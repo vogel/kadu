@@ -239,8 +239,8 @@ ALSAPlayerSlots::ALSAPlayerSlots(QObject *parent, const char *name) : QObject(pa
 
 	createDefaultConfiguration();
 
-	connect(sound_manager, SIGNAL(openDeviceImpl(SoundDeviceType, int, int, SoundDevice*, QMutex*)),
-			this, SLOT(openDevice(SoundDeviceType, int, int, SoundDevice*, QMutex*)));
+	connect(sound_manager, SIGNAL(openDeviceImpl(SoundDeviceType, int, int, SoundDevice*)),
+			this, SLOT(openDevice(SoundDeviceType, int, int, SoundDevice*)), Qt::DirectConnection);
 	connect(sound_manager, SIGNAL(closeDeviceImpl(SoundDevice)),
 			this, SLOT(closeDevice(SoundDevice)));
 	connect(sound_manager, SIGNAL(playSampleImpl(SoundDevice, const int16_t*, int, bool*)),
@@ -257,8 +257,8 @@ ALSAPlayerSlots::~ALSAPlayerSlots()
 {
 	kdebugf();
 
-	disconnect(sound_manager, SIGNAL(openDeviceImpl(SoundDeviceType, int, int, SoundDevice*, QMutex*)),
-			this, SLOT(openDevice(SoundDeviceType, int, int, SoundDevice*, QMutex*)));
+	disconnect(sound_manager, SIGNAL(openDeviceImpl(SoundDeviceType, int, int, SoundDevice*)),
+			this, SLOT(openDevice(SoundDeviceType, int, int, SoundDevice*)));
 	disconnect(sound_manager, SIGNAL(closeDeviceImpl(SoundDevice)),
 			this, SLOT(closeDevice(SoundDevice)));
 	disconnect(sound_manager, SIGNAL(playSampleImpl(SoundDevice, const int16_t*, int, bool*)),
@@ -287,16 +287,13 @@ bool ALSAPlayerSlots::isOk()
 	return ret;
 }
 
-void ALSAPlayerSlots::openDevice(SoundDeviceType type, int sample_rate, int channels, SoundDevice* device, QMutex* mutex)
+void ALSAPlayerSlots::openDevice(SoundDeviceType type, int sample_rate, int channels, SoundDevice* device)
 {
 	kdebugf();
 
 	ALSADevice *dev = new ALSADevice();
 	if (!dev)
-	{
-		mutex->unlock();
 		return;
-	}
 
 	if (type == PLAY_ONLY || type == PLAY_AND_RECORD)
 	{
@@ -306,7 +303,6 @@ void ALSAPlayerSlots::openDevice(SoundDeviceType type, int sample_rate, int chan
 			delete dev;
 			device = 0;
 			kdebugmf(KDEBUG_FUNCTION_END|KDEBUG_WARNING,"end: cannot open play device\n");
-			mutex->unlock();
 			return;
 		}
 	}
@@ -320,13 +316,11 @@ void ALSAPlayerSlots::openDevice(SoundDeviceType type, int sample_rate, int chan
 			delete dev;
 			device = 0;
 			kdebugmf(KDEBUG_FUNCTION_END|KDEBUG_WARNING,"end: cannot open record device\n");
-			mutex->unlock();
 			return;
 		}
 	}
 	dev->channels = channels;
 	*device = (SoundDevice)dev;
-	mutex->unlock();
 	kdebugf2();
 }
 

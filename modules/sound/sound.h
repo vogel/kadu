@@ -311,7 +311,7 @@ class SoundManager : public Notifier, public ConfigurationUiHandler
 			@device zwrócony uogólniony deskryptor urz±dzenia lub NULL je¶li otwarcie siê nie powiod³o.
 			@param mutex - mutex to be unlock after setting the device
 		**/
-		void openDeviceImpl(SoundDeviceType type, int sample_rate, int channels, SoundDevice* device, QMutex *mutex);
+		void openDeviceImpl(SoundDeviceType type, int sample_rate, int channels, SoundDevice* device);
 		/**
 			Pod ten sygna³ powinien podpi±æ siê modu³
 			d¼wiêkowy je¶li obs³uguje funkcjê odtwarzania

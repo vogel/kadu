@@ -83,8 +83,8 @@ OSSPlayerSlots::OSSPlayerSlots(QObject *parent, const char *name) : QObject(pare
 
 	createDefaultConfiguration();
 
-	connect(sound_manager, SIGNAL(openDeviceImpl(SoundDeviceType, int, int, SoundDevice*, QMutex*)),
-		this, SLOT(openDevice(SoundDeviceType, int, int, SoundDevice*, QMutex*)));
+	connect(sound_manager, SIGNAL(openDeviceImpl(SoundDeviceType, int, int, SoundDevice*)),
+		this, SLOT(openDevice(SoundDeviceType, int, int, SoundDevice*)), Qt::DirectConnection);
 	connect(sound_manager, SIGNAL(closeDeviceImpl(SoundDevice)),
 		this, SLOT(closeDevice(SoundDevice)));
 	connect(sound_manager, SIGNAL(playSampleImpl(SoundDevice, const int16_t*, int, bool*)),
@@ -101,8 +101,8 @@ OSSPlayerSlots::~OSSPlayerSlots()
 {
 	kdebugf();
 
-	disconnect(sound_manager, SIGNAL(openDeviceImpl(SoundDeviceType, int, int, SoundDevice*, QMutex*)),
-		this, SLOT(openDevice(SoundDeviceType, int, int, SoundDevice*, QMutex*)));
+	disconnect(sound_manager, SIGNAL(openDeviceImpl(SoundDeviceType, int, int, SoundDevice*)),
+		this, SLOT(openDevice(SoundDeviceType, int, int, SoundDevice*)));
 	disconnect(sound_manager, SIGNAL(closeDeviceImpl(SoundDevice)),
 		this, SLOT(closeDevice(SoundDevice)));
 	disconnect(sound_manager, SIGNAL(playSampleImpl(SoundDevice, const int16_t*, int, bool*)),
@@ -115,7 +115,7 @@ OSSPlayerSlots::~OSSPlayerSlots()
 	kdebugf2();
 }
 
-void OSSPlayerSlots::openDevice(SoundDeviceType type, int sample_rate, int channels, SoundDevice* device, QMutex* mutex)
+void OSSPlayerSlots::openDevice(SoundDeviceType type, int sample_rate, int channels, SoundDevice* device)
 {
 	kdebugf();
 	int maxbufsize = 0, caps = 0, value;
@@ -136,7 +136,6 @@ void OSSPlayerSlots::openDevice(SoundDeviceType type, int sample_rate, int chann
 	if (fd < 0)
 	{
 		fprintf(stderr, "Error opening device (%s, %d)\n", strerror(errno), errno);
-		mutex->unlock();
 		return;
 	}
 
@@ -145,7 +144,6 @@ void OSSPlayerSlots::openDevice(SoundDeviceType type, int sample_rate, int chann
 	{
 		fprintf(stderr, "Error resetting (%s, %d)\n", strerror(errno), errno);
 		close(fd);
-		mutex->unlock();
 		return;
 	}
 
@@ -157,7 +155,6 @@ void OSSPlayerSlots::openDevice(SoundDeviceType type, int sample_rate, int chann
 	{
 		fprintf(stderr, "Error setting format (%s, %d)\n", strerror(errno), errno);
 		close(fd);
-		mutex->unlock();
 		return;
 	}
 
@@ -167,7 +164,6 @@ void OSSPlayerSlots::openDevice(SoundDeviceType type, int sample_rate, int chann
 	{
 		fprintf(stderr, "Error setting channels (%s, %d)\n", strerror(errno), errno);
 		close(fd);
-		mutex->unlock();
 		return;
 	}
 
@@ -177,7 +173,6 @@ void OSSPlayerSlots::openDevice(SoundDeviceType type, int sample_rate, int chann
 	{
 		fprintf(stderr, "Error setting speed (%s, %d)\n", strerror(errno), errno);
 		close(fd);
-		mutex->unlock();
 		return;
 	}
 
@@ -186,7 +181,6 @@ void OSSPlayerSlots::openDevice(SoundDeviceType type, int sample_rate, int chann
 	{
 		fprintf(stderr, "Error getting max buffer size (%s, %d)\n", strerror(errno), errno);
 		close(fd);
-		mutex->unlock();
 		return;
 	}
 
@@ -195,7 +189,6 @@ void OSSPlayerSlots::openDevice(SoundDeviceType type, int sample_rate, int chann
 	{
 		fprintf(stderr, "Error getting capabilities (%s, %d)\n", strerror(errno), errno);
 		close(fd);
-		mutex->unlock();
 		return;
 	}
 	else
@@ -219,7 +212,6 @@ void OSSPlayerSlots::openDevice(SoundDeviceType type, int sample_rate, int chann
 	dev->channels = channels;
 	dev->flushing = false;
 	*device = (SoundDevice) dev;
-	mutex->unlock();
 }
 
 void OSSPlayerSlots::closeDevice(SoundDevice device)

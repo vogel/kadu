@@ -425,14 +425,7 @@ SoundDevice SoundManager::openDevice(SoundDeviceType type, int sample_rate, int 
 {
 	kdebugf();
 	SoundDevice device;
-
-	QMutex mutex;
-	mutex.lock();
-	emit openDeviceImpl(type, sample_rate, channels, &device, &mutex);
-	kdebugm(KDEBUG_INFO, "waiting until lock will be removed... ");
-	mutex.lock();
-	mutex.unlock();
-	kdebugm(KDEBUG_INFO, "done\n");
+	emit openDeviceImpl(type, sample_rate, channels, &device);
 	kdebugf2();
 	return device;
 }
