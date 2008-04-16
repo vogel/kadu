@@ -1,8 +1,8 @@
 #ifndef KADU_NAS_SOUND_H
 #define KADU_NAS_SOUND_H
-#include <qobject.h>
-#include <qstring.h>
-#include <qglobal.h>
+#include <QObject>
+#include <QString>
+
 /**
  * @defgroup nas_sound NAS sound
  * @{

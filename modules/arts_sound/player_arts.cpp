@@ -20,9 +20,8 @@
 #include <sys/socket.h>
 #include <sys/un.h>
 
-#include <qapplication.h>
-#include <qprocess.h>
-#include <qtimer.h>
+#include <QApplication>
+#include <QTimer>
 #include "arts_connector/common.c"
 
 /**
@@ -33,7 +32,7 @@ aRtsDevice::aRtsDevice() : mutex(), inUse(), process(0), sock(-1), no(-1), valid
 {
 }
 
-void aRtsDevice::processExited()
+void aRtsDevice::processExited(int exitCode, QProcess::ExitStatus exitStatus)
 {
 	kdebugf();
 	mutex.lock();
@@ -68,8 +67,8 @@ void aRtsDevice::deleteLater2()
 
 	if (process)
 	{
-		disconnect(process, SIGNAL(processExited()), this, SLOT(processExited()));
-		process->tryTerminate();
+		disconnect(process, SIGNAL(finished(int, QProcess::ExitStatus)), this, SLOT(processExited(int, QProcess::ExitStatus)));
+		process->terminate();
 		QTimer::singleShot(5000, process, SLOT(kill()));
 		QTimer::singleShot(5500, process, SLOT(deleteLater()));
 	}
@@ -99,14 +98,14 @@ aRtsPlayerRecorder::aRtsPlayerRecorder(QObject *parent, const char *name) : QObj
 	kdebugf();
 	srandom(time(NULL));
 
-	connect(sound_manager, SIGNAL(openDeviceImpl(SoundDeviceType, int, int, SoundDevice&)),
-		this, SLOT(openDevice(SoundDeviceType, int, int, SoundDevice&)));
+	connect(sound_manager, SIGNAL(openDeviceImpl(SoundDeviceType, int, int, SoundDevice*)),
+		this, SLOT(openDevice(SoundDeviceType, int, int, SoundDevice*)));
 	connect(sound_manager, SIGNAL(closeDeviceImpl(SoundDevice)),
 		this, SLOT(closeDevice(SoundDevice)));
-	connect(sound_manager, SIGNAL(playSampleImpl(SoundDevice, const int16_t*, int, bool&)),
-		this, SLOT(playSample(SoundDevice, const int16_t*, int, bool&)));
-	connect(sound_manager, SIGNAL(recordSampleImpl(SoundDevice, int16_t*, int, bool&)),
-		this, SLOT(recordSample(SoundDevice, int16_t*, int, bool&)));
+	connect(sound_manager, SIGNAL(playSampleImpl(SoundDevice, const int16_t*, int, bool*)),
+		this, SLOT(playSample(SoundDevice, const int16_t*, int, bool*)));
+	connect(sound_manager, SIGNAL(recordSampleImpl(SoundDevice, int16_t*, int, bool*)),
+		this, SLOT(recordSample(SoundDevice, int16_t*, int, bool*)));
 
 	kdebugf2();
 }
@@ -126,7 +125,7 @@ aRtsPlayerRecorder::~aRtsPlayerRecorder()
 
 		// for a moment we don't need mutex, but as it will be needed in closing device function, we release it
 		busymutex.unlock();
-		dev->process->tryTerminate();
+		dev->process->terminate();
 		QTimer::singleShot(5000, dev->process, SLOT(kill()));
 
 		// we are waiting for another thread to release that device
@@ -136,14 +135,14 @@ aRtsPlayerRecorder::~aRtsPlayerRecorder()
 	}
 	busymutex.unlock();
 
-	disconnect(sound_manager, SIGNAL(openDeviceImpl(SoundDeviceType, int, int, SoundDevice&)),
-		this, SLOT(openDevice(SoundDeviceType, int, int, SoundDevice&)));
+	disconnect(sound_manager, SIGNAL(openDeviceImpl(SoundDeviceType, int, int, SoundDevice*)),
+		this, SLOT(openDevice(SoundDeviceType, int, int, SoundDevice*)));
 	disconnect(sound_manager, SIGNAL(closeDeviceImpl(SoundDevice)),
 		this, SLOT(closeDevice(SoundDevice)));
-	disconnect(sound_manager, SIGNAL(playSampleImpl(SoundDevice, const int16_t*, int, bool&)),
-		this, SLOT(playSample(SoundDevice, const int16_t*, int, bool&)));
-	disconnect(sound_manager, SIGNAL(recordSampleImpl(SoundDevice, int16_t*, int, bool&)),
-		this, SLOT(recordSample(SoundDevice, int16_t*, int, bool&)));
+	disconnect(sound_manager, SIGNAL(playSampleImpl(SoundDevice, const int16_t*, int, bool*)),
+		this, SLOT(playSample(SoundDevice, const int16_t*, int, bool*)));
+	disconnect(sound_manager, SIGNAL(recordSampleImpl(SoundDevice, int16_t*, int, bool*)),
+		this, SLOT(recordSample(SoundDevice, int16_t*, int, bool*)));
 
 	// and now those which are in free devices pool
 	poolmutex.lock();
@@ -158,7 +157,7 @@ aRtsPlayerRecorder::~aRtsPlayerRecorder()
 	kdebugf2();
 }
 
-void aRtsPlayerRecorder::openDevice(SoundDeviceType type, int sample_rate, int channels, SoundDevice &device)
+void aRtsPlayerRecorder::openDevice(SoundDeviceType type, int sample_rate, int channels, SoundDevice *device)
 {
 	int itype;
 	if (type == PLAY_ONLY)
@@ -192,13 +191,14 @@ void aRtsPlayerRecorder::openDevice(SoundDeviceType type, int sample_rate, int c
 		dev->mutex.lock();
 		long pass = random();
 //		kdebugm(KDEBUG_INFO, "creating process\n");
-		dev->process = new QProcess(libPath("kadu/modules/bin/arts_sound/arts_connector"));
+		dev->process = new QProcess();
+		dev->process->start(libPath("kadu/modules/bin/arts_sound/arts_connector"));
 //		kdebugm(KDEBUG_INFO, "connecting processExited() signal\n");
-		connect(dev->process, SIGNAL(processExited()), dev, SLOT(processExited()));
+		connect(dev->process, SIGNAL(finished(int, QProcess::ExitStatus)), dev, SLOT(processExited(int, QProcess::ExitStatus)));
 		kdebugm(KDEBUG_INFO, "starting process\n");
-		if (!dev->process->start())
+		if (dev->process->state() == QProcess::NotRunning)
 		{
-			disconnect(dev->process, SIGNAL(processExited()), dev, SLOT(processExited()));
+			disconnect(dev->process, SIGNAL(finished(int, QProcess::ExitStatus)), dev, SLOT(processExited(int, QProcess::ExitStatus)));
 			delete dev->process;
 			dev->mutex.unlock();
 			delete dev;
@@ -207,11 +207,13 @@ void aRtsPlayerRecorder::openDevice(SoundDeviceType type, int sample_rate, int c
 			return;
 		}
 		kdebugm(KDEBUG_INFO, "writing to stdin\n");
-		dev->process->writeToStdin(QString("%1 %2 %3\n").arg(config_file.readNumEntry("General", "UIN")).arg(pass).arg(num));
+
+		QString data = QString("%1 %2 %3\n").arg(config_file.readNumEntry("General", "UIN")).arg(pass).arg(num);
+		dev->process->write(data.local8Bit().data(), data.size());
 		//WARNING: writeToStdin provides data in Qt event loop!
 
 		kdebugm(KDEBUG_INFO, "waiting for new line from arts_connector\n");
-		while (dev->valid && !dev->process->canReadLineStdout())
+		while (dev->valid && !dev->process->canReadLine())
 		{
 			// give a chance to end thread (processExited must lock dev->mutex)
 //			kdebugm(KDEBUG_INFO, "releasing lock\n");
@@ -225,16 +227,16 @@ void aRtsPlayerRecorder::openDevice(SoundDeviceType type, int sample_rate, int c
 		kdebugm(KDEBUG_INFO, "process exited or new line read\n");
 		QString out;
 		if (dev->valid)
-			out = dev->process->readLineStdout();
+			out = dev->process->readLine();
 		kdebugm(KDEBUG_INFO, "%d, process returned: '%s'\n", dev->valid, out.local8Bit().data());
 
-		if (dev->valid && dev->process->canReadLineStderr())
-			kdebugm(KDEBUG_WARNING, "process written on stderr: %s\n", dev->process->readLineStderr().local8Bit().data());
+		if (dev->valid && dev->process->canReadLine())
+			kdebugm(KDEBUG_WARNING, "process written on stderr: %s\n", dev->process->readLine().local8Bit().data());
 		if (out != "OK" || !dev->valid)
 		{
 			dev->mutex.unlock();
 			dev->deleteLater2();
-			device = NULL;
+			*device = NULL;
 			kdebugf2();
 			return;
 		}
@@ -251,7 +253,7 @@ void aRtsPlayerRecorder::openDevice(SoundDeviceType type, int sample_rate, int c
 
 			dev->mutex.unlock();
 			dev->deleteLater2();
-			device = NULL;
+			*device = NULL;
 			kdebugf2();
 			return;
 		}
@@ -268,7 +270,7 @@ void aRtsPlayerRecorder::openDevice(SoundDeviceType type, int sample_rate, int c
 		dev->mutex.lock();
 		kdebugm(KDEBUG_INFO, "%p %d\n", dev->process, dev->sock);
 	}
-	device = dev;
+	*device = dev;
 
 	sprintf(tmp, "OPEN %d %d %d\n", sample_rate, channels, itype);
 	kdebugm(KDEBUG_INFO, "%d, sending: '%s'\n", dev->valid, tmp);
@@ -282,7 +284,7 @@ void aRtsPlayerRecorder::openDevice(SoundDeviceType type, int sample_rate, int c
 		dev->valid = dev->valid && write_all(dev->sock, tmp, strlen(tmp), 100) != -1;
 		dev->mutex.unlock();
 		dev->deleteLater2();
-		device = NULL;
+		*device = NULL;
 		kdebugf2();
 		return;
 	}
@@ -340,7 +342,7 @@ void aRtsPlayerRecorder::closeDevice(SoundDevice device)
 	kdebugf2();
 }
 
-void aRtsPlayerRecorder::playSample(SoundDevice device, const int16_t* data, int length, bool& result)
+void aRtsPlayerRecorder::playSample(SoundDevice device, const int16_t* data, int length, bool* result)
 {
 	kdebugf();
 	aRtsDevice *dev = (aRtsDevice*)device;
@@ -359,15 +361,15 @@ void aRtsPlayerRecorder::playSample(SoundDevice device, const int16_t* data, int
 	dev->valid = dev->valid && read_line(dev->sock, tmp, 50) != -1;
 	kdebugm(KDEBUG_INFO, "%d, ret: '%s'\n", dev->valid, dev->valid ? tmp : "");
 	if (!dev->valid || sscanf(tmp, "PLAY SUCCESS: %d", &success) != 1)
-		result = false;
+		*result = false;
 	else
-		result = success;
+		*result = success;
 	dev->mutex.unlock();
 //	sleep(1);
 	kdebugf2();
 }
 
-void aRtsPlayerRecorder::recordSample(SoundDevice device, int16_t* data, int length, bool& result)
+void aRtsPlayerRecorder::recordSample(SoundDevice device, int16_t* data, int length, bool* result)
 {
 	kdebugf();
 	aRtsDevice *dev = (aRtsDevice*)device;
@@ -386,9 +388,9 @@ void aRtsPlayerRecorder::recordSample(SoundDevice device, int16_t* data, int len
 	dev->valid = dev->valid && read_line(dev->sock, tmp, 50) != -1;
 	kdebugm(KDEBUG_INFO, "%d, ret: '%s'\n", dev->valid, dev->valid ? tmp : "");
 	if (!dev->valid || sscanf(tmp, "RECORD SUCCESS: %d", &success) != 1)
-		result = false;
+		*result = false;
 	else
-		result = success;
+		*result = success;
 	dev->mutex.unlock();
 	kdebugf2();
 }

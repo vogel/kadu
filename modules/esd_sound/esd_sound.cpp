@@ -38,14 +38,14 @@ ESDPlayer::ESDPlayer(QObject *parent, const char *name) : QObject(parent, name)
 {
 	kdebugf();
 
-	connect(sound_manager, SIGNAL(openDeviceImpl(SoundDeviceType, int, int, SoundDevice&)),
-			this, SLOT(openDevice(SoundDeviceType, int, int, SoundDevice&)));
+	connect(sound_manager, SIGNAL(openDeviceImpl(SoundDeviceType, int, int, SoundDevice*)),
+			this, SLOT(openDevice(SoundDeviceType, int, int, SoundDevice*)));
 	connect(sound_manager, SIGNAL(closeDeviceImpl(SoundDevice)),
 			this, SLOT(closeDevice(SoundDevice)));
-	connect(sound_manager, SIGNAL(playSampleImpl(SoundDevice, const int16_t*, int, bool&)),
-			this, SLOT(playSample(SoundDevice, const int16_t*, int, bool&)));
-	connect(sound_manager, SIGNAL(recordSampleImpl(SoundDevice, int16_t*, int, bool&)),
-			this, SLOT(recordSample(SoundDevice, int16_t*, int, bool&)));
+	connect(sound_manager, SIGNAL(playSampleImpl(SoundDevice, const int16_t*, int, bool*)),
+			this, SLOT(playSample(SoundDevice, const int16_t*, int, bool*)));
+	connect(sound_manager, SIGNAL(recordSampleImpl(SoundDevice, int16_t*, int, bool*)),
+			this, SLOT(recordSample(SoundDevice, int16_t*, int, bool*)));
 	connect(sound_manager, SIGNAL(setFlushingEnabledImpl(SoundDevice, bool)),
 			this, SLOT(setFlushingEnabled(SoundDevice, bool)));
 
@@ -56,14 +56,14 @@ ESDPlayer::~ESDPlayer()
 {
 	kdebugf();
 
-	disconnect(sound_manager, SIGNAL(openDeviceImpl(SoundDeviceType, int, int, SoundDevice&)),
-			this, SLOT(openDevice(SoundDeviceType, int, int, SoundDevice&)));
+	disconnect(sound_manager, SIGNAL(openDeviceImpl(SoundDeviceType, int, int, SoundDevice*)),
+			this, SLOT(openDevice(SoundDeviceType, int, int, SoundDevice*)));
 	disconnect(sound_manager, SIGNAL(closeDeviceImpl(SoundDevice)),
 			this, SLOT(closeDevice(SoundDevice)));
-	disconnect(sound_manager, SIGNAL(playSampleImpl(SoundDevice, const int16_t*, int, bool&)),
-			this, SLOT(playSample(SoundDevice, const int16_t*, int, bool&)));
-	disconnect(sound_manager, SIGNAL(recordSampleImpl(SoundDevice, int16_t*, int, bool&)),
-			this, SLOT(recordSample(SoundDevice, int16_t*, int, bool&)));
+	disconnect(sound_manager, SIGNAL(playSampleImpl(SoundDevice, const int16_t*, int, bool*)),
+			this, SLOT(playSample(SoundDevice, const int16_t*, int, bool*)));
+	disconnect(sound_manager, SIGNAL(recordSampleImpl(SoundDevice, int16_t*, int, bool*)),
+			this, SLOT(recordSample(SoundDevice, int16_t*, int, bool*)));
 	disconnect(sound_manager, SIGNAL(setFlushingEnabledImpl(SoundDevice, bool)),
 			this, SLOT(setFlushingEnabled(SoundDevice, bool)));
 
@@ -76,18 +76,18 @@ struct ESDDevice
 	ESDDevice():play_sock(-1),rec_sock(-1){}
 };
 
-void ESDPlayer::openDevice(SoundDeviceType type, int sample_rate, int channels, SoundDevice& device)
+void ESDPlayer::openDevice(SoundDeviceType type, int sample_rate, int channels, SoundDevice* device)
 {
 	kdebugf();
 	ESDDevice *dev = new ESDDevice();
-	device = (SoundDevice) dev;
+	*device = (SoundDevice) dev;
 	if (type == PLAY_ONLY || type == PLAY_AND_RECORD)
 	{
 		dev->play_sock = esd_play_stream(ESD_BITS16|(channels==2?ESD_STEREO:ESD_MONO), sample_rate, NULL, NULL);
 		if (dev->play_sock<=0)
 		{
 			delete dev;
-			device = NULL;
+			*device = NULL;
 			return;
 		}
 	}
@@ -98,7 +98,7 @@ void ESDPlayer::openDevice(SoundDeviceType type, int sample_rate, int channels, 
 		{
 			esd_close(dev->play_sock);
 			delete dev;
-			device = NULL;
+			*device = NULL;
 			return;
 		}
 	}
@@ -121,7 +121,7 @@ void ESDPlayer::closeDevice(SoundDevice device)
 	kdebugf2();
 }
 
-void ESDPlayer::playSample(SoundDevice device, const int16_t* data, int length, bool& result)
+void ESDPlayer::playSample(SoundDevice device, const int16_t* data, int length, bool* result)
 {
 	kdebugf();
 	ESDDevice *dev = (ESDDevice *) device;
@@ -149,12 +149,12 @@ void ESDPlayer::playSample(SoundDevice device, const int16_t* data, int length, 
 		else
 			written += res;
 	}
-	result = written == length;
+	*result = written == length;
 
 	kdebugf2();
 }
 
-void ESDPlayer::recordSample(SoundDevice device, int16_t* data, int length, bool& result)
+void ESDPlayer::recordSample(SoundDevice device, int16_t* data, int length, bool* result)
 {
 	kdebugf();
 	ESDDevice *dev = (ESDDevice *) device;
@@ -182,7 +182,7 @@ void ESDPlayer::recordSample(SoundDevice device, int16_t* data, int length, bool
 		else
 			reed += res;
 	}
-	result = reed == length;
+	*result = reed == length;
 
 	kdebugf2();
 }

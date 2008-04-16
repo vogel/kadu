@@ -1,8 +1,8 @@
 #ifndef PLAYER_EXTERNAL_H
 #define PLAYER_EXTERNAL_H
 
-#include <qobject.h>
-#include <qstring.h>
+#include <QObject>
+#include <QString>
 
 /**
  * @defgroup ext_sound Ext sound
