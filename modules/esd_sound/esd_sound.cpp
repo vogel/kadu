@@ -39,7 +39,7 @@ ESDPlayer::ESDPlayer(QObject *parent, const char *name) : QObject(parent, name)
 	kdebugf();
 
 	connect(sound_manager, SIGNAL(openDeviceImpl(SoundDeviceType, int, int, SoundDevice*)),
-			this, SLOT(openDevice(SoundDeviceType, int, int, SoundDevice*)));
+			this, SLOT(openDevice(SoundDeviceType, int, int, SoundDevice*)), Qt::DirectConnection);
 	connect(sound_manager, SIGNAL(closeDeviceImpl(SoundDevice)),
 			this, SLOT(closeDevice(SoundDevice)));
 	connect(sound_manager, SIGNAL(playSampleImpl(SoundDevice, const int16_t*, int, bool*)),
