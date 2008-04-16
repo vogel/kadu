@@ -61,7 +61,7 @@ class SoundSlots : public QObject, public ConfigurationAwareObject
 		int16_t*    FullDuplexTestSample;
 
 	private slots:
-		void muteActionActivated(const UserGroup* users, const QWidget* source, bool is_on);
+		void muteActionActivated(QAction *action, bool is_on);
 		void setMuteActionState();
 		void muteUnmuteSounds();
 		void testSamplePlaying();
