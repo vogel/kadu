@@ -1,8 +1,8 @@
 #ifndef KADU_ALSA_SOUND_H
 #define KADU_ALSA_SOUND_H
-#include <qobject.h>
-#include <qstring.h>
-#include <qstringlist.h>
+#include <QObject>
+#include <QString>
+#include <QStringList>
 
 #define ALSA_PCM_NEW_HW_PARAMS_API
 #define ALSA_PCM_NEW_SW_PARAMS_API

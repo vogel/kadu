@@ -1,8 +1,8 @@
 #ifndef KADU_DSP_SOUND_H
 #define KADU_DSP_SOUND_H
-#include <qobject.h>
-#include <qstring.h>
-#include <qstringlist.h>
+#include <QObject>
+#include <QString>
+#include <QStringList>
 #include "../sound/sound.h"
 
 /**
