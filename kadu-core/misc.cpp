@@ -375,7 +375,7 @@ QString cp2unicode(const unsigned char *buf)
 		return QString::null;
 }
 
-QString unicode2cp(const QString &buf)
+QByteArray unicode2cp(const QString &buf)
 {
 	return codec_cp1250->fromUnicode(buf);
 }
@@ -388,7 +388,7 @@ QString latin2unicode(const unsigned char *buf)
 		return QString::null;
 }
 
-Q3CString unicode2latin(const QString &buf)
+QString unicode2latin(const QString &buf)
 {
 	return codec_latin2->fromUnicode(buf);
 }

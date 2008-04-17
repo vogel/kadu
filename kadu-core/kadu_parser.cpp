@@ -122,7 +122,7 @@ QString KaduParser::parse(const QString &s, const UserListElement &ule, const QO
 	QList<ParseElem> parseStack;
 
 	static bool searchChars[256] = {false};
-	const QByteArray slatin = unicode2latin(s);
+	const QByteArray slatin = s.toLocal8Bit().data();
 	if (searchChars[(unsigned char)'%'] == false)
 	{
 		searchChars[(unsigned char)'%'] = true;

@@ -1231,18 +1231,18 @@ QString GaduProtocol::sendMessage(UserListElements users, const QString &mesg)
 	myLastMessage.replace("\r\n", "\n");
 	myLastMessage.replace("\r", "\n");
 
-	QString msg = unicode2cp(msgtmp);
+	QByteArray data = unicode2cp(msgtmp);
 
-	emit sendMessageFiltering(users, msg, stop);
+	emit sendMessageFiltering(users, myLastMessage, stop);
 	if (stop)
 	{
 		kdebugmf(KDEBUG_FUNCTION_END, "end: filter stopped processing\n");
 		return myLastMessage;
 	}
 
-	if (msg.length() >= 2000)
+	if (data.length() >= 2000)
 	{
-		MessageBox::msg(tr("Filtered message too long (%1>=%2)").arg(msg.length()).arg(2000), false, "Warning");
+		MessageBox::msg(tr("Filtered message too long (%1>=%2)").arg(data.length()).arg(2000), false, "Warning");
 		kdebugmf(KDEBUG_FUNCTION_END, "end: filtered message too long\n");
 		return "\001thisisonlyworkaround";
 	}
@@ -1259,10 +1259,10 @@ QString GaduProtocol::sendMessage(UserListElements users, const QString &mesg)
 			if ((*user).usesProtocol("Gadu"))
 				uins[i++] = (*user).ID("Gadu").toUInt();
 		if (myLastFormatsLength)
-			seqNumber = gg_send_message_confer_richtext(Sess, GG_CLASS_CHAT, uinsCount, uins, (unsigned char *)msg.toLocal8Bit().data(),
+			seqNumber = gg_send_message_confer_richtext(Sess, GG_CLASS_CHAT, uinsCount, uins, (unsigned char *)data.data(),
 				myLastFormats, myLastFormatsLength);
 		else
-			seqNumber = gg_send_message_confer(Sess, GG_CLASS_CHAT, uinsCount, uins,(unsigned char *)msg.toLocal8Bit().data());
+			seqNumber = gg_send_message_confer(Sess, GG_CLASS_CHAT, uinsCount, uins,(unsigned char *)data.data());
 		delete[] uins;
 	}
 	else
@@ -1270,10 +1270,10 @@ QString GaduProtocol::sendMessage(UserListElements users, const QString &mesg)
 			if ((*user).usesProtocol("Gadu"))
 			{
 				if (myLastFormatsLength)
-					seqNumber = gg_send_message_richtext(Sess, GG_CLASS_CHAT, (*user).ID("Gadu").toUInt(), (unsigned char *)msg.toLocal8Bit().data(),
+					seqNumber = gg_send_message_richtext(Sess, GG_CLASS_CHAT, (*user).ID("Gadu").toUInt(), (unsigned char *)data.data(),
 						myLastFormats, myLastFormatsLength);
 				else
-					seqNumber = gg_send_message(Sess, GG_CLASS_CHAT, (*user).ID("Gadu").toUInt(),(unsigned char *)msg.toLocal8Bit().data());
+					seqNumber = gg_send_message(Sess, GG_CLASS_CHAT, (*user).ID("Gadu").toUInt(),(unsigned char *)data.data());
 
 				break;
 			}
@@ -1419,19 +1419,19 @@ void GaduProtocol::searchNextInPubdir(SearchRecord& searchRecord)
 	req = gg_pubdir50_new(GG_PUBDIR50_SEARCH);
 
 	if (!searchRecord.Uin.isEmpty())
-		gg_pubdir50_add(req, GG_PUBDIR50_UIN, (const char *)unicode2cp(searchRecord.Uin).toLocal8Bit().data());
+		gg_pubdir50_add(req, GG_PUBDIR50_UIN, (const char *)unicode2cp(searchRecord.Uin).data());
 	if (!searchRecord.FirstName.isEmpty())
-		gg_pubdir50_add(req, GG_PUBDIR50_FIRSTNAME, (const char *)unicode2cp(searchRecord.FirstName).toLocal8Bit().data());
+		gg_pubdir50_add(req, GG_PUBDIR50_FIRSTNAME, (const char *)unicode2cp(searchRecord.FirstName).data());
 	if (!searchRecord.LastName.isEmpty())
-		gg_pubdir50_add(req, GG_PUBDIR50_LASTNAME, (const char *)unicode2cp(searchRecord.LastName).toLocal8Bit().data());
+		gg_pubdir50_add(req, GG_PUBDIR50_LASTNAME, (const char *)unicode2cp(searchRecord.LastName).data());
 	if (!searchRecord.NickName.isEmpty())
-		gg_pubdir50_add(req, GG_PUBDIR50_NICKNAME, (const char *)unicode2cp(searchRecord.NickName).toLocal8Bit().data());
+		gg_pubdir50_add(req, GG_PUBDIR50_NICKNAME, (const char *)unicode2cp(searchRecord.NickName).data());
 	if (!searchRecord.City.isEmpty())
-		gg_pubdir50_add(req, GG_PUBDIR50_CITY, (const char *)unicode2cp(searchRecord.City).toLocal8Bit().data());
+		gg_pubdir50_add(req, GG_PUBDIR50_CITY, (const char *)unicode2cp(searchRecord.City).data());
 	if (!searchRecord.BirthYearFrom.isEmpty())
 	{
 		QString bufYear = searchRecord.BirthYearFrom + ' ' + searchRecord.BirthYearTo;
-		gg_pubdir50_add(req, GG_PUBDIR50_BIRTHYEAR, (const char *)unicode2cp(bufYear).toLocal8Bit().data());
+		gg_pubdir50_add(req, GG_PUBDIR50_BIRTHYEAR, (const char *)unicode2cp(bufYear).data());
 	}
 
 	switch (searchRecord.Gender)
@@ -1603,8 +1603,8 @@ void GaduProtocol::changePassword(UinType uin, const QString &mail, const QStrin
 void GaduProtocol::doRegisterAccount()
 {
 	kdebugf();
-	struct gg_http *h = gg_register3(unicode2cp(DataEmail).toLocal8Bit().data(), unicode2cp(DataPassword).toLocal8Bit().data(),
-		unicode2cp(TokenId).toLocal8Bit().data(), unicode2cp(TokenValue).toLocal8Bit().data(), 1);
+	struct gg_http *h = gg_register3(unicode2cp(DataEmail).data(), unicode2cp(DataPassword).data(),
+		unicode2cp(TokenId).data(), unicode2cp(TokenValue).data(), 1);
 	if (h)
 	{
 		PubdirSocketNotifiers *sn = new PubdirSocketNotifiers(h, this, "pubdir_socket_notifiers");
@@ -1626,8 +1626,8 @@ void GaduProtocol::registerDone(bool ok, struct gg_http *h)
 void GaduProtocol::doUnregisterAccount()
 {
 	kdebugf();
-	struct gg_http* h = gg_unregister3(DataUin, unicode2cp(DataPassword).toLocal8Bit().data(), unicode2cp(TokenId).toLocal8Bit().data(),
-		unicode2cp(TokenValue).toLocal8Bit().data(), 1);
+	struct gg_http* h = gg_unregister3(DataUin, unicode2cp(DataPassword).data(), unicode2cp(TokenId).data(),
+		unicode2cp(TokenValue).data(), 1);
 	if (h)
 	{
 		PubdirSocketNotifiers *sn = new PubdirSocketNotifiers(h, this, "pubdir_socket_notifiers");
@@ -1651,8 +1651,8 @@ void GaduProtocol::doRemindPassword()
 {
 	kdebugf();
 
-	struct gg_http *h = gg_remind_passwd3(DataUin, unicode2cp(DataEmail).toLocal8Bit().data(), unicode2cp(TokenId).toLocal8Bit().data(),
-		unicode2cp(TokenValue).toLocal8Bit().data(), 1);
+	struct gg_http *h = gg_remind_passwd3(DataUin, unicode2cp(DataEmail).data(), unicode2cp(TokenId).data(),
+		unicode2cp(TokenValue).data(), 1);
 	if (h)
 	{
 		PubdirSocketNotifiers *sn = new PubdirSocketNotifiers(h, this, "pubdir_socket_notifiers");
@@ -1675,9 +1675,9 @@ void GaduProtocol::doChangePassword()
 {
 	kdebugf();
 
-	struct gg_http *h = gg_change_passwd4(DataUin, unicode2cp(DataEmail).toLocal8Bit().data(),
-		unicode2cp(DataPassword).toLocal8Bit().data(), unicode2cp(DataNewPassword).toLocal8Bit().data(),
-		unicode2cp(TokenId).toLocal8Bit().data(), unicode2cp(TokenValue).toLocal8Bit().data(), 1);
+	struct gg_http *h = gg_change_passwd4(DataUin, unicode2cp(DataEmail).data(),
+		unicode2cp(DataPassword).data(), unicode2cp(DataNewPassword).data(),
+		unicode2cp(TokenId).data(), unicode2cp(TokenValue).data(), 1);
 	if (h)
 	{
 		PubdirSocketNotifiers *sn = new PubdirSocketNotifiers(h, this, "pubdir_socket_notifiers");
