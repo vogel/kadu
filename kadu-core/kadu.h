@@ -177,7 +177,7 @@ class Kadu : public KaduMainWindow, ConfigurationAwareObject, public ActionWindo
 		~Kadu();
 
 		virtual bool supportsActionType(ActionDescription::ActionType type) {
-			return type & (ActionDescription::TypeGlobal | ActionDescription::TypeUserList); }
+			return type & (ActionDescription::TypeGlobal | ActionDescription::TypeUserList | ActionDescription::TypeUser); }
 		virtual UserBox * getUserBox() { return Userbox; }
 		virtual UserListElements getUserListElements();
 		virtual ChatWidget * getChatWidget() { return 0; }

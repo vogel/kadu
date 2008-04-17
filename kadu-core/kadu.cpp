@@ -748,12 +748,12 @@ void Kadu::addUserActionActivated(QAction *sender, bool toggled)
 {
  	kdebugf();
 	ActionWindow *window = dynamic_cast<ActionWindow *>(sender->parent());
-	if (!window)
+	if (window)
 	{	
 		UserListElements selectedUsers = window->getUserListElements();
- 		if ((selectedUsers.count() == 1) && (selectedUsers[1].isAnonymous()))
+ 		if ((selectedUsers.count() == 1) && (selectedUsers[0].isAnonymous()))
 		{
- 			(new UserInfo(selectedUsers[1], kadu, "add_user"))->show();
+ 			(new UserInfo(selectedUsers[0], kadu, "add_user"))->show();
 			return;
 		}
 	}
