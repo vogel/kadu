@@ -38,9 +38,22 @@ void KaduMainWindow::loadToolBarsFromConfig(const QString &prefix)
 	loadToolBarsFromConfig(realPrefix + "rightDockArea", Qt::RightToolBarArea);
 }
 
-bool offsetComparator(ToolBar *t1, ToolBar *t2)
+bool horizontalToolbarComparator(ToolBar *t1, ToolBar *t2)
 {
-	return t1->offset() < t2->offset();
+	if (t1->yOffset() < t2->yOffset())
+		return true;
+	if (t1->yOffset() > t2->yOffset())
+		return false;
+	return t1->xOffset() < t2->xOffset();
+}
+
+bool verticalToolbarComparator(ToolBar *t1, ToolBar *t2)
+{
+	if (t1->xOffset() < t2->xOffset())
+		return true;
+	if (t1->xOffset() > t2->xOffset())
+		return false;
+	return t1->yOffset() < t2->yOffset();
 }
 
 bool KaduMainWindow::loadToolBarsFromConfig(const QString &configName, Qt::ToolBarArea area, bool remove)
@@ -76,9 +89,31 @@ bool KaduMainWindow::loadToolBarsFromConfig(const QString &configName, Qt::ToolB
 		toolBars.append(toolbar);
 	}
 
-	qSort(toolBars.begin(), toolBars.end(), offsetComparator);
-	foreach(ToolBar *toolBar, toolBars)
-		addToolBar(area, toolBar);
+	int currentLine = 0;
+	if (area == Qt::LeftToolBarArea || area == Qt::RightToolBarArea)
+	{
+		qSort(toolBars.begin(), toolBars.end(), verticalToolbarComparator);
+		foreach(ToolBar *toolBar, toolBars)
+		{
+			if (toolBar->xOffset() != currentLine)
+				addToolBarBreak(area);
+
+			addToolBar(area, toolBar);
+			currentLine = toolBar->xOffset();
+		}
+	}
+	else
+	{
+		qSort(toolBars.begin(), toolBars.end(), horizontalToolbarComparator);
+		foreach(ToolBar *toolBar, toolBars)
+		{
+			if (toolBar->yOffset() != currentLine)
+				addToolBarBreak(area);
+
+			addToolBar(area, toolBar);
+			currentLine = toolBar->yOffset();
+		}
+	}
 
 	if (remove)
 		toolbarsConfig.removeChild(dockareaConfig);
