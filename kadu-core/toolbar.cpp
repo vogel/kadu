@@ -29,7 +29,7 @@
 QMap< QString, QList<ToolBar::ToolBarAction> > ToolBar::DefaultActions;
 
 ToolBar::ToolBar(QWidget * parent)
-	: QToolBar(parent)/*, dragButton(NULL)*/
+	: QToolBar(parent), Offset(0)
 {
 	kdebugf();
 
@@ -228,7 +228,11 @@ void ToolBar::writeToConfig(QDomElement parent_element)
 {
 	kdebugf();
 	QDomElement toolbar_elem = xml_config_file->createElement(parent_element, "ToolBar");
-// 	toolbar_elem.setAttribute("offset", offset());
+
+	if (orientation() == Qt::Horizontal)
+		toolbar_elem.setAttribute("offset", pos().x());
+	else
+		toolbar_elem.setAttribute("offset", pos().y());
 
 	FOREACH(toolBarAction, ToolBarActions)
 	{
@@ -318,7 +322,7 @@ void ToolBar::loadFromConfig(QDomElement toolbar_element)
 {
 	kdebugf();
 
-// 	setOffset(toolbar_element.attribute("offset").toInt());
+	Offset = toolbar_element.attribute("offset").toInt();
 
 	ToolBarActions.clear();
 

@@ -35,6 +35,9 @@ class ToolBar : public QToolBar
 	QList<ToolBarAction> ToolBarActions;
 //	ToolButton *dragButton; /*!< przeci?gany przycisk akcji */
 
+	// TODO: remove, used only when reading from config
+	int Offset;
+
 	void addAction(const QString &actionName, bool showLabel, QAction *after = 0);
 
 	static QMap< QString, QList<ToolBarAction> > DefaultActions;
@@ -134,6 +137,8 @@ public:
 		o podanej nazwie znajduje si? ju? na pasku narz?dzi.
 	**/
 	bool hasAction (const QString &action_name);
+
+	int offset() { return Offset; }
 
 public slots:
 	/**

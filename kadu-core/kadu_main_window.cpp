@@ -38,6 +38,11 @@ void KaduMainWindow::loadToolBarsFromConfig(const QString &prefix)
 	loadToolBarsFromConfig(realPrefix + "rightDockArea", Qt::RightToolBarArea);
 }
 
+bool offsetComparator(ToolBar *t1, ToolBar *t2)
+{
+	return t1->offset() < t2->offset();
+}
+
 bool KaduMainWindow::loadToolBarsFromConfig(const QString &configName, Qt::ToolBarArea area, bool remove)
 {
 	kdebugf();
@@ -53,6 +58,7 @@ bool KaduMainWindow::loadToolBarsFromConfig(const QString &configName, Qt::ToolB
 	if (dockareaConfig.isNull())
 		return false;
 
+	QList<ToolBar *> toolBars;
 	for (QDomNode n = dockareaConfig.firstChild(); !n.isNull(); n = n.nextSibling())
 	{
 		const QDomElement &toolbarConfig = n.toElement();
@@ -67,8 +73,12 @@ bool KaduMainWindow::loadToolBarsFromConfig(const QString &configName, Qt::ToolB
 		toolbar->show();
 // 		setAcceptDockWindow(toolbar, true);
 
-		addToolBar(area, toolbar);
+		toolBars.append(toolbar);
 	}
+
+	qSort(toolBars.begin(), toolBars.end(), offsetComparator);
+	foreach(ToolBar *toolBar, toolBars)
+		addToolBar(area, toolBar);
 
 	if (remove)
 		toolbarsConfig.removeChild(dockareaConfig);
