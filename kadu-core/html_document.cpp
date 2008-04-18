@@ -7,7 +7,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <qregexp.h>
+#include <QRegExp>
 
 #include "config_file.h"
 #include "debug.h"

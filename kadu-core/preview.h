@@ -1,10 +1,6 @@
 #ifndef PREVIEW_H
 #define PREVIEW_H
 
-#include <qglobal.h>
-
-#include <qobject.h>
-
 #include "userlistelement.h"
 #include "usergroup.h"
 

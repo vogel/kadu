@@ -10,8 +10,6 @@
 #include "debug.h"
 #include "misc.h"
 #include "protocols_manager.h"
-//Added by qt3to4:
-#include <QList>
 
 ProtocolsManager::ProtocolsManager() : QObject(NULL, "protocols_manager"),
 	protocolDescriptions(), protocols()

@@ -1,13 +1,8 @@
 #ifndef KADU_COLOR_SELECTOR_H
 #define KADU_COLOR_SELECTOR_H
 
-#include <qglobal.h>
-
-#include <qpushbutton.h>
-#include <qcolor.h>
-#include <qwidget.h>
-//Added by qt3to4:
-#include <QCloseEvent>
+#include <QPushButton>
+#include <QWidget>
 
 class QCloseEvent;
 

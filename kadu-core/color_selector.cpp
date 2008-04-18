@@ -7,15 +7,9 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <qapplication.h>
-#include <qdesktopwidget.h>
-#include <qlayout.h>
-#include <qtooltip.h>
-//Added by qt3to4:
-#include <QPixmap>
-#include <Q3GridLayout>
-#include <QList>
-#include <QCloseEvent>
+#include <QApplication>
+#include <QDesktopWidget>
+#include <QLayout>
 
 #include "color_selector.h"
 #include "debug.h"
@@ -34,7 +28,7 @@ ColorSelectorButton::ColorSelectorButton(QWidget* parent, const QColor& qcolor, 
 //	setAutoRaise(true);
 	setMouseTracking(true);
 	setFixedSize(WIDTH1*width+(BORDER1*2)+(width-1)*(BORDER1*2), WIDTH1+(BORDER1*2));
-	QToolTip::add(this,color.name());
+	setToolTip(color.name());
 	connect(this, SIGNAL(clicked()), this, SLOT(buttonClicked()));
 }
 
@@ -44,9 +38,12 @@ void ColorSelectorButton::buttonClicked()
 }
 
 ColorSelector::ColorSelector(const QColor &defColor, QWidget* parent, const char* name)
-	: QWidget (parent, name,Qt::WType_Popup|Qt::WDestructiveClose)
+	: QWidget(parent, name, Qt::Popup)
 {
 	kdebugf();
+
+	setAttribute(Qt::WA_DeleteOnClose);
+
 	QList<QColor> qcolors;
 	int i;
 
@@ -54,7 +51,7 @@ ColorSelector::ColorSelector(const QColor &defColor, QWidget* parent, const char
 		qcolors.append(colors[i]);
 
 	int selector_width = 4; //sqrt(16)
-	Q3GridLayout *grid = new Q3GridLayout(this, 0, selector_width, 0, 0);
+	QGridLayout *grid = new QGridLayout(this, 0, selector_width, 0, 0);
 
 	i = 0;
 	CONST_FOREACH(color, qcolors)

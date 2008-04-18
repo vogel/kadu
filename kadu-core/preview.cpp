@@ -7,7 +7,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <qapplication.h>
+#include <QApplication>
 
 #include "config_file.h"
 #include "kadu_parser.h"

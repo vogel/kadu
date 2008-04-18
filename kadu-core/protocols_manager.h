@@ -1,11 +1,7 @@
 #ifndef KADU_PROTOCOLS_MANAGER_H
 #define KADU_PROTOCOLS_MANAGER_H
 
-#include <qglobal.h>
-
-#include <qobject.h>
-#include <qstring.h>
-#include <q3valuelist.h>
+#include <QObject>
 
 #include "protocol.h"
 

@@ -1,11 +1,6 @@
 #ifndef KADU_HTML_DOCUMENT_H
 #define KADU_HTML_DOCUMENT_H
 
-#include <qglobal.h>
-
-#include <qstring.h>
-#include <q3valuelist.h>
-
 class QRegExp;
 
 /**

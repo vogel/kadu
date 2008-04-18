@@ -1,16 +1,10 @@
 #ifndef KADU_SPLITTER_H
 #define KADU_SPLITTER_H
 
-#include <qglobal.h>
+#include <QSplitter>
 
-#include <q3valuelist.h>
-#include <qsplitter.h>
-//Added by qt3to4:
-#include <QChildEvent>
-
-class QPainter;
 class QChildEvent;
-class QWidget;
+
 class KaduTextBrowser;
 
 /**
