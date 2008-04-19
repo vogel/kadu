@@ -24,6 +24,10 @@
 #include "message_box.h"
 #include "toolbar.h"
 #include "userbox.h"
+//Added by qt3to4:
+#include <Q3ValueList>
+#include <QLabel>
+#include <QKeyEvent>
 
 extern "C" int history_init()
 {
@@ -69,12 +73,14 @@ HistoryModule::HistoryModule() : QObject(NULL, "history")
 		history, SLOT(messageReceived(Protocol *, UserListElements, const QString&, time_t)));
 	connect(gadu, SIGNAL(imageReceivedAndSaved(UinType, uint32_t, uint32_t, const QString &)),
 		history, SLOT(imageReceivedAndSaved(UinType, uint32_t, uint32_t, const QString &)));
-	connect(kadu, SIGNAL(removingUsers(UserListElements)),
-		this, SLOT(removingUsers(UserListElements)));
+	connect(kadu, SIGNAL(removingUsers(UserListElements)), this, SLOT(removingUsers(UserListElements)));
 
-	Action* history_action = new Action("History", tr("Show history"), "showHistoryAction", Action::TypeUser);
-	connect(history_action, SIGNAL(activated(const UserGroup*, const QWidget*, bool)),
-		this, SLOT(historyActionActivated(const UserGroup*)));
+
+	historyActionDescription = new ActionDescription(
+		ActionDescription::TypeUser, "showHistoryAction",
+		this, SLOT(historyActionActivated(QAction *, bool)),
+		"History", tr("Show history")
+	);
 
 	ToolBar::addDefaultAction("Kadu toolbar", "showHistoryAction", 4);
 	ToolBar::addDefaultAction("Chat toolbar 1", "showHistoryAction", 3);
@@ -105,9 +111,8 @@ HistoryModule::~HistoryModule()
 	FOREACH(it, chat_manager->chats())
 		chatDestroying(*it);
 
-	Action* history_action = KaduActions["showHistoryAction"];
-	delete history_action;
-	history_action = 0;
+	delete historyActionDescription;
+	historyActionDescription = 0;
 
 	disconnect(gadu, SIGNAL(messageReceived(Protocol *, UserListElements, const QString&, time_t)),
 		history, SLOT(messageReceived(Protocol *, UserListElements, const QString&, time_t)));
@@ -169,8 +174,8 @@ void HistoryModule::appendHistory(ChatWidget *chat)
 
 	UserListElements senders = chat->users()->toUserListElements();
 
-	QValueList<HistoryEntry> entries;
-	QValueList<HistoryEntry> entriestmp;
+	Q3ValueList<HistoryEntry> entries;
+	Q3ValueList<HistoryEntry> entriestmp;
 	QDateTime date = QDateTime::currentDateTime();
 	unsigned int from, end, count;
 
@@ -194,7 +199,7 @@ void HistoryModule::appendHistory(ChatWidget *chat)
 			| HISTORYMANAGER_ENTRY_MSGSEND | HISTORYMANAGER_ENTRY_CHATRCV | HISTORYMANAGER_ENTRY_MSGRCV);
 		kdebugmf(KDEBUG_INFO, "temp entries = %u\n", entriestmp.count());
 
-		QValueList<HistoryEntry>::iterator it = entriestmp.begin();
+		Q3ValueList<HistoryEntry>::iterator it = entriestmp.begin();
 		while (it != entriestmp.end())
 		{
 			if ((*it).type == HISTORYMANAGER_ENTRY_CHATRCV
@@ -224,12 +229,12 @@ void HistoryModule::appendHistory(ChatWidget *chat)
 	else
 		from = entryCount - chatHistoryQuotation;
 
-	QValueList<ChatMessage *> messages;
+	Q3ValueList<ChatMessage *> messages;
 
 	int quotTime = config_file.readNumEntry("History", "ChatHistoryQuotationTime");
 
-	QValueListConstIterator<HistoryEntry> entry = entries.at(from);
-	QValueListConstIterator<HistoryEntry> entriesEnd = entries.end();
+	Q3ValueListConstIterator<HistoryEntry> entry = entries.at(from);
+	Q3ValueListConstIterator<HistoryEntry> entriesEnd = entries.end();
 	for (; entry!=entriesEnd; ++entry)
 		if ((*entry).date.secsTo(QDateTime::currentDateTime()) <= -quotTime * 3600)
 		{
@@ -290,7 +295,7 @@ void HistoryModule::viewHistory()
 	}
 	UserListElements users = activeUserBox->selectedUsers();
 	UserGroup user_group(users);
-	KaduActions["showHistoryAction"]->activate(&user_group);
+//	KaduActions["showHistoryAction"]->activate(&user_group);
 	kdebugf2();
 }
 
@@ -337,7 +342,7 @@ void HistoryModule::userboxMenuPopup()
 
 	bool any_ok = false;
 	CONST_FOREACH(user, users)
-		if if (!(*user).protocolList().isEmpty())
+		if (!(*user).protocolList().isEmpty())
 		{
 			any_ok = true;
 			break;

@@ -3,15 +3,21 @@
 
 #include "main_configuration_window.h"
 #include "usergroup.h"
+//Added by qt3to4:
+#include <QKeyEvent>
+#include <QLabel>
 
 class QLabel;
 
+class ActionDescription;
 class ChatWidget;
 class UserGroup;
 
 class HistoryModule : public ConfigurationUiHandler
 {
 	Q_OBJECT
+
+	ActionDescription *historyActionDescription;
 
 	QLabel *dontCiteOldMessagesLabel;
 

@@ -7,12 +7,18 @@
  *                                                                         *
  ***************************************************************************/
 
+#include <QApplication>
 #include <qcheckbox.h>
 #include <qlayout.h>
 #include <qpushbutton.h>
 #include <qregexp.h>
 #include <qsplitter.h>
-#include <qvbox.h>
+#include <q3vbox.h>
+//Added by qt3to4:
+#include <QCloseEvent>
+#include <Q3GridLayout>
+#include <Q3ValueList>
+#include <QKeyEvent>
 
 #include "chat_message.h"
 #include "chat_messages_view.h"
@@ -25,8 +31,8 @@
 
 #include "history_dialog.h"
 
-UinsListViewText::UinsListViewText(QListView *parent, const UinsList &uins)
-	: QListViewItem(parent), uins(uins)
+UinsListViewText::UinsListViewText(Q3ListView *parent, const UinsList &uins)
+	: Q3ListViewItem(parent), uins(uins)
 {
 //	kdebugf();
 	QString name;
@@ -55,8 +61,8 @@ const UinsList &UinsListViewText::getUinsList() const
 	return uins;
 }
 
-DateListViewText::DateListViewText(QListViewItem *parent, const HistoryDate &date)
-	: QListViewItem(parent), date(date)
+DateListViewText::DateListViewText(Q3ListViewItem *parent, const HistoryDate &date)
+	: Q3ListViewItem(parent), date(date)
 {
 	setText(0, date.date.toString("yyyy.MM.dd"));
 }
@@ -67,7 +73,7 @@ const HistoryDate &DateListViewText::getDate() const
 }
 
 HistoryDialog::HistoryDialog(UinsList uins)
-	: QWidget(kadu, "HistoryDialog", WType_TopLevel | WDestructiveClose), uinslv(0), body(0),
+	: QWidget(kadu, "HistoryDialog", Qt::WType_TopLevel | Qt::WDestructiveClose), uinslv(0), body(0),
 	uins(uins), start(0), findrec(), closeDemand(false), finding(false), dateentries()
 {
 	kdebugf();
@@ -76,16 +82,16 @@ HistoryDialog::HistoryDialog(UinsList uins)
 
 	setCaption(tr("History"));
 
-	QGridLayout *grid = new QGridLayout(this, 2, 5, 5, 5, "grid");
+	Q3GridLayout *grid = new Q3GridLayout(this, 2, 5, 5, 5, "grid");
 
 	QSplitter *splitter = new QSplitter(Qt::Horizontal, this, "splitter");
 
-	uinslv = new QListView(splitter, "uinslv");
+	uinslv = new Q3ListView(splitter, "uinslv");
 	uinslv->addColumn(tr("Uins"));
 	uinslv->setRootIsDecorated(TRUE);
 
-	QVBox *vbox = new QVBox(splitter, "vbox");
-	body = new ChatMessagesView(vbox, "body");
+	Q3VBox *vbox = new Q3VBox(splitter, "vbox");
+	body = new ChatMessagesView(vbox);
 	body->setPrune(0);
 
 	QCheckBox *showStatusChanges = new QCheckBox(tr("Show status changes"), vbox);
@@ -93,20 +99,20 @@ HistoryDialog::HistoryDialog(UinsList uins)
 	showStatusChanges->setChecked(!config_file.readBoolEntry("History", "DontShowStatusChanges"));
 	connect(showStatusChanges, SIGNAL(toggled(bool)), this, SLOT(showStatusChanged(bool)));
 
-	QHBox *btnbox = new QHBox(vbox, "btnbox");
+	Q3HBox *btnbox = new Q3HBox(vbox, "btnbox");
 	btnbox->setSpacing(5);
 	QPushButton *searchbtn = new QPushButton(tr("&Find"), btnbox, "searchbtn");
 	QPushButton *searchnextbtn = new QPushButton(tr("Find &next"), btnbox, "searcgnextbtn");
 	QPushButton *searchprevbtn = new QPushButton(tr("Find &previous"), btnbox, "searchprevbtn");
 
-	QValueList<int> sizes;
+	Q3ValueList<int> sizes;
 	sizes.append(1);
 	sizes.append(3);
 	splitter->setSizes(sizes);
 	grid->addMultiCellWidget(splitter, 0, 1, 0, 4);
 
-	connect(uinslv, SIGNAL(expanded(QListViewItem *)), this, SLOT(uinsChanged(QListViewItem *)));
-	connect(uinslv, SIGNAL(currentChanged(QListViewItem *)), this, SLOT(dateChanged(QListViewItem *)));
+	connect(uinslv, SIGNAL(expanded(Q3ListViewItem *)), this, SLOT(uinsChanged(Q3ListViewItem *)));
+	connect(uinslv, SIGNAL(currentChanged(Q3ListViewItem *)), this, SLOT(dateChanged(Q3ListViewItem *)));
 	connect(searchbtn, SIGNAL(clicked()), this, SLOT(searchBtnClicked()));
 	connect(searchnextbtn, SIGNAL(clicked()), this, SLOT(searchNextBtnClicked()));
 	connect(searchprevbtn, SIGNAL(clicked()), this, SLOT(searchPrevBtnClicked()));
@@ -118,9 +124,9 @@ HistoryDialog::HistoryDialog(UinsList uins)
 	findrec.actualrecord = -1;
 
 	UinsListViewText *uinslvt, *selecteduinslvt = NULL;
-	QListViewItem *datelvt;
+	Q3ListViewItem *datelvt;
 
-	QValueList<UinsList> uinsentries = history->getUinsLists();
+	Q3ValueList<UinsList> uinsentries = history->getUinsLists();
 
 	CONST_FOREACH(uinsentry, uinsentries)
 	{
@@ -155,10 +161,10 @@ void HistoryDialog::showStatusChanged(bool showStatusChanges)
 		dateChanged(uinslv->currentItem());
 }
 
-void HistoryDialog::uinsChanged(QListViewItem *item)
+void HistoryDialog::uinsChanged(Q3ListViewItem *item)
 {
 	kdebugf();
-	QValueList<HistoryDate> dateentries;
+	Q3ValueList<HistoryDate> dateentries;
 	if (item->depth() == 0)
 	{
 		uins = ((UinsListViewText *)item)->getUinsList();
@@ -172,7 +178,7 @@ void HistoryDialog::uinsChanged(QListViewItem *item)
 	kdebugf2();
 }
 
-void HistoryDialog::dateChanged(QListViewItem *item)
+void HistoryDialog::dateChanged(Q3ListViewItem *item)
 {
 	kdebugf();
 	int count, depth = item->depth();
@@ -251,13 +257,13 @@ void HistoryDialog::showHistoryEntries(int from, int count)
 	kdebugf();
 
 	bool noStatus = config_file.readBoolEntry("History", "DontShowStatusChanges");
-	QValueList<HistoryEntry> entries = history->getHistoryEntries(uins, from, count);
-	QValueList<ChatMessage *> chatMessages;
+	Q3ValueList<HistoryEntry> entries = history->getHistoryEntries(uins, from, count);
+	Q3ValueList<ChatMessage *> chatMessages;
 
 	body->clearMessages();
 
-	QValueList<HistoryEntry>::const_iterator entry = entries.constBegin();
-	QValueList<HistoryEntry>::const_iterator lastEntry = entries.constEnd();
+	Q3ValueList<HistoryEntry>::const_iterator entry = entries.constBegin();
+	Q3ValueList<HistoryEntry>::const_iterator lastEntry = entries.constEnd();
 	for(; entry != lastEntry; ++entry)
 		if (!((*entry).type & HISTORYMANAGER_ENTRY_STATUS) || !noStatus)
 			chatMessages.append(createChatMessage(*entry));
@@ -320,7 +326,7 @@ const QString &HistoryDialog::gaduStatus2symbol(unsigned int status)
 void HistoryDialog::setDateListViewText(const QDateTime &datetime)
 {
 	kdebugf();
-	QListViewItem *actlvi;
+	Q3ListViewItem *actlvi;
 	actlvi = uinslv->firstChild();
 	while (actlvi && !((UinsListViewText *)actlvi)->getUinsList().equals(uins))
 		actlvi = actlvi->nextSibling();
@@ -345,7 +351,7 @@ void HistoryDialog::searchHistory()
 	int start, end, count, total, len;
 	unsigned int i;
 	QDateTime fromdate, todate;
-	QValueList<HistoryEntry> entries;
+	Q3ValueList<HistoryEntry> entries;
 	unsigned int entriesCount;
 	QRegExp rxp;
 
@@ -392,8 +398,8 @@ void HistoryDialog::searchHistory()
 			entries = history->getHistoryEntries(uins, findrec.actualrecord - len + 1, len);
 			entriesCount = entries.count();
 			//ehh, szkoda, ¿e w Qt nie ma reverse iteratorów...
-			QValueList<HistoryEntry>::const_iterator entry = entries.fromLast();
-			QValueList<HistoryEntry>::const_iterator firstEntry = entries.begin();
+			Q3ValueList<HistoryEntry>::const_iterator entry = entries.fromLast();
+			Q3ValueList<HistoryEntry>::const_iterator firstEntry = entries.begin();
 			bool end;
 			i = 0;
 			do
@@ -468,7 +474,7 @@ void HistoryDialog::searchHistory()
 
 void HistoryDialog::keyPressEvent(QKeyEvent *e)
 {
-	if (e->key() == Key_Escape)
+	if (e->key() == Qt::Key_Escape)
 	{
 		e->accept();
 		close();
@@ -479,7 +485,7 @@ void HistoryDialog::keyPressEvent(QKeyEvent *e)
 
 void HistoryDialog::closeEvent(QCloseEvent *e)
 {
-	saveGeometry(this, "History", "HistoryGeometry");
+//	saveGeometry(this, "History", "HistoryGeometry");
 
 	if (finding)
 	{

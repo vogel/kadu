@@ -15,14 +15,18 @@
 #include <qapplication.h>
 #include <qcheckbox.h>
 #include <qcombobox.h>
-#include <qhbox.h>
-#include <qhgroupbox.h>
+#include <q3hbox.h>
+#include <q3hgroupbox.h>
 #include <qlayout.h>
 #include <qlineedit.h>
 #include <qpushbutton.h>
 #include <qradiobutton.h>
 #include <qtooltip.h>
-#include <qvbuttongroup.h>
+#include <Q3VButtonGroup>
+#include <Q3TextStream>
+//Added by qt3to4:
+#include <Q3GridLayout>
+#include <Q3ValueList>
 
 HistoryFindRec::HistoryFindRec() :
 	fromdate(), todate(), type(0), data(), reverse(false), actualrecord()
@@ -63,9 +67,9 @@ HistorySearchDialog::HistorySearchDialog(QWidget *parent, UinsList uins) : QDial
 	for (i = 0; i <= 59; ++i)
 		minslist.append(numslist[i]);
 
-	QHBox *from_hb = new QHBox(this);
+	Q3HBox *from_hb = new Q3HBox(this);
 	from_chb = new QCheckBox(tr("&From:") ,from_hb);
-	from_hgb = new QHGroupBox(from_hb);
+	from_hgb = new Q3HGroupBox(from_hb);
 	from_day_cob = new QComboBox(from_hgb);
 	from_day_cob->insertStringList(dayslist);
 	QToolTip::add(from_day_cob, tr("day"));
@@ -82,9 +86,9 @@ HistorySearchDialog::HistorySearchDialog(QWidget *parent, UinsList uins) : QDial
 	from_min_cob->insertStringList(minslist);
 	QToolTip::add(from_min_cob, tr("minute"));
 
-	QHBox *to_hb = new QHBox(this);
+	Q3HBox *to_hb = new Q3HBox(this);
 	to_chb = new QCheckBox(tr("&To:") ,to_hb);
-	to_hgb = new QHGroupBox(to_hb);
+	to_hgb = new Q3HGroupBox(to_hb);
 	to_day_cob = new QComboBox(to_hgb);
 	to_day_cob->insertStringList(dayslist);
 	QToolTip::add(to_day_cob, tr("day"));
@@ -101,7 +105,7 @@ HistorySearchDialog::HistorySearchDialog(QWidget *parent, UinsList uins) : QDial
 	to_min_cob->insertStringList(minslist);
 	QToolTip::add(to_min_cob, tr("minute"));
 
-	criteria_bg = new QVButtonGroup(tr("Find Criteria"), this);
+	criteria_bg = new Q3VButtonGroup(tr("Find Criteria"), this);
 	phrase_rb = new QRadioButton(tr("&Pattern"), criteria_bg);
 	status_rb = new QRadioButton(tr("&Status"), criteria_bg);
 	if (config_file.readBoolEntry("History", "DontShowStatusChanges"))
@@ -109,9 +113,9 @@ HistorySearchDialog::HistorySearchDialog(QWidget *parent, UinsList uins) : QDial
 	criteria_bg->insert(phrase_rb, 1);
 	criteria_bg->insert(status_rb, 2);
 
-	phrase_hgb = new QHGroupBox(tr("Pattern"), this);
+	phrase_hgb = new Q3HGroupBox(tr("Pattern"), this);
 	phrase_edit = new QLineEdit(phrase_hgb);
-	status_hgb = new QHGroupBox(tr("Status"), this);
+	status_hgb = new Q3HGroupBox(tr("Status"), this);
 	status_cob = new QComboBox(status_hgb);
 	for (i = 0; i < 4; ++i)
 		status_cob->insertItem(qApp->translate("@default", UserStatus::name(i * 2).ascii()));
@@ -131,7 +135,7 @@ HistorySearchDialog::HistorySearchDialog(QWidget *parent, UinsList uins) : QDial
 	connect(reset_btn, SIGNAL(clicked()), this, SLOT(resetBtnClicked()));
 	connect(cancel_btn, SIGNAL(clicked()), this, SLOT(cancelBtnClicked()));
 
-	QGridLayout *grid = new QGridLayout(this, 6, 4, 5, 5);
+	Q3GridLayout *grid = new Q3GridLayout(this, 6, 4, 5, 5);
 	grid->addMultiCellWidget(from_hb, 0, 0, 0, 3);
 	grid->addMultiCellWidget(to_hb, 1, 1, 0, 3);
 	grid->addMultiCellWidget(criteria_bg, 2, 3, 0, 1);
@@ -211,7 +215,7 @@ void HistorySearchDialog::cancelBtnClicked()
 void HistorySearchDialog::resetFromDate()
 {
 	kdebugf();
-	QValueList<HistoryEntry> entries;
+	Q3ValueList<HistoryEntry> entries;
 
 	entries = history->getHistoryEntries(uins, 0, 1);
 	if (!entries.isEmpty())
@@ -229,7 +233,7 @@ void HistorySearchDialog::resetFromDate()
 void HistorySearchDialog::resetToDate()
 {
 	kdebugf();
-	QValueList<HistoryEntry> entries;
+	Q3ValueList<HistoryEntry> entries;
 
 	entries = history->getHistoryEntries(uins, history->getHistoryEntriesCount(uins) - 1, 1);
 	if (!entries.isEmpty())

@@ -2,6 +2,10 @@
 #define HISTORY_DIALOG_H
 
 #include <qwidget.h>
+//Added by qt3to4:
+#include <QKeyEvent>
+#include <Q3ValueList>
+#include <QCloseEvent>
 #include "gadu.h"
 #include "history.h"
 #include "history_search_dialog.h"
@@ -9,21 +13,21 @@
 class ChatMessage;
 class ChatMessagesView;
 
-class QListView;
-class QListViewItem;
+class Q3ListView;
+class Q3ListViewItem;
 
-class UinsListViewText : public QListViewItem {
+class UinsListViewText : public Q3ListViewItem {
 	public:
-		UinsListViewText(QListView *parent, const UinsList &uins);
+		UinsListViewText(Q3ListView *parent, const UinsList &uins);
 		const UinsList &getUinsList() const;
 
 	private:
 		UinsList uins;
 };
 
-class DateListViewText : public QListViewItem {
+class DateListViewText : public Q3ListViewItem {
 	public:
-		DateListViewText(QListViewItem *parent, const HistoryDate &date);
+		DateListViewText(Q3ListViewItem *parent, const HistoryDate &date);
 		const HistoryDate &getDate() const;
 
 	private:
@@ -44,14 +48,14 @@ protected:
 	static const QString &gaduStatus2symbol(unsigned int status);
 	void closeEvent(QCloseEvent *e);
 
-	QListView *uinslv;
+	Q3ListView *uinslv;
 	ChatMessagesView* body;
 	UinsList uins;
 	int start;
 	HistoryFindRec findrec;
 	bool closeDemand;
 	bool finding;
-	QValueList<HistoryDate> dateentries;
+	Q3ValueList<HistoryDate> dateentries;
 
 	virtual void keyPressEvent(QKeyEvent *e);
 
@@ -62,8 +66,8 @@ public:
 	HistoryDialog(UinsList uins);
 
 public slots:
-	void uinsChanged(QListViewItem *item);
-	void dateChanged(QListViewItem *item);
+	void uinsChanged(Q3ListViewItem *item);
+	void dateChanged(Q3ListViewItem *item);
 	void searchBtnClicked();
 	void searchNextBtnClicked();
 	void searchPrevBtnClicked();

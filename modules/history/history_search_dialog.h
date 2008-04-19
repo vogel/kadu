@@ -7,10 +7,10 @@
 
 class QCheckBox;
 class QComboBox;
-class QHGroupBox;
+class Q3HGroupBox;
 class QLineEdit;
 class QRadioButton;
-class QVButtonGroup;
+class Q3VButtonGroup;
 
 struct HistoryFindRec {
 	QDateTime fromdate;
@@ -40,13 +40,13 @@ class HistorySearchDialog : public QDialog {
 		void resetBtnClicked();
 
 	protected:
-		QHGroupBox *from_hgb, *to_hgb, *phrase_hgb, *status_hgb;
+		Q3HGroupBox *from_hgb, *to_hgb, *phrase_hgb, *status_hgb;
 		QCheckBox *from_chb, *to_chb, *reverse_chb;
 		QComboBox *from_day_cob, *from_month_cob, *from_year_cob, *from_hour_cob, *from_min_cob;
 		QComboBox *to_day_cob, *to_month_cob, *to_year_cob, *to_hour_cob, *to_min_cob;
 		QComboBox *status_cob;
 		QLineEdit *phrase_edit;
-		QVButtonGroup *criteria_bg;
+		Q3VButtonGroup *criteria_bg;
 		QRadioButton *phrase_rb, *status_rb;
 		QStringList numslist;
 		UinsList uins;

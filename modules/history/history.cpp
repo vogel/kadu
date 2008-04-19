@@ -10,17 +10,20 @@
 #include <qapplication.h>
 #include <qcheckbox.h>
 #include <qcombobox.h>
-#include <qgrid.h>
-#include <qhbox.h>
-#include <qhgroupbox.h>
+#include <q3grid.h>
+#include <q3hbox.h>
+#include <q3hgroupbox.h>
 #include <qmessagebox.h>
 #include <qpushbutton.h>
 #include <qradiobutton.h>
 #include <qregexp.h>
 #include <qsplitter.h>
 #include <qtimer.h>
-#include <qvbox.h>
-#include <qvbuttongroup.h>
+#include <q3vbox.h>
+#include <Q3VButtonGroup>
+#include <Q3TextStream>
+//Added by qt3to4:
+#include <Q3ValueList>
 
 // #include "config_dialog.h"
 #include "config_file.h"
@@ -118,7 +121,7 @@ void HistoryManager::appendMessage(UinsList uins, UinType uin, const QString &ms
 	line = linelist.join(",");
 
 	f.setName(fname);
-	if (!(f.open(IO_WriteOnly | IO_Append)))
+	if (!(f.open(QIODevice::WriteOnly | QIODevice::Append)))
 	{
 		kdebugmf(KDEBUG_ERROR, "Error opening history file %s\n", (const char *)fname.local8Bit());
 		return;
@@ -126,14 +129,14 @@ void HistoryManager::appendMessage(UinsList uins, UinType uin, const QString &ms
 
 	buildIndexPrivate(fname);
 	fidx.setName(f.name() + ".idx");
-	if (fidx.open(IO_WriteOnly | IO_Append))
+	if (fidx.open(QIODevice::WriteOnly | QIODevice::Append))
 	{
 		offs = f.at();
 		fidx.writeBlock((const char *)&offs, sizeof(int));
 		fidx.close();
 	}
 
-	QTextStream stream(&f);
+	Q3TextStream stream(&f);
 	stream.setCodec(codec_latin2);
 	stream << line << '\n';
 
@@ -145,7 +148,7 @@ void HistoryManager::appendSms(const QString &mobile, const QString &msg)
 {
 	kdebugmf(KDEBUG_FUNCTION_START, "appending sms to history (%s)\n", mobile.local8Bit().data());
 	QFile f, fidx;
-	QTextStream stream;
+	Q3TextStream stream;
 	QStringList linelist;
 	QString altnick, line, fname;
 	UinType uin = 0;
@@ -179,7 +182,7 @@ void HistoryManager::appendSms(const QString &mobile, const QString &msg)
 	line = linelist.join(",");
 
 	f.setName(ggPath("history/sms"));
-	if (!(f.open(IO_WriteOnly | IO_Append)))
+	if (!(f.open(QIODevice::WriteOnly | QIODevice::Append)))
 	{
 		kdebugmf(KDEBUG_ERROR, "Error opening sms history file\n");
 		return;
@@ -187,7 +190,7 @@ void HistoryManager::appendSms(const QString &mobile, const QString &msg)
 
 	buildIndexPrivate(f.name());
 	fidx.setName(f.name() + ".idx");
-	if (fidx.open(IO_WriteOnly | IO_Append))
+	if (fidx.open(QIODevice::WriteOnly | QIODevice::Append))
 	{
 		offs = f.at();
 		fidx.writeBlock((const char *)&offs, sizeof(int));
@@ -204,14 +207,14 @@ void HistoryManager::appendSms(const QString &mobile, const QString &msg)
 		fname = ggPath("history/");
 		fname = fname + QString::number(uin);
 		f.setName(fname);
-		if (!(f.open(IO_WriteOnly | IO_Append)))
+		if (!(f.open(QIODevice::WriteOnly | QIODevice::Append)))
 		{
 			kdebugmf(KDEBUG_ERROR, "Error opening sms history\n");
 			return;
 		}
 
 		fidx.setName(f.name() + ".idx");
-		if (fidx.open(IO_WriteOnly | IO_Append))
+		if (fidx.open(QIODevice::WriteOnly | QIODevice::Append))
 		{
 			offs = f.at();
 			fidx.writeBlock((const char *)&offs, sizeof(int));
@@ -294,7 +297,7 @@ void HistoryManager::appendStatus(UinType uin, const UserStatus &status)
 
 	fname = fname + QString::number(uin);
 	f.setName(fname);
-	if (!(f.open(IO_WriteOnly | IO_Append)))
+	if (!(f.open(QIODevice::WriteOnly | QIODevice::Append)))
 	{
 		kdebugmf(KDEBUG_ERROR, "Error opening history file %s\n", (const char *)fname.local8Bit());
 		return;
@@ -302,14 +305,14 @@ void HistoryManager::appendStatus(UinType uin, const UserStatus &status)
 
 	buildIndexPrivate(fname);
 	fidx.setName(fname + ".idx");
-	if (fidx.open(IO_WriteOnly | IO_Append))
+	if (fidx.open(QIODevice::WriteOnly | QIODevice::Append))
 	{
 		offs = f.at();
 		fidx.writeBlock((const char *)&offs, sizeof(int));
 		fidx.close();
 	}
 
-	QTextStream stream(&f);
+	Q3TextStream stream(&f);
 	stream.setCodec(codec_latin2);
 	stream << line << '\n';
 
@@ -352,7 +355,7 @@ void HistoryManager::convHist2ekgForm(UinsList uins)
 	fname = getFileNameByUinsList(uins);
 
 	f.setName(path + fname);
-	if (!(f.open(IO_ReadWrite)))
+	if (!(f.open(QIODevice::ReadWrite)))
 	{
 		kdebugmf(KDEBUG_ERROR, "Error opening history file %s\n", (const char *)fname.local8Bit());
 		return;
@@ -360,16 +363,16 @@ void HistoryManager::convHist2ekgForm(UinsList uins)
 
 	fnameout = fname + ".new";
 	fout.setName(path + fnameout);
-	if (!(fout.open(IO_WriteOnly | IO_Truncate)))
+	if (!(fout.open(QIODevice::WriteOnly | QIODevice::Truncate)))
 	{
 		kdebugmf(KDEBUG_ERROR, "Error opening new history file %s\n", (const char *)fnameout.local8Bit());
 		f.close();
 		return;
 	}
 
-	QTextStream stream(&f);
+	Q3TextStream stream(&f);
 	stream.setCodec(codec_latin2);
-	QTextStream streamout(&fout);
+	Q3TextStream streamout(&fout);
 	streamout.setCodec(codec_latin2);
 
 	bool our, foreign;
@@ -494,23 +497,23 @@ void HistoryManager::convSms2ekgForm()
 
 	fname = "sms";
 	f.setName(path + fname);
-	if (!(f.open(IO_ReadWrite)))
+	if (!(f.open(QIODevice::ReadWrite)))
 	{
 		kdebugmf(KDEBUG_ERROR, "Error opening sms history file %s\n", (const char *)fname.local8Bit());
 		return;
 	}
 	fnameout = fname + ".new";
 	fout.setName(path + fnameout);
-	if (!(fout.open(IO_WriteOnly | IO_Truncate)))
+	if (!(fout.open(QIODevice::WriteOnly | QIODevice::Truncate)))
 	{
 		kdebugmf(KDEBUG_ERROR, "Error opening new sms history file %s\n", (const char *)fnameout.local8Bit());
 		f.close();
 		return;
 	}
 
-	QTextStream stream(&f);
+	Q3TextStream stream(&f);
 	stream.setCodec(codec_latin2);
-	QTextStream streamout(&fout);
+	Q3TextStream streamout(&fout);
 	streamout.setCodec(codec_latin2);
 
 	bool header;
@@ -607,7 +610,7 @@ int HistoryManager::getHistoryEntriesCountPrivate(const QString &filename) const
 	QByteArray buffer;
 
 	f.setName(path + filename + ".idx");
-	if (!(f.open(IO_ReadOnly)))
+	if (!(f.open(QIODevice::ReadOnly)))
 	{
 		kdebugmf(KDEBUG_ERROR, "Error opening history file %s\n", (const char *)filename.local8Bit());
 		return 0;
@@ -645,11 +648,11 @@ int HistoryManager::getHistoryEntriesCount(const QString &mobile)
 	return ret;
 }
 
-QValueList<HistoryEntry> HistoryManager::getHistoryEntries(UinsList uins, int from, int count, int mask)
+Q3ValueList<HistoryEntry> HistoryManager::getHistoryEntries(UinsList uins, int from, int count, int mask)
 {
 	kdebugf();
 
-	QValueList<HistoryEntry> entries;
+	Q3ValueList<HistoryEntry> entries;
 	QStringList tokens;
 	QFile f, fidx;
 	QString path = ggPath("history/");
@@ -661,14 +664,14 @@ QValueList<HistoryEntry> HistoryManager::getHistoryEntries(UinsList uins, int fr
 	else
 		filename = "sms";
 	f.setName(path + filename);
-	if (!(f.open(IO_ReadOnly)))
+	if (!(f.open(QIODevice::ReadOnly)))
 	{
 		kdebugmf(KDEBUG_ERROR, "Error opening history file %s\n", (const char *)filename.local8Bit());
 		return entries;
 	}
 
 	fidx.setName(f.name() + ".idx");
-	if (!fidx.open(IO_ReadOnly))
+	if (!fidx.open(QIODevice::ReadOnly))
 		return entries;
 	fidx.at(from * sizeof(int));
 	fidx.readBlock((char *)&offs, (Q_LONG)sizeof(int));
@@ -676,7 +679,7 @@ QValueList<HistoryEntry> HistoryManager::getHistoryEntries(UinsList uins, int fr
 	if (!f.at(offs))
 		return entries;
 
-	QTextStream stream(&f);
+	Q3TextStream stream(&f);
 	stream.setCodec(codec_latin2);
 
 	int linenr = from;
@@ -807,7 +810,7 @@ QValueList<HistoryEntry> HistoryManager::getHistoryEntries(UinsList uins, int fr
 	return entries;
 }
 
-uint HistoryManager::getHistoryDate(QTextStream &stream)
+uint HistoryManager::getHistoryDate(Q3TextStream &stream)
 {
 	kdebugf();
 	QString line;
@@ -829,11 +832,11 @@ uint HistoryManager::getHistoryDate(QTextStream &stream)
 	return (tokens[pos].toUInt() / 86400);
 }
 
-QValueList<HistoryDate> HistoryManager::getHistoryDates(const UinsList &uins)
+Q3ValueList<HistoryDate> HistoryManager::getHistoryDates(const UinsList &uins)
 {
 	kdebugf();
 
-	QValueList<HistoryDate> entries;
+	Q3ValueList<HistoryDate> entries;
 	HistoryDate newdate;
 	QFile f, fidx;
 	QString path = ggPath("history/");
@@ -850,16 +853,16 @@ QValueList<HistoryDate> HistoryManager::getHistoryDates(const UinsList &uins)
 
 	filename = getFileNameByUinsList(uins);
 	f.setName(path + filename);
-	if (!(f.open(IO_ReadOnly)))
+	if (!(f.open(QIODevice::ReadOnly)))
 	{
 		kdebugmf(KDEBUG_ERROR, "Error opening history file %s\n", (const char *)filename.local8Bit());
 		return entries;
 	}
-	QTextStream stream(&f);
+	Q3TextStream stream(&f);
 	stream.setCodec(codec_latin2);
 
 	fidx.setName(f.name() + ".idx");
-	if (!fidx.open(IO_ReadOnly))
+	if (!fidx.open(QIODevice::ReadOnly))
 		return entries;
 
 	oldidx = actidx = 0;
@@ -932,10 +935,10 @@ QValueList<HistoryDate> HistoryManager::getHistoryDates(const UinsList &uins)
 	return entries;
 }
 
-QValueList<UinsList> HistoryManager::getUinsLists() const
+Q3ValueList<UinsList> HistoryManager::getUinsLists() const
 {
 	kdebugf();
-	QValueList<UinsList> entries;
+	Q3ValueList<UinsList> entries;
 	QDir dir(ggPath("history/"), "*.idx");
 	QStringList struins;
 	UinsList uins;
@@ -969,12 +972,12 @@ void HistoryManager::buildIndexPrivate(const QString &filename)
 		return;
 	QFile fin(filename);
 	QFile fout(fnameout);
-	if (!fin.open(IO_ReadOnly))
+	if (!fin.open(QIODevice::ReadOnly))
 	{
 		kdebugmf(KDEBUG_ERROR, "Error opening history file: %s\n", (const char *)fin.name().local8Bit());
 		return;
 	}
-	if (!fout.open(IO_WriteOnly | IO_Truncate))
+	if (!fout.open(QIODevice::WriteOnly | QIODevice::Truncate))
 	{
 		kdebugmf(KDEBUG_ERROR, "Error creating history index file: %s\n", (const char *)fout.name().local8Bit());
 		fin.close();
@@ -1053,7 +1056,7 @@ QStringList HistoryManager::mySplit(const QChar &sep, const QString &str)
 		{
 			if (letter == '\\')
 			{
-				switch (str[idx + 1])
+				switch (str[idx + 1].toAscii())
 				{
 					case 'n':
 						token.append('\n');
@@ -1128,7 +1131,7 @@ int HistoryManager::getHistoryEntryIndexByDate(const UinsList &uins, const QDate
 {
 	kdebugf();
 
-	QValueList<HistoryEntry> entries;
+	Q3ValueList<HistoryEntry> entries;
 	int count = getHistoryEntriesCount(uins);
 	int start, end;
 
@@ -1171,7 +1174,7 @@ void HistoryManager::messageReceived(Protocol * /*protocol*/, UserListElements s
 	if (!config_file.readBoolEntry("History", "Logging"))
 		return;
 	kdebugf();
-	int occur = msg.contains(QRegExp("<img [^>]* gg_crc[^>]*>"));
+	int occur = msg.find(QRegExp("<img [^>]* gg_crc[^>]*>"));
 	UinType sender0 = senders[0].ID("Gadu").toUInt();
 	kdebugm(KDEBUG_INFO, "sender: %d msg: '%s' occur:%d\n", sender0, msg.local8Bit().data(), occur);
 	UinsList uins;//TODO: throw out UinsList as soon as possible!
@@ -1200,17 +1203,17 @@ void HistoryManager::imageReceivedAndSaved(UinType sender, uint32_t size, uint32
 	kdebugm(KDEBUG_INFO, "sender: %d, size: %d, crc:%u, path:%s\n", sender, size, crc32, path.local8Bit().data());
 	QString reg = GaduImagesManager::loadingImageHtml(sender, size, crc32);
 	QString imagehtml = GaduImagesManager::imageHtml(path);
-	QMap<UinType, QValueList<BuffMessage> >::iterator it = bufferedMessages.find(sender);
+	QMap<UinType, Q3ValueList<BuffMessage> >::iterator it = bufferedMessages.find(sender);
 	if (it != bufferedMessages.end())
 	{
 //		kdebugm(KDEBUG_INFO, "sender found\n");
-		QValueList<BuffMessage> &messages = it.data();
+		Q3ValueList<BuffMessage> &messages = it.data();
 		FOREACH(msg, messages)
 		{
 //			kdebugm(KDEBUG_INFO, "counter:%d\n", (*msg).counter);
 			if ((*msg).counter)
 			{
-				int occur = (*msg).message.contains(reg);
+				int occur = (*msg).message.find(reg);
 //				kdebugm(KDEBUG_INFO, "occur:%d\n", occur);
 				if (occur)
 				{
@@ -1255,7 +1258,7 @@ void HistoryManager::checkImageTimeout(UinType uin)
 {
 	kdebugf();
 	time_t currentTime = time(NULL);
-	QValueList<BuffMessage> &msgs = bufferedMessages[uin];
+	Q3ValueList<BuffMessage> &msgs = bufferedMessages[uin];
 	while (!msgs.isEmpty())
 	{
 		BuffMessage &msg = msgs.front();
@@ -1280,7 +1283,7 @@ void HistoryManager::checkImageTimeout(UinType uin)
 void HistoryManager::checkImagesTimeouts()
 {
 	kdebugf();
-	QValueList<UinType> uins = bufferedMessages.keys();
+	Q3ValueList<UinType> uins = bufferedMessages.keys();
 
 	CONST_FOREACH(uin, uins)
 		checkImageTimeout(*uin);
