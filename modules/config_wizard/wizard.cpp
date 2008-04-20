@@ -5,12 +5,12 @@
  *  (at your option) any later version.
  */
 
-#include <qbuttongroup.h>
-#include <qcheckbox.h>
-#include <qcombobox.h>
-#include <qlineedit.h>
-#include <qpushbutton.h>
-#include <qradiobutton.h>
+#include <QButtonGroup>
+#include <QCheckBox>
+#include <QComboBox>
+#include <QLineEdit>
+#include <QPushButton>
+#include <QRadioButton>
 
 #include <stdlib.h>
 #include <unistd.h>
@@ -56,10 +56,10 @@ extern "C" void config_wizard_close()
 
 WizardStarter::WizardStarter(QObject *parent, const char *name) : QObject(parent, name)
 {
-	QPopupMenu *MainMenu = kadu->mainMenu();
+	QMenu *MainMenu = kadu->mainMenu();
 
 	menuPos = MainMenu->insertItem(icons_manager->loadIcon("ConfigurationWizard"), tr("Configuration Wizard"), this, SLOT(start()), 0, -1, 0);
-	icons_manager->registerMenuItem(MainMenu, tr("Configuration Wizard"), "ConfigurationWizard");
+	//icons_manager->registerMenuItem(MainMenu, tr("Configuration Wizard"), "ConfigurationWizard");
 }
 
 WizardStarter::~WizardStarter()
@@ -84,30 +84,44 @@ void WizardStarter::start()
 }
 
 Wizard::Wizard(QWidget *parent, const char *name, bool modal)
-	: QWizard(parent, name, modal)
+	: QDialog(parent/*, name, modal*/)
 {
 	kdebugf();
 	setCaption(tr("Kadu Wizard"));
-	setMinimumSize(470, 300);
+	setMinimumSize(510, 300);
+
+	layout = new QGridLayout(this);
+	layout->setSpacing(0);
+	layout->setContentsMargins(10, 10, 10, 10);
+	pageArea = new QStackedWidget(this);
+	pageArea->setMinimumSize(490, 290);
+	pageArea->setContentsMargins(0, 0, 0, 0);
+	layout->addWidget(pageArea, 0, 0, 1, 4, Qt::AlignLeft);
 
 	createGGAccountPage();
 	createApplicationsPage();
 	createSoundPage();
 
-	QPushButton *finish_button = finishButton();
-	connect(finish_button, SIGNAL(clicked()), this, SLOT(finishClicked()));
-	finish_button->setText(tr("Finish"));
+	backButton = new QPushButton(this);
+	backButton->setText(tr("< Back"));
+	connect(backButton, SIGNAL(clicked()), this, SLOT(backClicked()));
+	layout->addWidget(backButton, 1, 0, 1, 1);
 
-	QPushButton *next_button = nextButton();
-	next_button->setText(tr("Next >"));
+	nextButton = new QPushButton(this);
+	nextButton->setText(tr("Next >"));
+	connect(nextButton, SIGNAL(clicked()), this, SLOT(nextClicked()));
+	layout->addWidget(nextButton, 1, 1, 1, 1);
 
-	QPushButton *back_button = backButton();
-	back_button->setText(tr("< Back"));
-
-	cancelButton()->setText(tr("Cancel"));
-	connect(cancelButton(), SIGNAL(clicked()), this, SLOT(cancelClicked()));
-
-	helpButton()->hide();
+	cancelButton = new QPushButton(this);
+	cancelButton->setText(tr("Cancel"));
+	connect(cancelButton, SIGNAL(clicked()), this, SLOT(cancelClicked()));
+	layout->addWidget(cancelButton, 1, 2, 1, 1);
+	
+	finishButton = new QPushButton(this);
+	finishButton->setText(tr("Finish"));
+	connect(finishButton, SIGNAL(clicked()), this, SLOT(finishClicked()));
+	finishButton->setEnabled(false);
+	layout->addWidget(finishButton, 1, 3, 1, 1);
 
 	kdebugf2();
 }
@@ -131,10 +145,26 @@ void Wizard::addPage(QWidget *page, const QString &title, const QString &descrip
 	page->reparent(wholePage, QPoint(0, 0), true);
 	layout->addWidget(page, 2);
 
-	QWizard::addPage(wholePage, title);
+	pageArea->addWidget(wholePage);
+	pageArea->setWindowTitle(title);
+}
 
-	if (lastOne)
-		setFinishEnabled(wholePage, true);
+void Wizard::nextClicked()
+{
+	int index = pageArea->currentIndex() + 1;
+	if (index < pageArea->count())
+		pageArea->setCurrentIndex(index);
+
+	if (index == pageArea->count() - 1)
+		finishButton->setEnabled(true);
+}
+
+void Wizard::backClicked()
+{
+	int index = pageArea->currentIndex() - 1;
+	if (index >= 0)
+		pageArea->setCurrentIndex(index);
+	finishButton->setEnabled(false);
 }
 
 /**
@@ -160,7 +190,7 @@ void Wizard::cancelClicked()
 
 void Wizard::closeEvent(QCloseEvent *e)
 {
-	QWizard::closeEvent(e);
+	QDialog::closeEvent(e);
 
 	startWizardObj = 0;
 	deleteLater();
@@ -177,10 +207,10 @@ void Wizard::wizardStart()
 /**
 	po zaimportowaniu listy kontaktów siê wywo³uje
 **/
-void WizardStarter::userListImported(bool ok, QValueList<UserListElement> list)
+void WizardStarter::userListImported(bool ok, QList<UserListElement> list)
 {
 	kdebugf();
-	disconnect(gadu, SIGNAL(userListImported(bool, QValueList<UserListElement>)), this, SLOT(userListImported(bool, QValueList<UserListElement>)));
+	disconnect(gadu, SIGNAL(userListImported(bool, QList<UserListElement>)), this, SLOT(userListImported(bool, QList<UserListElement>)));
 
 	if (!ok)
 	{
@@ -238,9 +268,9 @@ void Wizard::registerGGAccount()
 		(*widget)->setEnabled(false);
 
 	haveNumber->setEnabled(false);
-	nextButton()->setEnabled(false);
-	finishButton()->setEnabled(false);
-	cancelButton()->setEnabled(false);
+	nextButton->setEnabled(false);
+	finishButton->setEnabled(false);
+	cancelButton->setEnabled(false);
 
 	connect(gadu, SIGNAL(registered(bool, UinType)), this, SLOT(registeredGGAccount(bool, UinType)));
 	gadu->registerAccount(ggEMail->text(), ggNewPassword->text());
@@ -280,9 +310,9 @@ void Wizard::registeredGGAccount(bool ok, UinType uin)
 	disconnect(gadu, SIGNAL(registered(bool, UinType)), this, SLOT(registeredGGAccount(bool, UinType)));
 
 	haveNumber->setEnabled(true);
-	nextButton()->setEnabled(true);
-	finishButton()->setEnabled(true);
-	cancelButton()->setEnabled(true);
+	nextButton->setEnabled(true);
+	finishButton->setEnabled(true);
+	cancelButton->setEnabled(true);
 
 	kdebugf2();
 }
@@ -320,9 +350,7 @@ void Wizard::createGGAccountPage()
 	QVBoxLayout *layout = new QVBoxLayout(ggPage);
 	layout->setSpacing(5);
 
-	QGroupBox *account = new QGroupBox(1, Qt::Horizontal, tr("Account"), ggPage);
-	account->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
-	layout->addWidget(account);
+	QGroupBox *account = new QGroupBox(tr("Account"), ggPage);
 
 	QWidget *container = new QWidget(account);
 	QGridLayout *gridLayout = new QGridLayout(container);
@@ -375,7 +403,9 @@ void Wizard::createGGAccountPage()
 	haveNumberGroup->insert(haveNumber);
 	haveNumberGroup->insert(dontHaveNumber);
 
-	layout->addStretch(1);
+	container->setLayout(gridLayout);
+	layout->addWidget(account);
+	ggPage->setLayout(layout);
 
 	haveNumberWidgets.append(ggNumberLabel);
 	haveNumberWidgets.append(ggNumber);
@@ -446,9 +476,7 @@ void Wizard::createApplicationsPage()
 	QVBoxLayout *layout = new QVBoxLayout(applicationsPage);
 	layout->setSpacing(5);
 
-	QGroupBox *browserOptions = new QGroupBox(1, Qt::Horizontal, tr("WWW browser"), applicationsPage);
-	browserOptions->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
-	layout->addWidget(browserOptions);
+	QGroupBox *browserOptions = new QGroupBox(tr("WWW browser"), applicationsPage);
 
 	QWidget *browserContainer = new QWidget(browserOptions);
 	QGridLayout *browserGridLayout = new QGridLayout(browserContainer);
@@ -473,9 +501,10 @@ void Wizard::createApplicationsPage()
 	browserCommandLineEdit = new QLineEdit(browserContainer);
 	browserGridLayout->addWidget(browserCommandLineEdit, 1, 1);
 
-	QGroupBox *emailOptions = new QGroupBox(1, Qt::Horizontal, tr("e-mail client"), applicationsPage);
-	emailOptions->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
-	layout->addWidget(emailOptions);
+	browserContainer->setLayout(browserGridLayout);
+	layout->addWidget(browserOptions);
+
+	QGroupBox *emailOptions = new QGroupBox(tr("e-mail client"), applicationsPage);
 
 	QWidget *emailContainer = new QWidget(emailOptions);
 	QGridLayout *emailGridLayout = new QGridLayout(emailContainer);
@@ -495,7 +524,10 @@ void Wizard::createApplicationsPage()
 	mailCommandLineEdit = new QLineEdit(emailContainer);
 	emailGridLayout->addWidget(mailCommandLineEdit, 1, 1);
 
-	layout->addStretch(1);
+	emailContainer->setLayout(emailGridLayout);
+	layout->addWidget(emailOptions);
+
+	applicationsPage->setLayout(layout);
 
 	loadApplicationsOptions();
 
@@ -584,9 +616,7 @@ void Wizard::createSoundPage()
 	QVBoxLayout *layout = new QVBoxLayout(soundPage);
 	layout->setSpacing(5);
 
-	QGroupBox *soundOptions = new QGroupBox(1, Qt::Horizontal, tr("Sound system"), soundPage);
-	soundOptions->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
-	layout->addWidget(soundOptions);
+	QGroupBox *soundOptions = new QGroupBox(tr("Sound system"), soundPage);
 
 	QWidget *container = new QWidget(soundOptions);
 	QGridLayout *gridLayout = new QGridLayout(container);
@@ -640,8 +670,10 @@ void Wizard::createSoundPage()
 
 	soundModuleCombo->insertStringList(soundModules);
 
-	layout->addStretch(100);
-
+	container->setLayout(gridLayout);
+	layout->addWidget(soundOptions);
+	soundPage->setLayout(layout);
+	
 	loadSoundOptions();
 
 	addPage(soundPage, tr("Sound"), tr(

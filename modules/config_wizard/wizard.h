@@ -1,8 +1,10 @@
 #ifndef KADU_CONFIG_WIZARD_H
 #define KADU_CONFIG_WIZARD_H
 
-#include <qwizard.h>
-#include <qvaluelist.h>
+#include <QDialog>
+#include <QStackedWidget>
+#include <QGridLayout>
+#include <QList>
 
 #include "../account_management/register.h"
 
@@ -18,9 +20,16 @@ class QRadioButton;
  * @defgroup config_wizard Config wizard
  * @{
  */
-class Wizard : public QWizard
+class Wizard : public QDialog
 {
     Q_OBJECT
+
+	QStackedWidget *pageArea;
+	QGridLayout *layout;
+	QPushButton *nextButton;
+	QPushButton *backButton;
+	QPushButton *cancelButton;
+	QPushButton *finishButton;
 
 	QPushButton *ggRegisterAccount;
 
@@ -33,8 +42,8 @@ class Wizard : public QWizard
 	QLineEdit *ggReNewPassword;
 	QLineEdit *ggEMail;
 
-	QValueList<QWidget *> haveNumberWidgets;
-	QValueList<QWidget *> dontHaveNumberWidgets;
+	QList<QWidget *> haveNumberWidgets;
+	QList<QWidget *> dontHaveNumberWidgets;
 
 	QComboBox *browserCombo;
 	QLineEdit *browserCommandLineEdit;
@@ -69,6 +78,8 @@ private slots:
 
 	void finishClicked();
 	void cancelClicked();
+	void nextClicked();
+	void backClicked();
 
 	void browserChanged(int index);
 	void emailChanged(int index);
@@ -102,7 +113,7 @@ public:
 public slots:
 	void start();
 
-	void userListImported(bool ok, QValueList<UserListElement> list);
+	void userListImported(bool ok, QList<UserListElement> list);
 	void connected();
 
 };
