@@ -344,7 +344,7 @@ Kadu::Kadu(QWidget *parent)
 		InfoPanel->QWidget::hide();
 	connect(&updateInformationPanelTimer, SIGNAL(timeout()), this, SLOT(updateInformationPanel()));
 
-	statusButton = new QPushButton(QIcon(icons_manager->loadIcon("Offline")), tr("Offline"), this, "statusButton");
+	statusButton = new QPushButton(icons_manager->loadIcon("Offline"), tr("Offline"), this, "statusButton");
 	MainLayout->addWidget (statusButton);
 	statusButton->setPopup(statusMenu);
 
@@ -2058,7 +2058,10 @@ void Kadu::setMainWindowIcon(const QPixmap &icon)
 	bool blocked = false;
 	emit settingMainIconBlocked(blocked);
 	if (!blocked)
-		setIcon(icon);
+	{
+		setWindowIcon(icon);
+		QApplication::setWindowIcon(icon);
+	}
 }
 
 const QDateTime &Kadu::startTime() const
