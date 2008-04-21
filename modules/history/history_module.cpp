@@ -145,15 +145,22 @@ void HistoryModule::updateQuoteTimeLabel(int value)
 	dontCiteOldMessagesLabel->setText(tr("%1 day(s) %2 hour(s)").arg(-value / 24).arg((-value) % 24));
 }
 
-void HistoryModule::historyActionActivated(const UserGroup* users)
+void HistoryModule::historyActionActivated(QAction *sender, bool toggled)
 {
 	kdebugf();
 
-	if (!users) // fix for 0000839
+	ActionWindow *window = dynamic_cast<ActionWindow *>(sender->parent());
+	if (!window)
+	{
+		return;
+	}
+	UserListElements users = window->getUserListElements();
+
+	if (users.count() == 0)
 		return;
 
 	UinsList uins;
-	CONST_FOREACH(user, *users)
+	CONST_FOREACH(user, users)
 		uins.append((*user).ID("Gadu").toUInt());
 	//TODO: throw out UinsList as soon as possible!
 	(new HistoryDialog(uins))->show();
@@ -164,7 +171,13 @@ void HistoryModule::chatKeyPressed(QKeyEvent *e, ChatWidget *chatWidget, bool &h
 {
 	if (HotKey::shortCut(e, "ShortCuts", "kadu_viewhistory"))
 	{
-		historyActionActivated(chatWidget->users());
+		const UserGroup *users = chatWidget->users();
+		UinsList uins;
+		CONST_FOREACH(user, *users)
+			uins.append((*user).ID("Gadu").toUInt());
+		//TODO: throw out UinsList as soon as possible!
+		(new HistoryDialog(uins))->show();
+
 		handled = true;
 	}
 }
@@ -294,8 +307,13 @@ void HistoryModule::viewHistory()
 		return;
 	}
 	UserListElements users = activeUserBox->selectedUsers();
-	UserGroup user_group(users);
-//	KaduActions["showHistoryAction"]->activate(&user_group);
+
+	UinsList uins;
+	CONST_FOREACH(user, users)
+		uins.append((*user).ID("Gadu").toUInt());
+	//TODO: throw out UinsList as soon as possible!
+	(new HistoryDialog(uins))->show();
+
 	kdebugf2();
 }
 

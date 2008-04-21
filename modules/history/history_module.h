@@ -25,7 +25,7 @@ class HistoryModule : public ConfigurationUiHandler
 	void appendHistory(ChatWidget *chat);
 
 private slots:
-	void historyActionActivated(const UserGroup* users);
+	void historyActionActivated(QAction *sender, bool toggled);
 	void messageSentAndConfirmed(UserListElements receivers, const QString& message);
 	void viewHistory();
 	void deleteHistory();
