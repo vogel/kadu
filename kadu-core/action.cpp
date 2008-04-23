@@ -22,6 +22,7 @@
 #include "debug.h"
 #include "icons_manager.h"
 #include "kadu.h"
+#include "kadu_main_window.h"
 #include "misc.h"
 #include "toolbar.h"
 #include "toolbutton.h"
@@ -124,23 +125,23 @@ ActionDescription::~ActionDescription()
 	KaduActions.remove(this);
 }
 
-KaduAction * ActionDescription::getAction(QWidget *parent)
+KaduAction * ActionDescription::getAction(KaduMainWindow *kaduMainWindow)
 {
 	KaduAction *result;
 
 	if (Checkable)
 	{
 		if (!IconName.isEmpty())
-			result = new KaduAction(icons_manager->loadIcon(IconName + "_off"), icons_manager->loadIcon(IconName), CheckedText, Text, parent);
+			result = new KaduAction(icons_manager->loadIcon(IconName + "_off"), icons_manager->loadIcon(IconName), CheckedText, Text, kaduMainWindow);
 		else
-			result = new KaduAction(CheckedText, Text, parent);
+			result = new KaduAction(CheckedText, Text, kaduMainWindow);
 	}
 	else
 	{
 		if (!IconName.isEmpty())
-			result = new KaduAction(icons_manager->loadIcon(IconName), Text, parent);
+			result = new KaduAction(icons_manager->loadIcon(IconName), Text, kaduMainWindow);
 		else
-			result = new KaduAction(Text, parent);
+			result = new KaduAction(Text, kaduMainWindow);
 	}
 
 	result->setCheckable(Checkable);
@@ -403,12 +404,14 @@ ActionDescription * Actions::operator [] (int index)
 	return ActionDescriptions[ActionDescriptions.keys()[index]];
 }
 
-QAction * Actions::getAction(const QString &name, QWidget *parent) const
+QAction * Actions::getAction(const QString &name, KaduMainWindow *kaduMainWindow) const
 {
 	if (!contains(name))
 		return 0;
 
-	return ActionDescriptions[name]->getAction(parent);
+	KaduAction *result =  ActionDescriptions[name]->getAction(kaduMainWindow);
+	kaduMainWindow->addAction(result);
+	return result;
 }
 
 bool Actions::contains(const QString &name) const

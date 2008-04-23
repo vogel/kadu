@@ -194,3 +194,8 @@ void KaduMainWindow::addRightToolbar()
 {
 	addToolBar(Qt::RightToolBarArea, new ToolBar(this));
 }
+
+void KaduMainWindow::addAction(KaduAction *action)
+{
+	actions.append(action);
+}

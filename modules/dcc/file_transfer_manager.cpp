@@ -205,11 +205,11 @@ void FileTransferManager::sendFileActionActivated(QAction *sender, bool toggled)
 {
 	kdebugf();
 
-	ActionWindow *actionWindow = dynamic_cast<ActionWindow *>(sender->parent());
-	if (!actionWindow)
+	KaduMainWindow *kaduMainWindow = dynamic_cast<KaduMainWindow *>(sender->parent());
+	if (!kaduMainWindow)
 		return;
 
-	UserListElements users = actionWindow->getUserListElements();
+	UserListElements users = kaduMainWindow->getUserListElements();
 	if (users.count())
 		sendFile(users);
 

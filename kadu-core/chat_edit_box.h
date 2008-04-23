@@ -15,7 +15,7 @@
 
 class CustomInput;
 
-class ChatEditBox : public KaduMainWindow, public ActionWindow
+class ChatEditBox : public KaduMainWindow
 {
 	Q_OBJECT
 

@@ -13,11 +13,19 @@
 #include <QDomElement>
 #include <QMainWindow>
 
+#include "action.h"
+
 class QContextMenuEvent;
 
 class KaduMainWindow : public QMainWindow
 {
 	Q_OBJECT
+
+	// TODO: is it a good solution?
+	QList<KaduAction *> actions;
+
+	friend class Actions;
+	void addAction(KaduAction *action);
 
 protected:
 	void loadToolBarsFromConfig(const QString &prefix);
@@ -33,6 +41,11 @@ public:
 	virtual ~KaduMainWindow();
 
 	virtual QMenu * createPopupMenu() { return 0; }
+
+	virtual bool supportsActionType(ActionDescription::ActionType type) = 0;
+	virtual UserBox * getUserBox() = 0;
+	virtual UserListElements getUserListElements() = 0;
+	virtual ChatWidget * getChatWidget() = 0;
 
 public slots:
 	void addTopToolbar();

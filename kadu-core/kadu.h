@@ -35,7 +35,7 @@ class QPushButton;
 /**
 	G³ówne okno Kadu
 **/
-class Kadu : public KaduMainWindow, ConfigurationAwareObject, public ActionWindow
+class Kadu : public KaduMainWindow, ConfigurationAwareObject
 {
 	Q_OBJECT
 

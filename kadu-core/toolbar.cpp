@@ -276,9 +276,9 @@ void ToolBar::actionUnloaded(const QString &actionName)
 void ToolBar::updateButtons()
 {
 	QAction *lastAction = 0;
-	ActionWindow *actionWindow = dynamic_cast<ActionWindow *>(parent());
+	KaduMainWindow *kaduMainWindow = dynamic_cast<KaduMainWindow *>(parent());
 
-	if (!actionWindow)
+	if (!kaduMainWindow)
 		return;
 
 	FOREACH(toolBarAction, ToolBarActions)
@@ -302,9 +302,9 @@ void ToolBar::updateButtons()
 			}
 		}
 
-		if (KaduActions.contains(actionName) && actionWindow->supportsActionType(KaduActions[actionName]->type()))
+		if (KaduActions.contains(actionName) && kaduMainWindow->supportsActionType(KaduActions[actionName]->type()))
 		{
-			(*toolBarAction).action = KaduActions.getAction(actionName, dynamic_cast<QWidget *>(parent()));
+			(*toolBarAction).action = KaduActions.getAction(actionName, dynamic_cast<KaduMainWindow *>(parent()));
 			QToolBar::addAction((*toolBarAction).action);
 			(*toolBarAction).button = dynamic_cast<QToolButton *>(widgetForAction((*toolBarAction).action));
 
@@ -448,13 +448,13 @@ QMenu * ToolBar::createContextMenu(QToolButton *button)
 	CONST_FOREACH(actionDescription, KaduActions)
 	{
 		bool supportsAction;
-		ActionWindow *actionWindow = 0;
+		KaduMainWindow *kaduMainWindow= 0;
 		if (parent())
-			actionWindow = dynamic_cast<ActionWindow *>(parent());
+			kaduMainWindow = dynamic_cast<KaduMainWindow *>(parent());
 
-		if (actionWindow)
-			supportsAction = actionWindow->supportsActionType((*actionDescription)->type());
-		else
+		if (kaduMainWindow)
+			supportsAction = kaduMainWindow->supportsActionType((*actionDescription)->type());
+		else // TODO is it possible?
 			supportsAction = (*actionDescription)->type() == ActionDescription::TypeGlobal;
 
 		if (!supportsAction)

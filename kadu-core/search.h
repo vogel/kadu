@@ -39,7 +39,7 @@ public slots:
 	\brief Wyszukiwanie w katalogu publicznym.
 	\class SearchDialog
 **/
-class SearchDialog : public KaduMainWindow, public ActionWindow {
+class SearchDialog : public KaduMainWindow {
 	Q_OBJECT
 
 	friend class SearchActionsSlots;

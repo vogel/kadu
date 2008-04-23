@@ -15,6 +15,7 @@
 #include "usergroup.h"
 
 class ChatWidget;
+class KaduMainWindow;
 class ToolBar;
 class UserBox;
 
@@ -82,25 +83,12 @@ public:
 	virtual ~ActionDescription();
 
 	QString name() { return Name; }
-	KaduAction *getAction(QWidget *parent);
+	KaduAction *getAction(KaduMainWindow *kaduMainWindow);
 
 	QString text() { return Text; }
 	QString iconName() { return IconName; }
 
 	ActionType type() { return Type; }
-
-};
-
-class ActionWindow
-{
-public:
-	ActionWindow() {};
-	virtual ~ActionWindow() {};
-
-	virtual bool supportsActionType(ActionDescription::ActionType type) = 0;
-	virtual UserBox * getUserBox() = 0;
-	virtual UserListElements getUserListElements() = 0;
-	virtual ChatWidget * getChatWidget() = 0;
 
 };
 
@@ -212,7 +200,7 @@ public:
 	ActionDescription * operator [] (const QString &name);
 	ActionDescription * operator [] (int index);
 
-	QAction *getAction(const QString &name, QWidget *parent) const;
+	QAction *getAction(const QString &name, KaduMainWindow *kaduMainWindow) const;
 	bool contains(const QString &name) const;
 
 	QMap<QString, ActionDescription *>::Iterator begin() { return ActionDescriptions.begin(); }

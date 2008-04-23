@@ -670,7 +670,7 @@ void Kadu::selectedUsersNeeded(const UserGroup*& users)
 
 void Kadu::inactiveUsersActionActivated(QAction *sender, bool toggled)
 {
-	ActionWindow *window = dynamic_cast<ActionWindow *>(sender->parent());
+	KaduMainWindow *window = dynamic_cast<KaduMainWindow *>(sender->parent());
 	if (!window)
 		return;
 
@@ -679,7 +679,7 @@ void Kadu::inactiveUsersActionActivated(QAction *sender, bool toggled)
 
 void Kadu::descriptionUsersActionActivated(QAction *sender, bool toggled)
 {
-	ActionWindow *window = dynamic_cast<ActionWindow *>(sender->parent());
+	KaduMainWindow *window = dynamic_cast<KaduMainWindow *>(sender->parent());
 	if (!window)
 		return;
 
@@ -688,7 +688,7 @@ void Kadu::descriptionUsersActionActivated(QAction *sender, bool toggled)
 
 void Kadu::onlineAndDescUsersActionActivated(QAction *sender, bool toggled)
 {
-	ActionWindow *window = dynamic_cast<ActionWindow *>(sender->parent());
+	KaduMainWindow *window = dynamic_cast<KaduMainWindow *>(sender->parent());
 	if (!window)
 		return;
 
@@ -732,7 +732,7 @@ void Kadu::editUserActionActivated(QAction *sender, bool toggled)
 {
 	kdebugf();
 
-	ActionWindow *window = dynamic_cast<ActionWindow *>(sender->parent());
+	KaduMainWindow *window = dynamic_cast<KaduMainWindow *>(sender->parent());
 	if (!window)
 		return;
 	
@@ -747,7 +747,7 @@ void Kadu::editUserActionActivated(QAction *sender, bool toggled)
 void Kadu::addUserActionActivated(QAction *sender, bool toggled)
 {
  	kdebugf();
-	ActionWindow *window = dynamic_cast<ActionWindow *>(sender->parent());
+	KaduMainWindow *window = dynamic_cast<KaduMainWindow *>(sender->parent());
 	if (window)
 	{	
 		UserListElements selectedUsers = window->getUserListElements();

@@ -248,11 +248,11 @@ void ChatManager::autoSendActionActivated(QAction *sender, bool toggled)
 {
 	kdebugf();
 
-	ActionWindow *actionWindow = dynamic_cast<ActionWindow *>(sender->parent());
-	if (!actionWindow)
+	KaduMainWindow *kaduMainWindow = dynamic_cast<KaduMainWindow *>(sender->parent());
+	if (!kaduMainWindow)
 		return;
 
-	ChatWidget *chatWidget = actionWindow->getChatWidget();
+	ChatWidget *chatWidget = kaduMainWindow->getChatWidget();
 	if (chatWidget)
 	{
 		chatWidget->setAutoSend(toggled);
@@ -267,11 +267,11 @@ void ChatManager::clearActionActivated(QAction *sender, bool toggled)
 {
 	kdebugf();
 
-	ActionWindow *actionWindow = dynamic_cast<ActionWindow *>(sender->parent());
-	if (!actionWindow)
+	KaduMainWindow *kaduMainWindow = dynamic_cast<KaduMainWindow *>(sender->parent());
+	if (!kaduMainWindow)
 		return;
 
-	ChatWidget *chatWidget = actionWindow->getChatWidget();
+	ChatWidget *chatWidget = kaduMainWindow->getChatWidget();
 	if (chatWidget)
 		chatWidget->clearChatWindow();
 
@@ -282,11 +282,11 @@ void ChatManager::insertImageActionActivated(QAction *sender, bool toggled)
 {
 	kdebugf();
 
-	ActionWindow *actionWindow = dynamic_cast<ActionWindow *>(sender->parent());
-	if (!actionWindow)
+	KaduMainWindow *kaduMainWindow = dynamic_cast<KaduMainWindow *>(sender->parent());
+	if (!kaduMainWindow)
 		return;
 
-	ChatWidget *chatWidget = actionWindow->getChatWidget();
+	ChatWidget *chatWidget = kaduMainWindow->getChatWidget();
 	if (chatWidget)
 		chatWidget->insertImage();
 
@@ -297,11 +297,11 @@ void ChatManager::boldActionActivated(QAction *sender, bool toggled)
 {
 	kdebugf();
 
-	ActionWindow *actionWindow = dynamic_cast<ActionWindow *>(sender->parent());
-	if (!actionWindow)
+	KaduMainWindow *kaduMainWindow = dynamic_cast<KaduMainWindow *>(sender->parent());
+	if (!kaduMainWindow)
 		return;
 
-	ChatWidget *chatWidget = actionWindow->getChatWidget();
+	ChatWidget *chatWidget = kaduMainWindow->getChatWidget();
 	if (chatWidget)
 		chatWidget->edit()->setBold(toggled);
 
@@ -312,11 +312,11 @@ void ChatManager::italicActionActivated(QAction *sender, bool toggled)
 {
 	kdebugf();
 
-	ActionWindow *actionWindow = dynamic_cast<ActionWindow *>(sender->parent());
-	if (!actionWindow)
+	KaduMainWindow *kaduMainWindow = dynamic_cast<KaduMainWindow *>(sender->parent());
+	if (!kaduMainWindow)
 		return;
 
-	ChatWidget *chatWidget = actionWindow->getChatWidget();
+	ChatWidget *chatWidget = kaduMainWindow->getChatWidget();
 	if (chatWidget)
 		chatWidget->edit()->setItalic(toggled);
 
@@ -328,11 +328,11 @@ void ChatManager::underlineActionActivated(QAction *sender, bool toggled)
 	kdebugf();
 
 
-	ActionWindow *actionWindow = dynamic_cast<ActionWindow *>(sender->parent());
-	if (!actionWindow)
+	KaduMainWindow *kaduMainWindow = dynamic_cast<KaduMainWindow *>(sender->parent());
+	if (!kaduMainWindow)
 		return;
 
-	ChatWidget *chatWidget = actionWindow->getChatWidget();
+	ChatWidget *chatWidget = kaduMainWindow->getChatWidget();
 	if (chatWidget)
 		chatWidget->edit()->setUnderline(toggled);
 
@@ -343,11 +343,11 @@ void ChatManager::sendActionActivated(QAction *sender, bool toggled)
 {
 	kdebugf();
 
-	ActionWindow *actionWindow = dynamic_cast<ActionWindow *>(sender->parent());
-	if (!actionWindow)
+	KaduMainWindow *kaduMainWindow = dynamic_cast<KaduMainWindow *>(sender->parent());
+	if (!kaduMainWindow)
 		return;
 
-	ChatWidget *chatWidget = actionWindow->getChatWidget();
+	ChatWidget *chatWidget = kaduMainWindow->getChatWidget();
 	if (chatWidget)
 		if (chatWidget->waitingForACK())
 			chatWidget->cancelMessage();
@@ -361,7 +361,7 @@ void ChatManager::whoisActionActivated(QAction *sender, bool toggled)
 {
 	kdebugf();
 
-	ActionWindow *window = dynamic_cast<ActionWindow *>(sender->parent());
+	KaduMainWindow *window = dynamic_cast<KaduMainWindow *>(sender->parent());
 	if (!window)
 	{
 		(new SearchDialog(kadu, "search_user"))->show();
@@ -387,7 +387,7 @@ void ChatManager::whoisActionActivated(QAction *sender, bool toggled)
 
 void ChatManager::insertEmoticonActionActivated(QAction *sender, bool toggled)
 {
-	ActionWindow *window = dynamic_cast<ActionWindow *>(sender->parent());
+	KaduMainWindow *window = dynamic_cast<KaduMainWindow *>(sender->parent());
 	if (!window)
 		return;
 
@@ -404,7 +404,7 @@ void ChatManager::insertEmoticonActionActivated(QAction *sender, bool toggled)
 
 void ChatManager::colorSelectorActionActivated(QAction *sender, bool toggled)
 {
-	ActionWindow *window = dynamic_cast<ActionWindow *>(sender->parent());
+	KaduMainWindow *window = dynamic_cast<KaduMainWindow *>(sender->parent());
 	if (!window)
 		return;
 
@@ -423,7 +423,7 @@ void ChatManager::ignoreUserActionActivated(QAction *sender, bool toggled)
 {
 	kdebugf();
 
-	ActionWindow *window = dynamic_cast<ActionWindow *>(sender->parent());
+	KaduMainWindow *window = dynamic_cast<KaduMainWindow *>(sender->parent());
 	if (!window)
 		return;
 
@@ -467,7 +467,7 @@ void ChatManager::blockUserActionActivated(QAction *sender, bool toggled)
 {
 	kdebugf();
 
-	ActionWindow *window = dynamic_cast<ActionWindow *>(sender->parent());
+	KaduMainWindow *window = dynamic_cast<KaduMainWindow *>(sender->parent());
 	if (!window)
 		return;
 
@@ -520,7 +520,7 @@ void ChatManager::chatActionActivated(QAction *sender, bool toggled)
 {
 	kdebugf();
 
-	ActionWindow *window = dynamic_cast<ActionWindow *>(sender->parent());
+	KaduMainWindow *window = dynamic_cast<KaduMainWindow *>(sender->parent());
 	if (!window)
 		return;
 
