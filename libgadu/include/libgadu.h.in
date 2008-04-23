@@ -1,4 +1,4 @@
-/* $Id: libgadu.h.in 537 2008-02-24 13:32:42Z wojtekka $ */
+/* $Id: libgadu.h.in 582 2008-04-10 19:22:35Z wojtekka $ */
 
 /*
  *  (C) Copyright 2001-2003 Wojtek Kaniewski <wojtekka@irc.pl>
@@ -147,10 +147,10 @@ typedef struct {
  */
 #define gg_common_head(x) \
 	int fd;			/**< Obserwowany deskryptor */ \
-	int check;		/**< Informacja o żądaniu odczytu/zapisu (patrz \c gg_check_t) */ \
-	int state;		/**< Aktualny stan połączenia (patrz \c gg_state_t) */ \
-	int error;		/**< Kod błędu dla \c GG_STATE_ERROR (patrz \c gg_error_t) */ \
-	int type;		/**< Rodzaj sesji (patrz \c gg_session_t) */ \
+	int check;		/**< Informacja o żądaniu odczytu/zapisu (patrz \ref gg_check_t) */ \
+	int state;		/**< Aktualny stan połączenia (patrz \ref gg_state_t) */ \
+	int error;		/**< Kod błędu dla \c GG_STATE_ERROR (patrz \ref gg_error_t) */ \
+	int type;		/**< Rodzaj sesji (patrz \ref gg_session_t) */ \
 	int id;			/**< Identyfikator sesji */ \
 	int timeout;		/**< Czas pozostały do zakończenia stanu */ \
 	int (*callback)(x*); 	/**< Funkcja zwrotna */ \
@@ -918,7 +918,7 @@ void gg_pubdir50_free(gg_pubdir50_t res);
  */
 enum {
 	GG_PUBDIR50_UIN,	/**< Numer Gadu-Gadu */
-	GG_PUBDIR50_STATUS,	/**< Status */
+	GG_PUBDIR50_STATUS,	/**< Status (tylko wynik wyszukiwania) */
 	GG_PUBDIR50_FIRSTNAME,	/**< Imię */
 	GG_PUBDIR50_LASTNAME,	/**< Nazwisko */
 	GG_PUBDIR50_NICKNAME,	/**< Pseudonim */
@@ -938,7 +938,7 @@ enum {
  */
 enum {
 	GG_PUBDIR50_GENDER_FEMALE,	/**< Kobieta */
-	GG_PUBDIR50_GENDER_MAIL,	/**< Mężczyzna */
+	GG_PUBDIR50_GENDER_MALE,	/**< Mężczyzna */
 };
 
 /**
@@ -948,7 +948,7 @@ enum {
  */
 enum {
 	GG_PUBDIR50_GENDER_SET_FEMALE,	/**< Kobieta */
-	GG_PUBDIR50_GENDER_SET_MAIL,	/**< Mężczyzna */
+	GG_PUBDIR50_GENDER_SET_MALE,	/**< Mężczyzna */
 };
 
 /**
