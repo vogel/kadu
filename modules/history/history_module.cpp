@@ -149,11 +149,10 @@ void HistoryModule::historyActionActivated(QAction *sender, bool toggled)
 {
 	kdebugf();
 
-	ActionWindow *window = dynamic_cast<ActionWindow *>(sender->parent());
+	KaduMainWindow *window = dynamic_cast<KaduMainWindow *>(sender->parent());
 	if (!window)
-	{
 		return;
-	}
+
 	UserListElements users = window->getUserListElements();
 
 	if (users.count() == 0)
@@ -184,7 +183,6 @@ void HistoryModule::chatKeyPressed(QKeyEvent *e, ChatWidget *chatWidget, bool &h
 
 void HistoryModule::appendHistory(ChatWidget *chat)
 {
-
 	UserListElements senders = chat->users()->toUserListElements();
 
 	Q3ValueList<HistoryEntry> entries;
