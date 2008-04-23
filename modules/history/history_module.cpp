@@ -24,8 +24,7 @@
 #include "message_box.h"
 #include "toolbar.h"
 #include "userbox.h"
-//Added by qt3to4:
-#include <Q3ValueList>
+
 #include <QLabel>
 #include <QKeyEvent>
 
@@ -185,8 +184,8 @@ void HistoryModule::appendHistory(ChatWidget *chat)
 {
 	UserListElements senders = chat->users()->toUserListElements();
 
-	Q3ValueList<HistoryEntry> entries;
-	Q3ValueList<HistoryEntry> entriestmp;
+	QList<HistoryEntry> entries;
+	QList<HistoryEntry> entriestmp;
 	QDateTime date = QDateTime::currentDateTime();
 	unsigned int from, end, count;
 
@@ -210,7 +209,7 @@ void HistoryModule::appendHistory(ChatWidget *chat)
 			| HISTORYMANAGER_ENTRY_MSGSEND | HISTORYMANAGER_ENTRY_CHATRCV | HISTORYMANAGER_ENTRY_MSGRCV);
 		kdebugmf(KDEBUG_INFO, "temp entries = %u\n", entriestmp.count());
 
-		Q3ValueList<HistoryEntry>::iterator it = entriestmp.begin();
+		QList<HistoryEntry>::iterator it = entriestmp.begin();
 		while (it != entriestmp.end())
 		{
 			if ((*it).type == HISTORYMANAGER_ENTRY_CHATRCV
@@ -240,22 +239,22 @@ void HistoryModule::appendHistory(ChatWidget *chat)
 	else
 		from = entryCount - chatHistoryQuotation;
 
-	Q3ValueList<ChatMessage *> messages;
+	QList<ChatMessage *> messages;
 
 	int quotTime = config_file.readNumEntry("History", "ChatHistoryQuotationTime");
 
-	Q3ValueListConstIterator<HistoryEntry> entry = entries.at(from);
-	Q3ValueListConstIterator<HistoryEntry> entriesEnd = entries.end();
-	for (; entry!=entriesEnd; ++entry)
-		if ((*entry).date.secsTo(QDateTime::currentDateTime()) <= -quotTime * 3600)
-		{
-			ChatMessage *message;
-			if ((*entry).type == HISTORYMANAGER_ENTRY_MSGSEND || (*entry).type == HISTORYMANAGER_ENTRY_CHATSEND)
-				message = new ChatMessage(kadu->myself(), (*entry).message, TypeSent, (*entry).date);
-			else
-			message = new ChatMessage(userlist->byID("Gadu", QString::number((*entry).uin)), (*entry).message, TypeReceived, (*entry).date, (*entry).sdate);
-			messages.append(message);
-		}
+	QList<HistoryEntry>::const_iterator entry = entries.end() + from; // entries.at(from);
+	QList<HistoryEntry>::const_iterator entriesEnd = entries.end();
+// 	for (; entry!=entriesEnd; ++entry)
+// 		if ((*entry).date.secsTo(QDateTime::currentDateTime()) <= -quotTime * 3600)
+// 		{
+// 			ChatMessage *message;
+// 			if ((*entry).type == HISTORYMANAGER_ENTRY_MSGSEND || (*entry).type == HISTORYMANAGER_ENTRY_CHATSEND)
+// 				message = new ChatMessage(kadu->myself(), (*entry).message, TypeSent, (*entry).date);
+// 			else
+// 			message = new ChatMessage(userlist->byID("Gadu", QString::number((*entry).uin)), (*entry).message, TypeReceived, (*entry).date, (*entry).sdate);
+// 			messages.append(message);
+// 		}
 	if (!messages.empty())
 		chat->appendMessages(messages);
 }
