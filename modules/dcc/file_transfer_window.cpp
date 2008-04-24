@@ -7,7 +7,9 @@
  *                                                                         *
  ***************************************************************************/
 
+#include <QGridLayout>
 #include <QProgressBar>
+#include <QScrollArea>
 #include <QUrl>
 
 #include "debug.h"

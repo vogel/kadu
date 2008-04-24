@@ -15,6 +15,7 @@
 #include "file_transfer.h"
 
 class QLabel;
+class QGridLayout;
 class QProgressBar;
 class QPushButton;
 class QScrollArea;

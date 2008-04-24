@@ -7,6 +7,8 @@
  *                                                                         *
  ***************************************************************************/
 
+#include <QVBoxLayout>
+
 #include "window_notify.h"
 #include "debug.h"
 #include "config_file.h"

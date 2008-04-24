@@ -1,16 +1,8 @@
 #ifndef KADU_CONFIGURATION_WINDOW_H
 #define KADU_CONFIGURATION_WINDOW_H
 
-#include <qglobal.h>
-
-#include <qdom.h>
-#include <qtabwidget.h>
-#include <QGridLayout>
-#include <QGroupBox>
-#include <QList>
-#include <QListWidget>
-#include <QScrollArea>
-#include <QKeyEvent>
+#include <QDomNode>
+#include <QTabWidget>
 
 #include "color_button.h"
 #include "hot_key.h"
@@ -27,6 +19,7 @@ class ConfigWidget;
 
 class QGridLayout;
 class QGroupBox;
+class QListWidgetItem;
 class QWidget;
 
 class ConfigSection : public QObject
@@ -176,7 +169,7 @@ class ConfigurationWindow : public QDialog
 
 	QString Name;
 
-	/*Q3VBox*/QWidget *left;
+	QWidget *left;
 	QMap<QString, ConfigSection *> configSections;
 	ConfigSection *currentSection;
 
