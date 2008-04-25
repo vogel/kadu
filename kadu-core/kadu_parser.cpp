@@ -466,6 +466,8 @@ QString KaduParser::parse(const QString &s, const UserListElement &ule, const QO
 							kdebugm(KDEBUG_WARNING, "tag %s not registered\n", pe.str.local8Bit().data());
 							pe.str = QString::null;
 						}
+						if (escape && !pe.str.isEmpty())
+							HtmlDocument::escapeText(pe.str);
 						parseStack.push_back(pe);
 						break;
 					}

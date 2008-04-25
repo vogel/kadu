@@ -126,8 +126,9 @@ ChatMessage::ChatMessage(const UserListElement &ule, const QString &unformattedM
 			break;
 	}
 
-	this->unformattedMessage = convertCharacters(unformattedMessage, backgroundColor,
-		(EmoticonsStyle)config_file.readNumEntry("Chat", "EmoticonsStyle"));
+	this->unformattedMessage = unformattedMessage;
+// 	convertCharacters(unformattedMessage, backgroundColor,
+// 		(EmoticonsStyle)config_file.readNumEntry("Chat", "EmoticonsStyle"));
 }
 
 ChatMessage::ChatMessage(const QString &rawContent, ChatMessageType type, QDateTime date,
@@ -136,6 +137,7 @@ ChatMessage::ChatMessage(const QString &rawContent, ChatMessageType type, QDateT
 {
 }
 
+// TODO: move
 /* convert special characters into emoticons, HTML into plain text and so forth */
 QString ChatMessage::convertCharacters(QString edit, const QColor &bgcolor, EmoticonsStyle style)
 {

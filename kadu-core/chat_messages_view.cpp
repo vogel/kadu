@@ -81,7 +81,7 @@ QString ChatMessagesView::formatMessage(ChatMessage *message, ChatMessage *after
 		format = ChatSyntaxWithoutHeader;
 
 		message->setSeparatorSize(separatorSize);
-		return KaduParser::parse(format, message->sender(), message);
+		return KaduParser::parse(format, message->sender(), message, true);
 	}
 	else
 	{
@@ -107,7 +107,7 @@ QString ChatMessagesView::formatMessage(ChatMessage *message, ChatMessage *after
 		message->setShowServerTime(NoServerTime, NoServerTimeDiff);
 		message->setSeparatorSize(separatorSize);
 		
-		return KaduParser::parse(format, message->sender(), message);
+		return KaduParser::parse(format, message->sender(), message, true);
 	}
 }
 
@@ -127,10 +127,11 @@ void ChatMessagesView::repaintMessages()
 	(*message)->setSeparatorSize(0);
 
 	if ((*message)->type() == TypeSystem)
-		text += KaduParser::parse(ChatSyntaxWithoutHeader, (*message)->sender(), *message);
+		text = KaduParser::parse(ChatSyntaxWithoutHeader, (*message)->sender(), *message);
 	else
-	{	(*message)->setShowServerTime(NoServerTime, NoServerTimeDiff);
-		text += KaduParser::parse(ChatSyntaxWithHeader, (*message)->sender(), *message);
+	{
+		(*message)->setShowServerTime(NoServerTime, NoServerTimeDiff);
+		text = KaduParser::parse(ChatSyntaxWithHeader, (*message)->sender(), *message);
 	}
 
 	prevMessage = message;
