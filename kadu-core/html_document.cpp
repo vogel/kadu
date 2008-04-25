@@ -32,6 +32,7 @@ void HtmlDocument::escapeText(QString& text)
 void HtmlDocument::unescapeText(QString& text)
 {
 	//UWAGA: &amp; MUSI byæ na koñcu!
+	text.replace("<span style=\"color:#000000\">", "<span>");
 	text.replace("&nbsp;", " ");
 	text.replace("&lt;", "<");
 	text.replace("&gt;", ">");

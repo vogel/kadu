@@ -15,7 +15,8 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * dodana nowa pula adresów serwerów gg (neeo)
 * aktualizacja t³umaczeñ na jêzyk niemiecki (Ron_K/White Eagle)
 * aktualizacja libgadu - poprawki przy wyszukiwaniu w katalogu i w DCC (neeo)
-* dodanie komunikatu o wyborze zestawu d¼wiêku 'W³asne'aby móc zmieniaæ poszczególne pliki d¼wiêkowe (White Eagle)
+* dodanie komunikatu o wyborze zestawu d¼wiêku 'W³asne', aby móc zmieniaæ poszczególne pliki d¼wiêkowe (White Eagle)
+* poprawka kolorowania wiadomo¶ci przychodz±cych (daris/neeo)
 
 +++ wersja 0.6.0
 * zmiany w procedurze ³±czenia siê: (joi)
