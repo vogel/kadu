@@ -8,6 +8,7 @@
  ***************************************************************************/
 
 #include <QApplication>
+#include <QLabel>
 #include <QSpinBox>
 
 #include "color_button.h"

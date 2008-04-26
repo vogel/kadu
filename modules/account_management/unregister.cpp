@@ -9,6 +9,8 @@
 
 #include <QApplication>
 #include <QGroupBox>
+#include <QKeyEvent>
+#include <QLabel>
 #include <QLayout>
 #include <QLineEdit>
 #include <QPushButton>

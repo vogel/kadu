@@ -1,32 +1,16 @@
 #ifndef KADU_MISC_H
 #define KADU_MISC_H
 
-#include <qglobal.h>
-
-#include <qdatetime.h>
-#include <qdialog.h>
-#include <q3filedialog.h>
-#include <qimage.h>
-#include <qlabel.h>
-#include <qstring.h>
-#include <q3vbox.h>
-//Added by qt3to4:
-#include <Q3CString>
-#include <QPaintEvent>
-#include <QList>
-#include <QPixmap>
-#include <Q3PopupMenu>
-#include <QKeyEvent>
+#include <Q3FileDialog>
 
 #include <time.h>
 
 #include "status.h"
 
 class QComboBox;
+class QLabel;
 class QLineEdit;
-class Q3ListBox;
-class QMenuData;
-class Q3PopupMenu;
+class QPushButton;
 
 /*
 	Zmienia ¶cie¿kê relatywn± do katalogu z ustawieniami gg
@@ -74,8 +58,6 @@ QStringList toStringList(const QString &e1, const QString &e2=QString(), const Q
 
 void saveGeometry(const QWidget *w, const QString &section, const QString &name);
 void loadGeometry(QWidget *w, const QString &section, const QString &name, int defaultX, int defaultY, int defaultWidth, int defaultHeight);
-
-int showPopupMenu(Q3PopupMenu *menu);
 
 //usuwa znaki nowego wiersza, tagi htmla (wszystko co da siê dopasowaæ jako <.*>)
 QString toPlainText(const QString &text);
@@ -182,13 +164,13 @@ class CreateNotifier : public QObject
 		void objectCreated(QObject* new_object);
 };
 
-
+/*
 class PixmapPreview : public QLabel, public Q3FilePreview
 {
 	public:
 		PixmapPreview();
 		void previewUrl(const Q3Url& url);
-};
+};*/
 
 class ImageDialog : public Q3FileDialog
 {

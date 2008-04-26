@@ -1014,7 +1014,7 @@ void UserBoxMenu::show(Q3ListBoxItem *item)
 		return;
 
 	emit popup();
-	showPopupMenu(this);
+	exec(QCursor::pos());
 }
 
 void UserBoxMenu::refreshIcons()

@@ -7,6 +7,8 @@
  *                                                                         *
  ***************************************************************************/
 
+#include <QKeyEvent>
+#include <QLabel>
 #include <QLayout>
 #include <QLineEdit>
 #include <QListWidget>

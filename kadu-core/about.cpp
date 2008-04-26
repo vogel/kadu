@@ -7,6 +7,7 @@
  *                                                                         *
  ***************************************************************************/
 
+#include <QLabel>
 #include <QLayout>
 #include <QPushButton>
 #include <QTabWidget>

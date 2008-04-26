@@ -1,13 +1,6 @@
 #ifndef GADU_IMAGES_MANAGER_H
 #define GADU_IMAGES_MANAGER_H
 
-#include <qglobal.h>
-
-#include <qcolor.h>
-#include <qdatetime.h>
-#include <qstring.h>
-#include <q3valuelist.h>
-
 #include "gadu.h"
 #include "html_document.h"
 

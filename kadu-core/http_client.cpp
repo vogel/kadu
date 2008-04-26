@@ -7,7 +7,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <qregexp.h>
+#include <QRegExp>
+#include <QTime>
 
 #include "config_file.h"
 #include "debug.h"

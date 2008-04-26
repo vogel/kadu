@@ -7,14 +7,17 @@
  *                                                                         *
  ***************************************************************************/
 
+#include <QLabel>
 #include <QVBoxLayout>
 
-#include "window_notify.h"
-#include "debug.h"
-#include "config_file.h"
-#include "icons_manager.h"
 #include "../notify/notify.h"
 #include "../notify/notification.h"
+
+#include "config_file.h"
+#include "debug.h"
+#include "icons_manager.h"
+
+#include "window_notify.h"
 
 /**
  * @ingroup window_notify

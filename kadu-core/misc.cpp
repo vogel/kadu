@@ -1072,10 +1072,10 @@ void CreateNotifier::notify(QObject* new_object)
 	emit objectCreated(new_object);
 }
 
-PixmapPreview::PixmapPreview() : QLabel(NULL)
-{
-}
-
+// PixmapPreview::PixmapPreview() : QLabel(NULL)
+// {
+// }
+/*
 void PixmapPreview::previewUrl(const Q3Url& url)
 {
 	QString path = url.path();
@@ -1091,15 +1091,15 @@ void PixmapPreview::previewUrl(const Q3Url& url)
 		pix = pix.xForm(mx);
 		setPixmap(pix);
 	}
-}
+}*/
 
 ImageDialog::ImageDialog(QWidget* parent)
 	: Q3FileDialog(parent,"image dialog",true)
 {
-	PixmapPreview* pp = new PixmapPreview();
+// 	PixmapPreview* pp = new PixmapPreview();
 	setFilter(qApp->translate("ImageDialog", "Images")+" (*.png *.PNG *.jpg *.JPG *.jpeg *.JPEG *.gif *.GIF *.bmp *.BMP)");
-	setContentsPreviewEnabled(true);
-	setContentsPreview(pp, pp);
+// 	setContentsPreviewEnabled(true);
+// 	setContentsPreview(pp, pp);
 	setPreviewMode(Q3FileDialog::Contents);
 }
 
@@ -1219,24 +1219,24 @@ void printBacktrace(const QString &header)
 	fflush(stderr);
 }
 
-int showPopupMenu(Q3PopupMenu *menu)
-{
-	kdebugf();
-	QSize desktopSize = QApplication::desktop()->size();
-	QSize menuSizeHint = menu->sizeHint();
-	QPoint p = QCursor::pos();
-//	kdebugm(KDEBUG_INFO, "p:%d,%d menuSize:%d,%d desktop:%d,%d\n", p.x(), p.y(), menuSizeHint.width(), menuSizeHint.height(), desktopSize.width(), desktopSize.height());
-	if (p.y() + menuSizeHint.height() >= desktopSize.height())
-		p.setY(p.y() - menuSizeHint.height() - 10);
-	else
-		p.setY(p.y() + 10);
-	if (p.x() + menuSizeHint.width() >= desktopSize.width())
-		p.setX(p.x() - menuSizeHint.width() - 10);
-	else
-		p.setX(p.x() + 10);
-//	kdebugm(KDEBUG_INFO, "new_p:%d,%d\n", p.x(), p.y());
-
-	int r = menu->exec(p);
-	kdebugf2();
-	return r;
-}
+// int showPopupMenu(Q3PopupMenu *menu)
+// {
+// 	kdebugf();
+// 	QSize desktopSize = QApplication::desktop()->size();
+// 	QSize menuSizeHint = menu->sizeHint();
+// 	QPoint p = QCursor::pos();
+// //	kdebugm(KDEBUG_INFO, "p:%d,%d menuSize:%d,%d desktop:%d,%d\n", p.x(), p.y(), menuSizeHint.width(), menuSizeHint.height(), desktopSize.width(), desktopSize.height());
+// 	if (p.y() + menuSizeHint.height() >= desktopSize.height())
+// 		p.setY(p.y() - menuSizeHint.height() - 10);
+// 	else
+// 		p.setY(p.y() + 10);
+// 	if (p.x() + menuSizeHint.width() >= desktopSize.width())
+// 		p.setX(p.x() - menuSizeHint.width() - 10);
+// 	else
+// 		p.setX(p.x() + 10);
+// //	kdebugm(KDEBUG_INFO, "new_p:%d,%d\n", p.x(), p.y());
+// 
+// 	int r = menu->exec(p);
+// 	kdebugf2();
+// 	return r;
+// }

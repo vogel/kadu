@@ -8,6 +8,7 @@
  ***************************************************************************/
 
 #include <QGridLayout>
+#include <QLabel>
 #include <QProgressBar>
 #include <QScrollArea>
 #include <QUrl>

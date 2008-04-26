@@ -7,10 +7,11 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <qapplication.h>
+#include <QApplication>
+#include <QDateTime>
+#include <QFile>
+#include <QMutex>
 #include <QTextStream>
-#include <qfile.h>
-#include <qmutex.h>
 
 #include "debug.h"
 #include "config_file.h"

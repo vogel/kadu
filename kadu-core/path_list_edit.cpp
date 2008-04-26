@@ -8,6 +8,7 @@
  ***************************************************************************/
 
 #include <QFileDialog>
+#include <QKeyEvent>
 #include <QLayout>
 #include <QLineEdit>
 #include <QListWidget>
