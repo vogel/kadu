@@ -18,6 +18,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * dodanie komunikatu o wyborze zestawu d¼wiêku 'W³asne', aby móc zmieniaæ poszczególne pliki d¼wiêkowe (White Eagle)
 * poprawka kolorowania wiadomo¶ci przychodz±cych (daris/neeo)
 * poprawka parsowania statusu w module autoaway (White Eagle)
+* poprawka ³±czenia, gdy kadu zosta³o uruchomione bez dostêpu do sieci (White Eagle)
 
 +++ wersja 0.6.0
 * zmiany w procedurze ³±czenia siê: (joi)

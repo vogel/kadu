@@ -1161,6 +1161,7 @@ void GaduProtocol::login()
 	else
 	{
 		whileConnecting = false;
+		NextStatus->setOffline();
 		disconnectedSlot();
 		emit error(Disconnected);
 	}
