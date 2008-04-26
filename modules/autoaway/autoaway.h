@@ -74,6 +74,8 @@ class AutoAway : public ConfigurationUiHandler, ConfigurationAwareObject
 	bool autoDisconnectEnabled;
 	bool parseAutoStatus;
 
+	bool updateDescripion;
+
 	unsigned int idleTime;
 	unsigned int refreshStatusTime;
 	unsigned int refreshStatusInterval;

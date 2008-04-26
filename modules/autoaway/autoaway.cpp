@@ -129,7 +129,7 @@ void AutoAwayStatusChanger::setChangeDescriptionTo(ChangeDescriptionTo newChange
 }
 
 AutoAway::AutoAway(QObject* parent, const char *name)
-	: autoAwayStatusChanger(0), timer(0)
+	: autoAwayStatusChanger(0), timer(0), updateDescripion(true)
 {
 	createDefaultConfiguration();
 	configurationUpdated();
@@ -251,6 +251,11 @@ void AutoAway::checkIdleTime()
 	{
 		autoAwayStatusChanger->setChangeDescriptionTo(changeTo, parseDescription(autoStatusText));
 		refreshStatusTime = idleTime + refreshStatusInterval;
+	} 
+	else if (updateDescripion)
+	{
+		autoAwayStatusChanger->setChangeDescriptionTo(changeTo, parseDescription(autoStatusText));
+		updateDescripion = false;
 	}
 
 	if (idleTime >= autoDisconnectTime && autoDisconnectEnabled)
@@ -260,7 +265,10 @@ void AutoAway::checkIdleTime()
 	else if (idleTime >= autoAwayTime && autoAwayEnabled)
 		autoAwayStatusChanger->setChangeStatusTo(AutoAwayStatusChanger::ChangeStatusToBusy);
 	else
+	{
 		autoAwayStatusChanger->setChangeStatusTo(AutoAwayStatusChanger::NoChangeStatus);
+		updateDescripion = true;
+	}
 
 	if (idleTime < refreshStatusTime)
 		refreshStatusTime = refreshStatusInterval;
