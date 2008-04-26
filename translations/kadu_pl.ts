@@ -1588,6 +1588,10 @@ Czy na pewno tego chcesz?</translation>
         <source>Me</source>
         <translation>Ja</translation>
     </message>
+    <message>
+        <source>Change status</source>
+        <translation>Zmiana statusu</translation>
+    </message>
 </context>
 <context>
     <name>KaduTabBar</name>

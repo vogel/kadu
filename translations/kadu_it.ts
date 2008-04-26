@@ -1573,6 +1573,10 @@ Di più conessioni con il password incorretto</translation>
         <source>Me</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Change status</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>KaduTabBar</name>

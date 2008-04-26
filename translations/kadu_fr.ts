@@ -1563,6 +1563,10 @@ Too many attempts with bad password</source>
         <source>Me</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Change status</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>KaduTabBar</name>

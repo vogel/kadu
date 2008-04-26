@@ -1556,6 +1556,10 @@ Too many attempts with bad password</source>
 %0will be deleted. Are you sure?</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Change status</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>KaduTabBar</name>
