@@ -243,18 +243,18 @@ void HistoryModule::appendHistory(ChatWidget *chat)
 
 	int quotTime = config_file.readNumEntry("History", "ChatHistoryQuotationTime");
 
-	QList<HistoryEntry>::const_iterator entry = entries.end() + from; // entries.at(from);
+	QList<HistoryEntry>::const_iterator entry = entries.begin() + from;
 	QList<HistoryEntry>::const_iterator entriesEnd = entries.end();
-// 	for (; entry!=entriesEnd; ++entry)
-// 		if ((*entry).date.secsTo(QDateTime::currentDateTime()) <= -quotTime * 3600)
-// 		{
-// 			ChatMessage *message;
-// 			if ((*entry).type == HISTORYMANAGER_ENTRY_MSGSEND || (*entry).type == HISTORYMANAGER_ENTRY_CHATSEND)
-// 				message = new ChatMessage(kadu->myself(), (*entry).message, TypeSent, (*entry).date);
-// 			else
-// 			message = new ChatMessage(userlist->byID("Gadu", QString::number((*entry).uin)), (*entry).message, TypeReceived, (*entry).date, (*entry).sdate);
-// 			messages.append(message);
-// 		}
+	for (; entry!=entriesEnd; ++entry)
+		if ((*entry).date.secsTo(QDateTime::currentDateTime()) <= -quotTime * 3600)
+		{
+			ChatMessage *message;
+			if ((*entry).type == HISTORYMANAGER_ENTRY_MSGSEND || (*entry).type == HISTORYMANAGER_ENTRY_CHATSEND)
+				message = new ChatMessage(kadu->myself(), (*entry).message, TypeSent, (*entry).date);
+			else
+			message = new ChatMessage(userlist->byID("Gadu", QString::number((*entry).uin)), (*entry).message, TypeReceived, (*entry).date, (*entry).sdate);
+			messages.append(message);
+		}
 	if (!messages.empty())
 		chat->appendMessages(messages);
 }
