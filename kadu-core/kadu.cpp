@@ -834,7 +834,6 @@ void Kadu::openChat()
 
 //void Kadu::showStatusActionActivated()
 //{
-//	showPopupMenu(statusMenu);
 //}
 //
 //void Kadu::showStatusActionAddedToToolbar(ToolButton* button)
