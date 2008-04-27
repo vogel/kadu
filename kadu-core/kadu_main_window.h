@@ -14,6 +14,7 @@
 #include <QMainWindow>
 
 #include "action.h"
+#include "userlist.h"
 
 class QContextMenuEvent;
 
