@@ -1,16 +1,11 @@
 #ifndef KADU_CHAT_MESSAGE_H
 #define KADU_CHAT_MESSAGE_H
 
-#include <qglobal.h>
-
-#include <qcolor.h>
-#include <qdatetime.h>
-#include <qmap.h>
-#include <qstring.h>
+#include <QDateTime>
+#include <QString>
 
 #include "emoticons.h"
-#include "gadu.h"
-#include "userlistelement.h"
+#include "protocol.h"
 
 enum ChatMessageType
 {

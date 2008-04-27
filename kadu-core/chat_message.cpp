@@ -7,12 +7,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <stdlib.h>
-
-#include <qregexp.h>
-
-#include "kadu_parser.h"
 #include "gadu_images_manager.h"
+#include "kadu_parser.h"
 #include "misc.h"
 
 #include "chat_message.h"
