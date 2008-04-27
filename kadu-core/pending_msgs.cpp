@@ -43,13 +43,26 @@ bool PendingMsgs::pendingMsgs(UserListElement user) const
 //		return pendingMsgs();
 
 	CONST_FOREACH(msg, msgs)
-		if((*msg).users[0] == user)
+		if ((*msg).users[0] == user)
 		{
 //			kdebugf2();
 			return true;
 		}
 //	kdebugf2();
 	return false;
+}
+
+unsigned int PendingMsgs::pendingMsgsCount(UserListElements users) const
+{
+	kdebugf();
+
+	unsigned int count = 0;
+
+	CONST_FOREACH(msg, msgs)
+		if ((*msg).users.equals(users))
+			count++;
+
+	return count;
 }
 
 bool PendingMsgs::pendingMsgs() const
