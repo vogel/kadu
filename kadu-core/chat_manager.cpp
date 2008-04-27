@@ -7,33 +7,24 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <qcursor.h>
-#include <qbitmap.h>
-#include <qtooltip.h>
-//Added by qt3to4:
-#include <QList>
-
-#include "action.h"
-#include "debug.h"
-#include "chat_manager.h"
-#include "chat_widget.h"
+#include "activate.h"
+#include "chat_message.h"
+#include "chat_window.h"
 #include "custom_input.h"
-#include "icons_manager.h"
+#include "debug.h"
 #include "ignore.h"
 #include "kadu.h"
-#include "kadu_splitter.h"
 #include "message_box.h"
 #include "misc.h"
 #include "pending_msgs.h"
-#include "search.h"
 #include "protocols_manager.h"
-#include "toolbar.h"
+#include "search.h"
 #include "userbox.h"
 
-#include "activate.h"
+#include "chat_manager.h"
 
-ChatManager::ChatManager(QObject* parent, const char* name) : QObject(parent, name),
-	ChatWidgets(), ClosedChatUsers(), addons(), refreshTitlesTimer()
+ChatManager::ChatManager(QObject *parent)
+	: QObject(parent), ChatWidgets(), ClosedChatUsers(), addons(), refreshTitlesTimer()
 {
 	kdebugf();
 
@@ -121,24 +112,12 @@ ChatManager::ChatManager(QObject* parent, const char* name) : QObject(parent, na
 		"Black", tr("Change color")
 	);
 
-	ToolBar::addDefaultAction("Chat toolbar 1", "autoSendAction");
-	ToolBar::addDefaultAction("Chat toolbar 1", "clearChatAction");
-	ToolBar::addDefaultAction("Chat toolbar 1", "insertEmoticonAction");
-	ToolBar::addDefaultAction("Chat toolbar 1", "whoisAction");
-	ToolBar::addDefaultAction("Chat toolbar 1", "insertImageAction");
-
-	ToolBar::addDefaultAction("Chat toolbar 2", "boldAction");
-	ToolBar::addDefaultAction("Chat toolbar 2", "italicAction");
-	ToolBar::addDefaultAction("Chat toolbar 2", "underlineAction");
-	ToolBar::addDefaultAction("Chat toolbar 2", "colorAction");
-
-	ToolBar::addDefaultAction("Chat toolbar 3", "sendAction", -1, true);
-
 	if (config_file.readBoolEntry("Chat", "RememberPosition"))
 	{
 		userlist->addPerContactNonProtocolConfigEntry("chat_geometry", "ChatGeometry");
 		userlist->addPerContactNonProtocolConfigEntry("chat_vertical_sizes", "VerticalSizes");
 	}
+
 	connect(&refreshTitlesTimer, SIGNAL(timeout()), this, SLOT(refreshTitles()));
 	connect(userlist, SIGNAL(usersStatusChanged(QString)), this, SLOT(refreshTitlesLater()));
 
@@ -151,7 +130,7 @@ void ChatManager::closeAllWindows()
 
 	while (!ChatWidgets.empty())
 	{
-		ChatWidget *chat=ChatWidgets.first();
+		ChatWidget *chat = ChatWidgets.first();
 		delete chat;
 	}
 
@@ -541,7 +520,7 @@ const QList<UserListElements> ChatManager::closedChatUsers() const
 	return ClosedChatUsers;
 }
 
-int ChatManager::registerChatWidget(ChatWidget* chat)
+int ChatManager::registerChatWidget(ChatWidget *chat)
 {
 	kdebugf();
 
@@ -551,7 +530,7 @@ int ChatManager::registerChatWidget(ChatWidget* chat)
 	return ChatWidgets.count() - 1;
 }
 
-void ChatManager::unregisterChatWidget(ChatWidget* chat)
+void ChatManager::unregisterChatWidget(ChatWidget *chat)
 {
 	kdebugf();
 
@@ -642,10 +621,6 @@ int ChatManager::openChatWidget(Protocol *initialProtocol, const UserListElement
 				kdebugm(KDEBUG_INFO, "parent type: %s\n", win->parent()->className());
 				win = static_cast<QWidget *>(win->parent());
 			}
-#if QT_VERSION >= 0x030300
-			if (qstrcmp(qVersion(), "3.3") >= 0) // dodatkowe zabezpieczenie przed idiotami u¿ywaj±cymi opcji --force przy instalacji pakietów
-				win->setWindowState(win->windowState() & ~Qt::WindowMinimized | Qt::WindowActive);
-#endif
 			if (forceActivate)
 				activateWindow(win->winId());
 			win->raise();
@@ -682,8 +657,8 @@ int ChatManager::openChatWidget(Protocol *initialProtocol, const UserListElement
 	}
  	chat->refreshTitle();
 
-	connect(chat, SIGNAL(messageSentAndConfirmed(UserListElements, const QString&)),
-		this, SIGNAL(messageSentAndConfirmed(UserListElements, const QString&)));
+	connect(chat, SIGNAL(messageSentAndConfirmed(UserListElements, const QString &)),
+		this, SIGNAL(messageSentAndConfirmed(UserListElements, const QString &)));
 
 //	chat->makeActive();
 	emit chatWidgetCreated(chat);
@@ -836,7 +811,7 @@ void ChatManager::initModule()
 
 	ChatMessage::registerParserTags();
 	emoticons->setEmoticonsTheme(config_file.readEntry("Chat", "EmoticonsTheme"));
-	chat_manager = new ChatManager(kadu, "chat_manager");
+	chat_manager = new ChatManager(kadu);
 
 	kdebugf2();
 }

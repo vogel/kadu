@@ -14,6 +14,7 @@
 
 #include "action.h"
 #include "chat_manager.h"
+#include "chat_message.h"
 #include "debug.h"
 #include "history.h"
 #include "history_dialog.h"

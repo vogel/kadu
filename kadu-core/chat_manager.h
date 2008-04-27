@@ -10,22 +10,12 @@
 #ifndef KADU_CHAT_MANAGER_H
 #define KADU_CHAT_MANAGER_H
 
-#include <qglobal.h>
-
-#include <qobject.h>
-#include <qtimer.h>
-//Added by qt3to4:
-#include <QList>
+#include <QTimer>
 
 #include "chat_widget.h"
-#include "chat_window.h"
-#include "chat_message.h"
 #include "configuration_aware_object.h"
-#include "toolbar.h"
-#include "usergroup.h"
 
 class ActionDescription;
-
 class Protocol;
 
 /**
@@ -90,12 +80,12 @@ protected:
 
 public:
 	/**
-		\fn ChatManager(QObject* parent=NULL, const char* name=NULL)
+		\fn ChatManager(QObject* parent = 0)
 		Konstruktor tworz±cy obiekt zarz±dzaj±cy oknami
 		\param parent rodzic okna
 		\param name nazwa obiektu
 	**/
-	ChatManager(QObject* parent=NULL, const char* name=NULL);
+	ChatManager(QObject *parent = 0);
 
 	/**
 		\fn ~ChatManager()
@@ -119,7 +109,7 @@ public:
 		\fn const ChatList& chats() const
 		Funkcja zwraca listê otwartych okien Chat
 	**/
-	const ChatList& chats() const;
+	const ChatList & chats() const;
 
 	/**
 		\fn QValueList<UserListElements> closedChatsUsers() const
@@ -135,7 +125,7 @@ public:
 		\return wska¼nik do okna je¶li istnieje w przeciwnym
 		 wypadku zwraca NULL
 	**/
-	ChatWidget* findChatWidget(const UserGroup *group) const;
+	ChatWidget * findChatWidget(const UserGroup *group) const;
 
 	/**
 		\fn Chat* findChat(UserListElements users) const;
@@ -145,7 +135,7 @@ public:
 		\return wska¼nik do okna je¶li istnieje w przeciwnym
 		 wypadku zwraca NULL
 	**/
-	ChatWidget* findChatWidget(UserListElements users) const;
+	ChatWidget * findChatWidget(UserListElements users) const;
 
 	// co za g³upota
 	// TODO: przenie¶æ do klasy ChatWidget / ewentualnie do nowo-utworzonej klasy Chat
@@ -159,7 +149,7 @@ public:
 		istnieje,\n je¶li nie to tworzy tak±
 		w³asno¶æ (ustawia na pust±)
 	**/
-	QVariant& getChatWidgetProperty(const UserGroup *group, const QString &name);
+	QVariant & getChatWidgetProperty(const UserGroup *group, const QString &name);
 
 	void loadOpenedWindows();
 	void saveOpenedWindows();
@@ -217,7 +207,7 @@ public slots:
 		\param chat wska¼nik do okna ktore chcemy dodaæ
 		\return zwraca numer naszego okna po zarejestrowaniu
 	**/
-	int registerChatWidget(ChatWidget* chat);
+	int registerChatWidget(ChatWidget *chat);
 
 	/**
 		\fn void unregisterChat(Chat* chat)
@@ -226,7 +216,7 @@ public slots:
 		wysy³a sygna³ chatDestroying i chatDestroyed
 		\param chat okno które bêdzie wyrejestrowane
 	**/
-	void unregisterChatWidget(ChatWidget* chat);
+	void unregisterChatWidget(ChatWidget *chat);
 
 	/**
 		\fn void refreshTitles()
@@ -269,7 +259,7 @@ signals:
 	**/
 	void chatWidgetCreated(ChatWidget *chat);
 
-	void chatWidgetActivated(ChatWidget *);
+	void chatWidgetActivated(ChatWidget *chat);
 
 	/**
 		\fn void chatCreated(const UserGroup *group)
