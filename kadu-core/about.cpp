@@ -7,35 +7,39 @@
  *                                                                         *
  ***************************************************************************/
 
+#include <QBoxLayout>
 #include <QLabel>
-#include <QLayout>
 #include <QPushButton>
 #include <QTabWidget>
 #include <QTextEdit>
 #include <QTextStream>
 
-#include "about.h"
 #include "debug.h"
 #include "icons_manager.h"
 #include "misc.h"
 
+#include "about.h"
+
 class KaduLink : public QLabel
 {
-	public:
-		KaduLink() : QLabel()
-		{
-			setText("<a href=\"http://www.kadu.net/\">www.kadu.net</a>");
-			setCursor(QCursor(Qt::PointingHandCursor));
-			setSizePolicy(QSizePolicy(QSizePolicy::Minimum, QSizePolicy::Fixed));
-		}
-	protected:
-		virtual void mousePressEvent(QMouseEvent *)
-		{
-			openWebBrowser("http://www.kadu.net/");
-		}
+protected:
+	virtual void mousePressEvent(QMouseEvent *)
+	{
+		openWebBrowser("http://www.kadu.net/");
+	}
+
+public:
+	KaduLink() : QLabel()
+	{
+		setText("<a href=\"http://www.kadu.net/\">www.kadu.net</a>");
+		setCursor(QCursor(Qt::PointingHandCursor));
+		setSizePolicy(QSizePolicy(QSizePolicy::Minimum, QSizePolicy::Fixed));
+	}
+
 };
 
-About::About(QWidget *parent, const char *name) : QWidget(parent, name, Qt::Window)
+About::About(QWidget *parent)
+	: QWidget(parent, Qt::Window)
 {
 	kdebugf();
 
@@ -73,11 +77,10 @@ About::About(QWidget *parent, const char *name) : QWidget(parent, name, Qt::Wind
 	texts_layout->addWidget(l_info);
 	texts_layout->addWidget(new KaduLink());
 	texts->setLayout(texts_layout);
-
 	// end create main QLabel widgets (icon and app info)
 
 	// our TabWidget
-	QTabWidget *tw_about = new QTabWidget;
+	QTabWidget *tw_about = new QTabWidget(this);
 	// end our TabWidget
 
 	// create our info widgets
@@ -131,19 +134,16 @@ About::About(QWidget *parent, const char *name) : QWidget(parent, name, Qt::Wind
 	QPushButton *pb_close = new QPushButton(icons_manager->loadIcon("CloseWindow"), tr("&Close"));
 	connect(pb_close, SIGNAL(clicked()), this, SLOT(close()));
 
-	QHBoxLayout *bottom_layout = new QHBoxLayout;
+	QHBoxLayout *bottom_layout = new QHBoxLayout(bottom);
 	bottom_layout->addWidget(blank2);
 	bottom_layout->addWidget(pb_close);
 
-	bottom->setLayout(bottom_layout);
 	// end close button
 	center_layout->addWidget(bottom);
 
-	QHBoxLayout *layout = new QHBoxLayout;
+	QHBoxLayout *layout = new QHBoxLayout(this);
 	layout->addWidget(left);
 	layout->addWidget(center);
-
-	setLayout(layout);
 
 	loadGeometry(this, "General", "AboutGeometry", 0, 30, 640, 420);
 

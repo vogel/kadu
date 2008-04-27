@@ -856,7 +856,7 @@ void Kadu::help()
 
 void Kadu::about()
 {
-	(new About(kadu, "about_window"))->show();
+	(new About(kadu))->show();
 }
 
 void Kadu::quit()
