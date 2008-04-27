@@ -20,7 +20,8 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * poprawka parsowania statusu w module autoaway (White Eagle)
 * poprawka ³±czenia, gdy kadu zosta³o uruchomione bez dostêpu do sieci (White Eagle)
 * aktualizacja t³umaczeñ (neeo)
-* poprawka cytowania wiadomosci z historii w oknie chat (neeo) 
+* poprawka cytowania wiadomo¶ci z historii w oknie chat (neeo) 
+* modu³y autostatus i globalhotkeys dodane do autodownloadu (White Eagle)
 
 +++ wersja 0.6.0
 * zmiany w procedurze ³±czenia siê: (joi)
