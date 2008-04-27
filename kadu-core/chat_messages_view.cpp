@@ -7,14 +7,11 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <QList>
-#include <QResizeEvent>
 #include <QScrollBar>
 
 #include "chat_message.h"
-#include "config_file.h"
 #include "debug.h"
-#include "emoticons.h"
+#include "gadu.h"
 #include "kadu_parser.h"
 #include "misc.h"
 #include "syntax_editor.h"

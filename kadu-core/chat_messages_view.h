@@ -1,15 +1,11 @@
 #ifndef CHAT_MESSAGES_VIEW
 #define CHAT_MESSAGES_VIEW
 
-#include <qglobal.h>
+#include <QList>
 
 #include "configuration_aware_object.h"
-#include "gadu.h"
 #include "kadu_text_browser.h"
-#include "userlistelement.h"
-//Added by qt3to4:
-#include <QResizeEvent>
-#include <QList>
+#include "protocol.h"
 
 class ChatMessage;
 class QResizeEvent;
