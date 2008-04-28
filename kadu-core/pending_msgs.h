@@ -54,6 +54,13 @@ class PendingMsgs : public QObject
 		**/
 		bool pendingMsgs(UserListElement user) const;
 
+		/**
+			\fn unsigned int pendingMsgsCount(UserListElements users) const
+			Sprawdza, czy w kolejce s± jakie¶ oczekuj±ce wiadomo¶ci dla podanej listy u¿ytkowników
+			i zwraca ich liczbê.
+			\param users lista u¿ytkowników, dla których nale¿y sprawdziæ kolejkê.
+			\return liczba oczekuj±cych wiadomo¶ci.
+		**/
 		unsigned int pendingMsgsCount(UserListElements users) const;
 
 		/**
