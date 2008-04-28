@@ -13,6 +13,7 @@
 #include <qlabel.h>
 #include <qlayout.h>
 #include <qlineedit.h>
+#include <qobjectlist.h>
 #include <qpushbutton.h>
 #include <qscrollview.h>
 #include <qtabwidget.h>
@@ -582,7 +583,19 @@ void UserInfo::selectIcon()
 	iDialog->setFilter(tr("Icons (*.png *.xpm *.jpg)"));
 	if (iDialog->exec() == QDialog::Accepted)
 	{
-		QString groupName = sender()->parent()->name();
+		QString groupName;
+		const QCheckBox *groupCheckBox;
+		
+		CONST_FOREACH(child, *sender()->parent()->children())
+		{
+			groupCheckBox = dynamic_cast<const QCheckBox*>(*child);
+			
+			if(groupCheckBox)
+			{
+				groupName = groupCheckBox->text();
+				break;
+			}
+		}
 
 		config_file.writeEntry("GroupIcon", "recentPath", iDialog->dirPath());
 		config_file.writeEntry("GroupIcon", groupName, iDialog->selectedFile());
@@ -597,7 +610,19 @@ void UserInfo::selectIcon()
 
 void UserInfo::deleteIcon()
 {
-	QString groupName = sender()->parent()->name();
+	QString groupName;
+	const QCheckBox *groupCheckBox;
+	
+	CONST_FOREACH(child, *sender()->parent()->children())
+	{
+		groupCheckBox = dynamic_cast<const QCheckBox*>(*child);
+		
+		if(groupCheckBox)
+		{
+			groupName = groupCheckBox->text();
+			break;
+		}
+	}
 
 	config_file.removeVariable("GroupIcon", groupName);
 
