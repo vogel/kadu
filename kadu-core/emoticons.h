@@ -1,33 +1,18 @@
 #ifndef EMOTICONS_H
 #define EMOTICONS_H
 
-#include <qglobal.h>
-
-#include <qcolor.h>
-#include <qmovie.h>
-//Added by qt3to4:
-#include <QCloseEvent>
-#include <QPaintEvent>
 #include <QList>
-#include <QPixmap>
-#include <QEvent>
-// #include <private/qrichtext_p.h>
-#include <qstringlist.h>
-#include <qtoolbutton.h>
-#include <q3valuevector.h>
-#include <qlabel.h>
+#include <QToolButton>
 
 #include "config_file.h"
 #include "configuration_aware_object.h"
 #include "html_document.h"
 #include "themes.h"
 
+class QLabel;
+
 class ChatWidget;
 class EmotsWalker;
-class QImage;
-class QLabel;
-class Q3TextEdit;
-class Q3ScrollView;
 
 enum EmoticonsStyle
 {
@@ -49,13 +34,13 @@ class EmoticonsManager : public Themes, ConfigurationAwareObject
 			QString stat;
 			EmoticonsListItem();
 		};
-		Q3ValueVector<EmoticonsListItem> Aliases;
+		QList<EmoticonsListItem> Aliases;
 		QList<EmoticonsListItem> Selector;
 		EmotsWalker *walker;
 
-		static QString getQuoted(const QString& s, unsigned int& pos);
+		static QString getQuoted(const QString &s, unsigned int &pos);
 
-		bool loadGGEmoticonThemePart(QString subdir);
+		bool loadGGEmoticonThemePart(const QString &subdir);
 		bool loadGGEmoticonTheme();
 	public:
 		static void initModule();
@@ -65,7 +50,7 @@ class EmoticonsManager : public Themes, ConfigurationAwareObject
 		Konstruktor tworzy obiekt oraz wyszukuje listê zestawów w katalogu
 		$DATADIR/kadu/themes/emoticons
 		**/
-		EmoticonsManager(const QString& name, const QString& configname);
+		EmoticonsManager(const QString &name, const QString &configname);
 		~EmoticonsManager();
 
 		/**
@@ -74,7 +59,7 @@ class EmoticonsManager : public Themes, ConfigurationAwareObject
 		Funkcja ustawi zestaw je¶li taki istnieje w przeciwnym wypadku
 		ustawionym zestawem bêdzie "gadu-gadu"
 		**/
-		void setEmoticonsTheme(const QString& theme);
+		void setEmoticonsTheme(const QString &theme);
 
 		/**
 		Funkcja wstawia w text zamiast tagów emotikonek odpowiednie emotikonki
@@ -83,8 +68,8 @@ class EmoticonsManager : public Themes, ConfigurationAwareObject
 		\param style styl emotikonki jaki ma byæ wstawiony - domy¶lnie jest do
 		 aktualny zestaw
 		**/
-		void expandEmoticons(HtmlDocument& text, const QColor& bgcolor,
-			EmoticonsStyle style=(EmoticonsStyle) config_file.readNumEntry("Chat", "EmoticonsStyle"));
+		void expandEmoticons(HtmlDocument &text, const QColor &bgcolor,
+			EmoticonsStyle style = (EmoticonsStyle)config_file.readNumEntry("Chat", "EmoticonsStyle"));
 		/**
 		Funkcja zwraca ilo¶æ emotikonek w zestawie
 		**/
@@ -123,7 +108,7 @@ class EmoticonSelectorButton : public QToolButton
 		QString EmoticonString;
 		QString AnimPath;
 		QString StaticPath;
-		QMovie* Movie;
+		QMovie *Movie;
 	private slots:
 		void buttonClicked();
 		void movieUpdate();
@@ -131,11 +116,11 @@ class EmoticonSelectorButton : public QToolButton
 		/**
 		Funkcja obs³uguj±ca najechanie kursorem myszki na dan± emotikonkê.
 		**/
-		void enterEvent(QEvent* e);
+		void enterEvent(QEvent *e);
 		/**
 		Funkcja obs³uguj±ca opuszczenie obszaru wy¶wietlania emotikonki.
 		**/
-		void leaveEvent(QEvent* e);
+		void leaveEvent(QEvent *e);
 	public:
 		/**
 		Konstruktor tworz±cy przycisk z emotikonk±
@@ -146,15 +131,15 @@ class EmoticonSelectorButton : public QToolButton
 		\param anim_path ¶cie¿ka do animowanej emotikonki
 		**/
 		EmoticonSelectorButton(
-			QWidget* parent,const QString& emoticon_string,
-			const QString& static_path,const QString& anim_path);
+			QWidget *parent, const QString &emoticon_string,
+			const QString &static_path,const QString &anim_path);
 		~EmoticonSelectorButton();
 	signals:
 		/**
 		Sygna³ emitowany po naci¶niêciu przycisku z emotikonk±
 		przekazywana jest warto¶æ emoticon_string (przewa¿nie jest to tag)
 		**/
-		void clicked(const QString& emoticon_string);
+		void clicked(const QString &emoticon_string);
 };
 /**
 	Klasa wy¶wietlaj±ca listê emotikonek z aktualnego zestawu.
@@ -165,7 +150,7 @@ class EmoticonSelector : public QWidget
 	private:
 		ChatWidget *callingwidget;
 	private slots:
-		void iconClicked(const QString& emoticon_string);
+		void iconClicked(const QString &emoticon_string);
 	protected:
 		/**
 		Funkcja obs³uguj±ca zamkniêcie listy.
@@ -178,13 +163,13 @@ class EmoticonSelector : public QWidget
 		\param name nazwa obiektu
 		\param caller okno chat do ktorego ma byæ wpisana wybrana emotikonka
 		**/
-		EmoticonSelector(QWidget* parent = 0, const char *name = 0, ChatWidget *caller = 0);
+		EmoticonSelector(QWidget *parent = 0, const char *name = 0, ChatWidget *caller = 0);
 	public slots:
 		/**
 		Slot obs³uguj±cy poprawne wy¶wietlenie listy emotikonek, wyrównanie do
 		okna wywo³uj±cego.
 		**/
-		void alignTo(QWidget* w);
+		void alignTo(QWidget *w);
 };
 
 /* Klasa wyciêta za ¼róde³ Qt i przystosowana na potrzeby Kadu (oryginalnie nazywa³a siê QTextImage) */
@@ -192,11 +177,11 @@ class EmoticonSelector : public QWidget
 // {
 // 	public:
 // 		StaticTextItem(QTextDocument *p, const QMap<QString, QString> &attr, const QString& context,
-// 			Q3MimeSourceFactory &factory );
+// 			Q3MimeSourceFactory &factory);
 // 		virtual ~StaticTextItem();
 // 
 // 		Placement placement() const { return place; }
-// 		void adjustToPainter( QPainter* );
+// 		void adjustToPainter(QPainter*);
 // 		int minimumWidth() const { return width; }
 // 
 // 		QString richText() const;
@@ -240,7 +225,7 @@ class AnimTextItem : public QTextCustomItem
 		void draw(
 			QPainter* p, int x, int y, int cx, int cy,
 			int cw, int ch, const QColorGroup& cg,
-			bool selected );
+			bool selected);
 		virtual QString richText() const;
 
 };*/
@@ -297,7 +282,7 @@ class StaticStyleSheet : public Q3StyleSheet
 struct PrefixNode
 {
 	int emotIndex;
-	Q3ValueVector<QPair<QChar, PrefixNode*> > childs;
+	QList<QPair<QChar, PrefixNode *> > childs;
 	PrefixNode();
 };
 
@@ -310,11 +295,11 @@ struct PrefixNode
 class EmotsWalker
 {
 	/** dictionary is based on prefix tree */
-	PrefixNode* root;
-	QPair<QChar, PrefixNode*> myPair;
+	PrefixNode *root;
+	QPair<QChar, PrefixNode *> myPair;
 	/** positions in prefix tree, representing current analysis of text */
-	Q3ValueVector<const PrefixNode*> positions;
-	Q3ValueVector<int> lengths;
+	QList<const PrefixNode *> positions;
+	QList<int> lengths;
 	unsigned int amountPositions;
 
 	public:
@@ -322,9 +307,9 @@ class EmotsWalker
 		~EmotsWalker();
 
 	private:
-		PrefixNode* findChild( const PrefixNode* node, const QChar& c );
-		PrefixNode* insertChild( PrefixNode* node, const QChar& c );
-		void removeChilds( PrefixNode* node );
+		PrefixNode * findChild(const PrefixNode *node, const QChar &c);
+		PrefixNode * insertChild(PrefixNode *node, const QChar &c);
+		void removeChilds(PrefixNode *node);
 
 	public:
 		/**
@@ -332,7 +317,7 @@ class EmotsWalker
 			number, which will be used later to notify occurrences of
 			emot in analyzed text
 		*/
-		void insertString( const QString& str, int num );
+		void insertString(const QString &str, int num);
 
 		/**
 			return number of emot, which occurre in analyzed text just
@@ -340,7 +325,7 @@ class EmotsWalker
 			beginning of text analysis is turned on by 'initWalking()'
 			if no emot occures, -1 is returned
 		*/
-		int checkEmotOccurrence( const QChar& c );
+		int checkEmotOccurrence(const QChar &c);
 
 		/**
 			clear internal structures responsible for analyzing text, it allows

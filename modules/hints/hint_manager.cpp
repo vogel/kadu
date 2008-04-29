@@ -11,6 +11,7 @@
 #include <QCheckBox>
 #include <QComboBox>
 #include <QDesktopWidget>
+#include <QLabel>
 #include <QSpinBox>
 
 #include "chat_widget.h"

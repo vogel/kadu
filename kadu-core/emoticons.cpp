@@ -7,29 +7,22 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <qapplication.h>
-#include <qdesktopwidget.h>
-#include <qfile.h>
-#include <q3textedit.h>
-#include <qtooltip.h>
-#include <qpainter.h>
-
-//Added by qt3to4:
-#include <QLabel>
-#include <Q3GridLayout>
-#include <QPixmap>
-#include <QEvent>
-#include <QPaintEvent>
-#include <QCloseEvent>
-
-#include <algorithm>
 #include <math.h>
+
+#include <QApplication>
+#include <QDesktopWidget>
+#include <QFile>
+#include <QLayout>
+#include <QMovie>
+#include <QPainter>
+#include <QRegExp>
+#include <QTextStream>
 
 #include "chat_widget.h"
 #include "debug.h"
-#include "emoticons.h"
-#include "kadu_text_browser.h"
 #include "misc.h"
+
+#include "emoticons.h"
 
 #define IMG_Y_OFFSET 2
 
@@ -129,12 +122,15 @@ QString EmoticonsManager::getQuoted(const QString& s, unsigned int& pos)
 	return r;
 }
 
-bool EmoticonsManager::loadGGEmoticonThemePart(QString subdir)
+bool EmoticonsManager::loadGGEmoticonThemePart(const QString &subdir)
 {
 	kdebugmf(KDEBUG_FUNCTION_START, "subdir: %s\n", subdir.local8Bit().data());
-	if (!subdir.isEmpty())
-		subdir += '/';
-	QString path = themePath() + '/' + subdir;
+
+	QString dir = subdir;
+
+	if (!dir.isEmpty())
+		dir += '/';
+	QString path = themePath() + '/' + dir;
 	QFile theme_file(path + ConfigName);
 	if (!theme_file.open(QIODevice::ReadOnly))
 	{
@@ -169,11 +165,11 @@ bool EmoticonsManager::loadGGEmoticonThemePart(QString subdir)
 		if (multi)
 			++i; // eat ')'
 		++i; // eat ','
-		item.anim = subdir + fixFileName(path, getQuoted(line, i));
+		item.anim = dir + fixFileName(path, getQuoted(line, i));
 		if (i < lineLength && line[i] == ',')
 		{
 			++i; // eat ','
-			item.stat = subdir + fixFileName(path, getQuoted(line, i));
+			item.stat = dir + fixFileName(path, getQuoted(line, i));
 		}
 		else
 			item.stat = item.anim;
@@ -403,7 +399,7 @@ EmoticonSelector::EmoticonSelector(QWidget *parent, const char *name, ChatWidget
 	int selector_count = emoticons->selectorCount();
 	int selector_width = (int)sqrt((double)selector_count);
 	int btn_width = 0;
-	Q3GridLayout *grid = new Q3GridLayout(this, 0, selector_width, 0, 0);
+	QGridLayout *grid = new QGridLayout(this, 0, selector_width, 0, 0);
 
 	for(int i = 0; i < selector_count; ++i)
 	{
