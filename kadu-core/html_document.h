@@ -4,6 +4,8 @@
 class QRegExp;
 
 /**
+	TODO: replace, refactor, remove or something
+
 	Klasa reprezentuj±ca dokument html. Przechowuje
 	listê elementów. Element mo¿e byæ tagiem html
 	albo kawa³kiem tekstu.

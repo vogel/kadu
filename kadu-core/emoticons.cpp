@@ -36,7 +36,7 @@ void EmoticonsManager::initModule()
 
 	emoticons = new EmoticonsManager("emoticons", "emots.txt");
 	emoticons->setPaths(QStringList::split(QRegExp("(;|:)"), config_file.readEntry("Chat", "EmoticonsPaths")));
-//	emoticons->setEmoticonsTheme(config_file.readEntry("Chat", "EmoticonsTheme"));
+	emoticons->setEmoticonsTheme(config_file.readEntry("Chat", "EmoticonsTheme"));
 
 	kdebugf2();
 }
@@ -128,7 +128,7 @@ bool EmoticonsManager::loadGGEmoticonThemePart(const QString &subdir)
 
 	QString dir = subdir;
 
-	if (!dir.isEmpty())
+	if (!dir.isEmpty() && !dir.endsWith("/"))
 		dir += '/';
 	QString path = themePath() + '/' + dir;
 	QFile theme_file(path + ConfigName);
@@ -165,11 +165,11 @@ bool EmoticonsManager::loadGGEmoticonThemePart(const QString &subdir)
 		if (multi)
 			++i; // eat ')'
 		++i; // eat ','
-		item.anim = dir + fixFileName(path, getQuoted(line, i));
+		item.anim = path + fixFileName(path, getQuoted(line, i));
 		if (i < lineLength && line[i] == ',')
 		{
 			++i; // eat ','
-			item.stat = dir + fixFileName(path, getQuoted(line, i));
+			item.stat = path + fixFileName(path, getQuoted(line, i));
 		}
 		else
 			item.stat = item.anim;
@@ -221,7 +221,7 @@ void EmoticonsManager::expandEmoticons(HtmlDocument& doc, const QColor& bgcolor,
 	kdebugf();
 
 	static bool emotsFound = false;
-	const static QString emotTemplate("<img emoticon=\"1\" title=\"%1\" src=\"%2\" bgcolor=\"%3\" animated=\"%4\"/>");
+	const static QString emotTemplate("<img emoticon=\"1\" title=\"%0\" src=\"%1\" bgcolor=\"%2\" animated=\"%3\"/>");
 
 	if (!walker)
 	{

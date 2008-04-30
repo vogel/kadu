@@ -141,7 +141,11 @@ void ChatMessagesView::repaintMessages()
 	int lastScrollValue = verticalScrollBar()->value();
 	bool lastLine = (lastScrollValue == verticalScrollBar()->maxValue());
 
-	setText(text);
+	HtmlDocument htmlDocument;
+	htmlDocument.parseHtml(text);
+	emoticons->expandEmoticons(htmlDocument, "black");
+
+	setText(htmlDocument.generateHtml());
 	updateBackgrounds();
 
 	if (lastLine)

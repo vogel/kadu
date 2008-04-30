@@ -52,6 +52,7 @@ class ChatMessagesView : public KaduTextBrowser, ConfigurationAwareObject
 		@param after wtf?
 	**/
  	QString formatMessage(ChatMessage *message, ChatMessage *after);
+
 	/**
 		\fn void pruneMessages()
 		Funkcja ograniczaj±ca ilo¶æ wy¶wietlanych wiadomo¶ci do maksymalnej ustawionej w konfiguracji.
