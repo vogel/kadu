@@ -533,7 +533,7 @@ void GroupsManager::setIconForTab(const QString &name)
 	{
 		if (GroupBar->tabAt(index)->text() == name)
 		{
-			int currentTab = GroupBar->currentTab();
+			int currentTab = GroupBar->indexOf(GroupBar->currentTab());
 
 			GroupBar->removeTab(GroupBar->tabAt(index));
 
@@ -551,6 +551,7 @@ void GroupsManager::setIconForTab(const QString &name)
 			GroupBar->update();
 
 			GroupBar->setCurrentTab(GroupBar->tabAt(currentTab));
+
 			return;
 		}
 	}
