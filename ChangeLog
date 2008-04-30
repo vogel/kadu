@@ -23,6 +23,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * poprawka cytowania wiadomo¶ci z historii w oknie chat (neeo) 
 * modu³y autostatus i globalhotkeys dodane do autodownloadu (White Eagle)
 * poprawka wysypu Kadu przy próbie zmiany/usuniêcia ikony grupy o nazwie z polskimi znakami (duncan_idaho/White Eagle)
+* zmiana ikony dla aktywnej grupy nie powoduje prze³±czenia zak³adki (neeo,White Eagle)
 
 +++ wersja 0.6.0
 * zmiany w procedurze ³±czenia siê: (joi)
