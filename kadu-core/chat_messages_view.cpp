@@ -143,6 +143,8 @@ void ChatMessagesView::repaintMessages()
 
 	HtmlDocument htmlDocument;
 	htmlDocument.parseHtml(text);
+	htmlDocument.convertUrlsToHtml();
+	htmlDocument.convertMailToHtml();
 	emoticons->expandEmoticons(htmlDocument, "black");
 
 	setText(htmlDocument.generateHtml());
