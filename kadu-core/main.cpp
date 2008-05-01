@@ -337,9 +337,9 @@ int main(int argc, char *argv[])
 					kdebugm(KDEBUG_INFO, "l_type: %d, l_pid: %d\n", lock_str->l_type, lock_str->l_pid);
 					if (ggnumber)
 					{
-#ifdef __FreeBSD__
+#if defined (__FreeBSD__) || defined (__sun__)
 						typedef union sigval sigval_t;
-#endif /* __FreeBSD__ */
+#endif
 
 						sigval_t v;
 						v.sival_int = ggnumber;

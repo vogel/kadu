@@ -5,6 +5,10 @@
 #include <qstring.h>
 #include <qdatetime.h>
 
+#ifdef __sun__
+#include <sys/types.h>
+#endif /* __sun__ */
+
 #include "status.h"
 #include "usergroup.h"
 

@@ -29,6 +29,10 @@
 #include <stdlib.h>
 #include <sys/stat.h>
 
+#ifdef __sun__
+#include <fcntl.h>
+#endif /* __sun__ */
+
 #include "about.h"
 #include "action.h"
 #include "chat_manager.h"
