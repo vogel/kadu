@@ -321,8 +321,8 @@ Jest to wysoce ryzykowne!</translation>
         <translation>Adresy IP</translation>
     </message>
     <message>
-        <source>You can specify which GG servers to use. Separate every server using semicolon (for example: 217.17.41.82;217.17.41.83;217.17.41.84;217.17.41.144)</source>
-        <translation>Możesz podać listę serwerów, z jakich chcesz korzystać. Oddziel je średnikiem (na przykład: 217.17.41.82;217.17.41.83;217.17.41.84;217.17.41.144)</translation>
+        <source>You can specify which GG servers to use. Separate every server using semicolon (for example: 91.197.13.26;91.197.13.24;91.197.13.29;91.197.13.6)</source>
+        <translation>Możesz podać listę serwerów, z jakich chcesz korzystać. Oddziel je średnikiem (na przykład: 91.197.13.26;91.197.13.24;91.197.13.29;91.197.13.6)</translation>
     </message>
     <message>
         <source>Port to connect to servers</source>

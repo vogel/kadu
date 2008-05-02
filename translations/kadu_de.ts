@@ -319,9 +319,9 @@ It&apos;s a high security risk!</source>
         <translation>Adresse IP</translation>
     </message>
     <message>
-        <source>You can specify which GG servers to use. Separate every server using semicolon (for example: 217.17.41.82;217.17.41.83;217.17.41.84;217.17.41.144)</source>
+        <source>You can specify which GG servers to use. Separate every server using semicolon (for example: 91.197.13.26;91.197.13.24;91.197.13.29;91.197.13.6)</source>
         <translation>Hier können Sie angeben, welchen Server GaduGadu Sie nutzen wollen. Trennen Sie die Adressen IP mit Hilfe eines Semmikolons. 
-(z.B: 217.17.41.82;217.17.41.83;217.17.41.84;217.17.41.144)</translation>
+(z.B: 91.197.13.26;91.197.13.24;91.197.13.29;91.197.13.6)</translation>
     </message>
     <message>
         <source>Port to connect to servers</source>
