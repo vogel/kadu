@@ -1,9 +1,8 @@
-Teksty w nawiasach na koñcu wpisu mówi± o tym, kto dokona³ poprawki
-lub rozbudowy. Postaæ (x/y) oznacza, ¿e x jest pomys³odawc± lub
-podes³a³ patcha, a zrobi³ to kto¶ oznaczony przez y. Je¶li jest
-w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
+Teksty w nawiasach na koñcu wpisu mówi± o tym, kto dokona³ poprawki lub rozbudowy.
+Postaæ (x/y) oznacza, ¿e x jest pomys³odawc± lub podes³a³ patcha, a zrobi³ to kto¶ oznaczony przez y.
+Je¶li jest w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 
-+++ wersja 0.6.0.1
++++ wersja 0.6.0.1 (03.05.2008)
 * poprawka kompilacji na FreeBSD 7.0 (neeo)
 * poprawne dzia³anie przy zmianie stanu akcji wysy³ania wiadomo¶ci przez Return (neeo)
 * poprawione zachowanie okien pokazuj±cych wiadomo¶ci przy zmianie ich rozmiaru (daris/neeo)
@@ -26,7 +25,7 @@ w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * zmiana ikony dla aktywnej grupy nie powoduje prze³±czenia zak³adki (neeo,White Eagle)
 * poprawki kompilacji w systemie Solaris (neeo)
 
-+++ wersja 0.6.0
++++ wersja 0.6.0 (02.03.2008)
 * zmiany w procedurze ³±czenia siê: (joi)
   - ekspresowe ³±czenie siê z serwerem gg (zapamiêtujemy adres serwera,
   do którego ostatnio uda³o siê podpi±æ)
