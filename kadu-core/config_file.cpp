@@ -9,19 +9,17 @@
 
 #include <QApplication>
 #include <QDateTime>
+#include <QDir>
 #include <QFile>
 #include <QMutex>
 #include <QTextStream>
 
+#include <errno.h>
+
 #include "debug.h"
-#include "config_file.h"
 #include "misc.h"
 
-//rename
-#include <stdio.h>
-//strerror
-#include <string.h>
-#include <errno.h>
+#include "config_file.h"
 
 QMutex GlobalMutex;
 
