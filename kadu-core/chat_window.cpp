@@ -7,32 +7,21 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <qapplication.h>
-#include <qdesktopwidget.h>
-#include <qcursor.h>
-#include <qtimer.h>
-//Added by qt3to4:
-#include <QCloseEvent>
-#include "chat_window.h"
-#include "chat_widget.h"
-#include "chat_manager.h"
-#include "debug.h"
-#include "config_file.h"
-#include "hot_key.h"
-#include "icons_manager.h"
-#include "kadu.h"
-#include "kadu_parser.h"
-#include "kadu_splitter.h"
-#include "kadu_text_browser.h"
-#include "message_box.h"
-#include "misc.h"
-#include "search.h"
-#include "syntax_editor.h"
-#include "userbox.h"
-#include "protocol.h"
+#include <QApplication>
+#include <QDateTime>
+#include <QDesktopWidget>
+#include <QTimer>
+#include <QVBoxLayout>
 
-ChatWindow::ChatWindow(QWidget* parent, const char* name) : QWidget(parent),
-	currentChatWidget(0), title_timer(new QTimer(this, "title_timer"))
+#include "chat_manager.h"
+#include "chat_window.h"
+#include "config_file.h"
+#include "debug.h"
+#include "message_box.h"
+#include "usergroup.h"
+
+ChatWindow::ChatWindow(QWidget *parent)
+	: QWidget(parent), currentChatWidget(0), title_timer(new QTimer(this, "title_timer"))
 {
 	kdebugf();
 
@@ -82,7 +71,7 @@ void ChatWindow::setChatWidget(ChatWidget *newChatWidget)
 	updateTitle();
 }
 
-ChatWidget* ChatWindow::chatWidget()
+ChatWidget * ChatWindow::chatWidget()
 {
 	return currentChatWidget;
 }
@@ -147,7 +136,7 @@ void ChatWindow::storeGeometry()
 		(*users->begin()).setData("ChatGeometry", QString("%1,%2,%3,%4").arg(pos().x()).arg(pos().y()).arg(size().width()).arg(size().height()));
 }
 
-void ChatWindow::closeEvent(QCloseEvent* e)
+void ChatWindow::closeEvent(QCloseEvent *e)
 {
 	kdebugf();
 

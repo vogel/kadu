@@ -1,19 +1,18 @@
 #ifndef KADU_CHAT_WINDOW_H
 #define KADU_CHAT_WINDOW_H
 
-#include <QCloseEvent>
-#include <QMainWindow>
-
 #include "chat_widget.h"
 #include "configuration_aware_object.h"
+
+class QTimer;
 
 class ChatWindow : public QWidget, public ChatContainer, ConfigurationAwareObject
 {
 	Q_OBJECT
 
 private:
-	ChatWidget* currentChatWidget;
-	QTimer* title_timer;  /*!< zmienna przechowuj±ca czas od ostatniego od¶wie¿enia tytu³u okna */
+	ChatWidget *currentChatWidget;
+	QTimer *title_timer;  /*!< zmienna przechowuj±ca czas od ostatniego od¶wie¿enia tytu³u okna */
 
 	void storeGeometry();
 	void restoreGeometry();
@@ -30,7 +29,7 @@ protected:
 		\fn virtual void closeEvent(QCloseEvent* e)
 		Funkcja obs³uguj±ca zamkniêcie okna
 	**/
-	virtual void closeEvent(QCloseEvent* e);
+	virtual void closeEvent(QCloseEvent *e);
 
 	/**
 		\fn virtual void windowActivationChange(bool oldActive)
@@ -41,11 +40,11 @@ protected:
 	virtual void configurationUpdated();
 
 public:
-	ChatWindow(QWidget *parent = 0, const char *name = 0);
+	ChatWindow(QWidget *parent = 0);
 	virtual ~ChatWindow();
 
 	void setChatWidget(ChatWidget *chatWidget);
-	ChatWidget* chatWidget();
+	ChatWidget * chatWidget();
 
 	void closeChatWidget(ChatWidget *chatWidget);
 
