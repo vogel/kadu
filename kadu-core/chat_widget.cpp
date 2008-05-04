@@ -649,7 +649,7 @@ void ChatWidget::openEmoticonSelector(const QWidget *activating_widget)
 void ChatWidget::changeColor(const QWidget *activating_widget)
 {
 	//sytuacja podobna jak w przypadku emoticon_selectora
-	color_selector = new ColorSelector(Edit->paletteForegroundColor(), this, "color_selector");
+	color_selector = new ColorSelector(Edit->paletteForegroundColor(), this);
 	color_selector->alignTo(const_cast<QWidget*>(activating_widget)); //TODO: do something about const_cast
 	color_selector->show();
 	connect(color_selector, SIGNAL(colorSelect(const QColor&)), this, SLOT(colorChanged(const QColor&)));

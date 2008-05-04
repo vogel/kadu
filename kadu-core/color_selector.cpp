@@ -9,25 +9,30 @@
 
 #include <QApplication>
 #include <QDesktopWidget>
-#include <QLayout>
+#include <QGridLayout>
+#include <QPixmap>
 
-#include "color_selector.h"
 #include "debug.h"
 #include "misc.h"
+
+#include "color_selector.h"
 
 const char colors[16][8] = {"#FF0000", "#A00000", "#00FF00", "#00A000", "#0000FF", "#0000A0", "#FFFF00",
 	"#A0A000", "#FF00FF", "#A000A0", "#00FFFF", "#00A0A0", "#FFFFFF", "#A0A0A0", "#808080", "#000000"};
 
-ColorSelectorButton::ColorSelectorButton(QWidget* parent, const QColor& qcolor, int width, const char *name) : QPushButton(parent, name), color(qcolor)
+ColorSelectorButton::ColorSelectorButton(const QColor &qcolor, int width, QWidget *parent)
+	: QPushButton(parent), color(qcolor)
 {
+
 #define WIDTH1 15
 #define BORDER1 3
-	QPixmap p(WIDTH1*width+(width-1)*(BORDER1*2), WIDTH1);
+
+	QPixmap p(WIDTH1 * width + (width - 1) * (BORDER1 * 2), WIDTH1);
 	p.fill(qcolor);
 	setPixmap(p);
 //	setAutoRaise(true);
 	setMouseTracking(true);
-	setFixedSize(WIDTH1*width+(BORDER1*2)+(width-1)*(BORDER1*2), WIDTH1+(BORDER1*2));
+	setFixedSize(WIDTH1 * width + (BORDER1 * 2) + (width - 1) * (BORDER1 * 2), WIDTH1 + (BORDER1 * 2));
 	setToolTip(color.name());
 	connect(this, SIGNAL(clicked()), this, SLOT(buttonClicked()));
 }
@@ -37,8 +42,8 @@ void ColorSelectorButton::buttonClicked()
 	emit clicked(color);
 }
 
-ColorSelector::ColorSelector(const QColor &defColor, QWidget* parent, const char* name)
-	: QWidget(parent, name, Qt::Popup)
+ColorSelector::ColorSelector(const QColor &defColor, QWidget *parent)
+	: QWidget(parent, Qt::Popup)
 {
 	kdebugf();
 
@@ -56,27 +61,27 @@ ColorSelector::ColorSelector(const QColor &defColor, QWidget* parent, const char
 	i = 0;
 	CONST_FOREACH(color, qcolors)
 	{
-		ColorSelectorButton* btn = new ColorSelectorButton(this, *color, 1, QString("color_selector:%1").arg((*color).name()).local8Bit().data());
+		ColorSelectorButton *btn = new ColorSelectorButton(*color, 1, this);
 		grid->addWidget(btn, i / selector_width, i % selector_width);
 		connect(btn, SIGNAL(clicked(const QColor&)), this, SLOT(iconClicked(const QColor&)));
 		++i;
 	}
 	if (!qcolors.contains(defColor))
 	{
-		ColorSelectorButton* btn = new ColorSelectorButton(this, defColor, 4, QString("color_selector:%1").arg(defColor.name()).local8Bit().data());
+		ColorSelectorButton* btn = new ColorSelectorButton(defColor, 4, this);
 		grid->addMultiCellWidget(btn, 4, 4, 0, 3);
 		connect(btn, SIGNAL(clicked(const QColor&)), this, SLOT(iconClicked(const QColor&)));
 	}
 	kdebugf2();
 }
 
-void ColorSelector::iconClicked(const QColor& color)
+void ColorSelector::iconClicked(const QColor &color)
 {
 	emit colorSelect(color);
 	close();
 }
 
-void ColorSelector::closeEvent(QCloseEvent* e)
+void ColorSelector::closeEvent(QCloseEvent *e)
 {
 	kdebugf();
 	emit aboutToClose();
@@ -84,7 +89,7 @@ void ColorSelector::closeEvent(QCloseEvent* e)
 	kdebugf2();
 }
 
-void ColorSelector::alignTo(QWidget* w)
+void ColorSelector::alignTo(QWidget *w)
 {
 	kdebugf();
 	// oblicz pozycjê widgetu do którego równamy
@@ -115,4 +120,3 @@ void ColorSelector::alignTo(QWidget* w)
 	move(x, y);
 	kdebugf2();
 }
-
