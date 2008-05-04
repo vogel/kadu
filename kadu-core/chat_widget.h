@@ -10,46 +10,28 @@
 #ifndef KADU_CHAT_WIDGET_H
 #define KADU_CHAT_WIDGET_H
 
-#include <qglobal.h>
-
-#include <qdatetime.h>
-#include <qwidget.h>
-#include <q3hbox.h>
-
-#include <QDragEnterEvent>
-#include <QDropEvent>
-#include <QDragMoveEvent>
-#include <QEvent>
-#include <QKeyEvent>
-#include <QMainWindow>
+#include <QDateTime>
+#include <QList>
 #include <QPixmap>
+#include <QWidget>
 
 #include "chat_messages_view.h"
-#include "config_file.h"
 #include "configuration_aware_object.h"
-#include "emoticons.h"
-#include "protocol.h"
-#include "toolbar.h"
-#include "usergroup.h"
-
-class Q3HBox;
-class Q3MimeSourceFactory;
-class QObject;
-class QPushButton;
+#include "userlist.h"
 
 class ChatEditBox;
-class ChatWidget;
-class ChatManager;
 class ChatMessage;
+class ChatWidget;
 class ColorSelector;
 class CustomInput;
 class EmoticonSelector;
 class KaduSplitter;
-class KaduTextBrowser;
+class Protocol;
 class UserBox;
+class UserGroup;
 
-/** \typedef QValueList<ChatWidget*> ChatList */
-typedef QList<ChatWidget*> ChatList;
+/** \typedef QList<ChatWidget *> ChatList */
+typedef QList<ChatWidget *> ChatList;
 
 /**
 	Klasa tworz±ca okno rozmowy, rejestruj±ca przyciski,
@@ -72,11 +54,11 @@ private:
 	QColor actcolor; /*!< zmienna przechowuj±ca aktualny kolor */
 	QPixmap pix;
 //	Q3MimeSourceFactory *bodyformat; /*!< zmienna ustawiaj±ca format */
-	EmoticonSelector* emoticon_selector; /*!< okienko do wyboru emotikonek */
-	ColorSelector* color_selector; /*!< okienko do wyboru koloru */
+	EmoticonSelector *emoticon_selector; /*!< okienko do wyboru emotikonek */
+	ColorSelector *color_selector; /*!< okienko do wyboru koloru */
 	bool AutoSend; /*!< okre¶la czy Return powoduje wys³anie wiadomo¶ci */
 	bool WaitingForACK;
-	UserBox* userbox; /*!< lista kontaktów przydatna gdy jeste¶my w konferencji */
+	UserBox *userbox; /*!< lista kontaktów przydatna gdy jeste¶my w konferencji */
 	QString myLastMessage; /*!< zmienna przechowuj±ca nasz± ostatni± wiadomo¶æ */
 	KaduSplitter *vertSplit, *horizSplit; /*!< obiekty oddzielaj±ce kontrolki od siebie */
 
@@ -95,7 +77,7 @@ private slots:
 		\fn void changeColor()
 		Slot zmieniaj±cy kolor czcionki
 	**/
-	void changeColor(const QWidget* activating_widget);
+	void changeColor(const QWidget *activating_widget);
 
 	/**
 		\fn void connectAcknowledgeSlots()
@@ -109,7 +91,7 @@ private slots:
 	**/
 	void disconnectAcknowledgeSlots();
 
-	void selectedUsersNeeded(const UserGroup*& user_group);
+	void selectedUsersNeeded(const UserGroup * &user_group);
 
 // 	void sendActionAddedToToolbar(ToolButton*, ToolBar*);
 
@@ -144,7 +126,7 @@ public:
 		\param parent rodzic okna
 		\param name nazwa obiektu
 	**/
-	ChatWidget(Protocol *initialProtocol, const UserListElements &usrs, QWidget* parent = 0, const char* name = 0);
+	ChatWidget(Protocol *initialProtocol, const UserListElements &usrs, QWidget *parent = 0);
 
 	/**
 		\fn ~Chat()
@@ -175,7 +157,7 @@ public:
 		\fn const UserGroup *users() const
 		Zwraca listê numerów rozmowców.
 	**/
-	const UserGroup *users() const;
+	const UserGroup * users() const;
 
 	/**
 		\fn void repaintMessages()
@@ -190,19 +172,19 @@ public:
 		\fn const QString& title() const
 		Zwraca aktualny tytu³ okna
 	**/
-	const QString& caption() const;
+	const QString & caption() const;
 
 	/**
 		\fn CustonInput* edit()
 		Zwraca wska¼nik do okna wpisywania wiadomo¶ci
 	**/
-	CustomInput* edit();
+	CustomInput * edit();
 
 	/**
 		\fn UserBox* userbox()
 		Zwraca wska¼nik do userboxa konferencji, je¶li on istnieje
 	**/
-	UserBox* getUserbox();
+	UserBox * getUserbox();
 
 	/**
 		\fn bool autoSend() const
@@ -336,7 +318,7 @@ public slots:
 		\fn void emoticonSelectorClicked()
 		Slot wy¶wietlaj±cy okno z wyborem emotikonek
 	**/
-	void openEmoticonSelector(const QWidget* activating_widget);
+	void openEmoticonSelector(const QWidget *activating_widget);
 
 	/**
 		\fn void insertImage()
@@ -356,7 +338,7 @@ signals:
 		wyslania wiadomosci, np klikajac na guzik "wyslij".
 		\param chat wska¼nik do okna które emituje sygna³
 	**/
-	void messageSendRequested(ChatWidget* chat);
+	void messageSendRequested(ChatWidget *chat);
 
 	/**
 		\fn void messageSent(Chat* chat)
@@ -366,7 +348,7 @@ signals:
 		\param chat wska¼nik do okna rozmowy,
 		 które emitowa³o sygna³
 	**/
-	void messageSent(ChatWidget* chat);
+	void messageSent(ChatWidget *chat);
 
 	/**
 		\fn void messageSentAndConfirmed(UserListElements receivers, const QString& message)
@@ -378,7 +360,7 @@ signals:
 		\param receivers list of receivers
 		\param message the message
 	**/
-	void messageSentAndConfirmed(UserListElements receivers, const QString& message);
+	void messageSentAndConfirmed(UserListElements receivers, const QString &message);
 
 	/**
 		\fn void fileDropped(const UserGroup *users, const QString& fileName)

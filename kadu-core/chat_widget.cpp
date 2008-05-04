@@ -7,51 +7,32 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <q3dragobject.h>
-#include <qlabel.h>
-#include <qpushbutton.h>
-#include <qregexp.h>
-#include <qtimer.h>
-#include <q3vbox.h>
-//Added by qt3to4:
-#include <QKeyEvent>
-#include <QList>
-#include <QPixmap>
-#include <QDragEnterEvent>
-#include <QDragMoveEvent>
-#include <QDropEvent>
-#include <QEvent>
 #include <QShortcut>
+#include <QVBoxLayout>
 
-#include "action.h"
 #include "chat_edit_box.h"
-#include "chat_widget.h"
 #include "chat_manager.h"
 #include "chat_message.h"
 #include "color_selector.h"
 #include "custom_input.h"
 #include "debug.h"
-#include "gadu_images_manager.h"
-#include "hot_key.h"
+#include "emoticons.h"
 #include "icons_manager.h"
 #include "ignore.h"
 #include "kadu.h"
 #include "kadu_parser.h"
 #include "kadu_splitter.h"
-#include "kadu_text_browser.h"
 #include "message_box.h"
-#include "misc.h"
 #include "protocol.h"
-#include "search.h"
-#include "syntax_editor.h"
 #include "userbox.h"
+#include "usergroup.h"
 
-ChatWidget::ChatWidget(Protocol *initialProtocol, const UserListElements &usrs, QWidget* parent, const char* name)
-	: QWidget(parent), CurrentProtocol(initialProtocol),
-	Users(new UserGroup(usrs)),
-	index(0), actcolor(),
-	/*bodyformat(new Q3MimeSourceFactory()), */emoticon_selector(0), color_selector(0),
-	WaitingForACK(false), userbox(0), horizSplit(0),
+#include "chat_widget.h"
+
+ChatWidget::ChatWidget(Protocol *initialProtocol, const UserListElements &usrs, QWidget *parent)
+	: QWidget(parent),
+	CurrentProtocol(initialProtocol), Users(new UserGroup(usrs)), index(0), actcolor(),
+	emoticon_selector(0), color_selector(0), WaitingForACK(false), userbox(0), horizSplit(0),
 	activationCount(0), NewMessagesCount(0)
 {
 	kdebugf();
@@ -412,7 +393,7 @@ QPixmap ChatWidget::icon()
 	return pix;
 }
 
-void ChatWidget::keyPressEvent(QKeyEvent* e)
+void ChatWidget::keyPressEvent(QKeyEvent *e)
 {
 	kdebugf();
  	if (keyPressEventHandled(e))
@@ -580,7 +561,7 @@ void ChatWidget::disconnectAcknowledgeSlots()
 	kdebugf2();
 }
 
-void ChatWidget::selectedUsersNeeded(const UserGroup*& user_group)
+void ChatWidget::selectedUsersNeeded(const UserGroup * &user_group)
 {
 	kdebugf();
 	user_group = users();
@@ -655,7 +636,7 @@ void ChatWidget::sendMessage()
 	kdebugf2();
 }
 
-void ChatWidget::openEmoticonSelector(const QWidget* activating_widget)
+void ChatWidget::openEmoticonSelector(const QWidget *activating_widget)
 {
 	//emoticons_selector zawsze bêdzie NULLem gdy wchodzimy do tej funkcji
 	//bo EmoticonSelector ma ustawione flagi Qt::WDestructiveClose i Qt::WType_Popup
@@ -665,7 +646,7 @@ void ChatWidget::openEmoticonSelector(const QWidget* activating_widget)
 	emoticon_selector->show();
 }
 
-void ChatWidget::changeColor(const QWidget* activating_widget)
+void ChatWidget::changeColor(const QWidget *activating_widget)
 {
 	//sytuacja podobna jak w przypadku emoticon_selectora
 	color_selector = new ColorSelector(Edit->paletteForegroundColor(), this, "color_selector");
@@ -682,7 +663,7 @@ void ChatWidget::colorSelectorAboutToClose()
 	kdebugf2();
 }
 
-void ChatWidget::colorChanged(const QColor& color)
+void ChatWidget::colorChanged(const QColor &color)
 {
 	color_selector = NULL;
 
