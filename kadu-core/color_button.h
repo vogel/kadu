@@ -1,10 +1,7 @@
 #ifndef COLOR_BUTTON_H
 #define COLOR_BUTTON_H
 
-#include <qglobal.h>
-
-#include <qcolor.h>
-#include <qpushbutton.h>
+#include <QPushButton>
 
 /**
     Kontrolka do wyboru koloru
@@ -16,7 +13,7 @@ class ColorButton : public QPushButton
 	QColor currentColor;
 
 public:
-	ColorButton(QWidget *parent = 0, const char * name = 0);
+	ColorButton(QWidget *parent = 0);
 	const QColor &color() const;
 	bool setColor(const QColor &color);
 

@@ -514,13 +514,13 @@ void ConfigPathListEdit::hide()
 
 ConfigColorButton::ConfigColorButton(const QString &section, const QString &item, const QString &widgetCaption, const QString &toolTip,
 		ConfigGroupBox *parentConfigGroupBox, char *name)
-	: ColorButton(parentConfigGroupBox->widget(), name), ConfigWidgetValue(widgetCaption, toolTip, section, item, parentConfigGroupBox), label(0)
+	: ColorButton(parentConfigGroupBox->widget()), ConfigWidgetValue(widgetCaption, toolTip, section, item, parentConfigGroupBox), label(0)
 {
 	createWidgets();
 }
 
 ConfigColorButton::ConfigColorButton(ConfigGroupBox *parentConfigGroupBox, char *name)
-	: ColorButton(parentConfigGroupBox->widget(), name), ConfigWidgetValue(parentConfigGroupBox), label(0)
+	: ColorButton(parentConfigGroupBox->widget()), ConfigWidgetValue(parentConfigGroupBox), label(0)
 {
 }
 

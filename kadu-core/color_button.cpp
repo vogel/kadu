@@ -7,14 +7,12 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <qcolordialog.h>
-//Added by qt3to4:
-#include <QPixmap>
+#include <QColorDialog>
 
 #include "color_button.h"
 
-ColorButton::ColorButton(QWidget *parent, const char *name)
-	: QPushButton(parent, name)
+ColorButton::ColorButton(QWidget *parent)
+	: QPushButton(parent)
 {
 	connect(this, SIGNAL(clicked()), this, SLOT(onClick()));
 }
