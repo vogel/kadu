@@ -8,6 +8,7 @@
  ***************************************************************************/
 
 #include "misc.h"
+
 #include "configuration_aware_object.h"
 
 QList<ConfigurationAwareObject *> ConfigurationAwareObject::objects;
@@ -24,8 +25,8 @@ void ConfigurationAwareObject::unregisterObject(ConfigurationAwareObject *object
 
 void ConfigurationAwareObject::notifyAll()
 {
-	FOREACH(object, objects)
-		(*object)->configurationUpdated();
+	foreach(ConfigurationAwareObject *object, objects)
+		object->configurationUpdated();
 }
 
 ConfigurationAwareObject::ConfigurationAwareObject()

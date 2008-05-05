@@ -17,6 +17,7 @@ public:
 	virtual ~ConfigurationAwareObject();
 
 	virtual void configurationUpdated() = 0;
+
 };
 
 #endif // CONFIGURATION_AWARE_OBJECT
