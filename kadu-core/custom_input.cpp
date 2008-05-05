@@ -7,13 +7,12 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "custom_input.h"
 #include "debug.h"
 #include "hot_key.h"
-//Added by qt3to4:
-#include <QKeyEvent>
 
-CustomInput::CustomInput(QWidget* parent)
+#include "custom_input.h"
+
+CustomInput::CustomInput(QWidget *parent)
 	: QTextEdit(parent), autosend_enabled(true)
 {
 	kdebugf();
@@ -23,7 +22,7 @@ CustomInput::CustomInput(QWidget* parent)
 	kdebugf2();
 }
 
-void CustomInput::keyPressEvent(QKeyEvent* e)
+void CustomInput::keyPressEvent(QKeyEvent *e)
 {
 	kdebugf();
 	bool handled = false;
@@ -92,7 +91,7 @@ void CustomInput::keyPressEvent(QKeyEvent* e)
 	kdebugf2();
 }
 
-void CustomInput::keyReleaseEvent(QKeyEvent* e)
+void CustomInput::keyReleaseEvent(QKeyEvent *e)
 {
 	bool handled = false;
 	emit keyReleased(e, this, handled);
