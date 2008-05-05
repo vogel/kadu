@@ -1,19 +1,16 @@
 #ifndef CONFIGURATION_WINDOW_WIDGETS_H
 #define CONFIGURATION_WINDOW_WIDGETS_H
 
-#include <qglobal.h>
-
-#include <qcheckbox.h>
-#include <qcombobox.h>
-#include <qdom.h>
-#include <qlabel.h>
-#include <qlineedit.h>
-// #include <q3listbox.h>
-#include <qpushbutton.h>
-#include <qslider.h>
-#include <qspinbox.h>
-// #include <q3vbox.h>
+#include <QCheckBox>
+#include <QComboBox>
+#include <QDomElement>
+#include <QLabel>
+#include <QLineEdit>
 #include <QListWidget>
+#include <QPushButton>
+#include <QSlider>
+#include <QSpinBox>
+
 #include "color_button.h"
 #include "hot_key.h"
 #include "path_list_edit.h"
@@ -23,6 +20,7 @@
 #include "syntax_editor.h"
 
 class ConfigGroupBox;
+class ConfigurationWindow;
 
 /**
 	&lt;widget id="id" tool-tip="toolTip" /&gt;

@@ -7,15 +7,13 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <qapplication.h>
-#include <qdom.h>
-#include <qlabel.h>
-#include <qregexp.h>
-#include <qtooltip.h>
+#include <QApplication>
+#include <QToolTip>
 
-#include "configuration_window.h"
 #include "config_file.h"
+#include "configuration_window.h"
 #include "debug.h"
+#include "misc.h"
 
 #include "configuration_window_widgets.h"
 
