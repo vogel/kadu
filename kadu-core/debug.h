@@ -1,8 +1,6 @@
 #ifndef DEBUG_H
 #define DEBUG_H
 
-#include <qglobal.h>
-
 #include "kadu-config.h"
 
 /* pierwsze 8 bitow zarezerwowane jest dla libgadu */

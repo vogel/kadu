@@ -10,12 +10,15 @@
 #include "debug.h"
 
 int debug_mask;
+
 #ifdef DEBUG_ENABLED
 
-#include <qmutex.h>
-#include <stdio.h>
-#include <stdarg.h>
+#include <QMutex>
+
 #include <sys/time.h>
+
+#include <stdarg.h>
+#include <stdio.h>
 
 /*
 	Poniewa¿ debug() mo¿e byæ u¿ywany w ró¿nych w±tkach,
