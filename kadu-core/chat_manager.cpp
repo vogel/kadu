@@ -10,6 +10,7 @@
 #include "activate.h"
 #include "chat_message.h"
 #include "chat_window.h"
+#include "config_file.h"
 #include "custom_input.h"
 #include "debug.h"
 #include "ignore.h"

@@ -21,6 +21,7 @@
 #include <QUrl>
 #include <QTextCursor>
 
+#include "config_file.h"
 #include "debug.h"
 #include "emoticons.h"
 #include "kadu_text_browser.h"

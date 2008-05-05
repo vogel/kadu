@@ -7,18 +7,18 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <math.h>
-
 #include <QApplication>
 #include <QDesktopWidget>
 #include <QFile>
-#include <QLayout>
+#include <QGridLayout>
 #include <QMovie>
 #include <QPainter>
-#include <QRegExp>
 #include <QTextStream>
 
+#include <math.h>
+
 #include "chat_widget.h"
+#include "config_file.h"
 #include "debug.h"
 #include "misc.h"
 
@@ -261,12 +261,12 @@ void EmoticonsManager::expandEmoticons(HtmlDocument& doc, const QColor& bgcolor,
 		{
 			// find out if there is some emot occurence when we
 			// add current character
-			int idx = walker -> checkEmotOccurrence( text[j] );
+			int idx = walker -> checkEmotOccurrence(text[j]);
 			// when some emot from dictionary is ending at current character
-			if ( idx >= 0 )
+			if (idx >= 0)
 				// check if there already was some occurence, whose
 				// beginning is before beginning of currently found one
-				if ( lastEmot >= 0 && lastBegin < j - Aliases[idx].alias.length() + 1 )
+				if (lastEmot >= 0 && lastBegin < j - Aliases[idx].alias.length() + 1)
 				{
 					// if so, then replace that previous occurrence
 					// with html tag
@@ -276,8 +276,8 @@ void EmoticonsManager::expandEmoticons(HtmlDocument& doc, const QColor& bgcolor,
 					else
 						new_text = narg(emotTemplate, Aliases[lastEmot].alias, Aliases[lastEmot].stat, bgcolor.name(), QString::number(animated));
 
-					doc.splitElement( e_i, lastBegin, Aliases[lastEmot].alias.length() );
-					doc.setElementValue( e_i, new_text, true );
+					doc.splitElement(e_i, lastBegin, Aliases[lastEmot].alias.length());
+					doc.setElementValue(e_i, new_text, true);
 					// our analysis will begin directly after
 					// occurrence of previous emot
 					lastEmot = -1;
@@ -291,7 +291,7 @@ void EmoticonsManager::expandEmoticons(HtmlDocument& doc, const QColor& bgcolor,
 				}
 		}
 		// this is the case, when only one emot was found in current text part
-		if ( lastEmot >= 0 )
+		if (lastEmot >= 0)
 		{
 			QString new_text;
 			if (animated)
@@ -299,8 +299,8 @@ void EmoticonsManager::expandEmoticons(HtmlDocument& doc, const QColor& bgcolor,
 			else
 				new_text = narg(emotTemplate, Aliases[lastEmot].alias, Aliases[lastEmot].stat, bgcolor.name(), QString::number(animated));
 
-			doc.splitElement( e_i, lastBegin, Aliases[lastEmot].alias.length() );
-			doc.setElementValue( e_i, new_text, true );
+			doc.splitElement(e_i, lastBegin, Aliases[lastEmot].alias.length());
+			doc.setElementValue(e_i, new_text, true);
 		}
 	}
 	kdebugm(KDEBUG_DUMP, "Emoticons expanded, html is below:\n%s\n",doc.generateHtml().local8Bit().data());
@@ -314,7 +314,7 @@ int EmoticonsManager::selectorCount() const
 
 QString EmoticonsManager::selectorString(int emot_num) const
 {
-	if (emot_num >= 0 && uint(emot_num) < Selector.count())
+	if ((emot_num >= 0) && (emot_num < Selector.count()))
 		return Selector[emot_num].alias;
 	else
 		return QString::null;
@@ -322,7 +322,7 @@ QString EmoticonsManager::selectorString(int emot_num) const
 
 QString EmoticonsManager::selectorAnimPath(int emot_num) const
 {
-	if (emot_num >= 0 && uint(emot_num) < Selector.count())
+	if ((emot_num >= 0 && (emot_num)) < (Selector.count()))
 		return themePath() + '/' + Selector[emot_num].anim;
 	else
 		return QString::null;
@@ -330,7 +330,7 @@ QString EmoticonsManager::selectorAnimPath(int emot_num) const
 
 QString EmoticonsManager::selectorStaticPath(int emot_num) const
 {
-	if (emot_num >= 0 && uint(emot_num) < Selector.count())
+	if ((emot_num >= 0) && ((emot_num) < Selector.count()))
 		return themePath() + '/' + Selector[emot_num].stat;
 	else
 		return QString::null;
@@ -338,11 +338,8 @@ QString EmoticonsManager::selectorStaticPath(int emot_num) const
 
 EmoticonsManager *emoticons;
 
-EmoticonSelectorButton::EmoticonSelectorButton(
-	QWidget* parent, const QString& emoticon_string,
-	const QString& anim_path, const QString& static_path)
-	: QToolButton(parent), EmoticonString(emoticon_string),
-		AnimPath(anim_path), StaticPath(static_path), Movie(0)
+EmoticonSelectorButton::EmoticonSelectorButton(const QString& emoticon_string, const QString& anim_path, const QString& static_path, QWidget *parent)
+	: QToolButton(parent), EmoticonString(emoticon_string), AnimPath(anim_path), StaticPath(static_path), Movie(0)
 {
 	setPixmap(QPixmap(StaticPath));
 	setAutoRaise(true);
@@ -393,8 +390,8 @@ void EmoticonSelectorButton::leaveEvent(QEvent* e)
 	}
 }
 
-EmoticonSelector::EmoticonSelector(QWidget *parent, const char *name, ChatWidget * caller) :
-	QWidget (parent, name, Qt::WType_Popup | Qt::WDestructiveClose), callingwidget(caller)
+EmoticonSelector::EmoticonSelector(ChatWidget *caller, QWidget *parent)
+	: QWidget (parent, Qt::WType_Popup | Qt::WDestructiveClose), callingwidget(caller)
 {
 	int selector_count = emoticons->selectorCount();
 	int selector_width = (int)sqrt((double)selector_count);
@@ -404,9 +401,10 @@ EmoticonSelector::EmoticonSelector(QWidget *parent, const char *name, ChatWidget
 	for(int i = 0; i < selector_count; ++i)
 	{
 		EmoticonSelectorButton* btn = new EmoticonSelectorButton(
-			this, emoticons->selectorString(i),
+			emoticons->selectorString(i),
 			emoticons->selectorAnimPath(i),
-			emoticons->selectorStaticPath(i));
+			emoticons->selectorStaticPath(i),
+			this);
 		btn_width = btn->sizeHint().width();
 		grid->addWidget(btn, i / selector_width, i % selector_width);
 		connect(btn, SIGNAL(clicked(const QString&)), this, SLOT(iconClicked(const QString&)));
@@ -462,25 +460,25 @@ void EmoticonSelector::alignTo(QWidget* w)
 
 #define Q_DUMMY_COMPARISON_OPERATOR(C)
 
-static inline bool is_printer( QPainter *p )
+static inline bool is_printer(QPainter *p)
 {
-	if ( !p || !p->device() )
+	if (!p || !p->device())
 		return FALSE;
 	return p->device()->devType() == QInternal::Printer;
 }
 
-static inline int scale( int value, QPainter *painter )
+static inline int scale(int value, QPainter *painter)
 {
-	if ( is_printer( painter ) ) {
-		Q3PaintDeviceMetrics metrics( painter->device() );
+	if (is_printer(painter)) {
+		Q3PaintDeviceMetrics metrics(painter->device());
 #if defined(Q_WS_X11)
-		value = value * metrics.logicalDpiY() / QPaintDevice::x11AppDpiY( painter->device()->x11Screen() );
+		value = value * metrics.logicalDpiY() / QPaintDevice::x11AppDpiY(painter->device()->x11Screen());
 #elif defined (Q_WS_WIN)
-		HDC hdc = GetDC( 0 );
-		int gdc = GetDeviceCaps( hdc, LOGPIXELSY );
-		if ( gdc )
+		HDC hdc = GetDC(0);
+		int gdc = GetDeviceCaps(hdc, LOGPIXELSY);
+		if (gdc)
 			value = value * metrics.logicalDpiY() / gdc;
-		ReleaseDC( 0, hdc );
+		ReleaseDC(0, hdc);
 #elif defined (Q_WS_MAC)
 		value = value * metrics.logicalDpiY() / 75; // ##### FIXME
 #elif defined (Q_WS_QWS)
@@ -492,7 +490,7 @@ static inline int scale( int value, QPainter *painter )
 
 struct QPixmapInt
 {
-	QPixmapInt() : pm(), ref( 0 ) {}
+	QPixmapInt() : pm(), ref(0) {}
 	QPixmap pm;
 	int	    ref;
 	Q_DUMMY_COMPARISON_OPERATOR(QPixmapInt)
@@ -506,9 +504,9 @@ StaticTextItem::StaticTextItem(QTextDocument *p, const QMap<QString, QString> &a
     : QTextCustomItem(p), reg(0), pm(), place(PlaceInline), tmpwidth(0), tmpheight(0), attributes(attr), imgId()
 {
 	width = height = 0;
-	if ( attr.contains("width") )
+	if (attr.contains("width"))
 		width = attr["width"].toInt();
-	if ( attr.contains("height") )
+	if (attr.contains("height"))
 		height = attr["height"].toInt();
 
 	QString imageName = attr["src"];
@@ -516,12 +514,12 @@ StaticTextItem::StaticTextItem(QTextDocument *p, const QMap<QString, QString> &a
 	if (!imageName)
 		imageName = attr["source"];
 
-	if ( !imageName.isEmpty() )
+	if (!imageName.isEmpty())
 	{
-		imgId = QString( "%1,%2,%3,%4" ).arg( imageName ).arg( width ).arg( height ).arg( (ulong)&factory );
-		if ( !pixmap_map )
+		imgId = QString("%1,%2,%3,%4").arg(imageName).arg(width).arg(height).arg((ulong)&factory);
+		if (!pixmap_map)
 			pixmap_map = new QMap<QString, QPixmapInt>;
-		if ( pixmap_map->contains( imgId ) ) {
+		if (pixmap_map->contains(imgId)) {
 			QPixmapInt& pmi = pixmap_map->operator[](imgId);
 			pm = pmi.pm;
 			pmi.ref++;
@@ -529,57 +527,57 @@ StaticTextItem::StaticTextItem(QTextDocument *p, const QMap<QString, QString> &a
 			height = pm.height();
 		} else {
 			QImage img;
-			const QMimeSource* m = factory.data( imageName, context );
-			if ( !m ) {
-				qWarning("StaticTextItem: no mimesource for %s", imageName.latin1() );
+			const QMimeSource* m = factory.data(imageName, context);
+			if (!m) {
+				qWarning("StaticTextItem: no mimesource for %s", imageName.latin1());
 			}
 			else {
-				if ( !Q3ImageDrag::decode( m, img ) ) {
-					qWarning("StaticTextItem: cannot decode %s", imageName.latin1() );
+				if (!Q3ImageDrag::decode(m, img)) {
+					qWarning("StaticTextItem: cannot decode %s", imageName.latin1());
 				}
 			}
 
-			if ( !img.isNull() ) {
-				if ( width == 0 ) {
+			if (!img.isNull()) {
+				if (width == 0) {
 					width = img.width();
-					if ( height != 0 ) {
+					if (height != 0) {
 						width = img.width() * height / img.height();
 					}
 				}
-				if ( height == 0 ) {
+				if (height == 0) {
 					height = img.height();
-					if ( width != img.width() ) {
+					if (width != img.width()) {
 						height = img.height() * width / img.width();
 					}
 				}
-				if ( img.width() != width || img.height() != height ){
+				if (img.width() != width || img.height() != height){
 #ifndef QT_NO_IMAGE_SMOOTHSCALE
 					img = img.smoothScale(width, height);
 #endif
 					width = img.width();
 					height = img.height();
 				}
-				pm.convertFromImage( img );
+				pm.convertFromImage(img);
 			}
-			if ( !pm.isNull() ) {
+			if (!pm.isNull()) {
 				QPixmapInt& pmi = pixmap_map->operator[](imgId);
 				pmi.pm = pm;
 				pmi.ref++;
 			}
 		}
-		if ( pm.mask() ) {
-			QRegion mask( *pm.mask() );
-			QRegion all( 0, 0, pm.width(), pm.height() );
-			reg = new QRegion( all.subtract( mask ) );
+		if (pm.mask()) {
+			QRegion mask(*pm.mask());
+			QRegion all(0, 0, pm.width(), pm.height());
+			reg = new QRegion(all.subtract(mask));
 		}
     }
 
-	if ( pm.isNull() && (width*height)==0 )
+	if (pm.isNull() && (width*height)==0)
 		width = height = 50;
 
-	if ( attr["align"] == "left" )
+	if (attr["align"] == "left")
 		place = PlaceLeft;
-	else if ( attr["align"] == "right" )
+	else if (attr["align"] == "right")
 		place = PlaceRight;
 
 	tmpwidth = width;
@@ -588,12 +586,12 @@ StaticTextItem::StaticTextItem(QTextDocument *p, const QMap<QString, QString> &a
 
 StaticTextItem::~StaticTextItem()
 {
-	if ( pixmap_map && pixmap_map->contains( imgId ) ) {
+	if (pixmap_map && pixmap_map->contains(imgId)) {
 		QPixmapInt& pmi = pixmap_map->operator[](imgId);
 		pmi.ref--;
-		if ( !pmi.ref ) {
-			pixmap_map->remove( imgId );
-			if ( pixmap_map->isEmpty() ) {
+		if (!pmi.ref) {
+			pixmap_map->remove(imgId);
+			if (pixmap_map->isEmpty()) {
 				delete pixmap_map;
 				pixmap_map = 0;
 			}
@@ -614,9 +612,9 @@ QString StaticTextItem::richText() const
 	QString s;
 	s += "<img ";
 	it = attributes.begin();
-	for ( ; it != attributes.end(); ++it ) {
+	for (; it != attributes.end(); ++it) {
 		s += it.key() + '=';
-		if ( (*it).find( ' ' ) != -1 )
+		if ((*it).find(' ') != -1)
 			s += '"' + *it + "\" ";
 		else
 			s += *it + ' ';
@@ -625,10 +623,10 @@ QString StaticTextItem::richText() const
 	return s;
 }
 
-void StaticTextItem::adjustToPainter( QPainter* p )
+void StaticTextItem::adjustToPainter(QPainter* p)
 {
-	width = scale( tmpwidth, p );
-	height = scale( tmpheight, p );
+	width = scale(tmpwidth, p);
+	height = scale(tmpheight, p);
 }*/
 
 #if !defined(Q_WS_X11)
@@ -636,62 +634,62 @@ void StaticTextItem::adjustToPainter( QPainter* p )
 #include <q3cleanuphandler.h>
 static QPixmap *qrt_selection = 0;
 static Q3SingleCleanupHandler<QPixmap> qrt_cleanup_pixmap;
-static void qrt_createSelectionPixmap( const QColorGroup &cg )
+static void qrt_createSelectionPixmap(const QColorGroup &cg)
 {
-	qrt_selection = new QPixmap( 2, 2 );
-	qrt_cleanup_pixmap.set( &qrt_selection );
-	qrt_selection->fill( Qt::color0 );
-	QBitmap m( 2, 2 );
-	m.fill( Qt::color1 );
-	QPainter p( &m );
-	p.setPen( Qt::color0 );
-	for ( int j = 0; j < 2; ++j ) {
-		p.drawPoint( j % 2, j );
+	qrt_selection = new QPixmap(2, 2);
+	qrt_cleanup_pixmap.set(&qrt_selection);
+	qrt_selection->fill(Qt::color0);
+	QBitmap m(2, 2);
+	m.fill(Qt::color1);
+	QPainter p(&m);
+	p.setPen(Qt::color0);
+	for (int j = 0; j < 2; ++j) {
+		p.drawPoint(j % 2, j);
 	}
 	p.end();
-	qrt_selection->setMask( m );
-	qrt_selection->fill( cg.highlight() );
+	qrt_selection->setMask(m);
+	qrt_selection->fill(cg.highlight());
 }
 #endif
 
-// void StaticTextItem::draw( QPainter* p, int x, int y, int cx, int cy, int cw, int ch, const QColorGroup& cg, bool selected )
+// void StaticTextItem::draw(QPainter* p, int x, int y, int cx, int cy, int cw, int ch, const QColorGroup& cg, bool selected)
 // {
 // //	kdebugm(KDEBUG_DUMP, "x:%d, y:%d, cx:%d, cy:%d, cw:%d, ch:%d, placement:%d, PlaceInline:%d, xpos:%d, ypos:%d\n",
 // //		x, y, cx, cy, cw, ch, placement(), PlaceInline, xpos, ypos);
-// 	if ( placement() != PlaceInline ) {
+// 	if (placement() != PlaceInline) {
 // 		x = xpos;
 // 		y = ypos;
 // 	}
 // //	for (int i=QColorGroup::Foreground; i<QColorGroup::NColorRoles; i++)
 // //		kdebugm(KDEBUG_INFO, "%s\n", cg.color((QColorGroup::ColorRole)i).name().local8Bit().data());
 // 
-// 	if ( pm.isNull() ) {
+// 	if (pm.isNull()) {
 // 		pm=QPixmap(width, height);
 // 		pm.fill(cg.base());
-// //		p->fillRect( x , y, width, height,  cg.base() );
+// //		p->fillRect(x , y, width, height,  cg.base());
 // //		return;
 // 	}
 // 
-// 	if ( is_printer( p ) ) {
-// 		p->drawPixmap( QRect( x, y, width, height ), pm );
+// 	if (is_printer(p)) {
+// 		p->drawPixmap(QRect(x, y, width, height), pm);
 // 		return;
 // 	}
 // 
-// 	if ( placement() != PlaceInline && !QRect( xpos, ypos, width, height ).intersects( QRect( cx, cy, cw, ch ) ) )
+// 	if (placement() != PlaceInline && !QRect(xpos, ypos, width, height).intersects(QRect(cx, cy, cw, ch)))
 // 		return;
 // 
-// 	if ( placement() == PlaceInline )
-// 		p->drawPixmap( x , y + (!attributes["src"].isEmpty() ? IMG_Y_OFFSET : 0), pm );
+// 	if (placement() == PlaceInline)
+// 		p->drawPixmap(x , y + (!attributes["src"].isEmpty() ? IMG_Y_OFFSET : 0), pm);
 // 	else
-// 		p->drawPixmap( cx , cy + (!attributes["src"].isEmpty() ? IMG_Y_OFFSET : 0), pm, cx - x, cy - y, cw, ch );
+// 		p->drawPixmap(cx , cy + (!attributes["src"].isEmpty() ? IMG_Y_OFFSET : 0), pm, cx - x, cy - y, cw, ch);
 // 
-// 	if ( selected && placement() == PlaceInline && is_printer( p ) ) {
+// 	if (selected && placement() == PlaceInline && is_printer(p)) {
 // #if defined(Q_WS_X11)
-// 		p->fillRect( QRect( QPoint( x, y ), pm.size() ), QBrush( cg.highlight(), Qt::Dense4Pattern) );
+// 		p->fillRect(QRect(QPoint(x, y), pm.size()), QBrush(cg.highlight(), Qt::Dense4Pattern));
 // #else // in WIN32 Dense4Pattern doesn't work correctly (transparency problem), so work around it
-// 		if ( !qrt_selection )
-// 			qrt_createSelectionPixmap( cg );
-// 		p->drawTiledPixmap( x, y, pm.width(), pm.height(), *qrt_selection );
+// 		if (!qrt_selection)
+// 			qrt_createSelectionPixmap(cg);
+// 		p->drawTiledPixmap(x, y, pm.width(), pm.height(), *qrt_selection);
 // #endif
 // 	}
 // }
@@ -849,7 +847,7 @@ AnimTextItem::~AnimTextItem()
 void AnimTextItem::draw(
 	QPainter* / *p* /, int x, int y, int cx, int cy,
 	int cw, int ch, const QColorGroup& / *cg* /,
-	bool / *selected* / )
+	bool / *selected* /)
 {
 //	kdebugm(KDEBUG_WARNING, "%d\n", int(QRect(x, y, width, height).intersects(QRect(cx, cy, cw, ch))));
 	if (!QRect(x, y, width, height).intersects(QRect(cx, cy, cw, ch)))
@@ -905,7 +903,7 @@ QImage* AnimTextItem::SizeCheckImage=NULL;
 AnimTextItem::MoviesCache* AnimTextItem::Movies=NULL;
 
 AnimStyleSheet::AnimStyleSheet(
-	Q3TextEdit* parent, const QString& path, const char* name )
+	Q3TextEdit* parent, const QString& path, const char* name)
 	: Q3StyleSheet(parent, name), Path(path)
 {
 }
@@ -960,7 +958,7 @@ EmotsWalker::EmotsWalker() : root(new PrefixNode()), myPair(), positions(), leng
 /** deletes entire dictionary of emots */
 EmotsWalker::~EmotsWalker()
 {
-	removeChilds( root );
+	removeChilds(root);
 	delete root;
 }
 
@@ -968,14 +966,14 @@ EmotsWalker::~EmotsWalker()
     edge marked by given character
     return NULL if there is none
 */
-PrefixNode* EmotsWalker::findChild( const PrefixNode* node, const QChar& c )
+PrefixNode* EmotsWalker::findChild(const PrefixNode* node, const QChar& c)
 {
 	myPair.first = c;
 	// create variable 'position' with result of binary search in childs
 	// of given node
-	VAR( position, std::upper_bound ( node -> childs.constBegin(), node -> childs.constEnd(), myPair ) );
+	VAR(position, std::upper_bound (node -> childs.constBegin(), node -> childs.constEnd(), myPair));
 
-	if ( position != node -> childs.constEnd() && position -> first == c )
+	if (position != node -> childs.constEnd() && position -> first == c)
 		return position -> second;
 	else
 		return NULL;
@@ -984,23 +982,23 @@ PrefixNode* EmotsWalker::findChild( const PrefixNode* node, const QChar& c )
 /** add successor to given node with edge marked by given characted
     (building of prefix tree)
 */
-PrefixNode* EmotsWalker::insertChild( PrefixNode* node, const QChar& c )
+PrefixNode* EmotsWalker::insertChild(PrefixNode* node, const QChar& c)
 {
 	PrefixNode* newNode = new PrefixNode();
 
 	// create child with new node
-	VAR( newPair, qMakePair( c, newNode ) );
+	VAR(newPair, qMakePair(c, newNode));
 	// insert new child into childs of current node, performing binary
 	// search to find correct position for it
-	node -> childs.insert( std::upper_bound( node -> childs.begin(), node -> childs.end(), newPair ), newPair );
+	node -> childs.insert(std::upper_bound(node -> childs.begin(), node -> childs.end(), newPair), newPair);
 	return newNode;
 }
 
 /** recursively delete all childs of given node */
-void EmotsWalker::removeChilds( PrefixNode* node )
+void EmotsWalker::removeChilds(PrefixNode* node)
 {
-	CONST_FOREACH( ch, node -> childs ) {
-		removeChilds( ch -> second );
+	CONST_FOREACH(ch, node -> childs) {
+		removeChilds(ch -> second);
 		delete ch -> second;
 	}
 }
@@ -1009,22 +1007,22 @@ void EmotsWalker::removeChilds( PrefixNode* node )
     number, which will be used later to notify occurrences of
     emot in analyzed text
 */
-void EmotsWalker::insertString( const QString& str, int num )
+void EmotsWalker::insertString(const QString& str, int num)
 {
 	PrefixNode *child, *node = root;
 	unsigned int len = str.length();
 	unsigned int pos = 0;
 
 	// it adds string to prefix tree character after character
-	while ( pos < len ) {
-		child = findChild( node, str[pos] );
-		if ( child == NULL )
-			child = insertChild( node, str[pos] );
+	while (pos < len) {
+		child = findChild(node, str[pos]);
+		if (child == NULL)
+			child = insertChild(node, str[pos]);
 		node = child;
 		++pos;
 	}
 
-	if ( node -> emotIndex == -1 )
+	if (node -> emotIndex == -1)
 		node -> emotIndex = num;
 }
 
@@ -1033,33 +1031,35 @@ void EmotsWalker::insertString( const QString& str, int num )
     beginning of text analysis is turned on by 'initWalking()'
     if no emot occures, -1 is returned
 */
-int EmotsWalker::checkEmotOccurrence( const QChar& c )
+int EmotsWalker::checkEmotOccurrence(const QChar &c)
 {
 	const PrefixNode* next;
 	int result = -1, resultLen = -1;
 
-	if ( amountPositions < positions.size() ) {
+	if (amountPositions < positions.size())
+	{
 		lengths[amountPositions] = 0;
 		positions[amountPositions++] = root;
 	}
-	else {
+	else
+	{
 		++amountPositions;
-		positions.push_back( root );
-		lengths.push_back( 0 );
+		positions.push_back(root);
+		lengths.push_back(0);
 	}
 
 	for (int i = amountPositions - 1; i >= 0; --i) {
-		next = findChild( positions[i], c );
-		if ( next == NULL ) {
+		next = findChild(positions[i], c);
+		if (next == NULL) {
 			lengths[i] = lengths[--amountPositions];
 			positions[i] = positions[amountPositions];
 		}
 		else {
 			positions[i] = next;
 			++lengths[i];
-			if ( result == -1 ||
-				( next -> emotIndex >= 0 &&
-				( next -> emotIndex < result || resultLen < lengths[i] ) ) )
+			if (result == -1 ||
+				(next -> emotIndex >= 0 &&
+				(next -> emotIndex < result || resultLen < lengths[i])))
 			{
 				resultLen = lengths[i];
 				result = next -> emotIndex;

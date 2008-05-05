@@ -1718,7 +1718,7 @@ void Kadu::updateInformationPanel(UserListElement user)
 		if((EmoticonsStyle)config_file.readNumEntry("Chat", "EmoticonsStyle") != EMOTS_NONE && config_file.readBoolEntry("General", "ShowEmotPanel"))
 		{
 //			InfoPanel->mimeSourceFactory()->addFilePath(emoticons->themePath());
-			emoticons->expandEmoticons(doc, config_file.readColorEntry("Look", "InfoPanelBgColor"));
+			emoticons->expandEmoticons(doc, config_file.readColorEntry("Look", "InfoPanelBgColor"), (EmoticonsStyle)config_file.readNumEntry("Chat", "EmoticonsStyle"));
 		}
 		InfoPanel->setText(doc.generateHtml());
 //		if (config_file.readBoolEntry("General", "ShowEmotPanel"))

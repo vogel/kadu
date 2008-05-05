@@ -10,6 +10,7 @@
 #include <QScrollBar>
 
 #include "chat_message.h"
+#include "config_file.h"
 #include "debug.h"
 #include "gadu.h"
 #include "kadu_parser.h"
@@ -145,7 +146,7 @@ void ChatMessagesView::repaintMessages()
 	htmlDocument.parseHtml(text);
 	htmlDocument.convertUrlsToHtml();
 	htmlDocument.convertMailToHtml();
-	emoticons->expandEmoticons(htmlDocument, "black");
+	emoticons->expandEmoticons(htmlDocument, "black", (EmoticonsStyle)config_file.readNumEntry("Chat", "EmoticonsStyle"));
 
 	setText(htmlDocument.generateHtml());
 	updateBackgrounds();

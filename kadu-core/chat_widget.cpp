@@ -14,6 +14,7 @@
 #include "chat_manager.h"
 #include "chat_message.h"
 #include "color_selector.h"
+#include "config_file.h"
 #include "custom_input.h"
 #include "debug.h"
 #include "emoticons.h"
@@ -641,7 +642,7 @@ void ChatWidget::openEmoticonSelector(const QWidget *activating_widget)
 	//emoticons_selector zawsze bêdzie NULLem gdy wchodzimy do tej funkcji
 	//bo EmoticonSelector ma ustawione flagi Qt::WDestructiveClose i Qt::WType_Popup
 	//akcj± na opuszczenie okna jest ustawienie zmiennej emoticons_selector w Chacie na NULL
-	emoticon_selector = new EmoticonSelector(NULL, "emoticon_selector", this);
+	emoticon_selector = new EmoticonSelector(this, this);
 	emoticon_selector->alignTo(const_cast<QWidget*>(activating_widget)); //TODO: do something about const_cast
 	emoticon_selector->show();
 }
