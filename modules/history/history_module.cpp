@@ -15,6 +15,7 @@
 #include "action.h"
 #include "chat_manager.h"
 #include "chat_message.h"
+#include "config_file.h"
 #include "debug.h"
 #include "history.h"
 #include "history_dialog.h"
@@ -198,7 +199,7 @@ void HistoryModule::appendHistory(ChatWidget *chat)
 	end = count - 1;
 
 	from = count;
-	unsigned int chatHistoryQuotation=config_file.readUnsignedNumEntry("History", "ChatHistoryCitation");
+	unsigned int chatHistoryQuotation = config_file.readUnsignedNumEntry("History", "ChatHistoryCitation");
 	while (from >= 1 && entries.count() < chatHistoryQuotation)
 	{
 		if (end < chatHistoryQuotation)
