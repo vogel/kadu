@@ -408,7 +408,7 @@ void Kadu::popupMenu()
 	kdebugf();
 
 	UserBox *activeUserBox = UserBox::activeUserBox();
-	if (activeUserBox == NULL) //to siê zdarza...
+	if (activeUserBox == NULL) //to siï¿½ zdarza...
 	{
 		kdebugf2();
 		return;
@@ -876,7 +876,7 @@ void Kadu::quit()
 
 void Kadu::importExportUserlist()
 {
-	(new UserlistImportExport(kadu, "userlist_import_export"))->show();
+	(new UserlistImportExport(kadu))->show();
 }
 
 void Kadu::hideKadu()
@@ -1455,7 +1455,7 @@ bool Kadu::close(bool quit)
 		IconsManager::closeModule();
 
 #ifdef Q_OS_MACX
-		//na koniec przywracamy domy¶ln± ikonê, je¿eli tego nie zrobimy, to pozostanie bie¿±cy status
+		//na koniec przywracamy domyï¿½lnï¿½ ikonï¿½, jeï¿½eli tego nie zrobimy, to pozostanie bieï¿½ï¿½cy status
 		setMainWindowIcon(QPixmap(dataPath("kadu.png")));
 #endif
 
@@ -1523,14 +1523,14 @@ void Kadu::createRecentChatsMenu()
 
 	CONST_FOREACH(users, chat_manager->closedChatUsers())
 	{
-		QStringList altnicks = (*users).altNicks(); // lista nicków z okna rozmowy
+		QStringList altnicks = (*users).altNicks(); // lista nickï¿½w z okna rozmowy
 		QString chat_users;
 
 		if (altnicks.count() <= 5)
 			chat_users = altnicks.join(", ");
-		else // je¿eli jest wiêcej ni¿ piêciu u¿ytkowników...
+		else // jeï¿½eli jest wiï¿½cej niï¿½ piï¿½ciu uï¿½ytkownikï¿½w...
 		{
-			for (int i = 0; i < 4; i++) // to i tak dodajemy tylko pierwszych piêciu :)
+			for (int i = 0; i < 4; i++) // to i tak dodajemy tylko pierwszych piï¿½ciu :)
 				chat_users.append(*altnicks.at(i) + ", ");
 			chat_users.append(*altnicks.at(4) + " [...]");
 		}
@@ -1808,7 +1808,7 @@ void Kadu::refreshPrivateStatusFromConfigFile()
 {
 	bool privateStatus = config_file.readBoolEntry("General", "PrivateStatus");
 
-	// je¶li stan nie uleg³ zmianie to nic nie robimy
+	// jeï¿½li stan nie ulegï¿½ zmianie to nic nie robimy
 	if (statusMenu->isItemChecked(8) == privateStatus)
 		return;
 

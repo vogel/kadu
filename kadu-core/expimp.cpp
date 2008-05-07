@@ -7,28 +7,28 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <stdlib.h>
-
+#include <QAbstractTableModel>
 #include <QFileDialog>
 #include <QGroupBox>
+#include <QHBoxLayout>
 #include <QKeyEvent>
 #include <QLabel>
-#include <QLayout>
+#include <QListView>
 #include <QPushButton>
+#include <QTreeWidget>
+#include <QVBoxLayout>
 
 #include "debug.h"
-#include "expimp.h"
 #include "gadu.h"
 #include "icons_manager.h"
 #include "ignore.h"
 #include "message_box.h"
 #include "misc.h"
-#include "userlist.h"
 
-UserlistImportExport::UserlistImportExport(QWidget *parent, const char *name) :
-	QWidget(parent, name, Qt::Window),
-	pb_fetch(0), importedUserlist(), pb_send(0), pb_delete(0), pb_tofile(0),
-	l_itemscount(0), lv_userlist(0)
+#include "expimp.h"
+
+UserlistImportExport::UserlistImportExport(QWidget *parent)
+	: QWidget(parent, Qt::Window), pb_fetch(0), importedUserlist(), pb_send(0), pb_delete(0), pb_tofile(0), l_itemscount(0), lv_userlist(0)
 {
 	kdebugf();
 	setWindowTitle(tr("Import / export userlist"));
@@ -65,24 +65,21 @@ UserlistImportExport::UserlistImportExport(QWidget *parent, const char *name) :
 	import_layout->setSpacing(5);
 	gb_import->setTitle(tr("Import userlist"));
 	// end our QGroupBox
-	lv_userlist = new Q3ListView;
-	lv_userlist->addColumn(tr("UIN"));
-	lv_userlist->addColumn(tr("Nickname"));
-	lv_userlist->addColumn(tr("Disp. nick"));
-	lv_userlist->addColumn(tr("Name"));
-	lv_userlist->addColumn(tr("Surname"));
-	lv_userlist->addColumn(tr("Mobile no."));
-	lv_userlist->addColumn(tr("Group"));
-	lv_userlist->addColumn(tr("Email"));
+	lv_userlist = new QTreeWidget(this);
+
+	QStringList headers;
+	headers << tr("UIN") << tr("Nickname") << tr("Disp. nick") << tr("Name") << tr("Surname") << tr("Mobile no.") << tr("Group") << tr("Email");
+	lv_userlist->setHeaderLabels(headers);
 	lv_userlist->setAllColumnsShowFocus(true);
+	lv_userlist->setIndentation(false);
 	// end our QListView
 
 	// buttons
-	QWidget *importbuttons = new QWidget;
-	QHBoxLayout *importbuttons_layout = new QHBoxLayout;
+	QWidget *importbuttons = new QWidget(this);
+	QHBoxLayout *importbuttons_layout = new QHBoxLayout(importbuttons);
 	importbuttons_layout->setSpacing(5);
 
-	QWidget *w_blank2 = new QWidget;
+	QWidget *w_blank2 = new QWidget(this);
 	w_blank2->setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Maximum));
 
 	pb_fetch = new QPushButton(icons_manager->loadIcon("FetchUserList"), tr("&Fetch userlist"), this, "fetch");
@@ -224,11 +221,11 @@ void UserlistImportExport::fromfile()
 				QString id;
 				if ((*i).usesProtocol("Gadu"))
 					id = (*i).ID("Gadu");
-				new Q3ListViewItem(lv_userlist, id,
-					(*i).nickName(),  (*i).altNick(),
-					(*i).firstName(), (*i).lastName(),
-					(*i).mobile(),    (*i).data("Groups").toStringList().join(","),
-					(*i).email());
+
+				QStringList values;
+				values << id << (*i).nickName() << (*i).altNick() << (*i).firstName() << (*i).lastName() << (*i).mobile() <<
+					(*i).data("Groups").toStringList().join(",") << (*i).email();
+				new QTreeWidgetItem(lv_userlist, values);
 			}
 		}
 		else
@@ -291,9 +288,11 @@ void UserlistImportExport::userListImported(bool ok, QList<UserListElement> user
 			QString id;
 			if ((*user).usesProtocol("Gadu"))
 				id = (*user).ID("Gadu");
-			new Q3ListViewItem(lv_userlist, id, (*user).nickName(),
-				(*user).altNick(), (*user).firstName(), (*user).lastName(), (*user).mobile(),
-				(*user).data("Groups").toStringList().join(","), (*user).email());
+
+			QStringList values;
+			values << id << (*user).nickName() << (*user).altNick() << (*user).firstName() << (*user).lastName() << (*user).mobile() <<
+				(*user).data("Groups").toStringList().join(",") << (*user).email();
+			new QTreeWidgetItem(lv_userlist, values);
 		}
 	kdebugf2();
 }
