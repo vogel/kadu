@@ -1,28 +1,20 @@
 #ifndef SMS_H
 #define SMS_H
 
-#include <qwidget.h>
-#include <qdialog.h>
-#include <qmultilineedit.h>
-#include <qlineedit.h>
-#include <qcheckbox.h>
-#include <qcombobox.h>
-#include <qlabel.h>
-#include <qpushbutton.h>
-#include <qprocess.h>
-#include <qsocket.h>
-#include <qimage.h>
-#include <qmap.h>
-#include <qmessagebox.h>
-#include <qlistbox.h>
-#include <qptrstack.h>
+#include <QDialog>
+#include <QMap>
+#include <QWidget>
 
 #include "configuration_aware_object.h"
-#include "debug.h"
 #include "http_client.h"
 #include "main_configuration_window.h"
-#include "misc.h"
-#include "userlist.h"
+
+class Q3ListBox;
+class QCheckBox;
+class QComboBox;
+class QListWidget;
+class QProcess;
+class QTextEdit;
 
 /**
  * @defgroup sms SMS
@@ -32,14 +24,13 @@ class SmsImageDialog : public QDialog
 {
 	Q_OBJECT
 
-	private:
 		QLineEdit* code_edit;
 
 	private slots:
 		void onReturnPressed();
 
 	public:
-		SmsImageDialog(QWidget* parent,const QByteArray& image);
+		SmsImageDialog(QWidget* parent, const QByteArray& image);
 		void reject();
 
 	signals:
@@ -66,13 +57,13 @@ class SmsGateway : public QObject
 	private slots:
 		void httpError();
 	protected slots:
-		virtual void httpFinished()=0;
-		virtual void httpRedirected(QString)=0;
+		virtual void httpFinished() = 0;
+		virtual void httpRedirected(QString) = 0;
 
 	public:
-		SmsGateway(QObject* parent, const char *name=0);
+		SmsGateway(QObject* parent);
 	public slots:
-		virtual void send(const QString& number,const QString& message, const QString& contact, const QString& signature)=0;
+		virtual void send(const QString& number,const QString& message, const QString& contact, const QString& signature) = 0;
 
 	signals:
 		void finished(bool success);
@@ -82,17 +73,16 @@ class SmsSender : public QObject
 {
 	Q_OBJECT
 
-	private:
 		SmsGateway* Gateway;
 
 	private slots:
 		void onFinished(bool success);
 
 	public:
-		SmsSender(QObject* parent=0, const char *name=0);
+		SmsSender(QObject* parent = 0);
 		~SmsSender();
 	public slots:
-		void send(const QString& number,const QString& message, const QString& contact, const QString& signature);
+		void send(const QString& number, const QString& message, const QString& contact, const QString& signature);
 
 	signals:
 		void finished(bool success);
@@ -105,19 +95,9 @@ class Sms : public QWidget, ConfigurationAwareObject
 {
 	Q_OBJECT
 
-	protected:
-		virtual void configurationUpdated();
-		virtual void keyPressEvent(QKeyEvent *e);
-
-	public:
-		Sms(const QString& altnick, QWidget* parent=0, const char *name=0);
-		~Sms();
-		void setRecipient(const QString& phone);
-
-	private:
-		QMultiLineEdit *body;
+		QTextEdit *body;
 		QLineEdit *recipient;
-		QComboBox* list;
+		QComboBox *list;
 		QLabel *smslen;
 		QLabel *l_contact;
 		QLineEdit *e_contact;
@@ -128,6 +108,7 @@ class Sms : public QWidget, ConfigurationAwareObject
 		QProcess *smsProcess;
 		SmsSender Sender;
 
+
 	private slots:
 		void updateRecipient(const QString &);
 		void updateList(const QString& newnumber);
@@ -136,6 +117,15 @@ class Sms : public QWidget, ConfigurationAwareObject
 		void updateCounter();
 		void smsSigHandler();
 		void onSmsSenderFinished(bool success);
+
+	protected:
+		virtual void configurationUpdated();
+		virtual void keyPressEvent(QKeyEvent *e);
+
+	public:
+		Sms(const QString& altnick, QWidget* parent = 0);
+		~Sms();
+		void setRecipient(const QString& phone);
 };
 
 typedef SmsGateway* isValidFunc(const QString&, QObject*);
@@ -145,6 +135,8 @@ class SmsConfigurationUiHandler : public ConfigurationUiHandler, ConfigurationAw
 {
 	Q_OBJECT
 
+	ActionDescription *sendSmsActionDescription;
+
 	int menuid;
 	QMap<QString,isValidFunc*> gateways;
 
@@ -152,7 +144,7 @@ class SmsConfigurationUiHandler : public ConfigurationUiHandler, ConfigurationAw
 	QLineEdit *customApp;
 	QCheckBox *useCustomString;
 	QLineEdit *customString;
-	QListBox *gatewayListBox;
+	QListWidget *gatewayListWidget;
 
 	void createDefaultConfiguration();
 
@@ -173,13 +165,13 @@ public:
 public slots:
 	void onSmsBuildInCheckToggle(bool);
 	void onSendSms();
-	void onUserClicked(int button, QListBoxItem* item, const QPoint& pos);
+	void onUserClicked(int button, Q3ListBoxItem* item, const QPoint& pos);
 	void onUserDblClicked(UserListElement elem);
 	void onPopupMenuCreate();
 	void onSendSmsToUser();
 	void onUpButton();
 	void onDownButton();
-	void sendSmsActionActivated(const UserGroup* users);
+	void sendSmsActionActivated(QAction *sender, bool toggled);
 
 };
 
