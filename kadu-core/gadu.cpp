@@ -7,35 +7,25 @@
  *                                                                         *
  ***************************************************************************/
 
+#include <QApplication>
+#include <QIntValidator>
+#include <QTimer>
+
+#include <netinet/in.h>
+
 #include "config_file.h"
 #include "debug.h"
-#include "gadu.h"
-#include "gadu-private.h"
 #include "gadu_images_manager.h"
+#include "gadu-private.h"
 #include "icons_manager.h"
 #include "ignore.h"
 #include "kadu.h"
-#include "kadu-config.h"
 #include "message_box.h"
 #include "misc.h"
-#include "chat_widget.h"
-#include "chat_manager.h"
 
-//netinet/in.h na freebsd 4.x jest wybrakowane i trzeba inkludowaæ sys/types.h
-#include <sys/types.h>
-//dla htonl
-#include <netinet/in.h>
+#include "gadu.h"
 
-#include <stdlib.h>
-
-#include <qapplication.h>
-#include <qtimer.h>
-#include <qvalidator.h>
-#include <qregexp.h>
-#include <QPixmap>
-#include <QList>
-
-#define GG_STATUS_INVISIBLE2 0x0009 /* g³upy... */
+#define GG_STATUS_INVISIBLE2 0x0009 /* gï¿½upy... */
 
 static QList<QHostAddress> gg_servers;
 
@@ -69,25 +59,26 @@ static const char *gg_servers_ip[GG_SERVERS_COUNT] = {
 //              Timers
 // ------------------------------------
 
-class ConnectionTimeoutTimer : public QTimer {
-	public:
-		static void on();
-		static void off();
-		static bool connectTimeoutRoutine(const QObject *receiver, const char *member);
+class ConnectionTimeoutTimer : public QTimer
+{
+	ConnectionTimeoutTimer(QObject *parent = 0);
+	static ConnectionTimeoutTimer *connectiontimeout_object;
 
-	private:
-		ConnectionTimeoutTimer(QObject *parent = 0, const char *name=0);
+public:
+	static void on();
+	static void off();
+	static bool connectTimeoutRoutine(const QObject *receiver, const char *member);
 
-		static ConnectionTimeoutTimer *connectiontimeout_object;
 };
 
-ConnectionTimeoutTimer *ConnectionTimeoutTimer::connectiontimeout_object = NULL;
+ConnectionTimeoutTimer *ConnectionTimeoutTimer::connectiontimeout_object = 0;
 
 // ------------------------------------
 //        Timers - implementation
 // ------------------------------------
 
-ConnectionTimeoutTimer::ConnectionTimeoutTimer(QObject *parent, const char *name) : QTimer(parent, name)
+ConnectionTimeoutTimer::ConnectionTimeoutTimer(QObject *parent)
+	: QTimer(parent)
 {
 	start(config_file.readUnsignedNumEntry("Network", "TimeoutInMs"), true);
 }
@@ -100,7 +91,7 @@ bool ConnectionTimeoutTimer::connectTimeoutRoutine(const QObject *receiver, cons
 void ConnectionTimeoutTimer::on()
 {
 	if (!connectiontimeout_object)
-		connectiontimeout_object = new ConnectionTimeoutTimer(kadu, "connection_timeout_timer_object");
+		connectiontimeout_object = new ConnectionTimeoutTimer(kadu);
 }
 
 void ConnectionTimeoutTimer::off()
@@ -108,7 +99,7 @@ void ConnectionTimeoutTimer::off()
 	if (connectiontimeout_object)
 	{
 		delete connectiontimeout_object;
-		connectiontimeout_object = NULL;
+		connectiontimeout_object = 0;
 	}
 }
 
@@ -120,9 +111,11 @@ bool UinsList::equals(const UinsList &uins) const
 {
 	if (count() != uins.count())
 		return false;
-	CONST_FOREACH(i, *this)
-		if(!uins.contains(*i))
+
+	foreach(UinType uin, *this)
+		if(!uins.contains(uin))
 			return false;
+
 	return true;
 }
 
@@ -138,14 +131,14 @@ UinsList::UinsList(UinType uin)
 UinsList::UinsList(const QString &uins)
 {
 	QStringList list = QStringList::split(",", uins);
-	CONST_FOREACH(it, list)
-		append((*it).toUInt());
+	foreach(QString uin, list)
+		append(uin.toUInt());
 }
 
 UinsList::UinsList(const QStringList &list)
 {
-	CONST_FOREACH(it, list)
-		append((*it).toUInt());
+	foreach(QString uin, list)
+		append(uin.toUInt());
 }
 
 void UinsList::sort()
@@ -156,8 +149,8 @@ void UinsList::sort()
 QStringList UinsList::toStringList() const
 {
 	QStringList list;
-	CONST_FOREACH(uin, *this)
-		list.append(QString::number(*uin));
+	foreach(UinType uin, *this)
+		list.append(QString::number(uin));
 	return list;
 }
 
@@ -167,7 +160,7 @@ SearchResult::SearchResult() :
 {
 }
 
-SearchResult::SearchResult(const SearchResult& copyFrom) :
+SearchResult::SearchResult(const SearchResult &copyFrom) :
 	Uin(copyFrom.Uin),
 	First(copyFrom.First),
 	Last(copyFrom.Last),
@@ -214,32 +207,32 @@ SearchRecord::~SearchRecord()
 {
 }
 
-void SearchRecord::reqUin(const QString& uin)
+void SearchRecord::reqUin(const QString &uin)
 {
 	Uin = uin;
 }
 
-void SearchRecord::reqFirstName(const QString& firstName)
+void SearchRecord::reqFirstName(const QString &firstName)
 {
 	FirstName = firstName;
 }
 
-void SearchRecord::reqLastName(const QString& lastName)
+void SearchRecord::reqLastName(const QString &lastName)
 {
 	LastName = lastName;
 }
 
-void SearchRecord::reqNickName(const QString& nickName)
+void SearchRecord::reqNickName(const QString &nickName)
 {
 	NickName = nickName;
 }
 
-void SearchRecord::reqCity(const QString& city)
+void SearchRecord::reqCity(const QString &city)
 {
 	City = city;
 }
 
-void SearchRecord::reqBirthYear(const QString& birthYearFrom, const QString& birthYearTo)
+void SearchRecord::reqBirthYear(const QString &birthYearFrom, const QString &birthYearTo)
 {
 	BirthYearFrom = birthYearFrom;
 	BirthYearTo = birthYearTo;
@@ -351,7 +344,8 @@ void GaduProtocol::initModule()
 	kdebugf2();
 }
 
-GaduProtocol::GaduProtocol(const QString &id, QObject *parent, const char *name) : Protocol("Gadu", id, parent, name),
+GaduProtocol::GaduProtocol(const QString &id, QObject *parent)
+	: Protocol("Gadu", id, parent),
 		Mode(Register), DataUin(0), DataEmail(), DataPassword(), DataNewPassword(), TokenId(), TokenValue(),
 		ServerNr(0), ActiveServer(), LoginParams(), Sess(0), sendImageRequests(0), seqNumber(0), whileConnecting(false),
 		DccExternalIP(), SocketNotifiers(new GaduSocketNotifiers(this, "gadu_socket_notifiers")), PingTimer(0),
@@ -429,7 +423,7 @@ GaduProtocol::~GaduProtocol()
 	kdebugf2();
 }
 
-bool GaduProtocol::validateUserID(QString& uid)
+bool GaduProtocol::validateUserID(QString &uid)
 {
 	QIntValidator v(1, 99999999, this);
 	int pos = 0;
@@ -455,8 +449,8 @@ void GaduProtocol::iWantGoOnline(const QString &desc)
 {
 	kdebugf();
 
-	//nie pozwalamy na zmianê statusu lub ponowne logowanie gdy jeste¶my
-	//w trakcie ³±czenia siê z serwerem, bo serwer zwróci nam g³upoty
+	//nie pozwalamy na zmianï¿½ statusu lub ponowne logowanie gdy jesteï¿½my
+	//w trakcie ï¿½ï¿½czenia siï¿½ z serwerem, bo serwer zwrï¿½ci nam gï¿½upoty
 	if (whileConnecting)
 		return;
 
@@ -555,15 +549,13 @@ void GaduProtocol::iWantGoOffline(const QString &desc)
 	kdebugf2();
 }
 
-void GaduProtocol::protocolUserDataChanged(QString protocolName, UserListElement elem,
-							QString name, QVariant oldValue, QVariant currentValue,
-							bool massively, bool /*last*/)
+void GaduProtocol::protocolUserDataChanged(QString protocolName, UserListElement elem, QString name, QVariant oldValue, QVariant currentValue, bool massively, bool /*last*/)
 {
 	kdebugf();
 	/*
-	   je¿eli listê kontaktów bêdziemy wysy³aæ po kawa³ku, to serwer zgubi czê¶æ danych!
-	   musimy wiêc wys³aæ j± w ca³o¶ci (poprzez sendUserList())
-	   w takim w³a¶nie przypadku (massively==true) nie robimy nic
+	   jeï¿½eli listï¿½ kontaktï¿½w bï¿½dziemy wysyï¿½aï¿½ po kawaï¿½ku, to serwer zgubi czï¿½ï¿½ï¿½ danych!
+	   musimy wiï¿½c wysï¿½aï¿½ jï¿½ w caï¿½oï¿½ci (poprzez sendUserList())
+	   w takim wï¿½aï¿½nie przypadku (massively==true) nie robimy nic
 	*/
 	if (protocolName != "Gadu")
 		return;
@@ -610,8 +602,7 @@ void GaduProtocol::protocolUserDataChanged(QString protocolName, UserListElement
 	kdebugf2();
 }
 
-void GaduProtocol::userDataChanged(UserListElement elem, QString name, QVariant oldValue,
-					QVariant currentValue, bool massively, bool /*last*/)
+void GaduProtocol::userDataChanged(UserListElement elem, QString name, QVariant oldValue, QVariant currentValue, bool massively, bool /*last*/)
 {
 	kdebugf();
 	if (!elem.usesProtocol("Gadu"))
@@ -699,7 +690,7 @@ QHostAddress GaduProtocol::activeServer()
 	return ActiveServer;
 }
 
-void GaduProtocol::setDccExternalIP(const QHostAddress& ip)
+void GaduProtocol::setDccExternalIP(const QHostAddress &ip)
 {
 	DccExternalIP = ip;
 }
@@ -728,26 +719,26 @@ void GaduProtocol::connectedSlot()
 	CurrentStatus->setStatus(*NextStatus);
 	emit connected();
 
-	// po po³±czeniu z sewerem niestety trzeba ponownie ustawiæ
-	// status, inaczej nie bêdziemy widoczni - raczej b³±d serwerów
+	// po poï¿½ï¿½czeniu z sewerem niestety trzeba ponownie ustawiï¿½
+	// status, inaczej nie bï¿½dziemy widoczni - raczej bï¿½ï¿½d serwerï¿½w
 	if (NextStatus->isInvisible() || (LoginParams.status&~GG_STATUS_FRIENDS_MASK) != static_cast<GaduStatus *>(NextStatus)->toStatusNumber())
 		NextStatus->refresh();
 
 	/*
-		UWAGA: je¿eli robimy refresh(), to przy przechodzeniu z niedostêpnego z opisem
+		UWAGA: jeï¿½eli robimy refresh(), to przy przechodzeniu z niedostï¿½pnego z opisem
 		na niewidoczny z opisem ta zmiana jest ujawniana naszym kontaktom!
-		przy przechodzeniu z niedostêpnego na niewidoczny efekt nie wystêpuje
+		przy przechodzeniu z niedostï¿½pnego na niewidoczny efekt nie wystï¿½puje
 
-		je¿eli NIE zrobimy refresh(), to powy¿szy efekt nie wystêpuje, ale przy
-		przechodzeniu z niedostêpnego z opisem na niewidoczny (bez opisu), nasz
-		opis u innych pozostaje! (a¿ do czasu naszej zmiany statusu lub ich
-		roz³±czenia i po³±czenia)
+		jeï¿½eli NIE zrobimy refresh(), to powyï¿½szy efekt nie wystï¿½puje, ale przy
+		przechodzeniu z niedostï¿½pnego z opisem na niewidoczny (bez opisu), nasz
+		opis u innych pozostaje! (aï¿½ do czasu naszej zmiany statusu lub ich
+		rozï¿½ï¿½czenia i poï¿½ï¿½czenia)
 	*/
 
 	/*
-		UWAGA 2: procedura ³±czenia siê z serwerem w chwili obecnej wykorzystuje
-		fakt ponownego ustawienia statusu po zalogowaniu, bo iWantGo* blokuj±
-		zmiany statusów w trakcie ³±czenia siê z serwerem
+		UWAGA 2: procedura ï¿½ï¿½czenia siï¿½ z serwerem w chwili obecnej wykorzystuje
+		fakt ponownego ustawienia statusu po zalogowaniu, bo iWantGo* blokujï¿½
+		zmiany statusï¿½w w trakcie ï¿½ï¿½czenia siï¿½ z serwerem
 	*/
 
 	kdebugf2();
@@ -774,11 +765,11 @@ void GaduProtocol::disconnectedSlot()
 		Sess = NULL;
 	}
 
-	// du¿o bezsensownej roboty, wiêc gdy jeste¶my w trakcie wy³±czania,
+	// duï¿½o bezsensownej roboty, wiï¿½c gdy jesteï¿½my w trakcie wyï¿½ï¿½czania,
 	// to jej nie wykonujemy
-	// dla ka¿dego kontaktu po ustawieniu statusu emitowane s± sygna³y,
-	// które powoduj± od¶wie¿enie panelu informacyjnego, zapisanie statusów,
-	// od¶wie¿enie okien chatów, od¶wie¿enie userboksa
+	// dla kaï¿½dego kontaktu po ustawieniu statusu emitowane sï¿½ sygnaï¿½y,
+	// ktï¿½re powodujï¿½ odï¿½wieï¿½enie panelu informacyjnego, zapisanie statusï¿½w,
+	// odï¿½wieï¿½enie okien chatï¿½w, odï¿½wieï¿½enie userboksa
 	if (!Kadu::closing())
 		userlist->setAllOffline("Gadu");
 
@@ -900,17 +891,16 @@ void GaduProtocol::errorSlot(GaduError err)
 	if (!continue_connecting)
 		NextStatus->setOffline();
 
-	// je¶li b³±d który wyst±pi³ umo¿liwia dalsze próby po³±czenia
-	// i w miêdzyczasie u¿ytkownik nie zmieni³ statusu na niedostêpny
-	// to za sekundê próbujemy ponownie
+	// jeï¿½li bï¿½ï¿½d ktï¿½ry wystï¿½piï¿½ umoï¿½liwia dalsze prï¿½by poï¿½ï¿½czenia
+	// i w miï¿½dzyczasie uï¿½ytkownik nie zmieniï¿½ statusu na niedostï¿½pny
+	// to za sekundï¿½ prï¿½bujemy ponownie
 	if (continue_connecting && !NextStatus->isOffline())
 		connectAfterOneSecond();
 
 	kdebugf2();
 }
 
-void GaduProtocol::imageReceived(UinType sender, uint32_t size, uint32_t crc32,
-	const QString &filename, const char *data)
+void GaduProtocol::imageReceived(UinType sender, uint32_t size, uint32_t crc32, const QString &filename, const char *data)
 {
 	kdebugm(KDEBUG_INFO, QString("Received image. sender: %1, size: %2, crc32: %3,filename: %4\n")
 		.arg(sender).arg(size).arg(crc32).arg(filename).local8Bit().data());
@@ -927,8 +917,7 @@ void GaduProtocol::imageRequestReceivedSlot(UinType sender, uint32_t size, uint3
 	gadu_images_manager.sendImage(sender,size,crc32);
 }
 
-void GaduProtocol::messageReceivedSlot(int msgclass, UserListElements senders, QString &msg, time_t time,
-	QByteArray &formats)
+void GaduProtocol::messageReceivedSlot(int msgclass, UserListElements senders, QString &msg, time_t time, QByteArray &formats)
 {
 /*
 	najpierw sprawdzamy czy nie jest to wiadomosc systemowa (senders[0] rowne 0)
@@ -1134,7 +1123,7 @@ void GaduProtocol::login()
 //	polaczenia TLS z serwerami GG na razie nie dzialaja
 //	LoginParams.tls = config_file.readBoolEntry("Network", "UseTLS");
 	LoginParams.tls = 0;
-	LoginParams.client_version = GG_DEFAULT_CLIENT_VERSION; //tego siê nie zwalnia...
+	LoginParams.client_version = GG_DEFAULT_CLIENT_VERSION; //tego siï¿½ nie zwalnia...
 	LoginParams.protocol_version = GG_DEFAULT_PROTOCOL_VERSION; // we are gg 7.7 now
 		// =  GG_DEFAULT_PROTOCOL_VERSION;
 	if (LoginParams.tls)
@@ -1376,7 +1365,7 @@ void GaduProtocol::sendUserList()
 	kdebugf2();
 }
 
-bool GaduProtocol::sendImageRequest(UserListElement user,int size,uint32_t crc32)
+bool GaduProtocol::sendImageRequest(UserListElement user, int size, uint32_t crc32)
 {
 	kdebugf();
 	int res = 1;
@@ -1390,7 +1379,7 @@ bool GaduProtocol::sendImageRequest(UserListElement user,int size,uint32_t crc32
 	return (res == 0);
 }
 
-bool GaduProtocol::sendImage(UserListElement user, const QString& file_name, uint32_t size, const char* data)
+bool GaduProtocol::sendImage(UserListElement user, const QString &file_name, uint32_t size, const char *data)
 {
 	kdebugf();
 	int res = 1;
@@ -1496,7 +1485,7 @@ void GaduProtocol::newResults(gg_pubdir50_t res)
 
 /* informacje osobiste */
 
-void GaduProtocol::getPersonalInfo(SearchRecord& searchRecord)
+void GaduProtocol::getPersonalInfo(SearchRecord &searchRecord)
 {
 	kdebugf();
 
@@ -1508,7 +1497,7 @@ void GaduProtocol::getPersonalInfo(SearchRecord& searchRecord)
 	kdebugf2();
 }
 
-void GaduProtocol::setPersonalInfo(SearchRecord& searchRecord, SearchResult& newData)
+void GaduProtocol::setPersonalInfo(SearchRecord &searchRecord, SearchResult &newData)
 {
 	kdebugf();
 
@@ -1538,12 +1527,12 @@ void GaduProtocol::setPersonalInfo(SearchRecord& searchRecord, SearchResult& new
 }
 
 // -----------------------------
-//      Zarz±dzanie kontem
+//      Zarzï¿½dzanie kontem
 // -----------------------------
 
 void GaduProtocol::getToken()
 {
-	TokenSocketNotifiers *sn = new TokenSocketNotifiers(this, "token_socket_notifiers");
+	TokenSocketNotifiers *sn = new TokenSocketNotifiers(this);
 	connect(sn, SIGNAL(tokenError()), this, SLOT(tokenError()));
 	connect(sn, SIGNAL(gotToken(QString, QPixmap)), this, SLOT(gotToken(QString, QPixmap)));
 	sn->start();
@@ -1573,7 +1562,7 @@ void GaduProtocol::unregisterAccount(UinType uin, const QString &password)
 	kdebugf2();
 }
 
-void GaduProtocol::remindPassword(UinType uin, const QString& mail)
+void GaduProtocol::remindPassword(UinType uin, const QString &mail)
 {
 	kdebugf();
 
@@ -1585,8 +1574,7 @@ void GaduProtocol::remindPassword(UinType uin, const QString& mail)
 	kdebugf2();
 }
 
-void GaduProtocol::changePassword(UinType uin, const QString &mail, const QString &password,
-	const QString &newPassword)
+void GaduProtocol::changePassword(UinType uin, const QString &mail, const QString &password, const QString &newPassword)
 {
 	kdebugf();
 
@@ -1749,9 +1737,9 @@ void GaduProtocol::gotToken(QString tokenId, QPixmap tokenImage)
 	kdebugf2();
 }
 
-/* lista u¿ytkowników */
+/* lista uï¿½ytkownikï¿½w */
 
-QString GaduProtocol::userListToString(const UserList& userList) const
+QString GaduProtocol::userListToString(const UserList &userList) const
 {
 	kdebugf();
 	NotifyType type;
@@ -1797,7 +1785,7 @@ QList<UserListElement> GaduProtocol::stringToUserList(const QString &string) con
 	return streamToUserList(stream);
 }
 
-QList<UserListElement> GaduProtocol::streamToUserList(QTextStream& stream) const
+QList<UserListElement> GaduProtocol::streamToUserList(QTextStream &stream) const
 {
 	kdebugf();
 
@@ -1890,7 +1878,7 @@ void GaduProtocol::connectAfterOneSecond()
 	kdebugf2();
 }
 
-bool GaduProtocol::doExportUserList(const UserList& userList)
+bool GaduProtocol::doExportUserList(const UserList &userList)
 {
 	kdebugf();
 
@@ -1954,14 +1942,14 @@ void GaduProtocol::userListReceived(const struct gg_event *e)
 	//return;
 
 	int cnt = 0;
-	while (e->event.notify60[nr].uin) // zliczamy najpierw ile zmian statusów zostanie wyemitowanych
+	while (e->event.notify60[nr].uin) // zliczamy najpierw ile zmian statusï¿½w zostanie wyemitowanych
 	{
 		if (!userlist->byID("Gadu", QString::number(e->event.notify60[nr].uin)).isAnonymous())
 			++cnt;
 		++nr;
 	}
 	nr = 0;
-	//a teraz bêdziemy przetwarzaæ
+	//a teraz bï¿½dziemy przetwarzaï¿½
 
 	while (e->event.notify60[nr].uin)
 	{
@@ -2304,7 +2292,7 @@ QString GaduFormater::formatGGMessage(const QString &msg, unsigned int formats_l
 
 	const UserStatus &curStat = gadu->currentStatus();
 
-	/* gdy mamy sendera na li¶cie kontaktów, nie jest on ignorowany,
+	/* gdy mamy sendera na liï¿½cie kontaktï¿½w, nie jest on ignorowany,
 	nie jest anononimowy i nasz status na to pozwala, to zezwalamy na obrazki */
 	bool receiveImage =
 			userlist->contains(user, FalseForAnonymous) &&
@@ -2401,10 +2389,7 @@ QString GaduFormater::formatGGMessage(const QString &msg, unsigned int formats_l
 				else if (sender!=0)
 				{
 					kdebugm(KDEBUG_INFO, "Someone sends us an image\n");
-					QString file_name =
-							gadu_images_manager.getSavedImageFileName(
-							tmpsize,
-	   tmpcrc32);
+					QString file_name = gadu_images_manager.getSavedImageFileName(tmpsize, tmpcrc32);
 					if (!file_name.isEmpty())
 					{
 						kdebugm(KDEBUG_INFO, "This image was already saved\n");
@@ -2420,8 +2405,7 @@ QString GaduFormater::formatGGMessage(const QString &msg, unsigned int formats_l
 							{
 								kdebugm(KDEBUG_INFO, "sending request\n");
 								gadu->sendImageRequest(user, tmpsize, tmpcrc32);
-								mesg.append(GaduImagesManager::loadingImageHtml(
-											sender,tmpsize,tmpcrc32));
+								mesg.append(GaduImagesManager::loadingImageHtml(sender,tmpsize,tmpcrc32));
 							}
 							else
 								mesg.append(qApp->translate("@default", QT_TR_NOOP("###IMAGE BLOCKED###")));
@@ -2433,10 +2417,7 @@ QString GaduFormater::formatGGMessage(const QString &msg, unsigned int formats_l
 				else
 				{
 					kdebugm(KDEBUG_INFO, "This is my message and my image\n");
-					QString file_name =
-							gadu_images_manager.getImageToSendFileName(
-							tmpsize,
-	   tmpcrc32);
+					QString file_name = gadu_images_manager.getImageToSendFileName(tmpsize, tmpcrc32);
 					mesg.append(GaduImagesManager::imageHtml(file_name));
 				}
 			}// if (actformat->font & GG_FONT_IMAGE)
@@ -2716,6 +2697,4 @@ QString GaduFormater::unformatGGMessage(const QString &msg, unsigned int &format
 	return mesg;
 }
 
-
-
-GaduProtocol* gadu;
+GaduProtocol *gadu;

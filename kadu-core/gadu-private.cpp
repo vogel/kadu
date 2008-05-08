@@ -335,8 +335,8 @@ void GaduSocketNotifiers::setSession(gg_session *sess)
 void GaduSocketNotifiers::checkWrite()
 {
 	kdebugf();
-	//kiedy¶ tu siê sypa³o, ale b³±d zosta³ naprawiony
-	//mimo to niech kdebugi zostan± w razie gdyby ten b³±d kiedy¶ powróci³
+	//kiedyï¿½ tu siï¿½ sypaï¿½o, ale bï¿½ï¿½d zostaï¿½ naprawiony
+	//mimo to niech kdebugi zostanï¿½ w razie gdyby ten bï¿½ï¿½d kiedyï¿½ powrï¿½ciï¿½
 	if (Sess == NULL)
 	{
 		kdebugm(KDEBUG_PANIC, "Sess == NULL !!\n");
@@ -575,7 +575,7 @@ void GaduSocketNotifiers::connectionFailed(int failure)
 	kdebugf2();
 }
 
-Protocol *GaduProtocolManager::newInstance(const QString &id)
+Protocol * GaduProtocolManager::newInstance(const QString &id)
 {
-	return new GaduProtocol(id, protocols_manager, "gadu_protocol_");
+	return new GaduProtocol(id, protocols_manager);
 }
