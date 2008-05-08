@@ -9,17 +9,14 @@
 
 #include "config_file.h"
 #include "debug.h"
-#include "groups_manager.h"
-#include "action.h"
 #include "icons_manager.h"
 #include "kadu.h"
-#include "misc.h"
 #include "pending_msgs.h"
 #include "tabbar.h"
 #include "userbox.h"
 #include "userlist.h"
-//Added by qt3to4:
-#include <QPixmap>
+
+#include "groups_manager.h"
 
 void GroupsManager::initModule()
 {
@@ -84,9 +81,9 @@ void GroupsManager::setTabBar(KaduTabBar *bar)
 	GroupBar = bar;
 
 	bar->setShape(QTabBar::RoundedBelow);
-	int index = bar->addTab(tr("All"));
-	bar->setTabIcon(index, icons_manager->loadPixmap("PersonalInfo").xForm(QMatrix().rotate(-90)));
+	bar->addTab(icons_manager->loadIcon("PersonalInfo"), tr("All"));
 	bar->setFont(QFont(config_file.readFontEntry("Look", "UserboxFont").family(), config_file.readFontEntry("Look", "UserboxFont").pointSize(), QFont::Bold));
+	bar->setIconSize(QSize(16,16));
 	connect(bar, SIGNAL(selected(int)), this, SLOT(tabSelected(int)));
 	connect(userlist, SIGNAL(modified()), this, SLOT(refreshTabBarLater()));
 	connect(&refreshTimer, SIGNAL(timeout()), this, SLOT(refreshTabBar()));
@@ -213,12 +210,7 @@ void GroupsManager::refreshTabBar()
 		{
 			QString iconPath = config_file.readEntry("GroupIcon", (*group));	
 			if (!iconPath.isEmpty()) 
-			{
-				QPixmap icon = icons_manager->loadPixmap(iconPath).xForm(QMatrix().rotate(-90));
-
-				int index = GroupBar->addTab(*group);
-				GroupBar->setTabIcon(index, icon.xForm(QMatrix().scale((double)16/icon.width(), (double)16/icon.height())));
-			}
+				GroupBar->addTab(icons_manager->loadIcon(iconPath), *group);
 			else 
 				GroupBar->addTab(*group);
 		}
@@ -227,8 +219,6 @@ void GroupsManager::refreshTabBar()
 	kdebugm(KDEBUG_INFO, "%i group tabs\n", GroupBar->count());
 	GroupBar->show();
 
-	/* odswiezamy - dziala tylko jesli jest widoczny */
-	GroupBar->update();
 	kdebugf2();
 }
 
@@ -247,7 +237,7 @@ void GroupsManager::configurationUpdated()
 void GroupsManager::iconThemeChanged()
 {
 	if (GroupBar)
-		GroupBar->setTabIcon(0, icons_manager->loadPixmap("PersonalInfo").xForm(QMatrix().rotate(-90)));
+		GroupBar->setTabIcon(0, icons_manager->loadIcon("PersonalInfo"));
 }
 
 void GroupsManager::changeDisplayingBlocking()
@@ -535,25 +525,13 @@ void GroupsManager::setIconForTab(const QString &name)
 	{
 		if (GroupBar->tabText(index) == name)
 		{
-			int currentTab = GroupBar->currentIndex();
-
-			GroupBar->removeTab(index);
-
 			QString iconPath = config_file.readEntry("GroupIcon", name);	
 
 			if (!iconPath.isEmpty()) 
-			{
-				QPixmap icon = icons_manager->loadPixmap(iconPath).xForm(QMatrix().rotate(-90));
-
-				GroupBar->insertTab(index, name);
-				GroupBar->setTabIcon(index, icon.xForm(QMatrix().scale((double)16/icon.width(), (double)16/icon.height())));
-			}
+				GroupBar->setTabIcon(index, icons_manager->loadIcon(iconPath));
 			else 
-				GroupBar->insertTab(index, name);
+				GroupBar->setTabIcon(index, QIcon());
 
-			GroupBar->update();
-
-			GroupBar->setCurrentIndex(currentTab);
 			return;
 		}
 	}

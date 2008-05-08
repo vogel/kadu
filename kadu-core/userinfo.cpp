@@ -605,7 +605,19 @@ void UserInfo::selectIcon()
 	iDialog->setFilter(tr("Icons (*.png *.xpm *.jpg)"));
 	if (iDialog->exec() == QDialog::Accepted)
 	{
-		QString groupName = sender()->parent()->name();
+		QString groupName;
+		const QCheckBox *checkBox = NULL;
+		
+		CONST_FOREACH(child, sender()->parent()->children())
+		{
+			checkBox = dynamic_cast<const QCheckBox*>(*child);
+			
+			if(checkBox)
+			{
+				groupName = checkBox->text();
+				break;
+			}
+		}
 
 		config_file.writeEntry("GroupIcon", "recentPath", iDialog->dirPath());
 		config_file.writeEntry("GroupIcon", groupName, iDialog->selectedFile());
@@ -620,7 +632,19 @@ void UserInfo::selectIcon()
 
 void UserInfo::deleteIcon()
 {
-	QString groupName = sender()->parent()->name();
+	QString groupName;
+	const QCheckBox *checkBox = NULL;
+	
+	CONST_FOREACH(child, sender()->parent()->children())
+	{
+		checkBox = dynamic_cast<const QCheckBox*>(*child);
+		
+		if(checkBox)
+		{
+			groupName = checkBox->text();
+			break;
+		}
+	}
 
 	config_file.removeVariable("GroupIcon", groupName);
 

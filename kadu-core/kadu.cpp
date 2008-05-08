@@ -182,7 +182,7 @@ Kadu::Kadu(QWidget *parent)
 	QHBoxLayout *hbox_layout = new QHBoxLayout;
 
 	// groupbar
-	GroupBar = new KaduTabBar(this, "groupbar");
+	GroupBar = new KaduTabBar(this);
 	hbox_layout->setStretchFactor(GroupBar, 1);
 
 	StatusChangerManager::initModule();
@@ -208,6 +208,7 @@ Kadu::Kadu(QWidget *parent)
 	hbox_layout->setStretchFactor(Userbox, 100);
 	hbox_layout->addWidget(GroupBar);
 	hbox_layout->addWidget(Userbox);
+	hbox_layout->setAlignment(GroupBar, Qt::AlignTop);
 	hbox->setLayout(hbox_layout);
 	connect(UserBox::userboxmenu, SIGNAL(popup()), this, SLOT(popupMenu()));
 	connect(Userbox, SIGNAL(rightButtonPressed(Q3ListBoxItem *, const QPoint &)),
@@ -1019,6 +1020,7 @@ void Kadu::changeAppearance()
 	QApplication::setStyle(config_file.readEntry("Look", "QtStyle"));
 
 	GroupBar->setFont(QFont(config_file.readFontEntry("Look", "UserboxFont").family(), config_file.readFontEntry("Look", "UserboxFont").pointSize(),75));
+	GroupBar->setShape(QTabBar::RoundedWest);
 
 	if (config_file.readBoolEntry("Look", "ShowInfoPanel"))
 	{

@@ -1,15 +1,9 @@
 #ifndef KADU_GROUPS_MANAGER_H
 #define KADU_GROUPS_MANAGER_H
 
-#include <qglobal.h>
-
-#include <qmap.h>
-#include <qobject.h>
-#include <qstring.h>
-#include <qstringlist.h>
-#include <qtimer.h>
-#include <qvariant.h>
-#include <qmatrix.h>
+#include <QMap>
+#include <QObject>
+#include <QTimer>
 
 #include "configuration_aware_object.h"
 #include "usergroup.h"

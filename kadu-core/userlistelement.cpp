@@ -262,7 +262,8 @@ QVariant UserListElement::setData(const QString &name, const QVariant &val, bool
 	}
 	else
 	{
-		CONST_FOREACH (group, privateData->Parents)
+		QList<UserGroup*> currentGroups = privateData->Parents;
+		CONST_FOREACH (group, currentGroups)
 		{
 			emit (*group)->userDataChanged(*this, name, old, val, massively, last);
 			emit (*group)->usersDataChanged(name);
