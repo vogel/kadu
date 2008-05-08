@@ -9,19 +9,24 @@
 
 #include "config_file.h"
 #include "debug.h"
-#include "gadu_images_manager.h"
+#include "gadu.h"
 #include "icons_manager.h"
 #include "misc.h"
 
-GaduImagesManager::ImageToSend::ImageToSend() : size(0), crc32(0), file_name(), lastSent(), data(0)
+#include "gadu_images_manager.h"
+
+GaduImagesManager::ImageToSend::ImageToSend()
+	: size(0), crc32(0), file_name(), lastSent(), data(0)
 {
 }
 
-GaduImagesManager::SavedImage::SavedImage() : size(0), crc32(0), file_name()
+GaduImagesManager::SavedImage::SavedImage()
+	: size(0), crc32(0), file_name()
 {
 }
 
-GaduImagesManager::GaduImagesManager() : ImagesToSend(), SavedImages()
+GaduImagesManager::GaduImagesManager()
+	: ImagesToSend(), SavedImages()
 {
 }
 
@@ -41,9 +46,9 @@ void GaduImagesManager::setBackgroundsForAnimatedImages(HtmlDocument &doc, const
 	}
 }
 
-QString GaduImagesManager::imageHtml(const QString& file_name)
+QString GaduImagesManager::imageHtml(const QString &file_name)
 {
-	if (file_name.right(4).lower()==".gif")
+	if (file_name.right(4).lower() == ".gif")
 		return narg(QString("<img bgcolor=\"\" animated=\"1\" src=\"%1\" title=\"%2\"/>"), file_name, file_name);
 	else
 		return QString("<img src=\"%1\"/>").arg(file_name);
@@ -55,7 +60,7 @@ QString GaduImagesManager::loadingImageHtml(UinType uin, uint32_t size, uint32_t
 		icons_manager->iconPath("LoadingImage"), QString::number(uin), QString::number(size), QString::number(crc32));
 }
 
-void GaduImagesManager::addImageToSend(const QString& file_name, uint32_t& size, uint32_t& crc32)
+void GaduImagesManager::addImageToSend(const QString &file_name, uint32_t &size, uint32_t &crc32)
 {
 	kdebugf();
 	ImageToSend img;
@@ -136,13 +141,13 @@ void GaduImagesManager::sendImage(UinType uin, uint32_t size, uint32_t crc32)
 		gadu->sendImage(userlist->byID("Gadu", QString::number(uin)), i.file_name, i.size, i.data);
 		delete[] i.data;
 		i.data = NULL;
-		i.lastSent = QDateTime::currentDateTime(); // to pole wykorzysta siê przy zapisywaniu listy obrazków do pliku, stare obrazki bêd± usuwane
+		i.lastSent = QDateTime::currentDateTime(); // to pole wykorzysta siï¿½ przy zapisywaniu listy obrazkï¿½w do pliku, stare obrazki bï¿½dï¿½ usuwane
 	}
 	else
 		kdebugm(KDEBUG_WARNING, "Image data not found\n");
 }
 
-QString GaduImagesManager::saveImage(UinType sender, uint32_t size, uint32_t crc32, const QString& filename, const char* data)
+QString GaduImagesManager::saveImage(UinType sender, uint32_t size, uint32_t crc32, const QString& filename, const char *data)
 {
 	kdebugf();
 	QString path = ggPath("images");
@@ -195,7 +200,7 @@ QString GaduImagesManager::getSavedImageFileName(uint32_t size, uint32_t crc32)
 	return QString::null;
 }
 
-QString GaduImagesManager::replaceLoadingImages(const QString& text, UinType sender, uint32_t size, uint32_t crc32)
+QString GaduImagesManager::replaceLoadingImages(const QString &text, UinType sender, uint32_t size, uint32_t crc32)
 {
 	kdebugf();
 	QString loading_string = GaduImagesManager::loadingImageHtml(sender,size,crc32);
