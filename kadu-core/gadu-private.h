@@ -1,18 +1,21 @@
+/***************************************************************************
+ *                                                                         *
+ *   This program is free software; you can redistribute it and/or modify  *
+ *   it under the terms of the GNU General Public License as published by  *
+ *   the Free Software Foundation; either version 2 of the License, or     *
+ *   (at your option) any later version.                                   *
+ *                                                                         *
+ ***************************************************************************/
+
 #ifndef GADU_PRIVATE_H
 #define GADU_PRIVATE_H
 
-#include <qglobal.h>
-
-#include <q3cstring.h>
-#include <qobject.h>
-#include <qpixmap.h>
-#include <qstring.h>
-
 #include "gadu.h"
+#include "protocol.h"
 #include "protocols_manager.h"
-#include "userlistelement.h"
 
 class QSocketNotifier;
+
 struct gg_http;
 struct gg_session;
 
@@ -26,132 +29,136 @@ class SocketNotifiers : public QObject
 {
 	Q_OBJECT
 
-	protected:
-		int Fd;
-		QSocketNotifier *Snr;
-		QSocketNotifier *Snw;
+protected:
+	int Fd;
+	QSocketNotifier *Snr;
+	QSocketNotifier *Snw;
 
-		void createSocketNotifiers();
-		void deleteSocketNotifiers();
-		void recreateSocketNotifiers();
-		virtual void socketEvent() = 0;
+	void createSocketNotifiers();
+	void deleteSocketNotifiers();
+	void recreateSocketNotifiers();
+	virtual void socketEvent() = 0;
 
-	protected slots:
-		virtual void dataReceived() = 0;
-		virtual void dataSent() = 0;
+protected slots:
+	virtual void dataReceived() = 0;
+	virtual void dataSent() = 0;
 
-	public:
-		SocketNotifiers(int fd, QObject *parent=0, const char *name=0);
-		virtual ~SocketNotifiers();
-		virtual void start();
-		virtual void stop();
+public:
+	SocketNotifiers(int fd, QObject *parent = 0);
+	virtual ~SocketNotifiers();
+	virtual void start();
+	virtual void stop();
+
 };
 
 class PubdirSocketNotifiers : public SocketNotifiers
 {
 	Q_OBJECT
 
-	private:
-		struct gg_http *H;
+	struct gg_http *H;
 
-	protected:
-		virtual void socketEvent();
+protected:
+	virtual void socketEvent();
 
-	protected slots:
-		virtual void dataReceived();
-		virtual void dataSent();
+protected slots:
+	virtual void dataReceived();
+	virtual void dataSent();
 
-	public:
-		PubdirSocketNotifiers(struct gg_http *, QObject *parent=0, const char *name=0);
-		virtual ~PubdirSocketNotifiers();
+public:
+	PubdirSocketNotifiers(struct gg_http *, QObject *parent = 0);
+	virtual ~PubdirSocketNotifiers();
 
-	signals:
-		void done(bool ok, struct gg_http *);
+signals:
+	void done(bool ok, struct gg_http *);
+
 };
 
 class TokenSocketNotifiers : public SocketNotifiers
 {
 	Q_OBJECT
 
-	private:
-		struct gg_http *H;
+	struct gg_http *H;
 
-	protected:
-		virtual void socketEvent();
+protected:
+	virtual void socketEvent();
 
-	protected slots:
-		virtual void dataReceived();
-		virtual void dataSent();
+protected slots:
+	virtual void dataReceived();
+	virtual void dataSent();
 
-	public:
-		TokenSocketNotifiers(QObject *parent=0, const char *name=0);
-		virtual ~TokenSocketNotifiers();
+public:
+	TokenSocketNotifiers(QObject *parent = 0);
+	virtual ~TokenSocketNotifiers();
 
-		virtual void start();
+	virtual void start();
 
-	signals:
-		void gotToken(QString, QPixmap);
-		void tokenError();
+signals:
+	void gotToken(QString, QPixmap);
+	void tokenError();
+
 };
 
 class GaduSocketNotifiers : public SocketNotifiers
 {
 	Q_OBJECT
 
-	private:
-		gg_session *Sess;
-		int socketEventCalls;
+	gg_session *Sess;
+	int socketEventCalls;
 
-		void connectionFailed(int);
+	void connectionFailed(int);
 
-	protected:
-		virtual void socketEvent();
+protected:
+	virtual void socketEvent();
 
-	public slots:
-		virtual void dataReceived();
-		virtual void dataSent();
+public:
+	GaduSocketNotifiers(QObject *parent = 0);
+	virtual ~GaduSocketNotifiers();
+	void setSession(gg_session *sess);
+	void checkWrite();
 
-	public:
-		GaduSocketNotifiers(QObject *parent=0, const char *name=0);
-		virtual ~GaduSocketNotifiers();
-		void setSession(gg_session *sess);
-		void checkWrite();
+public slots:
+	virtual void dataReceived();
+	virtual void dataSent();
 
-	signals:
-		void ackReceived(int seq, uin_t uin, int status);
-		void connected();
-		/**
-			Otrzymano wiadomo¶æ CTCP.
-			Kto¶ nas prosi o po³±czenie dcc, poniewa¿
-			jeste¶my za NAT-em.
-			TODO: zmieniæ nazwê.
-		**/
-		void dccConnectionReceived(const UserListElement &);
 
-		/**
-			Sygna³ jest emitowany, gdy serwer przerwa³ po³±czenie
-		**/
-		void serverDisconnected();
+signals:
+	void ackReceived(int seq, uin_t uin, int status);
+	void connected();
 
-		void error(GaduError);
-		void imageReceived(UinType, uint32_t, uint32_t, const QString &filename, const char *data);
-		void imageRequestReceived(UinType, uint32_t, uint32_t);
-		void messageReceived(int, UserListElements, QString &, time_t, QByteArray &);
-		void pubdirReplyReceived(gg_pubdir50_t);
-		void systemMessageReceived(QString &, QDateTime &, int, void *);
-		void userlistReceived(const struct gg_event *);
-		void userlistReplyReceived(char, char *);
-		void userStatusChanged(const struct gg_event *);
+	/**
+		Otrzymano wiadomoï¿½ï¿½ CTCP.
+		Ktoï¿½ nas prosi o poï¿½ï¿½czenie dcc, poniewaï¿½
+		jesteï¿½my za NAT-em.
+		TODO: zmieniï¿½ nazwï¿½.
+	**/
+	void dccConnectionReceived(const UserListElement &);
 
-		void dcc7New(struct gg_dcc7 *);
-		void dcc7Accepted(struct gg_dcc7 *);
-		void dcc7Rejected(struct gg_dcc7 *);
+	/**
+		Sygnaï¿½ jest emitowany, gdy serwer przerwaï¿½ poï¿½ï¿½czenie
+	**/
+	void serverDisconnected();
+
+	void error(GaduError);
+	void imageReceived(UinType, uint32_t, uint32_t, const QString &filename, const char *data);
+	void imageRequestReceived(UinType, uint32_t, uint32_t);
+	void messageReceived(int, UserListElements, QString &, time_t, QByteArray &);
+	void pubdirReplyReceived(gg_pubdir50_t);
+	void systemMessageReceived(QString &, QDateTime &, int, void *);
+	void userlistReceived(const struct gg_event *);
+	void userlistReplyReceived(char, char *);
+	void userStatusChanged(const struct gg_event *);
+
+	void dcc7New(struct gg_dcc7 *);
+	void dcc7Accepted(struct gg_dcc7 *);
+	void dcc7Rejected(struct gg_dcc7 *);
+
 };
 
 class GaduProtocolManager : public ProtocolManager
 {
-	public:
-		virtual Protocol *newInstance(const QString &id);
+public:
+	virtual Protocol * newInstance(const QString &id);
+
 };
 
 #pragma GCC visibility pop

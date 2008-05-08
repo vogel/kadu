@@ -7,20 +7,17 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <qsocketnotifier.h>
-#include <QString>
-#include <QPixmap>
-
-#include "libgadu.h"
+#include <QSocketNotifier>
 
 #include "config_file.h"
 #include "debug.h"
-#include "gadu-private.h"
 #include "ignore.h"
 #include "misc.h"
-#include "userlist.h"
 
-SocketNotifiers::SocketNotifiers(int fd, QObject *parent, const char *name) : QObject(parent, name), Fd(fd), Snr(0), Snw(0)
+#include "gadu-private.h"
+
+SocketNotifiers::SocketNotifiers(int fd, QObject *parent)
+	: QObject(parent), Fd(fd), Snr(0), Snw(0)
 {
 	kdebugf();
 	kdebugf2();
@@ -93,8 +90,8 @@ void SocketNotifiers::recreateSocketNotifiers()
 
 /* PubdirSocketNotifiers */
 
-PubdirSocketNotifiers::PubdirSocketNotifiers(struct gg_http *h, QObject *parent, const char *name)
-	: SocketNotifiers(h->fd, parent, name), H(h)
+PubdirSocketNotifiers::PubdirSocketNotifiers(struct gg_http *h, QObject *parent)
+	: SocketNotifiers(h->fd, parent), H(h)
 {
 	kdebugf();
 	kdebugf2();
@@ -188,8 +185,8 @@ void PubdirSocketNotifiers::socketEvent()
 
 /* TokenSocketNotifier */
 
-TokenSocketNotifiers::TokenSocketNotifiers(QObject *parent, const char *name)
-	: SocketNotifiers(0, parent, name), H(0)
+TokenSocketNotifiers::TokenSocketNotifiers(QObject *parent)
+	: SocketNotifiers(0, parent), H(0)
 {
 	kdebugf();
 	kdebugf2();
@@ -315,8 +312,8 @@ void TokenSocketNotifiers::socketEvent()
 
 /* GaduSocketNotifiers */
 
-GaduSocketNotifiers::GaduSocketNotifiers(QObject *parent, const char *name) :
-	SocketNotifiers(0, parent, name), Sess(0), socketEventCalls(0)
+GaduSocketNotifiers::GaduSocketNotifiers(QObject *parent) :
+	SocketNotifiers(0, parent), Sess(0), socketEventCalls(0)
 {
 	kdebugf();
 	kdebugf2();

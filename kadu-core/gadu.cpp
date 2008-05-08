@@ -348,7 +348,7 @@ GaduProtocol::GaduProtocol(const QString &id, QObject *parent)
 	: Protocol("Gadu", id, parent),
 		Mode(Register), DataUin(0), DataEmail(), DataPassword(), DataNewPassword(), TokenId(), TokenValue(),
 		ServerNr(0), ActiveServer(), LoginParams(), Sess(0), sendImageRequests(0), seqNumber(0), whileConnecting(false),
-		DccExternalIP(), SocketNotifiers(new GaduSocketNotifiers(this, "gadu_socket_notifiers")), PingTimer(0),
+		DccExternalIP(), SocketNotifiers(new GaduSocketNotifiers(this)), PingTimer(0),
 		SendUserListTimer(new QTimer(this, "SendUserListTimer")), UserListClear(false), ImportReply()
 {
 	kdebugf();
@@ -1595,7 +1595,7 @@ void GaduProtocol::doRegisterAccount()
 		unicode2cp(TokenId).data(), unicode2cp(TokenValue).data(), 1);
 	if (h)
 	{
-		PubdirSocketNotifiers *sn = new PubdirSocketNotifiers(h, this, "pubdir_socket_notifiers");
+		PubdirSocketNotifiers *sn = new PubdirSocketNotifiers(h, this);
 		connect(sn, SIGNAL(done(bool, struct gg_http *)), this, SLOT(registerDone(bool, struct gg_http *)));
 		sn->start();
 	}
@@ -1618,7 +1618,7 @@ void GaduProtocol::doUnregisterAccount()
 		unicode2cp(TokenValue).data(), 1);
 	if (h)
 	{
-		PubdirSocketNotifiers *sn = new PubdirSocketNotifiers(h, this, "pubdir_socket_notifiers");
+		PubdirSocketNotifiers *sn = new PubdirSocketNotifiers(h, this);
 		connect(sn, SIGNAL(done(bool, struct gg_http *)),
 			this, SLOT(unregisterDone(bool, struct gg_http *)));
 		sn->start();
@@ -1643,7 +1643,7 @@ void GaduProtocol::doRemindPassword()
 		unicode2cp(TokenValue).data(), 1);
 	if (h)
 	{
-		PubdirSocketNotifiers *sn = new PubdirSocketNotifiers(h, this, "pubdir_socket_notifiers");
+		PubdirSocketNotifiers *sn = new PubdirSocketNotifiers(h, this);
 		connect(sn, SIGNAL(done(bool, struct gg_http *)), this, SLOT(remindDone(bool, struct gg_http *)));
 		sn->start();
 	}
@@ -1668,7 +1668,7 @@ void GaduProtocol::doChangePassword()
 		unicode2cp(TokenId).data(), unicode2cp(TokenValue).data(), 1);
 	if (h)
 	{
-		PubdirSocketNotifiers *sn = new PubdirSocketNotifiers(h, this, "pubdir_socket_notifiers");
+		PubdirSocketNotifiers *sn = new PubdirSocketNotifiers(h, this);
 		connect(sn, SIGNAL(done(bool, struct gg_http *)), this,
 			SLOT(changePasswordDone(bool, struct gg_http *)));
 		sn->start();
