@@ -2,7 +2,7 @@
 #define KADU_GROUPS_MANAGER_H
 
 #include <QMap>
-#include <QObject>
+#include <QStringList>
 #include <QTimer>
 
 #include "configuration_aware_object.h"
@@ -13,8 +13,8 @@ class KaduTabBar;
 class UserBox;
 
 /**
-	Klasa s³u¿±ca przede wszystkim zarz±dzaniu nazwanymi grupami kontaktów,
-	ale tak¿e zarz±dza grupami typu: blokowani, blokuj±cy, tylko z opisami, tylko dostêpni, anonimowi
+	Klasa sï¿½uï¿½ï¿½ca przede wszystkim zarzï¿½dzaniu nazwanymi grupami kontaktï¿½w,
+	ale takï¿½e zarzï¿½dza grupami typu: blokowani, blokujï¿½cy, tylko z opisami, tylko dostï¿½pni, anonimowi
 	\class GroupsManager
 	\brief
 **/
@@ -52,44 +52,44 @@ protected:
 public:
 	/**
 		\fn static void initModule()
-		inicjuje modu³ zarz±dcy grup
+		inicjuje moduï¿½ zarzï¿½dcy grup
 	**/
 	static void initModule();
 
 	/**
 		\fn static void closeModule()
-		sprz±ta po module zarz±dcy grup
+		sprzï¿½ta po module zarzï¿½dcy grup
 	**/
 	static void closeModule();
 
 	/**
 		\fn UserGroup *group(const QString &name) const
-		zwraca grupê kontaktów o nazwie name
+		zwraca grupï¿½ kontaktï¿½w o nazwie name
 		\param name nazwa grupy
-		\return grupa kontaktów
+		\return grupa kontaktï¿½w
 	**/
 	UserGroup *group(const QString &name) const;
 
 	/**
 		\fn UserGroup *addGroup(const QString &name)
-		dodaje now± grupê kontaktów o nazwie name
+		dodaje nowï¿½ grupï¿½ kontaktï¿½w o nazwie name
 		\param name nazwa grupy
-		\return grupa kontaktów
+		\return grupa kontaktï¿½w
 	**/
 	UserGroup *addGroup(const QString &name);
 
 	/**
 		\fn void removeGroup(const QString &name)
-		usuwa grupê kontaktów o nazwie name
+		usuwa grupï¿½ kontaktï¿½w o nazwie name
 		\param name nazwa grupy
 	**/
 	void removeGroup(const QString &name);
 
 	/**
 		\fn void setTabBar(KaduTabBar *bar)
-		ustawia pas zak³adek, na którym klasa bêdzie operowaæ oraz inicjuje
-		wewnêtrzne dane klasy
-		\param bar pas zak³adek, w którym bêdê umieszczane zak³adki grup
+		ustawia pas zakï¿½adek, na ktï¿½rym klasa bï¿½dzie operowaï¿½ oraz inicjuje
+		wewnï¿½trzne dane klasy
+		\param bar pas zakï¿½adek, w ktï¿½rym bï¿½dï¿½ umieszczane zakï¿½adki grup
 	**/
 	void setTabBar(KaduTabBar *bar);
 
@@ -114,7 +114,7 @@ public:
 
 	/**
 		\fn void setIconForTab(const QString &name, bool showIcon)
-		ustawia lub usuwa ikonkê dla grupy o nazwie name
+		ustawia lub usuwa ikonkï¿½ dla grupy o nazwie name
 		\param name nazwa grupy
 	**/
 	void setIconForTab(const QString &name);
@@ -123,60 +123,60 @@ public slots:
 
 	/**
 		\fn void setActiveGroup(const QString &name)
-		ustawia aktywn± grupê na name
+		ustawia aktywnï¿½ grupï¿½ na name
 		\param name nazwa grupy
 	**/
-	void setActiveGroup(const QString& group);
+	void setActiveGroup(const QString &group);
 
 	/**
 		\fn void refreshTabBar()
-		od¶wie¿a pasek zak³adek grup
+		odï¿½wieï¿½a pasek zakï¿½adek grup
 	**/
 	void refreshTabBar();
 
 	/**
 		\fn void refreshTabBarLater()
-		od¶wie¿a pasek zak³adek grup, ale po zakoñczeniu bie¿acych operacji
+		odï¿½wieï¿½a pasek zakï¿½adek grup, ale po zakoï¿½czeniu bieï¿½acych operacji
 	**/
 	inline void refreshTabBarLater() { refreshTimer.start(0, true); }
 
 	/**
 		\fn void changeDisplayingBlocking()
-		w³±cza lub wy³±cza wy¶wietlanie kontaktów blokuj±cych
-		w g³ównej li¶cie kontaktów w zale¿no¶ci od poprzedniego stanu
+		wï¿½ï¿½cza lub wyï¿½ï¿½cza wyï¿½wietlanie kontaktï¿½w blokujï¿½cych
+		w gï¿½ï¿½wnej liï¿½cie kontaktï¿½w w zaleï¿½noï¿½ci od poprzedniego stanu
 	**/
 	void changeDisplayingBlocking();
 
 	/**
 		\fn void changeDisplayingBlocked()
-		w³±cza lub wy³±cza wy¶wietlanie kontaktów blokowanych
-		w g³ównej li¶cie kontaktów w zale¿no¶ci od poprzedniego stanu
+		wï¿½ï¿½cza lub wyï¿½ï¿½cza wyï¿½wietlanie kontaktï¿½w blokowanych
+		w gï¿½ï¿½wnej liï¿½cie kontaktï¿½w w zaleï¿½noï¿½ci od poprzedniego stanu
 	**/
 	void changeDisplayingBlocked();
 
 	/**
 		\fn void changeDisplayingOffline(UserBox *userBox, bool show);
-		w³±cza lub wy³±cza wy¶wietlanie kontaktów niedostêpnych
-		w li¶cie kontaktów w zale¿no¶ci od poprzedniego stanu
-		\param userBox lista kontaktów
+		wï¿½ï¿½cza lub wyï¿½ï¿½cza wyï¿½wietlanie kontaktï¿½w niedostï¿½pnych
+		w liï¿½cie kontaktï¿½w w zaleï¿½noï¿½ci od poprzedniego stanu
+		\param userBox lista kontaktï¿½w
 		\param show stan akcji
 	**/
 	void changeDisplayingOffline(UserBox *userBox, bool show);
 
 	/**
 		\fn void changeDisplayingWithoutDescription(UserBox *userBox, bool show)
-		w³±cza lub wy³±cza wy¶wietlanie kontaktów o statusach bez opisu
-		w li¶cie kontaktów w zale¿no¶ci od poprzedniego stanu
-		\param userBox lista kontaktów
+		wï¿½ï¿½cza lub wyï¿½ï¿½cza wyï¿½wietlanie kontaktï¿½w o statusach bez opisu
+		w liï¿½cie kontaktï¿½w w zaleï¿½noï¿½ci od poprzedniego stanu
+		\param userBox lista kontaktï¿½w
 		\param show stan akcji
 	**/
 	void changeDisplayingWithoutDescription(UserBox *userBox, bool show);
 
 	/**
 		\fn void changeDisplayingOnlineAndDescription(UserBox *userBox, bool show)
-		w³±cza lub wy³±cza wy¶wietlanie kontatków o statusach "dostêpny"
-		lub "zajêty" oraz kontatków z opisem
-		\param userBox lista kontaktów
+		wï¿½ï¿½cza lub wyï¿½ï¿½cza wyï¿½wietlanie kontatkï¿½w o statusach "dostï¿½pny"
+		lub "zajï¿½ty" oraz kontatkï¿½w z opisem
+		\param userBox lista kontaktï¿½w
 		\param show stan akcji
 	**/
 	void changeDisplayingOnlineAndDescription(UserBox *userBox, bool show);
@@ -187,155 +187,175 @@ extern GroupsManager *groups_manager;
 
 /**
 	\class UsersWithDescription
-	Klasa grupuj±ca kontakty o statusie z opisem,
-	automatycznie synchronizuj±ca siê z g³ówn± list± kontaktów
+	Klasa grupujï¿½ca kontakty o statusie z opisem,
+	automatycznie synchronizujï¿½ca siï¿½ z gï¿½ï¿½wnï¿½ listï¿½ kontaktï¿½w
 **/
 class UsersWithDescription : public UserGroup
 {
 	Q_OBJECT
-	public:
-		UsersWithDescription();
-		virtual ~UsersWithDescription();
-	private slots:
-		void statusChangedSlot(UserListElement elem, QString protocolName,
-							const UserStatus &oldStatus, bool massively, bool last);
+
+private slots:
+	void statusChangedSlot(UserListElement elem, QString protocolName, const UserStatus &oldStatus, bool massively, bool last);
+
+public:
+	UsersWithDescription();
+	virtual ~UsersWithDescription();
+
 };
+
 extern UsersWithDescription *usersWithDescription;
 
 /**
 	\class OnlineUsers
-	Klasa grupuj±ca kontakty o statusie "dostêpny" lub "zajêty",
-	automatycznie synchronizuj±ca siê z g³ówn± list± kontaktów
+	Klasa grupujï¿½ca kontakty o statusie "dostï¿½pny" lub "zajï¿½ty",
+	automatycznie synchronizujï¿½ca siï¿½ z gï¿½ï¿½wnï¿½ listï¿½ kontaktï¿½w
 **/
 class OnlineUsers : public UserGroup
 {
 	Q_OBJECT
-	public:
-		OnlineUsers();
-		virtual ~OnlineUsers();
-	private slots:
-		void statusChangedSlot(UserListElement elem, QString protocolName,
-							const UserStatus &oldStatus, bool massively, bool last);
+
+private slots:
+	void statusChangedSlot(UserListElement elem, QString protocolName, const UserStatus &oldStatus, bool massively, bool last);
+
+public:
+	OnlineUsers();
+	virtual ~OnlineUsers();
+
 };
+
 extern OnlineUsers *onlineUsers;
 
 /**
 	\class OnlineAndDescriptionUsers
-	Klasa grupuj±ca kontakty o statusie "dostêpny",
-	lub "zajêty", oraz kontakty maj±ca opis. Klasa
-	automatycznie synchronizuje siê z g³ówn± list± kontaktów
+	Klasa grupujï¿½ca kontakty o statusie "dostï¿½pny",
+	lub "zajï¿½ty", oraz kontakty majï¿½ca opis. Klasa
+	automatycznie synchronizuje siï¿½ z gï¿½ï¿½wnï¿½ listï¿½ kontaktï¿½w
 **/
 class OnlineAndDescriptionUsers : public UserGroup
 {
 	Q_OBJECT
 
-	public:
-		OnlineAndDescriptionUsers();
-		virtual ~OnlineAndDescriptionUsers();
+private slots:
+	void statusChangedSlot(UserListElement elem, QString protocolName, const UserStatus &oldStatus, bool massively, bool last);
+	void userChangedSlot(UserListElement elem, bool massively, bool last);
+	void protocolAddedOrRemoved(UserListElement elem, QString protocolName, bool massively, bool last);
 
-	private slots:
-		void statusChangedSlot(UserListElement elem, QString protocolName,
-					    const UserStatus &oldStatus, bool massively, bool last);
-		void userChangedSlot(UserListElement elem, bool massively, bool last);
-		void protocolAddedOrRemoved(UserListElement elem, QString protocolName, bool massively, bool last);
+public:
+	OnlineAndDescriptionUsers();
+	virtual ~OnlineAndDescriptionUsers();
+
 };
+
 extern OnlineAndDescriptionUsers *onlineAndDescriptionUsers;
 
 /**
 	\class OfflineUsers
-	Klasa grupuj±ca kontakty o statusie "niedostêpny",
-	automatycznie synchronizuj±ca siê z g³ówn± list± kontaktów
+	Klasa grupujï¿½ca kontakty o statusie "niedostï¿½pny",
+	automatycznie synchronizujï¿½ca siï¿½ z gï¿½ï¿½wnï¿½ listï¿½ kontaktï¿½w
 **/
 class OfflineUsers : public UserGroup
 {
 	Q_OBJECT
+
+private slots:
+	void statusChangedSlot(UserListElement elem, QString protocolName, const UserStatus &oldStatus, bool massively, bool last);
+	void userChangedSlot(UserListElement elem, bool massively, bool last);
+	void protocolAddedOrRemoved(UserListElement elem, QString protocolName, bool massively, bool last);
+
 	public:
 		OfflineUsers();
 		virtual ~OfflineUsers();
-	private slots:
-		void statusChangedSlot(UserListElement elem, QString protocolName,
-					    const UserStatus &oldStatus, bool massively, bool last);
-		void userChangedSlot(UserListElement elem, bool massively, bool last);
-		void protocolAddedOrRemoved(UserListElement elem, QString protocolName, bool massively, bool last);
+
 };
+
 extern OfflineUsers *offlineUsers;
 
 /**
 	\class BlockedUsers
-	Klasa grupuj±ca kontakty, które s± blokowane,
-	automatycznie synchronizuj±ca siê z g³ówn± list± kontaktów
+	Klasa grupujï¿½ca kontakty, ktï¿½re sï¿½ blokowane,
+	automatycznie synchronizujï¿½ca siï¿½ z gï¿½ï¿½wnï¿½ listï¿½ kontaktï¿½w
 **/
 class BlockedUsers : public UserGroup
 {
 	Q_OBJECT
-	public:
-		BlockedUsers();
-		virtual ~BlockedUsers();
-	private slots:
-		void protocolUserDataChangedSlot(QString protocolName, UserListElement elem,
-							QString name, QVariant oldValue, QVariant currentValue,
-							bool massively, bool last);
+
+private slots:
+	void protocolUserDataChangedSlot(QString protocolName, UserListElement elem, QString name, QVariant oldValue, QVariant currentValue,
+		bool massively, bool last);
+
+public:
+	BlockedUsers();
+	virtual ~BlockedUsers();
+
 };
+
 extern BlockedUsers *blockedUsers;
 
 /**
 	\class BlockingUsers
-	Klasa grupuj±ca kontakty o statusie blokuj±cym,
-	automatycznie synchronizuj±ca siê z g³ówn± list± kontaktów
+	Klasa grupujï¿½ca kontakty o statusie blokujï¿½cym,
+	automatycznie synchronizujï¿½ca siï¿½ z gï¿½ï¿½wnï¿½ listï¿½ kontaktï¿½w
 **/
 class BlockingUsers : public UserGroup
 {
 	Q_OBJECT
-	public:
-		BlockingUsers();
-		virtual ~BlockingUsers();
-	private slots:
-		void statusChangedSlot(UserListElement elem, QString protocolName,
-							const UserStatus &oldStatus, bool massively, bool last);
+
+private slots:
+	void statusChangedSlot(UserListElement elem, QString protocolName, const UserStatus &oldStatus, bool massively, bool last);
+
+public:
+	BlockingUsers();
+	virtual ~BlockingUsers();
+
 };
+
 extern BlockingUsers *blockingUsers;
 
 /**
 	\class AnonymousUsers
-	Klasa grupuj±ca kontakty anonimowe,
-	automatycznie synchronizuj±ca siê z g³ówn± list± kontaktów
+	Klasa grupujï¿½ca kontakty anonimowe,
+	automatycznie synchronizujï¿½ca siï¿½ z gï¿½ï¿½wnï¿½ listï¿½ kontaktï¿½w
 **/
 class AnonymousUsers : public UserGroup
 {
 	Q_OBJECT
-	public:
-		AnonymousUsers();
-		virtual ~AnonymousUsers();
-	private slots:
-		void userDataChangedSlot(UserListElement elem,
-							QString name, QVariant oldValue, QVariant currentValue,
-							bool massively, bool last);
-		void userAdded(UserListElement elem, bool massively, bool last);
-		void removingUser(UserListElement elem, bool massively, bool last);
+
+private slots:
+	void userDataChangedSlot(UserListElement elem, QString name, QVariant oldValue, QVariant currentValue, bool massively, bool last);
+	void userAdded(UserListElement elem, bool massively, bool last);
+	void removingUser(UserListElement elem, bool massively, bool last);
+
+public:
+	AnonymousUsers();
+	virtual ~AnonymousUsers();
+
 };
+
 extern AnonymousUsers *anonymousUsers;
 
 /**
 	\class AnonymousUsersWithoutMessages
-	Klasa grupuj±ca kontakty anonimowe, nie maj±ce wiadomo¶ci do odebrania
-	automatycznie synchronizuj±ca siê z g³ówn± list± kontaktów
+	Klasa grupujï¿½ca kontakty anonimowe, nie majï¿½ce wiadomoï¿½ci do odebrania
+	automatycznie synchronizujï¿½ca siï¿½ z gï¿½ï¿½wnï¿½ listï¿½ kontaktï¿½w
 **/
 class AnonymousUsersWithoutMessages : public UserGroup
 {
 	Q_OBJECT
-	public:
-		AnonymousUsersWithoutMessages();
-		virtual ~AnonymousUsersWithoutMessages();
-	private slots:
-		void messageFromUserAdded(UserListElement elem);
-		void messageFromUserDeleted(UserListElement elem);
 
-		void userDataChangedSlot(UserListElement elem,
-							QString name, QVariant oldValue, QVariant currentValue,
-							bool massively, bool last);
-		void userAdded(UserListElement elem, bool massively, bool last);
-		void removingUser(UserListElement elem, bool massively, bool last);
+private slots:
+	void messageFromUserAdded(UserListElement elem);
+	void messageFromUserDeleted(UserListElement elem);
+
+	void userDataChangedSlot(UserListElement elem, QString name, QVariant oldValue, QVariant currentValue, bool massively, bool last);
+	void userAdded(UserListElement elem, bool massively, bool last);
+	void removingUser(UserListElement elem, bool massively, bool last);
+
+public:
+	AnonymousUsersWithoutMessages();
+	virtual ~AnonymousUsersWithoutMessages();
+
 };
+
 extern AnonymousUsersWithoutMessages *anonymousUsersWithoutMessages;
 
 #endif

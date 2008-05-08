@@ -14,7 +14,6 @@
 #include "pending_msgs.h"
 #include "tabbar.h"
 #include "userbox.h"
-#include "userlist.h"
 
 #include "groups_manager.h"
 
@@ -37,7 +36,7 @@ void GroupsManager::closeModule()
 {
 	kdebugf();
 	delete groups_manager;
-	groups_manager = NULL;
+	groups_manager = 0;
 
 	UserBox *userbox = kadu->userbox();
 	userbox->removeNegativeFilter(blockingUsers);
@@ -49,28 +48,28 @@ void GroupsManager::closeModule()
 	userbox->removeNegativeFilter(anonymousUsersWithoutMessages);
 
 	delete usersWithDescription;
-	usersWithDescription = NULL;
+	usersWithDescription = 0;
 
 	delete onlineUsers;
-	onlineUsers = NULL;
+	onlineUsers = 0;
 
 	delete onlineAndDescriptionUsers;
-	onlineAndDescriptionUsers = NULL;
+	onlineAndDescriptionUsers = 0;
 
 	delete offlineUsers;
-	offlineUsers = NULL;
+	offlineUsers = 0;
 
 	delete blockedUsers;
-	blockedUsers = NULL;
+	blockedUsers = 0;
 
 	delete blockingUsers;
-	blockingUsers = NULL;
+	blockingUsers = 0;
 
 	delete anonymousUsers;
-	anonymousUsers = NULL;
+	anonymousUsers = 0;
 
 	delete anonymousUsersWithoutMessages;
-	anonymousUsersWithoutMessages = NULL;
+	anonymousUsersWithoutMessages = 0;
 
 	kdebugf2();
 }
@@ -95,8 +94,8 @@ void GroupsManager::setTabBar(KaduTabBar *bar)
 	if (configTab >= 0 && configTab < GroupBar->count())
 		((QTabBar*) GroupBar)->setCurrentTab(configTab);
 
-	//najpierw ustawiamy odwrotnie, a pó¼niej robimy x=!x;
-	// TODO: gówniana metoda, poprawiæ
+	//najpierw ustawiamy odwrotnie, a pï¿½ï¿½niej robimy x=!x;
+	// TODO: gï¿½wniana metoda, poprawiï¿½
 	showBlocked = !config_file.readBoolEntry("General", "ShowBlocked");
 	showBlocking = !config_file.readBoolEntry("General", "ShowBlocking");
 	showOffline = !config_file.readBoolEntry("General", "ShowOffline");
@@ -112,7 +111,7 @@ void GroupsManager::setTabBar(KaduTabBar *bar)
 
 void GroupsManager::tabSelected(int id)
 {
-	if (lastId != id) // od¶wie¿amy UserBoksa dopiero gdy grupa naprawdê siê zmieni...
+	if (lastId != id) // odï¿½wieï¿½amy UserBoksa dopiero gdy grupa naprawdï¿½ siï¿½ zmieni...
 	{
 		lastId = id;
 		if (id == 0)
@@ -122,7 +121,7 @@ void GroupsManager::tabSelected(int id)
 	}
 }
 
-void GroupsManager::setActiveGroup(const QString& name)
+void GroupsManager::setActiveGroup(const QString &name)
 {
 	kdebugf();
 	if (name == currentGroup)
@@ -174,7 +173,7 @@ void GroupsManager::refreshTabBar()
 		return;
 	}
 
-	/* budujemy listê grup */
+	/* budujemy listï¿½ grup */
 	QStringList group_list = groups();
 	kdebugm(KDEBUG_INFO, "%u groups found: %s\n", group_list.count(), group_list.join(",").local8Bit().data());
 
@@ -309,9 +308,9 @@ void GroupsManager::changeDisplayingOnlineAndDescription(UserBox *userBox, bool 
 	kdebugf2();
 }
 
-GroupsManager::GroupsManager() : QObject(0, "groups_manager"),
-		Groups(), GroupBar(0), lastId(-1), currentGroup(), showBlocked(true),
-		showBlocking(true), showOffline(true), showWithoutDescription(true), refreshTimer()
+GroupsManager::GroupsManager()
+	: QObject(), Groups(), GroupBar(0), lastId(-1), currentGroup(), showBlocked(true),
+	showBlocking(true), showOffline(true), showWithoutDescription(true), refreshTimer()
 {
 	kdebugf();
 	CONST_FOREACH(user, *userlist)
@@ -379,7 +378,7 @@ UserGroup *GroupsManager::group(const QString &name) const
 		if (!Groups.contains(name))
 		{
 			kdebugm(KDEBUG_PANIC, "group %s does not exist!\n", name.local8Bit().data());
-			return NULL;
+			return 0;
 		}
 		else
 			return Groups[name];
@@ -447,7 +446,7 @@ void GroupsManager::removeGroup(const QString &name)
 void GroupsManager::userDataChanged(UserListElement elem, QString name, QVariant oldValue,
 							QVariant currentValue, bool /*massively*/, bool /*last*/)
 {
-//dodanie(usuniêcie) u¿ytkownika do grupy poprzez zmianê pola Groups powinno aktualizowaæ UserGrupê
+//dodanie(usuniï¿½cie) uï¿½ytkownika do grupy poprzez zmianï¿½ pola Groups powinno aktualizowaï¿½ UserGrupï¿½
 	if (name != "Groups")
 		return;
 	kdebugf();
@@ -455,7 +454,7 @@ void GroupsManager::userDataChanged(UserListElement elem, QString name, QVariant
 	QStringList newGroups = currentValue.toStringList();
 	CONST_FOREACH(v, oldGroups)
 	{
-		if (!newGroups.contains(*v)) //usuniêcie z grupy
+		if (!newGroups.contains(*v)) //usuniï¿½cie z grupy
 			group(*v)->removeUser(elem);
 
 		if (group(*v)->count() == 0)
@@ -476,7 +475,7 @@ void GroupsManager::userDataChanged(UserListElement elem, QString name, QVariant
 	kdebugf2();
 }
 
-//dodanie(usuniêcie) u¿ytkownika do grupy poprzez addUser (removeUser) powinno modyfikowaæ pole Groups
+//dodanie(usuniï¿½cie) uï¿½ytkownika do grupy poprzez addUser (removeUser) powinno modyfikowaï¿½ pole Groups
 void GroupsManager::userAdded(UserListElement elem, bool /*massively*/, bool /*last*/)
 {
 //	kdebugf();
@@ -919,4 +918,4 @@ OnlineAndDescriptionUsers *onlineAndDescriptionUsers;
 OfflineUsers *offlineUsers;
 AnonymousUsers *anonymousUsers;
 AnonymousUsersWithoutMessages *anonymousUsersWithoutMessages;
-GroupsManager *groups_manager = NULL;
+GroupsManager *groups_manager = 0;
