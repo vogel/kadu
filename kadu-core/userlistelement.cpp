@@ -106,11 +106,11 @@ QVariant UserListElement::setProtocolData(const QString &protocolName, const QSt
 			groups = new UserGroupSet();
 			names->insert(name, groups);
 		}
-		CONST_FOREACH (group, privateData->Parents)
+		foreach (UserGroup *group, privateData->Parents)
 		{
-			emit (*group)->protocolUserDataChanged(protocolName, *this, name, old, val, massively, last);
-			if (!groups->contains(*group))
-				groups->insert(*group);
+			emit group->protocolUserDataChanged(protocolName, *this, name, old, val, massively, last);
+			if (!groups->contains(group))
+				groups->insert(group);
 		}
 		if (last)
 		{
@@ -125,10 +125,10 @@ QVariant UserListElement::setProtocolData(const QString &protocolName, const QSt
 	}
 	else
 	{
-		CONST_FOREACH (group, privateData->Parents)
+		foreach (UserGroup *group, privateData->Parents)
 		{
-			emit (*group)->protocolUserDataChanged(protocolName, *this, name, old, val, massively, last);
-			emit (*group)->protocolUsersDataChanged(protocolName, name);
+			emit group->protocolUserDataChanged(protocolName, *this, name, old, val, massively, last);
+			emit group->protocolUsersDataChanged(protocolName, name);
 		}
 	}
 
@@ -243,11 +243,11 @@ QVariant UserListElement::setData(const QString &name, const QVariant &val, bool
 			groups = new UserGroupSet();
 			ULEPrivate::userDataProxy.insert(name, groups);
 		}
-		CONST_FOREACH (group, privateData->Parents)
+		foreach (UserGroup *group, privateData->Parents)
 		{
-			emit (*group)->userDataChanged(*this, name, old, val, massively, last);
-			if (!groups->contains(*group))
-				groups->insert(*group);
+			emit group->userDataChanged(*this, name, old, val, massively, last);
+			if (!groups->contains(group))
+				groups->insert(group);
 		}
 		if (last)
 		{
@@ -262,11 +262,10 @@ QVariant UserListElement::setData(const QString &name, const QVariant &val, bool
 	}
 	else
 	{
-		QList<UserGroup*> currentGroups = privateData->Parents;
-		CONST_FOREACH (group, currentGroups)
+		foreach (UserGroup *group, privateData->Parents)
 		{
-			emit (*group)->userDataChanged(*this, name, old, val, massively, last);
-			emit (*group)->usersDataChanged(name);
+			emit group->userDataChanged(*this, name, old, val, massively, last);
+			emit group->usersDataChanged(name);
 		}
 	}
 	return old;
@@ -341,8 +340,8 @@ void UserListElement::addProtocol(const QString &name, const QString &id, bool m
 		return;
 	}
 	privateData->protocols.insert(name, new ProtocolData(name, id));
-	CONST_FOREACH (group, privateData->Parents)
-		emit (*group)->protocolAdded(*this, name, massively, last);
+	foreach (UserGroup *group, privateData->Parents)
+		emit group->protocolAdded(*this, name, massively, last);
 }
 
 void UserListElement::deleteProtocol(const QString &protocolName, bool massively, bool last)
@@ -355,8 +354,8 @@ void UserListElement::deleteProtocol(const QString &protocolName, bool massively
 #endif
 		return;
 	}
-	CONST_FOREACH (group, privateData->Parents)
-		emit (*group)->removingProtocol(*this, protocolName, massively, last);
+	foreach (UserGroup *group, privateData->Parents)
+		emit group->removingProtocol(*this, protocolName, massively, last);
 	delete privateData->protocols[protocolName];
 	privateData->protocols.remove(protocolName);
 }
@@ -399,12 +398,13 @@ void UserListElement::setStatus(const QString &protocolName, const UserStatus &s
 			groups = new UserGroupSet();
 			ULEPrivate::statusChangeProxy.insert(protocolName, groups);
 		}
-		CONST_FOREACH (group, privateData->Parents)
+
+		foreach (UserGroup *group, privateData->Parents)
 		{
 //			kdebugm(KDEBUG_INFO, "group: %p\n", *group);
-// 			emit (*group)->statusChanged(*this, protocolName, *oldStatus, massively, last);
-			if (!groups->contains(*group))
-				groups->insert(*group);
+ 			emit group->statusChanged(*this, protocolName, *oldStatus, massively, last);
+			if (!groups->contains(group))
+				groups->insert(group);
 		}
 		if (last)
 		{
@@ -419,10 +419,10 @@ void UserListElement::setStatus(const QString &protocolName, const UserStatus &s
 	}
 	else
 	{
-		CONST_FOREACH (group, privateData->Parents)
+		foreach (UserGroup *group, privateData->Parents)
 		{
-// 			emit (*group)->statusChanged(*this, protocolName, *oldStatus, massively, last);
-			emit (*group)->usersStatusChanged(protocolName);
+ 			emit group->statusChanged(*this, protocolName, *oldStatus, massively, last);
+			emit group->usersStatusChanged(protocolName);
 		}
 	}
 
