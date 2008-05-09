@@ -11,16 +11,17 @@
 
 #include "config_file.h"
 #include "debug.h"
-#include "html_document.h"
 #include "misc.h"
+
+#include "html_document.h"
 
 HtmlDocument::HtmlDocument() : Elements()
 {
 }
 
-void HtmlDocument::escapeText(QString& text)
+void HtmlDocument::escapeText(QString &text)
 {
-	//UWAGA: &amp; MUSI byæ na pocz±tku!
+	//UWAGA: &amp; MUSI byï¿½ na poczï¿½tku!
 	text.replace("&", "&amp;");
 	text.replace("<", "&lt;");
 	text.replace(">", "&gt;");
@@ -29,9 +30,9 @@ void HtmlDocument::escapeText(QString& text)
 	text.replace("  ", "&nbsp; ");
 }
 
-void HtmlDocument::unescapeText(QString& text)
+void HtmlDocument::unescapeText(QString &text)
 {
-	//UWAGA: &amp; MUSI byæ na koñcu!
+	//UWAGA: &amp; MUSI byï¿½ na koï¿½cu!
 	text.replace("&nbsp;", " ");
 	text.replace("&lt;", "<");
 	text.replace("&gt;", ">");
@@ -62,7 +63,7 @@ void HtmlDocument::addText(const QString &text)
 	Elements.append(e);
 }
 
-void HtmlDocument::insertTag(const int pos,const QString &text)
+void HtmlDocument::insertTag(const int pos, const QString &text)
 {
 	Element e;
 	e.text = text;
@@ -70,7 +71,7 @@ void HtmlDocument::insertTag(const int pos,const QString &text)
 	Elements.insert(pos,e);
 }
 
-void HtmlDocument::insertText(const int pos,const QString &text)
+void HtmlDocument::insertText(const int pos, const QString &text)
 {
 	Element e;
 	e.text = text;
@@ -79,7 +80,7 @@ void HtmlDocument::insertText(const int pos,const QString &text)
 	Elements.insert(pos,e);
 }
 
-void HtmlDocument::parseHtml(const QString& html)
+void HtmlDocument::parseHtml(const QString &html)
 {
 //	kdebugm(KDEBUG_FUNCTION_START | KDEBUG_INFO, "%s\n", html.local8Bit().data());
 	Element e;
@@ -159,14 +160,14 @@ QString & HtmlDocument::elementText(int index)
 	return Elements[index].text;
 }
 
-void HtmlDocument::setElementValue(int index,const QString& text,bool tag)
+void HtmlDocument::setElementValue(int index, const QString &text, bool tag)
 {
 	Element& e=Elements[index];
 	e.text=text;
 	e.tag=tag;
 }
 
-void HtmlDocument::splitElement(int& index,int start,int length)
+void HtmlDocument::splitElement(int &index, int start, int length)
 {
 	Element& e=Elements[index];
 	if(start>0)
@@ -190,12 +191,12 @@ void HtmlDocument::splitElement(int& index,int start,int length)
 	e.text=e.text.mid(start,length);
 }
 
-QRegExp* HtmlDocument::url_regexp = NULL;
+QRegExp *HtmlDocument::url_regexp = 0;
 
 const QRegExp &HtmlDocument::urlRegExp()
 {
 	if (!url_regexp)
-		url_regexp = new QRegExp(latin2unicode((const unsigned char *)"(http://|https://|www\\.|ftp://|ftp\\.|sftp://|smb://|file:/|rsync://|svn://|svn\\+ssh://)[a-zA-Z0-9êó±¶³¿¼æñÊÓ¡¦£¯¬ÆÑ\\*\\-\\._/~?=&#\\+%\\(\\):;,!@\\\\]*"));
+		url_regexp = new QRegExp(latin2unicode((const unsigned char *)"(http://|https://|www\\.|ftp://|ftp\\.|sftp://|smb://|file:/|rsync://|svn://|svn\\+ssh://)[a-zA-Z0-9ï¿½ó±¶³ï¿½ï¿½ï¿½ï¿½ï¿½Ó¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½\\*\\-\\._/~?=&#\\+%\\(\\):;,!@\\\\]*"));
 	return *url_regexp;
 }
 
@@ -216,7 +217,7 @@ void HtmlDocument::convertUrlsToHtml()
 		int lft = config_file.readNumEntry("Chat","LinkFoldTreshold");
 
 		QString link2 = text.mid(p, l);
-		link2.replace("%20", "%2520"); //obej¶cie buga w operze :|, która nie potrafi otworzyæ linka ze spacj±
+		link2.replace("%20", "%2520"); //obejï¿½cie buga w operze :|, ktï¿½ra nie potrafi otworzyï¿½ linka ze spacjï¿½
 
 		QString link;
 		if ((l - p > lft) && config_file.readBoolEntry("Chat", "FoldLink"))
@@ -229,7 +230,7 @@ void HtmlDocument::convertUrlsToHtml()
 	}
 }
 
-QRegExp *HtmlDocument::mail_regexp = NULL;
+QRegExp *HtmlDocument::mail_regexp = 0;
 
 const QRegExp &HtmlDocument::mailRegExp()
 {
@@ -258,7 +259,7 @@ void HtmlDocument::convertMailToHtml()
 	}
 }
 
-QRegExp *HtmlDocument::gg_regexp = NULL;
+QRegExp *HtmlDocument::gg_regexp = 0;
 
 const QRegExp &HtmlDocument::ggRegExp()
 {

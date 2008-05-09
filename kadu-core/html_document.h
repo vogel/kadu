@@ -1,141 +1,154 @@
 #ifndef KADU_HTML_DOCUMENT_H
 #define KADU_HTML_DOCUMENT_H
 
+#include <QList>
+
 class QRegExp;
 
 /**
 	TODO: replace, refactor, remove or something
 
-	Klasa reprezentuj±ca dokument html. Przechowuje
-	listê elementów. Element mo¿e byæ tagiem html
-	albo kawa³kiem tekstu.
+	Klasa reprezentujï¿½ca dokument html. Przechowuje
+	listï¿½ elementï¿½w. Element moï¿½e byï¿½ tagiem html
+	albo kawaï¿½kiem tekstu.
 **/
 class HtmlDocument
 {
-	private:
-		struct Element
-		{
-			QString text;
-			bool tag;
-			Element() : text(), tag(false) {}
-		};
-		QList<Element> Elements;
-		void addElement(Element e);
-		static QRegExp* url_regexp;
-		static QRegExp* mail_regexp;
-		static QRegExp* gg_regexp;
+	struct Element
+	{
+		QString text;
+		bool tag;
+		Element() : text(), tag(false) {}
+	};
+	QList<Element> Elements;
+	void addElement(Element e);
+	static QRegExp *url_regexp;
+	static QRegExp *mail_regexp;
+	static QRegExp *gg_regexp;
 
-	public:
-		static void escapeText(QString& text);
-		static void unescapeText(QString& text);
+public:
+	static void escapeText(QString &text);
+	static void unescapeText(QString &text);
 
-		HtmlDocument();
+	HtmlDocument();
 
-		/**
-			Dodaje podany tekst do listy elementów jako
-			tag html.
-			@param text tekst do dodania
-		**/
-		void addTag(const QString &text);
-		/**
-			Dodaje podany tekst do listy elementów jako
-			zwyk³y tekst.
-			@param text tekst do dodania
-		**/
-		void addText(const QString &text);
-		/**
-			Wstawia podany tekst do listy elementów jako
-			tag html przed innym elementem.
-			@param pos indeks elementu przed ktorym wstawiamy
-			@param text tekst do dodania
-		**/
-		void insertTag(const int pos,const QString &text);
-		/**
-			Wstawia podany tekst do listy elementów jako
-			zwykly tekst przed innym elementem.
-			@param pos indeks elementu przed ktorym wstawiamy
-			@param text tekst do dodania
-		**/
-		void insertText(const int pos,const QString &text);
-		/**
-			Parsuje podany napis zgodny ze struktur± html
-			i otrzymane dane przypisuje do dokumentu.
-			@param html napis do skonwertowania
-		**/
-		void parseHtml(const QString& html);
-		/**
-			Na podstawie zawarto¶ci dokumentu generuje
-			napis zgodny ze struktur± html. Znaki specjalne
-			wchodz±ce w sk³ad elementów nie bêd±cych tagami
-			html s± escapowane.
-		**/
-		QString generateHtml() const;
-		/**
-			Zwraca ilo¶æ elementów wchodz±cych w sk³ad
-			dokumentu.
-		**/
-		int countElements() const;
-		/**
-			Sprawdza czy element o podanym indeksie jest
-			tagiem html czy zwyk³ym tekstem.
-		**/
-		bool isTagElement(int index) const;
-		/**
-			Zwraca tekst elementu o podanym indeksie.
-		**/
-		const QString &elementText(int index) const;
-		/**
-			Zwraca tekst elementu o podanym indeksie.
-		**/
-		QString &elementText(int index);
-		/**
-			Ustawia tekst i typ elementu o podanym indeksie.
-		**/
-		void setElementValue(int index, const QString& text, bool tag=false);
-		/**
-			Wydziela z elementu podany fragment tekstu.
-			Element mo¿e pozostaæ jeden albo
-			ulec podzieleniu na dwa lub nawet trzy elementy.
-			Funkcja zmienia warto¶æ argumentu index, aby
-			indeks wydzielonego elementu by³ aktualny.
-		**/
-		void splitElement(int& index, int start, int length);
+	/**
+		Dodaje podany tekst do listy elementï¿½w jako
+		tag html.
+		@param text tekst do dodania
+	**/
+	void addTag(const QString &text);
 
-		/**
-			Skanuje tekst w poszukiwaniu adresów www,
-			np. "www.kadu.net" i zmienia je w linki html.
-		**/
-		void convertUrlsToHtml();
+	/**
+		Dodaje podany tekst do listy elementï¿½w jako
+		zwykï¿½y tekst.
+		@param text tekst do dodania
+	**/
+	void addText(const QString &text);
 
-		/**
-			Skanuje tekst w poszukiwaniu adresów email
-			i zamienia je w linki html.
-		**/
-		void convertMailToHtml();
+	/**
+		Wstawia podany tekst do listy elementï¿½w jako
+		tag html przed innym elementem.
+		@param pos indeks elementu przed ktorym wstawiamy
+		@param text tekst do dodania
+	**/
+	void insertTag(const int pos, const QString &text);
 
-		/**
-			Skanuje tekst w poszukiwaniu numerów gg
-			i zamienia je w linki html.
-		**/
-		void convertGGToHtml();
+	/**
+		Wstawia podany tekst do listy elementï¿½w jako
+		zwykly tekst przed innym elementem.
+		@param pos indeks elementu przed ktorym wstawiamy
+		@param text tekst do dodania
+	**/
+	void insertText(const int pos, const QString &text);
 
-		/**
-			Wyra¿enie regularne przydatne w poszukiwaniu
-			adresów www (i innych).
-		**/
-		static const QRegExp &urlRegExp();
+	/**
+		Parsuje podany napis zgodny ze strukturï¿½ html
+		i otrzymane dane przypisuje do dokumentu.
+		@param html napis do skonwertowania
+	**/
+	void parseHtml(const QString &html);
 
-		/**
-			Wyra¿enie regularne przydatne w poszukiwaniu
-			adresów email.
-		**/
-		static const QRegExp &mailRegExp();
+	/**
+		Na podstawie zawartoï¿½ci dokumentu generuje
+		napis zgodny ze strukturï¿½ html. Znaki specjalne
+		wchodzï¿½ce w skï¿½ad elementï¿½w nie bï¿½dï¿½cych tagami
+		html sï¿½ escapowane.
+	**/
+	QString generateHtml() const;
 
-		/**
-			Wyra¿enie regularne przydatne w poszukiwaniu
-			numerów gg.
-		**/
-		static const QRegExp &ggRegExp();
+	/**
+		Zwraca iloï¿½ï¿½ elementï¿½w wchodzï¿½cych w skï¿½ad
+		dokumentu.
+	**/
+	int countElements() const;
+
+	/**
+		Sprawdza czy element o podanym indeksie jest
+		tagiem html czy zwykï¿½ym tekstem.
+	**/
+	bool isTagElement(int index) const;
+
+	/**
+		Zwraca tekst elementu o podanym indeksie.
+	**/
+	const QString & elementText(int index) const;
+
+	/**
+		Zwraca tekst elementu o podanym indeksie.
+	**/
+	QString & elementText(int index);
+
+	/**
+		Ustawia tekst i typ elementu o podanym indeksie.
+	**/
+	void setElementValue(int index, const QString &text, bool tag = false);
+
+	/**
+		Wydziela z elementu podany fragment tekstu.
+		Element moï¿½e pozostaï¿½ jeden albo
+		ulec podzieleniu na dwa lub nawet trzy elementy.
+		Funkcja zmienia wartoï¿½ï¿½ argumentu index, aby
+		indeks wydzielonego elementu byï¿½ aktualny.
+	**/
+	void splitElement(int &index, int start, int length);
+
+	/**
+		Skanuje tekst w poszukiwaniu adresï¿½w www,
+		np. "www.kadu.net" i zmienia je w linki html.
+	**/
+	void convertUrlsToHtml();
+
+	/**
+		Skanuje tekst w poszukiwaniu adresï¿½w email
+		i zamienia je w linki html.
+	**/
+	void convertMailToHtml();
+
+	/**
+		Skanuje tekst w poszukiwaniu numerï¿½w gg
+		i zamienia je w linki html.
+	**/
+	void convertGGToHtml();
+
+	/**
+		Wyraï¿½enie regularne przydatne w poszukiwaniu
+		adresï¿½w www (i innych).
+	**/
+	static const QRegExp & urlRegExp();
+
+	/**
+		Wyraï¿½enie regularne przydatne w poszukiwaniu
+		adresï¿½w email.
+	**/
+	static const QRegExp & mailRegExp();
+
+	/**
+		Wyraï¿½enie regularne przydatne w poszukiwaniu
+		numerï¿½w gg.
+	**/
+	static const QRegExp & ggRegExp();
+
 };
 
 #endif
