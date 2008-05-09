@@ -392,13 +392,13 @@ bool ConfigComboBox::fromDomElement(QDomElement domElement)
 
 ConfigHotKeyEdit::ConfigHotKeyEdit(const QString &section, const QString &item, const QString &widgetCaption, const QString &toolTip,
 		ConfigGroupBox *parentConfigGroupBox, char *name)
-	: HotKeyEdit(parentConfigGroupBox->widget(), name), ConfigWidgetValue(widgetCaption, toolTip, section, item, parentConfigGroupBox), label(0)
+	: HotKeyEdit(parentConfigGroupBox->widget()), ConfigWidgetValue(widgetCaption, toolTip, section, item, parentConfigGroupBox), label(0)
 {
 	createWidgets();
 }
 
 ConfigHotKeyEdit::ConfigHotKeyEdit(ConfigGroupBox *parentConfigGroupBox, char *name)
-	: HotKeyEdit(parentConfigGroupBox->widget(), name), ConfigWidgetValue(parentConfigGroupBox), label(0)
+	: HotKeyEdit(parentConfigGroupBox->widget()), ConfigWidgetValue(parentConfigGroupBox), label(0)
 {
 }
 

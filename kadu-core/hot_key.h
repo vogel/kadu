@@ -1,29 +1,25 @@
 #ifndef HOT_KEY_H
 #define HOT_KEY_H
 
-#include <qglobal.h>
-
-#include <qkeysequence.h>
-#include <qlineedit.h>
-//Added by qt3to4:
-#include <QKeyEvent>
+#include <QLineEdit>
 
 class HotKey
 {
 public:
 	/**
-	  Pobiera skrót klawiszowy, z pliku konfiguracyjnego
+	  Pobiera skrï¿½t klawiszowy, z pliku konfiguracyjnego
 	  z grupy "groupname", o polu "name"
 	 **/
-	static QKeySequence shortCutFromFile(const QString& groupname, const QString &name);
+	static QKeySequence shortCutFromFile(const QString &groupname, const QString &name);
 
 	/**
-	  Sprawdza czy skrót naci¶niêty przy zdarzeniu QKeyEvent zgadza siê
-	  ze skrótem klawiszowym, z pliku konfiguracyjnego, o polu "name"
+	  Sprawdza czy skrï¿½t naciï¿½niï¿½ty przy zdarzeniu QKeyEvent zgadza siï¿½
+	  ze skrï¿½tem klawiszowym, z pliku konfiguracyjnego, o polu "name"
 	 **/
-	static bool shortCut(QKeyEvent *e, const QString& groupname, const QString &name);
+	static bool shortCut(QKeyEvent *e, const QString &groupname, const QString &name);
 
 	static QString keyEventToString(QKeyEvent *e);
+
 };
 
 class HotKeyEdit : public QLineEdit
@@ -33,27 +29,26 @@ protected:
 	virtual void keyReleaseEvent(QKeyEvent *e);
 
 public:
-	HotKeyEdit(QWidget *parent = 0, const char *name = 0)
-		: QLineEdit(parent, name) {}
+	HotKeyEdit(QWidget *parent = 0);
 	/**
-	  Pobiera skrót klawiszowy
+	  Pobiera skrï¿½t klawiszowy
 	**/
-	QString shortCutString() const { return text(); }
+	QString shortCutString() const;
 
 	/**
-	  Pobiera skrót klawiszowy
+	  Pobiera skrï¿½t klawiszowy
 	**/
-	QKeySequence shortCut() const { return QKeySequence(text()); }
+	QKeySequence shortCut() const;
 
 	/**
-	  Ustawia skrót klawiszowy
+	  Ustawia skrï¿½t klawiszowy
 	**/
 	void setShortCut(const QString &shortcut);
 
 	/**
-	  Ustawia skrót klawiszowy
+	  Ustawia skrï¿½t klawiszowy
 	**/
-	void setShortCut(const QKeySequence &shortcut) { setText(shortcut); }
+	void setShortCut(const QKeySequence &shortcut);
 
 };
 

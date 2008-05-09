@@ -7,8 +7,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <qevent.h>
-//Added by qt3to4:
 #include <QKeyEvent>
 
 #include "config_file.h"
@@ -41,13 +39,40 @@ QString HotKey::keyEventToString(QKeyEvent *e)
 			result += "Alt+";
 	}
 
-	if (!((e->key() == Qt::Key_Control)
-		||(e->key() == Qt::Key_Shift)
-		||(e->key() == Qt::Key_Alt)
-		||(e->key() == Qt::Key_Meta)))
-			result += QKeySequence(e->key()).toString();
+	if (!((e->key() == Qt::Key_Control) ||
+		(e->key() == Qt::Key_Shift) ||
+		(e->key() == Qt::Key_Alt) ||
+		(e->key() == Qt::Key_Meta)))
+		result += QKeySequence(e->key()).toString();
 
 	return result;
+}
+
+HotKeyEdit::HotKeyEdit(QWidget *parent)
+	: QLineEdit(parent)
+{
+}
+
+QString HotKeyEdit::shortCutString() const
+{
+	return text();
+}
+
+QKeySequence HotKeyEdit::shortCut() const {
+	return QKeySequence(text());
+}
+
+void HotKeyEdit::setShortCut(const QString &shortcut)
+{
+	QKeySequence str(shortcut);
+	if (str == QKeySequence())
+		setText(QString::null);
+	else
+		setText(shortcut);
+}
+
+void HotKeyEdit::setShortCut(const QKeySequence &shortcut) {
+	setText(shortcut);
 }
 
 void HotKeyEdit::keyPressEvent(QKeyEvent *e)
@@ -61,13 +86,4 @@ void HotKeyEdit::keyReleaseEvent(QKeyEvent *)
 	// jesli tak to nie ma takiego skrotu klawiszowego
 	if (text().at(text().length() - 1) == '+')
 		setText(QString::null);
-}
-
-void HotKeyEdit::setShortCut(const QString &shortcut)
-{
-	QKeySequence str(shortcut);
-	if (str == QKeySequence())
-		setText(QString::null);
-	else
-		setText(shortcut);
 }
