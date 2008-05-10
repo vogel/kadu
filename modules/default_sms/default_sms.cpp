@@ -9,8 +9,8 @@
 
 #include "default_sms.h"
 
-#include <qregexp.h>
-#include <qmessagebox.h>
+#include <QRegExp>
+#include <QMessageBox>
 
 #include "config_file.h"
 #include "configuration_window_widgets.h"
@@ -55,7 +55,7 @@ extern "C" void default_sms_close()
 /********** SmsOrangeGateway **********/
 
 SmsOrangeGateway::SmsOrangeGateway(QObject* parent, const char *name)
-	: SmsGateway(parent, name), Token()
+	: SmsGateway(parent), Token()
 {
 	modules_manager->moduleIncUsageCount("default_sms");
 }
@@ -179,7 +179,7 @@ void SmsOrangeGateway::onCodeEntered(const QString& code)
 /********** SmsPlusGateway **********/
 
 SmsPlusGateway::SmsPlusGateway(QObject* parent, const char *name)
-	: SmsGateway(parent, name)
+	: SmsGateway(parent)
 {
 	modules_manager->moduleIncUsageCount("default_sms");
 }
@@ -209,7 +209,7 @@ void SmsPlusGateway::send(const QString& number, const QString& message, const Q
 bool SmsPlusGateway::isNumberCorrect(const QString& number)
 {
 	return
-		((number[0]=='6' && ((QChar(number[2])-'0')%2)!=0) ||
+		((number[0]=='6' && ((QChar(number[2]).digitValue() - '0') % 2) != 0) ||
 		(number[0]=='7' && number[1]=='8' && (number[2]=='1' || number[2]=='2' || number[2]=='3' || number[2]=='5')) ||
 		(number[0]=='7' && number[1]=='2' && (number[2]=='1' || number[2]=='2' || number[2]=='3' || number[2]=='5' || number[2]=='6')) ||
 		(number[0]=='8' && number[1]=='8' && (number[2]=='5' || number[2]=='7')));
@@ -270,7 +270,7 @@ void SmsPlusGateway::httpFinished()
 /********** SmsEraGateway **********/
 
 SmsEraGateway::SmsEraGateway(QObject* parent, const char *name)
-	: SmsGateway(parent, name)
+	: SmsGateway(parent)
 {
 	import_0_5_0_configuration();
 	createDefaultConfiguration();
@@ -319,7 +319,7 @@ void SmsEraGateway::send(const QString& number, const QString& message, const QS
 bool SmsEraGateway::isNumberCorrect(const QString& number)
 {
 	return
-		((number[0]=='6'&&((QChar(number[2])-'0')%2)==0) ||
+		((number[0]=='6'&&((QChar(number[2]).digitValue() - '0') % 2) == 0) ||
 		(number[0]=='7' && number[1]=='8' && (number[2]=='4' || number[2]=='7' || number[2]=='8')) ||
 		(number[0]=='8' && number[1]=='8' && number[2]!='5' && number[2]!='7') ||
 		(number[0]=='7' && number[1]=='2' && number[2]=='8' && number[3]=='3'));
