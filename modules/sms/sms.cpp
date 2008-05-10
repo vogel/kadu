@@ -392,7 +392,7 @@ void Sms::sendSms()
 
 		if (!smsProcess->waitForStarted())
 			MessageBox::msg(tr("Could not spawn child process. Check if the program is functional"), false, "Warning", this);
-		connect(smsProcess, SIGNAL(finished(int exitCode, QProcess::ExitStatus exitStatus)), this, SLOT(smsSigHandler()));
+		connect(smsProcess, SIGNAL(finished(int, QProcess::ExitStatus)), this, SLOT(smsSigHandler()));
 	}
 	kdebugf2();
 }
@@ -405,7 +405,7 @@ void Sms::smsSigHandler()
 	else
 		MessageBox::msg(tr("The process exited abnormally. The SMS may not be sent"), false, "Warning", this);
 	delete smsProcess;
-	smsProcess = NULL;
+	smsProcess = 0;
 
 	c_saveInHistory->setEnabled(true);
 	e_contact->setEnabled(true);
