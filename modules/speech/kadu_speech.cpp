@@ -7,10 +7,10 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <qcheckbox.h>
-#include <qfiledialog.h>
-#include <qprocess.h>
-#include <qslider.h>
+#include <QCheckBox>
+#include <QFileDialog>
+#include <QProcess>
+#include <QSlider>
 
 #include <stdlib.h>
 #include <time.h>
@@ -20,6 +20,7 @@
 #include "chat_widget.h"
 #include "chat_manager.h"
 #include "configuration_window_widgets.h"
+#include "config_file.h"
 #include "debug.h"
 #include "kadu_speech.h"
 #include "kadu.h"
@@ -67,6 +68,8 @@ SpeechConfigurationWidget::SpeechConfigurationWidget(QWidget *parent, char *name
 	gridLayout->addWidget(maleLineEdit, 0, 1);
 	gridLayout->addWidget(new QLabel(tr("Female format") + ":", this), 1, 0, Qt::AlignRight);
 	gridLayout->addWidget(femaleLineEdit, 1, 1);
+
+	parent->layout()->addWidget(this);
 }
 
 SpeechConfigurationWidget::~SpeechConfigurationWidget()
@@ -227,7 +230,7 @@ void Speech::say(const QString &s, const QString &path,
 		soundSystem = sound_system;
 	}
 
-	list.append(t);
+	//list.append(t);
 	if (klatt && soundSystem == "Dsp")
 		list.append(" -L");
 	if (!melody)
@@ -251,9 +254,9 @@ void Speech::say(const QString &s, const QString &path,
 
 	kdebugm(KDEBUG_INFO, "%s\n", (const char *)list.join(" ").local8Bit());
 
-	QProcess *p  =new QProcess(list);
-	connect(p, SIGNAL(processExited()), p, SLOT(deleteLater()));
-	p->launch(s.local8Bit());
+	QProcess *p = new QProcess();
+	connect(p, SIGNAL(finished(int, QProcess::ExitStatus)), p, SLOT(deleteLater()));
+	p->start(t, list);
 
 	kdebugf2();
 }

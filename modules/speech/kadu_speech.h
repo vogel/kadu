@@ -1,7 +1,7 @@
 #ifndef KADU_SPEAK_H
 #define KADU_SPEAK_H
-#include <qobject.h>
-#include <qstring.h>
+#include <QObject>
+#include <QString>
 
 #include "../notify/notify.h"
 
