@@ -7,11 +7,12 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <qapplication.h>
-#include <qlineedit.h>
-#include <qmap.h>
-#include <qprocess.h>
-#include <qtooltip.h>
+#include <QApplication>
+#include <QLineEdit>
+#include <QMap>
+#include <QProcess>
+#include <QToolTip>
+#include <QLabel>
 
 #include "config_file.h"
 #include "debug.h"
@@ -46,6 +47,8 @@ ExecConfigurationWidget::ExecConfigurationWidget(QWidget *parent, char *name)
 	QGridLayout *gridLayout = new QGridLayout(this, 0, 0, 0, 3);
 	gridLayout->addWidget(new QLabel(tr("Command") + ":", this), 0, 0, Qt::AlignRight);
 	gridLayout->addWidget(commandLineEdit, 0, 1);
+
+	parent->layout()->addWidget(this);
 }
 
 ExecConfigurationWidget::~ExecConfigurationWidget()
@@ -121,7 +124,7 @@ QStringList mySplit(const QChar &sep, const QString &str)
 		{
 			if (letter == '\\')
 			{
-				switch (str[idx + 1])
+				switch (str[idx + 1].digitValue())
 				{
 					case 'n':
 						token.append('\n');
@@ -227,9 +230,13 @@ void ExecNotify::run(const QStringList &args, const QString &stdin)
 		kdebugm(KDEBUG_INFO, "arg: '%s'\n", (*arg).local8Bit().data());
 	kdebugm(KDEBUG_INFO, "stdin: %s\n", stdin.local8Bit().data());
 #endif
-	QProcess *p = new QProcess(args);
-	connect(p, SIGNAL(processExited()), p, SLOT(deleteLater()));
-	p->launch(stdin.local8Bit());
+	QProcess *p = new QProcess();
+	QString cmd = args.first();
+	QStringList arguments = args;
+	arguments.removeAt(0);
+	connect(p, SIGNAL(finished(int, QProcess::ExitStatus)), p, SLOT(deleteLater()));
+	p->start(cmd, arguments);
+	//p->launch(stdin.local8Bit());
 }
 
 void ExecNotify::import_0_5_0_ConfigurationFromTo(const QString &from, const QString &to)
