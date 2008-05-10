@@ -1,10 +1,10 @@
 #ifndef XLFD_CHOOSER_H
 #define XLFD_CHOOSER_H
 
-#include <qobject.h>
-#include <qprocess.h>
-#include <qstring.h>
-#include <qvaluelist.h>
+#include <QObject>
+#include <QProcess>
+#include <QString>
+#include <QList>
 
 class XLFDChooser : public QObject
 {
@@ -19,7 +19,7 @@ class XLFDChooser : public QObject
 			char *slot;
 			SearchPosition();
 		};
-		QValueList<SearchPosition> queries;
+		QList<SearchPosition> queries;
 	signals:
 		void fontSelected(const QString &);
 	private slots:

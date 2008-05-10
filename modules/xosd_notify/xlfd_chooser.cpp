@@ -20,15 +20,11 @@ void XLFDChooser::processExited()
 	FOREACH(it, queries)
 	{
 		QProcess *proc = (*it).proc;
-		if (!proc->isRunning())
+		if (proc->state() != QProcess::Running)
 		{
-			if (!proc->canReadLineStdout())
-			{
-				kdebugmf(KDEBUG_FUNCTION_END, "end: can't read line\n");
-				return;
-			}
-			QString line = proc->readLineStdout();
-			kdebugm(KDEBUG_INFO, "font: '%s'\n", line.local8Bit().data());
+			char line[80];
+			proc->readLine(line, sizeof(line));
+			kdebugm(KDEBUG_INFO, "font: '%s'\n", line);
 
 			connect(this, SIGNAL(fontSelected(const QString &)), (*it).receiver, (*it).slot);
 			emit fontSelected(line);
@@ -75,18 +71,22 @@ void XLFDChooser::getFont(QObject *receiver, char *slot, const QString &initial,
 	pos.slot = slot;
 	pos.pattern = pattern;
 	pos.initial = initial;
+	QString cmd;
+	QStringList args;
 #ifdef USE_GTKFONTDIALOG
-	pos.proc = new QProcess(toStringList(libPath("kadu/modules/bin/xosd_notify/gtkfontdialog"), initial, pattern));
+	cmd = libPath("kadu/modules/bin/xosd_notify/gtkfontdialog");
+	args = toStringList(initial, pattern);
 #else
+	cmd = "xfontsel";
 	if (pattern.isEmpty())
-		pos.proc = new QProcess(toStringList("xfontsel", "-print"));
+		args = toStringList("-print");
 	else
-		pos.proc = new QProcess(toStringList("xfontsel", "-print", "-pattern", pattern));
+		args = toStringList("-print", "-pattern", pattern);
 #endif
-
+	pos.proc = new QProcess();
 	queries.append(pos);
-	connect(pos.proc, SIGNAL(processExited()), this, SLOT(processExited()));
-	pos.proc->start();
+	connect(pos.proc, SIGNAL(finished(int, QProcess::ExitStatus)), this, SLOT(processExited()));
+	pos.proc->start(cmd, args);
 	kdebugf2();
 }
 

@@ -7,7 +7,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <qstringlist.h>
+#include <QStringList>
 
 #include "config_file.h"
 #include "configuration_window_widgets.h"
@@ -134,6 +134,8 @@ XOSDConfigurationWidget::XOSDConfigurationWidget(QWidget *parent, char *name)
 	gridLayout->addMultiCellWidget(testButton, 8, 8, 0, 1);
 
 	main_xlfd_chooser = new XLFDChooser(this, "main_xlfd_chooser");
+
+	parent->layout()->addWidget(this);
 }
 
 XOSDConfigurationWidget::~XOSDConfigurationWidget()
@@ -168,7 +170,6 @@ void XOSDConfigurationWidget::saveNotifyConfigurations()
 		config_file.writeEntry("XOSD", eventName + "Timeout", (*config).timeout);
 		config_file.writeEntry("XOSD", eventName + "OutlineOffset", (*config).shadow_offset);
 		config_file.writeEntry("XOSD", eventName + "ShadowOffset", (*config).outline_offset);
-
 	}
 }
 
@@ -497,7 +498,7 @@ void XOSDNotify::oneSecond()
 	int sum = 0;
 	for (int k = 0; k < 9; ++k)
 	{
-		QValueList<OSDLine> &linesK = lines[k];
+		QList<OSDLine> &linesK = lines[k];
 
 		const unsigned int count = linesK.count();
 //		unsigned int i = count - 1;
@@ -505,7 +506,7 @@ void XOSDNotify::oneSecond()
 		if (count == 0)
 			continue;
 
-		QValueListIterator<OSDLine> line = linesK.end();
+		QList<OSDLine>::iterator line = linesK.end();
 		--line;
 		for (unsigned int j = 0; j < count; ++j, --line)
 			if ((*line).timeout-- < 0)

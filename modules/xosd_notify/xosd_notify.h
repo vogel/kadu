@@ -3,9 +3,9 @@
 
 #include <xosd.h>
 
-#include <qobject.h>
-#include <qtimer.h>
-#include <qvaluelist.h>
+#include <QObject>
+#include <QTimer>
+#include <QList>
 
 #include "../notify/notify.h"
 
@@ -98,7 +98,7 @@ class XOSDNotify : public Notifier, public ConfigurationUiHandler, public Config
 			int x,y;
 		} offsets[9];
 
-		QValueList<OSDLine> lines[9];
+		QList<OSDLine> lines[9];
 
 		QTimer *timer;
 
