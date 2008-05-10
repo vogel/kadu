@@ -7,9 +7,9 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <qapplication.h>
-#include <qcheckbox.h>
-#include <qdesktopwidget.h>
+#include <QApplication>
+#include <QCheckBox>
+#include <QDesktopWidget>
 
 #include "macosx_docking.h"
 #include "../docking/docking.h"
@@ -28,7 +28,7 @@ MacOSXDocking::MacOSXDocking(QObject *parent, const char *name) : QObject(parent
 	kdebugf();
 	config_file.writeEntry("General", "RunDocked", false);
 
-	connect(docking_manager, SIGNAL(trayPixmapChanged(const QPixmap &, const QString &)), this, SLOT(trayPixmapChanged(const QPixmap &, const QString &)));
+	connect(docking_manager, SIGNAL(trayPixmapChanged(const QIcon &, const QString &)), this, SLOT(trayPixmapChanged(const QIcon &, const QString &)));
 	connect(docking_manager, SIGNAL(searchingForTrayPosition(QPoint &)), this, SLOT(findTrayPosition(QPoint &)));
 	connect(kadu, SIGNAL(settingMainIconBlocked(bool &)), this, SLOT(blockSettingIcon(bool &)));
 	docking_manager->setDocked(true, true);
@@ -40,7 +40,7 @@ MacOSXDocking::~MacOSXDocking()
 	kdebugf();
 	docking_manager->setDocked(false);
 	disconnect(kadu, SIGNAL(settingMainIconBlocked(bool &)), this, SLOT(blockSettingIcon(bool &)));
-	disconnect(docking_manager, SIGNAL(trayPixmapChanged(const QPixmap &, const QString &)), this, SLOT(trayPixmapChanged(const QPixmap &, const QString &)));
+	disconnect(docking_manager, SIGNAL(trayPixmapChanged(const QIcon &, const QString &)), this, SLOT(trayPixmapChanged(const QIcon &, const QString &)));
 	disconnect(docking_manager, SIGNAL(searchingForTrayPosition(QPoint &)), this, SLOT(findTrayPosition(QPoint &)));
 
 	kdebugf2();
@@ -51,19 +51,19 @@ void MacOSXDocking::blockSettingIcon(bool &block)
 	block = true;
 }
 
-void MacOSXDocking::trayPixmapChanged(const QPixmap &small_pix, const QString &name)
+void MacOSXDocking::trayPixmapChanged(const QIcon &small_pix, const QString &name)
 {
 	if (!config_file.readBoolEntry("MacOSX Dock", "IconNotification"))
 		return;
 
-	const QPixmap &pix = icons_manager->loadIcon("Big" + name);
+	const QIcon &pix = icons_manager->loadIcon("Big" + name);
 	if (pix.isNull())
 	{
 		kdebugm(KDEBUG_WARNING, "big icon of %s not available\n", name.local8Bit().data());
-		kadu->setIcon(small_pix);
+		kadu->setIcon(small_pix.pixmap(128,128));
 	}
 	else
-		kadu->setIcon(pix);
+		kadu->setIcon(pix.pixmap(128,128));
 }
 
 void MacOSXDocking::findTrayPosition(QPoint &p)

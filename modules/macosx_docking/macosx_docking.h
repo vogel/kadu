@@ -1,7 +1,7 @@
 #ifndef MACOSX_DOCKING
 #define MACOSX_DOCKING
 
-#include <qobject.h>
+#include <QObject>
 
 #include "configuration_aware_object.h"
 #include "main_configuration_window.h"
@@ -15,7 +15,7 @@ class MacOSXDocking : public ConfigurationUiHandler
 	Q_OBJECT
 	private slots:
 		void blockSettingIcon(bool &);
-		void trayPixmapChanged(const QPixmap &, const QString &);
+		void trayPixmapChanged(const QIcon &, const QString &);
 		void findTrayPosition(QPoint &);
 		void onCreateTabGeneral();
 	public:
