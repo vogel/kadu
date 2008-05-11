@@ -440,19 +440,18 @@ void Kadu::popupMenu()
 
 	if (containsUserWithoutID)
 	{
-		UserBox::userboxmenu->setItemVisible(ignoreuseritem, false);
-		UserBox::userboxmenu->setItemVisible(blockuseritem, false);
-		UserBox::userboxmenu->setItemVisible(notifyuseritem, false);
-		UserBox::userboxmenu->setItemVisible(offlinetouseritem, false);
-		UserBox::userboxmenu->setItemVisible(hidedescriptionitem, false);
+		UserBox::management->setItemVisible(ignoreuseritem, false);
+		UserBox::management->setItemVisible(blockuseritem, false);
+		UserBox::management->setItemVisible(notifyuseritem, false);
+		UserBox::management->setItemVisible(offlinetouseritem, false);
+		UserBox::management->setItemVisible(hidedescriptionitem, false);
 		UserBox::userboxmenu->setItemVisible(chatitem, false);
 	}
 	else
 	{
 		bool on;
 		UserListElements selectedUsers = activeUserBox->selectedUsers();
-		if (IgnoredManager::isIgnored(selectedUsers))
-			UserBox::userboxmenu->setItemChecked(ignoreuseritem, true);
+		UserBox::management->setItemChecked(ignoreuseritem, IgnoredManager::isIgnored(selectedUsers));
 
 		on = true;
 		CONST_FOREACH(user, users)
@@ -461,7 +460,7 @@ void Kadu::popupMenu()
 				on = false;
 				break;
 			}
-		UserBox::userboxmenu->setItemChecked(blockuseritem, on);
+		UserBox::management->setItemChecked(blockuseritem, on);
 
 		on = true;
 		CONST_FOREACH(user, users)
@@ -470,8 +469,8 @@ void Kadu::popupMenu()
 				on = false;
 				break;
 			}
-		UserBox::userboxmenu->setItemVisible(offlinetouseritem, config_file.readBoolEntry("General", "PrivateStatus"));
-		UserBox::userboxmenu->setItemChecked(offlinetouseritem, on);
+		UserBox::management->setItemVisible(offlinetouseritem, config_file.readBoolEntry("General", "PrivateStatus"));
+		UserBox::management->setItemChecked(offlinetouseritem, on);
 
 		on = false;
 		CONST_FOREACH(user, users)
@@ -480,7 +479,7 @@ void Kadu::popupMenu()
 				on = true;
 				break;
 			}
-		UserBox::userboxmenu->setItemChecked(hidedescriptionitem, on);
+		UserBox::management->setItemChecked(hidedescriptionitem, on);
 
 		on = true;
 		CONST_FOREACH(user, users)
@@ -489,14 +488,14 @@ void Kadu::popupMenu()
 				on = false;
 				break;
 			}
-		UserBox::userboxmenu->setItemVisible(notifyuseritem, !config_file.readBoolEntry("Notify", "NotifyAboutAll"));
-		UserBox::userboxmenu->setItemChecked(notifyuseritem, on);
+		UserBox::management->setItemVisible(notifyuseritem, !config_file.readBoolEntry("Notify", "NotifyAboutAll"));
+		UserBox::management->setItemChecked(notifyuseritem, on);
 
 		if (containsMe)
 		{
-			UserBox::userboxmenu->setItemVisible(ignoreuseritem, false);
-			UserBox::userboxmenu->setItemVisible(blockuseritem, false);
-			UserBox::userboxmenu->setItemVisible(offlinetouseritem, false);
+			UserBox::management->setItemVisible(ignoreuseritem, false);
+			UserBox::management->setItemVisible(blockuseritem, false);
+			UserBox::management->setItemVisible(offlinetouseritem, false);
 			UserBox::userboxmenu->setItemVisible(chatitem, false);
 		}
 	}
@@ -776,14 +775,7 @@ void Kadu::openChatWith()
 void Kadu::showUserInfo()
 {
 	kdebugf();
-	UserBox *activeUserBox=UserBox::activeUserBox();
-	if (activeUserBox==NULL)
-	{
-		kdebugf2();
-		return;
-	}
-	UserGroup users(activeUserBox->selectedUsers());
-// 	editUserActionActivated(&users);
+	KaduActions.getAction("editUserAction", this)->activate(QAction::Trigger);
 	kdebugf2();
 }
 

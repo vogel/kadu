@@ -506,7 +506,8 @@ void UserInfo::keyPressEvent(QKeyEvent *ke_event)
 
 void UserInfo::resultsReady()
 {
-	e_dnsname->setText(dns->hostNames()[0]);
+	if(!dns->hostNames().isEmpty())
+		e_dnsname->setText(dns->hostNames()[0]);
 }
 
 void UserInfo::updateUserlist()
