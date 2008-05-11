@@ -168,7 +168,8 @@ class Kadu : public KaduMainWindow, ConfigurationAwareObject
 		void keyPressEvent(QKeyEvent *e);
 		virtual void resizeEvent(QResizeEvent *);
 		virtual void customEvent(QCustomEvent *);
-
+		virtual void closeEvent(QCloseEvent* event);
+		
 		virtual void configurationUpdated();
 //		virtual void moveEvent(QMoveEvent *);
 
@@ -246,7 +247,7 @@ class Kadu : public KaduMainWindow, ConfigurationAwareObject
 		void blink();
 		void showdesc(bool show = true);
 		virtual bool close(bool quit = false);
-		void quitApplication();
+// 		void quitApplication();
 
 		/**
 			Potrzebne dla modu³u dokuj±cego ¿eby

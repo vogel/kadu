@@ -1470,11 +1470,11 @@ bool Kadu::close(bool quit)
 	}
 }
 
-void Kadu::quitApplication()
-{
-	kdebugf();
-	close(true);
-}
+// void Kadu::quitApplication()
+// {
+// 	kdebugf();
+// 	close(true);
+// }
 
 Kadu::~Kadu(void)
 {
@@ -1755,6 +1755,7 @@ void Kadu::setDocked(bool docked, bool dontHideOnClose1)
 {
 	Docked = docked;
 	dontHideOnClose = dontHideOnClose1;
+	qApp->setQuitOnLastWindowClosed(Docked && dontHideOnClose);
 // 	if (config_file.readBoolEntry("General", "ShowAnonymousWithMsgs") || !Docked || dontHideOnClose)
 // 	{
 	Userbox->removeNegativeFilter(anonymousUsers);
@@ -2311,4 +2312,19 @@ void Kadu::createDefaultConfiguration()
 	config_file.addVariable("ShortCuts", "kadu_searchuser", "Ctrl+F");
 	config_file.addVariable("ShortCuts", "kadu_showoffline", "F9");
 	config_file.addVariable("ShortCuts", "kadu_showonlydesc", "F10");
+}
+
+void Kadu::closeEvent(QCloseEvent* event)
+{
+	kdebugf();
+	
+	if(Closing)
+		event->accept();
+	else
+	{
+		event->ignore();
+		close();
+	}
+	
+	kdebugf2();
 }
