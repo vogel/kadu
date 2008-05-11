@@ -31,6 +31,7 @@ extern "C" void xosd_notify_close()
 {
 	MainConfigurationWindow::unregisterUiFile(dataPath("kadu/modules/configuration/xosd_notify.ui"), xosd_notify);
 	delete xosd_notify;
+	xosd_notify = 0;
 }
 
 TestConfig::TestConfig() : type(), position(0), font_color(),

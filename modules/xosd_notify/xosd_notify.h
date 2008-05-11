@@ -7,6 +7,8 @@
 #include <QTimer>
 #include <QList>
 
+#include "configuration_aware_object.h"
+#include "main_configuration_window.h"
 #include "../notify/notify.h"
 
 #include "xlfd_chooser.h"
@@ -70,7 +72,7 @@ class XOSDConfigurationWidget : public NotifierConfigurationWidget
 		virtual void switchToEvent(const QString &event);
 };
 
-class XOSDNotify : public Notifier, public ConfigurationUiHandler, public ConfigurationAwareObject
+class XOSDNotify : public Notifier, public ConfigurationUiHandler, ConfigurationAwareObject
 {
 	Q_OBJECT
 	private:
