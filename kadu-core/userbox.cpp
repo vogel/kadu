@@ -546,6 +546,10 @@ UserBox::UserBox(bool fancy, UserGroup *group, QWidget* parent, const char* name
 UserBox::~UserBox()
 {
 	kdebugf();
+
+	disconnect(VisibleUsers, SIGNAL(userRemoved(UserListElement, bool, bool)),
+			this, SLOT(userRemovedFromVisible(UserListElement, bool, bool)));
+
 	UserBoxes.remove(this);
 	delete VisibleUsers;
 	VisibleUsers = 0;
