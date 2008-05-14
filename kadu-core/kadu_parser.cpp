@@ -9,15 +9,13 @@
 
 #include <QApplication>
 
-#include <stdlib.h>
-
 #include "config_file.h"
 #include "debug.h"
 #include "html_document.h"
 #include "icons_manager.h"
-#include "kadu_parser.h"
 #include "misc.h"
-#include "userlistelement.h"
+
+#include "kadu_parser.h"
 
 QMap<QString, QString> KaduParser::globalVariables;
 QMap<QString, QString (*)(const UserListElement &)> KaduParser::registeredTags;
@@ -408,7 +406,7 @@ QString KaduParser::parse(const QString &s, const UserListElement &ule, const QO
 					}
 					else if (pe2.type == ParseElem::PE_CHECK_FILE_EXISTS || pe2.type == ParseElem::PE_CHECK_FILE_NOT_EXISTS)
 					{
-						// zmienna potrzebna, bo pop_back() zniszczy nam zmienn± pe2, któr± pobrali¶my przez referencjê
+						// zmienna potrzebna, bo pop_back() zniszczy nam zmiennï¿½ pe2, ktï¿½rï¿½ pobraliï¿½my przez referencjï¿½
 						bool check_file_exists = pe2.type == ParseElem::PE_CHECK_FILE_EXISTS;
 
 						int spacePos = pe.str.find(' ', 0);

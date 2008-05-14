@@ -7,6 +7,11 @@
  *                                                                         *
  ***************************************************************************/
 
+#include <QApplication>
+#include <QGridLayout>
+#include <QHBoxLayout>
+#include <QListWidget>
+
 #include "chat_widget.h"
 #include "chat_manager.h"
 #include "config_file.h"
@@ -21,8 +26,6 @@
 #include "status_changed_notification.h"
 #include "userbox.h"
 
-#include <QApplication>
-#include <QListWidget>
 
 extern "C" int notify_init()
 {

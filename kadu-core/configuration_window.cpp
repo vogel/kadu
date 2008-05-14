@@ -9,7 +9,9 @@
 
 #include <QApplication>
 #include <QGroupBox>
+#include <QHBoxLayout>
 #include <QScrollArea>
+#include <QVBoxLayout>
 
 #include "config_file.h"
 #include "configuration_aware_object.h"

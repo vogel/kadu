@@ -2,16 +2,11 @@
 #define KADU_PARSER_H
 
 #include <QMap>
-#include <QString>
 
-class QObject;
-class UserListElement;
+#include "userlistelement.h"
 
 class KaduParser
 {
-
-private:
-
 	struct ParseElem
 	{
 		enum ParseElemType
@@ -40,7 +35,6 @@ private:
 	static QString executeCmd(const QString &cmd);
 
 public:
-
 	static QMap<QString, QString> globalVariables;
 	static QString parse(const QString &s, const UserListElement &ule, bool escape = true);
 	static QString parse(const QString &s, const UserListElement &ule, const QObject * const object, bool escape = true);
