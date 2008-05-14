@@ -7,26 +7,19 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <qapplication.h>
-#include <qclipboard.h>
-#include <qobject.h>
-#include <q3popupmenu.h>
-#include <qregexp.h>
+#include <QApplication>
+#include <QClipboard>
+#include <QFile>
 #include <QFileDialog>
-#include <qfile.h>
-//Added by qt3to4:
-#include <QWheelEvent>
-#include <QMouseEvent>
-// #include <private/qrichtext_p.h>
-#include <QUrl>
-#include <QTextCursor>
+#include <QMenu>
 
 #include "config_file.h"
 #include "debug.h"
-#include "emoticons.h"
-#include "kadu_text_browser.h"
-#include "misc.h"
+#include "html_document.h"
 #include "message_box.h"
+#include "misc.h"
+
+#include "kadu_text_browser.h"
 
 KaduTextBrowser::KaduTextBrowser(QWidget *parent)
 	: QTextBrowser(parent),//, QToolTip(viewport()),
