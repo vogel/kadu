@@ -7,13 +7,13 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <QRegExp>
 #include <QTime>
 
 #include "config_file.h"
 #include "debug.h"
-#include "http_client.h"
 #include "misc.h"
+
+#include "http_client.h"
 
 HttpClient::HttpClient() :
 		Socket(), Host(), Referer(), Path(), Data(), PostData(), StatusCode(0),
@@ -100,7 +100,7 @@ void HttpClient::onReadyRead()
 		// Dostalismy naglowek,
 		kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "HttpClient: Http header found:\n%s\n", s.local8Bit().data());
 		HeaderParsed = true;
-		// Wyci±gamy status
+		// Wyciï¿½gamy status
 		QRegExp status_regexp("HTTP/1\\.[01] (\\d+)");
 		if (status_regexp.search(s) < 0)
 		{
@@ -133,7 +133,7 @@ void HttpClient::onReadyRead()
 			get(location);
 			return;
 		}
-		// Wyci±gamy Content-Length
+		// Wyciï¿½gamy Content-Length
 		QRegExp cl_regexp("Content-Length: (\\d+)");
 		ContentLengthNotFound = cl_regexp.search(s) < 0;
 		if (ContentLengthNotFound)
@@ -165,8 +165,8 @@ void HttpClient::onReadyRead()
 		kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "HttpClient: Header parsed and cutted off from data\n");
 		kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "HttpClient: Header size: %i bytes\n", header_size);
 		kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "HttpClient: New data block size: %i bytes\n", new_data_size);
-		// Je¶li status jest 100 - Continue to czekamy na dalsze dane
-		// (uniewa¿niamy ten nag³owek i czekamy na nastêpny)
+		// Jeï¿½li status jest 100 - Continue to czekamy na dalsze dane
+		// (uniewaï¿½niamy ten nagï¿½owek i czekamy na nastï¿½pny)
 		if (StatusCode == 100)
 		{
 			HeaderParsed = false;
@@ -174,7 +174,7 @@ void HttpClient::onReadyRead()
 		}
 	}
 	// Kontynuuj odczyt jesli dane niekompletne
-	// lub je¶li mamy czekaæ na connection close
+	// lub jeï¿½li mamy czekaï¿½ na connection close
 	if (ContentLength > Data.size() || ContentLengthNotFound)
 		return;
 	// Mamy cale dane
@@ -244,7 +244,7 @@ int HttpClient::status() const
 	return StatusCode;
 }
 
-const QByteArray& HttpClient::data() const
+const QByteArray & HttpClient::data() const
 {
 	return Data;
 }
@@ -256,12 +256,12 @@ QString HttpClient::encode(const QString& text)
 	return encoded;
 }
 
-const QString &HttpClient::cookie(const QString& name) const
+const QString & HttpClient::cookie(const QString& name) const
 {
 	return Cookies[name];
 }
 
-const QMap<QString,QString> &HttpClient::cookies() const
+const QMap<QString,QString> & HttpClient::cookies() const
 {
 	return Cookies;
 }

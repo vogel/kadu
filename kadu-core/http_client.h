@@ -1,57 +1,55 @@
 #ifndef KADU_HTTP_CLIENT_H
 #define KADU_HTTP_CLIENT_H
 
-#include <qglobal.h>
+#include <QByteArray>
+#include <QTcpSocket>
 
-#include <q3cstring.h>
-#include <qmap.h>
-#include <qobject.h>
-#include <q3socket.h>
-
+// TODO: replace with QHttp
 class HttpClient : public QObject
 {
 	Q_OBJECT
 
-	private:
-		Q3Socket Socket;
-		QString Host;
-		QString Referer;
-		QString Path;
-		QByteArray Data;
-		QByteArray PostData;
-		int StatusCode;
-		bool HeaderParsed;
+	QTcpSocket Socket;
+	QString Host;
+	QString Referer;
+	QString Path;
+	QByteArray Data;
+	QByteArray PostData;
 
-		unsigned int ContentLength;
-		bool ContentLengthNotFound;
+	int StatusCode;
+	bool HeaderParsed;
 
-		QMap<QString, QString> Cookies;
+	unsigned int ContentLength;
+	bool ContentLengthNotFound;
 
-	private slots:
-		void onConnected();
-		void onReadyRead();
-		void onConnectionClosed();
+	QMap<QString, QString> Cookies;
 
-	public slots:
-		void setHost(const QString &host);
-		void get(const QString &path);
-		void post(const QString &path, const QByteArray &data);
-		void post(const QString &path, const QString &data);
+private slots:
+	void onConnected();
+	void onReadyRead();
+	void onConnectionClosed();
 
-	public:
-		HttpClient();
-		int status() const;
-		const QByteArray &data() const;
-		static QString encode(const QString &text);
+public:
+	HttpClient();
+	int status() const;
+	const QByteArray & data() const;
+	static QString encode(const QString &text);
 
-		const QString &cookie(const QString &name) const;
-		const QMap<QString, QString> &cookies() const;
-		void setCookie(const QString &name, const QString &value);
+	const QString & cookie(const QString &name) const;
+	const QMap<QString, QString> & cookies() const;
+	void setCookie(const QString & name, const QString &value);
 
-	signals:
-		void finished();
-		void redirected(QString link);
-		void error();
+public slots:
+	void setHost(const QString &host);
+	void get(const QString &path);
+	void post(const QString &path, const QByteArray &data);
+	void post(const QString &path, const QString &data);
+
+signals:
+	void finished();
+	void redirected(QString link);
+	void error();
+
 };
 
 #endif
