@@ -9,20 +9,23 @@
 
 #include <QApplication>
 #include <QCloseEvent>
+#include <QHBoxLayout>
 #include <QLabel>
+#include <QMap>
 #include <QPushButton>
 #include <QVBoxLayout>
 
-#include "icons_manager.h"
-#include "message_box.h"
 #include "debug.h"
+#include "icons_manager.h"
+
+#include "message_box.h"
 
 const int MessageBox::OK       = 1;  // 00001
 const int MessageBox::CANCEL   = 2;  // 00010
 const int MessageBox::YES      = 4;  // 00100
 const int MessageBox::NO       = 8;  // 01000
 
-MessageBox::MessageBox(const QString& message, int components, bool modal, const QString &iconName, QWidget *parent)
+MessageBox::MessageBox(const QString &message, int components, bool modal, const QString &iconName, QWidget *parent)
 	: QDialog(parent, Qt::Window | Qt::MSWindowsFixedSizeDialogHint | Qt::WindowTitleHint | Qt::WindowSystemMenuHint),
 	message(message)
 {
@@ -33,11 +36,11 @@ MessageBox::MessageBox(const QString& message, int components, bool modal, const
 	
 	setModal(modal);
 
-	QVBoxLayout* vbox = new QVBoxLayout(this);
+	QVBoxLayout *vbox = new QVBoxLayout(this);
 	vbox->setMargin(10);
 	vbox->setSpacing(10);
 
-	QHBoxLayout* hboxlabels = new QHBoxLayout(vbox);
+	QHBoxLayout *hboxlabels = new QHBoxLayout(vbox);
 	hboxlabels->addStretch(1);
 
 	if (!iconName.isEmpty())
@@ -47,16 +50,16 @@ MessageBox::MessageBox(const QString& message, int components, bool modal, const
 		hboxlabels->addWidget(icon, 0, Qt::AlignCenter);
 	}
 
-	QLabel* label = new QLabel(this);
+	QLabel *label = new QLabel(this);
 	if (!message.isEmpty())
 		label->setText(message);
 
 	hboxlabels->addWidget(label, 0, Qt::AlignCenter);
 	hboxlabels->addStretch(1);
 
-	QHBoxLayout* hboxbuttons = new QHBoxLayout(vbox);
-	QWidget* buttons = new QWidget;
-	QHBoxLayout* buttons_layout = new QHBoxLayout;
+	QHBoxLayout *hboxbuttons = new QHBoxLayout(vbox);
+	QWidget *buttons = new QWidget;
+	QHBoxLayout *buttons_layout = new QHBoxLayout;
 	buttons_layout->setSpacing(20);
 
 	if (components & OK)
@@ -85,13 +88,13 @@ MessageBox::~MessageBox()
 
 void MessageBox::addButton(QBoxLayout *parent, const QString &caption, const char *slot)
 {
-	QPushButton* b = new QPushButton;
+	QPushButton *b = new QPushButton;
 	b->setText(caption);
 	parent->addWidget(b);
 	connect(b, SIGNAL(clicked()), this, slot);
 }
 
-void MessageBox::closeEvent(QCloseEvent* e)
+void MessageBox::closeEvent(QCloseEvent *e)
 {
 	e->ignore();
 }
@@ -120,17 +123,17 @@ void MessageBox::noClicked()
 	reject();
 }
 
-void MessageBox::status(const QString& message)
+void MessageBox::status(const QString &message)
 {
-	MessageBox* m = new MessageBox(message);
+	MessageBox *m = new MessageBox(message);
 	m->show();
 	Boxes.insert(message,m);
 	qApp->processEvents();
 }
 
-void MessageBox::msg(const QString& message, bool modal, const QString& iconName, QWidget *parent)
+void MessageBox::msg(const QString &message, bool modal, const QString &iconName, QWidget *parent)
 {
-	MessageBox* m = new MessageBox(message, OK, modal, iconName, parent);
+	MessageBox *m = new MessageBox(message, OK, modal, iconName, parent);
 
 	if (modal)
 		m->exec();
@@ -138,13 +141,13 @@ void MessageBox::msg(const QString& message, bool modal, const QString& iconName
 		m->show();
 }
 
-bool MessageBox::ask(const QString& message, const QString& iconName, QWidget *parent)
+bool MessageBox::ask(const QString &message, const QString &iconName, QWidget *parent)
 {
-	MessageBox* m = new MessageBox(message, YES|NO, true, iconName, parent);
+	MessageBox *m = new MessageBox(message, YES|NO, true, iconName, parent);
 	return (m->exec() == Accepted);
 }
 
-void MessageBox::close(const QString& message)
+void MessageBox::close(const QString &message)
 {
 	if (Boxes.contains(message))
 	{

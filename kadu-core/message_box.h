@@ -1,3 +1,12 @@
+/***************************************************************************
+ *                                                                         *
+ *   This program is free software; you can redistribute it and/or modify  *
+ *   it under the terms of the GNU General Public License as published by  *
+ *   the Free Software Foundation; either version 2 of the License, or     *
+ *   (at your option) any later version.                                   *
+ *                                                                         *
+ ***************************************************************************/
+
 #ifndef MESSAGE_BOX_H
 #define MESSAGE_BOX_H
 
@@ -8,80 +17,78 @@ class QLabel;
 
 /**
 	Odpowiednik klasy QMessageBox z QT. W zamierzeniu ma
-	mieæ wiêksze mo¿liwo¶ci i wygodniejszy interface ni¿
-	orygina³.
+	mieï¿½ wiï¿½ksze moï¿½liwoï¿½ci i wygodniejszy interface niï¿½
+	oryginaï¿½.
 **/
 class MessageBox : public QDialog
 {
 	Q_OBJECT
 
-	private:
-		static QMap<QString,MessageBox*> Boxes;
-		QLabel *icon;
-		QString message;
+	static QMap<QString, MessageBox *> Boxes;
+	QLabel *icon;
+	QString message;
 
-		void addButton(QBoxLayout *parent, const QString &caption, const char *slot);
+	void addButton(QBoxLayout *parent, const QString &caption, const char *slot);
 
-	private slots:
-		void okClicked();
-		void cancelClicked();
-		void yesClicked();
-		void noClicked();
+private slots:
+	void okClicked();
+	void cancelClicked();
+	void yesClicked();
+	void noClicked();
 
-	protected:
-		void closeEvent(QCloseEvent* e);
+protected:
+	void closeEvent(QCloseEvent *e);
 
-	public:
-		// komponenty dialogu
-		static const int OK;
-		static const int CANCEL;
-		static const int YES;
-		static const int NO;
-		//
-		MessageBox(const QString& message, int components = 0, bool modal = false, const QString &iconName = QString::null, QWidget *parent = 0);
-		~MessageBox();
+public:
+	static const int OK;
+	static const int CANCEL;
+	static const int YES;
+	static const int NO;
 
-		//
+	MessageBox(const QString &message, int components = 0, bool modal = false, const QString &iconName = QString::null, QWidget *parent = 0);
+	~MessageBox();
 
-		/**
-			Informuje u¿ytkownika o wykonywanej przez
-			program czynno¶ci. Tworzy dialog zawieraj±cy
-			tylko podany tekst. Nie blokuje wykonywania
-			programu. Zamkniêcie dialogu nastêpuje po
-			wywo³aniu funkcji close z t± sam± wiadomo¶ci±
-			przekazan± jako argument.
-			Wywo³uje QApplication::processEvents().
-		**/
-		static void status(const QString& message);
 
-		/**
-			Zadaje u¿ytkownikowi pytanie. Tworzy dialog
-			z dwoma przyciskami: "Tak" i "Nie". Blokuje
-			wykonywanie programu i czeka na reakcjê
-			u¿ytkownika. Zwraca true je¶li wybra³ "Tak"
-			lub false je¶li wybra³ "Nie".
-		**/
-		static bool ask(const QString& message, const QString& iconName = QString::null, QWidget *parent = 0);
+	/**
+		Informuje uï¿½ytkownika o wykonywanej przez
+		program czynnoï¿½ci. Tworzy dialog zawierajï¿½cy
+		tylko podany tekst. Nie blokuje wykonywania
+		programu. Zamkniï¿½cie dialogu nastï¿½puje po
+		wywoï¿½aniu funkcji close z tï¿½ samï¿½ wiadomoï¿½ciï¿½
+		przekazanï¿½ jako argument.
+		Wywoï¿½uje QApplication::processEvents().
+	**/
+	static void status(const QString &message);
 
-		/**
-			Przekazuje u¿ytkownikowi informacjê. Tworzy
-			dialog z przyciskiem: "OK" zamykaj±cy okno.
-			Nie blokuje wykonywania programu.
-		**/
-		static void msg(const QString& message, bool modal=false, const QString& iconName = QString::null, QWidget *parent = 0);
+	/**
+		Zadaje uï¿½ytkownikowi pytanie. Tworzy dialog
+		z dwoma przyciskami: "Tak" i "Nie". Blokuje
+		wykonywanie programu i czeka na reakcjï¿½
+		uï¿½ytkownika. Zwraca true jeï¿½li wybraï¿½ "Tak"
+		lub false jeï¿½li wybraï¿½ "Nie".
+	**/
+	static bool ask(const QString &message, const QString &iconName = QString::null, QWidget *parent = 0);
 
-		/**
-			Zamyka dialog, który zosta³ stworzony za
-			pomoc± funkcji status z t± sam± wiadomo¶ci±
-			przekazan± jako argument.
-		**/
-		static void close(const QString& message);
+	/**
+		Przekazuje uï¿½ytkownikowi informacjï¿½. Tworzy
+		dialog z przyciskiem: "OK" zamykajï¿½cy okno.
+		Nie blokuje wykonywania programu.
+	**/
+	static void msg(const QString &message, bool modal = false, const QString &iconName = QString::null, QWidget *parent = 0);
 
-	signals:
-		void okPressed();
-		void cancelPressed();
-		void yesPressed();
-		void noPressed();
+	/**
+		Zamyka dialog, ktï¿½ry zostaï¿½ stworzony za
+		pomocï¿½ funkcji status z tï¿½ samï¿½ wiadomoï¿½ciï¿½
+		przekazanï¿½ jako argument.
+	**/
+	static void close(const QString &message);
+
+signals:
+	void okPressed();
+	void cancelPressed();
+	void yesPressed();
+	void noPressed();
+
 };
 
 #endif
