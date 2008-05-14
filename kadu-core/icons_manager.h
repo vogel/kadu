@@ -1,14 +1,9 @@
 #ifndef KADU_ICONS_MANAGER_H
 #define KADU_ICONS_MANAGER_H
 
-#include <qglobal.h>
-
-#include <qmenudata.h>
-#include <qmovie.h>
-#include <qicon.h>
-#include <qpixmap.h>
-#include <qstring.h>
-#include <q3valuelist.h>
+#include <QIcon>
+#include <QMap>
+#include <QPixmap>
 
 #include "configuration_aware_object.h"
 #include "themes.h"
@@ -24,11 +19,11 @@ class IconsManager : public Themes, ConfigurationAwareObject
 //	QList<QPair<QMenuData *, QList<QPair<QString, QString> > > > menus;
 
 public:
-	IconsManager(const QString& name, const QString& configname);
+	IconsManager(const QString &name, const QString &configname);
 
 	/**
-		Zwraca pe³n± ¶cie¿kê do ikony z aktualnego zestawu
-		lub bezposrednio name je¶li jest to pe³na ¶cie¿ka.
+		Zwraca peï¿½nï¿½ ï¿½cieï¿½kï¿½ do ikony z aktualnego zestawu
+		lub bezposrednio name jeï¿½li jest to peï¿½na ï¿½cieï¿½ka.
 		@param name nazwa ikony z zestawu lub sciezka do pliku
 		(jesli zawiera znak '/' to jest interpretowana jako
 		sciezka).
@@ -36,14 +31,14 @@ public:
 	QString iconPath(const QString &name) const;
 
 	/**
-		£aduje ikonê z aktualnego zestawu lub z podanego pliku.
-		@param name nazwa ikony z zestawu lub ¶cie¿ka do pliku
-		(je¶li zawiera znak '/' to jest interpretowana jako
-		¶cie¿ka).
+		ï¿½aduje ikonï¿½ z aktualnego zestawu lub z podanego pliku.
+		@param name nazwa ikony z zestawu lub ï¿½cieï¿½ka do pliku
+		(jeï¿½li zawiera znak '/' to jest interpretowana jako
+		ï¿½cieï¿½ka).
 	**/
-	const QPixmap &loadPixmap(const QString &name);
+	const QPixmap & loadPixmap(const QString &name);
 // 	const QMovie &loadAnimatedIcon(const QString &name);
-	const QIcon &loadIcon(const QString &name);
+	const QIcon & loadIcon(const QString &name);
 
 	static void initModule();
 	static void closeModule();

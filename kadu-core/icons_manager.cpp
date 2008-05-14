@@ -7,22 +7,16 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <qcombobox.h>
-#include <qmessagebox.h>
-//Added by qt3to4:
-#include <QPixmap>
-#include <QList>
-
 #include "action.h"
 #include "config_file.h"
 #include "debug.h"
-#include "icons_manager.h"
 #include "kadu.h"
-#include "misc.h"
 #include "userbox.h"
 
-IconsManager::IconsManager(const QString& name, const QString& configname) :
-	Themes(name, configname, "icons_manager"), pixmaps(), icons()/*, animatedIcons()*///, menus()
+#include "icons_manager.h"
+
+IconsManager::IconsManager(const QString &name, const QString &configname)
+	: Themes(name, configname, "icons_manager"), pixmaps(), icons()/*, animatedIcons()*///, menus()
 {
 	kdebugf();
 	kdebugf2();
@@ -144,8 +138,8 @@ void IconsManager::refreshMenus()
 // 			QString t = menu->text(id);
 // 
 // 			CONST_FOREACH(it2, (*it).second)
-				//startsWith jest potrzebne, bo je¿eli opcja w menu ma skrót klawiszowy,
-				//to menu->text(id) zwraca napis "Nazwa opcji\tskrót klawiszowy"
+				//startsWith jest potrzebne, bo jeï¿½eli opcja w menu ma skrï¿½t klawiszowy,
+				//to menu->text(id) zwraca napis "Nazwa opcji\tskrï¿½t klawiszowy"
 // 				if (t == (*it2).first || t.startsWith((*it2).first + "\t"))
 // 				{
 // 					bool enabled = menu->isItemEnabled(id);
