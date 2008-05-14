@@ -7,24 +7,18 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <stdlib.h>
-
-#include <qapplication.h>
-#include <qstyle.h>
-#include <qstylefactory.h>
-//Added by qt3to4:
+#include <QApplication>
 #include <QList>
-#include <QKeyEvent>
-#include <QStyle>
+#include <QPair>
+#include <QStyleFactory>
 
 #include "chat_message.h"
 #include "config_file.h"
 #include "configuration_window_widgets.h"
 #include "debug.h"
-#include "emoticons.h"
 #include "icons_manager.h"
 #include "kadu.h"
-#include "modules.h"
+#include "userlistelement.h"
 
 #include "main_configuration_window.h"
 

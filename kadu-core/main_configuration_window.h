@@ -1,42 +1,31 @@
 #ifndef MAIN_CONFIGURATION_WINDOW_H
 #define MAIN_CONFIGURATION_WINDOW_H
 
-#include <qglobal.h>
-
-#include <qpair.h>
-#include <q3valuelist.h>
-//Added by qt3to4:
-#include <QKeyEvent>
-
 #include "configuration_window.h"
-
-class ConfigComboBox;
-class ConfigLineEdit;
-
-class ChatMessage;
-class Preview;
 
 class QCheckBox;
 
-class MainConfigurationWindow;
+class ChatMessage;
+class ConfigComboBox;
 
+class MainConfigurationWindow;
 /**
 	@class ConfigurationUiHandler
 	@author Vogel
-	@short Klasa bazowa dla klas obs³uguj±cych okno konfiguracyjne.
+	@short Klasa bazowa dla klas obsï¿½ugujï¿½cych okno konfiguracyjne.
 
-	Klasa dziedzicz±ca z tej bêdzie informowana o stworzeniu nowego g³ównego okna
-	konfiguracyjnego co da jej mo¿liwo¶æ podpiêcia siê pod sygna³y odpowiednich
+	Klasa dziedziczï¿½ca z tej bï¿½dzie informowana o stworzeniu nowego gï¿½ï¿½wnego okna
+	konfiguracyjnego co da jej moï¿½liwoï¿½ï¿½ podpiï¿½cia siï¿½ pod sygnaï¿½y odpowiednich
 	kontrolek i odpowiedniej reakcji na nie.
  **/
-// TODO: zamiast slota zwyk³a metoda wirtualna?
+// TODO: zamiast slota zwykï¿½a metoda wirtualna?
 class ConfigurationUiHandler : public virtual QObject
 {
 	Q_OBJECT
 
 public slots:
 	/**
-		Slot wywo³ywany, gdy g³ówne okno konfiguracyjne zostanie stworzone.
+		Slot wywoï¿½ywany, gdy gï¿½ï¿½wne okno konfiguracyjne zostanie stworzone.
 	 **/
 	virtual void mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow) = 0;
 };
@@ -44,7 +33,7 @@ public slots:
 /**
 	@class MainConfigurationWindow
 	@author Vogel
-	@short G³ówne okno konfiguracyjne.
+	@short Gï¿½ï¿½wne okno konfiguracyjne.
  **/
 class MainConfigurationWindow : public ConfigurationWindow
 {
@@ -110,14 +99,14 @@ public:
 	}
 
 	/**
-		Rejestracja nowego pliku *.ui (dokonywana przez modu³u).
-		Plik uiFile zostanie wczytany wraz z otwarciem g³ównego okna konfiguracyjnego.
-		Obiekt uiHandle zostanie poinformowany o stworzeniu okna i bêdzie móg³ dodaæ
-		do niego w³asne interakcje.
+		Rejestracja nowego pliku *.ui (dokonywana przez moduï¿½u).
+		Plik uiFile zostanie wczytany wraz z otwarciem gï¿½ï¿½wnego okna konfiguracyjnego.
+		Obiekt uiHandle zostanie poinformowany o stworzeniu okna i bï¿½dzie mï¿½gï¿½ dodaï¿½
+		do niego wï¿½asne interakcje.
 	 **/
 	static void registerUiFile(const QString &uiFile, ConfigurationUiHandler *uiHandler);
 	/**
-		Wyrejestrowanie pliku *.ui i klasy obs³uguj±cej okno konfiguracyjne.
+		Wyrejestrowanie pliku *.ui i klasy obsï¿½ugujï¿½cej okno konfiguracyjne.
 	 **/
 	static void unregisterUiFile(const QString &uiFile, ConfigurationUiHandler *uiHandler);
 
