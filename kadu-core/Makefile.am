@@ -36,7 +36,6 @@ ignore.cpp \
 kadu.cpp \
 kadu_main_window.cpp \
 kadu_parser.cpp \
-kadu_splitter.cpp \
 kadu_text_browser.cpp \
 main.cpp \
 main_configuration_window.cpp \
@@ -104,7 +103,6 @@ ignore.h \
 kadu.h \
 kadu_main_window.h \
 kadu_parser.h \
-kadu_splitter.h \
 kadu_text_browser.h \
 main_configuration_window.h \
 message_box.h \
@@ -222,7 +220,6 @@ obj/ignore.$(OBJEXT) \
 obj/kadu.$(OBJEXT) \
 obj/kadu_main_window.$(OBJEXT) \
 obj/kadu_parser.$(OBJEXT) \
-obj/kadu_splitter.$(OBJEXT) \
 obj/kadu_text_browser.$(OBJEXT) \
 obj/main.$(OBJEXT) \
 obj/main_configuration_window.$(OBJEXT) \
@@ -362,7 +359,6 @@ include $(DEPS)/kadu_moc.d
 include $(DEPS)/kadu_main_window.d
 include $(DEPS)/kadu_main_window_moc.d
 include $(DEPS)/kadu_parser.d
-include $(DEPS)/kadu_splitter.d
 include $(DEPS)/kadu_text_browser.d
 include $(DEPS)/kadu_text_browser_moc.d
 include $(DEPS)/main.d

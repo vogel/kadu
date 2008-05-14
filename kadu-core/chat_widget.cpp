@@ -8,6 +8,7 @@
  ***************************************************************************/
 
 #include <QShortcut>
+#include <QSplitter>
 #include <QVBoxLayout>
 
 #include "chat_edit_box.h"
@@ -22,7 +23,6 @@
 #include "ignore.h"
 #include "kadu.h"
 #include "kadu_parser.h"
-#include "kadu_splitter.h"
 #include "message_box.h"
 #include "protocol.h"
 #include "userbox.h"
@@ -43,7 +43,7 @@ ChatWidget::ChatWidget(Protocol *initialProtocol, const UserListElements &usrs, 
 	layout->setMargin(0);
 	layout->setSpacing(0);
 
-	vertSplit = new KaduSplitter(Qt::Vertical, this);
+	vertSplit = new QSplitter(Qt::Vertical, this);
 	layout->addWidget(vertSplit);
 
 	setAcceptDrops(true);
@@ -52,7 +52,7 @@ ChatWidget::ChatWidget(Protocol *initialProtocol, const UserListElements &usrs, 
 
 	if (Users->count() > 1)
 	{
-		horizSplit = new KaduSplitter(Qt::Horizontal, this, "horizSplit");
+		horizSplit = new QSplitter(Qt::Horizontal, this, "horizSplit");
 		horizSplit->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Expanding);
 
 		body = new ChatMessagesView(horizSplit);
@@ -639,9 +639,9 @@ void ChatWidget::sendMessage()
 
 void ChatWidget::openEmoticonSelector(const QWidget *activating_widget)
 {
-	//emoticons_selector zawsze bêdzie NULLem gdy wchodzimy do tej funkcji
+	//emoticons_selector zawsze bï¿½dzie NULLem gdy wchodzimy do tej funkcji
 	//bo EmoticonSelector ma ustawione flagi Qt::WDestructiveClose i Qt::WType_Popup
-	//akcj± na opuszczenie okna jest ustawienie zmiennej emoticons_selector w Chacie na NULL
+	//akcjï¿½ na opuszczenie okna jest ustawienie zmiennej emoticons_selector w Chacie na NULL
 	emoticon_selector = new EmoticonSelector(this, this);
 	emoticon_selector->alignTo(const_cast<QWidget*>(activating_widget)); //TODO: do something about const_cast
 	emoticon_selector->show();
@@ -762,7 +762,7 @@ Protocol *ChatWidget::currentProtocol()
 	return CurrentProtocol;
 }
 
-// TODO: do dupy, zmieniæ przed 0.6
+// TODO: do dupy, zmieniï¿½ przed 0.6
 void ChatWidget::makeActive()
 {
 	kdebugf();

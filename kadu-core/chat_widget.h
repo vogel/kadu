@@ -19,13 +19,14 @@
 #include "configuration_aware_object.h"
 #include "userlist.h"
 
+class QSplitter;
+
 class ChatEditBox;
 class ChatMessage;
 class ChatWidget;
 class ColorSelector;
 class CustomInput;
 class EmoticonSelector;
-class KaduSplitter;
 class Protocol;
 class UserBox;
 class UserGroup;
@@ -34,8 +35,8 @@ class UserGroup;
 typedef QList<ChatWidget *> ChatList;
 
 /**
-	Klasa tworz±ca okno rozmowy, rejestruj±ca przyciski,
-	formatuj±ca wiadomo¶æ itp.
+	Klasa tworzï¿½ca okno rozmowy, rejestrujï¿½ca przyciski,
+	formatujï¿½ca wiadomoï¿½ï¿½ itp.
 	\class ChatWidget
 	\brief Okno rozmowy
 **/
@@ -47,47 +48,47 @@ class ChatWidget : public QWidget, ConfigurationAwareObject
 private:
 	friend class ChatManager;
 
-	QString Caption; /*!< tytu³ okna */
+	QString Caption; /*!< tytuï¿½ okna */
 	Protocol *CurrentProtocol;
-	UserGroup *Users; /*!< lista u¿ytkowników w danym oknie */
-	int index;	/*!< nr okna (z chat menad¿era) */
-	QColor actcolor; /*!< zmienna przechowuj±ca aktualny kolor */
+	UserGroup *Users; /*!< lista uï¿½ytkownikï¿½w w danym oknie */
+	int index;	/*!< nr okna (z chat menadï¿½era) */
+	QColor actcolor; /*!< zmienna przechowujï¿½ca aktualny kolor */
 	QPixmap pix;
-//	Q3MimeSourceFactory *bodyformat; /*!< zmienna ustawiaj±ca format */
+//	Q3MimeSourceFactory *bodyformat; /*!< zmienna ustawiajï¿½ca format */
 	EmoticonSelector *emoticon_selector; /*!< okienko do wyboru emotikonek */
 	ColorSelector *color_selector; /*!< okienko do wyboru koloru */
-	bool AutoSend; /*!< okre¶la czy Return powoduje wys³anie wiadomo¶ci */
+	bool AutoSend; /*!< okreï¿½la czy Return powoduje wysï¿½anie wiadomoï¿½ci */
 	bool WaitingForACK;
-	UserBox *userbox; /*!< lista kontaktów przydatna gdy jeste¶my w konferencji */
-	QString myLastMessage; /*!< zmienna przechowuj±ca nasz± ostatni± wiadomo¶æ */
-	KaduSplitter *vertSplit, *horizSplit; /*!< obiekty oddzielaj±ce kontrolki od siebie */
+	UserBox *userbox; /*!< lista kontaktï¿½w przydatna gdy jesteï¿½my w konferencji */
+	QString myLastMessage; /*!< zmienna przechowujï¿½ca naszï¿½ ostatniï¿½ wiadomoï¿½ï¿½ */
+	QSplitter *vertSplit, *horizSplit; /*!< obiekty oddzielajï¿½ce kontrolki od siebie */
 
-	QDateTime lastMsgTime; /*!< czas ostatniej wiadomo¶ci */
+	QDateTime lastMsgTime; /*!< czas ostatniej wiadomoï¿½ci */
 
-	ChatEditBox *Edit; /*!< okno do wpisywania wiadomo¶ci */
-	ChatMessagesView *body; /*!< historia rozmowy, proszê NIE dawaæ dostêpu na zewn±trz do tej zmiennej */
+	ChatEditBox *Edit; /*!< okno do wpisywania wiadomoï¿½ci */
+	ChatMessagesView *body; /*!< historia rozmowy, proszï¿½ NIE dawaï¿½ dostï¿½pu na zewnï¿½trz do tej zmiennej */
 
 	// TODO: remove
 	int activationCount;
 
-	unsigned int NewMessagesCount; /*!< liczba nowych wiadomo¶ci w oknie rozmowy */
+	unsigned int NewMessagesCount; /*!< liczba nowych wiadomoï¿½ci w oknie rozmowy */
 
 private slots:
 	/**
 		\fn void changeColor()
-		Slot zmieniaj±cy kolor czcionki
+		Slot zmieniajï¿½cy kolor czcionki
 	**/
 	void changeColor(const QWidget *activating_widget);
 
 	/**
 		\fn void connectAcknowledgeSlots()
-		Slot pod³±czaj±cy potwierdzenie dostarczenia wiadomo¶ci
+		Slot podï¿½ï¿½czajï¿½cy potwierdzenie dostarczenia wiadomoï¿½ci
 	**/
 	void connectAcknowledgeSlots();
 
 	/**
 		\fn void disconnectAcknowledgeSlots()
-		Slot od³±czaj±cy potwierdzenie dostarczenia wiadomo¶ci
+		Slot odï¿½ï¿½czajï¿½cy potwierdzenie dostarczenia wiadomoï¿½ci
 	**/
 	void disconnectAcknowledgeSlots();
 
@@ -97,16 +98,16 @@ private slots:
 
 	/**
 		\fn void colorActionForceRefresh()
-		Slot jest wywo³ywany, po dodaniu do paska narzêdzi akcji zmieniaj±cej
-		kolor wiadomo¶ci lub zmianie zestawu ikon. U¿ywa setActColor() wymuszaj±c
-		od¶wie¿enie koloru na przycisku.
+		Slot jest wywoï¿½ywany, po dodaniu do paska narzï¿½dzi akcji zmieniajï¿½cej
+		kolor wiadomoï¿½ci lub zmianie zestawu ikon. Uï¿½ywa setActColor() wymuszajï¿½c
+		odï¿½wieï¿½enie koloru na przycisku.
 	**/
 	void colorActionForceRefresh();
 
 	/**
 		\fn void setActColor()
 		\param force wymuszenie zmiany
-		Ustawia poprawny kolor na przycisku akcji obs³uguj±cej kolor wiadomo¶ci
+		Ustawia poprawny kolor na przycisku akcji obsï¿½ugujï¿½cej kolor wiadomoï¿½ci
 	**/
 	void setActColor(bool force);
 
@@ -122,7 +123,7 @@ public:
 	/**
 		Konstruktor okna rozmowy
 		\fn Chat(UserListElements usrs, QWidget* parent = 0, const char* name = 0)
-		\param usrs lista kontaktów, z którymi prowadzona jest rozmowa
+		\param usrs lista kontaktï¿½w, z ktï¿½rymi prowadzona jest rozmowa
 		\param parent rodzic okna
 		\param name nazwa obiektu
 	**/
@@ -135,61 +136,61 @@ public:
 	~ChatWidget();
 
 	/**
-		Dodaje now± wiadomosæ systemow± do okna.
+		Dodaje nowï¿½ wiadomosï¿½ systemowï¿½ do okna.
 
-		@param rawContent tre¶æ wiadomo¶ci w postaci HTML
-		@param backgroundColor kolor t³a wiadomo¶ci (format HTML)
-		@param fontColor kolor wiadomo¶ci (format HTML)
+		@param rawContent treï¿½ï¿½ wiadomoï¿½ci w postaci HTML
+		@param backgroundColor kolor tï¿½a wiadomoï¿½ci (format HTML)
+		@param fontColor kolor wiadomoï¿½ci (format HTML)
 	 **/
 	void appendSystemMessage(const QString &rawContent, const QString &backgroundColor, const QString &fontColor);
 
 	/**
 		\fn void newMessage(const QString &protocolName, UserListElements senders, const QString &msg, time_t time)
-		Dodaje wiadomo¶æ do okna
-		\param protocolName nazwa protoko³u
-		\param senders lista u¿ytkowników
-		\param msg wiadomo¶c
+		Dodaje wiadomoï¿½ï¿½ do okna
+		\param protocolName nazwa protokoï¿½u
+		\param senders lista uï¿½ytkownikï¿½w
+		\param msg wiadomoï¿½c
 		\param time czas
 		**/
 	void newMessage(const QString &protocolName, UserListElements senders, const QString &msg, time_t time);
 
 	/**
 		\fn const UserGroup *users() const
-		Zwraca listê numerów rozmowców.
+		Zwraca listï¿½ numerï¿½w rozmowcï¿½w.
 	**/
 	const UserGroup * users() const;
 
 	/**
 		\fn void repaintMessages()
-		Od¶wie¿a zawarto¶æ okna uwzglêdniaj±c ewentualne
-		zmiany dokonane w której¶ wiadomo¶ci z listy
-		uzyskanej za pomoc± metody chatMessages(),
-		dodanie nowych wiadomo¶ci lub usuniêcie istniej±cych.
+		Odï¿½wieï¿½a zawartoï¿½ï¿½ okna uwzglï¿½dniajï¿½c ewentualne
+		zmiany dokonane w ktï¿½rejï¿½ wiadomoï¿½ci z listy
+		uzyskanej za pomocï¿½ metody chatMessages(),
+		dodanie nowych wiadomoï¿½ci lub usuniï¿½cie istniejï¿½cych.
 	**/
 	void repaintMessages();
 
 	/**
 		\fn const QString& title() const
-		Zwraca aktualny tytu³ okna
+		Zwraca aktualny tytuï¿½ okna
 	**/
 	const QString & caption() const;
 
 	/**
 		\fn CustonInput* edit()
-		Zwraca wska¼nik do okna wpisywania wiadomo¶ci
+		Zwraca wskaï¿½nik do okna wpisywania wiadomoï¿½ci
 	**/
 	CustomInput * edit();
 
 	/**
 		\fn UserBox* userbox()
-		Zwraca wska¼nik do userboxa konferencji, je¶li on istnieje
+		Zwraca wskaï¿½nik do userboxa konferencji, jeï¿½li on istnieje
 	**/
 	UserBox * getUserbox();
 
 	/**
 		\fn bool autoSend() const
-		Zwraca warto¶æ okre¶laj±c±, czy Return powoduje
-		wys³anie wiadomo¶ci.
+		Zwraca wartoï¿½ï¿½ okreï¿½lajï¿½cï¿½, czy Return powoduje
+		wysï¿½anie wiadomoï¿½ci.
 	**/
 	bool autoSend() const;
 
@@ -216,13 +217,13 @@ public:
 public slots:
 	/**
 		\fn void refreshTitle()
-		Slot ustawiaj±cy tytu³ okna zgodnie z konfiguracj±
+		Slot ustawiajï¿½cy tytuï¿½ okna zgodnie z konfiguracjï¿½
 	**/
 	void refreshTitle();
 
 	/**
 		\fn void addEmoticon(QString)
-		Slot dodaje ikonke do pola wpisywania wiadomo¶ci
+		Slot dodaje ikonke do pola wpisywania wiadomoï¿½ci
 		\param emot ikonka np. <lol>
 	**/
 	void addEmoticon(QString);
@@ -233,78 +234,78 @@ public slots:
 
 	/**
 		\fn void editTextChanged()
-		Slot jest wywo³ywany, gdy zmieni³a siê zawarto¶æ
-		pola edycji wiadomo¶ci. Ustawia poprawny stan przycisku
+		Slot jest wywoï¿½ywany, gdy zmieniï¿½a siï¿½ zawartoï¿½ï¿½
+		pola edycji wiadomoï¿½ci. Ustawia poprawny stan przycisku
 		akcji sendAction w oknie rozmowy.
 	**/
 	void editTextChanged();
 
 	/**
 		\fn void appendMessages(const QValueList<ChatMessage *> &)
-		Slot dodaj wiadomo¶ci do okna
-		\param messages lista wiadomo¶ci
+		Slot dodaj wiadomoï¿½ci do okna
+		\param messages lista wiadomoï¿½ci
 	**/
 	void appendMessages(const QList<ChatMessage *> &, bool pending = false);
 
 	/**
 		\fn void appendMessage(ChatMessage *)
-		Slot dodaj wiadomo¶æ do okna
-		\param messages lista wiadomo¶ci
+		Slot dodaj wiadomoï¿½ï¿½ do okna
+		\param messages lista wiadomoï¿½ci
 	**/
 	void appendMessage(ChatMessage *, bool pending = false);
 
 	/**
 		\fn void sendMessage()
-		Slot wywo³ywany po naci¶niêciu przycisku
-		do wysy³ania wiadomo¶ci
+		Slot wywoï¿½ywany po naciï¿½niï¿½ciu przycisku
+		do wysyï¿½ania wiadomoï¿½ci
 	**/
 	void sendMessage();
 
 	/**
 		\fn void cancelMessage()
-		Slot wywo³ywany po naci¶nieciu przycisku anulowania
-		wysy³aniu wiadomo¶ci
+		Slot wywoï¿½ywany po naciï¿½nieciu przycisku anulowania
+		wysyï¿½aniu wiadomoï¿½ci
 	**/
 	void cancelMessage();
 
 	/**
 		\fn void writeMyMessage()
-		Slot wpisuj±cy wiadomo¶æ do okna
+		Slot wpisujï¿½cy wiadomoï¿½ï¿½ do okna
 		\see sendMessage
 	**/
 	void writeMyMessage();
 
 	/**
 		\fn void curPosChanged(int para, int pos)
-		Slot wywo³ywany kiedy pozycja kursosa zmieni³a siê
+		Slot wywoï¿½ywany kiedy pozycja kursosa zmieniï¿½a siï¿½
 	**/
 	void curPosChanged();
 
 	/**
 		\fn void specialKeyPressed(int key)
-		Slot zostaje wywo³any gdy naci¶niêto specjalny klawisz (skrót)
-		odpowiadaj±cy np KEY_BOLD
-		\param key warto¶æ naci¶niêtego specjalnego klawisza
+		Slot zostaje wywoï¿½any gdy naciï¿½niï¿½to specjalny klawisz (skrï¿½t)
+		odpowiadajï¿½cy np KEY_BOLD
+		\param key wartoï¿½ï¿½ naciï¿½niï¿½tego specjalnego klawisza
 	**/
 	void specialKeyPressed(int key);
 
 	/**
 		\fn void colorChanged(const QColor& color)
-		Slot zostaje wywo³wany gdy u¿ytkownik zmieni³ kolor czcionki
-		któr± bêdzie pisa³
-		\param color warto¶æ zmienionego koloru
+		Slot zostaje wywoï¿½wany gdy uï¿½ytkownik zmieniï¿½ kolor czcionki
+		ktï¿½rï¿½ bï¿½dzie pisaï¿½
+		\param color wartoï¿½ï¿½ zmienionego koloru
 	**/
 	void colorChanged(const QColor& color);
 
 	/**
 		\fn void colorSelectorAboutToClose()
-		Slot zostaje wywo³any przy zamykaniu okna wyboru ikonek
+		Slot zostaje wywoï¿½any przy zamykaniu okna wyboru ikonek
 	**/
 	void colorSelectorAboutToClose();
 
 	/**
 		\fn void clearChatWindow()
-		Slot czyszcz±cy okno rozmowy
+		Slot czyszczï¿½cy okno rozmowy
 	**/
 	void clearChatWindow();
 
@@ -316,13 +317,13 @@ public slots:
 
 	/**
 		\fn void emoticonSelectorClicked()
-		Slot wy¶wietlaj±cy okno z wyborem emotikonek
+		Slot wyï¿½wietlajï¿½cy okno z wyborem emotikonek
 	**/
 	void openEmoticonSelector(const QWidget *activating_widget);
 
 	/**
 		\fn void insertImage()
-		Slot wklejaj±cy obrazek do okna rozmowy (wybór obrazka)
+		Slot wklejajï¿½cy obrazek do okna rozmowy (wybï¿½r obrazka)
 	**/
 	void insertImage();
 
@@ -336,7 +337,7 @@ signals:
 		\fn void messageSendRequested(Chat* chat)
 		Sygnal jest emitowany gdy uzytkownik wyda polecenie
 		wyslania wiadomosci, np klikajac na guzik "wyslij".
-		\param chat wska¼nik do okna które emituje sygna³
+		\param chat wskaï¿½nik do okna ktï¿½re emituje sygnaï¿½
 	**/
 	void messageSendRequested(ChatWidget *chat);
 
@@ -345,8 +346,8 @@ signals:
 		Sygnal jest emitowany gdy zakonczy sie proces
 		wysylania wiadomosci i zwiazanych z tym czynnosci.
 		Oczywiscie nie wiemy czy wiadomosc dotarla.
-		\param chat wska¼nik do okna rozmowy,
-		 które emitowa³o sygna³
+		\param chat wskaï¿½nik do okna rozmowy,
+		 ktï¿½re emitowaï¿½o sygnaï¿½
 	**/
 	void messageSent(ChatWidget *chat);
 
@@ -364,9 +365,9 @@ signals:
 
 	/**
 		\fn void fileDropped(const UserGroup *users, const QString& fileName)
-		Sygna³ jest emitowany, gdy w oknie Chat
+		Sygnaï¿½ jest emitowany, gdy w oknie Chat
 		upuszczono plik.
-	\param users lista u¿ytkowników
+	\param users lista uï¿½ytkownikï¿½w
 		\param fileName nazwa pliku
 	**/
 	void fileDropped(const UserGroup *users, const QString &fileName);
@@ -382,13 +383,13 @@ signals:
 
 /**
 	@class ChatContainer
-	@brief Klasa abstrakcyjna opisuj±ca rodzica klasy ChatWidget.
+	@brief Klasa abstrakcyjna opisujï¿½ca rodzica klasy ChatWidget.
 
-	Klasa abstrakcyjna z której powinny dziedziczyæ klasy bêd±ce rodzicami obiektów 
+	Klasa abstrakcyjna z ktï¿½rej powinny dziedziczyï¿½ klasy bï¿½dï¿½ce rodzicami obiektï¿½w 
 	klasy ChatWidget.
 	
-	Informuje który chat powinien zostaæ zamkniêty w przypadku np. ignorowania kontaktu 
-	z którym prowadzona jest rozmowa
+	Informuje ktï¿½ry chat powinien zostaï¿½ zamkniï¿½ty w przypadku np. ignorowania kontaktu 
+	z ktï¿½rym prowadzona jest rozmowa
 **/
 
 class ChatContainer
@@ -398,7 +399,7 @@ class ChatContainer
 		virtual ~ChatContainer() {};
 
 		/**
-			Metoda informuj±ca, który chat powinien zostaæ zamkniêty
+			Metoda informujï¿½ca, ktï¿½ry chat powinien zostaï¿½ zamkniï¿½ty
 		 **/
 		virtual void closeChatWidget(ChatWidget *chat) = 0;
 };
