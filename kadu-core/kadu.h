@@ -2,38 +2,32 @@
 #define KADU_H
 
 #include <QCustomEvent>
-#include <QDomElement>
-#include <QKeyEvent>
-#include <QMenu>
-#include <QPixmap>
-#include <QResizeEvent>
-#include <QString>
+#include <QDateTime>
 #include <QTimer>
-#include <QVBoxLayout>
 
-#include "action.h"
 #include "configuration_aware_object.h"
-#include "gadu.h"
 #include "kadu_main_window.h"
-#include "status.h"
-#include "usergroup.h"
-#include "userlistelement.h"
+#include "protocol.h"
+
+class QAction;
+class QActionGroup;
+class QFile;
+class QMenu;
+class QMenuBar;
+class QPushButton;
+class QVBoxLayout;
+
+// TODO: remove
+class Q3ListBoxItem;
 
 class ActionDescription;
 class KaduTabBar;
 class KaduTextBrowser;
-class MainConfigurationWindow;
-class SplitStatusChanger;
-class UserBox;
+class UserGroup;
 class UserStatusChanger;
 
-class QFile;
-class Q3ListBoxItem;
-class QMenuBar;
-class QPushButton;
-
 /**
-	G³ówne okno Kadu
+	Gï¿½ï¿½wne okno Kadu
 **/
 class Kadu : public KaduMainWindow, ConfigurationAwareObject
 {
@@ -61,275 +55,268 @@ class Kadu : public KaduMainWindow, ConfigurationAwareObject
 	// TODO: remove
 	friend class Wizard;
 
-	private:
-		UserListElement Myself;
+	UserListElement Myself;
 
-		static bool Closing;
-		KaduTextBrowser* InfoPanel;
-		QString InfoPanelSyntax;
-		QMenuBar* MenuBar;
-		QMenu* MainMenu;
-		QMenu* RecentChatsMenu;
-		KaduTabBar* GroupBar;
-		UserBox* Userbox;
-		QWidget* MainWidget;
-		QVBoxLayout *MainLayout;
+	static bool Closing;
+	KaduTextBrowser *InfoPanel;
+	QString InfoPanelSyntax;
+	QMenuBar *MenuBar;
+	QMenu *MainMenu;
+	QMenu *RecentChatsMenu;
+	KaduTabBar *GroupBar;
+	UserBox *Userbox;
+	QWidget *MainWidget;
+	QVBoxLayout *MainLayout;
 
-		QMenu* statusMenu;
-		QPushButton* statusButton;
-		QPoint lastPositionBeforeStatusMenuHide;
-		QDateTime StartTime;
-		QTimer updateInformationPanelTimer;
+	QMenu *statusMenu;
+	QPushButton *statusButton;
+	QPoint lastPositionBeforeStatusMenuHide;
+	QDateTime StartTime;
+	QTimer updateInformationPanelTimer;
 
-		UserStatus NextStatus;
-		UserGroup *selectedUsers; //don't touch!
+	UserStatus NextStatus;
+	UserGroup *selectedUsers; //don't touch! TODO: remove in near future
 
-		UserStatusChanger *userStatusChanger;
+	UserStatusChanger *userStatusChanger;
 #if 0
-		SplitStatusChanger *splitStatusChanger;
+	SplitStatusChanger *splitStatusChanger;
 #endif
 
-		bool ShowMainWindowOnStart;
-		bool DoBlink;
-		bool BlinkOn;
-		bool Docked;
-		bool dontHideOnClose;
+	bool ShowMainWindowOnStart;
+	bool DoBlink;
+	bool BlinkOn;
+	bool Docked;
+	bool dontHideOnClose;
 
-		void createMenu();
-		void createStatusPopupMenu();
+	void createMenu();
+	void createStatusPopupMenu();
 
-		void showStatusOnMenu(int);
+	void showStatusOnMenu(int);
 
-		void import_0_5_0_configuration();
-		void createDefaultConfiguration();
+	void import_0_5_0_configuration();
+	void createDefaultConfiguration();
 
-	public slots:
-		virtual void show();
-		virtual void hide();
-		void mouseButtonClicked(int, Q3ListBoxItem *);
-		void updateInformationPanel(UserListElement);
-		void updateInformationPanel();
-		void updateInformationPanelLater();
+private slots:
+	void inactiveUsersActionActivated(QAction *sender, bool toggled);
+	void descriptionUsersActionActivated(QAction *sender, bool toggled);
+	void onlineAndDescUsersActionActivated(QAction *sender, bool toggled);
+	void configurationActionActivated(QAction *sender, bool toggled);
+	void addUserActionActivated(QAction *sender, bool toggled);
+	void editUserActionActivated(QAction *sender, bool toggled);
+	void searchInDirectoryActionActivated(QAction *sender, bool toggled);
 
-		void sendMessage(UserListElement elem);
-		void configure();
+	void openChat();
+	void messageReceived(Protocol *protocol, UserListElements senders, const QString &msg, time_t time);
+	void createRecentChatsMenu();
+	void openRecentChats(int index);
+	void openChatWith();
 
-		void setStatus(const UserStatus &status);
-		void setOnline(const QString &description = QString::null);
-		void setBusy(const QString &description = QString::null);
-		void setInvisible(const QString &description = QString::null);
-		void setOffline(const QString &description = QString::null);
+	void goOnline();
+	void goOnlineDesc();
+	void goBusy();
+	void goBusyDesc();
+	void goInvisible();
+	void goInvisibleDesc();
+	void goOffline();
+	void goOfflineDesc();
 
-	private slots:
-		void inactiveUsersActionActivated(QAction *sender, bool toggled);
-		void descriptionUsersActionActivated(QAction *sender, bool toggled);
-		void onlineAndDescUsersActionActivated(QAction *sender, bool toggled);
-		void configurationActionActivated(QAction *sender, bool toggled);
-		void addUserActionActivated(QAction *sender, bool toggled);
-		void editUserActionActivated(QAction *sender, bool toggled);
-		void searchInDirectoryActionActivated(QAction *sender, bool toggled);
+	void changePrivateStatusSlot(bool toggled);
 
-		void openChat();
-		void messageReceived(Protocol *protocol, UserListElements senders, const QString &msg, time_t time);
-		void createRecentChatsMenu();
-		void openRecentChats(int index);
-		void openChatWith();
+	void wentOnline(const QString &);
+	void wentBusy(const QString &);
+	void wentInvisible(const QString &);
+	void wentOffline(const QString &);
+	void connected();
+	void connecting();
+	void disconnected();
+	void imageReceivedAndSaved(UinType sender, uint32_t size, uint32_t crc32, const QString &path);
+	void systemMessageReceived(const QString &msg);
+	void deleteOldConfigFiles();
 
-		void goOnline();
-		void goOnlineDesc();
-		void goBusy();
-		void goBusyDesc();
-		void goInvisible();
-		void goInvisibleDesc();
-		void goOffline();
-		void goOfflineDesc();
+	void currentChanged(UserListElement);
 
-		void changePrivateStatusSlot(bool toggled);
+	void statusMenuAboutToHide(void);
+	void dockMenuAboutToHide(void);
 
-		void wentOnline(const QString &);
-		void wentBusy(const QString &);
-		void wentInvisible(const QString &);
-		void wentOffline(const QString &);
-		void connected();
-		void connecting();
-		void disconnected();
-		void imageReceivedAndSaved(UinType sender, uint32_t size, uint32_t crc32, const QString &path);
-		void systemMessageReceived(const QString &msg);
-		void deleteOldConfigFiles();
+	void changeStatus(UserStatus status);
 
-		void currentChanged(UserListElement);
-
-		void statusMenuAboutToHide(void);
-		void dockMenuAboutToHide(void);
-
-		void changeStatus(UserStatus status);
-
-	protected:
-		void keyPressEvent(QKeyEvent *e);
-		virtual void resizeEvent(QResizeEvent *);
-		virtual void customEvent(QCustomEvent *);
-		virtual void closeEvent(QCloseEvent* event);
+protected:
+	void keyPressEvent(QKeyEvent *e);
+	virtual void resizeEvent(QResizeEvent *);
+	virtual void customEvent(QCustomEvent *);
+	virtual void closeEvent(QCloseEvent *event);
 		
-		virtual void configurationUpdated();
-//		virtual void moveEvent(QMoveEvent *);
+	virtual void configurationUpdated();
+//	virtual void moveEvent(QMoveEvent *);
 
-	public:
-		Kadu(QWidget* parent=0);
-		~Kadu();
+public:
+	Kadu(QWidget *parent = 0);
+	~Kadu();
 
-		virtual bool supportsActionType(ActionDescription::ActionType type) {
-			return type & (ActionDescription::TypeGlobal | ActionDescription::TypeUserList | ActionDescription::TypeUser); }
-		virtual UserBox * getUserBox() { return Userbox; }
-		virtual UserListElements getUserListElements();
-		virtual ChatWidget * getChatWidget() { return 0; }
+	virtual bool supportsActionType(ActionDescription::ActionType type) {
+		return type & (ActionDescription::TypeGlobal | ActionDescription::TypeUserList | ActionDescription::TypeUser); }
+	virtual UserBox * getUserBox() { return Userbox; }
+	virtual UserListElements getUserListElements();
+	virtual ChatWidget * getChatWidget() { return 0; }
 
-		const UserListElement & myself() { return Myself; };
+	const UserListElement & myself() { return Myself; };
 
-		bool userInActiveGroup(UinType uin);
-		void removeUsers(UserListElements);
+	bool userInActiveGroup(UinType uin);
+	void removeUsers(UserListElements);
 
-		/**
-			Zwraca wskaznik do glownego menu programu.
-		**/
-		QMenu* mainMenu() const;
+	/**
+		Zwraca wskaznik do glownego menu programu.
+	**/
+	QMenu * mainMenu() const;
 
-		/**
-			Zwraca wskaznik do zakladek z nazwami grup.
-		**/
-		KaduTabBar* groupBar() const;
+	/**
+		Zwraca wskaznik do zakladek z nazwami grup.
+	**/
+	KaduTabBar * groupBar() const;
 
-		/**
-			Zwraca wskaznik do userbox-a w glownym oknie.
-		**/
-		UserBox* userbox() const;
+	/**
+		Zwraca wskaznik do userbox-a w glownym oknie.
+	**/
+	UserBox * userbox() const;
 
-		/**
-			Zwraca wska¼nik na g³ówny layout w obiekcie, teraz jest to QVBoxLayout.
-			(hint) U¿ywaj±c nale¿y badaæ nazwy i klasy obiektów GUI dostêpnych przez ten obiekt.
-		**/
-		QVBoxLayout* mainLayout() const;
+	/**
+		Zwraca wskaï¿½nik na gï¿½ï¿½wny layout w obiekcie, teraz jest to QVBoxLayout.
+		(hint) Uï¿½ywajï¿½c naleï¿½y badaï¿½ nazwy i klasy obiektï¿½w GUI dostï¿½pnych przez ten obiekt.
+	**/
+	QVBoxLayout * mainLayout() const;
 
-		/**
-			Zwraca true je¶li kadu jest zadokowane.
-		**/
-		bool docked() const;
+	/**
+		Zwraca true jeï¿½li kadu jest zadokowane.
+	**/
+	bool docked() const;
 
-		/**
-			Set default status based on values in configuration file
-		**/
-		void setDefaultStatus();
+	/**
+		Set default status based on values in configuration file
+	**/
+	void setDefaultStatus();
 
-		/**
-		**/
-		void startupProcedure();
+	void startupProcedure();
 
-		/**
-		**/
-		int personalInfoMenuId;//potrzebne dla modu³u account_management
+	int personalInfoMenuId;//potrzebne dla moduï¿½u account_management
 
-		/**
-			w zwi±zku z tym, ¿e opis sk³adni dla parsera jest u¿ywany w kilku miejscach
-			dodane zosta³o to pole, ¿eby nie trzeba by³o zmieniaæ tekstu w kilku miejscach
-		**/
-		static const char *SyntaxText;
-		static const char *SyntaxTextExtended;
-		static const char *SyntaxTextNotify;
+	/**
+		w zwiï¿½zku z tym, ï¿½e opis skï¿½adni dla parsera jest uï¿½ywany w kilku miejscach
+		dodane zostaï¿½o to pole, ï¿½eby nie trzeba byï¿½o zmieniaï¿½ tekstu w kilku miejscach
+	**/
+	static const char *SyntaxText;
+	static const char *SyntaxTextExtended;
+	static const char *SyntaxTextNotify;
 
-		static bool closing() { return Closing; }
-		static void setClosing() { Closing = true; }
+	static bool closing() { return Closing; }
+	static void setClosing() { Closing = true; }
 
-		const QDateTime &startTime() const;
-		void refreshPrivateStatusFromConfigFile();
+	const QDateTime &startTime() const;
+	void refreshPrivateStatusFromConfigFile();
 
-	public slots:
-		void slotHandleState(int command);
-		void changeAppearance();
-		void blink();
-		void showdesc(bool show = true);
-		virtual bool close(bool quit = false);
-// 		void quitApplication();
+public slots:
+	virtual void show();
+	virtual void hide();
+	void mouseButtonClicked(int, Q3ListBoxItem *);
+	void updateInformationPanel(UserListElement);
+	void updateInformationPanel();
+	void updateInformationPanelLater();
 
-		/**
-			Potrzebne dla modu³u dokuj±cego ¿eby
-			g³ówne okno nie miga³o przy starcie...
-		**/
-		void setShowMainWindowOnStart(bool show);
+	void sendMessage(UserListElement elem);
+	void configure();
 
-		/**
-			Modu³ dokowania powinien to ustawic, aby kadu
-			wiedzialo, ze jest zadokowane.
-		**/
-		void setDocked(bool docked, bool dontHideOnClose);
+	void setStatus(const UserStatus &status);
+	void setOnline(const QString &description = QString::null);
+	void setBusy(const QString &description = QString::null);
+	void setInvisible(const QString &description = QString::null);
+	void setOffline(const QString &description = QString::null);
 
-		void about();
-		void addUserAction();
-		void blockUser();
-		void copyDescription();
-		void openDescriptionLink();
-		void writeMail();
-		void copyPersonalInfo();
-		void deleteUsers();
-		void help();
-		void hideKadu();
-		void ignoreUser();
-		void importExportUserlist();
-		void lookupInDirectory();
-		void manageIgnored();
-		void notifyUser();
-		void offlineToUser();
-		void hideDescription();
-		void personalInfo();
-		void quit();
-		void showUserInfo();
-		void popupMenu();
+	void slotHandleState(int command);
+	void changeAppearance();
+	void blink();
+	void showdesc(bool show = true);
+	virtual bool close(bool quit = false);
+// 	void quitApplication();
 
-		// odczytuje z obrazka tekst i zapisuje go w drugim parametrze
-		void readTokenValue(QPixmap, QString &);
+	/**
+		Potrzebne dla moduï¿½u dokujï¿½cego ï¿½eby
+		gï¿½ï¿½wne okno nie migaï¿½o przy starcie...
+	**/
+	void setShowMainWindowOnStart(bool show);
 
-		void setMainWindowIcon(const QPixmap &);
+	/**
+		Moduï¿½ dokowania powinien to ustawic, aby kadu
+		wiedzialo, ze jest zadokowane.
+	**/
+	void setDocked(bool docked, bool dontHideOnClose);
 
-		void selectedUsersNeeded(const UserGroup*& users);
-		void editUserActionAddedToToolbar(const UserGroup* users);
-		void editUserActionSetParams(QString protocolName, UserListElement users);
-//		void showStatusActionActivated();
-//		void showStatusActionAddedToToolbar(ToolButton* button);
+	void about();
+	void addUserAction();
+	void blockUser();
+	void copyDescription();
+	void openDescriptionLink();
+	void writeMail();
+	void copyPersonalInfo();
+	void deleteUsers();
+	void help();
+	void hideKadu();
+	void ignoreUser();
+	void importExportUserlist();
+	void lookupInDirectory();
+	void manageIgnored();
+	void notifyUser();
+	void offlineToUser();
+	void hideDescription();
+	void personalInfo();
+	void quit();
+	void showUserInfo();
+	void popupMenu();
 
-	signals:
-		void keyPressed(QKeyEvent* e);
-		void statusPixmapChanged(const QIcon &icon, const QString &icon_name);
+	// odczytuje z obrazka tekst i zapisuje go w drugim parametrze
+	void readTokenValue(QPixmap, QString &);
 
-		// TODO: workaround
-		void messageReceivedSignal(Protocol *, UserListElements, const QString &, time_t);
+	void setMainWindowIcon(const QPixmap &);
 
-		/**
-			wywo³ana zosta³a funkcja show() na g³ównym oknie
-		**/
-		void shown();
+	void selectedUsersNeeded(const UserGroup *& users);
+	void editUserActionAddedToToolbar(const UserGroup* users);
+	void editUserActionSetParams(QString protocolName, UserListElement users);
+//	void showStatusActionActivated();
+//	void showStatusActionAddedToToolbar(ToolButton* button);
 
-		void hiding();
+signals:
+	void keyPressed(QKeyEvent *e);
+	void statusPixmapChanged(const QIcon &icon, const QString &icon_name);
 
-		/**
-			u¿ywany przez modu³ hints do zdobycia pozycji traya od modu³u docking
-			TODO: trzeba wymy¶liæ jaki¶ elegancki sposób na komunikacjê pomiêdzy modu³ami, które nie zale¿± od siebie
-		**/
-		void searchingForTrayPosition(QPoint &point);
+	// TODO: workaround
+	void messageReceivedSignal(Protocol *, UserListElements, const QString &, time_t);
 
-		void settingMainIconBlocked(bool &);
+	/**
+		wywoï¿½ana zostaï¿½a funkcja show() na gï¿½ï¿½wnym oknie
+	**/
+	void shown();
+	void hiding();
 
-		void removingUsers(UserListElements users);
+	/**
+		uï¿½ywany przez moduï¿½ hints do zdobycia pozycji traya od moduï¿½u docking
+		TODO: trzeba wymyï¿½liï¿½ jakiï¿½ elegancki sposï¿½b na komunikacjï¿½ pomiï¿½dzy moduï¿½ami, ktï¿½re nie zaleï¿½ï¿½ od siebie
+	**/
+	void searchingForTrayPosition(QPoint &point);
+	void settingMainIconBlocked(bool &);
+	void removingUsers(UserListElements users);
+
 };
 
 class OpenGGChatEvent : public QCustomEvent
 {
-	public:
+	int Number;
+
+public:
 	OpenGGChatEvent(int num) : QCustomEvent(5432), Number(num) {}
 	int number() const { return Number; }
-	private:
-	int Number;
+
 };
 
-extern Kadu* kadu;
-extern QMenu* dockMenu;
+extern Kadu *kadu;
+extern QMenu *dockMenu;
 extern int lockFileHandle;
 extern QFile *lockFile;
 struct flock;

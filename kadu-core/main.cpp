@@ -33,12 +33,12 @@
 
 #include "kadu.h"
 #include "kadu-config.h"
-
 #include "config_file.h"
 #include "misc.h"
 #include "debug.h"
 #include "groups_manager.h"
 #include "icons_manager.h"
+#include "libgadu.h"
 #include "misc.h"
 #include "modules.h"
 #include "emoticons.h"

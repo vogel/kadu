@@ -10,6 +10,7 @@
 #include <QApplication>
 #include <QComboBox>
 #include <QInputDialog>
+#include <QHBoxLayout>
 #include <QLineEdit>
 #include <QPushButton>
 #include <QTextEdit>

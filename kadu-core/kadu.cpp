@@ -7,72 +7,50 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <qapplication.h>
-#include <qcheckbox.h>
-#include <qclipboard.h>
-#include <qcombobox.h>
-#include <qmenubar.h>
-#include <qpushbutton.h>
-#include <qregexp.h>
-#include <qsplitter.h>
-#include <qstyle.h>
-#include <qstylefactory.h>
-#include <qtextcodec.h>
-#include <QHBoxLayout>
-#include <QResizeEvent>
-#include <QPixmap>
-#include <QList>
-#include <QKeyEvent>
+#include <QApplication>
+#include <QClipboard>
+#include <QMenuBar>
+#include <QPushButton>
+#include <QSplitter>
 #include <QVBoxLayout>
-#include <Q3Frame>
-#include <QCustomEvent>
-#include <QMenu>
-#include <QToolBar>
-#include <QWidget>
 
-#include <sys/file.h>
-#include <sys/types.h>
-#include <sys/socket.h>
 #include <sys/time.h>
-#include <netinet/in.h>
-#include <time.h>
-#include <stdlib.h>
-#include <sys/stat.h>
+#include <fcntl.h>
+#include <unistd.h>
 
 #include "about.h"
-#include "action.h"
 #include "chat_manager.h"
 #include "config_file.h"
 #include "debug.h"
 #include "emoticons.h"
 #include "expimp.h"
+#include "gadu.h"
 #include "gadu_images_manager.h"
 #include "groups_manager.h"
 #include "hot_key.h"
 #include "html_document.h"
 #include "icons_manager.h"
 #include "ignore.h"
-#include "kadu.h"
-#include "kadu-config.h"
 #include "kadu_parser.h"
-#include "kadu_text_browser.h"
 #include "main_configuration_window.h"
 #include "message_box.h"
-#include "misc.h"
 #include "modules.h"
+#include "misc.h"
 #include "pending_msgs.h"
 #include "personal_info.h"
 #include "protocols_manager.h"
 #include "search.h"
 #include "status_changer.h"
+#include "syntax_editor.h"
 #include "tabbar.h"
-#include "toolbar.h"
 #include "updates.h"
 #include "userbox.h"
 #include "userinfo.h"
 
-static QTimer* blinktimer;
-QMenu* dockMenu;
+#include "kadu.h"
+
+static QTimer *blinktimer;
+QMenu *dockMenu;
 
 int lockFileHandle;
 QFile *lockFile;
@@ -399,7 +377,7 @@ Kadu::Kadu(QWidget *parent)
 	kdebugf2();
 }
 
-QVBoxLayout* Kadu::mainLayout() const
+QVBoxLayout * Kadu::mainLayout() const
 {
 	return MainLayout;
 }
@@ -650,7 +628,7 @@ void Kadu::lookupInDirectory()
 	kdebugf2();
 }
 
-void Kadu::selectedUsersNeeded(const UserGroup*& users)
+void Kadu::selectedUsersNeeded(const UserGroup *&users)
 {
 	kdebugf();
 
@@ -721,7 +699,7 @@ void Kadu::editUserActionSetParams(QString /*protocolName*/, UserListElement use
 	kdebugf2();
 }
 
-void Kadu::editUserActionAddedToToolbar(const UserGroup* users)
+void Kadu::editUserActionAddedToToolbar(const UserGroup *users)
 {
 	kdebugf();
 	if ((users->count()) == 1 && (*users->begin()).isAnonymous())
@@ -2314,17 +2292,17 @@ void Kadu::createDefaultConfiguration()
 	config_file.addVariable("ShortCuts", "kadu_showonlydesc", "F10");
 }
 
-void Kadu::closeEvent(QCloseEvent* event)
+void Kadu::closeEvent(QCloseEvent *event)
 {
 	kdebugf();
 	
-	if(Closing)
-		event->accept();
-	else
+	if (!Closing)
 	{
 		event->ignore();
 		close();
 	}
+	else
+		event->accept();
 	
 	kdebugf2();
 }

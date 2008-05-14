@@ -16,6 +16,7 @@
 #include <qtextcodec.h>
 #include <qtranslator.h>
 #include <q3vbox.h>
+#include <QLayout>
 #include <q3vgroupbox.h>
 //Added by qt3to4:
 #include <QKeyEvent>

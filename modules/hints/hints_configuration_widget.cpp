@@ -8,6 +8,7 @@
  ***************************************************************************/
 
 #include <QApplication>
+#include <QGridLayout>
 #include <QLabel>
 #include <QSpinBox>
 
