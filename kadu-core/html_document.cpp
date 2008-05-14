@@ -196,7 +196,8 @@ QRegExp *HtmlDocument::url_regexp = 0;
 const QRegExp &HtmlDocument::urlRegExp()
 {
 	if (!url_regexp)
-		url_regexp = new QRegExp(latin2unicode((const unsigned char *)"(http://|https://|www\\.|ftp://|ftp\\.|sftp://|smb://|file:/|rsync://|svn://|svn\\+ssh://)[a-zA-Z0-9�󱶳�����ӡ������\\*\\-\\._/~?=&#\\+%\\(\\):;,!@\\\\]*"));
+	// TODO: WTF? fix it!!!!!!!!!!!!!!!!!!!!!!!
+		url_regexp = new QRegExp(latin2unicode("(http://|https://|www\\.|ftp://|ftp\\.|sftp://|smb://|file:/|rsync://|svn://|svn\\+ssh://)[a-zA-Z0-9�󱶳�����ӡ������\\*\\-\\._/~?=&#\\+%\\(\\):;,!@\\\\]*"));
 	return *url_regexp;
 }
 
@@ -235,7 +236,7 @@ QRegExp *HtmlDocument::mail_regexp = 0;
 const QRegExp &HtmlDocument::mailRegExp()
 {
 	if (!mail_regexp)
-		mail_regexp = new QRegExp(latin2unicode((const unsigned char *)"(mailto:){0,1}[a-zA-Z0-9_\\.\\-]+@[a-zA-Z0-9\\-\\.]+\\.[a-zA-Z]{2,4}"));
+		mail_regexp = new QRegExp(latin2unicode("(mailto:){0,1}[a-zA-Z0-9_\\.\\-]+@[a-zA-Z0-9\\-\\.]+\\.[a-zA-Z]{2,4}"));
 	return *mail_regexp;
 }
 
@@ -264,7 +265,7 @@ QRegExp *HtmlDocument::gg_regexp = 0;
 const QRegExp &HtmlDocument::ggRegExp()
 {
 	if (!gg_regexp)
-		gg_regexp = new QRegExp(latin2unicode((const unsigned char*)"gg:(/){0,3}[0-9]{1,8}"));
+		gg_regexp = new QRegExp(latin2unicode("gg:(/){0,3}[0-9]{1,8}"));
 	return *gg_regexp;
 }
 

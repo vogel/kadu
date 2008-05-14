@@ -178,14 +178,14 @@ void SearchResult::setData(const char *uin, const char *first, const char *last,
 	const char *city, const char *familyName, const char *familyCity, const char *gender, const char *status)
 {
 	kdebugf();
-	Uin = cp2unicode((unsigned char *)uin);
-	First = cp2unicode((unsigned char *)first);
-	Last = cp2unicode((unsigned char *)last);
-	Nick = cp2unicode((unsigned char *)nick);
-	Born = cp2unicode((unsigned char *)born);
-	City = cp2unicode((unsigned char *)city);
-	FamilyName = cp2unicode((unsigned char *)familyName);
-	FamilyCity = cp2unicode((unsigned char *)familyCity);
+	Uin = cp2unicode(uin);
+	First = cp2unicode(first);
+	Last = cp2unicode(last);
+	Nick = cp2unicode(nick);
+	Born = cp2unicode(born);
+	City = cp2unicode(city);
+	FamilyName = cp2unicode(familyName);
+	FamilyCity = cp2unicode(familyCity);
 	if (status)
 		Stat.fromStatusNumber(atoi(status) & 127, QString::null);
 	if (gender)
@@ -945,7 +945,7 @@ void GaduProtocol::messageReceivedSlot(int msgclass, UserListElements senders, Q
 		return;
 
 	const char* msg_c = msg;
-	QString mesg = cp2unicode((const unsigned char*)msg_c);
+	QString mesg = cp2unicode(msg_c);
 	QDateTime datetime;
 	datetime.setTime_t(time);
 
@@ -1978,7 +1978,7 @@ void GaduProtocol::userListReceived(const struct gg_event *e)
 		if (e->event.notify60[nr].descr)
 		{
 			status.fromStatusNumber(e->event.notify60[nr].status,
-				cp2unicode((unsigned char *)e->event.notify60[nr].descr));
+				cp2unicode(e->event.notify60[nr].descr));
 			QString desc = status.description();
 			desc.replace("\r\n", "\n");
 			desc.replace("\r", "\n");
@@ -2039,7 +2039,7 @@ void GaduProtocol::userListReplyReceived(char type, char *reply)
 		}
 
 		if (reply[0] != 0)
-			ImportReply += cp2unicode((unsigned char *)reply);
+			ImportReply += cp2unicode(reply);
 
 		if (type == GG_USERLIST_GET_MORE_REPLY)
 		{
@@ -2070,7 +2070,7 @@ void GaduProtocol::userStatusChanged(const struct gg_event *e)
 	{
 		uin = e->event.status60.uin;
 		status.fromStatusNumber(e->event.status60.status,
-			cp2unicode((unsigned char *)e->event.status60.descr));
+			cp2unicode(e->event.status60.descr));
 		remote_ip = e->event.status60.remote_ip;
 		remote_port = e->event.status60.remote_port;
 		version = e->event.status60.version;
@@ -2080,7 +2080,7 @@ void GaduProtocol::userStatusChanged(const struct gg_event *e)
 	{
 		uin = e->event.status.uin;
 		status.fromStatusNumber(e->event.status.status,
-			cp2unicode((unsigned char *)e->event.status.descr));
+			cp2unicode(e->event.status.descr));
 		remote_ip = 0;
 		remote_port = 0;
 		version = 0;

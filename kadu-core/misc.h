@@ -1,42 +1,39 @@
 #ifndef KADU_MISC_H
 #define KADU_MISC_H
 
+// TODO remove
 #include <Q3FileDialog>
-
-#include <time.h>
 
 #include "status.h"
 
 class QComboBox;
 class QLabel;
-class QLineEdit;
 class QPushButton;
 
 /*
-	Zmienia ¶cie¿kê relatywn± do katalogu z ustawieniami gg
-	na ¶cie¿kê bezwzgledn± uwzglêdniaj±c zmienne ¶rodowiskowe
+	Zmienia ï¿½cieï¿½kï¿½ relatywnï¿½ do katalogu z ustawieniami gg
+	na ï¿½cieï¿½kï¿½ bezwzglednï¿½ uwzglï¿½dniajï¿½c zmienne ï¿½rodowiskowe
 	$HOME i $CONFIG_DIR
 */
 QString ggPath(const QString &subpath = QString::null);
 
 /*
-	zwraca ¶cie¿kê do pliku f
-	je¿eli drugi parametr nie jest == 0, to funkcja próbuje najpierw ustaliæ
-	¶cie¿kê na podstawie argv0, które ma byæ równe argv[0] oraz zmiennej PATH
+	zwraca ï¿½cieï¿½kï¿½ do pliku f
+	jeï¿½eli drugi parametr nie jest == 0, to funkcja prï¿½buje najpierw ustaliï¿½
+	ï¿½cieï¿½kï¿½ na podstawie argv0, ktï¿½re ma byï¿½ rï¿½wne argv[0] oraz zmiennej PATH
 */
 QString dataPath(const QString &f = QString::null, const char *argv0 = 0);
 
 QString libPath(const QString &f = QString::null);
 
-class UserListElement;
-
-QString cp2unicode(const unsigned char *);
+QString cp2unicode(const QByteArray &);
 QByteArray unicode2cp(const QString &);
-QString latin2unicode(const unsigned char *);
-QString unicode2latin(const QString &);
+QString latin2unicode(const QByteArray &);
+QByteArray unicode2latin(const QString &);
 QString unicode2std(const QString &);
 
-//zamienia kodowanie polskich znaków przekonwertowane z utf-8 przy pomocy QUrl::encode na kodowanie latin-2
+// TODO: why not use nromal QUrl::encode ?
+//zamienia kodowanie polskich znakï¿½w przekonwertowane z utf-8 przy pomocy QUrl::encode na kodowanie latin-2
 QString unicodeUrl2latinUrl(const QString &buf);
 //zamienia polskie znaki na format latin2 "url" (czyli do postaci %XY)
 QString unicode2latinUrl(const QString &buf);
@@ -59,7 +56,7 @@ QStringList toStringList(const QString &e1, const QString &e2=QString(), const Q
 void saveGeometry(const QWidget *w, const QString &section, const QString &name);
 void loadGeometry(QWidget *w, const QString &section, const QString &name, int defaultX, int defaultY, int defaultWidth, int defaultHeight);
 
-//usuwa znaki nowego wiersza, tagi htmla (wszystko co da siê dopasowaæ jako <.*>)
+//usuwa znaki nowego wiersza, tagi htmla (wszystko co da siï¿½ dopasowaï¿½ jako <.*>)
 QString toPlainText(const QString &text);
 
 extern QFont *defaultFont;
@@ -149,8 +146,8 @@ class TokenDialog : public QDialog
 	o utworzeniu nowej instancji danej klasy.
 	umieszczamy w klasie publiczna statyczna
 	zmienna createNotifier klasy CreateNotifier
-	do ktorej mog± siê pod³±czaæ pozosta³e cze¶ci kodu.
-	przed wyj¶ciem z konstruktora wywo³ujemy metodê:
+	do ktorej mogï¿½ siï¿½ podï¿½ï¿½czaï¿½ pozostaï¿½e czeï¿½ci kodu.
+	przed wyjï¿½ciem z konstruktora wywoï¿½ujemy metodï¿½:
 	createNotifier.notify(this);
 **/
 class CreateNotifier : public QObject
@@ -185,13 +182,13 @@ QList<int> toIntList(const QList<QVariant> &in);
 QList<QVariant> toVariantList(const QList<int> &in);
 
 /*
-	zastêpstwo dla arga w QString, które podmienia kolejne %[1-4] w miejscu
+	zastï¿½pstwo dla arga w QString, ktï¿½re podmienia kolejne %[1-4] w miejscu
 
 	w QStringu efektem:
-		QString("%1 odstêp %2").arg("pierwszy %1 tekst").arg("drugi tekst") jest "pierwszy drugi tekst tekst odstêp %2"
-	a chcieliby¶my ¿eby by³o
-		"pierwszy %1 tekst odstêp drugi tekst"
-	co robi w³a¶nie ta funkcja
+		QString("%1 odstï¿½p %2").arg("pierwszy %1 tekst").arg("drugi tekst") jest "pierwszy drugi tekst tekst odstï¿½p %2"
+	a chcielibyï¿½my ï¿½eby byï¿½o
+		"pierwszy %1 tekst odstï¿½p drugi tekst"
+	co robi wï¿½aï¿½nie ta funkcja
 */
 QString narg(const QString &s, const QString &arg1, const QString &arg2,
 				const QString &arg3=QString(), const QString &arg4=QString());
@@ -203,19 +200,19 @@ QString narg(const QString &s, const QString &arg1, const QString &arg2,
 				const QString &arg9=QString());
 
 /**
-	uogólniony narg(const QString&, const QString &, const QString &, const QString &, const QString &)
-	na wiêksz± liczbê parametrów
-	count musi byæ <=9
-	tab - tablica count wska¼ników do QString
+	uogï¿½lniony narg(const QString&, const QString &, const QString &, const QString &, const QString &)
+	na wiï¿½kszï¿½ liczbï¿½ parametrï¿½w
+	count musi byï¿½ <=9
+	tab - tablica count wskaï¿½nikï¿½w do QString
 **/
 QString narg(const QString &s, const QString **tab, int count);
 
 void printBacktrace(const QString &header = QString::null);
 
-// definiuje now± zmienn± v o takim samym typie jak x jednocze¶nie inicjuj±c j± warto¶ci± x
+// definiuje nowï¿½ zmiennï¿½ v o takim samym typie jak x jednoczeï¿½nie inicjujï¿½c jï¿½ wartoï¿½ciï¿½ x
 #define VAR(v,x)	__typeof(x) v=x
 
-// szybsza w zapisaniu pêtla for
+// szybsza w zapisaniu pï¿½tla for
 #define FOREACH(i,c) for(VAR(i, (c).begin()); i!=(c).end(); ++i)
 
 #define CONST_FOREACH(i,c) for(VAR(i, (c).constBegin()), _kadu__##i##__end = (c).constEnd(); i!=_kadu__##i##__end; ++i)

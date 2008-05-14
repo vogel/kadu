@@ -403,9 +403,9 @@ QString DccSocket::fileName()
 	switch (Version)
 	{
 		case Dcc6:
-			return cp2unicode(Dcc6Struct->file_info.filename);
+			return cp2unicode(QByteArray((const char *)Dcc6Struct->file_info.filename));
 		case Dcc7:
-			return cp2unicode(Dcc7Struct->filename);
+			return cp2unicode(QByteArray((const char *)Dcc7Struct->filename));
 		default:
 			return 0;
 	}

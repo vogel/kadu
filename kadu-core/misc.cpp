@@ -7,50 +7,36 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <qapplication.h>
-#include <qdesktopwidget.h>
-#include <qcombobox.h>
-#include <qcursor.h>
-#include <qlabel.h>
-#include <qlayout.h>
-#include <qlineedit.h>
-#include <q3listbox.h>
-#include <qpainter.h>
-#include <q3popupmenu.h>
-#include <qpushbutton.h>
-#include <qregexp.h>
-#include <q3simplerichtext.h>
-#include <qtextcodec.h>
-//Added by qt3to4:
-#include <Q3HBoxLayout>
-#include <QKeyEvent>
-#include <QList>
+#include <QApplication>
+#include <QComboBox>
+#include <QDesktopWidget>
+#include <QFont>
+#include <QFontInfo>
 #include <QGridLayout>
-#include <Q3CString>
-#include <QPixmap>
-#include <QPaintEvent>
+#include <QKeyEvent>
+#include <QLabel>
+#include <QLineEdit>
+#include <QPainter>
 #include <QProcess>
+#include <QPushButton>
+#include <QRect>
+#include <QTextCodec>
+#include <QVariant>
 
-//getpwuid
 #include <pwd.h>
-
-#include <unistd.h>
-#include <time.h>
-#include <stdlib.h>
 
 #include "chat_manager.h"
 #include "config_file.h"
 #include "debug.h"
-#include "gadu.h"
 #include "html_document.h"
 #include "icons_manager.h"
 #include "kadu.h"
-#include "kadu-config.h"
 #include "kadu_parser.h"
+#include "libgadu.h"
 #include "message_box.h"
+#include "userlist.h"
+
 #include "misc.h"
-#include "protocols_manager.h"
-#include "userlistelement.h"
 
 #define GG_FONT_IMAGE	0x80
 
@@ -124,10 +110,10 @@ QString ggPath(const QString &subpath)
 
 #include <errno.h>
 /*
-	sprawdza czy wskazana ¶cie¿ka jest linkiem symbolicznym	i je¿eli jest,
-	to próbuje wyci±gn±æ ¶cie¿kê na któr± wskazuje ten link
-	zwraca b³±d tylko gdy wyst±pi jaki¶ b³±d przy wywo³ywaniu readlink (co wskazuje na jaki¶ powa¿ny b³±d)
-	uwaga: je¿eli pliku nie ma, to funkcja zwraca _sukces_, bo plik nie jest linkiem
+	sprawdza czy wskazana ï¿½cieï¿½ka jest linkiem symbolicznym	i jeï¿½eli jest,
+	to prï¿½buje wyciï¿½gnï¿½ï¿½ ï¿½cieï¿½kï¿½ na ktï¿½rï¿½ wskazuje ten link
+	zwraca bï¿½ï¿½d tylko gdy wystï¿½pi jakiï¿½ bï¿½ï¿½d przy wywoï¿½ywaniu readlink (co wskazuje na jakiï¿½ powaï¿½ny bï¿½ï¿½d)
+	uwaga: jeï¿½eli pliku nie ma, to funkcja zwraca _sukces_, bo plik nie jest linkiem
  */
 static bool delinkify(char *path, int maxlen)
 {
@@ -163,11 +149,11 @@ static bool delinkify(char *path, int maxlen)
 
 /*
 	funkcja poszukuje binarki programu na podstawie argv[0] oraz zmiennej PATH
-	je¿eli j± znajdzie, to zapisuje ¶cie¿kê pod adres wskazany przez path
-	(o maksymalnej d³ugo¶ci len) oraz zwraca path, który zakañczany jest znakiem '/'
-	je¿eli binarka nie zostanie znaleziona, to zwracany jest NULL
-	w obu przypadkach gwarantowane jest, ¿e path koñczy siê znakiem 0
-	(len musi byæ > 2)
+	jeï¿½eli jï¿½ znajdzie, to zapisuje ï¿½cieï¿½kï¿½ pod adres wskazany przez path
+	(o maksymalnej dï¿½ugoï¿½ci len) oraz zwraca path, ktï¿½ry zakaï¿½czany jest znakiem '/'
+	jeï¿½eli binarka nie zostanie znaleziona, to zwracany jest NULL
+	w obu przypadkach gwarantowane jest, ï¿½e path koï¿½czy siï¿½ znakiem 0
+	(len musi byï¿½ > 2)
 */
 static char *findMe(const char *argv0, char *path, int len)
 {
@@ -180,7 +166,7 @@ static char *findMe(const char *argv0, char *path, int len)
 	int l;
 
 
-	if (argv0[0] == '.' && argv0[1] == '/') //¶cie¿ka wzglêdem bie¿±cego katalogu (./)
+	if (argv0[0] == '.' && argv0[1] == '/') //ï¿½cieï¿½ka wzglï¿½dem bieï¿½ï¿½cego katalogu (./)
 	{
 		if (getcwd(path, len - 2) == NULL)
 		{
@@ -201,7 +187,7 @@ static char *findMe(const char *argv0, char *path, int len)
 		return path;
 	}
 
-	if (argv0[0] == '.' && argv0[1] == '.' && argv0[2] == '/') //¶cie¿ka wzglêdem bie¿±cego katalogu (../)
+	if (argv0[0] == '.' && argv0[1] == '.' && argv0[2] == '/') //ï¿½cieï¿½ka wzglï¿½dem bieï¿½ï¿½cego katalogu (../)
 	{
 		if (getcwd(path, len - 2)==NULL)
 		{
@@ -223,7 +209,7 @@ static char *findMe(const char *argv0, char *path, int len)
 		return path;
 	}
 
-	if (argv0[0] == '/') //¶cie¿ka bezwzglêdna
+	if (argv0[0] == '/') //ï¿½cieï¿½ka bezwzglï¿½dna
 	{
 		strncpy(path, argv0, len - 1);
 		path[len - 1] = 0;
@@ -238,7 +224,7 @@ static char *findMe(const char *argv0, char *path, int len)
 		return path;
 	}
 
-	previous = getenv("PATH"); //szukamy we wszystkich katalogach, które s± w PATH
+	previous = getenv("PATH"); //szukamy we wszystkich katalogach, ktï¿½re sï¿½ w PATH
 	while((current = strchr(previous, ':')))
 	{
 		l = current - previous;
@@ -270,7 +256,7 @@ static char *findMe(const char *argv0, char *path, int len)
 		}
 		previous = current + 1;
 	}
-	//nie znale¼li¶my dot±d (bo szukali¶my ':'), wiêc mo¿e w pozosta³ej czê¶ci co¶ siê znajdzie?
+	//nie znaleï¿½liï¿½my dotï¿½d (bo szukaliï¿½my ':'), wiï¿½c moï¿½e w pozostaï¿½ej czï¿½ï¿½ci coï¿½ siï¿½ znajdzie?
 	strncpy(path, previous, len - 2);
 	path[len - 2] = 0;
 
@@ -331,8 +317,8 @@ QString dataPath(const QString &p, const char *argv0)
 		QString bindir(BINDIR);
 		QString libdir(LIBDIR);
 
-		//je¿eli ¶cie¿ki nie koñcz± siê na /share i /bin oraz gdy bez tych koñcówek
-		//¶cie¿ki siê nie pokrywaj±, to znaczy ¿e kto¶ ustawi³ rêcznie DATADIR lub BINDIR
+		//jeï¿½eli ï¿½cieï¿½ki nie koï¿½czï¿½ siï¿½ na /share i /bin oraz gdy bez tych koï¿½cï¿½wek
+		//ï¿½cieï¿½ki siï¿½ nie pokrywajï¿½, to znaczy ï¿½e ktoï¿½ ustawiï¿½ rï¿½cznie DATADIR lub BINDIR
 		if (!datadir.endsWith("/share") || !bindir.endsWith("/bin") || !libdir.endsWith("/lib") ||
 			datadir.left(datadir.length() - 6) != bindir.left(bindir.length() - 4) ||
 			bindir.left(bindir.length() - 4) != libdir.left(libdir.length() - 4))
@@ -367,12 +353,9 @@ QString dataPath(const QString &p, const char *argv0)
 	return data_path + p;
 }
 
-QString cp2unicode(const unsigned char *buf)
+QString cp2unicode(const QByteArray &buf)
 {
-	if (buf)
-		return codec_cp1250->toUnicode((const char*)buf);
-	else
-		return QString::null;
+	return codec_cp1250->toUnicode(buf);
 }
 
 QByteArray unicode2cp(const QString &buf)
@@ -380,15 +363,12 @@ QByteArray unicode2cp(const QString &buf)
 	return codec_cp1250->fromUnicode(buf);
 }
 
-QString latin2unicode(const unsigned char *buf)
+QString latin2unicode(const QByteArray &buf)
 {
-	if (buf)
-		return codec_latin2->toUnicode((const char*)buf);
-	else
-		return QString::null;
+	return codec_latin2->toUnicode(buf);
 }
 
-QString unicode2latin(const QString &buf)
+QByteArray unicode2latin(const QString &buf)
 {
 	return codec_latin2->fromUnicode(buf);
 }
@@ -445,24 +425,24 @@ QString unicode2latinUrl(const QString &buf)
 QString unicodeUrl2latinUrl(const QString &buf)
 {
 	QString tmp = buf;
-	tmp.replace("%C4%99", "%EA"); //ê
-	tmp.replace("%C3%B3", "%F3"); //ó
-	tmp.replace("%C4%85", "%B1"); //±
-	tmp.replace("%C5%9B", "%B6"); //¶
-	tmp.replace("%C5%82", "%B3"); //³
-	tmp.replace("%C5%BC", "%BF"); //¿
-	tmp.replace("%C5%BA", "%BC"); //¼
-	tmp.replace("%C4%87", "%E6"); //æ
-	tmp.replace("%C5%84", "%F1"); //ñ
-	tmp.replace("%C4%98", "%CA"); //Ê
-	tmp.replace("%C3%93", "%D3"); //Ó
-	tmp.replace("%C4%84", "%A1"); //¡
-	tmp.replace("%C5%9A", "%A6"); //¦
-	tmp.replace("%C5%81", "%A3"); //£
-	tmp.replace("%C5%BB", "%AF"); //¯
-	tmp.replace("%C5%B9", "%AC"); //¬
-	tmp.replace("%C4%86", "%C3"); //Æ
-	tmp.replace("%C5%83", "%D1"); //Ñ
+	tmp.replace("%C4%99", "%EA"); //ï¿½
+	tmp.replace("%C3%B3", "%F3"); //ï¿½
+	tmp.replace("%C4%85", "%B1"); //ï¿½
+	tmp.replace("%C5%9B", "%B6"); //ï¿½
+	tmp.replace("%C5%82", "%B3"); //ï¿½
+	tmp.replace("%C5%BC", "%BF"); //ï¿½
+	tmp.replace("%C5%BA", "%BC"); //ï¿½
+	tmp.replace("%C4%87", "%E6"); //ï¿½
+	tmp.replace("%C5%84", "%F1"); //ï¿½
+	tmp.replace("%C4%98", "%CA"); //ï¿½
+	tmp.replace("%C3%93", "%D3"); //ï¿½
+	tmp.replace("%C4%84", "%A1"); //ï¿½
+	tmp.replace("%C5%9A", "%A6"); //ï¿½
+	tmp.replace("%C5%81", "%A3"); //ï¿½
+	tmp.replace("%C5%BB", "%AF"); //ï¿½
+	tmp.replace("%C5%B9", "%AC"); //ï¿½
+	tmp.replace("%C4%86", "%C3"); //ï¿½
+	tmp.replace("%C5%83", "%D1"); //ï¿½
 	return tmp;
 }
 
@@ -630,7 +610,7 @@ void openMailClient(const QString &mail)
 	QString email = mail;
 
 	if (email.startsWith("mailto:"))
-		email.remove(0, 7); // usuwamy "mailto:", je¶li zosta³o dodane jako fragment adresu
+		email.remove(0, 7); // usuwamy "mailto:", jeï¿½li zostaï¿½o dodane jako fragment adresu
 
 	if (mailClient.contains("%1"))
 		mailClient.replace("%1", email);
@@ -855,9 +835,9 @@ void ChooseDescription::okPressed()
 {
 	QString description = Description->currentText();
 
-	//je¿eli ju¿ by³ taki opis, to go usuwamy
+	//jeï¿½eli juï¿½ byï¿½ taki opis, to go usuwamy
 	defaultdescriptions.remove(description);
-	//i dodajemy na pocz±tek
+	//i dodajemy na poczï¿½tek
 	defaultdescriptions.prepend(description);
 
 	while (defaultdescriptions.count() > config_file.readNumEntry("General", "NumberOfDescriptions"))
