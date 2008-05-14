@@ -7,42 +7,27 @@
  *                                                                         *
  ***************************************************************************/
 
-
-#include <qapplication.h>
-#include <qmessagebox.h>
-#include <qtextcodec.h>
-#include <QByteArray>
+#include <QApplication>
+#include <QMessageBox>
 #include <QTranslator>
-#include <QCustomEvent>
-#include <QString>
-#include <QPixmap>
-#include <QEvent>
 
-#include <errno.h>
-#include <string.h>
-#include <sys/stat.h>
 #include <sys/file.h>
-#include <stdlib.h>
-#include <unistd.h>
-#include <sys/types.h>
-#include <stdio.h>
-#include <fcntl.h>
+#include <sys/stat.h>
 #include <sys/time.h>
+#include <sys/types.h>
+#include <errno.h>
 #include <pwd.h>
-#include <signal.h>
 
-#include "kadu.h"
-#include "kadu-config.h"
 #include "config_file.h"
-#include "misc.h"
 #include "debug.h"
+#include "emoticons.h"
 #include "groups_manager.h"
 #include "icons_manager.h"
+#include "kadu.h"
 #include "libgadu.h"
+#include "message_box.h"
 #include "misc.h"
 #include "modules.h"
-#include "emoticons.h"
-#include "message_box.h"
 #include "protocols_manager.h"
 
 //look for comment in config_file.h
@@ -51,11 +36,12 @@ ConfigFile *config_file_ptr;
 Kadu *kadu;
 
 #ifdef SIG_HANDLING_ENABLED
-#include <qdatetime.h>
-#include <signal.h>
+	#include <qdatetime.h>
+	#include <signal.h>
 #ifdef HAVE_EXECINFO
-#include <execinfo.h>
+	#include <execinfo.h>
 #endif
+
 #define OPEN_CHAT_SIGNAL (SIGRTMIN + 7)
 
 static int sigsegvCount = 0;
