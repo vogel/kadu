@@ -718,7 +718,7 @@ void Kadu::editUserActionActivated(QAction *sender, bool toggled)
 	UserListElements selectedUsers = window->getUserListElements();
 	
 	if (selectedUsers.count() == 1)
-			(new UserInfo(*selectedUsers.begin(), kadu, "user_info"))->show();
+			(new UserInfo(*selectedUsers.begin(), kadu))->show();
 			
 	kdebugf2();
 }
@@ -732,11 +732,11 @@ void Kadu::addUserActionActivated(QAction *sender, bool toggled)
 		UserListElements selectedUsers = window->getUserListElements();
  		if ((selectedUsers.count() == 1) && (selectedUsers[0].isAnonymous()))
 		{
- 			(new UserInfo(selectedUsers[0], kadu, "add_user"))->show();
+ 			(new UserInfo(selectedUsers[0], kadu))->show();
 			return;
 		}
 	}
-	(new UserInfo(UserListElement(), kadu, "add_user"))->show();
+	(new UserInfo(UserListElement(), kadu))->show();
 
  	kdebugf2();
 }

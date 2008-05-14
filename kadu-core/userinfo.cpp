@@ -7,24 +7,21 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <qcheckbox.h>
-#include <q3dns.h>
-#include <q3hbox.h>
-#include <qlabel.h>
-#include <qlayout.h>
-#include <qlineedit.h>
-#include <qpushbutton.h>
-#include <q3scrollview.h>
-#include <qtabwidget.h>
-#include <qtooltip.h>
-#include <qvalidator.h>
-#include <q3vbox.h>
-#include <q3vgroupbox.h>
-//Added by qt3to4:
+#include <QCheckBox>
+#include <Q3HBox>
+#include <Q3VBox>
+#include <Q3VGroupBox>
+#include <QHBoxLayout>
+#include <QHostInfo>
+#include <QIntValidator>
 #include <QKeyEvent>
-#include <QPixmap>
-#include <Q3Frame>
-#include <QResizeEvent>
+#include <QLabel>
+#include <QLineEdit>
+#include <QPushButton>
+#include <QScrollArea>
+#include <QScrollBar>
+#include <QTabWidget>
+#include <QVBoxLayout>
 
 #include "config_file.h"
 #include "debug.h"
@@ -32,17 +29,17 @@
 #include "groups_manager.h"
 #include "icons_manager.h"
 #include "message_box.h"
-#include "userinfo.h"
 #include "userlist.h"
+
+#include "userinfo.h"
 
 CreateNotifier UserInfo::createNotifier;
 
-UserInfo::UserInfo(UserListElement user, QWidget* parent, const char *name)
-	: QWidget(parent, name, Qt::Dialog), User(user),
+UserInfo::UserInfo(UserListElement user, QWidget* parent)
+	: QWidget(parent, Qt::Dialog), User(user),
 	e_firstname(0), e_lastname(0), e_nickname(0), e_altnick(0), e_mobile(0), e_uin(0),
 	e_addr(0), e_ver(0), e_email(0), e_dnsname(0), c_blocking(0), c_offtouser(0),
-	c_notify(0), pb_addapply(0), tw_main(0), vgb_general(0), dns(0), groups(),
-	hiddenCheckBoxes(), newGroup(0), groupsBox(0)
+	c_notify(0), pb_addapply(0), tw_main(0), groups(), hiddenCheckBoxes(), newGroup(0), groupsWidget(0), groupsLayout(0)
 {
 	kdebugf();
 
@@ -133,7 +130,7 @@ void UserInfo::setupTab1()
 {
 	kdebugf();
 	// our QVGroupBox
-	vgb_general = new Q3VGroupBox(tw_main);
+	Q3VGroupBox *vgb_general = new Q3VGroupBox(tw_main);
 	vgb_general->setFrameStyle(Q3Frame::NoFrame);
 	// end our QGroupBox
 
@@ -264,12 +261,7 @@ void UserInfo::setupTab1()
 			e_addr->setText(User.IP("Gadu").toString());
 
 			if (User.DNSName("Gadu").isEmpty())
-			{
-				dns = new Q3Dns();
-				dns->setLabel(User.IP("Gadu"));
-				dns->setRecordType(Q3Dns::Ptr);
-				connect(dns, SIGNAL(resultsReady()), this, SLOT(resultsReady()));
-			}
+				QHostInfo::lookupHost(User.IP("Gadu").toString(), this, SLOT(resultsReady(QHostInfo)));
 			else
 				e_dnsname->setText(User.DNSName("Gadu"));
 		}
@@ -295,7 +287,7 @@ void UserInfo::setupTab1()
 			e_ver->setText(tr("(Unknown)"));
 
 		e_status->setText(tr(User.status("Gadu").name().ascii()));
-		QToolTip::add(e_status, User.status("Gadu").description());
+		e_status->setToolTip(User.status("Gadu").description());
 
 		tw_main->setTabIconSet(vgb_general, User.status("Gadu").pixmap());
 	}
@@ -307,31 +299,33 @@ void UserInfo::setupTab2()
 {
 	kdebugf();
 
-	scrollView = new Q3ScrollView(tw_main);
-	scrollView->setFrameStyle(Q3Frame::NoFrame);
-	scrollView->setResizePolicy(Q3ScrollView::AutoOneFit);
-	scrollView->setVScrollBarMode(Q3ScrollView::Auto);
-	scrollView->setHScrollBarMode(Q3ScrollView::AlwaysOff);
+	scrollArea = new QScrollArea(tw_main);
+	scrollArea->setFrameStyle(QFrame::NoFrame);
+	scrollArea->setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
+	scrollArea->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 
-	Q3VGroupBox *groupsTab = new Q3VGroupBox(scrollView->viewport());
-	groupsTab->setFrameStyle(Q3Frame::NoFrame);
-	scrollView->addChild(groupsTab);
+	QWidget *groupsTab = new QWidget(tw_main);
+	QVBoxLayout *groupsTabLayout = new QVBoxLayout(groupsTab);
 
-	tw_main->addTab(scrollView, tr("Groups"));
+	tw_main->addTab(scrollArea, tr("Groups"));
+
+	scrollArea->setWidget(groupsTab);
+	scrollArea->setWidgetResizable(true);
 
 	QStringList allGroups = groups_manager->groups();
 
 	QStringList userGroups = User.data("Groups").toStringList();
 
-	groupsBox = new Q3VBox(groupsTab);
-	groupsBox->setSpacing(3);
+	groupsWidget = new QWidget(groupsTab);
+	groupsLayout = new QVBoxLayout(groupsWidget);
+	groupsLayout->setSpacing(3);
 
 	CONST_FOREACH(it, allGroups)
 	{
-		Q3HBox *box = new Q3HBox(groupsBox, *it);
-		box->setSpacing(3);
-		QCheckBox *checkBox=new QCheckBox(*it, box);
-		checkBox->show();
+		QWidget *box = new QWidget(groupsWidget);
+		QHBoxLayout *boxLayout = new QHBoxLayout(box);
+		boxLayout->setSpacing(3);
+		QCheckBox *checkBox = new QCheckBox(*it, box);
 		checkBox->setChecked(userGroups.contains(*it));
 
 		QLabel *textLabel = new QLabel(box);
@@ -340,20 +334,28 @@ void UserInfo::setupTab2()
 
 		QLabel *pixmapLabel = new QLabel(box);
 		QPixmap icon = icons_manager->loadPixmap(config_file.readEntry("GroupIcon", *it, ""));
-		pixmapLabel->setPixmap(icon.xForm(QMatrix().scale((double)16/icon.width(), (double)16/icon.height())));
+		pixmapLabel->setPixmap(icon.xForm(QWMatrix().scale((double)16/icon.width(), (double)16/icon.height())));
 		pixmapLabel->setMaximumWidth(22);
 		pixmapLabel->setMaximumHeight(22);
 		pixmapLabels[*it] = pixmapLabel;
 
 		QPushButton *changeIconButton = new QPushButton(box);
 		changeIconButton->setPixmap(icons_manager->loadPixmap("AddSelectPathDialogButton"));
-		QToolTip::add(changeIconButton, tr("Change icon"));
+		changeIconButton->setToolTip(tr("Change icon"));
 		changeIconButton->setMaximumWidth(30);
 
 		QPushButton *deleteIconButton = new QPushButton(box);
 		deleteIconButton->setPixmap(icons_manager->loadPixmap("RemoveSelectPathDialogButton"));
-		QToolTip::add(deleteIconButton, tr("Delete icon"));
+		deleteIconButton->setToolTip(tr("Delete icon"));
 		deleteIconButton->setMaximumWidth(30);
+
+		boxLayout->addWidget(checkBox);
+		boxLayout->addWidget(textLabel);
+		boxLayout->addWidget(pixmapLabel);
+		boxLayout->addWidget(changeIconButton);
+		boxLayout->addWidget(deleteIconButton);
+
+		groupsLayout->addWidget(box);
 
 		connect(changeIconButton, SIGNAL(clicked()), this, SLOT(selectIcon()));
 		connect(deleteIconButton, SIGNAL(clicked()), this, SLOT(deleteIcon()));
@@ -363,6 +365,11 @@ void UserInfo::setupTab2()
 
 	newGroup = new QLineEdit(groupsTab);
 	QPushButton *addNewGroup = new QPushButton(tr("Add new group"), groupsTab);
+
+	groupsTabLayout->addWidget(groupsWidget);
+	groupsTabLayout->addWidget(newGroup);
+	groupsTabLayout->addWidget(addNewGroup);
+
 	connect(addNewGroup, SIGNAL(clicked()), this, SLOT(newGroupClicked()));
 	connect(newGroup, SIGNAL(returnPressed()), this, SLOT(newGroupClicked()));
 
@@ -423,8 +430,9 @@ void UserInfo::newGroupClicked()
 			return;
 		}
 
-	Q3HBox *box = new Q3HBox(groupsBox, groupName);
-	box->setSpacing(3);
+	QWidget *box = new QWidget(groupsWidget);
+	QHBoxLayout *boxLayout = new QHBoxLayout(box);
+	boxLayout->setSpacing(3);
 
 	QCheckBox *checkBox = new QCheckBox(groupName, box);
 
@@ -441,13 +449,21 @@ void UserInfo::newGroupClicked()
 
 	QPushButton *changeIconButton = new QPushButton(box);
 	changeIconButton->setPixmap(icons_manager->loadPixmap("AddSelectPathDialogButton"));
-	QToolTip::add(changeIconButton, tr("Change icon"));
+	changeIconButton->setToolTip(tr("Change icon"));
 	changeIconButton->setMaximumWidth(30);
 
 	QPushButton *deleteIconButton = new QPushButton(box);
 	deleteIconButton->setPixmap(icons_manager->loadPixmap("CancelMessage"));
-	QToolTip::add(deleteIconButton, tr("Delete icon"));
+	deleteIconButton->setToolTip(tr("Delete icon"));
 	deleteIconButton->setMaximumWidth(30);
+
+	boxLayout->addWidget(checkBox);
+	boxLayout->addWidget(textLabel);
+	boxLayout->addWidget(pixmapLabel);
+	boxLayout->addWidget(changeIconButton);
+	boxLayout->addWidget(deleteIconButton);
+
+	groupsLayout->addWidget(box);
 
 	connect(changeIconButton, SIGNAL(clicked()), this, SLOT(selectIcon()));
 	connect(deleteIconButton, SIGNAL(clicked()), this, SLOT(deleteIcon()));
@@ -467,14 +483,15 @@ void UserInfo::setupTab3()
 	kdebugf();
 
 	// Misc options
-	Q3VGroupBox *vgb_others = new Q3VGroupBox(vgb_general);
-	vgb_others->setFrameStyle(Q3Frame::NoFrame);
+	QWidget *othersWidget = new QWidget(tw_main);
 
-	tw_main->addTab(vgb_others, tr("Others"));
+	othersWidget->setSizePolicy(QSizePolicy(QSizePolicy::Minimum, QSizePolicy::Expanding));
 
-	c_blocking = new QCheckBox(tr("Block user"), vgb_others);
-	c_offtouser = new QCheckBox(tr("Offline to user"), vgb_others);
-	c_notify = new QCheckBox(tr("Notify about status changes"), vgb_others);
+	QVBoxLayout *othersLayout = new QVBoxLayout(othersWidget);
+
+	c_blocking = new QCheckBox(tr("Block user"), othersWidget);
+	c_offtouser = new QCheckBox(tr("Offline to user"), othersWidget);
+	c_notify = new QCheckBox(tr("Notify about status changes"), othersWidget);
 
 	if (!config_file.readBoolEntry("General", "PrivateStatus"))
 		c_offtouser->setEnabled(false);
@@ -485,6 +502,13 @@ void UserInfo::setupTab3()
 		c_offtouser->setChecked(User.protocolData("Gadu", "OfflineTo").toBool());
 	}
 	c_notify->setChecked(User.notify());
+
+	othersLayout->addWidget(c_blocking);
+	othersLayout->addWidget(c_offtouser);
+	othersLayout->addWidget(c_notify);
+	othersLayout->addStretch();
+
+	tw_main->addTab(othersWidget, tr("Others"));
 	// end Misc options
 
 	kdebugf2();
@@ -494,7 +518,6 @@ UserInfo::~UserInfo()
 {
 	kdebugf();
 // 	saveGeometry(this, "General", "ManageUsersDialogGeometry");
-	delete dns;
 	kdebugf2();
 }
 
@@ -504,10 +527,10 @@ void UserInfo::keyPressEvent(QKeyEvent *ke_event)
 		close();
 }
 
-void UserInfo::resultsReady()
+void UserInfo::resultsReady(const QHostInfo &host)
 {
-	if(!dns->hostNames().isEmpty())
-		e_dnsname->setText(dns->hostNames()[0]);
+    	if (host.error() == QHostInfo::NoError)
+		e_dnsname->setText(host.hostName());
 }
 
 void UserInfo::updateUserlist()
@@ -595,7 +618,7 @@ void UserInfo::updateUserlist()
 
 void UserInfo::scrollToBottom()
 {
-	scrollView->setContentsPos(0, scrollView->contentsHeight());
+	scrollArea->verticalScrollBar()->setValue(scrollArea->widget()->height());
 }
 
 void UserInfo::selectIcon()
@@ -625,8 +648,7 @@ void UserInfo::selectIcon()
 
 		groups_manager->setIconForTab(groupName);
 
-		QPixmap icon = icons_manager->loadPixmap(iDialog->selectedFile());
-		pixmapLabels[groupName]->setPixmap(icon.xForm(QMatrix().scale((double)16/icon.width(), (double)16/icon.height())));
+		pixmapLabels[groupName]->setPixmap(icons_manager->loadPixmap(iDialog->selectedFile()).scaled(QSize(16,16)));
 	}
 	delete iDialog;
 }
@@ -634,13 +656,13 @@ void UserInfo::selectIcon()
 void UserInfo::deleteIcon()
 {
 	QString groupName;
-	const QCheckBox *checkBox = NULL;
+	const QCheckBox *checkBox = 0;
 	
 	CONST_FOREACH(child, sender()->parent()->children())
 	{
 		checkBox = dynamic_cast<const QCheckBox*>(*child);
 		
-		if(checkBox)
+		if (checkBox)
 		{
 			groupName = checkBox->text();
 			break;
@@ -649,7 +671,7 @@ void UserInfo::deleteIcon()
 
 	config_file.removeVariable("GroupIcon", groupName);
 
-	pixmapLabels[groupName]->setText("");
+	pixmapLabels[groupName]->setPixmap(QPixmap());
 
 	groups_manager->setIconForTab(groupName);
 }

@@ -272,9 +272,9 @@ void SearchDialog::addFound()
 
 	foreach (UserListElement user, found)
 		if (user.isAnonymous())
-			(new UserInfo(user, kadu, "add_user"))->show();
+			(new UserInfo(user, kadu))->show();
 		else
-			(new UserInfo(user, kadu, "user_info"))->show();
+			(new UserInfo(user, kadu))->show();
 }
 
 void SearchDialog::chatFound()
@@ -619,7 +619,7 @@ void SearchDialog::updateInfoClicked()
 
 	ule.setFirstName(firstname);
 	ule.setNickName(nickname);
-	(new UserInfo(ule, kadu, "user_info"))->show();
+	(new UserInfo(ule, kadu))->show();
 	kdebugf2();
 }
 /*

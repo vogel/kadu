@@ -1,25 +1,19 @@
 #ifndef KADU_USERINFO_H
 #define KADU_USERINFO_H
 
-#include <qglobal.h>
-
-#include <q3hbox.h>
-#include <q3valuelist.h>
-//Added by qt3to4:
-#include <QLabel>
-#include <QKeyEvent>
+#include <QList>
+#include <QWidget>
 
 #include "userlistelement.h"
 #include "misc.h"
 
 class QCheckBox;
-class Q3Dns;
+class QHostInfo;
 class QLineEdit;
 class QPushButton;
-class Q3ScrollView;
+class QScrollArea;
 class QTabWidget;
-class Q3VBox;
-class Q3VGroupBox;
+class QVBoxLayout;
 
 /**
 	Klasa ta reprezentuje okno, z którym mamy do czynienia podczas dodawania nowego kontaktu,
@@ -30,30 +24,7 @@ class Q3VGroupBox;
 class UserInfo : public QWidget
 {
 	Q_OBJECT
-	public:
-		/**
-			\var static CreateNotifier createNotifier
-			Statyczny obiekt wysy³aj±cy sygna³ CreateNotifier::objectCreated
-			je¶li powstanie nowa instancja okienka.
-		**/
-		static CreateNotifier createNotifier;
 
-		/**
-			\fn UserInfo(const QString &altnick, bool addUser = false, QDialog* parent=0, const char *name=0)
-			Konstruktor tworz±cy okno dialogowe z informacjami o danym kontakcie.
-			\param altnick pseudonim kontaktu wy¶wietlany na li¶cie.
-			\param addUser TRUE gdy dodajemy kontakt, FALSE gdy edytujemy dane istniej±cego. Domy¶lnie FALSE.
-			\param parent wska¼nik do obiektu stanowi±cego rodzica. Domy¶lnie 0.
-			\param name nazwa kontrolki. Domy¶lnie 0.
-		**/
-		UserInfo(UserListElement user, QWidget* parent = 0, const char *name = 0);
-		~UserInfo();
-
-		QTabWidget *tabs() {return tw_main;}
-		UserListElement user() const {return User;}
-		static bool acceptableGroupName(const QString &groupName);
-
-	private:
 		UserListElement User;
 		QLineEdit *e_firstname;
 		QLineEdit *e_lastname;
@@ -70,51 +41,24 @@ class UserInfo : public QWidget
 		QCheckBox *c_notify;
 		QPushButton *pb_addapply;
 		QTabWidget *tw_main;
-		Q3VGroupBox *vgb_general;
-		Q3Dns *dns;
-		Q3ScrollView* scrollView;
+		QScrollArea* scrollArea;
 
 		QList<QCheckBox *> groups;
 		QList<QCheckBox *> hiddenCheckBoxes;
 		QLineEdit *newGroup;
-		Q3VBox *groupsBox;
+		QWidget *groupsWidget;
+		QVBoxLayout *groupsLayout;
 
 		QMap <QString, QLabel *> pixmapLabels;
 
 		void keyPressEvent(QKeyEvent *);
 
-	protected:
-		/**
-			\fn void setupTab1()
-			Tworzy pierwsz± zak³adkê.
-		**/
-		void setupTab1();
-
-		/**
-			\fn void setupTab2()
-			Tworzy drug± zak³adkê.
-		**/
-		void setupTab2();
-
-		/**
-			\fn void setupTab3()
-			Tworzy trzeci± zak³adkê.
-		**/
-		void setupTab3();
-
-	public slots:
-		/**
-			\fn void updateUserlist()
-			Wci¶niêcie przycisku Dodaj/Uaktualnij
-		**/
-		void updateUserlist();
-
 	private slots:
 		/**
-			\fn void resultsReady()
+			\fn void resultsReady(const QHostInfo &host)
 			Ustawia warto¶æ pola DNS na znalezion± nazwê domeny.
 		**/
-		void resultsReady();
+		void resultsReady(const QHostInfo &host);
 
 		/**
 			\fn void newGroupClicked()
@@ -139,6 +83,56 @@ class UserInfo : public QWidget
 			wci¶niêto przycisk usuniêcia ikony grupy
 		**/
 		void deleteIcon();
+
+	protected:
+		/**
+			\fn void setupTab1()
+			Tworzy pierwsz± zak³adkê.
+		**/
+		void setupTab1();
+
+		/**
+			\fn void setupTab2()
+			Tworzy drug± zak³adkê.
+		**/
+		void setupTab2();
+
+		/**
+			\fn void setupTab3()
+			Tworzy trzeci± zak³adkê.
+		**/
+		void setupTab3();
+
+	public:
+		/**
+			\var static CreateNotifier createNotifier
+			Statyczny obiekt wysy³aj±cy sygna³ CreateNotifier::objectCreated
+			je¶li powstanie nowa instancja okienka.
+		**/
+		static CreateNotifier createNotifier;
+
+		/**
+			\fn UserInfo(const QString &altnick, bool addUser = false, QDialog* parent=0, const char *name=0)
+			Konstruktor tworz±cy okno dialogowe z informacjami o danym kontakcie.
+			\param altnick pseudonim kontaktu wy¶wietlany na li¶cie.
+			\param addUser TRUE gdy dodajemy kontakt, FALSE gdy edytujemy dane istniej±cego. Domy¶lnie FALSE.
+			\param parent wska¼nik do obiektu stanowi±cego rodzica. Domy¶lnie 0.
+			\param name nazwa kontrolki. Domy¶lnie 0.
+		**/
+		UserInfo(UserListElement user, QWidget* parent = 0);
+		~UserInfo();
+
+		QTabWidget *tabs() {return tw_main;}
+		UserListElement user() const {return User;}
+		static bool acceptableGroupName(const QString &groupName);
+
+	public slots:
+		/**
+			\fn void updateUserlist()
+			Wci¶niêcie przycisku Dodaj/Uaktualnij
+		**/
+		void updateUserlist();
+
 	signals:
 		void updateClicked(UserInfo *);
 };
