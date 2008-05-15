@@ -9,9 +9,10 @@
 #include <QCheckBox>
 #include <QComboBox>
 #include <QGridLayout>
-#include <QVBoxLayout>
+#include <QLabel>
 #include <QListView>
 #include <QMenuBar>
+#include <QVBoxLayout>
 
 #include "action.h"
 #include "debug.h"

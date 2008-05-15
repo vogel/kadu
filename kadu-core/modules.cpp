@@ -7,24 +7,22 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <qapplication.h>
-#include <qcheckbox.h>
-#include <qlabel.h>
-#include <q3listview.h>
-#include <q3popupmenu.h>
-#include <qpushbutton.h>
-#include <qtextcodec.h>
-#include <qtranslator.h>
-#include <q3vbox.h>
-#include <QLayout>
-#include <q3vgroupbox.h>
-//Added by qt3to4:
+#include <QApplication>
+#include <QCheckBox>
+#include <QGroupBox>
+#include <QHBoxLayout>
 #include <QKeyEvent>
-#include <QResizeEvent>
+#include <QLabel>
+#include <QMenu>
+#include <QPushButton>
+#include <QScrollBar>
+#include <QTranslator>
+#include <QTreeWidget>
+#include <QTreeWidgetItem>
+#include <QVBoxLayout>
 
 #include <dlfcn.h>
 
-// #include "config_dialog.h"
 #include "config_file.h"
 #include "debug.h"
 #include "hot_key.h"
@@ -32,7 +30,9 @@
 #include "kadu.h"
 #include "message_box.h"
 #include "misc.h"
+
 #include "modules.h"
+
 #include "modules_static.cpp"
 
 #ifdef Q_OS_MACX
@@ -78,7 +78,8 @@ ModuleInfo::ModuleInfo() : depends(), conflicts(), provides(),
 {
 }
 
-ModulesDialog::ModulesDialog() : Q3HBox(kadu, "modules_dialog", Qt::WType_TopLevel | Qt::WDestructiveClose),
+ModulesDialog::ModulesDialog(QWidget *parent)
+	: QWidget(parent, Qt::WType_TopLevel | Qt::WDestructiveClose),
 	lv_modules(0), l_moduleinfo(0)
 {
 	kdebugf();
@@ -87,17 +88,19 @@ ModulesDialog::ModulesDialog() : Q3HBox(kadu, "modules_dialog", Qt::WType_TopLev
 	layout()->setResizeMode(QLayout::Minimum);
 
 	// create main QLabel widgets (icon and app info)
-	Q3VBox *left=new Q3VBox(this);
-	left->setMargin(10);
-	left->setSpacing(10);
+	QWidget *left = new QWidget(this);
+	QVBoxLayout *leftLayout = new QVBoxLayout(left);
+	leftLayout->setMargin(10);
+	leftLayout->setSpacing(10);
 
 	QLabel *l_icon = new QLabel(left);
-	QWidget *blank=new QWidget(left);
+	QWidget *blank = new QWidget(left);
 	blank->setSizePolicy(QSizePolicy(QSizePolicy::Maximum, QSizePolicy::Expanding));
 
-	Q3VBox *center=new Q3VBox(this);
-	center->setMargin(10);
-	center->setSpacing(10);
+	QWidget *center = new QWidget(this);
+	QVBoxLayout *centerLayout = new QVBoxLayout(center);
+	centerLayout->setMargin(10);
+	centerLayout->setSpacing(10);
 
 	QLabel *l_info = new QLabel(center);
 	l_icon->setPixmap(icons_manager->loadPixmap("ManageModulesWindowIcon"));
@@ -109,16 +112,16 @@ ModulesDialog::ModulesDialog() : Q3HBox(kadu, "modules_dialog", Qt::WType_TopLev
 	// end create main QLabel widgets (icon and app info)
 
 	// our QListView
-	lv_modules = new Q3ListView(center);
-	lv_modules->addColumn(tr("Module name"), 160);
-	lv_modules->addColumn(tr("Version"), 100);
-	lv_modules->addColumn(tr("Module type"), 150);
-	lv_modules->addColumn(tr("State"), 120);
+	lv_modules = new QTreeWidget(center);
+	QStringList headers;
+	headers << tr("Module name") << tr("Version") << tr("Module type") << tr("State");
+	lv_modules->setHeaderLabels(headers);
 	lv_modules->setAllColumnsShowFocus(true);
 	// end our QListView
 
 	//our QVGroupBox
-	Q3VGroupBox *vgb_info = new Q3VGroupBox(center);
+	QGroupBox *vgb_info = new QGroupBox(center);
+	QVBoxLayout *infoLayout = new QVBoxLayout(vgb_info);
 	vgb_info->setTitle(tr("Info"));
 	//end our QGroupBox
 
@@ -127,12 +130,14 @@ ModulesDialog::ModulesDialog() : Q3HBox(kadu, "modules_dialog", Qt::WType_TopLev
 	l_moduleinfo->setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Minimum));
 
 	// buttons
-	Q3HBox *bottom=new Q3HBox(center);
+	QWidget *bottom = new QWidget(center);
+	QHBoxLayout *bottomLayout = new QHBoxLayout(bottom);
+	bottomLayout->setSpacing(5);
+
 	hideBaseModules = new QCheckBox(tr("Hide base modules"), bottom);
 	hideBaseModules->setChecked(config_file.readBoolEntry("General", "HideBaseModules"));
 	connect(hideBaseModules, SIGNAL(clicked()), this, SLOT(refreshList()));
 	QWidget *blank2 = new QWidget(bottom);
-	bottom->setSpacing(5);
 	blank2->setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Maximum));
 	QPushButton *pb_close = new QPushButton(icons_manager->loadIcon("CloseWindow"), tr("&Close"), bottom, "close");
 	// end buttons
@@ -154,39 +159,51 @@ ModulesDialog::~ModulesDialog()
 	kdebugf2();
 }
 
+QTreeWidgetItem * ModulesDialog::getSelected()
+{
+	if (lv_modules->selectedItems().count())
+		return lv_modules->selectedItems()[0];
+	else
+		return 0;
+}
+
 void ModulesDialog::itemsChanging()
 {
-	if (lv_modules->selectedItem() != NULL)
+	if (lv_modules->selectedItems().count())
 		getInfo();
 }
 
-void ModulesDialog::moduleAction(Q3ListViewItem *)
+void ModulesDialog::moduleAction(QTreeWidgetItem *)
 {
 	kdebugf();
-	if (lv_modules->selectedItem() != NULL)
-		if ((lv_modules->selectedItem()->text(2) == tr("Dynamic")) &&
-			(lv_modules->selectedItem()->text(3) == tr("Loaded")))
-			unloadItem();
-		else
-		if ((lv_modules->selectedItem()->text(2) == tr("Dynamic")) &&
-			(lv_modules->selectedItem()->text(3) == tr("Not loaded")))
-			loadItem();
+
+	QTreeWidgetItem *selectedItem = getSelected();
+	if (!selectedItem)
+		return;
+
+	// TODO: OH LOL
+	if ((selectedItem->text(2) == tr("Dynamic")) && (selectedItem->text(3) == tr("Loaded")))
+		unloadItem(selectedItem->text(0));
+	else
+		if ((selectedItem->text(2) == tr("Dynamic")) && (selectedItem->text(3) == tr("Not loaded")))
+			loadItem(selectedItem->text(0));
+
 	kdebugf2();
 }
 
-void ModulesDialog::loadItem()
+void ModulesDialog::loadItem(const QString &item)
 {
 	kdebugf();
-	modules_manager->activateModule(lv_modules->selectedItem()->text(0));
+	modules_manager->activateModule(item);
 	refreshList();
 	modules_manager->saveLoadedModules();
 	kdebugf2();
 }
 
-void ModulesDialog::unloadItem()
+void ModulesDialog::unloadItem(const QString &item)
 {
 	kdebugf();
-	modules_manager->deactivateModule(lv_modules->selectedItem()->text(0));
+	modules_manager->deactivateModule(item);
 	refreshList();
 	modules_manager->saveLoadedModules();
 	kdebugf2();
@@ -196,12 +213,13 @@ void ModulesDialog::refreshList()
 {
 	kdebugf();
 
-	int vScrollValue=lv_modules->verticalScrollBar()->value();
+	int vScrollValue = lv_modules->verticalScrollBar()->value();
 
 	QString s_selected;
 
-	if (lv_modules->selectedItem() != NULL)
-		s_selected = lv_modules->selectedItem()->text(0);
+	QTreeWidgetItem *selectedItem = getSelected();
+	if (selectedItem)
+		s_selected = selectedItem->text(0);
 
 	lv_modules->clear();
 
@@ -210,40 +228,58 @@ void ModulesDialog::refreshList()
 	bool hideBase = hideBaseModules->isChecked();
 	CONST_FOREACH(module, moduleList)
 	{
-		if (modules_manager->moduleInfo(*module,info))
+		QStringList strings;
+
+		if (modules_manager->moduleInfo(*module, info))
 		{
-			if (!info.base || !hideBase)
-				new Q3ListViewItem(lv_modules, *module, info.version, tr("Static"), tr("Loaded"));
+			if (info.base && hideBase)
+				continue;
+
+			strings << *module << info.version << tr("Static") << tr("Loaded");
 		}
 		else
-			new Q3ListViewItem(lv_modules, *module, QString::null, tr("Static"), tr("Loaded"));
+			strings << *module << QString::null << tr("Static") << tr("Loaded");
+	
+		new QTreeWidgetItem(lv_modules, strings);
 	}
 
 	moduleList = modules_manager->loadedModules();
 	CONST_FOREACH(module, moduleList)
 	{
-		if (modules_manager->moduleInfo(*module,info))
+		QStringList strings;
+
+		if (modules_manager->moduleInfo(*module, info))
 		{
-			if (!info.base || !hideBase)
-				new Q3ListViewItem(lv_modules, *module, info.version, tr("Dynamic"), tr("Loaded"));
+			if (info.base && hideBase)
+				continue;
+
+			strings << *module << info.version << tr("Dynamic") << tr("Loaded");
 		}
 		else
-			new Q3ListViewItem(lv_modules, *module, QString::null, tr("Dynamic"), tr("Loaded"));
+			strings << *module << QString::null << tr("Dynamic") << tr("Loaded");
+	
+		new QTreeWidgetItem(lv_modules, strings);
 	}
 
 	moduleList = modules_manager->unloadedModules();
 	CONST_FOREACH(module, moduleList)
 	{
-		if (modules_manager->moduleInfo(*module,info))
+		QStringList strings;
+
+		if (modules_manager->moduleInfo(*module, info))
 		{
-			if (!info.base || !hideBase)
-				new Q3ListViewItem(lv_modules, *module, info.version, tr("Dynamic"), tr("Not loaded"));
+			if (info.base && hideBase)
+				continue;
+
+			strings << *module << info.version << tr("Dynamic") << tr("Not loaded");
 		}
 		else
-			new Q3ListViewItem(lv_modules, *module, QString::null, tr("Dynamic"), tr("Not loaded"));
+			strings << *module << QString::null << tr("Dynamic") << tr("Not loaded");
+	
+		new QTreeWidgetItem(lv_modules, strings);
 	}
 
-	lv_modules->setSelected(lv_modules->findItem(s_selected, 0), true);
+// 	lv_modules->setSelected(lv_modules->findItem(s_selected, 0), true);
 
 	lv_modules->verticalScrollBar()->setValue(vScrollValue);
 	kdebugf2();
@@ -254,7 +290,11 @@ void ModulesDialog::getInfo()
 	kdebugf();
 	ModuleInfo info;
 
-	if (!modules_manager->moduleInfo(lv_modules->selectedItem()->text(0), info))
+	QTreeWidgetItem *selected = getSelected();
+	if (!selected)
+		return;
+
+	if (!modules_manager->moduleInfo(selected->text(0), info))
 	{
 		kdebugf2();
 		return;
@@ -268,7 +308,7 @@ void ModulesDialog::getInfo()
 			"<br/><b>Author: </b>%5"
 			"<br/><b>Version: </b>%6"
 			"<br/><b>Description: </b>%7")
-			.arg(lv_modules->selectedItem()->text(0))
+			.arg(selected->text(0))
 			.arg(info.depends.join(", "))
 			.arg(info.conflicts.join(", "))
 			.arg(info.provides.join(", "))

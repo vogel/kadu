@@ -1,62 +1,63 @@
+/***************************************************************************
+ *                                                                         *
+ *   This program is free software; you can redistribute it and/or modify  *
+ *   it under the terms of the GNU General Public License as published by  *
+ *   the Free Software Foundation; either version 2 of the License, or     *
+ *   (at your option) any later version.                                   *
+ *                                                                         *
+ ***************************************************************************/
+
 #ifndef KADU_MODULES_H
 #define KADU_MODULES_H
 
-#include <qglobal.h>
-
-#include <q3hbox.h>
-#include <qobject.h>
-#include <qstring.h>
-#include <qstringlist.h>
-//Added by qt3to4:
-#include <QLabel>
-#include <QTranslator>
-#include <QKeyEvent>
+#include <QMap>
+#include <QWidget>
 
 class QCheckBox;
 class QLabel;
-class Q3ListView;
-class Q3ListViewItem;
 class QTranslator;
+class QTreeWidget;
+class QTreeWidgetItem;
 
 /**
-	Zastêpuje klasê QLibrary na specyficzne potrzeby Kadu.
+	Zastï¿½puje klasï¿½ QLibrary na specyficzne potrzeby Kadu.
 	\class Library
 	\brief Biblioteki dzielone.
 **/
 class Library : public QObject
 {
-	private:
-		QString FileName;
-		void* Handle;
+	QString FileName;
+	void *Handle;
 
-	public:
-		/**
-			\fn Library(const QString& file_name)
-			Konstruktor przydzielaj±cy dany plik dla tego obiektu biblioteki dzielonej.
-			\param file_name nazwa pliku biblioteki dzielonej.
-		**/
-		Library(const QString& file_name);
-		~Library();
+public:
+	/**
+		\fn Library(const QString &file_name)
+		Konstruktor przydzielajï¿½cy dany plik dla tego obiektu biblioteki dzielonej.
+		\param file_name nazwa pliku biblioteki dzielonej.
+	**/
+	Library(const QString &file_name);
+	~Library();
 
-		/**
-			\fn bool load()
-			£aduje przydzielon± bibliotekê dzielon± do pamiêci.
-		**/
-		bool load();
+	/**
+		\fn bool load()
+		ï¿½aduje przydzielonï¿½ bibliotekï¿½ dzielonï¿½ do pamiï¿½ci.
+	**/
+	bool load();
 
-		/**
-			\fn void* resolve(const QString& symbol_name)
-			T³umaczy nazwê symbolu na funkcjê z za³adowanej biblioteki dzielonej.
-			\param symbol_name nazwa symbolu do przet³umaczenia.
-			\return wska¼nik do przt³umaczonego symbolu.
-		**/
-		void* resolve(const QString& symbol_name);
+	/**
+		\fn void * resolve(const QString &symbol_name)
+		Tï¿½umaczy nazwï¿½ symbolu na funkcjï¿½ z zaï¿½adowanej biblioteki dzielonej.
+		\param symbol_name nazwa symbolu do przetï¿½umaczenia.
+		\return wskaï¿½nik do prztï¿½umaczonego symbolu.
+	**/
+	void * resolve(const QString &symbol_name);
 
-		/**
-			\fn QString error()
-			\return tre¶æ b³êdu, jaki wyst±pi³ podczas ³adowanie biblioteki dzielonej.
-		**/
-		QString error();
+	/**
+		\fn QString error()
+		\return treï¿½ï¿½ bï¿½ï¿½du, jaki wystï¿½piï¿½ podczas ï¿½adowanie biblioteki dzielonej.
+	**/
+	QString error();
+
 };
 
 /**
@@ -65,301 +66,312 @@ class Library : public QObject
 **/
 struct ModuleInfo
 {
-	QStringList depends; /*!< Jakie inne modu³y s± wymagane przez ten modu³. */
-	QStringList conflicts; /*!< Z jakimi modu³ami ten modu³ konfliktuje. */
-	QStringList provides; /*!< Jak± cechê dostarcza ten modu³. */
-	QString description; /*!< Opis modu³u. */
-	QString author; /*!< Autor modu³u. */
-	QString version; /*!< Wersja modu³u. */
-	bool load_by_def; /*!< Czy modu³ jest domy¶lnie ³adowany, czy nie? */
-	bool base; /*!< Czy modu³ nale¿y do modu³ów podstawowych? */
+	QStringList depends; /*!< Jakie inne moduï¿½y sï¿½ wymagane przez ten moduï¿½. */
+	QStringList conflicts; /*!< Z jakimi moduï¿½ami ten moduï¿½ konfliktuje. */
+	QStringList provides; /*!< Jakï¿½ cechï¿½ dostarcza ten moduï¿½. */
+	QString description; /*!< Opis moduï¿½u. */
+	QString author; /*!< Autor moduï¿½u. */
+	QString version; /*!< Wersja moduï¿½u. */
+	bool load_by_def; /*!< Czy moduï¿½ jest domyï¿½lnie ï¿½adowany, czy nie? */
+	bool base; /*!< Czy moduï¿½ naleï¿½y do moduï¿½ï¿½w podstawowych? */
 	ModuleInfo();
 };
 
 /**
-	Klasa reprezentuj±ca okno dialogowe, s³u¿±ce do ³adowanie i wy³adowywania modu³ów.
-	£adowanie/wy³adowywanie, oraz inne operacje na modu³ach z poziomu C++ dokonywane
-	s± za pomoc± klasy ModulesManager. Ta klasa tworzy jedynie okno dialogowe, bêd±ce
-	interfejsem do ww. klasy dla u¿ytkownika Kadu.
+	Klasa reprezentujï¿½ca okno dialogowe, sï¿½uï¿½ï¿½ce do ï¿½adowanie i wyï¿½adowywania moduï¿½ï¿½w.
+	ï¿½adowanie/wyï¿½adowywanie, oraz inne operacje na moduï¿½ach z poziomu C++ dokonywane
+	sï¿½ za pomocï¿½ klasy ModulesManager. Ta klasa tworzy jedynie okno dialogowe, bï¿½dï¿½ce
+	interfejsem do ww. klasy dla uï¿½ytkownika Kadu.
 	\class ModulesDialog
-	\brief "Zarz±dca modu³ów"
+	\brief "Zarzï¿½dca moduï¿½ï¿½w"
 **/
-class ModulesDialog : public Q3HBox
+class ModulesDialog : public QWidget
 {
 	Q_OBJECT
 
-	private:
-		Q3ListView* lv_modules;
-		QLabel* l_moduleinfo;
-		QCheckBox *hideBaseModules;
+	QTreeWidget *lv_modules;
+	QLabel *l_moduleinfo;
+	QCheckBox *hideBaseModules;
 
-	private slots:
-		void loadItem();
-		void unloadItem();
-		void moduleAction(Q3ListViewItem *);
-		void itemsChanging();
-		void getInfo();
-		void refreshList();
-		void keyPressEvent(QKeyEvent *);
+	QTreeWidgetItem * getSelected();
 
-	public:
-		/**
-			\fn ModulesDialog()
-			Konstruktor standardowy.
-		**/
-		ModulesDialog();
-		~ModulesDialog();
+	void loadItem(const QString &item);
+	void unloadItem(const QString &item);
+
+private slots:
+	void moduleAction(QTreeWidgetItem *);
+	void itemsChanging();
+	void getInfo();
+	void refreshList();
+	void keyPressEvent(QKeyEvent *);
+
+public:
+	/**
+		\fn ModulesDialog()
+		Konstruktor standardowy.
+	**/
+	ModulesDialog(QWidget *parent = 0);
+	~ModulesDialog();
+
 };
 
 /**
-	Ta klasa odpowiada za obs³ugê modu³ów Kadu.
+	Ta klasa odpowiada za obsï¿½ugï¿½ moduï¿½ï¿½w Kadu.
 	\class ModulesManager
-	\brief Zarz±dzanie modu³ami
+	\brief Zarzï¿½dzanie moduï¿½ami
 **/
 class ModulesManager : public QObject
 {
 	Q_OBJECT
 
-	private:
-		typedef int InitModuleFunc();
-		typedef void CloseModuleFunc();
-		/**
-			\struct StaticModule
-			\brief Informacje o statycznym module.
-		**/
-		struct StaticModule
-		{
-			InitModuleFunc* init; /*!< Wska¼nik do funkcji inicjalizuj±cej modu³. */
-			CloseModuleFunc* close; /*!< Wska¼nik do funkcji deinicjalizuj±cej modu³. */
-		};
-		/**
-			Lista statycznych modu³ów wype³niania
-			przez kod generowany przez configure.
-		**/
-		QMap<QString,StaticModule> StaticModules;
-		/**
-			Informacje o aktywnym module
-			statycznym b±d¼ zewnêtrznym.
-			Dla modu³u statycznego lib==NULL.
-			\struct Module
-			\brief Informacje o aktywnym module.
-		**/
-		struct Module
-		{
-			Library* lib; /*!< Wska¼nik do obiektu biblioteki dzielonej. */
-			CloseModuleFunc* close; /*!< Wska¼nik do funkcji deinicjalizuj±cej modu³. */
-			QTranslator* translator; /*!< Wska¼nik do obiektu t³umacz±cego dla tego modu³u. */
-			ModuleInfo info; /*!< Informacje o module. */
-			int usage_counter; /*!< Licznik u¿ycia modu³u. */
-			Module();
-		};
-		/**
-			Lista aktywnych modu³ów
-			statycznych b±d¼ zewnêtrznych.
-		**/
-		QMap<QString,Module> Modules;
-		/**
-		**/
-		ModulesDialog* Dialog;
-		/**
-			£aduje plik z t³umaczeniem. Zwraca NULL je¶li wyst±pi³
-			b³±d.
-		**/
-		QTranslator* loadModuleTranslation(const QString& module_name);
-		/**
-			Sprawdza czy dostêpne s± modu³y z listy
-			zale¿no¶ci danego modu³u. W razie czego
-			stara siê je za³adowaæ je¶li s± dostêpne.
-			@param module_info informacje o module
-		**/
-		bool satisfyModuleDependencies(const ModuleInfo& module_info);
-		/**
-			Zwiêksza liczniki u¿ycia modu³ów u¿ywanych
-			przez dany modu³.
-			@param module_info informacje o module
-		**/
-		void incDependenciesUsageCount(const ModuleInfo& module_info);
-		/**
-			Rejestruje modu³ statyczny. Funcja wywo³ywana
-			dla wszystkich modu³ów statycznych przez kod
-			wygenerowany przez configure.
-		**/
-		void registerStaticModule(const QString& module_name,
-			InitModuleFunc* init,CloseModuleFunc* close);
-		/**
-			Rejestruje modu³y statyczne. Kod funkcji jest
-			generowany przez configure.
-		**/
-		void registerStaticModules();
+	typedef int InitModuleFunc(void);
+	typedef void CloseModuleFunc(void);
 
-		/**
-			Skupia wszystkie t³umaczenia w jednej hierarchii
-		**/
-		QObject *translators;
+	/**
+		\struct StaticModule
+		\brief Informacje o statycznym module.
+	**/
+	struct StaticModule
+	{
+		InitModuleFunc *init; /*!< Wskaï¿½nik do funkcji inicjalizujï¿½cej moduï¿½. */
+		CloseModuleFunc *close; /*!< Wskaï¿½nik do funkcji deinicjalizujï¿½cej moduï¿½. */
+	};
 
-	private slots:
-		void dialogDestroyed();
+	/**
+		Lista statycznych moduï¿½ï¿½w wypeï¿½niania
+		przez kod generowany przez configure.
+	**/
+	QMap<QString, StaticModule> StaticModules;
 
-	public:
-		/**
-			\fn static void initModule()
-			Inicjalizuje obs³ugê modu³ów. Metoda ta wywo³ywana jest przy starcie Kadu, przez jego rdzeñ.
-		**/
-		static void initModule();
+	/**
+		Informacje o aktywnym module
+		statycznym bï¿½dï¿½ zewnï¿½trznym.
+		Dla moduï¿½u statycznego lib==NULL.
+		\struct Module
+		\brief Informacje o aktywnym module.
+	**/
+	struct Module
+	{
+		Library *lib; /*!< Wskaï¿½nik do obiektu biblioteki dzielonej. */
+		CloseModuleFunc *close; /*!< Wskaï¿½nik do funkcji deinicjalizujï¿½cej moduï¿½. */
+		QTranslator *translator; /*!< Wskaï¿½nik do obiektu tï¿½umaczï¿½cego dla tego moduï¿½u. */
+		ModuleInfo info; /*!< Informacje o module. */
+		int usage_counter; /*!< Licznik uï¿½ycia moduï¿½u. */
+		Module();
+	};
 
-		/**
-			\fn static void closeModule()
-			Deinicjalizuje obs³ugê modu³ów. Metoda ta jest wywo³ywana przy zamykaniu Kadu, przez jego rdzeñ.
-		**/
-		static void closeModule();
+	/**
+		Lista aktywnych moduï¿½ï¿½w
+		statycznych bï¿½dï¿½ zewnï¿½trznych.
+	**/
+	QMap<QString, Module> Modules;
 
-		/**
-			\fn ModulesManager()
-			Standardowy konstruktor.
-		**/
-		ModulesManager();
-		~ModulesManager();
+	ModulesDialog *Dialog;
 
-		/**
-			\fn QStringList staticModules() const
-			\return listê modu³ów wkompilowanych
-			statycznie w plik wykonywalny Kadu.
-		**/
-		QStringList staticModules() const;
+	/**
+		ï¿½aduje plik z tï¿½umaczeniem. Zwraca NULL jeï¿½li wystï¿½piï¿½
+		bï¿½ï¿½d.
+	**/
+	QTranslator *loadModuleTranslation(const QString &module_name);
 
-		/**
-			\fn QStringList installedModules() const
-			\return listê modu³ów zainstalowanych jako
-			dzielone biblioteki (shared libraries).
-		**/
-		QStringList installedModules() const;
+	/**
+		Sprawdza czy dostï¿½pne sï¿½ moduï¿½y z listy
+		zaleï¿½noï¿½ci danego moduï¿½u. W razie czego
+		stara siï¿½ je zaï¿½adowaï¿½ jeï¿½li sï¿½ dostï¿½pne.
+		@param module_info informacje o module
+	**/
+	bool satisfyModuleDependencies(const ModuleInfo &module_info);
 
-		/**
-			\fn QStringList loadedModules() const
-			\return listê modu³ów za³adowanych do pamiêci
-			jako dzielone biblioteki (shared libraries).
-		**/
-		QStringList loadedModules() const;
+	/**
+		Zwiï¿½ksza liczniki uï¿½ycia moduï¿½ï¿½w uï¿½ywanych
+		przez dany moduï¿½.
+		@param module_info informacje o module
+	**/
 
-		/**
-			\fn QStringList unloadedModules() const
-			\return listê modu³ów zainstalowanych jako
-			dzielone biblioteki (shared libraries)
-			i nie za³adowanych aktualnie do pamiêci.
-		**/
-		QStringList unloadedModules() const;
+	void incDependenciesUsageCount(const ModuleInfo &module_info);
+	/**
+		Rejestruje moduï¿½ statyczny. Funcja wywoï¿½ywana
+		dla wszystkich moduï¿½ï¿½w statycznych przez kod
+		wygenerowany przez configure.
+	**/
 
-		/**
-			\fn QStringList activeModules() const
-			\return listê aktywnych modu³ów.
-			Uwzglêdniane s± zarówno aktywne modu³y
-			statyczne jak i zewnêtrzne.
-		**/
-		QStringList activeModules() const;
+	void registerStaticModule(const QString &module_name, InitModuleFunc *init, CloseModuleFunc *close);
 
-		QString moduleProvides(const QString &provides);
+	/**
+		Rejestruje moduï¿½y statyczne. Kod funkcji jest
+		generowany przez configure.
+	**/
+	void registerStaticModules();
 
-		/**
-			\fn bool moduleInfo(const QString& module_name, ModuleInfo& info) const
-			Pobiera do info informacje o danym module.
-			\param[in] module_name nazwa modu³u, dla którego nale¿y pobraæ informacjê.
-			\param[out] info struktura, w której te informacje nale¿y umie¶ciæ.
-			\return true, je¶li siê uda³o, w przeciwnym wypadku false.
-		**/
-		bool moduleInfo(const QString& module_name, ModuleInfo& info) const;
+	/**
+		Skupia wszystkie tï¿½umaczenia w jednej hierarchii
+	**/
+	QObject *translators;
 
-		/**
-			\fn bool moduleIsStatic(const QString& module_name) const
-			Sprawdza czy podany modu³ jest wkompilowany statycznie.
-			\param module_name nazwa modu³u.
-			\return true, je¶li modu³ jest wkompilowany, false je¶li nie jest.
-		**/
-		bool moduleIsStatic(const QString& module_name) const;
+private slots:
+	void dialogDestroyed();
 
-		/**
-			\fn bool moduleIsInstalled(const QString& module_name) const
-			Sprawdza czy podany modu³ jest zainstalowany
-			w katalogu z modu³ami zewnêtrznymi.
-			\param module_name nazwa modu³u.
-			\return true, je¶li modu³ jest zainstalowany, false je¶li nie jest.
-		**/
-		bool moduleIsInstalled(const QString& module_name) const;
+public:
+	/**
+		\fn static void initModule()
+		Inicjalizuje obsï¿½ugï¿½ moduï¿½ï¿½w. Metoda ta wywoï¿½ywana jest przy starcie Kadu, przez jego rdzeï¿½.
+	**/
+	static void initModule();
 
-		/**
-			\fn bool moduleIsLoaded(const QString& module_name) const
-			Sprawdza czy podany modu³ zewnêtrzny jest za³adowany.
-			\param module_name nazwa modu³u.
-			\return true, je¶li modu³ jest za³adowany, false je¶li nie jest.
-		**/
-		bool moduleIsLoaded(const QString& module_name) const;
+	/**
+		\fn static void closeModule()
+		Deinicjalizuje obsï¿½ugï¿½ moduï¿½ï¿½w. Metoda ta jest wywoï¿½ywana przy zamykaniu Kadu, przez jego rdzeï¿½.
+	**/
+	static void closeModule();
 
-		/**
-			\fn bool moduleIsActive(const QString& module_name) const
-			Sprawdza czy podany modu³ jest aktywny.
-			Dzia³a dla modu³ów statycznych i za³adowanych
-			zewnêtrznych.
-			\param module_name nazwa modu³u.
-			\return true, je¶li modu³ jest aktywny, false je¶li nie jest.
-		**/
-		bool moduleIsActive(const QString& module_name) const;
+	/**
+		\fn ModulesManager()
+		Standardowy konstruktor.
+	**/
+	ModulesManager();
+	~ModulesManager();
 
-		/**
-			\fn bool conflictsWithLoaded(const QString &module_name, const ModuleInfo& module_info) const
-			Sprawdza czy podany modu³ konfliktuje
-			z jakim¶ innym za³adowanym modu³em.
-			\param module_name nazwa modu³u.
-			\param module_info informacje o module.
-			\return true, je¶li modu³ konfliktuje, false je¶li nie.
-		**/
-		bool conflictsWithLoaded(const QString &module_name, const ModuleInfo& module_info) const;
+	/**
+		\fn QStringList staticModules() const
+		\return listï¿½ moduï¿½ï¿½w wkompilowanych
+		statycznie w plik wykonywalny Kadu.
+	**/
+	QStringList staticModules() const;
 
-	public slots:
-		/**
-			\fn bool activateModule(const QString& module_name)
-			Aktywuje modu³ statyczny je¶li jest dostêpny
-			lub ³aduje do pamiêci i aktywuje modu³ zewnêtrzny.
-			Przez aktywacje rozumie siê wywo³anie funkcji *_init z modu³u.
-			\param module_name nazwa modu³u.
-			\return true je¶li aktywacja przebieg³a bezproblemowo, false w przeciwnym wypadku.
-		**/
-		bool activateModule(const QString& module_name);
+	/**
+		\fn QStringList installedModules() const
+		\return listï¿½ moduï¿½ï¿½w zainstalowanych jako
+		dzielone biblioteki (shared libraries).
+	**/
+	QStringList installedModules() const;
 
-		/**
-			\fn bool deactivateModule(const QString& module_name, bool force=false)
-			Deaktywuje modu³ statyczny lub deaktywuje i usuwa z pamiêci modu³ zewnêtrzny.
-			\param module_name nazwa modu³u.
-			\return true je¶li dezaktywacja przebieg³a bezproblemowo, false w przeciwnym wypadku.
-		**/
-		bool deactivateModule(const QString& module_name, bool force=false);
+	/**
+		\fn QStringList loadedModules() const
+		\return listï¿½ moduï¿½ï¿½w zaï¿½adowanych do pamiï¿½ci
+		jako dzielone biblioteki (shared libraries).
+	**/
+	QStringList loadedModules() const;
 
-		/**
-			\fn void showDialog()
-			Wy¶wietla okno dialogowe "Zarz±dcy modu³ów", czyli tworzy i pokazuje klasê ModulesDialog.
-		**/
-		void showDialog();
+	/**
+		\fn QStringList unloadedModules() const
+		\return listï¿½ moduï¿½ï¿½w zainstalowanych jako
+		dzielone biblioteki (shared libraries)
+		i nie zaï¿½adowanych aktualnie do pamiï¿½ci.
+	**/
+	QStringList unloadedModules() const;
 
-		/**
-			\fn void moduleIncUsageCount(const QString& module_name)
-			Zwiêksza licznik u¿ycia modu³u o 1.
-			\param module_name nazwa modu³u.
-		**/
-		void moduleIncUsageCount(const QString& module_name);
+	/**
+		\fn QStringList activeModules() const
+		\return listï¿½ aktywnych moduï¿½ï¿½w.
+		Uwzglï¿½dniane sï¿½ zarï¿½wno aktywne moduï¿½y
+		statyczne jak i zewnï¿½trzne.
+	**/
+	QStringList activeModules() const;
 
-		/**
-			\fn void moduleDecUsageCount(const QString& module_name)
-		 	Zmniejsza licznik u¿ycia modu³u o 1.
-			\param module_name nazwa modu³u.
-		**/
-		void moduleDecUsageCount(const QString& module_name);
+	QString moduleProvides(const QString &provides);
 
-		/**
-			\fn void saveLoadedModules()
-			Zapisuje do pliku konfiguracyjnego listê za³adowanych
-			modu³ów.
-		**/
-		void saveLoadedModules();
+	/**
+		\fn bool moduleInfo(const QString &module_name, ModuleInfo &info) const
+		Pobiera do info informacje o danym module.
+		\param[in] module_name nazwa moduï¿½u, dla ktï¿½rego naleï¿½y pobraï¿½ informacjï¿½.
+		\param[out] info struktura, w ktï¿½rej te informacje naleï¿½y umieï¿½ciï¿½.
+		\return true, jeï¿½li siï¿½ udaï¿½o, w przeciwnym wypadku false.
+	**/
+	bool moduleInfo(const QString &module_name, ModuleInfo &info) const;
+
+	/**
+		\fn bool moduleIsStatic(const QString &module_name) const
+		Sprawdza czy podany moduï¿½ jest wkompilowany statycznie.
+		\param module_name nazwa moduï¿½u.
+		\return true, jeï¿½li moduï¿½ jest wkompilowany, false jeï¿½li nie jest.
+	**/
+	bool moduleIsStatic(const QString &module_name) const;
+
+	/**
+		\fn bool moduleIsInstalled(const QString &module_name) const
+		Sprawdza czy podany moduï¿½ jest zainstalowany
+		w katalogu z moduï¿½ami zewnï¿½trznymi.
+		\param module_name nazwa moduï¿½u.
+		\return true, jeï¿½li moduï¿½ jest zainstalowany, false jeï¿½li nie jest.
+	**/
+	bool moduleIsInstalled(const QString &module_name) const;
+
+	/**
+		\fn bool moduleIsLoaded(const QString &module_name) const
+		Sprawdza czy podany moduï¿½ zewnï¿½trzny jest zaï¿½adowany.
+		\param module_name nazwa moduï¿½u.
+		\return true, jeï¿½li moduï¿½ jest zaï¿½adowany, false jeï¿½li nie jest.
+	**/
+	bool moduleIsLoaded(const QString &module_name) const;
+
+	/**
+		\fn bool moduleIsActive(const QString &module_name) const
+		Sprawdza czy podany moduï¿½ jest aktywny.
+		Dziaï¿½a dla moduï¿½ï¿½w statycznych i zaï¿½adowanych
+		zewnï¿½trznych.
+		\param module_name nazwa moduï¿½u.
+		\return true, jeï¿½li moduï¿½ jest aktywny, false jeï¿½li nie jest.
+	**/
+	bool moduleIsActive(const QString &module_name) const;
+
+	/**
+		\fn bool conflictsWithLoaded(const QString &module_name, const ModuleInfo &module_info) const
+		Sprawdza czy podany moduï¿½ konfliktuje
+		z jakimï¿½ innym zaï¿½adowanym moduï¿½em.
+		\param module_name nazwa moduï¿½u.
+		\param module_info informacje o module.
+		\return true, jeï¿½li moduï¿½ konfliktuje, false jeï¿½li nie.
+	**/
+	bool conflictsWithLoaded(const QString &module_name, const ModuleInfo &module_info) const;
+
+public slots:
+	/**
+		\fn bool activateModule(const QString &module_name)
+		Aktywuje moduï¿½ statyczny jeï¿½li jest dostï¿½pny
+		lub ï¿½aduje do pamiï¿½ci i aktywuje moduï¿½ zewnï¿½trzny.
+		Przez aktywacje rozumie siï¿½ wywoï¿½anie funkcji *_init z moduï¿½u.
+		\param module_name nazwa moduï¿½u.
+		\return true jeï¿½li aktywacja przebiegï¿½a bezproblemowo, false w przeciwnym wypadku.
+	**/
+	bool activateModule(const QString &module_name);
+
+	/**
+		\fn bool deactivateModule(const QString &module_name, bool force=false)
+		Deaktywuje moduï¿½ statyczny lub deaktywuje i usuwa z pamiï¿½ci moduï¿½ zewnï¿½trzny.
+		\param module_name nazwa moduï¿½u.
+		\return true jeï¿½li dezaktywacja przebiegï¿½a bezproblemowo, false w przeciwnym wypadku.
+	**/
+	bool deactivateModule(const QString &module_name, bool force = false);
+
+	/**
+		\fn void showDialog()
+		Wyï¿½wietla okno dialogowe "Zarzï¿½dcy moduï¿½ï¿½w", czyli tworzy i pokazuje klasï¿½ ModulesDialog.
+	**/
+	void showDialog();
+
+	/**
+		\fn void moduleIncUsageCount(const QString &module_name)
+		Zwiï¿½ksza licznik uï¿½ycia moduï¿½u o 1.
+		\param module_name nazwa moduï¿½u.
+	**/
+	void moduleIncUsageCount(const QString &module_name);
+
+	/**
+		\fn void moduleDecUsageCount(const QString &module_name)
+	 	Zmniejsza licznik uï¿½ycia moduï¿½u o 1.
+		\param module_name nazwa moduï¿½u.
+	**/
+	void moduleDecUsageCount(const QString &module_name);
+
+	/**
+		\fn void saveLoadedModules()
+		Zapisuje do pliku konfiguracyjnego listï¿½ zaï¿½adowanych
+		moduï¿½ï¿½w.
+	**/
+	void saveLoadedModules();
+
 };
 
-extern ModulesManager* modules_manager;
+extern ModulesManager *modules_manager;
 
 #endif

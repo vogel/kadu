@@ -8,6 +8,8 @@
 #include <QButtonGroup>
 #include <QCheckBox>
 #include <QComboBox>
+#include <QGridLayout>
+#include <QLabel>
 #include <QLineEdit>
 #include <QPushButton>
 #include <QRadioButton>
@@ -168,7 +170,7 @@ void Wizard::backClicked()
 }
 
 /**
-	naci¶niêcie zakoñcz i zapisanie konfiguracji (o ile nie nast±pi³o wcze¶niej)
+	naciï¿½niï¿½cie zakoï¿½cz i zapisanie konfiguracji (o ile nie nastï¿½piï¿½o wczeï¿½niej)
 **/
 void Wizard::finishClicked()
 {
@@ -197,7 +199,7 @@ void Wizard::closeEvent(QCloseEvent *e)
 }
 
 /**
-	wywo³anie wizarda z menu
+	wywoï¿½anie wizarda z menu
 **/
 void Wizard::wizardStart()
 {
@@ -205,7 +207,7 @@ void Wizard::wizardStart()
 }
 
 /**
-	po zaimportowaniu listy kontaktów siê wywo³uje
+	po zaimportowaniu listy kontaktï¿½w siï¿½ wywoï¿½uje
 **/
 void WizardStarter::userListImported(bool ok, QList<UserListElement> list)
 {
@@ -279,7 +281,7 @@ void Wizard::registerGGAccount()
 }
 
 /**
-	Zapisanie parametrów nowego konta
+	Zapisanie parametrï¿½w nowego konta
 **/
 void Wizard::registeredGGAccount(bool ok, UinType uin)
 {
@@ -319,7 +321,7 @@ void Wizard::registeredGGAccount(bool ok, UinType uin)
 
 
 /**
-	sprawdzenie czy trzeba importowaæ listê kontaktów czy nie i ew. import
+	sprawdzenie czy trzeba importowaï¿½ listï¿½ kontaktï¿½w czy nie i ew. import
 **/
 
 void Wizard::tryImport()
