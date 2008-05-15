@@ -44,7 +44,6 @@ class UserInfo : public QWidget
 		QScrollArea* scrollArea;
 
 		QList<QCheckBox *> groups;
-		QList<QCheckBox *> hiddenCheckBoxes;
 		QLineEdit *newGroup;
 		QWidget *groupsWidget;
 		QVBoxLayout *groupsLayout;

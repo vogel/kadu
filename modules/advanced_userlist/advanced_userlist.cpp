@@ -114,25 +114,37 @@ void AdvancedUserList::userboxCreated(QObject *new_object)
 void AdvancedUserList::userInfoWindowCreated(QObject *new_object)
 {
 	kdebugf();
+
 	UserInfo *info = static_cast<UserInfo *>(new_object);
 	connect(info, SIGNAL(updateClicked(UserInfo *)), this, SLOT(updateClicked(UserInfo *)));
 	QWidget *space = static_cast<QWidget*>(info->child("space_for_advanced_userlist"));
+
 	if (!space)
-		space = info;
-	new QLabel(tr("Priority"), space);
-	(new QSpinBox(-10, 10, 1, space, "priority_spinbox"))->setValue(info->user().data("Priority").toInt());
+		return;
+
+	QSpinBox *spinBox = new QSpinBox(-10, 10, 1, space);
+	spinBox->setName("priority_spinbox");
+	spinBox->setValue(info->user().data("Priority").toInt());
+
+	QVBoxLayout *spaceLayout = new QVBoxLayout(space);
+
+	spaceLayout->addWidget(new QLabel(tr("Priority"), space));
+	spaceLayout->addWidget(spinBox);
+
 	kdebugf2();
 }
 
 void AdvancedUserList::updateClicked(UserInfo *info)
 {
 	kdebugf();
+
 	int val = static_cast<QSpinBox *>(info->child("priority_spinbox"))->value();
 	if (info->user().data("Priority").toInt() != val)
 	{
 		info->user().setData("Priority", val);
 		UserBox::refreshAllLater();
 	}
+
 	kdebugf2();
 }
 
@@ -171,6 +183,7 @@ void AdvancedUserList::onDownButton()
 void AdvancedUserList::displayFunctionList()
 {
 	kdebugf();
+
 	QList <UserBox::CmpFuncDesc> cmpFuns = kadu->userbox()->compareFunctions();
 	QListWidgetItem *selected = sortingListBox->currentItem();
 

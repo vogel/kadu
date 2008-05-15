@@ -8,9 +8,7 @@
  ***************************************************************************/
 
 #include <QCheckBox>
-#include <Q3HBox>
-#include <Q3VBox>
-#include <Q3VGroupBox>
+#include <QGridLayout>
 #include <QHBoxLayout>
 #include <QHostInfo>
 #include <QIntValidator>
@@ -39,7 +37,7 @@ UserInfo::UserInfo(UserListElement user, QWidget* parent)
 	: QWidget(parent, Qt::Dialog), User(user),
 	e_firstname(0), e_lastname(0), e_nickname(0), e_altnick(0), e_mobile(0), e_uin(0),
 	e_addr(0), e_ver(0), e_email(0), e_dnsname(0), c_blocking(0), c_offtouser(0),
-	c_notify(0), pb_addapply(0), tw_main(0), groups(), hiddenCheckBoxes(), newGroup(0), groupsWidget(0), groupsLayout(0)
+	c_notify(0), pb_addapply(0), tw_main(0), groups(), newGroup(0), groupsWidget(0), groupsLayout(0)
 {
 	kdebugf();
 
@@ -129,113 +127,85 @@ UserInfo::UserInfo(UserListElement user, QWidget* parent)
 void UserInfo::setupTab1()
 {
 	kdebugf();
-	// our QVGroupBox
-	Q3VGroupBox *vgb_general = new Q3VGroupBox(tw_main);
-	vgb_general->setFrameStyle(Q3Frame::NoFrame);
-	// end our QGroupBox
 
-	tw_main->addTab(vgb_general, tr("General"));
+	QWidget *generalWidget = new QWidget(tw_main);
 
-	// info panel
+	tw_main->addTab(generalWidget, tr("General"));
 
 	// UIN and disp
-	Q3HBox *hb_uindisp = new Q3HBox(vgb_general);
-	Q3VBox *vb_uin = new Q3VBox(hb_uindisp);
-	Q3VBox *vb_disp = new Q3VBox(hb_uindisp);
-	hb_uindisp->setSpacing(3);
-	vb_uin->setSpacing(3);
-	vb_disp->setSpacing(3);
-
-	new QLabel(tr("Uin"), vb_uin);
-	e_uin = new QLineEdit(vb_uin);
+	e_uin = new QLineEdit(generalWidget);
 	e_uin->setMaxLength(8);
 	e_uin->setValidator(new QIntValidator(1, 99999999, this));
 
-	new QLabel(tr("AltNick"), vb_disp);
-	e_altnick = new QLineEdit(vb_disp);
+	e_altnick = new QLineEdit(generalWidget);
 	// end UIN and disp
 
 	// name and nick
-	Q3HBox *hb_namenick = new Q3HBox(vgb_general);
-	Q3VBox *vb_name = new Q3VBox(hb_namenick);
-	Q3VBox *vb_nick = new Q3VBox(hb_namenick);
-	hb_namenick->setSpacing(3);
-	vb_name->setSpacing(3);
-	vb_nick->setSpacing(3);
-
-	new QLabel(tr("First name"), vb_name);
-	e_firstname = new QLineEdit(vb_name);
-	new QLabel(tr("Nickname"), vb_nick);
-	e_nickname = new QLineEdit(vb_nick);
+	e_firstname = new QLineEdit(generalWidget);
+	e_nickname = new QLineEdit(generalWidget);
 	// end name and nick
 
 	// Surname & mobile
-	Q3HBox *hb_surnamemobile = new Q3HBox(vgb_general);
-	Q3VBox *vb_surname = new Q3VBox(hb_surnamemobile);
-	Q3VBox *vb_mobile = new Q3VBox(hb_surnamemobile);
-	hb_surnamemobile->setSpacing(3);
-	vb_surname->setSpacing(3);
-	vb_mobile->setSpacing(3);
+	e_lastname = new QLineEdit(generalWidget);
 
-	new QLabel(tr("Surname"), vb_surname);
-	e_lastname = new QLineEdit(vb_surname);
-
-	new QLabel(tr("Mobile"), vb_mobile);
-	e_mobile = new QLineEdit(vb_mobile);
+	e_mobile = new QLineEdit(generalWidget);
 	// end Surname & mobile
 
 	// Email
-	Q3HBox *hb_email = new Q3HBox(vgb_general);
-	Q3VBox *vb_email = new Q3VBox(hb_email);
-	Q3VBox *vb_empty = new Q3VBox(hb_email, "space_for_advanced_userlist");
-	hb_email->setSpacing(3);
-	vb_email->setSpacing(3);
-	vb_empty->setSpacing(3);
+	QWidget *emptyWidget = new QWidget(generalWidget);
+	emptyWidget->setName("space_for_advanced_userlist");
 
-	new QLabel(tr("Email"), vb_email);
-	e_email = new QLineEdit(vb_email);
-	hb_email->setStretchFactor(vb_email, 1);
-	hb_email->setStretchFactor(vb_empty, 1);
+	e_email = new QLineEdit(generalWidget);
 	// end Email
 
-	Q3Frame *line1 = new Q3Frame(vgb_general);
-	line1->setFrameShape(Q3Frame::HLine);
-	line1->setFrameShadow(Q3Frame::Sunken);
-	line1->setFrameShape(Q3Frame::HLine);
+	QFrame *line1 = new QFrame(generalWidget);
+	line1->setFrameShape(QFrame::HLine);
+	line1->setFrameShadow(QFrame::Sunken);
+	line1->setFrameShape(QFrame::HLine);
 
 	// IP and DNS
-	Q3HBox *hb_ipdns = new Q3HBox(vgb_general);
-	Q3VBox *vb_ip = new Q3VBox(hb_ipdns);
-	Q3VBox *vb_dns = new Q3VBox(hb_ipdns);
-	hb_ipdns->setSpacing(3);
-	vb_ip->setSpacing(3);
-	vb_dns->setSpacing(3);
-
-	new QLabel(tr("Address IP and Port"), vb_ip);
-	e_addr = new QLineEdit(vb_ip);
+	e_addr = new QLineEdit(generalWidget);
 	e_addr->setBackgroundMode(Qt::PaletteButton);
 
-	new QLabel(tr("DNS name"), vb_dns);
-	e_dnsname = new QLineEdit(vb_dns);
+	e_dnsname = new QLineEdit(generalWidget);
 	
 	e_dnsname->setBackgroundMode(Qt::PaletteButton);
 	// end IP and DNS
 
 	// Protocol Version and status
-	Q3HBox *hb_protversionstate = new Q3HBox(vgb_general);
-	Q3VBox *vb_protversion = new Q3VBox(hb_protversionstate);
-	Q3VBox *vb_state = new Q3VBox(hb_protversionstate);
-	hb_protversionstate->setSpacing(3);
-	vb_protversion->setSpacing(3);
-	vb_state->setSpacing(3);
-	new QLabel(tr("Protocol version"), vb_protversion);
-	e_ver = new QLineEdit(vb_protversion);
+	e_ver = new QLineEdit(generalWidget);
 	e_ver->setBackgroundMode(Qt::PaletteButton);
 
-	new QLabel(tr("Status"), vb_state);
-	QLineEdit *e_status = new QLineEdit(vb_state);
+	QLineEdit *e_status = new QLineEdit(generalWidget);
 	e_status->setBackgroundMode(Qt::PaletteButton);
 	// end Protocol Version and status
+
+	QGridLayout * generalLayout = new QGridLayout(generalWidget);
+	generalLayout->setSpacing(3);
+	generalLayout->addWidget(new QLabel(tr("Uin"), generalWidget), 0, 0);
+	generalLayout->addWidget(e_uin, 1, 0);
+	generalLayout->addWidget(new QLabel(tr("AltNick"), generalWidget), 0, 1);
+	generalLayout->addWidget(e_altnick, 1, 1);
+	generalLayout->addWidget(new QLabel(tr("First name"), generalWidget), 2, 0);
+	generalLayout->addWidget(e_firstname, 3, 0);
+	generalLayout->addWidget(new QLabel(tr("Nickname"), generalWidget), 2, 1);
+	generalLayout->addWidget(e_nickname, 3, 1);
+	generalLayout->addWidget(new QLabel(tr("Surname"), generalWidget), 4, 0);
+	generalLayout->addWidget(e_lastname, 5, 0);
+	generalLayout->addWidget(new QLabel(tr("Mobile"), generalWidget), 4, 1);
+	generalLayout->addWidget(e_mobile, 5, 1);
+	generalLayout->addWidget(new QLabel(tr("Email"), generalWidget), 6, 0);
+	generalLayout->addWidget(e_email, 7, 0);
+	generalLayout->addWidget(emptyWidget, 6, 1, 2, 1);
+	generalLayout->addWidget(line1, 8, 0, 1, 2);
+	generalLayout->addWidget(new QLabel(tr("Address IP and Port"), generalWidget), 9, 0);
+	generalLayout->addWidget(e_addr, 10, 0);
+	generalLayout->addWidget(new QLabel(tr("DNS name"), generalWidget), 9, 1);
+	generalLayout->addWidget(e_dnsname, 10, 1);
+	generalLayout->addWidget(new QLabel(tr("Protocol version"), generalWidget), 11, 0);
+	generalLayout->addWidget(e_ver, 12, 0);
+	generalLayout->addWidget(new QLabel(tr("Status"), generalWidget), 11, 1);
+	generalLayout->addWidget(e_status, 12, 1);
 
 	e_status->setReadOnly(true);
 	e_addr->setReadOnly(true);
@@ -289,7 +259,7 @@ void UserInfo::setupTab1()
 		e_status->setText(tr(User.status("Gadu").name().ascii()));
 		e_status->setToolTip(User.status("Gadu").description());
 
-		tw_main->setTabIconSet(vgb_general, User.status("Gadu").pixmap());
+		tw_main->setTabIconSet(generalWidget, User.status("Gadu").pixmap());
 	}
 
 	kdebugf2();
@@ -630,7 +600,7 @@ void UserInfo::selectIcon()
 	if (iDialog->exec() == QDialog::Accepted)
 	{
 		QString groupName;
-		const QCheckBox *checkBox = NULL;
+		const QCheckBox *checkBox = 0;
 		
 		CONST_FOREACH(child, sender()->parent()->children())
 		{
