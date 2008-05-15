@@ -667,7 +667,7 @@ QString versionToName(const unsigned int version)
 }
 
 //internal usage
-static void stringHeapSortPushDown( QString* heap, int first, int last )
+static void stringHeapSortPushDown(QString *heap, int first, int last)
 {
 	int r = first;
 	while ( r <= last / 2 ) {
@@ -693,8 +693,8 @@ static void stringHeapSortPushDown( QString* heap, int first, int last )
 static void stringHeapSortHelper( QStringList::iterator b, QStringList::iterator e, QString, uint n )
 {
 	QStringList::iterator insert = b;
-	QString* realheap = new QString[n];
-	QString* heap = realheap - 1;
+	QString *realheap = new QString[n];
+	QString *heap = realheap - 1;
 	int size = 0;
 	for( ; insert != e; ++insert ) {
 		heap[++size] = *insert;
@@ -738,8 +738,8 @@ void ChooseDescription::show(const UserStatus &status, const QPoint &position)
 	Dialog->raise();
 }
 
-ChooseDescription::ChooseDescription(QWidget *parent, const char *name)
-	: QDialog(parent, name, false)
+ChooseDescription::ChooseDescription(QWidget *parent)
+	: QDialog(parent, false)
 {
 	kdebugf();
 	setWindowTitle(tr("Select description"));
@@ -874,7 +874,8 @@ void ChooseDescription::updateAvailableChars(const QString &text)
 #endif
 }
 
-OpenChatWith::OpenChatWith(QWidget* parent, const char* name) : QWidget(parent, name, Qt::Window)
+OpenChatWith::OpenChatWith(QWidget *parent)
+	: QWidget(parent, Qt::Window)
 {
 	kdebugf();
 
@@ -975,12 +976,12 @@ void OpenChatWith::inputAccepted()
 }
 
 ImageWidget::ImageWidget(QWidget *parent)
-	: QWidget(parent, "ImageWidget"), Image()
+	: QWidget(parent), Image()
 {
 }
 
-ImageWidget::ImageWidget(QWidget *parent,const QByteArray &image)
-	: QWidget(parent, "ImageWidget"), Image(image)
+ImageWidget::ImageWidget(const QByteArray &image, QWidget *parent)
+	: QWidget(parent), Image(image)
 {
 	setMinimumSize(Image.width(), Image.height());
 }
@@ -1010,8 +1011,8 @@ void ImageWidget::paintEvent(QPaintEvent *)
 //      TokenDialog
 // -----------------------
 
-TokenDialog::TokenDialog(QPixmap tokenImage, QDialog *parent, const char *name)
-	: QDialog(parent, name), tokenedit(0)
+TokenDialog::TokenDialog(QPixmap tokenImage, QDialog *parent)
+	: QDialog(parent), tokenedit(0)
 {
 	kdebugf();
 	QGridLayout *grid = new QGridLayout(this);
@@ -1047,7 +1048,7 @@ void TokenDialog::getValue(QString &tokenValue)
 	tokenValue = tokenedit->text();
 }
 
-void CreateNotifier::notify(QObject* new_object)
+void CreateNotifier::notify(QObject *new_object)
 {
 	emit objectCreated(new_object);
 }
@@ -1073,7 +1074,7 @@ void PixmapPreview::previewUrl(const Q3Url& url)
 	}
 }*/
 
-ImageDialog::ImageDialog(QWidget* parent)
+ImageDialog::ImageDialog(QWidget *parent)
 	: Q3FileDialog(parent,"image dialog",true)
 {
 // 	PixmapPreview* pp = new PixmapPreview();

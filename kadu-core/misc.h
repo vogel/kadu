@@ -85,7 +85,7 @@ private slots:
 public:
 	static void show(const UserStatus &status, const QPoint &position);
 
-	ChooseDescription(QWidget *parent = 0, const char *name = 0);
+	ChooseDescription(QWidget *parent = 0);
 	virtual ~ChooseDescription();
 
 	void setStatus(const UserStatus &status);
@@ -107,38 +107,36 @@ protected:
 	virtual void keyPressEvent(QKeyEvent *e);
 
 public:
-	OpenChatWith(QWidget *parent = 0, const char *name = 0);
+	OpenChatWith(QWidget *parent = 0);
 	virtual ~OpenChatWith();
 
 };
 
 class ImageWidget : public QWidget
 {
-//	Q_OBJECT
+	QImage Image;
 
-	private:
-		QImage Image;
+protected:
+	virtual void paintEvent(QPaintEvent *e);
 
-	protected:
-		virtual void paintEvent(QPaintEvent *e);
+public:
+	ImageWidget(QWidget *parent);
+	ImageWidget(const QByteArray &image, QWidget *parent);
+	void setImage(const QByteArray &image);
+	void setImage(const QPixmap &image);
 
-	public:
-		ImageWidget(QWidget *parent);
-		ImageWidget(QWidget *parent,const QByteArray &image);
-		void setImage(const QByteArray &image);
-		void setImage(const QPixmap &image);
 };
 
 class TokenDialog : public QDialog
 {
 	Q_OBJECT
 
-	public:
-		TokenDialog(QPixmap tokenImage, QDialog *parent = 0, const char *name = 0);
-		void getValue(QString &tokenValue);
+	QLineEdit *tokenedit;
 
-	private:
-		QLineEdit *tokenedit;
+public:
+	TokenDialog(QPixmap tokenImage, QDialog *parent = 0);
+	void getValue(QString &tokenValue);
+
 };
 
 /**
@@ -154,11 +152,12 @@ class CreateNotifier : public QObject
 {
 	Q_OBJECT
 
-	public:
-		void notify(QObject* new_object);
+public:
+	void notify(QObject *new_object);
 
-	signals:
-		void objectCreated(QObject* new_object);
+signals:
+	void objectCreated(QObject *new_object);
+
 };
 
 /*
@@ -171,8 +170,9 @@ class PixmapPreview : public QLabel, public Q3FilePreview
 
 class ImageDialog : public Q3FileDialog
 {
-	public:
-		ImageDialog(QWidget* parent);
+public:
+	ImageDialog(QWidget *parent);
+
 };
 
 class QLabel;

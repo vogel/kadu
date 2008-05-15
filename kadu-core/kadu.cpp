@@ -745,7 +745,7 @@ void Kadu::openChatWith()
 {
 	kdebugf();
 
-	(new OpenChatWith(this, "open_chat_with"))->show();
+	(new OpenChatWith(this))->show();
 
 	kdebugf2();
 }
@@ -1970,7 +1970,7 @@ void Kadu::showStatusOnMenu(int statusNr)
 
 void Kadu::readTokenValue(QPixmap tokenImage, QString &tokenValue)
 {
-	TokenDialog *td = new TokenDialog(tokenImage, 0, "token_dialog");
+	TokenDialog *td = new TokenDialog(tokenImage, 0);
 
 	if (td->exec() == QDialog::Accepted)
 		td->getValue(tokenValue);
