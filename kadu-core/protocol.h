@@ -4,6 +4,10 @@
 #include <QObject>
 #include <QDateTime>
 
+#ifdef __sun__
+#include <sys/types.h>
+#endif /* __sun__ */
+
 #include "status.h"
 #include "usergroup.h"
 

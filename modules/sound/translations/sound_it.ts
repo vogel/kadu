@@ -71,12 +71,17 @@
 <context>
     <name>SoundConfigurationWidget</name>
     <message>
-        <location filename="../sound_slots.cpp" line="33"/>
+        <location filename="../sound_slots.cpp" line="32"/>
+        <source>Choose &apos;Custom&apos; theme in &apos;Sound&apos; page to change sound file</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../sound_slots.cpp" line="34"/>
         <source>Test</source>
         <translation>Prova</translation>
     </message>
     <message>
-        <location filename="../sound_slots.cpp" line="37"/>
+        <location filename="../sound_slots.cpp" line="39"/>
         <source>Sound file</source>
         <translation>File di suono</translation>
     </message>

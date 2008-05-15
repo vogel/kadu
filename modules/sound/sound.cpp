@@ -191,7 +191,7 @@ SoundManager::SoundManager(const QString& name, const QString& configname) : Not
 	play_thread->start();
 
 	sound_manager = this;
-	sound_slots = new SoundSlots(this, "sound_slots");
+	sound_slots = new SoundSlots(this);
 
 	themes->setPaths(QStringList::split(QRegExp("(;|:)"), config_file.readEntry("Sounds", "SoundPaths")));
 

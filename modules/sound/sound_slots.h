@@ -22,6 +22,7 @@ class SoundConfigurationWidget : public NotifierConfigurationWidget
 	QString currentNotifyEvent;
 
 	SelectFile *soundFileSelectFile;
+	QLabel *warning;
 
 private slots:
 	void test();
@@ -42,7 +43,7 @@ public slots:
 class SoundSlots : public QObject, public ConfigurationAwareObject
 {
 	Q_OBJECT
-	private:
+
 		ActionDescription* mute_action;
 		QMap<QString, QString> soundfiles;
 		QStringList soundNames;
@@ -75,7 +76,7 @@ class SoundSlots : public QObject, public ConfigurationAwareObject
 	protected:
 		void configurationUpdated();
 	public:
-		SoundSlots(QObject *parent=0, const char *name=0);
+		SoundSlots(QObject *parent = 0);
 		~SoundSlots();
 };
 

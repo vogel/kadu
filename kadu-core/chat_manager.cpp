@@ -705,6 +705,8 @@ void ChatManager::openPendingMsgs(UserListElements users, bool forceActivate)
 	QList<ChatMessage *> messages;
 	PendingMsgs::Element elem;
 
+	int chat = openChatWidget(gadu, users, forceActivate);
+
 	for (int i = 0; i < pending.count(); ++i)
 	{
 		elem = pending[i];
@@ -721,13 +723,10 @@ void ChatManager::openPendingMsgs(UserListElements users, bool forceActivate)
 	if (messages.size())
 	{
 		// TODO: Lame API
-		int i = openChatWidget(gadu, users, forceActivate);
-		if (ChatWidgets[i]->countMessages() == 0)
-			ChatWidgets[i]->appendMessages(messages);
+		if (!ChatWidgets[chat]->countMessages())
+			ChatWidgets[chat]->appendMessages(messages, true);
 		UserBox::refreshAllLater();
 	}
-	else
-		openChatWidget(gadu, users, forceActivate);
 
 	kdebugf2();
 }

@@ -24,6 +24,7 @@
 #include "kadu.h"
 #include "misc.h"
 #include "message_box.h"
+#include "pending_msgs.h"
 #include "toolbar.h"
 #include "userbox.h"
 
@@ -197,9 +198,8 @@ void HistoryModule::appendHistory(ChatWidget *chat)
 
 	count = history->getHistoryEntriesCount(uins);
 	end = count - 1;
-
 	from = count;
-	unsigned int chatHistoryQuotation = config_file.readUnsignedNumEntry("History", "ChatHistoryCitation");
+	unsigned int chatHistoryQuotation = config_file.readUnsignedNumEntry("History", "ChatHistoryCitation") + pending.pendingMsgsCount(senders);
 	while (from >= 1 && entries.count() < chatHistoryQuotation)
 	{
 		if (end < chatHistoryQuotation)
@@ -257,6 +257,7 @@ void HistoryModule::appendHistory(ChatWidget *chat)
 			message = new ChatMessage(userlist->byID("Gadu", QString::number((*entry).uin)), (*entry).message, TypeReceived, (*entry).date, (*entry).sdate);
 			messages.append(message);
 		}
+
 	if (!messages.empty())
 		chat->appendMessages(messages);
 }
@@ -272,10 +273,8 @@ void HistoryModule::chatCreated(ChatWidget *chat)
 		this, SLOT(messageSentAndConfirmed(UserListElements, const QString&)));
 
 	// don't do it for already opened chats with discussions
-	if (chat->countMessages() != 0)
-		return;
-
-	appendHistory(chat);
+	if (!chat->countMessages())
+		appendHistory(chat);
 
 	kdebugf2();
 }

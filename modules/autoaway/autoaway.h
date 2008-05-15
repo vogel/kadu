@@ -73,6 +73,8 @@ class AutoAway : public ConfigurationUiHandler, ConfigurationAwareObject
 	bool autoDisconnectEnabled;
 	bool parseAutoStatus;
 
+	bool updateDescripion;
+
 	unsigned int idleTime;
 	unsigned int refreshStatusTime;
 	unsigned int refreshStatusInterval;
@@ -111,7 +113,7 @@ protected:
 	virtual void configurationUpdated();
 
 public:
-	AutoAway(QObject *parent = 0, const char *name=0);
+	AutoAway();
 	virtual ~AutoAway();
 
 	QString changeDescription(const QString &oldDescription);

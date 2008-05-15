@@ -51,6 +51,19 @@ bool PendingMsgs::pendingMsgs(UserListElement user) const
 	return false;
 }
 
+unsigned int PendingMsgs::pendingMsgsCount(UserListElements users) const
+{
+	kdebugf();
+
+	unsigned int count = 0;
+
+	CONST_FOREACH(msg, msgs)
+		if ((*msg).users.equals(users))
+			count++;
+
+	return count;
+}
+
 bool PendingMsgs::pendingMsgs() const
 {
 	return !msgs.isEmpty();

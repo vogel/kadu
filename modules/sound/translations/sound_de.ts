@@ -57,6 +57,10 @@
 <context>
     <name>SoundConfigurationWidget</name>
     <message>
+        <source>Choose &apos;Custom&apos; theme in &apos;Sound&apos; page to change sound file</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Test</source>
         <translation>Test</translation>
     </message>

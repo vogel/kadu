@@ -29,14 +29,16 @@
 SoundConfigurationWidget::SoundConfigurationWidget(QWidget *parent, char *name)
 	: NotifierConfigurationWidget(parent, name), currentNotifyEvent("")
 {
+	warning = new QLabel("<b>" + tr("Choose 'Custom' theme in 'Sound' page to change sound file") + "</b>", this);
 	soundFileSelectFile = new SelectFile("audio", this);
 	QPushButton *testButton = new QPushButton(tr("Test"), this);
 	connect(testButton, SIGNAL(clicked()), this, SLOT(test()));
 
-	QGridLayout *gridLayout = new QGridLayout(this, 0, 0, 0, 5);
-	gridLayout->addWidget(new QLabel(tr("Sound file") + ":", this), 0, 0, Qt::AlignRight);
-	gridLayout->addWidget(soundFileSelectFile, 0, 1);
-	gridLayout->addWidget(testButton, 0, 2);
+	QGridLayout *gridLayout = new QGridLayout(this);
+ 	gridLayout->addMultiCellWidget(warning, 0, 0, 0, 3);
+	gridLayout->addWidget(new QLabel(tr("Sound file") + ":", this), 1, 0, Qt::AlignRight);
+	gridLayout->addWidget(soundFileSelectFile, 1, 1);
+	gridLayout->addWidget(testButton, 1, 2);
 	
 	parent->layout()->addWidget(this);
 }
@@ -76,10 +78,11 @@ void SoundConfigurationWidget::switchToEvent(const QString &event)
 
 void SoundConfigurationWidget::themeChanged(int index)
 {
+	warning->setShown(index != 0);
 	soundFileSelectFile->setEnabled(index == 0);
 }
 
-SoundSlots::SoundSlots(QObject *parent, const char *name) : QObject(parent, name),
+SoundSlots::SoundSlots(QObject *parent) : QObject(parent),
 	soundfiles(), soundNames(), soundTexts(), SamplePlayingTestMsgBox(0), SamplePlayingTestDevice(0),
 	SamplePlayingTestSample(0), SampleRecordingTestMsgBox(0), SampleRecordingTestDevice(0),
 	SampleRecordingTestSample(0), FullDuplexTestMsgBox(0), FullDuplexTestDevice(0), FullDuplexTestSample(0)
