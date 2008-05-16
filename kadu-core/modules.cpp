@@ -79,13 +79,14 @@ ModuleInfo::ModuleInfo() : depends(), conflicts(), provides(),
 }
 
 ModulesDialog::ModulesDialog(QWidget *parent)
-	: QWidget(parent, Qt::WType_TopLevel | Qt::WDestructiveClose),
+	: QWidget(parent, Qt::Window),
 	lv_modules(0), l_moduleinfo(0)
 {
 	kdebugf();
-	setCaption(tr("Manage Modules"));
+	setWindowTitle(tr("Manage Modules"));
+	setAttribute(Qt::WA_DeleteOnClose);
 
-	layout()->setResizeMode(QLayout::Minimum);
+//	layout()->setResizeMode(QLayout::Minimum);
 
 	// create main QLabel widgets (icon and app info)
 	QWidget *left = new QWidget(this);
@@ -96,6 +97,9 @@ ModulesDialog::ModulesDialog(QWidget *parent)
 	QLabel *l_icon = new QLabel(left);
 	QWidget *blank = new QWidget(left);
 	blank->setSizePolicy(QSizePolicy(QSizePolicy::Maximum, QSizePolicy::Expanding));
+
+	leftLayout->addWidget(l_icon);
+	leftLayout->addWidget(blank);
 
 	QWidget *center = new QWidget(this);
 	QVBoxLayout *centerLayout = new QVBoxLayout(center);
@@ -129,6 +133,8 @@ ModulesDialog::ModulesDialog(QWidget *parent)
 	l_moduleinfo->setText(tr("<b>Module:</b><br/><b>Depends on:</b><br/><b>Conflicts with:</b><br/><b>Provides:</b><br/><b>Author:</b><br/><b>Version:</b><br/><b>Description:</b>"));
 	l_moduleinfo->setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Minimum));
 
+	infoLayout->addWidget(l_moduleinfo);
+
 	// buttons
 	QWidget *bottom = new QWidget(center);
 	QHBoxLayout *bottomLayout = new QHBoxLayout(bottom);
@@ -140,11 +146,24 @@ ModulesDialog::ModulesDialog(QWidget *parent)
 	QWidget *blank2 = new QWidget(bottom);
 	blank2->setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Maximum));
 	QPushButton *pb_close = new QPushButton(icons_manager->loadIcon("CloseWindow"), tr("&Close"), bottom, "close");
+
+	bottomLayout->addWidget(hideBaseModules);
+	bottomLayout->addWidget(blank2);
+	bottomLayout->addWidget(pb_close);
 	// end buttons
 
+	centerLayout->addWidget(l_info);
+	centerLayout->addWidget(lv_modules);
+	centerLayout->addWidget(vgb_info);
+	centerLayout->addWidget(bottom);
+
+	QHBoxLayout *layout = new QHBoxLayout(this);
+	layout->addWidget(left);
+	layout->addWidget(center);
+
 	connect(pb_close, SIGNAL(clicked()), this, SLOT(close()));
-	connect(lv_modules, SIGNAL(selectionChanged()), this, SLOT(itemsChanging()));
-	connect(lv_modules, SIGNAL(doubleClicked(Q3ListViewItem *)), this, SLOT(moduleAction(Q3ListViewItem *)));
+	connect(lv_modules, SIGNAL(itemSelectionChanged()), this, SLOT(itemsChanging()));
+	connect(lv_modules, SIGNAL(itemDoubleClicked(QTreeWidgetItem *, int)), this, SLOT(moduleAction(QTreeWidgetItem *)));
 
 	loadGeometry(this, "General", "ModulesDialogGeometry", 0, 30, 600, 620);
 	refreshList();
