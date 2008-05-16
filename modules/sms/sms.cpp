@@ -11,6 +11,7 @@
 #include <QComboBox>
 #include <QGridLayout>
 #include <QHBoxLayout>
+#include <QLabel>
 #include <QListWidget>
 #include <QProcess>
 #include <QTextEdit>
@@ -77,7 +78,7 @@ SmsImageDialog::SmsImageDialog(QWidget* parent, const QByteArray& image)
 {
 	kdebugf();
 
-	ImageWidget *image_widget = new ImageWidget(this, image);
+	ImageWidget *image_widget = new ImageWidget(image, this);
 	QLabel* label = new QLabel(tr("Enter text from the picture:"), this);
 	code_edit = new QLineEdit(this);
 
