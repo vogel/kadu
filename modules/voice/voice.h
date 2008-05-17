@@ -1,11 +1,11 @@
 #ifndef KADU_VOICE_H
 #define KADU_VOICE_H
 
-#include <qdialog.h>
-#include <qthread.h>
-#include <qmutex.h>
-#include <qsemaphore.h>
-#include <qvaluelist.h>
+#include <QDialog>
+#include <QThread>
+#include <QMutex>
+#include <QSemaphore>
+#include <QList>
 
 extern "C" {
 	#include "libgsm/inc/gsm.h"
@@ -37,7 +37,7 @@ class VoiceChatDialog : public QDialog, public DccHandler
 {
 	Q_OBJECT
 
-	static QValueList<VoiceChatDialog *> VoiceChats;
+	static QList<VoiceChatDialog *> VoiceChats;
 	DccSocket* Socket;
 
 public:
@@ -135,12 +135,13 @@ public:
 
 };
 
-class PlayThread : public QObject, public QThread
+class PlayThread : public QThread
 {
 	Q_OBJECT
 
 public:
 	PlayThread();
+	~PlayThread();
 	void run();
 	void endThread();
 	void addGsmSample(char *data, int length);
@@ -149,18 +150,18 @@ signals:
 	void playGsmSample(char *data, int length);
 
 private:
-	QSemaphore wsem;
+	QSemaphore *wsem;
 	void waitForData(); //czeka na nowe dane
 	void moreData(); //daje znaæ, ¿e s± nowe dane
 
-	QValueList<struct gsm_sample> samples;
+	QList<struct gsm_sample> samples;
 	QMutex samplesMutex; // chroni dostêp do samples
 
 	bool end;
 //	QMutex endMutex; //chroni dostêp do end
 };
 
-class RecordThread : public QObject, public QThread
+class RecordThread : public QThread
 {
 	Q_OBJECT
 

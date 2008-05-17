@@ -9,10 +9,10 @@
 
 #include "voice.h"
 
-#include <qcheckbox.h>
-#include <qpushbutton.h>
-#include <qlayout.h>
-#include <qmessagebox.h>
+#include <QCheckBox>
+#include <QPushButton>
+#include <QLayout>
+#include <QMessageBox>
 
 #include <sys/types.h>
 #include <sys/socket.h>
@@ -54,11 +54,11 @@ extern "C" void voice_close()
 }
 
 VoiceChatDialog::VoiceChatDialog()
-	: QDialog (NULL, "voice_chat_dialog"), Socket(0), chatFinished(false)
+	: QDialog (NULL, Qt::WDestructiveClose), Socket(0), chatFinished(false)
 {
 	kdebugf();
 
-	setWFlags(Qt::WDestructiveClose);
+	//setWFlags(Qt::WDestructiveClose);
 	setCaption(tr("Voice chat"));
 	resize(200, 100);
 
@@ -179,9 +179,15 @@ void VoiceChatDialog::sendDataToAll(char *data, int length)
 		(*i)->sendData(data, length);
 }
 
-PlayThread::PlayThread() : QObject(0, 0), QThread(), wsem(32), samples(), samplesMutex(), end(false)
+PlayThread::PlayThread() : QThread(), samples(), samplesMutex(), end(false)
 {
-	wsem += 32; //mo¿e byæ max 32 próbek w kolejce
+	wsem = new QSemaphore(32);	//mo¿e byæ max 32 próbek w kolejce
+}
+
+PlayThread::~PlayThread()
+{
+	delete wsem;
+	wsem = 0;
 }
 
 void PlayThread::run()
@@ -228,12 +234,12 @@ void PlayThread::run()
 
 void PlayThread::moreData()
 {
-	wsem--;
+	wsem->release();
 }
 
 void PlayThread::waitForData()
 {
-	wsem++;
+	wsem->acquire();
 }
 
 void PlayThread::endThread()
@@ -274,7 +280,7 @@ void PlayThread::addGsmSample(char *data, int length)
 	kdebugf2();
 }
 
-RecordThread::RecordThread() : QObject(0, 0), QThread(), end(false)
+RecordThread::RecordThread() : QThread(), end(false)
 {
 }
 
@@ -786,7 +792,7 @@ bool VoiceManager::addSocket(DccSocket *socket)
 	return true;
 }
 
-QValueList<VoiceChatDialog *> VoiceChatDialog::VoiceChats;
+QList<VoiceChatDialog *> VoiceChatDialog::VoiceChats;
 VoiceManager *voice_manager = NULL;
 
 /** @} */
