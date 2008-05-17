@@ -108,7 +108,7 @@ About::About(QWidget *parent)
 	// changelog
 	QTextEdit *tb_changelog = new QTextEdit(tw_about);
 	tb_changelog->setReadOnly(true);
-	tb_changelog->setFrameStyle(QFrame::StyledPanel | QFrame::Raised);
+	tb_changelog->setFrameStyle(QFrame::StyledPanel | QFrame::Plain);
 	tb_changelog->setWordWrapMode(QTextOption::NoWrap);
 	tb_changelog->setText(loadFile("ChangeLog"));
 
