@@ -13,6 +13,7 @@
 #include <QProcess>
 #include <QToolTip>
 #include <QLabel>
+#include <QGridLayout>
 
 #include "config_file.h"
 #include "debug.h"
