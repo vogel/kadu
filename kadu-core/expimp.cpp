@@ -14,6 +14,7 @@
 #include <qlistview.h>
 #include <qpushbutton.h>
 #include <qsimplerichtext.h>
+#include <qtimer.h>
 #include <qvbox.h>
 #include <qvgroupbox.h>
 
@@ -295,6 +296,8 @@ void UserlistImportExport::ExportToFile(void)
 			else
 				MessageBox::msg(tr("The application encountered an internal error\nThe export userlist to file was unsuccessful"), false, "Critical", this);
 		}
+		else
+			QTimer::singleShot(0, this, SLOT(ExportToFile()));
 	}
 
 	pb_send->setEnabled(true);

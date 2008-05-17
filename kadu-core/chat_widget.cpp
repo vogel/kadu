@@ -333,15 +333,18 @@ void ChatWidget::setActColor(bool force)
 void ChatWidget::insertImage()
 {
 	kdebugf();
-	ImageDialog* id = new ImageDialog(this);
-	id->setDir(config_file.readEntry("Chatt", "LastImagePath"));
+
+	ImageDialog *id = new ImageDialog(this);
+	id->setDir(config_file.readEntry("Chat", "LastImagePath"));
 	id->setCaption(tr("Insert image"));
+
 	if (id->exec() == QDialog::Accepted)
 	{
-		config_file.writeEntry("Chatt", "LastImagePath", id->dirPath());
+		config_file.writeEntry("Chat", "LastImagePath", id->dirPath());
+
 		QString selectedFile = id->selectedFile();
 		QFileInfo f(selectedFile);
-		delete id;id = NULL;
+
 		if (!f.isReadable())
 		{
 			MessageBox::msg(tr("This file is not readable"), true, "Warning", this);
@@ -388,8 +391,9 @@ void ChatWidget::insertImage()
 		}
 		Edit->insert(QString("[IMAGE ") + selectedFile + ']');
 	}
-	else
-		delete id;
+
+	delete id;
+	id = NULL;
 
 	kdebugf2();
 }
