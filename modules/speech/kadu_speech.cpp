@@ -11,6 +11,7 @@
 #include <QFileDialog>
 #include <QProcess>
 #include <QSlider>
+#include <QGridLayout>
 
 #include <stdlib.h>
 #include <time.h>
