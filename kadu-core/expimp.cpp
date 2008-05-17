@@ -15,6 +15,7 @@
 #include <QLabel>
 #include <QListView>
 #include <QPushButton>
+#include <QTimer>
 #include <QTreeWidget>
 #include <QVBoxLayout>
 
@@ -341,6 +342,8 @@ void UserlistImportExport::ExportToFile(void)
 			else
 				MessageBox::msg(tr("The application encountered an internal error\nThe export userlist to file was unsuccessful"), false, "Critical", this);
 		}
+		else
+			QTimer::singleShot(0, this, SLOT(ExportToFile()));
 	}
 
 	pb_send->setEnabled(true);
