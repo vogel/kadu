@@ -212,7 +212,7 @@ Kadu::Kadu(QWidget *parent)
 	UserBox::management->addItem("Blocking", tr("Block"), this, SLOT(blockUser()));
 	UserBox::management->addItem("NotifyAboutUser", tr("Notify about user"), this, SLOT(notifyUser()));
 	UserBox::management->addItem("Offline", tr("Offline to user"), this, SLOT(offlineToUser()));
-	UserBox::management->addItem("HideDescription", tr("Hide description"), this, SLOT(hideDescription()));
+	UserBox::management->addItem("ShowDescription_off", tr("Hide description"), this, SLOT(hideDescription()));
 	UserBox::management->insertSeparator();
 	UserBox::management->addItem("RemoveFromUserlist", tr("Delete"), this, SLOT(deleteUsers()),HotKey::shortCutFromFile("ShortCuts", "kadu_deleteuser"));
 
