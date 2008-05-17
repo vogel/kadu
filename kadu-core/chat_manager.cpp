@@ -344,19 +344,19 @@ void ChatManager::whoisActionActivated(QAction *sender, bool toggled)
 	KaduMainWindow *window = dynamic_cast<KaduMainWindow *>(sender->parent());
 	if (!window)
 	{
-		(new SearchDialog(kadu, "search_user"))->show();
+		(new SearchDialog(kadu))->show();
 		return;
 	}
 
 	UserListElements users = window->getUserListElements();
 
 	if (users.count() == 0)
-		(new SearchDialog(kadu, "search_user"))->show();
+		(new SearchDialog(kadu))->show();
 	else
 	{
 		if (users[0].usesProtocol("Gadu"))
 		{
-			SearchDialog *sd = new SearchDialog(kadu, "user_info", users[0].ID("Gadu").toUInt());
+			SearchDialog *sd = new SearchDialog(kadu, users[0].ID("Gadu").toUInt());
 			sd->show();
 			sd->firstSearch();
 		}

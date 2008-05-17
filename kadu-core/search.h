@@ -14,10 +14,10 @@ class QCheckBox;
 class QComboBox;
 class QLabel;
 class QLineEdit;
-class Q3ListView;
-class Q3ListViewItem;
 class QPushButton;
 class QRadioButton;
+class QTreeWidget;
+class QTreeWidgetItem;
 
 // TODO: a better name
 class SearchActionsSlots : public QObject
@@ -39,7 +39,8 @@ public slots:
 	\brief Wyszukiwanie w katalogu publicznym.
 	\class SearchDialog
 **/
-class SearchDialog : public KaduMainWindow {
+class SearchDialog : public KaduMainWindow
+{
 	Q_OBJECT
 
 	friend class SearchActionsSlots;
@@ -61,7 +62,7 @@ class SearchDialog : public KaduMainWindow {
 	QLineEdit *e_surname;
 	QComboBox *c_gender;
 	QLineEdit *e_city;
-	Q3ListView *results;
+	QTreeWidget *results;
 	QLabel *progress;
 	QRadioButton *r_uin;
 	QRadioButton *r_pers;
@@ -78,6 +79,8 @@ class SearchDialog : public KaduMainWindow {
 	bool isPersonalDataEmpty() const;
 
 	UserListElements selected();
+
+	QTreeWidgetItem * selectedItem();
 
 private slots:
 	void uinTyped(void);
@@ -112,7 +115,7 @@ public:
 		\param whoisSearchUin warto¶æ logiczna informuj±ca o tym, czy wstêpnie ma byæ wybrane
 		wyszukiwanie po numerze UIN (1) czy po danych osobowych (0). Domy¶lnie 0.
 	**/
-	SearchDialog(QWidget *parent=0, const char *name=0, UinType whoisSearchUin = 0);
+	SearchDialog(QWidget *parent=0, UinType whoisSearchUin = 0);
 	~SearchDialog(void);
 
 	static void initModule();

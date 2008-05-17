@@ -617,7 +617,7 @@ void Kadu::lookupInDirectory()
 		UserListElement user = *(users.constBegin());
 		if (user.usesProtocol("Gadu"))
 		{
-			SearchDialog *sd = new SearchDialog(kadu, "user_info", user.ID("Gadu").toUInt());
+			SearchDialog *sd = new SearchDialog(kadu, user.ID("Gadu").toUInt());
 			sd->show();
 			sd->firstSearch();
 		}
@@ -815,7 +815,7 @@ void Kadu::openChat()
 
 void Kadu::searchInDirectoryActionActivated(QAction *sender, bool toggled)
 {
-	(new SearchDialog(kadu, "search_user"))->show();
+	(new SearchDialog(kadu))->show();
 }
 
 void Kadu::help()

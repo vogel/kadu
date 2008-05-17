@@ -7,24 +7,14 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <qcheckbox.h>
-#include <qcombobox.h>
-#include <q3groupbox.h>
-#include <q3buttongroup.h>
-#include <qlabel.h>
-#include <qlayout.h>
-#include <qlineedit.h>
-#include <q3listview.h>
-#include <qpushbutton.h>
-#include <qradiobutton.h>
-#include <qtooltip.h>
-#include <qvalidator.h>
-//Added by qt3to4:
-#include <QCloseEvent>
-#include <QResizeEvent>
-#include <Q3GridLayout>
-#include <QPixmap>
-#include <QKeyEvent>
+#include <QButtonGroup>
+#include <QCheckBox>
+#include <QComboBox>
+#include <QGridLayout>
+#include <QGroupBox>
+#include <QLineEdit>
+#include <QRadioButton>
+#include <QTreeWidget>
 
 #include "action.h"
 #include "chat_manager.h"
@@ -34,8 +24,9 @@
 #include "kadu.h"
 #include "message_box.h"
 #include "misc.h"
-#include "search.h"
 #include "userinfo.h"
+
+#include "search.h"
 
 SearchActionsSlots *SearchDialog::searchActionsSlot;
 
@@ -46,7 +37,7 @@ ActionDescription *SearchDialog::clearResultsAction;
 ActionDescription *SearchDialog::addFoundAction;
 ActionDescription *SearchDialog::chatFoundAction;
 
-SearchDialog::SearchDialog(QWidget *parent, const char *name, UinType whoisSearchUin)
+SearchDialog::SearchDialog(QWidget *parent, UinType whoisSearchUin)
 	: KaduMainWindow(parent),
 	only_active(0), e_uin(0), e_name(0), e_nick(0), e_byrFrom(0), e_byrTo(0), e_surname(0),
 	c_gender(0), e_city(0), results(0), progress(0), r_uin(0), r_pers(0), _whoisSearchUin(whoisSearchUin),
@@ -69,69 +60,80 @@ SearchDialog::SearchDialog(QWidget *parent, const char *name, UinType whoisSearc
 	QLabel *l_city;
 	QLabel *l_uin;
 
-	l_nick = new QLabel(tr("Nickname"),centralWidget);
+	l_nick = new QLabel(tr("Nickname"), centralWidget);
 	e_nick = new QLineEdit(centralWidget);
 	connect(e_nick, SIGNAL(textChanged(const QString &)), this, SLOT(personalDataTyped()));
 
-	l_gender = new QLabel(tr("Gender"),centralWidget);
+	l_gender = new QLabel(tr("Gender"), centralWidget);
 	c_gender = new QComboBox(centralWidget);
 	c_gender->insertItem(" ", 0);
 	c_gender->insertItem(tr("Male"), 1);
 	c_gender->insertItem(tr("Female"), 2);
 	connect(c_gender, SIGNAL(activated(const QString &)), this, SLOT(personalDataTyped()));
 
-	l_name = new QLabel(tr("Name"),centralWidget);
+	l_name = new QLabel(tr("Name"), centralWidget);
 	e_name = new QLineEdit(centralWidget);
 	connect(e_name, SIGNAL(textChanged(const QString &)), this, SLOT(personalDataTyped()));
 
-	l_surname = new QLabel(tr("Surname"),centralWidget);
+	l_surname = new QLabel(tr("Surname"), centralWidget);
 	e_surname = new QLineEdit(centralWidget);
 	connect(e_surname, SIGNAL(textChanged(const QString &)), this, SLOT(personalDataTyped()));
 
-	l_byr = new QLabel(tr("Birthyear"),centralWidget);
-	l_byrFrom = new QLabel(tr("from"),centralWidget);
+	l_byr = new QLabel(tr("Birthyear"), centralWidget);
+	l_byrFrom = new QLabel(tr("from"), centralWidget);
 	e_byrFrom = new QLineEdit(centralWidget);
 	e_byrFrom->setMaxLength(4);
 	e_byrFrom->setValidator(new QIntValidator(1, 2100, this));
 	connect(e_byrFrom, SIGNAL(textChanged(const QString &)), this, SLOT(personalDataTyped()));
 	connect(e_byrFrom, SIGNAL(textChanged(const QString &)), this, SLOT(byrFromDataTyped()));
-	l_byrTo = new QLabel(tr("to"),centralWidget);
+	l_byrTo = new QLabel(tr("to"), centralWidget);
 	e_byrTo = new QLineEdit(centralWidget);
 	e_byrTo->setEnabled(false);
 	e_byrTo->setMaxLength(4);
 	e_byrTo->setValidator(new QIntValidator(1, 2100, centralWidget));
 	connect(e_byrTo, SIGNAL(textChanged(const QString &)), this, SLOT(personalDataTyped()));
 
-	l_city = new QLabel(tr("City"),centralWidget);
+	l_city = new QLabel(tr("City"), centralWidget);
 	e_city = new QLineEdit(centralWidget);
 	connect(e_city, SIGNAL(textChanged(const QString &)), this, SLOT(personalDataTyped()));
 
-	only_active = new QCheckBox(tr("Only active users"),centralWidget);
+	only_active = new QCheckBox(tr("Only active users"), centralWidget);
 	connect(only_active, SIGNAL(clicked()), this, SLOT(personalDataTyped()));
 
-	Q3GroupBox * qgrp1 = new Q3GroupBox(2, Qt::Horizontal, tr("Uin"), centralWidget);
+	QGroupBox *qgrp1 = new QGroupBox(tr("Uin"), centralWidget);
+	QHBoxLayout *uinLayout = new QHBoxLayout(qgrp1);
 	l_uin = new QLabel(tr("Uin"),qgrp1);
 	e_uin = new QLineEdit(qgrp1);
 	e_uin->setMaxLength(8);
 	e_uin->setValidator(new QIntValidator(1, 99999999, centralWidget));
 	connect(e_uin, SIGNAL(textChanged(const QString &)), this, SLOT(uinTyped()));
+	uinLayout->addWidget(l_uin);
+	uinLayout->addWidget(e_uin);
 
 	progress = new QLabel(centralWidget);
 
-	results = new Q3ListView(centralWidget);
-	connect(results, SIGNAL(selectionChanged()), this, SLOT(selectionChanged()));
+	results = new QTreeWidget(centralWidget);
+	connect(results, SIGNAL(itemSelectionChanged()), this, SLOT(selectionChanged()));
 
-	Q3HButtonGroup * btngrp = new Q3HButtonGroup(tr("Search criteria"), centralWidget);
-	r_pers = new QRadioButton(tr("&Personal data"),btngrp);
+	QGroupBox * btngrp = new QGroupBox(tr("Search criteria"), centralWidget);
+	QButtonGroup *buttonGroup = new QButtonGroup(btngrp);
+	QHBoxLayout *btngrpLayout = new QHBoxLayout(btngrp);
+	r_pers = new QRadioButton(tr("&Personal data"), btngrp);
 	r_pers->setChecked(true);
 	connect(r_pers, SIGNAL(toggled(bool)), this, SLOT(persClicked()));
-	QToolTip::add(r_pers, tr("Search using the personal data typed above (name, nickname)..."));
+	r_pers->setToolTip(tr("Search using the personal data typed above (name, nickname)..."));
 
-	r_uin = new QRadioButton(tr("&Uin number"),btngrp);
+	r_uin = new QRadioButton(tr("&Uin number"), btngrp);
 	connect(r_uin, SIGNAL(toggled(bool)), this, SLOT(uinClicked()));
-	QToolTip::add(r_uin, tr("Search for this UIN exclusively"));
+	r_uin->setToolTip(tr("Search for this UIN exclusively"));
 
-	Q3GridLayout * grid = new Q3GridLayout (centralWidget, 7, 12, 7, 5);
+	buttonGroup->addButton(r_pers);
+	buttonGroup->addButton(r_uin);
+
+	btngrpLayout->addWidget(r_pers);
+	btngrpLayout->addWidget(r_uin);
+
+	QGridLayout * grid = new QGridLayout(centralWidget);
 	grid->addWidget(l_nick, 1, 0, Qt::AlignRight); grid->addWidget(e_nick, 1, 1);
 	grid->addWidget(l_gender, 2, 0, Qt::AlignRight); grid->addWidget(c_gender, 2, 1);
 	grid->addWidget(l_name, 1, 3, Qt::AlignRight); grid->addWidget(e_name, 1, 4);
@@ -140,14 +142,11 @@ SearchDialog::SearchDialog(QWidget *parent, const char *name, UinType whoisSearc
 	grid->addWidget(l_byrFrom, 1, 7, Qt::AlignRight); grid->addWidget(e_byrFrom, 1, 8);
 	grid->addWidget(l_byrTo, 2, 7, Qt::AlignRight); grid->addWidget(e_byrTo, 2, 8);
 	grid->addWidget(l_city, 1, 10, Qt::AlignRight); grid->addWidget(e_city, 1, 11);
+
 	grid->addMultiCellWidget(only_active, 2, 2, 10, 11);
-
 	grid->addMultiCellWidget(qgrp1, 3, 3, 0, 3);
-
 	grid->addMultiCellWidget(btngrp, 3, 3, 4, 11);
-
 	grid->addMultiCellWidget(results, 5, 5, 0, 11);
-// 	grid->addMultiCellWidget(dock_area, 6, 6, 0, 11);
 	grid->addMultiCellWidget(progress, 6, 6, 0, 1);
 
 	grid->addColSpacing(2, 10);
@@ -155,17 +154,15 @@ SearchDialog::SearchDialog(QWidget *parent, const char *name, UinType whoisSearc
 	grid->addColSpacing(9, 10);
 
 	grid->setResizeMode(QLayout::Minimum);
-
-	results->addColumn(tr("Status"));
-	results->addColumn(tr("Uin"));
-	results->addColumn(tr("Name"));
-	results->addColumn(tr("City"));
-	results->addColumn(tr("Nickname"));
-	results->addColumn(tr("Birth year"));
+	
+	QStringList headers;
+	headers << tr("Status") << tr("Uin") << tr("Name") << tr("City") << tr("Nickname") << tr("Birth year");
+	results->setHeaderLabels(headers);
 	results->setAllColumnsShowFocus(true);
-	results->setResizeMode(Q3ListView::AllColumns);
-	for (int i = 1; i < 5; ++i)
-		results->setColumnWidthMode(i, Q3ListView::Maximum);
+	results->setSelectionMode(QAbstractItemView::SingleSelection);
+//	results->setResizeMode(Q3ListView::AllColumns);
+//	for (int i = 1; i < 5; ++i)
+//		results->setColumnWidthMode(i, Q3ListView::Maximum);
 
 //	searchhidden = false;
 	if (_whoisSearchUin)
@@ -266,6 +263,16 @@ void SearchDialog::closeModule()
 #endif
 }
 
+QTreeWidgetItem * SearchDialog::selectedItem()
+{
+	if (results->selectedItems().count())
+		return results->selectedItems()[0];
+	else if (results->children().count() == 1)
+		return dynamic_cast<QTreeWidgetItem *>(results->children()[0]);
+	else 
+		return NULL;
+}
+
 void SearchDialog::addFound()
 {
 	UserListElements found = selected();
@@ -289,11 +296,7 @@ UserListElements SearchDialog::selected()
 {
 	UserListElements result;
 
-	Q3ListViewItem *selected = results->selectedItem();
-
-	if (!selected)
-		if (results->childCount() == 1)
-			selected = results->firstChild();
+	QTreeWidgetItem *selected = selectedItem();
 
 	if (!selected)
 		return result;
@@ -327,7 +330,7 @@ UserListElements SearchDialog::selected()
 	return result;
 }
 
-void SearchDialog::clearResults(void)
+void SearchDialog::clearResults()
 {
 	results->clear();
 
@@ -336,7 +339,7 @@ void SearchDialog::clearResults(void)
 // 	chat_searched_action->setEnabled(this, false);
 }
 
-void SearchDialog::stopSearch(void)
+void SearchDialog::stopSearch()
 {
 	kdebugf();
 
@@ -346,7 +349,8 @@ void SearchDialog::stopSearch(void)
 
 // 	if ((r_pers->isChecked() && !isPersonalDataEmpty()) || (r_uin->isChecked() && !e_uin->text().isEmpty()))
 // 		first_search_action->setEnabled(this, true);
-	if (results->selectedItem()) {
+	if (!results->selectedItems().isEmpty()) 
+	{
 // 		if (r_pers->isChecked() && !isPersonalDataEmpty())
 // 			next_results_action->setEnabled(this, true);
 
@@ -369,7 +373,7 @@ void SearchDialog::firstSearch()
 		return;
 	}
 
-	if (results->childCount())
+	if (!results->children().isEmpty())
 		clearResults();
 
 	searchRecord->clearData();
@@ -416,7 +420,7 @@ void SearchDialog::firstSearch()
 	kdebugf2();
 }
 
-void SearchDialog::nextSearch(void)
+void SearchDialog::nextSearch()
 {
 	kdebugf();
 
@@ -442,7 +446,7 @@ void SearchDialog::newSearchResults(SearchResults& searchResults, int seq, int f
 {
 	kdebugf();
 
-	Q3ListViewItem *qlv = NULL;
+	QTreeWidgetItem *qlv = 0;
 	QPixmap pix;
 
 	if ((seq != searchRecord->Seq) || searchRecord->IgnoreResults)
@@ -454,7 +458,9 @@ void SearchDialog::newSearchResults(SearchResults& searchResults, int seq, int f
 
 	CONST_FOREACH(searchIterator, searchResults)
 	{
-		qlv = results->findItem((*searchIterator).Uin, 1);
+		QList <QTreeWidgetItem *> items = results->findItems((*searchIterator).Uin, Qt::MatchExactly, 1);
+		if (items.count())
+			qlv = items[0];
 
 		pix = ((*searchIterator).Stat).pixmap((*searchIterator).Stat.status(), false, false);
 
@@ -472,9 +478,9 @@ void SearchDialog::newSearchResults(SearchResults& searchResults, int seq, int f
 		}
 		else
 		{
-			qlv = new Q3ListViewItem(results, QString::null, (*searchIterator).Uin,
-				(*searchIterator).First, (*searchIterator).City,
-				(*searchIterator).Nick, (*searchIterator).Born);
+			QStringList strings;
+			strings << QString::null << (*searchIterator).Uin << (*searchIterator).First <<(*searchIterator).City << (*searchIterator).Nick << (*searchIterator).Born;
+			qlv = new QTreeWidgetItem(results, strings);
 //			if (count == 1 && r_uin->isChecked() && !searchhidden
 //				&& (statuscode == GG_STATUS_NOT_AVAIL || statuscode == GG_STATUS_NOT_AVAIL_DESCR)) {
 //				qlv->setPixmap(0, pix);
@@ -483,8 +489,8 @@ void SearchDialog::newSearchResults(SearchResults& searchResults, int seq, int f
 //				return;
 //				}
 		//	}
-			qlv->setPixmap(0, pix);
-			qlv = NULL;
+			qlv->setIcon(0, QIcon(pix));
+			qlv = 0;
 		}
 	}
 
@@ -527,7 +533,7 @@ void SearchDialog::closeEvent(QCloseEvent * e)
 void SearchDialog::resizeEvent(QResizeEvent *e)
 {
 	QWidget::resizeEvent(e);
-	results->triggerUpdate();//workaround for bug in Qt, which do not refresh results properly
+//	results->triggerUpdate();//workaround for bug in Qt, which do not refresh results properly
 }
 
 void SearchDialog::keyPressEvent(QKeyEvent *e)
@@ -589,9 +595,9 @@ void SearchDialog::uinClicked()
 void SearchDialog::updateInfoClicked()
 {
 	kdebugf();
-	Q3ListViewItem *selected = results->selectedItem();
-	if (!selected && results->childCount() == 1)
-		selected = results->firstChild();
+
+	QTreeWidgetItem *selected = selectedItem();
+
 	if (!selected)
 		return;
 
@@ -703,7 +709,7 @@ void SearchActionsSlots::firstSearchActionActivated(QAction *sender, bool toggle
 // 	next_results_action->setEnabled(this, false);
 // 	clear_search_action->setSlot(SLOT(clearResults()));
 // 	clear_search_action->setEnabled(this, false);
-// 	add_searched_action->setEnabled(this, false);
+// 	add_searched_action->setEnabled(tl_uinhis, false);
 // 	chat_searched_action->setEnabled(this, false);
 
 void SearchActionsSlots::nextResultsActionActivated(QAction *sender, bool toggled)
