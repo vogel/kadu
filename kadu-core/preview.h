@@ -1,3 +1,12 @@
+/***************************************************************************
+ *                                                                         *
+ *   This program is free software; you can redistribute it and/or modify  *
+ *   it under the terms of the GNU General Public License as published by  *
+ *   the Free Software Foundation; either version 2 of the License, or     *
+ *   (at your option) any later version.                                   *
+ *                                                                         *
+ ***************************************************************************/
+
 #ifndef PREVIEW_H
 #define PREVIEW_H
 
@@ -16,7 +25,7 @@ class Preview : public KaduTextBrowser
 	QString resetBackgroundColor;
 
 public:
-	Preview(QWidget *parent = 0, char *name = 0);
+	Preview(QWidget *parent = 0);
 	~Preview();
 
 	void setResetBackgroundColor(const QString &resetBackgroundColor) { this->resetBackgroundColor = resetBackgroundColor; }

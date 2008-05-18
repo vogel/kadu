@@ -806,14 +806,14 @@ bool ConfigSelectFile::fromDomElement(QDomElement domElement)
 	return ConfigWidgetValue::fromDomElement(domElement);
 }
 
-ConfigPreview::ConfigPreview(const QString &widgetCaption, const QString &toolTip, ConfigGroupBox *parentConfigGroupBox, char *name)
-	: Preview(parentConfigGroupBox->widget(), name), ConfigWidget(widgetCaption, toolTip, parentConfigGroupBox), label(0)
+ConfigPreview::ConfigPreview(const QString &widgetCaption, const QString &toolTip, ConfigGroupBox *parentConfigGroupBox)
+	: Preview(parentConfigGroupBox->widget()), ConfigWidget(widgetCaption, toolTip, parentConfigGroupBox), label(0)
 {
 	createWidgets();
 }
 
-ConfigPreview::ConfigPreview(ConfigGroupBox *parentConfigGroupBox, char *name)
-	: Preview(parentConfigGroupBox->widget(), name), ConfigWidget(parentConfigGroupBox), label(0)
+ConfigPreview::ConfigPreview(ConfigGroupBox *parentConfigGroupBox)
+	: Preview(parentConfigGroupBox->widget()), ConfigWidget(parentConfigGroupBox), label(0)
 {
 }
 

@@ -374,8 +374,8 @@ protected:
 	virtual void createWidgets();
 
 public:
-	ConfigPreview(const QString &widgetCaption, const QString &toolTip, ConfigGroupBox *parentConfigGroupBox, char *name = 0);
-	ConfigPreview(ConfigGroupBox *parentConfigGroupBox, char *name = 0);
+	ConfigPreview(const QString &widgetCaption, const QString &toolTip, ConfigGroupBox *parentConfigGroupBox);
+	ConfigPreview(ConfigGroupBox *parentConfigGroupBox);
 	virtual ~ConfigPreview();
 
 	virtual void loadConfiguration() {};

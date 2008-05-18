@@ -15,7 +15,7 @@
 
 #include "preview.h"
 
-Preview::Preview(QWidget *parent, char *name)
+Preview::Preview(QWidget *parent)
 	: KaduTextBrowser(parent)
 {
 	setMinimumHeight(170);
