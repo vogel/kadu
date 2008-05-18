@@ -9,8 +9,8 @@
 
 #include "protocol.h"
 
-Protocol::Protocol(const QString &proto, const QString &id, QObject *parent, const char *name) :
-	QObject(parent, name), ConnectionTime(), ProtocolID(proto), id(id), CurrentStatus(0), NextStatus(0)
+Protocol::Protocol(const QString &proto, const QString &id, QObject *parent)
+	: QObject(parent), ConnectionTime(), ProtocolID(proto), id(id), CurrentStatus(0), NextStatus(0)
 {
 }
 
