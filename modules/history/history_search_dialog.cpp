@@ -15,18 +15,15 @@
 #include <qapplication.h>
 #include <qcheckbox.h>
 #include <qcombobox.h>
-#include <q3hbox.h>
-#include <q3hgroupbox.h>
+#include <qgroupbox.h>
 #include <qlayout.h>
 #include <qlineedit.h>
 #include <qpushbutton.h>
 #include <qradiobutton.h>
 #include <qtooltip.h>
-#include <Q3VButtonGroup>
-#include <Q3TextStream>
-//Added by qt3to4:
-#include <Q3GridLayout>
-#include <Q3ValueList>
+#include <QTextStream>
+#include <QGridLayout>
+#include <QList>
 
 HistoryFindRec::HistoryFindRec() :
 	fromdate(), todate(), type(0), data(), reverse(false), actualrecord()
@@ -67,9 +64,12 @@ HistorySearchDialog::HistorySearchDialog(QWidget *parent, UinsList uins) : QDial
 	for (i = 0; i <= 59; ++i)
 		minslist.append(numslist[i]);
 
-	Q3HBox *from_hb = new Q3HBox(this);
-	from_chb = new QCheckBox(tr("&From:") ,from_hb);
-	from_hgb = new Q3HGroupBox(from_hb);
+	QWidget *from = new QWidget;
+	QHBoxLayout *from_lay = new QHBoxLayout;
+	from_chb = new QCheckBox(tr("&From:") ,this);
+	from_lay->addWidget(from_chb);
+	from_hgb = new QGroupBox;
+	from_lay->addWidget(from_hgb);
 	from_day_cob = new QComboBox(from_hgb);
 	from_day_cob->insertStringList(dayslist);
 	QToolTip::add(from_day_cob, tr("day"));
@@ -85,37 +85,57 @@ HistorySearchDialog::HistorySearchDialog(QWidget *parent, UinsList uins) : QDial
 	from_min_cob = new QComboBox(from_hgb);
 	from_min_cob->insertStringList(minslist);
 	QToolTip::add(from_min_cob, tr("minute"));
+	from->setLayout(from_lay);
 
-	Q3HBox *to_hb = new Q3HBox(this);
-	to_chb = new QCheckBox(tr("&To:") ,to_hb);
-	to_hgb = new Q3HGroupBox(to_hb);
-	to_day_cob = new QComboBox(to_hgb);
+	QWidget *to = new QWidget;
+	QHBoxLayout *to_lay = new QHBoxLayout;
+	to_chb = new QCheckBox(tr("&To:") ,this);
+	to_lay->addWidget(to_chb);
+	to_hgb = new QGroupBox;
+	QWidget* to_w = new QWidget(to_hgb);\
+	QHBoxLayout *tow_lay = new QHBoxLayout;
+	to_lay->addWidget(to_hgb);
+	to_day_cob = new QComboBox;
+	tow_lay->addWidget(to_day_cob);
 	to_day_cob->insertStringList(dayslist);
 	QToolTip::add(to_day_cob, tr("day"));
-	to_month_cob = new QComboBox(to_hgb);
+	to_month_cob = new QComboBox;
+	tow_lay->addWidget(to_month_cob);
 	to_month_cob->insertStringList(monthslist);
 	QToolTip::add(to_month_cob, tr("month"));
-	to_year_cob = new QComboBox(to_hgb);
+	to_year_cob = new QComboBox;
+	tow_lay->addWidget(to_year_cob);
 	to_year_cob->insertStringList(yearslist);
 	QToolTip::add(to_year_cob, tr("year"));
-	to_hour_cob = new QComboBox(to_hgb);
+	to_hour_cob = new QComboBox;
+	tow_lay->addWidget(to_hour_cob);
 	to_hour_cob->insertStringList(hourslist);
 	QToolTip::add(to_hour_cob, tr("hour"));
-	to_min_cob = new QComboBox(to_hgb);
+	to_min_cob = new QComboBox;
+	tow_lay->addWidget(to_min_cob);
 	to_min_cob->insertStringList(minslist);
 	QToolTip::add(to_min_cob, tr("minute"));
+	to_w->setLayout(tow_lay);
+	to->setLayout(to_lay);
 
-	criteria_bg = new Q3VButtonGroup(tr("Find Criteria"), this);
-	phrase_rb = new QRadioButton(tr("&Pattern"), criteria_bg);
-	status_rb = new QRadioButton(tr("&Status"), criteria_bg);
+	criteria_bg = new QGroupBox(tr("Find Criteria"), this);
+	QWidget* criteria = new QWidget(criteria_bg);
+	QHBoxLayout* c_lay = new QHBoxLayout;
+	c_lay->setSpacing(10);
+	c_lay->setMargin(10);
+	phrase_rb = new QRadioButton;
+	c_lay->addWidget(phrase_rb);
+	phrase_rb->setText(tr("&Pattern"));
+	status_rb = new QRadioButton;
+	c_lay->addWidget(status_rb);
+	status_rb->setText(tr("&Status"));
 	if (config_file.readBoolEntry("History", "DontShowStatusChanges"))
 		status_rb->setEnabled(false);
-	criteria_bg->insert(phrase_rb, 1);
-	criteria_bg->insert(status_rb, 2);
+	criteria->setLayout(c_lay);
 
-	phrase_hgb = new Q3HGroupBox(tr("Pattern"), this);
+	phrase_hgb = new QGroupBox(tr("Pattern"), this);
 	phrase_edit = new QLineEdit(phrase_hgb);
-	status_hgb = new Q3HGroupBox(tr("Status"), this);
+	status_hgb = new QGroupBox(tr("Status"), this);
 	status_cob = new QComboBox(status_hgb);
 	for (i = 0; i < 4; ++i)
 		status_cob->insertItem(qApp->translate("@default", UserStatus::name(i * 2).ascii()));
@@ -135,9 +155,9 @@ HistorySearchDialog::HistorySearchDialog(QWidget *parent, UinsList uins) : QDial
 	connect(reset_btn, SIGNAL(clicked()), this, SLOT(resetBtnClicked()));
 	connect(cancel_btn, SIGNAL(clicked()), this, SLOT(cancelBtnClicked()));
 
-	Q3GridLayout *grid = new Q3GridLayout(this, 6, 4, 5, 5);
-	grid->addMultiCellWidget(from_hb, 0, 0, 0, 3);
-	grid->addMultiCellWidget(to_hb, 1, 1, 0, 3);
+	QGridLayout *grid = new QGridLayout(this, 6, 4, 5, 5);
+	grid->addMultiCellWidget(from, 0, 0, 0, 3);
+	grid->addMultiCellWidget(to, 1, 1, 0, 3);
 	grid->addMultiCellWidget(criteria_bg, 2, 3, 0, 1);
 	grid->addMultiCellWidget(phrase_hgb, 2, 2, 2, 3);
 	grid->addMultiCellWidget(status_hgb, 3, 3, 2, 3);
@@ -215,7 +235,7 @@ void HistorySearchDialog::cancelBtnClicked()
 void HistorySearchDialog::resetFromDate()
 {
 	kdebugf();
-	Q3ValueList<HistoryEntry> entries;
+	QList<HistoryEntry> entries;
 
 	entries = history->getHistoryEntries(uins, 0, 1);
 	if (!entries.isEmpty())
@@ -233,7 +253,7 @@ void HistorySearchDialog::resetFromDate()
 void HistorySearchDialog::resetToDate()
 {
 	kdebugf();
-	Q3ValueList<HistoryEntry> entries;
+	QList<HistoryEntry> entries;
 
 	entries = history->getHistoryEntries(uins, history->getHistoryEntriesCount(uins) - 1, 1);
 	if (!entries.isEmpty())
@@ -257,7 +277,7 @@ void HistorySearchDialog::resetBtnClicked()
 	to_chb->setChecked(false);
 	to_hgb->setEnabled(false);
 	resetToDate();
-	criteria_bg->setButton(1);
+///	criteria_bg->setButton(1);
 	phrase_edit->text().truncate(0);
 	status_cob->setCurrentItem(0);
 	criteriaChanged(1);
@@ -294,7 +314,7 @@ void HistorySearchDialog::setDialogValues(HistoryFindRec &findrec)
 		to_min_cob->setCurrentItem(findrec.todate.time().minute());
 		correctToDays(findrec.todate.date().month() - 1);
 	}
-	criteria_bg->setButton(findrec.type);
+	///criteria_bg->setButton(findrec.type);
 	criteriaChanged(findrec.type);
 	switch (findrec.type)
 	{
@@ -337,7 +357,7 @@ HistoryFindRec HistorySearchDialog::getDialogValues() const
 			to_month_cob->currentItem() + 1, to_day_cob->currentItem() + 1));
 		findrec.todate.setTime(QTime(to_hour_cob->currentItem(), to_min_cob->currentItem()));
 	}
-	findrec.type = criteria_bg->id(criteria_bg->selected());
+	///findrec.type = criteria_bg->id(criteria_bg->selected());
 	switch (findrec.type)
 	{
 		case 1:

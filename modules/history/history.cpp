@@ -10,22 +10,15 @@
 #include <qapplication.h>
 #include <qcheckbox.h>
 #include <qcombobox.h>
-#include <q3grid.h>
-#include <q3hbox.h>
-#include <q3hgroupbox.h>
 #include <qmessagebox.h>
 #include <qpushbutton.h>
 #include <qradiobutton.h>
 #include <qregexp.h>
 #include <qsplitter.h>
 #include <qtimer.h>
-#include <q3vbox.h>
-#include <Q3VButtonGroup>
-#include <Q3TextStream>
-//Added by qt3to4:
-#include <Q3ValueList>
+#include <QTextStream>
+#include <QList>
 
-// #include "config_dialog.h"
 #include "config_file.h"
 #include "debug.h"
 #include "emoticons.h"
@@ -136,7 +129,7 @@ void HistoryManager::appendMessage(UinsList uins, UinType uin, const QString &ms
 		fidx.close();
 	}
 
-	Q3TextStream stream(&f);
+	QTextStream stream(&f);
 	stream.setCodec(codec_latin2);
 	stream << line << '\n';
 
@@ -148,7 +141,7 @@ void HistoryManager::appendSms(const QString &mobile, const QString &msg)
 {
 	kdebugmf(KDEBUG_FUNCTION_START, "appending sms to history (%s)\n", mobile.local8Bit().data());
 	QFile f, fidx;
-	Q3TextStream stream;
+	QTextStream stream;
 	QStringList linelist;
 	QString altnick, line, fname;
 	UinType uin = 0;
@@ -312,7 +305,7 @@ void HistoryManager::appendStatus(UinType uin, const UserStatus &status)
 		fidx.close();
 	}
 
-	Q3TextStream stream(&f);
+	QTextStream stream(&f);
 	stream.setCodec(codec_latin2);
 	stream << line << '\n';
 
@@ -370,9 +363,9 @@ void HistoryManager::convHist2ekgForm(UinsList uins)
 		return;
 	}
 
-	Q3TextStream stream(&f);
+	QTextStream stream(&f);
 	stream.setCodec(codec_latin2);
-	Q3TextStream streamout(&fout);
+	QTextStream streamout(&fout);
 	streamout.setCodec(codec_latin2);
 
 	bool our, foreign;
@@ -511,9 +504,9 @@ void HistoryManager::convSms2ekgForm()
 		return;
 	}
 
-	Q3TextStream stream(&f);
+	QTextStream stream(&f);
 	stream.setCodec(codec_latin2);
-	Q3TextStream streamout(&fout);
+	QTextStream streamout(&fout);
 	streamout.setCodec(codec_latin2);
 
 	bool header;
@@ -648,11 +641,11 @@ int HistoryManager::getHistoryEntriesCount(const QString &mobile)
 	return ret;
 }
 
-Q3ValueList<HistoryEntry> HistoryManager::getHistoryEntries(UinsList uins, int from, int count, int mask)
+QList<HistoryEntry> HistoryManager::getHistoryEntries(UinsList uins, int from, int count, int mask)
 {
 	kdebugf();
 
-	Q3ValueList<HistoryEntry> entries;
+	QList<HistoryEntry> entries;
 	QStringList tokens;
 	QFile f, fidx;
 	QString path = ggPath("history/");
@@ -679,7 +672,7 @@ Q3ValueList<HistoryEntry> HistoryManager::getHistoryEntries(UinsList uins, int f
 	if (!f.at(offs))
 		return entries;
 
-	Q3TextStream stream(&f);
+	QTextStream stream(&f);
 	stream.setCodec(codec_latin2);
 
 	int linenr = from;
@@ -810,7 +803,7 @@ Q3ValueList<HistoryEntry> HistoryManager::getHistoryEntries(UinsList uins, int f
 	return entries;
 }
 
-uint HistoryManager::getHistoryDate(Q3TextStream &stream)
+uint HistoryManager::getHistoryDate(QTextStream &stream)
 {
 	kdebugf();
 	QString line;
@@ -832,11 +825,11 @@ uint HistoryManager::getHistoryDate(Q3TextStream &stream)
 	return (tokens[pos].toUInt() / 86400);
 }
 
-Q3ValueList<HistoryDate> HistoryManager::getHistoryDates(const UinsList &uins)
+QList<HistoryDate> HistoryManager::getHistoryDates(const UinsList &uins)
 {
 	kdebugf();
 
-	Q3ValueList<HistoryDate> entries;
+	QList<HistoryDate> entries;
 	HistoryDate newdate;
 	QFile f, fidx;
 	QString path = ggPath("history/");
@@ -858,7 +851,7 @@ Q3ValueList<HistoryDate> HistoryManager::getHistoryDates(const UinsList &uins)
 		kdebugmf(KDEBUG_ERROR, "Error opening history file %s\n", (const char *)filename.local8Bit());
 		return entries;
 	}
-	Q3TextStream stream(&f);
+	QTextStream stream(&f);
 	stream.setCodec(codec_latin2);
 
 	fidx.setName(f.name() + ".idx");
@@ -935,10 +928,10 @@ Q3ValueList<HistoryDate> HistoryManager::getHistoryDates(const UinsList &uins)
 	return entries;
 }
 
-Q3ValueList<UinsList> HistoryManager::getUinsLists() const
+QList<UinsList> HistoryManager::getUinsLists() const
 {
 	kdebugf();
-	Q3ValueList<UinsList> entries;
+	QList<UinsList> entries;
 	QDir dir(ggPath("history/"), "*.idx");
 	QStringList struins;
 	UinsList uins;
@@ -1131,7 +1124,7 @@ int HistoryManager::getHistoryEntryIndexByDate(const UinsList &uins, const QDate
 {
 	kdebugf();
 
-	Q3ValueList<HistoryEntry> entries;
+	QList<HistoryEntry> entries;
 	int count = getHistoryEntriesCount(uins);
 	int start, end;
 
@@ -1203,11 +1196,11 @@ void HistoryManager::imageReceivedAndSaved(UinType sender, uint32_t size, uint32
 	kdebugm(KDEBUG_INFO, "sender: %d, size: %d, crc:%u, path:%s\n", sender, size, crc32, path.local8Bit().data());
 	QString reg = GaduImagesManager::loadingImageHtml(sender, size, crc32);
 	QString imagehtml = GaduImagesManager::imageHtml(path);
-	QMap<UinType, Q3ValueList<BuffMessage> >::iterator it = bufferedMessages.find(sender);
+	QMap<UinType, QList<BuffMessage> >::iterator it = bufferedMessages.find(sender);
 	if (it != bufferedMessages.end())
 	{
 //		kdebugm(KDEBUG_INFO, "sender found\n");
-		Q3ValueList<BuffMessage> &messages = it.data();
+		QList<BuffMessage> &messages = it.data();
 		FOREACH(msg, messages)
 		{
 //			kdebugm(KDEBUG_INFO, "counter:%d\n", (*msg).counter);
@@ -1258,7 +1251,7 @@ void HistoryManager::checkImageTimeout(UinType uin)
 {
 	kdebugf();
 	time_t currentTime = time(NULL);
-	Q3ValueList<BuffMessage> &msgs = bufferedMessages[uin];
+	QList<BuffMessage> &msgs = bufferedMessages[uin];
 	while (!msgs.isEmpty())
 	{
 		BuffMessage &msg = msgs.front();
@@ -1283,7 +1276,7 @@ void HistoryManager::checkImageTimeout(UinType uin)
 void HistoryManager::checkImagesTimeouts()
 {
 	kdebugf();
-	Q3ValueList<UinType> uins = bufferedMessages.keys();
+	QList<UinType> uins = bufferedMessages.keys();
 
 	CONST_FOREACH(uin, uins)
 		checkImageTimeout(*uin);

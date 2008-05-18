@@ -1,16 +1,17 @@
 #ifndef HISTORY_SEARCH_DIALOG_H
 #define HISTORY_SEARCH_DIALOG_H
 
+#include <qbuttongroup.h>
 #include <qdialog.h>
 
 #include "gadu.h"
 
+class QButtonGroup;
 class QCheckBox;
 class QComboBox;
-class Q3HGroupBox;
+class QGroupBox;
 class QLineEdit;
 class QRadioButton;
-class Q3VButtonGroup;
 
 struct HistoryFindRec {
 	QDateTime fromdate;
@@ -40,13 +41,13 @@ class HistorySearchDialog : public QDialog {
 		void resetBtnClicked();
 
 	protected:
-		Q3HGroupBox *from_hgb, *to_hgb, *phrase_hgb, *status_hgb;
+		QGroupBox *from_hgb, *to_hgb, *phrase_hgb, *status_hgb;
+		QGroupBox *criteria_bg;
 		QCheckBox *from_chb, *to_chb, *reverse_chb;
 		QComboBox *from_day_cob, *from_month_cob, *from_year_cob, *from_hour_cob, *from_min_cob;
 		QComboBox *to_day_cob, *to_month_cob, *to_year_cob, *to_hour_cob, *to_min_cob;
 		QComboBox *status_cob;
 		QLineEdit *phrase_edit;
-		Q3VButtonGroup *criteria_bg;
 		QRadioButton *phrase_rb, *status_rb;
 		QStringList numslist;
 		UinsList uins;

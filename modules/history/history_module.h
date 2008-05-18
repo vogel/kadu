@@ -3,7 +3,6 @@
 
 #include "main_configuration_window.h"
 #include "usergroup.h"
-//Added by qt3to4:
 #include <QKeyEvent>
 #include <QLabel>
 

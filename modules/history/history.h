@@ -3,11 +3,10 @@
 
 #include <qdatetime.h>
 #include <qdialog.h>
-#include <q3listview.h>
+
 #include <qmap.h>
 #include <qstring.h>
-//Added by qt3to4:
-#include <Q3ValueList>
+#include <QList>
 
 #include <time.h>
 #include "gadu.h"
@@ -20,11 +19,9 @@
 #define HISTORYMANAGER_ENTRY_SMSSEND    0x00000020
 #define HISTORYMANAGER_ENTRY_ALL        0x0000003f
 #define HISTORYMANAGER_ENTRY_ALL_MSGS   0x0000002f
-class Q3TextStream;
+class QTextStream;
 class QComboBox;
 class QRadioButton;
-class Q3VButtonGroup;
-class Q3HGroupBox;
 class QCheckBox;
 class QLineEdit;
 
@@ -59,9 +56,9 @@ class HistoryManager : public QObject
 		HistoryManager(QObject *parent=0, const char *name=0);
 		int getHistoryEntriesCount(const UinsList &uins);
 		int getHistoryEntriesCount(const QString &mobile = QString::null);
-		Q3ValueList<HistoryEntry> getHistoryEntries(UinsList uins, int from, int count, int mask = HISTORYMANAGER_ENTRY_ALL);
-		Q3ValueList<HistoryDate> getHistoryDates(const UinsList &uins);
-		Q3ValueList<UinsList> getUinsLists() const;
+		QList<HistoryEntry> getHistoryEntries(UinsList uins, int from, int count, int mask = HISTORYMANAGER_ENTRY_ALL);
+		QList<HistoryDate> getHistoryDates(const UinsList &uins);
+		QList<UinsList> getUinsLists() const;
 		int getHistoryEntryIndexByDate(const UinsList &uins, const QDateTime &date, bool endate = false);
 		static QString getFileNameByUinsList(UinsList uins);
 		static QStringList mySplit(const QChar &sep, const QString &str);
@@ -69,7 +66,7 @@ class HistoryManager : public QObject
 	private:
 		QString text2csv(const QString &text);
 		int getHistoryEntriesCountPrivate(const QString &filename) const;
-		uint getHistoryDate(Q3TextStream &stream);
+		uint getHistoryDate(QTextStream &stream);
 		void buildIndexPrivate(const QString &filename);
 
 		class BuffMessage
@@ -90,7 +87,7 @@ class HistoryManager : public QObject
 					: uins(uins1), message(msg), tm(t),	arriveTime(arriveTime1),
 					own(own1), counter(cntr) {}
 		};
-		QMap<UinType, Q3ValueList<BuffMessage> > bufferedMessages;
+		QMap<UinType, QList<BuffMessage> > bufferedMessages;
 		QTimer *imagesTimer;
 
 		void checkImageTimeout(UinType uin);
