@@ -7,19 +7,20 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <QString>
-
 #include "chat_manager.h"
 #include "debug.h"
 #include "misc.h"
-#include "pending_msgs.h"
+#include "protocol.h"
 #include "userlist.h"
+
+#include "pending_msgs.h"
 
 PendingMsgs::Element::Element() : users(), proto(), msg(), msgclass(0), time(0)
 {
 }
 
-PendingMsgs::PendingMsgs(QObject *parent, const char *name) : QObject(parent, name), msgs()
+PendingMsgs::PendingMsgs(QObject *parent)
+	: QObject(parent), msgs()
 {
 }
 
@@ -218,4 +219,4 @@ void PendingMsgs::openMessages()
 	chat_manager->openPendingMsgs();
 }
 
-PendingMsgs pending(NULL, "pending_msgs");
+PendingMsgs pending(0);

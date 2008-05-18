@@ -1,139 +1,154 @@
+/***************************************************************************
+ *                                                                         *
+ *   This program is free software; you can redistribute it and/or modify  *
+ *   it under the terms of the GNU General Public License as published by  *
+ *   the Free Software Foundation; either version 2 of the License, or     *
+ *   (at your option) any later version.                                   *
+ *                                                                         *
+ ***************************************************************************/
+
 #ifndef PENDING_MSGS_H
 #define PENDING_MSGS_H
 
+#include <QObject>
+
 #include <time.h>
+
 #include "usergroup.h"
 
 class QString;
 
 /**
-	Klasa ta reprezentuje kolejkê wiadomo¶ci oczekuj±cych na odczytanie.
-	Wiadomo¶ci takie mog± byæ przechowywane w tej klasie nawet pomiêdzy kolejnymi
+	Klasa ta reprezentuje kolejkï¿½ wiadomoï¿½ci oczekujï¿½cych na odczytanie.
+	Wiadomoï¿½ci takie mogï¿½ byï¿½ przechowywane w tej klasie nawet pomiï¿½dzy kolejnymi
 	uruchomieniami Kadu.
 	\class PendingMsgs
-	\brief Kolejka oczekuj±cych wiadomo¶ci.
+	\brief Kolejka oczekujï¿½cych wiadomoï¿½ci.
 **/
 class PendingMsgs : public QObject
 {
 	Q_OBJECT
 
-	public:
-		/**
-			Struktura reprezentuj±ca wiadomo¶æ oczekuj±c± w kolejce.
-			\struct Element
-			\brief Wiadomo¶æ oczekuj±c± w kolejce.
-		**/
-		struct Element
-		{
-			UserListElements users; /*!< Lista u¿ytkowników, którzy nades³ali tê wiadomo¶æ. */
-			QString proto; /*!< Nazwa protoko³u. */
-			QString msg; /*!< Tre¶æ wiadomo¶ci. */
-			int msgclass; /*!< Klasa wiadomo¶ci. */
-			time_t time; /*!< Czas, w którym nadano wiadomo¶æ. */
-			Element();
-		};
+public:
+	struct Element;
 
-	private:
-		typedef QList<Element> PendingMsgsList;
-		PendingMsgsList msgs;
+private:
+	typedef QList<Element> PendingMsgsList;
+	PendingMsgsList msgs;
 
-	public:
-		/**
-			\fn PendingMsgs(QObject *parent=0, const char *name=0)
-			Standardowy konstruktor.
-			\param parent rodzic kontrolki. Domy¶lnie 0.
-			\param name nazwa kontrolki. Domy¶lnie 0.
-		**/
-		PendingMsgs(QObject *parent = 0, const char *name = 0);
+public:
+	/**
+		Struktura reprezentujï¿½ca wiadomoï¿½ï¿½ oczekujï¿½cï¿½ w kolejce.
+		\struct Element
+		\brief Wiadomoï¿½ï¿½ oczekujï¿½cï¿½ w kolejce.
+	**/
+	struct Element
+	{
+		UserListElements users; /*!< Lista uï¿½ytkownikï¿½w, ktï¿½rzy nadesï¿½ali tï¿½ wiadomoï¿½ï¿½. */
+		QString proto; /*!< Nazwa protokoï¿½u. */
+		QString msg; /*!< Treï¿½ï¿½ wiadomoï¿½ci. */
+		int msgclass; /*!< Klasa wiadomoï¿½ci. */
+		time_t time; /*!< Czas, w ktï¿½rym nadano wiadomoï¿½ï¿½. */
+		Element();
+	};
 
-		/**
-			\fn bool pendingMsgs(UserListElement user) const
-			Sprawdza, czy w kolejce s± jakie¶ oczekuj±ce wiadomo¶ci dla podanego u¿ytkownika.
-			\param user u¿ytkownik, dla którego nale¿y sprawdziæ kolejkê.
-			\return warto¶æ logiczn± informuj±c± czy w kolejce jest jaka¶ wiadomo¶æ czy nie.
-		**/
-		bool pendingMsgs(UserListElement user) const;
+	/**
+		\fn PendingMsgs(QObject *parent=0, const char *name=0)
+		Standardowy konstruktor.
+		\param parent rodzic kontrolki. Domyï¿½lnie 0.
+		\param name nazwa kontrolki. Domyï¿½lnie 0.
+	**/
+	PendingMsgs(QObject *parent = 0);
 
-		/**
-			\fn bool pendingMsgs() const
-			Sprawdza, czy w jakiejkolwiek kolejce s± oczekuj±ce wiadomo¶ci.
-			\return warto¶æ logiczn± informuj±c± czy s± jaka¶ wiadomo¶ci czy nie.
-		**/
-		bool pendingMsgs() const;
+	/**
+		\fn bool pendingMsgs(UserListElement user) const
+		Sprawdza, czy w kolejce sï¿½ jakieï¿½ oczekujï¿½ce wiadomoï¿½ci dla podanego uï¿½ytkownika.
+		\param user uï¿½ytkownik, dla ktï¿½rego naleï¿½y sprawdziï¿½ kolejkï¿½.
+		\return wartoï¿½ï¿½ logicznï¿½ informujï¿½cï¿½ czy w kolejce jest jakaï¿½ wiadomoï¿½ï¿½ czy nie.
+	**/
+	bool pendingMsgs(UserListElement user) const;
 
-                 /**
-                         \fn unsigned int pendingMsgsCount(UserListElements users) const
-                         Sprawdza, czy w kolejce s± jakie¶ oczekuj±ce wiadomo¶ci dla podanej listy u¿ytkowników
-                         i zwraca ich liczbê.
-                         \param users lista u¿ytkowników, dla których nale¿y sprawdziæ kolejkê.
-                         \return liczba oczekuj±cych wiadomo¶ci.
-                 **/
-		unsigned int pendingMsgsCount(UserListElements users) const;
+	/**
+		\fn bool pendingMsgs() const
+		Sprawdza, czy w jakiejkolwiek kolejce sï¿½ oczekujï¿½ce wiadomoï¿½ci.
+		\return wartoï¿½ï¿½ logicznï¿½ informujï¿½cï¿½ czy sï¿½ jakaï¿½ wiadomoï¿½ci czy nie.
+	**/
+	bool pendingMsgs() const;
 
-		/**
-			\fn int count() const
-			Liczy wszystkie wiadomo¶ci oczekuj±ce w kolejkach.
-			\return liczba oczekuj±cych wiadomo¶ci.
-		**/
-		int count() const;
+	/**
+		\fn unsigned int pendingMsgsCount(UserListElements users) const
+		Sprawdza, czy w kolejce sï¿½ jakieï¿½ oczekujï¿½ce wiadomoï¿½ci dla podanej listy uï¿½ytkownikï¿½w
+		i zwraca ich liczbï¿½.
+		\param users lista uï¿½ytkownikï¿½w, dla ktï¿½rych naleï¿½y sprawdziï¿½ kolejkï¿½.
+		\return liczba oczekujï¿½cych wiadomoï¿½ci.
+	**/
+	unsigned int pendingMsgsCount(UserListElements users) const;
 
-		/**
-			\fn Element &operator[](int index)
-			\return wiadomo¶æ z kolejki, o podanym indeksie.
-		**/
-		Element &operator[](int index);
+	/**
+		\fn int count() const
+		Liczy wszystkie wiadomoï¿½ci oczekujï¿½ce w kolejkach.
+		\return liczba oczekujï¿½cych wiadomoï¿½ci.
+	**/
+	int count() const;
 
-	public slots:
-		/**
-			\fn void openMessages()
-			Wywo³uje metodê ChatManager::openPendingMsgs.
-		**/
-		void openMessages();
+	/**
+		\fn Element &operator[](int index)
+		\return wiadomoï¿½ï¿½ z kolejki, o podanym indeksie.
+	**/
+	Element &operator[](int index);
 
-		/**
-			\fn void deleteMsg(int index)
-			Usuwa z kolejki wiadomo¶æ o danym indeksie.
-			\param index indeks wiadomo¶ci do usuniêcia.
-		**/
-		void deleteMsg(int index);
+public slots:
+	/**
+		\fn void openMessages()
+		Wywoï¿½uje metodï¿½ ChatManager::openPendingMsgs.
+	**/
+	void openMessages();
 
-		/**
-			\fn void addMsg(QString protocolName, UserListElements users, QString msg, int msgclass, time_t time)
-			Dodaje now± wiadomo¶æ do kolejki.
-			\param protocolName nazwa protoko³u
-			\param users lista u¿ytkowników, które przys³a³y wiadomo¶æ.
-			\param msg tre¶æ wiadomo¶ci.
-			\param msgclass klasa wiadomo¶ci.
-			\param time czas nades³ania wiadomo¶ci.
-		**/
-		void addMsg(QString protocolName, UserListElements users, QString msg, int msgclass, time_t time);
+	/**
+		\fn void deleteMsg(int index)
+		Usuwa z kolejki wiadomoï¿½ï¿½ o danym indeksie.
+		\param index indeks wiadomoï¿½ci do usuniï¿½cia.
+	**/
+	void deleteMsg(int index);
 
-		/**
-			\fn bool loadFromFile()
-			Wczytuje kolejkê wiadomo¶ci z pliku. Metoda ta wywo³ywana jest przy starcie
-			Kadu.
-		**/
-		bool loadFromFile();
+	/**
+		\fn void addMsg(QString protocolName, UserListElements users, QString msg, int msgclass, time_t time)
+		Dodaje nowï¿½ wiadomoï¿½ï¿½ do kolejki.
+		\param protocolName nazwa protokoï¿½u
+		\param users lista uï¿½ytkownikï¿½w, ktï¿½re przysï¿½aï¿½y wiadomoï¿½ï¿½.
+		\param msg treï¿½ï¿½ wiadomoï¿½ci. TODO: const QString &
+		\param msgclass klasa wiadomoï¿½ci.
+		\param time czas nadesï¿½ania wiadomoï¿½ci.
+	**/
+	void addMsg(QString protocolName, UserListElements users, QString msg, int msgclass, time_t time);
 
-		/**
-			\fn bool loadFromFile()
-			Zapisuje kolejkê wiadomo¶ci do pliku. Metoda ta wywo³ywana jest przy zamykaniu
-			Kadu.
-		**/
-		void writeToFile();
+	/**
+		\fn bool loadFromFile()
+		Wczytuje kolejkï¿½ wiadomoï¿½ci z pliku. Metoda ta wywoï¿½ywana jest przy starcie
+		Kadu.
+	**/
+	bool loadFromFile();
 
-	signals:
-		/**
-			\fn void messageFromUserAdded(UserListElement user)
-			Sygna³ ten emitowany jest, gdy nowa wiadomo¶æ zosta³a dodana do kolejki.
-		**/
-		void messageFromUserAdded(UserListElement user);
+	/**
+		\fn bool loadFromFile()
+		Zapisuje kolejkï¿½ wiadomoï¿½ci do pliku. Metoda ta wywoï¿½ywana jest przy zamykaniu
+		Kadu.
+	**/
+	void writeToFile();
 
-		/**
-			\fn void messageFromUserDeleted(UserListElement user)
-			Sygna³ ten emitowany jest, gdy wiadomo¶æ od u¿ytkownika user zosta³a usuniêta z kolejki.
-		**/
-		void messageFromUserDeleted(UserListElement user);
+signals:
+	/**
+		\fn void messageFromUserAdded(UserListElement user)
+		Sygnaï¿½ ten emitowany jest, gdy nowa wiadomoï¿½ï¿½ zostaï¿½a dodana do kolejki.
+	**/
+	void messageFromUserAdded(UserListElement user);
+
+	/**
+		\fn void messageFromUserDeleted(UserListElement user)
+		Sygnaï¿½ ten emitowany jest, gdy wiadomoï¿½ï¿½ od uï¿½ytkownika user zostaï¿½a usuniï¿½ta z kolejki.
+	**/
+	void messageFromUserDeleted(UserListElement user);
+
 };
 
 extern PendingMsgs pending;
