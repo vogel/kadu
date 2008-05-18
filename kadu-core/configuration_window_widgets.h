@@ -25,8 +25,8 @@ class ConfigurationWindow;
 /**
 	&lt;widget id="id" tool-tip="toolTip" /&gt;
 
-	@arg id - id dostêpne dla aplikacji/modu³ów
-	@arg toolTip - podpowied¼ dla u¿ytkownika
+	@arg id - id dostï¿½pne dla aplikacji/moduï¿½ï¿½w
+	@arg toolTip - podpowiedï¿½ dla uï¿½ytkownika
  **/
 class ConfigWidget
 {
@@ -55,8 +55,8 @@ public:
 /**
 	&lt;widget config-section="section" config-item="item" /&gt;
 
-	@arg section - sekcja w której trzymany jest element
-	@arg item - element, w którym trzymana jest warto¶æ parametry
+	@arg section - sekcja w ktï¿½rej trzymany jest element
+	@arg item - element, w ktï¿½rym trzymana jest wartoï¿½ï¿½ parametry
  **/
 class ConfigWidgetValue : public ConfigWidget
 {
@@ -136,9 +136,9 @@ public:
 /**
 	&lt;spin-box caption="caption" id="id" min-value="minValue" max-value="maxValue" step="step" /&gt;
 
-	@arg minValue - minimalna warto¶æ (obowi±zkowo)
-	@arg maxValue - maksymalna warto¶æ (obowi±zkowo)
-	@arg step - krok warto¶ci (nieobowiazkowo, domy¶lnie 1)
+	@arg minValue - minimalna wartoï¿½ï¿½ (obowiï¿½zkowo)
+	@arg maxValue - maksymalna wartoï¿½ï¿½ (obowiï¿½zkowo)
+	@arg step - krok wartoï¿½ci (nieobowiazkowo, domyï¿½lnie 1)
  **/
 class ConfigSpinBox : public QSpinBox, public ConfigWidgetValue
 {
@@ -167,8 +167,8 @@ public:
 		...
 	&lt;/combo-box&gt;
 
-	@arg value - warto¶æ zapisana do pliku konfiguracyjnego
-	@arg caption - warto¶æ wy¶wietlana
+	@arg value - wartoï¿½ï¿½ zapisana do pliku konfiguracyjnego
+	@arg caption - wartoï¿½ï¿½ wyï¿½wietlana
  **/
 class ConfigComboBox : public QComboBox, public ConfigWidgetValue
 {
@@ -233,8 +233,8 @@ protected:
 
 public:
 	ConfigPathListEdit(const QString &section, const QString &item, const QString &widgetCaption, const QString &toolTip,
-		ConfigGroupBox *parentConfigGroupBox, char *name = 0);
-	ConfigPathListEdit(ConfigGroupBox *parentConfigGroupBox, char *name = 0);
+		ConfigGroupBox *parentConfigGroupBox);
+	ConfigPathListEdit(ConfigGroupBox *parentConfigGroupBox);
 	virtual ~ConfigPathListEdit();
 
 	virtual void loadConfiguration();
@@ -338,7 +338,7 @@ public:
 /**
 	&lt;select-file caption="caption" id="id" type="type" /&gt;
 
-	@arg type all = wszystkie pliki, images = obrazki, audio = pliki d¼wiêkowe
+	@arg type all = wszystkie pliki, images = obrazki, audio = pliki dï¿½wiï¿½kowe
  **/
 class ConfigSelectFile : public SelectFile, public ConfigWidgetValue
 {
@@ -364,7 +364,7 @@ public:
 /**
 	&lt;preview caption="caption" id="id" /&gt;
 
-	Podgl±d sk³adni.
+	Podglï¿½d skï¿½adni.
  **/
 class ConfigPreview : public Preview, public ConfigWidget
 {
@@ -388,9 +388,9 @@ public:
 /**
 	&lt;slider caption="caption" id="id" /&gt;
 
-	@arg minValue - minimalna warto¶æ (obowi±zkowo)
-	@arg maxValue - maksymalna warto¶æ (obowi±zkowo)
-	@arg pageStep - krok warto¶ci (obowi±zkowo)
+	@arg minValue - minimalna wartoï¿½ï¿½ (obowiï¿½zkowo)
+	@arg maxValue - maksymalna wartoï¿½ï¿½ (obowiï¿½zkowo)
+	@arg pageStep - krok wartoï¿½ci (obowiï¿½zkowo)
  **/
 class ConfigSlider : public QSlider, public ConfigWidgetValue
 {
@@ -440,8 +440,8 @@ public:
 		...
 	&lt;/list-box&gt;
 
-	@arg value - warto¶æ zapisana do pliku konfiguracyjnego
-	@arg caption - warto¶æ wy¶wietlana
+	@arg value - wartoï¿½ï¿½ zapisana do pliku konfiguracyjnego
+	@arg caption - wartoï¿½ï¿½ wyï¿½wietlana
  **/
 class ConfigListWidget : public QListWidget, public ConfigWidget
 {

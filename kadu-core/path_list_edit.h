@@ -1,3 +1,12 @@
+/***************************************************************************
+ *                                                                         *
+ *   This program is free software; you can redistribute it and/or modify  *
+ *   it under the terms of the GNU General Public License as published by  *
+ *   the Free Software Foundation; either version 2 of the License, or     *
+ *   (at your option) any later version.                                   *
+ *                                                                         *
+ ***************************************************************************/
+
 #ifndef PATH_LIST_EDIT_H
 #define PATH_LIST_EDIT_H
 
@@ -21,7 +30,7 @@ private slots:
 	void pathListChanged(const QStringList &pathList);
 
 public:
-	PathListEdit(QWidget *parent = 0, char *name = 0);
+	PathListEdit(QWidget *parent = 0);
 	virtual ~PathListEdit() {}
 
 	QStringList pathList() const { return PathList; }
@@ -29,6 +38,7 @@ public:
 
 signals:
 	void changed();
+
 };
 
 class PathListEditWindow : public QWidget
@@ -54,7 +64,7 @@ private slots:
 	void currentItemChanged(const QString &newItem);
 
 public:
-	PathListEditWindow(const QStringList &pathList, QWidget *parent = 0, const char *name = 0);
+	PathListEditWindow(const QStringList &pathList, QWidget *parent = 0);
 	~PathListEditWindow();
 
 public slots:

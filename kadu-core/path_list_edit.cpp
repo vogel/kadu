@@ -8,8 +8,9 @@
  ***************************************************************************/
 
 #include <QFileDialog>
+#include <QGridLayout>
+#include <QHBoxLayout>
 #include <QKeyEvent>
-#include <QLayout>
 #include <QLineEdit>
 #include <QListWidget>
 
@@ -19,8 +20,8 @@
 
 #include "path_list_edit.h"
 
-PathListEdit::PathListEdit(QWidget *parent, char *name)
-	: QPushButton(tr("Select"), parent, name), Dialog(0)
+PathListEdit::PathListEdit(QWidget *parent)
+	: QPushButton(tr("Select"), parent), Dialog(0)
 {
 	connect(this, SIGNAL(clicked()), this, SLOT(showDialog()));
 }
@@ -55,8 +56,8 @@ void PathListEdit::setPathList(const QStringList &pathList)
 		Dialog->setPathList(PathList);
 }
 
-PathListEditWindow::PathListEditWindow(const QStringList &pathList, QWidget *parent, const char *name)
-	: QWidget(parent, name)
+PathListEditWindow::PathListEditWindow(const QStringList &pathList, QWidget *parent)
+	: QWidget(parent)
 {
 	kdebugf();
 
