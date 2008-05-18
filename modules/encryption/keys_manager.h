@@ -1,20 +1,19 @@
 #ifndef KEYSMANAGER_H
 #define KEYSMANAGER_H
 
-#include <qhbox.h>
-#include <qlistview.h>
+#include <QListWidget>
 #include "usergroup.h"
 #include "userlistelement.h"
 
 class QDialog;
 class QPushButton;
 class QTextEdit;
-class QListView;
+class QTableWidget;
 
 /**
 	Dialog umo¿liwiaj±cy zarz±dzanie list± kluczy
 **/
-class KeysManager : public QHBox
+class KeysManager : public QWidget
 {
 	Q_OBJECT
 	public:
@@ -24,7 +23,7 @@ class KeysManager : public QHBox
 		void refreshKeysList();
 
 	private:
-		QListView *lv_keys;
+		QTableWidget *lv_keys;
 		QTextEdit *e_key;
 		QPushButton *pb_del;
 		QPushButton *pb_on;
@@ -38,7 +37,7 @@ class KeysManager : public QHBox
 		void selectionChanged();
 		void keyPressEvent(QKeyEvent *);
 		void turnEncryption();
-		void turnEncryption(QListViewItem *);
+		void turnEncryption(QListWidgetItem *);
 
 	signals:
 		void keyRemoved(UserListElement ule);

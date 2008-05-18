@@ -1,12 +1,13 @@
 #ifndef ENCRYPTION_H
 #define ENCRYPTION_H
 
-#include <qdialog.h>
+#include <QDialog>
 
 #include "keys_manager.h"
 #include "main_configuration_window.h"
 #include "misc.h"
 #include "usergroup.h"
+#include "config_file.h"
 
 class Action;
 class ChatWidget;
@@ -27,21 +28,21 @@ class EncryptionManager : public ConfigurationUiHandler
 
 	void setupEncryptButton(ChatWidget* chat, bool enabled);
 	void setupEncryptionButtonForUsers(UserListElements users, bool enabled);
-	Action* action;
 
+	ActionDescription *action;
 	QWidget *configurationWindow;
 	void createDefaultConfiguration();
 
 	KeysManager *KeysManagerDialog;
 
 private slots:
-	void decryptMessage(Protocol *protocol, UserListElements senders, QCString &msg, QByteArray &formats, bool &ignore);
+	void decryptMessage(Protocol *protocol, UserListElements senders, QString &msg, QByteArray &formats, bool &ignore);
 	void sendMessageFilter(const UserListElements users, QString &msg, bool &stop);
 	void setupEncrypt(const UserGroup *group);
 
 	void generateMyKeys();
 	void sendPublicKey();
-	void encryptionActionActivated(const UserGroup* users);
+	void encryptionActionActivated(QAction *action, const UserGroup* users);
 	void userBoxMenuPopup();
 
 	void keysManagerDialogDestroyed();

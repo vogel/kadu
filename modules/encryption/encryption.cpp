@@ -7,11 +7,13 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <qcheckbox.h>
-#include <qfile.h>
-#include <qhgroupbox.h>
-#include <qpushbutton.h>
-#include <qtooltip.h>
+#include <QCheckBox>
+#include <QFile>
+#include <QPushButton>
+#include <QToolTip>
+#include <QList>
+#include <QLabel>
+#include <QGridLayout>
 #include <stdlib.h>
 
 #include "action.h"
@@ -73,11 +75,12 @@ EncryptionManager::EncryptionManager()
 			this, SLOT(sendMessageFilter(const UserListElements, QString &, bool &)));
 	connect(UserBox::userboxmenu, SIGNAL(popup()), this, SLOT(userBoxMenuPopup()));
 
-	action = new Action("EncryptedChat", tr("Enable encryption for this conversation"),
-		"encryptionAction", Action::TypeChat);
-	action->setCheckable(true);
-	connect(action, SIGNAL(activated(const UserGroup*, const QWidget*, bool)),
-		this, SLOT(encryptionActionActivated(const UserGroup*)));
+	action = new ActionDescription(
+				ActionDescription::TypeChat, "encryptionAction",
+				this, SLOT(encryptionActionActivated(QAction *, const UserGroup*)),
+				"EncrypteChat", tr("Enable encryption for this conversation"),
+				true, tr("Disable encryption for this conversation"));
+	
 	connect(action, SIGNAL(addedToToolbar(const UserGroup*, ToolButton*, ToolBar*)),
 		this, SLOT(setupEncrypt(const UserGroup*)));
 	ToolBar::addDefaultAction("Chat toolbar 1", "encryptionAction", 4);
@@ -85,7 +88,7 @@ EncryptionManager::EncryptionManager()
 	UserBox::userboxmenu->addItemAtPos(2,"SendPublicKey", tr("Send my public key"), this, SLOT(sendPublicKey()));
 	
 	MenuId = kadu->mainMenu()->insertItem(icons_manager->loadIcon("KeysManager"), tr("Manage keys"), this, SLOT(showKeysManagerDialog()), 0, -1, 12);
-	icons_manager->registerMenuItem(kadu->mainMenu(), tr("Manage keys"), "KeysManager");
+	//icons_manager->registerMenuItem(kadu->mainMenu(), tr("Manage keys"), "KeysManager");
 
 	sim_key_path = strdup(ggPath("keys/").local8Bit());
 
@@ -177,8 +180,9 @@ void EncryptionManager::setupEncrypt(const UserGroup *group)
 void EncryptionManager::setupEncryptButton(ChatWidget* chat,bool enabled)
 {
 	kdebugf();
-	EncryptionEnabled[chat] = enabled;
-	QValueList<ToolButton*> buttons =
+	//TODO
+	/*EncryptionEnabled[chat] = enabled;
+	QList<ToolButton*> buttons =
 		KaduActions["encryptionAction"]->toolButtonsForUserListElements(
 			chat->users()->toUserListElements());
 	CONST_FOREACH(i, buttons)
@@ -199,11 +203,11 @@ void EncryptionManager::setupEncryptButton(ChatWidget* chat,bool enabled)
 	}
 	chat_manager->setChatWidgetProperty(chat->users(), "EncryptionEnabled", QVariant(enabled));
 	if (chat->users()->count() == 1)
-		(*(chat->users()->begin())).setData("EncryptionEnabled", enabled ? "true" : "false");
+		(*(chat->users()->begin())).setData("EncryptionEnabled", enabled ? "true" : "false");*/
 	kdebugf2();
 }
 
-void EncryptionManager::encryptionActionActivated(const UserGroup* users)
+void EncryptionManager::encryptionActionActivated(QAction *action, const UserGroup* users)
 {
 	kdebugf();
 	ChatWidget* chat= chat_manager->findChatWidget(users);
@@ -213,7 +217,7 @@ void EncryptionManager::encryptionActionActivated(const UserGroup* users)
 	kdebugf2();
 }
 
-void EncryptionManager::decryptMessage(Protocol *protocol, UserListElements senders, QCString &msg, QByteArray &formats, bool &ignore)
+void EncryptionManager::decryptMessage(Protocol *protocol, UserListElements senders, QString &msg, QByteArray &formats, bool &ignore)
 {
 	kdebugf();
 	if (msg.length() < 30)
@@ -278,10 +282,11 @@ void EncryptionManager::decryptMessage(Protocol *protocol, UserListElements send
 void EncryptionManager::setupEncryptionButtonForUsers(UserListElements users, bool enabled)
 {
 	kdebugf();
-	QValueList<ToolButton*> buttons =
+	//TODO
+	/*QList<ToolButton*> buttons =
 		KaduActions["encryptionAction"]->toolButtonsForUserListElements(users);
 	CONST_FOREACH(i, buttons)
-		(*i)->setEnabled(enabled);
+		(*i)->setEnabled(enabled);*/
 	kdebugf2();
 }
 
@@ -465,6 +470,7 @@ SavePublicKey::SavePublicKey(UserListElement user, QString keyData, QWidget *par
 	grid->addMultiCellWidget(l_info, 0, 0, 0, 1);
 	grid->addWidget(yesbtn, 1, 0);
 	grid->addWidget(nobtn, 1, 1);
+	this->setLayout(grid);
 
 	kdebugf2();
 }
