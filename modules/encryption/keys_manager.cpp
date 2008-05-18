@@ -7,15 +7,11 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <QLabel>
-#include <QLayout>
-#include <QTableWidget>
-#include <QPushButton>
-#include <QRegExp>
-#include <QTextEdit>
-//#include <QVBox>
-//#include <QVGroupBox>
+#include <QGroupBox>
 #include <QHBoxLayout>
+#include <QLabel>
+#include <QTextEdit>
+#include <QTreeWidget>
 #include <QVBoxLayout>
 
 #include "config_file.h"
@@ -23,105 +19,117 @@
 #include "gadu.h"
 #include "userlist.h"
 #include "icons_manager.h"
-#include "keys_manager.h"
 #include "encryption.h"
 #include "misc.h"
 #include "message_box.h"
 
-KeysManager::KeysManager(QDialog *parent, const char *name) : QWidget(parent, name),
+#include "keys_manager.h"
+
+KeysManager::KeysManager(QDialog *parent) 
+	: QWidget(parent),
 	lv_keys(0), e_key(0), pb_del(0), pb_on(0)
 {
 	kdebugf();
-	//setWFlags(Qt::WDestructiveClose);
-	setCaption(tr("Manage keys"));
 
-	QHBoxLayout *layout = new QHBoxLayout;
-	layout->setResizeMode(QLayout::Minimum);
+	setWindowTitle(tr("Manage keys"));
+	setAttribute(Qt::WA_DeleteOnClose);
+
 	// create main QLabel widgets (icon and app info)
-	QWidget *left = new QWidget(this);
-	//left->setMargin(10);
-	//left->setSpacing(10);
-	layout->addWidget(left);
 
-	QLabel *l_icon = new QLabel(left);
-	QWidget *blank=new QWidget(left);
+	QWidget *left = new QWidget();
+
+	QLabel *l_icon = new QLabel;
+	l_icon->setPixmap(icons_manager->loadPixmap("ManageKeysWindowIcon"));
+
+	QWidget *blank = new QWidget;
 	blank->setSizePolicy(QSizePolicy(QSizePolicy::Maximum, QSizePolicy::Expanding));
 
-	QWidget *center = new QWidget(this);
-	//center->setMargin(10);
-	//center->setSpacing(10);
-	layout->addWidget(center);
+	QVBoxLayout *left_layout = new QVBoxLayout;
+	left_layout->addWidget(l_icon);
+	left_layout->addWidget(blank);
+	left->setLayout(left_layout);
 
-	QLabel *l_info = new QLabel(center);
-	l_icon->setPixmap(icons_manager->loadIcon("ManageKeysWindowIcon").pixmap(128,128));
+	QWidget *center = new QWidget;
+
+	QLabel *l_info = new QLabel();
+
 	l_info->setText(tr("This dialog box allows you to manage your keys."));
-	l_info->setAlignment(Qt::WordBreak);
+	l_info->setWordWrap(true);
+	l_info->setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Minimum));
+
 	// end create main QLabel widgets (icon and app info)
 
 
-        // our QListView
-	lv_keys = new QTableWidget(center);
-	lv_keys->setColumnCount(3);
+        // our QTreeWidget
+	lv_keys = new QTreeWidget(center);
 
-	//QTableWidgetItem *header1 = new QTableWidgetItem(tr("Contact"));
-	//lv_keys->setHorizontalHeaderItem(0, header1);
-	QStringList labels;
-	labels << tr("Contact") << tr("Uin") << tr("Encryption is on");
-	lv_keys->setHorizontalHeaderLabels(labels);
-	lv_keys->setColumnWidth(0, 240);
-	lv_keys->setColumnWidth(1, 180);
-	lv_keys->setColumnWidth(2, 184);
-	
-	/*lv_keys->addColumn(tr("Contact"), 240);
-	lv_keys->addColumn(tr("Uin"), 180);
-	lv_keys->addColumn(tr("Encryption is on"), 184);
-	lv_keys->setAllColumnsShowFocus(true);*/
-	// end our QListView
+	QStringList headers;
+	headers << tr("Contact") << tr("Uin") << tr("Encryption is on");
 
-	// our QVGroupBox
-	QWidget *vgb_key = new QWidget(center);
-	QVBoxLayout *vgb_key_layout = new QVBoxLayout(vgb_key);
-	//vgb_key->setTitle(tr("Key"));
-	// end our QVGroupBox
+	lv_keys->setHeaderLabels(headers);
+	lv_keys->setAllColumnsShowFocus(true);
+	lv_keys->setIndentation(false);
+	// end our QTreeWidget
+
+	// our QGroupBox
+	QGroupBox *vgb_key = new QGroupBox(tr("Key"), center);
+	QVBoxLayout *keyLayout = new QVBoxLayout(vgb_key);
+	// end our QVroupBox
 	
 	// our QTextEdit
 	e_key = new QTextEdit(vgb_key);
-	e_key->setTextFormat(Qt::LogText);
-	vgb_key_layout->addWidget(e_key);
+	e_key->setReadOnly(true);
+	keyLayout->addWidget(e_key);
+//	e_key->setTextFormat(Qt::LogText);
 	// end our QTextEdit
-	vgb_key->setLayout(vgb_key_layout);
                                                                                                                                                                         
 	// buttons
-	QWidget *bottom = new QWidget(center);
-	QWidget *blank2 = new QWidget(bottom);
-	//bottom->setSpacing(5);
+	QWidget *bottom = new QWidget;
+
+	QWidget *blank2 = new QWidget;
 	blank2->setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Maximum));
-	//pb_del = new QPushButton(icons_manager->loadIconSet("DeleteKeyButton"), tr("Delete"), bottom);
+
+	pb_del = new QPushButton(icons_manager->loadIcon("DeleteKeyButton"), tr("Delete"), bottom);
 	pb_del->setEnabled(false);
-	//pb_on = new QPushButton(icons_manager->loadIconSet("DecryptedChat"), tr("On"), bottom);
+	pb_on = new QPushButton(icons_manager->loadIcon("DecryptedChat"), tr("On"), bottom);
 	pb_on->setEnabled(false);
 	QPushButton *pb_close = new QPushButton(icons_manager->loadIcon("CloseWindow"), tr("&Close"), bottom, "close");
+
+	QHBoxLayout *bottom_layout = new QHBoxLayout(bottom);
+	bottom_layout->addWidget(blank2);
+	bottom_layout->addWidget(pb_del);
+	bottom_layout->addWidget(pb_on);
+	bottom_layout->addWidget(pb_close);
 	// end buttons
+
+	QVBoxLayout *center_layout = new QVBoxLayout(center);
+	center_layout->addWidget(l_info);
+	center_layout->addWidget(lv_keys);
+	center_layout->addWidget(vgb_key);
+	center_layout->addWidget(bottom);
+
+	QHBoxLayout *layout = new QHBoxLayout(this);
+	layout->addWidget(left);
+	layout->addWidget(center);
 
 	connect(pb_del, SIGNAL(clicked()), this, SLOT(removeKey()));
 	connect(pb_on, SIGNAL(clicked()), this, SLOT(turnEncryption()));
 	connect(pb_close, SIGNAL(clicked()), this, SLOT(close()));
 
-	connect(lv_keys, SIGNAL(selectionChanged()), this, SLOT(selectionChanged()));
-	connect(lv_keys, SIGNAL(doubleClicked(QListViewItem *)), this, SLOT(turnEncryption(QListViewItem *)));
+	connect(lv_keys, SIGNAL(itemSelectionChanged()), this, SLOT(selectionChanged()));
+	connect(lv_keys, SIGNAL(itemDoubleClicked(QTreeWidgetItem *, int)), this, SLOT(turnEncryption(QTreeWidgetItem *)));
 	
-	// refreshing (loading) QListView
+	// refreshing (loading) QTreeWidget
 	refreshKeysList();
 
-	loadGeometry(this, "General", "KeysManagerDialogGeometry", 0, 0, 680, 460);
-	this->setLayout(layout);
+ 	loadGeometry(this, "General", "KeysManagerDialogGeometry", 0, 0, 680, 460);
 	kdebugf2();
 }
 
 KeysManager::~KeysManager()
 {
 	kdebugf();
-	//saveGeometry(this, "General", "KeysManagerDialogGeometry");
+//	saveGeometry(this, "General", "KeysManagerDialogGeometry");
 	delete lv_keys;
 	delete e_key;
 	delete pb_del;
@@ -132,6 +140,14 @@ void KeysManager::keyPressEvent(QKeyEvent *ke_event)
 {
 	if (ke_event->key() == Qt::Key_Escape)
 		close();
+}
+
+QTreeWidgetItem * KeysManager::getSelected()
+{
+	if (lv_keys->selectedItems().count())
+		return lv_keys->selectedItems()[0];
+	else
+		return 0;
 }
 
 void KeysManager::getKeysList(QStringList &uins)
@@ -148,9 +164,9 @@ void KeysManager::getKeysList(QStringList &uins)
 	CONST_FOREACH(fileName, list)
 	{
 		file.setName(ggPath("keys/").append(*fileName));
-		if (*fileName!=QString("private.pem") && *fileName!=GGUIN+QString(".pem") && file.open(IO_ReadOnly))
+		if (*fileName != QString("private.pem") && *fileName != GGUIN + QString(".pem") && file.open(QIODevice::ReadOnly))
 		{
-			temp=*fileName;
+			temp = *fileName;
 			uins << (temp.remove(QRegExp(".pem$")));
 			file.close();
 		}
@@ -159,11 +175,11 @@ void KeysManager::getKeysList(QStringList &uins)
 
 void KeysManager::turnContactEncryptionText(QString id, bool on)
 {
-	QTableWidgetItem *item = lv_keys->findItem(id, 1);
-	if(item)
+	QList <QTreeWidgetItem *> items = lv_keys->findItems(id, Qt::MatchExactly, 1);
+	if (items.count())
 	{
-		item->setText(2, bool2text(on));
-		if (lv_keys->selectedItem() == item)
+		items[0]->setText(2, bool2text(on));
+		if (getSelected() == items[0])
 			turnEncryptionBtn(on);
 	}
 }
@@ -171,14 +187,14 @@ void KeysManager::turnContactEncryptionText(QString id, bool on)
 void KeysManager::turnEncryption()
 {
 
-	turnEncryption(lv_keys->selectedItem());
+	turnEncryption(getSelected());
 }
 
-void KeysManager::turnEncryption(QListViewItem* item)
+void KeysManager::turnEncryption(QTreeWidgetItem *item)
 {
 	bool on = (item->text(2) == tr("Yes") ? false : true);
 
-	if (lv_keys->selectedItem() == item)
+	if (getSelected() == item)
 		turnEncryptionBtn(on);
 
 	UserListElements ules(userlist->byID("Gadu", item->text(1)));
@@ -188,15 +204,15 @@ void KeysManager::turnEncryption(QListViewItem* item)
 
 void KeysManager::turnEncryptionBtn(bool on)
 {
-	if(on)
+	if (on)
 	{
 		pb_on->setText(tr("Off"));
-		pb_on->setIconSet(icons_manager->loadIcon("EncryptedChat"));
+		pb_on->setIcon(icons_manager->loadIcon("EncryptedChat"));
 	}
 	else
 	{
 		pb_on->setText(tr("On"));
-		pb_on->setIconSet(icons_manager->loadIcon("DecryptedChat"));
+		pb_on->setIcon(icons_manager->loadIcon("DecryptedChat"));
 	}
 }
 
@@ -224,7 +240,10 @@ void KeysManager::refreshKeysList()
 			else
 				encrypt = config_file.readBoolEntry("Chat", "Encryption");
 
-			new QListViewItem(lv_keys, (userlist->contains(ule) ? ule.altNick() : QString::null), ule.ID("Gadu"), bool2text(encrypt));
+			QStringList strings;
+			strings << (userlist->contains(ule) ? ule.altNick() : QString::null) << ule.ID("Gadu") << bool2text(encrypt);
+
+			new QTreeWidgetItem(lv_keys, strings);
 		}
 	}
 	// end filling QListView
@@ -238,7 +257,7 @@ void KeysManager::removeKey()
 	kdebugf();
 	if (MessageBox::ask(tr("Are you sure you want to delete the selected key?")))
 	{
-		QString id = lv_keys->selectedItem()->text(1);
+		QString id = getSelected()->text(1);
 		QString path = ggPath("keys/")+id+QString(".pem");
 		QFile *file = new QFile(path);
 		if (file->remove())
@@ -248,6 +267,7 @@ void KeysManager::removeKey()
 		}
 		else
 			MessageBox::msg(tr("Cannot remove key\nCheck if you have access to file \"%1\"").arg(path));
+
 		delete file;
 	}
 	kdebugf2();
@@ -256,15 +276,15 @@ void KeysManager::removeKey()
 void KeysManager::selectionChanged()
 {
 	e_key->clear();
-	if (lv_keys->selectedItem() != NULL)
+	if (lv_keys->selectedItems().count())
 	{
 		pb_del->setEnabled(true);
 		pb_on->setEnabled(true);
-		turnEncryptionBtn(lv_keys->selectedItem()->text(2) == tr("Yes"));
+		turnEncryptionBtn(lv_keys->selectedItems()[0]->text(2) == tr("Yes"));
 		getKeyInfo();
 	}
-	else if (lv_keys->childCount() > 0)
-		lv_keys->setSelected(lv_keys->firstChild(), true);
+//	else if (lv_keys->childCount() > 0)
+//		lv_keys->setSelected(lv_keys->firstChild(), true);
 	else
 	{
 		pb_del->setEnabled(false);
@@ -274,8 +294,8 @@ void KeysManager::selectionChanged()
 
 void KeysManager::getKeyInfo()
 {
-	QFile *file = new QFile(ggPath("keys/")+(lv_keys->selectedItem()->text(1))+QString(".pem"));
-	if (file->open(IO_ReadOnly))
+	QFile *file = new QFile(ggPath("keys/") + (lv_keys->selectedItems()[0]->text(1)) + QString(".pem"));
+	if (file->open(QIODevice::ReadOnly))
 	{
 		e_key->append(file->readAll());
 		file->close();

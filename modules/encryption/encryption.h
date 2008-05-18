@@ -3,15 +3,13 @@
 
 #include <QDialog>
 
-#include "keys_manager.h"
 #include "main_configuration_window.h"
-#include "misc.h"
-#include "usergroup.h"
-#include "config_file.h"
 
-class Action;
+class ActionDescription;
 class ChatWidget;
+class KeysManager;
 class Protocol;
+class UserGroup;
 
 /**
  * @defgroup encryption Encryption
@@ -21,44 +19,44 @@ class EncryptionManager : public ConfigurationUiHandler
 {
 	Q_OBJECT
 
-	int MenuId;
+		int MenuId;
 
-	QMap<ChatWidget *, bool> EncryptionEnabled;
-	QMap<ChatWidget *, bool> EncryptionPossible;
+		QMap<ChatWidget *, bool> EncryptionEnabled;
+		QMap<ChatWidget *, bool> EncryptionPossible;
 
-	void setupEncryptButton(ChatWidget* chat, bool enabled);
-	void setupEncryptionButtonForUsers(UserListElements users, bool enabled);
+		void setupEncryptButton(ChatWidget* chat, bool enabled);
+		void setupEncryptionButtonForUsers(UserListElements users, bool enabled);
+		ActionDescription* action;
 
-	ActionDescription *action;
-	QWidget *configurationWindow;
-	void createDefaultConfiguration();
+		QWidget *configurationWindow;
+		void createDefaultConfiguration();
 
-	KeysManager *KeysManagerDialog;
+		KeysManager *KeysManagerDialog;
 
-private slots:
-	void decryptMessage(Protocol *protocol, UserListElements senders, QString &msg, QByteArray &formats, bool &ignore);
-	void sendMessageFilter(const UserListElements users, QString &msg, bool &stop);
-	void setupEncrypt(const UserGroup *group);
+	private slots:
+		void decryptMessage(Protocol *protocol, UserListElements senders, QString &msg, QByteArray &formats, bool &ignore);
+		void sendMessageFilter(const UserListElements users, QString &msg, bool &stop);
+		void setupEncrypt(const UserGroup *group);
 
-	void generateMyKeys();
-	void sendPublicKey();
-	void encryptionActionActivated(QAction *action, const UserGroup* users);
-	void userBoxMenuPopup();
+		void generateMyKeys();
+		void sendPublicKey();
+		void encryptionActionActivated(QAction *sender, bool toggled);
+		void userBoxMenuPopup();
 
-	void keysManagerDialogDestroyed();
+		void keysManagerDialogDestroyed();
 
-	void turnEncryption(UserGroup *group, bool on);
-	void keyRemoved(UserListElement ule);
-	void keyAdded(UserListElement ule);
+		void turnEncryption(UserGroup *group, bool on);
+		void keyRemoved(UserListElement ule);
+		void keyAdded(UserListElement ule);
 
-public:
-	EncryptionManager();
-	virtual ~EncryptionManager();
+	public:
+		EncryptionManager();
+		virtual ~EncryptionManager();
 
-	virtual void mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow);
+		virtual void mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow);
 
-public slots:
-	void showKeysManagerDialog();
+	public slots:
+		void showKeysManagerDialog();
 
 };
 
@@ -66,17 +64,17 @@ class SavePublicKey : public QDialog
 {
 	Q_OBJECT
 
-	UserListElement user;
-	QString keyData;
+		UserListElement user;
+		QString keyData;
 
-private slots:
-	void yesClicked();
+	private slots:
+		void yesClicked();
 
-public:
-	SavePublicKey(UserListElement user, QString keyData, QWidget *parent = 0, const char *name = "save_public_key");
+	public:
+		SavePublicKey(UserListElement user, QString keyData, QWidget *parent = 0);
 
-signals:
-	void keyAdded(UserListElement ule);
+	signals:
+		void keyAdded(UserListElement ule);
 
 };
 

@@ -121,6 +121,7 @@ ModulesDialog::ModulesDialog(QWidget *parent)
 	headers << tr("Module name") << tr("Version") << tr("Module type") << tr("State");
 	lv_modules->setHeaderLabels(headers);
 	lv_modules->setAllColumnsShowFocus(true);
+	lv_modules->setIndentation(false);
 	// end our QListView
 
 	//our QVGroupBox

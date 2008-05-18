@@ -57,11 +57,9 @@ About::About(QWidget *parent)
 	QWidget *blank = new QWidget;
 	blank->setSizePolicy(QSizePolicy(QSizePolicy::Maximum, QSizePolicy::Expanding));
 
-	QVBoxLayout *left_layout = new QVBoxLayout;
+	QVBoxLayout *left_layout = new QVBoxLayout(left);
 	left_layout->addWidget(l_icon);
 	left_layout->addWidget(blank);
-
-	left->setLayout(left_layout);
 
 	QWidget *center = new QWidget;
 
@@ -73,10 +71,9 @@ About::About(QWidget *parent)
 	l_info->setWordWrap(true);
 	l_info->setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Minimum));
 
-	QHBoxLayout *texts_layout = new QHBoxLayout;
+	QHBoxLayout *texts_layout = new QHBoxLayout(texts);
 	texts_layout->addWidget(l_info);
 	texts_layout->addWidget(new KaduLink());
-	texts->setLayout(texts_layout);
 	// end create main QLabel widgets (icon and app info)
 
 	// our TabWidget
@@ -119,12 +116,9 @@ About::About(QWidget *parent)
 	tw_about->addTab(tb_changelog, tr("&ChangeLog"));
 	// end create our info widgets
 
-	QVBoxLayout *center_layout = new QVBoxLayout;
+	QVBoxLayout *center_layout = new QVBoxLayout(center);
 	center_layout->addWidget(texts);
 	center_layout->addWidget(tw_about);
-
-	center->setLayout(center_layout);
-
 	// close button
 	QWidget *bottom = new QWidget;
 

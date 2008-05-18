@@ -160,6 +160,7 @@ SearchDialog::SearchDialog(QWidget *parent, UinType whoisSearchUin)
 	results->setHeaderLabels(headers);
 	results->setAllColumnsShowFocus(true);
 	results->setSelectionMode(QAbstractItemView::SingleSelection);
+	results->setIndentation(false);
 //	results->setResizeMode(Q3ListView::AllColumns);
 //	for (int i = 1; i < 5; ++i)
 //		results->setColumnWidthMode(i, Q3ListView::Maximum);
