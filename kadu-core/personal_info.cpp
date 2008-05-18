@@ -9,18 +9,20 @@
 
 #include <QComboBox>
 #include <QGroupBox>
+#include <QHBoxLayout>
 #include <QKeyEvent>
 #include <QLabel>
-#include <QLayout>
 #include <QLineEdit>
 #include <QPushButton>
 
 #include "debug.h"
+#include "gadu.h"
 #include "icons_manager.h"
-#include "misc.h"
+
 #include "personal_info.h"
 
-PersonalInfoDialog::PersonalInfoDialog(QWidget *parent, const char *name) : QWidget(parent, name, Qt::Window),
+PersonalInfoDialog::PersonalInfoDialog(QWidget *parent)
+	: QWidget(parent, Qt::Window),
 	le_nickname(0), le_name(0), le_surname(0), cb_gender(0), le_birthyear(0), le_city(0), le_familyname(0),
 	le_familycity(0), pb_save(0), State(READY), data(new SearchRecord())
 {
@@ -193,7 +195,7 @@ PersonalInfoDialog::PersonalInfoDialog(QWidget *parent, const char *name) : QWid
 
 	reloadInfo();
 
- 	loadGeometry(this, "General", "PersonalInfoDialogGeometry", 0, 30, 460, 280);
+//  	loadGeometry(this, "General", "PersonalInfoDialogGeometry", 0, 30, 460, 280);
 	kdebugf2();
 }
 
@@ -251,7 +253,7 @@ void PersonalInfoDialog::saveButtonClicked()
 	kdebugf2();
 }
 
-void PersonalInfoDialog::fillFields(SearchResults& searchResults, int seq, int)
+void PersonalInfoDialog::fillFields(SearchResults &searchResults, int seq, int)
 {
 	kdebugf();
 

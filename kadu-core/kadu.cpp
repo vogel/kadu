@@ -774,7 +774,7 @@ void Kadu::deleteUsers()
 
 void Kadu::personalInfo()
 {
-	(new PersonalInfoDialog(kadu, "personal_info"))->show();
+	(new PersonalInfoDialog(kadu))->show();
 }
 
 void Kadu::addUserAction()
