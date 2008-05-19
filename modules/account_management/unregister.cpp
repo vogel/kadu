@@ -27,7 +27,7 @@
  * @ingroup account_management
  * @{
  */
-Unregister::Unregister(QDialog *parent, const char *name) : QWidget(parent, name, Qt::Window),
+Unregister::Unregister(QDialog *parent) : QWidget(parent, Qt::Window),
 	uin(0), pwd(0)
 {
 	kdebugf();
@@ -44,10 +44,9 @@ Unregister::Unregister(QDialog *parent, const char *name) : QWidget(parent, name
 	QWidget *blank = new QWidget;
 	blank->setSizePolicy(QSizePolicy(QSizePolicy::Maximum, QSizePolicy::Expanding));
 
-	QVBoxLayout *left_layout = new QVBoxLayout;
+	QVBoxLayout *left_layout = new QVBoxLayout(left);
 	left_layout->addWidget(l_icon);
 	left_layout->addWidget(blank);
-	left->setLayout(left_layout);
 
 	QWidget *center = new QWidget;
 
@@ -62,9 +61,7 @@ Unregister::Unregister(QDialog *parent, const char *name) : QWidget(parent, name
 
 	//our QGroupBox
 	QGroupBox *vgb_uinpass = new QGroupBox(tr("UIN and password"));
-	QVBoxLayout *uinpass_layout = new QVBoxLayout;
-	vgb_uinpass->setLayout(uinpass_layout);
-
+	QVBoxLayout *uinpass_layout = new QVBoxLayout(vgb_uinpass);
 	//end our QGroupBox
 
 	// create needed fields
@@ -90,30 +87,21 @@ Unregister::Unregister(QDialog *parent, const char *name) : QWidget(parent, name
 	QPushButton *pb_close = new QPushButton(icons_manager->loadIcon("CloseWindow"), tr("&Close"), bottom, "close");
 	connect(pb_close, SIGNAL(clicked()), this, SLOT(close()));
 
-	QHBoxLayout *bottom_layout = new QHBoxLayout;
+	QHBoxLayout *bottom_layout = new QHBoxLayout(bottom);
 	bottom_layout->addWidget(blank2);
 	bottom_layout->addWidget(pb_unregister);
 	bottom_layout->addWidget(pb_close);
-
-	bottom->setLayout(bottom_layout);
-
 	// end buttons
 
-	QVBoxLayout *center_layout = new QVBoxLayout;
+	QVBoxLayout *center_layout = new QVBoxLayout(center);
 	center_layout->addWidget(l_info);
 	center_layout->addWidget(vgb_uinpass);
 	center_layout->setStretchFactor(vgb_uinpass, 1);
 	center_layout->addWidget(bottom);
 
-	center->setLayout(center_layout);
-
-	QHBoxLayout *layout = new QHBoxLayout;
+	QHBoxLayout *layout = new QHBoxLayout(this);
 	layout->addWidget(left);
 	layout->addWidget(center);
-
-	setLayout(layout);
-
-
 
 	connect(gadu, SIGNAL(unregistered(bool)), this, SLOT(unregistered(bool)));
 

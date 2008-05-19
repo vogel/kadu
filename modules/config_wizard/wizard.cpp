@@ -36,7 +36,7 @@
 extern "C" int config_wizard_init()
 {
 	kdebugf();
-	wizardStarter = new WizardStarter(NULL, "wizardStarter");
+	wizardStarter = new WizardStarter();
 
 	if (config_file.readNumEntry("General", "UIN", 0) == 0 || config_file.readEntry("General", "Password").isEmpty())
 		wizardStarter->start();
@@ -51,12 +51,12 @@ extern "C" void config_wizard_close()
 	if (wizardStarter)
 	{
 		delete wizardStarter;
-		wizardStarter = NULL;
+		wizardStarter = 0;
 	}
 	kdebugf2();
 }
 
-WizardStarter::WizardStarter(QObject *parent, const char *name) : QObject(parent, name)
+WizardStarter::WizardStarter(QObject *parent) : QObject(parent)
 {
 	QMenu *MainMenu = kadu->mainMenu();
 
@@ -79,17 +79,17 @@ void WizardStarter::start()
 	kdebugf();
 	if (!startWizardObj)
 	{
-		startWizardObj = new Wizard(NULL, "startWizardObj");
+		startWizardObj = new Wizard();
 		startWizardObj->wizardStart();
 	}
 	kdebugf2();
 }
 
-Wizard::Wizard(QWidget *parent, const char *name, bool modal)
-	: QDialog(parent/*, name, modal*/)
+Wizard::Wizard(QWidget *parent)
+	: QDialog(parent)
 {
 	kdebugf();
-	setCaption(tr("Kadu Wizard"));
+	setWindowTitle(tr("Kadu Wizard"));
 	setMinimumSize(510, 300);
 
 	layout = new QGridLayout(this);
@@ -407,7 +407,6 @@ void Wizard::createGGAccountPage()
 
 	container->setLayout(gridLayout);
 	layout->addWidget(account);
-	ggPage->setLayout(layout);
 
 	haveNumberWidgets.append(ggNumberLabel);
 	haveNumberWidgets.append(ggNumber);

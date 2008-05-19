@@ -13,7 +13,6 @@ class RemindPassword : public QWidget
 {
 	Q_OBJECT
 
-	private:
 		QLineEdit* emailedit;
 
 	private slots:
@@ -22,7 +21,7 @@ class RemindPassword : public QWidget
 		void keyPressEvent(QKeyEvent *);
 
 	public:
-		RemindPassword(QDialog *parent = 0, const char *name = "remind_pasword");
+		RemindPassword(QDialog *parent = 0);
 		~RemindPassword();
 
 };

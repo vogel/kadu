@@ -12,11 +12,6 @@ class Unregister : public QWidget
 {
 	Q_OBJECT
 
-	public:
-		Unregister(QDialog* parent = 0, const char *name = "unregister_user");
-		~Unregister();
-
-	private:
 		QLineEdit *uin;
 		QLineEdit *pwd;
 
@@ -26,6 +21,10 @@ class Unregister : public QWidget
 		void doUnregister();
 		void keyPressEvent(QKeyEvent *);
 
+	public:
+		Unregister(QDialog* parent = 0);
+		~Unregister();
+	
 	public slots:
 		void unregistered(bool ok);
 

@@ -37,101 +37,100 @@ class VoiceChatDialog : public QDialog, public DccHandler
 {
 	Q_OBJECT
 
-	static QList<VoiceChatDialog *> VoiceChats;
-	DccSocket* Socket;
+		static QList<VoiceChatDialog *> VoiceChats;
+		DccSocket* Socket;
 
-public:
-	VoiceChatDialog();
-	~VoiceChatDialog();
+	public:
+		VoiceChatDialog();
+		~VoiceChatDialog();
 
-	bool addSocket(DccSocket *socket);
-	void removeSocket(DccSocket *socket);
+		bool addSocket(DccSocket *socket);
+		void removeSocket(DccSocket *socket);
 
-	int dccType() { return GG_SESSION_DCC_VOICE; }
+		int dccType() { return GG_SESSION_DCC_VOICE; }
 
-	bool socketEvent(DccSocket *socket, bool &lock);
+		bool socketEvent(DccSocket *socket, bool &lock);
 
-	void connectionDone(DccSocket *socket) {}
-	void connectionError(DccSocket *socket) {}
+		void connectionDone(DccSocket *socket) {}
+		void connectionError(DccSocket *socket) {}
 
-	void connectionAccepted(DccSocket *socket) {}
-	void connectionRejected(DccSocket *socket) {}
+		void connectionAccepted(DccSocket *socket) {}
+		void connectionRejected(DccSocket *socket) {}
 
-	static void destroyAll();
-	static void sendDataToAll(char *data, int length);
+		static void destroyAll();
+		static void sendDataToAll(char *data, int length);
 
-	void sendData(char *data, int length);
+		void sendData(char *data, int length);
 
-	bool chatFinished;
+		bool chatFinished;
 };
 
 class VoiceManager : public ConfigurationUiHandler, public DccHandler
 {
-Q_OBJECT
+	Q_OBJECT
 
-private:
-	MessageBox *GsmEncodingTestMsgBox;
-	SoundDevice GsmEncodingTestDevice;
-	gsm GsmEncodingTestHandle;
-	int16_t *GsmEncodingTestSample;
-	gsm_frame *GsmEncodingTestFrames;
-	int GsmEncodingTestCurrFrame;
-	SoundDevice device;
+		MessageBox *GsmEncodingTestMsgBox;
+		SoundDevice GsmEncodingTestDevice;
+		gsm GsmEncodingTestHandle;
+		int16_t *GsmEncodingTestSample;
+		gsm_frame *GsmEncodingTestFrames;
+		int GsmEncodingTestCurrFrame;
+		SoundDevice device;
 
-	PlayThread *playThread;
-	RecordThread *recordThread;
-	gsm voice_enc;
-	gsm voice_dec;
+		PlayThread *playThread;
+		RecordThread *recordThread;
+		gsm voice_enc;
+		gsm voice_dec;
 
-	void resetCoder();
-	void resetDecoder();
-	bool askAcceptVoiceChat(DccSocket *socket);
+		void resetCoder();
+		void resetDecoder();
+		bool askAcceptVoiceChat(DccSocket *socket);
 
-	QCheckBox *testFast;
-	QCheckBox *testCut;
+		QCheckBox *testFast;
+		QCheckBox *testCut;
 
-	void createDefaultConfiguration();
+		void createDefaultConfiguration();
 
-	void makeVoiceChat(UinType dest);
+		void makeVoiceChat(UinType dest);
 
-private slots:
-	void makeVoiceChat();
+	private slots:
+		void makeVoiceChat();
 
-	void testGsmEncoding();
-	void gsmEncodingTestSampleRecorded(SoundDevice device);
-	void gsmEncodingTestSamplePlayed(SoundDevice device);
-	void playGsmSampleReceived(char *data, int length);
-	void recordSampleReceived(char *data, int length);
-	void mainDialogKeyPressed(QKeyEvent *e);
-	void chatKeyPressed(QKeyEvent *e, ChatWidget *chatWidget, bool &handled);
-	void userBoxMenuPopup();
+		void testGsmEncoding();
+		void gsmEncodingTestSampleRecorded(SoundDevice device);
+		void gsmEncodingTestSamplePlayed(SoundDevice device);
+		void playGsmSampleReceived(char *data, int length);
+		void recordSampleReceived(char *data, int length);
+		void mainDialogKeyPressed(QKeyEvent *e);
+		void chatKeyPressed(QKeyEvent *e, ChatWidget *chatWidget, bool &handled);
+		void userBoxMenuPopup();
 
-	void chatCreated(ChatWidget *chat);
-	void chatDestroying(ChatWidget *chat);
+		void chatCreated(ChatWidget *chat);
+		void chatDestroying(ChatWidget *chat);
 
-public:
-	VoiceManager();
-	virtual ~VoiceManager();
+	public:
+		VoiceManager();
+		virtual ~VoiceManager();
 
-	int setup();
-	void free();
-	void resetCodec();
-	void addGsmSample(char *data, int length);
+		int setup();
+		void free();
+		void resetCodec();
+		void addGsmSample(char *data, int length);
 
-	bool addSocket(DccSocket *socket);
-	void removeSocket(DccSocket *socket) {}
+		bool addSocket(DccSocket *socket);
+		void removeSocket(DccSocket *socket) {}
 
-	int dccType() { return GG_SESSION_DCC_VOICE; }
+		int dccType() { return GG_SESSION_DCC_VOICE; }
 
-	bool socketEvent(DccSocket *socket, bool &lock);
+		bool socketEvent(DccSocket *socket, bool &lock);
 
-	void connectionDone(DccSocket *socket) {}
-	void connectionError(DccSocket *socket) {}
+		void connectionDone(DccSocket *socket) {}
+		void connectionError(DccSocket *socket) {}
 
-	void connectionAccepted(DccSocket *socket) {}
-	void connectionRejected(DccSocket *socket) {}
+		void connectionAccepted(DccSocket *socket) {}
+		void connectionRejected(DccSocket *socket) {}
 
-	virtual void mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow);
+		virtual void mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow);
 
 };
 
@@ -139,43 +138,44 @@ class PlayThread : public QThread
 {
 	Q_OBJECT
 
-public:
-	PlayThread();
-	~PlayThread();
-	void run();
-	void endThread();
-	void addGsmSample(char *data, int length);
+		QSemaphore *wsem;
+		void waitForData(); //czeka na nowe dane
+		void moreData(); //daje znaæ, ¿e s± nowe dane
 
-signals:
-	void playGsmSample(char *data, int length);
+		QList<struct gsm_sample> samples;
+		QMutex samplesMutex; // chroni dostêp do samples
 
-private:
-	QSemaphore *wsem;
-	void waitForData(); //czeka na nowe dane
-	void moreData(); //daje znaæ, ¿e s± nowe dane
+		bool end;
+//		QMutex endMutex; //chroni dostêp do end
 
-	QList<struct gsm_sample> samples;
-	QMutex samplesMutex; // chroni dostêp do samples
+	public:
+		PlayThread();
+		~PlayThread();
+		void run();
+		void endThread();
+		void addGsmSample(char *data, int length);
 
-	bool end;
-//	QMutex endMutex; //chroni dostêp do end
+	signals:
+		void playGsmSample(char *data, int length);
+
+
 };
 
 class RecordThread : public QThread
 {
 	Q_OBJECT
 
-public:
-	RecordThread();
-	void run();
-	void endThread();
+		bool end;
+//		QMutex endMutex; //chroni dostêp do end
+	public:
+		RecordThread();
+		void run();
+		void endThread();
 
-signals:
-	void recordSample(char *data, int length);
+	signals:
+		void recordSample(char *data, int length);
 
-private:
-	bool end;
-//	QMutex endMutex; //chroni dostêp do end
+
 };
 
 extern VoiceManager *voice_manager;

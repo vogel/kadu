@@ -90,7 +90,7 @@ protected:
 	void closeEvent(QCloseEvent *e);
 
 public:
-	Wizard(QWidget *parent = 0, const char *name = 0, bool modal = false);
+	Wizard(QWidget *parent = 0);
 	~Wizard();
 
 	void addPage(QWidget *page, const QString &title, const QString &description, bool lastOne);
@@ -107,7 +107,7 @@ class WizardStarter : public QObject
 	int menuPos;
 
 public:
-	WizardStarter(QObject *parent=0, const char *name=0);
+	WizardStarter(QObject *parent = 0);
 	~WizardStarter();
 
 public slots:

@@ -54,17 +54,19 @@ extern "C" void voice_close()
 }
 
 VoiceChatDialog::VoiceChatDialog()
-	: QDialog (NULL, Qt::WDestructiveClose), Socket(0), chatFinished(false)
+	: QDialog(0), 
+	Socket(0), chatFinished(false)
 {
 	kdebugf();
 
-	//setWFlags(Qt::WDestructiveClose);
-	setCaption(tr("Voice chat"));
+	setWindowTitle(tr("Voice chat"));
+	setAttribute(Qt::WA_DeleteOnClose);
+
 	resize(200, 100);
 
 	QPushButton *b_stop = new QPushButton(tr("&Stop"), this);
 
-	QGridLayout *grid = new QGridLayout(this, 1, 1, 3, 3);
+	QGridLayout *grid = new QGridLayout(this);
 	grid->addWidget(b_stop, 0, 0, Qt::AlignCenter);
 
 	connect(b_stop, SIGNAL(clicked()), this, SLOT(close()));

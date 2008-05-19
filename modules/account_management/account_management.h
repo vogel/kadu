@@ -12,7 +12,6 @@ class AccountManagement : public QObject
 {
 	Q_OBJECT
 
-	private:
 		QAction *remindMenuAction;
 		QAction *changeMenuAction;
 		QAction *registerMenuAction;

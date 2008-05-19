@@ -1,5 +1,6 @@
 #ifndef KADU_SPEAK_H
 #define KADU_SPEAK_H
+
 #include <QObject>
 #include <QString>
 

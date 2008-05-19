@@ -17,11 +17,6 @@ class Register : public QWidget
 {
 	Q_OBJECT
 
-	public:
-		Register(QDialog* parent = 0, const char *name = "register_user");
-		~Register();
-
-	private:
 		QLineEdit *pwd;
 		QLineEdit *pwd2;
 		QLineEdit *mailedit;
@@ -34,6 +29,10 @@ class Register : public QWidget
 	private slots:
 		void doRegister();
 		void keyPressEvent(QKeyEvent *);
+
+	public:
+		Register(QDialog* parent = 0);
+		~Register();
 
 	public slots:
 		void registered(bool ok, UinType uin);

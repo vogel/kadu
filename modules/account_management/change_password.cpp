@@ -25,7 +25,7 @@
 /** @ingroup account_management
  * @{
  */
-ChangePassword::ChangePassword(QDialog *parent, const char *name) : QWidget(parent, name, Qt::Window),
+ChangePassword::ChangePassword(QDialog *parent) : QWidget(parent, Qt::Window),
 	emailedit(0), newpwd(0), newpwd2(0)
 {
 	kdebugf();
@@ -42,10 +42,9 @@ ChangePassword::ChangePassword(QDialog *parent, const char *name) : QWidget(pare
 	QWidget *blank = new QWidget;
 	blank->setSizePolicy(QSizePolicy(QSizePolicy::Maximum, QSizePolicy::Expanding));
 
-	QVBoxLayout *left_layout = new QVBoxLayout;
+	QVBoxLayout *left_layout = new QVBoxLayout(left);
 	left_layout->addWidget(l_icon);
 	left_layout->addWidget(blank);
-	left->setLayout(left_layout);
 
 	QWidget *center = new QWidget;
 
@@ -59,12 +58,10 @@ ChangePassword::ChangePassword(QDialog *parent, const char *name) : QWidget(pare
 
 	//our QGroupBox
 	QGroupBox *vgb_email = new QGroupBox(tr("Email"));
-	QVBoxLayout *email_layout = new QVBoxLayout;
-	vgb_email->setLayout(email_layout);
+	QVBoxLayout *email_layout = new QVBoxLayout(vgb_email);
 
 	QGroupBox *vgb_password = new QGroupBox(tr("Password"));
-	QVBoxLayout *password_layout = new QVBoxLayout;
-	vgb_password->setLayout(password_layout);
+	QVBoxLayout *password_layout = new QVBoxLayout(vgb_password);
 	//end our QGroupBox
 
 	// create needed fields
@@ -90,34 +87,28 @@ ChangePassword::ChangePassword(QDialog *parent, const char *name) : QWidget(pare
 	QWidget *blank2 = new QWidget;
 	blank2->setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Maximum));
 
-	QPushButton *pb_ok = new QPushButton(icons_manager->loadIcon("ChangePasswordEmailButton"), tr("OK"), bottom, "ok");
+	QPushButton *pb_ok = new QPushButton(icons_manager->loadIcon("ChangePasswordEmailButton"), tr("OK"), bottom);
 	connect(pb_ok, SIGNAL(clicked()), this, SLOT(start()));
 
-	QPushButton *pb_close = new QPushButton(icons_manager->loadIcon("CloseWindow"), tr("&Close"), bottom, "close");
+	QPushButton *pb_close = new QPushButton(icons_manager->loadIcon("CloseWindow"), tr("&Close"), bottom);
 	connect(pb_close, SIGNAL(clicked()), this, SLOT(close()));
 
-	QHBoxLayout *bottom_layout = new QHBoxLayout;
+	QHBoxLayout *bottom_layout = new QHBoxLayout(bottom);
 	bottom_layout->addWidget(blank2);
 	bottom_layout->addWidget(pb_ok);
 	bottom_layout->addWidget(pb_close);
 
-	bottom->setLayout(bottom_layout);
-
 	// end buttons
-	QVBoxLayout *center_layout = new QVBoxLayout;
+	QVBoxLayout *center_layout = new QVBoxLayout(center);
 	center_layout->addWidget(l_info);
 	center_layout->addWidget(vgb_email);
 	center_layout->addWidget(vgb_password);
 	center_layout->setStretchFactor(vgb_password, 1);
 	center_layout->addWidget(bottom);
 
-	center->setLayout(center_layout);
-
-	QHBoxLayout *layout = new QHBoxLayout;
+	QHBoxLayout *layout = new QHBoxLayout(this);
 	layout->addWidget(left);
 	layout->addWidget(center);
-
-	setLayout(layout);
 
 	loadGeometry(this, "General", "ChangePasswordDialogGeometry", 0, 30, 355, 350);
 	connect(gadu, SIGNAL(passwordChanged(bool)), this, SLOT(passwordChanged(bool)));

@@ -71,7 +71,7 @@ void Register::createConfig()
 	kdebugf2();
 }
 
-Register::Register(QDialog *parent, const char *name) : QWidget(parent, name, Qt::Window),
+Register::Register(QDialog *parent) : QWidget(parent, Qt::Window),
 	pwd(0), pwd2(0), mailedit(0), uin(0), cb_updateconfig(0)
 {
 	kdebugf();
@@ -88,10 +88,9 @@ Register::Register(QDialog *parent, const char *name) : QWidget(parent, name, Qt
 	QWidget *blank = new QWidget;
 	blank->setSizePolicy(QSizePolicy(QSizePolicy::Maximum, QSizePolicy::Expanding));
 
-	QVBoxLayout *left_layout = new QVBoxLayout;
+	QVBoxLayout *left_layout = new QVBoxLayout(left);
 	left_layout->addWidget(l_icon);
 	left_layout->addWidget(blank);
-	left->setLayout(left_layout);
 
 	QWidget *center = new QWidget;
 
@@ -105,12 +104,10 @@ Register::Register(QDialog *parent, const char *name) : QWidget(parent, name, Qt
 
 	//our QVGroupBox
 	QGroupBox *vgb_email = new QGroupBox(tr("Email"));
-	QVBoxLayout *email_layout = new QVBoxLayout;
-	vgb_email->setLayout(email_layout);
+	QVBoxLayout *email_layout = new QVBoxLayout(vgb_email);
 
 	QGroupBox *vgb_password = new QGroupBox(tr("Password"));
-	QVBoxLayout *password_layout = new QVBoxLayout;
-	vgb_password->setLayout(password_layout);
+	QVBoxLayout *password_layout = new QVBoxLayout(vgb_password);
 
 	//end our QGroupBox
 
@@ -147,16 +144,14 @@ Register::Register(QDialog *parent, const char *name) : QWidget(parent, name, Qt
 	QPushButton *pb_close = new QPushButton(icons_manager->loadIcon("CloseWindow"), tr("&Close"), bottom, "close");
 	connect(pb_close, SIGNAL(clicked()), this, SLOT(close()));
 
-	QHBoxLayout *bottom_layout = new QHBoxLayout;
+	QHBoxLayout *bottom_layout = new QHBoxLayout(bottom);
 	bottom_layout->addWidget(blank2);
 	bottom_layout->addWidget(pb_register);
 	bottom_layout->addWidget(pb_close);
 
-	bottom->setLayout(bottom_layout);
-
 	// end buttons
 
-	QVBoxLayout *center_layout = new QVBoxLayout;
+	QVBoxLayout *center_layout = new QVBoxLayout(center);
 	center_layout->addWidget(l_info);
 	center_layout->addWidget(vgb_email);
 	center_layout->addWidget(vgb_password);
@@ -164,13 +159,9 @@ Register::Register(QDialog *parent, const char *name) : QWidget(parent, name, Qt
 	center_layout->addWidget(cb_updateconfig);
 	center_layout->addWidget(bottom);
 
-	center->setLayout(center_layout);
-
-	QHBoxLayout *layout = new QHBoxLayout;
+	QHBoxLayout *layout = new QHBoxLayout(this);
 	layout->addWidget(left);
 	layout->addWidget(center);
-
-	setLayout(layout);
 
 	connect(gadu, SIGNAL(registered(bool, UinType)), this, SLOT(registered(bool, UinType)));
 

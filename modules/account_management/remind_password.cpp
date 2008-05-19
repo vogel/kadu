@@ -26,7 +26,7 @@
  * @ingroup account_management
  * @{
  */
-RemindPassword::RemindPassword(QDialog *parent, const char *name) : QWidget(parent, name, Qt::Window),
+RemindPassword::RemindPassword(QDialog *parent) : QWidget(parent, Qt::Window),
 	emailedit(0)
 {
 	kdebugf();
@@ -43,10 +43,9 @@ RemindPassword::RemindPassword(QDialog *parent, const char *name) : QWidget(pare
 	QWidget *blank = new QWidget;
 	blank->setSizePolicy(QSizePolicy(QSizePolicy::Maximum, QSizePolicy::Expanding));
 
-	QVBoxLayout *left_layout = new QVBoxLayout;
+	QVBoxLayout *left_layout = new QVBoxLayout(left);
 	left_layout->addWidget(l_icon);
 	left_layout->addWidget(blank);
-	left->setLayout(left_layout);
 
 	QWidget *center = new QWidget;
 
@@ -60,16 +59,13 @@ RemindPassword::RemindPassword(QDialog *parent, const char *name) : QWidget(pare
 
 	//our QVGroupBox
 	QGroupBox *vgb_email = new QGroupBox(tr("Email"));
-	QVBoxLayout *email_layout = new QVBoxLayout;
+	QVBoxLayout *email_layout = new QVBoxLayout(vgb_email);
 	//end our QGroupBox
 
 	// create needed fields
-
 	emailedit = new QLineEdit();
 	email_layout->addWidget(new QLabel(tr("Email (as during registration):")));
 	email_layout->addWidget(emailedit);
-
-	vgb_email->setLayout(email_layout);
 	// end create needed fields
 
 	// buttons
@@ -84,27 +80,20 @@ RemindPassword::RemindPassword(QDialog *parent, const char *name) : QWidget(pare
 	QPushButton *pb_close = new QPushButton(icons_manager->loadIcon("CloseWindow"), tr("&Close"), bottom, "close");
 	connect(pb_close, SIGNAL(clicked()), this, SLOT(close()));
 
-	QHBoxLayout *bottom_layout = new QHBoxLayout;
+	QHBoxLayout *bottom_layout = new QHBoxLayout(bottom);
 	bottom_layout->addWidget(blank2);
 	bottom_layout->addWidget(pb_ok);
 	bottom_layout->addWidget(pb_close);
-
-	bottom->setLayout(bottom_layout);
-
 	// end buttons
 
-	QVBoxLayout *center_layout = new QVBoxLayout;
+	QVBoxLayout *center_layout = new QVBoxLayout(center);
 	center_layout->addWidget(l_info);
 	center_layout->addWidget(vgb_email);
 	center_layout->addWidget(bottom);
 
-	center->setLayout(center_layout);
-
-	QHBoxLayout *layout = new QHBoxLayout;
+	QHBoxLayout *layout = new QHBoxLayout(this);
 	layout->addWidget(left);
 	layout->addWidget(center);
-
-	setLayout(layout);
 
 	loadGeometry(this, "General", "RemindPasswordDialogGeometry", 0, 30, 355, 200);
 	connect(gadu, SIGNAL(reminded(bool)), this, SLOT(reminded(bool)));

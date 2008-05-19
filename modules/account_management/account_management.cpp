@@ -94,6 +94,6 @@ void AccountManagement::changePassword()
 	(new ChangePassword())->show();
 }
 
-AccountManagement *account_management=NULL;
+AccountManagement *account_management = NULL;
 
 /** @} */

@@ -11,11 +11,6 @@ class ChangePassword : public QWidget
 {
 	Q_OBJECT
 
-	public:
-		ChangePassword(QDialog *parent = 0, const char *name = "change_password");
-		~ChangePassword();
-
-	private:
 		QLineEdit *emailedit;
 		QLineEdit *newpwd;
 		QLineEdit *newpwd2;
@@ -25,6 +20,9 @@ class ChangePassword : public QWidget
 		void passwordChanged(bool ok);
 		void keyPressEvent(QKeyEvent *);
 
+	public:
+		ChangePassword(QDialog *parent = 0);
+		~ChangePassword();
 };
 
 /** @} */

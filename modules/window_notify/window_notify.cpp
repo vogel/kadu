@@ -68,7 +68,7 @@ NotificationWindow::NotificationWindow(Notification *notification)
 	layout->setSpacing(10);
 	
 	QWidget* labels = new QWidget;
-	QHBoxLayout* labels_layout = new QHBoxLayout;
+	QHBoxLayout* labels_layout = new QHBoxLayout(labels);
 	labels_layout->setSpacing(10);
 	
 	if (!notification->icon().isNull())
@@ -82,13 +82,13 @@ NotificationWindow::NotificationWindow(Notification *notification)
 	l->setText(notification->text());
 
 	labels_layout->addWidget(l);
-	labels->setLayout(labels_layout);
+
 	layout->addWidget(labels, 0, Qt::AlignCenter);
 
 	QWidget* buttons = new QWidget;
-	QHBoxLayout* buttons_layout = new QHBoxLayout;
+	QHBoxLayout* buttons_layout = new QHBoxLayout(buttons);
 	buttons_layout->setSpacing(20);
-	buttons->setLayout(buttons_layout);
+
 	layout->addWidget(buttons, 0, Qt::AlignCenter);
 
 	const QList<QPair<QString, const char *> > callbacks = notification->getCallbacks();

@@ -58,7 +58,7 @@ ChatWidget::ChatWidget(Protocol *initialProtocol, const UserListElements &usrs, 
 		body = new ChatMessagesView(horizSplit);
 
 		QWidget *userlistContainer = new QWidget(horizSplit);
-		QVBoxLayout *uc_layout = new QVBoxLayout;
+		QVBoxLayout *uc_layout = new QVBoxLayout(userlistContainer);
 
 		userbox = new UserBox(false, Users, userlistContainer, "userbox");
 		userbox->setMinimumSize(QSize(30,30));
@@ -71,7 +71,6 @@ ChatWidget::ChatWidget(Protocol *initialProtocol, const UserListElements &usrs, 
 
 		uc_layout->addWidget(userbox);
 		uc_layout->addWidget(leaveConference);
-		userlistContainer->setLayout(uc_layout);
 
 		sizes.append(3);
 		sizes.append(1);
@@ -238,7 +237,8 @@ void ChatWidget::insertImage()
 		config_file.writeEntry("Chatt", "LastImagePath", id->dirPath());
 		QString selectedFile = id->selectedFile();
 		QFileInfo f(selectedFile);
-		delete id;id = NULL;
+		delete id;
+		id = NULL;
 		if (!f.isReadable())
 		{
 			MessageBox::msg(tr("This file is not readable"), true, "Warning", this);

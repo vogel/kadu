@@ -46,9 +46,12 @@ extern "C" void desktop_docking_close()
 }
 
 DesktopDockWindow::DesktopDockWindow(QWidget *parent, char *name)
-	: QLabel(parent, name, Qt::WMouseNoMask | Qt::WRepaintNoErase | Qt::WType_TopLevel |  Qt::WStyle_Customize | Qt::WStyle_NoBorder | Qt::WStyle_StaysOnTop | Qt::WX11BypassWM),
+	: QLabel(parent, name, Qt::Window | Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint | Qt::X11BypassWindowManagerHint),
 		isMoving(false)
 {
+	setAttribute(Qt::WA_NoBackground);
+	setAttribute(Qt::WA_MouseNoMask);
+
 	QIcon desktopDockIcon = docking_manager->defaultPixmap();
 	configurationUpdated();
 	setMouseTracking(true);
@@ -192,7 +195,7 @@ void DesktopDock::configurationUpdated()
 
 void DesktopDock::setToolTip(const QString& statusText)
 {
-	QToolTip::add(desktopDock, statusText);
+	desktopDock->setTooltip(statusText);
 }
 
 void DesktopDock::setPixmap(const QIcon& DockIcon, const QString & /*iconName*/)
