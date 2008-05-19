@@ -1,8 +1,7 @@
 #ifndef HISTORY_SEARCH_DIALOG_H
 #define HISTORY_SEARCH_DIALOG_H
 
-#include <qbuttongroup.h>
-#include <qdialog.h>
+#include <QDialog>
 
 #include "gadu.h"
 
@@ -23,8 +22,25 @@ struct HistoryFindRec {
 	HistoryFindRec();
 };
 
-class HistorySearchDialog : public QDialog {
+class HistorySearchDialog : public QDialog 
+{
 	Q_OBJECT
+
+	protected:
+		QGroupBox *fromGroupBox, *toGroupBox, *phraseGroupBox, *statusGroupBox;
+		QCheckBox *fromCheckBox, *toCheckBox, *reverseCheckBox;
+		QComboBox *fromDayComboBox, *fromMonthComboBox, *fromYearComboBox, *fromHourComboBox, *fromMinComboBox;
+		QComboBox *toDayComboBox, *toMonthComboBox, *toYearComboBox, *toHourComboBox, *toMinComboBox;
+		QComboBox *statusComboBox;
+		QLineEdit *phraseEdit;
+		QButtonGroup *criteriaButtonGroup;
+		QGroupBox *criteriaGroupBox;
+		QRadioButton *phraseRadioButton , *statusRadioButton ;
+		QStringList numsList;
+		UinsList uins;
+
+		void resetFromDate();
+		void resetToDate();
 	public:
 		HistorySearchDialog(QWidget *parent, UinsList uins);
 		void setDialogValues(HistoryFindRec &findrec);
@@ -39,21 +55,6 @@ class HistorySearchDialog : public QDialog {
 		void findBtnClicked();
 		void cancelBtnClicked();
 		void resetBtnClicked();
-
-	protected:
-		QGroupBox *from_hgb, *to_hgb, *phrase_hgb, *status_hgb;
-		QGroupBox *criteria_bg;
-		QCheckBox *from_chb, *to_chb, *reverse_chb;
-		QComboBox *from_day_cob, *from_month_cob, *from_year_cob, *from_hour_cob, *from_min_cob;
-		QComboBox *to_day_cob, *to_month_cob, *to_year_cob, *to_hour_cob, *to_min_cob;
-		QComboBox *status_cob;
-		QLineEdit *phrase_edit;
-		QRadioButton *phrase_rb, *status_rb;
-		QStringList numslist;
-		UinsList uins;
-
-		void resetFromDate();
-		void resetToDate();
 };
 
 #endif

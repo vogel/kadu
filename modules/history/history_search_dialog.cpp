@@ -7,37 +7,38 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "history_search_dialog.h"
+#include <QApplication>
+#include <QButtonGroup>
+#include <QCheckBox>
+#include <QComboBox>
+#include <QGridLayout>
+#include <QGroupBox>
+#include <QHBoxLayout>
+#include <QLineEdit>
+#include <QPushButton>
+#include <QRadioButton>
 
 #include "config_file.h"
 #include "debug.h"
 #include "history.h"
-#include <qapplication.h>
-#include <qcheckbox.h>
-#include <qcombobox.h>
-#include <qgroupbox.h>
-#include <qlayout.h>
-#include <qlineedit.h>
-#include <qpushbutton.h>
-#include <qradiobutton.h>
-#include <qtooltip.h>
-#include <QTextStream>
-#include <QGridLayout>
-#include <QList>
+
+#include "history_search_dialog.h"
 
 HistoryFindRec::HistoryFindRec() :
 	fromdate(), todate(), type(0), data(), reverse(false), actualrecord()
 {
 }
 
-HistorySearchDialog::HistorySearchDialog(QWidget *parent, UinsList uins) : QDialog(parent),
-		from_hgb(0), to_hgb(0), phrase_hgb(0), status_hgb(0), from_chb(0), to_chb(0), reverse_chb(0),
-		from_day_cob(0), from_month_cob(0), from_year_cob(0), from_hour_cob(0), from_min_cob(0),
-		to_day_cob(0), to_month_cob(0), to_year_cob(0), to_hour_cob(0), to_min_cob(0), status_cob(0),
-		phrase_edit(0), criteria_bg(0), phrase_rb(0), status_rb(0), numslist(), uins(uins)
+HistorySearchDialog::HistorySearchDialog(QWidget *parent, UinsList uins)
+	: QDialog(parent),
+		fromGroupBox(0), toGroupBox(0), phraseGroupBox(0), statusGroupBox(0), fromCheckBox(0), toCheckBox(0), reverseCheckBox(0),
+		fromDayComboBox(0), fromMonthComboBox(0), fromYearComboBox(0), fromHourComboBox(0), fromMinComboBox(0),
+		toDayComboBox(0), toMonthComboBox(0), toYearComboBox(0), toHourComboBox(0), toMinComboBox(0), statusComboBox(0),
+		phraseEdit(0), criteriaButtonGroup(0), phraseRadioButton (0), statusRadioButton (0), numsList(), uins(uins)
 {
 	kdebugf();
-	setCaption(tr("Search history"));
+
+	setWindowTitle(tr("Search history"));
 
 	int i;
 	char buf[128];
@@ -45,128 +46,155 @@ HistorySearchDialog::HistorySearchDialog(QWidget *parent, UinsList uins) : QDial
 	for (i = 0; i <= 59; ++i)
 	{
 		sprintf(buf, "%02d", i);
-		numslist.append(QString(buf));
+		numsList.append(QString(buf));
 	}
 
-	QStringList yearslist;
+	QStringList yearsList;
 	for (i = 2000; i <= 2020; ++i)
-		yearslist.append(QString::number(i));
-	QStringList dayslist;
+		yearsList.append(QString::number(i));
+	QStringList daysList;
 	for (i = 1; i <= 31; ++i)
-		dayslist.append(numslist[i]);
-	QStringList monthslist;
+		daysList.append(numsList[i]);
+	QStringList monthsList;
 	for (i = 1; i <= 12; ++i)
-		monthslist.append(numslist[i]);
-	QStringList hourslist;
+		monthsList.append(numsList[i]);
+	QStringList hoursList;
 	for (i = 0; i <= 23; ++i)
-		hourslist.append(numslist[i]);
-	QStringList minslist;
+		hoursList.append(numsList[i]);
+	QStringList minsList;
 	for (i = 0; i <= 59; ++i)
-		minslist.append(numslist[i]);
+		minsList.append(numsList[i]);
 
-	QWidget *from = new QWidget;
-	QHBoxLayout *from_lay = new QHBoxLayout;
-	from_chb = new QCheckBox(tr("&From:") ,this);
-	from_lay->addWidget(from_chb);
-	from_hgb = new QGroupBox;
-	from_lay->addWidget(from_hgb);
-	from_day_cob = new QComboBox(from_hgb);
-	from_day_cob->insertStringList(dayslist);
-	QToolTip::add(from_day_cob, tr("day"));
-	from_month_cob = new QComboBox(from_hgb);
-	from_month_cob->insertStringList(monthslist);
-	QToolTip::add(from_month_cob, tr("month"));
-	from_year_cob = new QComboBox(from_hgb);
-	from_year_cob->insertStringList(yearslist);
-	QToolTip::add(from_year_cob, tr("year"));
-	from_hour_cob = new QComboBox(from_hgb);
-	from_hour_cob->insertStringList(hourslist);
-	QToolTip::add(from_hour_cob, tr("hour"));
-	from_min_cob = new QComboBox(from_hgb);
-	from_min_cob->insertStringList(minslist);
-	QToolTip::add(from_min_cob, tr("minute"));
-	from->setLayout(from_lay);
+	QWidget *fromWidget = new QWidget(this);
+	QHBoxLayout *fromLayout = new QHBoxLayout(fromWidget);
+	
+	fromCheckBox = new QCheckBox(tr("&From:"), fromWidget);
+	fromGroupBox = new QGroupBox(fromWidget);
+	QHBoxLayout *fromGroupBoxLayout = new QHBoxLayout(fromGroupBox);
 
-	QWidget *to = new QWidget;
-	QHBoxLayout *to_lay = new QHBoxLayout;
-	to_chb = new QCheckBox(tr("&To:") ,this);
-	to_lay->addWidget(to_chb);
-	to_hgb = new QGroupBox;
-	QWidget* to_w = new QWidget(to_hgb);\
-	QHBoxLayout *tow_lay = new QHBoxLayout;
-	to_lay->addWidget(to_hgb);
-	to_day_cob = new QComboBox;
-	tow_lay->addWidget(to_day_cob);
-	to_day_cob->insertStringList(dayslist);
-	QToolTip::add(to_day_cob, tr("day"));
-	to_month_cob = new QComboBox;
-	tow_lay->addWidget(to_month_cob);
-	to_month_cob->insertStringList(monthslist);
-	QToolTip::add(to_month_cob, tr("month"));
-	to_year_cob = new QComboBox;
-	tow_lay->addWidget(to_year_cob);
-	to_year_cob->insertStringList(yearslist);
-	QToolTip::add(to_year_cob, tr("year"));
-	to_hour_cob = new QComboBox;
-	tow_lay->addWidget(to_hour_cob);
-	to_hour_cob->insertStringList(hourslist);
-	QToolTip::add(to_hour_cob, tr("hour"));
-	to_min_cob = new QComboBox;
-	tow_lay->addWidget(to_min_cob);
-	to_min_cob->insertStringList(minslist);
-	QToolTip::add(to_min_cob, tr("minute"));
-	to_w->setLayout(tow_lay);
-	to->setLayout(to_lay);
+	fromDayComboBox = new QComboBox(fromGroupBox);
+	fromDayComboBox->insertStringList(daysList);
+	fromDayComboBox->setToolTip(tr("day"));
 
-	criteria_bg = new QGroupBox(tr("Find Criteria"), this);
-	QWidget* criteria = new QWidget(criteria_bg);
-	QHBoxLayout* c_lay = new QHBoxLayout;
-	c_lay->setSpacing(10);
-	c_lay->setMargin(10);
-	phrase_rb = new QRadioButton;
-	c_lay->addWidget(phrase_rb);
-	phrase_rb->setText(tr("&Pattern"));
-	status_rb = new QRadioButton;
-	c_lay->addWidget(status_rb);
-	status_rb->setText(tr("&Status"));
+	fromMonthComboBox = new QComboBox(fromGroupBox);
+	fromMonthComboBox->insertStringList(monthsList);
+	fromMonthComboBox->setToolTip(tr("month"));
+
+	fromYearComboBox = new QComboBox(fromGroupBox);
+	fromYearComboBox->insertStringList(yearsList);
+	fromYearComboBox->setToolTip(tr("year"));
+
+	fromHourComboBox = new QComboBox(fromGroupBox);
+	fromHourComboBox->insertStringList(hoursList);
+	fromHourComboBox->setToolTip(tr("hour"));
+
+	fromMinComboBox = new QComboBox(fromGroupBox);
+	fromMinComboBox->insertStringList(minsList);
+	fromMinComboBox->setToolTip(tr("minute"));
+
+	fromGroupBoxLayout->addWidget(fromDayComboBox);
+	fromGroupBoxLayout->addWidget(fromMonthComboBox);
+	fromGroupBoxLayout->addWidget(fromYearComboBox);
+	fromGroupBoxLayout->addWidget(fromHourComboBox);
+	fromGroupBoxLayout->addWidget(fromMinComboBox);
+
+	fromLayout->addWidget(fromCheckBox);
+	fromLayout->addWidget(fromGroupBox);
+
+	QWidget *toWidget = new QWidget(this);
+	QHBoxLayout *toLayout = new QHBoxLayout(toWidget);
+	
+	toCheckBox = new QCheckBox(tr("&From:"), toWidget);
+	toGroupBox = new QGroupBox(toWidget);
+	QHBoxLayout *toGroupBoxLayout = new QHBoxLayout(toGroupBox);
+
+	toDayComboBox = new QComboBox(toGroupBox);
+	toDayComboBox->insertStringList(daysList);
+	toDayComboBox->setToolTip(tr("day"));
+
+	toMonthComboBox = new QComboBox(toGroupBox);
+	toMonthComboBox->insertStringList(monthsList);
+	toMonthComboBox->setToolTip(tr("month"));
+
+	toYearComboBox = new QComboBox(toGroupBox);
+	toYearComboBox->insertStringList(yearsList);
+	toYearComboBox->setToolTip(tr("year"));
+
+	toHourComboBox = new QComboBox(toGroupBox);
+	toHourComboBox->insertStringList(hoursList);
+	toHourComboBox->setToolTip(tr("hour"));
+
+	toMinComboBox = new QComboBox(toGroupBox);
+	toMinComboBox->insertStringList(minsList);
+	toMinComboBox->setToolTip(tr("minute"));
+
+	toGroupBoxLayout->addWidget(toDayComboBox);
+	toGroupBoxLayout->addWidget(toMonthComboBox);
+	toGroupBoxLayout->addWidget(toYearComboBox);
+	toGroupBoxLayout->addWidget(toHourComboBox);
+	toGroupBoxLayout->addWidget(toMinComboBox);
+
+	toLayout->addWidget(toCheckBox);
+	toLayout->addWidget(toGroupBox);
+
+	criteriaButtonGroup = new QButtonGroup(this);
+	criteriaGroupBox = new QGroupBox(tr("Find Criteria"), this);
+	QHBoxLayout *criteriaLayout = new QHBoxLayout(criteriaGroupBox);
+
+	phraseRadioButton  = new QRadioButton(tr("&Pattern"), criteriaGroupBox);
+	statusRadioButton  = new QRadioButton(tr("&Status"), criteriaGroupBox);
+
 	if (config_file.readBoolEntry("History", "DontShowStatusChanges"))
-		status_rb->setEnabled(false);
-	criteria->setLayout(c_lay);
+		statusRadioButton ->setEnabled(false);
 
-	phrase_hgb = new QGroupBox(tr("Pattern"), this);
-	phrase_edit = new QLineEdit(phrase_hgb);
-	status_hgb = new QGroupBox(tr("Status"), this);
-	status_cob = new QComboBox(status_hgb);
+	criteriaButtonGroup->addButton(phraseRadioButton , 0);
+	criteriaButtonGroup->addButton(statusRadioButton , 1);
+
+	criteriaLayout->addWidget(phraseRadioButton);
+	criteriaLayout->addWidget(statusRadioButton);
+
+	phraseGroupBox = new QGroupBox(tr("Pattern"), this);
+	QHBoxLayout *phraseLayout = new QHBoxLayout(phraseGroupBox);
+
+	phraseEdit = new QLineEdit(phraseGroupBox);
+
+	phraseLayout->addWidget(phraseEdit);
+
+	statusGroupBox = new QGroupBox(tr("Status"), this);
+	QHBoxLayout *statusLayout = new QHBoxLayout(statusGroupBox);
+	statusComboBox = new QComboBox(statusGroupBox);
+
 	for (i = 0; i < 4; ++i)
-		status_cob->insertItem(qApp->translate("@default", UserStatus::name(i * 2).ascii()));
+		statusComboBox->insertItem(i, qApp->translate("@default", UserStatus::name(i * 2).ascii()));
+	statusLayout->addWidget(statusComboBox);
 
-	reverse_chb = new QCheckBox(tr("&Reverse find"), this);
+	reverseCheckBox = new QCheckBox(tr("&Reverse find"), this);
 
-	QPushButton *find_btn = new QPushButton(tr("&Find"), this);
-	QPushButton *reset_btn = new QPushButton(tr("Reset"), this);
-	QPushButton *cancel_btn = new QPushButton(tr("&Cancel"), this);
+	QPushButton *findButton = new QPushButton(tr("&Find"), this);
+	QPushButton *resetButton = new QPushButton(tr("Reset"), this);
+	QPushButton *cancelButton = new QPushButton(tr("&Cancel"), this);
 
-	connect(from_chb, SIGNAL(toggled(bool)), this, SLOT(fromToggled(bool)));
-	connect(from_month_cob, SIGNAL(activated(int)), this, SLOT(correctFromDays(int)));
-	connect(to_chb, SIGNAL(toggled(bool)), this, SLOT(toToggled(bool)));
-	connect(to_month_cob, SIGNAL(activated(int)), this, SLOT(correctToDays(int)));
-	connect(criteria_bg, SIGNAL(clicked(int)), this, SLOT(criteriaChanged(int)));
-	connect(find_btn, SIGNAL(clicked()), this, SLOT(findBtnClicked()));
-	connect(reset_btn, SIGNAL(clicked()), this, SLOT(resetBtnClicked()));
-	connect(cancel_btn, SIGNAL(clicked()), this, SLOT(cancelBtnClicked()));
+	connect(fromCheckBox, SIGNAL(toggled(bool)), this, SLOT(fromToggled(bool)));
+	connect(fromMonthComboBox, SIGNAL(activated(int)), this, SLOT(correctFromDays(int)));
+	connect(toCheckBox, SIGNAL(toggled(bool)), this, SLOT(toToggled(bool)));
+	connect(toMonthComboBox, SIGNAL(activated(int)), this, SLOT(correctToDays(int)));
+	connect(criteriaButtonGroup, SIGNAL(buttonClicked(int)), this, SLOT(criteriaChanged(int)));
+	connect(findButton, SIGNAL(clicked()), this, SLOT(findBtnClicked()));
+	connect(resetButton, SIGNAL(clicked()), this, SLOT(resetBtnClicked()));
+	connect(cancelButton, SIGNAL(clicked()), this, SLOT(cancelBtnClicked()));
 
-	QGridLayout *grid = new QGridLayout(this, 6, 4, 5, 5);
-	grid->addMultiCellWidget(from, 0, 0, 0, 3);
-	grid->addMultiCellWidget(to, 1, 1, 0, 3);
-	grid->addMultiCellWidget(criteria_bg, 2, 3, 0, 1);
-	grid->addMultiCellWidget(phrase_hgb, 2, 2, 2, 3);
-	grid->addMultiCellWidget(status_hgb, 3, 3, 2, 3);
-	grid->addMultiCellWidget(reverse_chb, 4, 4, 0, 3, Qt::AlignLeft);
-	grid->addWidget(find_btn, 5, 1);
-	grid->addWidget(reset_btn, 5, 2);
-	grid->addWidget(cancel_btn, 5, 3);
+	QGridLayout *grid = new QGridLayout(this);
+	grid->addMultiCellWidget(fromWidget, 0, 0, 0, 3);
+	grid->addMultiCellWidget(toWidget, 1, 1, 0, 3);
+	grid->addMultiCellWidget(criteriaGroupBox, 2, 3, 0, 1);
+	grid->addMultiCellWidget(phraseGroupBox, 2, 2, 2, 3);
+	grid->addMultiCellWidget(statusGroupBox, 3, 3, 2, 3);
+	grid->addMultiCellWidget(reverseCheckBox, 4, 4, 0, 3, Qt::AlignLeft);
+	grid->addWidget(findButton, 5, 1);
+	grid->addWidget(resetButton, 5, 2);
+	grid->addWidget(cancelButton, 5, 3);
 
-	phrase_edit->setFocus();
+	phraseEdit->setFocus();
 	kdebugf2();
 }
 
@@ -175,16 +203,18 @@ static const int daysForMonth[12] = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30,
 void HistorySearchDialog::correctFromDays(int index)
 {
 	kdebugf();
-	if (daysForMonth[index] != from_day_cob->count())
+	if (daysForMonth[index] != fromDayComboBox->count())
 	{
-		QStringList dayslist;
+		QStringList daysList;
 		for (int i = 1; i <= daysForMonth[index]; ++i)
-			dayslist.append(numslist[i]);
-		int current_day = from_day_cob->currentItem();
-		from_day_cob->clear();
-		from_day_cob->insertStringList(dayslist);
-		if (current_day <= from_day_cob->count())
-			from_day_cob->setCurrentItem(current_day);
+			daysList.append(numsList[i]);
+
+		int current_day = fromDayComboBox->currentIndex();
+		fromDayComboBox->clear();
+		fromDayComboBox->insertStringList(daysList);
+
+		if (current_day <= fromDayComboBox->count())
+			fromDayComboBox->setCurrentIndex(current_day);
 	}
 	kdebugf2();
 }
@@ -192,34 +222,34 @@ void HistorySearchDialog::correctFromDays(int index)
 void HistorySearchDialog::correctToDays(int index)
 {
 	kdebugf();
-	if (daysForMonth[index] != to_day_cob->count())
+	if (daysForMonth[index] != toDayComboBox->count())
 	{
-		QStringList dayslist;
+		QStringList daysList;
 		for (int i = 1; i <= daysForMonth[index]; ++i)
-			dayslist.append(numslist[i]);
-		int current_day = to_day_cob->currentItem();
-		to_day_cob->clear();
-		to_day_cob->insertStringList(dayslist);
-		if (current_day <= to_day_cob->count())
-			to_day_cob->setCurrentItem(current_day);
+			daysList.append(numsList[i]);
+		int current_day = toDayComboBox->currentIndex();
+		toDayComboBox->clear();
+		toDayComboBox->insertStringList(daysList);
+		if (current_day <= toDayComboBox->count())
+			toDayComboBox->setCurrentIndex(current_day);
 	}
 	kdebugf2();
 }
 
 void HistorySearchDialog::fromToggled(bool on)
 {
-	from_hgb->setEnabled(on);
+	fromGroupBox->setEnabled(on);
 }
 
 void HistorySearchDialog::toToggled(bool on)
 {
-	to_hgb->setEnabled(on);
+	toGroupBox->setEnabled(on);
 }
 
 void HistorySearchDialog::criteriaChanged(int id)
 {
-	phrase_hgb->setEnabled(id == 1);
-	status_hgb->setEnabled(id != 1);
+	phraseGroupBox->setEnabled(id == 0);
+	statusGroupBox->setEnabled(id != 0);
 }
 
 void HistorySearchDialog::findBtnClicked()
@@ -240,11 +270,11 @@ void HistorySearchDialog::resetFromDate()
 	entries = history->getHistoryEntries(uins, 0, 1);
 	if (!entries.isEmpty())
 	{
-		from_day_cob->setCurrentItem(entries[0].date.date().day() - 1);
-		from_month_cob->setCurrentItem(entries[0].date.date().month() - 1);
-		from_year_cob->setCurrentItem(entries[0].date.date().year() - 2000);
-		from_hour_cob->setCurrentItem(entries[0].date.time().hour());
-		from_min_cob->setCurrentItem(entries[0].date.time().minute());
+		fromDayComboBox->setCurrentIndex(entries[0].date.date().day() - 1);
+		fromMonthComboBox->setCurrentIndex(entries[0].date.date().month() - 1);
+		fromYearComboBox->setCurrentIndex(entries[0].date.date().year() - 2000);
+		fromHourComboBox->setCurrentIndex(entries[0].date.time().hour());
+		fromMinComboBox->setCurrentIndex(entries[0].date.time().minute());
 		correctFromDays(entries[0].date.date().month() - 1);
 	}
 	kdebugf2();
@@ -258,11 +288,11 @@ void HistorySearchDialog::resetToDate()
 	entries = history->getHistoryEntries(uins, history->getHistoryEntriesCount(uins) - 1, 1);
 	if (!entries.isEmpty())
 	{
-		to_day_cob->setCurrentItem(entries[0].date.date().day() - 1);
-		to_month_cob->setCurrentItem(entries[0].date.date().month() - 1);
-		to_year_cob->setCurrentItem(entries[0].date.date().year() - 2000);
-		to_hour_cob->setCurrentItem(entries[0].date.time().hour());
-		to_min_cob->setCurrentItem(entries[0].date.time().minute());
+		toDayComboBox->setCurrentIndex(entries[0].date.date().day() - 1);
+		toMonthComboBox->setCurrentIndex(entries[0].date.date().month() - 1);
+		toYearComboBox->setCurrentIndex(entries[0].date.date().year() - 2000);
+		toHourComboBox->setCurrentIndex(entries[0].date.time().hour());
+		toMinComboBox->setCurrentIndex(entries[0].date.time().minute());
 		correctToDays(entries[0].date.date().month() - 1);
 	}
 	kdebugf2();
@@ -271,59 +301,61 @@ void HistorySearchDialog::resetToDate()
 void HistorySearchDialog::resetBtnClicked()
 {
 	kdebugf();
-	from_hgb->setEnabled(false);
-	from_chb->setChecked(false);
+	fromGroupBox->setEnabled(false);
+	fromCheckBox->setChecked(false);
 	resetFromDate();
-	to_chb->setChecked(false);
-	to_hgb->setEnabled(false);
+	toCheckBox->setChecked(false);
+	toGroupBox->setEnabled(false);
 	resetToDate();
-///	criteria_bg->setButton(1);
-	phrase_edit->text().truncate(0);
-	status_cob->setCurrentItem(0);
-	criteriaChanged(1);
-	reverse_chb->setChecked(false);
+	criteriaButtonGroup->buttons()[0]->setChecked(true);
+	phraseEdit->text().truncate(0);
+	statusComboBox->setCurrentIndex(0);
+	criteriaChanged(0);
+	reverseCheckBox->setChecked(false);
 	kdebugf2();
 }
 
 void HistorySearchDialog::setDialogValues(HistoryFindRec &findrec)
 {
 	kdebugf();
-	from_chb->setChecked(!findrec.fromdate.isNull());
-	from_hgb->setEnabled(!findrec.fromdate.isNull());
+	fromCheckBox->setChecked(!findrec.fromdate.isNull());
+	fromGroupBox->setEnabled(!findrec.fromdate.isNull());
 	if (findrec.fromdate.isNull())
 		resetFromDate();
 	else
 	{
-		from_day_cob->setCurrentItem(findrec.fromdate.date().day() - 1);
-		from_month_cob->setCurrentItem(findrec.fromdate.date().month() - 1);
-		from_year_cob->setCurrentItem(findrec.fromdate.date().year() - 2000);
-		from_hour_cob->setCurrentItem(findrec.fromdate.time().hour());
-		from_min_cob->setCurrentItem(findrec.fromdate.time().minute());
+		fromDayComboBox->setCurrentIndex(findrec.fromdate.date().day() - 1);
+		fromMonthComboBox->setCurrentIndex(findrec.fromdate.date().month() - 1);
+		fromYearComboBox->setCurrentIndex(findrec.fromdate.date().year() - 2000);
+		fromHourComboBox->setCurrentIndex(findrec.fromdate.time().hour());
+		fromMinComboBox->setCurrentIndex(findrec.fromdate.time().minute());
 		correctFromDays(findrec.fromdate.date().month() - 1);
 	}
-	to_chb->setChecked(!findrec.todate.isNull());
-	to_hgb->setEnabled(!findrec.todate.isNull());
+	toCheckBox->setChecked(!findrec.todate.isNull());
+	toGroupBox->setEnabled(!findrec.todate.isNull());
+
 	if (findrec.todate.isNull())
 		resetToDate();
 	else
 	{
-		to_day_cob->setCurrentItem(findrec.todate.date().day() - 1);
-		to_month_cob->setCurrentItem(findrec.todate.date().month() - 1);
-		to_year_cob->setCurrentItem(findrec.todate.date().year() - 2000);
-		to_hour_cob->setCurrentItem(findrec.todate.time().hour());
-		to_min_cob->setCurrentItem(findrec.todate.time().minute());
+		toDayComboBox->setCurrentIndex(findrec.todate.date().day() - 1);
+		toMonthComboBox->setCurrentIndex(findrec.todate.date().month() - 1);
+		toYearComboBox->setCurrentIndex(findrec.todate.date().year() - 2000);
+		toHourComboBox->setCurrentIndex(findrec.todate.time().hour());
+		toMinComboBox->setCurrentIndex(findrec.todate.time().minute());
 		correctToDays(findrec.todate.date().month() - 1);
 	}
-	///criteria_bg->setButton(findrec.type);
+	criteriaButtonGroup->buttons()[findrec.type]->setChecked(true);
 	criteriaChanged(findrec.type);
+
 	switch (findrec.type)
 	{
 		case 1:
-			phrase_edit->setText(findrec.data);
+			phraseEdit->setText(findrec.data);
 			break;
 		case 2:
 		{
-			int status=0;
+			int status = 0;
 			if (findrec.data == "avail")
 				status = 0;
 			else if (findrec.data == "busy")
@@ -332,11 +364,11 @@ void HistorySearchDialog::setDialogValues(HistoryFindRec &findrec)
 				status = 2;
 			else if (findrec.data == "notavail")
 				status = 3;
-			status_cob->setCurrentItem(status);
+			statusComboBox->setCurrentIndex(status);
 			break;
 		}
 	}
-	reverse_chb->setChecked(findrec.reverse);
+	reverseCheckBox->setChecked(findrec.reverse);
 	kdebugf2();
 }
 
@@ -345,26 +377,27 @@ HistoryFindRec HistorySearchDialog::getDialogValues() const
 	kdebugf();
 	HistoryFindRec findrec;
 
-	if (from_chb->isChecked())
+	if (fromCheckBox->isChecked())
 	{
-		findrec.fromdate.setDate(QDate(from_year_cob->currentItem() + 2000,
-			from_month_cob->currentItem() + 1, from_day_cob->currentItem() + 1));
-		findrec.fromdate.setTime(QTime(from_hour_cob->currentItem(), from_min_cob->currentItem()));
+		findrec.fromdate.setDate(QDate(fromYearComboBox->currentIndex() + 2000,
+			fromMonthComboBox->currentIndex() + 1, fromDayComboBox->currentIndex() + 1));
+		findrec.fromdate.setTime(QTime(fromHourComboBox->currentIndex(), fromMinComboBox->currentIndex()));
 	}
-	if (to_chb->isChecked())
+	if (toCheckBox->isChecked())
 	{
-		findrec.todate.setDate(QDate(to_year_cob->currentItem() + 2000,
-			to_month_cob->currentItem() + 1, to_day_cob->currentItem() + 1));
-		findrec.todate.setTime(QTime(to_hour_cob->currentItem(), to_min_cob->currentItem()));
+		findrec.todate.setDate(QDate(toYearComboBox->currentIndex() + 2000,
+			toMonthComboBox->currentIndex() + 1, toDayComboBox->currentIndex() + 1));
+		findrec.todate.setTime(QTime(toHourComboBox->currentIndex(), toMinComboBox->currentIndex()));
 	}
-	///findrec.type = criteria_bg->id(criteria_bg->selected());
+	findrec.type = criteriaButtonGroup->id(criteriaButtonGroup->checkedButton());
+
 	switch (findrec.type)
 	{
 		case 1:
-			findrec.data = phrase_edit->text();
+			findrec.data = phraseEdit->text();
 			break;
 		case 2:
-			switch (status_cob->currentItem())
+			switch (statusComboBox->currentIndex())
 			{
 				case 0:
 					findrec.data = "avail";
@@ -381,7 +414,7 @@ HistoryFindRec HistorySearchDialog::getDialogValues() const
 			}
 			break;
 	}
-	findrec.reverse = reverse_chb->isChecked();
+	findrec.reverse = reverseCheckBox->isChecked();
 	kdebugf2();
 	return findrec;
 }
