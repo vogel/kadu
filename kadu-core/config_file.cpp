@@ -37,9 +37,9 @@ void XmlConfigFile::read()
 	files += backups.entryList();
 	bool fileOpened(false);
 
-	CONST_FOREACH(fileName, files)
+	foreach(QString fileName, files)
 	{
-		file.setName(ggPath(*fileName));
+		file.setName(ggPath(fileName));
 		fileOpened = file.open(QIODevice::ReadOnly);
 		if (fileOpened && file.size() > 0)
 		{

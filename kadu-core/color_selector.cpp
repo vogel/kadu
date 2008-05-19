@@ -59,9 +59,9 @@ ColorSelector::ColorSelector(const QColor &defColor, QWidget *parent)
 	QGridLayout *grid = new QGridLayout(this, 0, selector_width, 0, 0);
 
 	i = 0;
-	CONST_FOREACH(color, qcolors)
+	foreach(QColor color, qcolors)
 	{
-		ColorSelectorButton *btn = new ColorSelectorButton(*color, 1, this);
+		ColorSelectorButton *btn = new ColorSelectorButton(color, 1, this);
 		grid->addWidget(btn, i / selector_width, i % selector_width);
 		connect(btn, SIGNAL(clicked(const QColor&)), this, SLOT(iconClicked(const QColor&)));
 		++i;

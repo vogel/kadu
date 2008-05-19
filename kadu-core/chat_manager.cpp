@@ -181,14 +181,14 @@ void ChatManager::saveOpenedWindows()
 	QDomElement root_elem = xml_config_file->rootElement();
 	QDomElement chats_elem = xml_config_file->accessElement(root_elem, "ChatWindows");
 	xml_config_file->removeChildren(chats_elem);
-	CONST_FOREACH(chat, ChatWidgets)
+	foreach(ChatWidget *chat, ChatWidgets)
 	{
 		QDomElement window_elem = xml_config_file->createElement(chats_elem, "Window");
-		Protocol *protocol = (*chat)->currentProtocol();
+		Protocol *protocol = chat->currentProtocol();
 		QString protoId = protocol->protocolID();
 		window_elem.setAttribute("protocol", protoId);
 		window_elem.setAttribute("id", protocol->ID());
-		const UserGroup *users = (*chat)->users();
+		const UserGroup *users = chat->users();
 		CONST_FOREACH(user, *users)
 		{
 			QDomElement user_elem = xml_config_file->createElement(window_elem, "Contact");
@@ -214,7 +214,7 @@ ChatManager::~ChatManager()
 				<< "ignoreUserAction" << "blockUserAction" << "boldAction"
 				<< "italicAction" << "underlineAction" << "colorAction"
 				<< "sendAction" << "chatAction" << "openChatWithAction";
-	CONST_FOREACH(act, chatActions)
+	foreach(QString act, chatActions)
 	{
 		ActionDescription *a = KaduActions[*act];
 		delete a;
@@ -411,9 +411,9 @@ void ChatManager::ignoreUserActionActivated(QAction *sender, bool toggled)
 	if (users.count() > 0)
 	{
 		bool ContainsBad = false;
-		CONST_FOREACH(user, users)
+		foreach(UserListElement user, users)
 		{
-			QString uid = (*user).ID("Gadu");
+			QString uid = user.ID("Gadu");
 			if (!gadu->validateUserID(uid))
 			{
 				ContainsBad = true;
@@ -459,8 +459,8 @@ void ChatManager::blockUserActionActivated(QAction *sender, bool toggled)
 
 		UserListElements copy = users;
 
-		CONST_FOREACH(user, copy)
-			if (!(*user).usesProtocol("Gadu") || !(*user).protocolData("Gadu", "Blocking").toBool())
+		foreach(UserListElement user, copy)
+			if (!user.usesProtocol("Gadu") || !user.protocolData("Gadu", "Blocking").toBool())
 			{
 				on = false;
 				break;
@@ -563,8 +563,8 @@ void ChatManager::refreshTitlesLater()
 void ChatManager::refreshTitles()
 {
 	kdebugf();
- 	CONST_FOREACH(chat, ChatWidgets)
-		(*chat)->refreshTitle();
+ 	foreach(ChatWidget *chat, ChatWidgets)
+		chat->refreshTitle();
 	emit chatWidgetTitlesUpdated();
 	kdebugf2();
 }
@@ -572,26 +572,26 @@ void ChatManager::refreshTitles()
 void ChatManager::refreshTitlesForUser(UserListElement user)
 {
 	kdebugf();
- 	CONST_FOREACH(chat, ChatWidgets)
- 		if ((*chat)->users()->contains(user))
- 			(*chat)->refreshTitle();
+ 	foreach(ChatWidget *chat, ChatWidgets)
+ 		if (chat->users()->contains(user))
+ 			chat->refreshTitle();
 	kdebugf2();
 }
 
 ChatWidget* ChatManager::findChatWidget(const UserGroup *group) const
 {
-	CONST_FOREACH(chat, ChatWidgets)
-		if ((*chat)->users() == group)
-			return *chat;
+	foreach(ChatWidget *chat, ChatWidgets)
+		if (chat->users() == group)
+			return chat;
 	kdebugmf(KDEBUG_WARNING, "no such chat\n");
 	return NULL;
 }
 
 ChatWidget* ChatManager::findChatWidget(UserListElements users) const
 {
-	CONST_FOREACH(chat, ChatWidgets)
-		if (users.equals((*chat)->users()))
-			return *chat;
+	foreach(ChatWidget *chat, ChatWidgets)
+		if (users.equals(chat->users()))
+			return chat;
 	kdebugmf(KDEBUG_WARNING, "no such chat\n");
 	return NULL;
 }
@@ -600,9 +600,9 @@ int ChatManager::openChatWidget(Protocol *initialProtocol, const UserListElement
 {
 	kdebugf();
 
-	CONST_FOREACH(user, users)
+	foreach(UserListElement user, users)
 	{
-		QString uid = (*user).ID(initialProtocol->protocolID());
+		QString uid = user.ID(initialProtocol->protocolID());
 		if (!initialProtocol->validateUserID(uid))
 		{
 			kdebugf2();
@@ -611,11 +611,11 @@ int ChatManager::openChatWidget(Protocol *initialProtocol, const UserListElement
 	}
 
 	unsigned int i = 0;
-	CONST_FOREACH(chat, ChatWidgets)
+	foreach(ChatWidget *chat, ChatWidgets)
 	{
-		if ((*chat)->users()->equals(users))
+		if (chat->users()->equals(users))
 		{
-			QWidget *win = *chat;
+			QWidget *win = chat;
 			kdebugm(KDEBUG_INFO, "parent: %p\n", win->parent());
 			while (win->parent()) // for tabs module
 			{
@@ -625,16 +625,16 @@ int ChatManager::openChatWidget(Protocol *initialProtocol, const UserListElement
 			if (forceActivate)
 				activateWindow(win->winId());
 			win->raise();
-			(*chat)->makeActive();
-			emit chatWidgetOpen(*chat);
+			chat->makeActive();
+			emit chatWidgetOpen(chat);
 			return i;
 		}
 		++i;
 	}
 
 	QStringList userNames;
-	CONST_FOREACH(user, users)
-		userNames.append((*user).altNick());
+	foreach(UserListElement user, users)
+		userNames.append(user.altNick());
 	userNames.sort();
 
 	ChatWidget *chat = new ChatWidget(initialProtocol, users);
