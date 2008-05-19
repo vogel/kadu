@@ -7,27 +7,19 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <qapplication.h>
-#include <qcheckbox.h>
-#include <qcombobox.h>
-#include <qmessagebox.h>
-#include <qpushbutton.h>
-#include <qradiobutton.h>
-#include <qregexp.h>
-#include <qsplitter.h>
-#include <qtimer.h>
+#include <QApplication>
+#include <QMessageBox>
 #include <QTextStream>
-#include <QList>
+#include <QTimer>
 
 #include "config_file.h"
 #include "debug.h"
-#include "emoticons.h"
 #include "gadu_images_manager.h"
-#include "history.h"
-#include "kadu.h"
-#include "kadu_text_browser.h"
 #include "html_document.h"
+#include "kadu.h"
 #include "misc.h"
+
+#include "history.h"
 
 enum {
 	HISTORYMANAGER_ORDINARY_LINE,
@@ -37,9 +29,10 @@ enum {
 	HISTORYMANAGER_SMS_WITHOUT_NICK
 };
 
-HistoryManager::HistoryManager(QObject *parent, const char *name) : QObject(parent, name), bufferedMessages(), imagesTimer(new QTimer(this, "imagesTimer"))
+HistoryManager::HistoryManager(QObject *parent) 
+	: QObject(parent), bufferedMessages(), imagesTimer(new QTimer(this))
 {
-	imagesTimer->start(1000*60);//60 sekund
+	imagesTimer->start(1000 * 60);//60 sekund
 	connect(imagesTimer, SIGNAL(timeout()), this, SLOT(checkImagesTimeouts()));
 	connect(userlist, SIGNAL(statusChanged(UserListElement, QString, const UserStatus &, bool, bool)),
 		this, SLOT(statusChanged(UserListElement, QString, const UserStatus &, bool, bool)));
@@ -66,9 +59,9 @@ QString HistoryManager::getFileNameByUinsList(UinsList uins)
 	{
 		uins.sort();
 		unsigned int i = 0, uinsCount = uins.count();
-		CONST_FOREACH(uin, uins)
+		foreach(UinType uin, uins)
 		{
-			fname.append(QString::number(*uin));
+			fname.append(QString::number(uin));
 			if (i++ < uinsCount - 1)
 				fname.append("_");
 		}
@@ -1171,9 +1164,9 @@ void HistoryManager::messageReceived(Protocol * /*protocol*/, UserListElements s
 	UinType sender0 = senders[0].ID("Gadu").toUInt();
 	kdebugm(KDEBUG_INFO, "sender: %d msg: '%s' occur:%d\n", sender0, msg.local8Bit().data(), occur);
 	UinsList uins;//TODO: throw out UinsList as soon as possible!
-	CONST_FOREACH(u, senders)
-		if ((*u).usesProtocol("Gadu"))
-			uins.append((*u).ID("Gadu").toUInt());
+	foreach(UserListElement u, senders)
+		if (u.usesProtocol("Gadu"))
+			uins.append(u.ID("Gadu").toUInt());
 	if (bufferedMessages.find(sender0) != bufferedMessages.end() || occur > 0)
 	{
 		kdebugm(KDEBUG_INFO, "buffering\n");
@@ -1278,8 +1271,8 @@ void HistoryManager::checkImagesTimeouts()
 	kdebugf();
 	QList<UinType> uins = bufferedMessages.keys();
 
-	CONST_FOREACH(uin, uins)
-		checkImageTimeout(*uin);
+	foreach(UinType uin, uins)
+		checkImageTimeout(uin);
 	kdebugf2();
 }
 

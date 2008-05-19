@@ -63,7 +63,7 @@ HistoryModule::HistoryModule() : QObject(NULL, "history")
 	path_.append("/history/");
 	mkdir(path_.local8Bit().data(), 0700);
 
-	history = new HistoryManager(0, "history_manager");
+	history = new HistoryManager();
 
 	connect(chat_manager, SIGNAL(chatWidgetCreated(ChatWidget *)), this, SLOT(chatCreated(ChatWidget *)));
 	connect(chat_manager, SIGNAL(chatWidgetDestroying(ChatWidget *)), this, SLOT(chatDestroying(ChatWidget*)));

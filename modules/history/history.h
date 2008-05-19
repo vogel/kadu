@@ -1,14 +1,11 @@
 #ifndef HISTORY_H
 #define HISTORY_H
 
-#include <qdatetime.h>
-#include <qdialog.h>
-
-#include <qmap.h>
-#include <qstring.h>
 #include <QList>
+#include <QMap>
 
 #include <time.h>
+
 #include "gadu.h"
 
 #define HISTORYMANAGER_ENTRY_CHATSEND   0x00000001
@@ -19,11 +16,8 @@
 #define HISTORYMANAGER_ENTRY_SMSSEND    0x00000020
 #define HISTORYMANAGER_ENTRY_ALL        0x0000003f
 #define HISTORYMANAGER_ENTRY_ALL_MSGS   0x0000002f
+
 class QTextStream;
-class QComboBox;
-class QRadioButton;
-class QCheckBox;
-class QLineEdit;
 
 struct HistoryEntry {
 	int type;
@@ -52,18 +46,6 @@ class HistoryManager : public QObject
 {
 	Q_OBJECT
 
-	public:
-		HistoryManager(QObject *parent=0, const char *name=0);
-		int getHistoryEntriesCount(const UinsList &uins);
-		int getHistoryEntriesCount(const QString &mobile = QString::null);
-		QList<HistoryEntry> getHistoryEntries(UinsList uins, int from, int count, int mask = HISTORYMANAGER_ENTRY_ALL);
-		QList<HistoryDate> getHistoryDates(const UinsList &uins);
-		QList<UinsList> getUinsLists() const;
-		int getHistoryEntryIndexByDate(const UinsList &uins, const QDateTime &date, bool endate = false);
-		static QString getFileNameByUinsList(UinsList uins);
-		static QStringList mySplit(const QChar &sep, const QString &str);
-
-	private:
 		QString text2csv(const QString &text);
 		int getHistoryEntriesCountPrivate(const QString &filename) const;
 		uint getHistoryDate(QTextStream &stream);
@@ -78,25 +60,37 @@ class HistoryManager : public QObject
 				time_t arriveTime;
 				bool own;
 				int counter;
-				BuffMessage(const UinsList &uins1=UinsList(),
-							const QString &msg=QString(),
-							time_t t=0,
-							time_t arriveTime1=time(NULL),
-							bool own1=false,
-							int cntr=1)
-					: uins(uins1), message(msg), tm(t),	arriveTime(arriveTime1),
+				BuffMessage(const UinsList &uins1 = UinsList(),
+							const QString &msg = QString(),
+							time_t t = 0,
+							time_t arriveTime1 = time(NULL),
+							bool own1 = false,
+							int cntr = 1)
+					: uins(uins1), message(msg), tm(t), arriveTime(arriveTime1),
 					own(own1), counter(cntr) {}
 		};
 		QMap<UinType, QList<BuffMessage> > bufferedMessages;
 		QTimer *imagesTimer;
 
 		void checkImageTimeout(UinType uin);
+
 	private slots:
 		void messageReceived(Protocol *protocol, UserListElements senders, const QString& msg, time_t time);
 		void imageReceivedAndSaved(UinType sender, uint32_t size, uint32_t crc32, const QString &path);
 		void checkImagesTimeouts();
 		void statusChanged(UserListElement elem, QString protocolName,
 					const UserStatus &oldStatus, bool massively, bool last);
+
+	public:
+		HistoryManager(QObject *parent = 0);
+		int getHistoryEntriesCount(const UinsList &uins);
+		int getHistoryEntriesCount(const QString &mobile = QString::null);
+		QList<HistoryEntry> getHistoryEntries(UinsList uins, int from, int count, int mask = HISTORYMANAGER_ENTRY_ALL);
+		QList<HistoryDate> getHistoryDates(const UinsList &uins);
+		QList<UinsList> getUinsLists() const;
+		int getHistoryEntryIndexByDate(const UinsList &uins, const QDateTime &date, bool endate = false);
+		static QString getFileNameByUinsList(UinsList uins);
+		static QStringList mySplit(const QChar &sep, const QString &str);
 
 	public slots:
 		void addMyMessage(const UinsList &senders, const QString &msg);
@@ -105,7 +99,7 @@ class HistoryManager : public QObject
 			raczej nie u¿ywaæ...
 		**/
 		void appendMessage(UinsList receivers, UinType sender, const QString &msg,
-				bool own, time_t t=0, bool chat=true, time_t arriveTime=time(NULL));
+				bool own, time_t t = 0, bool chat = true, time_t arriveTime = time(NULL));
 		void appendSms(const QString &mobile, const QString &msg);
 		void appendStatus(UinType uin, const UserStatus &sstatus);
 		void removeHistory(const UinsList &uins);
