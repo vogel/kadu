@@ -7,7 +7,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "history_module.h"
+#include <QLabel>
 
 #include <sys/stat.h>
 #include <sys/types.h>
@@ -20,7 +20,6 @@
 #include "history.h"
 #include "history_dialog.h"
 #include "hot_key.h"
-#include "icons_manager.h"
 #include "kadu.h"
 #include "misc.h"
 #include "message_box.h"
@@ -28,8 +27,9 @@
 #include "toolbar.h"
 #include "userbox.h"
 
-#include <QLabel>
-#include <QKeyEvent>
+#include "history_module.h"
+
+
 
 extern "C" int history_init()
 {
@@ -53,7 +53,7 @@ extern "C" void history_close()
 	kdebugf2();
 }
 
-HistoryModule::HistoryModule() : QObject(NULL, "history")
+HistoryModule::HistoryModule()
 {
 	kdebugf();
 
@@ -90,9 +90,6 @@ HistoryModule::HistoryModule() : QObject(NULL, "history")
 	UserBox::userboxmenu->addItemAtPos(5, "History", tr("History"), this, SLOT(viewHistory()), HotKey::shortCutFromFile("ShortCuts", "kadu_viewhistory"));
 	UserBox::management->addItemAtPos(7, "ClearHistory", tr("Clear history"),  this, SLOT(deleteHistory()));
 	connect(UserBox::userboxmenu, SIGNAL(popup()), this, SLOT(userboxMenuPopup()));
-
-	QStringList actions;
-	actions.append("showHistoryAction");
 
 	kdebugf2();
 }
@@ -161,8 +158,8 @@ void HistoryModule::historyActionActivated(QAction *sender, bool toggled)
 		return;
 
 	UinsList uins;
-	CONST_FOREACH(user, users)
-		uins.append((*user).ID("Gadu").toUInt());
+	foreach(UserListElement user, users)
+		uins.append(user.ID("Gadu").toUInt());
 	//TODO: throw out UinsList as soon as possible!
 	(new HistoryDialog(uins))->show();
 	kdebugf2();
@@ -193,8 +190,8 @@ void HistoryModule::appendHistory(ChatWidget *chat)
 	unsigned int from, end, count;
 
 	UinsList uins;//TODO: throw out UinsList as soon as possible!
-	CONST_FOREACH(user, senders)
-		uins.append((*user).ID("Gadu").toUInt());
+	foreach(UserListElement user, senders)
+		uins.append(user.ID("Gadu").toUInt());
 
 	count = history->getHistoryEntriesCount(uins);
 	end = count - 1;
@@ -247,7 +244,7 @@ void HistoryModule::appendHistory(ChatWidget *chat)
 
 	QList<HistoryEntry>::const_iterator entry = entries.begin() + from;
 	QList<HistoryEntry>::const_iterator entriesEnd = entries.end();
-	for (; entry!=entriesEnd; ++entry)
+	for (; entry != entriesEnd; ++entry)
 		if ((*entry).date.secsTo(QDateTime::currentDateTime()) <= -quotTime * 3600)
 		{
 			ChatMessage *message;
@@ -288,8 +285,8 @@ void HistoryModule::chatDestroying(ChatWidget *chat)
 void HistoryModule::messageSentAndConfirmed(UserListElements receivers, const QString& message)
 {
 	UinsList uins;
-	CONST_FOREACH(user, receivers)
-		uins.append((*user).ID("Gadu").toUInt());
+	foreach(UserListElement user, receivers)
+		uins.append(user.ID("Gadu").toUInt());
 	//TODO: throw out UinsList as soon as possible!
 	history->addMyMessage(uins, message);
 }
@@ -307,8 +304,8 @@ void HistoryModule::viewHistory()
 	UserListElements users = activeUserBox->selectedUsers();
 
 	UinsList uins;
-	CONST_FOREACH(user, users)
-		uins.append((*user).ID("Gadu").toUInt());
+	foreach(UserListElement user, users)
+		uins.append(user.ID("Gadu").toUInt());
 	//TODO: throw out UinsList as soon as possible!
 	(new HistoryDialog(uins))->show();
 
@@ -327,9 +324,9 @@ void HistoryModule::deleteHistory()
 	//TODO: throw out UinsList as soon as possible!
 	UinsList uins;
 	UserListElements users = activeUserBox->selectedUsers();
-	CONST_FOREACH(user, users)
-		if ((*user).usesProtocol("Gadu"))
-			uins.append((*user).ID("Gadu").toUInt());
+	foreach(UserListElement user, users)
+		if (user.usesProtocol("Gadu"))
+			uins.append(user.ID("Gadu").toUInt());
 
 	history->removeHistory(uins);
 	kdebugf2();
@@ -357,8 +354,8 @@ void HistoryModule::userboxMenuPopup()
 	int delete_history_item = UserBox::management->getItem(tr("Clear history"));
 
 	bool any_ok = false;
-	CONST_FOREACH(user, users)
-		if (!(*user).protocolList().isEmpty())
+	foreach(UserListElement user, users)
+		if (!user.protocolList().isEmpty())
 		{
 			any_ok = true;
 			break;
@@ -384,11 +381,11 @@ void HistoryModule::removingUsers(UserListElements users)
 	if (!MessageBox::ask(tr("The following users were deleted:\n%0Do you want to remove history as well?").arg(tmp), "Warning", kadu))
 		return;
 	QString fname;
-	CONST_FOREACH(user, users)
+	foreach(UserListElement user, users)
 	{
-		if ((*user).usesProtocol("Gadu"))
+		if (user.usesProtocol("Gadu"))
 		{
-			fname = ggPath("history/") + (*user).ID("Gadu");
+			fname = ggPath("history/") + user.ID("Gadu");
 			kdebugmf(KDEBUG_INFO, "deleting %s\n", (const char *)fname.local8Bit());
 			QFile::remove(fname);
 			QFile::remove(fname + ".idx");
@@ -408,4 +405,4 @@ void HistoryModule::createDefaultConfiguration()
 	config_file.addVariable("ShortCuts", "kadu_viewhistory", "Ctrl+H");
 }
 
-HistoryModule* history_module = NULL;
+HistoryModule* history_module = 0;

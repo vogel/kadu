@@ -2,9 +2,6 @@
 #define HISTORY_MODULE_H
 
 #include "main_configuration_window.h"
-#include "usergroup.h"
-#include <QKeyEvent>
-#include <QLabel>
 
 class QLabel;
 
