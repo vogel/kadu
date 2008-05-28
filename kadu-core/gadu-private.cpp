@@ -286,7 +286,8 @@ void TokenSocketNotifiers::socketEvent()
 				for (unsigned int i = 0; i < H->body_size; ++i)
 					buf[i] = H->body[i];
 
-				QPixmap tokenImage(buf);
+				QPixmap tokenImage;
+				tokenImage.loadFromData(buf);
 
 				emit gotToken(tokenId, tokenImage);
 			}
