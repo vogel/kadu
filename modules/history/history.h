@@ -17,7 +17,7 @@
 #define HISTORYMANAGER_ENTRY_ALL        0x0000003f
 #define HISTORYMANAGER_ENTRY_ALL_MSGS   0x0000002f
 
-class QTextStream;
+class Q3TextStream;
 
 struct HistoryEntry {
 	int type;
@@ -48,7 +48,7 @@ class HistoryManager : public QObject
 
 		QString text2csv(const QString &text);
 		int getHistoryEntriesCountPrivate(const QString &filename) const;
-		uint getHistoryDate(QTextStream &stream);
+		uint getHistoryDate(Q3TextStream &stream);
 		void buildIndexPrivate(const QString &filename);
 
 		class BuffMessage

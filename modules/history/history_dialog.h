@@ -1,77 +1,74 @@
 #ifndef HISTORY_DIALOG_H
 #define HISTORY_DIALOG_H
 
-#include <qwidget.h>
-#include <QKeyEvent>
-#include <QList>
-#include <QCloseEvent>
+#include <QWidget>
+#include <QTreeWidgetItem>
+
 #include "gadu.h"
 #include "history.h"
 #include "history_search_dialog.h"
-#include <qtreewidget.h>
+
+class QTreeWidget;
 
 class ChatMessage;
 class ChatMessagesView;
 
-class QTreeWidget;
-class QTreeWidgetItem;
+class UinsListViewText : public QTreeWidgetItem
+{
+		UinsList uins;
 
-class UinsListViewText : public QTreeWidgetItem {
 	public:
 		UinsListViewText(QTreeWidget *parent, const UinsList &uins);
 		const UinsList &getUinsList() const;
-
-	private:
-		UinsList uins;
 };
 
-class DateListViewText : public QTreeWidgetItem {
+class DateListViewText : public QTreeWidgetItem
+{
+		HistoryDate date;
+
 	public:
 		DateListViewText(QTreeWidgetItem *parent, const HistoryDate &date);
 		const HistoryDate &getDate() const;
-
-	private:
-		HistoryDate date;
 };
 
 /**
 	History dialog
 **/
-class HistoryDialog : public QWidget {
+class HistoryDialog : public QWidget
+{
 	Q_OBJECT
 
-protected:
-	ChatMessage * createChatMessage(const HistoryEntry &entry);
-	void showHistoryEntries(int from, int count);
-	void setDateListViewText(const QDateTime &datetime);
-	void searchHistory();
-	static const QString &gaduStatus2symbol(unsigned int status);
-	void closeEvent(QCloseEvent *e);
+	private slots:
+		void showStatusChanged(bool);
 
-	QTreeWidget *uinslv;
-	ChatMessagesView* body;
-	UinsList uins;
-	int start;
-	HistoryFindRec findrec;
-	bool closeDemand;
-	bool finding;
-	QList<HistoryDate> dateentries;
+	protected:
+		ChatMessage * createChatMessage(const HistoryEntry &entry);
+		void showHistoryEntries(int from, int count);
+		void setDateListViewText(const QDateTime &datetime);
+		void searchHistory();
+		static const QString &gaduStatus2symbol(unsigned int status);
+		void closeEvent(QCloseEvent *e);
 
-	virtual void keyPressEvent(QKeyEvent *e);
+		QTreeWidget *uinsTreeWidget;
+		ChatMessagesView* body;
+		UinsList uins;
+		int start;
+		HistoryFindRec findRec;
+		bool closeDemand;
+		bool finding;
+		QList<HistoryDate> dateEntries;
 
-private slots:
-	void showStatusChanged(bool);
+		virtual void keyPressEvent(QKeyEvent *e);
 
-public:
-	HistoryDialog(UinsList uins);
+	public:
+		HistoryDialog(UinsList uins);
 
-public slots:
-	void uinsChanged(QTreeWidgetItem *item, int col);
-	void dateChanged(QTreeWidgetItem *item, int col);
-	void searchBtnClicked();
-	void searchNextBtnClicked();
-	void searchPrevBtnClicked();
-
+	public slots:
+		void uinsChanged(QTreeWidgetItem *item);
+		void dateChanged(QTreeWidgetItem*item);
+		void searchButtonClicked();
+		void searchNextButtonClicked();
+		void searchPrevButtonClicked();
 };
 
 #endif

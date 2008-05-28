@@ -147,8 +147,8 @@ HistorySearchDialog::HistorySearchDialog(QWidget *parent, UinsList uins)
 	if (config_file.readBoolEntry("History", "DontShowStatusChanges"))
 		statusRadioButton ->setEnabled(false);
 
-	criteriaButtonGroup->addButton(phraseRadioButton , 0);
-	criteriaButtonGroup->addButton(statusRadioButton , 1);
+	criteriaButtonGroup->addButton(phraseRadioButton , 1);
+	criteriaButtonGroup->addButton(statusRadioButton , 2);
 
 	criteriaLayout->addWidget(phraseRadioButton);
 	criteriaLayout->addWidget(statusRadioButton);
@@ -248,8 +248,8 @@ void HistorySearchDialog::toToggled(bool on)
 
 void HistorySearchDialog::criteriaChanged(int id)
 {
-	phraseGroupBox->setEnabled(id == 0);
-	statusGroupBox->setEnabled(id != 0);
+	phraseGroupBox->setEnabled(id == 1);
+	statusGroupBox->setEnabled(id != 1);
 }
 
 void HistorySearchDialog::findBtnClicked()
@@ -307,10 +307,10 @@ void HistorySearchDialog::resetBtnClicked()
 	toCheckBox->setChecked(false);
 	toGroupBox->setEnabled(false);
 	resetToDate();
-	criteriaButtonGroup->buttons()[0]->setChecked(true);
+	criteriaButtonGroup->button(1)->setChecked(true);
 	phraseEdit->text().truncate(0);
 	statusComboBox->setCurrentIndex(0);
-	criteriaChanged(0);
+	criteriaChanged(1);
 	reverseCheckBox->setChecked(false);
 	kdebugf2();
 }
@@ -345,7 +345,7 @@ void HistorySearchDialog::setDialogValues(HistoryFindRec &findrec)
 		toMinComboBox->setCurrentIndex(findrec.todate.time().minute());
 		correctToDays(findrec.todate.date().month() - 1);
 	}
-	criteriaButtonGroup->buttons()[findrec.type]->setChecked(true);
+	criteriaButtonGroup->button(findrec.type)->setChecked(true);
 	criteriaChanged(findrec.type);
 
 	switch (findrec.type)
