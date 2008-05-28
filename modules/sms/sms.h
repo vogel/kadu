@@ -136,6 +136,7 @@ class Sms : public QWidget, ConfigurationAwareObject
 		void updateCounter();
 		void smsSigHandler();
 		void onSmsSenderFinished(bool success);
+		void refreshIcon(const QPixmap &);
 };
 
 typedef SmsGateway* isValidFunc(const QString&, QObject*);

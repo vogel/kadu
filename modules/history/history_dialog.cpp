@@ -111,6 +111,8 @@ HistoryDialog::HistoryDialog(UinsList uins)
 	connect(searchnextbtn, SIGNAL(clicked()), this, SLOT(searchNextBtnClicked()));
 	connect(searchprevbtn, SIGNAL(clicked()), this, SLOT(searchPrevBtnClicked()));
 
+	connect(kadu, SIGNAL(statusPixmapChanged(const QPixmap &, const QString &)), this, SLOT(refreshIcon(const QPixmap &)));
+
 	loadGeometry(this, "History", "HistoryGeometry", 0, 30, 500, 400);
 
 	findrec.type = 1;
@@ -153,6 +155,11 @@ void HistoryDialog::showStatusChanged(bool showStatusChanges)
 
 	if (uinslv->currentItem())
 		dateChanged(uinslv->currentItem());
+}
+
+void HistoryDialog::refreshIcon(const QPixmap &pix)
+{
+	setIcon(pix);
 }
 
 void HistoryDialog::uinsChanged(QListViewItem *item)

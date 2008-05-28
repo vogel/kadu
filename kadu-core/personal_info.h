@@ -38,6 +38,7 @@ class PersonalInfoDialog : public QHBox
 	private slots:
 		void saveButtonClicked();
 		void keyPressEvent(QKeyEvent *);
+		void refreshIcon(const QPixmap &);
 		void reloadInfo();
 
 	public:

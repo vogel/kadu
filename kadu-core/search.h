@@ -127,6 +127,7 @@ class SearchDialog : public QWidget {
 		void nextResultsActionAddedToToolbar(ToolButton*, ToolBar*);
 		void clearResultsActionAddedToToolbar(ToolButton*, ToolBar*);
 		void selectionChanged();
+		void refreshIcon(const QPixmap &);
 
 	protected:
 		/**

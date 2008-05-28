@@ -30,6 +30,7 @@ private slots:
 	void add();
 	void getList();
 	void keyPressEvent(QKeyEvent *);
+	void refreshIcon(const QPixmap &);
 
 protected:
 	virtual void resizeEvent(QResizeEvent *);

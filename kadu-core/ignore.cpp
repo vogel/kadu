@@ -21,6 +21,7 @@
 #include "gadu.h"
 #include "icons_manager.h"
 #include "ignore.h"
+#include "kadu.h"
 #include "misc.h"
 #include "userlist.h"
 
@@ -91,6 +92,8 @@ Ignored::Ignored(QWidget *parent, const char *name) : QHBox(parent, name, WType_
 	layoutHelper->addLabel(l_info);
 	layoutHelper->addLabel(l_uin);
 
+	connect(kadu, SIGNAL(statusPixmapChanged(const QPixmap &, const QString &)), this, SLOT(refreshIcon(const QPixmap &)));
+
  	loadGeometry(this, "General", "IgnoredDialogGeometry", 0, 30, 330, 350);
 	kdebugf2();
 }
@@ -109,6 +112,11 @@ void Ignored::keyPressEvent(QKeyEvent *ke_event)
 		close();
 	if ((ke_event->key() == Qt::Key_Return || ke_event->key() == Qt::Key_Enter) && e_uin->hasFocus())
 		add();
+}
+
+void Ignored::refreshIcon(const QPixmap &pix)
+{
+	setIcon(pix);
 }
 
 void Ignored::add()

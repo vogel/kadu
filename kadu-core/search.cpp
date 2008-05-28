@@ -205,6 +205,8 @@ SearchDialog::SearchDialog(QWidget *parent, const char *name, UinType whoisSearc
 
 	connect(gadu, SIGNAL(newSearchResults(SearchResults &, int, int)), this, SLOT(newSearchResults(SearchResults &, int, int)));
 
+	connect(kadu, SIGNAL(statusPixmapChanged(const QPixmap &, const QString &)), this, SLOT(refreshIcon(const QPixmap &)));
+
 	kdebugf2();
 }
 
@@ -671,4 +673,9 @@ void SearchDialog::selectionChanged()
 	bool enableActions = results->selectedItem() != 0;
 	add_searched_action->setEnabled(this, enableActions);
 	chat_searched_action->setEnabled(this, enableActions);
+}
+
+void SearchDialog::refreshIcon(const QPixmap &pix)
+{
+	setIcon(pix);
 }

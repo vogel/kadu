@@ -59,6 +59,7 @@ class UserlistImportExport : public QHBox {
 		void userListCleared(bool ok);
 		void keyPressEvent(QKeyEvent *);
 		void updateUserListCount();
+		void refreshIcon(const QPixmap &);
 };
 
 #endif

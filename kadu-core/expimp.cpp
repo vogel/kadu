@@ -23,6 +23,7 @@
 #include "gadu.h"
 #include "icons_manager.h"
 #include "ignore.h"
+#include "kadu.h"
 #include "message_box.h"
 #include "misc.h"
 #include "userlist.h"
@@ -130,6 +131,8 @@ UserlistImportExport::UserlistImportExport(QWidget *parent, const char *name) :
 	connect(gadu, SIGNAL(userListExported(bool)), this, SLOT(userListExported(bool)));
 	connect(gadu, SIGNAL(userListCleared(bool)), this, SLOT(userListCleared(bool)));
 	connect(gadu, SIGNAL(userListImported(bool, QValueList<UserListElement>)), this, SLOT(userListImported(bool, QValueList<UserListElement>)));
+
+	connect(kadu, SIGNAL(statusPixmapChanged(const QPixmap &, const QString &)), this, SLOT(refreshIcon(const QPixmap &)));
 	// end connect
 
 	layoutHelper->addLabel(l_info);
@@ -158,6 +161,11 @@ void UserlistImportExport::keyPressEvent(QKeyEvent *ke_event)
 {
 	if (ke_event->key() == Qt::Key_Escape)
 		close();
+}
+
+void UserlistImportExport::refreshIcon(const QPixmap &pix)
+{
+	setIcon(pix);
 }
 
 void UserlistImportExport::fromfile()

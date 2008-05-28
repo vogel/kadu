@@ -261,6 +261,8 @@ Sms::Sms(const QString& altnick, QWidget* parent, const char *name) : QWidget(pa
 
 	connect(&Sender, SIGNAL(finished(bool)), this, SLOT(onSmsSenderFinished(bool)));
 
+	connect(kadu, SIGNAL(statusPixmapChanged(const QPixmap &, const QString &)), this, SLOT(refreshIcon(const QPixmap &)));
+
 	configurationUpdated();
 	loadGeometry(this, "Sms", "SmsDialogGeometry", 200, 200, 400, 250);
 
@@ -273,6 +275,11 @@ Sms::~Sms()
 	saveGeometry(this, "Sms", "SmsDialogGeometry");
 
 	modules_manager->moduleDecUsageCount("sms");
+}
+
+void Sms::refreshIcon(const QPixmap &pix)
+{
+	setIcon(pix);
 }
 
 void Sms::configurationUpdated()

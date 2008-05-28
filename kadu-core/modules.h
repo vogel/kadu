@@ -97,6 +97,7 @@ class ModulesDialog : public QHBox
 		void getInfo();
 		void refreshList();
 		void keyPressEvent(QKeyEvent *);
+		void refreshIcon(const QPixmap &);
 
 	public:
 		/**

@@ -19,6 +19,7 @@
 #include "about.h"
 #include "debug.h"
 #include "icons_manager.h"
+#include "kadu.h"
 #include "misc.h"
 
 class KaduLink : public QLabel
@@ -122,6 +123,8 @@ About::About(QWidget *parent, const char *name) : QHBox(parent, name, WType_TopL
 	connect(pb_close, SIGNAL(clicked()), this, SLOT(close()));
 	// end close button
 
+	connect(kadu, SIGNAL(statusPixmapChanged(const QPixmap &, const QString &)), this, SLOT(refreshIcon(const QPixmap &)));
+
 	layoutHelper->addLabel(l_info);
 	loadGeometry(this, "General", "AboutGeometry", 0, 30, 640, 420);
 
@@ -142,6 +145,11 @@ void About::keyPressEvent(QKeyEvent *ke_event)
 {
 	if (ke_event->key() == Qt::Key_Escape)
 		close();
+}
+
+void About::refreshIcon(const QPixmap &pix)
+{
+	setIcon(pix);
 }
 
 QString About::loadFile(const QString &name)

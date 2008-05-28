@@ -17,6 +17,7 @@
 
 #include "debug.h"
 #include "icons_manager.h"
+#include "kadu.h"
 #include "misc.h"
 #include "personal_info.h"
 
@@ -129,6 +130,8 @@ PersonalInfoDialog::PersonalInfoDialog(QWidget *parent, const char *name) : QHBo
 
 	connect(gadu, SIGNAL(newSearchResults(SearchResults&, int, int)), this, SLOT(fillFields(SearchResults&, int, int)));
 
+	connect(kadu, SIGNAL(statusPixmapChanged(const QPixmap &, const QString &)), this, SLOT(refreshIcon(const QPixmap &)));
+
 	reloadInfo();
 
 	layoutHelper->addLabel(l_info);
@@ -157,6 +160,11 @@ void PersonalInfoDialog::keyPressEvent(QKeyEvent *ke_event)
 		close();
 	if ((ke_event->key() == Qt::Key_Return || ke_event->key() == Qt::Key_Enter))
 		saveButtonClicked();
+}
+
+void PersonalInfoDialog::refreshIcon(const QPixmap &pix)
+{
+	setIcon(pix);
 }
 
 void PersonalInfoDialog::reloadInfo()

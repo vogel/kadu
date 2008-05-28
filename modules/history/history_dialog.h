@@ -57,6 +57,7 @@ protected:
 
 private slots:
 	void showStatusChanged(bool);
+	void refreshIcon(const QPixmap &);
 
 public:
 	HistoryDialog(UinsList uins);

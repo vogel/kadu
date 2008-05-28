@@ -142,6 +142,9 @@ ModulesDialog::ModulesDialog() : QHBox(kadu, "modules_dialog", WType_TopLevel | 
 
 	layoutHelper->addLabel(l_info);
 	layoutHelper->addLabel(l_moduleinfo);
+
+	connect(kadu, SIGNAL(statusPixmapChanged(const QPixmap &, const QString &)), this, SLOT(refreshIcon(const QPixmap &)));
+
 	loadGeometry(this, "General", "ModulesDialogGeometry", 0, 30, 600, 620);
 	refreshList();
 	kdebugf2();
@@ -154,6 +157,11 @@ ModulesDialog::~ModulesDialog()
 	saveGeometry(this, "General", "ModulesDialogGeometry");
 	delete layoutHelper;
 	kdebugf2();
+}
+
+void ModulesDialog::refreshIcon(const QPixmap &pix)
+{
+	setIcon(pix);
 }
 
 void ModulesDialog::itemsChanging()

@@ -260,6 +260,8 @@ ConfigurationWindow::ConfigurationWindow(const QString &name, const QString &cap
 	sectionsListBox->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Expanding);
 	sectionsListBox->setHScrollBarMode(QScrollView::AlwaysOff);
 	connect(sectionsListBox, SIGNAL(highlighted(const QString &)), this, SLOT(changeSection(const QString &)));
+
+	connect(kadu, SIGNAL(statusPixmapChanged(const QPixmap &, const QString &)), this, SLOT(refreshIcon(const QPixmap &)));
 }
 
 ConfigurationWindow::~ConfigurationWindow()
@@ -288,6 +290,11 @@ void ConfigurationWindow::show()
 		setActiveWindow();
 		raise();
 	}
+}
+
+void ConfigurationWindow::refreshIcon(const QPixmap &pix)
+{
+	setIcon(pix);
 }
 
 QValueList<ConfigWidget *> ConfigurationWindow::appendUiFile(const QString &fileName, bool load)

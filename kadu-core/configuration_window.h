@@ -197,6 +197,8 @@ private slots:
 
 	void changeSection(const QString &newSectionName);
 
+	void refreshIcon(const QPixmap &);
+
 protected:
 	virtual void keyPressEvent(QKeyEvent *e);
 
