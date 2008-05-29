@@ -10,7 +10,6 @@
 #include <QTimer>
 
 #include "debug.h"
-#include "misc.h"
 
 #include "status_changer.h"
 
