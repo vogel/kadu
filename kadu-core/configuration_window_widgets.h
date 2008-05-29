@@ -279,8 +279,8 @@ protected:
 
 public:
 	ConfigSelectFont(const QString &section, const QString &item, const QString &widgetCaption, const QString &toolTip,
-		ConfigGroupBox *parentConfigGroupBox, char *name = 0);
-	ConfigSelectFont(ConfigGroupBox *parentConfigGroupBox, char *name = 0);
+		ConfigGroupBox *parentConfigGroupBox);
+	ConfigSelectFont(ConfigGroupBox *parentConfigGroupBox0);
 	virtual ~ConfigSelectFont();
 
 	virtual void loadConfiguration();

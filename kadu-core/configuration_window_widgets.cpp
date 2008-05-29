@@ -571,14 +571,14 @@ void ConfigColorButton::hide()
 }
 
 ConfigSelectFont::ConfigSelectFont(const QString &section, const QString &item, const QString &widgetCaption, const QString &toolTip,
-		ConfigGroupBox *parentConfigGroupBox, char *name)
-	: SelectFont(parentConfigGroupBox->widget(), name), ConfigWidgetValue(widgetCaption, toolTip, section, item, parentConfigGroupBox), label(0)
+		ConfigGroupBox *parentConfigGroupBox)
+	: SelectFont(parentConfigGroupBox->widget()), ConfigWidgetValue(widgetCaption, toolTip, section, item, parentConfigGroupBox), label(0)
 {
 	createWidgets();
 }
 
-ConfigSelectFont::ConfigSelectFont(ConfigGroupBox *parentConfigGroupBox, char *name)
-	: SelectFont(parentConfigGroupBox->widget(), name), ConfigWidgetValue(parentConfigGroupBox), label(0)
+ConfigSelectFont::ConfigSelectFont(ConfigGroupBox *parentConfigGroupBox)
+	: SelectFont(parentConfigGroupBox->widget()), ConfigWidgetValue(parentConfigGroupBox), label(0)
 {
 }
 

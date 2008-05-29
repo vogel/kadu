@@ -14,8 +14,8 @@
 
 #include "select_font.h"
 
-SelectFont::SelectFont(QWidget *parent, const char *name)
-	: QWidget(parent, name)
+SelectFont::SelectFont(QWidget *parent)
+	: QWidget(parent)
 {
 	QHBoxLayout *layout = new QHBoxLayout;
 	layout->setSpacing(5);
