@@ -1,37 +1,58 @@
+/***************************************************************************
+ *                                                                         *
+ *   This program is free software; you can redistribute it and/or modify  *
+ *   it under the terms of the GNU General Public License as published by  *
+ *   the Free Software Foundation; either version 2 of the License, or     *
+ *   (at your option) any later version.                                   *
+ *                                                                         *
+ ***************************************************************************/
+
 #ifndef KADU_TABBAR_H
 #define KADU_TABBAR_H
 
 #include <QTabBar>
 
 /**
-	Klasa ta jest odpowiedzialna za obs³ugê zak³adek grup kontaktów.
+	Klasa ta jest odpowiedzialna za obsï¿½ugï¿½ zakï¿½adek grup kontaktï¿½w.
 	\class KaduTabBar
-	\brief Zak³adki grup.
+	\brief Zakï¿½adki grup.
 **/
-class KaduTabBar : public QTabBar {
+class KaduTabBar : public QTabBar
+{
 	Q_OBJECT
-	public:
-		/**
-			\fn KaduTabBar(QWidget *parent = 0, const char *name = 0)
-			Standardowy konstruktor.
-			\param parent rodzic kontrolki.
-			\param name nazwa kontrolki.
-		**/
-		KaduTabBar(QWidget *parent = 0);
 
-		/**
-			\fn void dragEnterEvent(QDragEnterEvent* e)
-			Metoda obs³uguj±ca zdarzenie "przeci±gniêcia" nad listê zak³adek "podniesionego" wcze¶niej elementu.
-			\param e wska¼nik obiektu opisuj±cego to zdarzenie.
-		**/
-		void dragEnterEvent(QDragEnterEvent* e);
+	QString currentGroup;
+	QStringList currentUles;
 
-		/**
-			\fn void dropEvent(QDropEvent* e)
-			Metoda obs³uguj±ca zdarzenie "upuszczenia" nad listê zak³adek "podniesionego" wcze¶niej elementu.
-			\param e wska¼nik obiektu opisuj±cego to zdarzenie.
-		**/
-		void dropEvent(QDropEvent* e);
+	QString getNewGroupNameFromUser(bool *ok);
+
+private slots:
+	void addToGroup();
+	void moveToGroup();
+
+protected:
+	/**
+		\fn void dragEnterEvent(QDragEnterEvent* e)
+		Metoda obsï¿½ugujï¿½ca zdarzenie "przeciï¿½gniï¿½cia" nad listï¿½ zakï¿½adek "podniesionego" wczeï¿½niej elementu.
+		\param e wskaï¿½nik obiektu opisujï¿½cego to zdarzenie.
+	**/
+	void dragEnterEvent(QDragEnterEvent* e);
+
+	/**
+		\fn void dropEvent(QDropEvent* e)
+		Metoda obsï¿½ugujï¿½ca zdarzenie "upuszczenia" nad listï¿½ zakï¿½adek "podniesionego" wczeï¿½niej elementu.
+		\param e wskaï¿½nik obiektu opisujï¿½cego to zdarzenie.
+	**/
+	void dropEvent(QDropEvent *e);
+
+public:
+	/**
+		\fn KaduTabBar(QWidget *parent = 0, const char *name = 0)
+		Standardowy konstruktor.
+		\param parent rodzic kontrolki.
+		\param name nazwa kontrolki.
+	**/
+	KaduTabBar(QWidget *parent = 0);
 
 };
 

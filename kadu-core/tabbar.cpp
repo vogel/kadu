@@ -8,24 +8,25 @@
  ***************************************************************************/
 
 #include <QApplication>
+#include <QDragEnterEvent>
 #include <QInputDialog>
 
 #include "debug.h"
 #include "groups_manager.h"
-#include "misc.h"
 #include "userbox.h"
 #include "userinfo.h"
 
 #include "tabbar.h"
 
-KaduTabBar::KaduTabBar(QWidget *parent)	: QTabBar(parent)
+KaduTabBar::KaduTabBar(QWidget *parent)
+	: QTabBar(parent)
 {
 	kdebugf();
 	setSizePolicy(QSizePolicy(QSizePolicy::Maximum, QSizePolicy::Preferred));
 	setAcceptDrops(true);
 }
 
-void KaduTabBar::dragEnterEvent(QDragEnterEvent* e)
+void KaduTabBar::dragEnterEvent(QDragEnterEvent *e)
 {
 	kdebugf();
 	e->accept(UlesDrag::canDecode(e) &&
@@ -33,73 +34,94 @@ void KaduTabBar::dragEnterEvent(QDragEnterEvent* e)
 	kdebugf2();
 }
 
-void KaduTabBar::dropEvent(QDropEvent* e)
+QString KaduTabBar::getNewGroupNameFromUser(bool *ok)
+{
+	QString group;
+	QString text;
+
+	do
+	{
+		text = QInputDialog::getText(tr("Add new group"), tr("Name of new group:"), QLineEdit::Normal, text, ok);
+		if (!*ok)
+			return QString::null;
+
+		if (UserInfo::acceptableGroupName(text))
+			group = text;
+	}
+	while (group.isEmpty());
+
+	return group;
+}
+
+void KaduTabBar::dropEvent(QDropEvent *e)
 {
 	kdebugf();
 
 	QStringList ules;
-	if (dynamic_cast<UserBox*>(e->source()) && UlesDrag::decode(e, ules))
+	if (!dynamic_cast<UserBox*>(e->source()) || !UlesDrag::decode(e, ules))
+		return;
+
+	QApplication::setOverrideCursor(QCursor(Qt::ArrowCursor));
+	QString group;
+	int tabIndex = tabAt(e->pos());
+
+	if (tabIndex == -1)
 	{
-		QApplication::setOverrideCursor(QCursor(Qt::ArrowCursor));
-		QString group;
-		int tabIndex = tabAt(e->pos());
-		if (tabIndex!=-1)
-			group = tabText(tabIndex);
-		else
+		bool ok;
+		group = getNewGroupNameFromUser(&ok);
+		if (!ok)
 		{
-			bool ok;
-			QString text;
-			do
-			{
-				text = QInputDialog::getText(tr("Add new group"), tr("Name of new group:"), QLineEdit::Normal, text, &ok);
-				if (!ok)
-				{
-					QApplication::restoreOverrideCursor();
-					return;
-				}
-				if (UserInfo::acceptableGroupName(text))
-					group = text;
-			}
-			while (group.isEmpty());
+			QApplication::restoreOverrideCursor();
+			return;
 		}
-		if (group == GroupsManager::tr("All"))
-			group = QString::null;
-
-		Q3PopupMenu menu(this);
-		menu.insertItem(tr("Add to group %1").arg(group), 2);
-
-		if (tabText(currentIndex()) != GroupsManager::tr("All"))
-			menu.insertItem(tr("Move to group %1").arg(group), 1);
-
-		int menuret = -1;
-		if (group.isEmpty() || (menuret = menu.exec(mapToGlobal(e->pos()))) == 1)
-		{
-			QStringList groups;
-			if (!group.isEmpty())
-				groups.append(group);
-			CONST_FOREACH(ule, ules)
-			{
-				userlist->byAltNick(*ule).setData("Groups", groups);
-			}
-		}
-		else if (menuret == 2)
-		{
-			CONST_FOREACH(ule, ules)
-			{
-				UserListElement user = userlist->byAltNick(*ule);
-				QStringList userGroups = user.data("Groups").toStringList();
-				if (!userGroups.contains(group))
-				{
-					userGroups.append(group);
-					user.setData("Groups", userGroups);
-				}
-			}
-		}
-
-		// too slow, we need to do something about that
-		userlist->writeToConfig();
-
-		QApplication::restoreOverrideCursor();
 	}
+	else
+		group = tabText(tabIndex);
+
+	if (group == GroupsManager::tr("All"))
+		group = QString::null;
+
+	currentGroup = group;
+	currentUles = ules;
+
+	QMenu menu(this);
+	menu.addAction(tr("Add to group %1").arg(group), this, SLOT(addToGroup()));
+	if (tabText(currentIndex()) != GroupsManager::tr("All"))
+		menu.addAction(tr("Move to group %1").arg(group), this, SLOT(moveToGroup()));
+	menu.exec(QCursor::pos());
+
+	currentGroup = QString::null;
+
+	userlist->writeToConfig();
+
+	QApplication::restoreOverrideCursor();
+
 	kdebugf2();
+}
+
+void KaduTabBar::addToGroup()
+{
+	if (currentGroup.isEmpty())
+		return;
+
+	foreach(QString ule, currentUles)
+	{
+		UserListElement user = userlist->byAltNick(ule);
+		QStringList userGroups = user.data("Groups").toStringList();
+		if (!userGroups.contains(currentGroup))
+		{
+			userGroups.append(currentGroup);
+			user.setData("Groups", userGroups);
+		}
+	}
+}
+
+void KaduTabBar::moveToGroup()
+{
+	QStringList groups;
+	if (!currentGroup.isEmpty())
+		groups.append(currentGroup);
+
+	foreach(QString ule, currentUles)
+		userlist->byAltNick(ule).setData("Groups", groups);
 }
