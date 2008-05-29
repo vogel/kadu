@@ -47,9 +47,11 @@ class About : public QHBox {
 		**/
 		void keyPressEvent(QKeyEvent *);
 
+		LayoutHelper *layoutHelper;
+
+	private slots:
 		void refreshIcon(const QPixmap &);
 
-		LayoutHelper *layoutHelper;
 	protected:
 		virtual void resizeEvent(QResizeEvent *);
 };

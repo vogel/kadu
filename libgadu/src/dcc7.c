@@ -1,4 +1,4 @@
-/* $Id: dcc7.c 541 2008-02-29 21:32:00Z wojtekka $ */
+/* $Id: dcc7.c 602 2008-05-26 13:12:11Z darkjames $ */
 
 /*
  *  (C) Copyright 2001-2008 Wojtek Kaniewski <wojtekka@irc.pl>
@@ -189,7 +189,7 @@ static int gg_dcc7_connect(struct gg_session *sess, struct gg_dcc7 *dcc)
 static int gg_dcc7_listen(struct gg_dcc7 *dcc, uint16_t port)
 {
 	struct sockaddr_in sin;
-	int fd, bound = 0;
+	int fd;
 
 	gg_debug_dcc(dcc, GG_DEBUG_FUNCTION, "** gg_dcc7_listen(%p, %d)\n", dcc, port);
 
@@ -209,21 +209,21 @@ static int gg_dcc7_listen(struct gg_dcc7 *dcc, uint16_t port)
 	if (!port)
 		port = GG_DEFAULT_DCC_PORT;
 
-	while (!bound) {
+	while (1) {
 		sin.sin_family = AF_INET;
 		sin.sin_addr.s_addr = INADDR_ANY;
 		sin.sin_port = htons(port);
 
 		gg_debug_dcc(dcc, GG_DEBUG_MISC, "// gg_dcc7_listen() trying port %d\n", port);
+
 		if (!bind(fd, (struct sockaddr*) &sin, sizeof(sin)))
-			bound = 1;
-		else {
-			if (++port == 65535) {
-				gg_debug_dcc(dcc, GG_DEBUG_MISC, "// gg_dcc7_listen() no free port found\n");
-				close(fd);
-				errno = ENOENT;
-				return -1;
-			}
+			break;
+
+		if (port++ == 65535) {
+			gg_debug_dcc(dcc, GG_DEBUG_MISC, "// gg_dcc7_listen() no free port found\n");
+			close(fd);
+			errno = ENOENT;
+			return -1;
 		}
 	}
 
