@@ -1,4 +1,4 @@
-/* $Id: libgadu.c 523 2008-02-04 23:43:25Z wojtekka $ */
+/* $Id: libgadu.c 608 2008-05-29 13:15:43Z darkjames $ */
 
 /*
  *  (C) Copyright 2001-2006 Wojtek Kaniewski <wojtekka@irc.pl>
@@ -165,7 +165,7 @@ static char rcsid[]
 #ifdef __GNUC__
 __attribute__ ((unused))
 #endif
-= "$Id: libgadu.c 523 2008-02-04 23:43:25Z wojtekka $";
+= "$Id: libgadu.c 608 2008-05-29 13:15:43Z darkjames $";
 #endif
 
 #endif /* DOXYGEN */
@@ -558,10 +558,10 @@ int gg_write(struct gg_session *sess, const char *buf, int length)
 				res = write(sess->fd, buf + written, length - written);
 
 				if (res == -1) {
-					if (errno != EINTR)
-						break;
+					if (errno == EAGAIN || errno == EINTR)
+						continue;
 
-					continue;
+					break;
 				}
 
 				written += res;
@@ -590,7 +590,7 @@ int gg_write(struct gg_session *sess, const char *buf, int length)
 
 				sess->send_buf = tmp;
 
-				memcpy(sess->send_buf + sess->send_left, buf, length - res);
+				memcpy(sess->send_buf + sess->send_left, buf + res, length - res);
 
 				sess->send_left += length - res;
 

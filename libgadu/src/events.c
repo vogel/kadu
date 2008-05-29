@@ -1,4 +1,4 @@
-/* $Id: events.c 536 2008-02-24 13:32:13Z wojtekka $ */
+/* $Id: events.c 591 2008-04-14 20:30:12Z wojtekka $ */
 
 /*
  *  (C) Copyright 2001-2006 Wojtek Kaniewski <wojtekka@irc.pl>
@@ -285,15 +285,20 @@ static int gg_handle_recv_msg(struct gg_header *h, struct gg_event *e, struct gg
 		return 0;
 	}
 
-	for (p = (char*) r + sizeof(*r); *p; p++) {
-		if (*p == 0x02 && p == packet_end - 1) {
-			gg_debug_session(sess, GG_DEBUG_MISC, "// gg_handle_recv_msg() received ctcp packet\n");
-			break;
-		}
+	/* znajdź \0 */
+	for (p = (char*) r + sizeof(*r); ; p++) {
 		if (p >= packet_end) {
 			gg_debug_session(sess, GG_DEBUG_MISC, "// gg_handle_recv_msg() malformed packet, message out of bounds (0)\n");
 			goto malformed;
 		}
+
+		if (*p == 0x02 && p == packet_end - 1) {
+			gg_debug_session(sess, GG_DEBUG_MISC, "// gg_handle_recv_msg() received ctcp packet\n");
+			break;
+		}
+
+		if (!*p)
+			break;
 	}
 
 	p++;
@@ -516,6 +521,7 @@ static int gg_watch_fd_connected(struct gg_session *sess, struct gg_event *e)
 				e->event.notify_descr.notify[0].uin = gg_fix32(e->event.notify_descr.notify[0].uin);
 				e->event.notify_descr.notify[0].status = gg_fix32(e->event.notify_descr.notify[0].status);
 				e->event.notify_descr.notify[0].remote_port = gg_fix16(e->event.notify_descr.notify[0].remote_port);
+				e->event.notify_descr.notify[0].version = gg_fix32(e->event.notify_descr.notify[0].version);
 
 				count = h->length - sizeof(*n);
 				if (!(tmp = malloc(count + 1))) {
@@ -542,6 +548,7 @@ static int gg_watch_fd_connected(struct gg_session *sess, struct gg_event *e)
 					e->event.notify[i].uin = gg_fix32(e->event.notify[i].uin);
 					e->event.notify[i].status = gg_fix32(e->event.notify[i].status);
 					e->event.notify[i].remote_port = gg_fix16(e->event.notify[i].remote_port);
+					e->event.notify[i].version = gg_fix32(e->event.notify[i].version);
 				}
 			}
 
@@ -1637,7 +1644,7 @@ struct gg_event *gg_watch_fd(struct gg_session *sess)
 				{
 					unsigned int hash;
 
-					hash = gg_login_hash(password, w->key);
+					hash = gg_fix32(gg_login_hash(password, w->key));
 					gg_debug_session(sess, GG_DEBUG_DUMP, "// gg_watch_fd() challenge %.4x --> GG32 hash %.8x\n", w->key, hash);
 					memcpy(l.hash, &hash, sizeof(hash));
 

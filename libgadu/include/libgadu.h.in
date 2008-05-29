@@ -1,4 +1,4 @@
-/* $Id: libgadu.h.in 537 2008-02-24 13:32:42Z wojtekka $ */
+/* $Id: libgadu.h.in 605 2008-05-27 09:30:35Z darkjames $ */
 
 /*
  *  (C) Copyright 2001-2003 Wojtek Kaniewski <wojtekka@irc.pl>
@@ -147,10 +147,10 @@ typedef struct {
  */
 #define gg_common_head(x) \
 	int fd;			/**< Obserwowany deskryptor */ \
-	int check;		/**< Informacja o żądaniu odczytu/zapisu (patrz \c gg_check_t) */ \
-	int state;		/**< Aktualny stan połączenia (patrz \c gg_state_t) */ \
-	int error;		/**< Kod błędu dla \c GG_STATE_ERROR (patrz \c gg_error_t) */ \
-	int type;		/**< Rodzaj sesji (patrz \c gg_session_t) */ \
+	int check;		/**< Informacja o żądaniu odczytu/zapisu (patrz \ref gg_check_t) */ \
+	int state;		/**< Aktualny stan połączenia (patrz \ref gg_state_t) */ \
+	int error;		/**< Kod błędu dla \c GG_STATE_ERROR (patrz \ref gg_error_t) */ \
+	int type;		/**< Rodzaj sesji (patrz \ref gg_session_t) */ \
 	int id;			/**< Identyfikator sesji */ \
 	int timeout;		/**< Czas pozostały do zakończenia stanu */ \
 	int (*callback)(x*); 	/**< Funkcja zwrotna */ \
@@ -918,7 +918,7 @@ void gg_pubdir50_free(gg_pubdir50_t res);
  */
 enum {
 	GG_PUBDIR50_UIN,	/**< Numer Gadu-Gadu */
-	GG_PUBDIR50_STATUS,	/**< Status */
+	GG_PUBDIR50_STATUS,	/**< Status (tylko wynik wyszukiwania) */
 	GG_PUBDIR50_FIRSTNAME,	/**< Imię */
 	GG_PUBDIR50_LASTNAME,	/**< Nazwisko */
 	GG_PUBDIR50_NICKNAME,	/**< Pseudonim */
@@ -938,7 +938,7 @@ enum {
  */
 enum {
 	GG_PUBDIR50_GENDER_FEMALE,	/**< Kobieta */
-	GG_PUBDIR50_GENDER_MAIL,	/**< Mężczyzna */
+	GG_PUBDIR50_GENDER_MALE,	/**< Mężczyzna */
 };
 
 /**
@@ -948,7 +948,7 @@ enum {
  */
 enum {
 	GG_PUBDIR50_GENDER_SET_FEMALE,	/**< Kobieta */
-	GG_PUBDIR50_GENDER_SET_MAIL,	/**< Mężczyzna */
+	GG_PUBDIR50_GENDER_SET_MALE,	/**< Mężczyzna */
 };
 
 /**
@@ -1916,6 +1916,49 @@ struct gg_dcc7_dunno1 {
 #define GG_DCC7_TIMEOUT_GET 1800	/* 30 minut */
 #define GG_DCC7_TIMEOUT_FILE_ACK 300	/* 5 minut */
 #define GG_DCC7_TIMEOUT_VOICE_ACK 300	/* 5 minut */
+
+#define GG_DCC7_VOICE_RETRIES 0x11	/* 17 powtorzen */
+
+#define GG_DCC7_RESERVED1		0xdeadc0de
+#define GG_DCC7_RESERVED2		0xdeadbeaf
+
+struct gg_dcc7_voice_auth {
+	uint8_t type;			/* 0x00 -> wysylanie ID
+					   0x01 -> potwierdzenie ID
+					*/
+	gg_dcc7_id_t id;		/* identyfikator połączenia */
+	uint32_t reserved1;		/* GG_DCC7_RESERVED1 */
+	uint32_t reserved2;		/* GG_DCC7_RESERVED2 */
+} GG_PACKED;
+
+struct gg_dcc7_voice_nodata {	/* wyciszony mikrofon, ten pakiet jest wysylany co 1s (jesli chcemy podtrzymac polaczenie) */
+	uint8_t type;			/* 0x02 */
+	gg_dcc7_id_t id;		/* identyfikator połączenia */
+	uint32_t reserved1;		/* GG_DCC7_RESERVED1 */
+	uint32_t reserved2;		/* GG_DCC7_RESERVED2 */
+} GG_PACKED;
+
+struct gg_dcc7_voice_data {
+	uint8_t type;			/* 0x03 */
+	uint32_t did;			/* XXX: co ile zwieksza sie u nas id pakietu [uzywac 0x28] */
+	uint32_t len;			/* rozmiar strukturki - 1 (sizeof(type)) */
+	uint32_t packet_id;		/* numerek pakietu */
+	uint32_t datalen;		/* rozmiar danych */
+	char data[];			/* ramki: albo gsm, albo speex, albo melp, albo inne. */
+} GG_PACKED;
+
+struct gg_dcc7_voice_init {
+	uint8_t type;			/* 0x04 */
+	uint32_t id;			/* nr kroku [0x1 - 0x5] */
+	uint32_t protocol;		/* XXX: wersja protokolu (0x29, 0x2a, 0x2b) */
+	uint32_t len;			/* rozmiar sizeof(protocol)+sizeof(len)+sizeof(data) = 0x08 + sizeof(data) */
+	char data[];			/* reszta danych */
+} GG_PACKED;
+
+struct gg_dcc7_voice_init_confirm {
+	uint8_t type;			/* 0x05 */
+	uint32_t id;			/* id tego co potwierdzamy [0x1 - 0x5] */
+} GG_PACKED;
 
 #ifdef __cplusplus
 }
