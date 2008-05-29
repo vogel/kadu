@@ -349,8 +349,8 @@ protected:
 
 public:
 	ConfigSelectFile(const QString &section, const QString &item, const QString &widgetCaption, const QString &toolTip,
-		const QString &type, ConfigGroupBox *parentConfigGroupBox,  char *name = 0);
-	ConfigSelectFile(ConfigGroupBox *parentConfigGroupBox, char *name = 0);
+		const QString &type, ConfigGroupBox *parentConfigGroupBox);
+	ConfigSelectFile(ConfigGroupBox *parentConfigGroupBox);
 	virtual ~ConfigSelectFile();
 
 	virtual void loadConfiguration();

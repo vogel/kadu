@@ -736,14 +736,14 @@ void ConfigActionButton::hide()
 }
 
 ConfigSelectFile::ConfigSelectFile(const QString &section, const QString &item, const QString &widgetCaption, const QString &toolTip,
-		const QString &type, ConfigGroupBox *parentConfigGroupBox, char *name)
-	: SelectFile(type, parentConfigGroupBox->widget(), name), ConfigWidgetValue(widgetCaption, toolTip, section, item, parentConfigGroupBox), label(0)
+		const QString &type, ConfigGroupBox *parentConfigGroupBox)
+	: SelectFile(type, parentConfigGroupBox->widget()), ConfigWidgetValue(widgetCaption, toolTip, section, item, parentConfigGroupBox), label(0)
 {
 	createWidgets();
 }
 
-ConfigSelectFile::ConfigSelectFile(ConfigGroupBox *parentConfigGroupBox, char *name)
-	: SelectFile(parentConfigGroupBox->widget(), name), ConfigWidgetValue(parentConfigGroupBox), label(0)
+ConfigSelectFile::ConfigSelectFile(ConfigGroupBox *parentConfigGroupBox)
+	: SelectFile(parentConfigGroupBox->widget()), ConfigWidgetValue(parentConfigGroupBox), label(0)
 {
 }
 

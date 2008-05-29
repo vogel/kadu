@@ -17,8 +17,8 @@
 
 #include "select_file.h"
 
-SelectFile::SelectFile(const QString &type, QWidget *parent, char *name)
-	: QWidget(parent, name), Type(type)
+SelectFile::SelectFile(const QString &type, QWidget *parent)
+	: QWidget(parent), Type(type)
 {
 	QHBoxLayout *layout = new QHBoxLayout;
 
@@ -33,8 +33,8 @@ SelectFile::SelectFile(const QString &type, QWidget *parent, char *name)
 	setLayout(layout);
 }
 
-SelectFile::SelectFile(QWidget *parent, char *name)
-	: QWidget(parent, name)
+SelectFile::SelectFile(QWidget *parent)
+	: QWidget(parent)
 {
 	QHBoxLayout *layout = new QHBoxLayout;
 
