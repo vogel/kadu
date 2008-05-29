@@ -177,7 +177,7 @@ void SampleRecordThread::stop()
 }
 
 SoundManager::SoundManager(const QString& name, const QString& configname) : Notifier(),
-	themes(new Themes(name, configname, "sound_manager")),
+	themes(new Themes(name, configname)),
 	lastsoundtime(), mute(false), PlayingThreads(), RecordingThreads(),
 	play_thread(new SoundPlayThread()), simple_player_count(0)
 {

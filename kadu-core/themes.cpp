@@ -11,16 +11,17 @@
 #include "debug.h"
 #include "message_box.h"
 #include "misc.h"
+
 #include "themes.h"
 
-Themes::Themes(const QString& themename, const QString& configname, const char *name)
-	: QObject(NULL, name), ThemesList(), ThemesPaths(), additional(),
+Themes::Themes(const QString &themename, const QString &configname)
+	: QObject(), ThemesList(), ThemesPaths(), additional(),
 	ConfigName(configname), Name(themename), ActualTheme("Custom"), entries()
 {
 	setPaths(QStringList());
 }
 
-QStringList Themes::getSubDirs(const QString& path, bool validate) const
+QStringList Themes::getSubDirs(const QString &path, bool validate) const
 {
 	QDir dir(path);
 	dir.setFilter(QDir::Dirs);
@@ -32,16 +33,16 @@ QStringList Themes::getSubDirs(const QString& path, bool validate) const
 		return dirs;
 
 	QStringList subdirs;
-	CONST_FOREACH(dir, dirs)
+	foreach(const QString dir, dirs)
 	{
-		QString dirname = path + '/' + (*dir);
+		QString dirname = path + '/' + dir;
 		if (validateDir(dirname))
-			subdirs.append(*dir);
+			subdirs.append(dir);
 	}
 	return subdirs;
 }
 
-bool Themes::validateDir(const QString& path) const
+bool Themes::validateDir(const QString &path) const
 {
 	QFile f(path + '/' + ConfigName);
 	if (f.exists())
@@ -50,9 +51,9 @@ bool Themes::validateDir(const QString& path) const
 	QStringList subdirs = getSubDirs(path, false);
 	if (!subdirs.isEmpty())
 	{
-		CONST_FOREACH(dir, subdirs)
+		foreach(const QString dir, subdirs)
 		{
-			f.setName(path + '/' + (*dir) + '/' + ConfigName);
+			f.setName(path + '/' + dir + '/' + ConfigName);
 			if (!f.exists())
 				return false;
 		}
@@ -63,12 +64,12 @@ bool Themes::validateDir(const QString& path) const
 	return false;
 }
 
-const QStringList &Themes::themes() const
+const QStringList & Themes::themes() const
 {
 	return ThemesList;
 }
 
-void Themes::setTheme(const QString& theme)
+void Themes::setTheme(const QString &theme)
 {
 	kdebugf();
 
@@ -88,12 +89,12 @@ void Themes::setTheme(const QString& theme)
 	kdebugmf(KDEBUG_FUNCTION_END|KDEBUG_INFO, "end: theme: %s\n", ActualTheme.local8Bit().data());
 }
 
-const QString &Themes::theme() const
+const QString & Themes::theme() const
 {
 	return ActualTheme;
 }
 
-QString Themes::fixFileName(const QString& path, const QString& fn) const
+QString Themes::fixFileName(const QString &path, const QString &fn) const
 {
 	// check if original path is ok
 	if(QFile::exists(path + '/' + fn))
@@ -111,7 +112,7 @@ QString Themes::fixFileName(const QString& path, const QString& fn) const
 	return fn;
 }
 
-void Themes::setPaths(const QStringList& paths)
+void Themes::setPaths(const QStringList &paths)
 {
 	kdebugf();
 	ThemesList.clear();
@@ -149,17 +150,17 @@ QStringList Themes::defaultKaduPathsWithThemes() const
 	return default1 + default2;
 }
 
-const QStringList &Themes::paths() const
+const QStringList & Themes::paths() const
 {
     return ThemesPaths;
 }
 
-const QStringList &Themes::additionalPaths() const
+const QStringList & Themes::additionalPaths() const
 {
     return additional;
 }
 
-QString Themes::themePath(const QString& theme) const
+QString Themes::themePath(const QString &theme) const
 {
 	QString t = theme;
 	if (theme.isEmpty())
@@ -177,7 +178,7 @@ QString Themes::themePath(const QString& theme) const
 	return list.first();
 }
 
-QString Themes::getThemeEntry(const QString& name) const
+QString Themes::getThemeEntry(const QString &name) const
 {
 	if (entries.contains(name))
 		return entries[name];

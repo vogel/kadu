@@ -52,7 +52,7 @@ void EmoticonsManager::closeModule()
 }
 
 EmoticonsManager::EmoticonsManager(const QString& name, const QString& configname)
-	: Themes(name, configname, "emoticons_manager"), Aliases(), Selector(), walker(0)
+	: Themes(name, configname), Aliases(), Selector(), walker(0)
 
 {
 	kdebugf();
@@ -425,7 +425,7 @@ void EmoticonSelector::iconClicked(const QString& emoticon_string)
 
 void EmoticonSelector::alignTo(QWidget* w)
 {
-	// oblicz pozycjê widgetu do którego równamy
+	// oblicz pozycjï¿½ widgetu do ktï¿½rego rï¿½wnamy
 	QPoint w_pos = w->mapToGlobal(QPoint(0,0));
 	// oblicz rozmiar selektora
 	QSize e_size = sizeHint();
@@ -434,19 +434,19 @@ void EmoticonSelector::alignTo(QWidget* w)
 	// oblicz dystanse od widgetu do lewego brzegu i do prawego
 	int l_dist = w_pos.x();
 	int r_dist = s_size.width() - (w_pos.x() + w->width());
-	// oblicz pozycjê w zale¿no¶ci od tego czy po lewej stronie
-	// jest wiêcej miejsca czy po prawej
+	// oblicz pozycjï¿½ w zaleï¿½noï¿½ci od tego czy po lewej stronie
+	// jest wiï¿½cej miejsca czy po prawej
 	int x;
 	if (l_dist >= r_dist)
 		x = w_pos.x() - e_size.width();
 	else
 		x = w_pos.x() + w->width();
-	// oblicz pozycjê y - centrujemy w pionie
+	// oblicz pozycjï¿½ y - centrujemy w pionie
 	int y = w_pos.y() + w->height()/2 - e_size.height()/2;
-	// je¶li wychodzi poza doln± krawêd¼ to równamy do niej
+	// jeï¿½li wychodzi poza dolnï¿½ krawï¿½dï¿½ to rï¿½wnamy do niej
 	if (y + e_size.height() > s_size.height())
 		y = s_size.height() - e_size.height();
-	// je¶li wychodzi poza górn± krawêd¼ to równamy do niej
+	// jeï¿½li wychodzi poza gï¿½rnï¿½ krawï¿½dï¿½ to rï¿½wnamy do niej
 	if (y < 0)
 		y = 0;
 	// ustawiamy selektor na wyliczonej pozycji
@@ -869,7 +869,7 @@ void AnimTextItem::draw(
 
 	Label->lastX = x - Edit->contentsX();
 
-	// +IMG_Y_OFFSET dla lepszego efektu optycznego - emotikony s± bardziej wy¶rodkowane
+	// +IMG_Y_OFFSET dla lepszego efektu optycznego - emotikony sï¿½ bardziej wyï¿½rodkowane
 	if (y - cy > 0)
 		Label->lastY = y - cy + Edit->visibleHeight() - ch + IMG_Y_OFFSET;
 	else

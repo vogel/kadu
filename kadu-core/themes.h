@@ -1,18 +1,22 @@
+/***************************************************************************
+ *                                                                         *
+ *   This program is free software; you can redistribute it and/or modify  *
+ *   it under the terms of the GNU General Public License as published by  *
+ *   the Free Software Foundation; either version 2 of the License, or     *
+ *   (at your option) any later version.                                   *
+ *                                                                         *
+ ***************************************************************************/
+
 #ifndef KADU_THEMES_H
 #define KADU_THEMES_H
 
-#include <qglobal.h>
-
-#include <qmap.h>
-#include <qobject.h>
-#include <qregexp.h>
-#include <qstring.h>
-#include <qstringlist.h>
+#include <QStringList>
+#include <QMap>
 
 /**
-	Klasa obs³uguj±ca ró¿ne zestawy (jak ikony i emotikony)
+	Klasa obsï¿½ugujï¿½ca rï¿½ï¿½ne zestawy (jak ikony i emotikony)
 	\class Themes
-	\brief Klasa zarz±dzaj±ca zestawami
+	\brief Klasa zarzï¿½dzajï¿½ca zestawami
 **/
 
 class Themes : public QObject
@@ -21,111 +25,111 @@ class Themes : public QObject
 
 	friend class EmoticonsManager;
 
-	QStringList ThemesList; //!< lista z nazwami dostêpnych zestawów
-	QStringList ThemesPaths; //!< lista ¶cie¿ek w których szukamy zestawów
+	QStringList ThemesList; //!< lista z nazwami dostï¿½pnych zestawï¿½w
+	QStringList ThemesPaths; //!< lista ï¿½cieï¿½ek w ktï¿½rych szukamy zestawï¿½w
 	QStringList additional;
-	QString ConfigName; //!< nazwa pliku z konfiguracj± zestawu
+	QString ConfigName; //!< nazwa pliku z konfiguracjï¿½ zestawu
 	QString Name; //!< typ zestawu (np. "icons", "emoticons")
 	QString ActualTheme; //!< nazwa aktualnie wybranego zestawu
 	QMap<QString, QString> entries;
 
 	/**
-		\fn QStringList getSubDirs(const QString& path, bool validate = true) const
-		Wyszukuje podkatalogi w podanej ¶cie¿ce i zwraca listê tych zawieraj±cych
-		pliki konfiguracyjne zestawu. Je¶li parametr validate ma warto¶æ false,
-		zwrócona zostanie lista wszystkich znalezionych podkatalogów.
-		\param path ¶cie¿ka do katalogu
-		\param validate sprawdzenie zawarto¶ci
-		\return lista podkatalogów
+		\fn QStringList getSubDirs(const QString &path, bool validate = true) const
+		Wyszukuje podkatalogi w podanej ï¿½cieï¿½ce i zwraca listï¿½ tych zawierajï¿½cych
+		pliki konfiguracyjne zestawu. Jeï¿½li parametr validate ma wartoï¿½ï¿½ false,
+		zwrï¿½cona zostanie lista wszystkich znalezionych podkatalogï¿½w.
+		\param path ï¿½cieï¿½ka do katalogu
+		\param validate sprawdzenie zawartoï¿½ci
+		\return lista podkatalogï¿½w
 	**/
-	QStringList getSubDirs(const QString& path, bool validate = true) const;
+	QStringList getSubDirs(const QString &path, bool validate = true) const;
 
 	/**
-		\fn bool validateDir(const QString& path) const
-		Sprawdza czy w podanym katalogu, b±d¼ jego podkatalogach znajduj±
-		siê pliki z konfiguracj± zestawu.
-		\param path ¶cie¿ka do katalogu
+		\fn bool validateDir(const QString &path) const
+		Sprawdza czy w podanym katalogu, bï¿½dï¿½ jego podkatalogach znajdujï¿½
+		siï¿½ pliki z konfiguracjï¿½ zestawu.
+		\param path ï¿½cieï¿½ka do katalogu
 	**/
-	bool validateDir(const QString& path) const;
+	bool validateDir(const QString &path) const;
 
-	QString fixFileName(const QString& path, const QString& fn) const;
+	QString fixFileName(const QString &path, const QString &fn) const;
 
-	public:
+public:
+	/**
+		\fn Themes(const QString &name, const QString &configname)
+		Konstruktor tworzï¿½cy nowy zestaw
+		\param name typ zestawu
+		\param configname plik z konfiguracjï¿½ zestawu
+	**/
+	Themes(const QString &name, const QString &configname);
+
+	/**
+		\fn QStringList defaultKaduPathsWithThemes() const
+		Tworzy listï¿½ ï¿½cieï¿½ek do zestawï¿½w znajdujï¿½cych siï¿½ w lokalizacjach
+		domyï¿½lnych dla typu zestawu.
+		\return lista ï¿½cieï¿½ek do zestawï¿½w
+	**/
+	QStringList defaultKaduPathsWithThemes() const;
+
+	/**
+		\fn const QStringList &themes() const
+		Funkcja zwraca listï¿½ z nazwami dostï¿½pnych zestawï¿½w
+	**/
+	const QStringList & themes() const;
+
+	/**
+		\fn const QString &theme() const
+		Funkcja zwraca nazwï¿½ aktualnie wybranego zestawu
+	**/
+	const QString & theme() const;
+
+	/**
+		\fn const QStringList &paths() const
+		Funkcja zwraca listï¿½ ï¿½cieï¿½ek, w ktï¿½rych wyszukiwane sï¿½ zestawy
+	**/
+	const QStringList & paths() const;
+
+	const QStringList & additionalPaths() const;
+
+	/**
+		\fn const QStringList &paths() const
+		Funkcja zwraca ï¿½cieï¿½kï¿½ do wskazanego zestawu
+	**/
+	QString themePath(const QString &theme = QString::null) const;
+
+	QString getThemeEntry(const QString &name) const;
+	const QMap<QString, QString>  &getEntries() { return entries; }
+
+public slots:
 		/**
-			\fn Themes(const QString& name, const QString& configname, const char *cname = 0)
-			Konstruktor tworz±cy nowy zestaw
-			\param name typ zestawu
-			\param configname plik z konfiguracj± zestawu
-			\param cname nazwa obiektu
-		**/
-		Themes(const QString& name, const QString& configname, const char *cname = 0);
+		\fn void setTheme(const QString &theme)
+		Zmienia aktualny zestaw na wskazany o ile ten istnieje
+		\param theme nazwa zestawu
+	**/
+	void setTheme(const QString &theme);
 
-		/**
-			\fn QStringList defaultKaduPathsWithThemes() const
-			Tworzy listê ¶cie¿ek do zestawów znajduj±cych siê w lokalizacjach
-			domy¶lnych dla typu zestawu.
-			\return lista ¶cie¿ek do zestawów
-		**/
-		QStringList defaultKaduPathsWithThemes() const;
+	/**
+		\fn void setPaths(const QStringList &paths)
+		Ustawia listï¿½ ï¿½cieï¿½ek, w ktï¿½rych wyszukiwane sï¿½ zestawy
+		\param paths lista ï¿½cieï¿½ek
+	**/
+	void setPaths(const QStringList &paths);
 
-		/**
-			\fn const QStringList &themes() const
-			Funkcja zwraca listê z nazwami dostêpnych zestawów
-		**/
-		const QStringList &themes() const;
+signals:
+	/**
+		\fn void themeChanged(const QString &theme)
+	 	Sygnaï¿½ jest emitowany, gdy zmieniono aktualny zestaw
+		\param theme nazwa nowego zestawu
+	**/
+	void themeChanged(const QString &theme);
 
-		/**
-			\fn const QString &theme() const
-			Funkcja zwraca nazwê aktualnie wybranego zestawu
-		**/
-		const QString &theme() const;
+	/**
+		\fn void pathsChanged(const QStringList &list)
+		Sygnaï¿½ jest emitowany, gdy zmieniono ï¿½cieï¿½kï¿½ wyszukiwania
+		\param list lista nowych ï¿½cieï¿½ek
+	**/
+	void pathsChanged(const QStringList &list);
 
-		/**
-			\fn const QStringList &paths() const
-			Funkcja zwraca listê ¶cie¿ek, w których wyszukiwane s± zestawy
-		**/
-		const QStringList &paths() const;
-
-		const QStringList &additionalPaths() const;
-
-		/**
-			\fn const QStringList &paths() const
-			Funkcja zwraca ¶cie¿kê do wskazanego zestawu
-		**/
-		QString themePath(const QString& theme = QString::null) const;
-
-		QString getThemeEntry(const QString& name) const;
-		const QMap<QString, QString> & getEntries() { return entries; }
-
-	public slots:
-		/**
-			\fn void setTheme(const QString& theme)
-			Zmienia aktualny zestaw na wskazany o ile ten istnieje
-			\param theme nazwa zestawu
-		**/
-		void setTheme(const QString& theme);
-
-		/**
-			\fn void setPaths(const QStringList& paths)
-			Ustawia listê ¶cie¿ek, w których wyszukiwane s± zestawy
-			\param paths lista ¶cie¿ek
-		**/
-		void setPaths(const QStringList& paths);
-
-	signals:
-		/**
-			\fn void themeChanged(const QString& theme)
-		 	Sygna³ jest emitowany, gdy zmieniono aktualny zestaw
-			\param theme nazwa nowego zestawu
-		**/
-		void themeChanged(const QString& theme);
-
-		/**
-			\fn void pathsChanged(const QStringList& list)
-		 	Sygna³ jest emitowany, gdy zmieniono ¶cie¿kê wyszukiwania
-			\param list lista nowych ¶cie¿ek
-		**/
-		void pathsChanged(const QStringList& list);
 };
 
 #endif

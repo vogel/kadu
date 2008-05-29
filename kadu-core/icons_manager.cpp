@@ -16,7 +16,7 @@
 #include "icons_manager.h"
 
 IconsManager::IconsManager(const QString &name, const QString &configname)
-	: Themes(name, configname, "icons_manager"), pixmaps(), icons()/*, animatedIcons()*///, menus()
+	: Themes(name, configname), pixmaps(), icons()/*, animatedIcons()*///, menus()
 {
 	kdebugf();
 	kdebugf2();
