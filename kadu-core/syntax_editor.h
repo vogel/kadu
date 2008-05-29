@@ -1,3 +1,12 @@
+/***************************************************************************
+ *                                                                         *
+ *   This program is free software; you can redistribute it and/or modify  *
+ *   it under the terms of the GNU General Public License as published by  *
+ *   the Free Software Foundation; either version 2 of the License, or     *
+ *   (at your option) any later version.                                   *
+ *                                                                         *
+ ***************************************************************************/
+
 #ifndef SYNTAX_EDITOR_H
 #define SYNTAX_EDITOR_H
 
@@ -66,7 +75,7 @@ private slots:
 	void syntaxListUpdated();
 
 public:
-	SyntaxEditor(QWidget *parent = 0, char *name = 0);
+	SyntaxEditor(QWidget *parent = 0);
 	virtual ~SyntaxEditor();
 
 	QString currentSyntax();
@@ -104,10 +113,10 @@ protected:
 	virtual void keyPressEvent(QKeyEvent *e);
 
 public:
-	SyntaxEditorWindow(SyntaxList *syntaxList, const QString &syntaxName, const QString &category, const QString &syntaxHint, QWidget* parent = 0, const char *name = 0);
+	SyntaxEditorWindow(SyntaxList *syntaxList, const QString &syntaxName, const QString &category, const QString &syntaxHint, QWidget* parent = 0);
 	~SyntaxEditorWindow();
 
-	Preview *preview() { return previewPanel; }
+	Preview * preview() { return previewPanel; }
 
 public slots:
 	void refreshPreview();

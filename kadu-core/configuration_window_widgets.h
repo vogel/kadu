@@ -302,8 +302,8 @@ protected:
 
 public:
 	ConfigSyntaxEditor(const QString &section, const QString &item, const QString &widgetCaption, const QString &toolTip,
-		ConfigGroupBox *parentConfigGroupBox, char *name = 0);
-	ConfigSyntaxEditor(ConfigGroupBox *parentConfigGroupBox, char *name = 0);
+		ConfigGroupBox *parentConfigGroupBox);
+	ConfigSyntaxEditor(ConfigGroupBox *parentConfigGroupBox);
 	virtual ~ConfigSyntaxEditor();
 
 	virtual void loadConfiguration();

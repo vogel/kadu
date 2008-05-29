@@ -9,17 +9,16 @@
 
 #include <QApplication>
 #include <QComboBox>
-#include <QInputDialog>
+#include <QGridLayout>
 #include <QHBoxLayout>
+#include <QInputDialog>
 #include <QLineEdit>
 #include <QPushButton>
 #include <QTextEdit>
+#include <QVBoxLayout>
 
 #include "config_file.h"
-#include "debug.h"
 #include "icons_manager.h"
-#include "kadu.h"
-#include "kadu_parser.h"
 #include "message_box.h"
 #include "misc.h"
 #include "preview.h"
@@ -195,8 +194,8 @@ bool SyntaxList::isGlobal(const QString &name)
 	return info.global;
 }
 
-SyntaxEditor::SyntaxEditor(QWidget *parent, char *name)
-	: QWidget(parent, name), syntaxList(0)
+SyntaxEditor::SyntaxEditor(QWidget *parent)
+	: QWidget(parent), syntaxList(0)
 {
 	UserStatus status;
 	status.setBusy(qApp->translate("@default", "Description"));
@@ -331,8 +330,8 @@ void SyntaxEditor::syntaxListUpdated()
 	syntaxListCombo->insertStringList(syntaxList->keys());
 }
 
-SyntaxEditorWindow::SyntaxEditorWindow(SyntaxList *syntaxList, const QString &syntaxName, const QString &category, const QString &syntaxHint, QWidget* parent, const char *name)
-	: QWidget(parent, name), syntaxList(syntaxList), syntaxName(syntaxName)
+SyntaxEditorWindow::SyntaxEditorWindow(SyntaxList *syntaxList, const QString &syntaxName, const QString &category, const QString &syntaxHint, QWidget* parent)
+	: QWidget(parent), syntaxList(syntaxList), syntaxName(syntaxName)
 {
 	setWindowTitle(tr("Kadu syntax editor"));
 	setAttribute(Qt::WA_DeleteOnClose);
