@@ -7,18 +7,19 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "debug.h"
-#include "status.h"
-
 #include <QPixmap>
 
-UserStatus::UserStatus() : QObject(NULL, 0), Changed(false),
-	Stat(Offline), Description(), FriendsOnly(false)
+#include "debug.h"
+
+#include "status.h"
+
+UserStatus::UserStatus()
+	: QObject(), Changed(false), Stat(Offline), Description(), FriendsOnly(false)
 {
 }
 
-UserStatus::UserStatus(const UserStatus &copyMe) : QObject(NULL, 0),
-	Changed(false), Stat(copyMe.Stat), Description(copyMe.Description),
+UserStatus::UserStatus(const UserStatus &copyMe)
+	: QObject(), Changed(false), Stat(copyMe.Stat), Description(copyMe.Description),
 	FriendsOnly(copyMe.FriendsOnly)
 {
 }
@@ -142,7 +143,7 @@ int UserStatus::index() const
 	return (static_cast<int>(Stat) << 1) + (Description.isEmpty() ? 0 : 1);
 }
 
-void UserStatus::setOnline(const QString& desc)
+void UserStatus::setOnline(const QString &desc)
 {
 	if (Stat == Online && Description == desc && !Changed)
 		return;
@@ -157,7 +158,7 @@ void UserStatus::setOnline(const QString& desc)
 	delete old;
 }
 
-void UserStatus::setBusy(const QString& desc)
+void UserStatus::setBusy(const QString &desc)
 {
 	if (Stat == Busy && Description == desc && !Changed)
 		return;
@@ -172,7 +173,7 @@ void UserStatus::setBusy(const QString& desc)
 	delete old;
 }
 
-void UserStatus::setInvisible(const QString& desc)
+void UserStatus::setInvisible(const QString &desc)
 {
 	if (Stat == Invisible && Description == desc && !Changed)
 		return;
@@ -187,7 +188,7 @@ void UserStatus::setInvisible(const QString& desc)
 	delete old;
 }
 
-void UserStatus::setOffline(const QString& desc)
+void UserStatus::setOffline(const QString &desc)
 {
 	if (Stat == Offline && Description == desc)
 		return;
@@ -217,7 +218,7 @@ void UserStatus::setBlocking()
 	delete old;
 }
 
-void UserStatus::setDescription(const QString& desc)
+void UserStatus::setDescription(const QString &desc)
 {
 	if (Description == desc)
 		return;
@@ -272,7 +273,7 @@ void UserStatus::setFriendsOnly(bool f)
 	}
 }
 
-void UserStatus::setStatus(const UserStatus& stat)
+void UserStatus::setStatus(const UserStatus &stat)
 {
 	FriendsOnly = stat.FriendsOnly;
 	Changed = true;
@@ -290,7 +291,7 @@ void UserStatus::setStatus(const UserStatus& stat)
 	}
 }
 
-void UserStatus::setIndex(int index, const QString& desc)
+void UserStatus::setIndex(int index, const QString &desc)
 {
 // 	if (index % 2 == 0)
 // 		setStatus(static_cast<eUserStatus>(index >> 1), QString::null);
@@ -298,7 +299,7 @@ void UserStatus::setIndex(int index, const QString& desc)
 	setStatus(static_cast<eUserStatus>(index >> 1), desc);
 }
 
-void UserStatus::setStatus(eUserStatus stat, const QString& desc)
+void UserStatus::setStatus(eUserStatus stat, const QString &desc)
 {
 	switch (stat)
 	{
@@ -318,7 +319,7 @@ void UserStatus::refresh()
 	setStatus(*this);
 }
 
-eUserStatus UserStatus::fromString(const QString& stat)
+eUserStatus UserStatus::fromString(const QString &stat)
 {
 	if (stat.contains("Online"))
 		return Online;
