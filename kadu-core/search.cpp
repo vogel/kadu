@@ -10,20 +10,20 @@
 #include <QButtonGroup>
 #include <QCheckBox>
 #include <QComboBox>
-#include <QGridLayout>
 #include <QGroupBox>
+#include <QGridLayout>
+#include <QLabel>
 #include <QLineEdit>
 #include <QRadioButton>
 #include <QTreeWidget>
+#include <QTreeWidgetItem>
 
-#include "action.h"
 #include "chat_manager.h"
-#include "config_file.h"
 #include "debug.h"
-#include "icons_manager.h"
 #include "kadu.h"
 #include "message_box.h"
 #include "misc.h"
+#include "toolbar.h"
 #include "userinfo.h"
 
 #include "search.h"

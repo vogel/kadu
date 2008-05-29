@@ -43,6 +43,7 @@
 #include "status_changer.h"
 #include "syntax_editor.h"
 #include "tabbar.h"
+#include "toolbar.h"
 #include "updates.h"
 #include "userbox.h"
 #include "userinfo.h"

@@ -1,20 +1,13 @@
 #ifndef KADU_SEARCH_H
 #define KADU_SEARCH_H
 
-#include <QCloseEvent>
-#include <QKeyEvent>
-#include <QLabel>
-#include <QResizeEvent>
-
 #include "gadu.h"
 #include "kadu_main_window.h"
-#include "toolbar.h"
 
 class QCheckBox;
 class QComboBox;
 class QLabel;
 class QLineEdit;
-class QPushButton;
 class QRadioButton;
 class QTreeWidget;
 class QTreeWidgetItem;
@@ -99,8 +92,8 @@ private slots:
 protected:
 	/**
 		\fn void closeEvent(QCloseEvent * e)
-		Obs³uguje zdarzenie zamkniêcia okna wyszukiwania w katalogu publicznym.
-		\param e wska¼nik do obiektu opisuj±cego zdarzenie zamkniêcie okna.
+		Obsï¿½uguje zdarzenie zamkniï¿½cia okna wyszukiwania w katalogu publicznym.
+		\param e wskaï¿½nik do obiektu opisujï¿½cego zdarzenie zamkniï¿½cie okna.
 	**/
 	virtual void closeEvent(QCloseEvent *e);
 	virtual void resizeEvent(QResizeEvent *e);
@@ -110,10 +103,10 @@ public:
 	/**
 		\fn SearchDialog(QWidget *parent=0, const char *name=0, UinType whoisSearchUin = 0)
 		Standardowy konstruktor.
-		\param parent rodzic kontrolki. Domy¶lnie 0.
-		\param name nazwa kontrolki. Domy¶lnie 0.
-		\param whoisSearchUin warto¶æ logiczna informuj±ca o tym, czy wstêpnie ma byæ wybrane
-		wyszukiwanie po numerze UIN (1) czy po danych osobowych (0). Domy¶lnie 0.
+		\param parent rodzic kontrolki. Domyï¿½lnie 0.
+		\param name nazwa kontrolki. Domyï¿½lnie 0.
+		\param whoisSearchUin wartoï¿½ï¿½ logiczna informujï¿½ca o tym, czy wstï¿½pnie ma byï¿½ wybrane
+		wyszukiwanie po numerze UIN (1) czy po danych osobowych (0). Domyï¿½lnie 0.
 	**/
 	SearchDialog(QWidget *parent=0, UinType whoisSearchUin = 0);
 	~SearchDialog(void);
@@ -128,25 +121,25 @@ public:
 
 	/**
 		\fn void firstSearch()
-		Czy¶ci listê wyników, a nastêpnie wyszukuje w katalogu publicznym wg.
-		podanych w oknie danych. Wy¶wietla tylko ograniczon± ich liczbê, ze wzglêdu
-		na dzia³anie protoko³u Gadu-Gadu. Metoda ta wywo³ywana jest przy wci¶niêciu
-		przycisku "Szukaj". Aby uzyskaæ kolejne wyniki i dodaæ je do
-		bierz±cych, nale¿y dokonaæ wtórnego zapytania metod± SearchDialog::nextSearch.
+		Czyï¿½ci listï¿½ wynikï¿½w, a nastï¿½pnie wyszukuje w katalogu publicznym wg.
+		podanych w oknie danych. Wyï¿½wietla tylko ograniczonï¿½ ich liczbï¿½, ze wzglï¿½du
+		na dziaï¿½anie protokoï¿½u Gadu-Gadu. Metoda ta wywoï¿½ywana jest przy wciï¿½niï¿½ciu
+		przycisku "Szukaj". Aby uzyskaï¿½ kolejne wyniki i dodaï¿½ je do
+		bierzï¿½cych, naleï¿½y dokonaï¿½ wtï¿½rnego zapytania metodï¿½ SearchDialog::nextSearch.
 	**/
 	void firstSearch();
 
 	/**
 		\fn void nextSearch()
-		Kontynuuje wyszukowanie kolejnych kontaktów, a wyniki dodaje do bierz±cych.
-		Metoda ta wywo³ywana jest przy wci¶niêciu przycisku "Nastêpne wyniki".
+		Kontynuuje wyszukowanie kolejnych kontaktï¿½w, a wyniki dodaje do bierzï¿½cych.
+		Metoda ta wywoï¿½ywana jest przy wciï¿½niï¿½ciu przycisku "Nastï¿½pne wyniki".
 	**/
 	void nextSearch();
 
 	/**
 		\fn void stopSearch(void)
-		Zatrzymuje aktualne wyszukiwanie. Je¶li w pó¼niejszym czasie zwrócone
-		zostan± jakie¶ wyniki, bêd± one zignorowane.
+		Zatrzymuje aktualne wyszukiwanie. Jeï¿½li w pï¿½ï¿½niejszym czasie zwrï¿½cone
+		zostanï¿½ jakieï¿½ wyniki, bï¿½dï¿½ one zignorowane.
 	**/
 	void stopSearch();
 
@@ -158,12 +151,12 @@ public:
 public slots:
 	/**
 		\fn void newSearchResults(SearchResults& searchResults, int seq, int fromUin)
-		Interpretuje uzyskane wyniki wyszukiwania i dodaje je do listy wyników.
-		Metoda ta jest wywo³ywana, gdy serwer Gadu-Gadu odpowie na zapytanie do katalogu publicznego.
-		\param searchResults lista struktur opisuj±cych wyniki wyszukiwania.
+		Interpretuje uzyskane wyniki wyszukiwania i dodaje je do listy wynikï¿½w.
+		Metoda ta jest wywoï¿½ywana, gdy serwer Gadu-Gadu odpowie na zapytanie do katalogu publicznego.
+		\param searchResults lista struktur opisujï¿½cych wyniki wyszukiwania.
 		\param seq unikalny identyfikator zapytania do katalogu publicznego.
-		\param fromUin numer UIN, od którego rozpoczêto wyszukiwanie (jest ró¿ny dla kolejnych
-		wywo³añ - najpierw SearchDialog::firstSearch, a potem kolejne SearchDialog::nextSearch).
+		\param fromUin numer UIN, od ktï¿½rego rozpoczï¿½to wyszukiwanie (jest rï¿½ï¿½ny dla kolejnych
+		wywoï¿½aï¿½ - najpierw SearchDialog::firstSearch, a potem kolejne SearchDialog::nextSearch).
 	**/
 	void newSearchResults(SearchResults& searchResults, int seq, int fromUin);
 
