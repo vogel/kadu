@@ -431,7 +431,7 @@ void ChatManager::ignoreUserActionActivated(QAction *sender, bool toggled)
 				ChatWidget *chat = findChatWidget(users);
 				if (chat)
 				{
-				ChatContainer * container = dynamic_cast<ChatContainer *>(chat->topLevelWidget());
+					ChatContainer *container = dynamic_cast<ChatContainer *>(chat->window());
 					if (container)
 						container->closeChatWidget(chat);
 				}
@@ -485,7 +485,7 @@ void ChatManager::blockUserActionActivated(QAction *sender, bool toggled)
 			ChatWidget *chat = findChatWidget(users);
 			if (chat)
 			{
-				ChatContainer * container = dynamic_cast<ChatContainer *>(chat->topLevelWidget());
+				ChatContainer *container = dynamic_cast<ChatContainer *>(chat->window());
 				if (container)
 					container->closeChatWidget(chat);
 			}
@@ -615,13 +615,8 @@ int ChatManager::openChatWidget(Protocol *initialProtocol, const UserListElement
 	{
 		if (chat->users()->equals(users))
 		{
-			QWidget *win = chat;
-			kdebugm(KDEBUG_INFO, "parent: %p\n", win->parent());
-			while (win->parent()) // for tabs module
-			{
-				kdebugm(KDEBUG_INFO, "parent type: %s\n", win->parent()->className());
-				win = static_cast<QWidget *>(win->parent());
-			}
+			QWidget *win = chat->window();
+			kdebugm(KDEBUG_INFO, "parent: %p\n", win);
 			if (forceActivate)
 				activateWindow(win->winId());
 			win->raise();
@@ -641,9 +636,7 @@ int ChatManager::openChatWidget(Protocol *initialProtocol, const UserListElement
 
 	if (forceActivate)
 	{
-		QWidget *win = chat;
-		while (win->parent())
-			win = static_cast<QWidget *>(win->parent());
+		QWidget *win = chat->window();
 		activateWindow(win->winId());
 	}
 
@@ -652,7 +645,8 @@ int ChatManager::openChatWidget(Protocol *initialProtocol, const UserListElement
 	if (!handled)
 	{
 		ChatWindow *window = new ChatWindow();
-		chat->reparent(window, QPoint(), true);
+		chat->setParent(window);
+		chat->show();
 		window->setChatWidget(chat);
 		window->show();
 	}

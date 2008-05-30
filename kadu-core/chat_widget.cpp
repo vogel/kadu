@@ -19,6 +19,7 @@
 #include "custom_input.h"
 #include "debug.h"
 #include "emoticons.h"
+#include "hot_key.h"
 #include "icons_manager.h"
 #include "ignore.h"
 #include "kadu.h"
@@ -231,7 +232,7 @@ void ChatWidget::insertImage()
 	kdebugf();
 	ImageDialog* id = new ImageDialog(this);
 	id->setDir(config_file.readEntry("Chatt", "LastImagePath"));
-	id->setCaption(tr("Insert image"));
+	id->setWindowTitle(tr("Insert image"));
 	if (id->exec() == QDialog::Accepted)
 	{
 		config_file.writeEntry("Chatt", "LastImagePath", id->dirPath());
@@ -364,7 +365,7 @@ void ChatWidget::refreshTitle()
 
 
 bool ChatWidget::keyPressEventHandled(QKeyEvent *e)
-{/*
+{
 	if (HotKey::shortCut(e,"ShortCuts", "chat_clear"))
 	{
 		clearChatWindow();
@@ -377,15 +378,15 @@ bool ChatWidget::keyPressEventHandled(QKeyEvent *e)
 	}
 	else if (HotKey::shortCut(e,"ShortCuts", "kadu_searchuser"))
 	{
-		KaduActions["whoisAction"]->activate(Users);
+		KaduActions.getAction("whoisAction", Edit)->activate(QAction::Trigger);
 		return true;
 	}
 	else if (HotKey::shortCut(e,"ShortCuts", "kadu_openchatwith"))
 	{
-		KaduActions["openChatWithAction"]->activate(Users);
+		KaduActions.getAction("openChatWithAction", Edit)->activate(QAction::Trigger);
 		return true;
 	}
-	else*/
+	else
 		return false;
 }
 
@@ -766,9 +767,7 @@ Protocol *ChatWidget::currentProtocol()
 void ChatWidget::makeActive()
 {
 	kdebugf();
-	QWidget *win = this;
-	while (win->parent()) //for tabs module
-		win = static_cast<QWidget *>(win->parent());
+	QWidget *win = this->window();
 	win->setActiveWindow();
 	// workaround for kwin which sometimes don't make window active when it's requested right after "unminimization"
 	if (!win->isActiveWindow() && activationCount++ < 20)
