@@ -8,6 +8,7 @@
  ***************************************************************************/
 
 #include <QContextMenuEvent>
+#include <QMenu>
 
 #include "config_file.h"
 #include "debug.h"

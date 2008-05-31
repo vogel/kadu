@@ -144,26 +144,16 @@ Actions::Actions()
 
 void Actions::insert(ActionDescription *action)
 {
-	ActionDescriptions.insert(action->name(), action);
+	QMap<QString, ActionDescription *>::insert(action->name(), action);
 	emit actionLoaded(action->name());
 }
 
 void Actions::remove(ActionDescription *action)
 {
-	ActionDescriptions.remove(action->name());
+	QMap<QString, ActionDescription *>::remove(action->name());
 
 	if (!Kadu::closing())
 		emit actionUnloaded(action->name());
-}
-
-ActionDescription * Actions::operator [] (const QString &name)
-{
-	return ActionDescriptions[name];
-}
-
-ActionDescription * Actions::operator [] (int index)
-{
-	return ActionDescriptions[ActionDescriptions.keys()[index]];
 }
 
 QAction * Actions::getAction(const QString &name, KaduMainWindow *kaduMainWindow) const
@@ -171,14 +161,9 @@ QAction * Actions::getAction(const QString &name, KaduMainWindow *kaduMainWindow
 	if (!contains(name))
 		return 0;
 
-	KaduAction *result =  ActionDescriptions[name]->getAction(kaduMainWindow);
+	KaduAction *result =  (*this)[name]->getAction(kaduMainWindow);
 	kaduMainWindow->addAction(result);
 	return result;
-}
-
-bool Actions::contains(const QString &name) const
-{
-	return ActionDescriptions.contains(name);
 }
 
 void Actions::refreshIcons()

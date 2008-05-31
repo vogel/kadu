@@ -1,3 +1,12 @@
+/***************************************************************************
+ *                                                                         *
+ *   This program is free software; you can redistribute it and/or modify  *
+ *   it under the terms of the GNU General Public License as published by  *
+ *   the Free Software Foundation; either version 2 of the License, or     *
+ *   (at your option) any later version.                                   *
+ *                                                                         *
+ ***************************************************************************/
+
 #ifndef ACTION_H
 #define ACTION_H
 
@@ -82,11 +91,9 @@ public:
 
 };
 
-class Actions : public QObject
+class Actions : public QObject, public QMap<QString, ActionDescription *>
 {
 	Q_OBJECT
-
-	QMap<QString, ActionDescription *> ActionDescriptions;
 
 	void insert(ActionDescription *action);
 	void remove(ActionDescription *action);
@@ -94,20 +101,9 @@ class Actions : public QObject
 
 public:
 	Actions();
-
-	ActionDescription * operator [] (const QString &name);
-	ActionDescription * operator [] (int index);
+	virtual ~Actions() {}
 
 	QAction *getAction(const QString &name, KaduMainWindow *kaduMainWindow) const;
-	bool contains(const QString &name) const;
-
-	QMap<QString, ActionDescription *>::Iterator begin() { return ActionDescriptions.begin(); }
-	QMap<QString, ActionDescription *>::Iterator end() { return ActionDescriptions.end(); }
-	QMap<QString, ActionDescription *>::ConstIterator begin () const { return ActionDescriptions.begin(); }
-	QMap<QString, ActionDescription *>::ConstIterator end () const { return ActionDescriptions.end(); }
-	QMap<QString, ActionDescription *>::ConstIterator constBegin () const { return ActionDescriptions.constBegin(); }
-	QMap<QString, ActionDescription *>::ConstIterator constEnd () const { return ActionDescriptions.constEnd(); }
-
 	void refreshIcons();
 
 signals:

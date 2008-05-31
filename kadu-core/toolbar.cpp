@@ -7,24 +7,21 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <qcursor.h>
-#include <qobject.h>
 #include <QContextMenuEvent>
-#include <QMoveEvent>
-#include <QDropEvent>
-#include <QList>
-#include <Q3PopupMenu>
 #include <QDragEnterEvent>
-#include <QShortcut>
+#include <QMenu>
+#include <QTimer>
+#include <QToolButton>
 
 #include "action.h"
 #include "config_file.h"
 #include "debug.h"
 #include "icons_manager.h"
+#include "kadu_main_window.h"
 #include "message_box.h"
 #include "misc.h"
+
 #include "toolbar.h"
-#include "kadu.h"
 
 QMap< QString, QList<ToolBar::ToolBarAction> > ToolBar::DefaultActions;
 
@@ -66,12 +63,15 @@ void ToolBar::addAction(const QString &actionName, bool showLabel, QAction *afte
 
 	if (after)
 	{
-		FOREACH(i, ToolBarActions)
-			if ((*i).action == after)
+		int index = 0;
+
+		foreach(ToolBarAction i, ToolBarActions)
+			if (i.action == after)
 			{
-				ToolBarActions.insert(i, newAction);
+				ToolBarActions.insert(index, newAction);
 				return;
 			}
+			index++;
 	}
 
 	ToolBarActions.append(newAction);
@@ -232,14 +232,14 @@ void ToolBar::writeToConfig(QDomElement parent_element)
 	toolbar_elem.setAttribute("x_offset", pos().x());
 	toolbar_elem.setAttribute("y_offset", pos().y());
 
-	FOREACH(toolBarAction, ToolBarActions)
+	foreach(ToolBarAction toolBarAction, ToolBarActions)
 	{
-		if ((*toolBarAction).button)
-			(*toolBarAction).showLabel = (*toolBarAction).button->toolButtonStyle() != Qt::ToolButtonIconOnly;
+		if (toolBarAction.button)
+			toolBarAction.showLabel = toolBarAction.button->toolButtonStyle() != Qt::ToolButtonIconOnly;
 
 		QDomElement button_elem = xml_config_file->createElement(toolbar_elem, "ToolButton");
-		button_elem.setAttribute("action_name", (*toolBarAction).actionName);
-		button_elem.setAttribute("uses_text_label", (*toolBarAction).showLabel);
+		button_elem.setAttribute("action_name", toolBarAction.actionName);
+		button_elem.setAttribute("uses_text_label", toolBarAction.showLabel);
 	}
 
 	kdebugf2();
@@ -249,8 +249,8 @@ bool ToolBar::hasAction(const QString &action_name)
 {
 	kdebugf();
 
-	CONST_FOREACH(toolBarAction, ToolBarActions)
-		if ((*toolBarAction).actionName == action_name)
+	foreach(ToolBarAction toolBarAction, ToolBarActions)
+		if (toolBarAction.actionName == action_name)
 			return true;
 	return false;
 
@@ -281,37 +281,37 @@ void ToolBar::updateButtons()
 	if (!kaduMainWindow)
 		return;
 
-	FOREACH(toolBarAction, ToolBarActions)
+	foreach(ToolBarAction toolBarAction, ToolBarActions)
 	{
-		const QString &actionName = (*toolBarAction).actionName;
+		const QString &actionName = toolBarAction.actionName;
 
-		if ((*toolBarAction).action)
+		if (toolBarAction.action)
 		{
 			if (KaduActions.contains(actionName))
 			{
-				lastAction = (*toolBarAction).action;
+				lastAction = toolBarAction.action;
 				continue;
 			}
 			else
 			{
-				if ((*toolBarAction).action)
+				if (toolBarAction.action)
 				{
-					delete (*toolBarAction).action;
-					(*toolBarAction).action = 0;
+					delete toolBarAction.action;
+					toolBarAction.action = 0;
 				}
 			}
 		}
 
 		if (KaduActions.contains(actionName) && kaduMainWindow->supportsActionType(KaduActions[actionName]->type()))
 		{
-			(*toolBarAction).action = KaduActions.getAction(actionName, dynamic_cast<KaduMainWindow *>(parent()));
-			QToolBar::addAction((*toolBarAction).action);
-			(*toolBarAction).button = dynamic_cast<QToolButton *>(widgetForAction((*toolBarAction).action));
+			toolBarAction.action = KaduActions.getAction(actionName, dynamic_cast<KaduMainWindow *>(parent()));
+			QToolBar::addAction(toolBarAction.action);
+			toolBarAction.button = dynamic_cast<QToolButton *>(widgetForAction(toolBarAction.action));
 
-			if ((*toolBarAction).showLabel)
-				(*toolBarAction).button->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
+			if (toolBarAction.showLabel)
+				toolBarAction.button->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
 
-			lastAction = (*toolBarAction).action;
+			lastAction = toolBarAction.action;
 		}
 	}
 }
@@ -445,7 +445,7 @@ QMenu * ToolBar::createContextMenu(QToolButton *button)
 	}
 
 	QMenu *actionsMenu = new QMenu(tr("Add new button"), this);
-	CONST_FOREACH(actionDescription, KaduActions)
+	foreach(ActionDescription *actionDescription, KaduActions.values())
 	{
 		bool supportsAction;
 		KaduMainWindow *kaduMainWindow= 0;
@@ -453,17 +453,17 @@ QMenu * ToolBar::createContextMenu(QToolButton *button)
 			kaduMainWindow = dynamic_cast<KaduMainWindow *>(parent());
 
 		if (kaduMainWindow)
-			supportsAction = kaduMainWindow->supportsActionType((*actionDescription)->type());
+			supportsAction = kaduMainWindow->supportsActionType(actionDescription->type());
 		else // TODO is it possible?
-			supportsAction = (*actionDescription)->type() == ActionDescription::TypeGlobal;
+			supportsAction = actionDescription->type() == ActionDescription::TypeGlobal;
 
 		if (!supportsAction)
 			continue;
 
-		if (!hasAction((*actionDescription)->name()))
+		if (!hasAction(actionDescription->name()))
 		{
-			QAction *action = actionsMenu->addAction(icons_manager->loadIcon((*actionDescription)->iconName()), (*actionDescription)->text());
-			action->setData((*actionDescription)->name());
+			QAction *action = actionsMenu->addAction(icons_manager->loadIcon(actionDescription->iconName()), actionDescription->text());
+			action->setData(actionDescription->name());
 		}
 	}
 
@@ -492,6 +492,8 @@ QMenu * ToolBar::createContextMenu(QToolButton *button)
 			break;
 		case Qt::RightToolBarArea:
 			menu->addAction(tr("Create new toolbar"), parent(), SLOT(addRightToolbar()));
+			break;
+		default:
 			break;
 	}
 
@@ -522,14 +524,14 @@ void ToolBar::deleteButton()
 	if (!currentButton)
 		return;
 
-	FOREACH(actionIterator, ToolBarActions)
-		if ((*actionIterator).button == currentButton)
+	foreach(ToolBarAction toolBarAction, ToolBarActions)
+		if (toolBarAction.button == currentButton)
 		{
 			// TODO: again, lame solution
 			removeAction(currentButton->defaultAction());
 			currentButton = 0;
 
-			ToolBarActions.remove(actionIterator);
+			ToolBarActions.remove(toolBarAction);
 			return;
 		}
 }

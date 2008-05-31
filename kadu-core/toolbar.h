@@ -1,16 +1,22 @@
+/***************************************************************************
+ *                                                                         *
+ *   This program is free software; you can redistribute it and/or modify  *
+ *   it under the terms of the GNU General Public License as published by  *
+ *   the Free Software Foundation; either version 2 of the License, or     *
+ *   (at your option) any later version.                                   *
+ *                                                                         *
+ ***************************************************************************/
+
 #ifndef TOOLBAR_H
 #define TOOLBAR_H
 
-#include <QContextMenuEvent>
-#include <QDragEnterEvent>
-#include <QDropEvent>
-#include <QMoveEvent>
+#include <QDomElement>
 #include <QToolBar>
 
-#include <Q3PopupMenu>
+class QMenu;
+class QToolButton;
 
-#include "toolbutton.h"
-#include "usergroup.h"
+class UserGroup;
 
 /**
 	Klasa tworz?ca pasek narz?dziowy
@@ -30,6 +36,10 @@ class ToolBar : public QToolBar
 		QAction *action;
 		QToolButton *button;
 		bool showLabel;
+
+		bool operator == (struct ToolBarAction action) {
+			return actionName == action.actionName;
+		}
 	};
 
 	QList<ToolBarAction> ToolBarActions;
@@ -41,7 +51,7 @@ class ToolBar : public QToolBar
 
 	void addAction(const QString &actionName, bool showLabel, QAction *after = 0);
 
-	static QMap< QString, QList<ToolBarAction> > DefaultActions;
+	static QMap<QString, QList<ToolBarAction> > DefaultActions;
 
 private slots:
 	/**
