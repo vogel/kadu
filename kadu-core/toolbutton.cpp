@@ -7,20 +7,20 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <qapplication.h>
-#include <qcursor.h>
-#include <q3popupmenu.h>
-#include <q3textstream.h>
+// #include <qapplication.h>
+// #include <qcursor.h>
+// #include <q3popupmenu.h>
+// #include <q3textstream.h>
 //Added by qt3to4:
-#include <QContextMenuEvent>
-#include <QMouseEvent>
-#include <QEvent>
-
-#include "config_file.h"
-#include "debug.h"
-#include "misc.h"
-#include "toolbar.h"
-#include "toolbutton.h"
+// #include <QContextMenuEvent>
+// #include <QMouseEvent>
+// #include <QEvent>
+// 
+// #include "config_file.h"
+// #include "debug.h"
+// #include "misc.h"
+// #include "toolbar.h"
+// #include "toolbutton.h"
 /*
 class DisabledToolButtonWatcher : public QObject
 {
@@ -69,7 +69,7 @@ void ToolButton::mouseMoveEvent(QMouseEvent* e)
 		d->dragMove();
 	}
 }*/
-
+/*
 ActionDrag::ActionDrag(const QString &actionName, bool showLabel, QWidget* dragSource, const char* name)
 	: DragSimple("application/x-kadu-action", actionName + " " + QString::number(showLabel ? 1 : 0), dragSource, name)
 {
@@ -94,4 +94,4 @@ bool ActionDrag::decode(const QMimeSource *source, QString &actionName, bool &sh
 	showLabel = tmp;
 
 	return true;
-}
+}*/
