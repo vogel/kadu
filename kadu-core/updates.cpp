@@ -7,37 +7,43 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <q3network.h>
-#include <q3urloperator.h>
+#include <QHttp>
 
 #include "config_file.h"
 #include "debug.h"
+#include "gadu.h"
 #include "kadu.h"
 #include "message_box.h"
+
 #include "updates.h"
 
-Updates *Updates::instance = NULL;
+Updates *Updates::instance = 0;
 bool Updates::UpdateChecked = false;
 QDateTime Updates::LastUpdateCheck;
 
-Updates::Updates(UinType uin) : query(QString("update.php?uin=%1&version=%2").arg(uin).arg(QString(VERSION))), op(0)
+Updates::Updates(UinType uin)
+	: query(QString("/update.php?uin=%1&version=%2").arg(uin).arg(QString(VERSION)))
 {
 	kdebugf();
-	q3InitNetworkProtocols();
-	op = new Q3UrlOperator("http://www.kadu.net");
+
+	httpClient = new QHttp("www.kadu.net");
+
 	kdebugf2();
 }
 
 Updates::~Updates()
 {
 	kdebugf();
-	delete op;
+	delete httpClient;
+	httpClient = 0;
 }
 
 void Updates::run()
 {
 	kdebugf();
-	op->get(query);
+
+	httpClient->get(query);
+
 	kdebugf2();
 }
 
@@ -59,28 +65,34 @@ void Updates::initModule()
 		if (myUin)
 		{
 			instance = new Updates(myUin);
-			connect(instance->op, SIGNAL(data(const QByteArray &, Q3NetworkOperation *)),
-					instance, SLOT(gotUpdatesInfo(const QByteArray &, Q3NetworkOperation *)));
+			connect(instance->httpClient, SIGNAL(readyRead(const QHttpResponseHeader &)),
+					instance, SLOT(gotUpdatesInfo(const QHttpResponseHeader &)));
 			connect(gadu, SIGNAL(connected()), instance, SLOT(run()));
 		}
 	}
+
 	kdebugf2();
 }
 
 void Updates::closeModule()
 {
 	kdebugf();
+
 	if (instance)
 	{
 		instance->deleteLater();
 		instance = 0;
 	}
+
 	kdebugf2();
 }
 
-void Updates::gotUpdatesInfo(const QByteArray &data, Q3NetworkOperation * /*op*/)
+void Updates::gotUpdatesInfo(const QHttpResponseHeader &responseHeader)
 {
 	kdebugf();
+
+	QByteArray data = httpClient->readAll();
+
 	if (config_file.readBoolEntry("General", "CheckUpdates"))
 	{
 		unsigned int size = data.size();
@@ -101,5 +113,6 @@ void Updates::gotUpdatesInfo(const QByteArray &data, Q3NetworkOperation * /*op*/
 	UpdateChecked = true;
 	config_file.writeEntry("General", "LastUpdateCheck", QDateTime(QDate(1970, 1, 1)).secsTo(QDateTime::currentDateTime()));
 	closeModule();
+
 	kdebugf2();
 }
