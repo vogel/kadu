@@ -417,9 +417,10 @@ void HistoryDialog::searchHistory()
 		{
 			len = total > 1000 ? 1000 : total;
 			entries = history->getHistoryEntries(uins, findRec.actualrecord - len + 1, len);
+
 			entriesCount = entries.count();
 			//ehh, szkoda, ¿e w Qt nie ma reverse iteratorów...
-			QList<HistoryEntry>::const_iterator entry = entries.end();
+			QList<HistoryEntry>::const_iterator entry = entries.end() - 1;
 			QList<HistoryEntry>::const_iterator firstEntry = entries.begin();
 			bool end;
 			i = 0;
