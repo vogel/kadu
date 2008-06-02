@@ -8,8 +8,6 @@
  ***************************************************************************/
 
 #include <QCheckBox>
-#include <QGridLayout>
-#include <QHBoxLayout>
 #include <QHostInfo>
 #include <QIntValidator>
 #include <QKeyEvent>
@@ -27,13 +25,14 @@
 #include "groups_manager.h"
 #include "icons_manager.h"
 #include "message_box.h"
+#include "misc.h"
 #include "userlist.h"
 
 #include "userinfo.h"
 
 CreateNotifier UserInfo::createNotifier;
 
-UserInfo::UserInfo(UserListElement user, QWidget* parent)
+UserInfo::UserInfo(UserListElement user, QWidget *parent)
 	: QWidget(parent, Qt::Dialog), User(user),
 	e_firstname(0), e_lastname(0), e_nickname(0), e_altnick(0), e_mobile(0), e_uin(0),
 	e_addr(0), e_ver(0), e_email(0), e_dnsname(0), c_blocking(0), c_offtouser(0),
@@ -290,24 +289,24 @@ void UserInfo::setupTab2()
 	groupsLayout = new QVBoxLayout(groupsWidget);
 	groupsLayout->setSpacing(3);
 
-	CONST_FOREACH(it, allGroups)
+	foreach(QString it, allGroups)
 	{
 		QWidget *box = new QWidget(groupsWidget);
 		QHBoxLayout *boxLayout = new QHBoxLayout(box);
 		boxLayout->setSpacing(3);
-		QCheckBox *checkBox = new QCheckBox(*it, box);
-		checkBox->setChecked(userGroups.contains(*it));
+		QCheckBox *checkBox = new QCheckBox(it, box);
+		checkBox->setChecked(userGroups.contains(it));
 
 		QLabel *textLabel = new QLabel(box);
 		textLabel->setText(tr("Icon:"));
 		textLabel->setMaximumWidth(40);
 
 		QLabel *pixmapLabel = new QLabel(box);
-		QPixmap icon = icons_manager->loadPixmap(config_file.readEntry("GroupIcon", *it, ""));
+		QPixmap icon = icons_manager->loadPixmap(config_file.readEntry("GroupIcon", it, ""));
 		pixmapLabel->setPixmap(icon.xForm(QWMatrix().scale((double)16/icon.width(), (double)16/icon.height())));
 		pixmapLabel->setMaximumWidth(22);
 		pixmapLabel->setMaximumHeight(22);
-		pixmapLabels[*it] = pixmapLabel;
+		pixmapLabels[it] = pixmapLabel;
 
 		QPushButton *changeIconButton = new QPushButton(box);
 		changeIconButton->setPixmap(icons_manager->loadPixmap("AddSelectPathDialogButton"));
@@ -393,8 +392,8 @@ void UserInfo::newGroupClicked()
 		kdebugf2();
 		return;
 	}
-	CONST_FOREACH(checkbox, groups)
-		if ((*checkbox)->text() == groupName)
+	foreach(QCheckBox *checkbox, groups)
+		if (checkbox->text() == groupName)
 		{
 			MessageBox::msg(tr("This group already exists!"), true, "Warning", this);
 			return;
@@ -519,15 +518,15 @@ void UserInfo::updateUserlist()
 		return;
 	}
 
-	if (userlist->contains("Gadu", id)) // je¿eli istenieje ju¿ u¿ytkownik o danym ID...
+	if (userlist->contains("Gadu", id)) // jeï¿½eli istenieje juï¿½ uï¿½ytkownik o danym ID...
 	{
 		UserListElement user = userlist->byID("Gadu", id);
 		if (user != User) // ...i nie jest to ten, aktualnie edytowany...
 		{
-			if (user.isAnonymous()) // ...to je¶li istniej±cy kontakt jest anonimem...
+			if (user.isAnonymous()) // ...to jeï¿½li istniejï¿½cy kontakt jest anonimem...
 			{
 				userlist->removeUser(User);
-				User = user; // ...to usuwamy edytowanego usera i zastêpujemy go anonimem
+				User = user; // ...to usuwamy edytowanego usera i zastï¿½pujemy go anonimem
 			}
 			else
 			{
@@ -559,9 +558,9 @@ void UserInfo::updateUserlist()
 			User.addProtocol("Gadu", id);
 
 	QStringList l;
-	CONST_FOREACH(checkbox, groups)
-		if ((*checkbox)->isChecked())
-			l.append((*checkbox)->text());
+	foreach(QCheckBox *checkbox, groups)
+		if (checkbox->isChecked())
+			l.append(checkbox->text());
 	User.setData("Groups", l);
 
 	User.setEmail(e_email->text());
@@ -602,9 +601,9 @@ void UserInfo::selectIcon()
 		QString groupName;
 		const QCheckBox *checkBox = 0;
 		
-		CONST_FOREACH(child, sender()->parent()->children())
+		foreach(QObject *child, sender()->parent()->children())
 		{
-			checkBox = dynamic_cast<const QCheckBox*>(*child);
+			checkBox = dynamic_cast<const QCheckBox*>(child);
 			
 			if(checkBox)
 			{
@@ -628,9 +627,9 @@ void UserInfo::deleteIcon()
 	QString groupName;
 	const QCheckBox *checkBox = 0;
 	
-	CONST_FOREACH(child, sender()->parent()->children())
+	foreach(QObject *child, sender()->parent()->children())
 	{
-		checkBox = dynamic_cast<const QCheckBox*>(*child);
+		checkBox = dynamic_cast<const QCheckBox*>(child);
 		
 		if (checkBox)
 		{
