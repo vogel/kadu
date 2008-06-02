@@ -1,14 +1,16 @@
+/***************************************************************************
+ *                                                                         *
+ *   This program is free software; you can redistribute it and/or modify  *
+ *   it under the terms of the GNU General Public License as published by  *
+ *   the Free Software Foundation; either version 2 of the License, or     *
+ *   (at your option) any later version.                                   *
+ *                                                                         *
+ ***************************************************************************/
+
 #ifndef KADU_USERGROUP_H
 #define KADU_USERGROUP_H
 
-#include <qglobal.h>
-
-#include <qmap.h>
-#include <qobject.h>
-#include <q3shared.h>
-#include <qstring.h>
-#include <q3valuelist.h>
-#include <qvariant.h>
+#include <QList>
 
 #include "userlistelement.h"
 
@@ -19,22 +21,22 @@ enum BehaviourForAnonymous {TrueForAnonymous, FalseForAnonymous};
 
 /**
 	\class UserGroup
-	Klasa odpowiedzialna za przechowywanie grup kontaktów. Daje mo¿liwo¶æ
-	bardzo szybkiego wyszukiwania oraz informowania o zdarzeniach zwi±zanych
-	z kontaktami (zmiana statusu, dodanie, usuniêcie, zmiana danych).
+	Klasa odpowiedzialna za przechowywanie grup kontaktï¿½w. Daje moï¿½liwoï¿½ï¿½
+	bardzo szybkiego wyszukiwania oraz informowania o zdarzeniach zwiï¿½zanych
+	z kontaktami (zmiana statusu, dodanie, usuniï¿½cie, zmiana danych).
 	Patrz: UserList, GroupsManager, UsersWithDescription, OnlineUsers,
 	       BlockedUsers, BlockingUsers, AnonymousUsers
-	Je¿eli nie potrzebujesz informacji o zdarzeniach, lepiej u¿yæ jest klasy
+	Jeï¿½eli nie potrzebujesz informacji o zdarzeniach, lepiej uï¿½yï¿½ jest klasy
 	UserListElements.
 
-	Parametr "last" w sygna³ach dostêpnych w tej klasie, powinien byæ u¿ywany
-	tylko gdy mamy absolutn± pewno¶æ, ¿e zmiana danych nast±pi³a dla wszystkich
-	kontaktów z tej grupy (i ani jednego wiêcej). Dlatego te¿ bezpieczne jest
-	u¿ywanie tego parametru tylko w slotach pod³±czonych do klasy UserList.
-	Je¿eli mimo to potrzebujemy skorzystaæ z parametru massively w celu wykonania
-	jakiej¶ czynno¶ci dopiero po zakoñczeniu zmian, mo¿emy pos³u¿yæ siê QTimerem
-	z czasem 0 (czyli po oddaniu sterowania pêtli zdarzeñ Qt) i jednokrotnym
-	uruchomieniem. Przyk³ad:
+	Parametr "last" w sygnaï¿½ach dostï¿½pnych w tej klasie, powinien byï¿½ uï¿½ywany
+	tylko gdy mamy absolutnï¿½ pewnoï¿½ï¿½, ï¿½e zmiana danych nastï¿½piï¿½a dla wszystkich
+	kontaktï¿½w z tej grupy (i ani jednego wiï¿½cej). Dlatego teï¿½ bezpieczne jest
+	uï¿½ywanie tego parametru tylko w slotach podï¿½ï¿½czonych do klasy UserList.
+	Jeï¿½eli mimo to potrzebujemy skorzystaï¿½ z parametru massively w celu wykonania
+	jakiejï¿½ czynnoï¿½ci dopiero po zakoï¿½czeniu zmian, moï¿½emy posï¿½uï¿½yï¿½ siï¿½ QTimerem
+	z czasem 0 (czyli po oddaniu sterowania pï¿½tli zdarzeï¿½ Qt) i jednokrotnym
+	uruchomieniem. Przykï¿½ad:
 	<code>
 	class MojaKlasa
 	{
@@ -55,14 +57,14 @@ enum BehaviourForAnonymous {TrueForAnonymous, FalseForAnonymous};
 
 	void MojaKlasa::refresh()
 	{
-		...//bardzo kosztowne od¶wie¿anie
+		...//bardzo kosztowne odï¿½wieï¿½anie
 	}
 
 	void MojaKlasa::userAdded(UserListElement elem, bool massively, bool last)
 	{
 		if (massively)
 		{
-			akcja1; //np jakie¶ buforowanie
+			akcja1; //np jakieï¿½ buforowanie
 			...
 			refreshLater();
 		}
@@ -79,430 +81,426 @@ class UserGroup : public QObject
 {
 	Q_OBJECT
 
-	public:
-		typedef QList<UserListElement>::const_iterator const_iterator;
-		typedef QList<UserListElement>::iterator iterator;
-		typedef size_t size_type;
+	/* standardowy operator kopiowania zepsuï¿½by obiekt ï¿½rï¿½dï¿½owy */
+	virtual UserGroup & operator = (const UserGroup &) {return *this;}
 
-		/**
-			\fn UserGroup(int size, const char *name = 0)
-			\param size spodziewana ilo¶æ elementów * 2
-			\param name nazwa grupy
-		**/
-		UserGroup(int size, const char *name = 0);
+	/* nie da siï¿½ porï¿½wnywaï¿½ obiektï¿½w tej klasy */
+	bool operator == (const UserGroup &) const {return false;}
 
-		/**
-			\fn UserGroup(const QValueList<UserListElement> &group, const char *name = 0)
-			\param group
-			\param name nazwa grupy
-		**/
-		UserGroup(const QList<UserListElement> &group, const char *name = 0);
+protected:
+	UserGroupData *d;
+	friend class UserListElement;
+	friend class ULEPrivate;
 
-		/**
-			\fn virtual ~UserGroup()
-			Zwalnia pamiêæ zwi±zan± z grup±
-		**/
-		virtual ~UserGroup();
+	/**
+		\fn UserListElement byKey(UserListKey key)
+		\param key klucz
+		Zwraca element listy kontaktï¿½w identyfikowany przez klucz.
+	**/
+	UserListElement byKey(UserListKey key);
 
-		/**
-			\fn bool equals(UserListElements users) const
-			\param users
-			Z³o¿ono¶æ O(users.count()).
-		**/
-		bool equals(UserListElements users) const;
+public:
+	typedef QList<UserListElement>::const_iterator const_iterator;
+	typedef QList<UserListElement>::iterator iterator;
+	typedef size_t size_type;
 
-		/**
-			\fn bool equals(UserListElements users) const
-			\param users
-			Z³o¿ono¶æ O(users.count()).
-		**/
-		bool equals(const UserGroup *group) const;
+	/**
+		\fn UserGroup(int size, const char *name = 0)
+		\param size spodziewana iloï¿½ï¿½ elementï¿½w * 2
+		\param name nazwa grupy
+	**/
+	UserGroup(int size);
 
-		/**
-			\fn UserListElement byID(const QString &protocolName, const QString &id)
-			\param protocolName identyfikator protoko³u
-			\param id identyfikator kontaktu
-			Zwraca element listy kontaktów identyfikowany przez nazwê
-			protoko³u i identyfikator w tym¿e protokole.
-			Je¿eli nie znajdzie siê taki kontakt, to tworzony jest nowy
-			anonimowy kontakt i dodawany do listy.
-			Z³o¿ono¶æ O(count()), ale w przysz³o¶ci bêdzie optymalizowana.
-		**/
-		UserListElement byID(const QString &protocolName, const QString &id);
+	/* standardowy konstruktor kopiujï¿½cy zepsuï¿½by obiekt ï¿½rï¿½dï¿½owy */
+	UserGroup(const UserGroup &);
 
-		/**
-			\fn UserListElement byAltNick(const QString &altnick)
-			\param altnick wy¶wietlany pseudonim wg. którego nastêpuje wyszukiwanie.
-			\return obiekt reprezentuj±cy kontakt o podanym pseudonimie wy¶wietlanym.
-			Wyszukuje kontakt po wy¶wietlanym pseudonimie.
-			Je¿eli nie znajdzie siê taki kontakt, to tworzony jest nowy
-			anonimowy kontakt i dodawany do listy.
-			Z³o¿ono¶æ O(count()), ale w przysz³o¶ci bêdzie optymalizowana do O(1).
-		**/
-		UserListElement byAltNick(const QString &altnick);
+	/**
+		\fn UserGroup(const QValueList<UserListElement> &group, const char *name = 0)
+		\param group
+		\param name nazwa grupy
+	**/
+	UserGroup(const QList<UserListElement> &group);
 
-		/**
-			\fn bool contains(const QString &protocolName, const QString &id, BehaviourForAnonymous beh = TrueForAnonymous) const
-			\param protocolName identyfikator protoko³u
-			\param id identyfikator kontaktu
-			\param beh sposób zachowania dla anonimów
-			Sprawdza czy grupa zawiera kontakt o danym identyfikatorze we wskazanym protokole.
-			W przypadku kontaktów anonimowych zachowanie tej funkcji okre¶la parametr beh. Gdy jest utawiony na:
-				TrueForAnonymous (domy¶lnie), to zwraca prawdê
-				FalseForAnonymous, to zwraca fa³sz
-			Z³o¿ono¶æ O(count()), ale w przysz³o¶ci bêdzie optymalizowana.
-		**/
-		bool contains(const QString &protocolName, const QString &id, BehaviourForAnonymous beh = TrueForAnonymous) const;
+	/**
+		\fn virtual ~UserGroup()
+		Zwalnia pamiï¿½ï¿½ zwiï¿½zanï¿½ z grupï¿½
+	**/
+	virtual ~UserGroup();
 
-		/**
-			\fn bool contains(UserListElement elem, BehaviourForAnonymous beh = TrueForAnonymous) const
-			\param elem sprawdzany kontakt
-			\param beh sposób zachowania dla anonimów
-			Sprawdza czy grupa zawiera wskazany kontakt.
-			W przypadku kontaktów anonimowych zachowanie tej funkcji okre¶la parametr beh. Gdy jest utawiony na:
-				TrueForAnonymous (domy¶lnie), to  zwraca prawdê
-				FalseForAnonymous, to zwraca fa³sz
-			Z³o¿ono¶æ O(1).
-		**/
-		bool contains(UserListElement elem, BehaviourForAnonymous beh = TrueForAnonymous) const;
+	/**
+		\fn bool equals(UserListElements users) const
+		\param users
+		Zï¿½oï¿½onoï¿½ï¿½ O(users.count()).
+	**/
+	bool equals(const UserListElements users) const;
 
-		/**
-			\fn bool containsAltNick(const QString &altnick, BehaviourForAnonymous beh = TrueForAnonymous) const
-			\param altnick wy¶wietlany pseudonim
-			\param beh sposób zachowania dla anonimów
-			Sprawdza czy grupa zawiera kontakt o danym pseudonimie wy¶wietlanym.
-			W przypadku kontaktów anonimowych zachowanie tej funkcji okre¶la parametr beh. Gdy jest utawiony na:
-				TrueForAnonymous (domy¶lnie), to  zwraca prawdê
-				FalseForAnonymous, to zwraca fa³sz
-			Z³o¿ono¶æ O(count()), ale w przysz³o¶ci bêdzie optymalizowana do O(1).
-		**/
-		bool containsAltNick(const QString &altnick, BehaviourForAnonymous beh = TrueForAnonymous) const;
+	/**
+		\fn bool equals(UserListElements users) const
+		\param users
+		Zï¿½oï¿½onoï¿½ï¿½ O(users.count()).
+	**/
+	bool equals(const UserGroup *group) const;
 
-		/**
-			\fn size_type count() const
-			Zwraca ilo¶æ kontaktów.
-		**/
-		size_type count() const;
+	/**
+		\fn UserListElement byID(const QString &protocolName, const QString &id)
+		\param protocolName identyfikator protokoï¿½u
+		\param id identyfikator kontaktu
+		Zwraca element listy kontaktï¿½w identyfikowany przez nazwï¿½
+		protokoï¿½u i identyfikator w tymï¿½e protokole.
+		Jeï¿½eli nie znajdzie siï¿½ taki kontakt, to tworzony jest nowy
+		anonimowy kontakt i dodawany do listy.
+		Zï¿½oï¿½onoï¿½ï¿½ O(count()), ale w przyszï¿½oï¿½ci bï¿½dzie optymalizowana.
+	**/
+	UserListElement byID(const QString &protocolName, const QString &id);
 
-		/**
-			\fn const_iterator constBegin () const
-			Zwraca iterator pocz±tkowy.
-		**/
-		const_iterator constBegin () const;
+	/**
+		\fn UserListElement byAltNick(const QString &altnick)
+		\param altnick wyï¿½wietlany pseudonim wg. ktï¿½rego nastï¿½puje wyszukiwanie.
+		\return obiekt reprezentujï¿½cy kontakt o podanym pseudonimie wyï¿½wietlanym.
+		Wyszukuje kontakt po wyï¿½wietlanym pseudonimie.
+		Jeï¿½eli nie znajdzie siï¿½ taki kontakt, to tworzony jest nowy
+		anonimowy kontakt i dodawany do listy.
+		Zï¿½oï¿½onoï¿½ï¿½ O(count()), ale w przyszï¿½oï¿½ci bï¿½dzie optymalizowana do O(1).
+	**/
+	UserListElement byAltNick(const QString &altnick);
 
-		/**
-			\fn const_iterator constEnd () const
-			Zwraca iterator koñcowy.
-		**/
-		const_iterator constEnd () const;
+	/**
+		\fn bool contains(const QString &protocolName, const QString &id, BehaviourForAnonymous beh = TrueForAnonymous) const
+		\param protocolName identyfikator protokoï¿½u
+		\param id identyfikator kontaktu
+		\param beh sposï¿½b zachowania dla anonimï¿½w
+		Sprawdza czy grupa zawiera kontakt o danym identyfikatorze we wskazanym protokole.
+		W przypadku kontaktï¿½w anonimowych zachowanie tej funkcji okreï¿½la parametr beh. Gdy jest utawiony na:
+			TrueForAnonymous (domyï¿½lnie), to zwraca prawdï¿½
+			FalseForAnonymous, to zwraca faï¿½sz
+		Zï¿½oï¿½onoï¿½ï¿½ O(count()), ale w przyszï¿½oï¿½ci bï¿½dzie optymalizowana.
+	**/
+	bool contains(const QString &protocolName, const QString &id, BehaviourForAnonymous beh = TrueForAnonymous) const;
 
-		/**
-			\fn const_iterator begin () const
-			Zwraca iterator pocz±tkowy.
-		**/
-		iterator begin () const;
+	/**
+		\fn bool contains(UserListElement elem, BehaviourForAnonymous beh = TrueForAnonymous) const
+		\param elem sprawdzany kontakt
+		\param beh sposï¿½b zachowania dla anonimï¿½w
+		Sprawdza czy grupa zawiera wskazany kontakt.
+		W przypadku kontaktï¿½w anonimowych zachowanie tej funkcji okreï¿½la parametr beh. Gdy jest utawiony na:
+			TrueForAnonymous (domyï¿½lnie), to  zwraca prawdï¿½
+			FalseForAnonymous, to zwraca faï¿½sz
+		Zï¿½oï¿½onoï¿½ï¿½ O(1).
+	**/
+	bool contains(UserListElement elem, BehaviourForAnonymous beh = TrueForAnonymous) const;
 
-		/**
-			\fn const_iterator end () const
-			Zwraca iterator koñcowy.
-		**/
-		iterator end () const;
+	/**
+		\fn bool containsAltNick(const QString &altnick, BehaviourForAnonymous beh = TrueForAnonymous) const
+		\param altnick wyï¿½wietlany pseudonim
+		\param beh sposï¿½b zachowania dla anonimï¿½w
+		Sprawdza czy grupa zawiera kontakt o danym pseudonimie wyï¿½wietlanym.
+		W przypadku kontaktï¿½w anonimowych zachowanie tej funkcji okreï¿½la parametr beh. Gdy jest utawiony na:
+			TrueForAnonymous (domyï¿½lnie), to  zwraca prawdï¿½
+			FalseForAnonymous, to zwraca faï¿½sz
+		Zï¿½oï¿½onoï¿½ï¿½ O(count()), ale w przyszï¿½oï¿½ci bï¿½dzie optymalizowana do O(1).
+	**/
+	bool containsAltNick(const QString &altnick, BehaviourForAnonymous beh = TrueForAnonymous) const;
 
-		/**
-			\fn UserListElements toUserListElements() const
-			Zwraca listê kontaktów w postaci obiektu klasy UserListElements
-		**/
-		UserListElements toUserListElements() const;
+	/**
+		\fn size_type count() const
+		Zwraca iloï¿½ï¿½ kontaktï¿½w.
+	**/
+	size_type count() const;
 
-		/**
-			\fn void resize(int size)
-			\param size rozmiar bufora * 2
-			Zmienia wewnêtrzny rozmiar buforów dla klas s³ownikowych (Q*Dict).
-		**/
-		void resize(int size);
+	/**
+		\fn const_iterator constBegin () const
+		Zwraca iterator poczï¿½tkowy.
+	**/
+	const_iterator constBegin() const;
 
-		/**
-			\fn QStringList altNicks() const
-			Zwraca listê nicków kontaktów nale¿±cych do grupy w postaci
-			obiektu klasy QStringList.
-		**/
-		QStringList altNicks() const;
+	/**
+		\fn const_iterator constEnd () const
+		Zwraca iterator koï¿½cowy.
+	**/
+	const_iterator constEnd () const;
 
-		/**
-			\fn void clear()
-			Czy¶ci listê u¿ytkowników w danej grupie.
-		**/
-		void clear();
+	/**
+		\fn const_iterator begin () const
+		Zwraca iterator poczï¿½tkowy.
+	**/
+	iterator begin() const;
 
-	public slots:
-		/**
-			\fn void addUser(UserListElement ule, bool massively = false, bool last = false)
-			\param ule obiekt reprezentuj±cy kontakt, który chcemy dodaæ.
-			\param massively true, gdy jest to cze¶æ wiêkszego dodawania
-			\param last true, gdy massively == true i jest to ostatnie dodanie
-			Dodaje do listy podany kontakt.
-		**/
-		void addUser(UserListElement ule, bool massively = false, bool last = false);
+	/**
+		\fn const_iterator end () const
+		Zwraca iterator koï¿½cowy.
+	**/
+	iterator end() const;
 
-		/**
-			\fn void removeUser(UserListElement ule, bool massively = false, bool last = false)
-			\param ule obiekt reprezentuj±cy kontakt, który chcemy usun±æ.
-			\param massively true, gdy jest to cze¶æ wiêkszego usuwania
-			\param last true, gdy massively == true i jest to ostatnie usuniêcie
-			Usuwa podany kontakt z listy.
-		**/
-		void removeUser(UserListElement ule, bool massively = false, bool last = false);
+	/**
+		\fn UserListElements toUserListElements() const
+		Zwraca listï¿½ kontaktï¿½w w postaci obiektu klasy UserListElements
+	**/
+	UserListElements toUserListElements() const;
 
-		/**
-			\fn UserListElement addAnonymous(const QString &protocolName, const QString &id, bool massively = false, bool last = false)
-			\param protocolName identyfikator protoko³u
-			\param id identyfikator kontaktu
-			\param massively true, gdy jest to cze¶æ wiêkszego dodawania
-			\param last true, gdy massively == true i jest to ostatnie dodanie
-			Dodaje do listy anonimowy kontakt i zwraca go.
-		**/
-		UserListElement addAnonymous(const QString &protocolName, const QString &id, bool massively = false, bool last = false);
+	/**
+		\fn void resize(int size)
+		\param size rozmiar bufora * 2
+		Zmienia wewnï¿½trzny rozmiar buforï¿½w dla klas sï¿½ownikowych (Q*Dict).
+	**/
+	void resize(int size);
 
-		/**
-			\fn void addUsers(const UserGroup *group)
-			Dodaje do listy wszystkie kontakty nale¿±ce do grupy group
-			\param group grupa kontaktów
-		**/
-		void addUsers(const UserGroup *group);
+	/**
+		\fn QStringList altNicks() const
+		Zwraca listï¿½ nickï¿½w kontaktï¿½w naleï¿½ï¿½cych do grupy w postaci
+		obiektu klasy QStringList.
+	**/
+	QStringList altNicks() const;
 
-		/**
-			\fn void addUsers(QValueList<UserListElement> users)
-			Dodaje do listy wszystkie kontakty nale¿±ce do listy users
-			\param users kontakty
-		**/
-		void addUsers(QList<UserListElement> users);
+	/**
+		\fn void clear()
+		Czyï¿½ci listï¿½ uï¿½ytkownikï¿½w w danej grupie.
+	**/
+	void clear();
 
-		/**
-			\fn void removeUsers(const UserGroup *group)
-			Usuwa z listy wszystkie kontakty nale¿±ce do grupy group
-			\param group grupa kontaktów
-		**/
-		void removeUsers(const UserGroup *group);
+public slots:
+	/**
+		\fn void addUser(UserListElement ule, bool massively = false, bool last = false)
+		\param ule obiekt reprezentujï¿½cy kontakt, ktï¿½ry chcemy dodaï¿½.
+		\param massively true, gdy jest to czeï¿½ï¿½ wiï¿½kszego dodawania
+		\param last true, gdy massively == true i jest to ostatnie dodanie
+		Dodaje do listy podany kontakt.
+	**/
+	void addUser(UserListElement ule, bool massively = false, bool last = false);
 
-		/**
-			\fn void removeUsers(QValueList<UserListElement> users)
-			Usuwa z listy wszystkie kontakty nale¿±ce do listy users
-			\param users kontakty
-		**/
-		void removeUsers(QList<UserListElement> users);
+	/**
+		\fn void removeUser(UserListElement ule, bool massively = false, bool last = false)
+		\param ule obiekt reprezentujï¿½cy kontakt, ktï¿½ry chcemy usunï¿½ï¿½.
+		\param massively true, gdy jest to czeï¿½ï¿½ wiï¿½kszego usuwania
+		\param last true, gdy massively == true i jest to ostatnie usuniï¿½cie
+		Usuwa podany kontakt z listy.
+	**/
+	void removeUser(UserListElement ule, bool massively = false, bool last = false);
 
-	signals:
-		/**
-			\fn void modified()
-			Sygna³ generowany po zakoñczeniu zmian w li¶cie	kontaktów.
-			\todo sprawdziæ czy zawsze dzieje siê to po zakoñczeniu zmian
-		**/
-		void modified();
+	/**
+		\fn UserListElement addAnonymous(const QString &protocolName, const QString &id, bool massively = false, bool last = false)
+		\param protocolName identyfikator protokoï¿½u
+		\param id identyfikator kontaktu
+		\param massively true, gdy jest to czeï¿½ï¿½ wiï¿½kszego dodawania
+		\param last true, gdy massively == true i jest to ostatnie dodanie
+		Dodaje do listy anonimowy kontakt i zwraca go.
+	**/
+	UserListElement addAnonymous(const QString &protocolName, const QString &id, bool massively = false, bool last = false);
 
-		/**
-			\fn void userDataChanged(UserListElement elem, QString name, QVariant oldValue, QVariant currentValue, bool massively, bool last)
-			\param elem kontakt, którego dane siê zmieni³y
-			\param name nazwa w³asno¶ci
-			\param oldValue stara warto¶æ
-			\param currentValue nowa (bie¿±ca) warto¶æ
-			\param massively true, gdy jest to cze¶æ wiêkszych zmian
-			\param last true, gdy massively == true i jest to ostatnia zmiana
-			Sygna³ generowany gdy dla kontaktu elem zmieni siê w³asno¶æ o nazwie name.
-			Przekazuje tak¿e star± i now± warto¶æ.
-		**/
-		void userDataChanged(UserListElement elem, QString name, QVariant oldValue,
-							QVariant currentValue, bool massively, bool last);
+	/**
+		\fn void addUsers(const UserGroup *group)
+		Dodaje do listy wszystkie kontakty naleï¿½ï¿½ce do grupy group
+		\param group grupa kontaktï¿½w
+	**/
+	void addUsers(const UserGroup *group);
 
-		void usersDataChanged(QString name);
+	/**
+		\fn void addUsers(QValueList<UserListElement> users)
+		Dodaje do listy wszystkie kontakty naleï¿½ï¿½ce do listy users
+		\param users kontakty
+	**/
+	void addUsers(QList<UserListElement> users);
 
-		/**
-			\fn void protocolUserDataChanged(QString protocolName, UserListElement elem, QString name, QVariant oldValue, QVariant currentValue, bool massively, bool last)
-			\param protocolName identyfikator protoko³u
-			\param elem kontakt, którego dane siê zmieni³y
-			\param name nazwa w³asno¶ci
-			\param oldValue stara warto¶æ
-			\param currentValue nowa (bie¿±ca) warto¶æ
-			\param massively true, gdy jest to cze¶æ wiêkszych zmian
-			\param last true, gdy massively == true i jest to ostatnia zmiana
-			Sygna³ generowany gdy dla kontaktu elem zmieni siê w³asno¶æ zwi±zana z protoko³em
-			protocolName o nazwie name. Przekazuje tak¿e star± i now± warto¶æ.
-		**/
-		void protocolUserDataChanged(QString protocolName, UserListElement elem,
-							QString name, QVariant oldValue, QVariant currentValue,
-							bool massively, bool last);
+	/**
+		\fn void removeUsers(const UserGroup *group)
+		Usuwa z listy wszystkie kontakty naleï¿½ï¿½ce do grupy group
+		\param group grupa kontaktï¿½w
+	**/
+	void removeUsers(const UserGroup *group);
 
-		void protocolUsersDataChanged(QString protocolName, QString name);
+	/**
+		\fn void removeUsers(QValueList<UserListElement> users)
+		Usuwa z listy wszystkie kontakty naleï¿½ï¿½ce do listy users
+		\param users kontakty
+	**/
+	void removeUsers(QList<UserListElement> users);
 
-		/**
-			\fn void userAdded(UserListElement elem, bool massively, bool last)
-			\param elem dodany kontakt
-			\param massively czy jest to fragment wiêkszych zmian
-			\param last je¿eli massively == true, to last == true dla ostatniego kontaktu
-			Sygna³ generowany po dodaniu kontaktu elem do listy
-		**/
-		void userAdded(UserListElement elem, bool massively, bool last);
+signals:
+	/**
+		\fn void modified()
+		Sygnaï¿½ generowany po zakoï¿½czeniu zmian w liï¿½cie	kontaktï¿½w.
+		\todo sprawdziï¿½ czy zawsze dzieje siï¿½ to po zakoï¿½czeniu zmian
+	**/
+	void modified();
 
-		/**
-			\fn void addingUser(UserListElement elem, bool massively, bool last)
-			\param elem dodany kontakt
-			\param massively czy jest to fragment wiêkszych zmian
-			\param last je¿eli massively == true, to last == true dla ostatniego kontaktu
-			Sygna³ generowany przed dodaniem kontaktu elem do listy
-		**/
-		void addingUser(UserListElement elem, bool massively, bool last);
+	/**
+		\fn void userDataChanged(UserListElement elem, QString name, QVariant oldValue, QVariant currentValue, bool massively, bool last)
+		\param elem kontakt, ktï¿½rego dane siï¿½ zmieniï¿½y
+		\param name nazwa wï¿½asnoï¿½ci
+		\param oldValue stara wartoï¿½ï¿½
+		\param currentValue nowa (bieï¿½ï¿½ca) wartoï¿½ï¿½
+		\param massively true, gdy jest to czeï¿½ï¿½ wiï¿½kszych zmian
+		\param last true, gdy massively == true i jest to ostatnia zmiana
+		Sygnaï¿½ generowany gdy dla kontaktu elem zmieni siï¿½ wï¿½asnoï¿½ï¿½ o nazwie name.
+		Przekazuje takï¿½e starï¿½ i nowï¿½ wartoï¿½ï¿½.
+	**/
+	void userDataChanged(UserListElement elem, QString name, QVariant oldValue, QVariant currentValue, bool massively, bool last);
 
-		void usersAdded();
+	void usersDataChanged(QString name);
 
-		/**
-			\fn void removingUser(UserListElement elem, bool massively, bool last)
-			\param elem usuwany kontakt
-			\param massively czy jest to fragment wiêkszych zmian
-			\param last je¿eli massively == true, to last == true dla ostatniego kontaktu
-			Sygna³ generowany przed usuniêciem kontaktu z listy.
-		**/
-		void removingUser(UserListElement elem, bool massively, bool last);
+	/**
+		\fn void protocolUserDataChanged(QString protocolName, UserListElement elem, QString name, QVariant oldValue, QVariant currentValue, bool massively, bool last)
+		\param protocolName identyfikator protokoï¿½u
+		\param elem kontakt, ktï¿½rego dane siï¿½ zmieniï¿½y
+		\param name nazwa wï¿½asnoï¿½ci
+		\param oldValue stara wartoï¿½ï¿½
+		\param currentValue nowa (bieï¿½ï¿½ca) wartoï¿½ï¿½
+		\param massively true, gdy jest to czeï¿½ï¿½ wiï¿½kszych zmian
+		\param last true, gdy massively == true i jest to ostatnia zmiana
+		Sygnaï¿½ generowany gdy dla kontaktu elem zmieni siï¿½ wï¿½asnoï¿½ï¿½ zwiï¿½zana z protokoï¿½em
+		protocolName o nazwie name. Przekazuje takï¿½e starï¿½ i nowï¿½ wartoï¿½ï¿½.
+	**/
+	void protocolUserDataChanged(QString protocolName, UserListElement elem, QString name, QVariant oldValue, QVariant currentValue, bool massively, bool last);
 
-		/**
-			\fn void userRemoved(UserListElement elem, bool massively, bool last)
-			\param elem usuwany kontakt
-			\param massively czy jest to fragment wiêkszych zmian
-			\param last je¿eli massively == true, to last == true dla ostatniego kontaktu
-			Sygna³ generowany po usuniêciu kontaktu z listy.
-		**/
-		void userRemoved(UserListElement elem, bool massively, bool last);
+	void protocolUsersDataChanged(QString protocolName, QString name);
 
-		void usersRemoved();
+	/**
+		\fn void userAdded(UserListElement elem, bool massively, bool last)
+		\param elem dodany kontakt
+		\param massively czy jest to fragment wiï¿½kszych zmian
+		\param last jeï¿½eli massively == true, to last == true dla ostatniego kontaktu
+		Sygnaï¿½ generowany po dodaniu kontaktu elem do listy
+	**/
+	void userAdded(UserListElement elem, bool massively, bool last);
 
-		/**
-			\fn void protocolAdded(UserListElement elem, QString protocolName, bool massively, bool last)
-			\param elem kontakt, dla którego dodany zosta³ protokó³
-			\param protocolName identyfikator protoko³u
-			\param massively czy jest to fragment wiêkszych zmian
-			\param last je¿eli massively == true, to last == true dla ostatniego kontaktu
-			Sygna³ generowany po dodaniu protoko³u protocolName kontaktowi elem.
-		**/
-		void protocolAdded(UserListElement elem, QString protocolName, bool massively, bool last);
+	/**
+		\fn void addingUser(UserListElement elem, bool massively, bool last)
+		\param elem dodany kontakt
+		\param massively czy jest to fragment wiï¿½kszych zmian
+		\param last jeï¿½eli massively == true, to last == true dla ostatniego kontaktu
+		Sygnaï¿½ generowany przed dodaniem kontaktu elem do listy
+	**/
+	void addingUser(UserListElement elem, bool massively, bool last);
 
-		/**
-			\fn void removingProtocol(UserListElement elem, QString protocolName, bool massively, bool last)
-			\param elem kontakt, dla którego usuniêty zosta³ protokó³
-			\param protocolName identyfikator protoko³u
-			\param massively czy jest to fragment wiêkszych zmian
-			\param last je¿eli massively == true, to last == true dla ostatniego kontaktu
-			Sygna³ generowany przed usuniêciem protoko³u protocolName kontaktu elem.
-		**/
-		void removingProtocol(UserListElement elem, QString protocolName, bool massively, bool last);
+	void usersAdded();
 
-		/**
-			\fn void statusChanged(UserListElement elem, QString protocolName, const UserStatus &oldStatus, bool massively, bool last)
-			\param elem kontakt, dla którego zmieni³ siê status
-			\param protocolName identyfikator protoko³u
-			\param oldStatus poprzedni status
-			\param massively czy jest to fragment wiêkszych zmian
-			\param last je¿eli massively == true, to last == true dla ostatniego kontaktu
-		**/
- 		void statusChanged(UserListElement elem, QString protocolName,
- 							const UserStatus &oldStatus, bool massively, bool last);
+	/**
+		\fn void removingUser(UserListElement elem, bool massively, bool last)
+		\param elem usuwany kontakt
+		\param massively czy jest to fragment wiï¿½kszych zmian
+		\param last jeï¿½eli massively == true, to last == true dla ostatniego kontaktu
+		Sygnaï¿½ generowany przed usuniï¿½ciem kontaktu z listy.
+	**/
+	void removingUser(UserListElement elem, bool massively, bool last);
 
-		void usersStatusChanged(QString protocolName);
+	/**
+		\fn void userRemoved(UserListElement elem, bool massively, bool last)
+		\param elem usuwany kontakt
+		\param massively czy jest to fragment wiï¿½kszych zmian
+		\param last jeï¿½eli massively == true, to last == true dla ostatniego kontaktu
+		Sygnaï¿½ generowany po usuniï¿½ciu kontaktu z listy.
+	**/
+	void userRemoved(UserListElement elem, bool massively, bool last);
 
-	protected:
-		UserGroupData *d;
-		friend class UserListElement;
-		friend class ULEPrivate;
+	void usersRemoved();
 
-		/**
-			\fn UserListElement byKey(UserListKey key)
-			\param key klucz
-			Zwraca element listy kontaktów identyfikowany przez klucz.
-		**/
-		UserListElement byKey(UserListKey key);
+	/**
+		\fn void protocolAdded(UserListElement elem, QString protocolName, bool massively, bool last)
+		\param elem kontakt, dla ktï¿½rego dodany zostaï¿½ protokï¿½ï¿½
+		\param protocolName identyfikator protokoï¿½u
+		\param massively czy jest to fragment wiï¿½kszych zmian
+		\param last jeï¿½eli massively == true, to last == true dla ostatniego kontaktu
+		Sygnaï¿½ generowany po dodaniu protokoï¿½u protocolName kontaktowi elem.
+	**/
+	void protocolAdded(UserListElement elem, QString protocolName, bool massively, bool last);
 
-	private:
-		/* standardowy konstruktor kopiuj±cy zepsu³by obiekt ¼ród³owy */
-		UserGroup(const UserGroup &) : QObject(0,0), d(0) {}
+	/**
+		\fn void removingProtocol(UserListElement elem, QString protocolName, bool massively, bool last)
+		\param elem kontakt, dla ktï¿½rego usuniï¿½ty zostaï¿½ protokï¿½ï¿½
+		\param protocolName identyfikator protokoï¿½u
+		\param massively czy jest to fragment wiï¿½kszych zmian
+		\param last jeï¿½eli massively == true, to last == true dla ostatniego kontaktu
+		Sygnaï¿½ generowany przed usuniï¿½ciem protokoï¿½u protocolName kontaktu elem.
+	**/
+	void removingProtocol(UserListElement elem, QString protocolName, bool massively, bool last);
 
-		/* standardowy operator kopiowania zepsu³by obiekt ¼ród³owy */
- 		virtual UserGroup &operator = (const UserGroup &) {return *this;}
+	/**
+		\fn void statusChanged(UserListElement elem, QString protocolName, const UserStatus &oldStatus, bool massively, bool last)
+		\param elem kontakt, dla ktï¿½rego zmieniï¿½ siï¿½ status
+		\param protocolName identyfikator protokoï¿½u
+		\param oldStatus poprzedni status
+		\param massively czy jest to fragment wiï¿½kszych zmian
+		\param last jeï¿½eli massively == true, to last == true dla ostatniego kontaktu
+	**/
+	void statusChanged(UserListElement elem, QString protocolName, const UserStatus &oldStatus, bool massively, bool last);
 
-		/* nie da siê porównywaæ obiektów tej klasy */
-		bool operator==(const UserGroup &) const {return false;}
+	void usersStatusChanged(QString protocolName);
 
 };
 
 /**
 	\class UserListElements
-	Prosta lista u¿ytkowników z kilkoma u³atwiaczami.
+	Prosta lista uï¿½ytkownikï¿½w z kilkoma uï¿½atwiaczami.
 **/
 class UserListElements : public QList<UserListElement>
 {
-	public:
-		/**
-			\fn UserListElements(UserListElement)
-			Konstruktor dodaj±cy od razu wskazany kontakt
-		**/
-		UserListElements(UserListElement);
+public:
+	/**
+		\fn UserListElements(UserListElement)
+		Konstruktor dodajï¿½cy od razu wskazany kontakt
+	**/
+	UserListElements(UserListElement);
 
-		/**
-			\fn UserListElements(const UserListElements &)
-			Konstruktor kopiuj±cy
-		**/
-		UserListElements(const UserListElements &);
+	/**
+		\fn UserListElements(const UserListElements &)
+		Konstruktor kopiujï¿½cy
+	**/
+	UserListElements(const UserListElements &);
 
-		/**
-			\fn UserListElements(const QValueList<UserListElement> &)
-			Konstruktor inicjuj±cy siê wskazan± list±
-		**/
-		UserListElements(const QList<UserListElement> &);
+	/**
+		\fn UserListElements(const QValueList<UserListElement> &)
+		Konstruktor inicjujï¿½cy siï¿½ wskazanï¿½ listï¿½
+	**/
+	UserListElements(const QList<UserListElement> &);
 
-		/**
-			\fn UserListElements()
-			Standardowy konstruktor.
-		**/
-		UserListElements();
+	/**
+		\fn UserListElements()
+		Standardowy konstruktor.
+	**/
+	UserListElements();
 
-		/**
-			\fn bool equals(const UserListElements &elems) const
-			Sprawdza czy bie¿±ca lista zaiwera te same elemnty co wskazana.
-			\attention {Z³o¿ono¶æ O(count()*elems.count()).}
-		**/
-		bool equals(const UserListElements &elems) const;
+	/**
+		\fn bool equals(const UserListElements &elems) const
+		Sprawdza czy bieï¿½ï¿½ca lista zaiwera te same elemnty co wskazana.
+		\attention {Zï¿½oï¿½onoï¿½ï¿½ O(count()*elems.count()).}
+	**/
+	bool equals(const UserListElements &elems) const;
 
-		/**
-			\fn bool equals(const UserGroup *group) const
-			Sprawdza czy bie¿±ca lista zaiwera te same elemnty co wskazana.
-			\attention {Z³o¿ono¶æ O(count()).}
-		**/
-		bool equals(const UserGroup *group) const;
+	/**
+		\fn bool equals(const UserGroup *group) const
+		Sprawdza czy bieï¿½ï¿½ca lista zaiwera te same elemnty co wskazana.
+		\attention {Zï¿½oï¿½onoï¿½ï¿½ O(count()).}
+	**/
+	bool equals(const UserGroup *group) const;
 
-		/**
-			\fn void sort()
-			Sortuje listê w sposób jednoznaczny.
-		**/
-		void sort();
+	/**
+		\fn void sort()
+		Sortuje listï¿½ w sposï¿½b jednoznaczny.
+	**/
+	void sort();
 
-		/**
-			\fn bool contains(QString protocol, QString id) const
-			Zwraca informacjê o tym czy lista zawiera kontakt o wskazanym protokole i identyfiaktorze.
-			(Z³o¿ono¶æ O(n))
-		**/
-		bool contains(QString protocol, QString id) const;
+	/**
+		\fn bool contains(QString protocol, QString id) const
+		Zwraca informacjï¿½ o tym czy lista zawiera kontakt o wskazanym protokole i identyfiaktorze.
+		(Zï¿½oï¿½onoï¿½ï¿½ O(n))
+	**/
+	bool contains(QString protocol, QString id) const;
 
-		/**
-			\fn bool contains(UserListElement e) const
-			Zwraca informacjê o tym czy lista zawiera wskazany kontakt.
-			(Z³o¿ono¶æ O(n))
-		**/
-		bool contains(UserListElement e) const { return QList<UserListElement>::contains(e) > 0;}
+	/**
+		\fn bool contains(UserListElement e) const
+		Zwraca informacjï¿½ o tym czy lista zawiera wskazany kontakt.
+		(Zï¿½oï¿½onoï¿½ï¿½ O(n))
+	**/
+	bool contains(UserListElement e) const { return QList<UserListElement>::contains(e) > 0;}
 
-		/**
-			\fn QStringList altNicks() const
-			Zwraca listê nicków kontaktów nale¿±cych w postaci obiektu
-			klasy QStringList.
-		**/
-		QStringList altNicks() const;
+	/**
+		\fn QStringList altNicks() const
+		Zwraca listï¿½ nickï¿½w kontaktï¿½w naleï¿½ï¿½cych w postaci obiektu
+		klasy QStringList.
+	**/
+	QStringList altNicks() const;
 
-		bool operator < (const UserListElements &) const;
+	bool operator < (const UserListElements &) const;
+
 };
 
 #endif

@@ -30,7 +30,7 @@
 #include "userlist.h"
 #include "userlist-private.h"
 
-UserList::UserList() : UserGroup(101, "userlist"),
+UserList::UserList() : UserGroup(101),
 	nonProtoKeys(), protoKeys()
 {
 	initKeys();
@@ -258,7 +258,7 @@ void UserList::setAllOffline(const QString &protocolName)
 	size_type cnt = count();
 	int todo = 0;
 
-	// zliczamy najpierw kontakty, których status przestawimy - czyli takie, które maj± opis lub nie s± offline
+	// zliczamy najpierw kontakty, ktï¿½rych status przestawimy - czyli takie, ktï¿½re majï¿½ opis lub nie sï¿½ offline
 	for (size_type j = 1; j <= cnt; ++j, ++user)
 	{
 		if ((*user).usesProtocol(protocolName))
