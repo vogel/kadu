@@ -9,7 +9,7 @@
 
 #include <QApplication>
 #include <QMessageBox>
-#include <Q3TextStream>
+#include <QTextStream>
 #include <QTimer>
 
 #include "config_file.h"
@@ -122,7 +122,7 @@ void HistoryManager::appendMessage(UinsList uins, UinType uin, const QString &ms
 		fidx.close();
 	}
 
-	Q3TextStream stream(&f);
+	QTextStream stream(&f);
 	stream.setCodec(codec_latin2);
 	stream << line << '\n';
 
@@ -134,7 +134,7 @@ void HistoryManager::appendSms(const QString &mobile, const QString &msg)
 {
 	kdebugmf(KDEBUG_FUNCTION_START, "appending sms to history (%s)\n", mobile.local8Bit().data());
 	QFile f, fidx;
-	Q3TextStream stream;
+	QTextStream stream;
 	QStringList linelist;
 	QString altnick, line, fname;
 	UinType uin = 0;
@@ -298,7 +298,7 @@ void HistoryManager::appendStatus(UinType uin, const UserStatus &status)
 		fidx.close();
 	}
 
-	Q3TextStream stream(&f);
+	QTextStream stream(&f);
 	stream.setCodec(codec_latin2);
 	stream << line << '\n';
 
@@ -356,9 +356,9 @@ void HistoryManager::convHist2ekgForm(UinsList uins)
 		return;
 	}
 
-	Q3TextStream stream(&f);
+	QTextStream stream(&f);
 	stream.setCodec(codec_latin2);
-	Q3TextStream streamout(&fout);
+	QTextStream streamout(&fout);
 	streamout.setCodec(codec_latin2);
 
 	bool our, foreign;
@@ -497,9 +497,9 @@ void HistoryManager::convSms2ekgForm()
 		return;
 	}
 
-	Q3TextStream stream(&f);
+	QTextStream stream(&f);
 	stream.setCodec(codec_latin2);
-	Q3TextStream streamout(&fout);
+	QTextStream streamout(&fout);
 	streamout.setCodec(codec_latin2);
 
 	bool header;
@@ -665,7 +665,7 @@ QList<HistoryEntry> HistoryManager::getHistoryEntries(UinsList uins, int from, i
 	if (!f.at(offs))
 		return entries;
 
-	Q3TextStream stream(&f);
+	QTextStream stream(&f);
 	stream.setCodec(codec_latin2);
 
 	int linenr = from;
@@ -796,7 +796,7 @@ QList<HistoryEntry> HistoryManager::getHistoryEntries(UinsList uins, int from, i
 	return entries;
 }
 
-uint HistoryManager::getHistoryDate(Q3TextStream &stream)
+uint HistoryManager::getHistoryDate(QTextStream &stream)
 {
 	kdebugf();
 	QString line;
@@ -844,7 +844,7 @@ QList<HistoryDate> HistoryManager::getHistoryDates(const UinsList &uins)
 		kdebugmf(KDEBUG_ERROR, "Error opening history file %s\n", (const char *)filename.local8Bit());
 		return entries;
 	}
-	Q3TextStream stream(&f);
+	QTextStream stream(&f);
 	stream.setCodec(codec_latin2);
 
 	fidx.setName(f.name() + ".idx");
@@ -874,7 +874,7 @@ QList<HistoryDate> HistoryManager::getHistoryDates(const UinsList &uins)
 				break;
 			fidx.at(actidx * sizeof(int));
 			fidx.readBlock((char *)&offs, (Q_LONG)sizeof(int));
-			f.at(offs);
+			stream.seek(offs);
 			actdate = getHistoryDate(stream);
 //			if (++num%10 == 0)
 //				qApp->processEvents();
@@ -891,7 +891,7 @@ QList<HistoryDate> HistoryManager::getHistoryDates(const UinsList &uins)
 				actidx = (leftidx + rightidx) / 2;
 				fidx.at(actidx * sizeof(int));
 				fidx.readBlock((char *)&offs, (Q_LONG)sizeof(int));
-				f.at(offs);
+				stream.seek(offs);
 				actdate = getHistoryDate(stream);
 				if (actdate > olddate)
 					rightidx = actidx;
@@ -905,7 +905,7 @@ QList<HistoryDate> HistoryManager::getHistoryDates(const UinsList &uins)
 			{
 				fidx.at(actidx * sizeof(int));
 				fidx.readBlock((char *)&offs, (Q_LONG)sizeof(int));
-				f.at(offs);
+				stream.seek(offs);
 				actdate = getHistoryDate(stream);
 			}
 			newdate.date.setTime_t(actdate * 86400);
@@ -916,7 +916,7 @@ QList<HistoryDate> HistoryManager::getHistoryDates(const UinsList &uins)
 
 	fidx.close();
 	f.close();
-
+	kdebugmf(KDEBUG_INFO, "entries count = %d\n", entries.count());
 	kdebugf2();
 	return entries;
 }

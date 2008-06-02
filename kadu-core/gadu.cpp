@@ -337,8 +337,8 @@ void GaduProtocol::initModule()
 	QHostAddress ip2;
 	servers = QStringList::split(";", config_file.readEntry("Network", "Server"));
 	ConfigServers.clear();
-	CONST_FOREACH(server, servers)
-		if (ip2.setAddress(*server))
+	foreach(QString server, servers)
+		if (ip2.setAddress(server))
 			ConfigServers.append(ip2);
 
 	kdebugf2();
@@ -1237,17 +1237,17 @@ QString GaduProtocol::sendMessage(UserListElements users, const QString &mesg)
 		return "\001thisisonlyworkaround";
 	}
 
-	CONST_FOREACH(user, users)
-		if ((*user).usesProtocol("Gadu"))
+	foreach(UserListElement user, users)
+		if (user.usesProtocol("Gadu"))
 			++uinsCount;
 
 	if (uinsCount > 1)
 	{
 		UinType* uins = new UinType[uinsCount];
 		unsigned int i = 0;
-		CONST_FOREACH(user, users)
-			if ((*user).usesProtocol("Gadu"))
-				uins[i++] = (*user).ID("Gadu").toUInt();
+		foreach(UserListElement user, users)
+			if (user.usesProtocol("Gadu"))
+				uins[i++] = user.ID("Gadu").toUInt();
 		if (myLastFormatsLength)
 			seqNumber = gg_send_message_confer_richtext(Sess, GG_CLASS_CHAT, uinsCount, uins, (unsigned char *)data.data(),
 				myLastFormats, myLastFormatsLength);
@@ -1256,14 +1256,14 @@ QString GaduProtocol::sendMessage(UserListElements users, const QString &mesg)
 		delete[] uins;
 	}
 	else
-		CONST_FOREACH(user, users)
-			if ((*user).usesProtocol("Gadu"))
+		foreach(UserListElement user, users)
+			if (user.usesProtocol("Gadu"))
 			{
 				if (myLastFormatsLength)
-					seqNumber = gg_send_message_richtext(Sess, GG_CLASS_CHAT, (*user).ID("Gadu").toUInt(), (unsigned char *)data.data(),
+					seqNumber = gg_send_message_richtext(Sess, GG_CLASS_CHAT, user.ID("Gadu").toUInt(), (unsigned char *)data.data(),
 						myLastFormats, myLastFormatsLength);
 				else
-					seqNumber = gg_send_message(Sess, GG_CLASS_CHAT, (*user).ID("Gadu").toUInt(),(unsigned char *)data.data());
+					seqNumber = gg_send_message(Sess, GG_CLASS_CHAT, user.ID("Gadu").toUInt(),(unsigned char *)data.data());
 
 				break;
 			}

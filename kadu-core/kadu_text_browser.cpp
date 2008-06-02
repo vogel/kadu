@@ -347,7 +347,7 @@ void KaduTextBrowser::saveImage()
 	fd->setDir(config_file.readEntry("Chat", "LastImagePath"));
 	fd->setFilter(QString("%1 (*%2)").arg(qApp->translate("ImageDialog", "Images"), fileExt));
 	fd->setLabelText(QFileDialog::FileName, image.section('/', -1));
-	fd->setCaption(tr("Save image"));
+	fd->setWindowTitle(tr("Save image"));
 	while ((fdResult = fd->exec()) == QFileDialog::Accepted
 		&& QFile::exists(fd->selectedFile())
 		&& !MessageBox::ask(tr("File already exists. Overwrite?")));
