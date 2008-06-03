@@ -1,436 +1,443 @@
+/***************************************************************************
+ *                                                                         *
+ *   This program is free software; you can redistribute it and/or modify  *
+ *   it under the terms of the GNU General Public License as published by  *
+ *   the Free Software Foundation; either version 2 of the License, or     *
+ *   (at your option) any later version.                                   *
+ *                                                                         *
+ ***************************************************************************/
+
 #ifndef KADU_USERLISTELEMENT_H
 #define KADU_USERLISTELEMENT_H
 
-#include <qglobal.h>
+#include <QObject>
+#include <QVariant>
 
-#include <qhostaddress.h>
-#include <qobject.h>
-#include <qstring.h>
-#include <qvariant.h>
-
-#include "status.h"
+class QHostAddress;
 
 class ULEPrivate;
 class UserGroup;
+class UserStatus;
 
 typedef long int UserListKey;
 
 /**
-	Typ opisuj±cy stan powiadamiania.
+	Typ opisujï¿½cy stan powiadamiania.
 	\enum NotifyType
-	\brief Typ opisuj±cy stan powiadamiania.
+	\brief Typ opisujï¿½cy stan powiadamiania.
 **/
 enum NotifyType {
-	NotifyGlobal = 0, /*!< powiadomienia zale¿ne od globalnych ustawieñ */
-	NotifyOff = 1, /*!< powiadomienia wy³±czone */
+	NotifyGlobal = 0, /*!< powiadomienia zaleï¿½ne od globalnych ustawieï¿½ */
+	NotifyOff = 1, /*!< powiadomienia wyï¿½ï¿½czone */
 	NotifyOwn = 2 /*!< indywidualne ustawienie powiadamiania */
 };
 
 /**
-	Klasa reprezentuj±ca kontakt (u¿ytkownika na li¶cie kontaktów).
+	Klasa reprezentujï¿½ca kontakt (uï¿½ytkownika na liï¿½cie kontaktï¿½w).
 	\class UserListElement
-	\brief Klasa reprezentuj±ca kontakt.
-	Ze zwglêdu na siln± hermetyzacjê, nale¿y unikaæ dawania dostêpu przez wska¼niki / referencje
-	(nawet const) na zewn±trz do wewnêtrznych danych.
+	\brief Klasa reprezentujï¿½ca kontakt.
+	Ze zwglï¿½du na silnï¿½ hermetyzacjï¿½, naleï¿½y unikaï¿½ dawania dostï¿½pu przez wskaï¿½niki / referencje
+	(nawet const) na zewnï¿½trz do wewnï¿½trznych danych.
 
-	Klasa zosta³a zbudowana w taki sposób, ¿e przekazywanie przez warto¶æ jest
-	bardzo tanie (¿adne pola nie s± kopiowane). Jednocze¶nie nie mo¿na wykonaæ
-	niezale¿nej (nie powi±zanej ze ¼ród³em) kopii obiektu, gdy¿ mog³oby to
-	doprowadziæ do stworzenia kilku kontaktów o tych samych danych (czego nale¿y
-	siê wystrzegaæ!).
+	Klasa zostaï¿½a zbudowana w taki sposï¿½b, ï¿½e przekazywanie przez wartoï¿½ï¿½ jest
+	bardzo tanie (ï¿½adne pola nie sï¿½ kopiowane). Jednoczeï¿½nie nie moï¿½na wykonaï¿½
+	niezaleï¿½nej (nie powiï¿½zanej ze ï¿½rï¿½dï¿½em) kopii obiektu, gdyï¿½ mogï¿½oby to
+	doprowadziï¿½ do stworzenia kilku kontaktï¿½w o tych samych danych (czego naleï¿½y
+	siï¿½ wystrzegaï¿½!).
 **/
 class UserListElement : public QObject
 {
 	Q_OBJECT
-	public:
-		/**
-			\fn UserListElement()
-		**/
-		UserListElement();
 
-		/**
-			\fn UserListElement(const UserListElement &copyMe)
-			Konstruktor kopiuj±cy.
-		**/
-		UserListElement(const UserListElement &copyMe);
+	ULEPrivate *privateData;
+	static unsigned long int used;
+	friend class UserGroup;
 
-		/**
-			\fn virtual ~UserListElement()
-			Zwalnia pamiêæ zwi±zan± z kontaktem, gdy licznik odwo³añ == 1
-		**/
-		virtual ~UserListElement();
+protected:
+	/**
+		\fn UserListKey key() const
+		Zwraca klucz po ktï¿½rym jest identyfikowany kontakt
+	**/
+	UserListKey key() const;
 
-		/**
-			\fn void operator = (const UserListElement &copyMe)
-			Operator kopiuj±cy. Dane bêd± dzielone.
-			\param copyMe obiekt klasy UserListElement który bêdzie skopiowany.
-		**/
-		UserListElement & operator = (const UserListElement &copyMe);
+public:
+	/**
+		\fn UserListElement()
+	**/
+	UserListElement();
 
-		inline bool operator == (const UserListElement &u) const { return key() == u.key(); }
+	/**
+		\fn UserListElement(const UserListElement &copyMe)
+		Konstruktor kopiujï¿½cy.
+	**/
+	UserListElement(const UserListElement &copyMe);
 
-		inline bool operator != (const UserListElement &u) const { return key() != u.key(); }
+	/**
+		\fn virtual ~UserListElement()
+		Zwalnia pamiï¿½ï¿½ zwiï¿½zanï¿½ z kontaktem, gdy licznik odwoï¿½aï¿½ == 1
+	**/
+	virtual ~UserListElement();
 
-		inline bool operator < (const UserListElement &u) const { return key()  < u.key(); }
+	/**
+		\fn void operator = (const UserListElement &copyMe)
+		Operator kopiujï¿½cy. Dane bï¿½dï¿½ dzielone.
+		\param copyMe obiekt klasy UserListElement ktï¿½ry bï¿½dzie skopiowany.
+	**/
+	UserListElement & operator = (const UserListElement &copyMe);
 
-		/**
-			\fn QString ID(const QString &protocolName) const
-			\param protocolName identyfikator protoko³u
-			Zwraca identyfikator kontaktu we wskazanym protokole.
-		**/
-		QString ID(const QString &protocolName) const;
+	inline bool operator == (const UserListElement &u) const { return key() == u.key(); }
 
-		/**
-			\fn const UserStatus &status(const QString &protocolName) const
-			\param protocolName identyfikator protoko³u
-			Zwraca status kontaktu w protokole protocolName.
-		**/
-		const UserStatus &status(const QString &protocolName) const;
+	inline bool operator != (const UserListElement &u) const { return key() != u.key(); }
 
-		/**
-			\fn QVariant data(const QString &name) const
-			\param name nazwa w³asno¶ci
-			Zwraca w³asno¶æ (która nie jest zwi±zana z ¿adnym protoko³em)
-		**/
-		QVariant data(const QString &name) const;
+	inline bool operator < (const UserListElement &u) const { return key() < u.key(); }
 
-		/**
-			\fn QVariant protocolData(const QString &protocolName, const QString &name) const
-			\param protocolName identyfikator protoko³u
-			\param name nazwa w³a¶no¶ci
-			Zwraca w³asno¶æ name dla protoko³u protocolName.
-		**/
-		QVariant protocolData(const QString &protocolName, const QString &name) const;
+	/**
+		\fn QString ID(const QString &protocolName) const
+		\param protocolName identyfikator protokoï¿½u
+		Zwraca identyfikator kontaktu we wskazanym protokole.
+	**/
+	QString ID(const QString &protocolName) const;
 
-		/**
-			\fn QStringList protocolList() const
-			Zwraca listê identyfikatorów protoko³ów dla danego kontaktu.
-		**/
-		QStringList protocolList() const;
+	/**
+		\fn const UserStatus &status(const QString &protocolName) const
+		\param protocolName identyfikator protokoï¿½u
+		Zwraca status kontaktu w protokole protocolName.
+	**/
+	const UserStatus &status(const QString &protocolName) const;
 
-		/**
-			\fn QStringList protocolDataKeys(const QString &protocolName) const
-			Zwraca listê identyfikatorów pól dla protoko³u protocolName.
-		**/
-		QStringList protocolDataKeys(const QString &protocolName) const;
+	/**
+		\fn QVariant data(const QString &name) const
+		\param name nazwa wï¿½asnoï¿½ci
+		Zwraca wï¿½asnoï¿½ï¿½ (ktï¿½ra nie jest zwiï¿½zana z ï¿½adnym protokoï¿½em)
+	**/
+	QVariant data(const QString &name) const;
 
-		/**
-			\fn QStringList nonProtocolDataKeys() const
-			Zwraca listê identyfikatorów pól nie zwi±zanych z ¿adnym protoko³em.
-		**/
-		QStringList nonProtocolDataKeys() const;
+	/**
+		\fn QVariant protocolData(const QString &protocolName, const QString &name) const
+		\param protocolName identyfikator protokoï¿½u
+		\param name nazwa wï¿½aï¿½noï¿½ci
+		Zwraca wï¿½asnoï¿½ï¿½ name dla protokoï¿½u protocolName.
+	**/
+	QVariant protocolData(const QString &protocolName, const QString &name) const;
 
-		/**
-			\fn QString firstName() const
-			Zwraca imiê kontaktu.
-		**/
-		QString firstName() const;
+	/**
+		\fn QStringList protocolList() const
+		Zwraca listï¿½ identyfikatorï¿½w protokoï¿½ï¿½w dla danego kontaktu.
+	**/
+	QStringList protocolList() const;
 
-		/**
-			\fn QString lastName() const
-			Zwraca nazwisko kontaktu.
-		**/
-		QString lastName() const;
+	/**
+		\fn QStringList protocolDataKeys(const QString &protocolName) const
+		Zwraca listï¿½ identyfikatorï¿½w pï¿½l dla protokoï¿½u protocolName.
+	**/
+	QStringList protocolDataKeys(const QString &protocolName) const;
 
-		/**
-			\fn QString nickName() const
-			Zwraca pseudonim kontaktu.
-		**/
-		QString nickName() const;
+	/**
+		\fn QStringList nonProtocolDataKeys() const
+		Zwraca listï¿½ identyfikatorï¿½w pï¿½l nie zwiï¿½zanych z ï¿½adnym protokoï¿½em.
+	**/
+	QStringList nonProtocolDataKeys() const;
 
-		/**
-			\fn QString altNick() const
-			Zwraca wy¶wietlany pseudonim kontaktu.
-		**/
-		QString altNick() const;
+	/**
+		\fn QString firstName() const
+		Zwraca imiï¿½ kontaktu.
+	**/
+	QString firstName() const;
 
-		/**
-			\fn QString mobile() const
-			Zwraca numer telefonu kontaktu.
-		**/
-		QString mobile() const;
+	/**
+		\fn QString lastName() const
+		Zwraca nazwisko kontaktu.
+	**/
+	QString lastName() const;
 
-		/**
-			\fn QString email() const
-			Zwraca adres E-Mail kontaktu.
-		**/
-		QString email() const;
+	/**
+		\fn QString nickName() const
+		Zwraca pseudonim kontaktu.
+	**/
+	QString nickName() const;
 
-		/**
-			\fn QString homePhone() const
-			Zwraca numer telefonu domowego kontaktu.
-		**/
-		QString homePhone() const;
+	/**
+		\fn QString altNick() const
+		Zwraca wyï¿½wietlany pseudonim kontaktu.
+	**/
+	QString altNick() const;
 
-		/**
-			\fn QString aliveSound(NotifyType &type) const
-			Zwraca sposób powiadamiania d¼wiêkiem o zmianach statusu kontaktu.
-		**/
-		QString aliveSound(NotifyType &type) const;
+	/**
+		\fn QString mobile() const
+		Zwraca numer telefonu kontaktu.
+	**/
+	QString mobile() const;
 
-		/**
-			\fn QString messageSound(NotifyType &type) const
-			Zwraca sposób powiadamiania d¼wiêkiem o wiadomo¶ciach od kontaktu.
-		**/
-		QString messageSound(NotifyType &type) const;
+	/**
+		\fn QString email() const
+		Zwraca adres E-Mail kontaktu.
+	**/
+	QString email() const;
 
-		/**
-			\fn bool isAnonymous() const
-			Zwraca informacjê, czy kontakt jest anonimowy czy nie.
-		**/
-		bool isAnonymous() const;
+	/**
+		\fn QString homePhone() const
+		Zwraca numer telefonu domowego kontaktu.
+	**/
+	QString homePhone() const;
 
-		/**
-			\fn bool notify() const
-			Zwraca informacjê, czy u¿ytkownik jest powiadamiany o kontakcie czy nie.
-		**/
-		bool notify() const;
+	/**
+		\fn QString aliveSound(NotifyType &type) const
+		Zwraca sposï¿½b powiadamiania dï¿½wiï¿½kiem o zmianach statusu kontaktu.
+	**/
+	QString aliveSound(NotifyType &type) const;
 
-		/**
-			\fn bool usesProtocol(const QString &name) const
-			\param name identyfikator protoko³u
-			Zwraca informacjê o tym czy do kontaktu przypisany jest protokó³ o wskazanym identyfikatorze.
-		**/
-		bool usesProtocol(const QString &name) const;
+	/**
+		\fn QString messageSound(NotifyType &type) const
+		Zwraca sposï¿½b powiadamiania dï¿½wiï¿½kiem o wiadomoï¿½ciach od kontaktu.
+	**/
+	QString messageSound(NotifyType &type) const;
 
-		/**
-			\fn bool hasIPAddress(const QString &protocolName) const
-			\param protocolName identyfikator protoko³u
-			Zwraca informacjê czy znany jest adres IP we wskazanym protokole.
-		**/
-		bool hasIP(const QString &protocolName) const;
+	/**
+		\fn bool isAnonymous() const
+		Zwraca informacjï¿½, czy kontakt jest anonimowy czy nie.
+	**/
+	bool isAnonymous() const;
 
-		/**
-			\fn QHostAddress IP(const QString &protocolName) const
-			\param protocolName identyfikator protoko³u
-			Zwraca adres IP kontaktu.
-		**/
-		QHostAddress IP(const QString &protocolName) const;
+	/**
+		\fn bool notify() const
+		Zwraca informacjï¿½, czy uï¿½ytkownik jest powiadamiany o kontakcie czy nie.
+	**/
+	bool notify() const;
 
-		/**
-			\fn QString DNSName(const QString &protocolName) const
-			\param protocolName identyfikator protoko³u
-			Zwraca nazwê domeny kontaktu (je¶li znaleziona).
-		**/
-		QString DNSName(const QString &protocolName) const;
+	/**
+		\fn bool usesProtocol(const QString &name) const
+		\param name identyfikator protokoï¿½u
+		Zwraca informacjï¿½ o tym czy do kontaktu przypisany jest protokï¿½ï¿½ o wskazanym identyfikatorze.
+	**/
+	bool usesProtocol(const QString &name) const;
 
-		/**
-			\fn short port(const QString &protocolName) const
-			\param protocolName identyfikator protoko³u
-			Zwraca numer portu kontaktu.
-		**/
-		short port(const QString &protocolName) const;
+	/**
+		\fn bool hasIPAddress(const QString &protocolName) const
+		\param protocolName identyfikator protokoï¿½u
+		Zwraca informacjï¿½ czy znany jest adres IP we wskazanym protokole.
+	**/
+	bool hasIP(const QString &protocolName) const;
 
-	public slots:
-		/**
-			\fn QVariant setData(const QString &name, const QVariant &val, bool massively = false, bool last = false)
-			ustawia w³asno¶æ kontaktu stowarzyszon± z nazw± "name"
-			zwraca star± warto¶æ
-			\param name nazwa w³asno¶ci
-			\param val nowa warto¶æ
-			\param massively true, gdy jest to czê¶æ wiêkszych zmian
-			\param last true, gdy massively == true i jest to ostatnia zmiana
+	/**
+		\fn QHostAddress IP(const QString &protocolName) const
+		\param protocolName identyfikator protokoï¿½u
+		Zwraca adres IP kontaktu.
+	**/
+	QHostAddress IP(const QString &protocolName) const;
 
-			pola bezprotoko³owe:
+	/**
+		\fn QString DNSName(const QString &protocolName) const
+		\param protocolName identyfikator protokoï¿½u
+		Zwraca nazwï¿½ domeny kontaktu (jeï¿½li znaleziona).
+	**/
+	QString DNSName(const QString &protocolName) const;
 
-				QStringList Groups;
-				QString FirstName; Imiê kontaktu.
-				QString LastName; Nazwisko kontaktu.
-				QString NickName; Pseudonim kontaktu.
-				QString AltNick; Pseudonim kontaktu, który jest wy¶wietlany na li¶cie.
-				QString Mobile; Numer telefonu kontaktu.
-				QString Email; E-Mail kontaktu.
-				bool Anonymous; Informuje, czy kontakt jest anonimowy czy nie.
-				bool Notify; Informuje czy mamy w³±czone powiadamianie o kontakcie.
+	/**
+		\fn short port(const QString &protocolName) const
+		\param protocolName identyfikator protokoï¿½u
+		Zwraca numer portu kontaktu.
+	**/
+	short port(const QString &protocolName) const;
 
-				NotifyType AliveSound; Przechowuje informacjê o sposobie powiadamiania
-										o zmianie statusu kontaku d¼wiêkiem.
-				QString OwnAliveSound; Je¶li sposób powiadamiania o zmianie statusu kontaktu ma warto¶æ OWN,
-									to ta zmienna przechowuje nazwê pliku d¼wiêkowego do odtworzenia.
+public slots:
+	/**
+		\fn QVariant setData(const QString &name, const QVariant &val, bool massively = false, bool last = false)
+		ustawia wï¿½asnoï¿½ï¿½ kontaktu stowarzyszonï¿½ z nazwï¿½ "name"
+		zwraca starï¿½ wartoï¿½ï¿½
+		\param name nazwa wï¿½asnoï¿½ci
+		\param val nowa wartoï¿½ï¿½
+		\param massively true, gdy jest to czï¿½ï¿½ï¿½ wiï¿½kszych zmian
+		\param last true, gdy massively == true i jest to ostatnia zmiana
 
-				NotifyType MessageSound; Przechowuje informacjê o sposobie powiadamiania
-										o nowej wiadomo¶ci od kontaktu d¼wiêkiem.
-				QString OwnMessageSound;  Je¶li sposób powiadamiania o nowej wiadomo¶ci od kontaktu ma warto¶æ OWN,
-										to ta zmienna przechowuje nazwê pliku d¼wiêkowego do odtworzenia.
+		pola bezprotokoï¿½owe:
 
-				QString HomePhone; Numer telefonu domowego kontaktu.
-		**/
-		QVariant setData(const QString &name, const QVariant &val, bool massively = false, bool last = false);
+			QStringList Groups;
+			QString FirstName; Imiï¿½ kontaktu.
+			QString LastName; Nazwisko kontaktu.
+			QString NickName; Pseudonim kontaktu.
+			QString AltNick; Pseudonim kontaktu, ktï¿½ry jest wyï¿½wietlany na liï¿½cie.
+			QString Mobile; Numer telefonu kontaktu.
+			QString Email; E-Mail kontaktu.
+			bool Anonymous; Informuje, czy kontakt jest anonimowy czy nie.
+			bool Notify; Informuje czy mamy wï¿½ï¿½czone powiadamianie o kontakcie.
 
-		/**
-			\fn QVariant setProtocolData(const QString &protocolName, const QString &name, const QVariant &val, bool massively = false, bool last = false)
-			\param protocolName identyfikator protoko³u
-			\param name nazwa w³asno¶ci
-			\param val nowa warto¶æ
-			\param massively true, gdy jest to czê¶æ wiêkszych zmian
-			\param last true, gdy massively == true i jest to ostatnia zmiana
-			\return stara warto¶æ
-			Ustawia w³asno¶æ name zwi±zan± z protoko³em protocolName na val.
+			NotifyType AliveSound; Przechowuje informacjï¿½ o sposobie powiadamiania
+									o zmianie statusu kontaku dï¿½wiï¿½kiem.
+			QString OwnAliveSound; Jeï¿½li sposï¿½b powiadamiania o zmianie statusu kontaktu ma wartoï¿½ï¿½ OWN,
+								to ta zmienna przechowuje nazwï¿½ pliku dï¿½wiï¿½kowego do odtworzenia.
 
-			dla protoko³u "Gadu" dostêpne s± nastêpuj±ce pola:
+			NotifyType MessageSound; Przechowuje informacjï¿½ o sposobie powiadamiania
+									o nowej wiadomoï¿½ci od kontaktu dï¿½wiï¿½kiem.
+			QString OwnMessageSound;  Jeï¿½li sposï¿½b powiadamiania o nowej wiadomoï¿½ci od kontaktu ma wartoï¿½ï¿½ OWN,
+									to ta zmienna przechowuje nazwï¿½ pliku dï¿½wiï¿½kowego do odtworzenia.
 
-				int MaxImageSize; Maksymalny rozmiar obrazka, jak± mo¿e przyj±æ kontakt.
-				QHostAddress IP; Adres IP kontaktu (je¶li wykryty).
-				QString DNSName; Nazwa domenu kontaktu (je¶li znaleziona).
-				short Port; Port kontaktu (je¶li wykryty).
-				int Version; Wersja protoko³u u¿ywanego przez kontakt.
-				bool Blocking; Informuje czy blokujemy kontakt, czy nie.
-				bool OfflineTo; Informuje czy mamy w³±czony tryb "niedostêpny dla kontaktu" dla tego kontaktu.
-		**/
-		QVariant setProtocolData(const QString &protocolName, const QString &name, const QVariant &val, bool massively = false, bool last = false);
+			QString HomePhone; Numer telefonu domowego kontaktu.
+	**/
+	QVariant setData(const QString &name, const QVariant &val, bool massively = false, bool last = false);
 
-		/**
-			\fn void addProtocol(const QString &protocolName, const QString &id, bool massively = false, bool last = false)
-			\param protocolName identyfikator protoko³u
-			\param id identyfikator w tym protokole w postaci napisu
-			\param massively true, gdy jest to czê¶æ wiêkszych zmian
-			\param last true, gdy massively == true i jest to ostatnia zmiana
-			Dodaje do kontaktu informacjê o u¿ywanym protokole.
-		**/
-		void addProtocol(const QString &protocolName, const QString &id, bool massively = false, bool last = false);
+	/**
+		\fn QVariant setProtocolData(const QString &protocolName, const QString &name, const QVariant &val, bool massively = false, bool last = false)
+		\param protocolName identyfikator protokoï¿½u
+		\param name nazwa wï¿½asnoï¿½ci
+		\param val nowa wartoï¿½ï¿½
+		\param massively true, gdy jest to czï¿½ï¿½ï¿½ wiï¿½kszych zmian
+		\param last true, gdy massively == true i jest to ostatnia zmiana
+		\return stara wartoï¿½ï¿½
+		Ustawia wï¿½asnoï¿½ï¿½ name zwiï¿½zanï¿½ z protokoï¿½em protocolName na val.
 
-		/**
-			\fn void deleteProtocol(const QString &protocolName, bool massively = false, bool last = false)
-			\param protocolName identyfikator protoko³u
-			\param massively true, gdy jest to czê¶æ wiêkszych zmian
-			\param last true, gdy massively == true i jest to ostatnia zmiana
-			Usuwa informacje o protokole.
-		**/
-		void deleteProtocol(const QString &protocolName, bool massively = false, bool last = false);
+		dla protokoï¿½u "Gadu" dostï¿½pne sï¿½ nastï¿½pujï¿½ce pola:
 
-		/**
-			\fn void setStatus(const QString &protocolName, const UserStatus &status, bool massively = false, bool last = false)
-			\param protocolName identyfikator protoko³u
-			\param status nowy status
-			\param massively true, gdy jest to czê¶æ wiêkszych zmian
-			\param last true, gdy massively == true i jest to ostatnia zmiana
-			Zmienia status kontaktu w protokolej protocolName.
-		**/
-		void setStatus(const QString &protocolName, const UserStatus &status, bool massively = false, bool last = false);
+			int MaxImageSize; Maksymalny rozmiar obrazka, jakï¿½ moï¿½e przyjï¿½ï¿½ kontakt.
+			QHostAddress IP; Adres IP kontaktu (jeï¿½li wykryty).
+			QString DNSName; Nazwa domenu kontaktu (jeï¿½li znaleziona).
+			short Port; Port kontaktu (jeï¿½li wykryty).
+			int Version; Wersja protokoï¿½u uï¿½ywanego przez kontakt.
+			bool Blocking; Informuje czy blokujemy kontakt, czy nie.
+			bool OfflineTo; Informuje czy mamy wï¿½ï¿½czony tryb "niedostï¿½pny dla kontaktu" dla tego kontaktu.
+	**/
+	QVariant setProtocolData(const QString &protocolName, const QString &name, const QVariant &val, bool massively = false, bool last = false);
 
-		/**
-			\fn void setFirstName(const QString &firstName)
-			Ustawia imiê dla kontaktu.
-			\param firstName imiê, które zostanie przydzielone kontaktowi.
-		**/
-		void setFirstName(const QString &firstName);
+	/**
+		\fn void addProtocol(const QString &protocolName, const QString &id, bool massively = false, bool last = false)
+		\param protocolName identyfikator protokoï¿½u
+		\param id identyfikator w tym protokole w postaci napisu
+		\param massively true, gdy jest to czï¿½ï¿½ï¿½ wiï¿½kszych zmian
+		\param last true, gdy massively == true i jest to ostatnia zmiana
+		Dodaje do kontaktu informacjï¿½ o uï¿½ywanym protokole.
+	**/
+	void addProtocol(const QString &protocolName, const QString &id, bool massively = false, bool last = false);
 
-		/**
-			\fn void setLastName(const QString &lastName)
-			Ustawia nazwisko dla kontaktu.
-			\param lastName nazwisko, które zostanie przydzielone kontaktowi.
-		**/
-		void setLastName(const QString &lastName);
+	/**
+		\fn void deleteProtocol(const QString &protocolName, bool massively = false, bool last = false)
+		\param protocolName identyfikator protokoï¿½u
+		\param massively true, gdy jest to czï¿½ï¿½ï¿½ wiï¿½kszych zmian
+		\param last true, gdy massively == true i jest to ostatnia zmiana
+		Usuwa informacje o protokole.
+	**/
+	void deleteProtocol(const QString &protocolName, bool massively = false, bool last = false);
 
-		/**
-			\fn void setNickName(const QString &nickName)
-			Ustawia pseudonim dla kontaktu.
-			\param nickName pseudonim, który zostanie przydzielony kontaktowi.
-		**/
-		void setNickName(const QString &nickName);
+	/**
+		\fn void setStatus(const QString &protocolName, const UserStatus &status, bool massively = false, bool last = false)
+		\param protocolName identyfikator protokoï¿½u
+		\param status nowy status
+		\param massively true, gdy jest to czï¿½ï¿½ï¿½ wiï¿½kszych zmian
+		\param last true, gdy massively == true i jest to ostatnia zmiana
+		Zmienia status kontaktu w protokolej protocolName.
+	**/
+	void setStatus(const QString &protocolName, const UserStatus &status, bool massively = false, bool last = false);
 
-		/**
-			\fn void setAltNick(const QString &altNick)
-			Ustawia wy¶wietlany pseudonim dla kontaktu.
-			\param altNick wy¶wietlany pseudonim, który zostanie przydzielony kontaktowi.
-		**/
-		void setAltNick(const QString &altNick);
+	/**
+		\fn void setFirstName(const QString &firstName)
+		Ustawia imiï¿½ dla kontaktu.
+		\param firstName imiï¿½, ktï¿½re zostanie przydzielone kontaktowi.
+	**/
+	void setFirstName(const QString &firstName);
 
-		/**
-			\fn void setMobile(const QString &mobile)
-			Ustawia numer telefonu dla kontaktu.
-			\param mobile numer telefonu, który zostanie przydzielony kontaktowi.
-		**/
-		void setMobile(const QString &mobile);
+	/**
+		\fn void setLastName(const QString &lastName)
+		Ustawia nazwisko dla kontaktu.
+		\param lastName nazwisko, ktï¿½re zostanie przydzielone kontaktowi.
+	**/
+	void setLastName(const QString &lastName);
 
-		/**
-			\fn void setEmail(const QString &email)
-			Ustawia adres E-Mail dla kontaktu.
-			\param email adres, który zostanie przydzielony kontaktowi.
-		**/
-		void setEmail(const QString &email);
+	/**
+		\fn void setNickName(const QString &nickName)
+		Ustawia pseudonim dla kontaktu.
+		\param nickName pseudonim, ktï¿½ry zostanie przydzielony kontaktowi.
+	**/
+	void setNickName(const QString &nickName);
 
-		/**
-			\fn void setAnonymous(const bool anonymous)
-			Ustawia stan anonimowo¶ci kontaktu.
-			\param anonymous warto¶æ logiczna informuj±ca, ¿e kontakt jest anonimowy, lub nie.
-		**/
-		void setAnonymous(const bool &anonymous);
+	/**
+		\fn void setAltNick(const QString &altNick)
+		Ustawia wyï¿½wietlany pseudonim dla kontaktu.
+		\param altNick wyï¿½wietlany pseudonim, ktï¿½ry zostanie przydzielony kontaktowi.
+	**/
+	void setAltNick(const QString &altNick);
 
-		/**
-			\fn void setNotify(const bool notify)
-			Ustawia stan powiadamiania o kontakcie.
-			\param notify warto¶æ logiczna informuj±ca, czy u¿ytkownik ma byæ powiadamiany o kontakcie.
-		**/
-		void setNotify(const bool &notify);
+	/**
+		\fn void setMobile(const QString &mobile)
+		Ustawia numer telefonu dla kontaktu.
+		\param mobile numer telefonu, ktï¿½ry zostanie przydzielony kontaktowi.
+	**/
+	void setMobile(const QString &mobile);
 
-		/**
-			\fn void setHomePhone(const QString &phone)
-			Ustawia numer telefonu domowego dla kontaktu.
-			\param phone numer telefonu, który zostanie przydzielony kontaktowi.
-		**/
-		void setHomePhone(const QString &phone);
+	/**
+		\fn void setEmail(const QString &email)
+		Ustawia adres E-Mail dla kontaktu.
+		\param email adres, ktï¿½ry zostanie przydzielony kontaktowi.
+	**/
+	void setEmail(const QString &email);
 
-		/**
-			\fn void setAliveSound(NotifyType type, const QString &file = QString::null)
-			Ustawia sposób powiadamiania d¼wiêkiem o zmianie statusu przez kontakt.
-			\param type sposób powiadamiania.
-			\arg \c GLOBAL powiadomienia zale¿ne od globalnych ustawieñ.
-			\arg \c OFF powiadomienia wy³±czone.
-			\arg \c OWN indywidualne ustawienie powiadamiania/
+	/**
+		\fn void setAnonymous(const bool anonymous)
+		Ustawia stan anonimowoï¿½ci kontaktu.
+		\param anonymous wartoï¿½ï¿½ logiczna informujï¿½ca, ï¿½e kontakt jest anonimowy, lub nie.
+	**/
+	void setAnonymous(const bool &anonymous);
 
-			\param file plik d¼wiêkowy, wymagany dla indywidualnego ustawienia powiadomieñ.
-		**/
-		void setAliveSound(NotifyType type, const QString &file = QString::null);
+	/**
+		\fn void setNotify(const bool notify)
+		Ustawia stan powiadamiania o kontakcie.
+		\param notify wartoï¿½ï¿½ logiczna informujï¿½ca, czy uï¿½ytkownik ma byï¿½ powiadamiany o kontakcie.
+	**/
+	void setNotify(const bool &notify);
 
-		/**
-			\fn void setMessageSound(NotifyType type, const QString &file = QString::null)
-			Ustawia sposób powiadamiania d¼wiêkiem o nowej wiadomo¶ci od kontaktu.
-			\param type sposób powiadamiania.
-			\arg \c GLOBAL powiadomienia zale¿ne od globalnych ustawieñ.
-			\arg \c OFF powiadomienia wy³±czone.
-			\arg \c OWN indywidualne ustawienie powiadamiania/
+	/**
+		\fn void setHomePhone(const QString &phone)
+		Ustawia numer telefonu domowego dla kontaktu.
+		\param phone numer telefonu, ktï¿½ry zostanie przydzielony kontaktowi.
+	**/
+	void setHomePhone(const QString &phone);
 
-			\param file plik d¼wiêkowy, wymagany dla indywidualnego ustawienia powiadomieñ.
-		**/
-		void setMessageSound(NotifyType type, const QString &file = QString::null);
+	/**
+		\fn void setAliveSound(NotifyType type, const QString &file = QString::null)
+		Ustawia sposï¿½b powiadamiania dï¿½wiï¿½kiem o zmianie statusu przez kontakt.
+		\param type sposï¿½b powiadamiania.
+		\arg \c GLOBAL powiadomienia zaleï¿½ne od globalnych ustawieï¿½.
+		\arg \c OFF powiadomienia wyï¿½ï¿½czone.
+		\arg \c OWN indywidualne ustawienie powiadamiania/
 
-		/**
-			\fn void setAddressAndPort(const QString &protocolName, const QHostAddress &ip, short port)
-			\param protocolName identyfikator protoko³u
-			\param ip adres IP
-			\param port port
-			Ustawia adres IP i port dla wskazanego protoko³u.
-		**/
-		void setAddressAndPort(const QString &protocolName, const QHostAddress &ip, short port);
+		\param file plik dï¿½wiï¿½kowy, wymagany dla indywidualnego ustawienia powiadomieï¿½.
+	**/
+	void setAliveSound(NotifyType type, const QString &file = QString::null);
 
-		/**
-			\fn void setDNSName(const QString &protocolName, const QString &dnsname)
-			\param protocolName identyfikator protoko³u
-			\param dnsname nowa domena
-			Ustawia domenê dla wskazanego protoko³u.
-		**/
-		void setDNSName(const QString &protocolName, const QString &dnsname);
+	/**
+		\fn void setMessageSound(NotifyType type, const QString &file = QString::null)
+		Ustawia sposï¿½b powiadamiania dï¿½wiï¿½kiem o nowej wiadomoï¿½ci od kontaktu.
+		\param type sposï¿½b powiadamiania.
+		\arg \c GLOBAL powiadomienia zaleï¿½ne od globalnych ustawieï¿½.
+		\arg \c OFF powiadomienia wyï¿½ï¿½czone.
+		\arg \c OWN indywidualne ustawienie powiadamiania/
 
-		/**
-			\fn void refreshDNSName(const QString &protocolName)
-			\param protocolName identyfikator protoko³u
-			Wywo³uje zapytanie o nazwê domeny dla kontaktu oraz wype³nia odpowiednie pole kontaktu,
-			gdy domena zostanie odnaleziona.
-		**/
-		void refreshDNSName(const QString &protocolName);
+		\param file plik dï¿½wiï¿½kowy, wymagany dla indywidualnego ustawienia powiadomieï¿½.
+	**/
+	void setMessageSound(NotifyType type, const QString &file = QString::null);
 
-	protected:
-		/**
-			\fn UserListKey key() const
-			Zwraca klucz po którym jest identyfikowany kontakt
-		**/
-		UserListKey key() const;
+	/**
+		\fn void setAddressAndPort(const QString &protocolName, const QHostAddress &ip, short port)
+		\param protocolName identyfikator protokoï¿½u
+		\param ip adres IP
+		\param port port
+		Ustawia adres IP i port dla wskazanego protokoï¿½u.
+	**/
+	void setAddressAndPort(const QString &protocolName, const QHostAddress &ip, short port);
 
-	private:
-		ULEPrivate *privateData;
-		static unsigned long int used;
-		friend class UserGroup;
+	/**
+		\fn void setDNSName(const QString &protocolName, const QString &dnsname)
+		\param protocolName identyfikator protokoï¿½u
+		\param dnsname nowa domena
+		Ustawia domenï¿½ dla wskazanego protokoï¿½u.
+	**/
+	void setDNSName(const QString &protocolName, const QString &dnsname);
+
+	/**
+		\fn void refreshDNSName(const QString &protocolName)
+		\param protocolName identyfikator protokoï¿½u
+		Wywoï¿½uje zapytanie o nazwï¿½ domeny dla kontaktu oraz wypeï¿½nia odpowiednie pole kontaktu,
+		gdy domena zostanie odnaleziona.
+	**/
+	void refreshDNSName(const QString &protocolName);
+
 };
 
 #endif

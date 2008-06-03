@@ -11,6 +11,7 @@
 #define KADU_USERGROUP_H
 
 #include <QList>
+#include <QVariant>
 
 #include "userlistelement.h"
 

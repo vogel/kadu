@@ -8,6 +8,7 @@
  ***************************************************************************/
 
 #include <QStringList>
+#include <QVariant>
 
 #include "debug.h"
 #include "kadu.h"

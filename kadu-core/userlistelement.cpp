@@ -7,10 +7,12 @@
  *                                                                         *
  ***************************************************************************/
 
+#include <QHostAddress>
+
 #include "debug.h"
-#include "dnshandler.h"
-#include "misc.h"
+#include "status.h"
 #include "usergroup.h"
+
 #include "userlistelement.h"
 #include "userlist-private.h"
 

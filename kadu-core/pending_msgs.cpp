@@ -7,6 +7,8 @@
  *                                                                         *
  ***************************************************************************/
 
+#include <QTextCodec>
+
 #include "chat_manager.h"
 #include "debug.h"
 #include "misc.h"

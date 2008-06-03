@@ -16,6 +16,7 @@
 #include <QMenu>
 #include <QPushButton>
 #include <QScrollBar>
+#include <QTextCodec>
 #include <QTranslator>
 #include <QTreeWidget>
 #include <QTreeWidgetItem>

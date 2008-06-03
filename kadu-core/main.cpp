@@ -9,6 +9,7 @@
 
 #include <QApplication>
 #include <QMessageBox>
+#include <QTextCodec>
 #include <QTranslator>
 
 #include <sys/file.h>

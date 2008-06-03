@@ -10,6 +10,7 @@
 #ifndef SYNTAX_EDITOR_H
 #define SYNTAX_EDITOR_H
 
+#include <QMap>
 #include <QWidget>
 
 #include "userlistelement.h"

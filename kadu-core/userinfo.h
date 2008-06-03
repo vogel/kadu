@@ -11,6 +11,7 @@
 #define KADU_USERINFO_H
 
 #include <QList>
+#include <QMap>
 #include <QWidget>
 
 #include "userlistelement.h"

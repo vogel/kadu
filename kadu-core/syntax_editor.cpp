@@ -11,10 +11,12 @@
 #include <QComboBox>
 #include <QGridLayout>
 #include <QHBoxLayout>
+#include <QHostAddress>
 #include <QInputDialog>
 #include <QLineEdit>
 #include <QPushButton>
 #include <QTextEdit>
+#include <QTextStream>
 #include <QVBoxLayout>
 
 #include "config_file.h"

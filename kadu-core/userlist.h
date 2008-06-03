@@ -10,6 +10,8 @@
 #ifndef KADU_USERLIST_H
 #define KADU_USERLIST_H
 
+#include <QMap>
+
 #include "usergroup.h"
 
 /**

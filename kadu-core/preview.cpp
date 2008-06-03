@@ -8,6 +8,7 @@
  ***************************************************************************/
 
 #include <QApplication>
+#include <QHostAddress>
 
 #include "config_file.h"
 #include "kadu_parser.h"

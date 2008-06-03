@@ -10,6 +10,8 @@
 #ifndef NOTIFICATION_H
 #define NOTIFICATION_H
 
+#include <QPair>
+
 #include "userlist.h"
 
 #include "../notify/notification.h"
@@ -18,52 +20,52 @@ class QTimer;
 
 /**
 	@class Notification
-	@author Rafa³ 'Vogel' Malinowski
-	@brief Klasa informuj±ca u¿ytkownika o zaj¶ciu pewnego zdarzenia.
+	@author Rafaï¿½ 'Vogel' Malinowski
+	@brief Klasa informujï¿½ca uï¿½ytkownika o zajï¿½ciu pewnego zdarzenia.
 
-	Zdarzenia identyfikowane s± poprzez nazwy. Ka¿de zdarzenie musi zostaæ zarejestrowane
-	przed u¿yciem w klasie Notify a takze wyrejestrowane w przypadku wy³adowania modu³u,
-	który wywo³ywa³ dane zdarzenie.
+	Zdarzenia identyfikowane sï¿½ poprzez nazwy. Kaï¿½de zdarzenie musi zostaï¿½ zarejestrowane
+	przed uï¿½yciem w klasie Notify a takze wyrejestrowane w przypadku wyï¿½adowania moduï¿½u,
+	ktï¿½ry wywoï¿½ywaï¿½ dane zdarzenie.
 
-	Do ka¿dego zdarzenia mo¿e byæ przypisana ikona, lista kontaktów oraz lista akcji, które u¿ytkownik
-	mo¿e podj±æ w odpowiedzi na zdarzenie. Przyk³adowo, zdarzenie polegaj±ce na odebraniu wiadomo¶ci od
-	anonimowego kontaktu, z którym nie prowadzimy aktualnie rozmowy mo¿e mieæ postaæ:
+	Do kaï¿½dego zdarzenia moï¿½e byï¿½ przypisana ikona, lista kontaktï¿½w oraz lista akcji, ktï¿½re uï¿½ytkownik
+	moï¿½e podjï¿½ï¿½ w odpowiedzi na zdarzenie. Przykï¿½adowo, zdarzenie polegajï¿½ce na odebraniu wiadomoï¿½ci od
+	anonimowego kontaktu, z ktï¿½rym nie prowadzimy aktualnie rozmowy moï¿½e mieï¿½ postaï¿½:
 
 	<ul>
 		<li>nazwa: newChatWithAnonymous</li>
 		<li>ikona: chat</li>
-		<li>lista kontaktów: kontakt, który rozpocz±³ rozmowê</li>
+		<li>lista kontaktï¿½w: kontakt, ktï¿½ry rozpoczï¿½ï¿½ rozmowï¿½</li>
 		<li>akcja: odbierz komunikat</li>
 		<li>akcja: ignoruj komunikat</li>
 	</ul>
 
-	Akcje u¿ytkownika implementowane s± w obiektach potomnych w postaci w postaci slotów.
-	Domy¶lnie zaimplementowane s± dwa sloty wirtualne: callbackAccept i callbackDiscard,
-	odpowiadaj±ce zaakceptowaniu i odrzuceniu zdarzenia.
+	Akcje uï¿½ytkownika implementowane sï¿½ w obiektach potomnych w postaci w postaci slotï¿½w.
+	Domyï¿½lnie zaimplementowane sï¿½ dwa sloty wirtualne: callbackAccept i callbackDiscard,
+	odpowiadajï¿½ce zaakceptowaniu i odrzuceniu zdarzenia.
 
-	Dodanie nowych akcji polega na dodaniu nowych slotów do klas potomnych. Aktywacja
-	akcji (tak¿e tych dwóch domy¶lnych) dokonuje sie poprzez metodê addCallback(caption, slot),
-	na przyk³ad:
+	Dodanie nowych akcji polega na dodaniu nowych slotï¿½w do klas potomnych. Aktywacja
+	akcji (takï¿½e tych dwï¿½ch domyï¿½lnych) dokonuje sie poprzez metodï¿½ addCallback(caption, slot),
+	na przykï¿½ad:
 
 	<code>
-		addCallback(tr("Odbierz rozmowê"), SLOT(callbackAccept()));
-		addCallback(tr("Ignoruj rozmowê"), SLOT(callbackDiscard()));
+		addCallback(tr("Odbierz rozmowï¿½"), SLOT(callbackAccept()));
+		addCallback(tr("Ignoruj rozmowï¿½"), SLOT(callbackDiscard()));
 	</code>
 
-	Obiekty mog± automatycznie podejmowaæ akcje domy¶lne po przekroczeniu pewnego
+	Obiekty mogï¿½ automatycznie podejmowaï¿½ akcje domyï¿½lne po przekroczeniu pewnego
 	okresu czasu:
 
 	<code>
 		setDefaultCallback(2000, SLOT(callbackAccept()));
 	</code>
 
-	Mo¿na takze anulowaæ akcjê domy¶ln±:
+	Moï¿½na takze anulowaï¿½ akcjï¿½ domyï¿½lnï¿½:
 
 	<code>
 		clearDefaultCallback();
 	</code>
 
-	Notyfikacja, co do której pewna akcja zosta³a wykonana, wywo³uje sygna³ closed().
+	Notyfikacja, co do ktï¿½rej pewna akcja zostaï¿½a wykonana, wywoï¿½uje sygnaï¿½ closed().
  **/
 class Notification : public QObject {
 	Q_OBJECT
@@ -87,51 +89,51 @@ private:
 public:
 
 	/**
-		Tworzy now± notfikacjê o zadanym typie, ikonie i zadanej asocjacji z kontaktami.
-		Klasy potome zazwyczaj maj± w³asne kontruktory, które wype³niaj± automatycznie
+		Tworzy nowï¿½ notfikacjï¿½ o zadanym typie, ikonie i zadanej asocjacji z kontaktami.
+		Klasy potome zazwyczaj majï¿½ wï¿½asne kontruktory, ktï¿½re wypeï¿½niajï¿½ automatycznie
 		parametry tego konstruktora.
 
 		@arg type typ zdarzenia
 		@arg icon nazwa ikony zdarzenia
-		@arg userListElements lista kontaktów powi±zana ze zdarzeniem
+		@arg userListElements lista kontaktï¿½w powiï¿½zana ze zdarzeniem
 	 **/
 	Notification(const QString &type, const QString &icon, const UserListElements &userListElements);
 	virtual ~Notification();
 
 	/**
-		Wywo³ywane przez notyfikator, który zajmuje siê danym zdarzeniem.
+		Wywoï¿½ywane przez notyfikator, ktï¿½ry zajmuje siï¿½ danym zdarzeniem.
 	 **/
 	void acquire();
 	/**
-		Wywo³ywane przez notyfikator, który przestaje zajmowaæ siê danym zdarzeniem.
-		Gdy ¿aden notyfikator nie zajmuje siê danym zdarzeniem, zdarzenie jest zwalniane.
-		Wystêpuje to na przyk³ad w przypadku modu³ów d¼wiêkowych czy modu³u hints, gdy
-		dymek zniknie po up³ywie okre¶lonego czasu a nie przez zdarzenie wywo³ane przez u¿ytkownika.
+		Wywoï¿½ywane przez notyfikator, ktï¿½ry przestaje zajmowaï¿½ siï¿½ danym zdarzeniem.
+		Gdy ï¿½aden notyfikator nie zajmuje siï¿½ danym zdarzeniem, zdarzenie jest zwalniane.
+		Wystï¿½puje to na przykï¿½ad w przypadku moduï¿½ï¿½w dï¿½wiï¿½kowych czy moduï¿½u hints, gdy
+		dymek zniknie po upï¿½ywie okreï¿½lonego czasu a nie przez zdarzenie wywoï¿½ane przez uï¿½ytkownika.
 	 **/
 	void release();
 
 	/**
-		Zamyka zdarzenie. Wywo³uje sygna³ closed() i usuwa obiekt.
+		Zamyka zdarzenie. Wywoï¿½uje sygnaï¿½ closed() i usuwa obiekt.
 	 **/
 	void close();
 
 	/**
-		Usuwa akcje u¿ytkownika
+		Usuwa akcje uï¿½ytkownika
 	 **/
 	void clearCallbacks();
 	/**
-		Dodaje akcje u¿ytkownika.
+		Dodaje akcje uï¿½ytkownika.
 
-		@arg caption wy¶wietlana nazwa akcji
-		@arg slot slot wywo³ywany w przypadku wybrania przez u¿ytkownika danej akcji
+		@arg caption wyï¿½wietlana nazwa akcji
+		@arg slot slot wywoï¿½ywany w przypadku wybrania przez uï¿½ytkownika danej akcji
 	 **/
 	void addCallback(const QString &caption, const char *slot);
 
 	/**
-		Ustawia akcjê domy¶ln±.
+		Ustawia akcjï¿½ domyï¿½lnï¿½.
 
-		@arg timeout liczba milisekund, jaka musi up³yn±æ przed wykonaniem domy¶lnej akcji
-		@arg slot slot wywo³ywany w przypadku up³yniêcia czasu
+		@arg timeout liczba milisekund, jaka musi upï¿½ynï¿½ï¿½ przed wykonaniem domyï¿½lnej akcji
+		@arg slot slot wywoï¿½ywany w przypadku upï¿½yniï¿½cia czasu
 	 **/
 	void setDefaultCallback(int timeout, const char *slot);
 
@@ -142,45 +144,45 @@ public:
 	 **/
 	QString type() const;
 	/**
-		Lista kontaktów powi±zana ze zdarzeniem/
+		Lista kontaktï¿½w powiï¿½zana ze zdarzeniem/
 
-		@return lista kontaktów powi±zana ze zdarzeniem
+		@return lista kontaktï¿½w powiï¿½zana ze zdarzeniem
 	 **/
 	const UserListElements &userListElements() const;
 
 	/**
-		Ustawia tytu³ zdarzenia.
+		Ustawia tytuï¿½ zdarzenia.
 	 **/
 	void setTitle(const QString &title);
 	/**
-		Tytu³ zdarzenia.
+		Tytuï¿½ zdarzenia.
 
-		@return tytu³ zdarzenia
+		@return tytuï¿½ zdarzenia
 	 **/
 	QString title() const;
 
 	/**
-		Ustawia tre¶æ zdarzenia.
+		Ustawia treï¿½ï¿½ zdarzenia.
 	 **/
 	void setText(const QString &text);
 	/**
-		Tre¶æ zdarzenia.
+		Treï¿½ï¿½ zdarzenia.
 
-		@return tre¶æ zdarzenia
+		@return treï¿½ï¿½ zdarzenia
 	 **/
 	QString text() const;
 
 	/**
-		Ustawia szczegó³y zdarzenia (jak na przyk³ad tekst wiadomo¶ci).
+		Ustawia szczegï¿½ï¿½y zdarzenia (jak na przykï¿½ad tekst wiadomoï¿½ci).
 	 **/
 	void setDetails(const QString &details);
 	/**
-		Szczegó³y zdarzenia
+		Szczegï¿½ï¿½y zdarzenia
 	 **/
 	QString details() const;
 
 	/**
-		Ustawia ikonê zdarzenia.
+		Ustawia ikonï¿½ zdarzenia.
 	 **/
 	void setIcon(const QString &icon);
 	/**
@@ -199,22 +201,22 @@ public:
 
 public slots:
 	/**
-		Domy¶lny slot wywo³ywany w przypadku zaakceptowania zdarzenia.
+		Domyï¿½lny slot wywoï¿½ywany w przypadku zaakceptowania zdarzenia.
 	 **/
 	virtual void callbackAccept();
 	/**
-		Domy¶lny slot wywo³ywany w przypadku odrzucenia zdarzenia.
+		Domyï¿½lny slot wywoï¿½ywany w przypadku odrzucenia zdarzenia.
 	 **/
 	virtual void callbackDiscard();
 
 	/**
-		Slot anuluj±cy domy¶ln± akcjê - wywo³ywany rêcznie przy wyborze dowolnej innej akcji.
+		Slot anulujï¿½cy domyï¿½lnï¿½ akcjï¿½ - wywoï¿½ywany rï¿½cznie przy wyborze dowolnej innej akcji.
 	 **/
 	void clearDefaultCallback();
 
 signals:
 	/**
-		Sygna³ wysylany przy zamykaniu zdarzenia, po wyborze przez u¿ytkownika dowolnej akcji.
+		Sygnaï¿½ wysylany przy zamykaniu zdarzenia, po wyborze przez uï¿½ytkownika dowolnej akcji.
 	 **/
 	void closed(Notification *);
 

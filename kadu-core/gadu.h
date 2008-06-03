@@ -1,6 +1,7 @@
 #ifndef GADU_H
 #define GADU_H
 
+#include <QHostAddress>
 #include <QPixmap>
 
 #include "libgadu.h"
