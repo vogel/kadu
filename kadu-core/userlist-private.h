@@ -1,79 +1,73 @@
 #ifndef KADU_USERLIST_PRIVATE_H
 #define KADU_USERLIST_PRIVATE_H
 
-#include <qglobal.h>
-
-#include <q3dict.h>
-#include <q3intdict.h>
-#include <qmap.h>
-#include <qobject.h>
-#include <q3ptrdict.h>
-#include <q3shared.h>
-#include <qstring.h>
-#include <qvariant.h>
-//Added by qt3to4:
+#include <QHash>
 #include <QList>
+#include <QSet>
+#include <QSharedData>
 
 #include "userlistelement.h"
 
-class UserStatus;
-class UserGroup;
 class ProtocolData;
+class UserGroup;
 
 #pragma GCC visibility push(hidden)
 
-class UserGroupSet : public Q3PtrDict<void>
-{
-	public:
-		UserGroupSet() {}
-		bool contains(UserGroup *g) {return Q3PtrDict<void>::find(g) != 0;}
-		void insert(UserGroup *g) { Q3PtrDict<void>::insert(g, (void *)1); }
-};
+typedef QSet<UserGroup *> UserGroupSet;
 
-class ULEPrivate : public QObject, public Q3Shared
+class ULEPrivate : public QObject, public QSharedData
 {
 	Q_OBJECT
-	public:
-		Q3Dict<QVariant> informations;
-		Q3Dict<ProtocolData> protocols;
-		QList<UserGroup *> Parents;
-		UserListKey key;
-		ULEPrivate();
-		~ULEPrivate();
 
-		static Q3Dict<Q3Dict<UserGroupSet> > protocolUserDataProxy; // protocolName -> (fieldName -> UserGroupSet)
-		static Q3Dict<UserGroupSet> userDataProxy; // field name -> UserGroupSet
-//		static QDict<QPtrDict<void> > addProtocolProxy;
-//		static QDict<QPtrDict<void> > removeProtocolProxy;
-		static Q3Dict<UserGroupSet> statusChangeProxy;
-		static void closeModule();
-	public slots:
-		/* potrzebne, ¿eby refreshDNSName() mia³o do czego siê pod³±czyæ
-		   inaczej mo¿e siê zdarzyæ, ¿e w³a¶ciwy obiekt ULE ju¿ nie istnieje,
-		   gdy przychodzi odpowied¼ od serwera dns*/
-		void setDNSName(const QString &protocolName, const QString &dnsname);
+public:
+	QHash<QString, QVariant *> informations;
+	QHash<QString, ProtocolData *> protocols;
+	QList<UserGroup *> Parents;
+	UserListKey key;
+	ULEPrivate();
+	~ULEPrivate();
+
+	static QHash<QString, QHash<QString, UserGroupSet> > protocolUserDataProxy; // protocolName -> (fieldName -> UserGroupSet)
+	static QHash<QString, UserGroupSet> userDataProxy; // field name -> UserGroupSet
+//	static QDict<QPtrDict<void> > addProtocolProxy;
+//	static QDict<QPtrDict<void> > removeProtocolProxy;
+	static QHash<QString, UserGroupSet> statusChangeProxy;
+	static void closeModule();
+
+public slots:
+	/* potrzebne, ï¿½eby refreshDNSName() miaï¿½o do czego siï¿½ podï¿½ï¿½czyï¿½
+	   inaczej moï¿½e siï¿½ zdarzyï¿½, ï¿½e wï¿½aï¿½ciwy obiekt ULE juï¿½ nie istnieje,
+	   gdy przychodzi odpowiedï¿½ od serwera dns*/
+	void setDNSName(const QString &protocolName, const QString &dnsname);
+
 };
 
 class UserGroupData
 {
-	public:
-		UserGroupData(int size);
-		~UserGroupData();
-		Q3IntDict<UserListElement> data;
-		QList<UserListElement> list;
+
+public:
+	UserGroupData();
+	~UserGroupData();
+	QHash<int, UserListElement> data;
+	QList<UserListElement> list;
+
 };
 
-class ProtocolData : public QObject {
-	public:
-		QString ID;
-		UserStatus *Stat;
-		Q3Dict<QVariant> data;
-	public:
-		ProtocolData(const QString &protocolName, const QString &id);
-		ProtocolData();
-		ProtocolData(const ProtocolData &);
-		virtual ~ProtocolData();
-		ProtocolData &operator = (const ProtocolData &copyMe);
+
+class ProtocolData : public QObject
+{
+
+public:
+	QString ID;
+	UserStatus *Stat;
+	QHash<QString, QVariant *> data;
+
+	ProtocolData(const QString &protocolName, const QString &id);
+	ProtocolData();
+	ProtocolData(const ProtocolData &);
+	virtual ~ProtocolData();
+	ProtocolData & operator = (const ProtocolData &copyMe);
+
 };
 
 #pragma GCC visibility pop

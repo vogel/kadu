@@ -239,13 +239,6 @@ public:
 	UserListElements toUserListElements() const;
 
 	/**
-		\fn void resize(int size)
-		\param size rozmiar bufora * 2
-		Zmienia wewn�trzny rozmiar bufor�w dla klas s�ownikowych (Q*Dict).
-	**/
-	void resize(int size);
-
-	/**
 		\fn QStringList altNicks() const
 		Zwraca list� nick�w kontakt�w nale��cych do grupy w postaci
 		obiektu klasy QStringList.

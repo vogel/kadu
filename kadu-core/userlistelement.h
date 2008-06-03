@@ -10,6 +10,7 @@
 #ifndef KADU_USERLISTELEMENT_H
 #define KADU_USERLISTELEMENT_H
 
+#include <QExplicitlySharedDataPointer>
 #include <QObject>
 #include <QVariant>
 
@@ -49,7 +50,7 @@ class UserListElement : public QObject
 {
 	Q_OBJECT
 
-	ULEPrivate *privateData;
+	QExplicitlySharedDataPointer<ULEPrivate> privateData;
 	static unsigned long int used;
 	friend class UserGroup;
 

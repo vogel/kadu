@@ -18,7 +18,7 @@
 #include "usergroup.h"
 
 UserGroup::UserGroup(int size)
-	: QObject(), d(new UserGroupData(size))
+	: QObject(), d(new UserGroupData())
 {
 }
 
@@ -29,7 +29,7 @@ UserGroup::UserGroup(const UserGroup &copy)
 }
 
 UserGroup::UserGroup(const QList<UserListElement> &group)
-	: QObject(), d(new UserGroupData(group.size() * 2))
+	: QObject(), d(new UserGroupData())
 {
 	addUsers(group);
 }
@@ -79,7 +79,7 @@ UserListElement UserGroup::byID(const QString &protocolName, const QString &id)
 {
 	foreach(UserListElement ule, d->list)
 	{
-		ProtocolData *protoData = ule.privateData->protocols.find(protocolName);
+		ProtocolData *protoData = *ule.privateData->protocols.find(protocolName);
 		if (protoData && protoData->ID == id)
 			return ule;
 	}
@@ -91,7 +91,7 @@ bool UserGroup::contains(const QString &protocolName, const QString &id, Behavio
 {
 	foreach(UserListElement ule, d->list)
 	{
-		ProtocolData *protoData = ule.privateData->protocols.find(protocolName);
+		ProtocolData *protoData = *ule.privateData->protocols.find(protocolName);
 		if (protoData && protoData->ID == id)
 			if (ule.isAnonymous())
 				return (beh == TrueForAnonymous);
@@ -104,7 +104,7 @@ bool UserGroup::contains(const QString &protocolName, const QString &id, Behavio
 bool UserGroup::contains(UserListElement elem, BehaviourForAnonymous beh) const
 {
 //	kdebugf();
-	if (d->data.find(elem.key()) != NULL)
+	if (d->data.contains(elem.key()))
 		if (elem.isAnonymous())
 			return (beh == TrueForAnonymous);
 		else
@@ -141,7 +141,7 @@ bool UserGroup::equals(const UserGroup *group) const
 
 UserListElement UserGroup::byKey(UserListKey key)
 {
-	return *(d->data[key]);
+	return d->data[key];
 }
 
 void UserGroup::addUser(UserListElement ule, bool massively, bool last)
@@ -151,7 +151,7 @@ void UserGroup::addUser(UserListElement ule, bool massively, bool last)
 	if (!ule.privateData->Parents.contains(this))
 	{
 		emit addingUser(ule, massively, last);
-		d->data.insert(ule.key(), new UserListElement(ule));
+		d->data[ule.key()] = UserListElement(ule);
 		d->list.append(ule);
 		ule.privateData->Parents.append(this);
 		emit userAdded(ule, massively, last);
@@ -227,9 +227,10 @@ void UserGroup::removeUser(UserListElement ule, bool massively, bool last)
 {
 //	kdebugmf(KDEBUG_FUNCTION_START, "start: group:'%s' altNick:'%s' mass:%d last:%d\n", name(), ule.altNick().local8Bit().data(), massively, last);
 //	printBacktrace("xxx");
-	UserListElement *elem = d->data.find(ule.key());
-	if (elem != NULL)
-	{
+	// TODO: fix for 0.6.5
+	UserListElement elem = *d->data.find(ule.key());
+// 	if (elem)
+// 	{
 //		kdebugm(KDEBUG_INFO, "user found\n");
 		emit removingUser(ule, massively, last);
 		// very ugly hack :|
@@ -240,11 +241,11 @@ void UserGroup::removeUser(UserListElement ule, bool massively, bool last)
 			ule.privateData->Parents.remove(this);
 			d->data.remove(ule.key());
 			d->list.remove(ule);
-			delete elem;
+// 			delete elem;
 		}
 		emit userRemoved(ule, massively, last);
 		emit modified();
-	}
+// 	}
 	if (!massively || (massively && last))
 		emit usersRemoved();
 
@@ -279,11 +280,6 @@ UserGroup::iterator UserGroup::end () const
 UserListElements UserGroup::toUserListElements() const
 {
 	return d->list;
-}
-
-void UserGroup::resize(int size)
-{
-	d->data.resize(size);
 }
 
 void UserGroup::clear()
@@ -367,7 +363,7 @@ bool UserListElements::operator < (const UserListElements &compareTo) const
 	if (count() > compareTo.count())
 		return false;
 
-	for (unsigned int i = 0; i < count(); i++)
+	for (int i = 0; i < count(); i++)
 	{
 		if (at(i) < compareTo.at(i))
 			return true;

@@ -128,7 +128,6 @@ void UserList::merge(const QList<UserListElement> &ulist)
 	foreach(UserListElement user2, toUnsetAnonymous)
 		user2.setData("Anonymous", false, true, i++ == anonSize);
 
-	d->data.resize(2 * (count() + toAppend.size()));
 	addUsers(toAppend);
 
 	emit modified();
@@ -148,9 +147,6 @@ void UserList::readFromConfig()
 		return;
 	}
 	QDomNodeList contact_list = contacts_elem.elementsByTagName("Contact");
-
-	if (contact_list.count() > 50)
-		resize(2 * contact_list.count() - 1);
 
 	for (unsigned int i = 0, cnt = contact_list.count(); i < cnt; ++i)
 	{
@@ -198,9 +194,10 @@ void UserList::writeToConfig()
 	QDomElement contacts_elem = xml_config_file->accessElement(root_elem, "Contacts");
 	xml_config_file->removeChildren(contacts_elem);
 
-	Q3IntDictIterator<UserListElement> i(d->data);
-	uint cnt = i.count();
-	for (uint j = 0; j < cnt; ++j, ++i)
+	QHash<int, UserListElement>::iterator i = d->data.begin();
+	QHash<int, UserListElement>::iterator end = d->data.end();
+
+	for (; i != end; i++)
 	{
 		if ((*i).isAnonymous())
 			continue;
