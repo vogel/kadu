@@ -1,101 +1,95 @@
+/***************************************************************************
+ *                                                                         *
+ *   This program is free software; you can redistribute it and/or modify  *
+ *   it under the terms of the GNU General Public License as published by  *
+ *   the Free Software Foundation; either version 2 of the License, or     *
+ *   (at your option) any later version.                                   *
+ *                                                                         *
+ ***************************************************************************/
+
 #ifndef KADU_USERLIST_H
 #define KADU_USERLIST_H
 
-//#include <qglobal.h>
-
-//#include <qstring.h>
-//Added by qt3to4:
-//#include <QList>
 #include "usergroup.h"
 
 /**
 	\class UserList
-	\brief Klasa reprezentuj±ca listê kontaktów.
+	\brief Klasa reprezentujï¿½ca listï¿½ kontaktï¿½w.
 **/
 class UserList : public UserGroup
 {
 	Q_OBJECT
-	public:
-		/**
-			\fn static void initModule()
-			Inicjuje modu³ listy kontaktów.
-		**/
-		static void initModule();
 
-		/**
-			\fn static void closeModule()
-			Sprz±ta po module listy kontaktów.
-		**/
-		static void closeModule();
+	/**
+		\fn UserList()
+		Konstruktor standardowy.
+	**/
+	UserList();
 
-	public slots:
-		/**
-			\fn bool readFromFile()
-			Wczytuje listê kontaktów z plików "userlist"
-			i "userattribs" z katalogu z ustawieniami.
-			TODO: obsolete, do wywalenia w 0.6
-			\return FALSE, gdy wyst±pi³y b³êdy, lub TRUE w przeciwnym wypadku.
-		**/
-		bool readFromFile();
+	/**
+		\fn ~UserList()
+	**/
+	virtual ~UserList();
 
-		/**
-			\fn void merge(const QValueList<UserListElement> &list)
-			Scala listê kontaktów z podan± list± kontaktów \a userlist.
-			\param userlist lista kontaktów z któr± nale¿y scaliæ
-		**/
-		void merge(const QList<UserListElement> &list);
+	QMap<QString, QString> nonProtoKeys;
+	QMap<QString, QMap<QString, QString> > protoKeys;
 
-		/**
-			\fn void readFromConfig()
-			Wczytuje listê kontaktów z drzewa xml z konfiguracj±
-			programu. Poprzednie kontakty s± usuwane.
-		**/
-		void readFromConfig();
+	void initKeys();
 
-		/**
-			\fn void writeToConfig()
-			Dodaje listê kontaktów do drzewa xml z konfiguracj±
-			programu. Poprzednie kontakty s± usuwane.
-		**/
-		void writeToConfig();
+public:
+	/**
+		\fn static void initModule()
+		Inicjuje moduï¿½ listy kontaktï¿½w.
+	**/
+	static void initModule();
 
-		/**
-			\fn void setAllOffline(const QString &protocolName)
-			\param protocolName identyfikator protoko³u
-			Przestawia status wszystkich kontaktów
-			dla wskazanego protoko³u na "niedostêpny".
+	/**
+		\fn static void closeModule()
+		Sprzï¿½ta po module listy kontaktï¿½w.
+	**/
+	static void closeModule();
 
-		**/
-		void setAllOffline(const QString &protocolName);
+public slots:
+	/**
+		\fn void merge(const QValueList<UserListElement> &list)
+		Scala listï¿½ kontaktï¿½w z podanï¿½ listï¿½ kontaktï¿½w \a userlist.
+		\param userlist lista kontaktï¿½w z ktï¿½rï¿½ naleï¿½y scaliï¿½
+	**/
+	void merge(const QList<UserListElement> &list);
 
-		/**
-			\fn void clear()
-			Usuwa wszystkie kontakty.
-		**/
-		void clear();
+	/**
+		\fn void readFromConfig()
+		Wczytuje listï¿½ kontaktï¿½w z drzewa xml z konfiguracjï¿½
+		programu. Poprzednie kontakty sï¿½ usuwane.
+	**/
+	void readFromConfig();
 
-		void addPerContactNonProtocolConfigEntry(const QString &attribute_name, const QString &internal_key);
-		void removePerContactNonProtocolConfigEntry(const QString &attribute_name);
-		void addPerContactProtocolConfigEntry(const QString &protocolName, const QString &attribute_name, const QString &internal_key);
-		void removePerContactProtocolConfigEntry(const QString &protocolName, const QString &attribute_name);
+	/**
+		\fn void writeToConfig()
+		Dodaje listï¿½ kontaktï¿½w do drzewa xml z konfiguracjï¿½
+		programu. Poprzednie kontakty sï¿½ usuwane.
+	**/
+	void writeToConfig();
 
+	/**
+		\fn void setAllOffline(const QString &protocolName)
+		\param protocolName identyfikator protokoï¿½u
+		Przestawia status wszystkich kontaktï¿½w
+		dla wskazanego protokoï¿½u na "niedostï¿½pny".
+	**/
+	void setAllOffline(const QString &protocolName);
 
-	private:
-		/**
-			\fn UserList()
-			Konstruktor standardowy.
-		**/
-		UserList();
+	/**
+		\fn void clear()
+		Usuwa wszystkie kontakty.
+	**/
+	void clear();
 
-		/**
-			\fn ~UserList()
-		**/
-		virtual ~UserList();
+	void addPerContactNonProtocolConfigEntry(const QString &attribute_name, const QString &internal_key);
+	void removePerContactNonProtocolConfigEntry(const QString &attribute_name);
+	void addPerContactProtocolConfigEntry(const QString &protocolName, const QString &attribute_name, const QString &internal_key);
+	void removePerContactProtocolConfigEntry(const QString &protocolName, const QString &attribute_name);
 
-		QMap<QString, QString> nonProtoKeys;
-		QMap<QString, QMap<QString, QString> > protoKeys;
-
-		void initKeys();
 };
 
 extern UserList *userlist;

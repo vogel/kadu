@@ -13,25 +13,21 @@
 // "plugins" for changing the way userboxes are painted? maybe only parameters?
 // later ULE::hasFeature(protocol, featurename)
 
-#include <qdom.h>
-#include <qfile.h>
-#include <qtextcodec.h>
-//Added by qt3to4:
-#include <QList>
-
-//mkdir
-#include <sys/stat.h>
+#include <QDomNodeList>
+#include <QFile>
 
 #include "config_file.h"
 #include "debug.h"
 #include "gadu.h"
 #include "misc.h"
+#include "protocol.h"
 #include "protocols_manager.h"
+
 #include "userlist.h"
 #include "userlist-private.h"
 
-UserList::UserList() : UserGroup(101),
-	nonProtoKeys(), protoKeys()
+UserList::UserList()
+	: UserGroup(101), nonProtoKeys(), protoKeys()
 {
 	initKeys();
 	readFromConfig();
@@ -47,67 +43,73 @@ void UserList::merge(const QList<UserListElement> &ulist)
 	UserListElements toAppend;
 	UserListElements toUnsetAnonymous;
 
-	CONST_FOREACH(user, ulist)
+	foreach(UserListElement user, ulist)
 	{
 		UserListElement user2;
-		if (containsAltNick((*user).altNick()))
-			user2 = byAltNick((*user).altNick());
+		if (containsAltNick(user.altNick()))
+			user2 = byAltNick(user.altNick());
 		else
 		{
-			QStringList protos = (*user).protocolList();
+			QStringList protos = user.protocolList();
 			QString foundProto;
-			CONST_FOREACH(proto, protos)
-				if (contains(*proto, (*user).ID(*proto)))
+
+			foreach(QString proto, protos)
+				if (contains(proto, user.ID(proto)))
 				{
-					foundProto = *proto;
+					foundProto = proto;
 					break;
 				}
+
 			if (!foundProto.isEmpty())
-				user2 = byID(foundProto, (*user).ID(foundProto));
+				user2 = byID(foundProto, user.ID(foundProto));
 			else
 			{
-				toAppend.append(*user);
+				toAppend.append(user);
 				continue;
 			}
 		}
 
 		//copying of protocols
-		QStringList protos = (*user).protocolList();
-		CONST_FOREACH(proto, protos)
+		QStringList protos = user.protocolList();
+
+		foreach(QString proto, protos)
 		{
-			if (!contains(*proto, (*user).ID(*proto)))
-				user2.addProtocol(*proto, (*user).ID(*proto));
+			if (!contains(proto, user.ID(proto)))
+				user2.addProtocol(proto, user.ID(proto));
 
 			//and protocols data
-			UserListElement user3 = byID(*proto, (*user).ID(*proto));
-			QStringList protoDataKeys = (*user).protocolDataKeys(*proto);
-			CONST_FOREACH(key, protoDataKeys)
+			UserListElement user3 = byID(proto, user.ID(proto));
+			QStringList protoDataKeys = user.protocolDataKeys(proto);
+
+			foreach(QString key, protoDataKeys)
 			{
-				QVariant val = user3.protocolData(*proto, *key);
+				QVariant val = user3.protocolData(proto, key);
 				if (!val.isValid() || val.isNull())
-					user3.setProtocolData(*proto, *key, (*user).protocolData(*proto, *key));
+					user3.setProtocolData(proto, key, user.protocolData(proto, key));
 			}
 		}
 
 		//copying of non protocol data
-		QStringList dataKeys = (*user).nonProtocolDataKeys();
-		CONST_FOREACH(key, dataKeys)
+		QStringList dataKeys = user.nonProtocolDataKeys();
+
+		foreach(QString key, dataKeys)
 		{
-			QVariant val = user2.data(*key);
+			QVariant val = user2.data(key);
 			if (!val.isValid() || val.isNull())
-				user2.setData(*key, (*user).data(*key));
+				user2.setData(key, user.data(key));
 		}
+
 		if (user2.isAnonymous())
 		{
-			user2.setAltNick((*user).altNick());
-			user2.setEmail((*user).email());
-			user2.setHomePhone((*user).homePhone());
-			user2.setNotify((*user).notify());
-			user2.setMobile((*user).mobile());
-			user2.setNickName((*user).nickName());
-			user2.setLastName((*user).lastName());
-			user2.setFirstName((*user).firstName());
-			user2.setData("Groups", (*user).data("Groups"));
+			user2.setAltNick(user.altNick());
+			user2.setEmail(user.email());
+			user2.setHomePhone(user.homePhone());
+			user2.setNotify(user.notify());
+			user2.setMobile(user.mobile());
+			user2.setNickName(user.nickName());
+			user2.setLastName(user.lastName());
+			user2.setFirstName(user.firstName());
+			user2.setData("Groups", user.data("Groups"));
 			
 			NotifyType nt;
 			QString path;
@@ -123,8 +125,8 @@ void UserList::merge(const QList<UserListElement> &ulist)
 	}
 
 	int i = 1, anonSize = toUnsetAnonymous.size();
-	FOREACH(user2, toUnsetAnonymous)
-		(*user2).setData("Anonymous", false, true, i++ == anonSize);
+	foreach(UserListElement user2, toUnsetAnonymous)
+		user2.setData("Anonymous", false, true, i++ == anonSize);
 
 	d->data.resize(2 * (count() + toAppend.size()));
 	addUsers(toAppend);
@@ -174,14 +176,15 @@ void UserList::readFromConfig()
 		e.setMessageSound((NotifyType)contact_elem.attribute("message_sound_type").toInt(),
 			contact_elem.attribute("message_sound_file"));
 
-		CONST_FOREACH(it, nonProtoKeys)
-			if (contact_elem.hasAttribute(it.key()))
-				e.setData(it.data(), contact_elem.attribute(it.key()), true);
-		CONST_FOREACH(it, protoKeys)
-			if (e.usesProtocol(it.key()))
-				CONST_FOREACH(it2, *it)
-					if (contact_elem.hasAttribute(it2.key()))
-						e.setProtocolData(it.key(), it2.data(), contact_elem.attribute(it2.key()), true);
+		foreach(QString it, nonProtoKeys.keys())
+			if (contact_elem.hasAttribute(it))
+				e.setData(nonProtoKeys[it], contact_elem.attribute(it), true);
+
+		foreach(QString it, protoKeys.keys())
+			if (e.usesProtocol(it))
+				foreach(QString it2, protoKeys[it])
+					if (contact_elem.hasAttribute(it2))
+						e.setProtocolData(it, protoKeys[it][it2], contact_elem.attribute(it2), true);
 
 		addUser(e, true, i + 1 == cnt);
 	}
@@ -226,21 +229,21 @@ void UserList::writeToConfig()
 		contact_elem.setAttribute("message_sound_file", (*i).messageSound(type));
 		contact_elem.setAttribute("message_sound_type", type);
 
-		CONST_FOREACH(it, nonProtoKeys)
+		foreach(QString it, nonProtoKeys.keys())
 		{
-			const QString &val = (*i).data(it.data()).toString();
+			const QString &val = (*i).data(*it.data()).toString();
 //			kdebugmf(KDEBUG_WARNING, "%s %s %s\n", (*i).altNick().local8Bit().data(), it.key().local8Bit().data(), val.local8Bit().data());
 			if (!val.isEmpty())
-				contact_elem.setAttribute(it.key(), val);
+				contact_elem.setAttribute(it, val);
 		}
 
-		CONST_FOREACH(it, protoKeys)
-			if ((*i).usesProtocol(it.key()))
-				CONST_FOREACH(it2, *it)
+		foreach(QString it, protoKeys.keys())
+			if ((*i).usesProtocol(it))
+				foreach(QString it2, protoKeys[it])
 				{
-					const QString &val = (*i).protocolData(it.key(), it2.key()).toString();
+					const QString &val = (*i).protocolData(it, it2).toString();
 					if (!val.isEmpty())
-						contact_elem.setAttribute(it2.key(), val);
+						contact_elem.setAttribute(it2, val);
 				}
 	}
 }
@@ -289,79 +292,6 @@ void UserList::setAllOffline(const QString &protocolName)
 void UserList::clear()
 {
 	removeUsers(toUserListElements());
-}
-
-
-bool UserList::readFromFile()
-{
-	kdebugf();
-	QString path;
-	QMap<UinType, QStringList> attrs;
-	QStringList userattribs,groupnames;
-	QString line;
-	UserListElement e;
-
-	path = ggPath("userattribs");
-	kdebugmf(KDEBUG_INFO, "Opening userattribs file: %s\n",
-		path.local8Bit().data());
-	QFile fa(path);
-	if (!fa.open(QIODevice::ReadOnly))
-		kdebugmf(KDEBUG_ERROR, "Error opening userattribs file\n");
-	else
-	{
-		QTextStream s(&fa);
-		while (!(line = s.readLine()).isEmpty())
-		{
-			QStringList slist;
-			slist = QStringList::split(';', line);
-			if (slist.count() == 4)
-				attrs[slist[0].toULong()] = slist;
-		}
-		fa.close();
-	}
-
-	path = ggPath("userlist");
-	kdebugmf(KDEBUG_INFO, "Opening userlist file: %s\n",
-		path.local8Bit().data());
-	QFile f(path);
-	if (!f.open(QIODevice::ReadOnly))
-	{
-		kdebugmf(KDEBUG_ERROR, "Error opening userlist file");
-		return false;
-	}
-
-	kdebugmf(KDEBUG_INFO, "File opened successfuly\n");
-
-	QTextStream t(&f);
-	t.setCodec(codec_latin2);
-
-	QList<UserListElement> list = gadu->streamToUserList(t);
-	f.close();
-	addUsers(list);
-	kdebugm(KDEBUG_WARNING, "%s\n", gadu->userListToString(*this).local8Bit().data());
-
-	Q3IntDictIterator<UserListElement> user(d->data);
-	uint cnt = user.count();
-	for (uint j = 0; j < cnt; ++j, ++user)
-	{
-		UinType uin = (*user).ID("Gadu").toUInt();
-		if (attrs.contains(uin))
-		{
-			(*user).setProtocolData("Gadu", "Blocking", attrs[uin][1]=="true");
-			(*user).setProtocolData("Gadu", "OfflineTo", attrs[uin][2]=="true");
-			(*user).setNotify(attrs[uin][3]=="true");
-		}
-		else
-		{
-			(*user).setProtocolData("Gadu", "Blocking", false);
-			(*user).setProtocolData("Gadu", "OfflineTo", false);
-			(*user).setNotify(false);
-		}
-	}
-
-	emit modified();
-	kdebugf2();
-	return true;
 }
 
 void UserList::initModule()
