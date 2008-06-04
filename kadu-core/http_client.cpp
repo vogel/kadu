@@ -11,6 +11,7 @@
 
 #include "config_file.h"
 #include "debug.h"
+#include "html_document.h"
 #include "http_client.h"
 #include "misc.h"
 
@@ -130,6 +131,7 @@ void HttpClient::onReadyRead()
 			//
 			emit redirected(location);
 			get(location);
+
 			return;
 		}
 		// Wyci±gamy Content-Length
