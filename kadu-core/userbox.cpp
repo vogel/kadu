@@ -417,8 +417,8 @@ void KaduListBoxPixmap::changeText(const QString &text)
 QPixmap KaduListBoxPixmap::pixmapForUser(const UserListElement &user)
 {
 	bool has_mobile = !user.mobile().isEmpty();
-	bool usesGadu = user.usesProtocol("Gadu");
-	if (!usesGadu)
+
+	if (!user.usesProtocol("Gadu"))
 	{
 		if (has_mobile)
 			return icons_manager->loadPixmap("Mobile");
@@ -1323,7 +1323,7 @@ void UserBox::removingProtocol(UserListElement /*elem*/, QString /*protocolName*
 void UserBox::userDataChanged(UserListElement /*elem*/, QString name, QVariant /*oldValue*/,
 					QVariant /*currentValue*/, bool /*massively*/, bool /*last*/)
 {
-	if (name != "AltNick" && name != "Mobile" && name != "HideDescription") // we are not interested in other names
+	if (name != "AltNick" && name != "Mobile" && name != "Email" && name != "HideDescription") // we are not interested in other names
 		return;
 	refreshLater();
 }
