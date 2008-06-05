@@ -377,6 +377,9 @@ void SearchDialog::firstSearch()
 	if (!results->children().isEmpty())
 		clearResults();
 
+	if (searching)
+		gadu->stopSearchInPubdir(*searchRecord);
+
 	searchRecord->clearData();
 
 	if (r_pers->isChecked())
@@ -447,13 +450,15 @@ void SearchDialog::newSearchResults(SearchResults& searchResults, int seq, int f
 {
 	kdebugf();
 
-	QTreeWidgetItem *qlv = 0;
-	QPixmap pix;
-
 	if ((seq != searchRecord->Seq) || searchRecord->IgnoreResults)
 		return;
 
+	QTreeWidgetItem *qlv = 0;
+	QPixmap pix;
+
 	searchRecord->FromUin = fromUin;
+
+	int items = results->children().count(); // number of items already in results
 
 	// ??	if ((status && atoi(status) <= 1 && only_active->isChecked()) || !status)
 
@@ -505,7 +510,7 @@ void SearchDialog::newSearchResults(SearchResults& searchResults, int seq, int f
 // 		first_search_action->setEnabled(this, true);
 // 	stop_search_action->setEnabled(this, false);
 
-	if (searchResults.isEmpty())
+	if (searchResults.isEmpty()  || ((int)searchResults.count() == items))
 	{
 		kdebugmf(KDEBUG_INFO, "No results. Exit.\n");
 		MessageBox::msg(tr("There were no results of your search"), false, "Information", this);
@@ -516,9 +521,12 @@ void SearchDialog::newSearchResults(SearchResults& searchResults, int seq, int f
 // 		if (r_pers->isChecked() && !isPersonalDataEmpty())
 // 			next_results_action->setEnabled(this, true);
 
-// 		clear_search_action->setEnabled(this, true);
-// 		add_searched_action->setEnabled(this, true);
-// 		chat_searched_action->setEnabled(this, true);
+//		if (results->selectedItem())
+//		{
+//			clear_search_action->setEnabled(this, true);
+//			add_searched_action->setEnabled(this, true);
+//			chat_searched_action->setEnabled(this, true);
+//		}
 	}
 
 	searching = false;
