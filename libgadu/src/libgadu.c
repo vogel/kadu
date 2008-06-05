@@ -1,4 +1,4 @@
-/* $Id: libgadu.c 608 2008-05-29 13:15:43Z darkjames $ */
+/* $Id: libgadu.c 612 2008-06-02 20:11:16Z wojtekka $ */
 
 /*
  *  (C) Copyright 2001-2006 Wojtek Kaniewski <wojtekka@irc.pl>
@@ -165,7 +165,7 @@ static char rcsid[]
 #ifdef __GNUC__
 __attribute__ ((unused))
 #endif
-= "$Id: libgadu.c 608 2008-05-29 13:15:43Z darkjames $";
+= "$Id: libgadu.c 612 2008-06-02 20:11:16Z wojtekka $";
 #endif
 
 #endif /* DOXYGEN */
@@ -558,10 +558,10 @@ int gg_write(struct gg_session *sess, const char *buf, int length)
 				res = write(sess->fd, buf + written, length - written);
 
 				if (res == -1) {
-					if (errno == EAGAIN || errno == EINTR)
-						continue;
+					if (errno != EINTR)
+						break;
 
-					break;
+					continue;
 				}
 
 				written += res;
@@ -593,8 +593,6 @@ int gg_write(struct gg_session *sess, const char *buf, int length)
 				memcpy(sess->send_buf + sess->send_left, buf + res, length - res);
 
 				sess->send_left += length - res;
-
-				return 0;
 			}
 		}
 	}
@@ -835,8 +833,8 @@ int gg_send_packet(struct gg_session *sess, int type, ...)
 		return -1;
 	}
 
-	if (res == 0 && sess->async)
-		gg_debug_session(sess, GG_DEBUG_MISC, "// gg_send_packet() partial write(), %d sent, %d left\n", res, tmp_length - res);
+	if (sess->async)
+		gg_debug_session(sess, GG_DEBUG_MISC, "// gg_send_packet() partial write(), %d sent, %d left, %d total left\n", res, tmp_length - res, sess->send_left);
 
 	if (sess->send_buf)
 		sess->check |= GG_CHECK_WRITE;
