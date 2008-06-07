@@ -63,6 +63,7 @@ public:
 		TypeChat     = 0x0004, //!< actions with TypeChat type requires access to chat window
 		TypeSearch   = 0x0008, //!< actions with TypeSearch type requires access to search window
 		TypeUserList = 0x0010, //!< actions with TypeUserList type requires access to user list widget
+		TypeHistory  = 0x0020, //!< actions with TypeHistory type requires access to history window
 		TypeAll      = 0xFFFF  //!< TypeAll is used to set masks for all types of actions
 	};
 
