@@ -464,7 +464,7 @@ void ChatWidget::newMessage(const QString &/*protocolName*/, UserListElements se
 	QDateTime date;
 	date.setTime_t(time);
 
-	ChatMessage *message = new ChatMessage(senders[0], msg, TypeReceived, QDateTime::currentDateTime(), date);
+	ChatMessage *message = new ChatMessage(senders[0], UserListElements(kadu->myself()), msg, TypeReceived, QDateTime::currentDateTime(), date);
 	body->appendMessage(message);
 
 	lastMsgTime = QDateTime::currentDateTime();
@@ -476,7 +476,7 @@ void ChatWidget::newMessage(const QString &/*protocolName*/, UserListElements se
 void ChatWidget::writeMyMessage()
 {
 	kdebugf();
-	ChatMessage *message = new ChatMessage(kadu->myself(), myLastMessage, TypeSent, QDateTime::currentDateTime());
+	ChatMessage *message = new ChatMessage(kadu->myself(), Users->toUserListElements(), myLastMessage, TypeSent, QDateTime::currentDateTime());
 	body->appendMessage(message);
 
 	if (!Edit->inputBox()->isEnabled())

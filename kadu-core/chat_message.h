@@ -37,6 +37,7 @@ class ChatMessage : public QObject
 	**/
 	QString convertCharacters(QString text, const QColor &bgcolor, EmoticonsStyle style);
 	UserListElement Ule;
+	UserListElements Receivers;
 	QDateTime Date;
 	QDateTime SDate;
 	int SeparatorSize;
@@ -55,7 +56,8 @@ public:
 	static void unregisterParserTags();
 
 	/**
-		\fn ChatMessage(const QString &nick, const QString &unformattedMessage, bool myMessage, QDateTime date, QDateTime sdate=QDateTime())
+		\fn ChatMessage(const UserListElement &ule, const UserListElements &receivers, const QString &unformattedMessage, ChatMessageType type,
+		QDateTime date, QDateTime sdate = QDateTime())
 		Konstruktor ustawiaj±cy nick, niesformatowan± wiadomo¶æ,
 		czy wiadomo¶æ pochodzi od nas, datê wiadomo¶ci,
 		datê nadania wiadomo¶ci przez serwer
@@ -65,7 +67,7 @@ public:
 		\param date data otrzymania wiadomo¶ci
 		\param sdate data wys³ania wiadomo¶ci
 	**/
-	ChatMessage(const UserListElement &ule, const QString &unformattedMessage, ChatMessageType type,
+	ChatMessage(const UserListElement &ule, const UserListElements &receivers, const QString &unformattedMessage, ChatMessageType type,
 		QDateTime date, QDateTime sdate = QDateTime());
 
 	ChatMessage(const QString &rawContent, ChatMessageType type, QDateTime date,
@@ -75,6 +77,7 @@ public:
 
 	UserListElement sender() const { return Ule; }
 	QDateTime date() const { return Date; }
+	QDateTime sdate() const { return SDate; }
 	ChatMessageType type() const { return Type; }
 
 	void setSeparatorSize(int separatorSize) { SeparatorSize = separatorSize; }

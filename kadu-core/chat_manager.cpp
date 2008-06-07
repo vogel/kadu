@@ -687,7 +687,8 @@ ChatMessage *convertPendingToMessage(PendingMsgs::Element elem)
 
 	QDateTime date;
 	date.setTime_t(elem.time);
-	ChatMessage *message = new ChatMessage(elem.users[0], elem.msg, TypeReceived, QDateTime::currentDateTime(), date);
+	UserListElements ules = UserListElements(kadu->myself());
+	ChatMessage *message = new ChatMessage(elem.users[0], ules, elem.msg, TypeReceived, QDateTime::currentDateTime(), date);
 
 	return message;
 }

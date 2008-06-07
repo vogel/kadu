@@ -257,11 +257,11 @@ ChatMessage * HistoryDialog::createChatMessage(const HistoryEntry &entry)
 
 	bool isMyMessage = entry.type & (HISTORYMANAGER_ENTRY_CHATSEND | HISTORYMANAGER_ENTRY_MSGSEND | HISTORYMANAGER_ENTRY_SMSSEND);
 
-	UserListElement sender;
+	UserListElement sender = userlist->byID("Gadu", QString::number(entry.uin));
 	if (isMyMessage)
-		return new ChatMessage(kadu->myself(), messageText, TypeSent, entry.date, entry.sdate);
+		return new ChatMessage(kadu->myself(), UserListElements(sender), messageText, TypeSent, entry.date, entry.sdate);
 	else
-		return new ChatMessage(userlist->byID("Gadu", QString::number(entry.uin)), messageText, TypeReceived, entry.date, entry.sdate);
+		return new ChatMessage(userlist->byID("Gadu", QString::number(entry.uin)), UserListElements(kadu->myself()),messageText, TypeReceived, entry.date, entry.sdate);
 }
 
 void HistoryDialog::showHistoryEntries(int from, int count)
