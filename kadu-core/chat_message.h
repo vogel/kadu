@@ -78,6 +78,7 @@ public:
 	UserListElement sender() const { return Ule; }
 	QDateTime date() const { return Date; }
 	QDateTime sdate() const { return SDate; }
+	UserListElements receivers() const { return Receivers; }
 	ChatMessageType type() const { return Type; }
 
 	void setSeparatorSize(int separatorSize) { SeparatorSize = separatorSize; }
