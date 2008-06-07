@@ -671,15 +671,15 @@ void UserBox::mouseReleaseEvent(QMouseEvent *e)
 void UserBox::mouseMoveEvent(QMouseEvent* e)
 {
 //	kdebugf();
-	if ((e->state() & Qt::LeftButton) && itemAt(e->pos()))
+	if ((e->buttons() & Qt::LeftButton) && itemAt(e->pos()))
 	{
 		QStringList ules;
-		for(unsigned int i = 0, count1 = count(); i < count1; ++i)
+		for(int i = 0, count1 = count(); i < count1; ++i)
 			if (isSelected(i))
 				ules.append(item(i)->text());
 
-		Q3DragObject* d = new UlesDrag(ules, this);
-		d->dragCopy();
+		QDrag* drag = new UlesDrag(ules, this);
+		drag->exec(Qt::CopyAction);
 	}
 	else
 	{
@@ -1490,27 +1490,44 @@ UserListElement UserBox::currentUser() const
 	}
 }
 
-UlesDrag::UlesDrag(const QStringList &ules, QWidget* dragSource, const char* name)
-	: DragSimple("application/x-kadu-ules", ules.join("\n"), dragSource, name)
+UlesDrag::UlesDrag(const QStringList &ules, QWidget* dragSource)
+	: QDrag(dragSource)
 {
 	kdebugf();
+
+	QByteArray data;
+	QMimeData *mimeData = new QMimeData;
+	QString allUles = ules.join("\n");
+
+	data = allUles.toUtf8(); 
+
+     	mimeData->setData("application/x-kadu-ules", data);
+
+	setMimeData(mimeData);
+
 	kdebugf2();
 }
 
-bool UlesDrag::decode(const QMimeSource *source, QStringList &ules)
+bool UlesDrag::decode(QDropEvent *event, QStringList &ules)
 {
-	QTextStream stream(source->encodedData("application/x-kadu-ules"), QIODevice::ReadOnly);
-	stream.setCodec(QTextCodec::codecForLocale());
+	const QMimeData *mimeData = event->mimeData();
 
-	QString allUles = stream.read();
+	if (!mimeData->hasFormat("application/x-kadu-ules"))
+		return false;
+
+	QTextStream stream(mimeData->data("application/x-kadu-ules"), QIODevice::ReadOnly);
+	stream.setCodec("UTF-8");
+
+	QString allUles = stream.readAll();
+
 	ules = QStringList::split("\n", allUles);
 
 	return ules.count() > 0;
 }
 
-bool UlesDrag::canDecode(const QMimeSource *source)
+bool UlesDrag::canDecode(QDragEnterEvent *event)
 {
-	return source->provides("application/x-kadu-ules");
+	return event->mimeData()->hasFormat("application/x-kadu-ules");
 }
 
 inline int compareAltNick(const UserListElement &u1, const UserListElement &u2)

@@ -1,7 +1,7 @@
 #ifndef KADU_USERBOX_H
 #define KADU_USERBOX_H
 
-#include <qglobal.h>
+#include <QDrag>
 
 #include <q3listbox.h>
 #include <qpixmap.h>
@@ -18,7 +18,6 @@
 #include <vector>
 
 #include "configuration_aware_object.h"
-#include "drag_simple.h"
 #include "gadu.h"
 #include "misc.h"
 #include "userlistelement.h"
@@ -28,13 +27,13 @@ class ULEComparer;
 
 class ActionDescription;
 
-class UlesDrag : public DragSimple
+class UlesDrag : public QDrag
 {
 
 public:
-	UlesDrag(const QStringList &ules, QWidget* dragSource = 0, const char* name = 0);
-	static bool decode(const QMimeSource *source, QStringList &ules);
-	static bool canDecode(const QMimeSource *source);
+	UlesDrag(const QStringList &ules, QWidget* dragSource = 0);
+	static bool decode(QDropEvent *event, QStringList &ules);
+	static bool canDecode(QDragEnterEvent *event);
 
 };
 

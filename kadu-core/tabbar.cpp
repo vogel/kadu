@@ -29,8 +29,8 @@ KaduTabBar::KaduTabBar(QWidget *parent)
 void KaduTabBar::dragEnterEvent(QDragEnterEvent *e)
 {
 	kdebugf();
-	e->accept(UlesDrag::canDecode(e) &&
-		dynamic_cast<UserBox*>(e->source()));
+	if (UlesDrag::canDecode(e));
+		e->acceptProposedAction();
 	kdebugf2();
 }
 
@@ -58,8 +58,10 @@ void KaduTabBar::dropEvent(QDropEvent *e)
 	kdebugf();
 
 	QStringList ules;
-	if (!dynamic_cast<UserBox*>(e->source()) || !UlesDrag::decode(e, ules))
+	if (!UlesDrag::decode(e, ules))
 		return;
+
+	e->acceptProposedAction();
 
 	QApplication::setOverrideCursor(QCursor(Qt::ArrowCursor));
 	QString group;
