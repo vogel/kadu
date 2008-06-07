@@ -21,7 +21,6 @@ config_file.cpp \
 custom_input.cpp \
 debug.cpp \
 dnshandler.cpp \
-drag_simple.cpp \
 emoticons.cpp \
 expimp.cpp \
 gadu.cpp \
@@ -88,7 +87,6 @@ config_file.h \
 custom_input.h \
 debug.h \
 dnshandler.h \
-drag_simple.h \
 emoticons.h \
 expimp.h \
 gadu.h \
@@ -205,7 +203,6 @@ obj/configuration_window_widgets.$(OBJEXT) \
 obj/custom_input.$(OBJEXT) \
 obj/debug.$(OBJEXT) \
 obj/dnshandler.$(OBJEXT) \
-obj/drag_simple.$(OBJEXT) \
 obj/emoticons.$(OBJEXT) \
 obj/expimp.$(OBJEXT) \
 obj/gadu.$(OBJEXT) \
@@ -334,7 +331,6 @@ include $(DEPS)/custom_input_moc.d
 include $(DEPS)/debug.d
 include $(DEPS)/dnshandler.d
 include $(DEPS)/dnshandler_moc.d
-include $(DEPS)/drag_simple.d
 include $(DEPS)/emoticons.d
 include $(DEPS)/emoticons_moc.d
 include $(DEPS)/expimp.d
