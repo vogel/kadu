@@ -41,7 +41,7 @@ SearchDialog::SearchDialog(QWidget *parent, UinType whoisSearchUin)
 	: KaduMainWindow(parent),
 	only_active(0), e_uin(0), e_name(0), e_nick(0), e_byrFrom(0), e_byrTo(0), e_surname(0),
 	c_gender(0), e_city(0), results(0), progress(0), r_uin(0), r_pers(0), _whoisSearchUin(whoisSearchUin),
-	seq(0), selectedUsers(new UserGroup(1)), searchRecord(new SearchRecord()), searchhidden(false), searching(false), workaround(false)
+	seq(0), selectedUsers(new UserGroup()), searchRecord(new SearchRecord()), searchhidden(false), searching(false), workaround(false)
 {
 	kdebugf();
 

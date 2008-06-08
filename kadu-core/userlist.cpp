@@ -27,7 +27,7 @@
 #include "userlist-private.h"
 
 UserList::UserList()
-	: UserGroup(101), nonProtoKeys(), protoKeys()
+	: UserGroup(), nonProtoKeys(), protoKeys()
 {
 	initKeys();
 	readFromConfig();
@@ -137,7 +137,10 @@ void UserList::merge(const QList<UserListElement> &ulist)
 void UserList::readFromConfig()
 {
 	kdebugf();
-	d->data.clear();
+
+	printf("[%p] reading data from config...\n", this);
+
+	privateUserGroupData->data.clear();
 	QDomElement contacts_elem = xml_config_file->findElement(
 		xml_config_file->rootElement(), "Contacts");
 	if (contacts_elem.isNull())
@@ -190,17 +193,25 @@ void UserList::readFromConfig()
 
 void UserList::writeToConfig()
 {
+	printf("[%p] will write %d elements\n", this, privateUserGroupData->data.size());
+
 	QDomElement root_elem = xml_config_file->rootElement();
 	QDomElement contacts_elem = xml_config_file->accessElement(root_elem, "Contacts");
 	xml_config_file->removeChildren(contacts_elem);
 
-	QHash<UserListKey, UserListElement>::iterator i = d->data.begin();
-	QHash<UserListKey, UserListElement>::iterator end = d->data.end();
+	QHash<UserListKey, UserListElement>::iterator i = privateUserGroupData->data.begin();
+	QHash<UserListKey, UserListElement>::iterator end = privateUserGroupData->data.end();
 
 	for (; i != end; i++)
 	{
+		printf("[%p] writing one...\n", this);
+
 		if ((*i).isAnonymous())
+		{
+			printf("[%p] oh no, not writing...\n", this);
 			continue;
+		}
+
 		QDomElement contact_elem = xml_config_file->createElement(contacts_elem, "Contact");
 		contact_elem.setAttribute("altnick", (*i).altNick());
 		contact_elem.setAttribute("first_name", (*i).firstName());

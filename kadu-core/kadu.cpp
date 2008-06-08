@@ -137,7 +137,7 @@ Kadu::Kadu(QWidget *parent)
 	InfoPanel(0), MenuBar(0), MainMenu(0), RecentChatsMenu(0), GroupBar(0),
 	Userbox(0), statusMenu(0), statusButton(), lastPositionBeforeStatusMenuHide(),
 	StartTime(QDateTime::currentDateTime()), updateInformationPanelTimer(), NextStatus(),
-	selectedUsers(new UserGroup(userlist->count() / 2)), ShowMainWindowOnStart(true),
+	selectedUsers(new UserGroup()), ShowMainWindowOnStart(true),
 	DoBlink(false), BlinkOn(false),Docked(false), dontHideOnClose(false), personalInfoMenuId(-1)
 {
 	kdebugf();

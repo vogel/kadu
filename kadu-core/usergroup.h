@@ -90,7 +90,7 @@ class UserGroup : public QObject
 	bool operator == (const UserGroup &) const {return false;}
 
 protected:
-	QExplicitlySharedDataPointer<UserGroupData> d;
+	/*QExplicitlySharedDataPointer<*/UserGroupData/*>*/ *privateUserGroupData;
 	friend class UserListElement;
 	friend class ULEPrivate;
 
@@ -108,10 +108,9 @@ public:
 
 	/**
 		\fn UserGroup(int size, const char *name = 0)
-		\param size spodziewana ilo�� element�w * 2
 		\param name nazwa grupy
 	**/
-	UserGroup(int size);
+	UserGroup();
 
 	/* standardowy konstruktor kopiuj�cy zepsu�by obiekt �r�d�owy */
 	UserGroup(const UserGroup &);

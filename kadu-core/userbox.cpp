@@ -471,7 +471,7 @@ UserBoxMenu *UserBox::management = NULL;
 CreateNotifier UserBox::createNotifier;
 
 UserBox::UserBox(bool fancy, UserGroup *group, QWidget* parent, const char* name, Qt::WFlags f)
-	: Q3ListBox(parent, name, f), fancy(fancy), VisibleUsers(new UserGroup(userlist->count() * 2)),
+	: Q3ListBox(parent, name, f), fancy(fancy), VisibleUsers(new UserGroup()),
 	Filters(), NegativeFilters(), sortHelper(), toRemove(), AppendProxy(), RemoveProxy(), comparer(new ULEComparer()),
 	refreshTimer(), lastMouseStopUser(nullElement), tipTimer(),
 	verticalPositionTimer(), lastVerticalPosition(0)

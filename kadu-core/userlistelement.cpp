@@ -95,32 +95,21 @@ QVariant UserListElement::setProtocolData(const QString &protocolName, const QSt
 
 	if (massively)
 	{
-		QHash<QString, UserGroupSet> *names = &*ULEPrivate::protocolUserDataProxy.find(protocolName);
-		if (!names)
-		{
-			names = new QHash<QString, UserGroupSet>();
-			ULEPrivate::protocolUserDataProxy[protocolName] = *names;
-		}
-
-		UserGroupSet *groups = &*names->find(name);
-		if (!groups)
-		{
-			groups = new UserGroupSet();
-			(*names)[name] = *groups;
-		}
+		QHash<QString, UserGroupSet> names = ULEPrivate::protocolUserDataProxy[protocolName];
+		UserGroupSet groups = names[name];
 
 		foreach (UserGroup *group, privateData->Parents)
 		{
 			emit group->protocolUserDataChanged(protocolName, *this, name, old, val, massively, last);
-			if (!groups->contains(group))
-				groups->insert(group);
+			if (!groups.contains(group))
+				groups.insert(group);
 		}
 		if (last)
 		{
-			foreach (UserGroup *ug, *groups)
+			foreach (UserGroup *ug, groups)
 				emit ug->protocolUsersDataChanged(protocolName, name);
 
-			groups->clear();
+			groups.clear();
 		}
 	}
 	else
@@ -137,8 +126,7 @@ QVariant UserListElement::setProtocolData(const QString &protocolName, const QSt
 
 QVariant UserListElement::protocolData(const QString &protocolName, const QString &name) const
 {
-	ProtocolData *protoData = *privateData->protocols.find(protocolName);
-	if (!protoData)
+	if (!privateData->protocols.contains(protocolName))
 	{
 #ifdef DEBUG_ENABLED
 		kdebugm(KDEBUG_ERROR, "%s not found!\n", protocolName.local8Bit().data());
@@ -146,17 +134,17 @@ QVariant UserListElement::protocolData(const QString &protocolName, const QStrin
 #endif
 		return QVariant();
 	}
-	QVariant *val = protoData->data.value(name);
+
+	QVariant *val = privateData->protocols[protocolName]->data.value(name);
 	if (val)
 		return *val;
 	else
 		return QVariant();
 }
 
-const UserStatus &UserListElement::status(const QString &protocolName) const
+const UserStatus & UserListElement::status(const QString &protocolName) const
 {
-	ProtocolData *protoData = *privateData->protocols.find(protocolName);
-	if (!protoData)
+	if (!privateData->protocols.contains(protocolName))
 	{
 #ifdef DEBUG_ENABLED
 		kdebugm(KDEBUG_ERROR, "%s not found!\n", protocolName.local8Bit().data());
@@ -165,13 +153,12 @@ const UserStatus &UserListElement::status(const QString &protocolName) const
 		static UserStatus us;
 		return us;
 	}
-	return *(protoData->Stat);
+	return *privateData->protocols[protocolName]->Stat;
 }
 
 QString UserListElement::ID(const QString &protocolName) const
 {
-	ProtocolData *protoData = *privateData->protocols.find(protocolName);
-	if (!protoData)
+	if (!privateData->protocols.contains(protocolName))
 	{
 #ifdef DEBUG_ENABLED
 		kdebugm(KDEBUG_ERROR, "%s not found!\n", protocolName.local8Bit().data());
@@ -179,7 +166,8 @@ QString UserListElement::ID(const QString &protocolName) const
 #endif
 		return QString::null;
 	}
-	return protoData->ID;
+
+	return privateData->protocols[protocolName]->ID;
 }
 
 UserListElement::UserListElement(const UserListElement &copyMe)
@@ -375,8 +363,7 @@ void UserListElement::setDNSName(const QString &protocolName, const QString &dns
 void UserListElement::setStatus(const QString &protocolName, const UserStatus &status, bool massively, bool last)
 {
 //	kdebugf();
-	ProtocolData *protoData = *privateData->protocols.find(protocolName);
-	if (!protoData)
+	if (!privateData->protocols.contains(protocolName))
 	{
 #ifdef DEBUG_ENABLED
 		kdebugm(KDEBUG_ERROR, "%s not found!\n", protocolName.local8Bit().data());
@@ -384,31 +371,27 @@ void UserListElement::setStatus(const QString &protocolName, const UserStatus &s
 #endif
 		return;
 	}
-	UserStatus *oldStatus = protoData->Stat->copy();
-	*(protoData->Stat) = status;
+
+	UserStatus *oldStatus = privateData->protocols[protocolName]->Stat->copy();
+	*privateData->protocols[protocolName]->Stat = status;
 
 	if (massively)
 	{
-		UserGroupSet *groups = &*ULEPrivate::statusChangeProxy.find(protocolName);
-		if (!groups)
-		{
-			groups = new UserGroupSet();
-			ULEPrivate::statusChangeProxy[protocolName] = *groups;
-		}
+		UserGroupSet groups = ULEPrivate::statusChangeProxy[protocolName];
 
 		foreach (UserGroup *group, privateData->Parents)
 		{
 //			kdebugm(KDEBUG_INFO, "group: %p\n", *group);
  			emit group->statusChanged(*this, protocolName, *oldStatus, massively, last);
-			if (!groups->contains(group))
-				groups->insert(group);
+			if (!groups.contains(group))
+				groups.insert(group);
 		}
 		if (last)
 		{
-			foreach (UserGroup *ug, *groups)
+			foreach (UserGroup *ug, groups)
 				emit ug->usersStatusChanged(protocolName);
 
-			groups->clear();
+			groups.clear();
 		}
 	}
 	else
@@ -431,8 +414,7 @@ QStringList UserListElement::protocolList() const
 
 QStringList UserListElement::protocolDataKeys(const QString &protocolName) const
 {
-	ProtocolData *protoData = *privateData->protocols.find(protocolName);
-	if (!protoData)
+	if (!privateData->protocols.contains(protocolName))
 	{
 #ifdef DEBUG_ENABLED
 		kdebugm(KDEBUG_ERROR, "%s not found!\n", protocolName.local8Bit().data());
@@ -441,7 +423,7 @@ QStringList UserListElement::protocolDataKeys(const QString &protocolName) const
 		return QStringList();
 	}
 
-	return protoData->data.keys();
+	return privateData->protocols[protocolName]->data.keys();
 }
 
 QStringList UserListElement::nonProtocolDataKeys() const

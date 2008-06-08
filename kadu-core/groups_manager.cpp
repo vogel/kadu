@@ -406,7 +406,7 @@ UserGroup *GroupsManager::addGroup(const QString &name)
 	int cnt = userlist->count() / 2;
 	if (cnt < 30)
 		cnt = 31;
-	UserGroup *group = new UserGroup(cnt);
+	UserGroup *group = new UserGroup();
 	Groups.insert(name, group);
 
 	connect(group, SIGNAL(userAdded(UserListElement, bool, bool)),
@@ -536,7 +536,7 @@ void GroupsManager::setIconForTab(const QString &name)
 	}
 }
 
-UsersWithDescription::UsersWithDescription() : UserGroup(userlist->count())
+UsersWithDescription::UsersWithDescription() : UserGroup()
 {
 	connect(userlist, SIGNAL(statusChanged(UserListElement, QString, const UserStatus &, bool, bool)),
 			this, SLOT(statusChangedSlot(UserListElement, QString, const UserStatus &, bool, bool)));
@@ -559,7 +559,7 @@ void UsersWithDescription::statusChangedSlot(UserListElement elem, QString proto
 		addUser(elem);
 }
 
-OnlineUsers::OnlineUsers() : UserGroup(userlist->count())
+OnlineUsers::OnlineUsers() : UserGroup()
 {
 	connect(userlist, SIGNAL(statusChanged(UserListElement, QString, const UserStatus &, bool, bool)),
 			this, SLOT(statusChangedSlot(UserListElement, QString, const UserStatus &, bool, bool)));
@@ -582,7 +582,7 @@ void OnlineUsers::statusChangedSlot(UserListElement elem, QString protocolName,
 		removeUser(elem);
 }
 
-OnlineAndDescriptionUsers::OnlineAndDescriptionUsers() : UserGroup(userlist->count())
+OnlineAndDescriptionUsers::OnlineAndDescriptionUsers() : UserGroup()
 {
 	connect(userlist, SIGNAL(statusChanged(UserListElement, QString, const UserStatus &, bool, bool)),
 			this, SLOT(statusChangedSlot(UserListElement, QString, const UserStatus &, bool, bool)));
@@ -640,7 +640,7 @@ void OnlineAndDescriptionUsers::protocolAddedOrRemoved(UserListElement elem, QSt
 	userChangedSlot(elem, massively, last);
 }
 
-OfflineUsers::OfflineUsers() : UserGroup(userlist->count())
+OfflineUsers::OfflineUsers() : UserGroup()
 {
 	foreach(const UserListElement user, *userlist)
 	{
@@ -724,7 +724,7 @@ void OfflineUsers::protocolAddedOrRemoved(UserListElement elem, QString protocol
 	userChangedSlot(elem, massively, last);
 }
 
-BlockedUsers::BlockedUsers() : UserGroup(userlist->count() / 4)
+BlockedUsers::BlockedUsers() : UserGroup()
 {
 	foreach(UserListElement user, *userlist)
 	{
@@ -756,7 +756,7 @@ void BlockedUsers::protocolUserDataChangedSlot(QString protocolName, UserListEle
 		removeUser(elem);
 }
 
-BlockingUsers::BlockingUsers() : UserGroup(userlist->count() / 4)
+BlockingUsers::BlockingUsers() : UserGroup()
 {
 	connect(userlist, SIGNAL(statusChanged(UserListElement, QString, const UserStatus &, bool, bool)),
 			this, SLOT(statusChangedSlot(UserListElement, QString, const UserStatus &, bool, bool)));
@@ -777,7 +777,7 @@ void BlockingUsers::statusChangedSlot(UserListElement elem, QString protocolName
 		removeUser(elem);
 }
 
-AnonymousUsers::AnonymousUsers() : UserGroup(userlist->count() / 4)
+AnonymousUsers::AnonymousUsers() : UserGroup()
 {
 	connect(userlist, SIGNAL(userDataChanged(UserListElement, QString, QVariant, QVariant, bool, bool)),
 			this, SLOT(userDataChangedSlot(UserListElement, QString, QVariant, QVariant, bool, bool)));
@@ -828,7 +828,7 @@ void AnonymousUsers::removingUser(UserListElement elem, bool massively, bool las
 		addUser(elem, massively, last);
 }
 
-AnonymousUsersWithoutMessages::AnonymousUsersWithoutMessages() : UserGroup(userlist->count() / 4)
+AnonymousUsersWithoutMessages::AnonymousUsersWithoutMessages() : UserGroup()
 {
 	connect(userlist, SIGNAL(userDataChanged(UserListElement, QString, QVariant, QVariant, bool, bool)),
 			this, SLOT(userDataChangedSlot(UserListElement, QString, QVariant, QVariant, bool, bool)));
