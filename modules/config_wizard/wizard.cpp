@@ -209,10 +209,10 @@ void Wizard::wizardStart()
 /**
 	po zaimportowaniu listy kontakt�w si� wywo�uje
 **/
-void WizardStarter::userListImported(bool ok, QList<UserListElement> list)
+void WizardStarter::userListImported(bool ok, QList<UserListElement *> list)
 {
 	kdebugf();
-	disconnect(gadu, SIGNAL(userListImported(bool, QList<UserListElement>)), this, SLOT(userListImported(bool, QList<UserListElement>)));
+	disconnect(gadu, SIGNAL(userListImported(bool, QList<UserListElement *>)), this, SLOT(userListImported(bool, QList<UserListElement *>)));
 
 	if (!ok)
 	{

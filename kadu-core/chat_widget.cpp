@@ -259,11 +259,11 @@ void ChatWidget::insertImage()
 		}
 
 		int counter = 0;
-		foreach(UserListElement *user, *Users)
+		foreach(UserListElement user, *Users)
 		{
-			if (user->usesProtocol("Gadu"))//TODO: user.hasFeature("ImageSending")
+			if (user.usesProtocol("Gadu"))//TODO: user.hasFeature("ImageSending")
 			{
-				unsigned int maximagesize = user->protocolData("Gadu", "MaxImageSize").toUInt();
+				unsigned int maximagesize = user.protocolData("Gadu", "MaxImageSize").toUInt();
 				if (f.size() >= maximagesize * 1024)
 					++counter;
 			}
@@ -272,7 +272,7 @@ void ChatWidget::insertImage()
 		}
 		if (counter == 1 && Users->count() == 1)
 		{
-			if (!MessageBox::ask(tr("This file is too big for %1.\nDo you really want to send this image?\n").arg((*Users->constBegin())->altNick())))
+			if (!MessageBox::ask(tr("This file is too big for %1.\nDo you really want to send this image?\n").arg((*Users->constBegin()).altNick())))
 			{
 				QTimer::singleShot(0, this, SLOT(insertImage()));
 				kdebugf2();
@@ -324,17 +324,17 @@ void ChatWidget::refreshTitle()
 		int i = 0;
 
 		if (config_file.readEntry("Look", "ConferenceContents").isEmpty())
-			foreach(UserListElement *user, *Users)
+			foreach(UserListElement user, *Users)
 			{
-				title.append(KaduParser::parse("%a", *user, false));
+				title.append(KaduParser::parse("%a", user, false));
 
 				if (++i < uinsSize)
 					title.append(", ");
 			}
 		else
-			foreach(UserListElement *user, *Users)
+			foreach(UserListElement user, *Users)
 			{
-				title.append(KaduParser::parse(config_file.readEntry("Look","ConferenceContents"), *user, false));
+				title.append(KaduParser::parse(config_file.readEntry("Look","ConferenceContents"), user, false));
 
 				if (++i < uinsSize)
 					title.append(", ");
@@ -344,17 +344,17 @@ void ChatWidget::refreshTitle()
 	}
 	else
 	{
-		UserListElement *user = *Users->constBegin();
+		UserListElement user = *Users->constBegin();
 		if (config_file.readEntry("Look", "ChatContents").isEmpty())
 		{
-			if (user->isAnonymous())
-				title = KaduParser::parse(tr("Chat with ")+"%a", *user, false);
+			if (user.isAnonymous())
+				title = KaduParser::parse(tr("Chat with ")+"%a", user, false);
 			else
-				title = KaduParser::parse(tr("Chat with ")+"%a (%s[: %d])", *user, false);
+				title = KaduParser::parse(tr("Chat with ")+"%a (%s[: %d])", user, false);
 		}
 		else
-			title = KaduParser::parse(config_file.readEntry("Look","ChatContents"), *user, false);
-		pix = user->status(currentProtocol()->protocolID()).pixmap();
+			title = KaduParser::parse(config_file.readEntry("Look","ChatContents"), user, false);
+		pix = user.status(currentProtocol()->protocolID()).pixmap();
 	}
 
 	title.replace("<br/>", " ");
@@ -794,7 +794,7 @@ void ChatWidget::restoreGeometry()
 	QList<int> vertSizes = toIntList(chat_manager->getChatWidgetProperty(Users, "VerticalSizes").toList());
 	if (vertSizes.empty() && Users->count() == 1)
 	{
-		QString vert_sz_str = (*(Users->constBegin()))->data("VerticalSizes").toString();
+		QString vert_sz_str = (*(Users->constBegin())).data("VerticalSizes").toString();
 		if (!vert_sz_str.isEmpty())
 		{
 			bool ok[2];

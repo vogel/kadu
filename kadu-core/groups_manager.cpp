@@ -313,12 +313,12 @@ GroupsManager::GroupsManager()
 	showBlocking(true), showOffline(true), showWithoutDescription(true), refreshTimer()
 {
 	kdebugf();
-	foreach(UserListElement *user, *userlist)
+	foreach(UserListElement user, *userlist)
 	{
 //		kdebugm(KDEBUG_INFO, "%s\n", (*user).altNick().local8Bit().data());
-		QStringList groups_ = user->data("Groups").toStringList();
+		QStringList groups_ = user.data("Groups").toStringList();
 		foreach(const QString &g, groups_)
-			addGroup(g)->addUser(*user);
+			addGroup(g)->addUser(user);
 	}
 	connect (userlist, SIGNAL(userDataChanged(UserListElement, QString, QVariant, QVariant, bool, bool)),
 			 this, SLOT(userDataChanged(UserListElement, QString, QVariant, QVariant, bool, bool)));
@@ -429,7 +429,7 @@ void GroupsManager::removeGroup(const QString &name)
 	UserGroup *group = this->Groups[name];
 
 	for (int i = 1, cnt = group->count(); i <= cnt; ++i)
-		group->removeUser(**group->constBegin(), true, i == cnt);
+		group->removeUser(*group->constBegin(), true, i == cnt);
 
 	disconnect(group, SIGNAL(userAdded(UserListElement, bool, bool)),
 				this, SLOT(userAdded(UserListElement, bool, bool)));
@@ -642,16 +642,16 @@ void OnlineAndDescriptionUsers::protocolAddedOrRemoved(UserListElement elem, QSt
 
 OfflineUsers::OfflineUsers() : UserGroup(userlist->count())
 {
-	foreach(const UserListElement *user, *userlist)
+	foreach(const UserListElement user, *userlist)
 	{
 		bool offline = true;
 
-		QStringList protos = user->protocolList();
+		QStringList protos = user.protocolList();
 		if (!protos.empty()) // user uses any protocol? let's check them all...
 		{
 			foreach(const QString &proto, protos)
 			{
-				if (!user->status(proto).isOffline())
+				if (!user.status(proto).isOffline())
 				{
 					offline = false; // if online in at LEAST one proto
 					break;
@@ -662,7 +662,7 @@ OfflineUsers::OfflineUsers() : UserGroup(userlist->count())
 			offline = false;
 
 		if (offline)
-			addUser(*user);
+			addUser(user);
 	}
 
 	connect(userlist, SIGNAL(statusChanged(UserListElement, QString, const UserStatus &, bool, bool)),
@@ -726,11 +726,11 @@ void OfflineUsers::protocolAddedOrRemoved(UserListElement elem, QString protocol
 
 BlockedUsers::BlockedUsers() : UserGroup(userlist->count() / 4)
 {
-	foreach(UserListElement *user, *userlist)
+	foreach(UserListElement user, *userlist)
 	{
 //		kdebugm(KDEBUG_INFO, "%s\n", (*user).altNick().local8Bit().data());
-		if (user->usesProtocol("Gadu") && user->protocolData("Gadu", "Blocking").toBool())
-			addUser(*user);
+		if (user.usesProtocol("Gadu") && user.protocolData("Gadu", "Blocking").toBool())
+			addUser(user);
 	}
 	connect(userlist, SIGNAL(protocolUserDataChanged(QString, UserListElement, QString, QVariant, QVariant, bool, bool)),
 			this, SLOT(protocolUserDataChangedSlot(QString, UserListElement, QString, QVariant, QVariant, bool, bool)));

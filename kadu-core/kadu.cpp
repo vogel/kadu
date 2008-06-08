@@ -703,8 +703,8 @@ void Kadu::editUserActionSetParams(QString /*protocolName*/, UserListElement use
 void Kadu::editUserActionAddedToToolbar(const UserGroup *users)
 {
 	kdebugf();
-	if ((users->count()) == 1 && (*users->begin())->isAnonymous())
-		editUserActionSetParams("", **users->begin());
+	if ((users->count()) == 1 && (*users->begin()).isAnonymous())
+		editUserActionSetParams("", *users->begin());
 	kdebugf2();
 }
 

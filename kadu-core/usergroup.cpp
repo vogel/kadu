@@ -34,12 +34,6 @@ UserGroup::UserGroup(const QList<UserListElement> &group)
 	addUsers(group);
 }
 
-UserGroup::UserGroup(const QList<UserListElement *> &group)
-	: QObject(), d(new UserGroupData())
-{
-	addUsers(group);
-}
-
 //#include "kadu.h"
 UserGroup::~UserGroup()
 {
@@ -48,17 +42,17 @@ UserGroup::~UserGroup()
 //		blockSignals(true);
 	if (cnt > 1)
 		while (!d->list.isEmpty())
-			removeUser(*d->list[0], true, i++ == cnt);
+			removeUser(d->list[0], true, i++ == cnt);
 	else if (cnt == 1)
-		removeUser(*d->list[0]);
+		removeUser(d->list[0]);
 	delete d;
 }
 
 UserListElement UserGroup::byAltNick(const QString& altnick)
 {
-	foreach(UserListElement *i, d->list)
-		if (i->altNick() == altnick)
-			return *i;
+	foreach(UserListElement i, d->list)
+		if (i.altNick() == altnick)
+			return i;
 
 	kdebugm(KDEBUG_WARNING, "%s not found, creating ULE\n", altnick.local8Bit().data());
 //	printBacktrace("ule nout found");
@@ -71,9 +65,9 @@ UserListElement UserGroup::byAltNick(const QString& altnick)
 
 bool UserGroup::containsAltNick(const QString &altnick, BehaviourForAnonymous beh) const
 {
-	foreach(UserListElement *i, d->list)
-		if (i->altNick() == altnick)
-			if (i->isAnonymous())
+	foreach(UserListElement i, d->list)
+		if (i.altNick() == altnick)
+			if (i.isAnonymous())
 				return (beh == TrueForAnonymous);
 			else
 				return true;
@@ -83,11 +77,11 @@ bool UserGroup::containsAltNick(const QString &altnick, BehaviourForAnonymous be
 
 UserListElement UserGroup::byID(const QString &protocolName, const QString &id)
 {
-	foreach(const UserListElement *ule, d->list)
+	foreach(const UserListElement ule, d->list)
 	{
-		ProtocolData *protoData = *ule->privateData->protocols.find(protocolName);
+		ProtocolData *protoData = *ule.privateData->protocols.find(protocolName);
 		if (protoData && protoData->ID == id)
-			return *ule;
+			return ule;
 	}
 	kdebugm(KDEBUG_WARNING, "%s,%s not found, creating ULE\n", protocolName.local8Bit().data(), id.local8Bit().data());
 	return addAnonymous(protocolName, id);
@@ -95,11 +89,11 @@ UserListElement UserGroup::byID(const QString &protocolName, const QString &id)
 
 bool UserGroup::contains(const QString &protocolName, const QString &id, BehaviourForAnonymous beh) const
 {
-	foreach(UserListElement *ule, d->list)
+	foreach(UserListElement ule, d->list)
 	{
-		ProtocolData *protoData = *ule->privateData->protocols.find(protocolName);
+		ProtocolData *protoData = *ule.privateData->protocols.find(protocolName);
 		if (protoData && protoData->ID == id)
-			if (ule->isAnonymous())
+			if (ule.isAnonymous())
 				return (beh == TrueForAnonymous);
 			else
 				return true;
@@ -139,15 +133,15 @@ bool UserGroup::equals(const UserGroup *group) const
 	unsigned int cnt = count();
 	if (cnt != group->count())
 		return false;
-	foreach(UserListElement *user, *group)
-		if (!contains(*user))
+	foreach(UserListElement user, *group)
+		if (!contains(user))
 			return false;
 	return true;
 }
 
 UserListElement UserGroup::byKey(UserListKey key)
 {
-	return *d->data[key];
+	return d->data[key];
 }
 
 void UserGroup::addUser(UserListElement ule, bool massively, bool last)
@@ -157,8 +151,8 @@ void UserGroup::addUser(UserListElement ule, bool massively, bool last)
 	if (!ule.privateData->Parents.contains(this))
 	{
 		emit addingUser(ule, massively, last);
-		d->data[ule.key()] = new UserListElement(ule);
-		d->list.append(&ule);
+		d->data[ule.key()] = UserListElement(ule);
+		d->list.append(ule);
 		ule.privateData->Parents.append(this);
 		emit userAdded(ule, massively, last);
 		emit modified();
@@ -186,10 +180,10 @@ void UserGroup::addUsers(const UserGroup *group)
 	kdebugmf(KDEBUG_FUNCTION_START, "start: group:'%s' group2:'%s'\n", name(), group->name());
 	int i = 1, cnt = group->count();
 	if (cnt > 1)
-		foreach(const UserListElement *user, *group)
-			addUser(*user, true, i++ == cnt);
+		foreach(const UserListElement user, *group)
+			addUser(user, true, i++ == cnt);
 	else if (cnt == 1)
-		addUser(**(group->constBegin()));
+		addUser(*(group->constBegin()));
 	kdebugf2();
 }
 
@@ -205,27 +199,15 @@ void UserGroup::addUsers(QList<UserListElement> users)
 	kdebugf2();
 }
 
-void UserGroup::addUsers(QList<UserListElement *> users)
-{
-	kdebugmf(KDEBUG_FUNCTION_START, "start: group:'%s'\n", name());
-	int i = 1, cnt = users.count();
-	if (cnt > 1)
-		foreach(UserListElement *user, users)
-			addUser(*user, true, i++ == cnt);
-	else if (cnt == 1)
-		addUser(*users[0]);
-	kdebugf2();
-}
-
 void UserGroup::removeUsers(const UserGroup *group)
 {
 	kdebugmf(KDEBUG_FUNCTION_START, "start: group:'%s' group2:'%s'\n", name(), group->name());
 	int i = 1, cnt = group->count();
 	if (cnt > 1)
-		foreach(UserListElement *user, *group)
-			removeUser(*user, true, i++ == cnt);
+		foreach(UserListElement user, *group)
+			removeUser(user, true, i++ == cnt);
 	else if (cnt == 1)
-		removeUser(**(group->constBegin()));
+		removeUser(*(group->constBegin()));
 	kdebugf2();
 }
 
@@ -246,7 +228,7 @@ void UserGroup::removeUser(UserListElement ule, bool massively, bool last)
 //	kdebugmf(KDEBUG_FUNCTION_START, "start: group:'%s' altNick:'%s' mass:%d last:%d\n", name(), ule.altNick().local8Bit().data(), massively, last);
 //	printBacktrace("xxx");
 	// TODO: fix for 0.6.5
-	UserListElement *elem = d->data[ule.key()];
+	UserListElement elem = d->data[ule.key()];
 // 	if (elem)
 // 	{
 //		kdebugm(KDEBUG_INFO, "user found\n");
@@ -258,7 +240,7 @@ void UserGroup::removeUser(UserListElement ule, bool massively, bool last)
 		{
 			ule.privateData->Parents.remove(this);
 			d->data.remove(ule.key());
-			d->list.removeAll(&ule);
+			d->list.removeAll(ule);
 // 			delete elem;
 		}
 		emit userRemoved(ule, massively, last);
@@ -309,8 +291,8 @@ void UserGroup::clear()
 QStringList UserGroup::altNicks() const
 {
 	QStringList nicks;
-	foreach(UserListElement *user, d->list)
-		nicks.append(user->altNick());
+	foreach(UserListElement user, d->list)
+		nicks.append(user.altNick());
 	return nicks;
 }
 
@@ -351,12 +333,6 @@ UserListElements::UserListElements(const UserListElements &u) : QList<UserListEl
 
 UserListElements::UserListElements(const QList<UserListElement> &u) : QList<UserListElement>(u)
 {
-}
-
-UserListElements::UserListElements(const QList<UserListElement *> &u)
-{
-	foreach(UserListElement *ule, u)
-		append(*ule);
 }
 
 UserListElements::UserListElements()

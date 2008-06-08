@@ -1109,9 +1109,9 @@ void UserBox::applyFilter(UserGroup *g)
 		return;
 	Filters.append(g);
 	UserListElements users;
-	foreach(UserListElement *user, *VisibleUsers)
-		if (!g->contains(*user))
-			users.append(*user);
+	foreach(UserListElement user, *VisibleUsers)
+		if (!g->contains(user))
+			users.append(user);
 	VisibleUsers->removeUsers(users);
 	connect(g, SIGNAL(userAdded(UserListElement, bool, bool)),
 			this, SLOT(userAddedToGroup(UserListElement, bool, bool)));
@@ -1138,14 +1138,14 @@ void UserBox::removeFilter(UserGroup *g)
 	Filters.pop_back(); //temporarily removing
 
 	UserListElements users;
-	foreach(UserListElement *user, *last)
+	foreach(UserListElement user, *last)
 	{
-		if (VisibleUsers->contains(*user)) // we are not looking for contacts which are certain
+		if (VisibleUsers->contains(user)) // we are not looking for contacts which are certain
 			continue;
 		bool omit = false;
 
 		foreach(UserGroup *ngroup, NegativeFilters)
-			if (ngroup->contains(*user))
+			if (ngroup->contains(user))
 			{
 				omit = true;
 				break;
@@ -1154,7 +1154,7 @@ void UserBox::removeFilter(UserGroup *g)
 			continue;
 
 		foreach(UserGroup *group, Filters)
-			if (!group->contains(*user))
+			if (!group->contains(user))
 			{
 				omit = true;
 				break; // if belongs to any group, there is no point in checking further
@@ -1162,7 +1162,7 @@ void UserBox::removeFilter(UserGroup *g)
 		if (omit)
 			continue;
 
-		users.append(*user);
+		users.append(user);
 	}
 	Filters.append(last); // restoring
 	VisibleUsers->addUsers(users);
@@ -1178,9 +1178,9 @@ void UserBox::applyNegativeFilter(UserGroup *g)
 		return;
 	NegativeFilters.append(g);
 	UserListElements users;
-	foreach(UserListElement *user, *VisibleUsers)
-		if (g->contains(*user))
-			users.append(*user);
+	foreach(UserListElement user, *VisibleUsers)
+		if (g->contains(user))
+			users.append(user);
 	VisibleUsers->removeUsers(users);
 	connect(g, SIGNAL(userAdded(UserListElement, bool, bool)),
 			this, SLOT(userRemovedFromGroup(UserListElement, bool, bool)));
@@ -1203,11 +1203,11 @@ void UserBox::removeNegativeFilter(UserGroup *g)
 			this, SLOT(userAddedToGroup(UserListElement, bool, bool)));
 
 	UserListElements users;
-	foreach(UserListElement *user, *g)
+	foreach(UserListElement user, *g)
 	{
 		bool omit = false;
 		foreach(UserGroup *ngroup, NegativeFilters)
-			if (ngroup->contains(*user))
+			if (ngroup->contains(user))
 			{
 				omit = true;
 				break;
@@ -1216,7 +1216,7 @@ void UserBox::removeNegativeFilter(UserGroup *g)
 			continue;
 
 		foreach(UserGroup *group, Filters)
-			if (!group->contains(*user))
+			if (!group->contains(user))
 			{
 				omit = true;
 				break;
@@ -1224,7 +1224,7 @@ void UserBox::removeNegativeFilter(UserGroup *g)
 		if (omit)
 			continue;
 
-		users.append(*user);
+		users.append(user);
 	}
 	VisibleUsers->addUsers(users);
 	refresh();

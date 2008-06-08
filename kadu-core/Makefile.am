@@ -18,6 +18,7 @@ configuration_aware_object.cpp \
 configuration_window.cpp \
 configuration_window_widgets.cpp \
 config_file.cpp \
+contact.cpp \
 custom_input.cpp \
 debug.cpp \
 dnshandler.cpp \
@@ -84,6 +85,7 @@ configuration_aware_object.h \
 configuration_window.h \
 configuration_window_widgets.h \
 config_file.h \
+contact.h \
 custom_input.h \
 debug.h \
 dnshandler.h \
@@ -142,6 +144,7 @@ moc/color_button_moc.cpp \
 moc/color_selector_moc.cpp \
 moc/configuration_window_moc.cpp \
 moc/configuration_window_widgets_moc.cpp \
+moc/contact_moc.cpp \
 moc/custom_input_moc.cpp \
 moc/dnshandler_moc.cpp \
 moc/emoticons_moc.cpp \
@@ -200,6 +203,7 @@ obj/config_file.$(OBJEXT) \
 obj/configuration_aware_object.$(OBJEXT) \
 obj/configuration_window.$(OBJEXT) \
 obj/configuration_window_widgets.$(OBJEXT) \
+obj/contact.$(OBJEXT) \
 obj/custom_input.$(OBJEXT) \
 obj/debug.$(OBJEXT) \
 obj/dnshandler.$(OBJEXT) \
@@ -259,6 +263,7 @@ obj/color_selector_moc.$(OBJEXT) \
 obj/custom_input_moc.$(OBJEXT) \
 obj/configuration_window_moc.$(OBJEXT) \
 obj/configuration_window_widgets_moc.$(OBJEXT) \
+obj/contact_moc.$(OBJEXT) \
 obj/dnshandler_moc.$(OBJEXT) \
 obj/emoticons_moc.$(OBJEXT) \
 obj/expimp_moc.$(OBJEXT) \
@@ -326,6 +331,7 @@ include $(DEPS)/configuration_window_moc.d
 include $(DEPS)/configuration_window_widgets.d
 include $(DEPS)/configuration_window_widgets_moc.d
 include $(DEPS)/config_file.d
+include $(DEPS)/contact.d
 include $(DEPS)/custom_input.d
 include $(DEPS)/custom_input_moc.d
 include $(DEPS)/debug.d

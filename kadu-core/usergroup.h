@@ -101,8 +101,8 @@ protected:
 	UserListElement byKey(UserListKey key);
 
 public:
-	typedef QList<UserListElement *>::const_iterator const_iterator;
-	typedef QList<UserListElement *>::iterator iterator;
+	typedef QList<UserListElement>::const_iterator const_iterator;
+	typedef QList<UserListElement>::iterator iterator;
 	typedef size_t size_type;
 
 	/**
@@ -121,7 +121,6 @@ public:
 		\param name nazwa grupy
 	**/
 	UserGroup(const QList<UserListElement> &group);
-	UserGroup(const QList<UserListElement *> &group);
 
 	/**
 		\fn virtual ~UserGroup()
@@ -294,7 +293,6 @@ public slots:
 		\param users kontakty
 	**/
 	void addUsers(QList<UserListElement> users);
-	void addUsers(QList<UserListElement *> users);
 
 	/**
 		\fn void removeUsers(const UserGroup *group)
@@ -447,7 +445,6 @@ public:
 		Konstruktor inicjuj�cy si� wskazan� list�
 	**/
 	UserListElements(const QList<UserListElement> &);
-	UserListElements(const QList<UserListElement *> &);
 
 	/**
 		\fn UserListElements()

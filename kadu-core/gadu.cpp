@@ -1329,8 +1329,8 @@ void GaduProtocol::sendUserList()
 	char *types;
 
 	unsigned int j = 0;
-	foreach(UserListElement *user, *userlist)
-		if (user->usesProtocol("Gadu") && !user->isAnonymous())
+	foreach(UserListElement user, *userlist)
+		if (user.usesProtocol("Gadu") && !user.isAnonymous())
 			++j;
 
 	if (!j)
@@ -1344,14 +1344,14 @@ void GaduProtocol::sendUserList()
 	types = new char[j];
 
 	j = 0;
-	foreach(UserListElement *user, *userlist)
-		if (user->usesProtocol("Gadu") && !user->isAnonymous())
+	foreach(UserListElement user, *userlist)
+		if (user.usesProtocol("Gadu") && !user.isAnonymous())
 		{
-			uins[j] = user->ID("Gadu").toUInt();
-			if (user->protocolData("Gadu", "OfflineTo").toBool())
+			uins[j] = user.ID("Gadu").toUInt();
+			if (user.protocolData("Gadu", "OfflineTo").toBool())
 				types[j] = GG_USER_OFFLINE;
 			else
-				if (user->protocolData("Gadu", "Blocking").toBool())
+				if (user.protocolData("Gadu", "Blocking").toBool())
 					types[j] = GG_USER_BLOCKED;
 				else
 					types[j] = GG_USER_NORMAL;
@@ -1747,28 +1747,28 @@ QString GaduProtocol::userListToString(const UserList &userList) const
 	QString file;
 	QString contacts;
 
-	foreach(UserListElement *i, *userlist)
-		if (!i->isAnonymous() && (i->usesProtocol("Gadu") || !i->mobile().isEmpty()))
+	foreach(UserListElement i, *userlist)
+		if (!i.isAnonymous() && (i.usesProtocol("Gadu") || !i.mobile().isEmpty()))
 		{
-			contacts += i->firstName();					contacts += ';';
-			contacts += i->lastName();					contacts += ';';
-			contacts += i->nickName();					contacts += ';';
-			contacts += i->altNick();						contacts += ';';
-			contacts += i->mobile();						contacts += ';';
-			contacts += i->data("Groups").toStringList().join(";");	contacts += ';';
-			if (i->usesProtocol("Gadu"))
-				contacts += i->ID("Gadu");				contacts += ';';
-			contacts += i->email();						contacts += ';';
-			file = i->aliveSound(type);
+			contacts += i.firstName();					contacts += ';';
+			contacts += i.lastName();					contacts += ';';
+			contacts += i.nickName();					contacts += ';';
+			contacts += i.altNick();						contacts += ';';
+			contacts += i.mobile();						contacts += ';';
+			contacts += i.data("Groups").toStringList().join(";");	contacts += ';';
+			if (i.usesProtocol("Gadu"))
+				contacts += i.ID("Gadu");				contacts += ';';
+			contacts += i.email();						contacts += ';';
+			file = i.aliveSound(type);
 			contacts += QString::number(type);				contacts += ';';
 			contacts += file;								contacts += ';';
-			file = i->messageSound(type);
+			file = i.messageSound(type);
 			contacts += QString::number(type);				contacts += ';';
 			contacts += file;								contacts += ';';
-			if (i->usesProtocol("Gadu"))
-				contacts += QString::number(i->protocolData("Gadu", "OfflineTo").toBool());
+			if (i.usesProtocol("Gadu"))
+				contacts += QString::number(i.protocolData("Gadu", "OfflineTo").toBool());
 			contacts += ';';
-			contacts += i->homePhone();					//contacts += ';';
+			contacts += i.homePhone();					//contacts += ';';
 			contacts += "\r\n";
 		}
 

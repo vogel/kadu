@@ -189,10 +189,10 @@ void ChatManager::saveOpenedWindows()
 		window_elem.setAttribute("protocol", protoId);
 		window_elem.setAttribute("id", protocol->ID());
 		const UserGroup *users = chat->users();
-		foreach(UserListElement *user, *users)
+		foreach(UserListElement user, *users)
 		{
 			QDomElement user_elem = xml_config_file->createElement(window_elem, "Contact");
- 			user_elem.setAttribute("id", (*user).ID(protoId));
+ 			user_elem.setAttribute("id", user.ID(protoId));
 		}
 	}
 	kdebugf2();
