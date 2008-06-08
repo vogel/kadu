@@ -302,9 +302,9 @@ void FileTransferManager::chatDestroying(ChatWidget *chat)
 
 void FileTransferManager::fileDropped(const UserGroup *group, const QString &fileName)
 {
-	foreach(UserListElement *i, *group)
-		if (i->usesProtocol("Gadu"))
-			sendFile(i->ID("Gadu").toUInt(), fileName);
+	foreach(UserListElement i, *group)
+		if (i.usesProtocol("Gadu"))
+			sendFile(i.ID("Gadu").toUInt(), fileName);
 }
 
 void FileTransferManager::showFileTransferWindow()

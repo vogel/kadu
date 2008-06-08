@@ -47,18 +47,18 @@ AdvancedUserList::AdvancedUserList()
 
 	// zliczamy u�ytkownik�w bez priorytetu
 	int cnt = 0;
-	foreach(UserListElement *user, *userlist)
-		if (user->data("Priority").isNull())
+	foreach(UserListElement user, *userlist)
+		if (user.data("Priority").isNull())
 			++cnt;
 
 	// i ustawiamy im priorytet
 	int i = 1;
-	foreach(UserListElement *user, *userlist)
-		if (user->data("Priority").isNull())
-			user->setData("Priority", int(0), true, i++ == cnt);
+	foreach(UserListElement user, *userlist)
+		if (user.data("Priority").isNull())
+			user.setData("Priority", int(0), true, i++ == cnt);
 
 	connect(userlist, SIGNAL(userAdded(UserListElement, bool, bool)),
-			this,       SLOT(userAdded(UserListElement, bool, bool)));
+			this, SLOT(userAdded(UserListElement, bool, bool)));
 
 	const QList<UserBox *> &userboxes = UserBox::userboxes();
 	foreach(UserBox *userbox, userboxes)

@@ -209,10 +209,10 @@ void Wizard::wizardStart()
 /**
 	po zaimportowaniu listy kontakt�w si� wywo�uje
 **/
-void WizardStarter::userListImported(bool ok, QList<UserListElement *> list)
+void WizardStarter::userListImported(bool ok, QList<UserListElement> list)
 {
 	kdebugf();
-	disconnect(gadu, SIGNAL(userListImported(bool, QList<UserListElement *>)), this, SLOT(userListImported(bool, QList<UserListElement *>)));
+	disconnect(gadu, SIGNAL(userListImported(bool, QList<UserListElement>)), this, SLOT(userListImported(bool, QList<UserListElement >)));
 
 	if (!ok)
 	{
@@ -233,7 +233,7 @@ void WizardStarter::connected()
 	if (!gadu->doImportUserList())
 	{
 		MessageBox::msg(tr("User list couldn't be imported"));
-		disconnect(gadu, SIGNAL(userListImported(bool, QValueList<UserListElement>)), this, SLOT(userListImported(bool, QValueList<UserListElement>)));
+		disconnect(gadu, SIGNAL(userListImported(bool, QList<UserListElement>)), this, SLOT(userListImported(bool, QList<UserListElement>)));
 	}
 
 	disconnect(gadu, SIGNAL(connected()), this, SLOT(connected()));
@@ -340,7 +340,7 @@ void Wizard::tryImport()
 	else if (!gadu->doImportUserList())
 	{
 		MessageBox::msg(tr("User list wasn't imported because of some error"));
-		disconnect(gadu, SIGNAL(userListImported(bool, QValueList<UserListElement>)), wizardStarter, SLOT(userListImported(bool, QValueList<UserListElement>)));
+		disconnect(gadu, SIGNAL(userListImported(bool, QList<UserListElement>)), wizardStarter, SLOT(userListImported(bool, QList<UserListElement>)));
 	}
 }
 

@@ -150,11 +150,11 @@ void HistoryManager::appendSms(const QString &mobile, const QString &msg)
 	linelist.append(QString::number(time(NULL)));
 	linelist.append(text2csv(html_msg));
 
-	foreach(UserListElement *i, *userlist)
-		if (i->mobile() == mobile)
+	foreach(UserListElement i, *userlist)
+		if (i.mobile() == mobile)
 		{
-			altnick = i->altNick();
-			uin = i->ID("Gadu").toUInt();;
+			altnick = i.altNick();
+			uin = i.ID("Gadu").toUInt();;
 			break;
 		}
 	if (uin)
@@ -546,9 +546,9 @@ void HistoryManager::convSms2ekgForm()
 			datetime.setTime(QTime(czas.left(2).toInt(), czas.mid(3, 2).toInt(), czas.right(2).toInt()));
 			linelist.append(QString::number(-datetime.secsTo(
 				QDateTime(QDate(1970, 1, 1), QTime(0 ,0)))));
-			foreach(UserListElement *user, *userlist)
-				if (user->mobile() == mobile)
-					uin = user->ID("Gadu").toUInt();
+			foreach(UserListElement user, *userlist)
+				if (user.mobile() == mobile)
+					uin = user.ID("Gadu").toUInt();
 			header = false;
 		}
 		else

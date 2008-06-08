@@ -171,8 +171,8 @@ void HistoryModule::chatKeyPressed(QKeyEvent *e, ChatWidget *chatWidget, bool &h
 	{
 		const UserGroup *users = chatWidget->users();
 		UinsList uins;
-		foreach(UserListElement *user, *users)
-			uins.append(user->ID("Gadu").toUInt());
+		foreach(UserListElement user, *users)
+			uins.append(user.ID("Gadu").toUInt());
 		//TODO: throw out UinsList as soon as possible!
 		(new HistoryDialog(uins))->show();
 

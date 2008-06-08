@@ -157,12 +157,12 @@ void Notify::mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigu
 
 	statusGroupBox->addWidgets(0, notifyUsers);
 
-	foreach(UserListElement *user, *userlist)
-		if (user->usesProtocol("Gadu") && !user->isAnonymous())
-			if (!user->notify())
-				allUsers->addItem(user->altNick());
+	foreach(UserListElement user, *userlist)
+		if (user.usesProtocol("Gadu") && !user.isAnonymous())
+			if (!user.notify())
+				allUsers->addItem(user.altNick());
 			else
-				notifiedUsers->addItem(user->altNick());
+				notifiedUsers->addItem(user.altNick());
 
 	allUsers->sortItems();
 	notifiedUsers->sortItems();
