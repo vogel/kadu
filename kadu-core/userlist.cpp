@@ -138,8 +138,6 @@ void UserList::readFromConfig()
 {
 	kdebugf();
 
-	printf("[%p] reading data from config...\n", this);
-
 	privateUserGroupData->data.clear();
 	QDomElement contacts_elem = xml_config_file->findElement(
 		xml_config_file->rootElement(), "Contacts");
@@ -193,8 +191,6 @@ void UserList::readFromConfig()
 
 void UserList::writeToConfig()
 {
-	printf("[%p] will write %d elements\n", this, privateUserGroupData->data.size());
-
 	QDomElement root_elem = xml_config_file->rootElement();
 	QDomElement contacts_elem = xml_config_file->accessElement(root_elem, "Contacts");
 	xml_config_file->removeChildren(contacts_elem);
@@ -204,13 +200,8 @@ void UserList::writeToConfig()
 
 	for (; i != end; i++)
 	{
-		printf("[%p] writing one...\n", this);
-
 		if ((*i).isAnonymous())
-		{
-			printf("[%p] oh no, not writing...\n", this);
 			continue;
-		}
 
 		QDomElement contact_elem = xml_config_file->createElement(contacts_elem, "Contact");
 		contact_elem.setAttribute("altnick", (*i).altNick());

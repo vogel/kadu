@@ -25,7 +25,6 @@ UserGroup::UserGroup()
 UserGroup::UserGroup(const UserGroup &copy)
 	: QObject(), privateUserGroupData(copy.privateUserGroupData)
 {
-	printf("this copy is baaaaaad\n");
 	#warning "UserGroup copying is safe only in 'foreach' macro"
 }
 
@@ -38,8 +37,6 @@ UserGroup::UserGroup(const QList<UserListElement> &group)
 //#include "kadu.h"
 UserGroup::~UserGroup()
 {
-// 	printf("[%p] cleaning user group\n", this);
-
 // 	int i = 1, cnt = count();
 //	if (Kadu::closing())
 //		blockSignals(true);
@@ -242,8 +239,6 @@ void UserGroup::removeUser(UserListElement ule, bool massively, bool last)
 		{
 			ule.privateData->Parents.remove(this);
 			privateUserGroupData->data.remove(ule.key());
-
-			printf("[%p] remove user...\n", this);
 
 			privateUserGroupData->list.removeAll(ule);
 // 			delete elem;
