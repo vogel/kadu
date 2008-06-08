@@ -194,8 +194,8 @@ void UserList::writeToConfig()
 	QDomElement contacts_elem = xml_config_file->accessElement(root_elem, "Contacts");
 	xml_config_file->removeChildren(contacts_elem);
 
-	QHash<int, UserListElement>::iterator i = d->data.begin();
-	QHash<int, UserListElement>::iterator end = d->data.end();
+	QHash<UserListKey, UserListElement>::iterator i = d->data.begin();
+	QHash<UserListKey, UserListElement>::iterator end = d->data.end();
 
 	for (; i != end; i++)
 	{

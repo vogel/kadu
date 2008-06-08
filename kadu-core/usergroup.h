@@ -10,6 +10,7 @@
 #ifndef KADU_USERGROUP_H
 #define KADU_USERGROUP_H
 
+#include <QExplicitlySharedDataPointer>
 #include <QList>
 #include <QVariant>
 
@@ -89,7 +90,7 @@ class UserGroup : public QObject
 	bool operator == (const UserGroup &) const {return false;}
 
 protected:
-	UserGroupData *d;
+	QExplicitlySharedDataPointer<UserGroupData> d;
 	friend class UserListElement;
 	friend class ULEPrivate;
 

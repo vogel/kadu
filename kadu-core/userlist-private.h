@@ -42,13 +42,13 @@ public slots:
 
 };
 
-class UserGroupData
+class UserGroupData :  public QSharedData
 {
 
 public:
 	UserGroupData();
 	~UserGroupData();
-	QHash<int, UserListElement> data;
+	QHash<UserListKey, UserListElement> data;
 	QList<UserListElement> list;
 
 };

@@ -45,7 +45,6 @@ UserGroup::~UserGroup()
 			removeUser(d->list[0], true, i++ == cnt);
 	else if (cnt == 1)
 		removeUser(d->list[0]);
-	delete d;
 }
 
 UserListElement UserGroup::byAltNick(const QString& altnick)
