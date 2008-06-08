@@ -138,17 +138,15 @@ void Themes::setPaths(const QStringList &paths)
 
 QStringList Themes::defaultKaduPathsWithThemes() const
 {
-	QStringList default1, default2;
-	default1 = getSubDirs(dataPath("kadu/themes/" + Name));
-	default2 = getSubDirs(ggPath(Name));
+	QStringList result;
 
-	foreach(QString it, default1)
-		it = dataPath("kadu/themes/" + Name + '/' + it + '/');
+	foreach(QString it, getSubDirs(dataPath("kadu/themes/" + Name)))
+		result << dataPath("kadu/themes/" + Name + '/' + it + '/');
 
-	foreach(QString it, default2)
-		it = ggPath(Name) + '/' + it + '/';
+	foreach(QString it, getSubDirs(ggPath(Name)))
+		result << ggPath(Name) + '/' + it + '/';
 
-	return default1 + default2;
+	return result;
 }
 
 const QStringList & Themes::paths() const

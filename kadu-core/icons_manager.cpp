@@ -29,6 +29,7 @@ QString IconsManager::iconPath(const QString &name) const
 		fname = name;
 	else
 		fname = themePath() + getThemeEntry(name);
+
 	return fname;
 }
 
