@@ -119,17 +119,17 @@ void Themes::setPaths(const QStringList &paths)
 	ThemesPaths.clear();
 	additional.clear();
 	QStringList temp = paths + defaultKaduPathsWithThemes();
-	CONST_FOREACH(it, temp)
+	foreach(const QString &it, temp)
 	{
-		if (validateDir(*it))
+		if (validateDir(it))
 		{
-			if (paths.findIndex(*it) != -1)
-				additional.append(*it);
-			ThemesPaths.append(*it);
-			ThemesList.append((*it).section("/", -1, -1, QString::SectionSkipEmpty));
+			if (paths.findIndex(it) != -1)
+				additional.append(it);
+			ThemesPaths.append(it);
+			ThemesList.append(it.section("/", -1, -1, QString::SectionSkipEmpty));
 		}
 		else
-			MessageBox::msg(tr("<i>%1</i><br/>does not contain any theme configuration file").arg(*it), false, "Warning");
+			MessageBox::msg(tr("<i>%1</i><br/>does not contain any theme configuration file").arg(it), false, "Warning");
 	}
 	emit pathsChanged(ThemesPaths);
 	kdebugf2();
@@ -141,11 +141,11 @@ QStringList Themes::defaultKaduPathsWithThemes() const
 	default1 = getSubDirs(dataPath("kadu/themes/" + Name));
 	default2 = getSubDirs(ggPath(Name));
 
-	FOREACH(it, default1)
-		*it = dataPath("kadu/themes/" + Name + '/' + (*it) + '/');
+	foreach(QString it, default1)
+		it = dataPath("kadu/themes/" + Name + '/' + it + '/');
 
-	FOREACH(it, default2)
-		*it = ggPath(Name) + '/' + (*it) + '/';
+	foreach(QString it, default2)
+		it = ggPath(Name) + '/' + it + '/';
 
 	return default1 + default2;
 }

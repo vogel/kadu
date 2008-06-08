@@ -37,9 +37,9 @@ void MainConfigurationWindow::registerUiFile(const QString &uiFile, Configuratio
 
 		// allow uiHandler handle this...
 		// TODO: make it pretty
-		FOREACH(widget, widgets)
-			if (*widget)
-				(*widget)->loadConfiguration();
+		foreach(ConfigWidget *widget, widgets)
+			if (widget)
+				widget->loadConfiguration();
 	}
 }
 
@@ -52,10 +52,10 @@ void MainConfigurationWindow::unregisterUiFile(const QString &uiFile, Configurat
 
 void MainConfigurationWindow::instanceCreated()
 {
-	FOREACH(configurationUiHandlerPair, UiFiles)
+	foreach(ConfigurationHandelUiPair configurationUiHandlerPair, UiFiles)
 	{
-		ConfigurationUiHandler *uiHandler = (*configurationUiHandlerPair).second;
-		Instance->appendUiFile((*configurationUiHandlerPair).first);
+		ConfigurationUiHandler *uiHandler = configurationUiHandlerPair.second;
+		Instance->appendUiFile(configurationUiHandlerPair.first);
 		if (uiHandler)
 			uiHandler->mainConfigurationWindowCreated(Instance);
 	}
@@ -234,9 +234,9 @@ void MainConfigurationWindow::setLanguages()
 	QStringList itemValues;
 	QStringList itemCaptions;
 
-	FOREACH(file, files)
+	foreach(const QString &file, files)
 	{
-		QString itemValue = (*file).mid(5, (*file).length() - 8);
+		QString itemValue = file.mid(5, file.length() - 8);
 		QString itemCaption = translateLanguage(qApp, itemValue, true);
 
 		itemValues.append(itemValue);
@@ -269,8 +269,8 @@ void MainConfigurationWindow::setIconThemes()
 	QStringList captions;
 	themes.sort();
 
-	FOREACH(theme, themes)
-		captions.append(qApp->translate("@default", *theme));
+	foreach(const QString &theme, themes)
+		captions.append(qApp->translate("@default", theme));
 
 	iconThemes->setItems(themes, captions);
 	iconThemes->setCurrentText(icons_manager->theme());
@@ -296,10 +296,10 @@ void MainConfigurationWindow::setToolTipClasses()
 	values << "";
 
 	QStringList toolTipClasses = tool_tip_class_manager->getToolTipClasses();
-	CONST_FOREACH(toolTipClass, toolTipClasses)
+	foreach(const QString &toolTipClass, toolTipClasses)
 	{
-		captions << qApp->translate("@default", *toolTipClass);
-		values << *toolTipClass;
+		captions << qApp->translate("@default", toolTipClass);
+		values << toolTipClass;
 	}
 
 	dynamic_cast<ConfigComboBox *>(widgetById("toolTipClasses"))->setItems(values, captions);
@@ -309,12 +309,12 @@ QString MainConfigurationWindow::findExecutable(const QStringList &paths, const 
 {
 	QFileInfo fi;
 
-	CONST_FOREACH(path, paths)
-		CONST_FOREACH(executableName, executableNames)
+	foreach(const QString &path, paths)
+		foreach(const QString &executableName, executableNames)
 		{
-			fi.setFile(*path + "/" + *executableName);
+			fi.setFile(path + "/" + executableName);
 			if (fi.isExecutable())
-				return *path + "/" + *executableName;
+				return path + "/" + executableName;
 		}
 
 	return QString::null;
@@ -365,8 +365,8 @@ QString MainConfigurationWindow::getBrowserExecutable(int browserIndex)
 		{
 			QString homePath = getenv("HOME");
 			QStringList dirList = QDir("/usr/lib").entryList("mozilla*", QDir::All, QDir::Name | QDir::Reversed);
-			CONST_FOREACH(dir, dirList)
-				searchPath.append("/usr/lib/" + (*dir));
+			foreach(const QString &dir, dirList)
+				searchPath.append("/usr/lib/" + dir);
 
 			searchPath.append("/usr/local/Mozilla");
 			searchPath.append("/usr/local/mozilla");
@@ -385,8 +385,8 @@ QString MainConfigurationWindow::getBrowserExecutable(int browserIndex)
 		{
 			QString homePath = getenv("HOME");
 			QStringList dirList = QDir("/usr/lib").entryList("seamonkey*", QDir::All, QDir::Name | QDir::Reversed);
-			CONST_FOREACH(dir, dirList)
-				searchPath.append("/usr/lib/" + (*dir));
+			foreach(const QString &dir, dirList)
+				searchPath.append("/usr/lib/" + dir);
 
 			searchPath.append("/usr/local/Seamonkey");
     			searchPath.append("/usr/local/seamonkey");
@@ -402,11 +402,11 @@ QString MainConfigurationWindow::getBrowserExecutable(int browserIndex)
 			QString homePath = getenv("HOME");
 
 			QStringList dirList = QDir("/usr/lib").entryList("mozilla-firefox*", QDir::All, QDir::Name | QDir::Reversed);
-			CONST_FOREACH(dir, dirList)
-				searchPath.append("/usr/lib/" + (*dir));
+			foreach(const QString &dir, dirList)
+				searchPath.append("/usr/lib/" + dir);
 			dirList = QDir("/usr/lib").entryList("firefox*", QDir::All, QDir::Name | QDir::Reversed);
-			CONST_FOREACH(dir, dirList)
-				searchPath.append("/usr/lib/" + (*dir));
+			foreach(const QString &dir, dirList)
+				searchPath.append("/usr/lib/" + dir);
 
 			searchPath.append("/usr/lib/MozillaFirefox");
 			searchPath.append("/usr/local/Firefox");
@@ -423,8 +423,8 @@ QString MainConfigurationWindow::getBrowserExecutable(int browserIndex)
 // 			executableName.append("firefox-xremote-client");
 
 			dirList = QDir("/usr/lib").entryList("mozilla*", QDir::All, QDir::Name | QDir::Reversed);
-			CONST_FOREACH(dir, dirList)
-				searchPath.append("/usr/lib/" + (*dir));
+			foreach(const QString &dir, dirList)
+				searchPath.append("/usr/lib/" + dir);
 
 // 			options << tr("Open in new window") << tr("Open in new tab");
 			break;

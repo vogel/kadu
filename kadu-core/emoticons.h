@@ -20,7 +20,7 @@ enum EmoticonsStyle
 };
 
 /**
-	Menad¿er emotikonów
+	Menadï¿½er emotikonï¿½w
 **/
 class EmoticonsManager : public Themes, ConfigurationAwareObject
 {
@@ -45,7 +45,7 @@ public:
 	static void closeModule();
 
 	/**
-		Konstruktor tworzy obiekt oraz wyszukuje listê zestawów w katalogu
+		Konstruktor tworzy obiekt oraz wyszukuje listï¿½ zestawï¿½w w katalogu
 		$DATADIR/kadu/themes/emoticons
 	**/
 	EmoticonsManager(const QString &name, const QString &configname);
@@ -54,43 +54,43 @@ public:
 	/**
 		\brief Funkcja ustawia zestaw emotikonek na theme
 		\param theme nazwa zestawu
-		Funkcja ustawi zestaw je¶li taki istnieje w przeciwnym wypadku
-		ustawionym zestawem bêdzie "gadu-gadu"
+		Funkcja ustawi zestaw jeï¿½li taki istnieje w przeciwnym wypadku
+		ustawionym zestawem bï¿½dzie "gadu-gadu"
 	**/
 	void setEmoticonsTheme(const QString &theme);
 
 	/**
-		Funkcja wstawia w text zamiast tagów emotikonek odpowiednie emotikonki
-		\param text dokument w którym maj± byæ zamienione tagi
-		\param bgcolor kolor t³a emotikonki
-		\param style styl emotikonki jaki ma byæ wstawiony - domy¶lnie jest do
+		Funkcja wstawia w text zamiast tagï¿½w emotikonek odpowiednie emotikonki
+		\param text dokument w ktï¿½rym majï¿½ byï¿½ zamienione tagi
+		\param bgcolor kolor tï¿½a emotikonki
+		\param style styl emotikonki jaki ma byï¿½ wstawiony - domyï¿½lnie jest do
 		 aktualny zestaw
 	**/
 	void expandEmoticons(HtmlDocument &text, const QColor &bgcolor, EmoticonsStyle style);
 
 	/**
-		Funkcja zwraca ilo¶æ emotikonek w zestawie
+		Funkcja zwraca iloï¿½ï¿½ emotikonek w zestawie
 	**/
 	int selectorCount() const;
 
 	/**
 		Funkcja zwraca alias odpowiedniej emotikonki
 		\param emot_num nr emotikonki z listy
-		\return Zwracany jest pusty ci±g je¶li nie znaleziono emotikonki w przeciwnym razie zwracany jest alias.
+		\return Zwracany jest pusty ciï¿½g jeï¿½li nie znaleziono emotikonki w przeciwnym razie zwracany jest alias.
 	**/
 	QString selectorString(int emot_num) const;
 
 	/**
-		Funkcja zwraca ¶cie¿kê do odpowiedniej animowanej emotikonki
+		Funkcja zwraca ï¿½cieï¿½kï¿½ do odpowiedniej animowanej emotikonki
 		\param emot_num nr emotikonki z listy
-		\return Zwracany jest pusty ci±g je¶li nie znaleziono emotikonki w przeciwnym razie zwracana jest ¶cie¿ka do emotikonki
+		\return Zwracany jest pusty ciï¿½g jeï¿½li nie znaleziono emotikonki w przeciwnym razie zwracana jest ï¿½cieï¿½ka do emotikonki
 	**/
 	QString selectorAnimPath(int emot_num) const;
 
 	/**
-		Funkcja zwraca ¶cie¿kê do odpowiedniej statycznej emotikonki
+		Funkcja zwraca ï¿½cieï¿½kï¿½ do odpowiedniej statycznej emotikonki
 		\param emot_num nr emotikonki z listy
-		\return Zwracany jest pusty ci±g je¶li nie znaleziono emotikonki w przeciwnym razie zwracana jest ¶cie¿ka do emotikonki
+		\return Zwracany jest pusty ciï¿½g jeï¿½li nie znaleziono emotikonki w przeciwnym razie zwracana jest ï¿½cieï¿½ka do emotikonki
 	**/
 	QString selectorStaticPath(int emot_num) const;
 
@@ -101,7 +101,7 @@ public:
 extern EmoticonsManager *emoticons;
 
 /**
-	Klasa s³u¿±ca do wyboru emotikonki z zestawu
+	Klasa sï¿½uï¿½ï¿½ca do wyboru emotikonki z zestawu
 **/
 class EmoticonSelectorButton : public QToolButton
 {
@@ -118,37 +118,37 @@ private slots:
 
 protected:
 	/**
-		Funkcja obs³uguj±ca najechanie kursorem myszki na dan± emotikonkê.
+		Funkcja obsï¿½ugujï¿½ca najechanie kursorem myszki na danï¿½ emotikonkï¿½.
 	**/
 	void enterEvent(QEvent *e);
 
 	/**
-		Funkcja obs³uguj±ca opuszczenie obszaru wy¶wietlania emotikonki.
+		Funkcja obsï¿½ugujï¿½ca opuszczenie obszaru wyï¿½wietlania emotikonki.
 	**/
 	void leaveEvent(QEvent *e);
 
 public:
 	/**
-		Konstruktor tworz±cy przycisk z emotikonk±
-		\param parent widget na którym osadzona ma byæ przycisk z emotikonk±
-		\param emoticon_string nazwa która ma byæ wy¶wietlana po najechaniu na
+		Konstruktor tworzï¿½cy przycisk z emotikonkï¿½
+		\param parent widget na ktï¿½rym osadzona ma byï¿½ przycisk z emotikonkï¿½
+		\param emoticon_string nazwa ktï¿½ra ma byï¿½ wyï¿½wietlana po najechaniu na
 		przycisk
-		\param static_path ¶cie¿ka do statycznej emotikonki
-		\param anim_path ¶cie¿ka do animowanej emotikonki
+		\param static_path ï¿½cieï¿½ka do statycznej emotikonki
+		\param anim_path ï¿½cieï¿½ka do animowanej emotikonki
 	**/
 	EmoticonSelectorButton(const QString &emoticon_string, const QString &static_path, const QString &anim_path, QWidget *parent);
 	~EmoticonSelectorButton();
 	
 signals:
 	/**
-		Sygna³ emitowany po naci¶niêciu przycisku z emotikonk±
-		przekazywana jest warto¶æ emoticon_string (przewa¿nie jest to tag)
+		Sygnaï¿½ emitowany po naciï¿½niï¿½ciu przycisku z emotikonkï¿½
+		przekazywana jest wartoï¿½ï¿½ emoticon_string (przewaï¿½nie jest to tag)
 	**/
 	void clicked(const QString &emoticon_string);
 
 };
 /**
-	Klasa wy¶wietlaj±ca listê emotikonek z aktualnego zestawu.
+	Klasa wyï¿½wietlajï¿½ca listï¿½ emotikonek z aktualnego zestawu.
 **/
 class EmoticonSelector : public QWidget
 {
@@ -161,32 +161,35 @@ private slots:
 
 protected:
 	/**
-		Funkcja obs³uguj±ca zamkniêcie listy.
+		Funkcja obsï¿½ugujï¿½ca zamkniï¿½cie listy.
 	**/
 	void closeEvent(QCloseEvent *e);
 
 public:
 	/**
-		Konstruktor tworz±cy listê emotikonek.
-		\param parent rodzic na którym ma byæ wy¶wietlona lista
+		Konstruktor tworzï¿½cy listï¿½ emotikonek.
+		\param parent rodzic na ktï¿½rym ma byï¿½ wyï¿½wietlona lista
 		\param name nazwa obiektu
-		\param caller okno chat do ktorego ma byæ wpisana wybrana emotikonka
+		\param caller okno chat do ktorego ma byï¿½ wpisana wybrana emotikonka
 	**/
 	EmoticonSelector(ChatWidget *caller, QWidget *parent = 0);
 
 public slots:
 	/**
-		Slot obs³uguj±cy poprawne wy¶wietlenie listy emotikonek, wyrównanie do
-		okna wywo³uj±cego.
+		Slot obsï¿½ugujï¿½cy poprawne wyï¿½wietlenie listy emotikonek, wyrï¿½wnanie do
+		okna wywoï¿½ujï¿½cego.
 	**/
 	void alignTo(QWidget *w);
 
 };
 
+struct PrefixNode;
+typedef QPair<QChar, PrefixNode *> Prefix;
+
 struct PrefixNode
 {
 	int emotIndex;
-	QList<QPair<QChar, PrefixNode *> > childs;
+	QList<Prefix> childs;
 	PrefixNode();
 };
 

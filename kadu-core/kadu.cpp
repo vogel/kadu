@@ -402,11 +402,11 @@ void Kadu::popupMenu()
 
 	bool containsMe = false;
 	bool containsUserWithoutID = false;
-	CONST_FOREACH(user, users)
+	foreach(UserListElement user, users)
 	{
-		if (!containsUserWithoutID && !(*user).usesProtocol("Gadu"))
+		if (!containsUserWithoutID && !user.usesProtocol("Gadu"))
 			containsUserWithoutID = true;
-		if (!containsMe && (*user).usesProtocol("Gadu") && (*user).ID("Gadu") == Myself.ID("Gadu"))
+		if (!containsMe && user.usesProtocol("Gadu") && user.ID("Gadu") == Myself.ID("Gadu"))
 			containsMe = true;
 	}
 
@@ -433,8 +433,8 @@ void Kadu::popupMenu()
 		UserBox::management->setItemChecked(ignoreuseritem, IgnoredManager::isIgnored(selectedUsers));
 
 		on = true;
-		CONST_FOREACH(user, users)
-			if (!(*user).usesProtocol("Gadu") || !(*user).protocolData("Gadu", "Blocking").toBool())
+		foreach(UserListElement user, users)
+			if (!user.usesProtocol("Gadu") || !user.protocolData("Gadu", "Blocking").toBool())
 			{
 				on = false;
 				break;
@@ -442,8 +442,8 @@ void Kadu::popupMenu()
 		UserBox::management->setItemChecked(blockuseritem, on);
 
 		on = true;
-		CONST_FOREACH(user, users)
-			if (!(*user).usesProtocol("Gadu") || !(*user).protocolData("Gadu", "OfflineTo").toBool())
+		foreach(UserListElement user, users)
+			if (!user.usesProtocol("Gadu") || !user.protocolData("Gadu", "OfflineTo").toBool())
 			{
 				on = false;
 				break;
@@ -452,8 +452,8 @@ void Kadu::popupMenu()
 		UserBox::management->setItemChecked(offlinetouseritem, on);
 
 		on = false;
-		CONST_FOREACH(user, users)
-			if ((*user).data("HideDescription").toString() == "true")
+		foreach(UserListElement user, users)
+			if (user.data("HideDescription").toString() == "true")
 			{
 				on = true;
 				break;
@@ -461,8 +461,8 @@ void Kadu::popupMenu()
 		UserBox::management->setItemChecked(hidedescriptionitem, on);
 
 		on = true;
-		CONST_FOREACH(user, users)
-			if (!(*user).notify())
+		foreach(UserListElement user, users)
+			if (!user.notify())
 			{
 				on = false;
 				break;
@@ -578,8 +578,8 @@ void Kadu::copyPersonalInfo()
 	UserListElements users = activeUserBox->selectedUsers();
 	QStringList infoList;
 	QString copyPersonalDataSyntax = config_file.readEntry("General", "CopyPersonalDataSyntax", tr("Contact: %a[ (%u)]\n[First name: %f\n][Last name: %r\n][Mobile: %m\n]"));
-	CONST_FOREACH(user, users)
-		infoList.append(KaduParser::parse(copyPersonalDataSyntax, *user, false));
+	foreach(UserListElement user, users)
+		infoList.append(KaduParser::parse(copyPersonalDataSyntax, user, false));
 
 	QString info = infoList.join("\n");
 	if (!info.isEmpty())
@@ -703,8 +703,8 @@ void Kadu::editUserActionSetParams(QString /*protocolName*/, UserListElement use
 void Kadu::editUserActionAddedToToolbar(const UserGroup *users)
 {
 	kdebugf();
-	if ((users->count()) == 1 && (*users->begin()).isAnonymous())
-		editUserActionSetParams("", *users->begin());
+	if ((users->count()) == 1 && (*users->begin())->isAnonymous())
+		editUserActionSetParams("", **users->begin());
 	kdebugf2();
 }
 
@@ -890,16 +890,16 @@ void Kadu::blockUser()
 
 	UserListElements users = activeUserBox->selectedUsers();
 	bool on = true;
-	CONST_FOREACH(user, users)
-		if (!(*user).usesProtocol("Gadu") || !(*user).protocolData("Gadu", "Blocking").toBool())
+	foreach(UserListElement user, users)
+		if (!user.usesProtocol("Gadu") || !user.protocolData("Gadu", "Blocking").toBool())
 		{
 			on = false;
 			break;
 		}
 
- 	FOREACH(user, users)
-		if ((*user).usesProtocol("Gadu") && (*user).protocolData("Gadu", "Blocking").toBool() != !on)
-			(*user).setProtocolData("Gadu", "Blocking", !on);
+ 	foreach(UserListElement user, users)
+		if (user.usesProtocol("Gadu") && user.protocolData("Gadu", "Blocking").toBool() != !on)
+			user.setProtocolData("Gadu", "Blocking", !on);
 	userlist->writeToConfig();
 	kdebugf2();
 }
@@ -916,16 +916,16 @@ void Kadu::notifyUser()
 
 	UserListElements users = activeUserBox->selectedUsers();
 	bool on = true;
-	CONST_FOREACH(user, users)
-		if (!(*user).notify())
+	foreach(UserListElement user, users)
+		if (!user.notify())
 		{
 			on = false;
 			break;
 		}
 
-	FOREACH(user, users)
-		if ((*user).notify() != !on)
-			(*user).setNotify(!on);
+	foreach(UserListElement user, users)
+		if (user.notify() != !on)
+			user.setNotify(!on);
 
 	userlist->writeToConfig();
 	kdebugf2();
@@ -943,16 +943,16 @@ void Kadu::offlineToUser()
 
 	UserListElements users = activeUserBox->selectedUsers();
 	bool on = true;
-	CONST_FOREACH(user, users)
-		if (!(*user).usesProtocol("Gadu") || !(*user).protocolData("Gadu", "OfflineTo").toBool())
+	foreach(UserListElement user, users)
+		if (!user.usesProtocol("Gadu") || !user.protocolData("Gadu", "OfflineTo").toBool())
 		{
 			on = false;
 			break;
 		}
 
-	FOREACH(user, users)
-		if ((*user).usesProtocol("Gadu") && (*user).protocolData("Gadu", "OfflineTo").toBool() != !on)
-			(*user).setProtocolData("Gadu", "OfflineTo", !on);
+	foreach(UserListElement user, users)
+		if (user.usesProtocol("Gadu") && user.protocolData("Gadu", "OfflineTo").toBool() != !on)
+			user.setProtocolData("Gadu", "OfflineTo", !on);
 
 	userlist->writeToConfig();
 	kdebugf2();
@@ -970,15 +970,15 @@ void Kadu::hideDescription()
 
 	UserListElements users = activeUserBox->selectedUsers();
 	bool on = true;
-	CONST_FOREACH(user, users)
-		if ((*user).data("HideDescription").toString() == "true")
+	foreach(UserListElement user, users)
+		if (user.data("HideDescription").toString() == "true")
 		{
 			on = false;
 			break;
 		}
 
-	FOREACH(user, users)
-		(*user).setData("HideDescription", on ? "true" : "false");
+	foreach(UserListElement user, users)
+		user.setData("HideDescription", on ? "true" : "false");
 
 	userlist->writeToConfig();
 	kdebugf2();
@@ -1459,19 +1459,7 @@ Kadu::~Kadu(void)
 {
 	kdebugf();
 
-#if DEBUG_ENABLED
-	// for valgrind
-	QStringList mainActions;
-	mainActions << "inactiveUsersAction" << "descriptionUsersAction"
-				<< "configurationAction" << "editUserAction"
-				<< "addUserAction" << "openSearchAction";
-
-	CONST_FOREACH(act, mainActions)
-	{
-		ActionDescription *a = KaduActions[*act];
-		delete a;
-	}
-#endif
+	qDeleteAll(KaduActions);
 	delete selectedUsers;
 
 	kdebugf2();
@@ -1494,9 +1482,9 @@ void Kadu::createRecentChatsMenu()
 
 	unsigned int index = 0; // indeks pozycji w popupie
 
-	CONST_FOREACH(users, chat_manager->closedChatUsers())
+	foreach(UserListElements users, chat_manager->closedChatUsers())
 	{
-		QStringList altnicks = (*users).altNicks(); // lista nick�w z okna rozmowy
+		QStringList altnicks = users.altNicks(); // lista nick�w z okna rozmowy
 		QString chat_users;
 
 		if (altnicks.count() <= 5)

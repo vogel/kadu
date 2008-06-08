@@ -105,9 +105,9 @@ Notify::~Notify()
 	if (!Notifiers.isEmpty())
 	{
 		kdebugm(KDEBUG_WARNING, "WARNING: not unregistered notifiers found! (%u)\n", Notifiers.size());
-		QList<QString> notifierNames = Notifiers.keys();
-		CONST_FOREACH(name, notifierNames)
-			unregisterNotifier(*name);
+		QStringList notifierNames = Notifiers.keys();
+		foreach(const QString &name, notifierNames)
+			unregisterNotifier(name);
 	}
 
 	kdebugf2();
@@ -123,10 +123,10 @@ void Notify::mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigu
 	QStringList captions;
 	QStringList values;
 
-	CONST_FOREACH(notifyEvent, NotifyEvents)
+	foreach(const NotifyEvent &notifyEvent, NotifyEvents)
 	{
-		captions.append(qApp->translate("@default", (*notifyEvent).description));
-		values.append((*notifyEvent).name);
+		captions.append(qApp->translate("@default", notifyEvent.description));
+		values.append(notifyEvent.name);
 	}
 
 	notifications->setItems(values, captions);
@@ -157,12 +157,12 @@ void Notify::mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigu
 
 	statusGroupBox->addWidgets(0, notifyUsers);
 
-	CONST_FOREACH(user, *userlist)
-		if ((*user).usesProtocol("Gadu") && !(*user).isAnonymous())
-			if (!(*user).notify())
-				allUsers->addItem((*user).altNick());
+	foreach(UserListElement *user, *userlist)
+		if (user->usesProtocol("Gadu") && !user->isAnonymous())
+			if (!user->notify())
+				allUsers->addItem(user->altNick());
 			else
-				notifiedUsers->addItem((*user).altNick());
+				notifiedUsers->addItem(user->altNick());
 
 	allUsers->sortItems();
 	notifiedUsers->sortItems();
@@ -177,8 +177,8 @@ void Notify::mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigu
 
 	notificationsGroupBox = mainConfigurationWindow->configGroupBox("Notifications", "General", "Notifications");
 
-	FOREACH(notifierData, Notifiers)
-		addConfigurationWidget(*notifierData, notifierData.key());
+	foreach(const QString &key, Notifiers.keys())
+		addConfigurationWidget(Notifiers[key], key);
 
 	eventSwitched(0);
 }
@@ -187,8 +187,8 @@ void Notify::mainConfigurationWindowDestroyed()
 {
 	notificationsGroupBox = 0;
 
-	FOREACH(notifierData, Notifiers)
-		(*notifierData).configurationWidget = 0;
+	foreach(NotifierData notifierData, Notifiers)
+		notifierData.configurationWidget = 0;
 }
 
 void Notify::addConfigurationWidget(NotifierData &notifier, const QString &name)
@@ -231,16 +231,18 @@ void Notify::eventSwitched(int index)
 	kdebugf();
 
 	CurrentEvent = notifications->currentItemValue();
-	FOREACH(notifierData, Notifiers)
+	foreach(const QString &key, Notifiers.keys())
 	{
-		if (!(*notifierData).events.contains(CurrentEvent))
-			(*notifierData).events[CurrentEvent] = config_file.readBoolEntry("Notify", CurrentEvent + '_' + notifierData.key());
+		NotifierData notifierData = Notifiers[key];
 
-		if ((*notifierData).configurationWidget)
-			(*notifierData).configurationWidget->switchToEvent(CurrentEvent);
+		if (!notifierData.events.contains(CurrentEvent))
+			notifierData.events[CurrentEvent] = config_file.readBoolEntry("Notify", CurrentEvent + '_' + key);
 
-		if ((*notifierData).configurationGroupBox)
-			(*notifierData).configurationGroupBox->setChecked((*notifierData).events[CurrentEvent]);
+		if (notifierData.configurationWidget)
+			notifierData.configurationWidget->switchToEvent(CurrentEvent);
+
+		if (notifierData.configurationGroupBox)
+			notifierData.configurationGroupBox->setChecked(notifierData.events[CurrentEvent]);
 	}
 }
 
@@ -256,13 +258,15 @@ void Notify::configurationWindowApplied()
 
 	userlist->writeToConfig();
 
-	FOREACH(notifierData, Notifiers)
+	foreach(const QString &key, Notifiers.keys())
 	{
-		if ((*notifierData).configurationWidget)
-			(*notifierData).configurationWidget->saveNotifyConfigurations();
+		NotifierData notifierData = Notifiers[key];
 
-		FOREACH(event, ((*notifierData).events))
-			config_file.writeEntry("Notify", event.key() + '_' + notifierData.key(), *event);
+		if (notifierData.configurationWidget)
+			notifierData.configurationWidget->saveNotifyConfigurations();
+
+		foreach(const QString &eventKey, notifierData.events.keys())
+			config_file.writeEntry("Notify", eventKey + '_' + key, notifierData.events[eventKey]);
 	}
 }
 
@@ -394,12 +398,9 @@ void Notify::unregisterEvent(const QString &name)
 {
 	kdebugf();
 
-	FOREACH(it, NotifyEvents)// look for matching event
-		if ((*it).name == name)
-		{
-			NotifyEvents.remove(it);
-			break;
-		}
+	NotifyEvent remove;
+	remove.name = name;
+	NotifyEvents.removeAll(remove);
 
 	kdebugf2();
 }
@@ -430,12 +431,12 @@ void Notify::registerNotifier(const QString &name, Notifier *notifier)
 		QStringList addToMe;
 		addToMe << "toAvailable" << "toBusy" << "toInvisible" << "toNotAvailable";
 
-		CONST_FOREACH(i, addToMe)
+		foreach(const QString &i, addToMe)
 		{
-			if (!config_file.readBoolEntry("Notify", *i + '_' + name))
+			if (!config_file.readBoolEntry("Notify", i + '_' + name))
 			{
-				notifier->copyConfiguration("StatusChanged", *i);
-				config_file.writeEntry("Notify", *i + '_' + name, true);
+				notifier->copyConfiguration("StatusChanged", i);
+				config_file.writeEntry("Notify", i + '_' + name, true);
 			}
 		}
 
@@ -496,20 +497,26 @@ void Notify::notify(Notification *notification)
 
 	notification->acquire();
 
-	CONST_FOREACH(i, Notifiers)
-		if (config_file.readBoolEntry("Notify", notifyType + '_' + i.key()))
+	foreach(const QString &key, Notifiers.keys())
+	{
+		NotifierData notifier = Notifiers[key];
+
+		if (config_file.readBoolEntry("Notify", notifyType + '_' + key))
 		{
-			(*i).notifier->notify(notification);
+			notifier.notifier->notify(notification);
 			foundNotifier = true;
-			foundNotifierWithCallbackSupported = foundNotifierWithCallbackSupported || ((*i).notifier->callbackCapacity() == CallbackSupported);
+			foundNotifierWithCallbackSupported = foundNotifierWithCallbackSupported || (notifier.notifier->callbackCapacity() == CallbackSupported);
 		}
+	}
 
 	if (!foundNotifierWithCallbackSupported)
-		CONST_FOREACH(i, Notifiers)
+		foreach(const QString &key, Notifiers.keys())
 		{
-			if ((*i).notifier->callbackCapacity() == CallbackSupported)
+			NotifierData notifier = Notifiers[key];
+
+			if (notifier.notifier->callbackCapacity() == CallbackSupported)
 			{
-				(*i).notifier->notify(notification);
+				notifier.notifier->notify(notification);
 				foundNotifier = true;
 				foundNotifierWithCallbackSupported = true;
 				break;

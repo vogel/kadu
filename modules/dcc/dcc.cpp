@@ -418,8 +418,8 @@ bool DccManager::socketEvent(DccSocket *socket, bool &lock)
 			break;
 	}
 
-	FOREACH(handler, SocketHandlers)
-		if ((*handler)->socketEvent(socket, lock))
+	foreach(DccHandler *handler, SocketHandlers)
+		if (handler->socketEvent(socket, lock))
 			return true;
 
 	return false;

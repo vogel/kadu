@@ -149,7 +149,7 @@ void EncryptionManager::setupEncrypt(const UserGroup *group)
 	kdebugf();
 	QString keyfile_path;
 	keyfile_path.append(ggPath("keys/"));
-	keyfile_path.append((*(*group).constBegin()).ID("Gadu"));
+	keyfile_path.append((*(*group).constBegin())->ID("Gadu"));
 	keyfile_path.append(".pem");
 	QFileInfo keyfile(keyfile_path);
 	bool encryption_possible =
@@ -161,8 +161,8 @@ void EncryptionManager::setupEncrypt(const UserGroup *group)
 		QVariant v = chat_manager->getChatWidgetProperty(group, "EncryptionEnabled");
 		if (v.isValid())
 			encrypt = v.toBool();
-		else if ((*(group->constBegin())).data("EncryptionEnabled").isValid())
-			encrypt = (*(group->constBegin())).data("EncryptionEnabled").toString() == "true";
+		else if ((*(group->constBegin()))->data("EncryptionEnabled").isValid())
+			encrypt = (*(group->constBegin()))->data("EncryptionEnabled").toString() == "true";
 		else
 			encrypt = config_file.readBoolEntry("Chat", "Encryption");
 	}
@@ -201,7 +201,7 @@ void EncryptionManager::setupEncryptButton(ChatWidget* chat, bool enabled)
 */
 	chat_manager->setChatWidgetProperty(chat->users(), "EncryptionEnabled", QVariant(enabled));
 	if (chat->users()->count() == 1)
-		(*(chat->users()->begin())).setData("EncryptionEnabled", enabled ? "true" : "false");
+		(*(chat->users()->begin()))->setData("EncryptionEnabled", enabled ? "true" : "false");
 	kdebugf2();
 }
 
@@ -218,7 +218,7 @@ void EncryptionManager::encryptionActionActivated(QAction *sender, bool toggled)
 		return;
 	setupEncryptButton(chatWidget,!EncryptionEnabled[chatWidget]);
 	if (KeysManagerDialog)
-		KeysManagerDialog->turnContactEncryptionText((*chatWidget->users()->constBegin()).ID("Gadu"), EncryptionEnabled[chatWidget]);
+		KeysManagerDialog->turnContactEncryptionText((*chatWidget->users()->constBegin())->ID("Gadu"), EncryptionEnabled[chatWidget]);
 	kdebugf2();
 }
 
@@ -303,10 +303,10 @@ void EncryptionManager::turnEncryption(UserGroup *group, bool on)
 	else
 	{
 		chat_manager->setChatWidgetProperty(group, "EncryptionEnabled", QVariant(on));
-		(*(group->begin())).setData("EncryptionEnabled", (on ? "true" : "false"));
+		(*(group->begin()))->setData("EncryptionEnabled", (on ? "true" : "false"));
 	}
 	if (KeysManagerDialog)
-		KeysManagerDialog->turnContactEncryptionText((*(*group).constBegin()).ID("Gadu"), on);
+		KeysManagerDialog->turnContactEncryptionText((*(*group).constBegin())->ID("Gadu"), on);
 }
 
 void EncryptionManager::sendMessageFilter(const UserListElements users, QString &msg, bool &stop)
@@ -353,8 +353,8 @@ void EncryptionManager::userBoxMenuPopup()
 		unsigned int myUin = config_file.readUnsignedNumEntry("General", "UIN");
 		UserListElements users = activeUserBox->selectedUsers();
 
-		CONST_FOREACH(user, users)
-			if (!(*user).usesProtocol("Gadu") || (*user).ID("Gadu").toUInt() == myUin)
+		foreach(UserListElement user, users)
+			if (!user.usesProtocol("Gadu") || user.ID("Gadu").toUInt() == myUin)
 			{
 				sendKeyEnabled = false;
 				break;
@@ -390,8 +390,8 @@ void EncryptionManager::sendPublicKey()
 		mykey = t.read();
 		keyfile.close();
 		UserListElements users = activeUserBox->selectedUsers();
-		CONST_FOREACH(user, users)
-			gadu->sendMessage(*user, mykey);
+		foreach(UserListElement user, users)
+			gadu->sendMessage(user, mykey);
 
 		MessageBox::msg(tr("Your public key has been sent"), false, "Information", kadu);
 	}

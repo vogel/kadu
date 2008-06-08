@@ -48,8 +48,8 @@ class UserGroupData
 public:
 	UserGroupData();
 	~UserGroupData();
-	QHash<int, UserListElement> data;
-	QList<UserListElement> list;
+	QHash<int, UserListElement *> data;
+	QList<UserListElement *> list;
 
 };
 

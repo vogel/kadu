@@ -58,11 +58,8 @@ void SoundConfigurationWidget::saveNotifyConfigurations()
 	if (currentNotifyEvent != "")
 		soundFiles[currentNotifyEvent] = soundFileSelectFile->file();
 
-	CONST_FOREACH(soundFile, soundFiles)
-	{
-		const QString &eventName = soundFile.key();
-		config_file.writeEntry("Sounds", eventName + "_sound", *soundFile);
-	}
+	foreach(const QString &key, soundFiles)
+		config_file.writeEntry("Sounds", key + "_sound", soundFiles[key]);
 }
 
 void SoundConfigurationWidget::switchToEvent(const QString &event)

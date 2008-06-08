@@ -189,7 +189,7 @@ void ChatManager::saveOpenedWindows()
 		window_elem.setAttribute("protocol", protoId);
 		window_elem.setAttribute("id", protocol->ID());
 		const UserGroup *users = chat->users();
-		CONST_FOREACH(user, *users)
+		foreach(UserListElement *user, *users)
 		{
 			QDomElement user_elem = xml_config_file->createElement(window_elem, "Contact");
  			user_elem.setAttribute("id", (*user).ID(protoId));
@@ -216,7 +216,7 @@ ChatManager::~ChatManager()
 				<< "sendAction" << "chatAction" << "openChatWithAction";
 	foreach(QString act, chatActions)
 	{
-		ActionDescription *a = KaduActions[*act];
+		ActionDescription *a = KaduActions[act];
 		delete a;
 	}
 #endif
@@ -466,13 +466,13 @@ void ChatManager::blockUserActionActivated(QAction *sender, bool toggled)
 				break;
 			}
 
-		FOREACH(user, copy)
+		foreach(UserListElement user, copy)
 		{
-			QString uid = (*user).ID("Gadu");
-			if (gadu->validateUserID(uid) && (*user).protocolData("Gadu", "Blocking").toBool() != !on)
+			QString uid = user.ID("Gadu");
+			if (gadu->validateUserID(uid) && user.protocolData("Gadu", "Blocking").toBool() != !on)
 			{
-				(*user).setProtocolData("Gadu", "Blocking", !on);
-				if ((!on) && (!blocked_anonymous) && ((*user).isAnonymous()))
+				user.setProtocolData("Gadu", "Blocking", !on);
+				if ((!on) && (!blocked_anonymous) && (user.isAnonymous()))
 					blocked_anonymous = true;
 			}
 		}
@@ -535,8 +535,8 @@ void ChatManager::unregisterChatWidget(ChatWidget *chat)
 {
 	kdebugf();
 
-	FOREACH(curChat, ChatWidgets)
-		if (*curChat == chat)
+	foreach(ChatWidget *curChat, ChatWidgets)
+		if (curChat == chat)
 		{
 			if (chat->body->countMessages())
 			{
@@ -755,11 +755,11 @@ void ChatManager::sendMessage(UserListElement user, UserListElements selected_us
 QVariant& ChatManager::getChatWidgetProperty(const UserGroup *group, const QString &name)
 {
 	kdebugf();
-	FOREACH(addon, addons)
-		if (group->equals((*addon).users))
+	foreach(ChatInfo addon, addons)
+		if (group->equals(addon.users))
 		{
 			kdebugf2();
-			return (*addon).map[name];
+			return addon.map[name];
 		}
 	ChatInfo info;
 	info.users = group->toUserListElements();
@@ -772,10 +772,10 @@ QVariant& ChatManager::getChatWidgetProperty(const UserGroup *group, const QStri
 void ChatManager::setChatWidgetProperty(const UserGroup *group, const QString &name, const QVariant &value)
 {
 	kdebugf();
-	FOREACH(addon, addons)
-		if (group->equals((*addon).users))
+	foreach(ChatInfo addon, addons)
+		if (group->equals(addon.users))
 		{
-			(*addon).map[name] = value;
+			addon.map[name] = value;
 			kdebugf2();
 			return;
 		}

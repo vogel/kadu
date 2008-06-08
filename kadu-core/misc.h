@@ -209,14 +209,6 @@ QString narg(const QString &s, const QString **tab, int count);
 
 void printBacktrace(const QString &header = QString::null);
 
-// definiuje now� zmienn� v o takim samym typie jak x jednocze�nie inicjuj�c j� warto�ci� x
-#define VAR(v,x)	__typeof(x) v=x
-
-// szybsza w zapisaniu p�tla for
-#define FOREACH(i,c) for(VAR(i, (c).begin()); i!=(c).end(); ++i)
-
-#define CONST_FOREACH(i,c) for(VAR(i, (c).constBegin()), _kadu__##i##__end = (c).constEnd(); i!=_kadu__##i##__end; ++i)
-
 // private
 extern long long int startTime, beforeExecTime, endingTime, exitingTime;
 extern bool measureTime;

@@ -45,24 +45,24 @@ AdvancedUserList::AdvancedUserList()
 
 	userlist->addPerContactNonProtocolConfigEntry("priority", "Priority");
 
-	// zliczamy u¿ytkowników bez priorytetu
+	// zliczamy uï¿½ytkownikï¿½w bez priorytetu
 	int cnt = 0;
-	CONST_FOREACH(user, *userlist)
-		if ((*user).data("Priority").isNull())
+	foreach(UserListElement *user, *userlist)
+		if (user->data("Priority").isNull())
 			++cnt;
 
 	// i ustawiamy im priorytet
 	int i = 1;
-	FOREACH(user, *userlist)
-		if ((*user).data("Priority").isNull())
-			(*user).setData("Priority", int(0), true, i++ == cnt);
+	foreach(UserListElement *user, *userlist)
+		if (user->data("Priority").isNull())
+			user->setData("Priority", int(0), true, i++ == cnt);
 
 	connect(userlist, SIGNAL(userAdded(UserListElement, bool, bool)),
 			this,       SLOT(userAdded(UserListElement, bool, bool)));
 
 	const QList<UserBox *> &userboxes = UserBox::userboxes();
-	CONST_FOREACH(userbox, userboxes)
-		userboxCreated(*userbox);
+	foreach(UserBox *userbox, userboxes)
+		userboxCreated(userbox);
 	connect(&UserBox::createNotifier, SIGNAL(objectCreated(QObject *)), this, SLOT(userboxCreated(QObject *)));
 	connect(&UserInfo::createNotifier, SIGNAL(objectCreated(QObject *)), this, SLOT(userInfoWindowCreated(QObject *)));
 
@@ -79,10 +79,10 @@ AdvancedUserList::~AdvancedUserList()
 	disconnect(userlist, SIGNAL(userAdded(UserListElement, bool, bool)),
 				this,      SLOT(userAdded(UserListElement, bool, bool)));
 	const QList<UserBox *> &userboxes = UserBox::userboxes();
-	CONST_FOREACH(userbox, userboxes)
+	foreach(UserBox *userbox, userboxes)
 	{
-		(*userbox)->removeCompareFunction("Priority");
-		(*userbox)->removeCompareFunction("Pending");
+		userbox->removeCompareFunction("Priority");
+		userbox->removeCompareFunction("Pending");
 	}
 }
 
@@ -98,11 +98,11 @@ void AdvancedUserList::userboxCreated(QObject *new_object)
 	box->addCompareFunction("Priority", tr("Priorities"), compareByPriority);
 
 	int idx = 0;
-	// TODO: lipne sortowanie b±belkowe, pó¼niej siê to napisze porz±dnie
-	CONST_FOREACH(funId, order)
+	// TODO: lipne sortowanie bï¿½belkowe, pï¿½ï¿½niej siï¿½ to napisze porzï¿½dnie
+	foreach(const QString &funId, order)
 	{
-		while (box->compareFunctions()[idx].id != *funId)
-			if (!box->moveUpCompareFunction(*funId))
+		while (box->compareFunctions()[idx].id != funId)
+			if (!box->moveUpCompareFunction(funId))
 			{
 				--idx;
 				break;
@@ -188,11 +188,11 @@ void AdvancedUserList::displayFunctionList()
 	QListWidgetItem *selected = sortingListBox->currentItem();
 
 	sortingListBox->clear();
-	CONST_FOREACH(id, order)
-		CONST_FOREACH(fun, cmpFuns)
-			if ((*id) == (*fun).id)
+	foreach(const QString &id, order)
+		foreach(UserBox::CmpFuncDesc fun, cmpFuns)
+			if (id == fun.id)
 			{
-				sortingListBox->addItem((*fun).description);
+				sortingListBox->addItem(fun.description);
 				break;
 			}
 
@@ -249,8 +249,8 @@ void AdvancedUserList::configurationWindowApplied()
 	config_file.writeEntry("AdvUserList", "Order", order.join(","));
 
 	const QList<UserBox *> &userboxes = UserBox::userboxes();
-	CONST_FOREACH(userbox, userboxes)
-		userboxCreated(*userbox);
+	foreach(UserBox *userbox, userboxes)
+		userboxCreated(userbox);
 
 	kdebugf2();
 }

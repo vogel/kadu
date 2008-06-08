@@ -44,8 +44,8 @@ bool PendingMsgs::pendingMsgs(UserListElement user) const
 //	if (uin == 0)
 //		return pendingMsgs();
 
-	CONST_FOREACH(msg, msgs)
-		if((*msg).users[0] == user)
+	foreach(Element msg, msgs)
+		if(msg.users[0] == user)
 		{
 //			kdebugf2();
 			return true;
@@ -60,8 +60,8 @@ unsigned int PendingMsgs::pendingMsgsCount(UserListElements users) const
 
 	unsigned int count = 0;
 
-	CONST_FOREACH(msg, msgs)
-		if ((*msg).users.equals(users))
+	foreach(Element msg, msgs)
+		if (msg.users.equals(users))
 			count++;
 
 	return count;
@@ -108,27 +108,27 @@ void PendingMsgs::writeToFile()
 	int t = msgs.count();
 	f.writeBlock((char*)&t,sizeof(int));
 	// next for each message
-	CONST_FOREACH(i, msgs)
+	foreach(Element i, msgs)
 	{
 		// saving uins, first - number of
-		t=(*i).users.size();
+		t = i.users.size();
 		f.writeBlock((char*)&t,sizeof(int));
 		// uins
-		CONST_FOREACH(j, (*i).users)
+		foreach(UserListElement j, i.users)
 		{
-			UinType uin = (*j).ID("Gadu").toUInt();
+			UinType uin = j.ID("Gadu").toUInt();
 			f.writeBlock((char*)&uin, sizeof(UinType));
 		}
 		// message size
-		t=(*i).msg.length();
+		t = i.msg.length();
 		f.writeBlock((char*)&t,sizeof(int));
 		// message content
-		QString cmsg = codec_latin2->fromUnicode((*i).msg);
+		QString cmsg = codec_latin2->fromUnicode(i.msg);
 		f.writeBlock(cmsg, cmsg.length());
 		// message class
-		f.writeBlock((char*)&(*i).msgclass,sizeof(int));
+		f.writeBlock((char*)&i.msgclass,sizeof(int));
 		// and time
-		f.writeBlock((char*)&(*i).time,sizeof(time_t));
+		f.writeBlock((char*)&i.time,sizeof(time_t));
 	}
 	// close file
 	f.close();

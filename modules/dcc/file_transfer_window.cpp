@@ -260,10 +260,10 @@ FileTransferWindow::FileTransferWindow(QWidget *parent, const char *name)
 
 	loadGeometry(this, "General", "TransferWindowGeometry", 200, 200, 500, 300);
 
-	CONST_FOREACH(i, file_transfer_manager->transfers())
+	foreach(FileTransfer *i, file_transfer_manager->transfers())
 	{
-		(*i)->addListener(this, true);
-		newFileTransfer(*i);
+		i->addListener(this, true);
+		newFileTransfer(i);
 	}
 
 	contentsChanged();
@@ -275,8 +275,8 @@ FileTransferWindow::~FileTransferWindow()
 {
 	kdebugf();
 
-	CONST_FOREACH(i, file_transfer_manager->transfers())
-		(*i)->removeListener(this, true);
+	foreach(FileTransfer *i, file_transfer_manager->transfers())
+		i->removeListener(this, true);
 
 // 	saveGeometry(this, "General", "TransferWindowGeometry");
 
@@ -296,9 +296,9 @@ void FileTransferWindow::keyPressEvent(QKeyEvent *e)
 
 void FileTransferWindow::clearClicked()
 {
-	FOREACH(i, file_transfer_manager->transfers())
-		if ((*i)->status() == FileTransfer::StatusFinished)
-			(*i)->deleteLater();
+	foreach(FileTransfer *i, file_transfer_manager->transfers())
+		if (i->status() == FileTransfer::StatusFinished)
+			i->deleteLater();
 }
 
 void FileTransferWindow::contentsChanged()

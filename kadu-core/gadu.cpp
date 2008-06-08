@@ -1329,8 +1329,8 @@ void GaduProtocol::sendUserList()
 	char *types;
 
 	unsigned int j = 0;
-	CONST_FOREACH(user, *userlist)
-		if ((*user).usesProtocol("Gadu") && !(*user).isAnonymous())
+	foreach(UserListElement *user, *userlist)
+		if (user->usesProtocol("Gadu") && !user->isAnonymous())
 			++j;
 
 	if (!j)
@@ -1344,14 +1344,14 @@ void GaduProtocol::sendUserList()
 	types = new char[j];
 
 	j = 0;
-	CONST_FOREACH(user, *userlist)
-		if ((*user).usesProtocol("Gadu") && !(*user).isAnonymous())
+	foreach(UserListElement *user, *userlist)
+		if (user->usesProtocol("Gadu") && !user->isAnonymous())
 		{
-			uins[j] = (*user).ID("Gadu").toUInt();
-			if ((*user).protocolData("Gadu", "OfflineTo").toBool())
+			uins[j] = user->ID("Gadu").toUInt();
+			if (user->protocolData("Gadu", "OfflineTo").toBool())
 				types[j] = GG_USER_OFFLINE;
 			else
-				if ((*user).protocolData("Gadu", "Blocking").toBool())
+				if (user->protocolData("Gadu", "Blocking").toBool())
 					types[j] = GG_USER_BLOCKED;
 				else
 					types[j] = GG_USER_NORMAL;
@@ -1747,28 +1747,28 @@ QString GaduProtocol::userListToString(const UserList &userList) const
 	QString file;
 	QString contacts;
 
-	CONST_FOREACH(i, userList)
-		if (!(*i).isAnonymous() && ((*i).usesProtocol("Gadu") || !(*i).mobile().isEmpty()))
+	foreach(UserListElement *i, *userlist)
+		if (!i->isAnonymous() && (i->usesProtocol("Gadu") || !i->mobile().isEmpty()))
 		{
-			contacts += (*i).firstName();					contacts += ';';
-			contacts += (*i).lastName();					contacts += ';';
-			contacts += (*i).nickName();					contacts += ';';
-			contacts += (*i).altNick();						contacts += ';';
-			contacts += (*i).mobile();						contacts += ';';
-			contacts += (*i).data("Groups").toStringList().join(";");	contacts += ';';
-			if ((*i).usesProtocol("Gadu"))
-				contacts += (*i).ID("Gadu");				contacts += ';';
-			contacts += (*i).email();						contacts += ';';
-			file = (*i).aliveSound(type);
+			contacts += i->firstName();					contacts += ';';
+			contacts += i->lastName();					contacts += ';';
+			contacts += i->nickName();					contacts += ';';
+			contacts += i->altNick();						contacts += ';';
+			contacts += i->mobile();						contacts += ';';
+			contacts += i->data("Groups").toStringList().join(";");	contacts += ';';
+			if (i->usesProtocol("Gadu"))
+				contacts += i->ID("Gadu");				contacts += ';';
+			contacts += i->email();						contacts += ';';
+			file = i->aliveSound(type);
 			contacts += QString::number(type);				contacts += ';';
 			contacts += file;								contacts += ';';
-			file = (*i).messageSound(type);
+			file = i->messageSound(type);
 			contacts += QString::number(type);				contacts += ';';
 			contacts += file;								contacts += ';';
-			if ((*i).usesProtocol("Gadu"))
-				contacts += QString::number((*i).protocolData("Gadu", "OfflineTo").toBool());
+			if (i->usesProtocol("Gadu"))
+				contacts += QString::number(i->protocolData("Gadu", "OfflineTo").toBool());
 			contacts += ';';
-			contacts += (*i).homePhone();					//contacts += ';';
+			contacts += i->homePhone();					//contacts += ';';
 			contacts += "\r\n";
 		}
 
@@ -2478,9 +2478,9 @@ unsigned char *GaduFormater::allocFormantBuffer(const QList<struct richtext_form
 	tmpformats = cformats;
 	memcpy(tmpformats, &richtext_header, sizeof(struct gg_msg_richtext));
 	tmpformats += sizeof(struct gg_msg_richtext);
-	CONST_FOREACH(it, formants)
+
+	foreach(struct richtext_formant actformant, formants)
 	{
-		struct richtext_formant actformant = (*it);
 		actformant.format.position = gg_fix16(actformant.format.position);
 		memcpy(tmpformats, &actformant, sizeof(gg_msg_richtext_format));
 		tmpformats += sizeof(gg_msg_richtext_format);
@@ -2623,26 +2623,26 @@ QString GaduFormater::unformatGGMessage(const QString &msg, unsigned int &format
 				tmp = tmp.section("\"", 1, 1);
 				attribs = QStringList::split(";", tmp);
 				formantattribs.clear();
-				CONST_FOREACH(attrib, attribs)
+				foreach(const QString &attrib, attribs)
 				{
-					actattrib.name = (*attrib).section(":", 0, 0);
-					actattrib.value = (*attrib).section(":", 1, 1);
+					actattrib.name = attrib.section(":", 0, 0);
+					actattrib.value = attrib.section(":", 1, 1);
 					formantattribs.append(actattrib);
 				}
 				actformant.format.position = pos;
 				actformant.format.font = 0;
-				CONST_FOREACH(actattrib, formantattribs)
+				foreach(attrib_formant actattrib, formantattribs)
 				{
-					if ((*actattrib).name == "font-style" && (*actattrib).value == "italic")
+					if (actattrib.name == "font-style" && actattrib.value == "italic")
 						actformant.format.font |= GG_FONT_ITALIC;
-					if ((*actattrib).name == "text-decoration" && (*actattrib).value == "underline")
+					if (actattrib.name == "text-decoration" && actattrib.value == "underline")
 						actformant.format.font |= GG_FONT_UNDERLINE;
-					if ((*actattrib).name == "font-weight" && (*actattrib).value == "600")
+					if (actattrib.name == "font-weight" && actattrib.value == "600")
 						actformant.format.font |= GG_FONT_BOLD;
-					if ((*actattrib).name == "color")
+					if (actattrib.name == "color")
 					{
 						actformant.format.font |= GG_FONT_COLOR;
-						QColor color((*actattrib).value);
+						QColor color(actattrib.value);
 						actformant.color.red = color.red();
 						actformant.color.green = color.green();
 						actformant.color.blue = color.blue();

@@ -10,6 +10,7 @@
 #include <QHostAddress>
 
 #include "debug.h"
+#include "misc.h"
 #include "status.h"
 #include "usergroup.h"
 
@@ -184,10 +185,10 @@ QString UserListElement::ID(const QString &protocolName) const
 UserListElement::UserListElement(const UserListElement &copyMe)
 	: QObject()
 {
-//	kdebugf();
+	kdebugf();
 // 	copyMe.privateData->ref();
 	privateData = copyMe.privateData;
-//	kdebugf2();
+	kdebugf2();
 }
 
 UserListElement::UserListElement()

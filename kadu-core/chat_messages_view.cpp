@@ -40,8 +40,7 @@ ChatMessagesView::ChatMessagesView(QWidget *parent) : KaduTextBrowser(parent),
 
 ChatMessagesView::~ChatMessagesView()
 {
-	FOREACH(msg, Messages)
-		delete *msg;
+	qDeleteAll(Messages);
 	Messages.clear();
 
 //	delete bodyformat;
@@ -60,8 +59,8 @@ void ChatMessagesView::pageDown()
 
 void ChatMessagesView::imageReceivedAndSaved(UinType sender, uint32_t size, uint32_t crc32,const QString & /*path*/)
 {
-	FOREACH(message, Messages)
-		(*message)->replaceLoadingImages(sender, size, crc32);
+	foreach(ChatMessage *message, Messages)
+		message->replaceLoadingImages(sender, size, crc32);
 	repaintMessages();
 }
 
@@ -210,8 +209,7 @@ void ChatMessagesView::setPrune(unsigned int prune)
 
 void ChatMessagesView::clearMessages()
 {
-	FOREACH(message, Messages)
-		delete *message;
+	qDeleteAll(Messages);
 	Messages.clear();
 
 	clear();

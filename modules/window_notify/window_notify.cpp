@@ -95,8 +95,8 @@ NotificationWindow::NotificationWindow(Notification *notification)
 
 	if (callbacks.size())
 	{
-		FOREACH (i, callbacks)
-			addButton(buttons, (*i).first, (*i).second);
+		foreach(Notification::Callback i, callbacks)
+			addButton(buttons, i.first, i.second);
 	}
 	else
 		addButton(buttons, tr("OK"), SLOT(callbackAccept()));

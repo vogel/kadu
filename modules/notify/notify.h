@@ -21,7 +21,7 @@ class QListWidget;
 
 /**
 	@enum CallbackRequirement
-	Okre¶la, czy dane zdarzenie wymaga podjêcia od u¿ytkownika akcji innej ni¿ domy¶lne zaakceptowanie/odrzucenie.
+	Okreï¿½la, czy dane zdarzenie wymaga podjï¿½cia od uï¿½ytkownika akcji innej niï¿½ domyï¿½lne zaakceptowanie/odrzucenie.
  **/
 enum CallbackRequirement {
 	CallbackRequired,
@@ -30,7 +30,7 @@ enum CallbackRequirement {
 
 /**
 	@enum CallbackCapacity
-	Okre¶la, czy dany notifikator potrafi obs³u¿yæ zdarzenia wymagajace od u¿ytkownika akcji innej ni¿ domy¶lne zaakceptowanie/odrzucenie.
+	Okreï¿½la, czy dany notifikator potrafi obsï¿½uï¿½yï¿½ zdarzenia wymagajace od uï¿½ytkownika akcji innej niï¿½ domyï¿½lne zaakceptowanie/odrzucenie.
  **/
 enum CallbackCapacity {
 	CallbackSupported,
@@ -43,8 +43,8 @@ enum CallbackCapacity {
 	@short Widget konfiguracyjny dla Notifiera.
 
 	Widget jest tworzony i dodawany w odpowiednim miejscu w oknie konfiguracyjnym.
-	Zawarto¶æ elementów zmienia siê po wyborze innej notyfikacji w oknie konfiguracyjnym.
-	Wiget zapamietuje wszystkie zmiany dla wszystkich typów notyfikacji i w odpowienim
+	Zawartoï¿½ï¿½ elementï¿½w zmienia siï¿½ po wyborze innej notyfikacji w oknie konfiguracyjnym.
+	Wiget zapamietuje wszystkie zmiany dla wszystkich typï¿½w notyfikacji i w odpowienim
 	momencie je zapisuje.
 **/
 class NotifierConfigurationWidget : public QWidget
@@ -55,19 +55,19 @@ public:
 	NotifierConfigurationWidget(QWidget *parent = 0, char *name = 0) : QWidget(parent, name) {}
 
 	/**
-		W tej metodzie widget mo¿e wczytaæ konfigruacje wszystkich zdarzeñ.
+		W tej metodzie widget moï¿½e wczytaï¿½ konfigruacje wszystkich zdarzeï¿½.
 	 **/
 	virtual void loadNotifyConfigurations() = 0;
 	/**
-		W tej metodzie widget musi zapisaæ wszystkie zmienione konfiguracje
-		wszystkich zmienionych zdarzeñ.
+		W tej metodzie widget musi zapisaï¿½ wszystkie zmienione konfiguracje
+		wszystkich zmienionych zdarzeï¿½.
 	 **/
 	virtual void saveNotifyConfigurations() = 0;
 
 public slots:
 	/**
-		Slot wywo³ywany, gdy widget ma prze³±czyæ siê na konfigruacjê innego zdarzenia.
-		Zmiany w aktualnym zdarzeniu powinny zostaæ zapisane.
+		Slot wywoï¿½ywany, gdy widget ma przeï¿½ï¿½czyï¿½ siï¿½ na konfigruacjï¿½ innego zdarzenia.
+		Zmiany w aktualnym zdarzeniu powinny zostaï¿½ zapisane.
 
 		@arg event - nazwa nowego zdarzenia
 	 **/
@@ -77,14 +77,14 @@ public slots:
 
 /**
 	@class Notifier
-	@brief Klasa abstrakcyjna opisuj±ca notifikator.
+	@brief Klasa abstrakcyjna opisujï¿½ca notifikator.
 
-	Notifykatory zajmuj± siê wy¶wietlaniem lub informowaniem w inny sposób u¿ytkownika o wystêpuj±cych
-	w programie zdarzeniach (nowa rozmowa, nowy transfer pliku, b³±d...).
+	Notifykatory zajmujï¿½ siï¿½ wyï¿½wietlaniem lub informowaniem w inny sposï¿½b uï¿½ytkownika o wystï¿½pujï¿½cych
+	w programie zdarzeniach (nowa rozmowa, nowy transfer pliku, bï¿½ï¿½d...).
 
-	Notyfikatory mogê umo¿liwiaæ u¿ytkownikowi podjêcie akcji jak odebranie lub zignorownie rozmowy,
-	odebranie pliku, kontynuacje odbierania pliku i inne. Niektóry notifikatory nie bêd±
-	implementowaæ akcji, dlatego te¿ niektóre zdarzenia nie mog± byæ przez nie obs³ugiwane.
+	Notyfikatory mogï¿½ umoï¿½liwiaï¿½ uï¿½ytkownikowi podjï¿½cie akcji jak odebranie lub zignorownie rozmowy,
+	odebranie pliku, kontynuacje odbierania pliku i inne. Niektï¿½ry notifikatory nie bï¿½dï¿½
+	implementowaï¿½ akcji, dlatego teï¿½ niektï¿½re zdarzenia nie mogï¿½ byï¿½ przez nie obsï¿½ugiwane.
  **/
 class Notifier : public virtual QObject
 {
@@ -93,27 +93,27 @@ class Notifier : public virtual QObject
 		virtual ~Notifier() {};
 
 		/**
-			Okre¶la, czy notifikator poradzi sobie ze zdarzeniami wymagajacymi podjêcia akcji.
+			Okreï¿½la, czy notifikator poradzi sobie ze zdarzeniami wymagajacymi podjï¿½cia akcji.
 		 **/
 		virtual CallbackCapacity callbackCapacity() { return CallbackNotSupported; }
 
 		/**
-			Metoda informuj±ca notifikator o nowym zdarzeniu. Zdarzenie mo¿e wywo³aæ
-			sygna³ closed(), po którym notyfikator musi przestaæ informowaæ u¿ytkownika
-			o danym zdarzeniu (na przyk³ad, musi zamkn±æ skojarzone ze zdarzeniem okno).
+			Metoda informujï¿½ca notifikator o nowym zdarzeniu. Zdarzenie moï¿½e wywoï¿½aï¿½
+			sygnaï¿½ closed(), po ktï¿½rym notyfikator musi przestaï¿½ informowaï¿½ uï¿½ytkownika
+			o danym zdarzeniu (na przykï¿½ad, musi zamknï¿½ï¿½ skojarzone ze zdarzeniem okno).
 		 **/
 		virtual void notify(Notification *notification) = 0;
 
 		/**
 			Kopiuje konfiguracje jednego zdarzenia do drugiego.
-			U¿ywane przy przej¶ciu z 0.5 na 0.6 - po 0.6 zostanie usuniête.
+			Uï¿½ywane przy przejï¿½ciu z 0.5 na 0.6 - po 0.6 zostanie usuniï¿½te.
 		 **/
 		virtual void copyConfiguration(const QString &fromEvent, const QString &toEvent) = 0;
 
 		/**
 			Zwraca widget, jaki zostanie dodany do okna konfiguracyjnego
 			na prawo od odpowiedniego CheckBoxa.
-			Mo¿e zwróciæ zero.
+			Moï¿½e zwrï¿½ciï¿½ zero.
 		 **/
 		virtual NotifierConfigurationWidget *createConfigurationWidget(QWidget *parent = 0, char *name = 0) = 0;
 };
@@ -163,6 +163,8 @@ class Notify : public ConfigurationUiHandler
 		CallbackRequirement callbackRequirement;
 		const char *description;
 		NotifyEvent() : name(), callbackRequirement(CallbackNotRequired), description(0){}
+
+		bool operator == (const NotifyEvent &compare) { return name == compare.name; }
 	};
 	QList<NotifyEvent> NotifyEvents;
 

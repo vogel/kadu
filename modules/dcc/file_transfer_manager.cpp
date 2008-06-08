@@ -55,8 +55,8 @@ FileTransferManager::FileTransferManager(QObject *parent, const char *name) : QO
 	connect(chat_manager, SIGNAL(chatWidgetCreated(ChatWidget *)), this, SLOT(chatCreated(ChatWidget *)));
 	connect(chat_manager, SIGNAL(chatWidgetDestroying(ChatWidget *)), this, SLOT(chatDestroying(ChatWidget*)));
 
-	FOREACH(it, chat_manager->chats())
-		chatCreated(*it);
+	foreach(ChatWidget *it, chat_manager->chats())
+		chatCreated(it);
 
 	dcc_manager->addHandler(this);
 
@@ -94,8 +94,8 @@ FileTransferManager::~FileTransferManager()
 	disconnect(chat_manager, SIGNAL(chatWidgetCreated(ChatWidget *)), this, SLOT(chatCreated(ChatWidget *)));
 	disconnect(chat_manager, SIGNAL(chatWidgetDestroying(ChatWidget *)), this, SLOT(chatDestroying(ChatWidget *)));
 
-	FOREACH(it, chat_manager->chats())
-		chatDestroying(*it);
+	foreach(ChatWidget *it, chat_manager->chats())
+		chatDestroying(it);
 
 	destroyAll();
 
@@ -138,8 +138,8 @@ void FileTransferManager::writeToConfig()
 	QDomElement root_elem = xml_config_file->rootElement();
 	QDomElement fts_elem = xml_config_file->accessElement(root_elem, "FileTransfers");
 	xml_config_file->removeChildren(fts_elem);
-	CONST_FOREACH(i, Transfers)
-		(*i)->toDomElement(fts_elem);
+	foreach(FileTransfer *i, Transfers)
+		i->toDomElement(fts_elem);
 	xml_config_file->sync();
 
 	kdebugf2();
@@ -184,8 +184,8 @@ void FileTransferManager::sendFile(UinType receiver)
 		return;
 	}
 
-	CONST_FOREACH(file, files)
-		sendFile(receiver, *file);
+	foreach(const QString &file, files)
+		sendFile(receiver, file);
 
 	kdebugf2();
 }
@@ -229,10 +229,10 @@ void FileTransferManager::sendFile(const UserListElements users)
 
 	unsigned int myUin = config_file.readUnsignedNumEntry("General", "UIN");
 
-	CONST_FOREACH(user, users)
-		CONST_FOREACH(file, files)
-			if ((*user).usesProtocol("Gadu") && (*user).ID("Gadu") != QString::number(myUin))
-				sendFile((*user).ID("Gadu").toUInt(), *file);
+	foreach(UserListElement user, users)
+		foreach(const QString &file, files)
+			if (user.usesProtocol("Gadu") && user.ID("Gadu") != QString::number(myUin))
+				sendFile(user.ID("Gadu").toUInt(), file);
 
 	kdebugf2();
 }
@@ -257,8 +257,8 @@ void FileTransferManager::userboxMenuPopup()
 		unsigned int myUin = config_file.readUnsignedNumEntry("General", "UIN");
 		UserListElements users = activeUserBox->selectedUsers();
 
-		CONST_FOREACH(user, users)
-			if (!(*user).usesProtocol("Gadu") || (*user).ID("Gadu").toUInt() == myUin)
+		foreach(UserListElement user, users)
+			if (!user.usesProtocol("Gadu") || user.ID("Gadu").toUInt() == myUin)
 			{
 				dccKeyEnabled = false;
 				break;
@@ -302,9 +302,9 @@ void FileTransferManager::chatDestroying(ChatWidget *chat)
 
 void FileTransferManager::fileDropped(const UserGroup *group, const QString &fileName)
 {
-	CONST_FOREACH(i, *group)
-		if ((*i).usesProtocol("Gadu"))
-			sendFile((*i).ID("Gadu").toUInt(), fileName);
+	foreach(UserListElement *i, *group)
+		if (i->usesProtocol("Gadu"))
+			sendFile(i->ID("Gadu").toUInt(), fileName);
 }
 
 void FileTransferManager::showFileTransferWindow()
@@ -541,17 +541,17 @@ FileTransfer * FileTransferManager::search(FileTransfer::FileTransferType type, 
 {
 	kdebugf();
 
-	FOREACH(i, Transfers)
-		if ((*i)->Type == type && (*i)->Contact == contact)
+	foreach(FileTransfer *i, Transfers)
+		if (i->Type == type && i->Contact == contact)
 			if (fileNameType == FileTransfer::FileNameFull)
 			{
-				if ((*i)->FileName == fileName)
-					return *i;
+				if (i->FileName == fileName)
+					return i;
 			}
 			else
 			{
-				if ((*i)->GaduFileName == fileName)
-					return *i;
+				if (i->GaduFileName == fileName)
+					return i;
 			}
 
 	return 0;
@@ -561,9 +561,9 @@ FileTransfer * FileTransferManager::byUin(UinType uin)
 {
 	kdebugf();
 
-	FOREACH(i, Transfers)
-		if ((*i)->Contact == uin && (*i)->unused())
-			return *i;
+	foreach(FileTransfer *i, Transfers)
+		if (i->Contact == uin && i->unused())
+			return i;
 
 	return 0;
 }
@@ -572,9 +572,9 @@ FileTransfer * FileTransferManager::byUinAndStatus(UinType uin, FileTransfer::Fi
 {
 	kdebugf();
 
-	FOREACH(i, Transfers)
-		if ((*i)->Contact == uin && (*i)->unused() == 0 && (*i)->Status == status)
-			return *i;
+	foreach(FileTransfer *i, Transfers)
+		if (i->Contact == uin && i->unused() == 0 && i->Status == status)
+			return i;
 
 	return 0;
 }

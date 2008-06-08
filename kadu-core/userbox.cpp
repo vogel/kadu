@@ -262,9 +262,9 @@ void KaduListBoxPixmap::paint(QPainter *painter)
 				painter->setPen(descColor);
 			else
 				painter->setPen(origColor);
-			CONST_FOREACH(text, out)
+			foreach(const QString &text, out)
 			{
-				painter->drawText(pm.width() + 5, yPos, *text);
+				painter->drawText(pm.width() + 5, yPos, text);
 				yPos += descriptionFontMetrics->lineSpacing();
 			}
 
@@ -456,9 +456,9 @@ class ULEComparer
 inline bool ULEComparer::operator()(const UserListElement &e1, const UserListElement &e2) const
 {
 	int ret = 0;
-	CONST_FOREACH(f, CmpFunctions)
+	foreach(UserBox::CmpFuncDesc f, CmpFunctions)
 	{
-		ret = (*f).func(e1, e2);
+		ret = f.func(e1, e2);
 //		kdebugm(KDEBUG_WARNING, "%s %s %d\n", e1.altNick().local8Bit().data(), e2.altNick().local8Bit().data(), ret);
 		if (ret)
 			break;
@@ -766,8 +766,8 @@ void UserBox::refresh()
 		insertItem(new KaduListBoxPixmap(*user));
 
 	// restore selected users
-	CONST_FOREACH(username, s_users)
-		setSelected(findItem(*username), true);
+	foreach(const QString &username, s_users)
+		setSelected(findItem(username), true);
 	setCurrentItem(findItem(s_user));
 
 	// restore vertical scrollbar position
@@ -817,9 +817,9 @@ UserBox* UserBox::activeUserBox()
 {
 	kdebugf();
 
-	CONST_FOREACH(box, UserBoxes)
+	foreach(UserBox *box, UserBoxes)
 	{
-		QWidget *widget = *box;
+		QWidget *widget = box;
 		if (!widget->isShown())
 			continue;
 
@@ -827,7 +827,7 @@ UserBox* UserBox::activeUserBox()
 			widget = dynamic_cast<QWidget *>(widget->parent());
 
 		if (widget->isActiveWindow())
-			return *box;
+			return box;
 	}
 	kdebugmf(KDEBUG_WARNING, "return NULL!\n");
 //	printBacktrace("activeUserBox NULL");
@@ -842,16 +842,16 @@ void UserBox::refreshLater()
 void UserBox::refreshAll()
 {
 	kdebugf();
-	FOREACH(box, UserBoxes)
-		(*box)->refresh();
+	foreach(UserBox *box, UserBoxes)
+		box->refresh();
 	kdebugf2();
 }
 
 void UserBox::refreshAllLater()
 {
 	kdebugf();
-	FOREACH(box, UserBoxes)
-		(*box)->refreshLater();
+	foreach(UserBox *box, UserBoxes)
+		box->refreshLater();
 	kdebugf2();
 }
 
@@ -1030,12 +1030,12 @@ void UserBoxMenu::refreshIcons()
 		int id = idAt(i);
 		QString t = text(id);
 
-		CONST_FOREACH(it, iconNames)
-			if (t.startsWith((*it).first))
+		foreach(IconName it, iconNames)
+			if (t.startsWith(it.first))
 			{
 				bool visible = isItemVisible(id);
 				bool checked = isItemChecked(id);
-				changeItem(id, icons_manager->loadIcon((*it).second), t);
+				changeItem(id, icons_manager->loadIcon(it.second), t);
 				setItemVisible(id, visible);
 				setItemChecked(id, checked);
 			}
@@ -1091,8 +1091,8 @@ void UserBox::setColorsOrBackgrounds()
 			backgroundImage = 0;
 		}
 
-	FOREACH(userbox, UserBoxes)
-		(*userbox)->refreshBackground();
+	foreach(UserBox *userbox, UserBoxes)
+		userbox->refreshBackground();
 }
 
 QList<UserBox *> UserBox::UserBoxes;
@@ -1109,7 +1109,7 @@ void UserBox::applyFilter(UserGroup *g)
 		return;
 	Filters.append(g);
 	UserListElements users;
-	CONST_FOREACH(user, *VisibleUsers)
+	foreach(UserListElement *user, *VisibleUsers)
 		if (!g->contains(*user))
 			users.append(*user);
 	VisibleUsers->removeUsers(users);
@@ -1138,14 +1138,14 @@ void UserBox::removeFilter(UserGroup *g)
 	Filters.pop_back(); //temporarily removing
 
 	UserListElements users;
-	CONST_FOREACH(user, *last)
+	foreach(UserListElement *user, *last)
 	{
 		if (VisibleUsers->contains(*user)) // we are not looking for contacts which are certain
 			continue;
 		bool omit = false;
 
-		CONST_FOREACH(ngroup, NegativeFilters)
-			if ((*ngroup)->contains(*user))
+		foreach(UserGroup *ngroup, NegativeFilters)
+			if (ngroup->contains(*user))
 			{
 				omit = true;
 				break;
@@ -1153,8 +1153,8 @@ void UserBox::removeFilter(UserGroup *g)
 		if (omit)
 			continue;
 
-		CONST_FOREACH(group, Filters)
-			if (!(*group)->contains(*user))
+		foreach(UserGroup *group, Filters)
+			if (!group->contains(*user))
 			{
 				omit = true;
 				break; // if belongs to any group, there is no point in checking further
@@ -1178,7 +1178,7 @@ void UserBox::applyNegativeFilter(UserGroup *g)
 		return;
 	NegativeFilters.append(g);
 	UserListElements users;
-	CONST_FOREACH(user, *VisibleUsers)
+	foreach(UserListElement *user, *VisibleUsers)
 		if (g->contains(*user))
 			users.append(*user);
 	VisibleUsers->removeUsers(users);
@@ -1203,11 +1203,11 @@ void UserBox::removeNegativeFilter(UserGroup *g)
 			this, SLOT(userAddedToGroup(UserListElement, bool, bool)));
 
 	UserListElements users;
-	CONST_FOREACH(user, *g)
+	foreach(UserListElement *user, *g)
 	{
 		bool omit = false;
-		CONST_FOREACH(ngroup, NegativeFilters)
-			if ((*ngroup)->contains(*user))
+		foreach(UserGroup *ngroup, NegativeFilters)
+			if (ngroup->contains(*user))
 			{
 				omit = true;
 				break;
@@ -1215,8 +1215,8 @@ void UserBox::removeNegativeFilter(UserGroup *g)
 		if (omit)
 			continue;
 
-		CONST_FOREACH(group, Filters)
-			if (!(*group)->contains(*user))
+		foreach(UserGroup *group, Filters)
+			if (!group->contains(*user))
 			{
 				omit = true;
 				break;
@@ -1241,8 +1241,8 @@ void UserBox::addCompareFunction(const QString &id, const QString &trDescription
 
 void UserBox::removeCompareFunction(const QString &id)
 {
-	FOREACH(c, comparer->CmpFunctions)
-		if ((*c).id == id)
+	foreach(CmpFuncDesc c, comparer->CmpFunctions)
+		if (c.id == id)
 		{
 			comparer->CmpFunctions.remove(c);
 			refreshLater();
@@ -1256,22 +1256,23 @@ bool UserBox::moveUpCompareFunction(const QString &id)
 	CmpFuncDesc d;
 	int pos = 0;
 	bool found = false;
-	FOREACH(c, comparer->CmpFunctions)
+	foreach(CmpFuncDesc c, comparer->CmpFunctions)
 	{
-		if ((*c).id == id)
-		{
-			found = true;
-			if (pos == 0)
-				break;
-			d = *c;
-			--c;
-			c = comparer->CmpFunctions.insert(c, d);
-			c += 2;
-			comparer->CmpFunctions.remove(c);
-			refreshLater();
-			break;
-		}
-		++pos;
+	// TODO: 0.6.5
+// 		if (c.id == id)
+// 		{
+// 			found = true;
+// 			if (pos == 0)
+// 				break;
+// 			d = c;
+// 			--c;
+// 			c = comparer->CmpFunctions.insert(c, d);
+// 			c += 2;
+// 			comparer->CmpFunctions.remove(c);
+// 			refreshLater();
+// 			break;
+// 		}
+// 		++pos;
 	}
 	kdebugf2();
 	return found;
@@ -1284,22 +1285,23 @@ bool UserBox::moveDownCompareFunction(const QString &id)
 	int pos = 0;
 	int cnt = comparer->CmpFunctions.count();
 	bool found = false;
-	FOREACH(c, comparer->CmpFunctions)
+	foreach(CmpFuncDesc c, comparer->CmpFunctions)
 	{
-		if ((*c).id == id)
-		{
-			found = true;
-			if (pos == cnt - 1)
-				break;
-			d = *c;
-			++c;
-			c = comparer->CmpFunctions.insert(c, d);
-			c -= 2;
-			comparer->CmpFunctions.remove(c);
-			refreshLater();
-			break;
-		}
-		++pos;
+		// TODO: 0.6.5
+// 		if (c.id == id)
+// 		{
+// 			found = true;
+// 			if (pos == cnt - 1)
+// 				break;
+// 			d = *c;
+// 			++c;
+// 			c = comparer->CmpFunctions.insert(c, d);
+// 			c -= 2;
+// 			comparer->CmpFunctions.remove(c);
+// 			refreshLater();
+// 			break;
+// 		}
+// 		++pos;
 	}
 	kdebugf2();
 	return found;
@@ -1404,16 +1406,16 @@ void UserBox::userAddedToGroup(UserListElement elem, bool massively, bool last)
 	const UserGroup *s = static_cast<const UserGroup *>(sender());
 //	kdebugm(KDEBUG_INFO, "sender name: '%s'\n", s->name());
 	bool append = true;
-	CONST_FOREACH(group, NegativeFilters)
-		if ((*group)->contains(elem))
+	foreach(UserGroup *group, NegativeFilters)
+		if (group->contains(elem))
 		{
 			append = false;
 			break;
 		}
 //	kdebugm(KDEBUG_WARNING, "%d %d %d\n", append, massively, last);
 	if (append)
-		CONST_FOREACH(group, Filters)
-			if (!(*group)->contains(elem))
+		foreach(UserGroup *group, Filters)
+			if (!group->contains(elem))
 			{
 				append = false;
 				break;

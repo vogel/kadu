@@ -161,12 +161,12 @@ void KeysManager::getKeysList(QStringList &uins)
 	QString temp;
 	QString GGUIN = QString::number(config_file.readNumEntry("General", "UIN"));
 	
-	CONST_FOREACH(fileName, list)
+	foreach(const QString &fileName, list)
 	{
-		file.setName(ggPath("keys/").append(*fileName));
-		if (*fileName != QString("private.pem") && *fileName != GGUIN + QString(".pem") && file.open(QIODevice::ReadOnly))
+		file.setName(ggPath("keys/").append(fileName));
+		if (fileName != QString("private.pem") && fileName != GGUIN + QString(".pem") && file.open(QIODevice::ReadOnly))
 		{
-			temp = *fileName;
+			temp = fileName;
 			uins << (temp.remove(QRegExp(".pem$")));
 			file.close();
 		}
@@ -229,9 +229,9 @@ void KeysManager::refreshKeysList()
 	// clearing list
 	lv_keys->clear();
 	
-	CONST_FOREACH(strUin, uins)
+	foreach(const QString &strUin, uins)
 	{
-		UinType uin = (*strUin).toUInt(&ok);
+		UinType uin = strUin.toUInt(&ok);
 		if (ok)
 		{
 			ule = userlist->byID("Gadu", QString::number(uin));

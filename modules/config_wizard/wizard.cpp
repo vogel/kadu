@@ -266,8 +266,8 @@ void Wizard::registerGGAccount()
 		return;
 	}
 
-	FOREACH(widget, dontHaveNumberWidgets)
-		(*widget)->setEnabled(false);
+	foreach(QWidget *widget, dontHaveNumberWidgets)
+		widget->setEnabled(false);
 
 	haveNumber->setEnabled(false);
 	nextButton->setEnabled(false);
@@ -305,8 +305,8 @@ void Wizard::registeredGGAccount(bool ok, UinType uin)
 	{
 		MessageBox::msg(tr("An error has occured while registration. Please try again later."), false, "Warning");
 
-		FOREACH(widget, dontHaveNumberWidgets)
-			(*widget)->setEnabled(true);
+		foreach(QWidget *widget, dontHaveNumberWidgets)
+			widget->setEnabled(true);
 	}
 
 	disconnect(gadu, SIGNAL(registered(bool, UinType)), this, SLOT(registeredGGAccount(bool, UinType)));
@@ -435,10 +435,10 @@ void Wizard::createGGAccountPage()
 
 void Wizard::haveNumberChanged(bool haveNumber)
 {
-	FOREACH(widget, haveNumberWidgets)
-		(*widget)->setEnabled(haveNumber);
-	FOREACH(widget, dontHaveNumberWidgets)
-		(*widget)->setEnabled(!haveNumber);
+	foreach(QWidget *widget, haveNumberWidgets)
+		widget->setEnabled(haveNumber);
+	foreach(QWidget *widget, dontHaveNumberWidgets)
+		widget->setEnabled(!haveNumber);
 }
 
 void Wizard::loadGGAccountOptions()
@@ -635,20 +635,20 @@ void Wizard::createSoundPage()
 	ModuleInfo moduleInfo;
 
 	QStringList moduleList = modules_manager->staticModules();
-	CONST_FOREACH(moduleName, moduleList)
-		if (modules_manager->moduleInfo(*moduleName, moduleInfo))
+	foreach(const QString &moduleName, moduleList)
+		if (modules_manager->moduleInfo(moduleName, moduleInfo))
 			if (moduleInfo.provides.contains("sound_driver"))
 			{
-				soundModules.append(*moduleName);
+				soundModules.append(moduleName);
 				break;
 			}
 
 	if (soundModules.size() == 0)
 	{
 		moduleList = modules_manager->installedModules();
-		CONST_FOREACH(moduleName, moduleList)
-			if (modules_manager->moduleInfo(*moduleName, moduleInfo) && moduleInfo.provides.contains("sound_driver"))
-				soundModules.append(*moduleName);
+		foreach(const QString &moduleName, moduleList)
+			if (modules_manager->moduleInfo(moduleName, moduleInfo) && moduleInfo.provides.contains("sound_driver"))
+				soundModules.append(moduleName);
 	}
 
 	// make alsa/ext/arts first in list

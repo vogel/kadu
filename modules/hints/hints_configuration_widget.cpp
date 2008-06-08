@@ -64,15 +64,15 @@ void HintsConfigurationWidget::saveNotifyConfigurations()
 	if (currentNotifyEvent != "")
 		hintProperties[currentNotifyEvent] = currentProperties;
 
-	CONST_FOREACH(hintProperty, hintProperties)
+	foreach(const HintProperties &hintProperty, hintProperties)
 	{
-		const QString &eventName = (*hintProperty).eventName;
+		const QString &eventName = hintProperty.eventName;
 
-		config_file.writeEntry("Hints", QString("Event_") + eventName + "_font", (*hintProperty).font);
-		config_file.writeEntry("Hints", QString("Event_") + eventName + "_fgcolor", (*hintProperty).foregroundColor);
-		config_file.writeEntry("Hints", QString("Event_") + eventName + "_bgcolor", (*hintProperty).backgroundColor);
-		config_file.writeEntry("Hints", QString("Event_") + eventName + "_timeout", (int)(*hintProperty).timeout);
-		config_file.writeEntry("Hints", QString("Event_") + eventName + "_syntax", (*hintProperty).syntax);
+		config_file.writeEntry("Hints", QString("Event_") + eventName + "_font", hintProperty.font);
+		config_file.writeEntry("Hints", QString("Event_") + eventName + "_fgcolor", hintProperty.foregroundColor);
+		config_file.writeEntry("Hints", QString("Event_") + eventName + "_bgcolor", hintProperty.backgroundColor);
+		config_file.writeEntry("Hints", QString("Event_") + eventName + "_timeout", (int)hintProperty.timeout);
+		config_file.writeEntry("Hints", QString("Event_") + eventName + "_syntax", hintProperty.syntax);
 	}
 }
 

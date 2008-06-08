@@ -172,12 +172,12 @@ QString GaduImagesManager::getImageToSendFileName(uint32_t size, uint32_t crc32)
 {
 	kdebugf();
 	kdebugm(KDEBUG_INFO, "Searching images to send: size=%u, crc32=%u\n",size,crc32);
-	CONST_FOREACH(i, ImagesToSend)
+	foreach(ImageToSend i, ImagesToSend)
 	{
-		if ((*i).size==size && (*i).crc32==crc32)
+		if (i.size == size && i.crc32 == crc32)
 		{
 			kdebugm(KDEBUG_INFO, "Image data found\n");
-			return (*i).file_name;
+			return i.file_name;
 		}
 	}
 	kdebugm(KDEBUG_WARNING, "Image data not found\n");
@@ -188,12 +188,12 @@ QString GaduImagesManager::getSavedImageFileName(uint32_t size, uint32_t crc32)
 {
 	kdebugf();
 	kdebugm(KDEBUG_INFO, "Searching saved images: size=%u, crc32=%u\n",size,crc32);
-	CONST_FOREACH(i, SavedImages)
+	foreach(SavedImage i, SavedImages)
 	{
-		if ((*i).size==size && (*i).crc32==crc32)
+		if (i.size == size && i.crc32 == crc32)
 		{
 			kdebugm(KDEBUG_INFO, "Image data found\n");
-			return (*i).file_name;
+			return i.file_name;
 		}
 	}
 	kdebugm(KDEBUG_WARNING, "Image data not found\n");

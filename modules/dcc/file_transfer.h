@@ -63,8 +63,10 @@ public:
 	};
 
 private:
+	typedef QPair<QObject *, bool> Listener;
+
 	QObject *mainListener;
-	QList<QPair<QObject *, bool> > listeners;
+	QList<Listener> listeners;
 
 	DccSocket *Socket;
 	DccVersion Version;

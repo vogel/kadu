@@ -68,8 +68,8 @@ HistoryModule::HistoryModule()
 	connect(chat_manager, SIGNAL(chatWidgetCreated(ChatWidget *)), this, SLOT(chatCreated(ChatWidget *)));
 	connect(chat_manager, SIGNAL(chatWidgetDestroying(ChatWidget *)), this, SLOT(chatDestroying(ChatWidget*)));
 
-	FOREACH(it, chat_manager->chats())
-		chatCreated(*it);
+	foreach(ChatWidget *it, chat_manager->chats())
+		chatCreated(it);
 
 	connect(gadu, SIGNAL(messageReceived(Protocol *, UserListElements, const QString&, time_t)),
 		history, SLOT(messageReceived(Protocol *, UserListElements, const QString&, time_t)));
@@ -107,8 +107,8 @@ HistoryModule::~HistoryModule()
 	disconnect(chat_manager, SIGNAL(chatWidgetCreated(ChatWidget *)), this, SLOT(chatCreated(ChatWidget *)));
 	disconnect(chat_manager, SIGNAL(chatWidgetDestroying(ChatWidget *)), this, SLOT(chatDestroying(ChatWidget *)));
 
-	FOREACH(it, chat_manager->chats())
-		chatDestroying(*it);
+	foreach(ChatWidget *it, chat_manager->chats())
+		chatDestroying(it);
 
 	delete historyActionDescription;
 	historyActionDescription = 0;
@@ -171,8 +171,8 @@ void HistoryModule::chatKeyPressed(QKeyEvent *e, ChatWidget *chatWidget, bool &h
 	{
 		const UserGroup *users = chatWidget->users();
 		UinsList uins;
-		CONST_FOREACH(user, *users)
-			uins.append((*user).ID("Gadu").toUInt());
+		foreach(UserListElement *user, *users)
+			uins.append(user->ID("Gadu").toUInt());
 		//TODO: throw out UinsList as soon as possible!
 		(new HistoryDialog(uins))->show();
 

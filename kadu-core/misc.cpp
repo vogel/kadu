@@ -898,9 +898,9 @@ OpenChatWith::OpenChatWith(QWidget *parent)
 	c_text->setToolTip(tr("UIN or nick"));
 
 	QStringList posibilities;
-	CONST_FOREACH(user, userlist->toUserListElements())
-		if (!((*user).protocolList()).isEmpty())
-			posibilities.append((*user).altNick());
+	foreach(UserListElement user, userlist->toUserListElements())
+		if (!(user.protocolList()).isEmpty())
+			posibilities.append(user.altNick());
 	posibilities.sort();
 
 	c_text->insertStringList(posibilities);
@@ -1088,16 +1088,16 @@ ImageDialog::ImageDialog(QWidget *parent)
 QList<int> toIntList(const QList<QVariant> &in)
 {
 	QList<int> out;
-	CONST_FOREACH(it, in)
-		out.append((*it).toInt());
+	foreach(QVariant it, in)
+		out.append(it.toInt());
 	return out;
 }
 
 QList<QVariant> toVariantList(const QList<int> &in)
 {
 	QList<QVariant> out;
-	CONST_FOREACH(it, in)
-		out.append(QVariant(*it));
+	foreach(int it, in)
+		out.append(QVariant(it));
 	return out;
 }
 

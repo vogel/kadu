@@ -54,8 +54,8 @@ FileTransfer::~FileTransfer()
 	emit fileTransferStatusChanged(this);
 	emit fileTransferDestroying(this);
 
-	FOREACH(i, listeners)
-		disconnectSignals((*i).first, (*i).second);
+	foreach(Listener i, listeners)
+		disconnectSignals(i.first, i.second);
 
 	if (mainListener)
 		disconnectSignals(mainListener, false);

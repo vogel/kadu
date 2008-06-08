@@ -28,11 +28,6 @@ class UserList : public UserGroup
 	**/
 	UserList();
 
-	/**
-		\fn ~UserList()
-	**/
-	virtual ~UserList();
-
 	QMap<QString, QString> nonProtoKeys;
 	QMap<QString, QMap<QString, QString> > protoKeys;
 
@@ -50,6 +45,11 @@ public:
 		Sprz�ta po module listy kontakt�w.
 	**/
 	static void closeModule();
+
+	/**
+		\fn ~UserList()
+	**/
+	virtual ~UserList();
 
 public slots:
 	/**

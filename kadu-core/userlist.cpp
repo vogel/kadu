@@ -194,51 +194,51 @@ void UserList::writeToConfig()
 	QDomElement contacts_elem = xml_config_file->accessElement(root_elem, "Contacts");
 	xml_config_file->removeChildren(contacts_elem);
 
-	QHash<int, UserListElement>::iterator i = d->data.begin();
-	QHash<int, UserListElement>::iterator end = d->data.end();
+	QHash<int, UserListElement *>::iterator i = d->data.begin();
+	QHash<int, UserListElement *>::iterator end = d->data.end();
 
 	for (; i != end; i++)
 	{
-		if ((*i).isAnonymous())
+		if ((*i)->isAnonymous())
 			continue;
 		QDomElement contact_elem = xml_config_file->createElement(contacts_elem, "Contact");
-		contact_elem.setAttribute("altnick", (*i).altNick());
-		contact_elem.setAttribute("first_name", (*i).firstName());
-		contact_elem.setAttribute("last_name", (*i).lastName());
-		contact_elem.setAttribute("nick_name", (*i).nickName());
-		contact_elem.setAttribute("mobile", (*i).mobile());
-		contact_elem.setAttribute("email", (*i).email());
-		contact_elem.setAttribute("home_phone", (*i).homePhone());
-		if ((*i).usesProtocol("Gadu"))
+		contact_elem.setAttribute("altnick", (*i)->altNick());
+		contact_elem.setAttribute("first_name", (*i)->firstName());
+		contact_elem.setAttribute("last_name", (*i)->lastName());
+		contact_elem.setAttribute("nick_name", (*i)->nickName());
+		contact_elem.setAttribute("mobile", (*i)->mobile());
+		contact_elem.setAttribute("email", (*i)->email());
+		contact_elem.setAttribute("home_phone", (*i)->homePhone());
+		if ((*i)->usesProtocol("Gadu"))
 		{
-			contact_elem.setAttribute("uin", (*i).ID("Gadu"));
+			contact_elem.setAttribute("uin", (*i)->ID("Gadu"));
 			contact_elem.setAttribute("blocking",
-				(*i).protocolData("Gadu", "Blocking").toBool() ? QString("true") : QString("false"));
+				(*i)->protocolData("Gadu", "Blocking").toBool() ? QString("true") : QString("false"));
 			contact_elem.setAttribute("offline_to",
-				(*i).protocolData("Gadu", "OfflineTo").toBool() ? QString("true") : QString("false"));
+				(*i)->protocolData("Gadu", "OfflineTo").toBool() ? QString("true") : QString("false"));
 		}
 		contact_elem.setAttribute("notify",
-			(*i).notify() ? QString("true") : QString("false"));
-		contact_elem.setAttribute("groups", (*i).data("Groups").toStringList().join(","));
+			(*i)->notify() ? QString("true") : QString("false"));
+		contact_elem.setAttribute("groups", (*i)->data("Groups").toStringList().join(","));
 		NotifyType type;
-		contact_elem.setAttribute("alive_sound_file", (*i).aliveSound(type));
+		contact_elem.setAttribute("alive_sound_file", (*i)->aliveSound(type));
 		contact_elem.setAttribute("alive_sound_type", type);
-		contact_elem.setAttribute("message_sound_file", (*i).messageSound(type));
+		contact_elem.setAttribute("message_sound_file", (*i)->messageSound(type));
 		contact_elem.setAttribute("message_sound_type", type);
 
-		foreach(QString it, nonProtoKeys.keys())
+		foreach(const QString &it, nonProtoKeys.keys())
 		{
-			const QString &val = (*i).data(*it.data()).toString();
+			const QString &val = (*i)->data(*it.data()).toString();
 //			kdebugmf(KDEBUG_WARNING, "%s %s %s\n", (*i).altNick().local8Bit().data(), it.key().local8Bit().data(), val.local8Bit().data());
 			if (!val.isEmpty())
 				contact_elem.setAttribute(it, val);
 		}
 
-		foreach(QString it, protoKeys.keys())
-			if ((*i).usesProtocol(it))
+		foreach(const QString &it, protoKeys.keys())
+			if ((*i)->usesProtocol(it))
 				foreach(QString it2, protoKeys[it])
 				{
-					const QString &val = (*i).protocolData(it, it2).toString();
+					const QString &val = (*i)->protocolData(it, it2).toString();
 					if (!val.isEmpty())
 						contact_elem.setAttribute(it2, val);
 				}
@@ -254,16 +254,16 @@ void UserList::setAllOffline(const QString &protocolName)
 	s = protocols_manager->byProtocolID(protocolName)[0]->newStatus();
 	s->setOffline();
 
-	QList<UserListElement>::iterator user = begin();
+	QList<UserListElement *>::iterator user = begin();
 	size_type cnt = count();
 	int todo = 0;
 
 	// zliczamy najpierw kontakty, kt�rych status przestawimy - czyli takie, kt�re maj� opis lub nie s� offline
 	for (size_type j = 1; j <= cnt; ++j, ++user)
 	{
-		if ((*user).usesProtocol(protocolName))
+		if ((*user)->usesProtocol(protocolName))
 		{
-			const UserStatus &stat = (*user).status(protocolName);
+			const UserStatus &stat = (*user)->status(protocolName);
 			if (!stat.isOffline() || stat.hasDescription())
 				++todo;
 		}
@@ -275,11 +275,11 @@ void UserList::setAllOffline(const QString &protocolName)
 	for (size_type j = 1; j <= cnt; ++j, ++user)
 	{
 //		kdebugm(KDEBUG_INFO, "%s %d\n", (*user).altNick().local8Bit().data(), (*user).usesProtocol(protocolName));
-		if ((*user).usesProtocol(protocolName))
+		if ((*user)->usesProtocol(protocolName))
 		{
-			const UserStatus &stat = (*user).status(protocolName);
+			const UserStatus &stat = (*user)->status(protocolName);
 			if (!stat.isOffline() || stat.hasDescription())
-				(*user).setStatus(protocolName, *s, true, i++ == todo);
+				(*user)->setStatus(protocolName, *s, true, i++ == todo);
 		}
 	}
 	delete s;
@@ -332,8 +332,8 @@ void UserList::removePerContactNonProtocolConfigEntry(const QString &attribute_n
 
 	QStringList keys = QStringList::split(",", config_file.readEntry("General", "NonProtoAdditionalAttributes"));
 	QStringList atts = keys.grep(attribute_name + '=');
-	CONST_FOREACH(att, atts)
-		keys.remove(*att);
+	foreach(const QString &att, atts)
+		keys.remove(att);
 	config_file.writeEntry("General", "NonProtoAdditionalAttributes", keys.join(","));
 
 	kdebugf2();
@@ -370,8 +370,8 @@ void UserList::removePerContactProtocolConfigEntry(const QString &protocolName, 
 
 	QStringList keys = QStringList::split(",", config_file.readEntry("General", "ProtoAdditionalAttributes"));
 	QStringList atts = keys.grep(protocolName + '=' + attribute_name + '=');
-	CONST_FOREACH(att, atts)
-		keys.remove(*att);
+	foreach(const QString &att, atts)
+		keys.remove(att);
 	config_file.writeEntry("General", "ProtoAdditionalAttributes", keys.join(","));
 
 	kdebugf2();
@@ -382,16 +382,16 @@ void UserList::initKeys()
 	kdebugf();
 
 	QStringList keys1 = QStringList::split(",", config_file.readEntry("General", "NonProtoAdditionalAttributes"));
-	CONST_FOREACH(it, keys1)
+	foreach(const QString &it, keys1)
 	{
-		QStringList x = QStringList::split("=", *it);
+		QStringList x = QStringList::split("=", it);
 		nonProtoKeys[x[0]] = x[1];
 	}
 
 	QStringList keys2 = QStringList::split(",", config_file.readEntry("General", "ProtoAdditionalAttributes"));
-	CONST_FOREACH(it, keys2)
+	foreach(const QString &it, keys2)
 	{
-		QStringList x = QStringList::split("=", *it);
+		QStringList x = QStringList::split("=", it);
 		protoKeys[x[0]][x[1]] = x[2];
 	}
 

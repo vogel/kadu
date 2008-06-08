@@ -37,7 +37,7 @@ void XmlConfigFile::read()
 	files += backups.entryList();
 	bool fileOpened(false);
 
-	foreach(QString fileName, files)
+	foreach(const QString &fileName, files)
 	{
 		file.setName(ggPath(fileName));
 		fileOpened = file.open(QIODevice::ReadOnly);
@@ -296,14 +296,14 @@ void PlainConfigFile::write() const
 		kdebugm(KDEBUG_INFO, "file opened '%s'\n", (const char *)file.name().local8Bit());
 		QTextStream stream(&file);
 		stream.setCodec(codec_latin2);
-		CONST_FOREACH(i, groups)
+		foreach(const QString &key, groups.keys())
 		{
 //			kdebugm(KDEBUG_DUMP, ">> %s\n", (const char*)i.key().local8Bit());
-			out.append(format1.arg(i.key()));
-			CONST_FOREACH(j, i.data())
+			out.append(format1.arg(key));
+			foreach(const QString &dataKey, groups[key].keys())
 			{
-				QString q = j.data();
-				out.append(format2.arg(j.key()).arg(q.replace('\n', "\\n")));
+				QString q = groups[key][dataKey];
+				out.append(format2.arg(dataKey).arg(q.replace('\n', "\\n")));
 //				kdebugm(KDEBUG_DUMP, ">>>>> %s %s\n", (const char*)j.key().local8Bit(), (const char*)q.local8Bit());
 			}
 			out.append("\n");
@@ -531,7 +531,7 @@ QColor PlainConfigFile::readColorEntry(const QString &group,const QString &name,
 		if (!str.contains(','))
 			return QColor(str);
 
-		//stary zapis kolorów, w 0.5.0 mo¿na bêdzie wywaliæ
+		//stary zapis kolorï¿½w, w 0.5.0 moï¿½na bï¿½dzie wywaliï¿½
 		bool ok;
 		QStringList stringlist = QStringList::split(",", str);
 		if (stringlist.count() != 3)
@@ -876,7 +876,7 @@ QColor ConfigFile::readColorEntry(const QString &group,const QString &name, cons
 		if (!str.contains(','))
 			return QColor(str);
 
-		//stary zapis kolorów, w 0.5.0 mo¿na bêdzie wywaliæ
+		//stary zapis kolorï¿½w, w 0.5.0 moï¿½na bï¿½dzie wywaliï¿½
 		bool ok;
 		QStringList stringlist = QStringList::split(",", str);
 		if (stringlist.count() != 3)

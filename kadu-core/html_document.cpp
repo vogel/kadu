@@ -131,10 +131,10 @@ void HtmlDocument::parseHtml(const QString &html)
 QString HtmlDocument::generateHtml() const
 {
 	QString html,tmp;
-	CONST_FOREACH(e, Elements)
+	foreach(const Element &e, Elements)
 	{
-		tmp = (*e).text;
-		if (!(*e).tag)
+		tmp = e.text;
+		if (!e.tag)
 			escapeText(tmp);
 		html += tmp;
 	}

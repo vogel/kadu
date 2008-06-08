@@ -228,9 +228,9 @@ Sms::Sms(const QString& altnick, QWidget* parent) : QWidget(parent, Qt::Window),
 	grid->addWidget(recipient, 0, 1);
 
 	QStringList strlist; // lista kontaktow z przypisanym numerem telefonu
-	CONST_FOREACH(user, *userlist)
-		if (!(*user).mobile().isEmpty())
-		 	strlist.append((*user).altNick());
+	foreach(UserListElement *user, *userlist)
+		if (!user->mobile().isEmpty())
+		 	strlist.append(user->altNick());
 	strlist.sort();
 	strlist.prepend(QString::null);
 
@@ -324,10 +324,10 @@ void Sms::updateList(const QString &newnumber)
 		kdebugmf(KDEBUG_FUNCTION_END, "end: new number is empty\n");
 		return;
 	}
-	CONST_FOREACH(user, *userlist)
-		if ((*user).mobile() == newnumber)
+	foreach(UserListElement *user, *userlist)
+		if (user->mobile() == newnumber)
 		{
-			list->setCurrentText((*user).altNick());
+			list->setCurrentText(user->altNick());
 			kdebugf2();
 			return;
 		}
@@ -583,11 +583,11 @@ SmsGateway* SmsConfigurationUiHandler::getGateway(const QString& number)
 	kdebugf();
 	QStringList priorities = QStringList::split(";", config_file.readEntry("SMS", "Priority"));
 
-	CONST_FOREACH(gate, priorities)
+	foreach(const QString &gate, priorities)
 	{
-		if (gateways.contains(*gate))
+		if (gateways.contains(gate))
 		{
-			isValidFunc *f = gateways[*gate];
+			isValidFunc *f = gateways[gate];
 			SmsGateway *Gateway = f(number, this);
 			if (Gateway)
 			{
@@ -697,13 +697,13 @@ void SmsConfigurationUiHandler::mainConfigurationWindowCreated(MainConfiguration
 // TODO: fix it, should be ':' not ';'
 	QStringList priority = QStringList::split(";", config_file.readEntry("SMS", "Priority"));
 
-	CONST_FOREACH(gate, priority)
-		if (gateways.contains(*gate))
-			gatewayListWidget->addItem(*gate);
+	foreach(const QString &gate, priority)
+		if (gateways.contains(gate))
+			gatewayListWidget->addItem(gate);
 
-	CONST_FOREACH(gate, gateways)
-		if (gatewayListWidget->findItems(gate.key(), 0).isEmpty())
-			gatewayListWidget->addItem(gate.key());
+	foreach(const QString &key, gateways.keys())
+		if (gatewayListWidget->findItems(key, 0).isEmpty())
+			gatewayListWidget->addItem(key);
 }
 
 void SmsConfigurationUiHandler::createDefaultConfiguration()

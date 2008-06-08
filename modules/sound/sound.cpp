@@ -344,9 +344,9 @@ void SoundManager::applyTheme(const QString &themeName)
 	themes->setTheme(themeName);
 	QMap<QString, QString> entries = themes->getEntries();
 
-	CONST_FOREACH(entry, entries)
-		if (!entry.key().isEmpty() && !(*entry).isEmpty())
-			config_file.writeEntry("Sounds", entry.key() + "_sound", themes->themePath() + *entry);
+	foreach(const QString &key, entries)
+		if (!key.isEmpty() && !entries[key].isEmpty())
+			config_file.writeEntry("Sounds", key + "_sound", themes->themePath() + entries[key]);
 }
 
 Themes *SoundManager::theme()

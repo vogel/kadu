@@ -150,11 +150,11 @@ void HistoryManager::appendSms(const QString &mobile, const QString &msg)
 	linelist.append(QString::number(time(NULL)));
 	linelist.append(text2csv(html_msg));
 
-	CONST_FOREACH(i, *userlist)
-		if ((*i).mobile() == mobile)
+	foreach(UserListElement *i, *userlist)
+		if (i->mobile() == mobile)
 		{
-			altnick = (*i).altNick();
-			uin = (*i).ID("Gadu").toUInt();;
+			altnick = i->altNick();
+			uin = i->ID("Gadu").toUInt();;
 			break;
 		}
 	if (uin)
@@ -546,9 +546,9 @@ void HistoryManager::convSms2ekgForm()
 			datetime.setTime(QTime(czas.left(2).toInt(), czas.mid(3, 2).toInt(), czas.right(2).toInt()));
 			linelist.append(QString::number(-datetime.secsTo(
 				QDateTime(QDate(1970, 1, 1), QTime(0 ,0)))));
-			CONST_FOREACH(user, *userlist)
-				if ((*user).mobile() == mobile)
-					uin = (*user).ID("Gadu").toUInt();
+			foreach(UserListElement *user, *userlist)
+				if (user->mobile() == mobile)
+					uin = user->ID("Gadu").toUInt();
 			header = false;
 		}
 		else
@@ -930,13 +930,13 @@ QList<UinsList> HistoryManager::getUinsLists() const
 	UinsList uins;
 
 	QStringList entryList = dir.entryList();
-	FOREACH(entry, entryList)
+	foreach(QString entry, entryList)
 	{
-		struins = QStringList::split("_", (*entry).remove(QRegExp(".idx$")));
+		struins = QStringList::split("_", entry.remove(QRegExp(".idx$")));
 		uins.clear();
 		if (struins[0] != "sms")
-			CONST_FOREACH(struin, struins)
-				uins.append((*struin).toUInt());
+			foreach(const QString &struin, struins)
+				uins.append(struin.toUInt());
 		entries.append(uins);
 	}
 
@@ -1194,17 +1194,17 @@ void HistoryManager::imageReceivedAndSaved(UinType sender, uint32_t size, uint32
 	{
 //		kdebugm(KDEBUG_INFO, "sender found\n");
 		QList<BuffMessage> &messages = it.data();
-		FOREACH(msg, messages)
+		foreach(BuffMessage msg, messages)
 		{
 //			kdebugm(KDEBUG_INFO, "counter:%d\n", (*msg).counter);
-			if ((*msg).counter)
+			if (msg.counter)
 			{
-				int occur = (*msg).message.find(reg);
+				int occur = msg.message.find(reg);
 //				kdebugm(KDEBUG_INFO, "occur:%d\n", occur);
 				if (occur)
 				{
-					(*msg).message.replace(reg, imagehtml);
-					(*msg).counter -= occur;
+					msg.message.replace(reg, imagehtml);
+					msg.counter -= occur;
 				}
 			}
 		}

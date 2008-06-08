@@ -192,13 +192,13 @@ void GroupsManager::refreshTabBar()
 	}
 
 	/* dodajemy nowe zakladki */
-	CONST_FOREACH(group, group_list)
+	foreach(const QString &group, group_list)
 	{
 		bool createNewTab = true;
 
 		for (int j = 0, count = GroupBar->count(); j < count; ++j)
 		{
-			if (GroupBar->tabText(j) == (*group))
+			if (GroupBar->tabText(j) == group)
 			{
 				createNewTab = false;
 				break;
@@ -207,11 +207,11 @@ void GroupsManager::refreshTabBar()
 
 		if (createNewTab)
 		{
-			QString iconPath = config_file.readEntry("GroupIcon", (*group));	
+			QString iconPath = config_file.readEntry("GroupIcon", group);
 			if (!iconPath.isEmpty()) 
-				GroupBar->addTab(icons_manager->loadIcon(iconPath), *group);
+				GroupBar->addTab(icons_manager->loadIcon(iconPath), group);
 			else 
-				GroupBar->addTab(*group);
+				GroupBar->addTab(group);
 		}
 	}
 
@@ -313,12 +313,12 @@ GroupsManager::GroupsManager()
 	showBlocking(true), showOffline(true), showWithoutDescription(true), refreshTimer()
 {
 	kdebugf();
-	CONST_FOREACH(user, *userlist)
+	foreach(UserListElement *user, *userlist)
 	{
 //		kdebugm(KDEBUG_INFO, "%s\n", (*user).altNick().local8Bit().data());
-		QStringList groups_ = (*user).data("Groups").toStringList();
-		CONST_FOREACH(g, groups_)
-			addGroup(*g)->addUser(*user);
+		QStringList groups_ = user->data("Groups").toStringList();
+		foreach(const QString &g, groups_)
+			addGroup(g)->addUser(*user);
 	}
 	connect (userlist, SIGNAL(userDataChanged(UserListElement, QString, QVariant, QVariant, bool, bool)),
 			 this, SLOT(userDataChanged(UserListElement, QString, QVariant, QVariant, bool, bool)));
@@ -355,8 +355,8 @@ void GroupsManager::userAddedToMainUserlist(UserListElement elem, bool /*massive
 {
 	kdebugf();
 	QStringList groups = elem.data("Groups").toStringList();
-	CONST_FOREACH(group, groups)
-		addGroup(*group)->addUser(elem, true, false);
+	foreach(const QString &group, groups)
+		addGroup(group)->addUser(elem, true, false);
 	kdebugf2();
 }
 
@@ -364,8 +364,8 @@ void GroupsManager::userRemovedFromMainUserlist(UserListElement elem, bool /*mas
 {
 	kdebugf();
 	QStringList groups = elem.data("Groups").toStringList();
-	CONST_FOREACH(grp, groups)
-		addGroup(*grp)->removeUser(elem, true, false);
+	foreach(const QString &group, groups)
+		addGroup(group)->removeUser(elem, true, false);
 	kdebugf2();
 }
 
@@ -429,7 +429,7 @@ void GroupsManager::removeGroup(const QString &name)
 	UserGroup *group = this->Groups[name];
 
 	for (int i = 1, cnt = group->count(); i <= cnt; ++i)
-		group->removeUser(*(group->constBegin()), true, i == cnt);
+		group->removeUser(**group->constBegin(), true, i == cnt);
 
 	disconnect(group, SIGNAL(userAdded(UserListElement, bool, bool)),
 				this, SLOT(userAdded(UserListElement, bool, bool)));
@@ -452,24 +452,24 @@ void GroupsManager::userDataChanged(UserListElement elem, QString name, QVariant
 	kdebugf();
 	QStringList oldGroups = oldValue.toStringList();
 	QStringList newGroups = currentValue.toStringList();
-	CONST_FOREACH(v, oldGroups)
+	foreach(const QString &v, oldGroups)
 	{
-		if (!newGroups.contains(*v)) //usuni�cie z grupy
-			group(*v)->removeUser(elem);
+		if (!newGroups.contains(v)) //usuni�cie z grupy
+			group(v)->removeUser(elem);
 
-		if (group(*v)->count() == 0)
+		if (group(v)->count() == 0)
 		{
-			removeGroup(*v);
-			config_file.removeVariable("GroupIcon", (*v));
+			removeGroup(v);
+			config_file.removeVariable("GroupIcon", (v));
 		}
 	}
 
-	CONST_FOREACH(v, newGroups)
-		if (!oldGroups.contains(*v)) //dodanie grupy
+	foreach(const QString &v, newGroups)
+		if (!oldGroups.contains(v)) //dodanie grupy
 		{
-			if (!groupExists(*v))
-				addGroup(*v);
-			group(*v)->addUser(elem);
+			if (!groupExists(v))
+				addGroup(v);
+			group(v)->addUser(elem);
 		}
 	refreshTabBarLater();
 	kdebugf2();
@@ -479,13 +479,13 @@ void GroupsManager::userDataChanged(UserListElement elem, QString name, QVariant
 void GroupsManager::userAdded(UserListElement elem, bool /*massively*/, bool /*last*/)
 {
 //	kdebugf();
-	CONST_FOREACH(group, Groups)
-		if (sender() == *group)
+	foreach(const QString &key, Groups.keys())
+		if (sender() == Groups[key])
 		{
 			QStringList ule_groups = elem.data("Groups").toStringList();
-			if (!ule_groups.contains(group.key()))
+			if (!ule_groups.contains(key))
 			{
-				ule_groups.append(group.key());
+				ule_groups.append(key);
 				elem.setData("Groups", ule_groups);
 			}
 			break;
@@ -497,13 +497,13 @@ void GroupsManager::userAdded(UserListElement elem, bool /*massively*/, bool /*l
 void GroupsManager::userRemoved(UserListElement elem, bool /*massively*/, bool /*last*/)
 {
 //	kdebugf();
-	CONST_FOREACH(group, Groups)
-		if (sender() == *group)
+	foreach(const QString &key, Groups.keys())
+		if (sender() == Groups[key])
 		{
 			QStringList ule_groups = elem.data("Groups").toStringList();
-			if (ule_groups.contains(group.key()))
+			if (ule_groups.contains(key))
 			{
-				ule_groups.remove(group.key());
+				ule_groups.remove(key);
 				elem.setData("Groups", ule_groups);
 			}
 			break;
@@ -613,9 +613,9 @@ void OnlineAndDescriptionUsers::userChangedSlot(UserListElement elem, bool /*mas
 	QStringList protos = elem.protocolList();
 	if (!protos.isEmpty())
 	{
-		CONST_FOREACH(proto, protos)
+		foreach(const QString &proto, protos)
 		{
-			UserStatus status = elem.status(*proto);
+			UserStatus status = elem.status(proto);
 			if (status.isOnline() || status.isBusy() || status.hasDescription())
 			{
 				isWanted = true;
@@ -642,16 +642,16 @@ void OnlineAndDescriptionUsers::protocolAddedOrRemoved(UserListElement elem, QSt
 
 OfflineUsers::OfflineUsers() : UserGroup(userlist->count())
 {
-	CONST_FOREACH(user, *userlist)
+	foreach(const UserListElement *user, *userlist)
 	{
 		bool offline = true;
 
-		QStringList protos = (*user).protocolList();
+		QStringList protos = user->protocolList();
 		if (!protos.empty()) // user uses any protocol? let's check them all...
 		{
-			CONST_FOREACH(proto, protos)
+			foreach(const QString &proto, protos)
 			{
-				if (!(*user).status(*proto).isOffline())
+				if (!user->status(proto).isOffline())
 				{
 					offline = false; // if online in at LEAST one proto
 					break;
@@ -696,9 +696,9 @@ void OfflineUsers::userChangedSlot(UserListElement elem, bool /*massively*/, boo
 	QStringList protos = elem.protocolList();
 	if (!protos.empty()) // if elem uses any protocol, we check status in all of them...
 	{
-		CONST_FOREACH(proto, protos)
+		foreach(const QString &proto, protos)
 		{
-			if (!elem.status(*proto).isOffline())
+			if (!elem.status(proto).isOffline())
 			{
 				offline = false;
 				break;
@@ -726,10 +726,10 @@ void OfflineUsers::protocolAddedOrRemoved(UserListElement elem, QString protocol
 
 BlockedUsers::BlockedUsers() : UserGroup(userlist->count() / 4)
 {
-	CONST_FOREACH(user, *userlist)
+	foreach(UserListElement *user, *userlist)
 	{
 //		kdebugm(KDEBUG_INFO, "%s\n", (*user).altNick().local8Bit().data());
-		if ((*user).usesProtocol("Gadu") && (*user).protocolData("Gadu", "Blocking").toBool())
+		if (user->usesProtocol("Gadu") && user->protocolData("Gadu", "Blocking").toBool())
 			addUser(*user);
 	}
 	connect(userlist, SIGNAL(protocolUserDataChanged(QString, UserListElement, QString, QVariant, QVariant, bool, bool)),

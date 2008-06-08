@@ -149,9 +149,9 @@ void Ignored::add()
 	bool ok;
 	UserListElements users;
 	QStringList strlist = QStringList::split(";", e_uin->text());
-	CONST_FOREACH(strUin, strlist)
+	foreach(const QString &strUin, strlist)
 	{
-		UinType uin = (*strUin).toUInt(&ok);
+		UinType uin = strUin.toUInt(&ok);
 		if (ok)
 			users.append(userlist->byID("Gadu", QString::number(uin)));
 	}
@@ -169,15 +169,15 @@ void Ignored::getList()
 {
 	kdebugf();
 	lb_list->clear();
-	CONST_FOREACH(ignoredList, IgnoredManager::getList())
+	foreach(IgnoredManager::IgnoredEntry ignoredEntry, IgnoredManager::getList())
 	{
 		QStringList strlist;
-		CONST_FOREACH(user, (*ignoredList).first)
+		foreach(UserListElement user, ignoredEntry.first)
 		{
-			if (userlist->contains(*user))
-				strlist.append(QString("%1 (%2)").arg((*user).ID("Gadu")).arg((*user).altNick()));
+			if (userlist->contains(user))
+				strlist.append(QString("%1 (%2)").arg(user.ID("Gadu")).arg(user.altNick()));
 			else
-				strlist.append(QString("%1").arg((*user).ID("Gadu")));
+				strlist.append(QString("%1").arg(user.ID("Gadu")));
 		}
 		lb_list->addItem(new QListWidgetItem(icons_manager->loadPixmap("Blocking"), strlist.join(";")));
 	}
@@ -191,8 +191,8 @@ void Ignored::remove()
 		return;
 	QStringList strlist = QStringList::split(";", lb_list->currentItem()->text());
 	UserListElements users;
-	CONST_FOREACH(str, strlist)
-		users.append(userlist->byID("Gadu", (*str).section(' ', 0, 0)));
+	foreach(const QString &str, strlist)
+		users.append(userlist->byID("Gadu", str.section(' ', 0, 0)));
 	IgnoredManager::remove(users);
 	getList();
 	IgnoredManager::writeToConfiguration();
@@ -238,16 +238,16 @@ void IgnoredManager::writeToConfiguration()
 	QDomElement ignored_elem = xml_config_file->accessElement(xml_config_file->rootElement(), "Ignored");
 	xml_config_file->removeChildren(ignored_elem);
 
-	CONST_FOREACH(ignoreList, Ignored)
+	foreach(IgnoredEntry ignoreEntry, Ignored)
 	{
-		if ((*ignoreList).second)
+		if (ignoreEntry.second)
 			continue;
 
 		QDomElement ignored_group_elem = xml_config_file->createElement(ignored_elem, "IgnoredGroup");
-		CONST_FOREACH(user, (*ignoreList).first)
+		foreach(UserListElement user, ignoreEntry.first)
 		{
 			QDomElement ignored_contact_elem = xml_config_file->createElement(ignored_group_elem, "IgnoredContact");
-			ignored_contact_elem.setAttribute("uin", (*user).ID("Gadu"));
+			ignored_contact_elem.setAttribute("uin", user.ID("Gadu"));
 		}
 	}
 

@@ -76,14 +76,14 @@ ChatWidget * ChatWindow::chatWidget()
 	return currentChatWidget;
 }
 
-// TODO: zrobiæ od pocz±tku, strukturalnie spieprzone
+// TODO: zrobiï¿½ od poczï¿½tku, strukturalnie spieprzone
 void ChatWindow::restoreGeometry()
 {
 	const UserGroup *group = currentChatWidget->users();
 	QRect geometry = chat_manager->getChatWidgetProperty(group, "Geometry").toRect();
 	if (geometry.isEmpty() && group->count() == 1)
 	{
-		QString geo_str = (*(group->constBegin())).data("ChatGeometry").toString();
+		QString geo_str = (*(group->constBegin()))->data("ChatGeometry").toString();
 		if (!geo_str.isEmpty())
 		{
 			bool ok[4];
@@ -133,7 +133,7 @@ void ChatWindow::storeGeometry()
 	const UserGroup *users = currentChatWidget->users();
 	chat_manager->setChatWidgetProperty(users, "Geometry", QRect(pos().x(), pos().y(), size().width(), size().height()));
 	if (users->count() == 1)
-		(*users->begin()).setData("ChatGeometry", QString("%1,%2,%3,%4").arg(pos().x()).arg(pos().y()).arg(size().width()).arg(size().height()));
+		(*users->begin())->setData("ChatGeometry", QString("%1,%2,%3,%4").arg(pos().x()).arg(pos().y()).arg(size().width()).arg(size().height()));
 }
 
 void ChatWindow::closeEvent(QCloseEvent *e)

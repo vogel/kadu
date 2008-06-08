@@ -173,7 +173,7 @@ bool EmoticonsManager::loadGGEmoticonThemePart(const QString &subdir)
 		}
 		else
 			item.stat = item.anim;
-		CONST_FOREACH(alias, aliases)
+		foreach(const QString &alias, aliases)
 		{
 			item.alias = *alias;
 			Aliases.push_back(item);
@@ -196,8 +196,8 @@ bool EmoticonsManager::loadGGEmoticonTheme()
 	if (loadGGEmoticonThemePart(QString::null))
 		something_loaded = true;
 	QStringList subdirs = getSubDirs(themePath());
-	CONST_FOREACH(subdir, subdirs)
-		if (loadGGEmoticonThemePart(*subdir))
+	foreach(const QString &subdir, subdirs)
+		if (loadGGEmoticonThemePart(subdir))
 			something_loaded = true;
 
 	if (something_loaded) {
@@ -208,8 +208,8 @@ bool EmoticonsManager::loadGGEmoticonTheme()
 		int i = 0;
 		// put all emots into dictionary, to allow easy finding
 		// their occurrences in text
-		CONST_FOREACH(item, Aliases)
-			walker->insertString(item->alias.lower(), i++);
+		foreach(EmoticonsListItem item, Aliases)
+			walker->insertString(item.alias.lower(), i++);
 	}
 
 	kdebugmf(KDEBUG_FUNCTION_END | KDEBUG_INFO, "loaded: %d\n", something_loaded);
@@ -971,7 +971,7 @@ PrefixNode* EmotsWalker::findChild(const PrefixNode* node, const QChar& c)
 	myPair.first = c;
 	// create variable 'position' with result of binary search in childs
 	// of given node
-	VAR(position, std::upper_bound (node -> childs.constBegin(), node -> childs.constEnd(), myPair));
+	QList<Prefix>::const_iterator position = std::upper_bound (node -> childs.constBegin(), node -> childs.constEnd(), myPair);
 
 	if (position != node -> childs.constEnd() && position -> first == c)
 		return position -> second;
@@ -987,7 +987,7 @@ PrefixNode* EmotsWalker::insertChild(PrefixNode* node, const QChar& c)
 	PrefixNode* newNode = new PrefixNode();
 
 	// create child with new node
-	VAR(newPair, qMakePair(c, newNode));
+	Prefix newPair = qMakePair(c, newNode);
 	// insert new child into childs of current node, performing binary
 	// search to find correct position for it
 	node -> childs.insert(std::upper_bound(node -> childs.begin(), node -> childs.end(), newPair), newPair);
@@ -995,11 +995,11 @@ PrefixNode* EmotsWalker::insertChild(PrefixNode* node, const QChar& c)
 }
 
 /** recursively delete all childs of given node */
-void EmotsWalker::removeChilds(PrefixNode* node)
+void EmotsWalker::removeChilds(PrefixNode *node)
 {
-	CONST_FOREACH(ch, node -> childs) {
-		removeChilds(ch -> second);
-		delete ch -> second;
+	foreach(Prefix ch, node->childs) {
+		removeChilds(ch.second);
+		delete ch.second;
 	}
 }
 

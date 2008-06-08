@@ -50,13 +50,13 @@ void HttpClient::onConnected()
 	if (!Cookies.isEmpty())
 	{
 		query += "Cookie: ";
-		CONST_FOREACH(it, Cookies)
+		foreach(const QString &key, Cookies.keys())
 		{
-			query += it.key() + '=' + it.data();
-			++it;
-			if (it != Cookies.end())
+			query += key + '=' + Cookies[key];
+// 			++it;
+// 			if (it != Cookies.end())
 				query += "; ";
-			--it;
+// 			--it;
 		}
 		query += "\r\n";
 	}

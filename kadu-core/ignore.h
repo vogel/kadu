@@ -9,7 +9,7 @@ class QLineEdit;
 class QListWidget;
 
 /**
-	Dialog umo¿liwiaj±cy zarz±dzanie list± ignorowanych
+	Dialog umoï¿½liwiajï¿½cy zarzï¿½dzanie listï¿½ ignorowanych
 **/
 class Ignored : public QWidget
 {
@@ -32,7 +32,11 @@ public:
 
 class IgnoredManager
 {
-	static QList<QPair<UserListElements, bool> > Ignored;
+public:
+	typedef QPair<UserListElements, bool> IgnoredEntry;
+
+private:
+	static QList<IgnoredEntry> Ignored;
 
 public:
 	static void loadFromConfiguration();

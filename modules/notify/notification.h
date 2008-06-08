@@ -70,6 +70,9 @@ class QTimer;
 class Notification : public QObject {
 	Q_OBJECT
 
+public:
+	typedef QPair<QString, const char *> Callback;
+
 private:
 
 	QString Type;
@@ -80,7 +83,7 @@ private:
 	QString Details;
 	QString Icon;
 
-	QList<QPair<QString, const char *> > Callbacks;
+	QList<Callback > Callbacks;
 	QTimer *DefaultCallbackTimer;
 
 	int ReferencesCount;
@@ -197,7 +200,7 @@ public:
 
 		@return lista akcji
 	 **/
-	const QList<QPair<QString, const char *> > & getCallbacks();
+	const QList<Callback> & getCallbacks();
 
 public slots:
 	/**

@@ -38,7 +38,7 @@ public:
 };
 
 /**
-	Klasa zdolna do pokazywania ToolTipów nad oknem kontaktów.
+	Klasa zdolna do pokazywania ToolTipï¿½w nad oknem kontaktï¿½w.
  **/
 class ToolTipClass
 {
@@ -51,19 +51,19 @@ public:
 	/**
 		Pokazuje tooltip w punkcie point na temat kontaktu user.
 
-		@param point punkt, w którym ma siê pojawiæ tooltip
-		@param user u¿ytkownik, którego dotyczy informacja
+		@param point punkt, w ktï¿½rym ma siï¿½ pojawiï¿½ tooltip
+		@param user uï¿½ytkownik, ktï¿½rego dotyczy informacja
 	 **/
 	virtual void showToolTip(const QPoint &point, const UserListElement &user) = 0;
 	/**
-		Ukrywa tooltip (je¿eli by³ pokazany)
+		Ukrywa tooltip (jeï¿½eli byï¿½ pokazany)
 	 **/
 	virtual void hideToolTip() = 0;
 
 };
 
 /**
-	Menad¿er klas wy¶wietlaj±cych tooltipy. Rejestruje klasy i pozwala na wybór jednej z nich w oknie konfiguracyjnym,
+	Menadï¿½er klas wyï¿½wietlajï¿½cych tooltipy. Rejestruje klasy i pozwala na wybï¿½r jednej z nich w oknie konfiguracyjnym,
  **/
 class ToolTipClassManager
 {
@@ -77,51 +77,51 @@ public:
 	virtual ~ToolTipClassManager();
 
 	/**
-		Rejestruje now± klasê do pokazywania tooltipów pod odpowiedni± nazw±.
-		Zarejestrowane klasy pojawiaj± siê w oknie konfiguracji.
+		Rejestruje nowï¿½ klasï¿½ do pokazywania tooltipï¿½w pod odpowiedniï¿½ nazwï¿½.
+		Zarejestrowane klasy pojawiajï¿½ siï¿½ w oknie konfiguracji.
 
 		@param toolTipClassName nazwa rejestrowanej klasy
 		@param toolTipClass obiekt rejestrowanej klasy
 	 **/
 	void registerToolTipClass(const QString &toolTipClassName, ToolTipClass *toolTipClass);
 	/**
-		Wyrejestrowuje klasê do pokazywania tooltipów pod odpowiedni± nazw±.
+		Wyrejestrowuje klasï¿½ do pokazywania tooltipï¿½w pod odpowiedniï¿½ nazwï¿½.
 
 		@param toolTipClassName nazwa wyrejestrowanej klasy
 	 **/
 	void unregisterToolTipClass(const QString &toolTipClassName);
 
 	/**
-		Zwraca listê nazw zarejestrowanych klas do pokazywania tooltipów.
+		Zwraca listï¿½ nazw zarejestrowanych klas do pokazywania tooltipï¿½w.
 	 **/
 	QStringList getToolTipClasses();
 	/**
-		Wybiera klasê, która ma przej±æ wy¶wietlanie tooltipów.
+		Wybiera klasï¿½, ktï¿½ra ma przejï¿½ï¿½ wyï¿½wietlanie tooltipï¿½w.
 	 **/
 	void useToolTipClass(const QString &toolTipClassName);
 
 	/**
 		Pokazuje tooltip w punkcie point na temat kontaktu user.
 
-		@param point punkt, w którym ma siê pojawiæ tooltip
-		@param user u¿ytkownik, którego dotyczy informacja
-		@return true, gdy tooltip zosta³ pokazany (klasa do obs³ugi jest za³adowana)
+		@param point punkt, w ktï¿½rym ma siï¿½ pojawiï¿½ tooltip
+		@param user uï¿½ytkownik, ktï¿½rego dotyczy informacja
+		@return true, gdy tooltip zostaï¿½ pokazany (klasa do obsï¿½ugi jest zaï¿½adowana)
 	 **/
 	bool showToolTip(const QPoint &point, const UserListElement &user);
 	/**
-		Ukrywa tooltip (je¿eli by³ pokazany)
+		Ukrywa tooltip (jeï¿½eli byï¿½ pokazany)
 
-		@return true, gdy tooltip zosta³ ukryty (klasa do obs³ugi jest za³adowana)
+		@return true, gdy tooltip zostaï¿½ ukryty (klasa do obsï¿½ugi jest zaï¿½adowana)
 	 **/
 	bool hideToolTip();
 
 };
 
 /**
-	Klasa reprezentuj±ca kontakt wizualnie na li¶cie kontaktów. Opisuje ona ikonê kontaktu,
-	jego wy¶wietlan± nazwê oraz ewentualny opis.
+	Klasa reprezentujï¿½ca kontakt wizualnie na liï¿½cie kontaktï¿½w. Opisuje ona ikonï¿½ kontaktu,
+	jego wyï¿½wietlanï¿½ nazwï¿½ oraz ewentualny opis.
 	\class KaduListBoxPixmap
-	\brief Klasa reprezentuj±ca kontakt wizualnie.
+	\brief Klasa reprezentujï¿½ca kontakt wizualnie.
 **/
 class KaduListBoxPixmap : public Q3ListBoxItem
 {
@@ -147,35 +147,35 @@ class KaduListBoxPixmap : public Q3ListBoxItem
 protected:
 	/**
 		\fn int lineHeight(const QListBox *lb) const
-		Zwraca wysoko¶æ samej czcionki dla elementu reprezentuj±cego wy¶wietlany kontakt w pikselach.
-		\param lb obiekt reprezentuj±cy wy¶wietlany kontakt.
+		Zwraca wysokoï¿½ï¿½ samej czcionki dla elementu reprezentujï¿½cego wyï¿½wietlany kontakt w pikselach.
+		\param lb obiekt reprezentujï¿½cy wyï¿½wietlany kontakt.
 	**/
 	int lineHeight(const Q3ListBox *lb) const;
 
 	/**
 		\fn void paint(QPainter *painter)
-		Rysuje wy¶wietlany kontakt na li¶cie.
-		\param painter wska¼nik do obiektu rysuj±cego.
+		Rysuje wyï¿½wietlany kontakt na liï¿½cie.
+		\param painter wskaï¿½nik do obiektu rysujï¿½cego.
 	**/
 	void paint(QPainter *painter);
 
 	/**
 		\fn void calculateSize(const QString &text, int width, QStringList &out, int &height) const
-		Oblicza odpowiedni± wysoko¶æ elementu listy kontaktów tak, aby pomie¶ciæ
-		opis podzielony na niezbêdn± liczbê linii.
-		\param[in] text wy¶wietlany opis.
-		\param[in] width szeroko¶æ kolumny listy kontaktów.
-		\param[out] out lista ³añcuchów znaków, zawieraj±ca kolejne linie opisu powsta³e
-			w wyniku podzielenia opisu tak, aby zmie¶ci³ siê w danej szeroko¶ci kolumny.
-		\param[out] height wysoko¶æ elementu listy kontaktów potrzebna aby pomie¶ciæ opis
+		Oblicza odpowiedniï¿½ wysokoï¿½ï¿½ elementu listy kontaktï¿½w tak, aby pomieï¿½ciï¿½
+		opis podzielony na niezbï¿½dnï¿½ liczbï¿½ linii.
+		\param[in] text wyï¿½wietlany opis.
+		\param[in] width szerokoï¿½ï¿½ kolumny listy kontaktï¿½w.
+		\param[out] out lista ï¿½aï¿½cuchï¿½w znakï¿½w, zawierajï¿½ca kolejne linie opisu powstaï¿½e
+			w wyniku podzielenia opisu tak, aby zmieï¿½ciï¿½ siï¿½ w danej szerokoï¿½ci kolumny.
+		\param[out] height wysokoï¿½ï¿½ elementu listy kontaktï¿½w potrzebna aby pomieï¿½ciï¿½ opis
 			podzielony w liniach.
 	**/
 	void calculateSize(const QString &text, int width, QStringList &out, int &height) const;
 
 	/**
 		\fn void changeText(const QString &text)
-		Zmienia nazwê wy¶wietlan± dla kontaktu na li¶cie na podan±.
-		\param text nowa nazwa do wy¶wietlenia.
+		Zmienia nazwï¿½ wyï¿½wietlanï¿½ dla kontaktu na liï¿½cie na podanï¿½.
+		\param text nowa nazwa do wyï¿½wietlenia.
 	**/
 	void changeText(const QString &text);
 
@@ -184,27 +184,27 @@ protected:
 
 	static QPixmap pixmapForUser(const UserListElement &user);
 
-	/*funkcje wprowadzone ¿eby zaoszczêdziæ na odwo³aniach do pliku konfiguracyjnego*/
+	/*funkcje wprowadzone ï¿½eby zaoszczï¿½dziï¿½ na odwoï¿½aniach do pliku konfiguracyjnego*/
 	/**
 		\fn static void setFont(const QFont &f)
-		Ustawia czcionkê dla tego elementu.
+		Ustawia czcionkï¿½ dla tego elementu.
 		\param f czcionka
 	**/
 	static void setFont(const QFont &f);
 
 	/**
 		\fn static void setMyUIN(UinType u)
-		Ustawia UIN lokalnego u¿ytkownika Kadu dla tego elementu, aby by³o wiadomo,
-		¿e ten element jego reprezentuje (poniewa¿ do pobierania informacji o statusie i opisie
-		u¿ywane s± ró¿ne metody dla kontaktu i lokalnego u¿ytkownika).
+		Ustawia UIN lokalnego uï¿½ytkownika Kadu dla tego elementu, aby byï¿½o wiadomo,
+		ï¿½e ten element jego reprezentuje (poniewaï¿½ do pobierania informacji o statusie i opisie
+		uï¿½ywane sï¿½ rï¿½ï¿½ne metody dla kontaktu i lokalnego uï¿½ytkownika).
 		\param u numer UIN.
 	**/
 	static void setMyUIN(UinType u);
 
 	/**
 		\fn static void setShowDesc(bool sd)
-		Ustawia stan wy¶wietlania opisów na li¶cie kontaktów.
-		\param sd warto¶æ logiczna informuj±ca o tym, czy opisy maj± byæ wy¶wietlane na li¶cie kontatów.
+		Ustawia stan wyï¿½wietlania opisï¿½w na liï¿½cie kontaktï¿½w.
+		\param sd wartoï¿½ï¿½ logiczna informujï¿½ca o tym, czy opisy majï¿½ byï¿½ wyï¿½wietlane na liï¿½cie kontatï¿½w.
 	**/
 	static void setShowDesc(bool sd);
 
@@ -212,30 +212,30 @@ protected:
 
 	/**
 		\fn static void setAlignTop(bool at)
-		Ustawia stan wyrównywania do górnego brzegu elementu.
-		\param at warto¶æ logiczna informuj±ca o tym, czy wy¶wietlana nazwa kontaktu ma byæ wyrównywana
-			do górnej krawêdzi elementu.
+		Ustawia stan wyrï¿½wnywania do gï¿½rnego brzegu elementu.
+		\param at wartoï¿½ï¿½ logiczna informujï¿½ca o tym, czy wyï¿½wietlana nazwa kontaktu ma byï¿½ wyrï¿½wnywana
+			do gï¿½rnej krawï¿½dzi elementu.
 	**/
 	static void setAlignTop(bool at);
 
 	/**
 		\fn static void setShowMultilineDesc(bool m)
-		Ustawia stan wy¶wietlania opisów wieloliniowych.
-		\param m warto¶æ logiczna informuj±ca o tym, czy opis tego elementu mo¿e byæ wy¶wietlany
-			w wielu liniach, je¶li zawiera znaki nowej linii.
+		Ustawia stan wyï¿½wietlania opisï¿½w wieloliniowych.
+		\param m wartoï¿½ï¿½ logiczna informujï¿½ca o tym, czy opis tego elementu moï¿½e byï¿½ wyï¿½wietlany
+			w wielu liniach, jeï¿½li zawiera znaki nowej linii.
 	**/
 	static void setShowMultilineDesc(bool m);
 
 	/**
 		\fn static void setMultiColumn(bool m)
-		Ustawia stan wy¶wietlania listy kontaktów w wielu kolumnach.
-		\param m warto¶æ logiczna informuj±ca o tym, czy lista ma byæ wy¶wietlana w wielu kolumnach.
+		Ustawia stan wyï¿½wietlania listy kontaktï¿½w w wielu kolumnach.
+		\param m wartoï¿½ï¿½ logiczna informujï¿½ca o tym, czy lista ma byï¿½ wyï¿½wietlana w wielu kolumnach.
 	**/
 	static void setColumnCount(int m);
 
 	/**
 		\fn static void setDescriptionColor(const QColor &col)
-		Ustawia kolor wy¶wietlanego opisu.
+		Ustawia kolor wyï¿½wietlanego opisu.
 		\param col kolor
 	**/
 	static void setDescriptionColor(const QColor &col);
@@ -243,36 +243,36 @@ protected:
 public:
 	/**
 		\fn KaduListBoxPixmap(const QPixmap &pix, UserListElement user, bool bold = false)
-		Konstruktor dodaj±cy kontakt do listy.
-		\param user kontakt, z którego bêd± pobierane dane do wy¶wietlenia
-		\param bold warto¶æ logiczna informuj±ca o tym, czy nazwa kontaktu
-			ma byæ wy¶wietlana pogrubion± czcionk±.
+		Konstruktor dodajï¿½cy kontakt do listy.
+		\param user kontakt, z ktï¿½rego bï¿½dï¿½ pobierane dane do wyï¿½wietlenia
+		\param bold wartoï¿½ï¿½ logiczna informujï¿½ca o tym, czy nazwa kontaktu
+			ma byï¿½ wyï¿½wietlana pogrubionï¿½ czcionkï¿½.
 	**/
 	KaduListBoxPixmap(UserListElement user);
 
 	/**
 		\fn bool isBold() const
-		Zwraca informacjê, czy nazwa kontaktu jest wy¶wietlana pogrubion± czcionk±, czy nie.
+		Zwraca informacjï¿½, czy nazwa kontaktu jest wyï¿½wietlana pogrubionï¿½ czcionkï¿½, czy nie.
 	**/
 	bool isBold() const;
 
 	/**
 		\fn int height(const QListBox *lb) const
-		Zwraca wysoko¶æ elementu reprezentuj±cego wy¶wietlany kontakt w pikselach.
-		\param lb obiekt reprezentuj±cy wy¶wietlany kontakt.
+		Zwraca wysokoï¿½ï¿½ elementu reprezentujï¿½cego wyï¿½wietlany kontakt w pikselach.
+		\param lb obiekt reprezentujï¿½cy wyï¿½wietlany kontakt.
 	**/
 	virtual int height(const Q3ListBox *lb) const;
 
 	/**
 		\fn int width(const QListBox *lb) const
-		Zwraca szeroko¶æ elementu reprezentuj±cego wy¶wietlany kontakt w pikselach.
-		\param lb obiekt reprezentuj±cy wy¶wietlany kontakt.
+		Zwraca szerokoï¿½ï¿½ elementu reprezentujï¿½cego wyï¿½wietlany kontakt w pikselach.
+		\param lb obiekt reprezentujï¿½cy wyï¿½wietlany kontakt.
 	**/
 	virtual int width(const Q3ListBox *lb) const;
 
 	/**
 		\fn void refreshItem()
-		Od¶wie¿a ikonê i tekst elementu.
+		Odï¿½wieï¿½a ikonï¿½ i tekst elementu.
 	**/
 	void refreshItem();
 
@@ -281,17 +281,20 @@ public:
 };
 
 /**
-	Klasa reprezentuj±ca menu podrêczne listy kontaktów - czyli to, które dostajemy klikaj±c
-	na którymkolwiek kontakcie prawym przyciskiem myszy.
+	Klasa reprezentujï¿½ca menu podrï¿½czne listy kontaktï¿½w - czyli to, ktï¿½re dostajemy klikajï¿½c
+	na ktï¿½rymkolwiek kontakcie prawym przyciskiem myszy.
 	\class UserBoxMenu
-	\brief Menu podrêczne listy kontaktów.
+	\brief Menu podrï¿½czne listy kontaktï¿½w.
 **/
 class UserBoxMenu : public Q3PopupMenu
 {
 	Q_OBJECT
 
+	public:
+		typedef QPair<QString, QString> IconName;
+
 	private:
-		QList<QPair<QString, QString> > iconNames;
+		QList<IconName> iconNames;
 
 	private slots:
 		void restoreLook();
@@ -300,14 +303,14 @@ class UserBoxMenu : public Q3PopupMenu
 		/**
 			\fn UserBoxMenu(QWidget *parent=0, const char* name=0)
 			Standardowy konstruktor.
-			\param parent wska¼nik na obiekt kontrolki-rodzica.
+			\param parent wskaï¿½nik na obiekt kontrolki-rodzica.
 			\param name nazwa kontrolki.
 		**/
 		UserBoxMenu(QWidget *parent=0, const char* name=0);
 
 		/**
 			\fn int getItem(const QString &caption) const
-			Zwraca unikaln± liczbê identyfikuj±c± element menu z podanym napisem.
+			Zwraca unikalnï¿½ liczbï¿½ identyfikujï¿½cï¿½ element menu z podanym napisem.
 			\param caption napis elementu.
 		**/
 		int getItem(const QString &caption) const;
@@ -316,7 +319,7 @@ class UserBoxMenu : public Q3PopupMenu
 		/**
 			\fn void show(QListBoxItem *item)
 			Pokazuje menu dla podanego kontaktu.
-			\param item element wy¶wietlanej listy kontaktów reprezentuj±cy rz±dany kontakt.
+			\param item element wyï¿½wietlanej listy kontaktï¿½w reprezentujï¿½cy rzï¿½dany kontakt.
 		**/
 		void show(Q3ListBoxItem *item);
 
@@ -324,10 +327,10 @@ class UserBoxMenu : public Q3PopupMenu
 			\fn int addItem(const QString &text, const QObject* receiver, const char* member, const QKeySequence accel= 0, int id= -1)
 			Dodaje nowy element do menu.
 			\param text napis dla nowego elementu.
-			\param receiver obiekt odbieraj±cy sygna³ wybrania elementu z menu.
-			\param member SLOT obiektu \a receiver który zostanie wykonany po wybraniu elementu z menu.
-			\param accel skrót klawiaturowy dla tego elementu. Domy¶lnie brak.
-			\param id Unikatowa liczba identyfikuj±ca nowy element. Domy¶lnie pierwsza wolna.
+			\param receiver obiekt odbierajï¿½cy sygnaï¿½ wybrania elementu z menu.
+			\param member SLOT obiektu \a receiver ktï¿½ry zostanie wykonany po wybraniu elementu z menu.
+			\param accel skrï¿½t klawiaturowy dla tego elementu. Domyï¿½lnie brak.
+			\param id Unikatowa liczba identyfikujï¿½ca nowy element. Domyï¿½lnie pierwsza wolna.
 		**/
 		int addItem(const QString &text, const QObject* receiver, const char* member, const QKeySequence accel= 0, int id= -1);
 
@@ -336,56 +339,56 @@ class UserBoxMenu : public Q3PopupMenu
 			Dodaje nowy element do menu.
 			\param iconname nazwa ikony z zestawu lub sciezka do pliku
 			\param text napis dla nowego elementu.
-			\param receiver obiekt odbieraj±cy sygna³ wybrania elementu z menu.
-			\param member SLOT obiektu \a receiver który zostanie wykonany po wybraniu elementu z menu.
-			\param accel skrót klawiaturowy dla tego elementu. Domy¶lnie brak.
-			\param id Unikatowa liczba identyfikuj±ca nowy element. Domy¶lnie pierwsza wolna.
+			\param receiver obiekt odbierajï¿½cy sygnaï¿½ wybrania elementu z menu.
+			\param member SLOT obiektu \a receiver ktï¿½ry zostanie wykonany po wybraniu elementu z menu.
+			\param accel skrï¿½t klawiaturowy dla tego elementu. Domyï¿½lnie brak.
+			\param id Unikatowa liczba identyfikujï¿½ca nowy element. Domyï¿½lnie pierwsza wolna.
 		**/
 		int addItem(const QString &iconname, const QString &text, const QObject* receiver, const char* member, const QKeySequence accel= 0, int id= -1);
 
 		/**
 			\fn int addItemAtPos(int index, const QString &text, const QObject* receiver, const char* member, const QKeySequence accel= 0, int id= -1)
 			Dodaje nowy element do menu.
-			\param index pozycja (licz±c od 0) na której znale¼æ ma siê nowy element.
+			\param index pozycja (liczï¿½c od 0) na ktï¿½rej znaleï¿½ï¿½ ma siï¿½ nowy element.
 			\param text napis dla nowego elementu.
-			\param receiver obiekt odbieraj±cy sygna³ wybrania elementu z menu.
-			\param member SLOT obiektu \a receiver który zostanie wykonany po wybraniu elementu z menu.
-			\param accel skrót klawiaturowy dla tego elementu. Domy¶lnie brak.
-			\param id Unikatowa liczba identyfikuj±ca nowy element. Domy¶lnie pierwsza wolna.
+			\param receiver obiekt odbierajï¿½cy sygnaï¿½ wybrania elementu z menu.
+			\param member SLOT obiektu \a receiver ktï¿½ry zostanie wykonany po wybraniu elementu z menu.
+			\param accel skrï¿½t klawiaturowy dla tego elementu. Domyï¿½lnie brak.
+			\param id Unikatowa liczba identyfikujï¿½ca nowy element. Domyï¿½lnie pierwsza wolna.
 		**/
 		int addItemAtPos(int index, const QString &text, const QObject* receiver, const char* member, const QKeySequence accel= 0, int id= -1);
 
 		/**
 			\fn int addItemAtPos(int index,const QString &iconname, const QString &text, const QObject* receiver, const char* member, const QKeySequence accel= 0, int id= -1)
 			Dodaje nowy element do menu.
-			\param index pozycja (licz±c od 0) na której znale¼æ ma siê nowy element.
+			\param index pozycja (liczï¿½c od 0) na ktï¿½rej znaleï¿½ï¿½ ma siï¿½ nowy element.
 			\param iconname nazwa ikony z zestawu lub sciezka do pliku
 			\param text napis dla nowego elementu.
-			\param receiver obiekt odbieraj±cy sygna³ wybrania elementu z menu.
-			\param member SLOT obiektu \a receiver który zostanie wykonany po wybraniu elementu z menu.
-			\param accel skrót klawiaturowy dla tego elementu. Domy¶lnie brak.
-			\param id Unikatowa liczba identyfikuj±ca nowy element. Domy¶lnie pierwsza wolna.
+			\param receiver obiekt odbierajï¿½cy sygnaï¿½ wybrania elementu z menu.
+			\param member SLOT obiektu \a receiver ktï¿½ry zostanie wykonany po wybraniu elementu z menu.
+			\param accel skrï¿½t klawiaturowy dla tego elementu. Domyï¿½lnie brak.
+			\param id Unikatowa liczba identyfikujï¿½ca nowy element. Domyï¿½lnie pierwsza wolna.
 		**/
 		int addItemAtPos(int index,const QString &iconname, const QString &text, const QObject* receiver, const char* member, const QKeySequence accel= 0, int id= -1);
 
 		/**
 			\fn void refreshIcons()
-			Prze³adowuje wszystkie ikony w tym menu dodane przy pomocy powy¿szych funkcji
+			Przeï¿½adowuje wszystkie ikony w tym menu dodane przy pomocy powyï¿½szych funkcji
 		**/
 		void refreshIcons();
 	signals:
 		/**
 			\fn void popup()
-			Sygna³ emitowany, gdy menu jest wywo³ywane.
+			Sygnaï¿½ emitowany, gdy menu jest wywoï¿½ywane.
 		**/
 		void popup();
 };
 
 
 /**
-	Klasa reprezentuj±ca listê kontaktów wraz z ikonkami stanów.
+	Klasa reprezentujï¿½ca listï¿½ kontaktï¿½w wraz z ikonkami stanï¿½w.
 	\class UserBox
-	\brief Wy¶wietlana lista kontaktów.
+	\brief Wyï¿½wietlana lista kontaktï¿½w.
 **/
 class UserBox : public Q3ListBox, ConfigurationAwareObject
 {
@@ -456,8 +459,8 @@ protected:
 
 	/**
 		\fn virtual void mousePressEvent(QMouseEvent *e)
-		Wci¶niêto który¶ z przycisków myszki na li¶cie kontaktów.
-		\param e wska¼nik obiektu opisuj±cego to zdarzenie.
+		Wciï¿½niï¿½to ktï¿½ryï¿½ z przyciskï¿½w myszki na liï¿½cie kontaktï¿½w.
+		\param e wskaï¿½nik obiektu opisujï¿½cego to zdarzenie.
 	**/
 	virtual void mousePressEvent(QMouseEvent *e);
 
@@ -465,33 +468,33 @@ protected:
 
 	/**
 		\fn virtual void mouseMoveEvent(QMouseEvent* e)
-		Poruszono myszk± nad list± kontaktów.
-		\param e wska¼nik obiektu opisuj±cego to zdarzenie.
+		Poruszono myszkï¿½ nad listï¿½ kontaktï¿½w.
+		\param e wskaï¿½nik obiektu opisujï¿½cego to zdarzenie.
 	**/
 	virtual void mouseMoveEvent(QMouseEvent* e);
 
 	/**
 		\fn virtual void keyPressEvent(QKeyEvent *e)
-		Wci¶niêto który¶ z klawiszów w aktywnej li¶cie kontaktów.
-		\param e wska¼nik obiektu opisuj±cego to zdarzenie.
+		Wciï¿½niï¿½to ktï¿½ryï¿½ z klawiszï¿½w w aktywnej liï¿½cie kontaktï¿½w.
+		\param e wskaï¿½nik obiektu opisujï¿½cego to zdarzenie.
 	**/
 	virtual void keyPressEvent(QKeyEvent *e);
 
 	/**
 		\fn virtual void resizeEvent(QResizeEvent *)
-		Lista kontaktów zmieni³a swój rozmiar.
-		\param e wska¼nik obiektu opisuj±cego to zdarzenie.
+		Lista kontaktï¿½w zmieniï¿½a swï¿½j rozmiar.
+		\param e wskaï¿½nik obiektu opisujï¿½cego to zdarzenie.
 	**/
 	virtual void resizeEvent(QResizeEvent *);
 
 public:
 	/**
 		\fn UserBox(UserGroup *group = userlist, QWidget* parent = 0, const char* name = 0, WFlags f = 0)
-		Standardowy konstruktor tworz±cy listê kontaktów.
-		\param group grupa kontaktów, która bêdzie wy¶wietlana
-		\param parent rodzic kontrolki. Domy¶lnie 0.
-		\param name nazwa kontrolki. Domy¶lnie 0.
-		\param f flagi kontrolki. Domy¶lnie 0.
+		Standardowy konstruktor tworzï¿½cy listï¿½ kontaktï¿½w.
+		\param group grupa kontaktï¿½w, ktï¿½ra bï¿½dzie wyï¿½wietlana
+		\param parent rodzic kontrolki. Domyï¿½lnie 0.
+		\param name nazwa kontrolki. Domyï¿½lnie 0.
+		\param f flagi kontrolki. Domyï¿½lnie 0.
 	**/
 	UserBox(bool fancy, UserGroup *group = userlist, QWidget* parent = 0, const char* name = 0, Qt::WFlags f = 0);
 
@@ -499,13 +502,13 @@ public:
 
 	/**
 		\var static UserBoxMenu *userboxmenu
-		Wska¼nik do menu kontekstowego listy kontaktów.
+		Wskaï¿½nik do menu kontekstowego listy kontaktï¿½w.
 	**/
 	static UserBoxMenu *userboxmenu;
 
 	/**
 		\var static UserBoxMenu *management
-		Wska¼nik do menu zarz±dzania kontaktami.
+		Wskaï¿½nik do menu zarzï¿½dzania kontaktami.
 	**/
 	static UserBoxMenu *management;
 
@@ -513,8 +516,8 @@ public:
 
 	/**
 		\fn static void initModule()
-		Inicjalizuje zmienne niezbêdne do dzia³ania UserBox. Funkcja ta jest
-		wywo³ywana przy starcie Kadu przez rdzeñ Kadu.
+		Inicjalizuje zmienne niezbï¿½dne do dziaï¿½ania UserBox. Funkcja ta jest
+		wywoï¿½ywana przy starcie Kadu przez rdzeï¿½ Kadu.
 	**/
 	static void initModule();
 
@@ -522,42 +525,42 @@ public:
 
 	/**
 		\fn UserListElements getSelectedUsers() const
-		Funkcja zwraca listê zaznaczonych uzytkowników.
-		\return UserListElements z zaznaczonymi u¿ytkownikami.
+		Funkcja zwraca listï¿½ zaznaczonych uzytkownikï¿½w.
+		\return UserListElements z zaznaczonymi uï¿½ytkownikami.
 	**/
 	UserListElements selectedUsers() const;
 
 	/**
 		\fn const UserGroup *visibleUsers() const
-		zwraca listê kontaktów, które s± obecnie na li¶cie
-		\return grupa kontaktów
+		zwraca listï¿½ kontaktï¿½w, ktï¿½re sï¿½ obecnie na liï¿½cie
+		\return grupa kontaktï¿½w
 	**/
 	const UserGroup *visibleUsers() const;
 
 	/**
 		\fn QValueList<UserGroup *> filters() const
-		Zwraca listê filtrów "pozytywnych"
-		\return lista filtrów
+		Zwraca listï¿½ filtrï¿½w "pozytywnych"
+		\return lista filtrï¿½w
 	**/
 	QList<UserGroup *> filters() const;
 
 	/**
 		\fn QValueList<UserGroup *> negativeFilters() const
-		Zwraca listê filtrów "negatywnych"
-		\return lista filtrów
+		Zwraca listï¿½ filtrï¿½w "negatywnych"
+		\return lista filtrï¿½w
 	**/
 	QList<UserGroup *> negativeFilters() const;
 
 	/**
 		\fn bool currentUserExists() const
-		\return informacja o istnieniu bie¿±cego kontaktu
+		\return informacja o istnieniu bieï¿½ï¿½cego kontaktu
 	**/
 	bool currentUserExists() const;
 
 	/**
 		\fn UserListElement currentUser() const
-		\attention {przed wywo³aniem tej metody nale¿y sprawdziæ, czy istnieje bie¿±cy kontakt!}
-		\return bie¿±cy kontakt
+		\attention {przed wywoï¿½aniem tej metody naleï¿½y sprawdziï¿½, czy istnieje bieï¿½ï¿½cy kontakt!}
+		\return bieï¿½ï¿½cy kontakt
 		\see UserBox::currentUserExists()
 	**/
 	UserListElement currentUser() const;
@@ -565,7 +568,7 @@ public:
 	/**
 		\fn static UserBox* activeUserBox()
 		Funkcja znajdujaca aktywny UserBox.
-		\return wska¼nik do aktywnego UserBox'a, je¶li taki nie istnieje zwracana jest warto¶æ NULL.
+		\return wskaï¿½nik do aktywnego UserBox'a, jeï¿½li taki nie istnieje zwracana jest wartoï¿½ï¿½ NULL.
 	**/
 	static UserBox* activeUserBox();
 
@@ -579,37 +582,39 @@ public:
 			QString id;
 			QString description;
 			int (*func)(const UserListElement &, const UserListElement &);
+
+			bool operator == (const CmpFuncDesc &compare) { return id == compare.id; }
 	};
 
 	/**
 		\fn QValueList<UserBox::CmpFuncDesc> compareFunctions() const
-		\return lista obiektów opisuj±cych funkcje porównuj±ce
+		\return lista obiektï¿½w opisujï¿½cych funkcje porï¿½wnujï¿½ce
 	**/
 		QList<UserBox::CmpFuncDesc> compareFunctions() const;
 
 	/**
 		\fn void addCompareFunction(const QString &id, const QString &trDescription, int (*cmp)(const UserListElement &, const UserListElement &))
-		Dodaje funkcjê porównuj±c± do bie¿±cego UserBoksa.
-		Funkcja cmp powinna zwracaæ warto¶æ:
-			< 0 gdy pierwszy kontakt powinien znale¼æ siê przed drugim
-			= 0 gdy kolejno¶æ kontaktów nie ma znaczenia
-			> 0 gdy pierwszy kontakt powinien znale¼æ siê za drugim
-		\param id krótki identyfikator funkcji
-		\param trDescription pzet³umaczony opis funkcji (w zamierzeniu do wy¶wietlenia w konfiguracji)
-		\param cmp funkcja porównuj±ca
+		Dodaje funkcjï¿½ porï¿½wnujï¿½cï¿½ do bieï¿½ï¿½cego UserBoksa.
+		Funkcja cmp powinna zwracaï¿½ wartoï¿½ï¿½:
+			< 0 gdy pierwszy kontakt powinien znaleï¿½ï¿½ siï¿½ przed drugim
+			= 0 gdy kolejnoï¿½ï¿½ kontaktï¿½w nie ma znaczenia
+			> 0 gdy pierwszy kontakt powinien znaleï¿½ï¿½ siï¿½ za drugim
+		\param id krï¿½tki identyfikator funkcji
+		\param trDescription pzetï¿½umaczony opis funkcji (w zamierzeniu do wyï¿½wietlenia w konfiguracji)
+		\param cmp funkcja porï¿½wnujï¿½ca
 	**/
 	void addCompareFunction(const QString &id, const QString &trDescription,
 				int (*cmp)(const UserListElement &, const UserListElement &));
 
 	/**
 		\fn static void refreshAll()
-		Od¶wie¿a wszystkie UserBoksy.
+		Odï¿½wieï¿½a wszystkie UserBoksy.
 	**/
 	static void refreshAll();
 
 	/**
 		\fn static void refreshAllLater()
-		Od¶wie¿a wszystkie UserBoksy, ale dopiero po powrocie do pêtli zdarzeñ Qt.
+		Odï¿½wieï¿½a wszystkie UserBoksy, ale dopiero po powrocie do pï¿½tli zdarzeï¿½ Qt.
 	**/
 	static void refreshAllLater();
 
@@ -620,75 +625,75 @@ public:
 public slots:
 	/**
 		\fn void showDescriptionsActionActivated(QAction *sender, bool toggle);
-		Slot jest wywo³ywany, gdy aktywowano ukrywanie opisów kontaktów
-		\param users u¿ytkownicy (nieu¿ywany)
-		\param widget (nieu¿ywany)
-		\param toggle w³±czenie / wy³±czenie ukrywania opisów
+		Slot jest wywoï¿½ywany, gdy aktywowano ukrywanie opisï¿½w kontaktï¿½w
+		\param users uï¿½ytkownicy (nieuï¿½ywany)
+		\param widget (nieuï¿½ywany)
+		\param toggle wï¿½ï¿½czenie / wyï¿½ï¿½czenie ukrywania opisï¿½w
 	**/
 	void showDescriptionsActionActivated(QAction *sender, bool toggle);
 
 	/**
 		\fn void setDescriptionsActionState()
-		Slot jest wywo³ywany, w celu ustawienia poprawnego stanu dla akcji
-		w³±czaj±cej / wy³±czaj±cej pokazywanie opisów na li¶cie kontaktów
+		Slot jest wywoï¿½ywany, w celu ustawienia poprawnego stanu dla akcji
+		wï¿½ï¿½czajï¿½cej / wyï¿½ï¿½czajï¿½cej pokazywanie opisï¿½w na liï¿½cie kontaktï¿½w
 	**/
 	void setDescriptionsActionState();
 
 	/**
 		\fn void applyFilter(UserGroup *group)
-		Nak³ada na bie¿±cy UserBox filtr "pozytywny" - wy¶wietlane bêd±
-		tylko te kontakty, które nale¿± do group.
+		Nakï¿½ada na bieï¿½ï¿½cy UserBox filtr "pozytywny" - wyï¿½wietlane bï¿½dï¿½
+		tylko te kontakty, ktï¿½re naleï¿½ï¿½ do group.
 		\param group filtr
 	**/
 	void applyFilter(UserGroup *group);
 
 	/**
 		\fn void removeFilter(UserGroup *group)
-		Usuwa z bie¿±cego UserBoksa wskazany filtr "pozytywny".
+		Usuwa z bieï¿½ï¿½cego UserBoksa wskazany filtr "pozytywny".
 		\param group filtr
 	**/
 	void removeFilter(UserGroup *group);
 
 	/**
 		\fn void applyNegativeFilter(UserGroup *group)
-		Nak³ada na bie¿±cy UserBox filtr "negatywny" - wy¶wietlane bêd±
-		tylko te kontakty, które nie nale¿± do group.
+		Nakï¿½ada na bieï¿½ï¿½cy UserBox filtr "negatywny" - wyï¿½wietlane bï¿½dï¿½
+		tylko te kontakty, ktï¿½re nie naleï¿½ï¿½ do group.
 		\param group filtr
 	**/
 	void applyNegativeFilter(UserGroup *group);
 
 	/**
 		\fn void removeNegativeFilter(UserGroup *group)
-		Usuwa z bie¿±cego UserBoksa wskazany filtr "negatywny".
+		Usuwa z bieï¿½ï¿½cego UserBoksa wskazany filtr "negatywny".
 		\param group filtr
 	**/
 	void removeNegativeFilter(UserGroup *group);
 
 	/**
 		\fn void removeCompareFunction(const QString &id)
-		Usuwa funkcjê porównuj±c± o identyfikatorze id.
-		\param id identyfikator funkcji porównuj±cej
+		Usuwa funkcjï¿½ porï¿½wnujï¿½cï¿½ o identyfikatorze id.
+		\param id identyfikator funkcji porï¿½wnujï¿½cej
 	**/
 	void removeCompareFunction(const QString &id);
 
 	/**
 		\fn void moveUpCompareFunction(const QString &id)
-		Przesuwa funkcjê porównuj±c± o identyfikatorze id wy¿ej w kolejno¶ci sprawdzania.
-		\param id identyfikator funkcji porównuj±cej
+		Przesuwa funkcjï¿½ porï¿½wnujï¿½cï¿½ o identyfikatorze id wyï¿½ej w kolejnoï¿½ci sprawdzania.
+		\param id identyfikator funkcji porï¿½wnujï¿½cej
 	**/
 	bool moveUpCompareFunction(const QString &id);
 
 	/**
 		\fn void moveDownCompareFunction(const QString &id)
-		Przesuwa funkcjê porównuj±c± o identyfikatorze id ni¿ej w kolejno¶ci sprawdzania.
-		\param id identyfikator funkcji porównuj±cej
+		Przesuwa funkcjï¿½ porï¿½wnujï¿½cï¿½ o identyfikatorze id niï¿½ej w kolejnoï¿½ci sprawdzania.
+		\param id identyfikator funkcji porï¿½wnujï¿½cej
 	**/
 	bool moveDownCompareFunction(const QString &id);
 
 	/**
 		\fn void refresh()
-		Od¶wie¿a bie¿±cy UserBox. Nie nale¿y tej funkcji nadu¿ywaæ,
-		bo wiêkszo¶æ (90%) sytuacji jest wykrywanych przez sam± klasê.
+		Odï¿½wieï¿½a bieï¿½ï¿½cy UserBox. Nie naleï¿½y tej funkcji naduï¿½ywaï¿½,
+		bo wiï¿½kszoï¿½ï¿½ (90%) sytuacji jest wykrywanych przez samï¿½ klasï¿½.
 	**/
 	void refresh();
 
@@ -697,29 +702,29 @@ public slots:
 signals:
 	/**
 		\fn void doubleClicked(UserListElement user)
-		Sygna³ jest emitowany, gdy na którym¶ z kontaktów klikniêto dwukrotnie.
-		\param user kontakt, na którym kilkniêto dwukrotnie
-		\warning U¿ywaj tego sygna³u zamiast QListBox::doubleClicked(QListBoxItem *) !!!
-		Tamten ze wzglêdu na od¶wie¿anie listy w jednym ze slotów pod³±czonych
-		do tego sygna³u czasami przekazuje wska¼nik do elementu, który ju¿ NIE ISTNIEJE.
+		Sygnaï¿½ jest emitowany, gdy na ktï¿½rymï¿½ z kontaktï¿½w klikniï¿½to dwukrotnie.
+		\param user kontakt, na ktï¿½rym kilkniï¿½to dwukrotnie
+		\warning Uï¿½ywaj tego sygnaï¿½u zamiast QListBox::doubleClicked(QListBoxItem *) !!!
+		Tamten ze wzglï¿½du na odï¿½wieï¿½anie listy w jednym ze slotï¿½w podï¿½ï¿½czonych
+		do tego sygnaï¿½u czasami przekazuje wskaï¿½nik do elementu, ktï¿½ry juï¿½ NIE ISTNIEJE.
 	**/
 	void doubleClicked(UserListElement user);
 
 	/**
 		\fn void returnPressed(UserListElement user)
-		Sygna³ jest emitowany, gdy wci¶niêto klawisz enter na wybranym kontakcie.
-		\param user kontakt, na którym wci¶niêto enter
-		\warning U¿ywaj tego sygna³u zamiast QListBox::returnPressed(QListBoxItem *) !!!
-		Tamten ze wzglêdu na od¶wie¿anie listy w jednym ze slotów pod³±czonych
-		do tego sygna³u czasami przekazuje wska¼nik do elementu, który ju¿ NIE ISTNIEJE.
+		Sygnaï¿½ jest emitowany, gdy wciï¿½niï¿½to klawisz enter na wybranym kontakcie.
+		\param user kontakt, na ktï¿½rym wciï¿½niï¿½to enter
+		\warning Uï¿½ywaj tego sygnaï¿½u zamiast QListBox::returnPressed(QListBoxItem *) !!!
+		Tamten ze wzglï¿½du na odï¿½wieï¿½anie listy w jednym ze slotï¿½w podï¿½ï¿½czonych
+		do tego sygnaï¿½u czasami przekazuje wskaï¿½nik do elementu, ktï¿½ry juï¿½ NIE ISTNIEJE.
 	**/
 	void returnPressed(UserListElement user);
 
 	/**
 		\fn void currentChanged(UserListElement user)
-		Sygna³ jest emitowany, gdy zmieni³ siê bie¿±cy kontakt.
-		\attention {raczej nale¿u u¿ywaæ tego sygna³u zamiast QListBox::currentChaned(QListBoxItem *)}
-		\param user obecnie bie¿±cy kontakt
+		Sygnaï¿½ jest emitowany, gdy zmieniï¿½ siï¿½ bieï¿½ï¿½cy kontakt.
+		\attention {raczej naleï¿½u uï¿½ywaï¿½ tego sygnaï¿½u zamiast QListBox::currentChaned(QListBoxItem *)}
+		\param user obecnie bieï¿½ï¿½cy kontakt
 	**/
 	void currentChanged(UserListElement user);
 
@@ -727,20 +732,20 @@ signals:
 
 /**
 	\fn int compareAltNick(const UserListElement &u1, const UserListElement &u2)
-	Funkcja porównuj±ca AltNicki metod± QString::localeAwareCompare()
+	Funkcja porï¿½wnujï¿½ca AltNicki metodï¿½ QString::localeAwareCompare()
 **/
 int compareAltNick(const UserListElement &u1, const UserListElement &u2);
 
 /**
 	\fn int compareAltNickCaseInsensitive(const UserListElement &u1, const UserListElement &u2)
-	Funkcja porównuj±ca AltNicki metod± QString::localeAwareCompare(), wcze¶niej robi±ca lower(),
-	a wiêc wolniejsza od compareAltNick
+	Funkcja porï¿½wnujï¿½ca AltNicki metodï¿½ QString::localeAwareCompare(), wczeï¿½niej robiï¿½ca lower(),
+	a wiï¿½c wolniejsza od compareAltNick
 **/
 int compareAltNickCaseInsensitive(const UserListElement &u1, const UserListElement &u2);
 
 /**
 	\fn int compareStatus(const UserListElement &u1, const UserListElement &u2)
-	Funkcja porównuj±ca statusy w protokole Gadu-Gadu. Uwa¿a status "dostêpny" i "zajêty" za równowa¿ne.
+	Funkcja porï¿½wnujï¿½ca statusy w protokole Gadu-Gadu. Uwaï¿½a status "dostï¿½pny" i "zajï¿½ty" za rï¿½wnowaï¿½ne.
 **/
 int compareStatus(const UserListElement &u1, const UserListElement &u2);
 

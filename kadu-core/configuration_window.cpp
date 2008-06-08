@@ -290,9 +290,7 @@ ConfigurationWindow::ConfigurationWindow(const QString &name, const QString &cap
 ConfigurationWindow::~ConfigurationWindow()
 {
 	config_file.writeEntry("General", "ConfigurationWindow_" + Name, sectionsListWidget->currentItem()->text());
-
-	FOREACH(configSection, configSections)
-		delete *configSection;
+	qDeleteAll(configSections);
 }
 
 void ConfigurationWindow::show()
@@ -320,9 +318,9 @@ QList<ConfigWidget *> ConfigurationWindow::appendUiFile(const QString &fileName,
 	QList<ConfigWidget *> widgets = processUiFile(fileName);
 
 	if (load)
-		FOREACH(widget, widgets)
-			if (*widget)
-				(*widget)->loadConfiguration();
+		foreach(ConfigWidget *widget, widgets)
+			if (widget)
+				widget->loadConfiguration();
 
 	return widgets;
 }
@@ -571,9 +569,9 @@ void ConfigurationWindow::removeUiElementFromDom(QDomNode uiElementNode, ConfigG
 	const QDomElement &uiElement = uiElementNode.toElement();
 	const QString &caption = uiElement.attribute("caption");
 
-	FOREACH(child, configGroupBox->widget()->children())
+	foreach(QObject *child, configGroupBox->widget()->children())
 	{
-		ConfigWidget *configWidget = dynamic_cast<ConfigWidget *>(*child);
+		ConfigWidget *configWidget = dynamic_cast<ConfigWidget *>(child);
 		if (!configWidget)
 			continue;
 
@@ -639,8 +637,8 @@ void ConfigurationWindow::loadConfiguration(QObject *object)
 		return;
 
 	const QObjectList children = object->children();
-	FOREACH(child, children)
-		loadConfiguration(*child);
+	foreach(QObject *child, children)
+		loadConfiguration(child);
 
 	ConfigWidget *configWidget = dynamic_cast<ConfigWidget *>(object);
 	if (configWidget)
@@ -655,8 +653,8 @@ void ConfigurationWindow::saveConfiguration(QObject *object)
 		return;
 
 	const QObjectList children = object->children();
-	FOREACH(child, children)
-		saveConfiguration(*child);
+	foreach(QObject *child, children)
+		saveConfiguration(child);
 
 	ConfigWidget *configWidget = dynamic_cast<ConfigWidget *>(object);
 	if (configWidget)

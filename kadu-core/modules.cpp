@@ -247,55 +247,55 @@ void ModulesDialog::refreshList()
 	QStringList moduleList = modules_manager->staticModules();
 	ModuleInfo info;
 	bool hideBase = hideBaseModules->isChecked();
-	CONST_FOREACH(module, moduleList)
+	foreach(const QString &module, moduleList)
 	{
 		QStringList strings;
 
-		if (modules_manager->moduleInfo(*module, info))
+		if (modules_manager->moduleInfo(module, info))
 		{
 			if (info.base && hideBase)
 				continue;
 
-			strings << *module << info.version << tr("Static") << tr("Loaded");
+			strings << module << info.version << tr("Static") << tr("Loaded");
 		}
 		else
-			strings << *module << QString::null << tr("Static") << tr("Loaded");
+			strings << module << QString::null << tr("Static") << tr("Loaded");
 	
 		new QTreeWidgetItem(lv_modules, strings);
 	}
 
 	moduleList = modules_manager->loadedModules();
-	CONST_FOREACH(module, moduleList)
+	foreach(const QString &module, moduleList)
 	{
 		QStringList strings;
 
-		if (modules_manager->moduleInfo(*module, info))
+		if (modules_manager->moduleInfo(module, info))
 		{
 			if (info.base && hideBase)
 				continue;
 
-			strings << *module << info.version << tr("Dynamic") << tr("Loaded");
+			strings << module << info.version << tr("Dynamic") << tr("Loaded");
 		}
 		else
-			strings << *module << QString::null << tr("Dynamic") << tr("Loaded");
+			strings << module << QString::null << tr("Dynamic") << tr("Loaded");
 	
 		new QTreeWidgetItem(lv_modules, strings);
 	}
 
 	moduleList = modules_manager->unloadedModules();
-	CONST_FOREACH(module, moduleList)
+	foreach(const QString &module, moduleList)
 	{
 		QStringList strings;
 
-		if (modules_manager->moduleInfo(*module, info))
+		if (modules_manager->moduleInfo(module, info))
 		{
 			if (info.base && hideBase)
 				continue;
 
-			strings << *module << info.version << tr("Dynamic") << tr("Not loaded");
+			strings << module << info.version << tr("Dynamic") << tr("Not loaded");
 		}
 		else
-			strings << *module << QString::null << tr("Dynamic") << tr("Not loaded");
+			strings << module << QString::null << tr("Dynamic") << tr("Not loaded");
 	
 		new QTreeWidgetItem(lv_modules, strings);
 	}
@@ -375,9 +375,9 @@ ModulesManager::ModulesManager() : QObject(NULL, "modules_manager"),
 
 	registerStaticModules();
 	QStringList static_list = staticModules();
-	CONST_FOREACH(i, static_list)
-		if (!moduleIsActive(*i))
-			activateModule(*i);
+	foreach(const QString &i, static_list)
+		if (!moduleIsActive(i))
+			activateModule(i);
 
 	// load modules as config file say
 	QStringList installed_list = installedModules();
@@ -386,24 +386,24 @@ ModulesManager::ModulesManager() : QObject(NULL, "modules_manager"),
 	QString unloaded_str = config_file.readEntry("General", "UnloadedModules");
 	QStringList unloaded_list = QStringList::split(',', unloaded_str);
 	bool load_error = false;
-	CONST_FOREACH(i, installed_list)
-		if (!moduleIsActive(*i))
+	foreach(const QString &i, installed_list)
+		if (!moduleIsActive(i))
 		{
 			bool load_module;
-			if (loaded_list.contains(*i))
+			if (loaded_list.contains(i))
 				load_module = true;
-			else if (unloaded_list.contains(*i))
+			else if (unloaded_list.contains(i))
 				load_module = false;
 			else
 			{
 				ModuleInfo m_info;
-				if (moduleInfo(*i, m_info))
+				if (moduleInfo(i, m_info))
 					load_module = m_info.load_by_def;
 				else
 					load_module = false;
 			}
 			if (load_module)
-				if (!activateModule(*i))
+				if (!activateModule(i))
 					load_error = true;
 		}
 
@@ -412,8 +412,8 @@ ModulesManager::ModulesManager() : QObject(NULL, "modules_manager"),
 	if (load_error)
 		saveLoadedModules();
 
-	CONST_FOREACH(it, Modules)
-		kdebugm(KDEBUG_INFO, "module: %s, usage: %d\n", it.key().local8Bit().data(), it.data().usage_counter);
+	foreach(const QString &it, Modules.keys())
+		kdebugm(KDEBUG_INFO, "module: %s, usage: %d\n", it.local8Bit().data(), Modules[it].usage_counter);
 
 	kdebugf2();
 }
@@ -422,8 +422,8 @@ ModulesManager::~ModulesManager()
 {
 	kdebugf();
 
-	CONST_FOREACH(it, Modules)
-		kdebugm(KDEBUG_INFO, "module: %s, usage: %d\n", it.key().local8Bit().data(), it.data().usage_counter);
+	foreach(const QString &it, Modules.keys())
+		kdebugm(KDEBUG_INFO, "module: %s, usage: %d\n", it.local8Bit().data(), Modules[it].usage_counter);
 
 	// unloading all not used modules
 	// as long as any module were unloaded
@@ -433,9 +433,9 @@ ModulesManager::~ModulesManager()
 	{
 		QStringList active = activeModules();
 		deactivated = false;
-		CONST_FOREACH(i, active)
-			if (Modules[*i].usage_counter == 0)
-				if (deactivateModule(*i))
+		foreach(const QString &i, active)
+			if (Modules[i].usage_counter == 0)
+				if (deactivateModule(i))
 					deactivated = true;
 	}
 	while (deactivated);
@@ -443,10 +443,10 @@ ModulesManager::~ModulesManager()
 	// we cannot unload more modules in normal way
 	// so we are making it brutal ;)
 	QStringList active = activeModules();
-	CONST_FOREACH(i, active)
+	foreach(const QString &i, active)
 	{
-		kdebugm(KDEBUG_PANIC, "WARNING! Could not deactivate module %s, killing\n",(*i).local8Bit().data());
-		deactivateModule((*i), true);
+		kdebugm(KDEBUG_PANIC, "WARNING! Could not deactivate module %s, killing\n",i.local8Bit().data());
+		deactivateModule(i, true);
 	}
 
 	delete translators;
@@ -473,13 +473,13 @@ QTranslator* ModulesManager::loadModuleTranslation(const QString& module_name)
 bool ModulesManager::satisfyModuleDependencies(const ModuleInfo& module_info)
 {
 	kdebugf();
-	CONST_FOREACH(it, module_info.depends)
+	foreach(const QString &it, module_info.depends)
 	{
-		if (!moduleIsActive(*it))
+		if (!moduleIsActive(it))
 		{
-			if (moduleIsInstalled(*it) || moduleIsStatic(*it))
+			if (moduleIsInstalled(it) || moduleIsStatic(it))
 			{
-				if (!activateModule(*it))
+				if (!activateModule(it))
 				{
 					kdebugf2();
 					return false;
@@ -487,7 +487,7 @@ bool ModulesManager::satisfyModuleDependencies(const ModuleInfo& module_info)
 			}
 			else
 			{
-				MessageBox::msg(tr("Required module %1 was not found").arg(*it));
+				MessageBox::msg(tr("Required module %1 was not found").arg(it));
 				kdebugf2();
 				return false;
 			}
@@ -500,10 +500,10 @@ bool ModulesManager::satisfyModuleDependencies(const ModuleInfo& module_info)
 void ModulesManager::incDependenciesUsageCount(const ModuleInfo& module_info)
 {
 	kdebugmf(KDEBUG_FUNCTION_START, "%s\n", module_info.description.local8Bit().data());
-	CONST_FOREACH(it, module_info.depends)
+	foreach(const QString &it, module_info.depends)
 	{
-		kdebugm(KDEBUG_INFO, "incUsage: %s\n", (*it).local8Bit().data());
-		moduleIncUsageCount(*it);
+		kdebugm(KDEBUG_INFO, "incUsage: %s\n", it.local8Bit().data());
+		moduleIncUsageCount(it);
 	}
 	kdebugf2();
 }
@@ -520,8 +520,8 @@ void ModulesManager::registerStaticModule(const QString& module_name,
 QStringList ModulesManager::staticModules() const
 {
 	QStringList static_modules;
-	CONST_FOREACH(i, StaticModules)
-		static_modules.append(i.key());
+	foreach(const QString &i, StaticModules.keys())
+		static_modules.append(i);
 	return static_modules;
 }
 
@@ -531,17 +531,17 @@ QStringList ModulesManager::installedModules() const
 	dir.setFilter(QDir::Files);
 	QStringList installed;
 	QStringList entries = dir.entryList();
-	CONST_FOREACH(entry, entries)
-		installed.append((*entry).left((*entry).length() - SO_EXT_LEN - 1));
+	foreach(const QString &entry, entries)
+		installed.append(entry.left(entry.length() - SO_EXT_LEN - 1));
 	return installed;
 }
 
 QStringList ModulesManager::loadedModules() const
 {
 	QStringList loaded;
-	CONST_FOREACH(i, Modules)
-		if (i.data().lib!=NULL)
-			loaded.append(i.key());
+	foreach(const QString &i, Modules.keys())
+		if (Modules[i].lib!=NULL)
+			loaded.append(i);
 	return loaded;
 }
 
@@ -551,17 +551,17 @@ QStringList ModulesManager::unloadedModules() const
 	QStringList installed = installedModules();
 	QStringList loaded = loadedModules();
 	QStringList unloaded;
-	CONST_FOREACH(module, installed)
-		if (!loaded.contains(*module))
-			unloaded.append(*module);
+	foreach(const QString &module, installed)
+		if (!loaded.contains(module))
+			unloaded.append(module);
 	return unloaded;
 }
 
 QStringList ModulesManager::activeModules() const
 {
 	QStringList active;
-	CONST_FOREACH(i, Modules)
-		active.append(i.key());
+	foreach(const QString &i, Modules.keys())
+		active.append(i);
 	return active;
 }
 
@@ -570,16 +570,16 @@ QString ModulesManager::moduleProvides(const QString &provides)
 	ModuleInfo info;
 
 	QStringList moduleList = staticModules();
-	CONST_FOREACH(moduleName, moduleList)
-		if (moduleInfo(*moduleName, info))
+	foreach(const QString &moduleName, moduleList)
+		if (moduleInfo(moduleName, info))
 			if (info.provides.contains(provides))
-				return *moduleName;
+				return moduleName;
 
 	moduleList = installedModules();
-	CONST_FOREACH(moduleName, moduleList)
-		if (moduleInfo(*moduleName, info) && info.provides.contains(provides))
-			if (moduleIsLoaded(*moduleName))
-				return *moduleName;
+	foreach(const QString &moduleName, moduleList)
+		if (moduleInfo(moduleName, info) && info.provides.contains(provides))
+			if (moduleIsLoaded(moduleName))
+				return moduleName;
 
 	return "";
 }
@@ -652,28 +652,28 @@ void ModulesManager::saveLoadedModules()
 bool ModulesManager::conflictsWithLoaded(const QString &module_name, const ModuleInfo& module_info) const
 {
 	kdebugf();
-	CONST_FOREACH(it, module_info.conflicts)
+	foreach(const QString &it, module_info.conflicts)
 	{
-		if (moduleIsActive(*it))
+		if (moduleIsActive(it))
 		{
-			MessageBox::msg(narg(tr("Module %1 conflicts with: %2"), module_name, *it));
+			MessageBox::msg(narg(tr("Module %1 conflicts with: %2"), module_name, it));
 			kdebugf2();
 			return true;
 		}
-		CONST_FOREACH(mit, Modules)
-			CONST_FOREACH(sit, (*mit).info.provides)
-				if ((*it)==(*sit))
+		foreach(const QString &key, Modules.keys())
+			foreach(const QString &sit, Modules[key].info.provides)
+				if (it == sit)
 				{
-					MessageBox::msg(narg(tr("Module %1 conflicts with: %2"), module_name, mit.key()));
+					MessageBox::msg(narg(tr("Module %1 conflicts with: %2"), module_name, key));
 					kdebugf2();
 					return true;
 				}
 	}
-	CONST_FOREACH(it, Modules)
-		CONST_FOREACH(sit, (*it).info.conflicts)
-			if ((*sit)==module_name)
+	foreach(const QString &key, Modules.keys())
+		foreach(const QString &sit, Modules[key].info.conflicts)
+			if (sit == module_name)
 			{
-				MessageBox::msg(narg(tr("Module %1 conflicts with: %2"), module_name, it.key()));
+				MessageBox::msg(narg(tr("Module %1 conflicts with: %2"), module_name, key));
 				kdebugf2();
 				return true;
 			}
@@ -781,17 +781,17 @@ bool ModulesManager::deactivateModule(const QString& module_name, bool force)
 		return false;
 	}
 
-	CONST_FOREACH(i, m.info.depends)
-		moduleDecUsageCount(*i);
+	foreach(const QString &i, m.info.depends)
+		moduleDecUsageCount(i);
 
 	m.close();
-	if (m.translator!=NULL)
+	if (m.translator)
 	{
 		qApp->removeTranslator(m.translator);
 		delete m.translator;
 	}
 
-	if (m.lib!=NULL)
+	if (m.lib)
 		m.lib->deleteLater();
 
 	Modules.remove(module_name);

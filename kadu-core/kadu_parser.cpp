@@ -605,14 +605,14 @@ QString KaduParser::parse(const QString &s, const UserListElement &ule, const QO
 	}
 	QString ret;
 	QString p;
-	CONST_FOREACH(it, parseStack)
+	foreach(ParseElem elem, parseStack)
 	{
-		if ((*it).type != ParseElem::PE_STRING)
-			kdebugm(KDEBUG_WARNING, "Incorrect parse string! %d\n", (*it).type);
+		if (elem.type != ParseElem::PE_STRING)
+			kdebugm(KDEBUG_WARNING, "Incorrect parse string! %d\n", elem.type);
 
-		switch ((*it).type)
+		switch (elem.type)
 		{
-			case ParseElem::PE_STRING:					p = (*it).str;	break;
+			case ParseElem::PE_STRING:					p = elem.str;	break;
 			case ParseElem::PE_EXTERNAL_VARIABLE:		p = "#{";		break;
 			case ParseElem::PE_ICONPATH:				p = "@{";		break;
 			case ParseElem::PE_VARIABLE:				p = "${";		break;

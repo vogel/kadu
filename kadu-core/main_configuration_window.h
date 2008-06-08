@@ -39,8 +39,9 @@ class MainConfigurationWindow : public ConfigurationWindow
 {
 	Q_OBJECT
 
+	typedef QPair<QString, ConfigurationUiHandler *> ConfigurationHandelUiPair;
 	static MainConfigurationWindow *Instance;
-	static QList<QPair<QString, ConfigurationUiHandler *> > UiFiles;
+	static QList<ConfigurationHandelUiPair> UiFiles;
 
 	static void instanceCreated();
 

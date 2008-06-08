@@ -46,15 +46,15 @@ Hint::Hint(QWidget *parent, Notification *notification)
 	callbacksBox = new QHBoxLayout();
 	vbox->addLayout(callbacksBox);
 
-	const QList<QPair<QString, const char *> > callbacks = notification->getCallbacks();
+	const QList<Notification::Callback> callbacks = notification->getCallbacks();
 	if (notification->getCallbacks().count())
 	{
 		callbacksBox->addStretch(10);
 
-		FOREACH(i, callbacks)
+		foreach(Notification::Callback i, callbacks)
 		{
-			QPushButton *button = new QPushButton((*i).first, this);
-			connect(button, SIGNAL(clicked()), notification, (*i).second);
+			QPushButton *button = new QPushButton(i.first, this);
+			connect(button, SIGNAL(clicked()), notification, i.second);
 			connect(button, SIGNAL(clicked()), notification, SLOT(clearDefaultCallback()));
 
 			callbacksBox->addWidget(button);

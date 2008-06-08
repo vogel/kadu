@@ -251,17 +251,6 @@ void SearchDialog::initModule()
 void SearchDialog::closeModule()
 {
 	delete searchActionsSlot;
-
-#if DEBUG_ENABLED
-	// for valgrind
-	QStringList searchActions;
-	searchActions << "stopSearchAction" << "firstSearchAction" << "nextResultsAction" << "clearSearchAction" << "addSearchedAction" << "chatSearchedAction";
-	CONST_FOREACH(act, searchActions)
-	{
-		ActionDescription *a = KaduActions[*act];
-		delete a;
-	}
-#endif
 }
 
 QTreeWidgetItem * SearchDialog::selectedItem()
@@ -462,22 +451,22 @@ void SearchDialog::newSearchResults(SearchResults& searchResults, int seq, int f
 
 	// ??	if ((status && atoi(status) <= 1 && only_active->isChecked()) || !status)
 
-	CONST_FOREACH(searchIterator, searchResults)
+	foreach(SearchResult searchResult, searchResults)
 	{
-		QList <QTreeWidgetItem *> items = results->findItems((*searchIterator).Uin, Qt::MatchExactly, 1);
+		QList <QTreeWidgetItem *> items = results->findItems(searchResult.Uin, Qt::MatchExactly, 1);
 		if (items.count())
 			qlv = items[0];
 
-		pix = ((*searchIterator).Stat).pixmap((*searchIterator).Stat.status(), false, false);
+		pix = searchResult.Stat.pixmap(searchResult.Stat.status(), false, false);
 
 		if (qlv)
 		{
 //			if (!searchhidden) {
-			qlv->setText(1, (*searchIterator).Uin);
-			qlv->setText(2, (*searchIterator).First);
-			qlv->setText(3, (*searchIterator).City);
-			qlv->setText(4, (*searchIterator).Nick);
-			qlv->setText(5, (*searchIterator).Born);
+			qlv->setText(1, searchResult.Uin);
+			qlv->setText(2, searchResult.First);
+			qlv->setText(3, searchResult.City);
+			qlv->setText(4, searchResult.Nick);
+			qlv->setText(5, searchResult.Born);
 //	}
 //			else
 //				searchhidden = false;
@@ -485,7 +474,7 @@ void SearchDialog::newSearchResults(SearchResults& searchResults, int seq, int f
 		else
 		{
 			QStringList strings;
-			strings << QString::null << (*searchIterator).Uin << (*searchIterator).First <<(*searchIterator).City << (*searchIterator).Nick << (*searchIterator).Born;
+			strings << QString::null << searchResult.Uin << searchResult.First << searchResult.City << searchResult.Nick << searchResult.Born;
 			qlv = new QTreeWidgetItem(results, strings);
 //			if (count == 1 && r_uin->isChecked() && !searchhidden
 //				&& (statuscode == GG_STATUS_NOT_AVAIL || statuscode == GG_STATUS_NOT_AVAIL_DESCR)) {
