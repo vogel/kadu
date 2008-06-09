@@ -77,6 +77,8 @@ HistoryDialog::HistoryDialog(UinsList uins)
 	setAttribute(Qt::WA_DeleteOnClose);
 
 	QGridLayout *grid = new QGridLayout(this);
+	grid->setMargin(0);
+	grid->setSpacing(0);
 
 	QSplitter *splitter = new QSplitter(Qt::Horizontal, this);
 

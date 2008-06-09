@@ -184,6 +184,8 @@ HistorySearchDialog::HistorySearchDialog(QWidget *parent, UinsList uins)
 	connect(cancelButton, SIGNAL(clicked()), this, SLOT(cancelBtnClicked()));
 
 	QGridLayout *grid = new QGridLayout(this);
+	grid->setMargin(0);
+	grid->setSpacing(0);
 	grid->addMultiCellWidget(fromWidget, 0, 0, 0, 3);
 	grid->addMultiCellWidget(toWidget, 1, 1, 0, 3);
 	grid->addMultiCellWidget(criteriaGroupBox, 2, 3, 0, 1);
