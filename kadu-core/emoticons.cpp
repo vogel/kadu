@@ -175,7 +175,7 @@ bool EmoticonsManager::loadGGEmoticonThemePart(const QString &subdir)
 			item.stat = item.anim;
 		foreach(const QString &alias, aliases)
 		{
-			item.alias = *alias;
+			item.alias = alias;
 			Aliases.push_back(item);
 		}
 		item.alias = aliases[0];
