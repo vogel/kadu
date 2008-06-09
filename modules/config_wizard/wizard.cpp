@@ -212,7 +212,8 @@ void Wizard::wizardStart()
 void WizardStarter::userListImported(bool ok, QList<UserListElement> list)
 {
 	kdebugf();
-	disconnect(gadu, SIGNAL(userListImported(bool, QList<UserListElement>)), this, SLOT(userListImported(bool, QList<UserListElement >)));
+
+	disconnect(gadu, SIGNAL(userListImported(bool, QList<UserListElement>)), this, SLOT(userListImported(bool, QList<UserListElement>)));
 
 	if (!ok)
 	{

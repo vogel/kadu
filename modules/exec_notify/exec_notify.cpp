@@ -61,11 +61,8 @@ void ExecConfigurationWidget::saveNotifyConfigurations()
 	if (currentNotifyEvent != "")
 		Commands[currentNotifyEvent] = commandLineEdit->text();
 
-	CONST_FOREACH(Command, Commands)
-	{
-		const QString &eventName = Command.key();
-		config_file.writeEntry("Exec Notify", eventName + "Cmd", *Command);
-	}
+	foreach(const QString &eventName, Commands)
+		config_file.writeEntry("Exec Notify", eventName + "Cmd", Commands[eventName]);
 }
 
 void ExecConfigurationWidget::switchToEvent(const QString &event)
@@ -202,6 +199,7 @@ void ExecNotify::notify(Notification *notification)
 	if (syntax.isEmpty())
 		return;
 	QStringList s = mySplit(' ', syntax);
+	QStringList result;
 	
 	const UserListElements &senders = notification->userListElements();
 	UserListElement ule;
@@ -209,19 +207,19 @@ void ExecNotify::notify(Notification *notification)
 	if (senders.count())
 		ule = notification->userListElements()[0];
 
-	FOREACH(it, s)
+	foreach(QString it, s)
 	{
-		if ((*it).contains("%ids"))
+		if (it.contains("%ids"))
 		{
 			QStringList sndrs;
-			CONST_FOREACH(sndr, senders)
-				sndrs.append((*sndr).ID("Gadu"));
-			(*it).replace("%ids", sndrs.join(","));
+			foreach(UserListElement sndr, senders)
+				sndrs.append(sndr.ID("Gadu"));
+			it.replace("%ids", sndrs.join(","));
 		}
-		(*it) = KaduParser::parse((*it), ule, notification);
+		result.append(KaduParser::parse(it, ule, notification));
 	}
 
-	run(s, QString::null);
+	run(result, QString::null);
 }
 
 void ExecNotify::run(const QStringList &args, const QString &stdin)

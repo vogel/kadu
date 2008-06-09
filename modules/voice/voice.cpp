@@ -137,7 +137,7 @@ bool VoiceChatDialog::socketEvent(DccSocket *socket, bool &lock)
 			kdebugmf(KDEBUG_INFO, "GG_EVENT_DCC_VOICE_DATA\n");
 			int len = socket->ggDccEvent()->event.dcc_voice_data.length;
 
-			//zostawiamy zapas gdyby to siê kiedy¶ zmieni³o
+			//zostawiamy zapas gdyby to siï¿½ kiedyï¿½ zmieniï¿½o
 			if (len > 1630) // 1630 == 5 * 326
 			{
 				socket->reject();
@@ -177,13 +177,13 @@ void VoiceChatDialog::sendDataToAll(char *data, int length)
 {
 	kdebugf();
 
-	FOREACH(i, VoiceChats)
-		(*i)->sendData(data, length);
+	foreach(VoiceChatDialog *i, VoiceChats)
+		i->sendData(data, length);
 }
 
 PlayThread::PlayThread() : QThread(), samples(), samplesMutex(), end(false)
 {
-	wsem = new QSemaphore(32);	//mo¿e byæ max 32 próbek w kolejce
+	wsem = new QSemaphore(32);	//moï¿½e byï¿½ max 32 prï¿½bek w kolejce
 }
 
 PlayThread::~PlayThread()
@@ -269,7 +269,7 @@ void PlayThread::addGsmSample(char *data, int length)
 	if (samples.size() >= 3)
 	{
 		kdebugm(KDEBUG_WARNING, "losing 3 frames\n");
-		// jak nie bêdziemy takich rzeczy robiæ, to lag bêdzie siê powiêksza³ :/
+		// jak nie bï¿½dziemy takich rzeczy robiï¿½, to lag bï¿½dzie siï¿½ powiï¿½kszaï¿½ :/
 		while (!samples.empty())
 		{
 			delete [] samples[0].data;
@@ -392,8 +392,8 @@ VoiceManager::VoiceManager()
 	connect(chat_manager, SIGNAL(chatWidgetCreated(ChatWidget *)), this, SLOT(chatCreated(ChatWidget *)));
 	connect(chat_manager, SIGNAL(chatWidgetDestroying(ChatWidget *)), this, SLOT(chatDestroying(ChatWidget*)));
 
-	FOREACH(it, chat_manager->chats())
-		chatCreated(*it);
+	foreach(ChatWidget *it, chat_manager->chats())
+		chatCreated(it);
 
 	dcc_manager->addHandler(this);
 
@@ -412,8 +412,8 @@ VoiceManager::~VoiceManager()
 	disconnect(chat_manager, SIGNAL(chatWidgetCreated(ChatWidget *)), this, SLOT(chatCreated(ChatWidget *)));
 	disconnect(chat_manager, SIGNAL(chatWidgetDestroying(ChatWidget *)), this, SLOT(chatDestroying(ChatWidget*)));
 
-	FOREACH(it, chat_manager->chats())
-		chatDestroying(*it);
+	foreach(ChatWidget *it, chat_manager->chats())
+		chatDestroying(it);
 
 	disconnect(UserBox::userboxmenu,SIGNAL(popup()),
 		this, SLOT(userBoxMenuPopup()));
@@ -626,7 +626,7 @@ void VoiceManager::recordSampleReceived(char *data, int length)
 
 	int silence = 0;
 	for (int i = 0; i < 160 * 10; ++i)
-		if (abs(input[i]) < 256) // 256 ustalone do¶wiadczalnie
+		if (abs(input[i]) < 256) // 256 ustalone doï¿½wiadczalnie
 			++silence;
 	kdebugm(KDEBUG_INFO, "silence: %d / %d\n", silence, 160 * 10);
 /*	if (silence == 0)
@@ -645,7 +645,7 @@ void VoiceManager::recordSampleReceived(char *data, int length)
 		input2 += 160;
 	}
 	/* celowo sprawdzane jest to PO kodowaniu, bo koder musi
-	   znaæ ca³o¶æ sygna³u ¿eby poprawnie pracowaæ */
+	   znaï¿½ caï¿½oï¿½ï¿½ sygnaï¿½u ï¿½eby poprawnie pracowaï¿½ */
 	if (silence == 160 * 10)
 	{
 		kdebugm(KDEBUG_INFO, "silence! not sending packet\n");
@@ -725,7 +725,7 @@ void VoiceManager::userBoxMenuPopup()
 {
 	kdebugf();
 	UserBox *activeUserBox = UserBox::activeUserBox();
-	if (activeUserBox == NULL) //to siê zdarza...
+	if (activeUserBox == NULL) //to siï¿½ zdarza...
 		return;
 	UserListElements users = activeUserBox->selectedUsers();
 	UserListElement user = users[0];
