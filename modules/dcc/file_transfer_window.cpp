@@ -234,14 +234,15 @@ FileTransferWindow::FileTransferWindow(QWidget *parent, const char *name)
 	mainGrid->addWidget(scrollView, 0, 0);
 	scrollView->move(0, 0);
 
-	frame = new QFrame(scrollView->widget());
+	frame = new QFrame(this);
 
  	frame->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Minimum);
 
 	transfersLayout = new QVBoxLayout(frame, 0, 1);
 	transfersLayout->setDirection(QBoxLayout::Up);
 
-// 	scrollView->addChild(frame, 0, 0);
+ 	scrollView->setWidget(frame);
+	scrollView->setWidgetResizable(true);
 
 	QWidget *buttonBox = new QWidget;
 	QHBoxLayout *buttonBox_layout = new QHBoxLayout;
