@@ -73,6 +73,8 @@ private:
 
 	unsigned int NewMessagesCount; /*!< liczba nowych wiadomo�ci w oknie rozmowy */
 
+	bool decodeLocalFiles(QDropEvent *event, QStringList &files);
+
 private slots:
 	/**
 		\fn void changeColor()

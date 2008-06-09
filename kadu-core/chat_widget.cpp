@@ -7,8 +7,6 @@
  *                                                                         *
  ***************************************************************************/
 
-// TODO: remove
-#include <Q3UriDrag>
 #include <QShortcut>
 #include <QSplitter>
 #include <QVBoxLayout>
@@ -722,33 +720,52 @@ bool ChatWidget::waitingForACK() const
 	return WaitingForACK;
 }
 
+bool ChatWidget::decodeLocalFiles(QDropEvent *event, QStringList &files)
+{
+	if (!event->mimeData()->hasUrls())
+		return false;
+
+	QList<QUrl> urls = event->mimeData()->urls();
+	
+	foreach(QUrl url, urls)
+	{
+		QString file = url.toLocalFile();
+		if (!file.isEmpty())
+		{
+			//is needed to check if file refer to local file?
+			QFileInfo fileInfo(file);
+			if (fileInfo.exists())
+				files.append(file);
+		}
+	}
+	return files.count() > 0;
+
+}
+
 void ChatWidget::dragEnterEvent(QDragEnterEvent *e)
 {
 	QStringList files;
+	
+	if (decodeLocalFiles(e, files))
+		e->acceptProposedAction();
 
-	if (Q3UriDrag::decodeLocalFiles(e, files))
-		e->accept(files.count() > 0);
-	else
-		e->accept(false);
 }
 
 void ChatWidget::dragMoveEvent(QDragMoveEvent *e)
 {
 	QStringList files;
 
-	if (Q3UriDrag::decodeLocalFiles(e, files))
-		e->accept(files.count() > 0);
-	else
-		e->accept(false);
+	if (decodeLocalFiles(e, files))
+		e->acceptProposedAction();
 }
 
 void ChatWidget::dropEvent(QDropEvent *e)
 {
 	QStringList files;
 
-	if (Q3UriDrag::decodeLocalFiles(e, files))
+	if (decodeLocalFiles(e, files))
 	{
-		e->accept(files.count() > 0);
+		e->acceptProposedAction();
 
 		QStringList::iterator i = files.begin();
 		QStringList::iterator end = files.end();
@@ -756,8 +773,6 @@ void ChatWidget::dropEvent(QDropEvent *e)
 		for (; i != end; i++)
 			emit fileDropped(Users, *i);
 	}
-	else
-		e->accept(false);
 }
 
 Protocol *ChatWidget::currentProtocol()
