@@ -61,7 +61,7 @@ bool ConfigWidgetValue::fromDomElement(QDomElement domElement)
 
 ConfigLineEdit::ConfigLineEdit(const QString &section, const QString &item, const QString &widgetCaption, const QString &toolTip,
 		ConfigGroupBox *parentConfigGroupBox, char *name)
-	: QLineEdit(parentConfigGroupBox->widget(), name), ConfigWidgetValue(widgetCaption, toolTip, section, item, parentConfigGroupBox), label(0)
+	: QLineEdit(parentConfigGroupBox->widget(), name), ConfigWidgetValue(section, item, widgetCaption, toolTip, parentConfigGroupBox), label(0)
 {
 	createWidgets();
 }
@@ -144,7 +144,7 @@ void ConfigGGPasswordEdit::saveConfiguration()
 
 ConfigCheckBox::ConfigCheckBox(const QString &section, const QString &item, const QString &widgetCaption, const QString &toolTip,
 		ConfigGroupBox *parentConfigGroupBox, char *name)
-	: QCheckBox(widgetCaption, parentConfigGroupBox->widget(), name), ConfigWidgetValue(widgetCaption, toolTip, section, item, parentConfigGroupBox)
+	: QCheckBox(widgetCaption, parentConfigGroupBox->widget(), name), ConfigWidgetValue(section, item, widgetCaption, toolTip, parentConfigGroupBox)
 {
 	createWidgets();
 }
@@ -194,7 +194,7 @@ void ConfigCheckBox::hide()
 
 ConfigSpinBox::ConfigSpinBox(const QString &section, const QString &item, const QString &widgetCaption, const QString &toolTip,
 		int minValue, int maxValue, int step, ConfigGroupBox *parentConfigGroupBox, const char *name)
-	: QSpinBox(minValue, maxValue, step, parentConfigGroupBox->widget(), name), ConfigWidgetValue(widgetCaption, toolTip, section, item, parentConfigGroupBox),
+	: QSpinBox(minValue, maxValue, step, parentConfigGroupBox->widget(), name), ConfigWidgetValue(section, item, widgetCaption, toolTip, parentConfigGroupBox),
 		label(0)
 {
 }
@@ -279,7 +279,7 @@ bool ConfigSpinBox::fromDomElement(QDomElement domElement)
 
 ConfigComboBox::ConfigComboBox(const QString &section, const QString &item, const QString &widgetCaption, const QString &toolTip,
 		const QStringList &itemValues, const QStringList &itemCaptions, ConfigGroupBox *parentConfigGroupBox, const char *name)
-	: QComboBox(parentConfigGroupBox->widget(), name), ConfigWidgetValue(widgetCaption, toolTip, section, item, parentConfigGroupBox), label(0)
+	: QComboBox(parentConfigGroupBox->widget(), name), ConfigWidgetValue(section, item, widgetCaption, toolTip, parentConfigGroupBox), label(0)
 {
 	createWidgets();
 }
@@ -392,7 +392,7 @@ bool ConfigComboBox::fromDomElement(QDomElement domElement)
 
 ConfigHotKeyEdit::ConfigHotKeyEdit(const QString &section, const QString &item, const QString &widgetCaption, const QString &toolTip,
 		ConfigGroupBox *parentConfigGroupBox, char *name)
-	: HotKeyEdit(parentConfigGroupBox->widget()), ConfigWidgetValue(widgetCaption, toolTip, section, item, parentConfigGroupBox), label(0)
+	: HotKeyEdit(parentConfigGroupBox->widget()), ConfigWidgetValue(section, item, widgetCaption, toolTip, parentConfigGroupBox), label(0)
 {
 	createWidgets();
 }
@@ -452,7 +452,7 @@ void ConfigHotKeyEdit::hide()
 
 ConfigPathListEdit::ConfigPathListEdit(const QString &section, const QString &item, const QString &widgetCaption, const QString &toolTip,
 		ConfigGroupBox *parentConfigGroupBox)
-	: PathListEdit(parentConfigGroupBox->widget()), ConfigWidgetValue(widgetCaption, toolTip, section, item, parentConfigGroupBox), label(0)
+	: PathListEdit(parentConfigGroupBox->widget()), ConfigWidgetValue(section, item, widgetCaption, toolTip, parentConfigGroupBox), label(0)
 {
 	createWidgets();
 }
@@ -512,7 +512,7 @@ void ConfigPathListEdit::hide()
 
 ConfigColorButton::ConfigColorButton(const QString &section, const QString &item, const QString &widgetCaption, const QString &toolTip,
 		ConfigGroupBox *parentConfigGroupBox, char *name)
-	: ColorButton(parentConfigGroupBox->widget()), ConfigWidgetValue(widgetCaption, toolTip, section, item, parentConfigGroupBox), label(0)
+	: ColorButton(parentConfigGroupBox->widget()), ConfigWidgetValue(section, item, widgetCaption, toolTip, parentConfigGroupBox), label(0)
 {
 	createWidgets();
 }
@@ -572,7 +572,7 @@ void ConfigColorButton::hide()
 
 ConfigSelectFont::ConfigSelectFont(const QString &section, const QString &item, const QString &widgetCaption, const QString &toolTip,
 		ConfigGroupBox *parentConfigGroupBox)
-	: SelectFont(parentConfigGroupBox->widget()), ConfigWidgetValue(widgetCaption, toolTip, section, item, parentConfigGroupBox), label(0)
+	: SelectFont(parentConfigGroupBox->widget()), ConfigWidgetValue(section, item, widgetCaption, toolTip, parentConfigGroupBox), label(0)
 {
 	createWidgets();
 }
@@ -632,7 +632,7 @@ void ConfigSelectFont::hide()
 
 ConfigSyntaxEditor::ConfigSyntaxEditor(const QString &section, const QString &item, const QString &widgetCaption, const QString &toolTip,
 		ConfigGroupBox *parentConfigGroupBox)
-	: SyntaxEditor(parentConfigGroupBox->widget()), ConfigWidgetValue(widgetCaption, toolTip, section, item, parentConfigGroupBox), label(0)
+	: SyntaxEditor(parentConfigGroupBox->widget()), ConfigWidgetValue(section, item, widgetCaption, toolTip, parentConfigGroupBox), label(0)
 {
 	createWidgets();
 }
@@ -737,7 +737,7 @@ void ConfigActionButton::hide()
 
 ConfigSelectFile::ConfigSelectFile(const QString &section, const QString &item, const QString &widgetCaption, const QString &toolTip,
 		const QString &type, ConfigGroupBox *parentConfigGroupBox)
-	: SelectFile(type, parentConfigGroupBox->widget()), ConfigWidgetValue(widgetCaption, toolTip, section, item, parentConfigGroupBox), label(0)
+	: SelectFile(type, parentConfigGroupBox->widget()), ConfigWidgetValue(section, item, widgetCaption, toolTip, parentConfigGroupBox), label(0)
 {
 	createWidgets();
 }
@@ -847,7 +847,7 @@ void ConfigPreview::hide()
 ConfigSlider::ConfigSlider(const QString &section, const QString &item, const QString &widgetCaption, const QString &toolTip,
 		int minValue, int maxValue, int pageStep, ConfigGroupBox *parentConfigGroupBox, const char *name)
 	: QSlider(minValue, maxValue, pageStep, 0, Qt::Horizontal, parentConfigGroupBox->widget(), name),
-		ConfigWidgetValue(widgetCaption, toolTip, section, item, parentConfigGroupBox), label(0)
+		ConfigWidgetValue(section, item, widgetCaption, toolTip, parentConfigGroupBox), label(0)
 {
 }
 
