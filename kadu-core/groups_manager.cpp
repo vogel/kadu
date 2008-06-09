@@ -80,7 +80,7 @@ void GroupsManager::setTabBar(KaduTabBar *bar)
 	GroupBar = bar;
 
 	bar->setShape(QTabBar::RoundedBelow);
-// 	bar->addTab(icons_manager->loadIcon("PersonalInfo"), tr("All"));
+	bar->addTab(icons_manager->loadIcon("PersonalInfo"), tr("All"));
 	bar->setFont(QFont(config_file.readFontEntry("Look", "UserboxFont").family(), config_file.readFontEntry("Look", "UserboxFont").pointSize(), QFont::Bold));
 	bar->setIconSize(QSize(16,16));
 	connect(bar, SIGNAL(selected(int)), this, SLOT(tabSelected(int)));
