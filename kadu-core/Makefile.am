@@ -57,7 +57,6 @@ syntax_editor.cpp \
 tabbar.cpp \
 themes.cpp \
 toolbar.cpp \
-toolbutton.cpp \
 userbox.cpp \
 userinfo.cpp \
 userlist.cpp \
@@ -123,7 +122,6 @@ syntax_editor.h \
 tabbar.h \
 themes.h \
 toolbar.h \
-toolbutton.h \
 userbox.h \
 userinfo.h \
 userlist.h \
@@ -177,7 +175,6 @@ moc/syntax_editor_moc.cpp \
 moc/tabbar_moc.cpp \
 moc/themes_moc.cpp \
 moc/toolbar_moc.cpp \
-moc/toolbutton_moc.cpp \
 moc/updates_moc.cpp \
 moc/userbox_moc.cpp \
 moc/userinfo_moc.cpp \
@@ -242,7 +239,6 @@ obj/syntax_editor.$(OBJEXT) \
 obj/tabbar.$(OBJEXT) \
 obj/themes.$(OBJEXT) \
 obj/toolbar.$(OBJEXT) \
-obj/toolbutton.$(OBJEXT) \
 obj/userbox.$(OBJEXT) \
 obj/userinfo.$(OBJEXT) \
 obj/userlist.$(OBJEXT) \
@@ -295,7 +291,6 @@ obj/syntax_editor_moc.$(OBJEXT) \
 obj/tabbar_moc.$(OBJEXT) \
 obj/themes_moc.$(OBJEXT) \
 obj/toolbar_moc.$(OBJEXT) \
-obj/toolbutton_moc.$(OBJEXT) \
 obj/userbox_moc.$(OBJEXT) \
 obj/userinfo_moc.$(OBJEXT) \
 obj/userlist_moc.$(OBJEXT) \
@@ -400,8 +395,6 @@ include $(DEPS)/themes.d
 include $(DEPS)/themes_moc.d
 include $(DEPS)/toolbar.d
 include $(DEPS)/toolbar_moc.d
-include $(DEPS)/toolbutton.d
-include $(DEPS)/toolbutton_moc.d
 include $(DEPS)/updates.d
 include $(DEPS)/updates_moc.d
 include $(DEPS)/userbox.d
