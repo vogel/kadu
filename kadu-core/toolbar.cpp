@@ -8,10 +8,12 @@
  ***************************************************************************/
 
 #include <QContextMenuEvent>
+#include <QCursor>
 #include <QDragEnterEvent>
 #include <QMenu>
 #include <QTimer>
 #include <QToolButton>
+#include <QTextStream>
 
 #include "action.h"
 #include "config_file.h"
@@ -68,11 +70,24 @@ void ToolBar::addAction(const QString &actionName, bool showLabel, QAction *afte
 		foreach(ToolBarAction i, ToolBarActions)
 			if (i.action == after)
 			{
+				newAction.action = KaduActions.getAction(actionName, dynamic_cast<KaduMainWindow *>(parent()));
+				insertAction(after, newAction.action);
+				newAction.button = dynamic_cast<QToolButton *>(widgetForAction(newAction.action));
+				connect(newAction.button, SIGNAL(pressed()), this, SLOT(buttonPressed()));
+				if (newAction.showLabel)
+					newAction.button->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
 				ToolBarActions.insert(index, newAction);
 				return;
 			}
 			index++;
 	}
+
+	newAction.action = KaduActions.getAction(actionName, dynamic_cast<KaduMainWindow *>(parent()));
+	QToolBar::addAction(newAction.action);
+	newAction.button = dynamic_cast<QToolButton *>(widgetForAction(newAction.action));
+	connect(newAction.button, SIGNAL(pressed()), this, SLOT(buttonPressed()));
+	if (newAction.showLabel)
+		newAction.button->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
 
 	ToolBarActions.append(newAction);
 }
@@ -84,49 +99,77 @@ void ToolBar::usersChanged()
 // 			(*actionIterator).button->usersChanged();
 }
 
-// TODO: optimize
-// void ToolBar::moveAction(const QString &actionName, ToolButton *button)
-// {
-// 	bool actionFirst;
-// 	bool showLabel;
-// 
-// 	FOREACH(actionIterator, ToolBarActions)
-// 		if ((*actionIterator).actionName == actionName)
-// 		{
-// 			if ((*actionIterator).button == button)
-// 				return;
-// 			actionFirst = true;
-// 			break;
-// 		}
-// 		else if ((*actionIterator).button == button)
-// 		{
-// 			if ((*actionIterator).actionName == actionName)
-// 				return;
-// 			actionFirst = false;
-// 			break;
-// 		}
-// 
-// 	FOREACH(actionIterator, ToolBarActions)
-// 		if ((*actionIterator).actionName == actionName)
-// 		{
-// 			showLabel = (*actionIterator).showLabel;
-// 			delete (*actionIterator).button;
-// 			ToolBarActions.remove(actionIterator);
-// 			break;
-// 		}
-// 
-// 	addAction(actionName, showLabel, button, !actionFirst);
-// 	updateButtons();
-// }
+void ToolBar::moveAction(const QString &actionName, bool showLabel, QAction *after)
+{
+ 	bool actionFind = false;
+	int index = 0;
+
+	ToolBarAction newAction;
+	newAction.actionName = actionName;
+	newAction.action = 0;
+	newAction.button = 0;
+	newAction.showLabel = showLabel;
+
+ 	foreach(ToolBarAction toolBarAction, ToolBarActions)
+	{
+		if (toolBarAction.actionName == actionName)
+		{
+			if (toolBarAction.action == after)
+				return;
+			else
+			{
+				removeAction(toolBarAction.action);
+				ToolBarActions.remove(toolBarAction);
+			}
+
+		}
+		if (toolBarAction.action != after && !actionFind)
+			++index;
+		else
+			actionFind = true;
+	}
+
+ 	newAction.action = KaduActions.getAction(actionName, dynamic_cast<KaduMainWindow *>(parent()));
+
+	insertAction(ToolBarActions[index].action, newAction.action);
+	newAction.button = dynamic_cast<QToolButton *>(widgetForAction(newAction.action));
+	connect(newAction.button, SIGNAL(pressed()), this, SLOT(buttonPressed()));
+	if (newAction.showLabel)
+		newAction.button->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
+	ToolBarActions.insert(index, newAction);
+}
 
 void ToolBar::addButtonClicked(QAction *action)
 {
-//	kdebugmf(KDEBUG_FUNCTION_START | KDEBUG_INFO, "action_index = %d\n", action_index);
-
 	addAction(action->data().toString(), false);
-	updateButtons();
+}
 
-	kdebugf2();
+void ToolBar::buttonPressed()
+{
+	MouseStart = mapFromGlobal(QCursor::pos());
+}
+
+void ToolBar::mouseMoveEvent(QMouseEvent* e)
+{
+	if ((e->buttons() & Qt::LeftButton) && (MouseStart - e->pos()).manhattanLength() >= 15)
+	{
+		QAction *action = actionAt(MouseStart);
+		if (!action)
+			return;
+		foreach(ToolBarAction toolBarAction, ToolBarActions)
+		{
+			if (toolBarAction.action == action)
+			{
+				QDrag* drag = new ActionDrag(toolBarAction.actionName, toolBarAction.button->toolButtonStyle() == Qt::ToolButtonTextBesideIcon, this);
+
+				drag->exec(Qt::CopyAction);
+
+				e->accept();
+			}	
+		}
+	}
+	else
+		QToolBar::mouseMoveEvent(e);
 }
 
 void ToolBar::moveEvent(QMoveEvent *e)
@@ -143,63 +186,59 @@ void ToolBar::moveEvent(QMoveEvent *e)
 
 void ToolBar::dragEnterEvent(QDragEnterEvent* event)
 {
-	kdebugf();/*
+	kdebugf();
 	ToolBar* source = dynamic_cast<ToolBar*>(event->source());
 	if (source)
 	{
 		QString actionName;
 		bool showLabel;
 
-		if (ActionDrag::decode(event, actionName, showLabel))
-			event->accept((event->source() == this) || (!hasAction(actionName) && dockArea()->supportsAction(KaduActions[actionName]->actionType())));
-		else
-			event->accept(false);
+		if (ActionDrag::decode(event, actionName, showLabel) && (((event->source() == this) || (!hasAction(actionName) && dynamic_cast<KaduMainWindow *>(parent())->supportsActionType(KaduActions[actionName]->type())))))
+		{
+			event->acceptProposedAction();
+			return;
+		}
+		
 	}
-	else*/
-		event->accept(false);
+	event->ignore();
 	kdebugf2();
 }
 
 void ToolBar::dropEvent(QDropEvent* event)
 {
-	// TODO: update ToolbarActions
-/*
 	kdebugf();
 	ToolBar* source = dynamic_cast<ToolBar*>(event->source());
 
 	if (!source)
 	{
-		event->accept(false);
+		event->ignore();
 		return;
 	}
-
 
 	QString actionName;
 	bool showLabel;
 	if (!ActionDrag::decode(event, actionName, showLabel))
 	{
-		event->accept(false);
+		event->ignore();
 		return;
 	}
 
-	ToolBar* source_toolbar = (ToolBar*)event->source();
-	ToolButton *child = dynamic_cast<ToolButton *>(childAt(event->pos()));
+	ToolBar* source_toolbar = dynamic_cast<ToolBar*>(event->source());
+	QAction *after = actionAt(event->pos());
 
 	if (source_toolbar != this)
 	{
-		source_toolbar->removeAction(actionName);
+		source_toolbar->deleteAction(actionName);
 
-		if (child)
-			addAction(actionName, showLabel, child);
-		else
-			addAction(actionName, showLabel);
+//		if (after)
+			addAction(actionName, showLabel, after);
+//		else
+//			addAction(actionName, showLabel);
 	}
 	else
-		moveAction(actionName, child);
+		moveAction(actionName, showLabel, after);
 
-	updateButtons();
-
-	event->accept(true);*/
+	event->acceptProposedAction();
 
 	kdebugf2();
 }
@@ -261,16 +300,14 @@ void ToolBar::actionLoaded(const QString &actionName)
 {
 	if (!hasAction(actionName))
 		return;
-
-	QTimer::singleShot(0, this, SLOT(updateButtons()));
+	updateButtons();
 }
 
 void ToolBar::actionUnloaded(const QString &actionName)
 {
 	if (!hasAction(actionName))
 		return;
-
-	updateButtons();
+	deleteAction(actionName);
 }
 
 void ToolBar::updateButtons()
@@ -281,37 +318,38 @@ void ToolBar::updateButtons()
 	if (!kaduMainWindow)
 		return;
 
-	foreach(ToolBarAction toolBarAction, ToolBarActions)
+	QList<ToolBarAction>::iterator toolBarAction;
+ 	for (toolBarAction = ToolBarActions.begin(); toolBarAction != ToolBarActions.end(); ++toolBarAction)
 	{
-		const QString &actionName = toolBarAction.actionName;
+		const QString &actionName = (*toolBarAction).actionName;
 
-		if (toolBarAction.action)
+		if ((*toolBarAction).action)
 		{
 			if (KaduActions.contains(actionName))
 			{
-				lastAction = toolBarAction.action;
+				lastAction = (*toolBarAction).action;
 				continue;
 			}
 			else
 			{
-				if (toolBarAction.action)
+				if ((*toolBarAction).action)
 				{
-					delete toolBarAction.action;
-					toolBarAction.action = 0;
+					delete (*toolBarAction).action;
+					(*toolBarAction).action = 0;
 				}
 			}
 		}
 
 		if (KaduActions.contains(actionName) && kaduMainWindow->supportsActionType(KaduActions[actionName]->type()))
 		{
-			toolBarAction.action = KaduActions.getAction(actionName, dynamic_cast<KaduMainWindow *>(parent()));
-			QToolBar::addAction(toolBarAction.action);
-			toolBarAction.button = dynamic_cast<QToolButton *>(widgetForAction(toolBarAction.action));
+			(*toolBarAction).action = KaduActions.getAction(actionName, dynamic_cast<KaduMainWindow *>(parent()));
+			QToolBar::addAction((*toolBarAction).action);
+			(*toolBarAction).button = dynamic_cast<QToolButton *>(widgetForAction((*toolBarAction).action));
+	connect((*toolBarAction).button, SIGNAL(pressed()), this, SLOT(buttonPressed()));
+			if ((*toolBarAction).showLabel)
+				(*toolBarAction).button->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
 
-			if (toolBarAction.showLabel)
-				toolBarAction.button->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
-
-			lastAction = toolBarAction.action;
+			lastAction = (*toolBarAction).action;
 		}
 	}
 }
@@ -534,4 +572,59 @@ void ToolBar::deleteButton()
 			ToolBarActions.remove(toolBarAction);
 			return;
 		}
+}
+
+void ToolBar::deleteAction(const QString &actionName)
+{
+	foreach(ToolBarAction toolBarAction, ToolBarActions)
+		if (toolBarAction.actionName == actionName)
+		{
+			removeAction(toolBarAction.action);
+			ToolBarActions.remove(toolBarAction);
+			return;
+		}
+}
+
+ActionDrag::ActionDrag(const QString &actionName, bool showLabel, QWidget* dragSource)
+	: QDrag(dragSource)
+{
+	kdebugf();
+
+	QByteArray data;
+	QMimeData *mimeData = new QMimeData;
+
+	QString string = actionName + "\n" + QString::number(showLabel ? 1 : 0);
+
+	data = string.toUtf8();
+
+     	mimeData->setData("application/x-kadu-action", data);
+
+	setMimeData(mimeData);
+
+	kdebugf2();
+}
+
+bool ActionDrag::decode(QDropEvent *event, QString &actionName, bool &showLabel)
+{
+	const QMimeData *mimeData = event->mimeData();
+
+	if (!mimeData->hasFormat("application/x-kadu-action"))
+		return false;
+
+	QTextStream stream(mimeData->data("application/x-kadu-action"), QIODevice::ReadOnly);
+	stream.setCodec("UTF-8");
+
+	if (stream.atEnd())
+		return false;
+
+	actionName = stream.readLine();
+
+	if (stream.atEnd())
+		return false;
+
+	int tmp;
+	stream >> tmp;
+	showLabel = tmp;
+
+	return true;
 }

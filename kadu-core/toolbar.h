@@ -11,6 +11,7 @@
 #define TOOLBAR_H
 
 #include <QDomElement>
+#include <QDrag>
 #include <QToolBar>
 
 class QMenu;
@@ -49,6 +50,8 @@ class ToolBar : public QToolBar
 	int XOffset;
 	int YOffset;
 
+	QPoint MouseStart;
+
 	void addAction(const QString &actionName, bool showLabel, QAction *after = 0);
 
 	static QMap<QString, QList<ToolBarAction> > DefaultActions;
@@ -72,6 +75,7 @@ private slots:
 	void actionUnloaded(const QString &actionName);
 
 	void updateButtons();
+	void buttonPressed();
 
 	QMenu * createContextMenu(QToolButton *button);
 
@@ -100,6 +104,8 @@ protected:
 	**/
 	virtual void moveEvent(QMoveEvent *e);
 
+	virtual void mouseMoveEvent(QMouseEvent* e);
+
 public:
 	/**
 		Konstruktor paska narz?dzi
@@ -115,9 +121,8 @@ public:
 	**/
 	~ToolBar();
 
-// 	void addAction(const QString &actionName, bool showLabel, ToolButton *button = 0, bool before = true);
-// 	void removeAction(const QString &actionName);
-// 	void moveAction(const QString &actionName, ToolButton *button);
+ 	void deleteAction(const QString &actionName);
+ 	void moveAction(const QString &actionName, bool showLabel, QAction *after);
 
 	/**
 		\fn void loadFromConfig(QDomElement parent_element)
@@ -163,6 +168,14 @@ public slots:
 
 	void usersChanged();
 
+};
+
+class ActionDrag : public QDrag
+{
+
+public:
+	ActionDrag(const QString &actionName, bool showLabel, QWidget* dragSource = 0);
+	static bool decode(QDropEvent *event, QString &actionName, bool &showLabel);
 };
 
 #endif

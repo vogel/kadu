@@ -818,17 +818,9 @@ UserBox* UserBox::activeUserBox()
 	kdebugf();
 
 	foreach(UserBox *box, UserBoxes)
-	{
-		QWidget *widget = box;
-		if (!widget->isShown())
-			continue;
-
-		while (widget->parent())
-			widget = dynamic_cast<QWidget *>(widget->parent());
-
-		if (widget->isActiveWindow())
+		if (box->window()->isActiveWindow())
 			return box;
-	}
+
 	kdebugmf(KDEBUG_WARNING, "return NULL!\n");
 //	printBacktrace("activeUserBox NULL");
 	return kadu->userbox();
