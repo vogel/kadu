@@ -232,11 +232,7 @@ void ToolBar::dropEvent(QDropEvent* event)
 	if (source_toolbar != this)
 	{
 		source_toolbar->deleteAction(actionName);
-
-//		if (after)
-			addAction(actionName, showLabel, after);
-//		else
-//			addAction(actionName, showLabel);
+		addAction(actionName, showLabel, after);
 	}
 	else
 		moveAction(actionName, showLabel, after);
@@ -322,7 +318,8 @@ void ToolBar::updateButtons()
 		return;
 
 	QList<ToolBarAction>::iterator toolBarAction;
- 	for (toolBarAction = ToolBarActions.begin(); toolBarAction != ToolBarActions.end(); ++toolBarAction)
+	QList<ToolBarAction>::iterator toolBarNextAction;
+ 	for (toolBarAction = ToolBarActions.begin(), toolBarNextAction = ToolBarActions.begin() + 1; toolBarAction != ToolBarActions.end(); ++toolBarAction, ++toolBarNextAction)
 	{
 		const QString &actionName = (*toolBarAction).actionName;
 
@@ -346,7 +343,10 @@ void ToolBar::updateButtons()
 		if (KaduActions.contains(actionName) && kaduMainWindow->supportsActionType(KaduActions[actionName]->type()))
 		{
 			(*toolBarAction).action = KaduActions.getAction(actionName, dynamic_cast<KaduMainWindow *>(parent()));
-			QToolBar::addAction((*toolBarAction).action);
+			if (toolBarNextAction != ToolBarActions.end() && (*toolBarNextAction).action)
+				insertAction((*toolBarNextAction).action, (*toolBarAction).action);
+			else
+				QToolBar::addAction((*toolBarAction).action);
 			(*toolBarAction).button = dynamic_cast<QToolButton *>(widgetForAction((*toolBarAction).action));
 	connect((*toolBarAction).button, SIGNAL(pressed()), this, SLOT(buttonPressed()));
 			if ((*toolBarAction).showLabel)
