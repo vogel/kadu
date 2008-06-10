@@ -128,10 +128,13 @@ void ToolBar::moveAction(const QString &actionName, bool showLabel, QAction *aft
 		else
 			actionFind = true;
 	}
-
  	newAction.action = KaduActions.getAction(actionName, dynamic_cast<KaduMainWindow *>(parent()));
 
-	insertAction(ToolBarActions[index].action, newAction.action);
+	if (index > ToolBarActions.count() -1)
+		QToolBar::addAction(newAction.action);
+	else
+		insertAction(ToolBarActions[index].action, newAction.action);
+
 	newAction.button = dynamic_cast<QToolButton *>(widgetForAction(newAction.action));
 	connect(newAction.button, SIGNAL(pressed()), this, SLOT(buttonPressed()));
 	if (newAction.showLabel)
