@@ -289,7 +289,7 @@ void UserInfo::setupTab2()
 	groupsLayout = new QVBoxLayout(groupsWidget);
 	groupsLayout->setSpacing(3);
 
-	foreach(QString it, allGroups)
+	foreach(const QString &it, allGroups)
 	{
 		QWidget *box = new QWidget(groupsWidget);
 		QHBoxLayout *boxLayout = new QHBoxLayout(box);

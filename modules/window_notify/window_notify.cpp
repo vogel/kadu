@@ -95,7 +95,7 @@ NotificationWindow::NotificationWindow(Notification *notification)
 
 	if (callbacks.size())
 	{
-		foreach(Notification::Callback i, callbacks)
+		foreach(const Notification::Callback &i, callbacks)
 			addButton(buttons, i.first, i.second);
 	}
 	else

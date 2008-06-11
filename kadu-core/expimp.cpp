@@ -185,7 +185,7 @@ UserlistImportExport::UserlistImportExport(QWidget *parent)
 void UserlistImportExport::updateUserListCount()
 {
 	int realUserCount = 0;
-	foreach(UserListElement user, *userlist)
+	foreach(const UserListElement &user, *userlist)
 		if (!user.isAnonymous())
 			++realUserCount;
 	l_itemscount->setText(tr("%1 entries will be exported").arg(realUserCount));
@@ -217,15 +217,15 @@ void UserlistImportExport::fromfile()
 			importedUserlist = gadu->streamToUserList(stream);
 			file.close();
 
-			foreach(UserListElement i, importedUserlist)
+			foreach(const UserListElement &user, importedUserlist)
 			{
 				QString id;
-				if (i.usesProtocol("Gadu"))
-					id = i.ID("Gadu");
+				if (user.usesProtocol("Gadu"))
+					id = user.ID("Gadu");
 
 				QStringList values;
-				values << id << i.nickName() << i.altNick() << i.firstName() << i.lastName() << i.mobile() <<
-					i.data("Groups").toStringList().join(",") << i.email();
+				values << id << user.nickName() << user.altNick() << user.firstName() << user.lastName() << user.mobile() <<
+					user.data("Groups").toStringList().join(",") << user.email();
 				new QTreeWidgetItem(lv_userlist, values);
 			}
 		}
@@ -284,7 +284,7 @@ void UserlistImportExport::userListImported(bool ok, QList<UserListElement> user
 	pb_fetch->setEnabled(true);
 
 	if (ok)
-		foreach(UserListElement user, userList)
+		foreach(const UserListElement &user, userList)
 		{
 			QString id;
 			if (user.usesProtocol("Gadu"))

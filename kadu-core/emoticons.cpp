@@ -208,7 +208,7 @@ bool EmoticonsManager::loadGGEmoticonTheme()
 		int i = 0;
 		// put all emots into dictionary, to allow easy finding
 		// their occurrences in text
-		foreach(EmoticonsListItem item, Aliases)
+		foreach(const EmoticonsListItem &item, Aliases)
 			walker->insertString(item.alias.lower(), i++);
 	}
 
@@ -997,7 +997,7 @@ PrefixNode* EmotsWalker::insertChild(PrefixNode* node, const QChar& c)
 /** recursively delete all childs of given node */
 void EmotsWalker::removeChilds(PrefixNode *node)
 {
-	foreach(Prefix ch, node->childs) {
+	foreach(const Prefix &ch, node->childs) {
 		removeChilds(ch.second);
 		delete ch.second;
 	}

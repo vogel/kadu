@@ -54,7 +54,7 @@ FileTransfer::~FileTransfer()
 	emit fileTransferStatusChanged(this);
 	emit fileTransferDestroying(this);
 
-	foreach(Listener i, listeners)
+	foreach(const Listener &i, listeners)
 		disconnectSignals(i.first, i.second);
 
 	if (mainListener)

@@ -228,7 +228,7 @@ Sms::Sms(const QString& altnick, QWidget* parent) : QWidget(parent, Qt::Window),
 	grid->addWidget(recipient, 0, 1);
 
 	QStringList strlist; // lista kontaktow z przypisanym numerem telefonu
-	foreach(UserListElement user, *userlist)
+	foreach(const UserListElement &user, *userlist)
 		if (!user.mobile().isEmpty())
 		 	strlist.append(user.altNick());
 	strlist.sort();
@@ -324,7 +324,7 @@ void Sms::updateList(const QString &newnumber)
 		kdebugmf(KDEBUG_FUNCTION_END, "end: new number is empty\n");
 		return;
 	}
-	foreach(UserListElement user, *userlist)
+	foreach(const UserListElement &user, *userlist)
 		if (user.mobile() == newnumber)
 		{
 			list->setCurrentText(user.altNick());

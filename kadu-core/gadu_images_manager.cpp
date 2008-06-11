@@ -172,7 +172,7 @@ QString GaduImagesManager::getImageToSendFileName(uint32_t size, uint32_t crc32)
 {
 	kdebugf();
 	kdebugm(KDEBUG_INFO, "Searching images to send: size=%u, crc32=%u\n",size,crc32);
-	foreach(ImageToSend i, ImagesToSend)
+	foreach(const ImageToSend &i, ImagesToSend)
 	{
 		if (i.size == size && i.crc32 == crc32)
 		{
@@ -188,7 +188,7 @@ QString GaduImagesManager::getSavedImageFileName(uint32_t size, uint32_t crc32)
 {
 	kdebugf();
 	kdebugm(KDEBUG_INFO, "Searching saved images: size=%u, crc32=%u\n",size,crc32);
-	foreach(SavedImage i, SavedImages)
+	foreach(const SavedImage &i, SavedImages)
 	{
 		if (i.size == size && i.crc32 == crc32)
 		{

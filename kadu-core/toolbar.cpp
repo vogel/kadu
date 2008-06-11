@@ -67,8 +67,8 @@ void ToolBar::addAction(const QString &actionName, bool showLabel, QAction *afte
 	{
 		int index = 0;
 
-		foreach(ToolBarAction i, ToolBarActions)
-			if (i.action == after)
+		foreach(const ToolBarAction &toolBarAction, ToolBarActions)
+			if (toolBarAction.action == after)
 			{
 				newAction.action = KaduActions.getAction(actionName, dynamic_cast<KaduMainWindow *>(parent()));
 				insertAction(after, newAction.action);
@@ -110,7 +110,7 @@ void ToolBar::moveAction(const QString &actionName, bool showLabel, QAction *aft
 	newAction.button = 0;
 	newAction.showLabel = showLabel;
 
- 	foreach(ToolBarAction toolBarAction, ToolBarActions)
+ 	foreach(const ToolBarAction &toolBarAction, ToolBarActions)
 	{
 		if (toolBarAction.actionName == actionName)
 		{
@@ -159,7 +159,7 @@ void ToolBar::mouseMoveEvent(QMouseEvent* e)
 		QAction *action = actionAt(MouseStart);
 		if (!action)
 			return;
-		foreach(ToolBarAction toolBarAction, ToolBarActions)
+		foreach(const ToolBarAction &toolBarAction, ToolBarActions)
 		{
 			if (toolBarAction.action == action)
 			{
@@ -270,6 +270,7 @@ void ToolBar::writeToConfig(QDomElement parent_element)
 	toolbar_elem.setAttribute("x_offset", pos().x());
 	toolbar_elem.setAttribute("y_offset", pos().y());
 
+	// TODO: 0.6.5 fix
 	foreach(ToolBarAction toolBarAction, ToolBarActions)
 	{
 		if (toolBarAction.button)
@@ -287,7 +288,7 @@ bool ToolBar::hasAction(const QString &action_name)
 {
 	kdebugf();
 
-	foreach(ToolBarAction toolBarAction, ToolBarActions)
+	foreach(const ToolBarAction &toolBarAction, ToolBarActions)
 		if (toolBarAction.actionName == action_name)
 			return true;
 	return false;
@@ -565,7 +566,7 @@ void ToolBar::deleteButton()
 	if (!currentButton)
 		return;
 
-	foreach(ToolBarAction toolBarAction, ToolBarActions)
+	foreach(const ToolBarAction &toolBarAction, ToolBarActions)
 		if (toolBarAction.button == currentButton)
 		{
 			// TODO: again, lame solution
@@ -579,7 +580,7 @@ void ToolBar::deleteButton()
 
 void ToolBar::deleteAction(const QString &actionName)
 {
-	foreach(ToolBarAction toolBarAction, ToolBarActions)
+	foreach(const ToolBarAction &toolBarAction, ToolBarActions)
 		if (toolBarAction.actionName == actionName)
 		{
 			removeAction(toolBarAction.action);

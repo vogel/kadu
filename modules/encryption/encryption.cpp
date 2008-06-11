@@ -353,7 +353,7 @@ void EncryptionManager::userBoxMenuPopup()
 		unsigned int myUin = config_file.readUnsignedNumEntry("General", "UIN");
 		UserListElements users = activeUserBox->selectedUsers();
 
-		foreach(UserListElement user, users)
+		foreach(const UserListElement &user, users)
 			if (!user.usesProtocol("Gadu") || user.ID("Gadu").toUInt() == myUin)
 			{
 				sendKeyEnabled = false;
@@ -390,7 +390,7 @@ void EncryptionManager::sendPublicKey()
 		mykey = t.read();
 		keyfile.close();
 		UserListElements users = activeUserBox->selectedUsers();
-		foreach(UserListElement user, users)
+		foreach(const UserListElement &user, users)
 			gadu->sendMessage(user, mykey);
 
 		MessageBox::msg(tr("Your public key has been sent"), false, "Information", kadu);

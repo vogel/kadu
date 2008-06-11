@@ -39,7 +39,7 @@ void ProtocolsManager::registerProtocol(const QString &protocolID, const QString
 
 void ProtocolsManager::unregisterProtocol(const QString &protocolID)
 {
-	foreach(ProtocolDescription protoDesc, protocolDescriptions)
+	foreach(const ProtocolDescription &protoDesc, protocolDescriptions)
 		if (protoDesc.protocolID == protocolID)
 		{
 			protocolDescriptions.removeAll(protoDesc);
@@ -76,7 +76,7 @@ Protocol * ProtocolsManager::byID(const QString &protocolID, const QString &ID)
 Protocol * ProtocolsManager::newProtocol(const QString &protocolID, const QString &ID)
 {
 	Protocol *proto = 0;
-	foreach(ProtocolDescription protoDesc, protocolDescriptions)
+	foreach(const ProtocolDescription &protoDesc, protocolDescriptions)
 		if (protoDesc.protocolID == protocolID)
 		{
 			proto = protoDesc.Manager->newInstance(ID);

@@ -112,8 +112,8 @@ bool UinsList::equals(const UinsList &uins) const
 	if (count() != uins.count())
 		return false;
 
-	foreach(UinType uin, *this)
-		if(!uins.contains(uin))
+	foreach(const UinType &uin, *this)
+		if (!uins.contains(uin))
 			return false;
 
 	return true;
@@ -131,13 +131,13 @@ UinsList::UinsList(UinType uin)
 UinsList::UinsList(const QString &uins)
 {
 	QStringList list = QStringList::split(",", uins);
-	foreach(QString uin, list)
+	foreach(const QString &uin, list)
 		append(uin.toUInt());
 }
 
 UinsList::UinsList(const QStringList &list)
 {
-	foreach(QString uin, list)
+	foreach(const QString &uin, list)
 		append(uin.toUInt());
 }
 
@@ -149,7 +149,7 @@ void UinsList::sort()
 QStringList UinsList::toStringList() const
 {
 	QStringList list;
-	foreach(UinType uin, *this)
+	foreach(const UinType &uin, *this)
 		list.append(QString::number(uin));
 	return list;
 }
@@ -337,7 +337,7 @@ void GaduProtocol::initModule()
 	QHostAddress ip2;
 	servers = QStringList::split(";", config_file.readEntry("Network", "Server"));
 	ConfigServers.clear();
-	foreach(QString server, servers)
+	foreach(const QString &server, servers)
 		if (ip2.setAddress(server))
 			ConfigServers.append(ip2);
 
@@ -1237,7 +1237,7 @@ QString GaduProtocol::sendMessage(UserListElements users, const QString &mesg)
 		return "\001thisisonlyworkaround";
 	}
 
-	foreach(UserListElement user, users)
+	foreach(const UserListElement &user, users)
 		if (user.usesProtocol("Gadu"))
 			++uinsCount;
 
@@ -1245,7 +1245,7 @@ QString GaduProtocol::sendMessage(UserListElements users, const QString &mesg)
 	{
 		UinType* uins = new UinType[uinsCount];
 		unsigned int i = 0;
-		foreach(UserListElement user, users)
+		foreach(const UserListElement &user, users)
 			if (user.usesProtocol("Gadu"))
 				uins[i++] = user.ID("Gadu").toUInt();
 		if (myLastFormatsLength)
@@ -1256,7 +1256,7 @@ QString GaduProtocol::sendMessage(UserListElements users, const QString &mesg)
 		delete[] uins;
 	}
 	else
-		foreach(UserListElement user, users)
+		foreach(const UserListElement &user, users)
 			if (user.usesProtocol("Gadu"))
 			{
 				if (myLastFormatsLength)
@@ -1329,7 +1329,7 @@ void GaduProtocol::sendUserList()
 	char *types;
 
 	unsigned int j = 0;
-	foreach(UserListElement user, *userlist)
+	foreach(const UserListElement &user, *userlist)
 		if (user.usesProtocol("Gadu") && !user.isAnonymous())
 			++j;
 
@@ -1344,7 +1344,7 @@ void GaduProtocol::sendUserList()
 	types = new char[j];
 
 	j = 0;
-	foreach(UserListElement user, *userlist)
+	foreach(const UserListElement &user, *userlist)
 		if (user.usesProtocol("Gadu") && !user.isAnonymous())
 		{
 			uins[j] = user.ID("Gadu").toUInt();
@@ -1747,28 +1747,28 @@ QString GaduProtocol::userListToString(const UserList &userList) const
 	QString file;
 	QString contacts;
 
-	foreach(UserListElement i, *userlist)
-		if (!i.isAnonymous() && (i.usesProtocol("Gadu") || !i.mobile().isEmpty()))
+	foreach(const UserListElement &user, *userlist)
+		if (!user.isAnonymous() && (user.usesProtocol("Gadu") || !user.mobile().isEmpty()))
 		{
-			contacts += i.firstName();					contacts += ';';
-			contacts += i.lastName();					contacts += ';';
-			contacts += i.nickName();					contacts += ';';
-			contacts += i.altNick();						contacts += ';';
-			contacts += i.mobile();						contacts += ';';
-			contacts += i.data("Groups").toStringList().join(";");	contacts += ';';
-			if (i.usesProtocol("Gadu"))
-				contacts += i.ID("Gadu");				contacts += ';';
-			contacts += i.email();						contacts += ';';
-			file = i.aliveSound(type);
+			contacts += user.firstName();					contacts += ';';
+			contacts += user.lastName();					contacts += ';';
+			contacts += user.nickName();					contacts += ';';
+			contacts += user.altNick();						contacts += ';';
+			contacts += user.mobile();						contacts += ';';
+			contacts += user.data("Groups").toStringList().join(";");	contacts += ';';
+			if (user.usesProtocol("Gadu"))
+				contacts += user.ID("Gadu");				contacts += ';';
+			contacts += user.email();						contacts += ';';
+			file = user.aliveSound(type);
 			contacts += QString::number(type);				contacts += ';';
 			contacts += file;								contacts += ';';
-			file = i.messageSound(type);
+			file = user.messageSound(type);
 			contacts += QString::number(type);				contacts += ';';
 			contacts += file;								contacts += ';';
-			if (i.usesProtocol("Gadu"))
-				contacts += QString::number(i.protocolData("Gadu", "OfflineTo").toBool());
+			if (user.usesProtocol("Gadu"))
+				contacts += QString::number(user.protocolData("Gadu", "OfflineTo").toBool());
 			contacts += ';';
-			contacts += i.homePhone();					//contacts += ';';
+			contacts += user.homePhone();					//contacts += ';';
 			contacts += "\r\n";
 		}
 
@@ -2631,7 +2631,7 @@ QString GaduFormater::unformatGGMessage(const QString &msg, unsigned int &format
 				}
 				actformant.format.position = pos;
 				actformant.format.font = 0;
-				foreach(attrib_formant actattrib, formantattribs)
+				foreach(const attrib_formant &actattrib, formantattribs)
 				{
 					if (actattrib.name == "font-style" && actattrib.value == "italic")
 						actformant.format.font |= GG_FONT_ITALIC;

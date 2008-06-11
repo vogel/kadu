@@ -52,7 +52,7 @@ void MainConfigurationWindow::unregisterUiFile(const QString &uiFile, Configurat
 
 void MainConfigurationWindow::instanceCreated()
 {
-	foreach(ConfigurationHandelUiPair configurationUiHandlerPair, UiFiles)
+	foreach(const ConfigurationHandelUiPair &configurationUiHandlerPair, UiFiles)
 	{
 		ConfigurationUiHandler *uiHandler = configurationUiHandlerPair.second;
 		Instance->appendUiFile(configurationUiHandlerPair.first);

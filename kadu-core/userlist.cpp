@@ -43,7 +43,7 @@ void UserList::merge(const QList<UserListElement> &ulist)
 	UserListElements toAppend;
 	UserListElements toUnsetAnonymous;
 
-	foreach(UserListElement user, ulist)
+	foreach(const UserListElement &user, ulist)
 	{
 		UserListElement user2;
 		if (containsAltNick(user.altNick()))
@@ -53,7 +53,7 @@ void UserList::merge(const QList<UserListElement> &ulist)
 			QStringList protos = user.protocolList();
 			QString foundProto;
 
-			foreach(QString proto, protos)
+			foreach(const QString &proto, protos)
 				if (contains(proto, user.ID(proto)))
 				{
 					foundProto = proto;
@@ -72,7 +72,7 @@ void UserList::merge(const QList<UserListElement> &ulist)
 		//copying of protocols
 		QStringList protos = user.protocolList();
 
-		foreach(QString proto, protos)
+		foreach(const QString &proto, protos)
 		{
 			if (!contains(proto, user.ID(proto)))
 				user2.addProtocol(proto, user.ID(proto));
@@ -81,7 +81,7 @@ void UserList::merge(const QList<UserListElement> &ulist)
 			UserListElement user3 = byID(proto, user.ID(proto));
 			QStringList protoDataKeys = user.protocolDataKeys(proto);
 
-			foreach(QString key, protoDataKeys)
+			foreach(const QString &key, protoDataKeys)
 			{
 				QVariant val = user3.protocolData(proto, key);
 				if (!val.isValid() || val.isNull())
@@ -92,7 +92,7 @@ void UserList::merge(const QList<UserListElement> &ulist)
 		//copying of non protocol data
 		QStringList dataKeys = user.nonProtocolDataKeys();
 
-		foreach(QString key, dataKeys)
+		foreach(const QString &key, dataKeys)
 		{
 			QVariant val = user2.data(key);
 			if (!val.isValid() || val.isNull())
@@ -125,8 +125,9 @@ void UserList::merge(const QList<UserListElement> &ulist)
 	}
 
 	int i = 1, anonSize = toUnsetAnonymous.size();
-	foreach(UserListElement user2, toUnsetAnonymous)
-		user2.setData("Anonymous", false, true, i++ == anonSize);
+	// TODO: fix 0.6.5
+	foreach(UserListElement user, toUnsetAnonymous)
+		user.setData("Anonymous", false, true, i++ == anonSize);
 
 	addUsers(toAppend);
 
@@ -173,13 +174,13 @@ void UserList::readFromConfig()
 		e.setMessageSound((NotifyType)contact_elem.attribute("message_sound_type").toInt(),
 			contact_elem.attribute("message_sound_file"));
 
-		foreach(QString it, nonProtoKeys.keys())
+		foreach(const QString &it, nonProtoKeys.keys())
 			if (contact_elem.hasAttribute(it))
 				e.setData(nonProtoKeys[it], contact_elem.attribute(it), true);
 
-		foreach(QString it, protoKeys.keys())
+		foreach(const QString &it, protoKeys.keys())
 			if (e.usesProtocol(it))
-				foreach(QString it2, protoKeys[it])
+				foreach(const QString &it2, protoKeys[it])
 					if (contact_elem.hasAttribute(it2))
 						e.setProtocolData(it, protoKeys[it][it2], contact_elem.attribute(it2), true);
 
@@ -238,7 +239,7 @@ void UserList::writeToConfig()
 
 		foreach(const QString &it, protoKeys.keys())
 			if ((*i).usesProtocol(it))
-				foreach(QString it2, protoKeys[it])
+				foreach(const QString &it2, protoKeys[it])
 				{
 					const QString &val = (*i).protocolData(it, it2).toString();
 					if (!val.isEmpty())

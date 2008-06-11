@@ -157,7 +157,7 @@ void Notify::mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigu
 
 	statusGroupBox->addWidgets(0, notifyUsers);
 
-	foreach(UserListElement user, *userlist)
+	foreach(const UserListElement &user, *userlist)
 		if (user.usesProtocol("Gadu") && !user.isAnonymous())
 			if (!user.notify())
 				allUsers->addItem(user.altNick());
@@ -187,6 +187,7 @@ void Notify::mainConfigurationWindowDestroyed()
 {
 	notificationsGroupBox = 0;
 
+	// TODO: check 0.6.5 it is ok ?
 	foreach(NotifierData notifierData, Notifiers)
 		notifierData.configurationWidget = 0;
 }

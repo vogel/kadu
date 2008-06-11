@@ -257,7 +257,7 @@ void ChatWidget::insertImage()
 		}
 
 		int counter = 0;
-		foreach(UserListElement user, *Users)
+		foreach(const UserListElement &user, *Users)
 		{
 			if (user.usesProtocol("Gadu"))//TODO: user.hasFeature("ImageSending")
 			{
@@ -322,7 +322,7 @@ void ChatWidget::refreshTitle()
 		int i = 0;
 
 		if (config_file.readEntry("Look", "ConferenceContents").isEmpty())
-			foreach(UserListElement user, *Users)
+			foreach(const UserListElement &user, *Users)
 			{
 				title.append(KaduParser::parse("%a", user, false));
 
@@ -330,7 +330,7 @@ void ChatWidget::refreshTitle()
 					title.append(", ");
 			}
 		else
-			foreach(UserListElement user, *Users)
+			foreach(const UserListElement &user, *Users)
 			{
 				title.append(KaduParser::parse(config_file.readEntry("Look","ConferenceContents"), user, false));
 
@@ -727,7 +727,7 @@ bool ChatWidget::decodeLocalFiles(QDropEvent *event, QStringList &files)
 
 	QList<QUrl> urls = event->mimeData()->urls();
 	
-	foreach(QUrl url, urls)
+	foreach(const QUrl &url, urls)
 	{
 		QString file = url.toLocalFile();
 		if (!file.isEmpty())

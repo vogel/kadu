@@ -207,17 +207,13 @@ void ExecNotify::notify(Notification *notification)
 	if (senders.count())
 		ule = notification->userListElements()[0];
 
+	QStringList sendersList;
+	foreach(const UserListElement &sender, senders)
+		sendersList.append(sender.ID("Gadu"));
+	QString sendersString = sendersList.join(",");
+
 	foreach(QString it, s)
-	{
-		if (it.contains("%ids"))
-		{
-			QStringList sndrs;
-			foreach(UserListElement sndr, senders)
-				sndrs.append(sndr.ID("Gadu"));
-			it.replace("%ids", sndrs.join(","));
-		}
-		result.append(KaduParser::parse(it, ule, notification));
-	}
+		result.append(KaduParser::parse(it.replace("%ids", sendersString), ule, notification));
 
 	run(result, QString::null);
 }
@@ -225,8 +221,8 @@ void ExecNotify::notify(Notification *notification)
 void ExecNotify::run(const QStringList &args, const QString &stdin)
 {
 #ifdef DEBUG_ENABLED
-	CONST_FOREACH(arg, args)
-		kdebugm(KDEBUG_INFO, "arg: '%s'\n", (*arg).local8Bit().data());
+	foreach(QString arg, args)
+		kdebugm(KDEBUG_INFO, "arg: '%s'\n", arg.local8Bit().data());
 	kdebugm(KDEBUG_INFO, "stdin: %s\n", stdin.local8Bit().data());
 #endif
 	QProcess *p = new QProcess();

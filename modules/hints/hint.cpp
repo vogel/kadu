@@ -51,7 +51,7 @@ Hint::Hint(QWidget *parent, Notification *notification)
 	{
 		callbacksBox->addStretch(10);
 
-		foreach(Notification::Callback i, callbacks)
+		foreach(const Notification::Callback &i, callbacks)
 		{
 			QPushButton *button = new QPushButton(i.first, this);
 			connect(button, SIGNAL(clicked()), notification, i.second);

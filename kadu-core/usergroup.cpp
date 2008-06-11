@@ -49,9 +49,9 @@ UserGroup::~UserGroup()
 
 UserListElement UserGroup::byAltNick(const QString& altnick)
 {
-	foreach(UserListElement i, privateUserGroupData->list)
-		if (i.altNick() == altnick)
-			return i;
+	foreach(const UserListElement &user, privateUserGroupData->list)
+		if (user.altNick() == altnick)
+			return user;
 
 	kdebugm(KDEBUG_WARNING, "%s not found, creating ULE\n", altnick.local8Bit().data());
 //	printBacktrace("ule nout found");
@@ -64,9 +64,9 @@ UserListElement UserGroup::byAltNick(const QString& altnick)
 
 bool UserGroup::containsAltNick(const QString &altnick, BehaviourForAnonymous beh) const
 {
-	foreach(UserListElement i, privateUserGroupData->list)
-		if (i.altNick() == altnick)
-			if (i.isAnonymous())
+	foreach(const UserListElement &user, privateUserGroupData->list)
+		if (user.altNick() == altnick)
+			if (user.isAnonymous())
 				return (beh == TrueForAnonymous);
 			else
 				return true;
@@ -76,11 +76,11 @@ bool UserGroup::containsAltNick(const QString &altnick, BehaviourForAnonymous be
 
 UserListElement UserGroup::byID(const QString &protocolName, const QString &id)
 {
-	foreach(const UserListElement ule, privateUserGroupData->list)
+	foreach(const UserListElement &user, privateUserGroupData->list)
 	{
-		ProtocolData *protoData = *ule.privateData->protocols.find(protocolName);
+		ProtocolData *protoData = *user.privateData->protocols.find(protocolName);
 		if (protoData && protoData->ID == id)
-			return ule;
+			return user;
 	}
 	kdebugm(KDEBUG_WARNING, "%s,%s not found, creating ULE\n", protocolName.local8Bit().data(), id.local8Bit().data());
 	return addAnonymous(protocolName, id);
@@ -88,11 +88,11 @@ UserListElement UserGroup::byID(const QString &protocolName, const QString &id)
 
 bool UserGroup::contains(const QString &protocolName, const QString &id, BehaviourForAnonymous beh) const
 {
-	foreach(UserListElement ule, privateUserGroupData->list)
+	foreach(const UserListElement &user, privateUserGroupData->list)
 	{
-		ProtocolData *protoData = *ule.privateData->protocols.find(protocolName);
+		ProtocolData *protoData = user.privateData->protocols[protocolName];
 		if (protoData && protoData->ID == id)
-			if (ule.isAnonymous())
+			if (user.isAnonymous())
 				return (beh == TrueForAnonymous);
 			else
 				return true;
@@ -117,7 +117,7 @@ bool UserGroup::equals(const UserListElements users) const
 	int cnt = count();
 	if (cnt != users.count())
 		return false;
-	foreach(UserListElement user, users)
+	foreach(const UserListElement &user, users)
 		if (!contains(user))
 			return false;
 	return true;
@@ -132,7 +132,7 @@ bool UserGroup::equals(const UserGroup *group) const
 	unsigned int cnt = count();
 	if (cnt != group->count())
 		return false;
-	foreach(UserListElement user, *group)
+	foreach(const UserListElement &user, *group)
 		if (!contains(user))
 			return false;
 	return true;
@@ -179,7 +179,7 @@ void UserGroup::addUsers(const UserGroup *group)
 	kdebugmf(KDEBUG_FUNCTION_START, "start: group:'%s' group2:'%s'\n", name(), group->name());
 	int i = 1, cnt = group->count();
 	if (cnt > 1)
-		foreach(const UserListElement user, *group)
+		foreach(const UserListElement &user, *group)
 			addUser(user, true, i++ == cnt);
 	else if (cnt == 1)
 		addUser(*(group->constBegin()));
@@ -191,7 +191,7 @@ void UserGroup::addUsers(QList<UserListElement> users)
 	kdebugmf(KDEBUG_FUNCTION_START, "start: group:'%s'\n", name());
 	int i = 1, cnt = users.count();
 	if (cnt > 1)
-		foreach(UserListElement user, users)
+		foreach(const UserListElement &user, users)
 			addUser(user, true, i++ == cnt);
 	else if (cnt == 1)
 		addUser(users[0]);
@@ -203,7 +203,7 @@ void UserGroup::removeUsers(const UserGroup *group)
 	kdebugmf(KDEBUG_FUNCTION_START, "start: group:'%s' group2:'%s'\n", name(), group->name());
 	int i = 1, cnt = group->count();
 	if (cnt > 1)
-		foreach(UserListElement user, *group)
+		foreach(const UserListElement &user, *group)
 			removeUser(user, true, i++ == cnt);
 	else if (cnt == 1)
 		removeUser(*(group->constBegin()));
@@ -215,7 +215,7 @@ void UserGroup::removeUsers(QList<UserListElement> users)
 	kdebugmf(KDEBUG_FUNCTION_START, "start: group:'%s'\n", name());
 	int i = 1, cnt = users.count();
 	if (cnt > 1)
-		foreach(UserListElement user, users)
+		foreach(const UserListElement &user, users)
 			removeUser(user, true, i++ == cnt);
 	else if (cnt == 1)
 		removeUser(users[0]);
@@ -291,7 +291,7 @@ void UserGroup::clear()
 QStringList UserGroup::altNicks() const
 {
 	QStringList nicks;
-	foreach(UserListElement user, privateUserGroupData->list)
+	foreach(const UserListElement &user, privateUserGroupData->list)
 		nicks.append(user.altNick());
 	return nicks;
 }
@@ -300,7 +300,7 @@ bool UserListElements::equals(const UserListElements &elems) const
 {
 	if (count() != elems.count())
 		return false;
-	foreach(UserListElement user, elems)
+	foreach(const UserListElement &user, elems)
 		if (!contains(user))
 			return false;
 	return true;
@@ -310,7 +310,7 @@ bool UserListElements::equals(const UserGroup *group) const
 {
 	if (count() != group->count())
 		return false;
-	foreach(UserListElement user, *this)
+	foreach(const UserListElement &user, *this)
 		if (!group->contains(user))
 			return false;
 	return true;
@@ -341,7 +341,7 @@ UserListElements::UserListElements()
 
 bool UserListElements::contains(QString protocol, QString id) const
 {
-	foreach(UserListElement user, *this)
+	foreach(const UserListElement &user, *this)
 		if (user.usesProtocol(protocol) && user.ID(protocol) == id)
 			return true;
 	return false;
@@ -350,7 +350,7 @@ bool UserListElements::contains(QString protocol, QString id) const
 QStringList UserListElements::altNicks() const
 {
 	QStringList nicks;
-	foreach(UserListElement user, *this)
+	foreach(const UserListElement &user, *this)
 		nicks.append(user.altNick());
 	return nicks;
 }

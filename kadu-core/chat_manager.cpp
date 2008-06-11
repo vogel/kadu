@@ -189,7 +189,7 @@ void ChatManager::saveOpenedWindows()
 		window_elem.setAttribute("protocol", protoId);
 		window_elem.setAttribute("id", protocol->ID());
 		const UserGroup *users = chat->users();
-		foreach(UserListElement user, *users)
+		foreach(const UserListElement &user, *users)
 		{
 			QDomElement user_elem = xml_config_file->createElement(window_elem, "Contact");
  			user_elem.setAttribute("id", user.ID(protoId));
@@ -214,7 +214,7 @@ ChatManager::~ChatManager()
 				<< "ignoreUserAction" << "blockUserAction" << "boldAction"
 				<< "italicAction" << "underlineAction" << "colorAction"
 				<< "sendAction" << "chatAction" << "openChatWithAction";
-	foreach(QString act, chatActions)
+	foreach(const QString &act, chatActions)
 	{
 		ActionDescription *a = KaduActions[act];
 		delete a;
@@ -411,7 +411,7 @@ void ChatManager::ignoreUserActionActivated(QAction *sender, bool toggled)
 	if (users.count() > 0)
 	{
 		bool ContainsBad = false;
-		foreach(UserListElement user, users)
+		foreach(const UserListElement &user, users)
 		{
 			QString uid = user.ID("Gadu");
 			if (!gadu->validateUserID(uid))
@@ -459,13 +459,14 @@ void ChatManager::blockUserActionActivated(QAction *sender, bool toggled)
 
 		UserListElements copy = users;
 
-		foreach(UserListElement user, copy)
+		foreach(const UserListElement &user, copy)
 			if (!user.usesProtocol("Gadu") || !user.protocolData("Gadu", "Blocking").toBool())
 			{
 				on = false;
 				break;
 			}
 
+		// TODO: 0.6.5 fix
 		foreach(UserListElement user, copy)
 		{
 			QString uid = user.ID("Gadu");
@@ -600,7 +601,7 @@ int ChatManager::openChatWidget(Protocol *initialProtocol, const UserListElement
 {
 	kdebugf();
 
-	foreach(UserListElement user, users)
+	foreach(const UserListElement &user, users)
 	{
 		QString uid = user.ID(initialProtocol->protocolID());
 		if (!initialProtocol->validateUserID(uid))
@@ -628,7 +629,7 @@ int ChatManager::openChatWidget(Protocol *initialProtocol, const UserListElement
 	}
 
 	QStringList userNames;
-	foreach(UserListElement user, users)
+	foreach(const UserListElement &user, users)
 		userNames.append(user.altNick());
 	userNames.sort();
 
@@ -755,6 +756,7 @@ void ChatManager::sendMessage(UserListElement user, UserListElements selected_us
 QVariant& ChatManager::getChatWidgetProperty(const UserGroup *group, const QString &name)
 {
 	kdebugf();
+	// TODO 0.6.5 fix
 	foreach(ChatInfo addon, addons)
 		if (group->equals(addon.users))
 		{
@@ -772,6 +774,7 @@ QVariant& ChatManager::getChatWidgetProperty(const UserGroup *group, const QStri
 void ChatManager::setChatWidgetProperty(const UserGroup *group, const QString &name, const QVariant &value)
 {
 	kdebugf();
+	// TODO: 0.6.5 fix
 	foreach(ChatInfo addon, addons)
 		if (group->equals(addon.users))
 		{

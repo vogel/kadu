@@ -456,7 +456,7 @@ class ULEComparer
 inline bool ULEComparer::operator()(const UserListElement &e1, const UserListElement &e2) const
 {
 	int ret = 0;
-	foreach(UserBox::CmpFuncDesc f, CmpFunctions)
+	foreach(const UserBox::CmpFuncDesc &f, CmpFunctions)
 	{
 		ret = f.func(e1, e2);
 //		kdebugm(KDEBUG_WARNING, "%s %s %d\n", e1.altNick().local8Bit().data(), e2.altNick().local8Bit().data(), ret);
@@ -1022,7 +1022,7 @@ void UserBoxMenu::refreshIcons()
 		int id = idAt(i);
 		QString t = text(id);
 
-		foreach(IconName it, iconNames)
+		foreach(const IconName &it, iconNames)
 			if (t.startsWith(it.first))
 			{
 				bool visible = isItemVisible(id);
@@ -1101,7 +1101,7 @@ void UserBox::applyFilter(UserGroup *g)
 		return;
 	Filters.append(g);
 	UserListElements users;
-	foreach(UserListElement user, *VisibleUsers)
+	foreach(const UserListElement &user, *VisibleUsers)
 		if (!g->contains(user))
 			users.append(user);
 	VisibleUsers->removeUsers(users);
@@ -1130,7 +1130,7 @@ void UserBox::removeFilter(UserGroup *g)
 	Filters.pop_back(); //temporarily removing
 
 	UserListElements users;
-	foreach(UserListElement user, *last)
+	foreach(const UserListElement &user, *last)
 	{
 		if (VisibleUsers->contains(user)) // we are not looking for contacts which are certain
 			continue;
@@ -1170,7 +1170,7 @@ void UserBox::applyNegativeFilter(UserGroup *g)
 		return;
 	NegativeFilters.append(g);
 	UserListElements users;
-	foreach(UserListElement user, *VisibleUsers)
+	foreach(const UserListElement &user, *VisibleUsers)
 		if (g->contains(user))
 			users.append(user);
 	VisibleUsers->removeUsers(users);
@@ -1195,7 +1195,7 @@ void UserBox::removeNegativeFilter(UserGroup *g)
 			this, SLOT(userAddedToGroup(UserListElement, bool, bool)));
 
 	UserListElements users;
-	foreach(UserListElement user, *g)
+	foreach(const UserListElement &user, *g)
 	{
 		bool omit = false;
 		foreach(UserGroup *ngroup, NegativeFilters)
@@ -1233,7 +1233,7 @@ void UserBox::addCompareFunction(const QString &id, const QString &trDescription
 
 void UserBox::removeCompareFunction(const QString &id)
 {
-	foreach(CmpFuncDesc c, comparer->CmpFunctions)
+	foreach(const CmpFuncDesc &c, comparer->CmpFunctions)
 		if (c.id == id)
 		{
 			comparer->CmpFunctions.remove(c);
@@ -1248,7 +1248,7 @@ bool UserBox::moveUpCompareFunction(const QString &id)
 	CmpFuncDesc d;
 	int pos = 0;
 	bool found = false;
-	foreach(CmpFuncDesc c, comparer->CmpFunctions)
+	foreach(const CmpFuncDesc &c, comparer->CmpFunctions)
 	{
 	// TODO: 0.6.5
 // 		if (c.id == id)
@@ -1277,7 +1277,7 @@ bool UserBox::moveDownCompareFunction(const QString &id)
 	int pos = 0;
 	int cnt = comparer->CmpFunctions.count();
 	bool found = false;
-	foreach(CmpFuncDesc c, comparer->CmpFunctions)
+	foreach(const CmpFuncDesc &c, comparer->CmpFunctions)
 	{
 		// TODO: 0.6.5
 // 		if (c.id == id)

@@ -603,7 +603,7 @@ QString KaduParser::parse(const QString &s, const UserListElement &ule, const QO
 	}
 	QString ret;
 	QString p;
-	foreach(ParseElem elem, parseStack)
+	foreach(const ParseElem &elem, parseStack)
 	{
 		if (elem.type != ParseElem::PE_STRING)
 			kdebugm(KDEBUG_WARNING, "Incorrect parse string! %d\n", elem.type);

@@ -229,7 +229,7 @@ void FileTransferManager::sendFile(const UserListElements users)
 
 	unsigned int myUin = config_file.readUnsignedNumEntry("General", "UIN");
 
-	foreach(UserListElement user, users)
+	foreach(const UserListElement &user, users)
 		foreach(const QString &file, files)
 			if (user.usesProtocol("Gadu") && user.ID("Gadu") != QString::number(myUin))
 				sendFile(user.ID("Gadu").toUInt(), file);
@@ -257,7 +257,7 @@ void FileTransferManager::userboxMenuPopup()
 		unsigned int myUin = config_file.readUnsignedNumEntry("General", "UIN");
 		UserListElements users = activeUserBox->selectedUsers();
 
-		foreach(UserListElement user, users)
+		foreach(const UserListElement &user, users)
 			if (!user.usesProtocol("Gadu") || user.ID("Gadu").toUInt() == myUin)
 			{
 				dccKeyEnabled = false;
@@ -302,9 +302,9 @@ void FileTransferManager::chatDestroying(ChatWidget *chat)
 
 void FileTransferManager::fileDropped(const UserGroup *group, const QString &fileName)
 {
-	foreach(UserListElement i, *group)
-		if (i.usesProtocol("Gadu"))
-			sendFile(i.ID("Gadu").toUInt(), fileName);
+	foreach(const UserListElement &user, *group)
+		if (user.usesProtocol("Gadu"))
+			sendFile(user.ID("Gadu").toUInt(), fileName);
 }
 
 void FileTransferManager::showFileTransferWindow()

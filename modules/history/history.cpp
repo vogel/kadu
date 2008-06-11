@@ -59,7 +59,7 @@ QString HistoryManager::getFileNameByUinsList(UinsList uins)
 	{
 		uins.sort();
 		unsigned int i = 0, uinsCount = uins.count();
-		foreach(UinType uin, uins)
+		foreach(const UinType &uin, uins)
 		{
 			fname.append(QString::number(uin));
 			if (i++ < uinsCount - 1)
@@ -150,7 +150,7 @@ void HistoryManager::appendSms(const QString &mobile, const QString &msg)
 	linelist.append(QString::number(time(NULL)));
 	linelist.append(text2csv(html_msg));
 
-	foreach(UserListElement i, *userlist)
+	foreach(const UserListElement &i, *userlist)
 		if (i.mobile() == mobile)
 		{
 			altnick = i.altNick();
@@ -546,7 +546,7 @@ void HistoryManager::convSms2ekgForm()
 			datetime.setTime(QTime(czas.left(2).toInt(), czas.mid(3, 2).toInt(), czas.right(2).toInt()));
 			linelist.append(QString::number(-datetime.secsTo(
 				QDateTime(QDate(1970, 1, 1), QTime(0 ,0)))));
-			foreach(UserListElement user, *userlist)
+			foreach(const UserListElement &user, *userlist)
 				if (user.mobile() == mobile)
 					uin = user.ID("Gadu").toUInt();
 			header = false;
@@ -929,8 +929,7 @@ QList<UinsList> HistoryManager::getUinsLists() const
 	QStringList struins;
 	UinsList uins;
 
-	QStringList entryList = dir.entryList();
-	foreach(QString entry, entryList)
+	foreach(QString entry, dir.entryList())
 	{
 		struins = QStringList::split("_", entry.remove(QRegExp(".idx$")));
 		uins.clear();
@@ -1164,7 +1163,7 @@ void HistoryManager::messageReceived(Protocol * /*protocol*/, UserListElements s
 	UinType sender0 = senders[0].ID("Gadu").toUInt();
 	kdebugm(KDEBUG_INFO, "sender: %d msg: '%s' occur:%d\n", sender0, msg.local8Bit().data(), occur);
 	UinsList uins;//TODO: throw out UinsList as soon as possible!
-	foreach(UserListElement u, senders)
+	foreach(const UserListElement &u, senders)
 		if (u.usesProtocol("Gadu"))
 			uins.append(u.ID("Gadu").toUInt());
 	if (bufferedMessages.find(sender0) != bufferedMessages.end() || occur > 0)
@@ -1203,6 +1202,7 @@ void HistoryManager::imageReceivedAndSaved(UinType sender, uint32_t size, uint32
 //				kdebugm(KDEBUG_INFO, "occur:%d\n", occur);
 				if (occur)
 				{
+					// TODO: 0.6.5 check if this does operate on msg not on copy
 					msg.message.replace(reg, imagehtml);
 					msg.counter -= occur;
 				}
@@ -1271,7 +1271,7 @@ void HistoryManager::checkImagesTimeouts()
 	kdebugf();
 	QList<UinType> uins = bufferedMessages.keys();
 
-	foreach(UinType uin, uins)
+	foreach(const UinType &uin, uins)
 		checkImageTimeout(uin);
 	kdebugf2();
 }

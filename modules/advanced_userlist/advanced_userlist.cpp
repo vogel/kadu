@@ -47,12 +47,13 @@ AdvancedUserList::AdvancedUserList()
 
 	// zliczamy u�ytkownik�w bez priorytetu
 	int cnt = 0;
-	foreach(UserListElement user, *userlist)
+	foreach(const UserListElement &user, *userlist)
 		if (user.data("Priority").isNull())
 			++cnt;
 
 	// i ustawiamy im priorytet
 	int i = 1;
+	// TODO: 0.6.5 fix
 	foreach(UserListElement user, *userlist)
 		if (user.data("Priority").isNull())
 			user.setData("Priority", int(0), true, i++ == cnt);
@@ -189,7 +190,7 @@ void AdvancedUserList::displayFunctionList()
 
 	sortingListBox->clear();
 	foreach(const QString &id, order)
-		foreach(UserBox::CmpFuncDesc fun, cmpFuns)
+		foreach(const UserBox::CmpFuncDesc &fun, cmpFuns)
 			if (id == fun.id)
 			{
 				sortingListBox->addItem(fun.description);

@@ -267,7 +267,7 @@ void SearchDialog::addFound()
 {
 	UserListElements found = selected();
 
-	foreach (UserListElement user, found)
+	foreach (const UserListElement &user, found)
 		if (user.isAnonymous())
 			(new UserInfo(user, kadu))->show();
 		else
@@ -451,7 +451,7 @@ void SearchDialog::newSearchResults(SearchResults& searchResults, int seq, int f
 
 	// ??	if ((status && atoi(status) <= 1 && only_active->isChecked()) || !status)
 
-	foreach(SearchResult searchResult, searchResults)
+	foreach(const SearchResult &searchResult, searchResults)
 	{
 		QList <QTreeWidgetItem *> items = results->findItems(searchResult.Uin, Qt::MatchExactly, 1);
 		if (items.count())

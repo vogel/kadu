@@ -106,7 +106,7 @@ void KaduTabBar::addToGroup()
 	if (currentGroup.isEmpty())
 		return;
 
-	foreach(QString ule, currentUles)
+	foreach(const QString &ule, currentUles)
 	{
 		UserListElement user = userlist->byAltNick(ule);
 		QStringList userGroups = user.data("Groups").toStringList();
@@ -124,6 +124,6 @@ void KaduTabBar::moveToGroup()
 	if (!currentGroup.isEmpty())
 		groups.append(currentGroup);
 
-	foreach(QString ule, currentUles)
+	foreach(const QString &ule, currentUles)
 		userlist->byAltNick(ule).setData("Groups", groups);
 }

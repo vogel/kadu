@@ -169,10 +169,10 @@ void Ignored::getList()
 {
 	kdebugf();
 	lb_list->clear();
-	foreach(IgnoredManager::IgnoredEntry ignoredEntry, IgnoredManager::getList())
+	foreach(const IgnoredManager::IgnoredEntry &ignoredEntry, IgnoredManager::getList())
 	{
 		QStringList strlist;
-		foreach(UserListElement user, ignoredEntry.first)
+		foreach(const UserListElement &user, ignoredEntry.first)
 		{
 			if (userlist->contains(user))
 				strlist.append(QString("%1 (%2)").arg(user.ID("Gadu")).arg(user.altNick()));
@@ -238,13 +238,13 @@ void IgnoredManager::writeToConfiguration()
 	QDomElement ignored_elem = xml_config_file->accessElement(xml_config_file->rootElement(), "Ignored");
 	xml_config_file->removeChildren(ignored_elem);
 
-	foreach(IgnoredEntry ignoreEntry, Ignored)
+	foreach(const IgnoredEntry &ignoreEntry, Ignored)
 	{
 		if (ignoreEntry.second)
 			continue;
 
 		QDomElement ignored_group_elem = xml_config_file->createElement(ignored_elem, "IgnoredGroup");
-		foreach(UserListElement user, ignoreEntry.first)
+		foreach(const UserListElement &user, ignoreEntry.first)
 		{
 			QDomElement ignored_contact_elem = xml_config_file->createElement(ignored_group_elem, "IgnoredContact");
 			ignored_contact_elem.setAttribute("uin", user.ID("Gadu"));

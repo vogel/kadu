@@ -158,7 +158,7 @@ void HistoryModule::historyActionActivated(QAction *sender, bool toggled)
 		return;
 
 	UinsList uins;
-	foreach(UserListElement user, users)
+	foreach(const UserListElement &user, users)
 		uins.append(user.ID("Gadu").toUInt());
 	//TODO: throw out UinsList as soon as possible!
 	(new HistoryDialog(uins))->show();
@@ -190,7 +190,7 @@ void HistoryModule::appendHistory(ChatWidget *chat)
 	unsigned int from, end, count;
 
 	UinsList uins;//TODO: throw out UinsList as soon as possible!
-	foreach(UserListElement user, senders)
+	foreach(const UserListElement &user, senders)
 		uins.append(user.ID("Gadu").toUInt());
 
 	count = history->getHistoryEntriesCount(uins);
@@ -285,7 +285,7 @@ void HistoryModule::chatDestroying(ChatWidget *chat)
 void HistoryModule::messageSentAndConfirmed(UserListElements receivers, const QString& message)
 {
 	UinsList uins;
-	foreach(UserListElement user, receivers)
+	foreach(const UserListElement &user, receivers)
 		uins.append(user.ID("Gadu").toUInt());
 	//TODO: throw out UinsList as soon as possible!
 	history->addMyMessage(uins, message);
@@ -304,7 +304,7 @@ void HistoryModule::viewHistory()
 	UserListElements users = activeUserBox->selectedUsers();
 
 	UinsList uins;
-	foreach(UserListElement user, users)
+	foreach(const UserListElement &user, users)
 		uins.append(user.ID("Gadu").toUInt());
 	//TODO: throw out UinsList as soon as possible!
 	(new HistoryDialog(uins))->show();
@@ -324,7 +324,7 @@ void HistoryModule::deleteHistory()
 	//TODO: throw out UinsList as soon as possible!
 	UinsList uins;
 	UserListElements users = activeUserBox->selectedUsers();
-	foreach(UserListElement user, users)
+	foreach(const UserListElement &user, users)
 		if (user.usesProtocol("Gadu"))
 			uins.append(user.ID("Gadu").toUInt());
 
@@ -354,7 +354,7 @@ void HistoryModule::userboxMenuPopup()
 	int delete_history_item = UserBox::management->getItem(tr("Clear history"));
 
 	bool any_ok = false;
-	foreach(UserListElement user, users)
+	foreach(const UserListElement &user, users)
 		if (!user.protocolList().isEmpty())
 		{
 			any_ok = true;
@@ -381,12 +381,12 @@ void HistoryModule::removingUsers(UserListElements users)
 	if (!MessageBox::ask(tr("The following users were deleted:\n%0Do you want to remove history as well?").arg(tmp), "Warning", kadu))
 		return;
 	QString fname;
-	foreach(UserListElement user, users)
+	foreach(const UserListElement &user, users)
 	{
 		if (user.usesProtocol("Gadu"))
 		{
 			fname = ggPath("history/") + user.ID("Gadu");
-			kdebugmf(KDEBUG_INFO, "deleting %s\n", (const char *)fname.local8Bit());
+			kdebugmf(KDEBUG_INFO, "deleting %s\n", fname.local8Bit().data());
 			QFile::remove(fname);
 			QFile::remove(fname + ".idx");
 		}

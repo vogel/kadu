@@ -192,7 +192,7 @@ void GroupsManager::refreshTabBar()
 	}
 
 	/* dodajemy nowe zakladki */
-	foreach(QString group, group_list)
+	foreach(const QString &group, group_list)
 	{
 		bool createNewTab = true;
 
@@ -642,7 +642,7 @@ void OnlineAndDescriptionUsers::protocolAddedOrRemoved(UserListElement elem, QSt
 
 OfflineUsers::OfflineUsers() : UserGroup()
 {
-	foreach(const UserListElement user, *userlist)
+	foreach(const UserListElement &user, *userlist)
 	{
 		bool offline = true;
 

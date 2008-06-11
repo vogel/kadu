@@ -33,7 +33,7 @@ QStringList Themes::getSubDirs(const QString &path, bool validate) const
 		return dirs;
 
 	QStringList subdirs;
-	foreach(const QString dir, dirs)
+	foreach(const QString &dir, dirs)
 	{
 		QString dirname = path + '/' + dir;
 		if (validateDir(dirname))
@@ -51,7 +51,7 @@ bool Themes::validateDir(const QString &path) const
 	QStringList subdirs = getSubDirs(path, false);
 	if (!subdirs.isEmpty())
 	{
-		foreach(const QString dir, subdirs)
+		foreach(const QString &dir, subdirs)
 		{
 			f.setName(path + '/' + dir + '/' + ConfigName);
 			if (!f.exists())
@@ -140,10 +140,10 @@ QStringList Themes::defaultKaduPathsWithThemes() const
 {
 	QStringList result;
 
-	foreach(QString it, getSubDirs(dataPath("kadu/themes/" + Name)))
+	foreach(const QString &it, getSubDirs(dataPath("kadu/themes/" + Name)))
 		result << dataPath("kadu/themes/" + Name + '/' + it + '/');
 
-	foreach(QString it, getSubDirs(ggPath(Name)))
+	foreach(const QString &it, getSubDirs(ggPath(Name)))
 		result << ggPath(Name) + '/' + it + '/';
 
 	return result;

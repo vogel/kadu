@@ -37,7 +37,7 @@ UinsListViewText::UinsListViewText(QTreeWidget *parent, const UinsList &uins)
 	else
 	{
 		uint i = 0, uinsCount = uins.count();
-		foreach(UinType uin, uins)
+		foreach(const UinType &uin, uins)
 		{
 			if (userlist->contains("Gadu", QString::number(uin)))
 				name.append(userlist->byID("Gadu", QString::number(uin)).altNick());
@@ -134,7 +134,7 @@ HistoryDialog::HistoryDialog(UinsList uins)
 
 	QList<UinsList> uinsEntries = history->getUinsLists();
 
-	foreach(UinsList uinsEntry, uinsEntries)
+	foreach(const UinsList &uinsEntry, uinsEntries)
 	{
 		uinsItem = new UinsListViewText(uinsTreeWidget, uinsEntry);
 		uinsItem->setChildIndicatorPolicy(QTreeWidgetItem::ShowIndicator);
@@ -179,7 +179,7 @@ void HistoryDialog::uinsChanged(QTreeWidgetItem *item)
 	if (!item->childCount())
 	{
 		QList<HistoryDate> dateEntries = history->getHistoryDates(uins);
-		foreach(HistoryDate dateEntry, dateEntries)
+		foreach(const HistoryDate &dateEntry, dateEntries)
 			(new DateListViewText(item, dateEntry));
 	}
 	kdebugf2();
@@ -421,7 +421,7 @@ void HistoryDialog::searchHistory()
 			entries = history->getHistoryEntries(uins, findRec.actualrecord - len + 1, len);
 
 			entriesCount = entries.count();
-			//ehh, szkoda, ¿e w Qt nie ma reverse iteratorów...
+			//ehh, szkoda, ï¿½e w Qt nie ma reverse iteratorï¿½w...
 			QList<HistoryEntry>::const_iterator entry = entries.end() - 1;
 			QList<HistoryEntry>::const_iterator firstEntry = entries.begin();
 			bool end;
@@ -460,7 +460,7 @@ void HistoryDialog::searchHistory()
 			entries = history->getHistoryEntries(uins, findRec.actualrecord, len);
 			entriesCount = entries.count();
 			i = 0;
-			foreach(HistoryEntry entry, entries)
+			foreach(const HistoryEntry &entry, entries)
 			{
 				if ((findRec.type == 1 && (entry.type & HISTORYMANAGER_ENTRY_ALL_MSGS)
 					&& entry.message.contains(rxp)) ||

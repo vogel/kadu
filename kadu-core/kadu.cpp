@@ -402,7 +402,7 @@ void Kadu::popupMenu()
 
 	bool containsMe = false;
 	bool containsUserWithoutID = false;
-	foreach(UserListElement user, users)
+	foreach(const UserListElement &user, users)
 	{
 		if (!containsUserWithoutID && !user.usesProtocol("Gadu"))
 			containsUserWithoutID = true;
@@ -433,7 +433,7 @@ void Kadu::popupMenu()
 		UserBox::management->setItemChecked(ignoreuseritem, IgnoredManager::isIgnored(selectedUsers));
 
 		on = true;
-		foreach(UserListElement user, users)
+		foreach(const UserListElement &user, users)
 			if (!user.usesProtocol("Gadu") || !user.protocolData("Gadu", "Blocking").toBool())
 			{
 				on = false;
@@ -442,7 +442,7 @@ void Kadu::popupMenu()
 		UserBox::management->setItemChecked(blockuseritem, on);
 
 		on = true;
-		foreach(UserListElement user, users)
+		foreach(const UserListElement &user, users)
 			if (!user.usesProtocol("Gadu") || !user.protocolData("Gadu", "OfflineTo").toBool())
 			{
 				on = false;
@@ -452,7 +452,7 @@ void Kadu::popupMenu()
 		UserBox::management->setItemChecked(offlinetouseritem, on);
 
 		on = false;
-		foreach(UserListElement user, users)
+		foreach(const UserListElement &user, users)
 			if (user.data("HideDescription").toString() == "true")
 			{
 				on = true;
@@ -461,7 +461,7 @@ void Kadu::popupMenu()
 		UserBox::management->setItemChecked(hidedescriptionitem, on);
 
 		on = true;
-		foreach(UserListElement user, users)
+		foreach(const UserListElement &user, users)
 			if (!user.notify())
 			{
 				on = false;
@@ -578,7 +578,7 @@ void Kadu::copyPersonalInfo()
 	UserListElements users = activeUserBox->selectedUsers();
 	QStringList infoList;
 	QString copyPersonalDataSyntax = config_file.readEntry("General", "CopyPersonalDataSyntax", tr("Contact: %a[ (%u)]\n[First name: %f\n][Last name: %r\n][Mobile: %m\n]"));
-	foreach(UserListElement user, users)
+	foreach(const UserListElement &user, users)
 		infoList.append(KaduParser::parse(copyPersonalDataSyntax, user, false));
 
 	QString info = infoList.join("\n");
@@ -890,13 +890,14 @@ void Kadu::blockUser()
 
 	UserListElements users = activeUserBox->selectedUsers();
 	bool on = true;
-	foreach(UserListElement user, users)
+	foreach(const UserListElement &user, users)
 		if (!user.usesProtocol("Gadu") || !user.protocolData("Gadu", "Blocking").toBool())
 		{
 			on = false;
 			break;
 		}
 
+	// TODO: fix 0.6.5
  	foreach(UserListElement user, users)
 		if (user.usesProtocol("Gadu") && user.protocolData("Gadu", "Blocking").toBool() != !on)
 			user.setProtocolData("Gadu", "Blocking", !on);
@@ -916,13 +917,14 @@ void Kadu::notifyUser()
 
 	UserListElements users = activeUserBox->selectedUsers();
 	bool on = true;
-	foreach(UserListElement user, users)
+	foreach(const UserListElement &user, users)
 		if (!user.notify())
 		{
 			on = false;
 			break;
 		}
 
+	// TODO: 0.6.5 fix
 	foreach(UserListElement user, users)
 		if (user.notify() != !on)
 			user.setNotify(!on);
@@ -943,13 +945,14 @@ void Kadu::offlineToUser()
 
 	UserListElements users = activeUserBox->selectedUsers();
 	bool on = true;
-	foreach(UserListElement user, users)
+	foreach(const UserListElement &user, users)
 		if (!user.usesProtocol("Gadu") || !user.protocolData("Gadu", "OfflineTo").toBool())
 		{
 			on = false;
 			break;
 		}
 
+	// TODO: 0.6.5 pix
 	foreach(UserListElement user, users)
 		if (user.usesProtocol("Gadu") && user.protocolData("Gadu", "OfflineTo").toBool() != !on)
 			user.setProtocolData("Gadu", "OfflineTo", !on);
@@ -970,13 +973,14 @@ void Kadu::hideDescription()
 
 	UserListElements users = activeUserBox->selectedUsers();
 	bool on = true;
-	foreach(UserListElement user, users)
+	foreach(const UserListElement &user, users)
 		if (user.data("HideDescription").toString() == "true")
 		{
 			on = false;
 			break;
 		}
 
+	// TODO: 0.6.5 fix
 	foreach(UserListElement user, users)
 		user.setData("HideDescription", on ? "true" : "false");
 
@@ -1482,7 +1486,7 @@ void Kadu::createRecentChatsMenu()
 
 	unsigned int index = 0; // indeks pozycji w popupie
 
-	foreach(UserListElements users, chat_manager->closedChatUsers())
+	foreach(const UserListElements &users, chat_manager->closedChatUsers())
 	{
 		QStringList altnicks = users.altNicks(); // lista nick�w z okna rozmowy
 		QString chat_users;

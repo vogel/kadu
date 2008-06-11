@@ -44,7 +44,7 @@ bool PendingMsgs::pendingMsgs(UserListElement user) const
 //	if (uin == 0)
 //		return pendingMsgs();
 
-	foreach(Element msg, msgs)
+	foreach(const Element &msg, msgs)
 		if(msg.users[0] == user)
 		{
 //			kdebugf2();
@@ -60,7 +60,7 @@ unsigned int PendingMsgs::pendingMsgsCount(UserListElements users) const
 
 	unsigned int count = 0;
 
-	foreach(Element msg, msgs)
+	foreach(const Element &msg, msgs)
 		if (msg.users.equals(users))
 			count++;
 
@@ -108,15 +108,15 @@ void PendingMsgs::writeToFile()
 	int t = msgs.count();
 	f.writeBlock((char*)&t,sizeof(int));
 	// next for each message
-	foreach(Element i, msgs)
+	foreach(const Element &i, msgs)
 	{
 		// saving uins, first - number of
 		t = i.users.size();
 		f.writeBlock((char*)&t,sizeof(int));
 		// uins
-		foreach(UserListElement j, i.users)
+		foreach(const UserListElement &user, i.users)
 		{
-			UinType uin = j.ID("Gadu").toUInt();
+			UinType uin = user.ID("Gadu").toUInt();
 			f.writeBlock((char*)&uin, sizeof(UinType));
 		}
 		// message size
