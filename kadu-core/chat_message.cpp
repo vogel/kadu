@@ -73,7 +73,7 @@ static QString getSeparator(const QObject * const object)
 	int separatorSize = dynamic_cast<const ChatMessage * const>(object)->separatorSize();
 
 	if (separatorSize)
-		return "<img title=\"\" height=\"" + QString::number(separatorSize) + "\" width=\"10000\" align=\"right\">";
+		return "<p style=\"margin: 0; margin-top:" + QString::number(separatorSize) + "px\"></p>";
 	else
 		return "";
 }

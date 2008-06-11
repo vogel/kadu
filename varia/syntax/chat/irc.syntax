@@ -1,1 +1,1 @@
-<p style="background-color: #{backgroundColor}">#{separator}<font color="#{fontColor}"><b>\[#{receivedDate}\] <font color="#{nickColor}">%a</font>: </b> #{message}</font></p>
+#{separator}<p style="background-color: #{backgroundColor}"><font color="#{fontColor}"><b>\[#{receivedDate}\] <font color="#{nickColor}">%a</font>: </b> #{message}</font></p>
