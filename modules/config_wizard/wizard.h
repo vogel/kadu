@@ -1,10 +1,9 @@
 #ifndef KADU_CONFIG_WIZARD_H
 #define KADU_CONFIG_WIZARD_H
 
-#include <QDialog>
-#include <QStackedWidget>
 #include <QGridLayout>
 #include <QList>
+#include <QWizard>
 
 #include "../account_management/register.h"
 
@@ -20,16 +19,12 @@ class QRadioButton;
  * @defgroup config_wizard Config wizard
  * @{
  */
-class Wizard : public QDialog
+class Wizard : public QWizard
 {
     Q_OBJECT
 
-	QStackedWidget *pageArea;
-	QGridLayout *layout;
-	QPushButton *nextButton;
-	QPushButton *backButton;
-	QPushButton *cancelButton;
-	QPushButton *finishButton;
+	bool registeringAccount;
+	bool testingSound;
 
 	QPushButton *ggRegisterAccount;
 
@@ -76,10 +71,8 @@ private slots:
 	void registerGGAccount();
 	void registeredGGAccount(bool ok, UinType uin);
 
-	void finishClicked();
-	void cancelClicked();
-	void nextClicked();
-	void backClicked();
+	void acceptedSlot();
+	void rejectedSlot();
 
 	void browserChanged(int index);
 	void emailChanged(int index);
@@ -93,7 +86,7 @@ public:
 	Wizard(QWidget *parent = 0);
 	~Wizard();
 
-	void addPage(QWidget *page, const QString &title, const QString &description, bool lastOne);
+	virtual bool validateCurrentPage();
 
 public slots:
 	void wizardStart();

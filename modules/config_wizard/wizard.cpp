@@ -56,7 +56,8 @@ extern "C" void config_wizard_close()
 	kdebugf2();
 }
 
-WizardStarter::WizardStarter(QObject *parent) : QObject(parent)
+WizardStarter::WizardStarter(QObject *parent)
+	: QObject(parent)
 {
 	QMenu *MainMenu = kadu->mainMenu();
 
@@ -86,44 +87,18 @@ void WizardStarter::start()
 }
 
 Wizard::Wizard(QWidget *parent)
-	: QDialog(parent)
+	: QWizard(parent), registeringAccount(false), testingSound(false)
 {
 	kdebugf();
 	setWindowTitle(tr("Kadu Wizard"));
-	setMinimumSize(510, 300);
-
-	layout = new QGridLayout(this);
-	layout->setSpacing(0);
-	layout->setContentsMargins(10, 10, 10, 10);
-	pageArea = new QStackedWidget(this);
-	pageArea->setMinimumSize(490, 290);
-	pageArea->setContentsMargins(0, 0, 0, 0);
-	layout->addWidget(pageArea, 0, 0, 1, 4, Qt::AlignLeft);
+	setMinimumSize(710, 300);
 
 	createGGAccountPage();
 	createApplicationsPage();
 	createSoundPage();
 
-	backButton = new QPushButton(this);
-	backButton->setText(tr("< Back"));
-	connect(backButton, SIGNAL(clicked()), this, SLOT(backClicked()));
-	layout->addWidget(backButton, 1, 0, 1, 1);
-
-	nextButton = new QPushButton(this);
-	nextButton->setText(tr("Next >"));
-	connect(nextButton, SIGNAL(clicked()), this, SLOT(nextClicked()));
-	layout->addWidget(nextButton, 1, 1, 1, 1);
-
-	cancelButton = new QPushButton(this);
-	cancelButton->setText(tr("Cancel"));
-	connect(cancelButton, SIGNAL(clicked()), this, SLOT(cancelClicked()));
-	layout->addWidget(cancelButton, 1, 2, 1, 1);
-	
-	finishButton = new QPushButton(this);
-	finishButton->setText(tr("Finish"));
-	connect(finishButton, SIGNAL(clicked()), this, SLOT(finishClicked()));
-	finishButton->setEnabled(false);
-	layout->addWidget(finishButton, 1, 3, 1, 1);
+	connect(this, SIGNAL(accepted()), this, SLOT(acceptedSlot()));
+	connect(this, SIGNAL(rejected()), this, SLOT(rejectedSlot()));
 
 	kdebugf2();
 }
@@ -134,45 +109,15 @@ Wizard::~Wizard()
 	kdebugf2();
 }
 
-void Wizard::addPage(QWidget *page, const QString &title, const QString &description, bool lastOne)
+bool Wizard::validateCurrentPage()
 {
-	QWidget *wholePage = new QWidget(this);
-	QHBoxLayout *layout = new QHBoxLayout(wholePage);
-	layout->setSpacing(5);
-
-	QTextBrowser *descriptionPane = new QTextBrowser(wholePage);
-	descriptionPane->setText(description);
-	layout->addWidget(descriptionPane, 1);
-
-	page->reparent(wholePage, QPoint(0, 0), true);
-	layout->addWidget(page, 2);
-
-	pageArea->addWidget(wholePage);
-	pageArea->setWindowTitle(title);
-}
-
-void Wizard::nextClicked()
-{
-	int index = pageArea->currentIndex() + 1;
-	if (index < pageArea->count())
-		pageArea->setCurrentIndex(index);
-
-	if (index == pageArea->count() - 1)
-		finishButton->setEnabled(true);
-}
-
-void Wizard::backClicked()
-{
-	int index = pageArea->currentIndex() - 1;
-	if (index >= 0)
-		pageArea->setCurrentIndex(index);
-	finishButton->setEnabled(false);
+	return !(registeringAccount || testingSound);
 }
 
 /**
 	naci�ni�cie zako�cz i zapisanie konfiguracji (o ile nie nast�pi�o wcze�niej)
 **/
-void Wizard::finishClicked()
+void Wizard::acceptedSlot()
 {
 	saveGGAccountOptions();
 	saveApplicationsOptions();
@@ -182,7 +127,7 @@ void Wizard::finishClicked()
 	deleteLater();
 }
 
-void Wizard::cancelClicked()
+void Wizard::rejectedSlot()
 {
 	changeSoundModule(backupSoundModule);
 
@@ -267,13 +212,11 @@ void Wizard::registerGGAccount()
 		return;
 	}
 
+	registeringAccount = true;
 	foreach(QWidget *widget, dontHaveNumberWidgets)
 		widget->setEnabled(false);
 
 	haveNumber->setEnabled(false);
-	nextButton->setEnabled(false);
-	finishButton->setEnabled(false);
-	cancelButton->setEnabled(false);
 
 	connect(gadu, SIGNAL(registered(bool, UinType)), this, SLOT(registeredGGAccount(bool, UinType)));
 	gadu->registerAccount(ggEMail->text(), ggNewPassword->text());
@@ -313,9 +256,7 @@ void Wizard::registeredGGAccount(bool ok, UinType uin)
 	disconnect(gadu, SIGNAL(registered(bool, UinType)), this, SLOT(registeredGGAccount(bool, UinType)));
 
 	haveNumber->setEnabled(true);
-	nextButton->setEnabled(true);
-	finishButton->setEnabled(true);
-	cancelButton->setEnabled(true);
+	registeringAccount = false;
 
 	kdebugf2();
 }
@@ -348,67 +289,77 @@ void Wizard::tryImport()
 void Wizard::createGGAccountPage()
 {
 	kdebugf();
-	QWidget *ggPage = new QWidget(this);
 
-	QVBoxLayout *layout = new QVBoxLayout(ggPage);
-	layout->setSpacing(5);
+	QWizardPage *ggPage = new QWizardPage(this);
+	ggPage->setTitle(tr("Gadu-gadu account"));
 
-	QGroupBox *account = new QGroupBox(tr("Account"), ggPage);
-
-	QWidget *container = new QWidget(account);
-	QGridLayout *gridLayout = new QGridLayout(container);
+	QGridLayout *gridLayout = new QGridLayout(ggPage);
 	gridLayout->setSpacing(5);
 
-	haveNumber = new QRadioButton(tr("I have a number"), container);
+	gridLayout->setColumnStretch(0, 7);
+	gridLayout->setColumnStretch(1, 1);
+	gridLayout->setColumnStretch(2, 7);
+	gridLayout->setColumnStretch(3, 7);
+
+	QTextBrowser *descriptionPane = new QTextBrowser(ggPage);
+	descriptionPane->setText(tr("<h3>Welcome in Kadu</h3><h4>the Gadu-gadu network client for *nix and MacOS X.</h4>"
+		"<p>This is first time you launch Kadu. "
+		"This wizard will help you to configure the basic settings of Kadu. "
+		"If you are experienced Kadu user you may omit the wizard by clicking Cancel.</p>"
+		"<p>Please enter your account data. If you don't have one, you can create new here.</p>"
+		"<p>E-mail address is needed when you want to recover lost password to account</p>"));
+	descriptionPane->setFixedWidth(200);
+	gridLayout->addMultiCellWidget(descriptionPane, 0, 8, 0, 0);
+
+	haveNumber = new QRadioButton(tr("I have a number"), ggPage);
 	connect(haveNumber, SIGNAL(toggled(bool)), this, SLOT(haveNumberChanged(bool)));
-	gridLayout->addMultiCellWidget(haveNumber, 0, 0, 0, 1);
+	gridLayout->addMultiCellWidget(haveNumber, 0, 0, 2, 3);
 
-	QLabel *ggNumberLabel = new QLabel(tr("Gadu-gadu number") + ":", container);
-	gridLayout->addWidget(ggNumberLabel, 1, 0, Qt::AlignRight);
-	ggNumber = new QLineEdit(container);
-	gridLayout->addWidget(ggNumber, 1, 1);
+	QLabel *ggNumberLabel = new QLabel(tr("Gadu-gadu number") + ":", ggPage);
+	gridLayout->addWidget(ggNumberLabel, 1, 2, Qt::AlignRight);
+	ggNumber = new QLineEdit(ggPage);
+	gridLayout->addWidget(ggNumber, 1, 3);
 
-	QLabel *ggPasswordLabel = new QLabel(tr("Gadu-gadu password") + ":", container);
-	gridLayout->addWidget(ggPasswordLabel, 2, 0, Qt::AlignRight);
-	ggPassword = new QLineEdit(container);
+	QLabel *ggPasswordLabel = new QLabel(tr("Gadu-gadu password") + ":", ggPage);
+	gridLayout->addWidget(ggPasswordLabel, 2, 2, Qt::AlignRight);
+	ggPassword = new QLineEdit(ggPage);
 	ggPassword->setEchoMode(QLineEdit::Password);
-	gridLayout->addWidget(ggPassword, 2, 1);
+	gridLayout->addWidget(ggPassword, 2, 3);
 
-	ggImportContacts = new QCheckBox(tr("Import contacts"), container);
+	ggImportContacts = new QCheckBox(tr("Import contacts"), ggPage);
 	ggImportContacts->setChecked(true);
-	gridLayout->addMultiCellWidget(ggImportContacts, 3, 3, 0, 1);
+	gridLayout->addMultiCellWidget(ggImportContacts, 3, 3, 2, 3);
 
-	dontHaveNumber = new QRadioButton(tr("I don't have a number"), container);
-	gridLayout->addMultiCellWidget(dontHaveNumber, 4, 4, 0, 1);
+	dontHaveNumber = new QRadioButton(tr("I don't have a number"), ggPage);
+	gridLayout->addMultiCellWidget(dontHaveNumber, 4, 4, 2, 3);
 
-	QLabel *ggNewPasswordLabel = new QLabel(tr("New password") + ":", container);
-	gridLayout->addWidget(ggNewPasswordLabel, 5, 0, Qt::AlignRight);
-	ggNewPassword = new QLineEdit(container);
+	QLabel *ggNewPasswordLabel = new QLabel(tr("New password") + ":", ggPage);
+	gridLayout->addWidget(ggNewPasswordLabel, 5, 2, Qt::AlignRight);
+	ggNewPassword = new QLineEdit(ggPage);
 	ggNewPassword->setEchoMode(QLineEdit::Password);
-	gridLayout->addWidget(ggNewPassword, 5, 1);
+	gridLayout->addWidget(ggNewPassword, 5, 3);
 
-	QLabel *ggReNewPasswordLabel = new QLabel(tr("Retype password") + ":", container);
-	gridLayout->addWidget(ggReNewPasswordLabel, 6, 0, Qt::AlignRight);
-	ggReNewPassword = new QLineEdit(container);
+	QLabel *ggReNewPasswordLabel = new QLabel(tr("Retype password") + ":", ggPage);
+	gridLayout->addWidget(ggReNewPasswordLabel, 6, 2, Qt::AlignRight);
+	ggReNewPassword = new QLineEdit(ggPage);
 	ggReNewPassword->setEchoMode(QLineEdit::Password);
-	gridLayout->addWidget(ggReNewPassword, 6, 1);
+	gridLayout->addWidget(ggReNewPassword, 6, 3);
 
-	QLabel *ggEMailLabel = new QLabel(tr("Your e-mail address") + ":", container);
-	gridLayout->addWidget(ggEMailLabel, 7, 0, Qt::AlignRight);
-	ggEMail = new QLineEdit(container);
-	gridLayout->addWidget(ggEMail, 7, 1);
+	QLabel *ggEMailLabel = new QLabel(tr("Your e-mail address") + ":", ggPage);
+	gridLayout->addWidget(ggEMailLabel, 7, 2, Qt::AlignRight);
+	ggEMail = new QLineEdit(ggPage);
+	gridLayout->addWidget(ggEMail, 7, 3);
 
-	ggRegisterAccount = new QPushButton(tr("Register"), container);
+	ggRegisterAccount = new QPushButton(tr("Register"), ggPage);
 	connect(ggRegisterAccount, SIGNAL(clicked()), this, SLOT(registerGGAccount()));
-	gridLayout->addMultiCellWidget(ggRegisterAccount, 8, 8, 0, 1);
+	gridLayout->addMultiCellWidget(ggRegisterAccount, 8, 8, 2, 3);
 
 	QButtonGroup *haveNumberGroup = new QButtonGroup();
 	haveNumberGroup->insert(haveNumber);
 	haveNumberGroup->insert(dontHaveNumber);
 
-	container->setLayout(gridLayout);
-	layout->addWidget(account);
-
+	ggPage->setLayout(gridLayout);
+ 
 	haveNumberWidgets.append(ggNumberLabel);
 	haveNumberWidgets.append(ggNumber);
 	haveNumberWidgets.append(ggPasswordLabel);
@@ -424,12 +375,7 @@ void Wizard::createGGAccountPage()
 
 	loadGGAccountOptions();
 
-	addPage(ggPage, tr("Gadu-gadu account"), tr("<h3>Welcome in Kadu</h3><h4>the Gadu-gadu network client for *nix and MacOS X.</h4>"
-		"<p>This is first time you launch Kadu. "
-		"This wizard will help you to configure the basic settings of Kadu. "
-		"If you are experienced Kadu user you may omit the wizard by clicking Cancel.</p>"
-		"<p>Please enter your account data. If you don't have one, you can create new here.</p>"
-		"<p>E-mail address is needed when you want to recover lost password to account</p>"), false);
+	addPage(ggPage);
 
 	kdebugf2();
 }
@@ -473,19 +419,29 @@ void Wizard::saveGGAccountOptions()
 void Wizard::createApplicationsPage()
 {
 	kdebugf();
-	QWidget *applicationsPage = new QWidget(this);
 
-	QVBoxLayout *layout = new QVBoxLayout(applicationsPage);
-	layout->setSpacing(5);
+	QWizardPage *applicationsPage = new QWizardPage(this);
+	applicationsPage->setTitle(tr("Applications"));
 
-	QGroupBox *browserOptions = new QGroupBox(tr("WWW browser"), applicationsPage);
+	QGridLayout *gridLayout = new QGridLayout(applicationsPage);
+	gridLayout->setSpacing(5);
 
-	QWidget *browserContainer = new QWidget(browserOptions);
-	QGridLayout *browserGridLayout = new QGridLayout(browserContainer);
-	browserGridLayout->setSpacing(5);
+	gridLayout->setColumnStretch(0, 7);
+	gridLayout->setColumnStretch(1, 1);
+	gridLayout->setColumnStretch(2, 7);
+	gridLayout->setColumnStretch(3, 14);
+	gridLayout->setRowStretch(4, 100);
 
-	browserGridLayout->addWidget(new QLabel(tr("Choose your browser") + ":", browserContainer), 0, 0, Qt::AlignRight);
-	browserCombo = new QComboBox(browserContainer);
+	QTextBrowser *descriptionPane = new QTextBrowser(applicationsPage);
+	descriptionPane->setText(tr(
+		"<p>Please setup Kadu for working with your favourite WWW browser and email program.</p>"
+		"<p>Kadu will use these for opening various links from messages and user's descriptions</p>"));
+	descriptionPane->setFixedWidth(200);
+
+	gridLayout->addMultiCellWidget(descriptionPane, 0, 4, 0, 0);
+
+	gridLayout->addWidget(new QLabel(tr("Choose your browser") + ":", applicationsPage), 0, 2, Qt::AlignRight);
+	browserCombo = new QComboBox(applicationsPage);
 	browserCombo->insertItem(tr("Specify path"));
 	browserCombo->insertItem(tr("Konqueror"));
 	browserCombo->insertItem(tr("Opera"));
@@ -497,46 +453,31 @@ void Wizard::createApplicationsPage()
 	browserCombo->insertItem(tr("Galeon"));
 	browserCombo->insertItem(tr("Safari"));
 	connect(browserCombo, SIGNAL(activated(int)), this, SLOT(browserChanged(int)));
-	browserGridLayout->addWidget(browserCombo, 0, 1);
+	gridLayout->addWidget(browserCombo, 0, 3);
 
-	browserGridLayout->addWidget(new QLabel(tr("Custom browser") + ":", browserContainer), 1, 0, Qt::AlignRight);
-	browserCommandLineEdit = new QLineEdit(browserContainer);
-	browserGridLayout->addWidget(browserCommandLineEdit, 1, 1);
-
-	browserContainer->setLayout(browserGridLayout);
-	layout->addWidget(browserOptions);
-
-	QGroupBox *emailOptions = new QGroupBox(tr("e-mail client"), applicationsPage);
-
-	QWidget *emailContainer = new QWidget(emailOptions);
-	QGridLayout *emailGridLayout = new QGridLayout(emailContainer);
-	emailGridLayout->setSpacing(5);
-
-	emailGridLayout->addWidget(new QLabel(tr("Choose your e-mail client") + ":", emailContainer), 0, 0, Qt::AlignRight);
-	mailCombo = new QComboBox(emailContainer);
+	gridLayout->addWidget(new QLabel(tr("Custom browser") + ":", applicationsPage), 1, 2, Qt::AlignRight);
+	browserCommandLineEdit = new QLineEdit(applicationsPage);
+	gridLayout->addWidget(browserCommandLineEdit, 1, 3);
+ 
+	gridLayout->addWidget(new QLabel(tr("Choose your e-mail client") + ":", applicationsPage), 2, 2, Qt::AlignRight);
+	mailCombo = new QComboBox(applicationsPage);
 	mailCombo->insertItem(tr("Specify path"));
 	mailCombo->insertItem(tr("KMail"));
 	mailCombo->insertItem(tr("Thunderbird"));
 	mailCombo->insertItem(tr("SeaMonkey"));
 	mailCombo->insertItem(tr("Evolution"));
 	connect(mailCombo, SIGNAL(activated(int)), this, SLOT(emailChanged(int)));
-	emailGridLayout->addWidget(mailCombo, 0, 1);
+	gridLayout->addWidget(mailCombo, 2, 3);
 
-	emailGridLayout->addWidget(new QLabel(tr("Custom e-mail client") + ":", emailContainer), 1, 0, Qt::AlignRight);
-	mailCommandLineEdit = new QLineEdit(emailContainer);
-	emailGridLayout->addWidget(mailCommandLineEdit, 1, 1);
+	gridLayout->addWidget(new QLabel(tr("Custom e-mail client") + ":", applicationsPage), 3, 2, Qt::AlignRight);
+	mailCommandLineEdit = new QLineEdit(applicationsPage);
+	gridLayout->addWidget(mailCommandLineEdit, 3, 3);
 
-	emailContainer->setLayout(emailGridLayout);
-	layout->addWidget(emailOptions);
+	applicationsPage->setLayout(gridLayout);
 
-	applicationsPage->setLayout(layout);
+	addPage(applicationsPage);
 
 	loadApplicationsOptions();
-
-	addPage(applicationsPage, tr("Applications"), tr(
-		"<p>Please setup Kadu for working with your favourite WWW browser and email program.</p>"
-		"<p>Kadu will use these for opening various links from messages and user's descriptions</p>"
-	), false);
 
 	kdebugf2();
 }
@@ -613,23 +554,34 @@ void Wizard::saveApplicationsOptions()
 void Wizard::createSoundPage()
 {
 	kdebugf();
-	QWidget *soundPage = new QWidget(this);
 
-	QVBoxLayout *layout = new QVBoxLayout(soundPage);
-	layout->setSpacing(5);
+	QWizardPage *soundPage = new QWizardPage(this);
+	soundPage->setTitle(tr("Sound"));
 
-	QGroupBox *soundOptions = new QGroupBox(tr("Sound system"), soundPage);
-
-	QWidget *container = new QWidget(soundOptions);
-	QGridLayout *gridLayout = new QGridLayout(container);
+	QGridLayout *gridLayout = new QGridLayout(soundPage);
 	gridLayout->setSpacing(5);
 
-	gridLayout->addWidget(new QLabel(tr("Sound system") + ":", container), 0, 0, Qt::AlignRight);
-	soundModuleCombo = new QComboBox(container);
-	gridLayout->addWidget(soundModuleCombo, 0, 1);
+	gridLayout->setColumnStretch(0, 7);
+	gridLayout->setColumnStretch(1, 1);
+	gridLayout->setColumnStretch(2, 7);
+	gridLayout->setColumnStretch(3, 7);
+	gridLayout->setRowStretch(2, 100);
 
-	soundTest = new QPushButton(tr("Test sound"), container);
-	gridLayout->addMultiCellWidget(soundTest, 1, 1, 0, 1);
+	QTextBrowser *descriptionPane = new QTextBrowser(soundPage);
+	descriptionPane->setText(tr(
+		"<p>Please select your sound driver for sound notifications. "
+		"If you don't want sound notifications, use None driver.</p>"
+		"<p>If you don't know which driver to use, just check every ony with Test sound button."
+		"Don't forget to unmute your system before!</p>"));
+	descriptionPane->setFixedWidth(200);
+	gridLayout->addMultiCellWidget(descriptionPane, 0, 2, 0, 0);
+
+	gridLayout->addWidget(new QLabel(tr("Sound system") + ":", soundPage), 0, 2, Qt::AlignRight);
+	soundModuleCombo = new QComboBox(soundPage);
+	gridLayout->addWidget(soundModuleCombo, 0, 3);
+
+	soundTest = new QPushButton(tr("Test sound"), soundPage);
+	gridLayout->addMultiCellWidget(soundTest, 1, 1, 2, 3);
 	connect(soundTest, SIGNAL(clicked()), this, SLOT(testSound()));
 
 	QStringList soundModules;
@@ -669,21 +621,13 @@ void Wizard::createSoundPage()
 		soundModules.prepend("alsa_sound");
 	}
 	soundModules.prepend("None");
-
 	soundModuleCombo->insertStringList(soundModules);
 
-	container->setLayout(gridLayout);
-	layout->addWidget(soundOptions);
-	soundPage->setLayout(layout);
+	soundPage->setLayout(gridLayout);
 	
 	loadSoundOptions();
 
-	addPage(soundPage, tr("Sound"), tr(
-		"<p>Please select your sound driver for sound notifications. "
-		"If you don't want sound notifications, use None driver.</p>"
-		"<p>If you don't know which driver to use, just check every ony with Test sound button."
-		"Don't forget to unmute your system before!</p>"
-	), true);
+	addPage(soundPage);
 
 	kdebugf2();
 }
@@ -692,7 +636,10 @@ void Wizard::testSound()
 {
 	sound_manager->stop();
 	changeSoundModule(soundModuleCombo->currentText());
+
+	testingSound = true;
 	sound_manager->play(dataPath("kadu/themes/sounds/default/msg.wav"), true);
+	testingSound = false;
 }
 
 void Wizard::loadSoundOptions()
