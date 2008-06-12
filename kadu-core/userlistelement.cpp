@@ -153,6 +153,7 @@ const UserStatus * UserListElement::status(const QString &protocolName) const
 #endif
 		return 0;
 	}
+
 	return privateData->protocols[protocolName]->Stat;
 }
 

@@ -89,6 +89,9 @@ bool UserGroup::contains(const QString &protocolName, const QString &id, Behavio
 {
 	foreach(const UserListElement &user, *this)
 	{
+		if (!user.privateData->protocols.contains(protocolName))
+			continue;
+
 		ProtocolData *protoData = user.privateData->protocols[protocolName];
 		if (protoData && protoData->ID == id)
 			if (user.isAnonymous())
