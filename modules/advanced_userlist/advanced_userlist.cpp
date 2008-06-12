@@ -53,8 +53,8 @@ AdvancedUserList::AdvancedUserList()
 
 	// i ustawiamy im priorytet
 	int i = 1;
-	// TODO: 0.6.5 fix
-	foreach(UserListElement user, *userlist)
+
+	foreach(const UserListElement &user, *userlist)
 		if (user.data("Priority").isNull())
 			user.setData("Priority", int(0), true, i++ == cnt);
 

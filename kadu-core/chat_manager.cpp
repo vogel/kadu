@@ -466,8 +466,7 @@ void ChatManager::blockUserActionActivated(QAction *sender, bool toggled)
 				break;
 			}
 
-		// TODO: 0.6.5 fix
-		foreach(UserListElement user, copy)
+		foreach(const UserListElement &user, copy)
 		{
 			QString uid = user.ID("Gadu");
 			if (gadu->validateUserID(uid) && user.protocolData("Gadu", "Blocking").toBool() != !on)

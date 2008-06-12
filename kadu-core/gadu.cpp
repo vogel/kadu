@@ -1973,7 +1973,7 @@ void GaduProtocol::userListReceived(const struct gg_event *e)
 		user.setProtocolData("Gadu", "Version", e->event.notify60[nr].version, true, nr + 1 == cnt);
 		user.setProtocolData("Gadu", "MaxImageSize", e->event.notify60[nr].image_size, true, nr + 1 == cnt);
 
-		oldStatus = user.status("Gadu");
+		oldStatus = *user.status("Gadu");
 
 		GaduStatus status;
 		if (e->event.notify60[nr].descr)
@@ -2120,7 +2120,7 @@ void GaduProtocol::userStatusChanged(const struct gg_event *e)
 
 	user.refreshDNSName("Gadu");
 
-	oldStatus = user.status("Gadu");
+	oldStatus = *user.status("Gadu");
 	user.setStatus("Gadu", status, false, false);
 
 	kdebugf2();

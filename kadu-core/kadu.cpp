@@ -483,10 +483,10 @@ void Kadu::popupMenu()
 		UserBox::userboxmenu->setItemVisible(UserBox::userboxmenu->getItem(tr("Contact data")), false);
 	if ((users.count() != 1) || !firstUser.usesProtocol("Gadu"))
 		UserBox::userboxmenu->setItemVisible(UserBox::userboxmenu->getItem(tr("Search in directory")), false);
-	if ((users.count() != 1) || !firstUser.usesProtocol("Gadu") || firstUser.status("Gadu").description().isEmpty())
+	if ((users.count() != 1) || !firstUser.usesProtocol("Gadu") || firstUser.status("Gadu")->description().isEmpty())
 		UserBox::userboxmenu->setItemVisible(UserBox::userboxmenu->getItem(tr("Copy description")), false);
-	if ((users.count() != 1) || !firstUser.usesProtocol("Gadu") || firstUser.status("Gadu").description().isEmpty() ||
-		firstUser.status("Gadu").description().find(HtmlDocument::urlRegExp()) == -1)
+	if ((users.count() != 1) || !firstUser.usesProtocol("Gadu") || firstUser.status("Gadu")->description().isEmpty() ||
+		firstUser.status("Gadu")->description().find(HtmlDocument::urlRegExp()) == -1)
 		UserBox::userboxmenu->setItemVisible(UserBox::userboxmenu->getItem(tr("Open description link in browser")), false);
 	if ((users.count() != 1) || firstUser.email().isEmpty() || firstUser.email().find(HtmlDocument::mailRegExp()) == -1)
 		UserBox::userboxmenu->setItemVisible(UserBox::userboxmenu->getItem(tr("Write email message")), false);
@@ -511,7 +511,7 @@ void Kadu::copyDescription()
 	UserListElement user = activeUserBox->selectedUsers().first();
 	QString status;
 	if (user.usesProtocol("Gadu"))
-		status = user.status("Gadu").description();
+		status = user.status("Gadu")->description();
 	if (!status.isEmpty())
 	{
 		QClipboard *clipboard = QApplication::clipboard();
@@ -536,7 +536,7 @@ void Kadu::openDescriptionLink()
 
 	if (user.usesProtocol("Gadu"))
 	{
-		QString status = user.status("Gadu").description();
+		QString status = user.status("Gadu")->description();
 		if (!status.isEmpty())
 		{
 			QRegExp url = HtmlDocument::urlRegExp();
@@ -897,8 +897,7 @@ void Kadu::blockUser()
 			break;
 		}
 
-	// TODO: fix 0.6.5
- 	foreach(UserListElement user, users)
+ 	foreach(const UserListElement &user, users)
 		if (user.usesProtocol("Gadu") && user.protocolData("Gadu", "Blocking").toBool() != !on)
 			user.setProtocolData("Gadu", "Blocking", !on);
 	userlist->writeToConfig();
@@ -924,8 +923,7 @@ void Kadu::notifyUser()
 			break;
 		}
 
-	// TODO: 0.6.5 fix
-	foreach(UserListElement user, users)
+	foreach(const UserListElement &user, users)
 		if (user.notify() != !on)
 			user.setNotify(!on);
 
@@ -952,8 +950,7 @@ void Kadu::offlineToUser()
 			break;
 		}
 
-	// TODO: 0.6.5 pix
-	foreach(UserListElement user, users)
+	foreach(const UserListElement &user, users)
 		if (user.usesProtocol("Gadu") && user.protocolData("Gadu", "OfflineTo").toBool() != !on)
 			user.setProtocolData("Gadu", "OfflineTo", !on);
 
@@ -980,8 +977,7 @@ void Kadu::hideDescription()
 			break;
 		}
 
-	// TODO: 0.6.5 fix
-	foreach(UserListElement user, users)
+	foreach(const UserListElement &user, users)
 		user.setData("HideDescription", on ? "true" : "false");
 
 	userlist->writeToConfig();
@@ -1267,7 +1263,7 @@ void Kadu::messageReceived(Protocol *protocol, UserListElements senders, const Q
 
 		if (config_file.readBoolEntry("Chat", "OpenChatOnMessage"))
 		{
-			if (config_file.readBoolEntry("Chat", "OpenChatOnMessageWhenOnline") && !Myself.status(protocol->protocolID()).isOnline())
+			if (config_file.readBoolEntry("Chat", "OpenChatOnMessageWhenOnline") && !Myself.status(protocol->protocolID())->isOnline())
 			{
 				pending.addMsg(protocol->protocolID(), senders, msg, GG_CLASS_CHAT, time);
 				return;

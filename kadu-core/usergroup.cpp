@@ -204,7 +204,6 @@ void UserGroup::removeUser(const UserListElement &ule, bool massively, bool last
 {
 //	kdebugmf(KDEBUG_FUNCTION_START, "start: group:'%s' altNick:'%s' mass:%d last:%d\n", name(), ule.altNick().local8Bit().data(), massively, last);
 //	printBacktrace("xxx");
-	// TODO: fix for 0.6.5
 
 	if (contains(ule))
 	{

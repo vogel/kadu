@@ -125,8 +125,8 @@ void UserList::merge(const QList<UserListElement> &ulist)
 	}
 
 	int i = 1, anonSize = toUnsetAnonymous.size();
-	// TODO: fix 0.6.5
-	foreach(UserListElement user, toUnsetAnonymous)
+
+	foreach(const UserListElement &user, toUnsetAnonymous)
 		user.setData("Anonymous", false, true, i++ == anonSize);
 
 	addUsers(toAppend);
@@ -260,8 +260,8 @@ void UserList::setAllOffline(const QString &protocolName)
 	{
 		if (user.usesProtocol(protocolName))
 		{
-			const UserStatus &stat = user.status(protocolName);
-			if (!stat.isOffline() || stat.hasDescription())
+			const UserStatus *stat = user.status(protocolName);
+			if (!stat->isOffline() || stat->hasDescription())
 				++todo;
 		}
 	}
@@ -273,8 +273,8 @@ void UserList::setAllOffline(const QString &protocolName)
 //		kdebugm(KDEBUG_INFO, "%s %d\n", (*user).altNick().local8Bit().data(), (*user).usesProtocol(protocolName));
 		if (user.usesProtocol(protocolName))
 		{
-			const UserStatus &stat = user.status(protocolName);
-			if (!stat.isOffline() || stat.hasDescription())
+			const UserStatus *stat = user.status(protocolName);
+			if (!stat->isOffline() || stat->hasDescription())
 				user.setStatus(protocolName, *s, true, i++ == todo);
 		}
 	}

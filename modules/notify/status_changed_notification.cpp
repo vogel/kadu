@@ -31,12 +31,12 @@ void StatusChangedNotification::unregisterEvents(Notify *manager)
 }
 
 StatusChangedNotification::StatusChangedNotification(const QString &toStatus, const UserListElements &userListElements, const QString &protocolName)
-	: ProtocolNotification(QString("StatusChanged/") + toStatus, userListElements[0].status(protocolName).pixmapName(), userListElements, protocolName)
+	: ProtocolNotification(QString("StatusChanged/") + toStatus, userListElements[0].status(protocolName)->pixmapName(), userListElements, protocolName)
 {
 	const UserListElement &ule = userListElements[0];
 	QString syntax;
 
-	if (ule.status(protocolName).hasDescription())
+	if (ule.status(protocolName)->hasDescription())
 		syntax = tr("<b>%1</b> changed status to <i>%2</i><br/> <small>%3</small>");
 	else
 		syntax = tr("<b>%1</b> changed status to <i>%2</i>");
@@ -44,7 +44,7 @@ StatusChangedNotification::StatusChangedNotification(const QString &toStatus, co
 	setTitle(tr("Status changed"));
 	setText(narg(syntax,
 		Qt::escape(ule.altNick()),
-		qApp->translate("@default", ule.status(protocolName).name().ascii()),
-		Qt::escape(ule.status(protocolName).description())
+		qApp->translate("@default", ule.status(protocolName)->name().ascii()),
+		Qt::escape(ule.status(protocolName)->description())
 	));
 }
