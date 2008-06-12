@@ -54,16 +54,9 @@ class UserListElement : public QObject
 	Q_OBJECT
 
 	QExplicitlySharedDataPointer<ULEPrivate> privateData;
-	static unsigned long int used;
+
 	friend class UserGroup;
 	friend uint qHash(const UserListElement &index);
-
-protected:
-	/**
-		\fn UserListKey key() const
-		Zwraca klucz po kt�rym jest identyfikowany kontakt
-	**/
-// 	UserListKey key() const;
 
 public:
 	/**

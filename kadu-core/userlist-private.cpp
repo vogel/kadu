@@ -13,7 +13,6 @@
 #include "userlist-private.h"
 
 ULEPrivate::ULEPrivate()
-	: key(0)
 {
 }
 
@@ -28,7 +27,7 @@ ProtocolData::ProtocolData(const QString &/*protocolName*/, const QString &id)
 }
 
 ProtocolData::ProtocolData()
-	: ID(), Stat(new UserStatus())
+	: ID(), Stat(new GaduStatus())
 {
 }
 
@@ -38,7 +37,7 @@ ProtocolData::~ProtocolData()
 }
 
 ProtocolData::ProtocolData(const ProtocolData &s)
-	: ID(s.ID), Stat(s.Stat->copy()), data(s.data)
+	: ID(s.ID), Stat(s.Stat), data(s.data)
 {
 	kdebugf();
 }
@@ -49,7 +48,7 @@ ProtocolData & ProtocolData::operator = (const ProtocolData &s)
 	ID = s.ID;
 	delete Stat;
 
- 	Stat = s.Stat->copy();
+ 	Stat = s.Stat;
 	data = s.data;
 
 	return *this;

@@ -23,7 +23,6 @@ public:
 	QHash<QString, QVariant *> informations;
 	QHash<QString, ProtocolData *> protocols;
 	QList<UserGroup *> Parents;
-	UserListKey key;
 	ULEPrivate();
 	~ULEPrivate();
 
@@ -42,12 +41,13 @@ public slots:
 
 };
 
+class GaduStatus;
 class ProtocolData : public QObject
 {
 
 public:
 	QString ID;
-	UserStatus *Stat;
+	GaduStatus *Stat;
 	QHash<QString, QVariant *> data;
 
 	ProtocolData(const QString &protocolName, const QString &id);

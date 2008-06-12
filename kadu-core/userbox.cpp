@@ -31,6 +31,7 @@
 #include "action.h"
 #include "config_file.h"
 #include "debug.h"
+#include "gadu.h"
 #include "html_document.h"
 #include "icons_manager.h"
 #include "ignore.h"
@@ -431,7 +432,9 @@ QPixmap KaduListBoxPixmap::pixmapForUser(const UserListElement &user)
 		return icons_manager->loadPixmap("Message");
 	else
 	{
-		const QPixmap &pix = user.status("Gadu").pixmap(has_mobile);
+		GaduStatus s;
+		s = user.status("Gadu");
+		const QPixmap &pix = s.pixmap(s.status(), s.hasDescription(), has_mobile);
 		if (!pix.isNull())
 			return pix;
 		else

@@ -395,5 +395,3 @@ void UserList::initKeys()
 }
 
 UserList *userlist;
-
-unsigned long int UserListElement::used = 0;

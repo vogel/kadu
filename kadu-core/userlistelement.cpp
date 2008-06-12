@@ -10,6 +10,7 @@
 #include <QHostAddress>
 
 #include "debug.h"
+#include "gadu.h"
 #include "misc.h"
 #include "status.h"
 #include "usergroup.h"
@@ -183,32 +184,14 @@ UserListElement::UserListElement(const UserListElement &copyMe)
 UserListElement::UserListElement()
 	: QObject(), privateData(new ULEPrivate())
 {
-//	kdebugf();
-	privateData->key = used ++;
-// 	privateData->ref();
-//	kdebugf2();
 }
 
 UserListElement::~UserListElement()
 {
-//	kdebugf();
-// 	if (privateData->deref())
-// 	{
-// 		delete privateData;
-// 		privateData = 0;
-// 	}
-//	kdebugf2();
 }
 
-UserListElement &UserListElement::operator = (const UserListElement &copyMe)
+UserListElement & UserListElement::operator = (const UserListElement &copyMe)
 {
-//	kdebugf();
-//	printBacktrace("ULE::=\n");
-// 	if (privateData->deref())
-// 		delete privateData;
-// 	privateData = copyMe.privateData;
-// 	privateData->ref();
-//	kdebugf2();
 	privateData = copyMe.privateData;
 	return *this;
 }
@@ -368,8 +351,8 @@ void UserListElement::setStatus(const QString &protocolName, const UserStatus &s
 		return;
 	}
 
-	UserStatus *oldStatus = privateData->protocols[protocolName]->Stat->copy();
-	*privateData->protocols[protocolName]->Stat = status;
+	UserStatus oldStatus = *privateData->protocols[protocolName]->Stat;
+	privateData->protocols[protocolName]->Stat->setStatus(status);
 
 	if (massively)
 	{
@@ -378,7 +361,7 @@ void UserListElement::setStatus(const QString &protocolName, const UserStatus &s
 		foreach (UserGroup *group, privateData->Parents)
 		{
 //			kdebugm(KDEBUG_INFO, "group: %p\n", *group);
- 			emit group->statusChanged(*this, protocolName, *oldStatus, massively, last);
+ 			emit group->statusChanged(*this, protocolName, oldStatus, massively, last);
 			if (!groups.contains(group))
 				groups.insert(group);
 		}
@@ -394,12 +377,11 @@ void UserListElement::setStatus(const QString &protocolName, const UserStatus &s
 	{
 		foreach (UserGroup *group, privateData->Parents)
 		{
- 			emit group->statusChanged(*this, protocolName, *oldStatus, massively, last);
+ 			emit group->statusChanged(*this, protocolName, oldStatus, massively, last);
 			emit group->usersStatusChanged(protocolName);
 		}
 	}
 
-	delete oldStatus;
 //	kdebugf2();
 }
 
