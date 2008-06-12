@@ -738,7 +738,7 @@ void VoiceManager::userBoxMenuPopup()
 		user.usesProtocol("Gadu") &&
 		!containsOurUin &&
 		config_file.readBoolEntry("Network", "AllowDCC") &&
-		(user.status("Gadu")->isOnline() || user.status("Gadu")->isBusy());
+		(user.status("Gadu").isOnline() || user.status("Gadu").isBusy());
 
 	UserBox::userboxmenu->setItemVisible(voicechat, enable);
 	kdebugf2();

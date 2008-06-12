@@ -215,7 +215,7 @@ void HistoryManager::appendSms(const QString &mobile, const QString &msg)
 	kdebugf2();
 }
 
-void HistoryManager::appendStatus(UinType uin, const UserStatus *status)
+void HistoryManager::appendStatus(UinType uin, const UserStatus &status)
 {
 	kdebugf();
 
@@ -257,7 +257,7 @@ void HistoryManager::appendStatus(UinType uin, const UserStatus *status)
 		addr = addr + QString(":") + QString::number(port);
 	linelist.append(addr);
 	linelist.append(QString::number(time(NULL)));
-	switch (status->status())
+	switch (status.status())
 	{
 		case Online:
 			linelist.append("avail");
@@ -273,9 +273,9 @@ void HistoryManager::appendStatus(UinType uin, const UserStatus *status)
 			linelist.append("notavail");
 			break;
 	}
-	if (status->hasDescription())
+	if (status.hasDescription())
 	{
-		QString d = status->description();
+		QString d = status.description();
 		HtmlDocument::escapeText(d);
 		linelist.append(text2csv(d));
 	}

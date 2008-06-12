@@ -551,7 +551,7 @@ UsersWithDescription::~UsersWithDescription()
 void UsersWithDescription::statusChangedSlot(UserListElement elem, QString protocolName,
 							const UserStatus &oldStatus, bool /*massively*/, bool /*last*/)
 {
-	if (oldStatus.hasDescription() == elem.status(protocolName)->hasDescription())
+	if (oldStatus.hasDescription() == elem.status(protocolName).hasDescription())
 		return;
 	if (oldStatus.hasDescription()) // elem.status(protocolName).hasDescription() == false
 		removeUser(elem);
@@ -574,7 +574,7 @@ OnlineUsers::~OnlineUsers()
 void OnlineUsers::statusChangedSlot(UserListElement elem, QString protocolName,
 							const UserStatus &oldStatus, bool /*massively*/, bool /*last*/)
 {
-	if (oldStatus.isOffline() == elem.status(protocolName)->isOffline())
+	if (oldStatus.isOffline() == elem.status(protocolName).isOffline())
 		return;
 	if (oldStatus.isOffline())
 		addUser(elem);
@@ -615,7 +615,7 @@ void OnlineAndDescriptionUsers::userChangedSlot(UserListElement elem, bool /*mas
 	{
 		foreach(const QString &proto, protos)
 		{
-			UserStatus status = *elem.status(proto);
+			UserStatus status = elem.status(proto);
 			if (status.isOnline() || status.isBusy() || status.hasDescription())
 			{
 				isWanted = true;
@@ -651,7 +651,7 @@ OfflineUsers::OfflineUsers() : UserGroup()
 		{
 			foreach(const QString &proto, protos)
 			{
-				if (!user.status(proto)->isOffline())
+				if (!user.status(proto).isOffline())
 				{
 					offline = false; // if online in at LEAST one proto
 					break;
@@ -698,7 +698,7 @@ void OfflineUsers::userChangedSlot(UserListElement elem, bool /*massively*/, boo
 	{
 		foreach(const QString &proto, protos)
 		{
-			if (!elem.status(proto)->isOffline())
+			if (!elem.status(proto).isOffline())
 			{
 				offline = false;
 				break;
@@ -771,9 +771,9 @@ BlockingUsers::~BlockingUsers()
 void BlockingUsers::statusChangedSlot(UserListElement elem, QString protocolName,
 							const UserStatus &oldStatus, bool /*massively*/, bool /*last*/)
 {
-	if (!oldStatus.isBlocking() && elem.status(protocolName)->isBlocking())
+	if (!oldStatus.isBlocking() && elem.status(protocolName).isBlocking())
 		addUser(elem);
-	else if (oldStatus.isBlocking() && !elem.status(protocolName)->isBlocking())
+	else if (oldStatus.isBlocking() && !elem.status(protocolName).isBlocking())
 		removeUser(elem);
 }
 

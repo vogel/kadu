@@ -260,8 +260,8 @@ void UserList::setAllOffline(const QString &protocolName)
 	{
 		if (user.usesProtocol(protocolName))
 		{
-			const UserStatus *stat = user.status(protocolName);
-			if (!stat->isOffline() || stat->hasDescription())
+			const UserStatus &stat = user.status(protocolName);
+			if (!stat.isOffline() || stat.hasDescription())
 				++todo;
 		}
 	}
@@ -273,8 +273,8 @@ void UserList::setAllOffline(const QString &protocolName)
 //		kdebugm(KDEBUG_INFO, "%s %d\n", (*user).altNick().local8Bit().data(), (*user).usesProtocol(protocolName));
 		if (user.usesProtocol(protocolName))
 		{
-			const UserStatus *stat = user.status(protocolName);
-			if (!stat->isOffline() || stat->hasDescription())
+			const UserStatus &stat = user.status(protocolName);
+			if (!stat.isOffline() || stat.hasDescription())
 				user.setStatus(protocolName, *s, true, i++ == todo);
 		}
 	}

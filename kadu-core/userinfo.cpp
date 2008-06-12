@@ -255,10 +255,10 @@ void UserInfo::setupTab1()
 		else
 			e_ver->setText(tr("(Unknown)"));
 
-		e_status->setText(tr(User.status("Gadu")->name().ascii()));
-		e_status->setToolTip(User.status("Gadu")->description());
+		e_status->setText(tr(User.status("Gadu").name().ascii()));
+		e_status->setToolTip(User.status("Gadu").description());
 
-		tw_main->setTabIconSet(generalWidget, User.status("Gadu")->pixmap());
+		tw_main->setTabIconSet(generalWidget, User.status("Gadu").pixmap());
 	}
 
 	kdebugf2();

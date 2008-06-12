@@ -173,22 +173,22 @@ QString KaduParser::parse(const QString &s, const UserListElement &ule, const QO
 				case 's':
 					++i;
 					if (ule.usesProtocol("Gadu"))
-						pe.str = qApp->translate("@default", ule.status("Gadu")->name().ascii());
+						pe.str = qApp->translate("@default", ule.status("Gadu").name().ascii());
 					break;
 				case 't':
 					++i;
 					if (ule.usesProtocol("Gadu"))
-						pe.str = ule.status("Gadu")->name();
+						pe.str = ule.status("Gadu").name();
 					break;
 				case 'q':
 					++i;
 					if (ule.usesProtocol("Gadu"))
-						pe.str = ule.status("Gadu")->pixmapName();
+						pe.str = ule.status("Gadu").pixmapName();
 					break;
 				case 'd':
 					++i;
 					if (ule.usesProtocol("Gadu"))
-						pe.str = ule.status("Gadu")->description();
+						pe.str = ule.status("Gadu").description();
 
 				 	if (escape)
 			 			HtmlDocument::escapeText(pe.str);
@@ -225,7 +225,7 @@ QString KaduParser::parse(const QString &s, const UserListElement &ule, const QO
 					break;
 				case 'h':
 					++i;
-					if (ule.protocolData("Gadu", "Version").toUInt() && !ule.status("Gadu")->isOffline())
+					if (ule.protocolData("Gadu", "Version").toUInt() && !ule.status("Gadu").isOffline())
 						pe.str = versionToName(ule.protocolData("Gadu", "Version").toUInt() & 0x0000ffff);
 					break;
 				case 'n':

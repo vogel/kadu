@@ -101,7 +101,7 @@ class HistoryManager : public QObject
 		void appendMessage(UinsList receivers, UinType sender, const QString &msg,
 				bool own, time_t t = 0, bool chat = true, time_t arriveTime = time(NULL));
 		void appendSms(const QString &mobile, const QString &msg);
-		void appendStatus(UinType uin, const UserStatus *sstatus);
+		void appendStatus(UinType uin, const UserStatus &status);
 		void removeHistory(const UinsList &uins);
 
 		void convHist2ekgForm(UinsList uins);

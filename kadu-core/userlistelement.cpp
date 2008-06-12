@@ -143,7 +143,7 @@ QVariant UserListElement::protocolData(const QString &protocolName, const QStrin
 		return QVariant();
 }
 
-const UserStatus * UserListElement::status(const QString &protocolName) const
+UserStatus UserListElement::status(const QString &protocolName) const
 {
 	if (!privateData->protocols.contains(protocolName))
 	{
@@ -151,10 +151,10 @@ const UserStatus * UserListElement::status(const QString &protocolName) const
 		kdebugm(KDEBUG_ERROR, "%s not found!\n", protocolName.local8Bit().data());
 		printBacktrace("backtrace");
 #endif
-		return 0;
+		return UserStatus();
 	}
 
-	return privateData->protocols[protocolName]->Stat;
+	return *privateData->protocols[protocolName]->Stat;
 }
 
 QString UserListElement::ID(const QString &protocolName) const

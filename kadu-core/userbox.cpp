@@ -186,7 +186,7 @@ void KaduListBoxPixmap::setDescriptionColor(const QColor &col)
 
 bool KaduListBoxPixmap::isBold() const
 {
-	return ShowBold && User.usesProtocol("Gadu") && (User.status("Gadu")->isOnline() || User.status("Gadu")->isBusy());
+	return ShowBold && User.usesProtocol("Gadu") && (User.status("Gadu").isOnline() || User.status("Gadu").isBusy());
 }
 
 void KaduListBoxPixmap::paint(QPainter *painter)
@@ -207,7 +207,7 @@ void KaduListBoxPixmap::paint(QPainter *painter)
 		else if (User.protocolData("Gadu", "OfflineTo").toBool())
 			painter->setPen(QColor(128, 128, 128));
 		if (User.data("HideDescription").toString() != "true")
-			description = User.status("Gadu")->description();
+			description = User.status("Gadu").description();
 	}
 
 	int itemHeight = AlignUserboxIconsTop ? lineHeight(listBox()):height(listBox());
@@ -279,7 +279,7 @@ int KaduListBoxPixmap::height(const Q3ListBox* lb) const
 //	kdebugf();
 	QString description;
 	if (User.usesProtocol("Gadu") && User.data("HideDescription").toString() != "true")
-		description = User.status("Gadu")->description();
+		description = User.status("Gadu").description();
 	bool hasDescription = !description.isEmpty();
 
 	int height=lb->fontMetrics().lineSpacing()+3;
@@ -431,7 +431,7 @@ QPixmap KaduListBoxPixmap::pixmapForUser(const UserListElement &user)
 		return icons_manager->loadPixmap("Message");
 	else
 	{
-		const QPixmap &pix = user.status("Gadu")->pixmap(has_mobile);
+		const QPixmap &pix = user.status("Gadu").pixmap(has_mobile);
 		if (!pix.isNull())
 			return pix;
 		else
@@ -1542,7 +1542,7 @@ inline int compareStatus(const UserListElement &u1, const UserListElement &u2)
 	bool u1Gadu = u1.usesProtocol("Gadu");
 	bool u2Gadu = u2.usesProtocol("Gadu");
 	if (u1Gadu && u2Gadu)
-		return r[u1.status("Gadu")->status()] - r[u2.status("Gadu")->status()];
+		return r[u1.status("Gadu").status()] - r[u2.status("Gadu").status()];
 	else
 		return int(u2Gadu) - int(u1Gadu);
 }

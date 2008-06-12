@@ -108,7 +108,7 @@ public:
 		\param protocolName identyfikator protoko�u
 		Zwraca status kontaktu w protokole protocolName.
 	**/
-	const UserStatus * status(const QString &protocolName) const;
+	UserStatus status(const QString &protocolName) const;
 
 	/**
 		\fn QVariant data(const QString &name) const

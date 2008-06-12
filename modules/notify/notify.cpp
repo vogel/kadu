@@ -330,12 +330,12 @@ void Notify::statusChanged(UserListElement elem, QString protocolName,
 		return;
 
 	if (config_file.readBoolEntry("Notify", "IgnoreOnlineToOnline"))
-		if (elem.status("Gadu")->isOnline() || elem.status("Gadu")->isBusy())
+		if (elem.status("Gadu").isOnline() || elem.status("Gadu").isBusy())
 			if (oldStatus.isOnline() || oldStatus.isBusy())
 				return;
 
 	QString changedTo = "";
-	switch (elem.status("Gadu")->status())
+	switch (elem.status("Gadu").status())
 	{
 		case Online:	changedTo = "ToOnline"; break;
 		case Busy:		changedTo = "ToBusy"; break;
