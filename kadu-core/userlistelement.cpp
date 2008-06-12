@@ -41,7 +41,7 @@ QString UserListElement::DNSName(const QString &protocolName) const
 	return protocolData(protocolName, "DNSName").toString();
 }
 
-void UserListElement::setAddressAndPort(const QString &protocolName, const QHostAddress &ip, short port)
+void UserListElement::setAddressAndPort(const QString &protocolName, const QHostAddress &ip, short port) const
 {
 	if (!privateData->protocols.contains(protocolName))
 	{
@@ -61,15 +61,16 @@ short UserListElement::port(const QString &protocolName) const
 	return protocolData(protocolName, "Port").toUInt();
 }
 
-void UserListElement::refreshDNSName(const QString &protocolName)
+void UserListElement::refreshDNSName(const QString &protocolName) const
 {
+// TODO: 0.6.5
 // 	unsigned int ip = protocolData(protocolName, "IP").toUInt();
 // 	if (ip)
 // 		connect(new DNSHandler(protocolName, ip), SIGNAL(result(const QString &, const QString &)),
 // 				privateData, SLOT(setDNSName(const QString &, const QString &)));
 }
 
-QVariant UserListElement::setProtocolData(const QString &protocolName, const QString &name, const QVariant &val, bool massively, bool last)
+QVariant UserListElement::setProtocolData(const QString &protocolName, const QString &name, const QVariant &val, bool massively, bool last) const
 {
 	ProtocolData *protoData = *privateData->protocols.find(protocolName);
 
@@ -153,7 +154,7 @@ const UserStatus & UserListElement::status(const QString &protocolName) const
 		static UserStatus us;
 		return us;
 	}
-	return *privateData->protocols[protocolName]->Stat;
+	return privateData->protocols[protocolName]->Stat;
 }
 
 QString UserListElement::ID(const QString &protocolName) const
@@ -212,7 +213,7 @@ UserListElement &UserListElement::operator = (const UserListElement &copyMe)
 	return *this;
 }
 
-QVariant UserListElement::setData(const QString &name, const QVariant &val, bool massively, bool last)
+QVariant UserListElement::setData(const QString &name, const QVariant &val, bool massively, bool last) const
 {
 	QVariant old;
 	QVariant *oldVal = privateData->informations[name];
@@ -261,7 +262,7 @@ QVariant UserListElement::setData(const QString &name, const QVariant &val, bool
 	{ \
 		return data(propertyName).returnMethod(); \
 	} \
-	void UserListElement::setMethod(const type &n) \
+	void UserListElement::setMethod(const type &n) const \
 	{ \
 		setData(propertyName, n); \
 	}
@@ -282,7 +283,7 @@ QString UserListElement::aliveSound(NotifyType &type) const
 	return data("OwnAliveSound").toString();
 }
 
-void UserListElement::setAliveSound(NotifyType type, const QString &file)
+void UserListElement::setAliveSound(NotifyType type, const QString &file) const
 {
 	if (type == data("AliveSound").toInt() && file == data("OwnAliveSound").toString())
 		return;
@@ -296,7 +297,7 @@ QString UserListElement::messageSound(NotifyType &type) const
 	return data("OwnMessageSound").toString();
 }
 
-void UserListElement::setMessageSound(NotifyType type, const QString &file)
+void UserListElement::setMessageSound(NotifyType type, const QString &file) const
 {
 	if (type == data("MessageSound").toInt() && file == data("OwnMessageSound").toString())
 		return;
@@ -309,12 +310,7 @@ bool UserListElement::usesProtocol(const QString &name) const
 	return privateData->protocols.contains(name);
 }
 
-UserListKey UserListElement::key() const
-{
-	return privateData->key;
-}
-
-void UserListElement::addProtocol(const QString &name, const QString &id, bool massively, bool last)
+void UserListElement::addProtocol(const QString &name, const QString &id, bool massively, bool last) const
 {
 	if (privateData->protocols.contains(name))
 	{
@@ -329,7 +325,7 @@ void UserListElement::addProtocol(const QString &name, const QString &id, bool m
 		emit group->protocolAdded(*this, name, massively, last);
 }
 
-void UserListElement::deleteProtocol(const QString &protocolName, bool massively, bool last)
+void UserListElement::deleteProtocol(const QString &protocolName, bool massively, bool last) const
 {
 	if (!privateData->protocols.contains(protocolName))
 	{
@@ -354,13 +350,13 @@ QVariant UserListElement::data(const QString &name) const
 		return QVariant();
 }
 
-void UserListElement::setDNSName(const QString &protocolName, const QString &dnsname)
+void UserListElement::setDNSName(const QString &protocolName, const QString &dnsname) const
 {
 	kdebugf();
 	setProtocolData(protocolName, "DNSName", dnsname);
 }
 
-void UserListElement::setStatus(const QString &protocolName, const UserStatus &status, bool massively, bool last)
+void UserListElement::setStatus(const QString &protocolName, const UserStatus &status, bool massively, bool last) const
 {
 //	kdebugf();
 	if (!privateData->protocols.contains(protocolName))
@@ -429,4 +425,9 @@ QStringList UserListElement::protocolDataKeys(const QString &protocolName) const
 QStringList UserListElement::nonProtocolDataKeys() const
 {
 	return privateData->informations.keys();
+}
+
+uint qHash(const UserListElement &index)
+{
+	return (uint)index.privateData.data();
 }

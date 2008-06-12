@@ -42,18 +42,6 @@ public slots:
 
 };
 
-class UserGroupData :  public QSharedData
-{
-
-public:
-	UserGroupData();
-	~UserGroupData();
-	QHash<UserListKey, UserListElement> data;
-	QList<UserListElement> list;
-
-};
-
-
 class ProtocolData : public QObject
 {
 

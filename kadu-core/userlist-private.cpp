@@ -12,9 +12,6 @@
 
 #include "userlist-private.h"
 
-// WARNING: as soon as number of keys will grow, we need to increase
-// default dictionary sizes to prime numbers!
-// we can find them here: http://doc.trolltech.com/3.3/primes.html
 ULEPrivate::ULEPrivate()
 	: key(0)
 {
@@ -79,18 +76,11 @@ void ULEPrivate::setDNSName(const QString &protocolName, const QString &dnsname)
 		old = new QVariant();
 	}
 
-	foreach(UserGroup *group, Parents)
-		emit group->protocolUserDataChanged(protocolName, userlist->byKey(key), DNSName, *old, dnsname, false, false);
+// TODO: 0.6.5
+// 	foreach(UserGroup *group, Parents)
+// 		emit group->protocolUserDataChanged(protocolName, userlist->byKey(key), DNSName, *old, dnsname, false, false);
 
 	delete old;
-}
-
-UserGroupData::UserGroupData()
-{
-}
-
-UserGroupData::~UserGroupData()
-{
 }
 
 void ULEPrivate::closeModule()

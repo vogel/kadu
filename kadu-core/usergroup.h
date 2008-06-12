@@ -12,11 +12,11 @@
 
 #include <QExplicitlySharedDataPointer>
 #include <QList>
+#include <QSet>
 #include <QVariant>
 
 #include "userlistelement.h"
 
-class UserGroupData;
 class UserListElements;
 
 enum BehaviourForAnonymous {TrueForAnonymous, FalseForAnonymous};
@@ -79,7 +79,7 @@ enum BehaviourForAnonymous {TrueForAnonymous, FalseForAnonymous};
 	}
 	</code>
 **/
-class UserGroup : public QObject
+class UserGroup : public QObject, public QSet<UserListElement>
 {
 	Q_OBJECT
 
@@ -90,30 +90,17 @@ class UserGroup : public QObject
 	bool operator == (const UserGroup &) const {return false;}
 
 protected:
-	/*QExplicitlySharedDataPointer<*/UserGroupData/*>*/ *privateUserGroupData;
 	friend class UserListElement;
 	friend class ULEPrivate;
 
-	/**
-		\fn UserListElement byKey(UserListKey key)
-		\param key klucz
-		Zwraca element listy kontakt�w identyfikowany przez klucz.
-	**/
-	UserListElement byKey(UserListKey key);
-
 public:
-	typedef QList<UserListElement>::const_iterator const_iterator;
-	typedef QList<UserListElement>::iterator iterator;
-	typedef size_t size_type;
-
 	/**
 		\fn UserGroup(int size, const char *name = 0)
 		\param name nazwa grupy
 	**/
 	UserGroup();
 
-	/* standardowy konstruktor kopiuj�cy zepsu�by obiekt �r�d�owy */
-	UserGroup(const UserGroup &);
+	UserGroup(const UserGroup &copy);
 
 	/**
 		\fn UserGroup(const QValueList<UserListElement> &group, const char *name = 0)
@@ -134,13 +121,6 @@ public:
 		Z�o�ono�� O(users.count()).
 	**/
 	bool equals(const UserListElements users) const;
-
-	/**
-		\fn bool equals(UserListElements users) const
-		\param users
-		Z�o�ono�� O(users.count()).
-	**/
-	bool equals(const UserGroup *group) const;
 
 	/**
 		\fn UserListElement byID(const QString &protocolName, const QString &id)
@@ -188,7 +168,7 @@ public:
 			FalseForAnonymous, to zwraca fa�sz
 		Z�o�ono�� O(1).
 	**/
-	bool contains(UserListElement elem, BehaviourForAnonymous beh = TrueForAnonymous) const;
+	bool contains(const UserListElement &elem, BehaviourForAnonymous beh = TrueForAnonymous) const;
 
 	/**
 		\fn bool containsAltNick(const QString &altnick, BehaviourForAnonymous beh = TrueForAnonymous) const
@@ -201,36 +181,6 @@ public:
 		Z�o�ono�� O(count()), ale w przysz�o�ci b�dzie optymalizowana do O(1).
 	**/
 	bool containsAltNick(const QString &altnick, BehaviourForAnonymous beh = TrueForAnonymous) const;
-
-	/**
-		\fn size_type count() const
-		Zwraca ilo�� kontakt�w.
-	**/
-	size_type count() const;
-
-	/**
-		\fn const_iterator constBegin () const
-		Zwraca iterator pocz�tkowy.
-	**/
-	const_iterator constBegin() const;
-
-	/**
-		\fn const_iterator constEnd () const
-		Zwraca iterator ko�cowy.
-	**/
-	const_iterator constEnd () const;
-
-	/**
-		\fn const_iterator begin () const
-		Zwraca iterator pocz�tkowy.
-	**/
-	iterator begin() const;
-
-	/**
-		\fn const_iterator end () const
-		Zwraca iterator ko�cowy.
-	**/
-	iterator end() const;
 
 	/**
 		\fn UserListElements toUserListElements() const
@@ -259,7 +209,7 @@ public slots:
 		\param last true, gdy massively == true i jest to ostatnie dodanie
 		Dodaje do listy podany kontakt.
 	**/
-	void addUser(UserListElement ule, bool massively = false, bool last = false);
+	void addUser(const UserListElement &ule, bool massively = false, bool last = false);
 
 	/**
 		\fn void removeUser(UserListElement ule, bool massively = false, bool last = false)
@@ -268,7 +218,7 @@ public slots:
 		\param last true, gdy massively == true i jest to ostatnie usuni�cie
 		Usuwa podany kontakt z listy.
 	**/
-	void removeUser(UserListElement ule, bool massively = false, bool last = false);
+	void removeUser(const UserListElement &ule, bool massively = false, bool last = false);
 
 	/**
 		\fn UserListElement addAnonymous(const QString &protocolName, const QString &id, bool massively = false, bool last = false)

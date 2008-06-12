@@ -18,18 +18,17 @@
 #include "usergroup.h"
 
 UserGroup::UserGroup()
-	: QObject(), privateUserGroupData(new UserGroupData())
+	: QObject()
 {
 }
 
 UserGroup::UserGroup(const UserGroup &copy)
-	: QObject(), privateUserGroupData(copy.privateUserGroupData)
+	: QObject(), QSet<UserListElement>(copy)
 {
-	#warning "UserGroup copying is safe only in 'foreach' macro"
 }
 
 UserGroup::UserGroup(const QList<UserListElement> &group)
-	: QObject(), privateUserGroupData(new UserGroupData())
+	: QObject()
 {
 	addUsers(group);
 }
@@ -49,7 +48,7 @@ UserGroup::~UserGroup()
 
 UserListElement UserGroup::byAltNick(const QString& altnick)
 {
-	foreach(const UserListElement &user, privateUserGroupData->list)
+	foreach(const UserListElement &user, *this)
 		if (user.altNick() == altnick)
 			return user;
 
@@ -64,7 +63,7 @@ UserListElement UserGroup::byAltNick(const QString& altnick)
 
 bool UserGroup::containsAltNick(const QString &altnick, BehaviourForAnonymous beh) const
 {
-	foreach(const UserListElement &user, privateUserGroupData->list)
+	foreach(const UserListElement &user, *this)
 		if (user.altNick() == altnick)
 			if (user.isAnonymous())
 				return (beh == TrueForAnonymous);
@@ -76,7 +75,7 @@ bool UserGroup::containsAltNick(const QString &altnick, BehaviourForAnonymous be
 
 UserListElement UserGroup::byID(const QString &protocolName, const QString &id)
 {
-	foreach(const UserListElement &user, privateUserGroupData->list)
+	foreach(const UserListElement &user, *this)
 	{
 		ProtocolData *protoData = *user.privateData->protocols.find(protocolName);
 		if (protoData && protoData->ID == id)
@@ -88,7 +87,7 @@ UserListElement UserGroup::byID(const QString &protocolName, const QString &id)
 
 bool UserGroup::contains(const QString &protocolName, const QString &id, BehaviourForAnonymous beh) const
 {
-	foreach(const UserListElement &user, privateUserGroupData->list)
+	foreach(const UserListElement &user, *this)
 	{
 		ProtocolData *protoData = user.privateData->protocols[protocolName];
 		if (protoData && protoData->ID == id)
@@ -100,10 +99,10 @@ bool UserGroup::contains(const QString &protocolName, const QString &id, Behavio
 	return false;
 }
 
-bool UserGroup::contains(UserListElement elem, BehaviourForAnonymous beh) const
+bool UserGroup::contains(const UserListElement &elem, BehaviourForAnonymous beh) const
 {
 //	kdebugf();
-	if (privateUserGroupData->data.contains(elem.key()))
+	if (QSet<UserListElement>::contains(elem))
 		if (elem.isAnonymous())
 			return (beh == TrueForAnonymous);
 		else
@@ -123,35 +122,14 @@ bool UserGroup::equals(const UserListElements users) const
 	return true;
 }
 
-bool UserGroup::equals(const UserGroup *group) const
-{
-	if (NULL == group)
-		return false;
-	if (this == group)
-		return true;
-	unsigned int cnt = count();
-	if (cnt != group->count())
-		return false;
-	foreach(const UserListElement &user, *group)
-		if (!contains(user))
-			return false;
-	return true;
-}
-
-UserListElement UserGroup::byKey(UserListKey key)
-{
-	return privateUserGroupData->data[key];
-}
-
-void UserGroup::addUser(UserListElement ule, bool massively, bool last)
+void UserGroup::addUser(const UserListElement &ule, bool massively, bool last)
 {
 //	if (last)
 //	kdebugmf(KDEBUG_FUNCTION_START, "start: group:'%s' altNick:'%s' mass:%d last:%d\n", name(), ule.altNick().local8Bit().data(), massively, last);
 	if (!ule.privateData->Parents.contains(this))
 	{
 		emit addingUser(ule, massively, last);
-		privateUserGroupData->data[ule.key()] = UserListElement(ule);
-		privateUserGroupData->list.append(ule);
+		insert(ule);
 		ule.privateData->Parents.append(this);
 		emit userAdded(ule, massively, last);
 		emit modified();
@@ -222,15 +200,14 @@ void UserGroup::removeUsers(QList<UserListElement> users)
 	kdebugf2();
 }
 
-void UserGroup::removeUser(UserListElement ule, bool massively, bool last)
+void UserGroup::removeUser(const UserListElement &ule, bool massively, bool last)
 {
 //	kdebugmf(KDEBUG_FUNCTION_START, "start: group:'%s' altNick:'%s' mass:%d last:%d\n", name(), ule.altNick().local8Bit().data(), massively, last);
 //	printBacktrace("xxx");
 	// TODO: fix for 0.6.5
-	UserListElement elem = privateUserGroupData->data[ule.key()];
-// 	if (elem)
-// 	{
-//		kdebugm(KDEBUG_INFO, "user found\n");
+
+	if (contains(ule))
+	{
 		emit removingUser(ule, massively, last);
 		// very ugly hack :|
 		if (this == userlist && !Kadu::closing())
@@ -238,48 +215,24 @@ void UserGroup::removeUser(UserListElement ule, bool massively, bool last)
 		else
 		{
 			ule.privateData->Parents.remove(this);
-			privateUserGroupData->data.remove(ule.key());
-
-			privateUserGroupData->list.removeAll(ule);
-// 			delete elem;
+			QSet<UserListElement>::remove(ule);
 		}
 		emit userRemoved(ule, massively, last);
 		emit modified();
-// 	}
+	}
+
 	if (!massively || (massively && last))
 		emit usersRemoved();
 
 //	kdebugf2();
 }
 
-UserGroup::size_type UserGroup::count() const
-{
-	return privateUserGroupData->list.count();
-}
-
-UserGroup::const_iterator UserGroup::constBegin () const
-{
-	return privateUserGroupData->list.constBegin();
-}
-
-UserGroup::const_iterator UserGroup::constEnd () const
-{
-	return privateUserGroupData->list.constEnd();
-}
-
-UserGroup::iterator UserGroup::begin () const
-{
-	return privateUserGroupData->list.begin();
-}
-
-UserGroup::iterator UserGroup::end () const
-{
-	return privateUserGroupData->list.end();
-}
-
 UserListElements UserGroup::toUserListElements() const
 {
-	return privateUserGroupData->list;
+	UserListElements result;
+	foreach (const UserListElement &user, *this)
+		result.append(user);
+	return result;
 }
 
 void UserGroup::clear()
@@ -291,7 +244,7 @@ void UserGroup::clear()
 QStringList UserGroup::altNicks() const
 {
 	QStringList nicks;
-	foreach(const UserListElement &user, privateUserGroupData->list)
+	foreach(const UserListElement &user, *this)
 		nicks.append(user.altNick());
 	return nicks;
 }
