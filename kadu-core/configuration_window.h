@@ -163,7 +163,7 @@ public:
 	Atrybut catpion jest wymagany. Mo¿liwe tagi widget s± opisane w dokumentacji
 	klas Config* (np.: ConfigComboBox).
  **/
-class ConfigurationWindow : public QDialog
+class ConfigurationWindow : public QWidget
 {
 	Q_OBJECT
 

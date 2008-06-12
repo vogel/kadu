@@ -228,7 +228,7 @@ void ConfigSection::iconThemeChanged()
 }
 
 ConfigurationWindow::ConfigurationWindow(const QString &name, const QString &caption)
-	: QDialog(0, "configuration_window:" + name), Name(name), currentSection(0)
+	: QWidget(kadu, Qt::Window), Name(name), currentSection(0)
 {
 	setAttribute(Qt::WA_DeleteOnClose);
 	setWindowTitle(caption);
