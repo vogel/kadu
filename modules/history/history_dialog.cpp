@@ -340,7 +340,6 @@ const QString &HistoryDialog::gaduStatus2symbol(unsigned int status)
 void HistoryDialog::setDateListViewText(const QDateTime &datetime)
 {
 	kdebugf();
-
 	QTreeWidgetItem *actlvi;
 
 	for (int i = 0; i < uinsTreeWidget->topLevelItemCount(); i++)
@@ -351,11 +350,13 @@ void HistoryDialog::setDateListViewText(const QDateTime &datetime)
 	}
  	if (actlvi)
  	{
+		QTreeWidgetItem *uinItem = actlvi;
 
-		uinsTreeWidget->expandItem(actlvi);
-		for (int i = 0; i < actlvi->childCount(); i++)
+		uinsTreeWidget->expandItem(uinItem);
+
+		for (int i = 0; i < uinItem->childCount(); i++)
 		{
-			actlvi = actlvi->child(i);
+			actlvi = uinItem->child(i);
 			if (dynamic_cast<DateListViewText *>(actlvi)->getDate().date.date() == datetime.date())
 				break;
 		}
