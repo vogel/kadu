@@ -121,30 +121,31 @@ QString KaduParser::parse(const QString &s, const UserListElement &ule, const QO
 	int index = 0, i, len = s.length();
 	QList<ParseElem> parseStack;
 
-	static bool searchChars[256] = {false};
-	const QByteArray slatin = s.toLocal8Bit().data();
-	if (searchChars[(unsigned char)'%'] == false)
+	static QHash<QChar, bool> searchChars;
+
+	if (!searchChars.value('%', false))
 	{
-		searchChars[(unsigned char)'%'] = true;
-		searchChars[(unsigned char)'['] = true;
-		searchChars[(unsigned char)'{'] = true;
-		searchChars[(unsigned char)'\\'] = true;
-		searchChars[(unsigned char)'$'] = true;
-		searchChars[(unsigned char)'@'] = true;
-		searchChars[(unsigned char)'#'] = true;
-		searchChars[(unsigned char)'}'] = true;
-		searchChars[(unsigned char)']'] = true;
+		searchChars['%'] = true;
+		searchChars['['] = true;
+		searchChars['{'] = true;
+		searchChars['\\'] = true;
+		searchChars['$'] = true;
+		searchChars['@'] = true;
+		searchChars['#'] = true;
+		searchChars['}'] = true;
+		searchChars[']'] = true;
 	}
+
 	bool allowExec = config_file.readBoolEntry("General", "AllowExecutingFromParser", false);
-	searchChars[(unsigned char)'`'] = allowExec;
-	searchChars[(unsigned char)'\''] = allowExec;
+	searchChars['`'] = allowExec;
+	searchChars['\''] = allowExec;
 
 	while (index < len)
 	{
 		ParseElem pe1, pe;
 
 		for(i = index; i < len; ++i)
-			if (searchChars[(unsigned char)slatin[i]])
+			if (searchChars.value(s[i], false))
 				break;
 
 //		this is the same, but code above is muuuuch faster
@@ -160,7 +161,7 @@ QString KaduParser::parse(const QString &s, const UserListElement &ule, const QO
 				break;
 		}
 
-		char c = slatin[i];
+		char c = s[i].toAscii();
 		if (c == '%')
 		{
 			++i;
@@ -168,7 +169,7 @@ QString KaduParser::parse(const QString &s, const UserListElement &ule, const QO
 				break;
 			pe.type = ParseElem::PE_STRING;
 
-			switch (slatin[i])
+			switch (s[i].toAscii())
 			{
 				case 's':
 					++i;
