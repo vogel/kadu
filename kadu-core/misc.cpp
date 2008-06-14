@@ -1137,7 +1137,7 @@ QString narg(const QString &s, const QString **tab, int count)
 		{
 			out.append(QConstString(d - j, j).string());
 			++d;
-			out.append(*(tab[d->digitValue()]));
+			out.append(*(tab[d->digitValue() - 1]));
 			j = 0;
 		}
 		else
