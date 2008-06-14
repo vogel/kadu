@@ -584,7 +584,7 @@ void ChatWidget::selectedUsersNeeded(const UserGroup * &user_group)
 void ChatWidget::sendMessage()
 {
 	kdebugf();
-	if (Edit->inputBox()->text().isEmpty())
+	if (Edit->inputBox()->toPlainText().isEmpty())
 	{
 		kdebugf2();
 		return;
