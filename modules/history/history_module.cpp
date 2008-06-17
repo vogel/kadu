@@ -81,7 +81,8 @@ HistoryModule::HistoryModule()
 	historyActionDescription = new ActionDescription(
 		ActionDescription::TypeUser, "showHistoryAction",
 		this, SLOT(historyActionActivated(QAction *, bool)),
-		"History", tr("Show history")
+		"History", tr("Show history"), false, QString::null,
+		disableEmptyUles
 	);
 
 	ToolBar::addDefaultAction("Kadu toolbar", "showHistoryAction", 4);

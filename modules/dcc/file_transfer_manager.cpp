@@ -49,7 +49,8 @@ FileTransferManager::FileTransferManager(QObject *parent, const char *name) : QO
 	sendFileActionDescription = new ActionDescription(
 		ActionDescription::TypeUser, "sendFileAction",
 		this, SLOT(sendFileDirectoryActionActivated(QAction *, bool)),
-		"SendFile", tr("Send file")
+		"SendFile", tr("Send file"), false, QString::null,
+		disableEmptyUles
 	);
 
 	connect(chat_manager, SIGNAL(chatWidgetCreated(ChatWidget *)), this, SLOT(chatCreated(ChatWidget *)));

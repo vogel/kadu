@@ -74,25 +74,29 @@ ChatManager::ChatManager(QObject *parent)
 	whoisActionDescription = new ActionDescription(
 		ActionDescription::TypeChat, "whoisAction",
 		this, SLOT(whoisActionActivated(QAction *, bool)),
-		"LookupUserInfo", tr("Search this user in directory")
+		"LookupUserInfo", tr("Search this user in directory"), false, QString::null,
+		disableEmptyUles
 	);
 
 	ignoreUserActionDescription = new ActionDescription(
 		ActionDescription::TypeUser, "ignoreUserAction",
 		this, SLOT(ignoreUserActionActivated(QAction *, bool)),
-		"Ignore", tr("Ignore user")
+		"Ignore", tr("Ignore user"), false, QString::null,
+		disableEmptyUles
 	);
 
 	blockUserActionDescription = new ActionDescription(
 		ActionDescription::TypeUser, "blockUserAction",
 		this, SLOT(blockUserActionActivated(QAction *, bool)),
-		"Blocking", tr("Block user")
+		"Blocking", tr("Block user"), false, QString::null,
+		disableEmptyUles
 	);
 
 	chatActionDescription = new ActionDescription(
 		ActionDescription::TypeUser, "chatAction",
 		this, SLOT(chatActionActivated(QAction *, bool)),
-		"OpenChat", tr("&Chat")
+		"OpenChat", tr("&Chat"), false, QString::null,
+		disableEmptyUles
 	);
 
 	openChatWithActionDescription = new ActionDescription(

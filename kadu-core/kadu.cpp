@@ -263,7 +263,8 @@ Kadu::Kadu(QWidget *parent)
 	editUserActionDescription = new ActionDescription(
 		ActionDescription::TypeUser, "editUserAction",
 		this, SLOT(editUserActionActivated(QAction *, bool)),
-		"EditUserInfo", tr("Contact data")
+		"EditUserInfo", tr("Contact data"), false, QString::null,
+		disableEmptyUles
 	);
 
 	addUserActionDescription = new ActionDescription(

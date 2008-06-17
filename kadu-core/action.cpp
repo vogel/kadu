@@ -154,4 +154,9 @@ void Actions::refreshIcons()
 // 		(*action)->refreshIcons();
 }
 
+bool disableEmptyUles(const UserListElements &ules)
+{
+	return !ules.isEmpty();
+}
+
 Actions KaduActions;

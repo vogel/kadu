@@ -122,6 +122,8 @@ signals:
 
 };
 
+bool disableEmptyUles(const UserListElements &ules);
+
 extern Actions KaduActions;
 
 #endif
