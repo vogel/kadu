@@ -450,6 +450,8 @@ private slots:
 	void messageFromUserAdded(UserListElement elem);
 	void messageFromUserDeleted(UserListElement elem);
 
+	void selectionChangedSlot();
+
 protected:
 	virtual void configurationUpdated();
 
@@ -727,6 +729,8 @@ signals:
 		\param user obecnie bie��cy kontakt
 	**/
 	void currentChanged(UserListElement user);
+
+	void userListChanged(const UserListElements &ules);
 
 };
 

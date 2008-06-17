@@ -17,18 +17,21 @@ class ChatWidget;
 class KaduMainWindow;
 class ToolBar;
 class UserBox;
+class UserListElements;
+
+class ActionDescription;
 
 class KaduAction : public QAction
 {
 	Q_OBJECT
+
+	ActionDescription *Description;
 
 	QString OnText;
 	QString OffText;
 
 	QIcon OnIcon;
 	QIcon OffIcon;
-
-	void connectSignalsAndSlots();
 
 private slots:
 	void changedSlot();
@@ -37,12 +40,11 @@ private slots:
 	void triggeredSlot(bool checked);
 
 public:
-	KaduAction(QObject *parent);
-	KaduAction(const QString &text, QObject *parent);
-	KaduAction(const QString &onText, const QString &offText, QObject *parent);
-	KaduAction(const QIcon &icon, const QString &text, QObject *parent);
-	KaduAction(const QIcon &onIcon, const QIcon offIcon, const QString &onText, const QString &offText, QObject *parent);
+	KaduAction(ActionDescription *description, QObject *parent);
 	virtual ~KaduAction();
+
+public slots:
+	void userListChanged(const UserListElements &ules);
 
 signals:
 	void changed(QAction *action);
@@ -56,7 +58,13 @@ class ActionDescription : public QObject
 {
 	Q_OBJECT
 
+	friend class KaduAction;
+
 public:
+
+	// TODO 0.6.7: this sux, but will be better
+	typedef bool (*ActionBoolCallback)(const UserListElements &);
+
 	enum ActionType {
 		TypeGlobal   = 0x0001, //!< actions with TypeGlobal type does not require access to user list or anything window-dependend
 		TypeUser     = 0x0002, //!< actions with TypeUser type requires access to one or more users from user list
@@ -76,14 +84,15 @@ private:
 	QString Text;
 	QString CheckedText;
 	bool Checkable;
+	ActionBoolCallback EnableCallback;
 
 public:
 	ActionDescription(ActionType Type, const QString &Name, QObject *Object, char *Slot,
-		const QString &IconName, const QString &Text, bool Checkable = false, const QString &CheckedText = "");
+		const QString &IconName, const QString &Text, bool Checkable = false, const QString &CheckedText = "", ActionBoolCallback enableCallback = 0);
 	virtual ~ActionDescription();
 
 	QString name() { return Name; }
-	KaduAction *getAction(KaduMainWindow *kaduMainWindow);
+	KaduAction * getAction(KaduMainWindow *kaduMainWindow);
 
 	QString text() { return Text; }
 	QString iconName() { return IconName; }
@@ -104,7 +113,7 @@ public:
 	Actions();
 	virtual ~Actions() {}
 
-	QAction *getAction(const QString &name, KaduMainWindow *kaduMainWindow) const;
+	QAction * getAction(const QString &name, KaduMainWindow *kaduMainWindow) const;
 	void refreshIcons();
 
 signals:

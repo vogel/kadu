@@ -13,6 +13,7 @@
 #include "config_file.h"
 #include "debug.h"
 #include "toolbar.h"
+#include "userbox.h"
 
 #include "kadu_main_window.h"
 
@@ -198,5 +199,7 @@ void KaduMainWindow::addRightToolbar()
 
 void KaduMainWindow::addAction(KaduAction *action)
 {
-	actions.append(action);
+	UserBox *userbox = getUserBox();
+	if (userbox)
+		connect(userbox, SIGNAL(userListChanged(const UserListElements &)), action, SLOT(userListChanged(const UserListElements &)));
 }

@@ -493,6 +493,8 @@ UserBox::UserBox(bool fancy, UserGroup *group, QWidget* parent, const char* name
 
 	setDescriptionsActionState();
 
+	connect(this, SIGNAL(selectionChanged()), this, SLOT(selectionChangedSlot()));
+
 	connect(group, SIGNAL(userAdded(UserListElement, bool, bool)),
 			this, SLOT(userAddedToGroup(UserListElement, bool, bool)));
 	connect(group, SIGNAL(userRemoved(UserListElement, bool, bool)),
@@ -814,6 +816,11 @@ UserListElements UserBox::selectedUsers() const
 			users.append(static_cast<KaduListBoxPixmap *>(item(i))->User);
 	kdebugf2();
 	return users;
+}
+
+void UserBox::selectionChangedSlot()
+{
+	emit userListChanged(selectedUsers());
 }
 
 UserBox* UserBox::activeUserBox()

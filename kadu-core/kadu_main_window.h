@@ -22,9 +22,6 @@ class KaduMainWindow : public QMainWindow
 {
 	Q_OBJECT
 
-	// TODO: is it a good solution?
-	QList<KaduAction *> actions;
-
 	friend class Actions;
 	void addAction(KaduAction *action);
 

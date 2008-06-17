@@ -13,34 +13,35 @@
 
 #include "action.h"
 
-KaduAction::KaduAction(QObject *parent)
-	: QAction(parent)
+KaduAction::KaduAction(ActionDescription *description, QObject *parent)
+	: QAction(parent), Description(description)
 {
-	connectSignalsAndSlots();
-}
+	setText(Description->Text);
 
-KaduAction::KaduAction(const QString &text, QObject *parent)
-	: QAction(text, parent)
-{
-	connectSignalsAndSlots();
-}
+	if (Description->Checkable)
+	{
+		OnText = Description->CheckedText;
+		OffText = Description->Text;
+	}
 
-KaduAction::KaduAction(const QString &onText, const QString &offText, QObject *parent)
-	: QAction(offText, parent), OnText(onText), OffText(offText)
-{
-	connectSignalsAndSlots();
-}
+	if (!Description->IconName.isEmpty())
+	{
+		if (Description->Checkable)
+		{
+			OnIcon = icons_manager->loadIcon(Description->IconName);
+			OffIcon = icons_manager->loadIcon(Description->IconName + "_off");
+			setIcon(OffIcon);
+		}
+		else
+			setIcon(icons_manager->loadIcon(Description->IconName));
+	}
 
-KaduAction::KaduAction(const QIcon &icon, const QString &text, QObject *parent)
-	: QAction(icon, text, parent)
-{
-	connectSignalsAndSlots();
-}
+	setCheckable(Description->Checkable);
 
-KaduAction::KaduAction(const QIcon &onIcon, const QIcon offIcon, const QString &onText, const QString &offText, QObject *parent)
-	: QAction(offIcon, offText, parent), OnText(onText), OffText(offText), OnIcon(onIcon), OffIcon(offIcon)
-{
-	connectSignalsAndSlots();
+	connect(this, SIGNAL(changed()), this, SLOT(changedSlot()));
+	connect(this, SIGNAL(hovered()), this, SLOT(hoveredSlot()));
+	connect(this, SIGNAL(toggled(bool)), this, SLOT(toggledSlot(bool)));
+	connect(this, SIGNAL(triggered(bool)), this, SLOT(triggeredSlot(bool)));
 }
 
 KaduAction::~KaduAction()
@@ -82,17 +83,14 @@ void KaduAction::triggeredSlot(bool checked)
 	emit triggered(this, checked);
 }
 
-void KaduAction::connectSignalsAndSlots()
+void KaduAction::userListChanged(const UserListElements &ules)
 {
-	connect(this, SIGNAL(changed()), this, SLOT(changedSlot()));
-	connect(this, SIGNAL(hovered()), this, SLOT(hoveredSlot()));
-	connect(this, SIGNAL(toggled(bool)), this, SLOT(toggledSlot(bool)));
-	connect(this, SIGNAL(triggered(bool)), this, SLOT(triggeredSlot(bool)));
+	if (Description->EnableCallback)
+		setEnabled((*Description->EnableCallback)(ules));
 }
 
-
 ActionDescription::ActionDescription(ActionType Type, const QString &Name, QObject *Object, char *Slot,
-	const QString &IconName, const QString &Text, bool Checkable, const QString &CheckedText)
+	const QString &IconName, const QString &Text, bool Checkable, const QString &CheckedText, ActionBoolCallback enableCallback)
 {
 	this->Type = Type;
 	this->Name = Name;
@@ -102,6 +100,7 @@ ActionDescription::ActionDescription(ActionType Type, const QString &Name, QObje
 	this->Text = Text;
 	this->Checkable = Checkable;
 	this->CheckedText = CheckedText;
+	this->EnableCallback = enableCallback;
 
 	KaduActions.insert(this);
 }
@@ -113,24 +112,7 @@ ActionDescription::~ActionDescription()
 
 KaduAction * ActionDescription::getAction(KaduMainWindow *kaduMainWindow)
 {
-	KaduAction *result;
-
-	if (Checkable)
-	{
-		if (!IconName.isEmpty())
-			result = new KaduAction(icons_manager->loadIcon(IconName + "_off"), icons_manager->loadIcon(IconName), CheckedText, Text, kaduMainWindow);
-		else
-			result = new KaduAction(CheckedText, Text, kaduMainWindow);
-	}
-	else
-	{
-		if (!IconName.isEmpty())
-			result = new KaduAction(icons_manager->loadIcon(IconName), Text, kaduMainWindow);
-		else
-			result = new KaduAction(Text, kaduMainWindow);
-	}
-
-	result->setCheckable(Checkable);
+	KaduAction *result = new KaduAction(this, kaduMainWindow);
 
 	connect(result, SIGNAL(toggled(QAction *, bool)), Object, Slot);
 	connect(result, SIGNAL(triggered(QAction *, bool)), Object, Slot);
