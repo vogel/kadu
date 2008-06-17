@@ -201,5 +201,8 @@ void KaduMainWindow::addAction(KaduAction *action)
 {
 	UserBox *userbox = getUserBox();
 	if (userbox)
+	{
 		connect(userbox, SIGNAL(userListChanged(const UserListElements &)), action, SLOT(userListChanged(const UserListElements &)));
+		action->userListChanged(userbox->selectedUsers());
+	}
 }
