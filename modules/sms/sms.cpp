@@ -473,8 +473,7 @@ SmsConfigurationUiHandler::SmsConfigurationUiHandler()
 	sendSmsActionDescription = new ActionDescription(
 		ActionDescription::TypeGlobal, "sendSmsAction",
 		this, SLOT(sendSmsActionActivated(QAction *, bool)),
-		"SendSms", tr("Send SMS"), false, QString::null,
-		disableEmptyUles
+		"SendSms", tr("Send SMS"), false
 	);
 
 	kdebugf2();
