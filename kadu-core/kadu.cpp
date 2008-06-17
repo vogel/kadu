@@ -159,6 +159,8 @@ Kadu::Kadu(QWidget *parent)
 
 	QWidget* hbox = new QWidget(split);
 	QHBoxLayout *hbox_layout = new QHBoxLayout;
+	hbox_layout->setMargin(0);
+	hbox_layout->setSpacing(0);
 
 	// groupbar
 	GroupBar = new KaduTabBar(this);
