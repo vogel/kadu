@@ -63,6 +63,9 @@ ChatWidget::ChatWidget(Protocol *initialProtocol, const UserListElements &usrs, 
 
 		QWidget *userlistContainer = new QWidget(horizSplit);
 		QVBoxLayout *uc_layout = new QVBoxLayout(userlistContainer);
+		uc_layout->setMargin(0);
+		uc_layout->setSpacing(0);
+		
 
 		userbox = new UserBox(Edit, false, Users, userlistContainer, "userbox");
 		userbox->setMinimumSize(QSize(30,30));

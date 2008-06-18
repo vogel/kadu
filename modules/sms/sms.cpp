@@ -649,10 +649,12 @@ void SmsConfigurationUiHandler::sendSmsActionActivated(QAction *sender, bool tog
 		UserListElements users = window->getUserListElements();
 
 		if (users.count() == 1 && !users[0].mobile().isEmpty())
+		{
 			newSms(users[0].altNick());
+			return;
+		}
 	}
-	else
-		newSms(QString::null);
+	newSms(QString::null);
 
 	kdebugf2();
 }

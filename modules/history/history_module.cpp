@@ -81,8 +81,7 @@ HistoryModule::HistoryModule()
 	historyActionDescription = new ActionDescription(
 		ActionDescription::TypeUser, "showHistoryAction",
 		this, SLOT(historyActionActivated(QAction *, bool)),
-		"History", tr("Show history"), false, QString::null,
-		disableEmptyUles
+		"History", tr("Show history"), false
 	);
 
 	ToolBar::addDefaultAction("Kadu toolbar", "showHistoryAction", 4);
@@ -151,20 +150,19 @@ void HistoryModule::historyActionActivated(QAction *sender, bool toggled)
 {
 	kdebugf();
 
-	KaduMainWindow *window = dynamic_cast<KaduMainWindow *>(sender->parent());
-	if (!window)
-		return;
-
-	UserListElements users = window->getUserListElements();
-
-	if (users.count() == 0)
-		return;
-
 	UinsList uins;
-	foreach(const UserListElement &user, users)
-		uins.append(user.ID("Gadu").toUInt());
+	KaduMainWindow *window = dynamic_cast<KaduMainWindow *>(sender->parent());
+	if (window)
+	{
+		UserListElements users = window->getUserListElements();
+	
+		if (users.count() > 0)
+			foreach(const UserListElement &user, users)
+				uins.append(user.ID("Gadu").toUInt());
+	}
 	//TODO: throw out UinsList as soon as possible!
 	(new HistoryDialog(uins))->show();
+
 	kdebugf2();
 }
 
