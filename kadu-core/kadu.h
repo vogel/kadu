@@ -105,7 +105,6 @@ private slots:
 	void editUserActionActivated(QAction *sender, bool toggled);
 	void searchInDirectoryActionActivated(QAction *sender, bool toggled);
 
-	void openChat();
 	void messageReceived(Protocol *protocol, UserListElements senders, const QString &msg, time_t time);
 	void createRecentChatsMenu();
 	void openRecentChats(int index);
@@ -252,23 +251,24 @@ public slots:
 	void about();
 	void addUserAction();
 	void blockUser();
-	void copyDescription();
-	void openDescriptionLink();
-	void writeMail();
-	void copyPersonalInfo();
+
+	void writeEMail(QAction *sender, bool toggled);
+	void copyDescription(QAction *sender, bool toggled);
+	void openDescriptionLink(QAction *sender, bool toggled);
+	void copyPersonalInfo(QAction *sender, bool toggled);
+	void lookupInDirectory(QAction *sender, bool toggled);
+
 	void deleteUsers();
 	void help();
 	void hideKadu();
 	void ignoreUser();
 	void importExportUserlist();
-	void lookupInDirectory();
 	void manageIgnored();
 	void notifyUser();
 	void offlineToUser();
 	void hideDescription();
 	void personalInfo();
 	void quit();
-	void showUserInfo();
 	void popupMenu();
 
 	// odczytuje z obrazka tekst i zapisuje go w drugim parametrze

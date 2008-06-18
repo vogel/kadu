@@ -88,9 +88,11 @@ HistoryModule::HistoryModule()
 	ToolBar::addDefaultAction("Kadu toolbar", "showHistoryAction", 4);
 	ToolBar::addDefaultAction("Chat toolbar 1", "showHistoryAction", 3);
 
-	UserBox::userboxmenu->addItemAtPos(5, "History", tr("History"), this, SLOT(viewHistory()), HotKey::shortCutFromFile("ShortCuts", "kadu_viewhistory"));
-	UserBox::management->addItemAtPos(7, "ClearHistory", tr("Clear history"),  this, SLOT(deleteHistory()));
-	connect(UserBox::userboxmenu, SIGNAL(popup()), this, SLOT(userboxMenuPopup()));
+	UserBox::addActionDescription(historyActionDescription);
+
+// 	UserBox::userboxmenu->addItemAtPos(5, "History", tr("History"), this, SLOT(viewHistory()), HotKey::shortCutFromFile("ShortCuts", "kadu_viewhistory"));
+// 	UserBox::management->addItemAtPos(7, "ClearHistory", tr("Clear history"),  this, SLOT(deleteHistory()));
+// 	connect(UserBox::userboxmenu, SIGNAL(popup()), this, SLOT(userboxMenuPopup()));
 
 	kdebugf2();
 }
@@ -99,11 +101,11 @@ HistoryModule::~HistoryModule()
 {
 	kdebugf();
 
-	int history_item = UserBox::userboxmenu->getItem(tr("History"));
-	int delete_history_item = UserBox::management->getItem(tr("Clear history"));
-	UserBox::userboxmenu->removeItem(history_item);
-	UserBox::management->removeItem(delete_history_item);
-	disconnect(UserBox::userboxmenu, SIGNAL(popup()), this, SLOT(userboxMenuPopup()));
+// 	int history_item = UserBox::userboxmenu->getItem(tr("History"));
+// 	int delete_history_item = UserBox::management->getItem(tr("Clear history"));
+// 	UserBox::userboxmenu->removeItem(history_item);
+// 	UserBox::management->removeItem(delete_history_item);
+// 	disconnect(UserBox::userboxmenu, SIGNAL(popup()), this, SLOT(userboxMenuPopup()));
 
 	disconnect(chat_manager, SIGNAL(chatWidgetCreated(ChatWidget *)), this, SLOT(chatCreated(ChatWidget *)));
 	disconnect(chat_manager, SIGNAL(chatWidgetDestroying(ChatWidget *)), this, SLOT(chatDestroying(ChatWidget *)));
@@ -351,8 +353,8 @@ void HistoryModule::userboxMenuPopup()
 		return;
 	}
 
-	int history_item = UserBox::userboxmenu->getItem(tr("History"));
-	int delete_history_item = UserBox::management->getItem(tr("Clear history"));
+// 	int history_item = UserBox::userboxmenu->getItem(tr("History"));
+// 	int delete_history_item = UserBox::management->getItem(tr("Clear history"));
 
 	bool any_ok = false;
 	foreach(const UserListElement &user, users)
@@ -361,8 +363,8 @@ void HistoryModule::userboxMenuPopup()
 			any_ok = true;
 			break;
 		}
-	UserBox::userboxmenu->setItemVisible(history_item, any_ok);
-	UserBox::userboxmenu->setItemVisible(delete_history_item, any_ok);
+// 	UserBox::userboxmenu->setItemVisible(history_item, any_ok);
+// 	UserBox::userboxmenu->setItemVisible(delete_history_item, any_ok);
 
 	kdebugf2();
 }

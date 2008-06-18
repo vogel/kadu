@@ -40,10 +40,10 @@ FileTransferManager::FileTransferManager(QObject *parent, const char *name) : QO
 {
 	kdebugf();
 
-	UserBox::userboxmenu->addItemAtPos(1, "SendFile", tr("Send file"),
-		this, SLOT(sendFile()),
-		HotKey::shortCutFromFile("ShortCuts", "kadu_sendfile"));
-	connect(UserBox::userboxmenu,SIGNAL(popup()), this, SLOT(userboxMenuPopup()));
+// 	UserBox::userboxmenu->addItemAtPos(1, "SendFile", tr("Send file"),
+// 		this, SLOT(sendFile()),
+// 		HotKey::shortCutFromFile("ShortCuts", "kadu_sendfile"));
+// 	connect(UserBox::userboxmenu,SIGNAL(popup()), this, SLOT(userboxMenuPopup()));
 	connect(kadu, SIGNAL(keyPressed(QKeyEvent *)), this, SLOT(kaduKeyPressed(QKeyEvent *)));
 
 	sendFileActionDescription = new ActionDescription(
@@ -52,6 +52,8 @@ FileTransferManager::FileTransferManager(QObject *parent, const char *name) : QO
 		"SendFile", tr("Send file"), false, QString::null,
 		disableEmptyUles
 	);
+
+	UserBox::addActionDescription(sendFileActionDescription);
 
 	connect(chat_manager, SIGNAL(chatWidgetCreated(ChatWidget *)), this, SLOT(chatCreated(ChatWidget *)));
 	connect(chat_manager, SIGNAL(chatWidgetDestroying(ChatWidget *)), this, SLOT(chatDestroying(ChatWidget*)));
@@ -83,9 +85,9 @@ FileTransferManager::~FileTransferManager()
  	notification_manager->unregisterEvent("FileTransfer/IncomingFile");
 	notification_manager->unregisterEvent("FileTransfer/Finished");
 
-	int sendfile = UserBox::userboxmenu->getItem(tr("Send file"));
-	UserBox::userboxmenu->removeItem(sendfile);
-	disconnect(UserBox::userboxmenu,SIGNAL(popup()), this, SLOT(userboxMenuPopup()));
+// 	int sendfile = UserBox::userboxmenu->getItem(tr("Send file"));
+// 	UserBox::userboxmenu->removeItem(sendfile);
+// 	disconnect(UserBox::userboxmenu,SIGNAL(popup()), this, SLOT(userboxMenuPopup()));
 	disconnect(kadu, SIGNAL(keyPressed(QKeyEvent*)), this, SLOT(kaduKeyPressed(QKeyEvent*)));
 
 	delete sendFileActionDescription;
@@ -249,7 +251,7 @@ void FileTransferManager::userboxMenuPopup()
 		return;
 	}
 
-	int sendfile = UserBox::userboxmenu->getItem(tr("Send file"));
+// 	int sendfile = UserBox::userboxmenu->getItem(tr("Send file"));
 	bool dccEnabled = config_file.readBoolEntry("Network", "AllowDCC");
 	bool dccKeyEnabled = true;
 
@@ -266,7 +268,7 @@ void FileTransferManager::userboxMenuPopup()
 			}
 	}
 
-	UserBox::userboxmenu->setItemVisible(sendfile, dccKeyEnabled && dccEnabled);
+// 	UserBox::userboxmenu->setItemVisible(sendfile, dccKeyEnabled && dccEnabled);
 	kdebugf2();
 }
 

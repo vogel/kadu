@@ -10,6 +10,7 @@
 #include <QApplication>
 #include <QDragEnterEvent>
 #include <QInputDialog>
+#include <QMenu>
 
 #include "debug.h"
 #include "groups_manager.h"

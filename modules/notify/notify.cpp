@@ -18,6 +18,7 @@
 #include "configuration_window_widgets.h"
 #include "connection_error_notification.h"
 #include "debug.h"
+#include "gadu.h"
 #include "kadu.h"
 #include "misc.h"
 #include "new_message_notification.h"

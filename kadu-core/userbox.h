@@ -1,31 +1,29 @@
+/***************************************************************************
+ *                                                                         *
+ *   This program is free software; you can redistribute it and/or modify  *
+ *   it under the terms of the GNU General Public License as published by  *
+ *   the Free Software Foundation; either version 2 of the License, or     *
+ *   (at your option) any later version.                                   *
+ *                                                                         *
+ ***************************************************************************/
+
 #ifndef KADU_USERBOX_H
 #define KADU_USERBOX_H
 
+#include <Q3ListBoxItem>
 #include <QDrag>
-
-#include <q3listbox.h>
-#include <qpixmap.h>
-#include <q3popupmenu.h>
-#include <qtimer.h>
-//Added by qt3to4:
-#include <QWheelEvent>
-#include <QResizeEvent>
-#include <QList>
-#include <QMouseEvent>
-#include <QKeyEvent>
-#include <QEvent>
-
-#include <vector>
+#include <QTimer>
 
 #include "configuration_aware_object.h"
-#include "gadu.h"
 #include "misc.h"
-#include "userlistelement.h"
+#include "protocol.h"
+#include "userlist.h"
 
 class QFontMetrics;
-class ULEComparer;
 
 class ActionDescription;
+class KaduMainWindow;
+class ULEComparer;
 
 class UlesDrag : public QDrag
 {
@@ -286,42 +284,42 @@ public:
 	\class UserBoxMenu
 	\brief Menu podr�czne listy kontakt�w.
 **/
-class UserBoxMenu : public Q3PopupMenu
-{
-	Q_OBJECT
-
-	public:
-		typedef QPair<QString, QString> IconName;
-
-	private:
-		QList<IconName> iconNames;
-
-	private slots:
-		void restoreLook();
-
-	public:
+// class UserBoxMenu : public Q3PopupMenu
+// {
+// 	Q_OBJECT
+// 
+// 	public:
+// 		typedef QPair<QString, QString> IconName;
+// 
+// 	private:
+// 		QList<IconName> iconNames;
+// 
+// 	private slots:
+// 		void restoreLook();
+// 
+// 	public:
 		/**
 			\fn UserBoxMenu(QWidget *parent=0, const char* name=0)
 			Standardowy konstruktor.
 			\param parent wska�nik na obiekt kontrolki-rodzica.
 			\param name nazwa kontrolki.
 		**/
-		UserBoxMenu(QWidget *parent=0, const char* name=0);
+// 		UserBoxMenu(QWidget *parent=0, const char* name=0);
 
 		/**
 			\fn int getItem(const QString &caption) const
 			Zwraca unikaln� liczb� identyfikuj�c� element menu z podanym napisem.
 			\param caption napis elementu.
 		**/
-		int getItem(const QString &caption) const;
-
-	public slots:
+// 		int getItem(const QString &caption) const;
+// 
+// 	public slots:
 		/**
 			\fn void show(QListBoxItem *item)
 			Pokazuje menu dla podanego kontaktu.
 			\param item element wy�wietlanej listy kontakt�w reprezentuj�cy rz�dany kontakt.
 		**/
-		void show(Q3ListBoxItem *item);
+// 		void show(Q3ListBoxItem *item);
 
 		/**
 			\fn int addItem(const QString &text, const QObject* receiver, const char* member, const QKeySequence accel= 0, int id= -1)
@@ -332,7 +330,7 @@ class UserBoxMenu : public Q3PopupMenu
 			\param accel skr�t klawiaturowy dla tego elementu. Domy�lnie brak.
 			\param id Unikatowa liczba identyfikuj�ca nowy element. Domy�lnie pierwsza wolna.
 		**/
-		int addItem(const QString &text, const QObject* receiver, const char* member, const QKeySequence accel= 0, int id= -1);
+// 		int addItem(const QString &text, const QObject* receiver, const char* member, const QKeySequence accel= 0, int id= -1);
 
 		/**
 			\fn int addItem(const QString &iconname, const QString &text, const QObject* receiver, const char* member, const QKeySequence accel= 0, int id= -1)
@@ -344,7 +342,7 @@ class UserBoxMenu : public Q3PopupMenu
 			\param accel skr�t klawiaturowy dla tego elementu. Domy�lnie brak.
 			\param id Unikatowa liczba identyfikuj�ca nowy element. Domy�lnie pierwsza wolna.
 		**/
-		int addItem(const QString &iconname, const QString &text, const QObject* receiver, const char* member, const QKeySequence accel= 0, int id= -1);
+// 		int addItem(const QString &iconname, const QString &text, const QObject* receiver, const char* member, const QKeySequence accel= 0, int id= -1);
 
 		/**
 			\fn int addItemAtPos(int index, const QString &text, const QObject* receiver, const char* member, const QKeySequence accel= 0, int id= -1)
@@ -356,7 +354,7 @@ class UserBoxMenu : public Q3PopupMenu
 			\param accel skr�t klawiaturowy dla tego elementu. Domy�lnie brak.
 			\param id Unikatowa liczba identyfikuj�ca nowy element. Domy�lnie pierwsza wolna.
 		**/
-		int addItemAtPos(int index, const QString &text, const QObject* receiver, const char* member, const QKeySequence accel= 0, int id= -1);
+// 		int addItemAtPos(int index, const QString &text, const QObject* receiver, const char* member, const QKeySequence accel= 0, int id= -1);
 
 		/**
 			\fn int addItemAtPos(int index,const QString &iconname, const QString &text, const QObject* receiver, const char* member, const QKeySequence accel= 0, int id= -1)
@@ -369,20 +367,20 @@ class UserBoxMenu : public Q3PopupMenu
 			\param accel skr�t klawiaturowy dla tego elementu. Domy�lnie brak.
 			\param id Unikatowa liczba identyfikuj�ca nowy element. Domy�lnie pierwsza wolna.
 		**/
-		int addItemAtPos(int index,const QString &iconname, const QString &text, const QObject* receiver, const char* member, const QKeySequence accel= 0, int id= -1);
+// 		int addItemAtPos(int index,const QString &iconname, const QString &text, const QObject* receiver, const char* member, const QKeySequence accel= 0, int id= -1);
 
 		/**
 			\fn void refreshIcons()
 			Prze�adowuje wszystkie ikony w tym menu dodane przy pomocy powy�szych funkcji
 		**/
-		void refreshIcons();
-	signals:
+// 		void refreshIcons();
+// 	signals:
 		/**
 			\fn void popup()
 			Sygna� emitowany, gdy menu jest wywo�ywane.
 		**/
-		void popup();
-};
+// 		void popup();
+// };
 
 
 /**
@@ -394,7 +392,12 @@ class UserBox : public Q3ListBox, ConfigurationAwareObject
 {
 	Q_OBJECT
 
+	static QList<ActionDescription *> UserBoxActions;
+	static QList<ActionDescription *> ManagementActions;
+
 	friend class Kadu;
+
+	KaduMainWindow *mainWindow; // TODO: !!!HACK!!!
 
 	static QList<UserBox*> UserBoxes;
 	bool fancy;
@@ -489,6 +492,8 @@ protected:
 	**/
 	virtual void resizeEvent(QResizeEvent *);
 
+	virtual void contextMenuEvent(QContextMenuEvent *event);
+
 public:
 	/**
 		\fn UserBox(UserGroup *group = userlist, QWidget* parent = 0, const char* name = 0, WFlags f = 0)
@@ -498,21 +503,25 @@ public:
 		\param name nazwa kontrolki. Domy�lnie 0.
 		\param f flagi kontrolki. Domy�lnie 0.
 	**/
-	UserBox(bool fancy, UserGroup *group = userlist, QWidget* parent = 0, const char* name = 0, Qt::WFlags f = 0);
+	UserBox(KaduMainWindow *mainWindow, bool fancy, UserGroup *group = userlist, QWidget* parent = 0, const char* name = 0, Qt::WFlags f = 0);
 
 	virtual ~UserBox();
+
+	static void addActionDescription(ActionDescription *actionDescription);
+	static void addSeparator();
+	static void addManagementActionDescription(ActionDescription *actionDescription);
 
 	/**
 		\var static UserBoxMenu *userboxmenu
 		Wska�nik do menu kontekstowego listy kontakt�w.
 	**/
-	static UserBoxMenu *userboxmenu;
+// 	static UserBoxMenu *userboxmenu;
 
 	/**
 		\var static UserBoxMenu *management
 		Wska�nik do menu zarz�dzania kontaktami.
 	**/
-	static UserBoxMenu *management;
+// 	static UserBoxMenu *management;
 
 	static void setColorsOrBackgrounds();
 

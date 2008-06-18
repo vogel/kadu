@@ -16,6 +16,7 @@
 #include "config_file.h"
 #include "configuration_window_widgets.h"
 #include "debug.h"
+#include "gadu.h"
 #include "icons_manager.h"
 #include "kadu.h"
 #include "userlistelement.h"

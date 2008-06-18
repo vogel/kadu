@@ -111,11 +111,11 @@ void Kadu::keyPressEvent(QKeyEvent *e)
 	}
 	else if (HotKey::shortCut(e,"ShortCuts", "kadu_persinfo"))
 	{
-		if (Userbox->selectedUsers().count() == 1)
-			showUserInfo();
+// 		if (Userbox->selectedUsers().count() == 1)
+// 			showUserInfo();
 	}
-	else if (HotKey::shortCut(e,"ShortCuts", "kadu_searchuser"))
-		lookupInDirectory();
+// 	else if (HotKey::shortCut(e,"ShortCuts", "kadu_searchuser"))
+// 		lookupInDirectory();
 //	else if (HotKey::shortCut(e,"ShortCuts", "kadu_showoffline"))
 //		groups_manager->changeDisplayingOffline();
 // 	else if (HotKey::shortCut(e,"ShortCuts", "kadu_showonlydesc"))
@@ -184,42 +184,71 @@ Kadu::Kadu(QWidget *parent)
 
 	// userbox
 	UserBox::initModule();
-	Userbox = new UserBox(true, userlist, this, "userbox");
+	Userbox = new UserBox(this, true, userlist, this, "userbox");
 
 	hbox_layout->setStretchFactor(Userbox, 100);
 	hbox_layout->addWidget(GroupBar);
 	hbox_layout->addWidget(Userbox);
 	hbox_layout->setAlignment(GroupBar, Qt::AlignTop);
 	hbox->setLayout(hbox_layout);
-	connect(UserBox::userboxmenu, SIGNAL(popup()), this, SLOT(popupMenu()));
-	connect(Userbox, SIGNAL(rightButtonPressed(Q3ListBoxItem *, const QPoint &)),
-		UserBox::userboxmenu, SLOT(show(Q3ListBoxItem *)));
-	connect(UserBox::management, SIGNAL(aboutToShow()), this, SLOT(popupMenu()));
+// 	connect(UserBox::userboxmenu, SIGNAL(popup()), this, SLOT(popupMenu()));
+// 	connect(Userbox, SIGNAL(rightButtonPressed(Q3ListBoxItem *, const QPoint &)),
+// 		UserBox::userboxmenu, SLOT(show(Q3ListBoxItem *)));
+// 	connect(UserBox::management, SIGNAL(aboutToShow()), this, SLOT(popupMenu()));
 	connect(Userbox, SIGNAL(doubleClicked(UserListElement)), this, SLOT(sendMessage(UserListElement)));
 	connect(Userbox, SIGNAL(returnPressed(UserListElement)), this, SLOT(sendMessage(UserListElement)));
 	connect(Userbox, SIGNAL(mouseButtonClicked(int, Q3ListBoxItem *, const QPoint &)),
 		this, SLOT(mouseButtonClicked(int, Q3ListBoxItem *)));
 	connect(Userbox, SIGNAL(currentChanged(UserListElement)), this, SLOT(currentChanged(UserListElement)));
 
-	UserBox::userboxmenu->addItem("OpenChat", tr("Open chat window") ,this, SLOT(openChat()));
-	UserBox::userboxmenu->insertSeparator();
-	UserBox::userboxmenu->addItem("WriteEmail", tr("Write email message"), this, SLOT(writeMail()));
-	UserBox::userboxmenu->addItem("CopyDescription", tr("Copy description"), this, SLOT(copyDescription()));
-	UserBox::userboxmenu->addItem("OpenDescriptionLink", tr("Open description link in browser"), this, SLOT(openDescriptionLink()));
-	UserBox::userboxmenu->addItem("CopyPersonalInfo", tr("Copy personal info"), this, SLOT(copyPersonalInfo()));
-	UserBox::userboxmenu->addItem("LookupUserInfo", tr("Search in directory"), this, SLOT(lookupInDirectory()), HotKey::shortCutFromFile("ShortCuts", "kadu_searchuser"));
-	UserBox::userboxmenu->addItem("EditUserInfo", tr("Contact data"), this, SLOT(showUserInfo()), HotKey::shortCutFromFile("ShortCuts", "kadu_persinfo"));
-	UserBox::userboxmenu->insertSeparator();
+	ActionDescription *writeEmailActionDescription = new ActionDescription(
+		ActionDescription::TypeUser, "writeEmailAction",
+		this, SLOT(writeEMail(QAction *, bool)),
+		"WriteEmail", tr("Write email message")
+	);
+	UserBox::addActionDescription(writeEmailActionDescription);
 
-	UserBox::management->addItem("Ignore", tr("Ignore"), this, SLOT(ignoreUser()));
-	UserBox::management->addItem("Blocking", tr("Block"), this, SLOT(blockUser()));
-	UserBox::management->addItem("NotifyAboutUser", tr("Notify about user"), this, SLOT(notifyUser()));
-	UserBox::management->addItem("Offline", tr("Offline to user"), this, SLOT(offlineToUser()));
-	UserBox::management->addItem("ShowDescription_off", tr("Hide description"), this, SLOT(hideDescription()));
-	UserBox::management->insertSeparator();
-	UserBox::management->addItem("RemoveFromUserlist", tr("Delete"), this, SLOT(deleteUsers()),HotKey::shortCutFromFile("ShortCuts", "kadu_deleteuser"));
+	ActionDescription *copyDescriptionActionDescription = new ActionDescription(
+		ActionDescription::TypeUser, "copyDescriptionAction",
+		this, SLOT(copyDescription(QAction *, bool)),
+		"CopyDescription", tr("Copy description")
+	);
+	UserBox::addActionDescription(copyDescriptionActionDescription);
 
-	UserBox::userboxmenu->insertItem(tr("User management"), UserBox::management);
+	ActionDescription *openDescriptionLinkActionDescription = new ActionDescription(
+		ActionDescription::TypeUser, "openDescriptionLinkAction",
+		this, SLOT(openDescriptionLink(QAction *, bool)),
+		"OpenDescriptionLink", tr("Open description link in browser")
+	);
+	UserBox::addActionDescription(openDescriptionLinkActionDescription);
+
+	ActionDescription *copyPersonalInfoActionDescription = new ActionDescription(
+		ActionDescription::TypeUser, "copyPersonalInfoAction",
+		this, SLOT(copyPersonalInfo(QAction *, bool)),
+		"CopyPersonalInfo", tr("Copy personal info")
+	);
+	UserBox::addActionDescription(copyPersonalInfoActionDescription);
+
+	ActionDescription *lookupUserInfoActionDescription = new ActionDescription(
+		ActionDescription::TypeUser, "lookupUserInfoAction",
+		this, SLOT(lookupInDirectory(QAction *, bool)),
+		"LookupUserInfo", tr("Search in directory")
+	);
+	UserBox::addActionDescription(lookupUserInfoActionDescription); // HotKey::shortCutFromFile("ShortCuts", "kadu_searchuser")
+
+	UserBox::addActionDescription(editUserActionDescription); // HotKey::shortCutFromFile("ShortCuts", "kadu_persinfo")
+
+	UserBox::addSeparator();
+
+// 	UserBox::management->addItem("Ignore", tr("Ignore"), this, SLOT(ignoreUser()));
+// 	UserBox::management->addItem("Blocking", tr("Block"), this, SLOT(blockUser()));
+// 	UserBox::management->addItem("NotifyAboutUser", tr("Notify about user"), this, SLOT(notifyUser()));
+// 	UserBox::management->addItem("Offline", tr("Offline to user"), this, SLOT(offlineToUser()));
+// 	UserBox::management->addItem("ShowDescription_off", tr("Hide description"), this, SLOT(hideDescription()));
+// 	UserBox::management->insertSeparator();
+// 	UserBox::management->addItem("RemoveFromUserlist", tr("Delete"), this, SLOT(deleteUsers()),HotKey::shortCutFromFile("ShortCuts", "kadu_deleteuser"));
+
+// 	UserBox::userboxmenu->insertItem(tr("User management"), UserBox::management);
 
 	groups_manager->setTabBar(GroupBar);
 	setDocked(Docked, dontHideOnClose);
@@ -413,27 +442,27 @@ void Kadu::popupMenu()
 			containsMe = true;
 	}
 
-	int ignoreuseritem = UserBox::management->getItem(tr("Ignore"));
-	int blockuseritem = UserBox::management->getItem(tr("Block"));
-	int notifyuseritem = UserBox::management->getItem(tr("Notify about user"));
-	int offlinetouseritem = UserBox::management->getItem(tr("Offline to user"));
-	int hidedescriptionitem = UserBox::management->getItem(tr("Hide description"));
-	int chatitem = UserBox::userboxmenu->getItem(tr("Open chat window"));
+// 	int ignoreuseritem = UserBox::management->getItem(tr("Ignore"));
+// 	int blockuseritem = UserBox::management->getItem(tr("Block"));
+// 	int notifyuseritem = UserBox::management->getItem(tr("Notify about user"));
+// 	int offlinetouseritem = UserBox::management->getItem(tr("Offline to user"));
+// 	int hidedescriptionitem = UserBox::management->getItem(tr("Hide description"));
+// 	int chatitem = UserBox::userboxmenu->getItem(tr("Open chat window"));
 
 	if (containsUserWithoutID)
 	{
-		UserBox::management->setItemVisible(ignoreuseritem, false);
-		UserBox::management->setItemVisible(blockuseritem, false);
-		UserBox::management->setItemVisible(notifyuseritem, false);
-		UserBox::management->setItemVisible(offlinetouseritem, false);
-		UserBox::management->setItemVisible(hidedescriptionitem, false);
-		UserBox::userboxmenu->setItemVisible(chatitem, false);
+// 		UserBox::management->setItemVisible(ignoreuseritem, false);
+// 		UserBox::management->setItemVisible(blockuseritem, false);
+// 		UserBox::management->setItemVisible(notifyuseritem, false);
+// 		UserBox::management->setItemVisible(offlinetouseritem, false);
+// 		UserBox::management->setItemVisible(hidedescriptionitem, false);
+// 		UserBox::userboxmenu->setItemVisible(chatitem, false);
 	}
 	else
 	{
 		bool on;
 		UserListElements selectedUsers = activeUserBox->selectedUsers();
-		UserBox::management->setItemChecked(ignoreuseritem, IgnoredManager::isIgnored(selectedUsers));
+// 		UserBox::management->setItemChecked(ignoreuseritem, IgnoredManager::isIgnored(selectedUsers));
 
 		on = true;
 		foreach(const UserListElement &user, users)
@@ -442,7 +471,7 @@ void Kadu::popupMenu()
 				on = false;
 				break;
 			}
-		UserBox::management->setItemChecked(blockuseritem, on);
+// 		UserBox::management->setItemChecked(blockuseritem, on);
 
 		on = true;
 		foreach(const UserListElement &user, users)
@@ -451,8 +480,8 @@ void Kadu::popupMenu()
 				on = false;
 				break;
 			}
-		UserBox::management->setItemVisible(offlinetouseritem, config_file.readBoolEntry("General", "PrivateStatus"));
-		UserBox::management->setItemChecked(offlinetouseritem, on);
+// 		UserBox::management->setItemVisible(offlinetouseritem, config_file.readBoolEntry("General", "PrivateStatus"));
+// 		UserBox::management->setItemChecked(offlinetouseritem, on);
 
 		on = false;
 		foreach(const UserListElement &user, users)
@@ -461,7 +490,7 @@ void Kadu::popupMenu()
 				on = true;
 				break;
 			}
-		UserBox::management->setItemChecked(hidedescriptionitem, on);
+// 		UserBox::management->setItemChecked(hidedescriptionitem, on);
 
 		on = true;
 		foreach(const UserListElement &user, users)
@@ -470,29 +499,29 @@ void Kadu::popupMenu()
 				on = false;
 				break;
 			}
-		UserBox::management->setItemVisible(notifyuseritem, !config_file.readBoolEntry("Notify", "NotifyAboutAll"));
-		UserBox::management->setItemChecked(notifyuseritem, on);
+// 		UserBox::management->setItemVisible(notifyuseritem, !config_file.readBoolEntry("Notify", "NotifyAboutAll"));
+// 		UserBox::management->setItemChecked(notifyuseritem, on);
 
 		if (containsMe)
 		{
-			UserBox::management->setItemVisible(ignoreuseritem, false);
-			UserBox::management->setItemVisible(blockuseritem, false);
-			UserBox::management->setItemVisible(offlinetouseritem, false);
-			UserBox::userboxmenu->setItemVisible(chatitem, false);
+// 			UserBox::management->setItemVisible(ignoreuseritem, false);
+// 			UserBox::management->setItemVisible(blockuseritem, false);
+// 			UserBox::management->setItemVisible(offlinetouseritem, false);
+// 			UserBox::userboxmenu->setItemVisible(chatitem, false);
 		}
 	}
 
-	if (users.count() != 1)
-		UserBox::userboxmenu->setItemVisible(UserBox::userboxmenu->getItem(tr("Contact data")), false);
-	if ((users.count() != 1) || !firstUser.usesProtocol("Gadu"))
-		UserBox::userboxmenu->setItemVisible(UserBox::userboxmenu->getItem(tr("Search in directory")), false);
-	if ((users.count() != 1) || !firstUser.usesProtocol("Gadu") || firstUser.status("Gadu").description().isEmpty())
-		UserBox::userboxmenu->setItemVisible(UserBox::userboxmenu->getItem(tr("Copy description")), false);
-	if ((users.count() != 1) || !firstUser.usesProtocol("Gadu") || firstUser.status("Gadu").description().isEmpty() ||
-		firstUser.status("Gadu").description().find(HtmlDocument::urlRegExp()) == -1)
-		UserBox::userboxmenu->setItemVisible(UserBox::userboxmenu->getItem(tr("Open description link in browser")), false);
-	if ((users.count() != 1) || firstUser.email().isEmpty() || firstUser.email().find(HtmlDocument::mailRegExp()) == -1)
-		UserBox::userboxmenu->setItemVisible(UserBox::userboxmenu->getItem(tr("Write email message")), false);
+// 	if (users.count() != 1)
+// 		UserBox::userboxmenu->setItemVisible(UserBox::userboxmenu->getItem(tr("Contact data")), false);
+// 	if ((users.count() != 1) || !firstUser.usesProtocol("Gadu"))
+// 		UserBox::userboxmenu->setItemVisible(UserBox::userboxmenu->getItem(tr("Search in directory")), false);
+// 	if ((users.count() != 1) || !firstUser.usesProtocol("Gadu") || firstUser.status("Gadu").description().isEmpty())
+// 		UserBox::userboxmenu->setItemVisible(UserBox::userboxmenu->getItem(tr("Copy description")), false);
+// 	if ((users.count() != 1) || !firstUser.usesProtocol("Gadu") || firstUser.status("Gadu").description().isEmpty() ||
+// 		firstUser.status("Gadu").description().find(HtmlDocument::urlRegExp()) == -1)
+// 		UserBox::userboxmenu->setItemVisible(UserBox::userboxmenu->getItem(tr("Open description link in browser")), false);
+// 	if ((users.count() != 1) || firstUser.email().isEmpty() || firstUser.email().find(HtmlDocument::mailRegExp()) == -1)
+// 		UserBox::userboxmenu->setItemVisible(UserBox::userboxmenu->getItem(tr("Write email message")), false);
 	kdebugf2();
 }
 
@@ -501,97 +530,128 @@ void Kadu::configure()
 	configurationActionActivated(0, false);
 }
 
-void Kadu::copyDescription()
+void Kadu::writeEMail(QAction *sender, bool toggled)
 {
 	kdebugf();
-	UserBox *activeUserBox = UserBox::activeUserBox();
-	if (activeUserBox == NULL)
-	{
-		kdebugf2();
+
+	KaduMainWindow *window = dynamic_cast<KaduMainWindow *>(sender->parent());
+	if (!window)
 		return;
-	}
 
-	UserListElement user = activeUserBox->selectedUsers().first();
-	QString status;
-	if (user.usesProtocol("Gadu"))
-		status = user.status("Gadu").description();
-	if (!status.isEmpty())
-	{
-		QClipboard *clipboard = QApplication::clipboard();
-
-		clipboard->setText(status, QClipboard::Clipboard);
-		clipboard->setText(status, QClipboard::Selection);
-	}
-	kdebugf2();
-}
-
-void Kadu::openDescriptionLink()
-{
-	kdebugf();
-	UserBox *activeUserBox = UserBox::activeUserBox();
-	if (activeUserBox == NULL)
-	{
-		kdebugf2();
+	UserListElements users = window->getUserListElements();
+	if (users.count() < 1)
 		return;
-	}
 
-	UserListElement user = activeUserBox->selectedUsers().first();
-
-	if (user.usesProtocol("Gadu"))
-	{
-		QString status = user.status("Gadu").description();
-		if (!status.isEmpty())
-		{
-			QRegExp url = HtmlDocument::urlRegExp();
-			int idx_start = url.search(status);
-			if (idx_start >= 0)
-				openWebBrowser(status.mid(idx_start, url.matchedLength()));
-		}
-	}
-
-	kdebugf2();
-}
-
-void Kadu::writeMail()
-{
-	kdebugf();
-	UserBox *activeUserBox = UserBox::activeUserBox();
-	if (!activeUserBox)
-	{
-		kdebugf2();
-		return;
-	}
-
-	UserListElement user = activeUserBox->selectedUsers().first();
+	UserListElement user = users[0];
 	if (!user.email().isEmpty())
 		openMailClient(user.email());
+
 	kdebugf2();
 }
 
-void Kadu::copyPersonalInfo()
+void Kadu::copyDescription(QAction *sender, bool toggled)
 {
 	kdebugf();
-	UserBox *activeUserBox = UserBox::activeUserBox();
-	if (activeUserBox == NULL)
-	{
-		kdebugf2();
-		return;
-	}
 
-	UserListElements users = activeUserBox->selectedUsers();
+	KaduMainWindow *window = dynamic_cast<KaduMainWindow *>(sender->parent());
+	if (!window)
+		return;
+
+	UserListElements users = window->getUserListElements();
+	if (users.count() < 1)
+		return;
+
+	UserListElement user = users[0];
+	if (!user.usesProtocol("Gadu"))
+		return;
+
+	QString status = user.status("Gadu").description();
+	if (status.isEmpty())
+		return
+
+	QApplication::clipboard()->setText(status, QClipboard::Clipboard);
+	QApplication::clipboard()->setText(status, QClipboard::Selection);
+
+	kdebugf2();
+}
+
+void Kadu::openDescriptionLink(QAction *sender, bool toggled)
+{
+	kdebugf();
+
+	KaduMainWindow *window = dynamic_cast<KaduMainWindow *>(sender->parent());
+	if (!window)
+		return;
+
+	UserListElements users = window->getUserListElements();
+	if (users.count() < 1)
+		return;
+
+	UserListElement user = users[0];
+	if (!user.usesProtocol("Gadu"))
+		return;
+
+	QString status = user.status("Gadu").description();
+	if (status.isEmpty())
+		return;
+
+	QRegExp url = HtmlDocument::urlRegExp();
+	int idx_start = url.search(status);
+	if (idx_start >= 0)
+		openWebBrowser(status.mid(idx_start, url.matchedLength()));
+
+	kdebugf2();
+}
+
+void Kadu::copyPersonalInfo(QAction *sender, bool toggled)
+{
+	kdebugf();
+
+	KaduMainWindow *window = dynamic_cast<KaduMainWindow *>(sender->parent());
+	if (!window)
+		return;
+
+	UserListElements users = window->getUserListElements();
+
 	QStringList infoList;
 	QString copyPersonalDataSyntax = config_file.readEntry("General", "CopyPersonalDataSyntax", tr("Contact: %a[ (%u)]\n[First name: %f\n][Last name: %r\n][Mobile: %m\n]"));
 	foreach(const UserListElement &user, users)
 		infoList.append(KaduParser::parse(copyPersonalDataSyntax, user, false));
 
 	QString info = infoList.join("\n");
-	if (!info.isEmpty())
-	{
-		QClipboard *clipboard = QApplication::clipboard();
+	if (info.isEmpty())
+		return;
 
-		clipboard->setText(info, QClipboard::Clipboard);
-		clipboard->setText(info, QClipboard::Selection);
+	QApplication::clipboard()->setText(info, QClipboard::Clipboard);
+	QApplication::clipboard()->setText(info, QClipboard::Selection);
+
+	kdebugf2();
+}
+
+void Kadu::lookupInDirectory(QAction *sender, bool toggled)
+{
+	kdebugf();
+
+	KaduMainWindow *window = dynamic_cast<KaduMainWindow *>(sender->parent());
+	if (!window)
+		return;
+
+	UserListElements users = window->getUserListElements();
+
+	if (users.count() != 1)
+	{
+		searchInDirectoryActionActivated(0, false);
+		return;
 	}
+
+	UserListElement user = *(users.constBegin());
+	if (!user.usesProtocol("Gadu"))
+		return;
+
+	SearchDialog *sd = new SearchDialog(kadu, user.ID("Gadu").toUInt());
+	sd->show();
+	sd->firstSearch();
+
 	kdebugf2();
 }
 
@@ -600,34 +660,6 @@ void Kadu::openRecentChats(int index)
 	kdebugf();
 
 	chat_manager->openPendingMsgs(chat_manager->closedChatUsers().at(index));
-
-	kdebugf2();
-}
-
-void Kadu::lookupInDirectory()
-{
-	kdebugf();
-
-	UserBox *activeUserBox = UserBox::activeUserBox();
-	if (activeUserBox == NULL)
-	{
-		kdebugf2();
-		return;
-	}
-
-	UserListElements users = activeUserBox->selectedUsers();
-	if (users.count() == 1)
-	{
-		UserListElement user = *(users.constBegin());
-		if (user.usesProtocol("Gadu"))
-		{
-			SearchDialog *sd = new SearchDialog(kadu, user.ID("Gadu").toUInt());
-			sd->show();
-			sd->firstSearch();
-		}
-	}
-	else
-		searchInDirectoryActionActivated(0, false);
 
 	kdebugf2();
 }
@@ -754,13 +786,6 @@ void Kadu::openChatWith()
 	kdebugf2();
 }
 
-void Kadu::showUserInfo()
-{
-	kdebugf();
-	KaduActions.getAction("editUserAction", this)->activate(QAction::Trigger);
-	kdebugf2();
-}
-
 void Kadu::deleteUsers()
 {
 	kdebugf();
@@ -791,21 +816,6 @@ void Kadu::addUserAction()
 void Kadu::manageIgnored()
 {
 	(new Ignored(kadu, "ignored"))->show();
-}
-
-void Kadu::openChat()
-{
-	kdebugf();
-
-	UserBox *activeUserBox = UserBox::activeUserBox();
-	if (activeUserBox == NULL)
-	{
-		kdebugf2();
-		return;
-	}
-	sendMessage(activeUserBox->selectedUsers()[0]);
-
-	kdebugf2();
 }
 
 //void Kadu::showStatusActionActivated()
@@ -1397,9 +1407,9 @@ bool Kadu::close(bool quit)
 		disconnect(&(gadu->currentStatus()), SIGNAL(goOffline(const QString &)),
 				this, SLOT(wentOffline(const QString &)));
 
-		disconnect(UserBox::userboxmenu, SIGNAL(popup()), this, SLOT(popupMenu()));
-		disconnect(Userbox, SIGNAL(rightButtonPressed(Q3ListBoxItem *, const QPoint &)),
-					UserBox::userboxmenu, SLOT(show(Q3ListBoxItem *)));
+// 		disconnect(UserBox::userboxmenu, SIGNAL(popup()), this, SLOT(/*/*popupMenu*/*/()));
+// 		disconnect(Userbox, SIGNAL(rightButtonPressed(Q3ListBoxItem *, const QPoint &)),
+// 					UserBox::userboxmenu, SLOT(show(Q3ListBoxItem *)));
 		disconnect(Userbox, SIGNAL(doubleClicked(UserListElement)), this, SLOT(sendMessage(UserListElement)));
 		disconnect(Userbox, SIGNAL(returnPressed(UserListElement)), this, SLOT(sendMessage(UserListElement)));
 		disconnect(Userbox, SIGNAL(mouseButtonClicked(int, Q3ListBoxItem *, const QPoint &)),

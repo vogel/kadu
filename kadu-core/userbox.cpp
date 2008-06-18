@@ -469,12 +469,15 @@ inline bool ULEComparer::operator()(const UserListElement &e1, const UserListEle
 	return ret < 0;
 }
 
-UserBoxMenu *UserBox::userboxmenu = NULL;
-UserBoxMenu *UserBox::management = NULL;
+// UserBoxMenu *UserBox::userboxmenu = NULL;
+// UserBoxMenu *UserBox::management = NULL;
 CreateNotifier UserBox::createNotifier;
 
-UserBox::UserBox(bool fancy, UserGroup *group, QWidget* parent, const char* name, Qt::WFlags f)
-	: Q3ListBox(parent, name, f), fancy(fancy), VisibleUsers(new UserGroup()),
+QList<ActionDescription *> UserBox::UserBoxActions;
+QList<ActionDescription *> UserBox::ManagementActions;
+
+UserBox::UserBox(KaduMainWindow *mainWindow, bool fancy, UserGroup *group, QWidget* parent, const char* name, Qt::WFlags f)
+	: Q3ListBox(parent, name, f), mainWindow(mainWindow), fancy(fancy), VisibleUsers(new UserGroup()),
 	Filters(), NegativeFilters(), sortHelper(), toRemove(), AppendProxy(), RemoveProxy(), comparer(new ULEComparer()),
 	refreshTimer(), lastMouseStopUser(nullElement), tipTimer(),
 	verticalPositionTimer(), lastVerticalPosition(0)
@@ -520,10 +523,10 @@ UserBox::UserBox(bool fancy, UserGroup *group, QWidget* parent, const char* name
 	else
 		addCompareFunction("AltNick", tr("Nicks"), compareAltNick);
 
-	if (!userboxmenu)
-		userboxmenu = new UserBoxMenu(this);
-	if (!management)
-		management = new UserBoxMenu(userboxmenu);
+// 	if (!userboxmenu)
+// 		userboxmenu = new UserBoxMenu(this);
+// 	if (!management)
+// 		management = new UserBoxMenu(userboxmenu);
 	UserBoxes.append(this);
 
 	setMinimumWidth(20);
@@ -979,6 +982,22 @@ void UserBox::currentChangedSlot(Q3ListBoxItem *item)
 		emit currentChanged(static_cast<KaduListBoxPixmap *>(item)->User);
 }
 
+void UserBox::addActionDescription(ActionDescription *actionDescription)
+{
+	UserBoxActions.append(actionDescription);
+}
+
+void UserBox::addSeparator()
+{
+	UserBoxActions.append(0);
+}
+
+void UserBox::addManagementActionDescription(ActionDescription *actionDescription)
+{
+	ManagementActions.append(actionDescription);
+}
+
+/*
 UserBoxMenu::UserBoxMenu(QWidget *parent, const char *name) : Q3PopupMenu(parent, name), iconNames()
 {
 	connect(this, SIGNAL(aboutToHide()), this, SLOT(restoreLook()));
@@ -1052,7 +1071,7 @@ void UserBoxMenu::refreshIcons()
 			}
 	}
 	kdebugf2();
-}
+}*/
 
 void UserBox::configurationUpdated()
 {
@@ -1468,6 +1487,19 @@ void UserBox::userRemovedFromGroup(UserListElement elem, bool massively, bool la
 		RemoveProxy.remove(s);
 	}
 //	kdebugf2();
+}
+
+void UserBox::contextMenuEvent(QContextMenuEvent *event)
+{
+	QMenu *menu = new QMenu(this);
+
+	foreach (ActionDescription *actionDescription, UserBox::UserBoxActions)
+		if (actionDescription)
+			menu->addAction(actionDescription->getAction(mainWindow));
+		else
+			menu->addSeparator();
+
+	menu->exec(event->globalPos());
 }
 
 const UserGroup *UserBox::visibleUsers() const

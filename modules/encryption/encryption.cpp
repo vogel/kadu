@@ -9,6 +9,7 @@
 
 #include <QGridLayout>
 #include <QLabel>
+#include <QMenu>
 
 #include "action.h"
 #include "chat_widget.h"
@@ -69,7 +70,7 @@ EncryptionManager::EncryptionManager()
 			this, SLOT(decryptMessage(Protocol *, UserListElements, QString&, QByteArray&, bool&)));
 	connect(gadu, SIGNAL(sendMessageFiltering(const UserListElements, QString &, bool &)),
 			this, SLOT(sendMessageFilter(const UserListElements, QString &, bool &)));
-	connect(UserBox::userboxmenu, SIGNAL(popup()), this, SLOT(userBoxMenuPopup()));
+// 	connect(UserBox::userboxmenu, SIGNAL(popup()), this, SLOT(userBoxMenuPopup()));
 
 	action = new ActionDescription(
                 	ActionDescription::TypeChat, "encryptionAction",
@@ -83,7 +84,7 @@ EncryptionManager::EncryptionManager()
 
 	ToolBar::addDefaultAction("Chat toolbar 1", "encryptionAction", 4);
 
-	UserBox::userboxmenu->addItemAtPos(2,"SendPublicKey", tr("Send my public key"), this, SLOT(sendPublicKey()));
+// 	UserBox::userboxmenu->addItemAtPos(2,"SendPublicKey", tr("Send my public key"), this, SLOT(sendPublicKey()));
 	
 	MenuId = kadu->mainMenu()->insertItem(icons_manager->loadIcon("KeysManager"), tr("Manage keys"), this, SLOT(showKeysManagerDialog()), 0, -1, 12);
 //	icons_manager->registerMenuItem(kadu->mainMenu(), tr("Manage keys"), "KeysManager");
@@ -100,14 +101,14 @@ EncryptionManager::~EncryptionManager()
 {
 	kdebugf();
 	kadu->mainMenu()->removeItem(MenuId);
-	int sendkeyitem = UserBox::userboxmenu->getItem(tr("Send my public key"));
-	UserBox::userboxmenu->removeItem(sendkeyitem);
+// 	int sendkeyitem = UserBox::userboxmenu->getItem(tr("Send my public key"));
+// 	UserBox::userboxmenu->removeItem(sendkeyitem);
 
 	disconnect(gadu, SIGNAL(rawGaduReceivedMessageFilter(Protocol *, UserListElements, QString&, QByteArray&, bool&)),
 			this, SLOT(decryptMessage(Protocol *, UserListElements, QString&, QByteArray&, bool&)));
 	disconnect(gadu, SIGNAL(sendMessageFiltering(const UserListElements, QString &, bool &)),
 			this, SLOT(sendMessageFilter(const UserListElements, QString &, bool &)));
-	disconnect(UserBox::userboxmenu,SIGNAL(popup()),this,SLOT(userBoxMenuPopup()));
+// 	disconnect(UserBox::userboxmenu,SIGNAL(popup()),this,SLOT(userBoxMenuPopup()));
 
 	delete action;
 	action = 0;
@@ -335,7 +336,7 @@ void EncryptionManager::sendMessageFilter(const UserListElements users, QString 
 void EncryptionManager::userBoxMenuPopup()
 {
 	kdebugf();
-	int sendkeyitem = UserBox::userboxmenu->getItem(tr("Send my public key"));
+// 	int sendkeyitem = UserBox::userboxmenu->getItem(tr("Send my public key"));
 
 	UserBox *activeUserBox = UserBox::activeUserBox();
 	if (activeUserBox == NULL)
@@ -363,7 +364,7 @@ void EncryptionManager::userBoxMenuPopup()
 	else
 		sendKeyEnabled = false;
 
-	UserBox::userboxmenu->setItemVisible(sendkeyitem, sendKeyEnabled);
+// 	UserBox::userboxmenu->setItemVisible(sendkeyitem, sendKeyEnabled);
 	kdebugf2();
 }
 

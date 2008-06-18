@@ -11,11 +11,13 @@
 #include <QCursor>
 #include <QObject>
 #include <QMenu>
+#include <QMouseEvent>
 #include <QTimer>
 
 #include "config_file.h"
 #include "docking.h"
 #include "debug.h"
+#include "gadu.h"
 #include "icons_manager.h"
 #include "kadu.h"
 #include "pending_msgs.h"

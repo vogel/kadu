@@ -9,12 +9,14 @@
 
 #include <QApplication>
 
-#include "autoresponder.h"
 #include "chat_widget.h"
 #include "chat_manager.h"
 #include "debug.h"
+#include "gadu.h"
 #include "kadu.h"
 #include "kadu_parser.h"
+
+#include "autoresponder.h"
 
 /**
  * @ingroup autoresponder

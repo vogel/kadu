@@ -117,6 +117,9 @@ ChatManager::ChatManager(QObject *parent)
 		"Black", tr("Change color")
 	);
 
+	UserBox::addActionDescription(chatActionDescription);
+	UserBox::addSeparator();
+
 	if (config_file.readBoolEntry("Chat", "RememberPosition"))
 	{
 		userlist->addPerContactNonProtocolConfigEntry("chat_geometry", "ChatGeometry");

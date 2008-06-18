@@ -19,6 +19,7 @@
 #include "custom_input.h"
 #include "debug.h"
 #include "emoticons.h"
+#include "gadu.h"
 #include "hot_key.h"
 #include "icons_manager.h"
 #include "ignore.h"
@@ -51,6 +52,8 @@ ChatWidget::ChatWidget(Protocol *initialProtocol, const UserListElements &usrs, 
 	/* register us in the chats registry... */
 	index = chat_manager->registerChatWidget(this);
 
+	Edit = new ChatEditBox(this);
+
 	if (Users->count() > 1)
 	{
 		horizSplit = new QSplitter(Qt::Horizontal, this, "horizSplit");
@@ -61,10 +64,10 @@ ChatWidget::ChatWidget(Protocol *initialProtocol, const UserListElements &usrs, 
 		QWidget *userlistContainer = new QWidget(horizSplit);
 		QVBoxLayout *uc_layout = new QVBoxLayout(userlistContainer);
 
-		userbox = new UserBox(false, Users, userlistContainer, "userbox");
+		userbox = new UserBox(Edit, false, Users, userlistContainer, "userbox");
 		userbox->setMinimumSize(QSize(30,30));
-		connect(userbox, SIGNAL(rightButtonPressed(Q3ListBoxItem *, const QPoint &)),
-			UserBox::userboxmenu, SLOT(show(Q3ListBoxItem *)));
+// 		connect(userbox, SIGNAL(rightButtonPressed(Q3ListBoxItem *, const QPoint &)),
+// 			UserBox::userboxmenu, SLOT(show(Q3ListBoxItem *)));
 
 		QPushButton *leaveConference = new QPushButton(tr("Leave conference"), userlistContainer);
 		leaveConference->setMinimumWidth(userbox->minimumWidth());
@@ -85,7 +88,6 @@ ChatWidget::ChatWidget(Protocol *initialProtocol, const UserListElements &usrs, 
 		vertSplit->addWidget(body);
 	}
 
-	Edit = new ChatEditBox(this);
 	vertSplit->addWidget(Edit);
 
 	connect(Edit->inputBox(), SIGNAL(keyPressed(QKeyEvent *, CustomInput *, bool &)), this, SLOT(keyPressedSlot(QKeyEvent *, CustomInput *, bool &)));
