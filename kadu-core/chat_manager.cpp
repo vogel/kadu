@@ -641,12 +641,6 @@ int ChatManager::openChatWidget(Protocol *initialProtocol, const UserListElement
 
 	ChatWidget *chat = new ChatWidget(initialProtocol, users);
 
-	if (forceActivate)
-	{
-		QWidget *win = chat->window();
-		activateWindow(win->winId());
-	}
-
 	bool handled = false;
 	emit handleNewChatWidget(chat, handled);
 	if (!handled)
@@ -662,7 +656,12 @@ int ChatManager::openChatWidget(Protocol *initialProtocol, const UserListElement
 	connect(chat, SIGNAL(messageSentAndConfirmed(UserListElements, const QString &)),
 		this, SIGNAL(messageSentAndConfirmed(UserListElements, const QString &)));
 
-//	chat->makeActive();
+	if (forceActivate)
+	{
+		QWidget *win = chat->window();
+		activateWindow(win->winId());
+	}
+
 	emit chatWidgetCreated(chat);
 // TODO: remove, it is so stupid ...
 	emit chatWidgetCreated(chat, time(0));
