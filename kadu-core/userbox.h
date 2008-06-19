@@ -510,6 +510,7 @@ public:
 	static void addActionDescription(ActionDescription *actionDescription);
 	static void addSeparator();
 	static void addManagementActionDescription(ActionDescription *actionDescription);
+	static void addManagementSeparator();
 
 	/**
 		\var static UserBoxMenu *userboxmenu

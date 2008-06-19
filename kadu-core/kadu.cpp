@@ -106,8 +106,8 @@ void Kadu::keyPressEvent(QKeyEvent *e)
 	}
 	else if (HotKey::shortCut(e,"ShortCuts", "kadu_deleteuser"))
 	{
-		if (!Userbox->selectedUsers().isEmpty())
-			deleteUsers();
+// 		if (!Userbox->selectedUsers().isEmpty())
+// 			deleteUsers();
 	}
 	else if (HotKey::shortCut(e,"ShortCuts", "kadu_persinfo"))
 	{
@@ -203,35 +203,35 @@ Kadu::Kadu(QWidget *parent)
 
 	ActionDescription *writeEmailActionDescription = new ActionDescription(
 		ActionDescription::TypeUser, "writeEmailAction",
-		this, SLOT(writeEMail(QAction *, bool)),
+		this, SLOT(writeEMailActionActivated(QAction *, bool)),
 		"WriteEmail", tr("Write email message")
 	);
 	UserBox::addActionDescription(writeEmailActionDescription);
 
 	ActionDescription *copyDescriptionActionDescription = new ActionDescription(
 		ActionDescription::TypeUser, "copyDescriptionAction",
-		this, SLOT(copyDescription(QAction *, bool)),
+		this, SLOT(copyDescriptionActionActivated(QAction *, bool)),
 		"CopyDescription", tr("Copy description")
 	);
 	UserBox::addActionDescription(copyDescriptionActionDescription);
 
 	ActionDescription *openDescriptionLinkActionDescription = new ActionDescription(
 		ActionDescription::TypeUser, "openDescriptionLinkAction",
-		this, SLOT(openDescriptionLink(QAction *, bool)),
+		this, SLOT(openDescriptionLinkActionActivated(QAction *, bool)),
 		"OpenDescriptionLink", tr("Open description link in browser")
 	);
 	UserBox::addActionDescription(openDescriptionLinkActionDescription);
 
 	ActionDescription *copyPersonalInfoActionDescription = new ActionDescription(
 		ActionDescription::TypeUser, "copyPersonalInfoAction",
-		this, SLOT(copyPersonalInfo(QAction *, bool)),
+		this, SLOT(copyPersonalInfoActionActivated(QAction *, bool)),
 		"CopyPersonalInfo", tr("Copy personal info")
 	);
 	UserBox::addActionDescription(copyPersonalInfoActionDescription);
 
 	ActionDescription *lookupUserInfoActionDescription = new ActionDescription(
 		ActionDescription::TypeUser, "lookupUserInfoAction",
-		this, SLOT(lookupInDirectory(QAction *, bool)),
+		this, SLOT(lookupInDirectoryActionActivated(QAction *, bool)),
 		"LookupUserInfo", tr("Search in directory")
 	);
 	UserBox::addActionDescription(lookupUserInfoActionDescription); // HotKey::shortCutFromFile("ShortCuts", "kadu_searchuser")
@@ -240,15 +240,38 @@ Kadu::Kadu(QWidget *parent)
 
 	UserBox::addSeparator();
 
-// 	UserBox::management->addItem("Ignore", tr("Ignore"), this, SLOT(ignoreUser()));
-// 	UserBox::management->addItem("Blocking", tr("Block"), this, SLOT(blockUser()));
-// 	UserBox::management->addItem("NotifyAboutUser", tr("Notify about user"), this, SLOT(notifyUser()));
-// 	UserBox::management->addItem("Offline", tr("Offline to user"), this, SLOT(offlineToUser()));
-// 	UserBox::management->addItem("ShowDescription_off", tr("Hide description"), this, SLOT(hideDescription()));
-// 	UserBox::management->insertSeparator();
-// 	UserBox::management->addItem("RemoveFromUserlist", tr("Delete"), this, SLOT(deleteUsers()),HotKey::shortCutFromFile("ShortCuts", "kadu_deleteuser"));
+	UserBox::addManagementActionDescription(chat_manager->ignoreUserActionDescription);
+	UserBox::addManagementActionDescription(chat_manager->blockUserActionDescription);
 
-// 	UserBox::userboxmenu->insertItem(tr("User management"), UserBox::management);
+	ActionDescription *notifyAboutUserActionDescription = new ActionDescription(
+		ActionDescription::TypeUser, "notifyAboutUserAction",
+		this, SLOT(notifyAboutUserActionActivated(QAction *, bool)),
+		"NotifyAboutUser", tr("Notify about user")
+	);
+	UserBox::addManagementActionDescription(notifyAboutUserActionDescription);
+
+	ActionDescription *offlineToUserActionDescription = new ActionDescription(
+		ActionDescription::TypeUser, "offlineToUserAction",
+		this, SLOT(offlineToUserActionActivated(QAction *, bool)),
+		"Offline", tr("Offline to user")
+	);
+	UserBox::addManagementActionDescription(offlineToUserActionDescription);
+
+	ActionDescription *hideDescriptionActionDescription = new ActionDescription(
+		ActionDescription::TypeUser, "hideDescriptionAction",
+		this, SLOT(hideDescriptionActionActivated(QAction *, bool)),
+		"ShowDescription_off", tr("Hide description")
+	);
+	UserBox::addManagementActionDescription(hideDescriptionActionDescription);
+
+	UserBox::addManagementSeparator();
+
+	ActionDescription *deleteUsersActionDescription = new ActionDescription(
+		ActionDescription::TypeUser, "deleteUsersAction",
+		this, SLOT(deleteUsersActionActivated(QAction *, bool)),
+		"RemoveFromUserlist", tr("Delete")
+	);
+	UserBox::addManagementActionDescription(deleteUsersActionDescription); // TODO: HotKey::shortCutFromFile("ShortCuts", "kadu_deleteuser"));
 
 	groups_manager->setTabBar(GroupBar);
 	setDocked(Docked, dontHideOnClose);
@@ -310,7 +333,7 @@ Kadu::Kadu(QWidget *parent)
 		"LookupUserInfo", tr("Search user in directory")
 	);
 
-/*	TODO: port this.
+/*	TODO 0.6.5: port this.
 	Action* open_status_action = new Action("Offline", tr("Change status"), "openStatusAction", Action::TypeGlobal);
 	connect(open_status_action, SIGNAL(activated(const UserGroup*, const QWidget*, bool)),
 		this, SLOT(showStatusActionActivated()));
@@ -530,7 +553,7 @@ void Kadu::configure()
 	configurationActionActivated(0, false);
 }
 
-void Kadu::writeEMail(QAction *sender, bool toggled)
+void Kadu::writeEMailActionActivated(QAction *sender, bool toggled)
 {
 	kdebugf();
 
@@ -549,7 +572,7 @@ void Kadu::writeEMail(QAction *sender, bool toggled)
 	kdebugf2();
 }
 
-void Kadu::copyDescription(QAction *sender, bool toggled)
+void Kadu::copyDescriptionActionActivated(QAction *sender, bool toggled)
 {
 	kdebugf();
 
@@ -575,7 +598,7 @@ void Kadu::copyDescription(QAction *sender, bool toggled)
 	kdebugf2();
 }
 
-void Kadu::openDescriptionLink(QAction *sender, bool toggled)
+void Kadu::openDescriptionLinkActionActivated(QAction *sender, bool toggled)
 {
 	kdebugf();
 
@@ -603,7 +626,7 @@ void Kadu::openDescriptionLink(QAction *sender, bool toggled)
 	kdebugf2();
 }
 
-void Kadu::copyPersonalInfo(QAction *sender, bool toggled)
+void Kadu::copyPersonalInfoActionActivated(QAction *sender, bool toggled)
 {
 	kdebugf();
 
@@ -628,7 +651,7 @@ void Kadu::copyPersonalInfo(QAction *sender, bool toggled)
 	kdebugf2();
 }
 
-void Kadu::lookupInDirectory(QAction *sender, bool toggled)
+void Kadu::lookupInDirectoryActionActivated(QAction *sender, bool toggled)
 {
 	kdebugf();
 
@@ -651,6 +674,99 @@ void Kadu::lookupInDirectory(QAction *sender, bool toggled)
 	SearchDialog *sd = new SearchDialog(kadu, user.ID("Gadu").toUInt());
 	sd->show();
 	sd->firstSearch();
+
+	kdebugf2();
+}
+
+void Kadu::notifyAboutUserActionActivated(QAction *sender, bool toggled)
+{
+	kdebugf();
+
+	KaduMainWindow *window = dynamic_cast<KaduMainWindow *>(sender->parent());
+	if (!window)
+		return;
+
+	UserListElements users = window->getUserListElements();
+
+	bool on = true;
+	foreach(const UserListElement &user, users)
+		if (!user.notify())
+		{
+			on = false;
+			break;
+		}
+
+	foreach(const UserListElement &user, users)
+		if (user.notify() == on)
+			user.setNotify(!on);
+
+	userlist->writeToConfig();
+
+	kdebugf2();
+}
+
+void Kadu::offlineToUserActionActivated(QAction *sender, bool toggled)
+{
+	kdebugf();
+
+	KaduMainWindow *window = dynamic_cast<KaduMainWindow *>(sender->parent());
+	if (!window)
+		return;
+
+	UserListElements users = window->getUserListElements();
+
+	bool on = true;
+	foreach(const UserListElement &user, users)
+		if (!user.usesProtocol("Gadu") || !user.protocolData("Gadu", "OfflineTo").toBool())
+		{
+			on = false;
+			break;
+		}
+
+	foreach(const UserListElement &user, users)
+		if (user.usesProtocol("Gadu") && user.protocolData("Gadu", "OfflineTo").toBool() == on)
+			user.setProtocolData("Gadu", "OfflineTo", !on); // TODO: here boolean
+
+	userlist->writeToConfig();
+
+	kdebugf2();
+}
+
+void Kadu::hideDescriptionActionActivated(QAction *sender, bool toggled)
+{
+	kdebugf();
+
+	KaduMainWindow *window = dynamic_cast<KaduMainWindow *>(sender->parent());
+	if (!window)
+		return;
+
+	UserListElements users = window->getUserListElements();
+	bool on = true;
+	foreach(const UserListElement &user, users)
+		if (user.data("HideDescription").toString() == "true")
+		{
+			on = false;
+			break;
+		}
+
+	foreach(const UserListElement &user, users)
+		user.setData("HideDescription", on ? "true" : "false"); // TODO: here string, LOL
+
+	userlist->writeToConfig();
+
+	kdebugf2();
+}
+
+void Kadu::deleteUsersActionActivated(QAction *sender, bool toggled)
+{
+	kdebugf();
+
+	KaduMainWindow *window = dynamic_cast<KaduMainWindow *>(sender->parent());
+	if (!window)
+		return;
+
+	UserListElements users = window->getUserListElements();
+	removeUsers(users);
 
 	kdebugf2();
 }
@@ -786,21 +902,6 @@ void Kadu::openChatWith()
 	kdebugf2();
 }
 
-void Kadu::deleteUsers()
-{
-	kdebugf();
-	UserBox *activeUserBox=UserBox::activeUserBox();
-	if (activeUserBox==NULL)
-	{
-		kdebugf2();
-		return;
-	}
-	removeUsers(activeUserBox->selectedUsers());
-	if (!Userbox->isSelected(Userbox->currentItem()))
-		InfoPanel->clear();
-	kdebugf2();
-}
-
 void Kadu::personalInfo()
 {
 	(new PersonalInfoDialog(kadu))->show();
@@ -871,130 +972,6 @@ void Kadu::hideKadu()
 			showMinimized();
 		else
 			close();
-}
-
-void Kadu::ignoreUser()
-{
-	kdebugf();
-	UserBox *activeUserBox = UserBox::activeUserBox();
-	if (activeUserBox == NULL)
-	{
-		kdebugf2();
-		return;
-	}
-	UserListElements users = activeUserBox->selectedUsers();
-	if (IgnoredManager::isIgnored(users))
-		IgnoredManager::remove(users);
-	else
-		IgnoredManager::insert(users);
-	IgnoredManager::writeToConfiguration();
-	kdebugf2();
-}
-
-void Kadu::blockUser()
-{
-	kdebugf();
-	UserBox *activeUserBox = UserBox::activeUserBox();
-	if (activeUserBox == NULL)
-	{
-		kdebugf2();
-		return;
-	}
-
-	UserListElements users = activeUserBox->selectedUsers();
-	bool on = true;
-	foreach(const UserListElement &user, users)
-		if (!user.usesProtocol("Gadu") || !user.protocolData("Gadu", "Blocking").toBool())
-		{
-			on = false;
-			break;
-		}
-
- 	foreach(const UserListElement &user, users)
-		if (user.usesProtocol("Gadu") && user.protocolData("Gadu", "Blocking").toBool() != !on)
-			user.setProtocolData("Gadu", "Blocking", !on);
-	userlist->writeToConfig();
-	kdebugf2();
-}
-
-void Kadu::notifyUser()
-{
-	kdebugf();
-	UserBox *activeUserBox = UserBox::activeUserBox();
-	if (activeUserBox == NULL)
-	{
-		kdebugf2();
-		return;
-	}
-
-	UserListElements users = activeUserBox->selectedUsers();
-	bool on = true;
-	foreach(const UserListElement &user, users)
-		if (!user.notify())
-		{
-			on = false;
-			break;
-		}
-
-	foreach(const UserListElement &user, users)
-		if (user.notify() != !on)
-			user.setNotify(!on);
-
-	userlist->writeToConfig();
-	kdebugf2();
-}
-
-void Kadu::offlineToUser()
-{
-	kdebugf();
-	UserBox *activeUserBox = UserBox::activeUserBox();
-	if (activeUserBox == NULL)
-	{
-		kdebugf2();
-		return;
-	}
-
-	UserListElements users = activeUserBox->selectedUsers();
-	bool on = true;
-	foreach(const UserListElement &user, users)
-		if (!user.usesProtocol("Gadu") || !user.protocolData("Gadu", "OfflineTo").toBool())
-		{
-			on = false;
-			break;
-		}
-
-	foreach(const UserListElement &user, users)
-		if (user.usesProtocol("Gadu") && user.protocolData("Gadu", "OfflineTo").toBool() != !on)
-			user.setProtocolData("Gadu", "OfflineTo", !on);
-
-	userlist->writeToConfig();
-	kdebugf2();
-}
-
-void Kadu::hideDescription()
-{
-	kdebugf();
-	UserBox *activeUserBox = UserBox::activeUserBox();
-	if (activeUserBox == NULL)
-	{
-		kdebugf2();
-		return;
-	}
-
-	UserListElements users = activeUserBox->selectedUsers();
-	bool on = true;
-	foreach(const UserListElement &user, users)
-		if (user.data("HideDescription").toString() == "true")
-		{
-			on = false;
-			break;
-		}
-
-	foreach(const UserListElement &user, users)
-		user.setData("HideDescription", on ? "true" : "false");
-
-	userlist->writeToConfig();
-	kdebugf2();
 }
 
 void Kadu::changeAppearance()

@@ -19,16 +19,17 @@ class ActionDescription;
 class Protocol;
 
 /**
-	Klasa pozwalaj±ca zarz±dzaæ otwartymi oknami rozmów: otwieraæ,
-	zamykac, szukaæ okna ze wglêdu na listê u¿ytkowników itp.
+	Klasa pozwalajï¿½ca zarzï¿½dzaï¿½ otwartymi oknami rozmï¿½w: otwieraï¿½,
+	zamykac, szukaï¿½ okna ze wglï¿½du na listï¿½ uï¿½ytkownikï¿½w itp.
 	\class ChatManager
-	\brief Klasa zarz±dzaj±ca oknami ChatWidget
+	\brief Klasa zarzï¿½dzajï¿½ca oknami ChatWidget
 **/
 
 class ChatManager : public QObject, ConfigurationAwareObject
 {
 	Q_OBJECT
 
+public: // TODO: 0.6.6 clean it up
 	ActionDescription *autoSendActionDescription;
 	ActionDescription *clearChatActionDescription;
 	ActionDescription *insertImageActionDescription;
@@ -44,8 +45,9 @@ class ChatManager : public QObject, ConfigurationAwareObject
 	ActionDescription *insertEmoticonActionDescription;
 	ActionDescription *colorSelectorActionDescription;
 
+private:
 	ChatList ChatWidgets; /*!< lista okien*/
-	QList<UserListElements> ClosedChatUsers; /*!< u¿ytkownicy, których okna zosta³y zamkniête*/
+	QList<UserListElements> ClosedChatUsers; /*!< uï¿½ytkownicy, ktï¿½rych okna zostaï¿½y zamkniï¿½te*/
 
 	/**
 		\struct ChatInfo
@@ -53,11 +55,11 @@ class ChatManager : public QObject, ConfigurationAwareObject
 	**/
 	struct ChatInfo
 	{
-		UserListElements users;          /*!< lista u¿ytkowników identyfikuj±ca okno */
+		UserListElements users;          /*!< lista uï¿½ytkownikï¿½w identyfikujï¿½ca okno */
 		QMap<QString, QVariant> map;     /*!< parametry danego okna */
 		ChatInfo() : users(), map() {}
 	};
-	QList<ChatInfo> addons; /*!< lista parametrów okien */
+	QList<ChatInfo> addons; /*!< lista parametrï¿½w okien */
 	QTimer refreshTitlesTimer;
 
 private slots:
@@ -81,7 +83,7 @@ protected:
 public:
 	/**
 		\fn ChatManager(QObject* parent = 0)
-		Konstruktor tworz±cy obiekt zarz±dzaj±cy oknami
+		Konstruktor tworzï¿½cy obiekt zarzï¿½dzajï¿½cy oknami
 		\param parent rodzic okna
 		\param name nazwa obiektu
 	**/
@@ -101,53 +103,53 @@ public:
 
 	/**
 		\fn static void closeModule()
-		Wyrejestrowuje opcje modu³u z okna konfiguracji
+		Wyrejestrowuje opcje moduï¿½u z okna konfiguracji
 	**/
 	static void closeModule();
 
 	/**
 		\fn const ChatList& chats() const
-		Funkcja zwraca listê otwartych okien Chat
+		Funkcja zwraca listï¿½ otwartych okien Chat
 	**/
 	const ChatList & chats() const;
 
 	/**
 		\fn QValueList<UserListElements> closedChatsUsers() const
-		Funkcja zwraca listê u¿ytkowników, dla których zamkniêto okna Chat
+		Funkcja zwraca listï¿½ uï¿½ytkownikï¿½w, dla ktï¿½rych zamkniï¿½to okna Chat
 	**/
 	const QList<UserListElements> closedChatUsers() const;
 
 	/**
 		\fn ChatWidget* findChatWidget(const UserGroup *group) const;
-		Funkcja zwraca wska¼nik do okna z list±
-		u¿ytkowników group
-		\param group lista u¿ytkowników
-		\return wska¼nik do okna je¶li istnieje w przeciwnym
+		Funkcja zwraca wskaï¿½nik do okna z listï¿½
+		uï¿½ytkownikï¿½w group
+		\param group lista uï¿½ytkownikï¿½w
+		\return wskaï¿½nik do okna jeï¿½li istnieje w przeciwnym
 		 wypadku zwraca NULL
 	**/
 	ChatWidget * findChatWidget(const UserGroup *group) const;
 
 	/**
 		\fn Chat* findChat(UserListElements users) const;
-		Funkcja zwraca wska¼nik do okna z list±
-		u¿ytkowników group
-		\param users lista u¿ytkowników
-		\return wska¼nik do okna je¶li istnieje w przeciwnym
+		Funkcja zwraca wskaï¿½nik do okna z listï¿½
+		uï¿½ytkownikï¿½w group
+		\param users lista uï¿½ytkownikï¿½w
+		\return wskaï¿½nik do okna jeï¿½li istnieje w przeciwnym
 		 wypadku zwraca NULL
 	**/
 	ChatWidget * findChatWidget(UserListElements users) const;
 
-	// co za g³upota
-	// TODO: przenie¶æ do klasy ChatWidget / ewentualnie do nowo-utworzonej klasy Chat
+	// co za gï¿½upota
+	// TODO: przenieï¿½ï¿½ do klasy ChatWidget / ewentualnie do nowo-utworzonej klasy Chat
 	/**
 		\fn QVariant& getChatWidgetProperty(const UserGroup *group, const QString &name)
-		Funkcja zwraca warto¶æ w³asno¶ci "name" okna
-		okre¶lonego przez group
-		\param group grupa u¿ytkowników identyfikuj±ca okno
-		\param name nazwa w³asno¶ci
-		\return zwraca warto¶æ w³asno¶ci je¶li okre¶lone okno
-		istnieje,\n je¶li nie to tworzy tak±
-		w³asno¶æ (ustawia na pust±)
+		Funkcja zwraca wartoï¿½ï¿½ wï¿½asnoï¿½ci "name" okna
+		okreï¿½lonego przez group
+		\param group grupa uï¿½ytkownikï¿½w identyfikujï¿½ca okno
+		\param name nazwa wï¿½asnoï¿½ci
+		\return zwraca wartoï¿½ï¿½ wï¿½asnoï¿½ci jeï¿½li okreï¿½lone okno
+		istnieje,\n jeï¿½li nie to tworzy takï¿½
+		wï¿½asnoï¿½ï¿½ (ustawia na pustï¿½)
 	**/
 	QVariant & getChatWidgetProperty(const UserGroup *group, const QString &name);
 
@@ -159,8 +161,8 @@ public slots:
 	/**
 		\fn int openChatWidget(QString initialProtocol, UserListElements users, time_t time = 0)
 		Funkcja otwiera nowe okno Chat z wymienionymi rozmowcami.
-		\param initialProtocol protokó³ pocz±tkowy
-		\param users lista u¿ytkowników identyfikuj±cych okno
+		\param initialProtocol protokï¿½ï¿½ poczï¿½tkowy
+		\param users lista uï¿½ytkownikï¿½w identyfikujï¿½cych okno
 		\param time time of pending message that created a chat or 0 if not applicable
 		\return zwracany jest numer otwartego okna
 	**/
@@ -168,24 +170,24 @@ public slots:
 
 	/**
 		\fn void openPendingMsgs(UserListElements users)
-		Funkcja wpisuje zakolejkowane wiadomo¶ci do okna
-		z u¿ytkownikami "users"
-		\param users lista u¿ytkowników identyfikuj±cych okno
+		Funkcja wpisuje zakolejkowane wiadomoï¿½ci do okna
+		z uï¿½ytkownikami "users"
+		\param users lista uï¿½ytkownikï¿½w identyfikujï¿½cych okno
 	**/
 	void openPendingMsgs(UserListElements users, bool forceActivate = false);
 
 	/**
 		\fn void openPendingMsgs()
-		Funkcja wpisuje wszystkie zakolejkowane wiadomo¶ci
+		Funkcja wpisuje wszystkie zakolejkowane wiadomoï¿½ci
 		do odpowiednich okien
 	**/
 	void openPendingMsgs(bool forceActivate = false);
 
 	/**
 		\fn void deletePendingMsgs(UserListElements users)
-		Funkcja usuwa zakolejkowane wiadomo¶ci
-		z u¿ytkownikami "users"
-		\param users lista u¿ytkowników identyfikuj±cych okno
+		Funkcja usuwa zakolejkowane wiadomoï¿½ci
+		z uï¿½ytkownikami "users"
+		\param users lista uï¿½ytkownikï¿½w identyfikujï¿½cych okno
 	**/
 	void deletePendingMsgs(UserListElements users);
 
@@ -203,8 +205,8 @@ public slots:
 
 	/**
 		\fn int registerChatWidget(ChatWidget* chat)
-		Dodaje okno do menad¿era
-		\param chat wska¼nik do okna ktore chcemy dodaæ
+		Dodaje okno do menadï¿½era
+		\param chat wskaï¿½nik do okna ktore chcemy dodaï¿½
 		\return zwraca numer naszego okna po zarejestrowaniu
 	**/
 	int registerChatWidget(ChatWidget *chat);
@@ -212,49 +214,49 @@ public slots:
 	/**
 		\fn void unregisterChat(Chat* chat)
 		Funkcja wyrejestrowuje okno z managera \n
-		Zapisuje w³asno¶ci okna \n
-		wysy³a sygna³ chatDestroying i chatDestroyed
-		\param chat okno które bêdzie wyrejestrowane
+		Zapisuje wï¿½asnoï¿½ci okna \n
+		wysyï¿½a sygnaï¿½ chatDestroying i chatDestroyed
+		\param chat okno ktï¿½re bï¿½dzie wyrejestrowane
 	**/
 	void unregisterChatWidget(ChatWidget *chat);
 
 	/**
 		\fn void refreshTitles()
-		Funkcja od¶wie¿a tytu³y wszystkich okien
+		Funkcja odï¿½wieï¿½a tytuï¿½y wszystkich okien
 	**/
 	void refreshTitles();
 	void refreshTitlesLater();
 
 	/**
 		\fn void refreshTitlesForUser(UserListElement user)
-		Funkcja od¶wie¿a tytu³y okien które zawieraj± uin
-		\param user u¿ytkownik, którego
-		opis/status bêdzie od¶wie¿any
+		Funkcja odï¿½wieï¿½a tytuï¿½y okien ktï¿½re zawierajï¿½ uin
+		\param user uï¿½ytkownik, ktï¿½rego
+		opis/status bï¿½dzie odï¿½wieï¿½any
 	**/
 	void refreshTitlesForUser(UserListElement user);
 
 	/**
 		\fn void setChatWidgetProperty(const UserGroup *group, const QString &name, const QVariant &value)
-		Funkcja pozwala przypisaæ okre¶lonemu czatowi
-		(nawet je¿eli on jeszcze nie istnieje) pewne w³asno¶ci
-		\param group grupa u¿ytkowników identyfikuj±cych okno
-		\param name nazwa w³asno¶ci
-		\param value warto¶æ w³asno¶ci
+		Funkcja pozwala przypisaï¿½ okreï¿½lonemu czatowi
+		(nawet jeï¿½eli on jeszcze nie istnieje) pewne wï¿½asnoï¿½ci
+		\param group grupa uï¿½ytkownikï¿½w identyfikujï¿½cych okno
+		\param name nazwa wï¿½asnoï¿½ci
+		\param value wartoï¿½ï¿½ wï¿½asnoï¿½ci
 	**/
 	void setChatWidgetProperty(const UserGroup *group, const QString &name, const QVariant &value);
 
 signals:
 	/**
 		\fn void handleNewChatWidget(ChatWidget *chat, bool &handled)
-	 	Sygna³ ten jest wysy³any po utworzeniu nowego okna chat.
-		Je¶li zmienna handled zostanie ustawiona na true, to 
+	 	Sygnaï¿½ ten jest wysyï¿½any po utworzeniu nowego okna chat.
+		Jeï¿½li zmienna handled zostanie ustawiona na true, to 
 		niezostanie utworzony nowy obiekt ChatWindiw
 		\param chat nowe okno chat
 	**/
 	void handleNewChatWidget(ChatWidget *chat, bool &handled);
 	/**
 		\fn void chatWidgetCreated(ChatWidget *chat)
-	 	Sygna³ ten jest wysy³any po utworzeniu nowego okna chat
+	 	Sygnaï¿½ ten jest wysyï¿½any po utworzeniu nowego okna chat
 		\param chat nowe okno chat
 	**/
 	void chatWidgetCreated(ChatWidget *chat);
@@ -263,7 +265,7 @@ signals:
 
 	/**
 		\fn void chatCreated(const UserGroup *group)
-	 	Sygna³ ten jest wysy³any po utworzeniu nowego okna chat
+	 	Sygnaï¿½ ten jest wysyï¿½any po utworzeniu nowego okna chat
 		\param chat nowe okno chat
 		\param time time of pending message that created a chat or 0 if not applicable
 	**/
@@ -271,15 +273,15 @@ signals:
 
 	/**
 		\fn void chatDestroying(const UserGroup *group)
-	 	Sygna³ ten jest wysy³any przed zamnkniêciem okna chat
+	 	Sygnaï¿½ ten jest wysyï¿½any przed zamnkniï¿½ciem okna chat
 		\param chat zamykane okno
 	**/
 	void chatWidgetDestroying(ChatWidget *chat);
 
 	/**
 		\fn void chatOpen(UserListElements users)
-		Sygna³ ten jest wysy³aniy podczas ka¿dej próby
-		otwarcia nowego okna chat nawet je¶li ju¿ taki istnieje
+		Sygnaï¿½ ten jest wysyï¿½aniy podczas kaï¿½dej prï¿½by
+		otwarcia nowego okna chat nawet jeï¿½li juï¿½ taki istnieje
 		\param chat otwarte okno
 	**/
 	void chatWidgetOpen(ChatWidget *chat);

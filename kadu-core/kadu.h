@@ -104,6 +104,15 @@ private slots:
 	void addUserActionActivated(QAction *sender, bool toggled);
 	void editUserActionActivated(QAction *sender, bool toggled);
 	void searchInDirectoryActionActivated(QAction *sender, bool toggled);
+	void notifyAboutUserActionActivated(QAction *sender, bool toggled);
+	void offlineToUserActionActivated(QAction *sender, bool toggled);
+	void hideDescriptionActionActivated(QAction *sender, bool toggled);
+	void writeEMailActionActivated(QAction *sender, bool toggled);
+	void copyDescriptionActionActivated(QAction *sender, bool toggled);
+	void openDescriptionLinkActionActivated(QAction *sender, bool toggled);
+	void copyPersonalInfoActionActivated(QAction *sender, bool toggled);
+	void lookupInDirectoryActionActivated(QAction *sender, bool toggled);
+	void deleteUsersActionActivated(QAction *sender, bool toggled);
 
 	void messageReceived(Protocol *protocol, UserListElements senders, const QString &msg, time_t time);
 	void createRecentChatsMenu();
@@ -250,23 +259,11 @@ public slots:
 
 	void about();
 	void addUserAction();
-	void blockUser();
 
-	void writeEMail(QAction *sender, bool toggled);
-	void copyDescription(QAction *sender, bool toggled);
-	void openDescriptionLink(QAction *sender, bool toggled);
-	void copyPersonalInfo(QAction *sender, bool toggled);
-	void lookupInDirectory(QAction *sender, bool toggled);
-
-	void deleteUsers();
 	void help();
 	void hideKadu();
-	void ignoreUser();
 	void importExportUserlist();
 	void manageIgnored();
-	void notifyUser();
-	void offlineToUser();
-	void hideDescription();
 	void personalInfo();
 	void quit();
 	void popupMenu();

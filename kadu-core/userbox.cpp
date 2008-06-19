@@ -997,6 +997,11 @@ void UserBox::addManagementActionDescription(ActionDescription *actionDescriptio
 	ManagementActions.append(actionDescription);
 }
 
+void UserBox::addManagementSeparator()
+{
+	ManagementActions.append(0);
+}
+
 /*
 UserBoxMenu::UserBoxMenu(QWidget *parent, const char *name) : Q3PopupMenu(parent, name), iconNames()
 {
@@ -1498,6 +1503,14 @@ void UserBox::contextMenuEvent(QContextMenuEvent *event)
 			menu->addAction(actionDescription->getAction(mainWindow));
 		else
 			menu->addSeparator();
+
+	QMenu *management = menu->addMenu(tr("User management"));
+
+	foreach (ActionDescription *actionDescription, UserBox::ManagementActions)
+		if (actionDescription)
+			management->addAction(actionDescription->getAction(mainWindow));
+		else
+			management->addSeparator();
 
 	menu->exec(event->globalPos());
 }
