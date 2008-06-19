@@ -444,7 +444,7 @@ Kadu::Kadu(QWidget *parent)
 		ActionDescription::TypeUser, "hideDescriptionAction",
 		this, SLOT(hideDescriptionActionActivated(QAction *, bool)),
 		"ShowDescription_off", tr("Hide description"), false, "",
-		disableNoGaduUle
+		disableNonIdUles
 	);
 	UserBox::addManagementActionDescription(hideDescriptionActionDescription);
 

@@ -82,21 +82,21 @@ ChatManager::ChatManager(QObject *parent)
 		ActionDescription::TypeUser, "ignoreUserAction",
 		this, SLOT(ignoreUserActionActivated(QAction *, bool)),
 		"Ignore", tr("Ignore user"), false, QString::null,
-		disableEmptyUles
+		disableContainsSelfUles
 	);
 
 	blockUserActionDescription = new ActionDescription(
 		ActionDescription::TypeUser, "blockUserAction",
 		this, SLOT(blockUserActionActivated(QAction *, bool)),
 		"Blocking", tr("Block user"), false, QString::null,
-		disableEmptyUles
+		disableContainsSelfUles
 	);
 
 	chatActionDescription = new ActionDescription(
 		ActionDescription::TypeUser, "chatAction",
 		this, SLOT(chatActionActivated(QAction *, bool)),
 		"OpenChat", tr("&Chat"), false, QString::null,
-		disableEmptyUles
+		disableContainsSelfUles
 	);
 
 	openChatWithActionDescription = new ActionDescription(

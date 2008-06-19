@@ -311,6 +311,8 @@ public:
 
 };
 
+bool disableContainsSelfUles(const UserListElements &ules);
+
 extern Kadu *kadu;
 extern QMenu *dockMenu;
 extern int lockFileHandle;
