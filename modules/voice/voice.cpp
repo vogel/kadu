@@ -53,6 +53,27 @@ extern "C" void voice_close()
 	voice_manager = 0;
 }
 
+bool disableNonVoiceUles(const UserListElements &ules)
+{
+	kdebugf();
+
+	if (ules.count() != 1)
+		return false;
+
+	bool dccEnabled = config_file.readBoolEntry("Network", "AllowDCC");
+
+	if (!dccEnabled)
+		return false;
+
+	unsigned int myUin = config_file.readUnsignedNumEntry("General", "UIN");
+	UserListElement user = ules[0];
+	if (!user.usesProtocol("Gadu") || user.ID("Gadu").toUInt() == myUin)
+		return false;
+
+	kdebugf2();
+	return true;
+}
+
 VoiceChatDialog::VoiceChatDialog()
 	: QDialog(0), 
 	Socket(0), chatFinished(false)
@@ -381,11 +402,14 @@ VoiceManager::VoiceManager()
 	kdebugf();
 
 	createDefaultConfiguration();
+	voiceChatActionDescription = new ActionDescription(
+		ActionDescription::TypeUser, "voiceChatAction",
+		this, SLOT(voiceChatActionActivated(QAction *, bool)),
+		"VoiceChat", tr("Voice chat"), false, QString::null,
+		disableNonVoiceUles
+	); // HotKey::shortCutFromFile("ShortCuts", "kadu_voicechat"));
+	UserBox::insertActionDescription(2, voiceChatActionDescription);
 
-// 	UserBox::userboxmenu->addItemAtPos(2,"VoiceChat", tr("Voice chat"), this,
-// 		SLOT(makeVoiceChat()), HotKey::shortCutFromFile("ShortCuts", "kadu_voicechat"));
-// 	connect(UserBox::userboxmenu, SIGNAL(popup()),
-// 		this, SLOT(userBoxMenuPopup()));
 	connect(kadu, SIGNAL(keyPressed(QKeyEvent*)),
 		this, SLOT(mainDialogKeyPressed(QKeyEvent*)));
 
@@ -406,8 +430,7 @@ VoiceManager::~VoiceManager()
 
 	dcc_manager->removeHandler(this);
 
-// 	int voice_chat_item = UserBox::userboxmenu->getItem(tr("Voice chat"));
-// 	UserBox::userboxmenu->removeItem(voice_chat_item);
+	delete voiceChatActionDescription;
 
 	disconnect(chat_manager, SIGNAL(chatWidgetCreated(ChatWidget *)), this, SLOT(chatCreated(ChatWidget *)));
 	disconnect(chat_manager, SIGNAL(chatWidgetDestroying(ChatWidget *)), this, SLOT(chatDestroying(ChatWidget*)));
@@ -415,8 +438,6 @@ VoiceManager::~VoiceManager()
 	foreach(ChatWidget *it, chat_manager->chats())
 		chatDestroying(it);
 
-// 	disconnect(UserBox::userboxmenu,SIGNAL(popup()),
-// 		this, SLOT(userBoxMenuPopup()));
 	disconnect(kadu, SIGNAL(keyPressed(QKeyEvent*)),
 		this, SLOT(mainDialogKeyPressed(QKeyEvent*)));
 	VoiceChatDialog::destroyAll();
@@ -662,19 +683,17 @@ void VoiceManager::addGsmSample(char *data, int length)
 	kdebugf2();
 }
 
-void VoiceManager::makeVoiceChat()
+void VoiceManager::voiceChatActionActivated(QAction *sender, bool toggled)
 {
 	kdebugf();
 
-	UserBox *activeUserBox = UserBox::activeUserBox();
-	if (activeUserBox == NULL)
+	KaduMainWindow *kaduMainWindow = dynamic_cast<KaduMainWindow *>(sender->parent());
+	if (!kaduMainWindow)
 		return;
 
-	UserListElements users = activeUserBox->selectedUsers();
-	if (users.count() != 1)
-		return;
-
-	makeVoiceChat(users[0].ID("Gadu").toUInt());
+	UserListElements users = kaduMainWindow->getUserListElements();
+	if (users.count() == 1)
+		makeVoiceChat(users[0].ID("Gadu").toUInt());
 
 	kdebugf2();
 }
@@ -706,8 +725,8 @@ bool VoiceManager::askAcceptVoiceChat(DccSocket *socket)
 
 void VoiceManager::mainDialogKeyPressed(QKeyEvent *e)
 {
-	if (HotKey::shortCut(e,"ShortCuts", "kadu_voicechat"))
-		makeVoiceChat();
+//	if (HotKey::shortCut(e,"ShortCuts", "kadu_voicechat"))
+//		makeVoiceChat();
 }
 
 void VoiceManager::chatKeyPressed(QKeyEvent *e, ChatWidget *chatWidget, bool &handled)
@@ -719,29 +738,6 @@ void VoiceManager::chatKeyPressed(QKeyEvent *e, ChatWidget *chatWidget, bool &ha
 			makeVoiceChat(users[0].ID("Gadu").toUInt());
 		handled = true;
 	}
-}
-
-void VoiceManager::userBoxMenuPopup()
-{
-	kdebugf();
-	UserBox *activeUserBox = UserBox::activeUserBox();
-	if (activeUserBox == NULL) //to si� zdarza...
-		return;
-	UserListElements users = activeUserBox->selectedUsers();
-	UserListElement user = users[0];
-
-	bool containsOurUin = users.contains("Gadu", QString::number(config_file.readNumEntry("General", "UIN")));
-// 	int voicechat = UserBox::userboxmenu->getItem(tr("Voice chat"));
-
-// 	bool enable =
-// 		(users.count() == 1) &&
-// 		user.usesProtocol("Gadu") &&
-// 		!containsOurUin &&
-// 		config_file.readBoolEntry("Network", "AllowDCC") &&
-// 		(user.status("Gadu").isOnline() || user.status("Gadu").isBusy());
-
-// 	UserBox::userboxmenu->setItemVisible(voicechat, enable);
-	kdebugf2();
 }
 
 bool VoiceManager::socketEvent(DccSocket *socket, bool &lock)

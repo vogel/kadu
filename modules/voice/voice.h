@@ -11,6 +11,7 @@ extern "C" {
 	#include "libgsm/inc/gsm.h"
 };
 
+#include "action.h"
 #include "../dcc/dcc.h"
 #include "../dcc/dcc_handler.h"
 #include "../sound/sound.h"
@@ -68,7 +69,7 @@ class VoiceChatDialog : public QDialog, public DccHandler
 class VoiceManager : public ConfigurationUiHandler, public DccHandler
 {
 	Q_OBJECT
-
+		ActionDescription *voiceChatActionDescription;
 		MessageBox *GsmEncodingTestMsgBox;
 		SoundDevice GsmEncodingTestDevice;
 		gsm GsmEncodingTestHandle;
@@ -94,7 +95,7 @@ class VoiceManager : public ConfigurationUiHandler, public DccHandler
 		void makeVoiceChat(UinType dest);
 
 	private slots:
-		void makeVoiceChat();
+		void voiceChatActionActivated(QAction *sender, bool toggled);
 
 		void testGsmEncoding();
 		void gsmEncodingTestSampleRecorded(SoundDevice device);
@@ -103,7 +104,6 @@ class VoiceManager : public ConfigurationUiHandler, public DccHandler
 		void recordSampleReceived(char *data, int length);
 		void mainDialogKeyPressed(QKeyEvent *e);
 		void chatKeyPressed(QKeyEvent *e, ChatWidget *chatWidget, bool &handled);
-		void userBoxMenuPopup();
 
 		void chatCreated(ChatWidget *chat);
 		void chatDestroying(ChatWidget *chat);
