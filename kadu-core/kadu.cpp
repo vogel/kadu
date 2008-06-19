@@ -229,7 +229,7 @@ bool disableNoGaduDescriptionUrl(const UserListElements &ules)
 	if (!disableNoGaduDescription(ules))
 		return false;
 
-	if (!ules[0].status("Gadu").description().find(HtmlDocument::urlRegExp()))
+	if (ules[0].status("Gadu").description().indexOf(HtmlDocument::urlRegExp()) < 0)
 		return false;
 
 	kdebugf2();
@@ -243,7 +243,7 @@ bool disableNoEMail(const UserListElements &ules)
 	if (!disableNotOneUles(ules))
 		return false;
 
-	if (ules[0].email().isEmpty() || !ules[0].email().find(HtmlDocument::mailRegExp()))
+	if (ules[0].email().isEmpty() || ules[0].email().indexOf(HtmlDocument::mailRegExp()) < 0)
 		return false;
 
 	kdebugf2();
@@ -502,7 +502,7 @@ Kadu::Kadu(QWidget *parent)
 		ActionDescription::TypeUser, "editUserAction",
 		this, SLOT(editUserActionActivated(QAction *, bool)),
 		"EditUserInfo", tr("Contact data"), false, QString::null,
-		disableEmptyUles
+		disableNotOneUles
 	);
 
 	addUserActionDescription = new ActionDescription(

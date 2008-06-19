@@ -54,8 +54,7 @@ bool ChatEditBox::supportsActionType(ActionDescription::ActionType type)
 
 UserBox * ChatEditBox::getUserBox()
 {
-	// TODO: It's stupid
-	ChatWidget *chatWidget = dynamic_cast<ChatWidget *>(parent()->parent());
+	ChatWidget *chatWidget = getChatWidget();
 	if (chatWidget)
 		if (chatWidget->users()->count() > 1)
 			return chatWidget->getUserbox();
@@ -65,7 +64,6 @@ UserBox * ChatEditBox::getUserBox()
 
 UserListElements ChatEditBox::getUserListElements()
 {
-	// TODO: It's stupid
 	ChatWidget *chatWidget = getChatWidget();
 	if (chatWidget)
 		return chatWidget->users()->toUserListElements();
@@ -76,4 +74,12 @@ UserListElements ChatEditBox::getUserListElements()
 ChatWidget * ChatEditBox::getChatWidget()
 {
 	return dynamic_cast<ChatWidget *>(parent()->parent());
+}
+
+void ChatEditBox::addAction(KaduAction *action)
+{
+	ChatWidget *chatWidget = dynamic_cast<ChatWidget *>(parent());
+	if (chatWidget)
+		action->userListChanged(chatWidget->users()->toUserListElements());
+
 }

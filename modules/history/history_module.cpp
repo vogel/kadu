@@ -96,8 +96,7 @@ HistoryModule::HistoryModule()
 	historyActionDescription = new ActionDescription(
 		ActionDescription::TypeUser, "showHistoryAction",
 		this, SLOT(historyActionActivated(QAction *, bool)),
-		"History", tr("Show history"), false, "",
-		disableNonProtocolUles
+		"History", tr("Show history"), false
 	);
 	UserBox::insertActionDescription(5, historyActionDescription); // TODO: HotKey::shortCutFromFile("ShortCuts", "kadu_viewhistory")
 
@@ -160,17 +159,16 @@ void HistoryModule::historyActionActivated(QAction *sender, bool toggled)
 {
 	kdebugf();
 	
-	KaduMainWindow *window = dynamic_cast<KaduMainWindow *>(sender->parent());
-	if (!window)
-		return;
-
 	UinsList uins;
-	UserListElements users = window->getUserListElements();
+	KaduMainWindow *window = dynamic_cast<KaduMainWindow *>(sender->parent());
+	if (window)
+	{
+		UserListElements users = window->getUserListElements();
 
-	if (users.count())
-		foreach(const UserListElement &user, users)
-			uins.append(user.ID("Gadu").toUInt());
-
+		if (users.count() > 0)
+			foreach(const UserListElement &user, users)
+				uins.append(user.ID("Gadu").toUInt());
+	}
 	//TODO: throw out UinsList as soon as possible!
 	(new HistoryDialog(uins))->show();
 

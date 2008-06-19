@@ -23,7 +23,7 @@ class KaduMainWindow : public QMainWindow
 	Q_OBJECT
 
 	friend class Actions;
-	void addAction(KaduAction *action);
+	virtual void addAction(KaduAction *action);
 
 protected:
 	void loadToolBarsFromConfig(const QString &prefix);
