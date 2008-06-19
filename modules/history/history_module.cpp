@@ -29,8 +29,6 @@
 
 #include "history_module.h"
 
-
-
 extern "C" int history_init()
 {
 	kdebugf();
@@ -51,6 +49,21 @@ extern "C" void history_close()
 	history_module = 0;
 
 	kdebugf2();
+}
+
+bool disableNonProtocolUles(const UserListElements &ules)
+{
+	kdebugf();
+
+	if (!ules.count())
+		return false;
+
+	foreach(const UserListElement &user, ules)
+		if (!user.protocolList().isEmpty())
+			return true;
+
+	kdebugf2();
+	return false;
 }
 
 HistoryModule::HistoryModule()
@@ -77,20 +90,24 @@ HistoryModule::HistoryModule()
 		history, SLOT(imageReceivedAndSaved(UinType, uint32_t, uint32_t, const QString &)));
 	connect(kadu, SIGNAL(removingUsers(UserListElements)), this, SLOT(removingUsers(UserListElements)));
 
+	ToolBar::addDefaultAction("Kadu toolbar", "showHistoryAction", 4);
+	ToolBar::addDefaultAction("Chat toolbar 1", "showHistoryAction", 3);
 
 	historyActionDescription = new ActionDescription(
 		ActionDescription::TypeUser, "showHistoryAction",
 		this, SLOT(historyActionActivated(QAction *, bool)),
-		"History", tr("Show history"), false
+		"History", tr("Show history"), false, "",
+		disableNonProtocolUles
 	);
-
-	ToolBar::addDefaultAction("Kadu toolbar", "showHistoryAction", 4);
-	ToolBar::addDefaultAction("Chat toolbar 1", "showHistoryAction", 3);
-
 	UserBox::insertActionDescription(5, historyActionDescription); // TODO: HotKey::shortCutFromFile("ShortCuts", "kadu_viewhistory")
 
-// 	UserBox::management->addItemAtPos(7, "ClearHistory", tr("Clear history"),  this, SLOT(deleteHistory()));
-// 	connect(UserBox::userboxmenu, SIGNAL(popup()), this, SLOT(userboxMenuPopup()));
+	ActionDescription *clearHistoryActionDescription = new ActionDescription(
+		ActionDescription::TypeHistory, "clearHistoryAction",
+		this, SLOT(clearHistoryActionActivated(QAction *, bool)),
+		"ClearHistory", tr("Clear history"), false, "",
+		disableNonProtocolUles
+	);
+	UserBox::insertManagementActionDescription(7, clearHistoryActionDescription);
 
 	kdebugf2();
 }
@@ -98,12 +115,6 @@ HistoryModule::HistoryModule()
 HistoryModule::~HistoryModule()
 {
 	kdebugf();
-
-// 	int history_item = UserBox::userboxmenu->getItem(tr("History"));
-// 	int delete_history_item = UserBox::management->getItem(tr("Clear history"));
-// 	UserBox::userboxmenu->removeItem(history_item);
-// 	UserBox::management->removeItem(delete_history_item);
-// 	disconnect(UserBox::userboxmenu, SIGNAL(popup()), this, SLOT(userboxMenuPopup()));
 
 	disconnect(chat_manager, SIGNAL(chatWidgetCreated(ChatWidget *)), this, SLOT(chatCreated(ChatWidget *)));
 	disconnect(chat_manager, SIGNAL(chatWidgetDestroying(ChatWidget *)), this, SLOT(chatDestroying(ChatWidget *)));
@@ -148,19 +159,40 @@ void HistoryModule::updateQuoteTimeLabel(int value)
 void HistoryModule::historyActionActivated(QAction *sender, bool toggled)
 {
 	kdebugf();
+	
+	KaduMainWindow *window = dynamic_cast<KaduMainWindow *>(sender->parent());
+	if (!window)
+		return;
 
 	UinsList uins;
-	KaduMainWindow *window = dynamic_cast<KaduMainWindow *>(sender->parent());
-	if (window)
-	{
-		UserListElements users = window->getUserListElements();
-	
-		if (users.count() > 0)
-			foreach(const UserListElement &user, users)
-				uins.append(user.ID("Gadu").toUInt());
-	}
+	UserListElements users = window->getUserListElements();
+
+	if (users.count())
+		foreach(const UserListElement &user, users)
+			uins.append(user.ID("Gadu").toUInt());
+
 	//TODO: throw out UinsList as soon as possible!
 	(new HistoryDialog(uins))->show();
+
+	kdebugf2();
+}
+
+void HistoryModule::clearHistoryActionActivated(QAction *sender, bool toggled)
+{
+	kdebugf();
+	
+	KaduMainWindow *window = dynamic_cast<KaduMainWindow *>(sender->parent());
+	if (!window)
+		return;
+
+	UinsList uins;
+	UserListElements users = window->getUserListElements();
+
+	foreach(const UserListElement &user, users)
+		if (user.usesProtocol("Gadu"))
+			uins.append(user.ID("Gadu").toUInt());
+
+	history->removeHistory(uins);
 
 	kdebugf2();
 }
@@ -308,60 +340,6 @@ void HistoryModule::viewHistory()
 		uins.append(user.ID("Gadu").toUInt());
 	//TODO: throw out UinsList as soon as possible!
 	(new HistoryDialog(uins))->show();
-
-	kdebugf2();
-}
-
-void HistoryModule::deleteHistory()
-{
-	kdebugf();
-	UserBox *activeUserBox = UserBox::activeUserBox();
-	if (activeUserBox == NULL)
-	{
-		kdebugf2();
-		return;
-	}
-	//TODO: throw out UinsList as soon as possible!
-	UinsList uins;
-	UserListElements users = activeUserBox->selectedUsers();
-	foreach(const UserListElement &user, users)
-		if (user.usesProtocol("Gadu"))
-			uins.append(user.ID("Gadu").toUInt());
-
-	history->removeHistory(uins);
-	kdebugf2();
-}
-
-void HistoryModule::userboxMenuPopup()
-{
-	kdebugf();
-
-	UserBox *activeUserBox = UserBox::activeUserBox();
-	if (activeUserBox == NULL)
-	{
-		kdebugf2();
-		return;
-	}
-
-	UserListElements users = activeUserBox->selectedUsers();
-	if (!users.count())
-	{
-		kdebugf2();
-		return;
-	}
-
-// 	int history_item = UserBox::userboxmenu->getItem(tr("History"));
-// 	int delete_history_item = UserBox::management->getItem(tr("Clear history"));
-
-	bool any_ok = false;
-	foreach(const UserListElement &user, users)
-		if (!user.protocolList().isEmpty())
-		{
-			any_ok = true;
-			break;
-		}
-// 	UserBox::userboxmenu->setItemVisible(history_item, any_ok);
-// 	UserBox::userboxmenu->setItemVisible(delete_history_item, any_ok);
 
 	kdebugf2();
 }

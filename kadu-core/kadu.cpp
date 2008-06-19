@@ -131,6 +131,185 @@ void Kadu::keyPressEvent(QKeyEvent *e)
 //	kdebugf2();
 }
 
+bool disableNonIdUles(const UserListElements &ules)
+{
+	kdebugf();
+
+	foreach(const UserListElement &user, ules)
+		if (!user.usesProtocol("Gadu"))
+			return false;
+
+	kdebugf2();
+	return true;
+}
+
+bool disableContainsSelfUles(const UserListElements &ules)
+{
+	kdebugf();
+
+	foreach(const UserListElement &user, ules)
+		if (user.usesProtocol("Gadu") && user.ID("Gadu") == kadu->myself().ID("Gadu"))
+			return false;
+
+	kdebugf2();
+	return true;
+}
+
+bool disableOfflineToUser(const UserListElements &ules)
+{
+	kdebugf();
+
+	if (!disableNonIdUles(ules))
+		return false;
+
+	if (!config_file.readBoolEntry("General", "PrivateStatus"))
+		return false;
+
+	kdebugf2();
+	return true;
+}
+
+bool disableNotify(const UserListElements &ules)
+{
+	kdebugf();
+
+	if (!disableNonIdUles(ules))
+		return false;
+
+	if (config_file.readBoolEntry("Notify", "NotifyAboutAll"))
+		return false;
+
+	kdebugf2();
+	return true;
+}
+
+bool disableNotOneUles(const UserListElements &ules)
+{
+	kdebugf();
+
+	if (ules.count() != 1)
+		return false;
+
+	kdebugf2();
+	return true;
+}
+
+bool disableNoGaduUle(const UserListElements &ules)
+{
+	kdebugf();
+
+	if (!disableNotOneUles(ules))
+		return false;
+
+	if (!ules[0].usesProtocol("Gadu"))
+		return false;
+
+	kdebugf2();
+	return true;
+}
+
+bool disableNoGaduDescription(const UserListElements &ules)
+{
+	kdebugf();
+
+	if (!disableNoGaduUle(ules))
+		return false;
+
+	if (ules[0].status("Gadu").description().isEmpty())
+		return false;
+
+	kdebugf2();
+	return true;
+}
+
+bool disableNoGaduDescriptionUrl(const UserListElements &ules)
+{
+	kdebugf();
+
+	if (!disableNoGaduDescription(ules))
+		return false;
+
+	if (!ules[0].status("Gadu").description().find(HtmlDocument::urlRegExp()))
+		return false;
+
+	kdebugf2();
+	return true;
+}
+
+bool disableNoEMail(const UserListElements &ules)
+{
+	kdebugf();
+
+	if (!disableNotOneUles(ules))
+		return false;
+
+	if (ules[0].email().isEmpty() || !ules[0].email().find(HtmlDocument::mailRegExp()))
+		return false;
+
+	kdebugf2();
+	return true;
+}
+
+// 		UserBox::management->setItemChecked(ignoreuseritem, IgnoredManager::isIgnored(selectedUsers));
+
+// 		foreach(const UserListElement &user, users)
+// 			if (!user.usesProtocol("Gadu") || !user.protocolData("Gadu", "Blocking").toBool())
+// 			{
+// 				on = false;
+// 				break;
+// 			}
+// 		UserBox::management->setItemChecked(blockuseritem, on);
+
+// 		on = true;
+// 		foreach(const UserListElement &user, users)
+// 			if (!user.usesProtocol("Gadu") || !user.protocolData("Gadu", "OfflineTo").toBool())
+// 			{
+// 				on = false;
+// 				break;
+// 			}
+// 		UserBox::management->setItemChecked(offlinetouseritem, on);
+
+// 		on = false;
+// 		foreach(const UserListElement &user, users)
+// 			if (user.data("HideDescription").toString() == "true")
+// 			{
+// 				on = true;
+// 				break;
+// 			}
+// 		UserBox::management->setItemChecked(hidedescriptionitem, on);
+
+// 		on = true;
+// 		foreach(const UserListElement &user, users)
+// 			if (!user.notify())
+// 			{
+// 				on = false;
+// 				break;
+// 			}
+// 		UserBox::management->setItemChecked(notifyuseritem, on);
+
+
+// ignore, block, notify, offline, hidedesc, chatitem
+// bool disableNonIdUles(const UserListElements &ules)
+// ignore, block, offline, chat
+// bool disableContainsSelfUles(const UserListElements &ules)
+// bool disableHideDescription(const UserListElements &ules)
+// bool disableNotOneUles(const UserListElements &ules)
+// bool disableNoGaduUle(const UserListElements &ules)
+// bool disableNoGaduDescription(const UserListElements &ules)
+// bool disableNoGaduDescriptionUrl(const UserListElements &ules)
+
+// 	if (users.count() != 1)
+// 		UserBox::userboxmenu->setItemVisible(UserBox::userboxmenu->getItem(tr("Contact data")), false);
+// 	if ((users.count() != 1) || !firstUser.usesProtocol("Gadu"))
+// 		UserBox::userboxmenu->setItemVisible(UserBox::userboxmenu->getItem(tr("Search in directory")), false);
+// 	if ((users.count() != 1) || !firstUser.usesProtocol("Gadu") || firstUser.status("Gadu").description().isEmpty())
+// 		UserBox::userboxmenu->setItemVisible(UserBox::userboxmenu->getItem(tr("Copy description")), false);
+// 	if ((users.count() != 1) || !firstUser.usesProtocol("Gadu") || firstUser.status("Gadu").description().isEmpty() ||
+// 		firstUser.status("Gadu").description().find(HtmlDocument::urlRegExp()) == -1)
+// 		UserBox::userboxmenu->setItemVisible(UserBox::userboxmenu->getItem(tr("Open description link in browser")), false);
+// 	if ((users.count() != 1) || firstUser.email().isEmpty() || firstUser.email().find(HtmlDocument::mailRegExp()) == -1)
+// 		UserBox::userboxmenu->setItemVisible(UserBox::userboxmenu->getItem(tr("Write email message")), false);
+
 /* a monstrous constructor so Kadu would take longer to start up */
 Kadu::Kadu(QWidget *parent)
 	: KaduMainWindow(parent),
@@ -192,33 +371,34 @@ Kadu::Kadu(QWidget *parent)
 	hbox_layout->setAlignment(GroupBar, Qt::AlignTop);
 	hbox->setLayout(hbox_layout);
 // 	connect(UserBox::userboxmenu, SIGNAL(popup()), this, SLOT(popupMenu()));
-// 	connect(Userbox, SIGNAL(rightButtonPressed(Q3ListBoxItem *, const QPoint &)),
-// 		UserBox::userboxmenu, SLOT(show(Q3ListBoxItem *)));
-// 	connect(UserBox::management, SIGNAL(aboutToShow()), this, SLOT(popupMenu()));
 	connect(Userbox, SIGNAL(doubleClicked(UserListElement)), this, SLOT(sendMessage(UserListElement)));
 	connect(Userbox, SIGNAL(returnPressed(UserListElement)), this, SLOT(sendMessage(UserListElement)));
 	connect(Userbox, SIGNAL(mouseButtonClicked(int, Q3ListBoxItem *, const QPoint &)),
 		this, SLOT(mouseButtonClicked(int, Q3ListBoxItem *)));
 	connect(Userbox, SIGNAL(currentChanged(UserListElement)), this, SLOT(currentChanged(UserListElement)));
 
+
 	ActionDescription *writeEmailActionDescription = new ActionDescription(
 		ActionDescription::TypeUser, "writeEmailAction",
 		this, SLOT(writeEMailActionActivated(QAction *, bool)),
-		"WriteEmail", tr("Write email message")
+		"WriteEmail", tr("Write email message"), false, "",
+		disableNoEMail
 	);
 	UserBox::addActionDescription(writeEmailActionDescription);
 
 	ActionDescription *copyDescriptionActionDescription = new ActionDescription(
 		ActionDescription::TypeUser, "copyDescriptionAction",
 		this, SLOT(copyDescriptionActionActivated(QAction *, bool)),
-		"CopyDescription", tr("Copy description")
+		"CopyDescription", tr("Copy description"), false, "",
+		disableNoGaduDescription
 	);
 	UserBox::addActionDescription(copyDescriptionActionDescription);
 
 	ActionDescription *openDescriptionLinkActionDescription = new ActionDescription(
 		ActionDescription::TypeUser, "openDescriptionLinkAction",
 		this, SLOT(openDescriptionLinkActionActivated(QAction *, bool)),
-		"OpenDescriptionLink", tr("Open description link in browser")
+		"OpenDescriptionLink", tr("Open description link in browser"), false, "",
+		disableNoGaduDescriptionUrl
 	);
 	UserBox::addActionDescription(openDescriptionLinkActionDescription);
 
@@ -232,7 +412,8 @@ Kadu::Kadu(QWidget *parent)
 	ActionDescription *lookupUserInfoActionDescription = new ActionDescription(
 		ActionDescription::TypeUser, "lookupUserInfoAction",
 		this, SLOT(lookupInDirectoryActionActivated(QAction *, bool)),
-		"LookupUserInfo", tr("Search in directory")
+		"LookupUserInfo", tr("Search in directory"), false, "",
+		disableNoGaduUle
 	);
 	UserBox::addActionDescription(lookupUserInfoActionDescription); // HotKey::shortCutFromFile("ShortCuts", "kadu_searchuser")
 
@@ -246,21 +427,24 @@ Kadu::Kadu(QWidget *parent)
 	ActionDescription *notifyAboutUserActionDescription = new ActionDescription(
 		ActionDescription::TypeUser, "notifyAboutUserAction",
 		this, SLOT(notifyAboutUserActionActivated(QAction *, bool)),
-		"NotifyAboutUser", tr("Notify about user")
+		"NotifyAboutUser", tr("Notify about user"), false, "",
+		disableNotify
 	);
 	UserBox::addManagementActionDescription(notifyAboutUserActionDescription);
 
 	ActionDescription *offlineToUserActionDescription = new ActionDescription(
 		ActionDescription::TypeUser, "offlineToUserAction",
 		this, SLOT(offlineToUserActionActivated(QAction *, bool)),
-		"Offline", tr("Offline to user")
+		"Offline", tr("Offline to user"), false, "",
+		disableOfflineToUser
 	);
 	UserBox::addManagementActionDescription(offlineToUserActionDescription);
 
 	ActionDescription *hideDescriptionActionDescription = new ActionDescription(
 		ActionDescription::TypeUser, "hideDescriptionAction",
 		this, SLOT(hideDescriptionActionActivated(QAction *, bool)),
-		"ShowDescription_off", tr("Hide description")
+		"ShowDescription_off", tr("Hide description"), false, "",
+		disableNoGaduUle
 	);
 	UserBox::addManagementActionDescription(hideDescriptionActionDescription);
 
@@ -436,116 +620,6 @@ Kadu::Kadu(QWidget *parent)
 QVBoxLayout * Kadu::mainLayout() const
 {
 	return MainLayout;
-}
-
-void Kadu::popupMenu()
-{
-	kdebugf();
-
-	UserBox *activeUserBox = UserBox::activeUserBox();
-	if (activeUserBox == NULL) //to si� zdarza...
-	{
-		kdebugf2();
-		return;
-	}
-
-	UserListElements users = activeUserBox->selectedUsers();
-	if (users.count() == 0)
-		return;
-
-	UserListElement firstUser = *users.constBegin();
-
-	bool containsMe = false;
-	bool containsUserWithoutID = false;
-	foreach(const UserListElement &user, users)
-	{
-		if (!containsUserWithoutID && !user.usesProtocol("Gadu"))
-			containsUserWithoutID = true;
-		if (!containsMe && user.usesProtocol("Gadu") && user.ID("Gadu") == Myself.ID("Gadu"))
-			containsMe = true;
-	}
-
-// 	int ignoreuseritem = UserBox::management->getItem(tr("Ignore"));
-// 	int blockuseritem = UserBox::management->getItem(tr("Block"));
-// 	int notifyuseritem = UserBox::management->getItem(tr("Notify about user"));
-// 	int offlinetouseritem = UserBox::management->getItem(tr("Offline to user"));
-// 	int hidedescriptionitem = UserBox::management->getItem(tr("Hide description"));
-// 	int chatitem = UserBox::userboxmenu->getItem(tr("Open chat window"));
-
-	if (containsUserWithoutID)
-	{
-// 		UserBox::management->setItemVisible(ignoreuseritem, false);
-// 		UserBox::management->setItemVisible(blockuseritem, false);
-// 		UserBox::management->setItemVisible(notifyuseritem, false);
-// 		UserBox::management->setItemVisible(offlinetouseritem, false);
-// 		UserBox::management->setItemVisible(hidedescriptionitem, false);
-// 		UserBox::userboxmenu->setItemVisible(chatitem, false);
-	}
-	else
-	{
-		bool on;
-		UserListElements selectedUsers = activeUserBox->selectedUsers();
-// 		UserBox::management->setItemChecked(ignoreuseritem, IgnoredManager::isIgnored(selectedUsers));
-
-		on = true;
-		foreach(const UserListElement &user, users)
-			if (!user.usesProtocol("Gadu") || !user.protocolData("Gadu", "Blocking").toBool())
-			{
-				on = false;
-				break;
-			}
-// 		UserBox::management->setItemChecked(blockuseritem, on);
-
-		on = true;
-		foreach(const UserListElement &user, users)
-			if (!user.usesProtocol("Gadu") || !user.protocolData("Gadu", "OfflineTo").toBool())
-			{
-				on = false;
-				break;
-			}
-// 		UserBox::management->setItemVisible(offlinetouseritem, config_file.readBoolEntry("General", "PrivateStatus"));
-// 		UserBox::management->setItemChecked(offlinetouseritem, on);
-
-		on = false;
-		foreach(const UserListElement &user, users)
-			if (user.data("HideDescription").toString() == "true")
-			{
-				on = true;
-				break;
-			}
-// 		UserBox::management->setItemChecked(hidedescriptionitem, on);
-
-		on = true;
-		foreach(const UserListElement &user, users)
-			if (!user.notify())
-			{
-				on = false;
-				break;
-			}
-// 		UserBox::management->setItemVisible(notifyuseritem, !config_file.readBoolEntry("Notify", "NotifyAboutAll"));
-// 		UserBox::management->setItemChecked(notifyuseritem, on);
-
-		if (containsMe)
-		{
-// 			UserBox::management->setItemVisible(ignoreuseritem, false);
-// 			UserBox::management->setItemVisible(blockuseritem, false);
-// 			UserBox::management->setItemVisible(offlinetouseritem, false);
-// 			UserBox::userboxmenu->setItemVisible(chatitem, false);
-		}
-	}
-
-// 	if (users.count() != 1)
-// 		UserBox::userboxmenu->setItemVisible(UserBox::userboxmenu->getItem(tr("Contact data")), false);
-// 	if ((users.count() != 1) || !firstUser.usesProtocol("Gadu"))
-// 		UserBox::userboxmenu->setItemVisible(UserBox::userboxmenu->getItem(tr("Search in directory")), false);
-// 	if ((users.count() != 1) || !firstUser.usesProtocol("Gadu") || firstUser.status("Gadu").description().isEmpty())
-// 		UserBox::userboxmenu->setItemVisible(UserBox::userboxmenu->getItem(tr("Copy description")), false);
-// 	if ((users.count() != 1) || !firstUser.usesProtocol("Gadu") || firstUser.status("Gadu").description().isEmpty() ||
-// 		firstUser.status("Gadu").description().find(HtmlDocument::urlRegExp()) == -1)
-// 		UserBox::userboxmenu->setItemVisible(UserBox::userboxmenu->getItem(tr("Open description link in browser")), false);
-// 	if ((users.count() != 1) || firstUser.email().isEmpty() || firstUser.email().find(HtmlDocument::mailRegExp()) == -1)
-// 		UserBox::userboxmenu->setItemVisible(UserBox::userboxmenu->getItem(tr("Write email message")), false);
-	kdebugf2();
 }
 
 void Kadu::configure()
@@ -1385,8 +1459,6 @@ bool Kadu::close(bool quit)
 				this, SLOT(wentOffline(const QString &)));
 
 // 		disconnect(UserBox::userboxmenu, SIGNAL(popup()), this, SLOT(/*/*popupMenu*/*/()));
-// 		disconnect(Userbox, SIGNAL(rightButtonPressed(Q3ListBoxItem *, const QPoint &)),
-// 					UserBox::userboxmenu, SLOT(show(Q3ListBoxItem *)));
 		disconnect(Userbox, SIGNAL(doubleClicked(UserListElement)), this, SLOT(sendMessage(UserListElement)));
 		disconnect(Userbox, SIGNAL(returnPressed(UserListElement)), this, SLOT(sendMessage(UserListElement)));
 		disconnect(Userbox, SIGNAL(mouseButtonClicked(int, Q3ListBoxItem *, const QPoint &)),

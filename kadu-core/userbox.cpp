@@ -469,8 +469,6 @@ inline bool ULEComparer::operator()(const UserListElement &e1, const UserListEle
 	return ret < 0;
 }
 
-// UserBoxMenu *UserBox::userboxmenu = NULL;
-// UserBoxMenu *UserBox::management = NULL;
 CreateNotifier UserBox::createNotifier;
 
 QList<ActionDescription *> UserBox::UserBoxActions;
@@ -1434,7 +1432,11 @@ void UserBox::contextMenuEvent(QContextMenuEvent *event)
 
 	foreach (ActionDescription *actionDescription, UserBox::UserBoxActions)
 		if (actionDescription)
-			menu->addAction(actionDescription->getAction(mainWindow));
+		{
+			KaduAction *action = actionDescription->getAction(mainWindow);
+			action->userListChanged(mainWindow->getUserListElements());
+			menu->addAction(action);
+		}
 		else
 			menu->addSeparator();
 
@@ -1442,7 +1444,11 @@ void UserBox::contextMenuEvent(QContextMenuEvent *event)
 
 	foreach (ActionDescription *actionDescription, UserBox::ManagementActions)
 		if (actionDescription)
-			management->addAction(actionDescription->getAction(mainWindow));
+		{
+			KaduAction *action = actionDescription->getAction(mainWindow);
+			action->userListChanged(mainWindow->getUserListElements());
+			management->addAction(action);
+		}
 		else
 			management->addSeparator();
 

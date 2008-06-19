@@ -89,7 +89,7 @@ class SmsSender : public QObject
 };
 
 /**
-	Dialog umo¿liwiaj±cy wysy³anie SMS'ów
+	Dialog umoï¿½liwiajï¿½cy wysyï¿½anie SMS'ï¿½w
 **/
 class Sms : public QWidget, ConfigurationAwareObject
 {
@@ -167,7 +167,6 @@ public slots:
 	void onSendSms();
 	void onUserClicked(int button, Q3ListBoxItem* item, const QPoint& pos);
 	void onUserDblClicked(UserListElement elem);
-	void onPopupMenuCreate();
 	void onSendSmsToUser();
 	void onUpButton();
 	void onDownButton();

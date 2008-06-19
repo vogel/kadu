@@ -22,10 +22,10 @@ class HistoryModule : public ConfigurationUiHandler
 
 private slots:
 	void historyActionActivated(QAction *sender, bool toggled);
+	void clearHistoryActionActivated(QAction *sender, bool toggled);
+
 	void messageSentAndConfirmed(UserListElements receivers, const QString& message);
 	void viewHistory();
-	void deleteHistory();
-	void userboxMenuPopup();
 	void removingUsers(UserListElements users);
 	void updateQuoteTimeLabel(int);
 

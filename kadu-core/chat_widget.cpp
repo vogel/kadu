@@ -69,8 +69,6 @@ ChatWidget::ChatWidget(Protocol *initialProtocol, const UserListElements &usrs, 
 
 		userbox = new UserBox(Edit, false, Users, userlistContainer, "userbox");
 		userbox->setMinimumSize(QSize(30,30));
-// 		connect(userbox, SIGNAL(rightButtonPressed(Q3ListBoxItem *, const QPoint &)),
-// 			UserBox::userboxmenu, SLOT(show(Q3ListBoxItem *)));
 
 		QPushButton *leaveConference = new QPushButton(tr("Leave conference"), userlistContainer);
 		leaveConference->setMinimumWidth(userbox->minimumWidth());

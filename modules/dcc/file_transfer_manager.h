@@ -39,7 +39,6 @@ class FileTransferManager : public QObject, DccHandler
 	QList<FileTransfer *> Transfers;
 
 private slots:
-	void userboxMenuPopup();
 	void sendFile();
 	void kaduKeyPressed(QKeyEvent *e);
 	void chatKeyPressed(QKeyEvent *e, ChatWidget *widget, bool &handled);
@@ -98,7 +97,7 @@ private slots:
 
 public slots:
 	/**
-		Inicjuje wysy³anie pliku do podanego odbiorcy.
+		Inicjuje wysyï¿½anie pliku do podanego odbiorcy.
 	**/
 	void sendFile(UinType receiver);
 

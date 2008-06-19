@@ -35,6 +35,28 @@
 
 #include "file_transfer_manager.h"
 
+bool disableNonDccUles(const UserListElements &ules)
+{
+	kdebugf();
+
+	if (!ules.count())
+		return false;
+
+	bool dccEnabled = config_file.readBoolEntry("Network", "AllowDCC");
+	bool dccKeyEnabled = true;
+
+	if (!dccEnabled)
+		return false;
+
+	unsigned int myUin = config_file.readUnsignedNumEntry("General", "UIN");
+	foreach(const UserListElement &user, ules)
+		if (!user.usesProtocol("Gadu") || user.ID("Gadu").toUInt() == myUin)
+			return false;
+
+	kdebugf2();
+	return true;
+}
+
 FileTransferManager::FileTransferManager(QObject *parent, const char *name) : QObject(parent, name),
 	fileTransferWindow(0), toggleFileTransferWindowMenuId(0)
 {
@@ -46,7 +68,7 @@ FileTransferManager::FileTransferManager(QObject *parent, const char *name) : QO
 		ActionDescription::TypeUser, "sendFileAction",
 		this, SLOT(sendFileDirectoryActionActivated(QAction *, bool)),
 		"SendFile", tr("Send file"), false, QString::null,
-		disableEmptyUles
+		disableNonDccUles
 	); // HotKey::shortCutFromFile("ShortCuts", "kadu_sendfile")
 
 	UserBox::insertActionDescription(1, sendFileActionDescription);
@@ -81,9 +103,6 @@ FileTransferManager::~FileTransferManager()
  	notification_manager->unregisterEvent("FileTransfer/IncomingFile");
 	notification_manager->unregisterEvent("FileTransfer/Finished");
 
-// 	int sendfile = UserBox::userboxmenu->getItem(tr("Send file"));
-// 	UserBox::userboxmenu->removeItem(sendfile);
-// 	disconnect(UserBox::userboxmenu,SIGNAL(popup()), this, SLOT(userboxMenuPopup()));
 	disconnect(kadu, SIGNAL(keyPressed(QKeyEvent*)), this, SLOT(kaduKeyPressed(QKeyEvent*)));
 
 	delete sendFileActionDescription;
@@ -233,38 +252,6 @@ void FileTransferManager::sendFile(const UserListElements users)
 			if (user.usesProtocol("Gadu") && user.ID("Gadu") != QString::number(myUin))
 				sendFile(user.ID("Gadu").toUInt(), file);
 
-	kdebugf2();
-}
-
-void FileTransferManager::userboxMenuPopup()
-{
-	kdebugf();
-
-	UserBox *activeUserBox = UserBox::activeUserBox();
-	if (activeUserBox == NULL)
-	{
-		kdebugf2();
-		return;
-	}
-
-// 	int sendfile = UserBox::userboxmenu->getItem(tr("Send file"));
-	bool dccEnabled = config_file.readBoolEntry("Network", "AllowDCC");
-	bool dccKeyEnabled = true;
-
-	if (dccEnabled)
-	{
-		unsigned int myUin = config_file.readUnsignedNumEntry("General", "UIN");
-		UserListElements users = activeUserBox->selectedUsers();
-
-		foreach(const UserListElement &user, users)
-			if (!user.usesProtocol("Gadu") || user.ID("Gadu").toUInt() == myUin)
-			{
-				dccKeyEnabled = false;
-				break;
-			}
-	}
-
-// 	UserBox::userboxmenu->setItemVisible(sendfile, dccKeyEnabled && dccEnabled);
 	kdebugf2();
 }
 

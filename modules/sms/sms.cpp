@@ -47,7 +47,6 @@ extern "C" int sms_init()
 			smsConfigurationUiHandler, SLOT(onUserClicked(int, Q3ListBoxItem*, const QPoint&)));
 	QObject::connect(kadu->userbox(), SIGNAL(returnPressed(UserListElement)),
 			smsConfigurationUiHandler, SLOT(onUserDblClicked(UserListElement)));
-// 	QObject::connect(UserBox::userboxmenu, SIGNAL(popup()), smsConfigurationUiHandler, SLOT(onPopupMenuCreate()));
 
 	kdebugf2();
 	return 0;
@@ -63,7 +62,6 @@ extern "C" void sms_close()
 			smsConfigurationUiHandler, SLOT(onUserDblClicked(UserListElement)));
 	QObject::disconnect(kadu->userbox(), SIGNAL(mouseButtonClicked(int, Q3ListBoxItem*,const QPoint&)),
 			smsConfigurationUiHandler, SLOT(onUserClicked(int, Q3ListBoxItem*, const QPoint&)));
-// 	QObject::disconnect(UserBox::userboxmenu, SIGNAL(popup()), smsConfigurationUiHandler, SLOT(onPopupMenuCreate()));
 
 	MainConfigurationWindow::unregisterUiFile(dataPath("kadu/modules/configuration/sms.ui"), smsConfigurationUiHandler);
 	delete smsConfigurationUiHandler;
@@ -464,9 +462,6 @@ SmsConfigurationUiHandler::SmsConfigurationUiHandler()
 
 	createDefaultConfiguration();
 
-// 	UserBox::userboxmenu->addItemAtPos(2, "SendSms", tr("Send SMS"), this, SLOT(onSendSmsToUser()),
-//                 HotKey::shortCutFromFile("ShortCuts", "kadu_sendsms"));
-
 	QMenu *MainMenu = kadu->mainMenu();
 	menuid = MainMenu->insertItem(icons_manager->loadIcon("SendSms"), tr("Send SMS"), this, SLOT(onSendSms()), 0, -1, 10);
 	//icons_manager->registerMenuItem(MainMenu, tr("Send SMS"), "SendSms");
@@ -476,6 +471,7 @@ SmsConfigurationUiHandler::SmsConfigurationUiHandler()
 		this, SLOT(sendSmsActionActivated(QAction *, bool)),
 		"SendSms", tr("Send SMS"), false
 	);
+	UserBox::insertActionDescription(2, sendSmsActionDescription); // TODO: HotKey::shortCutFromFile("ShortCuts", "kadu_sendsms")
 
 	kdebugf2();
 }
@@ -483,8 +479,7 @@ SmsConfigurationUiHandler::SmsConfigurationUiHandler()
 SmsConfigurationUiHandler::~SmsConfigurationUiHandler()
 {
 	kdebugf();
-// 	int sendsmstem = UserBox::userboxmenu->getItem(tr("Send SMS"));
-// 	UserBox::userboxmenu->removeItem(sendsmstem);
+
 	kadu->mainMenu()->removeItem(menuid);
 
 	delete sendSmsActionDescription;
@@ -622,21 +617,6 @@ void SmsConfigurationUiHandler::onDownButton()
 	QListWidgetItem *item = gatewayListWidget->takeItem(index);
 	gatewayListWidget->insertItem(++index, item);
 	item->setSelected(true);
-}
-
-void SmsConfigurationUiHandler::onPopupMenuCreate()
-{
-	kdebugf();
-
-	UserBox *activeUserBox = kadu->userbox()->activeUserBox();
-	if (activeUserBox == NULL) //to sie zdarza...
-		return;
-
-	UserListElements users = activeUserBox->selectedUsers();
-// 	if ((users[0]).mobile().isEmpty() || users.count() != 1)
-// 		UserBox::userboxmenu->setItemVisible(UserBox::userboxmenu->getItem(tr("Send SMS")), false);
-
-	kdebugf2();
 }
 
 void SmsConfigurationUiHandler::sendSmsActionActivated(QAction *sender, bool toggled)

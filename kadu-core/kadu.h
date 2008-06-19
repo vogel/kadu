@@ -266,7 +266,6 @@ public slots:
 	void manageIgnored();
 	void personalInfo();
 	void quit();
-	void popupMenu();
 
 	// odczytuje z obrazka tekst i zapisuje go w drugim parametrze
 	void readTokenValue(QPixmap, QString &);
