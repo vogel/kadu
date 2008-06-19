@@ -1206,16 +1206,16 @@ QString GaduProtocol::sendMessage(UserListElements users, const QString &mesg)
 	unsigned char *myLastFormats = 0;
 	bool stop = false;
 	QString msgtmp = mesg;
-// 	msgtmp.replace("\n", "\r\n");
-// 	msgtmp = GaduFormater::unformatGGMessage(msgtmp, myLastFormatsLength, myLastFormats);
+ 	msgtmp.replace("\n", "\r\n");
+ 	msgtmp = GaduFormater::unformatGGMessage(msgtmp, myLastFormatsLength, myLastFormats);
 	QString myLastMessage = msgtmp;
 
-// 	if (myLastFormatsLength)
-// 		myLastMessage = GaduFormater::formatGGMessage(myLastMessage, myLastFormatsLength - sizeof(struct gg_msg_richtext),
-// 			(void *)(myLastFormats + sizeof(struct gg_msg_richtext)),0);
-// 
-// 	else
-// 		HtmlDocument::escapeText(myLastMessage);
+ 	if (myLastFormatsLength)
+ 		myLastMessage = GaduFormater::formatGGMessage(myLastMessage, myLastFormatsLength - sizeof(struct gg_msg_richtext),
+ 			(void *)(myLastFormats + sizeof(struct gg_msg_richtext)),0);
+ 
+ 	else
+ 		HtmlDocument::escapeText(myLastMessage);
 
 	kdebugmf(KDEBUG_INFO, "\n%s\n", (const char *)unicode2latin(myLastMessage));
 	myLastMessage.replace("\r\n", "\n");
