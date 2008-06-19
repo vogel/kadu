@@ -32,7 +32,7 @@ Je¶li jest w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * poprawka parsowania statusu w module autoaway (White Eagle)
 * poprawka ³±czenia, gdy kadu zosta³o uruchomione bez dostêpu do sieci (White Eagle)
 * aktualizacja t³umaczeñ (neeo)
-* poprawka cytowania wiadomo¶ci z historii w oknie chat (neeo) 
+* poprawka cytowania wiadomo¶ci z historii w oknie chat (neeo)
 * modu³y autostatus i globalhotkeys dodane do autodownloadu (White Eagle)
 * poprawka wysypu Kadu przy próbie zmiany/usuniêcia ikony grupy o nazwie z polskimi znakami (duncan_idaho/White Eagle)
 * zmiana ikony dla aktywnej grupy nie powoduje prze³±czenia zak³adki (neeo,White Eagle)
