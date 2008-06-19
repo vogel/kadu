@@ -26,7 +26,9 @@ class EncryptionManager : public ConfigurationUiHandler
 
 		void setupEncryptButton(ChatWidget* chat, bool enabled);
 		void setupEncryptionButtonForUsers(UserListElements users, bool enabled);
-		ActionDescription* action;
+
+		ActionDescription* sendPublicKeyActionDescription;
+		ActionDescription* encryptionActionDescription;
 
 		QWidget *configurationWindow;
 		void createDefaultConfiguration();
@@ -39,9 +41,8 @@ class EncryptionManager : public ConfigurationUiHandler
 		void setupEncrypt(const UserGroup *group);
 
 		void generateMyKeys();
-		void sendPublicKey();
+		void sendPublicKeyActionActivated(QAction *sender, bool toggled);
 		void encryptionActionActivated(QAction *sender, bool toggled);
-		void userBoxMenuPopup();
 
 		void keysManagerDialogDestroyed();
 

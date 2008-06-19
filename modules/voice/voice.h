@@ -11,13 +11,13 @@ extern "C" {
 	#include "libgsm/inc/gsm.h"
 };
 
-#include "action.h"
 #include "../dcc/dcc.h"
 #include "../dcc/dcc_handler.h"
 #include "../sound/sound.h"
 
 #include "main_configuration_window.h"
 
+class ActionDescription;
 class ChatWidget;
 class PlayThread;
 class RecordThread;

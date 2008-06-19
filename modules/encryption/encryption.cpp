@@ -57,6 +57,33 @@ extern "C" void encryption_close()
 	encryption_manager = 0;
 }
 
+bool disableSendKey(const UserListElements &ules)
+{
+	kdebugf();
+
+	if (!ules.count())
+		return false;
+
+	QString keyfile_path;
+	keyfile_path.append(ggPath("keys/"));
+	keyfile_path.append(QString::number(config_file.readNumEntry("General", "UIN")));
+	keyfile_path.append(".pem");
+	QFileInfo keyfile(keyfile_path);
+
+	if (keyfile.permission(QFileInfo::ReadUser) && !gadu->currentStatus().isOffline())
+	{
+		unsigned int myUin = config_file.readUnsignedNumEntry("General", "UIN");
+
+		foreach(const UserListElement &user, ules)
+			if (!user.usesProtocol("Gadu") || user.ID("Gadu").toUInt() == myUin)
+				return false;
+
+		return true;
+	}
+	else
+		return false;
+}
+
 EncryptionManager::EncryptionManager()
 	: MenuId(0), EncryptionEnabled(), EncryptionPossible(), KeysManagerDialog(0)
 {
@@ -70,9 +97,8 @@ EncryptionManager::EncryptionManager()
 			this, SLOT(decryptMessage(Protocol *, UserListElements, QString&, QByteArray&, bool&)));
 	connect(gadu, SIGNAL(sendMessageFiltering(const UserListElements, QString &, bool &)),
 			this, SLOT(sendMessageFilter(const UserListElements, QString &, bool &)));
-// 	connect(UserBox::userboxmenu, SIGNAL(popup()), this, SLOT(userBoxMenuPopup()));
 
-	action = new ActionDescription(
+	encryptionActionDescription = new ActionDescription(
                 	ActionDescription::TypeChat, "encryptionAction",
 			this, SLOT(encryptionActionActivated(QAction *, bool)),
 			"DecryptedChat", tr("Enable encryption for this conversation"),
@@ -84,8 +110,14 @@ EncryptionManager::EncryptionManager()
 
 	ToolBar::addDefaultAction("Chat toolbar 1", "encryptionAction", 4);
 
-// 	UserBox::userboxmenu->addItemAtPos(2,"SendPublicKey", tr("Send my public key"), this, SLOT(sendPublicKey()));
-	
+	sendPublicKeyActionDescription = new ActionDescription(
+		ActionDescription::TypeUser, "sendPublicKeyAction",
+		this, SLOT(sendPublicKeyActionActivated(QAction *, bool)),
+		"SendPublicKey", tr("Send my public key"), false, QString::null,
+		disableSendKey
+	);
+	UserBox::insertActionDescription(2, sendPublicKeyActionDescription);
+
 	MenuId = kadu->mainMenu()->insertItem(icons_manager->loadIcon("KeysManager"), tr("Manage keys"), this, SLOT(showKeysManagerDialog()), 0, -1, 12);
 //	icons_manager->registerMenuItem(kadu->mainMenu(), tr("Manage keys"), "KeysManager");
 
@@ -101,17 +133,15 @@ EncryptionManager::~EncryptionManager()
 {
 	kdebugf();
 	kadu->mainMenu()->removeItem(MenuId);
-// 	int sendkeyitem = UserBox::userboxmenu->getItem(tr("Send my public key"));
-// 	UserBox::userboxmenu->removeItem(sendkeyitem);
 
 	disconnect(gadu, SIGNAL(rawGaduReceivedMessageFilter(Protocol *, UserListElements, QString&, QByteArray&, bool&)),
 			this, SLOT(decryptMessage(Protocol *, UserListElements, QString&, QByteArray&, bool&)));
 	disconnect(gadu, SIGNAL(sendMessageFiltering(const UserListElements, QString &, bool &)),
 			this, SLOT(sendMessageFilter(const UserListElements, QString &, bool &)));
-// 	disconnect(UserBox::userboxmenu,SIGNAL(popup()),this,SLOT(userBoxMenuPopup()));
 
-	delete action;
-	action = 0;
+	delete encryptionActionDescription;
+	delete sendPublicKeyActionDescription;
+
 	kdebugf2();
 }
 
@@ -333,50 +363,20 @@ void EncryptionManager::sendMessageFilter(const UserListElements users, QString 
 //	kdebugm(KDEBUG_INFO, "length: %d\n", msg.length());
 }
 
-void EncryptionManager::userBoxMenuPopup()
-{
-	kdebugf();
-// 	int sendkeyitem = UserBox::userboxmenu->getItem(tr("Send my public key"));
-
-	UserBox *activeUserBox = UserBox::activeUserBox();
-	if (activeUserBox == NULL)
-		return;
-
-	QString keyfile_path;
-	keyfile_path.append(ggPath("keys/"));
-	keyfile_path.append(QString::number(config_file.readNumEntry("General", "UIN")));
-	keyfile_path.append(".pem");
-	QFileInfo keyfile(keyfile_path);
-
-	bool sendKeyEnabled = true;
-	if (keyfile.permission(QFileInfo::ReadUser) && !gadu->currentStatus().isOffline())
-	{
-		unsigned int myUin = config_file.readUnsignedNumEntry("General", "UIN");
-		UserListElements users = activeUserBox->selectedUsers();
-
-		foreach(const UserListElement &user, users)
-			if (!user.usesProtocol("Gadu") || user.ID("Gadu").toUInt() == myUin)
-			{
-				sendKeyEnabled = false;
-				break;
-			}
-	}
-	else
-		sendKeyEnabled = false;
-
-// 	UserBox::userboxmenu->setItemVisible(sendkeyitem, sendKeyEnabled);
-	kdebugf2();
-}
-
-void EncryptionManager::sendPublicKey()
+void EncryptionManager::sendPublicKeyActionActivated(QAction *sender, bool toggled)
 {
 	kdebugf();
 	QString keyfile_path;
 	QString mykey;
 	QFile keyfile;
 
-	UserBox *activeUserBox = UserBox::activeUserBox();
-	if (activeUserBox == NULL)
+	KaduMainWindow *kaduMainWindow = dynamic_cast<KaduMainWindow *>(sender->parent());
+	if (!kaduMainWindow)
+		return;
+
+	UserListElements users = kaduMainWindow->getUserListElements();
+
+	if (!users.count())
 		return;
 
 	keyfile_path.append(ggPath("keys/"));
@@ -390,7 +390,6 @@ void EncryptionManager::sendPublicKey()
 		QTextStream t(&keyfile);
 		mykey = t.read();
 		keyfile.close();
-		UserListElements users = activeUserBox->selectedUsers();
 		foreach(const UserListElement &user, users)
 			gadu->sendMessage(user, mykey);
 

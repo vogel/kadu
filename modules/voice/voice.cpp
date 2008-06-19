@@ -22,6 +22,7 @@
 #include "../dcc/dcc.h"
 #include "../dcc/dcc_socket.h"
 
+#include "action.h"
 #include "chat_widget.h"
 #include "chat_manager.h"
 #include "config_file.h"
@@ -30,7 +31,7 @@
 #include "hot_key.h"
 #include "kadu.h"
 #include "message_box.h"
-#include "userbox.h"
+//#include "userbox.h"
 #include "userlist.h"
 
 /**
