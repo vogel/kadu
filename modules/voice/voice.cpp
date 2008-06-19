@@ -68,11 +68,11 @@ bool disableNonVoiceUles(const UserListElements &ules)
 
 	unsigned int myUin = config_file.readUnsignedNumEntry("General", "UIN");
 	UserListElement user = ules[0];
-	if (!user.usesProtocol("Gadu") || user.ID("Gadu").toUInt() == myUin)
-		return false;
+	if (user.usesProtocol("Gadu") && user.ID("Gadu").toUInt() != myUin && (user.status("Gadu").isOnline() || user.status("Gadu").isBusy()))
+		return true;
 
 	kdebugf2();
-	return true;
+	return false;
 }
 
 VoiceChatDialog::VoiceChatDialog()
