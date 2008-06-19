@@ -81,5 +81,11 @@ void ChatEditBox::addAction(KaduAction *action)
 	ChatWidget *chatWidget = dynamic_cast<ChatWidget *>(parent());
 	if (chatWidget)
 		action->userListChanged(chatWidget->users()->toUserListElements());
+	else 
+	{
+		chatWidget = getChatWidget();
+		if (chatWidget)
+			action->userListChanged(chatWidget->users()->toUserListElements());
+	}
 
 }
