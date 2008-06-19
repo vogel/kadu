@@ -87,9 +87,8 @@ HistoryModule::HistoryModule()
 	ToolBar::addDefaultAction("Kadu toolbar", "showHistoryAction", 4);
 	ToolBar::addDefaultAction("Chat toolbar 1", "showHistoryAction", 3);
 
-	UserBox::addActionDescription(historyActionDescription);
+	UserBox::insertActionDescription(5, historyActionDescription); // TODO: HotKey::shortCutFromFile("ShortCuts", "kadu_viewhistory")
 
-// 	UserBox::userboxmenu->addItemAtPos(5, "History", tr("History"), this, SLOT(viewHistory()), HotKey::shortCutFromFile("ShortCuts", "kadu_viewhistory"));
 // 	UserBox::management->addItemAtPos(7, "ClearHistory", tr("Clear history"),  this, SLOT(deleteHistory()));
 // 	connect(UserBox::userboxmenu, SIGNAL(popup()), this, SLOT(userboxMenuPopup()));
 

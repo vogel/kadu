@@ -987,6 +987,11 @@ void UserBox::addActionDescription(ActionDescription *actionDescription)
 	UserBoxActions.append(actionDescription);
 }
 
+void UserBox::insertActionDescription(int pos, ActionDescription *actionDescription)
+{
+	UserBoxActions.insert(pos, actionDescription);
+}
+
 void UserBox::addSeparator()
 {
 	UserBoxActions.append(0);
@@ -995,6 +1000,11 @@ void UserBox::addSeparator()
 void UserBox::addManagementActionDescription(ActionDescription *actionDescription)
 {
 	ManagementActions.append(actionDescription);
+}
+
+void UserBox::insertManagementActionDescription(int pos, ActionDescription *actionDescription)
+{
+	ManagementActions.insert(pos, actionDescription);
 }
 
 void UserBox::addManagementSeparator()

@@ -508,8 +508,10 @@ public:
 	virtual ~UserBox();
 
 	static void addActionDescription(ActionDescription *actionDescription);
+	static void insertActionDescription(int pos, ActionDescription *actionDescription);
 	static void addSeparator();
 	static void addManagementActionDescription(ActionDescription *actionDescription);
+	static void insertManagementActionDescription(int pos, ActionDescription *actionDescription);
 	static void addManagementSeparator();
 
 	/**

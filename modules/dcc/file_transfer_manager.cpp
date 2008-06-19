@@ -40,10 +40,6 @@ FileTransferManager::FileTransferManager(QObject *parent, const char *name) : QO
 {
 	kdebugf();
 
-// 	UserBox::userboxmenu->addItemAtPos(1, "SendFile", tr("Send file"),
-// 		this, SLOT(sendFile()),
-// 		HotKey::shortCutFromFile("ShortCuts", "kadu_sendfile"));
-// 	connect(UserBox::userboxmenu,SIGNAL(popup()), this, SLOT(userboxMenuPopup()));
 	connect(kadu, SIGNAL(keyPressed(QKeyEvent *)), this, SLOT(kaduKeyPressed(QKeyEvent *)));
 
 	sendFileActionDescription = new ActionDescription(
@@ -51,9 +47,9 @@ FileTransferManager::FileTransferManager(QObject *parent, const char *name) : QO
 		this, SLOT(sendFileDirectoryActionActivated(QAction *, bool)),
 		"SendFile", tr("Send file"), false, QString::null,
 		disableEmptyUles
-	);
+	); // HotKey::shortCutFromFile("ShortCuts", "kadu_sendfile")
 
-	UserBox::addActionDescription(sendFileActionDescription);
+	UserBox::insertActionDescription(1, sendFileActionDescription);
 
 	connect(chat_manager, SIGNAL(chatWidgetCreated(ChatWidget *)), this, SLOT(chatCreated(ChatWidget *)));
 	connect(chat_manager, SIGNAL(chatWidgetDestroying(ChatWidget *)), this, SLOT(chatDestroying(ChatWidget*)));
