@@ -531,6 +531,7 @@ FileTransfer * FileTransferManager::search(FileTransfer::FileTransferType type, 
 
 	FOREACH(i, Transfers)
 		if ((*i)->Type == type && (*i)->Contact == contact)
+		{
 			if (fileNameType == FileTransfer::FileNameFull)
 			{
 				if ((*i)->FileName == fileName)
@@ -541,6 +542,7 @@ FileTransfer * FileTransferManager::search(FileTransfer::FileTransferType type, 
 				if ((*i)->GaduFileName == fileName)
 					return *i;
 			}
+		}
 
 	return 0;
 }

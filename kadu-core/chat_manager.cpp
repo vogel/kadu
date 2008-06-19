@@ -543,7 +543,7 @@ int ChatManager::openChatWidget(Protocol *initialProtocol, const UserListElement
 			}
 #if QT_VERSION >= 0x030300
 			if (qstrcmp(qVersion(), "3.3") >= 0) // dodatkowe zabezpieczenie przed idiotami u¿ywaj±cymi opcji --force przy instalacji pakietów
-				win->setWindowState(win->windowState() & ~WindowMinimized | WindowActive);
+				win->setWindowState(win->windowState() & (~WindowMinimized | WindowActive));
 #endif
 			if (forceActivate)
 				activateWindow(win->winId());

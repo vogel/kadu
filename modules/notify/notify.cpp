@@ -148,10 +148,12 @@ void Notify::mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigu
 
 	CONST_FOREACH(user, *userlist)
 		if ((*user).usesProtocol("Gadu") && !(*user).isAnonymous())
+		{
 			if (!(*user).notify())
 				allUsers->insertItem((*user).altNick());
 			else
 				notifiedUsers->insertItem((*user).altNick());
+		}
 
 	allUsers->sort();
 	notifiedUsers->sort();

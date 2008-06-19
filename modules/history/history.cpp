@@ -440,10 +440,12 @@ void HistoryManager::convHist2ekgForm(UinsList uins)
 				uin = uins[1];
 			linelist.append(QString::number(uin));
 			if (our)
+			{
 				if (userlist->contains("Gadu", QString::number(uin)))
 					nick = userlist->byID("Gadu", QString::number(uin)).altNick();
 				else
 					nick = QString::number(uin);
+			}
 			linelist.append(nick);
 			linelist.append(QString::number(-datetime.secsTo(
 				QDateTime(QDate(1970, 1, 1), QTime(0 ,0)))));
@@ -1139,12 +1141,14 @@ int HistoryManager::getHistoryEntryIndexByDate(const UinsList &uins, const QDate
 		kdebugmf(KDEBUG_INFO, "start = %d, end = %d\n", start, end);
 		entries = getHistoryEntries(uins, start + ((end - start) / 2), 1);
 		if (!entries.isEmpty())
+		{
 			if (date < entries[0].date)
 				end -= ((end - start) / 2) + 1;
 			else if (date > entries[0].date)
 				start += ((end - start) / 2) + 1;
 			else
 				return start + ((end - start) / 2);
+		}
 	}
 	if (end < 0)
 	{

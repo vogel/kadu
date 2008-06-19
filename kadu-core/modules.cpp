@@ -174,6 +174,7 @@ void ModulesDialog::moduleAction(QListViewItem *)
 {
 	kdebugf();
 	if (lv_modules->selectedItem() != NULL)
+	{
 		if ((lv_modules->selectedItem()->text(2) == tr("Dynamic")) &&
 			(lv_modules->selectedItem()->text(3) == tr("Loaded")))
 			unloadItem();
@@ -181,6 +182,7 @@ void ModulesDialog::moduleAction(QListViewItem *)
 		if ((lv_modules->selectedItem()->text(2) == tr("Dynamic")) &&
 			(lv_modules->selectedItem()->text(3) == tr("Not loaded")))
 			loadItem();
+	}
 	kdebugf2();
 }
 

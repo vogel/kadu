@@ -1430,10 +1430,12 @@ void UserBox::userRemovedFromGroup(UserListElement elem, bool massively, bool la
 		return;
 	}
 	if (VisibleUsers->contains(elem))
+	{
 		if (massively)
 			RemoveProxy[s].append(elem);
 		else
 			VisibleUsers->removeUser(elem);
+	}
 	if (massively && last)
 	{
 		VisibleUsers->removeUsers(RemoveProxy[s]);

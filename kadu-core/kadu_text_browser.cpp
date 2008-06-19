@@ -297,7 +297,7 @@ QString KaduTextBrowser::imageAt(const QPoint &point)
 			QTextCursor endCur(*c);
 			c->gotoPreviousLetter();
 //			kdebugm(KDEBUG_INFO, "point.x()=%d c->x()=%d\n", point.x(), c->x());
-			if (ok = (c->x() < point.x()))
+			if ((ok = (c->x() < point.x())))
 			{
 //				kdebugm(KDEBUG_INFO, "c0->x() < point.x()\n");
 				doc->setSelectionStart(1, *c);
@@ -313,7 +313,7 @@ QString KaduTextBrowser::imageAt(const QPoint &point)
 			{
 				c->gotoNextLetter();
 //				kdebugm(KDEBUG_INFO, "point.x()=%d c->x()=%d\n", point.x(), c->x());
-				if (ok = (point.x() < c->x()))
+				if ((ok = (point.x() < c->x())))
 				{
 //					kdebugm(KDEBUG_INFO, "point.x() < c2->x()\n");
 					doc->setSelectionEnd(1, *c);

@@ -843,10 +843,12 @@ void Kadu::importExportUserlist()
 void Kadu::hideKadu()
 {
 	if (Docked)
+	{
 		if (dontHideOnClose)
 			showMinimized();
 		else
 			close();
+	}
 }
 
 void Kadu::ignoreUser()
@@ -1295,10 +1297,12 @@ bool Kadu::close(bool quit)
 		pending.writeToFile();
 		IgnoredManager::writeToConfiguration();
 		if (!gadu->currentStatus().isOffline())
+		{
 			if (config_file.readBoolEntry("General", "DisconnectWithCurrentDescription"))
 				setOffline(gadu->currentStatus().description());
 			else
 				setOffline(config_file.readEntry("General", "DisconnectDescription"));
+		}
 
 		xml_config_file->makeBackup();
 		ModulesManager::closeModule();
