@@ -562,14 +562,6 @@ int ChatManager::openChatWidget(Protocol *initialProtocol, const UserListElement
 
 	ChatWidget *chat = new ChatWidget(initialProtocol, users);
 
-	if (forceActivate)
-	{
-		QWidget *win = chat;
-		while (win->parent())
-			win = static_cast<QWidget *>(win->parent());
-		activateWindow(win->winId());
-	}
-
 	bool handled = false;
 	emit handleNewChatWidget(chat, handled);
 	if (!handled)
@@ -583,6 +575,14 @@ int ChatManager::openChatWidget(Protocol *initialProtocol, const UserListElement
 
 	connect(chat, SIGNAL(messageSentAndConfirmed(UserListElements, const QString&)),
 		this, SIGNAL(messageSentAndConfirmed(UserListElements, const QString&)));
+
+	if (forceActivate)
+	{
+		QWidget *win = chat;
+		while (win->parent())
+			win = static_cast<QWidget *>(win->parent());
+		activateWindow(win->winId());
+	}
 
 //	chat->makeActive();
 	emit chatWidgetCreated(chat);

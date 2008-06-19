@@ -11,6 +11,8 @@ Je¶li jest w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * poprawiona wspó³praca modu³u SMS z bramk± Ery (neeo)
 * poprawione zachowanie przy dodawaniu kontaktów z samym adresem e-mail (neeo)
 * modu³ senthistory dodany do autodownloadu (neeo)
+* poprawka bledu przy aktywacji okna chat, przy aktywnej opcji "otworz okno
+rozmowy gdy nadejdzie nowa wiadomosc" (White Eagle)
 
 +++ wersja 0.6.0.1 (03.05.2008)
 * poprawka kompilacji na FreeBSD 7.0 (neeo)
