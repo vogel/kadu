@@ -279,111 +279,6 @@ public:
 };
 
 /**
-	Klasa reprezentuj�ca menu podr�czne listy kontakt�w - czyli to, kt�re dostajemy klikaj�c
-	na kt�rymkolwiek kontakcie prawym przyciskiem myszy.
-	\class UserBoxMenu
-	\brief Menu podr�czne listy kontakt�w.
-**/
-// class UserBoxMenu : public Q3PopupMenu
-// {
-// 	Q_OBJECT
-// 
-// 	public:
-// 		typedef QPair<QString, QString> IconName;
-// 
-// 	private:
-// 		QList<IconName> iconNames;
-// 
-// 	private slots:
-// 		void restoreLook();
-// 
-// 	public:
-		/**
-			\fn UserBoxMenu(QWidget *parent=0, const char* name=0)
-			Standardowy konstruktor.
-			\param parent wska�nik na obiekt kontrolki-rodzica.
-			\param name nazwa kontrolki.
-		**/
-// 		UserBoxMenu(QWidget *parent=0, const char* name=0);
-
-		/**
-			\fn int getItem(const QString &caption) const
-			Zwraca unikaln� liczb� identyfikuj�c� element menu z podanym napisem.
-			\param caption napis elementu.
-		**/
-// 		int getItem(const QString &caption) const;
-// 
-// 	public slots:
-		/**
-			\fn void show(QListBoxItem *item)
-			Pokazuje menu dla podanego kontaktu.
-			\param item element wy�wietlanej listy kontakt�w reprezentuj�cy rz�dany kontakt.
-		**/
-// 		void show(Q3ListBoxItem *item);
-
-		/**
-			\fn int addItem(const QString &text, const QObject* receiver, const char* member, const QKeySequence accel= 0, int id= -1)
-			Dodaje nowy element do menu.
-			\param text napis dla nowego elementu.
-			\param receiver obiekt odbieraj�cy sygna� wybrania elementu z menu.
-			\param member SLOT obiektu \a receiver kt�ry zostanie wykonany po wybraniu elementu z menu.
-			\param accel skr�t klawiaturowy dla tego elementu. Domy�lnie brak.
-			\param id Unikatowa liczba identyfikuj�ca nowy element. Domy�lnie pierwsza wolna.
-		**/
-// 		int addItem(const QString &text, const QObject* receiver, const char* member, const QKeySequence accel= 0, int id= -1);
-
-		/**
-			\fn int addItem(const QString &iconname, const QString &text, const QObject* receiver, const char* member, const QKeySequence accel= 0, int id= -1)
-			Dodaje nowy element do menu.
-			\param iconname nazwa ikony z zestawu lub sciezka do pliku
-			\param text napis dla nowego elementu.
-			\param receiver obiekt odbieraj�cy sygna� wybrania elementu z menu.
-			\param member SLOT obiektu \a receiver kt�ry zostanie wykonany po wybraniu elementu z menu.
-			\param accel skr�t klawiaturowy dla tego elementu. Domy�lnie brak.
-			\param id Unikatowa liczba identyfikuj�ca nowy element. Domy�lnie pierwsza wolna.
-		**/
-// 		int addItem(const QString &iconname, const QString &text, const QObject* receiver, const char* member, const QKeySequence accel= 0, int id= -1);
-
-		/**
-			\fn int addItemAtPos(int index, const QString &text, const QObject* receiver, const char* member, const QKeySequence accel= 0, int id= -1)
-			Dodaje nowy element do menu.
-			\param index pozycja (licz�c od 0) na kt�rej znale�� ma si� nowy element.
-			\param text napis dla nowego elementu.
-			\param receiver obiekt odbieraj�cy sygna� wybrania elementu z menu.
-			\param member SLOT obiektu \a receiver kt�ry zostanie wykonany po wybraniu elementu z menu.
-			\param accel skr�t klawiaturowy dla tego elementu. Domy�lnie brak.
-			\param id Unikatowa liczba identyfikuj�ca nowy element. Domy�lnie pierwsza wolna.
-		**/
-// 		int addItemAtPos(int index, const QString &text, const QObject* receiver, const char* member, const QKeySequence accel= 0, int id= -1);
-
-		/**
-			\fn int addItemAtPos(int index,const QString &iconname, const QString &text, const QObject* receiver, const char* member, const QKeySequence accel= 0, int id= -1)
-			Dodaje nowy element do menu.
-			\param index pozycja (licz�c od 0) na kt�rej znale�� ma si� nowy element.
-			\param iconname nazwa ikony z zestawu lub sciezka do pliku
-			\param text napis dla nowego elementu.
-			\param receiver obiekt odbieraj�cy sygna� wybrania elementu z menu.
-			\param member SLOT obiektu \a receiver kt�ry zostanie wykonany po wybraniu elementu z menu.
-			\param accel skr�t klawiaturowy dla tego elementu. Domy�lnie brak.
-			\param id Unikatowa liczba identyfikuj�ca nowy element. Domy�lnie pierwsza wolna.
-		**/
-// 		int addItemAtPos(int index,const QString &iconname, const QString &text, const QObject* receiver, const char* member, const QKeySequence accel= 0, int id= -1);
-
-		/**
-			\fn void refreshIcons()
-			Prze�adowuje wszystkie ikony w tym menu dodane przy pomocy powy�szych funkcji
-		**/
-// 		void refreshIcons();
-// 	signals:
-		/**
-			\fn void popup()
-			Sygna� emitowany, gdy menu jest wywo�ywane.
-		**/
-// 		void popup();
-// };
-
-
-/**
 	Klasa reprezentuj�ca list� kontakt�w wraz z ikonkami stan�w.
 	\class UserBox
 	\brief Wy�wietlana lista kontakt�w.
@@ -513,18 +408,6 @@ public:
 	static void addManagementActionDescription(ActionDescription *actionDescription);
 	static void insertManagementActionDescription(int pos, ActionDescription *actionDescription);
 	static void addManagementSeparator();
-
-	/**
-		\var static UserBoxMenu *userboxmenu
-		Wska�nik do menu kontekstowego listy kontakt�w.
-	**/
-// 	static UserBoxMenu *userboxmenu;
-
-	/**
-		\var static UserBoxMenu *management
-		Wska�nik do menu zarz�dzania kontaktami.
-	**/
-// 	static UserBoxMenu *management;
 
 	static void setColorsOrBackgrounds();
 
