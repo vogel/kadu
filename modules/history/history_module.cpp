@@ -73,7 +73,7 @@ HistoryModule::HistoryModule() : QObject(NULL, "history")
 	connect(kadu, SIGNAL(removingUsers(UserListElements)),
 		this, SLOT(removingUsers(UserListElements)));
 
-	Action* history_action = new Action("History", tr("Show history"), "showHistoryAction", Action::TypeUser);
+	Action* history_action = new Action("History", tr("Show history"), "showHistoryAction", Action::TypeGlobal);
 	connect(history_action, SIGNAL(activated(const UserGroup*, const QWidget*, bool)),
 		this, SLOT(historyActionActivated(const UserGroup*)));
 
@@ -145,14 +145,17 @@ void HistoryModule::historyActionActivated(const UserGroup* users)
 {
 	kdebugf();
 
-	if (!users) // fix for 0000839
-		return;
-
 	UinsList uins;
-	CONST_FOREACH(user, *users)
-		uins.append((*user).ID("Gadu").toUInt());
+
+	if (users)
+	{
+		CONST_FOREACH(user, *users)
+			uins.append((*user).ID("Gadu").toUInt());
+	}
+
 	//TODO: throw out UinsList as soon as possible!
 	(new HistoryDialog(uins))->show();
+
 	kdebugf2();
 }
 
