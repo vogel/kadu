@@ -66,7 +66,7 @@ FileTransferManager::FileTransferManager(QObject *parent, const char *name) : QO
 
 	sendFileActionDescription = new ActionDescription(
 		ActionDescription::TypeUser, "sendFileAction",
-		this, SLOT(sendFileDirectoryActionActivated(QAction *, bool)),
+		this, SLOT(sendFileActionActivated(QAction *, bool)),
 		"SendFile", tr("Send file"), false, QString::null,
 		disableNonDccUles
 	); // HotKey::shortCutFromFile("ShortCuts", "kadu_sendfile")

@@ -344,12 +344,15 @@ void ToolBar::updateButtons()
 		if (KaduActions.contains(actionName) && kaduMainWindow->supportsActionType(KaduActions[actionName]->type()))
 		{
 			(*toolBarAction).action = KaduActions.getAction(actionName, dynamic_cast<KaduMainWindow *>(parent()));
+
 			if (toolBarNextAction != ToolBarActions.end() && (*toolBarNextAction).action)
 				insertAction((*toolBarNextAction).action, (*toolBarAction).action);
 			else
 				QToolBar::addAction((*toolBarAction).action);
+
 			(*toolBarAction).button = dynamic_cast<QToolButton *>(widgetForAction((*toolBarAction).action));
-	connect((*toolBarAction).button, SIGNAL(pressed()), this, SLOT(buttonPressed()));
+			connect((*toolBarAction).button, SIGNAL(pressed()), this, SLOT(buttonPressed()));
+
 			if ((*toolBarAction).showLabel)
 				(*toolBarAction).button->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
 

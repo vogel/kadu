@@ -993,6 +993,11 @@ void Kadu::manageIgnored()
 	(new Ignored(kadu, "ignored"))->show();
 }
 
+void Kadu::lookupInDirectory()
+{
+	searchInDirectoryActionActivated(0, false);
+}
+
 //void Kadu::showStatusActionActivated()
 //{
 //}

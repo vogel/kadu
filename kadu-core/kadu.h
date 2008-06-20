@@ -263,6 +263,7 @@ public slots:
 	void help();
 	void hideKadu();
 	void importExportUserlist();
+	void lookupInDirectory();
 	void manageIgnored();
 	void personalInfo();
 	void quit();
