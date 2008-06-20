@@ -18,19 +18,16 @@ class KaduTextBrowser : public QTextBrowser //, private QToolTip
 	QTimer refreshTimer; /*!< Timer od�wie�ania widgetu. */
 	QString anchor;  /*!< Bie��co u�ywany link. */
 	int level;
-	/**
-		this value stores the current highlighted link
-		for use with maybeTip(), or is null
-	**/
-	QString highlightedlink;  /*!< Aktualnie pod�wietlony link (lub NULL je�li takiego akurat brak). */
+	
 	QString image;
-	bool trueTransparency;
 
 private slots:
+
 	/**
 		\fn void refresh()
 		Slot od�wie�aj�cy zawarto�� widgetu.
 	**/
+
 	void refresh();
 	/**
 		\fn void refreshLater()
@@ -38,11 +35,7 @@ private slots:
 		@see refreshTimer
 	**/
 	void refreshLater();
-	/**
-		\fn void copyLinkLocation()
-		Kopiuje wskazany odno�nik do schowka.
-	**/
-	void copyLinkLocation();
+
 	/**
 		\fn void hyperlinkClicked(const QUrl &anchor) const
 		Otwiera klikni�ty odno�nik w okre�lonej w konfiguracji przegl�darce.
@@ -55,9 +48,8 @@ private slots:
 	void verticalSliderReleasedSlot();
 
 protected:
-	QMenu * createPopupMenu(const QPoint &point);
+	virtual void contextMenuEvent(QContextMenuEvent * event);
 	virtual void drawContents(QPainter *p, int clipx, int clipy, int clipw, int cliph);
-	virtual void maybeTip(const QPoint&);
 	virtual void mouseReleaseEvent(QMouseEvent *e);
 	virtual void wheelEvent(QWheelEvent *e);
 
@@ -70,11 +62,6 @@ public:
 	**/
 	QString imageAt(const QPoint &point);
 
-	/**
-		default: false
-	**/
-	void setTrueTransparency(bool);
-	bool isTrueTransparencyEnabled() const;
 /* TODO: uncomment if needed
 	public slots:
 		virtual void copy();

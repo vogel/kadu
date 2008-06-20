@@ -323,7 +323,7 @@ QString EmoticonsManager::selectorString(int emot_num) const
 QString EmoticonsManager::selectorAnimPath(int emot_num) const
 {
 	if ((emot_num >= 0 && (emot_num)) < (Selector.count()))
-		return themePath() + '/' + Selector[emot_num].anim;
+		return Selector[emot_num].anim;
 	else
 		return QString::null;
 }
@@ -331,7 +331,7 @@ QString EmoticonsManager::selectorAnimPath(int emot_num) const
 QString EmoticonsManager::selectorStaticPath(int emot_num) const
 {
 	if ((emot_num >= 0) && ((emot_num) < Selector.count()))
-		return themePath() + '/' + Selector[emot_num].stat;
+		return Selector[emot_num].stat;
 	else
 		return QString::null;
 }
@@ -391,12 +391,16 @@ void EmoticonSelectorButton::leaveEvent(QEvent* e)
 }
 
 EmoticonSelector::EmoticonSelector(ChatWidget *caller, QWidget *parent)
-	: QWidget (parent, Qt::WType_Popup | Qt::WDestructiveClose), callingwidget(caller)
+	: QWidget (parent, Qt::Popup), callingwidget(caller)
 {
+	setAttribute(Qt::WA_DeleteOnClose);
+
 	int selector_count = emoticons->selectorCount();
 	int selector_width = (int)sqrt((double)selector_count);
 	int btn_width = 0;
-	QGridLayout *grid = new QGridLayout(this, 0, selector_width, 0, 0);
+	QGridLayout *grid = new QGridLayout(this);
+	grid->setMargin(0);
+	grid->setSpacing(0);
 
 	for(int i = 0; i < selector_count; ++i)
 	{

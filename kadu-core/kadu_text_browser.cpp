@@ -12,6 +12,7 @@
 #include <QFile>
 #include <QFileDialog>
 #include <QMenu>
+#include <QToolTip>
 
 #include "config_file.h"
 #include "debug.h"
@@ -22,17 +23,19 @@
 #include "kadu_text_browser.h"
 
 KaduTextBrowser::KaduTextBrowser(QWidget *parent)
-	: QTextBrowser(parent),//, QToolTip(viewport()),
-	refreshTimer(), anchor(), level(0), highlightedlink(), image(), trueTransparency(false)
+	: QTextBrowser(parent),
+	refreshTimer(), anchor(), level(0), image()
 {
 	kdebugf();
+
+	setAttribute(Qt::WA_StaticContents);
+	setAttribute(Qt::WA_NoBackground);
 
 	setAcceptDrops(false);
 	viewport()->setAcceptDrops(false);
 
 	setOpenLinks(false);
 //	setResizePolicy(QScrollView::AutoOne);
-//	setWFlags(Qt::WNoAutoErase|Qt::WStaticContents|Qt::WPaintClever);
 	connect(this, SIGNAL(anchorClicked(const QUrl &)), this, SLOT(hyperlinkClicked(const QUrl &)));
 	connect(this, SIGNAL(highlighted(const QString&)), this, SLOT(linkHighlighted(const QString &)));
 	setLineWrapMode(QTextEdit::WidgetWidth/**QTextEdit::AtWordOrDocumentBoundary*/);
@@ -99,16 +102,9 @@ void KaduTextBrowser::refresh()
 	kdebugf2();
 }
 
-void KaduTextBrowser::maybeTip(const QPoint &c)
-{
-	if (!highlightedlink.isEmpty())
-		kdebugmf(KDEBUG_INFO, "link %s (X,Y)=%d,%d\n", highlightedlink.local8Bit().data(), c.x(), c.y());
-// 	tip(QRect(c.x() - 20, c.y() - 5, 40, 10), highlightedlink);
-}
-
 void KaduTextBrowser::linkHighlighted(const QString & link)
 {
-	highlightedlink = link;
+	QToolTip::showText(QCursor::pos(), link);
 }
 
 void KaduTextBrowser::setSource(const QString &/*name*/)
@@ -120,30 +116,18 @@ void KaduTextBrowser::setMargin(int width)
 	setContentsMargins(width, width, width, width);
 }
 
-void KaduTextBrowser::copyLinkLocation()
+void KaduTextBrowser::contextMenuEvent(QContextMenuEvent * event)
 {
-	kdebugmf(KDEBUG_FUNCTION_START, "anchor = %s\n", anchor.local8Bit().data());
-	QApplication::clipboard()->setText(anchor);
-}
-
-QMenu *KaduTextBrowser::createPopupMenu(const QPoint &point)
-{
-	kdebugf();
-	anchor = anchorAt(point);
-	anchor.replace("%2520", "%20");//workaround for bug in Opera, see: HtmlDocument::convertUrlsToHtml()
-	image = imageAt(point);
+	image = imageAt(event->pos());
 	if (!image.isEmpty())
 		kdebugm(KDEBUG_INFO, "image: %s\n", image.local8Bit().data());
 
-	QMenu *popupmenu = createStandardContextMenu();
+	QMenu *popupmenu = createStandardContextMenu(event->pos());
 
-	if (!anchor.isEmpty())
-		popupmenu->insertItem(tr("Copy link &location"), this, SLOT(copyLinkLocation()), Qt::CTRL + Qt::Key_L, -1, 0);
-	else if (!image.isNull())
-		popupmenu->insertItem(tr("&Save image..."), this, SLOT(saveImage()));
-
+	if (!image.isNull())
+		popupmenu->addAction(tr("&Save image..."), this, SLOT(saveImage()));
+	popupmenu->popup(event->globalPos());
 	kdebugf2();
-	return popupmenu;
 }
 
 void KaduTextBrowser::drawContents(QPainter * p, int clipx, int clipy, int clipw, int cliph)
@@ -375,12 +359,3 @@ void KaduTextBrowser::saveImage()
 	kdebugf2();
 }
 
-void KaduTextBrowser::setTrueTransparency(bool b)
-{
-	trueTransparency = b;
-}
-
-bool KaduTextBrowser::isTrueTransparencyEnabled() const
-{
-	return trueTransparency;
-}
