@@ -70,18 +70,16 @@ bool disableSendKey(const UserListElements &ules)
 	keyfile_path.append(".pem");
 	QFileInfo keyfile(keyfile_path);
 
-	if (keyfile.permission(QFileInfo::ReadUser) && !gadu->currentStatus().isOffline())
-	{
-		unsigned int myUin = config_file.readUnsignedNumEntry("General", "UIN");
-
-		foreach(const UserListElement &user, ules)
-			if (!user.usesProtocol("Gadu") || user.ID("Gadu").toUInt() == myUin)
-				return false;
-
-		return true;
-	}
-	else
+	if (!keyfile.permission(QFileInfo::ReadUser) || gadu->currentStatus().isOffline())
 		return false;
+
+	unsigned int myUin = config_file.readUnsignedNumEntry("General", "UIN");
+
+	foreach(const UserListElement &user, ules)
+		if (!user.usesProtocol("Gadu") || user.ID("Gadu").toUInt() == myUin)
+			return false;
+
+	return true;
 }
 
 EncryptionManager::EncryptionManager()
@@ -102,7 +100,8 @@ EncryptionManager::EncryptionManager()
                 	ActionDescription::TypeChat, "encryptionAction",
 			this, SLOT(encryptionActionActivated(QAction *, bool)),
 			"DecryptedChat", tr("Enable encryption for this conversation"),
-			true, tr("Disable encryption for this conversation")
+			true, tr("Disable encryption for this conversation"),
+			disableSendKey
 	);
 
 //	connect(action, SIGNAL(addedToToolbar(const UserGroup*, ToolButton*, ToolBar*)),

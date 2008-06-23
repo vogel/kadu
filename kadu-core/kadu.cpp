@@ -854,25 +854,6 @@ void Kadu::openRecentChats(int index)
 	kdebugf2();
 }
 
-void Kadu::selectedUsersNeeded(const UserGroup *&users)
-{
-	kdebugf();
-
-	UserBox *activeUserBox = UserBox::activeUserBox();
-	if (activeUserBox == NULL)
-	{
-		users = NULL;
-		kdebugf2();
-		return;
-	}
-
-	selectedUsers->clear();
-	selectedUsers->addUsers(activeUserBox->selectedUsers());
-	users = selectedUsers;
-
-	kdebugf2();
-}
-
 void Kadu::inactiveUsersActionActivated(QAction *sender, bool toggled)
 {
 	KaduMainWindow *window = dynamic_cast<KaduMainWindow *>(sender->parent());
@@ -981,12 +962,13 @@ void Kadu::personalInfo()
 	(new PersonalInfoDialog(kadu))->show();
 }
 
-void Kadu::addUserAction()
-{
-	const UserGroup* users;
-	selectedUsersNeeded(users);
+//TODO: 0.6.5
+// void Kadu::addUserAction()
+// {
+// 	const UserGroup* users;
+// `	selectedUsersNeeded(users);
 // 	addUserActionActivated(users);
-}
+// }
 
 void Kadu::manageIgnored()
 {
@@ -1163,21 +1145,10 @@ void Kadu::sendMessage(UserListElement elem)
 {
 	kdebugf();
 
-	UserBox *activeUserBox = UserBox::activeUserBox();
-	if (activeUserBox == NULL)
-	{
-		kdebugf2();
-		return;
-	}
-
-	UserListElements users = activeUserBox->selectedUsers();
-	if (!users.isEmpty())
-	{
-		if (elem.usesProtocol("Gadu") && !users.contains("Gadu", Myself.ID("Gadu"))) //TODO: elem.hasFeature("SendingMessages")
-			chat_manager->sendMessage(elem, users);
-		else if (elem.mobile().isEmpty() && !elem.email().isEmpty())
-			openMailClient(users.first().email());
-	}
+	if (elem.usesProtocol("Gadu") && elem != Myself) //TODO: elem.hasFeature("SendingMessages")
+		chat_manager->sendMessage(elem, elem);
+	else if (elem.mobile().isEmpty() && !elem.email().isEmpty())
+		openMailClient(elem.email());
 
 	kdebugf2();
 }

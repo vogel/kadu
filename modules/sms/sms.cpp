@@ -534,19 +534,20 @@ void SmsConfigurationUiHandler::onUserDblClicked(UserListElement user)
 
 void SmsConfigurationUiHandler::onSendSmsToUser()
 {
-	kdebugf();
-	UserListElements users;
-	UserBox *activeUserBox = kadu->userbox()->activeUserBox();
-	if (activeUserBox == NULL)
-		return;
+// TODO: 0.6.5
+// 	kdebugf();
+// 	UserListElements users;
+// 	UserBox *activeUserBox = kadu->userbox()->activeUserBox();
+// 	if (activeUserBox == NULL)
+// 		return;
 
-	users = activeUserBox->selectedUsers();
-	if (users.count() != 1)
-		return;
+// 	users = activeUserBox->selectedUsers();
+// 	if (users.count() != 1)
+// 		return;
 
-	if (!users[0].mobile().isEmpty())
-		newSms(users[0].altNick());
-	kdebugf2();
+// 	if (!users[0].mobile().isEmpty())
+// 		newSms(users[0].altNick());
+// 	kdebugf2();
 }
 
 void SmsConfigurationUiHandler::onSendSms()

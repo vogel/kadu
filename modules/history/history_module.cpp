@@ -321,27 +321,6 @@ void HistoryModule::messageSentAndConfirmed(UserListElements receivers, const QS
 	history->addMyMessage(uins, message);
 }
 
-void HistoryModule::viewHistory()
-{
-	kdebugf();
-	UserBox *activeUserBox = UserBox::activeUserBox();
-
-	if (activeUserBox == NULL)
-	{
-		kdebugf2();
-		return;
-	}
-	UserListElements users = activeUserBox->selectedUsers();
-
-	UinsList uins;
-	foreach(const UserListElement &user, users)
-		uins.append(user.ID("Gadu").toUInt());
-	//TODO: throw out UinsList as soon as possible!
-	(new HistoryDialog(uins))->show();
-
-	kdebugf2();
-}
-
 void HistoryModule::removingUsers(UserListElements users)
 {
 	kdebugf();

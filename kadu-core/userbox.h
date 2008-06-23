@@ -462,13 +462,6 @@ public:
 	**/
 	UserListElement currentUser() const;
 
-	/**
-		\fn static UserBox* activeUserBox()
-		Funkcja znajdujaca aktywny UserBox.
-		\return wska�nik do aktywnego UserBox'a, je�li taki nie istnieje zwracana jest warto�� NULL.
-	**/
-	static UserBox* activeUserBox();
-
 	class CmpFuncDesc
 	{
 		public:

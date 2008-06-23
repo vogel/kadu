@@ -824,19 +824,6 @@ void UserBox::selectionChangedSlot()
 	emit userListChanged(selectedUsers());
 }
 
-UserBox* UserBox::activeUserBox()
-{
-	kdebugf();
-
-	foreach(UserBox *box, UserBoxes)
-		if (box->window()->isActiveWindow())
-			return box;
-
-	kdebugmf(KDEBUG_WARNING, "return NULL!\n");
-//	printBacktrace("activeUserBox NULL");
-	return kadu->userbox();
-}
-
 void UserBox::refreshLater()
 {
 	refreshTimer.start(0, true);

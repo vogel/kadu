@@ -258,7 +258,6 @@ public slots:
 	void setDocked(bool docked, bool dontHideOnClose);
 
 	void about();
-	void addUserAction();
 
 	void help();
 	void hideKadu();
@@ -273,7 +272,6 @@ public slots:
 
 	void setMainWindowIcon(const QPixmap &);
 
-	void selectedUsersNeeded(const UserGroup *& users);
 	void editUserActionAddedToToolbar(const UserGroup* users);
 	void editUserActionSetParams(QString protocolName, UserListElement users);
 //	void showStatusActionActivated();

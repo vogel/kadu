@@ -570,23 +570,6 @@ void ChatWidget::disconnectAcknowledgeSlots()
 	kdebugf2();
 }
 
-void ChatWidget::selectedUsersNeeded(const UserGroup * &user_group)
-{
-	kdebugf();
-	user_group = users();
-	//TODO: do przemyslenia kwestia akcji, ktore dzialaja tylko dla wybranych
-	// kontaktow z userboxa, cos w stylu:
-	/*	if (!userbox)
-		user = *Users->constBegin();
-	else
-		if (userbox->currentItem() == -1)
-			user = *Users->constBegin();
-		else
-			user = Users->byAltNick(userbox->currentText());*/
-	// tak poprzednio dzialalo "whois"
-	kdebugf2();
-}
-
 /* sends the message typed */
 void ChatWidget::sendMessage()
 {

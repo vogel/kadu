@@ -208,17 +208,6 @@ void FileTransferManager::sendFile(UinType receiver)
 	kdebugf2();
 }
 
-void FileTransferManager::sendFile()
-{
-	kdebugf();
-
-	UserBox *activeUserBox = UserBox::activeUserBox();
-	if (activeUserBox)
-		sendFile(activeUserBox->selectedUsers());
-
-	kdebugf2();
-}
-
 void FileTransferManager::sendFileActionActivated(QAction *sender, bool toggled)
 {
 	kdebugf();
@@ -257,8 +246,9 @@ void FileTransferManager::sendFile(const UserListElements users)
 
 void FileTransferManager::kaduKeyPressed(QKeyEvent *e)
 {
-	if (HotKey::shortCut(e, "ShortCuts", "kadu_sendfile"))
-		sendFile();
+// TODO: 0.6.5
+// 	if (HotKey::shortCut(e, "ShortCuts", "kadu_sendfile"))
+// 		sendFile();
 }
 
 void FileTransferManager::chatKeyPressed(QKeyEvent *e, ChatWidget *chatWidget, bool &handled)
