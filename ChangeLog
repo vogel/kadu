@@ -2,7 +2,7 @@ Teksty w nawiasach na koñcu wpisu mówi± o tym, kto dokona³ poprawki lub rozbudow
 Postaæ (x/y) oznacza, ¿e x jest pomys³odawc± lub podes³a³ patcha, a zrobi³ to kto¶ oznaczony przez y.
 Je¶li jest w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 
-+++ wersja 0.6.0.2-rc1 (22.06.2008)
++++ wersja 0.6.0.2 (03.07.2008)
 * poprawiona kolejno¶æ argumentów konstruktora klasy ConfigLineEdit (neeo)
 * wy¶wietlanie poprawnej ikony po zmianie zestawu lub zmianie statusu dla wcze¶niej otwartych okien (neeo)
 * poprawiona wywrotka programu przy odrzucaniu przychodz±cego transferu pliku (White Eagle)
