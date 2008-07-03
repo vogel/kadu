@@ -336,10 +336,12 @@ void ChatManager::sendActionActivated(QAction *sender, bool toggled)
 
 	ChatWidget *chatWidget = kaduMainWindow->getChatWidget();
 	if (chatWidget)
+	{
 		if (chatWidget->waitingForACK())
 			chatWidget->cancelMessage();
 		else
 			chatWidget->sendMessage();
+	}
 
 	kdebugf2();
 }

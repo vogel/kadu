@@ -64,11 +64,15 @@ UserListElement UserGroup::byAltNick(const QString& altnick)
 bool UserGroup::containsAltNick(const QString &altnick, BehaviourForAnonymous beh) const
 {
 	foreach(const UserListElement &user, *this)
+	{
 		if (user.altNick() == altnick)
+		{
 			if (user.isAnonymous())
 				return (beh == TrueForAnonymous);
 			else
 				return true;
+		}
+	}
 
 	return false;
 }
@@ -93,11 +97,13 @@ bool UserGroup::contains(const QString &protocolName, const QString &id, Behavio
 			continue;
 
 		ProtocolData *protoData = user.privateData->protocols[protocolName];
-		if (protoData && protoData->ID == id)
+		if (protoData && (protoData->ID == id))
+		{
 			if (user.isAnonymous())
 				return (beh == TrueForAnonymous);
 			else
 				return true;
+		}
 	}
 	return false;
 }
