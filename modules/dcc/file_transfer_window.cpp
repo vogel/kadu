@@ -83,7 +83,7 @@ FileTransferWidget::FileTransferWidget(QWidget *parent, FileTransfer *ft)
 	buttons_layout->addWidget(continueButton);
 	buttons_layout->addWidget(deleteThis);
 	buttons->setLayout(buttons_layout);
-// 	layout->addWidget(buttons, 2, 2, Qt::AlignRight);
+ 	layout->addWidget(buttons, 2, 2, Qt::AlignRight);
 
 	UserListElement ule = userlist->byID("Gadu", QString::number(ft->contact()));
 

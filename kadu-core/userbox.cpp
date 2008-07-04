@@ -1141,7 +1141,8 @@ void UserBox::applyNegativeFilter(UserGroup *g)
 	connect(g, SIGNAL(userRemoved(UserListElement, bool, bool)),
 			this, SLOT(userAddedToGroup(UserListElement, bool, bool)));
 	refresh();
-	emit selectionChanged();
+	if (!Kadu::closing())
+		emit selectionChanged();
 	kdebugf2();
 }
 
@@ -1182,7 +1183,8 @@ void UserBox::removeNegativeFilter(UserGroup *g)
 	}
 	VisibleUsers->addUsers(users);
 	refresh();
-	emit selectionChanged();
+	if (!Kadu::closing())
+		emit selectionChanged();
 	kdebugf2();
 }
 
