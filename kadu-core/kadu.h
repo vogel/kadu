@@ -1,9 +1,10 @@
 #ifndef KADU_H
 #define KADU_H
 
-#include <QCustomEvent>
-#include <QDateTime>
-#include <QTimer>
+#include <QtCore/QCustomEvent>
+#include <QtCore/QDateTime>
+#include <QtCore/QTimer>
+#include <QtGui/QKeyEvent>
 
 #include "configuration_aware_object.h"
 #include "kadu_main_window.h"

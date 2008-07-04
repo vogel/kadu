@@ -10,7 +10,7 @@
 #ifndef STATUS_CHANGER
 #define STATUS_CHANGER
 
-#include <QObject>
+#include <QtCore/QObject>
 
 #include "status.h"
 

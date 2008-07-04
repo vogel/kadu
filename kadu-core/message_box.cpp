@@ -7,13 +7,13 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <QApplication>
-#include <QCloseEvent>
-#include <QHBoxLayout>
-#include <QLabel>
-#include <QMap>
-#include <QPushButton>
-#include <QVBoxLayout>
+#include <QtCore/QMap>
+#include <QtGui/QApplication>
+#include <QtGui/QCloseEvent>
+#include <QtGui/QHBoxLayout>
+#include <QtGui/QLabel>
+#include <QtGui/QPushButton>
+#include <QtGui/QVBoxLayout>
 
 #include "debug.h"
 #include "icons_manager.h"

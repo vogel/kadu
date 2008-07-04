@@ -7,12 +7,13 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <QBoxLayout>
-#include <QLabel>
-#include <QPushButton>
-#include <QTabWidget>
-#include <QTextEdit>
-#include <QTextStream>
+#include <QtCore/QTextStream>
+#include <QtGui/QBoxLayout>
+#include <QtGui/QKeyEvent>
+#include <QtGui/QLabel>
+#include <QtGui/QPushButton>
+#include <QtGui/QTabWidget>
+#include <QtGui/QTextEdit>
 
 #include "debug.h"
 #include "icons_manager.h"
@@ -67,7 +68,7 @@ About::About(QWidget *parent)
 
 	QLabel *l_info = new QLabel;
 	l_info->setText(QString("<span style=\"font-size: 12pt\">Kadu %1 %2<br />(c) 2001-2008 Kadu Team</span>").arg(VERSION)
-			.arg(strlen(detailed_version) > 0 ? ("(" + QString(detailed_version) + ")") : QString::null));
+			.arg(strlen(DETAILED_VERSION) > 0 ? ("(" + QString(DETAILED_VERSION) + ")") : QString::null));
 	l_info->setWordWrap(true);
 	l_info->setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Minimum));
 
@@ -166,13 +167,13 @@ QString About::loadFile(const QString &name)
 	QFile file(dataPath("kadu/" + name));
 	if (!file.open(QIODevice::ReadOnly))
 	{
-		kdebugm(KDEBUG_ERROR, "About::loadFile(%s) cannot open file\n", name.local8Bit().data());
+		kdebugm(KDEBUG_ERROR, "About::loadFile(%s) cannot open file\n", name.toLocal8Bit().data());
 		return QString::null;
 	}
 
 	QTextStream str(&file);
 	str.setCodec(codec_latin2);
-	QString data = str.read();
+	QString data = str.readAll();
 	file.close();
 
 	kdebugf2();

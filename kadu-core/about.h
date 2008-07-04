@@ -1,7 +1,16 @@
+/***************************************************************************
+ *                                                                         *
+ *   This program is free software; you can redistribute it and/or modify  *
+ *   it under the terms of the GNU General Public License as published by  *
+ *   the Free Software Foundation; either version 2 of the License, or     *
+ *   (at your option) any later version.                                   *
+ *                                                                         *
+ ***************************************************************************/
+
 #ifndef ABOUT_H
 #define ABOUT_H
 
-#include <QWidget>
+#include <QtGui/QWidget>
 
 /**
 	\class About
@@ -16,8 +25,8 @@ class About : public QWidget {
 public:
 	/**
 		\fn About(QWidget *parent = 0)
-		Konstruktor tworzy okno, ustawia zak³adki z informacjami o autorach, podziêkowaniach, licencji oraz listê zmian w programie. \n
-		Domy¶lnie okno ma rozmiar 640x420.
+		Konstruktor tworzy okno, ustawia zakï¿½adki z informacjami o autorach, podziï¿½kowaniach, licencji oraz listï¿½ zmian w programie. \n
+		Domyï¿½lnie okno ma rozmiar 640x420.
 		\param parent rodzic okna
 		\param name nazwa obiektu
 	**/

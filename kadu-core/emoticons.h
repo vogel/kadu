@@ -1,9 +1,9 @@
 #ifndef EMOTICONS_H
 #define EMOTICONS_H
 
-#include <QList>
-#include <QPair>
-#include <QToolButton>
+#include <QtCore/QList>
+#include <QtCore/QPair>
+#include <QtGui/QToolButton>
 
 #include "configuration_aware_object.h"
 #include "html_document.h"

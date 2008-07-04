@@ -10,10 +10,10 @@
 #ifndef KADU_CHAT_WIDGET_H
 #define KADU_CHAT_WIDGET_H
 
-#include <QDateTime>
-#include <QList>
-#include <QPixmap>
-#include <QWidget>
+#include <QtCore/QDateTime>
+#include <QtCore/QList>
+#include <QtGui/QPixmap>
+#include <QtGui/QWidget>
 
 #include "chat_messages_view.h"
 #include "configuration_aware_object.h"

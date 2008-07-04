@@ -1,16 +1,16 @@
 #ifndef CONFIG_FILE_H
 #define CONFIG_FILE_H
 
-#include <QColor>
-#include <QDomDocument>
-#include <QFont>
-#include <QMap>
-#include <QRect>
-#include <QSize>
-#include <QStringList>
+#include <QtCore/QMap>
+#include <QtCore/QRect>
+#include <QtCore/QSize>
+#include <QtCore/QStringList>
+#include <QtGui/QColor>
+#include <QtGui/QFont>
+#include <QtXml/QDomDocument>
 
 /**
-	Klasa reprezentuj±ca plik XML-owy z zapisem konfiguracji programu
+	Klasa reprezentujï¿½ca plik XML-owy z zapisem konfiguracji programu
 **/
 class XmlConfigFile
 {
@@ -29,12 +29,12 @@ public:
 	void read();
 
 	/**
-		Zapisuje na dysk zawarto¶æ konfiguracji
+		Zapisuje na dysk zawartoï¿½ï¿½ konfiguracji
 	**/
 	void sync();
 
 	/**
-		Zapisuje do wybranego pliku kopiê konfiguracji
+		Zapisuje do wybranego pliku kopiï¿½ konfiguracji
 	**/
 	void saveTo(const QString &filename);
 
@@ -86,7 +86,7 @@ public:
 extern XmlConfigFile *xml_config_file;
 
 /**
-	Klasa reprezentuj±ca tekstowy plik konfiguracyjny (format INI)
+	Klasa reprezentujï¿½ca tekstowy plik konfiguracyjny (format INI)
 **/
 class PlainConfigFile
 {
@@ -113,197 +113,197 @@ public:
 	void read();
 
 	/**
-		Zapisuje na dysk zawarto¶æ konfiguracji
+		Zapisuje na dysk zawartoï¿½ï¿½ konfiguracji
 	**/
 
 	void sync() const;
 	/**
-		Zwraca ca³± sekcjê "name"
+		Zwraca caï¿½ï¿½ sekcjï¿½ "name"
 	**/
 	QMap<QString, QString> & getGroupSection(const QString &name);
 
 	/**
-		Zwraca listê sekcji
+		Zwraca listï¿½ sekcji
 	**/
 	QStringList getGroupList() const;
 
 	/**
-		Zapisuje warto¶æ "value" do grupy "group" w pole "name"
+		Zapisuje wartoï¿½ï¿½ "value" do grupy "group" w pole "name"
 		@param group nazwa grupy
 		@param name nazwa pola w grupie
-		@param value warto¶æ QString do wpisania
+		@param value wartoï¿½ï¿½ QString do wpisania
 	**/
 	void writeEntry(const QString &group,const QString &name, const QString &value);
 
 	/**
-		Zapisuje warto¶æ "value" do grupy "group" w pole "name"
+		Zapisuje wartoï¿½ï¿½ "value" do grupy "group" w pole "name"
 		@param group nazwa grupy
 		@param name nazwa pola w grupie
-		@param value warto¶æ char* do wpisania
+		@param value wartoï¿½ï¿½ char* do wpisania
 	**/
 	void writeEntry(const QString &group,const QString &name, const char *value);
 
 	/**
-		Zapisuje warto¶æ "value" do grupy "group" w pole "name"
+		Zapisuje wartoï¿½ï¿½ "value" do grupy "group" w pole "name"
 		@param group nazwa grupy
 		@param name nazwa pola w grupie
-		@param value warto¶æ int do wpisania
+		@param value wartoï¿½ï¿½ int do wpisania
 	**/
 	void writeEntry(const QString &group, const QString &name, const int value);
 
 	/**
-		Zapisuje warto¶æ "value" do grupy "group" w pole "name"
+		Zapisuje wartoï¿½ï¿½ "value" do grupy "group" w pole "name"
 		@param group nazwa grupy
 		@param name nazwa pola w grupie
-		@param value warto¶æ double do wpisania
+		@param value wartoï¿½ï¿½ double do wpisania
 	**/
 	void writeEntry(const QString &group, const QString &name, const double value);
 
 	/**
-		Zapisuje warto¶æ "value" do grupy "group" w pole "name"
+		Zapisuje wartoï¿½ï¿½ "value" do grupy "group" w pole "name"
 		@param group nazwa grupy
 		@param name nazwa pola w grupie
-		@param value warto¶æ bool do wpisania
+		@param value wartoï¿½ï¿½ bool do wpisania
 	**/
 	void writeEntry(const QString &group,const QString &name, const bool value);
 
 	/**
-		Zapisuje warto¶æ "value" do grupy "group" w pole "name"
+		Zapisuje wartoï¿½ï¿½ "value" do grupy "group" w pole "name"
 		@param group nazwa grupy
 		@param name nazwa pola w grupie
-		@param value warto¶æ QRect do wpisania
+		@param value wartoï¿½ï¿½ QRect do wpisania
 	**/
 	void writeEntry(const QString &group,const QString &name, const QRect &value);
 
 	/**
-		Zapisuje warto¶æ "value" do grupy "group" w pole "name"
+		Zapisuje wartoï¿½ï¿½ "value" do grupy "group" w pole "name"
 		@param group nazwa grupy
 		@param name nazwa pola w grupie
-		@param value warto¶æ QSize do wpisania
+		@param value wartoï¿½ï¿½ QSize do wpisania
 	**/
 	void writeEntry(const QString &group, const QString &name, const QSize &value);
 
 	/**
-		Zapisuje warto¶æ "value" do grupy "group" w pole "name"
+		Zapisuje wartoï¿½ï¿½ "value" do grupy "group" w pole "name"
 		@param group nazwa grupy
 		@param name nazwa pola w grupie
-		@param value warto¶æ QColor do wpisania
+		@param value wartoï¿½ï¿½ QColor do wpisania
 	**/
 	void writeEntry(const QString &group, const QString &name, const QColor &value);
 
 	/**
-		Zapisuje warto¶æ "value" do grupy "group" w pole "name"
+		Zapisuje wartoï¿½ï¿½ "value" do grupy "group" w pole "name"
 		@param group nazwa grupy
 		@param name nazwa pola w grupie
-		@param value warto¶æ QFont do wpisania
+		@param value wartoï¿½ï¿½ QFont do wpisania
 	**/
 	void writeEntry(const QString &group, const QString &name, const QFont &value);
 
 	/**
-		Zapisuje warto¶æ "value" do grupy "group" w pole "name"
+		Zapisuje wartoï¿½ï¿½ "value" do grupy "group" w pole "name"
 		@param group nazwa grupy
 		@param name nazwa pola w grupie
-		@param value warto¶æ QPoint do wpisania
+		@param value wartoï¿½ï¿½ QPoint do wpisania
 	**/
 	void writeEntry(const QString &group, const QString &name, const QPoint &value);
 
 	/**
-		Zwraca warto¶æ pola "name" z grupy "group"
+		Zwraca wartoï¿½ï¿½ pola "name" z grupy "group"
 		@param group nazwa grupy
 		@param name nazwa pola w grupie
-		@param def domy¶lna warto¶æ pola
-		@return warto¶æ danego pola, je¶li nie istnieje zwracana
-		jest warto¶æ "def"
+		@param def domyï¿½lna wartoï¿½ï¿½ pola
+		@return wartoï¿½ï¿½ danego pola, jeï¿½li nie istnieje zwracana
+		jest wartoï¿½ï¿½ "def"
 	**/
 	QString readEntry(const QString &group, const QString &name, const QString &def = QString::null) const;
 
 	/**
-		Zwraca warto¶æ pola "name" z grupy "group"
+		Zwraca wartoï¿½ï¿½ pola "name" z grupy "group"
 		@param group nazwa grupy
 		@param name nazwa pola w grupie
-		@param def domy¶lna warto¶æ pola
-		@return warto¶æ danego pola, je¶li nie istnieje zwracana
-		jest warto¶æ "def"
+		@param def domyï¿½lna wartoï¿½ï¿½ pola
+		@return wartoï¿½ï¿½ danego pola, jeï¿½li nie istnieje zwracana
+		jest wartoï¿½ï¿½ "def"
 	**/
 	int readNumEntry(const QString &group, const QString &name, int def = 0) const;
 
 	/**
-		Zwraca warto¶æ pola "name" z grupy "group"
+		Zwraca wartoï¿½ï¿½ pola "name" z grupy "group"
 		@param group nazwa grupy
 		@param name nazwa pola w grupie
-		@param def domy¶lna warto¶æ pola
-		@return warto¶æ danego pola, je¶li nie istnieje zwracana
-		jest warto¶æ "def"
+		@param def domyï¿½lna wartoï¿½ï¿½ pola
+		@return wartoï¿½ï¿½ danego pola, jeï¿½li nie istnieje zwracana
+		jest wartoï¿½ï¿½ "def"
 	**/
 	unsigned int readUnsignedNumEntry(const QString &group, const QString &name, unsigned int def = 0) const;
 
 	/**
-		Zwraca warto¶æ pola "name" z grupy "group"
+		Zwraca wartoï¿½ï¿½ pola "name" z grupy "group"
 		@param group nazwa grupy
 		@param name nazwa pola w grupie
-		@param def domy¶lna warto¶æ pola
-		@return warto¶æ danego pola, je¶li nie istnieje zwracana
-		jest warto¶æ "def"
+		@param def domyï¿½lna wartoï¿½ï¿½ pola
+		@return wartoï¿½ï¿½ danego pola, jeï¿½li nie istnieje zwracana
+		jest wartoï¿½ï¿½ "def"
 	**/
 	double readDoubleNumEntry(const QString &group, const QString &name, double def = 0.0) const;
 
 	/**
-		Zwraca warto¶æ pola "name" z grupy "group"
+		Zwraca wartoï¿½ï¿½ pola "name" z grupy "group"
 		@param group nazwa grupy
 		@param name nazwa pola w grupie
-		@param def domy¶lna warto¶æ pola
-		@return warto¶æ danego pola, je¶li nie istnieje zwracana
-		jest warto¶æ "def"
+		@param def domyï¿½lna wartoï¿½ï¿½ pola
+		@return wartoï¿½ï¿½ danego pola, jeï¿½li nie istnieje zwracana
+		jest wartoï¿½ï¿½ "def"
 	**/
 	bool readBoolEntry(const QString &group, const QString &name, bool def = false) const;
 
 	/**
-		Zwraca warto¶æ pola "name" z grupy "group"
+		Zwraca wartoï¿½ï¿½ pola "name" z grupy "group"
 		@param group nazwa grupy
 		@param name nazwa pola w grupie
-		@param def domy¶lna warto¶æ pola
-		@return warto¶æ danego pola, je¶li nie istnieje zwracana
-		jest warto¶æ "def"
+		@param def domyï¿½lna wartoï¿½ï¿½ pola
+		@return wartoï¿½ï¿½ danego pola, jeï¿½li nie istnieje zwracana
+		jest wartoï¿½ï¿½ "def"
 	**/
 	QRect readRectEntry(const QString &group, const QString &name, const QRect *def = 0L) const;
 
 	/**
-		Zwraca warto¶æ pola "name" z grupy "group"
+		Zwraca wartoï¿½ï¿½ pola "name" z grupy "group"
 		@param group nazwa grupy
 		@param name nazwa pola w grupie
-		@param def domy¶lna warto¶æ pola
-		@return warto¶æ danego pola, je¶li nie istnieje zwracana
-		jest warto¶æ "def"
+		@param def domyï¿½lna wartoï¿½ï¿½ pola
+		@return wartoï¿½ï¿½ danego pola, jeï¿½li nie istnieje zwracana
+		jest wartoï¿½ï¿½ "def"
 	**/
 	QSize readSizeEntry(const QString &group, const QString &name, const QSize *def = 0L) const;
 
 	/**
-		Zwraca warto¶æ pola "name" z grupy "group"
+		Zwraca wartoï¿½ï¿½ pola "name" z grupy "group"
 		@param group nazwa grupy
 		@param name nazwa pola w grupie
-		@param def domy¶lna warto¶æ pola
-		@return warto¶æ danego pola, je¶li nie istnieje zwracana
-		jest warto¶æ "def"
+		@param def domyï¿½lna wartoï¿½ï¿½ pola
+		@return wartoï¿½ï¿½ danego pola, jeï¿½li nie istnieje zwracana
+		jest wartoï¿½ï¿½ "def"
 	**/
 	QColor readColorEntry(const QString &group, const QString &name, const QColor *def = 0L) const;
 
 	/**
-		Zwraca warto¶æ pola "name" z grupy "group"
+		Zwraca wartoï¿½ï¿½ pola "name" z grupy "group"
 		@param group nazwa grupy
 		@param name nazwa pola w grupie
-		@param def domy¶lna warto¶æ pola
-		@return warto¶æ danego pola, je¶li nie istnieje zwracana
-		jest warto¶æ "def"
+		@param def domyï¿½lna wartoï¿½ï¿½ pola
+		@return wartoï¿½ï¿½ danego pola, jeï¿½li nie istnieje zwracana
+		jest wartoï¿½ï¿½ "def"
 	**/
 	QFont readFontEntry(const QString &group, const QString &name, const QFont *def = 0L) const;
 
 	/**
-		Zwraca warto¶æ pola "name" z grupy "group"
+		Zwraca wartoï¿½ï¿½ pola "name" z grupy "group"
 		@param group nazwa grupy
 		@param name nazwa pola w grupie
-		@param def domy¶lna warto¶æ pola
-		@return warto¶æ danego pola, je¶li nie istnieje zwracana
-		jest warto¶æ "def"
+		@param def domyï¿½lna wartoï¿½ï¿½ pola
+		@return wartoï¿½ï¿½ danego pola, jeï¿½li nie istnieje zwracana
+		jest wartoï¿½ï¿½ "def"
 	**/
 	QPoint readPointEntry(const QString &group, const QString &name, const QPoint *def = 0L) const;
 
@@ -315,99 +315,99 @@ public:
 	void removeVariable(const QString &group, const QString &name);
 
 	/**
-		Tworzy pole "name" w grupie "group" je¶li ono nie istnieje
-		i ustawia warto¶æ na "value"
+		Tworzy pole "name" w grupie "group" jeï¿½li ono nie istnieje
+		i ustawia wartoï¿½ï¿½ na "value"
 		@param group nazwa grupy
 		@param name nazwa pola w grupie
-		@param value warto¶æ QPoint do wpisania
+		@param value wartoï¿½ï¿½ QPoint do wpisania
 	**/
 	void addVariable(const QString &group, const QString &name, const QString &value);
 
 	/**
-		Tworzy pole "name" w grupie "group" je¶li ono nie istnieje
-		i ustawia warto¶æ na "value"
+		Tworzy pole "name" w grupie "group" jeï¿½li ono nie istnieje
+		i ustawia wartoï¿½ï¿½ na "value"
 		@param group nazwa grupy
 		@param name nazwa pola w grupie
-		@param value warto¶æ QPoint do wpisania
+		@param value wartoï¿½ï¿½ QPoint do wpisania
 	**/
 	void addVariable(const QString &group, const QString &name, const char *value);
 
 	/**
-		Tworzy pole "name" w grupie "group" je¶li ono nie istnieje
-		i ustawia warto¶æ na "value"
+		Tworzy pole "name" w grupie "group" jeï¿½li ono nie istnieje
+		i ustawia wartoï¿½ï¿½ na "value"
 		@param group nazwa grupy
 		@param name nazwa pola w grupie
-		@param value warto¶æ QPoint do wpisania
+		@param value wartoï¿½ï¿½ QPoint do wpisania
 	**/
 	void addVariable(const QString &group, const QString &name, const int value);
 
 	/**
-		Tworzy pole "name" w grupie "group" je¶li ono nie istnieje
-		i ustawia warto¶æ na "value"
+		Tworzy pole "name" w grupie "group" jeï¿½li ono nie istnieje
+		i ustawia wartoï¿½ï¿½ na "value"
 		@param group nazwa grupy
 		@param name nazwa pola w grupie
-		@param value warto¶æ QPoint do wpisania
+		@param value wartoï¿½ï¿½ QPoint do wpisania
 	**/
 	void addVariable(const QString &group, const QString &name, const double value);
 
 	/**
-		Tworzy pole "name" w grupie "group" je¶li ono nie istnieje
-		i ustawia warto¶æ na "value"
+		Tworzy pole "name" w grupie "group" jeï¿½li ono nie istnieje
+		i ustawia wartoï¿½ï¿½ na "value"
 		@param group nazwa grupy
 		@param name nazwa pola w grupie
-		@param value warto¶æ QPoint do wpisania
+		@param value wartoï¿½ï¿½ QPoint do wpisania
 	**/
 	void addVariable(const QString &group, const QString &name, const bool value);
 
 	/**
-		Tworzy pole "name" w grupie "group" je¶li ono nie istnieje
-		i ustawia warto¶æ na "value"
+		Tworzy pole "name" w grupie "group" jeï¿½li ono nie istnieje
+		i ustawia wartoï¿½ï¿½ na "value"
 		@param group nazwa grupy
 		@param name nazwa pola w grupie
-		@param value warto¶æ QPoint do wpisania
+		@param value wartoï¿½ï¿½ QPoint do wpisania
 	**/
 	void addVariable(const QString &group, const QString &name, const QRect &value);
 
 	/**
-		Tworzy pole "name" w grupie "group" je¶li ono nie istnieje
-		i ustawia warto¶æ na "value"
+		Tworzy pole "name" w grupie "group" jeï¿½li ono nie istnieje
+		i ustawia wartoï¿½ï¿½ na "value"
 		@param group nazwa grupy
 		@param name nazwa pola w grupie
-		@param value warto¶æ QPoint do wpisania
+		@param value wartoï¿½ï¿½ QPoint do wpisania
 	**/
 	void addVariable(const QString &group, const QString &name, const QSize &value);
 
 	/**
-		Tworzy pole "name" w grupie "group" je¶li ono nie istnieje
-		i ustawia warto¶æ na "value"
+		Tworzy pole "name" w grupie "group" jeï¿½li ono nie istnieje
+		i ustawia wartoï¿½ï¿½ na "value"
 		@param group nazwa grupy
 		@param name nazwa pola w grupie
-		@param value warto¶æ QPoint do wpisania
+		@param value wartoï¿½ï¿½ QPoint do wpisania
 	**/
 	void addVariable(const QString &group, const QString &name, const QColor &value);
 
 	/**
-		Tworzy pole "name" w grupie "group" je¶li ono nie istnieje
-		i ustawia warto¶æ na "value"
+		Tworzy pole "name" w grupie "group" jeï¿½li ono nie istnieje
+		i ustawia wartoï¿½ï¿½ na "value"
 		@param group nazwa grupy
 		@param name nazwa pola w grupie
-		@param value warto¶æ QPoint do wpisania
+		@param value wartoï¿½ï¿½ QPoint do wpisania
 	**/
 	void addVariable(const QString &group, const QString &name, const QFont &value);
 
 	/**
-		Tworzy pole "name" w grupie "group" je¶li ono nie istnieje
-		i ustawia warto¶æ na "value"
+		Tworzy pole "name" w grupie "group" jeï¿½li ono nie istnieje
+		i ustawia wartoï¿½ï¿½ na "value"
 		@param group nazwa grupy
 		@param name nazwa pola w grupie
-		@param value warto¶æ QPoint do wpisania
+		@param value wartoï¿½ï¿½ QPoint do wpisania
 	**/
 	void addVariable(const QString &group, const QString &name, const QPoint &value);
 
 };
 
 /**
-	Klasa reprezentuj±ca plik z zapisem konfiguracji programu
+	Klasa reprezentujï¿½ca plik z zapisem konfiguracji programu
 **/
 class ConfigFile
 {
@@ -423,186 +423,186 @@ public:
 	ConfigFile(const QString &filename);
 
 	/**
-		Zapisuje na dysk zawarto¶æ konfiguracji
+		Zapisuje na dysk zawartoï¿½ï¿½ konfiguracji
 	**/
 	void sync() const;
 
 	/**
-		Zapisuje warto¶æ "value" do grupy "group" w pole "name"
+		Zapisuje wartoï¿½ï¿½ "value" do grupy "group" w pole "name"
 		@param group nazwa grupy
 		@param name nazwa pola w grupie
-		@param value warto¶æ QString do wpisania
+		@param value wartoï¿½ï¿½ QString do wpisania
 	**/
 	void writeEntry(const QString &group, const QString &name, const QString &value);
 
 	/**
-		Zapisuje warto¶æ "value" do grupy "group" w pole "name"
+		Zapisuje wartoï¿½ï¿½ "value" do grupy "group" w pole "name"
 		@param group nazwa grupy
 		@param name nazwa pola w grupie
-		@param value warto¶æ char* do wpisania
+		@param value wartoï¿½ï¿½ char* do wpisania
 	**/
 	void writeEntry(const QString &group, const QString &name, const char *value);
 
 	/**
-		Zapisuje warto¶æ "value" do grupy "group" w pole "name"
+		Zapisuje wartoï¿½ï¿½ "value" do grupy "group" w pole "name"
 		@param group nazwa grupy
 		@param name nazwa pola w grupie
-		@param value warto¶æ int do wpisania
+		@param value wartoï¿½ï¿½ int do wpisania
 	**/
 	void writeEntry(const QString &group, const QString &name, const int value);
 
 	/**
-		Zapisuje warto¶æ "value" do grupy "group" w pole "name"
+		Zapisuje wartoï¿½ï¿½ "value" do grupy "group" w pole "name"
 		@param group nazwa grupy
 		@param name nazwa pola w grupie
-		@param value warto¶æ double do wpisania
+		@param value wartoï¿½ï¿½ double do wpisania
 	**/
 	void writeEntry(const QString &group, const QString &name, const double value);
 
 	/**
-		Zapisuje warto¶æ "value" do grupy "group" w pole "name"
+		Zapisuje wartoï¿½ï¿½ "value" do grupy "group" w pole "name"
 		@param group nazwa grupy
 		@param name nazwa pola w grupie
-		@param value warto¶æ bool do wpisania
+		@param value wartoï¿½ï¿½ bool do wpisania
 	**/
 	void writeEntry(const QString &group, const QString &name, const bool value);
 
 	/**
-		Zapisuje warto¶æ "value" do grupy "group" w pole "name"
+		Zapisuje wartoï¿½ï¿½ "value" do grupy "group" w pole "name"
 		@param group nazwa grupy
 		@param name nazwa pola w grupie
-		@param value warto¶æ QRect do wpisania
+		@param value wartoï¿½ï¿½ QRect do wpisania
 	**/
 	void writeEntry(const QString &group, const QString &name, const QRect &value);
 
 	/**
-		Zapisuje warto¶æ "value" do grupy "group" w pole "name"
+		Zapisuje wartoï¿½ï¿½ "value" do grupy "group" w pole "name"
 		@param group nazwa grupy
 		@param name nazwa pola w grupie
-		@param value warto¶æ QSize do wpisania
+		@param value wartoï¿½ï¿½ QSize do wpisania
 	**/
 	void writeEntry(const QString &group, const QString &name, const QSize &value);
 
 	/**
-		Zapisuje warto¶æ "value" do grupy "group" w pole "name"
+		Zapisuje wartoï¿½ï¿½ "value" do grupy "group" w pole "name"
 		@param group nazwa grupy
 		@param name nazwa pola w grupie
-		@param value warto¶æ QColor do wpisania
+		@param value wartoï¿½ï¿½ QColor do wpisania
 	**/
 	void writeEntry(const QString &group, const QString &name, const QColor &value);
 
 	/**
-		Zapisuje warto¶æ "value" do grupy "group" w pole "name"
+		Zapisuje wartoï¿½ï¿½ "value" do grupy "group" w pole "name"
 		@param group nazwa grupy
 		@param name nazwa pola w grupie
-		@param value warto¶æ QFont do wpisania
+		@param value wartoï¿½ï¿½ QFont do wpisania
 	**/
 	void writeEntry(const QString &group, const QString &name, const QFont &value);
 
 	/**
-		Zapisuje warto¶æ "value" do grupy "group" w pole "name"
+		Zapisuje wartoï¿½ï¿½ "value" do grupy "group" w pole "name"
 		@param group nazwa grupy
 		@param name nazwa pola w grupie
-		@param value warto¶æ QPoint do wpisania
+		@param value wartoï¿½ï¿½ QPoint do wpisania
 	**/
 	void writeEntry(const QString &group, const QString &name, const QPoint &value);
 
 	/**
-		Zwraca warto¶æ pola "name" z grupy "group"
+		Zwraca wartoï¿½ï¿½ pola "name" z grupy "group"
 		@param group nazwa grupy
 		@param name nazwa pola w grupie
-		@param def domy¶lna warto¶æ pola
-		@return warto¶æ danego pola, je¶li nie istnieje zwracana
-		jest warto¶æ "def"
+		@param def domyï¿½lna wartoï¿½ï¿½ pola
+		@return wartoï¿½ï¿½ danego pola, jeï¿½li nie istnieje zwracana
+		jest wartoï¿½ï¿½ "def"
 	**/
 	QString readEntry(const QString &group, const QString &name, const QString &def = QString::null) const;
 
 	/**
-		Zwraca warto¶æ pola "name" z grupy "group"
+		Zwraca wartoï¿½ï¿½ pola "name" z grupy "group"
 		@param group nazwa grupy
 		@param name nazwa pola w grupie
-		@param def domy¶lna warto¶æ pola
-		@return warto¶æ danego pola, je¶li nie istnieje zwracana
-		jest warto¶æ "def"
+		@param def domyï¿½lna wartoï¿½ï¿½ pola
+		@return wartoï¿½ï¿½ danego pola, jeï¿½li nie istnieje zwracana
+		jest wartoï¿½ï¿½ "def"
 	**/
 	int readNumEntry(const QString &group, const QString &name, int def = 0) const;
 
 	/**
-		Zwraca warto¶æ pola "name" z grupy "group"
+		Zwraca wartoï¿½ï¿½ pola "name" z grupy "group"
 		@param group nazwa grupy
 		@param name nazwa pola w grupie
-		@param def domy¶lna warto¶æ pola
-		@return warto¶æ danego pola, je¶li nie istnieje zwracana
-		jest warto¶æ "def"
+		@param def domyï¿½lna wartoï¿½ï¿½ pola
+		@return wartoï¿½ï¿½ danego pola, jeï¿½li nie istnieje zwracana
+		jest wartoï¿½ï¿½ "def"
 	**/
 	unsigned int readUnsignedNumEntry(const QString &group, const QString &name, unsigned int def = 0) const;
 
 	/**
-		Zwraca warto¶æ pola "name" z grupy "group"
+		Zwraca wartoï¿½ï¿½ pola "name" z grupy "group"
 		@param group nazwa grupy
 		@param name nazwa pola w grupie
-		@param def domy¶lna warto¶æ pola
-		@return warto¶æ danego pola, je¶li nie istnieje zwracana
-		jest warto¶æ "def"
+		@param def domyï¿½lna wartoï¿½ï¿½ pola
+		@return wartoï¿½ï¿½ danego pola, jeï¿½li nie istnieje zwracana
+		jest wartoï¿½ï¿½ "def"
 	**/
 	double readDoubleNumEntry(const QString &group, const QString &name, double def = 0.0) const;
 
 	/**
-		Zwraca warto¶æ pola "name" z grupy "group"
+		Zwraca wartoï¿½ï¿½ pola "name" z grupy "group"
 		@param group nazwa grupy
 		@param name nazwa pola w grupie
-		@param def domy¶lna warto¶æ pola
-		@return warto¶æ danego pola, je¶li nie istnieje zwracana
-		jest warto¶æ "def"
+		@param def domyï¿½lna wartoï¿½ï¿½ pola
+		@return wartoï¿½ï¿½ danego pola, jeï¿½li nie istnieje zwracana
+		jest wartoï¿½ï¿½ "def"
 	**/
 	bool readBoolEntry(const QString &group, const QString &name, bool def = false) const;
 
 	/**
-		Zwraca warto¶æ pola "name" z grupy "group"
+		Zwraca wartoï¿½ï¿½ pola "name" z grupy "group"
 		@param group nazwa grupy
 		@param name nazwa pola w grupie
-		@param def domy¶lna warto¶æ pola
-		@return warto¶æ danego pola, je¶li nie istnieje zwracana
-		jest warto¶æ "def"
+		@param def domyï¿½lna wartoï¿½ï¿½ pola
+		@return wartoï¿½ï¿½ danego pola, jeï¿½li nie istnieje zwracana
+		jest wartoï¿½ï¿½ "def"
 	**/
 	QRect readRectEntry(const QString &group, const QString &name, const QRect *def = 0L) const;
 
 	/**
-		Zwraca warto¶æ pola "name" z grupy "group"
+		Zwraca wartoï¿½ï¿½ pola "name" z grupy "group"
 		@param group nazwa grupy
 		@param name nazwa pola w grupie
-		@param def domy¶lna warto¶æ pola
-		@return warto¶æ danego pola, je¶li nie istnieje zwracana
-		jest warto¶æ "def"
+		@param def domyï¿½lna wartoï¿½ï¿½ pola
+		@return wartoï¿½ï¿½ danego pola, jeï¿½li nie istnieje zwracana
+		jest wartoï¿½ï¿½ "def"
 	**/
 	QSize readSizeEntry(const QString &group, const QString &name, const QSize *def = 0L) const;
 
 	/**
-		Zwraca warto¶æ pola "name" z grupy "group"
+		Zwraca wartoï¿½ï¿½ pola "name" z grupy "group"
 		@param group nazwa grupy
 		@param name nazwa pola w grupie
-		@param def domy¶lna warto¶æ pola
-		@return warto¶æ danego pola, je¶li nie istnieje zwracana jest warto¶æ "def"
+		@param def domyï¿½lna wartoï¿½ï¿½ pola
+		@return wartoï¿½ï¿½ danego pola, jeï¿½li nie istnieje zwracana jest wartoï¿½ï¿½ "def"
 	**/
 	QColor readColorEntry(const QString &group, const QString &name, const QColor *def = 0L) const;
 
 	/**
-		Zwraca warto¶æ pola "name" z grupy "group"
+		Zwraca wartoï¿½ï¿½ pola "name" z grupy "group"
 		@param group nazwa grupy
 		@param name nazwa pola w grupie
-		@param def domy¶lna warto¶æ pola
-		@return warto¶æ danego pola, je¶li nie istnieje zwracana
-		jest warto¶æ "def"
+		@param def domyï¿½lna wartoï¿½ï¿½ pola
+		@return wartoï¿½ï¿½ danego pola, jeï¿½li nie istnieje zwracana
+		jest wartoï¿½ï¿½ "def"
 	**/
 	QFont readFontEntry(const QString &group, const QString &name, const QFont *def = 0L) const;
 
 	/**
-		Zwraca warto¶æ pola "name" z grupy "group"
+		Zwraca wartoï¿½ï¿½ pola "name" z grupy "group"
 		@param group nazwa grupy
 		@param name nazwa pola w grupie
-		@param def domy¶lna warto¶æ pola
-		@return warto¶æ danego pola, je¶li nie istnieje zwracana
-		jest warto¶æ "def"
+		@param def domyï¿½lna wartoï¿½ï¿½ pola
+		@return wartoï¿½ï¿½ danego pola, jeï¿½li nie istnieje zwracana
+		jest wartoï¿½ï¿½ "def"
 		**/
 	QPoint readPointEntry(const QString &group, const QString &name, const QPoint *def = 0L) const;
 
@@ -614,98 +614,98 @@ public:
 	void removeVariable(const QString &group, const QString &name);
 
 	/**
-		Tworzy pole "name" w grupie "group" je¶li ono nie istnieje
-		i ustawia warto¶æ na "value"
+		Tworzy pole "name" w grupie "group" jeï¿½li ono nie istnieje
+		i ustawia wartoï¿½ï¿½ na "value"
 		@param group nazwa grupy
 		@param name nazwa pola w grupie
-		@param value warto¶æ QPoint do wpisania
+		@param value wartoï¿½ï¿½ QPoint do wpisania
 	**/
 	void addVariable(const QString &group, const QString &name, const QString &value);
 
 	/**
-		Tworzy pole "name" w grupie "group" je¶li ono nie istnieje
-		i ustawia warto¶æ na "value"
+		Tworzy pole "name" w grupie "group" jeï¿½li ono nie istnieje
+		i ustawia wartoï¿½ï¿½ na "value"
 		@param group nazwa grupy
 		@param name nazwa pola w grupie
-		@param value warto¶æ QPoint do wpisania
+		@param value wartoï¿½ï¿½ QPoint do wpisania
 	**/
 	void addVariable(const QString &group, const QString &name, const char *value);
 
 	/**
-		Tworzy pole "name" w grupie "group" je¶li ono nie istnieje
-		i ustawia warto¶æ na "value"
+		Tworzy pole "name" w grupie "group" jeï¿½li ono nie istnieje
+		i ustawia wartoï¿½ï¿½ na "value"
 		@param group nazwa grupy
 		@param name nazwa pola w grupie
-		@param value warto¶æ QPoint do wpisania
+		@param value wartoï¿½ï¿½ QPoint do wpisania
 	**/
 	void addVariable(const QString &group, const QString &name, const int value);
 
 	/**
-		Tworzy pole "name" w grupie "group" je¶li ono nie istnieje
-		i ustawia warto¶æ na "value"
+		Tworzy pole "name" w grupie "group" jeï¿½li ono nie istnieje
+		i ustawia wartoï¿½ï¿½ na "value"
 		@param group nazwa grupy
 		@param name nazwa pola w grupie
-		@param value warto¶æ QPoint do wpisania
+		@param value wartoï¿½ï¿½ QPoint do wpisania
 	**/
 	void addVariable(const QString &group, const QString &name, const double value);
 
 	/**
-		Tworzy pole "name" w grupie "group" je¶li ono nie istnieje
-		i ustawia warto¶æ na "value"
+		Tworzy pole "name" w grupie "group" jeï¿½li ono nie istnieje
+		i ustawia wartoï¿½ï¿½ na "value"
 		@param group nazwa grupy
 		@param name nazwa pola w grupie
-		@param value warto¶æ QPoint do wpisania
+		@param value wartoï¿½ï¿½ QPoint do wpisania
 	**/
 	void addVariable(const QString &group, const QString &name, const bool value);
 
 	/**
-		Tworzy pole "name" w grupie "group" je¶li ono nie istnieje
-		i ustawia warto¶æ na "value"
+		Tworzy pole "name" w grupie "group" jeï¿½li ono nie istnieje
+		i ustawia wartoï¿½ï¿½ na "value"
 		@param group nazwa grupy
 		@param name nazwa pola w grupie
-		@param value warto¶æ QPoint do wpisania
+		@param value wartoï¿½ï¿½ QPoint do wpisania
 	**/
 	void addVariable(const QString &group, const QString &name, const QRect &value);
 
 	/**
-		Tworzy pole "name" w grupie "group" je¶li ono nie istnieje
-		i ustawia warto¶æ na "value"
+		Tworzy pole "name" w grupie "group" jeï¿½li ono nie istnieje
+		i ustawia wartoï¿½ï¿½ na "value"
 		@param group nazwa grupy
 		@param name nazwa pola w grupie
-		@param value warto¶æ QPoint do wpisania
+		@param value wartoï¿½ï¿½ QPoint do wpisania
 	**/
 	void addVariable(const QString &group, const QString &name, const QSize &value);
 
 	/**
-		Tworzy pole "name" w grupie "group" je¶li ono nie istnieje
-		i ustawia warto¶æ na "value"
+		Tworzy pole "name" w grupie "group" jeï¿½li ono nie istnieje
+		i ustawia wartoï¿½ï¿½ na "value"
 		@param group nazwa grupy
 		@param name nazwa pola w grupie
-		@param value warto¶æ QPoint do wpisania
+		@param value wartoï¿½ï¿½ QPoint do wpisania
 	**/
 	void addVariable(const QString &group, const QString &name, const QColor &value);
 
 	/**
-		Tworzy pole "name" w grupie "group" je¶li ono nie istnieje
-		i ustawia warto¶æ na "value"
+		Tworzy pole "name" w grupie "group" jeï¿½li ono nie istnieje
+		i ustawia wartoï¿½ï¿½ na "value"
 		@param group nazwa grupy
 		@param name nazwa pola w grupie
-		@param value warto¶æ QPoint do wpisania
+		@param value wartoï¿½ï¿½ QPoint do wpisania
 	**/
 	void addVariable(const QString &group, const QString &name, const QFont &value);
 
 	/**
-		Tworzy pole "name" w grupie "group" je¶li ono nie istnieje
-		i ustawia warto¶æ na "value"
+		Tworzy pole "name" w grupie "group" jeï¿½li ono nie istnieje
+		i ustawia wartoï¿½ï¿½ na "value"
 		@param group nazwa grupy
 		@param name nazwa pola w grupie
-		@param value warto¶æ QPoint do wpisania
+		@param value wartoï¿½ï¿½ QPoint do wpisania
 	**/
 	void addVariable(const QString &group, const QString &name, const QPoint &value);
 
 };
 
-//TODO: po wydaniu 0.4 trzeba zmieniæ nazwê na config_file i wywaliæ define'a
+//TODO: po wydaniu 0.4 trzeba zmieniï¿½ nazwï¿½ na config_file i wywaliï¿½ define'a
 //TODO: mamy juz 0.6 ;)
 
 extern ConfigFile *config_file_ptr;

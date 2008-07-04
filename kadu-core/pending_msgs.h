@@ -10,7 +10,7 @@
 #ifndef PENDING_MSGS_H
 #define PENDING_MSGS_H
 
-#include <QObject>
+#include <QtCore/QObject>
 
 #include <time.h>
 

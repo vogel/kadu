@@ -7,21 +7,21 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <QApplication>
-#include <QComboBox>
-#include <QDesktopWidget>
-#include <QFont>
-#include <QFontInfo>
-#include <QGridLayout>
-#include <QKeyEvent>
-#include <QLabel>
-#include <QLineEdit>
-#include <QPainter>
-#include <QProcess>
-#include <QPushButton>
-#include <QRect>
-#include <QTextCodec>
-#include <QVariant>
+#include <QtCore/QProcess>
+#include <QtCore/QRect>
+#include <QtCore/QTextCodec>
+#include <QtCore/QVariant>
+#include <QtGui/QApplication>
+#include <QtGui/QComboBox>
+#include <QtGui/QDesktopWidget>
+#include <QtGui/QFont>
+#include <QtGui/QFontInfo>
+#include <QtGui/QGridLayout>
+#include <QtGui/QKeyEvent>
+#include <QtGui/QLabel>
+#include <QtGui/QLineEdit>
+#include <QtGui/QPainter>
+#include <QtGui/QPushButton>
 
 #include <pwd.h>
 

@@ -7,7 +7,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <QSocketNotifier>
+#include <QtCore/QSocketNotifier>
 
 #include "config_file.h"
 #include "debug.h"

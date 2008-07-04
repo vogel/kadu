@@ -7,7 +7,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <QRegExp>
+#include <QtCore/QRegExp>
 
 #include "config_file.h"
 #include "debug.h"

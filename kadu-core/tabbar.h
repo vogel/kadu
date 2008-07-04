@@ -10,7 +10,7 @@
 #ifndef KADU_TABBAR_H
 #define KADU_TABBAR_H
 
-#include <QTabBar>
+#include <QtGui/QTabBar>
 
 /**
 	Klasa ta jest odpowiedzialna za obs�ug� zak�adek grup kontakt�w.

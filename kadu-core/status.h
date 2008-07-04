@@ -1,8 +1,8 @@
 #ifndef KADU_STATUS_H
 #define KADU_STATUS_H
 
-#include <QObject>
-#include <QStringList>
+#include <QtCore/QObject>
+#include <QtCore/QStringList>
 
 class QPixmap;
 

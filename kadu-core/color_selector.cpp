@@ -7,10 +7,10 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <QApplication>
-#include <QDesktopWidget>
-#include <QGridLayout>
-#include <QPixmap>
+#include <QtGui/QApplication>
+#include <QtGui/QDesktopWidget>
+#include <QtGui/QGridLayout>
+#include <QtGui/QPixmap>
 
 #include "debug.h"
 #include "misc.h"

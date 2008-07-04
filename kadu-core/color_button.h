@@ -1,7 +1,7 @@
 #ifndef COLOR_BUTTON_H
 #define COLOR_BUTTON_H
 
-#include <QPushButton>
+#include <QtGui/QPushButton>
 
 /**
     Kontrolka do wyboru koloru

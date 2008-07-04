@@ -7,17 +7,17 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <QCheckBox>
-#include <QHostInfo>
-#include <QIntValidator>
-#include <QKeyEvent>
-#include <QLabel>
-#include <QLineEdit>
-#include <QPushButton>
-#include <QScrollArea>
-#include <QScrollBar>
-#include <QTabWidget>
-#include <QVBoxLayout>
+#include <QtGui/QCheckBox>
+#include <QtGui/QIntValidator>
+#include <QtGui/QKeyEvent>
+#include <QtGui/QLabel>
+#include <QtGui/QLineEdit>
+#include <QtGui/QPushButton>
+#include <QtGui/QScrollArea>
+#include <QtGui/QScrollBar>
+#include <QtGui/QTabWidget>
+#include <QtGui/QVBoxLayout>
+#include <QtNetwork/QHostInfo>
 
 #include "config_file.h"
 #include "debug.h"

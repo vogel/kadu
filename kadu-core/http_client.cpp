@@ -7,7 +7,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <QTime>
+#include <QtCore/QTime>
 
 #include "config_file.h"
 #include "debug.h"

@@ -7,7 +7,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <QColorDialog>
+#include <QtGui/QColorDialog>
 
 #include "color_button.h"
 

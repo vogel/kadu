@@ -7,10 +7,10 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <QApplication>
-#include <QList>
-#include <QPair>
-#include <QStyleFactory>
+#include <QtCore/QList>
+#include <QtCore/QPair>
+#include <QtGui/QApplication>
+#include <QtGui/QStyleFactory>
 
 #include "chat_message.h"
 #include "config_file.h"

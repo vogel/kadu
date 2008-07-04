@@ -7,12 +7,12 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <QApplication>
-#include <QDateTime>
-#include <QDir>
-#include <QFile>
-#include <QMutex>
-#include <QTextStream>
+#include <QtCore/QDateTime>
+#include <QtCore/QDir>
+#include <QtCore/QFile>
+#include <QtCore/QMutex>
+#include <QtCore/QTextStream>
+#include <QtGui/QApplication>
 
 #include <errno.h>
 

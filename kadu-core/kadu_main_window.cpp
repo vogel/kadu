@@ -7,8 +7,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <QContextMenuEvent>
-#include <QMenu>
+#include <QtGui/QContextMenuEvent>
+#include <QtGui/QMenu>
 
 #include "config_file.h"
 #include "debug.h"

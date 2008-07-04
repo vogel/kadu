@@ -10,8 +10,8 @@
 #ifndef KADU_MAIN_WINDOW_H
 #define KADU_MAIN_WINDOW_H
 
-#include <QDomElement>
-#include <QMainWindow>
+#include <QtGui/QMainWindow>
+#include <QtXml/QDomElement>
 
 #include "action.h"
 #include "userlist.h"

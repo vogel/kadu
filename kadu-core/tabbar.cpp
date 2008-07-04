@@ -7,10 +7,10 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <QApplication>
-#include <QDragEnterEvent>
-#include <QInputDialog>
-#include <QMenu>
+#include <QtGui/QApplication>
+#include <QtGui/QDragEnterEvent>
+#include <QtGui/QInputDialog>
+#include <QtGui/QMenu>
 
 #include "debug.h"
 #include "groups_manager.h"

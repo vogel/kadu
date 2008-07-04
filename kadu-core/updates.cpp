@@ -7,7 +7,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <QHttp>
+#include <QtNetwork/QHttp>
 
 #include "config_file.h"
 #include "debug.h"

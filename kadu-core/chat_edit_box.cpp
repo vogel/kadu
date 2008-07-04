@@ -7,7 +7,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <QDomElement>
+#include <QtXml/QDomElement>
 
 #include "config_file.h"
 #include "chat_widget.h"

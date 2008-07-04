@@ -7,12 +7,12 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <QFileDialog>
-#include <QGridLayout>
-#include <QHBoxLayout>
-#include <QKeyEvent>
-#include <QLineEdit>
-#include <QListWidget>
+#include <QtGui/QFileDialog>
+#include <QtGui/QGridLayout>
+#include <QtGui/QHBoxLayout>
+#include <QtGui/QKeyEvent>
+#include <QtGui/QLineEdit>
+#include <QtGui/QListWidget>
 
 #include "debug.h"
 #include "icons_manager.h"

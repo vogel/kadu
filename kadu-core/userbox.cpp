@@ -9,24 +9,23 @@
 
 #include <algorithm>
 
-#include <qapplication.h>
-#include <qcheckbox.h>
-#include <qcursor.h>
-#include <qcombobox.h>
-#include <q3dragobject.h>
-#include <qpainter.h>
-#include <qspinbox.h>
-#include <qtextcodec.h>
-#include <q3vgroupbox.h>
-//Added by qt3to4:
-#include <QKeyEvent>
-#include <QList>
-#include <QPixmap>
-#include <QResizeEvent>
-#include <Q3PopupMenu>
-#include <QMouseEvent>
-#include <QEvent>
-#include <QWheelEvent>
+#include <Qt3Support/Q3DragObject>
+#include <Qt3Support/Q3PopupMenu>
+#include <Qt3Support/Q3VGroupBox>
+#include <QtCore/QEvent>
+#include <QtCore/QList>
+#include <QtCore/QTextCodec>
+#include <QtGui/QApplication>
+#include <QtGui/QCheckBox>
+#include <QtGui/QCursor>
+#include <QtGui/QComboBox>
+#include <QtGui/QKeyEvent>
+#include <QtGui/QPainter>
+#include <QtGui/QMouseEvent>
+#include <QtGui/QPixmap>
+#include <QtGui/QResizeEvent>
+#include <QtGui/QSpinBox>
+#include <QtGui/QWheelEvent>
 
 #include "action.h"
 #include "config_file.h"
@@ -1141,8 +1140,7 @@ void UserBox::applyNegativeFilter(UserGroup *g)
 	connect(g, SIGNAL(userRemoved(UserListElement, bool, bool)),
 			this, SLOT(userAddedToGroup(UserListElement, bool, bool)));
 	refresh();
-	if (!Kadu::closing())
-		emit selectionChanged();
+	emit selectionChanged();
 	kdebugf2();
 }
 
@@ -1183,8 +1181,7 @@ void UserBox::removeNegativeFilter(UserGroup *g)
 	}
 	VisibleUsers->addUsers(users);
 	refresh();
-	if (!Kadu::closing())
-		emit selectionChanged();
+	emit selectionChanged();
 	kdebugf2();
 }
 
@@ -1403,12 +1400,10 @@ void UserBox::userRemovedFromGroup(UserListElement elem, bool massively, bool la
 		return;
 	}
 	if (VisibleUsers->contains(elem))
-	{
 		if (massively)
 			RemoveProxy[s].append(elem);
 		else
 			VisibleUsers->removeUser(elem);
-	}
 	if (massively && last)
 	{
 		VisibleUsers->removeUsers(RemoveProxy[s]);

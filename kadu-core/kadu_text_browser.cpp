@@ -7,12 +7,12 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <QApplication>
-#include <QClipboard>
-#include <QFile>
-#include <QFileDialog>
-#include <QMenu>
-#include <QToolTip>
+#include <QtCore/QFile>
+#include <QtGui/QApplication>
+#include <QtGui/QClipboard>
+#include <QtGui/QFileDialog>
+#include <QtGui/QMenu>
+#include <QtGui/QToolTip>
 
 #include "config_file.h"
 #include "debug.h"

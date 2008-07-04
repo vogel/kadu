@@ -10,9 +10,9 @@
 #ifndef KADU_USERLISTELEMENT_H
 #define KADU_USERLISTELEMENT_H
 
-#include <QExplicitlySharedDataPointer>
-#include <QObject>
-#include <QVariant>
+#include <QtCore/QExplicitlySharedDataPointer>
+#include <QtCore/QObject>
+#include <QtCore/QVariant>
 
 class QHostAddress;
 

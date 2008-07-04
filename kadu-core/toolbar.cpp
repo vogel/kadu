@@ -7,13 +7,13 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <QContextMenuEvent>
-#include <QCursor>
-#include <QDragEnterEvent>
-#include <QMenu>
-#include <QTimer>
-#include <QToolButton>
-#include <QTextStream>
+#include <QtCore/QTimer>
+#include <QtCore/QTextStream>
+#include <QtGui/QContextMenuEvent>
+#include <QtGui/QCursor>
+#include <QtGui/QDragEnterEvent>
+#include <QtGui/QMenu>
+#include <QtGui/QToolButton>
 
 #include "action.h"
 #include "config_file.h"

@@ -10,7 +10,7 @@
 #ifndef SELECT_FONT_H
 #define SELECT_FONT_H
 
-#include <QWidget>
+#include <QtGui/QWidget>
 
 class QLineEdit;
 

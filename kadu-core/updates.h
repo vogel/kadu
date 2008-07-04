@@ -10,8 +10,8 @@
 #ifndef KADU_UPDATES_H
 #define KADU_UPDATES_H
 
-#include <QDateTime>
-#include <QHttpResponseHeader>
+#include <QtCore/QDateTime>
+#include <QtNetwork/QHttpResponseHeader>
 
 #include "protocol.h"
 

@@ -7,16 +7,16 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <QButtonGroup>
-#include <QCheckBox>
-#include <QComboBox>
-#include <QGroupBox>
-#include <QGridLayout>
-#include <QLabel>
-#include <QLineEdit>
-#include <QRadioButton>
-#include <QTreeWidget>
-#include <QTreeWidgetItem>
+#include <QtGui/QButtonGroup>
+#include <QtGui/QCheckBox>
+#include <QtGui/QComboBox>
+#include <QtGui/QGroupBox>
+#include <QtGui/QGridLayout>
+#include <QtGui/QLabel>
+#include <QtGui/QLineEdit>
+#include <QtGui/QRadioButton>
+#include <QtGui/QTreeWidget>
+#include <QtGui/QTreeWidgetItem>
 
 #include "chat_manager.h"
 #include "debug.h"

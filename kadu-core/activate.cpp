@@ -21,7 +21,6 @@
   DEALINGS IN THE SOFTWARE.
 */
 
-#include <QX11Info>
 #include "activate.h"
 
 #include <X11/Xlib.h>

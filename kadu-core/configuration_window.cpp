@@ -7,11 +7,11 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <QApplication>
-#include <QGroupBox>
-#include <QHBoxLayout>
-#include <QScrollArea>
-#include <QVBoxLayout>
+#include <QtGui/QApplication>
+#include <QtGui/QGroupBox>
+#include <QtGui/QHBoxLayout>
+#include <QtGui/QScrollArea>
+#include <QtGui/QVBoxLayout>
 
 #include "config_file.h"
 #include "configuration_aware_object.h"

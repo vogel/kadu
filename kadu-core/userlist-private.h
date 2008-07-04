@@ -1,10 +1,10 @@
 #ifndef KADU_USERLIST_PRIVATE_H
 #define KADU_USERLIST_PRIVATE_H
 
-#include <QHash>
-#include <QList>
-#include <QSet>
-#include <QSharedData>
+#include <QtCore/QHash>
+#include <QtCore/QList>
+#include <QtCore/QSet>
+#include <QtCore/QSharedData>
 
 #include "userlistelement.h"
 

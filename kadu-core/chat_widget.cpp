@@ -7,9 +7,9 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <QShortcut>
-#include <QSplitter>
-#include <QVBoxLayout>
+#include <QtGui/QShortcut>
+#include <QtGui/QSplitter>
+#include <QtGui/QVBoxLayout>
 
 #include "chat_edit_box.h"
 #include "chat_manager.h"

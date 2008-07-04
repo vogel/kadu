@@ -1,9 +1,9 @@
 #ifndef KADU_GROUPS_MANAGER_H
 #define KADU_GROUPS_MANAGER_H
 
-#include <QMap>
-#include <QStringList>
-#include <QTimer>
+#include <QtCore/QMap>
+#include <QtCore/QStringList>
+#include <QtCore/QTimer>
 
 #include "configuration_aware_object.h"
 #include "usergroup.h"

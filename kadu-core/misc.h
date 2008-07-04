@@ -2,7 +2,7 @@
 #define KADU_MISC_H
 
 // TODO remove
-#include <Q3FileDialog>
+#include <Qt3Support/Q3FileDialog>
 
 #include "status.h"
 

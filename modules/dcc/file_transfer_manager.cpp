@@ -43,7 +43,7 @@ bool disableNonDccUles(const UserListElements &ules)
 		return false;
 
 	bool dccEnabled = config_file.readBoolEntry("Network", "AllowDCC");
-//	bool dccKeyEnabled = true;
+	bool dccKeyEnabled = true;
 
 	if (!dccEnabled)
 		return false;
@@ -516,9 +516,7 @@ FileTransfer * FileTransferManager::search(FileTransfer::FileTransferType type, 
 	kdebugf();
 
 	foreach(FileTransfer *i, Transfers)
-	{
 		if (i->Type == type && i->Contact == contact)
-		{
 			if (fileNameType == FileTransfer::FileNameFull)
 			{
 				if (i->FileName == fileName)
@@ -529,8 +527,6 @@ FileTransfer * FileTransferManager::search(FileTransfer::FileTransferType type, 
 				if (i->GaduFileName == fileName)
 					return i;
 			}
-		}
-	}
 
 	return 0;
 }

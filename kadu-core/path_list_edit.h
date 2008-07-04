@@ -10,7 +10,7 @@
 #ifndef PATH_LIST_EDIT_H
 #define PATH_LIST_EDIT_H
 
-#include <QPushButton>
+#include <QtGui/QPushButton>
 
 class QLineEdit;
 class QListWidget;

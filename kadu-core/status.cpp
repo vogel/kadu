@@ -7,7 +7,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <QPixmap>
+#include <QtGui/QPixmap>
 
 #include "debug.h"
 

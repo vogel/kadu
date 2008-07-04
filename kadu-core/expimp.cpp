@@ -7,17 +7,17 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <QAbstractTableModel>
-#include <QFileDialog>
-#include <QGroupBox>
-#include <QHBoxLayout>
-#include <QKeyEvent>
-#include <QLabel>
-#include <QListView>
-#include <QPushButton>
-#include <QTimer>
-#include <QTreeWidget>
-#include <QVBoxLayout>
+#include <QtCore/QAbstractTableModel>
+#include <QtCore/QTimer>
+#include <QtGui/QFileDialog>
+#include <QtGui/QGroupBox>
+#include <QtGui/QHBoxLayout>
+#include <QtGui/QKeyEvent>
+#include <QtGui/QLabel>
+#include <QtGui/QListView>
+#include <QtGui/QPushButton>
+#include <QtGui/QTreeWidget>
+#include <QtGui/QVBoxLayout>
 
 #include "debug.h"
 #include "gadu.h"

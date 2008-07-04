@@ -7,8 +7,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <QApplication>
-#include <QHostAddress>
+#include <QtGui/QApplication>
+#include <QtNetwork/QHostAddress>
 
 #include "config_file.h"
 #include "kadu_parser.h"

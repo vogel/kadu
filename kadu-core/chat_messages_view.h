@@ -1,7 +1,7 @@
 #ifndef CHAT_MESSAGES_VIEW
 #define CHAT_MESSAGES_VIEW
 
-#include <QList>
+#include <QtCore/QList>
 
 #include "configuration_aware_object.h"
 #include "kadu_text_browser.h"
@@ -11,51 +11,51 @@ class ChatMessage;
 class QResizeEvent;
 
 /**
-	Klasa uniwersalnego obiektu wy¶wietlaj±cego listê wiadomo¶ci(okno chat, historia...).
+	Klasa uniwersalnego obiektu wyï¿½wietlajï¿½cego listï¿½ wiadomoï¿½ci(okno chat, historia...).
 	\class ChatMessagesView
-	\brief Okno przegl±dania listy wiadomo¶ci.
+	\brief Okno przeglï¿½dania listy wiadomoï¿½ci.
 **/
 class ChatMessagesView : public KaduTextBrowser, ConfigurationAwareObject
 {
 	Q_OBJECT
 
-	QList<ChatMessage *> Messages; /*!< Lista wiadomo¶ci wy¶wietlanych w danym obiekcie. */
-	unsigned int Prune; /*!< Maksymalna ilo¶æ wy¶wietlanych wiadomo¶ci. */
+	QList<ChatMessage *> Messages; /*!< Lista wiadomoï¿½ci wyï¿½wietlanych w danym obiekcie. */
+	unsigned int Prune; /*!< Maksymalna iloï¿½ï¿½ wyï¿½wietlanych wiadomoï¿½ci. */
  
-	bool CfgNoHeaderRepeat; /*!< Usuwanie powtarzaj±cych siê nag³ówków wiadomo¶ci. */
-	unsigned int CfgHeaderSeparatorHeight; /*!< Wysoko¶æ separatora nag³ówków. */
-	unsigned int CfgNoHeaderInterval; /*!< Odstêp czasu, przy jakim bêd± usuwane nag³ówki. */
-	unsigned int ParagraphSeparator; /*!< Wysoko¶æ separatora wiadomo¶ci. */
+	bool CfgNoHeaderRepeat; /*!< Usuwanie powtarzajï¿½cych siï¿½ nagï¿½ï¿½wkï¿½w wiadomoï¿½ci. */
+	unsigned int CfgHeaderSeparatorHeight; /*!< Wysokoï¿½ï¿½ separatora nagï¿½ï¿½wkï¿½w. */
+	unsigned int CfgNoHeaderInterval; /*!< Odstï¿½p czasu, przy jakim bï¿½dï¿½ usuwane nagï¿½ï¿½wki. */
+	unsigned int ParagraphSeparator; /*!< Wysokoï¿½ï¿½ separatora wiadomoï¿½ci. */
  
-	bool NoServerTime; /*!< Usuwanie czasu serwera z wiadomo¶ci. */
-	int NoServerTimeDiff; /*!< Maksymalna ró¿nica czasu serwera i lokalnego, dla której czas serwera bêdzie usuwany. */
+	bool NoServerTime; /*!< Usuwanie czasu serwera z wiadomoï¿½ci. */
+	int NoServerTimeDiff; /*!< Maksymalna rï¿½ï¿½nica czasu serwera i lokalnego, dla ktï¿½rej czas serwera bï¿½dzie usuwany. */
  
-	QString ChatSyntaxWithHeader; /*!< Sk³adnia stylu rozmowy z nag³ówkiem. */
-	QString ChatSyntaxWithoutHeader; /*!< Sk³adnia stylu rozmowy bez nag³ówka. */
+	QString ChatSyntaxWithHeader; /*!< Skï¿½adnia stylu rozmowy z nagï¿½ï¿½wkiem. */
+	QString ChatSyntaxWithoutHeader; /*!< Skï¿½adnia stylu rozmowy bez nagï¿½ï¿½wka. */
  
 /// 	Q3MimeSourceFactory *bodyformat;
  
 	/**
 		\fn void repaintMessages()
-		Funkcja od¶wie¿aj±ca widok wiadomo¶ci.
+		Funkcja odï¿½wieï¿½ajï¿½ca widok wiadomoï¿½ci.
 	**/
 	void repaintMessages(); 
 	/**
 		\fn void updateBackgrounds()
-		Funkcja od¶wie¿aj±ca kolory t³a wiadomo¶ci.
+		Funkcja odï¿½wieï¿½ajï¿½ca kolory tï¿½a wiadomoï¿½ci.
 	**/
 	void updateBackgrounds();
 	/**
 		\fn QString formatMessage(ChatMessage *message, ChatMessage *after)
-		Funkcja formatuj±ca wiadomo¶ci wed³ug ustawieñ w konfiguracji.
-		@param message wiadomo¶æ do sformatowania
+		Funkcja formatujï¿½ca wiadomoï¿½ci wedï¿½ug ustawieï¿½ w konfiguracji.
+		@param message wiadomoï¿½ï¿½ do sformatowania
 		@param after wtf?
 	**/
  	QString formatMessage(ChatMessage *message, ChatMessage *after);
 
 	/**
 		\fn void pruneMessages()
-		Funkcja ograniczaj±ca ilo¶æ wy¶wietlanych wiadomo¶ci do maksymalnej ustawionej w konfiguracji.
+		Funkcja ograniczajï¿½ca iloï¿½ï¿½ wyï¿½wietlanych wiadomoï¿½ci do maksymalnej ustawionej w konfiguracji.
 		@see Prune
 	**/
 	void pruneMessages();
@@ -67,24 +67,24 @@ protected:
 private slots:
 	/**
 		\fn void pageUp()
-		Slot przewijaj±cy okno wiadomo¶ci o sta³± warto¶æ w górê.
+		Slot przewijajï¿½cy okno wiadomoï¿½ci o staï¿½ï¿½ wartoï¿½ï¿½ w gï¿½rï¿½.
 	**/
  	void pageUp();
 	/**
 		\fn void pageDown()
-		Slot przewijaj±cy okno wiadomo¶ci o sta³± warto¶æ w dó³.
+		Slot przewijajï¿½cy okno wiadomoï¿½ci o staï¿½ï¿½ wartoï¿½ï¿½ w dï¿½ï¿½.
 	**/
  	void pageDown();
 
 	/**
 		\fn void imageReceivedAndSaved(UinType sender,uint32_t size,uint32_t crc32,const QString& path)
-		TODO: zmieniæ nag³ówek
-		TODO; przesun±æ do klasy ChatMessage
-		Slot obs³uguj±cy odebranie i zapis obrazka
-		\param sender osoba, która wys³a³a obrazek
+		TODO: zmieniï¿½ nagï¿½ï¿½wek
+		TODO; przesunï¿½ï¿½ do klasy ChatMessage
+		Slot obsï¿½ugujï¿½cy odebranie i zapis obrazka
+		\param sender osoba, ktï¿½ra wysï¿½aï¿½a obrazek
 		\param size rozmiar obrazka
 		\param crc32 suma kontrolna obrazka
-		\param path ¶cie¿ka do obrazka
+		\param path ï¿½cieï¿½ka do obrazka
 	**/
 	void imageReceivedAndSaved(UinType sender, uint32_t size, uint32_t crc32, const QString& path);
 
@@ -94,28 +94,28 @@ public:
 
 	/**
 		\fn void appendMessage(ChatMessage *message)
-		Dodaje pojedyncz± wiadomo¶æ do danego okna.
-		@param message Wiadomo¶æ do dodania.
+		Dodaje pojedynczï¿½ wiadomoï¿½ï¿½ do danego okna.
+		@param message Wiadomoï¿½ï¿½ do dodania.
 	**/
  	void appendMessage(ChatMessage *message);
 	/**
 		\fn void appendMessages(QList<ChatMessage *> messages)
-		Dodaje listê wiadomo¶ci do danego okna.
-		@param messages Lista wiadomo¶ci do dodania.
+		Dodaje listï¿½ wiadomoï¿½ci do danego okna.
+		@param messages Lista wiadomoï¿½ci do dodania.
 	**/
  	void appendMessages(QList<ChatMessage *> messages);
 
 	/**
 		\fn unsigned int countMessages()
-		Zwraca ilo¶æ wiadomo¶ci w danym oknie.
+		Zwraca iloï¿½ï¿½ wiadomoï¿½ci w danym oknie.
 		@see Messages
 	**/
  	unsigned int countMessages();
 
 	/**
 		\fn void setPrune(unsigned int prune)
-		Ustawia maksymaln± ilo¶æ wiadomo¶ci w danym oknie.
-		@param prune Maksymalna ilo¶æ wiadomo¶ci.
+		Ustawia maksymalnï¿½ iloï¿½ï¿½ wiadomoï¿½ci w danym oknie.
+		@param prune Maksymalna iloï¿½ï¿½ wiadomoï¿½ci.
 		@see Prune
 	**/
 	void setPrune(unsigned int prune);
@@ -123,7 +123,7 @@ public:
 public slots:
 	/**
 		\fn void clearMessages()
-		Slot usuwaj±cy wszystkie wiadomo¶ci z okna.
+		Slot usuwajï¿½cy wszystkie wiadomoï¿½ci z okna.
 	**/
 	void clearMessages();
 

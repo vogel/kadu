@@ -7,10 +7,10 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <QFileDialog>
-#include <QHBoxLayout>
-#include <QLineEdit>
-#include <QPushButton>
+#include <QtGui/QFileDialog>
+#include <QtGui/QHBoxLayout>
+#include <QtGui/QLineEdit>
+#include <QtGui/QPushButton>
 
 #include "icons_manager.h"
 #include "misc.h"

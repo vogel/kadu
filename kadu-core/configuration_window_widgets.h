@@ -1,15 +1,15 @@
 #ifndef CONFIGURATION_WINDOW_WIDGETS_H
 #define CONFIGURATION_WINDOW_WIDGETS_H
 
-#include <QCheckBox>
-#include <QComboBox>
-#include <QDomElement>
-#include <QLabel>
-#include <QLineEdit>
-#include <QListWidget>
-#include <QPushButton>
-#include <QSlider>
-#include <QSpinBox>
+#include <QtGui/QCheckBox>
+#include <QtGui/QComboBox>
+#include <QtGui/QLabel>
+#include <QtGui/QLineEdit>
+#include <QtGui/QListWidget>
+#include <QtGui/QPushButton>
+#include <QtGui/QSlider>
+#include <QtGui/QSpinBox>
+#include <QtXml/QDomElement>
 
 #include "color_button.h"
 #include "hot_key.h"

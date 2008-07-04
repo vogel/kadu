@@ -7,9 +7,9 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <QApplication>
-#include <QIntValidator>
-#include <QTimer>
+#include <QtCore/QTimer>
+#include <QtGui/QApplication>
+#include <QtGui/QIntValidator>
 
 #include <netinet/in.h>
 
@@ -98,7 +98,6 @@ void ConnectionTimeoutTimer::off()
 {
 	if (connectiontimeout_object)
 	{
-		connectiontimeout_object->stop();
 		delete connectiontimeout_object;
 		connectiontimeout_object = 0;
 	}

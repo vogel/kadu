@@ -13,8 +13,8 @@
 // "plugins" for changing the way userboxes are painted? maybe only parameters?
 // later ULE::hasFeature(protocol, featurename)
 
-#include <QDomNodeList>
-#include <QFile>
+#include <QtCore/QFile>
+#include <QtXml/QDomNodeList>
 
 #include "config_file.h"
 #include "debug.h"

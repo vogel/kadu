@@ -1,8 +1,8 @@
 #ifndef GADU_H
 #define GADU_H
 
-#include <QHostAddress>
-#include <QPixmap>
+#include <QtGui/QPixmap>
+#include <QtNetwork/QHostAddress>
 
 #include "libgadu.h"
 #include "protocol.h"

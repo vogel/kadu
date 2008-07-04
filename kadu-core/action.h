@@ -10,8 +10,8 @@
 #ifndef ACTION_H
 #define ACTION_H
 
-#include <QAction>
-#include <QIcon>
+#include <QtGui/QAction>
+#include <QtGui/QIcon>
 
 class ChatWidget;
 class KaduMainWindow;

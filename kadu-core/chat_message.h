@@ -1,8 +1,8 @@
 #ifndef KADU_CHAT_MESSAGE_H
 #define KADU_CHAT_MESSAGE_H
 
-#include <QDateTime>
-#include <QString>
+#include <QtCore/QDateTime>
+#include <QtCore/QString>
 
 #include "emoticons.h"
 #include "protocol.h"
@@ -16,14 +16,14 @@ enum ChatMessageType
 
 /**
 
-	Klasa przechowuj±ca informacje o wiadomo¶ci, która ma siê pojawiæ
+	Klasa przechowujï¿½ca informacje o wiadomoï¿½ci, ktï¿½ra ma siï¿½ pojawiï¿½
 	w oknie Chat.
 
 	TODO: optimize and cache
 	TODO: make API pretty
 
 	\class ChatMessage
-	\brief Klasa przechowuj±ca informacje o wiadomo¶ci.
+	\brief Klasa przechowujï¿½ca informacje o wiadomoï¿½ci.
 **/
 class ChatMessage : public QObject
 {
@@ -32,7 +32,7 @@ class ChatMessage : public QObject
 		Funkcja zamienia specjalne tagi na emotikonki,
 		html na czysty tekst itp.
 		\param text tekst do konwersji
-		\param bgcolor kolor t³a
+		\param bgcolor kolor tï¿½a
 		\param style styl emotikonek
 	**/
 	QString convertCharacters(QString text, const QColor &bgcolor, EmoticonsStyle style);
@@ -58,14 +58,14 @@ public:
 	/**
 		\fn ChatMessage(const UserListElement &ule, const UserListElements &receivers, const QString &unformattedMessage, ChatMessageType type,
 		QDateTime date, QDateTime sdate = QDateTime())
-		Konstruktor ustawiaj±cy nick, niesformatowan± wiadomo¶æ,
-		czy wiadomo¶æ pochodzi od nas, datê wiadomo¶ci,
-		datê nadania wiadomo¶ci przez serwer
-		\param nick nazwa u¿ytkownika
-		\param unformattedMessage niesformatowana wiadomo¶æ
-		\param myMessage zmienna mowi±ca czy wiadomo¶æ pochodzi od nas
-		\param date data otrzymania wiadomo¶ci
-		\param sdate data wys³ania wiadomo¶ci
+		Konstruktor ustawiajï¿½cy nick, niesformatowanï¿½ wiadomoï¿½ï¿½,
+		czy wiadomoï¿½ï¿½ pochodzi od nas, datï¿½ wiadomoï¿½ci,
+		datï¿½ nadania wiadomoï¿½ci przez serwer
+		\param nick nazwa uï¿½ytkownika
+		\param unformattedMessage niesformatowana wiadomoï¿½ï¿½
+		\param myMessage zmienna mowiï¿½ca czy wiadomoï¿½ï¿½ pochodzi od nas
+		\param date data otrzymania wiadomoï¿½ci
+		\param sdate data wysï¿½ania wiadomoï¿½ci
 	**/
 	ChatMessage(const UserListElement &ule, const UserListElements &receivers, const QString &unformattedMessage, ChatMessageType type,
 		QDateTime date, QDateTime sdate = QDateTime());

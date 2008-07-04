@@ -1,7 +1,7 @@
 #ifndef KADU_PROTOCOLS_MANAGER_H
 #define KADU_PROTOCOLS_MANAGER_H
 
-#include <QList>
+#include <QtCore/QList>
 
 #include "protocol.h"
 

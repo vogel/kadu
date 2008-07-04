@@ -7,11 +7,11 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <QApplication>
-#include <QDateTime>
-#include <QDesktopWidget>
-#include <QTimer>
-#include <QVBoxLayout>
+#include <QtCore/QDateTime>
+#include <QtCore/QTimer>
+#include <QtGui/QApplication>
+#include <QtGui/QDesktopWidget>
+#include <QtGui/QVBoxLayout>
 
 #include "chat_manager.h"
 #include "chat_window.h"

@@ -10,9 +10,9 @@
 #ifndef KADU_USERINFO_H
 #define KADU_USERINFO_H
 
-#include <QList>
-#include <QMap>
-#include <QWidget>
+#include <QtCore/QList>
+#include <QtCore/QMap>
+#include <QtGui/QWidget>
 
 #include "userlistelement.h"
 

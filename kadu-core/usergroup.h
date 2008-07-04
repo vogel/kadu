@@ -10,10 +10,10 @@
 #ifndef KADU_USERGROUP_H
 #define KADU_USERGROUP_H
 
-#include <QExplicitlySharedDataPointer>
-#include <QList>
-#include <QSet>
-#include <QVariant>
+#include <QtCore/QExplicitlySharedDataPointer>
+#include <QtCore/QList>
+#include <QtCore/QSet>
+#include <QtCore/QVariant>
 
 #include "userlistelement.h"
 

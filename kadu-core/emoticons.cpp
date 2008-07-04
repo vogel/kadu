@@ -7,16 +7,15 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <QApplication>
-#include <QDesktopWidget>
-#include <QFile>
-#include <QGridLayout>
-#include <QMovie>
-#include <QPainter>
-#include <QTextStream>
+#include <QtCore/QFile>
+#include <QtCore/QTextStream>
+#include <QtGui/QApplication>
+#include <QtGui/QDesktopWidget>
+#include <QtGui/QGridLayout>
+#include <QtGui/QMovie>
+#include <QtGui/QPainter>
 
 #include <math.h>
-#include <algorithm>
 
 #include "chat_widget.h"
 #include "config_file.h"
@@ -265,7 +264,6 @@ void EmoticonsManager::expandEmoticons(HtmlDocument& doc, const QColor& bgcolor,
 			int idx = walker -> checkEmotOccurrence(text[j]);
 			// when some emot from dictionary is ending at current character
 			if (idx >= 0)
-			{
 				// check if there already was some occurence, whose
 				// beginning is before beginning of currently found one
 				if (lastEmot >= 0 && lastBegin < j - Aliases[idx].alias.length() + 1)
@@ -291,7 +289,6 @@ void EmoticonsManager::expandEmoticons(HtmlDocument& doc, const QColor& bgcolor,
 					lastEmot = idx;
 					lastBegin = j - Aliases[lastEmot].alias.length() + 1;
 				}
-			}
 		}
 		// this is the case, when only one emot was found in current text part
 		if (lastEmot >= 0)
@@ -460,10 +457,8 @@ void EmoticonSelector::alignTo(QWidget* w)
 	move(x, y);
 }
 
-#include <q3dragobject.h>
-#include <q3paintdevicemetrics.h>
-#include <qglobal.h>
-#include <qfeatures.h>
+#include <Qt3Support/q3dragobject.h>
+#include <Qt3Support/q3paintdevicemetrics.h>
 
 #define Q_DUMMY_COMPARISON_OPERATOR(C)
 
@@ -978,9 +973,9 @@ PrefixNode* EmotsWalker::findChild(const PrefixNode* node, const QChar& c)
 	myPair.first = c;
 	// create variable 'position' with result of binary search in childs
 	// of given node
-	QList<Prefix>::const_iterator position = std::upper_bound(node->childs.constBegin(), node->childs.constEnd(), myPair);
+	QList<Prefix>::const_iterator position = std::upper_bound (node -> childs.constBegin(), node -> childs.constEnd(), myPair);
 
-	if ((position != node->childs.constEnd()) && (position->first == c))
+	if (position != node -> childs.constEnd() && position -> first == c)
 		return position -> second;
 	else
 		return NULL;

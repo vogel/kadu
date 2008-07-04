@@ -10,7 +10,7 @@
 #ifndef KADU_CHAT_MANAGER_H
 #define KADU_CHAT_MANAGER_H
 
-#include <QTimer>
+#include <QtCore/QTimer>
 
 #include "chat_widget.h"
 #include "configuration_aware_object.h"

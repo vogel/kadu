@@ -10,8 +10,8 @@
 #ifndef KADU_THEMES_H
 #define KADU_THEMES_H
 
-#include <QStringList>
-#include <QMap>
+#include <QtCore/QStringList>
+#include <QtCore/QMap>
 
 /**
 	Klasa obs�uguj�ca r��ne zestawy (jak ikony i emotikony)

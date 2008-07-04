@@ -1,8 +1,8 @@
 #ifndef KADU_HTTP_CLIENT_H
 #define KADU_HTTP_CLIENT_H
 
-#include <QByteArray>
-#include <QTcpSocket>
+#include <QtCore/QByteArray>
+#include <QtNetwork/QTcpSocket>
 
 // TODO: replace with QHttp
 class HttpClient : public QObject

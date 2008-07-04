@@ -1,7 +1,7 @@
 #ifndef KADU_HTML_DOCUMENT_H
 #define KADU_HTML_DOCUMENT_H
 
-#include <QList>
+#include <QtCore/QList>
 
 class QRegExp;
 

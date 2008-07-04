@@ -10,9 +10,9 @@
 #ifndef KADU_USERBOX_H
 #define KADU_USERBOX_H
 
-#include <Q3ListBoxItem>
-#include <QDrag>
-#include <QTimer>
+#include <Qt3Support/Q3ListBoxItem>
+#include <QtCore/QTimer>
+#include <QtGui/QDrag>
 
 #include "configuration_aware_object.h"
 #include "misc.h"

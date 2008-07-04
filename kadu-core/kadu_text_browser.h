@@ -1,8 +1,8 @@
 #ifndef KADU_TEXT_BROWSER_H
 #define KADU_TEXT_BROWSER_H
 
-#include <QTextBrowser>
-#include <QTimer>
+#include <QtCore/QTimer>
+#include <QtGui/QTextBrowser>
 
 /**
 	Zmodyfikowany QTextBrowser specjalnie na potrzeby Kadu.

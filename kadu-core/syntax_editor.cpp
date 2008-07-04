@@ -7,17 +7,17 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <QApplication>
-#include <QComboBox>
-#include <QGridLayout>
-#include <QHBoxLayout>
-#include <QHostAddress>
-#include <QInputDialog>
-#include <QLineEdit>
-#include <QPushButton>
-#include <QTextEdit>
-#include <QTextStream>
-#include <QVBoxLayout>
+#include <QtCore/QTextStream>
+#include <QtGui/QApplication>
+#include <QtGui/QComboBox>
+#include <QtGui/QGridLayout>
+#include <QtGui/QHBoxLayout>
+#include <QtGui/QInputDialog>
+#include <QtGui/QLineEdit>
+#include <QtGui/QPushButton>
+#include <QtGui/QTextEdit>
+#include <QtGui/QVBoxLayout>
+#include <QtNetwork/QHostAddress>
 
 #include "config_file.h"
 #include "icons_manager.h"

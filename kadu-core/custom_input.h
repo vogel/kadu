@@ -10,11 +10,11 @@
 #ifndef KADU_CUSTOM_INPUT_H
 #define KADU_CUSTOM_INPUT_H
 
-#include <QTextEdit>
+#include <QtGui/QTextEdit>
 
 /**
 	\class CustomInput
-	\brief Klasa umo¿liwiaj±ca wpisywanie wiadomo¶ci
+	\brief Klasa umoï¿½liwiajï¿½ca wpisywanie wiadomoï¿½ci
 **/
 class CustomInput : public QTextEdit
 {
@@ -22,36 +22,36 @@ class CustomInput : public QTextEdit
 
 protected:
 
-	bool autosend_enabled;/*!< zmienna informuj±ca czy w³±czone jest
-				automatyczne wysy³anie */
+	bool autosend_enabled;/*!< zmienna informujï¿½ca czy wï¿½ï¿½czone jest
+				automatyczne wysyï¿½anie */
 
 	/**
 		\fn virtual void keyPressEvent(QKeyEvent *e)
-		Funkcja obs³uguj±ca naci¶niêcie przycisku
-		\param e wska¼nik do obiektu obs³uguj±cego klawisze
+		Funkcja obsï¿½ugujï¿½ca naciï¿½niï¿½cie przycisku
+		\param e wskaï¿½nik do obiektu obsï¿½ugujï¿½cego klawisze
 	**/
 	virtual void keyPressEvent(QKeyEvent *e);
 
 	/**
 		\fn virtual void keyReleaseEvent(QKeyEvent *e)
-		Funkcja obs³uguj±ca zwolnienie przycisku
-		\param e wska¼nik do obiektu obs³uguj±cego klawisze
+		Funkcja obsï¿½ugujï¿½ca zwolnienie przycisku
+		\param e wskaï¿½nik do obiektu obsï¿½ugujï¿½cego klawisze
 	**/
 	virtual void keyReleaseEvent(QKeyEvent *e);
 
 public:
-	/*! Typ wyliczeniowy mowi±cy o rodzaju pisanych znaków */
+	/*! Typ wyliczeniowy mowiï¿½cy o rodzaju pisanych znakï¿½w */
 	enum
 	{
 		KEY_BOLD,/*!< pogrubienie */
 		KEY_ITALIC,/*!< kursywa */
-		KEY_UNDERLINE/*!< podkre¶lenie */
+		KEY_UNDERLINE/*!< podkreï¿½lenie */
 	};
 
 	/**
 		\fn CustomInput(QWidget *parent = 0)
-		Konstruktor tworz±cy obiekt
-		i ustawiaj±cy odpowiedni styl
+		Konstruktor tworzï¿½cy obiekt
+		i ustawiajï¿½cy odpowiedni styl
 		\param parent rodzic okna
 		\param name nazwa obiektu
 	**/
@@ -66,52 +66,52 @@ public slots:
 
 	/**
 		\fn void setAutosend(bool on)
-		Ustawia/wy³±cza automatyczne wysy³anie wiadomo¶ci
-		\param on zmienna ustawiaj±ca autosend
+		Ustawia/wyï¿½ï¿½cza automatyczne wysyï¿½anie wiadomoï¿½ci
+		\param on zmienna ustawiajï¿½ca autosend
 	**/
 	void setAutosend(bool on);
 
 signals:
 	/**
 		\fn void sendMessage()
-		Sygna³ zostaje wys³any kiedy naci¶niêto
-		klawisz wys³ania wiadomo¶ci
+		Sygnaï¿½ zostaje wysï¿½any kiedy naciï¿½niï¿½to
+		klawisz wysï¿½ania wiadomoï¿½ci
 	**/
 	void sendMessage();
 
 	/**
 		\fn void specialKeyPressed(int key)
-		Sygna³ zostaje wys³any gdy naci¶niêto specjalny
-		klawisz (skrót) odpowiadaj±cy np KEY_BOLD
-		\param key warto¶æ z typu wyliczeniowego KEY_*
+		Sygnaï¿½ zostaje wysï¿½any gdy naciï¿½niï¿½to specjalny
+		klawisz (skrï¿½t) odpowiadajï¿½cy np KEY_BOLD
+		\param key wartoï¿½ï¿½ z typu wyliczeniowego KEY_*
 	**/
 	void specialKeyPressed(int key);
 
 	/**
 		\fn void keyPressed(QKeyEvent *e, CustomInput *sender, bool &handled)
-		Dowolny przycisk klawiatury zosta³ naci¶niêty.
-		Przekazany zostaje tak¿e obiekt, który wywo³a³ akcjê -
+		Dowolny przycisk klawiatury zostaï¿½ naciï¿½niï¿½ty.
+		Przekazany zostaje takï¿½e obiekt, ktï¿½ry wywoï¿½aï¿½ akcjï¿½ -
 		czyli this
-		\param e wska¼nik do obiektu obs³uguj±cego klawisze
-		\param sender wska¼nik do obiektu, który
-		wywo³a³ ten sygna³
-		\param handled Slot osb³uguj±cy ten sygna³ powinien ten parametr ustawiæ na true,
-		je¶li zdarzenie zosta³o ju¿ obs³u¿one i ¿adne czynno¶ci zwi±zane
-		ze standardow± obs³ug± kontrolek Qt nie powinny byæ podjête.
+		\param e wskaï¿½nik do obiektu obsï¿½ugujï¿½cego klawisze
+		\param sender wskaï¿½nik do obiektu, ktï¿½ry
+		wywoï¿½aï¿½ ten sygnaï¿½
+		\param handled Slot osbï¿½ugujï¿½cy ten sygnaï¿½ powinien ten parametr ustawiï¿½ na true,
+		jeï¿½li zdarzenie zostaï¿½o juï¿½ obsï¿½uï¿½one i ï¿½adne czynnoï¿½ci zwiï¿½zane
+		ze standardowï¿½ obsï¿½ugï¿½ kontrolek Qt nie powinny byï¿½ podjï¿½te.
 	**/
 	void keyPressed(QKeyEvent *e, CustomInput *sender, bool &handled);
 
 	/**
 		\fn void keyReleased(QKeyEvent *e, CustomInput *sender, bool &handled)
-		Dowolny przycisk klawiatury zosta³ zwolniony.
-		Przekazany zostaje tak¿e obiekt, który wywo³a³ akcjê -
+		Dowolny przycisk klawiatury zostaï¿½ zwolniony.
+		Przekazany zostaje takï¿½e obiekt, ktï¿½ry wywoï¿½aï¿½ akcjï¿½ -
 		 czyli this.
-		\param e wska¼nik do obiektu obs³uguj±cego klawisze
-		\param sender wska¼nik do obiektu, który
-		wywo³a³ ten sygna³
-		\param handled Slot osb³uguj±cy ten sygna³ powinien ten parametr ustawiæ na true,
-		je¶li zdarzenie zosta³o ju¿ obs³u¿one i ¿adne czynno¶ci zwi±zane
-		ze standardow± obs³ug± kontrolek Qt nie powinny byæ podjête.
+		\param e wskaï¿½nik do obiektu obsï¿½ugujï¿½cego klawisze
+		\param sender wskaï¿½nik do obiektu, ktï¿½ry
+		wywoï¿½aï¿½ ten sygnaï¿½
+		\param handled Slot osbï¿½ugujï¿½cy ten sygnaï¿½ powinien ten parametr ustawiï¿½ na true,
+		jeï¿½li zdarzenie zostaï¿½o juï¿½ obsï¿½uï¿½one i ï¿½adne czynnoï¿½ci zwiï¿½zane
+		ze standardowï¿½ obsï¿½ugï¿½ kontrolek Qt nie powinny byï¿½ podjï¿½te.
 	**/
 	void keyReleased(QKeyEvent *e, CustomInput *sender, bool &handled);
 

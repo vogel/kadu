@@ -24,7 +24,7 @@
 #ifndef ACTIVATE_H
 #define ACTIVATE_H
 
-#include <QX11Info>
+#include <QtGui/QX11Info>
 
 void create_netwm_atoms(Display *d);
 

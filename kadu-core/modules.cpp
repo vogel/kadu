@@ -7,20 +7,20 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <QApplication>
-#include <QCheckBox>
-#include <QGroupBox>
-#include <QHBoxLayout>
-#include <QKeyEvent>
-#include <QLabel>
-#include <QMenu>
-#include <QPushButton>
-#include <QScrollBar>
-#include <QTextCodec>
-#include <QTranslator>
-#include <QTreeWidget>
-#include <QTreeWidgetItem>
-#include <QVBoxLayout>
+#include <QtCore/QTextCodec>
+#include <QtCore/QTranslator>
+#include <QtGui/QApplication>
+#include <QtGui/QCheckBox>
+#include <QtGui/QGroupBox>
+#include <QtGui/QHBoxLayout>
+#include <QtGui/QKeyEvent>
+#include <QtGui/QLabel>
+#include <QtGui/QMenu>
+#include <QtGui/QPushButton>
+#include <QtGui/QScrollBar>
+#include <QtGui/QTreeWidget>
+#include <QtGui/QTreeWidgetItem>
+#include <QtGui/QVBoxLayout>
 
 #include <dlfcn.h>
 
@@ -34,7 +34,7 @@
 
 #include "modules.h"
 
-#include "modules_static.cpp"
+// #include "modules_static.cpp"
 
 #ifdef Q_OS_MACX
 	#define SO_EXT "dylib"
@@ -373,7 +373,8 @@ ModulesManager::ModulesManager() : QObject(NULL, "modules_manager"),
 	MainMenu->insertItem(icons_manager->loadIcon("ManageModules"), tr("&Manage Modules"), this, SLOT(showDialog()), HotKey::shortCutFromFile("ShortCuts", "kadu_modulesmanager"), -1, 2);
 // 	icons_manager->registerMenuItem(MainMenu, tr("&Manage Modules"), "ManageModules");
 
-	registerStaticModules();
+// TODO
+// 	registerStaticModules();
 	QStringList static_list = staticModules();
 	foreach(const QString &i, static_list)
 		if (!moduleIsActive(i))

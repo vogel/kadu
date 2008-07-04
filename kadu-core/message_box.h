@@ -10,7 +10,7 @@
 #ifndef MESSAGE_BOX_H
 #define MESSAGE_BOX_H
 
-#include <QDialog>
+#include <QtGui/QDialog>
 
 class QBoxLayout;
 class QLabel;

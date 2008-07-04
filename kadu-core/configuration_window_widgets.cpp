@@ -7,8 +7,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <QApplication>
-#include <QToolTip>
+#include <QtGui/QApplication>
+#include <QtGui/QToolTip>
 
 #include "config_file.h"
 #include "configuration_window.h"

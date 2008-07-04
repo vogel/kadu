@@ -1,8 +1,8 @@
 #ifndef EXPIMP_H
 #define EXPIMP_H
 
-#include <QList>
-#include <QWidget>
+#include <QtCore/QList>
+#include <QtGui/QWidget>
 
 #include "userlistelement.h"
 

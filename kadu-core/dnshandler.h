@@ -1,31 +1,31 @@
 #ifndef KADU_DNS_HANDLER_H
 #define KADU_DNS_HANDLER_H
 
-#include <QHostInfo>
+#include <QtNetwork/QHostInfo>
 
 /**
-	T³umaczy adres IP na nazwê domeny (DNS). Kiedy proces zostanie zakoñczony,
-	emituje odpowiedni sygna³ zawieraj±cy informacjê o nazwie domeny.
+	Tï¿½umaczy adres IP na nazwï¿½ domeny (DNS). Kiedy proces zostanie zakoï¿½czony,
+	emituje odpowiedni sygnaï¿½ zawierajï¿½cy informacjï¿½ o nazwie domeny.
 	\class DNSHandler
-	\brief Klasa t³umacz±ca adres IP na nazwê domeny.
+	\brief Klasa tï¿½umaczï¿½ca adres IP na nazwï¿½ domeny.
 **/
 class DNSHandler : public QObject
 {
 	Q_OBJECT
 
-	QString marker; /*!< znacznik (np. identyfikator protoko³u) */
+	QString marker; /*!< znacznik (np. identyfikator protokoï¿½u) */
 
 	/**
 		\fn void resultsReady()
-		Funkcja wywo³ywana, gdy proces t³umaczenia zosta³ zakoñczony.
+		Funkcja wywoï¿½ywana, gdy proces tï¿½umaczenia zostaï¿½ zakoï¿½czony.
 	**/
 	void resultsReady(QHostInfo hostInfo);
 
 public:
 	/**
 		\fn DNSHandler(const QString &marker, const QHostAddress &addr)
-		Konstruktor wywo³uj±cy zapytanie o domenê dla danego adresu IP.
-		\param marker znacznik (np. identyfikator protoko³u)
+		Konstruktor wywoï¿½ujï¿½cy zapytanie o domenï¿½ dla danego adresu IP.
+		\param marker znacznik (np. identyfikator protokoï¿½u)
 		\param addr adres IP
 	**/
 	DNSHandler(const QString &marker, const QHostAddress &addr);
@@ -36,14 +36,14 @@ public:
 	**/
 	~DNSHandler();
 
-	static int counter; /*!< licznik obiektów tej klasy */
+	static int counter; /*!< licznik obiektï¿½w tej klasy */
 
 signals:
 	/**
 		\fn void result(const QString &marker, const QString &hostname)
-		Sygna³ emitowany, gdy proces t³umaczenia zosta³ zakoñczony.
-		\param marker znacznik (np. identyfikator protoko³u)
-		\param hostname nazwa domeny odpowiadaj±ca adresowi IP o który pytano
+		Sygnaï¿½ emitowany, gdy proces tï¿½umaczenia zostaï¿½ zakoï¿½czony.
+		\param marker znacznik (np. identyfikator protokoï¿½u)
+		\param hostname nazwa domeny odpowiadajï¿½ca adresowi IP o ktï¿½ry pytano
 	**/
 	void result(const QString &marker, const QString &hostname);
 };

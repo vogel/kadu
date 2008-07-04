@@ -213,7 +213,7 @@ ChatManager::~ChatManager()
 
 	closeAllWindows();
 
-#if DEBUG_ENABLED
+#ifdef DEBUG_ENABLED
 	// for valgrind
 	QStringList chatActions;
 	chatActions << "autoSendAction" << "clearChatAction"
@@ -336,12 +336,10 @@ void ChatManager::sendActionActivated(QAction *sender, bool toggled)
 
 	ChatWidget *chatWidget = kaduMainWindow->getChatWidget();
 	if (chatWidget)
-	{
 		if (chatWidget->waitingForACK())
 			chatWidget->cancelMessage();
 		else
 			chatWidget->sendMessage();
-	}
 
 	kdebugf2();
 }

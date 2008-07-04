@@ -7,13 +7,13 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <QComboBox>
-#include <QGroupBox>
-#include <QHBoxLayout>
-#include <QKeyEvent>
-#include <QLabel>
-#include <QLineEdit>
-#include <QPushButton>
+#include <QtGui/QComboBox>
+#include <QtGui/QGroupBox>
+#include <QtGui/QHBoxLayout>
+#include <QtGui/QKeyEvent>
+#include <QtGui/QLabel>
+#include <QtGui/QLineEdit>
+#include <QtGui/QPushButton>
 
 #include "debug.h"
 #include "gadu.h"

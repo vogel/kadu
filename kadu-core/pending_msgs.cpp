@@ -7,7 +7,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <QTextCodec>
+#include <QtCore/QTextCodec>
 
 #include "chat_manager.h"
 #include "debug.h"

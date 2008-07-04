@@ -1,8 +1,8 @@
 #ifndef KADU_CONFIGURATION_WINDOW_H
 #define KADU_CONFIGURATION_WINDOW_H
 
-#include <QDomNode>
-#include <QTabWidget>
+#include <QtGui/QTabWidget>
+#include <QtXml/QDomNode>
 
 #include "color_button.h"
 #include "hot_key.h"
@@ -62,19 +62,19 @@ public:
 	@author Vogel
 	@short GroupBox w oknie konfiguracji
 
-	GroupBox w oknie konfiguracji definiowany jest przez nastêpuj±cy tag:
+	GroupBox w oknie konfiguracji definiowany jest przez nastï¿½pujï¿½cy tag:
 	<code>
-		&lt;group-box caption="tytu³" id="id"&gr;
+		&lt;group-box caption="tytuï¿½" id="id"&gr;
 			...
 		&lt;/group-box&gt;
 	</code>
 
-	GroupBox mo¿e znajdowaæ siê tylko wewn±trz tagu tab. W jego wnêtrzu
-	mog± zawieraæ siê dowolne tagi widgetów konfigruacyjnych.
+	GroupBox moï¿½e znajdowaï¿½ siï¿½ tylko wewnï¿½trz tagu tab. W jego wnï¿½trzu
+	mogï¿½ zawieraï¿½ siï¿½ dowolne tagi widgetï¿½w konfigruacyjnych.
 
-	Dodatkowo, GroupBox'a mo¿na stworzyæ (lub, je¿eli istnieje, uzyskaæ)
-	wywo³uj±c funkcjê configGroupBox(section, tab, groupBox) z okna konfiguracyjnego.
-	Do tak uzyskanego GroupBox'a mo¿na dodawaæ dowolne widgety (@see addWidget,
+	Dodatkowo, GroupBox'a moï¿½na stworzyï¿½ (lub, jeï¿½eli istnieje, uzyskaï¿½)
+	wywoï¿½ujï¿½c funkcjï¿½ configGroupBox(section, tab, groupBox) z okna konfiguracyjnego.
+	Do tak uzyskanego GroupBox'a moï¿½na dodawaï¿½ dowolne widgety (@see addWidget,
 	@see addWidgets).
  **/
 class ConfigGroupBox
@@ -94,9 +94,9 @@ public:
 
 	/**
 		Dodaje widget do GroupBoxa.
-		@param widget dodawany widget (nie mo¿e byæ NULL)
-		@param fullSpace kiedy true, dodany widget zajmuje ca³± szeroko¶æ GroupBox'a,
-			w przeciwnym wypadku tylko praw± jego czê¶æ
+		@param widget dodawany widget (nie moï¿½e byï¿½ NULL)
+		@param fullSpace kiedy true, dodany widget zajmuje caï¿½ï¿½ szerokoï¿½ï¿½ GroupBox'a,
+			w przeciwnym wypadku tylko prawï¿½ jego czï¿½ï¿½ï¿½
 	 **/
 	void addWidget(QWidget *widget, bool fullSpace = false);
 	/**
@@ -107,8 +107,8 @@ public:
 	void addWidgets(QWidget *widget1, QWidget *widget2);
 
 	/**
-		Zwraca true, gdy GroupBox nie posiada w sobie ¿adnych widgetów.
-		@return true, gdy GroupBox nie posiada w sobie ¿adnych widgetów
+		Zwraca true, gdy GroupBox nie posiada w sobie ï¿½adnych widgetï¿½w.
+		@return true, gdy GroupBox nie posiada w sobie ï¿½adnych widgetï¿½w
 	 **/
 	bool empty();
 
@@ -120,47 +120,47 @@ public:
 	@short Widget okna konfigruacyjnego.
 
 	Okno konfiguracyjne tego typu zawiera widgety konfiuracyjne podzielone wg. 3 stopnioej hierarchii.
-	Pierwszym stopniem s± sekcje reprezentowane przez ListWidget'a z lewej strony okna (zawieraj±cego
-	ikony i opis tekstowy). Okno zawieraj±ce tylko jedn± sekcjê nie wy¶wietla ListWidget'a.
-	Drugim stopniem s± karty reprezentowane przez TabWidget'y, trzecim - grupy opisane przez GroupBox'y.
+	Pierwszym stopniem sï¿½ sekcje reprezentowane przez ListWidget'a z lewej strony okna (zawierajï¿½cego
+	ikony i opis tekstowy). Okno zawierajï¿½ce tylko jednï¿½ sekcjï¿½ nie wyï¿½wietla ListWidget'a.
+	Drugim stopniem sï¿½ karty reprezentowane przez TabWidget'y, trzecim - grupy opisane przez GroupBox'y.
 
-	Okno konfiguracyjne identyfikuje siê przez jego nazwê podan± w konstruktorze
-	(dziêki tej nazwie ka¿de okno mo¿e osobno zapamiêtaæ swoj± pozycjê i ostatnio
+	Okno konfiguracyjne identyfikuje siï¿½ przez jego nazwï¿½ podanï¿½ w konstruktorze
+	(dziï¿½ki tej nazwie kaï¿½de okno moï¿½e osobno zapamiï¿½taï¿½ swojï¿½ pozycjï¿½ i ostatnio
 	otwartej karty).
 
-	Okna mog± teoretycznie zawieraæ dowolne widgety. Ka¿dy z nich, który dodatkowo
-	dziedziczy z klasy ConfigWidget, traktowany jest w specjalny sposób. Jego
-	metody loadConfiguration i saveConfiguration s± wywo³ywane automatycznie
-	przy otwieraniu okna i przy zapisywaniu konfiguracji, dziêki czemu nie jest
-	potrzebne ¿adne 'rêczne' podpinanie siê do tych akcji.
+	Okna mogï¿½ teoretycznie zawieraï¿½ dowolne widgety. Kaï¿½dy z nich, ktï¿½ry dodatkowo
+	dziedziczy z klasy ConfigWidget, traktowany jest w specjalny sposï¿½b. Jego
+	metody loadConfiguration i saveConfiguration sï¿½ wywoï¿½ywane automatycznie
+	przy otwieraniu okna i przy zapisywaniu konfiguracji, dziï¿½ki czemu nie jest
+	potrzebne ï¿½adne 'rï¿½czne' podpinanie siï¿½ do tych akcji.
 
-	W momencie zapisania konfiguracji wszystkie obiekty w programie bêd±ce instancajmi
-	klasy @see ConfigurationAwareObject zostan± o tym poinformowane i bêd±
-	mog³y zaktualizowaæ swój stan.
+	W momencie zapisania konfiguracji wszystkie obiekty w programie bï¿½dï¿½ce instancajmi
+	klasy @see ConfigurationAwareObject zostanï¿½ o tym poinformowane i bï¿½dï¿½
+	mogï¿½y zaktualizowaï¿½ swï¿½j stan.
 
-	Widgety w oknie mog± byæ tworzone na 2 sposoby. Pierwszym z nich jest
-	pobranie GroupBoxa za pomoc± funkcji @see configGroupBox i dodawanie
-	do niego widgetów za pomoc± jego funkcji addWidget i addWidgets.
-	Drug± jest stworzenie plików XML *.ui, które s± wczytywane i usuwane dynamicznie
-	z pomoc± metod @see appendUiFile i @see removeUiFile.
+	Widgety w oknie mogï¿½ byï¿½ tworzone na 2 sposoby. Pierwszym z nich jest
+	pobranie GroupBoxa za pomocï¿½ funkcji @see configGroupBox i dodawanie
+	do niego widgetï¿½w za pomocï¿½ jego funkcji addWidget i addWidgets.
+	Drugï¿½ jest stworzenie plikï¿½w XML *.ui, ktï¿½re sï¿½ wczytywane i usuwane dynamicznie
+	z pomocï¿½ metod @see appendUiFile i @see removeUiFile.
 
-	W tym drugim przypadku stosuje siê pliki *.ui o nastêpuj±cej strukturze:
+	W tym drugim przypadku stosuje siï¿½ pliki *.ui o nastï¿½pujï¿½cej strukturze:
 
 	&lt;configuration-ui&gt;
-		&lt;section caption="tytu³" icon="nazwa_ikony"&gt;
-			&lt;tab caption="tytu³"&gt;
-				&lt;group-box caption="tytu³" id="id"&gt;
+		&lt;section caption="tytuï¿½" icon="nazwa_ikony"&gt;
+			&lt;tab caption="tytuï¿½"&gt;
+				&lt;group-box caption="tytuï¿½" id="id"&gt;
 					&lt;widget ... /&gt;
 				&lt;/group-box&gt;
 			&lt;/tab&gt;
 		&lt;/section&gt;
 	&lt;/configuration-ui&gt;
 
-	Elementy zawieraj±ce atrybut id (nie wymagany) - czyli group-box i dowolny widget
-	mog± zostaæ pobrane przez aplikacje za pomoc± metody @see widgetById.
-	Widgety z modu³ów powinny posiadaæ id w postaci: nazwaModu³u/nazwaId.
+	Elementy zawierajï¿½ce atrybut id (nie wymagany) - czyli group-box i dowolny widget
+	mogï¿½ zostaï¿½ pobrane przez aplikacje za pomocï¿½ metody @see widgetById.
+	Widgety z moduï¿½ï¿½w powinny posiadaï¿½ id w postaci: nazwaModuï¿½u/nazwaId.
 
-	Atrybut catpion jest wymagany. Mo¿liwe tagi widget s± opisane w dokumentacji
+	Atrybut catpion jest wymagany. Moï¿½liwe tagi widget sï¿½ opisane w dokumentacji
 	klas Config* (np.: ConfigComboBox).
  **/
 class ConfigurationWindow : public QWidget
@@ -203,7 +203,7 @@ protected:
 public:
 	/**
 		Tworzy okno konfiguracyjne o danej nazwie. Nazwa wykorzystywana
-		jest przy zapamiêtywaniu pozycji okna oraz jego ostatnio
+		jest przy zapamiï¿½tywaniu pozycji okna oraz jego ostatnio
 		otwartej karty.
 	 **/
 	ConfigurationWindow(const QString &name, const QString &caption);
@@ -212,24 +212,24 @@ public:
 	QString name() { return Name; }
 
 	/**
-		Pobiera GroupBox'a zawartego w nastêpuj±cej ¶cie¿ce XPath:
+		Pobiera GroupBox'a zawartego w nastï¿½pujï¿½cej ï¿½cieï¿½ce XPath:
 		/section[@caption=SECTION]/tab[@caption=TAB]/group-box[@caption=GROUPBOX]
 
-		Je¿eli nie istnieje taki group-box to zostanie on stworzony, gdy create == true.
-		Dla crate == false zostanie zwrócony NULL.
+		Jeï¿½eli nie istnieje taki group-box to zostanie on stworzony, gdy create == true.
+		Dla crate == false zostanie zwrï¿½cony NULL.
 	 **/
 	ConfigGroupBox * configGroupBox(const QString &section, const QString &tab, const QString &groupBox, bool create = true);
 
 	/**
-		Je¿eli okno jest ukryte wczytuje warto¶ci elementów z pliku
+		Jeï¿½eli okno jest ukryte wczytuje wartoï¿½ci elementï¿½w z pliku
 		konfiguracyjnego i pokazuje okno.
 	 **/
 	virtual void show();
 
 	/**
 		Dodaje do okna konfiguracyjnego widgety wczytane z pliku fileName.
-		Gdy load == true wczytuje ich warto¶ci z pliku konfiguracyjnego. W przeciwnym
-		wypadku wczytanie warto¶ci nast±pi po wywo³aniu metody @see show.
+		Gdy load == true wczytuje ich wartoï¿½ci z pliku konfiguracyjnego. W przeciwnym
+		wypadku wczytanie wartoï¿½ci nastï¿½pi po wywoï¿½aniu metody @see show.
 	 **/
 	QList<ConfigWidget *> appendUiFile(const QString &fileName, bool load = true);
 	/**
@@ -238,7 +238,7 @@ public:
 	void removeUiFile(const QString &fileName);
 
 	/**
-		Zwraca element opisane id="id" we wczytanych plikach *.ui. Mo¿liwe
+		Zwraca element opisane id="id" we wczytanych plikach *.ui. Moï¿½liwe
 		dowolne widgety konfiguracyjne i elementy group-box.
 	 **/
 	QWidget *widgetById(const QString &id);
@@ -248,10 +248,10 @@ public:
 
 signals:
 	/**
-		Sygna³ emitowany po naci¶niêciu Ok lub Apply ale przed zapisaniem
-		warto¶ci do pliku konfiguracyjnego. Nietypowe widgety konfiguracyjne
-		powinny siê podpi±æ pod ten sygna³ i po jego uzyskaniu zapisaæ
-		nowe warto¶ci do pliku.
+		Sygnaï¿½ emitowany po naciï¿½niï¿½ciu Ok lub Apply ale przed zapisaniem
+		wartoï¿½ci do pliku konfiguracyjnego. Nietypowe widgety konfiguracyjne
+		powinny siï¿½ podpiï¿½ï¿½ pod ten sygnaï¿½ i po jego uzyskaniu zapisaï¿½
+		nowe wartoï¿½ci do pliku.
 	 **/
 	void configurationWindowApplied();
 

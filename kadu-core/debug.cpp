@@ -13,7 +13,7 @@ int debug_mask;
 
 #ifdef DEBUG_ENABLED
 
-#include <QMutex>
+#include <QtCore/QMutex>
 
 #include <sys/time.h>
 
@@ -21,10 +21,10 @@ int debug_mask;
 #include <stdio.h>
 
 /*
-	Poniewa¿ debug() mo¿e byæ u¿ywany w ró¿nych w±tkach,
-	wiêc zastosowa³em semafor, aby unikn±æ wy¶wietlenia
-	na ekranie czego¶ przez inny w±tek pomiêdzy
-	poszczególnymi wywo³aniami fprintf
+	Poniewaï¿½ debug() moï¿½e byï¿½ uï¿½ywany w rï¿½ï¿½nych wï¿½tkach,
+	wiï¿½c zastosowaï¿½em semafor, aby uniknï¿½ï¿½ wyï¿½wietlenia
+	na ekranie czegoï¿½ przez inny wï¿½tek pomiï¿½dzy
+	poszczegï¿½lnymi wywoï¿½aniami fprintf
 */
 static QMutex debug_mutex;
 
@@ -52,7 +52,7 @@ void _kdebug_with_mask(int mask, const char* file, const int line, const char* f
 		if (mask & KDEBUG_WARNING)
 			fprintf(stderr, "\033[34m");//niebieski
 		else if (mask & KDEBUG_ERROR)
-			fprintf(stderr, "\033[33;1m");//¿ó³ty
+			fprintf(stderr, "\033[33;1m");//ï¿½ï¿½ï¿½ty
 		else if (mask & KDEBUG_PANIC)
 			fprintf(stderr, "\033[31;1m");//jasny czerwony
 

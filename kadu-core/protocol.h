@@ -1,8 +1,8 @@
 #ifndef KADU_PROTOCOL_H
 #define KADU_PROTOCOL_H
 
-#include <QDateTime>
-#include <QObject>
+#include <QtCore/QDateTime>
+#include <QtCore/QObject>
 
 #ifdef __sun__
 #include <sys/types.h>

@@ -7,10 +7,10 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <QFontDialog>
-#include <QHBoxLayout>
-#include <QLineEdit>
-#include <QPushButton>
+#include <QtGui/QFontDialog>
+#include <QtGui/QHBoxLayout>
+#include <QtGui/QLineEdit>
+#include <QtGui/QPushButton>
 
 #include "select_font.h"
 

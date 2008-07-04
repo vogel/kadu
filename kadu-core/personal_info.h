@@ -1,7 +1,7 @@
 #ifndef PERSONAL_INFO_H
 #define PERSONAL_INFO_H
 
-#include <QWidget>
+#include <QtGui/QWidget>
 
 #include "search.h"
 

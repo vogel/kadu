@@ -83,7 +83,7 @@ FileTransferWidget::FileTransferWidget(QWidget *parent, FileTransfer *ft)
 	buttons_layout->addWidget(continueButton);
 	buttons_layout->addWidget(deleteThis);
 	buttons->setLayout(buttons_layout);
- 	layout->addWidget(buttons, 2, 2, Qt::AlignRight);
+// 	layout->addWidget(buttons, 2, 2, Qt::AlignRight);
 
 	UserListElement ule = userlist->byID("Gadu", QString::number(ft->contact()));
 
@@ -125,12 +125,10 @@ void FileTransferWidget::remove()
 	kdebugf();
 
 	if (ft->status() != FileTransfer::StatusFinished)
-	{
 		if (!MessageBox::ask(tr("Are you sure you want to remove this transfer?")))
 			return;
 		else
 			ft->stop(FileTransfer::StopFinally);
-	}
 
 	// it will destroy widget too, see FileTransferWidget::fileTransferDestroying
 	delete ft;

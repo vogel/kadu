@@ -7,9 +7,9 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <QApplication>
-#include <QHostAddress>
-#include <QVariant>
+#include <QtCore/QVariant>
+#include <QtGui/QApplication>
+#include <QtNetwork/QHostAddress>
 
 #include "config_file.h"
 #include "debug.h"

@@ -7,7 +7,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <QHostAddress>
+#include <QtNetwork/QHostAddress>
 
 #include "debug.h"
 #include "gadu.h"

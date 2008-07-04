@@ -10,9 +10,9 @@
 #ifndef TOOLBAR_H
 #define TOOLBAR_H
 
-#include <QDomElement>
-#include <QDrag>
-#include <QToolBar>
+#include <QtGui/QDrag>
+#include <QtGui/QToolBar>
+#include <QtXml/QDomElement>
 
 class QMenu;
 class QToolButton;

@@ -10,8 +10,8 @@
 #ifndef KADU_MODULES_H
 #define KADU_MODULES_H
 
-#include <QMap>
-#include <QWidget>
+#include <QtCore/QMap>
+#include <QtGui/QWidget>
 
 class QCheckBox;
 class QLabel;

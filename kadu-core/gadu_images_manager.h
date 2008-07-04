@@ -1,9 +1,9 @@
 #ifndef GADU_IMAGES_MANAGER_H
 #define GADU_IMAGES_MANAGER_H
 
-#include <QDateTime>
-#include <QMap>
-#include <QPair>
+#include <QtCore/QDateTime>
+#include <QtCore/QMap>
+#include <QtCore/QPair>
 
 #include "html_document.h"
 #include "protocol.h"

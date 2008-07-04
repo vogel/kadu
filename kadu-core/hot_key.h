@@ -1,7 +1,7 @@
 #ifndef HOT_KEY_H
 #define HOT_KEY_H
 
-#include <QLineEdit>
+#include <QtGui/QLineEdit>
 
 class HotKey
 {

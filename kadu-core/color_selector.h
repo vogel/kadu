@@ -1,13 +1,13 @@
 #ifndef KADU_COLOR_SELECTOR_H
 #define KADU_COLOR_SELECTOR_H
 
-#include <QPushButton>
+#include <QtGui/QPushButton>
 
 extern const char colors[16][8];
 
 /**
 	\class ColorSelectorButton
-	\brief Klasa do wyboru koloru za pomoc± przycisku
+	\brief Klasa do wyboru koloru za pomocï¿½ przycisku
 **/
 class ColorSelectorButton : public QPushButton
 {
@@ -21,7 +21,7 @@ private slots:
 public:
 	/**
 		\fn ColorSelectorButton(QWidget* parent, const QColor& qcolor, int width=1, const char *name=0)
-		Konstruktor tworz±cy okno do wyboru koloru
+		Konstruktor tworzï¿½cy okno do wyboru koloru
 		\param parent rodzic okna
 		\param qcolor kolor
 		\param width
@@ -33,7 +33,7 @@ signals:
 	// TODO: rename
 	/**
 		\fn void clicked(const QColor& color)
-		Sygna³ zostaje wys³any po wybraniu koloru
+		Sygnaï¿½ zostaje wysï¿½any po wybraniu koloru
 	**/
 	void clicked(const QColor& color);
 
@@ -41,7 +41,7 @@ signals:
 
 /**
 	\class ColorSelector
-	\brief Klasa do wyboru kolorów
+	\brief Klasa do wyboru kolorï¿½w
 **/
 class ColorSelector : public QWidget
 {
@@ -50,7 +50,7 @@ class ColorSelector : public QWidget
 private slots:
 	/**
 		\fn void iconClicked(const QColor& color);
-		Slot obs³uguj±cy wybranie koloru
+		Slot obsï¿½ugujï¿½cy wybranie koloru
 		\param color wybrany kolor
 	**/
 	void iconClicked(const QColor &color);
@@ -58,14 +58,14 @@ private slots:
 protected:
 	/**
 		\fn void closeEvent(QCloseEvent*)
-		Funkcja obs³uguj±ca zamkniêcie okna wyboru kolorów
+		Funkcja obsï¿½ugujï¿½ca zamkniï¿½cie okna wyboru kolorï¿½w
 	**/
 	void closeEvent(QCloseEvent *);
 
 public:
 	/**
 		\fn ColorSelector(const QColor &defColor, QWidget* parent = 0, const char* name = 0)
-		Konstruktor obiektu do wyboru kolorów
+		Konstruktor obiektu do wyboru kolorï¿½w
 		\param defColor
 		\param parent rodzic okna
 		\param name nazwa obiektu
@@ -76,8 +76,8 @@ public slots:
 	// TODO: WTF? remove!!
 	/**
 		\fn void alignTo(QWidget* w)
-	  	Slot wyrównuje pozycjê do widgeta
-		\param w wka¼nik do obiektu ktorego bêdziemy wyrównywac
+	  	Slot wyrï¿½wnuje pozycjï¿½ do widgeta
+		\param w wkaï¿½nik do obiektu ktorego bï¿½dziemy wyrï¿½wnywac
 	**/
 	void alignTo(QWidget *w);
 
@@ -85,14 +85,14 @@ signals:
 	// TODO: rename
 	/**
 		\fn void aboutToClose()
-		Sygna³ jest emitowany gdy zamykany jest wybór kolorów
+		Sygnaï¿½ jest emitowany gdy zamykany jest wybï¿½r kolorï¿½w
 	**/
 	void aboutToClose();
 
 	// TODO: rename
 	/**
 		\fn void colorSelect(const QColor&)
-		Sygna³ jest emitowany gdy wybrano kolor
+		Sygnaï¿½ jest emitowany gdy wybrano kolor
 	**/
 	void colorSelect(const QColor &);
 

@@ -1,7 +1,7 @@
 #ifndef KADU_PARSER_H
 #define KADU_PARSER_H
 
-#include <QMap>
+#include <QtCore/QMap>
 
 #include "userlistelement.h"
 

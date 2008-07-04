@@ -7,10 +7,10 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <QApplication>
-#include <QMessageBox>
-#include <QTextCodec>
-#include <QTranslator>
+#include <QtCore/QTextCodec>
+#include <QtCore/QTranslator>
+#include <QtGui/QApplication>
+#include <QtGui/QMessageBox>
 
 #include <sys/file.h>
 #include <sys/stat.h>
@@ -37,7 +37,7 @@ ConfigFile *config_file_ptr;
 Kadu *kadu;
 
 #ifdef SIG_HANDLING_ENABLED
-	#include <qdatetime.h>
+	#include <QtCore/QDateTime>
 	#include <signal.h>
 #ifdef HAVE_EXECINFO
 	#include <execinfo.h>

@@ -7,7 +7,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <QKeyEvent>
+#include <QtGui/QKeyEvent>
 
 #include "config_file.h"
 

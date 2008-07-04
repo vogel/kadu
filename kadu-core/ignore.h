@@ -1,7 +1,7 @@
 #ifndef IGNORE_H
 #define IGNORE_H
 
-#include <QWidget>
+#include <QtGui/QWidget>
 
 #include "usergroup.h"
 
