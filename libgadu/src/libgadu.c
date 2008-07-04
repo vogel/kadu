@@ -1,4 +1,4 @@
-/* $Id: libgadu.c 612 2008-06-02 20:11:16Z wojtekka $ */
+/* $Id: libgadu.c 623 2008-06-09 23:35:58Z wojtekka $ */
 
 /*
  *  (C) Copyright 2001-2006 Wojtek Kaniewski <wojtekka@irc.pl>
@@ -165,7 +165,7 @@ static char rcsid[]
 #ifdef __GNUC__
 __attribute__ ((unused))
 #endif
-= "$Id: libgadu.c 612 2008-06-02 20:11:16Z wojtekka $";
+= "$Id: libgadu.c 623 2008-06-09 23:35:58Z wojtekka $";
 #endif
 
 #endif /* DOXYGEN */
@@ -926,11 +926,28 @@ struct gg_session *gg_login(const struct gg_login_params *p)
 		goto fail;
 	}
 
-	if (p->status_descr && !(sess->initial_descr = strdup(p->status_descr))) {
-		gg_debug(GG_DEBUG_MISC, "// gg_login() not enough memory for status\n");
-		goto fail;
-	}
+	if (p->status_descr) {
+		int max_length;
 
+		if (p->protocol_version >= 0x2d && p->encoding != GG_ENCODING_UTF8) {
+			sess->initial_descr = gg_cp_to_utf8(p->status_descr);
+			max_length = GG_STATUS_DESCR_MAXSIZE;
+		} else {
+			sess->initial_descr = strdup(p->status_descr);
+			max_length = GG_STATUS_DESCR_MAXSIZE_PRE_8_0;
+		}
+
+		if (!sess->initial_descr) {
+			gg_debug(GG_DEBUG_MISC, "// gg_login() not enough memory for status\n");
+			goto fail;
+		}
+		
+		// XXX pamiętać, żeby nie ciąć w środku znaku utf-8
+		
+		if (strlen(sess->initial_descr) > max_length)
+			sess->initial_descr[max_length] = 0;
+	}
+	
 	if (p->hash_type < 0 || p->hash_type > GG_LOGIN_HASH_SHA1) {
 		gg_debug(GG_DEBUG_MISC, "// gg_login() invalid arguments. unknown hash type (%d)\n", p->hash_type);
 		errno = EFAULT;
@@ -952,13 +969,14 @@ struct gg_session *gg_login(const struct gg_login_params *p)
 	sess->external_addr = p->external_addr;
 	sess->protocol_version = (p->protocol_version) ? p->protocol_version : GG_DEFAULT_PROTOCOL_VERSION;
 	if (p->era_omnix)
-		sess->protocol_version |= GG_ERA_OMNIX_MASK;
+		sess->protocol_flags |= GG_ERA_OMNIX_MASK;
 	if (p->has_audio)
-		sess->protocol_version |= GG_HAS_AUDIO_MASK;
+		sess->protocol_flags |= GG_HAS_AUDIO_MASK;
 	sess->client_version = (p->client_version) ? strdup(p->client_version) : NULL;
 	sess->last_sysmsg = p->last_sysmsg;
 	sess->image_size = p->image_size;
 	sess->pid = -1;
+	sess->encoding = p->encoding;
 
 	if (p->tls == 1) {
 #ifdef GG_CONFIG_HAVE_OPENSSL
@@ -1270,20 +1288,27 @@ void gg_free_session(struct gg_session *sess)
 }
 
 /**
- * Zmienia status użytkownika.
+ * \internal Funkcja wysyłająca pakiet zmiany statusu użytkownika.
  *
  * \param sess Struktura sesji
  * \param status Nowy status użytkownika
+ * \param descr Opis statusu użytkownika (lub \c NULL)
+ * \param time Czas powrotu w postaci uniksowego znacznika czasu (lub 0)
  *
  * \return 0 jeśli się powiodło, -1 w przypadku błędu
  *
  * \ingroup status
  */
-int gg_change_status(struct gg_session *sess, int status)
+static int gg_change_status_common(struct gg_session *sess, int status, const char *descr, int time)
 {
 	struct gg_new_status p;
-
-	gg_debug_session(sess, GG_DEBUG_FUNCTION, "** gg_change_status(%p, %d);\n", sess, status);
+	char *new_descr = NULL;
+	uint32_t new_time;
+	int descr_len = 0;
+	int descr_len_max;
+	int packet_type;
+	int append_null = 0;
+	int res;
 
 	if (!sess) {
 		errno = EFAULT;
@@ -1296,15 +1321,78 @@ int gg_change_status(struct gg_session *sess, int status)
 	}
 
 	// dodaj flagę obsługi połączeń głosowych zgodną z GG 7.x
-	
-	if ((sess->protocol_version & 0xff) >= 0x2a && (sess->protocol_version & GG_HAS_AUDIO_MASK) && !GG_S_I(status))
-		status |= 0x20000;
+
+	if ((sess->protocol_version >= 0x2a) && (sess->protocol_flags & GG_HAS_AUDIO_MASK) && !GG_S_I(status))
+		status |= GG_STATUS_VOICE_MASK;
 
 	p.status = gg_fix32(status);
 
 	sess->status = status;
 
-	return gg_send_packet(sess, GG_NEW_STATUS, &p, sizeof(p), NULL);
+	if (sess->protocol_version >= 0x2d) {
+		if (descr != NULL && sess->encoding != GG_ENCODING_UTF8) {
+			new_descr = gg_cp_to_utf8(descr);
+
+			if (!new_descr)
+				return -1;
+		}
+
+		packet_type = GG_NEW_STATUS80;
+		descr_len_max = GG_STATUS_DESCR_MAXSIZE;
+		append_null = 1;
+	} else {
+		packet_type = GG_NEW_STATUS;
+		descr_len_max = GG_STATUS_DESCR_MAXSIZE_PRE_8_0;
+
+		if (time != 0)
+			append_null = 1;
+	}
+
+	if (descr) {
+		descr_len = strlen((new_descr) ? new_descr : descr);
+
+		if (descr_len > descr_len_max)
+			descr_len = descr_len_max;
+
+		// XXX pamiętać o tym, żeby nie ucinać w środku znaku utf-8
+	}
+
+	if (time)
+		new_time = gg_fix32(time);
+
+	res = gg_send_packet(sess,
+			     packet_type,
+			     &p,
+			     sizeof(p),
+			     (new_descr) ? new_descr : descr,
+			     descr_len,
+			     (append_null) ? "\0" : NULL,
+			     (append_null) ? 1 : 0,
+			     (time) ? &new_time : NULL,
+			     (time) ? sizeof(new_time) : 0,
+			     NULL);
+
+	if (new_descr)
+		free(new_descr);
+
+	return res;
+}
+
+/**
+ * Zmienia status użytkownika.
+ *
+ * \param sess Struktura sesji
+ * \param status Nowy status użytkownika
+ *
+ * \return 0 jeśli się powiodło, -1 w przypadku błędu
+ *
+ * \ingroup status
+ */
+int gg_change_status(struct gg_session *sess, int status)
+{
+	gg_debug_session(sess, GG_DEBUG_FUNCTION, "** gg_change_status(%p, %d);\n", sess, status);
+
+	return gg_change_status_common(sess, status, NULL, 0);
 }
 
 /**
@@ -1320,25 +1408,9 @@ int gg_change_status(struct gg_session *sess, int status)
  */
 int gg_change_status_descr(struct gg_session *sess, int status, const char *descr)
 {
-	struct gg_new_status p;
-
 	gg_debug_session(sess, GG_DEBUG_FUNCTION, "** gg_change_status_descr(%p, %d, \"%s\");\n", sess, status, descr);
 
-	if (!sess || !descr) {
-		errno = EFAULT;
-		return -1;
-	}
-
-	if (sess->state != GG_STATE_CONNECTED) {
-		errno = ENOTCONN;
-		return -1;
-	}
-
-	p.status = gg_fix32(status);
-
-	sess->status = status;
-
-	return gg_send_packet(sess, GG_NEW_STATUS, &p, sizeof(p), descr, (strlen(descr) > GG_STATUS_DESCR_MAXSIZE) ? GG_STATUS_DESCR_MAXSIZE : strlen(descr), NULL);
+	return gg_change_status_common(sess, status, descr, 0);
 }
 
 /**
@@ -1355,28 +1427,9 @@ int gg_change_status_descr(struct gg_session *sess, int status, const char *desc
  */
 int gg_change_status_descr_time(struct gg_session *sess, int status, const char *descr, int time)
 {
-	struct gg_new_status p;
-	uint32_t newtime;
-
 	gg_debug_session(sess, GG_DEBUG_FUNCTION, "** gg_change_status_descr_time(%p, %d, \"%s\", %d);\n", sess, status, descr, time);
 
-	if (!sess || !descr || !time) {
-		errno = EFAULT;
-		return -1;
-	}
-
-	if (sess->state != GG_STATE_CONNECTED) {
-		errno = ENOTCONN;
-		return -1;
-	}
-
-	p.status = gg_fix32(status);
-
-	sess->status = status;
-
-	newtime = gg_fix32(time);
-
-	return gg_send_packet(sess, GG_NEW_STATUS, &p, sizeof(p), descr, (strlen(descr) > GG_STATUS_DESCR_MAXSIZE) ? GG_STATUS_DESCR_MAXSIZE : strlen(descr), "\0", 1, &newtime, sizeof(newtime), NULL);
+	return gg_change_status_common(sess, status, descr, time);
 }
 
 /**

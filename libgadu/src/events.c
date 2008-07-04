@@ -1,4 +1,4 @@
-/* $Id: events.c 591 2008-04-14 20:30:12Z wojtekka $ */
+/* $Id: events.c 623 2008-06-09 23:35:58Z wojtekka $ */
 
 /*
  *  (C) Copyright 2001-2006 Wojtek Kaniewski <wojtekka@irc.pl>
@@ -205,23 +205,12 @@ static void gg_image_queue_parse(struct gg_event *e, char *p, unsigned int len, 
 	}
 
 	if (p[0] == 0x05) {
-		int i, ok = 0;
-
 		q->done = 0;
 
 		len -= sizeof(struct gg_msg_image_reply);
 		p += sizeof(struct gg_msg_image_reply);
 
-		/* sprawdź, czy mamy tekst zakończony \0 */
-
-		for (i = 0; i < len; i++) {
-			if (!p[i]) {
-				ok = 1;
-				break;
-			}
-		}
-
-		if (!ok) {
+		if (gg_find_null(p, 0, len) == NULL) {
 			gg_debug_session(sess, GG_DEBUG_MISC, "// gg_image_queue_parse() malformed packet from %d, unlimited filename\n", sender);
 			return;
 		}
@@ -457,6 +446,101 @@ fail:
 }
 
 /**
+ * \internal Analizuje przychodzący pakiet z wiadomością protokołu Gadu-Gadu 8.0.
+ *
+ * Rozbija pakiet na poszczególne składniki -- tekst, informacje
+ * o konferencjach, formatowani itd.
+ *
+ * \param h Wskaźnik do odebranego pakietu
+ * \param e Struktura zdarzenia
+ * \param sess Struktura sesji
+ *
+ * \return 0 jeśli się powiodło, -1 w przypadku błędu
+ */
+static int gg_handle_recv_msg80(struct gg_header *h, struct gg_event *e, struct gg_session *sess)
+{
+	char *packet = (char*) h + sizeof(struct gg_header);
+	struct gg_recv_msg80 *r = (struct gg_recv_msg80*) packet;
+	uint32_t offset_plain;
+	uint32_t offset_attr;
+
+	gg_debug_session(sess, GG_DEBUG_FUNCTION, "** gg_handle_recv_msg80(%p, %p);\n", h, e);
+
+	if (!r->seq && !r->msgclass) {
+		gg_debug_session(sess, GG_DEBUG_MISC, "// gg_handle_recv_msg80() oops, silently ignoring the bait\n");
+		goto ignore;
+	}
+
+	offset_plain = gg_fix32(r->offset_plain);
+	offset_attr  = gg_fix32(r->offset_attr);
+
+	if (offset_plain < sizeof(struct gg_recv_msg80) || offset_plain >= h->length || offset_attr <= sizeof(struct gg_recv_msg80) || offset_attr > h->length) {
+		gg_debug_session(sess, GG_DEBUG_MISC, "// gg_handle_recv_msg80() malformed packet, message out of bounds (0)\n");
+		goto ignore;
+	}
+
+	if (gg_find_null(packet, offset_plain, h->length) == NULL) {
+		gg_debug_session(sess, GG_DEBUG_MISC, "// gg_handle_recv_msg80() malformed packet, message out of bounds (2)\n");
+		goto ignore;
+	}
+
+	/* XXX, XHTML i inne takie, kiedy indziej */
+
+	e->type = GG_EVENT_MSG;
+	e->event.msg.msgclass = gg_fix32(r->msgclass);
+	e->event.msg.sender = gg_fix32(r->sender);
+	e->event.msg.time = gg_fix32(r->time);
+	e->event.msg.seq = gg_fix32(r->seq);
+
+	if (sess->encoding == GG_ENCODING_CP1250)
+		e->event.msg.message = (unsigned char*) strdup(packet + offset_plain);
+	else
+		e->event.msg.message = (unsigned char*) gg_cp_to_utf8(packet + offset_plain);
+
+#if 0
+		const char *p;
+		char *q;
+		int in_tag = 0;
+		int length = 0;
+
+		// chwilowo usuwamy XHTML
+
+		for (p = packet + sizeof(struct gg_recv_msg80); *p; p++) {
+			if (*p == '<')
+				in_tag = 1;
+			else if (*p == '>')
+				in_tag = 0;
+			else if (!in_tag)
+				length++;
+		}
+
+		e->event.msg.message = malloc(length + 1);
+
+		if (!e->event.msg.message) {
+			gg_debug_session(sess, GG_DEBUG_MISC, "// gg_handle_recv_msg80() out of memory for message, ignoring\n");
+			goto ignore;
+		}
+
+		for (p = packet + sizeof(struct gg_recv_msg80), q = (char*) e->event.msg.message; *p; p++) {
+			if (*p == '<')
+				in_tag = 1;
+			else if (*p == '>')
+				in_tag = 0;
+			else if (!in_tag)
+				*q++ = *p;
+		}
+
+		*q = 0;
+#endif
+
+	return 0;
+
+ignore:
+	e->type = GG_EVENT_NONE;
+	return 0;
+}
+
+/**
  * \internal Odbiera pakiet od serwera.
  *
  * Analizuje pakiet i wypełnia strukturę zdarzenia.
@@ -494,6 +578,16 @@ static int gg_watch_fd_connected(struct gg_session *sess, struct gg_event *e)
 
 			break;
 		}
+
+		case GG_RECV_MSG80:
+		{
+			if (h->length >= sizeof(struct gg_recv_msg80))
+				if (gg_handle_recv_msg80(h, e, sess))
+					goto fail;
+
+			break;
+		}
+
 
 		case GG_NOTIFY_REPLY:
 		{
@@ -582,6 +676,7 @@ static int gg_watch_fd_connected(struct gg_session *sess, struct gg_event *e)
 		}
 
 		case GG_NOTIFY_REPLY77:
+		case GG_NOTIFY_REPLY80:
 		{
 			struct gg_notify_reply77 *n = (void*) p;
 			unsigned int length = h->length, i = 0;
@@ -622,13 +717,30 @@ static int gg_watch_fd_connected(struct gg_session *sess, struct gg_event *e)
 					unsigned char descr_len = *((char*) n + sizeof(struct gg_notify_reply77));
 
 					if (descr_len < length) {
-						if (!(e->event.notify60[i].descr = malloc(descr_len + 1))) {
+						char *descr;
+
+						if (!(descr = malloc(descr_len + 1))) {
 							gg_debug_session(sess, GG_DEBUG_MISC, "// gg_watch_fd_connected() not enough memory for notify data\n");
 							goto fail;
 						}
 
-						memcpy(e->event.notify60[i].descr, (char*) n + sizeof(struct gg_notify_reply77) + 1, descr_len);
-						e->event.notify60[i].descr[descr_len] = 0;
+						memcpy(descr, (char*) n + sizeof(struct gg_notify_reply77) + 1, descr_len);
+						descr[descr_len] = 0;
+
+						if (h->type == GG_NOTIFY_REPLY80 && sess->encoding != GG_ENCODING_UTF8) {
+							char *cp_descr = gg_utf8_to_cp(descr);
+
+							if (!cp_descr) {
+								gg_debug_session(sess, GG_DEBUG_MISC, "// gg_watch_fd_connected() not enough memory for notify data\n");
+								free(descr);
+								goto fail;
+							}
+
+							free(descr);
+							descr = cp_descr;
+						}
+
+						e->event.notify60[i].descr = descr;
 
 						/* XXX czas */
 							
@@ -657,6 +769,7 @@ static int gg_watch_fd_connected(struct gg_session *sess, struct gg_event *e)
 		}
 
 		case GG_STATUS77:
+		case GG_STATUS80:
 		{
 			struct gg_status77 *s = (void*) p;
 			uint32_t uin;
@@ -692,6 +805,12 @@ static int gg_watch_fd_connected(struct gg_session *sess, struct gg_event *e)
 				if (buf) {
 					memcpy(buf, (char*) p + sizeof(*s), len);
 					buf[len] = 0;
+				}
+
+				if (h->type == GG_STATUS80 && sess->encoding != GG_ENCODING_UTF8) {
+					char *cp_buf = gg_utf8_to_cp(buf);
+					free(buf);
+					buf = cp_buf;
 				}
 
 				e->event.status60.descr = buf;
@@ -1577,7 +1696,10 @@ struct gg_event *gg_watch_fd(struct gg_session *sess)
 			gg_debug_session(sess, GG_DEBUG_MISC, "// gg_watch_fd() GG_STATE_READING_KEY\n");
 
 			memset(&l, 0, sizeof(l));
-			l.dunno2 = 0xbe;
+			if (sess->protocol_version >= 0x2d)
+				l.dunno2 = 0x64;
+			else
+				l.dunno2 = 0xbe;
 
 			/* XXX bardzo, bardzo, bardzo głupi pomysł na pozbycie
 			 * się tekstu wrzucanego przez proxy. */
@@ -1691,7 +1813,7 @@ struct gg_event *gg_watch_fd(struct gg_session *sess)
 
 			l.uin = gg_fix32(sess->uin);
 			l.status = gg_fix32(sess->initial_status ? sess->initial_status : GG_STATUS_AVAIL);
-			l.version = gg_fix32(sess->protocol_version);
+			l.version = gg_fix32(sess->protocol_version | sess->protocol_flags);
 			l.local_port = gg_fix16(gg_dcc_port);
 			l.image_size = sess->image_size;
 
@@ -1700,8 +1822,13 @@ struct gg_event *gg_watch_fd(struct gg_session *sess)
 				l.local_port = gg_fix16(sess->external_port);
 			}
 
-			gg_debug_session(sess, GG_DEBUG_TRAFFIC, "// gg_watch_fd() sending GG_LOGIN70 packet\n");
-			ret = gg_send_packet(sess, GG_LOGIN70, &l, sizeof(l), sess->initial_descr, (sess->initial_descr) ? strlen(sess->initial_descr) : 0, NULL);
+			if (sess->protocol_version >= 0x2d) {
+				gg_debug_session(sess, GG_DEBUG_TRAFFIC, "// gg_watch_fd() sending GG_LOGIN80 packet\n");
+				ret = gg_send_packet(sess, GG_LOGIN80, &l, sizeof(l), sess->initial_descr, (sess->initial_descr) ? strlen(sess->initial_descr) : 0, (sess->initial_descr) ? "\0" : NULL, (sess->initial_descr) ? 1 : 0, NULL);
+			} else {
+				gg_debug_session(sess, GG_DEBUG_TRAFFIC, "// gg_watch_fd() sending GG_LOGIN70 packet\n");
+				ret = gg_send_packet(sess, GG_LOGIN70, &l, sizeof(l), sess->initial_descr, (sess->initial_descr) ? strlen(sess->initial_descr) : 0, NULL);
+			}
 
 			free(sess->initial_descr);
 			sess->initial_descr = NULL;
