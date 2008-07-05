@@ -196,7 +196,7 @@ QRegExp* HtmlDocument::url_regexp = NULL;
 const QRegExp &HtmlDocument::urlRegExp()
 {
 	if (!url_regexp)
-		url_regexp = new QRegExp(latin2unicode((const unsigned char *)"(http://|https://|www\\.|ftp://|ftp\\.|sftp://|smb://|file:/|rsync://|svn://|svn\\+ssh://)[a-zA-Z0-9ÍÛ±∂≥øºÊÒ ”°¶£Ø¨∆—\\*\\-\\._/~?=&#\\+%\\(\\):;,!@\\\\]*"));
+		url_regexp = new QRegExp(latin2unicode((const unsigned char *)"(http://|https://|www\\.|ftp://|ftp\\.|sftp://|smb://|file:/|rsync://|svn://|svn\\+ssh://)[a-zA-Z0-9ÍÛ±∂≥øºÊÒ ”°¶£Ø¨∆—\\*\\-\\._/~?=&#\\+%\\(\\)\\[\\]:;,!@\\\\]*"));
 	return *url_regexp;
 }
 
