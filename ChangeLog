@@ -4,6 +4,7 @@ Je¶li jest w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 
 +++ wersja 0.6.0.3-svn
 * aktualizacja libgadu - drobne poprawki, dodana obs³uga gg 8.0 (neeo)
+* zaktualizowany system budowania (neeo)
 
 +++ wersja 0.6.0.2 (03.07.2008)
 * poprawiona kolejno¶æ argumentów konstruktora klasy ConfigLineEdit (neeo)
