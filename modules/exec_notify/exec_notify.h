@@ -10,8 +10,8 @@
 #ifndef EXEC_NOTIFY_H
 #define EXEC_NOTIFY_H
 
-#include <QObject>
-#include <QStringList>
+#include <QtCore/QObject>
+#include <QtCore/QStringList>
 
 #include "../notify/notify.h"
 #include "../notify/notification.h"

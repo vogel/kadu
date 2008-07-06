@@ -1,7 +1,6 @@
 #ifndef KADU_SOUNDFILE_H
 #define KADU_SOUNDFILE_H
 
-#include "../../kadu-stdint.h"
 /** @ingroup sound
  * @{
  */

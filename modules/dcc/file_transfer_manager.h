@@ -10,9 +10,9 @@
 #ifndef FILE_TRANSFER_MANAGER_H
 #define FILE_TRANSFER_MANAGER_H
 
-#include <qobject.h>
-#include <QList>
-#include <QKeyEvent>
+#include <QtCore/QObject>
+#include <QtCore/QList>
+#include <QtGui/QKeyEvent>
 
 #include "dcc_handler.h"
 #include "file_transfer.h"

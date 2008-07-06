@@ -1,8 +1,3 @@
-# link_directories(
-# 	${kadu_SOURCE_DIR}/modules/docking
-# 	${kadu_SOURCE_DIR}/modules/notify
-# 	${kadu_SOURCE_DIR}/modules/sound)
-
 add_custom_command (OUTPUT ${CMAKE_CURRENT_SOURCE_DIR}/version.cpp
 	COMMAND echo "const char *detailed_version = \"${KADU_VERSION}\";" > version.cpp
 	DEPENDS ${kadu_SOURCE_DIR}/VERSION VERBATIM)
@@ -131,8 +126,6 @@ set (kadu_MOC_SRCS
 	userlist-private.h
 )
 
-include_directories (${CMAKE_CURRENT_SOURCE_DIR})
-
 qt_wrap_cpp (kadu MOC_FILES ${kadu_MOC_SRCS})
 
 if (COMMAND cmake_policy)
@@ -140,6 +133,8 @@ if (COMMAND cmake_policy)
 endif (COMMAND cmake_policy)
 
 add_executable (kadu ${kadu_SRCS} ${MOC_FILES})
-target_link_libraries (kadu ${QT_LIBRARIES} ${QT_QTGUI_LIBRARY} ${QT_QT3SUPPORT_LIBRARY} gadu)
+
+link_directories (modules)
+target_link_libraries (kadu ${QT_LIBRARIES} ${QT_QTGUI_LIBRARY} ${QT_QT3SUPPORT_LIBRARY} ${STATIC_MODULES} gadu)
 
 install (TARGETS kadu DESTINATION bin)

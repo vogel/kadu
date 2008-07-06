@@ -4,13 +4,13 @@
  *  the Free Software Foundation; either version 2 of the License, or
  *  (at your option) any later version.
  */
-#include <QApplication>
+#include <QtGui/QApplication>
 #include <QBitmap>
 #include <QToolTip>
-#include <QCheckBox>
-#include <QDesktopWidget>
-#include <QMenu>
-#include <QSpinBox>
+#include <QtGui/QCheckBox>
+#include <QtGui/QDesktopWidget>
+#include <QtGui/QMenu>
+#include <QtGui/QSpinBox>
 
 #include "../docking/docking.h"
 

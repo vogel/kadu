@@ -7,14 +7,14 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <QApplication>
-#include <QCursor>
-#include <QObject>
-#include <QMenu>
-#include <QMouseEvent>
-#include <QTimer>
+#include <QtCore/QObject>
+#include <QtCore/QTimer>
+#include <QtGui/QApplication>
+#include <QtGui/QCursor>
+#include <QtGui/QMenu>
+#include <QtGui/QMouseEvent>
 
-#include "config_file.h"
+#include "kadu-core/config_file.h"
 #include "docking.h"
 #include "debug.h"
 #include "gadu.h"

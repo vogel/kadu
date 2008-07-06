@@ -1,8 +1,8 @@
 #ifndef HINT_H
 #define HINT_H
 
-#include <QWidget>
-#include <QVBoxLayout>
+#include <QtGui/QWidget>
+#include <QtGui/QVBoxLayout>
 
 #include "configuration_aware_object.h"
 #include "gadu.h"
@@ -24,7 +24,7 @@ class Hint : public QWidget, ConfigurationAwareObject
 
 	QLabel *icon;
 	QLabel *label;
-	QColor bcolor; //kolor t³a
+	QColor bcolor; //kolor tï¿½a
 	unsigned int secs;
 	unsigned int startSecs;
 
@@ -65,9 +65,9 @@ public:
 
 public slots:
 	/**
-		minê³a sekunda, zmniejsza licznik pozosta³ych sekund,
-		zwraca true je¿eli jeszcze pozosta³ czas
-		false, gdy czas siê skoñczy³
+		minï¿½a sekunda, zmniejsza licznik pozostaï¿½ych sekund,
+		zwraca true jeï¿½eli jeszcze pozostaï¿½ czas
+		false, gdy czas siï¿½ skoï¿½czyï¿½
 	**/
 	void nextSecond();
 

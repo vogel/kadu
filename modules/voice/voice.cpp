@@ -9,10 +9,10 @@
 
 #include "voice.h"
 
-#include <QCheckBox>
-#include <QPushButton>
+#include <QtGui/QCheckBox>
+#include <QtGui/QPushButton>
 #include <QLayout>
-#include <QMessageBox>
+#include <QtGui/QMessageBox>
 
 #include <sys/types.h>
 #include <sys/socket.h>

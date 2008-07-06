@@ -1,7 +1,7 @@
 #ifndef REGISTER_H
 #define REGISTER_H
 
-#include <QWidget>
+#include <QtGui/QWidget>
 
 #include "gadu.h"
 

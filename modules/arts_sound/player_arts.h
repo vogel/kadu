@@ -1,11 +1,11 @@
 #ifndef KADU_ARTS_H
 #define KADU_ARTS_H
 
-#include <QObject>
-#include <QString>
-#include <QList>
+#include <QtCore/QObject>
+#include <QtCore/QString>
+#include <QtCore/QList>
 #include <QMutex>
-#include <QProcess>
+#include <QtCore/QProcess>
 #include "../sound/sound.h"
 
 class QProcess;

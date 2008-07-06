@@ -7,10 +7,10 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <QLabel>
-#include <QSpinBox>
-#include <QList>
-#include <QHBoxLayout>
+#include <QtCore/QList>
+#include <QtGui/QLabel>
+#include <QtGui/QSpinBox>
+#include <QtGui/QHBoxLayout>
 
 #include "advanced_userlist.h"
 #include "config_file.h"

@@ -11,7 +11,7 @@
 
 #include <qapplication.h>
 #include <qtooltip.h>
-#include <qobject.h>
+#include <QtCore/QObject>
 #include <qtimer.h>
 
 #include "../docking/docking.h"

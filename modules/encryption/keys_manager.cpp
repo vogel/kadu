@@ -7,12 +7,12 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <QGroupBox>
-#include <QHBoxLayout>
-#include <QLabel>
-#include <QTextEdit>
+#include <QtGui/QGroupBox>
+#include <QtGui/QHBoxLayout>
+#include <QtGui/QLabel>
+#include <QtGui/QTextEdit>
 #include <QTreeWidget>
-#include <QVBoxLayout>
+#include <QtGui/QVBoxLayout>
 
 #include "config_file.h"
 #include "debug.h"

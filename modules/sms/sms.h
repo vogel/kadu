@@ -1,9 +1,9 @@
 #ifndef SMS_H
 #define SMS_H
 
-#include <QDialog>
-#include <QMap>
-#include <QWidget>
+#include <QtGui/QDialog>
+#include <QtCore/QMap>
+#include <QtGui/QWidget>
 
 #include "configuration_aware_object.h"
 #include "http_client.h"

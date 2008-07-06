@@ -1,9 +1,9 @@
 #ifndef AUTOAWAY_H
 #define AUTOAWAY_H
 
-#include <QTimer>
-#include <QObject>
-#include <QEvent>
+#include <QtCore/QEvent>
+#include <QtCore/QTimer>
+#include <QtCore/QObject>
 
 #include "configuration_aware_object.h"
 #include "main_configuration_window.h"

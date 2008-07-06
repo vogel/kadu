@@ -32,12 +32,29 @@ set (DATADIR ${CMAKE_INSTALL_PREFIX}/share)
 set (LIBDIR ${CMAKE_INSTALL_PREFIX}/lib)
 set (BINDIR ${CMAKE_INSTALL_PREFIX}/bin)
 
+# macros
+
+macro (kadu_configuration)
+	install (FILES ${ARGN}
+		DESTINATION "share/kadu/configuration")
+endmacro (kadu_configuration)
+
+macro (kadu_module_configuration)
+	install (FILES ${ARGN}
+		DESTINATION "share/kadu/modules/configuration")
+endmacro (kadu_module_configuration)
+
+macro (kadu_module_desc)
+	install (FILES ${ARGN}
+		DESTINATION "share/kadu/modules")
+endmacro (kadu_module_desc)
+
 # libraries
 
 find_package (Qt4 4.4 REQUIRED)
 add_definitions (${QT_DEFINITIONS})
 add_definitions (-DQT3_SUPPORT)
-include_directories (${QT_INCLUDE_DIR} ${CMAKE_CURRENT_SOURCE_DIR})
+include_directories (${QT_INCLUDE_DIR} ${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_CURRENT_SOURCE_DIR}/kadu-core)
 
 find_library (LIBGADU NAMES gadu PATHS /usr/local/lib /usr/lib)
 
@@ -45,10 +62,10 @@ find_library (LIBGADU NAMES gadu PATHS /usr/local/lib /usr/lib)
 
 configure_file(${CMAKE_CURRENT_SOURCE_DIR}/kadu-config.h.cmake ${CMAKE_CURRENT_SOURCE_DIR}/kadu-config.h )
 
+add_subdirectory (modules)
 add_subdirectory (kadu-core)
 add_subdirectory (varia)
 add_subdirectory (translations)
-add_subdirectory (modules)
 
 message (STATUS "Kadu (version: ${KADU_VERSION}) will be build:")
 message (STATUS " * libgadu in ${LIBGADU}")

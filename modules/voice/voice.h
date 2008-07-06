@@ -1,11 +1,11 @@
 #ifndef KADU_VOICE_H
 #define KADU_VOICE_H
 
-#include <QDialog>
+#include <QtGui/QDialog>
 #include <QThread>
 #include <QMutex>
 #include <QSemaphore>
-#include <QList>
+#include <QtCore/QList>
 
 extern "C" {
 	#include "libgsm/inc/gsm.h"
@@ -140,13 +140,13 @@ class PlayThread : public QThread
 
 		QSemaphore *wsem;
 		void waitForData(); //czeka na nowe dane
-		void moreData(); //daje znaæ, ¿e s± nowe dane
+		void moreData(); //daje znaï¿½, ï¿½e sï¿½ nowe dane
 
 		QList<struct gsm_sample> samples;
-		QMutex samplesMutex; // chroni dostêp do samples
+		QMutex samplesMutex; // chroni dostï¿½p do samples
 
 		bool end;
-//		QMutex endMutex; //chroni dostêp do end
+//		QMutex endMutex; //chroni dostï¿½p do end
 
 	public:
 		PlayThread();
@@ -166,7 +166,7 @@ class RecordThread : public QThread
 	Q_OBJECT
 
 		bool end;
-//		QMutex endMutex; //chroni dostêp do end
+//		QMutex endMutex; //chroni dostï¿½p do end
 	public:
 		RecordThread();
 		void run();

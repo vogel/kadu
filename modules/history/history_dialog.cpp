@@ -7,13 +7,13 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <QApplication>
-#include <QCheckBox>
-#include <QGridLayout>
-#include <QHBoxLayout>
-#include <QPushButton>
-#include <QSplitter>
-#include <QVBoxLayout>
+#include <QtGui/QApplication>
+#include <QtGui/QCheckBox>
+#include <QtGui/QGridLayout>
+#include <QtGui/QHBoxLayout>
+#include <QtGui/QPushButton>
+#include <QtGui/QSplitter>
+#include <QtGui/QVBoxLayout>
 
 #include "chat_message.h"
 #include "chat_messages_view.h"

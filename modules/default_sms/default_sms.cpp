@@ -10,7 +10,7 @@
 #include "default_sms.h"
 
 #include <QRegExp>
-#include <QMessageBox>
+#include <QtGui/QMessageBox>
 
 #include "config_file.h"
 #include "configuration_window_widgets.h"
@@ -248,13 +248,13 @@ void SmsPlusGateway::httpFinished()
 	{
 		QString Page=Http.data();
 		kdebugm(KDEBUG_INFO, "SMS Provider Results Page:\n%s\n",Page.local8Bit().data());
-		if (Page.find("Z powodu przekroczenia limitów bramki")>=0)
+		if (Page.find("Z powodu przekroczenia limitï¿½w bramki")>=0)
 		{
 			kdebugm(KDEBUG_INFO, "Limit exceeded\n");
 			QMessageBox::critical(p,"SMS",tr("Limits have been exceeded, try again later."));
 			emit finished(false);
 		}
-		else if (Page.find("SMS zosta³ wys³any")>=0)
+		else if (Page.find("SMS zostaï¿½ wysï¿½any")>=0)
 			emit finished(true);
 		else
 		{
@@ -355,7 +355,7 @@ void SmsEraGateway::httpRedirected(QString link)
 	kdebugf2();
 }
 
-// TODO: WTF is that, co za nazwa dla funkcji... kurde... kto to pisa³?
+// TODO: WTF is that, co za nazwa dla funkcji... kurde... kto to pisaï¿½?
 QString SmsEraGateway::errorNumber(int nr)
 {
 	switch(nr)

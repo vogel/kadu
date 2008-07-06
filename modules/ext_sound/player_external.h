@@ -1,8 +1,8 @@
 #ifndef PLAYER_EXTERNAL_H
 #define PLAYER_EXTERNAL_H
 
-#include <QObject>
-#include <QString>
+#include <QtCore/QObject>
+#include <QtCore/QString>
 
 /**
  * @defgroup ext_sound Ext sound

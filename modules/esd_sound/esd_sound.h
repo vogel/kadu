@@ -1,7 +1,7 @@
 #ifndef KADU_ESD_SOUND_H
 #define KADU_ESD_SOUND_H
-#include <QObject>
-#include <QString>
+#include <QtCore/QObject>
+#include <QtCore/QString>
 #include "../sound/sound.h"
 
 /**

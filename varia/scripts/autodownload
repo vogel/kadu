@@ -8,9 +8,9 @@ if test $# -lt 2; then
 	exit 1
 fi
 
-echo
+# echo
 echo -e "\033[32m>>>\033[0m Downloading $1 $2"
-echo
+# echo
 
 if test -f ../VERSION; then
 	KADU_VERSION=`cat ../VERSION`
@@ -34,13 +34,13 @@ function autodownload()
 	ITEM_WEBSITES=`cat $1.web`
 	if [ -z "$ITEM_WEBSITES" ]; then
 		echo -e "\033[31m!!!\033[0m ERROR: Homepage for $1 $2 is unknown"
-		echo
+# 		echo
 		exit 1
 	fi
 
 	ITEM_HREFS=
 	for ITEM_WEBSITE in $ITEM_WEBSITES; do
-		if wget -T 20 -t 2 -N $ITEM_WEBSITE/kadu-$KADU_VERSION-$1.href; then
+		if wget -q -T 20 -t 2 -N $ITEM_WEBSITE/kadu-$KADU_VERSION-$1.href; then
 			ITEM_HREFS=`cat kadu-$KADU_VERSION-$1.href`
 			break
 		fi
@@ -53,7 +53,7 @@ function autodownload()
 		if test -z "$3"; then
 			for VER in $3 $4 $5 $6 $7 $8; do
 				for ITEM_WEBSITE in $ITEM_WEBSITES; do
-					if wget -T 20 -t 2 -N $ITEM_WEBSITE/kadu-$VER-$1.href; then
+					if wget -q -T 20 -t 2 -N $ITEM_WEBSITE/kadu-$VER-$1.href; then
 						ITEM_HREFS=`cat kadu-$KADU_VERSION-$1.href`
 						break
 					fi
@@ -66,13 +66,13 @@ function autodownload()
 
 		if test -z "$ITEM_HREFS"; then
 			echo -e "\033[31m!!!\033[0m ERROR: Downloading of $1 $2 href-file failed"
-			echo
+# 			echo
 			exit 1
 		fi
 	fi
 
 	for ITEM_HREF in $ITEM_HREFS; do
-		if wget -T 30 -t 2 -N $ITEM_HREF; then
+		if wget -q -T 30 -t 2 -N $ITEM_HREF; then
 			ITEM_HREF_NAME=`basename $ITEM_HREF`
 			break
 		fi
@@ -80,13 +80,13 @@ function autodownload()
 
 	if test -z "$ITEM_HREF_NAME"; then
 		echo -e "\033[31m!!!\033[0m ERROR: Downloading of $1 $2 package failed"
-		echo
+# 		echo
 		exit 1
 	fi
 
-	echo
+# 	echo
 	echo -e "\033[32m>>>\033[0m Unpacking $1 $2"
-	echo
+# 	echo
 
 	rm -rf $1
 	ITEM_HREF_EXT=`expr "$ITEM_HREF_NAME" : '.*\.\(.*\)'`
@@ -96,13 +96,13 @@ function autodownload()
 		TAR_OPTION=j
 	else
 		echo -e "\033[31m!!!\033[0m ERROR: Unpacking $1 $2 package failed: not supported archive format"
-		echo
+# 		echo
 		exit 1
 	fi
 
 	if ! tar -x${TAR_OPTION}f "$ITEM_HREF_NAME"; then
 		echo -e "\033[31m!!!\033[0m ERROR: Unpacking $1 $2 package failed"
-		echo
+# 		echo
 		exit 1
 	fi
 
@@ -112,7 +112,7 @@ function autodownload()
 			mv "$ITEM_HREF_NAME_WITHOUT_EXT" "$1"
 		else
 			echo -e "\033[31m!!!\033[0m ERROR: Unpacking $1 $2 package failed: doesn't contain required directory"
-			echo
+# 			echo
 			exit 1
 		fi
 	fi
@@ -120,9 +120,9 @@ function autodownload()
 	touch $1/.autodownloaded
 
 	if [ -d patches/$1 ]; then
-		echo
+# 		echo
 		echo -e "\033[32m>>>\033[0m Patching $1 $2"
-		echo
+# 		echo
 		for i in patches/$1/*; do
 			if [ -f $i ]; then
 				patch -f -p0 --dry-run -s < $i
@@ -137,7 +137,7 @@ function autodownload()
 	fi
 
 	echo -e "\033[32m>>>\033[0m $2 downloaded and unpacked successfully"
-	echo
+# 	echo
 }
 
 for name in $*;

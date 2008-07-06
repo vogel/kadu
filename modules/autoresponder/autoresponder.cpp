@@ -7,7 +7,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <QApplication>
+#include <QtGui/QApplication>
 
 #include "chat_widget.h"
 #include "chat_manager.h"

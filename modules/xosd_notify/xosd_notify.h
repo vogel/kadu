@@ -3,9 +3,9 @@
 
 #include <xosd.h>
 
-#include <QObject>
-#include <QTimer>
-#include <QList>
+#include <QtCore/QObject>
+#include <QtCore/QTimer>
+#include <QtCore/QList>
 
 #include "configuration_aware_object.h"
 #include "main_configuration_window.h"
@@ -24,7 +24,7 @@ struct TestConfig
 		int timeout;
 		int shadow_offset, outline_offset;
 
-		int font_size;//warto¶æ pomocnicza
+		int font_size;//wartoï¿½ï¿½ pomocnicza
 		TestConfig();
 	};
 
@@ -37,9 +37,9 @@ class XOSDConfigurationWidget : public NotifierConfigurationWidget
 		TestConfig currentConfig;
 
 		/**
-			sprawdza rozmiar czcionki wed³ug XLFD,
-			je¿eli znajdzie odpowiednie pole to zwraca rozmiar czcionki,
-			je¿eli nie, to zwraca -1
+			sprawdza rozmiar czcionki wedï¿½ug XLFD,
+			jeï¿½eli znajdzie odpowiednie pole to zwraca rozmiar czcionki,
+			jeï¿½eli nie, to zwraca -1
 		**/
 		int getFontSize(const QString &xlfd);
 
@@ -89,7 +89,7 @@ class XOSDNotify : public Notifier, public ConfigurationUiHandler, Configuration
 			QColor shadow_color;
 			QString font;
 
-			int font_size;//warto¶æ pomocnicza
+			int font_size;//wartoï¿½ï¿½ pomocnicza
 			OSDLine();
 		};
 
@@ -108,15 +108,15 @@ class XOSDNotify : public Notifier, public ConfigurationUiHandler, Configuration
 		QStringList optionPrefixes;
 
 		/**
-			przekszta³ca pozycjê - liczbê z zakresu 0..8 na zmienne typów
+			przeksztaï¿½ca pozycjï¿½ - liczbï¿½ z zakresu 0..8 na zmienne typï¿½w
 			xosd_pos(XOSD_left, XOSD_center, XOSD_right) i xosd_align(XOSD_top, XOSD_middle, XOSD_bottom)
 		**/
 		void position2PosAlign(int position, xosd_pos &pos, xosd_align &align);
 
 		/**
-			sprawdza rozmiar czcionki wed³ug XLFD,
-			je¿eli znajdzie odpowiednie pole to zwraca rozmiar czcionki,
-			je¿eli nie, to zwraca -1
+			sprawdza rozmiar czcionki wedï¿½ug XLFD,
+			jeï¿½eli znajdzie odpowiednie pole to zwraca rozmiar czcionki,
+			jeï¿½eli nie, to zwraca -1
 		**/
 		int getFontSize(const QString &xlfd);
 
@@ -131,7 +131,7 @@ class XOSDNotify : public Notifier, public ConfigurationUiHandler, Configuration
 	private slots:
 		void oneSecond();
 		/**
-			od¶wie¿a wszystkie dymki na pozycji "position"
+			odï¿½wieï¿½a wszystkie dymki na pozycji "position"
 		**/
 		void refresh(int position);
 
@@ -149,9 +149,9 @@ class XOSDNotify : public Notifier, public ConfigurationUiHandler, Configuration
 
 	public slots:
 		/**
-			dodajê now± liniê tekstu na pozycji "position" (0..8) o czasie znikania "timeout"
-			czcionce "font", kolorze "font_color", kolorze cienia "shadow_color" i przesuniêciu "shadow_offset",
-			kolorze obramówki "outline_color" i przesuniêciu obramówki "outline_offset"
+			dodajï¿½ nowï¿½ liniï¿½ tekstu na pozycji "position" (0..8) o czasie znikania "timeout"
+			czcionce "font", kolorze "font_color", kolorze cienia "shadow_color" i przesuniï¿½ciu "shadow_offset",
+			kolorze obramï¿½wki "outline_color" i przesuniï¿½ciu obramï¿½wki "outline_offset"
 		**/
 		void addLine(int position, const QString &text, int timeout,
 					const QString &font=QString::null, const QColor &font_color=QColor(),

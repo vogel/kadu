@@ -7,8 +7,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <QApplication>
-#include <QMetaType>
+#include <QtCore/QMetaType>
+#include <QtGui/QApplication>
 
 #include "chat_widget.h"
 #include "chat_manager.h"

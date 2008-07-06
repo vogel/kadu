@@ -7,10 +7,10 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <QApplication>
-#include <QGridLayout>
-#include <QHBoxLayout>
-#include <QListWidget>
+#include <QtGui/QApplication>
+#include <QtGui/QGridLayout>
+#include <QtGui/QHBoxLayout>
+#include <QtGui/QListWidget>
 
 #include "chat_widget.h"
 #include "chat_manager.h"

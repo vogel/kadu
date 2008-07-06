@@ -34,7 +34,7 @@
 
 #include "modules.h"
 
-// #include "modules_static.cpp"
+#include "modules/static_modules.cpp"
 
 #ifdef Q_OS_MACX
 	#define SO_EXT "dylib"
@@ -373,8 +373,7 @@ ModulesManager::ModulesManager() : QObject(NULL, "modules_manager"),
 	MainMenu->insertItem(icons_manager->loadIcon("ManageModules"), tr("&Manage Modules"), this, SLOT(showDialog()), HotKey::shortCutFromFile("ShortCuts", "kadu_modulesmanager"), -1, 2);
 // 	icons_manager->registerMenuItem(MainMenu, tr("&Manage Modules"), "ManageModules");
 
-// TODO
-// 	registerStaticModules();
+	registerStaticModules();
 	QStringList static_list = staticModules();
 	foreach(const QString &i, static_list)
 		if (!moduleIsActive(i))
@@ -528,12 +527,12 @@ QStringList ModulesManager::staticModules() const
 
 QStringList ModulesManager::installedModules() const
 {
-	QDir dir(libPath("kadu/modules"),"*." SO_EXT);
+	QDir dir(libPath("kadu/modules"),"lib*." SO_EXT);
 	dir.setFilter(QDir::Files);
 	QStringList installed;
 	QStringList entries = dir.entryList();
 	foreach(const QString &entry, entries)
-		installed.append(entry.left(entry.length() - SO_EXT_LEN - 1));
+		installed.append(entry.mid(3, entry.length() - SO_EXT_LEN - 4));
 	return installed;
 }
 
@@ -725,7 +724,7 @@ bool ModulesManager::activateModule(const QString& module_name)
 	}
 	else
 	{
-		m.lib = new Library(libPath("kadu/modules/" + module_name + "." SO_EXT));
+		m.lib = new Library(libPath("kadu/modules/lib" + module_name + "." SO_EXT));
 		if (!m.lib->load())
 		{
 			QString err = m.lib->error();

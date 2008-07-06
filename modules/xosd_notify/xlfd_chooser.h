@@ -1,10 +1,10 @@
 #ifndef XLFD_CHOOSER_H
 #define XLFD_CHOOSER_H
 
-#include <QObject>
-#include <QProcess>
-#include <QString>
-#include <QList>
+#include <QtCore/QObject>
+#include <QtCore/QProcess>
+#include <QtCore/QString>
+#include <QtCore/QList>
 
 class XLFDChooser : public QObject
 {

@@ -7,10 +7,10 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <QApplication>
-#include <QGridLayout>
-#include <QLabel>
-#include <QSpinBox>
+#include <QtGui/QApplication>
+#include <QtGui/QGridLayout>
+#include <QtGui/QLabel>
+#include <QtGui/QSpinBox>
 
 #include "color_button.h"
 #include "config_file.h"

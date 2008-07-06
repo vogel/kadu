@@ -15,7 +15,7 @@ for module in $*; do
 	fi
 
 	if [ "$type" == "$option" ]; then
-		result="$result $module"
+		result="$result;$module"
 	fi
 
 done

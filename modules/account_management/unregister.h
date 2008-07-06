@@ -1,7 +1,7 @@
 #ifndef UNREGISTER_H
 #define UNREGISTER_H
 
-#include <QWidget>
+#include <QtGui/QWidget>
 
 class QLineEdit;
 

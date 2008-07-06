@@ -7,16 +7,16 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <QApplication>
-#include <QButtonGroup>
-#include <QCheckBox>
-#include <QComboBox>
-#include <QGridLayout>
-#include <QGroupBox>
-#include <QHBoxLayout>
-#include <QLineEdit>
-#include <QPushButton>
-#include <QRadioButton>
+#include <QtGui/QApplication>
+#include <QtGui/QButtonGroup>
+#include <QtGui/QCheckBox>
+#include <QtGui/QComboBox>
+#include <QtGui/QGridLayout>
+#include <QtGui/QGroupBox>
+#include <QtGui/QHBoxLayout>
+#include <QtGui/QLineEdit>
+#include <QtGui/QPushButton>
+#include <QtGui/QRadioButton>
 
 #include "config_file.h"
 #include "debug.h"

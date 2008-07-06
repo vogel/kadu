@@ -7,13 +7,13 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <QApplication>
-#include <QLineEdit>
-#include <QMap>
-#include <QProcess>
+#include <QtGui/QApplication>
+#include <QtGui/QLineEdit>
+#include <QtCore/QMap>
+#include <QtCore/QProcess>
 #include <QToolTip>
-#include <QLabel>
-#include <QGridLayout>
+#include <QtGui/QLabel>
+#include <QtGui/QGridLayout>
 
 #include "config_file.h"
 #include "debug.h"

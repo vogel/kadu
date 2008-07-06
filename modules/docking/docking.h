@@ -1,8 +1,8 @@
 #ifndef DOCKING_H
 #define DOCKING_H
 
-#include <QLabel>
-#include <QIcon>
+#include <QtGui/QLabel>
+#include <QtGui/QIcon>
 
 #include "configuration_aware_object.h"
 #include "main_configuration_window.h"
@@ -49,7 +49,7 @@ public slots:
 	**/
 	void setDocked(bool docked, bool butDontHideOnClose = false);
 
- 	signals:
+ signals:
 	void trayPixmapChanged(const QIcon& icon, const QString &name);
 	void trayMovieChanged(const QMovie& movie);
 	void trayTooltipChanged(const QString& tooltip);

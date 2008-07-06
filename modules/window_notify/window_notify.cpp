@@ -7,8 +7,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <QLabel>
-#include <QVBoxLayout>
+#include <QtGui/QLabel>
+#include <QtGui/QVBoxLayout>
 
 #include "../notify/notify.h"
 #include "../notify/notification.h"

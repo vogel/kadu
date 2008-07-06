@@ -7,9 +7,9 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <QGridLayout>
-#include <QLabel>
-#include <QMenu>
+#include <QtGui/QGridLayout>
+#include <QtGui/QLabel>
+#include <QtGui/QMenu>
 
 #include "action.h"
 #include "chat_widget.h"

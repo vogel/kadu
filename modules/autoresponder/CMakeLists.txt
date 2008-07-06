@@ -1,0 +1,36 @@
+set (SOURCES
+	autoresponder.cpp
+)
+
+set (MOC_SOURCES
+	autoresponder.h
+)
+
+set (TRANSLATION_SOURCES
+	translations/autoresponder_de.ts
+	translations/autoresponder_fr.ts
+	translations/autoresponder_it.ts
+	translations/autoresponder_pl.ts
+)
+
+set (CONFIGURATION_FILES
+	configuration/autoresponder.ui)
+
+kadu_module_desc (autoresponder.desc)
+kadu_module_configuration(${CONFIGURATION_FILES})
+qt_wrap_cpp (autoresponder MOC_FILES ${MOC_SOURCES})
+
+qt4_add_translation (TRANSLATION_FILES ${TRANSLATION_SOURCES})
+
+install (FILES ${TRANSLATION_FILES}
+	DESTINATION "share/kadu/modules/translations")
+
+if (COMMAND cmake_policy)
+	cmake_policy(SET CMP0003 NEW)
+endif (COMMAND cmake_policy)
+
+add_library (autoresponder ${autoresponder} ${SOURCES} ${MOC_FILES})
+add_custom_target (autoresponder-translations DEPENDS ${TRANSLATION_FILES})
+add_dependencies (autoresponder autoresponder-translations)
+
+install (TARGETS autoresponder DESTINATION lib/kadu/modules)

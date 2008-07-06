@@ -1,14 +1,14 @@
 #ifndef KADU_SOUND_H
 #define KADU_SOUND_H
 
-#include <QObject>
-#include <QString>
-#include <QDateTime>
-#include <QStringList>
-#include <QMap>
-#include <QThread>
-#include <QMutex>
-#include <QSemaphore>
+#include <QtCore/QObject>
+#include <QtCore/QString>
+#include <QtCore/QDateTime>
+#include <QtCore/QStringList>
+#include <QtCore/QMap>
+#include <QtCore/QThread>
+#include <QtCore/QMutex>
+#include <QtCore/QSemaphore>
 
 #include "../notify/notify.h"
 

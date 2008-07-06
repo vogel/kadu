@@ -7,12 +7,12 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <QApplication>
-#include <QCheckBox>
-#include <QComboBox>
-#include <QDesktopWidget>
-#include <QLabel>
-#include <QSpinBox>
+#include <QtGui/QApplication>
+#include <QtGui/QCheckBox>
+#include <QtGui/QComboBox>
+#include <QtGui/QDesktopWidget>
+#include <QtGui/QLabel>
+#include <QtGui/QSpinBox>
 
 #include "chat_widget.h"
 #include "chat_manager.h"

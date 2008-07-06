@@ -10,7 +10,7 @@
 #ifndef FILE_TRANSFER_WINDOW
 #define FILE_TRANSFER_WINDOW
 
-#include <QFrame>
+#include <QtGui/QFrame>
 
 #include "file_transfer.h"
 

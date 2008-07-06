@@ -7,8 +7,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <QApplication>
-#include <QTextDocument>
+#include <QtGui/QApplication>
+#include <QtGui/QTextDocument>
 
 #include "misc.h"
 

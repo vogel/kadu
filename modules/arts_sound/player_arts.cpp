@@ -20,8 +20,8 @@
 #include <sys/socket.h>
 #include <sys/un.h>
 
-#include <QApplication>
-#include <QTimer>
+#include <QtGui/QApplication>
+#include <QtCore/QTimer>
 #include "arts_connector/common.c"
 
 /**

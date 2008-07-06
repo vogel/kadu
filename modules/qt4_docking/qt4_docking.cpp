@@ -7,16 +7,17 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "qt4_docking.h"
-
-#include <QToolTip>
+#include <QtGui/QToolTip>
 
 #include "../docking/docking.h"
-#include "debug.h"
-#include "config_file.h"
-#include "kadu.h"
+
 #include "chat_manager.h"
 #include "chat_widget.h"
+#include "config_file.h"
+#include "debug.h"
+#include "kadu.h"
+
+#include "qt4_docking.h"
 
 /**
  * @ingroup qt4_docking
@@ -112,4 +113,3 @@ void Qt4TrayIcon::trayActivated(QSystemTrayIcon::ActivationReason reason)
 Qt4TrayIcon* qt4_tray_icon = NULL;
 
 /** @} */
-

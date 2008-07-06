@@ -6,13 +6,14 @@
  *   (at your option) any later version.                                   *
  *                                                                         *
  ***************************************************************************/
-#include <QCheckBox>
-#include <QComboBox>
-#include <QGridLayout>
-#include <QLabel>
-#include <QListView>
-#include <QMenuBar>
-#include <QVBoxLayout>
+
+#include <QtGui/QCheckBox>
+#include <QtGui/QComboBox>
+#include <QtGui/QGridLayout>
+#include <QtGui/QLabel>
+#include <QtGui/QListView>
+#include <QtGui/QMenuBar>
+#include <QtGui/QVBoxLayout>
 
 #include "action.h"
 #include "debug.h"

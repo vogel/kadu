@@ -1,7 +1,7 @@
 #ifndef HISTORY_SEARCH_DIALOG_H
 #define HISTORY_SEARCH_DIALOG_H
 
-#include <QDialog>
+#include <QtGui/QDialog>
 
 #include "gadu.h"
 

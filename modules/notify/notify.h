@@ -1,7 +1,7 @@
 #ifndef NOTIFY_H
 #define NOTIFY_H
 
-#include <QGroupBox>
+#include <QtGui/QGroupBox>
 
 #include <time.h>
 

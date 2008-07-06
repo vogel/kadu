@@ -1,7 +1,7 @@
 #ifndef REMIND_PASSWORD_H
 #define REMIND_PASSWORD_H
 
-#include <QWidget>
+#include <QtGui/QWidget>
 
 class QLineEdit;
 

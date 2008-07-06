@@ -1,9 +1,9 @@
 #ifndef KADU_CONFIG_WIZARD_H
 #define KADU_CONFIG_WIZARD_H
 
-#include <QGridLayout>
-#include <QList>
-#include <QWizard>
+#include <QtCore/QList>
+#include <QtGui/QGridLayout>
+#include <QtGui/QWizard>
 
 #include "../account_management/register.h"
 

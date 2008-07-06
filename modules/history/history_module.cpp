@@ -7,7 +7,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <QLabel>
+#include <QtGui/QLabel>
 
 #include <sys/stat.h>
 #include <sys/types.h>

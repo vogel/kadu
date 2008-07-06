@@ -1,7 +1,7 @@
 #ifndef ENCRYPTION_H
 #define ENCRYPTION_H
 
-#include <QDialog>
+#include <QtGui/QDialog>
 
 #include "main_configuration_window.h"
 

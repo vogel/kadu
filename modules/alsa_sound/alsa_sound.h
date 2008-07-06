@@ -1,12 +1,13 @@
 #ifndef KADU_ALSA_SOUND_H
 #define KADU_ALSA_SOUND_H
-#include <QObject>
-#include <QString>
-#include <QStringList>
+
+#include <QtCore/QObject>
+#include <QtCore/QString>
+#include <QtCore/QStringList>
 
 #define ALSA_PCM_NEW_HW_PARAMS_API
 #define ALSA_PCM_NEW_SW_PARAMS_API
-#include <asoundlib.h>
+#include <alsa/asoundlib.h>
 
 #include "../sound/sound.h"
 

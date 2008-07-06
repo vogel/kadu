@@ -8,7 +8,7 @@
  ***************************************************************************/
 
 #include <stdlib.h>
-#include <QFileDialog>
+#include <QtGui/QFileDialog>
 
 #include "../sound/sound.h"
 

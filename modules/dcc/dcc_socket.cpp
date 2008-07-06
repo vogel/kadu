@@ -7,7 +7,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <qsocketnotifier.h>
+#include <QtCore/QSocketNotifier>
 
 #include <arpa/inet.h> 
 

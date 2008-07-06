@@ -7,7 +7,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <QMenu>
+#include <QtGui/QMenu>
 
 #include "debug.h"
 #include "icons_manager.h"

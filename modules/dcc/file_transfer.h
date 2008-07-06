@@ -10,8 +10,7 @@
 #ifndef FILE_TRANSFER_H
 #define FILE_TRANSFER_H
 
-#include <qdom.h>
-#include <QList>
+#include <QtCore/QList>
 
 #include "dcc.h"
 #include "dcc_handler.h"

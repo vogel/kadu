@@ -1,7 +1,7 @@
 #ifndef CHANGE_PASSWORD_H
 #define CHANGE_PASSWORD_H
 
-#include <QWidget>
+#include <QtGui/QWidget>
 
 class QLineEdit;
 /** @ingroup account_management

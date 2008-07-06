@@ -7,9 +7,9 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <QApplication>
-#include <QCheckBox>
-#include <QSpinBox>
+#include <QtGui/QApplication>
+#include <QtGui/QCheckBox>
+#include <QtGui/QSpinBox>
 
 #include "autoaway.h"
 #include "config_file.h"

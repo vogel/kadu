@@ -7,9 +7,9 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <QApplication>
-#include <QCheckBox>
-#include <QDesktopWidget>
+#include <QtGui/QApplication>
+#include <QtGui/QCheckBox>
+#include <QtGui/QDesktopWidget>
 
 #include "macosx_docking.h"
 #include "../docking/docking.h"
@@ -75,9 +75,9 @@ void MacOSXDocking::findTrayPosition(QPoint &p)
 void MacOSXDocking::onCreateTabGeneral()
 {
 	kdebugf();
-	//ze wzglêdu na jaki¶ problem z Qt opcja wy³±czona
-	//(okno pojawia siê, znika i znowu pojawia, wiêc nie do¶æ, ¿e nie dzia³a,
-	//  to mo¿e byæ denerwuj±ca je¿eli kto¶ zapomnia³, ¿e to w³±czy³)
+	//ze wzglï¿½du na jakiï¿½ problem z Qt opcja wyï¿½ï¿½czona
+	//(okno pojawia siï¿½, znika i znowu pojawia, wiï¿½c nie doï¿½ï¿½, ï¿½e nie dziaï¿½a,
+	//  to moï¿½e byï¿½ denerwujï¿½ca jeï¿½eli ktoï¿½ zapomniaï¿½, ï¿½e to wï¿½ï¿½czyï¿½)
 	config_file.writeEntry("General", "RunDocked", false);
 }
 

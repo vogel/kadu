@@ -7,9 +7,9 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <QLabel>
-#include <QMouseEvent>
-#include <QPushButton>
+#include <QtGui/QLabel>
+#include <QtGui/QMouseEvent>
+#include <QtGui/QPushButton>
 
 #include "config_file.h"
 #include "debug.h"

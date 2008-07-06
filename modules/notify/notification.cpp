@@ -7,7 +7,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <QTimer>
+#include <QtCore/QTimer>
 
 #include "debug.h"
 #include "kadu_parser.h"

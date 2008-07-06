@@ -7,13 +7,13 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <QApplication>
-#include <QGroupBox>
-#include <QKeyEvent>
-#include <QLabel>
-#include <QLayout>
-#include <QLineEdit>
-#include <QPushButton>
+#include <QtGui/QApplication>
+#include <QtGui/QGroupBox>
+#include <QtGui/QKeyEvent>
+#include <QtGui/QLabel>
+#include <QtGui/QLayout>
+#include <QtGui/QLineEdit>
+#include <QtGui/QPushButton>
 
 #include "config_file.h"
 #include "debug.h"

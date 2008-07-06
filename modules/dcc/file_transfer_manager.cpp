@@ -12,11 +12,11 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 
-#include <qmessagebox.h>
-#include <QFileDialog>
-#include <QKeyEvent>
-#include <QList>
-#include <QMenu>
+#include <QtGui/QMessageBox>
+#include <QtGui/QFileDialog>
+#include <QtGui/QKeyEvent>
+#include <QtCore/QList>
+#include <QtGui/QMenu>
 
 #include "chat_manager.h"
 #include "config_file.h"

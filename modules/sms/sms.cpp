@@ -7,15 +7,15 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <QCheckBox>
-#include <QComboBox>
-#include <QGridLayout>
-#include <QHBoxLayout>
-#include <QLabel>
-#include <QListWidget>
-#include <QMenu>
-#include <QProcess>
-#include <QTextEdit>
+#include <QtGui/QCheckBox>
+#include <QtGui/QComboBox>
+#include <QtGui/QGridLayout>
+#include <QtGui/QHBoxLayout>
+#include <QtGui/QLabel>
+#include <QtGui/QListWidget>
+#include <QtGui/QMenu>
+#include <QtCore/QProcess>
+#include <QtGui/QTextEdit>
 
 #include "action.h"
 #include "config_file.h"

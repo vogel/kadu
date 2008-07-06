@@ -5,15 +5,15 @@
  *  (at your option) any later version.
  */
 
-#include <QButtonGroup>
-#include <QCheckBox>
-#include <QComboBox>
-#include <QGridLayout>
-#include <QLabel>
-#include <QLineEdit>
-#include <QMenu>
-#include <QPushButton>
-#include <QRadioButton>
+#include <QtGui/QButtonGroup>
+#include <QtGui/QCheckBox>
+#include <QtGui/QComboBox>
+#include <QtGui/QGridLayout>
+#include <QtGui/QLabel>
+#include <QtGui/QLineEdit>
+#include <QtGui/QMenu>
+#include <QtGui/QPushButton>
+#include <QtGui/QRadioButton>
 
 #include <stdlib.h>
 #include <unistd.h>

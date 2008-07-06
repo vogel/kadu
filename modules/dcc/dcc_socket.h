@@ -10,7 +10,7 @@
 #ifndef DCC_SOCKET_H
 #define DCC_SOCKET_H
 
-#include <qobject.h>
+#include <QtCore/QObject>
 
 #include "dcc.h"
 

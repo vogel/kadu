@@ -10,9 +10,9 @@
 #ifndef KADU_DCC_H
 #define KADU_DCC_H
 
-#include <qhostaddress.h>
-#include <qtimer.h>
-#include <QList>
+#include <QtCore/QList>
+#include <QtCore/QTimer>
+#include <QtNetwork/QHostAddress>
 
 #include "configuration_aware_object.h"
 #include "dcc_handler.h"
@@ -68,9 +68,9 @@ private slots:
 	void dcc7New(struct gg_dcc7 *);
 
 	/**
-		Otrzymano wiadomo¶æ CTCP.
-		Kto¶ nas prosi o po³±czenie dcc, poniewa¿
-		jeste¶my za NAT-em.
+		Otrzymano wiadomoï¿½ï¿½ CTCP.
+		Ktoï¿½ nas prosi o poï¿½ï¿½czenie dcc, poniewaï¿½
+		jesteï¿½my za NAT-em.
 	**/
 	void dccConnectionReceived(const UserListElement& sender);
 	void timeout();

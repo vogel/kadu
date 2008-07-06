@@ -1,8 +1,8 @@
 #ifndef HISTORY_DIALOG_H
 #define HISTORY_DIALOG_H
 
-#include <QWidget>
-#include <QTreeWidgetItem>
+#include <QtGui/QWidget>
+#include <QtGui/QTreeWidgetItem>
 
 #include "gadu.h"
 #include "history.h"

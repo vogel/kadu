@@ -11,7 +11,7 @@
 #include "misc.h"
 #include "nas_sound.h"
 #include "debug.h"
-#include <QApplication>
+#include <QtGui/QApplication>
 
 /**
  * @ingroup nas_sound

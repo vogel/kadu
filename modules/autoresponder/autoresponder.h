@@ -1,8 +1,8 @@
 #ifndef AUTORESPONDER_H
 #define AUTORESPONDER_H
 
-#include <QObject>
-#include <QList>
+#include <QtCore/QObject>
+#include <QtCore/QList>
 
 #include "config_file.h"
 #include "configuration_aware_object.h"

@@ -1,8 +1,8 @@
 #ifndef HISTORY_H
 #define HISTORY_H
 
-#include <QList>
-#include <QMap>
+#include <QtCore/QList>
+#include <QtCore/QMap>
 
 #include <time.h>
 

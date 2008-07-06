@@ -1,7 +1,7 @@
 #ifndef MACOSX_DOCKING
 #define MACOSX_DOCKING
 
-#include <QObject>
+#include <QtCore/QObject>
 
 #include "configuration_aware_object.h"
 #include "main_configuration_window.h"

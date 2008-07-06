@@ -1,7 +1,7 @@
 #ifndef ACC_MAN_H
 #define ACC_MAN_H
 
-#include <QObject>
+#include <QtCore/QObject>
 
 class QAction;
 /**

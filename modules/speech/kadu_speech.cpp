@@ -7,11 +7,11 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <QCheckBox>
-#include <QFileDialog>
-#include <QProcess>
+#include <QtGui/QCheckBox>
+#include <QtGui/QFileDialog>
+#include <QtCore/QProcess>
 #include <QSlider>
-#include <QGridLayout>
+#include <QtGui/QGridLayout>
 
 #include <stdlib.h>
 #include <time.h>
@@ -267,7 +267,7 @@ void Speech::testSpeech()
 	kdebugf();
 
 	QString program = programSelectFile->file();
-	// TODO: mo¿e u¿ywaæ jakiego¶ normalnego tekstu ?
+	// TODO: moï¿½e uï¿½ywaï¿½ jakiegoï¿½ normalnego tekstu ?
 	QString formatM = config_file.readEntry("Speech", "NewChat_Syntax/Male");
 	QString formatF = config_file.readEntry("Speech", "NewChat_Syntax/Female");
 	QString device = dspDeviceLineEdit->text();

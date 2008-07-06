@@ -1,8 +1,8 @@
 #ifndef KADU_SOUND_SLOTS
 #define KADU_SOUND_SLOTS
 
-#include <QMap>
-#include <QStringList>
+#include <QtCore/QMap>
+#include <QtCore/QStringList>
 
 #include "message_box.h"
 #include "sound.h"

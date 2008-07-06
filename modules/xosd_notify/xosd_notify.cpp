@@ -7,8 +7,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <QStringList>
-#include <QGridLayout>
+#include <QtCore/QStringList>
+#include <QtGui/QGridLayout>
 
 #include "config_file.h"
 #include "configuration_window_widgets.h"

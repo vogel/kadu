@@ -7,11 +7,11 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <QGridLayout>
-#include <QLabel>
-#include <QProgressBar>
-#include <QScrollArea>
-#include <QUrl>
+#include <QtGui/QGridLayout>
+#include <QtGui/QLabel>
+#include <QtGui/QProgressBar>
+#include <QtGui/QScrollArea>
+#include <QtCore/QUrl>
 
 #include "debug.h"
 #include "file_transfer.h"

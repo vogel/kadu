@@ -7,7 +7,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <QTextDocument>
+#include <QtGui/QTextDocument>
 
 #include "new_message_notification.h"
 

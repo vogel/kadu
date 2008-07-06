@@ -1,7 +1,7 @@
 #ifndef KADU_NAS_SOUND_H
 #define KADU_NAS_SOUND_H
-#include <QObject>
-#include <QString>
+#include <QtCore/QObject>
+#include <QtCore/QString>
 
 /**
  * @defgroup nas_sound NAS sound
@@ -12,7 +12,7 @@
 #endif
 
 #ifndef INTERNAL_QT_SOUND_SUPPORT
-#include <qsocketnotifier.h>
+#include <QtNetwork/QSocketNotifier>
 namespace audiolib {
 #include <audio/audiolib.h>
 #include <audio/soundlib.h>

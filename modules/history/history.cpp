@@ -7,10 +7,10 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <QApplication>
-#include <QMessageBox>
-#include <QTextStream>
-#include <QTimer>
+#include <QtGui/QApplication>
+#include <QtGui/QMessageBox>
+#include <QtCore/QTextStream>
+#include <QtCore/QTimer>
 
 #include "config_file.h"
 #include "debug.h"

@@ -7,13 +7,13 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <qcheckbox.h>
-#include <QFileDialog>
-#include <qfileinfo.h>
-#include <qlayout.h>
-#include <qmessagebox.h>
-#include <qpushbutton.h>
-#include <qsocketnotifier.h>
+#include <QtCore/QFileInfo>
+#include <QtCore/QSocketNotifier>
+#include <QtGui/QCheckBox>
+#include <QtGui/QFileDialog>
+#include <QtGui/QLayout>
+#include <QtGui/QMessageBox>
+#include <QtGui/QPushButton>
 
 #include <stdlib.h>
 #include <fcntl.h>

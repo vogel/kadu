@@ -1,7 +1,7 @@
 #ifndef ECHO_H
 #define ECHO_H
 
-#include <qobject.h>
+#include <QtCore/QObject>
 
 #include "gadu.h"
 #include "protocol.h"

@@ -2,7 +2,7 @@
 #define DESKTOPDOCK_H
 
 #include <QPixmap>
-#include <QLabel>
+#include <QtGui/QLabel>
 
 #include "configuration_aware_object.h"
 #include "main_configuration_window.h"

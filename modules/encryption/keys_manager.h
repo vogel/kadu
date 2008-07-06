@@ -1,7 +1,7 @@
 #ifndef KEYSMANAGER_H
 #define KEYSMANAGER_H
 
-#include <QWidget>
+#include <QtGui/QWidget>
 
 #include "usergroup.h"
 #include "userlistelement.h"
@@ -13,7 +13,7 @@ class QTreeWidget;
 class QTreeWidgetItem;
 
 /**
-	Dialog umo¿liwiaj±cy zarz±dzanie list± kluczy
+	Dialog umoï¿½liwiajï¿½cy zarzï¿½dzanie listï¿½ kluczy
 **/
 class KeysManager : public QWidget
 {

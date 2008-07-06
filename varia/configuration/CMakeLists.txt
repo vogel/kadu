@@ -3,5 +3,4 @@ set (CONFIGURATION_FILES
 	dialog.ui
 )
 
-install (FILES ${CONFIGURATION_FILES}
-	DESTINATION "share/kadu/configuration")
+kadu_configuration (${CONFIGURATION_FILES})

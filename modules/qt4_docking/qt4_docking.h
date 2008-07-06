@@ -1,10 +1,9 @@
 #ifndef QT4_DOCKING_H
 #define QT4_DOCKING_H
 
-//#include <qlabel.h>
-#include <QIcon>
-#include <QObject>
-#include <QSystemTrayIcon>
+#include <QtCore/QObject>
+#include <QtGui/QIcon>
+#include <QtGui/QSystemTrayIcon>
 
 /**
  * @defgroup qt4_docking QT4 docking

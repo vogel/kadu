@@ -7,7 +7,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <QUrl>
+#include <QtCore/QUrl>
+
 #include "config_file.h"
 #include "dcc.h"
 #include "dcc_socket.h"

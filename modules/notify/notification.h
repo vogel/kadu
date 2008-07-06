@@ -10,7 +10,7 @@
 #ifndef NOTIFICATION_H
 #define NOTIFICATION_H
 
-#include <QPair>
+#include <QtCore/QPair>
 
 #include "userlist.h"
 
