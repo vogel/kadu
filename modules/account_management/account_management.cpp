@@ -7,8 +7,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <QtGui/QMenu>
-
+#include "action.h"
 #include "debug.h"
 #include "icons_manager.h"
 #include "kadu.h"
@@ -44,14 +43,36 @@ extern "C" void account_management_close()
 AccountManagement::AccountManagement()
 {
 	kdebugf();
-//TODO: fix position of actions in menu
-	QMenu *MainMenu = kadu->mainMenu();
-//	int index = MainMenu->indexOf(kadu->personalInfoMenuId);
 
-	unregisterMenuAction = MainMenu->addAction(icons_manager->loadIcon("UnregisterUser"), tr("Unregister user"), this, SLOT(unregisterUser())/*, 0, -1, index*/);
-	registerMenuAction = MainMenu->addAction(icons_manager->loadIcon("RegisterUser"), tr("Register &new user"), this, SLOT(registerUser())/*, 0, -1, index*/);
-	changeMenuAction = MainMenu->addAction(icons_manager->loadIcon("ChangePassMail"), tr("&Change password / email"), this, SLOT(changePassword())/*, 0, -1, index*/);
-	remindMenuAction = MainMenu->addAction(icons_manager->loadIcon("RemindPass"), tr("Remind &password"), this, SLOT(remindPassword())/*, 0, -1, index*/);
+	int index = kadu->personalInfoMenuId;
+
+	unregisterMenuActionDescription = new ActionDescription(
+		ActionDescription::TypeGlobal, "unregisterUserAction",
+		this, SLOT(unregisterUser(QAction *, bool)),
+		"UnregisterUser", tr("Unregister user")
+	);
+	kadu->insertMenuActionDescription(index, unregisterMenuActionDescription);
+
+	registerMenuActionDescription = new ActionDescription(
+		ActionDescription::TypeGlobal, "registerUserAction",
+		this, SLOT(registerUser(QAction *, bool)),
+		"RegisterUser", tr("Register &new user")
+	);
+	kadu->insertMenuActionDescription(index, registerMenuActionDescription);
+
+	changeMenuActionDescription = new ActionDescription(
+		ActionDescription::TypeGlobal, "changePasswordAction",
+		this, SLOT(changePassword(QAction *, bool)),
+		"ChangePassMail", tr("&Change password / email")
+	);
+	kadu->insertMenuActionDescription(index, changeMenuActionDescription);
+
+	remindMenuActionDescription = new ActionDescription(
+		ActionDescription::TypeGlobal, "remidPasswordAction",
+		this, SLOT(remindPassword(QAction *, bool)),
+		"RemindPass", tr("Remind &password")
+	);
+	kadu->insertMenuActionDescription(index, remindMenuActionDescription);
 
 //	icons_manager->registerMenuItem(MainMenu, tr("Unregister user"), "UnregisterUser");
 //	icons_manager->registerMenuItem(MainMenu, tr("Register &new user"), "RegisterUser");
@@ -65,31 +86,37 @@ AccountManagement::~AccountManagement()
 {
 	kdebugf();
 
-	QMenu *MainMenu = kadu->mainMenu();
-	MainMenu->removeAction(remindMenuAction);
-	MainMenu->removeAction(changeMenuAction);
-	MainMenu->removeAction(registerMenuAction);
-	MainMenu->removeAction(unregisterMenuAction);
+	kadu->removeMenuActionDescription(remindMenuActionDescription);
+	delete remindMenuActionDescription;
+
+	kadu->removeMenuActionDescription(changeMenuActionDescription);
+	delete changeMenuActionDescription;
+
+	kadu->removeMenuActionDescription(registerMenuActionDescription);
+	delete registerMenuActionDescription;
+
+	kadu->removeMenuActionDescription(unregisterMenuActionDescription);
+	delete unregisterMenuActionDescription;
 
 	kdebugf2();
 }
 
-void AccountManagement::registerUser()
+void AccountManagement::registerUser(QAction *sender, bool toggled)
 {
 	(new Register())->show();
 }
 
-void AccountManagement::unregisterUser()
+void AccountManagement::unregisterUser(QAction *sender, bool toggled)
 {
 	(new Unregister())->show();
 }
 
-void AccountManagement::remindPassword()
+void AccountManagement::remindPassword(QAction *sender, bool toggled)
 {
 	(new RemindPassword())->show();
 }
 
-void AccountManagement::changePassword()
+void AccountManagement::changePassword(QAction *sender, bool toggled)
 {
 	(new ChangePassword())->show();
 }

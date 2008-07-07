@@ -53,6 +53,8 @@ class Kadu : public KaduMainWindow, ConfigurationAwareObject
 	QAction *changeStatusToOfflineDesc;
 	QAction *changePrivateStatus;
 
+	QMap<ActionDescription *, KaduAction*> mainMenuActions;
+
 	// TODO: remove
 	friend class Wizard;
 
@@ -176,7 +178,7 @@ public:
 	/**
 		Zwraca wskaznik do glownego menu programu.
 	**/
-	QMenu * mainMenu() const;
+//	QMenu * mainMenu() const;
 
 	/**
 		Zwraca wskaznik do zakladek z nazwami grup.
@@ -222,6 +224,13 @@ public:
 	const QDateTime &startTime() const;
 	void refreshPrivateStatusFromConfigFile();
 
+
+	void addMenuActionDescription(ActionDescription *actionDescription);
+	void insertMenuActionDescription(int pos, ActionDescription *actionDescription);
+	void removeMenuActionDescription(ActionDescription *actionDescription);
+	QAction * addMenuSeparator();
+	void removeMenuSeparator(QAction *separator);
+
 public slots:
 	virtual void show();
 	virtual void hide();
@@ -258,14 +267,13 @@ public slots:
 	**/
 	void setDocked(bool docked, bool dontHideOnClose);
 
-	void about();
+	void about(QAction *sender, bool toggled);
 
-	void help();
-	void hideKadu();
-	void importExportUserlist();
-	void lookupInDirectory();
-	void manageIgnored();
-	void personalInfo();
+	void help(QAction *sender, bool toggled);
+	void hideKadu(QAction *sender, bool toggled);
+	void importExportUserlist(QAction *sender, bool toggled);
+	void manageIgnored(QAction *sender, bool toggled);
+	void personalInfo(QAction *sender, bool toggled);
 	void quit();
 
 	// odczytuje z obrazka tekst i zapisuje go w drugim parametrze

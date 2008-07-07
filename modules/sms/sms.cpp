@@ -13,7 +13,6 @@
 #include <QtGui/QHBoxLayout>
 #include <QtGui/QLabel>
 #include <QtGui/QListWidget>
-#include <QtGui/QMenu>
 #include <QtCore/QProcess>
 #include <QtGui/QTextEdit>
 
@@ -462,17 +461,14 @@ SmsConfigurationUiHandler::SmsConfigurationUiHandler()
 
 	createDefaultConfiguration();
 
-	QMenu *MainMenu = kadu->mainMenu();
-	menuid = MainMenu->insertItem(icons_manager->loadIcon("SendSms"), tr("Send SMS"), this, SLOT(onSendSms()), 0, -1, 10);
-	//icons_manager->registerMenuItem(MainMenu, tr("Send SMS"), "SendSms");
-
 	sendSmsActionDescription = new ActionDescription(
 		ActionDescription::TypeGlobal, "sendSmsAction",
 		this, SLOT(sendSmsActionActivated(QAction *, bool)),
 		"SendSms", tr("Send SMS"), false
 	);
 	UserBox::insertActionDescription(2, sendSmsActionDescription); // TODO: HotKey::shortCutFromFile("ShortCuts", "kadu_sendsms")
-
+	kadu->insertMenuActionDescription(10, sendSmsActionDescription);
+	//icons_manager->registerMenuItem(MainMenu, tr("Send SMS"), "SendSms");
 	kdebugf2();
 }
 
@@ -480,8 +476,7 @@ SmsConfigurationUiHandler::~SmsConfigurationUiHandler()
 {
 	kdebugf();
 
-	kadu->mainMenu()->removeItem(menuid);
-
+	kadu->removeMenuActionDescription(sendSmsActionDescription);
 	delete sendSmsActionDescription;
 	kdebugf2();
 }
@@ -550,10 +545,6 @@ void SmsConfigurationUiHandler::onSendSmsToUser()
 // 	kdebugf2();
 }
 
-void SmsConfigurationUiHandler::onSendSms()
-{
-	newSms(QString::null);
-}
 
 void SmsConfigurationUiHandler::registerGateway(QString name, isValidFunc* f)
 {

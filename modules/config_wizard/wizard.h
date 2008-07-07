@@ -10,6 +10,7 @@
 #include "chat_widget.h"
 #include "misc.h"
 
+class ActionDescription;
 class QComboBox;
 class QLineEdit;
 class QPushButton;
@@ -97,14 +98,14 @@ class WizardStarter : public QObject
 {
 	Q_OBJECT
 
-	int menuPos;
+	ActionDescription *configWizardActionDescription;
 
 public:
 	WizardStarter(QObject *parent = 0);
 	~WizardStarter();
 
 public slots:
-	void start();
+	void start(QAction *sender, bool toggled);
 
 	void userListImported(bool ok, QList<UserListElement> list);
 	void connected();

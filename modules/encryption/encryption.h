@@ -29,6 +29,7 @@ class EncryptionManager : public ConfigurationUiHandler
 
 		ActionDescription* sendPublicKeyActionDescription;
 		ActionDescription* encryptionActionDescription;
+		ActionDescription* keysManagerActionDescription;
 
 		QWidget *configurationWindow;
 		void createDefaultConfiguration();
@@ -57,7 +58,7 @@ class EncryptionManager : public ConfigurationUiHandler
 		virtual void mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow);
 
 	public slots:
-		void showKeysManagerDialog();
+		void showKeysManagerDialog(QAction *sender, bool toggled);
 
 };
 

@@ -9,7 +9,6 @@
 
 #include <QtGui/QGridLayout>
 #include <QtGui/QLabel>
-#include <QtGui/QMenu>
 
 #include "action.h"
 #include "chat_widget.h"
@@ -117,7 +116,13 @@ EncryptionManager::EncryptionManager()
 	);
 	UserBox::insertActionDescription(2, sendPublicKeyActionDescription);
 
-	MenuId = kadu->mainMenu()->insertItem(icons_manager->loadIcon("KeysManager"), tr("Manage keys"), this, SLOT(showKeysManagerDialog()), 0, -1, 12);
+	keysManagerActionDescription = new ActionDescription(
+		ActionDescription::TypeGlobal, "keysManagerAction",
+		this, SLOT(showKeysManagerDialog(QAction *, bool)),
+		"KeysManager", tr("Manage keys")
+	);
+	kadu->insertMenuActionDescription(12, keysManagerActionDescription);
+
 //	icons_manager->registerMenuItem(kadu->mainMenu(), tr("Manage keys"), "KeysManager");
 
 	sim_key_path = strdup(ggPath("keys/").local8Bit());
@@ -131,7 +136,9 @@ EncryptionManager::EncryptionManager()
 EncryptionManager::~EncryptionManager()
 {
 	kdebugf();
-	kadu->mainMenu()->removeItem(MenuId);
+
+	kadu->removeMenuActionDescription(keysManagerActionDescription);
+	delete keysManagerActionDescription;
 
 	disconnect(gadu, SIGNAL(rawGaduReceivedMessageFilter(Protocol *, UserListElements, QString&, QByteArray&, bool&)),
 			this, SLOT(decryptMessage(Protocol *, UserListElements, QString&, QByteArray&, bool&)));
@@ -404,7 +411,7 @@ void EncryptionManager::createDefaultConfiguration()
 	config_file.addVariable("Look", "EncryptionColor", QColor(0, 127, 0));
 }
 
-void EncryptionManager::showKeysManagerDialog()
+void EncryptionManager::showKeysManagerDialog(QAction *sender, bool toggled)
 {
 	kdebugf();
 	if (!KeysManagerDialog)

@@ -27,6 +27,7 @@ class FileTransferManager : public QObject, DccHandler
 	Q_OBJECT
 
 	ActionDescription *sendFileActionDescription;
+	ActionDescription *fileTransferWindowActionDescription;
 
 	FileTransferWindow *fileTransferWindow;
 	int toggleFileTransferWindowMenuId;
@@ -47,7 +48,7 @@ private slots:
 
 	void fileDropped(const UserGroup *group, const QString &);
 
-	void toggleFileTransferWindow();
+	void toggleFileTransferWindow(QAction *sender, bool toggled);
 	void sendFileActionActivated(QAction *sender, bool toggled);
 
 	void transferDestroyed(QObject *transfer);

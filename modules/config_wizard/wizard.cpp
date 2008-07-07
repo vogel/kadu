@@ -11,7 +11,6 @@
 #include <QtGui/QGridLayout>
 #include <QtGui/QLabel>
 #include <QtGui/QLineEdit>
-#include <QtGui/QMenu>
 #include <QtGui/QPushButton>
 #include <QtGui/QRadioButton>
 
@@ -40,7 +39,7 @@ extern "C" int config_wizard_init()
 	wizardStarter = new WizardStarter();
 
 	if (config_file.readNumEntry("General", "UIN", 0) == 0 || config_file.readEntry("General", "Password").isEmpty())
-		wizardStarter->start();
+		wizardStarter->start(0, false);
 
 	kdebugf2();
 	return 0;
@@ -60,15 +59,21 @@ extern "C" void config_wizard_close()
 WizardStarter::WizardStarter(QObject *parent)
 	: QObject(parent)
 {
-	QMenu *MainMenu = kadu->mainMenu();
+	configWizardActionDescription = new ActionDescription(
+		ActionDescription::TypeGlobal, "configWizardAction",
+		this, SLOT(start(QAction *, bool)),
+		"ConfigurationWizard", tr("Configuration Wizard")
+	);
+	kadu->insertMenuActionDescription(0, configWizardActionDescription);
 
-	menuPos = MainMenu->insertItem(icons_manager->loadIcon("ConfigurationWizard"), tr("Configuration Wizard"), this, SLOT(start()), 0, -1, 0);
 	//icons_manager->registerMenuItem(MainMenu, tr("Configuration Wizard"), "ConfigurationWizard");
 }
 
 WizardStarter::~WizardStarter()
 {
-	kadu->mainMenu()->removeItem(menuPos);
+	kadu->removeMenuActionDescription(configWizardActionDescription);
+	delete configWizardActionDescription;
+
 	if (startWizardObj)
 	{
 		delete startWizardObj;
@@ -76,7 +81,7 @@ WizardStarter::~WizardStarter()
 	}
 }
 
-void WizardStarter::start()
+void WizardStarter::start(QAction *sender, bool toggled)
 {
 	kdebugf();
 	if (!startWizardObj)

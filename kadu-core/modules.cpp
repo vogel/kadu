@@ -15,7 +15,6 @@
 #include <QtGui/QHBoxLayout>
 #include <QtGui/QKeyEvent>
 #include <QtGui/QLabel>
-#include <QtGui/QMenu>
 #include <QtGui/QPushButton>
 #include <QtGui/QScrollBar>
 #include <QtGui/QTreeWidget>
@@ -369,8 +368,13 @@ ModulesManager::ModulesManager() : QObject(NULL, "modules_manager"),
 	// the same is true for menu - modules should load up at end
 	modules_manager = this;
 
-	QMenu *MainMenu = kadu->mainMenu();
-	MainMenu->insertItem(icons_manager->loadIcon("ManageModules"), tr("&Manage Modules"), this, SLOT(showDialog()), HotKey::shortCutFromFile("ShortCuts", "kadu_modulesmanager"), -1, 2);
+	ActionDescription *manageModulesActionDescription = new ActionDescription(
+		ActionDescription::TypeGlobal, "manageModulesAction",
+		this, SLOT(showDialog(QAction *, bool)),
+		"ManageModules", tr("&Manage Modules")
+	);
+	kadu->insertMenuActionDescription(2, manageModulesActionDescription);// HotKey::shortCutFromFile("ShortCuts", "kadu_modulesmanager")
+
 // 	icons_manager->registerMenuItem(MainMenu, tr("&Manage Modules"), "ManageModules");
 
 	registerStaticModules();
@@ -800,7 +804,7 @@ bool ModulesManager::deactivateModule(const QString& module_name, bool force)
 	return true;
 }
 
-void ModulesManager::showDialog()
+void ModulesManager::showDialog(QAction *sender, bool toggled)
 {
 	kdebugf();
 

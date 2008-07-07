@@ -16,7 +16,6 @@
 #include <QtGui/QFileDialog>
 #include <QtGui/QKeyEvent>
 #include <QtCore/QList>
-#include <QtGui/QMenu>
 
 #include "chat_manager.h"
 #include "config_file.h"
@@ -81,9 +80,13 @@ FileTransferManager::FileTransferManager(QObject *parent, const char *name) : QO
 
 	dcc_manager->addHandler(this);
 
-	QMenu *MainMenu = kadu->mainMenu();
-	toggleFileTransferWindowMenuId = MainMenu->insertItem(icons_manager->loadIcon("SendFileWindow"), tr("Toggle transfers window"),
-		this, SLOT(toggleFileTransferWindow()), 0, -1, 10);
+	fileTransferWindowActionDescription = new ActionDescription(
+		ActionDescription::TypeGlobal, "sendFileWindowAction",
+		this, SLOT(toggleFileTransferWindow(QAction *, bool)),
+		"SendFileWindow", tr("Toggle transfers window")
+	);
+	kadu->insertMenuActionDescription(10, fileTransferWindowActionDescription);
+
 //	icons_manager->registerMenuItem(MainMenu, tr("Toggle transfers window"), "SendFileWindow");
 
 	notification_manager->registerEvent("FileTransfer/IncomingFile",  QT_TRANSLATE_NOOP("@default", "An user wants to send you a file"), CallbackRequired);
@@ -117,7 +120,8 @@ FileTransferManager::~FileTransferManager()
 
 	destroyAll();
 
-	kadu->mainMenu()->removeItem(toggleFileTransferWindowMenuId);
+	kadu->removeMenuActionDescription(fileTransferWindowActionDescription);
+	delete fileTransferWindowActionDescription;
 
 	if (fileTransferWindow)
 	{
@@ -184,7 +188,7 @@ void FileTransferManager::sendFile(UinType receiver, const QString &filename)
 	}
 
 	if (!fileTransferWindow)
-		toggleFileTransferWindow();
+		toggleFileTransferWindow(0, false);
 
 	ft->start();
 
@@ -286,10 +290,10 @@ void FileTransferManager::fileDropped(const UserGroup *group, const QString &fil
 void FileTransferManager::showFileTransferWindow()
 {
 	if (!fileTransferWindow)
-		toggleFileTransferWindow();
+		toggleFileTransferWindow(0, false);
 }
 
-void FileTransferManager::toggleFileTransferWindow()
+void FileTransferManager::toggleFileTransferWindow(QAction *sender, bool toggled)
 {
 	kdebugmf(KDEBUG_FUNCTION_START, "start: fileTransferWindow:%p\n", fileTransferWindow);
 	if (fileTransferWindow)

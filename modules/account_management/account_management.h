@@ -3,6 +3,7 @@
 
 #include <QtCore/QObject>
 
+class ActionDescription;
 class QAction;
 /**
  * @defgroup account_management "Account management"
@@ -11,21 +12,21 @@ class QAction;
 class AccountManagement : public QObject
 {
 	Q_OBJECT
-
-		QAction *remindMenuAction;
-		QAction *changeMenuAction;
-		QAction *registerMenuAction;
-		QAction *unregisterMenuAction;
+	
+		ActionDescription *remindMenuActionDescription;
+		ActionDescription *changeMenuActionDescription;
+		ActionDescription *registerMenuActionDescription;
+		ActionDescription *unregisterMenuActionDescription;
 	
 	public:
 		AccountManagement();
 		~AccountManagement();
 	
 	public slots:
-		void registerUser();
-		void unregisterUser();
-		void remindPassword();
-		void changePassword();
+		void registerUser(QAction *sender, bool toggled);
+		void unregisterUser(QAction *sender, bool toggled);
+		void remindPassword(QAction *sender, bool toggled);
+		void changePassword(QAction *sender, bool toggled);
 };
 
 extern AccountManagement *account_management;

@@ -123,7 +123,7 @@ void Kadu::keyPressEvent(QKeyEvent *e)
 	else if (HotKey::shortCut(e,"ShortCuts", "kadu_configure"))
 		configure();
 	else if (HotKey::shortCut(e,"ShortCuts", "kadu_modulesmanager"))
-		modules_manager->showDialog();
+		modules_manager->showDialog(0, false);
 
 	emit keyPressed(e);
 
@@ -333,11 +333,11 @@ Kadu::Kadu(QWidget *parent)
 	MainLayout->setMargin(0);
 	MainLayout->setSpacing(0);
 
-	QSplitter *split = new QSplitter(Qt::Vertical, this, "splitter");
+	QSplitter *split = new QSplitter(Qt::Vertical, this);
 	MainLayout->addWidget(split);
 
 	QWidget* hbox = new QWidget(split);
-	QHBoxLayout *hbox_layout = new QHBoxLayout;
+	QHBoxLayout *hbox_layout = new QHBoxLayout(hbox);
 	hbox_layout->setMargin(0);
 	hbox_layout->setSpacing(0);
 
@@ -369,8 +369,7 @@ Kadu::Kadu(QWidget *parent)
 	hbox_layout->addWidget(GroupBar);
 	hbox_layout->addWidget(Userbox);
 	hbox_layout->setAlignment(GroupBar, Qt::AlignTop);
-	hbox->setLayout(hbox_layout);
-// 	connect(UserBox::userboxmenu, SIGNAL(popup()), this, SLOT(popupMenu()));
+
 	connect(Userbox, SIGNAL(doubleClicked(UserListElement)), this, SLOT(sendMessage(UserListElement)));
 	connect(Userbox, SIGNAL(returnPressed(UserListElement)), this, SLOT(sendMessage(UserListElement)));
 	connect(Userbox, SIGNAL(mouseButtonClicked(int, Q3ListBoxItem *, const QPoint &)),
@@ -565,7 +564,7 @@ Kadu::Kadu(QWidget *parent)
 	connect(&updateInformationPanelTimer, SIGNAL(timeout()), this, SLOT(updateInformationPanel()));
 
 	statusButton = new QPushButton(icons_manager->loadIcon("Offline"), tr("Offline"), this, "statusButton");
-	MainLayout->addWidget (statusButton);
+	MainLayout->addWidget(statusButton);
 	statusButton->setPopup(statusMenu);
 
 	if (!config_file.readBoolEntry("Look", "ShowStatusButton"))
@@ -606,7 +605,6 @@ Kadu::Kadu(QWidget *parent)
 		this, SLOT(wentOffline(const QString &)));
 
 	MainLayout->setResizeMode(QLayout::Minimum);
-	MainWidget->setLayout(MainLayout);
 	setCentralWidget(MainWidget);
 
 	if (config_file.readBoolEntry("Chat", "SaveOpenedWindows", true))
@@ -957,7 +955,7 @@ void Kadu::openChatWith()
 	kdebugf2();
 }
 
-void Kadu::personalInfo()
+void Kadu::personalInfo(QAction *sender, bool toggled)
 {
 	(new PersonalInfoDialog(kadu))->show();
 }
@@ -970,14 +968,9 @@ void Kadu::personalInfo()
 // 	addUserActionActivated(users);
 // }
 
-void Kadu::manageIgnored()
+void Kadu::manageIgnored(QAction *sender, bool toggled)
 {
 	(new Ignored(kadu, "ignored"))->show();
-}
-
-void Kadu::lookupInDirectory()
-{
-	searchInDirectoryActionActivated(0, false);
 }
 
 //void Kadu::showStatusActionActivated()
@@ -994,7 +987,7 @@ void Kadu::searchInDirectoryActionActivated(QAction *sender, bool toggled)
 	(new SearchDialog(kadu))->show();
 }
 
-void Kadu::help()
+void Kadu::help(QAction *sender, bool toggled)
 {
 	if (config_file.readEntry("General", "Language", QString(QTextCodec::locale()).mid(0,2)) == "pl")
 		openWebBrowser("http://www.kadu.net/w/Kadu:Pomoc");
@@ -1002,7 +995,7 @@ void Kadu::help()
 		openWebBrowser("http://www.kadu.net/w/English:Kadu:Help");
 }
 
-void Kadu::about()
+void Kadu::about(QAction *sender, bool toggled)
 {
 	(new About(kadu))->show();
 }
@@ -1021,12 +1014,12 @@ void Kadu::quit()
 	close(true);
 }
 
-void Kadu::importExportUserlist()
+void Kadu::importExportUserlist(QAction *sender, bool toggled)
 {
 	(new UserlistImportExport(kadu))->show();
 }
 
-void Kadu::hideKadu()
+void Kadu::hideKadu(QAction *sender, bool toggled)
 {
 	if (Docked)
 		if (dontHideOnClose)
@@ -1541,6 +1534,54 @@ void Kadu::createRecentChatsMenu()
 
 	kdebugf2();
 }
+void Kadu::addMenuActionDescription(ActionDescription *actionDescription)
+{
+	if (!actionDescription)
+		return;
+	KaduAction *action = actionDescription->getAction(this);
+	MainMenu->addAction(action);
+	mainMenuActions[actionDescription] = action;
+}
+
+void Kadu::insertMenuActionDescription(int pos, ActionDescription *actionDescription)
+{
+	if (!actionDescription)
+		return;
+	KaduAction *action = actionDescription->getAction(this);
+	QList<QAction *> menuActions = MainMenu->actions();
+	if (pos >= menuActions.count() - 1)
+		MainMenu->addAction(action);
+	else
+		MainMenu->insertAction(menuActions[pos], action);
+
+	mainMenuActions[actionDescription] = action;
+}
+
+QAction * Kadu::addMenuSeparator()
+{
+	return MainMenu->addSeparator();
+}
+
+void Kadu::removeMenuSeparator(QAction * separator)
+{
+	if (!separator)
+		return;
+	MainMenu->removeAction(separator);
+}
+
+void Kadu::removeMenuActionDescription(ActionDescription *actionDescription)
+{
+	if (!actionDescription)
+		return;
+	KaduAction *action = mainMenuActions[actionDescription];
+	
+	if (!action)
+		return;
+
+	MainMenu->removeAction(action);
+	mainMenuActions.remove(actionDescription);
+
+}
 
 void Kadu::createMenu()
 {
@@ -1551,23 +1592,67 @@ void Kadu::createMenu()
 	RecentChatsMenu->setIcon(icons_manager->loadIcon("OpenChat"));
 	RecentChatsMenu->setTitle(tr("Recent chats..."));
 
-	MainMenu->addAction(icons_manager->loadIcon("Ignore"), tr("Manage &ignored"), this, SLOT(manageIgnored()));
-	MainMenu->addAction(icons_manager->loadIcon("Configuration"), tr("&Configuration"), this, SLOT(configure()), HotKey::shortCutFromFile("ShortCuts", "kadu_configure"));
-	MainMenu->insertSeparator();
+	ActionDescription *manageIgnoredActionDescription = new ActionDescription(
+		ActionDescription::TypeGlobal, "manageIgnoredAction",
+		this, SLOT(manageIgnored(QAction *, bool)),
+		"Ignore", tr("Manage &ignored")
+	);
+	addMenuActionDescription(manageIgnoredActionDescription);
+	addMenuActionDescription(configurationActionDescription); //HotKey::shortCutFromFile("ShortCuts", "kadu_configure"));
 
-	QAction *personalInfoMenu = MainMenu->addAction(icons_manager->loadIcon("PersonalInfo"), tr("Personal information"), this, SLOT(personalInfo()));
-	MainMenu->insertSeparator();
+	addMenuSeparator();
+	ActionDescription *personalInfoActionDescription = new ActionDescription(
+		ActionDescription::TypeGlobal, "personalInfoAction",
+		this, SLOT(personalInfo(QAction *, bool)),
+		"PersonalInfo", tr("Personal information")
+	);
+	addMenuActionDescription(personalInfoActionDescription);
+	personalInfoMenuId = MainMenu->actions().indexOf(mainMenuActions[personalInfoActionDescription]) + 1;
+
+	addMenuSeparator();
+
 	MainMenu->addMenu(RecentChatsMenu);
-	MainMenu->addAction(icons_manager->loadIcon("LookupUserInfo"), tr("&Search user in directory"), this, SLOT(lookupInDirectory()));
-	MainMenu->addAction(icons_manager->loadIcon("ImportExport"), tr("I&mport / Export userlist"), this, SLOT(importExportUserlist()));
-	MainMenu->addAction(icons_manager->loadIcon("AddUser"), tr("&Add user"), this, SLOT(addUserAction()), HotKey::shortCutFromFile("ShortCuts", "kadu_adduser"));
-	MainMenu->addAction(icons_manager->loadIcon("OpenChat"), tr("&Open chat with..."), this, SLOT(openChatWith()), HotKey::shortCutFromFile("ShortCuts", "kadu_openchatwith"));
-	MainMenu->insertSeparator();
-	MainMenu->addAction(icons_manager->loadIcon("HelpMenuItem"), tr("H&elp"), this, SLOT(help()));
-	MainMenu->addAction(icons_manager->loadIcon("AboutMenuItem"), tr("A&bout..."), this, SLOT(about()));
-	MainMenu->insertSeparator();
-	MainMenu->addAction(icons_manager->loadIcon("HideKadu"), tr("&Hide Kadu"), this, SLOT(hideKadu()));
-	MainMenu->addAction(icons_manager->loadIcon("Exit"), tr("&Exit Kadu"), this, SLOT(quit()));
+	addMenuActionDescription(openSearchActionDescription);
+	ActionDescription *importExportUserlisActionDescription = new ActionDescription(
+		ActionDescription::TypeGlobal, "importExportUserlisAction",
+		this, SLOT(importExportUserlist(QAction *, bool)),
+		"ImportExport", tr("I&mport / Export userlist")
+	);
+	addMenuActionDescription(importExportUserlisActionDescription);
+	addMenuActionDescription(addUserActionDescription); //HotKey::shortCutFromFile("ShortCuts", "kadu_adduser"));
+	addMenuActionDescription(chat_manager->openChatWithActionDescription);//HotKey::shortCutFromFile("ShortCuts", "kadu_openchatwith"));
+
+	addMenuSeparator();
+	ActionDescription *helpActionDescription = new ActionDescription(
+		ActionDescription::TypeMainMenu, "helpAction",
+		this, SLOT(help(QAction *, bool)),
+		"HelpMenuItem", tr("H&elp")
+	);
+	addMenuActionDescription(helpActionDescription);
+
+	ActionDescription *aboutActionDescription = new ActionDescription(
+		ActionDescription::TypeMainMenu, "aboutAction",
+		this, SLOT(about(QAction *, bool)),
+		"AboutMenuItem", tr("A&bout...")
+	);
+	addMenuActionDescription(aboutActionDescription);
+
+	addMenuSeparator();
+
+	ActionDescription *hideKaduActionDescription = new ActionDescription(
+		ActionDescription::TypeMainMenu, "hideKaduAction",
+		this, SLOT(hideKadu(QAction *, bool)),
+		"HideKadu", tr("&Hide Kadu")
+	);
+	addMenuActionDescription(hideKaduActionDescription);
+
+	ActionDescription *exitKaduActionDescription = new ActionDescription(
+		ActionDescription::TypeMainMenu, "exitKaduAction",
+		this, SLOT(quit()),
+		"Exit", tr("&Exit Kadu")
+	);
+	addMenuActionDescription(exitKaduActionDescription);
+
 	menuBar()->addMenu(MainMenu);
 
 // 	icons_manager->registerMenu(MainMenu);
@@ -1736,10 +1821,10 @@ void Kadu::currentChanged(UserListElement user)
 // 	return MenuBar;
 // }
 
-QMenu* Kadu::mainMenu() const
-{
-	return MainMenu;
-}
+//QMenu* Kadu::mainMenu() const
+//{
+//	return MainMenu;
+//}
 
 KaduTabBar* Kadu::groupBar() const
 {

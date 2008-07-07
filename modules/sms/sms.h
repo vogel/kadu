@@ -164,7 +164,6 @@ public:
 
 public slots:
 	void onSmsBuildInCheckToggle(bool);
-	void onSendSms();
 	void onUserClicked(int button, Q3ListBoxItem* item, const QPoint& pos);
 	void onUserDblClicked(UserListElement elem);
 	void onSendSmsToUser();

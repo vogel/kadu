@@ -819,8 +819,9 @@ UserListElements UserBox::selectedUsers() const
 }
 
 void UserBox::selectionChangedSlot()
-{
-	emit userListChanged(selectedUsers());
+{	
+	if (!Kadu::closing())
+		emit userListChanged(selectedUsers());
 }
 
 void UserBox::refreshLater()

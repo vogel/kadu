@@ -344,10 +344,10 @@ public slots:
 	bool deactivateModule(const QString &module_name, bool force = false);
 
 	/**
-		\fn void showDialog()
+		\fn void showDialog(QAction *sender, bool toggled)
 		Wy�wietla okno dialogowe "Zarz�dcy modu��w", czyli tworzy i pokazuje klas� ModulesDialog.
 	**/
-	void showDialog();
+	void showDialog(QAction *sender, bool toggled);
 
 	/**
 		\fn void moduleIncUsageCount(const QString &module_name)
