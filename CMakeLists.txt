@@ -9,7 +9,7 @@ if (NOT CMAKE_BUILD_TYPE)
 	set (CMAKE_BUILD_TYPE Release CACHE STRING "Choose the type of build, options are: Debug Release RelWithDebInfo." FORCE)
 endif (NOT CMAKE_BUILD_TYPE)
 
-cmake_minimum_required (VERSION 2.4.0)
+cmake_minimum_required (VERSION 2.6.0)
 
 find_file (KADU_VERSION_FILE VERSION PATHS ${CMAKE_CURRENT_SOURCE_DIR})
 exec_program (svnversion
