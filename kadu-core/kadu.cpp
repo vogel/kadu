@@ -417,8 +417,6 @@ Kadu::Kadu(QWidget *parent)
 	);
 	UserBox::addActionDescription(lookupUserInfoActionDescription); // HotKey::shortCutFromFile("ShortCuts", "kadu_searchuser")
 
-	UserBox::addActionDescription(editUserActionDescription); // HotKey::shortCutFromFile("ShortCuts", "kadu_persinfo")
-
 	UserBox::addSeparator();
 
 	UserBox::addManagementActionDescription(chat_manager->ignoreUserActionDescription);
@@ -516,6 +514,8 @@ Kadu::Kadu(QWidget *parent)
 		this, SLOT(searchInDirectoryActionActivated(QAction *, bool)),
 		"LookupUserInfo", tr("Search user in directory")
 	);
+
+	UserBox::addActionDescription(editUserActionDescription); // HotKey::shortCutFromFile("ShortCuts", "kadu_persinfo")
 
 /*	TODO 0.6.5: port this.
 	Action* open_status_action = new Action("Offline", tr("Change status"), "openStatusAction", Action::TypeGlobal);

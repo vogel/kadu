@@ -3,6 +3,7 @@
 
 #include <QtCore/QHash>
 #include <QtCore/QList>
+#include <QtCore/QMutex>
 #include <QtCore/QSet>
 #include <QtCore/QSharedData>
 
@@ -19,12 +20,17 @@ class ULEPrivate : public QObject, public QSharedData
 {
 	Q_OBJECT
 
+// 	QMutex mutex;
+
 public:
-	QHash<QString, QVariant *> informations;
-	QHash<QString, ProtocolData *> protocols;
+	QHash<QString, QVariant> informations;
+	QHash<QString, ProtocolData> protocols;
 	QList<UserGroup *> Parents;
 	ULEPrivate();
 	~ULEPrivate();
+
+// 	void lock() { mutex.lock(); }
+// 	void unlock() { mutex.unlock(); }
 
 	static QHash<QString, QHash<QString, UserGroupSet> > protocolUserDataProxy; // protocolName -> (fieldName -> UserGroupSet)
 	static QHash<QString, UserGroupSet> userDataProxy; // field name -> UserGroupSet
@@ -41,14 +47,35 @@ public slots:
 
 };
 
+class SharedStatus : public QSharedData
+{
+
+public:
+	UserStatus *Stat;
+
+	SharedStatus(UserStatus *stat)
+		: Stat(stat)
+	{
+	}
+
+	virtual ~SharedStatus() {
+		if (Stat)
+		{
+			delete Stat;
+			Stat = 0;
+		}
+	}
+
+};
+
 class GaduStatus;
 class ProtocolData : public QObject
 {
 
 public:
 	QString ID;
-	GaduStatus *Stat;
-	QHash<QString, QVariant *> data;
+	QExplicitlySharedDataPointer<SharedStatus> Stat;
+	QHash<QString, QVariant> data;
 
 	ProtocolData(const QString &protocolName, const QString &id);
 	ProtocolData();

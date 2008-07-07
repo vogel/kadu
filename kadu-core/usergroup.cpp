@@ -75,11 +75,24 @@ bool UserGroup::containsAltNick(const QString &altnick, BehaviourForAnonymous be
 
 UserListElement UserGroup::byID(const QString &protocolName, const QString &id)
 {
+	kdebugf();
+
 	foreach(const UserListElement &user, *this)
 	{
-		ProtocolData *protoData = *user.privateData->protocols.find(protocolName);
-		if (protoData && protoData->ID == id)
-			return user;
+// 		user.privateData->lock();
+
+		if (user.privateData->protocols.contains(protocolName))
+		{
+			ProtocolData protoData = user.privateData->protocols[protocolName];
+
+			if (protoData.ID == id)
+			{
+// 				user.privateData->unlock();
+				return user;
+			}
+		}
+
+// 		user.privateData->unlock();
 	}
 	kdebugm(KDEBUG_WARNING, "%s,%s not found, creating ULE\n", protocolName.local8Bit().data(), id.local8Bit().data());
 	return addAnonymous(protocolName, id);
@@ -87,17 +100,30 @@ UserListElement UserGroup::byID(const QString &protocolName, const QString &id)
 
 bool UserGroup::contains(const QString &protocolName, const QString &id, BehaviourForAnonymous beh) const
 {
+	kdebugf();
+
 	foreach(const UserListElement &user, *this)
 	{
-		if (!user.privateData->protocols.contains(protocolName))
-			continue;
+// 		user.privateData->lock();
 
-		ProtocolData *protoData = user.privateData->protocols[protocolName];
-		if (protoData && protoData->ID == id)
+		if (!user.privateData->protocols.contains(protocolName))
+		{
+// 			user.privateData->unlock();
+			continue;
+		}
+
+		ProtocolData protoData = user.privateData->protocols[protocolName];
+		if (protoData.ID == id)
+		{
+// 			user.privateData->unlock();
+
 			if (user.isAnonymous())
 				return (beh == TrueForAnonymous);
 			else
 				return true;
+		}
+
+// 		user.privateData->unlock();
 	}
 	return false;
 }
@@ -129,16 +155,25 @@ void UserGroup::addUser(const UserListElement &ule, bool massively, bool last)
 {
 //	if (last)
 //	kdebugmf(KDEBUG_FUNCTION_START, "start: group:'%s' altNick:'%s' mass:%d last:%d\n", name(), ule.altNick().local8Bit().data(), massively, last);
+	kdebugf();
+
+// 	ule.privateData->lock();
+
 	if (!ule.privateData->Parents.contains(this))
 	{
+// 		ule.privateData->unlock();
 		emit addingUser(ule, massively, last);
 		insert(ule);
 		ule.privateData->Parents.append(this);
 		emit userAdded(ule, massively, last);
 		emit modified();
 	}
+	else
+// 		ule.privateData->unlock();
+
 	if (!massively || (massively && last))
 		emit usersAdded();
+
 //	if (last)
 //	kdebugf2();
 }
@@ -208,6 +243,10 @@ void UserGroup::removeUser(const UserListElement &ule, bool massively, bool last
 //	kdebugmf(KDEBUG_FUNCTION_START, "start: group:'%s' altNick:'%s' mass:%d last:%d\n", name(), ule.altNick().local8Bit().data(), massively, last);
 //	printBacktrace("xxx");
 
+	kdebugf();
+
+// 	ule.privateData->lock();
+
 	if (contains(ule))
 	{
 		emit removingUser(ule, massively, last);
@@ -225,6 +264,8 @@ void UserGroup::removeUser(const UserListElement &ule, bool massively, bool last
 
 	if (!massively || (massively && last))
 		emit usersRemoved();
+
+// 	ule.privateData->unlock();
 
 //	kdebugf2();
 }

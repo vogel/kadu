@@ -23,7 +23,7 @@ file (READ ${CMAKE_CURRENT_SOURCE_DIR}/SNAPSHOT DETAILED_VERSION)
 string (REPLACE "\n" "" DETAILED_VERSION ${DETAILED_VERSION})
 
 if (DEBUG)
-	add_definitions (-ggdb -O)
+	add_definitions (-g -ggdb -O0)
 	set (DEBUG 1)
 	set (DEBUG_ENABLED 1)
 endif (DEBUG)

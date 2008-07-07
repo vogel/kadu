@@ -13,6 +13,7 @@
 #include "userlist-private.h"
 
 ULEPrivate::ULEPrivate()
+// 	: mutex(QMutex::Recursive)
 {
 }
 
@@ -21,19 +22,18 @@ ULEPrivate::~ULEPrivate()
 }
 
 ProtocolData::ProtocolData(const QString &/*protocolName*/, const QString &id)
-	: ID(id), Stat(new GaduStatus())
+	: ID(id), Stat(new SharedStatus(new GaduStatus()))
 {
 	//Stat = ProtocolManager::newStatus(protocolName);
 }
 
 ProtocolData::ProtocolData()
-	: ID(), Stat(new GaduStatus())
+	: ID(), Stat(new SharedStatus(new GaduStatus()))
 {
 }
 
 ProtocolData::~ProtocolData()
 {
-	delete Stat;
 }
 
 ProtocolData::ProtocolData(const ProtocolData &s)
@@ -46,7 +46,6 @@ ProtocolData & ProtocolData::operator = (const ProtocolData &s)
 {
 	kdebugf();
 	ID = s.ID;
-	delete Stat;
 
  	Stat = s.Stat;
 	data = s.data;
@@ -59,27 +58,19 @@ static QString DNSName("DNSName");
 void ULEPrivate::setDNSName(const QString &protocolName, const QString &dnsname)
 {
 	// simplified implementation of setProtocolData()
-	ProtocolData *protocolData = *protocols.find(protocolName);
-	if (!protocolData)
+	if (!protocols.contains(protocolName))
 		return;
-	QVariant *old = protocolData->data[DNSName];
-	if (old)
-	{
-		if (dnsname == old->toString())
-			return;
-		protocolData->data[DNSName] = new QVariant(dnsname);
-	}
-	else
-	{
-		protocolData->data.insert(DNSName, new QVariant(dnsname));
-		old = new QVariant();
-	}
+
+	ProtocolData protocolData = protocols[protocolName];
+	if (protocolData.data.contains(DNSName) && protocolData.data.value(DNSName).toString() == dnsname)
+		return;
+
+	protocolData.data[DNSName] = dnsname;
 
 // TODO: 0.6.5
 // 	foreach(UserGroup *group, Parents)
 // 		emit group->protocolUserDataChanged(protocolName, userlist->byKey(key), DNSName, *old, dnsname, false, false);
 
-	delete old;
 }
 
 void ULEPrivate::closeModule()

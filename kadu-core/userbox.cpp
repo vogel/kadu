@@ -1417,6 +1417,7 @@ void UserBox::contextMenuEvent(QContextMenuEvent *event)
 	QMenu *menu = new QMenu(this);
 
 	foreach (ActionDescription *actionDescription, UserBox::UserBoxActions)
+	{
 		if (actionDescription)
 		{
 			KaduAction *action = actionDescription->getAction(mainWindow);
@@ -1425,6 +1426,7 @@ void UserBox::contextMenuEvent(QContextMenuEvent *event)
 		}
 		else
 			menu->addSeparator();
+	}
 
 	QMenu *management = menu->addMenu(tr("User management"));
 

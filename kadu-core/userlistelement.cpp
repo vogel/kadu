@@ -20,16 +20,23 @@
 
 bool UserListElement::hasIP(const QString &protocolName) const
 {
-	ProtocolData *protoData = *privateData->protocols.find(protocolName);
-	if (!protoData)
+	kdebugf();
+
+	//privateData->lock();
+
+	if (!privateData->protocols.contains(protocolName))
 	{
 #ifdef DEBUG_ENABLED
 		kdebugm(KDEBUG_ERROR, "%s not found!\n", protocolName.local8Bit().data());
 		printBacktrace("backtrace");
 #endif
+		//privateData->unlock();
 		return false;
 	}
-	return protoData->data.contains("IP") && protoData->data["IP"]->toUInt() != 0;
+
+	bool result = privateData->protocols[protocolName].data.contains("IP") && privateData->protocols[protocolName].data["IP"].toUInt() != 0;
+	//privateData->unlock();
+	return result;
 }
 
 QHostAddress UserListElement::IP(const QString &protocolName) const
@@ -44,17 +51,25 @@ QString UserListElement::DNSName(const QString &protocolName) const
 
 void UserListElement::setAddressAndPort(const QString &protocolName, const QHostAddress &ip, short port) const
 {
+	kdebugf();
+
+	//privateData->lock();
+
 	if (!privateData->protocols.contains(protocolName))
 	{
 #ifdef DEBUG_ENABLED
 		kdebugm(KDEBUG_ERROR, "%s not found!\n", protocolName.local8Bit().data());
 		printBacktrace("backtrace");
 #endif
+		//privateData->unlock();
 		return;
 	}
+
 	setDNSName(protocolName, QString::null);
 	setProtocolData(protocolName, "IP", ip.ip4Addr());
 	setProtocolData(protocolName, "Port", port);
+
+	//privateData->unlock();
 }
 
 short UserListElement::port(const QString &protocolName) const
@@ -73,27 +88,33 @@ void UserListElement::refreshDNSName(const QString &protocolName) const
 
 QVariant UserListElement::setProtocolData(const QString &protocolName, const QString &name, const QVariant &val, bool massively, bool last) const
 {
-	ProtocolData *protoData = *privateData->protocols.find(protocolName);
+	kdebugf();
 
-	if (!protoData)
+	//privateData->lock();
+
+	if (!privateData->protocols.contains(protocolName))
 	{
 #ifdef DEBUG_ENABLED
 		kdebugm(KDEBUG_ERROR, "%s not found!\n", protocolName.local8Bit().data());
 		printBacktrace("backtrace");
 #endif
+		//privateData->unlock();
 		return QVariant();
 	}
+
+	ProtocolData protoData = privateData->protocols[protocolName];
 	QVariant old;
-	QVariant *oldVal = protoData->data[name];
-	if (oldVal)
-		old = *oldVal;
-	if (val == old)
-		return old;
-	if (oldVal)
-		protoData->data[name] = new QVariant(val);
-	else
-		protoData->data[name] = new QVariant(val);
-	delete oldVal;
+
+	if (protoData.data.contains(name))
+		if (protoData.data[name] == val)
+		{
+			//privateData->unlock();
+			return protoData.data[name];
+		}
+		else
+			old = protoData.data[name];
+
+	protoData.data[name] = val;
 
 	if (massively)
 	{
@@ -123,61 +144,86 @@ QVariant UserListElement::setProtocolData(const QString &protocolName, const QSt
 		}
 	}
 
-	return old;
+	QVariant result = protoData.data[name];
+	//privateData->unlock();
+
+	return result;
 }
 
 QVariant UserListElement::protocolData(const QString &protocolName, const QString &name) const
 {
+	kdebugf();
+
+	//privateData->lock();
+
 	if (!privateData->protocols.contains(protocolName))
 	{
 #ifdef DEBUG_ENABLED
 		kdebugm(KDEBUG_ERROR, "%s not found!\n", protocolName.local8Bit().data());
 		printBacktrace("backtrace");
 #endif
+		//privateData->unlock();
 		return QVariant();
 	}
 
-	QVariant *val = privateData->protocols[protocolName]->data.value(name);
-	if (val)
-		return *val;
-	else
-		return QVariant();
+	QVariant result;
+	if (privateData->protocols[protocolName].data.contains(name))
+		QVariant result = privateData->protocols[protocolName].data.value(name);
+
+	//privateData->unlock();
+	return result;
 }
 
 UserStatus UserListElement::status(const QString &protocolName) const
 {
+	kdebugf();
+
+	//privateData->lock();
+
 	if (!privateData->protocols.contains(protocolName))
 	{
 #ifdef DEBUG_ENABLED
 		kdebugm(KDEBUG_ERROR, "%s not found!\n", protocolName.local8Bit().data());
 		printBacktrace("backtrace");
 #endif
+		//privateData->unlock();
 		return UserStatus();
 	}
 
-	return *privateData->protocols[protocolName]->Stat;
+	UserStatus result = *privateData->protocols[protocolName].Stat->Stat;
+
+	//privateData->unlock();
+	return result;
 }
 
 QString UserListElement::ID(const QString &protocolName) const
 {
+	kdebugf();
+
+	//privateData->lock();
+
 	if (!privateData->protocols.contains(protocolName))
 	{
 #ifdef DEBUG_ENABLED
 		kdebugm(KDEBUG_ERROR, "%s not found!\n", protocolName.local8Bit().data());
 		printBacktrace("backtrace");
 #endif
+		//privateData->unlock();
 		return QString::null;
 	}
 
-	return privateData->protocols[protocolName]->ID;
+	QString result = privateData->protocols[protocolName].ID;
+	//privateData->unlock();
+	return result;
 }
 
 UserListElement::UserListElement(const UserListElement &copyMe)
 	: QObject()
 {
-	kdebugf();
-// 	copyMe.privateData->ref();
+// 	kdebugf();
+
 	privateData = copyMe.privateData;
+
 	kdebugf2();
 }
 
@@ -193,19 +239,28 @@ UserListElement::~UserListElement()
 UserListElement & UserListElement::operator = (const UserListElement &copyMe)
 {
 	privateData = copyMe.privateData;
+
 	return *this;
 }
 
 QVariant UserListElement::setData(const QString &name, const QVariant &val, bool massively, bool last) const
 {
+	kdebugf();
+
+	//privateData->lock();
+
 	QVariant old;
-	QVariant *oldVal = privateData->informations[name];
-	if (oldVal)
-		old = *oldVal;
-	if (val == old)
-		return old;
-	privateData->informations[name] = new QVariant(val);
-	delete oldVal;
+
+	if (privateData->informations.contains(name))
+		if (privateData->informations[name] == val)
+		{
+			//privateData->unlock();
+			return privateData->informations[name];
+		}
+		else
+			old = privateData->informations[name];
+
+	privateData->informations[name] = val;
 
 	if (massively)
 	{
@@ -237,7 +292,10 @@ QVariant UserListElement::setData(const QString &name, const QVariant &val, bool
 			emit group->usersDataChanged(name);
 		}
 	}
-	return old;
+
+	QVariant result = val;
+	//privateData->unlock();
+	return val;
 }
 
 #define defineGetSetMethods(getMethod, setMethod, propertyName, type, returnMethod) \
@@ -290,47 +348,72 @@ void UserListElement::setMessageSound(NotifyType type, const QString &file) cons
 
 bool UserListElement::usesProtocol(const QString &name) const
 {
-	return privateData->protocols.contains(name);
+	kdebugf();
+
+	//privateData->lock();
+	bool result = privateData->protocols.contains(name);
+	//privateData->unlock();
+	return result;
 }
 
 void UserListElement::addProtocol(const QString &name, const QString &id, bool massively, bool last) const
 {
+	kdebugf();
+
+	//privateData->lock();
+
 	if (privateData->protocols.contains(name))
 	{
 #ifdef DEBUG_ENABLED
 		kdebugm(KDEBUG_ERROR, "%s found!!\n", name.local8Bit().data());
 		printBacktrace("protocol already exists");
 #endif
+		//privateData->unlock();
 		return;
 	}
-	privateData->protocols.insert(name, new ProtocolData(name, id));
+
+	privateData->protocols.insert(name, ProtocolData(name, id));
 	foreach (UserGroup *group, privateData->Parents)
 		emit group->protocolAdded(*this, name, massively, last);
+
+	//privateData->unlock();
 }
 
 void UserListElement::deleteProtocol(const QString &protocolName, bool massively, bool last) const
 {
+	kdebugf();
+
+	//privateData->lock();
+
 	if (!privateData->protocols.contains(protocolName))
 	{
 #ifdef DEBUG_ENABLED
 		kdebugm(KDEBUG_PANIC, "%s not found!!\n", protocolName.local8Bit().data());
 		printBacktrace("protocol does not exists");
 #endif
+		//privateData->unlock();
 		return;
 	}
+
 	foreach (UserGroup *group, privateData->Parents)
 		emit group->removingProtocol(*this, protocolName, massively, last);
-	delete privateData->protocols[protocolName];
 	privateData->protocols.remove(protocolName);
+
+	//privateData->unlock();
 }
 
 QVariant UserListElement::data(const QString &name) const
 {
-	QVariant *val = privateData->informations[name];
-	if (val)
-		return *val;
-	else
-		return QVariant();
+	kdebugf();
+
+	//privateData->lock();
+
+	QVariant result;
+	if (privateData->informations.contains(name))
+		result = privateData->informations[name];
+
+	//privateData->unlock();
+	return result;
 }
 
 void UserListElement::setDNSName(const QString &protocolName, const QString &dnsname) const
@@ -341,18 +424,21 @@ void UserListElement::setDNSName(const QString &protocolName, const QString &dns
 
 void UserListElement::setStatus(const QString &protocolName, const UserStatus &status, bool massively, bool last) const
 {
-//	kdebugf();
+	kdebugf();
+
+	//privateData->lock();
 	if (!privateData->protocols.contains(protocolName))
 	{
 #ifdef DEBUG_ENABLED
 		kdebugm(KDEBUG_ERROR, "%s not found!\n", protocolName.local8Bit().data());
 		printBacktrace("backtrace");
 #endif
+		//privateData->unlock();
 		return;
 	}
 
-	UserStatus oldStatus = *privateData->protocols[protocolName]->Stat;
-	privateData->protocols[protocolName]->Stat->setStatus(status);
+	UserStatus oldStatus = *privateData->protocols[protocolName].Stat->Stat;
+	privateData->protocols[protocolName].Stat->Stat->setStatus(status);
 
 	if (massively)
 	{
@@ -365,6 +451,7 @@ void UserListElement::setStatus(const QString &protocolName, const UserStatus &s
 			if (!groups.contains(group))
 				groups.insert(group);
 		}
+
 		if (last)
 		{
 			foreach (UserGroup *ug, groups)
@@ -382,31 +469,49 @@ void UserListElement::setStatus(const QString &protocolName, const UserStatus &s
 		}
 	}
 
+	//privateData->unlock();
 //	kdebugf2();
 }
 
 QStringList UserListElement::protocolList() const
 {
-	return privateData->protocols.keys();
+	kdebugf();
+
+	//privateData->lock();
+	QStringList result = privateData->protocols.keys();
+	//privateData->unlock();
+	return result;
 }
 
 QStringList UserListElement::protocolDataKeys(const QString &protocolName) const
 {
+	kdebugf();
+
+	//privateData->lock();
+
 	if (!privateData->protocols.contains(protocolName))
 	{
 #ifdef DEBUG_ENABLED
 		kdebugm(KDEBUG_ERROR, "%s not found!\n", protocolName.local8Bit().data());
 		printBacktrace("backtrace");
 #endif
+		//privateData->unlock();
 		return QStringList();
 	}
 
-	return privateData->protocols[protocolName]->data.keys();
+	QStringList result = privateData->protocols[protocolName].data.keys();
+	//privateData->unlock();
+	return result;
 }
 
 QStringList UserListElement::nonProtocolDataKeys() const
 {
-	return privateData->informations.keys();
+	kdebugf();
+
+	//privateData->lock();
+	QStringList result = privateData->informations.keys();
+	//privateData->unlock();
+	return result;
 }
 
 uint qHash(const UserListElement &index)
