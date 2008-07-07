@@ -1,9 +1,9 @@
 Kadu, klient Gadu-Gadu dla Qt
 
 +++ WYMAGANIA
- * Qt > 4.4
+ * Qt >= 4.4.0
  * szczegó³y w pomocy online http://www.kadu.net/
- 
+
 +++ FICZERSY
  * status: offline, online, away, invisible
  * wysy³anie/odbieranie wiadomo¶ci
