@@ -59,7 +59,6 @@
 #include "userlist.cpp"
 #include "userlistelement.cpp"
 #include "userlist-private.cpp"
-#include "version.cpp"
 #include "moc/about_moc.cpp"
 #include "moc/action_moc.cpp"
 #include "chat_edit_box_moc.cpp"

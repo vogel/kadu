@@ -1,7 +1,3 @@
-add_custom_command (OUTPUT ${CMAKE_CURRENT_SOURCE_DIR}/version.cpp
-	COMMAND echo "const char *detailed_version = \"${KADU_VERSION}\";" > version.cpp
-	DEPENDS ${kadu_SOURCE_DIR}/VERSION VERBATIM)
-
 set (kadu_SRCS
 	about.cpp
 	action.cpp
