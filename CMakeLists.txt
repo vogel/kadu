@@ -11,6 +11,8 @@ endif (NOT CMAKE_BUILD_TYPE)
 
 cmake_minimum_required (VERSION 2.6.0 FATAL_ERROR)
 
+include (FindPkgConfig)
+
 execute_process (COMMAND svnversion -n ${CMAKE_CURRENT_SOURCE_DIR} OUTPUT_VARIABLE DETAILED_VERSION)
 
 file (READ ${CMAKE_CURRENT_SOURCE_DIR}/VERSION KADU_VERSION)
@@ -51,7 +53,7 @@ add_definitions (${QT_DEFINITIONS})
 add_definitions (-DQT3_SUPPORT)
 include_directories (${QT_INCLUDE_DIR} ${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_CURRENT_SOURCE_DIR}/kadu-core)
 
-find_library (LIBGADU NAMES gadu PATHS /usr/local/lib /usr/lib)
+pkg_search_module (LIBGADU REQUIRED libgadu>=1.8.0)
 
 # build
 
@@ -63,6 +65,6 @@ add_subdirectory (varia)
 add_subdirectory (translations)
 
 message (STATUS "Kadu (version: ${KADU_VERSION}) will be build:")
-message (STATUS " * libgadu in ${LIBGADU}")
+message (STATUS " * libgadu (version ${LIBGADU_VERSION}) in ${LIBGADU}")
 message (STATUS " * install prefix: ${CMAKE_INSTALL_PREFIX}")
 message (STATUS " * debug ${DEBUG} (${CMAKE_BUILD_TYPE})")

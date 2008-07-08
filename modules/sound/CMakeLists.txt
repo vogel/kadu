@@ -21,7 +21,7 @@ set (CONFIGURATION_FILES
 	configuration/sound.ui)
 
 kadu_module_desc (sound.desc)
-kadu_module_configuration(${CONFIGURATION_FILES})
+kadu_module_configuration (${CONFIGURATION_FILES})
 qt_wrap_cpp (sound MOC_FILES ${MOC_SOURCES})
 
 qt4_add_translation (TRANSLATION_FILES ${TRANSLATION_SOURCES})
@@ -33,8 +33,13 @@ if (COMMAND cmake_policy)
 	cmake_policy(SET CMP0003 NEW)
 endif (COMMAND cmake_policy)
 
+pkg_search_module (SNDFILE REQUIRED sndfile>=1.0)
+
 add_library (sound ${sound} ${SOURCES} ${MOC_FILES})
 add_custom_target (sound-translations DEPENDS ${TRANSLATION_FILES})
 add_dependencies (sound sound-translations)
+
+target_link_libraries (sound ${SNDFILE_LIBRARIES})
+include_directories (${SNDFILE_INCLUDE_DIRS})
 
 install (TARGETS sound DESTINATION lib/kadu/modules)

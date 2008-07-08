@@ -131,6 +131,6 @@ endif (COMMAND cmake_policy)
 add_executable (kadu ${kadu_SRCS} ${MOC_FILES})
 
 link_directories (modules)
-target_link_libraries (kadu ${QT_LIBRARIES} ${QT_QTGUI_LIBRARY} ${QT_QT3SUPPORT_LIBRARY} ${STATIC_MODULES} gadu)
+target_link_libraries (kadu ${QT_LIBRARIES} ${QT_QTGUI_LIBRARY} ${QT_QT3SUPPORT_LIBRARY} ${STATIC_MODULES} ${LIBGADU_LIBRARIES})
 
 install (TARGETS kadu DESTINATION bin)
