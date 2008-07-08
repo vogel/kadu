@@ -54,6 +54,8 @@ add_definitions (-DQT3_SUPPORT)
 include_directories (${QT_INCLUDE_DIR} ${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_CURRENT_SOURCE_DIR}/kadu-core)
 
 pkg_search_module (LIBGADU REQUIRED libgadu>=1.8.0)
+include_directories (${LIBGADU_INCLUDE_DIRS})
+link_directories (${LIBGADU_LIBRARY_DIRS})
 
 # build
 
@@ -65,7 +67,7 @@ add_subdirectory (varia)
 add_subdirectory (translations)
 
 message (STATUS "Kadu (version: ${KADU_VERSION}) will be build:")
-message (STATUS " * libgadu (version ${LIBGADU_VERSION}) in ${LIBGADU}")
+message (STATUS " * libgadu (version ${LIBGADU_VERSION}) in ${LIBGADU_LIBRARY_DIRS}")
 message (STATUS " * install prefix: ${CMAKE_INSTALL_PREFIX}")
 message (STATUS " * debug ${DEBUG} (${CMAKE_BUILD_TYPE})")
 
