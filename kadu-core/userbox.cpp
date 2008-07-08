@@ -1415,6 +1415,9 @@ void UserBox::userRemovedFromGroup(UserListElement elem, bool massively, bool la
 
 void UserBox::contextMenuEvent(QContextMenuEvent *event)
 {
+	if (!itemAt(event->pos()))
+		return;
+
 	QMenu *menu = new QMenu(this);
 
 	foreach (ActionDescription *actionDescription, UserBox::UserBoxActions)

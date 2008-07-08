@@ -9,7 +9,7 @@
 
 #include "default_sms.h"
 
-#include <QRegExp>
+#include <QtCore/QRegExp>
 #include <QtGui/QMessageBox>
 
 #include "config_file.h"
