@@ -29,12 +29,13 @@ if (COMMAND cmake_policy)
 	cmake_policy(SET CMP0003 NEW)
 endif (COMMAND cmake_policy)
 
-find_library (ASOUND_LIB asound)
-find_path (ASOUND_INCLUDE alsa/version.h)
+pkg_search_module (ALSA REQUIRED alsa)
 
-add_library (alsa_sound ${alsa_sound} ${SOURCES} ${MOC_FILES} ${ASOUND_LIB})
-include_directories (${ASOUND_INCLUDE})
+add_library (alsa_sound ${alsa_sound} ${SOURCES} ${MOC_FILES})
 add_custom_target (alsa_sound-translations DEPENDS ${TRANSLATION_FILES})
 add_dependencies (alsa_sound alsa_sound-translations)
+
+target_link_libraries (alsa_sound ${ALSA_LIBRARIES})
+include_directories (${ALSA_INCLUDE_DIRS})
 
 install (TARGETS alsa_sound DESTINATION lib/kadu/modules)
