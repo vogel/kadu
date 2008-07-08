@@ -15,7 +15,11 @@ for icon_theme in $*; do
 	fi
 
 	if [ "$type" == "$option" ]; then
-		result="$result;$icon_theme"
+		if [ -z "$result" ]; then
+			result="$icon_theme"
+		else
+			result="$result;$icon_theme"
+		fi
 	fi
 
 done

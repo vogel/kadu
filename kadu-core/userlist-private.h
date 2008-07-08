@@ -7,6 +7,7 @@
 #include <QtCore/QSet>
 #include <QtCore/QSharedData>
 
+#include "status.h"
 #include "userlistelement.h"
 
 class ProtocolData;
