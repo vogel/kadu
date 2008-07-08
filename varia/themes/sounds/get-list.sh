@@ -15,7 +15,11 @@ for sound_theme in $*; do
 	fi
 
 	if [ "$type" == "$option" ]; then
-		result="$result $sound_theme"
+		if [ -z "$result" ]; then
+			result="$sound_theme"
+		else
+			result="$result;$sound_theme"
+		fi
 	fi
 
 done

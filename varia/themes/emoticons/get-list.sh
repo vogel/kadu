@@ -15,7 +15,11 @@ for emoticon_theme in $*; do
 	fi
 
 	if [ "$type" == "$option" ]; then
-		result="$result $emoticon_theme"
+		if [ -z "$result" ]; then
+			result="$emoticon_theme"
+		else
+			result="$result;$emoticon_theme"
+		fi
 	fi
 
 done

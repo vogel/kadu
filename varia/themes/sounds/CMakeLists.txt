@@ -22,7 +22,7 @@ endforeach (INSTALL_SOUND_THEME)
 
 add_dependencies (kadu sound_themes)
 
-install (DIRECTORY ${INSTALL_EMOTICON_THEMES}
+install (DIRECTORY ${INSTALL_SOUND_THEMES}
 	DESTINATION share/kadu/themes/sound
 	PATTERN ".svn" EXCLUDE
 	PATTERN "*.wav"
