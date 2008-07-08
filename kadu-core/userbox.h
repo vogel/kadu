@@ -404,9 +404,11 @@ public:
 
 	static void addActionDescription(ActionDescription *actionDescription);
 	static void insertActionDescription(int pos, ActionDescription *actionDescription);
+	static void removeActionDescription(ActionDescription *actionDescription);
 	static void addSeparator();
 	static void addManagementActionDescription(ActionDescription *actionDescription);
 	static void insertManagementActionDescription(int pos, ActionDescription *actionDescription);
+	static void removeManagementActionDescription(ActionDescription *actionDescription);
 	static void addManagementSeparator();
 
 	static void setColorsOrBackgrounds();

@@ -13,6 +13,7 @@ class HistoryModule : public ConfigurationUiHandler
 {
 	Q_OBJECT
 
+	ActionDescription *clearHistoryActionDescription;
 	ActionDescription *historyActionDescription;
 
 	QLabel *dontCiteOldMessagesLabel;

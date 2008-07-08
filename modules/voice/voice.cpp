@@ -10,9 +10,9 @@
 #include "voice.h"
 
 #include <QtGui/QCheckBox>
-#include <QtGui/QPushButton>
-#include <QLayout>
+#include <QtGui/QLayout>
 #include <QtGui/QMessageBox>
+#include <QtGui/QPushButton>
 
 #include <sys/types.h>
 #include <sys/socket.h>
@@ -431,7 +431,9 @@ VoiceManager::~VoiceManager()
 
 	dcc_manager->removeHandler(this);
 
+	UserBox::removeActionDescription(voiceChatActionDescription);
 	delete voiceChatActionDescription;
+	voiceChatActionDescription = 0;
 
 	disconnect(chat_manager, SIGNAL(chatWidgetCreated(ChatWidget *)), this, SLOT(chatCreated(ChatWidget *)));
 	disconnect(chat_manager, SIGNAL(chatWidgetDestroying(ChatWidget *)), this, SLOT(chatDestroying(ChatWidget*)));

@@ -476,6 +476,7 @@ SmsConfigurationUiHandler::~SmsConfigurationUiHandler()
 {
 	kdebugf();
 
+	UserBox::removeActionDescription(sendSmsActionDescription);
 	kadu->removeMenuActionDescription(sendSmsActionDescription);
 	delete sendSmsActionDescription;
 	kdebugf2();

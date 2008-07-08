@@ -100,7 +100,7 @@ HistoryModule::HistoryModule()
 	);
 	UserBox::insertActionDescription(5, historyActionDescription); // TODO: HotKey::shortCutFromFile("ShortCuts", "kadu_viewhistory")
 
-	ActionDescription *clearHistoryActionDescription = new ActionDescription(
+	clearHistoryActionDescription = new ActionDescription(
 		ActionDescription::TypeHistory, "clearHistoryAction",
 		this, SLOT(clearHistoryActionActivated(QAction *, bool)),
 		"ClearHistory", tr("Clear history"), false, "",
@@ -121,8 +121,13 @@ HistoryModule::~HistoryModule()
 	foreach(ChatWidget *it, chat_manager->chats())
 		chatDestroying(it);
 
+	UserBox::removeActionDescription(historyActionDescription);
 	delete historyActionDescription;
 	historyActionDescription = 0;
+
+	UserBox::removeManagementActionDescription(clearHistoryActionDescription);
+	delete clearHistoryActionDescription;
+	clearHistoryActionDescription = 0;
 
 	disconnect(gadu, SIGNAL(messageReceived(Protocol *, UserListElements, const QString&, time_t)),
 		history, SLOT(messageReceived(Protocol *, UserListElements, const QString&, time_t)));

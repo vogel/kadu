@@ -108,6 +108,7 @@ FileTransferManager::~FileTransferManager()
 
 	disconnect(kadu, SIGNAL(keyPressed(QKeyEvent*)), this, SLOT(kaduKeyPressed(QKeyEvent*)));
 
+	UserBox::removeActionDescription(sendFileActionDescription);
 	delete sendFileActionDescription;
 
 	dcc_manager->removeHandler(this);
