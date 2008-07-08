@@ -55,7 +55,6 @@ class UserListElement : public QObject
 
 	QExplicitlySharedDataPointer<ULEPrivate> privateData;
 
-	friend class UserGroup;
 	friend uint qHash(const UserListElement &index);
 
 public:
@@ -236,6 +235,10 @@ public:
 		Zwraca numer portu kontaktu.
 	**/
 	short port(const QString &protocolName) const;
+
+	bool containsGroup(UserGroup *group) const;
+	void addGroup(UserGroup *group) const;
+	void removeGroup(UserGroup *group) const;
 
 public slots:
 	/**

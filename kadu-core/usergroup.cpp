@@ -78,22 +78,10 @@ UserListElement UserGroup::byID(const QString &protocolName, const QString &id)
 	kdebugf();
 
 	foreach(const UserListElement &user, *this)
-	{
-// 		user.privateData->lock();
-
-		if (user.privateData->protocols.contains(protocolName))
-		{
-			ProtocolData protoData = user.privateData->protocols[protocolName];
-
-			if (protoData.ID == id)
-			{
-// 				user.privateData->unlock();
+		if (user.usesProtocol(protocolName))
+			if (user.ID(protocolName) == id)
 				return user;
-			}
-		}
 
-// 		user.privateData->unlock();
-	}
 	kdebugm(KDEBUG_WARNING, "%s,%s not found, creating ULE\n", protocolName.local8Bit().data(), id.local8Bit().data());
 	return addAnonymous(protocolName, id);
 }
@@ -103,28 +91,15 @@ bool UserGroup::contains(const QString &protocolName, const QString &id, Behavio
 	kdebugf();
 
 	foreach(const UserListElement &user, *this)
-	{
-// 		user.privateData->lock();
+		if (user.usesProtocol(protocolName))
+			if (user.ID(protocolName) == id)
+			{
+				if (user.isAnonymous())
+					return (beh == TrueForAnonymous);
+				else
+					return true;
+			}
 
-		if (!user.privateData->protocols.contains(protocolName))
-		{
-// 			user.privateData->unlock();
-			continue;
-		}
-
-		ProtocolData protoData = user.privateData->protocols[protocolName];
-		if (protoData.ID == id)
-		{
-// 			user.privateData->unlock();
-
-			if (user.isAnonymous())
-				return (beh == TrueForAnonymous);
-			else
-				return true;
-		}
-
-// 		user.privateData->unlock();
-	}
 	return false;
 }
 
@@ -159,12 +134,12 @@ void UserGroup::addUser(const UserListElement &ule, bool massively, bool last)
 
 // 	ule.privateData->lock();
 
-	if (!ule.privateData->Parents.contains(this))
+	if (!ule.containsGroup(this))
 	{
 // 		ule.privateData->unlock();
 		emit addingUser(ule, massively, last);
 		insert(ule);
-		ule.privateData->Parents.append(this);
+		ule.addGroup(this);
 		emit userAdded(ule, massively, last);
 		emit modified();
 	}
@@ -255,7 +230,7 @@ void UserGroup::removeUser(const UserListElement &ule, bool massively, bool last
 			ule.setAnonymous(true);
 		else
 		{
-			ule.privateData->Parents.remove(this);
+			ule.removeGroup(this);
 			QSet<UserListElement>::remove(ule);
 		}
 		emit userRemoved(ule, massively, last);

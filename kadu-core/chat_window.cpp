@@ -123,7 +123,8 @@ void ChatWindow::restoreGeometry()
 	setGeometry(geometry);
 
 	currentChatWidget->setGeometry(geometry);
-	currentChatWidget->restoreGeometry();
+// TODO: 0.6.5
+// 	currentChatWidget->restoreGeometry();
 }
 
 void ChatWindow::storeGeometry()

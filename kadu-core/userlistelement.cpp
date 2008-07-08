@@ -514,6 +514,21 @@ QStringList UserListElement::nonProtocolDataKeys() const
 	return result;
 }
 
+bool UserListElement::containsGroup(UserGroup *group) const
+{
+	return privateData->Parents.contains(group);
+}
+
+void UserListElement::addGroup(UserGroup *group) const
+{
+	privateData->Parents.append(group);
+}
+
+void UserListElement::removeGroup(UserGroup *group) const
+{
+	privateData->Parents.remove(group);
+}
+
 uint qHash(const UserListElement &index)
 {
 	return (uint)index.privateData.data();

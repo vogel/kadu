@@ -319,9 +319,13 @@ void GaduProtocol::initModule()
 	{
 		int idx1 = getRand(0, GG_SERVERS_COUNT - 1);
 		int idx2 = getRand(0, GG_SERVERS_COUNT - 1);
-		QHostAddress a = gg_servers[idx1];
-		gg_servers[idx1] = gg_servers[idx2];
-		gg_servers[idx2] = a;
+
+		if (idx1 != idx2)
+		{
+			QHostAddress a = gg_servers[idx1];
+			gg_servers[idx1] = gg_servers[idx2];
+			gg_servers[idx2] = a;
+		}
 	}
 
 	gg_proxy_host = NULL;
@@ -754,7 +758,7 @@ void GaduProtocol::disconnectedSlot()
 	{
 		PingTimer->stop();
 		delete PingTimer;
-		PingTimer = NULL;
+		PingTimer = 0;
 	}
 
 	SocketNotifiers->stop();
@@ -763,7 +767,7 @@ void GaduProtocol::disconnectedSlot()
 	{
 		gg_logoff(Sess);
 		gg_free_session(Sess);
-		Sess = NULL;
+		Sess = 0;
 	}
 
 	// du�o bezsensownej roboty, wi�c gdy jeste�my w trakcie wy��czania,
