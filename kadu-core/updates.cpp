@@ -52,17 +52,18 @@ unsigned int Updates::stripVersion(const QString &stripversion)
 {
 	QString version = stripversion;
 
-	version.replace("-svn", "1");
-	version.replace("-alpha", "2");
-	version.replace("-beta", "3");
-	version.replace("-rc", "4");
+	version.replace("-svn", "01");
+	version.replace("-alpha", "02");
+	version.replace("-beta", "03");
+	version.replace("-rc", "04");
 	version.remove(".");
 
 	switch (version.length())
 	{
-		case 3: version.append("000"); break;
-		case 4: version.append("00"); break;
-		case 5: version.append("0"); break;
+		case 3: version.append("0500"); break;
+		case 4: version.append("050"); break;
+		case 5: version.append("05"); break;
+		case 6: version.append("0"); break;
 		default: break;
 	}
 
