@@ -43,7 +43,30 @@ void Updates::run()
 
 bool Updates::ifNewerVersion(const QString &newestversion)
 {
-	return (newestversion != QString(VERSION));
+	QString version(VERSION);
+
+	return (stripVersion(newestversion) > stripVersion(version));
+}
+
+unsigned int Updates::stripVersion(const QString &stripversion)
+{
+	QString version = stripversion;
+
+	version.replace("-svn", "1");
+	version.replace("-alpha", "2");
+	version.replace("-beta", "3");
+	version.replace("-rc", "4");
+	version.remove(".");
+
+	switch (version.length())
+	{
+		case 3: version.append("000"); break;
+		case 4: version.append("00"); break;
+		case 5: version.append("0"); break;
+		default: break;
+	}
+
+	return (version.toUInt());
 }
 
 void Updates::initModule()
