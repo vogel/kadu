@@ -744,6 +744,7 @@ ChooseDescription::ChooseDescription(QWidget *parent)
 {
 	kdebugf();
 	setWindowTitle(tr("Select description"));
+	setAttribute(Qt::WA_DeleteOnClose);
 
 	while (defaultdescriptions.count() > config_file.readNumEntry("General", "NumberOfDescriptions"))
 		defaultdescriptions.pop_back();
@@ -855,10 +856,8 @@ void ChooseDescription::okPressed()
 
 void ChooseDescription::cancelPressed()
 {
-	close();
-
-	delete Dialog;
 	Dialog = 0;
+	close();
 }
 
 void ChooseDescription::updateAvailableChars(const QString &text)
