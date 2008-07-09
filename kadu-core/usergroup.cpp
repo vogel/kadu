@@ -33,17 +33,17 @@ UserGroup::UserGroup(const QList<UserListElement> &group)
 	addUsers(group);
 }
 
-//#include "kadu.h"
+#include "kadu.h"
 UserGroup::~UserGroup()
-{
-// 	int i = 1, cnt = count();
-//	if (Kadu::closing())
-//		blockSignals(true);
-// 	if (cnt > 1)
-// 		while (!privateUserGroupData->list.isEmpty())
-// 			removeUser(privateUserGroupData->list[0], true, i++ == cnt);
-// 	else if (cnt == 1)
-// 		removeUser(privateUserGroupData->list[0]);
+{ 
+	int i = 0;
+	int cnt = count();
+
+	if (Kadu::closing())
+		blockSignals(true);
+
+	foreach(const UserListElement &user, toList())
+		removeUser(user, cnt > 0, cnt == ++i);
 }
 
 UserListElement UserGroup::byAltNick(const QString& altnick)
