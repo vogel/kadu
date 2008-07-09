@@ -4,6 +4,7 @@ project (kadu)
 
 option (DEBUG "Build the project using debugging code" OFF CMAKE_BUILD_TYPE "DEBUG")
 option (ENABLE_AUTDOWNLOAD "Use automatic download of modules/icons/emoticons" ON)
+option (SIG_HANDLING_ENABLED "Define if you want system signals handling" ON)
 
 if (NOT CMAKE_BUILD_TYPE)
 	set (CMAKE_BUILD_TYPE Release CACHE STRING "Choose the type of build, options are: Debug Release RelWithDebInfo." FORCE)
@@ -12,11 +13,26 @@ endif (NOT CMAKE_BUILD_TYPE)
 cmake_minimum_required (VERSION 2.6.0 FATAL_ERROR)
 
 include (FindPkgConfig)
+include (CheckIncludeFiles)
+include (CheckFunctionExists)
 
-execute_process (COMMAND svnversion -n ${CMAKE_CURRENT_SOURCE_DIR} OUTPUT_VARIABLE DETAILED_VERSION)
+find_package(Subversion)
+if(Subversion_FOUND)
+	execute_process (COMMAND svnversion -n ${CMAKE_CURRENT_SOURCE_DIR} OUTPUT_VARIABLE DETAILED_VERSION)
+endif(Subversion_FOUND)
 
 file (READ ${CMAKE_CURRENT_SOURCE_DIR}/VERSION KADU_VERSION)
 string (REPLACE "\n" "" KADU_VERSION ${KADU_VERSION})
+
+# TODO: Add libexecinfo support 
+check_include_files ("execinfo.h" HAVE_EXECINFO)
+if (HAVE_EXECINFO)
+	check_function_exists ("backtrace" HAVE_EXECINFO)
+endif (HAVE_EXECINFO)
+
+if (SIG_HANDLING_ENABLED)
+	set (SIG_HANDLING_ENABLED 1)
+endif (SIG_HANDLING_ENABLED)
 
 if (DEBUG)
 	add_definitions (-g -ggdb -O0)
