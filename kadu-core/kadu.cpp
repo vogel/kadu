@@ -549,12 +549,8 @@ Kadu::Kadu(QWidget *parent)
 //	InfoPanel->resize(InfoPanel->size().width(), int(1.5 * QFontMetrics(InfoPanel->font()).height()));
 	InfoPanel->setTextFormat(Qt::RichText);
 	InfoPanel->setAlignment(Qt::AlignVCenter/** | Qt::WordBreak | Qt::DontClip*/);
-	if (!config_file.readBoolEntry("Look", "PanelVerticalScrollbar"))
-		InfoPanel->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-	InfoPanel->setPaletteBackgroundColor(config_file.readColorEntry("Look", "InfoPanelBgColor"));
-	InfoPanel->setPaletteForegroundColor(config_file.readColorEntry("Look", "InfoPanelFgColor"));
-	InfoPanel->QTextEdit::setFont(config_file.readFontEntry("Look", "PanelFont"));
-// 	if((EmoticonsStyle)config_file.readNumEntry("Chat", "EmoticonsStyle") == EMOTS_ANIMATED)
+
+//// 	if((EmoticonsStyle)config_file.readNumEntry("Chat", "EmoticonsStyle") == EMOTS_ANIMATED)
 // 		InfoPanel->setStyleSheet(new AnimStyleSheet(InfoPanel, emoticons->themePath()));
 // 	else
 // 		InfoPanel->setStyleSheet(new StaticStyleSheet(InfoPanel, emoticons->themePath()));
@@ -1040,8 +1036,9 @@ void Kadu::changeAppearance()
 	if (config_file.readBoolEntry("Look", "ShowInfoPanel"))
 	{
 		InfoPanel->show();
-		InfoPanel->setPaletteBackgroundColor(config_file.readColorEntry("Look", "InfoPanelBgColor"));
-		InfoPanel->setPaletteForegroundColor(config_file.readColorEntry("Look", "InfoPanelFgColor"));
+		QString style = narg("background-color:%1; color:%2", config_file.readColorEntry("Look","InfoPanelBgColor").name(), config_file.readColorEntry("Look","InfoPanelFgColor").name());
+
+		InfoPanel->setStyleSheet(style);
 		InfoPanel->QTextEdit::setFont(config_file.readFontEntry("Look", "PanelFont"));
 
 		if (config_file.readBoolEntry("Look", "PanelVerticalScrollbar"))
