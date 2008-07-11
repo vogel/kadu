@@ -29,7 +29,7 @@ KaduTextBrowser::KaduTextBrowser(QWidget *parent)
 	kdebugf();
 
 	setAttribute(Qt::WA_StaticContents);
-	setAttribute(Qt::WA_NoBackground);
+// 	setAttribute(Qt::WA_NoBackground);
 
 	setAcceptDrops(false);
 	viewport()->setAcceptDrops(false);
