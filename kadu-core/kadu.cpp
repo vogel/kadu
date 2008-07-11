@@ -843,11 +843,11 @@ void Kadu::deleteUsersActionActivated(QAction *sender, bool toggled)
 	kdebugf2();
 }
 
-void Kadu::openRecentChats(int index)
+void Kadu::openRecentChats(QAction *action)
 {
 	kdebugf();
 
-	chat_manager->openPendingMsgs(chat_manager->closedChatUsers().at(index));
+	chat_manager->openPendingMsgs(chat_manager->closedChatUsers().at(action->data().toInt()));
 
 	kdebugf2();
 }
@@ -1473,11 +1473,11 @@ void Kadu::createRecentChatsMenu()
 	kdebugf();
 
 	RecentChatsMenu->clear();
-
+	QAction *action;
 	if (chat_manager->closedChatUsers().isEmpty())
 	{
-		RecentChatsMenu->addAction(tr("No closed chats found")/*, 0*/);
-		RecentChatsMenu->setItemEnabled(0, false);
+		action = RecentChatsMenu->addAction(tr("No closed chats found")/*, 0*/);
+		action->setEnabled(false);
 
 		kdebugf2();
 		return;
@@ -1498,8 +1498,9 @@ void Kadu::createRecentChatsMenu()
 				chat_users.append(*altnicks.at(i) + ", ");
 			chat_users.append(*altnicks.at(4) + " [...]");
 		}
-
-		RecentChatsMenu->addAction(icons_manager->loadIcon("OpenChat"), chat_users, this, SLOT(openRecentChats(int))/*, 0, index*/);
+		action = new QAction(icons_manager->loadIcon("OpenChat"), chat_users, this);
+		action->setData(index);
+		RecentChatsMenu->addAction(action);
 
 		index++;
 	}
@@ -1563,7 +1564,8 @@ void Kadu::createMenu()
 	RecentChatsMenu = new QMenu;
 	RecentChatsMenu->setIcon(icons_manager->loadIcon("OpenChat"));
 	RecentChatsMenu->setTitle(tr("Recent chats..."));
-
+	connect(RecentChatsMenu, SIGNAL(triggered(QAction *)), this, SLOT(openRecentChats(QAction *)));	
+	
 	ActionDescription *manageIgnoredActionDescription = new ActionDescription(
 		ActionDescription::TypeGlobal, "manageIgnoredAction",
 		this, SLOT(manageIgnored(QAction *, bool)),

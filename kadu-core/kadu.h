@@ -119,7 +119,7 @@ private slots:
 
 	void messageReceived(Protocol *protocol, UserListElements senders, const QString &msg, time_t time);
 	void createRecentChatsMenu();
-	void openRecentChats(int index);
+	void openRecentChats(QAction *action);
 	void openChatWith();
 
 	void changeStatusSlot();
