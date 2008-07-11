@@ -14,8 +14,8 @@ private:
 	ChatWidget *currentChatWidget;
 	QTimer *title_timer;  /*!< zmienna przechowuj±ca czas od ostatniego od¶wie¿enia tytu³u okna */
 
-	void storeGeometry();
-	void restoreGeometry();
+	void kaduStoreGeometry();
+	void kaduRestoreGeometry();
 
 	bool activateWithNewMessages; /*!< czy aktywujemy okno po przyj¶ciu nowej wiadomo¶ci */
 	bool showNewMessagesNum; /*!< czy pokazujemy liczbê nowych wiadomo¶ci w tytule nieaktywnego okna */

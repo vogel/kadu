@@ -209,8 +209,8 @@ public:
 	QDateTime getLastMsgTime();
 	QPixmap icon();
 
-	void storeGeometry();
-	void restoreGeometry();
+	void kaduStoreGeometry();
+	void kaduRestoreGeometry();
 
 	unsigned int countMessages() { return body->countMessages(); }
 

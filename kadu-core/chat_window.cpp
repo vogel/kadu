@@ -35,7 +35,7 @@ ChatWindow::ChatWindow(QWidget *parent)
 
 ChatWindow::~ChatWindow()
 {
-	storeGeometry();
+	kaduStoreGeometry();
 }
 
 void ChatWindow::configurationUpdated()
@@ -67,7 +67,7 @@ void ChatWindow::setChatWidget(ChatWidget *newChatWidget)
 
 	setFocusProxy(currentChatWidget);
 
-	restoreGeometry();
+	kaduRestoreGeometry();
 	updateTitle();
 }
 
@@ -77,7 +77,7 @@ ChatWidget * ChatWindow::chatWidget()
 }
 
 // TODO: zrobi� od pocz�tku, strukturalnie spieprzone
-void ChatWindow::restoreGeometry()
+void ChatWindow::kaduRestoreGeometry()
 {
 	const UserGroup *group = currentChatWidget->users();
 	QRect geometry = chat_manager->getChatWidgetProperty(group, "Geometry").toRect();
@@ -123,13 +123,13 @@ void ChatWindow::restoreGeometry()
 	setGeometry(geometry);
 
 	currentChatWidget->setGeometry(geometry);
-// TODO: 0.6.5
-// 	currentChatWidget->restoreGeometry();
+
+	currentChatWidget->kaduRestoreGeometry();
 }
 
-void ChatWindow::storeGeometry()
+void ChatWindow::kaduStoreGeometry()
 {
-	currentChatWidget->storeGeometry();
+	currentChatWidget->kaduStoreGeometry();
 
 	const UserGroup *users = currentChatWidget->users();
 	chat_manager->setChatWidgetProperty(users, "Geometry", QRect(pos().x(), pos().y(), size().width(), size().height()));

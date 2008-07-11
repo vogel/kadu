@@ -794,7 +794,7 @@ unsigned int ChatWidget::newMessagesCount() const
 	return NewMessagesCount;
 }
 
-void ChatWidget::restoreGeometry()
+void ChatWidget::kaduRestoreGeometry()
 {
 	QList<int> vertSizes = toIntList(chat_manager->getChatWidgetProperty(Users, "VerticalSizes").toList());
 	if (vertSizes.empty() && Users->count() == 1)
@@ -827,16 +827,16 @@ void ChatWidget::restoreGeometry()
 	}
 }
 
-void ChatWidget::storeGeometry()
+void ChatWidget::kaduStoreGeometry()
 {
-// 	QList<int> sizes = vertSplit->sizes();
-// 	chat_manager->setChatWidgetProperty(Users, "VerticalSizes", toVariantList(sizes));
+	QList<int> sizes = vertSplit->sizes();
+	chat_manager->setChatWidgetProperty(Users, "VerticalSizes", toVariantList(sizes));
 
-// 	if (Users->count() == 1)
-// 		(*Users->begin()).setData("VerticalSizes", QString("%1,%2").arg(sizes[0]).arg(sizes[1]));
+	if (Users->count() == 1)
+		(*Users->begin()).setData("VerticalSizes", QString("%1,%2").arg(sizes[0]).arg(sizes[1]));
 
-// 	if (horizSplit)
-// 		chat_manager->setChatWidgetProperty(Users, "HorizontalSizes", toVariantList(horizSplit->sizes()));
+	if (horizSplit)
+		chat_manager->setChatWidgetProperty(Users, "HorizontalSizes", toVariantList(horizSplit->sizes()));
 }
 
 void ChatWidget::leaveConference()
