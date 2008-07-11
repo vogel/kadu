@@ -1,5 +1,6 @@
 set (SOURCES
 	advanced_userlist.cpp
+	main.cpp
 )
 
 set (MOC_SOURCES

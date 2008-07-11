@@ -33,7 +33,6 @@ UserGroup::UserGroup(const QList<UserListElement> &group)
 	addUsers(group);
 }
 
-#include "kadu.h"
 UserGroup::~UserGroup()
 { 
 	int i = 0;
