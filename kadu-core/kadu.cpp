@@ -1150,7 +1150,12 @@ void Kadu::changeStatusSlot()
 {
 	QAction *action = dynamic_cast<QAction *>(sender());
 	if (action)
-		slotHandleState(action->data().toInt());
+	{
+		int data = action->data().toInt();
+		foreach (QAction *action, changeStatusActionGroup->actions())
+			action->setChecked(action->data().toInt() == data);
+		slotHandleState(data);
+	}
 }
 
 void Kadu::changePrivateStatusSlot(bool toggled)
@@ -1660,6 +1665,7 @@ void Kadu::createStatusPopupMenu()
 	dockMenu = new QMenu(this);
 
 	changeStatusActionGroup = new QActionGroup(this);
+	changeStatusActionGroup->setExclusive(false); // HACK
 
 	GaduStatus s;
 
