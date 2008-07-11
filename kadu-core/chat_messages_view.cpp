@@ -87,8 +87,8 @@ QString ChatMessagesView::formatMessage(ChatMessage *message, ChatMessage *after
 		if (after && !includeHeader)
 			includeHeader =
 				(after->type() != TypeSystem) &&
-				(message->date().toTime_t() - after->date().toTime_t() > (CfgNoHeaderInterval * 60)) ||
-				(message->sender() != after->sender());
+				((message->date().toTime_t() - after->date().toTime_t() > (CfgNoHeaderInterval * 60)) ||
+				 (message->sender() != after->sender()));
 
 		if (includeHeader)
 		{
