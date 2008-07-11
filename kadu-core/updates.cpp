@@ -43,31 +43,34 @@ void Updates::run()
 
 bool Updates::ifNewerVersion(const QString &newestversion)
 {
-	QString version(VERSION);
+	QString actual = stripVersion(VERSION);
+	QString newest = stripVersion(newestversion);
 
-	return (stripVersion(newestversion) > stripVersion(version));
+	if (newest.length() > actual.length())
+		actual.append(QString().fill('0', newest.length() - actual.length()));
+	else
+		newest.append(QString().fill('0', actual.length() - newest.length()));
+
+	return (newest.toUInt() > actual.toUInt());
 }
 
-unsigned int Updates::stripVersion(const QString &stripversion)
+QString Updates::stripVersion(const QString stripversion)
 {
+	bool cs = false; // find and replace are NOT case sensitive
 	QString version = stripversion;
 
-	version.replace("-svn", "01");
-	version.replace("-alpha", "02");
-	version.replace("-beta", "03");
-	version.replace("-rc", "04");
-	version.remove(".");
+	if (version.find("-svn", 0, cs) != -1)
+		version.replace("-svn", "01", cs);
+	else if (version.find("-alpha", 0, cs) != -1)
+		version.replace("-alpha", "02", cs);
+	else if (version.find("-beta", 0, cs) != -1)
+		version.replace("-beta", "03", cs);
+	else if (version.find("-rc", 0, cs) != -1)
+		version.replace("-rc", "04", cs);
+	else
+		version.append("05");
 
-	switch (version.length())
-	{
-		case 3: version.append("0500"); break;
-		case 4: version.append("050"); break;
-		case 5: version.append("05"); break;
-		case 6: version.append("0"); break;
-		default: break;
-	}
-
-	return (version.toUInt());
+	return (version.remove("."));
 }
 
 void Updates::initModule()

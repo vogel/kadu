@@ -32,7 +32,7 @@ class Updates : public QObject
 		Updates(UinType uin);
 		virtual ~Updates();
 		static bool ifNewerVersion(const QString &newestversion);
-		static unsigned int stripVersion(const QString &version);
+		static QString stripVersion(const QString stripversion);
 };
 
 #endif
