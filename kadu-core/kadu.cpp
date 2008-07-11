@@ -1146,44 +1146,11 @@ void Kadu::sendMessage(UserListElement elem)
 	kdebugf2();
 }
 
-void Kadu::goOnline()
+void Kadu::changeStatusSlot()
 {
-	slotHandleState(0);
-}
-
-void Kadu::goOnlineDesc()
-{
-	slotHandleState(1);
-}
-
-void Kadu::goBusy()
-{
-	slotHandleState(2);
-}
-
-void Kadu::goBusyDesc()
-{
-	slotHandleState(3);
-}
-
-void Kadu::goInvisible()
-{
-	slotHandleState(4);
-}
-
-void Kadu::goInvisibleDesc()
-{
-	slotHandleState(5);
-}
-
-void Kadu::goOffline()
-{
-	slotHandleState(6);
-}
-
-void Kadu::goOfflineDesc()
-{
-	slotHandleState(7);
+	QAction *action = dynamic_cast<QAction *>(sender());
+	if (action)
+		slotHandleState(action->data().toInt());
 }
 
 void Kadu::changePrivateStatusSlot(bool toggled)
@@ -1698,35 +1665,43 @@ void Kadu::createStatusPopupMenu()
 
 	changeStatusToOnline = new QAction(icons_manager->loadIcon(s.pixmapName(Online, false, false)), tr("Online"), this);
 	changeStatusToOnline->setCheckable(true);
-	connect(changeStatusToOnline, SIGNAL(triggered()), this, SLOT(goOnline()));
+	changeStatusToOnline->setData(0);
+	connect(changeStatusToOnline, SIGNAL(triggered()), this, SLOT(changeStatusSlot()));
 
 	changeStatusToOnlineDesc = new QAction(icons_manager->loadIcon(s.pixmapName(Online, true, false)), tr("Online (d.)"), this);
 	changeStatusToOnlineDesc->setCheckable(true);
-	connect(changeStatusToOnlineDesc, SIGNAL(triggered()), this, SLOT(goOnlineDesc()));
+	changeStatusToOnlineDesc->setData(1);
+	connect(changeStatusToOnlineDesc, SIGNAL(triggered()), this, SLOT(changeStatusSlot()));
 
 	changeStatusToBusy = new QAction(icons_manager->loadIcon(s.pixmapName(Busy, false, false)), tr("Busy"), this);
 	changeStatusToBusy->setCheckable(true);
-	connect(changeStatusToBusy, SIGNAL(triggered()), this, SLOT(goBusy()));
+	changeStatusToBusy->setData(2);
+	connect(changeStatusToBusy, SIGNAL(triggered()), this, SLOT(changeStatusSlot()));
 
 	changeStatusToBusyDesc = new QAction(icons_manager->loadIcon(s.pixmapName(Busy, true, false)), tr("Busy (d.)"), this);
 	changeStatusToBusyDesc->setCheckable(true);
-	connect(changeStatusToBusyDesc, SIGNAL(triggered()), this, SLOT(goBusyDesc()));
+	changeStatusToBusyDesc->setData(3);
+	connect(changeStatusToBusyDesc, SIGNAL(triggered()), this, SLOT(changeStatusSlot()));
 
 	changeStatusToInvisible = new QAction(icons_manager->loadIcon(s.pixmapName(Invisible, false, false)), tr("Invisible"), this);
 	changeStatusToInvisible->setCheckable(true);
-	connect(changeStatusToInvisible, SIGNAL(triggered()), this, SLOT(goInvisible()));
+	changeStatusToInvisible->setData(4);
+	connect(changeStatusToInvisible, SIGNAL(triggered()), this, SLOT(changeStatusSlot()));
 
 	changeStatusToInvisibleDesc = new QAction(icons_manager->loadIcon(s.pixmapName(Invisible, true, false)), tr("Invisible (d.)"), this);
 	changeStatusToInvisibleDesc->setCheckable(true);
-	connect(changeStatusToInvisibleDesc, SIGNAL(triggered()), this, SLOT(goInvisibleDesc()));
+	changeStatusToInvisibleDesc->setData(5);
+	connect(changeStatusToInvisibleDesc, SIGNAL(triggered()), this, SLOT(changeStatusSlot()));
 
 	changeStatusToOffline = new QAction(icons_manager->loadIcon(s.pixmapName(Offline, false, false)), tr("Offline"), this);
 	changeStatusToOffline->setCheckable(true);
-	connect(changeStatusToOffline, SIGNAL(triggered()), this, SLOT(goOffline()));
+	changeStatusToOffline->setData(6);
+	connect(changeStatusToOffline, SIGNAL(triggered()), this, SLOT(changeStatusSlot()));
 
 	changeStatusToOfflineDesc = new QAction(icons_manager->loadIcon(s.pixmapName(Offline, true, false)), tr("Offline (d.)"), this);
 	changeStatusToOfflineDesc->setCheckable(true);
-	connect(changeStatusToOfflineDesc, SIGNAL(triggered()), this, SLOT(goOfflineDesc()));
+	changeStatusToOfflineDesc->setData(7);
+	connect(changeStatusToOfflineDesc, SIGNAL(triggered()), this, SLOT(changeStatusSlot()));
 
 	changePrivateStatus = new QAction(tr("Private"), this);
 	changePrivateStatus->setCheckable(true);

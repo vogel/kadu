@@ -122,14 +122,7 @@ private slots:
 	void openRecentChats(int index);
 	void openChatWith();
 
-	void goOnline();
-	void goOnlineDesc();
-	void goBusy();
-	void goBusyDesc();
-	void goInvisible();
-	void goInvisibleDesc();
-	void goOffline();
-	void goOfflineDesc();
+	void changeStatusSlot();
 
 	void changePrivateStatusSlot(bool toggled);
 
