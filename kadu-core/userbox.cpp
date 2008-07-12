@@ -942,7 +942,7 @@ void UserBox::refreshBackground()
 		image = *backgroundImage;
 
 	//TODO 0.6.5:
-// 	setPaletteBackgroundPixmap(image);
+// 	viewport()->setPaletteBackgroundPixmap(QPixmap::fromImage(image));
 }
 
 void UserBox::doubleClickedSlot(Q3ListBoxItem *item)
@@ -1432,6 +1432,8 @@ void UserBox::contextMenuEvent(QContextMenuEvent *event)
 		return;
 
 	QMenu *menu = new QMenu(this);
+//workround. See: http://www.kadu.net/forum/viewtopic.php?p=84527#84527
+	menu->setStyleSheet("color:" + QApplication::palette().color(QPalette::WindowText).name());
 
 	foreach (ActionDescription *actionDescription, UserBox::UserBoxActions)
 	{
