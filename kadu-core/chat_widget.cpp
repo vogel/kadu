@@ -156,13 +156,13 @@ void ChatWidget::configurationUpdated()
 
 	if (userbox)
 	{
-		userbox->viewport()->setStyleSheet("background-color:" + config_file.readColorEntry("Look","UserboxBgColor").name());
-		userbox->setStyleSheet("color:" + config_file.readColorEntry("Look","UserboxFgColor").name());
+		userbox->viewport()->setStyleSheet(QString("QWidget {background-color:%1}").arg(config_file.readColorEntry("Look","UserboxBgColor").name()));
+		userbox->setStyleSheet(QString("Q3ListView {color:%1}").arg(config_file.readColorEntry("Look","UserboxFgColor").name()));
 		userbox->Q3ListBox::setFont(config_file.readFontEntry("Look","UserboxFont"));
 	}
 
 	Edit->setFont(config_file.readFontEntry("Look","ChatFont"));
- 	Edit->inputBox()->setStyleSheet("background-color:" + config_file.readColorEntry("Look","ChatTextBgColor").name());
+ 	Edit->inputBox()->setStyleSheet(QString("QTextEdit {background-color:%1}").arg(config_file.readColorEntry("Look","ChatTextBgColor").name()));
 	AutoSend = config_file.readBoolEntry("Chat", "AutoSend");
 	Edit->inputBox()->setAutosend(AutoSend);
 

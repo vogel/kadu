@@ -1036,7 +1036,7 @@ void Kadu::changeAppearance()
 	if (config_file.readBoolEntry("Look", "ShowInfoPanel"))
 	{
 		InfoPanel->show();
-		QString style = narg("background-color:%1; color:%2", config_file.readColorEntry("Look","InfoPanelBgColor").name(), config_file.readColorEntry("Look","InfoPanelFgColor").name());
+		QString style = narg("QTextBrowser {background-color:%1; color:%2}", config_file.readColorEntry("Look","InfoPanelBgColor").name(), config_file.readColorEntry("Look","InfoPanelFgColor").name());
 
 		InfoPanel->setStyleSheet(style);
 		InfoPanel->QTextEdit::setFont(config_file.readFontEntry("Look", "PanelFont"));

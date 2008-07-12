@@ -900,8 +900,8 @@ void UserBox::resizeEvent(QResizeEvent *r)
 void UserBox::refreshBackground()
 {
 	//hack:
-	viewport()->setStyleSheet("background-color:" + config_file.readColorEntry("Look","UserboxBgColor").name());
-	setStyleSheet("color:" + config_file.readColorEntry("Look","UserboxFgColor").name());
+	viewport()->setStyleSheet(QString("QWidget {background-color:%1}").arg(config_file.readColorEntry("Look","UserboxBgColor").name()));
+	setStyleSheet(QString("QFrame {color:%1}").arg(config_file.readColorEntry("Look","UserboxFgColor").name()));
 
 	setStaticBackground(backgroundImage);
 	
@@ -1432,8 +1432,6 @@ void UserBox::contextMenuEvent(QContextMenuEvent *event)
 		return;
 
 	QMenu *menu = new QMenu(this);
-//workround. See: http://www.kadu.net/forum/viewtopic.php?p=84527#84527
-	menu->setStyleSheet("color:" + QApplication::palette().color(QPalette::WindowText).name());
 
 	foreach (ActionDescription *actionDescription, UserBox::UserBoxActions)
 	{
