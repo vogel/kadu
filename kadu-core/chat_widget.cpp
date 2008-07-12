@@ -157,7 +157,7 @@ void ChatWidget::configurationUpdated()
 	if (userbox)
 	{
 		userbox->viewport()->setStyleSheet(QString("QWidget {background-color:%1}").arg(config_file.readColorEntry("Look","UserboxBgColor").name()));
-		userbox->setStyleSheet(QString("Q3ListView {color:%1}").arg(config_file.readColorEntry("Look","UserboxFgColor").name()));
+		userbox->setStyleSheet(QString("QFrame {color:%1}").arg(config_file.readColorEntry("Look","UserboxFgColor").name()));
 		userbox->Q3ListBox::setFont(config_file.readFontEntry("Look","UserboxFont"));
 	}
 
