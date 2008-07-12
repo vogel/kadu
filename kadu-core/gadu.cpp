@@ -99,7 +99,7 @@ void ConnectionTimeoutTimer::off()
 	if (connectiontimeout_object)
 	{
 		connectiontimeout_object->stop();
-		delete connectiontimeout_object;
+		connectiontimeout_object->deleteLater();
 		connectiontimeout_object = 0;
 	}
 }
