@@ -899,10 +899,12 @@ void UserBox::resizeEvent(QResizeEvent *r)
 
 void UserBox::refreshBackground()
 {
-	setPaletteBackgroundColor(config_file.readColorEntry("Look","UserboxBgColor"));
-	setPaletteForegroundColor(config_file.readColorEntry("Look","UserboxFgColor"));
-	setStaticBackground(backgroundImage);
+	//hack:
+	viewport()->setStyleSheet("background-color:" + config_file.readColorEntry("Look","UserboxBgColor").name());
+	setStyleSheet("color:" + config_file.readColorEntry("Look","UserboxFgColor").name());
 
+	setStaticBackground(backgroundImage);
+	
 	if (!backgroundImage || !fancy)
 		return;
 
@@ -939,6 +941,7 @@ void UserBox::refreshBackground()
 	else // TILED
 		image = *backgroundImage;
 
+	//TODO 0.6.5:
 // 	setPaletteBackgroundPixmap(image);
 }
 
@@ -957,7 +960,7 @@ void UserBox::currentChangedSlot(Q3ListBoxItem *item)
 	/*
 	TODO 0.6.6: obejście dziwnego problemu z Q3ListBox.
 	Pomimo kilknięcia, currentItem() wskazuje na poprzednio aktywny element.
-	Blokujemy sygnał, aby ponownie nie wykonwywać tej samem metody 
+	Blokujemy sygnał, aby ponownie nie wykonywać tej samem metody 
 	*/
 	blockSignals(true);
 	setCurrentItem(item);

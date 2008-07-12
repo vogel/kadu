@@ -156,8 +156,8 @@ void ChatWidget::configurationUpdated()
 
 	if (userbox)
 	{
-		userbox->setPaletteBackgroundColor(config_file.readColorEntry("Look","UserboxBgColor"));
-		userbox->setPaletteForegroundColor(config_file.readColorEntry("Look","UserboxFgColor"));
+		userbox->viewport()->setStyleSheet("background-color:" + config_file.readColorEntry("Look","UserboxBgColor").name());
+		userbox->setStyleSheet("color:" + config_file.readColorEntry("Look","UserboxFgColor").name());
 		userbox->Q3ListBox::setFont(config_file.readFontEntry("Look","UserboxFont"));
 	}
 
