@@ -102,7 +102,7 @@ QVariant UserListElement::setProtocolData(const QString &protocolName, const QSt
 		return QVariant();
 	}
 
-	ProtocolData protoData = privateData->protocols[protocolName];
+	ProtocolData &protoData = privateData->protocols[protocolName];
 	QVariant old;
 
 	if (protoData.data.contains(name))
@@ -168,7 +168,7 @@ QVariant UserListElement::protocolData(const QString &protocolName, const QStrin
 
 	QVariant result;
 	if (privateData->protocols[protocolName].data.contains(name))
-		QVariant result = privateData->protocols[protocolName].data.value(name);
+		result = privateData->protocols[protocolName].data.value(name);
 
 	//privateData->unlock();
 	return result;
