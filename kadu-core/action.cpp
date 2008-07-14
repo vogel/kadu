@@ -110,14 +110,42 @@ ActionDescription::~ActionDescription()
 	KaduActions.remove(this);
 }
 
+void ActionDescription::actionDestroyed(QObject *action)
+{
+	KaduAction *kaduAction = dynamic_cast<KaduAction *>(action);
+	if (!kaduAction)
+		return;
+
+	KaduMainWindow *kaduMainWindow = dynamic_cast<KaduMainWindow *>(action->parent());
+	if (!kaduMainWindow)
+		return;
+
+	MappedActions.remove(kaduMainWindow, kaduAction);
+}
+
 KaduAction * ActionDescription::getAction(KaduMainWindow *kaduMainWindow)
 {
 	KaduAction *result = new KaduAction(this, kaduMainWindow);
+	MappedActions.insert(kaduMainWindow, result);
 
+	connect(result, SIGNAL(destroyed(QObject *)), this, SLOT(actionDestroyed(QObject *)));
 	connect(result, SIGNAL(toggled(QAction *, bool)), Object, Slot);
 	connect(result, SIGNAL(triggered(QAction *, bool)), Object, Slot);
 
 	return result;
+}
+
+QList<KaduAction *> ActionDescription::getActions()
+{
+	return MappedActions.values();
+}
+
+QList<KaduAction *> ActionDescription::getActions(KaduMainWindow *kaduMainWindow)
+{
+	if (MappedActions.contains(kaduMainWindow))
+		return MappedActions.values(kaduMainWindow);
+	else
+		return QList<KaduAction *>();
 }
 
 Actions::Actions()
@@ -143,7 +171,7 @@ QAction * Actions::getAction(const QString &name, KaduMainWindow *kaduMainWindow
 	if (!contains(name))
 		return 0;
 
-	KaduAction *result =  (*this)[name]->getAction(kaduMainWindow);
+	KaduAction *result = (*this)[name]->getAction(kaduMainWindow);
 	kaduMainWindow->addAction(result);
 	return result;
 }

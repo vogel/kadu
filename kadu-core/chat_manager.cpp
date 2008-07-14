@@ -8,11 +8,13 @@
  ***************************************************************************/
 
 #include "activate.h"
+#include "chat_edit_box.h"
 #include "chat_message.h"
 #include "chat_window.h"
 #include "config_file.h"
 #include "custom_input.h"
 #include "debug.h"
+#include "icons_manager.h"
 #include "ignore.h"
 #include "kadu.h"
 #include "message_box.h"
@@ -68,7 +70,7 @@ ChatManager::ChatManager(QObject *parent)
 	sendActionDescription = new ActionDescription(
 		ActionDescription::TypeChat, "sendAction",
 		this, SLOT(sendActionActivated(QAction *, bool)),
-		"SendMessage", tr("&Send"), true
+		"SendMessage", tr("&Send"), false
 	);
 
 	whoisActionDescription = new ActionDescription(
@@ -128,6 +130,8 @@ ChatManager::ChatManager(QObject *parent)
 
 	connect(&refreshTitlesTimer, SIGNAL(timeout()), this, SLOT(refreshTitles()));
 	connect(userlist, SIGNAL(usersStatusChanged(QString)), this, SLOT(refreshTitlesLater()));
+
+	configurationUpdated();
 
 	kdebugf2();
 }
@@ -335,11 +339,21 @@ void ChatManager::sendActionActivated(QAction *sender, bool toggled)
 		return;
 
 	ChatWidget *chatWidget = kaduMainWindow->getChatWidget();
+	// TODO: split in two ?
 	if (chatWidget)
 		if (chatWidget->waitingForACK())
+		{
 			chatWidget->cancelMessage();
+		}
 		else
+		{
+			const QList<KaduAction *> & actions = sendActionDescription->getActions(chatWidget->getChatEditBox());
+			printf("found %d actions\n", actions.size());
+			foreach (KaduAction *action, actions)
+				action->setIcon(icons_manager->loadIcon("CancelMessage"));
+
 			chatWidget->sendMessage();
+		}
 
 	kdebugf2();
 }
@@ -834,7 +848,8 @@ void ChatManager::configurationUpdated()
 		userlist->removePerContactNonProtocolConfigEntry("chat_vertical_sizes");
 	}
 
-// 	KaduActions["autoSendAction"]->setAllChecked(config_file.readBoolEntry("Chat", "AutoSend"));
+	foreach (QAction *action, autoSendActionDescription->getActions())
+		action->setChecked(config_file.readBoolEntry("Chat", "AutoSend"));
 
 	kdebugf2();
 }

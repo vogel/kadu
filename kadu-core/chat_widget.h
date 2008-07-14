@@ -75,6 +75,9 @@ private:
 
 	bool decodeLocalFiles(QDropEvent *event, QStringList &files);
 
+	void changeSendToCancelSend();
+	void changeCancelSendToSend();
+
 private slots:
 	/**
 		\fn void changeColor()
@@ -186,6 +189,8 @@ public:
 		Zwraca wska�nik do userboxa konferencji, je�li on istnieje
 	**/
 	UserBox * getUserbox();
+
+	ChatEditBox * getChatEditBox() { return Edit; }
 
 	/**
 		\fn bool autoSend() const

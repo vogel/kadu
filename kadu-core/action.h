@@ -10,6 +10,7 @@
 #ifndef ACTION_H
 #define ACTION_H
 
+#include <QtCore/QMultiMap>
 #include <QtGui/QAction>
 #include <QtGui/QIcon>
 
@@ -60,6 +61,8 @@ class ActionDescription : public QObject
 
 	friend class KaduAction;
 
+	QMultiMap<KaduMainWindow *, KaduAction *> MappedActions;
+
 public:
 
 	// TODO 0.6.7: this sux, but will be better
@@ -87,6 +90,9 @@ private:
 	bool Checkable;
 	ActionBoolCallback EnableCallback;
 
+private slots:
+	void actionDestroyed(QObject *action);
+
 public:
 	ActionDescription(ActionType Type, const QString &Name, QObject *Object, char *Slot,
 		const QString &IconName, const QString &Text, bool Checkable = false, const QString &CheckedText = "", ActionBoolCallback enableCallback = 0);
@@ -94,6 +100,8 @@ public:
 
 	QString name() { return Name; }
 	KaduAction * getAction(KaduMainWindow *kaduMainWindow);
+	QList<KaduAction *> getActions();
+	QList<KaduAction *> getActions(KaduMainWindow *kaduMainWindow);
 
 	QString text() { return Text; }
 	QString iconName() { return IconName; }

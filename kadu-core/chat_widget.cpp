@@ -11,6 +11,7 @@
 #include <QtGui/QSplitter>
 #include <QtGui/QVBoxLayout>
 
+#include "action.h"
 #include "chat_edit_box.h"
 #include "chat_manager.h"
 #include "chat_message.h"
@@ -137,7 +138,6 @@ ChatWidget::~ChatWidget()
 	disconnectAcknowledgeSlots();
 	disconnect(gadu, SIGNAL(imageReceivedAndSaved(UinType,uint32_t,uint32_t,const QString&)),
 		body, SLOT(imageReceivedAndSaved(UinType,uint32_t,uint32_t,const QString&)));
-
 
 	if (userbox)
 		delete userbox;
@@ -529,9 +529,8 @@ void ChatWidget::cancelMessage()
 	Edit->inputBox()->setFocus();
 
 	WaitingForACK = false;
-// 	KaduActions["sendAction"]->setIcons(Users->toUserListElements(),
-// 		icons_manager->loadIcon("SendMessage"));
-// 	KaduActions["sendAction"]->setTexts(Users->toUserListElements(), tr("&Send"));
+
+	changeCancelSendToSend();
 	kdebugf2();
 }
 
@@ -551,6 +550,9 @@ void ChatWidget::messageAcceptedSlot()
 	writeMyMessage();
 	emit messageSentAndConfirmed(Users->toUserListElements(), myLastMessage);
 	disconnectAcknowledgeSlots();
+
+	changeCancelSendToSend();
+
 	kdebugf2();
 }
 
@@ -568,6 +570,24 @@ void ChatWidget::disconnectAcknowledgeSlots()
 	disconnect(CurrentProtocol, SIGNAL(messageNotDelivered(const QString&)), this, SLOT(messageNotDeliveredSlot(const QString&)));
 	disconnect(CurrentProtocol, SIGNAL(messageAccepted()), this, SLOT(messageAcceptedSlot()));
 	kdebugf2();
+}
+
+void ChatWidget::changeSendToCancelSend()
+{
+	foreach (QAction *action, chat_manager->sendActionDescription->getActions())
+	{
+		action->setIcon(icons_manager->loadIcon("CancelMessage"));
+		action->setText(tr("&Cancel"));
+	}
+}
+
+void ChatWidget::changeCancelSendToSend()
+{
+	foreach (QAction *action, chat_manager->sendActionDescription->getActions())
+	{
+		action->setIcon(icons_manager->loadIcon("SendMessage"));
+		action->setText(tr("&Send"));
+	}
 }
 
 /* sends the message typed */
@@ -594,9 +614,8 @@ void ChatWidget::sendMessage()
 		Edit->inputBox()->setReadOnly(true);
 		Edit->inputBox()->setEnabled(false);
 		WaitingForACK = true;
-// 		KaduActions["sendAction"]->setIcons(Users->toUserListElements(),
-// 			icons_manager->loadIcon("CancelMessage"));
-// 		KaduActions["sendAction"]->setTexts(Users->toUserListElements(), tr("&Cancel"));
+
+		changeSendToCancelSend();
 	}
 	QString message = Edit->inputBox()->toPlainText();
 	myLastMessage = message;
