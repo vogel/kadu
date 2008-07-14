@@ -236,7 +236,7 @@ void ChatMessagesView::configurationUpdated()
 
 	// background color of chat
 // 	QString bgImage = KaduParser::parse(config_file.readEntry("Look", "ChatBgImage"), usrs[0]);
- 	setStyleSheet(QString("QTextBrowser {background-color:%1}").arg(config_file.readColorEntry("Look", "ChatBgColor").name()));
+ 	viewport()->setStyleSheet(QString("background-color:%1").arg(config_file.readColorEntry("Look", "ChatBgColor").name()));
 // 	if (!bgImage.isEmpty() && QFile::exists(bgImage))
 // 		brush.setPixmap(QPixmap(bgImage));
 
