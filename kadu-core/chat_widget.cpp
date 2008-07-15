@@ -37,7 +37,7 @@ ChatWidget::ChatWidget(Protocol *initialProtocol, const UserListElements &usrs, 
 	: QWidget(parent),
 	CurrentProtocol(initialProtocol), Users(new UserGroup(usrs)), index(0), actcolor(),
 	emoticon_selector(0), color_selector(0), WaitingForACK(false), userbox(0), horizSplit(0),
-	activationCount(0), NewMessagesCount(0)
+	activationCount(0), NewMessagesCount(0), Edit(0)
 {
 	kdebugf();
 	QList<int> sizes;
@@ -513,7 +513,8 @@ void ChatWidget::setAutoSend(bool auto_send)
 {
 	kdebugf();
 	AutoSend = auto_send;
-	Edit->inputBox()->setAutosend(auto_send);
+	if (Edit && Edit->inputBox())
+		Edit->inputBox()->setAutosend(auto_send);
 	kdebugf2();
 }
 

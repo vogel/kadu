@@ -863,9 +863,10 @@ void ChatManager::autoSendActionCreated(KaduAction *action)
 
 void ChatManager::autoSendActionCheck()
 {
-	bool check = config_file.readBoolEntry("Chat", "AutoSend");
-	foreach (QAction *action, autoSendActionDescription->actions())
-		action->setChecked(check);
+// TODO: 0.6.5
+// 	bool check = config_file.readBoolEntry("Chat", "AutoSend");
+// 	foreach (QAction *action, autoSendActionDescription->actions())
+// 		action->setChecked(check);
 }
 
 void ChatManager::configurationUpdated()
