@@ -619,7 +619,7 @@ void SmsConfigurationUiHandler::sendSmsActionActivated(QAction *sender, bool tog
 	KaduMainWindow *window = dynamic_cast<KaduMainWindow *>(sender->parent());
 	if (window)
 	{
-		UserListElements users = window->getUserListElements();
+		UserListElements users = window->userListElements();
 
 		if (users.count() == 1 && !users[0].mobile().isEmpty())
 		{

@@ -51,9 +51,11 @@ extern "C" void history_close()
 	kdebugf2();
 }
 
-bool disableNonProtocolUles(const UserListElements &ules)
+bool disableNonProtocolUles(KaduAction *action)
 {
 	kdebugf();
+
+	const UserListElements &ules = action->userListElements();
 
 	if (!ules.count())
 		return false;
@@ -168,7 +170,7 @@ void HistoryModule::historyActionActivated(QAction *sender, bool toggled)
 	KaduMainWindow *window = dynamic_cast<KaduMainWindow *>(sender->parent());
 	if (window)
 	{
-		UserListElements users = window->getUserListElements();
+		UserListElements users = window->userListElements();
 
 		if (users.count() > 0)
 			foreach(const UserListElement &user, users)
@@ -189,7 +191,7 @@ void HistoryModule::clearHistoryActionActivated(QAction *sender, bool toggled)
 		return;
 
 	UinsList uins;
-	UserListElements users = window->getUserListElements();
+	UserListElements users = window->userListElements();
 
 	foreach(const UserListElement &user, users)
 		if (user.usesProtocol("Gadu"))

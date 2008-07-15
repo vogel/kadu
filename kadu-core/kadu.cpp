@@ -131,11 +131,11 @@ void Kadu::keyPressEvent(QKeyEvent *e)
 //	kdebugf2();
 }
 
-bool disableNonIdUles(const UserListElements &ules)
+bool disableNonIdUles(KaduAction *action)
 {
 	kdebugf();
 
-	foreach(const UserListElement &user, ules)
+	foreach(const UserListElement &user, action->userListElements())
 		if (!user.usesProtocol("Gadu"))
 			return false;
 
@@ -143,11 +143,11 @@ bool disableNonIdUles(const UserListElements &ules)
 	return true;
 }
 
-bool disableContainsSelfUles(const UserListElements &ules)
+bool disableContainsSelfUles(KaduAction *action)
 {
 	kdebugf();
 
-	foreach(const UserListElement &user, ules)
+	foreach(const UserListElement &user, action->userListElements())
 		if (user.usesProtocol("Gadu") && user.ID("Gadu") == kadu->myself().ID("Gadu"))
 			return false;
 
@@ -155,11 +155,11 @@ bool disableContainsSelfUles(const UserListElements &ules)
 	return true;
 }
 
-bool disableOfflineToUser(const UserListElements &ules)
+bool disableOfflineToUser(KaduAction *action)
 {
 	kdebugf();
 
-	if (!disableNonIdUles(ules))
+	if (!disableNonIdUles(action))
 		return false;
 
 	if (!config_file.readBoolEntry("General", "PrivateStatus"))
@@ -169,11 +169,11 @@ bool disableOfflineToUser(const UserListElements &ules)
 	return true;
 }
 
-bool disableNotify(const UserListElements &ules)
+bool disableNotify(KaduAction *action)
 {
 	kdebugf();
 
-	if (!disableNonIdUles(ules))
+	if (!disableNonIdUles(action))
 		return false;
 
 	if (config_file.readBoolEntry("Notify", "NotifyAboutAll"))
@@ -183,66 +183,67 @@ bool disableNotify(const UserListElements &ules)
 	return true;
 }
 
-bool disableNotOneUles(const UserListElements &ules)
+bool disableNotOneUles(KaduAction *action)
 {
 	kdebugf();
 
-	if (ules.count() != 1)
+	if (action->userListElements().count() != 1)
 		return false;
 
 	kdebugf2();
 	return true;
 }
 
-bool disableNoGaduUle(const UserListElements &ules)
+bool disableNoGaduUle(KaduAction *action)
 {
 	kdebugf();
 
-	if (!disableNotOneUles(ules))
+	if (!disableNotOneUles(action))
 		return false;
 
-	if (!ules[0].usesProtocol("Gadu"))
+	if (!action->userListElements()[0].usesProtocol("Gadu"))
 		return false;
 
 	kdebugf2();
 	return true;
 }
 
-bool disableNoGaduDescription(const UserListElements &ules)
+bool disableNoGaduDescription(KaduAction *action)
 {
 	kdebugf();
 
-	if (!disableNoGaduUle(ules))
+	if (!disableNoGaduUle(action))
 		return false;
 
-	if (ules[0].status("Gadu").description().isEmpty())
+	if (action->userListElements()[0].status("Gadu").description().isEmpty())
 		return false;
 
 	kdebugf2();
 	return true;
 }
 
-bool disableNoGaduDescriptionUrl(const UserListElements &ules)
+bool disableNoGaduDescriptionUrl(KaduAction *action)
 {
 	kdebugf();
 
-	if (!disableNoGaduDescription(ules))
+	if (!disableNoGaduDescription(action))
 		return false;
 
-	if (ules[0].status("Gadu").description().indexOf(HtmlDocument::urlRegExp()) < 0)
+	if (action->userListElements()[0].status("Gadu").description().indexOf(HtmlDocument::urlRegExp()) < 0)
 		return false;
 
 	kdebugf2();
 	return true;
 }
 
-bool disableNoEMail(const UserListElements &ules)
+bool disableNoEMail(KaduAction *action)
 {
 	kdebugf();
 
-	if (!disableNotOneUles(ules))
+	if (!disableNotOneUles(action))
 		return false;
 
+	const UserListElements &ules = action->userListElements();
 	if (ules[0].email().isEmpty() || ules[0].email().indexOf(HtmlDocument::mailRegExp()) < 0)
 		return false;
 
@@ -629,7 +630,7 @@ void Kadu::writeEMailActionActivated(QAction *sender, bool toggled)
 	if (!window)
 		return;
 
-	UserListElements users = window->getUserListElements();
+	UserListElements users = window->userListElements();
 	if (users.count() < 1)
 		return;
 
@@ -648,7 +649,7 @@ void Kadu::copyDescriptionActionActivated(QAction *sender, bool toggled)
 	if (!window)
 		return;
 
-	UserListElements users = window->getUserListElements();
+	UserListElements users = window->userListElements();
 	if (users.count() < 1)
 		return;
 
@@ -674,7 +675,7 @@ void Kadu::openDescriptionLinkActionActivated(QAction *sender, bool toggled)
 	if (!window)
 		return;
 
-	UserListElements users = window->getUserListElements();
+	UserListElements users = window->userListElements();
 	if (users.count() < 1)
 		return;
 
@@ -702,7 +703,7 @@ void Kadu::copyPersonalInfoActionActivated(QAction *sender, bool toggled)
 	if (!window)
 		return;
 
-	UserListElements users = window->getUserListElements();
+	UserListElements users = window->userListElements();
 
 	QStringList infoList;
 	QString copyPersonalDataSyntax = config_file.readEntry("General", "CopyPersonalDataSyntax", tr("Contact: %a[ (%u)]\n[First name: %f\n][Last name: %r\n][Mobile: %m\n]"));
@@ -727,7 +728,7 @@ void Kadu::lookupInDirectoryActionActivated(QAction *sender, bool toggled)
 	if (!window)
 		return;
 
-	UserListElements users = window->getUserListElements();
+	UserListElements users = window->userListElements();
 
 	if (users.count() != 1)
 	{
@@ -754,7 +755,7 @@ void Kadu::notifyAboutUserActionActivated(QAction *sender, bool toggled)
 	if (!window)
 		return;
 
-	UserListElements users = window->getUserListElements();
+	UserListElements users = window->userListElements();
 
 	bool on = true;
 	foreach(const UserListElement &user, users)
@@ -781,7 +782,7 @@ void Kadu::offlineToUserActionActivated(QAction *sender, bool toggled)
 	if (!window)
 		return;
 
-	UserListElements users = window->getUserListElements();
+	UserListElements users = window->userListElements();
 
 	bool on = true;
 	foreach(const UserListElement &user, users)
@@ -808,7 +809,7 @@ void Kadu::hideDescriptionActionActivated(QAction *sender, bool toggled)
 	if (!window)
 		return;
 
-	UserListElements users = window->getUserListElements();
+	UserListElements users = window->userListElements();
 	bool on = true;
 	foreach(const UserListElement &user, users)
 		if (user.data("HideDescription").toString() == "true")
@@ -833,7 +834,7 @@ void Kadu::deleteUsersActionActivated(QAction *sender, bool toggled)
 	if (!window)
 		return;
 
-	UserListElements users = window->getUserListElements();
+	UserListElements users = window->userListElements();
 	removeUsers(users);
 
 	kdebugf2();
@@ -854,7 +855,7 @@ void Kadu::inactiveUsersActionActivated(QAction *sender, bool toggled)
 	if (!window)
 		return;
 
-	groups_manager->changeDisplayingOffline(window->getUserBox(), !toggled);
+	groups_manager->changeDisplayingOffline(window->userBox(), !toggled);
 }
 
 void Kadu::descriptionUsersActionActivated(QAction *sender, bool toggled)
@@ -863,7 +864,7 @@ void Kadu::descriptionUsersActionActivated(QAction *sender, bool toggled)
 	if (!window)
 		return;
 
-	groups_manager->changeDisplayingWithoutDescription(window->getUserBox(), !toggled);
+	groups_manager->changeDisplayingWithoutDescription(window->userBox(), !toggled);
 }
 
 void Kadu::onlineAndDescUsersActionActivated(QAction *sender, bool toggled)
@@ -872,7 +873,7 @@ void Kadu::onlineAndDescUsersActionActivated(QAction *sender, bool toggled)
 	if (!window)
 		return;
 
-	groups_manager->changeDisplayingOnlineAndDescription(window->getUserBox(), !toggled);
+	groups_manager->changeDisplayingOnlineAndDescription(window->userBox(), !toggled);
 }
 
 void Kadu::configurationActionActivated(QAction *sender, bool toggled)
@@ -916,7 +917,7 @@ void Kadu::editUserActionActivated(QAction *sender, bool toggled)
 	if (!window)
 		return;
 	
-	UserListElements selectedUsers = window->getUserListElements();
+	UserListElements selectedUsers = window->userListElements();
 	
 	if (selectedUsers.count() == 1)
 			(new UserInfo(*selectedUsers.begin(), kadu))->show();
@@ -930,7 +931,7 @@ void Kadu::addUserActionActivated(QAction *sender, bool toggled)
 	KaduMainWindow *window = dynamic_cast<KaduMainWindow *>(sender->parent());
 	if (window)
 	{	
-		UserListElements selectedUsers = window->getUserListElements();
+		UserListElements selectedUsers = window->userListElements();
  		if ((selectedUsers.count() == 1) && (selectedUsers[0].isAnonymous()))
 		{
  			(new UserInfo(selectedUsers[0], kadu))->show();
@@ -1508,7 +1509,7 @@ void Kadu::addMenuActionDescription(ActionDescription *actionDescription)
 {
 	if (!actionDescription)
 		return;
-	KaduAction *action = actionDescription->getAction(this);
+	KaduAction *action = actionDescription->createAction(this);
 	MainMenu->addAction(action);
 	mainMenuActions[actionDescription] = action;
 }
@@ -1517,7 +1518,7 @@ void Kadu::insertMenuActionDescription(int pos, ActionDescription *actionDescrip
 {
 	if (!actionDescription)
 		return;
-	KaduAction *action = actionDescription->getAction(this);
+	KaduAction *action = actionDescription->createAction(this);
 	QList<QAction *> menuActions = MainMenu->actions();
 	if (pos >= menuActions.count() - 1)
 		MainMenu->addAction(action);
@@ -1816,7 +1817,7 @@ UserBox* Kadu::userbox() const
 	return Userbox;
 }
 
-UserListElements Kadu::getUserListElements()
+UserListElements Kadu::userListElements()
 {
 	return Userbox->selectedUsers();
 }

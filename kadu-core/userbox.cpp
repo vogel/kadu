@@ -821,7 +821,7 @@ UserListElements UserBox::selectedUsers() const
 void UserBox::selectionChangedSlot()
 {	
 	if (!Kadu::closing())
-		emit userListChanged(selectedUsers());
+		emit userListChanged();
 }
 
 void UserBox::refreshLater()
@@ -1437,8 +1437,7 @@ void UserBox::contextMenuEvent(QContextMenuEvent *event)
 	{
 		if (actionDescription)
 		{
-			KaduAction *action = actionDescription->getAction(mainWindow);
-			action->userListChanged(mainWindow->getUserListElements());
+			KaduAction *action = actionDescription->createAction(mainWindow);
 			menu->addAction(action);
 		}
 		else
@@ -1450,8 +1449,7 @@ void UserBox::contextMenuEvent(QContextMenuEvent *event)
 	foreach (ActionDescription *actionDescription, UserBox::ManagementActions)
 		if (actionDescription)
 		{
-			KaduAction *action = actionDescription->getAction(mainWindow);
-			action->userListChanged(mainWindow->getUserListElements());
+			KaduAction *action = actionDescription->createAction(mainWindow);
 			management->addAction(action);
 		}
 		else

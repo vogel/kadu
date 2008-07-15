@@ -694,7 +694,7 @@ void VoiceManager::voiceChatActionActivated(QAction *sender, bool toggled)
 	if (!kaduMainWindow)
 		return;
 
-	UserListElements users = kaduMainWindow->getUserListElements();
+	UserListElements users = kaduMainWindow->userListElements();
 	if (users.count() == 1)
 		makeVoiceChat(users[0].ID("Gadu").toUInt());
 

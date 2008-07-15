@@ -80,7 +80,7 @@ ChatWidget * ChatWindow::chatWidget()
 void ChatWindow::kaduRestoreGeometry()
 {
 	const UserGroup *group = currentChatWidget->users();
-	QRect geometry = chat_manager->getChatWidgetProperty(group, "Geometry").toRect();
+	QRect geometry = chat_manager->chatWidgetProperty(group, "Geometry").toRect();
 	if (geometry.isEmpty() && group->count() == 1)
 	{
 		QString geo_str = (*(group->constBegin())).data("ChatGeometry").toString();

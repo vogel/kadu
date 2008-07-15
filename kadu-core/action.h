@@ -41,11 +41,13 @@ private slots:
 	void triggeredSlot(bool checked);
 
 public:
-	KaduAction(ActionDescription *description, QObject *parent);
+	KaduAction(ActionDescription *description, KaduMainWindow *parent);
 	virtual ~KaduAction();
 
+	UserListElements userListElements();
+
 public slots:
-	void userListChanged(const UserListElements &ules);
+	void checkIfEnabled();
 
 signals:
 	void changed(QAction *action);
@@ -66,7 +68,7 @@ class ActionDescription : public QObject
 public:
 
 	// TODO 0.6.7: this sux, but will be better
-	typedef bool (*ActionBoolCallback)(const UserListElements &);
+	typedef bool (*ActionBoolCallback)(KaduAction *);
 
 	enum ActionType {
 		TypeGlobal   = 0x0001, //!< actions with TypeGlobal type does not require access to user list or anything window-dependend
@@ -99,14 +101,17 @@ public:
 	virtual ~ActionDescription();
 
 	QString name() { return Name; }
-	KaduAction * getAction(KaduMainWindow *kaduMainWindow);
-	QList<KaduAction *> getActions();
-	QList<KaduAction *> getActions(KaduMainWindow *kaduMainWindow);
+	KaduAction * createAction(KaduMainWindow *kaduMainWindow);
+	QList<KaduAction *> actions();
+	QList<KaduAction *> actions(KaduMainWindow *kaduMainWindow);
 
 	QString text() { return Text; }
 	QString iconName() { return IconName; }
 
 	ActionType type() { return Type; }
+
+signals:
+	void actionCreated(KaduAction *);
 
 };
 
@@ -122,16 +127,17 @@ public:
 	Actions();
 	virtual ~Actions() {}
 
-	QAction * getAction(const QString &name, KaduMainWindow *kaduMainWindow) const;
+	QAction * createAction(const QString &name, KaduMainWindow *kaduMainWindow);
 	void refreshIcons();
 
 signals:
+	void actionCreated(KaduAction *);
 	void actionLoaded(const QString &actionName);
 	void actionUnloaded(const QString &actionName);
 
 };
 
-bool disableEmptyUles(const UserListElements &ules);
+bool disableEmptyUles(KaduAction *action);
 
 extern Actions KaduActions;
 

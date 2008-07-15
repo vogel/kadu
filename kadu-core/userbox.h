@@ -620,7 +620,7 @@ signals:
 	**/
 	void currentChanged(UserListElement user);
 
-	void userListChanged(const UserListElements &ules);
+	void userListChanged();
 
 };
 

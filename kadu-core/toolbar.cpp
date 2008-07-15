@@ -70,7 +70,7 @@ void ToolBar::addAction(const QString &actionName, bool showLabel, QAction *afte
 		foreach(const ToolBarAction &toolBarAction, ToolBarActions)
 			if (toolBarAction.action == after)
 			{
-				newAction.action = KaduActions.getAction(actionName, dynamic_cast<KaduMainWindow *>(parent()));
+				newAction.action = KaduActions.createAction(actionName, dynamic_cast<KaduMainWindow *>(parent()));
 				insertAction(after, newAction.action);
 				newAction.button = dynamic_cast<QToolButton *>(widgetForAction(newAction.action));
 				connect(newAction.button, SIGNAL(pressed()), this, SLOT(buttonPressed()));
@@ -82,7 +82,7 @@ void ToolBar::addAction(const QString &actionName, bool showLabel, QAction *afte
 			index++;
 	}
 
-	newAction.action = KaduActions.getAction(actionName, dynamic_cast<KaduMainWindow *>(parent()));
+	newAction.action = KaduActions.createAction(actionName, dynamic_cast<KaduMainWindow *>(parent()));
 	QToolBar::addAction(newAction.action);
 	newAction.button = dynamic_cast<QToolButton *>(widgetForAction(newAction.action));
 	connect(newAction.button, SIGNAL(pressed()), this, SLOT(buttonPressed()));
@@ -128,7 +128,7 @@ void ToolBar::moveAction(const QString &actionName, bool showLabel, QAction *aft
 		else
 			actionFind = true;
 	}
- 	newAction.action = KaduActions.getAction(actionName, dynamic_cast<KaduMainWindow *>(parent()));
+ 	newAction.action = KaduActions.createAction(actionName, dynamic_cast<KaduMainWindow *>(parent()));
 
 	if (index > ToolBarActions.count() -1)
 		QToolBar::addAction(newAction.action);
@@ -343,7 +343,7 @@ void ToolBar::updateButtons()
 
 		if (KaduActions.contains(actionName) && kaduMainWindow->supportsActionType(KaduActions[actionName]->type()))
 		{
-			(*toolBarAction).action = KaduActions.getAction(actionName, dynamic_cast<KaduMainWindow *>(parent()));
+			(*toolBarAction).action = KaduActions.createAction(actionName, dynamic_cast<KaduMainWindow *>(parent()));
 
 			if (toolBarNextAction != ToolBarActions.end() && (*toolBarNextAction).action)
 				insertAction((*toolBarNextAction).action, (*toolBarAction).action);

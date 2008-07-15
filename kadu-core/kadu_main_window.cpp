@@ -197,12 +197,8 @@ void KaduMainWindow::addRightToolbar()
 	addToolBar(Qt::RightToolBarArea, new ToolBar(this));
 }
 
-void KaduMainWindow::addAction(KaduAction *action)
+void KaduMainWindow::actionAdded(KaduAction *action)
 {
-	UserBox *userbox = getUserBox();
-	if (userbox)
-	{
-		connect(userbox, SIGNAL(userListChanged(const UserListElements &)), action, SLOT(userListChanged(const UserListElements &)));
-		action->userListChanged(userbox->selectedUsers());
-	}
+	if (userBox())
+		connect(userBox(), SIGNAL(userListChanged()), action, SLOT(checkIfEnabled()));
 }

@@ -23,7 +23,6 @@ class KaduMainWindow : public QMainWindow
 	Q_OBJECT
 
 	friend class Actions;
-	virtual void addAction(KaduAction *action);
 
 protected:
 	void loadToolBarsFromConfig(const QString &prefix);
@@ -41,9 +40,10 @@ public:
 	virtual QMenu * createPopupMenu() { return 0; }
 
 	virtual bool supportsActionType(ActionDescription::ActionType type) = 0;
-	virtual UserBox * getUserBox() = 0;
-	virtual UserListElements getUserListElements() = 0;
-	virtual ChatWidget * getChatWidget() = 0;
+	virtual UserBox * userBox() = 0;
+	virtual UserListElements userListElements() = 0;
+
+	void actionAdded(KaduAction *action);
 
 public slots:
 	void addTopToolbar();

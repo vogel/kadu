@@ -7,6 +7,7 @@
  *                                                                         *
  ***************************************************************************/
 
+#include "action.h"
 #include "activate.h"
 #include "chat_edit_box.h"
 #include "chat_message.h"
@@ -25,6 +26,15 @@
 #include "userbox.h"
 
 #include "chat_manager.h"
+
+bool disableEmptyTextBox(KaduAction *action)
+{
+	ChatEditBox *chatEditBox = dynamic_cast<ChatEditBox *>(action->parent());
+	if (!chatEditBox)
+		return false;
+
+	return !chatEditBox->inputBox()->toPlainText().isEmpty();
+}
 
 ChatManager::ChatManager(QObject *parent)
 	: QObject(parent), ChatWidgets(), ClosedChatUsers(), addons(), refreshTitlesTimer()
@@ -70,8 +80,10 @@ ChatManager::ChatManager(QObject *parent)
 	sendActionDescription = new ActionDescription(
 		ActionDescription::TypeChat, "sendAction",
 		this, SLOT(sendActionActivated(QAction *, bool)),
-		"SendMessage", tr("&Send"), false
+		"SendMessage", tr("&Send"), false, QString::null,
+		disableEmptyTextBox
 	);
+	connect(sendActionDescription, SIGNAL(actionCreated(KaduAction *)), this, SLOT(sendActionCreated(KaduAction *)));
 
 	whoisActionDescription = new ActionDescription(
 		ActionDescription::TypeChat, "whoisAction",
@@ -239,15 +251,15 @@ void ChatManager::autoSendActionActivated(QAction *sender, bool toggled)
 {
 	kdebugf();
 
-	KaduMainWindow *kaduMainWindow = dynamic_cast<KaduMainWindow *>(sender->parent());
-	if (!kaduMainWindow)
+	ChatEditBox *chatEditBox = dynamic_cast<ChatEditBox *>(sender->parent());
+	if (!chatEditBox)
 		return;
 
-	ChatWidget *chatWidget = kaduMainWindow->getChatWidget();
+	ChatWidget *chatWidget = chatEditBox->chatWidget();
 	if (chatWidget)
 	{
 		chatWidget->setAutoSend(toggled);
-		// autoSendActionDescription->setAllChecked(toggled);
+		// TODO: 0.6.5 autoSendActionDescription->setAllChecked(toggled);
 		config_file.writeEntry("Chat", "AutoSend", toggled);
 	}
 
@@ -258,11 +270,11 @@ void ChatManager::clearActionActivated(QAction *sender, bool toggled)
 {
 	kdebugf();
 
-	KaduMainWindow *kaduMainWindow = dynamic_cast<KaduMainWindow *>(sender->parent());
-	if (!kaduMainWindow)
+	ChatEditBox *chatEditBox = dynamic_cast<ChatEditBox *>(sender->parent());
+	if (!chatEditBox)
 		return;
 
-	ChatWidget *chatWidget = kaduMainWindow->getChatWidget();
+	ChatWidget *chatWidget = chatEditBox->chatWidget();
 	if (chatWidget)
 		chatWidget->clearChatWindow();
 
@@ -273,11 +285,11 @@ void ChatManager::insertImageActionActivated(QAction *sender, bool toggled)
 {
 	kdebugf();
 
-	KaduMainWindow *kaduMainWindow = dynamic_cast<KaduMainWindow *>(sender->parent());
-	if (!kaduMainWindow)
+	ChatEditBox *chatEditBox = dynamic_cast<ChatEditBox *>(sender->parent());
+	if (!chatEditBox)
 		return;
 
-	ChatWidget *chatWidget = kaduMainWindow->getChatWidget();
+	ChatWidget *chatWidget = chatEditBox->chatWidget();
 	if (chatWidget)
 		chatWidget->insertImage();
 
@@ -288,13 +300,11 @@ void ChatManager::boldActionActivated(QAction *sender, bool toggled)
 {
 	kdebugf();
 
-	KaduMainWindow *kaduMainWindow = dynamic_cast<KaduMainWindow *>(sender->parent());
-	if (!kaduMainWindow)
+	ChatEditBox *chatEditBox = dynamic_cast<ChatEditBox *>(sender->parent());
+	if (!chatEditBox)
 		return;
 
-	ChatWidget *chatWidget = kaduMainWindow->getChatWidget();
-	if (chatWidget)
-		chatWidget->edit()->setBold(toggled);
+	chatEditBox->inputBox()->setBold(toggled);
 
 	kdebugf2();
 }
@@ -303,13 +313,11 @@ void ChatManager::italicActionActivated(QAction *sender, bool toggled)
 {
 	kdebugf();
 
-	KaduMainWindow *kaduMainWindow = dynamic_cast<KaduMainWindow *>(sender->parent());
-	if (!kaduMainWindow)
+	ChatEditBox *chatEditBox = dynamic_cast<ChatEditBox *>(sender->parent());
+	if (!chatEditBox)
 		return;
 
-	ChatWidget *chatWidget = kaduMainWindow->getChatWidget();
-	if (chatWidget)
-		chatWidget->edit()->setItalic(toggled);
+	chatEditBox->inputBox()->setItalic(toggled);
 
 	kdebugf2();
 }
@@ -318,14 +326,11 @@ void ChatManager::underlineActionActivated(QAction *sender, bool toggled)
 {
 	kdebugf();
 
-
-	KaduMainWindow *kaduMainWindow = dynamic_cast<KaduMainWindow *>(sender->parent());
-	if (!kaduMainWindow)
+	ChatEditBox *chatEditBox = dynamic_cast<ChatEditBox *>(sender->parent());
+	if (!chatEditBox)
 		return;
 
-	ChatWidget *chatWidget = kaduMainWindow->getChatWidget();
-	if (chatWidget)
-		chatWidget->edit()->setUnderline(toggled);
+	chatEditBox->inputBox()->setUnderline(toggled);
 
 	kdebugf2();
 }
@@ -334,11 +339,11 @@ void ChatManager::sendActionActivated(QAction *sender, bool toggled)
 {
 	kdebugf();
 
-	KaduMainWindow *kaduMainWindow = dynamic_cast<KaduMainWindow *>(sender->parent());
-	if (!kaduMainWindow)
+	ChatEditBox *chatEditBox = dynamic_cast<ChatEditBox *>(sender->parent());
+	if (!chatEditBox)
 		return;
 
-	ChatWidget *chatWidget = kaduMainWindow->getChatWidget();
+	ChatWidget *chatWidget = chatEditBox->chatWidget();
 	// TODO: split in two ?
 	if (chatWidget)
 		if (chatWidget->waitingForACK())
@@ -347,15 +352,22 @@ void ChatManager::sendActionActivated(QAction *sender, bool toggled)
 		}
 		else
 		{
-			const QList<KaduAction *> & actions = sendActionDescription->getActions(chatWidget->getChatEditBox());
-			printf("found %d actions\n", actions.size());
-			foreach (KaduAction *action, actions)
+			foreach (KaduAction *action, sendActionDescription->actions(chatWidget->getChatEditBox()))
 				action->setIcon(icons_manager->loadIcon("CancelMessage"));
 
 			chatWidget->sendMessage();
 		}
 
 	kdebugf2();
+}
+
+void ChatManager::sendActionCreated(KaduAction *action)
+{
+	ChatEditBox *chatEditBox = dynamic_cast<ChatEditBox *>(action->parent());
+	if (!chatEditBox)
+		return;
+
+	connect(chatEditBox->inputBox(), SIGNAL(textChanged()), action, SLOT(checkIfEnabled()));
 }
 
 void ChatManager::whoisActionActivated(QAction *sender, bool toggled)
@@ -369,7 +381,7 @@ void ChatManager::whoisActionActivated(QAction *sender, bool toggled)
 		return;
 	}
 
-	UserListElements users = window->getUserListElements();
+	UserListElements users = window->userListElements();
 
 	if (users.count() == 0)
 		(new SearchDialog(kadu))->show();
@@ -388,11 +400,11 @@ void ChatManager::whoisActionActivated(QAction *sender, bool toggled)
 
 void ChatManager::insertEmoticonActionActivated(QAction *sender, bool toggled)
 {
-	KaduMainWindow *window = dynamic_cast<KaduMainWindow *>(sender->parent());
-	if (!window)
+	ChatEditBox *chatEditBox = dynamic_cast<ChatEditBox *>(sender->parent());
+	if (!chatEditBox)
 		return;
 
-	ChatWidget *chatWidget = window->getChatWidget();
+	ChatWidget *chatWidget = chatEditBox->chatWidget();
 	if (chatWidget)
 	{
 		QList<QWidget *> widgets = sender->associatedWidgets();
@@ -405,11 +417,11 @@ void ChatManager::insertEmoticonActionActivated(QAction *sender, bool toggled)
 
 void ChatManager::colorSelectorActionActivated(QAction *sender, bool toggled)
 {
-	KaduMainWindow *window = dynamic_cast<KaduMainWindow *>(sender->parent());
-	if (!window)
+	ChatEditBox *chatEditBox = dynamic_cast<ChatEditBox *>(sender->parent());
+	if (!chatEditBox)
 		return;
 
-	ChatWidget *chatWidget = window->getChatWidget();
+	ChatWidget *chatWidget = chatEditBox->chatWidget();
 	if (chatWidget)
 	{
 		QList<QWidget *> widgets = sender->associatedWidgets();
@@ -428,7 +440,7 @@ void ChatManager::ignoreUserActionActivated(QAction *sender, bool toggled)
 	if (!window)
 		return;
 
-	UserListElements users = window->getUserListElements();
+	UserListElements users = window->userListElements();
 	if (users.count() > 0)
 	{
 		bool ContainsBad = false;
@@ -472,7 +484,7 @@ void ChatManager::blockUserActionActivated(QAction *sender, bool toggled)
 	if (!window)
 		return;
 
-	UserListElements users = window->getUserListElements();
+	UserListElements users = window->userListElements();
 	if (users.count() > 0)
 	{
 		bool on = true;
@@ -525,7 +537,7 @@ void ChatManager::chatActionActivated(QAction *sender, bool toggled)
 	if (!window)
 		return;
 
-	UserListElements users = window->getUserListElements();
+	UserListElements users = window->userListElements();
 	if (users.count() > 0)
 		openChatWidget(gadu, users);
 
@@ -772,7 +784,7 @@ void ChatManager::sendMessage(UserListElement user, UserListElements selected_us
 	kdebugf2();
 }
 
-QVariant& ChatManager::getChatWidgetProperty(const UserGroup *group, const QString &name)
+QVariant& ChatManager::chatWidgetProperty(const UserGroup *group, const QString &name)
 {
 	kdebugf();
 	// TODO 0.6.5 fix
@@ -848,7 +860,7 @@ void ChatManager::configurationUpdated()
 		userlist->removePerContactNonProtocolConfigEntry("chat_vertical_sizes");
 	}
 
-	foreach (QAction *action, autoSendActionDescription->getActions())
+	foreach (QAction *action, autoSendActionDescription->actions())
 		action->setChecked(config_file.readBoolEntry("Chat", "AutoSend"));
 
 	kdebugf2();

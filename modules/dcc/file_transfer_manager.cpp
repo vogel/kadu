@@ -34,9 +34,11 @@
 
 #include "file_transfer_manager.h"
 
-bool disableNonDccUles(const UserListElements &ules)
+bool disableNonDccUles(KaduAction *action)
 {
 	kdebugf();
+
+	const UserListElements &ules = action->userListElements();
 
 	if (!ules.count())
 		return false;
@@ -221,7 +223,7 @@ void FileTransferManager::sendFileActionActivated(QAction *sender, bool toggled)
 	if (!kaduMainWindow)
 		return;
 
-	UserListElements users = kaduMainWindow->getUserListElements();
+	UserListElements users = kaduMainWindow->userListElements();
 	if (users.count())
 		sendFile(users);
 

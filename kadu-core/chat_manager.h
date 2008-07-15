@@ -16,6 +16,7 @@
 #include "configuration_aware_object.h"
 
 class ActionDescription;
+class KaduAction;
 class Protocol;
 
 /**
@@ -76,6 +77,8 @@ private slots:
 	void chatActionActivated(QAction *sender, bool toggled);
 	void insertEmoticonActionActivated(QAction *sender, bool toggled);
 	void colorSelectorActionActivated(QAction *sender, bool toogled);
+
+	void sendActionCreated(KaduAction *action);
 
 protected:
 	virtual void configurationUpdated();
@@ -142,7 +145,7 @@ public:
 	// co za g�upota
 	// TODO: przenie�� do klasy ChatWidget / ewentualnie do nowo-utworzonej klasy Chat
 	/**
-		\fn QVariant& getChatWidgetProperty(const UserGroup *group, const QString &name)
+		\fn QVariant& chatWidgetProperty(const UserGroup *group, const QString &name)
 		Funkcja zwraca warto�� w�asno�ci "name" okna
 		okre�lonego przez group
 		\param group grupa u�ytkownik�w identyfikuj�ca okno
@@ -151,7 +154,7 @@ public:
 		istnieje,\n je�li nie to tworzy tak�
 		w�asno�� (ustawia na pust�)
 	**/
-	QVariant & getChatWidgetProperty(const UserGroup *group, const QString &name);
+	QVariant & chatWidgetProperty(const UserGroup *group, const QString &name);
 
 	void loadOpenedWindows();
 	void saveOpenedWindows();

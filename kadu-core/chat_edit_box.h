@@ -21,8 +21,6 @@ class ChatEditBox : public KaduMainWindow
 
 	CustomInput *InputBox;
 
-	void addAction(KaduAction *action);
-
 public:
 	ChatEditBox(QWidget *parent);
 	virtual ~ChatEditBox();
@@ -31,9 +29,9 @@ public:
 	CustomInput * inputBox();
 
 	virtual bool supportsActionType(ActionDescription::ActionType type);
-	virtual UserBox * getUserBox();
-	virtual UserListElements getUserListElements();
-	virtual ChatWidget * getChatWidget();
+	virtual UserBox * userBox();
+	virtual UserListElements userListElements();
+	ChatWidget * chatWidget();
 
 };
 

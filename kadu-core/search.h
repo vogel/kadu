@@ -115,9 +115,9 @@ public:
 	static void closeModule();
 
 	virtual bool supportsActionType(ActionDescription::ActionType type) { return type & ActionDescription::TypeSearch; }
-	virtual UserBox * getUserBox() { return 0; }
-	virtual UserListElements getUserListElements() { return UserListElements(); }
-	virtual ChatWidget * getChatWidget() { return 0; }
+	virtual UserBox * userBox() { return 0; }
+	virtual UserListElements userListElements() { return UserListElements(); }
+	virtual ChatWidget * chatWidget() { return 0; }
 
 	/**
 		\fn void firstSearch()

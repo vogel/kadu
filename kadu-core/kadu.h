@@ -159,9 +159,9 @@ public:
 
 	virtual bool supportsActionType(ActionDescription::ActionType type) {
 		return type & (ActionDescription::TypeGlobal | ActionDescription::TypeUserList | ActionDescription::TypeUser); }
-	virtual UserBox * getUserBox() { return Userbox; }
-	virtual UserListElements getUserListElements();
-	virtual ChatWidget * getChatWidget() { return 0; }
+	virtual UserBox * userBox() { return Userbox; }
+	virtual UserListElements userListElements();
+	virtual ChatWidget * chatWidget() { return 0; }
 
 	const UserListElement & myself() { return Myself; };
 
@@ -312,7 +312,7 @@ public:
 
 };
 
-bool disableContainsSelfUles(const UserListElements &ules);
+bool disableContainsSelfUles(KaduAction *action);
 
 extern Kadu *kadu;
 extern QMenu *dockMenu;

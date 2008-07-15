@@ -52,40 +52,33 @@ bool ChatEditBox::supportsActionType(ActionDescription::ActionType type)
 	return (type == ActionDescription::TypeGlobal || type == ActionDescription::TypeChat || type == ActionDescription::TypeUser);
 }
 
-UserBox * ChatEditBox::getUserBox()
+UserBox * ChatEditBox::userBox()
 {
-	ChatWidget *chatWidget = getChatWidget();
-	if (chatWidget)
-		if (chatWidget->users()->count() > 1)
-			return chatWidget->getUserbox();
+	ChatWidget *cw = chatWidget();
+	if (cw && cw->users()->count() > 1)
+			return cw->getUserbox();
 
 	return 0;
 }
 
-UserListElements ChatEditBox::getUserListElements()
+UserListElements ChatEditBox::userListElements()
 {
-	ChatWidget *chatWidget = getChatWidget();
-	if (chatWidget)
-		return chatWidget->users()->toUserListElements();
+	ChatWidget *cw = chatWidget();
+	if (cw)
+		return cw->users()->toUserListElements();
 
 	return UserListElements();
 }
 
-ChatWidget * ChatEditBox::getChatWidget()
+ChatWidget * ChatEditBox::chatWidget()
 {
-	return dynamic_cast<ChatWidget *>(parent()->parent());
-}
+	ChatWidget *result = dynamic_cast<ChatWidget *>(parent());
+	if (result)
+		return result;
 
-void ChatEditBox::addAction(KaduAction *action)
-{
-	ChatWidget *chatWidget = dynamic_cast<ChatWidget *>(parent());
-	if (chatWidget)
-		action->userListChanged(chatWidget->users()->toUserListElements());
-	else 
-	{
-		chatWidget = getChatWidget();
-		if (chatWidget)
-			action->userListChanged(chatWidget->users()->toUserListElements());
-	}
+	result = dynamic_cast<ChatWidget *>(parent()->parent());
+	if (result)
+		return result;
 
+	return 0;
 }

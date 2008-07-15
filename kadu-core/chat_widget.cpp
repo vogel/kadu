@@ -105,8 +105,6 @@ ChatWidget::ChatWidget(Protocol *initialProtocol, const UserListElements &usrs, 
 	shortcut = new QShortcut(QKeySequence(Qt::Key_PageDown + Qt::SHIFT), this);
 	connect(shortcut, SIGNAL(activated()), body, SLOT(pageDown()));
 
-// 	Edit->setMimeSourceFactory(bodyformat);
-
 	connect(Edit->inputBox(), SIGNAL(cursorPositionChanged()), this, SLOT(curPosChanged()));
 	connect(Edit->inputBox(), SIGNAL(sendMessage()), this, SLOT(sendMessage()));
 	connect(Edit->inputBox(), SIGNAL(specialKeyPressed(int)), this, SLOT(specialKeyPressed(int)));
@@ -114,7 +112,8 @@ ChatWidget::ChatWidget(Protocol *initialProtocol, const UserListElements &usrs, 
 
 	editTextChanged(); // slot ustawia poprawny stan przycisku Send (tutaj - blokuje)
 	setActColor(false); // ustawia poprawny kolor na przycisku wyboru koloru
-/*
+
+	/*
 	connect(KaduActions["sendAction"], SIGNAL(addedToToolbar(ToolButton*, ToolBar*)),
 		this, SLOT(sendActionAddedToToolbar(ToolButton*, ToolBar*)));
 	connect(KaduActions["colorAction"], SIGNAL(addedToToolbar(ToolButton*, ToolBar*)),
@@ -385,12 +384,12 @@ bool ChatWidget::keyPressEventHandled(QKeyEvent *e)
 	}
 	else if (HotKey::shortCut(e,"ShortCuts", "kadu_searchuser"))
 	{
-		KaduActions.getAction("whoisAction", Edit)->activate(QAction::Trigger);
+		KaduActions.createAction("whoisAction", Edit)->activate(QAction::Trigger);
 		return true;
 	}
 	else if (HotKey::shortCut(e,"ShortCuts", "kadu_openchatwith"))
 	{
-		KaduActions.getAction("openChatWithAction", Edit)->activate(QAction::Trigger);
+		KaduActions.createAction("openChatWithAction", Edit)->activate(QAction::Trigger);
 		return true;
 	}
 	else
@@ -574,7 +573,7 @@ void ChatWidget::disconnectAcknowledgeSlots()
 
 void ChatWidget::changeSendToCancelSend()
 {
-	foreach (QAction *action, chat_manager->sendActionDescription->getActions())
+	foreach (QAction *action, chat_manager->sendActionDescription->actions())
 	{
 		action->setIcon(icons_manager->loadIcon("CancelMessage"));
 		action->setText(tr("&Cancel"));
@@ -583,7 +582,7 @@ void ChatWidget::changeSendToCancelSend()
 
 void ChatWidget::changeCancelSendToSend()
 {
-	foreach (QAction *action, chat_manager->sendActionDescription->getActions())
+	foreach (QAction *action, chat_manager->sendActionDescription->actions())
 	{
 		action->setIcon(icons_manager->loadIcon("SendMessage"));
 		action->setText(tr("&Send"));
@@ -815,7 +814,7 @@ unsigned int ChatWidget::newMessagesCount() const
 
 void ChatWidget::kaduRestoreGeometry()
 {
-	QList<int> vertSizes = toIntList(chat_manager->getChatWidgetProperty(Users, "VerticalSizes").toList());
+	QList<int> vertSizes = toIntList(chat_manager->chatWidgetProperty(Users, "VerticalSizes").toList());
 	if (vertSizes.empty() && Users->count() == 1)
 	{
 		QString vert_sz_str = (*(Users->constBegin())).data("VerticalSizes").toString();
@@ -840,7 +839,7 @@ void ChatWidget::kaduRestoreGeometry()
 
 	if (horizSplit)
 	{
-		QList<int> horizSizes = toIntList(chat_manager->getChatWidgetProperty(Users, "HorizontalSizes").toList());
+		QList<int> horizSizes = toIntList(chat_manager->chatWidgetProperty(Users, "HorizontalSizes").toList());
 		if (!horizSizes.empty())
 			horizSplit->setSizes(horizSizes);
 	}

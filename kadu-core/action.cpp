@@ -13,7 +13,7 @@
 
 #include "action.h"
 
-KaduAction::KaduAction(ActionDescription *description, QObject *parent)
+KaduAction::KaduAction(ActionDescription *description, KaduMainWindow *parent)
 	: QAction(parent), Description(description)
 {
 	setText(Description->Text);
@@ -42,10 +42,21 @@ KaduAction::KaduAction(ActionDescription *description, QObject *parent)
 	connect(this, SIGNAL(hovered()), this, SLOT(hoveredSlot()));
 	connect(this, SIGNAL(toggled(bool)), this, SLOT(toggledSlot(bool)));
 	connect(this, SIGNAL(triggered(bool)), this, SLOT(triggeredSlot(bool)));
+
+	checkIfEnabled();
 }
 
 KaduAction::~KaduAction()
 {
+}
+
+UserListElements KaduAction::userListElements()
+{
+	KaduMainWindow *kaduMainWindow = dynamic_cast<KaduMainWindow *>(parent());
+	if (kaduMainWindow)
+		return kaduMainWindow->userListElements();
+	else
+		return UserListElements();
 }
 
 void KaduAction::changedSlot()
@@ -83,10 +94,10 @@ void KaduAction::triggeredSlot(bool checked)
 	emit triggered(this, checked);
 }
 
-void KaduAction::userListChanged(const UserListElements &ules)
+void KaduAction::checkIfEnabled()
 {
 	if (Description->EnableCallback)
-		setEnabled((*Description->EnableCallback)(ules));
+		setEnabled((*Description->EnableCallback)(this));
 }
 
 ActionDescription::ActionDescription(ActionType Type, const QString &Name, QObject *Object, char *Slot,
@@ -123,7 +134,7 @@ void ActionDescription::actionDestroyed(QObject *action)
 	MappedActions.remove(kaduMainWindow, kaduAction);
 }
 
-KaduAction * ActionDescription::getAction(KaduMainWindow *kaduMainWindow)
+KaduAction * ActionDescription::createAction(KaduMainWindow *kaduMainWindow)
 {
 	KaduAction *result = new KaduAction(this, kaduMainWindow);
 	MappedActions.insert(kaduMainWindow, result);
@@ -132,15 +143,17 @@ KaduAction * ActionDescription::getAction(KaduMainWindow *kaduMainWindow)
 	connect(result, SIGNAL(toggled(QAction *, bool)), Object, Slot);
 	connect(result, SIGNAL(triggered(QAction *, bool)), Object, Slot);
 
+	emit actionCreated(result);
+
 	return result;
 }
 
-QList<KaduAction *> ActionDescription::getActions()
+QList<KaduAction *> ActionDescription::actions()
 {
 	return MappedActions.values();
 }
 
-QList<KaduAction *> ActionDescription::getActions(KaduMainWindow *kaduMainWindow)
+QList<KaduAction *> ActionDescription::actions(KaduMainWindow *kaduMainWindow)
 {
 	if (MappedActions.contains(kaduMainWindow))
 		return MappedActions.values(kaduMainWindow);
@@ -166,13 +179,16 @@ void Actions::remove(ActionDescription *action)
 		emit actionUnloaded(action->name());
 }
 
-QAction * Actions::getAction(const QString &name, KaduMainWindow *kaduMainWindow) const
+QAction * Actions::createAction(const QString &name, KaduMainWindow *kaduMainWindow)
 {
 	if (!contains(name))
 		return 0;
 
-	KaduAction *result = (*this)[name]->getAction(kaduMainWindow);
-	kaduMainWindow->addAction(result);
+	KaduAction *result = (*this)[name]->createAction(kaduMainWindow);
+	kaduMainWindow->actionAdded(result);
+
+	emit actionCreated(result);
+
 	return result;
 }
 
@@ -182,9 +198,9 @@ void Actions::refreshIcons()
 // 		(*action)->refreshIcons();
 }
 
-bool disableEmptyUles(const UserListElements &ules)
+bool disableEmptyUles(KaduAction *action)
 {
-	return !ules.isEmpty();
+	return !action->userListElements().isEmpty();
 }
 
 Actions KaduActions;

@@ -195,7 +195,7 @@ void EncryptionManager::setupEncrypt(const UserGroup *group)
 	bool encrypt = false;
 	if (encryption_possible)
 	{
-		QVariant v = chat_manager->getChatWidgetProperty(group, "EncryptionEnabled");
+		QVariant v = chat_manager->chatWidgetProperty(group, "EncryptionEnabled");
 		if (v.isValid())
 			encrypt = v.toBool();
 		else if ((*(group->constBegin())).data("EncryptionEnabled").isValid())
@@ -250,7 +250,7 @@ void EncryptionManager::encryptionActionActivated(QAction *sender, bool toggled)
 	if (!kaduMainWindow)
 		return;
 
-	ChatWidget *chatWidget = kaduMainWindow->getChatWidget();
+	ChatWidget *chatWidget = kaduMainWindow->chatWidget();
 	if (!chatWidget)
 		return;
 	setupEncryptButton(chatWidget,!EncryptionEnabled[chatWidget]);
@@ -380,7 +380,7 @@ void EncryptionManager::sendPublicKeyActionActivated(QAction *sender, bool toggl
 	if (!kaduMainWindow)
 		return;
 
-	UserListElements users = kaduMainWindow->getUserListElements();
+	UserListElements users = kaduMainWindow->userListElements();
 
 	if (!users.count())
 		return;
