@@ -125,6 +125,7 @@ ChatManager::ChatManager(QObject *parent)
 		this, SLOT(insertEmoticonActionActivated(QAction *, bool)),
 		"ChooseEmoticon", tr("Insert emoticon")
 	);
+	connect(insertEmoticonActionDescription, SIGNAL(actionCreated(KaduAction *)), this, SLOT(insertEmoticonActionCreated(KaduAction *)));
 
 	colorSelectorActionDescription = new ActionDescription(
 		ActionDescription::TypeChat, "colorAction",
@@ -407,6 +408,32 @@ void ChatManager::whoisActionActivated(QAction *sender, bool toggled)
 	}
 
 	kdebugf2();
+}
+
+void ChatManager::insertEmoticonActionCreated(KaduAction *action)
+{
+	if((EmoticonsStyle)config_file.readNumEntry("Chat","EmoticonsStyle") == EMOTS_NONE)
+	{
+		action->setToolTip(tr("Insert emoticon - enable in configuration"));
+		action->setEnabled(false);
+	}
+}
+
+void ChatManager::insertEmoticonActionEnabled()
+{
+ 	foreach (QAction *action, insertEmoticonActionDescription->actions())
+	{
+		if((EmoticonsStyle)config_file.readNumEntry("Chat","EmoticonsStyle") == EMOTS_NONE)
+		{
+			action->setToolTip(tr("Insert emoticon - enable in configuration"));
+			action->setEnabled(false);
+		}
+		else
+		{
+			action->setToolTip(tr("Insert emoticon"));
+			action->setEnabled(true);
+		}
+	}
 }
 
 void ChatManager::insertEmoticonActionActivated(QAction *sender, bool toggled)
@@ -863,7 +890,6 @@ void ChatManager::autoSendActionCreated(KaduAction *action)
 
 void ChatManager::autoSendActionCheck()
 {
-// TODO: 0.6.5
  	bool check = config_file.readBoolEntry("Chat", "AutoSend");
  	foreach (QAction *action, autoSendActionDescription->actions())
  		action->setChecked(check);
@@ -885,6 +911,7 @@ void ChatManager::configurationUpdated()
 	}
 
 	autoSendActionCheck();
+	insertEmoticonActionEnabled();
 
 	kdebugf2();
 }

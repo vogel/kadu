@@ -502,6 +502,7 @@ Kadu::Kadu(QWidget *parent)
 		"EditUserInfo", tr("Contact data"), false, QString::null,
 		disableNotOneUles
 	);
+	connect(editUserActionDescription, SIGNAL(actionCreated(KaduAction *)), this, SLOT(editUserActionCreated(KaduAction *)));
 
 	addUserActionDescription = new ActionDescription(
 		ActionDescription::TypeGlobal, "addUserAction",
@@ -881,32 +882,46 @@ void Kadu::configurationActionActivated(QAction *sender, bool toggled)
 	MainConfigurationWindow::instance()->show();
 }
 
-void Kadu::editUserActionSetParams(QString /*protocolName*/, UserListElement users)
+void Kadu::editUserActionSetParams(QString /*protocolName*/, UserListElement user)
 {
 	kdebugf();
-/*
-	Action *action = KaduActions["editUserAction"];
-	UserListElements elems = UserListElements(users);
-	if (users.isAnonymous())
+ 	foreach (QAction *action, editUserActionDescription->actions())
 	{
-		action->setIcons(elems, icons_manager->loadIcon("AddUser"));
-		action->setTexts(elems, tr("Add user"));
-	}
-	else
-	{
-		action->setIcons(elems, icons_manager->loadIcon("EditUserInfo"));
-		action->setTexts(elems, tr("Contact data"));
-	}*/
+		KaduMainWindow *window = dynamic_cast<KaduMainWindow *>(action->parent());
+		if (!window)
+			continue;
 
+		UserListElements users = window->userListElements();
+
+		if (users.count() == 1 && users[0] == user)
+		{
+			if (user.isAnonymous())
+			{
+				action->setIcon(icons_manager->loadIcon("AddUser"));
+				action->setText(tr("Add user"));
+			}
+			else
+			{
+				action->setIcon(icons_manager->loadIcon("EditUserInfo"));
+				action->setText(tr("Contact data"));
+			}
+		}
+	}
 	kdebugf2();
 }
 
-void Kadu::editUserActionAddedToToolbar(const UserGroup *users)
+void Kadu::editUserActionCreated(KaduAction *action)
 {
-	kdebugf();
-	if ((users->count()) == 1 && (*users->begin()).isAnonymous())
-		editUserActionSetParams("", *users->begin());
-	kdebugf2();
+	KaduMainWindow *window = dynamic_cast<KaduMainWindow *>(action->parent());
+	if (!window)
+		return;
+
+	UserListElements users = window->userListElements();
+	if ((users.count()) == 1 && (*users.begin()).isAnonymous())
+	{
+		action->setIcon(icons_manager->loadIcon("AddUser"));
+		action->setText(tr("Add user"));
+	}
 }
 
 void Kadu::editUserActionActivated(QAction *sender, bool toggled)
@@ -956,14 +971,6 @@ void Kadu::personalInfo(QAction *sender, bool toggled)
 {
 	(new PersonalInfoDialog(kadu))->show();
 }
-
-//TODO: 0.6.5
-// void Kadu::addUserAction()
-// {
-// 	const UserGroup* users;
-// `	selectedUsersNeeded(users);
-// 	addUserActionActivated(users);
-// }
 
 void Kadu::manageIgnored(QAction *sender, bool toggled)
 {

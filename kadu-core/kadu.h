@@ -274,8 +274,8 @@ public slots:
 
 	void setMainWindowIcon(const QPixmap &);
 
-	void editUserActionAddedToToolbar(const UserGroup* users);
-	void editUserActionSetParams(QString protocolName, UserListElement users);
+	void editUserActionCreated(KaduAction *action);
+	void editUserActionSetParams(QString protocolName, UserListElement user);
 //	void showStatusActionActivated();
 //	void showStatusActionAddedToToolbar(ToolButton* button);
 

@@ -64,11 +64,11 @@ private:
 	QTimer refreshTitlesTimer;
 
 	void autoSendActionCheck();
+	void insertEmoticonActionEnabled();
 
 private slots:
 	void autoSendActionActivated(QAction *sender, bool toggled);
 	void clearActionActivated(QAction *sender, bool toggled);
-	void insertImageActionActivated(QAction *sender, bool toggled);
 	void boldActionActivated(QAction *sender, bool toggled);
 	void italicActionActivated(QAction *sender, bool toggled);
 	void underlineActionActivated(QAction *sender, bool toggled);
@@ -77,11 +77,14 @@ private slots:
 	void ignoreUserActionActivated(QAction *sender, bool toggled);
 	void blockUserActionActivated(QAction *sender, bool toggled);
 	void chatActionActivated(QAction *sender, bool toggled);
-	void insertEmoticonActionActivated(QAction *sender, bool toggled);
+	void insertImageActionActivated(QAction *sender, bool toggled);
 	void colorSelectorActionActivated(QAction *sender, bool toogled);
 
 	void autoSendActionCreated(KaduAction *action);
 	void sendActionCreated(KaduAction *action);
+
+	void insertEmoticonActionCreated(KaduAction *action);
+	void insertEmoticonActionActivated(QAction *sender, bool toggled);
 
 protected:
 	virtual void configurationUpdated();
