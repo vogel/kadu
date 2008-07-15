@@ -123,11 +123,11 @@ ActionDescription::~ActionDescription()
 
 void ActionDescription::actionDestroyed(QObject *action)
 {
-	KaduAction *kaduAction = dynamic_cast<KaduAction *>(action);
+	KaduAction *kaduAction = static_cast<KaduAction *>(action);
 	if (!kaduAction)
 		return;
 
-	KaduMainWindow *kaduMainWindow = dynamic_cast<KaduMainWindow *>(action->parent());
+	KaduMainWindow *kaduMainWindow = static_cast<KaduMainWindow *>(action->parent());
 	if (!kaduMainWindow)
 		return;
 
