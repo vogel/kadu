@@ -144,6 +144,10 @@ private slots:
 
 	void changeStatus(UserStatus status);
 
+	void inactiveUsersActionCreated(KaduAction *action);
+	void descriptionUsersActionCreated(KaduAction *action);
+	void onlineAndDescUsersActionCreated(KaduAction *action);
+
 protected:
 	void keyPressEvent(QKeyEvent *e);
 	virtual void resizeEvent(QResizeEvent *);

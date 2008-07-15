@@ -475,6 +475,7 @@ Kadu::Kadu(QWidget *parent)
 		"ShowHideInactiveUsers", tr("Hide offline users"),
 		true, tr("Show offline users")
 	);
+	connect(inactiveUsersAction, SIGNAL(actionCreated(KaduAction *)), this, SLOT(inactiveUsersActionCreated(KaduAction *)));
 
 	descriptionUsersAction = new ActionDescription(
 		ActionDescription::TypeUserList, "descriptionUsersAction",
@@ -482,6 +483,7 @@ Kadu::Kadu(QWidget *parent)
 		"ShowOnlyDescriptionUsers", tr("Hide users without description"),
 		true, tr("Show users without description")
 	);
+	connect(descriptionUsersAction, SIGNAL(actionCreated(KaduAction *)), this, SLOT(descriptionUsersActionCreated(KaduAction *)));
 
 	onlineAndDescriptionUsersAction = new ActionDescription(
 		ActionDescription::TypeUserList, "onlineAndDescriptionUsersAction",
@@ -489,6 +491,7 @@ Kadu::Kadu(QWidget *parent)
 		"ShowOnlineAndDescriptionUsers", tr("Show only online and description users"),
 		true, tr("Show all users")
 	);
+	connect(onlineAndDescriptionUsersAction, SIGNAL(actionCreated(KaduAction *)), this, SLOT(onlineAndDescUsersActionCreated(KaduAction *)));
 
 	configurationActionDescription = new ActionDescription(
 		ActionDescription::TypeGlobal, "configurationAction",
@@ -875,6 +878,19 @@ void Kadu::onlineAndDescUsersActionActivated(QAction *sender, bool toggled)
 		return;
 
 	groups_manager->changeDisplayingOnlineAndDescription(window->userBox(), !toggled);
+}
+
+void Kadu::inactiveUsersActionCreated(KaduAction *action)
+{
+	action->setChecked(!config_file.readBoolEntry("General", "ShowOffline"));
+}
+void Kadu::descriptionUsersActionCreated(KaduAction *action)
+{
+	action->setChecked(!config_file.readBoolEntry("General", "ShowWithoutDescription"));
+}
+void Kadu::onlineAndDescUsersActionCreated(KaduAction *action)
+{
+	action->setChecked(!config_file.readBoolEntry("General", "ShowOnlineAndDescription"));
 }
 
 void Kadu::configurationActionActivated(QAction *sender, bool toggled)
