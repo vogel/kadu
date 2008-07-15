@@ -1149,10 +1149,9 @@ void Kadu::changeStatusSlot()
 	QAction *action = dynamic_cast<QAction *>(sender());
 	if (action)
 	{
-		int data = action->data().toInt();
 		foreach (QAction *action, changeStatusActionGroup->actions())
-			action->setChecked(action->data().toInt() == data);
-		slotHandleState(data);
+			action->setChecked(action->data().toInt() == gadu->currentStatus().index());
+		slotHandleState(action->data().toInt());
 	}
 }
 
@@ -1216,17 +1215,18 @@ void Kadu::slotHandleState(int command)
 
 void Kadu::changeStatus(UserStatus newStatus)
 {
+	if (NextStatus.isOffline())
+	{
+		changeStatusToOfflineDesc->setEnabled(false);
+		changeStatusToOffline->setChecked(true);
+	}
+
 	if (gadu->nextStatus() == newStatus)
 		return;
 
 	NextStatus.setStatus(newStatus);
 	gadu->writeableStatus().setStatus(NextStatus);
 
-	if (NextStatus.isOffline())
-	{
-		statusMenu->setItemEnabled(7, false);
-		dockMenu->setItemEnabled(7, false);
-	}
 }
 
 void Kadu::connecting()
@@ -1875,14 +1875,14 @@ void Kadu::refreshPrivateStatusFromConfigFile()
 	bool privateStatus = config_file.readBoolEntry("General", "PrivateStatus");
 
 	// je�li stan nie uleg� zmianie to nic nie robimy
-	if (statusMenu->isItemChecked(8) == privateStatus)
+	if (changePrivateStatus->isChecked() == privateStatus)
 		return;
 
 	UserStatus status = userStatusChanger->status();
 	status.setFriendsOnly(privateStatus);
 	userStatusChanger->userStatusSet(status);
 
-	statusMenu->setItemChecked(8, privateStatus);
+	changePrivateStatus->setChecked(privateStatus);
 }
 
 void Kadu::configurationUpdated()
@@ -2025,31 +2025,15 @@ void Kadu::showStatusOnMenu(int statusNr)
 {
 	kdebugf();
 
-	switch (statusNr)
-	{
-		case 0: changeStatusToOnline->setChecked(true); break;
-		case 1: changeStatusToOnlineDesc->setChecked(true); break;
-		case 2: changeStatusToBusy->setChecked(true); break;
-		case 3: changeStatusToBusyDesc->setChecked(true); break;
-		case 4: changeStatusToInvisible->setChecked(true); break;
-		case 5: changeStatusToInvisibleDesc->setChecked(true); break;
-		case 6: changeStatusToOffline->setChecked(true); break;
-		case 7: changeStatusToOfflineDesc->setChecked(true); break;
-	}
+	QList<QAction*> statusActions = changeStatusActionGroup->actions();
+	for (int i = 0; i < 8; ++i)
+		statusActions[i]->setChecked(i == statusNr);
 
-	for(int i = 0; i < 8; ++i)
-	{
-		statusMenu->setItemChecked(i, false);
-		dockMenu->setItemChecked(i, false);
-	}
-	statusMenu->setItemChecked(statusNr, true);
-	dockMenu->setItemChecked(statusNr, true);
-	statusMenu->setItemChecked(8, gadu->currentStatus().isFriendsOnly());
-	dockMenu->setItemChecked(8, gadu->currentStatus().isFriendsOnly());
+	changePrivateStatus->setChecked(gadu->currentStatus().isFriendsOnly());
 
 	statusButton->setText(qApp->translate("@default", gadu->currentStatus().name().ascii()));
-	statusMenu->setItemEnabled(7, statusNr != 6);
-	dockMenu->setItemEnabled(7, statusNr != 6);
+	changeStatusToOfflineDesc->setEnabled(statusNr != 6);
+	changeStatusToOffline->setEnabled(statusNr != 7);
 
 	QPixmap pix = gadu->currentStatus().pixmap();
 	QIcon icon(pix);
