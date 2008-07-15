@@ -60,7 +60,7 @@ WizardStarter::WizardStarter(QObject *parent)
 	: QObject(parent)
 {
 	configWizardActionDescription = new ActionDescription(
-		ActionDescription::TypeGlobal, "configWizardAction",
+		ActionDescription::TypeMainMenu, "configWizardAction",
 		this, SLOT(start(QAction *, bool)),
 		"ConfigurationWizard", tr("Configuration Wizard")
 	);

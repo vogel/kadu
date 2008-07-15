@@ -369,7 +369,7 @@ ModulesManager::ModulesManager() : QObject(NULL, "modules_manager"),
 	modules_manager = this;
 
 	ActionDescription *manageModulesActionDescription = new ActionDescription(
-		ActionDescription::TypeGlobal, "manageModulesAction",
+		ActionDescription::TypeMainMenu, "manageModulesAction",
 		this, SLOT(showDialog(QAction *, bool)),
 		"ManageModules", tr("&Manage Modules")
 	);

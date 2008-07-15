@@ -83,7 +83,7 @@ FileTransferManager::FileTransferManager(QObject *parent, const char *name) : QO
 	dcc_manager->addHandler(this);
 
 	fileTransferWindowActionDescription = new ActionDescription(
-		ActionDescription::TypeGlobal, "sendFileWindowAction",
+		ActionDescription::TypeMainMenu, "sendFileWindowAction",
 		this, SLOT(toggleFileTransferWindow(QAction *, bool)),
 		"SendFileWindow", tr("Toggle transfers window")
 	);

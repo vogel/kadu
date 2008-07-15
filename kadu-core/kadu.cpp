@@ -1397,7 +1397,6 @@ bool Kadu::close(bool quit)
 		disconnect(&(gadu->currentStatus()), SIGNAL(goOffline(const QString &)),
 				this, SLOT(wentOffline(const QString &)));
 
-// 		disconnect(UserBox::userboxmenu, SIGNAL(popup()), this, SLOT(/*/*popupMenu*/*/()));
 		disconnect(Userbox, SIGNAL(doubleClicked(UserListElement)), this, SLOT(sendMessage(UserListElement)));
 		disconnect(Userbox, SIGNAL(returnPressed(UserListElement)), this, SLOT(sendMessage(UserListElement)));
 		disconnect(Userbox, SIGNAL(mouseButtonClicked(int, Q3ListBoxItem *, const QPoint &)),
@@ -1565,7 +1564,7 @@ void Kadu::createMenu()
 	connect(RecentChatsMenu, SIGNAL(triggered(QAction *)), this, SLOT(openRecentChats(QAction *)));	
 	
 	ActionDescription *manageIgnoredActionDescription = new ActionDescription(
-		ActionDescription::TypeGlobal, "manageIgnoredAction",
+		ActionDescription::TypeMainMenu, "manageIgnoredAction",
 		this, SLOT(manageIgnored(QAction *, bool)),
 		"Ignore", tr("Manage &ignored")
 	);
@@ -1574,7 +1573,7 @@ void Kadu::createMenu()
 
 	addMenuSeparator();
 	ActionDescription *personalInfoActionDescription = new ActionDescription(
-		ActionDescription::TypeGlobal, "personalInfoAction",
+		ActionDescription::TypeMainMenu, "personalInfoAction",
 		this, SLOT(personalInfo(QAction *, bool)),
 		"PersonalInfo", tr("Personal information")
 	);
@@ -1586,7 +1585,7 @@ void Kadu::createMenu()
 	MainMenu->addMenu(RecentChatsMenu);
 	addMenuActionDescription(openSearchActionDescription);
 	ActionDescription *importExportUserlisActionDescription = new ActionDescription(
-		ActionDescription::TypeGlobal, "importExportUserlisAction",
+		ActionDescription::TypeMainMenu, "importExportUserlisAction",
 		this, SLOT(importExportUserlist(QAction *, bool)),
 		"ImportExport", tr("I&mport / Export userlist")
 	);

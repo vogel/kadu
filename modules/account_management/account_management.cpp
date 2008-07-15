@@ -47,28 +47,28 @@ AccountManagement::AccountManagement()
 	int index = kadu->personalInfoMenuId;
 
 	unregisterMenuActionDescription = new ActionDescription(
-		ActionDescription::TypeGlobal, "unregisterUserAction",
+		ActionDescription::TypeMainMenu, "unregisterUserAction",
 		this, SLOT(unregisterUser(QAction *, bool)),
 		"UnregisterUser", tr("Unregister user")
 	);
 	kadu->insertMenuActionDescription(index, unregisterMenuActionDescription);
 
 	registerMenuActionDescription = new ActionDescription(
-		ActionDescription::TypeGlobal, "registerUserAction",
+		ActionDescription::TypeMainMenu, "registerUserAction",
 		this, SLOT(registerUser(QAction *, bool)),
 		"RegisterUser", tr("Register &new user")
 	);
 	kadu->insertMenuActionDescription(index, registerMenuActionDescription);
 
 	changeMenuActionDescription = new ActionDescription(
-		ActionDescription::TypeGlobal, "changePasswordAction",
+		ActionDescription::TypeMainMenu, "changePasswordAction",
 		this, SLOT(changePassword(QAction *, bool)),
 		"ChangePassMail", tr("&Change password / email")
 	);
 	kadu->insertMenuActionDescription(index, changeMenuActionDescription);
 
 	remindMenuActionDescription = new ActionDescription(
-		ActionDescription::TypeGlobal, "remidPasswordAction",
+		ActionDescription::TypeMainMenu, "remidPasswordAction",
 		this, SLOT(remindPassword(QAction *, bool)),
 		"RemindPass", tr("Remind &password")
 	);
