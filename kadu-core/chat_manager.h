@@ -63,6 +63,8 @@ private:
 	QList<ChatInfo> addons; /*!< lista parametr�w okien */
 	QTimer refreshTitlesTimer;
 
+	void autoSendActionCheck();
+
 private slots:
 	void autoSendActionActivated(QAction *sender, bool toggled);
 	void clearActionActivated(QAction *sender, bool toggled);
@@ -78,6 +80,7 @@ private slots:
 	void insertEmoticonActionActivated(QAction *sender, bool toggled);
 	void colorSelectorActionActivated(QAction *sender, bool toogled);
 
+	void autoSendActionCreated(KaduAction *action);
 	void sendActionCreated(KaduAction *action);
 
 protected:

@@ -46,6 +46,7 @@ ChatManager::ChatManager(QObject *parent)
 		this, SLOT(autoSendActionActivated(QAction *, bool)),
 		"AutoSendMessage", tr("%1 sends message").arg(config_file.readEntry("ShortCuts", "chat_newline")), true
 	);
+	connect(autoSendActionDescription, SIGNAL(actionCreated(KaduAction *)), this, SLOT(autoSendActionCreated(KaduAction *)));
 
 	clearChatActionDescription = new ActionDescription(
 		ActionDescription::TypeChat, "clearChatAction",
@@ -259,8 +260,8 @@ void ChatManager::autoSendActionActivated(QAction *sender, bool toggled)
 	if (chatWidget)
 	{
 		chatWidget->setAutoSend(toggled);
-		// TODO: 0.6.5 autoSendActionDescription->setAllChecked(toggled);
 		config_file.writeEntry("Chat", "AutoSend", toggled);
+		autoSendActionCheck();
 	}
 
 	kdebugf2();
@@ -368,6 +369,16 @@ void ChatManager::sendActionCreated(KaduAction *action)
 		return;
 
 	connect(chatEditBox->inputBox(), SIGNAL(textChanged()), action, SLOT(checkIfEnabled()));
+
+	ChatWidget *chatWidget = chatEditBox->chatWidget();
+	if (!chatWidget)
+		return;
+
+	if (chatWidget->waitingForACK())
+	{
+		action->setIcon(icons_manager->loadIcon("CancelMessage"));
+		action->setText(tr("&Cancel"));
+	}
 }
 
 void ChatManager::whoisActionActivated(QAction *sender, bool toggled)
@@ -845,6 +856,18 @@ void ChatManager::initModule()
 	kdebugf2();
 }
 
+void ChatManager::autoSendActionCreated(KaduAction *action)
+{
+	action->setChecked(config_file.readBoolEntry("Chat", "AutoSend"));
+}
+
+void ChatManager::autoSendActionCheck()
+{
+	bool check = config_file.readBoolEntry("Chat", "AutoSend");
+	foreach (QAction *action, autoSendActionDescription->actions())
+		action->setChecked(check);
+}
+
 void ChatManager::configurationUpdated()
 {
 	kdebugf();
@@ -860,8 +883,7 @@ void ChatManager::configurationUpdated()
 		userlist->removePerContactNonProtocolConfigEntry("chat_vertical_sizes");
 	}
 
-	foreach (QAction *action, autoSendActionDescription->actions())
-		action->setChecked(config_file.readBoolEntry("Chat", "AutoSend"));
+	autoSendActionCheck();
 
 	kdebugf2();
 }
