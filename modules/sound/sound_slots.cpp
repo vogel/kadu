@@ -95,8 +95,7 @@ SoundSlots::SoundSlots(QObject *parent) : QObject(parent),
 		this, SLOT(muteActionActivated(QAction *, bool)),
 		"Unmute", tr("Mute sounds"), true, tr("Unmute sounds")
 	);
-
-//	connect(mute_action, SIGNAL(iconsRefreshed()), this, SLOT(setMuteActionState()));
+	connect(mute_action, SIGNAL(actionCreated(KaduAction *)), this, SLOT(setMuteActionState()));
 	ToolBar::addDefaultAction("Kadu toolbar", "muteSoundsAction", 0);
 	setMuteActionState();
 
@@ -116,14 +115,16 @@ void SoundSlots::muteActionActivated(QAction  *action, bool is_on)
 	Q_UNUSED(action)
 	kdebugf();
 	sound_manager->setMute(is_on);
-	//mute_action->setAllOn(is_on);
+ 	foreach (QAction *action, mute_action->actions())
+		action->setChecked(is_on);
 	config_file.writeEntry("Sounds", "PlaySound", !is_on);
 	kdebugf2();
 }
 
 void SoundSlots::setMuteActionState()
 {
-	//mute_action->setAllOn(sound_manager->isMuted());
+ 	foreach (QAction *action, mute_action->actions())
+		action->setChecked(sound_manager->isMuted());
 }
 
 void SoundSlots::muteUnmuteSounds()
@@ -135,7 +136,7 @@ void SoundSlots::muteUnmuteSounds()
 
 void SoundSlots::configurationUpdated()
 {
-	muteActionActivated(NULL, !config_file.readBoolEntry("Sounds", "PlaySound"));
+	muteActionActivated(0, !config_file.readBoolEntry("Sounds", "PlaySound"));
 }
 
 void SoundSlots::testSamplePlaying()

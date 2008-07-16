@@ -490,6 +490,7 @@ UserBox::UserBox(KaduMainWindow *mainWindow, bool fancy, UserGroup *group, QWidg
 		"ShowDescription", tr("Hide descriptions"),
 		true, tr("Show descriptions")
 	);
+	connect(showDescriptionAction, SIGNAL(actionCreated(KaduAction *)), this, SLOT(setDescriptionsActionState()));
 
 	setDescriptionsActionState();
 
@@ -520,10 +521,6 @@ UserBox::UserBox(KaduMainWindow *mainWindow, bool fancy, UserGroup *group, QWidg
 	else
 		addCompareFunction("AltNick", tr("Nicks"), compareAltNick);
 
-// 	if (!userboxmenu)
-// 		userboxmenu = new UserBoxMenu(this);
-// 	if (!management)
-// 		management = new UserBoxMenu(userboxmenu);
 	UserBoxes.append(this);
 
 	setMinimumWidth(20);
@@ -560,8 +557,8 @@ UserBox::~UserBox()
 	VisibleUsers = 0;
 	delete comparer;
 	comparer = 0;
-// 	delete desc_action;
-// 	desc_action = 0;
+ 	delete showDescriptionAction;
+ 	showDescriptionAction = 0;
 	kdebugf2();
 }
 
@@ -607,16 +604,17 @@ void UserBox::hideTip(bool waitForAnother)
 
 void UserBox::showDescriptionsActionActivated(QAction *sender, bool toggle)
 {
-// 	desc_action->setAllOn(toggle);
 	config_file.writeEntry("Look", "ShowDesc", !toggle);
-//	dynamic_cast<QCheckBox *>(MainConfigurationWindow::instance()->widgetById("showDescription"))->setChecked(toggle);
 	KaduListBoxPixmap::setShowDesc(!toggle);
 	UserBox::refreshAllLater();
+ 	foreach (QAction *action, showDescriptionAction->actions())
+		action->setChecked(!KaduListBoxPixmap::ShowDesc);
 }
 
 void UserBox::setDescriptionsActionState()
 {
-// 	desc_action->setAllOn(!KaduListBoxPixmap::ShowDesc);
+ 	foreach (QAction *action, showDescriptionAction->actions())
+		action->setChecked(!KaduListBoxPixmap::ShowDesc);
 }
 
 void UserBox::wheelEvent(QWheelEvent *e)
