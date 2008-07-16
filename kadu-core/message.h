@@ -11,9 +11,8 @@
 #define MESSAGE_H
 
 #include <QtCore/QList>
-
-class QColor;
-class QString;
+#include <QtCore/QRegExp>
+#include <QtGui/QColor>
 
 class MessagePart
 {
@@ -33,7 +32,7 @@ public:
 	bool underline() const { return Underline; }
 	QColor color() const { return Color; }
 
-	void dump();
+	QString toHtml() const;
 
 };
 
@@ -54,9 +53,8 @@ public:
 	void append(MessagePart part);
 	Message & operator << (MessagePart part);
 
-	QString toPlain();
-
-	void dump();
+	QString toPlain() const;
+	QString toHtml() const;
 
 };
 

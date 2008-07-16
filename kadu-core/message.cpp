@@ -7,9 +7,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <QtCore/QRegExp>
-#include <QtGui/QColor>
-
 #include "message.h"
 
 QRegExp Message::ParagraphRegExp("<p[^>]*>(.*)</p>");
@@ -24,15 +21,24 @@ MessagePart::~MessagePart()
 {
 }
 
-void MessagePart::dump()
+QString MessagePart::toHtml() const
 {
-	printf("content: [%s], biu:%d%d%d color: %s\n", Content.toLocal8Bit().data(), Bold, Italic, Underline, Color.name().toLocal8Bit().data());
-}
+	QString result = Content;
+	result.replace("\n", "<br />");
 
-void Message::dump()
-{
-	foreach (MessagePart part, Parts)
-		part.dump();
+	if (!Bold && !Italic && !Underline && !Color.isValid())
+		return result;
+
+	QString span = "<span style='";
+	if (Bold)
+		span += "font-weight:600;";
+	if (Italic)
+		span += "font-style:italic;";
+	if (Underline)
+		span += "text-decoration:underline;";
+	span += "'>";
+
+	return span + result + "</span>";
 }
 
 Message Message::parse(const QString &messageString)
@@ -112,11 +118,20 @@ Message & Message::operator << (MessagePart part)
 	return *this;
 }
 
-QString Message::toPlain()
+QString Message::toPlain() const
 {
 	QString result;
 	foreach (MessagePart part, Parts)
 		result += part.content();
+
+	return result;
+}
+
+QString Message::toHtml() const
+{
+	QString result;
+	foreach (MessagePart part, Parts)
+		result += part.toHtml();
 
 	return result;
 }

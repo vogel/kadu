@@ -13,7 +13,6 @@ typedef uin_t UinType;
 class QTimer;
 
 class GaduSocketNotifiers;
-class Message;
 
 // ------------------------------------
 //            UinsList
@@ -721,7 +720,7 @@ public slots:
 		@param users lista u�ytkownik�w, do kt�rych wysy�amy wiadomo��
 		@param mesg wiadomo��, kt�r� wysy�amy - kodowanie zmieniane wewn�trz
 	**/
-	QString sendMessage(UserListElements users, const QString &mesg);
+	virtual bool sendMessage(UserListElements users, const Message &message);
 
 	/**
 		Wysy�a pro�b� o przys�anie obrazka z danymi parametrami.

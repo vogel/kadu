@@ -482,7 +482,7 @@ void ChatWidget::newMessage(const QString &/*protocolName*/, UserListElements se
 void ChatWidget::writeMyMessage()
 {
 	kdebugf();
-	ChatMessage *message = new ChatMessage(kadu->myself(), Users->toUserListElements(), myLastMessage, TypeSent, QDateTime::currentDateTime());
+	ChatMessage *message = new ChatMessage(kadu->myself(), Users->toUserListElements(), myLastMessage.toHtml(), TypeSent, QDateTime::currentDateTime());
 	body->appendMessage(message);
 
 	if (!Edit->inputBox()->isEnabled())
@@ -548,7 +548,7 @@ void ChatWidget::messageAcceptedSlot()
 	kdebugf();
 	kdebugmf(KDEBUG_INFO, "This is my ack.\n");
 	writeMyMessage();
-	emit messageSentAndConfirmed(Users->toUserListElements(), myLastMessage);
+	emit messageSentAndConfirmed(Users->toUserListElements(), myLastMessage.toHtml());
 	disconnectAcknowledgeSlots();
 
 	changeCancelSendToSend();
@@ -618,95 +618,20 @@ void ChatWidget::sendMessage()
 		changeSendToCancelSend();
 	}
 
-	currentProtocol()->sendMessage(Users->toUserListElements(), Edit->inputBox()->toHtml());
+	myLastMessage = Message::parse(Edit->inputBox()->toHtml());
 
-	QString message2 = Edit->inputBox()->toHtml();
-	myLastMessage = message2;
-/*
-	QRegExp paragraph("<p[^>]*>(.*)</p>");
-	paragraph.setMinimal(true);
-
-	QString cleanedMessage;
-	int pos = 0;
-
-	while ((pos = paragraph.indexIn(myLastMessage, pos)) != -1) {
-		if (!cleanedMessage.isEmpty())
-			cleanedMessage.append("\n");
-		cleanedMessage.append(paragraph.cap(1));
-		pos += paragraph.matchedLength();
+	if (!currentProtocol()->sendMessage(Users->toUserListElements(), myLastMessage))
+	{
+		cancelMessage();
+		return;
 	}
-
-	myLastMessage = cleanedMessage;
-
-	printf("will send[%s]\n", myLastMessage.toLocal8Bit().data());
-
-	QRegExp decoration("<span.*(font-weight:600)?.*(font-style:italic)?.*(text-decoration: underline)?.*(color:#([0-9a-fA-F]+))?.*>(.*)</span>");
-	decoration.setMinimal(true);
-
-	cleanedMessage = "";
-	pos = 0;
-	int lastPos = 0;
-
-	while ((pos = decoration.indexIn(myLastMessage, pos)) != -1) {
-		if (lastPos != pos)
-		{
-			printf("appending: %d %d %s\n", lastPos, pos - lastPos, myLastMessage.mid(lastPos, pos - lastPos).toLocal8Bit().data());
-			cleanedMessage.append(myLastMessage.mid(lastPos, pos - lastPos));
-		}
-
-		bool b = !decoration.cap(1).isEmpty();
-		bool i = !decoration.cap(2).isEmpty();
-		bool u = !decoration.cap(3).isEmpty();
-		QString color = decoration.cap(5);
-
-		printf("4: \n", decoration.cap(4).toLocal8Bit().data());
-		printf("5: \n", decoration.cap(5).toLocal8Bit().data());
-
-		if (b) cleanedMessage.append("<b>");
-		if (i) cleanedMessage.append("<i>");
-		if (u) cleanedMessage.append("<u>");
-		if (!color.isEmpty())
-			cleanedMessage.append(QString("<font color='#%1'>").arg(color));
-
-		cleanedMessage.append(decoration.cap(6));
-
-		if (!color.isEmpty())
-			cleanedMessage.append("</font>");
-		if (u) cleanedMessage.append("</u>");
-		if (i) cleanedMessage.append("</i>");
-		if (b) cleanedMessage.append("</b>");
-
-		pos += decoration.matchedLength();
-		lastPos = pos;
-	}
-
-	printf("appending: %d %d %s\n", lastPos, myLastMessage.length() - lastPos, myLastMessage.mid(lastPos, myLastMessage.length() - lastPos).toLocal8Bit().data());
-	cleanedMessage.append(myLastMessage.mid(lastPos, myLastMessage.length() - lastPos));
-	myLastMessage = cleanedMessage;*/
-
-// 	printf("will send[%s]\n", myLastMessage.toLocal8Bit().data());
-
-	// TODO: to na pewno jest potrzebne ??
-// 	int messageBegin = message.find("<p>");
-// 	int messageEnd = message.findRev("</p>");
-// 	myLastMessage = message.mid(messageBegin + 3, messageEnd - messageBegin - 3);
-// 	myLastMessage.replace("</p>", "");
-// 	myLastMessage.replace("<p>", "");
-// 	myLastMessage.replace("<br />", "\n");
-
-// 	myLastMessage = currentProtocol()->sendMessage(Users->toUserListElements(), myLastMessage);
-// 	if (myLastMessage == "\001thisisonlyworkaround")
-// 	{
-// 		cancelMessage();
-// 		return;
-// 	}
 
 	if (config_file.readBoolEntry("Chat", "MessageAcks"))
 		connectAcknowledgeSlots();
 	else
 	{
 		writeMyMessage();
-		emit messageSentAndConfirmed(Users->toUserListElements(), myLastMessage);
+		emit messageSentAndConfirmed(Users->toUserListElements(), myLastMessage.toHtml());
 	}
 
 	emit messageSent(this);

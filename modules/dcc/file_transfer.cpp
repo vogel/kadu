@@ -354,7 +354,7 @@ void FileTransfer::start(StartType startType)
 		if (!gadu->currentStatus().isOffline())
 		{
 			QString messageToSend = message.arg(QUrl(FileName).fileName());
-			gadu->sendMessage(recv, messageToSend);
+			dynamic_cast<Protocol *>(gadu)->sendMessage(recv, messageToSend);
 		}
 		if (gadu->seqNum() == -1)
 			MessageBox::msg(tr("Error: message was not sent"), false, "Warning");

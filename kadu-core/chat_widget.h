@@ -18,6 +18,7 @@
 #include "chat_messages_view.h"
 #include "configuration_aware_object.h"
 #include "userlist.h"
+#include "message.h"
 
 class QSplitter;
 
@@ -60,7 +61,7 @@ private:
 	bool AutoSend; /*!< okre�la czy Return powoduje wys�anie wiadomo�ci */
 	bool WaitingForACK;
 	UserBox *userbox; /*!< lista kontakt�w przydatna gdy jeste�my w konferencji */
-	QString myLastMessage; /*!< zmienna przechowuj�ca nasz� ostatni� wiadomo�� */
+	Message myLastMessage; /*!< zmienna przechowuj�ca nasz� ostatni� wiadomo�� */
 	QSplitter *vertSplit, *horizSplit; /*!< obiekty oddzielaj�ce kontrolki od siebie */
 
 	QDateTime lastMsgTime; /*!< czas ostatniej wiadomo�ci */

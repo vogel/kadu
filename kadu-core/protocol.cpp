@@ -7,6 +7,8 @@
  *                                                                         *
  ***************************************************************************/
 
+#include "message.h"
+
 #include "protocol.h"
 
 Protocol::Protocol(const QString &proto, const QString &id, QObject *parent)
@@ -25,9 +27,19 @@ const QDateTime &Protocol::connectionTime() const
 	return ConnectionTime;
 }
 
-QString Protocol::sendMessage(UserListElement user, const QString &mesg)
+bool Protocol::sendMessage(UserListElement user, const QString &message)
 {
 	UserListElements users(user);
+	return sendMessage(users, Message::parse(message));
+}
 
-	return sendMessage(users, mesg);
+bool Protocol::sendMessage(UserListElements users, const QString &message)
+{
+	return sendMessage(users, Message::parse(message));
+}
+
+bool Protocol::sendMessage(UserListElement user, const Message &message)
+{
+	UserListElements users(user);
+	return sendMessage(users, message);
 }

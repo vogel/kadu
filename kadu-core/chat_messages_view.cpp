@@ -103,7 +103,9 @@ QString ChatMessagesView::formatMessage(ChatMessage *message, ChatMessage *after
 
 		message->setShowServerTime(NoServerTime, NoServerTimeDiff);
 		message->setSeparatorSize(separatorSize);
-		
+
+		printf("adding: %s\n", message->unformattedMessage.toLocal8Bit().data());
+
 		return KaduParser::parse(format, message->sender(), message, true);
 	}
 }

@@ -13,6 +13,8 @@
 
 typedef uint32_t UinType;
 
+class Message;
+
 class Protocol : public QObject
 {
 	Q_OBJECT
@@ -132,22 +134,10 @@ public:
 	const QDateTime & connectionTime() const;
 
 public slots:
-	/**
-		Wysy�a wiadomo�� bez formatowania tekstu. Je�li adresat�w jest wi�cej ni� jeden, to wysy�ana
-		jest wiadomo�� konferencyjna. Zwracany jest numer sekwencyjny wiadomo�ci, je�li
-		przypadkiem by�my chcieli �ledzi� jej potwierdzenie.
-		@param users lista u�ytkownik�w, do kt�rych wysy�amy wiadomo��
-		@param mesg wiadomo��, kt�r� wysy�amy - kodowanie zmieniane wewn�trz
-	**/
-	virtual QString sendMessage(UserListElements users, const QString &mesg) = 0;
-
-	/**
-		Wysy�a wiadomo�� bez formatowania tekstu. Zwracany jest numer sekwencyjny wiadomo�ci, je�li
-		przypadkiem by�my chcieli �ledzi� jej potwierdzenie.
-		@param users lista u�ytkownik�w, do kt�rych wysy�amy wiadomo��
-		@param mesg wiadomo��, kt�r� wysy�amy - kodowanie zmieniane wewn�trz
-	**/
-	QString sendMessage(UserListElement user, const QString &mesg);
+	virtual bool sendMessage(UserListElement user, const QString &message);
+	virtual bool sendMessage(UserListElements users, const QString &message);
+	virtual bool sendMessage(UserListElement user, const Message &message);
+	virtual bool sendMessage(UserListElements users, const Message &message) = 0;
 
 
 signals:

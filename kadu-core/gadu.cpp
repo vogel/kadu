@@ -1202,65 +1202,36 @@ void GaduProtocol::setupProxy()
 	kdebugf2();
 }
 
-void myMessageOutput(QtMsgType type, const char *msg)
-{
-	printf("%s\n", msg);
-}
-
-#include <QtCore/QtDebug>
-QString GaduProtocol::sendMessage(UserListElements users, const QString &mesg)
+bool GaduProtocol::sendMessage(UserListElements users, const Message &message)
 {
 	kdebugf();
 
-	qInstallMsgHandler(myMessageOutput);
-
-	Message message = Message::parse(mesg);
-	message.dump();
 	QString plain = message.toPlain();
 
-// 	int seq = 0;
 	unsigned int uinsCount = 0;
-	unsigned int myLastFormatsLength = 0;
-	unsigned char *myLastFormats = GaduFormater::createFormats(message, myLastFormatsLength);
+	unsigned int formatsSize = 0;
+	unsigned char *formats = GaduFormater::createFormats(message, formatsSize);
 	bool stop = false;
 
-	plain.replace("\n", "\r\n");
-	qDebug() << "plain" << plain;
-// 	QString msgtmp = mesg;
-// 	msgtmp.replace("\n", "\r\n");
-// 	qDebug() << "msgtmp" << msgtmp;
+	plain.replace("\r\n", "\n");
+	plain.replace("\r", "\n");
 
-// 	msgtmp = GaduFormater::unformatGGMessage(msgtmp, myLastFormatsLength, myLastFormats);
-// 	qDebug() << "msgtmp" << msgtmp;
-
-// 	QString myLastMessage = msgtmp;
-
-// 	if (myLastFormatsLength)
-// 		myLastMessage = GaduFormater::formatGGMessage(myLastMessage, myLastFormatsLength - sizeof(struct gg_msg_richtext),
-// 			(void *)(myLastFormats + sizeof(struct gg_msg_richtext)),0);
- 
-// 	else
-// 		HtmlDocument::escapeText(myLastMessage);
-
-	QString myLastMessage = mesg;
-	kdebugmf(KDEBUG_INFO, "\n%s\n", (const char *)unicode2latin(myLastMessage));
-	myLastMessage.replace("\r\n", "\n");
-	myLastMessage.replace("\r", "\n");
+	kdebugmf(KDEBUG_INFO, "\n%s\n", (const char *)unicode2latin(plain));
 
 	QByteArray data = unicode2cp(plain);
 
-	emit sendMessageFiltering(users, myLastMessage, stop);
+	emit sendMessageFiltering(users, plain, stop);
 	if (stop)
 	{
 		kdebugmf(KDEBUG_FUNCTION_END, "end: filter stopped processing\n");
-		return myLastMessage;
+		return false;
 	}
 
 	if (data.length() >= 2000)
 	{
 		MessageBox::msg(tr("Filtered message too long (%1>=%2)").arg(data.length()).arg(2000), false, "Warning");
 		kdebugmf(KDEBUG_FUNCTION_END, "end: filtered message too long\n");
-		return "\001thisisonlyworkaround";
+		return false;
 	}
 
 	foreach(const UserListElement &user, users)
@@ -1274,20 +1245,20 @@ QString GaduProtocol::sendMessage(UserListElements users, const QString &mesg)
 		foreach(const UserListElement &user, users)
 			if (user.usesProtocol("Gadu"))
 				uins[i++] = user.ID("Gadu").toUInt();
-		if (myLastFormatsLength)
+		if (formatsSize)
 			seqNumber = gg_send_message_confer_richtext(Sess, GG_CLASS_CHAT, uinsCount, uins, (unsigned char *)data.data(),
-				myLastFormats, myLastFormatsLength);
+				formats, formatsSize);
 		else
 			seqNumber = gg_send_message_confer(Sess, GG_CLASS_CHAT, uinsCount, uins,(unsigned char *)data.data());
 		delete[] uins;
 	}
 	else
-		foreach(const UserListElement &user, users)
+		foreach (const UserListElement &user, users)
 			if (user.usesProtocol("Gadu"))
 			{
-				if (myLastFormatsLength)
+				if (formatsSize)
 					seqNumber = gg_send_message_richtext(Sess, GG_CLASS_CHAT, user.ID("Gadu").toUInt(), (unsigned char *)data.data(),
-						myLastFormats, myLastFormatsLength);
+						formats, formatsSize);
 				else
 					seqNumber = gg_send_message(Sess, GG_CLASS_CHAT, user.ID("Gadu").toUInt(),(unsigned char *)data.data());
 
@@ -1295,11 +1266,11 @@ QString GaduProtocol::sendMessage(UserListElements users, const QString &mesg)
 			}
 
 	SocketNotifiers->checkWrite();
-	if (myLastFormats)
-		delete[] myLastFormats;
+	if (formats)
+		delete[] formats;
 
 	kdebugf2();
-	return myLastMessage;
+	return true;
 }
 
 void GaduProtocol::ackReceived(int seq, uin_t uin, int status)
@@ -2743,6 +2714,8 @@ unsigned int GaduFormater::computeFormatsSize(const Message &message)
 			first = false;
 		}
 	}
+
+	return size;
 }
 
 unsigned char * GaduFormater::createFormats(const Message &message, unsigned int &size)
@@ -2751,7 +2724,7 @@ unsigned char * GaduFormater::createFormats(const Message &message, unsigned int
 	if (!size)
 		return 0;
 
-	unsigned char *result = (unsigned char *)malloc(size);
+	unsigned char *result = new unsigned char[size];
 	bool first = true;
 	unsigned int memoryPosition = 0;
 	unsigned int textPosition = 0;
