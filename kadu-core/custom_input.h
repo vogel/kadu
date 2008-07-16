@@ -59,12 +59,6 @@ public:
 
 public slots:
 	/**
-		\fn void paste()
-		Slot wkleja czysty tekst
-	**/
-	void paste();
-
-	/**
 		\fn void setAutosend(bool on)
 		Ustawia/wy��cza automatyczne wysy�anie wiadomo�ci
 		\param on zmienna ustawiaj�ca autosend

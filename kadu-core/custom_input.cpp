@@ -16,9 +16,9 @@ CustomInput::CustomInput(QWidget *parent)
 	: QTextEdit(parent), autosend_enabled(true)
 {
 	kdebugf();
-// 	Q3StyleSheet *style=styleSheet();
-// 	style->item("p")->setMargin(Q3StyleSheetItem::MarginVertical, 0);
-// 	setStyleSheet(style);
+
+	setAcceptRichText(false);
+
 	kdebugf2();
 }
 
@@ -44,20 +44,6 @@ void CustomInput::keyPressEvent(QKeyEvent *e)
 	}
 	else
 	{
-		if (e->key() == Qt::Key_Minus)
-		{
-			insert("-");
-			e->accept();
-			kdebugf2();
-			return;
-		}
-		if (e->text() == "*")
-		{
-			insert("*");
-			e->accept();
-			kdebugf2();
-			return;
-		}
  		if (HotKey::shortCut(e, "ShortCuts", "chat_bold"))
  		{
  			emit specialKeyPressed(CustomInput::KEY_BOLD);
@@ -108,9 +94,3 @@ void CustomInput::setAutosend(bool on)
 {
 	autosend_enabled = on;
 }
-
-void CustomInput::paste()
-{
-// 	pasteSubType("plain");
-}
-
