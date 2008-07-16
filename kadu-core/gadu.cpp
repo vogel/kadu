@@ -951,7 +951,10 @@ void GaduProtocol::messageReceivedSlot(int msgclass, UserListElements senders, Q
 		return;
 
 	const char* msg_c = msg;
-	QString mesg = cp2unicode(msg_c);
+
+	Message message;
+	QString content = cp2unicode(msg_c);
+
 	QDateTime datetime;
 	datetime.setTime_t(time);
 
@@ -974,7 +977,7 @@ void GaduProtocol::messageReceivedSlot(int msgclass, UserListElements senders, Q
 		kdebugm(KDEBUG_INFO, "System message index %d\n", msgclass);
 
 		// TODO: remove
-		emit systemMessageReceived(mesg, datetime, formats.size(), formats.data());
+// 		emit systemMessageReceived(mesg, datetime, formats.size(), formats.data());
 		return;
 	}
 
@@ -982,21 +985,27 @@ void GaduProtocol::messageReceivedSlot(int msgclass, UserListElements senders, Q
 		config_file.readBoolEntry("Chat","IgnoreAnonymousRichtext"))
 	{
 		kdebugm(KDEBUG_INFO, "Richtext ignored from anonymous user\n");
+		message = GaduFormater::createMessage(content, 0, 0);
 	}
 	else
-		mesg = GaduFormater::formatGGMessage(mesg, formats.size(), formats.data(), senders[0].ID("Gadu").toUInt());
+	{
+		message = GaduFormater::createMessage(content, (unsigned char *)formats.data(), formats.size());
+// 		mesg = GaduFormater::formatGGMessage(mesg, formats.size(), formats.data(), senders[0].ID("Gadu").toUInt());
+	}
 
-	if (mesg.isEmpty())
+	if (message.toPlain().isEmpty())
 		return;
+// 	if (mesg.isEmpty())
+// 		return;
 
 	kdebugmf(KDEBUG_INFO, "Got message from %d saying \"%s\"\n",
-			senders[0].ID("Gadu").toUInt(), (const char *)mesg.local8Bit());
+			senders[0].ID("Gadu").toUInt(), (const char *)message.toPlain().local8Bit());
 
-	emit receivedMessageFilter(this, senders, mesg, time, ignore);
+	emit receivedMessageFilter(this, senders, message.toHtml(), time, ignore);
 	if (ignore)
 		return;
 
-	emit messageReceived(this, senders, mesg, time);
+	emit messageReceived(this, senders, message.toHtml(), time);
 }
 
 void GaduProtocol::everyMinuteActions()
@@ -2264,437 +2273,6 @@ QString GaduStatus::protocolName() const
 	return protoName;
 }
 
-// ------------------------------
-// 			GaduFormater
-// ------------------------------
-QString GaduFormater::formatGGMessage(const QString &msg, unsigned int formats_length, void *formats, UinType sender)
-{
-	kdebugf();
-	QString mesg, tmp;
-	bool bold, italic, underline, color, inspan;
-	char *cformats = (char *)formats;
-	char *cformats_end = cformats + formats_length;
-	struct gg_msg_richtext_format *actformat;
-	struct gg_msg_richtext_color *actcolor;
-	struct gg_msg_richtext_image* actimage;
-
-	bold = italic = underline = color = inspan = false;
-	unsigned int pos = 0;
-	const int MAX_NUMBER_OF_IMAGES = 5;
-	int number_of_images = 0;
-
-	UinsList uins(sender);
-	UserListElements users;
-	UserListElement user = userlist->byID("Gadu", QString::number(sender));
-	users.append(user);
-
-	const UserStatus &curStat = gadu->currentStatus();
-
-	/* gdy mamy sendera na li�cie kontakt�w, nie jest on ignorowany,
-	nie jest anononimowy i nasz status na to pozwala, to zezwalamy na obrazki */
-	bool receiveImage =
-			userlist->contains(user, FalseForAnonymous) &&
-			!IgnoredManager::isIgnored(users) &&
-
-			(curStat.isOnline() ||	curStat.isBusy() ||
-					(curStat.isInvisible() && config_file.readBoolEntry("Chat", "ReceiveImagesDuringInvisibility")));
-	kdebugm(KDEBUG_INFO, "msg: '%s'\n", msg.local8Bit().data());
-	kdebugm(KDEBUG_INFO, "formats_length: %u\n", formats_length);
-	for (unsigned int i = 0; i < formats_length; ++i)
-		kdebugm(KDEBUG_INFO, ">>%d\n", cformats[i]);
-	if (formats_length)
-	{
-		while (cformats < cformats_end)
-		{
-			actformat = (struct gg_msg_richtext_format *)cformats;
-			cformats += sizeof(struct gg_msg_richtext_format);
-			if (cformats > cformats_end)
-			{
-				kdebugm(KDEBUG_WARNING, "possible hacking attempt (1) - tryin' to exceed formats boundary!\n");
-				continue;
-			}
-			uint16_t tmpposition = gg_fix16(actformat->position);
-			kdebugm(KDEBUG_INFO, "position: %d, font: %d\n", tmpposition, actformat->font);
-			if (tmpposition > pos)
-			{
-				tmp = msg.mid(pos, tmpposition - pos);
-				HtmlDocument::escapeText(tmp);
-				mesg.append(tmp);
-				pos = tmpposition;
-			}
-
-			if (inspan)
-				mesg.append("</span>");
-			kdebugm(KDEBUG_INFO, "format: font:%d | bold:%d italic:%d underline:%d color:%d image:%d\n",
-					actformat->font, (actformat->font & GG_FONT_BOLD) != 0, (actformat->font & GG_FONT_ITALIC) != 0,
-									  (actformat->font & GG_FONT_UNDERLINE) != 0, (actformat->font & GG_FONT_COLOR) != 0,
-									   (actformat->font & GG_FONT_IMAGE) != 0);
-
-			if (actformat->font & (~GG_FONT_IMAGE))
-			{
-				inspan = true;
-				mesg.append("<span style=\"");
-				if (actformat->font & GG_FONT_BOLD)
-					mesg.append("font-weight:600;");
-				if (actformat->font & GG_FONT_ITALIC)
-					mesg.append("font-style:italic;");
-				if (actformat->font & GG_FONT_UNDERLINE)
-					mesg.append("text-decoration:underline;");
-				if (actformat->font & GG_FONT_COLOR)
-				{
-					mesg.append("color:");
-					actcolor = (struct gg_msg_richtext_color *)cformats;
-					cformats += sizeof(struct gg_msg_richtext_color);
-					if (cformats > cformats_end)
-					{
-						kdebugm(KDEBUG_WARNING, "possible hacking attempt (2) - tryin' to exceed formats boundary!\n");
-						continue;
-					}
-					mesg.append(QColor(actcolor->red, actcolor->green, actcolor->blue).name());
-				}
-				mesg.append("\">");
-			}
-			else
-				inspan = false;
-			if (actformat->font & GG_FONT_IMAGE)
-			{
-				kdebugmf(KDEBUG_INFO, "I got image probably\n");
-				actimage = (struct gg_msg_richtext_image*)(cformats);
-				cformats += sizeof(struct gg_msg_richtext_image);
-				if (cformats > cformats_end)
-				{
-					kdebugm(KDEBUG_WARNING, "possible hacking attempt (3) - tryin' to exceed formats boundary!\n");
-					continue;
-				}
-				uint32_t tmpsize = gg_fix32(actimage->size);
-				uint32_t tmpcrc32 = gg_fix32(actimage->crc32);
-				kdebugm(KDEBUG_INFO, "Image size: %d, crc32: %d, sender:%d\n", tmpsize, tmpcrc32, sender);
-
-				if (++number_of_images > MAX_NUMBER_OF_IMAGES)
-				{
-					kdebugm(KDEBUG_INFO, "%d: number of images in message exceeded %d, possible hacking attempt!\n", sender, MAX_NUMBER_OF_IMAGES);
-					if (number_of_images == MAX_NUMBER_OF_IMAGES + 1)
-						mesg.append(qApp->translate("@default",
-									QT_TR_NOOP("###TOO MANY IMAGES###")));
-				}
-				else if (tmpsize == 20 && (tmpcrc32 == 4567 || tmpcrc32==99))
-				{
-					// do not process spy and ekg2 special images
-					kdebugm(KDEBUG_INFO, "%d: scanning for invisibility detected, preparing tactical nuclear missiles ;)\n", sender);
-					if (receiveImage)
-						gadu->sendImageRequest(user, tmpsize, tmpcrc32);
-				}
-				else if (sender!=0)
-				{
-					kdebugm(KDEBUG_INFO, "Someone sends us an image\n");
-					QString file_name = gadu_images_manager.getSavedImageFileName(tmpsize, tmpcrc32);
-					if (!file_name.isEmpty())
-					{
-						kdebugm(KDEBUG_INFO, "This image was already saved\n");
-						mesg.append(GaduImagesManager::imageHtml(file_name));
-					}
-					else
-					{
-						unsigned int size = config_file.readUnsignedNumEntry("Chat", "MaxImageSize");
-
-						if (tmpsize < size * 1024)
-						{
-							if (receiveImage)
-							{
-								kdebugm(KDEBUG_INFO, "sending request\n");
-								gadu->sendImageRequest(user, tmpsize, tmpcrc32);
-								mesg.append(GaduImagesManager::loadingImageHtml(sender,tmpsize,tmpcrc32));
-							}
-							else
-								mesg.append(qApp->translate("@default", QT_TR_NOOP("###IMAGE BLOCKED###")));
-						}
-						else
-							mesg.append(qApp->translate("@default", QT_TR_NOOP("###IMAGE TOO BIG###")));
-					}
-				}
-				else
-				{
-					kdebugm(KDEBUG_INFO, "This is my message and my image\n");
-					QString file_name = gadu_images_manager.getImageToSendFileName(tmpsize, tmpcrc32);
-					mesg.append(GaduImagesManager::imageHtml(file_name));
-				}
-			}// if (actformat->font & GG_FONT_IMAGE)
-		}//while (cformats < cformats_end)
-		if (pos < msg.length())
-		{
-			tmp = msg.mid(pos, msg.length() - pos);
-			HtmlDocument::escapeText(tmp);
-			mesg.append(tmp);
-		}
-		if (inspan)
-			mesg.append("</span>");
-	}
-	else
-	{
-		mesg = msg;
-		HtmlDocument::escapeText(mesg);
-	}
-	kdebugf2();
-	return mesg;
-}
-
-QString GaduFormater::stripHTMLFromGGMessage(const QString &msg)
-{
-	kdebugf();
-	QRegExp regexp;
-	QString mesg = msg;
-
-//	mesg.remove(QRegExp("^<html><head><meta\\sname=\"qrichtext\"\\s*\\s/></head>"));
-	mesg.remove(QRegExp("^<html><head>.*<body\\s.*\">\\r\\n"));
-	mesg.remove(QRegExp("\\r\\n</body></html>\\r\\n$"));
-	mesg.remove("<wsp>");
-	mesg.remove("</wsp>");
-
-	mesg.remove("<p>");
-	mesg.remove("<p dir=\"ltr\">");
-//	mesg.remove("<p dir=\"rtl\">");
-	mesg.remove("</p>");
-	regexp.setMinimal(true);
-	regexp.setPattern("<font (face=\"(\\S)+\"\\s)?(size=\"\\d{1,2}\"(\\s)?)?(style=\"font-size:\\d{1,2}pt\"(\\s)?)?>");
-	mesg.remove(regexp);
-	mesg.remove("</font>");
-
-	return mesg;
-}
-
-unsigned char *GaduFormater::allocFormantBuffer(const QList<struct richtext_formant> &formants, unsigned int &formats_length)
-{
-	kdebugf();
-	struct gg_msg_richtext richtext_header;
-	unsigned char *cformats, *tmpformats;
-
-	richtext_header.flag = 2;
-	richtext_header.length = gg_fix16(formats_length);
-	formats_length += sizeof(struct gg_msg_richtext);
-	cformats = new unsigned char[formats_length];
-	tmpformats = cformats;
-	memcpy(tmpformats, &richtext_header, sizeof(struct gg_msg_richtext));
-	tmpformats += sizeof(struct gg_msg_richtext);
-
-	foreach(struct richtext_formant actformant, formants)
-	{
-		actformant.format.position = gg_fix16(actformant.format.position);
-		memcpy(tmpformats, &actformant, sizeof(gg_msg_richtext_format));
-		tmpformats += sizeof(gg_msg_richtext_format);
-		if (actformant.format.font & GG_FONT_COLOR)
-		{
-			memcpy(tmpformats, &actformant.color, sizeof(gg_msg_richtext_color));
-			tmpformats += sizeof(gg_msg_richtext_color);
-		}
-		if (actformant.format.font & GG_FONT_IMAGE)
-		{
-			memcpy(tmpformats, &actformant.image, sizeof(gg_msg_richtext_image));
-			tmpformats += sizeof(gg_msg_richtext_image);
-		}
-	}
-	kdebugmf(KDEBUG_INFO, "formats_length=%u, tmpformats-cformats=%d\n",
-			 formats_length, tmpformats - cformats);
-
-	return cformats;
-}
-/*
-QString GaduFormater::unformatGGMessage(const QString &msg, unsigned int &formats_length, unsigned char *&formats)
-{
-	kdebugf();
-	QString mesg, tmp;
-	QStringList attribs;
-	struct attrib_formant actattrib;
-	QList<attrib_formant> formantattribs;
-	int pos, idx, inspan;
-	struct richtext_formant actformant, lastformant;
-	QList<struct richtext_formant> formants;
-	bool endspan;
-
-	mesg = stripHTMLFromGGMessage(msg);
-
-	kdebugmf(KDEBUG_INFO, "\n%s\n", mesg.local8Bit().data());
-
-	inspan = -1;
-	pos = idx = formats_length = 0;
-	endspan = false;
-	lastformant.format.font = 0;
-
-	while (uint(pos) < mesg.length())
-	{
-		// get indexes of unparsed tags
-		int image_idx    = mesg.find("[IMAGE ", pos);
-		int span_idx     = mesg.find("<span style=", pos);
-		int span_end_idx = mesg.find("</span>", pos);
-
-		// if image(s) was parsed recently, we possibly have to restore previous
-		// active formatting (since image formant invalidates it)
-		// the following code inserts formant saved in lastformant object
-		if (lastformant.format.font != 0 &&
-				  pos != image_idx && pos != span_idx && pos != span_end_idx)
-		{
-			lastformant.format.position = pos;	// we need to update position
-			formants.append(lastformant);
-			formats_length += sizeof(struct gg_msg_richtext_format);
-		}
-		lastformant.format.font = 0; // don't insert this formant again
-
-		// do we have an image preceding any <span> tags?
-		if (image_idx != -1 &&
-				  (span_idx == -1 || image_idx < span_idx) &&
-				  (span_end_idx == -1 || image_idx < span_end_idx))
-		{
-			// we have to translate any unhandled </span> tags before image
-			// by inserting empty formant 0
-			// (fixes mantis bug 355)
-			if (endspan && inspan == -1 && pos)
-			{
-				endspan = false;	// mark </span> as handled
-				actformant.format.position = pos;
-				actformant.format.font = 0;
-				formants.append(actformant);
-				formats_length += sizeof(struct gg_msg_richtext_format);
-			}
-
-			// parse [IMAGE] tag and remove it from message
-			int idx_end = mesg.find("]", image_idx);
-			if (idx_end == -1)
-				idx_end = mesg.length() - 1;
-			QString file_name = mesg.mid(image_idx+7, idx_end-image_idx-7);
-			uint32_t size;
-			uint32_t crc32;
-			gadu_images_manager.addImageToSend(file_name, size, crc32);
-			mesg.remove(image_idx, idx_end-image_idx+1);
-
-			// search for last non-image formant before currently parsed image
-			// we need to save it, and reinsert after image in next loop iteration
-			// (this is required, since image formant removes any active formatting
-			// options)
-			QList<struct richtext_formant>::const_iterator it = formants.end();
-			while (it != formants.begin())
-			{
-				--it;
-				// check for non-image formants (formant 0 is ok)
-				if (((*it).format.font & GG_FONT_IMAGE) == 0)
-				{
-					lastformant = *it;
-					break;
-				}
-			}
-
-			// insert the actual image formant into the list
-			actformant.format.position = image_idx;
-			actformant.format.font = GG_FONT_IMAGE;
-			actformant.image.unknown1 = 0x0109;
-			actformant.image.size = gg_fix32(size);
-			actformant.image.crc32 = gg_fix32(crc32);
-			formants.append(actformant);
-			formats_length += sizeof(struct gg_msg_richtext_format)
-				+ sizeof(struct gg_msg_richtext_image);
-			pos = image_idx;
-		}
-		else if (inspan == -1)
-		{
-			// parsing <span> tag (NOTE: we actually handle </span> here too)
-			idx = span_idx;
-			if (idx != -1)
-			{
-				kdebugmf(KDEBUG_INFO, "idx=%d\n", idx);
-				inspan = idx;
-
-				// close any unhandled </span> tags (insert empty formant)
-				if (pos && idx > pos)
-				{
-					endspan = false;	// mark </span> as handled
-					actformant.format.position = pos;
-					actformant.format.font = 0;
-					formants.append(actformant);
-					formats_length += sizeof(struct gg_msg_richtext_format);
-				}
-
-				// parse <span> attributes and initialize formant structure
-				pos = idx;
-				idx = mesg.find("\">", pos);
-				tmp = mesg.mid(pos, idx - pos);
-				idx += 2;
-				mesg.remove(pos, idx - pos);
-				tmp = tmp.section("\"", 1, 1);
-				attribs = QStringList::split(";", tmp);
-				formantattribs.clear();
-				foreach(const QString &attrib, attribs)
-				{
-					actattrib.name = attrib.section(":", 0, 0);
-					actattrib.value = attrib.section(":", 1, 1);
-					formantattribs.append(actattrib);
-				}
-				actformant.format.position = pos;
-				actformant.format.font = 0;
-				foreach(const attrib_formant &actattrib, formantattribs)
-				{
-					if (actattrib.name == "font-style" && actattrib.value == "italic")
-						actformant.format.font |= GG_FONT_ITALIC;
-					if (actattrib.name == "text-decoration" && actattrib.value == "underline")
-						actformant.format.font |= GG_FONT_UNDERLINE;
-					if (actattrib.name == "font-weight" && actattrib.value == "600")
-						actformant.format.font |= GG_FONT_BOLD;
-					if (actattrib.name == "color")
-					{
-						actformant.format.font |= GG_FONT_COLOR;
-						QColor color(actattrib.value);
-						actformant.color.red = color.red();
-						actformant.color.green = color.green();
-						actformant.color.blue = color.blue();
-					}
-				}
-
-				// insert <span> formant into list
-				formants.append(actformant);
-				formats_length += sizeof(struct gg_msg_richtext_format)
-					+ sizeof(struct gg_msg_richtext_color)
-							* ((actformant.format.font & GG_FONT_COLOR) != 0);
-			}
-			else
-				break;
-		}
-		else
-		{
-			// found a </span> tag
-			idx = span_end_idx;
-			if (idx != -1)
-			{
-				// we don't create the formant structure here
-				// </span> tag is removed from string, empty formant
-				// is inserted in next loop iteration in code above.
-				kdebugmf(KDEBUG_INFO, "idx=%d\n", idx);
-				pos = idx;
-				mesg.remove(pos, 7);
-				inspan = -1;
-				endspan = true;	// we'll take care of this </span> later
-			}
-			else
-				break;
-		}
-	}
-
-	// if loop ended before we could insert </span> formant, insert it now
-	if (pos && idx == -1)
-	{
-		actformant.format.position = pos;
-		actformant.format.font = 0;
-		formants.append(actformant);
-		formats_length += sizeof(struct gg_msg_richtext_format);
-	}
-
-	// now convert QValueList into flat memory buffer
-	if (formats_length)
-		formats = allocFormantBuffer(formants, formats_length);
-	else
-		formats = NULL;
-
-	HtmlDocument::unescapeText(mesg);
-	kdebugmf(KDEBUG_INFO|KDEBUG_FUNCTION_END, "\n%s\n", unicode2latin(mesg).data());
-	return mesg;
-}*/
-
 unsigned int GaduFormater::computeFormatsSize(const Message &message)
 {
 	unsigned int size = 0;
@@ -2759,6 +2337,15 @@ unsigned char * GaduFormater::createFormats(const Message &message, unsigned int
 			color.blue = part.color().blue();
 		}
 
+		printf("position: %d\n", format.position);
+		printf("font: %d\n", format.font);
+		uint8_t arr[3];
+		memcpy(arr, &format, 3);
+
+		printf("a[0]: %d\n", arr[0]);
+		printf("a[1]: %d\n", arr[1]);
+		printf("a[2]: %d\n", arr[2]);
+
 		memcpy(result + memoryPosition, &format, sizeof(format));
 		memoryPosition += sizeof(format);
 
@@ -2770,6 +2357,73 @@ unsigned char * GaduFormater::createFormats(const Message &message, unsigned int
 
 		textPosition += part.content().length();
 	}
+
+	return result;
+}
+
+Message GaduFormater::createMessage(const QString &content, unsigned char * formats, unsigned int size)
+{
+	Message result;
+
+	printf("create message...: %d %p\n", size, formats);
+
+	if (size == 0 || !formats)
+	{
+		result << MessagePart(content, false, false, false, QColor());
+		return result;
+	}
+
+	bool first = true;
+	unsigned int memoryPosition = 0;
+	unsigned int prevTextPosition = 0;
+	unsigned int textPosition = 0;
+
+	struct gg_msg_richtext_format prevFormat;
+	struct gg_msg_richtext_format format;
+	struct gg_msg_richtext_color prevColor;
+	struct gg_msg_richtext_color color;
+
+	while (memoryPosition + sizeof(memoryPosition) <= size)
+	{
+		memcpy(&format, formats + memoryPosition, sizeof(format));
+		memoryPosition += sizeof(format);
+
+		if (first && format.position > 0)
+		{
+			result << MessagePart(content.mid(0, format.position), false, false, false, QColor());
+			textPosition = format.position;
+		}
+
+		if (memoryPosition + sizeof(color) <= size)
+			if (format.font & GG_FONT_COLOR)
+			{
+				memcpy(&color, formats + memoryPosition, sizeof(color));
+				memoryPosition += sizeof(color);
+			}
+
+		if (!first)
+		{
+			QColor textColor;
+			if (prevFormat.font & GG_FONT_COLOR)
+			{
+				textColor.setRed(prevColor.red);
+				textColor.setGreen(prevColor.green);
+				textColor.setBlue(prevColor.blue);
+			}
+
+			result << MessagePart(content.mid(prevTextPosition, textPosition - prevTextPosition),
+				prevFormat.font & GG_FONT_BOLD, prevFormat.font & GG_FONT_ITALIC, prevFormat.font & GG_FONT_UNDERLINE,
+				textColor);
+		}
+		else
+			first = false;
+
+		prevTextPosition = textPosition;
+		prevFormat = format;
+		prevColor = color;
+	}
+
+	return result;
 }
 
 GaduProtocol *gadu;
