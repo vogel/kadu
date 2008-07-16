@@ -618,9 +618,11 @@ void ChatWidget::sendMessage()
 		changeSendToCancelSend();
 	}
 
-	QString message = Edit->inputBox()->toHtml();
-	myLastMessage = message;
+	currentProtocol()->sendMessage(Users->toUserListElements(), Edit->inputBox()->toHtml());
 
+	QString message2 = Edit->inputBox()->toHtml();
+	myLastMessage = message2;
+/*
 	QRegExp paragraph("<p[^>]*>(.*)</p>");
 	paragraph.setMinimal(true);
 
@@ -638,7 +640,7 @@ void ChatWidget::sendMessage()
 
 	printf("will send[%s]\n", myLastMessage.toLocal8Bit().data());
 
-	QRegExp decoration("<span.*(font-weight:600)?.*(font-style:italic)?.*(text-decoration: underline)?.*(color: \\#([0-9a-fA-F]+))?.*>(.*)</span>");
+	QRegExp decoration("<span.*(font-weight:600)?.*(font-style:italic)?.*(text-decoration: underline)?.*(color:#([0-9a-fA-F]+))?.*>(.*)</span>");
 	decoration.setMinimal(true);
 
 	cleanedMessage = "";
@@ -664,7 +666,7 @@ void ChatWidget::sendMessage()
 		if (i) cleanedMessage.append("<i>");
 		if (u) cleanedMessage.append("<u>");
 		if (!color.isEmpty())
-			cleanedMessage.append("<font color='#%1'>").arg(color);
+			cleanedMessage.append(QString("<font color='#%1'>").arg(color));
 
 		cleanedMessage.append(decoration.cap(6));
 
@@ -680,9 +682,9 @@ void ChatWidget::sendMessage()
 
 	printf("appending: %d %d %s\n", lastPos, myLastMessage.length() - lastPos, myLastMessage.mid(lastPos, myLastMessage.length() - lastPos).toLocal8Bit().data());
 	cleanedMessage.append(myLastMessage.mid(lastPos, myLastMessage.length() - lastPos));
-	myLastMessage = cleanedMessage;
+	myLastMessage = cleanedMessage;*/
 
-	printf("will send[%s]\n", myLastMessage.toLocal8Bit().data());
+// 	printf("will send[%s]\n", myLastMessage.toLocal8Bit().data());
 
 	// TODO: to na pewno jest potrzebne ??
 // 	int messageBegin = message.find("<p>");
@@ -692,12 +694,12 @@ void ChatWidget::sendMessage()
 // 	myLastMessage.replace("<p>", "");
 // 	myLastMessage.replace("<br />", "\n");
 
-	myLastMessage = currentProtocol()->sendMessage(Users->toUserListElements(), myLastMessage);
-	if (myLastMessage == "\001thisisonlyworkaround")
-	{
-		cancelMessage();
-		return;
-	}
+// 	myLastMessage = currentProtocol()->sendMessage(Users->toUserListElements(), myLastMessage);
+// 	if (myLastMessage == "\001thisisonlyworkaround")
+// 	{
+// 		cancelMessage();
+// 		return;
+// 	}
 
 	if (config_file.readBoolEntry("Chat", "MessageAcks"))
 		connectAcknowledgeSlots();

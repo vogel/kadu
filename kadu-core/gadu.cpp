@@ -20,6 +20,7 @@
 #include "icons_manager.h"
 #include "ignore.h"
 #include "kadu.h"
+#include "message.h"
 #include "message_box.h"
 #include "misc.h"
 
@@ -1201,32 +1202,52 @@ void GaduProtocol::setupProxy()
 	kdebugf2();
 }
 
+void myMessageOutput(QtMsgType type, const char *msg)
+{
+	printf("%s\n", msg);
+}
+
+#include <QtCore/QtDebug>
 QString GaduProtocol::sendMessage(UserListElements users, const QString &mesg)
 {
 	kdebugf();
 
+	qInstallMsgHandler(myMessageOutput);
+
+	Message message = Message::parse(mesg);
+	message.dump();
+	QString plain = message.toPlain();
+
 // 	int seq = 0;
 	unsigned int uinsCount = 0;
 	unsigned int myLastFormatsLength = 0;
-	unsigned char *myLastFormats = 0;
+	unsigned char *myLastFormats = GaduFormater::createFormats(message, myLastFormatsLength);
 	bool stop = false;
-	QString msgtmp = mesg;
- 	msgtmp.replace("\n", "\r\n");
- 	msgtmp = GaduFormater::unformatGGMessage(msgtmp, myLastFormatsLength, myLastFormats);
-	QString myLastMessage = msgtmp;
 
- 	if (myLastFormatsLength)
- 		myLastMessage = GaduFormater::formatGGMessage(myLastMessage, myLastFormatsLength - sizeof(struct gg_msg_richtext),
- 			(void *)(myLastFormats + sizeof(struct gg_msg_richtext)),0);
+	plain.replace("\n", "\r\n");
+	qDebug() << "plain" << plain;
+// 	QString msgtmp = mesg;
+// 	msgtmp.replace("\n", "\r\n");
+// 	qDebug() << "msgtmp" << msgtmp;
+
+// 	msgtmp = GaduFormater::unformatGGMessage(msgtmp, myLastFormatsLength, myLastFormats);
+// 	qDebug() << "msgtmp" << msgtmp;
+
+// 	QString myLastMessage = msgtmp;
+
+// 	if (myLastFormatsLength)
+// 		myLastMessage = GaduFormater::formatGGMessage(myLastMessage, myLastFormatsLength - sizeof(struct gg_msg_richtext),
+// 			(void *)(myLastFormats + sizeof(struct gg_msg_richtext)),0);
  
- 	else
- 		HtmlDocument::escapeText(myLastMessage);
+// 	else
+// 		HtmlDocument::escapeText(myLastMessage);
 
+	QString myLastMessage = mesg;
 	kdebugmf(KDEBUG_INFO, "\n%s\n", (const char *)unicode2latin(myLastMessage));
 	myLastMessage.replace("\r\n", "\n");
 	myLastMessage.replace("\r", "\n");
 
-	QByteArray data = unicode2cp(msgtmp);
+	QByteArray data = unicode2cp(plain);
 
 	emit sendMessageFiltering(users, myLastMessage, stop);
 	if (stop)
@@ -2505,7 +2526,7 @@ unsigned char *GaduFormater::allocFormantBuffer(const QList<struct richtext_form
 
 	return cformats;
 }
-
+/*
 QString GaduFormater::unformatGGMessage(const QString &msg, unsigned int &formats_length, unsigned char *&formats)
 {
 	kdebugf();
@@ -2701,6 +2722,81 @@ QString GaduFormater::unformatGGMessage(const QString &msg, unsigned int &format
 	HtmlDocument::unescapeText(mesg);
 	kdebugmf(KDEBUG_INFO|KDEBUG_FUNCTION_END, "\n%s\n", unicode2latin(mesg).data());
 	return mesg;
+}*/
+
+unsigned int GaduFormater::computeFormatsSize(const Message &message)
+{
+	unsigned int size = 0;
+	bool first = true;
+
+	foreach (const MessagePart part, message.parts())
+	{
+		if (!first || part.bold() || part.italic() || part.underline())
+		{
+			size += sizeof(struct gg_msg_richtext_format);
+			first = false;
+		}
+
+		if (part.color().isValid())
+		{
+			size += sizeof(struct gg_msg_richtext_color);
+			first = false;
+		}
+	}
+}
+
+unsigned char * GaduFormater::createFormats(const Message &message, unsigned int &size)
+{
+	size = computeFormatsSize(message);
+	if (!size)
+		return 0;
+
+	unsigned char *result = (unsigned char *)malloc(size);
+	bool first = true;
+	unsigned int memoryPosition = 0;
+	unsigned int textPosition = 0;
+
+	struct gg_msg_richtext_format format;
+	struct gg_msg_richtext_color color;
+
+	foreach (MessagePart part, message.parts())
+	{
+		if (first && !part.bold() && !part.italic() && !part.underline() && !part.color().isValid())
+		{
+			first = false;
+			textPosition += part.content().length();
+			continue;
+		}
+
+		format.position = textPosition;
+		format.font = 0;
+
+		if (part.bold())
+			format.font |= GG_FONT_BOLD;
+		if (part.italic())
+			format.font |= GG_FONT_ITALIC;
+		if (part.underline())
+			format.font |= GG_FONT_UNDERLINE;
+
+		if (part.color().isValid())
+		{
+			format.font |= GG_FONT_COLOR;
+			color.red = part.color().red();
+			color.green = part.color().green();
+			color.blue = part.color().blue();
+		}
+
+		memcpy(result + memoryPosition, &format, sizeof(format));
+		memoryPosition += sizeof(format);
+
+		if (part.color().isValid())
+		{
+			memcpy(result + memoryPosition, &color, sizeof(color));
+			memoryPosition += sizeof(color);
+		}
+
+		textPosition += part.content().length();
+	}
 }
 
 GaduProtocol *gadu;

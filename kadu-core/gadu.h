@@ -11,7 +11,9 @@
 typedef uin_t UinType;
 
 class QTimer;
+
 class GaduSocketNotifiers;
+class Message;
 
 // ------------------------------------
 //            UinsList
@@ -179,6 +181,9 @@ class GaduFormater
 public:
 	static QString formatGGMessage(const QString &msg, unsigned int formats_length, void *formats, UinType sender);
 	static QString unformatGGMessage(const QString &msg, unsigned int &formats_length, unsigned char *&formats);
+
+	static unsigned int computeFormatsSize(const Message &message);
+	static unsigned char * createFormats(const Message &message, unsigned int &size);
 
 };
 

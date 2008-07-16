@@ -34,6 +34,7 @@ set (kadu_SRCS
 	kadu_text_browser.cpp
 	main_configuration_window.cpp
 	main.cpp
+	message.cpp
 	message_box.cpp
 	misc.cpp
 	modules.cpp
@@ -95,6 +96,7 @@ set (kadu_MOC_SRCS
 	kadu_parser.h
 	kadu_text_browser.h
 	main_configuration_window.h
+	message.h
 	message_box.h
 	misc.h
 	modules.h
