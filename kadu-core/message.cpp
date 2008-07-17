@@ -36,6 +36,8 @@ QString MessagePart::toHtml() const
 		span += "font-style:italic;";
 	if (Underline)
 		span += "text-decoration:underline;";
+	if (Color.isValid())
+		span += QString("color:%1;").arg(Color.name());
 	span += "'>";
 
 	return span + result + "</span>";

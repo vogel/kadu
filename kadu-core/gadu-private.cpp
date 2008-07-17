@@ -460,7 +460,6 @@ void GaduSocketNotifiers::socketEvent()
 					for (int i = 0; i < e->event.msg.recipients_count; ++i)
 						users.append(userlist->byID("Gadu", QString::number(e->event.msg.recipients[i])));
 				QString msg((char*)e->event.msg.message);
-				printf("formats: %d %p\n", e->event.msg.formats_length, e->event.msg.formats);
 				QByteArray formats;
 				formats.duplicate((const char*)e->event.msg.formats, e->event.msg.formats_length);
 				emit messageReceived(e->event.msg.msgclass, users, msg,

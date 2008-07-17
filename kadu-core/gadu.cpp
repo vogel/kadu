@@ -2275,12 +2275,12 @@ QString GaduStatus::protocolName() const
 
 unsigned int GaduFormater::computeFormatsSize(const Message &message)
 {
-	unsigned int size = 0;
+	unsigned int size = sizeof(struct gg_msg_richtext);
 	bool first = true;
 
 	foreach (const MessagePart part, message.parts())
 	{
-		if (!first || part.bold() || part.italic() || part.underline())
+		if (!first || part.bold() || part.italic() || part.underline() || part.color().isValid())
 		{
 			size += sizeof(struct gg_msg_richtext_format);
 			first = false;
@@ -2293,7 +2293,7 @@ unsigned int GaduFormater::computeFormatsSize(const Message &message)
 		}
 	}
 
-	return size;
+	return first ? 0 : size;
 }
 
 unsigned char * GaduFormater::createFormats(const Message &message, unsigned int &size)
@@ -2304,11 +2304,16 @@ unsigned char * GaduFormater::createFormats(const Message &message, unsigned int
 
 	unsigned char *result = new unsigned char[size];
 	bool first = true;
-	unsigned int memoryPosition = 0;
+	unsigned int memoryPosition = sizeof(struct gg_msg_richtext);
 	unsigned int textPosition = 0;
 
+	struct gg_msg_richtext header;
 	struct gg_msg_richtext_format format;
 	struct gg_msg_richtext_color color;
+
+	header.flag = 2;
+	header.length = gg_fix16(size - sizeof(struct gg_msg_richtext));
+	memcpy(result, &header, sizeof(header));
 
 	foreach (MessagePart part, message.parts())
 	{
@@ -2319,7 +2324,7 @@ unsigned char * GaduFormater::createFormats(const Message &message, unsigned int
 			continue;
 		}
 
-		format.position = textPosition;
+		format.position = gg_fix16(textPosition);
 		format.font = 0;
 
 		if (part.bold())
@@ -2328,29 +2333,18 @@ unsigned char * GaduFormater::createFormats(const Message &message, unsigned int
 			format.font |= GG_FONT_ITALIC;
 		if (part.underline())
 			format.font |= GG_FONT_UNDERLINE;
-
 		if (part.color().isValid())
-		{
 			format.font |= GG_FONT_COLOR;
-			color.red = part.color().red();
-			color.green = part.color().green();
-			color.blue = part.color().blue();
-		}
-
-		printf("position: %d\n", format.position);
-		printf("font: %d\n", format.font);
-		uint8_t arr[3];
-		memcpy(arr, &format, 3);
-
-		printf("a[0]: %d\n", arr[0]);
-		printf("a[1]: %d\n", arr[1]);
-		printf("a[2]: %d\n", arr[2]);
 
 		memcpy(result + memoryPosition, &format, sizeof(format));
 		memoryPosition += sizeof(format);
 
 		if (part.color().isValid())
 		{
+			color.red = part.color().red();
+			color.green = part.color().green();
+			color.blue = part.color().blue();
+
 			memcpy(result + memoryPosition, &color, sizeof(color));
 			memoryPosition += sizeof(color);
 		}
@@ -2361,11 +2355,9 @@ unsigned char * GaduFormater::createFormats(const Message &message, unsigned int
 	return result;
 }
 
-Message GaduFormater::createMessage(const QString &content, unsigned char * formats, unsigned int size)
+Message GaduFormater::createMessage(const QString &content, unsigned char *formats, unsigned int size)
 {
 	Message result;
-
-	printf("create message...: %d %p\n", size, formats);
 
 	if (size == 0 || !formats)
 	{
@@ -2383,16 +2375,14 @@ Message GaduFormater::createMessage(const QString &content, unsigned char * form
 	struct gg_msg_richtext_color prevColor;
 	struct gg_msg_richtext_color color;
 
-	while (memoryPosition + sizeof(memoryPosition) <= size)
+	while (memoryPosition + sizeof(format) <= size)
 	{
 		memcpy(&format, formats + memoryPosition, sizeof(format));
 		memoryPosition += sizeof(format);
+		textPosition = gg_fix16(format.position);
 
 		if (first && format.position > 0)
-		{
-			result << MessagePart(content.mid(0, format.position), false, false, false, QColor());
-			textPosition = format.position;
-		}
+			result << MessagePart(content.mid(0, textPosition), false, false, false, QColor());
 
 		if (memoryPosition + sizeof(color) <= size)
 			if (format.font & GG_FONT_COLOR)
@@ -2404,6 +2394,7 @@ Message GaduFormater::createMessage(const QString &content, unsigned char * form
 		if (!first)
 		{
 			QColor textColor;
+
 			if (prevFormat.font & GG_FONT_COLOR)
 			{
 				textColor.setRed(prevColor.red);
@@ -2422,6 +2413,21 @@ Message GaduFormater::createMessage(const QString &content, unsigned char * form
 		prevFormat = format;
 		prevColor = color;
 	}
+
+	textPosition = content.length();
+
+	QColor textColor;
+	if (prevFormat.font & GG_FONT_COLOR)
+	{
+		textColor.setRed(prevColor.red);
+		textColor.setGreen(prevColor.green);
+		textColor.setBlue(prevColor.blue);
+	}
+
+	if (textPosition != prevTextPosition)
+		result << MessagePart(content.mid(prevTextPosition, textPosition - prevTextPosition),
+			prevFormat.font & GG_FONT_BOLD, prevFormat.font & GG_FONT_ITALIC, prevFormat.font & GG_FONT_UNDERLINE,
+			textColor);
 
 	return result;
 }
