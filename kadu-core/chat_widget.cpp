@@ -108,22 +108,13 @@ ChatWidget::ChatWidget(Protocol *initialProtocol, const UserListElements &usrs, 
 	connect(Edit->inputBox(), SIGNAL(cursorPositionChanged()), this, SLOT(curPosChanged()));
 	connect(Edit->inputBox(), SIGNAL(sendMessage()), this, SLOT(sendMessage()));
 	connect(Edit->inputBox(), SIGNAL(specialKeyPressed(int)), this, SLOT(specialKeyPressed(int)));
-	connect(Edit->inputBox(), SIGNAL(textChanged()), this, SLOT(editTextChanged()));
-
-	editTextChanged(); // slot ustawia poprawny stan przycisku Send (tutaj - blokuje)
-	setActColor(false); // ustawia poprawny kolor na przycisku wyboru koloru
-
-	/*
-	connect(KaduActions["sendAction"], SIGNAL(addedToToolbar(ToolButton*, ToolBar*)),
-		this, SLOT(sendActionAddedToToolbar(ToolButton*, ToolBar*)));
-	connect(KaduActions["colorAction"], SIGNAL(addedToToolbar(ToolButton*, ToolBar*)),
-		this, SLOT(colorActionForceRefresh()));
-	connect(KaduActions["colorAction"], SIGNAL(iconsRefreshed()),
-		this, SLOT(colorActionForceRefresh()));*/
 
 	Edit->installEventFilter(this);
 
 	configurationUpdated();
+
+	connect(chat_manager->colorSelectorActionDescription, SIGNAL(actionCreated(KaduAction *)), this, SLOT(colorSelectorActionCreated(KaduAction *)));
+
 
 	kdebugf2();
 }
@@ -165,41 +156,46 @@ void ChatWidget::configurationUpdated()
 	AutoSend = config_file.readBoolEntry("Chat", "AutoSend");
 	Edit->inputBox()->setAutosend(AutoSend);
 
+	setActColor(true);
+
 	refreshTitle();
 }
 
 void ChatWidget::specialKeyPressed(int key)
 {
-// 	kdebugf();
-// 	switch (key)
-// 	{
-// 		case CustomInput::KEY_BOLD:
-// 			KaduActions["boldAction"]->setChecked(Users->toUserListElements(), !KaduActions["boldAction"]->isChecked(Users->toUserListElements()));
-// 			Edit->setBold(KaduActions["boldAction"]->isChecked(Users->toUserListElements()));
-// 			break;
-// 		case CustomInput::KEY_ITALIC:
-// 			KaduActions["italicAction"]->setChecked(Users->toUserListElements(), !KaduActions["italicAction"]->isChecked(Users->toUserListElements()));
-// 			Edit->setItalic(KaduActions["italicAction"]->isChecked(Users->toUserListElements()));
-// 			break;
-// 		case CustomInput::KEY_UNDERLINE:
-// 			KaduActions["underlineAction"]->setChecked(Users->toUserListElements(), !KaduActions["underlineAction"]->isChecked(Users->toUserListElements()));
-// 			Edit->setUnderline(KaduActions["underlineAction"]->isChecked(Users->toUserListElements()));
-// 			break;
-// 	}
-// 	kdebugf2();
+ 	kdebugf();
+ 	switch (key)
+ 	{
+		QAction *action;
+ 		case CustomInput::KEY_BOLD:
+ 			foreach (action, chat_manager->boldActionDescription->actions(Edit))
+				action->setChecked(!action->isChecked());
+ 			Edit->inputBox()->setBold(action->isChecked());
+ 			break;
+ 		case CustomInput::KEY_ITALIC:
+ 			foreach (action, chat_manager->italicActionDescription->actions(Edit))
+				action->setChecked(!action->isChecked());
+ 			Edit->inputBox()->setFontItalic(action->isChecked());
+ 			break;
+ 		case CustomInput::KEY_UNDERLINE:
+ 			foreach (action, chat_manager->underlineActionDescription->actions(Edit))
+				action->setChecked(!action->isChecked());
+ 			Edit->inputBox()->setFontUnderline(action->isChecked());
+ 			break;
+ 	}
+ 	kdebugf2();
 }
 
 void ChatWidget::curPosChanged()
 {
 	kdebugf();
-/*
-	UserListElements elems = Users->toUserListElements();
-	if (Edit->bold() != KaduActions["boldAction"]->isChecked(elems))
-		KaduActions["boldAction"]->setChecked(elems, Edit->bold());
-	if (Edit->italic() != KaduActions["italicAction"]->isChecked(elems))
-		KaduActions["italicAction"]->setChecked(elems, Edit->italic());
-	if (Edit->underline() != KaduActions["underlineAction"]->isChecked(elems))
-		KaduActions["underlineAction"]->setChecked(elems, Edit->underline());*/
+
+ 	foreach (QAction *action, chat_manager->boldActionDescription->actions(Edit))
+		action->setChecked(Edit->inputBox()->fontWeight() >= QFont::Bold);
+ 	foreach (QAction *action, chat_manager->italicActionDescription->actions(Edit))
+		action->setChecked(Edit->inputBox()->fontItalic());
+ 	foreach (QAction *action, chat_manager->underlineActionDescription->actions(Edit))
+		action->setChecked(Edit->inputBox()->fontUnderline());
 
 	setActColor(false);
 
@@ -223,7 +219,8 @@ void ChatWidget::setActColor(bool force)
 			actcolor = colors[i];
 		p.fill(actcolor);
 
-// 		KaduActions["colorAction"]->setPixmaps(Users->toUserListElements(), p);
+ 		foreach (QAction *action, chat_manager->colorSelectorActionDescription->actions(Edit))
+			action->setIcon(p);
 	}
 
 	kdebugf2();
@@ -293,18 +290,12 @@ void ChatWidget::insertImage()
 
 	kdebugf2();
 }
-/*
-void ChatWidget::sendActionAddedToToolbar(ToolButton* button, ToolBar* toolbar)
-{
-	kdebugf();
-	button->setEnabled(!Edit->inputBox()->text().isEmpty());
-	kdebugf2();
-}*/
 
-void ChatWidget::colorActionForceRefresh()
+void ChatWidget::colorSelectorActionCreated(KaduAction *action)
 {
 	kdebugf();
-	setActColor(true);
+	if (action->parent() == Edit)
+		setActColor(true);
 	kdebugf2();
 }
 
@@ -411,16 +402,6 @@ void ChatWidget::keyPressEvent(QKeyEvent *e)
 	kdebugf2();
 }
 
-void ChatWidget::editTextChanged()
-{
-// 	kdebugf();
-// 	QList<ToolButton*> buttons =
-// 		KaduActions["sendAction"]->toolButtonsForUserListElements(Users->toUserListElements());
-// 	bool buttonsEnabled = !Edit->text().isEmpty();
-// 	CONST_FOREACH(i, buttons)
-// 		(*i)->setEnabled(buttonsEnabled);
-// 	kdebugf2();
-}
 
 // TODO: remove
 bool ChatWidget::eventFilter(QObject *watched, QEvent *ev)
@@ -488,13 +469,13 @@ void ChatWidget::writeMyMessage()
 	if (!Edit->inputBox()->isEnabled())
 		cancelMessage();
 	Edit->inputBox()->clear();
-/*
-	if (KaduActions["boldAction"]->isOn(Users->toUserListElements()))
-		Edit->setBold(true);
-	if (KaduActions["italicAction"]->isOn(Users->toUserListElements()))
-		Edit->setItalic(true);
-	if (KaduActions["underlineAction"]->isOn(Users->toUserListElements()))
-		Edit->setUnderline(true);*/
+
+	if (chat_manager->boldActionDescription->actions(Edit).count())
+		Edit->inputBox()->setBold(chat_manager->boldActionDescription->actions(Edit)[0]->isChecked());
+	if (chat_manager->italicActionDescription->actions(Edit).count())
+		Edit->inputBox()->setFontItalic(chat_manager->italicActionDescription->actions(Edit)[0]->isChecked());
+	if (chat_manager->underlineActionDescription->actions(Edit).count())
+		Edit->inputBox()->setFontUnderline(chat_manager->underlineActionDescription->actions(Edit)[0]->isChecked());
 	kdebugf2();
 }
 
@@ -661,18 +642,20 @@ void ChatWidget::changeColor(const QWidget *activating_widget)
 void ChatWidget::colorSelectorAboutToClose()
 {
 	kdebugf();
-	color_selector = NULL;
+	color_selector = 0;
 	kdebugf2();
 }
 
 void ChatWidget::colorChanged(const QColor &color)
 {
-	color_selector = NULL;
+	color_selector = 0;
 
 	QPixmap p(12, 12);
 	p.fill(color);
 
-// 	KaduActions["colorAction"]->setPixmaps(Users->toUserListElements(), p);
+	foreach (QAction *action, chat_manager->colorSelectorActionDescription->actions(Edit))
+		action->setIcon(p);
+
 	Edit->inputBox()->setColor(color);
 	actcolor = color;
 }

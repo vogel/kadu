@@ -56,7 +56,7 @@ UserBox * ChatEditBox::userBox()
 {
 	ChatWidget *cw = chatWidget();
 	if (cw && cw->users()->count() > 1)
-			return cw->getUserbox();
+		return cw->getUserbox();
 
 	return 0;
 }

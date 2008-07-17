@@ -28,6 +28,7 @@ class ChatWidget;
 class ColorSelector;
 class CustomInput;
 class EmoticonSelector;
+class KaduAction;
 class Protocol;
 class UserBox;
 class UserGroup;
@@ -98,15 +99,14 @@ private slots:
 	**/
 	void disconnectAcknowledgeSlots();
 
-// 	void sendActionAddedToToolbar(ToolButton*, ToolBar*);
-
 	/**
-		\fn void colorActionForceRefresh()
+		\fn void colorSelectorActionCreated(KaduAction *action)
 		Slot jest wywo�ywany, po dodaniu do paska narz�dzi akcji zmieniaj�cej
-		kolor wiadomo�ci lub zmianie zestawu ikon. U�ywa setActColor() wymuszaj�c
-		od�wie�enie koloru na przycisku.
+		kolor wiadomo�ci. U�ywa setActColor() wymuszaj�c od�wie�enie koloru na przycisku.
+		Metoda jest wywoływana jedynia dla dodanych akcji po otwarciu chata. 
+		Przy tworzeniu chata metoda setActColor() wywoływana jest z poziomu configurationUpdated()
 	**/
-	void colorActionForceRefresh();
+	void colorSelectorActionCreated(KaduAction *action);
 
 	/**
 		\fn void setActColor()
@@ -237,14 +237,6 @@ public slots:
 	void messageNotDeliveredSlot(const QString &message);
 
 	void messageAcceptedSlot();
-
-	/**
-		\fn void editTextChanged()
-		Slot jest wywo�ywany, gdy zmieni�a si� zawarto��
-		pola edycji wiadomo�ci. Ustawia poprawny stan przycisku
-		akcji sendAction w oknie rozmowy.
-	**/
-	void editTextChanged();
 
 	/**
 		\fn void appendMessages(const QValueList<ChatMessage *> &)
