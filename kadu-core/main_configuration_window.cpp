@@ -138,12 +138,12 @@ MainConfigurationWindow::MainConfigurationWindow()
 	(dynamic_cast<ConfigSyntaxEditor *>(widgetById("chatSyntax")))->setSyntaxHint(qApp->translate("@default", Kadu::SyntaxTextExtended));
 	(dynamic_cast<ConfigSyntaxEditor *>(widgetById("infoPanelSyntax")))->setSyntaxHint(qApp->translate("@default", Kadu::SyntaxText));
 
-	loadGeometry(this, "General", "ConfigGeometry", 0, 30, 790, 480);
+	loadWindowGeometry(this, "General", "ConfigGeometry", 0, 30, 790, 480);
 }
 
 MainConfigurationWindow::~MainConfigurationWindow()
 {
-// 	saveGeometry(this, "General", "ConfigGeometry");
+ 	saveWindowGeometry(this, "General", "ConfigGeometry");
 	Instance = 0;
 }
 

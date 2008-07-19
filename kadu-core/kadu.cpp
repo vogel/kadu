@@ -401,7 +401,7 @@ Kadu::Kadu(QWidget *parent)
 	groups_manager->setTabBar(GroupBar);
 	setDocked(Docked, dontHideOnClose);
 
-	loadGeometry(this, "General", "Geometry", 0, 30, 205, 465);
+	loadWindowGeometry(this, "General", "Geometry", 0, 30, 205, 465);
 	import_0_5_0_configuration();
 
 	IgnoredManager::loadFromConfiguration();
@@ -1365,7 +1365,7 @@ bool Kadu::close(bool quit)
 		}
 		if (config_file.readBoolEntry("Look", "ShowStatusButton"))
 			config_file.writeEntry("General", "UserBoxHeight", Userbox->size().height());
-// 		saveGeometry(this, "General", "Geometry");
+ 		saveWindowGeometry(this, "General", "Geometry");
 
 		config_file.writeEntry("General", "DefaultDescription", defaultdescriptions.join("<-->"));
 

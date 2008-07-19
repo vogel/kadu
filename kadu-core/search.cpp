@@ -176,7 +176,7 @@ SearchDialog::SearchDialog(QWidget *parent, UinType whoisSearchUin)
 	else
 		loadToolBarsFromConfig("search"); // load new config
 
-	loadGeometry(this, "General", "SearchDialogGeometry", 0, 30, 800, 350);
+	loadWindowGeometry(this, "General", "SearchDialogGeometry", 0, 30, 800, 350);
 
 	connect(gadu, SIGNAL(newSearchResults(SearchResults &, int, int)), this, SLOT(newSearchResults(SearchResults &, int, int)));
 
@@ -190,7 +190,7 @@ SearchDialog::~SearchDialog()
 	writeToolBarsToConfig("search");
 
 	disconnect(gadu, SIGNAL(newSearchResults(SearchResults&, int, int)), this, SLOT(newSearchResults(SearchResults&, int, int)));
-// 	saveGeometry(this, "General", "SearchDialogGeometry");
+ 	saveWindowGeometry(this, "General", "SearchDialogGeometry");
 	delete searchRecord;
 	delete selectedUsers;
 	kdebugf2();

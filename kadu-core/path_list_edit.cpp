@@ -111,7 +111,7 @@ PathListEditWindow::PathListEditWindow(const QStringList &pathList, QWidget *par
 	connect(ok, SIGNAL(clicked()), this, SLOT(okClicked()));
 	connect(cancel, SIGNAL(clicked()), this, SLOT(close()));
 
-	loadGeometry(this, "General", "SelectPathDialogGeometry", 0, 30, 330, 330);
+	loadWindowGeometry(this, "General", "SelectPathDialogGeometry", 0, 30, 330, 330);
 	setPathList(pathList);
 }
 
@@ -202,7 +202,7 @@ void PathListEditWindow::okClicked()
 
 void PathListEditWindow::closeEvent(QCloseEvent *e)
 {
-// 	saveGeometry(this, "General", "SelectPathDialogGeometry");
+ 	saveWindowGeometry(this, "General", "SelectPathDialogGeometry");
 	QWidget::closeEvent(e);
 }
 

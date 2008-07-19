@@ -166,7 +166,7 @@ ModulesDialog::ModulesDialog(QWidget *parent)
 	connect(lv_modules, SIGNAL(itemSelectionChanged()), this, SLOT(itemsChanging()));
 	connect(lv_modules, SIGNAL(itemDoubleClicked(QTreeWidgetItem *, int)), this, SLOT(moduleAction(QTreeWidgetItem *)));
 
-	loadGeometry(this, "General", "ModulesDialogGeometry", 0, 30, 600, 620);
+	loadWindowGeometry(this, "General", "ModulesDialogGeometry", 0, 30, 600, 620);
 	refreshList();
 	kdebugf2();
 }
@@ -175,7 +175,7 @@ ModulesDialog::~ModulesDialog()
 {
 	kdebugf();
 	config_file.writeEntry("General", "HideBaseModules", hideBaseModules->isChecked());
-// 	saveGeometry(this, "General", "ModulesDialogGeometry");
+ 	saveWindowGeometry(this, "General", "ModulesDialogGeometry");
 	kdebugf2();
 }
 

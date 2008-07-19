@@ -122,14 +122,14 @@ KeysManager::KeysManager(QDialog *parent)
 	// refreshing (loading) QTreeWidget
 	refreshKeysList();
 
- 	loadGeometry(this, "General", "KeysManagerDialogGeometry", 0, 0, 680, 460);
+ 	loadWindowGeometry(this, "General", "KeysManagerDialogGeometry", 0, 0, 680, 460);
 	kdebugf2();
 }
 
 KeysManager::~KeysManager()
 {
 	kdebugf();
-//	saveGeometry(this, "General", "KeysManagerDialogGeometry");
+	saveWindowGeometry(this, "General", "KeysManagerDialogGeometry");
 	delete lv_keys;
 	delete e_key;
 	delete pb_del;

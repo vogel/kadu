@@ -178,7 +178,7 @@ UserlistImportExport::UserlistImportExport(QWidget *parent)
 
 	setLayout(layout);
 
- 	loadGeometry(this, "General", "ImportExportDialogGeometry", 0, 30, 640, 450);
+ 	loadWindowGeometry(this, "General", "ImportExportDialogGeometry", 0, 30, 640, 450);
 	kdebugf2();
 }
 
@@ -194,7 +194,7 @@ void UserlistImportExport::updateUserListCount()
 UserlistImportExport::~UserlistImportExport()
 {
 	kdebugf();
-// 	saveGeometry(this, "General", "ImportExportDialogGeometry");
+ 	saveWindowGeometry(this, "General", "ImportExportDialogGeometry");
 	kdebugf2();
 }
 

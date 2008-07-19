@@ -259,7 +259,7 @@ FileTransferWindow::FileTransferWindow(QWidget *parent, const char *name)
 	buttonBox->setLayout(buttonBox_layout);		
 	mainGrid->addWidget(buttonBox, 1, 0, Qt::AlignRight);
 
-	loadGeometry(this, "General", "TransferWindowGeometry", 200, 200, 500, 300);
+	loadWindowGeometry(this, "General", "TransferWindowGeometry", 200, 200, 500, 300);
 
 	foreach(FileTransfer *i, file_transfer_manager->transfers())
 	{
@@ -279,7 +279,7 @@ FileTransferWindow::~FileTransferWindow()
 	foreach(FileTransfer *i, file_transfer_manager->transfers())
 		i->removeListener(this, true);
 
-// 	saveGeometry(this, "General", "TransferWindowGeometry");
+ 	saveWindowGeometry(this, "General", "TransferWindowGeometry");
 
 	kdebugf2();
 }

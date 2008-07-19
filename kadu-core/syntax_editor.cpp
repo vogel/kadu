@@ -389,12 +389,12 @@ SyntaxEditorWindow::SyntaxEditorWindow(SyntaxList *syntaxList, const QString &sy
 	connect(saveAsSyntax, SIGNAL(clicked()), this, SLOT(saveAs()));
 	connect(cancel, SIGNAL(clicked()), this, SLOT(close()));
 
-	loadGeometry(this, "Look", "SyntaxEditorGeometry", 0, 30, 790, 480);
+	loadWindowGeometry(this, "Look", "SyntaxEditorGeometry", 0, 30, 790, 480);
 }
 
 SyntaxEditorWindow::~SyntaxEditorWindow()
 {
-// 	saveGeometry(this, "Look", "SyntaxEditorGeometry");
+ 	saveWindowGeometry(this, "Look", "SyntaxEditorGeometry");
 }
 
 void SyntaxEditorWindow::refreshPreview()

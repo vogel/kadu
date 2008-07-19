@@ -124,14 +124,14 @@ Ignored::Ignored(QWidget *parent, const char *name) : QWidget(parent, name, Qt::
 
 	setLayout(layout);
 
- 	loadGeometry(this, "General", "IgnoredDialogGeometry", 0, 30, 330, 350);
+ 	loadWindowGeometry(this, "General", "IgnoredDialogGeometry", 0, 30, 330, 350);
 	kdebugf2();
 }
 
 Ignored::~Ignored()
 {
 	kdebugf();
-// 	saveGeometry(this, "General", "IgnoredDialogGeometry");
+ 	saveWindowGeometry(this, "General", "IgnoredDialogGeometry");
 	kdebugf2();
 }
 

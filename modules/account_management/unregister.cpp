@@ -105,7 +105,7 @@ Unregister::Unregister(QDialog *parent) : QWidget(parent, Qt::Window),
 
 	connect(gadu, SIGNAL(unregistered(bool)), this, SLOT(unregistered(bool)));
 
- 	loadGeometry(this, "General", "UnregisterDialogGeometry", 0, 30, 355, 340);
+ 	loadWindowGeometry(this, "General", "UnregisterDialogGeometry", 0, 30, 355, 340);
 
 	kdebugf2();
 }
@@ -114,7 +114,7 @@ Unregister::~Unregister()
 {
 	kdebugf();
 
-//	saveGeometry(this, "General", "UnregisterDialogGeometry");
+	saveWindowGeometry(this, "General", "UnregisterDialogGeometry");
 
 	kdebugf2();
 }

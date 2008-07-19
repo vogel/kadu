@@ -95,7 +95,7 @@ RemindPassword::RemindPassword(QDialog *parent) : QWidget(parent, Qt::Window),
 	layout->addWidget(left);
 	layout->addWidget(center);
 
-	loadGeometry(this, "General", "RemindPasswordDialogGeometry", 0, 30, 355, 200);
+	loadWindowGeometry(this, "General", "RemindPasswordDialogGeometry", 0, 30, 355, 200);
 	connect(gadu, SIGNAL(reminded(bool)), this, SLOT(reminded(bool)));
 
 	kdebugf2();
@@ -105,7 +105,7 @@ RemindPassword::~RemindPassword()
 {
 	kdebugf();
 
-//	saveGeometry(this, "General", "RemindPasswordDialogGeometry");
+	saveWindowGeometry(this, "General", "RemindPasswordDialogGeometry");
 
 	kdebugf2();
 }

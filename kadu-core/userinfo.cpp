@@ -119,7 +119,7 @@ UserInfo::UserInfo(UserListElement user, QWidget *parent)
 
 	createNotifier.notify(this);
 
-	loadGeometry(this, "General", "ManageUsersDialogGeometry", 0, 30, 425, 500);
+	loadWindowGeometry(this, "General", "ManageUsersDialogGeometry", 0, 30, 425, 500);
 	kdebugf2();
 }
 
@@ -486,7 +486,7 @@ void UserInfo::setupTab3()
 UserInfo::~UserInfo()
 {
 	kdebugf();
-// 	saveGeometry(this, "General", "ManageUsersDialogGeometry");
+ 	saveWindowGeometry(this, "General", "ManageUsersDialogGeometry");
 	kdebugf2();
 }
 

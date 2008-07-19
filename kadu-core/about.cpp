@@ -140,7 +140,7 @@ About::About(QWidget *parent)
 	layout->addWidget(left);
 	layout->addWidget(center);
 
-	loadGeometry(this, "General", "AboutGeometry", 0, 30, 640, 420);
+	loadWindowGeometry(this, "General", "AboutGeometry", 0, 30, 640, 420);
 
 	kdebugf2();
 }
@@ -149,7 +149,7 @@ About::~About()
 {
 	kdebugf();
 
-// 	saveGeometry(this, "General", "AboutGeometry");
+ 	saveWindowGeometry(this, "General", "AboutGeometry");
 
 	kdebugf2();
 }

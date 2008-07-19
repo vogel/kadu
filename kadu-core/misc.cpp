@@ -49,7 +49,7 @@ QTextCodec *codec_latin2 = QTextCodec::codecForName("ISO8859-2");
 long long int startTime = 0, beforeExecTime = 0, endingTime = 0, exitingTime = 0;
 bool measureTime = false;
 
-void saveGeometry(const QWidget *w, const QString &section, const QString &name)
+void saveWindowGeometry(const QWidget *w, const QString &section, const QString &name)
 {
 	QRect geom;
 	geom.setX(w->pos().x());
@@ -60,7 +60,7 @@ void saveGeometry(const QWidget *w, const QString &section, const QString &name)
 	config_file.writeEntry(section, name, geom);
 }
 
-void loadGeometry(QWidget *w, const QString &section, const QString &name, int defaultX, int defaultY, int defaultWidth, int defaultHeight)
+void loadWindowGeometry(QWidget *w, const QString &section, const QString &name, int defaultX, int defaultY, int defaultWidth, int defaultHeight)
 {
 	QRect def_rect(defaultX, defaultY, defaultWidth, defaultHeight);
 	config_file.addVariable(section, name, def_rect);
@@ -933,7 +933,7 @@ OpenChatWith::OpenChatWith(QWidget *parent)
 
 	setLayout(layout);
 
-	loadGeometry(this, "General", "OpenChatWith", 100, 100, 250, 80);
+	loadWindowGeometry(this, "General", "OpenChatWith", 100, 100, 250, 80);
 	setFixedHeight(sizeHint().height());
 
 	kdebugf2();
@@ -941,7 +941,7 @@ OpenChatWith::OpenChatWith(QWidget *parent)
 
 OpenChatWith::~OpenChatWith()
 {
-// 	saveGeometry(this, "General", "OpenChatWith");
+ 	saveWindowGeometry(this, "General", "OpenChatWith");
 }
 
 void OpenChatWith::keyPressEvent(QKeyEvent *e)

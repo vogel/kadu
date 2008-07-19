@@ -124,7 +124,7 @@ HistoryDialog::HistoryDialog(UinsList uins)
 	connect(searchNextButton, SIGNAL(clicked()), this, SLOT(searchNextButtonClicked()));
 	connect(searchPrevButton, SIGNAL(clicked()), this, SLOT(searchPrevButtonClicked()));
 
-	loadGeometry(this, "History", "HistoryGeometry", 0, 30, 500, 400);
+	loadWindowGeometry(this, "History", "HistoryGeometry", 0, 30, 500, 400);
 
 	findRec.type = 1;
 	findRec.reverse = 0;
@@ -510,7 +510,7 @@ void HistoryDialog::keyPressEvent(QKeyEvent *e)
 
 void HistoryDialog::closeEvent(QCloseEvent *e)
 {
-//	saveGeometry(this, "History", "HistoryGeometry");
+	saveWindowGeometry(this, "History", "HistoryGeometry");
 
 	if (finding)
 	{
