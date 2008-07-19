@@ -41,6 +41,7 @@ KaduAction::KaduAction(ActionDescription *description, KaduMainWindow *parent)
 
 	connect(this, SIGNAL(changed()), this, SLOT(changedSlot()));
 	connect(this, SIGNAL(hovered()), this, SLOT(hoveredSlot()));
+	connect(this, SIGNAL(toggled(bool)), this, SLOT(toggledSlot(bool)));
 	connect(this, SIGNAL(triggered(bool)), this, SLOT(triggeredSlot(bool)));
 
 	checkIfEnabled();
@@ -69,7 +70,7 @@ void KaduAction::hoveredSlot()
 	emit hovered(this);
 }
 
-void KaduAction::setChecked(bool checked)
+void KaduAction::toggledSlot(bool checked)
 {
 	if (checked)
 	{
@@ -85,25 +86,10 @@ void KaduAction::setChecked(bool checked)
 		if (!OffIcon.isNull())
 			setIcon(OffIcon);
 	}
-	QAction::setChecked(checked);
 }
 
 void KaduAction::triggeredSlot(bool checked)
 {
-	if (checked)
-	{
-		if (!OnText.isEmpty())
-			setText(OnText);
-		if (!OnIcon.isNull())
-			setIcon(OnIcon);
-	}
-	else
-	{
-		if (!OffText.isEmpty())
-			setText(OffText);
-		if (!OffIcon.isNull())
-			setIcon(OffIcon);
-	}
 	emit triggered(this, checked);
 }
 
