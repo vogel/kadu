@@ -74,11 +74,15 @@ private slots:
 	void underlineActionActivated(QAction *sender, bool toggled);
 	void sendActionActivated(QAction *sender, bool toggled);
 	void whoisActionActivated(QAction *sender, bool toggled);
-	void ignoreUserActionActivated(QAction *sender, bool toggled);
-	void blockUserActionActivated(QAction *sender, bool toggled);
 	void chatActionActivated(QAction *sender, bool toggled);
 	void insertImageActionActivated(QAction *sender, bool toggled);
 	void colorSelectorActionActivated(QAction *sender, bool toogled);
+
+	void ignoreUserActionActivated(QAction *sender, bool toggled);
+	void ignoreUserActionCreated(KaduAction *action);
+
+	void blockUserActionActivated(QAction *sender, bool toggled);
+	void blockUserActionCreated(KaduAction *action);
 
 	void autoSendActionCreated(KaduAction *action);
 	void sendActionCreated(KaduAction *action);

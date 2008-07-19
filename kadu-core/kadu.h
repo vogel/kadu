@@ -41,6 +41,9 @@ class Kadu : public KaduMainWindow, ConfigurationAwareObject
 	ActionDescription *editUserActionDescription;
 	ActionDescription *addUserActionDescription;
 	ActionDescription *openSearchActionDescription;
+	ActionDescription *offlineToUserActionDescription;
+	ActionDescription *hideDescriptionActionDescription;
+	ActionDescription *notifyAboutUserActionDescription;
 
 	QActionGroup *changeStatusActionGroup;
 	QAction *changeStatusToOnline;
@@ -147,6 +150,9 @@ private slots:
 	void inactiveUsersActionCreated(KaduAction *action);
 	void descriptionUsersActionCreated(KaduAction *action);
 	void onlineAndDescUsersActionCreated(KaduAction *action);
+	void offlineToUserActionCreated(KaduAction *action);
+	void hideDescriptionActionCreated(KaduAction *action);
+	void notifyAboutUserActionCreated(KaduAction *action);
 
 protected:
 	void keyPressEvent(QKeyEvent *e);

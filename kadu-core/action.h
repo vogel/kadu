@@ -37,7 +37,6 @@ class KaduAction : public QAction
 private slots:
 	void changedSlot();
 	void hoveredSlot();
-	void toggledSlot(bool checked);
 	void triggeredSlot(bool checked);
 
 public:
@@ -48,6 +47,7 @@ public:
 
 public slots:
 	void checkIfEnabled();
+	virtual void setChecked(bool checked);
 
 signals:
 	void changed(QAction *action);

@@ -30,6 +30,7 @@ KaduAction::KaduAction(ActionDescription *description, KaduMainWindow *parent)
 		{
 			OnIcon = icons_manager->loadIcon(Description->IconName);
 			OffIcon = icons_manager->loadIcon(Description->IconName + "_off");
+
 			setIcon(OffIcon);
 		}
 		else
@@ -40,7 +41,6 @@ KaduAction::KaduAction(ActionDescription *description, KaduMainWindow *parent)
 
 	connect(this, SIGNAL(changed()), this, SLOT(changedSlot()));
 	connect(this, SIGNAL(hovered()), this, SLOT(hoveredSlot()));
-	connect(this, SIGNAL(toggled(bool)), this, SLOT(toggledSlot(bool)));
 	connect(this, SIGNAL(triggered(bool)), this, SLOT(triggeredSlot(bool)));
 
 	checkIfEnabled();
@@ -69,7 +69,7 @@ void KaduAction::hoveredSlot()
 	emit hovered(this);
 }
 
-void KaduAction::toggledSlot(bool checked)
+void KaduAction::setChecked(bool checked)
 {
 	if (checked)
 	{
@@ -85,12 +85,25 @@ void KaduAction::toggledSlot(bool checked)
 		if (!OffIcon.isNull())
 			setIcon(OffIcon);
 	}
-
-	emit toggled(this, checked);
+	QAction::setChecked(checked);
 }
 
 void KaduAction::triggeredSlot(bool checked)
 {
+	if (checked)
+	{
+		if (!OnText.isEmpty())
+			setText(OnText);
+		if (!OnIcon.isNull())
+			setIcon(OnIcon);
+	}
+	else
+	{
+		if (!OffText.isEmpty())
+			setText(OffText);
+		if (!OffIcon.isNull())
+			setIcon(OffIcon);
+	}
 	emit triggered(this, checked);
 }
 
@@ -140,7 +153,6 @@ KaduAction * ActionDescription::createAction(KaduMainWindow *kaduMainWindow)
 	MappedActions.insert(kaduMainWindow, result);
 
 	connect(result, SIGNAL(destroyed(QObject *)), this, SLOT(actionDestroyed(QObject *)));
-	connect(result, SIGNAL(toggled(QAction *, bool)), Object, Slot);
 	connect(result, SIGNAL(triggered(QAction *, bool)), Object, Slot);
 
 	emit actionCreated(result);

@@ -96,16 +96,18 @@ ChatManager::ChatManager(QObject *parent)
 	ignoreUserActionDescription = new ActionDescription(
 		ActionDescription::TypeUser, "ignoreUserAction",
 		this, SLOT(ignoreUserActionActivated(QAction *, bool)),
-		"Ignore", tr("Ignore user"), false, QString::null,
+		"Ignore", tr("Ignore user"), true, QString::null,
 		disableContainsSelfUles
 	);
+	connect(ignoreUserActionDescription, SIGNAL(actionCreated(KaduAction *)), this, SLOT(ignoreUserActionCreated(KaduAction *)));
 
 	blockUserActionDescription = new ActionDescription(
 		ActionDescription::TypeUser, "blockUserAction",
 		this, SLOT(blockUserActionActivated(QAction *, bool)),
-		"Blocking", tr("Block user"), false, QString::null,
+		"Blocking", tr("Block user"), true, QString::null,
 		disableContainsSelfUles
 	);
+	connect(blockUserActionDescription, SIGNAL(actionCreated(KaduAction *)), this, SLOT(blockUserActionCreated(KaduAction *)));
 
 	chatActionDescription = new ActionDescription(
 		ActionDescription::TypeUser, "chatAction",
@@ -319,7 +321,7 @@ void ChatManager::italicActionActivated(QAction *sender, bool toggled)
 	if (!chatEditBox)
 		return;
 
-	chatEditBox->inputBox()->setItalic(toggled);
+	chatEditBox->inputBox()->setFontItalic(toggled);
 
 	kdebugf2();
 }
@@ -332,7 +334,7 @@ void ChatManager::underlineActionActivated(QAction *sender, bool toggled)
 	if (!chatEditBox)
 		return;
 
-	chatEditBox->inputBox()->setUnderline(toggled);
+	chatEditBox->inputBox()->setFontUnderline(toggled);
 
 	kdebugf2();
 }
@@ -421,7 +423,7 @@ void ChatManager::insertEmoticonActionCreated(KaduAction *action)
 
 void ChatManager::insertEmoticonActionEnabled()
 {
- 	foreach (QAction *action, insertEmoticonActionDescription->actions())
+ 	foreach (KaduAction *action, insertEmoticonActionDescription->actions())
 	{
 		if((EmoticonsStyle)config_file.readNumEntry("Chat","EmoticonsStyle") == EMOTS_NONE)
 		{
@@ -470,6 +472,11 @@ void ChatManager::colorSelectorActionActivated(QAction *sender, bool toggled)
 	}
 }
 
+void ChatManager::ignoreUserActionCreated(KaduAction *action)
+{
+	action->setChecked(IgnoredManager::isIgnored(action->userListElements()));
+}
+
 void ChatManager::ignoreUserActionActivated(QAction *sender, bool toggled)
 {
 	kdebugf();
@@ -509,9 +516,28 @@ void ChatManager::ignoreUserActionActivated(QAction *sender, bool toggled)
 			}
 			kadu->userbox()->refresh();
 			IgnoredManager::writeToConfiguration();
+
+			foreach (KaduAction *action, ignoreUserActionDescription->actions())
+			{
+				if (action->userListElements() == users)
+					action->setChecked(IgnoredManager::isIgnored(users));
+			}
+
 		}
 	}
 	kdebugf2();
+}
+
+void ChatManager::blockUserActionCreated(KaduAction *action)
+{
+	bool on = false;
+	foreach(const UserListElement &user, action->userListElements())
+		if (user.protocolData("Gadu", "Blocking").toBool())
+		{
+			on = true;
+			break;
+		}
+	action->setChecked(on);
 }
 
 void ChatManager::blockUserActionActivated(QAction *sender, bool toggled)
@@ -563,6 +589,12 @@ void ChatManager::blockUserActionActivated(QAction *sender, bool toggled)
 		}
 
 		userlist->writeToConfig();
+
+		foreach (KaduAction *action, blockUserActionDescription->actions())
+		{
+			if (action->userListElements() == users)
+				action->setChecked(!on);
+		}
 	}
 	kdebugf2();
 }
@@ -606,7 +638,7 @@ void ChatManager::unregisterChatWidget(ChatWidget *chat)
 {
 	kdebugf();
 
-	foreach(ChatWidget *curChat, ChatWidgets)
+	foreach (ChatWidget *curChat, ChatWidgets)
 		if (curChat == chat)
 		{
 			if (chat->body->countMessages())
@@ -891,7 +923,7 @@ void ChatManager::autoSendActionCreated(KaduAction *action)
 void ChatManager::autoSendActionCheck()
 {
  	bool check = config_file.readBoolEntry("Chat", "AutoSend");
- 	foreach (QAction *action, autoSendActionDescription->actions())
+ 	foreach (KaduAction *action, autoSendActionDescription->actions())
  		action->setChecked(check);
 }
 

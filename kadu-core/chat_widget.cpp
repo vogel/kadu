@@ -166,7 +166,7 @@ void ChatWidget::specialKeyPressed(int key)
  	kdebugf();
  	switch (key)
  	{
-		QAction *action;
+		KaduAction *action;
  		case CustomInput::KEY_BOLD:
  			foreach (action, chat_manager->boldActionDescription->actions(Edit))
 				action->setChecked(!action->isChecked());
@@ -190,11 +190,11 @@ void ChatWidget::curPosChanged()
 {
 	kdebugf();
 
- 	foreach (QAction *action, chat_manager->boldActionDescription->actions(Edit))
+ 	foreach (KaduAction *action, chat_manager->boldActionDescription->actions(Edit))
 		action->setChecked(Edit->inputBox()->fontWeight() >= QFont::Bold);
- 	foreach (QAction *action, chat_manager->italicActionDescription->actions(Edit))
+ 	foreach (KaduAction *action, chat_manager->italicActionDescription->actions(Edit))
 		action->setChecked(Edit->inputBox()->fontItalic());
- 	foreach (QAction *action, chat_manager->underlineActionDescription->actions(Edit))
+ 	foreach (KaduAction *action, chat_manager->underlineActionDescription->actions(Edit))
 		action->setChecked(Edit->inputBox()->fontUnderline());
 
 	setActColor(false);
@@ -219,7 +219,7 @@ void ChatWidget::setActColor(bool force)
 			actcolor = colors[i];
 		p.fill(actcolor);
 
- 		foreach (QAction *action, chat_manager->colorSelectorActionDescription->actions(Edit))
+ 		foreach (KaduAction *action, chat_manager->colorSelectorActionDescription->actions(Edit))
 			action->setIcon(p);
 	}
 
@@ -470,11 +470,11 @@ void ChatWidget::writeMyMessage()
 		cancelMessage();
 	Edit->inputBox()->clear();
 
-	if (chat_manager->boldActionDescription->actions(Edit).count())
+	if (!chat_manager->boldActionDescription->actions(Edit).isEmpty())
 		Edit->inputBox()->setBold(chat_manager->boldActionDescription->actions(Edit)[0]->isChecked());
-	if (chat_manager->italicActionDescription->actions(Edit).count())
+	if (!chat_manager->italicActionDescription->actions(Edit).isEmpty())
 		Edit->inputBox()->setFontItalic(chat_manager->italicActionDescription->actions(Edit)[0]->isChecked());
-	if (chat_manager->underlineActionDescription->actions(Edit).count())
+	if (!chat_manager->underlineActionDescription->actions(Edit).isEmpty())
 		Edit->inputBox()->setFontUnderline(chat_manager->underlineActionDescription->actions(Edit)[0]->isChecked());
 	kdebugf2();
 }
@@ -555,7 +555,7 @@ void ChatWidget::disconnectAcknowledgeSlots()
 
 void ChatWidget::changeSendToCancelSend()
 {
-	foreach (QAction *action, chat_manager->sendActionDescription->actions())
+	foreach (KaduAction *action, chat_manager->sendActionDescription->actions())
 	{
 		action->setIcon(icons_manager->loadIcon("CancelMessage"));
 		action->setText(tr("&Cancel"));
@@ -564,7 +564,7 @@ void ChatWidget::changeSendToCancelSend()
 
 void ChatWidget::changeCancelSendToSend()
 {
-	foreach (QAction *action, chat_manager->sendActionDescription->actions())
+	foreach (KaduAction *action, chat_manager->sendActionDescription->actions())
 	{
 		action->setIcon(icons_manager->loadIcon("SendMessage"));
 		action->setText(tr("&Send"));
@@ -653,7 +653,7 @@ void ChatWidget::colorChanged(const QColor &color)
 	QPixmap p(12, 12);
 	p.fill(color);
 
-	foreach (QAction *action, chat_manager->colorSelectorActionDescription->actions(Edit))
+	foreach (KaduAction *action, chat_manager->colorSelectorActionDescription->actions(Edit))
 		action->setIcon(p);
 
 	Edit->inputBox()->setColor(color);

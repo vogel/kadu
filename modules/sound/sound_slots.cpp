@@ -115,7 +115,7 @@ void SoundSlots::muteActionActivated(QAction  *action, bool is_on)
 	Q_UNUSED(action)
 	kdebugf();
 	sound_manager->setMute(is_on);
- 	foreach (QAction *action, mute_action->actions())
+ 	foreach (KaduAction *action, mute_action->actions())
 		action->setChecked(is_on);
 	config_file.writeEntry("Sounds", "PlaySound", !is_on);
 	kdebugf2();
@@ -123,7 +123,7 @@ void SoundSlots::muteActionActivated(QAction  *action, bool is_on)
 
 void SoundSlots::setMuteActionState()
 {
- 	foreach (QAction *action, mute_action->actions())
+ 	foreach (KaduAction *action, mute_action->actions())
 		action->setChecked(sound_manager->isMuted());
 }
 

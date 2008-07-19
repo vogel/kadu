@@ -607,13 +607,13 @@ void UserBox::showDescriptionsActionActivated(QAction *sender, bool toggle)
 	config_file.writeEntry("Look", "ShowDesc", !toggle);
 	KaduListBoxPixmap::setShowDesc(!toggle);
 	UserBox::refreshAllLater();
- 	foreach (QAction *action, showDescriptionAction->actions())
+ 	foreach (KaduAction *action, showDescriptionAction->actions())
 		action->setChecked(!KaduListBoxPixmap::ShowDesc);
 }
 
 void UserBox::setDescriptionsActionState()
 {
- 	foreach (QAction *action, showDescriptionAction->actions())
+ 	foreach (KaduAction *action, showDescriptionAction->actions())
 		action->setChecked(!KaduListBoxPixmap::ShowDesc);
 }
 
