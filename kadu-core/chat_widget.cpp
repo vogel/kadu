@@ -555,7 +555,7 @@ void ChatWidget::disconnectAcknowledgeSlots()
 
 void ChatWidget::changeSendToCancelSend()
 {
-	foreach (KaduAction *action, chat_manager->sendActionDescription->actions())
+	foreach (KaduAction *action, chat_manager->sendActionDescription->actions(Edit))
 	{
 		action->setIcon(icons_manager->loadIcon("CancelMessage"));
 		action->setText(tr("&Cancel"));
@@ -564,7 +564,7 @@ void ChatWidget::changeSendToCancelSend()
 
 void ChatWidget::changeCancelSendToSend()
 {
-	foreach (KaduAction *action, chat_manager->sendActionDescription->actions())
+	foreach (KaduAction *action, chat_manager->sendActionDescription->actions(Edit))
 	{
 		action->setIcon(icons_manager->loadIcon("SendMessage"));
 		action->setText(tr("&Send"));

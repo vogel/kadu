@@ -356,9 +356,7 @@ void ChatManager::sendActionActivated(QAction *sender, bool toggled)
 		}
 		else
 		{
-			foreach (KaduAction *action, sendActionDescription->actions(chatWidget->getChatEditBox()))
-				action->setIcon(icons_manager->loadIcon("CancelMessage"));
-
+			chatWidget->changeSendToCancelSend();
 			chatWidget->sendMessage();
 		}
 
@@ -378,10 +376,7 @@ void ChatManager::sendActionCreated(KaduAction *action)
 		return;
 
 	if (chatWidget->waitingForACK())
-	{
-		action->setIcon(icons_manager->loadIcon("CancelMessage"));
-		action->setText(tr("&Cancel"));
-	}
+		chatWidget->changeSendToCancelSend();
 }
 
 void ChatManager::whoisActionActivated(QAction *sender, bool toggled)
