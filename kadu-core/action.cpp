@@ -130,13 +130,17 @@ void ActionDescription::actionDestroyed(QObject *action)
 	if (!kaduMainWindow)
 		return;
 
-	MappedActions.remove(kaduMainWindow, kaduAction);
+	if (MappedActions.contains(kaduMainWindow))
+		MappedActions.remove(kaduMainWindow);
 }
 
 KaduAction * ActionDescription::createAction(KaduMainWindow *kaduMainWindow)
 {
+	if (MappedActions.contains(kaduMainWindow))
+		return MappedActions[kaduMainWindow];
+
 	KaduAction *result = new KaduAction(this, kaduMainWindow);
-	MappedActions.insert(kaduMainWindow, result);
+	MappedActions[kaduMainWindow] = result;
 
 	connect(result, SIGNAL(destroyed(QObject *)), this, SLOT(actionDestroyed(QObject *)));
 	connect(result, SIGNAL(triggered(QAction *, bool)), Object, Slot);
@@ -151,12 +155,12 @@ QList<KaduAction *> ActionDescription::actions()
 	return MappedActions.values();
 }
 
-QList<KaduAction *> ActionDescription::actions(KaduMainWindow *kaduMainWindow)
+KaduAction * ActionDescription::action(KaduMainWindow *kaduMainWindow)
 {
 	if (MappedActions.contains(kaduMainWindow))
-		return MappedActions.values(kaduMainWindow);
+		return MappedActions[kaduMainWindow];
 	else
-		return QList<KaduAction *>();
+		return 0;
 }
 
 Actions::Actions()

@@ -63,7 +63,7 @@ class ActionDescription : public QObject
 
 	friend class KaduAction;
 
-	QMultiMap<KaduMainWindow *, KaduAction *> MappedActions;
+	QMap<KaduMainWindow *, KaduAction *> MappedActions;
 
 public:
 
@@ -103,7 +103,7 @@ public:
 	QString name() { return Name; }
 	KaduAction * createAction(KaduMainWindow *kaduMainWindow);
 	QList<KaduAction *> actions();
-	QList<KaduAction *> actions(KaduMainWindow *kaduMainWindow);
+	KaduAction * action(KaduMainWindow *kaduMainWindow);
 
 	QString text() { return Text; }
 	QString iconName() { return IconName; }
