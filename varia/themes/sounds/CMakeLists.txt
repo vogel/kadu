@@ -6,7 +6,7 @@ exec_program (./get-list.sh ${CMAKE_CURRENT_SOURCE_DIR}
 	ARGS "y" ${SOUND_THEMES}
 	OUTPUT_VARIABLE INSTALL_SOUND_THEMES)
 
-if (${SOUND_THEMES})
+if (SOUND_THEMES)
 	message (STATUS "Found sound themes: " ${SOUND_THEMES})
 
 	add_custom_target (sound_themes
@@ -28,5 +28,5 @@ if (${SOUND_THEMES})
 		PATTERN ".svn" EXCLUDE
 		PATTERN "*.wav"
 	)
-endif (${SOUND_THEMES})
+endif (SOUND_THEMES)
 
