@@ -148,6 +148,9 @@ class SmsConfigurationUiHandler : public ConfigurationUiHandler, ConfigurationAw
 
 	void createDefaultConfiguration();
 
+private slots:
+	void mainConfigurationWindowDestroyed();
+
 protected:
 	virtual void configurationUpdated();
 

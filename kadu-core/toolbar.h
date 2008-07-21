@@ -14,6 +14,8 @@
 #include <QtGui/QToolBar>
 #include <QtXml/QDomElement>
 
+#include "configuration_aware_object.h"
+
 class QMenu;
 class QToolButton;
 
@@ -25,7 +27,7 @@ class UserGroup;
 	\brief Pasek narz?dziowy
 **/
 
-class ToolBar : public QToolBar
+class ToolBar : public QToolBar, public ConfigurationAwareObject
 {
 	Q_OBJECT
 
@@ -71,6 +73,8 @@ private slots:
 	**/
 	void deleteToolbar();
 
+	void setBlockToolbars(bool checked);
+
 	void actionLoaded(const QString &name);
 	void actionUnloaded(const QString &actionName);
 
@@ -105,6 +109,8 @@ protected:
 	virtual void moveEvent(QMoveEvent *e);
 
 	virtual void mouseMoveEvent(QMouseEvent* e);
+
+	virtual void configurationUpdated();
 
 public:
 	/**

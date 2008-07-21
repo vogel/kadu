@@ -67,8 +67,6 @@ bool KaduMainWindow::loadToolBarsFromConfig(const QString &configName, Qt::ToolB
 	if (toolbarsConfig.isNull())
 		return false;
 
-// 	setBlockToolbars(toolbars_elem.attribute("blocked").toInt());
-
 	QDomElement dockareaConfig = xml_config_file->findElementByProperty(toolbarsConfig, "DockArea", "name", configName);
 	if (dockareaConfig.isNull())
 		return false;

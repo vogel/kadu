@@ -455,7 +455,7 @@ void Sms::keyPressEvent(QKeyEvent *e)
 }
 
 SmsConfigurationUiHandler::SmsConfigurationUiHandler()
-	: menuid(0), gateways()
+	: menuid(0), gateways(), gatewayListWidget(0)
 {
 	kdebugf();
 
@@ -501,6 +501,9 @@ void SmsConfigurationUiHandler::onSmsBuildInCheckToggle(bool value)
 
 void SmsConfigurationUiHandler::configurationUpdated()
 {
+	if (!gatewayListWidget)
+		return;
+
 	QStringList priority;
 	for (int index = 0; index < gatewayListWidget->count(); ++index)
 			priority += gatewayListWidget->item(index)->text();
@@ -634,6 +637,8 @@ void SmsConfigurationUiHandler::sendSmsActionActivated(QAction *sender, bool tog
 
 void SmsConfigurationUiHandler::mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow)
 {
+	connect(mainConfigurationWindow, SIGNAL(destroyed(QObject *)), this, SLOT(mainConfigurationWindowDestroyed()));
+
 	useBuiltIn = dynamic_cast<QCheckBox *>(mainConfigurationWindow->widgetById("sms/useBuildInApp"));
 	customApp = dynamic_cast<QLineEdit *>(mainConfigurationWindow->widgetById("sms/customApp"));
 	useCustomString = dynamic_cast<QCheckBox *>(mainConfigurationWindow->widgetById("sms/useCustomString"));
@@ -680,6 +685,11 @@ void SmsConfigurationUiHandler::mainConfigurationWindowCreated(MainConfiguration
 	foreach(const QString &key, gateways.keys())
 		if (gatewayListWidget->findItems(key, 0).isEmpty())
 			gatewayListWidget->addItem(key);
+}
+
+void SmsConfigurationUiHandler::mainConfigurationWindowDestroyed()
+{
+	gatewayListWidget = 0; // protect configurationUpdated
 }
 
 void SmsConfigurationUiHandler::createDefaultConfiguration()

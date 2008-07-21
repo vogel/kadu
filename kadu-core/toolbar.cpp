@@ -154,7 +154,7 @@ void ToolBar::buttonPressed()
 
 void ToolBar::mouseMoveEvent(QMouseEvent* e)
 {
-	if ((e->buttons() & Qt::LeftButton) && (MouseStart - e->pos()).manhattanLength() >= 15)
+	if (isMovable() && (e->buttons() & Qt::LeftButton) && (MouseStart - e->pos()).manhattanLength() >= 15)
 	{
 		QAction *action = actionAt(MouseStart);
 		if (!action)
@@ -260,6 +260,16 @@ void ToolBar::contextMenuEvent(QContextMenuEvent *e)
 
 	e->accept();
 	kdebugf2();
+}
+
+void ToolBar::configurationUpdated()
+{
+	QDomElement toolbarsConfig = xml_config_file->findElement(xml_config_file->rootElement(), "Toolbars");
+
+	if (toolbarsConfig.isNull())
+		return setMovable(false);
+
+	setMovable(!toolbarsConfig.attribute("blocked").toInt());
 }
 
 void ToolBar::writeToConfig(QDomElement parent_element)
@@ -477,70 +487,77 @@ QMenu * ToolBar::createContextMenu(QToolButton *button)
 {
 	QMenu *menu = new QMenu(this);
 
-	currentButton = button;
-	if (button)
+	if (isMovable())
 	{
-		QAction *showLabel = menu->addAction(tr("Show text label"), this, SLOT(showTextLabel()));
-		showLabel->setCheckable(true);
-		showLabel->setChecked(button->toolButtonStyle() != Qt::ToolButtonIconOnly);
+		currentButton = button;
+		if (button)
+		{
+			QAction *showLabel = menu->addAction(tr("Show text label"), this, SLOT(showTextLabel()));
+			showLabel->setCheckable(true);
+			showLabel->setChecked(button->toolButtonStyle() != Qt::ToolButtonIconOnly);
 
-		menu->addAction(tr("Delete button"), this, SLOT(deleteButton()));
+			menu->addAction(tr("Delete button"), this, SLOT(deleteButton()));
+
+			menu->addSeparator();
+		}
+
+		QMenu *actionsMenu = new QMenu(tr("Add new button"), this);
+		foreach(ActionDescription *actionDescription, KaduActions.values())
+		{
+			bool supportsAction;
+			KaduMainWindow *kaduMainWindow= 0;
+			if (parent())
+				kaduMainWindow = dynamic_cast<KaduMainWindow *>(parent());
+
+			if (kaduMainWindow)
+				supportsAction = kaduMainWindow->supportsActionType(actionDescription->type());
+			else // TODO is it possible?
+				supportsAction = actionDescription->type() == ActionDescription::TypeGlobal;
+
+			if (!supportsAction)
+				continue;
+
+			if (!hasAction(actionDescription->name()))
+			{
+				QAction *action = actionsMenu->addAction(icons_manager->loadIcon(actionDescription->iconName()), actionDescription->text());
+				action->setData(actionDescription->name());
+			}
+		}
+
+		if (actionsMenu->isEmpty())
+			actionsMenu->addAction(tr("No items to add found"))->setEnabled(false);
+		else
+			connect(actionsMenu, SIGNAL(triggered(QAction *)), this, SLOT(addButtonClicked(QAction *)));
+
+		menu->addAction(tr("Delete toolbar"), this, SLOT(deleteToolbar()));
+		menu->addMenu(actionsMenu);
+
+		QMainWindow *mainWindow = dynamic_cast<QMainWindow *>(parent());
 
 		menu->addSeparator();
-	}
-
-	QMenu *actionsMenu = new QMenu(tr("Add new button"), this);
-	foreach(ActionDescription *actionDescription, KaduActions.values())
-	{
-		bool supportsAction;
-		KaduMainWindow *kaduMainWindow= 0;
-		if (parent())
-			kaduMainWindow = dynamic_cast<KaduMainWindow *>(parent());
-
-		if (kaduMainWindow)
-			supportsAction = kaduMainWindow->supportsActionType(actionDescription->type());
-		else // TODO is it possible?
-			supportsAction = actionDescription->type() == ActionDescription::TypeGlobal;
-
-		if (!supportsAction)
-			continue;
-
-		if (!hasAction(actionDescription->name()))
+		switch (mainWindow->toolBarArea(this))
 		{
-			QAction *action = actionsMenu->addAction(icons_manager->loadIcon(actionDescription->iconName()), actionDescription->text());
-			action->setData(actionDescription->name());
+			case Qt::NoToolBarArea:
+			case Qt::TopToolBarArea:
+				menu->addAction(tr("Create new toolbar"), parent(), SLOT(addTopToolbar()));
+				break;
+			case Qt::BottomToolBarArea:
+				menu->addAction(tr("Create new toolbar"), parent(), SLOT(addBottomToolbar()));
+				break;
+			case Qt::LeftToolBarArea:
+				menu->addAction(tr("Create new toolbar"), parent(), SLOT(addLeftToolbar()));
+				break;
+			case Qt::RightToolBarArea:
+				menu->addAction(tr("Create new toolbar"), parent(), SLOT(addRightToolbar()));
+				break;
+			default:
+				break;
 		}
 	}
 
-	if (actionsMenu->isEmpty())
-		actionsMenu->addAction(tr("No items to add found"))->setEnabled(false);
-	else
-		connect(actionsMenu, SIGNAL(triggered(QAction *)), this, SLOT(addButtonClicked(QAction *)));
-
-	menu->addAction(tr("Delete toolbar"), this, SLOT(deleteToolbar()));
-	menu->addMenu(actionsMenu);
-
-	QMainWindow *mainWindow = dynamic_cast<QMainWindow *>(parent());
-
-	menu->addSeparator();
-	switch (mainWindow->toolBarArea(this))
-	{
-		case Qt::NoToolBarArea:
-		case Qt::TopToolBarArea:
-			menu->addAction(tr("Create new toolbar"), parent(), SLOT(addTopToolbar()));
-			break;
-		case Qt::BottomToolBarArea:
-			menu->addAction(tr("Create new toolbar"), parent(), SLOT(addBottomToolbar()));
-			break;
-		case Qt::LeftToolBarArea:
-			menu->addAction(tr("Create new toolbar"), parent(), SLOT(addLeftToolbar()));
-			break;
-		case Qt::RightToolBarArea:
-			menu->addAction(tr("Create new toolbar"), parent(), SLOT(addRightToolbar()));
-			break;
-		default:
-			break;
-	}
+	QAction *blockToolbars = menu->addAction(tr("Block toolbars"), this, SLOT(setBlockToolbars(bool)));
+	blockToolbars->setCheckable(true);
+	blockToolbars->setChecked(!isMovable());
 
 	return menu;
 }
@@ -551,6 +568,16 @@ void ToolBar::deleteToolbar()
 	if (MessageBox::ask(tr("Remove toolbar?"), "Warning", this))
 		deleteLater();
 	kdebugf2();
+}
+
+void ToolBar::setBlockToolbars(bool checked)
+{
+	QDomElement toolbarsConfig = xml_config_file->findElement(xml_config_file->rootElement(), "Toolbars");
+	if (toolbarsConfig.isNull())
+		toolbarsConfig = xml_config_file->createElement(xml_config_file->rootElement(), "ToolBars");
+
+	toolbarsConfig.setAttribute("blocked", checked);
+	ConfigurationAwareObject::notifyAll();
 }
 
 void ToolBar::showTextLabel()
