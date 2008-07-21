@@ -44,6 +44,7 @@ class Kadu : public KaduMainWindow, ConfigurationAwareObject
 	ActionDescription *offlineToUserActionDescription;
 	ActionDescription *hideDescriptionActionDescription;
 	ActionDescription *notifyAboutUserActionDescription;
+	ActionDescription *showStatusActionDescription;
 
 	QActionGroup *changeStatusActionGroup;
 	QAction *changeStatusToOnline;
@@ -286,8 +287,8 @@ public slots:
 
 	void editUserActionCreated(KaduAction *action);
 	void editUserActionSetParams(QString protocolName, UserListElement user);
-//	void showStatusActionActivated();
-//	void showStatusActionAddedToToolbar(ToolButton* button);
+	void showStatusActionActivated(QAction *sender, bool toggled);
+	void showStatusActionCreated(KaduAction *action);
 
 signals:
 	void keyPressed(QKeyEvent *e);

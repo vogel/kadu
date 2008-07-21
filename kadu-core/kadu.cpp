@@ -464,12 +464,12 @@ Kadu::Kadu(QWidget *parent)
 
 	UserBox::addActionDescription(editUserActionDescription); // HotKey::shortCutFromFile("ShortCuts", "kadu_persinfo")
 
-/*	TODO 0.6.5: port this.
-	Action* open_status_action = new Action("Offline", tr("Change status"), "openStatusAction", Action::TypeGlobal);
-	connect(open_status_action, SIGNAL(activated(const UserGroup*, const QWidget*, bool)),
-		this, SLOT(showStatusActionActivated()));
-	connect(open_status_action, SIGNAL(addedToToolbar(ToolButton*, ToolBar*)),
-		this, SLOT(showStatusActionAddedToToolbar(ToolButton*)));*/
+	showStatusActionDescription = new ActionDescription(
+		ActionDescription::TypeGlobal, "openStatusAction",
+		this, SLOT(showStatusActionActivated(QAction *, bool)),
+		"Offline", tr("Change status")
+	);
+	connect(showStatusActionDescription, SIGNAL(actionCreated(KaduAction *)), this, SLOT(showStatusActionCreated(KaduAction *)));
 
 	ToolBar::addDefaultAction("Kadu toolbar", "inactiveUsersAction");
 	ToolBar::addDefaultAction("Kadu toolbar", "descriptionUsersAction");
@@ -990,14 +990,15 @@ void Kadu::manageIgnored(QAction *sender, bool toggled)
 	(new Ignored(kadu, "ignored"))->show();
 }
 
-//void Kadu::showStatusActionActivated()
-//{
-//}
-//
-//void Kadu::showStatusActionAddedToToolbar(ToolButton* button)
-//{
-//	button->setPixmap(gadu->currentStatus().pixmap());
-//}
+void Kadu::showStatusActionActivated(QAction *sender, bool toggled)
+{
+	statusMenu->exec(QCursor::pos());
+}
+
+void Kadu::showStatusActionCreated(KaduAction *action)
+{
+	action->setIcon(gadu->currentStatus().pixmap());
+}
 
 void Kadu::searchInDirectoryActionActivated(QAction *sender, bool toggled)
 {
@@ -1077,7 +1078,10 @@ void Kadu::changeAppearance()
 	QPixmap pix = stat.pixmap();
 	QIcon icon(pix);
 	statusButton->setIcon(icon);
-//	KaduActions["openStatusAction"]->setPixmaps(pix);
+
+	foreach(KaduAction *action, showStatusActionDescription->actions())
+		action->setIcon(icon);
+
 	setMainWindowIcon(pix);
 	emit statusPixmapChanged(icon, stat.toString());
 	kdebugf2();
@@ -2060,7 +2064,10 @@ void Kadu::showStatusOnMenu(int statusNr)
 
 	statusButton->setIcon(icon);
 	setMainWindowIcon(pix);
-//	KaduActions["openStatusAction"]->setPixmaps(pix);
+
+	foreach(KaduAction *action, showStatusActionDescription->actions())
+		action->setIcon(icon);
+
 	emit statusPixmapChanged(icon, iconName);
 }
 
