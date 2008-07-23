@@ -224,7 +224,7 @@ UserListElement::UserListElement(const UserListElement &copyMe)
 
 	privateData = copyMe.privateData;
 
-	kdebugf2();
+//	kdebugf2();
 }
 
 UserListElement::UserListElement()

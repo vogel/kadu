@@ -557,8 +557,7 @@ UserBox::~UserBox()
 	VisibleUsers = 0;
 	delete comparer;
 	comparer = 0;
- 	delete showDescriptionAction;
- 	showDescriptionAction = 0;
+
 	kdebugf2();
 }
 
