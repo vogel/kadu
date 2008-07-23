@@ -33,10 +33,11 @@ ToolBar::ToolBar(QWidget * parent)
 	kdebugf();
 
 	setAcceptDrops(true);
-// 	setMovingEnabled(!DockArea::blocked());
 
 	connect(&KaduActions, SIGNAL(actionLoaded(const QString &)), this, SLOT(actionLoaded(const QString &)));
 	connect(&KaduActions, SIGNAL(actionUnloaded(const QString &)), this, SLOT(actionUnloaded(const QString &)));
+
+	configurationUpdated();
 
 	kdebugf2();
 }
