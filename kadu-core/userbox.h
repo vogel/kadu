@@ -292,7 +292,7 @@ class UserBox : public Q3ListBox, ConfigurationAwareObject
 
 	friend class Kadu;
 
-	KaduMainWindow *mainWindow; // TODO: !!!HACK!!!
+	KaduMainWindow *MainWindow; // TODO: !!!HACK!!!
 
 	static QList<UserBox*> UserBoxes;
 	bool fancy;
@@ -513,6 +513,8 @@ public:
 	static const QList<UserBox *> &userboxes() {return UserBoxes;}
 
 	static CreateNotifier createNotifier;
+
+	KaduMainWindow * mainWindow() {return MainWindow;}
 
 public slots:
 	/**

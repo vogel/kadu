@@ -94,18 +94,11 @@ void GroupsManager::setTabBar(KaduTabBar *bar)
 	if (configTab >= 0 && configTab < GroupBar->count())
 		((QTabBar*) GroupBar)->setCurrentTab(configTab);
 
-	//najpierw ustawiamy odwrotnie, a p��niej robimy x=!x;
-	// TODO 0.6.5: g�wniana metoda, poprawi�
-	showBlocked = !config_file.readBoolEntry("General", "ShowBlocked");
-	showBlocking = !config_file.readBoolEntry("General", "ShowBlocking");
-	showOffline = !config_file.readBoolEntry("General", "ShowOffline");
-	showWithoutDescription = !config_file.readBoolEntry("General", "ShowWithoutDescription");
-	showOnlineAndDescription = !config_file.readBoolEntry("General", "ShowOnlineAndDescription");
-	changeDisplayingBlocking();
-	changeDisplayingBlocked();
-//	changeDisplayingOffline();
-// 	changeDisplayingWithoutDescription();
-//	changeDisplayingOnlineAndDescription();
+	changeDisplayingBlocking(config_file.readBoolEntry("General", "ShowBlocking"));
+	changeDisplayingBlocked(config_file.readBoolEntry("General", "ShowBlocked"));
+	changeDisplayingOffline(kadu->userbox(), config_file.readBoolEntry("General", "ShowOffline"));
+ 	changeDisplayingWithoutDescription(kadu->userbox(), config_file.readBoolEntry("General", "ShowWithoutDescription"));
+	changeDisplayingOnlineAndDescription(kadu->userbox(), config_file.readBoolEntry("General", "ShowOnlineAndDescription"));
 	kdebugf2();
 }
 
@@ -223,15 +216,14 @@ void GroupsManager::refreshTabBar()
 
 void GroupsManager::configurationUpdated()
 {
-// TODO: 0.6.5
 	if (config_file.readBoolEntry("General", "ShowBlocking") != showBlocking)
-		changeDisplayingBlocking();
+		changeDisplayingBlocking(!showBlocking);
 	if (config_file.readBoolEntry("General", "ShowBlocked") != showBlocked)
-		changeDisplayingBlocked();
-//	if (config_file.readBoolEntry("General", "ShowOffline") != showOffline)
-//		changeDisplayingOffline();
-// 	if (config_file.readBoolEntry("General", "ShowWithoutDescription") != showWithoutDescription)
-// 		changeDisplayingWithoutDescription();
+		changeDisplayingBlocked(!showBlocked);
+	if (config_file.readBoolEntry("General", "ShowOffline") != showOffline)
+		changeDisplayingOffline(kadu->userbox(), !showOffline);
+ 	if (config_file.readBoolEntry("General", "ShowWithoutDescription") != showWithoutDescription)
+ 		changeDisplayingWithoutDescription(kadu->userbox(), !showWithoutDescription);
 }
 
 void GroupsManager::iconThemeChanged()
@@ -240,10 +232,10 @@ void GroupsManager::iconThemeChanged()
 		GroupBar->setTabIcon(0, icons_manager->loadIcon("PersonalInfo"));
 }
 
-void GroupsManager::changeDisplayingBlocking()
+void GroupsManager::changeDisplayingBlocking(bool show)
 {
 	kdebugf();
-	showBlocking = !showBlocking;
+	showBlocking = show;
 	if (showBlocking)
 		kadu->userbox()->removeNegativeFilter(blockingUsers);
 	else
@@ -252,10 +244,10 @@ void GroupsManager::changeDisplayingBlocking()
 	kdebugf2();
 }
 
-void GroupsManager::changeDisplayingBlocked()
+void GroupsManager::changeDisplayingBlocked(bool show)
 {
 	kdebugf();
-	showBlocked = !showBlocked;
+	showBlocked = show;
 	if (showBlocked)
 		kadu->userbox()->removeNegativeFilter(blockedUsers);
 	else
@@ -267,10 +259,16 @@ void GroupsManager::changeDisplayingBlocked()
 void GroupsManager::changeDisplayingOffline(UserBox *userBox, bool show)
 {
 	kdebugf();
-// TODO: 0.6.5
-// 	if (KaduActions["inactiveUsersAction"])
-// 		KaduActions["inactiveUsersAction"]->setAllOn(showOffline);
+
  	showOffline = show;
+
+	if (KaduActions["inactiveUsersAction"])
+	{
+		KaduAction *action = KaduActions["inactiveUsersAction"]->action(userBox->mainWindow());
+		if (action)
+			action->setChecked(!showOffline);
+	}
+
  	if (showOffline)
  		userBox->removeNegativeFilter(offlineUsers);
  	else
@@ -282,8 +280,16 @@ void GroupsManager::changeDisplayingOffline(UserBox *userBox, bool show)
 void GroupsManager::changeDisplayingWithoutDescription(UserBox *userBox, bool show)
 {
 	kdebugf();
-// TODO: 0.6.5
+
 	showWithoutDescription = show;
+
+	if (KaduActions["descriptionUsersAction"])
+	{
+		KaduAction *action = KaduActions["descriptionUsersAction"]->action(userBox->mainWindow());
+		if (action)
+			action->setChecked(!showWithoutDescription);
+	}
+
 	if (showWithoutDescription)
 		userBox->removeFilter(usersWithDescription);
 	else
@@ -297,10 +303,14 @@ void GroupsManager::changeDisplayingOnlineAndDescription(UserBox *userBox, bool 
 	kdebugf();
 
 	showOnlineAndDescription = show;
-/* TODO: 0.6.5
+
 	if (KaduActions["onlineAndDescriptionUsersAction"])
-		KaduActions["onlineAndDescriptionUsersAction"]->setAllOn(showOnlineAndDescription);
-*/
+	{
+		KaduAction *action = KaduActions["onlineAndDescriptionUsersAction"]->action(userBox->mainWindow());
+		if (action)
+			action->setChecked(!showOnlineAndDescription);
+	}
+
 	if (!showOnlineAndDescription)
 		userBox->applyFilter(onlineAndDescriptionUsers);
 	else

@@ -145,14 +145,14 @@ public slots:
 		w��cza lub wy��cza wy�wietlanie kontakt�w blokuj�cych
 		w g��wnej li�cie kontakt�w w zale�no�ci od poprzedniego stanu
 	**/
-	void changeDisplayingBlocking();
+	void changeDisplayingBlocking(bool show);
 
 	/**
 		\fn void changeDisplayingBlocked()
 		w��cza lub wy��cza wy�wietlanie kontakt�w blokowanych
 		w g��wnej li�cie kontakt�w w zale�no�ci od poprzedniego stanu
 	**/
-	void changeDisplayingBlocked();
+	void changeDisplayingBlocked(bool show);
 
 	/**
 		\fn void changeDisplayingOffline(UserBox *userBox, bool show);

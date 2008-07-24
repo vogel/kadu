@@ -474,7 +474,7 @@ QList<ActionDescription *> UserBox::UserBoxActions;
 QList<ActionDescription *> UserBox::ManagementActions;
 
 UserBox::UserBox(KaduMainWindow *mainWindow, bool fancy, UserGroup *group, QWidget* parent, const char* name, Qt::WFlags f)
-	: Q3ListBox(parent, name, f), mainWindow(mainWindow), fancy(fancy), VisibleUsers(new UserGroup()),
+	: Q3ListBox(parent, name, f), MainWindow(mainWindow), fancy(fancy), VisibleUsers(new UserGroup()),
 	Filters(), NegativeFilters(), sortHelper(), toRemove(), AppendProxy(), RemoveProxy(), comparer(new ULEComparer()),
 	refreshTimer(), lastMouseStopUser(nullElement), tipTimer(),
 	verticalPositionTimer(), lastVerticalPosition(0)
@@ -1434,7 +1434,7 @@ void UserBox::contextMenuEvent(QContextMenuEvent *event)
 	{
 		if (actionDescription)
 		{
-			KaduAction *action = actionDescription->createAction(mainWindow);
+			KaduAction *action = actionDescription->createAction(MainWindow);
 			menu->addAction(action);
 		}
 		else
@@ -1446,7 +1446,7 @@ void UserBox::contextMenuEvent(QContextMenuEvent *event)
 	foreach (ActionDescription *actionDescription, UserBox::ManagementActions)
 		if (actionDescription)
 		{
-			KaduAction *action = actionDescription->createAction(mainWindow);
+			KaduAction *action = actionDescription->createAction(MainWindow);
 			management->addAction(action);
 		}
 		else
