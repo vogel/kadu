@@ -31,6 +31,8 @@ class ToolBar : public QToolBar, public ConfigurationAwareObject
 {
 	Q_OBJECT
 
+	friend class DisabledActionsWatcher;
+
 	// TODO: ugly hack
 	QToolButton *currentButton;
 

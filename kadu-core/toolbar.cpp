@@ -25,6 +25,50 @@
 
 #include "toolbar.h"
 
+class DisabledActionsWatcher : public QObject
+{
+public:
+	DisabledActionsWatcher()
+	{
+	}
+
+	virtual bool eventFilter(QObject *o, QEvent *e)
+	{
+		QToolButton *button = dynamic_cast<QToolButton *>(o);
+		if (!button)
+			return false;
+		if (button->isEnabled())
+			return false;
+		ToolBar *toolbar = dynamic_cast<ToolBar *>(button->parent());
+		if (!toolbar)
+			return false;
+
+		switch (e->type())
+		{
+			case QEvent::MouseButtonPress:
+				toolbar->buttonPressed();
+				return true;
+			case QEvent::MouseMove:
+			{
+				QMouseEvent event(QEvent::MouseMove, toolbar->mapFromGlobal(QCursor::pos()), Qt::NoButton, ((QMouseEvent *)e)->buttons(), ((QMouseEvent *)e)->modifiers());
+				toolbar->mouseMoveEvent(&event);
+				return event.isAccepted();
+			}
+			case QEvent::ContextMenu:
+			{
+				QContextMenuEvent event(QContextMenuEvent::Mouse, toolbar->mapFromGlobal(QCursor::pos()));
+				toolbar->contextMenuEvent(&event);
+				return event.isAccepted();
+			}
+			default:
+				return false;
+		}
+	}
+};
+
+DisabledActionsWatcher *watcher = 0;
+
+
 QMap< QString, QList<ToolBar::ToolBarAction> > ToolBar::DefaultActions;
 
 ToolBar::ToolBar(QWidget * parent)
@@ -33,6 +77,9 @@ ToolBar::ToolBar(QWidget * parent)
 	kdebugf();
 
 	setAcceptDrops(true);
+
+	if (!watcher)
+		watcher = new DisabledActionsWatcher();
 
 	connect(&KaduActions, SIGNAL(actionLoaded(const QString &)), this, SLOT(actionLoaded(const QString &)));
 	connect(&KaduActions, SIGNAL(actionUnloaded(const QString &)), this, SLOT(actionUnloaded(const QString &)));
@@ -75,6 +122,7 @@ void ToolBar::addAction(const QString &actionName, bool showLabel, QAction *afte
 				insertAction(after, newAction.action);
 				newAction.button = dynamic_cast<QToolButton *>(widgetForAction(newAction.action));
 				connect(newAction.button, SIGNAL(pressed()), this, SLOT(buttonPressed()));
+				newAction.button->installEventFilter(watcher);
 				if (newAction.showLabel)
 					newAction.button->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
 				ToolBarActions.insert(index, newAction);
@@ -87,6 +135,7 @@ void ToolBar::addAction(const QString &actionName, bool showLabel, QAction *afte
 	QToolBar::addAction(newAction.action);
 	newAction.button = dynamic_cast<QToolButton *>(widgetForAction(newAction.action));
 	connect(newAction.button, SIGNAL(pressed()), this, SLOT(buttonPressed()));
+	newAction.button->installEventFilter(watcher);
 	if (newAction.showLabel)
 		newAction.button->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
 
@@ -138,6 +187,7 @@ void ToolBar::moveAction(const QString &actionName, bool showLabel, QAction *aft
 
 	newAction.button = dynamic_cast<QToolButton *>(widgetForAction(newAction.action));
 	connect(newAction.button, SIGNAL(pressed()), this, SLOT(buttonPressed()));
+	newAction.button->installEventFilter(watcher);
 	if (newAction.showLabel)
 		newAction.button->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
 	ToolBarActions.insert(index, newAction);
@@ -363,7 +413,7 @@ void ToolBar::updateButtons()
 
 			(*toolBarAction).button = dynamic_cast<QToolButton *>(widgetForAction((*toolBarAction).action));
 			connect((*toolBarAction).button, SIGNAL(pressed()), this, SLOT(buttonPressed()));
-
+			(*toolBarAction).button->installEventFilter(watcher);
 			if ((*toolBarAction).showLabel)
 				(*toolBarAction).button->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
 
