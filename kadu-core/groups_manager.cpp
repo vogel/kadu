@@ -308,10 +308,10 @@ void GroupsManager::changeDisplayingOnlineAndDescription(UserBox *userBox, bool 
 	{
 		KaduAction *action = KaduActions["onlineAndDescriptionUsersAction"]->action(userBox->mainWindow());
 		if (action)
-			action->setChecked(!showOnlineAndDescription);
+			action->setChecked(showOnlineAndDescription);
 	}
 
-	if (!showOnlineAndDescription)
+	if (showOnlineAndDescription)
 		userBox->applyFilter(onlineAndDescriptionUsers);
 	else
 		userBox->removeFilter(onlineAndDescriptionUsers);

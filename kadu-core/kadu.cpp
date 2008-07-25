@@ -874,7 +874,7 @@ void Kadu::onlineAndDescUsersActionActivated(QAction *sender, bool toggled)
 	if (!window)
 		return;
 
-	groups_manager->changeDisplayingOnlineAndDescription(window->userBox(), !toggled);
+	groups_manager->changeDisplayingOnlineAndDescription(window->userBox(), toggled);
 }
 
 void Kadu::inactiveUsersActionCreated(KaduAction *action)
@@ -887,7 +887,7 @@ void Kadu::descriptionUsersActionCreated(KaduAction *action)
 }
 void Kadu::onlineAndDescUsersActionCreated(KaduAction *action)
 {
-	action->setChecked(!config_file.readBoolEntry("General", "ShowOnlineAndDescription"));
+	action->setChecked(config_file.readBoolEntry("General", "ShowOnlineAndDescription"));
 }
 
 void Kadu::configurationActionActivated(QAction *sender, bool toggled)
