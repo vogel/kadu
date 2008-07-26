@@ -120,6 +120,7 @@ ModulesDialog::ModulesDialog(QWidget *parent)
 	QStringList headers;
 	headers << tr("Module name") << tr("Version") << tr("Module type") << tr("State");
 	lv_modules->setHeaderLabels(headers);
+	lv_modules->setSortingEnabled(true);
 	lv_modules->setAllColumnsShowFocus(true);
 	lv_modules->setIndentation(false);
 	// end our QListView
@@ -133,6 +134,7 @@ ModulesDialog::ModulesDialog(QWidget *parent)
 	l_moduleinfo = new QLabel(vgb_info);
 	l_moduleinfo->setText(tr("<b>Module:</b><br/><b>Depends on:</b><br/><b>Conflicts with:</b><br/><b>Provides:</b><br/><b>Author:</b><br/><b>Version:</b><br/><b>Description:</b>"));
 	l_moduleinfo->setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Minimum));
+	l_moduleinfo->setWordWrap(true);
 
 	infoLayout->addWidget(l_moduleinfo);
 
