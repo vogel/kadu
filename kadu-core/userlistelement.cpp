@@ -264,12 +264,15 @@ QVariant UserListElement::setData(const QString &name, const QVariant &val, bool
 
 	if (massively)
 	{
-		UserGroupSet *groups = &*ULEPrivate::userDataProxy.find(name);
-		if (!groups)
+		UserGroupSet *groups;
+		if (ULEPrivate::userDataProxy.find(name) == ULEPrivate::userDataProxy.end())
 		{
 			groups = new UserGroupSet();
 			ULEPrivate::userDataProxy[name] = *groups;
 		}
+		else
+			groups = &*ULEPrivate::userDataProxy.find(name); 			
+
 		foreach (UserGroup *group, privateData->Parents)
 		{
 			emit group->userDataChanged(*this, name, old, val, massively, last);
@@ -533,3 +536,4 @@ uint qHash(const UserListElement &index)
 {
 	return (uint)index.privateData.data();
 }
+
