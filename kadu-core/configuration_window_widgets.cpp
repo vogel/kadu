@@ -8,7 +8,6 @@
  ***************************************************************************/
 
 #include <QtGui/QApplication>
-#include <QtGui/QToolTip>
 
 #include "config_file.h"
 #include "configuration_window.h"
@@ -86,8 +85,8 @@ void ConfigLineEdit::createWidgets()
 
 	if (!ConfigWidget::ConfigWidget::toolTip.isEmpty())
 	{
-		QToolTip::add(this, qApp->translate("@default", ConfigWidget::toolTip));
-		QToolTip::add(label, qApp->translate("@default", ConfigWidget::toolTip));
+		setToolTip(qApp->translate("@default", ConfigWidget::toolTip));
+		label->setToolTip(qApp->translate("@default", ConfigWidget::toolTip));
 	}
 }
 
@@ -162,7 +161,7 @@ void ConfigCheckBox::createWidgets()
 	parentConfigGroupBox->addWidget(this, true);
 
 	if (!ConfigWidget::toolTip.isEmpty())
-		QToolTip::add(this, qApp->translate("@default", ConfigWidget::toolTip));
+		setToolTip(qApp->translate("@default", ConfigWidget::toolTip));
 }
 
 void ConfigCheckBox::loadConfiguration()
@@ -219,8 +218,8 @@ void ConfigSpinBox::createWidgets()
 
 	if (!ConfigWidget::toolTip.isEmpty())
 	{
-		QToolTip::add(this, qApp->translate("@default", ConfigWidget::toolTip));
-		QToolTip::add(label, qApp->translate("@default", ConfigWidget::toolTip));
+		setToolTip(qApp->translate("@default", ConfigWidget::toolTip));
+		label->setToolTip(qApp->translate("@default", ConfigWidget::toolTip));
 	}
 }
 
@@ -326,8 +325,8 @@ void ConfigComboBox::createWidgets()
 
 	if (!ConfigWidget::toolTip.isEmpty())
 	{
-		QToolTip::add(this, qApp->translate("@default", ConfigWidget::toolTip));
-		QToolTip::add(label, qApp->translate("@default", ConfigWidget::toolTip));
+		setToolTip(qApp->translate("@default", ConfigWidget::toolTip));
+		label->setToolTip(qApp->translate("@default", ConfigWidget::toolTip));
 	}
 }
 
@@ -417,8 +416,8 @@ void ConfigHotKeyEdit::createWidgets()
 
 	if (!ConfigWidget::toolTip.isEmpty())
 	{
-		QToolTip::add(this, qApp->translate("@default", ConfigWidget::toolTip));
-		QToolTip::add(label, qApp->translate("@default", ConfigWidget::toolTip));
+		setToolTip(qApp->translate("@default", ConfigWidget::toolTip));
+		label->setToolTip(qApp->translate("@default", ConfigWidget::toolTip));
 	}
 }
 
@@ -477,8 +476,8 @@ void ConfigPathListEdit::createWidgets()
 
 	if (!ConfigWidget::toolTip.isEmpty())
 	{
-		QToolTip::add(this, qApp->translate("@default", ConfigWidget::toolTip));
-		QToolTip::add(label, qApp->translate("@default", ConfigWidget::toolTip));
+		setToolTip(qApp->translate("@default", ConfigWidget::toolTip));
+		label->setToolTip(qApp->translate("@default", ConfigWidget::toolTip));
 	}
 }
 
@@ -537,8 +536,8 @@ void ConfigColorButton::createWidgets()
 
 	if (!ConfigWidget::toolTip.isEmpty())
 	{
-		QToolTip::add(this, qApp->translate("@default", ConfigWidget::toolTip));
-		QToolTip::add(label, qApp->translate("@default", ConfigWidget::toolTip));
+		setToolTip(qApp->translate("@default", ConfigWidget::toolTip));
+		label->setToolTip(qApp->translate("@default", ConfigWidget::toolTip));
 	}
 }
 
@@ -597,8 +596,8 @@ void ConfigSelectFont::createWidgets()
 
 	if (!ConfigWidget::toolTip.isEmpty())
 	{
-		QToolTip::add(this, qApp->translate("@default", ConfigWidget::toolTip));
-		QToolTip::add(label, qApp->translate("@default", ConfigWidget::toolTip));
+		setToolTip(qApp->translate("@default", ConfigWidget::toolTip));
+		label->setToolTip(qApp->translate("@default", ConfigWidget::toolTip));
 	}
 }
 
@@ -657,8 +656,8 @@ void ConfigSyntaxEditor::createWidgets()
 
 	if (!ConfigWidget::toolTip.isEmpty())
 	{
-		QToolTip::add(this, qApp->translate("@default", ConfigWidget::toolTip));
-		QToolTip::add(label, qApp->translate("@default", ConfigWidget::toolTip));
+		setToolTip(qApp->translate("@default", ConfigWidget::toolTip));
+		label->setToolTip(qApp->translate("@default", ConfigWidget::toolTip));
 	}
 }
 
@@ -722,7 +721,7 @@ void ConfigActionButton::createWidgets()
 	parentConfigGroupBox->addWidget(this);
 
 	if (!ConfigWidget::toolTip.isEmpty())
-		QToolTip::add(this, qApp->translate("@default", ConfigWidget::toolTip));
+		setToolTip(qApp->translate("@default", ConfigWidget::toolTip));
 }
 
 void ConfigActionButton::show()
@@ -762,8 +761,8 @@ void ConfigSelectFile::createWidgets()
 
 	if (!ConfigWidget::toolTip.isEmpty())
 	{
-		QToolTip::add(this, qApp->translate("@default", ConfigWidget::toolTip));
-		QToolTip::add(label, qApp->translate("@default", ConfigWidget::toolTip));
+		setToolTip(qApp->translate("@default", ConfigWidget::toolTip));
+		label->setToolTip(qApp->translate("@default", ConfigWidget::toolTip));
 	}
 }
 
@@ -871,8 +870,8 @@ void ConfigSlider::createWidgets()
 
 	if (!ConfigWidget::toolTip.isEmpty())
 	{
-		QToolTip::add(this, qApp->translate("@default", ConfigWidget::toolTip));
-		QToolTip::add(label, qApp->translate("@default", ConfigWidget::toolTip));
+		setToolTip(qApp->translate("@default", ConfigWidget::toolTip));
+		label->setToolTip(qApp->translate("@default", ConfigWidget::toolTip));
 	}
 }
 
@@ -947,7 +946,7 @@ void ConfigLabel::createWidgets()
 	parentConfigGroupBox->addWidget(this);
 
 	if (!ConfigWidget::toolTip.isEmpty())
-		QToolTip::add(this, qApp->translate("@default", ConfigWidget::toolTip));
+		setToolTip(qApp->translate("@default", ConfigWidget::toolTip));
 }
 
 void ConfigLabel::show()
@@ -999,8 +998,8 @@ void ConfigListWidget::createWidgets()
 
 	if (!ConfigWidget::toolTip.isEmpty())
 	{
-		QToolTip::add(this, qApp->translate("@default", ConfigWidget::toolTip));
-		QToolTip::add(label, qApp->translate("@default", ConfigWidget::toolTip));
+		setToolTip(qApp->translate("@default", ConfigWidget::toolTip));
+		label->setToolTip(qApp->translate("@default", ConfigWidget::toolTip));
 	}
 }
 

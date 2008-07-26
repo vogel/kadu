@@ -50,11 +50,9 @@ UserInfo::UserInfo(UserListElement user, QWidget *parent)
 	QWidget *w_icoblankwidget = new QWidget;
 	w_icoblankwidget->setSizePolicy(QSizePolicy(QSizePolicy::Maximum, QSizePolicy::Expanding));
 
-	QVBoxLayout *left_layout = new QVBoxLayout;
+	QVBoxLayout *left_layout = new QVBoxLayout(left);
 	left_layout->addWidget(l_icon);
 	left_layout->addWidget(w_icoblankwidget);
-
-	left->setLayout(left_layout);
 
 	QWidget *center = new QWidget();
 
@@ -66,11 +64,9 @@ UserInfo::UserInfo(UserListElement user, QWidget *parent)
 
 	tw_main = new QTabWidget;
 
-	QVBoxLayout *center_layout = new QVBoxLayout;
+	QVBoxLayout *center_layout = new QVBoxLayout(center);
 	center_layout->addWidget(l_info);
 	center_layout->addWidget(tw_main);
-
-	center->setLayout(center_layout);
 
 	// create our Tabs
 	setupTab1();
@@ -102,20 +98,16 @@ UserInfo::UserInfo(UserListElement user, QWidget *parent)
 	connect(pb_close, SIGNAL(clicked()), this, SLOT(close()));
 	connect(pb_addapply, SIGNAL(clicked()), this, SLOT(updateUserlist()));
 
-	QHBoxLayout *bottom_layout = new QHBoxLayout;
+	QHBoxLayout *bottom_layout = new QHBoxLayout(bottom);
 	bottom_layout->addWidget(w_blankwidget);
 	bottom_layout->addWidget(pb_addapply);
 	bottom_layout->addWidget(pb_close);
 
-	bottom->setLayout(bottom_layout);
-
 	center_layout->addWidget(bottom);
 
-	QHBoxLayout *layout = new QHBoxLayout;
+	QHBoxLayout *layout = new QHBoxLayout(this);
 	layout->addWidget(left);
 	layout->addWidget(center);
-
-	setLayout(layout);
 
 	createNotifier.notify(this);
 

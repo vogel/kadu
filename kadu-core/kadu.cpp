@@ -121,7 +121,7 @@ void Kadu::keyPressEvent(QKeyEvent *e)
 // 	else if (HotKey::shortCut(e,"ShortCuts", "kadu_showonlydesc"))
 // 		groups_manager->changeDisplayingWithoutDescription();
 	else if (HotKey::shortCut(e,"ShortCuts", "kadu_configure"))
-		configure();
+		configurationActionActivated(0, false);
 	else if (HotKey::shortCut(e,"ShortCuts", "kadu_modulesmanager"))
 		modules_manager->showDialog(0, false);
 
@@ -562,11 +562,6 @@ Kadu::Kadu(QWidget *parent)
 QVBoxLayout * Kadu::mainLayout() const
 {
 	return MainLayout;
-}
-
-void Kadu::configure()
-{
-	configurationActionActivated(0, false);
 }
 
 void Kadu::writeEMailActionActivated(QAction *sender, bool toggled)

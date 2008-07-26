@@ -244,7 +244,6 @@ public slots:
 	void updateInformationPanelLater();
 
 	void sendMessage(UserListElement elem);
-	void configure();
 
 	void setStatus(const UserStatus &status);
 	void setOnline(const QString &description = QString::null);

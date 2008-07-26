@@ -233,17 +233,17 @@ ConfigurationWindow::ConfigurationWindow(const QString &name, const QString &cap
 	setAttribute(Qt::WA_DeleteOnClose);
 	setWindowTitle(caption);
 
-	QVBoxLayout *main_layout = new QVBoxLayout;
+	QVBoxLayout *main_layout = new QVBoxLayout(this);
 
 	QWidget *center = new QWidget();
-	QHBoxLayout *center_layout = new QHBoxLayout;
+	QHBoxLayout *center_layout = new QHBoxLayout(center);
 	center_layout->setMargin(0);
 	center_layout->setSpacing(0);
 
 	left = new QWidget();
 	left->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Expanding);
 	left->hide();
-	QVBoxLayout *left_layout = new QVBoxLayout;
+	QVBoxLayout *left_layout = new QVBoxLayout(left);
 	left_layout->setMargin(0);
 	left_layout->setSpacing(0);
 
@@ -253,7 +253,7 @@ ConfigurationWindow::ConfigurationWindow(const QString &name, const QString &cap
 	container->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 
 	QWidget *buttons = new QWidget;
-	QHBoxLayout *buttons_layout = new QHBoxLayout;
+	QHBoxLayout *buttons_layout = new QHBoxLayout(buttons);
 	buttons_layout->setMargin(0);
 	buttons_layout->setSpacing(0);
 	QWidget *what = new QWidget;
@@ -265,7 +265,6 @@ ConfigurationWindow::ConfigurationWindow(const QString &name, const QString &cap
 	buttons_layout->addWidget(applyButton);
 	QPushButton *cancelButton = new QPushButton(icons_manager->loadIcon("CloseWindowButton"), tr("Cancel"), this);
 	buttons_layout->addWidget(cancelButton);
-	buttons->setLayout(buttons_layout);
 
 	connect(okButton, SIGNAL(clicked()), this, SLOT(updateAndCloseConfig()));
 	connect(applyButton, SIGNAL(clicked()), this, SLOT(updateConfig()));
@@ -277,14 +276,11 @@ ConfigurationWindow::ConfigurationWindow(const QString &name, const QString &cap
 	sectionsListWidget->setIconSize(QSize(32,32));
 	connect(sectionsListWidget, SIGNAL(currentTextChanged(const QString &)), this, SLOT(changeSection(const QString &)));
 	left_layout->addWidget(sectionsListWidget);
-	left->setLayout(left_layout);
 
 	main_layout->addWidget(center);
 	main_layout->addWidget(buttons);
 	center_layout->addWidget(left);
 	center_layout->addWidget(container);
-	center->setLayout(center_layout);
-	setLayout(main_layout);
 }
 
 ConfigurationWindow::~ConfigurationWindow()

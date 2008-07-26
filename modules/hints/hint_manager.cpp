@@ -121,8 +121,7 @@ void HintManager::mainConfigurationWindowCreated(MainConfigurationWindow *mainCo
 	overUserSyntax = mainConfigurationWindow->widgetById("hints/overUserSyntax");
 	overUserSyntax->setToolTip(qApp->translate("@default", Kadu::SyntaxText));
 
-	toolTipClassesHighlighted((dynamic_cast<QComboBox *>(mainConfigurationWindow->widgetById("toolTipClasses")))->currentText());
-	connect(mainConfigurationWindow->widgetById("toolTipClasses"), SIGNAL(highlighted(const QString &)),
+	connect(mainConfigurationWindow->widgetById("toolTipClasses"), SIGNAL(currentIndexChanged(const QString &)),
 		this, SLOT(toolTipClassesHighlighted(const QString &)));
 }
 
