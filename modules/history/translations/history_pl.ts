@@ -186,7 +186,7 @@
         <source>The following users were deleted:
 %0Do you want to remove history as well?</source>
         <translation>Następujący użytkownicy zostali usunięci:
-%0Czy chcesz usunąć ich z histori?</translation>
+%0Czy chcesz usunąć ich z historii?</translation>
     </message>
 </context>
 <context>
