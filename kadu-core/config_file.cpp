@@ -103,7 +103,9 @@ void XmlConfigFile::write(const QString& f)
 		stream.setEncoding(QTextStream::UnicodeUTF8);
 		stream << DomDocument.toString();
 		file.close();
-		if (rename(tmpFileName.local8Bit().data(), fileName.local8Bit().data()) == -1)
+		// remove old file (win32)
+		QFile::remove(fileName);
+		if (!QFile::rename(tmpFileName, fileName))
 		{
 			fprintf(stderr, "cannot rename '%s' to '%s': %s\n", tmpFileName.local8Bit().data(), fileName.local8Bit().data(), strerror(errno));
 			fflush(stderr);

@@ -17,7 +17,11 @@
 #include <sys/time.h>
 #include <sys/types.h>
 #include <errno.h>
+#ifndef Q_WS_WIN
 #include <pwd.h>
+#else
+#include <winsock2.h>
+#endif
 
 #include "config_file.h"
 #include "debug.h"
@@ -204,13 +208,24 @@ int main(int argc, char *argv[])
 	gettimeofday(&tv, &tz);
 	startTime = (tv.tv_sec % 1000) * 1000000 + tv.tv_usec;
 
+	// na Windowsie to nie ma znaczenia
+#ifndef Q_WS_WIN
 	char *env_lang = getenv("LANG");
 	if (env_lang)
 		setenv("LC_COLLATE", env_lang, true);
 	else
 		setenv("LC_COLLATE", "pl_PL", true);
+#endif
 
-//	debug_mask = -1;
+#ifdef Q_WS_WIN
+	WSADATA wsaData;
+
+	if (WSAStartup(MAKEWORD(2, 0), &wsaData) != 0) {
+		return 1;
+	}
+
+#endif
+	debug_mask = -1;
 	qInstallMsgHandler(kaduQtMessageHandler);
 	xml_config_file = new XmlConfigFile();
 	if (argc > 1)
@@ -235,6 +250,7 @@ int main(int argc, char *argv[])
 	{
 		char path[1024];
 		struct tm *t = localtime(&startTimeT);
+#ifndef Q_OS_WIN
 		struct passwd *p = getpwuid(geteuid());
 		if (t && p)
 		{
@@ -249,6 +265,14 @@ int main(int argc, char *argv[])
 				fprintf(stdout, "can't chmod output logfile (%s)!\n", path);
 			}
 		}
+#else
+		char *tmp=getenv("TEMP");
+		if(!tmp) tmp=".";
+		sprintf(path, "%s\\kadu-dbg-%04d-%02d-%02d-%02d-%02d-%02d.txt", tmp, 1900 + t->tm_year, 1 + t->tm_mon, t->tm_mday, t->tm_hour, t->tm_min, t->tm_sec);
+		if (freopen(path, "wx", stderr) == 0)
+			fprintf(stdout, "freopen: %s\n", strerror(errno));
+#endif
+
 	}
 
 #ifdef DEBUG_ENABLED
@@ -257,11 +281,13 @@ int main(int argc, char *argv[])
 		showTimesInDebug = atoi(d);
 #endif
 
+#ifndef Q_OS_WIN
 	lock_str = (struct flock *) malloc(sizeof(struct flock));
 	lock_str->l_type = F_WRLCK;
 	lock_str->l_whence = SEEK_SET;
 	lock_str->l_start = 0;
 	lock_str->l_len = 0;
+#endif
 
 #ifdef SIG_HANDLING_ENABLED
 	bool sh_enabled=true;
@@ -286,7 +312,9 @@ int main(int argc, char *argv[])
 #endif
 
 	// delayed running, useful in gnome
+#ifndef Q_OS_WIN
 	sleep(config_file.readNumEntry("General", "StartDelay"));
+#endif
 	QString data_dir = dataPath("kadu", argv[0]);
 	if (!QDir(data_dir).isReadable())
 	{
@@ -316,6 +344,7 @@ int main(int argc, char *argv[])
 	qApp->installTranslator(&kadu_qm);
 	qApp->setStyle(config_file.readEntry("Look", "QtStyle"));
 
+#ifndef Q_WS_WIN
 	lockFile = new QFile(ggPath("lock"));
 	if (lockFile->open(QIODevice::ReadWrite))
 	{
@@ -371,6 +400,7 @@ int main(int argc, char *argv[])
 			}
 		}
 	}
+#endif
 
 	ProtocolsManager::initModule();
 	UserList::initModule();
@@ -390,9 +420,11 @@ int main(int argc, char *argv[])
 	kadu->setMainWindowIcon(pix);
 
 	QString path_ = ggPath(QString::null);
+#ifndef Q_OS_WIN
 	if (path_.endsWith("/kadu/") || path_.endsWith("/Kadu/")) // for profiles directory
 		mkdir(path_.left(path_.length() - 6).local8Bit().data(), 0700);
 	mkdir(path_.local8Bit().data(), 0700);
+#endif
 
 	ModulesManager::initModule();
 
@@ -402,8 +434,11 @@ int main(int argc, char *argv[])
 
 	// if someone is running Kadu from root account, let's remind him
 	// that it's a "bad thing"(tm) ;) (usually for win32 users)
+	// and disable this feature for win32 ;)
+#ifndef Q_OS_WIN
 	if (geteuid() == 0)
 		MessageBox::msg(qApp->translate("@default", QT_TR_NOOP("Please do not run Kadu as a root!\nIt's a high security risk!")), false, "Warning");
+#endif
 	QTimer::singleShot(15000, kadu, SLOT(deleteOldConfigFiles()));
 	if (ggnumber)
 		qApp->postEvent(kadu, new OpenGGChatEvent(ggnumber));
@@ -430,6 +465,9 @@ int main(int argc, char *argv[])
 	kdebugm(KDEBUG_INFO, "after exec\n");
 	qApp->removeTranslator(&qt_qm);
 	qApp->removeTranslator(&kadu_qm);
+#ifdef Q_WS_WIN
+	WSACleanup();
+#endif
 
 	if (measureTime)
 	{

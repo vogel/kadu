@@ -21,7 +21,12 @@
 #include <QtGui/QTreeWidgetItem>
 #include <QtGui/QVBoxLayout>
 
+#ifdef Q_WS_WIN
+#include <windows.h>
+#undef MessageBox
+#else
 #include <dlfcn.h>
+#endif
 
 #include "config_file.h"
 #include "debug.h"
@@ -38,11 +43,14 @@
 #ifdef Q_OS_MACX
 	#define SO_EXT "dylib"
 	#define SO_EXT_LEN 5
+#elif defined(Q_OS_WIN)
+	#define SO_EXT "dll"
+	#define SO_EXT_LEN 3
 #else
 	#define SO_EXT "so"
 	#define SO_EXT_LEN 2
 #endif
-
+#ifndef Q_WS_WIN
 Library::Library(const QString& file_name) : FileName(file_name), Handle(0)
 {
 }
@@ -72,6 +80,38 @@ QString Library::error()
 {
 	return QString(dlerror());
 }
+#else
+Library::Library(const QString& file_name) : FileName(file_name), Handle(0)
+{
+}
+
+Library::~Library()
+{
+	kdebugf();
+	if (Handle != 0)
+		FreeLibrary((HINSTANCE)Handle);
+	kdebugf2();
+}
+
+bool Library::load()
+{
+	Handle = LoadLibrary(FileName.local8Bit().data());
+	return (Handle != 0);
+}
+
+void* Library::resolve(const QString& symbol_name)
+{
+	if (Handle == 0)
+		return 0;
+	return (void*)GetProcAddress((HINSTANCE)Handle, symbol_name.local8Bit().data());
+}
+
+QString Library::error()
+{
+	return QString("XXX: Ble!");
+}
+#endif
+
 
 ModuleInfo::ModuleInfo() : depends(), conflicts(), provides(),
 	description(), author(), version(), load_by_def(false)

@@ -59,6 +59,14 @@ void loadWindowGeometry(QWidget *w, const QString &section, const QString &name,
 //usuwa znaki nowego wiersza, tagi htmla (wszystko co da si� dopasowa� jako <.*>)
 QString toPlainText(const QString &text);
 
+// gettimeofday (win32)
+#ifdef Q_OS_WIN
+struct timeval;
+struct timezone {};
+int gettimeofday(struct timeval* tp, struct timezone* tzp);
+#endif
+
+
 extern QFont *defaultFont;
 extern QFontInfo *defaultFontInfo;
 

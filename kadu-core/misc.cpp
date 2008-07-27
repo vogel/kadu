@@ -23,7 +23,14 @@
 #include <QtGui/QPainter>
 #include <QtGui/QPushButton>
 
+#ifdef Q_WS_WIN
+#include <windows.h>
+#include <shlobj.h>
+#include <sys/timeb.h>
+#undef MessageBox
+#else
 #include <pwd.h>
+#endif
 
 #include "chat_manager.h"
 #include "config_file.h"
@@ -76,11 +83,20 @@ QString ggPath(const QString &subpath)
 	if (path == QString::null)
 	{
 		char *home;
+#ifdef Q_OS_WIN
+		home=new char[1024];
+		if(!SUCCEEDED(SHGetFolderPath(NULL, CSIDL_APPDATA, NULL,  0,  home))){
+			delete home;
+			home=getenv("HOMEPATH");
+		}
+		
+#else
 		struct passwd *pw;
 		if ((pw = getpwuid(getuid())))
 			home = pw->pw_dir;
 		else
 			home = getenv("HOME");
+#endif
 		KaduParser::globalVariables["HOME"] = home;
 		char *config_dir = getenv("CONFIG_DIR");
 #ifdef Q_OS_MACX
@@ -88,6 +104,11 @@ QString ggPath(const QString &subpath)
 			path = QString("%1/Library/Kadu/").arg(home);
 		else
 			path = QString("%1/%2/Kadu/").arg(home).arg(config_dir);
+#elif defined(Q_OS_WIN)
+		if (config_dir == NULL)
+			path = QString("%1\\Kadu\\").arg(home);
+		else
+			path = QString("%1\\%2\\Kadu\\").arg(home).arg(config_dir);		
 #else
 		if (config_dir == NULL)
 			path = QString("%1/.kadu/").arg(home);
@@ -96,6 +117,7 @@ QString ggPath(const QString &subpath)
 #endif
 		KaduParser::globalVariables["KADU_CONFIG"] = path;
 	}
+
 	return (path + subpath);
 }
 
@@ -117,6 +139,7 @@ QString ggPath(const QString &subpath)
  */
 static bool delinkify(char *path, int maxlen)
 {
+#ifndef Q_WS_WIN
 	kdebugmf(KDEBUG_FUNCTION_START, "%s\n", path);
 	struct stat st;
 	if (lstat(path, &st) == -1)
@@ -145,6 +168,9 @@ static bool delinkify(char *path, int maxlen)
 	delete [] path2;
 	kdebugf2();
 	return true;
+#else
+	return false;
+#endif
 }
 
 /*
@@ -312,6 +338,12 @@ QString dataPath(const QString &p, const char *argv0)
 			data_path = QString(cpath) + "../../";
 			lib_path = QString(cpath) + "../../";
 		}
+#elif defined(Q_OS_WIN)
+		char epath[1024];
+		GetModuleFileName(NULL, epath, 1024);
+		data_path=epath;
+		data_path.resize(data_path.lastIndexOf('\\')+1);
+		lib_path=data_path;
 #else
 		QString datadir(DATADIR);
 		QString bindir(BINDIR);
@@ -350,6 +382,7 @@ QString dataPath(const QString &p, const char *argv0)
 		printBacktrace("dataPath(): constructor of static object uses dataPath");
 	}
 	kdebugm(KDEBUG_INFO, "%s%s\n", data_path.local8Bit().data(), p.local8Bit().data());
+
 	return data_path + p;
 }
 
@@ -1166,6 +1199,19 @@ QString narg(const QString &s, const QString &arg1, const QString &arg2, const Q
 	const QString *tab[4]={&arg1, &arg2, &arg3, &arg4};
 	return narg(s, tab, 4);
 }
+
+#ifdef Q_OS_WIN
+int gettimeofday(struct timeval* tp, struct timezone* tzp)
+{
+	struct _timeb timebuffer;
+
+	_ftime(&timebuffer);
+	tp->tv_sec = timebuffer.time;
+	tp->tv_usec = timebuffer.millitm * 1000;
+
+	return 0;
+}
+#endif
 
 #ifdef HAVE_EXECINFO
 #include <execinfo.h>

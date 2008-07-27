@@ -15,6 +15,10 @@
 #include <QtGui/QMovie>
 #include <QtGui/QPainter>
 
+#ifdef Q_OS_WIN32
+#include <windows.h>
+#endif
+
 #include <math.h>
 #include <algorithm>
 
@@ -632,6 +636,7 @@ void StaticTextItem::adjustToPainter(QPainter* p)
 	height = scale(tmpheight, p);
 }*/
 
+#if 0 // ot, tak bo psuje
 #if !defined(Q_WS_X11)
 #include <qbitmap.h>
 #include <q3cleanuphandler.h>
@@ -653,6 +658,7 @@ static void qrt_createSelectionPixmap(const QColorGroup &cg)
 	qrt_selection->setMask(m);
 	qrt_selection->fill(cg.highlight());
 }
+#endif
 #endif
 
 // void StaticTextItem::draw(QPainter* p, int x, int y, int cx, int cy, int cw, int ch, const QColorGroup& cg, bool selected)

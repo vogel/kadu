@@ -24,10 +24,14 @@
 #ifndef ACTIVATE_H
 #define ACTIVATE_H
 
+#ifdef Q_OS_X11
 #include <QtGui/QX11Info>
 
 void create_netwm_atoms(Display *d);
 
 void activateWindow(Qt::HANDLE id);
+#else
+#define activateWindow(x)
+#endif
 
 #endif // ACTIVATE_H

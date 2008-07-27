@@ -11,7 +11,12 @@
 #include <QtGui/QApplication>
 #include <QtGui/QIntValidator>
 
+#ifdef Q_WS_WIN
+#include <winsock2.h>
+#undef MessageBox
+#else
 #include <netinet/in.h>
+#endif
 
 #include "config_file.h"
 #include "debug.h"
@@ -1972,7 +1977,7 @@ void GaduProtocol::userListReceived(const struct gg_event *e)
 		}
 
 		user.setProtocolData("Gadu", "DNSName", "", nr + 1 == cnt);
-		user.setProtocolData("Gadu", "IP", ntohl(e->event.notify60[nr].remote_ip), nr + 1 == cnt);
+		user.setProtocolData("Gadu", "IP", (unsigned int)ntohl(e->event.notify60[nr].remote_ip), nr + 1 == cnt);
 		user.setProtocolData("Gadu", "Port", e->event.notify60[nr].remote_port, nr + 1 == cnt);
 		user.refreshDNSName("Gadu");
 

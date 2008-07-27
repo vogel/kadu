@@ -23,6 +23,7 @@
 
 #include "activate.h"
 
+#ifdef Q_OS_X11
 #include <X11/Xlib.h>
 
 static Atom net_active_window = 0;
@@ -69,3 +70,4 @@ void activateWindow(Qt::HANDLE id)
 
 	XSendEvent(QX11Info::display(), QX11Info::appRootWindow(), False, netwm_sendevent_mask, &e);
 }
+#endif

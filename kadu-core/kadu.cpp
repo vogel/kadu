@@ -1024,6 +1024,7 @@ void Kadu::quit()
 		gettimeofday(&tv, &tz);
 		endingTime = (tv.tv_sec % 1000) * 1000000 + tv.tv_usec;
 	}
+
 	close(true);
 }
 
@@ -1453,12 +1454,14 @@ bool Kadu::close(bool quit)
 
 		QWidget::close(true);
 
+#ifndef Q_WS_WIN
 		lock_str->l_type = F_UNLCK;
 		fcntl(lockFileHandle, F_SETLK, lock_str);
 //		flock(lockFileHandle, LOCK_UN);
 		lockFile->close();
 		delete lockFile;
 		lockFile=NULL;
+#endif
 		kdebugmf(KDEBUG_INFO, "Graceful shutdown...\n");
 
 		delete xml_config_file;
