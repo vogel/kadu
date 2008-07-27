@@ -543,6 +543,8 @@ UserBox::~UserBox()
 	comparer = 0;
 	delete desc_action;
 	desc_action = 0;
+	delete backgroundImage;
+	backgroundImage = 0;
 	kdebugf2();
 }
 
@@ -1058,23 +1060,25 @@ void UserBox::configurationUpdated()
 
 void UserBox::setColorsOrBackgrounds()
 {
-	QImage *newImage = 0;
-
 	if (config_file.readBoolEntry("Look", "UseUserboxBackground", true))
 	{
-		QString s = config_file.readEntry("Look", "UserboxBackground");
-		if (!s.isEmpty() && QFile::exists(s))
-			newImage = new QImage(s);
+		QString img = config_file.readEntry("Look", "UserboxBackground");
+		if (!img.isEmpty() && QFile::exists(img))
+		{
+			if (backgroundImage)
+				backgroundImage->load(img);
+			else
+				backgroundImage = new QImage(img);
+		}
 	}
-
-	if (newImage)
-		backgroundImage = newImage;
 	else
+	{
 		if (backgroundImage)
 		{
 			delete backgroundImage;
 			backgroundImage = 0;
 		}
+	}
 
 	FOREACH(userbox, UserBoxes)
 		(*userbox)->refreshBackground();

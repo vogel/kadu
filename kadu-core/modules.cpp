@@ -39,14 +39,14 @@
 	#define SO_EXT_LEN 2
 #endif
 
-Library::Library(const QString& file_name) : FileName(file_name), Handle(0)
+Library::Library(const QString& file_name) : FileName(file_name), Handle(NULL)
 {
 }
 
 Library::~Library()
 {
 	kdebugf();
-	if (Handle != 0)
+	if (Handle != NULL)
 		dlclose(Handle);
 	kdebugf2();
 }
@@ -54,12 +54,12 @@ Library::~Library()
 bool Library::load()
 {
 	Handle = dlopen(FileName.local8Bit().data(), RTLD_NOW | RTLD_GLOBAL);
-	return (Handle != 0);
+	return (Handle != NULL);
 }
 
 void* Library::resolve(const QString& symbol_name)
 {
-	if (Handle == 0)
+	if (Handle == NULL)
 		return 0;
 	return dlsym(Handle, symbol_name.local8Bit().data());
 }
@@ -635,7 +635,6 @@ bool ModulesManager::conflictsWithLoaded(const QString &module_name, const Modul
 
 bool ModulesManager::activateModule(const QString& module_name)
 {
-	Module m;
 	kdebugmf(KDEBUG_FUNCTION_START, "'%s'\n", module_name.local8Bit().data());
 
 	if (moduleIsActive(module_name))
@@ -645,20 +644,9 @@ bool ModulesManager::activateModule(const QString& module_name)
 		return false;
 	}
 
-	if (moduleInfo(module_name,m.info))
-	{
-		if (conflictsWithLoaded(module_name, m.info))
-		{
-			kdebugf2();
-			return false;
-		}
-		if (!satisfyModuleDependencies(m.info))
-		{
-			kdebugf2();
-			return false;
-		}
-	}
-	else
+	Module m;
+
+	if (!moduleInfo(module_name, m.info) || conflictsWithLoaded(module_name, m.info) || !satisfyModuleDependencies(m.info))
 	{
 		kdebugf2();
 		return false;
@@ -669,10 +657,10 @@ bool ModulesManager::activateModule(const QString& module_name)
 
 	if (moduleIsStatic(module_name))
 	{
-		m.lib=NULL;
-		StaticModule sm=StaticModules[module_name];
-		init=sm.init;
-		m.close=sm.close;
+		m.lib = NULL;
+		StaticModule sm = StaticModules[module_name];
+		init = sm.init;
+		m.close = sm.close;
 	}
 	else
 	{
@@ -686,9 +674,9 @@ bool ModulesManager::activateModule(const QString& module_name)
 			kdebugf2();
 			return false;
 		}
-		init=(InitModuleFunc*)m.lib->resolve(module_name+"_init");
-		m.close=(CloseModuleFunc*)m.lib->resolve(module_name+"_close");
-		if (init==NULL||m.close==NULL)
+		init = (InitModuleFunc*)m.lib->resolve(module_name+"_init");
+		m.close = (CloseModuleFunc*)m.lib->resolve(module_name+"_close");
+		if (init == NULL || m.close == NULL)
 		{
 			MessageBox::msg(tr("Cannot find required functions in module %1.\nMaybe it's not Kadu-compatible Module.").arg(module_name));
 			delete m.lib;
@@ -715,18 +703,18 @@ bool ModulesManager::activateModule(const QString& module_name)
 
 	incDependenciesUsageCount(m.info);
 
-	m.usage_counter=0;
-	Modules.insert(module_name,m);
+	m.usage_counter = 0;
+	Modules.insert(module_name, m);
 	kdebugf2();
 	return true;
 }
 
 bool ModulesManager::deactivateModule(const QString& module_name, bool force)
 {
-	Module m=Modules[module_name];
+	Module m = Modules[module_name];
 	kdebugmf(KDEBUG_FUNCTION_START, "name:'%s' force:%d usage:%d\n", module_name.local8Bit().data(), force, m.usage_counter);
 
-	if (m.usage_counter>0 && !force)
+	if (m.usage_counter > 0 && !force)
 	{
 		MessageBox::msg(tr("Module %1 cannot be deactivated because it is used now").arg(module_name));
 		kdebugf2();
@@ -737,13 +725,13 @@ bool ModulesManager::deactivateModule(const QString& module_name, bool force)
 		moduleDecUsageCount(*i);
 
 	m.close();
-	if (m.translator!=NULL)
+	if (m.translator != NULL)
 	{
 		qApp->removeTranslator(m.translator);
 		delete m.translator;
 	}
 
-	if (m.lib!=NULL)
+	if (m.lib != NULL)
 		m.lib->deleteLater();
 
 	Modules.remove(module_name);
