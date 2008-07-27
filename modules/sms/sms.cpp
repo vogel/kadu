@@ -517,10 +517,21 @@ void SmsConfigurationUiHandler::newSms(QString nick)
 	(new Sms(nick, kadu))->show();
 }
 
-void SmsConfigurationUiHandler::onUserClicked(int button, Q3ListBoxItem* /*item*/, const QPoint& /*pos*/)
+void SmsConfigurationUiHandler::onUserClicked(int button, Q3ListBoxItem* item, const QPoint& /*pos*/)
 {
 	if (button == 4)
-		onSendSmsToUser();
+	{
+		UserBox *userbox = dynamic_cast<UserBox *>(item->listBox());
+		if (userbox)
+		{
+			UserListElements users = userbox->selectedUsers();
+ 			if (users.count() != 1)
+ 				return;
+
+ 			if (!users[0].mobile().isEmpty())
+ 				newSms(users[0].altNick());
+		}
+	}
 }
 
 void SmsConfigurationUiHandler::onUserDblClicked(UserListElement user)
@@ -530,25 +541,6 @@ void SmsConfigurationUiHandler::onUserDblClicked(UserListElement user)
 		newSms(user.altNick());
 	kdebugf2();
 }
-
-void SmsConfigurationUiHandler::onSendSmsToUser()
-{
-// TODO: 0.6.5
-// 	kdebugf();
-// 	UserListElements users;
-// 	UserBox *activeUserBox = kadu->userbox()->activeUserBox();
-// 	if (activeUserBox == NULL)
-// 		return;
-
-// 	users = activeUserBox->selectedUsers();
-// 	if (users.count() != 1)
-// 		return;
-
-// 	if (!users[0].mobile().isEmpty())
-// 		newSms(users[0].altNick());
-// 	kdebugf2();
-}
-
 
 void SmsConfigurationUiHandler::registerGateway(QString name, isValidFunc* f)
 {
@@ -602,6 +594,7 @@ void SmsConfigurationUiHandler::onUpButton()
 	QListWidgetItem * item = gatewayListWidget->takeItem(index);
 	gatewayListWidget->insertItem(--index, item);
 	item->setSelected(true);
+	gatewayListWidget->setCurrentItem(item);
 }
 
 void SmsConfigurationUiHandler::onDownButton()
@@ -613,6 +606,7 @@ void SmsConfigurationUiHandler::onDownButton()
 	QListWidgetItem *item = gatewayListWidget->takeItem(index);
 	gatewayListWidget->insertItem(++index, item);
 	item->setSelected(true);
+	gatewayListWidget->setCurrentItem(item);
 }
 
 void SmsConfigurationUiHandler::sendSmsActionActivated(QAction *sender, bool toggled)
