@@ -152,15 +152,14 @@ void AdvancedUserList::updateClicked(UserInfo *info)
 void AdvancedUserList::onUpButton()
 {
 	int index = sortingListBox->currentRow();
-	QListWidgetItem *item = sortingListBox->currentItem();
-	if (index == 0)
+	if (index < 1)
 		return;
+	QListWidgetItem *item = sortingListBox->takeItem(index);
 
 	QString removed = newOrder[index];
 	newOrder[index] = newOrder[index - 1];
 	newOrder[index - 1] = removed;
 
-	sortingListBox->removeItemWidget(item);
 	sortingListBox->insertItem(index - 1, item);
 	sortingListBox->setCurrentItem(item);
 }
@@ -168,15 +167,15 @@ void AdvancedUserList::onUpButton()
 void AdvancedUserList::onDownButton()
 {
 	int index = sortingListBox->currentRow();
-	QListWidgetItem *item = sortingListBox->currentItem();
-	if (index == sortingListBox->count() - 1)
+	if (index == sortingListBox->count() - 1 || index == -1)
 		return;
+
+	QListWidgetItem *item = sortingListBox->takeItem(index);
 
 	QString removed = newOrder[index];
 	newOrder[index] = newOrder[index + 1];
 	newOrder[index + 1] = removed;
 
-	sortingListBox->removeItemWidget(item);
 	sortingListBox->insertItem(index + 1, item);
 	sortingListBox->setCurrentItem(item);
 }

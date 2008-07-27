@@ -600,7 +600,7 @@ void SmsConfigurationUiHandler::onUpButton()
 void SmsConfigurationUiHandler::onDownButton()
 {
 	int index = gatewayListWidget->currentRow();
-	if (index == gatewayListWidget->count() - 1)
+	if (index == gatewayListWidget->count() - 1 || index == -1)
 		return;
 
 	QListWidgetItem *item = gatewayListWidget->takeItem(index);
