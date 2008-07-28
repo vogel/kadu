@@ -49,14 +49,14 @@ void GaduImagesManager::setBackgroundsForAnimatedImages(HtmlDocument &doc, const
 QString GaduImagesManager::imageHtml(const QString &file_name)
 {
 	if (file_name.right(4).lower() == ".gif")
-		return narg(QString("<img bgcolor=\"\" animated=\"1\" src=\"%1\" title=\"%2\"/>"), file_name, file_name);
+		return narg(QString("<img bgcolor=\"\" animated=\"1\" src=\"file:///%1\" title=\"%2\"/>"), file_name, file_name);
 	else
-		return QString("<img src=\"%1\"/>").arg(file_name);
+		return QString("<img src=\"file:///%1\"/>").arg(file_name);
 }
 
 QString GaduImagesManager::loadingImageHtml(UinType uin, uint32_t size, uint32_t crc32)
 {
-	return narg(QString("<img src=\"%1\" gg_sender=\"%2\" gg_size=\"%3\" gg_crc=\"%4\"/>"),
+	return narg(QString("<img src=\"file:///%1\" gg_sender=\"%2\" gg_size=\"%3\" gg_crc=\"%4\"/>"),
 		icons_manager->iconPath("LoadingImage"), QString::number(uin), QString::number(size), QString::number(crc32));
 }
 
@@ -210,10 +210,10 @@ QString GaduImagesManager::replaceLoadingImages(const QString &text, UinType sen
 
 	QString file_name = getSavedImageFileName(size,crc32);
 	if (file_name.right(4).lower()==".gif")
-		image_string = narg(QString("<img bgcolor=\"%1\" animated=\"1\" src=\"%2\" title=\"%3\"/>"),
+		image_string = narg(QString("<img bgcolor=\"%1\" animated=\"1\" src=\"file:///%2\" title=\"%3\"/>"),
 			config_file.readColorEntry("Look","ChatUsrBgColor").name(), file_name, file_name);
 	else
-		image_string = QString("<img src=\"%1\"/>").arg(file_name);
+		image_string = QString("<img src=\"file:///%1\"/>").arg(file_name);
 
 	while ((pos = new_text.find(loading_string)) != -1)
 	{

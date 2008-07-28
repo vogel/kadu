@@ -104,12 +104,6 @@ protected:
 	**/
 	virtual void contextMenuEvent(QContextMenuEvent *e);
 
-	/**
-		\fn virtual void contextMenuEvent(QContextMenuEvent* e)
-		Funkcja obs?uguj?ca przeci?ganie paska narz?dziowego.
-	**/
-	virtual void moveEvent(QMoveEvent *e);
-
 	virtual void mouseMoveEvent(QMouseEvent* e);
 
 	virtual void configurationUpdated();
