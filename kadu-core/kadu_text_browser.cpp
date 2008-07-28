@@ -34,17 +34,17 @@ KaduTextBrowser::KaduTextBrowser(QWidget *parent)
 	setAcceptDrops(false);
 // 	viewport()->setAcceptDrops(false);
 
-// 	setOpenLinks(false);
+ 	page()->setLinkDelegationPolicy(QWebPage::DelegateAllLinks);
 //	setResizePolicy(QScrollView::AutoOne);
-	connect(this, SIGNAL(anchorClicked(const QUrl &)), this, SLOT(hyperlinkClicked(const QUrl &)));
-	connect(this, SIGNAL(highlighted(const QString&)), this, SLOT(linkHighlighted(const QString &)));
+	connect(page(), SIGNAL(linkClicked(const QUrl &)), this, SLOT(hyperlinkClicked(const QUrl &)));
+	connect(page(), SIGNAL(linkHovered(const QString&,  const QString&, const QString&)), this, SLOT(linkHighlighted(const QString &)));
 // 	setLineWrapMode(QTextEdit::WidgetWidth/**QTextEdit::AtWordOrDocumentBoundary*/);
 // 	setTextFormat(Qt::RichText);
 
 //	connect(verticalScrollBar(), SIGNAL(sliderReleased()), this, SLOT(repaint()));
 //	connect(verticalScrollBar(), SIGNAL(sliderReleased()), this, SLOT(refresh()));
 //	connect(this, SIGNAL(contentsMoving(int, int)), this, SLOT(refreshLater()));
-	connect(this, SIGNAL(textChanged()), this, SLOT(refreshLater()));
+//	connect(this, SIGNAL(textChanged()), this, SLOT(refreshLater()));
 	connect(&refreshTimer, SIGNAL(timeout()), this, SLOT(refresh()));
 
 //	connect(this, SIGNAL(verticalSliderPressed()), this, SLOT(verticalSliderPressedSlot()));
@@ -98,7 +98,7 @@ void KaduTextBrowser::refresh()
 	//sync();
 	//repaint();
 	//repaintContents(false);
-	repaint();
+	reload();
 	kdebugf2();
 }
 

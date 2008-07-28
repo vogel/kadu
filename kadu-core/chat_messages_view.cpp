@@ -8,6 +8,7 @@
  ***************************************************************************/
 
 #include <QtGui/QScrollBar>
+#include <QtWebKit/QWebFrame>
 
 #include "chat_message.h"
 #include "config_file.h"
@@ -20,7 +21,7 @@
 #include "chat_messages_view.h"
 
 ChatMessagesView::ChatMessagesView(QWidget *parent) : KaduTextBrowser(parent),
-	Prune(0)
+	Prune(0), lastScrollValue(0), lastLine(false)
 {
 	setMargin(ParagraphSeparator);
 	setMinimumSize(QSize(100,100));
@@ -34,8 +35,6 @@ ChatMessagesView::ChatMessagesView(QWidget *parent) : KaduTextBrowser(parent),
 //	setMimeSourceFactory(bodyformat);
 // 	setTextFormat(Qt::RichText);
 	setFocusPolicy(Qt::NoFocus);
-
-//	scrollToBottom();
 }
 
 ChatMessagesView::~ChatMessagesView()
@@ -138,9 +137,8 @@ void ChatMessagesView::repaintMessages()
 		prevMessage = message;
 	}
 
-	// TODO: 0.6.5
-// 	int lastScrollValue = verticalScrollBar()->value();
-// 	bool lastLine = (lastScrollValue == verticalScrollBar()->maxValue());
+ 	lastScrollValue = page()->currentFrame()->scrollBarValue(Qt::Vertical);
+ 	lastLine = (lastScrollValue == page()->currentFrame()->scrollBarMaximum(Qt::Vertical));
 
 	HtmlDocument htmlDocument;
 	htmlDocument.parseHtml(text);
@@ -151,10 +149,7 @@ void ChatMessagesView::repaintMessages()
 	setHtml(htmlDocument.generateHtml());
 	updateBackgrounds();
 
-// 	if (lastLine)
-// 		verticalScrollBar()->setValue(verticalScrollBar()->maxValue());
-// 	else
-// 		verticalScrollBar()->setValue(lastScrollValue);
+	QTimer::singleShot(0, this, SLOT(scrollToLine()));
 
 	kdebugf2();
 }
@@ -237,8 +232,8 @@ void ChatMessagesView::configurationUpdated()
 
 	// background color of chat
 // 	QString bgImage = KaduParser::parse(config_file.readEntry("Look", "ChatBgImage"), usrs[0]);
-	// TODO: 0.6.5
-//  	viewport()->setStyleSheet(QString("background-color:%1").arg(config_file.readColorEntry("Look", "ChatBgColor").name()));
+
+  	setStyleSheet(QString("QWidget {background-color:%1}").arg(config_file.readColorEntry("Look", "ChatBgColor").name()));
 // 	if (!bgImage.isEmpty() && QFile::exists(bgImage))
 // 		brush.setPixmap(QPixmap(bgImage));
 
@@ -284,14 +279,19 @@ void ChatMessagesView::configurationUpdated()
 
 void ChatMessagesView::resizeEvent(QResizeEvent *e)
 {
-// TODO: 0.6.5
-// 	int lastScrollValue = verticalScrollBar()->value();
-// 	bool lastLine = (lastScrollValue == verticalScrollBar()->maxValue());
-// 
-// 	KaduTextBrowser::resizeEvent(e);
-// 
-// 	if (lastLine)
-// 		verticalScrollBar()->setValue(verticalScrollBar()->maxValue());
-// 	else
-// 		verticalScrollBar()->setValue(lastScrollValue);
+ 	lastScrollValue = page()->currentFrame()->scrollBarValue(Qt::Vertical);
+ 	lastLine = (lastScrollValue == page()->currentFrame()->scrollBarMaximum(Qt::Vertical));
+
+ 	KaduTextBrowser::resizeEvent(e);
+
+	scrollToLine();
+
+}
+
+void ChatMessagesView::scrollToLine()
+{
+ 	if (lastLine)
+ 		page()->currentFrame()->setScrollBarValue(Qt::Vertical, page()->currentFrame()->scrollBarMaximum(Qt::Vertical));
+ 	else
+ 		page()->currentFrame()->setScrollBarValue(Qt::Vertical, lastScrollValue);
 }

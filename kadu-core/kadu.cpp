@@ -13,6 +13,7 @@
 #include <QtGui/QPushButton>
 #include <QtGui/QSplitter>
 #include <QtGui/QVBoxLayout>
+#include <QtWebKit/QWebFrame>
 
 #include <sys/time.h>
 #include <fcntl.h>
@@ -1055,16 +1056,17 @@ void Kadu::changeAppearance()
 	if (config_file.readBoolEntry("Look", "ShowInfoPanel"))
 	{
 		InfoPanel->show();
-		QString style = narg("QTextBrowser {background-color:%1; color:%2}", config_file.readColorEntry("Look","InfoPanelBgColor").name(), config_file.readColorEntry("Look","InfoPanelFgColor").name());
+// TODO: 0.6.5
+		QString style = narg("QWidget {background-color:%1; color:%2}", config_file.readColorEntry("Look","InfoPanelBgColor").name(), config_file.readColorEntry("Look","InfoPanelFgColor").name());
 
 		InfoPanel->setStyleSheet(style);
-// TODO: 0.6.5
-// 		InfoPanel->QTextEdit::setFont(config_file.readFontEntry("Look", "PanelFont"));
 
-// 		if (config_file.readBoolEntry("Look", "PanelVerticalScrollbar"))
-// 			InfoPanel->setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
-// 		else
-// 			InfoPanel->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+	//QTextEdit::setFont(config_file.readFontEntry("Look", "PanelFont"));
+
+ 		if (config_file.readBoolEntry("Look", "PanelVerticalScrollbar"))
+ 			InfoPanel->page()->mainFrame()->setScrollBarPolicy (Qt::Vertical, Qt::ScrollBarAsNeeded);
+ 		else
+ 			InfoPanel->page()->mainFrame()->setScrollBarPolicy (Qt::Horizontal, Qt::ScrollBarAlwaysOff);
 	}
 	else
 		dynamic_cast<QWidget *>(InfoPanel)->hide();

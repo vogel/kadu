@@ -19,6 +19,9 @@ class ChatMessagesView : public KaduTextBrowser, ConfigurationAwareObject
 {
 	Q_OBJECT
 
+	int lastScrollValue;
+	bool lastLine;
+
 	QList<ChatMessage *> Messages; /*!< Lista wiadomo�ci wy�wietlanych w danym obiekcie. */
 	unsigned int Prune; /*!< Maksymalna ilo�� wy�wietlanych wiadomo�ci. */
  
@@ -65,6 +68,8 @@ protected:
 	virtual void resizeEvent(QResizeEvent *e);
 
 private slots:
+
+	void scrollToLine();
 	/**
 		\fn void pageUp()
 		Slot przewijaj�cy okno wiadomo�ci o sta�� warto�� w g�r�.
