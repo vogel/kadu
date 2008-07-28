@@ -1006,7 +1006,7 @@ void GaduProtocol::messageReceivedSlot(int msgclass, UserListElements senders, Q
 	kdebugmf(KDEBUG_INFO, "Got message from %d saying \"%s\"\n",
 			senders[0].ID("Gadu").toUInt(), (const char *)message.toPlain().local8Bit());
 
-	emit receivedMessageFilter(this, senders, message.toHtml(), time, ignore);
+	emit receivedMessageFilter(this, senders, message.toPlain(), time, ignore);
 	if (ignore)
 		return;
 

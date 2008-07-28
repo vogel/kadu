@@ -682,7 +682,7 @@ ActionDrag::ActionDrag(const QString &actionName, bool showLabel, QWidget* dragS
 
 	data = string.toUtf8();
 
-     	mimeData->setData("application/x-kadu-action", data);
+	mimeData->setData("application/x-kadu-action", data);
 
 	setMimeData(mimeData);
 

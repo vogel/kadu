@@ -2,6 +2,7 @@
 #define KADU_HTML_DOCUMENT_H
 
 #include <QtCore/QList>
+#include <QtCore/QString>
 
 class QRegExp;
 

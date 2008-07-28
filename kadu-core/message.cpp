@@ -7,6 +7,10 @@
  *                                                                         *
  ***************************************************************************/
 
+#include <QtGui/QTextDocument>
+
+#include "html_document.h"
+
 #include "message.h"
 
 QRegExp Message::ParagraphRegExp("<p[^>]*>(.*)</p>");
@@ -23,7 +27,7 @@ MessagePart::~MessagePart()
 
 QString MessagePart::toHtml() const
 {
-	QString result = Content;
+	QString result = Qt::escape(Content);
 	result.replace("\n", "<br />");
 
 	if (!Bold && !Italic && !Underline && !Color.isValid())
@@ -71,6 +75,7 @@ Message Message::parse(const QString &messageString)
 		if (lastPos != pos)
 		{
 			partContent = cleanedMessage.mid(lastPos, pos - lastPos);
+			HtmlDocument::unescapeText(partContent);
 			result << MessagePart(partContent, false, false, false, QColor());
 		}
 
@@ -89,6 +94,7 @@ Message Message::parse(const QString &messageString)
 	if (lastPos != cleanedMessage.length())
 	{
 		partContent = cleanedMessage.mid(lastPos, cleanedMessage.length() - lastPos);
+		HtmlDocument::unescapeText(partContent);
 		result << MessagePart(partContent, false, false, false, QColor());
 	}
 
