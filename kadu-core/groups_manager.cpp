@@ -208,8 +208,8 @@ void GroupsManager::refreshTabBar()
 
 		if (createNewTab)
 		{
-			QString iconPath = config_file.readEntry("GroupIcon", (*group));	
-			if (!iconPath.isEmpty()) 
+			QString iconPath = config_file.readEntry("GroupIcon", (*group));
+			if (!iconPath.isEmpty())
 			{
 				QPixmap icon = icons_manager->loadIcon(iconPath).xForm(QWMatrix().rotate(-90));
 
@@ -537,7 +537,7 @@ void GroupsManager::setIconForTab(const QString &name)
 
 			GroupBar->removeTab(GroupBar->tabAt(index));
 
-			QString iconPath = config_file.readEntry("GroupIcon", name);	
+			QString iconPath = config_file.readEntry("GroupIcon", name);
 
 			if (!iconPath.isEmpty()) 
 			{
