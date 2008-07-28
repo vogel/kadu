@@ -118,17 +118,14 @@ void KaduTextBrowser::setMargin(int width)
 
 void KaduTextBrowser::contextMenuEvent(QContextMenuEvent * event)
 {
-//	TODO: 0.6.5
-// 	image = imageAt(event->pos());
-// 	if (!image.isEmpty())
-// 		kdebugm(KDEBUG_INFO, "image: %s\n", image.local8Bit().data());
-// 
-// 	QMenu *popupmenu = createStandardContextMenu(event->pos());
-// 
-// 	if (!image.isNull())
-// 		popupmenu->addAction(tr("&Save image..."), this, SLOT(saveImage()));
-// 	popupmenu->popup(event->globalPos());
-// 	kdebugf2();
+	QMenu *popupmenu = new QMenu;
+	popupmenu->addAction(pageAction(QWebPage::CopyLinkToClipboard));
+	popupmenu->addAction(pageAction(QWebPage::DownloadImageToDisk));
+	popupmenu->addAction(pageAction(QWebPage::CopyImageToClipboard));
+	popupmenu->addAction(pageAction(QWebPage::Copy));
+
+ 	popupmenu->popup(event->globalPos());
+ 	kdebugf2();
 }
 
 void KaduTextBrowser::hyperlinkClicked(const QUrl &anchor) const
