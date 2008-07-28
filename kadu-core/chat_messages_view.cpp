@@ -32,7 +32,7 @@ ChatMessagesView::ChatMessagesView(QWidget *parent) : KaduTextBrowser(parent),
 
 //	bodyformat = new Q3MimeSourceFactory();
 //	setMimeSourceFactory(bodyformat);
-	setTextFormat(Qt::RichText);
+// 	setTextFormat(Qt::RichText);
 	setFocusPolicy(Qt::NoFocus);
 
 //	scrollToBottom();
@@ -49,12 +49,12 @@ ChatMessagesView::~ChatMessagesView()
 
 void ChatMessagesView::pageUp()
 {
-	scrollContentsBy(0, (height() * -2) / 3);
+// 	TODO: 0.6.5 scrollContentsBy(0, (height() * -2) / 3);
 }
 
 void ChatMessagesView::pageDown()
 {
-	scrollContentsBy(0, (height() * 2) / 3);
+// 	TODO: 0.6.5 scrollContentsBy(0, (height() * 2) / 3);
 }
 
 void ChatMessagesView::imageReceivedAndSaved(UinType sender, uint32_t size, uint32_t crc32,const QString & /*path*/)
@@ -138,8 +138,9 @@ void ChatMessagesView::repaintMessages()
 		prevMessage = message;
 	}
 
-	int lastScrollValue = verticalScrollBar()->value();
-	bool lastLine = (lastScrollValue == verticalScrollBar()->maxValue());
+	// TODO: 0.6.5
+// 	int lastScrollValue = verticalScrollBar()->value();
+// 	bool lastLine = (lastScrollValue == verticalScrollBar()->maxValue());
 
 	HtmlDocument htmlDocument;
 	htmlDocument.parseHtml(text);
@@ -147,13 +148,13 @@ void ChatMessagesView::repaintMessages()
 	htmlDocument.convertMailToHtml();
 	emoticons->expandEmoticons(htmlDocument, "black", (EmoticonsStyle)config_file.readNumEntry("Chat", "EmoticonsStyle"));
 
-	setText(htmlDocument.generateHtml());
+	setHtml(htmlDocument.generateHtml());
 	updateBackgrounds();
 
-	if (lastLine)
-		verticalScrollBar()->setValue(verticalScrollBar()->maxValue());
-	else
-		verticalScrollBar()->setValue(lastScrollValue);
+// 	if (lastLine)
+// 		verticalScrollBar()->setValue(verticalScrollBar()->maxValue());
+// 	else
+// 		verticalScrollBar()->setValue(lastScrollValue);
 
 	kdebugf2();
 }
@@ -212,9 +213,9 @@ void ChatMessagesView::clearMessages()
 	qDeleteAll(Messages);
 	Messages.clear();
 
-	clear();
-	updateBackgrounds();
-	viewport()->repaint();
+	setHtml("");
+//	TODO: 0.6.5 updateBackgrounds();
+// 	viewport()->repaint();
 }
 
 unsigned int ChatMessagesView::countMessages()
@@ -236,7 +237,8 @@ void ChatMessagesView::configurationUpdated()
 
 	// background color of chat
 // 	QString bgImage = KaduParser::parse(config_file.readEntry("Look", "ChatBgImage"), usrs[0]);
- 	viewport()->setStyleSheet(QString("background-color:%1").arg(config_file.readColorEntry("Look", "ChatBgColor").name()));
+	// TODO: 0.6.5
+//  	viewport()->setStyleSheet(QString("background-color:%1").arg(config_file.readColorEntry("Look", "ChatBgColor").name()));
 // 	if (!bgImage.isEmpty() && QFile::exists(bgImage))
 // 		brush.setPixmap(QPixmap(bgImage));
 
@@ -282,14 +284,14 @@ void ChatMessagesView::configurationUpdated()
 
 void ChatMessagesView::resizeEvent(QResizeEvent *e)
 {
-
-	int lastScrollValue = verticalScrollBar()->value();
-	bool lastLine = (lastScrollValue == verticalScrollBar()->maxValue());
-
-	KaduTextBrowser::resizeEvent(e);
-
-	if (lastLine)
-		verticalScrollBar()->setValue(verticalScrollBar()->maxValue());
-	else
-		verticalScrollBar()->setValue(lastScrollValue);
+// TODO: 0.6.5
+// 	int lastScrollValue = verticalScrollBar()->value();
+// 	bool lastLine = (lastScrollValue == verticalScrollBar()->maxValue());
+// 
+// 	KaduTextBrowser::resizeEvent(e);
+// 
+// 	if (lastLine)
+// 		verticalScrollBar()->setValue(verticalScrollBar()->maxValue());
+// 	else
+// 		verticalScrollBar()->setValue(lastScrollValue);
 }

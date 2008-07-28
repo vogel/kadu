@@ -3,6 +3,7 @@
 
 #include <QtCore/QTimer>
 #include <QtGui/QTextBrowser>
+#include <QtWebKit/QWebView>
 
 /**
 	Zmodyfikowany QTextBrowser specjalnie na potrzeby Kadu.
@@ -11,7 +12,7 @@
 	\class KaduTextBrowser
 	\brief Klasa bazowa dla ChatMessagesView orazz InfoPanel.
 **/
-class KaduTextBrowser : public QTextBrowser //, private QToolTip
+class KaduTextBrowser : public QWebView //, private QToolTip
 {
 	Q_OBJECT
 
@@ -49,7 +50,6 @@ private slots:
 
 protected:
 	virtual void contextMenuEvent(QContextMenuEvent * event);
-	virtual void drawContents(QPainter *p, int clipx, int clipy, int clipw, int cliph);
 	virtual void mouseReleaseEvent(QMouseEvent *e);
 	virtual void wheelEvent(QWheelEvent *e);
 

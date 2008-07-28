@@ -492,11 +492,12 @@ Kadu::Kadu(QWidget *parent)
 // 	icons_manager->registerMenuItem(dockMenu, tr("&Exit Kadu"), "Exit");
 
 	InfoPanel = new KaduTextBrowser(split);
-	InfoPanel->setFrameStyle(QFrame::NoFrame);
-	InfoPanel->setMinimumHeight(int(1.5 * QFontMetrics(InfoPanel->QTextEdit::font()).height()));
+// TODO: 0.6.5
+// 	InfoPanel->setFrameStyle(QFrame::NoFrame);
+// 	InfoPanel->setMinimumHeight(int(1.5 * QFontMetrics(InfoPanel->QTextEdit::font()).height()));
 //	InfoPanel->resize(InfoPanel->size().width(), int(1.5 * QFontMetrics(InfoPanel->font()).height()));
-	InfoPanel->setTextFormat(Qt::RichText);
-	InfoPanel->setAlignment(Qt::AlignVCenter/** | Qt::WordBreak | Qt::DontClip*/);
+// 	InfoPanel->setTextFormat(Qt::RichText);
+// 	InfoPanel->setAlignment(Qt::AlignVCenter/** | Qt::WordBreak | Qt::DontClip*/);
 
 //// 	if((EmoticonsStyle)config_file.readNumEntry("Chat", "EmoticonsStyle") == EMOTS_ANIMATED)
 // 		InfoPanel->setStyleSheet(new AnimStyleSheet(InfoPanel, emoticons->themePath()));
@@ -1057,12 +1058,13 @@ void Kadu::changeAppearance()
 		QString style = narg("QTextBrowser {background-color:%1; color:%2}", config_file.readColorEntry("Look","InfoPanelBgColor").name(), config_file.readColorEntry("Look","InfoPanelFgColor").name());
 
 		InfoPanel->setStyleSheet(style);
-		InfoPanel->QTextEdit::setFont(config_file.readFontEntry("Look", "PanelFont"));
+// TODO: 0.6.5
+// 		InfoPanel->QTextEdit::setFont(config_file.readFontEntry("Look", "PanelFont"));
 
-		if (config_file.readBoolEntry("Look", "PanelVerticalScrollbar"))
-			InfoPanel->setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
-		else
-			InfoPanel->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+// 		if (config_file.readBoolEntry("Look", "PanelVerticalScrollbar"))
+// 			InfoPanel->setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
+// 		else
+// 			InfoPanel->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 	}
 	else
 		dynamic_cast<QWidget *>(InfoPanel)->hide();
@@ -1147,7 +1149,7 @@ void Kadu::mouseButtonClicked(int button, Q3ListBoxItem *item)
 {
 	kdebugmf(KDEBUG_FUNCTION_START, "button=%d\n", button);
 	if (!item)
-		InfoPanel->clear();
+		InfoPanel->setHtml("");
 	kdebugf2();
 }
 
@@ -1806,7 +1808,7 @@ void Kadu::updateInformationPanel(UserListElement user)
 //			InfoPanel->mimeSourceFactory()->addFilePath(emoticons->themePath());
 			emoticons->expandEmoticons(doc, config_file.readColorEntry("Look", "InfoPanelBgColor"), (EmoticonsStyle)config_file.readNumEntry("Chat", "EmoticonsStyle"));
 		}
-		InfoPanel->setText(doc.generateHtml());
+		InfoPanel->setHtml(doc.generateHtml());
 //		if (config_file.readBoolEntry("General", "ShowEmotPanel"))
 //			InfoPanel->scrollToBottom();
 		kdebugf2();
@@ -1930,7 +1932,7 @@ void Kadu::configurationUpdated()
 	InfoPanelSyntax = SyntaxList::readSyntax("infopanel", config_file.readEntry("Look", "InfoPanelSyntaxFile"),
 		"<table><tr><td><img width=\"32\" height=\"32\" align=\"left\" valign=\"top\" src=\"@{ManageUsersWindowIcon}\"></td><td> "
 		"<div align=\"left\"> [<b>%a</b>][ (%u)] [<br>tel.: %m][<br>IP: %i]</div></td></tr></table> <hr> <b>%s</b> [<br>%d]");
-	InfoPanel->setText("<body bgcolor=\"" + config_file.readEntry("Look", "InfoPanelBgColor") + "\"></body>");
+	InfoPanel->setHtml("<body bgcolor=\"" + config_file.readEntry("Look", "InfoPanelBgColor") + "\"></body>");
 	updateInformationPanel();
 
 #ifdef DEBUG_ENABLED

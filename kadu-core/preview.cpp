@@ -43,14 +43,14 @@ Preview::~Preview()
 
 void Preview::syntaxChanged(const QString &content)
 {
-	viewport()->setUpdatesEnabled(false);
+// 	viewport()->setUpdatesEnabled(false);
 
 	QString syntax = content;
 	emit needSyntaxFixup(syntax);
 
 	QString text;
 
-	setText("<body bgcolor=\"" + resetBackgroundColor + "\"></body>");
+// 	setHtml("<body bgcolor=\"" + resetBackgroundColor + "\"></body>");
 	int count = objectsToParse.count();
 
 	if (count)
@@ -59,9 +59,9 @@ void Preview::syntaxChanged(const QString &content)
 	else
 		text = KaduParser::parse(syntax, ule);
 
-	setText(text);
+	setHtml(text);
 	emit needFixup(this);
 
-	viewport()->setUpdatesEnabled(true);
-	viewport()->repaint();
+// 	viewport()->setUpdatesEnabled(true);
+// 	viewport()->repaint();
 }

@@ -23,23 +23,23 @@
 #include "kadu_text_browser.h"
 
 KaduTextBrowser::KaduTextBrowser(QWidget *parent)
-	: QTextBrowser(parent),
+	: QWebView(parent),
 	refreshTimer(), anchor(), level(0), image()
 {
 	kdebugf();
 
-	setAttribute(Qt::WA_StaticContents);
-// 	setAttribute(Qt::WA_NoBackground);
+// 	setAttribute(Qt::WA_StaticContents);
+	setAttribute(Qt::WA_NoBackground);
 
 	setAcceptDrops(false);
-	viewport()->setAcceptDrops(false);
+// 	viewport()->setAcceptDrops(false);
 
-	setOpenLinks(false);
+// 	setOpenLinks(false);
 //	setResizePolicy(QScrollView::AutoOne);
 	connect(this, SIGNAL(anchorClicked(const QUrl &)), this, SLOT(hyperlinkClicked(const QUrl &)));
 	connect(this, SIGNAL(highlighted(const QString&)), this, SLOT(linkHighlighted(const QString &)));
-	setLineWrapMode(QTextEdit::WidgetWidth/**QTextEdit::AtWordOrDocumentBoundary*/);
-	setTextFormat(Qt::RichText);
+// 	setLineWrapMode(QTextEdit::WidgetWidth/**QTextEdit::AtWordOrDocumentBoundary*/);
+// 	setTextFormat(Qt::RichText);
 
 //	connect(verticalScrollBar(), SIGNAL(sliderReleased()), this, SLOT(repaint()));
 //	connect(verticalScrollBar(), SIGNAL(sliderReleased()), this, SLOT(refresh()));
@@ -118,35 +118,17 @@ void KaduTextBrowser::setMargin(int width)
 
 void KaduTextBrowser::contextMenuEvent(QContextMenuEvent * event)
 {
-	image = imageAt(event->pos());
-	if (!image.isEmpty())
-		kdebugm(KDEBUG_INFO, "image: %s\n", image.local8Bit().data());
-
-	QMenu *popupmenu = createStandardContextMenu(event->pos());
-
-	if (!image.isNull())
-		popupmenu->addAction(tr("&Save image..."), this, SLOT(saveImage()));
-	popupmenu->popup(event->globalPos());
-	kdebugf2();
-}
-
-void KaduTextBrowser::drawContents(QPainter * p, int clipx, int clipy, int clipw, int cliph)
-{
-	/*
-		for unknown reasons, QTextBrowser::drawContents() sometimes invokes itself, which produces:
-			QPixmap::operator=: Cannot assign to pixmap during painting
-			QPaintDevice: Cannot destroy paint device that is being painted
-		and freeze of application (http://www.kadu.net/forum/viewtopic.php?t=2486)
-	*/
-//	kdebugmf(KDEBUG_INFO, "level: %d\n", level);
-	++level;
-	if (level == 1)
-	{
-//		kdebugm(KDEBUG_INFO, "x:%d y:%d w:%d h:%d\n", clipx, clipy, clipw, cliph);
-///		QTextBrowser::drawContents(p, clipx, clipy, clipw, cliph);
-//		QTimer::singleShot(0, this, SLOT(repaint()));//niestety konieczne
-	}
-	--level;
+//	TODO: 0.6.5
+// 	image = imageAt(event->pos());
+// 	if (!image.isEmpty())
+// 		kdebugm(KDEBUG_INFO, "image: %s\n", image.local8Bit().data());
+// 
+// 	QMenu *popupmenu = createStandardContextMenu(event->pos());
+// 
+// 	if (!image.isNull())
+// 		popupmenu->addAction(tr("&Save image..."), this, SLOT(saveImage()));
+// 	popupmenu->popup(event->globalPos());
+// 	kdebugf2();
 }
 
 void KaduTextBrowser::hyperlinkClicked(const QUrl &anchor) const
@@ -249,14 +231,14 @@ void KaduTextBrowser::mouseReleaseEvent(QMouseEvent *e)
 {
 	kdebugf();
 	emit mouseReleased(e);
-	QTextBrowser::mouseReleaseEvent(e);
+	QWebView::mouseReleaseEvent(e);
 }
 
 void KaduTextBrowser::wheelEvent(QWheelEvent *e)
 {
 	kdebugf();
 	emit wheel(e);
-	QTextBrowser::wheelEvent(e);
+	QWebView::wheelEvent(e);
 }
 
 QString KaduTextBrowser::imageAt(const QPoint &point)
