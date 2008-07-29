@@ -8,6 +8,7 @@ Je¶li jest w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * poprawione wyra¿enie regularne dla URLi zawieraj±cych znaki '[' i ']' (neeo)
 * poprawione zachowanie przy sprawdzaniu dostêpno¶ci aktualizacji (neeo)
 * drobne optymalizacje, usuniêty wyciek pamiêci dla obrazu listy kontaktów (neeo)
+* zaktualizowane miejsce instalacji pliku kadu.desktop (neeo)
 
 +++ wersja 0.6.0.2 (03.07.2008)
 * poprawiona kolejno¶æ argumentów konstruktora klasy ConfigLineEdit (neeo)

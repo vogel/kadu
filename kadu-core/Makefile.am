@@ -544,14 +544,14 @@ install-data-local:
 #	$(mkinstalldirs) "$(DESTDIR)/$(includedir)/kadu/"
 #	$(INSTALL_DATA) *.h "$(DESTDIR)/$(includedir)/kadu/"
 	@if test -w "$(DESTDIR)$(datadir)"; then \
-		$(mkinstalldirs) "$(DESTDIR)$(datadir)/applnk/Internet/"; \
-		echo "[Desktop Entry]" > "$(DESTDIR)$(datadir)/applnk/Internet/kadu.desktop"; \
-		echo "Type=Application" >> "$(DESTDIR)$(datadir)/applnk/Internet/kadu.desktop"; \
-		echo "Exec=$(bindir)/kadu" >> "$(DESTDIR)$(datadir)/applnk/Internet/kadu.desktop"; \
-		echo "Icon=kadu.png" >> "$(DESTDIR)$(datadir)/applnk/Internet/kadu.desktop"; \
-		echo "MiniIcon=kadu-16.png" >> "$(DESTDIR)$(datadir)/applnk/Internet/kadu.desktop"; \
-		echo "Terminal=0" >> "$(DESTDIR)$(datadir)/applnk/Internet/kadu.desktop"; \
-		echo "Name=Kadu" >> "$(DESTDIR)$(datadir)/applnk/Internet/kadu.desktop"; \
+		$(mkinstalldirs) "$(DESTDIR)$(datadir)/applications/"; \
+		echo "[Desktop Entry]" > "$(DESTDIR)$(datadir)/applications/kadu.desktop"; \
+		echo "Type=Application" >> "$(DESTDIR)$(datadir)/applications/kadu.desktop"; \
+		echo "Exec=$(bindir)/kadu" >> "$(DESTDIR)$(datadir)/applications/kadu.desktop"; \
+		echo "Icon=kadu" >> "$(DESTDIR)$(datadir)/applications/kadu.desktop"; \
+		echo "Categories=Qt;Network;InstantMessaging;" >> "$(DESTDIR)$(datadir)/applications/kadu.desktop"; \
+		echo "Terminal=false" >> "$(DESTDIR)$(datadir)/applications/kadu.desktop"; \
+		echo "Name=Kadu" >> "$(DESTDIR)$(datadir)/applications/kadu.desktop"; \
 		$(mkinstalldirs) "$(DESTDIR)$(datadir)/pixmaps/"; \
 		$(INSTALL_DATA) hi16-app-kadu.png "$(DESTDIR)$(datadir)/pixmaps/kadu-16.png"; \
 		$(INSTALL_DATA) hi22-app-kadu.png "$(DESTDIR)$(datadir)/pixmaps/kadu-22.png"; \
@@ -578,7 +578,7 @@ install-data-local:
 
 uninstall-local:
 	rm -f "$(DESTDIR)$(includedir)/kadu"/*.h
-	rm -f "$(DESTDIR)$(datadir)/applnk/Internet/kadu.desktop"
+	rm -f "$(DESTDIR)$(datadir)/applications/kadu.desktop"
 	rm -f "$(DESTDIR)$(datadir)/pixmaps/kadu-16.png"
 	rm -f "$(DESTDIR)$(datadir)/pixmaps/kadu-22.png"
 	rm -f "$(DESTDIR)$(datadir)/pixmaps/kadu-24.png"
