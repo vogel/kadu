@@ -29,6 +29,8 @@ ChatMessagesView::ChatMessagesView(QWidget *parent) : KaduTextBrowser(parent),
 	connect(gadu, SIGNAL(imageReceivedAndSaved(UinType, uint32_t, uint32_t, const QString &)),
 		this, SLOT(imageReceivedAndSaved(UinType, uint32_t, uint32_t, const QString &)));
 
+	connect(this, SIGNAL(loadFinished(bool)), this, SLOT(scrollToLine()));
+
 	configurationUpdated();
 
 //	bodyformat = new Q3MimeSourceFactory();
@@ -148,8 +150,6 @@ void ChatMessagesView::repaintMessages()
 
 	setHtml(htmlDocument.generateHtml());
 	updateBackgrounds();
-
-	QTimer::singleShot(0, this, SLOT(scrollToLine()));
 
 	kdebugf2();
 }
