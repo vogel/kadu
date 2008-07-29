@@ -174,7 +174,7 @@ QVariant UserListElement::protocolData(const QString &protocolName, const QStrin
 	return result;
 }
 
-UserStatus UserListElement::status(const QString &protocolName) const
+UserStatus & UserListElement::status(const QString &protocolName) const
 {
 	kdebugf();
 
@@ -187,13 +187,11 @@ UserStatus UserListElement::status(const QString &protocolName) const
 		printBacktrace("backtrace");
 #endif
 		//privateData->unlock();
-		return UserStatus();
+static UserStatus us;
+		return us;
 	}
 
-	UserStatus result = *privateData->protocols[protocolName].Stat->Stat;
-
-	//privateData->unlock();
-	return result;
+	return *privateData->protocols[protocolName].Stat->Stat;
 }
 
 QString UserListElement::ID(const QString &protocolName) const

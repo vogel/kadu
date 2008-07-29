@@ -357,10 +357,7 @@ void ChatWidget::refreshTitle()
 		else
 			title = KaduParser::parse(config_file.readEntry("Look","ChatContents"), user, false);
 
- 		GaduStatus s;
-  	        s = user.status("Gadu");
-  	        pix = s.pixmap(s.status(), s.hasDescription(), false);
-//		pix = user.status(currentProtocol()->protocolID()).pixmap();
+		pix = user.status(currentProtocol()->protocolID()).pixmap();
 	}
 
 	title.replace("<br/>", " ");

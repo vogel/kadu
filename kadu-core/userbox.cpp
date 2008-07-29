@@ -431,9 +431,7 @@ QPixmap KaduListBoxPixmap::pixmapForUser(const UserListElement &user)
 		return icons_manager->loadPixmap("Message");
 	else
 	{
-		GaduStatus s;
-		s = user.status("Gadu");
-		const QPixmap &pix = s.pixmap(s.status(), s.hasDescription(), has_mobile);
+		const QPixmap &pix = user.status("Gadu").pixmap(has_mobile);
 		if (!pix.isNull())
 			return pix;
 		else
