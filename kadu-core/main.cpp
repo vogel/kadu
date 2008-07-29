@@ -329,7 +329,6 @@ int main(int argc, char *argv[])
 	}
 
 	kdebugm(KDEBUG_INFO, "before creation of new QApplication\n");
-	QApplication::setStyle(config_file.readEntry("Look", "QtStyle"));
 	new QApplication(argc, argv);
 	kdebugm(KDEBUG_INFO, "after creation of new QApplication\n");
 
@@ -343,7 +342,7 @@ int main(int argc, char *argv[])
 	QTranslator kadu_qm(0, "Translator_kadu");
 	kadu_qm.load(dataPath(QString("kadu/translations/kadu_") + lang), ".");
 	qApp->installTranslator(&kadu_qm);
-
+	qApp->setStyle(config_file.readEntry("Look", "QtStyle"));
 
 #ifndef Q_WS_WIN
 	lockFile = new QFile(ggPath("lock"));

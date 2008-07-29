@@ -25,6 +25,7 @@ class Hint : public QWidget, ConfigurationAwareObject
 	QLabel *icon;
 	QLabel *label;
 	QColor bcolor; //kolor t�a
+	QColor fcolor;
 	unsigned int secs;
 	unsigned int startSecs;
 

@@ -17,6 +17,7 @@
 #include "config_file.h"
 #include "configuration_window_widgets.h"
 #include "connection_error_notification.h"
+#include "custom_input.h"
 #include "debug.h"
 #include "gadu.h"
 #include "kadu.h"
@@ -78,8 +79,8 @@ Notify::Notify(QObject *parent, const char *name)
 	connect(kadu, SIGNAL(messageReceivedSignal(Protocol *, UserListElements, const QString&, time_t)),
 			this, SLOT(messageReceived(Protocol *, UserListElements, const QString&, time_t)));
 	// TODO:
-//	connect(userlist, SIGNAL(statusChanged(UserListElement, QString, const UserStatus &, bool, bool)),
-//		this, SLOT(statusChanged(UserListElement, QString, const UserStatus &, bool, bool)));
+	connect(userlist, SIGNAL(statusChanged(UserListElement, QString, const UserStatus &, bool, bool)),
+		this, SLOT(statusChanged(UserListElement, QString, const UserStatus &, bool, bool)));
 
 	MessageNotification::registerEvents(this);
 	ConnectionErrorNotification::registerEvent(this);
@@ -100,8 +101,8 @@ Notify::~Notify()
 	disconnect(gadu, SIGNAL(messageReceived(Protocol *, UserListElements, const QString&, time_t)),
 			this, SLOT(messageReceived(Protocol *, UserListElements, const QString&, time_t)));
 	// TODO:
-//	disconnect(userlist, SIGNAL(statusChanged(UserListElement, QString, const UserStatus &, bool, bool)),
-//		this, SLOT(statusChanged(UserListElement, QString, const UserStatus &, bool, bool)));
+	disconnect(userlist, SIGNAL(statusChanged(UserListElement, QString, const UserStatus &, bool, bool)),
+		this, SLOT(statusChanged(UserListElement, QString, const UserStatus &, bool, bool)));
 
 	if (!Notifiers.isEmpty())
 	{
@@ -363,7 +364,7 @@ void Notify::messageReceived(Protocol *protocol, UserListElements senders, const
 	if (!chat) // new chat
 		notify(new MessageNotification(MessageNotification::NewChat, senders, msg, protocol->protocolID()));
 	else // new message in chat
-		if (!chat->hasFocus() || !config_file.readBoolEntry("Notify", "NewMessageOnlyIfInactive"))
+		if (!chat->edit()->hasFocus() || !config_file.readBoolEntry("Notify", "NewMessageOnlyIfInactive"))
 			notify(new MessageNotification(MessageNotification::NewMessage, senders, msg, protocol->protocolID()));
 
 	kdebugf2();

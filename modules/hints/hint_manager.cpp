@@ -40,7 +40,7 @@ HintManager::HintManager(QWidget *parent, const char *name)	: Notifier(parent, n
 	hints(), tipFrame(0)
 {
 	kdebugf();
-	frame = new QFrame(parent, name, Qt::FramelessWindowHint | Qt::Tool | Qt::X11BypassWindowManagerHint | Qt::MSWindowsOwnDC);
+	frame = new QFrame(parent, name, Qt::FramelessWindowHint | Qt::Tool | Qt::X11BypassWindowManagerHint | Qt::WindowStaysOnTopHint |Qt::MSWindowsOwnDC);
 
 	frame->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
 	frame->setFrameStyle(QFrame::Box | QFrame::Plain);
@@ -457,7 +457,7 @@ void HintManager::showToolTip(const QPoint &point, const UserListElement &user)
 	if (tipFrame)
 		delete tipFrame;
 
-	tipFrame = new QFrame(0, "tip_frame", Qt::FramelessWindowHint | Qt::Tool | Qt::X11BypassWindowManagerHint | Qt::MSWindowsOwnDC);
+	tipFrame = new QFrame(0, "tip_frame", Qt::FramelessWindowHint | Qt::Tool | Qt::WindowStaysOnTopHint | Qt::X11BypassWindowManagerHint | Qt::MSWindowsOwnDC);
 	tipFrame->setFrameStyle(QFrame::Box | QFrame::Plain);
 	tipFrame->setLineWidth(FRAME_WIDTH);
 

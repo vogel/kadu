@@ -93,12 +93,11 @@ void Hint::configurationUpdated()
 	else
 		configurationDirective = "Event_" + notification->type();
 
-	QWidget w;
-
-	label->setFont(config_file.readFontEntry("Hints", configurationDirective + "_font"));
-	setPaletteForegroundColor(config_file.readColorEntry("Hints", configurationDirective + "_fgcolor", &paletteForegroundColor()));
 	bcolor = config_file.readColorEntry("Hints", configurationDirective + "_bgcolor", &paletteBackgroundColor());
-	setPaletteBackgroundColor(bcolor);
+	fcolor = config_file.readColorEntry("Hints", configurationDirective + "_fgcolor", &paletteForegroundColor());
+	label->setFont(config_file.readFontEntry("Hints", configurationDirective + "_font"));
+	QString style = narg("QWidget {color:%1; background-color:%2}", fcolor.name(), bcolor.name());
+	setStyleSheet(style);
 
 	setMinimumWidth(config_file.readNumEntry("Hints", "MinimumWidth", 100));
 	setMaximumWidth(config_file.readNumEntry("Hints", "MaximumWidth", 500));
@@ -110,19 +109,18 @@ void Hint::createLabels(const QPixmap &pixmap)
 	vbox->setSpacing(2);
 	vbox->setMargin(1);
 	vbox->setResizeMode(QLayout::FreeResize);
-
-	labels = new QHBoxLayout();
-	vbox->addLayout(labels);
-
+	QWidget *widget = new QWidget(this);
+	labels = new QHBoxLayout(widget);
+	vbox->addWidget(widget);
 	if (!pixmap.isNull())
 	{
 		icon = new QLabel(this, "Icon");
 		icon->setPixmap(pixmap);
-		icon->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Ignored);
 		labels->addWidget(icon, 0, Qt::AlignTop);
 	}
 
 	label = new QLabel(this, "Label");
+	label->setTextInteractionFlags(Qt::NoTextInteraction);
 	label->setTextFormat(Qt::RichText);
 	label->setAlignment(Qt::AlignVCenter | Qt::AlignLeft);
 	labels->addWidget(label);
@@ -249,12 +247,14 @@ void Hint::mouseReleaseEvent(QMouseEvent *event)
 
 void Hint::enterEvent(QEvent *)
 {
-	setPaletteBackgroundColor(bcolor.light());
+	QString style = narg("QWidget {color:%1; background-color:%2}", fcolor.name(), bcolor.lighter().name());
+	setStyleSheet(style);
 }
 
 void Hint::leaveEvent(QEvent *)
 {
-	setPaletteBackgroundColor(bcolor);
+	QString style = narg("QWidget {color:%1; background-color:%2}", fcolor.name(), bcolor.name());
+	setStyleSheet(style);
 }
 
 void Hint::getData(QString &text, QPixmap &pixmap, unsigned int &timeout, QFont &font, QColor &fgcolor, QColor &bgcolor)
@@ -268,7 +268,7 @@ void Hint::getData(QString &text, QPixmap &pixmap, unsigned int &timeout, QFont 
 
 	timeout = secs;
 	font = label->font();
-	fgcolor = label->paletteForegroundColor();
+	fgcolor = fcolor;
 	bgcolor = bcolor;
 }
 
