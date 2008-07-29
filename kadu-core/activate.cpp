@@ -21,6 +21,7 @@
   DEALINGS IN THE SOFTWARE.
 */
 
+#include <QtCore/QtGlobal>
 #include "activate.h"
 
 #ifdef Q_OS_X11
@@ -70,4 +71,12 @@ void activateWindow(Qt::HANDLE id)
 
 	XSendEvent(QX11Info::display(), QX11Info::appRootWindow(), False, netwm_sendevent_mask, &e);
 }
+#elif defined(Q_OS_WIN)
+#include <windows.h>
+#include <stdio.h>
+void activateWindow(void* id)
+{
+	SetForegroundWindow((HWND)id);	
+}
+
 #endif

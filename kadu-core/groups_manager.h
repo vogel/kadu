@@ -8,6 +8,7 @@
 #include "configuration_aware_object.h"
 #include "usergroup.h"
 #include "userlistelement.h"
+#include "exports.h"
 
 class KaduTabBar;
 class UserBox;
@@ -18,7 +19,7 @@ class UserBox;
 	\class GroupsManager
 	\brief
 **/
-class GroupsManager : public QObject, ConfigurationAwareObject
+class KADUAPI GroupsManager : public QObject, ConfigurationAwareObject
 {
 	Q_OBJECT
 
@@ -183,7 +184,7 @@ public slots:
 
 };
 
-extern GroupsManager *groups_manager;
+extern KADUAPI GroupsManager *groups_manager;
 
 /**
 	\class UsersWithDescription

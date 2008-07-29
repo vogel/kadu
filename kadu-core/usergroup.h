@@ -17,6 +17,8 @@
 
 #include "userlistelement.h"
 
+#include "exports.h"
+
 class UserListElements;
 
 enum BehaviourForAnonymous {TrueForAnonymous, FalseForAnonymous};
@@ -79,7 +81,7 @@ enum BehaviourForAnonymous {TrueForAnonymous, FalseForAnonymous};
 	}
 	</code>
 **/
-class UserGroup : public QObject, public QSet<UserListElement>
+class KADUAPI UserGroup : public QObject, public QSet<UserListElement>
 {
 	Q_OBJECT
 
@@ -375,7 +377,7 @@ signals:
 	\class UserListElements
 	Prosta lista u�ytkownik�w z kilkoma u�atwiaczami.
 **/
-class UserListElements : public QList<UserListElement>
+class KADUAPI UserListElements : public QList<UserListElement>
 {
 public:
 	/**

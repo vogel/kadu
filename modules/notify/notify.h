@@ -9,6 +9,7 @@
 #include "notification.h"
 #include "protocol.h"
 #include "userlist.h"
+#include "notify_exports.h"
 
 class MessageNotification;
 
@@ -47,7 +48,7 @@ enum CallbackCapacity {
 	Wiget zapamietuje wszystkie zmiany dla wszystkich typ�w notyfikacji i w odpowienim
 	momencie je zapisuje.
 **/
-class NotifierConfigurationWidget : public QWidget
+class NOTIFYAPI NotifierConfigurationWidget : public QWidget
 {
 	Q_OBJECT
 
@@ -86,7 +87,7 @@ public slots:
 	odebranie pliku, kontynuacje odbierania pliku i inne. Niekt�ry notifikatory nie b�d�
 	implementowa� akcji, dlatego te� niekt�re zdarzenia nie mog� by� przez nie obs�ugiwane.
  **/
-class Notifier : public virtual QObject
+class NOTIFYAPI Notifier : public virtual QObject
 {
 	public:
 		Notifier(QObject *parent = 0, const char *name = 0) : QObject(parent, name) {};
@@ -138,7 +139,7 @@ signals:
 
 };
 
-class Notify : public ConfigurationUiHandler
+class NOTIFYAPI Notify : public ConfigurationUiHandler
 {
 	Q_OBJECT
 
@@ -211,7 +212,7 @@ public:
 
 };
 
-extern Notify *notification_manager;
+extern NOTIFYAPI Notify *notification_manager;
 
 /** @} */
 

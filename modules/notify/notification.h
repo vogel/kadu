@@ -15,6 +15,8 @@
 #include "userlist.h"
 
 #include "../notify/notification.h"
+#include "notify_exports.h"
+
 
 class QTimer;
 
@@ -67,7 +69,7 @@ class QTimer;
 
 	Notyfikacja, co do kt�rej pewna akcja zosta�a wykonana, wywo�uje sygna� closed().
  **/
-class Notification : public QObject {
+class NOTIFYAPI Notification : public QObject {
 	Q_OBJECT
 
 public:

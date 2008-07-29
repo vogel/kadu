@@ -3,10 +3,12 @@
 
 #include <QtGui/QPushButton>
 
+#include "exports.h"
+
 /**
     Kontrolka do wyboru koloru
 **/
-class ColorButton : public QPushButton
+class KADUAPI ColorButton : public QPushButton
 {
 	Q_OBJECT
 

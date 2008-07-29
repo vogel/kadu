@@ -9,7 +9,7 @@
 
 #include <QtCore/QSocketNotifier>
 
-#include <arpa/inet.h> 
+//#include <arpa/inet.h> 
 
 #include "config_file.h"
 #include "dcc.h"

@@ -35,11 +35,6 @@
 #include "modules.h"
 #include "protocols_manager.h"
 
-//look for comment in config_file.h
-ConfigFile *config_file_ptr;
-
-Kadu *kadu;
-
 #ifdef SIG_HANDLING_ENABLED
 	#include <QtCore/QDateTime>
 	#include <signal.h>
@@ -195,9 +190,9 @@ void kaduQtMessageHandler(QtMsgType type, const char *msg)
 }
 
 #ifdef DEBUG_ENABLED
-extern bool showTimesInDebug;
+extern KADUAPI bool showTimesInDebug;
 #endif
-char SystemUserName[100];
+extern KADUAPI char* SystemUserName;
 
 int main(int argc, char *argv[])
 {
@@ -205,6 +200,7 @@ int main(int argc, char *argv[])
 	struct timeval tv;
 	struct timezone tz;
 	time_t startTimeT = time(0);
+	beforeExecTime = endingTime = exitingTime = 0;
 	gettimeofday(&tv, &tz);
 	startTime = (tv.tv_sec % 1000) * 1000000 + tv.tv_usec;
 

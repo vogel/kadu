@@ -7,11 +7,13 @@
 #include "configuration_aware_object.h"
 #include "main_configuration_window.h"
 
+#include "docking_exports.h"
+
 /**
  * @defgroup docking Docking
  * @{
  */
-class DockingManager : public ConfigurationUiHandler, ConfigurationAwareObject
+class DOCKINGAPI DockingManager : public ConfigurationUiHandler, ConfigurationAwareObject
 {
 	Q_OBJECT
 
@@ -59,7 +61,7 @@ public slots:
 	void mousePressRightButton();
 };
 
-extern DockingManager* docking_manager;
+extern DOCKINGAPI DockingManager* docking_manager;
 
 /** @} */
 

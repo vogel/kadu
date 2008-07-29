@@ -13,12 +13,13 @@
 #include <QtCore/QMap>
 
 #include "usergroup.h"
+#include "exports.h"
 
 /**
 	\class UserList
 	\brief Klasa reprezentuj�ca list� kontakt�w.
 **/
-class UserList : public UserGroup
+class KADUAPI UserList : public UserGroup
 {
 	Q_OBJECT
 
@@ -94,6 +95,6 @@ public slots:
 
 };
 
-extern UserList *userlist;
+extern KADUAPI UserList *userlist;
 
 #endif

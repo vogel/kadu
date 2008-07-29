@@ -8,6 +8,8 @@
 
 #include "gadu.h"
 
+#include "history_exports.h"
+
 #define HISTORYMANAGER_ENTRY_CHATSEND   0x00000001
 #define HISTORYMANAGER_ENTRY_CHATRCV    0x00000002
 #define HISTORYMANAGER_ENTRY_MSGSEND    0x00000004
@@ -42,7 +44,7 @@ struct HistoryDate {
 /**
 	Menad�er historii
 **/
-class HistoryManager : public QObject
+class HISTORYAPI HistoryManager : public QObject
 {
 	Q_OBJECT
 
@@ -110,6 +112,6 @@ class HistoryManager : public QObject
 		void buildIndex(const QString &mobile = QString::null);
 };
 
-extern HistoryManager *history;
+extern HISTORYAPI HistoryManager *history;
 
 #endif

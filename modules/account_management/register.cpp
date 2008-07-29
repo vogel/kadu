@@ -24,11 +24,13 @@
 #include "misc.h"
 #include "register.h"
 
+#ifndef Q_OS_WIN
 #include <pwd.h>
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <stdlib.h>
 #include <unistd.h>
+#endif
 
 /**
  * @ingroup account_management
@@ -38,6 +40,7 @@ void Register::createConfig()
 {
 	kdebugf();
 
+#if 0	// po co to ma byc?
 	char *home = getenv("HOME");
 	struct passwd *pw;
 
@@ -47,7 +50,9 @@ void Register::createConfig()
 			return;
 		home = pw->pw_dir;
 	}
+#endif
 
+#ifndef Q_OS_WIN32
 	struct stat buf;
 	QString ggpath = ggPath(QString::null);
 	stat(ggpath.local8Bit(), &buf);
@@ -62,6 +67,9 @@ void Register::createConfig()
 			return;
 		}
 	}
+#else
+	QDir().mkdir(ggPath(QString::null));
+#endif
 
 	kdebugmf(KDEBUG_INFO, "Writing config files...\n");
 	config_file.sync();

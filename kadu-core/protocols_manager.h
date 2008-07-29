@@ -4,8 +4,9 @@
 #include <QtCore/QList>
 
 #include "protocol.h"
+#include "exports.h"
 
-class ProtocolManager : public QObject
+class KADUAPI ProtocolManager : public QObject
 {
 	Q_OBJECT
 
@@ -14,7 +15,7 @@ public slots:
 
 };
 
-class ProtocolsManager : public QObject
+class KADUAPI ProtocolsManager : public QObject
 {
 	ProtocolsManager();
 	~ProtocolsManager();
@@ -50,6 +51,6 @@ public:
 
 };
 
-extern ProtocolsManager *protocols_manager;
+extern KADUAPI ProtocolsManager *protocols_manager;
 
 #endif

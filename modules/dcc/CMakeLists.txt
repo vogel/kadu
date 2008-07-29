@@ -43,6 +43,13 @@ endif (COMMAND cmake_policy)
 
 add_library (dcc ${dcc} ${SOURCES} ${MOC_FILES})
 add_custom_target (dcc-translations DEPENDS ${TRANSLATION_FILES})
+if (dcc STREQUAL STATIC)
+set_target_properties(dcc PROPERTIES COMPILE_FLAGS "-DKADULIB" )
+else (dcc STREQUAL STATIC)
+if (WIN32)
+target_link_libraries(dcc kadu_core notify)
+endif (WIN32)
+endif (dcc STREQUAL STATIC)
 add_dependencies (dcc dcc-translations)
 
 install (TARGETS dcc DESTINATION lib/kadu/modules)

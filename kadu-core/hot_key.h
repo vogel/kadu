@@ -3,7 +3,9 @@
 
 #include <QtGui/QLineEdit>
 
-class HotKey
+#include "exports.h"
+
+class KADUAPI HotKey
 {
 public:
 	/**
@@ -22,7 +24,7 @@ public:
 
 };
 
-class HotKeyEdit : public QLineEdit
+class KADUAPI HotKeyEdit : public QLineEdit
 {
 protected:
 	virtual void keyPressEvent(QKeyEvent *e);

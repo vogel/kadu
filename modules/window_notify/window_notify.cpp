@@ -23,7 +23,7 @@
  * @ingroup window_notify
  * @{
  */
-extern "C" int window_notify_init()
+extern "C" KADU_EXPORT int window_notify_init()
 {
 	kdebugf();
 	window_notify = new WindowNotify(0, "window_notify");
@@ -31,7 +31,7 @@ extern "C" int window_notify_init()
 	return 0;
 }
 
-extern "C" void window_notify_close()
+extern "C" KADU_EXPORT void window_notify_close()
 {
 	kdebugf();
 	delete window_notify;

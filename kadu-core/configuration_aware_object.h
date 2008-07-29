@@ -12,7 +12,9 @@
 
 #include <QtCore/QList>
 
-class ConfigurationAwareObject
+#include "exports.h"
+
+class KADUAPI ConfigurationAwareObject
 {
 	static QList<ConfigurationAwareObject *> objects;
 

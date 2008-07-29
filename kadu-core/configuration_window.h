@@ -77,7 +77,7 @@ public:
 	Do tak uzyskanego GroupBox'a mo�na dodawa� dowolne widgety (@see addWidget,
 	@see addWidgets).
  **/
-class ConfigGroupBox
+class KADUAPI ConfigGroupBox
 {
 	QString name;
 	ConfigTab *configTab;
@@ -163,7 +163,7 @@ public:
 	Atrybut catpion jest wymagany. Mo�liwe tagi widget s� opisane w dokumentacji
 	klas Config* (np.: ConfigComboBox).
  **/
-class ConfigurationWindow : public QWidget
+class KADUAPI ConfigurationWindow : public QWidget
 {
 	Q_OBJECT
 

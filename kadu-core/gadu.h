@@ -8,6 +8,8 @@
 #include "protocol.h"
 #include "userlist.h"
 
+#include "exports.h"
+
 typedef uin_t UinType;
 
 class QTimer;
@@ -18,7 +20,7 @@ class GaduSocketNotifiers;
 //            UinsList
 // ------------------------------------
 
-class UinsList : public QList<UinType>
+class KADUAPI UinsList : public QList<UinType>
 {
 
 public:
@@ -54,7 +56,7 @@ public:
 //             UserStatus
 // ------------------------------------
 
-class GaduStatus : public UserStatus
+class KADUAPI GaduStatus : public UserStatus
 {
 
 public:
@@ -170,7 +172,7 @@ public:
 /**
 	Klasa do obs�ugi protoko�u Gadu-Gadu
 **/
-class GaduProtocol : public Protocol
+class KADUAPI GaduProtocol : public Protocol
 {
 	Q_OBJECT
 
@@ -1004,6 +1006,6 @@ signals:
 
 };
 
-extern GaduProtocol *gadu;
+extern KADUAPI GaduProtocol *gadu;
 
 #endif

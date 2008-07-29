@@ -113,7 +113,7 @@ void PubdirSocketNotifiers::dataReceived()
 	if (H->check & GG_CHECK_READ)
 		socketEvent();
 
-	Snr->setEnabled(false);
+	if(Snr) Snr->setEnabled(true);
 
 	kdebugf2();
 }
@@ -227,7 +227,7 @@ void TokenSocketNotifiers::dataReceived()
 	if (H->check & GG_CHECK_READ)
 		socketEvent();
 
-	Snr->setEnabled(false);
+	if(Snr) Snr->setEnabled(true);
 	
 	kdebugf2();
 }
@@ -369,7 +369,7 @@ void GaduSocketNotifiers::dataReceived()
 	if (Sess->check & GG_CHECK_READ)
 		socketEvent();
 
-	Snr->setEnabled(true);
+	if(Snr) Snr->setEnabled(true);
 	
 
 	kdebugf2();

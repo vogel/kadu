@@ -35,6 +35,13 @@ endif (COMMAND cmake_policy)
 
 add_library (account_management ${account_management} ${SOURCES} ${MOC_FILES})
 add_custom_target (account_management-translations DEPENDS ${TRANSLATION_FILES})
+if (account_management STREQUAL STATIC)
+set_target_properties(account_management PROPERTIES COMPILE_FLAGS "-DKADULIB" )
+else (account_management STREQUAL STATIC)
+if (WIN32)
+target_link_libraries(account_management kadu_core)
+endif (WIN32)
+endif (account_management STREQUAL STATIC)
 add_dependencies (account_management account_management-translations)
 
 install (TARGETS account_management DESTINATION lib/kadu/modules)

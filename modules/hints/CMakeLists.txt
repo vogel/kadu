@@ -36,6 +36,13 @@ endif (COMMAND cmake_policy)
 
 add_library (hints ${hints} ${SOURCES} ${MOC_FILES})
 add_custom_target (hints-translations DEPENDS ${TRANSLATION_FILES})
+if (hints STREQUAL STATIC)
+set_target_properties(hints PROPERTIES COMPILE_FLAGS "-DKADULIB" )
+else (hints STREQUAL STATIC)
+if (WIN32)
+target_link_libraries(hints kadu_core notify)
+endif (WIN32)
+endif (hints STREQUAL STATIC)
 add_dependencies (hints hints-translations)
 
 install (TARGETS hints DESTINATION lib/kadu/modules)

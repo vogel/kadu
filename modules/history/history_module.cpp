@@ -29,7 +29,7 @@
 
 #include "history_module.h"
 
-extern "C" int history_init()
+extern "C" KADU_EXPORT int history_init()
 {
 	kdebugf();
 
@@ -40,7 +40,7 @@ extern "C" int history_init()
 	return 0;
 }
 
-extern "C" void history_close()
+extern "C" KADU_EXPORT void history_close()
 {
 	kdebugf();
 
@@ -76,7 +76,11 @@ HistoryModule::HistoryModule()
 
 	QString path_ = ggPath(QString::null);
 	path_.append("/history/");
+#ifdef Q_OS_WIN
+	QDir().mkdir(path_);
+#else
 	mkdir(path_.local8Bit().data(), 0700);
+#endif
 
 	history = new HistoryManager();
 

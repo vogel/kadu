@@ -16,6 +16,8 @@
 
 #include "usergroup.h"
 
+#include "exports.h"
+
 class QString;
 
 /**
@@ -25,7 +27,7 @@ class QString;
 	\class PendingMsgs
 	\brief Kolejka oczekuj�cych wiadomo�ci.
 **/
-class PendingMsgs : public QObject
+class KADUAPI PendingMsgs : public QObject
 {
 	Q_OBJECT
 
@@ -151,6 +153,6 @@ signals:
 
 };
 
-extern PendingMsgs pending;
+extern KADUAPI PendingMsgs pending;
 
 #endif

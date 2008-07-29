@@ -29,7 +29,7 @@
 #include "userbox.h"
 
 
-extern "C" int notify_init()
+extern "C" KADU_EXPORT int notify_init()
 {
 	kdebugf();
 
@@ -40,7 +40,7 @@ extern "C" int notify_init()
 	return 0;
 }
 
-extern "C" void notify_close()
+extern "C" KADU_EXPORT void notify_close()
 {
 	kdebugf();
 

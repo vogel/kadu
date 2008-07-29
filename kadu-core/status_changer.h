@@ -14,6 +14,8 @@
 
 #include "status.h"
 
+#include "exports.h"
+
 class QTimer;
 
 /**
@@ -23,7 +25,7 @@ class QTimer;
 	Implementacje klasy dokonuj� zmiany statusu u�ytkownik�w na podstawie dowolnych, zale�nych od
 	klasy parametr�w. Zmianie mo�e ulega� zar�wno opis jak i stan dost�pno�ci.
  **/
-class StatusChanger : public QObject
+class KADUAPI StatusChanger : public QObject
 {
 	Q_OBJECT
 
@@ -61,7 +63,7 @@ signals:
 	Klasa modyfikuje aktualny status u�ytkownika ustawiaj�c go na warto�� pola userStatus.
 	Priorytet modyfikatora: 0.
  **/
-class UserStatusChanger : public StatusChanger
+class KADUAPI UserStatusChanger : public StatusChanger
 {
 	Q_OBJECT
 
@@ -101,7 +103,7 @@ public slots:
 
 	Priorytet: 1000.
  **/
-class SplitStatusChanger : public StatusChanger
+class KADUAPI SplitStatusChanger : public StatusChanger
 {
 	Q_OBJECT
 
@@ -143,7 +145,7 @@ public:
 
 	Po stworzeniu i dodaniu pierwszych modyfikator�w wymaga uruchomienia za pomoc� metody enable.
  **/
-class StatusChangerManager : public QObject
+class KADUAPI StatusChangerManager : public QObject
 {
 	Q_OBJECT
 
@@ -181,6 +183,6 @@ signals:
 
 };
 
-extern StatusChangerManager *status_changer_manager;
+extern KADUAPI StatusChangerManager *status_changer_manager;
 
 #endif // STATUS_CHANGER

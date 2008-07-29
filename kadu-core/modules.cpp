@@ -9,6 +9,7 @@
 
 #include <QtCore/QTextCodec>
 #include <QtCore/QTranslator>
+#include <QtCore/QLibrary>
 #include <QtGui/QApplication>
 #include <QtGui/QCheckBox>
 #include <QtGui/QGroupBox>
@@ -21,10 +22,7 @@
 #include <QtGui/QTreeWidgetItem>
 #include <QtGui/QVBoxLayout>
 
-#ifdef Q_WS_WIN
-#include <windows.h>
-#undef MessageBox
-#else
+#ifndef Q_WS_WIN
 #include <dlfcn.h>
 #endif
 
@@ -50,6 +48,7 @@
 	#define SO_EXT "so"
 	#define SO_EXT_LEN 2
 #endif
+
 #ifndef Q_WS_WIN
 Library::Library(const QString& file_name) : FileName(file_name), Handle(0)
 {
@@ -76,42 +75,11 @@ void* Library::resolve(const QString& symbol_name)
 	return dlsym(Handle, symbol_name.local8Bit().data());
 }
 
-QString Library::error()
+QString Library::errorString()
 {
 	return QString(dlerror());
 }
-#else
-Library::Library(const QString& file_name) : FileName(file_name), Handle(0)
-{
-}
-
-Library::~Library()
-{
-	kdebugf();
-	if (Handle != 0)
-		FreeLibrary((HINSTANCE)Handle);
-	kdebugf2();
-}
-
-bool Library::load()
-{
-	Handle = LoadLibrary(FileName.local8Bit().data());
-	return (Handle != 0);
-}
-
-void* Library::resolve(const QString& symbol_name)
-{
-	if (Handle == 0)
-		return 0;
-	return (void*)GetProcAddress((HINSTANCE)Handle, symbol_name.local8Bit().data());
-}
-
-QString Library::error()
-{
-	return QString("XXX: Ble!");
-}
 #endif
-
 
 ModuleInfo::ModuleInfo() : depends(), conflicts(), provides(),
 	description(), author(), version(), load_by_def(false)
@@ -773,7 +741,7 @@ bool ModulesManager::activateModule(const QString& module_name)
 		m.lib = new Library(libPath("kadu/modules/lib" + module_name + "." SO_EXT));
 		if (!m.lib->load())
 		{
-			QString err = m.lib->error();
+			QString err = m.lib->errorString();
 			MessageBox::msg(narg(tr("Cannot load %1 module library.:\n%2"), module_name, err));
 			kdebugm(KDEBUG_ERROR, "cannot load %s because of: %s\n", module_name.local8Bit().data(), err.local8Bit().data());
 			delete m.lib;

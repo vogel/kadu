@@ -4,8 +4,10 @@
 #include <QtCore/QByteArray>
 #include <QtNetwork/QTcpSocket>
 
+#include "exports.h"
+
 // TODO: replace with QHttp
-class HttpClient : public QObject
+class KADUAPI HttpClient : public QObject
 {
 	Q_OBJECT
 

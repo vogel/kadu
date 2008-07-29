@@ -53,7 +53,7 @@ QFontInfo *defaultFontInfo;
 QTextCodec *codec_cp1250 = QTextCodec::codecForName("CP1250");
 QTextCodec *codec_latin2 = QTextCodec::codecForName("ISO8859-2");
 
-long long int startTime = 0, beforeExecTime = 0, endingTime = 0, exitingTime = 0;
+long int startTime, beforeExecTime, endingTime, exitingTime;
 bool measureTime = false;
 
 void saveWindowGeometry(const QWidget *w, const QString &section, const QString &name)
@@ -318,11 +318,19 @@ static QString data_path;
 
 QString libPath(const QString &f)
 {
+#ifdef Q_OS_WIN
+	QString fp=f;
+	if(fp.startsWith("kadu")) fp.remove(0, 4);
+	return lib_path + fp;
+#else
 	return lib_path + f;
+#endif
 }
 
 QString dataPath(const QString &p, const char *argv0)
 {
+	QString path=p;
+	
 	if (argv0 != 0)
 	{
 #ifdef Q_OS_MACX
@@ -381,9 +389,15 @@ QString dataPath(const QString &p, const char *argv0)
 		kdebugm(KDEBUG_PANIC, "dataPath() called _BEFORE_ initial dataPath(\"\",argv[0]) (static object uses dataPath()?) !!!\n");
 		printBacktrace("dataPath(): constructor of static object uses dataPath");
 	}
-	kdebugm(KDEBUG_INFO, "%s%s\n", data_path.local8Bit().data(), p.local8Bit().data());
 
-	return data_path + p;
+#ifdef Q_OS_WIN
+	// on windows remove kadu from path
+	if(path.startsWith("kadu")) path.remove(0, 4);
+#endif
+
+	kdebugm(KDEBUG_INFO, "%s%s\n", data_path.local8Bit().data(), path.local8Bit().data());
+
+	return data_path + path;
 }
 
 QString cp2unicode(const QByteArray &buf)

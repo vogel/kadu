@@ -51,6 +51,11 @@
 
 #include "kadu.h"
 
+//look for comment in config_file.h
+ConfigFile *config_file_ptr;
+
+Kadu *kadu;
+
 static QTimer *blinktimer;
 QMenu *dockMenu;
 
@@ -2085,7 +2090,7 @@ void Kadu::readTokenValue(QPixmap tokenImage, QString &tokenValue)
 	delete td;
 }
 
-extern char SystemUserName[];
+char SystemUserName[100];
 void Kadu::deleteOldConfigFiles()
 {
 	kdebugf();
@@ -2120,6 +2125,7 @@ void Kadu::deleteOldConfigFiles()
 		}
 //	kdebugm(KDEBUG_INFO, "bts deleted\n");
 
+	// TODO: win32 port
 	QDir oldDebugs("/tmp/", QString("kadu-%1-*.dbg").arg(SystemUserName), QDir::Name, QDir::Files);
 	if (oldDebugs.count() > 5)
 		for (unsigned int i = 0, max = oldDebugs.count() - 5; i < max; ++i)

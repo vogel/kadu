@@ -15,6 +15,8 @@
 #include "chat_widget.h"
 #include "configuration_aware_object.h"
 
+#include "exports.h"
+
 class ActionDescription;
 class KaduAction;
 class Protocol;
@@ -26,7 +28,7 @@ class Protocol;
 	\brief Klasa zarz�dzaj�ca oknami ChatWidget
 **/
 
-class ChatManager : public QObject, ConfigurationAwareObject
+class KADUAPI ChatManager : public QObject, ConfigurationAwareObject
 {
 	Q_OBJECT
 
@@ -314,6 +316,6 @@ signals:
 
 };
 
-extern ChatManager* chat_manager;
+extern KADUAPI ChatManager* chat_manager;
 
 #endif

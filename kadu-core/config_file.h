@@ -9,10 +9,12 @@
 #include <QtGui/QFont>
 #include <QtXml/QDomDocument>
 
+#include "exports.h"
+
 /**
 	Klasa reprezentuj�ca plik XML-owy z zapisem konfiguracji programu
 **/
-class XmlConfigFile
+class KADUAPI XmlConfigFile
 {
 	QDomDocument DomDocument;
 	void write(const QString& f = QString::null);
@@ -83,7 +85,7 @@ public:
 
 };
 
-extern XmlConfigFile *xml_config_file;
+extern KADUAPI XmlConfigFile *xml_config_file;
 
 /**
 	Klasa reprezentuj�ca tekstowy plik konfiguracyjny (format INI)
@@ -409,7 +411,7 @@ public:
 /**
 	Klasa reprezentuj�ca plik z zapisem konfiguracji programu
 **/
-class ConfigFile
+class KADUAPI ConfigFile
 {
 	bool changeEntry(const QString &group, const QString &name, const QString &value);
 	QString getEntry(const QString &group, const QString &name, bool *ok = 0) const;
@@ -708,7 +710,7 @@ public:
 //TODO: po wydaniu 0.4 trzeba zmieni� nazw� na config_file i wywali� define'a
 //TODO: mamy juz 0.6 ;)
 
-extern ConfigFile *config_file_ptr;
+extern KADUAPI ConfigFile *config_file_ptr;
 #define config_file (*config_file_ptr)
 
 #endif

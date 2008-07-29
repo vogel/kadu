@@ -30,7 +30,16 @@ if (COMMAND cmake_policy)
 endif (COMMAND cmake_policy)
 
 add_library (docking ${docking} ${SOURCES} ${MOC_FILES})
+set_target_properties(docking PROPERTIES COMPILE_FLAGS "-DDOCKING_BUILD" )
 add_custom_target (docking-translations DEPENDS ${TRANSLATION_FILES})
+if (docking STREQUAL STATIC)
+set_target_properties(docking PROPERTIES COMPILE_FLAGS "-DKADULIB" )
+else (docking STREQUAL STATIC)
+if (WIN32)
+target_link_libraries(docking kadu_core)
+endif (WIN32)
+endif (docking STREQUAL STATIC)
+
 add_dependencies (docking docking-translations)
 
 install (TARGETS docking DESTINATION lib/kadu/modules)

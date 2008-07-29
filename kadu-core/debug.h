@@ -2,6 +2,7 @@
 #define DEBUG_H
 
 #include "kadu-config.h"
+#include "exports.h"
 
 /* pierwsze 8 bitow zarezerwowane jest dla libgadu */
 
@@ -65,8 +66,8 @@
 	Funkcja pomocnicza. Nie u¿ywaæ.
 */
 #ifdef DEBUG_ENABLED
-void _kdebug_with_mask(int mask, const char *file, const int line, const char *format, ...) __attribute__((format (printf, 4, 5)));
+KADUAPI void _kdebug_with_mask(int mask, const char *file, const int line, const char *format, ...) __attribute__((format (printf, 4, 5)));
 #endif
-extern int debug_mask;
+extern KADUAPI int debug_mask;
 
 #endif

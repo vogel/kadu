@@ -33,7 +33,6 @@ set (kadu_SRCS
 	kadu_parser.cpp
 	kadu_text_browser.cpp
 	main_configuration_window.cpp
-	main.cpp
 	message.cpp
 	message_box.cpp
 	misc.cpp
@@ -130,9 +129,19 @@ if (COMMAND cmake_policy)
 	cmake_policy(SET CMP0003 NEW)
 endif (COMMAND cmake_policy)
 
-add_executable (kadu ${kadu_SRCS} ${MOC_FILES})
-
 link_directories (modules)
-target_link_libraries (kadu ${QT_LIBRARIES} ${STATIC_MODULES} ${LIBGADU_LIBRARIES})
+
+if (WIN32)
+set (CMAKE_SHARED_LIBRARY_PREFIX "")
+add_library(kadu_core SHARED ${kadu_SRCS} ${MOC_FILES})
+set_target_properties(kadu_core PROPERTIES DEFINE_SYMBOL KADULIB )
+target_link_libraries (kadu_core ${STATIC_MODULES} ${QT_LIBRARIES} ${LIBGADU_LIBRARIES})
+add_executable(kadu main.cpp)
+target_link_libraries (kadu kadu_core)
+else (WIN32)
+add_executable (kadu main.cpp ${kadu_SRCS} ${MOC_FILES})
+target_link_libraries (kadu ${STATIC_MODULES} ${QT_LIBRARIES} ${LIBGADU_LIBRARIES})
+endif (WIN32)
+
 
 install (TARGETS kadu DESTINATION bin)

@@ -12,6 +12,8 @@
 
 #include <QtGui/QDialog>
 
+#include "exports.h"
+
 class QBoxLayout;
 class QLabel;
 
@@ -20,7 +22,7 @@ class QLabel;
 	mie� wi�ksze mo�liwo�ci i wygodniejszy interface ni�
 	orygina�.
 **/
-class MessageBox : public QDialog
+class KADUAPI MessageBox : public QDialog
 {
 	Q_OBJECT
 

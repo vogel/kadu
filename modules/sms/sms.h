@@ -9,6 +9,8 @@
 #include "http_client.h"
 #include "main_configuration_window.h"
 
+#include "sms_exports.h"
+
 class Q3ListBox;
 class QCheckBox;
 class QComboBox;
@@ -20,7 +22,7 @@ class QTextEdit;
  * @defgroup sms SMS
  * @{
  */
-class SmsImageDialog : public QDialog
+class SMSAPI SmsImageDialog : public QDialog
 {
 	Q_OBJECT
 
@@ -37,7 +39,7 @@ class SmsImageDialog : public QDialog
 		void codeEntered(const QString& code);
 };
 
-class SmsGateway : public QObject
+class SMSAPI SmsGateway : public QObject
 {
 	Q_OBJECT
 
@@ -91,7 +93,7 @@ class SmsSender : public QObject
 /**
 	Dialog umo�liwiaj�cy wysy�anie SMS'�w
 **/
-class Sms : public QWidget, ConfigurationAwareObject
+class SMSAPI Sms : public QWidget, ConfigurationAwareObject
 {
 	Q_OBJECT
 
@@ -131,7 +133,7 @@ class Sms : public QWidget, ConfigurationAwareObject
 typedef SmsGateway* isValidFunc(const QString&, QObject*);
 
 // TODO: split into SmsConfigurationUiHandler and SmsGatewayManager and some more...
-class SmsConfigurationUiHandler : public ConfigurationUiHandler, ConfigurationAwareObject
+class SMSAPI SmsConfigurationUiHandler : public ConfigurationUiHandler, ConfigurationAwareObject
 {
 	Q_OBJECT
 
@@ -175,7 +177,7 @@ public slots:
 
 };
 
-extern SmsConfigurationUiHandler *smsConfigurationUiHandler;
+extern SMSAPI SmsConfigurationUiHandler *smsConfigurationUiHandler;
 
 /** @} */
 

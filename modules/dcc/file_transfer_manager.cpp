@@ -7,15 +7,11 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <fcntl.h>
-#include <unistd.h>
-#include <sys/types.h>
-#include <sys/stat.h>
-
 #include <QtGui/QMessageBox>
 #include <QtGui/QFileDialog>
 #include <QtGui/QKeyEvent>
 #include <QtCore/QList>
+#include <QtCore/QFile>
 
 #include "chat_manager.h"
 #include "config_file.h"
@@ -451,13 +447,16 @@ void FileTransferManager::acceptFile(FileTransfer *ft, DccSocket *socket, QStrin
 		}
 
 		haveFileName = false;
-		int flags = O_WRONLY;
+		QIODevice::OpenMode flags = QIODevice::WriteOnly;
 		if (resume)
-			flags |= O_APPEND;
+			flags |= QIODevice::Append;
 		else
-			flags |= O_CREAT | O_TRUNC;
+			flags |= QIODevice::Truncate;
 
-		if (!socket->setFile(open(fileName.local8Bit().data(), flags, S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH)))
+		QFile file(fileName);
+		file.open(flags);
+
+		if (!socket->setFile(file.handle()))
 			MessageBox::msg(tr("Could not open file. Select another one."), true, "Warning");
 		else
 		{

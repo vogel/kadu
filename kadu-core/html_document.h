@@ -4,6 +4,8 @@
 #include <QtCore/QList>
 #include <QtCore/QString>
 
+#include "exports.h"
+
 class QRegExp;
 
 /**
@@ -13,7 +15,7 @@ class QRegExp;
 	list� element�w. Element mo�e by� tagiem html
 	albo kawa�kiem tekstu.
 **/
-class HtmlDocument
+class KADUAPI HtmlDocument
 {
 	struct Element
 	{

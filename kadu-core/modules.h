@@ -13,12 +13,15 @@
 #include <QtCore/QMap>
 #include <QtGui/QWidget>
 
+#include "exports.h"
+
 class QCheckBox;
 class QLabel;
 class QTranslator;
 class QTreeWidget;
 class QTreeWidgetItem;
 
+#ifndef Q_OS_WIN
 /**
 	Zast�puje klas� QLibrary na specyficzne potrzeby Kadu.
 	\class Library
@@ -56,9 +59,13 @@ public:
 		\fn QString error()
 		\return tre�� b��du, jaki wyst�pi� podczas �adowanie biblioteki dzielonej.
 	**/
-	QString error();
+	QString errorString();
 
 };
+#else
+class QLibrary;
+#define Library QLibrary
+#endif
 
 /**
 	\struct ModuleInfo
@@ -120,7 +127,7 @@ public:
 	\class ModulesManager
 	\brief Zarz�dzanie modu�ami
 **/
-class ModulesManager : public QObject
+class KADUAPI ModulesManager : public QObject
 {
 	Q_OBJECT
 
@@ -372,6 +379,6 @@ public slots:
 
 };
 
-extern ModulesManager *modules_manager;
+extern KADUAPI ModulesManager *modules_manager;
 
 #endif

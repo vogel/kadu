@@ -19,6 +19,8 @@
 #include "protocol.h"
 #include "userlist.h"
 
+#include "exports.h"
+
 class QFontMetrics;
 
 class ActionDescription;
@@ -63,7 +65,7 @@ public:
 /**
 	Menad�er klas wy�wietlaj�cych tooltipy. Rejestruje klasy i pozwala na wyb�r jednej z nich w oknie konfiguracyjnym,
  **/
-class ToolTipClassManager
+class KADUAPI ToolTipClassManager
 {
 	QMap<QString, ToolTipClass *> ToolTipClasses;
 	QString ToolTipClassName;
@@ -283,7 +285,7 @@ public:
 	\class UserBox
 	\brief Wy�wietlana lista kontakt�w.
 **/
-class UserBox : public Q3ListBox, ConfigurationAwareObject
+class KADUAPI UserBox : public Q3ListBox, ConfigurationAwareObject
 {
 	Q_OBJECT
 
@@ -645,6 +647,6 @@ int compareAltNickCaseInsensitive(const UserListElement &u1, const UserListEleme
 **/
 int compareStatus(const UserListElement &u1, const UserListElement &u2);
 
-extern ToolTipClassManager *tool_tip_class_manager;
+extern KADUAPI ToolTipClassManager *tool_tip_class_manager;
 
 #endif

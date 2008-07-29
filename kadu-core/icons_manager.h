@@ -16,8 +16,9 @@
 
 #include "configuration_aware_object.h"
 #include "themes.h"
+#include "exports.h"
 
-class IconsManager : public Themes, ConfigurationAwareObject
+class KADUAPI IconsManager : public Themes, ConfigurationAwareObject
 {
 	Q_OBJECT
 
@@ -70,6 +71,6 @@ signals:
 
 };
 
-extern IconsManager *icons_manager;
+extern KADUAPI IconsManager *icons_manager;
 
 #endif

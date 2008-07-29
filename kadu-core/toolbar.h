@@ -16,6 +16,8 @@
 
 #include "configuration_aware_object.h"
 
+#include "exports.h"
+
 class QMenu;
 class QToolButton;
 
@@ -27,7 +29,7 @@ class UserGroup;
 	\brief Pasek narz?dziowy
 **/
 
-class ToolBar : public QToolBar, public ConfigurationAwareObject
+class KADUAPI ToolBar : public QToolBar, public ConfigurationAwareObject
 {
 	Q_OBJECT
 
@@ -172,7 +174,7 @@ public slots:
 
 };
 
-class ActionDrag : public QDrag
+class KADUAPI ActionDrag : public QDrag
 {
 
 public:

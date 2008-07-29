@@ -16,6 +16,8 @@
 #include "emoticons.h"
 #include "protocol.h"
 
+#include "exports.h"
+
 enum ChatMessageType
 {
 	TypeSystem,
@@ -34,7 +36,7 @@ enum ChatMessageType
 	\class ChatMessage
 	\brief Klasa przechowuj�ca informacje o wiadomo�ci.
 **/
-class ChatMessage : public QObject
+class KADUAPI ChatMessage : public QObject
 {
 	/**
 		\fn QString convertCharacters(QString text, const QColor &bgcolor, EmoticonsStyle style)

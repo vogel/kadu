@@ -20,6 +20,8 @@
 #include "userlist.h"
 #include "message.h"
 
+#include "exports.h"
+
 class QSplitter;
 
 class ChatEditBox;
@@ -43,7 +45,7 @@ typedef QList<ChatWidget *> ChatList;
 	\brief Okno rozmowy
 **/
 
-class ChatWidget : public QWidget, ConfigurationAwareObject
+class KADUAPI ChatWidget : public QWidget, ConfigurationAwareObject
 {
 	Q_OBJECT
 

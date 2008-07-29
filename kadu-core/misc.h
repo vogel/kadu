@@ -5,6 +5,7 @@
 #include <Qt3Support/Q3FileDialog>
 
 #include "status.h"
+#include "exports.h"
 
 class QComboBox;
 class QLabel;
@@ -15,33 +16,33 @@ class QPushButton;
 	na �cie�k� bezwzgledn� uwzgl�dniaj�c zmienne �rodowiskowe
 	$HOME i $CONFIG_DIR
 */
-QString ggPath(const QString &subpath = QString::null);
+KADUAPI QString ggPath(const QString &subpath = QString::null);
 
 /*
 	zwraca �cie�k� do pliku f
 	je�eli drugi parametr nie jest == 0, to funkcja pr�buje najpierw ustali�
 	�cie�k� na podstawie argv0, kt�re ma by� r�wne argv[0] oraz zmiennej PATH
 */
-QString dataPath(const QString &f = QString::null, const char *argv0 = 0);
+KADUAPI QString dataPath(const QString &f = QString::null, const char *argv0 = 0);
 
-QString libPath(const QString &f = QString::null);
+KADUAPI QString libPath(const QString &f = QString::null);
 
-QString cp2unicode(const QByteArray &);
-QByteArray unicode2cp(const QString &);
-QString latin2unicode(const QByteArray &);
-QByteArray unicode2latin(const QString &);
-QString unicode2std(const QString &);
+KADUAPI QString cp2unicode(const QByteArray &);
+KADUAPI QByteArray unicode2cp(const QString &);
+KADUAPI QString latin2unicode(const QByteArray &);
+KADUAPI QByteArray unicode2latin(const QString &);
+KADUAPI QString unicode2std(const QString &);
 
 // TODO: why not use nromal QUrl::encode ?
 //zamienia kodowanie polskich znak�w przekonwertowane z utf-8 przy pomocy QUrl::encode na kodowanie latin-2
-QString unicodeUrl2latinUrl(const QString &buf);
+KADUAPI QString unicodeUrl2latinUrl(const QString &buf);
 //zamienia polskie znaki na format latin2 "url" (czyli do postaci %XY)
-QString unicode2latinUrl(const QString &buf);
+KADUAPI QString unicode2latinUrl(const QString &buf);
 
 QString printDateTime(const QDateTime &datetime);
 QString timestamp(time_t = 0);
 QDateTime currentDateTime();
-QString pwHash(const QString &text);
+KADUAPI QString pwHash(const QString &text);
 QString translateLanguage(const QApplication *application, const QString &locale, const bool l2n);
 
 void openWebBrowser(const QString &link);
@@ -53,8 +54,8 @@ QString versionToName(const unsigned int version);
 void stringHeapSort(QStringList &c);
 QStringList toStringList(const QString &e1, const QString &e2=QString(), const QString &e3=QString(), const QString &e4=QString(), const QString &e5=QString());
 
-void saveWindowGeometry(const QWidget *w, const QString &section, const QString &name);
-void loadWindowGeometry(QWidget *w, const QString &section, const QString &name, int defaultX, int defaultY, int defaultWidth, int defaultHeight);
+void KADUAPI saveWindowGeometry(const QWidget *w, const QString &section, const QString &name);
+void KADUAPI loadWindowGeometry(QWidget *w, const QString &section, const QString &name, int defaultX, int defaultY, int defaultWidth, int defaultHeight);
 
 //usuwa znaki nowego wiersza, tagi htmla (wszystko co da si� dopasowa� jako <.*>)
 QString toPlainText(const QString &text);
@@ -63,15 +64,15 @@ QString toPlainText(const QString &text);
 #ifdef Q_OS_WIN
 struct timeval;
 struct timezone {};
-int gettimeofday(struct timeval* tp, struct timezone* tzp);
+int KADUAPI gettimeofday(struct timeval* tp, struct timezone* tzp);
 #endif
 
 
-extern QFont *defaultFont;
-extern QFontInfo *defaultFontInfo;
+extern KADUAPI QFont *defaultFont;
+extern KADUAPI QFontInfo *defaultFontInfo;
 
-extern QTextCodec *codec_cp1250;
-extern QTextCodec *codec_latin2;
+extern KADUAPI QTextCodec *codec_cp1250;
+extern KADUAPI QTextCodec *codec_latin2;
 
 class ChooseDescription : public QDialog
 {
@@ -101,7 +102,7 @@ public:
 
 };
 
-class OpenChatWith : public QWidget
+class KADUAPI OpenChatWith : public QWidget
 {
 	Q_OBJECT
 
@@ -120,7 +121,7 @@ public:
 
 };
 
-class ImageWidget : public QWidget
+class KADUAPI ImageWidget : public QWidget
 {
 	QImage Image;
 
@@ -198,10 +199,10 @@ QList<QVariant> toVariantList(const QList<int> &in);
 		"pierwszy %1 tekst odst�p drugi tekst"
 	co robi w�a�nie ta funkcja
 */
-QString narg(const QString &s, const QString &arg1, const QString &arg2,
+KADUAPI QString narg(const QString &s, const QString &arg1, const QString &arg2,
 				const QString &arg3=QString(), const QString &arg4=QString());
 
-QString narg(const QString &s, const QString &arg1, const QString &arg2,
+KADUAPI QString narg(const QString &s, const QString &arg1, const QString &arg2,
 				const QString &arg3, const QString &arg4,
 				const QString &arg5, const QString &arg6=QString(),
 				const QString &arg7=QString(),const QString &arg8=QString(),
@@ -213,12 +214,12 @@ QString narg(const QString &s, const QString &arg1, const QString &arg2,
 	count musi by� <=9
 	tab - tablica count wska�nik�w do QString
 **/
-QString narg(const QString &s, const QString **tab, int count);
+KADUAPI QString narg(const QString &s, const QString **tab, int count);
 
-void printBacktrace(const QString &header = QString::null);
+KADUAPI void printBacktrace(const QString &header = QString::null);
 
 // private
-extern long long int startTime, beforeExecTime, endingTime, exitingTime;
-extern bool measureTime;
+extern KADUAPI long int startTime, beforeExecTime, endingTime, exitingTime;
+extern KADUAPI bool measureTime;
 
 #endif

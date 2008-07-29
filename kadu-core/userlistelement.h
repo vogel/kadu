@@ -14,6 +14,8 @@
 #include <QtCore/QObject>
 #include <QtCore/QVariant>
 
+#include "exports.h"
+
 class QHostAddress;
 
 class ULEPrivate;
@@ -49,7 +51,7 @@ enum NotifyType {
 	doprowadzi� do stworzenia kilku kontakt�w o tych samych danych (czego nale�y
 	si� wystrzega�!).
 **/
-class UserListElement : public QObject
+class KADUAPI UserListElement : public QObject
 {
 	Q_OBJECT
 

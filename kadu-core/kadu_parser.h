@@ -5,7 +5,9 @@
 
 #include "userlistelement.h"
 
-class KaduParser
+#include "exports.h"
+
+class KADUAPI KaduParser
 {
 	struct ParseElem
 	{

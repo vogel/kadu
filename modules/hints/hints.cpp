@@ -14,7 +14,7 @@
  * @ingroup hints
  * @{
  */
-extern "C" int hints_init()
+extern "C" KADU_EXPORT int hints_init()
 {
 	kdebugf();
 
@@ -25,7 +25,7 @@ extern "C" int hints_init()
 	return 0;
 }
 
-extern "C" void hints_close()
+extern "C" KADU_EXPORT void hints_close()
 {
 	kdebugf();
 

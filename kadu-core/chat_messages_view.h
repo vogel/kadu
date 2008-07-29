@@ -7,6 +7,8 @@
 #include "kadu_text_browser.h"
 #include "protocol.h"
 
+#include "exports.h"
+
 class ChatMessage;
 class QResizeEvent;
 
@@ -15,7 +17,7 @@ class QResizeEvent;
 	\class ChatMessagesView
 	\brief Okno przegl�dania listy wiadomo�ci.
 **/
-class ChatMessagesView : public KaduTextBrowser, ConfigurationAwareObject
+class KADUAPI ChatMessagesView : public KaduTextBrowser, ConfigurationAwareObject
 {
 	Q_OBJECT
 

@@ -4,6 +4,8 @@
 #include <QtCore/QObject>
 #include <QtCore/QStringList>
 
+#include "exports.h"
+
 class QPixmap;
 
 /**
@@ -25,7 +27,7 @@ enum eUserStatus
 	\class UserStatus
 	\brief Klasa opisuj�ca status.
 **/
-class UserStatus : public QObject
+class KADUAPI UserStatus : public QObject
 {
 	Q_OBJECT
 

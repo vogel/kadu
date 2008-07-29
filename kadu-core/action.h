@@ -14,6 +14,8 @@
 #include <QtGui/QAction>
 #include <QtGui/QIcon>
 
+#include "exports.h"
+
 class ChatWidget;
 class KaduMainWindow;
 class ToolBar;
@@ -22,7 +24,7 @@ class UserListElements;
 
 class ActionDescription;
 
-class KaduAction : public QAction
+class KADUAPI KaduAction : public QAction
 {
 	Q_OBJECT
 
@@ -57,7 +59,7 @@ signals:
 
 };
 
-class ActionDescription : public QObject
+class KADUAPI ActionDescription : public QObject
 {
 	Q_OBJECT
 
@@ -115,7 +117,7 @@ signals:
 
 };
 
-class Actions : public QObject, public QMap<QString, ActionDescription *>
+class KADUAPI Actions : public QObject, public QMap<QString, ActionDescription *>
 {
 	Q_OBJECT
 

@@ -9,6 +9,7 @@
 #include "configuration_aware_object.h"
 #include "kadu_main_window.h"
 #include "protocol.h"
+#include "exports.h"
 
 class QAction;
 class QActionGroup;
@@ -30,7 +31,7 @@ class UserStatusChanger;
 /**
 	G��wne okno Kadu
 **/
-class Kadu : public KaduMainWindow, ConfigurationAwareObject
+class KADUAPI Kadu : public KaduMainWindow, ConfigurationAwareObject
 {
 	Q_OBJECT
 
@@ -324,8 +325,8 @@ public:
 
 bool disableContainsSelfUles(KaduAction *action);
 
-extern Kadu *kadu;
-extern QMenu *dockMenu;
+extern KADUAPI Kadu *kadu;
+extern KADUAPI QMenu *dockMenu;
 extern int lockFileHandle;
 extern QFile *lockFile;
 struct flock;

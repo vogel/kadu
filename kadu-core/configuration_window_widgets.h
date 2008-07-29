@@ -19,6 +19,8 @@
 #include "select_font.h"
 #include "syntax_editor.h"
 
+#include "exports.h"
+
 class ConfigGroupBox;
 class ConfigurationWindow;
 
@@ -28,7 +30,7 @@ class ConfigurationWindow;
 	@arg id - id dost�pne dla aplikacji/modu��w
 	@arg toolTip - podpowied� dla u�ytkownika
  **/
-class ConfigWidget
+class KADUAPI ConfigWidget
 {
 	friend class ConfigurationWindow;
 
@@ -58,7 +60,7 @@ public:
 	@arg section - sekcja w kt�rej trzymany jest element
 	@arg item - element, w kt�rym trzymana jest warto�� parametry
  **/
-class ConfigWidgetValue : public ConfigWidget
+class KADUAPI ConfigWidgetValue : public ConfigWidget
 {
 protected:
 	QString section;
@@ -75,7 +77,7 @@ public:
 /**
 	&lt;line-edit caption="caption" id="id" /&gt;
  **/
-class ConfigLineEdit : public QLineEdit, public ConfigWidgetValue
+class KADUAPI ConfigLineEdit : public QLineEdit, public ConfigWidgetValue
 {
 	QLabel *label;
 
@@ -98,7 +100,7 @@ public:
 /**
 	&lt;gg-password-edit caption="caption" id="id" /&gt;
  **/
-class ConfigGGPasswordEdit : public ConfigLineEdit
+class KADUAPI ConfigGGPasswordEdit : public ConfigLineEdit
 {
 public:
 	ConfigGGPasswordEdit(const QString &section, const QString &item, const QString &widgetCaption, const QString &toolTip,
@@ -113,7 +115,7 @@ public:
 /**
 	&lt;check-box caption="caption" id="id" /&gt;
  **/
-class ConfigCheckBox : public QCheckBox, public ConfigWidgetValue
+class KADUAPI ConfigCheckBox : public QCheckBox, public ConfigWidgetValue
 {
 	Q_OBJECT
 
@@ -140,7 +142,7 @@ public:
 	@arg maxValue - maksymalna warto�� (obowi�zkowo)
 	@arg step - krok warto�ci (nieobowiazkowo, domy�lnie 1)
  **/
-class ConfigSpinBox : public QSpinBox, public ConfigWidgetValue
+class KADUAPI ConfigSpinBox : public QSpinBox, public ConfigWidgetValue
 {
 	QLabel *label;
 
@@ -170,7 +172,7 @@ public:
 	@arg value - warto�� zapisana do pliku konfiguracyjnego
 	@arg caption - warto�� wy�wietlana
  **/
-class ConfigComboBox : public QComboBox, public ConfigWidgetValue
+class KADUAPI ConfigComboBox : public QComboBox, public ConfigWidgetValue
 {
 	QLabel *label;
 
@@ -201,7 +203,7 @@ public:
 /**
 	&lt;hot-key-edit caption="caption" id="id" /&gt;
  **/
-class ConfigHotKeyEdit : public HotKeyEdit, public ConfigWidgetValue
+class KADUAPI ConfigHotKeyEdit : public HotKeyEdit, public ConfigWidgetValue
 {
 	QLabel *label;
 
@@ -224,7 +226,7 @@ public:
 /**
 	&lt;path-list-edit caption="caption" id="id" /&gt;
  **/
-class ConfigPathListEdit : public PathListEdit, public ConfigWidgetValue
+class KADUAPI ConfigPathListEdit : public PathListEdit, public ConfigWidgetValue
 {
 	QLabel *label;
 
@@ -247,7 +249,7 @@ public:
 /**
 	&lt;colob-button caption="caption" id="id" /&gt;
  **/
-class ConfigColorButton : public ColorButton, public ConfigWidgetValue
+class KADUAPI ConfigColorButton : public ColorButton, public ConfigWidgetValue
 {
 	QLabel *label;
 
@@ -270,7 +272,7 @@ public:
 /**
 	&lt;select-font caption="caption" id="id" /&gt;
  **/
-class ConfigSelectFont : public SelectFont, public ConfigWidgetValue
+class KADUAPI ConfigSelectFont : public SelectFont, public ConfigWidgetValue
 {
 	QLabel *label;
 
@@ -293,7 +295,7 @@ public:
 /**
 	&lt;syntax-editro caption="caption" id="id" /&gt;
  **/
-class ConfigSyntaxEditor : public SyntaxEditor, public ConfigWidgetValue
+class KADUAPI ConfigSyntaxEditor : public SyntaxEditor, public ConfigWidgetValue
 {
 	QLabel *label;
 
@@ -317,7 +319,7 @@ public:
 /**
 	&lt;action-button caption="caption" id="id" /&gt;
  **/
-class ConfigActionButton : public QPushButton, public ConfigWidget
+class KADUAPI ConfigActionButton : public QPushButton, public ConfigWidget
 {
 protected:
 	virtual void createWidgets();
@@ -340,7 +342,7 @@ public:
 
 	@arg type all = wszystkie pliki, images = obrazki, audio = pliki d�wi�kowe
  **/
-class ConfigSelectFile : public SelectFile, public ConfigWidgetValue
+class KADUAPI ConfigSelectFile : public SelectFile, public ConfigWidgetValue
 {
 	QLabel *label;
 
@@ -366,7 +368,7 @@ public:
 
 	Podgl�d sk�adni.
  **/
-class ConfigPreview : public Preview, public ConfigWidget
+class KADUAPI ConfigPreview : public Preview, public ConfigWidget
 {
 	QLabel *label;
 
@@ -392,7 +394,7 @@ public:
 	@arg maxValue - maksymalna warto�� (obowi�zkowo)
 	@arg pageStep - krok warto�ci (obowi�zkowo)
  **/
-class ConfigSlider : public QSlider, public ConfigWidgetValue
+class KADUAPI ConfigSlider : public QSlider, public ConfigWidgetValue
 {
 	QLabel *label;
 
@@ -416,7 +418,7 @@ public:
 /**
 	&lt;label caption="caption" id="id" /&gt;
  **/
-class ConfigLabel : public QLabel, public ConfigWidget
+class KADUAPI ConfigLabel : public QLabel, public ConfigWidget
 {
 protected:
 	virtual void createWidgets();
@@ -443,7 +445,7 @@ public:
 	@arg value - warto�� zapisana do pliku konfiguracyjnego
 	@arg caption - warto�� wy�wietlana
  **/
-class ConfigListWidget : public QListWidget, public ConfigWidget
+class KADUAPI ConfigListWidget : public QListWidget, public ConfigWidget
 {
 	QLabel *label;
 

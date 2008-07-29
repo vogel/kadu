@@ -27,6 +27,13 @@ endif (COMMAND cmake_policy)
 
 add_library (window_notify ${window_notify} ${SOURCES} ${MOC_FILES})
 add_custom_target (window_notify-translations DEPENDS ${TRANSLATION_FILES})
+if (window_notify STREQUAL STATIC)
+set_target_properties(autoaway PROPERTIES COMPILE_FLAGS "-DKADULIB" )
+else (window_notify STREQUAL STATIC)
+if (WIN32)
+target_link_libraries(window_notify kadu_core notify)
+endif (WIN32)
+endif (window_notify STREQUAL STATIC)
 add_dependencies (window_notify window_notify-translations)
 
 install (TARGETS window_notify DESTINATION lib/kadu/modules)

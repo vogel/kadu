@@ -8,6 +8,7 @@
 #include "configuration_aware_object.h"
 #include "html_document.h"
 #include "themes.h"
+#include "exports.h"
 
 class ChatWidget;
 class EmotsWalker;
@@ -22,7 +23,7 @@ enum EmoticonsStyle
 /**
 	Menad�er emotikon�w
 **/
-class EmoticonsManager : public Themes, ConfigurationAwareObject
+class KADUAPI EmoticonsManager : public Themes, ConfigurationAwareObject
 {
 	struct EmoticonsListItem
 	{
@@ -98,7 +99,7 @@ public:
 
 };
 
-extern EmoticonsManager *emoticons;
+extern KADUAPI EmoticonsManager *emoticons;
 
 /**
 	Klasa s�u��ca do wyboru emotikonki z zestawu

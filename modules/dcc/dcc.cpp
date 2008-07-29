@@ -15,12 +15,17 @@
 #include <QtGui/QMessageBox>
 #include <QtGui/QPushButton>
 
+#ifdef _WIN32
+#include <winsock2.h>
+#undef MessageBox
+#else
 #include <stdlib.h>
 #include <fcntl.h>
 #include <unistd.h>
 #include <sys/socket.h>
 #include <sys/un.h>
 #include <netinet/in.h>
+#endif
 
 #include "config_file.h"
 #include "dcc.h"

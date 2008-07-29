@@ -31,6 +31,13 @@ endif (COMMAND cmake_policy)
 
 add_library (autoaway ${autoaway} ${SOURCES} ${MOC_FILES})
 add_custom_target (autoaway-translations DEPENDS ${TRANSLATION_FILES})
+if (autoaway STREQUAL STATIC)
+set_target_properties(autoaway PROPERTIES COMPILE_FLAGS "-DKADULIB" )
+else (autoaway STREQUAL STATIC)
+if (WIN32)
+target_link_libraries(autoaway kadu_core)
+endif (WIN32)
+endif (autoaway STREQUAL STATIC)
 add_dependencies (autoaway autoaway-translations)
 
 install (TARGETS autoaway DESTINATION lib/kadu/modules)

@@ -5,6 +5,8 @@
 
 #include "usergroup.h"
 
+#include "exports.h"
+
 class QLineEdit;
 class QListWidget;
 
@@ -30,7 +32,7 @@ public:
 
 };
 
-class IgnoredManager
+class KADUAPI IgnoredManager
 {
 public:
 	typedef QPair<UserListElements, bool> IgnoredEntry;

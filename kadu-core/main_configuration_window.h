@@ -3,6 +3,8 @@
 
 #include "configuration_window.h"
 
+#include "exports.h"
+
 class QCheckBox;
 
 class ChatMessage;
@@ -19,7 +21,7 @@ class MainConfigurationWindow;
 	kontrolek i odpowiedniej reakcji na nie.
  **/
 // TODO: zamiast slota zwyk�a metoda wirtualna?
-class ConfigurationUiHandler : public virtual QObject
+class KADUAPI ConfigurationUiHandler : public virtual QObject
 {
 	Q_OBJECT
 
@@ -35,7 +37,7 @@ public slots:
 	@author Vogel
 	@short G��wne okno konfiguracyjne.
  **/
-class MainConfigurationWindow : public ConfigurationWindow
+class KADUAPI MainConfigurationWindow : public ConfigurationWindow
 {
 	Q_OBJECT
 

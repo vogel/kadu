@@ -33,7 +33,7 @@ static QMutex debug_mutex;
 static int last;
 static struct timeval tv;
 static struct timezone tz;
-bool showTimesInDebug = false;
+bool KADU_EXPORT showTimesInDebug = false;
 
 void _kdebug_with_mask(int mask, const char* file, const int line, const char* format,...)
 {

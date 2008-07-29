@@ -24,12 +24,17 @@
 #ifndef ACTIVATE_H
 #define ACTIVATE_H
 
+#include "exports.h"
+
+
 #ifdef Q_OS_X11
 #include <QtGui/QX11Info>
 
 void create_netwm_atoms(Display *d);
 
 void activateWindow(Qt::HANDLE id);
+#elif defined (Q_OS_WIN)
+KADUAPI void activateWindow(void* id);
 #else
 #define activateWindow(x)
 #endif

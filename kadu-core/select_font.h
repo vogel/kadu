@@ -12,9 +12,11 @@
 
 #include <QtGui/QWidget>
 
+#include "exports.h"
+
 class QLineEdit;
 
-class SelectFont : public QWidget
+class KADUAPI SelectFont : public QWidget
 {
 	Q_OBJECT
 
