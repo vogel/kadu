@@ -407,7 +407,7 @@ void UserListElement::deleteProtocol(const QString &protocolName, bool massively
 
 QVariant UserListElement::data(const QString &name) const
 {
-	kdebugf();
+//	kdebugf();
 
 	//privateData->lock();
 
@@ -427,7 +427,7 @@ void UserListElement::setDNSName(const QString &protocolName, const QString &dns
 
 void UserListElement::setStatus(const QString &protocolName, const UserStatus &status, bool massively, bool last) const
 {
-	kdebugf();
+//	kdebugf();
 
 	//privateData->lock();
 	if (!privateData->protocols.contains(protocolName))

@@ -217,7 +217,7 @@ void UserGroup::removeUser(const UserListElement &ule, bool massively, bool last
 //	kdebugmf(KDEBUG_FUNCTION_START, "start: group:'%s' altNick:'%s' mass:%d last:%d\n", name(), ule.altNick().local8Bit().data(), massively, last);
 //	printBacktrace("xxx");
 
-	kdebugf();
+//	kdebugf();
 
 // 	ule.privateData->lock();
 

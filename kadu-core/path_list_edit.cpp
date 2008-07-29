@@ -123,7 +123,8 @@ void PathListEditWindow::setPathList(const QStringList &list)
 {
 	PathListWidget->clear();
 	PathListWidget->insertItems(0, list);
-	PathListWidget->item(0)->setSelected(true);
+	if (PathListWidget->item(0))
+		PathListWidget->item(0)->setSelected(true);
 }
 
 bool PathListEditWindow::validatePath(QString &path)
