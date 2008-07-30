@@ -11,6 +11,10 @@
 #include <QtGui/QCheckBox>
 #include <QtGui/QSpinBox>
 
+#ifdef Q_OS_WIN
+#include <windows.h>
+#endif
+
 #include "autoaway.h"
 #include "config_file.h"
 #include "debug.h"
@@ -205,6 +209,13 @@ void AutoAway::checkIdleTime()
 		idleTime = 0;
 	}
 
+#ifdef Q_OS_WIN
+	LASTINPUTINFO lpi;
+	lpi.cbSize=sizeof(LASTINPUTINFO);
+	GetLastInputInfo(&lpi);
+	idleTime=(GetTickCount() - lpi.dwTime)/1000;
+#else
+
 //	sprawdzenie czy wzrosla liczba obsluzonych przerwan klawiatury lub myszki
 	QFile f("/proc/interrupts");
 	if (f.open(IO_ReadOnly))
@@ -237,6 +248,7 @@ void AutoAway::checkIdleTime()
 			memcpy(interrupts, currentInterrupts, INTCOUNT*sizeof(interrupts[0]));
 		}
 	}
+#endif
 
 	idleTime += checkInterval;
 

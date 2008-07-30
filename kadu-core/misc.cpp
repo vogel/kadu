@@ -22,6 +22,7 @@
 #include <QtGui/QLineEdit>
 #include <QtGui/QPainter>
 #include <QtGui/QPushButton>
+#include <QtGui/QDesktopServices>
 
 #ifdef Q_WS_WIN
 #include <windows.h>
@@ -624,9 +625,15 @@ void openWebBrowser(const QString &link)
 	QString webBrowser = config_file.readEntry("Chat", "WebBrowser", QString::null);
 	if (webBrowser.isEmpty())
 	{
-		MessageBox::msg(qApp->translate("@default", QT_TR_NOOP("Web browser was not specified. Visit the configuration section")), false, "Warning");
-		kdebugmf(KDEBUG_INFO, "Web browser NOT specified.\n");
-		return;
+		if(!QDesktopServices::openUrl(QUrl(link))){
+			MessageBox::msg(qApp->translate("@default", QT_TR_NOOP("Web browser was not specified. Visit the configuration section")), false, "Warning");
+			kdebugmf(KDEBUG_INFO, "Web browser NOT specified.\n");
+			return;
+		}
+		else {
+			kdebugf2();
+			return;
+		}
 	}
 	if (!webBrowser.contains("%1"))
 		webBrowser.append(" \"" + link + '"');
