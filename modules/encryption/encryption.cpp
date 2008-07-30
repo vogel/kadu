@@ -42,7 +42,7 @@ EncryptionManager* encryption_manager;
 
 extern "C" int encryption_init(bool firstLoad)
 {
-	encryption_manager = new EncryptionManager();
+	encryption_manager = new EncryptionManager(firstLoad);
 	MainConfigurationWindow::registerUiFile(dataPath("kadu/modules/configuration/encryption.ui"), encryption_manager);
 
 	return 0;
@@ -81,7 +81,7 @@ bool disableSendKey(const UserListElements &ules)
 	return true;
 }
 
-EncryptionManager::EncryptionManager()
+EncryptionManager::EncryptionManager(bool firstLoad)
 	: MenuId(0), EncryptionEnabled(), EncryptionPossible(), KeysManagerDialog(0)
 {
 	kdebugf();
@@ -103,10 +103,8 @@ EncryptionManager::EncryptionManager()
 			disableSendKey
 	);
 
-//	connect(action, SIGNAL(addedToToolbar(const UserGroup*, ToolButton*, ToolBar*)),
-//		this, SLOT(setupEncrypt(const UserGroup*)));
-
-	ToolBar::addDefaultAction("Chat toolbar 1", "encryptionAction", 4);
+	if (firstLoad)
+		ChatEditBox::addAction("encryptionAction");
 
 	sendPublicKeyActionDescription = new ActionDescription(
 		ActionDescription::TypeUser, "sendPublicKeyAction",

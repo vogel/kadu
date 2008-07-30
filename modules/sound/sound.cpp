@@ -34,7 +34,8 @@ SoundSlots* sound_slots;
 extern "C" KADU_EXPORT int sound_init(bool firstLoad)
 {
 	kdebugf();
-	new SoundManager("sounds", "sound.conf");
+
+	new SoundManager(firstLoad, "sounds", "sound.conf");
 	MainConfigurationWindow::registerUiFile(dataPath("kadu/modules/configuration/sound.ui"), sound_manager);
 
 	qRegisterMetaType<SoundDevice>("SoundDevice");
@@ -176,7 +177,7 @@ void SampleRecordThread::stop()
 	kdebugf2();
 }
 
-SoundManager::SoundManager(const QString& name, const QString& configname) : Notifier(),
+SoundManager::SoundManager(bool firstLoad, const QString& name, const QString& configname) : Notifier(),
 	themes(new Themes(name, configname)),
 	lastsoundtime(), mute(false), PlayingThreads(), RecordingThreads(),
 	play_thread(new SoundPlayThread()), simple_player_count(0)
@@ -191,7 +192,7 @@ SoundManager::SoundManager(const QString& name, const QString& configname) : Not
 	play_thread->start();
 
 	sound_manager = this;
-	sound_slots = new SoundSlots(this);
+	sound_slots = new SoundSlots(firstLoad, this);
 
 	themes->setPaths(QStringList::split(QRegExp("(;|:)"), config_file.readEntry("Sounds", "SoundPaths")));
 

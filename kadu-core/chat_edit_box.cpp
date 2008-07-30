@@ -82,3 +82,41 @@ ChatWidget * ChatEditBox::chatWidget()
 
 	return 0;
 }
+
+void ChatEditBox::createDefaultToolbars(QDomElement toolbarsConfig)
+{
+	QDomElement dockAreaConfig = getDockAreaConfigElement(toolbarsConfig, "chat_topDockArea");
+	QDomElement toolbarConfig = xml_config_file->createElement(dockAreaConfig, "ToolBar");
+
+	addToolButton(toolbarConfig, "autoSendAction");
+	addToolButton(toolbarConfig, "clearChatAction");
+	addToolButton(toolbarConfig, "insertEmoticonAction");
+	addToolButton(toolbarConfig, "whoisAction");
+	addToolButton(toolbarConfig, "insertImageAction");
+	addToolButton(toolbarConfig, "editUserAction");
+
+	dockAreaConfig = getDockAreaConfigElement(toolbarsConfig, "chat_bottomDockArea");
+	toolbarConfig = xml_config_file->createElement(dockAreaConfig, "ToolBar");
+	toolbarConfig.setAttribute("x_offset", 0);
+
+	addToolButton(toolbarConfig, "boldAction");
+	addToolButton(toolbarConfig, "italicAction");
+	addToolButton(toolbarConfig, "underlineAction");
+	addToolButton(toolbarConfig, "colorAction");
+
+	toolbarConfig = xml_config_file->createElement(dockAreaConfig, "ToolBar");
+	toolbarConfig.setAttribute("x_offset", 200);
+
+	addToolButton(toolbarConfig, "sendAction", true);
+}
+
+void ChatEditBox::addAction(const QString &actionName, bool showLabel)
+{
+	addToolButton(findExistingToolbar("chat"), actionName, showLabel);
+	ConfigurationAwareObject::notifyAll(); // TODO
+}
+
+void ChatEditBox::configurationUpdated()
+{
+	refreshToolBars("chat");
+}

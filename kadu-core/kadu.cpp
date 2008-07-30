@@ -20,6 +20,7 @@
 #include <unistd.h>
 
 #include "about.h"
+#include "chat_edit_box.h"
 #include "chat_manager.h"
 #include "config_file.h"
 #include "debug.h"
@@ -476,13 +477,6 @@ Kadu::Kadu(QWidget *parent)
 		"Offline", tr("Change status")
 	);
 	connect(showStatusActionDescription, SIGNAL(actionCreated(KaduAction *)), this, SLOT(showStatusActionCreated(KaduAction *)));
-
-	ToolBar::addDefaultAction("Kadu toolbar", "inactiveUsersAction");
-	ToolBar::addDefaultAction("Kadu toolbar", "descriptionUsersAction");
-	ToolBar::addDefaultAction("Kadu toolbar", "configurationAction");
-	ToolBar::addDefaultAction("Kadu toolbar", "editUserAction");
-	ToolBar::addDefaultAction("Kadu toolbar", "openSearchAction");
-	ToolBar::addDefaultAction("Kadu toolbar", "addUserAction");
 
 	/* guess what */
 	createMenu();
@@ -1917,6 +1911,7 @@ void Kadu::refreshPrivateStatusFromConfigFile()
 
 void Kadu::configurationUpdated()
 {
+	refreshToolBars(""); // TODO
 	refreshPrivateStatusFromConfigFile();
 
 	changeAppearance();
@@ -2407,6 +2402,44 @@ void Kadu::createDefaultConfiguration()
 	config_file.addVariable("ShortCuts", "kadu_searchuser", "Ctrl+F");
 	config_file.addVariable("ShortCuts", "kadu_showoffline", "F9");
 	config_file.addVariable("ShortCuts", "kadu_showonlydesc", "F10");
+
+	createAllDefaultToolbars();
+}
+
+void Kadu::createAllDefaultToolbars()
+{
+	// dont use getToolbarsConfigElement here, we have to be sure that this element don'e exists
+	QDomElement toolbarsConfig = xml_config_file->findElement(xml_config_file->rootElement(), "Toolbars");
+
+	if (!toolbarsConfig.isNull())
+		return; // no need for defaults...
+
+	toolbarsConfig = xml_config_file->createElement(xml_config_file->rootElement(), "Toolbars");
+
+	Kadu::createDefaultToolbars(toolbarsConfig);
+	ChatEditBox::createDefaultToolbars(toolbarsConfig);
+	SearchDialog::createDefaultToolbars(toolbarsConfig);
+
+	xml_config_file->sync();
+}
+
+void Kadu::createDefaultToolbars(QDomElement toolbarsConfig)
+{
+	QDomElement dockAreaConfig = getDockAreaConfigElement(toolbarsConfig, "topDockArea");
+	QDomElement toolbarConfig = xml_config_file->createElement(dockAreaConfig, "ToolBar");
+
+	addToolButton(toolbarConfig, "inactiveUsersAction");
+	addToolButton(toolbarConfig, "descriptionUsersAction");
+	addToolButton(toolbarConfig, "configurationAction");
+	addToolButton(toolbarConfig, "editUserAction");
+	addToolButton(toolbarConfig, "openSearchAction");
+	addToolButton(toolbarConfig, "addUserAction");
+}
+
+void Kadu::addAction(const QString &actionName, bool showLabel)
+{
+	addToolButton(findExistingToolbar(""), actionName, showLabel);
+	ConfigurationAwareObject::notifyAll(); // TODO
 }
 
 void Kadu::closeEvent(QCloseEvent *event)

@@ -19,6 +19,7 @@
 #include <QtGui/QTreeWidgetItem>
 
 #include "chat_manager.h"
+#include "config_file.h"
 #include "debug.h"
 #include "kadu.h"
 #include "message_box.h"
@@ -237,13 +238,6 @@ void SearchDialog::initModule()
 		searchActionsSlot, SLOT(chatFoundActionActivated(QAction *, bool)),
 		"OpenChat", tr("&Chat")
 	);
-
-	ToolBar::addDefaultAction("Search toolbar", "firstSearchAction", -1, true);
-	ToolBar::addDefaultAction("Search toolbar", "nextResultsAction", 0, true);
-	ToolBar::addDefaultAction("Search toolbar", "stopSearchAction", 1, true);
-	ToolBar::addDefaultAction("Search toolbar", "clearSearchAction", 2, true);
-	ToolBar::addDefaultAction("Search toolbar", "addSearchedAction", 3, true);
-	ToolBar::addDefaultAction("Search toolbar", "chatSearchedAction", 4, true);
 
 	kdebugf2();
 }
@@ -696,6 +690,19 @@ void SearchActionsSlots::firstSearchActionActivated(QAction *sender, bool toggle
 	SearchDialog *search = dynamic_cast<SearchDialog *>(sender->parent());
 	if (search)
 		search->firstSearch();
+}
+
+void SearchDialog::createDefaultToolbars(QDomElement toolbarsConfig)
+{
+	QDomElement dockAreaConfig = getDockAreaConfigElement(toolbarsConfig, "search_bottomDockArea");
+	QDomElement toolbarConfig = xml_config_file->createElement(dockAreaConfig, "ToolBar");
+
+	addToolButton(toolbarConfig, "firstSearchAction", true);
+	addToolButton(toolbarConfig, "nextResultsAction", true);
+	addToolButton(toolbarConfig, "stopSearchAction", true);
+	addToolButton(toolbarConfig, "clearSearchAction", true);
+	addToolButton(toolbarConfig, "addSearchedAction", true);
+	addToolButton(toolbarConfig, "chatSearchedAction", true);
 }
 
 

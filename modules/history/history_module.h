@@ -35,7 +35,7 @@ private slots:
 	void chatDestroying(ChatWidget *chat);
 
 public:
-	HistoryModule();
+	HistoryModule(bool firstLoad);
 	virtual ~HistoryModule();
 
 	virtual void mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow);

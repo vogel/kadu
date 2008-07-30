@@ -142,13 +142,6 @@ void ToolBar::addAction(const QString &actionName, bool showLabel, QAction *afte
 	ToolBarActions.append(newAction);
 }
 
-void ToolBar::usersChanged()
-{
-// 	FOREACH(actionIterator, ToolBarActions)
-// 		if ((*actionIterator).button)
-// 			(*actionIterator).button->usersChanged();
-}
-
 void ToolBar::moveAction(const QString &actionName, bool showLabel, QAction *after)
 {
  	bool actionFind = false;
@@ -464,64 +457,6 @@ void ToolBar::loadFromConfig(QDomElement toolbar_element)
 	kdebugf2();
 }
 
-void ToolBar::addDefaultAction(const QString &toolbar, const QString &actionName, int index, bool showLabel)
-{
-	kdebugf();
-
-	QList<ToolBarAction> &actions = DefaultActions[toolbar];
-
-	ToolBarAction action;
-	action.actionName = actionName;
-	action.showLabel = showLabel;
-	action.action = 0;
-	action.button = 0;
-
-	if (index >= (int)actions.size())
-	{
-		kdebugm(KDEBUG_ERROR, "requested action index (%d) >= actions size (%u)!\n", index, actions.size());
-		printBacktrace("requested action index >= actions size!");
-		index = -1;
-	}
-
-	if (index < 0)
-		actions.push_back(action);
-	else
-		actions.insert(index, action);
-
-	kdebugf2();
-}
-
-void ToolBar::loadDefault()
-{
-// 	kdebugf();
-// 
-// 	if (DefaultActions.contains(name()))
-// 	{
-// 		const QList<ToolBarAction>& actions = DefaultActions[name()];
-// 		CONST_FOREACH(i, actions)
-// 			addAction((*i).actionName, (*i).showLabel, 0);
-// 	}
-// 
-// 	// TODO: why calling updateButtons does not work?
-// 	QTimer::singleShot(0, this, SLOT(updateButtons()));
-// 
-// 	kdebugf2();
-}
-
-const UserGroup* ToolBar::selectedUsers() const
-{
-// 	kdebugf();
-// 	DockArea *dockArea = dynamic_cast<DockArea*>(area());
-// 	const UserGroup *users = NULL;
-
-	// dont segfault on floating toolbars
-// 	if (dockArea)
-// 		users = dockArea->selectedUsers();
-// 
-// 	kdebugf2();
-	return 0; //users;
-}
-
 QMenu * ToolBar::createContextMenu(QToolButton *button)
 {
 	QMenu *menu = new QMenu(this);
@@ -613,7 +548,7 @@ void ToolBar::setBlockToolbars(bool checked)
 {
 	QDomElement toolbarsConfig = xml_config_file->findElement(xml_config_file->rootElement(), "Toolbars");
 	if (toolbarsConfig.isNull())
-		toolbarsConfig = xml_config_file->createElement(xml_config_file->rootElement(), "ToolBars");
+		toolbarsConfig = xml_config_file->createElement(xml_config_file->rootElement(), "Toolbars");
 
 	toolbarsConfig.setAttribute("blocked", checked);
 	ConfigurationAwareObject::notifyAll();

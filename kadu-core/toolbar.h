@@ -50,7 +50,6 @@ class KADUAPI ToolBar : public QToolBar, public ConfigurationAwareObject
 	};
 
 	QList<ToolBarAction> ToolBarActions;
-//	ToolButton *dragButton; /*!< przeci?gany przycisk akcji */
 
 	// TODO: remove, used only when reading from config
 	int XOffset;
@@ -135,21 +134,6 @@ public:
 	**/
 	void loadFromConfig(QDomElement parent_element);
 
-
-	static void addDefaultAction(const QString &toolbar, const QString &actionName, int index = -1, bool showLabel = false);
-	void loadDefault();
-
-	/**
-		\fn const UserGroup* selectedUsers() const
-		Returns list of users that will be affected by activated action.
-		It depends on where the toolbar is located. If toolbar is in chat
-		window, selected users are the users in chat. If toolbar is the
-		main toolbar, selected users are the selected ones in contact
-		list, and so on...
-		Returns NULL if toolbar is not connected to user list.
-	**/
-	const UserGroup * selectedUsers() const;
-
 	/**
 		\fn hasAction(QString action_name)
 		\param action_name nazwa szukanej akcji
@@ -169,8 +153,6 @@ public slots:
 		akcje znajduj?ce si? na pasku.
 	**/
 	void writeToConfig(QDomElement parent_element);
-
-	void usersChanged();
 
 };
 

@@ -13,17 +13,25 @@
 #include <action.h>
 #include <kadu_main_window.h>
 
+#include "configuration_aware_object.h"
+
 class CustomInput;
 
-class ChatEditBox : public KaduMainWindow
+class ChatEditBox : public KaduMainWindow, ConfigurationAwareObject
 {
 	Q_OBJECT
 
 	CustomInput *InputBox;
 
+protected:
+	virtual void configurationUpdated();
+
 public:
 	ChatEditBox(QWidget *parent);
 	virtual ~ChatEditBox();
+
+	static void createDefaultToolbars(QDomElement parentConfig);
+	static void addAction(const QString &actionName, bool showLabel = false);
 
 	// TODO: remove?
 	CustomInput * inputBox();

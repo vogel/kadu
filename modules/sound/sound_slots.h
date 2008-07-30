@@ -76,7 +76,7 @@ class SoundSlots : public QObject, public ConfigurationAwareObject
 	protected:
 		void configurationUpdated();
 	public:
-		SoundSlots(QObject *parent = 0);
+		SoundSlots(bool firstLoad, QObject *parent = 0);
 		~SoundSlots();
 };
 

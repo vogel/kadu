@@ -52,7 +52,7 @@ class EncryptionManager : public ConfigurationUiHandler
 		void keyAdded(UserListElement ule);
 
 	public:
-		EncryptionManager();
+		EncryptionManager(bool firstLoad);
 		virtual ~EncryptionManager();
 
 		virtual void mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow);

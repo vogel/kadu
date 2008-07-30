@@ -103,6 +103,7 @@ class KADUAPI Kadu : public KaduMainWindow, ConfigurationAwareObject
 
 	void import_0_5_0_configuration();
 	void createDefaultConfiguration();
+	void createAllDefaultToolbars();
 
 private slots:
 	void inactiveUsersActionActivated(QAction *sender, bool toggled);
@@ -168,6 +169,9 @@ protected:
 public:
 	Kadu(QWidget *parent = 0);
 	~Kadu();
+
+	static void createDefaultToolbars(QDomElement parentConfig);
+	static void addAction(const QString &actionName, bool showLabel = false);
 
 	virtual bool supportsActionType(ActionDescription::ActionType type) {
 		return type & (ActionDescription::TypeGlobal | ActionDescription::TypeUserList | ActionDescription::TypeUser); }

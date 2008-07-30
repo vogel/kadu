@@ -31,6 +31,14 @@ protected:
 	void writeToolBarsToConfig(const QString &prefix);
 	void writeToolBarsToConfig(QDomElement parentConfig, const QString &configName, Qt::ToolBarArea area);
 
+	static QDomElement getToolbarsConfigElement();
+	static QDomElement getDockAreaConfigElement(QDomElement toolbarsConfig, const QString &name);
+	static void addToolButton(QDomElement toolbarConfig, const QString &actionName, bool showLabel = false);
+	static QDomElement findExistingToolbarOnArea(const QString &areaName);
+	static QDomElement findExistingToolbar(const QString &prefix);
+
+	void refreshToolBars(const QString &prefix);
+
 	void contextMenuEvent(QContextMenuEvent *event);
 
 public:

@@ -768,7 +768,6 @@ bool ModulesManager::activateModule(const QString& module_name)
 	m.translator = loadModuleTranslation(module_name);
 
 	int res = init(!everLoaded.contains(module_name));
-	printf("activate: %s %d\n", module_name.toLocal8Bit().data(), !everLoaded.contains(module_name));
 	if (!everLoaded.contains(module_name))
 	{
 		everLoaded.append(module_name);

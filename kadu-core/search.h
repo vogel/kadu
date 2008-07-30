@@ -111,6 +111,8 @@ public:
 	SearchDialog(QWidget *parent=0, UinType whoisSearchUin = 0);
 	~SearchDialog(void);
 
+	static void createDefaultToolbars(QDomElement parentConfig);
+
 	static void initModule();
 	static void closeModule();
 

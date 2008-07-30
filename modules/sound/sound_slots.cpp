@@ -81,7 +81,8 @@ void SoundConfigurationWidget::themeChanged(int index)
 	soundFileSelectFile->setEnabled(index == 0);
 }
 
-SoundSlots::SoundSlots(QObject *parent) : QObject(parent),
+SoundSlots::SoundSlots(bool firstLoad, QObject *parent)
+	: QObject(parent),
 	soundfiles(), soundNames(), soundTexts(), SamplePlayingTestMsgBox(0), SamplePlayingTestDevice(0),
 	SamplePlayingTestSample(0), SampleRecordingTestMsgBox(0), SampleRecordingTestDevice(0),
 	SampleRecordingTestSample(0), FullDuplexTestMsgBox(0), FullDuplexTestDevice(0), FullDuplexTestSample(0)
@@ -96,7 +97,10 @@ SoundSlots::SoundSlots(QObject *parent) : QObject(parent),
 		"Unmute", tr("Mute sounds"), true, tr("Unmute sounds")
 	);
 	connect(mute_action, SIGNAL(actionCreated(KaduAction *)), this, SLOT(setMuteActionState()));
-	ToolBar::addDefaultAction("Kadu toolbar", "muteSoundsAction", 0);
+
+	if (firstLoad)
+		Kadu::addAction("muteSoundsAction");
+
 	setMuteActionState();
 
 	kdebugf2();

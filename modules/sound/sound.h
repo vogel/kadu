@@ -176,7 +176,7 @@ class SOUNDAPI SoundManager : public Notifier, public ConfigurationUiHandler
 
 	public:
 
-		SoundManager(const QString& name, const QString& configname);
+		SoundManager(bool firstLoad, const QString& name, const QString& configname);
 		~SoundManager();
 
 		virtual void mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow);

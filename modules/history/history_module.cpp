@@ -13,6 +13,7 @@
 #include <sys/types.h>
 
 #include "action.h"
+#include "chat_edit_box.h"
 #include "chat_manager.h"
 #include "chat_message.h"
 #include "config_file.h"
@@ -33,7 +34,7 @@ extern "C" KADU_EXPORT int history_init(bool firstLoad)
 {
 	kdebugf();
 
-	history_module = new HistoryModule();
+	history_module = new HistoryModule(firstLoad);
 	MainConfigurationWindow::registerUiFile(dataPath("kadu/modules/configuration/history.ui"), history_module);
 
 	kdebugf2();
@@ -68,7 +69,7 @@ bool disableNonProtocolUles(KaduAction *action)
 	return false;
 }
 
-HistoryModule::HistoryModule()
+HistoryModule::HistoryModule(bool firstLoad)
 {
 	kdebugf();
 
@@ -96,8 +97,11 @@ HistoryModule::HistoryModule()
 		history, SLOT(imageReceivedAndSaved(UinType, uint32_t, uint32_t, const QString &)));
 	connect(kadu, SIGNAL(removingUsers(UserListElements)), this, SLOT(removingUsers(UserListElements)));
 
-	ToolBar::addDefaultAction("Kadu toolbar", "showHistoryAction", 4);
-	ToolBar::addDefaultAction("Chat toolbar 1", "showHistoryAction", 3);
+	if (firstLoad)
+	{
+		Kadu::addAction("showHistoryAction");
+		ChatEditBox::addAction("showHistoryAction");
+	}
 
 	historyActionDescription = new ActionDescription(
 		ActionDescription::TypeUser, "showHistoryAction",
