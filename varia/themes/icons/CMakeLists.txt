@@ -6,7 +6,7 @@ exec_program (./get-list.sh ${CMAKE_CURRENT_SOURCE_DIR}
 	ARGS "y" ${ICON_THEMES}
 	OUTPUT_VARIABLE INSTALL_ICON_THEMES)
 
-if (ICON_THEMES)
+if (INSTALL_ICON_THEMES)
 	add_custom_target (icon_themes
 		DEPENDS ${INSTALL_ICON_THEMES})
 
@@ -28,4 +28,4 @@ if (ICON_THEMES)
 	)
 
 	add_dependencies (kadu icon_themes)
-endif (ICON_THEMES)
+endif (INSTALL_ICON_THEMES)

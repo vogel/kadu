@@ -16,4 +16,4 @@ if test "$1" == "ON"; then
 	done
 fi
 
-echo $available_icon_themes
+echo -n $available_icon_themes

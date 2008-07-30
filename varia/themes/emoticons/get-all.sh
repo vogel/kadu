@@ -16,4 +16,4 @@ if test "$1" == "ON"; then
 	done
 fi
 
-echo $available_emots_themes
+echo -n $available_emots_themes

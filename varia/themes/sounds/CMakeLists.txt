@@ -6,14 +6,12 @@ exec_program (./get-list.sh ${CMAKE_CURRENT_SOURCE_DIR}
 	ARGS "y" ${SOUND_THEMES}
 	OUTPUT_VARIABLE INSTALL_SOUND_THEMES)
 
-if (SOUND_THEMES)
-	message (STATUS "Found sound themes: " ${SOUND_THEMES})
-
+if (INSTALL_SOUND_THEMES)
 	add_custom_target (sound_themes
 		DEPENDS ${INSTALL_SOUND_THEMES})
 
 	foreach (INSTALL_SOUND_THEME ${INSTALL_SOUND_THEMES})
-		message (STATUS "Will install sound theme: " ${INSTALL_SOUND_THEME})
+		message (STATUS "Sound theme: " ${INSTALL_SOUND_THEME})
 		add_custom_command (OUTPUT ${CMAKE_CURRENT_SOURCE_DIR}/${INSTALL_SOUND_THEME}
 			COMMAND  ../../scripts/autodownload sound ${INSTALL_SOUND_THEME}
 			COMMENT "Downloading sound theme ${INSTALL_SOUND_THEMES}"
@@ -28,5 +26,5 @@ if (SOUND_THEMES)
 		PATTERN ".svn" EXCLUDE
 		PATTERN "*.wav"
 	)
-endif (SOUND_THEMES)
+endif (INSTALL_SOUND_THEMES)
 

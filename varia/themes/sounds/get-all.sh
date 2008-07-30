@@ -16,4 +16,4 @@ if test "$1" == "ON"; then
 	done
 fi
 
-echo $available_sound_themes
+echo -n $available_sound_themes

@@ -26,4 +26,4 @@ done
 
 rm -f .temp
 
-echo $result
+echo -n $result
