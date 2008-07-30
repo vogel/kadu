@@ -13,13 +13,15 @@
 #include <QtCore/QStringList>
 #include <QtCore/QMap>
 
+#include "exports.h"
+
 /**
 	Klasa obs�uguj�ca r��ne zestawy (jak ikony i emotikony)
 	\class Themes
 	\brief Klasa zarz�dzaj�ca zestawami
 **/
 
-class Themes : public QObject
+class KADUAPI Themes : public QObject
 {
 	Q_OBJECT
 

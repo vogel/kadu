@@ -71,7 +71,7 @@ class QLibrary;
 	\struct ModuleInfo
 	\brief Informacje o module.
 **/
-struct ModuleInfo
+struct KADUAPI ModuleInfo
 {
 	QStringList depends; /*!< Jakie inne modu�y s� wymagane przez ten modu�. */
 	QStringList conflicts; /*!< Z jakimi modu�ami ten modu� konfliktuje. */

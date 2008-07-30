@@ -12,9 +12,11 @@
 
 #include <QtGui/QWidget>
 
+#include "exports.h"
+
 class QLineEdit;
 
-class SelectFile : public QWidget
+class KADUAPI SelectFile : public QWidget
 {
 	Q_OBJECT
 

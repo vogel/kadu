@@ -16,6 +16,8 @@
 
 #include "userlistelement.h"
 
+#include "exports.h"
+
 class QCheckBox;
 class QHostInfo;
 class QLabel;
@@ -33,7 +35,7 @@ class CreateNotifier;
 	\class UserInfo
 	\brief Okno dialogowe pokazuj�ce informacje o wybranym kontakcie
 **/
-class UserInfo : public QWidget
+class KADUAPI UserInfo : public QWidget
 {
 	Q_OBJECT
 
