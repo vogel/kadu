@@ -22,6 +22,8 @@
 #include "usergroup.h"
 #include "userlist.h"
 
+#include "sound_exports.h"
+
 /**
  * @defgroup sound Sound
  * The sound module.
@@ -133,7 +135,7 @@ class SoundPlayThread : public QThread
 
 class SoundConfigurationWidget;
 
-class SoundManager : public Notifier, public ConfigurationUiHandler
+class SOUNDAPI SoundManager : public Notifier, public ConfigurationUiHandler
 {
     Q_OBJECT
 	private:
@@ -359,7 +361,7 @@ class SoundManager : public Notifier, public ConfigurationUiHandler
 		void setFlushingEnabledImpl(SoundDevice device, bool enabled);
 };
 
-extern SoundManager* sound_manager;
+extern SOUNDAPI SoundManager* sound_manager;
 /** @} */
 
 #endif

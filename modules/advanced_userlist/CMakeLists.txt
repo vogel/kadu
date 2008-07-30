@@ -32,6 +32,13 @@ endif (COMMAND cmake_policy)
 
 add_library (advanced_userlist ${advanced_userlist} ${SOURCES} ${MOC_FILES})
 add_custom_target (advanced_userlist-translations DEPENDS ${TRANSLATION_FILES})
+if (advanced_userlist STREQUAL STATIC)
+set_target_properties(dcc PROPERTIES COMPILE_FLAGS "-DKADULIB" )
+else (advanced_userlist STREQUAL STATIC)
+if (WIN32)
+target_link_libraries(advanced_userlist kadu_core notify)
+endif (WIN32)
+endif (advanced_userlist STREQUAL STATIC)
 add_dependencies (advanced_userlist advanced_userlist-translations)
 
 install (TARGETS advanced_userlist DESTINATION lib/kadu/modules)

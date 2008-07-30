@@ -34,11 +34,20 @@ if (COMMAND cmake_policy)
 endif (COMMAND cmake_policy)
 
 pkg_search_module (SNDFILE REQUIRED sndfile>=1.0)
+include_directories (${SNDFILE_INCLUDE_DIRS})
+link_directories (${SNDFILE_LIBRARY_DIRS})
 
 add_library (sound ${sound} ${SOURCES} ${MOC_FILES})
 add_custom_target (sound-translations DEPENDS ${TRANSLATION_FILES})
 add_dependencies (sound sound-translations)
-
+set_target_properties(sound PROPERTIES COMPILE_FLAGS "-DSOUND_BUILD" )
+if (sound STREQUAL STATIC)
+set_target_properties(sound PROPERTIES COMPILE_FLAGS "-DKADULIB" )
+else (sound STREQUAL STATIC)
+if (WIN32)
+target_link_libraries(sound kadu_core notify)
+endif (WIN32)
+endif (sound STREQUAL STATIC)
 target_link_libraries (sound ${SNDFILE_LIBRARIES})
 include_directories (${SNDFILE_INCLUDE_DIRS})
 

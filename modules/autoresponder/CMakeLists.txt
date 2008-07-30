@@ -31,6 +31,13 @@ endif (COMMAND cmake_policy)
 
 add_library (autoresponder ${autoresponder} ${SOURCES} ${MOC_FILES})
 add_custom_target (autoresponder-translations DEPENDS ${TRANSLATION_FILES})
+if (autoresponder STREQUAL STATIC)
+set_target_properties(dcc PROPERTIES COMPILE_FLAGS "-DKADULIB" )
+else (autoresponder STREQUAL STATIC)
+if (WIN32)
+target_link_libraries(autoresponder kadu_core)
+endif (WIN32)
+endif (autoresponder STREQUAL STATIC)
 add_dependencies (autoresponder autoresponder-translations)
 
 install (TARGETS autoresponder DESTINATION lib/kadu/modules)

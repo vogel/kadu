@@ -31,7 +31,7 @@
 SoundManager* sound_manager = NULL;
 SoundSlots* sound_slots;
 
-extern "C" int sound_init(bool firstLoad)
+extern "C" KADU_EXPORT int sound_init(bool firstLoad)
 {
 	kdebugf();
 	new SoundManager("sounds", "sound.conf");
@@ -44,7 +44,7 @@ extern "C" int sound_init(bool firstLoad)
 	return 0;
 }
 
-extern "C" void sound_close()
+extern "C" KADU_EXPORT void sound_close()
 {
 	kdebugf();
 	MainConfigurationWindow::unregisterUiFile(dataPath("kadu/modules/configuration/sound.ui"), sound_manager);

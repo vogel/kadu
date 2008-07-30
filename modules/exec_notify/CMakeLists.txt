@@ -8,7 +8,7 @@ set (MOC_SOURCES
 
 set (TRANSLATION_SOURCES
 	translations/exec_notify_de.ts
-	translations/exec_notify_ft.ts
+	translations/exec_notify_fr.ts
 	translations/exec_notify_it.ts
 	translations/exec_notify_pl.ts
 )
@@ -27,6 +27,13 @@ endif (COMMAND cmake_policy)
 
 add_library (exec_notify ${exec_notify} ${SOURCES} ${MOC_FILES})
 add_custom_target (exec_notify-translations DEPENDS ${TRANSLATION_FILES})
+if (exec_notify STREQUAL STATIC)
+set_target_properties(exec_notify PROPERTIES COMPILE_FLAGS "-DKADULIB" )
+else (exec_notify STREQUAL STATIC)
+if (WIN32)
+target_link_libraries(exec_notify kadu_core)
+endif (WIN32)
+endif (exec_notify STREQUAL STATIC)
 add_dependencies (exec_notify exec_notify-translations)
 
 install (TARGETS exec_notify DESTINATION lib/kadu/modules)

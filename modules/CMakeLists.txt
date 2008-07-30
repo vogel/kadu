@@ -1,6 +1,7 @@
 If (WIN32)
 	set (STATIC_MODULES "docking;qt4_docking")
-	set (DYNAMIC_MODULES "account_management;autoaway;dcc;default_sms;hints;history;notify;sms;window_notify")
+	set (DYNAMIC_MODULES "account_management;autoaway;dcc;default_sms;hints;history;notify;sms;window_notify;advanced_userlist;autoresponder;sound;config_wizard;ext_sound")
+	set (DISABLED_MODULES "desktop_docking;echo;exec_notify")
 else (WIN32)
 
 exec_program (./get-all.sh ${CMAKE_CURRENT_SOURCE_DIR}

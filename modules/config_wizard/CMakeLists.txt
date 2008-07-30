@@ -25,8 +25,18 @@ if (COMMAND cmake_policy)
 	cmake_policy(SET CMP0003 NEW)
 endif (COMMAND cmake_policy)
 
+# XXX
+link_directories (${SNDFILE_LIBRARY_DIRS})
+
 add_library (config_wizard ${config_wizard} ${SOURCES} ${MOC_FILES})
 add_custom_target (config_wizard-translations DEPENDS ${TRANSLATION_FILES})
+if (config_wizard STREQUAL STATIC)
+set_target_properties(config_wizard PROPERTIES COMPILE_FLAGS "-DKADULIB" )
+else (config_wizard STREQUAL STATIC)
+if (WIN32)
+target_link_libraries(config_wizard kadu_core sound)
+endif (WIN32)
+endif (config_wizard STREQUAL STATIC)
 add_dependencies (config_wizard config_wizard-translations)
 
 install (TARGETS config_wizard DESTINATION lib/kadu/modules)
