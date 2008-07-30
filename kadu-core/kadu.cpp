@@ -2125,13 +2125,19 @@ void Kadu::deleteOldConfigFiles()
 		}
 //	kdebugm(KDEBUG_INFO, "bts deleted\n");
 
-	// TODO: win32 port
-	QDir oldDebugs("/tmp/", QString("kadu-%1-*.dbg").arg(SystemUserName), QDir::Name, QDir::Files);
+#ifdef Q_OS_WIN
+	QString tmp(getenv("TEMP") ? getenv("TEMP") : ".");
+	QString mask("kadu-dbg-*.txt");
+#else
+	QString tmp("/tmp");
+	QString mask=QString("kadu-%1-*.dbg").arg(SystemUserName);
+#endif
+	QDir oldDebugs(tmp, mask, QDir::Name, QDir::Files);
 	if (oldDebugs.count() > 5)
 		for (unsigned int i = 0, max = oldDebugs.count() - 5; i < max; ++i)
 		{
-//			kdebugm(KDEBUG_DUMP, "deleting %s\n", oldDebugs[i].local8Bit().data());
-			QFile::remove("/tmp/" + oldDebugs[i]);
+			kdebugm(KDEBUG_DUMP, "deleting %s\n", oldDebugs[i].local8Bit().data());
+			QFile::remove(tmp + "/" + oldDebugs[i]);
 		}
 //	kdebugm(KDEBUG_INFO, "debugs deleted\n");
 	kdebugf2();
