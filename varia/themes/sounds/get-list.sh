@@ -26,4 +26,6 @@ done
 
 rm -f .temp
 
-echo -n $result
+if [ ! -z "$result" ]; then
+	echo $result
+fi

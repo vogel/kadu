@@ -7,7 +7,7 @@ for dir in *; do
 	fi
 done
 
-if test "$1" == "ON"; then
+if [ "$1" == "ON" ]; then
 	for file in *.web; do
 		dir=`basename $file .web`
 		if [ ! -f $dir/emots.txt ]; then
@@ -16,4 +16,6 @@ if test "$1" == "ON"; then
 	done
 fi
 
-echo -n $available_emots_themes
+if [ ! -z "$available_emots_themes" ]; then
+	echo $available_emots_themes
+fi
