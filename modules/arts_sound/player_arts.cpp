@@ -76,7 +76,7 @@ void aRtsDevice::deleteLater2()
 	kdebugf2();
 }
 
-extern "C" int arts_sound_init()
+extern "C" int arts_sound_init(bool firstLoad)
 {
 	kdebugf();
 	arts_player_recorder = new aRtsPlayerRecorder(0, "arts_player_recorder");

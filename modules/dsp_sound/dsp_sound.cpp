@@ -25,7 +25,7 @@
  * @ingroup dsp_sound
  * @{
  */
-extern "C" int dsp_sound_init()
+extern "C" int dsp_sound_init(bool firstLoad)
 {
 	kdebugf();
 

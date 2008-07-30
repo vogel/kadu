@@ -24,7 +24,7 @@
  * @{
  */
 
-extern "C" int qt4_docking_init()
+extern "C" int qt4_docking_init(bool firstLoad)
 {
 	qt4_tray_icon = new Qt4TrayIcon(NULL, "kadu_tray_icon");
 

@@ -38,7 +38,7 @@
  * @ingroup voice
  * @{
  */
-extern "C" int voice_init()
+extern "C" int voice_init(bool firstLoad)
 {
 	voice_manager = new VoiceManager();
 	MainConfigurationWindow::registerUiFile(dataPath("kadu/modules/configuration/voice.ui"), voice_manager);

@@ -88,7 +88,7 @@ static bool send_message(
 #define SYSTEM_TRAY_BEGIN_MESSAGE   1
 #define SYSTEM_TRAY_CANCEL_MESSAGE  2
 
-extern "C" int x11_docking_init()
+extern "C" int x11_docking_init(bool firstLoad)
 {
 	tray_restarter = new TrayRestarter();
 	x11_tray_icon = new X11TrayIcon(NULL, "x11_tray_icon");

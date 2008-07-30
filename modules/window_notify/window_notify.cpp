@@ -23,7 +23,7 @@
  * @ingroup window_notify
  * @{
  */
-extern "C" KADU_EXPORT int window_notify_init()
+extern "C" KADU_EXPORT int window_notify_init(bool firstLoad)
 {
 	kdebugf();
 	window_notify = new WindowNotify(0, "window_notify");

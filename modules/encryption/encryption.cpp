@@ -40,7 +40,7 @@ extern "C"
 
 EncryptionManager* encryption_manager;
 
-extern "C" int encryption_init()
+extern "C" int encryption_init(bool firstLoad)
 {
 	encryption_manager = new EncryptionManager();
 	MainConfigurationWindow::registerUiFile(dataPath("kadu/modules/configuration/encryption.ui"), encryption_manager);

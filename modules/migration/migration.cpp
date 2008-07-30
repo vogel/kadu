@@ -432,7 +432,7 @@ void MigrationDialog::finishButtonClicked()
 	accept();
 }
 
-extern "C" int migration_init()
+extern "C" int migration_init(bool firstLoad)
 {
 	kdebugf();
 	MigrationDialog* migration_dialog = new MigrationDialog();

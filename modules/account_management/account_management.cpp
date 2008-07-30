@@ -20,7 +20,7 @@
 /** @ingroup account_management
  * @{
  */
-extern "C" int account_management_init()
+extern "C" int account_management_init(bool firstLoad)
 {
 	kdebugf();
 

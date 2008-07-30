@@ -387,11 +387,7 @@ ModulesManager::ModulesManager() : QObject(NULL, "modules_manager"),
 
 // 	icons_manager->registerMenuItem(MainMenu, tr("&Manage Modules"), "ManageModules");
 
-	registerStaticModules();
-	QStringList static_list = staticModules();
-	foreach(const QString &i, static_list)
-		if (!moduleIsActive(i))
-			activateModule(i);
+	everLoaded = QStringList::split(',', config_file.readEntry("General", "EverLoaded"));
 
 	// load modules as config file say
 	QStringList installed_list = installedModules();
@@ -400,7 +396,15 @@ ModulesManager::ModulesManager() : QObject(NULL, "modules_manager"),
 	QString unloaded_str = config_file.readEntry("General", "UnloadedModules");
 	QStringList unloaded_list = QStringList::split(',', unloaded_str);
 	bool load_error = false;
+
+	registerStaticModules();
+	QStringList static_list = staticModules();
+	foreach(const QString &i, static_list)
+		if (!moduleIsActive(i))
+			activateModule(i);
+
 	foreach(const QString &i, installed_list)
+	{
 		if (!moduleIsActive(i))
 		{
 			bool load_module;
@@ -420,6 +424,7 @@ ModulesManager::ModulesManager() : QObject(NULL, "modules_manager"),
 				if (!activateModule(i))
 					load_error = true;
 		}
+	}
 
 	// if not all modules were loaded properly
 	// save the list of modules
@@ -435,6 +440,8 @@ ModulesManager::ModulesManager() : QObject(NULL, "modules_manager"),
 ModulesManager::~ModulesManager()
 {
 	kdebugf();
+
+	saveLoadedModules();
 
 	foreach(const QString &it, Modules.keys())
 		kdebugm(KDEBUG_INFO, "module: %s, usage: %d\n", it.local8Bit().data(), Modules[it].usage_counter);
@@ -658,8 +665,8 @@ bool ModulesManager::moduleIsActive(const QString& module_name) const
 
 void ModulesManager::saveLoadedModules()
 {
-	config_file.writeEntry("General", "LoadedModules",loadedModules().join(","));
-	config_file.writeEntry("General", "UnloadedModules",unloadedModules().join(","));
+	config_file.writeEntry("General", "LoadedModules", loadedModules().join(","));
+	config_file.writeEntry("General", "UnloadedModules", unloadedModules().join(","));
 	config_file.sync();
 }
 
@@ -726,8 +733,7 @@ bool ModulesManager::activateModule(const QString& module_name)
 		return false;
 	}
 
-	typedef int InitModuleFunc();
-	InitModuleFunc* init;
+	InitModuleFunc *init;
 
 	if (moduleIsStatic(module_name))
 	{
@@ -748,8 +754,8 @@ bool ModulesManager::activateModule(const QString& module_name)
 			kdebugf2();
 			return false;
 		}
-		init=(InitModuleFunc*)m.lib->resolve(module_name+"_init");
-		m.close=(CloseModuleFunc*)m.lib->resolve(module_name+"_close");
+		init = (InitModuleFunc *)m.lib->resolve(module_name+"_init");
+		m.close = (CloseModuleFunc *)m.lib->resolve(module_name+"_close");
 		if (init==NULL||m.close==NULL)
 		{
 			MessageBox::msg(tr("Cannot find required functions in module %1.\nMaybe it's not Kadu-compatible Module.").arg(module_name));
@@ -761,7 +767,14 @@ bool ModulesManager::activateModule(const QString& module_name)
 
 	m.translator = loadModuleTranslation(module_name);
 
-	int res = init();
+	int res = init(!everLoaded.contains(module_name));
+	printf("activate: %s %d\n", module_name.toLocal8Bit().data(), !everLoaded.contains(module_name));
+	if (!everLoaded.contains(module_name))
+	{
+		everLoaded.append(module_name);
+		config_file.writeEntry("General", "EverLoaded", everLoaded.join(","));
+	}
+
 	if (res != 0)
 	{
 		MessageBox::msg(tr("Module initialization routine for %1 failed.").arg(module_name));

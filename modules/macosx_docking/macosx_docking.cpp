@@ -86,7 +86,7 @@ void MacOSXDocking::mainConfigurationWindowCreated(MainConfigurationWindow *main
 	//w tej chwili nic tu nie robimy, ale kto wie ;)
 }
 
-extern "C" int macosx_docking_init()
+extern "C" int macosx_docking_init(bool firstLoad)
 {
 	mac_docking = new MacOSXDocking(docking_manager, "mac_docking");
 	MainConfigurationWindow::registerUiFile(dataPath("kadu/modules/configuration/macosx_docking.ui"), mac_docking);

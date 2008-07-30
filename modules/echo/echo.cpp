@@ -13,7 +13,7 @@
 #include "debug.h"
 #include "misc.h"
 
-extern "C" int echo_init()
+extern "C" int echo_init(bool firstLoad)
 {
 	echo = new Echo();
 	return 0;

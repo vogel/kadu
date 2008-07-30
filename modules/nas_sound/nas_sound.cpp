@@ -24,7 +24,7 @@
     ((((audiolib::AuInt32) (nnn)) * AU_FIXED_POINT_SCALE) / ((audiolib::AuInt32) (ddd)))
 #endif
 
-extern "C" int nas_sound_init()
+extern "C" int nas_sound_init(bool firstLoad)
 {
 	kdebugf();
 

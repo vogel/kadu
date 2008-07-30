@@ -29,7 +29,7 @@ struct ALSADevice
 	}
 };
 
-extern "C" int alsa_sound_init()
+extern "C" int alsa_sound_init(bool firstLoad)
 {
 	kdebugf();
 

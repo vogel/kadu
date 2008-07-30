@@ -23,7 +23,7 @@
  * @ingroup desktop_docking
  * @{
  */
-extern "C" int desktop_docking_init()
+extern "C" int desktop_docking_init(bool firstLoad)
 {
 	kdebugf();
 

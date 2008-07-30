@@ -33,7 +33,7 @@
  * @ingroup sms
  * @{
  */
-extern "C" KADU_EXPORT int sms_init()
+extern "C" KADU_EXPORT int sms_init(bool firstLoad)
 {
 	kdebugf();
 

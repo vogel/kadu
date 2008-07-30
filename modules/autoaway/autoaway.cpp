@@ -24,7 +24,7 @@
  */
 AutoAway *autoAway = 0;
 
-extern "C" int autoaway_init()
+extern "C" int autoaway_init(bool firstLoad)
 {
 	kdebugf();
 

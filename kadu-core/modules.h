@@ -131,7 +131,7 @@ class KADUAPI ModulesManager : public QObject
 {
 	Q_OBJECT
 
-	typedef int InitModuleFunc(void);
+	typedef int InitModuleFunc(bool);
 	typedef void CloseModuleFunc(void);
 
 	/**
@@ -172,6 +172,11 @@ class KADUAPI ModulesManager : public QObject
 		statycznych b�d� zewn�trznych.
 	**/
 	QMap<QString, Module> Modules;
+
+	/**
+		List of modules that were loaded in the past.
+	 **/
+	QStringList everLoaded;
 
 	ModulesDialog *Dialog;
 

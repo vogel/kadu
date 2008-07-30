@@ -21,7 +21,7 @@
  * @ingroup ext_sound
  * @{
  */
-extern "C" int ext_sound_init()
+extern "C" int ext_sound_init(bool firstLoad)
 {
 	kdebugf();
 

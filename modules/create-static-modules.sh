@@ -4,8 +4,8 @@ echo -n > static_modules.cpp
 
 for module in $*;
 do
-	echo "extern \"C\" int ${module}_init(void);" >> static_modules.cpp
-	echo "extern \"C\" void ${module}_close(void);" >> static_modules.cpp
+	echo "extern \"C\" int ${module}_init(bool);" >> static_modules.cpp
+	echo "extern \"C\" void ${module}_close();" >> static_modules.cpp
 done
 
 echo >> static_modules.cpp

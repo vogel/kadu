@@ -33,7 +33,7 @@
  * @{
  */
 
-extern "C" int config_wizard_init()
+extern "C" int config_wizard_init(bool firstLoad)
 {
 	kdebugf();
 	wizardStarter = new WizardStarter();

@@ -23,7 +23,7 @@
 
 #include "exec_notify.h"
 
-extern "C" int exec_notify_init()
+extern "C" int exec_notify_init(bool firstLoad)
 {
 	kdebugf();
 	exec_notify = new ExecNotify();

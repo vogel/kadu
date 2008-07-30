@@ -29,7 +29,7 @@
 
 #include "history_module.h"
 
-extern "C" KADU_EXPORT int history_init()
+extern "C" KADU_EXPORT int history_init(bool firstLoad)
 {
 	kdebugf();
 

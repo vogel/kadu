@@ -29,7 +29,7 @@
 #include "userbox.h"
 
 
-extern "C" KADU_EXPORT int notify_init()
+extern "C" KADU_EXPORT int notify_init(bool firstLoad)
 {
 	kdebugf();
 

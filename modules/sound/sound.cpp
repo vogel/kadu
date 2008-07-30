@@ -31,7 +31,7 @@
 SoundManager* sound_manager = NULL;
 SoundSlots* sound_slots;
 
-extern "C" int sound_init()
+extern "C" int sound_init(bool firstLoad)
 {
 	kdebugf();
 	new SoundManager("sounds", "sound.conf");

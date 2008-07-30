@@ -43,7 +43,7 @@
  * @ingroup dcc
  * @{
  */
-extern "C" int dcc_init()
+extern "C" int dcc_init(bool firstLoad)
 {
 	kdebugf();
 	dcc_manager = new DccManager();

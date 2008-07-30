@@ -30,7 +30,7 @@
  * @ingroup docking
  * @{
  */
-extern "C" KADU_EXPORT int docking_init()
+extern "C" KADU_EXPORT int docking_init(bool firstLoad)
 {
 	docking_manager = new DockingManager();
 	MainConfigurationWindow::registerUiFile(dataPath("kadu/modules/configuration/docking.ui"), docking_manager);

@@ -31,7 +31,7 @@
  * @ingroup speech
  * @{
  */
-extern "C" int speech_init()
+extern "C" int speech_init(bool firstLoad)
 {
 	kdebugf();
 

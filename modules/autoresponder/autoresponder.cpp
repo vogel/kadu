@@ -22,7 +22,7 @@
  * @ingroup autoresponder
  * @{
  */
-extern "C" int autoresponder_init()
+extern "C" int autoresponder_init(bool firstLoad)
 {
 	autoresponder = new AutoResponder();
 	MainConfigurationWindow::registerUiFile(dataPath("kadu/modules/configuration/autoresponder.ui"), autoresponder);

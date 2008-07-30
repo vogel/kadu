@@ -14,7 +14,7 @@
  * @ingroup hints
  * @{
  */
-extern "C" KADU_EXPORT int hints_init()
+extern "C" KADU_EXPORT int hints_init(bool firstLoad)
 {
 	kdebugf();
 

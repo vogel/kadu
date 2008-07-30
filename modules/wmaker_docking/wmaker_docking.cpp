@@ -28,7 +28,7 @@
  */
 extern Time qt_x_time;
 
-extern "C" int wmaker_docking_init()
+extern "C" int wmaker_docking_init(bool firstLoad)
 {
 	wmaker_tray_icon = new WMakerTrayIcon(NULL, "wmaker_tray_icon");
 	return 0;

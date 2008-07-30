@@ -19,7 +19,7 @@
  * @ingroup esd_sound
  * @{
  */
-extern "C" int esd_sound_init()
+extern "C" int esd_sound_init(bool firstLoad)
 {
 	kdebugf();
 	esd_player = new ESDPlayer(NULL, "esd_player_slots");

@@ -21,7 +21,7 @@
  * @ingroup default_sms
  * @{
  */
-extern "C" int default_sms_init()
+extern "C" int default_sms_init(bool firstLoad)
 {
 	kdebugf();
 

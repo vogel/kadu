@@ -21,7 +21,7 @@
 #include "../notify/notification.h"
 #include "../notify/notify.h"
 
-extern "C" int xosd_notify_init()
+extern "C" int xosd_notify_init(bool firstLoad)
 {
 	xosd_notify = new XOSDNotify();
 	MainConfigurationWindow::registerUiFile(dataPath("kadu/modules/configuration/xosd_notify.ui"), xosd_notify);

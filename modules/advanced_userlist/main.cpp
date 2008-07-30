@@ -14,7 +14,7 @@
 
 static AdvancedUserList *advanced_userlist;
 
-extern "C" int advanced_userlist_init()
+extern "C" int advanced_userlist_init(bool firstLoad)
 {
 	kdebugf();
 
