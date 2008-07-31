@@ -15,9 +15,11 @@
 
 #include "configuration_aware_object.h"
 
+#include "exports.h"
+
 class CustomInput;
 
-class ChatEditBox : public KaduMainWindow, ConfigurationAwareObject
+class KADUAPI ChatEditBox : public KaduMainWindow, ConfigurationAwareObject
 {
 	Q_OBJECT
 
