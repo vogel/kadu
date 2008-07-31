@@ -33,8 +33,6 @@ ChatMessagesView::ChatMessagesView(QWidget *parent) : KaduTextBrowser(parent),
 
 	configurationUpdated();
 
-//	bodyformat = new Q3MimeSourceFactory();
-//	setMimeSourceFactory(bodyformat);
 // 	setTextFormat(Qt::RichText);
 	setFocusPolicy(Qt::NoFocus);
 }
@@ -43,9 +41,6 @@ ChatMessagesView::~ChatMessagesView()
 {
 	qDeleteAll(Messages);
 	Messages.clear();
-
-//	delete bodyformat;
-//	bodyformat = 0;
 }
 
 void ChatMessagesView::pageUp()
@@ -220,14 +215,6 @@ unsigned int ChatMessagesView::countMessages()
 
 void ChatMessagesView::configurationUpdated()
 {
-// 	if ((EmoticonsStyle)config_file.readNumEntry("Chat","EmoticonsStyle") == EMOTS_ANIMATED)
-// 		setStyleSheet(new AnimStyleSheet(this, emoticons->themePath()));
-// 	else
-// 		setStyleSheet(new StaticStyleSheet(this, emoticons->themePath()));
-
-//	if ((EmoticonsStyle)config_file.readNumEntry("Chat","EmoticonsStyle") != EMOTS_NONE)
-//		mimeSourceFactory()->addFilePath(emoticons->themePath());
-
 	setFont(config_file.readFontEntry("Look","ChatFont"));
 
 	// background color of chat

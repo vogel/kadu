@@ -131,7 +131,7 @@ ChatWidget::~ChatWidget()
 
 	if (userbox)
 		delete userbox;
-//	delete bodyformat;
+
 	delete Users;
 
 	kdebugmf(KDEBUG_FUNCTION_END, "chat destroyed: index %d\n", index);

@@ -38,8 +38,6 @@ class KADUAPI ChatMessagesView : public KaduTextBrowser, ConfigurationAwareObjec
 	QString ChatSyntaxWithHeader; /*!< Sk�adnia stylu rozmowy z nag��wkiem. */
 	QString ChatSyntaxWithoutHeader; /*!< Sk�adnia stylu rozmowy bez nag��wka. */
  
-/// 	Q3MimeSourceFactory *bodyformat;
- 
 	/**
 		\fn void repaintMessages()
 		Funkcja od�wie�aj�ca widok wiadomo�ci.

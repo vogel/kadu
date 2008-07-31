@@ -499,11 +499,6 @@ Kadu::Kadu(QWidget *parent)
 // 	InfoPanel->setTextFormat(Qt::RichText);
 // 	InfoPanel->setAlignment(Qt::AlignVCenter/** | Qt::WordBreak | Qt::DontClip*/);
 
-//// 	if((EmoticonsStyle)config_file.readNumEntry("Chat", "EmoticonsStyle") == EMOTS_ANIMATED)
-// 		InfoPanel->setStyleSheet(new AnimStyleSheet(InfoPanel, emoticons->themePath()));
-// 	else
-// 		InfoPanel->setStyleSheet(new StaticStyleSheet(InfoPanel, emoticons->themePath()));
-
 	if (!config_file.readBoolEntry("Look", "ShowInfoPanel"))
 		InfoPanel->QWidget::hide();
 	connect(&updateInformationPanelTimer, SIGNAL(timeout()), this, SLOT(updateInformationPanel()));
@@ -1805,10 +1800,8 @@ void Kadu::updateInformationPanel(UserListElement user)
 		doc.convertUrlsToHtml();
 		doc.convertMailToHtml();
 		if((EmoticonsStyle)config_file.readNumEntry("Chat", "EmoticonsStyle") != EMOTS_NONE && config_file.readBoolEntry("General", "ShowEmotPanel"))
-		{
-//			InfoPanel->mimeSourceFactory()->addFilePath(emoticons->themePath());
 			emoticons->expandEmoticons(doc, config_file.readColorEntry("Look", "InfoPanelBgColor"), (EmoticonsStyle)config_file.readNumEntry("Chat", "EmoticonsStyle"));
-		}
+
 		InfoPanel->setHtml(doc.generateHtml());
 //		if (config_file.readBoolEntry("General", "ShowEmotPanel"))
 //			InfoPanel->scrollToBottom();
