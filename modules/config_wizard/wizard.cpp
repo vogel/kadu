@@ -490,7 +490,7 @@ void Wizard::createApplicationsPage()
 
 void Wizard::browserChanged(int index)
 {
-	QString browser = MainConfigurationWindow::instance()->getBrowserExecutable(index);
+	QString browser = MainConfigurationWindow::getBrowserExecutable(index);
 	browserCommandLineEdit->setEnabled(index == 0);
 	browserCommandLineEdit->setText(browser);
 
@@ -501,7 +501,7 @@ void Wizard::browserChanged(int index)
 
 void Wizard::emailChanged(int index)
 {
-	QString mail = MainConfigurationWindow::instance()->getEMailExecutable(index);
+	QString mail = MainConfigurationWindow::getEMailExecutable(index);
 
 	mailCommandLineEdit->setEnabled(index == 0);
 	mailCommandLineEdit->setText(mail);
