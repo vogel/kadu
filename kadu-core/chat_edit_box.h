@@ -19,14 +19,11 @@
 
 class CustomInput;
 
-class KADUAPI ChatEditBox : public KaduMainWindow, ConfigurationAwareObject
+class KADUAPI ChatEditBox : public KaduMainWindow
 {
 	Q_OBJECT
 
 	CustomInput *InputBox;
-
-protected:
-	virtual void configurationUpdated();
 
 public:
 	ChatEditBox(QWidget *parent);

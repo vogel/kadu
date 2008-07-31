@@ -1904,7 +1904,6 @@ void Kadu::refreshPrivateStatusFromConfigFile()
 
 void Kadu::configurationUpdated()
 {
-	refreshToolBars(""); // TODO
 	refreshPrivateStatusFromConfigFile();
 
 	changeAppearance();
@@ -2432,7 +2431,8 @@ void Kadu::createDefaultToolbars(QDomElement toolbarsConfig)
 void Kadu::addAction(const QString &actionName, bool showLabel)
 {
 	addToolButton(findExistingToolbar(""), actionName, showLabel);
-	ConfigurationAwareObject::notifyAll(); // TODO
+// 	xml_config_file->sync();
+	kadu->refreshToolBars("");
 }
 
 void Kadu::closeEvent(QCloseEvent *event)

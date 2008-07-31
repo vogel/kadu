@@ -16,9 +16,13 @@
 
 #include "chat_edit_box.h"
 
+QList<ChatEditBox *> chatEditBoxes;
+
 ChatEditBox::ChatEditBox(QWidget *parent)
 	: KaduMainWindow(parent)
 {
+	chatEditBoxes.append(this);
+
 	InputBox = new CustomInput(this);
 	InputBox->setWordWrapMode(QTextOption::WordWrap);
 	InputBox->setTextFormat(Qt::RichText);
@@ -39,6 +43,8 @@ ChatEditBox::ChatEditBox(QWidget *parent)
 
 ChatEditBox::~ChatEditBox()
 {
+	chatEditBoxes.remove(this);
+
 	writeToolBarsToConfig("chat");
 }
 
@@ -113,10 +119,7 @@ void ChatEditBox::createDefaultToolbars(QDomElement toolbarsConfig)
 void ChatEditBox::addAction(const QString &actionName, bool showLabel)
 {
 	addToolButton(findExistingToolbar("chat"), actionName, showLabel);
-	ConfigurationAwareObject::notifyAll(); // TODO
-}
 
-void ChatEditBox::configurationUpdated()
-{
-	refreshToolBars("chat");
+	foreach (ChatEditBox *chatEditBox, chatEditBoxes)
+		chatEditBox->refreshToolBars("chat");
 }
