@@ -218,12 +218,12 @@ void ExecNotify::notify(Notification *notification)
 	run(result, QString::null);
 }
 
-void ExecNotify::run(const QStringList &args, const QString &stdin)
+void ExecNotify::run(const QStringList &args, const QString &in)
 {
 #ifdef DEBUG_ENABLED
 	foreach(QString arg, args)
 		kdebugm(KDEBUG_INFO, "arg: '%s'\n", arg.local8Bit().data());
-	kdebugm(KDEBUG_INFO, "stdin: %s\n", stdin.local8Bit().data());
+	kdebugm(KDEBUG_INFO, "stdin: %s\n", in.local8Bit().data());
 #endif
 	QProcess *p = new QProcess();
 	QString cmd = args.first();

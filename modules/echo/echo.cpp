@@ -44,8 +44,7 @@ void Echo::messageReceived(Protocol *protocol, UserListElements senders, const Q
 	kdebugf();
 	if (msg.left(5) != "KADU ")
 	{
-		QString resp = QString("KADU ECHO: ") + msg;
-		gadu->sendMessage(senders, resp);
+		protocol->sendMessage(senders, QString("KADU ECHO: ") + msg);
 	}
 	kdebugf2();
 }

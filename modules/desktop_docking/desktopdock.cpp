@@ -195,7 +195,7 @@ void DesktopDock::configurationUpdated()
 
 void DesktopDock::setToolTip(const QString& statusText)
 {
-	desktopDock->setTooltip(statusText);
+	desktopDock->setToolTip(statusText);
 }
 
 void DesktopDock::setPixmap(const QIcon& DockIcon, const QString & /*iconName*/)

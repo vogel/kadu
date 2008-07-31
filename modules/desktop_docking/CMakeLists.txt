@@ -8,7 +8,7 @@ set (MOC_SOURCES
 
 set (TRANSLATION_SOURCES
 	translations/desktop_docking_de.ts
-	translations/desktop_docking_ft.ts
+	translations/desktop_docking_fr.ts
 	translations/desktop_docking_it.ts
 	translations/desktop_docking_pl.ts
 )
@@ -37,6 +37,7 @@ else (desktop_docking STREQUAL STATIC)
 if (WIN32)
 target_link_libraries(desktop_docking kadu_core docking)
 endif (WIN32)
+endif (desktop_docking STREQUAL STATIC)
 add_dependencies (desktop_docking desktop_docking-translations)
 
 install (TARGETS desktop_docking DESTINATION lib/kadu/modules)

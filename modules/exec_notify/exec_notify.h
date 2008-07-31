@@ -53,7 +53,7 @@ public:
 	void copyConfiguration(const QString &fromEvent, const QString &toEvent) {}
 
 public slots:
-		void run(const QStringList &args, const QString &stdin);
+		void run(const QStringList &args, const QString &in);
 
 };
 
