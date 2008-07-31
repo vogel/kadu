@@ -285,7 +285,8 @@ ConfigurationWindow::ConfigurationWindow(const QString &name, const QString &cap
 
 ConfigurationWindow::~ConfigurationWindow()
 {
-	config_file.writeEntry("General", "ConfigurationWindow_" + Name, sectionsListWidget->currentItem()->text());
+	if (sectionsListWidget->currentItem())
+		config_file.writeEntry("General", "ConfigurationWindow_" + Name, sectionsListWidget->currentItem()->text());
 	qDeleteAll(configSections);
 }
 

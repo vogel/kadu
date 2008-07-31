@@ -8,20 +8,17 @@
 /**
 	Zmodyfikowany QTextBrowser specjalnie na potrzeby Kadu.
 	Klikni�cie na linku otwiera ustawion� w konfiguracji przegl�dark�.
-	W menu kontekstowym jest dodatkowa opcja "Kopiuj lokacj� odno�nika".
 	\class KaduTextBrowser
-	\brief Klasa bazowa dla ChatMessagesView orazz InfoPanel.
+	\brief Klasa bazowa dla ChatMessagesView oraz InfoPanel.
 **/
 class KaduTextBrowser : public QWebView //, private QToolTip
 {
 	Q_OBJECT
 
-	QTimer refreshTimer; /*!< Timer od�wie�ania widgetu. */
-	QString anchor;  /*!< Bie��co u�ywany link. */
-	int level;
-	
 	QString image;
 
+	QTimer refreshTimer; /*!< Timer od�wie�ania widgetu. */
+	
 private slots:
 
 	/**
@@ -45,8 +42,6 @@ private slots:
 	void hyperlinkClicked(const QUrl &anchor) const;
 	void linkHighlighted(const QString &);
 	void saveImage();
-	void verticalSliderPressedSlot();
-	void verticalSliderReleasedSlot();
 
 protected:
 	virtual void contextMenuEvent(QContextMenuEvent * event);
@@ -57,15 +52,7 @@ public:
 	KaduTextBrowser(QWidget *parent = 0);
 	void setSource(const QString &name);
 	void setMargin(int width);
-	/**
-		Returns path to image at position point, or null if there's no image.
-	**/
-	QString imageAt(const QPoint &point);
 
-/* TODO: uncomment if needed
-	public slots:
-		virtual void copy();
-*/
 signals:
 	/**
 		Dowolny przycisk myszy zosta� zwolniony

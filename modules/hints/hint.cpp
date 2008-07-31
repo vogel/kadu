@@ -116,6 +116,7 @@ void Hint::createLabels(const QPixmap &pixmap)
 	{
 		icon = new QLabel(this, "Icon");
 		icon->setPixmap(pixmap);
+		icon->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
 		labels->addWidget(icon, 0, Qt::AlignTop);
 	}
 
