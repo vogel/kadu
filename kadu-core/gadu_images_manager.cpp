@@ -221,6 +221,7 @@ QString GaduImagesManager::replaceLoadingImages(const QString &text, UinType sen
 		new_text = new_text.replace(pos, loading_string.length(), image_string);
 	}
 	kdebugf2();
+
 	return new_text;
 }
 

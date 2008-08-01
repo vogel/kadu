@@ -38,6 +38,7 @@ public:
 	virtual ~MessagePart();
 
 	bool isImage() const { return Image; }
+	bool isEmpty() const { return !Image && Content.isEmpty(); }
 
 	QString content() const { return Content; }
 	bool bold() const { return Bold; }
@@ -68,6 +69,7 @@ public:
 	void append(MessagePart part);
 	Message & operator << (MessagePart part);
 
+	bool isEmpty() const;
 	QString toPlain() const;
 	QString toHtml() const;
 

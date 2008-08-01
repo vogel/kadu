@@ -9,6 +9,7 @@
 
 #include <QtGui/QTextDocument>
 
+#include "gadu_images_manager.h"
 #include "html_document.h"
 #include "icons_manager.h"
 
@@ -39,13 +40,13 @@ MessagePart::~MessagePart()
 
 QString MessagePart::toHtml() const
 {
-	if (Image)
+	if (Image && ImageSender)
 	{
-		return QString("<img src=\"file:///%1\" gg_sender=\"%2\" gg_size=\"%3\" gg_crc=\"%4\"/>")
-			.arg(ImagePath)
-			.arg(ImageSender)
-			.arg(ImageSize)
-			.arg(ImageCrc32);
+		return GaduImagesManager::loadingImageHtml(ImageSender, ImageSize,ImageCrc32);;
+	}
+	else if (Image)
+	{
+		return QString("<img src=\"file:///%1\" />").arg(ImagePath);
 	}
 	else
 	{
@@ -147,6 +148,15 @@ Message & Message::operator << (MessagePart part)
 {
 	Parts << part;
 	return *this;
+}
+
+bool Message::isEmpty() const
+{
+	foreach (MessagePart part, Parts)
+		if (!part.isEmpty())
+			return false;
+
+	return true;
 }
 
 QString Message::toPlain() const

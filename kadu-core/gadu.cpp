@@ -1009,7 +1009,7 @@ void GaduProtocol::messageReceivedSlot(int msgclass, UserListElements senders, Q
 		message = GaduFormater::createMessage(senders[0].ID("Gadu").toUInt(), content, (unsigned char *)formats.data(), formats.size(), receiveImages);
 	}
 
-	if (message.toPlain().isEmpty())
+	if (message.isEmpty())
 		return;
 
 	kdebugmf(KDEBUG_INFO, "Got message from %d saying \"%s\"\n",
@@ -2402,6 +2402,7 @@ void GaduFormater::appendToMessage(Message &result, UinType sender, const QStrin
 			return;
 		}
 
+		gadu->sendImageRequest(userlist->byID("Gadu", QString::number(sender)), size, crc32);
 		result << MessagePart(sender, size, crc32);
 	}
 	else
