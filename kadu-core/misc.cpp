@@ -59,13 +59,7 @@ bool measureTime = false;
 
 void saveWindowGeometry(const QWidget *w, const QString &section, const QString &name)
 {
-	QRect geom;
-	geom.setX(w->pos().x());
-	geom.setY(w->pos().y());
-	geom.setWidth(w->size().width());
-	geom.setHeight(w->size().height());
-
-	config_file.writeEntry(section, name, geom);
+	config_file.writeEntry(section, name, w->geometry());
 }
 
 void loadWindowGeometry(QWidget *w, const QString &section, const QString &name, int defaultX, int defaultY, int defaultWidth, int defaultHeight)
@@ -73,9 +67,7 @@ void loadWindowGeometry(QWidget *w, const QString &section, const QString &name,
 	QRect def_rect(defaultX, defaultY, defaultWidth, defaultHeight);
 	config_file.addVariable(section, name, def_rect);
 
-	QRect geom=config_file.readRectEntry(section, name);
-	w->resize(geom.width(),geom.height());
-	w->move(geom.x(),geom.y());
+	w->setGeometry(config_file.readRectEntry(section, name));
 }
 
 QString ggPath(const QString &subpath)
@@ -1173,6 +1165,31 @@ QString toPlainText(const QString &text)
 	kdebugm(KDEBUG_INFO, "plain: %s\n", copy.local8Bit().data());
 	return copy;
 }
+
+QRect stringToRect(const QString &value, const QRect *def)
+{
+	QStringList stringlist;
+	QRect rect(0,0,0,0);
+	int l, t, w, h;
+	bool ok;
+
+        stringlist = QStringList::split(",", value);
+        if (stringlist.count() != 4)
+                return def ? *def : rect;
+        l = stringlist[0].toInt(&ok); if (!ok) return def ? *def : rect;
+        t = stringlist[1].toInt(&ok); if (!ok) return def ? *def : rect;
+        w = stringlist[2].toInt(&ok); if (!ok) return def ? *def : rect;
+        h = stringlist[3].toInt(&ok); if (!ok) return def ? *def : rect;
+        rect.setRect(l, t, w, h);
+	
+	return rect;	
+}
+
+QString rectToString(const QRect& rect)
+{
+	return QString("%1,%2,%3,%4").arg(rect.left()).arg(rect.top()).arg(rect.width()).arg(rect.height());	
+}
+
 
 QString narg(const QString &s, const QString **tab, int count)
 {

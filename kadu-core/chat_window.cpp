@@ -19,6 +19,7 @@
 #include "debug.h"
 #include "message_box.h"
 #include "usergroup.h"
+#include "misc.h"
 
 ChatWindow::ChatWindow(QWidget *parent)
 	: QWidget(parent), currentChatWidget(0), title_timer(new QTimer(this, "title_timer"))
@@ -80,51 +81,40 @@ ChatWidget * ChatWindow::chatWidget()
 void ChatWindow::kaduRestoreGeometry()
 {
 	const UserGroup *group = currentChatWidget->users();
-	QRect geometry = chat_manager->chatWidgetProperty(group, "Geometry").toRect();
-	if (geometry.isEmpty() && group->count() == 1)
-	{
-		QString geo_str = (*(group->constBegin())).data("ChatGeometry").toString();
-		if (!geo_str.isEmpty())
-		{
-			bool ok[4];
-			QStringList s = QStringList::split(",", geo_str);
-			geometry.setX(s[0].toInt(ok));
-			geometry.setY(s[1].toInt(ok + 1));
-			geometry.setWidth(s[2].toInt(ok + 2));
-			geometry.setHeight(s[3].toInt(ok + 3));
-			if (int(ok[0]) + ok [1] + ok [2] + ok [3] != 4)
-				geometry = QRect();
-		}
-	}
-	if (geometry.isEmpty())
-	{
-		QPoint pos = QCursor::pos();
-		int x,y,width,height;
-		QDesktopWidget *desk = qApp->desktop();
-		x = pos.x() + 50;
-		y = pos.y() + 50;
-		height=400;
+	QRect geom = stringToRect(chat_manager->chatWidgetProperty(group, "Geometry").toString());
 
+	if (geom.isEmpty() && group->count() == 1)
+		geom = stringToRect((*(group->constBegin())).data("ChatGeometry").toString());
+
+	if(geom.isEmpty()){
+		QSize size(0, 400);
+		int x, y;
+		x=pos().x();
+		y=pos().y();
 		if (group->count() > 1)
-			width=550;
+			size.setWidth(550);
 		else
-			width=400;
-		if (x + width > desk->width())
-			x = desk->width() - width - 50;
-		if (y + height>desk->height())
-			y = desk->height() - height - 50;
+			size.setWidth(400);
+
+		QDesktopWidget *desk = qApp->desktop();
+
+		if ((size.width() + x) > desk->width())
+			x=desk->width() - size.width() - 50;
+		if ((size.height() + y) > desk->height())
+			y=desk->height() - size.height() - 50;
+
 		if (x<50) x = 50;
-		if (y<50) y = 50;
-		geometry.setX(x);
-		geometry.setY(y);
-		geometry.setWidth(width);
-		geometry.setHeight(height);
+		if (y<50) x = 50;
+
+		move(x, y);
+		resize(size);
 	}
-	setGeometry(geometry);
+	else{
+		setGeometry(geom);
+		currentChatWidget->setGeometry(geom);
 
-	currentChatWidget->setGeometry(geometry);
-
-	currentChatWidget->kaduRestoreGeometry();
+		currentChatWidget->kaduRestoreGeometry();
+	}
 }
 
 void ChatWindow::kaduStoreGeometry()
@@ -132,9 +122,9 @@ void ChatWindow::kaduStoreGeometry()
 	currentChatWidget->kaduStoreGeometry();
 
 	const UserGroup *users = currentChatWidget->users();
-	chat_manager->setChatWidgetProperty(users, "Geometry", QRect(pos().x(), pos().y(), size().width(), size().height()));
+	chat_manager->setChatWidgetProperty(users, "Geometry", rectToString(geometry()));
 	if (users->count() == 1)
-		(*users->begin()).setData("ChatGeometry", QString("%1,%2,%3,%4").arg(pos().x()).arg(pos().y()).arg(size().width()).arg(size().height()));
+		(*users->begin()).setData("ChatGeometry", rectToString(geometry()));
 }
 
 void ChatWindow::closeEvent(QCloseEvent *e)
