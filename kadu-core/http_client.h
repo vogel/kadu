@@ -29,7 +29,7 @@ class KADUAPI HttpClient : public QObject
 private slots:
 	void onConnected();
 	void onReadyRead();
-	void onConnectionClosed();
+	void onConnectionClosed(QAbstractSocket::SocketError errorCode);
 
 public:
 	HttpClient();

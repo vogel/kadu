@@ -22,7 +22,7 @@ HttpClient::HttpClient() :
 	kdebugf();
 	connect(&Socket, SIGNAL(connected()), this, SLOT(onConnected()));
 	connect(&Socket, SIGNAL(readyRead()), this, SLOT(onReadyRead()));
-	connect(&Socket, SIGNAL(connectionClosed()), this, SLOT(onConnectionClosed()));
+	connect(&Socket, SIGNAL(error(QAbstractSocket::SocketError)), this, SLOT(onConnectionClosed(QAbstractSocket::SocketError)));
 	kdebugf2();
 }
 
@@ -130,6 +130,7 @@ void HttpClient::onReadyRead()
 			delete t;
 			//
 			emit redirected(location);
+			Socket.close();
 			get(location);
 			return;
 		}
@@ -184,13 +185,20 @@ void HttpClient::onReadyRead()
 	kdebugf2();
 }
 
-void HttpClient::onConnectionClosed()
+void HttpClient::onConnectionClosed(QAbstractSocket::SocketError errorCode)
 {
 	kdebugf();
-	if (HeaderParsed && ContentLengthNotFound)
-		emit finished();
-	else
-		emit error();
+	//jesli powodem bylo przekierowanie, nie emitujemy sygnalow
+	if (StatusCode == 302)
+		return;
+	//czy polaczenie zostalo przerwane przez druga strone?
+	if (errorCode == QAbstractSocket::RemoteHostClosedError && Socket.state() == QAbstractSocket::ConnectedState)
+	{
+		if (HeaderParsed && ContentLengthNotFound)
+			emit finished();
+		else
+			emit error();
+	}
 	kdebugf2();
 }
 
