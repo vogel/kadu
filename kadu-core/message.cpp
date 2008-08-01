@@ -17,6 +17,7 @@
 
 QRegExp Message::ParagraphRegExp("<p[^>]*>(.*)</p>");
 QRegExp Message::SpanRegExp("<span.*(font-weight:600)?.*(font-style:italic)?.*(text-decoration: underline)?.*(color:(#[0-9a-fA-F]+))?.*>(.*)</span>");
+QRegExp Message::ImageRegExp("\\[IMAGE ([^\\]]+)\\]");
 
 MessagePart::MessagePart(const QString &content, bool bold, bool italic, bool underline, QColor color)
 	: Image(false), Content(content), Bold(bold), Italic(italic), Underline(underline), Color(color)
@@ -71,6 +72,37 @@ QString MessagePart::toHtml() const
 	}
 }
 
+void Message::parseImages(Message &message, const QString &messageString, bool b, bool i, bool u, QColor color)
+{
+	QString partContent; 
+
+	int lastPos = 0;
+	int pos = 0;
+
+	while ((pos = ImageRegExp.indexIn(messageString, pos)) != -1) {
+		if (lastPos != pos)
+		{
+			partContent = messageString.mid(lastPos, pos - lastPos);
+			HtmlDocument::unescapeText(partContent);
+			message << MessagePart(partContent, b, i, u, color);
+		}
+
+		QString fileName = ImageRegExp.cap(1);
+		if (!fileName.isEmpty())
+			message << MessagePart(fileName);
+
+		pos += ImageRegExp.matchedLength();
+		lastPos = pos;
+	}
+
+	if (lastPos != messageString.length())
+	{
+		partContent = messageString.mid(lastPos, messageString.length() - lastPos);
+		HtmlDocument::unescapeText(partContent);
+		message << MessagePart(partContent, b, i, u, color);
+	}
+}
+
 Message Message::parse(const QString &messageString)
 {
 	Message result;
@@ -82,6 +114,7 @@ Message Message::parse(const QString &messageString)
 	// TODO: move
 	ParagraphRegExp.setMinimal(true);
 	SpanRegExp.setMinimal(true);
+	ImageRegExp.setMinimal(true);
 
 	int lastPos = 0;
 	int pos = 0;
@@ -100,7 +133,7 @@ Message Message::parse(const QString &messageString)
 		{
 			partContent = cleanedMessage.mid(lastPos, pos - lastPos);
 			HtmlDocument::unescapeText(partContent);
-			result << MessagePart(partContent, false, false, false, QColor());
+			parseImages(result, partContent, false, false, false, QColor());
 		}
 
 		bool b = !SpanRegExp.cap(1).isEmpty();
@@ -109,7 +142,7 @@ Message Message::parse(const QString &messageString)
 		QColor color = QColor(SpanRegExp.cap(5));
 
 		partContent = SpanRegExp.cap(6);
-		result << MessagePart(partContent, b, i, u, color);
+		parseImages(result, partContent, b, i, u, color);
 
 		pos += SpanRegExp.matchedLength();
 		lastPos = pos;
@@ -119,7 +152,7 @@ Message Message::parse(const QString &messageString)
 	{
 		partContent = cleanedMessage.mid(lastPos, cleanedMessage.length() - lastPos);
 		HtmlDocument::unescapeText(partContent);
-		result << MessagePart(partContent, false, false, false, QColor());
+		parseImages(result, partContent, false, false, false, QColor());
 	}
 
 	return result;

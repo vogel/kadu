@@ -56,8 +56,11 @@ class Message
 {
 	static QRegExp ParagraphRegExp;
 	static QRegExp SpanRegExp;
+	static QRegExp ImageRegExp;
 
 	QList<MessagePart> Parts;
+
+	static void parseImages(Message &message, const QString &messageString, bool b, bool i, bool u, QColor color);
 
 public:
 	Message();

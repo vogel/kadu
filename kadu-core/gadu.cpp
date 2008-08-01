@@ -2294,10 +2294,17 @@ unsigned int GaduFormater::computeFormatsSize(const Message &message)
 
 	foreach (const MessagePart part, message.parts())
 	{
-		if (!first || part.bold() || part.italic() || part.underline() || part.color().isValid())
+		if (!first || part.isImage() || part.bold() || part.italic() || part.underline() || part.color().isValid())
 		{
 			size += sizeof(struct gg_msg_richtext_format);
 			first = false;
+		}
+
+		if (part.isImage())
+		{
+			size += sizeof(struct gg_msg_richtext_image);
+			first = false;
+			continue;
 		}
 
 		if (part.color().isValid())
@@ -2324,6 +2331,7 @@ unsigned char * GaduFormater::createFormats(const Message &message, unsigned int
 	struct gg_msg_richtext header;
 	struct gg_msg_richtext_format format;
 	struct gg_msg_richtext_color color;
+	struct gg_msg_richtext_image image;
 
 	header.flag = 2;
 	header.length = gg_fix16(size - sizeof(struct gg_msg_richtext));
@@ -2341,19 +2349,39 @@ unsigned char * GaduFormater::createFormats(const Message &message, unsigned int
 		format.position = gg_fix16(textPosition);
 		format.font = 0;
 
-		if (part.bold())
-			format.font |= GG_FONT_BOLD;
-		if (part.italic())
-			format.font |= GG_FONT_ITALIC;
-		if (part.underline())
-			format.font |= GG_FONT_UNDERLINE;
-		if (part.color().isValid())
-			format.font |= GG_FONT_COLOR;
+		if (part.isImage())
+		{
+			format.font |= GG_FONT_IMAGE;
+		}
+		else
+		{
+			if (part.bold())
+				format.font |= GG_FONT_BOLD;
+			if (part.italic())
+				format.font |= GG_FONT_ITALIC;
+			if (part.underline())
+				format.font |= GG_FONT_UNDERLINE;
+			if (part.color().isValid())
+				format.font |= GG_FONT_COLOR;
+		}
 
 		memcpy(result + memoryPosition, &format, sizeof(format));
 		memoryPosition += sizeof(format);
 
-		if (part.color().isValid())
+		if (part.isImage())
+		{
+			uint32_t size;
+			uint32_t crc32;
+			gadu_images_manager.addImageToSend(part.imagePath(), size, crc32);
+
+			image.unknown1 = 0x0109;
+			image.size = gg_fix32(size);
+			image.crc32 = gg_fix32(crc32);
+
+			memcpy(result + memoryPosition, &image, sizeof(image));
+			memoryPosition += sizeof(image);
+		}
+		else if (part.color().isValid())
 		{
 			color.red = part.color().red();
 			color.green = part.color().green();
