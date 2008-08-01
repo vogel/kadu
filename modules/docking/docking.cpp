@@ -201,7 +201,11 @@ void DockingManager::trayMousePressEvent(QMouseEvent * e)
 			return;
 		}
 
+#ifdef Q_OS_WIN	// workaround for windows feature
+		if (kadu->isMinimized() || !kadu->isVisible())
+#else
 		if (kadu->isMinimized() || !kadu->isVisible() || !kadu->isActiveWindow())
+#endif
 		{
 			kadu->show();
 			kadu->raise();
