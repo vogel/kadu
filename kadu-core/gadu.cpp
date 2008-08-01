@@ -990,18 +990,27 @@ void GaduProtocol::messageReceivedSlot(int msgclass, UserListElements senders, Q
 		config_file.readBoolEntry("Chat","IgnoreAnonymousRichtext"))
 	{
 		kdebugm(KDEBUG_INFO, "Richtext ignored from anonymous user\n");
-		message = GaduFormater::createMessage(content, 0, 0);
+		message = GaduFormater::createMessage(senders[0].ID("Gadu").toUInt(), content, 0, 0, false);
 	}
 	else
 	{
-		message = GaduFormater::createMessage(content, (unsigned char *)formats.data(), formats.size());
-// 		mesg = GaduFormater::formatGGMessage(mesg, formats.size(), formats.data(), senders[0].ID("Gadu").toUInt());
+		bool receiveImages =
+			userlist->contains(senders[0], FalseForAnonymous) &&
+			!IgnoredManager::isIgnored(senders) &&
+			(
+				CurrentStatus->isOnline() ||
+				CurrentStatus->isBusy() ||
+				(
+					CurrentStatus->isInvisible() &&
+					config_file.readBoolEntry("Chat", "ReceiveImagesDuringInvisibility")
+				)
+			);
+
+		message = GaduFormater::createMessage(senders[0].ID("Gadu").toUInt(), content, (unsigned char *)formats.data(), formats.size(), receiveImages);
 	}
 
 	if (message.toPlain().isEmpty())
 		return;
-// 	if (mesg.isEmpty())
-// 		return;
 
 	kdebugmf(KDEBUG_INFO, "Got message from %d saying \"%s\"\n",
 			senders[0].ID("Gadu").toUInt(), (const char *)message.toPlain().local8Bit());
@@ -2360,7 +2369,57 @@ unsigned char * GaduFormater::createFormats(const Message &message, unsigned int
 	return result;
 }
 
-Message GaduFormater::createMessage(const QString &content, unsigned char *formats, unsigned int size)
+void GaduFormater::appendToMessage(Message &result, UinType sender, const QString &content, struct gg_msg_richtext_format &format,
+		struct gg_msg_richtext_color &color, struct gg_msg_richtext_image &image, bool receiveImages)
+{
+	QColor textColor;
+
+	if (format.font & GG_FONT_IMAGE)
+	{
+		uint32_t size = gg_fix32(image.size);
+		uint32_t crc32 = gg_fix32(image.crc32);
+
+		if (size == 20 && (crc32 == 4567 || crc32 == 99)) // fake spy images
+			return;
+
+		QString file_name = gadu_images_manager.getSavedImageFileName(size, crc32);
+		if (!file_name.isEmpty())
+		{
+			result << MessagePart(file_name);
+			return;
+		}
+
+		if (!receiveImages)
+		{
+			result << MessagePart(qApp->translate("@default", QT_TR_NOOP("###IMAGE BLOCKED###")), false, false, false, textColor);
+			return;
+		}
+
+		unsigned int maxSize = config_file.readUnsignedNumEntry("Chat", "MaxImageSize");
+		if (size > maxSize * 1024)
+		{
+			result << MessagePart(qApp->translate("@default", QT_TR_NOOP("###IMAGE TOO BIG###")), false, false, false, textColor);
+			return;
+		}
+
+		result << MessagePart(sender, size, crc32);
+	}
+	else
+	{
+		if (format.font & GG_FONT_COLOR)
+		{
+			textColor.setRed(color.red);
+			textColor.setGreen(color.green);
+			textColor.setBlue(color.blue);
+		}
+
+		result << MessagePart(content, format.font & GG_FONT_BOLD, format.font & GG_FONT_ITALIC, format.font & GG_FONT_UNDERLINE, textColor);
+	}
+}
+
+#define MAX_NUMBER_OF_IMAGES 5
+
+Message GaduFormater::createMessage(UinType sender, const QString &content, unsigned char *formats, unsigned int size, bool receiveImages)
 {
 	Message result;
 
@@ -2374,11 +2433,13 @@ Message GaduFormater::createMessage(const QString &content, unsigned char *forma
 	unsigned int memoryPosition = 0;
 	unsigned int prevTextPosition = 0;
 	unsigned int textPosition = 0;
+	unsigned int images = 0;
 
 	struct gg_msg_richtext_format prevFormat;
 	struct gg_msg_richtext_format format;
 	struct gg_msg_richtext_color prevColor;
 	struct gg_msg_richtext_color color;
+	struct gg_msg_richtext_image image;
 
 	while (memoryPosition + sizeof(format) <= size)
 	{
@@ -2389,28 +2450,29 @@ Message GaduFormater::createMessage(const QString &content, unsigned char *forma
 		if (first && format.position > 0)
 			result << MessagePart(content.mid(0, textPosition), false, false, false, QColor());
 
-		if (memoryPosition + sizeof(color) <= size)
-			if (format.font & GG_FONT_COLOR)
+		if (format.font & GG_FONT_IMAGE)
+		{
+			images++;
+
+			if (memoryPosition + sizeof(image) <= size)
 			{
-				memcpy(&color, formats + memoryPosition, sizeof(color));
-				memoryPosition += sizeof(color);
+				memcpy(&image, formats + memoryPosition, sizeof(image));
+				memoryPosition += sizeof(image);
 			}
+		}
+		else
+		{
+			if (memoryPosition + sizeof(color) <= size)
+				if (format.font & GG_FONT_COLOR)
+				{
+					memcpy(&color, formats + memoryPosition, sizeof(color));
+					memoryPosition += sizeof(color);
+				}
+		}
 
 		if (!first)
-		{
-			QColor textColor;
-
-			if (prevFormat.font & GG_FONT_COLOR)
-			{
-				textColor.setRed(prevColor.red);
-				textColor.setGreen(prevColor.green);
-				textColor.setBlue(prevColor.blue);
-			}
-
-			result << MessagePart(content.mid(prevTextPosition, textPosition - prevTextPosition),
-				prevFormat.font & GG_FONT_BOLD, prevFormat.font & GG_FONT_ITALIC, prevFormat.font & GG_FONT_UNDERLINE,
-				textColor);
-		}
+			appendToMessage(result, sender, content.mid(prevTextPosition, textPosition - prevTextPosition),
+				prevFormat, prevColor, image, receiveImages && images <= MAX_NUMBER_OF_IMAGES);
 		else
 			first = false;
 
@@ -2419,20 +2481,8 @@ Message GaduFormater::createMessage(const QString &content, unsigned char *forma
 		prevColor = color;
 	}
 
-	textPosition = content.length();
-
-	QColor textColor;
-	if (prevFormat.font & GG_FONT_COLOR)
-	{
-		textColor.setRed(prevColor.red);
-		textColor.setGreen(prevColor.green);
-		textColor.setBlue(prevColor.blue);
-	}
-
-	if (textPosition != prevTextPosition)
-		result << MessagePart(content.mid(prevTextPosition, textPosition - prevTextPosition),
-			prevFormat.font & GG_FONT_BOLD, prevFormat.font & GG_FONT_ITALIC, prevFormat.font & GG_FONT_UNDERLINE,
-			textColor);
+	appendToMessage(result, sender, content.mid(prevTextPosition, content.length() - prevTextPosition), prevFormat, prevColor, image,
+		receiveImages && images <= MAX_NUMBER_OF_IMAGES);
 
 	return result;
 }

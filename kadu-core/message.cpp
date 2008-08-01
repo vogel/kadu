@@ -10,6 +10,7 @@
 #include <QtGui/QTextDocument>
 
 #include "html_document.h"
+#include "icons_manager.h"
 
 #include "message.h"
 
@@ -17,7 +18,18 @@ QRegExp Message::ParagraphRegExp("<p[^>]*>(.*)</p>");
 QRegExp Message::SpanRegExp("<span.*(font-weight:600)?.*(font-style:italic)?.*(text-decoration: underline)?.*(color:(#[0-9a-fA-F]+))?.*>(.*)</span>");
 
 MessagePart::MessagePart(const QString &content, bool bold, bool italic, bool underline, QColor color)
-	: Content(content), Bold(bold), Italic(italic), Underline(underline), Color(color)
+	: Image(false), Content(content), Bold(bold), Italic(italic), Underline(underline), Color(color)
+{
+}
+
+MessagePart::MessagePart(const QString &imagePath)
+	: Image(true), ImagePath(imagePath), ImageSender(0), ImageSize(0), ImageCrc32(0)
+{
+}
+
+MessagePart::MessagePart(UinType imageSender, int imageSize, int imageCrc32)
+	: Image(true), ImagePath(icons_manager->iconPath("LoadingImage")),
+		ImageSender(imageSender), ImageSize(imageSize), ImageCrc32(imageCrc32)
 {
 }
 
@@ -27,24 +39,35 @@ MessagePart::~MessagePart()
 
 QString MessagePart::toHtml() const
 {
-	QString result = Qt::escape(Content);
-	result.replace("\n", "<br />");
+	if (Image)
+	{
+		return QString("<img src=\"file:///%1\" gg_sender=\"%2\" gg_size=\"%3\" gg_crc=\"%4\"/>")
+			.arg(ImagePath)
+			.arg(ImageSender)
+			.arg(ImageSize)
+			.arg(ImageCrc32);
+	}
+	else
+	{
+		QString result = Qt::escape(Content);
+		result.replace("\n", "<br />");
 
-	if (!Bold && !Italic && !Underline && !Color.isValid())
-		return result;
+		if (!Bold && !Italic && !Underline && !Color.isValid())
+			return result;
 
-	QString span = "<span style='";
-	if (Bold)
-		span += "font-weight:600;";
-	if (Italic)
-		span += "font-style:italic;";
-	if (Underline)
-		span += "text-decoration:underline;";
-	if (Color.isValid())
-		span += QString("color:%1;").arg(Color.name());
-	span += "'>";
+		QString span = "<span style='";
+		if (Bold)
+			span += "font-weight:600;";
+		if (Italic)
+			span += "font-style:italic;";
+		if (Underline)
+			span += "text-decoration:underline;";
+		if (Color.isValid())
+			span += QString("color:%1;").arg(Color.name());
+		span += "'>";
 
-	return span + result + "</span>";
+		return span + result + "</span>";
+	}
 }
 
 Message Message::parse(const QString &messageString)

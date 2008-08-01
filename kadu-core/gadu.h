@@ -156,12 +156,14 @@ enum GaduError
 // ------------------------------------
 class GaduFormater
 {
+	static void appendToMessage(Message &result, UinType sender, const QString &content, struct gg_msg_richtext_format &format,
+		struct gg_msg_richtext_color &color, struct gg_msg_richtext_image &image, bool receiveImages);
 
 public:
 	static unsigned int computeFormatsSize(const Message &message);
 	static unsigned char * createFormats(const Message &message, unsigned int &size);
 
-	static Message createMessage(const QString &content, unsigned char * formats, unsigned int size);
+	static Message createMessage(UinType sender, const QString &content, unsigned char * formats, unsigned int size, bool receiveImages);
 
 };
 
