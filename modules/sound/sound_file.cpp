@@ -7,13 +7,14 @@
  *                                                                         *
  ***************************************************************************/
 
+#ifdef _MSC_VER
+#include "kadu-core/kinttypes.h"
+#else
 #include <stdint.h>
+#endif
+
 #include <sndfile.h>
 #include <string.h>
-
-#ifdef _MSC_VER
-#include "kadu-core/kinttypes.h.h"
-#endif
 
 #include "sound_file.h"
 #include "debug.h"
