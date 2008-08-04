@@ -225,6 +225,7 @@ void UserGroup::removeUser(const UserListElement &ule, bool massively, bool last
 	{
 		emit removingUser(ule, massively, last);
 		// very ugly hack :|
+		UserListElement ule2(ule);
 		if (this == userlist && !Kadu::closing())
 			ule.setAnonymous(true);
 		else
@@ -232,7 +233,8 @@ void UserGroup::removeUser(const UserListElement &ule, bool massively, bool last
 			ule.removeGroup(this);
 			QSet<UserListElement>::remove(ule);
 		}
-		emit userRemoved(ule, massively, last);
+		// ule can be deleted, so use a copy
+		emit userRemoved(ule2, massively, last);
 		emit modified();
 	}
 

@@ -1481,7 +1481,8 @@ Kadu::~Kadu(void)
 {
 	kdebugf();
 
-	qDeleteAll(KaduActions);
+	qDeleteAll(KaduActions.values());
+
 	delete selectedUsers;
 
 	kdebugf2();

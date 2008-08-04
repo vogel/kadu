@@ -341,6 +341,8 @@ int main(int argc, char *argv[])
 	kadu_qm.load(dataPath(QString("kadu/translations/kadu_") + lang), ".");
 	qApp->installTranslator(&kadu_qm);
 	qApp->setStyle(config_file.readEntry("Look", "QtStyle"));
+	// plugins path (win32)
+	qApp->addLibraryPath(libPath(""));
 
 #ifndef Q_WS_WIN
 	lockFile = new QFile(ggPath("lock"));
