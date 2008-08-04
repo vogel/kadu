@@ -21,7 +21,7 @@
  * @ingroup ext_sound
  * @{
  */
-extern "C" int ext_sound_init(bool firstLoad)
+extern "C" KADU_EXPORT int ext_sound_init(bool firstLoad)
 {
 	kdebugf();
 
@@ -31,7 +31,7 @@ extern "C" int ext_sound_init(bool firstLoad)
 	kdebugf2();
 	return 0;
 }
-extern "C" void ext_sound_close()
+extern "C" KADU_EXPORT void ext_sound_close()
 {
 	kdebugf();
 

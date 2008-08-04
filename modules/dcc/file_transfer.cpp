@@ -20,7 +20,7 @@
 
 #include "file_transfer.h"
 
-uint32_t gg_fix32(uint32_t);
+//uint32_t gg_fix32(uint32_t);
 
 FileTransfer::FileTransfer(FileTransferManager *listener, DccVersion version,
 		FileTransferType type, const UinType &contact, const QString &fileName) :

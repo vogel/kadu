@@ -23,7 +23,7 @@
  * @ingroup desktop_docking
  * @{
  */
-extern "C" int desktop_docking_init(bool firstLoad)
+extern "C" KADU_EXPORT int desktop_docking_init(bool firstLoad)
 {
 	kdebugf();
 
@@ -34,7 +34,7 @@ extern "C" int desktop_docking_init(bool firstLoad)
 	return 0;
 }
 
-extern "C" void desktop_docking_close()
+extern "C" KADU_EXPORT void desktop_docking_close()
 {
 	kdebugf();
 

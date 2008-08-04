@@ -43,7 +43,7 @@
  * @ingroup dcc
  * @{
  */
-extern "C" int dcc_init(bool firstLoad)
+extern "C" KADU_EXPORT int dcc_init(bool firstLoad)
 {
 	kdebugf();
 	dcc_manager = new DccManager();
@@ -54,7 +54,7 @@ extern "C" int dcc_init(bool firstLoad)
 	return 0;
 }
 
-extern "C" void dcc_close()
+extern "C" KADU_EXPORT void dcc_close()
 {
 	kdebugf();
 

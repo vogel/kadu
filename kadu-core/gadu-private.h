@@ -22,8 +22,9 @@ struct gg_session;
 // ------------------------------------
 //             Notifiers
 // ------------------------------------
-
+#ifndef _MSC_VER
 #pragma GCC visibility push(hidden)
+#endif
 
 class SocketNotifiers : public QObject
 {
@@ -161,6 +162,8 @@ public:
 
 };
 
+#ifndef _MSC_VER
 #pragma GCC visibility pop
+#endif
 
 #endif

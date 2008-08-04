@@ -21,6 +21,11 @@ set (TRANSLATION_SOURCES
 	translations/account_management_pl.ts
 )
 
+if(WIN32)
+	include_directories (${CMAKE_CURRENT_SOURCE_DIR})
+	set (SOURCES ${SOURCES} ../module.rc)
+endif(WIN32)
+
 kadu_module_desc (account_management.desc)
 qt_wrap_cpp (account_management MOC_FILES ${MOC_SOURCES})
 

@@ -79,7 +79,7 @@ void HttpClient::onReadyRead()
 	int size = Socket.bytesAvailable();
 	kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "HttpClient: Data Block Retreived: %i bytes\n", size);
 	// Dodaj nowe dane do starych
-	char buf[size];
+	char *buf=new char[size];
 	Socket.readBlock(buf, size);
 	//
 //	kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "%s\n",buf);
@@ -88,6 +88,7 @@ void HttpClient::onReadyRead()
 	Data.resize(old_size + size);
 	for(int i = 0; i < size; ++i)
 		Data[old_size + i] = buf[i];
+	delete buf;
 	// Jesli nie mamy jeszcze naglowka
 	if (!HeaderParsed)
 	{

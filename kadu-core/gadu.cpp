@@ -31,6 +31,8 @@
 
 #include "gadu.h"
 
+#include <time.h>
+
 #define GG_STATUS_INVISIBLE2 0x0009 /* g�upy... */
 
 static QList<QHostAddress> gg_servers;

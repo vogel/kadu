@@ -41,12 +41,18 @@
 #ifdef Q_OS_MACX
 	#define SO_EXT "dylib"
 	#define SO_EXT_LEN 5
+	#define SO_PREFIX "lib"
+	#define SO_PREFIX_LEN 3
 #elif defined(Q_OS_WIN)
 	#define SO_EXT "dll"
 	#define SO_EXT_LEN 3
+	#define SO_PREFIX ""
+	#define SO_PREFIX_LEN 0
 #else
 	#define SO_EXT "so"
 	#define SO_EXT_LEN 2
+	#define SO_PREFIX "lib"
+	#define SO_PREFIX_LEN 3
 #endif
 
 #ifndef Q_WS_WIN
@@ -548,12 +554,12 @@ QStringList ModulesManager::staticModules() const
 
 QStringList ModulesManager::installedModules() const
 {
-	QDir dir(libPath("kadu/modules"),"lib*." SO_EXT);
+	QDir dir(libPath("kadu/modules"),SO_PREFIX"*." SO_EXT);
 	dir.setFilter(QDir::Files);
 	QStringList installed;
 	QStringList entries = dir.entryList();
 	foreach(const QString &entry, entries)
-		installed.append(entry.mid(3, entry.length() - SO_EXT_LEN - 4));
+		installed.append(entry.mid(SO_PREFIX_LEN, entry.length() - SO_EXT_LEN - SO_PREFIX_LEN - 1));
 	return installed;
 }
 
@@ -744,7 +750,7 @@ bool ModulesManager::activateModule(const QString& module_name)
 	}
 	else
 	{
-		m.lib = new Library(libPath("kadu/modules/lib" + module_name + "." SO_EXT));
+		m.lib = new Library(libPath("kadu/modules/"SO_PREFIX + module_name + "." SO_EXT));
 		if (!m.lib->load())
 		{
 			QString err = m.lib->errorString();

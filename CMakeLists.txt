@@ -2,9 +2,12 @@ project (kadu)
 
 # configuration
 
-option (DEBUG "Build the project using debugging code" OFF CMAKE_BUILD_TYPE "DEBUG")
 option (ENABLE_AUTDOWNLOAD "Use automatic download of modules/icons/emoticons" ON)
 option (SIG_HANDLING_ENABLED "Define if you want system signals handling" ON)
+
+if (NOT BUILD_DESCRIPTION)
+	set (BUILD_DESCRIPTION "Compilied sources" CACHE STRING "Build description" FORCE)
+endif (NOT BUILD_DESCRIPTION)
 
 if (NOT CMAKE_BUILD_TYPE)
 	set (CMAKE_BUILD_TYPE Release CACHE STRING "Choose the type of build, options are: Debug Release RelWithDebInfo." FORCE)
@@ -34,11 +37,14 @@ if (SIG_HANDLING_ENABLED)
 	set (SIG_HANDLING_ENABLED 1)
 endif (SIG_HANDLING_ENABLED)
 
-if (DEBUG)
-	add_definitions (-g -ggdb -O0)
+if (CMAKE_BUILD_TYPE STREQUAL "Debug")
 	set (DEBUG 1)
 	set (DEBUG_ENABLED 1)
-endif (DEBUG)
+endif (CMAKE_BUILD_TYPE STREQUAL "Debug")
+
+if (MSVC)
+	add_definitions (/D_CRT_SECURE_NO_WARNINGS=1)
+endif (MSVC)
 
 set (DATADIR ${CMAKE_INSTALL_PREFIX}/share)
 set (LIBDIR ${CMAKE_INSTALL_PREFIX}/lib)
@@ -70,7 +76,7 @@ set(QT_USE_QNETWORK 1)
 set(QT_USE_QT3SUPPORT 1)
 set(QT_USE_QTWEBKIT 1)
 include(${QT_USE_FILE})
-include_directories (${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_CURRENT_SOURCE_DIR}/kadu-core ${QT_INCLUDES})
+include_directories (${CMAKE_BINARY_DIR} ${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_CURRENT_SOURCE_DIR}/kadu-core ${QT_INCLUDES})
 
 pkg_search_module (LIBGADU REQUIRED libgadu>=1.8.0)
 include_directories (${LIBGADU_INCLUDE_DIRS})
@@ -78,7 +84,7 @@ link_directories (${LIBGADU_LIBRARY_DIRS})
 
 # build
 
-configure_file (${CMAKE_CURRENT_SOURCE_DIR}/kadu-config.h.cmake ${CMAKE_CURRENT_SOURCE_DIR}/kadu-config.h)
+configure_file (${CMAKE_SOURCE_DIR}/kadu-config.h.cmake ${CMAKE_BINARY_DIR}/kadu-config.h)
 
 add_subdirectory (modules)
 add_subdirectory (kadu-core)

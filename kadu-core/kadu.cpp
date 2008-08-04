@@ -15,9 +15,11 @@
 #include <QtGui/QVBoxLayout>
 #include <QtWebKit/QWebFrame>
 
+#ifndef _MSC_VER
 #include <sys/time.h>
 #include <fcntl.h>
 #include <unistd.h>
+#endif
 
 #include "about.h"
 #include "chat_edit_box.h"
@@ -1015,10 +1017,10 @@ void Kadu::quit()
 
 	if (measureTime)
 	{
-		struct timeval tv;
-		struct timezone tz;
-		gettimeofday(&tv, &tz);
-		endingTime = (tv.tv_sec % 1000) * 1000000 + tv.tv_usec;
+		time_t sec;
+		int msec;
+		getTime(&sec, &msec);
+		endingTime = (sec % 1000) * 1000 + msec;
 	}
 
 	close(true);

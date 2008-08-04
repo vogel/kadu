@@ -23,7 +23,7 @@
 
 #include "exec_notify.h"
 
-extern "C" int exec_notify_init(bool firstLoad)
+extern "C" KADU_EXPORT int exec_notify_init(bool firstLoad)
 {
 	kdebugf();
 	exec_notify = new ExecNotify();
@@ -31,7 +31,7 @@ extern "C" int exec_notify_init(bool firstLoad)
 	return 0;
 }
 
-extern "C" void exec_notify_close()
+extern "C" KADU_EXPORT void exec_notify_close()
 {
 	kdebugf();
 	delete exec_notify;

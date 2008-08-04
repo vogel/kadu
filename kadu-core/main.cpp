@@ -12,12 +12,14 @@
 #include <QtGui/QApplication>
 #include <QtGui/QMessageBox>
 
+
+#include <time.h>
+#include <errno.h>
+#ifndef Q_WS_WIN
 #include <sys/file.h>
 #include <sys/stat.h>
 #include <sys/time.h>
 #include <sys/types.h>
-#include <errno.h>
-#ifndef Q_WS_WIN
 #include <pwd.h>
 #else
 #include <winsock2.h>
@@ -93,7 +95,7 @@ static void kadu_signal_handler(int s)
 		fprintf(stderr, "======= END OF BACKTRACE  ======\n");
 		fflush(stderr);
 
-		QByteArray p(ggPath(debug_file).local8Bit());
+		QByteArray p(QDir::toNativeSeparators(ggPath(debug_file)).local8Bit());
 		dbgfile = fopen(p.data(), "w");
 		if (dbgfile)
 		{
@@ -197,12 +199,12 @@ extern KADUAPI char* SystemUserName;
 int main(int argc, char *argv[])
 {
 	int ggnumber(0);
-	struct timeval tv;
-	struct timezone tz;
+	time_t sec;
+	int msec;
 	time_t startTimeT = time(0);
 	beforeExecTime = endingTime = exitingTime = 0;
-	gettimeofday(&tv, &tz);
-	startTime = (tv.tv_sec % 1000) * 1000000 + tv.tv_usec;
+	getTime(&sec, &msec);
+	startTime = (sec % 1000) * 1000 + msec;
 
 	// na Windowsie to nie ma znaczenia
 #ifndef Q_WS_WIN
@@ -216,7 +218,7 @@ int main(int argc, char *argv[])
 #ifdef Q_WS_WIN
 	WSADATA wsaData;
 
-	if (WSAStartup(MAKEWORD(2, 0), &wsaData) != 0) {
+	if (WSAStartup(MAKEWORD(2, 2), &wsaData) != 0) {
 		return 1;
 	}
 
@@ -252,8 +254,8 @@ int main(int argc, char *argv[])
 		{
 			strncpy(SystemUserName, p->pw_name, 99);
 			SystemUserName[99] = 0;
-			sprintf(path, "/tmp/kadu-%s-%04d-%02d-%02d-%02d-%02d-%02d-%ld.dbg", SystemUserName, 1900 + t->tm_year, 1 + t->tm_mon, t->tm_mday, t->tm_hour, t->tm_min, t->tm_sec, tv.tv_usec);
-			if (freopen(path, "wx", stderr) == 0)
+			sprintf(path, "/tmp/kadu-%s-%04d-%02d-%02d-%02d-%02d-%02d.dbg", SystemUserName, 1900 + t->tm_year, 1 + t->tm_mon, t->tm_mday, t->tm_hour, t->tm_min, t->tm_sec);
+			if (freopen(path, "w+", stderr) == 0)
 				fprintf(stdout, "freopen: %s\n", strerror(errno));
 			else if (fchmod(fileno(stderr), 0600) != 0)
 			{
@@ -265,7 +267,7 @@ int main(int argc, char *argv[])
 		char *tmp=getenv("TEMP");
 		if(!tmp) tmp=".";
 		sprintf(path, "%s\\kadu-dbg-%04d-%02d-%02d-%02d-%02d-%02d.txt", tmp, 1900 + t->tm_year, 1 + t->tm_mon, t->tm_mday, t->tm_hour, t->tm_min, t->tm_sec);
-		if (freopen(path, "wx", stderr) == 0)
+		if (freopen(path, "w+", stderr) == 0)
 			fprintf(stdout, "freopen: %s\n", strerror(errno));
 #endif
 
@@ -453,8 +455,8 @@ int main(int argc, char *argv[])
 
 	if (measureTime)
 	{
-		gettimeofday(&tv, &tz);
-		beforeExecTime = (tv.tv_sec % 1000) * 1000000 + tv.tv_usec;
+		getTime(&sec, &msec);
+		beforeExecTime = (sec % 1000) * 1000 + msec;
 	}
 
 	int ret = qApp->exec();
@@ -467,8 +469,8 @@ int main(int argc, char *argv[])
 
 	if (measureTime)
 	{
-		gettimeofday(&tv, &tz);
-		exitingTime = (tv.tv_sec % 1000) * 1000000 + tv.tv_usec;
+		getTime(&sec, &msec);
+		exitingTime = (sec % 1000) * 1000 + msec;
 		fprintf(stderr, "init time:%lld, run time:%lld, ending time:%lld\n", beforeExecTime - startTime, endingTime - beforeExecTime, exitingTime - endingTime);
 	}
 

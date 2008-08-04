@@ -1,0 +1,44 @@
+#include "kadu-config.h"
+#include <modver.h>
+#include <winver.h>
+
+VS_VERSION_INFO	VERSIONINFO
+FILEVERSION 	0,0,0,0
+PRODUCTVERSION	0,0,0,0
+#ifdef DEBUG
+FILEFLAGS	(VS_FF_DEBUG | VS_FF_PRERELEASE)
+#else
+FILEFLAGS	VS_FF_PRERELEASE
+#endif
+FILEOS		VOS__WINDOWS32
+FILETYPE	VFT_DLL
+FILESUBTYPE	VFT2_UNKNOWN
+BEGIN
+	BLOCK "StringFileInfo"
+	BEGIN 
+		BLOCK "040904E4"
+		BEGIN
+		VALUE "CompanyName",	AUTHOR
+		VALUE "FileDescription", DESCRIPTION " for Kadu"
+		VALUE "LegalCopyright", AUTHOR
+		VALUE "FileVersion", VERSION
+		VALUE "Comments", BUILD_DESCRIPTION
+		END
+	END
+	BLOCK "StringFileInfo"
+	BEGIN 
+		BLOCK "041504B0"
+		BEGIN
+		VALUE "CompanyName",	AUTHOR
+		VALUE "FileDescription", DESCRIPTION_PL
+		VALUE "LegalCopyright", AUTHOR
+		VALUE "FileVersion", VERSION
+		VALUE "Comments", BUILD_DESCRIPTION
+		END
+	END
+	BLOCK "VarFileInfo"
+	BEGIN
+		VALUE "Translation", 0x0409, 0x04E4
+		VALUE "Translation", 0x0415, 0x04B0
+	END
+END

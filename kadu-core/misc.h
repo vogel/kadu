@@ -63,13 +63,7 @@ QString rectToString(const QRect& rect);
 //usuwa znaki nowego wiersza, tagi htmla (wszystko co da si� dopasowa� jako <.*>)
 QString toPlainText(const QString &text);
 
-// gettimeofday (win32)
-#ifdef Q_OS_WIN
-struct timeval;
-struct timezone {};
-int KADUAPI gettimeofday(struct timeval* tp, struct timezone* tzp);
-#endif
-
+void KADUAPI getTime(time_t *sec, int *msec);
 
 extern KADUAPI QFont *defaultFont;
 extern KADUAPI QFontInfo *defaultFontInfo;

@@ -21,7 +21,7 @@
  * @ingroup default_sms
  * @{
  */
-extern "C" int default_sms_init(bool firstLoad)
+extern "C" KADU_EXPORT int default_sms_init(bool firstLoad)
 {
 	kdebugf();
 
@@ -36,7 +36,7 @@ extern "C" int default_sms_init(bool firstLoad)
 	return 0;
 }
 
-extern "C" void default_sms_close()
+extern "C" KADU_EXPORT void default_sms_close()
 {
 	kdebugf();
 

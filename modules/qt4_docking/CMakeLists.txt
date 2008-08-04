@@ -6,6 +6,11 @@ set (MOC_SOURCES
 	qt4_docking.h
 )
 
+if(WIN32)
+	include_directories (${CMAKE_CURRENT_SOURCE_DIR})
+	set (SOURCES ${SOURCES} ../module.rc)
+endif(WIN32)
+
 kadu_module_desc (qt4_docking.desc)
 qt_wrap_cpp (qt4_docking MOC_FILES ${MOC_SOURCES})
 

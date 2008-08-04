@@ -8,7 +8,6 @@
  ***************************************************************************/
 
 #include "debug.h"
-// dla gettimeofday
 #include "misc.h"
 
 int debug_mask;
@@ -16,8 +15,6 @@ int debug_mask;
 #ifdef DEBUG_ENABLED
 
 #include <QtCore/QMutex>
-
-#include <sys/time.h>
 
 #include <stdarg.h>
 #include <stdio.h>
@@ -31,8 +28,6 @@ int debug_mask;
 static QMutex debug_mutex;
 
 static int last;
-static struct timeval tv;
-static struct timezone tz;
 bool KADU_EXPORT showTimesInDebug = false;
 
 void _kdebug_with_mask(int mask, const char* file, const int line, const char* format,...)
@@ -43,9 +38,11 @@ void _kdebug_with_mask(int mask, const char* file, const int line, const char* f
 
 		if (showTimesInDebug)
 		{
-			gettimeofday(&tv, &tz);
-			int x = (tv.tv_sec % 1000) * 1000000 + tv.tv_usec;
-			fprintf(stderr, "KK <%ld:%06ld:%09d:%s:%i>\t", tv.tv_sec, tv.tv_usec, x - last, file, line);
+			time_t sec;
+			int msec;
+			getTime(&sec, &msec);
+			int x = (sec % 1000) * 1000 + msec;
+			fprintf(stderr, "KK <%d:%03d:%09d:%s:%i>\t", (int)sec, msec, x - last, file, line);
 			last = x;
 		}
 		else

@@ -22,14 +22,14 @@
  * @ingroup autoresponder
  * @{
  */
-extern "C" int autoresponder_init(bool firstLoad)
+extern "C" KADU_EXPORT int autoresponder_init(bool firstLoad)
 {
 	autoresponder = new AutoResponder();
 	MainConfigurationWindow::registerUiFile(dataPath("kadu/modules/configuration/autoresponder.ui"), autoresponder);
 	return 0;
 }
 
-extern "C" void autoresponder_close()
+extern "C" KADU_EXPORT void autoresponder_close()
 {
 	MainConfigurationWindow::unregisterUiFile(dataPath("kadu/modules/configuration/autoresponder.ui"), autoresponder);
 	delete autoresponder;

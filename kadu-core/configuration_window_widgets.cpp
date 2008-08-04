@@ -83,7 +83,7 @@ void ConfigLineEdit::createWidgets()
 	label = new QLabel(this, qApp->translate("@default", widgetCaption) + ":", parentConfigGroupBox->widget());
 	parentConfigGroupBox->addWidgets(label, this);
 
-	if (!ConfigWidget::ConfigWidget::toolTip.isEmpty())
+	if (!ConfigWidget::toolTip.isEmpty())
 	{
 		setToolTip(qApp->translate("@default", ConfigWidget::toolTip));
 		label->setToolTip(qApp->translate("@default", ConfigWidget::toolTip));

@@ -30,8 +30,11 @@
 #include <sys/timeb.h>
 #undef MessageBox
 #else
+#include <sys/time.h>
 #include <pwd.h>
 #endif
+
+#include <time.h>
 
 #include "chat_manager.h"
 #include "config_file.h"
@@ -114,6 +117,7 @@ QString ggPath(const QString &subpath)
 	return (path + subpath);
 }
 
+#ifndef Q_WS_WIN
 //stat,getcwd
 #include <unistd.h>
 #include <sys/types.h>
@@ -132,7 +136,6 @@ QString ggPath(const QString &subpath)
  */
 static bool delinkify(char *path, int maxlen)
 {
-#ifndef Q_WS_WIN
 	kdebugmf(KDEBUG_FUNCTION_START, "%s\n", path);
 	struct stat st;
 	if (lstat(path, &st) == -1)
@@ -161,10 +164,9 @@ static bool delinkify(char *path, int maxlen)
 	delete [] path2;
 	kdebugf2();
 	return true;
-#else
-	return false;
-#endif
 }
+#endif
+
 
 /*
 	funkcja poszukuje binarki programu na podstawie argv[0] oraz zmiennej PATH
@@ -174,6 +176,7 @@ static bool delinkify(char *path, int maxlen)
 	w obu przypadkach gwarantowane jest, �e path ko�czy si� znakiem 0
 	(len musi by� > 2)
 */
+#ifndef Q_OS_WIN
 static char *findMe(const char *argv0, char *path, int len)
 {
 	kdebugf();
@@ -305,6 +308,7 @@ static char *findMe(const char *argv0, char *path, int len)
 		return NULL;
 	}
 }
+#endif
 
 static QString lib_path;
 static QString data_path;
@@ -1238,18 +1242,25 @@ QString narg(const QString &s, const QString &arg1, const QString &arg2, const Q
 	return narg(s, tab, 4);
 }
 
-#ifdef Q_OS_WIN
-int gettimeofday(struct timeval* tp, struct timezone* tzp)
+void getTime(time_t *sec, int *msec)
 {
+#ifdef Q_OS_WIN
 	struct _timeb timebuffer;
 
 	_ftime(&timebuffer);
-	tp->tv_sec = timebuffer.time;
-	tp->tv_usec = timebuffer.millitm * 1000;
 
-	return 0;
-}
+	*sec = timebuffer.time;
+	*msec = timebuffer.millitm * 1000;
+#else
+	struct timeval tv;
+	struct timezone tz;
+	
+	gettimeofday(&tv, &tz);
+
+	*sec=tv.tv_sec;
+	*msec=tv.tv_usec * 1000;
 #endif
+}
 
 #ifdef HAVE_EXECINFO
 #include <execinfo.h>

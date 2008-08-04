@@ -5,6 +5,12 @@ set (SOURCES
 set (MOC_SOURCES
 	echo.h
 )
+
+if(WIN32)
+	include_directories (${CMAKE_CURRENT_SOURCE_DIR})
+	set (SOURCES ${SOURCES} ../module.rc)
+endif(WIN32)
+
 qt_wrap_cpp (echo MOC_FILES ${MOC_SOURCES})
 
 if (COMMAND cmake_policy)

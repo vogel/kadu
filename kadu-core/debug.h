@@ -34,18 +34,27 @@
 	Sk³adnia jak w printf.
 */
 #ifdef DEBUG_ENABLED
+#ifdef _MSC_VER
+#define __PRETTY_FUNCTION__ __FUNCTION__
+#define kdebug(format, ...) \
+	_kdebug_with_mask(KDEBUG_ALL, __FILE__, __LINE__, format, __VA_ARGS__)
+#define kdebugm(mask, format, ...) \
+	_kdebug_with_mask(mask, __FILE__, __LINE__, format, __VA_ARGS__)
+#define kdebugmf(mask, format, ...) \
+	_kdebug_with_mask(mask, __FILE__, __LINE__, "%s: " format, __PRETTY_FUNCTION__, __VA_ARGS__)
+#else
 #define kdebug(format, args...) \
 	_kdebug_with_mask(KDEBUG_ALL, __FILE__, __LINE__, format, ##args)
 #define kdebugm(mask, format, args...) \
 	_kdebug_with_mask(mask, __FILE__, __LINE__, format, ##args)
 #define kdebugmf(mask, format, args...) \
 	_kdebug_with_mask(mask, __FILE__, __LINE__, "%s: " format, __PRETTY_FUNCTION__, ##args)
+#endif // _MSC_VER
 #else
-#define kdebug(format, args...)
-#define kdebugm(mask, format, args...)
-#define kdebugmf(mask, format, args...)
+#define kdebug(format, ...)
+#define kdebugm(mask, format, ...)
+#define kdebugmf(mask, format, ...)
 #endif
-
 
 /*
 	<<< kdebugf >>>
@@ -66,7 +75,11 @@
 	Funkcja pomocnicza. Nie u¿ywaæ.
 */
 #ifdef DEBUG_ENABLED
-KADUAPI void _kdebug_with_mask(int mask, const char *file, const int line, const char *format, ...) __attribute__((format (printf, 4, 5)));
+KADUAPI void _kdebug_with_mask(int mask, const char *file, const int line, const char *format, ...)
+#ifndef _MSC_VER
+ __attribute__((format (printf, 4, 5)))
+#endif
+;
 #endif
 extern KADUAPI int debug_mask;
 

@@ -5,13 +5,15 @@
 #include <QtGui/QTextBrowser>
 #include <QtWebKit/QWebView>
 
+#include "exports.h"
+
 /**
 	Zmodyfikowany QTextBrowser specjalnie na potrzeby Kadu.
 	Klikni�cie na linku otwiera ustawion� w konfiguracji przegl�dark�.
 	\class KaduTextBrowser
 	\brief Klasa bazowa dla ChatMessagesView oraz InfoPanel.
 **/
-class KaduTextBrowser : public QWebView //, private QToolTip
+class KADUAPI KaduTextBrowser : public QWebView //, private QToolTip
 {
 	Q_OBJECT
 

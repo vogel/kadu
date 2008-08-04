@@ -13,6 +13,11 @@ set (TRANSLATION_SOURCES
 	translations/config_wizard_pl.ts
 )
 
+if(WIN32)
+	include_directories (${CMAKE_CURRENT_SOURCE_DIR})
+	set (SOURCES ${SOURCES} ../module.rc)
+endif(WIN32)
+
 kadu_module_desc (config_wizard.desc)
 qt_wrap_cpp (config_wizard MOC_FILES ${MOC_SOURCES})
 

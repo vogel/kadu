@@ -14,7 +14,7 @@
 
 static AdvancedUserList *advanced_userlist;
 
-extern "C" int advanced_userlist_init(bool firstLoad)
+extern "C" KADU_EXPORT int advanced_userlist_init(bool firstLoad)
 {
 	kdebugf();
 
@@ -25,7 +25,7 @@ extern "C" int advanced_userlist_init(bool firstLoad)
 	return 0;
 }
 
-extern "C" void advanced_userlist_close()
+extern "C" KADU_EXPORT void advanced_userlist_close()
 {
 	kdebugf();
 

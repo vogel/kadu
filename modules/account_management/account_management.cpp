@@ -20,7 +20,7 @@
 /** @ingroup account_management
  * @{
  */
-extern "C" int account_management_init(bool firstLoad)
+extern "C" KADU_EXPORT int account_management_init(bool firstLoad)
 {
 	kdebugf();
 
@@ -30,7 +30,7 @@ extern "C" int account_management_init(bool firstLoad)
 	return 0;
 }
 
-extern "C" void account_management_close()
+extern "C" KADU_EXPORT void account_management_close()
 {
 	kdebugf();
 

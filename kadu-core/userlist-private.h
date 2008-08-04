@@ -13,7 +13,9 @@
 class ProtocolData;
 class UserGroup;
 
+#ifndef _MSC_VER
 #pragma GCC visibility push(hidden)
+#endif
 
 typedef QSet<UserGroup *> UserGroupSet;
 
@@ -86,6 +88,8 @@ public:
 
 };
 
+#ifndef _MSC_VER
 #pragma GCC visibility pop
+#endif
 
 #endif

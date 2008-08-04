@@ -22,6 +22,11 @@ set (TRANSLATION_SOURCES
 set (CONFIGURATION_FILES
 	configuration/history.ui)
 
+if(WIN32)
+	include_directories (${CMAKE_CURRENT_SOURCE_DIR})
+	set (SOURCES ${SOURCES} ../module.rc)
+endif(WIN32)
+
 kadu_module_desc (history.desc)
 kadu_module_configuration(${CONFIGURATION_FILES})
 qt_wrap_cpp (history MOC_FILES ${MOC_SOURCES})

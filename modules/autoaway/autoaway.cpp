@@ -28,7 +28,7 @@
  */
 AutoAway *autoAway = 0;
 
-extern "C" int autoaway_init(bool firstLoad)
+extern "C" KADU_EXPORT int autoaway_init(bool firstLoad)
 {
 	kdebugf();
 
@@ -40,7 +40,7 @@ extern "C" int autoaway_init(bool firstLoad)
 	return 0;
 }
 
-extern "C" void autoaway_close()
+extern "C" KADU_EXPORT void autoaway_close()
 {
 	kdebugf();
 

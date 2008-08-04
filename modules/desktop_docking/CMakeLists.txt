@@ -16,6 +16,11 @@ set (TRANSLATION_SOURCES
 set (CONFIGURATION_FILES
 	configuration/desktop_docking.ui)
 
+if(WIN32)
+	include_directories (${CMAKE_CURRENT_SOURCE_DIR})
+	set (SOURCES ${SOURCES} ../module.rc)
+endif(WIN32)
+
 kadu_module_desc (desktop_docking.desc)
 kadu_module_configuration(${CONFIGURATION_FILES})
 qt_wrap_cpp (desktop_docking MOC_FILES ${MOC_SOURCES})

@@ -13,13 +13,13 @@
 #include "debug.h"
 #include "misc.h"
 
-extern "C" int echo_init(bool firstLoad)
+extern "C" KADU_EXPORT int echo_init(bool firstLoad)
 {
 	echo = new Echo();
 	return 0;
 }
 
-extern "C" void echo_close()
+extern "C" KADU_EXPORT void echo_close()
 {
 	delete echo;
 	echo = NULL;

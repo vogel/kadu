@@ -8,6 +8,10 @@
 #include <sys/types.h>
 #endif /* __sun__ */
 
+#ifdef _MSC_VER
+#include "kinttypes.h"
+#endif
+
 #include "status.h"
 #include "usergroup.h"
 

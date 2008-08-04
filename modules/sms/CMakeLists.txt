@@ -16,6 +16,11 @@ set (TRANSLATION_SOURCES
 set (CONFIGURATION_FILES
 	configuration/sms.ui)
 
+if(WIN32)
+	include_directories (${CMAKE_CURRENT_SOURCE_DIR})
+	set (SOURCES ${SOURCES} ../module.rc)
+endif(WIN32)
+
 kadu_module_desc (sms.desc)
 kadu_module_configuration(${CONFIGURATION_FILES})
 qt_wrap_cpp (sms MOC_FILES ${MOC_SOURCES})

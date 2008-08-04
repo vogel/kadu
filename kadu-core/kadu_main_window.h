@@ -16,9 +16,11 @@
 #include "action.h"
 #include "userlist.h"
 
+#include "exports.h"
+
 class QContextMenuEvent;
 
-class KaduMainWindow : public QMainWindow
+class KADUAPI KaduMainWindow : public QMainWindow
 {
 	Q_OBJECT
 

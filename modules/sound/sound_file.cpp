@@ -11,6 +11,10 @@
 #include <sndfile.h>
 #include <string.h>
 
+#ifdef _MSC_VER
+#include "kadu-core/kinttypes.h.h"
+#endif
+
 #include "sound_file.h"
 #include "debug.h"
 
@@ -45,7 +49,7 @@ SoundFile::SoundFile(const char *path):length(0),data(NULL),channels(-1),speed(0
 	{
 		length *= channels;
 		data = new int16_t[length];
-		float buffer[length];
+		float *buffer = new float [length];
 		double scale;
 
 		sf_command (f, SFC_CALC_SIGNAL_MAX, &scale, sizeof (scale)) ;
@@ -57,6 +61,7 @@ SoundFile::SoundFile(const char *path):length(0),data(NULL),channels(-1),speed(0
 		int readcount = sf_read_float (f, buffer, length);
 		for (int m = 0; m < readcount; ++m)
 			data [m] = int16_t(scale * buffer [m]);
+		delete buffer;
 	}
 	else
 	{

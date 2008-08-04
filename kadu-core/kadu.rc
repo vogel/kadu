@@ -1,0 +1,43 @@
+#include "kadu-config.h"
+#include <winver.h>
+
+icon1		ICON	kadu.ico
+VS_VERSION_INFO	VERSIONINFO
+FILEVERSION 	0,6,5
+PRODUCTVERSION	0,6,5
+#ifdef DEBUG
+FILEFLAGS	(VS_FF_DEBUG | VS_FF_PRERELEASE)
+#else
+FILEFLAGS	VS_FF_PRERELEASE
+#endif
+FILEOS		VOS__WINDOWS32
+FILETYPE	VFT_APP
+FILESUBTYPE	VFT2_UNKNOWN
+BEGIN
+	BLOCK "StringFileInfo"
+	BEGIN 
+		BLOCK "040904E4"
+		BEGIN
+		VALUE "CompanyName",	"Kadu Team"
+#ifdef KADU_CONSOLE
+		VALUE "FileDescription",  "Kadu main executable (console version)"
+#else
+		VALUE "FileDescription",  "Kadu main executable"
+#endif
+		VALUE "LegalCopyright", "Kadu Team"
+		VALUE "FileVersion", VERSION
+#ifdef KADU_CONSOLE
+		VALUE "OriginalFilename", "kadu_c.exe"
+#else
+		VALUE "OriginalFilename", "kadu.exe"
+#endif
+		VALUE "URL", "http://www.kadu.net/"
+		VALUE "Comments", BUILD_DESCRIPTION
+		END
+	END
+
+	BLOCK "VarFileInfo"
+	BEGIN
+		VALUE "Translation", 0x0409, 0x04E4
+	END
+END

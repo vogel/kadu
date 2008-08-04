@@ -13,6 +13,11 @@ set (TRANSLATION_SOURCES
 	translations/window_notify_pl.ts
 )
 
+if(WIN32)
+	include_directories (${CMAKE_CURRENT_SOURCE_DIR})
+	set (SOURCES ${SOURCES} ../module.rc)
+endif(WIN32)
+
 kadu_module_desc (window_notify.desc)
 qt_wrap_cpp (window_notify MOC_FILES ${MOC_SOURCES})
 

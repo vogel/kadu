@@ -15,7 +15,6 @@
 #include <QtGui/QRadioButton>
 
 #include <stdlib.h>
-#include <unistd.h>
 
 #include "../sound/sound.h"
 
@@ -33,7 +32,7 @@
  * @{
  */
 
-extern "C" int config_wizard_init(bool firstLoad)
+extern "C" KADU_EXPORT int config_wizard_init(bool firstLoad)
 {
 	kdebugf();
 	wizardStarter = new WizardStarter();
@@ -45,7 +44,7 @@ extern "C" int config_wizard_init(bool firstLoad)
 	return 0;
 }
 
-extern "C" void config_wizard_close()
+extern "C" KADU_EXPORT void config_wizard_close()
 {
 	kdebugf();
 	if (wizardStarter)
