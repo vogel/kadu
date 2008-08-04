@@ -530,8 +530,8 @@ void UserListElement::removeGroup(UserGroup *group) const
 	privateData->Parents.remove(group);
 }
 
-uint qHash(const UserListElement &index)
+ulong qHash(const UserListElement &index)
 {
-	return (uint)index.privateData.data();
+	return (ulong)index.privateData.data();
 }
 

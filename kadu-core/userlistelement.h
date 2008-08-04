@@ -25,7 +25,7 @@ class UserStatus;
 typedef long int UserListKey;
 
 class UserListElement;
-uint qHash(const UserListElement &index);
+ulong qHash(const UserListElement &index);
 
 /**
 	Typ opisuj�cy stan powiadamiania.
@@ -57,7 +57,7 @@ class KADUAPI UserListElement : public QObject
 
 	QExplicitlySharedDataPointer<ULEPrivate> privateData;
 
-	friend uint qHash(const UserListElement &index);
+	friend ulong qHash(const UserListElement &index);
 
 public:
 	/**
