@@ -157,6 +157,9 @@ void PathListEditWindow::addPathClicked()
 
 void PathListEditWindow::changePathClicked()
 {
+	if(!PathListWidget->currentItem())
+		return;
+
 	if (!PathListWidget->currentItem()->isSelected())
 		return;
 
@@ -171,6 +174,9 @@ void PathListEditWindow::changePathClicked()
 
 void PathListEditWindow::deletePathClicked()
 {
+	if(!PathListWidget->currentItem())
+		return;
+
 	if (!PathListWidget->currentItem()->isSelected())
 		return;
 
