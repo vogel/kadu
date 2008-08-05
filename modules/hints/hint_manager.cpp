@@ -362,18 +362,11 @@ void HintManager::deleteAllHints()
 	kdebugf();
 	hint_timer->stop();
 
-// 	Hint *toDelete = hints.first();
-// 	while (toDelete)
-// 	{
-// 		if (!toDelete->requireManualClosing())
-// 		{
-// 			deleteHint(toDelete);
-// 			toDelete = hints.current();
-// 		}
-// 		else
-// 			toDelete = hints.next();
-// 	}
-	hints.clear();
+	foreach(Hint *h, hints)
+	{
+		if(!h->requireManualClosing())
+			deleteHint(h);
+	}
 
 	if (hints.isEmpty())
 		frame->hide();
