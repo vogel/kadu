@@ -2346,7 +2346,7 @@ void Kadu::createDefaultConfiguration()
 
 	config_file.addVariable("Look", "AlignUserboxIconsTop", true);
 	config_file.addVariable("Look", "ChatContents", "");
-	config_file.addVariable("Look", "ChatFont", defaultFont);
+	config_file.addVariable("Look", "ChatFont", *defaultFont);
 	config_file.addVariable("Look", "ChatBgColor", QColor("#ffffff"));
 	config_file.addVariable("Look", "ChatMyBgColor", QColor("#E0E0E0"));
 	config_file.addVariable("Look", "ChatMyFontColor", QColor("#000000"));
@@ -2370,7 +2370,7 @@ void Kadu::createDefaultConfiguration()
 	config_file.addVariable("Look", "NoHeaderRepeat", false);
 	config_file.addVariable("Look", "NoServerTime", true);
 	config_file.addVariable("Look", "NoServerTimeDiff", 60);
-	config_file.addVariable("Look", "PanelFont", defaultFont);
+	config_file.addVariable("Look", "PanelFont", *defaultFont);
 	config_file.addVariable("Look", "PanelVerticalScrollBar", false);
 	config_file.addVariable("Look", "ParagraphSeparator", 4);
 	config_file.addVariable("Look", "ShowBold", true);
@@ -2383,7 +2383,7 @@ void Kadu::createDefaultConfiguration()
 	config_file.addVariable("Look", "UserboxBgColor", w.paletteBackgroundColor());
 	config_file.addVariable("Look", "UserBoxColumnCount", 1);
 	config_file.addVariable("Look", "UserboxFgColor", w.paletteForegroundColor());
-	config_file.addVariable("Look", "UserboxFont", defaultFont);
+	config_file.addVariable("Look", "UserboxFont", *defaultFont);
 	config_file.addVariable("Look", "UseUserboxBackground", false);
 
 	config_file.addVariable("Network", "AllowDCC", true);
