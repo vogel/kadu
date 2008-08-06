@@ -151,7 +151,7 @@ void ChatWidget::configurationUpdated()
 		userbox->Q3ListBox::setFont(config_file.readFontEntry("Look","UserboxFont"));
 	}
 
-	Edit->setFont(config_file.readFontEntry("Look","ChatFont"));
+	Edit->inputBox()->setFont(config_file.readFontEntry("Look","ChatFont"));
  	Edit->inputBox()->setStyleSheet(QString("QTextEdit {background-color:%1}").arg(config_file.readColorEntry("Look","ChatTextBgColor").name()));
 	AutoSend = config_file.readBoolEntry("Chat", "AutoSend");
 	Edit->inputBox()->setAutosend(AutoSend);

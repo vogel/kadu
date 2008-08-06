@@ -108,7 +108,14 @@ void ChatMessagesView::repaintMessages()
 {
 	kdebugf();
 
-	QString text;
+	QString text = QString(
+		"<html>"
+		"	<head>"
+		"		<style type='text/css'>") +
+		style +
+		"		</style>"
+		"	</head>"
+		"	<body>";
 
 	QList<ChatMessage *>::const_iterator message = Messages.constBegin();
 	QList<ChatMessage *>::const_iterator prevMessage;
@@ -120,11 +127,11 @@ void ChatMessagesView::repaintMessages()
 	(*message)->setSeparatorSize(0);
 
 	if ((*message)->type() == TypeSystem)
-		text = KaduParser::parse(ChatSyntaxWithoutHeader, (*message)->sender(), *message);
+		text += KaduParser::parse(ChatSyntaxWithoutHeader, (*message)->sender(), *message);
 	else
 	{
 		(*message)->setShowServerTime(NoServerTime, NoServerTimeDiff);
-		text = KaduParser::parse(ChatSyntaxWithHeader, (*message)->sender(), *message);
+		text += KaduParser::parse(ChatSyntaxWithHeader, (*message)->sender(), *message);
 	}
 
 	prevMessage = message;
@@ -136,6 +143,8 @@ void ChatMessagesView::repaintMessages()
 
  	lastScrollValue = page()->currentFrame()->scrollBarValue(Qt::Vertical);
  	lastLine = (lastScrollValue == page()->currentFrame()->scrollBarMaximum(Qt::Vertical));
+
+	text += "</body></html>";
 
 	HtmlDocument htmlDocument;
 	htmlDocument.parseHtml(text);
@@ -215,12 +224,36 @@ unsigned int ChatMessagesView::countMessages()
 
 void ChatMessagesView::configurationUpdated()
 {
-	setFont(config_file.readFontEntry("Look","ChatFont"));
+	QFont font = config_file.readFontEntry("Look","ChatFont");
+
+	QString fontFamily = font.family();
+	QString fontSize;
+	if (font.pointSize() > 0)
+		fontSize = QString::number(font.pointSize()) + "pt";
+	else
+		fontSize = QString::number(font.pixelSize()) + "px";
+	QString fontStyle = font.italic() ? "italic" : "normal";
+	QString fontWeight = font.bold() ? "bold" : "normal";
+	QString textDecoration = font.underline() ? "underline" : "none";
+	QString backgroundColor = config_file.readColorEntry("Look", "ChatBgColor").name();
+
+	style = QString(
+		"* {"
+		"	font: %1 %2 %3 %4;"
+		"	text-decoration: %5;"
+		"}"
+		"body {"
+		"	margin: 0;"
+		"	padding: 0;"
+		"	background-color: %6;"
+		"}").arg(fontStyle, fontWeight, fontSize, fontFamily, textDecoration, backgroundColor);
 
 	// background color of chat
 // 	QString bgImage = KaduParser::parse(config_file.readEntry("Look", "ChatBgImage"), usrs[0]);
 
-  	setStyleSheet(QString("QWidget {background-color:%1}").arg(config_file.readColorEntry("Look", "ChatBgColor").name()));
+	// TODO: for me with empty styleSheet if has artifacts on scrollbars...
+	// maybe Qt bug?
+  	setStyleSheet("QWidget { }");
 // 	if (!bgImage.isEmpty() && QFile::exists(bgImage))
 // 		brush.setPixmap(QPixmap(bgImage));
 

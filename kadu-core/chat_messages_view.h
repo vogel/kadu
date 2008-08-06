@@ -34,7 +34,9 @@ class KADUAPI ChatMessagesView : public KaduTextBrowser, ConfigurationAwareObjec
  
 	bool NoServerTime; /*!< Usuwanie czasu serwera z wiadomo�ci. */
 	int NoServerTimeDiff; /*!< Maksymalna r��nica czasu serwera i lokalnego, dla kt�rej czas serwera b�dzie usuwany. */
- 
+
+	QString style;
+
 	QString ChatSyntaxWithHeader; /*!< Sk�adnia stylu rozmowy z nag��wkiem. */
 	QString ChatSyntaxWithoutHeader; /*!< Sk�adnia stylu rozmowy bez nag��wka. */
  
