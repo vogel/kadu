@@ -151,3 +151,14 @@ endif (WIN32)
 
 
 install (TARGETS kadu DESTINATION bin)
+
+# install icons
+install (FILES hi16-app-kadu.png DESTINATION "share/pixmaps" RENAME kadu-16.png)
+install (FILES hi22-app-kadu.png DESTINATION "share/pixmaps" RENAME kadu-22.png)
+install (FILES hi24-app-kadu.png DESTINATION "share/pixmaps" RENAME kadu-24.png)
+install (FILES hi32-app-kadu.png DESTINATION "share/pixmaps" RENAME kadu.png)
+install (FILES hi48-app-kadu.png DESTINATION "share/pixmaps" RENAME kadu-48.png)
+install (FILES hi64-app-kadu.png DESTINATION "share/pixmaps" RENAME kadu-64.png)
+install (FILES hi128-app-kadu.png DESTINATION "share/pixmaps" RENAME kadu-128.png)
+install (FILES hi256-app-kadu.png DESTINATION "share/pixmaps" RENAME kadu-256.png)
+
