@@ -130,8 +130,8 @@ if (UNIX AND NOT APPLE)
 
 	add_custom_command(OUTPUT ${DESKTOP_ENTRY}
 		COMMAND touch ${DESKTOP_ENTRY}
-		COMMAND sh ../varia/scripts/create_kadu_desktop.sh ${CMAKE_INSTALL_PREFIX} >${DESKTOP_ENTRY}
-		DEPENDS ../varia/scripts/create_kadu_desktop.sh
+		COMMAND sh ${CMAKE_SOURCE_DIR}/varia/scripts/create_kadu_desktop.sh ${CMAKE_INSTALL_PREFIX} >${DESKTOP_ENTRY}
+		DEPENDS ${CMAKE_SOURCE_DIR}/varia/scripts/create_kadu_desktop.sh
 		COMMENT "Generating desktop entry file"
 	)
 	add_custom_target( DESKTOP_ENTRY_FILE ALL
