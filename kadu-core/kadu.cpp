@@ -2383,7 +2383,9 @@ void Kadu::createDefaultConfiguration()
 	config_file.addVariable("Look", "UserboxBgColor", w.paletteBackgroundColor());
 	config_file.addVariable("Look", "UserBoxColumnCount", 1);
 	config_file.addVariable("Look", "UserboxFgColor", w.paletteForegroundColor());
-	config_file.addVariable("Look", "UserboxFont", *defaultFont);
+	QFont userboxfont(*defaultFont);
+	userboxfont.setPointSize(defaultFont->pointSize()+1);
+	config_file.addVariable("Look", "UserboxFont", userboxfont);
 	config_file.addVariable("Look", "UseUserboxBackground", false);
 
 	config_file.addVariable("Network", "AllowDCC", true);
