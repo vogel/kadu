@@ -123,6 +123,23 @@ set (kadu_MOC_SRCS
 	userlist-private.h
 )
 
+if (UNIX AND NOT APPLE)
+	if (NOT DESKTOP_ENTRY)
+		set(DESKTOP_ENTRY ${CMAKE_CURRENT_SOURCE_DIR}/kadu.desktop)
+	endif (NOT DESKTOP_ENTRY)
+
+	add_custom_command(OUTPUT ${DESKTOP_ENTRY}
+		COMMAND touch ${DESKTOP_ENTRY}
+		COMMAND sh ../varia/scripts/create_kadu_desktop.sh ${CMAKE_INSTALL_PREFIX} >${DESKTOP_ENTRY}
+		DEPENDS ../varia/scripts/create_kadu_desktop.sh
+		COMMENT "Generating desktop entry file"
+	)
+	add_custom_target( DESKTOP_ENTRY_FILE ALL
+		DEPENDS ${DESKTOP_ENTRY}
+	)
+endif (UNIX AND NOT APPLE)
+
+
 qt_wrap_cpp (kadu MOC_FILES ${kadu_MOC_SRCS})
 
 if (COMMAND cmake_policy)
@@ -132,25 +149,31 @@ endif (COMMAND cmake_policy)
 link_directories (modules)
 
 if (WIN32)
-set (CMAKE_SHARED_LIBRARY_PREFIX "")
-add_library(kadu_core SHARED ${kadu_SRCS} ${MOC_FILES} kadu_core.rc)
-set_target_properties(kadu_core PROPERTIES DEFINE_SYMBOL KADULIB )
-target_link_libraries (kadu_core ${STATIC_MODULES} ${QT_LIBRARIES} ${LIBGADU_LIBRARIES})
+	set (CMAKE_SHARED_LIBRARY_PREFIX "")
+	add_library(kadu_core SHARED ${kadu_SRCS} ${MOC_FILES} kadu_core.rc)
+	set_target_properties(kadu_core PROPERTIES DEFINE_SYMBOL KADULIB )
+	target_link_libraries (kadu_core ${STATIC_MODULES} ${QT_LIBRARIES} ${LIBGADU_LIBRARIES})
 
-add_executable(kadu WIN32 main.cpp kadu.rc)
-add_executable(kadu_c main.cpp kadu.rc)
+	add_executable(kadu WIN32 main.cpp kadu.rc)
+	add_executable(kadu_c main.cpp kadu.rc)
 
-set_target_properties(kadu_c PROPERTIES COMPILE_FLAGS "-DKADU_CONSOLE" )
+	set_target_properties(kadu_c PROPERTIES COMPILE_FLAGS "-DKADU_CONSOLE" )
 
-target_link_libraries (kadu kadu_core ${QT_QTMAIN_LIBRARY})
-target_link_libraries (kadu_c kadu_core)
+	target_link_libraries (kadu kadu_core ${QT_QTMAIN_LIBRARY})
+	target_link_libraries (kadu_c kadu_core)
 else (WIN32)
-add_executable (kadu main.cpp kadu.rc ${kadu_SRCS} ${MOC_FILES})
-target_link_libraries (kadu ${STATIC_MODULES} ${QT_LIBRARIES} ${LIBGADU_LIBRARIES})
+	add_executable (kadu main.cpp kadu.rc ${kadu_SRCS} ${MOC_FILES})
+	target_link_libraries (kadu ${STATIC_MODULES} ${QT_LIBRARIES} ${LIBGADU_LIBRARIES})
 endif (WIN32)
 
 
 install (TARGETS kadu DESTINATION bin)
+
+# install desktop file
+if (UNIX AND NOT APPLE)
+	install(FILES ${DESKTOP_ENTRY} DESTINATION share/applications)
+endif (UNIX AND NOT APPLE)
+
 
 # install icons
 install (FILES hi16-app-kadu.png DESTINATION "share/pixmaps" RENAME kadu-16.png)
