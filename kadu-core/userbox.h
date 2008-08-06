@@ -541,14 +541,14 @@ public slots:
 		tylko te kontakty, kt�re nale�� do group.
 		\param group filtr
 	**/
-	void applyFilter(UserGroup *group);
+	void applyFilter(UserGroup *group, bool forceRefresh = true);
 
 	/**
 		\fn void removeFilter(UserGroup *group)
 		Usuwa z bie��cego UserBoksa wskazany filtr "pozytywny".
 		\param group filtr
 	**/
-	void removeFilter(UserGroup *group);
+	void removeFilter(UserGroup *group, bool forceRefresh = true);
 
 	/**
 		\fn void applyNegativeFilter(UserGroup *group)
@@ -556,14 +556,14 @@ public slots:
 		tylko te kontakty, kt�re nie nale�� do group.
 		\param group filtr
 	**/
-	void applyNegativeFilter(UserGroup *group);
+	void applyNegativeFilter(UserGroup *group, bool forceRefresh = true);
 
 	/**
 		\fn void removeNegativeFilter(UserGroup *group)
 		Usuwa z bie��cego UserBoksa wskazany filtr "negatywny".
 		\param group filtr
 	**/
-	void removeNegativeFilter(UserGroup *group);
+	void removeNegativeFilter(UserGroup *group, bool forceRefresh = true);
 
 	/**
 		\fn void removeCompareFunction(const QString &id)

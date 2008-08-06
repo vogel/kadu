@@ -133,7 +133,7 @@ void GroupsManager::setActiveGroup(const QString &name)
 		}
 	}
 	if (!currentGroup.isEmpty())
-		kadu->userbox()->removeFilter(group(currentGroup));
+		kadu->userbox()->removeFilter(group(currentGroup), false);
 	kadu->userbox()->applyFilter(group(name));
 	currentGroup = name;
 	kdebugf2();

@@ -1064,7 +1064,7 @@ QList<UserBox::CmpFuncDesc> UserBox::compareFunctions() const
 	return comparer->CmpFunctions;
 }
 
-void UserBox::applyFilter(UserGroup *g)
+void UserBox::applyFilter(UserGroup *g, bool forceRefresh)
 {
 	kdebugf();
 	if (Filters.contains(g))
@@ -1079,12 +1079,15 @@ void UserBox::applyFilter(UserGroup *g)
 			this, SLOT(userAddedToGroup(UserListElement, bool, bool)));
 	connect(g, SIGNAL(userRemoved(UserListElement, bool, bool)),
 			this, SLOT(userRemovedFromGroup(UserListElement, bool, bool)));
-	refresh();
-	emit selectionChanged();
+	if (forceRefresh)
+	{
+		refresh();
+		emit selectionChanged();
+	}
 	kdebugf2();
 }
 
-void UserBox::removeFilter(UserGroup *g)
+void UserBox::removeFilter(UserGroup *g, bool forceRefresh)
 {
 	kdebugf();
 	if (!Filters.contains(g))
@@ -1128,12 +1131,15 @@ void UserBox::removeFilter(UserGroup *g)
 	}
 	Filters.append(last); // restoring
 	VisibleUsers->addUsers(users);
-	refresh();
-	emit selectionChanged();
+	if (forceRefresh)
+	{
+		refresh();
+		emit selectionChanged();
+	}
 	kdebugf2();
 }
 
-void UserBox::applyNegativeFilter(UserGroup *g)
+void UserBox::applyNegativeFilter(UserGroup *g, bool forceRefresh)
 {
 	kdebugf();
 	if (NegativeFilters.contains(g))
@@ -1148,12 +1154,15 @@ void UserBox::applyNegativeFilter(UserGroup *g)
 			this, SLOT(userRemovedFromGroup(UserListElement, bool, bool)));
 	connect(g, SIGNAL(userRemoved(UserListElement, bool, bool)),
 			this, SLOT(userAddedToGroup(UserListElement, bool, bool)));
-	refresh();
-	emit selectionChanged();
+	if (forceRefresh)
+	{
+		refresh();
+		emit selectionChanged();
+	}
 	kdebugf2();
 }
 
-void UserBox::removeNegativeFilter(UserGroup *g)
+void UserBox::removeNegativeFilter(UserGroup *g, bool forceRefresh)
 {
 	kdebugf();
 	if (!NegativeFilters.contains(g))
@@ -1189,8 +1198,11 @@ void UserBox::removeNegativeFilter(UserGroup *g)
 		users.append(user);
 	}
 	VisibleUsers->addUsers(users);
-	refresh();
-	emit selectionChanged();
+	if (forceRefresh)
+	{
+		refresh();
+		emit selectionChanged();
+	}
 	kdebugf2();
 }
 

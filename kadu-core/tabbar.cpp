@@ -30,7 +30,7 @@ KaduTabBar::KaduTabBar(QWidget *parent)
 void KaduTabBar::dragEnterEvent(QDragEnterEvent *e)
 {
 	kdebugf();
-	if (UlesDrag::canDecode(e))	// XXX?
+	if (UlesDrag::canDecode(e))
 		e->acceptProposedAction();
 	kdebugf2();
 }
