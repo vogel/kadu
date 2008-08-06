@@ -71,6 +71,10 @@ MainConfigurationWindow::MainConfigurationWindow()
 	((QWidget *)(widgetById("debug")->parent()))->hide();
 #endif
 
+#ifndef Q_OS_WIN
+	((QWidget *)(widgetById("startup")->parent()))->hide();
+#endif
+
 	onStartupSetLastDescription = dynamic_cast<QCheckBox *>(widgetById("onStartupSetLastDescription"));
 	QLineEdit *disconnectDescription = dynamic_cast<QLineEdit *>(widgetById("disconnectDescription"));
 	QLineEdit *onStartupSetDescription = dynamic_cast<QLineEdit *>(widgetById("onStartupSetDescription"));

@@ -648,16 +648,25 @@ void openWebBrowser(const QString &link)
 void openMailClient(const QString &mail)
 {
 	kdebugf();
+	QString email = mail;
 
 	QString mailClient = config_file.readEntry("Chat", "MailClient", QString::null);
 	if (mailClient.isEmpty())
 	{
-		MessageBox::msg(qApp->translate("@default", QT_TR_NOOP("Mail client was not specified. Visit the configuration section")), false, "Warning");
-		kdebugmf(KDEBUG_INFO, "Mail client NOT specified.\n");
-		return;
+		if(!mail.startsWith("mailto:"))
+			email="mailto:"+mail;
+		
+		if(!QDesktopServices::openUrl(email)){
+			MessageBox::msg(qApp->translate("@default", QT_TR_NOOP("Mail client was not specified. Visit the configuration section")), false, "Warning");
+			kdebugmf(KDEBUG_INFO, "Mail client NOT specified.\n");
+			return;
+		}
+		else 
+		{
+			kdebugf2();
+			return;
+		}
 	}
-
-	QString email = mail;
 
 	if (email.startsWith("mailto:"))
 		email.remove(0, 7); // usuwamy "mailto:", je�li zosta�o dodane jako fragment adresu

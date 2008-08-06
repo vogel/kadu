@@ -11,6 +11,12 @@
 				<check-box caption="Check for updates" config-section="General" config-item="CheckUpdates"
 					   tool-tip="Automatically checks whether a new version is available" />
 			</group-box>
+
+			<group-box name="Startup" id="startup">
+				<check-box caption="Start on windows startup" config-section="General" config-item="RunOnStartup"
+					   tool-tip="Automatically start on Windows startup" id="startupcb"/>
+			</group-box>
+
 		</tab>
 
 		<tab name="Applications">

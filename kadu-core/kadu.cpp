@@ -7,6 +7,7 @@
  *                                                                         *
  ***************************************************************************/
 
+#include <QtCore/QSettings>
 #include <QtGui/QApplication>
 #include <QtGui/QClipboard>
 #include <QtGui/QMenuBar>
@@ -1931,6 +1932,16 @@ void Kadu::configurationUpdated()
 		"<div align=\"left\"> [<b>%a</b>][ (%u)] [<br>tel.: %m][<br>IP: %i]</div></td></tr></table> <hr> <b>%s</b> [<br>%d]");
 	InfoPanel->setHtml("<body bgcolor=\"" + config_file.readEntry("Look", "InfoPanelBgColor") + "\"></body>");
 	updateInformationPanel();
+
+#ifdef Q_OS_WIN
+	QSettings settings("HKEY_CURRENT_USER\\Software\\Microsoft\\Windows\\CurrentVersion\\Run",
+		       QSettings::NativeFormat);
+	if(config_file.readBoolEntry("General", "RunOnStartup"))
+		settings.setValue("Kadu", 
+				QDir::toNativeSeparators(QCoreApplication::applicationFilePath()));
+	else
+		settings.remove("Kadu");
+#endif
 
 #ifdef DEBUG_ENABLED
 	debug_mask = config_file.readNumEntry("General", "DEBUG_MASK");
