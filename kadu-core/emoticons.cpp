@@ -225,6 +225,9 @@ void EmoticonsManager::expandEmoticons(HtmlDocument& doc, const QColor& bgcolor,
 {
 	kdebugf();
 
+	if (EMOTS_NONE == style)
+		return;
+
 	static bool emotsFound = false;
 	const static QString emotTemplate("<img emoticon=\"1\" title=\"%1\" src=\"file:///%2\" bgcolor=\"%3\" animated=\"%4\"/>");
 
