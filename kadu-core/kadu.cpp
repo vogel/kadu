@@ -1465,6 +1465,8 @@ bool Kadu::close(bool quit)
 #endif
 		kdebugmf(KDEBUG_INFO, "Graceful shutdown...\n");
 
+		qDeleteAll(children());
+
 		delete xml_config_file;
 		delete config_file_ptr;
 
