@@ -154,15 +154,15 @@ if (WIN32)
 	set_target_properties(kadu_core PROPERTIES DEFINE_SYMBOL KADULIB )
 	target_link_libraries (kadu_core ${STATIC_MODULES} ${QT_LIBRARIES} ${LIBGADU_LIBRARIES})
 
-	add_executable(kadu WIN32 main.cpp kadu.rc)
-	add_executable(kadu_c main.cpp kadu.rc)
+	add_executable(kadu WIN32 main.cpp main_win32.cpp kadu.rc)
+	add_executable(kadu_c main.cpp main_win32.cpp kadu.rc)
 
 	set_target_properties(kadu_c PROPERTIES COMPILE_FLAGS "-DKADU_CONSOLE" )
 
 	target_link_libraries (kadu kadu_core ${QT_QTMAIN_LIBRARY})
 	target_link_libraries (kadu_c kadu_core)
 else (WIN32)
-	add_executable (kadu main.cpp kadu.rc ${kadu_SRCS} ${MOC_FILES})
+	add_executable (kadu main.cpp main_unix.cpp ${kadu_SRCS} ${MOC_FILES})
 	target_link_libraries (kadu ${STATIC_MODULES} ${QT_LIBRARIES} ${LIBGADU_LIBRARIES})
 endif (WIN32)
 

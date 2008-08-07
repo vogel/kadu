@@ -27,6 +27,8 @@ endif (Subversion_FOUND)
 file (READ ${CMAKE_CURRENT_SOURCE_DIR}/VERSION KADU_VERSION)
 string (REPLACE "\n" "" KADU_VERSION ${KADU_VERSION})
 
+if(!WIN32)
+
 # TODO: Add libexecinfo support 
 check_include_files ("execinfo.h" HAVE_EXECINFO)
 if (HAVE_EXECINFO)
@@ -36,6 +38,8 @@ endif (HAVE_EXECINFO)
 if (SIG_HANDLING_ENABLED)
 	set (SIG_HANDLING_ENABLED 1)
 endif (SIG_HANDLING_ENABLED)
+
+endif (!WIN32)
 
 if (CMAKE_BUILD_TYPE STREQUAL "Debug")
 	set (DEBUG 1)

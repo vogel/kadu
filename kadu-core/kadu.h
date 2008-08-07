@@ -1,7 +1,7 @@
 #ifndef KADU_H
 #define KADU_H
 
-#include <QtCore/QCustomEvent>
+#include <QtCore/QEvent>
 #include <QtCore/QDateTime>
 #include <QtCore/QTimer>
 #include <QtGui/QKeyEvent>
@@ -160,7 +160,7 @@ private slots:
 protected:
 	void keyPressEvent(QKeyEvent *e);
 	virtual void resizeEvent(QResizeEvent *);
-	virtual void customEvent(QCustomEvent *);
+	virtual void customEvent(QEvent *);
 	virtual void closeEvent(QCloseEvent *event);
 		
 	virtual void configurationUpdated();
@@ -317,12 +317,12 @@ signals:
 
 };
 
-class OpenGGChatEvent : public QCustomEvent
+class OpenGGChatEvent : public QEvent
 {
 	int Number;
 
 public:
-	OpenGGChatEvent(int num) : QCustomEvent(5432), Number(num) {}
+	OpenGGChatEvent(int num) : QEvent((Type)5432), Number(num) {}
 	int number() const { return Number; }
 
 };

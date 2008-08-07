@@ -63,10 +63,6 @@ Kadu *kadu;
 static QTimer *blinktimer;
 QMenu *dockMenu;
 
-int lockFileHandle;
-QFile *lockFile;
-struct flock *lock_str;
-
 const char *Kadu::SyntaxText = QT_TRANSLATE_NOOP
 (
 	"@default", "Syntax: %s - status, %d - description, %i - ip, %n - nick, %a - altnick, %f - first name\n"
@@ -1455,14 +1451,6 @@ bool Kadu::close(bool quit)
 
 		QWidget::close(true);
 
-#ifndef Q_WS_WIN
-		lock_str->l_type = F_UNLCK;
-		fcntl(lockFileHandle, F_SETLK, lock_str);
-//		flock(lockFileHandle, LOCK_UN);
-		lockFile->close();
-		delete lockFile;
-		lockFile=NULL;
-#endif
 		kdebugmf(KDEBUG_INFO, "Graceful shutdown...\n");
 
 		qDeleteAll(children());
@@ -2162,7 +2150,7 @@ const QDateTime &Kadu::startTime() const
 	return StartTime;
 }
 
-void Kadu::customEvent(QCustomEvent *e)
+void Kadu::customEvent(QEvent *e)
 {
 	if (int(e->type()) == 4321)
 		show();
