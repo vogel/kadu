@@ -19,7 +19,7 @@
 Preview::Preview(QWidget *parent)
 	: KaduTextBrowser(parent)
 {
-	setMinimumHeight(170);
+	setFixedHeight(170);
 
 	UserStatus status;
 	status.setBusy(qApp->translate("@default", "Description"));
