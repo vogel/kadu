@@ -15,20 +15,22 @@ class ChatMessagesView;
 
 class UinsListViewText : public QTreeWidgetItem
 {
-		UinsList uins;
+	UinsList uins;
 
-	public:
-		UinsListViewText(QTreeWidget *parent, const UinsList &uins);
-		const UinsList &getUinsList() const;
+public:
+	UinsListViewText(QTreeWidget *parent, const UinsList &uins);
+	const UinsList &getUinsList() const;
+
 };
 
 class DateListViewText : public QTreeWidgetItem
 {
-		HistoryDate date;
+	HistoryDate date;
 
-	public:
-		DateListViewText(QTreeWidgetItem *parent, const HistoryDate &date);
-		const HistoryDate &getDate() const;
+public:
+	DateListViewText(QTreeWidgetItem *parent, const HistoryDate &date);
+	const HistoryDate &getDate() const;
+
 };
 
 /**
@@ -38,37 +40,38 @@ class HistoryDialog : public QWidget
 {
 	Q_OBJECT
 
-	private slots:
-		void showStatusChanged(bool);
+private slots:
+	void showStatusChanged(bool);
 
-	protected:
-		ChatMessage * createChatMessage(const HistoryEntry &entry);
-		void showHistoryEntries(int from, int count);
-		void setDateListViewText(const QDateTime &datetime);
-		void searchHistory();
-		static const QString &gaduStatus2symbol(unsigned int status);
-		void closeEvent(QCloseEvent *e);
+protected:
+	ChatMessage * createChatMessage(const HistoryEntry &entry);
+	void showHistoryEntries(int from, int count);
+	void setDateListViewText(const QDateTime &datetime);
+	void searchHistory();
+	static const QString &gaduStatus2symbol(unsigned int status);
+	void closeEvent(QCloseEvent *e);
 
-		QTreeWidget *uinsTreeWidget;
-		ChatMessagesView* body;
-		UinsList uins;
-		int start;
-		HistoryFindRec findRec;
-		bool closeDemand;
-		bool finding;
-		QList<HistoryDate> dateEntries;
+	QTreeWidget *uinsTreeWidget;
+	ChatMessagesView* body;
+	UinsList uins;
+	int start;
+	HistoryFindRec findRec;
+	bool closeDemand;
+	bool finding;
+	QList<HistoryDate> dateEntries;
 
-		virtual void keyPressEvent(QKeyEvent *e);
+	virtual void keyPressEvent(QKeyEvent *e);
 
-	public:
-		HistoryDialog(UinsList uins);
+public:
+	HistoryDialog(UinsList uins);
 
-	public slots:
-		void uinsChanged(QTreeWidgetItem *item);
-		void dateChanged(QTreeWidgetItem*item);
-		void searchButtonClicked();
-		void searchNextButtonClicked();
-		void searchPrevButtonClicked();
+public slots:
+	void uinsChanged(QTreeWidgetItem *item);
+	void dateChanged(QTreeWidgetItem*item);
+	void searchButtonClicked();
+	void searchNextButtonClicked();
+	void searchPrevButtonClicked();
+
 };
 
 #endif
