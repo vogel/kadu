@@ -610,6 +610,7 @@ void Wizard::createSoundPage()
 	}
 
 	// make alsa/ext/arts first in list
+
 	if (soundModules.contains("arts_sound"))
 	{
 		soundModules.remove("arts_sound");
@@ -624,6 +625,11 @@ void Wizard::createSoundPage()
 	{
 		soundModules.remove("alsa_sound");
 		soundModules.prepend("alsa_sound");
+	}
+	if (soundModules.contains("dshow_sound"))
+	{
+		soundModules.remove("dshow_sound");
+		soundModules.prepend("dshow_sound");
 	}
 	soundModules.prepend("None");
 	soundModuleCombo->insertStringList(soundModules);
