@@ -512,17 +512,18 @@ bool SoundManager::recordSample(SoundDevice device, int16_t* data, int length)
 	return result;
 }
 
+// stupid Qt, yes this code work
 void SoundManager::connectNotify(const char *signal)
 {
-//	kdebugm(KDEBUG_INFO, ">>>%s %s\n", signal, SIGNAL(playSound(const QString&,bool,double)) );
-	if (strcmp(signal,SIGNAL(playSound(const QString&,bool,double)))==0)
+//	kdebugm(KDEBUG_INFO, ">>> %s %s\n", signal, SIGNAL(playSound(QString&,bool,double)) );
+	if (strcmp(signal,SIGNAL(playSound(QString,bool,double)))==0)
 		++simple_player_count;
 }
 
 void SoundManager::disconnectNotify(const char *signal)
 {
-//	kdebugm(KDEBUG_INFO, ">>>%s %s\n", signal, SIGNAL(playSound(const QString&,bool,double)) );
-	if (strcmp(signal,SIGNAL(playSound(const QString&,bool,double)))==0)
+//	kdebugm(KDEBUG_INFO, ">>> %s %s\n", signal, SIGNAL(playSound(QString&,bool,double)) );
+	if (strcmp(signal,SIGNAL(playSound(QString,bool,double)))==0)
 		--simple_player_count;
 }
 
