@@ -10,6 +10,7 @@ Je¶li jest w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * drobne optymalizacje, usuniêty wyciek pamiêci dla obrazu listy kontaktów (neeo)
 * zaktualizowane miejsce instalacji pliku kadu.desktop (neeo)
 * zmiany statusów nie s± logowane, gdy zapis historii jest wy³±czony (neeo)
+* modu³ nextinfo dodany do autodownloadu (neeo)
 
 +++ wersja 0.6.0.2 (03.07.2008)
 * poprawiona kolejno¶æ argumentów konstruktora klasy ConfigLineEdit (neeo)
