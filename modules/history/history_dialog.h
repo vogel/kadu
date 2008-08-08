@@ -23,13 +23,19 @@ public:
 
 };
 
-class DateListViewText : public QTreeWidgetItem
+class DateListViewText : public QObject, public QTreeWidgetItem
 {
+	Q_OBJECT
+
 	HistoryDate date;
+	bool containsMessages;
 
 public:
-	DateListViewText(QTreeWidgetItem *parent, const HistoryDate &date);
+	DateListViewText(QTreeWidgetItem *parent, UinsList uins, const HistoryDate &date);
 	const HistoryDate &getDate() const;
+
+public slots:
+	void showStatusChanges(bool showStatus);
 
 };
 
@@ -40,8 +46,10 @@ class HistoryDialog : public QWidget
 {
 	Q_OBJECT
 
+	bool ShowStatus;
+
 private slots:
-	void showStatusChanged(bool);
+	void showStatusChangesSlot(bool);
 
 protected:
 	ChatMessage * createChatMessage(const HistoryEntry &entry);
@@ -71,6 +79,9 @@ public slots:
 	void searchButtonClicked();
 	void searchNextButtonClicked();
 	void searchPrevButtonClicked();
+
+signals:
+	void showStatusChanges(bool);
 
 };
 

@@ -56,10 +56,39 @@ const UinsList &UinsListViewText::getUinsList() const
 	return uins;
 }
 
-DateListViewText::DateListViewText(QTreeWidgetItem *parent, const HistoryDate &date)
+DateListViewText::DateListViewText(QTreeWidgetItem *parent, UinsList uins, const HistoryDate &date)
 	: QTreeWidgetItem(parent, 0), date(date)
 {
 	setText(0, date.date.toString("yyyy.MM.dd"));
+	containsMessages = false;
+
+	QTreeWidgetItem *item = 0;
+	int from;
+	int count;
+
+	from = getDate().idx;
+	if (parent->indexOfChild(this) != parent->childCount() - 1)
+		item = parent->treeWidget()->itemBelow(item);
+
+	if (item)
+		count = ((DateListViewText *)item)->getDate().idx - from;
+	else
+		count = history->getHistoryEntriesCount(uins) - from;
+
+	QList<HistoryEntry> entries = history->getHistoryEntries(uins, from, count);
+	QList<HistoryEntry>::const_iterator entry = entries.constBegin();
+	QList<HistoryEntry>::const_iterator lastEntry = entries.constEnd();
+	for(; entry != lastEntry; ++entry)
+		if ((*entry).type != HISTORYMANAGER_ENTRY_STATUS)
+		{
+			containsMessages = true;
+			break;
+		}
+}
+
+void DateListViewText::showStatusChanges(bool showStatus)
+{
+	setHidden(!showStatus && !containsMessages);
 }
 
 const HistoryDate &DateListViewText::getDate() const
@@ -95,7 +124,10 @@ HistoryDialog::HistoryDialog(UinsList uins)
 	QCheckBox *showStatusChanges = new QCheckBox(tr("Show status changes"), rightWidget);
 	showStatusChanges->setDisabled(config_file.readBoolEntry("History", "DontSaveStatusChanges"));
 	showStatusChanges->setChecked(!config_file.readBoolEntry("History", "DontShowStatusChanges"));
-	connect(showStatusChanges, SIGNAL(toggled(bool)), this, SLOT(showStatusChanged(bool)));
+	ShowStatus = !config_file.readBoolEntry("History", "DontShowStatusChanges");
+
+	connect(showStatusChanges, SIGNAL(toggled(bool)), this, SLOT(showStatusChangesSlot(bool)));
+	connect(showStatusChanges, SIGNAL(toggled(bool)), this, SIGNAL(showStatusChanges(bool)));
 
 	QWidget *buttonWidget = new QWidget(rightWidget);
 	QHBoxLayout* buttonLatout = new QHBoxLayout(buttonWidget);
@@ -157,14 +189,13 @@ HistoryDialog::HistoryDialog(UinsList uins)
 		}
 	}
 
-
-
 	kdebugf2();
 }
 
-void HistoryDialog::showStatusChanged(bool showStatusChanges)
+void HistoryDialog::showStatusChangesSlot(bool showStatusChanges)
 {
 	config_file.writeEntry("History", "DontShowStatusChanges", !showStatusChanges);
+	ShowStatus = showStatusChanges;
 
 	if (uinsTreeWidget->currentItem())
 		dateChanged(uinsTreeWidget->currentItem());
@@ -180,7 +211,11 @@ void HistoryDialog::uinsChanged(QTreeWidgetItem *item)
 	{
 		QList<HistoryDate> dateEntries = history->getHistoryDates(uins);
 		foreach(const HistoryDate &dateEntry, dateEntries)
-			(new DateListViewText(item, dateEntry));
+		{
+			DateListViewText *dlvt = new DateListViewText(item, uins, dateEntry);
+			connect(this, SIGNAL(showStatusChanges(bool)), dlvt, SLOT(showStatusChanges(bool)));
+			dlvt->showStatusChanges(ShowStatus);
+		}
 	}
 	kdebugf2();
 }
