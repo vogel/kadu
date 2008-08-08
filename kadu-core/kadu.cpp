@@ -1462,11 +1462,11 @@ bool Kadu::close(bool quit)
 	}
 }
 
-// void Kadu::quitApplication()
-// {
-// 	kdebugf();
-// 	close(true);
-// }
+void Kadu::quitApplication()
+{
+	kdebugf();
+	close(true);
+}
 
 Kadu::~Kadu(void)
 {
@@ -1837,7 +1837,7 @@ void Kadu::setDocked(bool docked, bool dontHideOnClose1)
 {
 	Docked = docked;
 	dontHideOnClose = dontHideOnClose1;
-	qApp->setQuitOnLastWindowClosed(Docked && dontHideOnClose);
+	qApp->setQuitOnLastWindowClosed(!Docked/* || dontHideOnClose*/);
 // 	if (config_file.readBoolEntry("General", "ShowAnonymousWithMsgs") || !Docked || dontHideOnClose)
 // 	{
 	Userbox->removeNegativeFilter(anonymousUsers);
@@ -1953,6 +1953,8 @@ void Kadu::setDefaultStatus()
 
 	if (config_file.readNumEntry("General", "UIN", 0) == 0 || config_file.readEntry("General", "Password").isEmpty())
 		return;
+
+	QObject::connect(qApp, SIGNAL(aboutToQuit()), kadu, SLOT(quitApplication()));
 
 	QString description;
 	QString startupStatus = config_file.readEntry("General", "StartupStatus");
@@ -2437,21 +2439,5 @@ void Kadu::createDefaultToolbars(QDomElement toolbarsConfig)
 void Kadu::addAction(const QString &actionName, bool showLabel)
 {
 	addToolButton(findExistingToolbar(""), actionName, showLabel);
-// 	xml_config_file->sync();
 	kadu->refreshToolBars("");
-}
-
-void Kadu::closeEvent(QCloseEvent *event)
-{
-	kdebugf();
-	
-	if (!Closing)
-	{
-		event->ignore();
-		close();
-	}
-	else
-		event->accept();
-	
-	kdebugf2();
 }

@@ -157,11 +157,12 @@ private slots:
 	void hideDescriptionActionCreated(KaduAction *action);
 	void notifyAboutUserActionCreated(KaduAction *action);
 
+	void quitApplication();
+
 protected:
 	void keyPressEvent(QKeyEvent *e);
 	virtual void resizeEvent(QResizeEvent *);
 	virtual void customEvent(QEvent *);
-	virtual void closeEvent(QCloseEvent *event);
 		
 	virtual void configurationUpdated();
 //	virtual void moveEvent(QMoveEvent *);
@@ -261,7 +262,6 @@ public slots:
 	void blink();
 	void showdesc(bool show = true);
 	virtual bool close(bool quit = false);
-// 	void quitApplication();
 
 	/**
 		Potrzebne dla modu�u dokuj�cego �eby
