@@ -230,6 +230,12 @@ void HistoryManager::appendStatus(UinType uin, const UserStatus &status)
 {
 	kdebugf();
 
+	if (!config_file.readBoolEntry("History", "Logging") || config_file.readBoolEntry("History", "DontSaveStatusChanges"))
+	{
+		kdebugm(KDEBUG_INFO|KDEBUG_FUNCTION_END, "not appending\n");
+		return;
+	}
+
 	QFile f, fidx;
 	QString fname = ggPath("history/");
 	QString line, nick, addr;
@@ -238,12 +244,6 @@ void HistoryManager::appendStatus(UinType uin, const UserStatus &status)
 	QHostAddress ip;
 	unsigned short port;
 //	struct in_addr in;
-
-	if (config_file.readBoolEntry("History", "DontSaveStatusChanges"))
-	{
-		kdebugm(KDEBUG_INFO|KDEBUG_FUNCTION_END, "not appending\n");
-		return;
-	}
 
 	UinsList uins(uin);
 	convHist2ekgForm(uins);
