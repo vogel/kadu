@@ -46,7 +46,6 @@ class PathListEditWindow : public QWidget
 	Q_OBJECT
 
 	QListWidget *PathListWidget;
-	QLineEdit *PathEdit;
 
 	bool validatePath(QString &path);
 
@@ -55,13 +54,10 @@ private slots:
 	void changePathClicked();
 	void deletePathClicked();
 
-	void choosePathClicked();
-
 	void okClicked();
 
 	void closeEvent(QCloseEvent *e);
 	void keyPressEvent(QKeyEvent *e);
-	void currentItemChanged(const QString &newItem);
 
 public:
 	PathListEditWindow(const QStringList &pathList, QWidget *parent = 0);

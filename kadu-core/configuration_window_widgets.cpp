@@ -486,7 +486,7 @@ void ConfigPathListEdit::loadConfiguration()
 	if (section.isEmpty())
 		return;
 
-	setPathList(QStringList::split(QRegExp("(;|:)"), config_file.readEntry(section, item)));
+	setPathList(QStringList::split(QRegExp("&"), config_file.readEntry(section, item)));
 }
 
 void ConfigPathListEdit::saveConfiguration()
@@ -494,7 +494,7 @@ void ConfigPathListEdit::saveConfiguration()
 	if (section.isEmpty())
 		return;
 
-	config_file.writeEntry(section, item, pathList().join(":"));
+	config_file.writeEntry(section, item, pathList().join("&"));
 }
 
 void ConfigPathListEdit::show()

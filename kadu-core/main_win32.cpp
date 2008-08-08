@@ -35,7 +35,6 @@ class KaduMessageWindow : public QWidget
 	virtual bool winEvent (MSG * message, long * result){
 		switch(message->message){
 			case WM_OPEN_CHAT:
-				printf("gg:%i\n", message->wParam);
 				qApp->postEvent(kadu, new OpenGGChatEvent(message->wParam));
 				return false;
 				break;
