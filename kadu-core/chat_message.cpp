@@ -14,11 +14,22 @@
 
 #include "chat_message.h"
 
+QString formatMessage(const QString &text)
+{
+	HtmlDocument htmlDocument;
+	htmlDocument.parseHtml(text);
+	htmlDocument.convertUrlsToHtml();
+	htmlDocument.convertMailToHtml();
+	emoticons->expandEmoticons(htmlDocument, "black", (EmoticonsStyle)config_file.readNumEntry("Chat", "EmoticonsStyle"));
+
+	return htmlDocument.generateHtml();
+}
+
 static QString getMessage(const QObject * const object)
 {
 	const ChatMessage * const chatMessage = dynamic_cast<const ChatMessage * const>(object);
 	if (chatMessage)
-		return chatMessage->unformattedMessage;
+		return formatMessage(chatMessage->unformattedMessage);
 	else
 		return "";
 }

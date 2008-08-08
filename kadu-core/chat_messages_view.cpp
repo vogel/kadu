@@ -33,7 +33,6 @@ ChatMessagesView::ChatMessagesView(QWidget *parent) : KaduTextBrowser(parent),
 
 	configurationUpdated();
 
-// 	setTextFormat(Qt::RichText);
 	setFocusPolicy(Qt::NoFocus);
 }
 
@@ -146,13 +145,7 @@ void ChatMessagesView::repaintMessages()
 
 	text += "</body></html>";
 
-	HtmlDocument htmlDocument;
-	htmlDocument.parseHtml(text);
-	htmlDocument.convertUrlsToHtml();
-	htmlDocument.convertMailToHtml();
-	emoticons->expandEmoticons(htmlDocument, "black", (EmoticonsStyle)config_file.readNumEntry("Chat", "EmoticonsStyle"));
-
-	setHtml(htmlDocument.generateHtml());
+	setHtml(text);
 	updateBackgrounds();
 
 	kdebugf2();
