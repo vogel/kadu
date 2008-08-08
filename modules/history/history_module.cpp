@@ -84,9 +84,6 @@ HistoryModule::HistoryModule() : QObject(NULL, "history")
 	UserBox::management->addItemAtPos(7, "ClearHistory", tr("Clear history"),  this, SLOT(deleteHistory()));
 	connect(UserBox::userboxmenu, SIGNAL(popup()), this, SLOT(userboxMenuPopup()));
 
-	QStringList actions;
-	actions.append("showHistoryAction");
-
 	kdebugf2();
 }
 
