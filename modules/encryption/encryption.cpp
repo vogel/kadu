@@ -13,6 +13,7 @@
 #include "action.h"
 #include "chat_widget.h"
 #include "chat_manager.h"
+#include "chat_edit_box.h"
 #include "config_file.h"
 #include "debug.h"
 #include "keys_manager.h"
@@ -56,9 +57,11 @@ extern "C" void encryption_close()
 	encryption_manager = 0;
 }
 
-bool disableSendKey(const UserListElements &ules)
+bool disableSendKey(KaduAction *action)
 {
 	kdebugf();
+
+	UserListElements ules=action->userListElements();
 
 	if (!ules.count())
 		return false;
@@ -248,7 +251,7 @@ void EncryptionManager::encryptionActionActivated(QAction *sender, bool toggled)
 	if (!kaduMainWindow)
 		return;
 
-	ChatWidget *chatWidget = kaduMainWindow->chatWidget();
+	ChatWidget *chatWidget = chat_manager->findChatWidget(kaduMainWindow->userListElements());
 	if (!chatWidget)
 		return;
 	setupEncryptButton(chatWidget,!EncryptionEnabled[chatWidget]);
@@ -395,7 +398,7 @@ void EncryptionManager::sendPublicKeyActionActivated(QAction *sender, bool toggl
 		mykey = t.read();
 		keyfile.close();
 		foreach(const UserListElement &user, users)
-			gadu->sendMessage(user, mykey);
+			gadu->sendMessage(user, Message::parse(mykey));
 
 		MessageBox::msg(tr("Your public key has been sent"), false, "Information", kadu);
 	}

@@ -18,7 +18,12 @@
 #ifndef __SIMLITE_H
 #define __SIMLITE_H
 
-#include "../../kadu-stdint.h"
+#ifdef _MSC_VER
+#include "kadu-core/kinttypes.h"
+#else
+#include <stdint.h>
+#endif
+
 
 extern char *sim_key_path;
 extern int sim_errno;
