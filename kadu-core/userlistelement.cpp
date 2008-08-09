@@ -20,7 +20,7 @@
 
 bool UserListElement::hasIP(const QString &protocolName) const
 {
-	kdebugf();
+//	kdebugf();
 
 	//privateData->lock();
 
@@ -88,7 +88,7 @@ void UserListElement::refreshDNSName(const QString &protocolName) const
 
 QVariant UserListElement::setProtocolData(const QString &protocolName, const QString &name, const QVariant &val, bool massively, bool last) const
 {
-	kdebugf();
+//	kdebugf();
 
 	//privateData->lock();
 
@@ -152,7 +152,7 @@ QVariant UserListElement::setProtocolData(const QString &protocolName, const QSt
 
 QVariant UserListElement::protocolData(const QString &protocolName, const QString &name) const
 {
-	kdebugf();
+//	kdebugf();
 
 	//privateData->lock();
 
@@ -176,7 +176,7 @@ QVariant UserListElement::protocolData(const QString &protocolName, const QStrin
 
 UserStatus & UserListElement::status(const QString &protocolName) const
 {
-	kdebugf();
+//	kdebugf();
 
 	//privateData->lock();
 
@@ -196,7 +196,7 @@ static UserStatus us;
 
 QString UserListElement::ID(const QString &protocolName) const
 {
-	kdebugf();
+//	kdebugf();
 
 	//privateData->lock();
 
@@ -243,7 +243,7 @@ UserListElement & UserListElement::operator = (const UserListElement &copyMe)
 
 QVariant UserListElement::setData(const QString &name, const QVariant &val, bool massively, bool last) const
 {
-	kdebugf();
+//	kdebugf();
 
 	//privateData->lock();
 
@@ -349,7 +349,7 @@ void UserListElement::setMessageSound(NotifyType type, const QString &file) cons
 
 bool UserListElement::usesProtocol(const QString &name) const
 {
-	kdebugf();
+//	kdebugf();
 
 	//privateData->lock();
 	bool result = privateData->protocols.contains(name);
@@ -359,7 +359,7 @@ bool UserListElement::usesProtocol(const QString &name) const
 
 void UserListElement::addProtocol(const QString &name, const QString &id, bool massively, bool last) const
 {
-	kdebugf();
+//	kdebugf();
 
 	//privateData->lock();
 
@@ -382,7 +382,7 @@ void UserListElement::addProtocol(const QString &name, const QString &id, bool m
 
 void UserListElement::deleteProtocol(const QString &protocolName, bool massively, bool last) const
 {
-	kdebugf();
+//	kdebugf();
 
 	//privateData->lock();
 
@@ -486,7 +486,7 @@ QStringList UserListElement::protocolList() const
 
 QStringList UserListElement::protocolDataKeys(const QString &protocolName) const
 {
-	kdebugf();
+//	kdebugf();
 
 	//privateData->lock();
 

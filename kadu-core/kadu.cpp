@@ -1048,12 +1048,33 @@ void Kadu::changeAppearance()
 	if (config_file.readBoolEntry("Look", "ShowInfoPanel"))
 	{
 		InfoPanel->show();
-// TODO: 0.6.5
-		QString style = narg("QWidget {background-color:%1; color:%2}", config_file.readColorEntry("Look","InfoPanelBgColor").name(), config_file.readColorEntry("Look","InfoPanelFgColor").name());
 
-		InfoPanel->setStyleSheet(style);
 
-	//QTextEdit::setFont(config_file.readFontEntry("Look", "PanelFont"));
+		QFont font = config_file.readFontEntry("Look", "PanelFont");
+
+		QString fontFamily = font.family();
+		QString fontSize;
+		if (font.pointSize() > 0)
+			fontSize = QString::number(font.pointSize()) + "pt";
+		else
+			fontSize = QString::number(font.pixelSize()) + "px";
+		QString fontStyle = font.italic() ? "italic" : "normal";
+		QString fontWeight = font.bold() ? "bold" : "normal";
+		QString textDecoration = font.underline() ? "underline" : "none";
+		QString backgroundColor = config_file.readColorEntry("Look","InfoPanelBgColor").name();
+		QString fontColor = config_file.readColorEntry("Look","InfoPanelFgColor").name();
+
+		infoPanelStyle = QString(
+			"* {"
+			"	color: %1;"
+			"	font: %2 %3 %4 %5;"
+			"	text-decoration: %6;"
+			"}"
+			"body {"
+			"	margin: 0;"
+			"	padding: 0;"
+			"	background-color: %7;"
+			"}").arg(fontColor, fontStyle, fontWeight, fontSize, fontFamily, textDecoration, backgroundColor);
 
  		if (config_file.readBoolEntry("Look", "PanelVerticalScrollbar"))
  			InfoPanel->page()->mainFrame()->setScrollBarPolicy (Qt::Vertical, Qt::ScrollBarAsNeeded);
@@ -1788,6 +1809,14 @@ void Kadu::updateInformationPanel(UserListElement user)
 	if (Userbox->currentUserExists() && user == Userbox->currentUser())
 	{
 		kdebugmf(KDEBUG_INFO, "%s\n", user.altNick().local8Bit().data());
+		QString text = QString(
+			"<html>"
+			"	<head>"
+			"		<style type='text/css'>") +
+			infoPanelStyle +
+			"		</style>"
+			"	</head>"
+			"	<body>";
 		HtmlDocument doc;
 		doc.parseHtml(KaduParser::parse(InfoPanelSyntax, user));
 		doc.convertUrlsToHtml();
@@ -1795,9 +1824,10 @@ void Kadu::updateInformationPanel(UserListElement user)
 		if((EmoticonsStyle)config_file.readNumEntry("Chat", "EmoticonsStyle") != EMOTS_NONE && config_file.readBoolEntry("General", "ShowEmotPanel"))
 			emoticons->expandEmoticons(doc, config_file.readColorEntry("Look", "InfoPanelBgColor"), (EmoticonsStyle)config_file.readNumEntry("Chat", "EmoticonsStyle"));
 
-		InfoPanel->setHtml(doc.generateHtml());
-//		if (config_file.readBoolEntry("General", "ShowEmotPanel"))
-//			InfoPanel->scrollToBottom();
+		text += doc.generateHtml();
+		text += "</body></html>";
+		InfoPanel->setHtml(text);
+
 		kdebugf2();
 	}
 }
@@ -1837,6 +1867,7 @@ void Kadu::setDocked(bool docked, bool dontHideOnClose1)
 	Docked = docked;
 	dontHideOnClose = dontHideOnClose1;
 	qApp->setQuitOnLastWindowClosed(!Docked || dontHideOnClose);
+
 // 	if (config_file.readBoolEntry("General", "ShowAnonymousWithMsgs") || !Docked || dontHideOnClose)
 // 	{
 	Userbox->removeNegativeFilter(anonymousUsers);
@@ -1910,7 +1941,7 @@ void Kadu::configurationUpdated()
 		Myself.deleteProtocol("Gadu");
 		if (uin.toUInt())
 			Myself.addProtocol("Gadu", uin);
-		kadu->setCaption(tr("Kadu: %1").arg(uin));
+		kadu->setWindowTitle(tr("Kadu: %1").arg(uin));
 	}
 	Myself.setAltNick(config_file.readEntry("General", "Nick"));
 
