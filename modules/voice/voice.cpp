@@ -54,9 +54,11 @@ extern "C" void voice_close()
 	voice_manager = 0;
 }
 
-bool disableNonVoiceUles(const UserListElements &ules)
+bool disableNonVoiceUles(KaduAction *action)
 {
 	kdebugf();
+
+	UserListElements ules=action->userListElements();
 
 	if (ules.count() != 1)
 		return false;

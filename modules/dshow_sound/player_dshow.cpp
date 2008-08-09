@@ -94,10 +94,8 @@ bool DShowPlayer::winEvent(MSG * message, long * result)
 		{
 			event->FreeEventParams(code, x1, x2);
 
-			if(code==EC_COMPLETE){
-				control->Stop();
+			if(code==EC_COMPLETE)
 				printf("completed!\n");
-			}
 		}
 		return false;
 	}
