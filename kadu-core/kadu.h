@@ -82,6 +82,8 @@ class KADUAPI Kadu : public KaduMainWindow, ConfigurationAwareObject
 	QDateTime StartTime;
 	QTimer updateInformationPanelTimer;
 
+	QString infoPanelStyle;
+
 	UserStatus NextStatus;
 	UserGroup *selectedUsers; //don't touch! TODO: remove in near future
 
