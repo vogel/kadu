@@ -111,25 +111,7 @@ void Kadu::keyPressEvent(QKeyEvent *e)
 		}
 	}
 	else if (HotKey::shortCut(e,"ShortCuts", "kadu_deleteuser"))
-	{
-// 		if (!Userbox->selectedUsers().isEmpty())
-// 			deleteUsers();
-	}
-	else if (HotKey::shortCut(e,"ShortCuts", "kadu_persinfo"))
-	{
-// 		if (Userbox->selectedUsers().count() == 1)
-// 			showUserInfo();
-	}
-// 	else if (HotKey::shortCut(e,"ShortCuts", "kadu_searchuser"))
-// 		lookupInDirectory();
-//	else if (HotKey::shortCut(e,"ShortCuts", "kadu_showoffline"))
-//		groups_manager->changeDisplayingOffline();
-// 	else if (HotKey::shortCut(e,"ShortCuts", "kadu_showonlydesc"))
-// 		groups_manager->changeDisplayingWithoutDescription();
-	else if (HotKey::shortCut(e,"ShortCuts", "kadu_configure"))
-		configurationActionActivated(0, false);
-	else if (HotKey::shortCut(e,"ShortCuts", "kadu_modulesmanager"))
-		modules_manager->showDialog(0, false);
+		deleteUsersActionDescription->createAction(this)->trigger();
 
 	emit keyPressed(e);
 
@@ -361,7 +343,7 @@ Kadu::Kadu(QWidget *parent)
 		"LookupUserInfo", tr("Search in directory"), false, "",
 		disableNoGaduUle
 	);
-	UserBox::addActionDescription(lookupUserInfoActionDescription); // HotKey::shortCutFromFile("ShortCuts", "kadu_searchuser")
+	UserBox::addActionDescription(lookupUserInfoActionDescription);
 
 	UserBox::addSeparator();
 
@@ -397,12 +379,13 @@ Kadu::Kadu(QWidget *parent)
 
 	UserBox::addManagementSeparator();
 
-	ActionDescription *deleteUsersActionDescription = new ActionDescription(
+	deleteUsersActionDescription = new ActionDescription(
 		ActionDescription::TypeUser, "deleteUsersAction",
 		this, SLOT(deleteUsersActionActivated(QAction *, bool)),
 		"RemoveFromUserlist", tr("Delete")
 	);
-	UserBox::addManagementActionDescription(deleteUsersActionDescription); // TODO: HotKey::shortCutFromFile("ShortCuts", "kadu_deleteuser"));
+	deleteUsersActionDescription->setShortcut("kadu_deleteuser");
+	UserBox::addManagementActionDescription(deleteUsersActionDescription);
 
 	groups_manager->setTabBar(GroupBar);
 	setDocked(Docked, dontHideOnClose);
@@ -425,6 +408,7 @@ Kadu::Kadu(QWidget *parent)
 		true, tr("Show offline users")
 	);
 	connect(inactiveUsersAction, SIGNAL(actionCreated(KaduAction *)), this, SLOT(inactiveUsersActionCreated(KaduAction *)));
+	inactiveUsersAction->setShortcut("kadu_showoffline");
 
 	descriptionUsersAction = new ActionDescription(
 		ActionDescription::TypeUserList, "descriptionUsersAction",
@@ -433,6 +417,7 @@ Kadu::Kadu(QWidget *parent)
 		true, tr("Show users without description")
 	);
 	connect(descriptionUsersAction, SIGNAL(actionCreated(KaduAction *)), this, SLOT(descriptionUsersActionCreated(KaduAction *)));
+	descriptionUsersAction->setShortcut("kadu_showonlydesc");
 
 	onlineAndDescriptionUsersAction = new ActionDescription(
 		ActionDescription::TypeUserList, "onlineAndDescriptionUsersAction",
@@ -447,6 +432,7 @@ Kadu::Kadu(QWidget *parent)
 		this, SLOT(configurationActionActivated(QAction *, bool)),
 		"Configuration", tr("Configuration")
 	);
+	configurationActionDescription->setShortcut("kadu_configure", Qt::ApplicationShortcut);
 
 	editUserActionDescription = new ActionDescription(
 		ActionDescription::TypeUser, "editUserAction",
@@ -455,20 +441,22 @@ Kadu::Kadu(QWidget *parent)
 		disableNotOneUles
 	);
 	connect(editUserActionDescription, SIGNAL(actionCreated(KaduAction *)), this, SLOT(editUserActionCreated(KaduAction *)));
+	editUserActionDescription->setShortcut("kadu_persinfo");
+	UserBox::addActionDescription(editUserActionDescription);
 
 	addUserActionDescription = new ActionDescription(
 		ActionDescription::TypeGlobal, "addUserAction",
 		this, SLOT(addUserActionActivated(QAction *, bool)),
 		"AddUser", tr("Add user")
 	);
+	addUserActionDescription->setShortcut("kadu_adduser", Qt::ApplicationShortcut);
 
 	openSearchActionDescription = new ActionDescription(
 		ActionDescription::TypeGlobal, "openSearchAction",
 		this, SLOT(searchInDirectoryActionActivated(QAction *, bool)),
 		"LookupUserInfo", tr("Search user in directory")
 	);
-
-	UserBox::addActionDescription(editUserActionDescription); // HotKey::shortCutFromFile("ShortCuts", "kadu_persinfo")
+	openSearchActionDescription->setShortcut("kadu_searchuser");
 
 	showStatusActionDescription = new ActionDescription(
 		ActionDescription::TypeGlobal, "openStatusAction",
@@ -476,6 +464,7 @@ Kadu::Kadu(QWidget *parent)
 		"Offline", tr("Change status")
 	);
 	connect(showStatusActionDescription, SIGNAL(actionCreated(KaduAction *)), this, SLOT(showStatusActionCreated(KaduAction *)));
+
 
 	/* guess what */
 	createMenu();
@@ -1456,6 +1445,7 @@ bool Kadu::close(bool quit)
 		ChatManager::closeModule();
 		SearchDialog::closeModule();
 		GaduProtocol::closeModule();
+
 		userlist->writeToConfig();//writeToConfig must be before GroupsManager::closeModule, because GM::cM removes all groups from userlist
 		GroupsManager::closeModule();
 		xml_config_file->sync();
@@ -1603,7 +1593,7 @@ void Kadu::createMenu()
 		"Ignore", tr("Manage &ignored")
 	);
 	addMenuActionDescription(manageIgnoredActionDescription);
-	addMenuActionDescription(configurationActionDescription); //HotKey::shortCutFromFile("ShortCuts", "kadu_configure"));
+	addMenuActionDescription(configurationActionDescription);
 
 	addMenuSeparator();
 	ActionDescription *personalInfoActionDescription = new ActionDescription(
@@ -1624,8 +1614,8 @@ void Kadu::createMenu()
 		"ImportExport", tr("I&mport / Export userlist")
 	);
 	addMenuActionDescription(importExportUserlisActionDescription);
-	addMenuActionDescription(addUserActionDescription); //HotKey::shortCutFromFile("ShortCuts", "kadu_adduser"));
-	addMenuActionDescription(chat_manager->openChatWithActionDescription);//HotKey::shortCutFromFile("ShortCuts", "kadu_openchatwith"));
+	addMenuActionDescription(addUserActionDescription); 
+	addMenuActionDescription(chat_manager->openChatWithActionDescription);
 
 	addMenuSeparator();
 	ActionDescription *helpActionDescription = new ActionDescription(

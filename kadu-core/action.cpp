@@ -7,6 +7,7 @@
  *                                                                         *
  ***************************************************************************/
 
+#include "hot_key.h"
 #include "icons_manager.h"
 #include "kadu.h"
 #include "kadu_main_window.h"
@@ -102,6 +103,7 @@ void KaduAction::checkIfEnabled()
 ActionDescription::ActionDescription(ActionType Type, const QString &Name, QObject *Object, char *Slot,
 	const QString &IconName, const QString &Text, bool Checkable, const QString &CheckedText, ActionBoolCallback enableCallback)
 {
+	ShortcutItem = "";
 	this->Type = Type;
 	this->Name = Name;
 	this->Object = Object;
@@ -134,6 +136,14 @@ void ActionDescription::actionDestroyed(QObject *action)
 		MappedActions.remove(kaduMainWindow);
 }
 
+void ActionDescription::setShortcut(QString configItem, Qt::ShortcutContext context)
+{
+	ShortcutItem = configItem;
+	shortcutContext = context;
+
+	configurationUpdated();
+}
+
 KaduAction * ActionDescription::createAction(KaduMainWindow *kaduMainWindow)
 {
 	if (MappedActions.contains(kaduMainWindow))
@@ -147,6 +157,16 @@ KaduAction * ActionDescription::createAction(KaduMainWindow *kaduMainWindow)
 
 	emit actionCreated(result);
 
+	if (shortcutContext != Qt::ApplicationShortcut)
+	{
+		result->setShortcut(HotKey::shortCutFromFile("ShortCuts", ShortcutItem));
+		result->setShortcutContext(shortcutContext);
+	}
+	else if (MappedActions.values().count() == 1)
+	{
+		result->setShortcut(HotKey::shortCutFromFile("ShortCuts", ShortcutItem));
+		result->setShortcutContext(shortcutContext);
+	}
 	return result;
 }
 
@@ -161,6 +181,27 @@ KaduAction * ActionDescription::action(KaduMainWindow *kaduMainWindow)
 		return MappedActions[kaduMainWindow];
 	else
 		return 0;
+}
+
+
+void ActionDescription::configurationUpdated()
+{
+	if (ShortcutItem.isEmpty())
+		return;
+
+	if (shortcutContext != Qt::ApplicationShortcut)
+	{
+		foreach (KaduAction *action, MappedActions.values())
+		{
+			action->setShortcut(HotKey::shortCutFromFile("ShortCuts", ShortcutItem));
+			action->setShortcutContext(shortcutContext);
+		}
+	}
+	else if (MappedActions.values().count() > 0)
+	{
+		MappedActions.values()[0]->setShortcut(HotKey::shortCutFromFile("ShortCuts", ShortcutItem));
+		MappedActions.values()[0]->setShortcutContext(shortcutContext);
+	}
 }
 
 Actions::Actions()

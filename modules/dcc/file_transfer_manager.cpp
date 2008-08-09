@@ -66,8 +66,8 @@ FileTransferManager::FileTransferManager(QObject *parent, const char *name) : QO
 		this, SLOT(sendFileActionActivated(QAction *, bool)),
 		"SendFile", tr("Send file"), false, QString::null,
 		disableNonDccUles
-	); // HotKey::shortCutFromFile("ShortCuts", "kadu_sendfile")
-
+	); 
+	sendFileActionDescription->setShortcut("kadu_sendfile");
 	UserBox::insertActionDescription(1, sendFileActionDescription);
 
 	connect(chat_manager, SIGNAL(chatWidgetCreated(ChatWidget *)), this, SLOT(chatCreated(ChatWidget *)));

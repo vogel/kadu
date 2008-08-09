@@ -389,7 +389,8 @@ ModulesManager::ModulesManager() : QObject(NULL, "modules_manager"),
 		this, SLOT(showDialog(QAction *, bool)),
 		"ManageModules", tr("&Manage Modules")
 	);
-	kadu->insertMenuActionDescription(2, manageModulesActionDescription);// HotKey::shortCutFromFile("ShortCuts", "kadu_modulesmanager")
+	manageModulesActionDescription->setShortcut("kadu_modulesmanager", Qt::ApplicationShortcut);
+	kadu->insertMenuActionDescription(2, manageModulesActionDescription);
 
 // 	icons_manager->registerMenuItem(MainMenu, tr("&Manage Modules"), "ManageModules");
 

@@ -108,7 +108,8 @@ HistoryModule::HistoryModule(bool firstLoad)
 		this, SLOT(historyActionActivated(QAction *, bool)),
 		"History", tr("Show history"), false
 	);
-	UserBox::insertActionDescription(5, historyActionDescription); // TODO: HotKey::shortCutFromFile("ShortCuts", "kadu_viewhistory")
+	historyActionDescription->setShortcut("kadu_viewhistory");
+	UserBox::insertActionDescription(5, historyActionDescription);
 
 	clearHistoryActionDescription = new ActionDescription(
 		ActionDescription::TypeHistory, "clearHistoryAction",

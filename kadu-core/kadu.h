@@ -46,6 +46,7 @@ class KADUAPI Kadu : public KaduMainWindow, ConfigurationAwareObject
 	ActionDescription *hideDescriptionActionDescription;
 	ActionDescription *notifyAboutUserActionDescription;
 	ActionDescription *showStatusActionDescription;
+	ActionDescription *deleteUsersActionDescription;
 
 	QActionGroup *changeStatusActionGroup;
 	QAction *changeStatusToOnline;

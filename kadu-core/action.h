@@ -14,6 +14,8 @@
 #include <QtGui/QAction>
 #include <QtGui/QIcon>
 
+#include "configuration_aware_object.h"
+
 #include "exports.h"
 
 class ChatWidget;
@@ -59,7 +61,7 @@ signals:
 
 };
 
-class KADUAPI ActionDescription : public QObject
+class KADUAPI ActionDescription : public QObject, ConfigurationAwareObject
 {
 	Q_OBJECT
 
@@ -91,11 +93,16 @@ private:
 	QString IconName;
 	QString Text;
 	QString CheckedText;
+	QString ShortcutItem;
+	Qt::ShortcutContext shortcutContext;
 	bool Checkable;
 	ActionBoolCallback EnableCallback;
 
 private slots:
 	void actionDestroyed(QObject *action);
+
+protected:
+	virtual void configurationUpdated();
 
 public:
 	ActionDescription(ActionType Type, const QString &Name, QObject *Object, char *Slot,
@@ -109,6 +116,8 @@ public:
 
 	QString text() { return Text; }
 	QString iconName() { return IconName; }
+
+	void setShortcut(QString configItem, Qt::ShortcutContext context = Qt::WindowShortcut);
 
 	ActionType type() { return Type; }
 

@@ -121,6 +121,7 @@ ChatManager::ChatManager(QObject *parent)
 		kadu, SLOT(openChatWith()),
 		"OpenChat", tr("Open chat with...")
 	);
+	openChatWithActionDescription->setShortcut("kadu_openchatwith", Qt::ApplicationShortcut);
 
 	insertEmoticonActionDescription = new ActionDescription(
 		ActionDescription::TypeChat, "insertEmoticonAction",
