@@ -12,15 +12,14 @@
 
 #include "debug.h"
 
-#include "player_dshow.h"
-
 #include <dshow.h>
+
+#include "player_dshow.h"
 
 // add strmiids.lib to libs
 #pragma comment(lib, "strmiids.lib")
 
-IGraphBuilder *dshow = NULL;
-IMediaControl *control = NULL;
+#define WM_MEDIA_NOTIFY WM_APP+1
 
 /**
  * @ingroup dshow_sound
@@ -55,7 +54,10 @@ DShowPlayer::DShowPlayer()
 			IID_IGraphBuilder, (void **)&dshow);
 
 	dshow->QueryInterface(IID_IMediaControl, (void **)&control);
+	dshow->QueryInterface(IID_IMediaEventEx, (void **)&event);
 
+	event->SetNotifyWindow((OAHWND)winId(), WM_MEDIA_NOTIFY, NULL);
+	
 	connect(sound_manager, SIGNAL(playSound(const QString &, bool, double)),
 			this, SLOT(playSound(const QString &, bool, double)));
 
@@ -69,15 +71,37 @@ DShowPlayer::~DShowPlayer()
 	disconnect(sound_manager, SIGNAL(playSound(const QString &, bool, double)),
 			this, SLOT(playSound(const QString &, bool, double)));
 
+	event->Release();
+	control->Release();
+	dshow->Release();
+
 	kdebugf2();
 }
 
 void DShowPlayer::playSound(const QString &s, bool volCntrl, double vol)
 {
 	kdebugf();
-	control->Stop();
 	dshow->RenderFile((LPCWSTR)s.utf16(), 0);
 	control->Run();
+}
+
+bool DShowPlayer::winEvent(MSG * message, long * result)
+{
+	if(message->message==WM_MEDIA_NOTIFY)
+	{
+		long code, x1, x2;
+		while(SUCCEEDED(event->GetEvent(&code, &x1, &x2, 0)))
+		{
+			event->FreeEventParams(code, x1, x2);
+
+			if(code==EC_COMPLETE){
+				control->Stop();
+				printf("completed!\n");
+			}
+		}
+		return false;
+	}
+	return QWidget::winEvent(message, result);
 }
 
 DShowPlayer *dshow_player;

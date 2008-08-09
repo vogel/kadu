@@ -50,6 +50,11 @@ if (MSVC)
 	add_definitions (/D_CRT_SECURE_NO_WARNINGS=1)
 endif (MSVC)
 
+if(MINGW)
+	# override cmake bug/feature?
+	set (CMAKE_SHARED_LIBRARY_PREFIX "")
+endif(MINGW)
+
 set (DATADIR ${CMAKE_INSTALL_PREFIX}/share)
 set (LIBDIR ${CMAKE_INSTALL_PREFIX}/lib)
 set (BINDIR ${CMAKE_INSTALL_PREFIX}/bin)

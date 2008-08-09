@@ -59,7 +59,7 @@ LONG WINAPI exception_handler(struct _EXCEPTION_POINTERS* e)
 		SYSTEMTIME time;
 		GetTempPathW(MAX_PATH, temp);
 		GetSystemTime(&time);
-		_snwprintf(filename, MAX_PATH, L"%s\\Kadu-%S-%04d-%02d-%02dT%02d%02d%02d.dump",
+		_snwprintf(filename, MAX_PATH, L"%s\\Kadu-%S-%04d-%02d-%02dT%02d%02d%02d.dmp",
 			temp, VERSION, time.wYear, time.wMonth, time.wDay,
 			time.wHour, time.wMinute, time.wSecond);
 		HANDLE handle=CreateFileW(filename, GENERIC_READ | GENERIC_WRITE, 0, NULL,
