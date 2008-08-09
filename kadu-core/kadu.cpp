@@ -1019,8 +1019,7 @@ void Kadu::quit()
 		getTime(&sec, &msec);
 		endingTime = (sec % 1000) * 1000 + msec;
 	}
-
-	close(true);
+	qApp->quit();
 }
 
 void Kadu::importExportUserlist(QAction *sender, bool toggled)
@@ -1837,7 +1836,7 @@ void Kadu::setDocked(bool docked, bool dontHideOnClose1)
 {
 	Docked = docked;
 	dontHideOnClose = dontHideOnClose1;
-	qApp->setQuitOnLastWindowClosed(!Docked/* || dontHideOnClose*/);
+	qApp->setQuitOnLastWindowClosed(!Docked || dontHideOnClose);
 // 	if (config_file.readBoolEntry("General", "ShowAnonymousWithMsgs") || !Docked || dontHideOnClose)
 // 	{
 	Userbox->removeNegativeFilter(anonymousUsers);
@@ -1953,8 +1952,6 @@ void Kadu::setDefaultStatus()
 
 	if (config_file.readNumEntry("General", "UIN", 0) == 0 || config_file.readEntry("General", "Password").isEmpty())
 		return;
-
-	QObject::connect(qApp, SIGNAL(aboutToQuit()), kadu, SLOT(quitApplication()));
 
 	QString description;
 	QString startupStatus = config_file.readEntry("General", "StartupStatus");
