@@ -34,6 +34,9 @@ if (COMMAND cmake_policy)
 	cmake_policy(SET CMP0003 NEW)
 endif (COMMAND cmake_policy)
 
+# XXX
+link_directories (${SNDFILE_LIBRARY_DIRS})
+
 add_subdirectory (libgsm)
 
 add_library (voice ${voice} ${SOURCES} ${MOC_FILES})

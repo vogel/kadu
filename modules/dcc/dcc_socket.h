@@ -14,12 +14,14 @@
 
 #include "dcc.h"
 
+#include "dcc_exports.h"
+
 class QSocketNotifier;
 class QTimer;
 
 class DccHandler;
 
-class DccSocket : public QObject
+class DCCAPI DccSocket : public QObject
 {
 	Q_OBJECT
 

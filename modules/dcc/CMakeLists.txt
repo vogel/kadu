@@ -48,6 +48,7 @@ endif (COMMAND cmake_policy)
 
 add_library (dcc ${dcc} ${SOURCES} ${MOC_FILES})
 add_custom_target (dcc-translations DEPENDS ${TRANSLATION_FILES})
+set_target_properties(dcc PROPERTIES COMPILE_FLAGS "-DDCC_BUILD" )
 if (dcc STREQUAL STATIC)
 set_target_properties(dcc PROPERTIES COMPILE_FLAGS "-DKADULIB" )
 else (dcc STREQUAL STATIC)

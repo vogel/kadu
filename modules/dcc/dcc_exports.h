@@ -7,18 +7,18 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef _SOUND_EXPORTS_H
+#ifndef _DCC_EXPORTS_H
 
 #include "exports.h"
 #ifdef KADULIB
-#define SOUNDAPI KADU_EXPORT
+#define DCCAPI KADU_EXPORT
 #else
-#ifdef SOUND_BUILD
-#define SOUNDAPI KADU_EXPORT
+#ifdef DCC_BUILD
+#define DCCAPI KADU_EXPORT
 #else
-#define SOUNDAPI KADU_IMPORT
+#define DCCAPI KADU_IMPORT
 #endif
 #endif
 
-#define _SOUND_EXPORTS_H
+#define _DCC_EXPORTS_H
 #endif

@@ -19,6 +19,8 @@
 #include "gadu.h"
 #include "main_configuration_window.h"
 
+#include "dcc_exports.h"
+
 class QCheckBox;
 class QSocketNotifier;
 class QWidget;
@@ -36,7 +38,7 @@ enum DccVersion {
 	Dcc7
 };
 
-class DccManager : public ConfigurationUiHandler, ConfigurationAwareObject, DccHandler
+class DCCAPI DccManager : public ConfigurationUiHandler, ConfigurationAwareObject, DccHandler
 {
 	Q_OBJECT
 
@@ -116,7 +118,7 @@ signals:
 
 };
 
-extern DccManager* dcc_manager;
+extern DCCAPI DccManager* dcc_manager;
 
 /** @} */
 
