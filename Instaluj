@@ -24,7 +24,7 @@ export LANG=pl_PL
 # Configure, build and install Kadu
 perform_install()
 {
-	if  ./configure `cat log_prefix 2> /dev/null` `cat log_configureoptions 2>/dev/null`; then
+	if  cmake . `cat log_prefix 2> /dev/null` `cat log_configureoptions 2>/dev/null`; then
 		if [[ $advanced_install == true ]]; then
 			if make `cat log_makeoptions 2> /dev/null`;then
 				perform_make_install
@@ -42,7 +42,7 @@ perform_install()
 			fi;
 		fi;
 	else
-		echo "Instalacja nie powiod³a siê (na etapie ./configure)"
+		echo "Instalacja nie powiod³a siê (na etapie cmake ..)"
 		exit
 	fi;
 }
@@ -59,29 +59,27 @@ perform_make_install()
 }
 
 # make uninstall
-uninstall()
-{
-	$?=0
-	$dialog --stdout --defaultno --backtitle "Instalator Kadu" --title "Deinstalacja" --yesno "Czy na pewno chcesz odinstalowaæ Kadu?" 6 50
-		if [ $? == "0" ]; then
-			if [ $UID != "0" ]; then
-				$dialog --backtitle "Instalator Kadu" --infobox "Podaj has³o roota:" 3 24
-				su -c "make uninstall"
-			else
-				make uninstall
-			fi; 
-		fi;
-}
+#uninstall()
+#{
+#	$?=0
+#	$dialog --stdout --defaultno --backtitle "Instalator Kadu" --title "Deinstalacja" --yesno "Czy na pewno chcesz odinstalowaæ Kadu?" 6 50
+#		if [ $? == "0" ]; then
+#			if [ $UID != "0" ]; then
+#				$dialog --backtitle "Instalator Kadu" --infobox "Podaj has³o roota:" 3 24
+#				su -c "make uninstall"
+#			else
+#				make uninstall
+#			fi; 
+#		fi;
+#}
 
 # Some extra options
 additional_parameters()
 {
 	rm -fr log_configureoptions
 	$dialog --begin 19 48 --infobox "Naci¶nij CTRL+C aby wyj¶æ" 3 29 --and-widget --separate-output --nocancel --ok-label "OK" --checklist "Je¶li chcesz, to mo¿esz wybraæ dodatkowe opcje kompilacji:" 0 0 0 \
-	' --enable-debug' 	'W³±cza tryb debug' 0 \
-	' --enable-pheaders' 'W³±cza obs³ugê prekompilowanych nag³ówków' 0 \
-	' --with-existing-libgadu' 'Linkuje z istniej±cym libgadu' 0 \
-	' --disable-sig-handling' 'Bez obs³ugi sygna³ów systemowych (SIGSEGV, ...)' 0 \
+	' -DCMAKE_BUILD_TYPE=Debug' 	'W³±cza tryb debug' 0 \
+	' -DSIG_HANDLING_ENABLED=OFF' 'Bez obs³ugi sygna³ów systemowych (SIGSEGV, ...)' 0 \
 	 2>log_configureoptions
 
 }
@@ -127,7 +125,7 @@ hello()
 update()
 {
 	cd ..
-	LC_ALL=C svn checkout http://kadu.net/svn/kadu/trunk kadu
+	LC_ALL=C svn co http://kadu.net/svn/kadu/trunk kadu
 	if [[ $? == "0" ]]; then
 	$dialog --beep --backtitle "Instalator Kadu" --msgbox "¬ród³a Kadu zosta³y zaktualizowane!" 0 0
 	else 
@@ -142,7 +140,7 @@ pathmenu()
 	PREF_BAK=$PREFIXPATH
 	PREFIXPATH=`$dialog --begin 19 48 --infobox "Naci¶nij CTRL+C aby wyj¶æ" 3 29 --and-widget --stdout --nocancel --ok-label "OK" --backtitle "Instalator Kadu" --inputbox  "Podaj ¶cie¿kê instalacji Kadu" 7 50 "$PREFIXPATH"`
 	if [[ $PREFIXPATH != "" ]]; then
-		echo -e -n " --prefix=$PREFIXPATH" > log_prefix
+		echo -e -n " -DCMAKE_INSTALL_PREFIX=$PREFIXPATH" > log_prefix
 	else
 	PREFIXPATH=$PREF_BAK
 	fi;
@@ -399,15 +397,18 @@ display_help()
 	forum Kadu (http://kadu.net/forum) w poszukiwaniu 
 	odpowiedzi.
 	
-	Je¶li zamierzasz odinstalowaæ Kadu, to nie kasuj
-	tego katalogu, a nastêpnie uruchom instalatora
-	z parametrem "uninstall". 
+	END
+#	Je¶li zamierzasz odinstalowaæ Kadu, to nie kasuj
+#	tego katalogu, a nastêpnie uruchom instalatora
+#	z parametrem "uninstall". 
 	
+	cat >> ./.temp << "	END"
+
 	DLA ZAAWANSOWANYCH: uruchom instalatora w trybie
 	zaawansowanym, aby uzyskaæ dostêp do kilku dodatkowych
 	opcji instalacyjnych (wybór katalogu docelowego,
 	automatyczna aktualizacja do wersji z SVN, ró¿ne
-	opcje ./configure oraz make). Wyboru wersji
+	opcje cmake oraz make). Wyboru wersji
 	instalacji dokonasz za chwilê.
 	END
 	$dialog --backtitle "Instalator Kadu" --exit-label "Zrozumia³em" --textbox ./.temp 23 75
@@ -468,10 +469,10 @@ step0()
 		exit	
 	fi;
 
-	if [[ $1 == uninstall ]]; then
-		uninstall
-		exit
-	fi;
+#	if [[ $1 == uninstall ]]; then
+#		uninstall
+#		exit
+#	fi;
 }
 
 #1. Greetings
@@ -503,7 +504,7 @@ step3()
 step4()
 {	
 	PREFIXPATH=/usr
-	echo -e -n "--prefix=$PREFIXPATH" > log_prefix
+	echo -e -n "-DCMAKE_INSTALL_PREFIX=$PREFIXPATH" > log_prefix
 	if [[ $advanced_install == true ]]; then
 		pathmenu
 	fi;
