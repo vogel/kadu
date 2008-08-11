@@ -97,9 +97,6 @@ class AutoAway : public ConfigurationUiHandler, ConfigurationAwareObject
 
 	void createDefaultConfiguration();
 
-	void on();
-	void off();
-
 private slots:
 	void checkIdleTime();
 
@@ -108,6 +105,9 @@ private slots:
 	void autoOfflineSpinBoxValueChanged(int value);
 
 	void descriptionChangeChanged(int index);
+
+	void on();
+	void off();
 
 protected:
 	bool eventFilter(QObject *, QEvent *);

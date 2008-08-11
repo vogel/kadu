@@ -131,6 +131,9 @@ void AutoAwayStatusChanger::setChangeDescriptionTo(ChangeDescriptionTo newChange
 AutoAway::AutoAway(QObject* parent, const char *name)
 	: autoAwayStatusChanger(0), timer(0), updateDescripion(true)
 {
+	connect(gadu, SIGNAL(connected()), this, SLOT(on()));
+	connect(gadu, SIGNAL(disconnected()), this, SLOT(off()));
+
 	createDefaultConfiguration();
 	configurationUpdated();
 }
@@ -149,6 +152,9 @@ AutoAway::~AutoAway()
 		delete autoAwayStatusChanger;
 		autoAwayStatusChanger = 0;
 	}
+
+	disconnect(gadu, SIGNAL(connected()), this, SLOT(on()));
+	disconnect(gadu, SIGNAL(disconnected()), this, SLOT(off()));
 
 	qApp->removeEventFilter(this);
 }
@@ -323,7 +329,7 @@ void AutoAway::configurationUpdated()
 
 	changeTo = (AutoAwayStatusChanger::ChangeDescriptionTo)config_file.readNumEntry("General", "AutoChangeDescription");
 
-	if (autoAwayEnabled || autoInvisibleEnabled || autoDisconnectEnabled)
+	if ((autoAwayEnabled || autoInvisibleEnabled || autoDisconnectEnabled) && !gadu->currentStatus().isOffline())
 		on();
 	else
 		off();
