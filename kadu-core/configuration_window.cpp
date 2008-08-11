@@ -270,10 +270,10 @@ ConfigurationWindow::ConfigurationWindow(const QString &name, const QString &cap
 	connect(applyButton, SIGNAL(clicked()), this, SLOT(updateConfig()));
 	connect(cancelButton, SIGNAL(clicked()), this, SLOT(close()));
 
-	sectionsListWidget = new QListWidget;
-	sectionsListWidget->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Expanding);
+	sectionsListWidget = new QListWidget(this);
+	sectionsListWidget->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Expanding);
  	sectionsListWidget->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-	sectionsListWidget->setIconSize(QSize(32,32));
+	sectionsListWidget->setIconSize(QSize(32, 32));
 	connect(sectionsListWidget, SIGNAL(currentTextChanged(const QString &)), this, SLOT(changeSection(const QString &)));
 	left_layout->addWidget(sectionsListWidget);
 
@@ -617,11 +617,22 @@ ConfigSection *ConfigurationWindow::configSection(const QString &pixmap, const Q
 
 	QListWidgetItem *newConfigSectionListWidgetItem = new QListWidgetItem(icons_manager->loadPixmap(pixmap), name, sectionsListWidget);
 
+	QFontMetrics fontMetrics = sectionsListWidget->fontMetrics();
+	// TODO: 48 = margins + scrollbar - get real scrollbar width
+	int width = fontMetrics.width(name) + icons_manager->loadPixmap(pixmap).width() + 48;
+
 	ConfigSection *newConfigSection = new ConfigSection(name, this, newConfigSectionListWidgetItem, container, pixmap);
 	configSections[name] = newConfigSection;
 
+	if (configSections.count() == 1)
+		sectionsListWidget->setFixedWidth(width);
+
 	if (configSections.count() > 1)
+	{
+		if (sectionsListWidget->width() < width)
+			sectionsListWidget->setFixedWidth(width);
 		left->show();
+	}
 
 	return newConfigSection;
 }

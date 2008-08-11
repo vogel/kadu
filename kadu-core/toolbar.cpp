@@ -407,6 +407,10 @@ void ToolBar::loadFromConfig(QDomElement toolbar_element)
 {
 	kdebugf();
 
+	QString align = toolbar_element.attribute("align");
+	if (align == "right")
+		setLayoutDirection(Qt::RightToLeft);
+
 	bool offset_ok;
 	int offset = toolbar_element.attribute("offset").toInt(&offset_ok);
 

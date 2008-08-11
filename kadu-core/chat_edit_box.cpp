@@ -93,6 +93,7 @@ void ChatEditBox::createDefaultToolbars(QDomElement toolbarsConfig)
 {
 	QDomElement dockAreaConfig = getDockAreaConfigElement(toolbarsConfig, "chat_topDockArea");
 	QDomElement toolbarConfig = xml_config_file->createElement(dockAreaConfig, "ToolBar");
+	toolbarConfig.setAttribute("align", "right");
 
 	addToolButton(toolbarConfig, "autoSendAction");
 	addToolButton(toolbarConfig, "clearChatAction");
@@ -112,6 +113,7 @@ void ChatEditBox::createDefaultToolbars(QDomElement toolbarsConfig)
 
 	toolbarConfig = xml_config_file->createElement(dockAreaConfig, "ToolBar");
 	toolbarConfig.setAttribute("x_offset", 200);
+	toolbarConfig.setAttribute("align", "right");
 
 	addToolButton(toolbarConfig, "sendAction", true);
 }
