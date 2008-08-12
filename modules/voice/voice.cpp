@@ -40,7 +40,7 @@
  * @ingroup voice
  * @{
  */
-extern "C" int voice_init(bool firstLoad)
+extern "C" KADU_EXPORT int voice_init(bool firstLoad)
 {
 	voice_manager = new VoiceManager();
 	MainConfigurationWindow::registerUiFile(dataPath("kadu/modules/configuration/voice.ui"), voice_manager);
@@ -48,7 +48,7 @@ extern "C" int voice_init(bool firstLoad)
 	return 0;
 }
 
-extern "C" void voice_close()
+extern "C" KADU_EXPORT void voice_close()
 {
 	MainConfigurationWindow::unregisterUiFile(dataPath("kadu/modules/configuration/voice.ui"), voice_manager);
 

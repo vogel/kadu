@@ -95,8 +95,11 @@ LONG WINAPI exception_handler(struct _EXCEPTION_POINTERS* e)
 
 void enableSignalHandling()
 {
-	MiniDumpWriteDump_f=(MiniDumpWriteDump_t)QLibrary::resolve("dbghelp", "MiniDumpWriteDump");
-	SetUnhandledExceptionFilter(exception_handler);
+	char *t=getenv("DISABLE_DUMPS");
+	if(!t){
+		MiniDumpWriteDump_f=(MiniDumpWriteDump_t)QLibrary::resolve("dbghelp", "MiniDumpWriteDump");
+		SetUnhandledExceptionFilter(exception_handler);
+	}
 }
 
 bool isRuning(int ggnumber)
