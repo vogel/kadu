@@ -7,6 +7,7 @@
  *                                                                         *
  ***************************************************************************/
 
+#include <QtGui/QTextBlock>
 #include <QtGui/QTextDocument>
 
 #include "gadu_images_manager.h"
@@ -15,8 +16,6 @@
 
 #include "message.h"
 
-QRegExp Message::ParagraphRegExp("<p[^>]*>(.*)</p>");
-QRegExp Message::SpanRegExp("<span.*(font-weight:600)?.*(font-style:italic)?.*(text-decoration: underline)?.*(color:(#[0-9a-fA-F]+))?.*>(.*)</span>");
 QRegExp Message::ImageRegExp("\\[IMAGE ([^\\]]+)\\]");
 
 MessagePart::MessagePart(const QString &content, bool bold, bool italic, bool underline, QColor color)
@@ -103,56 +102,40 @@ void Message::parseImages(Message &message, const QString &messageString, bool b
 	}
 }
 
-Message Message::parse(const QString &messageString)
+Message Message::parse(const QTextDocument *document)
 {
 	Message result;
 
-	QString workingMessage = messageString;
-	QString cleanedMessage;
-	QString partContent; 
+	QString text;
 
-	// TODO: move
-	ParagraphRegExp.setMinimal(true);
-	SpanRegExp.setMinimal(true);
-	ImageRegExp.setMinimal(true);
-
-	int lastPos = 0;
-	int pos = 0;
-
-	while ((pos = ParagraphRegExp.indexIn(workingMessage, pos)) != -1) {
-		if (!cleanedMessage.isEmpty())
-			cleanedMessage.append("\n");
-		cleanedMessage.append(ParagraphRegExp.cap(1));
-		pos += ParagraphRegExp.matchedLength();
-	}
-
-	pos = 0;
-
-	while ((pos = SpanRegExp.indexIn(cleanedMessage, pos)) != -1) {
-		if (lastPos != pos)
+	QTextBlock block = document->firstBlock();
+	bool firstParagraph = true;
+	while (block.isValid())
+	{
+		bool firstFragment = true;
+		for (QTextBlock::iterator it = block.begin(); !it.atEnd(); ++it)
 		{
-			partContent = cleanedMessage.mid(lastPos, pos - lastPos);
-			HtmlDocument::unescapeText(partContent);
-			parseImages(result, partContent, false, false, false, QColor());
+			QTextFragment fragment = it.fragment();
+			if (!fragment.isValid())
+				continue;
+
+			if (!firstParagraph && firstFragment)
+				text = QString("\n") + block.text();
+			else
+				text = block.text();
+
+			QTextCharFormat format = fragment.charFormat();
+			parseImages(result, text,
+				format.font().bold(),
+				format.font().italic(),
+				format.font().underline(),
+				format.foreground().color());
+
+			firstFragment = false;
 		}
 
-		bool b = !SpanRegExp.cap(1).isEmpty();
-		bool i = !SpanRegExp.cap(2).isEmpty();
-		bool u = !SpanRegExp.cap(3).isEmpty();
-		QColor color = QColor(SpanRegExp.cap(5));
-
-		partContent = SpanRegExp.cap(6);
-		parseImages(result, partContent, b, i, u, color);
-
-		pos += SpanRegExp.matchedLength();
-		lastPos = pos;
-	}
-
-	if (lastPos != cleanedMessage.length())
-	{
-		partContent = cleanedMessage.mid(lastPos, cleanedMessage.length() - lastPos);
-		HtmlDocument::unescapeText(partContent);
-		parseImages(result, partContent, false, false, false, QColor());
+		block = block.next();
+		firstParagraph = false;
 	}
 
 	return result;

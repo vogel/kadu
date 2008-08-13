@@ -7,6 +7,8 @@
  *                                                                         *
  ***************************************************************************/
 
+#include <QtGui/QTextDocument>
+
 #include "message.h"
 
 #include "protocol.h"
@@ -30,12 +32,14 @@ const QDateTime &Protocol::connectionTime() const
 bool Protocol::sendMessage(UserListElement user, const QString &message)
 {
 	UserListElements users(user);
-	return sendMessage(users, Message::parse(message));
+	QTextDocument document(message);
+	return sendMessage(users, Message::parse(&document));
 }
 
 bool Protocol::sendMessage(UserListElements users, const QString &message)
 {
-	return sendMessage(users, Message::parse(message));
+	QTextDocument document(message);
+	return sendMessage(users, Message::parse(&document));
 }
 
 bool Protocol::sendMessage(UserListElement user, const Message &message)

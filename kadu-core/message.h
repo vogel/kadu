@@ -16,6 +16,8 @@
 
 #include "protocol.h"
 
+class QTextDocument;
+
 class MessagePart
 {
 	bool Image;
@@ -54,8 +56,6 @@ public:
 
 class Message
 {
-	static QRegExp ParagraphRegExp;
-	static QRegExp SpanRegExp;
 	static QRegExp ImageRegExp;
 
 	QList<MessagePart> Parts;
@@ -67,7 +67,7 @@ public:
 	Message(const QString &messageString);
 	virtual ~Message();
 
-	static Message parse(const QString &messageString);
+	static Message parse(const QTextDocument *messageDocument);
 
 	QList<MessagePart> parts() const;
 	void append(MessagePart part);

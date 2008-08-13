@@ -622,7 +622,7 @@ void ChatWidget::sendMessage()
 		changeSendToCancelSend();
 	}
 
-	myLastMessage = Message::parse(Edit->inputBox()->toHtml());
+	myLastMessage = Message::parse(Edit->inputBox()->document());
 
 	if (!currentProtocol()->sendMessage(Users->toUserListElements(), myLastMessage))
 	{
