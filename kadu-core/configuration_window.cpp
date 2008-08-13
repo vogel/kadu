@@ -319,6 +319,8 @@ QList<ConfigWidget *> ConfigurationWindow::appendUiFile(const QString &fileName,
 			if (widget)
 				widget->loadConfiguration();
 
+	changeSection(*configSections.keys().begin());
+
 	return widgets;
 }
 
