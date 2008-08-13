@@ -64,6 +64,7 @@ class Message
 
 public:
 	Message();
+	Message(const QString &messageString);
 	virtual ~Message();
 
 	static Message parse(const QString &messageString);

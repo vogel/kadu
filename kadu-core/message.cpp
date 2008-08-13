@@ -162,6 +162,10 @@ Message::Message()
 {
 }
 
+Message::Message(const QString &messageString)
+{
+	Parts.append(MessagePart(messageString, false, false, false, QColor()));
+}
 Message::~Message()
 {
 }
