@@ -86,7 +86,7 @@ void Themes::setTheme(const QString &theme)
 		emit themeChanged(ActualTheme);
 	}
 
-	kdebugmf(KDEBUG_FUNCTION_END|KDEBUG_INFO, "end: theme: %s\n", ActualTheme.local8Bit().data());
+	kdebugmf(KDEBUG_FUNCTION_END|KDEBUG_INFO, "end: theme: %s\n", qPrintable(ActualTheme));
 }
 
 const QString & Themes::theme() const

@@ -46,7 +46,7 @@ void ProtocolsManager::unregisterProtocol(const QString &protocolID)
 			return;
 		}
 
-	kdebugm(KDEBUG_WARNING, "protocol(%s) not found\n", protocolID.local8Bit().data());
+	kdebugm(KDEBUG_WARNING, "protocol(%s) not found\n", qPrintable(protocolID));
 }
 
 QList<Protocol *> ProtocolsManager::byProtocolID(const QString &protocolID)
@@ -58,7 +58,7 @@ QList<Protocol *> ProtocolsManager::byProtocolID(const QString &protocolID)
 			ret.append(proto);
 
 	if (ret.size() == 0)
-		kdebugm(KDEBUG_WARNING, "protocol(%s) not found\n", protocolID.local8Bit().data());
+		kdebugm(KDEBUG_WARNING, "protocol(%s) not found\n", qPrintable(protocolID));
 
 	return ret;
 }
@@ -69,7 +69,7 @@ Protocol * ProtocolsManager::byID(const QString &protocolID, const QString &ID)
 		if (proto->protocolID() == protocolID && proto->ID() == ID)
 			return proto;
 
-	kdebugm(KDEBUG_WARNING, "protocol,id(%s,%s) not found\n", protocolID.local8Bit().data(), ID.local8Bit().data());
+	kdebugm(KDEBUG_WARNING, "protocol,id(%s,%s) not found\n", qPrintable(protocolID), qPrintable(ID));
 	return 0;
 }
 
@@ -86,7 +86,7 @@ Protocol * ProtocolsManager::newProtocol(const QString &protocolID, const QStrin
 	if (proto)
 		protocols.append(proto);
 	else
-		kdebugm(KDEBUG_WARNING, "protocol(%s) not found\n", protocolID.local8Bit().data());
+		kdebugm(KDEBUG_WARNING, "protocol(%s) not found\n", qPrintable(protocolID));
 
 	return proto;
 }

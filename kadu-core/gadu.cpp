@@ -637,7 +637,7 @@ void GaduProtocol::userDataChanged(UserListElement elem, QString name, QVariant 
 
 void GaduProtocol::userAdded(UserListElement elem, bool massively, bool /*last*/)
 {
-	kdebugmf(KDEBUG_FUNCTION_START, "start: '%s' %d\n", elem.altNick().local8Bit().data(), massively/*, last*/);
+	kdebugmf(KDEBUG_FUNCTION_START, "start: '%s' %d\n", qPrintable(elem.altNick()), massively/*, last*/);
 	if (!elem.usesProtocol("Gadu"))
 		return;
 	if (CurrentStatus->isOffline())
@@ -653,7 +653,7 @@ void GaduProtocol::userAdded(UserListElement elem, bool massively, bool /*last*/
 
 void GaduProtocol::removingUser(UserListElement elem, bool massively, bool /*last*/)
 {
-	kdebugmf(KDEBUG_FUNCTION_START, "start: '%s' %d\n", elem.altNick().local8Bit().data(), massively/*, last*/);
+	kdebugmf(KDEBUG_FUNCTION_START, "start: '%s' %d\n", qPrintable(elem.altNick()), massively/*, last*/);
 	if (!elem.usesProtocol("Gadu"))
 		return;
 	if (CurrentStatus->isOffline())
@@ -897,7 +897,7 @@ void GaduProtocol::errorSlot(GaduError err)
 			host = server.toString();
 		else
 			host = "HUB";
-		kdebugm(KDEBUG_INFO, "%s %s\n", host.local8Bit().data(), msg.local8Bit().data());
+		kdebugm(KDEBUG_INFO, "%s %s\n", qPrintable(host), qPrintable(msg));
 		emit connectionError(this, host, msg);
 	}
 
@@ -915,8 +915,8 @@ void GaduProtocol::errorSlot(GaduError err)
 
 void GaduProtocol::imageReceived(UinType sender, uint32_t size, uint32_t crc32, const QString &filename, const char *data)
 {
-	kdebugm(KDEBUG_INFO, QString("Received image. sender: %1, size: %2, crc32: %3,filename: %4\n")
-		.arg(sender).arg(size).arg(crc32).arg(filename).local8Bit().data());
+	kdebugm(KDEBUG_INFO, qPrintable(QString("Received image. sender: %1, size: %2, crc32: %3,filename: %4\n")
+		.arg(sender).arg(size).arg(crc32).arg(filename)));
 
 	QString full_path = gadu_images_manager.saveImage(sender,size,crc32,filename,data);
 	emit imageReceivedAndSaved(sender, size, crc32, full_path);
@@ -924,8 +924,8 @@ void GaduProtocol::imageReceived(UinType sender, uint32_t size, uint32_t crc32, 
 
 void GaduProtocol::imageRequestReceivedSlot(UinType sender, uint32_t size, uint32_t crc32)
 {
-	kdebugm(KDEBUG_INFO, QString("Received image request. sender: %1, size: %2, crc32: %3\n")
-		.arg(sender).arg(size).arg(crc32).local8Bit().data());
+	kdebugm(KDEBUG_INFO, qPrintable(QString("Received image request. sender: %1, size: %2, crc32: %3\n")
+		.arg(sender).arg(size).arg(crc32)));
 
 	gadu_images_manager.sendImage(sender,size,crc32);
 }
@@ -1015,7 +1015,7 @@ void GaduProtocol::messageReceivedSlot(int msgclass, UserListElements senders, Q
 		return;
 
 	kdebugmf(KDEBUG_INFO, "Got message from %d saying \"%s\"\n",
-			senders[0].ID("Gadu").toUInt(), (const char *)message.toPlain().local8Bit());
+			senders[0].ID("Gadu").toUInt(), qPrintable(message.toPlain()));
 
 	emit receivedMessageFilter(this, senders, message.toPlain(), time, ignore);
 	if (ignore)
@@ -1043,7 +1043,7 @@ void GaduProtocol::systemMessageReceived(QString &message, QDateTime &time, int 
 	}
 
 	QString mesg = time.toString("hh:mm:ss (dd.MM.yyyy): ") + message;
-	kdebugm(KDEBUG_INFO, "sysMsg: %s\n", mesg.local8Bit().data());
+	kdebugm(KDEBUG_INFO, "sysMsg: %s\n", qPrintable(mesg));
 	emit systemMessageReceived(mesg);
 
 	kdebugf2();
@@ -1407,7 +1407,7 @@ bool GaduProtocol::sendImage(UserListElement user, const QString &file_name, uin
 	kdebugf();
 	int res = 1;
 	if (user.usesProtocol("Gadu"))
-		res = gg_image_reply(Sess, user.ID("Gadu").toUInt(), file_name.local8Bit().data(), data, size);
+		res = gg_image_reply(Sess, user.ID("Gadu").toUInt(), qPrintable(file_name), data, size);
 	kdebugf2();
 	return (res == 0);
 }
@@ -1459,7 +1459,7 @@ void GaduProtocol::searchNextInPubdir(SearchRecord& searchRecord)
 	if (searchRecord.Active)
 		gg_pubdir50_add(req, GG_PUBDIR50_ACTIVE, GG_PUBDIR50_ACTIVE_TRUE);
 
-	gg_pubdir50_add(req, GG_PUBDIR50_START, QString::number(searchRecord.FromUin).local8Bit());
+	gg_pubdir50_add(req, GG_PUBDIR50_START, qPrintable(QString::number(searchRecord.FromUin)));
 
 	searchRecord.Seq = gg_pubdir50(Sess, req);
 	gg_pubdir50_free(req);
@@ -1796,7 +1796,7 @@ QString GaduProtocol::userListToString(const UserList &userList) const
 
 	contacts.remove("(null)");
 
-//	kdebugm(KDEBUG_DUMP, "%s\n", contacts.local8Bit().data());
+//	kdebugm(KDEBUG_DUMP, "%s\n", qPrintable(contacts));
 	kdebugf2();
 	return contacts;
 }
@@ -1824,7 +1824,7 @@ QList<UserListElement> GaduProtocol::streamToUserList(QTextStream &stream) const
 	{
 		UserListElement e;
 		line = stream.readLine();
-//		kdebugm(KDEBUG_DUMP, ">>%s\n", line.local8Bit().data());
+//		kdebugm(KDEBUG_DUMP, ">>%s\n", qPrintable(line));
 		sections = QStringList::split(";", line, true);
 		secCount = sections.count();
 
@@ -1845,12 +1845,12 @@ QList<UserListElement> GaduProtocol::streamToUserList(QTextStream &stream) const
 		ok = false;
 		while (!ok && i < secCount)
 		{
-//			kdebugm(KDEBUG_DUMP, "checking: '%s'\n", sections[i].local8Bit().data());
+//			kdebugm(KDEBUG_DUMP, "checking: '%s'\n", qPrintable(sections[i]));
 			sections[i].toULong(&ok);
 			ok = ok || sections[i].isEmpty();
 			if (!ok)
 			{
-//				kdebugm(KDEBUG_DUMP, "adding: '%s'\n", sections[i].local8Bit().data());
+//				kdebugm(KDEBUG_DUMP, "adding: '%s'\n", qPrintable(sections[i]));
 				groupNames.append(sections[i]);
 			}
 			++i;
@@ -1961,7 +1961,7 @@ void GaduProtocol::userListReceived(const struct gg_event *e)
 
 	GaduStatus oldStatus;
 	int nr = 0;
-	//kdebugm(KDEBUG_WARNING, "%s\n", userListToString(*userlist).local8Bit().data());
+	//kdebugm(KDEBUG_WARNING, "%s\n", qPrintable(userListToString(*userlist)));
 	//return;
 
 	int cnt = 0;
@@ -2116,7 +2116,7 @@ void GaduProtocol::userStatusChanged(const struct gg_event *e)
 	status.setDescription(desc);
 
 	kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "User %d went %d (%s)\n", uin,
-		status.toStatusNumber(), status.name().local8Bit().data());
+		status.toStatusNumber(), qPrintable(status.name()));
 
 	if (!userlist->contains("Gadu", QString::number(uin), FalseForAnonymous))
 	{

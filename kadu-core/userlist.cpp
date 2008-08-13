@@ -229,7 +229,7 @@ void UserList::writeToConfig()
 		foreach(const QString &it, nonProtoKeys.keys())
 		{
 			const QString &val = user.data(nonProtoKeys[it]).toString();
-//			kdebugmf(KDEBUG_WARNING, "%s %s %s\n", (*i).altNick().local8Bit().data(), it.key().local8Bit().data(), val.local8Bit().data());
+//			kdebugmf(KDEBUG_WARNING, "%s %s %s\n", qPrintable((*i).altNick()), qPrintable(it.key()), qPrintable(val));
 			if (!val.isEmpty())
 				contact_elem.setAttribute(it, val);
 		}
@@ -270,7 +270,7 @@ void UserList::setAllOffline(const QString &protocolName)
 	int i = 0;
 	foreach(const UserListElement &user, *this)
 	{
-//		kdebugm(KDEBUG_INFO, "%s %d\n", (*user).altNick().local8Bit().data(), (*user).usesProtocol(protocolName));
+//		kdebugm(KDEBUG_INFO, "%s %d\n", qPrintable(*user), qPrintable(*user));
 		if (user.usesProtocol(protocolName))
 		{
 			const UserStatus &stat = user.status(protocolName);

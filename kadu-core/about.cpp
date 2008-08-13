@@ -167,7 +167,7 @@ QString About::loadFile(const QString &name)
 	QFile file(dataPath("kadu/" + name));
 	if (!file.open(QIODevice::ReadOnly))
 	{
-		kdebugm(KDEBUG_ERROR, "About::loadFile(%s) cannot open file\n", name.toLocal8Bit().data());
+		kdebugm(KDEBUG_ERROR, "About::loadFile(%s) cannot open file\n", qPrintable(name));
 		return QString::null;
 	}
 

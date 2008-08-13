@@ -84,7 +84,8 @@ static void kadu_signal_handler(int s)
 		fprintf(stderr, "======= END OF BACKTRACE  ======\n");
 		fflush(stderr);
 
-		QByteArray p(QDir::toNativeSeparators(ggPath(debug_file)).local8Bit());
+		// XXX?
+		QByteArray p(QDir::toNativeSeparators(qPrintable(ggPath(debug_file))));
 		dbgfile = fopen(p.data(), "w");
 		if (dbgfile)
 		{
@@ -98,13 +99,13 @@ static void kadu_signal_handler(int s)
 			QStringList modules = modules_manager->staticModules();
 
 			foreach(const QString &module, modules)
-				fprintf(dbgfile, "> %s\n", module.local8Bit().data());
+				fprintf(dbgfile, "> %s\n", qPrintable(module));
 			fflush(dbgfile);
 
 			fprintf(dbgfile, "loaded modules:\n");
 			modules = modules_manager->loadedModules();
 			foreach(const QString &module, modules)
-				fprintf(dbgfile, "> %s\n", module.local8Bit().data());
+				fprintf(dbgfile, "> %s\n", qPrintable(module));
 			fflush(dbgfile);
 			fprintf(dbgfile, "Qt compile time version: %d.%d.%d\nQt runtime version: %s\n", (QT_VERSION&0xff0000)>>16, (QT_VERSION&0xff00)>>8, QT_VERSION&0xff, qVersion());
 			fprintf(dbgfile, "Kadu version: %s %s\n", VERSION, DETAILED_VERSION);

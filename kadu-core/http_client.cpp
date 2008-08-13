@@ -68,8 +68,8 @@ void HttpClient::onConnected()
 	query += "\r\n";
 	if (!PostData.isEmpty())
 		query += QString(PostData);
-	kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "HttpClient: Sending query:\n%s\n", query.local8Bit().data());
-	Socket.writeBlock(query.local8Bit().data(), query.length());
+	kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "HttpClient: Sending query:\n%s\n", qPrintable(query));
+	Socket.writeBlock(qPrintable(query), query.length());
 	kdebugf2();
 }
 
@@ -99,7 +99,7 @@ void HttpClient::onReadyRead()
 		if (p < 0)
 			return;
 		// Dostalismy naglowek,
-		kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "HttpClient: Http header found:\n%s\n", s.local8Bit().data());
+		kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "HttpClient: Http header found:\n%s\n", qPrintable(s));
 		HeaderParsed = true;
 		// Wyci�gamy status
 		QRegExp status_regexp("HTTP/1\\.[01] (\\d+)");
@@ -122,7 +122,7 @@ void HttpClient::onReadyRead()
 				return;
 			}
 			QString location = location_regexp.cap(1);
-			kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "Jumping to %s\n", location.local8Bit().data());
+			kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "Jumping to %s\n", qPrintable(location));
 			// czekamy. zbyt szybkie przekierowanie konczy sie
 			// czasem petla. nie wiem dlaczego.
 			QTime* t = new QTime();
@@ -156,7 +156,7 @@ void HttpClient::onReadyRead()
 			QString cookie_name = cookie_regexp.cap(1);
 			QString cookie_val = cookie_regexp.cap(2);
 			Cookies.insert(cookie_name, cookie_val);
-			kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "HttpClient: Cookie retreived: %s=%s\n", cookie_name.local8Bit().data(), cookie_val.local8Bit().data());
+			kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "HttpClient: Cookie retreived: %s=%s\n", qPrintable(cookie_name), qPrintable(cookie_val));
 		}
 		// Wytnij naglowek z Data
 		int header_size = p + 4;
@@ -244,7 +244,7 @@ void HttpClient::post(const QString &path, const QByteArray& data)
 void HttpClient::post(const QString &path,const QString& data)
 {
 	QByteArray PostData;
-	PostData.duplicate(data.local8Bit().data(), data.length());
+	PostData.duplicate(qPrintable(data), data.length());
 	post(path, PostData);
 }
 

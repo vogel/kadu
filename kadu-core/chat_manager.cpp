@@ -197,7 +197,8 @@ void ChatManager::loadOpenedWindows()
 			if (protocol)
 				openChatWidget(protocol, users);
 			else
-				kdebugm(KDEBUG_WARNING, "protocol %s/%s not found!\n", protocolId.local8Bit().data(), accountId.local8Bit().data());
+				kdebugm(KDEBUG_WARNING, "protocol %s/%s not found!\n",
+					       qPrintable(protocolId), qPrintable(accountId));
 		}
 	}
 	kdebugf2();
@@ -864,7 +865,7 @@ QVariant& ChatManager::chatWidgetProperty(const UserGroup *group, const QString 
 	info.users = group->toUserListElements();
 	info.map[name] = QVariant();
 	addons.push_front(info);
-	kdebugmf(KDEBUG_FUNCTION_END, "end: %s NOT found\n", name.local8Bit().data());
+	kdebugmf(KDEBUG_FUNCTION_END, "end: %s NOT found\n", qPrintable(name));
 	return addons[0].map[name];
 }
 

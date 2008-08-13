@@ -83,7 +83,7 @@ void HtmlDocument::insertText(const int pos, const QString &text)
 
 void HtmlDocument::parseHtml(const QString &html)
 {
-//	kdebugm(KDEBUG_FUNCTION_START | KDEBUG_INFO, "%s\n", html.local8Bit().data());
+//	kdebugm(KDEBUG_FUNCTION_START | KDEBUG_INFO, "%s\n", qPrintable(html));
 	Element e;
 	e.tag = false;
 	int pos1, pos2;

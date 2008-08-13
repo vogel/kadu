@@ -392,7 +392,7 @@ QString dataPath(const QString &p, const char *argv0)
 	if(path.startsWith("kadu")) path.remove(0, 4);
 #endif
 
-	kdebugm(KDEBUG_INFO, "%s%s\n", data_path.local8Bit().data(), path.local8Bit().data());
+	kdebugm(KDEBUG_INFO, "%s%s\n", qPrintable(data_path), qPrintable(path));
 
 	return data_path + path;
 }
@@ -1163,7 +1163,7 @@ QList<QVariant> toVariantList(const QList<int> &in)
 QRegExp clean_regexp;
 QString toPlainText(const QString &text)
 {
-	kdebugm(KDEBUG_INFO, "rich: %s\n", text.local8Bit().data());
+	kdebugm(KDEBUG_INFO, "rich: %s\n", qPrintable(text));
 	if (clean_regexp.isEmpty())
 	{
 		clean_regexp = QRegExp("<.*>");
@@ -1175,7 +1175,7 @@ QString toPlainText(const QString &text)
 	copy.replace("\r",   " ");
 	copy.remove(clean_regexp);
 	HtmlDocument::unescapeText(copy);
-	kdebugm(KDEBUG_INFO, "plain: %s\n", copy.local8Bit().data());
+	kdebugm(KDEBUG_INFO, "plain: %s\n", qPrintable(copy));
 	return copy;
 }
 
@@ -1229,7 +1229,7 @@ QString narg(const QString &s, const QString **tab, int count)
 		++d;
 	}
 	out.append(QConstString(d - j, j).string());
-//	kdebugm(KDEBUG_DUMP, "out: '%s'\n", out.local8Bit().data());
+//	kdebugm(KDEBUG_DUMP, "out: '%s'\n", qPrintable(out));
 	kdebugf2();
 
 	return out;
@@ -1280,7 +1280,7 @@ void printBacktrace(const QString &header)
 	if (header.isEmpty())
 		fprintf(stderr, "\nbacktrace:\n");
 	else
-		fprintf(stderr, "\nbacktrace: ('%s')\n", header.local8Bit().data());
+		fprintf(stderr, "\nbacktrace: ('%s')\n", qPrintable(header));
 #ifdef HAVE_EXECINFO
 	void *bt_array[100];
 	char **bt_strings;

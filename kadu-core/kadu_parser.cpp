@@ -28,7 +28,7 @@ bool KaduParser::registerTag(const QString &name, QString (*func)(const UserList
 	kdebugf();
 	if (registeredTags.contains(name))
 	{
-		kdebugmf(KDEBUG_ERROR | KDEBUG_FUNCTION_END, "tag %s already registered!\n", name.local8Bit().data());
+		kdebugmf(KDEBUG_ERROR | KDEBUG_FUNCTION_END, "tag %s already registered!\n", qPrintable(name));
 		return false;
 	}
 	else
@@ -44,7 +44,7 @@ bool KaduParser::unregisterTag(const QString &name, QString (* /*func*/)(const U
 	kdebugf();
 	if (!registeredTags.contains(name))
 	{
-		kdebugmf(KDEBUG_ERROR | KDEBUG_FUNCTION_END, "tag %s not registered!\n", name.local8Bit().data());
+		kdebugmf(KDEBUG_ERROR | KDEBUG_FUNCTION_END, "tag %s not registered!\n", qPrintable(name));
 		return false;
 	}
 	else
@@ -60,7 +60,7 @@ bool KaduParser::registerObjectTag(const QString &name, ObjectTagCallback func)
 	kdebugf();
 	if (registeredObjectTags.contains(name))
 	{
-		kdebugmf(KDEBUG_ERROR | KDEBUG_FUNCTION_END, "tag %s already registered!\n", name.local8Bit().data());
+		kdebugmf(KDEBUG_ERROR | KDEBUG_FUNCTION_END, "tag %s already registered!\n", qPrintable(name));
 		return false;
 	}
 	else
@@ -76,7 +76,7 @@ bool KaduParser::unregisterObjectTag(const QString &name, ObjectTagCallback)
 	kdebugf();
 	if (!registeredObjectTags.contains(name))
 	{
-		kdebugmf(KDEBUG_ERROR | KDEBUG_FUNCTION_END, "tag %s not registered!\n", name.local8Bit().data());
+		kdebugmf(KDEBUG_ERROR | KDEBUG_FUNCTION_END, "tag %s not registered!\n", qPrintable(name));
 		return false;
 	}
 	else
@@ -95,7 +95,7 @@ QString KaduParser::executeCmd(const QString &cmd)
 	s.append(" >");
 	s.append(ggPath("execoutput"));
 
-	system(s.local8Bit());
+	system(qPrintable(s));
 	QFile *f = new QFile(ggPath("execoutput"));
 	if (f->open(QIODevice::ReadOnly))
 	{
@@ -117,7 +117,7 @@ QString KaduParser::parse(const QString &s, const UserListElement &ule, bool esc
 
 QString KaduParser::parse(const QString &s, const UserListElement &ule, const QObject * const object, bool escape)
 {
-	kdebugmf(KDEBUG_DUMP, "%s escape=%i\n", s.local8Bit().data(), escape);
+	kdebugmf(KDEBUG_DUMP, "%s escape=%i\n", qPrintable(s), escape);
 	int index = 0, i, len = s.length();
 	QList<ParseElem> parseStack;
 
@@ -420,7 +420,7 @@ QString KaduParser::parse(const QString &s, const UserListElement &ule, const QO
 							file = pe.str;
 						else
 							file = pe.str.left(spacePos);
-//						kdebugm(KDEBUG_INFO, "file: %s\n", file.local8Bit().data());
+//						kdebugm(KDEBUG_INFO, "file: %s\n", qPrintable(file));
 						if (QFile::exists(file) == check_file_exists)
 						{
 							pe.str = pe.str.mid(spacePos + 1);
@@ -435,12 +435,12 @@ QString KaduParser::parse(const QString &s, const UserListElement &ule, const QO
 						pe.type = ParseElem::PE_STRING;
 						if (KaduParser::globalVariables.contains(pe.str))
 						{
-							kdebugm(KDEBUG_INFO, "name: %s, value: %s\n", pe.str.local8Bit().data(), KaduParser::globalVariables[pe.str].local8Bit().data());
+							kdebugm(KDEBUG_INFO, "name: %s, value: %s\n", qPrintable(pe.str), qPrintable(KaduParser::globalVariables[pe.str]));
 							pe.str = KaduParser::globalVariables[pe.str];
 						}
 						else
 						{
-							kdebugm(KDEBUG_WARNING, "variable %s undefined\n", pe.str.local8Bit().data());
+							kdebugm(KDEBUG_WARNING, "variable %s undefined\n", qPrintable(pe.str));
 							pe.str = QString::null;
 						}
 						parseStack.push_back(pe);
@@ -464,7 +464,7 @@ QString KaduParser::parse(const QString &s, const UserListElement &ule, const QO
 							pe.str = registeredObjectTags[pe.str](object);
 						else
 						{
-							kdebugm(KDEBUG_WARNING, "tag %s not registered\n", pe.str.local8Bit().data());
+							kdebugm(KDEBUG_WARNING, "tag %s not registered\n", qPrintable(pe.str));
 							pe.str = QString::null;
 						}
 						parseStack.push_back(pe);
@@ -624,6 +624,6 @@ QString KaduParser::parse(const QString &s, const UserListElement &ule, const QO
 		}
 		ret += p;
 	}
-	kdebugm(KDEBUG_DUMP, "%s\n", ret.local8Bit().data());
+	kdebugm(KDEBUG_DUMP, "%s\n", qPrintable(ret));
 	return ret;
 }

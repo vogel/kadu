@@ -404,9 +404,9 @@ void KaduListBoxPixmap::calculateSize(const QString &text, int width, QStringLis
 	buf_width=width;
 	buf_out=out;
 	buf_height=height;
-//	kdebugm(KDEBUG_DUMP, "h:%d txt:%s\n", height, text.local8Bit().data());
+//	kdebugm(KDEBUG_DUMP, "h:%d txt:%s\n", height, qPrintable(text));
 //	for(QStringList::Iterator it = out.begin(); it != out.end(); ++it )
-//		kdebugm(KDEBUG_DUMP, ">>%s\n", (*it).local8Bit().data());
+//		kdebugm(KDEBUG_DUMP, ">>%s\n", qPrintable(*it));
 }
 
 void KaduListBoxPixmap::changeText(const QString &text)
@@ -459,7 +459,7 @@ inline bool ULEComparer::operator()(const UserListElement &e1, const UserListEle
 	foreach(const UserBox::CmpFuncDesc &f, CmpFunctions)
 	{
 		ret = f.func(e1, e2);
-//		kdebugm(KDEBUG_WARNING, "%s %s %d\n", e1.altNick().local8Bit().data(), e2.altNick().local8Bit().data(), ret);
+//		kdebugm(KDEBUG_WARNING, "%s %s %d\n", qPrintable(e1.altNick()), qPrintable(e2.altNick()), ret);
 		if (ret)
 			break;
 	}
@@ -1284,10 +1284,10 @@ bool UserBox::moveDownCompareFunction(const QString &id)
 void UserBox::sort()
 {
 //	FOREACH(u, sortHelper)
-//		kdebugm(KDEBUG_WARNING, ">>%s\n", (*u).altNick().local8Bit().data());
+//		kdebugm(KDEBUG_WARNING, ">>%s\n", qPrintable((*u).altNick()));
 	std::sort(sortHelper.begin(), sortHelper.end(), *comparer);
 //	FOREACH(u, sortHelper)
-//		kdebugm(KDEBUG_ERROR, ">>%s\n", (*u).altNick().local8Bit().data());
+//		kdebugm(KDEBUG_ERROR, ">>%s\n", qPrintable((*u).altNick()));
 }
 
 void UserBox::removingProtocol(UserListElement /*elem*/, QString /*protocolName*/, bool /*massively*/, bool /*last*/)

@@ -27,7 +27,7 @@ bool UserListElement::hasIP(const QString &protocolName) const
 	if (!privateData->protocols.contains(protocolName))
 	{
 #ifdef DEBUG_ENABLED
-		kdebugm(KDEBUG_ERROR, "%s not found!\n", protocolName.local8Bit().data());
+		kdebugm(KDEBUG_ERROR, "%s not found!\n", qPrintable(protocolName));
 		printBacktrace("backtrace");
 #endif
 		//privateData->unlock();
@@ -58,7 +58,7 @@ void UserListElement::setAddressAndPort(const QString &protocolName, const QHost
 	if (!privateData->protocols.contains(protocolName))
 	{
 #ifdef DEBUG_ENABLED
-		kdebugm(KDEBUG_ERROR, "%s not found!\n", protocolName.local8Bit().data());
+		kdebugm(KDEBUG_ERROR, "%s not found!\n", qPrintable(protocolName));
 		printBacktrace("backtrace");
 #endif
 		//privateData->unlock();
@@ -95,7 +95,7 @@ QVariant UserListElement::setProtocolData(const QString &protocolName, const QSt
 	if (!privateData->protocols.contains(protocolName))
 	{
 #ifdef DEBUG_ENABLED
-		kdebugm(KDEBUG_ERROR, "%s not found!\n", protocolName.local8Bit().data());
+		kdebugm(KDEBUG_ERROR, "%s not found!\n", qPrintable(protocolName));
 		printBacktrace("backtrace");
 #endif
 		//privateData->unlock();
@@ -159,7 +159,7 @@ QVariant UserListElement::protocolData(const QString &protocolName, const QStrin
 	if (!privateData->protocols.contains(protocolName))
 	{
 #ifdef DEBUG_ENABLED
-		kdebugm(KDEBUG_ERROR, "%s not found!\n", protocolName.local8Bit().data());
+		kdebugm(KDEBUG_ERROR, "%s not found!\n", qPrintable(protocolName));
 		printBacktrace("backtrace");
 #endif
 		//privateData->unlock();
@@ -183,7 +183,7 @@ UserStatus & UserListElement::status(const QString &protocolName) const
 	if (!privateData->protocols.contains(protocolName))
 	{
 #ifdef DEBUG_ENABLED
-		kdebugm(KDEBUG_ERROR, "%s not found!\n", protocolName.local8Bit().data());
+		kdebugm(KDEBUG_ERROR, "%s not found!\n", qPrintable(protocolName));
 		printBacktrace("backtrace");
 #endif
 		//privateData->unlock();
@@ -203,7 +203,7 @@ QString UserListElement::ID(const QString &protocolName) const
 	if (!privateData->protocols.contains(protocolName))
 	{
 #ifdef DEBUG_ENABLED
-		kdebugm(KDEBUG_ERROR, "%s not found!\n", protocolName.local8Bit().data());
+		kdebugm(KDEBUG_ERROR, "%s not found!\n", qPrintable(protocolName));
 		printBacktrace("backtrace");
 #endif
 		//privateData->unlock();
@@ -366,7 +366,7 @@ void UserListElement::addProtocol(const QString &name, const QString &id, bool m
 	if (privateData->protocols.contains(name))
 	{
 #ifdef DEBUG_ENABLED
-		kdebugm(KDEBUG_ERROR, "%s found!!\n", name.local8Bit().data());
+		kdebugm(KDEBUG_ERROR, "%s found!!\n", qPrintable(name));
 		printBacktrace("protocol already exists");
 #endif
 		//privateData->unlock();
@@ -389,7 +389,7 @@ void UserListElement::deleteProtocol(const QString &protocolName, bool massively
 	if (!privateData->protocols.contains(protocolName))
 	{
 #ifdef DEBUG_ENABLED
-		kdebugm(KDEBUG_PANIC, "%s not found!!\n", protocolName.local8Bit().data());
+		kdebugm(KDEBUG_PANIC, "%s not found!!\n", qPrintable(protocolName));
 		printBacktrace("protocol does not exists");
 #endif
 		//privateData->unlock();
@@ -431,7 +431,7 @@ void UserListElement::setStatus(const QString &protocolName, const UserStatus &s
 	if (!privateData->protocols.contains(protocolName))
 	{
 #ifdef DEBUG_ENABLED
-		kdebugm(KDEBUG_ERROR, "%s not found!\n", protocolName.local8Bit().data());
+		kdebugm(KDEBUG_ERROR, "%s not found!\n", qPrintable(protocolName));
 		printBacktrace("backtrace");
 #endif
 		//privateData->unlock();
@@ -493,7 +493,7 @@ QStringList UserListElement::protocolDataKeys(const QString &protocolName) const
 	if (!privateData->protocols.contains(protocolName))
 	{
 #ifdef DEBUG_ENABLED
-		kdebugm(KDEBUG_ERROR, "%s not found!\n", protocolName.local8Bit().data());
+		kdebugm(KDEBUG_ERROR, "%s not found!\n", qPrintable(protocolName));
 		printBacktrace("backtrace");
 #endif
 		//privateData->unlock();

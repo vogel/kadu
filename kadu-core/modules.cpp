@@ -70,7 +70,7 @@ Library::~Library()
 
 bool Library::load()
 {
-	Handle = dlopen(FileName.local8Bit().data(), RTLD_NOW | RTLD_GLOBAL);
+	Handle = dlopen(qPrintable(FileName), RTLD_NOW | RTLD_GLOBAL);
 	return (Handle != 0);
 }
 
@@ -78,7 +78,7 @@ void* Library::resolve(const QString& symbol_name)
 {
 	if (Handle == 0)
 		return 0;
-	return dlsym(Handle, symbol_name.local8Bit().data());
+	return dlsym(Handle, qPrintable(symbol_name));
 }
 
 QString Library::errorString()
@@ -439,7 +439,7 @@ ModulesManager::ModulesManager() : QObject(NULL, "modules_manager"),
 		saveLoadedModules();
 
 	foreach(const QString &it, Modules.keys())
-		kdebugm(KDEBUG_INFO, "module: %s, usage: %d\n", it.local8Bit().data(), Modules[it].usage_counter);
+		kdebugm(KDEBUG_INFO, "module: %s, usage: %d\n", qPrintable(it), Modules[it].usage_counter);
 
 	kdebugf2();
 }
@@ -451,7 +451,7 @@ ModulesManager::~ModulesManager()
 	saveLoadedModules();
 
 	foreach(const QString &it, Modules.keys())
-		kdebugm(KDEBUG_INFO, "module: %s, usage: %d\n", it.local8Bit().data(), Modules[it].usage_counter);
+		kdebugm(KDEBUG_INFO, "module: %s, usage: %d\n", qPrintable(it), Modules[it].usage_counter);
 
 	// unloading all not used modules
 	// as long as any module were unloaded
@@ -473,7 +473,7 @@ ModulesManager::~ModulesManager()
 	QStringList active = activeModules();
 	foreach(const QString &i, active)
 	{
-		kdebugm(KDEBUG_PANIC, "WARNING! Could not deactivate module %s, killing\n",i.local8Bit().data());
+		kdebugm(KDEBUG_PANIC, "WARNING! Could not deactivate module %s, killing\n",qPrintable(i));
 		deactivateModule(i, true);
 	}
 
@@ -527,10 +527,10 @@ bool ModulesManager::satisfyModuleDependencies(const ModuleInfo& module_info)
 
 void ModulesManager::incDependenciesUsageCount(const ModuleInfo& module_info)
 {
-	kdebugmf(KDEBUG_FUNCTION_START, "%s\n", module_info.description.local8Bit().data());
+	kdebugmf(KDEBUG_FUNCTION_START, "%s\n", qPrintable(module_info.description));
 	foreach(const QString &it, module_info.depends)
 	{
-		kdebugm(KDEBUG_INFO, "incUsage: %s\n", it.local8Bit().data());
+		kdebugm(KDEBUG_INFO, "incUsage: %s\n", qPrintable(it));
 		moduleIncUsageCount(it);
 	}
 	kdebugf2();
@@ -712,7 +712,7 @@ bool ModulesManager::conflictsWithLoaded(const QString &module_name, const Modul
 bool ModulesManager::activateModule(const QString& module_name)
 {
 	Module m;
-	kdebugmf(KDEBUG_FUNCTION_START, "'%s'\n", module_name.local8Bit().data());
+	kdebugmf(KDEBUG_FUNCTION_START, "'%s'\n", qPrintable(module_name));
 
 	if (moduleIsActive(module_name))
 	{
@@ -756,7 +756,7 @@ bool ModulesManager::activateModule(const QString& module_name)
 		{
 			QString err = m.lib->errorString();
 			MessageBox::msg(narg(tr("Cannot load %1 module library.:\n%2"), module_name, err));
-			kdebugm(KDEBUG_ERROR, "cannot load %s because of: %s\n", module_name.local8Bit().data(), err.local8Bit().data());
+			kdebugm(KDEBUG_ERROR, "cannot load %s because of: %s\n", qPrintable(module_name), qPrintable(err));
 			delete m.lib;
 			kdebugf2();
 			return false;
@@ -805,7 +805,7 @@ bool ModulesManager::activateModule(const QString& module_name)
 bool ModulesManager::deactivateModule(const QString& module_name, bool force)
 {
 	Module m=Modules[module_name];
-	kdebugmf(KDEBUG_FUNCTION_START, "name:'%s' force:%d usage:%d\n", module_name.local8Bit().data(), force, m.usage_counter);
+	kdebugmf(KDEBUG_FUNCTION_START, "name:'%s' force:%d usage:%d\n", qPrintable(module_name), force, m.usage_counter);
 
 	if (m.usage_counter>0 && !force)
 	{

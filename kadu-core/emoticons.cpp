@@ -81,7 +81,7 @@ void EmoticonsManager::configurationUpdated()
 
 void EmoticonsManager::setEmoticonsTheme(const QString& theme)
 {
-	kdebugmf(KDEBUG_FUNCTION_START | KDEBUG_INFO, "theme: %s\n", theme.local8Bit().data());
+	kdebugmf(KDEBUG_FUNCTION_START | KDEBUG_INFO, "theme: %s\n", qPrintable(theme));
 
 	QStringList themes = emoticons->themes();
 	if (themes.contains(theme))
@@ -129,7 +129,7 @@ QString EmoticonsManager::getQuoted(const QString& s, unsigned int& pos)
 
 bool EmoticonsManager::loadGGEmoticonThemePart(const QString &subdir)
 {
-	kdebugmf(KDEBUG_FUNCTION_START, "subdir: %s\n", subdir.local8Bit().data());
+	kdebugmf(KDEBUG_FUNCTION_START, "subdir: %s\n", qPrintable(subdir));
 
 	QString dir = subdir;
 
@@ -148,7 +148,7 @@ bool EmoticonsManager::loadGGEmoticonThemePart(const QString &subdir)
 	{
 		EmoticonsListItem item;
 		QString line = theme_stream.readLine();
-		kdebugm(KDEBUG_DUMP, "> %s\n", line.local8Bit().data());
+		kdebugm(KDEBUG_DUMP, "> %s\n", qPrintable(line));
 		unsigned int lineLength = line.length();
 		unsigned int i = 0;
 		bool multi = false;
@@ -239,7 +239,7 @@ void EmoticonsManager::expandEmoticons(HtmlDocument& doc, const QColor& bgcolor,
 
 	if (!emotsFound && getSubDirs(dataPath("kadu/themes/emoticons")).isEmpty())
 	{
-		fprintf(stderr, "no emoticons in %s\n", dataPath("kadu/themes/emoticons").local8Bit().data());
+		fprintf(stderr, "no emoticons in %s\n", qPrintable(dataPath("kadu/themes/emoticons")));
 		kdebugmf(KDEBUG_FUNCTION_END|KDEBUG_WARNING, "end: NO EMOTICONS!\n");
 		return;
 	}
@@ -311,7 +311,7 @@ void EmoticonsManager::expandEmoticons(HtmlDocument& doc, const QColor& bgcolor,
 			doc.setElementValue(e_i, new_text, true);
 		}
 	}
-	kdebugm(KDEBUG_DUMP, "Emoticons expanded, html is below:\n%s\n",doc.generateHtml().local8Bit().data());
+	kdebugm(KDEBUG_DUMP, "Emoticons expanded, html is below:\n%s\n", qPrintable(doc.generateHtml()));
 	kdebugf2();
 }
 

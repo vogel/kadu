@@ -43,17 +43,17 @@ void XmlConfigFile::read()
 		fileOpened = file.open(QIODevice::ReadOnly);
 		if (fileOpened && file.size() > 0)
 		{
-			kdebugm(KDEBUG_INFO, "file %s opened!\n", file.name().local8Bit().data());
+			kdebugm(KDEBUG_INFO, "file %s opened!\n", qPrintable(file.name()));
 			break;
 		}
 		if (fileOpened) // && file.size() == 0
 		{
-			kdebugm(KDEBUG_INFO, "config file (%s) is empty, looking for backup\n", file.name().local8Bit().data());
+			kdebugm(KDEBUG_INFO, "config file (%s) is empty, looking for backup\n", qPrintable(file.name()));
 			file.close();
 			fileOpened = false;
 		}
 		else
-			kdebugm(KDEBUG_INFO, "config file (%s) not opened, looking for backup\n", file.name().local8Bit().data());
+			kdebugm(KDEBUG_INFO, "config file (%s) not opened, looking for backup\n", qPrintable(file.name()));
 	}
 
 	if (fileOpened)
@@ -75,7 +75,7 @@ void XmlConfigFile::read()
 	}
 	else
 	{
-		fprintf(stderr, "error opening xml configuration file (%s), creating empty document\n", file.errorString().local8Bit().data());
+		fprintf(stderr, "error opening xml configuration file (%s), creating empty document\n", qPrintable(file.errorString()));
 		fflush(stderr);
 		QDomElement root = DomDocument.createElement( "Kadu" );
 		DomDocument.appendChild(root);
@@ -98,7 +98,7 @@ void XmlConfigFile::write(const QString& f)
 	file.setName(tmpFileName);
 	if (file.open(QIODevice::WriteOnly | QIODevice::Truncate))
 	{
-		kdebugm(KDEBUG_INFO, "file opened '%s'\n", file.name().local8Bit().data());
+		kdebugm(KDEBUG_INFO, "file opened '%s'\n", qPrintable(file.name()));
 		QTextStream stream(&file);
 		stream.setEncoding(QTextStream::UnicodeUTF8);
 		stream << DomDocument.toString();
@@ -107,13 +107,13 @@ void XmlConfigFile::write(const QString& f)
 		QFile::remove(fileName);
 		if (!QFile::rename(tmpFileName, fileName))
 		{
-			fprintf(stderr, "cannot rename '%s' to '%s': %s\n", tmpFileName.local8Bit().data(), fileName.local8Bit().data(), strerror(errno));
+			fprintf(stderr, "cannot rename '%s' to '%s': %s\n", qPrintable(tmpFileName), qPrintable(fileName), strerror(errno));
 			fflush(stderr);
 		}
 	}
 	else
 	{
-		fprintf(stderr, "cannot open '%s': %s\n", file.name().local8Bit().data(), file.errorString().local8Bit().data());
+		fprintf(stderr, "cannot open '%s': %s\n", qPrintable(file.name()), qPrintable(file.errorString()));
 		fflush(stderr);
 	}
 	kdebugf2();
@@ -173,7 +173,7 @@ QDomElement XmlConfigFile::findElementByProperty(QDomElement parent, const QStri
 			continue;
 		const QString &val = e.attribute(property_name);
 //		kdebug("Checking if property value \"%s\" equals \"%s\"\n",
-//			val.local8Bit().data(), property_value.local8Bit().data());
+//			qPrintable(val), qPrintable(property_value));
 		if (val == property_value)
 		{
 //			kdebug("Element found.\n");
@@ -241,7 +241,7 @@ PlainConfigFile &PlainConfigFile::operator=(const PlainConfigFile &c)
 
 void PlainConfigFile::read()
 {
-	kdebugmf(KDEBUG_FUNCTION_START, "%s\n", filename.local8Bit().data());
+	kdebugmf(KDEBUG_FUNCTION_START, "%s\n", qPrintable(filename));
 	QFile file(filename);
 	QString line;
 
@@ -295,18 +295,18 @@ void PlainConfigFile::write() const
 
 	if (file.open(QIODevice::WriteOnly | QIODevice::Truncate))
 	{
-		kdebugm(KDEBUG_INFO, "file opened '%s'\n", (const char *)file.name().local8Bit());
+		kdebugm(KDEBUG_INFO, "file opened '%s'\n", qPrintable(file.name()));
 		QTextStream stream(&file);
 		stream.setCodec(codec_latin2);
 		foreach(const QString &key, groups.keys())
 		{
-//			kdebugm(KDEBUG_DUMP, ">> %s\n", (const char*)i.key().local8Bit());
+//			kdebugm(KDEBUG_DUMP, ">> %s\n", (i.key()));
 			out.append(format1.arg(key));
 			foreach(const QString &dataKey, groups[key].keys())
 			{
 				QString q = groups[key][dataKey];
 				out.append(format2.arg(dataKey).arg(q.replace('\n', "\\n")));
-//				kdebugm(KDEBUG_DUMP, ">>>>> %s %s\n", (const char*)j.key().local8Bit(), (const char*)q.local8Bit());
+//				kdebugm(KDEBUG_DUMP, ">>>>> %s %s\n", qPrintable(key()), qPrintable(q));
 			}
 			out.append("\n");
 		}
@@ -315,7 +315,7 @@ void PlainConfigFile::write() const
 	}
 	else
 	{
-		fprintf(stderr, "cannot open '%s': %s\n", file.name().local8Bit().data(), file.errorString().local8Bit().data());
+		fprintf(stderr, "cannot open '%s': %s\n", qPrintable(file.name()), qPrintable(file.errorString()));
 		fflush(stderr);
 	}
 
@@ -344,7 +344,7 @@ QMap<QString, QString>& PlainConfigFile::getGroupSection(const QString& name)
 
 bool PlainConfigFile::changeEntry(const QString &group, const QString &name, const QString &value)
 {
-//	kdebugm(KDEBUG_FUNCTION_START, "PlainConfigFile::changeEntry(%s, %s, %s) %p\n", (const char *)group.local8Bit(), (const char *)name.local8Bit(), (const char *)value.local8Bit(), this);
+//	kdebugm(KDEBUG_FUNCTION_START, "PlainConfigFile::changeEntry(%s, %s, %s) %p\n", qPrintable(group), qPrintable(name), qPrintable(value), this);
 	if (activeGroupName!=group)
 	{
 		activeGroupName=group;
@@ -358,7 +358,7 @@ bool PlainConfigFile::changeEntry(const QString &group, const QString &name, con
 
 QString PlainConfigFile::getEntry(const QString &group, const QString &name, bool *ok) const
 {
-//	kdebugm(KDEBUG_FUNCTION_START, "PlainConfigFile::getEntry(%s, %s) %p\n", (const char *)group.local8Bit(), (const char *)name.local8Bit(), this);
+//	kdebugm(KDEBUG_FUNCTION_START, "PlainConfigFile::getEntry(%s, %s) %p\n", qPrintable(group), qPrintable(name), this);
 	if (activeGroupName!=group)
 	{
 		if (!groups.contains(group))
@@ -654,7 +654,7 @@ bool ConfigFile::changeEntry(const QString &group, const QString &name, const QS
 {
 	GlobalMutex.lock();
 
-//	kdebugm(KDEBUG_FUNCTION_START, "ConfigFile::changeEntry(%s, %s, %s) %p\n", group.local8Bit().data(), name.local8Bit().data(), value.local8Bit().data(), this);
+//	kdebugm(KDEBUG_FUNCTION_START, "ConfigFile::changeEntry(%s, %s, %s) %p\n", qPrintable(group), qPrintable(name), qPrintable(value), this);
 	QDomElement root_elem = xml_config_file->rootElement();
 	QDomElement deprecated_elem = xml_config_file->accessElement(root_elem, "Deprecated");
 	QDomElement config_file_elem = xml_config_file->accessElementByProperty(
@@ -677,7 +677,7 @@ QString ConfigFile::getEntry(const QString &group, const QString &name, bool *ok
 	bool resOk;
 	QString result = QString::null;
 
-//	kdebugm(KDEBUG_FUNCTION_START, "ConfigFile::getEntry(%s, %s) %p\n", group.local8Bit().data(), name.local8Bit().data(), this);
+//	kdebugm(KDEBUG_FUNCTION_START, "ConfigFile::getEntry(%s, %s) %p\n", qPrintable(group), qPrintable(name), this);
 	{
 		QDomElement root_elem = xml_config_file->rootElement();
 		QDomElement deprecated_elem = xml_config_file->findElement(root_elem, "Deprecated");

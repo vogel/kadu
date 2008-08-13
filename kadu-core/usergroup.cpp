@@ -51,7 +51,7 @@ UserListElement UserGroup::byAltNick(const QString& altnick)
 		if (user.altNick() == altnick)
 			return user;
 
-	kdebugm(KDEBUG_WARNING, "%s not found, creating ULE\n", altnick.local8Bit().data());
+	kdebugm(KDEBUG_WARNING, "%s not found, creating ULE\n", qPrintable(altnick));
 //	printBacktrace("ule nout found");
 	UserListElement *newElem = new UserListElement();
 	newElem->setAltNick(altnick);
@@ -81,7 +81,7 @@ UserListElement UserGroup::byID(const QString &protocolName, const QString &id)
 			if (user.ID(protocolName) == id)
 				return user;
 
-	kdebugm(KDEBUG_WARNING, "%s,%s not found, creating ULE\n", protocolName.local8Bit().data(), id.local8Bit().data());
+	kdebugm(KDEBUG_WARNING, "%s,%s not found, creating ULE\n", qPrintable(protocolName), qPrintable(id));
 	return addAnonymous(protocolName, id);
 }
 
@@ -128,7 +128,7 @@ bool UserGroup::equals(const UserListElements users) const
 void UserGroup::addUser(const UserListElement &ule, bool massively, bool last)
 {
 //	if (last)
-//	kdebugmf(KDEBUG_FUNCTION_START, "start: group:'%s' altNick:'%s' mass:%d last:%d\n", name(), ule.altNick().local8Bit().data(), massively, last);
+//	kdebugmf(KDEBUG_FUNCTION_START, "start: group:'%s' altNick:'%s' mass:%d last:%d\n", name(), qPrintable(ule.altNick()), massively, last);
 	kdebugf();
 
 // 	ule.privateData->lock();
@@ -154,7 +154,7 @@ void UserGroup::addUser(const UserListElement &ule, bool massively, bool last)
 
 UserListElement UserGroup::addAnonymous(const QString &protocolName, const QString &id, bool massively, bool last)
 {
-//	kdebugmf(KDEBUG_FUNCTION_START, "start: proto:'%s' id:'%s' mass:%d\n", protocolName.local8Bit().data(), id.local8Bit().data(), massively);
+//	kdebugmf(KDEBUG_FUNCTION_START, "start: proto:'%s' id:'%s' mass:%d\n", qPrintable(protocolName), qPrintable(id), massively);
 	UserListElement e;
 	e.setAltNick(id);
 	e.setAnonymous(true);
@@ -214,7 +214,7 @@ void UserGroup::removeUsers(QList<UserListElement> users)
 
 void UserGroup::removeUser(const UserListElement &ule, bool massively, bool last)
 {
-//	kdebugmf(KDEBUG_FUNCTION_START, "start: group:'%s' altNick:'%s' mass:%d last:%d\n", name(), ule.altNick().local8Bit().data(), massively, last);
+//	kdebugmf(KDEBUG_FUNCTION_START, "start: group:'%s' altNick:'%s' mass:%d last:%d\n", name(), qPrintable(ule.altNick()), massively, last);
 //	printBacktrace("xxx");
 
 //	kdebugf();

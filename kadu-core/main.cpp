@@ -158,7 +158,7 @@ int main(int argc, char *argv[])
 	QString data_dir = dataPath("kadu", argv[0]);
 	if (!QDir(data_dir).isReadable())
 	{
-		fprintf(stderr, "data directory (%s) is NOT readable, exiting...\n", data_dir.local8Bit().data());
+		fprintf(stderr, "data directory (%s) is NOT readable, exiting...\n", qPrintable(data_dir));
 		fprintf(stderr, "look at: http://www.kadu.net/msgs/data_dir_not_readable/\n");
 		fflush(stderr);
 
@@ -216,8 +216,8 @@ int main(int argc, char *argv[])
 	QString path_ = ggPath(QString::null);
 #ifndef Q_OS_WIN
 	if (path_.endsWith("/kadu/") || path_.endsWith("/Kadu/")) // for profiles directory
-		mkdir(path_.left(path_.length() - 6).local8Bit().data(), 0700);
-	mkdir(path_.local8Bit().data(), 0700);
+		mkdir(qPrintable(path_.left(path_.length() - 6)), 0700);
+	mkdir(qPrintable(path_), 0700);
 #else
 	QDir().mkdir(path_);
 #endif

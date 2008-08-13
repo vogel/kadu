@@ -168,7 +168,7 @@ void GroupsManager::refreshTabBar()
 
 	/* budujemy list� grup */
 	QStringList group_list = groups();
-	kdebugm(KDEBUG_INFO, "%u groups found: %s\n", group_list.count(), group_list.join(",").local8Bit().data());
+	kdebugm(KDEBUG_INFO, "%u groups found: %s\n", group_list.count(), qPrintable(group_list.join(",")));
 
 	/* usuwamy wszystkie niepotrzebne zakladki - od tylu,
 	   bo indeksy sie przesuwaja po usunieciu */
@@ -328,7 +328,7 @@ GroupsManager::GroupsManager()
 	kdebugf();
 	foreach(UserListElement user, *userlist)
 	{
-//		kdebugm(KDEBUG_INFO, "%s\n", (*user).altNick().local8Bit().data());
+//		kdebugm(KDEBUG_INFO, "%s\n", qPrintable((*user).altNick()));
 		QStringList groups_ = user.data("Groups").toStringList();
 		foreach(const QString &g, groups_)
 			addGroup(g)->addUser(user);
@@ -390,7 +390,7 @@ UserGroup *GroupsManager::group(const QString &name) const
 	{
 		if (!Groups.contains(name))
 		{
-			kdebugm(KDEBUG_PANIC, "group %s does not exist!\n", name.local8Bit().data());
+			kdebugm(KDEBUG_PANIC, "group %s does not exist!\n", qPrintable(name));
 			return 0;
 		}
 		else
@@ -410,7 +410,7 @@ bool GroupsManager::groupExists(const QString &name)
 
 UserGroup *GroupsManager::addGroup(const QString &name)
 {
-//	kdebugmf(KDEBUG_FUNCTION_START, "start: '%s'\n", name.local8Bit().data());
+//	kdebugmf(KDEBUG_FUNCTION_START, "start: '%s'\n", qPrintable(name));
 	if (Groups.contains(name))
 	{
 //		kdebugmf(KDEBUG_FUNCTION_END, "stop: group already exists\n");
@@ -741,7 +741,7 @@ BlockedUsers::BlockedUsers() : UserGroup()
 {
 	foreach(UserListElement user, *userlist)
 	{
-//		kdebugm(KDEBUG_INFO, "%s\n", (*user).altNick().local8Bit().data());
+//		kdebugm(KDEBUG_INFO, "%s\n", qPrintable((*user).altNick()));
 		if (user.usesProtocol("Gadu") && user.protocolData("Gadu", "Blocking").toBool())
 			addUser(user);
 	}
@@ -818,7 +818,7 @@ void AnonymousUsers::userDataChangedSlot(UserListElement elem,
 {
 	if (name != "Anonymous")
 		return;
-//	kdebugmf(KDEBUG_ERROR, "%s %d %d\n", elem.ID("Gadu").local8Bit().data(), currentValue.toBool(), contains(elem));
+//	kdebugmf(KDEBUG_ERROR, "%s %d %d\n", qPrintable(elem.ID("Gadu")), currentValue.toBool(), contains(elem));
 	if (currentValue.toBool())
 		addUser(elem, massively, last);
 	else
@@ -827,7 +827,7 @@ void AnonymousUsers::userDataChangedSlot(UserListElement elem,
 
 void AnonymousUsers::userAdded(UserListElement elem, bool massively, bool last)
 {
-//	kdebugmf(KDEBUG_ERROR, "%s %d %d\n", elem.ID("Gadu").local8Bit().data(), elem.isAnonymous(), contains(elem));
+//	kdebugmf(KDEBUG_ERROR, "%s %d %d\n", qPrintable(elem.ID("Gadu")), elem.isAnonymous(), contains(elem));
 	if (elem.isAnonymous())
 		addUser(elem, massively, last);
 	else
@@ -836,7 +836,7 @@ void AnonymousUsers::userAdded(UserListElement elem, bool massively, bool last)
 
 void AnonymousUsers::removingUser(UserListElement elem, bool massively, bool last)
 {
-//	kdebugmf(KDEBUG_ERROR, "%s %d %d\n", elem.ID("Gadu").local8Bit().data(), elem.isAnonymous(), contains(elem));
+//	kdebugmf(KDEBUG_ERROR, "%s %d %d\n", qPrintable(elem.ID("Gadu")), elem.isAnonymous(), contains(elem));
 	if (!contains(elem))
 		addUser(elem, massively, last);
 }
@@ -884,7 +884,7 @@ void AnonymousUsersWithoutMessages::userDataChangedSlot(UserListElement elem,
 {
 	if (name != "Anonymous")
 		return;
-//	kdebugmf(KDEBUG_WARNING, "%s %d %d %d\n", elem.ID("Gadu").local8Bit().data(), currentValue.toBool(), contains(elem), withoutMessages(elem));
+//	kdebugmf(KDEBUG_WARNING, "%s %d %d %d\n", qPrintable(elem.ID("Gadu")), currentValue.toBool(), contains(elem), withoutMessages(elem));
 
 	if (currentValue.toBool() && withoutMessages(elem))
 		addUser(elem, massively, last);
@@ -894,7 +894,7 @@ void AnonymousUsersWithoutMessages::userDataChangedSlot(UserListElement elem,
 
 void AnonymousUsersWithoutMessages::userAdded(UserListElement elem, bool massively, bool last)
 {
-//	kdebugmf(KDEBUG_ERROR, "%s %d %d\n", elem.ID("Gadu").local8Bit().data(), elem.isAnonymous(), contains(elem));
+//	kdebugmf(KDEBUG_ERROR, "%s %d %d\n", qPrintable(elem.ID("Gadu")), elem.isAnonymous(), contains(elem));
 
 	if (elem.isAnonymous() && withoutMessages(elem))
 		addUser(elem, massively, last);
@@ -904,7 +904,7 @@ void AnonymousUsersWithoutMessages::userAdded(UserListElement elem, bool massive
 
 void AnonymousUsersWithoutMessages::removingUser(UserListElement elem, bool massively, bool last)
 {
-//	kdebugmf(KDEBUG_WARNING, "%s %d %d %d\n", elem.ID("Gadu").local8Bit().data(), elem.isAnonymous(), contains(elem), withoutMessages(elem));
+//	kdebugmf(KDEBUG_WARNING, "%s %d %d %d\n", qPrintable(elem.ID("Gadu")), elem.isAnonymous(), contains(elem), withoutMessages(elem));
 
 	if (withoutMessages(elem))
 		addUser(elem, massively, last);

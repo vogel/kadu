@@ -41,7 +41,7 @@ void GaduImagesManager::setBackgroundsForAnimatedImages(HtmlDocument &doc, const
 
 		QString text = doc.elementText(i);
 		text.replace(anim, animText);
-//		kdebugm(KDEBUG_WARNING, ">>%s\n", text.local8Bit().data());
+//		kdebugm(KDEBUG_WARNING, ">>%s\n", qPrintable(text));
 		doc.setElementValue(i, text, true);
 	}
 }
@@ -65,7 +65,7 @@ void GaduImagesManager::addImageToSend(const QString &file_name, uint32_t &size,
 	kdebugf();
 	ImageToSend img;
 	QFile f(file_name);
-	kdebugm(KDEBUG_INFO, "Opening file \"%s\"\n", file_name.local8Bit().data());
+	kdebugm(KDEBUG_INFO, "Opening file \"%s\"\n", qPrintable(file_name));
 	if (!f.open(QIODevice::ReadOnly))
 	{
 		kdebugm(KDEBUG_ERROR, "Error opening file\n");
@@ -85,7 +85,7 @@ void GaduImagesManager::addImageToSend(const QString &file_name, uint32_t &size,
 			readBytes += tmp;
 		else
 		{
-			fprintf(stderr, "%s\n", f.errorString().local8Bit().data());
+			fprintf(stderr, "%s\n", qPrintable(f.errorString()));
 			delete [] img.data;
 			f.close();
 			return;
@@ -94,7 +94,7 @@ void GaduImagesManager::addImageToSend(const QString &file_name, uint32_t &size,
 	f.close();
 
 	img.crc32 = gg_crc32(0, (const unsigned char*)img.data, img.size);
-	kdebugm(KDEBUG_INFO, "Inserting into images to send: filename=%s, size=%i, crc32=%i\n\n", img.file_name.local8Bit().data(), img.size, img.crc32);
+	kdebugm(KDEBUG_INFO, "Inserting into images to send: filename=%s, size=%i, crc32=%i\n\n", qPrintable(img.file_name), img.size, img.crc32);
 	size = img.size;
 	crc32 = img.crc32;
 	ImagesToSend[qMakePair(size, crc32)] = img;
@@ -128,7 +128,7 @@ void GaduImagesManager::sendImage(UinType uin, uint32_t size, uint32_t crc32)
 					readBytes += tmp;
 				else
 				{
-					fprintf(stderr, "%s\n", f.errorString().local8Bit().data());
+					fprintf(stderr, "%s\n", qPrintable(f.errorString()));
 					delete [] i.data;
 					f.close();
 					return;
@@ -151,10 +151,10 @@ QString GaduImagesManager::saveImage(UinType sender, uint32_t size, uint32_t crc
 {
 	kdebugf();
 	QString path = ggPath("images");
-	kdebugm(KDEBUG_INFO, "Creating directory: %s\n",path.local8Bit().data());
+	kdebugm(KDEBUG_INFO, "Creating directory: %s\n", qPrintable(path));
 	QDir().mkdir(path);
 	QString file_name = QString("%1-%2-%3-%4").arg(sender).arg(size).arg(crc32).arg(filename);
-	kdebugm(KDEBUG_INFO, "Saving image as file: %s\n",file_name.local8Bit().data());
+	kdebugm(KDEBUG_INFO, "Saving image as file: %s\n", qPrintable(file_name));
 	SavedImage img;
 	img.size = size;
 	img.crc32 = crc32;

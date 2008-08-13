@@ -1798,7 +1798,7 @@ void Kadu::updateInformationPanel(UserListElement user)
 		return;
 	if (Userbox->currentUserExists() && user == Userbox->currentUser())
 	{
-		kdebugmf(KDEBUG_INFO, "%s\n", user.altNick().local8Bit().data());
+		kdebugmf(KDEBUG_INFO, "%s\n", qPrintable(user.altNick()));
 		QString text = QString(
 			"<html>"
 			"	<head>"
@@ -2111,7 +2111,7 @@ void Kadu::deleteOldConfigFiles()
 	if (oldConfigs.count() > 20)
 		for (unsigned int i = 0, max = oldConfigs.count() - 20; i < max; ++i)
 		{
-//			kdebugm(KDEBUG_DUMP, "deleting %s\n", oldConfigs[i].local8Bit().data());
+//			kdebugm(KDEBUG_DUMP, "deleting %s\n", qPrintable(oldConfigs[i]));
 			QFile::remove(ggPath(oldConfigs[i]));
 		}
 //	kdebugm(KDEBUG_INFO, "configs deleted\n");
@@ -2122,7 +2122,7 @@ void Kadu::deleteOldConfigFiles()
 	if (oldConfigs2.count() > 20)
 		for (unsigned int i = 0, max = oldConfigs2.count() - 20; i < max; ++i)
 		{
-//			kdebugm(KDEBUG_DUMP, "deleting %s\n", oldConfigs2[i].local8Bit().data());
+//			kdebugm(KDEBUG_DUMP, "deleting %s\n", qPrintable(oldConfigs2[i]));
 			QFile::remove(ggPath(oldConfigs2[i]));
 		}
 //	kdebugm(KDEBUG_INFO, "configs2 deleted\n");
@@ -2131,7 +2131,7 @@ void Kadu::deleteOldConfigFiles()
 	if (oldBacktraces.count() > 20)
 		for (unsigned int i = 0, max = oldBacktraces.count() - 20; i < max; ++i)
 		{
-//			kdebugm(KDEBUG_DUMP, "deleting %s\n", oldBacktraces[i].local8Bit().data());
+//			kdebugm(KDEBUG_DUMP, "deleting %s\n", qPrintable(oldBacktraces[i]));
 			QFile::remove(ggPath(oldBacktraces[i]));
 		}
 //	kdebugm(KDEBUG_INFO, "bts deleted\n");
@@ -2147,7 +2147,7 @@ void Kadu::deleteOldConfigFiles()
 	if (oldDebugs.count() > 5)
 		for (unsigned int i = 0, max = oldDebugs.count() - 5; i < max; ++i)
 		{
-			kdebugm(KDEBUG_DUMP, "deleting %s\n", oldDebugs[i].local8Bit().data());
+			kdebugm(KDEBUG_DUMP, "deleting %s\n", qPrintable(oldDebugs[i]));
 			QFile::remove(tmp + "/" + oldDebugs[i]);
 		}
 //	kdebugm(KDEBUG_INFO, "debugs deleted\n");
