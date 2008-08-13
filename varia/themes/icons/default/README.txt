@@ -50,7 +50,6 @@ Michał Bartecki (Mkbart) mkbart at gmail dot com
 	user-away_d/_m/_d_m.png
 	user-invisible_d/_m/_d_m.png
 	user-offline_d/_m/_d_m.png
-	all icons with "_dis" postfix
 	
 	
 Piotr Pełzowski (patpi) pelzowski at gmail dot com
