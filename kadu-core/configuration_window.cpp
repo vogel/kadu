@@ -11,7 +11,7 @@
 #include <QtGui/QGroupBox>
 #include <QtGui/QHBoxLayout>
 #include <QtGui/QScrollArea>
-#include <QtGui/QVBoxLayout>
+#include <QtGui/QDialogButtonBox>
 
 #include "config_file.h"
 #include "configuration_aware_object.h"
@@ -252,19 +252,14 @@ ConfigurationWindow::ConfigurationWindow(const QString &name, const QString &cap
 	Q_UNUSED(container_layout)
 	container->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 
-	QWidget *buttons = new QWidget;
-	QHBoxLayout *buttons_layout = new QHBoxLayout(buttons);
-	buttons_layout->setMargin(0);
-	buttons_layout->setSpacing(0);
-	QWidget *what = new QWidget;
-	what->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Maximum);
-	buttons_layout->addWidget(what);
+	QDialogButtonBox *buttons_layout = new QDialogButtonBox(Qt::Horizontal, this);
+
 	QPushButton *okButton = new QPushButton(icons_manager->loadIcon("OkWindowButton"), tr("Ok"), this);
-	buttons_layout->addWidget(okButton);
+	buttons_layout->addButton(okButton, QDialogButtonBox::AcceptRole);
 	QPushButton *applyButton = new QPushButton(icons_manager->loadIcon("ApplyWindowButton"), tr("Apply"), this);
-	buttons_layout->addWidget(applyButton);
+	buttons_layout->addButton(applyButton, QDialogButtonBox::ApplyRole);
 	QPushButton *cancelButton = new QPushButton(icons_manager->loadIcon("CloseWindowButton"), tr("Cancel"), this);
-	buttons_layout->addWidget(cancelButton);
+	buttons_layout->addButton(cancelButton, QDialogButtonBox::RejectRole);
 
 	connect(okButton, SIGNAL(clicked()), this, SLOT(updateAndCloseConfig()));
 	connect(applyButton, SIGNAL(clicked()), this, SLOT(updateConfig()));
@@ -278,7 +273,7 @@ ConfigurationWindow::ConfigurationWindow(const QString &name, const QString &cap
 	left_layout->addWidget(sectionsListWidget);
 
 	main_layout->addWidget(center);
-	main_layout->addWidget(buttons);
+	main_layout->addWidget(buttons_layout);
 	center_layout->addWidget(left);
 	center_layout->addWidget(container);
 }
