@@ -84,9 +84,7 @@ static void kadu_signal_handler(int s)
 		fprintf(stderr, "======= END OF BACKTRACE  ======\n");
 		fflush(stderr);
 
-		// XXX?
-		QByteArray p(QDir::toNativeSeparators(qPrintable(ggPath(debug_file))));
-		dbgfile = fopen(p.data(), "w");
+		dbgfile = fopen(qPrintable(ggPath(debug_file)), "w");
 		if (dbgfile)
 		{
 			fprintf(dbgfile, "======= BEGIN OF BACKTRACE =====\n");
