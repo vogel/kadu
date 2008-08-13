@@ -80,7 +80,7 @@ HistoryModule::HistoryModule(bool firstLoad)
 #ifdef Q_OS_WIN
 	QDir().mkdir(path_);
 #else
-	mkdir(path_.local8Bit().data(), 0700);
+	mkdir(qPrintable(path_), 0700);
 #endif
 
 	history = new HistoryManager();
@@ -261,8 +261,8 @@ void HistoryModule::appendHistory(ChatWidget *chat)
 				|| (*it).type == HISTORYMANAGER_ENTRY_MSGRCV)
 			{
 				kdebugmf(KDEBUG_INFO, "%s %s\n",
-					date.toString("dd.MM.yyyy hh:mm:ss").local8Bit().data(),
-					(*it).date.toString("dd.MM.yyyy hh:mm:ss").local8Bit().data());
+					qPrintable(date.toString("dd.MM.yyyy hh:mm:ss")),
+					qPrintable((*it).date.toString("dd.MM.yyyy hh:mm:ss")));
 				if (date <= (*it).date)
 					it = entriestmp.remove(it);
 				else
@@ -357,7 +357,7 @@ void HistoryModule::removingUsers(UserListElements users)
 		if (user.usesProtocol("Gadu"))
 		{
 			fname = ggPath("history/") + user.ID("Gadu");
-			kdebugmf(KDEBUG_INFO, "deleting %s\n", fname.local8Bit().data());
+			kdebugmf(KDEBUG_INFO, "deleting %s\n", qPrintable(fname));
 			QFile::remove(fname);
 			QFile::remove(fname + ".idx");
 		}

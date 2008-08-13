@@ -279,7 +279,7 @@ void ALSAPlayerSlots::createDefaultConfiguration()
 bool ALSAPlayerSlots::isOk()
 {
 	kdebugf();
-	snd_pcm_t *dev = alsa_open(config_file.readEntry("Sounds", "ALSAOutputDevice").local8Bit().data(), 1, 8000);
+	snd_pcm_t *dev = alsa_open(qPrintable(config_file.readEntry("Sounds", "ALSAOutputDevice")), 1, 8000);
 	bool ret = dev!=NULL;
 	if (dev)
 		snd_pcm_close (dev);
@@ -297,7 +297,7 @@ void ALSAPlayerSlots::openDevice(SoundDeviceType type, int sample_rate, int chan
 
 	if (type == PLAY_ONLY || type == PLAY_AND_RECORD)
 	{
-		dev->player = alsa_open (config_file.readEntry("Sounds", "ALSAOutputDevice").local8Bit().data(), channels, sample_rate, true);
+		dev->player = alsa_open (qPrintable(config_file.readEntry("Sounds", "ALSAOutputDevice")), channels, sample_rate, true);
 		if (!dev->player)
 		{
 			delete dev;
@@ -308,7 +308,7 @@ void ALSAPlayerSlots::openDevice(SoundDeviceType type, int sample_rate, int chan
 	}
 	if (type == RECORD_ONLY || type == PLAY_AND_RECORD)
 	{
-		dev->recorder = alsa_open (config_file.readEntry("Sounds", "ALSAOutputDevice").local8Bit().data(), channels, sample_rate, false);
+		dev->recorder = alsa_open (qPrintable(config_file.readEntry("Sounds", "ALSAOutputDevice")), channels, sample_rate, false);
 		if (!dev->recorder)
 		{
 			if (dev->player)

@@ -126,10 +126,10 @@ EncryptionManager::EncryptionManager(bool firstLoad)
 
 //	icons_manager->registerMenuItem(kadu->mainMenu(), tr("Manage keys"), "KeysManager");
 
-	sim_key_path = strdup(ggPath("keys/").local8Bit());
+	sim_key_path = strdup(qPrintable(ggPath("keys/")));
 
 	// use mkdir from sys/stat.h - there's no easy way to set permissions through Qt
-	mkdir(ggPath("keys").local8Bit().data(), 0700);
+	mkdir(qPrintable(ggPath("keys")), 0700);
 
 	kdebugf2();
 }
@@ -503,7 +503,7 @@ void SavePublicKey::yesClicked()
 	if (!(keyfile.open(QIODevice::WriteOnly)))
 	{
 		MessageBox::msg(tr("Error writting the key"), false, "Warning", this);
-		kdebugmf(KDEBUG_ERROR, "Error opening key file %s\n", (const char *)keyfile_path.local8Bit());
+		kdebugmf(KDEBUG_ERROR, "Error opening key file %s\n", qPrintable(keyfile_path));
 		return;
 	}
 	else

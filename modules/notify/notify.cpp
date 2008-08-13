@@ -423,7 +423,7 @@ void Notify::registerNotifier(const QString &name, Notifier *notifier)
 	if (Notifiers.contains(name))
 	{
 		kdebugm(KDEBUG_WARNING, "WARNING: '%s' already exists in notifiers! "
-		"strange... unregistering old Notifier\n", name.local8Bit().data());
+		"strange... unregistering old Notifier\n", qPrintable(name));
 
 		unregisterNotifier(name);
 	}
@@ -468,7 +468,7 @@ void Notify::unregisterNotifier(const QString &name)
 
 	if (!Notifiers.contains(name))
 	{
-		kdebugm(KDEBUG_WARNING, "WARNING: '%s' not registered!\n", name.local8Bit().data());
+		kdebugm(KDEBUG_WARNING, "WARNING: '%s' not registered!\n", qPrintable(name));
 		return;
 	}
 

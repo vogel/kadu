@@ -309,7 +309,7 @@ void FileTransfer::start(StartType startType)
 
 				case Dcc7:
 				{
-					gg_dcc7 *dcc = gg_dcc7_send_file(gadu->session(), Contact, FileName.local8Bit().data(),
+					gg_dcc7 *dcc = gg_dcc7_send_file(gadu->session(), Contact, qPrintable(FileName),
 						unicode2cp(FileName).data(), 0);
 
 					if (dcc)

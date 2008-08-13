@@ -442,7 +442,7 @@ void DccSocket::fillFileInfo(const QString &fileName)
 	switch (Version)
 	{
 		case Dcc6:
-			gg_dcc_fill_file_info2(Dcc6Struct, unicode2cp(fileName), fileName.local8Bit().data());
+			gg_dcc_fill_file_info2(Dcc6Struct, unicode2cp(fileName), qPrintable(fileName));
 			return;
 		default:
 			return;

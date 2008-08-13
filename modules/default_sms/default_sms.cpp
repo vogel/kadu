@@ -67,7 +67,7 @@ SmsOrangeGateway::~SmsOrangeGateway()
 
 void SmsOrangeGateway::httpRedirected(QString link)
 {
-	kdebugmf(KDEBUG_FUNCTION_START, "link: %s\n", link.local8Bit().data());
+	kdebugmf(KDEBUG_FUNCTION_START, "link: %s\n", qPrintable(link));
 }
 
 void SmsOrangeGateway::send(const QString& number,const QString& message, const QString& /*contact*/, const QString& signature)
@@ -99,7 +99,7 @@ void SmsOrangeGateway::httpFinished()
 	if (State==SMS_LOADING_PAGE)
 	{
 		QString Page=Http.data();
-		kdebugm(KDEBUG_INFO, "SMS Provider Page:\n%s\n",Page.local8Bit().data());
+		kdebugm(KDEBUG_INFO, "SMS Provider Page:\n%s\n", qPrintable(Page));
 		QRegExp pic_regexp("rotate_token\\.aspx\\?token=([^\"]+)");
 		int pic_pos=pic_regexp.search(Page);
 		if (pic_pos<0)
@@ -110,8 +110,8 @@ void SmsOrangeGateway::httpFinished()
 		}
 		QString pic_path=Page.mid(pic_pos,pic_regexp.matchedLength());
 		Token=pic_regexp.cap(1);
-		kdebugm(KDEBUG_INFO, "SMS Orange Token: %s\n",Token.local8Bit().data());
-		kdebugm(KDEBUG_INFO, "SMS Orange Picture: %s\n",pic_path.local8Bit().data());
+		kdebugm(KDEBUG_INFO, "SMS Orange Token: %s\n", qPrintable(Token));
+		kdebugm(KDEBUG_INFO, "SMS Orange Picture: %s\n", qPrintable(pic_path));
 		State=SMS_LOADING_PICTURE;
 		Http.get(pic_path);
 	}
@@ -125,7 +125,7 @@ void SmsOrangeGateway::httpFinished()
 	else if (State==SMS_LOADING_RESULTS)
 	{
 		QString Page=Http.data();
-		kdebugm(KDEBUG_INFO, "SMS Provider Results Page:\n%s\n", Page.local8Bit().data());
+		kdebugm(KDEBUG_INFO, "SMS Provider Results Page:\n%s\n", qPrintable(Page));
 		if (Page.find("wyczerpany")>=0)
 		{
 			kdebugm(KDEBUG_INFO, "You exceeded your daily limit\n");
@@ -191,7 +191,7 @@ SmsPlusGateway::~SmsPlusGateway()
 
 void SmsPlusGateway::httpRedirected(QString link)
 {
-	kdebugmf(KDEBUG_FUNCTION_START, "link: %s\n", link.local8Bit().data());
+	kdebugmf(KDEBUG_FUNCTION_START, "link: %s\n", qPrintable(link));
 }
 
 void SmsPlusGateway::send(const QString& number, const QString& message, const QString& /*contact*/, const QString& signature)
@@ -222,7 +222,7 @@ void SmsPlusGateway::httpFinished()
 	if (State==SMS_LOADING_PAGE)
 	{
 		QString Page=Http.data();
-		kdebugm(KDEBUG_INFO, "SMS Provider Page:\n%s\n",Page.local8Bit().data());
+		kdebugm(KDEBUG_INFO, "SMS Provider Page:\n%s\n", qPrintable(Page));
 		QRegExp code_regexp("name=\\\"kod\\\" value=\\\"(\\d+)\\\"");
 		QRegExp code_regexp2("name=\\\"Kod(\\d+)\\\" value=\\\"(\\d+)\\\"");
 		if (code_regexp.search(Page) < 0)
@@ -247,7 +247,7 @@ void SmsPlusGateway::httpFinished()
 	else if (State==SMS_LOADING_RESULTS)
 	{
 		QString Page=Http.data();
-		kdebugm(KDEBUG_INFO, "SMS Provider Results Page:\n%s\n",Page.local8Bit().data());
+		kdebugm(KDEBUG_INFO, "SMS Provider Results Page:\n%s\n", qPrintable(Page));
 		if (Page.find("Z powodu przekroczenia limit�w bramki")>=0)
 		{
 			kdebugm(KDEBUG_INFO, "Limit exceeded\n");
@@ -327,7 +327,7 @@ bool SmsEraGateway::isNumberCorrect(const QString& number)
 
 void SmsEraGateway::httpRedirected(QString link)
 {
-	kdebugmf(KDEBUG_FUNCTION_START, "link: %s\n", link.local8Bit().data());
+	kdebugmf(KDEBUG_FUNCTION_START, "link: %s\n", qPrintable(link));
 
 	QWidget *p = (QWidget*)(parent()->parent());
 

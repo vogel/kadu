@@ -109,7 +109,7 @@ void HistoryManager::appendMessage(UinsList uins, UinType uin, const QString &ms
 	f.setName(fname);
 	if (!(f.open(QIODevice::WriteOnly | QIODevice::Append)))
 	{
-		kdebugmf(KDEBUG_ERROR, "Error opening history file %s\n", (const char *)fname.local8Bit());
+		kdebugmf(KDEBUG_ERROR, "Error opening history file %s\n", qPrintable(fname));
 		return;
 	}
 
@@ -132,7 +132,7 @@ void HistoryManager::appendMessage(UinsList uins, UinType uin, const QString &ms
 
 void HistoryManager::appendSms(const QString &mobile, const QString &msg)
 {
-	kdebugmf(KDEBUG_FUNCTION_START, "appending sms to history (%s)\n", mobile.local8Bit().data());
+	kdebugmf(KDEBUG_FUNCTION_START, "appending sms to history (%s)\n", qPrintable(mobile));
 	QFile f, fidx;
 	QTextStream stream;
 	QStringList linelist;
@@ -285,7 +285,7 @@ void HistoryManager::appendStatus(UinType uin, const UserStatus &status)
 	f.setName(fname);
 	if (!(f.open(QIODevice::WriteOnly | QIODevice::Append)))
 	{
-		kdebugmf(KDEBUG_ERROR, "Error opening history file %s\n", (const char *)fname.local8Bit());
+		kdebugmf(KDEBUG_ERROR, "Error opening history file %s\n", qPrintable(fname));
 		return;
 	}
 
@@ -317,7 +317,7 @@ void HistoryManager::removeHistory(const UinsList &uins)
 		case 0:
 			fname = ggPath("history/");
 			fname.append(getFileNameByUinsList(uins));
-			kdebugmf(KDEBUG_INFO, "deleting %s\n", (const char *)fname.local8Bit());
+			kdebugmf(KDEBUG_INFO, "deleting %s\n", qPrintable(fname));
 			QFile::remove(fname);
 			QFile::remove(fname + ".idx");
 			break;
@@ -343,7 +343,7 @@ void HistoryManager::convHist2ekgForm(UinsList uins)
 	f.setName(path + fname);
 	if (!(f.open(QIODevice::ReadWrite)))
 	{
-		kdebugmf(KDEBUG_ERROR, "Error opening history file %s\n", (const char *)fname.local8Bit());
+		kdebugmf(KDEBUG_ERROR, "Error opening history file %s\n", qPrintable(fname));
 		return;
 	}
 
@@ -351,7 +351,7 @@ void HistoryManager::convHist2ekgForm(UinsList uins)
 	fout.setName(path + fnameout);
 	if (!(fout.open(QIODevice::WriteOnly | QIODevice::Truncate)))
 	{
-		kdebugmf(KDEBUG_ERROR, "Error opening new history file %s\n", (const char *)fnameout.local8Bit());
+		kdebugmf(KDEBUG_ERROR, "Error opening new history file %s\n", qPrintable(fnameout));
 		f.close();
 		return;
 	}
@@ -485,14 +485,14 @@ void HistoryManager::convSms2ekgForm()
 	f.setName(path + fname);
 	if (!(f.open(QIODevice::ReadWrite)))
 	{
-		kdebugmf(KDEBUG_ERROR, "Error opening sms history file %s\n", (const char *)fname.local8Bit());
+		kdebugmf(KDEBUG_ERROR, "Error opening sms history file %s\n", qPrintable(fname));
 		return;
 	}
 	fnameout = fname + ".new";
 	fout.setName(path + fnameout);
 	if (!(fout.open(QIODevice::WriteOnly | QIODevice::Truncate)))
 	{
-		kdebugmf(KDEBUG_ERROR, "Error opening new sms history file %s\n", (const char *)fnameout.local8Bit());
+		kdebugmf(KDEBUG_ERROR, "Error opening new sms history file %s\n", qPrintable(fnameout));
 		f.close();
 		return;
 	}
@@ -598,7 +598,7 @@ int HistoryManager::getHistoryEntriesCountPrivate(const QString &filename) const
 	f.setName(path + filename + ".idx");
 	if (!(f.open(QIODevice::ReadOnly)))
 	{
-		kdebugmf(KDEBUG_ERROR, "Error opening history file %s\n", (const char *)filename.local8Bit());
+		kdebugmf(KDEBUG_ERROR, "Error opening history file %s\n", qPrintable(filename));
 		return 0;
 	}
 	lines = f.size() / sizeof(int);
@@ -652,7 +652,7 @@ QList<HistoryEntry> HistoryManager::getHistoryEntries(UinsList uins, int from, i
 	f.setName(path + filename);
 	if (!(f.open(QIODevice::ReadOnly)))
 	{
-		kdebugmf(KDEBUG_ERROR, "Error opening history file %s\n", (const char *)filename.local8Bit());
+		kdebugmf(KDEBUG_ERROR, "Error opening history file %s\n", qPrintable(filename));
 		return entries;
 	}
 
@@ -841,7 +841,7 @@ QList<HistoryDate> HistoryManager::getHistoryDates(const UinsList &uins)
 	f.setName(path + filename);
 	if (!(f.open(QIODevice::ReadOnly)))
 	{
-		kdebugmf(KDEBUG_ERROR, "Error opening history file %s\n", (const char *)filename.local8Bit());
+		kdebugmf(KDEBUG_ERROR, "Error opening history file %s\n", qPrintable(filename));
 		return entries;
 	}
 	QTextStream stream(&f);
@@ -959,12 +959,12 @@ void HistoryManager::buildIndexPrivate(const QString &filename)
 	QFile fout(fnameout);
 	if (!fin.open(QIODevice::ReadOnly))
 	{
-		kdebugmf(KDEBUG_ERROR, "Error opening history file: %s\n", (const char *)fin.name().local8Bit());
+		kdebugmf(KDEBUG_ERROR, "Error opening history file: %s\n", qPrintable(fin.name()));
 		return;
 	}
 	if (!fout.open(QIODevice::WriteOnly | QIODevice::Truncate))
 	{
-		kdebugmf(KDEBUG_ERROR, "Error creating history index file: %s\n", (const char *)fout.name().local8Bit());
+		kdebugmf(KDEBUG_ERROR, "Error creating history index file: %s\n", qPrintable(fout.name()));
 		fin.close();
 		return;
 	}
@@ -1161,7 +1161,7 @@ void HistoryManager::messageReceived(Protocol * /*protocol*/, UserListElements s
 	kdebugf();
 	int occur = msg.find(QRegExp("<img [^>]* gg_crc[^>]*>"));
 	UinType sender0 = senders[0].ID("Gadu").toUInt();
-	kdebugm(KDEBUG_INFO, "sender: %d msg: '%s' occur:%d\n", sender0, msg.local8Bit().data(), occur);
+	kdebugm(KDEBUG_INFO, "sender: %d msg: '%s' occur:%d\n", sender0, qPrintable(msg), occur);
 	UinsList uins;//TODO: throw out UinsList as soon as possible!
 	foreach(const UserListElement &u, senders)
 		if (u.usesProtocol("Gadu"))
@@ -1185,7 +1185,7 @@ void HistoryManager::imageReceivedAndSaved(UinType sender, uint32_t size, uint32
 	if (!config_file.readBoolEntry("History", "Logging"))
 		return;
 	kdebugf();
-	kdebugm(KDEBUG_INFO, "sender: %d, size: %d, crc:%u, path:%s\n", sender, size, crc32, path.local8Bit().data());
+	kdebugm(KDEBUG_INFO, "sender: %d, size: %d, crc:%u, path:%s\n", sender, size, crc32, qPrintable(path));
 	QString reg = GaduImagesManager::loadingImageHtml(sender, size, crc32);
 	QString imagehtml = GaduImagesManager::imageHtml(path);
 	QMap<UinType, QList<BuffMessage> >::iterator it = bufferedMessages.find(sender);

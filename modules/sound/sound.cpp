@@ -389,7 +389,7 @@ void SoundManager::playSound(const QString &soundName)
 		lastsoundtime.restart();
 	}
 	else
-		fprintf(stderr, "file (%s) not found\n", sound.local8Bit().data());
+		fprintf(stderr, "file (%s) not found\n", qPrintable(sound));
 }
 
 void SoundManager::notify(Notification *notification)
@@ -414,7 +414,7 @@ void SoundManager::play(const QString &path, bool force)
 	if (QFile::exists(path))
 		play(path, config_file.readBoolEntry("Sounds","VolumeControl"), 1.0 * config_file.readDoubleNumEntry("Sounds", "SoundVolume") / 100);
 	else
-		fprintf(stderr, "file (%s) not found\n", path.local8Bit().data());
+		fprintf(stderr, "file (%s) not found\n", qPrintable(path));
 
 	kdebugf2();
 }
@@ -535,7 +535,7 @@ void SoundManager::play(const QString &path, bool volCntrl, double vol)
 	if (simple_player_count>0)
 		emit playSound(path, volCntrl, vol);
 	else
-		play_thread->tryPlay(path.local8Bit().data(), volCntrl, vol);
+		play_thread->tryPlay(qPrintable(path), volCntrl, vol);
 	kdebugf2();
 }
 
@@ -600,7 +600,7 @@ void SoundPlayThread::run()
 		SndParams params=list.first();
 		list.pop_front();
 
-		play(params.filename.local8Bit().data(),
+		play(qPrintable(params.filename),
 				params.volumeControl, params.volume);
 		mutex.unlock();
 		kdebugmf(KDEBUG_INFO, "unlocked\n");

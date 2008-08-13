@@ -59,7 +59,7 @@ void MacOSXDocking::trayPixmapChanged(const QIcon &small_pix, const QString &nam
 	const QIcon &pix = icons_manager->loadIcon("Big" + name);
 	if (pix.isNull())
 	{
-		kdebugm(KDEBUG_WARNING, "big icon of %s not available\n", name.local8Bit().data());
+		kdebugm(KDEBUG_WARNING, "big icon of %s not available\n", qPrintable(name));
 		kadu->setIcon(small_pix.pixmap(128,128));
 	}
 	else

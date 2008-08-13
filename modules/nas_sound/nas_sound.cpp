@@ -104,7 +104,7 @@ void NASPlayerSlots::playSound(const QString &s, bool volCntrl, double vol)
 		QSound::play(s);
 #else
 		audiolib::AuFixedPoint volume=AuFixedPointFromFraction2(int(vol*100),100);
-		audiolib::AuSoundPlayFromFile(auserver, (const char *)s.local8Bit(), AuNone, volume, NULL, NULL, NULL, NULL, NULL, NULL);
+		audiolib::AuSoundPlayFromFile(auserver, qPrintable(s), AuNone, volume, NULL, NULL, NULL, NULL, NULL, NULL);
 		audiolib::AuFlush(auserver);
 		dataReceived();
 		audiolib::AuFlush(auserver);

@@ -221,7 +221,7 @@ void DccManager::setupDcc()
 
 	gadu->setDccIpAndPort(htonl(DCCIP.ip4Addr()), DCCPort);
 
-	kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "DCC_IP=%s DCC_PORT=%d\n", DCCIP.toString().local8Bit().data(), DCCPort);
+	kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "DCC_IP=%s DCC_PORT=%d\n", qPrintable(DCCIP.toString()), DCCPort);
 
 	DccEnabled = true;
 
@@ -454,7 +454,7 @@ bool DccManager::acceptClient(UinType uin, UinType peerUin, int remoteAddr)
 	if (remoteAddress == peer.IP("Gadu")) // TODO: make it async, make DccSocket no-ui-aware
 		return true;
 
-	kdebugm(KDEBUG_WARNING, "possible spoofing attempt from %s (uin:%d)\n", remoteAddress.toString().local8Bit().data(), peerUin);
+	kdebugm(KDEBUG_WARNING, "possible spoofing attempt from %s (uin:%d)\n", qPrintable(remoteAddress.toString()), peerUin);
 	return MessageBox::ask(narg(
 		tr("%1 is asking for direct connection but his/her\n"
 			"IP address (%2) differs from what GG server returned\n"

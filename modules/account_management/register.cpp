@@ -55,13 +55,13 @@ void Register::createConfig()
 #ifndef Q_OS_WIN32
 	struct stat buf;
 	QString ggpath = ggPath(QString::null);
-	stat(ggpath.local8Bit(), &buf);
+	stat(qPrintable(ggpath), &buf);
 	if (S_ISDIR(buf.st_mode))
-		kdebugmf(KDEBUG_INFO, "Directory %s exists\n", (const char *)ggpath.local8Bit());
+		kdebugmf(KDEBUG_INFO, "Directory %s exists\n", qPrintable(ggpath));
 	else
 	{
 		kdebugmf(KDEBUG_INFO, "Creating directory\n");
-		if (mkdir(ggpath.local8Bit(), 0700) != 0 )
+		if (mkdir(qPrintable(ggpath), 0700) != 0 )
 		{
 			perror("mkdir");
 			return;

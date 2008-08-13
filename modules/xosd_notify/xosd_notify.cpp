@@ -75,7 +75,7 @@ void XOSDConfigurationWidget::clicked_ChangeFont()
 void XOSDConfigurationWidget::fontSelected(const QString &font)
 {
 	kdebugf();
-	kdebugm(KDEBUG_INFO, "%s %d %d\n", font.local8Bit().data(), font.isEmpty(), font.isNull());
+	kdebugm(KDEBUG_INFO, "%s %d %d\n", qPrintable(font), font.isEmpty(), font.isNull());
 
 	int size = getFontSize(font);
 	if (size < 0)
@@ -375,10 +375,10 @@ void XOSDNotify::test(const QString &text, const struct TestConfig &config)
 	xosd_set_align(testXOSD, align);
 
 	if (!config.font.isEmpty())
-		xosd_set_font(testXOSD, config.font.local8Bit().data());
-	xosd_set_colour(testXOSD, config.font_color.name().local8Bit().data());
-	xosd_set_shadow_colour(testXOSD, config.shadow_color.name().local8Bit().data());
-	xosd_set_outline_colour(testXOSD, config.outline_color.name().local8Bit().data());
+		xosd_set_font(testXOSD, qPrintable(config.font));
+	xosd_set_colour(testXOSD, qPrintable(config.font_color.name()));
+	xosd_set_shadow_colour(testXOSD, qPrintable(config.shadow_color.name()));
+	xosd_set_outline_colour(testXOSD, qPrintable(config.outline_color.name()));
 
 	xosd_set_shadow_offset(testXOSD, config.shadow_offset);
 	xosd_set_outline_offset(testXOSD, config.outline_offset);
@@ -391,7 +391,7 @@ void XOSDNotify::test(const QString &text, const struct TestConfig &config)
 	else
 		kdebugm(KDEBUG_WARNING, "config.position: %d\n", config.position);
 
-	xosd_display(testXOSD, 0, XOSD_string, text.local8Bit().data());
+	xosd_display(testXOSD, 0, XOSD_string, qPrintable(text));
 
 	QTimer::singleShot(1000*config.timeout, this, SLOT(destroyTest()));
 
@@ -439,17 +439,17 @@ void XOSDNotify::addLine(int position, const QString &text, int timeout,
 	xosd_set_align(line.handle, align);
 
 	if (!font.isEmpty())
-		xosd_set_font(line.handle, font.local8Bit().data());
+		xosd_set_font(line.handle, qPrintable(font));
 	if (font_color.isValid())
-		xosd_set_colour(line.handle, font_color.name().local8Bit().data());
+		xosd_set_colour(line.handle, qPrintable(font_color.name()));
 	if (shadow_color.isValid())
 	{
-		xosd_set_shadow_colour(line.handle, shadow_color.name().local8Bit().data());
+		xosd_set_shadow_colour(line.handle, qPrintable(shadow_color.name()));
 		xosd_set_shadow_offset(line.handle, shadow_offset);
 	}
 	if (outline_color.isValid())
 	{
-		xosd_set_outline_colour(line.handle, outline_color.name().local8Bit().data());
+		xosd_set_outline_colour(line.handle, qPrintable(outline_color.name()));
 		xosd_set_outline_offset(line.handle, outline_offset);
 	}
 
@@ -463,7 +463,7 @@ void XOSDNotify::addLine(int position, const QString &text, int timeout,
 	xosd_set_vertical_offset(line.handle, y_offset);
 
 	lines[position].append(line);
-	xosd_display(line.handle, 0, XOSD_string, text.local8Bit().data());
+	xosd_display(line.handle, 0, XOSD_string, qPrintable(text));
 
 	if (!timer->isActive())
 		timer->start(1000);

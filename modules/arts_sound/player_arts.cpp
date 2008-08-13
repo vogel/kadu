@@ -209,7 +209,7 @@ void aRtsPlayerRecorder::openDevice(SoundDeviceType type, int sample_rate, int c
 		kdebugm(KDEBUG_INFO, "writing to stdin\n");
 
 		QString data = QString("%1 %2 %3\n").arg(config_file.readNumEntry("General", "UIN")).arg(pass).arg(num);
-		dev->process->write(data.local8Bit().data(), data.size());
+		dev->process->write(qPrintable(data), data.size());
 		//WARNING: writeToStdin provides data in Qt event loop!
 
 		kdebugm(KDEBUG_INFO, "waiting for new line from arts_connector\n");
@@ -228,10 +228,10 @@ void aRtsPlayerRecorder::openDevice(SoundDeviceType type, int sample_rate, int c
 		QString out;
 		if (dev->valid)
 			out = dev->process->readLine();
-		kdebugm(KDEBUG_INFO, "%d, process returned: '%s'\n", dev->valid, out.local8Bit().data());
+		kdebugm(KDEBUG_INFO, "%d, process returned: '%s'\n", dev->valid, qPrintable(out));
 
 		if (dev->valid && dev->process->canReadLine())
-			kdebugm(KDEBUG_WARNING, "process written on stderr: %s\n", dev->process->readLine().local8Bit().data());
+			kdebugm(KDEBUG_WARNING, "process written on stderr: %s\n", qPrintable(dev->process->readLine()));
 		if (out != "OK" || !dev->valid)
 		{
 			dev->mutex.unlock();

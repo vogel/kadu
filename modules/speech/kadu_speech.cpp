@@ -253,7 +253,7 @@ void Speech::say(const QString &s, const QString &path,
 	list.append("-f");
 	list.append(QString::number(basefreq));
 
-	kdebugm(KDEBUG_INFO, "%s\n", (const char *)list.join(" ").local8Bit());
+	kdebugm(KDEBUG_INFO, "%s\n", qPrintable(list.join(" ")));
 
 	QProcess *p = new QProcess();
 	connect(p, SIGNAL(finished(int, QProcess::ExitStatus)), p, SLOT(deleteLater()));

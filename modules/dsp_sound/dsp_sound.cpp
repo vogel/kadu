@@ -122,7 +122,7 @@ void OSSPlayerSlots::openDevice(SoundDeviceType type, int sample_rate, int chann
 	*device = NULL;
 
 	QString sdev = config_file.readEntry("Sounds","OutputDevice", "/dev/dsp");
-	kdebugm(KDEBUG_INFO, "Opening %s\n", sdev.local8Bit().data());
+	kdebugm(KDEBUG_INFO, "Opening %s\n", qPrintable(sdev));
 
 	int flags;
 	if (type == PLAY_ONLY)
@@ -132,7 +132,7 @@ void OSSPlayerSlots::openDevice(SoundDeviceType type, int sample_rate, int chann
 	else
 		flags = O_RDWR;
 
-	int fd = open(sdev.local8Bit().data(), flags);
+	int fd = open(qPrintable(sdev), flags);
 	if (fd < 0)
 	{
 		fprintf(stderr, "Error opening device (%s, %d)\n", strerror(errno), errno);
