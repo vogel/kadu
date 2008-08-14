@@ -392,8 +392,6 @@ ModulesManager::ModulesManager() : QObject(NULL, "modules_manager"),
 	manageModulesActionDescription->setShortcut("kadu_modulesmanager", Qt::ApplicationShortcut);
 	kadu->insertMenuActionDescription(2, manageModulesActionDescription);
 
-// 	icons_manager->registerMenuItem(MainMenu, tr("&Manage Modules"), "ManageModules");
-
 	everLoaded = QStringList::split(',', config_file.readEntry("General", "EverLoaded"));
 
 	// load modules as config file say

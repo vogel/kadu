@@ -26,8 +26,6 @@ class KADUAPI IconsManager : public Themes, ConfigurationAwareObject
 	QMap<QString, QIcon> icons;
 // 	QMap<QString, QMovie> animatedIcons;
 
-//	QList<QPair<QMenuData *, QList<QPair<QString, QString> > > > menus;
-
 public:
 	IconsManager(const QString &name, const QString &configname);
 
@@ -53,18 +51,11 @@ public:
 	static void initModule();
 	static void closeModule();
 
-// 	void registerMenu(QMenuData *menu);
-// 	void unregisterMenu(QMenuData *menu);
-
-// 	void registerMenuItem(QMenuData *menu, const QString &caption, const QString &iconName);
-// 	void unregisterMenuItem(QMenuData *menu, const QString &caption);
-
 public: // TODO: fix, see Kadu::Kadu
 	virtual void configurationUpdated();
 
 public slots:
 	void clear();
-	void refreshMenus();
 
 signals:
 	void themeChanged();

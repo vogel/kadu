@@ -74,11 +74,6 @@ AccountManagement::AccountManagement()
 	);
 	kadu->insertMenuActionDescription(index, remindMenuActionDescription);
 
-//	icons_manager->registerMenuItem(MainMenu, tr("Unregister user"), "UnregisterUser");
-//	icons_manager->registerMenuItem(MainMenu, tr("Register &new user"), "RegisterUser");
-//	icons_manager->registerMenuItem(MainMenu, tr("&Change password / email"), "ChangePassMail");
-//	icons_manager->registerMenuItem(MainMenu, tr("Remind &password"), "RemindPass");
-
 	kdebugf2();
 }
 

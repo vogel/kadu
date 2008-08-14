@@ -27,6 +27,8 @@ KaduAction::KaduAction(ActionDescription *description, KaduMainWindow *parent)
 
 	if (!Description->IconName.isEmpty())
 	{
+		connect(icons_manager, SIGNAL(themeChanged()), this, SLOT(updateIcon()));
+
 		if (Description->Checkable)
 		{
 			OnIcon = icons_manager->loadIcon(Description->IconName);
@@ -98,6 +100,19 @@ void KaduAction::checkIfEnabled()
 {
 	if (Description->EnableCallback)
 		setEnabled((*Description->EnableCallback)(this));
+}
+
+void KaduAction::updateIcon()
+{
+	if (Description->Checkable)
+	{
+		OnIcon = icons_manager->loadIcon(Description->IconName);
+		OffIcon = icons_manager->loadIcon(Description->IconName + "_off");
+
+		toggledSlot(isChecked());
+	}
+	else
+		setIcon(icons_manager->loadIcon(Description->IconName));
 }
 
 ActionDescription::ActionDescription(ActionType Type, const QString &Name, QObject *Object, char *Slot,
@@ -233,12 +248,6 @@ QAction * Actions::createAction(const QString &name, KaduMainWindow *kaduMainWin
 	emit actionCreated(result);
 
 	return result;
-}
-
-void Actions::refreshIcons()
-{
-// 	FOREACH(action, ActionsMap)
-// 		(*action)->refreshIcons();
 }
 
 bool disableEmptyUles(KaduAction *action)

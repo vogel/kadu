@@ -124,8 +124,6 @@ EncryptionManager::EncryptionManager(bool firstLoad)
 	);
 	kadu->insertMenuActionDescription(12, keysManagerActionDescription);
 
-//	icons_manager->registerMenuItem(kadu->mainMenu(), tr("Manage keys"), "KeysManager");
-
 	sim_key_path = strdup(qPrintable(ggPath("keys/")));
 
 	// use mkdir from sys/stat.h - there's no easy way to set permissions through Qt

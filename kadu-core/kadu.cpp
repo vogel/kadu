@@ -462,7 +462,6 @@ Kadu::Kadu(QWidget *parent)
 
 	dockMenu->insertSeparator();
 	dockMenu->addAction(icons_manager->loadIcon("Exit"), tr("&Exit Kadu"), this, SLOT(quit()));
-// 	icons_manager->registerMenuItem(dockMenu, tr("&Exit Kadu"), "Exit");
 
 	InfoPanel = new KaduTextBrowser(split);
 // TODO: 0.6.5
@@ -1647,20 +1646,6 @@ void Kadu::createMenu()
 	addMenuActionDescription(exitKaduActionDescription);
 
 	menuBar()->addMenu(MainMenu);
-
-// 	icons_manager->registerMenu(MainMenu);
-// 	icons_manager->registerMenuItem(MainMenu, tr("Manage &ignored"), "Ignore");
-// 	icons_manager->registerMenuItem(MainMenu, tr("&Configuration"), "Configuration");
-// 	icons_manager->registerMenuItem(MainMenu, tr("Personal information"), "PersonalInfo");
-// 	icons_manager->registerMenuItem(MainMenu, tr("Recent chats..."), "OpenChat");
-// 	icons_manager->registerMenuItem(MainMenu, tr("&Search user in directory"), "LookupUserInfo");
-// 	icons_manager->registerMenuItem(MainMenu, tr("I&mport / Export userlist"), "ImportExport");
-// 	icons_manager->registerMenuItem(MainMenu, tr("&Add user"), "AddUser");
-// 	icons_manager->registerMenuItem(MainMenu, tr("&Open chat with..."), "OpenChat");
-// 	icons_manager->registerMenuItem(MainMenu, tr("H&elp"), "HelpMenuItem");
-// 	icons_manager->registerMenuItem(MainMenu, tr("A&bout..."), "AboutMenuItem");
-// 	icons_manager->registerMenuItem(MainMenu, tr("&Hide Kadu"), "HideKadu");
-// 	icons_manager->registerMenuItem(MainMenu, tr("&Exit Kadu"), "Exit");
 
 	kdebugf2();
 }

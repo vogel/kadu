@@ -52,6 +52,7 @@ public:
 
 public slots:
 	void checkIfEnabled();
+	void updateIcon();
 
 signals:
 	void changed(QAction *action);
@@ -139,7 +140,6 @@ public:
 	virtual ~Actions() {}
 
 	QAction * createAction(const QString &name, KaduMainWindow *kaduMainWindow);
-	void refreshIcons();
 
 signals:
 	void actionCreated(KaduAction *);

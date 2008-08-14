@@ -412,7 +412,8 @@ VoiceManager::VoiceManager()
 		this, SLOT(voiceChatActionActivated(QAction *, bool)),
 		"VoiceChat", tr("Voice chat"), false, QString::null,
 		disableNonVoiceUles
-	); // HotKey::shortCutFromFile("ShortCuts", "kadu_voicechat"));
+	); 
+	voiceChatActionDescription->setShortcut("kadu_voicechat");
 	UserBox::insertActionDescription(2, voiceChatActionDescription);
 
 	connect(kadu, SIGNAL(keyPressed(QKeyEvent*)),

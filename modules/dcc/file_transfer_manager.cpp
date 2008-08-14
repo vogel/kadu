@@ -85,8 +85,6 @@ FileTransferManager::FileTransferManager(QObject *parent, const char *name) : QO
 	);
 	kadu->insertMenuActionDescription(10, fileTransferWindowActionDescription);
 
-//	icons_manager->registerMenuItem(MainMenu, tr("Toggle transfers window"), "SendFileWindow");
-
 	notification_manager->registerEvent("FileTransfer/IncomingFile",  QT_TRANSLATE_NOOP("@default", "An user wants to send you a file"), CallbackRequired);
 	notification_manager->registerEvent("FileTransfer/Finished", QT_TRANSLATE_NOOP("@default", "File transfer was finished"), CallbackNotRequired);
 

@@ -64,8 +64,6 @@ WizardStarter::WizardStarter(QObject *parent)
 		"ConfigurationWizard", tr("Configuration Wizard")
 	);
 	kadu->insertMenuActionDescription(0, configWizardActionDescription);
-
-	//icons_manager->registerMenuItem(MainMenu, tr("Configuration Wizard"), "ConfigurationWizard");
 }
 
 WizardStarter::~WizardStarter()

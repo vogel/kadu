@@ -16,7 +16,7 @@
 #include "icons_manager.h"
 
 IconsManager::IconsManager(const QString &name, const QString &configname)
-	: Themes(name, configname), pixmaps(), icons()/*, animatedIcons()*///, menus()
+	: Themes(name, configname), pixmaps(), icons()/*, animatedIcons()*///
 {
 	kdebugf();
 	kdebugf2();
@@ -79,83 +79,6 @@ void IconsManager::clear()
 	kdebugf2();
 }
 
-// void IconsManager::registerMenu(QMenuData *menu)
-// {
-// 	kdebugf();
-	//menus.push_front(qMakePair(menu, QList<QPair<QString, QString> >()));
-// 	kdebugf2();
-// }
-
-// void IconsManager::unregisterMenu(QMenuData *menu)
-// {
-// 	kdebugf();
-// 	FOREACH(it, menus)
-// 		if ((*it).first == menu)
-// 		{
-// 			menus.remove(it);
-// 			break;
-// 		}
-// 	kdebugf2();
-// }
-
-// void IconsManager::registerMenuItem(QMenuData *menu, const QString &caption, const QString &iconName)
-// {
-// 	kdebugf();
-// 	FOREACH(it, menus)
-// 		if ((*it).first == menu)
-// 		{
-// 			(*it).second.push_front(qMakePair(caption, iconName));
-// 			break;
-// 		}
-// 	kdebugf2();
-// }
-
-// void IconsManager::unregisterMenuItem(QMenuData *menu, const QString &caption)
-// {
-// 	kdebugf();
-// 	FOREACH(it, menus)
-// 		if ((*it).first == menu)
-// 		{
-// 			CONST_FOREACH(it2, (*it).second)
-// 				if ((*it2).first == caption)
-// 				{
-// 					(*it).second.remove(*it2);
-// 					break;
-// 				}
-// 			break;
-// 		}
-// 	kdebugf2();
-// }
-
-void IconsManager::refreshMenus()
-{
-	kdebugf();
-// 	CONST_FOREACH(it, menus)
-// 	{
-// 		QMenuData *menu = (*it).first;
-// 		for (unsigned int i = 0, count = menu->count(); i < count; ++i)
-// 		{
-// 			int id = menu->idAt(i);
-// 			QString t = menu->text(id);
-// 
-// 			CONST_FOREACH(it2, (*it).second)
-				//startsWith jest potrzebne, bo je�eli opcja w menu ma skr�t klawiszowy,
-				//to menu->text(id) zwraca napis "Nazwa opcji\tskr�t klawiszowy"
-// 				if (t == (*it2).first || t.startsWith((*it2).first + "\t"))
-// 				{
-// 					bool enabled = menu->isItemEnabled(id);
-// 					bool visible = menu->isItemVisible(id);
-// 					bool checked = menu->isItemChecked(id);
-// 					menu->changeItem(id, loadIcon((*it2).second), t);
-// 					menu->setItemEnabled(id, enabled);
-// 					menu->setItemVisible(id, visible);
-// 					menu->setItemChecked(id, checked);
-// 				}
-// 		}
-// 	}
-	kdebugf2();
-}
-
 // TODO: clear it!
 void IconsManager::configurationUpdated()
 {
@@ -165,8 +88,6 @@ void IconsManager::configurationUpdated()
 
 	icons_manager->clear();
 	icons_manager->setTheme(config_file.readEntry("Look", "IconTheme"));
-	KaduActions.refreshIcons();
-	icons_manager->refreshMenus();
 	kadu->changeAppearance();
 
 	// TODO: Make it standard

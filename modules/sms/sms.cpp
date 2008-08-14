@@ -469,7 +469,6 @@ SmsConfigurationUiHandler::SmsConfigurationUiHandler()
 	sendSmsActionDescription->setShortcut("kadu_sendsms");
 	UserBox::insertActionDescription(2, sendSmsActionDescription);
 	kadu->insertMenuActionDescription(10, sendSmsActionDescription);
-	//icons_manager->registerMenuItem(MainMenu, tr("Send SMS"), "SendSms");
 	kdebugf2();
 }
 
