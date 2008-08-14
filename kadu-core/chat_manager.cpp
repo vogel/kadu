@@ -444,7 +444,9 @@ int ChatManager::registerChatWidget(ChatWidget* chat)
 {
 	kdebugf();
 
-	ClosedChatUsers.remove(chat->users()->toUserListElements());
+	UserListElements users = chat->users()->toUserListElements();
+	users.sort();
+	ClosedChatUsers.remove(users);
 	ChatWidgets.append(chat);
 
 	return ChatWidgets.count() - 1;
@@ -459,7 +461,9 @@ void ChatManager::unregisterChatWidget(ChatWidget* chat)
 		{
 			if (chat->body->countMessages())
 			{
-				ClosedChatUsers.prepend(chat->users()->toUserListElements());
+				UserListElements users = chat->users()->toUserListElements();
+				users.sort();
+				ClosedChatUsers.prepend(users);
 				if (ClosedChatUsers.count() > 10)
 					ClosedChatUsers.pop_back();
 			}
