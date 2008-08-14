@@ -353,14 +353,9 @@ void ChatManager::sendActionActivated(QAction *sender, bool toggled)
 	// TODO: split in two ?
 	if (chatWidget)
 		if (chatWidget->waitingForACK())
-		{
 			chatWidget->cancelMessage();
-		}
 		else
-		{
-			chatWidget->changeSendToCancelSend();
 			chatWidget->sendMessage();
-		}
 
 	kdebugf2();
 }
