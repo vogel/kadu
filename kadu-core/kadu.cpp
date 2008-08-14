@@ -143,20 +143,6 @@ bool disableContainsSelfUles(KaduAction *action)
 	return true;
 }
 
-bool disableOfflineToUser(KaduAction *action)
-{
-	kdebugf();
-
-	if (!disableNonIdUles(action))
-		return false;
-
-	if (!config_file.readBoolEntry("General", "PrivateStatus"))
-		return false;
-
-	kdebugf2();
-	return true;
-}
-
 bool disableNotify(KaduAction *action)
 {
 	kdebugf();
@@ -362,8 +348,7 @@ Kadu::Kadu(QWidget *parent)
 	offlineToUserActionDescription = new ActionDescription(
 		ActionDescription::TypeUser, "offlineToUserAction",
 		this, SLOT(offlineToUserActionActivated(QAction *, bool)),
-		"Offline", tr("Offline to user"), true, "",
-		disableOfflineToUser
+		"Offline", tr("Offline to user"), true, "", NULL		
 	);
 	connect(offlineToUserActionDescription, SIGNAL(actionCreated(KaduAction *)), this, SLOT(offlineToUserActionCreated(KaduAction *)));
 	UserBox::addManagementActionDescription(offlineToUserActionDescription);
@@ -721,6 +706,19 @@ void Kadu::notifyAboutUserActionCreated(KaduAction *action)
 void Kadu::offlineToUserActionActivated(QAction *sender, bool toggled)
 {
 	kdebugf();
+
+	if (!config_file.readBoolEntry("General", "PrivateStatus"))
+		if(MessageBox::ask("You need to have private status to do it, would you like to set private status now?")){
+			UserStatus status;
+			status.setStatus(userStatusChanger->status());
+			status.setFriendsOnly(toggled);
+			setStatus(status);
+			config_file.writeEntry("General", "PrivateStatus", true);
+		}
+		else{
+			kdebugf2();
+			return;
+		}
 
 	KaduMainWindow *window = dynamic_cast<KaduMainWindow *>(sender->parent());
 	if (!window)
