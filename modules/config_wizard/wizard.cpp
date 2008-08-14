@@ -274,8 +274,8 @@ void Wizard::tryImport()
 	if (!ggImportContacts->isChecked())
 		return;
 
-	connect(gadu, SIGNAL(userListImported(bool, QValueList<UserListElement>)),
-			wizardStarter, SLOT(userListImported(bool, QValueList<UserListElement>)));
+	connect(gadu, SIGNAL(userListImported(bool, QList<UserListElement>)),
+			wizardStarter, SLOT(userListImported(bool, QList<UserListElement>)));
 
 	if (gadu->currentStatus().isOffline())
 	{
