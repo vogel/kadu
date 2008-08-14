@@ -120,9 +120,9 @@ Message Message::parse(const QTextDocument *document)
 				continue;
 
 			if (!firstParagraph && firstFragment)
-				text = QString("\n") + block.text();
+				text = QString("\n") + fragment.text();
 			else
-				text = block.text();
+				text = fragment.text();
 
 			QTextCharFormat format = fragment.charFormat();
 			parseImages(result, text,
