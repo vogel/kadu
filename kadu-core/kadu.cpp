@@ -119,6 +119,22 @@ void Kadu::keyPressEvent(QKeyEvent *e)
 //	kdebugf2();
 }
 
+void Kadu::closeEvent(QCloseEvent *event)
+{	 
+	kdebugf();	 
+
+	if (!Closing)	 
+	{	 
+		event->ignore();	 
+		close();	 
+	}	 
+	else	 
+		event->accept();	 
+
+	kdebugf2();	 
+}
+
+
 bool disableNonIdUles(KaduAction *action)
 {
 	kdebugf();
@@ -2084,7 +2100,7 @@ void Kadu::readTokenValue(QPixmap tokenImage, QString &tokenValue)
 	delete td;
 }
 
-char SystemUserName[100];
+char *SystemUserName;
 void Kadu::deleteOldConfigFiles()
 {
 	kdebugf();

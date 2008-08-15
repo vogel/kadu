@@ -32,6 +32,16 @@
 #include "modules.h"
 #include "protocols_manager.h"
 
+class KaduApplication: public QApplication
+{
+	public:
+		KaduApplication(int &argc, char **argv): QApplication(argc, argv) {};
+		void commitData(QSessionManager & manager)
+		{
+			kadu->quit();
+		}
+};
+
 void kaduQtMessageHandler(QtMsgType type, const char *msg)
 {
 	switch (type)
@@ -119,11 +129,10 @@ int main(int argc, char *argv[])
 		char path[1024];
 		struct tm *t = localtime(&startTimeT);
 #ifndef Q_OS_WIN
-		struct passwd *p = getpwuid(geteuid());
+		struct passwd *p = getpwuid(getuid());
 		if (t && p)
 		{
-			strncpy(SystemUserName, p->pw_name, 99);
-			SystemUserName[99] = 0;
+			SystemUserName=strdup(p->pw_name);
 			sprintf(path, "/tmp/kadu-%s-%04d-%02d-%02d-%02d-%02d-%02d.dbg", SystemUserName, 1900 + t->tm_year, 1 + t->tm_mon, t->tm_mday, t->tm_hour, t->tm_min, t->tm_sec);
 			if (freopen(path, "w+", stderr) == 0)
 				fprintf(stdout, "freopen: %s\n", strerror(errno));
@@ -168,9 +177,9 @@ int main(int argc, char *argv[])
 		exit(10);
 	}
 
-	kdebugm(KDEBUG_INFO, "before creation of new QApplication\n");
-	new QApplication(argc, argv);
-	kdebugm(KDEBUG_INFO, "after creation of new QApplication\n");
+	kdebugm(KDEBUG_INFO, "before creation of new KaduApplication\n");
+	new KaduApplication(argc, argv);
+	kdebugm(KDEBUG_INFO, "after creation of new KaduApplication\n");
 
 	defaultFont = new QFont(qApp->font());
 	defaultFontInfo = new QFontInfo(*defaultFont);
@@ -184,7 +193,7 @@ int main(int argc, char *argv[])
 	qApp->installTranslator(&kadu_qm);
 	qApp->setStyle(config_file.readEntry("Look", "QtStyle"));
 	// plugins path (win32)
-	qApp->addLibraryPath(libPath(""));
+	qApp->addLibraryPath(libPath("qt"));
 
 	if(isRuning(ggnumber)){
 		Kadu::setClosing();

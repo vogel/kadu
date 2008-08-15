@@ -166,6 +166,7 @@ protected:
 	void keyPressEvent(QKeyEvent *e);
 	virtual void resizeEvent(QResizeEvent *);
 	virtual void customEvent(QEvent *);
+	virtual void closeEvent(QCloseEvent *event);
 		
 	virtual void configurationUpdated();
 //	virtual void moveEvent(QMoveEvent *);
