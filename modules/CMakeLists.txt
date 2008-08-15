@@ -55,7 +55,7 @@ else (WIN32)
 endif (WIN32)
 
 if (NOT STATIC_MODULES STREQUAL "\n")
-	message (STATUS "Static module: " ${MODULE})
+	set (STATIC_MODULES ${STATIC_MODULES} CACHE INTERNAL "")
 
 	foreach (MODULE ${STATIC_MODULES})
 		message (STATUS "Static module: " ${MODULE})
