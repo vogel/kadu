@@ -41,7 +41,7 @@ static QString getPriority(const UserListElement &elem)
 AdvancedUserList::AdvancedUserList()
 {
 	config_file.addVariable("AdvUserList", "Order", "Pending,Status,Priority,AltNick");
-	order = QStringList::split(',', config_file.readEntry("AdvUserList", "Order"));
+	order = config_file.readEntry("AdvUserList", "Order").split(",");
 
 	userlist->addPerContactNonProtocolConfigEntry("priority", "Priority");
 

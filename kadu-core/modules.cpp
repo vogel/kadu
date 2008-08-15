@@ -392,14 +392,14 @@ ModulesManager::ModulesManager() : QObject(NULL, "modules_manager"),
 	manageModulesActionDescription->setShortcut("kadu_modulesmanager", Qt::ApplicationShortcut);
 	kadu->insertMenuActionDescription(2, manageModulesActionDescription);
 
-	everLoaded = QStringList::split(',', config_file.readEntry("General", "EverLoaded"));
+	everLoaded = config_file.readEntry("General", "EverLoaded").split(",");
 
 	// load modules as config file say
 	QStringList installed_list = installedModules();
 	QString loaded_str = config_file.readEntry("General", "LoadedModules");
-	QStringList loaded_list = QStringList::split(',', loaded_str);
+	QStringList loaded_list = loaded_str.split(",");
 	QString unloaded_str = config_file.readEntry("General", "UnloadedModules");
-	QStringList unloaded_list = QStringList::split(',', unloaded_str);
+	QStringList unloaded_list = unloaded_str.split(",");
 	bool load_error = false;
 
 	registerStaticModules();
@@ -633,14 +633,11 @@ bool ModulesManager::moduleInfo(const QString& module_name, ModuleInfo& info) co
 	else
 		info.version = desc_file.readEntry("Module", "Version");
 
-	info.depends = QStringList::split(" ",
-		desc_file.readEntry("Module", "Dependencies"));
+	info.depends = desc_file.readEntry("Module", "Dependencies").split(" ");
 
-	info.conflicts=QStringList::split(" ",
-		desc_file.readEntry("Module", "Conflicts"));
+	info.conflicts=desc_file.readEntry("Module", "Conflicts").split(" ");
 
-	info.provides=QStringList::split(" ",
-		desc_file.readEntry("Module", "Provides"));
+	info.provides=desc_file.readEntry("Module", "Provides").split(" ");
 
 	info.load_by_def = desc_file.readBoolEntry("Module", "LoadByDefault");
 	info.base = desc_file.readBoolEntry("Module", "Base");

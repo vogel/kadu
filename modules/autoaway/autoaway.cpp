@@ -237,7 +237,7 @@ void AutoAway::checkIdleTime()
 		{
 			if (line.contains("i8042") || line.contains("keyboard") || line.contains("mouse", false))
 			{
-				strlist = QStringList::split(" ", line);
+				strlist = line.split(" ");
 
 				intNum = strlist[0];
 				intNum.truncate(intNum.length()-1);

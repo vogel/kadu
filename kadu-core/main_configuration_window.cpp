@@ -332,7 +332,7 @@ void MainConfigurationWindow::onChangeEmoticonsStyle(int index)
 
 QString MainConfigurationWindow::getBrowserExecutable(int browserIndex)
 {
-	QStringList searchPath = QStringList::split(":", QString(getenv("PATH")));
+	QStringList searchPath = QString(getenv("PATH")).split(":");
 	QStringList executableName;
 // 	QStringList options;
 
@@ -485,7 +485,7 @@ void MainConfigurationWindow::onChangeBrowser(int index)
 
 QString MainConfigurationWindow::getEMailExecutable(int emailIndex)
 {
-	QStringList searchPath = QStringList::split(":", QString(getenv("PATH")));
+	QStringList searchPath = QString(getenv("PATH")).split(":");
 	QStringList executableName;
 	QString parameters;
 

@@ -103,7 +103,7 @@ void IconsManager::initModule()
 
 	icons_manager = new IconsManager("icons", "icons.conf");
 
-	icons_manager->setPaths(QStringList::split(QRegExp("(;|:)"), config_file.readEntry("Look", "IconsPaths")));
+	icons_manager->setPaths(config_file.readEntry("Look", "IconsPaths").split("&"));
 
 	QStringList themes = icons_manager->themes();
 	QString theme = config_file.readEntry("Look", "IconTheme");

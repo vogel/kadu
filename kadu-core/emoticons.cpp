@@ -40,7 +40,7 @@ void EmoticonsManager::initModule()
 	kdebugf();
 
 	emoticons = new EmoticonsManager("emoticons", "emots.txt");
-	emoticons->setPaths(QStringList::split(QRegExp("(;|:)"), config_file.readEntry("Chat", "EmoticonsPaths")));
+	emoticons->setPaths(config_file.readEntry("Chat", "EmoticonsPaths").split("&"));
 	emoticons->setEmoticonsTheme(config_file.readEntry("Chat", "EmoticonsTheme"));
 
 	kdebugf2();

@@ -139,7 +139,7 @@ UinsList::UinsList(UinType uin)
 
 UinsList::UinsList(const QString &uins)
 {
-	QStringList list = QStringList::split(",", uins);
+	QStringList list = uins.split(",");
 	foreach(const QString &uin, list)
 		append(uin.toUInt());
 }
@@ -344,11 +344,11 @@ void GaduProtocol::initModule()
 	gg_debug_level = 1;
 #endif
 
-	defaultdescriptions = QStringList::split("<-->", config_file.readEntry("General","DefaultDescription", tr("I am busy.")), true);
+	defaultdescriptions = config_file.readEntry("General","DefaultDescription", tr("I am busy.")).split("<-->");
 
 	QStringList servers;
 	QHostAddress ip2;
-	servers = QStringList::split(";", config_file.readEntry("Network", "Server"));
+	servers = config_file.readEntry("Network", "Server").split(";");
 	ConfigServers.clear();
 	foreach(const QString &server, servers)
 		if (ip2.setAddress(server))
@@ -1825,7 +1825,7 @@ QList<UserListElement> GaduProtocol::streamToUserList(QTextStream &stream) const
 		UserListElement e;
 		line = stream.readLine();
 //		kdebugm(KDEBUG_DUMP, ">>%s\n", qPrintable(line));
-		sections = QStringList::split(";", line, true);
+		sections = line.split(";");
 		secCount = sections.count();
 
 		if (secCount < 7)

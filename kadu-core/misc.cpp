@@ -1186,7 +1186,7 @@ QRect stringToRect(const QString &value, const QRect *def)
 	int l, t, w, h;
 	bool ok;
 
-        stringlist = QStringList::split(",", value);
+        stringlist = value.split(",");
         if (stringlist.count() != 4)
                 return def ? *def : rect;
         l = stringlist[0].toInt(&ok); if (!ok) return def ? *def : rect;

@@ -45,7 +45,7 @@ int XOSDConfigurationWidget::getFontSize(const QString &xlfd)
 {
 	kdebugf();
 
-	QStringList font = QStringList::split("-", xlfd, true);
+	QStringList font = xlfd.split("-");
 	if (font.size() < 8)
 	{
 		kdebugf2();
@@ -547,7 +547,7 @@ int XOSDNotify::getFontSize(const QString &xlfd)
 {
 	kdebugf();
 
-	QStringList font = QStringList::split("-", xlfd, true);
+	QStringList font = xlfd.split("-");
 	if (font.size() < 8)
 	{
 		kdebugf2();

@@ -245,7 +245,7 @@ void MigrationDialog::xmlIgnoredListMigration()
 		{
 			kdebugm(KDEBUG_INFO, "ignored file line: %s\n", qPrintable(line));
 			UinsList uins;
-			QStringList list = QStringList::split(";", line);
+			QStringList list = line.split(";");
 			QDomElement ignored_grp_elem =
 				xml_config_file->createElement(ignored_elem, "IgnoredGroup");
 			kdebugm(KDEBUG_INFO, "begin of ignored group loop\n");
@@ -383,7 +383,7 @@ void MigrationDialog::xmlConfigFilesMigration()
 	for (unsigned int i = 0, dircnt = dir.count(); i < dircnt; ++i)
 		xmlConfigFileMigration(dir[i]);
 
-	QStringList modules = QStringList::split(",", config_file.readEntry("General", "LoadedModules"));
+	QStringList modules = config_file.readEntry("General", "LoadedModules").split(",");
 	QString unload(QString::null);
 	if ((modules.grep("_sound").count() > 1) && (modules.remove("ext_sound") == 1)) // ext_sound and other sound modules
 		unload.append(",ext_sound");

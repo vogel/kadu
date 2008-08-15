@@ -148,7 +148,7 @@ void Ignored::add()
 	kdebugf();
 	bool ok;
 	UserListElements users;
-	QStringList strlist = QStringList::split(";", e_uin->text());
+	QStringList strlist = e_uin->text().split(";");
 	foreach(const QString &strUin, strlist)
 	{
 		UinType uin = strUin.toUInt(&ok);
@@ -189,7 +189,7 @@ void Ignored::remove()
 	kdebugf();
 	if (!lb_list->currentItem())
 		return;
-	QStringList strlist = QStringList::split(";", lb_list->currentItem()->text());
+	QStringList strlist = lb_list->currentItem()->text().split(";");
 	UserListElements users;
 	foreach(const QString &str, strlist)
 		users.append(userlist->byID("Gadu", str.section(' ', 0, 0)));

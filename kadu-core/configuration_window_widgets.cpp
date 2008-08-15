@@ -486,7 +486,7 @@ void ConfigPathListEdit::loadConfiguration()
 	if (section.isEmpty())
 		return;
 
-	setPathList(QStringList::split(QRegExp("&"), config_file.readEntry(section, item)));
+	setPathList(config_file.readEntry(section, item).split("&"));
 }
 
 void ConfigPathListEdit::saveConfiguration()

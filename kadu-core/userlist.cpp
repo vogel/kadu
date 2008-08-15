@@ -168,7 +168,7 @@ void UserList::readFromConfig()
 			e.setProtocolData("Gadu", "OfflineTo", contact_elem.attribute("offline_to") == "true");
 		}
 		e.setNotify(contact_elem.attribute("notify") == "true");
-		e.setData("Groups", QStringList::split(",", contact_elem.attribute("groups")));
+		e.setData("Groups", contact_elem.attribute("groups").split(","));
 		e.setAliveSound((NotifyType)contact_elem.attribute("alive_sound_type").toInt(),
 			contact_elem.attribute("alive_sound_file"));
 		e.setMessageSound((NotifyType)contact_elem.attribute("message_sound_type").toInt(),
@@ -310,7 +310,7 @@ void UserList::addPerContactNonProtocolConfigEntry(const QString &attribute_name
 	}
 	nonProtoKeys[attribute_name] = internal_key;
 
-	QStringList keys = QStringList::split(",", config_file.readEntry("General", "NonProtoAdditionalAttributes"));
+	QStringList keys = config_file.readEntry("General", "NonProtoAdditionalAttributes").split(",");
 	keys.append(attribute_name + '=' + internal_key);
 	config_file.writeEntry("General", "NonProtoAdditionalAttributes", keys.join(","));
 
@@ -326,7 +326,7 @@ void UserList::removePerContactNonProtocolConfigEntry(const QString &attribute_n
 		return;
 	nonProtoKeys.erase(it);
 
-	QStringList keys = QStringList::split(",", config_file.readEntry("General", "NonProtoAdditionalAttributes"));
+	QStringList keys = config_file.readEntry("General", "NonProtoAdditionalAttributes").split(",");
 	QStringList atts = keys.grep(attribute_name + '=');
 	foreach(const QString &att, atts)
 		keys.remove(att);
@@ -346,7 +346,7 @@ void UserList::addPerContactProtocolConfigEntry(const QString &protocolName, con
 	}
 	p[attribute_name] = internal_key;
 
-	QStringList keys = QStringList::split(",", config_file.readEntry("General", "ProtoAdditionalAttributes"));
+	QStringList keys = config_file.readEntry("General", "ProtoAdditionalAttributes").split(",");
 	keys.append(protocolName + '=' + attribute_name + '=' + internal_key);
 	config_file.writeEntry("General", "ProtoAdditionalAttributes", keys.join(","));
 	kdebugf2();
@@ -364,7 +364,7 @@ void UserList::removePerContactProtocolConfigEntry(const QString &protocolName, 
 	}
 	p.erase(it);
 
-	QStringList keys = QStringList::split(",", config_file.readEntry("General", "ProtoAdditionalAttributes"));
+	QStringList keys = config_file.readEntry("General", "ProtoAdditionalAttributes").split(",");
 	QStringList atts = keys.grep(protocolName + '=' + attribute_name + '=');
 	foreach(const QString &att, atts)
 		keys.remove(att);
@@ -377,17 +377,17 @@ void UserList::initKeys()
 {
 	kdebugf();
 
-	QStringList keys1 = QStringList::split(",", config_file.readEntry("General", "NonProtoAdditionalAttributes"));
+	QStringList keys1 = config_file.readEntry("General", "NonProtoAdditionalAttributes").split(",");
 	foreach(const QString &it, keys1)
 	{
-		QStringList x = QStringList::split("=", it);
+		QStringList x = it.split("=");
 		nonProtoKeys[x[0]] = x[1];
 	}
 
-	QStringList keys2 = QStringList::split(",", config_file.readEntry("General", "ProtoAdditionalAttributes"));
+	QStringList keys2 = config_file.readEntry("General", "ProtoAdditionalAttributes").split(",");
 	foreach(const QString &it, keys2)
 	{
-		QStringList x = QStringList::split("=", it);
+		QStringList x = it.split("=");
 		protoKeys[x[0]][x[1]] = x[2];
 	}
 
