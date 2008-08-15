@@ -16,6 +16,8 @@
 
 #include "protocol.h"
 
+#include "exports.h"
+
 class QTextDocument;
 
 class MessagePart
@@ -54,7 +56,7 @@ public:
 
 };
 
-class Message
+class KADUAPI Message
 {
 	static QRegExp ImageRegExp;
 

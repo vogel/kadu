@@ -41,7 +41,7 @@ extern "C"
 
 EncryptionManager* encryption_manager;
 
-extern "C" int encryption_init(bool firstLoad)
+extern "C" KADU_EXPORT int encryption_init(bool firstLoad)
 {
 	encryption_manager = new EncryptionManager(firstLoad);
 	MainConfigurationWindow::registerUiFile(dataPath("kadu/modules/configuration/encryption.ui"), encryption_manager);
@@ -49,7 +49,7 @@ extern "C" int encryption_init(bool firstLoad)
 	return 0;
 }
 
-extern "C" void encryption_close()
+extern "C" KADU_EXPORT void encryption_close()
 {
 	MainConfigurationWindow::unregisterUiFile(dataPath("kadu/modules/configuration/encryption.ui"), encryption_manager);
 
@@ -124,10 +124,14 @@ EncryptionManager::EncryptionManager(bool firstLoad)
 	);
 	kadu->insertMenuActionDescription(12, keysManagerActionDescription);
 
-	sim_key_path = strdup(qPrintable(ggPath("keys/")));
+	sim_key_path = strdup(qPrintable(QDir::toNativeSeparators(ggPath("keys/"))));
 
 	// use mkdir from sys/stat.h - there's no easy way to set permissions through Qt
+#ifdef Q_OS_WIN
+	QDir().mkdir(ggPath("keys"));
+#else
 	mkdir(qPrintable(ggPath("keys")), 0700);
+#endif
 
 	kdebugf2();
 }
