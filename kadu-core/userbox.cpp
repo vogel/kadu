@@ -337,7 +337,7 @@ void KaduListBoxPixmap::calculateSize(const QString &text, int width, QStringLis
 		out.clear();
 		height=0;
 */
-	QStringList tmpout = text.split("\n");
+	QStringList tmpout = QStringList::split('\n', text, true);
 
 	int wsize = descriptionFontMetrics->width('W'); //'w' is the widest letter
 	int initialLength = width / wsize; // try to guess width
@@ -1528,7 +1528,7 @@ bool UlesDrag::decode(QDropEvent *event, QStringList &ules)
 
 	QString allUles = stream.readAll();
 
-	ules = allUles.split("\n");
+	ules = QStringList::split("\n", allUles);
 
 	return ules.count() > 0;
 }

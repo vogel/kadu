@@ -800,7 +800,7 @@ uint HistoryManager::getHistoryDate(QTextStream &stream)
 {
 	kdebugf();
 	QString line;
-	static QStringList types = QString("smssend chatrcv chatsend msgrcv msgsend status").split(" ");
+	static QStringList types = QStringList::split(" ", "smssend chatrcv chatsend msgrcv msgsend status");
 	QStringList tokens;
 	int type, pos;
 
@@ -931,7 +931,7 @@ QList<UinsList> HistoryManager::getUinsLists() const
 
 	foreach(QString entry, dir.entryList())
 	{
-		struins = entry.remove(QRegExp(".idx$")).split("_");
+		struins = QStringList::split("_", entry.remove(QRegExp(".idx$")));
 		uins.clear();
 		if (struins[0] != "sms")
 			foreach(const QString &struin, struins)

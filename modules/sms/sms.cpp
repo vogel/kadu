@@ -374,7 +374,7 @@ void Sms::sendSms()
 		if (config_file.readBoolEntry("SMS", "UseCustomString")&&
 			(!config_file.readBoolEntry("SMS", "BuiltInApp")))
 		{
-			QStringList args = config_file.readEntry("SMS", "SmsString").split(" ");
+			QStringList args = QStringList::split(' ', config_file.readEntry("SMS", "SmsString"));
 			if(args.find("%n") != args.end())
 				*args.find("%n") = recipient->text();
 			if(args.find("%m") != args.end())
@@ -545,7 +545,7 @@ void SmsConfigurationUiHandler::onUserDblClicked(UserListElement user)
 void SmsConfigurationUiHandler::registerGateway(QString name, isValidFunc* f)
 {
 	kdebugf();
-	QStringList priority = config_file.readEntry("SMS", "Priority").split(";");
+	QStringList priority = QStringList::split(";", config_file.readEntry("SMS", "Priority"));
 	if (!priority.contains(name))
 	{
 		priority += name;
@@ -565,7 +565,7 @@ void SmsConfigurationUiHandler::unregisterGateway(QString name)
 SmsGateway* SmsConfigurationUiHandler::getGateway(const QString& number)
 {
 	kdebugf();
-	QStringList priorities = config_file.readEntry("SMS", "Priority").split(";");
+	QStringList priorities = QStringList::split(";", config_file.readEntry("SMS", "Priority"));
 
 	foreach(const QString &gate, priorities)
 	{
@@ -670,7 +670,7 @@ void SmsConfigurationUiHandler::mainConfigurationWindowCreated(MainConfiguration
 	connect(useCustomString, SIGNAL(toggled(bool)), customString, SLOT(setEnabled(bool)));
 
 // TODO: fix it, should be ':' not ';'
-	QStringList priority = config_file.readEntry("SMS", "Priority").split(";");
+	QStringList priority = QStringList::split(";", config_file.readEntry("SMS", "Priority"));
 
 	foreach(const QString &gate, priority)
 		if (gateways.contains(gate))

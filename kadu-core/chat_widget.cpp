@@ -820,7 +820,7 @@ void ChatWidget::kaduRestoreGeometry()
 		if (!vert_sz_str.isEmpty())
 		{
 			bool ok[2];
-			QStringList s = vert_sz_str.split(",");
+			QStringList s = QStringList::split(",", vert_sz_str);
 			vertSizes.append(s[0].toInt(ok));
 			vertSizes.append(s[1].toInt(ok + 1));
 			if (!(ok[0] && ok[1]))

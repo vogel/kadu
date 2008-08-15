@@ -257,6 +257,7 @@ void MainConfigurationWindow::setQtThemes()
 
 	QStringList themes = QStyleFactory::keys();
 	QString currentStyle = QApplication::style()->name();
+
 	if (!themes.contains(currentStyle))
 		themes.append(currentStyle);
 
@@ -332,7 +333,7 @@ void MainConfigurationWindow::onChangeEmoticonsStyle(int index)
 
 QString MainConfigurationWindow::getBrowserExecutable(int browserIndex)
 {
-	QStringList searchPath = QString(getenv("PATH")).split(":");
+	QStringList searchPath = QStringList::split(":", QString(getenv("PATH")));
 	QStringList executableName;
 // 	QStringList options;
 
@@ -485,7 +486,7 @@ void MainConfigurationWindow::onChangeBrowser(int index)
 
 QString MainConfigurationWindow::getEMailExecutable(int emailIndex)
 {
-	QStringList searchPath = QString(getenv("PATH")).split(":");
+	QStringList searchPath = QStringList::split(":", QString(getenv("PATH")));
 	QStringList executableName;
 	QString parameters;
 

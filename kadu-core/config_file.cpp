@@ -501,7 +501,7 @@ QSize PlainConfigFile::readSizeEntry(const QString &group,const QString &name, c
 
 	if (string == QString::null)
 		return def ? *def : size;
-	stringlist = string.split(",");
+	stringlist = QStringList::split(",", string);
 	if (stringlist.count() != 2)
 		return def ? *def : size;
 	w = stringlist[0].toInt(&ok); if (!ok) return def ? *def : size;
@@ -524,7 +524,7 @@ QColor PlainConfigFile::readColorEntry(const QString &group,const QString &name,
 
 		//stary zapis kolor�w, w 0.5.0 mo�na b�dzie wywali�
 		bool ok;
-		QStringList stringlist = str.split(",");
+		QStringList stringlist = QStringList::split(",", str);
 		if (stringlist.count() != 3)
 			return def ? *def : col;
 		int r = stringlist[0].toInt(&ok); if (!ok) return def ? *def : col;
@@ -545,7 +545,7 @@ QFont PlainConfigFile::readFontEntry(const QString &group,const QString &name, c
 
 	if (string == QString::null)
 		return def ? *def : QApplication::font();
-	stringlist = string.split(",");
+	stringlist = QStringList::split(",", string);
 	if (stringlist.count() < 2)
 		return def ? *def : QApplication::font();
 	font.setFamily(stringlist[0]);
@@ -577,7 +577,7 @@ QPoint PlainConfigFile::readPointEntry(const QString &group,const QString &name,
 
 	if (string == QString::null)
 		return def ? *def : point;
-	stringlist = string.split(",");
+	stringlist = QStringList::split(",", string);
 	if (stringlist.count() != 2)
 		return def ? *def : point;
 	x = stringlist[0].toInt(&ok); if (!ok) return def ? *def : point;
@@ -824,7 +824,7 @@ QRect ConfigFile::readRectEntry(const QString &group,const QString &name, const 
 
 	if (string == QString::null)
 		return def ? *def : rect;
-	stringlist = string.split(",");
+	stringlist = QStringList::split(",", string);
 	if (stringlist.count() != 4)
 		return def ? *def : rect;
 	l = stringlist[0].toInt(&ok); if (!ok) return def ? *def : rect;
@@ -845,7 +845,7 @@ QSize ConfigFile::readSizeEntry(const QString &group,const QString &name, const 
 
 	if (string == QString::null)
 		return def ? *def : size;
-	stringlist = string.split(",");
+	stringlist = QStringList::split(",", string);
 	if (stringlist.count() != 2)
 		return def ? *def : size;
 	w = stringlist[0].toInt(&ok); if (!ok) return def ? *def : size;
@@ -868,7 +868,7 @@ QColor ConfigFile::readColorEntry(const QString &group,const QString &name, cons
 
 		//stary zapis kolor�w, w 0.5.0 mo�na b�dzie wywali�
 		bool ok;
-		QStringList stringlist = str.split(",");;
+		QStringList stringlist = QStringList::split(",", str);
 		if (stringlist.count() != 3)
 			return def ? *def : col;
 		int r = stringlist[0].toInt(&ok); if (!ok) return def ? *def : col;
@@ -901,7 +901,7 @@ QPoint ConfigFile::readPointEntry(const QString &group,const QString &name, cons
 
 	if (string == QString::null)
 		return def ? *def : point;
-	stringlist = string.split(",");
+	stringlist = QStringList::split(",", string);
 	if (stringlist.count() != 2)
 		return def ? *def : point;
 	x = stringlist[0].toInt(&ok); if (!ok) return def ? *def : point;
