@@ -46,7 +46,7 @@ else (WIN32)
 		message (FATAL_ERROR ${DEPS_MESSAGE})
 	endif (DEPS_STATUS EQUAL 1)
 
-	exec_program (${CMAKE_CURRENT_SOURCE_DIR}/create-static-modules.sh ${CMAKE_CURRENT_SOURCE_DIR}
+	exec_program (${CMAKE_CURRENT_SOURCE_DIR}/create-static-modules.sh ${CMAKE_CURRENT_BINARY_DIR}
 		ARGS ${STATIC_MODULES}
 		OUTPUT_VARIABLE NULL_VAR
 	)

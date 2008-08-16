@@ -125,7 +125,7 @@ set (kadu_MOC_SRCS
 
 if (UNIX AND NOT APPLE)
 	if (NOT DESKTOP_ENTRY)
-		set(DESKTOP_ENTRY ${CMAKE_CURRENT_SOURCE_DIR}/kadu.desktop)
+		set(DESKTOP_ENTRY ${CMAKE_CURRENT_BINARY_DIR}/kadu.desktop)
 	endif (NOT DESKTOP_ENTRY)
 
 	add_custom_command(OUTPUT ${DESKTOP_ENTRY}
