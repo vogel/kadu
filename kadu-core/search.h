@@ -18,6 +18,12 @@ class SearchActionsSlots : public QObject
 	Q_OBJECT
 
 public slots:
+	void firstSearchActionCreated(KaduAction *action);
+	void nextResultsActionCreated(KaduAction *action);
+	void stopSearchActionCreated(KaduAction *action);
+	void clearResultsActionCreated(KaduAction *action);
+	void actionsFoundActionCreated(KaduAction *action);
+
 	void firstSearchActionActivated(QAction *sender, bool toggled);
 	void nextResultsActionActivated(QAction *sender, bool toggled);
 	void stopSearchActionActivated(QAction *sender, bool toggled);
@@ -74,6 +80,8 @@ class SearchDialog : public KaduMainWindow
 	UserListElements selected();
 
 	QTreeWidgetItem * selectedItem();
+
+	void setActionState(ActionDescription *action, bool toogle);
 
 private slots:
 	void uinTyped(void);
