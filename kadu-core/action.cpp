@@ -47,7 +47,7 @@ KaduAction::KaduAction(ActionDescription *description, KaduMainWindow *parent)
 	connect(this, SIGNAL(toggled(bool)), this, SLOT(toggledSlot(bool)));
 	connect(this, SIGNAL(triggered(bool)), this, SLOT(triggeredSlot(bool)));
 
-	checkIfEnabled();
+	checkState();
 }
 
 KaduAction::~KaduAction()
@@ -96,10 +96,10 @@ void KaduAction::triggeredSlot(bool checked)
 	emit triggered(this, checked);
 }
 
-void KaduAction::checkIfEnabled()
+void KaduAction::checkState()
 {
 	if (Description->EnableCallback)
-		setEnabled((*Description->EnableCallback)(this));
+		(*Description->EnableCallback)(this);
 }
 
 void KaduAction::updateIcon()
@@ -250,9 +250,9 @@ QAction * Actions::createAction(const QString &name, KaduMainWindow *kaduMainWin
 	return result;
 }
 
-bool disableEmptyUles(KaduAction *action)
+void disableEmptyUles(KaduAction *action)
 {
-	return !action->userListElements().isEmpty();
+	action->setEnabled(!action->userListElements().isEmpty());
 }
 
 Actions KaduActions;

@@ -269,5 +269,5 @@ void KaduMainWindow::addRightToolbar()
 void KaduMainWindow::actionAdded(KaduAction *action)
 {
 	if (userBox())
-		connect(userBox(), SIGNAL(userListChanged()), action, SLOT(checkIfEnabled()));
+		connect(userBox(), SIGNAL(userListChanged()), action, SLOT(checkState()));
 }

@@ -156,9 +156,6 @@ private slots:
 	void inactiveUsersActionCreated(KaduAction *action);
 	void descriptionUsersActionCreated(KaduAction *action);
 	void onlineAndDescUsersActionCreated(KaduAction *action);
-	void offlineToUserActionCreated(KaduAction *action);
-	void hideDescriptionActionCreated(KaduAction *action);
-	void notifyAboutUserActionCreated(KaduAction *action);
 
 	void quitApplication();
 
@@ -331,7 +328,7 @@ public:
 
 };
 
-bool disableContainsSelfUles(KaduAction *action);
+void disableContainsSelfUles(KaduAction *action);
 
 extern KADUAPI Kadu *kadu;
 extern KADUAPI QMenu *dockMenu;

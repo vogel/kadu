@@ -51,7 +51,7 @@ public:
 	UserListElements userListElements();
 
 public slots:
-	void checkIfEnabled();
+	void checkState();
 	void updateIcon();
 
 signals:
@@ -73,7 +73,7 @@ class KADUAPI ActionDescription : public QObject, ConfigurationAwareObject
 public:
 
 	// TODO 0.6.7: this sux, but will be better
-	typedef bool (*ActionBoolCallback)(KaduAction *);
+	typedef void (*ActionBoolCallback)(KaduAction *);
 
 	enum ActionType {
 		TypeGlobal   = 0x0001, //!< actions with TypeGlobal type does not require access to user list or anything window-dependend
@@ -148,7 +148,7 @@ signals:
 
 };
 
-bool disableEmptyUles(KaduAction *action);
+void disableEmptyUles(KaduAction *action);
 
 extern Actions KaduActions;
 

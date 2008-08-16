@@ -1446,6 +1446,7 @@ void UserBox::contextMenuEvent(QContextMenuEvent *event)
 		{
 			KaduAction *action = actionDescription->createAction(MainWindow);
 			menu->addAction(action);
+			action->checkState();
 		}
 		else
 			menu->addSeparator();
@@ -1458,6 +1459,7 @@ void UserBox::contextMenuEvent(QContextMenuEvent *event)
 		{
 			KaduAction *action = actionDescription->createAction(MainWindow);
 			management->addAction(action);
+			action->checkState();
 		}
 		else
 			management->addSeparator();

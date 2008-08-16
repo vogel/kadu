@@ -27,13 +27,47 @@
 
 #include "chat_manager.h"
 
-bool disableEmptyTextBox(KaduAction *action)
+void disableEmptyTextBox(KaduAction *action)
 {
 	ChatEditBox *chatEditBox = dynamic_cast<ChatEditBox *>(action->parent());
 	if (!chatEditBox)
-		return false;
+	{
+		action->setEnabled(false);
+		return;
+	}
 
-	return !chatEditBox->inputBox()->toPlainText().isEmpty();
+	action->setEnabled(!chatEditBox->inputBox()->toPlainText().isEmpty());
+}
+
+void checkBlocking(KaduAction *action)
+{
+	foreach(const UserListElement &user, action->userListElements())
+		if (user.usesProtocol("Gadu") && user.ID("Gadu") == kadu->myself().ID("Gadu"))
+		{
+			action->setEnabled(false);
+			return;
+		}
+	
+	bool on = false;
+	foreach(const UserListElement &user, action->userListElements())
+		if (user.protocolData("Gadu", "Blocking").toBool())
+		{
+			on = true;
+			break;
+		}
+	action->setChecked(on);
+}
+
+void checkIgnoreUser(KaduAction *action)
+{
+	foreach(const UserListElement &user, action->userListElements())
+		if (user.usesProtocol("Gadu") && user.ID("Gadu") == kadu->myself().ID("Gadu"))
+		{
+			action->setEnabled(false);
+			return;
+		}
+
+	action->setChecked(IgnoredManager::isIgnored(action->userListElements()));
 }
 
 ChatManager::ChatManager(QObject *parent)
@@ -97,17 +131,15 @@ ChatManager::ChatManager(QObject *parent)
 		ActionDescription::TypeUser, "ignoreUserAction",
 		this, SLOT(ignoreUserActionActivated(QAction *, bool)),
 		"Ignore", tr("Ignore user"), true, QString::null,
-		disableContainsSelfUles
+		checkIgnoreUser
 	);
-	connect(ignoreUserActionDescription, SIGNAL(actionCreated(KaduAction *)), this, SLOT(ignoreUserActionCreated(KaduAction *)));
 
 	blockUserActionDescription = new ActionDescription(
 		ActionDescription::TypeUser, "blockUserAction",
 		this, SLOT(blockUserActionActivated(QAction *, bool)),
 		"Blocking", tr("Block user"), true, QString::null,
-		disableContainsSelfUles
+		checkBlocking
 	);
-	connect(blockUserActionDescription, SIGNAL(actionCreated(KaduAction *)), this, SLOT(blockUserActionCreated(KaduAction *)));
 
 	chatActionDescription = new ActionDescription(
 		ActionDescription::TypeUser, "chatAction",
@@ -366,7 +398,7 @@ void ChatManager::sendActionCreated(KaduAction *action)
 	if (!chatEditBox)
 		return;
 
-	connect(chatEditBox->inputBox(), SIGNAL(textChanged()), action, SLOT(checkIfEnabled()));
+	connect(chatEditBox->inputBox(), SIGNAL(textChanged()), action, SLOT(checkState()));
 
 	ChatWidget *chatWidget = chatEditBox->chatWidget();
 	if (!chatWidget)
@@ -464,11 +496,6 @@ void ChatManager::colorSelectorActionActivated(QAction *sender, bool toggled)
 	}
 }
 
-void ChatManager::ignoreUserActionCreated(KaduAction *action)
-{
-	action->setChecked(IgnoredManager::isIgnored(action->userListElements()));
-}
-
 void ChatManager::ignoreUserActionActivated(QAction *sender, bool toggled)
 {
 	kdebugf();
@@ -518,18 +545,6 @@ void ChatManager::ignoreUserActionActivated(QAction *sender, bool toggled)
 		}
 	}
 	kdebugf2();
-}
-
-void ChatManager::blockUserActionCreated(KaduAction *action)
-{
-	bool on = false;
-	foreach(const UserListElement &user, action->userListElements())
-		if (user.protocolData("Gadu", "Blocking").toBool())
-		{
-			on = true;
-			break;
-		}
-	action->setChecked(on);
 }
 
 void ChatManager::blockUserActionActivated(QAction *sender, bool toggled)

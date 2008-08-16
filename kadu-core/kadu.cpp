@@ -135,110 +135,208 @@ void Kadu::closeEvent(QCloseEvent *event)
 }
 
 
-bool disableNonIdUles(KaduAction *action)
+void disableNonIdUles(KaduAction *action)
 {
 	kdebugf();
+	foreach(const UserListElement &user, action->userListElements())
+		if (!user.usesProtocol("Gadu"))
+		{
+			action->setEnabled(false);
+			return;
+		}
+
+	action->setEnabled(true);
+	kdebugf2();
+}
+
+void disableContainsSelfUles(KaduAction *action)
+{
+	kdebugf();
+	foreach(const UserListElement &user, action->userListElements())
+		if (user.usesProtocol("Gadu") && user.ID("Gadu") == kadu->myself().ID("Gadu"))
+		{
+			action->setEnabled(false);
+			return;
+		}
+	
+	action->setEnabled(true);
+	kdebugf2();
+}
+
+void checkNotify(KaduAction *action)
+{
+	kdebugf();
+
+	if (config_file.readBoolEntry("Notify", "NotifyAboutAll"))
+	{
+		action->setEnabled(false);
+		return;
+	}
 
 	foreach(const UserListElement &user, action->userListElements())
 		if (!user.usesProtocol("Gadu"))
-			return false;
+		{
+			action->setEnabled(false);
+			return;
+		}
+	action->setEnabled(true);
 
-	kdebugf2();
-	return true;
-}
-
-bool disableContainsSelfUles(KaduAction *action)
-{
-	kdebugf();
-
+	bool on = true;
 	foreach(const UserListElement &user, action->userListElements())
-		if (user.usesProtocol("Gadu") && user.ID("Gadu") == kadu->myself().ID("Gadu"))
-			return false;
+		if (!user.notify())
+		{
+			on = false;
+			break;
+		}
+	action->setChecked(on);
 
 	kdebugf2();
-	return true;
 }
 
-bool disableNotify(KaduAction *action)
+void checkOfflineTo(KaduAction *action)
 {
 	kdebugf();
-
-	if (!disableNonIdUles(action))
-		return false;
-
-	if (config_file.readBoolEntry("Notify", "NotifyAboutAll"))
-		return false;
-
+	bool on = true;
+	foreach(const UserListElement &user, action->userListElements())
+		if (!user.usesProtocol("Gadu") || !user.protocolData("Gadu", "OfflineTo").toBool())
+		{
+			on = false;
+			break;
+		}
+	action->setChecked(on);
 	kdebugf2();
-	return true;
 }
 
-bool disableNotOneUles(KaduAction *action)
+void checkHideDescription(KaduAction *action)
+{
+	foreach(const UserListElement &user, action->userListElements())
+		if (!user.usesProtocol("Gadu"))
+		{
+			action->setEnabled(false);
+			return;
+		}
+	action->setEnabled(true);
+
+	bool on = false;
+	foreach(const UserListElement &user, action->userListElements())
+		if (user.data("HideDescription").toString() == "true")
+		{
+			on = true;
+			break;
+		}
+	action->setChecked(on);
+}
+
+void disableNotOneUles(KaduAction *action)
+{
+	kdebugf();
+	if (action->userListElements().count() != 1)
+	{
+		action->setEnabled(false);
+		return;
+	}
+
+	action->setEnabled(true);
+	kdebugf2();
+}
+
+void disableNoGaduUle(KaduAction *action)
 {
 	kdebugf();
 
 	if (action->userListElements().count() != 1)
-		return false;
-
-	kdebugf2();
-	return true;
-}
-
-bool disableNoGaduUle(KaduAction *action)
-{
-	kdebugf();
-
-	if (!disableNotOneUles(action))
-		return false;
+	{
+		action->setEnabled(false);
+		return;
+	}
 
 	if (!action->userListElements()[0].usesProtocol("Gadu"))
-		return false;
+	{
+		action->setEnabled(false);
+		return;
+	}
 
+	action->setEnabled(true);
 	kdebugf2();
-	return true;
 }
 
-bool disableNoGaduDescription(KaduAction *action)
+void disableNoGaduDescription(KaduAction *action)
 {
 	kdebugf();
 
-	if (!disableNoGaduUle(action))
-		return false;
+	if (action->userListElements().count() != 1)
+	{
+		action->setEnabled(false);
+		return;
+	}
+
+	if (!action->userListElements()[0].usesProtocol("Gadu"))
+	{
+		action->setEnabled(false);
+		return;
+	}
 
 	if (action->userListElements()[0].status("Gadu").description().isEmpty())
-		return false;
+	{
+		action->setEnabled(false);
+		return;
+	}
 
+	action->setEnabled(true);
 	kdebugf2();
-	return true;
 }
 
-bool disableNoGaduDescriptionUrl(KaduAction *action)
+void disableNoGaduDescriptionUrl(KaduAction *action)
 {
 	kdebugf();
 
-	if (!disableNoGaduDescription(action))
-		return false;
+	if (action->userListElements().count() != 1)
+	{
+		action->setEnabled(false);
+		return;
+	}
+
+	if (!action->userListElements()[0].usesProtocol("Gadu"))
+	{
+		action->setEnabled(false);
+		return;
+	}
+
+	if (action->userListElements()[0].status("Gadu").description().isEmpty())
+	{
+		action->setEnabled(false);
+		return;
+	}
 
 	if (action->userListElements()[0].status("Gadu").description().indexOf(HtmlDocument::urlRegExp()) < 0)
-		return false;
+	{
+		action->setEnabled(false);
+		return;
+	}
 
+	action->setEnabled(true);
 	kdebugf2();
-	return true;
 }
 
-bool disableNoEMail(KaduAction *action)
+void disableNoEMail(KaduAction *action)
 {
 	kdebugf();
 
-	if (!disableNotOneUles(action))
-		return false;
+	if (action->userListElements().count() != 1)
+	{
+		action->setEnabled(false);
+		return;
+	}
 
 	const UserListElements &ules = action->userListElements();
 	if (ules[0].email().isEmpty() || ules[0].email().indexOf(HtmlDocument::mailRegExp()) < 0)
-		return false;
+	{
+		action->setEnabled(false);
+		return;
+	}
 
+	action->setEnabled(true);
 	kdebugf2();
-	return true;
 }
 
 /* a monstrous constructor so Kadu would take longer to start up */
@@ -356,26 +454,24 @@ Kadu::Kadu(QWidget *parent)
 		ActionDescription::TypeUser, "notifyAboutUserAction",
 		this, SLOT(notifyAboutUserActionActivated(QAction *, bool)),
 		"NotifyAboutUser", tr("Notify about user"), true, "",
-		disableNotify
+		checkNotify
 	);
-	connect(notifyAboutUserActionDescription, SIGNAL(actionCreated(KaduAction *)), this, SLOT(notifyAboutUserActionCreated(KaduAction *)));
 	UserBox::addManagementActionDescription(notifyAboutUserActionDescription);
 
 	offlineToUserActionDescription = new ActionDescription(
 		ActionDescription::TypeUser, "offlineToUserAction",
 		this, SLOT(offlineToUserActionActivated(QAction *, bool)),
-		"Offline", tr("Offline to user"), true, "", NULL		
+		"Offline", tr("Offline to user"), true, "",
+		checkOfflineTo		
 	);
-	connect(offlineToUserActionDescription, SIGNAL(actionCreated(KaduAction *)), this, SLOT(offlineToUserActionCreated(KaduAction *)));
 	UserBox::addManagementActionDescription(offlineToUserActionDescription);
 
 	hideDescriptionActionDescription = new ActionDescription(
 		ActionDescription::TypeUser, "hideDescriptionAction",
 		this, SLOT(hideDescriptionActionActivated(QAction *, bool)),
 		"ShowDescription_off", tr("Hide description"), true, "",
-		disableNonIdUles
+		checkHideDescription
 	);
-	connect(hideDescriptionActionDescription, SIGNAL(actionCreated(KaduAction *)), this, SLOT(hideDescriptionActionCreated(KaduAction *)));
 	UserBox::addManagementActionDescription(hideDescriptionActionDescription);
 
 	UserBox::addManagementSeparator();
@@ -706,31 +802,22 @@ void Kadu::notifyAboutUserActionActivated(QAction *sender, bool toggled)
 	kdebugf2();
 }
 
-void Kadu::notifyAboutUserActionCreated(KaduAction *action)
-{
-	bool on = true;
-	foreach(const UserListElement &user, action->userListElements())
-		if (!user.notify())
-		{
-			on = false;
-			break;
-		}
-	action->setChecked(on);
-}
-
 void Kadu::offlineToUserActionActivated(QAction *sender, bool toggled)
 {
 	kdebugf();
 
 	if (!config_file.readBoolEntry("General", "PrivateStatus"))
-		if(MessageBox::ask("You need to have private status to do it, would you like to set private status now?")){
+		if(MessageBox::ask("You need to have private status to do it, would you like to set private status now?"))
+		{
 			UserStatus status;
 			status.setStatus(userStatusChanger->status());
 			status.setFriendsOnly(toggled);
 			setStatus(status);
 			config_file.writeEntry("General", "PrivateStatus", true);
 		}
-		else{
+		else
+		{
+			sender->setChecked(!toggled);
 			kdebugf2();
 			return;
 		}
@@ -764,18 +851,6 @@ void Kadu::offlineToUserActionActivated(QAction *sender, bool toggled)
 	kdebugf2();
 }
 
-void Kadu::offlineToUserActionCreated(KaduAction *action)
-{
-	bool on = true;
-	foreach(const UserListElement &user, action->userListElements())
-		if (!user.usesProtocol("Gadu") || !user.protocolData("Gadu", "OfflineTo").toBool())
-		{
-			on = false;
-			break;
-		}
-	action->setChecked(on);
-}
-
 void Kadu::hideDescriptionActionActivated(QAction *sender, bool toggled)
 {
 	kdebugf();
@@ -805,18 +880,6 @@ void Kadu::hideDescriptionActionActivated(QAction *sender, bool toggled)
 	}
 
 	kdebugf2();
-}
-
-void Kadu::hideDescriptionActionCreated(KaduAction *action)
-{
-	bool on = false;
-	foreach(const UserListElement &user, action->userListElements())
-		if (user.data("HideDescription").toString() == "true")
-		{
-			on = true;
-			break;
-		}
-	action->setChecked(on);
 }
 
 void Kadu::deleteUsersActionActivated(QAction *sender, bool toggled)

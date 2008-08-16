@@ -56,27 +56,36 @@ extern "C" KADU_EXPORT void voice_close()
 	voice_manager = 0;
 }
 
-bool disableNonVoiceUles(KaduAction *action)
+void disableNonVoiceUles(KaduAction *action)
 {
 	kdebugf();
 
 	UserListElements ules=action->userListElements();
 
 	if (ules.count() != 1)
-		return false;
+	{
+		action->setEnabled(false);
+		return;
+	}
 
 	bool dccEnabled = config_file.readBoolEntry("Network", "AllowDCC");
 
 	if (!dccEnabled)
-		return false;
+	{
+		action->setEnabled(false);
+		return;
+	}
 
 	unsigned int myUin = config_file.readUnsignedNumEntry("General", "UIN");
 	UserListElement user = ules[0];
 	if (user.usesProtocol("Gadu") && user.ID("Gadu").toUInt() != myUin && (user.status("Gadu").isOnline() || user.status("Gadu").isBusy()))
-		return true;
+	{
+		action->setEnabled(true);
+		return;
+	}
 
+	action->setEnabled(false);
 	kdebugf2();
-	return false;
 }
 
 VoiceChatDialog::VoiceChatDialog()

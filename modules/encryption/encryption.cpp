@@ -57,14 +57,17 @@ extern "C" KADU_EXPORT void encryption_close()
 	encryption_manager = 0;
 }
 
-bool disableSendKey(KaduAction *action)
+void disableSendKey(KaduAction *action)
 {
 	kdebugf();
 
 	UserListElements ules=action->userListElements();
 
 	if (!ules.count())
-		return false;
+	{
+		action->setEnabled(false);
+		return;
+	}
 
 	QString keyfile_path;
 	keyfile_path.append(ggPath("keys/"));
@@ -73,15 +76,23 @@ bool disableSendKey(KaduAction *action)
 	QFileInfo keyfile(keyfile_path);
 
 	if (!keyfile.permission(QFileInfo::ReadUser))
-		return false;
+	{
+		action->setEnabled(false);
+		return;
+	}
 
 	unsigned int myUin = config_file.readUnsignedNumEntry("General", "UIN");
 
 	foreach(const UserListElement &user, ules)
+	{
 		if (!user.usesProtocol("Gadu") || user.ID("Gadu").toUInt() == myUin)
-			return false;
+		{
+			action->setEnabled(false);
+			return;
+		}
+	}
 
-	return true;
+	action->setEnabled(true);
 }
 
 EncryptionManager::EncryptionManager(bool firstLoad)

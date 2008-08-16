@@ -52,21 +52,27 @@ extern "C" KADU_EXPORT void history_close()
 	kdebugf2();
 }
 
-bool disableNonProtocolUles(KaduAction *action)
+void disableNonProtocolUles(KaduAction *action)
 {
 	kdebugf();
 
 	const UserListElements &ules = action->userListElements();
 
 	if (!ules.count())
-		return false;
+	{
+		action->setEnabled(false);
+		return;
+	}
 
 	foreach(const UserListElement &user, ules)
 		if (!user.protocolList().isEmpty())
-			return true;
+		{
+			action->setEnabled(true);
+			return;
+		}
 
+	action->setEnabled(false);
 	kdebugf2();
-	return false;
 }
 
 HistoryModule::HistoryModule(bool firstLoad)

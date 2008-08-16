@@ -30,28 +30,38 @@
 
 #include "file_transfer_manager.h"
 
-bool disableNonDccUles(KaduAction *action)
+void disableNonDccUles(KaduAction *action)
 {
 	kdebugf();
 
 	const UserListElements &ules = action->userListElements();
 
 	if (!ules.count())
-		return false;
+	{
+		action->setEnabled(false);
+		return;
+	}
 
 	bool dccEnabled = config_file.readBoolEntry("Network", "AllowDCC");
 	bool dccKeyEnabled = true;
 
 	if (!dccEnabled)
-		return false;
+	{
+		action->setEnabled(false);
+		return;
+	}
 
 	unsigned int myUin = config_file.readUnsignedNumEntry("General", "UIN");
 	foreach(const UserListElement &user, ules)
+	{
 		if (!user.usesProtocol("Gadu") || user.ID("Gadu").toUInt() == myUin)
-			return false;
+		{
+			action->setEnabled(false);
+			return;
+		}
+	}
 
-	kdebugf2();
-	return true;
+	action->setEnabled(true);
 }
 
 FileTransferManager::FileTransferManager(QObject *parent, const char *name) : QObject(parent, name),
