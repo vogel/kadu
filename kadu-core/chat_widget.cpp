@@ -156,7 +156,7 @@ void ChatWidget::configurationUpdated()
 	}
 
 	Edit->inputBox()->setFont(config_file.readFontEntry("Look","ChatFont"));
- 	Edit->inputBox()->viewport()->setStyleSheet(QString("background-color: %1").arg(config_file.readColorEntry("Look", "ChatTextBgColor").name()));
+ 	Edit->inputBox()->setStyleSheet(QString("QTextEdit {background-color: %1}").arg(config_file.readColorEntry("Look", "ChatTextBgColor").name()));
 	AutoSend = config_file.readBoolEntry("Chat", "AutoSend");
 	Edit->inputBox()->setAutosend(AutoSend);
 

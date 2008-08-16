@@ -159,6 +159,7 @@ SearchDialog::SearchDialog(QWidget *parent, UinType whoisSearchUin)
 	QStringList headers;
 	headers << tr("Status") << tr("Uin") << tr("Name") << tr("City") << tr("Nickname") << tr("Birth year");
 	results->setHeaderLabels(headers);
+	results->setSortingEnabled(true);
 	results->setAllColumnsShowFocus(true);
 	results->setSelectionMode(QAbstractItemView::SingleSelection);
 	results->setIndentation(false);

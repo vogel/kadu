@@ -314,7 +314,7 @@ void ModulesDialog::refreshList()
 	
 		new QTreeWidgetItem(lv_modules, strings);
 	}
-
+	lv_modules->resizeColumnToContents(0);
 // 	lv_modules->setSelected(lv_modules->findItem(s_selected, 0), true);
 
 	lv_modules->verticalScrollBar()->setValue(vScrollValue);
