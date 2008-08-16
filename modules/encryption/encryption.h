@@ -7,6 +7,7 @@
 
 class ActionDescription;
 class ChatWidget;
+class KaduAction;
 class KeysManager;
 class Protocol;
 class UserGroup;
@@ -39,7 +40,7 @@ class EncryptionManager : public ConfigurationUiHandler
 	private slots:
 		void decryptMessage(Protocol *protocol, UserListElements senders, QString &msg, QByteArray &formats, bool &ignore);
 		void sendMessageFilter(const UserListElements users, QString &msg, bool &stop);
-		void setupEncrypt(const UserGroup *group);
+		void setupEncrypt(KaduAction *action);
 
 		void generateMyKeys();
 		void sendPublicKeyActionActivated(QAction *sender, bool toggled);

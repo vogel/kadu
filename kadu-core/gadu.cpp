@@ -1243,9 +1243,10 @@ bool GaduProtocol::sendMessage(UserListElements users, const Message &message)
 
 	kdebugmf(KDEBUG_INFO, "\n%s\n", (const char *)unicode2latin(plain));
 
+	emit sendMessageFiltering(users, plain, stop);
+
 	QByteArray data = unicode2cp(plain);
 
-	emit sendMessageFiltering(users, plain, stop);
 	if (stop)
 	{
 		kdebugmf(KDEBUG_FUNCTION_END, "end: filter stopped processing\n");

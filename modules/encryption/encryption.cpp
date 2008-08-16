@@ -72,7 +72,7 @@ bool disableSendKey(KaduAction *action)
 	keyfile_path.append(".pem");
 	QFileInfo keyfile(keyfile_path);
 
-	if (!keyfile.permission(QFileInfo::ReadUser) || gadu->currentStatus().isOffline())
+	if (!keyfile.permission(QFileInfo::ReadUser))
 		return false;
 
 	unsigned int myUin = config_file.readUnsignedNumEntry("General", "UIN");
@@ -105,6 +105,7 @@ EncryptionManager::EncryptionManager(bool firstLoad)
 			true, tr("Disable encryption for this conversation"),
 			disableSendKey
 	);
+	connect(encryptionActionDescription, SIGNAL(actionCreated(KaduAction *)), this, SLOT(setupEncrypt(KaduAction *)));
 
 	if (firstLoad)
 		ChatEditBox::addAction("encryptionAction");
@@ -184,9 +185,20 @@ void EncryptionManager::generateMyKeys()
 	kdebugf2();
 }
 
-void EncryptionManager::setupEncrypt(const UserGroup *group)
+void EncryptionManager::setupEncrypt(KaduAction *action)
 {
 	kdebugf();
+
+	ChatEditBox *chatEditBox = dynamic_cast<ChatEditBox *>(action->parent());
+	if (!chatEditBox)
+		return;
+
+	ChatWidget *chatWidget = chatEditBox->chatWidget();
+	if (!chatWidget)
+		return;
+
+	const UserGroup *group = chatWidget->users();
+
 	QString keyfile_path;
 	keyfile_path.append(ggPath("keys/"));
 	keyfile_path.append((*(*group).constBegin()).ID("Gadu"));
@@ -207,10 +219,9 @@ void EncryptionManager::setupEncrypt(const UserGroup *group)
 			encrypt = config_file.readBoolEntry("Chat", "Encryption");
 	}
 
-	ChatWidget *chat = chat_manager->findChatWidget(group);
-	setupEncryptButton(chat, encrypt);
+	setupEncryptButton(chatWidget, encrypt);
 	setupEncryptionButtonForUsers(group->toUserListElements(), encryption_possible);
-	EncryptionPossible[chat] = encryption_possible;
+	EncryptionPossible[chatWidget] = encryption_possible;
 
 	kdebugf2();
 }
@@ -218,27 +229,24 @@ void EncryptionManager::setupEncrypt(const UserGroup *group)
 void EncryptionManager::setupEncryptButton(ChatWidget* chat, bool enabled)
 {
 	kdebugf();
-/* TODO
+
 	EncryptionEnabled[chat] = enabled;
-	QList<ToolButton*> buttons =
-		KaduActions["encryptionAction"]->toolButtonsForUserListElements(
-			chat->users()->toUserListElements());
-	CONST_FOREACH(i, buttons)
+
+	QAction *action = encryptionActionDescription->action(chat->getChatEditBox());
+	if (action)
 	{
 		if (enabled)
 		{
-			(*i)->setToolTip(tr("Disable encryption for this conversation"));
-			(*i)->setIconSet(icons_manager->loadIconSet("EncryptedChat"));
-			(*i)->setOn(true);
+			action->setToolTip(tr("Disable encryption for this conversation"));
+			action->setChecked(true);
 		}
 		else
 		{
-			(*i)->setToolTip(tr("Enable encryption for this conversation"));
-			(*i)->setIconSet(icons_manager->loadIconSet("DecryptedChat"));
-			(*i)->setOn(false);
+			action->setToolTip(tr("Enable encryption for this conversation"));
+			action->setChecked(false);
 		}
 	}
-*/
+
 	chat_manager->setChatWidgetProperty(chat->users(), "EncryptionEnabled", QVariant(enabled));
 	if (chat->users()->count() == 1)
 		(*(chat->users()->begin())).setData("EncryptionEnabled", enabled ? "true" : "false");
@@ -256,7 +264,7 @@ void EncryptionManager::encryptionActionActivated(QAction *sender, bool toggled)
 	ChatWidget *chatWidget = chat_manager->findChatWidget(kaduMainWindow->userListElements());
 	if (!chatWidget)
 		return;
-	setupEncryptButton(chatWidget,!EncryptionEnabled[chatWidget]);
+	setupEncryptButton(chatWidget, !EncryptionEnabled[chatWidget]);
 	if (KeysManagerDialog)
 		KeysManagerDialog->turnContactEncryptionText((*chatWidget->users()->constBegin()).ID("Gadu"), EncryptionEnabled[chatWidget]);
 	kdebugf2();
@@ -327,11 +335,11 @@ void EncryptionManager::decryptMessage(Protocol *protocol, UserListElements send
 void EncryptionManager::setupEncryptionButtonForUsers(UserListElements users, bool enabled)
 {
 	kdebugf(); 
-/* TODO
-	QList<ToolButton*> buttons = KaduActions["encryptionAction"]->toolButtonsForUserListElements(users);
-	CONST_FOREACH(i, buttons)
-		(*i)->setEnabled(enabled);
-*/
+	foreach (KaduAction *action, encryptionActionDescription->actions())
+	{
+		if (action->userListElements() == users)
+			action->setEnabled(enabled);
+	}
 	kdebugf2();
 }
 
@@ -356,7 +364,7 @@ void EncryptionManager::sendMessageFilter(const UserListElements users, QString 
 //	kdebugm(KDEBUG_INFO, "length: %d\n", msg.length());
 	if (users.count() == 1 && EncryptionEnabled[chat])
 	{
-		char *msg_c = sim_message_encrypt((const unsigned char *)msg.data(), (*users.constBegin()).ID("Gadu").toUInt());
+		char *msg_c = sim_message_encrypt((const unsigned char *)qPrintable(msg), (*users.constBegin()).ID("Gadu").toUInt());
 		if (!msg_c)
 		{
 			kdebugm(KDEBUG_ERROR, "sim_message_encrypt returned NULL! sim_errno=%d sim_strerror=%s\n", sim_errno, sim_strerror(sim_errno));
@@ -365,7 +373,8 @@ void EncryptionManager::sendMessageFilter(const UserListElements users, QString 
 		}
 		else
 		{
-			msg = msg_c;
+			msg = QString(msg_c);
+
 			free(msg_c);
 		}
 	}
