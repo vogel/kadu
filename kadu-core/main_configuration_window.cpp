@@ -258,11 +258,19 @@ void MainConfigurationWindow::setQtThemes()
 	QStringList themes = QStyleFactory::keys();
 	QString currentStyle = QApplication::style()->name();
 
+	foreach(const QString& it, themes)
+		if(it.lower()==currentStyle.lower())
+		{
+			currentStyle=it;
+			break;
+		}
+
 	if (!themes.contains(currentStyle))
 		themes.append(currentStyle);
 
 	qtThemes->setItems(themes, themes);
-	qtThemes->setCurrentText(currentStyle);
+	// hack, this setting will by used in ConfigComboBox::loadConfiguration()
+	config_file.writeEntry("Look", "QtStyle", currentStyle);
 }
 
 void MainConfigurationWindow::setIconThemes()
