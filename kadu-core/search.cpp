@@ -349,19 +349,20 @@ void SearchDialog::stopSearch()
 
 	gadu->stopSearchInPubdir(*searchRecord);
 
- 	setActionState(stopSearchAction, false);
+	setActionState(stopSearchAction, false);
 
- 	if ((r_pers->isChecked() && !isPersonalDataEmpty()) || (r_uin->isChecked() && !e_uin->text().isEmpty()))
- 		setActionState(firstSearchAction, true);
-	if (!results->selectedItems().isEmpty()) 
+	if ((r_pers->isChecked() && !isPersonalDataEmpty()) || (r_uin->isChecked() && !e_uin->text().isEmpty()))
+		setActionState(firstSearchAction, true);
+	if (!results->selectedItems().isEmpty())
 	{
- 		if (r_pers->isChecked() && !isPersonalDataEmpty())
- 			setActionState(nextResultsAction, true);
+		if (r_pers->isChecked() && !isPersonalDataEmpty())
+			setActionState(nextResultsAction, true);
 
- 		setActionState(clearResultsAction, true);
- 		setActionState(addFoundAction, true);
- 		setActionState(chatFoundAction, true);
+		setActionState(addFoundAction, true);
+		setActionState(chatFoundAction, true);
 	}
+	if (results->topLevelItemCount() > 0)
+		setActionState(clearResultsAction, true);
 
 	kdebugf2();
 }
@@ -464,7 +465,7 @@ void SearchDialog::newSearchResults(SearchResults& searchResults, int seq, int f
 
 	searchRecord->FromUin = fromUin;
 
-	int items = results->children().count(); // number of items already in results
+	int items = results->topLevelItemCount(); // number of items already in results
 
 	// ??	if ((status && atoi(status) <= 1 && only_active->isChecked()) || !status)
 
@@ -508,13 +509,13 @@ void SearchDialog::newSearchResults(SearchResults& searchResults, int seq, int f
 
 	progress->setText(tr("Done searching"));
 
- 	if (results->selectedItems().count() > 0)
- 		results->topLevelItem(0)->setSelected(true);
+//	if (results->topLevelItemCount() > 0)
+//		results->topLevelItem(0)->setSelected(true);
 
 //	searchhidden = false;
 	if ((r_pers->isChecked() && !isPersonalDataEmpty()) || (r_uin->isChecked() && !e_uin->text().isEmpty()))
 		setActionState(firstSearchAction, true);
- 	setActionState(stopSearchAction, false);
+	setActionState(stopSearchAction, false);
 
 	if (searchResults.isEmpty()  || ((int)searchResults.count() == items))
 	{
@@ -524,15 +525,17 @@ void SearchDialog::newSearchResults(SearchResults& searchResults, int seq, int f
 	}
 	else
 	{
- 		if (r_pers->isChecked() && !isPersonalDataEmpty())
- 			setActionState(nextResultsAction, true);
+		if (r_pers->isChecked() && !isPersonalDataEmpty())
+			setActionState(nextResultsAction, true);
 
-		if (results->selectedItems().count() > 0)
-		{
+		if (results->topLevelItemCount() > 0)
 			setActionState(clearResultsAction, true);
-			setActionState(addFoundAction, true);
-			setActionState(chatFoundAction, true);
-		}
+	}
+
+	if (!results->selectedItems().isEmpty())
+	{
+		setActionState(addFoundAction, true);
+		setActionState(chatFoundAction, true);
 	}
 
 	searching = false;
