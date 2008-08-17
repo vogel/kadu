@@ -90,11 +90,6 @@ private slots:
 	void persClicked();
 	void uinClicked();
 	void updateInfoClicked();
-// 	void actionsAddedToToolbar(ToolButton*, ToolBar*);
-// 	void stopSearchActionAddedToToolbar(ToolButton*, ToolBar*);
-// 	void firstSearchActionAddedToToolbar(ToolButton*, ToolBar*);
-// 	void nextResultsActionAddedToToolbar(ToolButton*, ToolBar*);
-// 	void clearResultsActionAddedToToolbar(ToolButton*, ToolBar*);
 	void selectionChanged();
 
 protected:
@@ -130,16 +125,6 @@ public:
 	virtual ChatWidget * chatWidget() { return 0; }
 
 	/**
-		\fn void firstSearch()
-		Czy�ci list� wynik�w, a nast�pnie wyszukuje w katalogu publicznym wg.
-		podanych w oknie danych. Wy�wietla tylko ograniczon� ich liczb�, ze wzgl�du
-		na dzia�anie protoko�u Gadu-Gadu. Metoda ta wywo�ywana jest przy wci�ni�ciu
-		przycisku "Szukaj". Aby uzyska� kolejne wyniki i doda� je do
-		bierz�cych, nale�y dokona� wt�rnego zapytania metod� SearchDialog::nextSearch.
-	**/
-	void firstSearch();
-
-	/**
 		\fn void nextSearch()
 		Kontynuuje wyszukowanie kolejnych kontakt�w, a wyniki dodaje do bierz�cych.
 		Metoda ta wywo�ywana jest przy wci�ni�ciu przycisku "Nast�pne wyniki".
@@ -170,6 +155,15 @@ public slots:
 	**/
 	void newSearchResults(SearchResults& searchResults, int seq, int fromUin);
 
+	/**
+		\fn void firstSearch()
+		Czy�ci list� wynik�w, a nast�pnie wyszukuje w katalogu publicznym wg.
+		podanych w oknie danych. Wy�wietla tylko ograniczon� ich liczb�, ze wzgl�du
+		na dzia�anie protoko�u Gadu-Gadu. Metoda ta wywo�ywana jest przy wci�ni�ciu
+		przycisku "Szukaj". Aby uzyska� kolejne wyniki i doda� je do
+		bierz�cych, nale�y dokona� wt�rnego zapytania metod� SearchDialog::nextSearch.
+	**/
+	void firstSearch();
 };
 
 #endif

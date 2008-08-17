@@ -64,6 +64,7 @@ SearchDialog::SearchDialog(QWidget *parent, UinType whoisSearchUin)
 	l_nick = new QLabel(tr("Nickname"), centralWidget);
 	e_nick = new QLineEdit(centralWidget);
 	connect(e_nick, SIGNAL(textChanged(const QString &)), this, SLOT(personalDataTyped()));
+	connect(e_nick, SIGNAL(returnPressed()), this, SLOT(firstSearch()));
 
 	l_gender = new QLabel(tr("Gender"), centralWidget);
 	c_gender = new QComboBox(centralWidget);
@@ -75,10 +76,12 @@ SearchDialog::SearchDialog(QWidget *parent, UinType whoisSearchUin)
 	l_name = new QLabel(tr("Name"), centralWidget);
 	e_name = new QLineEdit(centralWidget);
 	connect(e_name, SIGNAL(textChanged(const QString &)), this, SLOT(personalDataTyped()));
+	connect(e_name, SIGNAL(returnPressed()), this, SLOT(firstSearch()));
 
 	l_surname = new QLabel(tr("Surname"), centralWidget);
 	e_surname = new QLineEdit(centralWidget);
 	connect(e_surname, SIGNAL(textChanged(const QString &)), this, SLOT(personalDataTyped()));
+	connect(e_surname, SIGNAL(returnPressed()), this, SLOT(firstSearch()));
 
 	l_byr = new QLabel(tr("Birthyear"), centralWidget);
 	l_byrFrom = new QLabel(tr("from"), centralWidget);
@@ -87,16 +90,19 @@ SearchDialog::SearchDialog(QWidget *parent, UinType whoisSearchUin)
 	e_byrFrom->setValidator(new QIntValidator(1, 2100, this));
 	connect(e_byrFrom, SIGNAL(textChanged(const QString &)), this, SLOT(personalDataTyped()));
 	connect(e_byrFrom, SIGNAL(textChanged(const QString &)), this, SLOT(byrFromDataTyped()));
+	connect(e_byrFrom, SIGNAL(returnPressed()), this, SLOT(firstSearch()));
 	l_byrTo = new QLabel(tr("to"), centralWidget);
 	e_byrTo = new QLineEdit(centralWidget);
 	e_byrTo->setEnabled(false);
 	e_byrTo->setMaxLength(4);
 	e_byrTo->setValidator(new QIntValidator(1, 2100, centralWidget));
 	connect(e_byrTo, SIGNAL(textChanged(const QString &)), this, SLOT(personalDataTyped()));
+	connect(e_byrTo, SIGNAL(returnPressed()), this, SLOT(firstSearch()));
 
 	l_city = new QLabel(tr("City"), centralWidget);
 	e_city = new QLineEdit(centralWidget);
 	connect(e_city, SIGNAL(textChanged(const QString &)), this, SLOT(personalDataTyped()));
+	connect(e_city, SIGNAL(returnPressed()), this, SLOT(firstSearch()));
 
 	only_active = new QCheckBox(tr("Only active users"), centralWidget);
 	connect(only_active, SIGNAL(clicked()), this, SLOT(personalDataTyped()));
@@ -108,6 +114,7 @@ SearchDialog::SearchDialog(QWidget *parent, UinType whoisSearchUin)
 	e_uin->setMaxLength(8);
 	e_uin->setValidator(new QIntValidator(1, 99999999, centralWidget));
 	connect(e_uin, SIGNAL(textChanged(const QString &)), this, SLOT(uinTyped()));
+	connect(e_uin, SIGNAL(returnPressed()), this, SLOT(firstSearch()));
 	uinLayout->addWidget(l_uin);
 	uinLayout->addWidget(e_uin);
 
@@ -362,6 +369,9 @@ void SearchDialog::stopSearch()
 void SearchDialog::firstSearch()
 {
 	kdebugf();
+
+	if (r_pers->isChecked() && isPersonalDataEmpty())
+		return;
 
 	if (gadu->currentStatus().isOffline())
 	{
