@@ -342,7 +342,8 @@ void ToolBar::actionLoaded(const QString &actionName)
 {
 	if (!hasAction(actionName))
 		return;
-	updateButtons();
+	//workaround for modules
+	QTimer::singleShot(0, this, SLOT(updateButtons()));
 }
 
 void ToolBar::actionUnloaded(const QString &actionName)
