@@ -1,4 +1,4 @@
-set (GSM_SOURCES 
+set (GSM_SOURCES
 	src/add.c
 	src/code.c
 	src/debug.c
@@ -22,4 +22,4 @@ set (GSM_SOURCES
 include_directories (inc)
 
 add_library(gsm ${GSM_SOURCES})
-set_target_properties(gsm PROPERTIES COMPILE_FLAGS "-DSASR -DUSE_FLOAT_MUL -DFAST -DWAV49" )
+set_target_properties(gsm PROPERTIES COMPILE_FLAGS "-DSASR -DUSE_FLOAT_MUL -DFAST -DWAV49 -fPIC" )
