@@ -96,6 +96,8 @@ public:
 	int separatorSize() const { return SeparatorSize; }
 
 	void setShowServerTime(bool noServerTime, int noServerTimeDiff);
+
+	void setColorsAndBackground(QString &backgroundColor, QString &nickColor, QString &fontColor);
 };
 
 #endif

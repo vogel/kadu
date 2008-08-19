@@ -23,7 +23,6 @@
 ChatMessagesView::ChatMessagesView(QWidget *parent) : KaduTextBrowser(parent),
 	Prune(0), lastScrollValue(0), lastLine(false)
 {
-	setMargin(ParagraphSeparator);
 	setMinimumSize(QSize(100,100));
 
 	connect(gadu, SIGNAL(imageReceivedAndSaved(UinType, uint32_t, uint32_t, const QString &)),
@@ -146,17 +145,36 @@ void ChatMessagesView::repaintMessages()
 	text += "</body></html>";
 
 	setHtml(text);
-	updateBackgrounds();
 
 	kdebugf2();
 }
 
-void ChatMessagesView::updateBackgrounds()
+void ChatMessagesView::updateBackgroundsAndColors()
 {
+	QString myBackgroundColor = config_file.readEntry("Look", "ChatMyBgColor");
+	QString myFontColor = config_file.readEntry("Look", "ChatMyFontColor");
+	QString myNickColor = config_file.readEntry("Look", "ChatMyNickColor");
+	QString usrBackgroundColor = config_file.readEntry("Look", "ChatUsrBgColor");
+	QString usrFontColor = config_file.readEntry("Look", "ChatUsrFontColor");
+	QString usrNickColor = config_file.readEntry("Look", "ChatUsrNickColor");
 
-//	int i = 0;
-//	CONST_FOREACH(message, Messages)
-//		setParagraphBackgroundColor(i++, (*message)->backgroundColor);
+	foreach(ChatMessage *message, Messages)
+	{
+		switch (message->type())
+		{
+			case TypeSent:
+				message->setColorsAndBackground(myBackgroundColor, myNickColor, myFontColor);
+				break;
+
+			case TypeReceived:
+				message->setColorsAndBackground(usrBackgroundColor, usrNickColor, usrFontColor);
+				break;
+
+			case TypeSystem:
+				break;
+		}
+
+	}
 }
 
 void ChatMessagesView::appendMessage(ChatMessage *message)
@@ -206,8 +224,6 @@ void ChatMessagesView::clearMessages()
 	Messages.clear();
 
 	setHtml("");
-//	TODO: 0.6.5 updateBackgrounds();
-// 	viewport()->repaint();
 }
 
 unsigned int ChatMessagesView::countMessages()
@@ -217,6 +233,8 @@ unsigned int ChatMessagesView::countMessages()
 
 void ChatMessagesView::configurationUpdated()
 {
+	ParagraphSeparator = config_file.readUnsignedNumEntry("Look", "ParagraphSeparator");
+
 	QFont font = config_file.readFontEntry("Look","ChatFont");
 
 	QString fontFamily = font.family();
@@ -236,10 +254,13 @@ void ChatMessagesView::configurationUpdated()
 		"	text-decoration: %5;"
 		"}"
 		"body {"
-		"	margin: 0;"
+		"	margin: %6;"
 		"	padding: 0;"
-		"	background-color: %6;"
-		"}").arg(fontStyle, fontWeight, fontSize, fontFamily, textDecoration, backgroundColor);
+		"	background-color: %7;"
+		"}"
+		"p {"
+		"	margin: 0;"
+		"}").arg(fontStyle, fontWeight, fontSize, fontFamily, textDecoration, QString::number(ParagraphSeparator), backgroundColor);
 
 	// background color of chat
 // 	QString bgImage = KaduParser::parse(config_file.readEntry("Look", "ChatBgImage"), usrs[0]);
@@ -268,7 +289,7 @@ void ChatMessagesView::configurationUpdated()
 		ChatSyntaxWithoutHeader = ChatSyntaxWithHeader;
 
 	CfgNoHeaderRepeat = config_file.readBoolEntry("Look", "NoHeaderRepeat");
-	ParagraphSeparator = config_file.readUnsignedNumEntry("Look", "ParagraphSeparator");
+
 
 	// headers removal stuff
 	if (CfgNoHeaderRepeat)
@@ -285,7 +306,7 @@ void ChatMessagesView::configurationUpdated()
 	NoServerTime = config_file.readBoolEntry("Look", "NoServerTime");
 	NoServerTimeDiff = config_file.readUnsignedNumEntry("Look", "NoServerTimeDiff");
 
-	setMargin(ParagraphSeparator);
+	updateBackgroundsAndColors();
 
 	repaintMessages();
 }

@@ -49,7 +49,7 @@ class KADUAPI ChatMessagesView : public KaduTextBrowser, ConfigurationAwareObjec
 		\fn void updateBackgrounds()
 		Funkcja od�wie�aj�ca kolory t�a wiadomo�ci.
 	**/
-	void updateBackgrounds();
+	void updateBackgroundsAndColors();
 	/**
 		\fn QString formatMessage(ChatMessage *message, ChatMessage *after)
 		Funkcja formatuj�ca wiadomo�ci wed�ug ustawie� w konfiguracji.

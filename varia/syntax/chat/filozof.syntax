@@ -1,6 +1,6 @@
 <p>
 <kadu:header> 
-<b color="#{nickColor}">%a</b> <font size="-2" color="#{nickColor}">(#{receivedDate})</font><br> 
+<span style="color:#{nickColor}; font-weight:bold">%a</span> <span style="color:#{nickColor}; font-size:x-small ">(#{receivedDate})</span><br> 
 </kadu:header>
 <span color="#{fontColor}">#{message}</span> 
 </p>

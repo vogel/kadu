@@ -84,7 +84,7 @@ static QString getSeparator(const QObject * const object)
 	int separatorSize = dynamic_cast<const ChatMessage * const>(object)->separatorSize();
 
 	if (separatorSize)
-		return "<p style=\"margin: 0; margin-top:" + QString::number(separatorSize) + "px\"></p>";
+		return "<div style=\"margin: 0; margin-top:" + QString::number(separatorSize) + "px\"></div>";
 	else
 		return "";
 }
@@ -191,4 +191,14 @@ void ChatMessage::setShowServerTime(bool noServerTime, int noServerTimeDiff)
 		sentDate = printDateTime(SDate);
 	else
 		sentDate = QString::null;
+}
+
+void ChatMessage::setColorsAndBackground(QString &backgroundColor, QString &nickColor, QString &fontColor)
+{
+		if (Type == TypeSystem)
+			return;
+
+		this->backgroundColor = backgroundColor;
+		this->nickColor = nickColor;
+		this->fontColor = fontColor;
 }
