@@ -144,7 +144,11 @@ QDomElement KaduMainWindow::getDockAreaConfigElement(QDomElement toolbarsConfig,
 
 void KaduMainWindow::addToolButton(QDomElement toolbarConfig, const QString &actionName, bool showLabel)
 {
-	QDomElement buttonConfig = xml_config_file->createElement(toolbarConfig, "ToolButton");
+	QDomElement buttonConfig = xml_config_file->findElementByProperty(toolbarConfig, "ToolButton", "action_name", actionName);
+//don't add element if exists
+	if (!buttonConfig.isNull())
+		return;
+	buttonConfig = xml_config_file->createElement(toolbarConfig, "ToolButton");
 	buttonConfig.setAttribute("action_name", actionName);
 	buttonConfig.setAttribute("uses_text_label", showLabel);
 }
