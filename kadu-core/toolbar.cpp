@@ -447,6 +447,10 @@ void ToolBar::loadFromConfig(QDomElement toolbar_element)
 		ToolBarAction action;
 
 		action.actionName = button_elem.attribute("action_name");
+
+		if (hasAction(action.actionName))
+			continue;
+
 		if (button_elem.attribute("uses_text_label").isNull())
 			action.showLabel = false;
 		else
