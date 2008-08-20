@@ -681,10 +681,10 @@ void Kadu::copyDescriptionActionActivated(QAction *sender, bool toggled)
 
 	QString status = user.status("Gadu").description();
 	if (status.isEmpty())
-		return
+		return;
 
-	QApplication::clipboard()->setText(status, QClipboard::Clipboard);
 	QApplication::clipboard()->setText(status, QClipboard::Selection);
+	QApplication::clipboard()->setText(status, QClipboard::Clipboard);
 
 	kdebugf2();
 }
@@ -736,8 +736,8 @@ void Kadu::copyPersonalInfoActionActivated(QAction *sender, bool toggled)
 	if (info.isEmpty())
 		return;
 
-	QApplication::clipboard()->setText(info, QClipboard::Clipboard);
 	QApplication::clipboard()->setText(info, QClipboard::Selection);
+	QApplication::clipboard()->setText(info, QClipboard::Clipboard);
 
 	kdebugf2();
 }
