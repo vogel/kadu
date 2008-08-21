@@ -1230,23 +1230,23 @@ bool UserBox::moveUpCompareFunction(const QString &id)
 	CmpFuncDesc d;
 	int pos = 0;
 	bool found = false;
-	foreach(const CmpFuncDesc &c, comparer->CmpFunctions)
+	QList<CmpFuncDesc>::iterator c;
+	for (c = comparer->CmpFunctions.begin(); c != comparer->CmpFunctions.end(); ++c)
 	{
-	// TODO: 0.6.5
-// 		if (c.id == id)
-// 		{
-// 			found = true;
-// 			if (pos == 0)
-// 				break;
-// 			d = c;
-// 			--c;
-// 			c = comparer->CmpFunctions.insert(c, d);
-// 			c += 2;
-// 			comparer->CmpFunctions.remove(c);
-// 			refreshLater();
-// 			break;
-// 		}
-// 		++pos;
+ 		if ((*c).id == id)
+ 		{
+ 			found = true;
+ 			if (pos == 0)
+ 				break;
+ 			d = *c;
+ 			--c;
+ 			c = comparer->CmpFunctions.insert(c, d);
+ 			c += 2;
+ 			comparer->CmpFunctions.remove(c);
+ 			refreshLater();
+ 			break;
+ 		}
+ 		++pos;
 	}
 	kdebugf2();
 	return found;
@@ -1259,23 +1259,23 @@ bool UserBox::moveDownCompareFunction(const QString &id)
 	int pos = 0;
 	int cnt = comparer->CmpFunctions.count();
 	bool found = false;
-	foreach(const CmpFuncDesc &c, comparer->CmpFunctions)
+	QList<CmpFuncDesc>::iterator c;
+	for (c = comparer->CmpFunctions.begin(); c != comparer->CmpFunctions.end(); ++c)
 	{
-		// TODO: 0.6.5
-// 		if (c.id == id)
-// 		{
-// 			found = true;
-// 			if (pos == cnt - 1)
-// 				break;
-// 			d = *c;
-// 			++c;
-// 			c = comparer->CmpFunctions.insert(c, d);
-// 			c -= 2;
-// 			comparer->CmpFunctions.remove(c);
-// 			refreshLater();
-// 			break;
-// 		}
-// 		++pos;
+ 		if ((*c).id == id)
+ 		{
+ 			found = true;
+ 			if (pos == cnt - 1)
+ 				break;
+ 			d = *c;
+ 			++c;
+ 			c = comparer->CmpFunctions.insert(c, d);
+ 			c -= 2;
+ 			comparer->CmpFunctions.remove(c);
+ 			refreshLater();
+ 			break;
+ 		}
+ 		++pos;
 	}
 	kdebugf2();
 	return found;
