@@ -93,7 +93,7 @@ void HintsConfigurationWidget::switchToEvent(const QString &event)
 		currentNotifyEvent = event;
 		currentProperties.eventName = event;
 
-		config_file.addVariable("Hints", QString("Event_") + event + "_font", defaultFont);
+		config_file.addVariable("Hints", QString("Event_") + event + "_font", *defaultFont);
 		config_file.addVariable("Hints", QString("Event_") + event + "_fgcolor", paletteForegroundColor());
 		config_file.addVariable("Hints", QString("Event_") + event + "_bgcolor", paletteBackgroundColor());
 
