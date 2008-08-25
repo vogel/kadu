@@ -80,6 +80,13 @@ QString ggPath(const QString &subpath)
 	{
 		char *home;
 #ifdef Q_OS_WIN
+		// on win32 we dataPath dont need real argv[0] so it's safe to use this
+		// in such ugly way
+		if(QFile::exists(dataPath("usbinst", ""))){
+			path=dataPath("config/");
+			KaduParser::globalVariables["KADU_CONFIG"] = path;			
+			return (path+subpath);
+		}
 		home=new char[1024];
 		if(!SUCCEEDED(SHGetFolderPath(NULL, CSIDL_APPDATA, NULL,  0,  home))){
 			delete home;
