@@ -120,6 +120,7 @@ HistoryDialog::HistoryDialog(UinsList uins)
 	QVBoxLayout* rightLatout = new QVBoxLayout(rightWidget);
 	body = new ChatMessagesView(rightWidget);
 	body->setPrune(0);
+	body->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 
 	QCheckBox *showStatusChanges = new QCheckBox(tr("Show status changes"), rightWidget);
 	showStatusChanges->setDisabled(config_file.readBoolEntry("History", "DontSaveStatusChanges"));
