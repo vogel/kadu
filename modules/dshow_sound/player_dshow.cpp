@@ -44,20 +44,12 @@ extern "C" KADU_EXPORT void dshow_sound_close()
 	kdebugf2();
 }
 
-DShowPlayer::DShowPlayer()
+DShowPlayer::DShowPlayer(): dshow(NULL)
 {
 	kdebugf();
 
 	CoInitialize(NULL);
 
-	CoCreateInstance(CLSID_FilterGraph, NULL, CLSCTX_INPROC,
-			IID_IGraphBuilder, (void **)&dshow);
-
-	dshow->QueryInterface(IID_IMediaControl, (void **)&control);
-	dshow->QueryInterface(IID_IMediaEventEx, (void **)&event);
-
-	event->SetNotifyWindow((OAHWND)winId(), WM_MEDIA_NOTIFY, NULL);
-	
 	connect(sound_manager, SIGNAL(playSound(const QString &, bool, double)),
 			this, SLOT(playSound(const QString &, bool, double)));
 
@@ -71,9 +63,12 @@ DShowPlayer::~DShowPlayer()
 	disconnect(sound_manager, SIGNAL(playSound(const QString &, bool, double)),
 			this, SLOT(playSound(const QString &, bool, double)));
 
-	event->Release();
-	control->Release();
-	dshow->Release();
+	if(dshow){
+		control->Stop();
+		event->Release();
+		control->Release();
+		dshow->Release();
+	}
 
 	kdebugf2();
 }
@@ -81,8 +76,18 @@ DShowPlayer::~DShowPlayer()
 void DShowPlayer::playSound(const QString &s, bool volCntrl, double vol)
 {
 	kdebugf();
-	dshow->RenderFile((LPCWSTR)s.utf16(), 0);
-	control->Run();
+	if(!dshow){
+		CoCreateInstance(CLSID_FilterGraph, NULL, CLSCTX_INPROC,
+				IID_IGraphBuilder, (void **)&dshow);
+
+		dshow->QueryInterface(IID_IMediaControl, (void **)&control);
+		dshow->QueryInterface(IID_IMediaEventEx, (void **)&event);
+
+		event->SetNotifyWindow((OAHWND)winId(), WM_MEDIA_NOTIFY, NULL);
+
+		dshow->RenderFile((LPCWSTR)s.utf16(), 0);
+		control->Run();
+	}
 }
 
 bool DShowPlayer::winEvent(MSG * message, long * result)
@@ -94,10 +99,16 @@ bool DShowPlayer::winEvent(MSG * message, long * result)
 		{
 			event->FreeEventParams(code, x1, x2);
 
-			if(code==EC_COMPLETE)
+			if(code==EC_COMPLETE){
 				control->Stop();
+				event->Release();
+				control->Release();
+				dshow->Release();
+				dshow=NULL;
+			}
+			return false;
 		}
-		return false;
+
 	}
 	return QWidget::winEvent(message, result);
 }
