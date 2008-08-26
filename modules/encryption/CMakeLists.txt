@@ -37,6 +37,7 @@ endif (COMMAND cmake_policy)
 
 pkg_search_module (OPENSSL REQUIRED openssl)
 include_directories (${OPENSSL_INCLUDE_DIRS})
+link_directories (${OPENSSL_INCLUDE_DIRS})
 
 add_library (encryption ${encryption} ${SOURCES} ${MOC_FILES})
 target_link_libraries(encryption ${OPENSSL_LIBRARIES})

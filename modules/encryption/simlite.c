@@ -29,6 +29,9 @@
 #include <openssl/err.h>
 #include <openssl/pem.h>
 #include <openssl/sha.h>
+#ifdef WIN32
+#include <openssl/applink.c>
+#endif
 
 #include <limits.h>
 #include <stdio.h>
@@ -41,7 +44,11 @@
 #include "simlite.h"
 
 #ifndef PATH_MAX
+# ifndef _POSIX_PATH_MAX
+#  define PATH_MAX MAX_PATH
+# else
 #  define PATH_MAX _POSIX_PATH_MAX
+# endif
 #endif
 
 char *sim_key_path = NULL;
