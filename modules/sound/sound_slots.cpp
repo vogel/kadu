@@ -109,6 +109,7 @@ SoundSlots::SoundSlots(bool firstLoad, QObject *parent)
 SoundSlots::~SoundSlots()
 {
 	kdebugf();
+	disconnect(mute_action, SIGNAL(actionCreated(KaduAction *)), this, SLOT(setMuteActionState()));	
 	delete mute_action;
 	mute_action = 0;
 	kdebugf2();
