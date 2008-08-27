@@ -103,9 +103,11 @@ aRtsPlayerRecorder::aRtsPlayerRecorder(QObject *parent, const char *name) : QObj
 	connect(sound_manager, SIGNAL(closeDeviceImpl(SoundDevice)),
 		this, SLOT(closeDevice(SoundDevice)));
 	connect(sound_manager, SIGNAL(playSampleImpl(SoundDevice, const int16_t*, int, bool*)),
-		this, SLOT(playSample(SoundDevice, const int16_t*, int, bool*)));
+		this, SLOT(playSample(SoundDevice, const int16_t*, int, bool*)),
+		Qt::DirectConnection);
 	connect(sound_manager, SIGNAL(recordSampleImpl(SoundDevice, int16_t*, int, bool*)),
-		this, SLOT(recordSample(SoundDevice, int16_t*, int, bool*)));
+		this, SLOT(recordSample(SoundDevice, int16_t*, int, bool*)),
+		Qt::DirectConnection);
 
 	kdebugf2();
 }
