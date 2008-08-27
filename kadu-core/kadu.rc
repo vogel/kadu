@@ -20,9 +20,9 @@ BEGIN
 		BEGIN
 		VALUE "CompanyName",	"Kadu Team"
 #ifdef KADU_CONSOLE
-		VALUE "FileDescription",  "Kadu main executable (console version)"
+		VALUE "FileDescription",  "Kadu instant messenger (console version)"
 #else
-		VALUE "FileDescription",  "Kadu main executable"
+		VALUE "FileDescription",  "Kadu instant messenger"
 #endif
 		VALUE "LegalCopyright", "Kadu Team"
 		VALUE "FileVersion", VERSION
