@@ -45,8 +45,8 @@ QDateTime currentDateTime();
 KADUAPI QString pwHash(const QString &text);
 QString translateLanguage(const QApplication *application, const QString &locale, const bool l2n);
 
-void openWebBrowser(const QString &link);
-void openMailClient(const QString &mail);
+KADUAPI void openWebBrowser(const QString &link);
+KADUAPI void openMailClient(const QString &mail);
 void openGGChat(const QString &gg);
 
 QString versionToName(const unsigned int version);
