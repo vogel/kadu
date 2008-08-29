@@ -14,6 +14,7 @@ Je¶li jest w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * kadu nie ³±czy ponownie po roz³±czeniu w wyniku zalogowania siê innego klienta do serwera (White Eagle)
 * pozycje na li¶cie 'Ostatnie rozmowy...' nie duplikuj± siê (neeo)
 * poprawka kolorowania przychodz±cych wiadomo¶ci (daris/neeo)
+* dostêpna d³ugo¶æ opisu ustawiana w zale¿no¶ci od u¿ywanej wersji protoko³u (neeo)
 
 +++ wersja 0.6.0.2 (03.07.2008)
 * poprawiona kolejno¶æ argumentów konstruktora klasy ConfigLineEdit (neeo)

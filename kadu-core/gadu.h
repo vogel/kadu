@@ -628,6 +628,8 @@ class GaduProtocol : public Protocol
 		GaduProtocol(const QString &id, QObject *parent = NULL, const char *name = NULL);
 		virtual ~GaduProtocol();
 
+		unsigned int maxDescriptionLength();
+
 		gg_session * session() { return Sess; }
 
 		void changeID(const QString &id);
