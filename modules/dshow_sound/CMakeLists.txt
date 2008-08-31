@@ -13,6 +13,10 @@ set (TRANSLATION_SOURCES
 	translations/player_dshow_pl.ts
 )
 
+if(WIN32)
+	include_directories (${CMAKE_CURRENT_SOURCE_DIR})
+	set (SOURCES ${SOURCES} ../module.rc)
+endif(WIN32)
 
 kadu_module_desc (dshow_sound.desc)
 qt_wrap_cpp (dshow_sound MOC_FILES ${MOC_SOURCES})
