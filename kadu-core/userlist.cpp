@@ -275,7 +275,7 @@ void UserList::setAllOffline(const QString &protocolName)
 		{
 			const UserStatus &stat = user.status(protocolName);
 			if (!stat.isOffline() || stat.hasDescription())
-				user.setStatus(protocolName, *s, true, i++ == todo);
+				user.setStatus(protocolName, *s, true, ++i == todo);
 		}
 	}
 	delete s;

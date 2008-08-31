@@ -118,8 +118,8 @@ QVariant UserListElement::setProtocolData(const QString &protocolName, const QSt
 
 	if (massively)
 	{
-		QHash<QString, UserGroupSet> names = ULEPrivate::protocolUserDataProxy[protocolName];
-		UserGroupSet groups = names[name];
+		QHash<QString, UserGroupSet> &names = ULEPrivate::protocolUserDataProxy[protocolName];
+		UserGroupSet &groups = names[name];
 
 		foreach (UserGroup *group, privateData->Parents)
 		{
@@ -443,7 +443,7 @@ void UserListElement::setStatus(const QString &protocolName, const UserStatus &s
 
 	if (massively)
 	{
-		UserGroupSet groups = ULEPrivate::statusChangeProxy[protocolName];
+		UserGroupSet &groups = ULEPrivate::statusChangeProxy[protocolName];
 
 		foreach (UserGroup *group, privateData->Parents)
 		{
