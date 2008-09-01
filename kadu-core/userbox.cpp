@@ -644,7 +644,10 @@ void UserBox::mousePressEvent(QMouseEvent *e)
 	kdebugf();
 	hideTip(false);
 	if (e->button() != Qt::RightButton)
+	{
+		MouseStart = e->pos();
 		Q3ListBox::mousePressEvent(e);
+	}
 	else
 	{
 		Q3ListBoxItem *item = itemAt(e->pos());
@@ -671,7 +674,7 @@ void UserBox::mouseReleaseEvent(QMouseEvent *e)
 void UserBox::mouseMoveEvent(QMouseEvent* e)
 {
 //	kdebugf();
-	if ((e->buttons() & Qt::LeftButton) && itemAt(e->pos()))
+	if ((e->buttons() & Qt::LeftButton) && itemAt(MouseStart) && (e->pos() - MouseStart).manhattanLength() > QApplication::startDragDistance())
 	{
 		QStringList ules;
 		for(int i = 0, count1 = count(); i < count1; ++i)

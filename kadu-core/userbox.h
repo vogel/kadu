@@ -320,6 +320,8 @@ class KADUAPI UserBox : public Q3ListBox, ConfigurationAwareObject
 	QTimer verticalPositionTimer;
 	int lastVerticalPosition;
 
+	QPoint MouseStart;
+
 	static QImage *backgroundImage;
 	void refreshBackground();
 
