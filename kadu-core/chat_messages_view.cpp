@@ -260,6 +260,7 @@ void ChatMessagesView::configurationUpdated()
 		"}"
 		"p {"
 		"	margin: 0;"
+		"	padding: 3px;"
 		"}").arg(fontStyle, fontWeight, fontSize, fontFamily, textDecoration, QString::number(ParagraphSeparator), backgroundColor);
 
 	// background color of chat

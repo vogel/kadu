@@ -1229,7 +1229,7 @@ void Kadu::mouseButtonClicked(int button, Q3ListBoxItem *item)
 {
 	kdebugmf(KDEBUG_FUNCTION_START, "button=%d\n", button);
 	if (!item)
-		InfoPanel->setHtml("");
+		InfoPanel->setHtml("<body bgcolor=\"" + config_file.readEntry("Look", "InfoPanelBgColor") + "\"></body>");
 	kdebugf2();
 }
 

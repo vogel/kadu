@@ -16,7 +16,8 @@
 	\class About
 	\brief Okno z informacjami o programie.
 **/
-class About : public QWidget {
+class About : public QWidget 
+{
 	Q_OBJECT
 
 	QString loadFile(const QString &name);

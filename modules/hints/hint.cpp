@@ -43,13 +43,13 @@ Hint::Hint(QWidget *parent, Notification *notification)
 	createLabels(icons_manager->loadPixmap(notification->icon()));
 	updateText();
 
-	callbacksBox = new QHBoxLayout();
-	vbox->addLayout(callbacksBox);
-
 	const QList<Notification::Callback> callbacks = notification->getCallbacks();
 	if (notification->getCallbacks().count())
 	{
+		QWidget *callbacksWidget = new QWidget(this);
+		callbacksBox = new QHBoxLayout(callbacksWidget);
 		callbacksBox->addStretch(10);
+		vbox->addWidget(callbacksWidget);
 
 		foreach(const Notification::Callback &i, callbacks)
 		{
