@@ -78,8 +78,8 @@ MainConfigurationWindow::MainConfigurationWindow()
 	onStartupSetLastDescription = dynamic_cast<QCheckBox *>(widgetById("onStartupSetLastDescription"));
 	QLineEdit *disconnectDescription = dynamic_cast<QLineEdit *>(widgetById("disconnectDescription"));
 	QLineEdit *onStartupSetDescription = dynamic_cast<QLineEdit *>(widgetById("onStartupSetDescription"));
-	disconnectDescription->setMaxLength(GG_STATUS_DESCR_MAXSIZE);
-	onStartupSetDescription->setMaxLength(GG_STATUS_DESCR_MAXSIZE);
+	disconnectDescription->setMaxLength(gadu->maxDescriptionLength());
+	onStartupSetDescription->setMaxLength(gadu->maxDescriptionLength());
 
 	connect(widgetById("disconnectWithCurrentDescription"), SIGNAL(toggled(bool)), disconnectDescription, SLOT(setDisabled(bool)));
 	connect(onStartupSetLastDescription, SIGNAL(toggled(bool)), onStartupSetDescription, SLOT(setDisabled(bool)));

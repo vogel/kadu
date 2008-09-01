@@ -458,6 +458,16 @@ void GaduProtocol::currentStatusChanged(const UserStatus &/*status*/, const User
 		userlist->byID("Gadu", QString::number(LoginParams.uin)).setStatus("Gadu", *CurrentStatus);
 }
 
+unsigned int GaduProtocol::maxDescriptionLength()
+{
+#ifdef GG_STATUS_DESCR_MAXSIZE_PRE_8_0
+	if (LoginParams.protocol_version <= 0x2a)
+		return GG_STATUS_DESCR_MAXSIZE_PRE_8_0;
+#endif
+
+	return GG_STATUS_DESCR_MAXSIZE;
+}
+
 void GaduProtocol::iWantGoOnline(const QString &desc)
 {
 	kdebugf();
@@ -1154,8 +1164,9 @@ void GaduProtocol::login()
 //	polaczenia TLS z serwerami GG na razie nie dzialaja
 //	LoginParams.tls = config_file.readBoolEntry("Network", "UseTLS");
 	LoginParams.tls = 0;
-	LoginParams.client_version = GG_DEFAULT_CLIENT_VERSION; //tego si� nie zwalnia...
-	LoginParams.protocol_version = GG_DEFAULT_PROTOCOL_VERSION; // we are gg 7.7 now
+	LoginParams.client_version = "7, 7, 0, 3351"; //tego si� nie zwalnia...
+		// = GG_DEFAULT_CLIENT_VERSION
+	LoginParams.protocol_version = 0x2a; // we are gg 7.7 now
 		// =  GG_DEFAULT_PROTOCOL_VERSION;
 	if (LoginParams.tls)
 	{

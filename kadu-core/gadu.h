@@ -609,6 +609,8 @@ public:
 	GaduProtocol(const QString &id, QObject *parent = 0);
 	virtual ~GaduProtocol();
 
+	unsigned int maxDescriptionLength();
+
 	gg_session * session() { return Sess; }
 
 	void changeID(const QString &id);

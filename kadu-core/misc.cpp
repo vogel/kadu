@@ -39,6 +39,7 @@
 #include "chat_manager.h"
 #include "config_file.h"
 #include "debug.h"
+#include "gadu.h"
 #include "html_document.h"
 #include "icons_manager.h"
 #include "kadu.h"
@@ -821,7 +822,7 @@ ChooseDescription::ChooseDescription(QWidget *parent)
 
 	QLineEdit *ss = new QLineEdit(this, "LineEdit");
 #if 1
-	ss->setMaxLength(GG_STATUS_DESCR_MAXSIZE);
+	ss->setMaxLength(gadu->maxDescriptionLength());
 #endif
 	Description->setLineEdit(ss);
 
@@ -931,12 +932,12 @@ void ChooseDescription::updateAvailableChars(const QString &text)
 	int length = text.length();
 
 #if 0
-	int count = (length - 10) / (GG_STATUS_DESCR_MAXSIZE - 10);
-	int rest = (count + 1) * (GG_STATUS_DESCR_MAXSIZE - 10) - length + 10;
+	int count = (length - 10) / (gadu->maxDescriptionLength() - 10);
+	int rest = (count + 1) * (gadu->maxDescriptionLength() - 10) - length + 10;
 
 	AvailableChars->setText(' ' + QString::number(rest) + " (" + QString::number(count) + ")");
 #else
-	AvailableChars->setText(' ' + QString::number(GG_STATUS_DESCR_MAXSIZE - length));
+	AvailableChars->setText(' ' + QString::number(gadu->maxDescriptionLength() - length));
 #endif
 }
 
