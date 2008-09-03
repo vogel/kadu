@@ -19,6 +19,10 @@
 #else
 #include <winsock2.h>
 #endif
+#ifdef Q_WS_MAC
+#include <sys/types.h>
+#include <sys/stat.h>
+#endif
 
 #include "config_file.h"
 #include "debug.h"

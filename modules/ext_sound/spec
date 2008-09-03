@@ -1,3 +1,0 @@
-MODULE_SOURCES=player_external.cpp
-MODULE_MOC_HEADERS=player_external.h
-

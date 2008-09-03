@@ -1,2 +1,0 @@
-MODULE_SOURCES="exec_notify.cpp"
-MODULE_MOC_HEADERS="exec_notify.h"

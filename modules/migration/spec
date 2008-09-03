@@ -1,2 +1,0 @@
-MODULE_SOURCES="migration.cpp"
-MODULE_MOC_HEADERS="migration.h"

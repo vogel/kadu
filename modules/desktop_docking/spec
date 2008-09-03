@@ -1,2 +1,0 @@
-MODULE_SOURCES=desktopdock.cpp
-MODULE_MOC_HEADERS=desktopdock.h

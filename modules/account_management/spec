@@ -1,2 +1,0 @@
-MODULE_SOURCES="account_management.cpp register.cpp unregister.cpp change_password.cpp remind_password.cpp"
-MODULE_MOC_HEADERS="account_management.h register.h unregister.h change_password.h remind_password.h"

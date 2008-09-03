@@ -1,2 +1,0 @@
-MODULE_SOURCES="dsp_sound.cpp"
-MODULE_MOC_HEADERS=dsp_sound.h

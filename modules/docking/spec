@@ -1,2 +1,0 @@
-MODULE_SOURCES="docking.cpp"
-MODULE_MOC_HEADERS="docking.h"

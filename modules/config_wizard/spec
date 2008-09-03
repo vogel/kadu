@@ -1,2 +1,0 @@
-MODULE_SOURCES="wizard.cpp"
-MODULE_MOC_HEADERS="wizard.h"

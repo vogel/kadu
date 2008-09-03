@@ -1,2 +1,0 @@
-MODULE_SOURCES=autoaway.cpp
-MODULE_MOC_HEADERS=autoaway.h

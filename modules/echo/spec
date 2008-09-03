@@ -1,2 +1,0 @@
-MODULE_SOURCES=echo.cpp
-MODULE_MOC_HEADERS=echo.h

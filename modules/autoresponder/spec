@@ -1,2 +1,0 @@
-MODULE_SOURCES=autoresponder.cpp
-MODULE_MOC_HEADERS=autoresponder.h

@@ -1,2 +1,0 @@
-MODULE_SOURCES=sms.cpp
-MODULE_MOC_HEADERS=sms.h
