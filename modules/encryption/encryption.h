@@ -39,7 +39,7 @@ class EncryptionManager : public ConfigurationUiHandler
 
 	private slots:
 		void decryptMessage(Protocol *protocol, UserListElements senders, QString &msg, QByteArray &formats, bool &ignore);
-		void sendMessageFilter(const UserListElements users, QString &msg, bool &stop);
+		void sendMessageFilter(const UserListElements users, QByteArray &msg, bool &stop);
 		void setupEncrypt(KaduAction *action);
 
 		void generateMyKeys();

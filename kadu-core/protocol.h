@@ -180,7 +180,7 @@ signals:
 		\param msg wiadomo��
 		\param stop zako�czenie dalszej obr�bki sygna�u
 	**/
-	void sendMessageFiltering(const UserListElements users, QString &msg, bool &stop);
+	void sendMessageFiltering(const UserListElements users, QByteArray &msg, bool &stop);
 
 	/**
 		wiadomo�� nie zosta�a dostaczona

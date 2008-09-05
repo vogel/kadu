@@ -106,8 +106,8 @@ EncryptionManager::EncryptionManager(bool firstLoad)
 
 	connect(gadu, SIGNAL(rawGaduReceivedMessageFilter(Protocol *, UserListElements, QString&, QByteArray&, bool&)),
 			this, SLOT(decryptMessage(Protocol *, UserListElements, QString&, QByteArray&, bool&)));
-	connect(gadu, SIGNAL(sendMessageFiltering(const UserListElements, QString &, bool &)),
-			this, SLOT(sendMessageFilter(const UserListElements, QString &, bool &)));
+	connect(gadu, SIGNAL(sendMessageFiltering(const UserListElements, QByteArray &, bool &)),
+			this, SLOT(sendMessageFilter(const UserListElements, QByteArray &, bool &)));
 
 	encryptionActionDescription = new ActionDescription(
                 	ActionDescription::TypeChat, "encryptionAction",
@@ -157,8 +157,8 @@ EncryptionManager::~EncryptionManager()
 
 	disconnect(gadu, SIGNAL(rawGaduReceivedMessageFilter(Protocol *, UserListElements, QString&, QByteArray&, bool&)),
 			this, SLOT(decryptMessage(Protocol *, UserListElements, QString&, QByteArray&, bool&)));
-	disconnect(gadu, SIGNAL(sendMessageFiltering(const UserListElements, QString &, bool &)),
-			this, SLOT(sendMessageFilter(const UserListElements, QString &, bool &)));
+	disconnect(gadu, SIGNAL(sendMessageFiltering(const UserListElements, QByteArray &, bool &)),
+			this, SLOT(sendMessageFilter(const UserListElements, QByteArray &, bool &)));
 
 	delete encryptionActionDescription;
 	delete sendPublicKeyActionDescription;
@@ -368,14 +368,14 @@ void EncryptionManager::turnEncryption(UserGroup *group, bool on)
 		KeysManagerDialog->turnContactEncryptionText((*(*group).constBegin()).ID("Gadu"), on);
 }
 
-void EncryptionManager::sendMessageFilter(const UserListElements users, QString &msg, bool &stop)
+void EncryptionManager::sendMessageFilter(const UserListElements users, QByteArray &msg, bool &stop)
 {
 
 	ChatWidget* chat = chat_manager->findChatWidget(users);
 //	kdebugm(KDEBUG_INFO, "length: %d\n", msg.length());
 	if (users.count() == 1 && EncryptionEnabled[chat])
 	{
-		char *msg_c = sim_message_encrypt((const unsigned char *)qPrintable(msg), (*users.constBegin()).ID("Gadu").toUInt());
+		char *msg_c = sim_message_encrypt((const unsigned char *)msg.data(), (*users.constBegin()).ID("Gadu").toUInt());
 		if (!msg_c)
 		{
 			kdebugm(KDEBUG_ERROR, "sim_message_encrypt returned NULL! sim_errno=%d sim_strerror=%s\n", sim_errno, sim_strerror(sim_errno));
@@ -384,7 +384,7 @@ void EncryptionManager::sendMessageFilter(const UserListElements users, QString 
 		}
 		else
 		{
-			msg = QString(msg_c);
+			msg = QByteArray(msg_c);
 
 			free(msg_c);
 		}
