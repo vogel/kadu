@@ -134,6 +134,7 @@ ActionDescription::ActionDescription(ActionType Type, const QString &Name, QObje
 
 ActionDescription::~ActionDescription()
 {
+	qDeleteAll(MappedActions);
 	KaduActions.remove(this);
 }
 

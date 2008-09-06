@@ -207,7 +207,7 @@ void ToolBar::mouseMoveEvent(QMouseEvent* e)
 		{
 			if (toolBarAction.action == action)
 			{
-				QDrag* drag = new ActionDrag(toolBarAction.actionName, toolBarAction.button->toolButtonStyle() == Qt::ToolButtonTextBesideIcon, this);
+				QDrag* drag = new ActionDrag(toolBarAction.actionName, toolBarAction.showLabel, this);
 
 				drag->exec(Qt::CopyAction);
 
@@ -312,12 +312,8 @@ void ToolBar::writeToConfig(QDomElement parent_element)
 	toolbar_elem.setAttribute("x_offset", pos().x());
 	toolbar_elem.setAttribute("y_offset", pos().y());
 
-	// TODO: 0.6.5 fix
-	foreach(ToolBarAction toolBarAction, ToolBarActions)
+	foreach(const ToolBarAction &toolBarAction, ToolBarActions)
 	{
-		if (toolBarAction.button)
-			toolBarAction.showLabel = toolBarAction.button->toolButtonStyle() != Qt::ToolButtonIconOnly;
-
 		QDomElement button_elem = xml_config_file->createElement(toolbar_elem, "ToolButton");
 		button_elem.setAttribute("action_name", toolBarAction.actionName);
 		button_elem.setAttribute("uses_text_label", toolBarAction.showLabel);
@@ -350,7 +346,17 @@ void ToolBar::actionUnloaded(const QString &actionName)
 {
 	if (!hasAction(actionName))
 		return;
-	deleteAction(actionName);
+
+	QList<ToolBarAction>::iterator toolBarAction;
+ 	for (toolBarAction = ToolBarActions.begin(); toolBarAction != ToolBarActions.end(); ++toolBarAction)
+	{
+		if ((*toolBarAction).actionName == actionName)
+		{
+			(*toolBarAction).action = 0;
+			(*toolBarAction).button = 0;
+			return;
+		}
+	}
 }
 
 void ToolBar::updateButtons()
@@ -568,10 +574,24 @@ void ToolBar::showTextLabel()
 	if (!currentButton)
 		return;
 
-	if (currentButton->toolButtonStyle() == Qt::ToolButtonIconOnly)
-		currentButton->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
-	else
-		currentButton->setToolButtonStyle(Qt::ToolButtonIconOnly);
+	QList<ToolBarAction>::iterator toolBarAction;
+ 	for (toolBarAction = ToolBarActions.begin(); toolBarAction != ToolBarActions.end(); ++toolBarAction)
+	{
+		if ((*toolBarAction).button == currentButton)
+		{
+			if (currentButton->toolButtonStyle() == Qt::ToolButtonIconOnly)
+			{
+				(*toolBarAction).showLabel = true;
+				currentButton->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
+			}
+			else
+			{
+				(*toolBarAction).showLabel = false;
+				currentButton->setToolButtonStyle(Qt::ToolButtonIconOnly);
+			}
+			return;
+		}
+	}
 }
 
 void ToolBar::deleteButton()
@@ -600,6 +620,7 @@ void ToolBar::deleteAction(const QString &actionName)
 			ToolBarActions.remove(toolBarAction);
 			return;
 		}
+
 }
 
 ActionDrag::ActionDrag(const QString &actionName, bool showLabel, QWidget* dragSource)
