@@ -38,7 +38,7 @@ public slots:
 	\brief Wyszukiwanie w katalogu publicznym.
 	\class SearchDialog
 **/
-class SearchDialog : public KaduMainWindow
+class KADUAPI SearchDialog : public KaduMainWindow
 {
 	Q_OBJECT
 
