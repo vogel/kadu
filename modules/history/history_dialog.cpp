@@ -78,6 +78,7 @@ DateListViewText::DateListViewText(QTreeWidgetItem *parent, UinsList uins, const
 	QList<HistoryEntry> entries = history->getHistoryEntries(uins, from, count);
 	QList<HistoryEntry>::const_iterator entry = entries.constBegin();
 	QList<HistoryEntry>::const_iterator lastEntry = entries.constEnd();
+
 	for(; entry != lastEntry; ++entry)
 		if ((*entry).type != HISTORYMANAGER_ENTRY_STATUS)
 		{
@@ -315,7 +316,7 @@ void HistoryDialog::showHistoryEntries(int from, int count)
 	QList<HistoryEntry>::const_iterator entry = entries.constBegin();
 	QList<HistoryEntry>::const_iterator lastEntry = entries.constEnd();
 	for(; entry != lastEntry; ++entry)
-		if (!((*entry).type & HISTORYMANAGER_ENTRY_STATUS) || !noStatus)
+		if (((*entry).type != HISTORYMANAGER_ENTRY_STATUS) || !noStatus)
 			chatMessages.append(createChatMessage(*entry));
 
 	body->appendMessages(chatMessages);

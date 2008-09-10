@@ -86,12 +86,12 @@ QString ChatMessagesView::formatMessage(ChatMessage *message, ChatMessage *after
 
 		if (includeHeader)
 		{
-			separatorSize = ParagraphSeparator;
+			separatorSize = CfgHeaderSeparatorHeight;
 			format = ChatSyntaxWithHeader;
 		}
 		else
 		{
-			separatorSize = CfgHeaderSeparatorHeight;
+			separatorSize = ParagraphSeparator;
 			format = ChatSyntaxWithoutHeader;
 		}
 
