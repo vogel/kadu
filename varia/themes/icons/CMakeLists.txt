@@ -21,6 +21,7 @@ if (INSTALL_ICON_THEMES)
 
 	install (DIRECTORY ${INSTALL_ICON_THEMES}
 		DESTINATION share/kadu/themes/icons
+		PATTERN ".autodownloaded" EXCLUDE
 		PATTERN ".svn" EXCLUDE
 		PATTERN "README"
 		PATTERN "icons.conf"

@@ -23,6 +23,7 @@ if (INSTALL_EMOTICON_THEMES)
 
 	install (DIRECTORY ${INSTALL_EMOTICON_THEMES}
 		DESTINATION share/kadu/themes/emoticons
+		PATTERN ".autodownloaded" EXCLUDE
 		PATTERN ".svn" EXCLUDE
 		PATTERN "readme.txt"
 		PATTERN "emots.txt"

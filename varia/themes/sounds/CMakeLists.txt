@@ -23,6 +23,7 @@ if (INSTALL_SOUND_THEMES)
 
 	install (DIRECTORY ${INSTALL_SOUND_THEMES}
 		DESTINATION share/kadu/themes/sound
+		PATTERN ".autodownloaded" EXCLUDE
 		PATTERN ".svn" EXCLUDE
 		PATTERN "*.wav"
 	)
