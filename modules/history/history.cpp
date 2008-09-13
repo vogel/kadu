@@ -84,6 +84,7 @@ void HistoryManager::appendMessage(UinsList uins, UinType uin, const QString &ms
 
 	convHist2ekgForm(uins);
 	fname.append(getFileNameByUinsList(uins));
+	updateMessageDates(uins);
 
 	if (own)
 		if (chat)
@@ -1240,6 +1241,7 @@ void HistoryManager::messageReceived(Protocol * /*protocol*/, UserListElements s
 	foreach(const UserListElement &u, senders)
 		if (u.usesProtocol("Gadu"))
 			uins.append(u.ID("Gadu").toUInt());
+
 	if (bufferedMessages.find(sender0) != bufferedMessages.end() || occur > 0)
 	{
 		kdebugm(KDEBUG_INFO, "buffering\n");
@@ -1311,6 +1313,9 @@ void HistoryManager::addMyMessage(const UinsList &senders, const QString &msg)
 	}
 	else
 		appendMessage(senders, senders[0], msg, true, 0, true, current);
+
+	updateMessageDates(senders);
+
 	kdebugf2();
 }
 
