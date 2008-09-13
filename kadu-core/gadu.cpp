@@ -163,6 +163,25 @@ QStringList UinsList::toStringList() const
 	return list;
 }
 
+bool UinsList::operator < (const UinsList &compareTo) const
+{
+	if (count() < compareTo.count())
+		return true;
+
+	if (count() > compareTo.count())
+		return false;
+
+	for (int i = 0; i < count(); i++)
+	{
+		if (at(i) < compareTo.at(i))
+			return true;
+		if (compareTo.at(i) < at(i))
+			return false;
+	}
+
+	return false;
+}
+
 SearchResult::SearchResult() :
 	Uin(), First(), Last(), Nick(), Born(), City(),
 	FamilyName(), FamilyCity(), Gender(0), Stat()

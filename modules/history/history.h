@@ -51,7 +51,10 @@ class HISTORYAPI HistoryManager : public QObject
 		QString text2csv(const QString &text);
 		int getHistoryEntriesCountPrivate(const QString &filename) const;
 		uint getHistoryDate(QTextStream &stream);
+
 		void buildIndexPrivate(const QString &filename);
+		void createMessageDates(const UinsList uins);
+		void updateMessageDates(const UinsList uins);
 
 		class BuffMessage
 		{
@@ -74,6 +77,8 @@ class HISTORYAPI HistoryManager : public QObject
 		QMap<UinType, QList<BuffMessage> > bufferedMessages;
 		QTimer *imagesTimer;
 
+		QMap<UinsList, QDate> LastDate;
+
 		void checkImageTimeout(UinType uin);
 
 	private slots:
@@ -87,9 +92,13 @@ class HISTORYAPI HistoryManager : public QObject
 		HistoryManager(QObject *parent = 0);
 		int getHistoryEntriesCount(const UinsList &uins);
 		int getHistoryEntriesCount(const QString &mobile = QString::null);
+
 		QList<HistoryEntry> getHistoryEntries(UinsList uins, int from, int count, int mask = HISTORYMANAGER_ENTRY_ALL);
 		QList<HistoryDate> getHistoryDates(const UinsList &uins);
 		QList<UinsList> getUinsLists() const;
+
+		QList<QDate> getMessageDates(const UinsList &uins);
+
 		int getHistoryEntryIndexByDate(const UinsList &uins, const QDateTime &date, bool endate = false);
 		static QString getFileNameByUinsList(UinsList uins);
 		static QStringList mySplit(const QChar &sep, const QString &str);

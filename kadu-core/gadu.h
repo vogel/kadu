@@ -50,6 +50,8 @@ public:
 	void sort();
 	QStringList toStringList() const;
 
+	bool operator < (const UinsList &) const;
+
 };
 
 // ------------------------------------

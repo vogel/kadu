@@ -7,10 +7,11 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <QtGui/QApplication>
-#include <QtGui/QMessageBox>
+#include <QtCore/QDataStream>
 #include <QtCore/QTextStream>
 #include <QtCore/QTimer>
+#include <QtGui/QApplication>
+#include <QtGui/QMessageBox>
 
 #include "config_file.h"
 #include "debug.h"
@@ -1006,6 +1007,79 @@ void HistoryManager::buildIndexPrivate(const QString &filename)
 	fin.close();
 	fout.close();
 	kdebugf2();
+}
+
+void HistoryManager::createMessageDates(const UinsList uins)
+{
+	int entriesCount = getHistoryEntriesCount(uins);
+	if (entriesCount < 1)
+		return;
+
+	QList<HistoryEntry> entries = getHistoryEntries(uins, 0, entriesCount, HISTORYMANAGER_ENTRY_ALL_MSGS);
+
+	QFile messageDatesFile(ggPath("history/") + getFileNameByUinsList(uins) + ".message_dates");
+	messageDatesFile.open(QIODevice::WriteOnly);
+	QDataStream messageDatesStream(&messageDatesFile);
+
+	QDate currentDate;
+	HistoryEntry entry;
+	foreach (entry, entries)
+	{
+		if (entry.date.date() != currentDate && currentDate.isValid())
+		{
+			messageDatesStream << currentDate;
+			currentDate = entry.date.date();
+		}
+		else if (!currentDate.isValid())
+			currentDate = entry.date.date();
+	}
+
+	messageDatesFile.close();
+
+	if (currentDate.isValid())
+		LastDate[uins] = currentDate;
+}
+
+void HistoryManager::updateMessageDates(const UinsList uins)
+{
+	QDate date = QDate::currentDate();
+	if (LastDate.contains(uins))
+		if (LastDate[uins] == date)
+			return;
+
+	QFile messageDatesFile(ggPath("history/") + getFileNameByUinsList(uins) + ".message_dates");
+	if (!messageDatesFile.exists())
+	{
+		createMessageDates(uins);
+		return;
+	}
+
+	messageDatesFile.open(QIODevice::WriteOnly | QIODevice::Append);
+	QDataStream messageDatesStream(&messageDatesFile);
+	messageDatesStream << date;
+	messageDatesFile.close();
+
+	LastDate[uins] = date;
+}
+
+QList<QDate> HistoryManager::getMessageDates(const UinsList &uins)
+{
+	QFile messageDatesFile(ggPath("history/") + getFileNameByUinsList(uins) + ".message_dates");
+	if (!messageDatesFile.exists())
+		createMessageDates(uins);
+
+	QList<QDate> result;
+	messageDatesFile.open(QIODevice::ReadOnly);
+	QDataStream messageDatesStream(&messageDatesFile);
+
+	while (!messageDatesStream.atEnd())
+	{
+		QDate date;
+		messageDatesStream >> date;
+		result << date;
+	}
+
+	return result;
 }
 
 void HistoryManager::buildIndex(const UinsList &uins)

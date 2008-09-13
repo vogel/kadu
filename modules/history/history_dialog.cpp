@@ -56,35 +56,12 @@ const UinsList &UinsListViewText::getUinsList() const
 	return uins;
 }
 
-DateListViewText::DateListViewText(QTreeWidgetItem *parent, UinsList uins, const HistoryDate &date)
+DateListViewText::DateListViewText(QTreeWidgetItem *parent, UinsList uins, const HistoryDate &date, const QList<QDate> &messageDates)
 	: QTreeWidgetItem(parent, 0), date(date)
 {
 	setText(0, date.date.toString("yyyy.MM.dd"));
-	containsMessages = false;
 
-	QTreeWidgetItem *item = 0;
-	int from;
-	int count;
-
-	from = getDate().idx;
-	if (parent->indexOfChild(this) != parent->childCount() - 1)
-		item = parent->treeWidget()->itemBelow(item);
-
-	if (item)
-		count = ((DateListViewText *)item)->getDate().idx - from;
-	else
-		count = history->getHistoryEntriesCount(uins) - from;
-
-	QList<HistoryEntry> entries = history->getHistoryEntries(uins, from, count);
-	QList<HistoryEntry>::const_iterator entry = entries.constBegin();
-	QList<HistoryEntry>::const_iterator lastEntry = entries.constEnd();
-
-	for(; entry != lastEntry; ++entry)
-		if ((*entry).type != HISTORYMANAGER_ENTRY_STATUS)
-		{
-			containsMessages = true;
-			break;
-		}
+	containsMessages = messageDates.contains(date.date.date());
 }
 
 void DateListViewText::showStatusChanges(bool showStatus)
@@ -212,9 +189,11 @@ void HistoryDialog::uinsChanged(QTreeWidgetItem *item)
 	if (!item->childCount())
 	{
 		QList<HistoryDate> dateEntries = history->getHistoryDates(uins);
+		QList<QDate> messageDates = history->getMessageDates(uins);
+
 		foreach(const HistoryDate &dateEntry, dateEntries)
 		{
-			DateListViewText *dlvt = new DateListViewText(item, uins, dateEntry);
+			DateListViewText *dlvt = new DateListViewText(item, uins, dateEntry, messageDates);
 			connect(this, SIGNAL(showStatusChanges(bool)), dlvt, SLOT(showStatusChanges(bool)));
 			dlvt->showStatusChanges(ShowStatus);
 		}

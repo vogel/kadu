@@ -31,7 +31,7 @@ class DateListViewText : public QObject, public QTreeWidgetItem
 	bool containsMessages;
 
 public:
-	DateListViewText(QTreeWidgetItem *parent, UinsList uins, const HistoryDate &date);
+	DateListViewText(QTreeWidgetItem *parent, UinsList uins, const HistoryDate &date, const QList<QDate> &messageDates);
 	const HistoryDate &getDate() const;
 
 public slots:
