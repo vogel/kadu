@@ -15,15 +15,19 @@ class Qt4TrayIcon : public QSystemTrayIcon
 {
 	Q_OBJECT
 
+		QMovie *Movie;
+
 	private slots:
-		void setTrayPixmap(const QIcon& pixmap, const QString &iconName);
-		void setTrayMovie(const QMovie &movie);
-		void setTrayTooltip(const QString& tooltip);
-		void findTrayPosition(QPoint& pos);
+		void setTrayPixmap(const QIcon &pixmap, const QString &iconName);
+		void setTrayMovie(const QString &movie);
+		void setTrayTooltip(const QString &tooltip);
+		void findTrayPosition(QPoint &pos);
 		void trayActivated(QSystemTrayIcon::ActivationReason reason);
 
+		void movieUpdate();
+
 	public:
-		Qt4TrayIcon(QWidget *parent=0, const char *name=0);
+		Qt4TrayIcon(QWidget *parent = 0);
 		~Qt4TrayIcon();
 		
 };

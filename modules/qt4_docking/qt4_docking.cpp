@@ -7,7 +7,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <QtGui/QToolTip>
+#include <QtGui/QMovie>
 
 #include "../docking/docking.h"
 
@@ -26,7 +26,7 @@
 
 extern "C" int qt4_docking_init(bool firstLoad)
 {
-	qt4_tray_icon = new Qt4TrayIcon(NULL, "kadu_tray_icon");
+	qt4_tray_icon = new Qt4TrayIcon(NULL);
 
 	return 0;
 }
@@ -38,7 +38,7 @@ extern "C" void qt4_docking_close()
 }
 
 
-Qt4TrayIcon::Qt4TrayIcon(QWidget *parent, const char *name)
+Qt4TrayIcon::Qt4TrayIcon(QWidget *parent) : Movie(0)
 {
 	kdebugf();
 
@@ -47,7 +47,7 @@ Qt4TrayIcon::Qt4TrayIcon(QWidget *parent, const char *name)
 	connect(docking_manager, SIGNAL(trayPixmapChanged(const QIcon&, const QString &)), this, SLOT(setTrayPixmap(const QIcon&, const QString &)));
 	connect(docking_manager, SIGNAL(trayTooltipChanged(const QString&)), this, SLOT(setTrayTooltip(const QString&)));
 	connect(docking_manager, SIGNAL(searchingForTrayPosition(QPoint&)), this, SLOT(findTrayPosition(QPoint&)));
-	connect(docking_manager, SIGNAL(trayMovieChanged(const QMovie &)), this, SLOT(setTrayMovie(const QMovie &)));
+	connect(docking_manager, SIGNAL(trayMovieChanged(const QString &)), this, SLOT(setTrayMovie(const QString &)));
 
 	connect(this, SIGNAL(activated(QSystemTrayIcon::ActivationReason)), this, SLOT(trayActivated(QSystemTrayIcon::ActivationReason)));
 
@@ -63,7 +63,14 @@ Qt4TrayIcon::~Qt4TrayIcon()
 {
 	kdebugf();
 
-	disconnect(docking_manager, SIGNAL(trayMovieChanged(const QMovie &)), this, SLOT(setTrayMovie(const QMovie &)));
+	if (Movie)
+	{
+		Movie->stop();
+		Movie->deleteLater();
+		Movie = 0;
+	}
+
+	disconnect(docking_manager, SIGNAL(trayMovieChanged(const QString &)), this, SLOT(setTrayMovie(const QString &)));
 	disconnect(docking_manager, SIGNAL(trayPixmapChanged(const QIcon&, const QString &)), this, SLOT(setTrayPixmap(const QIcon&, const QString &)));
 	disconnect(docking_manager, SIGNAL(trayTooltipChanged(const QString&)), this, SLOT(setTrayTooltip(const QString&)));
 	disconnect(docking_manager, SIGNAL(searchingForTrayPosition(QPoint&)), this, SLOT(findTrayPosition(QPoint&)));
@@ -83,17 +90,38 @@ void Qt4TrayIcon::findTrayPosition(QPoint& pos)
 
 void Qt4TrayIcon::setTrayPixmap(const QIcon& pixmap, const QString &/*iconName*/)
 {
-	this->setIcon(pixmap);
+	if (Movie)
+	{
+		Movie->stop();
+		Movie->deleteLater();
+		Movie = 0;
+	}
+	setIcon(pixmap);
 }
 
-void Qt4TrayIcon::setTrayMovie(const QMovie &movie)
+void Qt4TrayIcon::setTrayMovie(const QString &movie)
 {
-	//QLabel::setMovie(movie);
+	if (Movie)
+	{
+		Movie->stop();
+		Movie->deleteLater();
+	}
+	else
+		setIcon(QIcon(""));
+
+	Movie = new QMovie(movie);
+	Movie->start();
+	connect(Movie, SIGNAL(updated(const QRect &)), this, SLOT(movieUpdate()));
+}
+
+void Qt4TrayIcon::movieUpdate()
+{
+	setIcon(Movie->framePixmap());
 }
 
 void Qt4TrayIcon::setTrayTooltip(const QString& tooltip)
 {
-	this->setToolTip(tooltip);
+	setToolTip(tooltip);
 }
 
 void Qt4TrayIcon::trayActivated(QSystemTrayIcon::ActivationReason reason)

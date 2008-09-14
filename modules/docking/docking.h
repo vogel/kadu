@@ -53,7 +53,7 @@ public slots:
 
  signals:
 	void trayPixmapChanged(const QIcon& icon, const QString &name);
-	void trayMovieChanged(const QMovie& movie);
+	void trayMovieChanged(const QString& movie);
 	void trayTooltipChanged(const QString& tooltip);
 	void searchingForTrayPosition(QPoint& pos);
 	void mousePressMidButton();

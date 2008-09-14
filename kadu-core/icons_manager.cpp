@@ -16,7 +16,7 @@
 #include "icons_manager.h"
 
 IconsManager::IconsManager(const QString &name, const QString &configname)
-	: Themes(name, configname), pixmaps(), icons()/*, animatedIcons()*///
+	: Themes(name, configname), pixmaps(), icons()
 {
 	kdebugf();
 	kdebugf2();
@@ -57,17 +57,6 @@ const QIcon &IconsManager::loadIcon(const QString &name)
 	return icons[name];
 
 }
-
-/*
-const QMovie &IconsManager::loadAnimatedIcon(const QString &name)
-{
-	QMap<QString, QMovie>::const_iterator i = animatedIcons.find(name);
-	if (i != animatedIcons.end())
-		return *i;
-
-	animatedIcons.insert(name, QMovie(iconPath(name)));
-	return animatedIcons[name];
-}*/
 
 void IconsManager::clear()
 {

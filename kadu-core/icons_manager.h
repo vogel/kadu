@@ -24,7 +24,6 @@ class KADUAPI IconsManager : public Themes, ConfigurationAwareObject
 
 	QMap<QString, QPixmap> pixmaps;
 	QMap<QString, QIcon> icons;
-// 	QMap<QString, QMovie> animatedIcons;
 
 public:
 	IconsManager(const QString &name, const QString &configname);
@@ -45,7 +44,6 @@ public:
 		�cie�ka).
 	**/
 	const QPixmap & loadPixmap(const QString &name);
-// 	const QMovie &loadAnimatedIcon(const QString &name);
 	const QIcon & loadIcon(const QString &name);
 
 	static void initModule();
