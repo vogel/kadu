@@ -61,7 +61,7 @@ void ExecConfigurationWidget::saveNotifyConfigurations()
 	if (currentNotifyEvent != "")
 		Commands[currentNotifyEvent] = commandLineEdit->text();
 
-	foreach(const QString &eventName, Commands)
+	foreach(const QString &eventName, Commands.keys())
 		config_file.writeEntry("Exec Notify", eventName + "Cmd", Commands[eventName]);
 }
 

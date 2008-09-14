@@ -59,7 +59,7 @@ void SoundConfigurationWidget::saveNotifyConfigurations()
 	if (currentNotifyEvent != "")
 		soundFiles[currentNotifyEvent] = soundFileSelectFile->file();
 
-	foreach(const QString &key, soundFiles)
+	foreach(const QString &key, soundFiles.keys())
 		config_file.writeEntry("Sounds", key + "_sound", soundFiles[key]);
 }
 
