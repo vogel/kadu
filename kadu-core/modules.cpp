@@ -184,6 +184,7 @@ ModulesDialog::ModulesDialog(QWidget *parent)
 
 	loadWindowGeometry(this, "General", "ModulesDialogGeometry", 0, 30, 600, 620);
 	refreshList();
+	lv_modules->sortByColumn(0, Qt::AscendingOrder);
 	kdebugf2();
 }
 
