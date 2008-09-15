@@ -161,6 +161,7 @@ EncryptionManager::~EncryptionManager()
 			this, SLOT(sendMessageFilter(const UserListElements, QByteArray &, bool &)));
 
 	delete encryptionActionDescription;
+	UserBox::removeActionDescription(sendPublicKeyActionDescription);
 	delete sendPublicKeyActionDescription;
 
 	kdebugf2();
