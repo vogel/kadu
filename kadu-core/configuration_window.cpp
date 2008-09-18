@@ -94,13 +94,37 @@ void ConfigGroupBox::addWidgets(QWidget *widget1, QWidget *widget2)
 		gridLayout->addWidget(widget2, numRows, 1);
 }
 
+class KaduScrollArea : public QScrollArea
+{
+public:
+	KaduScrollArea(QWidget *parent)
+		: QScrollArea(parent)
+	{
+	}
+
+	QSize sizeHint() const
+	{
+	    int f = 2 * frameWidth();
+		QSize sz(f, f);
+		sz += widget()->sizeHint();
+
+		if (verticalScrollBarPolicy() == Qt::ScrollBarAlwaysOn)
+			sz.setWidth(sz.width() + verticalScrollBar()->sizeHint().width());
+		if (horizontalScrollBarPolicy() == Qt::ScrollBarAlwaysOn)
+			sz.setHeight(sz.height() + horizontalScrollBar()->sizeHint().height());
+
+		return sz;
+	}
+};
+
 ConfigTab::ConfigTab(const QString &name, ConfigSection *configSection, QTabWidget *tabWidget)
 	: name(name), configSection(configSection)
 {
-	scrollArea = new QScrollArea(tabWidget);
+	scrollArea = new KaduScrollArea(tabWidget);
 	scrollArea->setFrameStyle(QFrame::NoFrame);
 	scrollArea->setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
 	scrollArea->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+	scrollArea->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Preferred);
 
 	mainWidget = new QWidget(tabWidget);
 	mainLayout = new QVBoxLayout(mainWidget);
