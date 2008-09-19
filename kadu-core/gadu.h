@@ -597,7 +597,6 @@ private slots:
 		@see messageQueued
 		@see messageBoxFull
 		@see messageNotDelivered
-		@see messageAccepted
 		@see messageRejected
 	**/
 	void ackReceived(int seq, uin_t uin, int status);
@@ -705,7 +704,7 @@ public slots:
 		@param users lista u�ytkownik�w, do kt�rych wysy�amy wiadomo��
 		@param mesg wiadomo��, kt�r� wysy�amy - kodowanie zmieniane wewn�trz
 	**/
-	virtual bool sendMessage(UserListElements users, const Message &message);
+	virtual bool sendMessage(UserListElements users, Message &message);
 
 	/**
 		Wysy�a pro�b� o przys�anie obrazka z danymi parametrami.
@@ -862,11 +861,6 @@ signals:
 	//void messageBlocked(int seq, UinType uin);
 
 	/**
-		wiadomo�� dostarczono
-	**/
-	void messageDelivered(int seq, UinType uin);
-
-	/**
 		wiadomo�� zakolejkowano
 	**/
 	void messageQueued(int seq, UinType uin);
@@ -877,8 +871,6 @@ signals:
 	//void messageBoxFull(int seq, UinType uin);
 
 	//void messageNotDelivered(int seq, UinType uin);
-
-	//void messageAccepted(int seq, UinType uin);
 	/**
 		wiadomo�� zosta�a odrzucona przez serwer
 	**/

@@ -238,7 +238,7 @@ public slots:
 
 	void messageNotDeliveredSlot(const QString &message);
 
-	void messageAcceptedSlot();
+	void messageDeliveredSlot(int);
 
 	/**
 		\fn void appendMessages(const QValueList<ChatMessage *> &)

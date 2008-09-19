@@ -543,9 +543,11 @@ void ChatWidget::messageNotDeliveredSlot(const QString &message)
 	kdebugf2();
 }
 
-void ChatWidget::messageAcceptedSlot()
+void ChatWidget::messageDeliveredSlot(int id)
 {
-	kdebugf();
+	if (myLastMessage.id() != id)
+		return;
+
 	kdebugmf(KDEBUG_INFO, "This is my ack.\n");
 	writeMyMessage();
 	emit messageSentAndConfirmed(Users->toUserListElements(), myLastMessage.toHtml());
@@ -560,7 +562,7 @@ void ChatWidget::connectAcknowledgeSlots()
 {
 	kdebugf();
 	connect(CurrentProtocol, SIGNAL(messageNotDelivered(const QString&)), this, SLOT(messageNotDeliveredSlot(const QString&)));
-	connect(CurrentProtocol, SIGNAL(messageAccepted()), this, SLOT(messageAcceptedSlot()));
+	connect(CurrentProtocol, SIGNAL(messageDelivered(int)), this, SLOT(messageDeliveredSlot(int)));
 	kdebugf2();
 }
 
@@ -568,7 +570,7 @@ void ChatWidget::disconnectAcknowledgeSlots()
 {
 	kdebugf();
 	disconnect(CurrentProtocol, SIGNAL(messageNotDelivered(const QString&)), this, SLOT(messageNotDeliveredSlot(const QString&)));
-	disconnect(CurrentProtocol, SIGNAL(messageAccepted()), this, SLOT(messageAcceptedSlot()));
+	disconnect(CurrentProtocol, SIGNAL(messageDelivered(int)), this, SLOT(messageDeliveredSlot(int)));
 	kdebugf2();
 }
 

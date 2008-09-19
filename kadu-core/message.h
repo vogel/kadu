@@ -59,10 +59,10 @@ public:
 class KADUAPI Message
 {
 	static QRegExp ImageRegExp;
+	static void parseImages(Message &message, const QString &messageString, bool b, bool i, bool u, QColor color);
 
 	QList<MessagePart> Parts;
-
-	static void parseImages(Message &message, const QString &messageString, bool b, bool i, bool u, QColor color);
+	int Id;
 
 public:
 	Message();
@@ -74,6 +74,9 @@ public:
 	QList<MessagePart> parts() const;
 	void append(MessagePart part);
 	Message & operator << (MessagePart part);
+
+	void setId(int id) { Id = id; }
+	int id() { return Id; }
 
 	bool isEmpty() const;
 	QString toPlain() const;

@@ -1257,10 +1257,11 @@ void GaduProtocol::setupProxy()
 	kdebugf2();
 }
 
-bool GaduProtocol::sendMessage(UserListElements users, const Message &message)
+bool GaduProtocol::sendMessage(UserListElements users, Message &message)
 {
 	kdebugf();
 
+	message.setId(-1);
 	QString plain = message.toPlain();
 
 	unsigned int uinsCount = 0;
@@ -1321,6 +1322,8 @@ bool GaduProtocol::sendMessage(UserListElements users, const Message &message)
 				break;
 			}
 
+	message.setId(seqNumber);
+
 	SocketNotifiers->checkWrite();
 	if (formats)
 		delete[] formats;
@@ -1343,13 +1346,12 @@ void GaduProtocol::ackReceived(int seq, uin_t uin, int status)
 			break;
 		case GG_ACK_DELIVERED:
 			kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "message delivered (uin: %d, seq: %d)\n", uin, seq);
-			emit messageDelivered(seq, uin);
-			emit messageAccepted();
+			emit messageDelivered(seq);
 			break;
 		case GG_ACK_QUEUED:
 			kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "message queued (uin: %d, seq: %d)\n", uin, seq);
 			emit messageQueued(seq, uin);
-			emit messageAccepted();
+			emit messageDelivered(seq);
 			break;
 		case GG_ACK_MBOXFULL:
 			kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "message box full (uin: %d, seq: %d)\n", uin, seq);

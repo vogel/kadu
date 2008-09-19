@@ -142,13 +142,16 @@ Message Message::parse(const QTextDocument *document)
 }
 
 Message::Message()
+	: Id(0)
 {
 }
 
 Message::Message(const QString &messageString)
+	: Id(0)
 {
 	Parts.append(MessagePart(messageString, false, false, false, QColor()));
 }
+
 Message::~Message()
 {
 }

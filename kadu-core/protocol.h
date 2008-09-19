@@ -138,10 +138,10 @@ public:
 	const QDateTime & connectionTime() const;
 
 public slots:
-	virtual bool sendMessage(UserListElement user, const QString &message);
-	virtual bool sendMessage(UserListElements users, const QString &message);
-	virtual bool sendMessage(UserListElement user, const Message &message);
-	virtual bool sendMessage(UserListElements users, const Message &message) = 0;
+	virtual bool sendMessage(UserListElement user, const QString &messageContent);
+	virtual bool sendMessage(UserListElements users, const QString &messageContent);
+	virtual bool sendMessage(UserListElement user, Message &message);
+	virtual bool sendMessage(UserListElements users, Message &message) = 0;
 
 
 signals:
@@ -188,10 +188,9 @@ signals:
 	void messageNotDelivered(const QString &message);
 
 	/**
-		wiadomo�� zosta�a przyj�ta przez serwer
-		TODO: WTF??
+		Message with id messageId was successfully delivered.
 	**/
-	void messageAccepted();
+	void messageDelivered(int messsageId);
 
 	/**
 		\fn receivedMessageFilter(Protocol *protocol, UserListElements senders, const QString &msg, time_t time, bool &ignore);

@@ -29,20 +29,22 @@ const QDateTime &Protocol::connectionTime() const
 	return ConnectionTime;
 }
 
-bool Protocol::sendMessage(UserListElement user, const QString &message)
+bool Protocol::sendMessage(UserListElement user, const QString &messageContent)
 {
 	UserListElements users(user);
-	QTextDocument document(message);
-	return sendMessage(users, Message::parse(&document));
+	QTextDocument document(messageContent);
+	Message message = Message::parse(&document);
+	return sendMessage(users, message);
 }
 
-bool Protocol::sendMessage(UserListElements users, const QString &message)
+bool Protocol::sendMessage(UserListElements users, const QString &messageContent)
 {
-	QTextDocument document(message);
-	return sendMessage(users, Message::parse(&document));
+	QTextDocument document(messageContent);
+	Message message = Message::parse(&document);
+	return sendMessage(users, message);
 }
 
-bool Protocol::sendMessage(UserListElement user, const Message &message)
+bool Protocol::sendMessage(UserListElement user, Message &message)
 {
 	UserListElements users(user);
 	return sendMessage(users, message);

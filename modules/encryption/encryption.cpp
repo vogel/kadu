@@ -421,7 +421,7 @@ void EncryptionManager::sendPublicKeyActionActivated(QAction *sender, bool toggl
 		mykey = t.read();
 		keyfile.close();
 		foreach(const UserListElement &user, users)
-			gadu->sendMessage(user, Message(mykey));
+			(dynamic_cast<Protocol *>(gadu))->sendMessage(user, mykey);
 
 		MessageBox::msg(tr("Your public key has been sent"), false, "Information", kadu);
 	}
