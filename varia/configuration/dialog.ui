@@ -104,7 +104,9 @@
 			<group-box name="Anonymous">
 				<check-box caption="Ignore messages from anonymous users" config-section="Chat" config-item="IgnoreAnonymousUsers" id="ignoreMessagesFromAnonymous" />
 				<check-box caption="Ignore messages from anonymous users also in conferences" config-section="Chat" config-item="IgnoreAnonymousUsersInConferences" id="ignoreMessagesFromAnonymousInConferences" />
-				<check-box caption="Ignore richtext from anonymous users" config-section="Chat" config-item="IgnoreAnonymousRichtext" />
+				<check-box caption="Ignore richtext from anonymous users" config-section="Chat" config-item="IgnoreAnonymousRichtext"
+				           tool-tip="Displays messages from anonymous users without formatting (colors, images, font weight...)
+Text is plain black." />
 <!-- 				<check-box caption="Always show anonymous contacts with messages" config-section="General" config-item="ShowAnonymousWithMsgs" /> -->
 			</group-box>
 		</tab>
@@ -196,7 +198,8 @@
 				<check-box caption="Activate windows with new messages" config-section="Chat" config-item="ActivateWithNewMessages" />
 				<check-box caption="Flash chat title on new message" config-section="Chat" config-item="BlinkChatTitle" />
 				<check-box caption="Show number of new messages on chat title" config-section="Chat" config-item="NewMessagesInChatTitle" />
-				<check-box caption="Nice date format" config-section="Look" config-item="NiceDateFormat" />
+				<check-box caption="Nice date format" config-section="Look" config-item="NiceDateFormat"
+				           tool-tip="Display dates is nice format, like Today, Yesterday or Friday" />
 			</group-box>
 
 			<group-box name="Style">
