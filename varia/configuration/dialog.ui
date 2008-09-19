@@ -161,7 +161,7 @@ Text is plain black." />
 		</tab>
 
 		<tab name="Colors">
-			<group-box name="Chat">
+			<group-box name="Chat window">
 				<color-button caption="Chat window" config-section="Look" config-item="ChatBgColor" />
 				<color-button caption="Text edit" config-section="Look" config-item="ChatTextBgColor" />
 				<color-button caption="My messages" config-section="Look" config-item="ChatMyBgColor" />
@@ -193,7 +193,7 @@ Text is plain black." />
 			</group-box>
         </tab>
 
-		<tab name="Chat">
+		<tab name="Chat window">
 			<group-box name="New messages notifications">
 				<check-box caption="Activate windows with new messages" config-section="Chat" config-item="ActivateWithNewMessages" />
 				<check-box caption="Flash chat title on new message" config-section="Chat" config-item="BlinkChatTitle" />
@@ -299,8 +299,8 @@ Text is plain black." />
 				<hot-key-edit caption="Show / hide users without description" config-section="ShortCuts" config-item="kadu_showonlydesc" />
 			</group-box>
 		</tab>
-		<tab name="Chat">
-			<group-box name="Chat">
+		<tab name="Chat window">
+			<group-box name="Chat window">
 				<hot-key-edit caption="New line / send message" config-section="ShortCuts" config-item="chat_newline" />
 				<hot-key-edit caption="Clear chat" config-section="ShortCuts" config-item="chat_clear" />
 				<hot-key-edit caption="Close chat" config-section="ShortCuts" config-item="chat_close" />

@@ -80,6 +80,17 @@
 			QT_TRANSLATE_NOOP("@default", "Automatically checks whether a new version is available");
 		
 			
+
+			
+			QT_TRANSLATE_NOOP("@default", "Startup");
+		
+				
+			QT_TRANSLATE_NOOP("@default", "Start on startup");
+		
+			QT_TRANSLATE_NOOP("@default", "Automatically start on system startup");
+		
+			
+
 		
 
 		
@@ -217,7 +228,7 @@
 				
 			QT_TRANSLATE_NOOP("@default", "IP Addresses");
 		
-			QT_TRANSLATE_NOOP("@default", "You can specify which GG servers to use. Separate every server using semicolon (for example: 217.17.41.82;217.17.41.83;217.17.41.84;217.17.41.144)");
+			QT_TRANSLATE_NOOP("@default", "You can specify which GG servers to use. Separate every server using semicolon (for example: 91.197.13.26;91.197.13.24;91.197.13.29;91.197.13.6)");
 		
 				
 			QT_TRANSLATE_NOOP("@default", "Port to connect to servers");
@@ -268,7 +279,6 @@
 				
 			QT_TRANSLATE_NOOP("@default", "Show offline contacts");
 		
-
 				
 			QT_TRANSLATE_NOOP("@default", "Show contacts that are blocked");
 		
@@ -288,6 +298,8 @@
 		
 				
 			QT_TRANSLATE_NOOP("@default", "Ignore richtext from anonymous users");
+		
+			QT_TRANSLATE_NOOP("@default", "Displays messages from anonymous users without formatting (colors, images, font weight...) Text is plain black.");
 		
 
 			
@@ -406,7 +418,7 @@
 			QT_TRANSLATE_NOOP("@default", "Colors");
 		
 			
-			QT_TRANSLATE_NOOP("@default", "Chat");
+			QT_TRANSLATE_NOOP("@default", "Chat window");
 		
 				
 			QT_TRANSLATE_NOOP("@default", "Chat window");
@@ -480,7 +492,7 @@
         
 
 		
-			QT_TRANSLATE_NOOP("@default", "Chat");
+			QT_TRANSLATE_NOOP("@default", "Chat window");
 		
 			
 			QT_TRANSLATE_NOOP("@default", "New messages notifications");
@@ -496,6 +508,8 @@
 		
 				
 			QT_TRANSLATE_NOOP("@default", "Nice date format");
+		
+			QT_TRANSLATE_NOOP("@default", "Display dates is nice format, like Today, Yesterday or Friday");
 		
 			
 
@@ -720,10 +734,10 @@
 			
 		
 		
-			QT_TRANSLATE_NOOP("@default", "Chat");
+			QT_TRANSLATE_NOOP("@default", "Chat window");
 		
 			
-			QT_TRANSLATE_NOOP("@default", "Chat");
+			QT_TRANSLATE_NOOP("@default", "Chat window");
 		
 				
 			QT_TRANSLATE_NOOP("@default", "New line / send message");

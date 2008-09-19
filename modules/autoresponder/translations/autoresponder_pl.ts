@@ -6,7 +6,7 @@
     <message>
         <location filename="../.configuration-ui-translations.cpp" line="3"/>
         <source>Chat</source>
-        <translation>Okno rozmowy</translation>
+        <translation type="unfinished">Rozmowa</translation>
     </message>
     <message>
         <location filename="../.configuration-ui-translations.cpp" line="6"/>
