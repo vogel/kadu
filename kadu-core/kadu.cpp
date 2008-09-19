@@ -462,7 +462,7 @@ Kadu::Kadu(QWidget *parent)
 		ActionDescription::TypeUser, "offlineToUserAction",
 		this, SLOT(offlineToUserActionActivated(QAction *, bool)),
 		"Offline", tr("Offline to user"), true, "",
-		checkOfflineTo		
+		checkOfflineTo
 	);
 	UserBox::addManagementActionDescription(offlineToUserActionDescription);
 
@@ -806,21 +806,16 @@ void Kadu::offlineToUserActionActivated(QAction *sender, bool toggled)
 {
 	kdebugf();
 
-	if (!config_file.readBoolEntry("General", "PrivateStatus"))
-		if(MessageBox::ask("You need to have private status to do it, would you like to set private status now?"))
-		{
-			UserStatus status;
-			status.setStatus(userStatusChanger->status());
-			status.setFriendsOnly(toggled);
-			setStatus(status);
-			config_file.writeEntry("General", "PrivateStatus", true);
-		}
+	if (toggled && !config_file.readBoolEntry("General", "PrivateStatus"))
+	{
+		if (MessageBox::ask("You need to have private status to do it, would you like to set private status now?"))
+			changePrivateStatus->setChecked(true);
 		else
 		{
 			sender->setChecked(!toggled);
-			kdebugf2();
 			return;
 		}
+	}
 
 	KaduMainWindow *window = dynamic_cast<KaduMainWindow *>(sender->parent());
 	if (!window)
@@ -829,20 +824,20 @@ void Kadu::offlineToUserActionActivated(QAction *sender, bool toggled)
 	UserListElements users = window->userListElements();
 
 	bool on = true;
-	foreach(const UserListElement &user, users)
+	foreach (const UserListElement &user, users)
 		if (!user.usesProtocol("Gadu") || !user.protocolData("Gadu", "OfflineTo").toBool())
 		{
 			on = false;
 			break;
 		}
 
-	foreach(const UserListElement &user, users)
+	foreach (const UserListElement &user, users)
 		if (user.usesProtocol("Gadu") && user.protocolData("Gadu", "OfflineTo").toBool() == on)
 			user.setProtocolData("Gadu", "OfflineTo", !on); // TODO: here boolean
 
 	userlist->writeToConfig();
 
-	foreach(KaduAction *action, offlineToUserActionDescription->actions())
+	foreach (KaduAction *action, offlineToUserActionDescription->actions())
 	{
 		if (action->userListElements() == users)
 			action->setChecked(!on);
@@ -1265,6 +1260,7 @@ void Kadu::changePrivateStatusSlot(bool toggled)
 	setStatus(status);
 
 	config_file.writeEntry("General", "PrivateStatus", toggled);
+	UserBox::refreshAllLater();
 }
 
 /* when we want to change the status */

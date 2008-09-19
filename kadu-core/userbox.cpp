@@ -204,7 +204,7 @@ void KaduListBoxPixmap::paint(QPainter *painter)
 			painter->setPen(QColor(255, 0, 0));
 		else if (IgnoredManager::isIgnored(users))
 			painter->setPen(QColor(192, 192, 0));
-		else if (User.protocolData("Gadu", "OfflineTo").toBool())
+		else if (config_file.readBoolEntry("General", "PrivateStatus") && User.protocolData("Gadu", "OfflineTo").toBool())
 			painter->setPen(QColor(128, 128, 128));
 		if (User.data("HideDescription").toString() != "true")
 			description = User.status("Gadu").description();
