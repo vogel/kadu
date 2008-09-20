@@ -372,8 +372,6 @@ Kadu::Kadu(QWidget *parent)
 
 	// groupbar
 	GroupBar = new KaduTabBar(this);
-	GroupBar->setShape(QTabBar::RoundedWest);
-
 	hbox_layout->setStretchFactor(GroupBar, 1);
 
 	StatusChangerManager::initModule();

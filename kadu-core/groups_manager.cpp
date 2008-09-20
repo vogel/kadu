@@ -79,7 +79,7 @@ void GroupsManager::setTabBar(KaduTabBar *bar)
 	kdebugf();
 	GroupBar = bar;
 
-	bar->setShape(QTabBar::RoundedBelow);
+	bar->setShape(QTabBar::RoundedWest);
 	bar->addTab(icons_manager->loadIcon("PersonalInfo"), tr("All"));
 	bar->setFont(QFont(config_file.readFontEntry("Look", "UserboxFont").family(), config_file.readFontEntry("Look", "UserboxFont").pointSize(), QFont::Bold));
 	bar->setIconSize(QSize(16,16));
