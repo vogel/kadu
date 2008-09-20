@@ -372,6 +372,8 @@ Kadu::Kadu(QWidget *parent)
 
 	// groupbar
 	GroupBar = new KaduTabBar(this);
+	GroupBar->setShape(QTabBar::RoundedWest);
+
 	hbox_layout->setStretchFactor(GroupBar, 1);
 
 	StatusChangerManager::initModule();
@@ -1103,7 +1105,6 @@ void Kadu::changeAppearance()
 	QApplication::setStyle(config_file.readEntry("Look", "QtStyle"));
 
 	GroupBar->setFont(QFont(config_file.readFontEntry("Look", "UserboxFont").family(), config_file.readFontEntry("Look", "UserboxFont").pointSize(),75));
-	GroupBar->setShape(QTabBar::RoundedWest);
 
 	if (config_file.readBoolEntry("Look", "ShowInfoPanel"))
 	{
