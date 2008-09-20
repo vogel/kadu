@@ -31,7 +31,7 @@
 
 #define IMG_Y_OFFSET 2
 
-EmoticonsManager::EmoticonsListItem::EmoticonsListItem() : alias(), anim(), stat()
+EmoticonsManager::EmoticonsListItem::EmoticonsListItem()
 {
 }
 
@@ -178,11 +178,16 @@ bool EmoticonsManager::loadGGEmoticonThemePart(const QString &subdir)
 		}
 		else
 			item.stat = item.anim;
+
 		foreach(const QString &alias, aliases)
 		{
 			item.alias = alias;
+			item.doubleEscapedAlias = alias;
+			HtmlDocument::escapeText(item.doubleEscapedAlias);
+			HtmlDocument::escapeText(item.doubleEscapedAlias);
 			Aliases.push_back(item);
 		}
+
 		item.alias = aliases[0];
 		Selector.append(item);
 	}
@@ -280,9 +285,9 @@ void EmoticonsManager::expandEmoticons(HtmlDocument& doc, const QColor& bgcolor,
 					// with html tag
 					QString new_text;
 					if (animated)
-						new_text = narg(emotTemplate, Aliases[lastEmot].alias, Aliases[lastEmot].anim, bgcolor.name(), QString::number(animated));
+						new_text = narg(emotTemplate, Aliases[lastEmot].doubleEscapedAlias, Aliases[lastEmot].anim, bgcolor.name(), QString::number(animated));
 					else
-						new_text = narg(emotTemplate, Aliases[lastEmot].alias, Aliases[lastEmot].stat, bgcolor.name(), QString::number(animated));
+						new_text = narg(emotTemplate, Aliases[lastEmot].doubleEscapedAlias, Aliases[lastEmot].stat, bgcolor.name(), QString::number(animated));
 
 					doc.splitElement(e_i, lastBegin, Aliases[lastEmot].alias.length());
 					doc.setElementValue(e_i, new_text, true);
@@ -303,9 +308,9 @@ void EmoticonsManager::expandEmoticons(HtmlDocument& doc, const QColor& bgcolor,
 		{
 			QString new_text;
 			if (animated)
-				new_text = narg(emotTemplate, Aliases[lastEmot].alias, Aliases[lastEmot].anim, bgcolor.name(), QString::number(animated));
+				new_text = narg(emotTemplate, Aliases[lastEmot].doubleEscapedAlias, Aliases[lastEmot].anim, bgcolor.name(), QString::number(animated));
 			else
-				new_text = narg(emotTemplate, Aliases[lastEmot].alias, Aliases[lastEmot].stat, bgcolor.name(), QString::number(animated));
+				new_text = narg(emotTemplate, Aliases[lastEmot].doubleEscapedAlias, Aliases[lastEmot].stat, bgcolor.name(), QString::number(animated));
 
 			doc.splitElement(e_i, lastBegin, Aliases[lastEmot].alias.length());
 			doc.setElementValue(e_i, new_text, true);
