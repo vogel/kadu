@@ -99,6 +99,7 @@ add_subdirectory (modules)
 add_subdirectory (kadu-core)
 add_subdirectory (varia)
 add_subdirectory (translations)
+add_subdirectory (kthxbye)
 
 message (STATUS "Kadu (version: ${KADU_VERSION}) will be build:")
 message (STATUS " * libgadu (version ${LIBGADU_VERSION}) in ${LIBGADU_LIBRARY_DIRS}")
