@@ -90,6 +90,9 @@ HistoryDialog::HistoryDialog(UinsList uins)
 	QSplitter *splitter = new QSplitter(Qt::Horizontal, this);
 
 	uinsTreeWidget = new QTreeWidget(splitter);
+	QFontMetrics fm(uinsTreeWidget->font());
+	uinsTreeWidget->setMinimumWidth(fm.width("W") * 20);
+
 	QStringList uinsLabels;
 	uinsLabels << tr("Uins");
 	uinsTreeWidget->setHeaderLabels(uinsLabels);

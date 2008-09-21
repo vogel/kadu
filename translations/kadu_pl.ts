@@ -737,7 +737,7 @@ Jest to wysoce ryzykowne!</translation>
     <message>
         <location filename="../kadu-core/.configuration-ui-translations.cpp" line="740"/>
         <source>Chat window</source>
-        <translation type="unfinished">Okno rozmowy lalalal</translation>
+        <translation type="unfinished">Okno rozmowy</translation>
     </message>
     <message>
         <location filename="../kadu-core/.configuration-ui-translations.cpp" line="427"/>
