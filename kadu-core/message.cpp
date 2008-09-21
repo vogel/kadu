@@ -134,6 +134,9 @@ Message Message::parse(const QTextDocument *document)
 			firstFragment = false;
 		}
 
+		if (firstFragment)
+			parseImages(result, "\n", false, false, false, QColor());
+
 		block = block.next();
 		firstParagraph = false;
 	}
