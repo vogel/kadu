@@ -59,19 +59,19 @@ perform_make_install()
 }
 
 # make uninstall
-#uninstall()
-#{
-#	$?=0
-#	$dialog --stdout --defaultno --backtitle "Instalator Kadu" --title "Deinstalacja" --yesno "Czy na pewno chcesz odinstalowaæ Kadu?" 6 50
-#		if [ $? == "0" ]; then
-#			if [ $UID != "0" ]; then
-#				$dialog --backtitle "Instalator Kadu" --infobox "Podaj has³o roota:" 3 24
-#				su -c "make uninstall"
-#			else
-#				make uninstall
-#			fi; 
-#		fi;
-#}
+uninstall()
+{
+	$?=0
+	$dialog --stdout --defaultno --backtitle "Instalator Kadu" --title "Deinstalacja" --yesno "Czy na pewno chcesz odinstalowaæ Kadu?" 6 50
+		if [ $? == "0" ]; then
+			if [ $UID != "0" ]; then
+				$dialog --backtitle "Instalator Kadu" --infobox "Podaj has³o roota:" 3 24
+				su -c "make uninstall"
+			else
+				make uninstall
+			fi; 
+		fi;
+}
 
 # Some extra options
 additional_parameters()
@@ -397,12 +397,10 @@ display_help()
 	forum Kadu (http://kadu.net/forum) w poszukiwaniu 
 	odpowiedzi.
 	
-	END
-#	Je¶li zamierzasz odinstalowaæ Kadu, to nie kasuj
-#	tego katalogu, a nastêpnie uruchom instalatora
-#	z parametrem "uninstall". 
+	Je¶li zamierzasz odinstalowaæ Kadu, to nie kasuj
+	tego katalogu, a nastêpnie uruchom instalatora
+	z parametrem "uninstall". 
 	
-	cat >> ./.temp << "	END"
 
 	DLA ZAAWANSOWANYCH: uruchom instalatora w trybie
 	zaawansowanym, aby uzyskaæ dostêp do kilku dodatkowych
@@ -469,10 +467,10 @@ step0()
 		exit	
 	fi;
 
-#	if [[ $1 == uninstall ]]; then
-#		uninstall
-#		exit
-#	fi;
+	if [[ $1 == uninstall ]]; then
+		uninstall
+		exit
+	fi;
 }
 
 #1. Greetings
