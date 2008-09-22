@@ -53,6 +53,8 @@ private:
 	friend class ChatManager;
 
 	QString Caption; /*!< tytu� okna */
+	QString EscapedCaption;
+
 	Protocol *CurrentProtocol;
 	UserGroup *Users; /*!< lista u�ytkownik�w w danym oknie */
 	int index;	/*!< nr okna (z chat menad�era) */
@@ -180,6 +182,7 @@ public:
 		Zwraca aktualny tytu� okna
 	**/
 	const QString & caption() const;
+	const QString & escapedCaption() const;
 
 	/**
 		\fn CustonInput* edit()

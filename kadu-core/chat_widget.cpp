@@ -368,6 +368,11 @@ void ChatWidget::refreshTitle()
 	title.replace("&nbsp;", " ");
 
 	Caption = title;
+
+	// qt treats [*] as 'modified placeholder'
+	// we escape each [*] with double [*][*] so it gets properly handled
+	EscapedCaption = Caption.replace(QLatin1String("[*]"), QLatin1String("[*][*]"));
+
 	emit captionUpdated();
 	kdebugf2();
 }
@@ -707,6 +712,11 @@ const UserGroup *ChatWidget::users() const
 const QString& ChatWidget::caption() const
 {
  	return Caption;
+}
+
+const QString& ChatWidget::escapedCaption() const
+{
+ 	return EscapedCaption;
 }
 
 CustomInput* ChatWidget::edit()

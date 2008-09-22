@@ -152,7 +152,7 @@ void ChatWindow::closeEvent(QCloseEvent *e)
 void ChatWindow::updateTitle()
 {
 	setIcon(currentChatWidget->icon());
-	setCaption(currentChatWidget->caption());
+	setWindowTitle(currentChatWidget->escapedCaption());
 
 	if (showNewMessagesNum && currentChatWidget->newMessagesCount()) // if we don't have new messages or don't want them to be shown
 		showNewMessagesNumInTitle();
@@ -165,12 +165,12 @@ void ChatWindow::blinkTitle()
 		if (!caption().contains(currentChatWidget->caption()) || !blinkChatTitle)
 		{
   			if (!showNewMessagesNum) // if we don't show number od new messages waiting
-  				setCaption(currentChatWidget->caption());
+  				setWindowTitle(currentChatWidget->escapedCaption());
   			else
 				showNewMessagesNumInTitle();
 		}
 		else
-			setCaption(QString().fill(' ', (currentChatWidget->caption().length() + 5)));
+			setWindowTitle(QString().fill(' ', (currentChatWidget->caption().length() + 5)));
 
 		if (blinkChatTitle) // timer will not be started, if configuration option was changed
 			title_timer->start(500,TRUE);
@@ -180,7 +180,7 @@ void ChatWindow::blinkTitle()
 void ChatWindow::showNewMessagesNumInTitle()
 {
 	if (!isActiveWindow())
-		setCaption("[" + QString().setNum(currentChatWidget->newMessagesCount()) + "] " + currentChatWidget->caption());
+		setWindowTitle("[" + QString().setNum(currentChatWidget->newMessagesCount()) + "] " + currentChatWidget->escapedCaption());
 }
 
 void ChatWindow::windowActivationChange(bool b)
@@ -189,7 +189,7 @@ void ChatWindow::windowActivationChange(bool b)
 	if (isActiveWindow())
 	{
 		currentChatWidget->markAllMessagesRead();
-		setCaption(currentChatWidget->caption());
+		setWindowTitle(currentChatWidget->escapedCaption());
 
 		if (title_timer->isActive())
 			title_timer->stop();
