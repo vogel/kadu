@@ -95,6 +95,12 @@ link_directories (${LIBGADU_LIBRARY_DIRS})
 
 configure_file (${CMAKE_SOURCE_DIR}/kadu-config.h.cmake ${CMAKE_BINARY_DIR}/kadu-config.h)
 
+configure_file (${CMAKE_CURRENT_SOURCE_DIR}/cmake_uninstall.cmake.in ${CMAKE_CURRENT_BINARY_DIR}/cmake_uninstall.cmake
+  IMMEDIATE @ONLY)
+
+add_custom_target(uninstall "${CMAKE_COMMAND}" -P "${CMAKE_CURRENT_BINARY_DIR}/cmake_uninstall.cmake")
+
+
 add_subdirectory (modules)
 add_subdirectory (kadu-core)
 add_subdirectory (varia)
