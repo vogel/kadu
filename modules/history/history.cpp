@@ -1234,7 +1234,8 @@ void HistoryManager::messageReceived(Protocol * /*protocol*/, UserListElements s
 	if (!config_file.readBoolEntry("History", "Logging"))
 		return;
 	kdebugf();
-	int occur = msg.find(QRegExp("<img [^>]* gg_crc[^>]*>"));
+	int occur = msg.count(QRegExp("<img [^>]* gg_crc[^>]*>"));
+
 	UinType sender0 = senders[0].ID("Gadu").toUInt();
 	kdebugm(KDEBUG_INFO, "sender: %d msg: '%s' occur:%d\n", sender0, qPrintable(msg), occur);
 	UinsList uins;//TODO: throw out UinsList as soon as possible!
@@ -1261,6 +1262,7 @@ void HistoryManager::imageReceivedAndSaved(UinType sender, uint32_t size, uint32
 	if (!config_file.readBoolEntry("History", "Logging"))
 		return;
 	kdebugf();
+
 	kdebugm(KDEBUG_INFO, "sender: %d, size: %d, crc:%u, path:%s\n", sender, size, crc32, qPrintable(path));
 	QString reg = GaduImagesManager::loadingImageHtml(sender, size, crc32);
 	QString imagehtml = GaduImagesManager::imageHtml(path);
@@ -1269,18 +1271,18 @@ void HistoryManager::imageReceivedAndSaved(UinType sender, uint32_t size, uint32
 	{
 //		kdebugm(KDEBUG_INFO, "sender found\n");
 		QList<BuffMessage> &messages = it.data();
-		foreach(BuffMessage msg, messages)
+		QList<BuffMessage>::iterator msg;
+		for (msg = messages.begin(); msg != messages.end(); ++msg)
 		{
 //			kdebugm(KDEBUG_INFO, "counter:%d\n", (*msg).counter);
-			if (msg.counter)
+			if ((*msg).counter)
 			{
-				int occur = msg.message.find(reg);
+				int occur = (*msg).message.count(reg);
 //				kdebugm(KDEBUG_INFO, "occur:%d\n", occur);
 				if (occur)
 				{
-					// TODO: 0.6.5 check if this does operate on msg not on copy
-					msg.message.replace(reg, imagehtml);
-					msg.counter -= occur;
+					(*msg).message.replace(reg, imagehtml);
+					(*msg).counter -= occur;
 				}
 			}
 		}

@@ -14,13 +14,14 @@
 
 #include "chat_message.h"
 
-QString formatMessage(const QString &text)
+QString formatMessage(const QString &text, const QString &backgroundColor)
 {
 	HtmlDocument htmlDocument;
 	htmlDocument.parseHtml(text);
 	htmlDocument.convertUrlsToHtml();
 	htmlDocument.convertMailToHtml();
-	emoticons->expandEmoticons(htmlDocument, "black", (EmoticonsStyle)config_file.readNumEntry("Chat", "EmoticonsStyle"));
+	emoticons->expandEmoticons(htmlDocument, backgroundColor, (EmoticonsStyle)config_file.readNumEntry("Chat", "EmoticonsStyle"));
+	GaduImagesManager::setBackgroundsForAnimatedImages(htmlDocument, backgroundColor);
 
 	return htmlDocument.generateHtml();
 }
@@ -29,7 +30,7 @@ static QString getMessage(const QObject * const object)
 {
 	const ChatMessage * const chatMessage = dynamic_cast<const ChatMessage * const>(object);
 	if (chatMessage)
-		return formatMessage(chatMessage->unformattedMessage);
+		return formatMessage(chatMessage->unformattedMessage, chatMessage->backgroundColor);
 	else
 		return "";
 }
@@ -38,7 +39,7 @@ static QString getBackgroundColor(const QObject * const object)
 {
 	const ChatMessage * const chatMessage = dynamic_cast<const ChatMessage * const>(object);
 	if (chatMessage)
-		return dynamic_cast<const ChatMessage * const>(object)->backgroundColor;
+		return chatMessage->backgroundColor;
 	else
 		return "";
 }
@@ -47,7 +48,7 @@ static QString getFontColor(const QObject * const object)
 {
 	const ChatMessage * const chatMessage = dynamic_cast<const ChatMessage * const>(object);
 	if (chatMessage)
-		return dynamic_cast<const ChatMessage * const>(object)->fontColor;
+		return chatMessage->fontColor;
 	else
 		return "";
 }
@@ -56,7 +57,7 @@ static QString getNickColor(const QObject * const object)
 {
 	const ChatMessage * const chatMessage = dynamic_cast<const ChatMessage * const>(object);
 	if (chatMessage)
-		return dynamic_cast<const ChatMessage * const>(object)->nickColor;
+		return chatMessage->nickColor;
 	else
 		return "";
 }
@@ -65,7 +66,7 @@ static QString getSentDate(const QObject * const object)
 {
 	const ChatMessage * const chatMessage = dynamic_cast<const ChatMessage * const>(object);
 	if (chatMessage)
-		return dynamic_cast<const ChatMessage * const>(object)->sentDate;
+		return chatMessage->sentDate;
 	else
 		return "";
 }
@@ -74,7 +75,7 @@ static QString getReceivedDate(const QObject * const object)
 {
 	const ChatMessage * const chatMessage = dynamic_cast<const ChatMessage * const>(object);
 	if (chatMessage)
-		return dynamic_cast<const ChatMessage * const>(object)->receivedDate;
+		return chatMessage->receivedDate;
 	else
 		return "";
 }
@@ -145,7 +146,7 @@ ChatMessage::ChatMessage(const QString &rawContent, ChatMessageType type, QDateT
 {
 }
 
-// TODO: move
+// TODO: remove?
 /* convert special characters into emoticons, HTML into plain text and so forth */
 QString ChatMessage::convertCharacters(QString edit, const QColor &bgcolor, EmoticonsStyle style)
 {
