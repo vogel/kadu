@@ -189,10 +189,15 @@ void ChatManager::closeAllWindows()
 {
 	kdebugf();
 
+	if (config_file.readBoolEntry("Chat", "SaveOpenedWindows", true))
+		chat_manager->saveOpenedWindows();
+
 	while (!ChatWidgets.empty())
 	{
 		ChatWidget *chat = ChatWidgets.first();
-		delete chat;
+		ChatWindow *window = dynamic_cast<ChatWindow *>(chat->parent());
+		if (window)
+			delete window;
 	}
 
 	kdebugf2();
@@ -262,6 +267,7 @@ void ChatManager::saveOpenedWindows()
 ChatManager::~ChatManager()
 {
 	kdebugf();
+
 	disconnect(&refreshTitlesTimer, SIGNAL(timeout()), this, SLOT(refreshTitles()));
 	disconnect(userlist, SIGNAL(usersStatusChanged(QString)), this, SLOT(refreshTitlesLater()));
 
@@ -906,9 +912,6 @@ void ChatManager::closeModule()
 	kdebugf();
 
 	ChatMessage::unregisterParserTags();
-
-	if (config_file.readBoolEntry("Chat", "SaveOpenedWindows", true))
-		chat_manager->saveOpenedWindows();
 
 	delete chat_manager;
 	chat_manager = 0;
