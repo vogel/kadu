@@ -39,8 +39,8 @@
 #include "modules/static_modules.cpp"
 
 #ifdef Q_OS_MACX
-	#define SO_EXT "dylib"
-	#define SO_EXT_LEN 5
+	#define SO_EXT "so"
+	#define SO_EXT_LEN 2
 	#define SO_PREFIX "lib"
 	#define SO_PREFIX_LEN 3
 #elif defined(Q_OS_WIN)

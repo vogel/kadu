@@ -184,3 +184,8 @@ install (FILES hi64-app-kadu.png DESTINATION "share/pixmaps" RENAME kadu-64.png)
 install (FILES hi128-app-kadu.png DESTINATION "share/pixmaps" RENAME kadu-128.png)
 install (FILES hi256-app-kadu.png DESTINATION "share/pixmaps" RENAME kadu-256.png)
 
+if (APPLE)
+	pkg_search_module (SNDFILE REQUIRED sndfile>=1.0)
+	include_directories (${SNDFILE_INCLUDE_DIRS})
+	link_directories (${SNDFILE_LIBRARY_DIRS})
+endif (APPLE)
