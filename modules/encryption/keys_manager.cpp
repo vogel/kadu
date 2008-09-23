@@ -186,7 +186,6 @@ void KeysManager::turnContactEncryptionText(QString id, bool on)
 
 void KeysManager::turnEncryption()
 {
-
 	turnEncryption(getSelected());
 }
 
@@ -207,7 +206,7 @@ void KeysManager::turnEncryptionBtn(bool on)
 	if (on)
 	{
 		pb_on->setText(tr("Off"));
-		pb_on->setIcon(icons_manager->loadIcon("EncryptedChat"));
+		pb_on->setIcon(icons_manager->loadIcon("DecryptedChat_off"));
 	}
 	else
 	{

@@ -6,6 +6,7 @@
 #include "main_configuration_window.h"
 
 class ActionDescription;
+class ChatEditBox;
 class ChatWidget;
 class KaduAction;
 class KeysManager;
@@ -25,7 +26,7 @@ class EncryptionManager : public ConfigurationUiHandler
 		QMap<ChatWidget *, bool> EncryptionEnabled;
 		QMap<ChatWidget *, bool> EncryptionPossible;
 
-		void setupEncryptButton(ChatWidget* chat, bool enabled);
+		void setupEncryptButton(ChatEditBox* chatEditBox, bool enabled);
 		void setupEncryptionButtonForUsers(UserListElements users, bool enabled);
 
 		ActionDescription* sendPublicKeyActionDescription;

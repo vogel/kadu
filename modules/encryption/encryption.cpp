@@ -231,37 +231,35 @@ void EncryptionManager::setupEncrypt(KaduAction *action)
 			encrypt = config_file.readBoolEntry("Chat", "Encryption");
 	}
 
-	setupEncryptButton(chatWidget, encrypt);
+	setupEncryptButton(chatEditBox, encrypt);
 	setupEncryptionButtonForUsers(group->toUserListElements(), encryption_possible);
 	EncryptionPossible[chatWidget] = encryption_possible;
 
 	kdebugf2();
 }
 
-void EncryptionManager::setupEncryptButton(ChatWidget* chat, bool enabled)
+void EncryptionManager::setupEncryptButton(ChatEditBox* chatEditBox, bool enabled)
 {
 	kdebugf();
 
-	EncryptionEnabled[chat] = enabled;
+	ChatWidget *chatWidget = chatEditBox->chatWidget();
+	if (!chatWidget)
+		return;
 
-	QAction *action = encryptionActionDescription->action(chat->getChatEditBox());
+	EncryptionEnabled[chatWidget] = enabled;
+
+	QAction *action = encryptionActionDescription->action(chatEditBox);
 	if (action)
 	{
 		if (enabled)
-		{
-			action->setToolTip(tr("Disable encryption for this conversation"));
 			action->setChecked(true);
-		}
 		else
-		{
-			action->setToolTip(tr("Enable encryption for this conversation"));
 			action->setChecked(false);
-		}
 	}
 
-	chat_manager->setChatWidgetProperty(chat->users(), "EncryptionEnabled", QVariant(enabled));
-	if (chat->users()->count() == 1)
-		(*(chat->users()->begin())).setData("EncryptionEnabled", enabled ? "true" : "false");
+	chat_manager->setChatWidgetProperty(chatWidget->users(), "EncryptionEnabled", QVariant(enabled));
+	if (chatWidget->users()->count() == 1)
+		(*(chatWidget->users()->begin())).setData("EncryptionEnabled", enabled ? "true" : "false");
 	kdebugf2();
 }
 
@@ -276,7 +274,7 @@ void EncryptionManager::encryptionActionActivated(QAction *sender, bool toggled)
 	ChatWidget *chatWidget = chat_manager->findChatWidget(kaduMainWindow->userListElements());
 	if (!chatWidget)
 		return;
-	setupEncryptButton(chatWidget, !EncryptionEnabled[chatWidget]);
+	setupEncryptButton(chatWidget->getChatEditBox(), !EncryptionEnabled[chatWidget]);
 	if (KeysManagerDialog)
 		KeysManagerDialog->turnContactEncryptionText((*chatWidget->users()->constBegin()).ID("Gadu"), EncryptionEnabled[chatWidget]);
 	kdebugf2();
@@ -359,7 +357,7 @@ void EncryptionManager::turnEncryption(UserGroup *group, bool on)
 {
 	ChatWidget *chat = chat_manager->findChatWidget(group->toUserListElements());
 	if (chat)
-		setupEncryptButton(chat, on);
+		setupEncryptButton(chat->getChatEditBox(), on);
 	else
 	{
 		chat_manager->setChatWidgetProperty(group, "EncryptionEnabled", QVariant(on));
@@ -468,7 +466,7 @@ void EncryptionManager::keyRemoved(UserListElement ule)
 	if (chat)
 	{
 		EncryptionPossible[chat] = false;
-		setupEncryptButton(chat, false);
+		setupEncryptButton(chat->getChatEditBox(), false);
 		setupEncryptionButtonForUsers(ules, false);
 	}
 }
