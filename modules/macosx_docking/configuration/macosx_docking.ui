@@ -1,0 +1,9 @@
+<configuration-ui>
+	<section name="Kadu">
+		<tab name="Tray">
+			<group-box name="MacOSX Dock">
+				<check-box caption="Icon Notification" config-section="MacOSX Dock" config-item="IconNotification" id="macosx_docking/change_icon" />
+			</group-box>
+		</tab>
+	</section>
+</configuration-ui>
