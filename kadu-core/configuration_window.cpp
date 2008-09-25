@@ -274,7 +274,6 @@ ConfigurationWindow::ConfigurationWindow(const QString &name, const QString &cap
 	container = new QWidget;
 	QHBoxLayout *container_layout = new QHBoxLayout(container);
 	Q_UNUSED(container_layout)
-	container->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 
 	QDialogButtonBox *buttons_layout = new QDialogButtonBox(Qt::Horizontal, this);
 
