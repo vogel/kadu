@@ -53,7 +53,7 @@ void MacOSXDocking::blockSettingIcon(bool &block)
 
 void MacOSXDocking::trayPixmapChanged(const QIcon &small_pix, const QString &name)
 {
-	if (!config_file.readBoolEntry("MacOSX Dock", "IconNotification"))
+	if (!config_file.readBoolEntry("MacOSX Dock", "IconNotification", true))
 		return;
 
 	const QIcon &pix = icons_manager->loadIcon("Big" + name);
@@ -61,9 +61,13 @@ void MacOSXDocking::trayPixmapChanged(const QIcon &small_pix, const QString &nam
 	{
 		kdebugm(KDEBUG_WARNING, "big icon of %s not available\n", qPrintable(name));
 		kadu->setIcon(small_pix.pixmap(128,128));
+		qApp->setWindowIcon(small_pix.pixmap(128,128));
 	}
 	else
+	{
 		kadu->setIcon(pix.pixmap(128,128));
+		qApp->setWindowIcon(pix.pixmap(128,128));
+	}
 }
 
 void MacOSXDocking::findTrayPosition(QPoint &p)

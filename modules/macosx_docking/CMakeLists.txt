@@ -6,6 +6,10 @@ set (MOC_SOURCES
 	macosx_docking.h
 )
 
+set (CONFIGURATION_FILES
+	configuration/macosx_docking.ui)
+
+kadu_module_configuration(${CONFIGURATION_FILES})
 qt_wrap_cpp (macosx_docking MOC_FILES ${MOC_SOURCES})
 
 install (FILES ${TRANSLATION_FILES}
