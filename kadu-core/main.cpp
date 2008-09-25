@@ -195,7 +195,7 @@ int main(int argc, char *argv[])
 	QTranslator kadu_qm(0, "Translator_kadu");
 	kadu_qm.load(dataPath(QString("kadu/translations/kadu_") + lang), ".");
 	qApp->installTranslator(&kadu_qm);
-	qApp->setStyle(config_file.readEntry("Look", "QtStyle"));
+
 	// plugins path (win32)
 	qApp->addLibraryPath(libPath("qt"));
 
