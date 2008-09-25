@@ -99,7 +99,7 @@ extern "C" int macosx_docking_init(bool firstLoad)
 
 extern "C" void macosx_docking_close()
 {
-	MainConfigurationWindow::registerUiFile(dataPath("kadu/modules/configuration/macosx_docking.ui"), mac_docking);
+	MainConfigurationWindow::unregisterUiFile(dataPath("kadu/modules/configuration/macosx_docking.ui"), mac_docking);
 	delete mac_docking;
 	mac_docking = NULL;
 }
