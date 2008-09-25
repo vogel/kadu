@@ -105,12 +105,12 @@ find_possible_errors()
 	fi;
 	
 	# Chceck if the QTDIR variable is set:
-	if [[ $QTDIR == "" ]]; then
-		$dialog --begin 19 48 --infobox "Naci¶nij CTRL+C aby wyj¶æ" 3 29 --and-widget --stdout --defaultno --backtitle "Instalator Kadu" --title "Brak ustawionej zmiennej \$QTDIR" --yesno "Zmienna \$QTDIR nie jest ustawiona. Mo¿esz mieæ problemy z kompilacj±\nCzy chcesz kontynuowaæ instalacjê?" 6 75
-		if [ $? == "1" ]; then
-			exit
-		fi;
-	fi;
+#	if [[ $QTDIR == "" ]]; then
+#		$dialog --begin 19 48 --infobox "Naci¶nij CTRL+C aby wyj¶æ" 3 29 --and-widget --stdout --defaultno --backtitle "Instalator Kadu" --title "Brak ustawionej zmiennej \$QTDIR" --yesno "Zmienna \$QTDIR nie jest ustawiona. Mo¿esz mieæ problemy z kompilacj±\nCzy chcesz kontynuowaæ instalacjê?" 6 75
+#		if [ $? == "1" ]; then
+#			exit
+#		fi;
+#	fi;
 }
 
 # Display initial greeting
@@ -152,13 +152,13 @@ prepare_modules_list()
 	available_modules=
 	cd modules
 	for dir in *; do \
-		if test -f $dir/spec; then \
+		if test -f $dir/CMakeLists.txt; then \
 			available_modules="$available_modules $dir"; \
 		fi; \
 	done
 	for file in *.web; do \
 		dir=`basename $file .web`; \
-		if test ! -f $dir/spec; then \
+		if test ! -f $dir/CMakeLists.txt; then \
 			available_modules="$available_modules $dir"; \
 		fi; \
 	done
