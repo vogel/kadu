@@ -6,21 +6,12 @@ set (MOC_SOURCES
 	wmaker_docking.h
 )
 
-set (TRANSLATION_SOURCES
-	translations/wmaker_docking_de.ts
-	translations/wmaker_docking_ft.ts
-	translations/wmaker_docking_it.ts
-	translations/wmaker_docking_pl.ts
-)
-
 set (CONFIGURATION_FILES
 	configuration/wmaker_docking.ui)
 
 kadu_module_desc (wmaker_docking.desc)
 kadu_module_configuration(${CONFIGURATION_FILES})
 qt_wrap_cpp (wmaker_docking MOC_FILES ${MOC_SOURCES})
-
-qt4_add_translation (TRANSLATION_FILES ${TRANSLATION_SOURCES})
 
 install (FILES ${TRANSLATION_FILES}
 	DESTINATION "share/kadu/modules/translations")

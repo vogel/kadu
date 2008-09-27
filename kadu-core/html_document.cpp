@@ -216,16 +216,20 @@ void HtmlDocument::convertUrlsToHtml()
 			continue;
 
 		int l = r.matchedLength();
-		int lft = config_file.readNumEntry("Chat","LinkFoldTreshold");
-
-		QString link2 = text.mid(p, l);
-		link2.replace("%20", "%2520"); //obej�cie buga w operze :|, kt�ra nie potrafi otworzy� linka ze spacj�
+		int lft = config_file.readNumEntry("Chat", "LinkFoldTreshold");
 
 		QString link;
+		QString displayLink = text.mid(p, l);
+		QString aLink = displayLink;
+
+		aLink.replace("%20", "%2520"); // Opera's bug workaround - allows opening links with spaces
+		if (!aLink.contains("://"))
+			aLink.prepend("http://");
+
 		if ((l - p > lft) && config_file.readBoolEntry("Chat", "FoldLink"))
-			link = "<a href=\"" + link2 + "\">" + text.mid(p, p+(lft/2)) + "..." + text.mid(l-(lft/2), lft/2) + "</a>";
+			link = "<a href=\"" + aLink + "\">" + text.mid(p, p+(lft/2)) + "..." + text.mid(l-(lft/2), lft/2) + "</a>";
 		else
-			link = "<a href=\"" + link2 + "\">" + link2 + "</a>";
+			link = "<a href=\"" + aLink + "\">" + displayLink + "</a>";
 
 		splitElement(i, p, l);
 		setElementValue(i, link, true);

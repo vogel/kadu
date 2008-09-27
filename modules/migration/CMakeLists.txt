@@ -8,7 +8,7 @@ set (MOC_SOURCES
 
 set (TRANSLATION_SOURCES
 	translations/migration_de.ts
-	translations/migration_ft.ts
+	translations/migration_fr.ts
 	translations/migration_it.ts
 	translations/migration_pl.ts
 )
