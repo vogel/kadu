@@ -539,44 +539,40 @@ void ChatWidget::cancelMessage()
 	kdebugf2();
 }
 
-void ChatWidget::messageNotDeliveredSlot(const QString &message)
+void ChatWidget::messageStatusChanged(int messageId, Protocol::MessageStatus status)
 {
-	kdebugf();
-	kdebugmf(KDEBUG_INFO, "This is my ack.\n");
-	MessageBox::msg(message/*tr("Message has not been delivered.")*/, true, "Warning", this);
-	cancelMessage();
-	kdebugf2();
-}
-
-void ChatWidget::messageDeliveredSlot(int id)
-{
-	if (myLastMessage.id() != id)
+	if (messageId != myLastMessage.id())
 		return;
 
-	kdebugmf(KDEBUG_INFO, "This is my ack.\n");
-	writeMyMessage();
-	emit messageSentAndConfirmed(Users->toUserListElements(), myLastMessage.toHtml());
-	disconnectAcknowledgeSlots();
+	switch (status)
+	{
+		case Protocol::StatusAcceptedDelivered:
+		case Protocol::StatusAcceptedQueued:
+			writeMyMessage();
+			emit messageSentAndConfirmed(Users->toUserListElements(), myLastMessage.toHtml());
+			disconnectAcknowledgeSlots();
+			changeCancelSendToSend();
+			return;
 
-	changeCancelSendToSend();
+		case Protocol::StatusRejectedBlocked:
+			MessageBox::msg("Message blocked", true, "Warning", this);
+		case Protocol::StatusRejectedBoxFull:
+			MessageBox::msg("Message box if full", true, "Warning", this);
+		case Protocol::StatusRejectedUnknown:
+			MessageBox::msg("Message not delivered", true, "Warning", this);
+	}
 
-	kdebugf2();
+	cancelMessage();
 }
 
 void ChatWidget::connectAcknowledgeSlots()
 {
-	kdebugf();
-	connect(CurrentProtocol, SIGNAL(messageNotDelivered(const QString&)), this, SLOT(messageNotDeliveredSlot(const QString&)));
-	connect(CurrentProtocol, SIGNAL(messageDelivered(int)), this, SLOT(messageDeliveredSlot(int)));
-	kdebugf2();
+	connect(CurrentProtocol, SIGNAL(messageStatusChanged(int, Protocol::MessageStatus)), this, SLOT(messageStatusChanged(int, Protocol::MessageStatus)));
 }
 
 void ChatWidget::disconnectAcknowledgeSlots()
 {
-	kdebugf();
-	disconnect(CurrentProtocol, SIGNAL(messageNotDelivered(const QString&)), this, SLOT(messageNotDeliveredSlot(const QString&)));
-	disconnect(CurrentProtocol, SIGNAL(messageDelivered(int)), this, SLOT(messageDeliveredSlot(int)));
-	kdebugf2();
+	disconnect(CurrentProtocol, SIGNAL(messageStatusChanged(int, Protocol::MessageStatus)), this, SLOT(messageStatusChanged(int, Protocol::MessageStatus)));
 }
 
 void ChatWidget::changeSendToCancelSend()

@@ -20,8 +20,10 @@ Protocol::Protocol(const QString &proto, const QString &id, QObject *parent)
 
 Protocol::~Protocol()
 {
-	delete CurrentStatus;
-	delete NextStatus;
+	if (CurrentStatus)
+		delete CurrentStatus;
+	if (NextStatus)
+		delete NextStatus;
 }
 
 const QDateTime &Protocol::connectionTime() const

@@ -591,13 +591,6 @@ private slots:
 	/**
 		Przysz�a informacja o dostarczeniu (lub nie) wiadomo�ci.
 		Na podstawie statusu emituje odpowiednie sygna�y message*
-
-		@see messageBlocked
-		@see messageDelivered
-		@see messageQueued
-		@see messageBoxFull
-		@see messageNotDelivered
-		@see messageRejected
 	**/
 	void ackReceived(int seq, uin_t uin, int status);
 
@@ -855,27 +848,6 @@ protected slots:
 	void removingProtocol(UserListElement elem, QString protocolName, bool massively, bool last);
 
 signals:
-	/**
-		wiadomo�� zosta�a zablokowana przez serwer
-	**/
-	//void messageBlocked(int seq, UinType uin);
-
-	/**
-		wiadomo�� zakolejkowano
-	**/
-	void messageQueued(int seq, UinType uin);
-
-	/**
-		skrzynka odbiorcza na serwerze jest pe�na
-	**/
-	//void messageBoxFull(int seq, UinType uin);
-
-	//void messageNotDelivered(int seq, UinType uin);
-	/**
-		wiadomo�� zosta�a odrzucona przez serwer
-	**/
-	void messageRejected(int seq, UinType uin);
-
 	/**
 		wyst�pi� b��d po��czenia
 		@param err przyczyna

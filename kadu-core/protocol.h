@@ -23,6 +23,16 @@ class Protocol : public QObject
 {
 	Q_OBJECT
 
+public:
+	enum MessageStatus {
+		StatusAcceptedDelivered,
+		StatusAcceptedQueued,
+		StatusRejectedBlocked,
+		StatusRejectedBoxFull,
+		StatusRejectedUnknown
+	};
+
+private:
 	UserStatus & writeableStatus() { return *NextStatus; }
 	friend class Kadu;
 
@@ -183,14 +193,9 @@ signals:
 	void sendMessageFiltering(const UserListElements users, QByteArray &msg, bool &stop);
 
 	/**
-		wiadomo�� nie zosta�a dostaczona
+		Message with id messageId was delivered or rejected.
 	**/
-	void messageNotDelivered(const QString &message);
-
-	/**
-		Message with id messageId was successfully delivered.
-	**/
-	void messageDelivered(int messsageId);
+	void messageStatusChanged(int messsageId, Protocol::MessageStatus status);
 
 	/**
 		\fn receivedMessageFilter(Protocol *protocol, UserListElements senders, const QString &msg, time_t time, bool &ignore);

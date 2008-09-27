@@ -239,9 +239,7 @@ public slots:
 	**/
 	void addEmoticon(QString);
 
-	void messageNotDeliveredSlot(const QString &message);
-
-	void messageDeliveredSlot(int);
+	void messageStatusChanged(int messageId, Protocol::MessageStatus status);
 
 	/**
 		\fn void appendMessages(const QValueList<ChatMessage *> &)

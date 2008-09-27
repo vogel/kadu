@@ -1337,31 +1337,28 @@ void GaduProtocol::ackReceived(int seq, uin_t uin, int status)
 	kdebugf();
 	if (seq != seqNumber)
 		return;
+
 	switch (status)
 	{
-		case GG_ACK_BLOCKED:
-			kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "message blocked (uin: %d, seq: %d)\n", uin, seq);
-			emit messageNotDelivered(QString(tr("Message blocked.")));
-			emit messageRejected(seq, uin);
-			break;
 		case GG_ACK_DELIVERED:
 			kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "message delivered (uin: %d, seq: %d)\n", uin, seq);
-			emit messageDelivered(seq);
+			emit messageStatusChanged(seq, StatusAcceptedDelivered);
 			break;
 		case GG_ACK_QUEUED:
 			kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "message queued (uin: %d, seq: %d)\n", uin, seq);
-			emit messageQueued(seq, uin);
-			emit messageDelivered(seq);
+			emit messageStatusChanged(seq, StatusAcceptedQueued);
+			break;
+		case GG_ACK_BLOCKED:
+			kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "message blocked (uin: %d, seq: %d)\n", uin, seq);
+			emit messageStatusChanged(seq, StatusRejectedBlocked);
 			break;
 		case GG_ACK_MBOXFULL:
 			kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "message box full (uin: %d, seq: %d)\n", uin, seq);
-			emit messageNotDelivered(QString(tr("Messagebox full.")));
-			emit messageRejected(seq, uin);
+			emit messageStatusChanged(seq, StatusRejectedBoxFull);
 			break;
 		case GG_ACK_NOT_DELIVERED:
 			kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "message not delivered (uin: %d, seq: %d)\n", uin, seq);
-			emit messageNotDelivered(QString(tr("Message not delivered.")));
-			emit messageRejected(seq, uin);
+			emit messageStatusChanged(seq, StatusRejectedUnknown);
 			break;
 		default:
 			kdebugm(KDEBUG_NETWORK|KDEBUG_WARNING, "unknown acknowledge! (uin: %d, seq: %d, status:%d)\n", uin, seq, status);
