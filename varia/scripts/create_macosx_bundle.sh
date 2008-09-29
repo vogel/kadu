@@ -191,7 +191,7 @@ fi
 if [ -f ${LQTDIR}/lib/QtCore.framework/versions/4/QtCore ]; then
 	echo "log: copying qt library"
 	cp ${LQTDIR}/lib/QtCore.framework/versions/4/QtCore ${FM_DIR}
-	install_name_tool -id @executable_path/../Frameworks/QtWebKit ${FM_DIR}/QtCore
+	install_name_tool -id @executable_path/../Frameworks/QtCore ${FM_DIR}/QtCore
 fi
 
 if [ -f ${SNDFILEPATH}/lib/libsndfile.1.dylib ]; then
