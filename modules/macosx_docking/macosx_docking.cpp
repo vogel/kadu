@@ -19,6 +19,8 @@
 #include "kadu.h"
 #include "misc.h"
 
+extern void qt_mac_set_dock_menu(QMenu *);
+
 /**
  * @ingroup macosx_docking
  * @{
@@ -27,11 +29,15 @@ MacOSXDocking::MacOSXDocking(QObject *parent, const char *name) : QObject(parent
 {
 	kdebugf();
 	config_file.writeEntry("General", "RunDocked", false);
+	
+	menu = new QMenu;
+	menu->addAction(tr("Show/Hide"), this, SLOT(toggleKaduVisibility()));
+	qt_mac_set_dock_menu(menu);
 
 	connect(docking_manager, SIGNAL(trayPixmapChanged(const QIcon &, const QString &)), this, SLOT(trayPixmapChanged(const QIcon &, const QString &)));
 	connect(docking_manager, SIGNAL(searchingForTrayPosition(QPoint &)), this, SLOT(findTrayPosition(QPoint &)));
 	connect(kadu, SIGNAL(settingMainIconBlocked(bool &)), this, SLOT(blockSettingIcon(bool &)));
-	docking_manager->setDocked(true, true);
+	docking_manager->setDocked(true);
 	kdebugf2();
 }
 
@@ -44,6 +50,17 @@ MacOSXDocking::~MacOSXDocking()
 	disconnect(docking_manager, SIGNAL(searchingForTrayPosition(QPoint &)), this, SLOT(findTrayPosition(QPoint &)));
 
 	kdebugf2();
+}
+
+void MacOSXDocking::toggleKaduVisibility()
+{
+	if (!kadu->isVisible())
+	{
+		kadu->show();
+		kadu->raise();
+	}
+	else
+		kadu->hide();
 }
 
 void MacOSXDocking::blockSettingIcon(bool &block)

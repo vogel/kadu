@@ -2,6 +2,7 @@
 #define MACOSX_DOCKING
 
 #include <QtCore/QObject>
+#include <QtGui/QMenu>
 
 #include "configuration_aware_object.h"
 #include "main_configuration_window.h"
@@ -18,11 +19,15 @@ class MacOSXDocking : public ConfigurationUiHandler
 		void trayPixmapChanged(const QIcon &, const QString &);
 		void findTrayPosition(QPoint &);
 		void onCreateTabGeneral();
+		void toggleKaduVisibility();
 	public:
 		MacOSXDocking(QObject *parent = 0, const char *name = 0);
 		~MacOSXDocking();
 		
 		virtual void mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow);
+	protected:
+		QMenu *menu;
+
 };
 
 extern MacOSXDocking *mac_docking;
