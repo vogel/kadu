@@ -69,6 +69,7 @@ class KADUAPI ActionDescription : public QObject, ConfigurationAwareObject
 	friend class KaduAction;
 
 	QMap<KaduMainWindow *, KaduAction *> MappedActions;
+	int deleted;
 
 public:
 
