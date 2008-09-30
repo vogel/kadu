@@ -135,6 +135,7 @@ ActionDescription::ActionDescription(ActionType Type, const QString &Name, QObje
 ActionDescription::~ActionDescription()
 {
 	qDeleteAll(MappedActions);
+	MappedActions.clear();
 	KaduActions.remove(this);
 }
 
@@ -146,6 +147,9 @@ void ActionDescription::actionDestroyed(QObject *action)
 
 	KaduMainWindow *kaduMainWindow = static_cast<KaduMainWindow *>(action->parent());
 	if (!kaduMainWindow)
+		return;
+
+	if (!Kadu::closing())
 		return;
 
 	if (MappedActions.contains(kaduMainWindow))
