@@ -128,12 +128,14 @@ ActionDescription::ActionDescription(ActionType Type, const QString &Name, QObje
 	this->Checkable = Checkable;
 	this->CheckedText = CheckedText;
 	this->EnableCallback = enableCallback;
+	this->deleted = 0;
 
 	KaduActions.insert(this);
 }
 
 ActionDescription::~ActionDescription()
 {
+	deleted = 1;
 	qDeleteAll(MappedActions);
 	MappedActions.clear();
 	KaduActions.remove(this);
@@ -149,10 +151,7 @@ void ActionDescription::actionDestroyed(QObject *action)
 	if (!kaduMainWindow)
 		return;
 
-	if (!Kadu::closing())
-		return;
-
-	if (MappedActions.contains(kaduMainWindow))
+	if (!deleted && MappedActions.contains(kaduMainWindow))
 		MappedActions.remove(kaduMainWindow);
 }
 
