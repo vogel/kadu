@@ -346,6 +346,7 @@ QString MainConfigurationWindow::getBrowserExecutable(int browserIndex)
 // 	QStringList options;
 
 	QString parameters;
+	QString prefix;
 
 // 	browserOptionComboBox->setEnabled(index >= 2 && index <= 4);
 
@@ -457,7 +458,7 @@ QString MainConfigurationWindow::getBrowserExecutable(int browserIndex)
 		{
 			searchPath.append("/Applications");
 			executableName.append("Safari.app");
-			parameters = "open";
+			prefix = "open ";
 			break;
 		}
 	}
@@ -469,7 +470,7 @@ QString MainConfigurationWindow::getBrowserExecutable(int browserIndex)
 	{
 		QString executable = findExecutable(searchPath, executableName);
 		if (!executable.isNull())
-			return executable + " " + parameters;
+			return prefix + executable + " " + parameters;
 		else
 			return QString::null;
 	}
