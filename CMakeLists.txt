@@ -71,14 +71,57 @@ macro (kadu_module_configuration)
 		DESTINATION "share/kadu/modules/configuration")
 endmacro (kadu_module_configuration)
 
-macro (kadu_module_desc)
+macro (kadu_module_desc MODULE_DESC)
 	install (FILES ${ARGN}
 		DESTINATION "share/kadu/modules")
 endmacro (kadu_module_desc)
 
+macro (kadu_module MODULE_NAME MODULE_SOURCES MODULE_MOC_SOURCES MODULE_TRANSLATION_SOURCES)
+
+	if (WIN32)
+		include_directories (${CMAKE_CURRENT_SOURCE_DIR})
+		set (MODULE_SOURCES ${MODULE_SOURCES} ../module.rc)
+	endif (WIN32)
+
+	install (FILES ${MODULE_NAME}.desc
+		DESTINATION "share/kadu/modules")
+
+	qt_wrap_cpp (${MODULE_NAME} MODULE_MOC_FILES ${MODULE_MOC_SOURCES})
+	qt4_add_translation (MODULE_TRANSLATION_FILES ${MODULE_TRANSLATION_SOURCES})
+
+	install (FILES ${MODULE_TRANSLATION_FILES}
+		DESTINATION "share/kadu/modules/translations")
+
+	if (COMMAND cmake_policy)
+		cmake_policy (SET CMP0003 NEW)
+	endif (COMMAND cmake_policy)
+
+	add_library (${MODULE_NAME} ${${MODULE_NAME}} ${MODULE_SOURCES} ${MODULE_MOC_FILES})
+	message (STATUS "add_library (${MODULE_NAME} ${${MODULE_NAME}} ${MODULE_SOURCES} ${MODULE_MOC_FILES})")
+	add_custom_target (${MODULE_NAME}-translations DEPENDS ${MODULE_TRANSLATION_FILES})
+
+	message (STATUS ${MODULE_NAME})
+	message (STATUS ${${MODULE_NAME}})
+
+	if (${${MODULE_NAME}} STREQUAL STATIC)
+		set_target_properties(${MODULE_NAME} PROPERTIES COMPILE_FLAGS "-DKADULIB" )
+	else (${${MODULE_NAME}} STREQUAL STATIC)
+		if (WIN32)
+			target_link_libraries (${MODULE_NAME} kadu_core)
+		endif (WIN32)
+		if (APPLE)
+			set_target_properties (${MODULE_NAME} PROPERTIES LINK_FLAGS "-undefined dynamic_lookup")
+		endif (APPLE)
+	endif (${${MODULE_NAME}} STREQUAL STATIC)
+	add_dependencies (${MODULE_NAME} ${MODULE_NAME}-translations)
+
+	install (TARGETS ${MODULE_NAME} DESTINATION lib/kadu/modules)
+
+endmacro (kadu_module)
+
 # libraries
 
-set (QT_MIN_VERSION "4.4.0")
+set (QT_MIN_VERSION "4.4.1")
 find_package (Qt4 REQUIRED)
 set(QT_USE_QTXML 1)
 set(QT_USE_QNETWORK 1)
