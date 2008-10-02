@@ -55,6 +55,10 @@
 
 #include "kadu.h"
 
+#ifdef Q_OS_MAC
+extern void qt_mac_set_dock_menu(QMenu *); //there's no header for it
+#endif
+
 //look for comment in config_file.h
 ConfigFile *config_file_ptr;
 
@@ -630,6 +634,10 @@ Kadu::Kadu(QWidget *parent)
 
 	MainLayout->setResizeMode(QLayout::Minimum);
 	setCentralWidget(MainWidget);
+
+#ifdef Q_OS_MAC
+	qt_mac_set_dock_menu(dockMenu);
+#endif
 
 	if (config_file.readBoolEntry("Chat", "SaveOpenedWindows", true))
 		chat_manager->loadOpenedWindows();
