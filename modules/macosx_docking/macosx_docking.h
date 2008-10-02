@@ -25,9 +25,6 @@ class MacOSXDocking : public ConfigurationUiHandler
 		~MacOSXDocking();
 		
 		virtual void mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow);
-	protected:
-		QMenu *menu;
-
 };
 
 extern MacOSXDocking *mac_docking;
