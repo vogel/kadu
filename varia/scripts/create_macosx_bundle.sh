@@ -26,7 +26,7 @@ INSTALLED_DIR=/usr/local/
 ICONS_PKG=ng_big_icons.tar.bz2
 ICONS_LINK=http://www.kadu.net/~neeo/kadu/macosx/$ICONS_PKG
 
-PLAYSOUND_LINK=http://f.steike.com/playsound
+#PLAYSOUND_LINK=http://f.steike.com/playsound
 
 echo "Set paths in this file and remove this lines (including exit)"
 echo "Ustaw sciezki w tym pliku i usun te linie (lacznie z exit)"
@@ -66,10 +66,10 @@ if [ ! -f ./varia/themes/icons/default/kadu/big_message.png ]; then
 	cd ..
 fi
 
-if [ ! -f ./playsound ]; then
-	curl -O ${PLAYSOUND_LINK}
-	chmod a+x playsound
-fi
+#if [ ! -f ./playsound ]; then
+#	curl -O ${PLAYSOUND_LINK}
+#	chmod a+x playsound
+#fi
 
 KADUVERSION=`cat VERSION`
 echo "log: removing old Kadu.app"
@@ -123,16 +123,16 @@ echo "<?xml version='1.0' encoding='UTF-8'?>
 MACOS_DIR=${CNT_DIR}/MacOS;
 mkdir ${MACOS_DIR}
 echo "log: copying kadu binary"
-cp ${INSTALLED_DIR}/bin/kadu ${MACOS_DIR}/kadu
-if [ -f ./playsound ]; then
-	echo "log: copying playsound binary"
-	cp playsound ${MACOS_DIR}/
-fi
+#cp ${INSTALLED_DIR}/bin/kadu ${MACOS_DIR}/kadu
+#if [ -f ./playsound ]; then
+##	echo "log: copying playsound binary"
+#	cp playsound ${MACOS_DIR}/
+#fi
 
 RSC_DIR=${CNT_DIR}/Resources
 mkdir ${RSC_DIR}
-cp kadu.icns $RSC_DIR/
-cp hi48-app-kadu.png ${DEST}/Kadu.app/kadu/kadu.png
+cp kadu-core/kadu.icns $RSC_DIR/
+cp kadu-core/hi48-app-kadu.png ${DEST}/Kadu.app/kadu/kadu.png
 
 FM_DIR=${CNT_DIR}/Frameworks
 mkdir ${FM_DIR}
@@ -153,44 +153,44 @@ fi
 #fi
 
 if [ -f ${QTDIR}/lib/Qt3Support.framework/versions/4/Qt3Support ]; then
-	echo "log: copying qt library"
+	echo "log: copying Qt3Support library"
 	cp ${QTDIR}/lib/Qt3Support.framework/versions/4/Qt3Support ${FM_DIR}
 	install_name_tool -id @executable_path/../Frameworks/Qt3Support ${FM_DIR}/Qt3Support
 fi
 
 if [ -f ${QTDIR}/lib/QtGui.framework/versions/4/QtGui ]; then
-	echo "log: copying qt library"
+	echo "log: copying QtGui library"
 	cp ${QTDIR}/lib/QtGui.framework/versions/4/QtGui ${FM_DIR}
 	install_name_tool -id @executable_path/../Frameworks/QtGui ${FM_DIR}/QtGui
 fi
 
-if [ -f ${LQTDIR}/lib/QtWebKit.framework/versions/4/QtWebKit ]; then
-	echo "log: copying qt library"
-	cp ${LQTDIR}/lib/QtWebKit.framework/versions/4/QtWebKit ${FM_DIR}
+if [ -f ${QTDIR}/lib/QtWebKit.framework/versions/4/QtWebKit ]; then
+	echo "log: copying QtWebKit library"
+	cp ${QTDIR}/lib/QtWebKit.framework/versions/4/QtWebKit ${FM_DIR}
 	install_name_tool -id @executable_path/../Frameworks/QtWebKit ${FM_DIR}/QtWebKit
 fi
 
 if [ -f ${QTDIR}/lib/QtXml.framework/versions/4/QtXml ]; then
-	echo "log: copying qt library"
+	echo "log: copying QtXml library"
 	cp ${QTDIR}/lib/QtXml.framework/versions/4/QtXml ${FM_DIR}
 	install_name_tool -id @executable_path/../Frameworks/QtXml ${FM_DIR}/QtXml
 fi
 
 if [ -f ${QTDIR}/lib/QtSql.framework/versions/4/QtSql ]; then
-	echo "log: copying qtSql library"
+	echo "log: copying QtSql library"
 	cp ${QTDIR}/lib/QtSql.framework/versions/4/QtSql ${FM_DIR}
 	install_name_tool -id @executable_path/../Frameworks/QtSql ${FM_DIR}/QtSql
 fi
 
 if [ -f ${QTDIR}/lib/QtNetwork.framework/versions/4/QtNetwork ]; then
-	echo "log: copying qt library"
+	echo "log: copying QtNetwork library"
 	cp ${QTDIR}/lib/QtNetwork.framework/versions/4/QtNetwork ${FM_DIR}
 	install_name_tool -id @executable_path/../Frameworks/QtNetwork ${FM_DIR}/QtNetwork	
 fi
 
-if [ -f ${LQTDIR}/lib/QtCore.framework/versions/4/QtCore ]; then
-	echo "log: copying qt library"
-	cp ${LQTDIR}/lib/QtCore.framework/versions/4/QtCore ${FM_DIR}
+if [ -f ${QTDIR}/lib/QtCore.framework/versions/4/QtCore ]; then
+	echo "log: copying QtCore library"
+	cp ${QTDIR}/lib/QtCore.framework/versions/4/QtCore ${FM_DIR}
 	install_name_tool -id @executable_path/../Frameworks/QtCore ${FM_DIR}/QtCore
 fi
 
@@ -217,7 +217,7 @@ install_name_tool -change ${QTDIR}/lib/QtCore.framework/Versions/4/QtCore @execu
 install_name_tool -change ${QTDIR}/lib/QtCore.framework/Versions/4/QtCore @executable_path/../Frameworks/QtCore ./QtXml
 install_name_tool -change ${QTDIR}/lib/QtCore.framework/Versions/4/QtCore @executable_path/../Frameworks/QtCore ./QtGui
 install_name_tool -change ${QTDIR}/lib/QtCore.framework/Versions/4/QtCore @executable_path/../Frameworks/QtCore ./QtWebKit
-install_name_tool -change ${LQTDIR}/lib/QtCore.framework/Versions/4/QtCore @executable_path/../Frameworks/QtCore ./QtWebKit
+install_name_tool -change ${QTDIR}/lib/QtCore.framework/Versions/4/QtCore @executable_path/../Frameworks/QtCore ./QtWebKit
 install_name_tool -change ${QTDIR}/lib/QtCore.framework/Versions/4/QtCore @executable_path/../Frameworks/QtCore ./QtNetwork
 install_name_tool -change ${QTDIR}/lib/QtGui.framework/Versions/4/QtGui @executable_path/../Frameworks/QtGui ./QtWebKit
 install_name_tool -change ${QTDIR}/lib/QtNetwork.framework/Versions/4/QtNetwork @executable_path/../Frameworks/QtNetwork ./QtWebKit
@@ -225,13 +225,13 @@ install_name_tool -change ${QTDIR}/lib/QtNetwork.framework/Versions/4/QtNetwork 
 cd ${MACOS_DIR}
 echo "log: changing library bindings"
 install_name_tool -change ${QTDIR}/lib/QtSql.framework/Versions/4/QtSql @executable_path/../Frameworks/QtSql ./kadu
-install_name_tool -change ${LQTDIR}/lib/QtSql.framework/Versions/4/QtSql @executable_path/../Frameworks/QtSql ./kadu
+install_name_tool -change ${QTDIR}/lib/QtSql.framework/Versions/4/QtSql @executable_path/../Frameworks/QtSql ./kadu
 install_name_tool -change ${QTDIR}/lib/QtNetwork.framework/Versions/4/QtNetwork @executable_path/../Frameworks/QtNetwork ./kadu
 install_name_tool -change ${QTDIR}/lib/QtGui.framework/Versions/4/QtGui @executable_path/../Frameworks/QtGui ./kadu
 install_name_tool -change ${QTDIR}/lib/QtXml.framework/Versions/4/QtXml @executable_path/../Frameworks/QtXml ./kadu
 install_name_tool -change ${QTDIR}/lib/Qt3Support.framework/Versions/4/Qt3Support @executable_path/../Frameworks/Qt3Support ./kadu
-install_name_tool -change ${LQTDIR}/lib/QtWebKit.framework/Versions/4/QtWebKit @executable_path/../Frameworks/QtWebKit ./kadu
-install_name_tool -change ${LQTDIR}/lib/QtCore.framework/Versions/4/QtCore @executable_path/../Frameworks/QtCore ./kadu
+install_name_tool -change ${QTDIR}/lib/QtWebKit.framework/Versions/4/QtWebKit @executable_path/../Frameworks/QtWebKit ./kadu
+install_name_tool -change ${QTDIR}/lib/QtCore.framework/Versions/4/QtCore @executable_path/../Frameworks/QtCore ./kadu
 
 #install_name_tool -change libQtCLucene.4.4.1.dylib @executable_path/../Frameworks/libQtCLucene.4.4.1.dylib ./kadu
 install_name_tool -change ${LIBGADU}/lib/libgadu.3.dylib @executable_path/../Frameworks/libgadu.3.dylib ./kadu
