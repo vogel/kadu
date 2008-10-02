@@ -1,18 +1,18 @@
 #!/bin/sh
 # destination directory, Kadu.app will be created here
 # katalog docelowy, w nim zostanie utworzony katalog Kadu.app
-DEST=~/Desktop/kadu
+DEST=~/Desktop/
 
-QTDIR=/usr/local/Trolltech/Qt-4.4.1
+QTDIR=/usr/local/Trolltech/Qt-4.4.2
 LQTDIR=~/Desktop/kadu/qt
 
 # prefix of compiled libsndfile and openssl
-# prefiks skompilowanych bibliotek libsndfile i libgadu
-SNDFILEPATH=~/Desktop/kadu/libsndfile
-LIBGADU=~/Desktop/kadu/libgadu
+# prefiks skompilowanych bibliotek libsndfile i openssl
+SNDFILEPATH=~/Compilation/libsndfile
+LIBGADU=~/Compilation/libgadu
 
 #OPENSSLPATH=~/Desktop/root/openssl
-OPENSSLPATH=/usr
+OPENSSLPATH=~/Compilation/openssl
 # version of openssl, without letters
 # wersja openssla, bez liter
 SSLVER=0.9.8
@@ -31,7 +31,7 @@ PLAYSOUND_LINK=http://f.steike.com/playsound
 echo "Set paths in this file and remove this lines (including exit)"
 echo "Ustaw sciezki w tym pliku i usun te linie (lacznie z exit)"
 echo
-exit
+#exit
 
 if [ ! -f VERSION ]; then
 	echo "run this script from main Kadu directory"
@@ -54,7 +54,7 @@ fi
 if [ ! -f ${QTDIR}/include/Qt/qwidget.h ]; then
 	echo "wrong QTDIR"
 	echo "QTDIR zle ustawione"
-	exit
+	#exit
 fi
 
 if [ ! -f ./varia/themes/icons/default/kadu/big_message.png ]; then
@@ -147,31 +147,31 @@ if [ -f ${OPENSSLPATH}/lib/libcrypto.${SSLVER}.dylib ]; then
 fi
 
 #if [ -f ${QTDIR}/lib/libQtCLucene.4.4.1.dylib ]; then
-#	echo "log: copying qt library"
+#	echo "log: copying qtCLucene library"
 #	cp ${QTDIR}/lib/libQtCLucene.4.4.1.dylib ${FM_DIR}
 #	install_name_tool -id @executable_path/../Frameworks/libQtCLucene.4.4.1.dylib ${FM_DIR}/libQtCLucene.4.4.1.dylib
 #fi
 
 if [ -f ${QTDIR}/lib/Qt3Support.framework/versions/4/Qt3Support ]; then
-	echo "log: copying qt library"
+	echo "log: copying qt3Support library"
 	cp ${QTDIR}/lib/Qt3Support.framework/versions/4/Qt3Support ${FM_DIR}
 	install_name_tool -id @executable_path/../Frameworks/Qt3Support ${FM_DIR}/Qt3Support
 fi
 
 if [ -f ${QTDIR}/lib/QtGui.framework/versions/4/QtGui ]; then
-	echo "log: copying qt library"
+	echo "log: copying qtGui library"
 	cp ${QTDIR}/lib/QtGui.framework/versions/4/QtGui ${FM_DIR}
 	install_name_tool -id @executable_path/../Frameworks/QtGui ${FM_DIR}/QtGui
 fi
 
-if [ -f ${LQTDIR}/lib/QtWebKit.framework/versions/4/QtWebKit ]; then
-	echo "log: copying qt library"
-	cp ${LQTDIR}/lib/QtWebKit.framework/versions/4/QtWebKit ${FM_DIR}
+if [ -f ${QTDIR}/lib/QtWebKit.framework/versions/4/QtWebKit ]; then
+	echo "log: copying qtWebKit library"
+	cp ${QTDIR}/lib/QtWebKit.framework/versions/4/QtWebKit ${FM_DIR}
 	install_name_tool -id @executable_path/../Frameworks/QtWebKit ${FM_DIR}/QtWebKit
 fi
 
 if [ -f ${QTDIR}/lib/QtXml.framework/versions/4/QtXml ]; then
-	echo "log: copying qt library"
+	echo "log: copying qtXml library"
 	cp ${QTDIR}/lib/QtXml.framework/versions/4/QtXml ${FM_DIR}
 	install_name_tool -id @executable_path/../Frameworks/QtXml ${FM_DIR}/QtXml
 fi
@@ -183,14 +183,14 @@ if [ -f ${QTDIR}/lib/QtSql.framework/versions/4/QtSql ]; then
 fi
 
 if [ -f ${QTDIR}/lib/QtNetwork.framework/versions/4/QtNetwork ]; then
-	echo "log: copying qt library"
+	echo "log: copying qtNetwork library"
 	cp ${QTDIR}/lib/QtNetwork.framework/versions/4/QtNetwork ${FM_DIR}
 	install_name_tool -id @executable_path/../Frameworks/QtNetwork ${FM_DIR}/QtNetwork	
 fi
 
-if [ -f ${LQTDIR}/lib/QtCore.framework/versions/4/QtCore ]; then
-	echo "log: copying qt library"
-	cp ${LQTDIR}/lib/QtCore.framework/versions/4/QtCore ${FM_DIR}
+if [ -f ${QTDIR}/lib/QtCore.framework/versions/4/QtCore ]; then
+	echo "log: copying qtCore library"
+	cp ${QTDIR}/lib/QtCore.framework/versions/4/QtCore ${FM_DIR}
 	install_name_tool -id @executable_path/../Frameworks/QtCore ${FM_DIR}/QtCore
 fi
 
@@ -210,17 +210,28 @@ cd ${FM_DIR}
 install_name_tool -change ${QTDIR}/lib/QtSql.framework/Versions/4/QtSql @executable_path/../Frameworks/QtSql ./QtCore
 install_name_tool -change ${QTDIR}/lib/QtSql.framework/Versions/4/QtSql @executable_path/../Frameworks/QtSql ./Qt3Support
 install_name_tool -change ${QTDIR}/lib/QtXml.framework/Versions/4/QtXml @executable_path/../Frameworks/QtXml ./Qt3Support
+echo 1
 install_name_tool -change ${QTDIR}/lib/QtGui.framework/Versions/4/QtGui @executable_path/../Frameworks/QtGui ./Qt3Support
+echo 2
 install_name_tool -change ${QTDIR}/lib/QtNetwork.framework/Versions/4/QtNetwork @executable_path/../Frameworks/QtNetwork ./Qt3Support
 install_name_tool -change ${QTDIR}/lib/QtCore.framework/Versions/4/QtCore @executable_path/../Frameworks/QtCore ./Qt3Support
+echo 3
 install_name_tool -change ${QTDIR}/lib/QtCore.framework/Versions/4/QtCore @executable_path/../Frameworks/QtCore ./QtSql
+echo 4
 install_name_tool -change ${QTDIR}/lib/QtCore.framework/Versions/4/QtCore @executable_path/../Frameworks/QtCore ./QtXml
+echo 5
 install_name_tool -change ${QTDIR}/lib/QtCore.framework/Versions/4/QtCore @executable_path/../Frameworks/QtCore ./QtGui
+echo 6
 install_name_tool -change ${QTDIR}/lib/QtCore.framework/Versions/4/QtCore @executable_path/../Frameworks/QtCore ./QtWebKit
+echo 7
 install_name_tool -change ${LQTDIR}/lib/QtCore.framework/Versions/4/QtCore @executable_path/../Frameworks/QtCore ./QtWebKit
+echo 8
 install_name_tool -change ${QTDIR}/lib/QtCore.framework/Versions/4/QtCore @executable_path/../Frameworks/QtCore ./QtNetwork
+echo 9
 install_name_tool -change ${QTDIR}/lib/QtGui.framework/Versions/4/QtGui @executable_path/../Frameworks/QtGui ./QtWebKit
+echo 10
 install_name_tool -change ${QTDIR}/lib/QtNetwork.framework/Versions/4/QtNetwork @executable_path/../Frameworks/QtNetwork ./QtWebKit
+echo 11
 
 cd ${MACOS_DIR}
 echo "log: changing library bindings"

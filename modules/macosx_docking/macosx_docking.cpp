@@ -29,14 +29,13 @@ MacOSXDocking::MacOSXDocking(QObject *parent, const char *name) : QObject(parent
 {
 	kdebugf();
 	config_file.writeEntry("General", "RunDocked", false);
-	
-	menu = new QMenu;
-	menu->addAction(tr("Show/Hide"), this, SLOT(toggleKaduVisibility()));
-	qt_mac_set_dock_menu(menu);
+
+	qt_mac_set_dock_menu(dockMenu);
 
 	connect(docking_manager, SIGNAL(trayPixmapChanged(const QIcon &, const QString &)), this, SLOT(trayPixmapChanged(const QIcon &, const QString &)));
 	connect(docking_manager, SIGNAL(searchingForTrayPosition(QPoint &)), this, SLOT(findTrayPosition(QPoint &)));
 	connect(kadu, SIGNAL(settingMainIconBlocked(bool &)), this, SLOT(blockSettingIcon(bool &)));
+	
 	docking_manager->setDocked(true);
 	kdebugf2();
 }
