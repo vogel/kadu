@@ -36,15 +36,61 @@
 #include "modules.h"
 #include "protocols_manager.h"
 
+#ifdef Q_OS_MAC
+#include <Carbon/Carbon.h>
+
+static OSStatus appleEventProcessor(const AppleEvent *ae,
+				AppleEvent *event, long handlerRefCon);
+#endif
+
 class KaduApplication: public QApplication
 {
 	public:
-		KaduApplication(int &argc, char **argv): QApplication(argc, argv) {};
+		KaduApplication(int &argc, char **argv): QApplication(argc, argv)
+		{
+#ifdef Q_OS_MAC
+			/* Install Reopen Application Event (Dock Clicked) */
+			m_appleEventProcessorUPP = AEEventHandlerUPP(appleEventProcessor);
+			AEInstallEventHandler(kCoreEventClass, kAEReopenApplication,
+				m_appleEventProcessorUPP, (long) this, true);
+#endif
+		};
 		void commitData(QSessionManager & manager)
 		{
 			kadu->quit();
 		}
+#ifdef Q_OS_MAC
+	private:
+		AEEventHandlerUPP m_appleEventProcessorUPP;
+#endif
 };
+
+#ifdef Q_WS_MAC
+static OSStatus appleEventProcessor(const AppleEvent *ae,
+				AppleEvent *event, long handlerRefCon)
+{
+	KaduApplication *app = (KaduApplication *) handlerRefCon;
+
+	OSType aeID = typeWildCard;
+	OSType aeClass = typeWildCard;
+
+	AEGetAttributePtr(ae, keyEventClassAttr, typeType, 0,
+                       &aeClass, sizeof(aeClass), 0);
+	AEGetAttributePtr(ae, keyEventIDAttr, typeType, 0,
+                       &aeID, sizeof(aeID), 0);
+
+	if (aeClass == kCoreEventClass)
+	{
+		if (aeID == kAEReopenApplication)
+		{
+			kadu->show();
+		}
+		return noErr;
+	}
+
+	return eventNotHandledErr;
+}
+#endif
 
 void kaduQtMessageHandler(QtMsgType type, const char *msg)
 {
