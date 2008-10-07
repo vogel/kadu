@@ -1,8 +1,0 @@
-[Module]
-Description=Migration utility
-Description[pl]=Narzêdzie do migracji
-Author=Kadu Team
-Dependencies=
-LoadByDefault=true
-Version=core
-Base=true
