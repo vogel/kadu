@@ -262,27 +262,25 @@ QVariant UserListElement::setData(const QString &name, const QVariant &val, bool
 
 	if (massively)
 	{
-		UserGroupSet *groups;
+		UserGroupSet groups;
+
 		if (ULEPrivate::userDataProxy.find(name) == ULEPrivate::userDataProxy.end())
-		{
-			groups = new UserGroupSet();
-			ULEPrivate::userDataProxy[name] = *groups;
-		}
+			ULEPrivate::userDataProxy[name] = groups;
 		else
-			groups = &*ULEPrivate::userDataProxy.find(name); 			
+			groups = *ULEPrivate::userDataProxy.find(name);
 
 		foreach (UserGroup *group, privateData->Parents)
 		{
 			emit group->userDataChanged(*this, name, old, val, massively, last);
-			if (!groups->contains(group))
-				groups->insert(group);
+			if (!groups.contains(group))
+				groups.insert(group);
 		}
 		if (last)
 		{
-			foreach (UserGroup *ug, *groups)
+			foreach (UserGroup *ug, groups)
 				emit ug->usersDataChanged(name);
 
-			groups->clear();
+			groups.clear();
 		}
 	}
 	else

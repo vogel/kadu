@@ -1048,13 +1048,12 @@ void UserBox::setColorsOrBackgrounds()
 	}
 
 	if (newImage)
-		backgroundImage = newImage;
-	else
+	{
 		if (backgroundImage)
-		{
 			delete backgroundImage;
-			backgroundImage = 0;
-		}
+
+		backgroundImage = newImage;
+	}
 
 	foreach(UserBox *userbox, UserBoxes)
 		userbox->refreshBackground();

@@ -89,7 +89,8 @@ public:
 			opts.append(QString(opt));
 
 		ConfigComboBox *formats = dynamic_cast<ConfigComboBox *>(mainConfigurationWindow->widgetById("screenshot/formats"));
-		formats->setItems(opts, opts);
+		if (formats)
+			formats->setItems(opts, opts);
 	}
 };
 
