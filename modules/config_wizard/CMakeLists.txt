@@ -13,6 +13,11 @@ set (TRANSLATION_SOURCES
 	translations/config_wizard_pl.ts
 )
 
+set (DATA_DIRECTORIES
+	data/joi
+	data/ronk2
+)
+
 if(WIN32)
 	include_directories (${CMAKE_CURRENT_SOURCE_DIR})
 	set (SOURCES ${SOURCES} ../module.rc)
@@ -25,6 +30,11 @@ qt4_add_translation (TRANSLATION_FILES ${TRANSLATION_SOURCES})
 
 install (FILES ${TRANSLATION_FILES}
 	DESTINATION "share/kadu/modules/translations")
+
+install (DIRECTORY ${DATA_FILES}
+	DESTINATION share/kadu/modules/data/config_wizard
+	PATTERN ".svn" EXCLUDE
+)
 
 if (COMMAND cmake_policy)
 	cmake_policy(SET CMP0003 NEW)
