@@ -11,10 +11,6 @@
  * Tomasz "Dorr(egaray)" Rostanski
  * rozteck (at) interia.pl
  *
- * najnowsza wersja zawsze dostepna pod adresem: 
- * http://www.kadu.net/~dorr/kadu-pcspeaker-current.tar.gz
- *
- * wersja 0.6.1
  */
  
 #include "pcspeaker.h"

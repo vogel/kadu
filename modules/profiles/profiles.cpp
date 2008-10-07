@@ -9,10 +9,6 @@
  * Tomasz "Dorr(egaray)" Rostanski
  * rozteck (at) interia.pl
  *
- * najnowsza wersja zawsze dostepna pod adresem: 
- * http://www.kadu.net/~dorr/kadu-profiles-current.tar.bz2
- *
- * wersja 0.4 (05.10.2008)
  */
 
 #include <QtCore/QDir>

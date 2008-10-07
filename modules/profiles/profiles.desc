@@ -3,4 +3,4 @@ Description=Kadu Profiles
 Description[pl]=Obsluga wielu kont gg
 Author=Dorregaray
 LoadByDefault=true
-Version=0.4
+Version=core
