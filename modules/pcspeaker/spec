@@ -1,0 +1,5 @@
+MODULE_SOURCES="pcspeaker.cpp pcspeaker_configuration_widget.cpp"
+MODULE_MOC_HEADERS="pcspeaker.h pcspeaker_configuration_widget.h"
+MODULE_INCLUDES=X11/Xlib.h
+MODULE_INCLUDES_PATH="/usr/include /usr/local/include"
+MODULE_LIBS_PATH="/usr/X11R6/include /usr/lib /usr/local/lib"

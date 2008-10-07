@@ -1,0 +1,6 @@
+[Module]
+Description=PC Speaker module
+Description[pl]=Powiadamianie o zdarzeniach przy pomocy PC Speakera
+Author=Dorregaray
+Dependencies=notify
+Version=0.6.1

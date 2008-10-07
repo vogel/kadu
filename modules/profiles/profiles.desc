@@ -1,0 +1,6 @@
+[Module]
+Description=Kadu Profiles
+Description[pl]=Obsluga wielu kont gg
+Author=Dorregaray
+LoadByDefault=true
+Version=0.4

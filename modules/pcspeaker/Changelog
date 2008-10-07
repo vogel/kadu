@@ -1,0 +1,89 @@
+					 		CHANGELOG
+						 Modul PC Speaker dla Kadu
+
+wersja 0.6.1 (04.10.2008)
++	modul przystosowany do Kadu 0.6.5
+
+wersja 0.6.0.3 (27.01.2008)
++	dodany tooltip ze skladnia do edytora dzwiekow
++	jesli nie ma konfiguracji ustawiane sa domyslne wartosci dzwiekow
+
+wersja 0.6.0.2 (29.12.2007)
++	poprawiony bug z nieodgrywaniem dzwiekow min. przy bledach polaczenia
+
+wersja 0.6.0.1 (10.07.2007)
++	dostosowanie do zmian api kadu, zwiazane ze sposobem tworzenia i uzytkowania okna
+	konfiguracji (kompiluje sie i buczy jak trzeba, ale wymaga jeszcze pracy)
+
+wersja 0.5.1.1 (19.04.2007)
++	dostosowanie do zmian api kadu
+
+wersja 0.5.0.5 (28.03.2007)
++	dostosowanie do zmian api kadu
+
+wersja 0.5.0.4 (11.01.2007)
++	dostosowanie do linii 0.6
+
+wersja 0.5.0.3 (17.02.2006):
++	drobne poprawki dostosowujace lepiej do wersji svn
+
+wersja 0.5.0.2 (24.01.2006):
++	dostosowanie do zmian w api kadu (0.5 svn)
+
+wersja 0.5.0.1 (07.10.2005):
++	przystosowanie do kolejnych zmian w api kadu (0.5 svn)
+
+wersja 0.5.0 (24.08.2005):
++	przystosowanie do zmian w api kadu (0.5 svn)
+
+wersja 0.5.0beta2:
++	calkowite odejscie od zaleznosci od sound
++	konfiguracja zdarzen przeniesiona do zakladki Powiadomienia
++	dodanie numeru wersji do pliku .desc
+
+wersja 0.5.0beta1:
++	przekopanie i uproszczenie kodu, poprawienie kilku bledow i nielogicznosci zgloszonych przez Joia
+
+wersja 0.4.2:
++	usuniety drobny bug dzieki ktoremu modul nie odzywal sie po zaladowaniu do czasu zagladniecia w konfiguracje
+
+wersja 0.4.1b:
++	powrot do zaleznosci od sound_managera w celu zapewnienia 100% odgrywania dzwiekow
++	bardzo drobna poprawka przy testach dzwiekow
+
+wersja 0.4.1:
++	na usilne prosby dodany Changelog
++	usunieta zaleznosc od modulu sound (dlaczego? bo sound wymaga libsndfile, co nie kazdy ma  a bez sensu byloby gdyby tego wymagal pcspeaker)
++	przemodelowane okno konfiguracji - dodane checkboxy okreslajace przy ktorym zdarzeniu pikac
++	regulacja glosnosci jako tako dziala (czyt. jak dasz na minimum to nie buczy, jak na maks to buczy, a posrednie wartosci jakies sa dziwne :/)
++	zaktualizowane tlumaczenie modulu
++	dodany brakujacy include
+
+wersja 0.4:
++	dodana zaleznosc od notify - w celu zachowania pelnej funkcjonalnosci modulu
++	dodane 2 dodatkowe dzwieki
+ 
+wersja 0.3:
++ 	przystosowanie do kadu 0.4.0 cvs - ograniczona funkcjonalnosc - tylko jeden beep na wszystko
+
+wersja 0.2: 
++	poprawiony parser ze stringa na dzwieki
++	3 wersje jezykowe
++	drobny uklon dla tych ktorym modul nie pipa (jak w ustawieniach linie beda puste to buczy przez printf)
++	poprawka przy wywolywaniu ioctl() [trzeba podzielic czestot. przez czestotl. zegara ukladu]
++ 	poprawiony bug z ignorowaniem pauzy - teraz juz nic nie moze byc zle w parserze (i hope so)
++	dodanie dlugosci trwania nutek - inna konfiguracja  (stara tez przejdzie)
++	dodanie regulacji glosnosci
++	zrezygnowanie zupelnie z ioctl()
++	przyciski test juz dzialaja jak powinny
++	poprawiony bug z niereagowaniem na zmiany w konfiguracji (trzeba bylo przeresetowac modul)
++	kolejna poprawka przyciskow test - teraz juz porzadna i ostateczna
++	poprawiony plik spec (zapomnialem dopisac w nim Xy)
++	wreszcie XBell odgrywa cala sekwencje dzwiekow
++	zapamietywanie domyslnego brzeczka przed odegraniem powiadomienia
++	testy biora aktualne ustawienie glosnosci (a nie to zapisane)
+-	regulacja glosnosci nie dziala
++	modul nie odcina juz innych programow od pc speakera podczas dzialania
+
+wersja 0.1:
++	pierwsza wersja modulu - pikanie oparte na ioctl(). jak sie pozniej okazalo w wiekszosci przypadkow nie dzialalo :P
