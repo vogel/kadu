@@ -1,8 +1,0 @@
-[Module]
-Description=aRts sound server support module
-Description[pl]=Modu³ do obs³ugi serwera d¼wiêku aRts
-Author=Kadu Team
-Dependencies=sound
-Provides=sound_driver
-Conflicts=sound_driver
-Version=core
