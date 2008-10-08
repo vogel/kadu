@@ -1,4 +1,5 @@
-<!DOCTYPE TS><TS>
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS><TS version="1.1" language="pl">
 <defaultcodec></defaultcodec>
 <context>
     <name>@default</name>
@@ -121,17 +122,19 @@ ustawiony przez niektórych uczestników konferencji:
     </message>
     <message>
         <source>Unable to create direcotry %1 for storing screenshots!</source>
-        <translation type="unfinished"></translation>
+        <translation>Nie można utworzyć katalogu %1 dla zapisywania zrzutów ekranu!</translation>
     </message>
     <message>
         <source>Can&apos;t write file %1.
 Access denied or other problem!</source>
-        <translation type="unfinished"></translation>
+        <translation>Nie można pisać do pliku %1.
+Brak dostępu lub inny problem.</translation>
     </message>
     <message>
         <source>Screenshot %1 has 0 size!
 It should be bigger.</source>
-        <translation type="unfinished"></translation>
+        <translation>Zrzut ekranu %1 ma zerowy rozmiar!
+Powinien być większy.</translation>
     </message>
 </context>
 </TS>

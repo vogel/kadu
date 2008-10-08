@@ -1,4 +1,6 @@
-<!DOCTYPE TS><TS>
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS><TS version="1.1" language="pl">
+<defaultcodec></defaultcodec>
 <context>
     <name>@default</name>
     <message>
@@ -53,7 +55,8 @@ Opis:
     <message>
         <source>Current status:
 %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Aktualny status:
+%1</translation>
     </message>
 </context>
 </TS>
