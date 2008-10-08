@@ -1,4 +1,5 @@
 
+
 	
 			QT_TRANSLATE_NOOP("@default", "Status");
 		
@@ -55,7 +56,6 @@
 		
 				
 			QT_TRANSLATE_NOOP("@default", "Autorefresh status");
-		
 		
 				
 			QT_TRANSLATE_NOOP("@default", "Parse AutoStatus");

@@ -18,46 +18,6 @@
         <translation>Schreiben Sie Tonen isolieren durch Sperrung, zb. D2 C1# H0#</translation>
     </message>
     <message>
-        <source>Speaker volume</source>
-        <translation>Lautstärke</translation>
-    </message>
-    <message>
-        <source>Test1</source>
-        <translation>Test</translation>
-    </message>
-    <message>
-        <source>Test2</source>
-        <translation>Test</translation>
-    </message>
-    <message>
-        <source>Test3</source>
-        <translation>Test</translation>
-    </message>
-    <message>
-        <source>Play sounds on</source>
-        <translation type="obsolete">Spiel </translation>
-    </message>
-    <message>
-        <source>New message</source>
-        <translation type="obsolete">Neue Nachricht</translation>
-    </message>
-    <message>
-        <source>New chat</source>
-        <translation type="obsolete">Neue Gesprach</translation>
-    </message>
-    <message>
-        <source>User&apos;s status change</source>
-        <translation type="obsolete">Benutzer andert Zustand</translation>
-    </message>
-    <message>
-        <source>Connection Error</source>
-        <translation type="obsolete">Verbindungsfehler</translation>
-    </message>
-    <message>
-        <source>Other message</source>
-        <translation type="obsolete">Andere Nachricht</translation>
-    </message>
-    <message>
         <source>Sounds</source>
         <translation>Klange</translation>
     </message>
@@ -66,24 +26,24 @@
         <translation>Nach Verbindungsfehler spiel</translation>
     </message>
     <message>
-        <source>Test4</source>
-        <translation>Test</translation>
-    </message>
-    <message>
         <source>On other messages play</source>
         <translation>Nach Andere Nachricht spiel</translation>
     </message>
     <message>
-        <source>Test5</source>
-        <translation>Test</translation>
+        <source>PC Speaker</source>
+        <translation>PC Speaker</translation>
     </message>
     <message>
-        <source>Please select events you want to be notified on using Notify tab in Configuration window.</source>
+        <source>Notifications</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>PC Speaker</source>
-        <translation>PC Speaker</translation>
+        <source>Volume</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Test</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 </TS>

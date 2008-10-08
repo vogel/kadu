@@ -123,13 +123,5 @@ Questo modulo e contraddittorio nella ideologia sistema Linux ed è fornito per 
         <source>The password is invalid. Sorry</source>
         <translation>Il password è incorretto</translation>
     </message>
-    <message>
-        <source>Profiles...</source>
-        <translation>Profili...</translation>
-    </message>
-    <message>
-        <source>No profiles</source>
-        <translation>No Profilo</translation>
-    </message>
 </context>
 </TS>
