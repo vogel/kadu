@@ -1,0 +1,2 @@
+MODULE_SOURCES="infos.cpp infos_dialog.cpp infos_list_view_item.cpp"
+MODULE_MOC_HEADERS="infos_dialog.h infos.h infos_list_view_item.h"
