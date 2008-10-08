@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration-ui>
+
+	<section name="Contacts" icon="ContactsTab">
+
+		<tab name="Filtering">
+			<group-box name="General">
+				<check-box caption="Show filter window" config-section="filtering" config-item="filter-showonload" />
+				<check-box caption="Start filtering on any key press" config-section="filtering" config-item="filter-startonany" />
+				<combo-box caption="Search in" config-section="filtering" config-item="filter-startswith">
+					<item value="1" caption="Begining" />
+					<item value="0" caption="Any place" />
+				</combo-box>
+				<check-box caption="Search also in cotact's UIN" config-section="filtering" config-item="filter-number" />
+				<check-box caption="Search also in cotact's e-mail" config-section="filtering" config-item="filter-email" />
+				<check-box caption="Search also in cotact's mobile phone number" config-section="filtering" config-item="filter-mobile" />
+			</group-box>
+		</tab>
+
+	</section>
+
+	<section name="Shortcuts" icon="ShortCutsTab">
+
+		<tab name="Userlist">
+			<group-box name="Userlist">
+				<hot-key-edit caption="Filter contacts" config-section="ShortCuts" config-item="filtering_start" />
+			</group-box>
+		</tab>
+
+	</section>
+
+</configuration-ui>

@@ -1,0 +1,86 @@
+Changes in spellchecker for Kadu
+- 21.08.2008 [Version 0.3]
+  Update for Kadu SVN by White Eagle.
+  QSyntaxHighlighter is being used now.
+
+- 01.05.2007 [Version 0.21]
+  Update for Kadu SVN using patch by Prezu.
+
+- 10.01.2007 [Version 0.20]
+  Fixed crashing in case when used dictionary was uninstalled.
+  Fixed memory leak when module was unloaded (main object wasn't destroyed).
+
+- 11.08.2006 [Version 0.19]
+  Fixed character coding (pach by Joi).
+
+- 20.11.2005 [Version 0.18]
+  Update for Kadu SVN.
+
+- 28.08.2005 [Version 0.17]
+  Update for Kadu SVN.
+  New Kadu Modules Manager Column: "Version" is now supported.
+
+- 02.05.2005 [Version 0.15]
+  Bugfix of startup crash.
+
+- 28.04.2005 [Version 0.14]
+  Two patches (by Joi) applied - fixed crashing and memory leak.
+
+- 02.11.2004 [Version 0.13]
+  Config icon changed to better one :)
+
+- 02.11.2004 [Version 0.12]
+  Many, many code cleanups.
+  Leaving <vector> and <map> includes. Using <qvaluelist.h> and <qmap.h> instead.
+  All methods names - first character renamed to lower-case.
+  Removed gui.cpp/gui.h. Whole configuration moved to Kadu ConfigDialog.
+
+- 28.07.2004 [Version 0.11]
+  Yet another updates for Kadu 0.4.0-cvs.
+
+- 12.07.2004 [Version 0.10]
+  Adrians patch applied acorrding to Kadu 0.4.0-cvs.
+
+- 13.06.2004 [Version 0.9]
+  I've taken module under my maintaining (Googie). Added version mark. This
+  version is released as 0.9.
+
+- 18.04.2004
+  update module for recent Kadu standards (exception forbidness, description
+  file)
+
+- 25.02.2004
+  update icons loading to new Kadu API - this version doesn't compile on
+  Kadu 0.3.7
+
+- 27.01.2004
+  fix segfault when playing too much with languages window
+
+- 25.01.2004
+  add settings for marking of misspelled words (color, bold, italic, underline
+  can be choosen)
+  add GUI for changing above options
+  add cleaning of spellchecking marks when module is unloaded
+  add GUI for changing behavior of spellchecking (accents, case-sensitivity)
+
+- 15.01.2004
+  add Polish translation, few updates
+
+- 13.01.2004
+  add ignore accents and ignore case, which are loaded from config file
+
+- 12.01.2004
+  add GUI for choosing languages, which are checked during chat
+  plugin search for dictionaries installed in system and make them available
+  for being checked
+  choosen languages are stored in configuration file
+  make updates of input nicer (GUI updates are disabled during changes)
+
+- 10.01.2004
+  add some GUI bindings for spellchecker
+  marks of wrong words are removed before sending message
+  some improvements due to better API of Kadu
+
+- 08.01.2004
+  first entry, spellchecker marks misspelled words for "pl_PL" distionary
+  with red color

@@ -1,0 +1,17 @@
+<configuration-ui>
+	<section name="Chat">
+		<tab name="SpellChecker">
+			<group-box name="Misspelled words marking options">
+				<color-button caption="Color" config-section="ASpell" config-item="Color" />
+				<check-box caption="Bold" config-section="ASpell" config-item="Bold" />
+				<check-box caption="Italic" config-section="ASpell" config-item="Italic" />
+				<check-box caption="Underline" config-section="ASpell" config-item="Underline" />
+			</group-box>
+
+			<group-box name="Spelling checker options">
+			<!--	<check-box caption="Ignore accents" config-section="ASpell" config-item="Accents" /> -->
+				<check-box caption="Ignore case" config-section="ASpell" config-item="Case" />
+			</group-box>
+		</tab>
+	</section>
+</configuration-ui>

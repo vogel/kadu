@@ -1,0 +1,46 @@
+[v1.13]
+	* Updated for Kadu 0.6.0-svn (1.05.2007).
+
+[v1.12]
+	* Updated for Kadu 0.5.0-svn (23.07.2005).
+	* New Kadu Modules Manager Column: "Version" is now supported.
+	* Fixed bug, while user was busy or invisible - then module wasn't working.
+
+[v1.11]
+    * Applied Config Dialog icon for module. Thanks for RonK, who made it :)
+
+[v1.10]
+    * Fixed 'force status with description'. It had just worked opposed.
+    * Fixed Kadu crash after start with FileDesc loaded.
+
+[v1.9]
+    * Yet another updates for Kadu 0.4.0-cvs (28.07.2004).
+
+[v1.8]
+    * Updated for Kadu 0.4.0-cvs (18.07.2004).
+
+[v1.7]
+    * Removed deprecated getActualStatus()
+
+[v1.6]
+    * Removed warning while compilation.
+
+[v1.5]
+    * Now FileDesc tab in Kadu configuration dialog
+      is removed after unload module.
+
+[v1.4]
+    * Provides 'descriptions' property and makes
+      conflicts with other module which provides this.
+
+[v1.3]
+    * Updated for Kadu 0.3.8-cvs (04.04.2004)
+
+[v1.2]
+    * Fixed for "friends only" statuses.
+
+[v1.1]
+    * Fixed localizations in config dialog.
+
+[v1.0]
+    * First public release.
