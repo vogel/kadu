@@ -3,19 +3,11 @@
     <name>@default</name>
     <message>
         <source>Firewall</source>
-        <translation type="obsolete">Firewall</translation>
+        <translation type="unfinished">Firewall</translation>
     </message>
     <message>
         <source>Automatic question</source>
         <translation>Automatyczne pytanie</translation>
-    </message>
-    <message>
-        <source>Message:</source>
-        <translation type="obsolete">Tekst pytania:</translation>
-    </message>
-    <message>
-        <source>Answer:</source>
-        <translation type="obsolete">Odpowiedź</translation>
     </message>
     <message>
         <source>After right answer</source>
@@ -44,10 +36,6 @@
     <message>
         <source>Write log to file</source>
         <translation>Zapisuj wypowiedzi do pliku</translation>
-    </message>
-    <message>
-        <source>This message will be send to unknown person.</source>
-        <translation type="obsolete">Ta wiadomość będzie wysłana do nieznanej osoby.</translation>
     </message>
     <message>
         <source>Search for unknown person in directory and show window with his personal data.</source>
@@ -102,22 +90,6 @@
         <translation>Musisz potwierdzić chęć wysłania wiadomości do tych osób</translation>
     </message>
     <message>
-        <source>All</source>
-        <translation type="obsolete">Wszyscy</translation>
-    </message>
-    <message>
-        <source>Secured</source>
-        <translation type="obsolete">Zabezpieczeni</translation>
-    </message>
-    <message>
-        <source>Move to &apos;All&apos;</source>
-        <translation type="obsolete">Przenieś do &apos;Wszyscy&apos;</translation>
-    </message>
-    <message>
-        <source>Move to &apos;Secured&apos;</source>
-        <translation type="obsolete">Przenieś do &apos;Zabezpieczeni&apos;</translation>
-    </message>
-    <message>
         <source>Module will ask the question typed below, if someone wants talk to you and you don&apos;t have him on your list.</source>
         <translation>Moduł zada pytanie, znajdujące się poniżej, jeśli ktoś, kogo nie masz na liście kontaktów, chce z tobą porozmawiać.</translation>
     </message>
@@ -138,16 +110,8 @@
         <translation>Osoby z listy kontaktów mogą przesyłać ci nieograniczoną liczbę emotikon</translation>
     </message>
     <message>
-        <source>Right answer for question above - you can use regexp.</source>
-        <translation type="obsolete">Prawidłowa odpowiedź na powyższe pytanie - można używać regexp.</translation>
-    </message>
-    <message>
         <source>Search</source>
         <translation>Wyszukiwanie</translation>
-    </message>
-    <message>
-        <source>Ignore chats with unknown invisible persons</source>
-        <translation>Ignoruj rozmowy z niewidocznymi anonimami</translation>
     </message>
     <message>
         <source>When invisible silently drop chats with unknown persons</source>
@@ -164,6 +128,10 @@
     <message>
         <source>Write to history</source>
         <translation>Zapisz w historii</translation>
+    </message>
+    <message>
+        <source>%u - uin, %m - message</source>
+        <translation type="unfinished">%u - uin, %m - wiadomość</translation>
     </message>
 </context>
 <context>
@@ -185,14 +153,6 @@
         <translation>OK, teraz ładnie się przedstaw ;-)</translation>
     </message>
     <message>
-        <source>%u writes: %m</source>
-        <translation type="obsolete">Anonim [%u] napisał: %m</translation>
-    </message>
-    <message>
-        <source>%u - uin, %m - message</source>
-        <translation type="obsolete">%u - uin, %m - wiadomość</translation>
-    </message>
-    <message>
         <source>This message has been generated AUTOMATICALLY!
 
 I&apos;m a busy person and I don&apos;t have time for stupid chats. Find another person to chat with. If you REALLY want something from me, simple type &quot;I want something&quot; (capital doesn&apos;t matter)</source>
@@ -204,10 +164,6 @@ Jeśli chcesz natomiast &quot;poklikać&quot;, to znajdź sobie do tego inną os
     <message>
         <source>I want something</source>
         <translation>coś chcę</translation>
-    </message>
-    <message>
-        <source>User info</source>
-        <translation type="obsolete">Informacje o kontakcie</translation>
     </message>
     <message>
         <source>conference</source>
@@ -236,14 +192,6 @@ Jeśli chcesz natomiast &quot;poklikać&quot;, to znajdź sobie do tego inną os
     <message>
         <source>Yes and allow until chat closed</source>
         <translation>Tak i pozwalaj dopóki prowadzisz rozmowę</translation>
-    </message>
-    <message>
-        <source>This message has been generated AUTOMATICALLY!
-
-I&apos;m a busy person and I don&apos;t have time for stupid chats with the persons hiding itselfs.</source>
-        <translation type="obsolete">Ta wiadomość została wygenerowana AUTOMATYCZNIE!
-
-Nie mam cię na mojej liście kontaktów i nie rozmawiam z nieznanymi, którzy nie są widoczni. Jeśli chcesz ze mną porozmawiać zmień status na Dostępny lub Zaraz wracam.</translation>
     </message>
     <message>
         <source>Move to &apos;Secured&apos;</source>
@@ -276,18 +224,6 @@ Nie mam cię na mojej liście kontaktów i nie rozmawiam z nieznanymi, którzy n
     <message>
         <source>Answer:</source>
         <translation>Odpowiedź:</translation>
-    </message>
-    <message>
-        <source>This message has been generated AUTOMATICALLY!
-
-I&apos;m a busy person and I don&apos;t have time for stupid chats with the persons hiding itselfs. If you want to talk with me change the status to Online or Busy first.</source>
-        <translation>Nie mam cię na mojej liście kontaktów i nie rozmawiam z nieznanymi, którzy nie są widoczni. Jeśli chcesz ze mną porozmawiać zmień status na Dostępny lub Zaraz wracam.</translation>
-    </message>
-    <message>
-        <source>Chat with invisible anonim ignored.
-</source>
-        <translation>Rozmowa z niewidocznym anonimem zignorowana.
-</translation>
     </message>
     <message>
         <source>Chat with anonim silently dropped.
