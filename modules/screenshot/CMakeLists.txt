@@ -10,12 +10,17 @@ set (TRANSLATION_SOURCES
 	translations/screenshot_pl.ts
 )
 
+set (CONFIGURATION_FILES
+	configuration/screenshot.ui
+)
+
 if(WIN32)
 	include_directories (${CMAKE_CURRENT_SOURCE_DIR})
 	set (SOURCES ${SOURCES} ../module.rc)
 endif(WIN32)
 
 kadu_module_desc (screenshot.desc)
+kadu_module_configuration (${CONFIGURATION_FILES})
 qt_wrap_cpp (screenshot MOC_FILES ${MOC_SOURCES})
 
 qt4_add_translation (TRANSLATION_FILES ${TRANSLATION_SOURCES})
