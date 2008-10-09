@@ -13,6 +13,8 @@
 #include <QtGui/QFileDialog>
 #include <QtGui/QMenu>
 #include <QtGui/QToolTip>
+#include <QtWebKit/QWebFrame>
+#include <QtWebKit/QWebHitTestResult>
 
 #include "config_file.h"
 #include "debug.h"
@@ -23,27 +25,20 @@
 #include "kadu_text_browser.h"
 
 KaduTextBrowser::KaduTextBrowser(QWidget *parent)
-	: QWebView(parent),
-	refreshTimer(), image()
+	: QWebView(parent), refreshTimer()
 {
 	kdebugf();
 
-// 	setAttribute(Qt::WA_StaticContents);
 	setAttribute(Qt::WA_NoBackground);
-
 	setAcceptDrops(false);
-// 	viewport()->setAcceptDrops(false);
 
  	page()->setLinkDelegationPolicy(QWebPage::DelegateAllLinks);
-//	setResizePolicy(QScrollView::AutoOne);
+
 	connect(page(), SIGNAL(linkClicked(const QUrl &)), this, SLOT(hyperlinkClicked(const QUrl &)));
 	connect(page(), SIGNAL(linkHovered(const QString&,  const QString&, const QString&)), this, SLOT(linkHighlighted(const QString &)));
-// 	setLineWrapMode(QTextEdit::WidgetWidth/**QTextEdit::AtWordOrDocumentBoundary*/);
-// 	setTextFormat(Qt::RichText);
 
-//	connect(this, SIGNAL(contentsMoving(int, int)), this, SLOT(refreshLater()));
-//	connect(this, SIGNAL(textChanged()), this, SLOT(refreshLater()));
-	connect(&refreshTimer, SIGNAL(timeout()), this, SLOT(refresh()));
+	connect(pageAction(QWebPage::DownloadImageToDisk), SIGNAL(triggered()), this, SLOT(saveImage()));
+	connect(&refreshTimer, SIGNAL(timeout()), this, SLOT(reload()));
 
 	kdebugf2();
 }
@@ -51,16 +46,6 @@ KaduTextBrowser::KaduTextBrowser(QWidget *parent)
 void KaduTextBrowser::refreshLater()
 {
 	refreshTimer.start(10, true);
-}
-
-void KaduTextBrowser::refresh()
-{
-	kdebugf();
-	//sync();
-	//repaint();
-	//repaintContents(false);
-	reload();
-	kdebugf2();
 }
 
 void KaduTextBrowser::linkHighlighted(const QString & link)
@@ -77,13 +62,19 @@ void KaduTextBrowser::setMargin(int width)
 	setContentsMargins(width, width, width, width);
 }
 
-void KaduTextBrowser::contextMenuEvent(QContextMenuEvent * event)
+void KaduTextBrowser::contextMenuEvent(QContextMenuEvent *event)
 {
-	QMenu *popupmenu = new QMenu;
-	popupmenu->addAction(pageAction(QWebPage::CopyLinkToClipboard));
-	popupmenu->addAction(pageAction(QWebPage::DownloadImageToDisk));
-	popupmenu->addAction(pageAction(QWebPage::CopyImageToClipboard));
+	contextMenuPos = event->pos();
+
+	QMenu *popupmenu = new QMenu();
+
 	popupmenu->addAction(pageAction(QWebPage::Copy));
+// 	popupmenu->addSeparator();
+	popupmenu->addAction(pageAction(QWebPage::CopyLinkToClipboard));
+// 	popupmenu->addAction(pageAction(QWebPage::DownloadLinkToDisk));
+	popupmenu->addSeparator();
+	popupmenu->addAction(pageAction(QWebPage::CopyImageToClipboard));
+	popupmenu->addAction(pageAction(QWebPage::DownloadImageToDisk));
 
  	popupmenu->popup(event->globalPos());
  	kdebugf2();
@@ -122,39 +113,51 @@ void KaduTextBrowser::wheelEvent(QWheelEvent *e)
 void KaduTextBrowser::saveImage()
 {
 	kdebugf();
-	QFileDialog *fd = new QFileDialog(this);
+
+	QString image = page()->currentFrame()->hitTestContent(contextMenuPos).imageUrl().toLocalFile();
+	if (image.isEmpty())
+		return;
+
 	int fdResult;
 	QString fileExt = '.' + image.section('.', -1);
 
-	fd->setMode(QFileDialog::AnyFile);
-	fd->setDir(config_file.readEntry("Chat", "LastImagePath"));
-	fd->setFilter(QString("%1 (*%2)").arg(qApp->translate("ImageDialog", "Images"), fileExt));
-	fd->setLabelText(QFileDialog::FileName, image.section('/', -1));
-	fd->setWindowTitle(tr("Save image"));
-	while ((fdResult = fd->exec()) == QFileDialog::Accepted
-		&& QFile::exists(fd->selectedFile())
-		&& !MessageBox::ask(tr("File already exists. Overwrite?")));
-	if (fdResult == QFileDialog::Accepted)
-	{
-		QFile dst((fd->selectedFile().endsWith(fileExt)) ? fd->selectedFile() : fd->selectedFile() + fileExt);
-		QFile src(image);
-		if (dst.open(QIODevice::WriteOnly))
-		{
-			if (src.open(QIODevice::ReadOnly))
-			{
-				char buffer[1024];
-				Q_LONG len;
-				while (!src.atEnd() && (len = src.readBlock(buffer, sizeof(buffer))) > 0
-					&& dst.writeBlock(buffer, len) != -1);
-				src.close();
-			}
-			config_file.writeEntry("Chat", "LastImagePath", fd->directory().absolutePath());
-			dst.close();
-		}
-		else
-			MessageBox::msg(tr("Cannot save image: %1").arg(dst.errorString()), false, "Warning");
-	}
-	delete fd;
-	kdebugf2();
-}
+	QFileDialog fd(this);
+	fd.setMode(QFileDialog::AnyFile);
+	fd.setDir(config_file.readEntry("Chat", "LastImagePath"));
+	fd.setFilter(QString("%1 (*%2)").arg(qApp->translate("ImageDialog", "Images"), fileExt));
+	fd.setLabelText(QFileDialog::FileName, image.section('/', -1));
+	fd.setWindowTitle(tr("Save image"));
 
+	while (true)
+	{
+		if (fd.exec() != QFileDialog::Accepted)
+			break;
+
+		if (QFile::exists(fd.selectedFile()))
+			if (MessageBox::ask(tr("File already exists. Overwrite?")))
+			{
+				QFile removeMe(fd.selectedFile());
+				if (!removeMe.remove())
+				{
+					MessageBox::msg(tr("Cannot save image: %1").arg(removeMe.errorString()), false, "Warning");
+					continue;
+				}
+			}
+			else
+				continue;
+
+		QString dst = fd.selectedFile();
+		if (!dst.endsWith(fileExt))
+			dst.append(fileExt);
+
+		QFile src(image);
+		if (!src.copy(dst))
+		{
+			MessageBox::msg(tr("Cannot save image: %1").arg(src.errorString()), false, "Warning");
+			continue;
+		}
+
+		config_file.writeEntry("Chat", "LastImagePath", fd.directory().absolutePath());
+		break;
+	}
+}

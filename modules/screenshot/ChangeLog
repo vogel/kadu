@@ -1,0 +1,63 @@
+[0.5.0]
+	* [ADDED]: Single-window screenshot mode. Allows users to click on any window,
+		and the shot of that window will be done.
+	* [ADDED]: Full support for Tabs module.
+
+[0.4.5]
+	* [ADDED]: Support for short ".jpg" extension (option for JPEG format).
+	* [BUGFIX]: Images size limit warning fixed (haven't work).
+
+[0.4.4]
+	* [UPDATE]: Translations update (thanks to Shinjin).
+
+[0.4.3]
+	* [UPDATE]: Update for Kadu SVN (5.11.2006).
+
+[0.4.2]
+	* [BUGFIX]: Fixed character coding (patch by Joi).
+
+[0.4.1]
+	* [BUGFIX]: Configuration "directory size control" group fixed.
+	* [BUGFIX]: Memory leak fix.
+	* [BUGFIX]: CPU 99% usage fixed (thanks to montor!).
+
+[0.4.0]
+	* [UPDATE]: Update for Kadu SVN (19.11.2005).
+	* [ADDED]: Chat buttons gets popup menu with choose to take a simple shot
+		or with hidden chat window.
+	* [ADDED]: File size and geometry hint.
+	* [ADDED]: Option to disable automatic [IMAGE] clause pasting.
+
+[0.3.4]
+	* [BUGFIX]: Added errno.h header.
+
+[0.3.3]
+	* [UPDATE]: Update for Kadu SVN (28/08/2005).
+	* [BUGFIX]: Checking if images path directory exists and trying to create it if it's not.
+
+[0.3.2]
+	* [ADDED]: New Kadu Modules Manager Column: "Version" is now supported.
+	* [ADDED]: When image is too big to send to recipient, module asks user if he wants
+		to force send.
+	* [BUGFIX]: Error while drawing rectangle from right-bottom to left-top fixed.
+
+[0.3.1]
+	* [BUGFIX]: Compilation errors fixed.
+
+[0.3.0]
+	* [UPDATE]: Shot region is now drawn much better.
+	* [UPDATE]: Mouse cursor changed for region drawing time.
+	* [UPDATE]: Chat icon changed.
+	* [ADDED]: Configuration icon added. Icons come from KDE 'Slick' icons set.
+	* [ADDED]: Configurable screenshot image format.
+	* [ADDED]: Configurable screenshot image quality.
+	* [ADDED]: Now escape key aborts making screenshot.
+	* [ADDED]: Contacts image size is now checked.
+
+[0.2.0]
+	* [ADDED]: ScreenShot region rectangle preview while drawing ScreenShot region.
+	* [UPDATE]: ScreenShot files are now unique.
+	* [BUGFIX]: Fixed crash while taking screenshot.
+
+[0.1.0]
+	* First public release.

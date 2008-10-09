@@ -1,0 +1,2 @@
+MODULE_SOURCES=antistring.cpp
+MODULE_MOC_HEADERS=antistring.h

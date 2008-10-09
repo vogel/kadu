@@ -1,0 +1,6 @@
+[0.5]
+* Ostrze¿enie o du¿ej ilo¶ci miejsca zajmowanej przez zrzuty.
+
+[Dalsze wersje]
+* Zrzuty danego okna (prawym przyciskiem). <- Qt nie posiada odpowiednich metod, trzeba mieszaæ w Xlib.
+* skalowanie obrazka do mniejszych rozmiarow (okreslonych w konfiguracji)

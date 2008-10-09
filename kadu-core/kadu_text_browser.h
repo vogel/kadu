@@ -17,18 +17,11 @@ class KADUAPI KaduTextBrowser : public QWebView //, private QToolTip
 {
 	Q_OBJECT
 
-	QString image;
-
+	QPoint contextMenuPos;
 	QTimer refreshTimer; /*!< Timer od�wie�ania widgetu. */
 	
 private slots:
 
-	/**
-		\fn void refresh()
-		Slot od�wie�aj�cy zawarto�� widgetu.
-	**/
-
-	void refresh();
 	/**
 		\fn void refreshLater()
 		Slot uruchamiaj�cy od�wie�enie z op��nieniem.

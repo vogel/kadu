@@ -135,10 +135,6 @@
         <translation>Zeige Verlauf</translation>
     </message>
     <message>
-        <source>History</source>
-        <translation>Verlauf</translation>
-    </message>
-    <message>
         <source>Clear history</source>
         <translation>Verlauf leeren</translation>
     </message>
@@ -148,11 +144,8 @@
     </message>
     <message>
         <source>The following users were deleted:
-%0
-Do you want to remove history as well?</source>
-        <translation>Die folgenen Kontate werden entfernt:
-%0
-Wollen Sie den Verlauf dieser leeren?</translation>
+%0Do you want to remove history as well?</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -184,10 +177,6 @@ Wollen Sie den Verlauf dieser leeren?</translation>
     <message>
         <source>minute</source>
         <translation>Minute</translation>
-    </message>
-    <message>
-        <source>&amp;To:</source>
-        <translation>&amp;Bis:</translation>
     </message>
     <message>
         <source>Find Criteria</source>

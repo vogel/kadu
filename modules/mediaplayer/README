@@ -1,0 +1,16 @@
+Modu³ obs³ugi odtwarzaczy multimedialnych dla Kadu.
+
+G³ówne cechy:
+* Wklejanie biez±cego tytu³u z odtwarzacza do okna rozmowy,
+* Ustawianie biez±cego tytu³u z odtwarzacza jako status,
+* Sterowanie odtwarzaczem z okna chat,
+* Mo¿liwo¶æ ³atwego dodania obs³ugi kolejnych odtwarzaczy jako modu³y Kadu.
+
+Autor:
+Pawe³ (Googie) Salawa
+boogie@scripts.one.pl
+
+mediaplayer.png borrowed from Oxygen icon theme.
+Oxygen icon theme is licensed under
+the GNU Library General Public License.
+(http://www.gnu.org/licenses/lgpl.html)

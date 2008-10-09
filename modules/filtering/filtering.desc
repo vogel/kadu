@@ -1,0 +1,8 @@
+[Module]
+Description=User list filtering
+Description[pl]=Filtrowanie listy kontaktów
+Author=pinkworm, Vogel
+Dependencies=
+Provides=filtering
+LoadByDefault=true
+Version=0.4.0

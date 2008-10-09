@@ -119,28 +119,28 @@ void ChatMessagesView::repaintMessages()
 	QList<ChatMessage *>::const_iterator prevMessage;
 	QList<ChatMessage *>::const_iterator end = Messages.constEnd();
 
-	if (message == end)
-		return;
-
-	(*message)->setSeparatorSize(0);
-
-	if ((*message)->type() == TypeSystem)
-		text += KaduParser::parse(ChatSyntaxWithoutHeader, (*message)->sender(), *message);
-	else
+	if (message != end)
 	{
-		(*message)->setShowServerTime(NoServerTime, NoServerTimeDiff);
-		text += KaduParser::parse(ChatSyntaxWithHeader, (*message)->sender(), *message);
-	}
+		(*message)->setSeparatorSize(0);
 
-	prevMessage = message;
-	while (++message != end)
-	{
-		text += formatMessage(*message, *prevMessage);
+		if ((*message)->type() == TypeSystem)
+			text += KaduParser::parse(ChatSyntaxWithoutHeader, (*message)->sender(), *message);
+		else
+		{
+			(*message)->setShowServerTime(NoServerTime, NoServerTimeDiff);
+			text += KaduParser::parse(ChatSyntaxWithHeader, (*message)->sender(), *message);
+		}
+
 		prevMessage = message;
+		while (++message != end)
+		{
+			text += formatMessage(*message, *prevMessage);
+			prevMessage = message;
+		}
 	}
 
- 	lastScrollValue = page()->currentFrame()->scrollBarValue(Qt::Vertical);
- 	lastLine = (lastScrollValue == page()->currentFrame()->scrollBarMaximum(Qt::Vertical));
+	lastScrollValue = page()->currentFrame()->scrollBarValue(Qt::Vertical);
+	lastLine = (lastScrollValue == page()->currentFrame()->scrollBarMaximum(Qt::Vertical));
 
 	text += "</body></html>";
 
@@ -260,6 +260,9 @@ void ChatMessagesView::configurationUpdated()
 		"* {"
 		"	font: %1 %2 %3 %4;"
 		"	text-decoration: %5;"
+		"}"
+		"a {"
+		"	text-decoration: underline;"
 		"}"
 		"body {"
 		"	margin: %6;"

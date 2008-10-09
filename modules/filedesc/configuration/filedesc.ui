@@ -1,0 +1,11 @@
+<configuration-ui>
+	<section name="Status">
+		<tab name="FileDesc">
+			<group-box name="FileDesc">
+				<select-file caption="File with description to synchronize" config-section="FileDesc" config-item="file" type="all" tool-tip="Enter here a file, which will contain descriptions to refresh by module." />
+				<check-box caption="Force status to be 'with description'" config-section="FileDesc" config-item="forceDescr" tool-tip="If you choose status without description, module will set it automaticaly to similar but with description" />
+				<check-box caption="Allow other descriptions" config-section="FileDesc" config-item="allowOther" tool-tip="Allows you to set some custom description manualy, until file contents doesn't change" />
+			</group-box>
+		</tab>
+	</section>
+</configuration-ui>

@@ -1,0 +1,8 @@
+[Module]
+Description=Cenzor
+Description[pl]=Cenzor
+Author=PK Team, Dorregaray
+Dependencies=notify
+LoadByDefault=false
+Version=0.3
+Base=false

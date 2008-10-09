@@ -1,0 +1,7 @@
+[Module]
+Description=Automatic word replacement
+Description[pl]=Automatyczna zamiana slow
+Author=PK Team, Dorregaray
+LoadByDefault=false
+Version=0.4
+Base=false

@@ -96,7 +96,7 @@ private:
 	QString Text;
 	QString CheckedText;
 	QString ShortcutItem;
-	Qt::ShortcutContext shortcutContext;
+	Qt::ShortcutContext ShortcutContext;
 	bool Checkable;
 	ActionBoolCallback EnableCallback;
 
