@@ -205,6 +205,28 @@ void ScreenShot::mousePressEvent(QMouseEvent *e)
 	}
 }
 
+void ScreenShot::paintEvent(QPaintEvent *e)
+{
+	QPainter painter(this);
+
+	painter.setCompositionMode(QPainter::CompositionMode_DestinationIn);
+	painter.setPen(QPen(QBrush(Qt::black), 1, Qt::DashLine));
+	painter.setBrush(Qt::NoBrush);
+
+	painter.drawRect(region);
+
+// TODO: make it work again
+/*
+	QStyleOptionFocusRect styleOption;
+	styleOption.initFrom(this);
+	styleOption.rect = region;
+	styleOption.state = QStyle::State_HasFocus | QStyle::State_KeyboardFocusChange;
+	styleOption.palette = colorGroup();
+	styleOption.backgroundColor = palette().color(QPalette::Background);*/
+
+// 	style()->drawPrimitive(QStyle::PE_FrameFocusRect, &styleOption, &painter);
+}
+
 void ScreenShot::mouseReleaseEvent(QMouseEvent *e)
 {
 	kdebugf();
@@ -219,7 +241,6 @@ void ScreenShot::mouseReleaseEvent(QMouseEvent *e)
 	buttonPressed = false;
 	releaseMouse();
 	releaseKeyboard();
-	drawRegionRect();
 
 	// Normalizowanie prostok±ta do zrzutu
 	region.setBottomRight(e->pos());
@@ -382,6 +403,7 @@ void ScreenShot::takeShot_Step2()
 	resize(pixmap.size());
 	setPaletteBackgroundPixmap(pixmap);
 	showFullScreen();
+	show();
 	setCursor(Qt::CrossCursor);
 
 	QTimer::singleShot(100, this, SLOT(grabMouseSlot()));
@@ -401,9 +423,7 @@ void ScreenShot::mouseMoveEvent(QMouseEvent *e)
 	if (!buttonPressed)
 		return;
 
-	drawRegionRect();
 	region.setBottomRight(e->pos());
-	drawRegionRect();
 
 	QRect reg = region;
 	reg = reg.normalize();
@@ -413,9 +433,10 @@ void ScreenShot::mouseMoveEvent(QMouseEvent *e)
 			.arg(QString::number(reg.width()))
 			.arg(QString::number(reg.height()))
 		);
+
+	repaint();
 }
 
-// TODO: use current file format
 void ScreenShot::updateHint()
 {
 	QBuffer buffer;
@@ -424,28 +445,14 @@ void ScreenShot::updateHint()
 	reg = reg.normalize();
 
 	QPixmap shot = QPixmap::grabWindow(winId(), reg.x(), reg.y(), reg.width(), reg.height());
-	bool ret = shot.save(&buffer, "PNG", -1);
+
+	// TODO: cache + use configurationUpdated
+	const char *format = config_file.readEntry("ScreenShot", "fileFormat", "PNG").ascii();
+	int quality = config_file.readNumEntry("ScreenShot", "quality", -1);
+	bool ret = shot.save(&buffer, format, quality);
 
 	if (ret)
-		sizeHint->fileSize->setText(QString::number(buffer.size()/1024)+" KB");
-}
-
-void ScreenShot::drawRegionRect()
-{
-	QPainter painter;
-	painter.begin(this);
-	painter.setCompositionMode(QPainter::CompositionMode_DestinationIn);
-	painter.setPen(QPen(Qt::color0, 1));
-	painter.setBrush(Qt::NoBrush);
-
-	QStyleOptionFocusRect styleOption;
-	styleOption.initFrom(this);
-	styleOption.rect = region;
-	styleOption.palette = colorGroup();
-
-	style()->drawPrimitive(QStyle::PE_FrameFocusRect, &styleOption, &painter);
-
-	painter.end();
+		sizeHint->fileSize->setText(QString::number(buffer.size()/1024) + " KB");
 }
 
 void ScreenShot::checkShotsSize()
