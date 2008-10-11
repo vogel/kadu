@@ -76,7 +76,30 @@ macro (kadu_module_desc MODULE_DESC)
 		DESTINATION "share/kadu/modules")
 endmacro (kadu_module_desc)
 
-macro (kadu_module MODULE_NAME MODULE_SOURCES MODULE_MOC_SOURCES MODULE_TRANSLATION_SOURCES)
+macro (kadu_module)
+
+	set (VARIABLE_NAME "MODULE_NAME")
+
+	set (MODULE_NAME "")
+	set (MODULE_SOURCES "")
+	set (MODULE_MOC_SOURCES "")
+	set (MODULE_TRANSLATION_SOURCES "")
+	set (MODULE_CONFIGURATION_FILES "")
+
+	foreach (ARG ${ARGV})
+
+		if ("${VARIABLE_NAME}" STREQUAL "MODULE_NAME")
+			set (MODULE_NAME ${ARG})
+			set (VARIABLE_NAME "")
+		elseif (ARG MATCHES "(MODULE_SOURCES|MODULE_MOC_SOURCES|MODULE_TRANSLATION_SOURCES|MODULE_CONFIGURATION_FILES)")
+			set (VARIABLE_NAME ${ARG})
+		elseif (VARIABLE_NAME STREQUAL "")
+			message (FATAL_ERROR "Invalid invocation of kadu_module macro")
+		else ("${VARIABLE_NAME}" STREQUAL "MODULE_NAME")
+			set (${VARIABLE_NAME} "${${VARIABLE_NAME}};${ARG}")
+		endif ("${VARIABLE_NAME}" STREQUAL "MODULE_NAME")
+
+	endforeach (ARG ${ARGV})
 
 	if (WIN32)
 		include_directories (${CMAKE_CURRENT_SOURCE_DIR})
@@ -88,6 +111,7 @@ macro (kadu_module MODULE_NAME MODULE_SOURCES MODULE_MOC_SOURCES MODULE_TRANSLAT
 
 	qt_wrap_cpp (${MODULE_NAME} MODULE_MOC_FILES ${MODULE_MOC_SOURCES})
 	qt4_add_translation (MODULE_TRANSLATION_FILES ${MODULE_TRANSLATION_SOURCES})
+	kadu_module_configuration(${MODULE_CONFIGURATION_FILES})
 
 	install (FILES ${MODULE_TRANSLATION_FILES}
 		DESTINATION "share/kadu/modules/translations")
@@ -97,11 +121,7 @@ macro (kadu_module MODULE_NAME MODULE_SOURCES MODULE_MOC_SOURCES MODULE_TRANSLAT
 	endif (COMMAND cmake_policy)
 
 	add_library (${MODULE_NAME} ${${MODULE_NAME}} ${MODULE_SOURCES} ${MODULE_MOC_FILES})
-	message (STATUS "add_library (${MODULE_NAME} ${${MODULE_NAME}} ${MODULE_SOURCES} ${MODULE_MOC_FILES})")
 	add_custom_target (${MODULE_NAME}-translations DEPENDS ${MODULE_TRANSLATION_FILES})
-
-	message (STATUS ${MODULE_NAME})
-	message (STATUS ${${MODULE_NAME}})
 
 	if (${${MODULE_NAME}} STREQUAL STATIC)
 		set_target_properties(${MODULE_NAME} PROPERTIES COMPILE_FLAGS "-DKADULIB" )
