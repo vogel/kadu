@@ -257,7 +257,7 @@ void ChatMessagesView::configurationUpdated()
 	QString backgroundColor = config_file.readColorEntry("Look", "ChatBgColor").name();
 
 	style = QString(
-		"* {"
+		"html {"
 		"	font: %1 %2 %3 %4;"
 		"	text-decoration: %5;"
 		"}"

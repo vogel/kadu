@@ -414,7 +414,7 @@ void UserInfo::newGroupClicked()
 	changeIconButton->setMaximumWidth(30);
 
 	QPushButton *deleteIconButton = new QPushButton(box);
-	deleteIconButton->setPixmap(icons_manager->loadPixmap("CancelMessage"));
+	deleteIconButton->setPixmap(icons_manager->loadPixmap("RemoveSelectPathDialogButton"));
 	deleteIconButton->setToolTip(tr("Delete icon"));
 	deleteIconButton->setMaximumWidth(30);
 

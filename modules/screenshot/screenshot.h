@@ -49,6 +49,7 @@ class ScreenShot : public QWidget
 	ChatWidget *chatWidget;
 
 	ScreenShotMode shotMode;
+	bool ShowPaintRect;
 
 	bool buttonPressed;
 	QRect region;
@@ -60,7 +61,6 @@ class ScreenShot : public QWidget
 	bool warnedAboutSize;
 	int minSize;
 
-	void drawRegionRect();
 	void checkShotsSize();
 	void handleShot(QPixmap p);
 
@@ -81,6 +81,9 @@ class ScreenShot : public QWidget
 	Window windowUnderCursor(bool includeDecorations);
 
 	void createDefaultConfiguration();
+
+protected:
+	virtual void paintEvent(QPaintEvent *e);
 
 private slots:
 	void takeShot();

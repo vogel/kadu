@@ -144,6 +144,8 @@ MediaPlayer::MediaPlayer(bool firstLoad)
 	createDefaultConfiguration();
 
 	mediaPlayerStatusChanger->changePositionInStatus((MediaPlayerStatusChanger::ChangeDescriptionTo)config_file.readNumEntry("MediaPlayer", "statusPosition"));
+
+	setControlsEnabled(false);
 }
 
 MediaPlayer::~MediaPlayer()
@@ -176,6 +178,18 @@ MediaPlayer::~MediaPlayer()
 		kadu->removeMenuActionDescription(enableMediaPlayerStatuses);
 	else
 		dockMenu->removeItem(popups[5]);
+}
+
+void MediaPlayer::setControlsEnabled(bool enabled)
+{
+	menu->setItemEnabled(popups[0], enabled);
+	menu->setItemEnabled(popups[1], enabled);
+	menu->setItemEnabled(popups[2], enabled);
+	menu->setItemEnabled(popups[3], enabled);
+	menu->setItemEnabled(popups[4], enabled);
+
+	if (popups[5])
+		menu->setItemEnabled(popups[5], enabled);
 }
 
 void MediaPlayer::mediaPlayerMenuActivated(QAction *sender, bool toggled)
@@ -670,11 +684,16 @@ bool MediaPlayer::registerMediaPlayer(PlayerInfo* info, PlayerCommands* cmds)
 
 	playerInfo = info;
 	playerCommands = cmds;
+
+	setControlsEnabled(true);
+
 	return true;
 }
 
 void MediaPlayer::unregisterMediaPlayer()
 {
+	setControlsEnabled(false);
+
 	playerInfo = 0;
 	playerCommands = 0;
 }
