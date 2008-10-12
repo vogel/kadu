@@ -2,6 +2,10 @@ Teksty w nawiasach na koñcu wpisu mówi± o tym, kto dokona³ poprawki lub rozbudow
 Postaæ (x/y) oznacza, ¿e x jest pomys³odawc± lub podes³a³ patcha, a zrobi³ to kto¶ oznaczony przez y.
 Je¶li jest w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 
++++ wersja 0.6.6
+* znacznie lepszy system budowania modu³ów - makro kadu_module zamiast kilkunastu linii kodu
+* usuniêcie sygna³ów messageReceived/Queued... i zast±pienie ich przez messageStatusChanged
+
 +++ wersja 0.6.5
 * wstêpny port na Qt4.4
 
