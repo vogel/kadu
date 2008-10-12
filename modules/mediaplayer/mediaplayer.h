@@ -55,6 +55,8 @@ class MediaPlayer : public ConfigurationUiHandler, ConfigurationAwareObject
 	*/
 	bool playerCommandsSupported();
 
+	void setControlsEnabled(bool enabled);
+
 	void createDefaultConfiguration();
 
 private slots:
