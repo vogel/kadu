@@ -49,6 +49,7 @@ class ScreenShot : public QWidget
 	ChatWidget *chatWidget;
 
 	ScreenShotMode shotMode;
+	bool ShowPaintRect;
 
 	bool buttonPressed;
 	QRect region;

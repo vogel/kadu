@@ -207,6 +207,9 @@ void ScreenShot::mousePressEvent(QMouseEvent *e)
 
 void ScreenShot::paintEvent(QPaintEvent *e)
 {
+	if (!ShowPaintRect)
+		return;
+
 	QPainter painter(this);
 
 	painter.setCompositionMode(QPainter::CompositionMode_DestinationIn);
@@ -247,6 +250,10 @@ void ScreenShot::mouseReleaseEvent(QMouseEvent *e)
 	region = region.normalize();
 
 	// Zrzut
+	ShowPaintRect = false;
+	repaint();
+	qApp->processEvents();
+
 	QPixmap shot = QPixmap::grabWindow(winId(), region.x(), region.y(), region.width(), region.height());
 
 	// Chowanie widgeta zrzutu i przywrócenie kursora.
@@ -434,6 +441,7 @@ void ScreenShot::mouseMoveEvent(QMouseEvent *e)
 			.arg(QString::number(reg.height()))
 		);
 
+	ShowPaintRect = true;
 	repaint();
 }
 
