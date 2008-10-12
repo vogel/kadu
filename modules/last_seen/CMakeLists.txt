@@ -9,35 +9,9 @@ set (MOC_SOURCES
 set (TRANSLATION_SOURCES
 	translations/last_seen_pl.ts)
 
-if(WIN32)
-	include_directories (${CMAKE_CURRENT_SOURCE_DIR})
-	set (SOURCES ${SOURCES} ../module.rc)
-endif(WIN32)
-
-kadu_module_desc (last_seen.desc)
-qt_wrap_cpp (last_seen MOC_FILES ${MOC_SOURCES})
-
-qt4_add_translation (TRANSLATION_FILES ${TRANSLATION_SOURCES})
-
-install (FILES ${TRANSLATION_FILES}
-	DESTINATION "share/kadu/modules/translations")
-
-if (COMMAND cmake_policy)
-	cmake_policy(SET CMP0003 NEW)
-endif (COMMAND cmake_policy)
-
-add_library (last_seen ${last_seen} ${SOURCES} ${MOC_FILES})
-add_custom_target (last_seen-translations DEPENDS ${TRANSLATION_FILES})
-if (last_seen STREQUAL STATIC)
-	set_target_properties(last_seen PROPERTIES COMPILE_FLAGS "-DKADULIB" )
-else (last_seen STREQUAL STATIC)
-	if (WIN32)
-		target_link_libraries(last_seen kadu_core)
-	endif (WIN32)
-	if (APPLE)
-		set_target_properties(last_seen PROPERTIES LINK_FLAGS "-undefined dynamic_lookup")
-	endif (APPLE)
-endif (last_seen STREQUAL STATIC)
-add_dependencies (last_seen last_seen-translations)
-
-install (TARGETS last_seen DESTINATION lib/kadu/modules)
+kadu_module (last_seen
+	MODULE_SOURCES ${SOURCES}
+	MODULE_MOC_SOURCES ${MOC_SOURCES}
+	MODULE_TRANSLATION_SOURCES ${TRANSLATION_SOURCES}
+	MODULE_CONFIGURATION_FILES ${CONFIGURATION_FILES}
+)

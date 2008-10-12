@@ -16,37 +16,9 @@ set (TRANSLATION_SOURCES
 set (CONFIGURATION_FILES
 	configuration/sms.ui)
 
-if(WIN32)
-	include_directories (${CMAKE_CURRENT_SOURCE_DIR})
-	set (SOURCES ${SOURCES} ../module.rc)
-endif(WIN32)
-
-kadu_module_desc (sms.desc)
-kadu_module_configuration(${CONFIGURATION_FILES})
-qt_wrap_cpp (sms MOC_FILES ${MOC_SOURCES})
-
-qt4_add_translation (TRANSLATION_FILES ${TRANSLATION_SOURCES})
-
-install (FILES ${TRANSLATION_FILES}
-	DESTINATION "share/kadu/modules/translations")
-
-if (COMMAND cmake_policy)
-	cmake_policy(SET CMP0003 NEW)
-endif (COMMAND cmake_policy)
-
-add_library (sms ${sms} ${SOURCES} ${MOC_FILES})
-set_target_properties(sms PROPERTIES COMPILE_FLAGS "-DSMS_BUILD" )
-add_custom_target (sms-translations DEPENDS ${TRANSLATION_FILES})
-if (sms STREQUAL STATIC)
-	set_target_properties(sms PROPERTIES COMPILE_FLAGS "-DKADULIB" )
-else (sms STREQUAL STATIC)
-	if (WIN32)
-		target_link_libraries(sms kadu_core history)
-	endif (WIN32)
-	if (APPLE)
-		set_target_properties(sms PROPERTIES LINK_FLAGS "-undefined dynamic_lookup")
-	endif (APPLE)
-endif (sms STREQUAL STATIC)
-add_dependencies (sms sms-translations)
-
-install (TARGETS sms DESTINATION lib/kadu/modules)
+kadu_module (sms
+	MODULE_SOURCES ${SOURCES}
+	MODULE_MOC_SOURCES ${MOC_SOURCES}
+	MODULE_TRANSLATION_SOURCES ${TRANSLATION_SOURCES}
+	MODULE_CONFIGURATION_FILES ${CONFIGURATION_FILES}
+)

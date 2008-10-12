@@ -16,36 +16,12 @@ set (TRANSLATION_SOURCES
 set (CONFIGURATION_FILES
 	configuration/win32_sound.ui)
 
-if(WIN32)
-	include_directories (${CMAKE_CURRENT_SOURCE_DIR})
-	set (SOURCES ${SOURCES} ../module.rc)
-endif(WIN32)
-
-kadu_module_desc (win32_sound.desc)
-kadu_module_configuration(${CONFIGURATION_FILES})
-qt_wrap_cpp (win32_sound MOC_FILES ${MOC_SOURCES})
-
-qt4_add_translation (TRANSLATION_FILES ${TRANSLATION_SOURCES})
-
-install (FILES ${TRANSLATION_FILES}
-	DESTINATION "share/kadu/modules/translations")
-
-if (COMMAND cmake_policy)
-	cmake_policy(SET CMP0003 NEW)
-endif (COMMAND cmake_policy)
+kadu_module (win32_sound
+	MODULE_SOURCES ${SOURCES}
+	MODULE_MOC_SOURCES ${MOC_SOURCES}
+	MODULE_TRANSLATION_SOURCES ${TRANSLATION_SOURCES}
+	MODULE_CONFIGURATION_FILES ${CONFIGURATION_FILES}
+)
 
 # XXX
 link_directories (${SNDFILE_LIBRARY_DIRS})
-
-add_library (win32_sound ${win32_sound} ${SOURCES} ${MOC_FILES})
-add_custom_target (win32_sound-translations DEPENDS ${TRANSLATION_FILES})
-if (win32_sound STREQUAL STATIC)
-	set_target_properties(win32_sound PROPERTIES COMPILE_FLAGS "-DKADULIB" )
-else (win32_sound STREQUAL STATIC)
-	if (WIN32)
-		target_link_libraries(win32_sound kadu_core sound)
-	endif (WIN32)
-endif (win32_sound STREQUAL STATIC)
-add_dependencies (win32_sound win32_sound-translations)
-
-install (TARGETS win32_sound DESTINATION lib/kadu/modules)

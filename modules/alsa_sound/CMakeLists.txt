@@ -16,26 +16,14 @@ set (TRANSLATION_SOURCES
 set (CONFIGURATION_FILES
 	configuration/alsa_sound.ui)
 
-kadu_module_desc (alsa_sound.desc)
-kadu_module_configuration(${CONFIGURATION_FILES})
-qt_wrap_cpp (alsa_sound MOC_FILES ${MOC_SOURCES})
-
-qt4_add_translation (TRANSLATION_FILES ${TRANSLATION_SOURCES})
-
-install (FILES ${TRANSLATION_FILES}
-	DESTINATION "share/kadu/modules/translations")
-
-if (COMMAND cmake_policy)
-	cmake_policy(SET CMP0003 NEW)
-endif (COMMAND cmake_policy)
+kadu_module (alsa_sound
+	MODULE_SOURCES ${SOURCES}
+	MODULE_MOC_SOURCES ${MOC_SOURCES}
+	MODULE_TRANSLATION_SOURCES ${TRANSLATION_SOURCES}
+	MODULE_CONFIGURATION_FILES ${CONFIGURATION_FILES}
+)
 
 pkg_search_module (ALSA REQUIRED alsa)
 
-add_library (alsa_sound ${alsa_sound} ${SOURCES} ${MOC_FILES})
-add_custom_target (alsa_sound-translations DEPENDS ${TRANSLATION_FILES})
-add_dependencies (alsa_sound alsa_sound-translations)
-
 target_link_libraries (alsa_sound ${ALSA_LIBRARIES})
 include_directories (${ALSA_INCLUDE_DIRS})
-
-install (TARGETS alsa_sound DESTINATION lib/kadu/modules)
