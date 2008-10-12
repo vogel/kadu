@@ -1132,12 +1132,10 @@ void Kadu::changeAppearance()
 		QString fontColor = config_file.readColorEntry("Look","InfoPanelFgColor").name();
 
 		infoPanelStyle = QString(
-			"* {"
+			"html {"
 			"	color: %1;"
 			"	font: %2 %3 %4 %5;"
 			"	text-decoration: %6;"
-			"}"
-			"body {"
 			"	margin: 0;"
 			"	padding: 0;"
 			"	background-color: %7;"
