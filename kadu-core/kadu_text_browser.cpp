@@ -65,6 +65,13 @@ void KaduTextBrowser::setMargin(int width)
 void KaduTextBrowser::contextMenuEvent(QContextMenuEvent *event)
 {
 	contextMenuPos = event->pos();
+	const QWebHitTestResult &hitTestContent = page()->currentFrame()->hitTestContent(contextMenuPos);
+	bool isImage = hitTestContent.imageUrl().isValid();
+	bool isLink = hitTestContent.linkUrl().isValid();
+
+	pageAction(QWebPage::CopyLinkToClipboard)->setEnabled(isLink);
+	pageAction(QWebPage::CopyImageToClipboard)->setEnabled(isImage);
+	pageAction(QWebPage::DownloadImageToDisk)->setEnabled(isImage);
 
 	QMenu *popupmenu = new QMenu();
 
