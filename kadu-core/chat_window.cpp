@@ -29,6 +29,9 @@ ChatWindow::ChatWindow(QWidget *parent)
 	connect(title_timer, SIGNAL(timeout()), this, SLOT(blinkTitle()));
 	connect(this, SIGNAL(chatWidgetActivated(ChatWidget *)), chat_manager, SIGNAL(chatWidgetActivated(ChatWidget *)));
 
+#ifdef Q_OS_MAC
+	setAttribute(Qt::WA_MacBrushedMetal);
+#endif
 	setAttribute(Qt::WA_DeleteOnClose);
 
 	configurationUpdated();

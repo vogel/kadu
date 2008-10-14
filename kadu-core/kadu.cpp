@@ -361,6 +361,10 @@ Kadu::Kadu(QWidget *parent)
 
 	createDefaultConfiguration();
 
+#ifdef Q_OS_MAC
+	setUnifiedTitleAndToolBarOnMac(true);
+#endif
+
 	MainWidget = new QWidget;
 	MainLayout = new QVBoxLayout(MainWidget);
 	MainLayout->setMargin(0);
