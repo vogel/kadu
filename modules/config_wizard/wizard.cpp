@@ -94,8 +94,15 @@ Wizard::Wizard(QWidget *parent)
 {
 	kdebugf();
 	setWindowTitle(tr("Kadu Wizard"));
+#ifdef Q_OS_MAC
+	/* MacOSX has it's own QWizard style which requires much more space
+	 * than the other ones so we're forcing the ClassicStyle to unify
+	 * the window sizes and look. Mac users will love us for that.
+	 */
+	setWizardStyle(QWizard::ClassicStyle);
+#else
 	setMinimumSize(710, 300);
-
+#endif
 	createGGAccountPage();
 	createApplicationsPage();
 	createSoundPage();
@@ -311,6 +318,7 @@ void Wizard::createGGAccountPage()
 		"If you are experienced Kadu user you may omit the wizard by clicking Cancel.</p>"
 		"<p>Please enter your account data. If you don't have one, you can create new here.</p>"
 		"<p>E-mail address is needed when you want to recover lost password to account</p>"));
+
 	descriptionPane->setFixedWidth(200);
 	gridLayout->addMultiCellWidget(descriptionPane, 0, 8, 0, 0);
 
@@ -439,6 +447,7 @@ void Wizard::createApplicationsPage()
 	descriptionPane->setText(tr(
 		"<p>Please setup Kadu for working with your favourite WWW browser and email program.</p>"
 		"<p>Kadu will use these for opening various links from messages and user's descriptions</p>"));
+
 	descriptionPane->setFixedWidth(200);
 
 	gridLayout->addMultiCellWidget(descriptionPane, 0, 4, 0, 0);
@@ -576,7 +585,9 @@ void Wizard::createSoundPage()
 		"If you don't want sound notifications, use None driver.</p>"
 		"<p>If you don't know which driver to use, just check every ony with Test sound button."
 		"Don't forget to unmute your system before!</p>"));
+
 	descriptionPane->setFixedWidth(200);
+
 	gridLayout->addMultiCellWidget(descriptionPane, 0, 2, 0, 0);
 
 	gridLayout->addWidget(new QLabel(tr("Sound system") + ":", soundPage), 0, 2, Qt::AlignRight);
@@ -643,7 +654,9 @@ void Wizard::createSoundPage()
 
 void Wizard::testSound()
 {
+#ifndef Q_OS_MAC
 	sound_manager->stop();
+#endif
 	changeSoundModule(soundModuleCombo->currentText());
 
 	testingSound = true;
