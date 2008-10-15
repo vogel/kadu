@@ -124,7 +124,9 @@ ModulesDialog::ModulesDialog(QWidget *parent)
 			"for numerous vital features like playing sounds or message encryption.\n"
 			"You can load (or unload) them by double-clicking on their names."));
 	l_info->setWordWrap(true);
+#ifndef	Q_OS_MAC
 	l_info->setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Minimum));
+#endif
 	// end create main QLabel widgets (icon and app info)
 
 	// our QListView
@@ -135,6 +137,9 @@ ModulesDialog::ModulesDialog(QWidget *parent)
 	lv_modules->setSortingEnabled(true);
 	lv_modules->setAllColumnsShowFocus(true);
 	lv_modules->setIndentation(false);
+	lv_modules->setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Minimum));
+
+	
 	// end our QListView
 
 	//our QVGroupBox
@@ -145,7 +150,9 @@ ModulesDialog::ModulesDialog(QWidget *parent)
 
 	l_moduleinfo = new QLabel(vgb_info);
 	l_moduleinfo->setText(tr("<b>Module:</b><br/><b>Depends on:</b><br/><b>Conflicts with:</b><br/><b>Provides:</b><br/><b>Author:</b><br/><b>Version:</b><br/><b>Description:</b>"));
+#ifndef	Q_OS_MAC
 	l_moduleinfo->setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Minimum));
+#endif
 	l_moduleinfo->setWordWrap(true);
 
 	infoLayout->addWidget(l_moduleinfo);
@@ -158,13 +165,12 @@ ModulesDialog::ModulesDialog(QWidget *parent)
 	hideBaseModules = new QCheckBox(tr("Hide base modules"), bottom);
 	hideBaseModules->setChecked(config_file.readBoolEntry("General", "HideBaseModules"));
 	connect(hideBaseModules, SIGNAL(clicked()), this, SLOT(refreshList()));
-	QWidget *blank2 = new QWidget(bottom);
-	blank2->setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Maximum));
 	QPushButton *pb_close = new QPushButton(icons_manager->loadIcon("CloseWindow"), tr("&Close"), bottom, "close");
 
 	bottomLayout->addWidget(hideBaseModules);
-	bottomLayout->addWidget(blank2);
+	bottomLayout->addStretch();
 	bottomLayout->addWidget(pb_close);
+	bottom->setMaximumHeight(pb_close->height() + 5);
 	// end buttons
 
 	centerLayout->addWidget(l_info);
