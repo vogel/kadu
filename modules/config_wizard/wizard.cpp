@@ -478,6 +478,7 @@ void Wizard::createApplicationsPage()
 	mailCombo->insertItem(tr("Thunderbird"));
 	mailCombo->insertItem(tr("SeaMonkey"));
 	mailCombo->insertItem(tr("Evolution"));
+	mailCombo->insertItem("Mail");
 	connect(mailCombo, SIGNAL(activated(int)), this, SLOT(emailChanged(int)));
 	gridLayout->addWidget(mailCombo, 2, 3);
 

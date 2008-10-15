@@ -458,7 +458,7 @@ QString MainConfigurationWindow::getBrowserExecutable(int browserIndex)
 		{
 			searchPath.append("/Applications");
 			executableName.append("Safari.app");
-			prefix = "open ";
+			prefix = "open -a ";
 			break;
 		}
 	}
@@ -498,6 +498,7 @@ QString MainConfigurationWindow::getEMailExecutable(int emailIndex)
 	QStringList searchPath = QStringList::split(":", QString(getenv("PATH")));
 	QStringList executableName;
 	QString parameters;
+	QString prefix = "";
 
 	switch (emailIndex)
 	{
@@ -540,13 +541,20 @@ QString MainConfigurationWindow::getEMailExecutable(int emailIndex)
 			parameters = "mailto:";
 			break;
 		}
+		case 5: //mail
+		{
+			searchPath.append("/Applications");
+			executableName.append("Mail.app");
+			parameters = "mailto:";
+			prefix = "open -a ";
+		}
 	}
 
 	if (emailIndex != 0)
 	{
 		QString executable = findExecutable(searchPath, executableName);
 		if (!executable.isNull())
-			return (executable + " " + parameters);
+			return (prefix + executable + " " + parameters);
 		else
 			return QString::null;
 	}
@@ -593,6 +601,7 @@ QString MainConfigurationWindow::emailIndexToString(int emailIndex)
 		case 2: return "Thunderbird";
 		case 3: return "SeaMonkey";
 		case 4: return "Evolution";
+		case 5: return "Mail";
 		default: return QString::null;
 	}
 }
