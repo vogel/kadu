@@ -173,7 +173,7 @@ Register::Register(QDialog *parent) : QWidget(parent, Qt::Window),
 
 	connect(gadu, SIGNAL(registered(bool, UinType)), this, SLOT(registered(bool, UinType)));
 
- 	loadWindowGeometry(this, "General", "RegisterDialogGeometry", 0, 30, 400, 400);
+ 	loadWindowGeometry(this, "General", "RegisterDialogGeometry", 0, 50, 400, 400);
 
 	kdebugf2();
 }

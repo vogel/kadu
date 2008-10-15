@@ -186,7 +186,7 @@ ModulesDialog::ModulesDialog(QWidget *parent)
 	connect(lv_modules, SIGNAL(itemSelectionChanged()), this, SLOT(itemsChanging()));
 	connect(lv_modules, SIGNAL(itemDoubleClicked(QTreeWidgetItem *, int)), this, SLOT(moduleAction(QTreeWidgetItem *)));
 
-	loadWindowGeometry(this, "General", "ModulesDialogGeometry", 0, 30, 600, 620);
+	loadWindowGeometry(this, "General", "ModulesDialogGeometry", 0, 50, 600, 620);
 	refreshList();
 	lv_modules->sortByColumn(0, Qt::AscendingOrder);
 	kdebugf2();

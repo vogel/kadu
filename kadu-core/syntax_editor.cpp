@@ -389,7 +389,7 @@ SyntaxEditorWindow::SyntaxEditorWindow(SyntaxList *syntaxList, const QString &sy
 	connect(saveAsSyntax, SIGNAL(clicked()), this, SLOT(saveAs()));
 	connect(cancel, SIGNAL(clicked()), this, SLOT(close()));
 
-	loadWindowGeometry(this, "Look", "SyntaxEditorGeometry", 0, 30, 790, 480);
+	loadWindowGeometry(this, "Look", "SyntaxEditorGeometry", 0, 50, 790, 480);
 }
 
 SyntaxEditorWindow::~SyntaxEditorWindow()
