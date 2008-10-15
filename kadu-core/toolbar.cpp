@@ -77,6 +77,7 @@ ToolBar::ToolBar(QWidget * parent)
 	kdebugf();
 
 	setAcceptDrops(true);
+	setIconSize(QSize(22, 22));
 
 	if (!watcher)
 		watcher = new DisabledActionsWatcher();
