@@ -122,7 +122,7 @@ KeysManager::KeysManager(QDialog *parent)
 	// refreshing (loading) QTreeWidget
 	refreshKeysList();
 
- 	loadWindowGeometry(this, "General", "KeysManagerDialogGeometry", 0, 30, 680, 460);
+ 	loadWindowGeometry(this, "General", "KeysManagerDialogGeometry", 0, 50, 680, 460);
 	kdebugf2();
 }
 

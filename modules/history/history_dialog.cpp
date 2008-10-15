@@ -138,7 +138,7 @@ HistoryDialog::HistoryDialog(UinsList uins)
 	connect(searchNextButton, SIGNAL(clicked()), this, SLOT(searchNextButtonClicked()));
 	connect(searchPrevButton, SIGNAL(clicked()), this, SLOT(searchPrevButtonClicked()));
 
-	loadWindowGeometry(this, "History", "HistoryGeometry", 0, 30, 500, 400);
+	loadWindowGeometry(this, "History", "HistoryGeometry", 0, 50, 500, 400);
 
 	findRec.type = 1;
 	findRec.reverse = 0;

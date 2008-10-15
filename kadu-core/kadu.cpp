@@ -495,7 +495,7 @@ Kadu::Kadu(QWidget *parent)
 	groups_manager->setTabBar(GroupBar);
 	setDocked(Docked, dontHideOnClose);
 
-	loadWindowGeometry(this, "General", "Geometry", 0, 30, 205, 465);
+	loadWindowGeometry(this, "General", "Geometry", 0, 50, 205, 465);
 	import_0_5_0_configuration();
 
 	IgnoredManager::loadFromConfiguration();

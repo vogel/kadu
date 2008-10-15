@@ -192,7 +192,7 @@ SearchDialog::SearchDialog(QWidget *parent, UinType whoisSearchUin)
  	setActionState(addFoundAction, false);
  	setActionState(chatFoundAction, false);
 
-	loadWindowGeometry(this, "General", "SearchDialogGeometry", 0, 30, 800, 350);
+	loadWindowGeometry(this, "General", "SearchDialogGeometry", 0, 50, 800, 350);
 
 	connect(gadu, SIGNAL(newSearchResults(SearchResults &, int, int)), this, SLOT(newSearchResults(SearchResults &, int, int)));
 

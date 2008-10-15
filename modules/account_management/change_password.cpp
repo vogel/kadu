@@ -110,7 +110,7 @@ ChangePassword::ChangePassword(QDialog *parent) : QWidget(parent, Qt::Window),
 	layout->addWidget(left);
 	layout->addWidget(center);
 
-	loadWindowGeometry(this, "General", "ChangePasswordDialogGeometry", 0, 30, 355, 350);
+	loadWindowGeometry(this, "General", "ChangePasswordDialogGeometry", 0, 50, 355, 350);
 	connect(gadu, SIGNAL(passwordChanged(bool)), this, SLOT(passwordChanged(bool)));
 
 	kdebugf2();

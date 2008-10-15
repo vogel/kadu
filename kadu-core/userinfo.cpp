@@ -111,7 +111,7 @@ UserInfo::UserInfo(UserListElement user, QWidget *parent)
 
 	createNotifier.notify(this);
 
-	loadWindowGeometry(this, "General", "ManageUsersDialogGeometry", 0, 30, 425, 500);
+	loadWindowGeometry(this, "General", "ManageUsersDialogGeometry", 0, 50, 425, 500);
 	kdebugf2();
 }
 
