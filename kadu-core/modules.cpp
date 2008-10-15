@@ -170,7 +170,9 @@ ModulesDialog::ModulesDialog(QWidget *parent)
 	bottomLayout->addWidget(hideBaseModules);
 	bottomLayout->addStretch();
 	bottomLayout->addWidget(pb_close);
+#ifdef Q_OS_MAC
 	bottom->setMaximumHeight(pb_close->height() + 5);
+#endif
 	// end buttons
 
 	centerLayout->addWidget(l_info);
