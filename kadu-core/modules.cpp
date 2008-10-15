@@ -109,11 +109,9 @@ ModulesDialog::ModulesDialog(QWidget *parent)
 	leftLayout->setSpacing(10);
 
 	QLabel *l_icon = new QLabel(left);
-	QWidget *blank = new QWidget(left);
-	blank->setSizePolicy(QSizePolicy(QSizePolicy::Maximum, QSizePolicy::Expanding));
 
 	leftLayout->addWidget(l_icon);
-	leftLayout->addWidget(blank);
+	leftLayout->addStretch();
 
 	QWidget *center = new QWidget(this);
 	QVBoxLayout *centerLayout = new QVBoxLayout(center);
