@@ -46,6 +46,7 @@
 					<item value="Thunderbird" caption="Thunderbird" />
 					<item value="SeaMonkey" caption="SeaMonkey" />
 					<item value="Evolution" caption="Evolution" />
+					<item value="Mail" caption="Mail" />
                 </combo-box>
 				<line-edit caption="Custom e-mail client" config-section="Chat" config-item="MailClient" id="mailPath" 
 					   tool-tip="Write specific path to your email client" />
