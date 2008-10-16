@@ -1,6 +1,0 @@
-MODULE_SOURCES="ao_sound.cpp"
-MODULE_MOC_HEADERS="ao_sound.h"
-MODULE_INCLUDES="ao.h"
-MODULE_INCLUDES_PATH="/usr/include /usr/include/ao"
-MODULE_LIBS="ao"
-MODULE_LIBS_PATH="/usr/lib"

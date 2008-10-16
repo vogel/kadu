@@ -1,2 +1,0 @@
-MODULE_SOURCES=profiles.cpp
-MODULE_MOC_HEADERS=profiles.h

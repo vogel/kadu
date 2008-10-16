@@ -1,2 +1,0 @@
-MODULE_SOURCES="parser_extender.cpp"
-MODULE_MOC_HEADERS="parser_extender.h"

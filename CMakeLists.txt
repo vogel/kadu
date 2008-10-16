@@ -123,6 +123,8 @@ macro (kadu_module)
 	add_library (${MODULE_NAME} ${${MODULE_NAME}} ${MODULE_SOURCES} ${MODULE_MOC_FILES})
 	add_custom_target (${MODULE_NAME}-translations DEPENDS ${MODULE_TRANSLATION_FILES})
 
+	add_dependencies (${MODULE_NAME} ${MODULE_NAME}-translations)
+
 	if (${${MODULE_NAME}} STREQUAL STATIC)
 		set_target_properties(${MODULE_NAME} PROPERTIES COMPILE_FLAGS "-DKADULIB" )
 	else (${${MODULE_NAME}} STREQUAL STATIC)
@@ -132,16 +134,14 @@ macro (kadu_module)
 		if (APPLE)
 			set_target_properties (${MODULE_NAME} PROPERTIES LINK_FLAGS "-undefined dynamic_lookup")
 		endif (APPLE)
+		install (TARGETS ${MODULE_NAME} DESTINATION lib/kadu/modules)
 	endif (${${MODULE_NAME}} STREQUAL STATIC)
-	add_dependencies (${MODULE_NAME} ${MODULE_NAME}-translations)
-
-	install (TARGETS ${MODULE_NAME} DESTINATION lib/kadu/modules)
 
 endmacro (kadu_module)
 
 # libraries
 
-set (QT_MIN_VERSION "4.4.1")
+set (QT_MIN_VERSION "4.4.0")
 find_package (Qt4 REQUIRED)
 set(QT_USE_QTXML 1)
 set(QT_USE_QNETWORK 1)

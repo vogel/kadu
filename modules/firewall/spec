@@ -1,2 +1,0 @@
-MODULE_SOURCES=firewall.cpp
-MODULE_MOC_HEADERS=firewall.h

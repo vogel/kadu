@@ -1,2 +1,0 @@
-MODULE_SOURCES=word_fix.cpp
-MODULE_MOC_HEADERS=word_fix.h
