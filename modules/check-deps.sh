@@ -16,7 +16,7 @@ function check_modules
 		for dep_module in $deps;
 		do
 			dep_ok=0
-			for check_dep_module in $allmodules;
+			for check_dep_module in $*;
 			do
 				if [ "$dep_module" == "$check_dep_module" ];
 				then
@@ -36,14 +36,12 @@ function check_modules
 	rm -f .tmp
 }
 
-allmodules=$*
 modules=
-for module in $allmodules;
+for module in $*;
 do
 	if [ "$module" == "-" ];
 	then
 		check_modules "static" $modules
-		modules=
 		continue
 	fi
 
