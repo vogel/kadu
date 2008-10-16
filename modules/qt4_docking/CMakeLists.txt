@@ -23,6 +23,7 @@ endif (COMMAND cmake_policy)
 
 add_library (qt4_docking ${qt4_docking} ${SOURCES} ${MOC_FILES})
 add_custom_target (qt4_docking-translations DEPENDS ${TRANSLATION_FILES})
+add_dependencies (qt4_docking qt4_docking-translations)
 if (qt4_docking STREQUAL STATIC)
 	set_target_properties(qt4_docking PROPERTIES COMPILE_FLAGS "-DKADULIB" )
 else (qt4_docking STREQUAL STATIC)
@@ -32,7 +33,8 @@ else (qt4_docking STREQUAL STATIC)
 	if (APPLE)
 		set_target_properties(qt4_docking PROPERTIES LINK_FLAGS "-undefined dynamic_lookup")
 	endif (APPLE)
+	install (TARGETS qt4_docking DESTINATION lib/kadu/modules)
 endif (qt4_docking STREQUAL STATIC)
-add_dependencies (qt4_docking qt4_docking-translations)
 
-install (TARGETS qt4_docking DESTINATION lib/kadu/modules)
+
+

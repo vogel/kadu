@@ -38,4 +38,9 @@ add_dependencies (alsa_sound alsa_sound-translations)
 target_link_libraries (alsa_sound ${ALSA_LIBRARIES})
 include_directories (${ALSA_INCLUDE_DIRS})
 
-install (TARGETS alsa_sound DESTINATION lib/kadu/modules)
+if (alsa_sound STREQUAL STATIC)
+	set_target_properties(alsa_sound PROPERTIES COMPILE_FLAGS "-DKADULIB" )
+else (alsa_sound STREQUAL STATIC)
+	install (TARGETS alsa_sound DESTINATION lib/kadu/modules)
+endif (alsa_sound STREQUAL STATIC)
+

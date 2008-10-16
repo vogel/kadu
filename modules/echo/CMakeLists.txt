@@ -19,13 +19,14 @@ endif (COMMAND cmake_policy)
 
 add_library (echo ${echo} ${SOURCES} ${MOC_FILES})
 add_custom_target (echo-translations DEPENDS ${TRANSLATION_FILES})
+add_dependencies (echo echo-translations)
 if (echo STREQUAL STATIC)
 	set_target_properties(echo PROPERTIES COMPILE_FLAGS "-DKADULIB" )
 else (echo STREQUAL STATIC)
 	if (WIN32)
 		target_link_libraries(echo kadu_core)
 	endif (WIN32)
+	install (TARGETS echo DESTINATION lib/kadu/modules)
 endif (echo STREQUAL STATIC)
-add_dependencies (echo echo-translations)
 
-install (TARGETS echo DESTINATION lib/kadu/modules)
+

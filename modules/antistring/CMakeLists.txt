@@ -28,9 +28,7 @@ install (FILES ${TRANSLATION_FILES}
 	DESTINATION "share/kadu/modules/translations")
 
 install (FILES ${DATA_FILES}
-	DESTINATION share/kadu/modules/data/antistring
-)
-
+	DESTINATION share/kadu/modules/data/antistring)
 
 if (COMMAND cmake_policy)
 	cmake_policy(SET CMP0003 NEW)
@@ -38,6 +36,7 @@ endif (COMMAND cmake_policy)
 
 add_library (antistring ${antistring} ${SOURCES} ${MOC_FILES})
 add_custom_target (antistring-translations DEPENDS ${TRANSLATION_FILES})
+add_dependencies (antistring antistring-translations)
 if (antistring STREQUAL STATIC)
 	set_target_properties(antistring PROPERTIES COMPILE_FLAGS "-DKADULIB" )
 else (antistring STREQUAL STATIC)
@@ -47,7 +46,6 @@ else (antistring STREQUAL STATIC)
 	if (APPLE)
 		set_target_properties(antistring PROPERTIES LINK_FLAGS "-undefined dynamic_lookup")
 	endif (APPLE)
+	install (TARGETS antistring DESTINATION lib/kadu/modules)
 endif (antistring STREQUAL STATIC)
-add_dependencies (antistring antistring-translations)
 
-install (TARGETS antistring DESTINATION lib/kadu/modules)

@@ -33,4 +33,9 @@ add_library (dsp_sound ${dsp_sound} ${SOURCES} ${MOC_FILES})
 add_custom_target (dsp_sound-translations DEPENDS ${TRANSLATION_FILES})
 add_dependencies (dsp_sound dsp_sound-translations)
 
-install (TARGETS dsp_sound DESTINATION lib/kadu/modules)
+if (dsp_sound STREQUAL STATIC)
+	set_target_properties(dsp_sound PROPERTIES COMPILE_FLAGS "-DKADULIB" )
+else (dsp_sound STREQUAL STATIC)
+	install (TARGETS dsp_sound DESTINATION lib/kadu/modules)
+endif (dsp_sound STREQUAL STATIC)
+

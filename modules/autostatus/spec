@@ -1,2 +1,0 @@
-MODULE_SOURCES="autostatus.cpp power_status_changer.cpp"
-MODULE_MOC_HEADERS="autostatus.h power_status_changer.h"

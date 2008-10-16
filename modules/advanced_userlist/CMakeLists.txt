@@ -37,6 +37,7 @@ endif (COMMAND cmake_policy)
 
 add_library (advanced_userlist ${advanced_userlist} ${SOURCES} ${MOC_FILES})
 add_custom_target (advanced_userlist-translations DEPENDS ${TRANSLATION_FILES})
+add_dependencies (advanced_userlist advanced_userlist-translations)
 if (advanced_userlist STREQUAL STATIC)
 	set_target_properties(advanced_userlist PROPERTIES COMPILE_FLAGS "-DKADULIB" )
 else (advanced_userlist STREQUAL STATIC)
@@ -46,7 +47,8 @@ else (advanced_userlist STREQUAL STATIC)
 	if (APPLE)
 		set_target_properties(advanced_userlist PROPERTIES LINK_FLAGS "-undefined dynamic_lookup")
 	endif (APPLE)
+	install (TARGETS advanced_userlist DESTINATION lib/kadu/modules)
 endif (advanced_userlist STREQUAL STATIC)
-add_dependencies (advanced_userlist advanced_userlist-translations)
 
-install (TARGETS advanced_userlist DESTINATION lib/kadu/modules)
+
+

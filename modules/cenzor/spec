@@ -1,2 +1,0 @@
-MODULE_SOURCES=cenzor.cpp
-MODULE_MOC_HEADERS=cenzor.h

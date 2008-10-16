@@ -32,6 +32,6 @@ else (ao_sound STREQUAL STATIC)
 	if (APPLE)
 		set_target_properties(ao_sound PROPERTIES LINK_FLAGS "-undefined dynamic_lookup")
 	endif (APPLE)
+	install (TARGETS ao_sound DESTINATION lib/kadu/modules)
 endif (ao_sound STREQUAL STATIC)
 
-install (TARGETS ao_sound DESTINATION lib/kadu/modules)

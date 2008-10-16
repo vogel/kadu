@@ -46,6 +46,10 @@ add_library (sound ${sound} ${SOURCES} ${MOC_FILES})
 add_custom_target (sound-translations DEPENDS ${TRANSLATION_FILES})
 add_dependencies (sound sound-translations)
 set_target_properties(sound PROPERTIES COMPILE_FLAGS "-DSOUND_BUILD" )
+
+target_link_libraries (sound ${SNDFILE_LIBRARIES})
+include_directories (${SNDFILE_INCLUDE_DIRS})
+
 if (sound STREQUAL STATIC)
 	set_target_properties(sound PROPERTIES COMPILE_FLAGS "-DKADULIB" )
 else (sound STREQUAL STATIC)
@@ -55,8 +59,8 @@ else (sound STREQUAL STATIC)
 	if (APPLE)
 		set_target_properties(sound PROPERTIES LINK_FLAGS "-undefined dynamic_lookup")
 	endif (APPLE)
+	install (TARGETS sound DESTINATION lib/kadu/modules)
 endif (sound STREQUAL STATIC)
-target_link_libraries (sound ${SNDFILE_LIBRARIES})
-include_directories (${SNDFILE_INCLUDE_DIRS})
 
-install (TARGETS sound DESTINATION lib/kadu/modules)
+
+
