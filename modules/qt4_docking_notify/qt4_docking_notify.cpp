@@ -93,9 +93,12 @@ void Qt4Notify::notify(Notification *notification)
 	{
 		notification->acquire();
 
+		unsigned int timeout = config_file.readNumEntry("Qt4DockingNotify", QString("Event_") + notification->type() + "_timeout");
+		unsigned int icon = config_file.readNumEntry("Qt4DockingNotify", QString("Event_") + notification->type() + "_icon");
+
 		senders = UserListElements(notification->userListElements());
-		qt4_tray_icon->showMessage(toPlainText(notification->title()), toPlainText(notification->text() + ":\n\n" + notification->details()), 
-			QSystemTrayIcon::NoIcon, 10000);
+		qt4_tray_icon->showMessage(toPlainText(notification->text()), toPlainText(notification->details()), 
+			(QSystemTrayIcon::MessageIcon)icon, timeout * 1000);
 
 		notification->release();
 	}
@@ -107,6 +110,20 @@ void Qt4Notify::messageClicked()
 {
 	if (!senders.isEmpty())
 		chat_manager->openPendingMsgs(senders, true);
+}
+
+NotifierConfigurationWidget *Qt4Notify::createConfigurationWidget(QWidget *parent, char *name)
+{
+	configurationWidget = new Qt4NotifyConfigurationWidget(parent, name);
+	return configurationWidget;
+}
+
+void Qt4Notify::mainConfigurationWindowCreated(MainConfigurationWindow*)
+{
+}
+
+void Qt4Notify::configurationUpdated()
+{
 }
 	
 void Qt4Notify::createDefaultConfiguration()

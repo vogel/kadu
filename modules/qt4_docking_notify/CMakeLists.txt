@@ -1,9 +1,11 @@
 set (SOURCES
 	qt4_docking_notify.cpp
+	qt4_docking_notify_configuration_widget.cpp
 )
 
 set (MOC_SOURCES
 	qt4_docking_notify.h
+	qt4_docking_notify_configuration_widget.h
 )
 
 set (TRANSLATION_SOURCES

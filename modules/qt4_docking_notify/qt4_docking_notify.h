@@ -2,22 +2,27 @@
 #define QT4_DOCKING_NOTIFY_H
 
 #include "gadu.h"
+#include "configuration_aware_object.h"
+#include "main_configuration_window.h"
 #include "../notify/notify.h"
 #include "../qt4_docking/qt4_docking.h"
+
+#include "qt4_docking_notify_configuration_widget.h"
 
 class UserListElements;
 
 /**
- * @defgroup window_notify Window notify
+ * @defgroup qt4_notify Qt4 Notify
  * @{
  */
-class Qt4Notify : public Notifier
+class Qt4Notify : public Notifier, public ConfigurationUiHandler, ConfigurationAwareObject
 {
 	Q_OBJECT
 
 	void createDefaultConfiguration();
 	QString toPlainText(const QString &text);
 	UserListElements senders;
+	Qt4NotifyConfigurationWidget *configurationWidget;
 
 public:
 	Qt4Notify(QObject *parent = 0, const char *name = 0);
@@ -29,7 +34,9 @@ public:
 
 	void copyConfiguration(const QString &fromEvent, const QString &toEvent) {}
 
-	virtual NotifierConfigurationWidget *createConfigurationWidget(QWidget *parent = 0, char *name = 0) { return 0; };
+	virtual NotifierConfigurationWidget *createConfigurationWidget(QWidget *parent = 0, char *name = 0);
+	virtual void mainConfigurationWindowCreated(MainConfigurationWindow*);
+	virtual void configurationUpdated();
 
 public slots:
 	void messageClicked();
