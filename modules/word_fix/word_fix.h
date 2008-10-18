@@ -2,7 +2,6 @@
 #define WORD_FIX_H
 
 #include <QtCore/QObject>
-#include "configuration_aware_object.h"
 #include "main_configuration_window.h"
 
 class ChatWidget;
@@ -19,11 +18,10 @@ class QPushButton;
  * \class WordFix
  * \brief Words fixing.
  */
-class WordFix : public ConfigurationUiHandler, ConfigurationAwareObject
+class WordFix : public ConfigurationUiHandler
 {
 	Q_OBJECT
 
-	private:
 		/*!
 		 * \var QMap<QString,QString> wordsList
 		 * Contains whole list of words for replacing in form:
@@ -40,8 +38,33 @@ class WordFix : public ConfigurationUiHandler, ConfigurationAwareObject
 
 		void saveList();
 
-	protected:
-		virtual void configurationUpdated();
+	private slots:
+		/*!
+		 * \fn void chatCreated(ChatWidget *chat)
+		 * This slot calls connectToClass"("Chat* chat")" to connect
+		 * the object to chat "<i>send message</i>" signal.
+		 * \param chat Pointer to the created chat window.
+		 */
+		void chatCreated(ChatWidget *chat, time_t time);
+
+		/*!
+		 * \fn void chatDestroying(ChatWidget *chat)
+		 * This slot calls disconnectFromClass"("Chat* chat")" to disconnect
+		 * the object from chat "<i>send message</i>" signal.
+		 * \param chat Pointer to the chat window.
+		 */
+		void chatDestroying(ChatWidget *chat);
+
+		/*!
+		 * \fn void sendRequest(Chat* chat)
+		 * Handles chat message send request.
+		 * It checks configuration if words fixing is enabled. If it's not,
+		 * then the method makes no changes in input text.
+		 * \param chat Chat window which sending request is invoked by.
+		 */
+		void sendRequest(ChatWidget *chat);
+
+		void configurationApplied();
 
 	public:
 		/*!
@@ -79,53 +102,7 @@ class WordFix : public ConfigurationUiHandler, ConfigurationAwareObject
 		 */
 		void doReplace(QString &text);
 
-	private slots:
-		/*!
-		 * \fn void chatCreated(ChatWidget *chat)
-		 * This slot calls connectToClass"("Chat* chat")" to connect
-		 * the object to chat "<i>send message</i>" signal.
-		 * \param chat Pointer to the created chat window.
-		 */
-		void chatCreated(ChatWidget *chat, time_t time);
-
-		/*!
-		 * \fn void chatDestroying(ChatWidget *chat)
-		 * This slot calls disconnectFromClass"("Chat* chat")" to disconnect
-		 * the object from chat "<i>send message</i>" signal.
-		 * \param chat Pointer to the chat window.
-		 */
-		void chatDestroying(ChatWidget *chat);
-
-		/*!
-		 * \fn void sendRequest(Chat* chat)
-		 * Handles chat message send request.
-		 * It checks configuration if words fixing is enabled. If it's not,
-		 * then the method makes no changes in input text.
-		 * \param chat Chat window which sending request is invoked by.
-		 */
-		void sendRequest(ChatWidget *chat);
-
 	public slots:
-		/*!
-		 * \fn void onCreateConfig()
-		 * Called when config dialog is created.
-		 * Connects words fix configuration widgets to slots.
-		 */
-		//void onCreateConfig();
-
-		/*!
-		 * \fn onDestroyConfig()
-		 * Called when config dialog is going to be destroyed.
-		 * Disconnects words fix configuration widgets from slots.
-		 */
-		//void onDestroyConfig();
-
-		/*!
-		 * \fn applyConfig();
-		 * Applies all changes made in WordFix config.
-		 */
-		//void applyConfig();
-
 		/*!
 		 * \fn void wordSelected(QTreeWidgetItem* item)
 		 * Called when a word was selected in configuration dialog

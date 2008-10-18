@@ -631,10 +631,10 @@ Safe sending GUI
 				allList->addItem(user.altNick());
 		}
 	}
-/*
-	allList->sort();
-	secureList->sort();
-*/
+
+	allList->sortItems();
+	secureList->sortItems();
+
 	allList->setSelectionMode(QAbstractItemView::ExtendedSelection);
 	secureList->setSelectionMode(QAbstractItemView::ExtendedSelection);
 /*
@@ -698,12 +698,17 @@ End creating Gui
 		moveToSecureList, SLOT(setEnabled(bool)));
 	connect(safeSending, SIGNAL(toggled(bool)),
 		moveToAllList, SLOT(setEnabled(bool)));
+
+	connect(mainConfigurationWindow, SIGNAL(configurationWindowApplied()), this, SLOT(configurationApplied()));
 }
 
 void Firewall::configurationUpdated()
 {
 	pattern.setPattern(unicode2std(config_file.readEntry("Firewall", "answer", tr("I want something"))));
+}
 
+void Firewall::configurationApplied()
+{
 	secured.clear();
 
 	for (unsigned int i = 0; i < secureList->count(); ++i)
