@@ -66,6 +66,8 @@ class Firewall : public ConfigurationUiHandler, ConfigurationAwareObject
 		void _AllLeft();
 		void _AllRight();
 
+		void configurationApplied();
+
 	protected:
 		virtual void configurationUpdated();
 };

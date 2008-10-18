@@ -378,10 +378,12 @@ void WordFix::mainConfigurationWindowCreated(MainConfigurationWindow *mainConfig
 	}
 	list->insertTopLevelItems(0, items);
 
+	connect(mainConfigurationWindow, SIGNAL(configurationWindowApplied()), this, SLOT(configurationApplied()));
+
 	kdebugf2();
 }
 
-void WordFix::configurationUpdated()
+void WordFix::configurationApplied()
 {
 	kdebugf();
 
