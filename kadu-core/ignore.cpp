@@ -36,12 +36,9 @@ Ignored::Ignored(QWidget *parent, const char *name) : QWidget(parent, name, Qt::
 	QLabel *l_icon = new QLabel;
 	l_icon->setPixmap(icons_manager->loadPixmap("ManageIgnoredWindowIcon"));
 
-	QWidget *blank = new QWidget;
-	blank->setSizePolicy(QSizePolicy(QSizePolicy::Maximum, QSizePolicy::Expanding));
-
 	QVBoxLayout *left_layout = new QVBoxLayout;
 	left_layout->addWidget(l_icon);
-	left_layout->addWidget(blank);
+	left_layout->addStretch();
 	left->setLayout(left_layout);
 
 	QWidget *center = new QWidget;
@@ -49,8 +46,9 @@ Ignored::Ignored(QWidget *parent, const char *name) : QWidget(parent, name, Qt::
 	QLabel *l_info = new QLabel();
 	l_info->setText(tr("This dialog box allows you to manage your ignored contacts."));
 	l_info->setWordWrap(true);
+#ifndef Q_OS_MAC
 	l_info->setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Minimum));
-
+#endif
 	// end create main QLabel widgets (icon and app info)
 
 	// our QListBox
@@ -89,9 +87,6 @@ Ignored::Ignored(QWidget *parent, const char *name) : QWidget(parent, name, Qt::
 	// buttons
 	QWidget *bottom = new QWidget;
 
-	QWidget *blank2 = new QWidget;
-	blank2->setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Maximum));
-
 	QPushButton *pb_del = new QPushButton(icons_manager->loadIcon("DeleteIgnoredButton"), tr("Delete"), bottom);
 	connect(pb_del, SIGNAL(clicked()), this, SLOT(remove()));
 
@@ -102,7 +97,7 @@ Ignored::Ignored(QWidget *parent, const char *name) : QWidget(parent, name, Qt::
 	connect(pb_close, SIGNAL(clicked()), this, SLOT(close()));
 
 	QHBoxLayout *bottom_layout = new QHBoxLayout;
-	bottom_layout->addWidget(blank2);
+	bottom_layout->addStretch();
 	bottom_layout->addWidget(pb_del);
 	bottom_layout->addWidget(pb_add);
 	bottom_layout->addWidget(pb_close);

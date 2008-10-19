@@ -47,19 +47,19 @@ UserInfo::UserInfo(UserListElement user, QWidget *parent)
 	QWidget *left = new QWidget;
 
 	QLabel *l_icon = new QLabel;
-	QWidget *w_icoblankwidget = new QWidget;
-	w_icoblankwidget->setSizePolicy(QSizePolicy(QSizePolicy::Maximum, QSizePolicy::Expanding));
 
 	QVBoxLayout *left_layout = new QVBoxLayout(left);
 	left_layout->addWidget(l_icon);
-	left_layout->addWidget(w_icoblankwidget);
+	left_layout->addStretch();
 
 	QWidget *center = new QWidget();
 
 	QLabel *l_info = new QLabel;
 	l_info->setText(tr("This dialog box allows you to view and edit information about the selected contact."));
 	l_info->setWordWrap(true);
+#ifndef Q_OS_MAC
 	l_info->setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Minimum));
+#endif
 	// end create main QLabel widgets (icon and app info)
 
 	tw_main = new QTabWidget;
@@ -75,9 +75,6 @@ UserInfo::UserInfo(UserListElement user, QWidget *parent)
 
 	// create buttons and fill icon and app info
 	QWidget *bottom = new QWidget;
-
-	QWidget *w_blankwidget = new QWidget;
-	w_blankwidget->setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Maximum));
 
 	if (!userlist->contains(User, FalseForAnonymous))
 	{
@@ -99,7 +96,7 @@ UserInfo::UserInfo(UserListElement user, QWidget *parent)
 	connect(pb_addapply, SIGNAL(clicked()), this, SLOT(updateUserlist()));
 
 	QHBoxLayout *bottom_layout = new QHBoxLayout(bottom);
-	bottom_layout->addWidget(w_blankwidget);
+	bottom_layout->addStretch();
 	bottom_layout->addWidget(pb_addapply);
 	bottom_layout->addWidget(pb_close);
 
