@@ -41,12 +41,9 @@ UserlistImportExport::UserlistImportExport(QWidget *parent)
 	QLabel *l_icon = new QLabel;
 	l_icon->setPixmap(icons_manager->loadPixmap("ImportExportWindowIcon"));
 
-	QWidget *blank = new QWidget;
-	blank->setSizePolicy(QSizePolicy(QSizePolicy::Maximum, QSizePolicy::Expanding));
-
 	QVBoxLayout *left_layout = new QVBoxLayout;
 	left_layout->addWidget(l_icon);
-	left_layout->addWidget(blank);
+	left_layout->addStretch();
 
 	left->setLayout(left_layout);
 
@@ -56,7 +53,9 @@ UserlistImportExport::UserlistImportExport(QWidget *parent)
 	QLabel *l_info = new QLabel;
 	l_info->setText(tr("This dialog box allows you to import and export your buddy list to a server or a file."));
 	l_info->setWordWrap(true);
+#ifndef Q_OS_MAC
 	l_info->setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Minimum));
+#endif
 	// end create main QLabel widgets (icon and app info)
 
 	// our QListView
@@ -80,16 +79,13 @@ UserlistImportExport::UserlistImportExport(QWidget *parent)
 	QHBoxLayout *importbuttons_layout = new QHBoxLayout(importbuttons);
 	importbuttons_layout->setSpacing(5);
 
-	QWidget *w_blank2 = new QWidget(this);
-	w_blank2->setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Maximum));
-
 	pb_fetch = new QPushButton(icons_manager->loadIcon("FetchUserList"), tr("&Fetch userlist"), this, "fetch");
 	QPushButton *pb_file = new QPushButton(icons_manager->loadIcon("ImportFromFile"), tr("&Import from file"), this, "file");
 	QPushButton *pb_save = new QPushButton(icons_manager->loadIcon("SaveUserlist"), tr("&Save results"), this, "save");
 	QPushButton *pb_merge = new QPushButton(icons_manager->loadIcon("MergeUserlist"), tr("&Merge results"), this, "merge");
 	// end buttons
 	
-	importbuttons_layout->addWidget(w_blank2);
+	importbuttons_layout->addStretch();
 	importbuttons_layout->addWidget(pb_fetch);
 	importbuttons_layout->addWidget(pb_file);
 	importbuttons_layout->addWidget(pb_save);

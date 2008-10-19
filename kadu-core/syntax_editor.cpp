@@ -366,8 +366,9 @@ SyntaxEditorWindow::SyntaxEditorWindow(SyntaxList *syntaxList, const QString &sy
 	QHBoxLayout *buttons_layout = new QHBoxLayout;
 	buttons->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Fixed);
 	buttons_layout->setSpacing(5);
-
+#ifndef Q_OS_MAC
 	(new QWidget(buttons))->setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Minimum));
+#endif
 	QPushButton *saveSyntax = new QPushButton(icons_manager->loadIcon("OkWindowButton"), tr("Save"), 0);
 	QPushButton *saveAsSyntax = new QPushButton(icons_manager->loadIcon("OkWindowButton"), tr("Save as..."), 0);
 	QPushButton *cancel = new QPushButton(icons_manager->loadIcon("CloseWindowButton"), tr("Cancel"), 0);

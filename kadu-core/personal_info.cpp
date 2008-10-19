@@ -36,12 +36,10 @@ PersonalInfoDialog::PersonalInfoDialog(QWidget *parent)
 	QLabel *l_icon = new QLabel;
 	l_icon->setPixmap(icons_manager->loadPixmap("PersonalInformationWindowIcon"));
 
-	QWidget *blank = new QWidget;
-	blank->setSizePolicy(QSizePolicy(QSizePolicy::Maximum, QSizePolicy::Expanding));
 
 	QVBoxLayout *left_layout = new QVBoxLayout;
 	left_layout->addWidget(l_icon);
-	left_layout->addWidget(blank);
+	left_layout->addStretch();
 	left->setLayout(left_layout);
 
 	QWidget *center = new QWidget;
@@ -51,7 +49,9 @@ PersonalInfoDialog::PersonalInfoDialog(QWidget *parent)
 	l_info->setText(tr("This dialog box allows you to manage your personal information, for example your "
 				"name, surname or age."));
 	l_info->setWordWrap(true);
+#ifndef Q_OS_MAC
 	l_info->setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Minimum));
+#endif
 	// end create main QLabel widgets (icon and app info)
 
 	// our QGroupBox
@@ -139,15 +139,12 @@ PersonalInfoDialog::PersonalInfoDialog(QWidget *parent)
 	fcity_layout->addWidget(new QLabel(tr("Family City")));
 	fcity_layout->addWidget(le_familycity);
 
-	QWidget *w_blankfill = new QWidget();
-	w_blankfill->setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Maximum));
-
 	QWidget *fnamefcity = new QWidget;
 	QHBoxLayout *fnamefcity_layout = new QHBoxLayout(fnamefcity);
 
 	fnamefcity_layout->addWidget(fname);
 	fnamefcity_layout->addWidget(fcity);
-	fnamefcity_layout->addWidget(w_blankfill);
+	fnamefcity_layout->addStretch();
 
 	info_layout->addWidget(nicknamesurname);
 	info_layout->addWidget(genderbirthyearcity);
@@ -156,9 +153,6 @@ PersonalInfoDialog::PersonalInfoDialog(QWidget *parent)
 
 	// buttons
 	QWidget *bottom = new QWidget;
-
-	QWidget *blank2 = new QWidget;
-	blank2->setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Maximum));
 
 	pb_save = new QPushButton(icons_manager->loadIcon("SavePersonalInfoButton"), tr("&Save"), bottom, "save");
 	connect(pb_save, SIGNAL(clicked()), this, SLOT(saveButtonClicked()));
@@ -170,7 +164,7 @@ PersonalInfoDialog::PersonalInfoDialog(QWidget *parent)
 	connect(pb_close, SIGNAL(clicked()), this, SLOT(close()));
 
 	QHBoxLayout *bottom_layout = new QHBoxLayout(bottom);
-	bottom_layout->addWidget(blank2);
+	bottom_layout->addStretch();
 	bottom_layout->addWidget(pb_save);
 	bottom_layout->addWidget(pb_reload);
 	bottom_layout->addWidget(pb_close);
