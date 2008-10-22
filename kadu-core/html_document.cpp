@@ -261,7 +261,7 @@ void HtmlDocument::convertMailToHtml()
 		QString mail = text.mid(p, l);
 		
 		splitElement(i, p, l);
-		setElementValue(i, "<a href=\"" + mail + "\">" + mail + "</a>", true);
+		setElementValue(i, "<a href=\"mailto:" + mail + "\">" + mail + "</a>", true);
 	}
 }
 
