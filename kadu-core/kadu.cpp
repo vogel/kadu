@@ -116,6 +116,15 @@ void Kadu::keyPressEvent(QKeyEvent *e)
 	}
 	else if (HotKey::shortCut(e,"ShortCuts", "kadu_deleteuser"))
 		deleteUsersActionDescription->createAction(this)->trigger();
+	else if (e->key() == Qt::Key_C && e->modifiers() & Qt::ControlModifier)
+	{
+		QString selectedText = InfoPanel->page()->selectedText();
+		if (!selectedText.isEmpty())
+		{
+			QApplication::clipboard()->setText(selectedText, QClipboard::Selection);
+			QApplication::clipboard()->setText(selectedText, QClipboard::Clipboard);
+		}
+	}
 
 	emit keyPressed(e);
 
