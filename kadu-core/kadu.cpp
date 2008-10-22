@@ -1148,7 +1148,7 @@ void Kadu::changeAppearance()
  		if (config_file.readBoolEntry("Look", "PanelVerticalScrollbar"))
  			InfoPanel->page()->mainFrame()->setScrollBarPolicy (Qt::Vertical, Qt::ScrollBarAsNeeded);
  		else
- 			InfoPanel->page()->mainFrame()->setScrollBarPolicy (Qt::Horizontal, Qt::ScrollBarAlwaysOff);
+ 			InfoPanel->page()->mainFrame()->setScrollBarPolicy (Qt::Vertical, Qt::ScrollBarAlwaysOff);
 	}
 	else
 		dynamic_cast<QWidget *>(InfoPanel)->hide();
