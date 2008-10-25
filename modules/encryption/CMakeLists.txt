@@ -31,6 +31,9 @@ qt_wrap_cpp (encryption MOC_FILES ${MOC_SOURCES})
 
 qt4_add_translation (TRANSLATION_FILES ${TRANSLATION_SOURCES})
 
+install (FILES ${TRANSLATION_FILES}
+	DESTINATION "share/kadu/modules/translations")
+
 if (COMMAND cmake_policy)
 	cmake_policy(SET CMP0003 NEW)
 endif (COMMAND cmake_policy)
