@@ -69,19 +69,27 @@ void KaduTextBrowser::contextMenuEvent(QContextMenuEvent *event)
 	bool isImage = hitTestContent.imageUrl().isValid();
 	bool isLink = hitTestContent.linkUrl().isValid();
 
-	pageAction(QWebPage::CopyLinkToClipboard)->setEnabled(isLink);
-	pageAction(QWebPage::CopyImageToClipboard)->setEnabled(isImage);
-	pageAction(QWebPage::DownloadImageToDisk)->setEnabled(isImage);
+	QAction *copy = pageAction(QWebPage::Copy);
+	copy->setText(tr("Copy"));
+	QAction *copyLink = pageAction(QWebPage::CopyLinkToClipboard);
+	copyLink->setText(tr("Copy Link"));
+	copyLink->setEnabled(isLink);
+	QAction *copyImage = pageAction(QWebPage::CopyImageToClipboard);
+	copyImage->setText(tr("Copy Image"));
+	copyImage->setEnabled(isImage);
+	QAction *saveImage = pageAction(QWebPage::DownloadImageToDisk);
+	saveImage->setText(tr("Save Image"));
+	saveImage->setEnabled(isImage);
 
 	QMenu *popupmenu = new QMenu();
 
-	popupmenu->addAction(pageAction(QWebPage::Copy));
+	popupmenu->addAction(copy);
 // 	popupmenu->addSeparator();
-	popupmenu->addAction(pageAction(QWebPage::CopyLinkToClipboard));
+	popupmenu->addAction(copyLink);
 // 	popupmenu->addAction(pageAction(QWebPage::DownloadLinkToDisk));
 	popupmenu->addSeparator();
-	popupmenu->addAction(pageAction(QWebPage::CopyImageToClipboard));
-	popupmenu->addAction(pageAction(QWebPage::DownloadImageToDisk));
+	popupmenu->addAction(copyImage);
+	popupmenu->addAction(saveImage);
 
  	popupmenu->popup(event->globalPos());
  	kdebugf2();
