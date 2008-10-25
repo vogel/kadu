@@ -740,7 +740,7 @@ bool ChatWidget::waitingForACK() const
 
 bool ChatWidget::decodeLocalFiles(QDropEvent *event, QStringList &files)
 {
-	if (!event->mimeData()->hasUrls())
+	if (!event->mimeData()->hasUrls() || event->source() == body)
 		return false;
 
 	QList<QUrl> urls = event->mimeData()->urls();
