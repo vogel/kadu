@@ -13,11 +13,13 @@
 #include "custom_input.h"
 
 CustomInput::CustomInput(QWidget *parent)
-	: QTextEdit(parent), autosend_enabled(true)
+	: QTextEdit(parent), autosend_enabled(true), CopyPossible(false)
 {
 	kdebugf();
 
 	setAcceptRichText(false);
+
+	connect(this, SIGNAL(copyAvailable(bool)), this, SLOT(setCopyPossible(bool)));
 
 	kdebugf2();
 }
@@ -25,6 +27,7 @@ CustomInput::CustomInput(QWidget *parent)
 void CustomInput::keyPressEvent(QKeyEvent *e)
 {
 	kdebugf();
+
 	bool handled = false;
 	emit keyPressed(e, this, handled);
 	if (handled)
@@ -72,6 +75,13 @@ void CustomInput::keyPressEvent(QKeyEvent *e)
  			kdebugf2();
  			return;
 		}
+		if (!CopyPossible && e->key() == Qt::Key_C && e->modifiers() & Qt::ControlModifier)
+		{
+			emit specialKeyPressed(CustomInput::KEY_COPY);
+ 			e->accept();
+ 			kdebugf2();
+ 			return;	
+		}
 	}
 	QTextEdit::keyPressEvent(e);
 	kdebugf2();
@@ -93,4 +103,9 @@ void CustomInput::keyReleaseEvent(QKeyEvent *e)
 void CustomInput::setAutosend(bool on)
 {
 	autosend_enabled = on;
+}
+
+void CustomInput::setCopyPossible(bool available)
+{
+	CopyPossible = available;
 }

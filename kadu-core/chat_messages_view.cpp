@@ -328,7 +328,6 @@ void ChatMessagesView::resizeEvent(QResizeEvent *e)
  	KaduTextBrowser::resizeEvent(e);
 
 	scrollToLine();
-
 }
 
 void ChatMessagesView::scrollToLine()
