@@ -869,7 +869,7 @@ void ChatManager::sendMessage(UserListElement user, UserListElements selected_us
 			return;
 		}
 
-	openChatWidget(gadu, selected_users);
+	openChatWidget(gadu, selected_users, true);
 
 	kdebugf2();
 }
