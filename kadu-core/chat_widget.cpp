@@ -189,6 +189,9 @@ void ChatWidget::specialKeyPressed(int key)
 				action->setChecked(!action->isChecked());
  			Edit->inputBox()->setFontUnderline(action->isChecked());
  			break;
+		 case CustomInput::KEY_COPY:
+			body->pageAction(QWebPage::Copy)->trigger();
+			break;
  	}
  	kdebugf2();
 }

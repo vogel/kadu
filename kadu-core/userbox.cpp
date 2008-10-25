@@ -939,7 +939,7 @@ void UserBox::refreshBackground()
 	else // TILED
 		image = *backgroundImage;
 
-	//TODO 0.6.5:
+	//TODO 0.6.6:
 // 	viewport()->setPaletteBackgroundPixmap(QPixmap::fromImage(image));
 }
 

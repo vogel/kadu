@@ -43,12 +43,14 @@ ChatMessagesView::~ChatMessagesView()
 
 void ChatMessagesView::pageUp()
 {
-// 	TODO: 0.6.5 scrollContentsBy(0, (height() * -2) / 3);
+	QKeyEvent event(QEvent::KeyPress, 0x01000016, Qt::NoModifier);
+	keyPressEvent(&event);
 }
 
 void ChatMessagesView::pageDown()
 {
-// 	TODO: 0.6.5 scrollContentsBy(0, (height() * 2) / 3);
+	QKeyEvent event(QEvent::KeyPress, 0x01000017, Qt::NoModifier);
+	keyPressEvent(&event);
 }
 
 void ChatMessagesView::imageReceivedAndSaved(UinType sender, uint32_t size, uint32_t crc32,const QString & /*path*/)
@@ -331,7 +333,6 @@ void ChatMessagesView::resizeEvent(QResizeEvent *e)
  	KaduTextBrowser::resizeEvent(e);
 
 	scrollToLine();
-
 }
 
 void ChatMessagesView::scrollToLine()

@@ -189,9 +189,9 @@ void Notify::mainConfigurationWindowDestroyed()
 {
 	notificationsGroupBox = 0;
 
-	// TODO: check 0.6.5 it is ok ?
-	foreach(NotifierData notifierData, Notifiers)
-		notifierData.configurationWidget = 0;
+	QMap<QString, NotifierData>::iterator notifierData;
+	for (notifierData = Notifiers.begin(); notifierData != Notifiers.end(); ++notifierData)
+		(*notifierData).configurationWidget = 0;
 }
 
 void Notify::addConfigurationWidget(NotifierData &notifier, const QString &name)

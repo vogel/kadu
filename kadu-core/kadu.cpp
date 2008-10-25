@@ -116,6 +116,8 @@ void Kadu::keyPressEvent(QKeyEvent *e)
 	}
 	else if (HotKey::shortCut(e,"ShortCuts", "kadu_deleteuser"))
 		deleteUsersActionDescription->createAction(this)->trigger();
+	else if (e->key() == Qt::Key_C && e->modifiers() & Qt::ControlModifier)
+		InfoPanel->pageAction(QWebPage::Copy)->trigger();
 
 	emit keyPressed(e);
 
@@ -1148,7 +1150,7 @@ void Kadu::changeAppearance()
  		if (config_file.readBoolEntry("Look", "PanelVerticalScrollbar"))
  			InfoPanel->page()->mainFrame()->setScrollBarPolicy (Qt::Vertical, Qt::ScrollBarAsNeeded);
  		else
- 			InfoPanel->page()->mainFrame()->setScrollBarPolicy (Qt::Horizontal, Qt::ScrollBarAlwaysOff);
+ 			InfoPanel->page()->mainFrame()->setScrollBarPolicy (Qt::Vertical, Qt::ScrollBarAlwaysOff);
 	}
 	else
 		dynamic_cast<QWidget *>(InfoPanel)->hide();

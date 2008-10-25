@@ -20,6 +20,11 @@ class CustomInput : public QTextEdit
 {
 	Q_OBJECT
 
+	bool CopyPossible;
+
+private slots:
+	void setCopyPossible(bool available);
+
 protected:
 
 	bool autosend_enabled;/*!< zmienna informuj�ca czy w��czone jest
@@ -45,7 +50,8 @@ public:
 	{
 		KEY_BOLD,/*!< pogrubienie */
 		KEY_ITALIC,/*!< kursywa */
-		KEY_UNDERLINE/*!< podkre�lenie */
+		KEY_UNDERLINE,/*!< podkre�lenie */
+		KEY_COPY/*!< kopiuj */
 	};
 
 	/**

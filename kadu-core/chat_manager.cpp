@@ -877,13 +877,17 @@ void ChatManager::sendMessage(UserListElement user, UserListElements selected_us
 QVariant& ChatManager::chatWidgetProperty(const UserGroup *group, const QString &name)
 {
 	kdebugf();
-	// TODO 0.6.5 fix
-	foreach(ChatInfo addon, addons)
-		if (group->equals(addon.users))
+
+	QList<ChatInfo>::iterator addon;
+	for (addon = addons.begin(); addon != addons.end(); ++addon)
+	{
+		if (group->equals((*addon).users))
 		{
 			kdebugf2();
-			return addon.map[name];
+			return (*addon).map[name];
 		}
+	}
+
 	ChatInfo info;
 	info.users = group->toUserListElements();
 	info.map[name] = QVariant();
@@ -895,14 +899,17 @@ QVariant& ChatManager::chatWidgetProperty(const UserGroup *group, const QString 
 void ChatManager::setChatWidgetProperty(const UserGroup *group, const QString &name, const QVariant &value)
 {
 	kdebugf();
-	// TODO: 0.6.5 fix
-	foreach(ChatInfo addon, addons)
-		if (group->equals(addon.users))
+
+	QList<ChatInfo>::iterator addon;
+	for (addon = addons.begin(); addon != addons.end(); ++addon)
+	{
+		if (group->equals((*addon).users))
 		{
-			addon.map[name] = value;
+			(*addon).map[name] = value;
 			kdebugf2();
 			return;
 		}
+	}
 	ChatInfo info;
 	info.users = group->toUserListElements();
 	info.map[name] = value;
