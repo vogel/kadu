@@ -1,4 +1,4 @@
-/* $Id: http.c 504 2008-01-13 22:43:52Z wojtekka $ */
+/* $Id: http.c 636 2008-10-23 21:46:04Z wojtekka $ */
 
 /*
  *  (C) Copyright 2001-2002 Wojtek Kaniewski <wojtekka@irc.pl>
@@ -222,7 +222,7 @@ int gg_http_watch_fd(struct gg_http *h)
 		h->fd = -1;
 
 #ifndef GG_CONFIG_HAVE_PTHREAD
-		waitpid(h->pid, NULL, 0);
+		waitpid(h->pid, NULL, WNOHANG);
 #else
 		if (h->resolver) {
 			gg_resolve_pthread_cleanup(h->resolver, 0);
@@ -498,7 +498,7 @@ void gg_http_stop(struct gg_http *h)
 #else
 	if (h->pid != -1) {
 		kill(h->pid, SIGKILL);
-		waitpid(h->pid, NULL, 0);
+		waitpid(h->pid, NULL, WNOHANG);
 		h->pid = -1;
 	}
 #endif

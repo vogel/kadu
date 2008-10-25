@@ -1,4 +1,4 @@
-/* $Id: events.c 629 2008-07-18 12:29:57Z darkjames $ */
+/* $Id: events.c 638 2008-10-23 21:50:29Z wojtekka $ */
 
 /*
  *  (C) Copyright 2001-2006 Wojtek Kaniewski <wojtekka@irc.pl>
@@ -722,7 +722,7 @@ static int gg_watch_fd_connected(struct gg_session *sess, struct gg_event *e)
 				if (GG_S_D(n->status)) {
 					unsigned char descr_len = *((char*) n + sizeof(struct gg_notify_reply77));
 
-					if (descr_len < length) {
+					if (sizeof(struct gg_notify_reply77) + descr_len <= length) {
 						char *descr;
 
 						if (!(descr = malloc(descr_len + 1))) {
@@ -872,7 +872,7 @@ static int gg_watch_fd_connected(struct gg_session *sess, struct gg_event *e)
 				if (GG_S_D(n->status)) {
 					unsigned char descr_len = *((char*) n + sizeof(struct gg_notify_reply60));
 
-					if (descr_len < length) {
+					if (sizeof(struct gg_notify_reply60) + descr_len <= length) {
 						if (!(e->event.notify60[i].descr = malloc(descr_len + 1))) {
 							gg_debug_session(sess, GG_DEBUG_MISC, "// gg_watch_fd_connected() not enough memory for notify data\n");
 							goto fail;
@@ -1213,7 +1213,7 @@ struct gg_event *gg_watch_fd(struct gg_session *sess)
 			sess->fd = -1;
 
 #ifndef GG_CONFIG_HAVE_PTHREAD
-			waitpid(sess->pid, NULL, 0);
+			waitpid(sess->pid, NULL, WNOHANG);
 			sess->pid = -1;
 #else
 			if (sess->resolver) {
