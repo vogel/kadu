@@ -607,7 +607,7 @@ void HintManager::createDefaultConfiguration()
 	// TODO: remove after removing import from 0.5
 	config_file.addVariable("Hints", "Event_NewChat_bgcolor", w.paletteBackgroundColor());
 	config_file.addVariable("Hints", "Event_NewChat_fgcolor", w.paletteForegroundColor());
-	config_file.addVariable("Hints", "Event_NewChat_font", defaultFont);
+	config_file.addVariable("Hints", "Event_NewChat_font", *defaultFont);
 	config_file.addVariable("Hints", "Event_NewChat_timeout", 10);
 	// end of TODO
 	config_file.addVariable("Hints", "HintsPositionX", 0);
@@ -622,7 +622,7 @@ void HintManager::createDefaultConfiguration()
 	config_file.addVariable("Hints", "SetAll", false); // TODO: fix
 	config_file.addVariable("Hints", "SetAll_bgcolor", w.paletteBackgroundColor());
 	config_file.addVariable("Hints", "SetAll_fgcolor", w.paletteForegroundColor());
-	config_file.addVariable("Hints", "SetAll_font", defaultFont);
+	config_file.addVariable("Hints", "SetAll_font", *defaultFont);
 	config_file.addVariable("Hints", "SetAll_timeout", 10);
 	config_file.addVariable("Hints", "ShowContentMessage", true);
 	config_file.addVariable("Hints", "UseUserPosition", false);
