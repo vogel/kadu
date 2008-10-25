@@ -738,7 +738,10 @@ int ChatManager::openChatWidget(Protocol *initialProtocol, const UserListElement
 			QWidget *win = chat->window();
 			kdebugm(KDEBUG_INFO, "parent: %p\n", win);
 			if (forceActivate)
-				activateWindow(win->winId());
+			{
+				activateWindow(win->winId()); /* Dorr: this sometimes doesn't work */
+				win->setWindowState(Qt::WindowActive);
+			}
 			win->raise();
 			chat->makeActive();
 			emit chatWidgetOpen(chat);
