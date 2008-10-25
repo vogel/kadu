@@ -1626,6 +1626,22 @@ Czy na pewno tego chcesz?</translation>
         <source>Cannot save image: %1</source>
         <translation>Nie można zapisać obrazka: %1</translation>
     </message>
+    <message>
+        <source>Copy</source>
+        <translation>Kopiuj</translation>
+    </message>
+    <message>
+        <source>Copy Link</source>
+        <translation>Kopiuj link</translation>
+    </message>
+    <message>
+        <source>Copy Image</source>
+        <translation>Kopiuj obrazek</translation>
+    </message>
+    <message>
+        <source>Save Image</source>
+        <translation>Zapisz obrazek</translation>
+    </message>
 </context>
 <context>
     <name>MainConfigurationWindow</name>

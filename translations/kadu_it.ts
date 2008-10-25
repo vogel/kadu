@@ -1611,6 +1611,22 @@ Di più conessioni con il password incorretto</translation>
         <source>Cannot save image: %1</source>
         <translation>Non posso salvare immaggine: %1</translation>
     </message>
+    <message>
+        <source>Copy</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Copy Link</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Copy Image</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Save Image</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>MainConfigurationWindow</name>
