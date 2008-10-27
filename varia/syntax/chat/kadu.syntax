@@ -1,5 +1,5 @@
 #{separator}
-<p style="background-color: #{backgroundColor};">
+<p style="background-color: #{backgroundColor}; color: #{fontColor}">
 	<kadu:header>
 		<span style="font-weight: bold;"><span style="color: #{nickColor}; font-weight: bold;">%a</span> :: #{receivedDate}[ / S #{sentDate}]</span>
 		<br />
