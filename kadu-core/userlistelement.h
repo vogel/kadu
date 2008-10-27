@@ -236,7 +236,7 @@ public:
 		\param protocolName identyfikator protoko�u
 		Zwraca numer portu kontaktu.
 	**/
-	short port(const QString &protocolName) const;
+	unsigned short port(const QString &protocolName) const;
 
 	bool containsGroup(UserGroup *group) const;
 	void addGroup(UserGroup *group) const;
@@ -423,7 +423,7 @@ public slots:
 		\param port port
 		Ustawia adres IP i port dla wskazanego protoko�u.
 	**/
-	void setAddressAndPort(const QString &protocolName, const QHostAddress &ip, short port) const;
+	void setAddressAndPort(const QString &protocolName, const QHostAddress &ip, unsigned short port) const;
 
 	/**
 		\fn void setDNSName(const QString &protocolName, const QString &dnsname)

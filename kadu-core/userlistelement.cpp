@@ -49,7 +49,7 @@ QString UserListElement::DNSName(const QString &protocolName) const
 	return protocolData(protocolName, "DNSName").toString();
 }
 
-void UserListElement::setAddressAndPort(const QString &protocolName, const QHostAddress &ip, short port) const
+void UserListElement::setAddressAndPort(const QString &protocolName, const QHostAddress &ip, unsigned short port) const
 {
 	kdebugf();
 
@@ -72,7 +72,7 @@ void UserListElement::setAddressAndPort(const QString &protocolName, const QHost
 	//privateData->unlock();
 }
 
-short UserListElement::port(const QString &protocolName) const
+unsigned short UserListElement::port(const QString &protocolName) const
 {
 	return protocolData(protocolName, "Port").toUInt();
 }
