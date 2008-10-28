@@ -11,6 +11,8 @@
 #include "hot_key.h"
 
 #include "custom_input.h"
+#include <QtGui/QMenu>
+#include <QtGui/QAction>
 
 CustomInput::CustomInput(QWidget *parent)
 	: QTextEdit(parent), autosend_enabled(true), CopyPossible(false)
@@ -98,6 +100,51 @@ void CustomInput::keyReleaseEvent(QKeyEvent *e)
 	}
 
 	QTextEdit::keyReleaseEvent(e);
+}
+
+void CustomInput::contextMenuEvent(QContextMenuEvent *e)
+{
+	QMenu *menu = new QMenu();
+
+	QAction *undo = new QAction(tr("Undo"), menu);
+	undo->setShortcut(QKeySequence::Undo);
+	connect(undo, SIGNAL(triggered()), this, SLOT(undo()));
+	menu->addAction(undo);
+
+	QAction *redo = new QAction(tr("Redo"), menu);
+	redo->setShortcut(QKeySequence::Redo);
+	connect(redo, SIGNAL(triggered()), this, SLOT(redo()));
+	menu->addAction(redo);
+	
+	menu->addSeparator();
+
+	QAction *cut = new QAction(tr("Cut"), menu);
+	cut->setShortcut(QKeySequence::Cut);
+	connect(cut, SIGNAL(triggered()), this, SLOT(cut()));
+	menu->addAction(cut);
+
+	QAction *copy = new QAction(tr("Copy"), menu);
+	copy->setShortcut(QKeySequence::Copy);
+	connect(copy, SIGNAL(triggered()), this, SLOT(copy()));
+	menu->addAction(copy);
+
+	QAction *paste = new QAction(tr("Paste"), menu);
+	paste->setShortcut(QKeySequence::Paste);
+	connect(paste, SIGNAL(triggered()), this, SLOT(paste()));
+	menu->addAction(paste);
+
+	QAction *clear = new QAction(tr("Clear"), menu);
+	connect(clear, SIGNAL(triggered()), this, SLOT(clear()));
+	menu->addAction(clear);
+
+	menu->addSeparator();
+
+	QAction *all = new QAction(tr("Select All"), menu);
+	all->setShortcut(QKeySequence::SelectAll);
+	connect(all, SIGNAL(triggered()), this, SLOT(selectAll()));
+	menu->addAction(all);
+	
+	menu->exec(e->globalPos());
 }
 
 void CustomInput::setAutosend(bool on)

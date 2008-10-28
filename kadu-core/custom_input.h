@@ -44,6 +44,12 @@ protected:
 	**/
 	virtual void keyReleaseEvent(QKeyEvent *e);
 
+	/**
+		\fn virtual void keyReleaseEvent(QKeyEvent *e)
+		Funkcja obs�uguj�ca zwswietlenie menu kontekstowego
+		\param e wska�nik do obiektu obs�uguj�cego klamenu
+	**/
+	virtual void contextMenuEvent(QContextMenuEvent *e);
 public:
 	/*! Typ wyliczeniowy mowi�cy o rodzaju pisanych znak�w */
 	enum
