@@ -1145,6 +1145,14 @@ void Kadu::changeAppearance()
 			"	margin: 0;"
 			"	padding: 0;"
 			"	background-color: %7;"
+			"}"
+			"div {"
+			"	color: %1;"
+			"	font: %2 %3 %4 %5;"
+			"	text-decoration: %6;"
+			"	margin: 0;"
+			"	padding: 0;"
+			"	background-color: %7;"
 			"}").arg(fontColor, fontStyle, fontWeight, fontSize, fontFamily, textDecoration, backgroundColor);
 
  		if (config_file.readBoolEntry("Look", "PanelVerticalScrollbar"))
