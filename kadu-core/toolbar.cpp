@@ -77,7 +77,7 @@ ToolBar::ToolBar(QWidget * parent)
 	kdebugf();
 
 	setAcceptDrops(true);
-	setIconSize(QSize(22, 22));
+	setIconSize(icons_manager->getIconsSize());
 
 	if (!watcher)
 		watcher = new DisabledActionsWatcher();
@@ -303,6 +303,7 @@ void ToolBar::configurationUpdated()
 		return setMovable(false);
 
 	setMovable(!toolbarsConfig.attribute("blocked").toInt());
+	setIconSize(icons_manager->getIconsSize());
 }
 
 void ToolBar::writeToConfig(QDomElement parent_element)
