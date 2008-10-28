@@ -81,7 +81,10 @@ void IconsManager::configurationUpdated()
 
 	// TODO: Make it standard
 	if (themeWasChanged)
+	{
+		
 		emit themeChanged();
+	}
 
 	kdebugf2();
 }
@@ -115,6 +118,12 @@ void IconsManager::closeModule()
 	icons_manager = 0;
 
 	kdebugf2();
+}
+
+QSize IconsManager::getIconsSize()
+{
+	QPixmap p = loadPixmap("Configuration");
+	return p.size();
 }
 
 IconsManager *icons_manager;

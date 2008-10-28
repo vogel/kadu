@@ -48,6 +48,8 @@ public:
 
 	static void initModule();
 	static void closeModule();
+	
+	QSize getIconsSize();
 
 public: // TODO: fix, see Kadu::Kadu
 	virtual void configurationUpdated();
