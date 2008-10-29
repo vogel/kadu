@@ -2431,6 +2431,12 @@ void Kadu::createDefaultConfiguration()
 	config_file.addVariable("General", "StartupStatusInvisibleWhenLastWasOffline", true);
 	config_file.addVariable("General", "UserBoxHeight", 300);
 
+#ifdef Q_OS_LINUX
+	/* Dorr: On Linux set default style to Cleanlooks so the new gnome users will
+	 * have nice looking kadu just after installation */
+	config_file.addVariable("Look", "QtStyle", "Cleanlooks");
+#endif
+
 	config_file.addVariable("Look", "AlignUserboxIconsTop", true);
 	config_file.addVariable("Look", "ChatContents", "");
 	config_file.addVariable("Look", "ChatFont", *defaultFont);
