@@ -213,11 +213,11 @@ class UserListElement : public QObject
 		QString DNSName(const QString &protocolName) const;
 
 		/**
-			\fn short port(const QString &protocolName) const
+			\fn unsigned short port(const QString &protocolName) const
 			\param protocolName identyfikator protoko³u
 			Zwraca numer portu kontaktu.
 		**/
-		short port(const QString &protocolName) const;
+		unsigned short port(const QString &protocolName) const;
 
 	public slots:
 		/**
@@ -394,13 +394,13 @@ class UserListElement : public QObject
 		void setMessageSound(NotifyType type, const QString &file = QString::null);
 
 		/**
-			\fn void setAddressAndPort(const QString &protocolName, const QHostAddress &ip, short port)
+			\fn void setAddressAndPort(const QString &protocolName, const QHostAddress &ip, unsigned short port)
 			\param protocolName identyfikator protoko³u
 			\param ip adres IP
 			\param port port
 			Ustawia adres IP i port dla wskazanego protoko³u.
 		**/
-		void setAddressAndPort(const QString &protocolName, const QHostAddress &ip, short port);
+		void setAddressAndPort(const QString &protocolName, const QHostAddress &ip, unsigned short port);
 
 		/**
 			\fn void setDNSName(const QString &protocolName, const QString &dnsname)
