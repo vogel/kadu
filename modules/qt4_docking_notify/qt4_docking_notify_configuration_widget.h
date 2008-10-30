@@ -24,6 +24,7 @@ struct Qt4NotifyProperties
 	unsigned int icon;
 	unsigned int timeout;
 	QString syntax;
+	QString title;
 };
 
 class Qt4NotifyConfigurationWidget : public NotifierConfigurationWidget
@@ -34,14 +35,15 @@ class Qt4NotifyConfigurationWidget : public NotifierConfigurationWidget
 	Qt4NotifyProperties currentProperties;
 	QString currentNotifyEvent;
 
-//	QLabel *warning;
 	QSpinBox *timeout;
-//	QLineEdit *syntax;
+	QLineEdit *syntax;
+	QLineEdit *title;
 	QComboBox *icon;
 
 private slots:
 	void timeoutChanged(int timeout);
-//	void syntaxChanged(const QString &syntax);
+	void syntaxChanged(const QString &syntax);
+	void titleChanged(const QString &title);
 	void iconChanged(int index);
 
 public:
@@ -51,10 +53,6 @@ public:
 	virtual void saveNotifyConfigurations();
 
 	virtual void switchToEvent(const QString &event);
-
-public slots:
-	void setAllEnabled(bool enabled);
-
 };
 
 #endif

@@ -21,6 +21,7 @@ class Qt4Notify : public Notifier, public ConfigurationUiHandler, ConfigurationA
 
 	void createDefaultConfiguration();
 	QString toPlainText(const QString &text);
+	QString parseText(QString text, Notification *notification, QString def);
 	UserListElements senders;
 	Qt4NotifyConfigurationWidget *configurationWidget;
 
