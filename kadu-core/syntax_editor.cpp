@@ -425,7 +425,7 @@ void SyntaxEditorWindow::saveAs()
 		if (newSyntaxName.isEmpty())
 			continue;
 
-		if (newSyntaxName == syntaxName)
+		if (newSyntaxName == syntaxName && !syntaxList->isGlobal(newSyntaxName))
 			break;
 
 		if (!syntaxList->contains(newSyntaxName))
