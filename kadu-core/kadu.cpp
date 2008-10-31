@@ -1251,12 +1251,19 @@ void Kadu::mouseButtonClicked(int button, Q3ListBoxItem *item)
 void Kadu::sendMessage(UserListElement elem)
 {
 	kdebugf();
+	UserBox *userbox = dynamic_cast<UserBox *>(sender());
+	if (!userbox)
+		return;
 
-	if (elem.usesProtocol("Gadu") && elem != Myself) //TODO: elem.hasFeature("SendingMessages")
-		chat_manager->sendMessage(elem, elem);
-	else if (elem.mobile().isEmpty() && !elem.email().isEmpty())
-		openMailClient(elem.email());
+	UserListElements users  = userbox->selectedUsers();
+	if (!users.isEmpty())
+	{
+		if (elem.usesProtocol("Gadu") && elem != Myself) //TODO: elem.hasFeature("SendingMessages")
+			chat_manager->sendMessage(elem, users);
+		else if (elem.mobile().isEmpty() && !elem.email().isEmpty())
+			openMailClient(elem.email());
 
+	}
 	kdebugf2();
 }
 
