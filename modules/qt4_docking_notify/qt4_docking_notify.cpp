@@ -86,7 +86,7 @@ QString Qt4Notify::toPlainText(const QString &text)
 	return doc.toPlainText();
 }
 
-QString Qt4Notify::parseText(QString text, Notification *notification, QString def)
+QString Qt4Notify::parseText(const QString &text, Notification *notification, const QString &def)
 {
 	UserListElement ule;
 	QString ret;
