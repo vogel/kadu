@@ -26,6 +26,8 @@ if (COMMAND cmake_policy)
 endif (COMMAND cmake_policy)
 
 add_library (growl_notify ${growl_notify} ${SOURCES} ${MOC_FILES})
+add_custom_target (growl_notify-translations DEPENDS ${TRANSLATION_FILES})
+add_dependencies (growl_notify growl_notify-translations)
 if (growl_notify STREQUAL STATIC)
 	set_target_properties(growl_notify PROPERTIES COMPILE_FLAGS "-DKADULIB" )
 else (growl_notify STREQUAL STATIC)

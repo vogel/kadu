@@ -105,6 +105,9 @@ void GrowlNotify::notify(Notification *notification)
 
 	QString title = config_file.readEntry("GrowlNotify", QString("Event_") + notification->type() + "_title");
 	QString syntax = config_file.readEntry("GrowlNotify", QString("Event_") + notification->type() + "_syntax");
+	QPixmap pixmap = icons_manager->loadPixmap("Big" + notification->icon());
+	if (pixmap.isNull())
+		pixmap = icons_manager->loadPixmap(notification->icon());
 
 	notification->acquire();
 	senders = UserListElements(notification->userListElements());
@@ -112,7 +115,7 @@ void GrowlNotify::notify(Notification *notification)
 	growlNotifier->notify("Kadu Notification", 
 		parseText(title, notification, notification->text()),
 		parseText(syntax, notification, notification->details()),
-		icons_manager->loadPixmap(notification->icon()),
+		pixmap,
 		false, this, SLOT(notification_clicked()));
 
 	notification->release();
@@ -128,7 +131,32 @@ void GrowlNotify::notification_clicked()
 
 void GrowlNotify::createDefaultConfiguration()
 {
-	config_file.addVariable("Notify", "FileTransfer/IncomingFile_Window", true);
+	config_file.addVariable("GrowlNotify", "Event_ConnectionError_syntax", "%&m");
+	config_file.addVariable("GrowlNotify", "Event_ConnectionError_title", "%&t");
+    
+	config_file.addVariable("GrowlNotify", "Event_NewChat_syntax", "%&d");
+	config_file.addVariable("GrowlNotify", "Event_NewChat_title", "%&m");
+	
+	config_file.addVariable("GrowlNotify", "Event_NewMessage_syntax", "%&d");
+	config_file.addVariable("GrowlNotify", "Event_NewMessage_title", "%&m");
+
+	config_file.addVariable("GrowlNotify", "Event_StatusChanged/ToOnline_syntax", "%&d");
+	config_file.addVariable("GrowlNotify", "Event_StatusChanged/ToOnline_title", "%&m");
+	
+	config_file.addVariable("GrowlNotify", "Event_StatusChanged/ToBusy_syntax", "%&d");
+	config_file.addVariable("GrowlNotify", "Event_StatusChanged/ToBusy_title", "%&m");
+
+    config_file.addVariable("GrowlNotify", "Event_StatusChanged/ToOffline_syntax", "%&d");
+    config_file.addVariable("GrowlNotify", "Event_StatusChanged/ToOffline_title", "%&m");
+
+    config_file.addVariable("GrowlNotify", "Event_StatusChanged/ToInvisible_syntax", "%&d");
+    config_file.addVariable("GrowlNotify", "Event_StatusChanged/ToInvisible_title", "%&m");
+	
+	config_file.addVariable("GrowlNotify", "Event_FileTransfer/Finished_syntax", "%&m");
+    config_file.addVariable("GrowlNotify", "Event_FileTransfer/Finished_title", "%&t");
+	
+    config_file.addVariable("GrowlNotify", "Event_FileTransfer/IncomingFile_syntax", "%&m");
+	config_file.addVariable("GrowlNotify", "Event_FileTransfer/IncomingFile_title", "%&t");
 }
 
 NotifierConfigurationWidget *GrowlNotify::createConfigurationWidget(QWidget *parent, char *name)

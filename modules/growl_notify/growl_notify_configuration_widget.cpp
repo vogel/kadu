@@ -31,7 +31,6 @@ GrowlNotifyConfigurationWidget::GrowlNotifyConfigurationWidget(QWidget *parent, 
 	syntax = new QLineEdit(this);
 	syntax->setToolTip(tooltip);
 
-	connect(timeout, SIGNAL(valueChanged(int)), this, SLOT(timeoutChanged(int)));
 	connect(syntax, SIGNAL(textChanged(const QString &)), this, SLOT(syntaxChanged(const QString &)));
 	connect(title, SIGNAL(textChanged(const QString &)), this, SLOT(titleChanged(const QString &)));
 

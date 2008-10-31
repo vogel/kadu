@@ -20,8 +20,6 @@ class QComboBox;
 struct GrowlNotifyProperties
 {
 	QString eventName;
-
-	unsigned int timeout;
 	QString syntax;
 	QString title;
 };
@@ -34,16 +32,12 @@ class GrowlNotifyConfigurationWidget : public NotifierConfigurationWidget
 	GrowlNotifyProperties currentProperties;
 	QString currentNotifyEvent;
 
-	QSpinBox *timeout;
 	QLineEdit *syntax;
 	QLineEdit *title;
-	QComboBox *icon;
 
 private slots:
-	void timeoutChanged(int timeout);
 	void syntaxChanged(const QString &syntax);
 	void titleChanged(const QString &title);
-	void iconChanged(int index);
 
 public:
 	GrowlNotifyConfigurationWidget(QWidget *parent = 0, char *name = 0);
