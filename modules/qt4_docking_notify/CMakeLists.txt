@@ -9,7 +9,7 @@ set (MOC_SOURCES
 )
 
 set (TRANSLATION_SOURCES
-#	translations/qt4_docking_notify_pl.ts
+	translations/qt4_docking_notify_pl.ts
 )
 
 kadu_module (qt4_docking_notify
