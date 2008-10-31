@@ -10,6 +10,7 @@
 
 class UserListElements;
 class GrowlNotifier;
+class GrowlNotifyConfigurationWidget;
 class GrowlNotify : public Notifier
 {
 	Q_OBJECT
@@ -17,9 +18,11 @@ class GrowlNotify : public Notifier
 	void createDefaultConfiguration();
 	
 	GrowlNotifier* growlNotifier;
+	GrowlNotifyConfigurationWidget *configurationWidget;
 	UserListElements senders;
 	
 	QString toPlainText(const QString &text);
+	QString parseText(const QString &text, Notification *notification, const QString &def);
 
 public:
 	GrowlNotify(QObject *parent = 0, const char *name = 0);
@@ -31,7 +34,7 @@ public:
 
 	void copyConfiguration(const QString &fromEvent, const QString &toEvent) {}
 
-	virtual NotifierConfigurationWidget *createConfigurationWidget(QWidget *parent = 0, char *name = 0) { return 0; };
+	virtual NotifierConfigurationWidget *createConfigurationWidget(QWidget *parent = 0, char *name = 0);
 
 public slots:
 	void notification_clicked();
