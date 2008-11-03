@@ -75,19 +75,22 @@ Hint::Hint(QWidget *parent, Notification *notification)
 	connect(notification, SIGNAL(closed(Notification *)), this, SLOT(notificationClosed()));
 
 	setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
-	setWindowOpacity(config_file.readNumEntry("OSDHints", "Opacity", 100) / 100);
+	
+	double opacity = config_file.readNumEntry("OSDHints", "Opacity", 100);
+	opacity /= 100;
+	setWindowOpacity(opacity);
 	configurationUpdated();
 
 	show();
-
-/*	mask.resize(width(), height());
+#if 0
+	mask.resize(width(), height());
 	mask.fill(Qt::black);
 	QPainter maskPainter(&mask);
 	maskPainter.setBrush(Qt::white);
 	maskPainter.setPen(Qt::white);
 	maskPainter.drawRoundRect(0, 0, width(), height(), 1600 / width(), 1600 / height());
 	setMask(mask);
-*/
+#endif
 	kdebugf2();
 }
 
@@ -122,19 +125,17 @@ void Hint::configurationUpdated()
 
 void Hint::createLabels(const QPixmap &pixmap)
 {
-	vbox = new QVBoxLayout(this);
-	vbox->setSpacing(2);
-	vbox->setMargin(0);
-	vbox->setResizeMode(QLayout::FreeResize);
+	labels = new QHBoxLayout(this);
+	labels->setSpacing(0);
+	labels->setMargin(10);
+	labels->setResizeMode(QLayout::FreeResize);
 
-	QWidget *widget = new QWidget(this);
-	labels = new QHBoxLayout(widget);
-	vbox->addWidget(widget);
 	if (!pixmap.isNull())
 	{
 		icon = new QLabel(this, "Icon");
 		icon->setPixmap(pixmap);
 		icon->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
+		icon->setBackgroundMode(Qt::NoBackground);
 		labels->addWidget(icon, 0, Qt::AlignTop);
 	}
 
@@ -142,6 +143,7 @@ void Hint::createLabels(const QPixmap &pixmap)
 	label->setTextInteractionFlags(Qt::NoTextInteraction);
 	label->setTextFormat(Qt::RichText);
 	label->setAlignment(Qt::AlignVCenter | Qt::AlignLeft);
+	label->setBackgroundMode(Qt::NoBackground);
 	labels->addWidget(label);
 }
 
@@ -169,15 +171,13 @@ void Hint::updateText()
 		{
 			int i = (count > 5) ? count - 5 : 0;
 			int citeSign = config_file.readNumEntry("OSDHints","CiteSign");
-
-			text += "\n";
 			for (; i < count; i++)
 			{
 				const QString &message = details[i];
 				if (message.length() > citeSign)
-					text += message.left(citeSign) + "...";
+					text += "\n" + message.left(citeSign) + "...";
 				else
-					text += message;
+					text += "\n" + message;
 			}
 		}
 	}
