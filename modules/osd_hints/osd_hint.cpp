@@ -125,10 +125,16 @@ void Hint::configurationUpdated()
 
 void Hint::createLabels(const QPixmap &pixmap)
 {
-	labels = new QHBoxLayout(this);
+	vbox = new QVBoxLayout(this);
+	vbox->setSpacing(2);
+	vbox->setMargin(0);
+	vbox->setResizeMode(QLayout::FreeResize);
+
+	QWidget *widget = new QWidget(this);
+	labels = new QHBoxLayout(widget);
 	labels->setSpacing(0);
 	labels->setMargin(10);
-	labels->setResizeMode(QLayout::FreeResize);
+	vbox->addWidget(widget);
 
 	if (!pixmap.isNull())
 	{
