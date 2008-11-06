@@ -40,8 +40,11 @@ HintManager::HintManager(QWidget *parent, const char *name)	: Notifier(parent, n
 	hints(), tipFrame(0)
 {
 	kdebugf();
+#ifdef Q_OS_MAC
+	frame = new QFrame(parent, name, Qt::FramelessWindowHint | Qt::SplashScreen | Qt::X11BypassWindowManagerHint | Qt::WindowStaysOnTopHint |Qt::MSWindowsOwnDC);
+#else
 	frame = new QFrame(parent, name, Qt::FramelessWindowHint | Qt::Tool | Qt::X11BypassWindowManagerHint | Qt::WindowStaysOnTopHint |Qt::MSWindowsOwnDC);
-
+#endif
 	frame->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
 	frame->setFrameStyle(QFrame::Box | QFrame::Plain);
 	frame->setLineWidth(FRAME_WIDTH);
