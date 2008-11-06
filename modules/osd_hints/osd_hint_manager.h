@@ -15,7 +15,7 @@ class QSpinBox;
 
 class HintsConfigurationWidget;
 
-class HintManager : public Notifier, public ConfigurationUiHandler, public ToolTipClass, ConfigurationAwareObject
+class OSDHintManager : public Notifier, public ConfigurationUiHandler, public ToolTipClass, ConfigurationAwareObject
 {
 	Q_OBJECT
 
@@ -23,22 +23,23 @@ private:
 	QFrame *frame;
 	QVBoxLayout *layout;
 	QTimer *hint_timer;
-	QList<Hint *> hints;
+	QList<OSDHint *> hints;
 	QFrame *tipFrame;
+	double opacity;
 
 	QSpinBox *minimumWidth;
 	QSpinBox *maximumWidth;
 	QWidget *overUserSyntax;
 	HintsConfigurationWidget *configurationWidget;
 
-	QMap<QPair<UserListElements, QString>, Hint *> linkedHints;
+	QMap<QPair<UserListElements, QString>, OSDHint *> linkedHints;
 
 	/**
 		ustala róg, od którego bêdzie liczona pozycja grupy dymków
 	**/
 	void setLayoutDirection();
 
-	void processButtonPress(const QString &buttonName, Hint *hint);
+	void processButtonPress(const QString &buttonName, OSDHint *hint);
 
 	void showNewMessage(const QString &configurationDirective, const QString &title, const QString &contentTitle, UserListElements senders, const QString &msg);
 
@@ -62,35 +63,35 @@ private slots:
 		na dymku o numerze id klikniêto lewym przyciskiem myszy
 		w zale¿no¶ci od konfiguracji otwierana jest nowa rozmowa, dymek jest kasowany lub kasowane s± wszystkie
 	**/
-	void leftButtonSlot(Hint *hint);
+	void leftButtonSlot(OSDHint *hint);
 
 	/**
 		na dymku o numerze id klikniêto prawym przyciskiem myszy
 		w zale¿no¶ci od konfiguracji otwierana jest nowa rozmowa, dymek jest kasowany lub kasowane s± wszystkie
 	**/
-	void rightButtonSlot(Hint *hint);
+	void rightButtonSlot(OSDHint *hint);
 
 	/**
 		na dymku o numerze id klikniêto ¶rodkowym przyciskiem myszy
 		w zale¿no¶ci od konfiguracji otwierana jest nowa rozmowa, dymek jest kasowany lub kasowane s± wszystkie
 	**/
-	void midButtonSlot(Hint *hint);
+	void midButtonSlot(OSDHint *hint);
 
-	void deleteHint(Hint *hint);
-	void deleteHintAndUpdate(Hint *hint);
+	void deleteHint(OSDHint *hint);
+	void deleteHintAndUpdate(OSDHint *hint);
 
 	void notificationClosed(Notification *notification);
 
 	/**
 		Pokazuje dymek zwi±zany z notyfikacj±.
 	**/
-	Hint *addHint(Notification *notification);
+	OSDHint *addHint(Notification *notification);
 
 	/**
 		je¿eli dymek dotyczy³ konkrentej osoby lub grupy osób, to otwierane jest okno chatu
 		dymek jest kasowany
 	**/
-	void openChat(Hint *hint);
+	void openChat(OSDHint *hint);
 
 	void chatWidgetActivated(ChatWidget *chat);
 
@@ -111,13 +112,13 @@ protected:
 
 signals:
 	/**
-		HintManager szuka pozycji traya, aby wy¶wietliæ w jego okolicy dymki
+		OSDHintManager szuka pozycji traya, aby wy¶wietliæ w jego okolicy dymki
 	**/
 	void searchingForTrayPosition(QPoint& pos);
 
 public:
-	HintManager(QWidget *parent=0, const char *name=0);
-	~HintManager();
+	OSDHintManager(QWidget *parent=0, const char *name=0);
+	~OSDHintManager();
 
 	virtual CallbackCapacity callbackCapacity() { return CallbackSupported; }
 	virtual void notify(Notification *notification);
@@ -132,6 +133,6 @@ public:
 
 };
 
-extern HintManager *hint_manager;
+extern OSDHintManager *hint_manager;
 
 #endif

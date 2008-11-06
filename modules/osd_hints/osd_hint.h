@@ -1,5 +1,5 @@
-#ifndef HINT_H
-#define HINT_H
+#ifndef OSDHint_H
+#define OSDHint_H
 
 #include <QtGui/QBitmap>
 #include <QtGui/QWidget>
@@ -14,7 +14,7 @@ class QVBoxLayout;
 
 class Notification;
 
-class Hint : public QWidget, ConfigurationAwareObject
+class OSDHint : public QWidget, ConfigurationAwareObject
 {
 	Q_OBJECT
 
@@ -50,8 +50,8 @@ protected:
 	virtual void configurationUpdated();
 
 public:
-	Hint(QWidget *parent, Notification *notification);
-	virtual ~Hint();
+	OSDHint(QWidget *parent, Notification *notification);
+	virtual ~OSDHint();
 
 	void getData(QString &text, QPixmap &pixmap, unsigned int &timeout, QFont &font, QColor &fgcolor, QColor &bgcolor);
 	bool requireManualClosing();
@@ -76,11 +76,11 @@ public slots:
 	void discardNotification();
 
 signals:
-	void leftButtonClicked(Hint *hint);
-	void rightButtonClicked(Hint *hint);
-	void midButtonClicked(Hint *hint);
-	void closing(Hint *hint);
-	void updated(Hint *hint);
+	void leftButtonClicked(OSDHint *OSDHint);
+	void rightButtonClicked(OSDHint *OSDHint);
+	void midButtonClicked(OSDHint *OSDHint);
+	void closing(OSDHint *OSDHint);
+	void updated(OSDHint *OSDHint);
 };
 
 #endif

@@ -35,7 +35,7 @@
  */
 #define FRAME_WIDTH 2
 
-HintManager::HintManager(QWidget *parent, const char *name)	: Notifier(parent, name), ToolTipClass(),
+OSDHintManager::OSDHintManager(QWidget *parent, const char *name)	: Notifier(parent, name), ToolTipClass(),
 	hint_timer(new QTimer(this, "hint_timer")),
 	hints(), tipFrame(0)
 {
@@ -50,17 +50,16 @@ HintManager::HintManager(QWidget *parent, const char *name)	: Notifier(parent, n
 	frame->setLineWidth(FRAME_WIDTH);
 	frame->setStyleSheet("QFrame {border-width: 1px; border-style: solid; border-color: #535353; border-radius: 3px;} ");
 
-	double opacity = config_file.readNumEntry("OSDHints", "Opacity", 100);
-	opacity /= 100;
-	frame->setWindowOpacity(opacity);
-
 	layout = new QVBoxLayout(frame, FRAME_WIDTH, 0, "grid");
 	layout->setResizeMode(QLayout::Fixed);
+	
+	opacity = config_file.readNumEntry("OSDHints", "Opacity", 100);
+	opacity /= 100;
 
 	connect(hint_timer, SIGNAL(timeout()), this, SLOT(oneSecond()));
 	connect(chat_manager, SIGNAL(chatWidgetActivated(ChatWidget *)), this, SLOT(chatWidgetActivated(ChatWidget *)));
 
-	const QString default_hints_syntax(QT_TRANSLATE_NOOP("HintManager", "[<i>%s</i><br/>][<br/><b>Description:</b><br/>%d<br/><br/>][<i>Mobile:</i> <b>%m</b><br/>]"));
+	const QString default_hints_syntax(QT_TRANSLATE_NOOP("OSDHintManager", "[<i>%s</i><br/>][<br/><b>Description:</b><br/>%d<br/><br/>][<i>Mobile:</i> <b>%m</b><br/>]"));
 	if (config_file.readEntry("OSDHints", "MouseOverUserSyntax") == default_hints_syntax || config_file.readEntry("OSDHints", "MouseOverUserSyntax").isEmpty())
 		config_file.writeEntry("OSDHints", "MouseOverUserSyntax", tr(default_hints_syntax.ascii()));
 
@@ -74,7 +73,7 @@ HintManager::HintManager(QWidget *parent, const char *name)	: Notifier(parent, n
 	kdebugf2();
 }
 
-HintManager::~HintManager()
+OSDHintManager::~OSDHintManager()
 {
 	kdebugf();
 
@@ -99,7 +98,7 @@ HintManager::~HintManager()
 	kdebugf2();
 }
 
-void HintManager::mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow)
+void OSDHintManager::mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow)
 {
 	connect(mainConfigurationWindow->widgetById("osdhints/showContent"), SIGNAL(toggled(bool)),
 		mainConfigurationWindow->widgetById("osdhints/showContentCount"), SLOT(setEnabled(bool)));
@@ -132,44 +131,43 @@ void HintManager::mainConfigurationWindowCreated(MainConfigurationWindow *mainCo
 		this, SLOT(toolTipClassesHighlighted(const QString &)));
 }
 
-void HintManager::toolTipClassesHighlighted(const QString &value)
+void OSDHintManager::toolTipClassesHighlighted(const QString &value)
 {
 	overUserSyntax->setEnabled(value == qApp->translate("@default", "OSDHints"));
 }
 
-NotifierConfigurationWidget *HintManager::createConfigurationWidget(QWidget *parent, char *name)
+NotifierConfigurationWidget *OSDHintManager::createConfigurationWidget(QWidget *parent, char *name)
 {
 	configurationWidget = new HintsConfigurationWidget(parent, name);
 	return configurationWidget;
 }
 
-void HintManager::minimumWidthChanged(int value)
+void OSDHintManager::minimumWidthChanged(int value)
 {
 	if (value > maximumWidth->value())
 		maximumWidth->setValue(value);
 }
 
-void HintManager::maximumWidthChanged(int value)
+void OSDHintManager::maximumWidthChanged(int value)
 {
 	if (value < minimumWidth->value())
 		minimumWidth->setValue(value);
 }
 
-void HintManager::hintUpdated()
+void OSDHintManager::hintUpdated()
 {
 	setHint();
 }
 
-void HintManager::configurationUpdated()
+void OSDHintManager::configurationUpdated()
 {
-	double opacity = config_file.readNumEntry("OSDHints", "Opacity", 100);
+	opacity = config_file.readNumEntry("OSDHints", "Opacity", 100);
 	opacity /= 100;
-	frame->setWindowOpacity(opacity);
 
 	setHint();
 }
 
-void HintManager::setHint()
+void OSDHintManager::setHint()
 {
 	kdebugf();
 
@@ -247,7 +245,7 @@ void HintManager::setHint()
 	kdebugf2();
 }
 
-void HintManager::deleteHint(Hint *hint)
+void OSDHintManager::deleteHint(OSDHint *hint)
 {
 	kdebugf();
 
@@ -258,13 +256,13 @@ void HintManager::deleteHint(Hint *hint)
 	kdebugf2();
 }
 
-void HintManager::deleteHintAndUpdate(Hint *hint)
+void OSDHintManager::deleteHintAndUpdate(OSDHint *hint)
 {
 	deleteHint(hint);
 	setHint();
 }
 
-void HintManager::oneSecond(void)
+void OSDHintManager::oneSecond(void)
 {
 	kdebugf();
 
@@ -286,7 +284,7 @@ void HintManager::oneSecond(void)
 	kdebugf2();
 }
 
-void HintManager::processButtonPress(const QString &buttonName, Hint *hint)
+void OSDHintManager::processButtonPress(const QString &buttonName, OSDHint *hint)
 {
 	kdebugmf(KDEBUG_FUNCTION_START, "%s\n", buttonName.ascii());
 
@@ -314,22 +312,22 @@ void HintManager::processButtonPress(const QString &buttonName, Hint *hint)
 	kdebugf2();
 }
 
-void HintManager::leftButtonSlot(Hint *hint)
+void OSDHintManager::leftButtonSlot(OSDHint *hint)
 {
 	processButtonPress("LeftButton", hint);
 }
 
-void HintManager::rightButtonSlot(Hint *hint)
+void OSDHintManager::rightButtonSlot(OSDHint *hint)
 {
 	processButtonPress("RightButton", hint);
 }
 
-void HintManager::midButtonSlot(Hint *hint)
+void OSDHintManager::midButtonSlot(OSDHint *hint)
 {
 	processButtonPress("MiddleButton", hint);
 }
 
-void HintManager::openChat(Hint *hint)
+void OSDHintManager::openChat(OSDHint *hint)
 {
 	kdebugf();
 
@@ -348,7 +346,7 @@ void HintManager::openChat(Hint *hint)
 	kdebugf2();
 }
 
-void HintManager::chatWidgetActivated(ChatWidget *chat)
+void OSDHintManager::chatWidgetActivated(ChatWidget *chat)
 {
 	QPair<UserListElements, QString> newChat = qMakePair(chat->users()->toUserListElements(), QString("NewChat"));
 	QPair<UserListElements, QString> newMessage = qMakePair(chat->users()->toUserListElements(), QString("NewMessage"));
@@ -368,12 +366,12 @@ void HintManager::chatWidgetActivated(ChatWidget *chat)
 	setHint();
 }
 
-void HintManager::deleteAllHints()
+void OSDHintManager::deleteAllHints()
 {
 	kdebugf();
 	hint_timer->stop();
 
-	foreach(Hint *h, hints)
+	foreach(OSDHint *h, hints)
 	{
 		if(!h->requireManualClosing())
 			deleteHint(h);
@@ -385,23 +383,23 @@ void HintManager::deleteAllHints()
 	kdebugf2();
 }
 
-Hint *HintManager::addHint(Notification *notification)
+OSDHint *OSDHintManager::addHint(Notification *notification)
 {
 	kdebugf();
 
 	connect(notification, SIGNAL(closed(Notification *)), this, SLOT(notificationClosed(Notification *)));
 
-	Hint *hint = new Hint(frame, notification);
+	OSDHint *hint = new OSDHint(frame, notification);
 	hints.append(hint);
 
 	setLayoutDirection();
 	layout->addWidget(static_cast<QWidget *>(hint));
 
-	connect(hint, SIGNAL(leftButtonClicked(Hint *)), this, SLOT(leftButtonSlot(Hint *)));
-	connect(hint, SIGNAL(rightButtonClicked(Hint *)), this, SLOT(rightButtonSlot(Hint *)));
-	connect(hint, SIGNAL(midButtonClicked(Hint *)), this, SLOT(midButtonSlot(Hint *)));
-	connect(hint, SIGNAL(closing(Hint *)), this, SLOT(deleteHintAndUpdate(Hint *)));
-	connect(hint, SIGNAL(updated(Hint *)), this, SLOT(hintUpdated()));
+	connect(hint, SIGNAL(leftButtonClicked(OSDHint *)), this, SLOT(leftButtonSlot(OSDHint *)));
+	connect(hint, SIGNAL(rightButtonClicked(OSDHint *)), this, SLOT(rightButtonSlot(OSDHint *)));
+	connect(hint, SIGNAL(midButtonClicked(OSDHint *)), this, SLOT(midButtonSlot(OSDHint *)));
+	connect(hint, SIGNAL(closing(OSDHint *)), this, SLOT(deleteHintAndUpdate(OSDHint *)));
+	connect(hint, SIGNAL(updated(OSDHint *)), this, SLOT(hintUpdated()));
 	setHint();
 
 	if (!hint_timer->isActive())
@@ -409,12 +407,14 @@ Hint *HintManager::addHint(Notification *notification)
 	if (frame->isHidden())
 		frame->show();
 
+	frame->setWindowOpacity(opacity);
+
 	kdebugf2();
 
 	return hint;
 }
 
-void HintManager::setLayoutDirection()
+void OSDHintManager::setLayoutDirection()
 {
 	kdebugf();
 	QPoint trayPosition;
@@ -447,7 +447,7 @@ void HintManager::setLayoutDirection()
 	kdebugf2();
 }
 
-void HintManager::showToolTip(const QPoint &point, const UserListElement &user)
+void OSDHintManager::showToolTip(const QPoint &point, const UserListElement &user)
 {
 	kdebugf();
 
@@ -491,7 +491,7 @@ void HintManager::showToolTip(const QPoint &point, const UserListElement &user)
 	kdebugf2();
 }
 
-void HintManager::hideToolTip()
+void OSDHintManager::hideToolTip()
 {
 	kdebugf();
 
@@ -505,7 +505,7 @@ void HintManager::hideToolTip()
 	kdebugf2();
 }
 
-void HintManager::notify(Notification *notification)
+void OSDHintManager::notify(Notification *notification)
 {
 	kdebugf();
 
@@ -520,30 +520,30 @@ void HintManager::notify(Notification *notification)
 	const UserListElements &ules = notification->userListElements();
 	if (linkedHints.count(qMakePair(ules, notification->type())))
 	{
-		Hint *linkedHint = linkedHints[qMakePair(ules, notification->type())];
+		OSDHint *linkedHint = linkedHints[qMakePair(ules, notification->type())];
 		linkedHint->addDetail(notification->details());
 	}
 	else
 	{
-		Hint *linkedHint = addHint(notification);
+		OSDHint *linkedHint = addHint(notification);
 		linkedHints[qMakePair(ules, notification->type())] = linkedHint;
 	}
 
 	kdebugf2();
 }
 
-void HintManager::notificationClosed(Notification *notification)
+void OSDHintManager::notificationClosed(Notification *notification)
 {
 	const UserListElements &ules = notification->userListElements();
 	if (linkedHints.count(qMakePair(ules, notification->type())))
 		linkedHints.remove(qMakePair(ules, notification->type()));
 }
 
-void HintManager::copyConfiguration(const QString &fromEvent, const QString &toEvent)
+void OSDHintManager::copyConfiguration(const QString &fromEvent, const QString &toEvent)
 {
 }
 
-void HintManager::createDefaultConfiguration()
+void OSDHintManager::createDefaultConfiguration()
 {
 	QWidget w;
 
@@ -571,7 +571,7 @@ void HintManager::createDefaultConfiguration()
 	config_file.addVariable("OSDHints", "Opacity", 100);
 }
 
-HintManager *hint_manager=NULL;
+OSDHintManager *hint_manager = NULL;
 
 /** @} */
 

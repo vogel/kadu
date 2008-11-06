@@ -25,7 +25,7 @@
  * @ingroup hints
  * @{
  */
-Hint::Hint(QWidget *parent, Notification *notification)
+OSDHint::OSDHint(QWidget *parent, Notification *notification)
 	: QWidget(parent, "OSDHint"), vbox(0), callbacksBox(0), icon(0), label(0), bcolor(), notification(notification),
 	  haveCallbacks(notification->getCallbacks().count() != 0)
 {
@@ -82,7 +82,7 @@ Hint::Hint(QWidget *parent, Notification *notification)
 	kdebugf2();
 }
 
-Hint::~Hint()
+OSDHint::~OSDHint()
 {
 	kdebugf();
 
@@ -92,7 +92,7 @@ Hint::~Hint()
 	kdebugf2();
 }
 
-void Hint::configurationUpdated()
+void OSDHint::configurationUpdated()
 {
 	QString configurationDirective;
 
@@ -111,7 +111,7 @@ void Hint::configurationUpdated()
 	setMaximumWidth(config_file.readNumEntry("OSDHints", "MaximumWidth", 500));
 }
 
-void Hint::createLabels(const QPixmap &pixmap)
+void OSDHint::createLabels(const QPixmap &pixmap)
 {
 	vbox = new QVBoxLayout(this);
 	vbox->setSpacing(2);
@@ -139,7 +139,7 @@ void Hint::createLabels(const QPixmap &pixmap)
 	labels->addWidget(label);
 }
 
-void Hint::updateText()
+void OSDHint::updateText()
 {
 	QString text;
 
@@ -179,22 +179,22 @@ void Hint::updateText()
 	emit updated(this);
 }
 
-void Hint::resetTimeout()
+void OSDHint::resetTimeout()
 {
 	secs = startSecs;
 }
 
-void Hint::notificationClosed()
+void OSDHint::notificationClosed()
 {
 	emit closing(this);
 }
 
-bool Hint::requireManualClosing()
+bool OSDHint::requireManualClosing()
 {
 	return haveCallbacks;
 }
 
-void Hint::nextSecond(void)
+void OSDHint::nextSecond(void)
 {
 	if (!haveCallbacks)
 	{
@@ -208,12 +208,12 @@ void Hint::nextSecond(void)
 	}
 }
 
-bool Hint::isDeprecated()
+bool OSDHint::isDeprecated()
 {
 	return (!haveCallbacks) && secs == 0;
 }
 
-void Hint::addDetail(const QString &detail)
+void OSDHint::addDetail(const QString &detail)
 {
 	details.append(detail);
 	if (details.count() > 5)
@@ -223,17 +223,17 @@ void Hint::addDetail(const QString &detail)
 	updateText();
 }
 
-bool Hint::hasUsers() const
+bool OSDHint::hasUsers() const
 {
 	return notification->userListElements().count() != 0;
 }
 
-const UserListElements & Hint::getUsers() const
+const UserListElements & OSDHint::getUsers() const
 {
 	return notification->userListElements();
 }
 
-void Hint::mouseReleaseEvent(QMouseEvent *event)
+void OSDHint::mouseReleaseEvent(QMouseEvent *event)
 {
 	switch (event->button())
 	{
@@ -254,19 +254,19 @@ void Hint::mouseReleaseEvent(QMouseEvent *event)
 	}
 }
 
-void Hint::enterEvent(QEvent *)
+void OSDHint::enterEvent(QEvent *)
 {
 	QString style = narg("QWidget {color:%1; background-color:%2; border-width:0px; border-color:%2}", fcolor.name(), bcolor.lighter().name());
 	setStyleSheet(style);
 }
 
-void Hint::leaveEvent(QEvent *)
+void OSDHint::leaveEvent(QEvent *)
 {
 	QString style = narg("QWidget {color:%1; background-color:%2; border-width:0px; border-color:%2}", fcolor.name(), bcolor.name());
 	setStyleSheet(style);
 }
 
-void Hint::getData(QString &text, QPixmap &pixmap, unsigned int &timeout, QFont &font, QColor &fgcolor, QColor &bgcolor)
+void OSDHint::getData(QString &text, QPixmap &pixmap, unsigned int &timeout, QFont &font, QColor &fgcolor, QColor &bgcolor)
 {
 	text = label->text().remove(" ");
 
@@ -281,12 +281,12 @@ void Hint::getData(QString &text, QPixmap &pixmap, unsigned int &timeout, QFont 
 	bgcolor = bcolor;
 }
 
-void Hint::acceptNotification()
+void OSDHint::acceptNotification()
 {
 	notification->callbackAccept();
 }
 
-void Hint::discardNotification()
+void OSDHint::discardNotification()
 {
 	notification->callbackDiscard();
 }

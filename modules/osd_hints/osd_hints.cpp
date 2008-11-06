@@ -18,7 +18,7 @@ extern "C" KADU_EXPORT int osd_hints_init(bool firstLoad)
 {
 	kdebugf();
 
-	hint_manager = new HintManager();
+	hint_manager = new OSDHintManager();
 	MainConfigurationWindow::registerUiFile(dataPath("kadu/modules/configuration/osd_hints.ui"), hint_manager);
 
 	kdebugf2();
