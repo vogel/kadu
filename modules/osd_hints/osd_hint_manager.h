@@ -43,10 +43,6 @@ private:
 	void showNewMessage(const QString &configurationDirective, const QString &title, const QString &contentTitle, UserListElements senders, const QString &msg);
 
 	// TODO: usun±æ w 0.6
-	void realCopyConfiguration(const QString &fromHint, const QString &toHint);
-	void import_0_5_0_Configuration();
-	void import_0_5_0_Configuration_fromTo(const QString &from, const QString &to,
-		const QString &syntax = QString::null, const QString &detailSyntax = QString::null);
 	void createDefaultConfiguration();
 
 private slots:

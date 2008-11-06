@@ -40,8 +40,11 @@ HintManager::HintManager(QWidget *parent, const char *name)	: Notifier(parent, n
 	hints(), tipFrame(0)
 {
 	kdebugf();
+#ifdef Q_OS_MAC
+	frame = new QFrame(parent, name, Qt::FramelessWindowHint | Qt::SplashScreen | Qt::X11BypassWindowManagerHint | Qt::WindowStaysOnTopHint |Qt::MSWindowsOwnDC);
+#else
 	frame = new QFrame(parent, name, Qt::FramelessWindowHint | Qt::Tool | Qt::X11BypassWindowManagerHint | Qt::WindowStaysOnTopHint |Qt::MSWindowsOwnDC);
-
+#endif
 	frame->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
 	frame->setFrameStyle(QFrame::Box | QFrame::Plain);
 	frame->setLineWidth(FRAME_WIDTH);
@@ -66,7 +69,6 @@ HintManager::HintManager(QWidget *parent, const char *name)	: Notifier(parent, n
 	notification_manager->registerNotifier(QT_TRANSLATE_NOOP("@default", "OSDHints"), this);
 	tool_tip_class_manager->registerToolTipClass(QT_TRANSLATE_NOOP("@default", "OSDHints"), this);
 
-	import_0_5_0_Configuration();
 	createDefaultConfiguration();
 
 	kdebugf2();
@@ -160,6 +162,10 @@ void HintManager::hintUpdated()
 
 void HintManager::configurationUpdated()
 {
+	double opacity = config_file.readNumEntry("OSDHints", "Opacity", 100);
+	opacity /= 100;
+	frame->setWindowOpacity(opacity);
+
 	setHint();
 }
 
@@ -536,42 +542,6 @@ void HintManager::notificationClosed(Notification *notification)
 void HintManager::copyConfiguration(const QString &fromEvent, const QString &toEvent)
 {
 }
-
-void HintManager::realCopyConfiguration(const QString &fromHint, const QString &toHint)
-{
-	config_file.writeEntry("OSDHints", toHint + "_font", config_file.readFontEntry("OSDHints", fromHint + "_font"));
-	config_file.writeEntry("OSDHints", toHint + "_fgcolor", config_file.readColorEntry("OSDHints", fromHint + "_fgcolor"));
-	config_file.writeEntry("OSDHints", toHint + "_bgcolor", config_file.readColorEntry("OSDHints", fromHint + "_bgcolor"));
-	config_file.writeEntry("OSDHints", toHint + "_timeout", (int) config_file.readUnsignedNumEntry("OSDHints",  fromHint + "_timeout"));
-}
-
-void HintManager::import_0_5_0_Configuration()
-{
-	if (config_file.readBoolEntry("OSDNotify", "UserBoxChangeToolTip_Hints", false) || (config_file.readEntry("Look", "UserboxToolTipStyle", "foo") == "foo"))
-	{
-		config_file.writeEntry("Look", "UserboxToolTipStyle", "OSDHints");
-		tool_tip_class_manager->useToolTipClass("OSDHints");
-		config_file.removeVariable("OSDNotify", "UserBoxChangeToolTip_Hints");
-	}
-
-	QString syntax = config_file.readEntry("OSDHints","NotifyHintSyntax");
-
-	import_0_5_0_Configuration_fromTo("HintError", "ConnectionError");
-	import_0_5_0_Configuration_fromTo("HintOnline", "StatusChanged/ToOnline", syntax);
-	import_0_5_0_Configuration_fromTo("HintBusy", "StatusChanged/ToBusy", syntax);
-	import_0_5_0_Configuration_fromTo("HintInvisible", "StatusChanged/ToInvisible", syntax);
-	import_0_5_0_Configuration_fromTo("HintOffline", "StatusChanged/ToOffline", syntax);
-	import_0_5_0_Configuration_fromTo("HintNewChat", "NewChat");
-	import_0_5_0_Configuration_fromTo("HintNewMessage", "NewMessage");
-
-	if ((config_file.readNumEntry("OSDHints", "SetAll_timeout", -1) == -1) && (config_file.readNumEntry("OSDHints", "Event_NewChat_timeout", -1) != -1))
-		realCopyConfiguration("Event_NewChat", "SetAll");
-}
-
-void HintManager::import_0_5_0_Configuration_fromTo(const QString &from, const QString &to, const QString &syntax, const QString &detailSyntax)
-{
-}
-
 
 void HintManager::createDefaultConfiguration()
 {
