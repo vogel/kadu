@@ -18,9 +18,7 @@ class Hint : public QWidget, ConfigurationAwareObject
 {
 	Q_OBJECT
 
-	QBitmap mask;
 	QVBoxLayout *vbox;
-
 	QHBoxLayout *labels;
 	QHBoxLayout *callbacksBox;
 

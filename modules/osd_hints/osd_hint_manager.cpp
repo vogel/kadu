@@ -33,7 +33,7 @@
  * @ingroup hints
  * @{
  */
-#define FRAME_WIDTH 1
+#define FRAME_WIDTH 2
 
 HintManager::HintManager(QWidget *parent, const char *name)	: Notifier(parent, name), ToolTipClass(),
 	hint_timer(new QTimer(this, "hint_timer")),
@@ -45,6 +45,11 @@ HintManager::HintManager(QWidget *parent, const char *name)	: Notifier(parent, n
 	frame->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
 	frame->setFrameStyle(QFrame::Box | QFrame::Plain);
 	frame->setLineWidth(FRAME_WIDTH);
+	frame->setStyleSheet("QFrame {border-width: 1px; border-style: solid; border-color: #535353; border-radius: 3px;} ");
+
+	double opacity = config_file.readNumEntry("OSDHints", "Opacity", 100);
+	opacity /= 100;
+	frame->setWindowOpacity(opacity);
 
 	layout = new QVBoxLayout(frame, FRAME_WIDTH, 0, "grid");
 	layout->setResizeMode(QLayout::Fixed);
