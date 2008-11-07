@@ -3,6 +3,8 @@
  * http://th30z.netsons.org/2008/08/qt4-mac-searchbox-wrapper/
  */
 
+#ifdef Q_OS_MAC
+
 // Qt4 Headers
 #include <QtCore/QVarLengthArray>
 #include <QtGui/QMenu>
@@ -148,3 +150,5 @@ void QMacSearchBox::setText (const QString& text) {
 void QMacSearchBox::clear (void) {
     setText(QString());
 }
+
+#endif /* Q_OS_MAC */

@@ -1,3 +1,5 @@
+#ifdef Q_OS_MAC
+
 #ifndef _QMAC_SEARCHBOX_H_
 #define _QMAC_SEARCHBOX_H_
 
@@ -35,4 +37,6 @@ class QMacSearchBox : public QWidget
         HIViewRef searchField;
 };
 
-#endif
+#endif /* _QMAC_SEARCHBOX_H_ */
+
+#endif /* Q_OS_MAC */
