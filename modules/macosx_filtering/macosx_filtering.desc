@@ -1,8 +1,0 @@
-[Module]
-Description=User list filtering for MacOS X
-Description[pl]=Filtrowanie listy kontaktow dla MacOS X
-Author=
-Dependencies=
-Provides=filtering
-LoadByDefault=true
-Version=core
