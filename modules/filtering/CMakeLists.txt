@@ -21,3 +21,5 @@ kadu_module (filtering
 	MODULE_TRANSLATION_SOURCES ${TRANSLATION_SOURCES}
 	MODULE_CONFIGURATION_FILES ${CONFIGURATION_FILES}
 )
+
+install (FILES "data/clear.png" "data/filtering.png" DESTINATION "share/kadu/modules/data/filtering")
