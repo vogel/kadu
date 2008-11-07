@@ -1,3 +1,17 @@
+if (APPLE)
+
+set (SOURCES
+	filtering.cpp
+	searchbox_mac.cpp
+)
+
+set (MOC_SOURCES
+	filtering.h
+	searchbox_mac.h
+)
+
+else (APPLE)
+
 set (SOURCES
 	filtering.cpp
 )
@@ -5,6 +19,8 @@ set (SOURCES
 set (MOC_SOURCES
 	filtering.h
 )
+
+endif (APPLE)
 
 set (TRANSLATION_SOURCES
 	translations/filtering_pl.ts
@@ -38,10 +54,10 @@ if (filtering STREQUAL STATIC)
 	set_target_properties(filtering PROPERTIES COMPILE_FLAGS "-DKADULIB" )
 else (filtering STREQUAL STATIC)
 	if (WIN32)
-		target_link_libraries(autoresponder kadu_core)
+		target_link_libraries(filtering kadu_core)
 	endif (WIN32)
 	if (APPLE)
-		set_target_properties(ext_sound PROPERTIES LINK_FLAGS "-undefined dynamic_lookup")
+		set_target_properties(filtering PROPERTIES LINK_FLAGS "-undefined dynamic_lookup")
 	endif (APPLE)
 	install (TARGETS filtering DESTINATION lib/kadu/modules)
 endif (filtering STREQUAL STATIC)

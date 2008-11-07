@@ -9,6 +9,7 @@
 
 class QPushButton;
 class QLineEdit;
+class QMacSearchBox;
 
 class Filtering : public QWidget, ConfigurationAwareObject 
 {
@@ -18,10 +19,12 @@ class Filtering : public QWidget, ConfigurationAwareObject
 	void hideFilter ();
 	void filterWith (const QString& f);
 	bool checkString (const QString& hay, const QString& needle, bool startsWith);
-
+#ifdef Q_OS_MAC
+	QMacSearchBox *search;
+#else
 	QPushButton *clearPB;
 	QLineEdit *textLE;
-
+#endif
 	UserGroup *filter;
 
 	void createDefaultConfiguration();
