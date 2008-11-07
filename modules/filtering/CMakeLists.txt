@@ -1,9 +1,11 @@
 set (SOURCES
 	filtering.cpp
+	searchbox_mac.cpp
 )
 
 set (MOC_SOURCES
 	filtering.h
+	searchbox_mac.h
 )
 
 set (TRANSLATION_SOURCES

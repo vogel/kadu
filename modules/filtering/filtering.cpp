@@ -15,6 +15,9 @@
 #include "userlist.h"
 
 #include "filtering.h"
+#ifdef Q_OS_MAC
+#include "searchbox_mac.h"
+#endif
 
 extern "C" int filtering_init(bool firstLoad)
 {
@@ -52,6 +55,17 @@ Filtering::Filtering(): QWidget(kadu)
 	
 	QHBoxLayout *l = new QHBoxLayout(this, 0, 5);
 
+#ifdef Q_OS_MAC
+	setContentsMargins(0, 2, 0, 0);
+	
+	search = new QMacSearchBox(this);
+	search->setMinimumHeight(24);
+	l->addWidget(search);
+
+	connect(search, SIGNAL(textChanged(const QString&)), this, SLOT(on_textLE_textChanged(const QString&)));
+
+#else
+
 	l->addWidget (clearPB = new QPushButton(this, "clearPB"));
 	clearPB->setPixmap (QPixmap (dataPath ("kadu/modules/data/filtering/clear.png")));
 	l->addWidget (new QLabel (tr("Filter") + ":", this, "filterLBL"));
@@ -61,6 +75,8 @@ Filtering::Filtering(): QWidget(kadu)
 	connect(textLE, SIGNAL(textChanged(const QString&)), this, SLOT(on_textLE_textChanged(const QString&)));
 	connect(textLE, SIGNAL(returnPressed()), this, SLOT(on_textLE_returnPressed()));
 	connect(kadu, SIGNAL(keyPressed(QKeyEvent*)), this, SLOT(on_kadu_keyPressed(QKeyEvent*)));
+
+#endif
 
 	kadu->userbox ()->installEventFilter (this);
 
@@ -73,7 +89,10 @@ Filtering::Filtering(): QWidget(kadu)
 Filtering::~Filtering()
 {
 	kdebugf();
-	
+#ifdef Q_OS_MAC
+	kadu->userbox()->removeFilter(filter);
+	disconnect(search, SIGNAL(textChanged(const QString&)), this, SLOT(textChanged(const QString&)));
+#else
 	if (! textLE->text ().isEmpty ()) {
 		kadu->userbox ()->removeFilter (filter);
 	}
@@ -81,7 +100,7 @@ Filtering::~Filtering()
 	disconnect(clearPB, SIGNAL(clicked()), this, SLOT(on_clearPB_clicked()));
 	disconnect(textLE, SIGNAL(textChanged(const QString&)), this, SLOT(on_textLE_textChanged(const QString&)));
 	disconnect(kadu, SIGNAL(keyPressed(QKeyEvent*)), this, SLOT(on_kadu_keyPressed(QKeyEvent*)));
-
+#endif
 	kadu->userbox ()->removeEventFilter (this);
 
 	kdebugf2();
@@ -90,7 +109,7 @@ Filtering::~Filtering()
 bool Filtering::on_kadu_keyPressed (QKeyEvent *e)
 {
 //	kdebugf();
-	
+#ifndef Q_OS_MAC
 	QString text = e->text ();
 	kdebugm (KDEBUG_INFO, QString("text=[%1] key=%2\n").arg (e->text ()).arg (e->key ()).local8Bit ());
 	
@@ -110,7 +129,7 @@ bool Filtering::on_kadu_keyPressed (QKeyEvent *e)
 	} else {
 	    return false;
 	}
-	
+#endif	
 //	kdebugf2();
 }
 
@@ -147,16 +166,18 @@ void Filtering::keyPressEvent (QKeyEvent *e)
 void Filtering::hideFilter ()
 {
     hide ();
+#ifndef Q_OS_MAC
     textLE->setText (QString::null);
+#endif
     kadu->userbox ()->setFocus ();
 }
 
 void Filtering::on_clearPB_clicked ()
 {
 	kdebugf();
-	
+#ifndef Q_OS_MAC
 	textLE->clear ();
-	
+#endif
 	kdebugf2();
 }
 
