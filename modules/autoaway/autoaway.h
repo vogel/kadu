@@ -8,7 +8,7 @@
 #include "configuration_aware_object.h"
 #include "main_configuration_window.h"
 #include "status_changer.h"
-#include "gadu.h"
+#include "../modules/gadu_protocol/gadu.h"
 
 class QLineEdit;
 class QSpinBox;

@@ -12,6 +12,8 @@
 #include <QtGui/QMenu>
 #include <QtGui/QToolTip>
 
+#include "account.h"
+#include "account_manager.h"
 #include "action.h"
 #include "chat_edit_box.h"
 #include "chat_manager.h"
@@ -19,7 +21,6 @@
 #include "config_file.h"
 #include "custom_input.h"
 #include "debug.h"
-#include "gadu.h"
 #include "html_document.h"
 #include "icons_manager.h"
 #include "kadu.h"
@@ -612,6 +613,7 @@ void MediaPlayer::checkTitle()
 		else
 			checked = false;
 
+	Protocol *gadu = AccountManager::instance()->defaultAccount()->protocol();
 	if (!gadu->currentStatus().isOffline() && checked)
 	{
 		if (title != currentTitle || !gadu->currentStatus().hasDescription())

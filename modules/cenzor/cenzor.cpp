@@ -1,12 +1,13 @@
-#include "cenzor.h"
-
+#include "account.h"
+#include "account_manager.h"
 #include "protocol.h"
 #include "debug.h"
 #include "misc.h"
 #include "config_file.h"
 #include "modules/notify/notify.h"
 #include "icons_manager.h"
-#include "gadu.h"
+
+#include "cenzor.h"
 
 #include <QtCore/QRegExp>
 #include <QtCore/QStringList>
@@ -39,6 +40,7 @@ Cenzor::Cenzor()
 {
 	kdebugf();
 
+	Protocol *gadu = AccountManager::instance()->defaultAccount()->protocol();
 	connect(gadu, SIGNAL(rawGaduReceivedMessageFilter(Protocol *, UserListElements, QString&, QByteArray&, bool&)), this, SLOT(messageFiltering(Protocol *, UserListElements, QString&, QByteArray&, bool&)));
 
 	words_read();
@@ -53,6 +55,7 @@ Cenzor::~Cenzor()
 
 	words_save();
 
+	Protocol *gadu = AccountManager::instance()->defaultAccount()->protocol();
 	disconnect(gadu, SIGNAL(rawGaduReceivedMessageFilter(Protocol *, UserListElements, QString&, QByteArray&, bool&)), this, SLOT(messageFiltering(Protocol *, UserListElements, QString&, QByteArray&, bool&)));
 
 	kdebugf2();

@@ -16,6 +16,8 @@
 #include <QtGui/QLineEdit>
 #include <QtGui/QPushButton>
 
+#include "account.h"
+#include "account_manager.h"
 #include "config_file.h"
 #include "debug.h"
 #include "html_document.h"
@@ -171,6 +173,7 @@ Register::Register(QDialog *parent) : QWidget(parent, Qt::Window),
 	layout->addWidget(left);
 	layout->addWidget(center);
 
+	GaduProtocol *gadu = dynamic_cast<GaduProtocol *>(AccountManager::instance()->defaultAccount()->protocol());
 	connect(gadu, SIGNAL(registered(bool, UinType)), this, SLOT(registered(bool, UinType)));
 
  	loadWindowGeometry(this, "General", "RegisterDialogGeometry", 0, 50, 400, 400);
@@ -217,6 +220,7 @@ void Register::doRegister()
 	}
 
 	setEnabled(false);
+	GaduProtocol *gadu = dynamic_cast<GaduProtocol *>(AccountManager::instance()->defaultAccount()->protocol());
 	gadu->registerAccount(mailedit->text(), pwd->text());
 
 	kdebugf2();

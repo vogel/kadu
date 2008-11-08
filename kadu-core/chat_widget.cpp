@@ -11,6 +11,8 @@
 #include <QtGui/QSplitter>
 #include <QtGui/QVBoxLayout>
 
+#include "account.h"
+#include "account_manager.h"
 #include "action.h"
 #include "chat_edit_box.h"
 #include "chat_manager.h"
@@ -20,7 +22,6 @@
 #include "custom_input.h"
 #include "debug.h"
 #include "emoticons.h"
-#include "gadu.h"
 #include "hot_key.h"
 #include "icons_manager.h"
 #include "ignore.h"
@@ -130,6 +131,8 @@ ChatWidget::~ChatWidget()
 	chat_manager->unregisterChatWidget(this);
 
 	disconnectAcknowledgeSlots();
+
+	Protocol *gadu = AccountManager::instance()->defaultAccount()->protocol();
 	disconnect(gadu, SIGNAL(imageReceivedAndSaved(UinType,uint32_t,uint32_t,const QString&)),
 		body, SLOT(imageReceivedAndSaved(UinType,uint32_t,uint32_t,const QString&)));
 
@@ -364,7 +367,7 @@ void ChatWidget::refreshTitle()
 		else
 			title = KaduParser::parse(config_file.readEntry("Look","ChatContents"), user, false);
 
-		pix = user.status(currentProtocol()->protocolID()).pixmap();
+		pix = user.status("Gadu").pixmap();
 	}
 
 	title.replace("<br/>", " ");

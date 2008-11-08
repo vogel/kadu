@@ -1,140 +1,35 @@
+/***************************************************************************
+ *                                                                         *
+ *   This program is free software; you can redistribute it and/or modify  *
+ *   it under the terms of the GNU General Public License as published by  *
+ *   the Free Software Foundation; either version 2 of the License, or     *
+ *   (at your option) any later version.                                   *
+ *                                                                         *
+ ***************************************************************************/
+
 #ifndef GADU_H
 #define GADU_H
 
 #include <QtGui/QPixmap>
 #include <QtNetwork/QHostAddress>
 
-#include "libgadu.h"
-#include "protocol.h"
-#include "userlist.h"
+#include <libgadu.h>
 
 #include "exports.h"
+#include "protocol.h"
+#include "userlist.h"
 
 typedef uin_t UinType;
 
 class QTimer;
 
+class AccountData;
+class GaduAccountData;
 class GaduSocketNotifiers;
 
-// ------------------------------------
-//            UinsList
-// ------------------------------------
-
-class KADUAPI UinsList : public QList<UinType>
-{
-
-public:
-	/**
-		konstruuje obiekt UinsList
-	**/
-	UinsList();
-
-	/**
-		konstruuje obiekt UinsList, inicjuj�c go uinem
-	**/
-	UinsList(UinType uin);
-
-	/**
-		konstruuje obiekt UinsList na podstawie �a�cucha "uins" sk�adaj�cego
-		si� z oddzielonych przecinkami Uin�w
-	**/
-	UinsList(const QString &uins);
-
-	/**
-	konstruuje obiekt UinsList na podstawie "list"
-		przekszta�acaj�c ka�dy element do typy UinType
-	**/
-	UinsList(const QStringList &list);
-
-	bool equals(const UinsList &uins) const;
-	void sort();
-	QStringList toStringList() const;
-
-	bool operator < (const UinsList &) const;
-
-};
-
-// ------------------------------------
-//             UserStatus
-// ------------------------------------
-
-class KADUAPI GaduStatus : public UserStatus
-{
-
-public:
-	GaduStatus();
-	virtual ~GaduStatus();
-
-	GaduStatus &operator = (const UserStatus &copyMe);
-
-	virtual QPixmap pixmap(eUserStatus status, bool has_desc, bool mobile) const;
-	virtual QString pixmapName(eUserStatus status, bool has_desc, bool mobile) const;
-
-	int toStatusNumber() const;
-	static int toStatusNumber(eUserStatus status, bool has_desc);
-
-	void fromStatusNumber(int statusNumber, const QString &description);
-
-	virtual UserStatus *copy() const;
-	virtual QString protocolName() const;
-
-};
-
-// ------------------------------------
-//              Search
-// ------------------------------------
-
-struct SearchResult
-{
-	QString Uin;
-	QString First;
-	QString Last;
-	QString Nick;
-	QString Born;
-	QString City;
-	QString FamilyName;
-	QString FamilyCity;
-	int Gender;
-	GaduStatus Stat;
-
-	SearchResult();
-	SearchResult(const SearchResult &);
-	void setData(const char *uin, const char *first, const char *last, const char *nick, const char *born,
-		const char *city, const char *familyName, const char *familyCity, const char *gender, const char *status);
-};
-
-typedef QList<SearchResult> SearchResults;
-
-struct SearchRecord
-{
-	int Seq;
-	int FromUin;
-	QString Uin;
-	QString FirstName;
-	QString LastName;
-	QString NickName;
-	QString City;
-	QString BirthYearFrom;
-	QString BirthYearTo;
-	int Gender;
-	bool Active;
-	bool IgnoreResults;
-
-	SearchRecord();
-	virtual ~SearchRecord();
-
-	void reqUin(const QString& uin);
-	void reqFirstName(const QString& firstName);
-	void reqLastName(const QString& lastName);
-	void reqNickName(const QString& nickName);
-	void reqCity(const QString& city);
-	void reqBirthYear(const QString& birthYearFrom, const QString& birthYearTo);
-	void reqGender(bool female);
-	void reqActive();
-
-	void clearData();
-};
-
+struct SearchRecord;
+struct SearchResult;
+typedef class QList<SearchResult> SearchResults;
 
 enum GaduError
 {
@@ -151,22 +46,6 @@ enum GaduError
 	ConnectionUnknow,
 	ConnectionTimeout,
 	Disconnected
-};
-
-// ------------------------------------
-//			GaduFormater
-// ------------------------------------
-class GaduFormater
-{
-	static void appendToMessage(Message &result, UinType sender, const QString &content, struct gg_msg_richtext_format &format,
-		struct gg_msg_richtext_color &color, struct gg_msg_richtext_image &image, bool receiveImages);
-
-public:
-	static unsigned int computeFormatsSize(const Message &message);
-	static unsigned char * createFormats(const Message &message, unsigned int &size);
-
-	static Message createMessage(UinType sender, const QString &content, unsigned char * formats, unsigned int size, bool receiveImages);
-
 };
 
 // ------------------------------------
@@ -216,6 +95,8 @@ class KADUAPI GaduProtocol : public Protocol
 		/** Zmienianie has�a **/
 		ChangePassword
 	} Mode;
+
+	GaduAccountData *GaduData;
 
 	/** Identyfikator u�ytkownika **/
 	UinType DataUin;
@@ -371,7 +252,7 @@ class KADUAPI GaduProtocol : public Protocol
 	**/
 	void doChangePassword();
 
-	GaduProtocol(const GaduProtocol &) : Protocol(QString::null, QString::null) {}
+	GaduProtocol(const GaduProtocol &) : Protocol() {}
 	GaduProtocol &operator=(const GaduProtocol &){return *this;}
 
 private slots:
@@ -598,10 +479,11 @@ private slots:
 
 public:
 	static void initModule();
-	static void closeModule();
 
-	GaduProtocol(const QString &id, QObject *parent = 0);
+	GaduProtocol();
 	virtual ~GaduProtocol();
+
+	virtual void setData(AccountData *);
 
 	unsigned int maxDescriptionLength();
 
@@ -975,7 +857,5 @@ signals:
 	void dcc7Rejected(struct gg_dcc7 *);
 
 };
-
-extern KADUAPI GaduProtocol *gadu;
 
 #endif

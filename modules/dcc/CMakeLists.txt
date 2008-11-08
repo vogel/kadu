@@ -10,7 +10,6 @@ set (SOURCES
 
 set (MOC_SOURCES
 	dcc.h
-	dcc_handler.h
 	dcc_socket.h
 	file_transfer.h
 	file_transfer_manager.h

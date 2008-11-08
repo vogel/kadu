@@ -19,6 +19,8 @@ typedef uint32_t UinType;
 
 class Message;
 
+class AccountData;
+
 class Protocol : public QObject
 {
 	Q_OBJECT
@@ -41,9 +43,6 @@ private:
 
 protected:
 	QDateTime ConnectionTime;
-
-	QString ProtocolID;
-	QString id;
 
 	/**
 		Bie��cy status. Zmieniany po po��czeniu, oraz w przypadku zmiany statusu kiedy po��czenie
@@ -71,7 +70,7 @@ protected:
 	UserStatus *NextStatus;
 
 public:
-	Protocol(const QString &proto, const QString &id, QObject *parent = 0);
+	Protocol();
 	virtual ~Protocol();
 
 	/**
@@ -137,15 +136,13 @@ public:
 	**/
 	const UserStatus & currentStatus() const { return *CurrentStatus; }
 
-	QString protocolID() const { return ProtocolID; }
-
-	QString ID() const { return id; }
-
 	virtual bool validateUserID(QString &uid) = 0;
 
 	virtual UserStatus * newStatus() const = 0;
 
 	const QDateTime & connectionTime() const;
+
+	virtual void setData(AccountData *data) = 0;
 
 public slots:
 	virtual bool sendMessage(UserListElement user, const QString &messageContent);

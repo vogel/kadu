@@ -166,7 +166,7 @@ add_custom_target(uninstall "${CMAKE_COMMAND}" -P "${CMAKE_CURRENT_BINARY_DIR}/c
 
 add_subdirectory (modules)
 add_subdirectory (kadu-core)
-add_subdirectory (varia)
+# add_subdirectory (varia)
 add_subdirectory (translations)
 add_subdirectory (kthxbye)
 

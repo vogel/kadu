@@ -20,9 +20,11 @@
 #include <QtGui/QVBoxLayout>
 #include <QtNetwork/QHostInfo>
 
+#include "account.h"
+#include "account_manager.h"
 #include "config_file.h"
 #include "debug.h"
-#include "gadu.h"
+#include "../modules/gadu_protocol/gadu.h"
 #include "groups_manager.h"
 #include "icons_manager.h"
 #include "message_box.h"
@@ -209,6 +211,8 @@ void UserInfo::setupTab1()
 	e_lastname->setText(User.lastName());
 	e_mobile->setText(User.mobile());
 	e_email->setText(User.email());
+
+	GaduProtocol *gadu = dynamic_cast<GaduProtocol *>(AccountManager::instance()->defaultAccount()->protocol());
 
 	connect(e_nickname, SIGNAL(editingFinished()), this, SLOT(updateAltNick()));
 	connect(e_firstname, SIGNAL(editingFinished()), this, SLOT(updateAltNick()));

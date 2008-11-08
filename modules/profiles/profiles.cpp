@@ -24,7 +24,7 @@
 #include "profiles.h" 
 #include "debug.h"
 #include "modules.h"
-#include "gadu.h"
+#include "../modules/gadu_protocol/gadu.h"
 #include "message_box.h"
 #include "kadu.h"
 #include "misc.h"

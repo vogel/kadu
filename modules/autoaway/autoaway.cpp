@@ -15,12 +15,15 @@
 #include <windows.h>
 #endif
 
-#include "autoaway.h"
+#include "account.h"
+#include "account_manager.h"
 #include "config_file.h"
 #include "debug.h"
 #include "kadu.h"
 #include "kadu_parser.h"
 #include "misc.h"
+
+#include "autoaway.h"
 
 /**
  * @ingroup autoaway
@@ -128,6 +131,8 @@ void AutoAwayStatusChanger::setChangeDescriptionTo(ChangeDescriptionTo newChange
 AutoAway::AutoAway()
 	: autoAwayStatusChanger(0), timer(0), updateDescripion(true)
 {
+	Protocol *gadu = AccountManager::instance()->defaultAccount()->protocol();
+
 	connect(gadu, SIGNAL(connected()), this, SLOT(on()));
 	connect(gadu, SIGNAL(disconnected()), this, SLOT(off()));
 
@@ -150,6 +155,7 @@ AutoAway::~AutoAway()
 		autoAwayStatusChanger = 0;
 	}
 
+	Protocol *gadu = AccountManager::instance()->defaultAccount()->protocol();
 	disconnect(gadu, SIGNAL(connected()), this, SLOT(on()));
 	disconnect(gadu, SIGNAL(disconnected()), this, SLOT(off()));
 
@@ -334,6 +340,7 @@ void AutoAway::configurationUpdated()
 
 	changeTo = (AutoAwayStatusChanger::ChangeDescriptionTo)config_file.readNumEntry("General", "AutoChangeDescription");
 
+	Protocol *gadu = AccountManager::instance()->defaultAccount()->protocol();
 	if ((autoAwayEnabled || autoInvisibleEnabled || autoDisconnectEnabled) && !gadu->currentStatus().isOffline())
 		on();
 	else

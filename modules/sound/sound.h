@@ -13,7 +13,7 @@
 #include "../notify/notify.h"
 
 #include "config_file.h"
-#include "gadu.h"
+#include "../modules/gadu_protocol/gadu.h"
 #include "main_configuration_window.h"
 #include "misc.h"
 #include "message_box.h"

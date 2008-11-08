@@ -15,7 +15,7 @@
 
 #include "config_file.h"
 #include "debug.h"
-#include "gadu_images_manager.h"
+#include "../modules/gadu_protocol/gadu_images_manager.h"
 #include "html_document.h"
 #include "kadu.h"
 #include "misc.h"

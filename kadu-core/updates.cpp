@@ -9,9 +9,11 @@
 
 #include <QtNetwork/QHttp>
 
+#include "account.h"
+#include "account_manager.h"
 #include "config_file.h"
 #include "debug.h"
-#include "gadu.h"
+#include "../modules/gadu_protocol/gadu.h"
 #include "kadu.h"
 #include "message_box.h"
 
@@ -96,6 +98,8 @@ void Updates::initModule()
 			instance = new Updates(myUin);
 			connect(instance->httpClient, SIGNAL(readyRead(const QHttpResponseHeader &)),
 					instance, SLOT(gotUpdatesInfo(const QHttpResponseHeader &)));
+
+			GaduProtocol *gadu = dynamic_cast<GaduProtocol *>(AccountManager::instance()->defaultAccount()->protocol());
 			connect(gadu, SIGNAL(connected()), instance, SLOT(run()));
 		}
 	}
@@ -122,6 +126,7 @@ void Updates::gotUpdatesInfo(const QHttpResponseHeader &responseHeader)
 
 	QByteArray data = httpClient->readAll();
 
+	GaduProtocol *gadu = dynamic_cast<GaduProtocol *>(AccountManager::instance()->defaultAccount()->protocol());
 	if (config_file.readBoolEntry("General", "CheckUpdates"))
 	{
 		unsigned int size = data.size();

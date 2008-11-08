@@ -10,7 +10,7 @@
 #include <QtNetwork/QHostAddress>
 
 #include "debug.h"
-#include "gadu.h"
+#include "../modules/gadu_protocol/gadu.h"
 #include "misc.h"
 #include "status.h"
 #include "usergroup.h"

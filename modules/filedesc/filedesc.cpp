@@ -7,7 +7,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "gadu.h"
+#include "account.h"
+#include "account_manager.h"
 #include "kadu.h"
 #include "config_file.h"
 #include "configuration_window.h"
@@ -16,6 +17,7 @@
 
 #include "filedesc.h"
 
+#include <QtCore/QTextStream>
 #include <QtCore/QTimer>
 
 #define MODULE_FILEDESC_VERSION 1.13
@@ -104,6 +106,8 @@ FileDescription::~FileDescription()
 
 void FileDescription::checkTitle()
 {
+	Protocol *gadu = AccountManager::instance()->defaultAccount()->protocol();
+
 	if (QFile::exists(config_file.readEntry("FileDesc", "file")))
 	{
 		QFile file(config_file.readEntry("FileDesc", "file"));

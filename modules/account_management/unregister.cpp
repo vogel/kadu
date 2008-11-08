@@ -15,9 +15,11 @@
 #include <QtGui/QLineEdit>
 #include <QtGui/QPushButton>
 
+#include "account.h"
+#include "account_manager.h"
 #include "config_file.h"
 #include "debug.h"
-#include "gadu.h"
+#include "../modules/gadu_protocol/gadu.h"
 #include "icons_manager.h"
 #include "message_box.h"
 #include "misc.h"
@@ -103,6 +105,7 @@ Unregister::Unregister(QDialog *parent) : QWidget(parent, Qt::Window),
 	layout->addWidget(left);
 	layout->addWidget(center);
 
+	GaduProtocol *gadu = dynamic_cast<GaduProtocol *>(AccountManager::instance()->defaultAccount()->protocol());
 	connect(gadu, SIGNAL(unregistered(bool)), this, SLOT(unregistered(bool)));
 
  	loadWindowGeometry(this, "General", "UnregisterDialogGeometry", 0, 50, 355, 340);
@@ -136,6 +139,7 @@ void Unregister::doUnregister()
 	}
 
 	setEnabled(false);
+	GaduProtocol *gadu = dynamic_cast<GaduProtocol *>(AccountManager::instance()->defaultAccount()->protocol());
 	gadu->unregisterAccount(uin->text().toUInt(), pwd->text());
 	kdebugf2();
 }

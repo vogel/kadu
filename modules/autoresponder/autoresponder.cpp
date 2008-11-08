@@ -9,10 +9,11 @@
 
 #include <QtGui/QApplication>
 
+#include "account.h"
+#include "account_manager.h"
 #include "chat_widget.h"
 #include "chat_manager.h"
 #include "debug.h"
-#include "gadu.h"
 #include "kadu.h"
 #include "kadu_parser.h"
 
@@ -40,6 +41,7 @@ AutoResponder::AutoResponder(QObject *parent, const char *name) : QObject(parent
 {
 	kdebugf();
 
+	Protocol *gadu = AccountManager::instance()->defaultAccount()->protocol();
 	connect(gadu, SIGNAL(messageReceived(Protocol *, UserListElements, const QString &, time_t )),
 		this, SLOT(messageReceived(Protocol *, UserListElements, const QString&, time_t)));
 	connect(chat_manager, SIGNAL(chatWidgetOpen(ChatWidget *)), this, SLOT(chatOpenedClosed(ChatWidget *)));
@@ -56,6 +58,7 @@ AutoResponder::~AutoResponder()
 {
 	kdebugf();
 
+	Protocol *gadu = AccountManager::instance()->defaultAccount()->protocol();
 	disconnect(gadu, SIGNAL(messageReceived(Protocol *, UserListElements, const QString&, time_t)),
 		this, SLOT(messageReceived(Protocol *, UserListElements, const QString&, time_t)));
 	disconnect(chat_manager, SIGNAL(chatWidgetOpen(ChatWidget *)), this, SLOT(chatOpenedClosed(ChatWidget *)));

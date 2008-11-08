@@ -18,7 +18,7 @@
 
 #include "config_file.h"
 #include "debug.h"
-#include "gadu.h"
+#include "../modules/gadu_protocol/gadu.h"
 #include "misc.h"
 #include "protocol.h"
 #include "protocols_manager.h"
@@ -245,13 +245,15 @@ void UserList::writeToConfig()
 	}
 }
 
+#include "../modules/gadu_protocol/gadu_status.h"
+
 void UserList::setAllOffline(const QString &protocolName)
 {
 	kdebugf();
 //	printBacktrace("setAllOffline");
 	UserStatus *s;
-//	s = new GaduStatus();
-	s = protocols_manager->byProtocolID(protocolName)[0]->newStatus();
+	s = new GaduStatus();
+//	s = protocols_manager->byProtocolID(protocolName)[0]->newStatus();
 	s->setOffline();
 
 	int todo = 0;

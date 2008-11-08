@@ -6,7 +6,8 @@
 
 #include <time.h>
 
-#include "gadu.h"
+#include "../modules/gadu_protocol/gadu.h"
+#include "../modules/gadu_protocol/uins_list.h"
 
 #include "history_exports.h"
 

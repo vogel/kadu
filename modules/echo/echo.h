@@ -3,7 +3,7 @@
 
 #include <QtCore/QObject>
 
-#include "gadu.h"
+#include "../modules/gadu_protocol/gadu.h"
 #include "protocol.h"
 #include "usergroup.h"
 

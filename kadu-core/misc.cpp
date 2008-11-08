@@ -37,15 +37,16 @@
 
 #include <time.h>
 
+#include "account.h"
+#include "account_manager.h"
 #include "chat_manager.h"
 #include "config_file.h"
 #include "debug.h"
-#include "gadu.h"
 #include "html_document.h"
 #include "icons_manager.h"
 #include "kadu.h"
 #include "kadu_parser.h"
-#include "libgadu.h"
+#include "../modules/gadu_protocol/gadu.h"
 #include "message_box.h"
 #include "userlist.h"
 
@@ -838,6 +839,7 @@ ChooseDescription::ChooseDescription(QWidget *parent)
 
 	QLineEdit *ss = new QLineEdit(this, "LineEdit");
 #if 1
+	GaduProtocol *gadu = dynamic_cast<GaduProtocol *>(AccountManager::instance()->defaultAccount()->protocol());
 	ss->setMaxLength(gadu->maxDescriptionLength());
 #endif
 	Description->setLineEdit(ss);
@@ -953,6 +955,7 @@ void ChooseDescription::updateAvailableChars(const QString &text)
 
 	AvailableChars->setText(' ' + QString::number(rest) + " (" + QString::number(count) + ")");
 #else
+	GaduProtocol *gadu = dynamic_cast<GaduProtocol *>(AccountManager::instance()->defaultAccount()->protocol());
 	AvailableChars->setText(' ' + QString::number(gadu->maxDescriptionLength() - length));
 #endif
 }

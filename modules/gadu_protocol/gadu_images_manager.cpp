@@ -7,6 +7,8 @@
  *                                                                         *
  ***************************************************************************/
 
+#include "account.h"
+#include "account_manager.h"
 #include "config_file.h"
 #include "debug.h"
 #include "gadu.h"
@@ -138,6 +140,8 @@ void GaduImagesManager::sendImage(UinType uin, uint32_t size, uint32_t crc32)
 			f.close();
 		}
 
+		// TODO: fix
+		GaduProtocol *gadu = dynamic_cast<GaduProtocol *>(AccountManager::instance()->defaultAccount()->protocol());
 		gadu->sendImage(userlist->byID("Gadu", QString::number(uin)), i.file_name, i.size, i.data);
 		delete[] i.data;
 		i.data = NULL;

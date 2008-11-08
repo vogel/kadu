@@ -23,14 +23,17 @@
 #endif
 
 #include "about.h"
+#include "account.h"
+#include "account_manager.h"
 #include "chat_edit_box.h"
 #include "chat_manager.h"
 #include "config_file.h"
 #include "debug.h"
 #include "emoticons.h"
 #include "expimp.h"
-#include "gadu.h"
-#include "gadu_images_manager.h"
+#include "../modules/gadu_protocol/gadu.h"
+#include "../modules/gadu_protocol/gadu_images_manager.h"
+#include "../modules/gadu_protocol/gadu_status.h"
 #include "groups_manager.h"
 #include "hot_key.h"
 #include "html_document.h"
@@ -126,18 +129,18 @@ void Kadu::keyPressEvent(QKeyEvent *e)
 }
 
 void Kadu::closeEvent(QCloseEvent *event)
-{	 
-	kdebugf();	 
+{
+	kdebugf();
 
-	if (!Closing)	 
-	{	 
-		event->ignore();	 
-		close();	 
-	}	 
-	else	 
-		event->accept();	 
+	if (!Closing)
+	{
+		event->ignore();
+		close();
+	}
+	else
+		event->accept();
 
-	kdebugf2();	 
+	kdebugf2();
 }
 
 
@@ -611,16 +614,8 @@ Kadu::Kadu(QWidget *parent)
 
 	split->setSizes(splitsizes);
 
-	connect(gadu, SIGNAL(messageReceived(Protocol *, UserListElements, const QString &, time_t)),
-		this, SLOT(messageReceived(Protocol *, UserListElements, const QString &, time_t)));
-	connect(gadu, SIGNAL(connecting()), this, SLOT(connecting()));
-	connect(gadu, SIGNAL(connected()), this, SLOT(connected()));
-	connect(gadu, SIGNAL(disconnected()), this, SLOT(disconnected()));
-	connect(gadu, SIGNAL(imageReceivedAndSaved(UinType, uint32_t, uint32_t, const QString &)),
-		this, SLOT(imageReceivedAndSaved(UinType, uint32_t, uint32_t, const QString &)));
-	connect(gadu, SIGNAL(needTokenValue(QPixmap, QString &)),
-		this, SLOT(readTokenValue(QPixmap, QString &)));
-	connect(gadu, SIGNAL(systemMessageReceived(const QString &)), this, SLOT(systemMessageReceived(const QString &)));
+	connect(AccountManager::instance(), SIGNAL(accountRegistered(Account *)),
+		this, SLOT(accountRegistered(Account *)));
 
 	connect(userlist, SIGNAL(usersDataChanged(QString)), this, SLOT(updateInformationPanelLater()));
 	connect(userlist, SIGNAL(protocolUsersDataChanged(QString, QString)), this, SLOT(updateInformationPanelLater()));
@@ -628,15 +623,6 @@ Kadu::Kadu(QWidget *parent)
 
 	connect(userlist, SIGNAL(protocolUserDataChanged(QString, UserListElement, QString, QVariant, QVariant, bool, bool)),
 		this, SLOT(editUserActionSetParams(QString, UserListElement)));
-
-	connect(&(gadu->currentStatus()), SIGNAL(goOnline(const QString &)),
-		this, SLOT(wentOnline(const QString &)));
-	connect(&(gadu->currentStatus()), SIGNAL(goBusy(const QString &)),
-		this, SLOT(wentBusy(const QString &)));
-	connect(&(gadu->currentStatus()), SIGNAL(goInvisible(const QString &)),
-		this, SLOT(wentInvisible(const QString &)));
-	connect(&(gadu->currentStatus()), SIGNAL(goOffline(const QString &)),
-		this, SLOT(wentOffline(const QString &)));
 
 	MainLayout->setResizeMode(QLayout::Minimum);
 	setCentralWidget(MainWidget);
@@ -651,6 +637,31 @@ Kadu::Kadu(QWidget *parent)
 	configurationUpdated();
 
 	kdebugf2();
+}
+
+void Kadu::accountRegistered(Account *account)
+{
+	Protocol *protocol = account->protocol();
+
+	connect(protocol, SIGNAL(messageReceived(Protocol *, UserListElements, const QString &, time_t)),
+		this, SLOT(messageReceived(Protocol *, UserListElements, const QString &, time_t)));
+	connect(protocol, SIGNAL(connecting()), this, SLOT(connecting()));
+	connect(protocol, SIGNAL(connected()), this, SLOT(connected()));
+	connect(protocol, SIGNAL(disconnected()), this, SLOT(disconnected()));
+	connect(protocol, SIGNAL(imageReceivedAndSaved(UinType, uint32_t, uint32_t, const QString &)),
+		this, SLOT(imageReceivedAndSaved(UinType, uint32_t, uint32_t, const QString &)));
+	connect(protocol, SIGNAL(needTokenValue(QPixmap, QString &)),
+		this, SLOT(readTokenValue(QPixmap, QString &)));
+	connect(protocol, SIGNAL(systemMessageReceived(const QString &)), this, SLOT(systemMessageReceived(const QString &)));
+
+	connect(&(protocol->currentStatus()), SIGNAL(goOnline(const QString &)),
+		this, SLOT(wentOnline(const QString &)));
+	connect(&(protocol->currentStatus()), SIGNAL(goBusy(const QString &)),
+		this, SLOT(wentBusy(const QString &)));
+	connect(&(protocol->currentStatus()), SIGNAL(goInvisible(const QString &)),
+		this, SLOT(wentInvisible(const QString &)));
+	connect(&(protocol->currentStatus()), SIGNAL(goOffline(const QString &)),
+		this, SLOT(wentOffline(const QString &)));
 }
 
 QVBoxLayout * Kadu::mainLayout() const
@@ -1061,6 +1072,7 @@ void Kadu::showStatusActionActivated(QAction *sender, bool toggled)
 
 void Kadu::showStatusActionCreated(KaduAction *action)
 {
+	Protocol *gadu = AccountManager::instance()->defaultAccount()->protocol();
 	action->setIcon(gadu->currentStatus().pixmap());
 }
 
@@ -1165,7 +1177,7 @@ void Kadu::changeAppearance()
 
 	kadu->statusButton->setShown(config_file.readBoolEntry("Look", "ShowStatusButton"));
 
-	const UserStatus &stat = gadu->currentStatus();
+	const UserStatus &stat = AccountManager::instance()->status();
 
 	QPixmap pix = stat.pixmap();
 	QIcon icon(pix);
@@ -1208,6 +1220,7 @@ void Kadu::blink()
 
 	kdebugf();
 
+	Protocol *gadu = AccountManager::instance()->defaultAccount()->protocol();
 	if (!DoBlink && !gadu->currentStatus().isOffline())
 		return;
 	else if (!DoBlink && gadu->currentStatus().isOffline())
@@ -1262,6 +1275,8 @@ void Kadu::sendMessage(UserListElement elem)
 
 void Kadu::changeStatusSlot()
 {
+	Protocol *gadu = AccountManager::instance()->defaultAccount()->protocol();
+
 	QAction *action = dynamic_cast<QAction *>(sender());
 	if (action)
 	{
@@ -1338,12 +1353,12 @@ void Kadu::changeStatus(UserStatus newStatus)
 		changeStatusToOffline->setChecked(true);
 	}
 
+	Protocol *gadu = AccountManager::instance()->defaultAccount()->protocol();
 	if (gadu->nextStatus() == newStatus)
 		return;
 
 	NextStatus.setStatus(newStatus);
 	gadu->writeableStatus().setStatus(NextStatus);
-
 }
 
 void Kadu::connecting()
@@ -1372,7 +1387,7 @@ void Kadu::messageReceived(Protocol *protocol, UserListElements senders, const Q
 
 	ChatWidget *chat = chat_manager->findChatWidget(senders);
 	if (chat)
-		chat->newMessage(protocol->protocolID(), senders, msg, time);
+		chat->newMessage("Gadu", senders, msg, time);
 	else
 	{
 		if (config_file.readBoolEntry("General","AutoRaise"))
@@ -1383,19 +1398,19 @@ void Kadu::messageReceived(Protocol *protocol, UserListElements senders, const Q
 
 		if (config_file.readBoolEntry("Chat", "OpenChatOnMessage"))
 		{
-			if (config_file.readBoolEntry("Chat", "OpenChatOnMessageWhenOnline") && !Myself.status(protocol->protocolID()).isOnline())
+			if (config_file.readBoolEntry("Chat", "OpenChatOnMessageWhenOnline") && !Myself.status("Gadu").isOnline())
 			{
-				pending.addMsg(protocol->protocolID(), senders, msg, GG_CLASS_CHAT, time);
+				pending.addMsg("Gadu", senders, msg, GG_CLASS_CHAT, time);
 				return;
 			}
 
 			// TODO: it is lame
 			chat_manager->openChatWidget(protocol, senders);
 			chat = chat_manager->findChatWidget(senders);
-			chat->newMessage(protocol->protocolID(), senders, msg, time);
+			chat->newMessage("Gadu", senders, msg, time);
 		}
 		else
-			pending.addMsg(protocol->protocolID(), senders, msg, GG_CLASS_CHAT, time);
+			pending.addMsg("Gadu", senders, msg, GG_CLASS_CHAT, time);
 	}
 
 	kdebugf2();
@@ -1474,6 +1489,8 @@ bool Kadu::close(bool quit)
 
 		pending.writeToFile();
 		IgnoredManager::writeToConfiguration();
+
+		Protocol *gadu = AccountManager::instance()->defaultAccount()->protocol();
 		if (!gadu->currentStatus().isOffline())
 			if (config_file.readBoolEntry("General", "DisconnectWithCurrentDescription"))
 				setOffline(gadu->currentStatus().description());
@@ -1535,13 +1552,11 @@ bool Kadu::close(bool quit)
 		UserBox::closeModule();
 		ChatManager::closeModule();
 		SearchDialog::closeModule();
-		GaduProtocol::closeModule();
 
 		userlist->writeToConfig();//writeToConfig must be before GroupsManager::closeModule, because GM::cM removes all groups from userlist
 		GroupsManager::closeModule();
 		xml_config_file->sync();
 		UserList::closeModule();
-		ProtocolsManager::closeModule();
 		EmoticonsManager::closeModule();
 		IconsManager::closeModule();
 
@@ -2004,7 +2019,7 @@ void Kadu::configurationUpdated()
 	QString uin = QString::number(config_file.readUnsignedNumEntry("General", "UIN", 0));
 	if (Myself.ID("Gadu").toUInt() != uin.toUInt())
 	{
-		gadu->changeID(uin);
+		// gadu->changeID(uin);
 		Myself.deleteProtocol("Gadu");
 		if (uin.toUInt())
 			Myself.addProtocol("Gadu", uin);
@@ -2147,6 +2162,7 @@ void Kadu::showStatusOnMenu(int statusNr)
 	for (int i = 0; i < 8; ++i)
 		statusActions[i]->setChecked(i == statusNr);
 
+	Protocol *gadu = AccountManager::instance()->defaultAccount()->protocol();
 	changePrivateStatus->setChecked(gadu->currentStatus().isFriendsOnly());
 
 	statusButton->setText(qApp->translate("@default", gadu->currentStatus().name().ascii()));
@@ -2249,6 +2265,8 @@ const QDateTime &Kadu::startTime() const
 
 void Kadu::customEvent(QEvent *e)
 {
+	Protocol *gadu = AccountManager::instance()->defaultAccount()->protocol();
+
 	if (int(e->type()) == 4321)
 		show();
 //		QTimer::singleShot(0, this, SLOT(show()));
@@ -2272,6 +2290,7 @@ void Kadu::setOnline(const QString &description)
 {
 	UserStatus status;
 
+	Protocol *gadu = AccountManager::instance()->defaultAccount()->protocol();
 	status.setStatus(gadu->currentStatus());
 	status.setOnline(description);
 
@@ -2282,6 +2301,7 @@ void Kadu::setBusy(const QString &description)
 {
 	UserStatus status;
 
+	Protocol *gadu = AccountManager::instance()->defaultAccount()->protocol();
 	status.setStatus(gadu->currentStatus());
 	status.setBusy(description);
 
@@ -2292,6 +2312,7 @@ void Kadu::setInvisible(const QString &description)
 {
 	UserStatus status;
 
+	Protocol *gadu = AccountManager::instance()->defaultAccount()->protocol();
 	status.setStatus(gadu->currentStatus());
 	status.setInvisible(description);
 
@@ -2302,6 +2323,7 @@ void Kadu::setOffline(const QString &description)
 {
 	UserStatus status;
 
+	Protocol *gadu = AccountManager::instance()->defaultAccount()->protocol();
 	status.setStatus(gadu->currentStatus());
 	status.setOffline(description);
 

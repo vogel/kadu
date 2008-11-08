@@ -3,7 +3,8 @@
 
 #include <QtGui/QDialog>
 
-#include "gadu.h"
+#include "../modules/gadu_protocol/gadu.h"
+#include "../modules/gadu_protocol/uins_list.h"
 
 class QButtonGroup;
 class QCheckBox;

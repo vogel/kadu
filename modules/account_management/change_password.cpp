@@ -14,12 +14,14 @@
 #include <QtGui/QLineEdit>
 #include <QtGui/QPushButton>
 
+#include "account.h"
+#include "account_manager.h"
 #include "change_password.h"
 #include "debug.h"
 #include "icons_manager.h"
 #include "message_box.h"
 #include "misc.h"
-#include "gadu.h"
+#include "../modules/gadu_protocol/gadu.h"
 #include "config_file.h"
 
 /** @ingroup account_management
@@ -111,7 +113,8 @@ ChangePassword::ChangePassword(QDialog *parent) : QWidget(parent, Qt::Window),
 	layout->addWidget(center);
 
 	loadWindowGeometry(this, "General", "ChangePasswordDialogGeometry", 0, 50, 355, 350);
-	connect(gadu, SIGNAL(passwordChanged(bool)), this, SLOT(passwordChanged(bool)));
+	connect(AccountManager::instance()->defaultAccount()->protocol(), SIGNAL(passwordChanged(bool)),
+		this, SLOT(passwordChanged(bool)));
 
 	kdebugf2();
 }
@@ -146,6 +149,7 @@ void ChangePassword::start()
 	QString newpassword = (newpwd->text().isEmpty() ? password : newpwd->text());
 
 	setEnabled(false);
+	GaduProtocol *gadu = dynamic_cast<GaduProtocol *>(AccountManager::instance()->defaultAccount()->protocol());
 	gadu->changePassword(config_file.readNumEntry("General", "UIN"), emailedit->text(), password, newpassword);
 
 	kdebugf2();

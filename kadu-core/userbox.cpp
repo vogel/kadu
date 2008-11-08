@@ -30,7 +30,7 @@
 #include "action.h"
 #include "config_file.h"
 #include "debug.h"
-#include "gadu.h"
+#include "../modules/gadu_protocol/gadu.h"
 #include "html_document.h"
 #include "icons_manager.h"
 #include "ignore.h"

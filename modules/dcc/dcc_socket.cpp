@@ -9,8 +9,8 @@
 
 #include <QtCore/QSocketNotifier>
 
-//#include <arpa/inet.h> 
-
+#include "account.h"
+#include "account_manager.h"
 #include "config_file.h"
 #include "dcc.h"
 #include "debug.h"
@@ -131,6 +131,7 @@ void DccSocket::initializeNotifiers()
 			socketFd = Dcc7Struct->fd;
 			if (socketFd == -1) // wait for accept/reject
 			{
+				Protocol *gadu = AccountManager::instance()->defaultAccount()->protocol();
 				connect(gadu, SIGNAL(dcc7Accepted(struct gg_dcc7 *)), this, SLOT(dcc7Accepted(struct gg_dcc7 *)));
 				connect(gadu, SIGNAL(dcc7Rejected(struct gg_dcc7 *)), this, SLOT(dcc7Rejected(struct gg_dcc7 *)));
 				return;
@@ -491,6 +492,7 @@ void DccSocket::dcc7Accepted(struct gg_dcc7 *dcc7)
 
 	kdebugf();
 
+	Protocol *gadu = AccountManager::instance()->defaultAccount()->protocol();
 	disconnect(gadu, SIGNAL(dcc7Accepted(struct gg_dcc7 *)), this, SLOT(dcc7Accepted(struct gg_dcc7 *)));
 	disconnect(gadu, SIGNAL(dcc7Rejected(struct gg_dcc7 *)), this, SLOT(dcc7Rejected(struct gg_dcc7 *)));
 
@@ -507,6 +509,7 @@ void DccSocket::dcc7Rejected(struct gg_dcc7 *dcc7)
 
 	kdebugf();
 
+	Protocol *gadu = AccountManager::instance()->defaultAccount()->protocol();
 	disconnect(gadu, SIGNAL(dcc7Accepted(struct gg_dcc7 *)), this, SLOT(dcc7Accepted(struct gg_dcc7 *)));
 	disconnect(gadu, SIGNAL(dcc7Rejected(struct gg_dcc7 *)), this, SLOT(dcc7Rejected(struct gg_dcc7 *)));
 

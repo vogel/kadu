@@ -30,7 +30,7 @@
 #include "groups_manager.h"
 #include "icons_manager.h"
 #include "kadu.h"
-#include "libgadu.h"
+#include "../modules/gadu_protocol/gadu.h"
 #include "message_box.h"
 #include "misc.h"
 #include "modules.h"
@@ -255,7 +255,6 @@ int main(int argc, char *argv[])
 		return 1;
 	}
 
-	ProtocolsManager::initModule();
 	UserList::initModule();
 	IconsManager::initModule();
 	GroupsManager::initModule();

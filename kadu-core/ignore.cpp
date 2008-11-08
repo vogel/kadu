@@ -17,7 +17,7 @@
 
 #include "config_file.h"
 #include "debug.h"
-#include "gadu.h"
+#include "../modules/gadu_protocol/gadu.h"
 #include "icons_manager.h"
 #include "ignore.h"
 #include "misc.h"

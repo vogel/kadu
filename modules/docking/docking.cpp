@@ -14,10 +14,11 @@
 #include <QtGui/QMenu>
 #include <QtGui/QMouseEvent>
 
-#include "kadu-core/config_file.h"
+#include "account.h"
+#include "account_manager.h"
+#include "config_file.h"
 #include "docking.h"
 #include "debug.h"
-#include "gadu.h"
 #include "icons_manager.h"
 #include "kadu.h"
 #include "pending_msgs.h"
@@ -25,6 +26,8 @@
 #include "misc.h"
 
 #include "activate.h"
+
+#include "../modules/gadu_protocol/gadu.h"
 
 /**
  * @ingroup docking
@@ -131,7 +134,7 @@ void DockingManager::changeIcon()
 				}
 				else
 				{
-					const UserStatus &stat = gadu->currentStatus();
+					const UserStatus &stat = AccountManager::instance()->defaultAccount()->protocol()->currentStatus();
 					emit trayPixmapChanged(QIcon(stat.pixmap()), stat.toString());
 					icon_timer->start(500,TRUE);
 					blink = false;
@@ -161,7 +164,7 @@ void DockingManager::pendingMessageDeleted()
 {
 	if (!pending.pendingMsgs())
 	{
-		const UserStatus &stat = gadu->currentStatus();
+		const UserStatus &stat = AccountManager::instance()->defaultAccount()->protocol()->currentStatus();
 		emit trayPixmapChanged(QIcon(stat.pixmap()), stat.toString());
 	}
 }
@@ -170,12 +173,14 @@ void DockingManager::defaultToolTip()
 {
 	if (config_file.readBoolEntry("General", "ShowTooltipInTray"))
 	{
+		UserStatus status = AccountManager::instance()->status();
+
 		QString tiptext;
 		tiptext.append(tr("Current status:\n%1")
-			.arg(qApp->translate("@default", UserStatus::name(gadu->currentStatus().index()).ascii())));
+			.arg(qApp->translate("@default", UserStatus::name(status.index()).ascii())));
 
-		if (gadu->currentStatus().hasDescription())
-			tiptext.append(tr("\n\nDescription:\n%2").arg(gadu->currentStatus().description()));
+		if (status.hasDescription())
+			tiptext.append(tr("\n\nDescription:\n%2").arg(status.description()));
 
 		emit trayTooltipChanged(tiptext);
 	}
@@ -238,7 +243,7 @@ void DockingManager::statusPixmapChanged(const QIcon &icon, const QString &iconN
 
 QIcon DockingManager::defaultPixmap()
 {
-	return QIcon(gadu->currentStatus().pixmap());
+	return QIcon(AccountManager::instance()->defaultAccount()->protocol()->currentStatus().pixmap());
 }
 
 void DockingManager::setDocked(bool docked, bool butDontHideOnClose)

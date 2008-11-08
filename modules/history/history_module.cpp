@@ -12,6 +12,8 @@
 #include <sys/stat.h>
 #include <sys/types.h>
 
+#include "account.h"
+#include "account_manager.h"
 #include "action.h"
 #include "chat_edit_box.h"
 #include "chat_manager.h"
@@ -97,6 +99,7 @@ HistoryModule::HistoryModule(bool firstLoad)
 	foreach(ChatWidget *it, chat_manager->chats())
 		chatCreated(it);
 
+	Protocol *gadu = AccountManager::instance()->defaultAccount()->protocol();
 	connect(gadu, SIGNAL(messageReceived(Protocol *, UserListElements, const QString&, time_t)),
 		history, SLOT(messageReceived(Protocol *, UserListElements, const QString&, time_t)));
 	connect(gadu, SIGNAL(imageReceivedAndSaved(UinType, uint32_t, uint32_t, const QString &)),
@@ -146,6 +149,7 @@ HistoryModule::~HistoryModule()
 	delete clearHistoryActionDescription;
 	clearHistoryActionDescription = 0;
 
+	Protocol *gadu = AccountManager::instance()->defaultAccount()->protocol();
 	disconnect(gadu, SIGNAL(messageReceived(Protocol *, UserListElements, const QString&, time_t)),
 		history, SLOT(messageReceived(Protocol *, UserListElements, const QString&, time_t)));
 	disconnect(gadu, SIGNAL(imageReceivedAndSaved(UinType, uint32_t, uint32_t, const QString &)),

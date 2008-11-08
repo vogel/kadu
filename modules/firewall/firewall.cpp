@@ -37,13 +37,14 @@ Nowa funkcjonalnosc - Dorregaray
 #include "../notify/notify.h"
 #include "../history/history.h"
 
+#include "account.h"
+#include "account_manager.h"
 #include "config_file.h"
 #include "icons_manager.h"
 #include "misc.h"
 #include "search.h"
 #include "kadu.h"
 #include "chat_manager.h"
-#include "gadu.h"
 #include "usergroup.h"
 #include "debug.h"
 
@@ -80,6 +81,7 @@ Firewall::Firewall() : flood_messages(0), right_after_connection(false)
 	pattern.setCaseSensitive(false);
 	pattern.setPattern(unicode2std(config_file.readEntry("Firewall", "answer", tr("I want something"))));
 
+	Protocol *gadu = AccountManager::instance()->defaultAccount()->protocol();
 	connect(gadu, SIGNAL(rawGaduReceivedMessageFilter(Protocol *, UserListElements, QString&, QByteArray&, bool&)), this, SLOT(messageFiltering(Protocol *, UserListElements, QString&, QByteArray&, bool&)));
 	connect(gadu, SIGNAL(sendMessageFiltering(const UserListElements, QByteArray &, bool &)), this, SLOT(sendMessageFilter(const UserListElements, QByteArray &, bool &)));
  	connect(chat_manager, SIGNAL(chatWidgetDestroying(ChatWidget *)), this, SLOT(chatDestroyed(ChatWidget *)));
@@ -101,7 +103,8 @@ Firewall::Firewall() : flood_messages(0), right_after_connection(false)
 Firewall::~Firewall()
 {
 	kdebugf();
-	
+
+	Protocol *gadu = AccountManager::instance()->defaultAccount()->protocol();	
 	disconnect(gadu, SIGNAL(rawGaduReceivedMessageFilter(Protocol *, UserListElements, QString&, QByteArray&, bool&)), this, SLOT(messageFiltering(Protocol *, UserListElements, QString&, QByteArray&, bool&)));
 	disconnect(gadu, SIGNAL(sendMessageFiltering(const UserListElements, QByteArray &, bool &)), this, SLOT(sendMessageFilter(const UserListElements, QByteArray &, bool &)));
 	disconnect(chat_manager, SIGNAL(chatWidgetDestroying(ChatWidget *)), this, SLOT(chatDestroyed(ChatWidget *)));
@@ -259,6 +262,7 @@ bool Firewall::checkChat(Protocol *protocol, const QString &message, const UserL
  		return false;
 	}
 
+	Protocol *gadu = AccountManager::instance()->defaultAccount()->protocol();
 	if (gadu->currentStatus().isInvisible() && config_file.readBoolEntry("Firewall", "drop_anonymous_when_invisible", false))
 	{
 		if (config_file.readBoolEntry("Firewall", "write_log", true))

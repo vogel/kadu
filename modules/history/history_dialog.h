@@ -4,7 +4,7 @@
 #include <QtGui/QWidget>
 #include <QtGui/QTreeWidgetItem>
 
-#include "gadu.h"
+#include "../modules/gadu_protocol/gadu.h"
 #include "history.h"
 #include "history_search_dialog.h"
 

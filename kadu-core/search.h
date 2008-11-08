@@ -1,7 +1,7 @@
 #ifndef KADU_SEARCH_H
 #define KADU_SEARCH_H
 
-#include "gadu.h"
+#include "../modules/gadu_protocol/gadu.h"
 #include "kadu_main_window.h"
 
 class QCheckBox;

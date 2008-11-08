@@ -14,9 +14,11 @@
 #include <QtGui/QLineEdit>
 #include <QtGui/QPushButton>
 
+#include "account.h"
+#include "account_manager.h"
 #include "config_file.h"
 #include "debug.h"
-#include "gadu.h"
+#include "../modules/gadu_protocol/gadu.h"
 #include "icons_manager.h"
 #include "message_box.h"
 #include "misc.h"
@@ -96,6 +98,7 @@ RemindPassword::RemindPassword(QDialog *parent) : QWidget(parent, Qt::Window),
 	layout->addWidget(center);
 
 	loadWindowGeometry(this, "General", "RemindPasswordDialogGeometry", 0, 50, 355, 200);
+	GaduProtocol *gadu = dynamic_cast<GaduProtocol *>(AccountManager::instance()->defaultAccount()->protocol());
 	connect(gadu, SIGNAL(reminded(bool)), this, SLOT(reminded(bool)));
 
 	kdebugf2();
@@ -121,6 +124,7 @@ void RemindPassword::start()
 	kdebugf();
 
 	setEnabled(false);
+	GaduProtocol *gadu = dynamic_cast<GaduProtocol *>(AccountManager::instance()->defaultAccount()->protocol());
 	gadu->remindPassword(config_file.readNumEntry("General", "UIN"), emailedit->text());
 
 	kdebugf2();

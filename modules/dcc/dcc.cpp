@@ -27,6 +27,8 @@
 #include <netinet/in.h>
 #endif
 
+#include "account.h"
+#include "account_manager.h"
 #include "config_file.h"
 #include "dcc.h"
 #include "dcc_socket.h"
@@ -73,6 +75,7 @@ DccManager::DccManager()
 
 	createDefaultConfiguration();
 
+	Protocol *gadu = AccountManager::instance()->defaultAccount()->protocol();
 	connect(&TimeoutTimer, SIGNAL(timeout()), this, SLOT(timeout()));
 
 	connect(gadu, SIGNAL(connecting()), this, SLOT(setupDcc()));
@@ -88,6 +91,7 @@ DccManager::~DccManager()
 {
 	kdebugf();
 
+	Protocol *gadu = AccountManager::instance()->defaultAccount()->protocol();
 	disconnect(gadu, SIGNAL(connecting()), this, SLOT(setupDcc()));
 	disconnect(gadu, SIGNAL(disconnected()), this, SLOT(closeDcc()));
 	disconnect(gadu, SIGNAL(dccConnectionReceived(const UserListElement&)),
@@ -208,6 +212,7 @@ void DccManager::setupDcc()
 	QHostAddress ext_ip;
 	bool forwarding = config_file.readBoolEntry("Network", "DccForwarding") && ext_ip.setAddress(config_file.readEntry("Network", "ExternalIP"));
 
+	GaduProtocol *gadu = dynamic_cast<GaduProtocol *>(AccountManager::instance()->defaultAccount()->protocol());
 	if (forwarding)
 	{
 		gadu->setDccExternalIP(ext_ip);
@@ -236,6 +241,8 @@ void DccManager::closeDcc()
 	{
 		delete MainSocket;
 		MainSocket = 0;
+
+		GaduProtocol *gadu = dynamic_cast<GaduProtocol *>(AccountManager::instance()->defaultAccount()->protocol());
 		gadu->setDccIpAndPort(0, 0);
 	}
 
@@ -303,6 +310,7 @@ void DccManager::getFileTransferSocket(uint32_t ip, uint16_t port, UinType myUin
 		}
 	}
 
+	GaduProtocol *gadu = dynamic_cast<GaduProtocol *>(AccountManager::instance()->defaultAccount()->protocol());
 	startTimeout();
 	requests.insert(peerUin, handler);
 	gadu->dccRequest(peerUin);
@@ -326,6 +334,7 @@ void DccManager::getVoiceSocket(uint32_t ip, uint16_t port, UinType myUin, UinTy
 		}
 	}
 
+	GaduProtocol *gadu = dynamic_cast<GaduProtocol *>(AccountManager::instance()->defaultAccount()->protocol());
 	startTimeout();
 	requests.insert(peerUin, handler);
 	gadu->dccRequest(peerUin);

@@ -8,7 +8,7 @@
  ***************************************************************************/
 
 #include "config_file.h"
-#include "gadu_images_manager.h"
+#include "../modules/gadu_protocol/gadu_images_manager.h"
 #include "kadu_parser.h"
 #include "misc.h"
 

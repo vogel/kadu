@@ -10,10 +10,11 @@
 #include <QtGui/QScrollBar>
 #include <QtWebKit/QWebFrame>
 
+#include "account.h"
+#include "account_manager.h"
 #include "chat_message.h"
 #include "config_file.h"
 #include "debug.h"
-#include "gadu.h"
 #include "kadu_parser.h"
 #include "misc.h"
 #include "syntax_editor.h"
@@ -25,6 +26,7 @@ ChatMessagesView::ChatMessagesView(QWidget *parent) : KaduTextBrowser(parent),
 {
 	setMinimumSize(QSize(100,100));
 
+	Protocol *gadu = AccountManager::instance()->defaultAccount()->protocol();
 	connect(gadu, SIGNAL(imageReceivedAndSaved(UinType, uint32_t, uint32_t, const QString &)),
 		this, SLOT(imageReceivedAndSaved(UinType, uint32_t, uint32_t, const QString &)));
 

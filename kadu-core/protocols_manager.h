@@ -1,56 +1,31 @@
 #ifndef KADU_PROTOCOLS_MANAGER_H
 #define KADU_PROTOCOLS_MANAGER_H
 
-#include <QtCore/QList>
+#include <QtCore/QMap>
+#include <QtCore/QObject>
 
-#include "protocol.h"
 #include "exports.h"
 
-class KADUAPI ProtocolManager : public QObject
-{
-	Q_OBJECT
-
-public slots:
-	virtual Protocol * newInstance(const QString &id) = 0;
-
-};
+class Protocol;
+class ProtocolFactory;
 
 class KADUAPI ProtocolsManager : public QObject
 {
+	static ProtocolsManager * Instance;
+
 	ProtocolsManager();
 	~ProtocolsManager();
 
-	struct ProtocolDescription
-	{
-		QString protocolID;
-		QString Name;
-		ProtocolManager *Manager;
-			
-		ProtocolDescription(const QString &id, const QString &name, ProtocolManager *manager)
-			: protocolID(id), Name(name), Manager(manager) {}
-		ProtocolDescription() : protocolID(), Name(), Manager(0) {}
-		ProtocolDescription(const ProtocolDescription &c) 
-			: protocolID(c.protocolID), Name(c.Name), Manager(c.Manager) {}
-
-		bool operator == (const ProtocolDescription &pd)  { return protocolID == pd.protocolID; }
-	};
-
-	QList<ProtocolDescription> protocolDescriptions;
-	QList<Protocol *> protocols;
+	QMap<QString, ProtocolFactory *> registeredFactories;
 
 public:
-	static void initModule();
-	static void closeModule();
+	static ProtocolsManager * instance();
 
-	QList<Protocol *> byProtocolID(const QString &protocolID);
-	Protocol *byID(const QString &protocolID, const QString &ID);
-		
-	void registerProtocol(const QString &protocolID, const QString &name, ProtocolManager *manager);
-	void unregisterProtocol(const QString &protocolID);
-	Protocol * newProtocol(const QString &protocolID, const QString &ID);
+	void registerProtocolFactory(const QString &name, ProtocolFactory *factory);
+	void unregisterProtocolFactory(const QString &name);
+
+	Protocol * newInstance(const QString &name);
 
 };
-
-extern KADUAPI ProtocolsManager *protocols_manager;
 
 #endif

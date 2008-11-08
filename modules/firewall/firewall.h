@@ -6,7 +6,7 @@
 #include <QtCore/QRegExp>
 
 #include "configuration_aware_object.h"
-#include "gadu.h"
+#include "../modules/gadu_protocol/gadu.h"
 #include "main_configuration_window.h"
 class ChatWidget;
 class QListWidget;

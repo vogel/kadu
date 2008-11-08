@@ -3,7 +3,7 @@
 
 #include <QtGui/QWidget>
 
-#include "gadu.h"
+#include "../modules/gadu_protocol/gadu.h"
 
 class QCheckBox;
 class QLineEdit;

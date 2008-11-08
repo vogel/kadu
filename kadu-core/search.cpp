@@ -18,6 +18,8 @@
 #include <QtGui/QTreeWidget>
 #include <QtGui/QTreeWidgetItem>
 
+#include "account.h"
+#include "account_manager.h"
 #include "chat_manager.h"
 #include "config_file.h"
 #include "debug.h"
@@ -26,6 +28,8 @@
 #include "misc.h"
 #include "toolbar.h"
 #include "userinfo.h"
+
+#include "../modules/gadu_protocol/gadu_search.h"
 
 #include "search.h"
 
@@ -194,6 +198,7 @@ SearchDialog::SearchDialog(QWidget *parent, UinType whoisSearchUin)
 
 	loadWindowGeometry(this, "General", "SearchDialogGeometry", 0, 50, 800, 350);
 
+	GaduProtocol *gadu = dynamic_cast<GaduProtocol *>(AccountManager::instance()->defaultAccount()->protocol());
 	connect(gadu, SIGNAL(newSearchResults(SearchResults &, int, int)), this, SLOT(newSearchResults(SearchResults &, int, int)));
 
 	kdebugf2();
@@ -290,6 +295,7 @@ void SearchDialog::addFound()
 
 void SearchDialog::chatFound()
 {
+	GaduProtocol *gadu = dynamic_cast<GaduProtocol *>(AccountManager::instance()->defaultAccount()->protocol());
 	UserListElements found = selected();
 	if (found.size())
 		chat_manager->openChatWidget(gadu, found);
@@ -347,6 +353,7 @@ void SearchDialog::stopSearch()
 {
 	kdebugf();
 
+	GaduProtocol *gadu = dynamic_cast<GaduProtocol *>(AccountManager::instance()->defaultAccount()->protocol());
 	gadu->stopSearchInPubdir(*searchRecord);
 
 	setActionState(stopSearchAction, false);
@@ -371,6 +378,7 @@ void SearchDialog::firstSearch()
 {
 	kdebugf();
 
+	GaduProtocol *gadu = dynamic_cast<GaduProtocol *>(AccountManager::instance()->defaultAccount()->protocol());
 	if (r_pers->isChecked() && isPersonalDataEmpty())
 		return;
 
@@ -435,6 +443,7 @@ void SearchDialog::nextSearch()
 {
 	kdebugf();
 
+	GaduProtocol *gadu = dynamic_cast<GaduProtocol *>(AccountManager::instance()->defaultAccount()->protocol());
 	if (gadu->currentStatus().isOffline())
 		return;
 

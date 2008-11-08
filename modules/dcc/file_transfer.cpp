@@ -9,6 +9,8 @@
 
 #include <QtCore/QUrl>
 
+#include "account.h"
+#include "account_manager.h"
 #include "config_file.h"
 #include "dcc.h"
 #include "dcc_socket.h"
@@ -280,6 +282,7 @@ void FileTransfer::start(StartType startType)
 {
 	kdebugf();
 
+	GaduProtocol *gadu = dynamic_cast<GaduProtocol *>(AccountManager::instance()->defaultAccount()->protocol());
 	if (gadu->currentStatus().isOffline())
 		return;
 

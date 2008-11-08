@@ -1,5 +1,7 @@
 #!/bin/bash
 
+exit 0
+
 if test $# -lt 2; then
 	echo
 	echo "Downloads and unpacks Kadu module, icon theme, sound theme or other."

@@ -8,7 +8,8 @@
  ***************************************************************************/
 
 #include "debug.h"
-#include "gadu.h"
+#include "../modules/gadu_protocol/gadu.h"
+#include "../modules/gadu_protocol/gadu_status.h"
 
 #include "userlist-private.h"
 

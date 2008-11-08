@@ -155,13 +155,6 @@ signals:
 
 };
 
-class GaduProtocolManager : public ProtocolManager
-{
-public:
-	virtual Protocol * newInstance(const QString &id);
-
-};
-
 #ifndef _MSC_VER
 #pragma GCC visibility pop
 #endif

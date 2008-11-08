@@ -18,6 +18,8 @@
 
 #include "../sound/sound.h"
 
+#include "account.h"
+#include "account_manager.h"
 #include "config_file.h"
 #include "debug.h"
 #include "html_document.h"
@@ -168,6 +170,7 @@ void WizardStarter::userListImported(bool ok, QList<UserListElement> list)
 {
 	kdebugf();
 
+	Protocol *gadu = AccountManager::instance()->defaultAccount()->protocol();
 	disconnect(gadu, SIGNAL(userListImported(bool, QList<UserListElement>)), this, SLOT(userListImported(bool, QList<UserListElement>)));
 
 	if (!ok)
@@ -186,6 +189,7 @@ void WizardStarter::userListImported(bool ok, QList<UserListElement> list)
 **/
 void WizardStarter::connected()
 {
+	GaduProtocol *gadu = dynamic_cast<GaduProtocol *>(AccountManager::instance()->defaultAccount()->protocol());
 	if (!gadu->doImportUserList())
 	{
 		MessageBox::msg(tr("User list couldn't be imported"));
@@ -228,6 +232,7 @@ void Wizard::registerGGAccount()
 
 	haveNumber->setEnabled(false);
 
+	GaduProtocol *gadu = dynamic_cast<GaduProtocol *>(AccountManager::instance()->defaultAccount()->protocol());
 	connect(gadu, SIGNAL(registered(bool, UinType)), this, SLOT(registeredGGAccount(bool, UinType)));
 	gadu->registerAccount(ggEMail->text(), ggNewPassword->text());
 
@@ -246,7 +251,8 @@ void Wizard::registeredGGAccount(bool ok, UinType uin)
 		config_file.writeEntry("General", "UIN", (int)uin);
 		config_file.writeEntry("General", "Password", pwHash(ggNewPassword->text()));
 
-		gadu->changeID(QString::number(uin));
+		Protocol *gadu = AccountManager::instance()->defaultAccount()->protocol();
+		// gadu->changeID(QString::number(uin));
 		kadu->setOnline();	//jak zarejestrowal to od razu sie laczy
 
 		MessageBox::msg(tr("Registration was successful.\nYou UIN is: ") + QString::number(int(uin))+tr("\nAccount configuration was saved.\nPress Ok to continue"));
@@ -263,6 +269,7 @@ void Wizard::registeredGGAccount(bool ok, UinType uin)
 			widget->setEnabled(true);
 	}
 
+	Protocol *gadu = AccountManager::instance()->defaultAccount()->protocol();
 	disconnect(gadu, SIGNAL(registered(bool, UinType)), this, SLOT(registeredGGAccount(bool, UinType)));
 
 	haveNumber->setEnabled(true);
@@ -281,6 +288,7 @@ void Wizard::tryImport()
 	if (!ggImportContacts->isChecked())
 		return;
 
+	GaduProtocol *gadu = dynamic_cast<GaduProtocol *>(AccountManager::instance()->defaultAccount()->protocol());
 	connect(gadu, SIGNAL(userListImported(bool, QList<UserListElement>)),
 			wizardStarter, SLOT(userListImported(bool, QList<UserListElement>)));
 

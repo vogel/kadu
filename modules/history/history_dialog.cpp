@@ -20,7 +20,7 @@
 #include "config_file.h"
 #include "debug.h"
 #include "emoticons.h"
-#include "gadu_images_manager.h"
+#include "../modules/gadu_protocol/gadu_images_manager.h"
 #include "kadu.h"
 #include "misc.h"
 

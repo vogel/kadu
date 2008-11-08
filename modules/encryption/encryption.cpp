@@ -10,6 +10,8 @@
 #include <QtGui/QGridLayout>
 #include <QtGui/QLabel>
 
+#include "account.h"
+#include "account_manager.h"
 #include "action.h"
 #include "chat_widget.h"
 #include "chat_manager.h"
@@ -17,7 +19,7 @@
 #include "config_file.h"
 #include "debug.h"
 #include "keys_manager.h"
-#include "gadu.h"
+#include "../modules/gadu_protocol/gadu.h"
 #include "icons_manager.h"
 #include "kadu.h"
 #include "message_box.h"
@@ -104,6 +106,7 @@ EncryptionManager::EncryptionManager(bool firstLoad)
 
 	userlist->addPerContactNonProtocolConfigEntry("encryption_enabled", "EncryptionEnabled");
 
+	Protocol *gadu = AccountManager::instance()->defaultAccount()->protocol();
 	connect(gadu, SIGNAL(rawGaduReceivedMessageFilter(Protocol *, UserListElements, QString&, QByteArray&, bool&)),
 			this, SLOT(decryptMessage(Protocol *, UserListElements, QString&, QByteArray&, bool&)));
 	connect(gadu, SIGNAL(sendMessageFiltering(const UserListElements, QByteArray &, bool &)),
@@ -155,6 +158,7 @@ EncryptionManager::~EncryptionManager()
 	kadu->removeMenuActionDescription(keysManagerActionDescription);
 	delete keysManagerActionDescription;
 
+	Protocol *gadu = AccountManager::instance()->defaultAccount()->protocol();
 	disconnect(gadu, SIGNAL(rawGaduReceivedMessageFilter(Protocol *, UserListElements, QString&, QByteArray&, bool&)),
 			this, SLOT(decryptMessage(Protocol *, UserListElements, QString&, QByteArray&, bool&)));
 	disconnect(gadu, SIGNAL(sendMessageFiltering(const UserListElements, QByteArray &, bool &)),
@@ -301,7 +305,9 @@ void EncryptionManager::decryptMessage(Protocol *protocol, UserListElements send
 
 	kdebugm(KDEBUG_INFO, "Decrypting encrypted message...(%d)\n", msg.length());
 	const char* msg_c = msg;
-	char* decoded = sim_message_decrypt((const unsigned char*)msg_c, senders[0].ID(protocol->protocolID()).toUInt());
+	// TODO: fix
+	// char* decoded = sim_message_decrypt((const unsigned char*)msg_c, senders[0].ID(protocol->protocolID()).toUInt());
+	char *decoded = 0;
 	kdebugm(KDEBUG_DUMP, "Decrypted message is(len:%u): %s\n", decoded ? strlen(decoded) : 0, decoded);
 	if (decoded != NULL)
 	{
@@ -418,8 +424,10 @@ void EncryptionManager::sendPublicKeyActionActivated(QAction *sender, bool toggl
 		QTextStream t(&keyfile);
 		mykey = t.read();
 		keyfile.close();
-		foreach(const UserListElement &user, users)
-			(dynamic_cast<Protocol *>(gadu))->sendMessage(user, mykey);
+
+		Protocol *gadu = AccountManager::instance()->defaultAccount()->protocol();
+		foreach (const UserListElement &user, users)
+			gadu->sendMessage(user, mykey);
 
 		MessageBox::msg(tr("Your public key has been sent"), false, "Information", kadu);
 	}

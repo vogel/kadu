@@ -1,5 +1,7 @@
 set (kadu_SRCS
 	about.cpp
+	account.cpp
+	account_manager.cpp
 	action.cpp
 	activate.cpp
 	chat_edit_box.cpp
@@ -19,9 +21,6 @@ set (kadu_SRCS
 	dnshandler.cpp
 	emoticons.cpp
 	expimp.cpp
-	gadu.cpp
-	gadu_images_manager.cpp
-	gadu-private.cpp
 	groups_manager.cpp
 	hot_key.cpp
 	html_document.cpp
@@ -63,6 +62,8 @@ set (kadu_SRCS
 
 set (kadu_MOC_SRCS
 	about.h
+	account.h
+	account_manager.h
 	action.h
 	activate.h
 	chat_edit_box.h
@@ -81,9 +82,6 @@ set (kadu_MOC_SRCS
 	dnshandler.h
 	emoticons.h
 	expimp.h
-	gadu.h
-	gadu_images_manager.h
-	gadu-private.h
 	groups_manager.h
 	hot_key.h
 	html_document.h

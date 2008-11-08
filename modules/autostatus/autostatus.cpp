@@ -13,11 +13,12 @@
 #include <QtGui/QSpinBox>
 #include <QtGui/QMessageBox>
 
-#include "kadu.h"
+#include "account.h"
+#include "account_manager.h"
 #include "config_file.h"
 #include "debug.h"
+#include "kadu.h"
 #include "misc.h"
-#include "gadu.h"
 
 #include "autostatus.h"
 #include "power_status_changer.h"
@@ -106,8 +107,9 @@ void Autostatus::changeStatus()
 void Autostatus::onAutostatus(QAction *sender, bool toggled)
 {
 	enabled = !enabled;
-	if(!enabled)
+	if (!enabled)
 	{
+		Protocol *gadu = AccountManager::instance()->defaultAccount()->protocol();
 		currStat = gadu->currentStatus().index();
 		currDesc = gadu->currentStatus().description();
 

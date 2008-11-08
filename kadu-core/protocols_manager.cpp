@@ -9,11 +9,21 @@
 
 #include "debug.h"
 #include "misc.h"
+#include "protocol_factory.h"
 
 #include "protocols_manager.h"
 
+ProtocolsManager * ProtocolsManager::Instance = 0;
+
+ProtocolsManager * ProtocolsManager::instance()
+{
+	if (0 == Instance)
+		Instance = new ProtocolsManager();
+
+	return Instance;
+}
+
 ProtocolsManager::ProtocolsManager()
-	: QObject(), protocolDescriptions(), protocols()
 {
 }
 
@@ -21,74 +31,25 @@ ProtocolsManager::~ProtocolsManager()
 {
 }
 
-void ProtocolsManager::initModule()
+void ProtocolsManager::registerProtocolFactory(const QString &name, ProtocolFactory *factory)
 {
-	protocols_manager = new ProtocolsManager();
+	if (0 != factory && !registeredFactories.contains(name))
+		registeredFactories[name] = factory;
 }
 
-void ProtocolsManager::closeModule()
+void ProtocolsManager::unregisterProtocolFactory(const QString &name)
 {
-	delete protocols_manager;
-	protocols_manager = 0;
+	if (registeredFactories.contains(name))
+	{
+		delete registeredFactories[name];
+		registeredFactories.remove(name);
+	}
 }
 
-void ProtocolsManager::registerProtocol(const QString &protocolID, const QString &name, ProtocolManager *manager)
+Protocol * ProtocolsManager::newInstance(const QString &name)
 {
-	protocolDescriptions.append(ProtocolDescription(protocolID, name, manager));
-}
+	if (registeredFactories.contains(name))
+		return registeredFactories[name]->newInstance();
 
-void ProtocolsManager::unregisterProtocol(const QString &protocolID)
-{
-	foreach(const ProtocolDescription &protoDesc, protocolDescriptions)
-		if (protoDesc.protocolID == protocolID)
-		{
-			protocolDescriptions.removeAll(protoDesc);
-			return;
-		}
-
-	kdebugm(KDEBUG_WARNING, "protocol(%s) not found\n", qPrintable(protocolID));
-}
-
-QList<Protocol *> ProtocolsManager::byProtocolID(const QString &protocolID)
-{
-	QList<Protocol *> ret;
-
-	foreach(Protocol *proto, protocols)
-		if (proto->protocolID() == protocolID)
-			ret.append(proto);
-
-	if (ret.size() == 0)
-		kdebugm(KDEBUG_WARNING, "protocol(%s) not found\n", qPrintable(protocolID));
-
-	return ret;
-}
-
-Protocol * ProtocolsManager::byID(const QString &protocolID, const QString &ID)
-{
-	foreach(Protocol *proto, protocols)
-		if (proto->protocolID() == protocolID && proto->ID() == ID)
-			return proto;
-
-	kdebugm(KDEBUG_WARNING, "protocol,id(%s,%s) not found\n", qPrintable(protocolID), qPrintable(ID));
 	return 0;
 }
-
-Protocol * ProtocolsManager::newProtocol(const QString &protocolID, const QString &ID)
-{
-	Protocol *proto = 0;
-	foreach(const ProtocolDescription &protoDesc, protocolDescriptions)
-		if (protoDesc.protocolID == protocolID)
-		{
-			proto = protoDesc.Manager->newInstance(ID);
-			break;
-		}
-
-	if (proto)
-		protocols.append(proto);
-	else
-		kdebugm(KDEBUG_WARNING, "protocol(%s) not found\n", qPrintable(protocolID));
-
-	return proto;
-}
-
-ProtocolsManager *protocols_manager;

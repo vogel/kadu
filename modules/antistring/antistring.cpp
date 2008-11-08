@@ -10,7 +10,8 @@
 #include "antistring.h"
 #include "../notify/notify.h"
 
-#include "gadu.h"
+#include "account.h"
+#include "account_manager.h"
 #include "misc.h"
 #include "debug.h"
 #include "protocol.h"
@@ -18,10 +19,10 @@
 #include "chat_manager.h"
 #include "icons_manager.h"
 
-//#include "message_box.h"
 #include <QtCore/QMap>
 #include <QtCore/QRegExp>
 #include <QtCore/QProcess>
+#include <QtCore/QTextStream>
 #include <QtGui/QLabel>
 #include <QtGui/QSpinBox>
 #include <QtGui/QGridLayout>
@@ -51,6 +52,8 @@ Antistring::Antistring()
 {
 	addDefaultConfiguration();
 	conditionsRead();
+
+	Protocol *gadu = AccountManager::instance()->defaultAccount()->protocol();
 	connect(gadu, SIGNAL(rawGaduReceivedMessageFilter(Protocol *, UserListElements, QString&, QByteArray&, bool&)),
 			this,
 			SLOT(messageFiltering(Protocol *, UserListElements, QString&, QByteArray&, bool&)));
@@ -58,6 +61,8 @@ Antistring::Antistring()
 
 Antistring::~Antistring()
 {
+	Protocol *gadu = AccountManager::instance()->defaultAccount()->protocol();
+
 	disconnect(gadu, SIGNAL(rawGaduReceivedMessageFilter(Protocol *, UserListElements, QString&, QByteArray&, bool&)),
 			this,
 			SLOT(messageFiltering(Protocol *, UserListElements, QString&, QByteArray&, bool&)));

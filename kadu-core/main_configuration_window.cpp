@@ -12,11 +12,13 @@
 #include <QtGui/QApplication>
 #include <QtGui/QStyleFactory>
 
+#include "account.h"
+#include "account_manager.h"
 #include "chat_message.h"
 #include "config_file.h"
 #include "configuration_window_widgets.h"
 #include "debug.h"
-#include "gadu.h"
+#include "../modules/gadu_protocol/gadu.h"
 #include "icons_manager.h"
 #include "kadu.h"
 #include "userlistelement.h"
@@ -78,6 +80,8 @@ MainConfigurationWindow::MainConfigurationWindow()
 	onStartupSetLastDescription = dynamic_cast<QCheckBox *>(widgetById("onStartupSetLastDescription"));
 	QLineEdit *disconnectDescription = dynamic_cast<QLineEdit *>(widgetById("disconnectDescription"));
 	QLineEdit *onStartupSetDescription = dynamic_cast<QLineEdit *>(widgetById("onStartupSetDescription"));
+
+	GaduProtocol *gadu = dynamic_cast<GaduProtocol *>(AccountManager::instance()->defaultAccount()->protocol());
 	disconnectDescription->setMaxLength(gadu->maxDescriptionLength());
 	onStartupSetDescription->setMaxLength(gadu->maxDescriptionLength());
 

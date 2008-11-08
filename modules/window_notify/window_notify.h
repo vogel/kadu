@@ -1,7 +1,7 @@
 #ifndef WINDOW_NOTIFY_H
 #define WINDOW_NOTIFY_H
 
-#include "gadu.h"
+#include "../modules/gadu_protocol/gadu.h"
 #include "../notify/notify.h"
 
 /**

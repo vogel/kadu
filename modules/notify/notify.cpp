@@ -12,6 +12,8 @@
 #include <QtGui/QHBoxLayout>
 #include <QtGui/QListWidget>
 
+#include "account.h"
+#include "account_manager.h"
 #include "chat_widget.h"
 #include "chat_manager.h"
 #include "config_file.h"
@@ -19,7 +21,6 @@
 #include "connection_error_notification.h"
 #include "custom_input.h"
 #include "debug.h"
-#include "gadu.h"
 #include "kadu.h"
 #include "misc.h"
 #include "new_message_notification.h"
@@ -73,6 +74,7 @@ Notify::Notify(QObject *parent, const char *name)
 
 	createDefaultConfiguration();
 
+	Protocol *gadu = AccountManager::instance()->defaultAccount()->protocol();
 	connect(gadu, SIGNAL(connectionError(Protocol *, const QString &, const QString &)), this, SLOT(connectionError(Protocol *, const QString &, const QString &)));
 
 	// TODO: workaround
@@ -97,6 +99,7 @@ Notify::~Notify()
 	ConnectionErrorNotification::unregisterEvent(this);
 	MessageNotification::unregisterEvents(this);
 
+	Protocol *gadu = AccountManager::instance()->defaultAccount()->protocol();
 	disconnect(gadu, SIGNAL(connectionError(Protocol *, const QString &, const QString &)), this, SLOT(connectionError(Protocol *, const QString &, const QString &)));
 	disconnect(gadu, SIGNAL(messageReceived(Protocol *, UserListElements, const QString&, time_t)),
 			this, SLOT(messageReceived(Protocol *, UserListElements, const QString&, time_t)));
@@ -360,12 +363,13 @@ void Notify::messageReceived(Protocol *protocol, UserListElements senders, const
 {
 	kdebugf();
 
+	Protocol *gadu = AccountManager::instance()->defaultAccount()->protocol();
 	ChatWidget *chat = chat_manager->findChatWidget(senders);
 	if (!chat) // new chat
-		notify(new MessageNotification(MessageNotification::NewChat, senders, msg, protocol->protocolID()));
+		notify(new MessageNotification(MessageNotification::NewChat, senders, msg, "Gadu"));
 	else // new message in chat
 		if (!chat->edit()->hasFocus() || !config_file.readBoolEntry("Notify", "NewMessageOnlyIfInactive"))
-			notify(new MessageNotification(MessageNotification::NewMessage, senders, msg, protocol->protocolID()));
+			notify(new MessageNotification(MessageNotification::NewMessage, senders, msg, "Gadu"));
 
 	kdebugf2();
 }
@@ -376,7 +380,7 @@ void Notify::connectionError(Protocol *protocol, const QString &server, const QS
 
 	if (!ConnectionErrorNotification::activeError(message))
 	{
-		ConnectionErrorNotification *connectionErrorNotification = new ConnectionErrorNotification(server, message, protocol->protocolID());
+		ConnectionErrorNotification *connectionErrorNotification = new ConnectionErrorNotification(server, message, "Gadu");
 		notify(connectionErrorNotification);
 	}
 

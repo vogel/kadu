@@ -7,6 +7,8 @@
  *                                                                         *
  ***************************************************************************/
 
+#include "account.h"
+#include "account_manager.h"
 #include "action.h"
 #include "activate.h"
 #include "chat_edit_box.h"
@@ -230,9 +232,11 @@ void ChatManager::loadOpenedWindows()
 				QString id = contact_elem.attribute("id");
 				users.append(userlist->byID(protocolId, id));
 			}
-			Protocol *protocol = protocols_manager->byID(protocolId, accountId);
-			if (protocol)
-				openChatWidget(protocol, users);
+
+			// TODO: fix
+			Protocol *gadu = AccountManager::instance()->defaultAccount()->protocol();
+			if (gadu)
+				openChatWidget(gadu, users);
 			else
 				kdebugm(KDEBUG_WARNING, "protocol %s/%s not found!\n",
 					       qPrintable(protocolId), qPrintable(accountId));
@@ -251,9 +255,9 @@ void ChatManager::saveOpenedWindows()
 	{
 		QDomElement window_elem = xml_config_file->createElement(chats_elem, "Window");
 		Protocol *protocol = chat->currentProtocol();
-		QString protoId = protocol->protocolID();
-		window_elem.setAttribute("protocol", protoId);
-		window_elem.setAttribute("id", protocol->ID());
+		QString protoId = "Gadu";
+		window_elem.setAttribute("protocol", "Gadu");
+		window_elem.setAttribute("id", "Gadu");
 		const UserGroup *users = chat->users();
 		foreach(const UserListElement &user, *users)
 		{
@@ -510,6 +514,7 @@ void ChatManager::ignoreUserActionActivated(QAction *sender, bool toggled)
 	if (!window)
 		return;
 
+	Protocol *gadu = AccountManager::instance()->defaultAccount()->protocol();
 	UserListElements users = window->userListElements();
 	if (users.count() > 0)
 	{
@@ -576,6 +581,7 @@ void ChatManager::blockUserActionActivated(QAction *sender, bool toggled)
 				break;
 			}
 
+		Protocol *gadu = AccountManager::instance()->defaultAccount()->protocol();
 		foreach(const UserListElement &user, copy)
 		{
 			QString uid = user.ID("Gadu");
@@ -620,6 +626,7 @@ void ChatManager::chatActionActivated(QAction *sender, bool toggled)
 	if (!window)
 		return;
 
+	Protocol *gadu = AccountManager::instance()->defaultAccount()->protocol();
 	UserListElements users = window->userListElements();
 	if (users.count() > 0)
 		openChatWidget(gadu, users);
@@ -720,9 +727,10 @@ int ChatManager::openChatWidget(Protocol *initialProtocol, const UserListElement
 {
 	kdebugf();
 
+	Protocol *gadu = AccountManager::instance()->defaultAccount()->protocol();
 	foreach(const UserListElement &user, users)
 	{
-		QString uid = user.ID(initialProtocol->protocolID());
+		QString uid = user.ID("Gadu");
 		if (!initialProtocol->validateUserID(uid))
 		{
 			kdebugf2();
@@ -822,6 +830,7 @@ void ChatManager::openPendingMsgs(UserListElements users, bool forceActivate)
 	QList<ChatMessage *> messages;
 	PendingMsgs::Element elem;
 
+	Protocol *gadu = AccountManager::instance()->defaultAccount()->protocol();
 	int chat = openChatWidget(gadu, users, forceActivate);
 
 	for (int i = 0; i < pending.count(); ++i)
@@ -869,6 +878,7 @@ void ChatManager::sendMessage(UserListElement user, UserListElements selected_us
 			return;
 		}
 
+	Protocol *gadu = AccountManager::instance()->defaultAccount()->protocol();
 	openChatWidget(gadu, selected_users, true);
 
 	kdebugf2();

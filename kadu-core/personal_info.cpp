@@ -15,8 +15,11 @@
 #include <QtGui/QLineEdit>
 #include <QtGui/QPushButton>
 
+#include "account.h"
+#include "account_manager.h"
 #include "debug.h"
-#include "gadu.h"
+#include "../modules/gadu_protocol/gadu.h"
+#include "../modules/gadu_protocol/gadu_search.h"
 #include "icons_manager.h"
 
 #include "personal_info.h"
@@ -185,6 +188,7 @@ PersonalInfoDialog::PersonalInfoDialog(QWidget *parent)
 
 	setLayout(layout);
 
+	Protocol *gadu = AccountManager::instance()->defaultAccount()->protocol();
 	connect(gadu, SIGNAL(newSearchResults(SearchResults&, int, int)), this, SLOT(fillFields(SearchResults&, int, int)));
 
 	reloadInfo();
@@ -212,6 +216,8 @@ void PersonalInfoDialog::keyPressEvent(QKeyEvent *ke_event)
 void PersonalInfoDialog::reloadInfo()
 {
 	kdebugf();
+
+	GaduProtocol *gadu = dynamic_cast<GaduProtocol *>(AccountManager::instance()->defaultAccount()->protocol());
 	if (!gadu->currentStatus().isOffline())
 	{
 		State = READING;
@@ -226,6 +232,7 @@ void PersonalInfoDialog::saveButtonClicked()
 {
 	kdebugf();
 
+	GaduProtocol *gadu = dynamic_cast<GaduProtocol *>(AccountManager::instance()->defaultAccount()->protocol());
 	if (gadu->currentStatus().isOffline())
 		return;
 
@@ -240,6 +247,7 @@ void PersonalInfoDialog::saveButtonClicked()
 	save.Gender = cb_gender->currentItem();
 	save.FamilyName = le_familyname->text();
 	save.FamilyCity = le_familycity->text();
+
 	gadu->setPersonalInfo(*data, save);
 
 	setEnabled(false);

@@ -22,6 +22,7 @@ class QVBoxLayout;
 // TODO: remove
 class Q3ListBoxItem;
 
+class Account;
 class ActionDescription;
 class KaduTabBar;
 class KaduTextBrowser;
@@ -158,6 +159,9 @@ private slots:
 	void onlineAndDescUsersActionCreated(KaduAction *action);
 
 	void quitApplication();
+
+	// new API
+	void accountRegistered(Account *);
 
 protected:
 	void keyPressEvent(QKeyEvent *e);
