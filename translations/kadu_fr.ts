@@ -446,19 +446,35 @@ Attention danger!
     </message>
     <message>
         <source>Online</source>
-        <translation type="unfinished">En ligne</translation>
+        <translation>En ligne</translation>
+    </message>
+    <message>
+        <source>Online (d.)</source>
+        <translation>En ligne avec description</translation>
     </message>
     <message>
         <source>Busy</source>
-        <translation type="unfinished">Je reviens toute suite</translation>
+        <translation>Je reviens toute suite</translation>
+    </message>
+    <message>
+        <source>Busy (d.)</source>
+        <translation>Je reviens toute suite avec description</translation>
     </message>
     <message>
         <source>Invisible</source>
-        <translation type="unfinished">Invisible</translation>
+        <translation>Invisible</translation>
+    </message>
+    <message>
+        <source>Invisible (d.)</source>
+        <translation>Invisible (description.)</translation>
     </message>
     <message>
         <source>Offline</source>
-        <translation type="unfinished">Hors ligne</translation>
+        <translation>Hors ligne</translation>
+    </message>
+    <message>
+        <source>Offline (d.)</source>
+        <translation>Hors ligne ( avec description.)</translation>
     </message>
     <message>
         <source>On startup, set last description</source>

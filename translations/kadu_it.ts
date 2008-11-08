@@ -445,19 +445,35 @@ E un rischio per la sicurezza!</translation>
     </message>
     <message>
         <source>Online</source>
-        <translation>Accessibile</translation>
+        <translation type="unfinished">Accessibile</translation>
+    </message>
+    <message>
+        <source>Online (d.)</source>
+        <translation type="unfinished">AAccessibile(desc)</translation>
     </message>
     <message>
         <source>Busy</source>
         <translation>Occupato</translation>
     </message>
     <message>
+        <source>Busy (d.)</source>
+        <translation type="unfinished">Occupato (desc.)</translation>
+    </message>
+    <message>
         <source>Invisible</source>
         <translation>Invisibile</translation>
     </message>
     <message>
+        <source>Invisible (d.)</source>
+        <translation type="unfinished">Invisibile(desc.)</translation>
+    </message>
+    <message>
         <source>Offline</source>
         <translation>Fuori linea</translation>
+    </message>
+    <message>
+        <source>Offline (d.)</source>
+        <translation type="unfinished">Fuori linea(desc)</translation>
     </message>
     <message>
         <source>On startup, set last description</source>

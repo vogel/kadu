@@ -448,16 +448,32 @@ It&apos;s a high security risk!</source>
         <translation>Erreichbar</translation>
     </message>
     <message>
+        <source>Online (d.)</source>
+        <translation>Erreichbar (Beschr.)</translation>
+    </message>
+    <message>
         <source>Busy</source>
         <translation>Beschäftigt</translation>
+    </message>
+    <message>
+        <source>Busy (d.)</source>
+        <translation>Beschäftigt (Beschr.)</translation>
     </message>
     <message>
         <source>Invisible</source>
         <translation>Versteckt</translation>
     </message>
     <message>
+        <source>Invisible (d.)</source>
+        <translation>Versteckt (Beschr.)</translation>
+    </message>
+    <message>
         <source>Offline</source>
         <translation>Offline</translation>
+    </message>
+    <message>
+        <source>Offline (d.)</source>
+        <translation>Offline (Beschr.)</translation>
     </message>
     <message>
         <source>On startup, set last description</source>
