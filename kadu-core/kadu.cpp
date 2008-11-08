@@ -2480,6 +2480,12 @@ void Kadu::createDefaultConfiguration()
 	userboxfont.setPointSize(defaultFont->pointSize()+1);
 	config_file.addVariable("Look", "UserboxFont", userboxfont);
 	config_file.addVariable("Look", "UseUserboxBackground", false);
+#ifdef Q_OS_MAC
+	/* Dorr: for MacOS X define the icon notification to animated which
+	 * will prevent from blinking the dock icon
+	 */
+	config_file.addVariable("Look", "NewMessageIcon", 2);
+#endif
 
 	config_file.addVariable("Network", "AllowDCC", true);
 	config_file.addVariable("Network", "DefaultPort", 0);
@@ -2488,21 +2494,31 @@ void Kadu::createDefaultConfiguration()
 	config_file.addVariable("Network", "TimeoutInMs", 5000);
 	config_file.addVariable("Network", "UseProxy", false);
 
-	config_file.addVariable("ShortCuts", "chat_bold", "Ctrl+B");
+#ifdef Q_OS_MAC
+	/* Dorr: for MacOS X define the function keys with 'apple' button
+	 * as it is the default system configuration */
+	config_file.addVariable("ShortCuts", "chat_clear", "Ctrl+F9");
+	config_file.addVariable("ShortCuts", "kadu_configure", "Ctrl+F2");
+	config_file.addVariable("ShortCuts", "kadu_modulesmanager", "Ctrl+F4");
+	config_file.addVariable("ShortCuts", "kadu_showoffline", "Ctrl+F9");
+	config_file.addVariable("ShortCuts", "kadu_showonlydesc", "Ctrl+F10");
+#else
 	config_file.addVariable("ShortCuts", "chat_clear", "F9");
+	config_file.addVariable("ShortCuts", "kadu_configure", "F2");
+	config_file.addVariable("ShortCuts", "kadu_modulesmanager", "F4");
+	config_file.addVariable("ShortCuts", "kadu_showoffline", "F9");
+	config_file.addVariable("ShortCuts", "kadu_showonlydesc", "F10");
+#endif
+	config_file.addVariable("ShortCuts", "chat_bold", "Ctrl+B");
 	config_file.addVariable("ShortCuts", "chat_close", "Esc");
 	config_file.addVariable("ShortCuts", "chat_italic", "Ctrl+I");
 	config_file.addVariable("ShortCuts", "chat_newline", "Return");
 	config_file.addVariable("ShortCuts", "chat_underline", "Ctrl+U");
 	config_file.addVariable("ShortCuts", "kadu_adduser", "Ctrl+N");
-	config_file.addVariable("ShortCuts", "kadu_configure", "F2");
 	config_file.addVariable("ShortCuts", "kadu_deleteuser", "Del");
-	config_file.addVariable("ShortCuts", "kadu_modulesmanager", "F4");
 	config_file.addVariable("ShortCuts", "kadu_openchatwith", "Ctrl+L");
 	config_file.addVariable("ShortCuts", "kadu_persinfo", "Ins");
 	config_file.addVariable("ShortCuts", "kadu_searchuser", "Ctrl+F");
-	config_file.addVariable("ShortCuts", "kadu_showoffline", "F9");
-	config_file.addVariable("ShortCuts", "kadu_showonlydesc", "F10");
 
 	createAllDefaultToolbars();
 }
