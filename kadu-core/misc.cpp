@@ -23,6 +23,7 @@
 #include <QtGui/QPainter>
 #include <QtGui/QPushButton>
 #include <QtGui/QDesktopServices>
+#include <QtGui/QDesktopWidget>
 
 #ifdef Q_WS_WIN
 #include <windows.h>
@@ -63,7 +64,9 @@ bool measureTime = false;
 
 void saveWindowGeometry(const QWidget *w, const QString &section, const QString &name)
 {
-	config_file.writeEntry(section, name, w->geometry());
+	/* Dorr: make sure the window will not be greater than desktop */
+	config_file.writeEntry(section, name,
+		QApplication::desktop()->availableGeometry().intersected(w->geometry()));
 }
 
 void loadWindowGeometry(QWidget *w, const QString &section, const QString &name, int defaultX, int defaultY, int defaultWidth, int defaultHeight)
