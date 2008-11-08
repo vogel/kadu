@@ -2365,6 +2365,38 @@ Possibile incompatibilità con Kadu.</translation>
         <source>User known as %1 with that UIN is already in userlist.</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Online</source>
+        <translation>Accessibile</translation>
+    </message>
+    <message>
+        <source>Online (d.)</source>
+        <translation>AAccessibile(desc)</translation>
+    </message>
+    <message>
+        <source>Busy</source>
+        <translation>Occupato</translation>
+    </message>
+    <message>
+        <source>Busy (d.)</source>
+        <translation>Occupato (desc.)</translation>
+    </message>
+    <message>
+        <source>Invisible</source>
+        <translation>Invisibile</translation>
+    </message>
+    <message>
+        <source>Invisible (d.)</source>
+        <translation>Invisibile(desc.)</translation>
+    </message>
+    <message>
+        <source>Offline</source>
+        <translation>Fuori linea</translation>
+    </message>
+    <message>
+        <source>Offline (d.)</source>
+        <translation>Fuori linea(desc)</translation>
+    </message>
 </context>
 <context>
     <name>UserStatus</name>

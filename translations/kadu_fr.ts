@@ -2355,6 +2355,38 @@ Peut être module incompatible avec Kadu.</translation>
         <source>User known as %1 with that UIN is already in userlist.</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Online</source>
+        <translation>En ligne</translation>
+    </message>
+    <message>
+        <source>Online (d.)</source>
+        <translation>En ligne avec description</translation>
+    </message>
+    <message>
+        <source>Busy</source>
+        <translation>Je reviens toute suite</translation>
+    </message>
+    <message>
+        <source>Busy (d.)</source>
+        <translation>Je reviens toute suite avec description</translation>
+    </message>
+    <message>
+        <source>Invisible</source>
+        <translation>Invisible</translation>
+    </message>
+    <message>
+        <source>Invisible (d.)</source>
+        <translation>Invisible (description.)</translation>
+    </message>
+    <message>
+        <source>Offline</source>
+        <translation>Hors ligne</translation>
+    </message>
+    <message>
+        <source>Offline (d.)</source>
+        <translation>Hors ligne ( avec description.)</translation>
+    </message>
 </context>
 <context>
     <name>UserStatus</name>

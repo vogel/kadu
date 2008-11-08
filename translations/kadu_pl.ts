@@ -2382,6 +2382,38 @@ Być może nie jest to moduł kompatybilny z Kadu.</translation>
         <source>Icon:</source>
         <translation>Ikona:</translation>
     </message>
+    <message>
+        <source>Online</source>
+        <translation>Dostępny</translation>
+    </message>
+    <message>
+        <source>Online (d.)</source>
+        <translation>Dostępny z opisem</translation>
+    </message>
+    <message>
+        <source>Busy</source>
+        <translation>Zajęty</translation>
+    </message>
+    <message>
+        <source>Busy (d.)</source>
+        <translation>Zajęty z opisem</translation>
+    </message>
+    <message>
+        <source>Invisible</source>
+        <translation>Ukryty</translation>
+    </message>
+    <message>
+        <source>Invisible (d.)</source>
+        <translation>Ukryty z opisem</translation>
+    </message>
+    <message>
+        <source>Offline</source>
+        <translation>Niedostępny</translation>
+    </message>
+    <message>
+        <source>Offline (d.)</source>
+        <translation>Niedostępny z opisem</translation>
+    </message>
 </context>
 <context>
     <name>UserStatus</name>
