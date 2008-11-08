@@ -12,6 +12,7 @@
 #include <QtGui/QKeyEvent>
 #include <QtGui/QLabel>
 #include <QtGui/QLineEdit>
+#include <QtGui/QComboBox>
 #include <QtGui/QPushButton>
 #include <QtGui/QScrollArea>
 #include <QtGui/QScrollBar>
@@ -125,7 +126,8 @@ void UserInfo::setupTab1()
 	e_uin->setMaxLength(8);
 	e_uin->setValidator(new QIntValidator(1, 99999999, this));
 
-	e_altnick = new QLineEdit(generalWidget);
+	e_altnick = new QComboBox(generalWidget);
+	e_altnick->setEditable(true);
 	// end UIN and disp
 
 	// name and nick
@@ -135,14 +137,13 @@ void UserInfo::setupTab1()
 
 	// Surname & mobile
 	e_lastname = new QLineEdit(generalWidget);
-
 	e_mobile = new QLineEdit(generalWidget);
 	// end Surname & mobile
 
-	// Email
 	QWidget *emptyWidget = new QWidget(generalWidget);
 	emptyWidget->setName("space_for_advanced_userlist");
 
+	// Email
 	e_email = new QLineEdit(generalWidget);
 	// end Email
 
@@ -156,7 +157,6 @@ void UserInfo::setupTab1()
 	e_addr->setBackgroundMode(Qt::PaletteButton);
 
 	e_dnsname = new QLineEdit(generalWidget);
-	
 	e_dnsname->setBackgroundMode(Qt::PaletteButton);
 	// end IP and DNS
 
@@ -201,11 +201,17 @@ void UserInfo::setupTab1()
 	e_dnsname->setReadOnly(true);
 
 	e_nickname->setText(User.nickName());
-	e_altnick->setText(User.altNick());
 	e_firstname->setText(User.firstName());
 	e_lastname->setText(User.lastName());
 	e_mobile->setText(User.mobile());
 	e_email->setText(User.email());
+
+	connect(e_nickname, SIGNAL(editingFinished()), this, SLOT(updateAltNick()));
+	connect(e_firstname, SIGNAL(editingFinished()), this, SLOT(updateAltNick()));
+	connect(e_lastname, SIGNAL(editingFinished()), this, SLOT(updateAltNick()));
+
+	e_altnick->setEditText(User.altNick());
+	updateAltNick();
 
 	if (User.usesProtocol("Gadu"))
 	{
@@ -251,6 +257,27 @@ void UserInfo::setupTab1()
 	}
 
 	kdebugf2();
+}
+
+void UserInfo::updateAltNick()
+{
+	QStringList list;
+	if (!e_altnick->currentText().isEmpty())
+		list << e_altnick->currentText();
+	if (!e_nickname->text().isEmpty() && !list.contains(e_nickname->text()))
+		list << e_nickname->text();
+	if (!e_firstname->text().isEmpty())
+	{
+		if (!list.contains(e_firstname->text()))
+			list << e_firstname->text();
+		if (!e_lastname->text().isEmpty())
+		{
+			list << e_firstname->text() + " " + e_lastname->text();
+			list << e_lastname->text() + " " + e_firstname->text();
+		}
+	}
+	e_altnick->clear();
+	e_altnick->addItems(list);
 }
 
 void UserInfo::setupTab2()
@@ -499,7 +526,7 @@ void UserInfo::updateUserlist()
 	if (!e_uin->text().isEmpty())
 		id = e_uin->text();
 
-	if (e_altnick->text().isEmpty())
+	if (e_altnick->currentText().isEmpty())
 	{
 		MessageBox::msg(tr("Altnick field cannot be empty."), false, "Warning", this);
 
@@ -530,7 +557,7 @@ void UserInfo::updateUserlist()
 	User.setFirstName(e_firstname->text());
 	User.setLastName(e_lastname->text());
 	User.setNickName(e_nickname->text());
-	User.setAltNick(e_altnick->text());
+	User.setAltNick(e_altnick->currentText());
 	User.setMobile(e_mobile->text());
 
 	if (User.usesProtocol("Gadu")) // there was an UIN so far?

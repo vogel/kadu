@@ -22,6 +22,7 @@ class QCheckBox;
 class QHostInfo;
 class QLabel;
 class QLineEdit;
+class QComboBox;
 class QPushButton;
 class QScrollArea;
 class QTabWidget;
@@ -43,7 +44,7 @@ class KADUAPI UserInfo : public QWidget
 	QLineEdit *e_firstname;
 	QLineEdit *e_lastname;
 	QLineEdit *e_nickname;
-	QLineEdit *e_altnick;
+	QComboBox *e_altnick;
 	QLineEdit *e_mobile;
 	QLineEdit *e_uin;
 	QLineEdit *e_addr;
@@ -145,6 +146,7 @@ public slots:
 		Wci�ni�cie przycisku Dodaj/Uaktualnij
 	**/
 	void updateUserlist();
+	void updateAltNick();
 
 signals:
 	void updateClicked(UserInfo *);
