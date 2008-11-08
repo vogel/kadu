@@ -100,8 +100,6 @@ ModulesDialog::ModulesDialog(QWidget *parent)
 	setWindowTitle(tr("Manage Modules"));
 	setAttribute(Qt::WA_DeleteOnClose);
 
-//	layout()->setResizeMode(QLayout::Minimum);
-
 	// create main QLabel widgets (icon and app info)
 	QWidget *left = new QWidget(this);
 	QVBoxLayout *leftLayout = new QVBoxLayout(left);
@@ -111,7 +109,7 @@ ModulesDialog::ModulesDialog(QWidget *parent)
 	QLabel *l_icon = new QLabel(left);
 
 	leftLayout->addWidget(l_icon);
-	leftLayout->addStretch();
+	leftLayout->addStretch(100);
 
 	QWidget *center = new QWidget(this);
 	QVBoxLayout *centerLayout = new QVBoxLayout(center);
@@ -137,7 +135,7 @@ ModulesDialog::ModulesDialog(QWidget *parent)
 	lv_modules->setSortingEnabled(true);
 	lv_modules->setAllColumnsShowFocus(true);
 	lv_modules->setIndentation(false);
-	lv_modules->setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Minimum));
+	lv_modules->setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding));
 
 	
 	// end our QListView
@@ -168,7 +166,7 @@ ModulesDialog::ModulesDialog(QWidget *parent)
 	QPushButton *pb_close = new QPushButton(icons_manager->loadIcon("CloseWindow"), tr("&Close"), bottom, "close");
 
 	bottomLayout->addWidget(hideBaseModules);
-	bottomLayout->addStretch();
+// 	bottomLayout->addStretch();
 	bottomLayout->addWidget(pb_close);
 #ifdef Q_OS_MAC
 	bottom->setMaximumHeight(pb_close->height() + 5);
