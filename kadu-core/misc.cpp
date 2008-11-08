@@ -521,10 +521,23 @@ QString printDateTime(const QDateTime &datetime)
 				ret.prepend(datetime.toString(qApp->translate("@default", "dddd at ")));
 				ret[0] = ret[0].upper(); // looks ugly lowercase ;)
 			}
+			else if ((delta > 7) && (delta < 14))
+			{
+				int tmp = delta % 7;
+				if (tmp == 0)
+					ret.prepend(qApp->translate("@default", "week ago at "));
+				else if (tmp == 1)
+					ret.prepend(qApp->translate("@default", "week and day ago at "));
+				else
+					ret.prepend(qApp->translate("@default", "week and %2 days ago at ").arg(delta%7));
+			}
 			else if (delta < 6*7)
 			{
-				if ((delta%7) == 0)
+				int tmp = delta % 7;
+				if (tmp == 0)
 					ret.prepend(qApp->translate("@default", "%1 weeks ago at ").arg(delta/7));
+				else if (tmp == 1)
+					ret.prepend(qApp->translate("@default", "%1 weeks and day ago at ").arg(delta/7));
 				else
 					ret.prepend(qApp->translate("@default", "%1 weeks and %2 days ago at ").arg(delta/7).arg(delta%7));
 			}

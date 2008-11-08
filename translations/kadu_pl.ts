@@ -75,11 +75,27 @@ Jest to wysoce ryzykowne!</translation>
     </message>
     <message>
         <source>%1 weeks ago at </source>
-        <translation>%1 tygodni temu o  </translation>
+        <translation>%1 tygodnie temu o </translation>
+    </message>
+    <message>
+        <source>%1 weeks and day ago at </source>
+        <translation>%1 tygodnie i jeden dzień temu o </translation>
     </message>
     <message>
         <source>%1 weeks and %2 days ago at </source>
-        <translation>%1 tydzień i %2 dni temu o </translation>
+        <translation>%1 tygodnie %2 dni temu o </translation>
+    </message>
+    <message>
+        <source>week ago at </source>
+        <translation>Tydzień temu o </translation>
+    </message>
+    <message>
+        <source>week and day ago at </source>
+        <translation>Tydzień i jeden dzień temu o </translation>
+    </message>
+    <message>
+        <source>week and %2 days ago at </source>
+        <translation>Tydzień i %2 dni temu o </translation>
     </message>
     <message>
         <source>d MMMM yyyy at </source>
