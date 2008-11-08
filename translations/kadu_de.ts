@@ -79,6 +79,22 @@ It&apos;s a high security risk!</source>
         <translation>Vor %1 Wochen und %2 Tagen um </translation>
     </message>
     <message>
+        <source>%1 weeks and day ago at </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>week ago at </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>week and day ago at </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>week and %2 days ago at </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>d MMMM yyyy at </source>
         <translation>d MMMM yyyy um </translation>
     </message>

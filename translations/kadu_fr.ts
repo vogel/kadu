@@ -81,6 +81,22 @@ Attention danger!
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <source>%1 weeks and day ago at </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>week ago at </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>week and day ago at </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>week and %2 days ago at </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>d MMMM yyyy at </source>
         <translation type="unfinished"></translation>
     </message>
