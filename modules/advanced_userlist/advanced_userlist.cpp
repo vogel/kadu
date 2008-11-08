@@ -118,19 +118,16 @@ void AdvancedUserList::userInfoWindowCreated(QObject *new_object)
 
 	UserInfo *info = static_cast<UserInfo *>(new_object);
 	connect(info, SIGNAL(updateClicked(UserInfo *)), this, SLOT(updateClicked(UserInfo *)));
-	QWidget *space = static_cast<QWidget*>(info->child("space_for_advanced_userlist"));
+	QLabel *space1 = static_cast<QLabel*>(info->child("space_for_advanced_userlist_label"));
+	QWidget *space2 = static_cast<QWidget*>(info->child("space_for_advanced_userlist_spinbox"));
 
-	if (!space)
+	if (!space1 || !space2)
 		return;
 
-	QSpinBox *spinBox = new QSpinBox(-10, 10, 1, space);
+	space1->setText(tr("Priority"));
+	QSpinBox *spinBox = new QSpinBox(-10, 10, 1, space2);
 	spinBox->setName("priority_spinbox");
 	spinBox->setValue(info->user().data("Priority").toInt());
-
-	QVBoxLayout *spaceLayout = new QVBoxLayout(space);
-
-	spaceLayout->addWidget(new QLabel(tr("Priority"), space));
-	spaceLayout->addWidget(spinBox);
 
 	kdebugf2();
 }

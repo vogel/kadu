@@ -140,8 +140,11 @@ void UserInfo::setupTab1()
 	e_mobile = new QLineEdit(generalWidget);
 	// end Surname & mobile
 
-	QWidget *emptyWidget = new QWidget(generalWidget);
-	emptyWidget->setName("space_for_advanced_userlist");
+	QLabel *emptyWidget = new QLabel("", generalWidget);
+	emptyWidget->setName("space_for_advanced_userlist_label");
+
+	QWidget *emptyWidget2 = new QWidget(generalWidget);
+	emptyWidget2->setName("space_for_advanced_userlist_spinbox");
 
 	// Email
 	e_email = new QLineEdit(generalWidget);
@@ -184,7 +187,8 @@ void UserInfo::setupTab1()
 	generalLayout->addWidget(e_mobile, 5, 1);
 	generalLayout->addWidget(new QLabel(tr("Email"), generalWidget), 6, 0);
 	generalLayout->addWidget(e_email, 7, 0);
-	generalLayout->addWidget(emptyWidget, 6, 1, 2, 1);
+	generalLayout->addWidget(emptyWidget, 6, 1);
+	generalLayout->addWidget(emptyWidget2, 7, 1);
 	generalLayout->addWidget(line1, 8, 0, 1, 2);
 	generalLayout->addWidget(new QLabel(tr("Address IP and Port"), generalWidget), 9, 0);
 	generalLayout->addWidget(e_addr, 10, 0);
@@ -250,7 +254,7 @@ void UserInfo::setupTab1()
 		else
 			e_ver->setText(tr("(Unknown)"));
 
-		e_status->setText(tr(User.status("Gadu").name().ascii()));
+		e_status->setText(tr(User.status("Gadu").name()));
 		e_status->setToolTip(User.status("Gadu").description());
 
 		tw_main->setTabIconSet(generalWidget, User.status("Gadu").pixmap());
