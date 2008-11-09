@@ -1035,6 +1035,14 @@ It&apos;s a high security risk!</source>
 #{separator} - Trenner zwischen Nachrichten,
 &lt;kadu:header&gt;Text&lt;/kadu:header&gt; - Dieser Text wird nicht angezeigt, wenn &apos;Entfernen der sich wiederholenden Kopfzeilen&apos; eingeschaltet ist</translation>
     </message>
+    <message>
+        <source>Displays messages from anonymous users without formatting (colors, images, font weight...). Text is plain black.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Display dates is nice format, like Today, Yesterday or Friday</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>About</name>

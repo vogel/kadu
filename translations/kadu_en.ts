@@ -1017,6 +1017,14 @@ It&apos;s a high security risk!</source>
 </source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Displays messages from anonymous users without formatting (colors, images, font weight...). Text is plain black.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Display dates is nice format, like Today, Yesterday or Friday</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>About</name>

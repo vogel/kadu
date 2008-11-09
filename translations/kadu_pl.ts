@@ -1036,6 +1036,14 @@ Jest to wysoce ryzykowne!</translation>
 &lt;kadu:header&gt;tekst&lt;/kadu:header&gt; - tekst nie będzie wyswietlany w trybie &apos;Usuń powtarzające się nagłówki&quot;
 </translation>
     </message>
+    <message>
+        <source>Displays messages from anonymous users without formatting (colors, images, font weight...). Text is plain black.</source>
+        <translation>Wyświetla tekst od anonimów bez formatowania (kolory, obrazki, czcionka). Tekst wiadomości jest czarny.</translation>
+    </message>
+    <message>
+        <source>Display dates is nice format, like Today, Yesterday or Friday</source>
+        <translation>Wyświetla daty w eleganckim formacie, na przykład: Dzisiaj, Wczoraj, Piątek</translation>
+    </message>
 </context>
 <context>
     <name>About</name>

@@ -17,6 +17,7 @@ Je¶li jest w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * dostêpna d³ugo¶æ opisu ustawiana w zale¿no¶ci od u¿ywanej wersji protoko³u (neeo)
 * aktualizacja libgadu - poprawka bezpieczeñstwa, rozwi±zany problem przy kompilacji bez pthreads (neeo)
 * numer portu w panelu informacyjnym nie przyjmuje warto¶ci ujemnych (dorr/neeo)
+* brakuj±ce podpowiedzi dla opcji w oknie konfiguracji (Vogel,neeo)
 
 +++ wersja 0.6.0.2 (03.07.2008)
 * poprawiona kolejno¶æ argumentów konstruktora klasy ConfigLineEdit (neeo)
