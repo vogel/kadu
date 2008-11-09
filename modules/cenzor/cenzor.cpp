@@ -89,10 +89,11 @@ int Cenzor::check(QString& msg)
 
 	for( QStringList::Iterator it = list.begin(); it != list.end(); it++)
 	{
-		for ( QStringList::Iterator itw = swearList.begin(); itw != swearList.end(); itw++)
-			if( ((*it).find(QRegExp((*itw),true)) >= 0) && (!checkOkWords((*it))) )
+		QString word = (*it).toLower();
+		for (QStringList::Iterator itw = swearList.begin(); itw != swearList.end(); itw++)
+			if ((word.find(QRegExp((*itw), true)) >= 0) && (!checkOkWords(word)))
 			{
-				il_w+=1;
+				il_w += 1;
 			}
 	}
 
@@ -103,8 +104,8 @@ int Cenzor::checkOkWords(QString txt)
 {
 	kdebugf();
 
-	for(QStringList::Iterator p = exclusionList.begin(); p != exclusionList.end(); p++)
-		if (txt.find(QRegExp((*p),true)) >= 0)
+	for (QStringList::Iterator p = exclusionList.begin(); p != exclusionList.end(); p++)
+		if (txt.find(QRegExp((*p), true)) >= 0)
 			return 1;
 
 	return 0;
