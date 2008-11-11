@@ -72,9 +72,8 @@ Filtering::Filtering(): QWidget(kadu)
 	connect(clearPB, SIGNAL(clicked()), this, SLOT(on_clearPB_clicked()));
 	connect(textLE, SIGNAL(textChanged(const QString&)), this, SLOT(on_textLE_textChanged(const QString&)));
 	connect(textLE, SIGNAL(returnPressed()), this, SLOT(on_textLE_returnPressed()));
-	connect(kadu, SIGNAL(keyPressed(QKeyEvent*)), this, SLOT(on_kadu_keyPressed(QKeyEvent*)));
 #endif
-
+	connect(kadu, SIGNAL(keyPressed(QKeyEvent*)), this, SLOT(on_kadu_keyPressed(QKeyEvent*)));
 	kadu->userbox ()->installEventFilter (this);
 
 	createDefaultConfiguration();
@@ -96,8 +95,9 @@ Filtering::~Filtering()
 	
 	disconnect(clearPB, SIGNAL(clicked()), this, SLOT(on_clearPB_clicked()));
 	disconnect(textLE, SIGNAL(textChanged(const QString&)), this, SLOT(on_textLE_textChanged(const QString&)));
-	disconnect(kadu, SIGNAL(keyPressed(QKeyEvent*)), this, SLOT(on_kadu_keyPressed(QKeyEvent*)));
 #endif
+	disconnect(kadu, SIGNAL(keyPressed(QKeyEvent*)), this, SLOT(on_kadu_keyPressed(QKeyEvent*)));
+
 	kadu->userbox ()->removeEventFilter (this);
 
 	kdebugf2();
@@ -106,27 +106,36 @@ Filtering::~Filtering()
 bool Filtering::on_kadu_keyPressed (QKeyEvent *e)
 {
 //	kdebugf();
-#ifndef Q_OS_MAC
-	QString text = e->text ();
+
+	QString text = e->text();
 	kdebugm (KDEBUG_INFO, QString("text=[%1] key=%2\n").arg (e->text ()).arg (e->key ()).local8Bit ());
 	
 	bool startonany = config_file.readBoolEntry ("filtering", "filter-startonany", false);
 	bool shortcut = HotKey::shortCut (e, "ShortCuts", "filtering_start");
 
-	if (shortcut || (startonany && (text.ref (0).isPrint ())) && kadu->userbox ()->count ()) {
+	if (shortcut || (startonany && (text.ref (0).isPrint())) && kadu->userbox()->count ()) {
 		show ();
-		textLE->setFocus ();
+#ifdef Q_OS_MAC
+		search->activate();
+#else
+		textLE->setFocus();
+#endif
 		if (startonany && (! shortcut)) {
-			textLE->setText (text);
+#ifdef Q_OS_MAC
+			if (search->text().isEmpty())
+				search->setText(text);
+#else
+			textLE->setText(text);
+#endif
 		}
+
 	    return true;
-	} else if (e->key () == Qt::Key_Escape && isVisible()) {
-	    hideFilter ();
+	} else if (e->key() == Qt::Key_Escape && isVisible()) {
+	    hideFilter();
 	    return true;
 	} else {
 	    return false;
 	}
-#endif	
 //	kdebugf2();
 }
 
@@ -147,11 +156,11 @@ void Filtering::keyPressEvent (QKeyEvent *e)
 {
 	kdebugf();
 	
-	if (e->key () == Qt::Key_Escape) {
-		hideFilter ();
+	if (e->key() == Qt::Key_Escape) {
+		hideFilter();
 		e->accept ();
-	} else if (e->key () == Qt::Key_Down) {
-		on_textLE_returnPressed ();
+	} else if (e->key() == Qt::Key_Down) {
+		on_textLE_returnPressed();
 		e->accept ();
 	} else {
 		e->ignore ();
@@ -163,17 +172,19 @@ void Filtering::keyPressEvent (QKeyEvent *e)
 void Filtering::hideFilter ()
 {
     hide ();
-#ifndef Q_OS_MAC
-    textLE->setText (QString::null);
+#ifdef Q_OS_MAC
+	search->setText(QString::null);
+#else
+    textLE->setText(QString::null);
 #endif
-    kadu->userbox ()->setFocus ();
+    kadu->userbox()->setFocus();
 }
 
 void Filtering::on_clearPB_clicked ()
 {
 	kdebugf();
 #ifndef Q_OS_MAC
-	textLE->clear ();
+	textLE->clear();
 #endif
 	kdebugf2();
 }
@@ -182,9 +193,9 @@ void Filtering::on_textLE_textChanged (const QString& s)
 {
 	kdebugf();
 	
-	clearFilter ();
+	clearFilter();
 	
-	if (! s.isEmpty ())
+	if (!s.isEmpty())
 		filterWith (s);
 	
 	kdebugf2();
@@ -194,7 +205,7 @@ void Filtering::clearFilter ()
 {
 	kdebugf();
 	
-	kadu->userbox ()->removeFilter (filter);
+	kadu->userbox()->removeFilter (filter);
 	filter->removeUsers (userlist);
 	
 	kdebugf2();
@@ -204,15 +215,15 @@ void Filtering::filterWith (const QString& f)
 {
 	kdebugf();
 	
-	bool filter_number = config_file.readBoolEntry ("filtering", "filter-number", false);
-	bool filter_email = config_file.readBoolEntry ("filtering", "filter-email", false);
-	bool filter_mobile = config_file.readBoolEntry ("filtering", "filter-mobile", false);
-	bool filter_startswith = config_file.readBoolEntry ("filtering", "filter-startswith", false);
+	bool filter_number = config_file.readBoolEntry("filtering", "filter-number", false);
+	bool filter_email = config_file.readBoolEntry("filtering", "filter-email", false);
+	bool filter_mobile = config_file.readBoolEntry("filtering", "filter-mobile", false);
+	bool filter_startswith = (config_file.readNumEntry("filtering", "filter-startswith", 1) == 1);
 	
 	foreach(const UserListElement &u, userlist->toUserListElements()) {
-		if (checkString (u.firstName (), f, filter_startswith)
-				|| checkString (u.lastName (), f, filter_startswith)
-				|| checkString (u.altNick (), f, filter_startswith)
+		if (checkString(u.firstName (), f, filter_startswith)
+				|| checkString(u.lastName (), f, filter_startswith)
+				|| checkString(u.altNick (), f, filter_startswith)
 				|| checkString (u.nickName (), f, filter_startswith)
 				|| (filter_number && u.usesProtocol ("Gadu") && checkString (u.ID ("Gadu"), f, filter_startswith))
 				|| (filter_email && checkString (u.email (), f, filter_startswith))
@@ -228,10 +239,10 @@ void Filtering::filterWith (const QString& f)
 
 bool Filtering::checkString (const QString &hay, const QString& needle, bool startsWith)
 {
-	int index = hay.find (needle, 0, false);
-	
-	return /* znaleziono gdziekolwiek */ (index >= 0) 
-			&& (/* startsWith implikuje znaleziono na pocz±tku*/ startsWith <= (index == 0));
+	if (startsWith)
+		return hay.startsWith(needle, Qt::CaseInsensitive);
+	else
+		return hay.contains(needle, Qt::CaseInsensitive);
 }
 
 void Filtering::on_textLE_returnPressed ()

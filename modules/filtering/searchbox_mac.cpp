@@ -149,3 +149,10 @@ void QMacSearchBox::clear (void) {
     setText(QString());
 }
 
+void QMacSearchBox::activate(void) {
+	HIViewAdvanceFocus(searchField, 0);
+	/* Dorr: I don't know the Carbon API. The HIViewAdvanceFocus was the only one
+	 * method to pass the focus to searchbox. However I have to reset the text here
+	 * otherwise some letters will be duplicated */
+	setText(text());
+}

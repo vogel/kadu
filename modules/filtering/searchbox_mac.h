@@ -21,6 +21,7 @@ class QMacSearchBox : public QWidget
 
         // GET Properties
         QString text(void) const;
+		void activate(void);
 
     signals:
         void textChanged (const QString& text);
