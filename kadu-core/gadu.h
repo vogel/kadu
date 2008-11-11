@@ -10,6 +10,10 @@
 
 #include "exports.h"
 
+#ifndef GG_CONFIG_HAVE_PTHREAD
+	#error "libgadu must be compiled with pthread support"
+#endif
+
 typedef uin_t UinType;
 
 class QTimer;

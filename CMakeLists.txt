@@ -88,6 +88,16 @@ include(${QT_USE_FILE})
 include_directories (${CMAKE_BINARY_DIR} ${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_CURRENT_SOURCE_DIR}/kadu-core ${QT_INCLUDES})
 
 pkg_search_module (LIBGADU REQUIRED libgadu>=1.8.0)
+
+execute_process (
+	COMMAND grep "#define GG_CONFIG_HAVE_PTHREAD" ${LIBGADU_INCLUDEDIR}/libgadu.h
+	RESULT_VARIABLE LIBGADU_PTHEADS
+)
+
+if (${LIBGADU_PTHEADS} GREATER 0)
+	message (FATAL_ERROR "libgadu must be compiled with pthreads support")
+endif (${LIBGADU_PTHEADS} GREATER 0)
+
 include_directories (${LIBGADU_INCLUDE_DIRS})
 link_directories (${LIBGADU_LIBRARY_DIRS})
 
@@ -99,7 +109,6 @@ configure_file (${CMAKE_CURRENT_SOURCE_DIR}/cmake_uninstall.cmake.in ${CMAKE_CUR
   IMMEDIATE @ONLY)
 
 add_custom_target(uninstall "${CMAKE_COMMAND}" -P "${CMAKE_CURRENT_BINARY_DIR}/cmake_uninstall.cmake")
-
 
 add_subdirectory (modules)
 add_subdirectory (kadu-core)
