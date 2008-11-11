@@ -89,11 +89,11 @@ void ChatWindow::kaduRestoreGeometry()
 	if (geom.isEmpty() && group->count() == 1)
 		geom = stringToRect((*(group->constBegin())).data("ChatGeometry").toString());
 
-	if(geom.isEmpty()){
+	if (geom.isEmpty()) {
 		QSize size(0, 400);
 		int x, y;
-		x=pos().x();
-		y=pos().y();
+		x = pos().x();
+		y = pos().y();
 		if (group->count() > 1)
 			size.setWidth(550);
 		else
@@ -102,17 +102,17 @@ void ChatWindow::kaduRestoreGeometry()
 		QDesktopWidget *desk = qApp->desktop();
 
 		if ((size.width() + x) > desk->width())
-			x=desk->width() - size.width() - 50;
+			x = desk->width() - size.width() - 50;
 		if ((size.height() + y) > desk->height())
-			y=desk->height() - size.height() - 50;
+			y = desk->height() - size.height() - 50;
 
-		if (x<50) x = 50;
-		if (y<50) x = 50;
+		if (x < 50) x = 50;
+		if (y < 50) y = 50;
 
 		move(x, y);
 		resize(size);
 	}
-	else{
+	else {
 		setGeometry(geom);
 		currentChatWidget->setGeometry(geom);
 
