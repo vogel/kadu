@@ -63,9 +63,7 @@ Filtering::Filtering(): QWidget(kadu)
 	l->addWidget(search);
 
 	connect(search, SIGNAL(textChanged(const QString&)), this, SLOT(on_textLE_textChanged(const QString&)));
-
 #else
-
 	l->addWidget (clearPB = new QPushButton(this, "clearPB"));
 	clearPB->setPixmap (QPixmap (dataPath ("kadu/modules/data/filtering/clear.png")));
 	l->addWidget (new QLabel (tr("Filter") + ":", this, "filterLBL"));
@@ -75,7 +73,6 @@ Filtering::Filtering(): QWidget(kadu)
 	connect(textLE, SIGNAL(textChanged(const QString&)), this, SLOT(on_textLE_textChanged(const QString&)));
 	connect(textLE, SIGNAL(returnPressed()), this, SLOT(on_textLE_returnPressed()));
 	connect(kadu, SIGNAL(keyPressed(QKeyEvent*)), this, SLOT(on_kadu_keyPressed(QKeyEvent*)));
-
 #endif
 
 	kadu->userbox ()->installEventFilter (this);
@@ -91,7 +88,7 @@ Filtering::~Filtering()
 	kdebugf();
 #ifdef Q_OS_MAC
 	kadu->userbox()->removeFilter(filter);
-	disconnect(search, SIGNAL(textChanged(const QString&)), this, SLOT(textChanged(const QString&)));
+	disconnect(search, SIGNAL(textChanged(const QString&)), this, SLOT(on_textLE_textChanged(const QString&)));
 #else
 	if (! textLE->text ().isEmpty ()) {
 		kadu->userbox ()->removeFilter (filter);
