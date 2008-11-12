@@ -16,6 +16,7 @@
 
 #include "infos_dialog.h"
 
+#include "misc.h"
 #include "modules.h"
 #include "userlist.h"
 #include "debug.h"
@@ -25,7 +26,9 @@ InfosDialog::InfosDialog(const LastSeen &lastSeen, QWidget *parent, const char *
 :QDialog(parent, name, modal, f)
 {
 	kdebugf();
-	this->resize(800, this->height());
+//	this->resize(800, this->height());
+	this->setCaption(tr("Information about contacts"));
+
 	QVBoxLayout *mainLayout = new QVBoxLayout(this, 10, -1, "infos_dialog_main_layout");
 	QTreeWidget *listView = new QTreeWidget(this);
 	listView->setColumnCount(7);
@@ -34,7 +37,7 @@ InfosDialog::InfosDialog(const LastSeen &lastSeen, QWidget *parent, const char *
 	QHBoxLayout *buttonsLayout = new QHBoxLayout(mainLayout, -1, "infos_dialog_buttons_layout");
 	listView->setAllColumnsShowFocus(true);
 	QStringList labels;
-	labels << "Contact" << "UIN" << "Nick" << "IP" << "Domain name" << "Description" << "Last time seen on";
+	labels << tr("Contact") << tr("UIN") << tr("Nick") << tr("IP") << tr("Domain name") << tr("Description") << tr("Last time seen on");
 	listView->setHeaderLabels(labels);
 	QPushButton *closeButton = new QPushButton(tr("&Close"), this, "infos close button");
 	buttonsLayout->addStretch();
@@ -61,6 +64,8 @@ InfosDialog::InfosDialog(const LastSeen &lastSeen, QWidget *parent, const char *
 	listView->sortItems(0, Qt::AscendingOrder);
 	
 	connect(closeButton, SIGNAL(clicked()), this, SLOT(close()));
+	
+	loadWindowGeometry(this, "LastSeen", "LastSeenWidgetGeometry", 0, 0, 800, 300);
 
 	kdebugf2();
 }
@@ -68,5 +73,8 @@ InfosDialog::InfosDialog(const LastSeen &lastSeen, QWidget *parent, const char *
 InfosDialog::~InfosDialog()
 {
 	kdebugf();
+
+	saveWindowGeometry(this, "LastSeen", "LastSeenWidgetGeometry");
+
 	kdebugf2();
 }
