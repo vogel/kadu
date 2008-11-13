@@ -461,12 +461,34 @@ void OSDHintManager::showToolTip(const QPoint &point, const UserListElement &use
 	if (tipFrame)
 		delete tipFrame;
 
-	tipFrame = new QFrame(0, "tip_frame", Qt::FramelessWindowHint | Qt::Tool | Qt::WindowStaysOnTopHint | Qt::X11BypassWindowManagerHint | Qt::MSWindowsOwnDC);
+#ifdef Q_OS_MAC
+	tipFrame = new QFrame(0, "tip_frame", Qt::FramelessWindowHint | Qt::SplashScreen | Qt::X11BypassWindowManagerHint | Qt::WindowStaysOnTopHint |Qt::MSWindowsOwnDC);
+#else
+	tipFrame = new QFrame(0, "tip_frame", Qt::FramelessWindowHint | Qt::Tool | Qt::X11BypassWindowManagerHint | Qt::WindowStaysOnTopHint |Qt::MSWindowsOwnDC);
+#endif
+	tipFrame->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
 	tipFrame->setFrameStyle(QFrame::Box | QFrame::Plain);
-	tipFrame->setLineWidth(FRAME_WIDTH);
 
-	QVBoxLayout *lay = new QVBoxLayout(tipFrame);
-	lay->setMargin(FRAME_WIDTH);
+	opacity = config_file.readNumEntry("OSDHints", "Opacity", 100);
+	opacity /= 100;
+	tipFrame->setWindowOpacity(opacity);
+
+	QHBoxLayout *lay = new QHBoxLayout(tipFrame, FRAME_WIDTH, 0, "lay");
+	lay->setMargin(10);
+	lay->setResizeMode(QLayout::Fixed);
+	
+
+	int iconSize = config_file.readNumEntry("OSDHints", "IconSize", 32);
+	QString pic = dataPath("kadu/modules/data/osd_hints/") + user.status("Gadu").name().lower() + QString::number(iconSize) + ".png";
+
+	QPixmap pixmap = icons_manager->loadPixmap(pic);
+    	if (pixmap.isNull())
+		pixmap = icons_manager->loadPixmap(dataPath("kadu/modules/data/osd_hints/osd_icon.png"));
+
+	QLabel *icon = new QLabel(tipFrame, "Icon");
+	icon->setPixmap(pixmap);
+	icon->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
+	lay->addWidget(icon, 0, Qt::AlignTop);
 
 	QLabel *tipLabel = new QLabel(text, tipFrame);
 	tipLabel->setTextFormat(Qt::RichText);
