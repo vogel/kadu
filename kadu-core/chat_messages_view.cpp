@@ -225,7 +225,7 @@ void ChatMessagesView::clearMessages()
 	qDeleteAll(Messages);
 	Messages.clear();
 
-	setHtml("");
+	setHtml("<body bgcolor=\"" + config_file.readColorEntry("Look", "ChatBgColor").name() + "\"></body>");
 }
 
 unsigned int ChatMessagesView::countMessages()
