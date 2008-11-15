@@ -466,6 +466,38 @@ inline bool ULEComparer::operator()(const UserListElement &e1, const UserListEle
 	return ret < 0;
 }
 
+//TODO 0.6.6: workaround for: http://www.kadu.net/mantis/view.php?id=1108
+class ScrollBarWatcher : public QObject
+{
+public:
+	ScrollBarWatcher()
+	{
+	}
+
+	virtual bool eventFilter(QObject *o, QEvent *e)
+	{
+		if (Kadu::closing())
+			return false;
+		QScrollBar *scrollbar = dynamic_cast<QScrollBar *>(o);
+		if (!scrollbar)
+			return false;
+		UserBox *userbox = dynamic_cast<UserBox *>(scrollbar->parent());
+		if (!userbox)
+			return false;
+
+		switch (e->type())
+		{
+			case QEvent::Show:
+			case QEvent::Hide:
+				userbox->refresh();
+			default:
+				return false;
+		}
+	}
+};
+ScrollBarWatcher *scrollBarWatcher = 0;
+//
+
 CreateNotifier UserBox::createNotifier;
 
 QList<ActionDescription *> UserBox::UserBoxActions;
@@ -481,6 +513,12 @@ UserBox::UserBox(KaduMainWindow *mainWindow, bool fancy, UserGroup *group, QWidg
 	Filters.append(group);
 
 	setHScrollBarMode(Q3ScrollView::AlwaysOff);
+
+	//TODO 0.6.6: workaround for: http://www.kadu.net/mantis/view.php?id=1108
+	if (!scrollBarWatcher)
+		scrollBarWatcher = new ScrollBarWatcher();
+	verticalScrollBar()->installEventFilter(scrollBarWatcher);
+	//
 
 	showDescriptionAction = new ActionDescription(
 		ActionDescription::TypeUserList, "descriptionsAction",
@@ -551,6 +589,7 @@ UserBox::~UserBox()
 			this, SLOT(userRemovedFromVisible(UserListElement, bool, bool)));
 
 	UserBoxes.remove(this);
+	
 	delete VisibleUsers;
 	VisibleUsers = 0;
 	delete comparer;
@@ -779,9 +818,9 @@ void UserBox::refresh()
 	// because settingCurrentItem changes vertical scrollbar position and line
 	// above doesn't prevents this, we must set position as soon as possible
 	lastVerticalPosition = vScrollValue;
+
 	verticalPositionTimer.start(0, true);
 
-	updateScrollBars();
 //	QListBox::refresh();
 
 //	}
@@ -794,10 +833,10 @@ void UserBox::refresh()
 void UserBox::resetVerticalPosition()
 {
 	kdebugf();
+
 	verticalScrollBar()->setValue(lastVerticalPosition);
 
 	updateScrollBars();
-// 	refresh();
 }
 
 void UserBox::rememberVerticalPosition()
@@ -900,7 +939,10 @@ void UserBox::refreshBackground()
 	//hack:
 	viewport()->setStyleSheet(QString("QWidget {background-color:%1}").arg(config_file.readColorEntry("Look","UserboxBgColor").name()));
 	setStyleSheet(QString("QFrame {color:%1}").arg(config_file.readColorEntry("Look","UserboxFgColor").name()));
-
+	
+	/*	
+	TODO 0.6.6: dead code. Re-Enable in 0.6.6
+	
 	setStaticBackground(backgroundImage);
 	
 	if (!backgroundImage || !fancy)
@@ -939,8 +981,8 @@ void UserBox::refreshBackground()
 	else // TILED
 		image = *backgroundImage;
 
-	//TODO 0.6.6:
-// 	viewport()->setPaletteBackgroundPixmap(QPixmap::fromImage(image));
+ 	viewport()->setPaletteBackgroundPixmap(QPixmap::fromImage(image));
+	*/
 }
 
 void UserBox::doubleClickedSlot(Q3ListBoxItem *item)
@@ -1036,8 +1078,11 @@ void UserBox::configurationUpdated()
 	kdebugf2();
 }
 
+
 void UserBox::setColorsOrBackgrounds()
 {
+	/*
+	TODO: 0.6.6:	
 	QImage *newImage = 0;
 
 	if (config_file.readBoolEntry("Look", "UseUserboxBackground", true))
@@ -1054,7 +1099,7 @@ void UserBox::setColorsOrBackgrounds()
 
 		backgroundImage = newImage;
 	}
-
+	*/
 	foreach(UserBox *userbox, UserBoxes)
 		userbox->refreshBackground();
 }

@@ -27,7 +27,7 @@
 #include "exports.h"
 
 
-#ifdef Q_OS_X11
+#ifdef Q_WS_X11
 #include <QtGui/QX11Info>
 
 void create_netwm_atoms(Display *d);

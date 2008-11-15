@@ -24,7 +24,7 @@
 #include <QtCore/QtGlobal>
 #include "activate.h"
 
-#ifdef Q_OS_X11
+#ifdef Q_WS_X11
 #include <X11/Xlib.h>
 
 static Atom net_active_window = 0;
