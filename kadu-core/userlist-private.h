@@ -23,22 +23,21 @@ class ULEPrivate : public QObject, public QSharedData
 {
 	Q_OBJECT
 
-// 	QMutex mutex;
+	UserListElement *Owner;
 
 public:
+	ULEPrivate(UserListElement *owner)
+		: Owner(owner)
+	{
+	}
+	~ULEPrivate() {}
+
 	QHash<QString, QVariant> informations;
 	QHash<QString, ProtocolData> protocols;
 	QList<UserGroup *> Parents;
-	ULEPrivate();
-	~ULEPrivate();
 
-// 	void lock() { mutex.lock(); }
-// 	void unlock() { mutex.unlock(); }
-
-	static QHash<QString, QHash<QString, UserGroupSet> > protocolUserDataProxy; // protocolName -> (fieldName -> UserGroupSet)
-	static QHash<QString, UserGroupSet> userDataProxy; // field name -> UserGroupSet
-//	static QDict<QPtrDict<void> > addProtocolProxy;
-//	static QDict<QPtrDict<void> > removeProtocolProxy;
+	static QHash<QString, QHash<QString, UserGroupSet> > protocolUserDataProxy;
+	static QHash<QString, UserGroupSet> userDataProxy;
 	static QHash<QString, UserGroupSet> statusChangeProxy;
 	static void closeModule();
 

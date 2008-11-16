@@ -10,6 +10,7 @@
 #include <QtNetwork/QHostAddress>
 
 #include "debug.h"
+#include "dnshandler.h"
 #include "gadu.h"
 #include "misc.h"
 #include "status.h"
@@ -79,11 +80,14 @@ unsigned short UserListElement::port(const QString &protocolName) const
 
 void UserListElement::refreshDNSName(const QString &protocolName) const
 {
-// TODO: 0.6.5
-// 	unsigned int ip = protocolData(protocolName, "IP").toUInt();
-// 	if (ip)
-// 		connect(new DNSHandler(protocolName, ip), SIGNAL(result(const QString &, const QString &)),
-// 				privateData, SLOT(setDNSName(const QString &, const QString &)));
+	quint32 ip = protocolData(protocolName, "IP").toUInt();
+
+	if (ip)
+	{
+		QHostAddress ha(ip);
+		connect(new DNSHandler(protocolName, ha), SIGNAL(result(const QString &, const QString &)),
+			privateData.data(), SLOT(setDNSName(const QString &, const QString &)));
+	}
 }
 
 QVariant UserListElement::setProtocolData(const QString &protocolName, const QString &name, const QVariant &val, bool massively, bool last) const
@@ -226,7 +230,7 @@ UserListElement::UserListElement(const UserListElement &copyMe)
 }
 
 UserListElement::UserListElement()
-	: QObject(), privateData(new ULEPrivate())
+	: QObject(), privateData(new ULEPrivate(this))
 {
 }
 

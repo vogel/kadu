@@ -12,15 +12,6 @@
 
 #include "userlist-private.h"
 
-ULEPrivate::ULEPrivate()
-// 	: mutex(QMutex::Recursive)
-{
-}
-
-ULEPrivate::~ULEPrivate()
-{
-}
-
 ProtocolData::ProtocolData(const QString &/*protocolName*/, const QString &id)
 	: ID(id), Stat(new SharedStatus(new GaduStatus()))
 {
@@ -67,9 +58,8 @@ void ULEPrivate::setDNSName(const QString &protocolName, const QString &dnsname)
 
 	protocolData.data[DNSName] = dnsname;
 
-// TODO: 0.6.5
-// 	foreach(UserGroup *group, Parents)
-// 		emit group->protocolUserDataChanged(protocolName, userlist->byKey(key), DNSName, *old, dnsname, false, false);
+	foreach(UserGroup *group, Parents)
+		emit group->protocolUserDataChanged(protocolName, *Owner, DNSName, "", dnsname, false, false);
 
 }
 

@@ -128,9 +128,8 @@ void Themes::setPaths(const QStringList &paths)
 			ThemesPaths.append(it);
 			ThemesList.append(it.section("/", -1, -1, QString::SectionSkipEmpty));
 		}
-// TODO: 0.6.5
-// 		else
-// 			MessageBox::msg(tr("<i>%1</i><br/>does not contain any theme configuration file").arg(it), false, "Warning");
+		else
+			MessageBox::msg(tr("<i>%1</i><br/>does not contain any theme configuration file").arg(it), false, "Warning");
 	}
 	emit pathsChanged(ThemesPaths);
 	kdebugf2();
