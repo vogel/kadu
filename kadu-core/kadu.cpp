@@ -616,6 +616,8 @@ Kadu::Kadu(QWidget *parent)
 
 	connect(AccountManager::instance(), SIGNAL(accountRegistered(Account *)),
 		this, SLOT(accountRegistered(Account *)));
+	foreach (Account *account, AccountManager::instance()->accounts())
+		accountRegistered(account);
 
 	connect(userlist, SIGNAL(usersDataChanged(QString)), this, SLOT(updateInformationPanelLater()));
 	connect(userlist, SIGNAL(protocolUsersDataChanged(QString, QString)), this, SLOT(updateInformationPanelLater()));

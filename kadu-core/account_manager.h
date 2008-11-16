@@ -35,6 +35,8 @@ public:
 	Account * defaultAccount();
 	Account * createAccount(const QString &protocolName, AccountData *accountData);
 
+	const QList<Account *> accounts() { return Accounts; }
+
 	void registerAccount(const QString &name, Account *account);
 	void unregisterAccount(const QString &name);
 
