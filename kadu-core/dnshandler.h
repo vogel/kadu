@@ -15,6 +15,7 @@ class DNSHandler : public QObject
 
 	QString marker; /*!< znacznik (np. identyfikator protoko�u) */
 
+private slots:
 	/**
 		\fn void resultsReady()
 		Funkcja wywo�ywana, gdy proces t�umaczenia zosta� zako�czony.

@@ -23,13 +23,8 @@ class ULEPrivate : public QObject, public QSharedData
 {
 	Q_OBJECT
 
-	UserListElement *Owner;
-
 public:
-	ULEPrivate(UserListElement *owner)
-		: Owner(owner)
-	{
-	}
+	ULEPrivate() {}
 	~ULEPrivate() {}
 
 	QHash<QString, QVariant> informations;
@@ -46,6 +41,9 @@ public slots:
 	   inaczej mo�e si� zdarzy�, �e w�a�ciwy obiekt ULE ju� nie istnieje,
 	   gdy przychodzi odpowied� od serwera dns*/
 	void setDNSName(const QString &protocolName, const QString &dnsname);
+
+signals:
+	void dnsNameResolved(const QString &protocolName, const QString &dnsname);
 
 };
 

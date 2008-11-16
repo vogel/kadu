@@ -52,15 +52,7 @@ void ULEPrivate::setDNSName(const QString &protocolName, const QString &dnsname)
 	if (!protocols.contains(protocolName))
 		return;
 
-	ProtocolData protocolData = protocols[protocolName];
-	if (protocolData.data.contains(DNSName) && protocolData.data.value(DNSName).toString() == dnsname)
-		return;
-
-	protocolData.data[DNSName] = dnsname;
-
-	foreach(UserGroup *group, Parents)
-		emit group->protocolUserDataChanged(protocolName, *Owner, DNSName, "", dnsname, false, false);
-
+	emit dnsNameResolved(protocolName, dnsname);
 }
 
 void ULEPrivate::closeModule()

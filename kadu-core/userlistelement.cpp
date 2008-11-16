@@ -230,19 +230,33 @@ UserListElement::UserListElement(const UserListElement &copyMe)
 }
 
 UserListElement::UserListElement()
-	: QObject(), privateData(new ULEPrivate(this))
+	: QObject(), privateData(new ULEPrivate())
 {
+	connect(privateData.data(), SIGNAL(dnsNameResolved(const QString &, const QString &)),
+		this, SLOT(dnsNameResolved(const QString &, const QString &)));
 }
 
 UserListElement::~UserListElement()
 {
+	disconnect(privateData.data(), SIGNAL(dnsNameResolved(const QString &, const QString &)),
+		this, SLOT(dnsNameResolved(const QString &, const QString &)));
 }
 
 UserListElement & UserListElement::operator = (const UserListElement &copyMe)
 {
+	disconnect(privateData.data(), SIGNAL(dnsNameResolved(const QString &, const QString &)),
+		this, SLOT(dnsNameResolved(const QString &, const QString &)));
+
 	privateData = copyMe.privateData;
+	connect(privateData.data(), SIGNAL(dnsNameResolved(const QString &, const QString &)),
+		this, SLOT(dnsNameResolved(const QString &, const QString &)));
 
 	return *this;
+}
+
+void UserListElement::dnsNameResolved(const QString &protocolName, const QString &dnsname)
+{
+	setProtocolData(protocolName, "DNSName", dnsname);
 }
 
 QVariant UserListElement::setData(const QString &name, const QVariant &val, bool massively, bool last) const

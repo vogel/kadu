@@ -242,6 +242,9 @@ public:
 	void addGroup(UserGroup *group) const;
 	void removeGroup(UserGroup *group) const;
 
+private slots:
+	void dnsNameResolved(const QString &protocolName, const QString &dnsname);
+
 public slots:
 	/**
 		\fn QVariant setData(const QString &name, const QVariant &val, bool massively = false, bool last = false)
