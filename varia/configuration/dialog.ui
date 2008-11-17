@@ -250,7 +250,7 @@ Text is plain black." />
 				<check-box caption="Allow multiline descriptions" config-section="Look" config-item="ShowMultilineDesc" id="multilineDescription"
 					   tool-tip="Dislpays multiline descriptions in userbox" />
 			</group-box>
-
+<!-- 
 			<group-box name="Background">
 				<check-box caption="Use background image" config-section="Look" config-item="UseUserboxBackground" id="useUserboxBackground" />
 				<select-file caption="Background file" config-section="Look" config-item="UserboxBackground" type="image"
@@ -262,6 +262,7 @@ Text is plain black." />
 					<item value="Stretched" caption="Stretched" />
 				</combo-box>
 			</group-box>
+-->
 		</tab>
 
 		<tab name="Information Panel">
