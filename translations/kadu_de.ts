@@ -80,19 +80,19 @@ It&apos;s a high security risk!</source>
     </message>
     <message>
         <source>%1 weeks and day ago at </source>
-        <translation type="unfinished"></translation>
+        <translation>vor %1 Woche/n und einem Tag um</translation>
     </message>
     <message>
         <source>week ago at </source>
-        <translation type="unfinished"></translation>
+        <translation>Vor einer Woche </translation>
     </message>
     <message>
         <source>week and day ago at </source>
-        <translation type="unfinished"></translation>
+        <translation>Vor einer Woche und einem Tag </translation>
     </message>
     <message>
         <source>week and %2 days ago at </source>
-        <translation type="unfinished"></translation>
+        <translation>Vor einer Woche und %2 Tagen um </translation>
     </message>
     <message>
         <source>d MMMM yyyy at </source>
@@ -1069,23 +1069,23 @@ It&apos;s a high security risk!</source>
     </message>
     <message>
         <source>Startup</source>
-        <translation type="unfinished"></translation>
+        <translation>Programmstart</translation>
     </message>
     <message>
         <source>Start on startup</source>
-        <translation type="unfinished"></translation>
+        <translation>Starte beim Programmstart</translation>
     </message>
     <message>
         <source>Automatically start on system startup</source>
-        <translation type="unfinished"></translation>
+        <translation>Starte beim Systemstart</translation>
     </message>
     <message>
         <source>Displays messages from anonymous users without formatting (colors, images, font weight...) Text is plain black.</source>
-        <translation type="unfinished"></translation>
+        <translation>Zeige Nachrichten von Unbekannten ohne Formatierung (Farben, Bilder). Text ist schwarz.</translation>
     </message>
     <message>
         <source>Display dates is nice format, like Today, Yesterday or Friday</source>
-        <translation type="unfinished"></translation>
+        <translation>Zeige Datum im &quot;netten Format&quot; wie &quot;Gestern&quot;, &quot;Morgen&quot; oder &quot;am Freitag&quot;</translation>
     </message>
 </context>
 <context>
@@ -1287,31 +1287,31 @@ von nun an ignoriert. Wollen Sie diese Konferrenz wirklich verlassen?</translati
     <name>CustomInput</name>
     <message>
         <source>Undo</source>
-        <translation type="unfinished"></translation>
+        <translation>Schritt zurück</translation>
     </message>
     <message>
         <source>Redo</source>
-        <translation type="unfinished"></translation>
+        <translation>Schritt vorwärts</translation>
     </message>
     <message>
         <source>Cut</source>
-        <translation type="unfinished"></translation>
+        <translation>Ausschneiden</translation>
     </message>
     <message>
         <source>Copy</source>
-        <translation type="unfinished"></translation>
+        <translation>Kopieren</translation>
     </message>
     <message>
         <source>Paste</source>
-        <translation type="unfinished"></translation>
+        <translation>Einfügen</translation>
     </message>
     <message>
         <source>Clear</source>
-        <translation type="unfinished"></translation>
+        <translation>Leeren</translation>
     </message>
     <message>
         <source>Select All</source>
-        <translation type="unfinished"></translation>
+        <translation>Alles Auswählen</translation>
     </message>
 </context>
 <context>
@@ -1605,7 +1605,7 @@ Zu viel Versuche mit falschem Passwort</translation>
     </message>
     <message>
         <source>Change status</source>
-        <translation type="unfinished"></translation>
+        <translation>Zustand wechseln</translation>
     </message>
     <message>
         <source>Selected users:
@@ -1615,42 +1615,42 @@ Zu viel Versuche mit falschem Passwort</translation>
     </message>
     <message>
         <source>Menu</source>
-        <translation type="unfinished"></translation>
+        <translation>Menü</translation>
     </message>
     <message>
         <source>Online</source>
-        <translation type="unfinished">Erreichbar</translation>
+        <translation>Erreichbar</translation>
     </message>
     <message>
         <source>Online (d.)</source>
-        <translation type="unfinished">Erreichbar (Beschr.)</translation>
+        <translation>Erreichbar (Beschr.)</translation>
     </message>
     <message>
         <source>Busy</source>
-        <translation type="unfinished">Beschäftigt</translation>
+        <translation>Beschäftigt</translation>
     </message>
     <message>
         <source>Busy (d.)</source>
-        <translation type="unfinished">Beschäftigt (Beschr.)</translation>
+        <translation>Beschäftigt (Beschr.)</translation>
     </message>
     <message>
         <source>Invisible</source>
-        <translation type="unfinished">Versteckt</translation>
+        <translation>Versteckt</translation>
     </message>
     <message>
         <source>Invisible (d.)</source>
-        <translation type="unfinished">Versteckt (Beschr.)</translation>
+        <translation>Versteckt (Beschr.)</translation>
     </message>
     <message>
         <source>Offline (d.)</source>
-        <translation type="unfinished">Offline (Beschr.)</translation>
+        <translation>Offline (Beschr.)</translation>
     </message>
 </context>
 <context>
     <name>KaduMainWindow</name>
     <message>
         <source>Create new toolbar</source>
-        <translation type="unfinished">Neue Werkzeugleiste erstellen</translation>
+        <translation>Neue Werkzeugleiste erstellen</translation>
     </message>
 </context>
 <context>
@@ -1688,19 +1688,19 @@ Zu viel Versuche mit falschem Passwort</translation>
     </message>
     <message>
         <source>Copy</source>
-        <translation type="unfinished"></translation>
+        <translation>Kopieren</translation>
     </message>
     <message>
         <source>Copy Link</source>
-        <translation type="unfinished"></translation>
+        <translation>Link kopieren</translation>
     </message>
     <message>
         <source>Copy Image</source>
-        <translation type="unfinished"></translation>
+        <translation>Bild kopieren</translation>
     </message>
     <message>
         <source>Save Image</source>
-        <translation type="unfinished"></translation>
+        <translation>Bild speichern</translation>
     </message>
 </context>
 <context>
@@ -1811,7 +1811,8 @@ mit:&lt;/b&gt;&lt;br/&gt;&lt;b&gt;Bringt mit:&lt;/b&gt;&lt;br/&gt;&lt;b&gt;Autor
     <message>
         <source>This dialog box allows you to manage installed modules. Modules are responsible for numerous vital features like playing sounds or message encryption.
 You can load (or unload) them by double-clicking on their names.</source>
-        <translation type="unfinished"></translation>
+        <translation>In diesem Fenster können sie die installierten Module verwalten. Module sorgen dafür, dass diese Anwendung erweitert wird wie z.B. um das Abspielen von Klängen, Verschlüsselung von Nachrichten etc.
+Sie können die Module starten oder einbinden, indem Sie den Namen des Moduls Doppelklicken.</translation>
     </message>
 </context>
 <context>
@@ -2112,11 +2113,11 @@ Vielleicht ist es kein Kadu-Modul.</translation>
     </message>
     <message>
         <source>Select File</source>
-        <translation type="unfinished"></translation>
+        <translation>Datei auswählen</translation>
     </message>
     <message>
         <source>Select audio File</source>
-        <translation type="unfinished"></translation>
+        <translation>Klangdatei auswählne</translation>
     </message>
 </context>
 <context>
@@ -2219,19 +2220,19 @@ Vielleicht ist es kein Kadu-Modul.</translation>
     </message>
     <message>
         <source>Show text label</source>
-        <translation type="unfinished">Textfläche zeigen</translation>
+        <translation>Textfläche zeigen</translation>
     </message>
     <message>
         <source>Delete button</source>
-        <translation type="unfinished">Schaltfläche entfernen</translation>
+        <translation>Schaltfläche entfernen</translation>
     </message>
     <message>
         <source>Create new toolbar</source>
-        <translation type="unfinished">Neue Werkzeugleiste erstellen</translation>
+        <translation>Neue Werkzeugleiste erstellen</translation>
     </message>
     <message>
         <source>Block toolbars</source>
-        <translation type="unfinished">Werkzeugleisten blockieren</translation>
+        <translation>Werkzeugleisten blockieren</translation>
     </message>
 </context>
 <context>
@@ -2265,7 +2266,7 @@ Vielleicht ist es kein Kadu-Modul.</translation>
     </message>
     <message>
         <source>User management</source>
-        <translation type="unfinished">Benutzerverwaltung</translation>
+        <translation>Benutzerverwaltung</translation>
     </message>
 </context>
 <context>

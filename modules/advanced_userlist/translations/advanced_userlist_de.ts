@@ -3,15 +3,15 @@
     <name>@default</name>
     <message>
         <source>Look</source>
-        <translation type="unfinished"></translation>
+        <translation>Aussehen</translation>
     </message>
     <message>
         <source>Userbox</source>
-        <translation type="unfinished"></translation>
+        <translation>Kontaktliste</translation>
     </message>
     <message>
         <source>Sorting</source>
-        <translation type="unfinished"></translation>
+        <translation>Sortierung</translation>
     </message>
 </context>
 <context>
@@ -38,7 +38,7 @@
     </message>
     <message>
         <source>Number of pending messages</source>
-        <translation type="unfinished"></translation>
+        <translation>Anzahl anstehender Nachrichten</translation>
     </message>
 </context>
 </TS>

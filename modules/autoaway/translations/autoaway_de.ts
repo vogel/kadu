@@ -3,78 +3,78 @@
     <name>@default</name>
     <message>
         <source>Status</source>
-        <translation type="unfinished"></translation>
+        <translation>Zustand</translation>
     </message>
     <message>
         <source>Autoaway</source>
-        <translation type="unfinished"></translation>
+        <translation>Auto-Abwesenheit</translation>
     </message>
     <message>
         <source>Check idle every</source>
-        <translation type="unfinished"></translation>
+        <translation>Auf Inaktivität prüfen alle</translation>
     </message>
     <message>
         <source>Enable autoaway</source>
-        <translation type="unfinished"></translation>
+        <translation>Auto-Abwesenheit einschalten</translation>
     </message>
     <message>
         <source>Set status to away after</source>
-        <translation type="unfinished"></translation>
+        <translation>Auf Abwesend umschalten nach</translation>
     </message>
     <message>
         <source>Enable autoinvisible</source>
-        <translation type="unfinished"></translation>
+        <translation>Auto-Unsichtbarkeit einschalten</translation>
     </message>
     <message>
         <source>Set status to invisible after</source>
-        <translation type="unfinished"></translation>
+        <translation>Auf Versteckt umschalten nach</translation>
     </message>
     <message>
         <source>Enable autodisconnect</source>
-        <translation type="unfinished"></translation>
+        <translation>Auto-Ausloggen einschalten</translation>
     </message>
     <message>
         <source>Disconnect after</source>
-        <translation type="unfinished"></translation>
+        <translation>Ausloggen nach</translation>
     </message>
     <message>
         <source>Description</source>
-        <translation type="unfinished"></translation>
+        <translation>Beschreibung</translation>
     </message>
     <message>
         <source>Don&apos;t change</source>
-        <translation type="unfinished"></translation>
+        <translation>Nicht ändern</translation>
     </message>
     <message>
         <source>Replace</source>
-        <translation type="unfinished"></translation>
+        <translation>Ersetzen</translation>
     </message>
     <message>
         <source>Add in front</source>
-        <translation type="unfinished"></translation>
+        <translation>Hinzufügen vorne</translation>
     </message>
     <message>
         <source>Add at the back</source>
-        <translation type="unfinished"></translation>
+        <translation>Hinzufügen hinten</translation>
     </message>
     <message>
         <source>New description</source>
-        <translation type="unfinished"></translation>
+        <translation>Neu Beschreibung</translation>
     </message>
     <message>
         <source>Autorefresh status</source>
-        <translation type="unfinished"></translation>
+        <translation>Zustand automatisch Erneuern</translation>
     </message>
     <message>
         <source>Parse AutoStatus</source>
-        <translation type="unfinished"></translation>
+        <translation>Auto-Zustand parsen</translation>
     </message>
 </context>
 <context>
     <name>AutoAway</name>
     <message>
         <source>Don&apos;t refresh</source>
-        <translation type="unfinished"></translation>
+        <translation>Nicht erneuern</translation>
     </message>
 </context>
 </TS>

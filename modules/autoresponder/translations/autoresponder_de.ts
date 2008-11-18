@@ -3,43 +3,43 @@
     <name>@default</name>
     <message>
         <source>Chat</source>
-        <translation type="unfinished"></translation>
+        <translation>Chat</translation>
     </message>
     <message>
         <source>Autoresponder</source>
-        <translation type="unfinished"></translation>
+        <translation>Auto-Odpowiedz</translation>
     </message>
     <message>
         <source>Options</source>
-        <translation type="unfinished"></translation>
+        <translation>Einstellungen</translation>
     </message>
     <message>
         <source>Autoanswer text</source>
-        <translation type="unfinished"></translation>
+        <translation>Antworttexr</translation>
     </message>
     <message>
         <source>Only for the first time</source>
-        <translation type="unfinished"></translation>
+        <translation>Nur das erste Mal</translation>
     </message>
     <message>
         <source>Respond to conferences</source>
-        <translation type="unfinished"></translation>
+        <translation>Auf Konferenzschaltungen reagieren</translation>
     </message>
     <message>
         <source>Choose status</source>
-        <translation type="unfinished"></translation>
+        <translation>Zustand auswählen</translation>
     </message>
     <message>
         <source>Status invisible</source>
-        <translation type="unfinished"></translation>
+        <translation>Zustand &quot;Versteckt&quot;</translation>
     </message>
     <message>
         <source>Status busy</source>
-        <translation type="unfinished"></translation>
+        <translation>Zustand &quot;Beschäftigt&quot;</translation>
     </message>
     <message>
         <source>Status available</source>
-        <translation type="unfinished"></translation>
+        <translation>Zustand &quot;Erreichbar&quot;</translation>
     </message>
 </context>
 <context>
@@ -50,7 +50,7 @@
     </message>
     <message>
         <source>I am busy.</source>
-        <translation type="unfinished"></translation>
+        <translation>Ich bin beschäftigt.</translation>
     </message>
 </context>
 </TS>

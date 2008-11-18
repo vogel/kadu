@@ -3,35 +3,35 @@
     <name>@default</name>
     <message>
         <source>SMS</source>
-        <translation type="unfinished"></translation>
+        <translation>SMS</translation>
     </message>
     <message>
         <source>General</source>
-        <translation type="unfinished"></translation>
+        <translation>Allgemein</translation>
     </message>
     <message>
         <source>Gateways</source>
-        <translation type="unfinished"></translation>
+        <translation>Gateways</translation>
     </message>
     <message>
         <source>SMS Era Gateway</source>
-        <translation type="unfinished"></translation>
+        <translation>SMS-Gateway von Era</translation>
     </message>
     <message>
         <source>Sponsored</source>
-        <translation type="unfinished"></translation>
+        <translation>Mit Werbung</translation>
     </message>
     <message>
         <source>OmnixMultimedia</source>
-        <translation type="unfinished"></translation>
+        <translation>OmnixMultimedia</translation>
     </message>
     <message>
         <source>User ID (48xxxxxxxxx)</source>
-        <translation type="unfinished"></translation>
+        <translation>Benutzer-ID (48xxxxxxxx)</translation>
     </message>
     <message>
         <source>Password</source>
-        <translation type="unfinished"></translation>
+        <translation>Passwort</translation>
     </message>
 </context>
 <context>

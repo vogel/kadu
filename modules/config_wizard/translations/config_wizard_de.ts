@@ -169,19 +169,19 @@ Klicken Sie bitte auf &quot;Weiter&quot;</translation>
     </message>
     <message>
         <source>Gadu-gadu account</source>
-        <translation type="unfinished"></translation>
+        <translation>Konto Gadu-Gadu</translation>
     </message>
     <message>
         <source>Sound system</source>
-        <translation type="unfinished"></translation>
+        <translation>Klang-Wiedergabe-System</translation>
     </message>
     <message>
         <source>Opera (new tab)</source>
-        <translation type="unfinished"></translation>
+        <translation>Opera (im neuen Tab)</translation>
     </message>
     <message>
         <source>Not found</source>
-        <translation type="unfinished"></translation>
+        <translation>Nicht gefunden</translation>
     </message>
 </context>
 <context>

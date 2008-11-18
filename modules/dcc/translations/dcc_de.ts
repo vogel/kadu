@@ -11,67 +11,67 @@
     </message>
     <message>
         <source>Account</source>
-        <translation type="unfinished"></translation>
+        <translation>Konto</translation>
     </message>
     <message>
         <source>File transfers and voice chats</source>
-        <translation type="unfinished"></translation>
+        <translation>Dateiübertragungen und Gespräche</translation>
     </message>
     <message>
         <source>General</source>
-        <translation type="unfinished"></translation>
+        <translation>Allgemein</translation>
     </message>
     <message>
         <source>Allow file transfers and voice chats</source>
-        <translation type="unfinished"></translation>
+        <translation>Erlaube Detaiübertragungen und Gespräche</translation>
     </message>
     <message>
         <source>File transfers</source>
-        <translation type="unfinished"></translation>
+        <translation>Dateiübertragungen</translation>
     </message>
     <message>
         <source>Remove completed transfers from transfers list</source>
-        <translation type="unfinished"></translation>
+        <translation>Vollständig übertragene Dateien aus der Liste entfernen</translation>
     </message>
     <message>
         <source>IP</source>
-        <translation type="unfinished"></translation>
+        <translation>IP</translation>
     </message>
     <message>
         <source>DCC IP autodetection</source>
-        <translation type="unfinished"></translation>
+        <translation>DCC IP Erkennung</translation>
     </message>
     <message>
         <source>IP address</source>
-        <translation type="unfinished"></translation>
+        <translation>Adresse IP</translation>
     </message>
     <message>
         <source>DCC forwarding enabled</source>
-        <translation type="unfinished"></translation>
+        <translation>DCC Weiterschaltung aktiv</translation>
     </message>
     <message>
         <source>External IP address</source>
-        <translation type="unfinished"></translation>
+        <translation>Externe adresse IP</translation>
     </message>
     <message>
         <source>External TCP port</source>
-        <translation type="unfinished"></translation>
+        <translation>Externer Port TCP</translation>
     </message>
     <message>
         <source>Local TCP port</source>
-        <translation type="unfinished"></translation>
+        <translation>Lokaler Port TCP</translation>
     </message>
     <message>
         <source>Shortcuts</source>
-        <translation type="unfinished"></translation>
+        <translation>Tastenkürzel</translation>
     </message>
     <message>
         <source>Sending filed and voice chats</source>
-        <translation type="unfinished"></translation>
+        <translation>Sende Datei- und Gesrpächsdaten</translation>
     </message>
     <message>
         <source>Send file</source>
-        <translation type="unfinished">Sende Datei</translation>
+        <translation>Sende Datei</translation>
     </message>
 </context>
 <context>
@@ -176,7 +176,7 @@ von %3kB senden. Soll ich annehmen?</translation>
     </message>
     <message>
         <source>Save file</source>
-        <translation type="unfinished"></translation>
+        <translation>Datei speichern</translation>
     </message>
 </context>
 <context>
@@ -231,7 +231,7 @@ von %3kB senden. Soll ich annehmen?</translation>
     </message>
     <message>
         <source>Are you sure you want to remove this transfer?</source>
-        <translation type="unfinished"></translation>
+        <translation>Sind Sie sicher, dass Sie diese Übertragung entfernen wollen?</translation>
     </message>
 </context>
 <context>
