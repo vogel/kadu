@@ -133,11 +133,11 @@ MainConfigurationWindow::MainConfigurationWindow()
  	connect(widgetById("iconPaths"), SIGNAL(changed()), this, SLOT(setIconThemes()));
 
 	connect(widgetById("ignoreMessagesFromAnonymous"), SIGNAL(toggled(bool)), widgetById("ignoreMessagesFromAnonymousInConferences"), SLOT(setEnabled(bool)));
-
+/*
 	QWidget *useUserboxBackground = widgetById("useUserboxBackground");
 	connect(useUserboxBackground, SIGNAL(toggled(bool)), widgetById("userboxBackground"), SLOT(setEnabled(bool)));
 	connect(useUserboxBackground, SIGNAL(toggled(bool)), widgetById("userboxBackgroundDisplayStyle"), SLOT(setEnabled(bool)));
-
+*/
 	widgetById("parseStatus")->setToolTip(qApp->translate("@default", Kadu::SyntaxText));
 	(dynamic_cast<ConfigSyntaxEditor *>(widgetById("chatSyntax")))->setSyntaxHint(qApp->translate("@default", Kadu::SyntaxTextExtended));
 	(dynamic_cast<ConfigSyntaxEditor *>(widgetById("infoPanelSyntax")))->setSyntaxHint(qApp->translate("@default", Kadu::SyntaxText));
