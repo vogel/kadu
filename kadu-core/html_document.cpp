@@ -227,9 +227,9 @@ void HtmlDocument::convertUrlsToHtml()
 			aLink.prepend("http://");
 
 		if ((l - p > lft) && config_file.readBoolEntry("Chat", "FoldLink"))
-			link = "<a href=\"" + aLink + "\">" + text.mid(p, p+(lft/2)) + "..." + text.mid(l-(lft/2), lft/2) + "</a>";
+			link = "<a href=\"" + aLink + "\" title=\"" + aLink + "\">" + text.mid(p, p+(lft/2)) + "..." + text.mid(l-(lft/2), lft/2) + "</a>";
 		else
-			link = "<a href=\"" + aLink + "\">" + displayLink + "</a>";
+			link = "<a href=\"" + aLink + "\" title=\"" + aLink + "\">" + displayLink + "</a>";
 
 		splitElement(i, p, l);
 		setElementValue(i, link, true);
