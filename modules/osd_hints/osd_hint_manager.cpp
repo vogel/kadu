@@ -253,6 +253,12 @@ void OSDHintManager::deleteHint(OSDHint *hint)
 	layout->removeWidget(static_cast<QWidget *>(hint));
 	hint->deleteLater();
 
+	if (hints.isEmpty())
+	{
+		hint_timer->stop();
+		frame->hide();
+	}
+
 	kdebugf2();
 }
 
@@ -476,7 +482,6 @@ void OSDHintManager::showToolTip(const QPoint &point, const UserListElement &use
 	QHBoxLayout *lay = new QHBoxLayout(tipFrame, FRAME_WIDTH, 0, "lay");
 	lay->setMargin(10);
 	lay->setResizeMode(QLayout::Fixed);
-	
 
 	int iconSize = config_file.readNumEntry("OSDHints", "IconSize", 32);
 	QString pic = dataPath("kadu/modules/data/osd_hints/") + user.status("Gadu").name().lower() + QString::number(iconSize) + ".png";
