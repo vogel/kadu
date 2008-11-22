@@ -9,10 +9,19 @@ set (MOC_SOURCES
 set (CONFIGURATION_FILES
 	configuration/macosx_docking.ui)
 
+set (TRANSLATION_SOURCES
+	translations/macosx_docking_de.ts
+	translations/macosx_docking_en.ts
+	translations/macosx_docking_fr.ts
+	translations/macosx_docking_it.ts
+	translations/macosx_docking_pl.ts
+)
+
 kadu_module_desc (macosx_docking.desc)
 kadu_module_configuration(${CONFIGURATION_FILES})
 qt_wrap_cpp (macosx_docking MOC_FILES ${MOC_SOURCES})
 
+qt4_add_translation (TRANSLATION_FILES ${TRANSLATION_SOURCES})
 install (FILES ${TRANSLATION_FILES}
 	DESTINATION "share/kadu/modules/translations")
 
