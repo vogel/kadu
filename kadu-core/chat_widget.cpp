@@ -248,11 +248,11 @@ void ChatWidget::insertImage()
 {
 	kdebugf();
 	ImageDialog* id = new ImageDialog(this);
-	id->setDir(config_file.readEntry("Chatt", "LastImagePath"));
+	id->setDir(config_file.readEntry("Chat", "LastImagePath"));
 	id->setWindowTitle(tr("Insert image"));
 	if (id->exec() == QDialog::Accepted)
 	{
-		config_file.writeEntry("Chatt", "LastImagePath", id->dirPath());
+		config_file.writeEntry("Chat", "LastImagePath", id->dirPath());
 		QString selectedFile = id->selectedFile();
 		QFileInfo f(selectedFile);
 		delete id;
