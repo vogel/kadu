@@ -17,9 +17,9 @@
 
 typedef uint32_t UinType;
 
-class Message;
-
 class AccountData;
+class Message;
+class ProtocolFactory;
 
 class Protocol : public QObject
 {
@@ -69,8 +69,10 @@ protected:
 	**/
 	UserStatus *NextStatus;
 
+	ProtocolFactory *Factory;
+
 public:
-	Protocol();
+	Protocol(ProtocolFactory *factory);
 	virtual ~Protocol();
 
 	/**
@@ -143,6 +145,8 @@ public:
 	const QDateTime & connectionTime() const;
 
 	virtual void setData(AccountData *data) = 0;
+	virtual AccountData * createAccountData() = 0;
+	ProtocolFactory * protocolFactory() { return Factory; }
 
 public slots:
 	virtual bool sendMessage(UserListElement user, const QString &messageContent);

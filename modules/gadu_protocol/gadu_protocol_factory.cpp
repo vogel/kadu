@@ -13,5 +13,5 @@
 
 Protocol * GaduProtocolFactory::newInstance()
 {
-	return new GaduProtocol();
+	return new GaduProtocol(this);
 }

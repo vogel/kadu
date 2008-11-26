@@ -21,6 +21,7 @@
 #include "misc.h"
 #include "modules.h"
 #include "kadu.h"
+#include "xml_config_file.h"
 
 int lockFileHandle;
 QFile *lockFile;

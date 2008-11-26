@@ -21,7 +21,11 @@ class GaduAccountData : public AccountData
 	QString Password;
 
 public:
+	GaduAccountData();
 	GaduAccountData(UinType uin, const QString &password);
+
+	virtual bool loadConfiguration(XmlConfigFile *configurationStorage, QDomElement parent);
+	virtual void storeConfiguration(XmlConfigFile *configurationStorage, QDomElement parent);
 
 	UinType uin() { return Uin; }
 	QString password() { return Password; }

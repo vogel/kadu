@@ -39,27 +39,31 @@
 #include "gadu_search.h"
 #include "gadu_status.h"
 #include "uins_list.h"
+#include "xml_config_file.h"
 
 #include "gadu.h"
 
 extern "C" int gadu_protocol_init(bool firstLoad)
 {
-	ProtocolsManager::instance()->registerProtocolFactory("GaduGadu", new GaduProtocolFactory());
+	ProtocolsManager::instance()->registerProtocolFactory("gadu", new GaduProtocolFactory());
 
-	GaduAccountData *gaduAccountData = new GaduAccountData(
-		config_file.readNumEntry("General", "UIN"),
-		unicode2cp(pwHash(config_file.readEntry("General", "Password")))
-	);
+	if (!xml_config_file->hasNode("Accounts"))
+	{
+		GaduAccountData *gaduAccountData = new GaduAccountData(
+				config_file.readNumEntry("General", "UIN"),
+				unicode2cp(pwHash(config_file.readEntry("General", "Password"))));
 
-	Account *defaultGaduGadu = AccountManager::instance()->createAccount("GaduGadu", gaduAccountData);
-	AccountManager::instance()->registerAccount("DefaultGaduGadu", defaultGaduGadu);
+		Account *defaultGaduGadu = AccountManager::instance()->createAccount(
+				"DefaultGaduGadu", "gadu", gaduAccountData);
+		AccountManager::instance()->registerAccount(defaultGaduGadu);
+	}
 
 	return 0;
 }
 
 extern "C" void gadu_protocol_close()
 {
-	ProtocolsManager::instance()->unregisterProtocolFactory("GaduGadu");
+	ProtocolsManager::instance()->unregisterProtocolFactory("gadu");
 }
 
 
@@ -310,8 +314,8 @@ void GaduProtocol::initModule()
 	kdebugf2();
 }
 
-GaduProtocol::GaduProtocol()
-	: Protocol(),
+GaduProtocol::GaduProtocol(ProtocolFactory *factory)
+	: Protocol(factory),
 		GaduData(0),
 		Mode(Register), DataUin(0), DataEmail(), DataPassword(), DataNewPassword(), TokenId(), TokenValue(),
 		ServerNr(0), ActiveServer(), LoginParams(), Sess(0), sendImageRequests(0), seqNumber(0), whileConnecting(false),
@@ -2136,4 +2140,9 @@ void GaduProtocol::setDccIpAndPort(unsigned long dcc_ip, int dcc_port)
 {
 	gg_dcc_ip = dcc_ip;
 	gg_dcc_port = dcc_port;
+}
+
+AccountData * GaduProtocol::createAccountData()
+{
+	return new GaduAccountData();
 }

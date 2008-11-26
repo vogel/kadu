@@ -13,6 +13,7 @@
 #include "chat_widget.h"
 #include "custom_input.h"
 #include "toolbar.h"
+#include "xml_config_file.h"
 
 #include "chat_edit_box.h"
 

@@ -22,6 +22,7 @@
 #include "kadu_main_window.h"
 #include "message_box.h"
 #include "misc.h"
+#include "xml_config_file.h"
 
 #include "toolbar.h"
 

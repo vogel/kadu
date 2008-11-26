@@ -19,6 +19,7 @@
 #include "file_transfer_manager.h"
 #include "message_box.h"
 #include "protocol.h"
+#include "xml_config_file.h"
 
 #include "file_transfer.h"
 

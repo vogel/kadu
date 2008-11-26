@@ -10,11 +10,18 @@
 #ifndef ACCOUNT_DATA
 #define ACCOUNT_DATA
 
+#include <QtXml/QDomElement>
+
+class XmlConfigFile;
+
 class AccountData
 {
 public:
 	AccountData() {}
 	virtual ~AccountData() {}
+
+	virtual bool loadConfiguration(XmlConfigFile *configurationStorage, QDomElement parent) = 0;
+	virtual void storeConfiguration(XmlConfigFile *configurationStorage, QDomElement parent) = 0;
 
 };
 

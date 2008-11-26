@@ -30,6 +30,7 @@
 #include "misc.h"
 #include "config_file.h"
 #include "icons_manager.h"
+#include "xml_config_file.h"
 
 QString kaduConfFile = "kadu.conf.xml";
 

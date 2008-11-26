@@ -74,8 +74,13 @@ Notify::Notify(QObject *parent, const char *name)
 
 	createDefaultConfiguration();
 
-	Protocol *gadu = AccountManager::instance()->defaultAccount()->protocol();
-	connect(gadu, SIGNAL(connectionError(Protocol *, const QString &, const QString &)), this, SLOT(connectionError(Protocol *, const QString &, const QString &)));
+	
+	if (0 != AccountManager::instance()->defaultAccount())
+	{
+		Protocol *gadu = AccountManager::instance()->defaultAccount()->protocol();
+		connect(gadu, SIGNAL(connectionError(Protocol *, const QString &, const QString &)),
+				this, SLOT(connectionError(Protocol *, const QString &, const QString &)));
+	}
 
 	// TODO: workaround
 	connect(kadu, SIGNAL(messageReceivedSignal(Protocol *, UserListElements, const QString&, time_t)),

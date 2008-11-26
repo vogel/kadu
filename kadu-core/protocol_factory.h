@@ -10,12 +10,17 @@
 #ifndef PROTOCOL_FACTORY_H
 #define PROTOCOL_FACTORY_H
 
+#include <QtCore/QString>
+
+class AccountData;
 class Protocol;
 
 class ProtocolFactory
 {
 public:
 	virtual Protocol * newInstance() = 0;
+	virtual QString name() = 0;
+
 };
 
 #endif // PROTOCOL_FACTORY_H

@@ -55,6 +55,7 @@
 #include "updates.h"
 #include "userbox.h"
 #include "userinfo.h"
+#include "xml_config_file.h"
 
 #include "kadu.h"
 
@@ -1284,6 +1285,9 @@ void Kadu::sendMessage(UserListElement elem)
 
 void Kadu::changeStatusSlot()
 {
+	if (0 == AccountManager::instance()->defaultAccount())
+		return;
+
 	Protocol *gadu = AccountManager::instance()->defaultAccount()->protocol();
 
 	QAction *action = dynamic_cast<QAction *>(sender());
@@ -1498,6 +1502,8 @@ bool Kadu::close(bool quit)
 
 		pending.writeToFile();
 		IgnoredManager::writeToConfiguration();
+
+		AccountManager::instance()->storeConfiguration(xml_config_file);
 
 		Protocol *gadu = AccountManager::instance()->defaultAccount()->protocol();
 		if (!gadu->currentStatus().isOffline())
@@ -2120,6 +2126,7 @@ void Kadu::startupProcedure()
 	if (ShowMainWindowOnStart)
 		show();
 
+	AccountManager::instance()->loadConfiguration(xml_config_file);
 	Updates::initModule();
 
 	xml_config_file->makeBackup();

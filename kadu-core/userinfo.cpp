@@ -30,6 +30,7 @@
 #include "message_box.h"
 #include "misc.h"
 #include "userlist.h"
+#include "xml_config_file.h"
 
 #include "userinfo.h"
 

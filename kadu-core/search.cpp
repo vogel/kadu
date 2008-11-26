@@ -28,6 +28,7 @@
 #include "misc.h"
 #include "toolbar.h"
 #include "userinfo.h"
+#include "xml_config_file.h"
 
 #include "../modules/gadu_protocol/gadu_search.h"
 

@@ -17,6 +17,7 @@
 
 class Account;
 class AccountData;
+class XmlConfigFile;
 
 class AccountManager : public QObject
 {
@@ -32,12 +33,15 @@ class AccountManager : public QObject
 public:
 	static AccountManager * instance();
 
+	void loadConfiguration(XmlConfigFile *configurationStorage);
+	void storeConfiguration(XmlConfigFile *configurationStorage);
+
 	Account * defaultAccount();
-	Account * createAccount(const QString &protocolName, AccountData *accountData);
+	Account * createAccount(const QString &name, const QString &protocolName, AccountData *accountData);
 
 	const QList<Account *> accounts() { return Accounts; }
 
-	void registerAccount(const QString &name, Account *account);
+	void registerAccount(Account *account);
 	void unregisterAccount(const QString &name);
 
 	UserStatus status();

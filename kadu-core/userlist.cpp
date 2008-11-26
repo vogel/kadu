@@ -22,6 +22,7 @@
 #include "misc.h"
 #include "protocol.h"
 #include "protocols_manager.h"
+#include "xml_config_file.h"
 
 #include "userlist.h"
 #include "userlist-private.h"

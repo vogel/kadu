@@ -14,6 +14,7 @@
 #include "debug.h"
 #include "toolbar.h"
 #include "userbox.h"
+#include "xml_config_file.h"
 
 #include "kadu_main_window.h"
 

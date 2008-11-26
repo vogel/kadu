@@ -25,6 +25,7 @@
 #include "kadu.h"
 #include "message_box.h"
 #include "protocol.h"
+#include "xml_config_file.h"
 
 #include "../notify/notify.h"
 

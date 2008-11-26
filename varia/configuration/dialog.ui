@@ -64,7 +64,19 @@
 			
 	</section>
 
-	<section name="Account" icon="GeneralTab" >
+	<section name="Accounts" icon="GeneralTab" >
+		<tab name="Manage accounts">
+			<group-box name="Accounts">
+				<list-box caption="Accounts">
+				</list-box>
+			</group-box>
+
+			<group-box name="Add account">
+				<combo-box caption="Account type">
+				</combo-box>
+			</group-box>
+		</tab>
+
 		<tab name="Gadu-Gadu">
 			<group-box name="User data">
 				<line-edit caption="UIN" config-section="General" config-item="UIN" />

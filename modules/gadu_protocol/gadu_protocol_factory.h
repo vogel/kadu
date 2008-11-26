@@ -16,6 +16,8 @@ class GaduProtocolFactory : public ProtocolFactory
 {
 public:
 	virtual Protocol * newInstance();
+	virtual QString name() { return "gadu"; }
+
 };
 
 #endif // GADU_PROTOCOL_FACTORY_H

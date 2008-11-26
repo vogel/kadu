@@ -7,12 +7,21 @@
  *                                                                         *
  ***************************************************************************/
 
+#include "account_data.h"
 #include "protocol.h"
+#include "protocol_factory.h"
+#include "protocols_manager.h"
+#include "xml_config_file.h"
 
 #include "account.h"
 
-Account::Account(Protocol *protocol, AccountData *data)
-	: ProtocolHandler(protocol), Data(data)
+Account::Account(const QString &name)
+	: Name(name), ProtocolHandler(0), Data(0)
+{
+}
+
+Account::Account(const QString &name, Protocol *protocol, AccountData *data)
+	: Name(name), ProtocolHandler(protocol), Data(data)
 {
 	protocol->setData(Data);
 }
@@ -24,6 +33,30 @@ Account::~Account()
 		delete ProtocolHandler;
 		ProtocolHandler = 0;
 	}
+}
+
+bool Account::loadConfiguration(XmlConfigFile *configurationStorage, QDomElement parent)
+{
+	QString protocolName = configurationStorage->getTextNode(parent, "Protocol");
+
+	ProtocolHandler = ProtocolsManager::instance()->newInstance(protocolName);
+	if (0 == ProtocolHandler)
+		return false;
+
+	Data = ProtocolHandler->createAccountData();
+	if (0 == Data)
+		return false;
+
+	ProtocolHandler->setData(Data);
+	return Data->loadConfiguration(configurationStorage, parent);
+}
+
+void Account::storeConfiguration(XmlConfigFile *configurationStorage, QDomElement parent)
+{
+	configurationStorage->createTextNode(
+			parent, "Protocol",
+			ProtocolHandler->protocolFactory()->name());
+	Data->storeConfiguration(configurationStorage, parent);
 }
 
 UserStatus Account::currentStatus()

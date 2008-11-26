@@ -252,8 +252,10 @@ class KADUAPI GaduProtocol : public Protocol
 	**/
 	void doChangePassword();
 
-	GaduProtocol(const GaduProtocol &) : Protocol() {}
+	GaduProtocol(const GaduProtocol &) : Protocol(0) {}
 	GaduProtocol &operator=(const GaduProtocol &){return *this;}
+
+	virtual AccountData * createAccountData();
 
 private slots:
 	/**
@@ -480,7 +482,7 @@ private slots:
 public:
 	static void initModule();
 
-	GaduProtocol();
+	GaduProtocol(ProtocolFactory *factory);
 	virtual ~GaduProtocol();
 
 	virtual void setData(AccountData *);

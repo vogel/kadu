@@ -134,6 +134,11 @@ void DockingManager::changeIcon()
 				}
 				else
 				{
+					if (0 == AccountManager::instance()->defaultAccount())
+					{
+						return;
+					}
+
 					const UserStatus &stat = AccountManager::instance()->defaultAccount()->protocol()->currentStatus();
 					emit trayPixmapChanged(QIcon(stat.pixmap()), stat.toString());
 					icon_timer->start(500,TRUE);
@@ -243,6 +248,11 @@ void DockingManager::statusPixmapChanged(const QIcon &icon, const QString &iconN
 
 QIcon DockingManager::defaultPixmap()
 {
+	if (0 == AccountManager::instance()->defaultAccount())
+	{
+		return QIcon();
+	}
+
 	return QIcon(AccountManager::instance()->defaultAccount()->protocol()->currentStatus().pixmap());
 }
 

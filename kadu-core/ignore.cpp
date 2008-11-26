@@ -22,6 +22,7 @@
 #include "ignore.h"
 #include "misc.h"
 #include "userlist.h"
+#include "xml_config_file.h"
 
 Ignored::Ignored(QWidget *parent, const char *name) : QWidget(parent, name, Qt::Window),
 	lb_list(0), e_uin(0)

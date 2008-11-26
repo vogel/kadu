@@ -58,6 +58,7 @@ set (kadu_SRCS
 	userlist.cpp
 	userlistelement.cpp
 	userlist-private.cpp
+	xml_config_file.cpp
 )
 
 set (kadu_MOC_SRCS

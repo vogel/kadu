@@ -26,6 +26,7 @@
 #include "protocols_manager.h"
 #include "search.h"
 #include "userbox.h"
+#include "xml_config_file.h"
 
 #include "chat_manager.h"
 
@@ -233,13 +234,16 @@ void ChatManager::loadOpenedWindows()
 				users.append(userlist->byID(protocolId, id));
 			}
 
-			// TODO: fix
-			Protocol *gadu = AccountManager::instance()->defaultAccount()->protocol();
-			if (gadu)
-				openChatWidget(gadu, users);
-			else
-				kdebugm(KDEBUG_WARNING, "protocol %s/%s not found!\n",
-					       qPrintable(protocolId), qPrintable(accountId));
+			// TODO 0.6.6: fix
+			if (AccountManager::instance()->defaultAccount())
+			{
+				Protocol *gadu = AccountManager::instance()->defaultAccount()->protocol();
+				if (gadu)
+					openChatWidget(gadu, users);
+				else
+					kdebugm(KDEBUG_WARNING, "protocol %s/%s not found!\n",
+						       qPrintable(protocolId), qPrintable(accountId));
+			}
 		}
 	}
 	kdebugf2();

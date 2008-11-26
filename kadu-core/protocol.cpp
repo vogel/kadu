@@ -13,7 +13,8 @@
 
 #include "protocol.h"
 
-Protocol::Protocol()
+Protocol::Protocol(ProtocolFactory *factory)
+	: Factory(factory)
 {
 }
 
