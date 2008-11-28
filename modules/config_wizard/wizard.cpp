@@ -39,6 +39,7 @@ extern "C" KADU_EXPORT int config_wizard_init(bool firstLoad)
 	kdebugf();
 	wizardStarter = new WizardStarter();
 
+	// TODO: 0.6.6
 	if (config_file.readNumEntry("General", "UIN", 0) == 0 || config_file.readEntry("General", "Password").isEmpty())
 		wizardStarter->start(0, false);
 
@@ -248,6 +249,7 @@ void Wizard::registeredGGAccount(bool ok, UinType uin)
 
 	if (ok)
 	{
+		// TODO: 0.6.6
 		config_file.writeEntry("General", "UIN", (int)uin);
 		config_file.writeEntry("General", "Password", pwHash(ggNewPassword->text()));
 
@@ -409,6 +411,7 @@ void Wizard::haveNumberChanged(bool haveNumber)
 
 void Wizard::loadGGAccountOptions()
 {
+	// TODO: 0.6.6
 	QString uin = config_file.readEntry("General", "UIN");
 
 	haveNumber->setChecked(true);

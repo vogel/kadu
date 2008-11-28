@@ -2078,9 +2078,6 @@ void Kadu::setDefaultStatus()
 {
 	kdebugf();
 
-	if (config_file.readNumEntry("General", "UIN", 0) == 0 || config_file.readEntry("General", "Password").isEmpty())
-		return;
-
 	QString description;
 	QString startupStatus = config_file.readEntry("General", "StartupStatus");
 	UserStatus status;

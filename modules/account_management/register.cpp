@@ -116,6 +116,7 @@ Register::Register(QDialog *parent) : QWidget(parent, Qt::Window),
 	QGroupBox *vgb_email = new QGroupBox(tr("Email"));
 	QVBoxLayout *email_layout = new QVBoxLayout(vgb_email);
 
+	// TODO: 0.6.6
 	QGroupBox *vgb_password = new QGroupBox(tr("Password"));
 	QVBoxLayout *password_layout = new QVBoxLayout(vgb_password);
 

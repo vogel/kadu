@@ -293,7 +293,8 @@ void ProfileConfigurationWindow::initConfiguration()
 	profileName = new QLineEdit(profileSettings);
 	profileGrid->addWidget(new QLabel(tr("Name")), 0, 0);
 	profileGrid->addWidget(profileName, 0, 1);
-	
+
+	// TODO: 0.6.6
 	profileUIN = new QLineEdit(profileSettings);
 	profileGrid->addWidget(new QLabel(tr("UIN"), profileSettings), 1, 0);
 	profileGrid->addWidget(profileUIN, 1, 1);
