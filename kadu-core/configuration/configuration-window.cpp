@@ -13,16 +13,16 @@
 #include <QtGui/QScrollArea>
 #include <QtGui/QDialogButtonBox>
 
+#include "configuration/configuration-window-widgets.h"
 #include "config_file.h"
 #include "configuration_aware_object.h"
-#include "configuration_window_widgets.h"
 #include "debug.h"
 #include "emoticons.h"
 #include "icons_manager.h"
 #include "kadu.h"
 #include "misc.h"
 
-#include "configuration_window.h"
+#include "configuration-window.h"
 
 class ConfigSection;
 
@@ -550,6 +550,8 @@ ConfigWidget * ConfigurationWindow::appendUiElementFromDom(QDomNode uiElementNod
 		widget = new ConfigLabel(configGroupBox);
 	else if (tagName == "list-box")
 		widget = new ConfigListWidget(configGroupBox);
+	else if (tagName == "manage-accounts")
+		widget = new ConfigManageAccounts(configGroupBox);
 	else
 	{
 		kdebugf2();

@@ -15,6 +15,7 @@
 #include <QtCore/qdatetime.h>
 #include <QtGui/qdialog.h>
 
+#include "configuration/configuration-window-widgets.h"
 #include "chat_edit_box.h"
 #include "chat_message.h"
 #include "chat_widget.h"
@@ -25,7 +26,6 @@
 #include "usergroup.h"
 #include "main_configuration_window.h"
 #include "configuration_aware_object.h"
-#include "configuration_window_widgets.h"
 
 enum HistoryEntryType
 {

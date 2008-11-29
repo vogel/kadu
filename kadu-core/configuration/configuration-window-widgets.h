@@ -11,6 +11,7 @@
 #include <QtGui/QSpinBox>
 #include <QtXml/QDomElement>
 
+#include "configuration/widgets/manage-accounts.h"
 #include "color_button.h"
 #include "hot_key.h"
 #include "path_list_edit.h"
@@ -471,6 +472,30 @@ public:
 	virtual void show();
 	virtual void hide();
 	virtual bool fromDomElement(QDomElement domElement);
+};
+
+
+/**
+	&lt;manage-accounts caption="caption" id="id" /&gt;
+ **/
+class KADUAPI ConfigManageAccounts : public ManageAccounts, public ConfigWidget
+{
+	QLabel *label;
+
+protected:
+	virtual void createWidgets();
+
+public:
+	ConfigManageAccounts(const QString &widgetCaption, const QString &toolTip,
+		ConfigGroupBox *parentConfigGroupBox, const char *name);
+	ConfigManageAccounts(ConfigGroupBox *parentConfigGroupBox, char *name = 0);
+	virtual ~ConfigManageAccounts();
+
+	virtual void loadConfiguration();
+	virtual void saveConfiguration();
+
+	virtual void show();
+	virtual void hide();
 };
 
 #endif // CONFIGURATION_WINDOW_WIDGETS_H

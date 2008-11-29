@@ -12,8 +12,8 @@
 #include <QtCore/QRegExp>
 #include <QtGui/QMessageBox>
 
+#include "configuration/configuration-window-widgets.h"
 #include "config_file.h"
-#include "configuration_window_widgets.h"
 #include "debug.h"
 #include "modules.h"
 

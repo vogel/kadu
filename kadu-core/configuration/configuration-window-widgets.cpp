@@ -9,12 +9,12 @@
 
 #include <QtGui/QApplication>
 
+#include "configuration/configuration-window.h"
 #include "config_file.h"
-#include "configuration_window.h"
 #include "debug.h"
 #include "misc.h"
 
-#include "configuration_window_widgets.h"
+#include "configuration-window-widgets.h"
 
 ConfigWidget::ConfigWidget(ConfigGroupBox *parentConfigGroupBox)
 	: parentConfigGroupBox(parentConfigGroupBox)
@@ -1036,4 +1036,45 @@ bool ConfigListWidget::fromDomElement(QDomElement domElement)
 	}
 
 	return ConfigWidget::fromDomElement(domElement);
+}
+
+ConfigManageAccounts::ConfigManageAccounts(const QString &widgetCaption,
+		const QString &toolTip, ConfigGroupBox *parentConfigGroupBox, const char *name)
+	: ManageAccounts(parentConfigGroupBox->widget()), ConfigWidget(widgetCaption, toolTip, parentConfigGroupBox)
+{
+}
+
+ConfigManageAccounts::ConfigManageAccounts(ConfigGroupBox *parentConfigGroupBox, char *name)
+	: ManageAccounts(parentConfigGroupBox->widget()), ConfigWidget(parentConfigGroupBox)
+{
+}
+
+ConfigManageAccounts::~ConfigManageAccounts()
+{
+}
+
+void ConfigManageAccounts::createWidgets()
+{
+	if (!ConfigWidget::toolTip.isEmpty())
+	{
+		setToolTip(qApp->translate("@default", ConfigWidget::toolTip));
+	}
+}
+
+void ConfigManageAccounts::loadConfiguration()
+{
+}
+
+void ConfigManageAccounts::saveConfiguration()
+{
+}
+
+void ConfigManageAccounts::show()
+{
+	ManageAccounts::show();
+}
+
+void ConfigManageAccounts::hide()
+{
+	ManageAccounts::hide();
 }

@@ -10,10 +10,10 @@
 #include <QtCore/QMetaType>
 #include <QtGui/QApplication>
 
+#include "configuration/configuration-window-widgets.h"
 #include "chat_widget.h"
 #include "chat_manager.h"
 #include "config_file.h"
-#include "configuration_window_widgets.h"
 #include "debug.h"
 #include "sound.h"
 #include "kadu.h"

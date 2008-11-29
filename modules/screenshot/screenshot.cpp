@@ -24,11 +24,11 @@
 #include <QtGui/QPainter>
 #include <QtGui/QX11Info>
 
+#include "configuration/configuration-window-widgets.h"
 #include "action.h"
 #include "chat_edit_box.h"
 #include "chat_widget.h"
 #include "config_file.h"
-#include "configuration_window_widgets.h"
 #include "custom_input.h"
 #include "debug.h"
 #include "message_box.h"

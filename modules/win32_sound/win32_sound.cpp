@@ -12,11 +12,10 @@
 
 typedef short int16_t;
 
+#include "configuration/configuration-window-widgets.h"
 #include "../sound/sound_file.h"
 #include "debug.h"
 #include "win32_sound.h"
-#include "configuration_window_widgets.h"
-//#include "config_dialog.h"
 
 /**
  * @ingroup dsp_sound

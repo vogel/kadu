@@ -12,12 +12,12 @@
 #include <QtGui/QHBoxLayout>
 #include <QtGui/QListWidget>
 
+#include "configuration/configuration-window-widgets.h"
 #include "account.h"
 #include "account_manager.h"
 #include "chat_widget.h"
 #include "chat_manager.h"
 #include "config_file.h"
-#include "configuration_window_widgets.h"
 #include "connection_error_notification.h"
 #include "custom_input.h"
 #include "debug.h"

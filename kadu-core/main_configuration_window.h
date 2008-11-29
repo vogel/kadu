@@ -1,7 +1,7 @@
 #ifndef MAIN_CONFIGURATION_WINDOW_H
 #define MAIN_CONFIGURATION_WINDOW_H
 
-#include "configuration_window.h"
+#include "configuration/configuration-window.h"
 
 #include "exports.h"
 

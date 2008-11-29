@@ -12,11 +12,11 @@
 #include <QtGui/QApplication>
 #include <QtGui/QStyleFactory>
 
+#include "configuration/configuration-window-widgets.h"
 #include "account.h"
 #include "account_manager.h"
 #include "chat_message.h"
 #include "config_file.h"
-#include "configuration_window_widgets.h"
 #include "debug.h"
 #include "../modules/gadu_protocol/gadu.h"
 #include "icons_manager.h"

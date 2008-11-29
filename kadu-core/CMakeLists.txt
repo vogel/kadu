@@ -1,3 +1,7 @@
+add_subdirectory (configuration)
+link_directories (configuration)
+link_directories (configuration/widgets)
+
 set (kadu_SRCS
 	about.cpp
 	account.cpp
@@ -14,8 +18,6 @@ set (kadu_SRCS
 	color_selector.cpp
 	config_file.cpp
 	configuration_aware_object.cpp
-	configuration_window.cpp
-	configuration_window_widgets.cpp
 	custom_input.cpp
 	debug.cpp
 	dnshandler.cpp
@@ -76,8 +78,6 @@ set (kadu_MOC_SRCS
 	color_selector.h
 	config_file.h
 	configuration_aware_object.h
-	configuration_window.h
-	configuration_window_widgets.h
 	custom_input.h
 	debug.h
 	dnshandler.h
@@ -124,7 +124,7 @@ set (kadu_MOC_SRCS
 
 if (UNIX AND NOT APPLE)
 	if (NOT DESKTOP_ENTRY)
-		set(DESKTOP_ENTRY ${CMAKE_CURRENT_BINARY_DIR}/kadu.desktop)
+		set (DESKTOP_ENTRY ${CMAKE_CURRENT_BINARY_DIR}/kadu.desktop)
 	endif (NOT DESKTOP_ENTRY)
 
 	add_custom_command(OUTPUT ${DESKTOP_ENTRY}
@@ -133,16 +133,15 @@ if (UNIX AND NOT APPLE)
 		DEPENDS ${CMAKE_SOURCE_DIR}/varia/scripts/create_kadu_desktop.sh
 		COMMENT "Generating desktop entry file"
 	)
-	add_custom_target( DESKTOP_ENTRY_FILE ALL
+	add_custom_target(DESKTOP_ENTRY_FILE ALL
 		DEPENDS ${DESKTOP_ENTRY}
 	)
 endif (UNIX AND NOT APPLE)
 
-
 qt_wrap_cpp (kadu MOC_FILES ${kadu_MOC_SRCS})
 
 if (COMMAND cmake_policy)
-	cmake_policy(SET CMP0003 NEW)
+	cmake_policy (SET CMP0003 NEW)
 endif (COMMAND cmake_policy)
 
 link_directories (modules)
@@ -161,7 +160,7 @@ if (WIN32)
 	target_link_libraries (kadu_c kadu_core)
 else (WIN32)
 	add_executable (kadu main.cpp main_unix.cpp ${kadu_SRCS} ${MOC_FILES})
-	target_link_libraries (kadu ${STATIC_MODULES} ${QT_LIBRARIES} ${LIBGADU_LIBRARIES})
+	target_link_libraries (kadu configuration configuration_widgets ${STATIC_MODULES} ${QT_LIBRARIES} ${LIBGADU_LIBRARIES})
 endif (WIN32)
 
 

@@ -7,11 +7,11 @@
  *                                                                         *
  ***************************************************************************/
 
+#include "configuration/configuration_window.h"
 #include "account.h"
 #include "account_manager.h"
 #include "kadu.h"
 #include "config_file.h"
-#include "configuration_window.h"
 #include "debug.h"
 #include "misc.h"
 
