@@ -16,8 +16,9 @@
 #include "misc.h"
 
 HttpClient::HttpClient() :
-		Socket(), Host(), Referer(), Path(), Data(), PostData(), StatusCode(0),
-		HeaderParsed(false), ContentLength(0), ContentLengthNotFound(false), Cookies()
+		Socket(), Agent(), Host(), Referer(), Path(), Data(), PostData(),
+		StatusCode(0), HeaderParsed(false), FollowRedirect(true), ContentLength(0),
+		ContentLengthNotFound(false), Cookies()
 {
 	kdebugf();
 	connect(&Socket, SIGNAL(connected()), this, SLOT(onConnected()));
@@ -42,7 +43,10 @@ void HttpClient::onConnected()
 	query += Path;
 	query += " HTTP/1.1\r\n";
 	query += "Host: " + Host + "\r\n";
-	query += "User-Agent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.4) Gecko/20030617\r\n";
+	if (!Agent.isEmpty())
+		query += "User-Agent: " + Agent + "\r\n";
+	else
+		query += "User-Agent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.4) Gecko/20030617\r\n";
 //	query += "Accept: text/xml,application/xml,application/xhtml+xml,text/html;q=0.9,text/plain;q=0.8\r\n";
 //	query += "Connection: keep-alive\r\n";
 	if (!Referer.isEmpty())
@@ -130,9 +134,14 @@ void HttpClient::onReadyRead()
 			delete t;
 			//
 			emit redirected(location);
-			get(location);
 
-			return;
+			// follow only if desired
+			if (FollowRedirect)
+			{
+				get(location);
+
+				return;
+			}
 		}
 		// Wyci±gamy Content-Length
 		QRegExp cl_regexp("Content-Length: (\\d+)");
@@ -201,12 +210,18 @@ void HttpClient::setHost(const QString &host)
 	Cookies.clear();
 }
 
-void HttpClient::get(const QString &path)
+void HttpClient::setAgent(const QString &agent)
+{
+	Agent = agent;
+}
+
+void HttpClient::get(const QString &path, bool redirectFollow)
 {
 	Referer = Path;
 	Path = path;
 	Data.resize(0);
 	PostData.resize(0);
+	FollowRedirect = redirectFollow;
 	HeaderParsed = false;
 
 	if(config_file.readBoolEntry("Network", "UseProxy", false))
@@ -233,7 +248,7 @@ void HttpClient::post(const QString &path, const QByteArray& data)
 		Socket.connectToHost(Host, 80);
 }
 
-void HttpClient::post(const QString &path,const QString& data)
+void HttpClient::post(const QString &path, const QString& data)
 {
 	QByteArray PostData;
 	PostData.duplicate(data.local8Bit().data(), data.length());

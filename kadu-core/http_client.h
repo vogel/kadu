@@ -12,6 +12,7 @@ class HttpClient : public QObject
 
 	private:
 		QSocket Socket;
+		QString Agent;
 		QString Host;
 		QString Referer;
 		QString Path;
@@ -19,6 +20,7 @@ class HttpClient : public QObject
 		QByteArray PostData;
 		int StatusCode;
 		bool HeaderParsed;
+		bool FollowRedirect;
 
 		unsigned int ContentLength;
 		bool ContentLengthNotFound;
@@ -32,7 +34,8 @@ class HttpClient : public QObject
 
 	public slots:
 		void setHost(const QString &host);
-		void get(const QString &path);
+		void setAgent(const QString &agent);
+		void get(const QString &path, bool redirectFollow = true);
 		void post(const QString &path, const QByteArray &data);
 		void post(const QString &path, const QString &data);
 
