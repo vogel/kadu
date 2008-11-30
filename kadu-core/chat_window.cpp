@@ -112,7 +112,7 @@ void ChatWindow::kaduRestoreGeometry()
 		move(x, y);
 		resize(size);
 	}
-	else{
+	else {
 		setGeometry(geom);
 		currentChatWidget->setGeometry(geom);
 
