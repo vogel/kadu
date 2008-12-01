@@ -2,7 +2,7 @@
 #define HINT_MANAGER_H
 
 #include "configuration_aware_object.h"
-#include "gadu.h"
+#include "../modules/gadu_protocol/gadu.h"
 #include "osd_hint.h"
 #include "main_configuration_window.h"
 #include "userbox.h"

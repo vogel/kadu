@@ -369,6 +369,12 @@ void OSDHintManager::chatWidgetActivated(ChatWidget *chat)
 		linkedHints.remove(newMessage);
 	}
 
+	foreach(OSDHint *h, hints)
+	{
+		if (h->getUsers().equals(chat->users()) && !h->requireManualClosing())
+			deleteHint(h);
+	}
+
 	setHint();
 }
 

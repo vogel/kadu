@@ -6,7 +6,7 @@
 #include <QtGui/QVBoxLayout>
 
 #include "configuration_aware_object.h"
-#include "gadu.h"
+#include "../modules/gadu_protocol/gadu.h"
 
 class QLabel;
 class QVBoxLayout;
