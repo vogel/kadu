@@ -357,6 +357,12 @@ void HintManager::chatWidgetActivated(ChatWidget *chat)
 		linkedHints.remove(newMessage);
 	}
 
+	foreach(Hint *h, hints)
+	{
+		if (h->getUsers().equals(chat->users()) && !h->requireManualClosing())
+			deleteHint(h);
+	}
+
 	setHint();
 }
 
