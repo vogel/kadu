@@ -13,6 +13,7 @@ class KADUAPI HttpClient : public QObject
 
 	QTcpSocket Socket;
 	QString Host;
+	QString Agent;
 	QString Referer;
 	QString Path;
 	QByteArray Data;
@@ -20,6 +21,7 @@ class KADUAPI HttpClient : public QObject
 
 	int StatusCode;
 	bool HeaderParsed;
+	bool FollowRedirect;
 
 	unsigned int ContentLength;
 	bool ContentLengthNotFound;
@@ -43,9 +45,10 @@ public:
 
 public slots:
 	void setHost(const QString &host);
-	void get(const QString &path);
-	void post(const QString &path, const QByteArray &data);
-	void post(const QString &path, const QString &data);
+	void setAgent(const QString &agent);
+	void get(const QString &path, bool redirectFollow = true);
+	void post(const QString &path, const QByteArray &data, bool redirectFollow = true);
+	void post(const QString &path, const QString &data, bool redirectFollow = true);
 
 signals:
 	void finished();
