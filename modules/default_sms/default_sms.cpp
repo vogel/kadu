@@ -353,9 +353,7 @@ void SmsEraGateway::httpRedirected(QString link)
 		else
 		{
 			if (config_file.readEntry("SMS", "EraGateway") == "Sponsored")
-			{
 				QMessageBox::critical(p, "SMS", tr("Error: ") + SmsEraGateway::errorNumber(error));
-			}
 
 			emit finished(false);
 		}
