@@ -313,7 +313,7 @@ void SmsEraGateway::send(const QString& number, const QString& message, const QS
 
 	Http.setHost("www.eraomnix.pl");
 	Http.setAgent("Kadu");
-	Http.get(path, get_data);
+	Http.get(path + get_data, false);
 
 	kdebugf2();
 }
