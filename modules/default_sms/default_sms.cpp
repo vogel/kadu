@@ -286,16 +286,15 @@ SmsEraGateway::~SmsEraGateway()
 void SmsEraGateway::send(const QString& number, const QString& message, const QString& /*contact*/, const QString& signature)
 {
 	kdebugf();
-	Number=number;
-	Message=message;
-	Http.setHost("www.eraomnix.pl");
+
+	Number = number;
+	Message = message;
 
 	QString path;
 	QString gateway = config_file.readEntry("SMS", "EraGateway");
-	QString post_data = "login=" + config_file.readEntry("SMS","EraGateway_" + gateway + "_User") +
-	    "&password=" + config_file.readEntry("SMS","EraGateway_" + gateway + "_Password") +
-	    "&number=48" + number + "&message=" + unicode2std(signature) + ":" + unicode2std(message) + "&mms=no" +
-	    "&success=OK&failure=ERROR";
+	QString get_data = "?failure=localhost&success=localhost&login=" + config_file.readEntry("SMS", "EraGateway_" + gateway + "_User") +
+		"&password=" + config_file.readEntry("SMS","EraGateway_" + gateway + "_Password") +
+		"&number=48" + number + "&message=" + unicode2std(signature) + ":" + unicode2std(message) + "&mms=no";
 
 	if (gateway == "Sponsored")
 	{
@@ -304,7 +303,7 @@ void SmsEraGateway::send(const QString& number, const QString& message, const QS
 	else if (gateway == "OmnixMultimedia")
 	{
 		path= "msg/api/do/tinker/omnix";
-		post_data.replace("&number=48", "&numbers=");
+		get_data.replace("&number=48", "&numbers=");
 	}
 	else
 	{
@@ -312,7 +311,10 @@ void SmsEraGateway::send(const QString& number, const QString& message, const QS
 		return;
 	}
 
-	Http.post(path, post_data);
+	Http.setHost("www.eraomnix.pl");
+	Http.setAgent("Kadu");
+	Http.get(path, get_data);
+
 	kdebugf2();
 }
 
@@ -331,23 +333,27 @@ void SmsEraGateway::httpRedirected(QString link)
 
 	QWidget *p = (QWidget*)(parent()->parent());
 
-	if (link.find("OK") > 0)
+	if (link.find("localhost") > 0)
 	{
-		if (config_file.readEntry("SMS", "EraGateway") == "Sponsored")
-			QMessageBox::information(p, "SMS", tr("Number of SMS' left on Sponsored Era Gateway: ") + link.remove("http://OK?X-ERA-error=0&X-ERA-counter="), QMessageBox::Ok);
-		emit finished(true);
-	}
-	else if (link.find("ERROR") > 0)
-	{
-		link.remove("http://ERROR?X-ERA-error=");
-		link.remove(link.find("&X-ERA-counter="), 17);
-		QMessageBox::critical(p, "SMS", tr("Error: ") + SmsEraGateway::errorNumber(link.toInt()));
-		emit finished(false);
-	}
-	else if (link.find("error/pl/") > 0)
-	{
-		kdebugf2();
-		return;
+		// remove unused parts of link
+		link.remove("http://localhost?X-ERA-error=");
+		link.remove(link.find("X-ERA-counter="), 14);
+
+		// split parts of link
+		QStringList counters = QStringList::split("&", link);
+		int error = (*(counters.begin())).toInt();
+
+		if (error == 0)
+		{
+			if (config_file.readEntry("SMS", "EraGateway") == "Sponsored")
+				QMessageBox::information(p, "SMS", tr("Number of SMS' left on Sponsored Era Gateway: ") + counters.back(), QMessageBox::Ok);
+			emit finished(true);
+		}
+		else
+		{
+			QMessageBox::critical(p, "SMS", tr("Error: ") + SmsEraGateway::errorNumber(error));
+			emit finished(false);
+		}
 	}
 	else
 		QMessageBox::critical(p, "SMS", tr("Provider gateway results page looks strange. SMS was probably NOT sent."));
