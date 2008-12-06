@@ -341,13 +341,12 @@ void SmsEraGateway::httpRedirected(QString link)
 
 		// split parts of link
 		QStringList counters = QStringList::split("&", link);
-		QString counter = (*(counters.end()));
-		int error = (*(counters.begin())).toInt();
+		int error = (*counters.begin()).toInt();
 
 		if (error == 0)
 		{
 			if (config_file.readEntry("SMS", "EraGateway") == "Sponsored")
-				QMessageBox::information(p, "SMS", tr("Number of SMS' left on Sponsored Era Gateway: ") + counter, QMessageBox::Ok);
+				QMessageBox::information(p, "SMS", tr("Number of SMS' left on Sponsored Era Gateway: ") + counters.back(), QMessageBox::Ok);
 
 			emit finished(true);
 		}
