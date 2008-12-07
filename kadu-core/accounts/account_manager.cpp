@@ -9,7 +9,7 @@
 
 #include "account.h"
 #include "config_file.h"
-#include "protocols_manager.h"
+#include "protocols/protocols_manager.h"
 #include "xml_config_file.h"
 
 #include "account_manager.h"

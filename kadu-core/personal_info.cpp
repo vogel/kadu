@@ -15,8 +15,8 @@
 #include <QtGui/QLineEdit>
 #include <QtGui/QPushButton>
 
-#include "account.h"
-#include "account_manager.h"
+#include "accounts/account.h"
+#include "accounts/account_manager.h"
 #include "debug.h"
 #include "../modules/gadu_protocol/gadu.h"
 #include "../modules/gadu_protocol/gadu_search.h"

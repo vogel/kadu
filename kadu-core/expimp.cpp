@@ -22,14 +22,14 @@
 
 #include "../modules/gadu_protocol/gadu.h"
 
-#include "account.h"
-#include "account_manager.h"
+#include "accounts/account.h"
+#include "accounts/account_manager.h"
 #include "debug.h"
 #include "icons_manager.h"
 #include "ignore.h"
 #include "message_box.h"
 #include "misc.h"
-#include "protocol.h"
+#include "protocols/protocol.h"
 
 #include "expimp.h"
 

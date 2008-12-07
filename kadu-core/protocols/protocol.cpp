@@ -7,9 +7,12 @@
  *                                                                         *
  ***************************************************************************/
 
+#include <QtGui/QIcon>
 #include <QtGui/QTextDocument>
 
+#include "icons_manager.h"
 #include "message.h"
+#include "protocols/protocol_factory.h"
 
 #include "protocol.h"
 
@@ -50,4 +53,12 @@ bool Protocol::sendMessage(UserListElement user, Message &message)
 {
 	UserListElements users(user);
 	return sendMessage(users, message);
+}
+
+QIcon Protocol::icon()
+{
+	QString iconName = Factory->iconName();
+	return iconName.isEmpty()
+		? QIcon()
+		: icons_manager->loadIcon(iconName);
 }

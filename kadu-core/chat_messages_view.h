@@ -5,7 +5,7 @@
 
 #include "configuration_aware_object.h"
 #include "kadu_text_browser.h"
-#include "protocol.h"
+#include "protocols/protocol.h"
 
 #include "exports.h"
 

@@ -14,7 +14,7 @@
 #include <QtCore/QString>
 
 #include "emoticons.h"
-#include "protocol.h"
+#include "protocols/protocol.h"
 
 #include "exports.h"
 

@@ -1,11 +1,15 @@
 add_subdirectory (configuration)
-link_directories (configuration)
-link_directories (configuration/widgets)
+	link_directories (configuration)
+	link_directories (configuration/widgets)
+
+add_subdirectory (accounts)
+	link_directories (accounts)
+
+add_subdirectory (protocols)
+	link_directories (protocols)
 
 set (kadu_SRCS
 	about.cpp
-	account.cpp
-	account_manager.cpp
 	action.cpp
 	activate.cpp
 	chat_edit_box.cpp
@@ -42,8 +46,6 @@ set (kadu_SRCS
 	pending_msgs.cpp
 	personal_info.cpp
 	preview.cpp
-	protocol.cpp
-	protocols_manager.cpp
 	search.cpp
 	select_file.cpp
 	select_font.cpp
@@ -65,8 +67,6 @@ set (kadu_SRCS
 
 set (kadu_MOC_SRCS
 	about.h
-	account.h
-	account_manager.h
 	action.h
 	activate.h
 	chat_edit_box.h
@@ -102,8 +102,6 @@ set (kadu_MOC_SRCS
 	pending_msgs.h
 	personal_info.h
 	preview.h
-	protocol.h
-	protocols_manager.h
 	search.h
 	select_file.h
 	select_font.h
@@ -160,7 +158,13 @@ if (WIN32)
 	target_link_libraries (kadu_c kadu_core)
 else (WIN32)
 	add_executable (kadu main.cpp main_unix.cpp ${kadu_SRCS} ${MOC_FILES})
-	target_link_libraries (kadu configuration configuration_widgets ${STATIC_MODULES} ${QT_LIBRARIES} ${LIBGADU_LIBRARIES})
+	target_link_libraries (
+		kadu
+		accounts
+		configuration configuration_widgets
+		protocols
+		${STATIC_MODULES} ${QT_LIBRARIES} ${LIBGADU_LIBRARIES}
+	)
 endif (WIN32)
 
 

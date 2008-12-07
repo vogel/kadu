@@ -23,8 +23,8 @@
 #endif
 
 #include "about.h"
-#include "account.h"
-#include "account_manager.h"
+#include "accounts/account.h"
+#include "accounts/account_manager.h"
 #include "chat_edit_box.h"
 #include "chat_manager.h"
 #include "config_file.h"
@@ -46,7 +46,7 @@
 #include "misc.h"
 #include "pending_msgs.h"
 #include "personal_info.h"
-#include "protocols_manager.h"
+#include "protocols/protocols_manager.h"
 #include "search.h"
 #include "status_changer.h"
 #include "syntax_editor.h"

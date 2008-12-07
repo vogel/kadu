@@ -148,6 +148,8 @@ public:
 	virtual AccountData * createAccountData() = 0;
 	ProtocolFactory * protocolFactory() { return Factory; }
 
+	QIcon icon();
+
 public slots:
 	virtual bool sendMessage(UserListElement user, const QString &messageContent);
 	virtual bool sendMessage(UserListElements users, const QString &messageContent);

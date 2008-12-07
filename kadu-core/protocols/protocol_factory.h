@@ -21,6 +21,11 @@ public:
 	virtual Protocol * newInstance() = 0;
 	virtual QString name() = 0;
 
+	virtual QString iconName()
+	{
+		return QString::null;
+	}
+
 };
 
 #endif // PROTOCOL_FACTORY_H

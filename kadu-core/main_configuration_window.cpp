@@ -13,8 +13,8 @@
 #include <QtGui/QStyleFactory>
 
 #include "configuration/configuration-window-widgets.h"
-#include "account.h"
-#include "account_manager.h"
+#include "accounts/account.h"
+#include "accounts/account_manager.h"
 #include "chat_message.h"
 #include "config_file.h"
 #include "debug.h"

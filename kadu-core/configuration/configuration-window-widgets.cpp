@@ -1056,9 +1056,9 @@ ConfigManageAccounts::~ConfigManageAccounts()
 void ConfigManageAccounts::createWidgets()
 {
 	if (!ConfigWidget::toolTip.isEmpty())
-	{
 		setToolTip(qApp->translate("@default", ConfigWidget::toolTip));
-	}
+
+	parentConfigGroupBox->addWidget(this, true);
 }
 
 void ConfigManageAccounts::loadConfiguration()

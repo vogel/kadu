@@ -34,7 +34,7 @@
 #include "message_box.h"
 #include "misc.h"
 #include "modules.h"
-#include "protocols_manager.h"
+#include "protocols/protocols_manager.h"
 #include "xml_config_file.h"
 
 #ifdef Q_OS_MAC

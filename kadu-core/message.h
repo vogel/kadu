@@ -14,7 +14,7 @@
 #include <QtCore/QRegExp>
 #include <QtGui/QColor>
 
-#include "protocol.h"
+#include "protocols/protocol.h"
 
 #include "exports.h"
 

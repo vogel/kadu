@@ -10,13 +10,14 @@
 #ifndef GADU_PROTOCOL_FACTORY_H
 #define GADU_PROTOCOL_FACTORY_H
 
-#include "protocol_factory.h"
+#include "protocols/protocol_factory.h"
 
 class GaduProtocolFactory : public ProtocolFactory
 {
 public:
 	virtual Protocol * newInstance();
 	virtual QString name() { return "gadu"; }
+	virtual QString iconName() { return "BigOnline"; }
 
 };
 

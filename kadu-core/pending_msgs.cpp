@@ -12,7 +12,7 @@
 #include "chat_manager.h"
 #include "debug.h"
 #include "misc.h"
-#include "protocol.h"
+#include "protocols/protocol.h"
 #include "userlist.h"
 
 #include "pending_msgs.h"

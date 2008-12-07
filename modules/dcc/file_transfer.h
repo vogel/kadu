@@ -14,7 +14,7 @@
 
 #include "dcc.h"
 #include "dcc_handler.h"
-#include "protocol.h"
+#include "protocols/protocol.h"
 
 class DccSocket;
 class FileTransferManager;

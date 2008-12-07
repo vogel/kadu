@@ -13,7 +13,7 @@
 #include <QtCore/QDateTime>
 #include <QtNetwork/QHttpResponseHeader>
 
-#include "protocol.h"
+#include "protocols/protocol.h"
 
 class QHttp;
 

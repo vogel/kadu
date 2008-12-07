@@ -21,7 +21,7 @@
 #include "chat_widget.h"
 #include "config_file.h"
 #include "html_document.h"
-#include "protocol.h"
+#include "protocols/protocol.h"
 #include "toolbar.h"
 #include "usergroup.h"
 #include "main_configuration_window.h"

@@ -11,8 +11,8 @@
 #define GADU_PRIVATE_H
 
 #include "gadu.h"
-#include "protocol.h"
-#include "protocols_manager.h"
+#include "protocols/protocol.h"
+#include "protocols/protocols_manager.h"
 
 class QSocketNotifier;
 

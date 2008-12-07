@@ -8,7 +8,7 @@
 
 #include "configuration_aware_object.h"
 #include "kadu_main_window.h"
-#include "protocol.h"
+#include "protocols/protocol.h"
 #include "exports.h"
 
 class QAction;

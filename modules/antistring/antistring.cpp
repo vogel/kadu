@@ -14,7 +14,7 @@
 #include "account_manager.h"
 #include "misc.h"
 #include "debug.h"
-#include "protocol.h"
+#include "protocols/protocol.h"
 #include "config_file.h"
 #include "chat_manager.h"
 #include "icons_manager.h"

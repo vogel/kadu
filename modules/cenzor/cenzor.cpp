@@ -1,6 +1,6 @@
 #include "account.h"
 #include "account_manager.h"
-#include "protocol.h"
+#include "protocols/protocol.h"
 #include "debug.h"
 #include "misc.h"
 #include "config_file.h"

@@ -55,6 +55,7 @@ ConfigGroupBox::ConfigGroupBox(const QString &name, ConfigTab *configTab, QGroup
 {
 	container = new QWidget(groupBox);
 	groupBox->layout()->addWidget(container);
+
 	gridLayout = new QGridLayout(container);
 	gridLayout->setAutoAdd(false);
 	gridLayout->setSpacing(5);
@@ -149,9 +150,9 @@ ConfigGroupBox *ConfigTab::configGroupBox(const QString &name, bool create)
 		return 0;
 
 	QGroupBox *groupBox = new QGroupBox(name, mainWidget);
-	groupBox->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
-	new QHBoxLayout(groupBox);
-	
+	QHBoxLayout *groupBoxLayout = new QHBoxLayout(groupBox);
+	groupBoxLayout->setSizeConstraint(QLayout::SetMinimumSize);
+
 	mainLayout->insertWidget(configGroupBoxes.count(), groupBox);
 
 	ConfigGroupBox *newConfigGroupBox = new ConfigGroupBox(name, this, groupBox);

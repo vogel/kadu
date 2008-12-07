@@ -11,8 +11,8 @@
 #include <QtGui/QSplitter>
 #include <QtGui/QVBoxLayout>
 
-#include "account.h"
-#include "account_manager.h"
+#include "accounts/account.h"
+#include "accounts/account_manager.h"
 #include "action.h"
 #include "chat_edit_box.h"
 #include "chat_manager.h"
@@ -28,7 +28,7 @@
 #include "kadu.h"
 #include "kadu_parser.h"
 #include "message_box.h"
-#include "protocol.h"
+#include "protocols/protocol.h"
 #include "userbox.h"
 #include "usergroup.h"
 

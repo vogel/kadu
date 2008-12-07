@@ -6,7 +6,7 @@
 #include <QtCore/QPair>
 
 #include "html_document.h"
-#include "protocol.h"
+#include "protocols/protocol.h"
 
 #include "exports.h"
 

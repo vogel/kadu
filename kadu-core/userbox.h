@@ -16,7 +16,7 @@
 
 #include "configuration_aware_object.h"
 #include "misc.h"
-#include "protocol.h"
+#include "protocols/protocol.h"
 #include "userlist.h"
 
 #include "exports.h"

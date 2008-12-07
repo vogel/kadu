@@ -16,7 +16,7 @@
 #include <libgadu.h>
 
 #include "exports.h"
-#include "protocol.h"
+#include "protocols/protocol.h"
 #include "userlist.h"
 
 typedef uin_t UinType;

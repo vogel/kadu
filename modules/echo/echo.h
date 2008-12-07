@@ -4,7 +4,7 @@
 #include <QtCore/QObject>
 
 #include "../modules/gadu_protocol/gadu.h"
-#include "protocol.h"
+#include "protocols/protocol.h"
 #include "usergroup.h"
 
 class Echo : public QObject

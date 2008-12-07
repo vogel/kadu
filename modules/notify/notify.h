@@ -7,7 +7,7 @@
 
 #include "main_configuration_window.h"
 #include "notification.h"
-#include "protocol.h"
+#include "protocols/protocol.h"
 #include "userlist.h"
 #include "notify_exports.h"
 

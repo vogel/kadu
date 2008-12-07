@@ -37,8 +37,8 @@
 
 #include <time.h>
 
-#include "account.h"
-#include "account_manager.h"
+#include "accounts/account.h"
+#include "accounts/account_manager.h"
 #include "chat_manager.h"
 #include "config_file.h"
 #include "debug.h"

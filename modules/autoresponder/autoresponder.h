@@ -8,7 +8,7 @@
 #include "configuration_aware_object.h"
 #include "main_configuration_window.h"
 #include "misc.h"
-#include "protocol.h"
+#include "protocols/protocol.h"
 #include "usergroup.h"
 /**
  * @defgroup autoresponder Autoresponder

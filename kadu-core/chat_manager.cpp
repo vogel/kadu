@@ -7,8 +7,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "account.h"
-#include "account_manager.h"
+#include "accounts/account.h"
+#include "accounts/account_manager.h"
 #include "action.h"
 #include "activate.h"
 #include "chat_edit_box.h"
@@ -23,7 +23,7 @@
 #include "message_box.h"
 #include "misc.h"
 #include "pending_msgs.h"
-#include "protocols_manager.h"
+#include "protocols/protocols_manager.h"
 #include "search.h"
 #include "userbox.h"
 #include "xml_config_file.h"

@@ -12,7 +12,7 @@
 
 #include <QtCore/QString>
 
-#include "account_data.h"
+#include "accounts/account_data.h"
 #include "gadu.h"
 
 class GaduAccountData : public AccountData

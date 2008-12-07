@@ -8,9 +8,9 @@
  ***************************************************************************/
 
 #include "account_data.h"
-#include "protocol.h"
-#include "protocol_factory.h"
-#include "protocols_manager.h"
+#include "protocols/protocol.h"
+#include "protocols/protocol_factory.h"
+#include "protocols/protocols_manager.h"
 #include "xml_config_file.h"
 
 #include "account.h"

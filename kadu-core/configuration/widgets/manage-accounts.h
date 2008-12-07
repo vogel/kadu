@@ -13,7 +13,10 @@
 #include <QtGui/QWidget>
 
 class QListWidget;
+class QMenu;
 class QPushButton;
+
+class Account;
 
 class ManageAccounts : public QWidget
 {
@@ -21,9 +24,14 @@ class ManageAccounts : public QWidget
 
 	QListWidget *AccountsListWidget;
 	QPushButton *AddAccountButton;
+	QPushButton *EditAccountButton;
 	QPushButton *RemoveAccountButton;
 	QPushButton *MoveUpAccountButton;
 	QPushButton *MoveDownAccountButton;
+
+	void createGui();
+	QMenu * createGuiAddAccountMenu();
+	void loadAccounts();
 
 public:
 	ManageAccounts(QWidget *parent = 0);
