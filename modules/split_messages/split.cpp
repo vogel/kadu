@@ -18,7 +18,7 @@
 #include "chat_manager.h"
 #include "usergroup.h"
 #include "debug.h"
-#include "gadu.h"
+#include "../gadu_protocol/gadu.h"
 
 Split *split;
 

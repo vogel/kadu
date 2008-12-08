@@ -10,8 +10,8 @@
 #include "antistring.h"
 #include "../notify/notify.h"
 
-#include "account.h"
-#include "account_manager.h"
+#include "accounts/account.h"
+#include "accounts/account_manager.h"
 #include "misc.h"
 #include "debug.h"
 #include "protocols/protocol.h"

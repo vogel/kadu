@@ -10,8 +10,8 @@
 #include <QtGui/QGridLayout>
 #include <QtGui/QLabel>
 
-#include "account.h"
-#include "account_manager.h"
+#include "accounts/account.h"
+#include "accounts/account_manager.h"
 #include "action.h"
 #include "chat_widget.h"
 #include "chat_manager.h"

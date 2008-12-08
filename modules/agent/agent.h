@@ -18,7 +18,7 @@
 #include <QtCore/QList>
 #include <QtGui/QLabel>
 
-#include "gadu.h"
+#include "../gadu_protocol/gadu.h"
 #include "userinfo.h"
 
 struct UnknownUser

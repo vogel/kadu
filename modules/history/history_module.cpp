@@ -12,8 +12,8 @@
 #include <sys/stat.h>
 #include <sys/types.h>
 
-#include "account.h"
-#include "account_manager.h"
+#include "accounts/account.h"
+#include "accounts/account_manager.h"
 #include "action.h"
 #include "chat_edit_box.h"
 #include "chat_manager.h"

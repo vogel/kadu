@@ -1,7 +1,7 @@
 #ifndef QT4_DOCKING_NOTIFY_H
 #define QT4_DOCKING_NOTIFY_H
 
-#include "gadu.h"
+#include "../gadu_protocol/gadu.h"
 #include "configuration_aware_object.h"
 #include "main_configuration_window.h"
 #include "../notify/notify.h"

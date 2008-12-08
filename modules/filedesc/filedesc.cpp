@@ -8,8 +8,8 @@
  ***************************************************************************/
 
 #include "configuration/configuration_window.h"
-#include "account.h"
-#include "account_manager.h"
+#include "accounts/account.h"
+#include "accounts/account_manager.h"
 #include "kadu.h"
 #include "config_file.h"
 #include "debug.h"

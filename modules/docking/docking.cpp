@@ -14,8 +14,8 @@
 #include <QtGui/QMenu>
 #include <QtGui/QMouseEvent>
 
-#include "account.h"
-#include "account_manager.h"
+#include "accounts/account.h"
+#include "accounts/account_manager.h"
 #include "config_file.h"
 #include "docking.h"
 #include "debug.h"

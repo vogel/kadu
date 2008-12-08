@@ -14,8 +14,8 @@
 #include <QtGui/QLineEdit>
 #include <QtGui/QPushButton>
 
-#include "account.h"
-#include "account_manager.h"
+#include "accounts/account.h"
+#include "accounts/account_manager.h"
 #include "change_password.h"
 #include "debug.h"
 #include "icons_manager.h"
