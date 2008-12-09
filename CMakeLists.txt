@@ -94,9 +94,9 @@ execute_process (
 	RESULT_VARIABLE LIBGADU_PTHEADS
 )
 
-if (${LIBGADU_PTHEADS} GREATER 0)
+if (NOT APPLE AND ${LIBGADU_PTHEADS} GREATER 0)
 	message (FATAL_ERROR "libgadu must be compiled with pthreads support")
-endif (${LIBGADU_PTHEADS} GREATER 0)
+endif (NOT APPLE AND ${LIBGADU_PTHEADS} GREATER 0)
 
 include_directories (${LIBGADU_INCLUDE_DIRS})
 link_directories (${LIBGADU_LIBRARY_DIRS})
