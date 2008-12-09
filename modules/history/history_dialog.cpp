@@ -523,6 +523,10 @@ void HistoryDialog::keyPressEvent(QKeyEvent *e)
 		e->accept();
 		close();
 	}
+	else if (e == QKeySequence::Copy)
+	{
+		body->pageAction(QWebPage::Copy)->trigger();
+	}
 	else
 		QWidget::keyPressEvent(e);
 }
