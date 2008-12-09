@@ -256,6 +256,8 @@ void SmsPlusGateway::httpFinished()
 		}
 		else if (Page.find("SMS zostaï¿½ wysï¿½any")>=0)
 			emit finished(true);
+		else if (Page.find("wiadomo¶æ zosta³a wys³ana")>=0)
+			emit finished(true);
 		else
 		{
 			QMessageBox::critical(p,"SMS",tr("Provider gateway results page looks strange. SMS was probably NOT sent."));
