@@ -111,6 +111,7 @@ void Hint::createLabels(const QPixmap &pixmap)
 	vbox->setResizeMode(QLayout::FreeResize);
 	QWidget *widget = new QWidget(this);
 	labels = new QHBoxLayout(widget);
+	labels->setContentsMargins(5, 5, 5, 5);
 	vbox->addWidget(widget);
 	if (!pixmap.isNull())
 	{
