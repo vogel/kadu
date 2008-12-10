@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 type=$1
 shift
@@ -21,7 +21,6 @@ for icon_theme in $*; do
 			result="$result;$icon_theme"
 		fi
 	fi
-
 done
 
 rm -f .temp

@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 available_sound_themes=""
 for dir in *; do
@@ -7,7 +7,7 @@ for dir in *; do
 	fi
 done
 
-if test "$1" == "ON"; then
+if [ "$1" == "ON" ]; then
 	for f in `ls *.web`; do
 		dir=`basename $f .web`
 		if [ ! -f "$dir/sound.conf" ]; then

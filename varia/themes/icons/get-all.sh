@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 available_icon_themes=""
 for dir in *; do
@@ -7,7 +7,7 @@ for dir in *; do
 	fi
 done
 
-if test "$1" == "ON"; then
+if [ "$1" == "ON" ]; then
 	for file in *.web; do
 		dir=`basename $file .web`
 		if [ ! -f $dir/icons.conf ]; then

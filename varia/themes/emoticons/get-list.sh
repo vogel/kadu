@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 type=$1
 shift
@@ -21,7 +21,6 @@ for emoticon_theme in $*; do
 			result="$result;$emoticon_theme"
 		fi
 	fi
-
 done
 
 rm -f .temp

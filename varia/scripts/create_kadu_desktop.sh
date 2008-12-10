@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 cat <<EOF
 [Desktop Entry]
 Version=1.0
