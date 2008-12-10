@@ -22,7 +22,7 @@ if (INSTALL_SOUND_THEMES)
 	add_dependencies (kadu sound_themes)
 
 	install (DIRECTORY ${INSTALL_SOUND_THEMES}
-		DESTINATION share/kadu/themes/sound
+		DESTINATION share/kadu/themes/sounds
 		PATTERN ".autodownloaded" EXCLUDE
 		PATTERN ".svn" EXCLUDE
 		PATTERN "*.wav"
