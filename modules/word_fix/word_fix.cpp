@@ -29,7 +29,7 @@
 
 WordFix *wordFix;
 
-extern "C" int word_fix_init()
+extern "C" KADU_EXPORT int word_fix_init()
 {
 	kdebugf();
 	wordFix = new WordFix();
@@ -39,7 +39,7 @@ extern "C" int word_fix_init()
 }
 
 
-extern "C" void word_fix_close()
+extern "C" KADU_EXPORT void word_fix_close()
 {
 	kdebugf();
 	MainConfigurationWindow::unregisterUiFile(dataPath("kadu/modules/configuration/word_fix.ui"), wordFix);

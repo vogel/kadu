@@ -22,7 +22,7 @@
 
 Infos *lastSeen;
 
-extern "C" int last_seen_init()
+extern "C" KADU_EXPORT int last_seen_init()
 {
 	kdebugf();
 
@@ -33,7 +33,7 @@ extern "C" int last_seen_init()
 }
 
 
-extern "C" void last_seen_close()
+extern "C" KADU_EXPORT void last_seen_close()
 {
 	kdebugf();
 

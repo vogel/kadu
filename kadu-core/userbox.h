@@ -27,7 +27,7 @@ class ActionDescription;
 class KaduMainWindow;
 class ULEComparer;
 
-class UlesDrag : public QDrag
+class KADUAPI UlesDrag : public QDrag
 {
 
 public:

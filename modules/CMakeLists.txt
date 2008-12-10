@@ -1,6 +1,7 @@
 If (WIN32)
 	set (STATIC_MODULES "docking;qt4_docking")
-	set (DYNAMIC_MODULES "account_management;autoaway;dcc;default_sms;hints;history;notify;sms;window_notify;advanced_userlist;autoresponder;sound;config_wizard;ext_sound;echo;exec_notify;desktop_docking;dshow_sound;voice;encryption;win32_sound")
+	set (DYNAMIC_MODULES
+		"account_management;autoaway;dcc;default_sms;hints;history;notify;sms;window_notify;advanced_userlist;autoresponder;sound;config_wizard;ext_sound;echo;exec_notify;desktop_docking;dshow_sound;voice;encryption;win32_sound;tabs;qt4_sound;firewall;antistring;auto_hide;parser_extender;word_fix;autostatus;last_seen;filtering;filedesc")
 	set (DISABLED_MODULES "")
 else (WIN32)
 

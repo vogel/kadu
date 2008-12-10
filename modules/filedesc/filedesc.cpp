@@ -22,7 +22,7 @@
 
 FileDescription *file_desc;
 
-extern "C" int filedesc_init()
+extern "C" KADU_EXPORT int filedesc_init()
 {
 	file_desc = new FileDescription();
 	MainConfigurationWindow::registerUiFile(dataPath("kadu/modules/configuration/filedesc.ui"), file_desc);
@@ -30,7 +30,7 @@ extern "C" int filedesc_init()
 	return 0;
 }
 
-extern "C" void filedesc_close()
+extern "C" KADU_EXPORT void filedesc_close()
 {
 	MainConfigurationWindow::unregisterUiFile(dataPath("kadu/modules/configuration/filedesc.ui"), file_desc);
 	delete file_desc;
