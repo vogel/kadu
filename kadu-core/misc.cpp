@@ -65,17 +65,23 @@ bool measureTime = false;
 
 void saveWindowGeometry(const QWidget *w, const QString &section, const QString &name)
 {
-	/* Dorr: make sure the window will not be greater than desktop */
+#ifdef Q_OS_MACX
+	/* Dorr: on Mac make sure the window will not be greater than desktop */
 	config_file.writeEntry(section, name,
 		QApplication::desktop()->availableGeometry().intersected(w->geometry()));
+#else
+	config_file.writeEntry(section, name,w->geometry());
+#endif
 }
 
 void loadWindowGeometry(QWidget *w, const QString &section, const QString &name, int defaultX, int defaultY, int defaultWidth, int defaultHeight)
 {
-	QRect def_rect(defaultX, defaultY, defaultWidth, defaultHeight);
-	config_file.addVariable(section, name, def_rect);
-
-	w->setGeometry(config_file.readRectEntry(section, name));
+	QRect rect = config_file.readRectEntry(section, name);
+	if ((rect.height() == 0) || (rect.width() == 0))
+	{
+		rect.setRect(defaultX, defaultY, defaultWidth, defaultHeight);
+	}
+	w->setGeometry(rect);
 }
 
 QString ggPath(const QString &subpath)
