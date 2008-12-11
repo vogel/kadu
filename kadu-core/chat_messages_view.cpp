@@ -244,11 +244,15 @@ void ChatMessagesView::configurationUpdated()
 	QString fontFamily = font.family();
 	QString fontSize;
 	if (font.pointSize() > 0)
-		/*  Dorr: On all systems this font is being displayed 3pts larger than
+#ifdef Q_OS_MAC
+		/*  Dorr: On MacOSX this font is being displayed 3pts larger than
 		 *  it really is, so reduce it's size to be coherent in entire
 		 *  application.
 		 */
 		fontSize = QString::number(font.pointSize()-3) + "pt";
+#else
+		fontSize = QString::number(font.pointSize()) + "pt";
+#endif
 	else
 		fontSize = QString::number(font.pixelSize()) + "px";
 	QString fontStyle = font.italic() ? "italic" : "normal";
