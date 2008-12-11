@@ -1,5 +1,5 @@
-#cmakedefine DEBUG
-#cmakedefine DEBUG_ENABLED
+#cmakedefine DEBUG 1
+#cmakedefine DEBUG_ENABLED 1
 
 #define DATADIR "${DATADIR}"
 #define LIBDIR "${LIBDIR}"
