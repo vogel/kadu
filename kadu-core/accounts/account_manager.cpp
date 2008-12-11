@@ -16,7 +16,7 @@
 
 AccountManager * AccountManager::Instance = 0;
 
-AccountManager * AccountManager::instance()
+KADUAPI AccountManager * AccountManager::instance()
 {
 	if (0 == Instance)
 		Instance = new AccountManager();

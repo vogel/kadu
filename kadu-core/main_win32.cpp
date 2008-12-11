@@ -19,6 +19,7 @@
 #include <windows.h>
 #include <dbghelp.h>
 #include "kadu-config.h"
+#include "xml_config_file.h"
 
 typedef BOOL (WINAPI *MiniDumpWriteDump_t)(HANDLE hProcess, DWORD ProcessId, HANDLE hFile, MINIDUMP_TYPE DumpType,
 		PMINIDUMP_EXCEPTION_INFORMATION ExceptionParam,

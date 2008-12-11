@@ -19,7 +19,7 @@ class Account;
 class AccountData;
 class XmlConfigFile;
 
-class AccountManager : public QObject
+class KADUAPI AccountManager : public QObject
 {
 	Q_OBJECT
 

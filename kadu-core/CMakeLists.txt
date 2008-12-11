@@ -147,7 +147,8 @@ link_directories (modules)
 if (WIN32)
 	add_library(kadu_core SHARED ${kadu_SRCS} ${MOC_FILES} kadu_core.rc)
 	set_target_properties(kadu_core PROPERTIES DEFINE_SYMBOL KADULIB )
-	target_link_libraries (kadu_core ${STATIC_MODULES} ${QT_LIBRARIES} ${LIBGADU_LIBRARIES})
+	target_link_libraries (kadu_core accounts configuration configuration_widgets protocols	
+		${STATIC_MODULES} ${QT_LIBRARIES} ${LIBGADU_LIBRARIES})
 
 	add_executable(kadu WIN32 main.cpp main_win32.cpp kadu.rc)
 	add_executable(kadu_c main.cpp main_win32.cpp kadu.rc)
@@ -158,6 +159,8 @@ if (WIN32)
 	target_link_libraries (kadu_c kadu_core)
 else (WIN32)
 	add_executable (kadu main.cpp main_unix.cpp ${kadu_SRCS} ${MOC_FILES})
+	set_target_properties(kadu PROPERTIES COMPILE_FLAGS "-DKADULIB" )
+	
 	target_link_libraries (
 		kadu
 		accounts

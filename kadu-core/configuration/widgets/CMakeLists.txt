@@ -8,3 +8,5 @@ set (configuration_widgets_MOC_SRCS
 
 qt_wrap_cpp (configuration_widgets MOC_FILES ${configuration_widgets_MOC_SRCS})
 add_library (configuration_widgets STATIC ${configuration_widgets_SRCS} ${MOC_FILES})
+
+set_target_properties(configuration_widgets PROPERTIES COMPILE_FLAGS "-DKADULIB" )

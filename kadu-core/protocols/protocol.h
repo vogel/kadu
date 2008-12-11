@@ -21,7 +21,7 @@ class AccountData;
 class Message;
 class ProtocolFactory;
 
-class Protocol : public QObject
+class KADUAPI Protocol : public QObject
 {
 	Q_OBJECT
 
