@@ -25,6 +25,7 @@ public:
 	void unregisterProtocolFactory(const QString &name);
 
 	const QList<ProtocolFactory *> protocolFactories() { return registeredFactories.values(); }
+	ProtocolFactory * protocolFactory(const QString &name);
 
 	Protocol * newInstance(const QString &name);
 

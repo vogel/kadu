@@ -37,6 +37,7 @@ public:
 
 	QString name() { return Name; }
 	Protocol * protocol() { return ProtocolHandler; }
+	AccountData * data() { return Data; }
 
 	UserStatus currentStatus();
 

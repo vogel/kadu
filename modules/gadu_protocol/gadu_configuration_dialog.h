@@ -7,30 +7,32 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef PROTOCOL_FACTORY_H
-#define PROTOCOL_FACTORY_H
+#ifndef GADU_CONFIGURATION_DIALOG
+#define GADU_CONFIGURATION_DIALOG
 
-#include <QtCore/QString>
 #include <QtGui/QDialog>
+#include <QtGui/QLineEdit>
 
-class AccountData;
-class Protocol;
+class GaduAccountData;
 
-class ProtocolFactory : public QObject
+class GaduConfigurationDialog : public QDialog
 {
+	Q_OBJECT
+
+	GaduAccountData *AccountData;
+	QLineEdit *UinLineEdit;
+	QLineEdit *PasswordLineEdit;
+
+	void createGui();
+	void loadAccountData();
+
+private slots:
+	void updateAccountData();
+
 public:
-	virtual Protocol * newInstance() = 0;
-	virtual AccountData * newAccountData() = 0;
-	virtual QDialog * newConfigurationDialog(AccountData *, QWidget *) = 0;
-
-	virtual QString name() = 0;
-	virtual QString displayName() = 0;
-
-	virtual QString iconName()
-	{
-		return QString::null;
-	}
+	GaduConfigurationDialog(GaduAccountData *accountData, QWidget *parent = 0);
+	~GaduConfigurationDialog();
 
 };
 
-#endif // PROTOCOL_FACTORY_H
+#endif // GADU_CONFIGURATION_DIALOG

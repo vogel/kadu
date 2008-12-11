@@ -7,11 +7,29 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "gadu_protocol_factory.h"
+#include <QtGui/QPushButton>
 
 #include "gadu.h"
+#include "gadu_account_data.h"
+#include "gadu_configuration_dialog.h"
+
+#include "gadu_protocol_factory.h"
 
 Protocol * GaduProtocolFactory::newInstance()
 {
 	return new GaduProtocol(this);
+}
+
+AccountData * GaduProtocolFactory::newAccountData()
+{
+	return new GaduAccountData();
+}
+
+QDialog * GaduProtocolFactory::newConfigurationDialog(AccountData *accountData, QWidget *parent)
+{
+	GaduAccountData *gaduAccountData = dynamic_cast<GaduAccountData *>(accountData);
+
+	return 0 != gaduAccountData
+		? new GaduConfigurationDialog(gaduAccountData, parent)
+		: 0;
 }

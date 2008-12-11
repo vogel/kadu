@@ -81,6 +81,15 @@ Account * AccountManager::createAccount(const QString &name, const QString &prot
 	return new Account(name, protocol, accountData);
 }
 
+Account * AccountManager::account(const QString &name)
+{
+	foreach (Account *account, Accounts)
+		if (name == account->name())
+			return account;
+
+	return 0;
+}
+
 void AccountManager::registerAccount(Account *account)
 {
 	// TODO: implement

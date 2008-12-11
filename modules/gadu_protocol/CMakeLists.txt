@@ -1,6 +1,7 @@
 set (SOURCES
 	gadu.cpp
 	gadu_account_data.cpp
+	gadu_configuration_dialog.cpp
 	gadu_formatter.cpp
 	gadu_images_manager.cpp
 	gadu-private.cpp
@@ -12,6 +13,7 @@ set (SOURCES
 
 set (MOC_SOURCES
 	gadu.h
+	gadu_configuration_dialog.h
 	gadu-private.h
 )
 

@@ -72,14 +72,6 @@
 			</group-box>
 		</tab>
 
-		<tab name="Gadu-Gadu">
-			<group-box name="User data">
-				<line-edit caption="UIN" config-section="General" config-item="UIN" />
-				<gg-password-edit caption="Password" config-section="General" config-item="Password" />
-				<line-edit caption="Nick" config-section="General" config-item="Nick" />
-			</group-box>
-		</tab>
-
 		<tab name="Server">
 			<group-box name="Servers properties">
 				<check-box caption="Use default servers" config-section="Network" config-item="isDefServers" id="useDefaultServers" />

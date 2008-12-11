@@ -38,6 +38,7 @@ public:
 
 	Account * defaultAccount();
 	Account * createAccount(const QString &name, const QString &protocolName, AccountData *accountData);
+	Account * account(const QString &name);
 
 	const QList<Account *> accounts() { return Accounts; }
 

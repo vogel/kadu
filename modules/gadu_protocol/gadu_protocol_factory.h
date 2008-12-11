@@ -16,7 +16,11 @@ class GaduProtocolFactory : public ProtocolFactory
 {
 public:
 	virtual Protocol * newInstance();
+	virtual AccountData * newAccountData();
+	virtual QDialog * newConfigurationDialog(AccountData *, QWidget *);
+
 	virtual QString name() { return "gadu"; }
+	virtual QString displayName() { return tr("Gadu-Gadu"); }
 	virtual QString iconName() { return "BigOnline"; }
 
 };

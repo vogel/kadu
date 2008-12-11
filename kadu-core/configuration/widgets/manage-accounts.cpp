@@ -15,6 +15,7 @@
 #include <QtGui/QVBoxLayout>
 
 #include "accounts/account.h"
+#include "accounts/account_data.h"
 #include "accounts/account_manager.h"
 #include "protocols/protocol.h"
 #include "protocols/protocol_factory.h"
@@ -45,6 +46,8 @@ void ManageAccounts::createGui()
 	MoveUpAccountButton = new QPushButton(tr("Move up"), this);
 	MoveDownAccountButton = new QPushButton(tr("Move down"), this);
 
+	connect(EditAccountButton, SIGNAL(clicked()), this, SLOT(editAccount()));
+
 	QVBoxLayout *buttonLayout = new QVBoxLayout();
 	buttonLayout->addWidget(AddAccountButton);
 	buttonLayout->addWidget(EditAccountButton);
@@ -68,8 +71,10 @@ QMenu * ManageAccounts::createGuiAddAccountMenu()
 	{
 		QIcon icon = icons_manager->loadIcon(protocolFactory->iconName());
 		QString name = protocolFactory->name();
+		QString displayName = protocolFactory->displayName();
 
-		QAction *protocolAction = addAccountMenu->addAction(icon, name);
+		QAction *protocolAction = addAccountMenu->addAction(icon, displayName,
+			this, SLOT(addAccount()));
 		protocolAction->setData(name);
 	}
 
@@ -89,4 +94,58 @@ void ManageAccounts::loadAccounts()
 
 		AccountsListWidget->addItem(accountListWidgetItem);
 	}
+}
+
+void ManageAccounts::addAccount()
+{
+	QAction *senderAction = dynamic_cast<QAction *>(sender());
+	if (0 == senderAction)
+		return;
+
+	QString protocolName = senderAction->data().toString();
+	if (protocolName.isEmpty())
+		return;
+
+	ProtocolFactory *protocolFactory = ProtocolsManager::instance()->protocolFactory(protocolName);
+	if (0 == protocolFactory)
+		return;
+
+	AccountData *newAccountData = protocolFactory->newAccountData();
+	if (0 == newAccountData)
+		return;
+
+	QDialog *configurationDialog = protocolFactory->newConfigurationDialog(newAccountData, this);
+	if (0 == configurationDialog)
+	{
+		delete newAccountData;
+		return;
+	}
+
+	configurationDialog->exec();
+}
+
+void ManageAccounts::editAccount()
+{
+	QListWidgetItem *currentAccountItem = AccountsListWidget->currentItem();
+	if (0 == currentAccountItem)
+		return;
+
+	QString accountName = currentAccountItem->text();
+	Account *account = AccountManager::instance()->account(accountName);
+	if (0 == account)
+		return;
+
+	Protocol *protocol = account->protocol();
+	if (0 == protocol)
+		return;
+
+	ProtocolFactory *protocolFactory = protocol->protocolFactory();
+	if (0 == protocolFactory)
+		return;
+
+	QDialog *configurationDialog = protocolFactory->newConfigurationDialog(account->data(), this);
+	if (0 == configurationDialog)
+		return;
+
+	configurationDialog->exec();
 }

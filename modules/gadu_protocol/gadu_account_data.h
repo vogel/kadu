@@ -30,6 +30,9 @@ public:
 	UinType uin() { return Uin; }
 	QString password() { return Password; }
 
+	void setUin(UinType uin) { Uin = uin; }
+	void setPassword(const QString &password) { Password = password; }
+
 };
 
 #endif // GADU_ACCOUNT_DATA
