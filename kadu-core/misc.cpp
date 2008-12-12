@@ -89,42 +89,44 @@ QString ggPath(const QString &subpath)
 	static QString path(QString::null);
 	if (path == QString::null)
 	{
-		char *home;
+		QString home;
 #ifdef Q_OS_WIN
-		// on win32 we dataPath dont need real argv[0] so it's safe to use this
+		// on win32 dataPath dont need real argv[0] so it's safe to use this
 		// in such ugly way
 		if(QFile::exists(dataPath("usbinst", ""))){
 			path=dataPath("config/");
 			KaduParser::globalVariables["KADU_CONFIG"] = path;			
 			return (path+subpath);
 		}
-		home=new char[1024];
-		if(!SUCCEEDED(SHGetFolderPath(NULL, CSIDL_APPDATA, NULL,  0,  home))){
-			delete home;
-			home=getenv("HOMEPATH");
+
+		WCHAR *homepath=new WCHAR[MAX_PATH+1];
+		if(!SUCCEEDED(SHGetFolderPathW(NULL, CSIDL_APPDATA, NULL,  0,  homepath))){
+			delete homepath;
+			homepath=_wgetenv(L"HOMEPATH");
 		}
+		home=QString::fromUtf16((const ushort*)homepath);
 		
 #else
 		struct passwd *pw;
 		if ((pw = getpwuid(getuid())))
-			home = pw->pw_dir;
+			home = QString::fromLocal8Bit(pw->pw_dir);
 		else
-			home = getenv("HOME");
+			home = QString::fromLocal8Bit(getenv("HOME"));
 #endif
 		KaduParser::globalVariables["HOME"] = home;
-		char *config_dir = getenv("CONFIG_DIR");
+		QString config_dir = QString::fromLocal8Bit(getenv("CONFIG_DIR"));
 #ifdef Q_OS_MACX
-		if (config_dir == NULL)
+		if (config_dir.isNull())
 			path = QString("%1/Library/Kadu/").arg(home);
 		else
 			path = QString("%1/%2/Kadu/").arg(home).arg(config_dir);
 #elif defined(Q_OS_WIN)
-		if (config_dir == NULL)
+		if (config_dir.isNull())
 			path = QString("%1\\Kadu\\").arg(home);
 		else
 			path = QString("%1\\%2\\Kadu\\").arg(home).arg(config_dir);		
 #else
-		if (config_dir == NULL)
+		if (config_dir.isNull())
 			path = QString("%1/.kadu/").arg(home);
 		else
 			path = QString("%1/%2/kadu/").arg(home).arg(config_dir);
@@ -362,9 +364,10 @@ QString dataPath(const QString &p, const char *argv0)
 			lib_path = QString(cpath) + "../../";
 		}
 #elif defined(Q_OS_WIN)
-		char epath[1024];
-		GetModuleFileName(NULL, epath, 1024);
-		data_path=epath;
+		WCHAR epath[MAX_PATH+1];
+		GetModuleFileNameW(NULL, epath, MAX_PATH);
+
+		data_path=QString::fromUtf16((const ushort*)epath);
 		data_path.resize(data_path.lastIndexOf('\\')+1);
 		lib_path=data_path;
 #else
