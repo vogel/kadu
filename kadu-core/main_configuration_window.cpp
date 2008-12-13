@@ -13,6 +13,7 @@
 #include <QtGui/QStyleFactory>
 
 #include "configuration/configuration-window-widgets.h"
+#include "configuration/config-file-data-manager.h"
 #include "accounts/account.h"
 #include "accounts/account_manager.h"
 #include "chat_message.h"
@@ -26,7 +27,20 @@
 #include "main_configuration_window.h"
 
 MainConfigurationWindow *MainConfigurationWindow::Instance = 0;
+ConfigFileDataManager *MainConfigurationWindow::InstanceDataManager = 0;
 QList<QPair<QString, ConfigurationUiHandler *> > MainConfigurationWindow::UiFiles;
+
+MainConfigurationWindow * MainConfigurationWindow::instance()
+{
+	if (!Instance)
+	{
+		InstanceDataManager = new ConfigFileDataManager();
+		Instance = new MainConfigurationWindow();
+		instanceCreated();
+	}
+
+	return Instance;
+}
 
 void MainConfigurationWindow::registerUiFile(const QString &uiFile, ConfigurationUiHandler *uiHandler)
 {
@@ -65,7 +79,7 @@ void MainConfigurationWindow::instanceCreated()
 }
 
 MainConfigurationWindow::MainConfigurationWindow()
-	: ConfigurationWindow("main", tr("Kadu configuration")), lookChatAdvanced(0)
+	: ConfigurationWindow("main", tr("Kadu configuration"), InstanceDataManager), lookChatAdvanced(0)
 {
 	appendUiFile(dataPath("kadu/configuration/dialog.ui"));
 
@@ -619,7 +633,7 @@ void MainConfigurationWindow::showLookChatAdvanced()
 {
 	if (!lookChatAdvanced)
 	{
-		lookChatAdvanced = new ConfigurationWindow("dialog-look-chat-advanced", tr("Advenced chat's look configuration"));
+		lookChatAdvanced = new ConfigurationWindow("dialog-look-chat-advanced", tr("Advenced chat's look configuration"), InstanceDataManager);
 		lookChatAdvanced->appendUiFile(dataPath("kadu/configuration/dialog-look-chat-advanced.ui"));
 
 		connect(lookChatAdvanced->widgetById("removeServerTime"), SIGNAL(toggled(bool)), lookChatAdvanced->widgetById("maxTimeDifference"), SLOT(setEnabled(bool)));

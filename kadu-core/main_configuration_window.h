@@ -32,6 +32,8 @@ public slots:
 	virtual void mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow) = 0;
 };
 
+class ConfigFileDataManager;
+
 /**
 	@class MainConfigurationWindow
 	@author Vogel
@@ -43,6 +45,8 @@ class KADUAPI MainConfigurationWindow : public ConfigurationWindow
 
 	typedef QPair<QString, ConfigurationUiHandler *> ConfigurationHandelUiPair;
 	static MainConfigurationWindow *Instance;
+	static ConfigFileDataManager *InstanceDataManager;
+
 	static QList<ConfigurationHandelUiPair> UiFiles;
 
 	static void instanceCreated();
@@ -90,16 +94,7 @@ private slots:
 	void setEmoticonThemes();
 
 public:
-	static MainConfigurationWindow * instance()
-	{
-		if (!Instance)
-		{
-			Instance = new MainConfigurationWindow();
-			instanceCreated();
-		}
-
-		return Instance;
-	}
+	static MainConfigurationWindow * instance();
 
 	/**
 		Rejestracja nowego pliku *.ui (dokonywana przez modu�u).

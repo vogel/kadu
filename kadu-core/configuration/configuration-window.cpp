@@ -252,8 +252,8 @@ void ConfigSection::iconThemeChanged()
 		listWidget->setCurrentItem(listWidgetItem);
 }
 
-ConfigurationWindow::ConfigurationWindow(const QString &name, const QString &caption)
-	: QWidget(kadu, Qt::Window), Name(name), currentSection(0)
+ConfigurationWindow::ConfigurationWindow(const QString &name, const QString &caption, ConfigurationWindowDataManager *dataManager)
+	: QWidget(kadu, Qt::Window), Name(name), currentSection(0), dataManager(dataManager)
 {
 	setAttribute(Qt::WA_DeleteOnClose);
 	setWindowTitle(caption);
@@ -520,39 +520,39 @@ ConfigWidget * ConfigurationWindow::appendUiElementFromDom(QDomNode uiElementNod
 	ConfigWidget *widget = 0;
 
 	if (tagName == "line-edit")
-		widget = new ConfigLineEdit(configGroupBox);
+		widget = new ConfigLineEdit(configGroupBox, dataManager);
 	else if (tagName == "gg-password-edit")
-		widget = new ConfigGGPasswordEdit(configGroupBox);
+		widget = new ConfigGGPasswordEdit(configGroupBox, dataManager);
 	else if (tagName == "check-box")
-		widget = new ConfigCheckBox(configGroupBox);
+		widget = new ConfigCheckBox(configGroupBox, dataManager);
 	else if (tagName == "spin-box")
-		widget = new ConfigSpinBox(configGroupBox);
+		widget = new ConfigSpinBox(configGroupBox, dataManager);
 	else if (tagName == "combo-box")
-		widget = new ConfigComboBox(configGroupBox);
+		widget = new ConfigComboBox(configGroupBox, dataManager);
 	else if (tagName == "hot-key-edit")
-		widget = new ConfigHotKeyEdit(configGroupBox);
+		widget = new ConfigHotKeyEdit(configGroupBox, dataManager);
 	else if (tagName == "path-list-edit")
-		widget = new ConfigPathListEdit(configGroupBox);
+		widget = new ConfigPathListEdit(configGroupBox, dataManager);
 	else if (tagName == "color-button")
-		widget = new ConfigColorButton(configGroupBox);
+		widget = new ConfigColorButton(configGroupBox, dataManager);
 	else if (tagName == "select-font")
-		widget = new ConfigSelectFont(configGroupBox);
+		widget = new ConfigSelectFont(configGroupBox, dataManager);
 	else if (tagName == "syntax-editor")
-		widget = new ConfigSyntaxEditor(configGroupBox);
+		widget = new ConfigSyntaxEditor(configGroupBox, dataManager);
 	else if (tagName == "action-button")
-		widget = new ConfigActionButton(configGroupBox);
+		widget = new ConfigActionButton(configGroupBox, dataManager);
 	else if (tagName == "select-file")
-		widget = new ConfigSelectFile(configGroupBox);
+		widget = new ConfigSelectFile(configGroupBox, dataManager);
 	else if (tagName == "preview")
-		widget = new ConfigPreview(configGroupBox);
+		widget = new ConfigPreview(configGroupBox, dataManager);
 	else if (tagName == "slider")
-		widget = new ConfigSlider(configGroupBox);
+		widget = new ConfigSlider(configGroupBox, dataManager);
 	else if (tagName == "label")
-		widget = new ConfigLabel(configGroupBox);
+		widget = new ConfigLabel(configGroupBox, dataManager);
 	else if (tagName == "list-box")
-		widget = new ConfigListWidget(configGroupBox);
+		widget = new ConfigListWidget(configGroupBox, dataManager);
 	else if (tagName == "manage-accounts")
-		widget = new ConfigManageAccounts(configGroupBox);
+		widget = new ConfigManageAccounts(configGroupBox, dataManager);
 	else
 	{
 		kdebugf2();

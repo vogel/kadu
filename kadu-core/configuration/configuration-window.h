@@ -20,6 +20,8 @@
 #include "syntax_editor.h"
 #include "userbox.h"
 
+#include "configuration-window-data-manager.h"
+
 class ConfigGroupBox;
 class ConfigLineEdit;
 class ConfigTab;
@@ -177,6 +179,7 @@ class KADUAPI ConfigurationWindow : public QWidget
 	Q_OBJECT
 
 	QString Name;
+	ConfigurationWindowDataManager *dataManager;
 
 	QWidget *left;
 	QMap<QString, ConfigSection *> configSections;
@@ -215,7 +218,7 @@ public:
 		jest przy zapami�tywaniu pozycji okna oraz jego ostatnio
 		otwartej karty.
 	 **/
-	ConfigurationWindow(const QString &name, const QString &caption);
+	ConfigurationWindow(const QString &name, const QString &caption, ConfigurationWindowDataManager *dataManager);
 	virtual ~ConfigurationWindow();
 
 	QString name() { return Name; }

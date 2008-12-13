@@ -1,12 +1,15 @@
 add_subdirectory (widgets)
 
 set (configuration_SRCS
+	config-file-data-manager.cpp
 	configuration-window.cpp
 	configuration-window-widgets.cpp
 )
 
 set (configuration_MOC_SRCS
+	config-file-data-manager.h
 	configuration-window.h
+	configuration-window-data-manager.h
 	configuration-window-widgets.h
 )
 
