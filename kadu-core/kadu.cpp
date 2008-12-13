@@ -576,6 +576,12 @@ Kadu::Kadu(QWidget *parent)
 	);
 	connect(showStatusActionDescription, SIGNAL(actionCreated(KaduAction *)), this, SLOT(showStatusActionCreated(KaduAction *)));
 
+	useProxyActionDescription = new ActionDescription(
+		ActionDescription::TypeGlobal, "useProxyAction",
+		this, SLOT(useProxyActionActivated(QAction *, bool)),
+		"UseProxy", tr("Use proxy"), true, tr("Don't use proxy")
+	);
+	connect(useProxyActionDescription, SIGNAL(actionCreated(KaduAction *)), this, SLOT(useProxyActionCreated(KaduAction *)));
 
 	/* guess what */
 	createMenu();
@@ -1075,8 +1081,32 @@ void Kadu::showStatusActionActivated(QAction *sender, bool toggled)
 
 void Kadu::showStatusActionCreated(KaduAction *action)
 {
-	Protocol *gadu = AccountManager::instance()->defaultAccount()->protocol();
-	action->setIcon(gadu->currentStatus().pixmap());
+	Account *gadu = AccountManager::instance()->defaultAccount();
+	if (gadu != NULL)
+		action->setIcon(gadu->protocol()->currentStatus().pixmap());
+}
+
+void Kadu::useProxyActionActivated(QAction *sender, bool toggled)
+{
+	config_file.writeEntry("Network", "UseProxy", toggled);
+
+	setProxyActionsStatus(toggled);
+}
+
+void Kadu::useProxyActionCreated(KaduAction *action)
+{
+	action->setChecked(config_file.readBoolEntry("Network", "UseProxy", false));
+}
+
+void Kadu::setProxyActionsStatus(bool checked)
+{
+	foreach (KaduAction *action, useProxyActionDescription->actions())
+		action->setChecked(checked);
+}
+
+void Kadu::setProxyActionsStatus()
+{
+	setProxyActionsStatus(config_file.readBoolEntry("Network", "UseProxy", false));
 }
 
 void Kadu::searchInDirectoryActionActivated(QAction *sender, bool toggled)
@@ -2049,6 +2079,8 @@ void Kadu::configurationUpdated()
 		"<div align=\"left\"> [<b>%a</b>][ (%u)] [<br>tel.: %m][<br>IP: %i]</div></td></tr></table> <hr> <b>%s</b> [<br>%d]");
 	InfoPanel->setHtml("<body bgcolor=\"" + config_file.readEntry("Look", "InfoPanelBgColor") + "\"></body>");
 	updateInformationPanel();
+
+	setProxyActionsStatus();
 
 #ifdef Q_OS_WIN
 	QSettings settings("HKEY_CURRENT_USER\\Software\\Microsoft\\Windows\\CurrentVersion\\Run",

@@ -48,6 +48,7 @@ class KADUAPI Kadu : public KaduMainWindow, ConfigurationAwareObject
 	ActionDescription *notifyAboutUserActionDescription;
 	ActionDescription *showStatusActionDescription;
 	ActionDescription *deleteUsersActionDescription;
+	ActionDescription *useProxyActionDescription;
 
 	QActionGroup *changeStatusActionGroup;
 	QAction *changeStatusToOnline;
@@ -298,6 +299,10 @@ public slots:
 	void editUserActionSetParams(QString protocolName, UserListElement user);
 	void showStatusActionActivated(QAction *sender, bool toggled);
 	void showStatusActionCreated(KaduAction *action);
+	void useProxyActionActivated(QAction *sender, bool toggled);
+	void useProxyActionCreated(KaduAction *action);
+	void setProxyActionsStatus(bool checked);
+	void setProxyActionsStatus();
 
 signals:
 	void keyPressed(QKeyEvent *e);
