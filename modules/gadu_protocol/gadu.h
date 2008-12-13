@@ -15,7 +15,7 @@
 
 #include <libgadu.h>
 
-#include "exports.h"
+#include "gadu_exports.h"
 #include "protocols/protocol.h"
 #include "userlist.h"
 
@@ -55,7 +55,7 @@ enum GaduError
 /**
 	Klasa do obs�ugi protoko�u Gadu-Gadu
 **/
-class KADUAPI GaduProtocol : public Protocol
+class GADUAPI GaduProtocol : public Protocol
 {
 	Q_OBJECT
 

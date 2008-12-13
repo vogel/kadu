@@ -12,11 +12,11 @@
 
 #include <QtCore/QList>
 
-#include "exports.h"
+#include "gadu_exports.h"
 
 #include "gadu.h"
 
-class KADUAPI UinsList : public QList<UinType>
+class GADUAPI UinsList : public QList<UinType>
 {
 public:
 	/**

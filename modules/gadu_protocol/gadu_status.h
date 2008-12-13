@@ -10,10 +10,10 @@
 #ifndef GADU_STATUS_H
 #define GADU_STATUS_H
 
-#include "exports.h"
+#include "gadu_exports.h"
 #include "status.h"
 
-class KADUAPI GaduStatus : public UserStatus
+class GADUAPI GaduStatus : public UserStatus
 {
 
 public:

@@ -8,9 +8,9 @@
 #include "html_document.h"
 #include "protocols/protocol.h"
 
-#include "exports.h"
+#include "gadu_exports.h"
 
-class KADUAPI GaduImagesManager
+class GADUAPI GaduImagesManager
 {
 	struct ImageToSend
 	{
@@ -65,6 +65,6 @@ public:
 
 };
 
-extern KADUAPI GaduImagesManager gadu_images_manager;
+extern GADUAPI GaduImagesManager gadu_images_manager;
 
 #endif
