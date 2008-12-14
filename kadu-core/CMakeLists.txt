@@ -173,7 +173,6 @@ endif (WIN32)
 
 
 install (TARGETS kadu DESTINATION bin)
-makae instll
 
 # install desktop file
 if (UNIX AND NOT APPLE)
