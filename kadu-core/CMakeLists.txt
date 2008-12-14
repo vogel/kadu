@@ -1,15 +1,18 @@
-add_subdirectory (configuration)
-	link_directories (configuration)
-	link_directories (configuration/widgets)
-
-add_subdirectory (accounts)
-	link_directories (accounts)
-
-add_subdirectory (protocols)
-	link_directories (protocols)
-
 set (kadu_SRCS
+
+	accounts/account.cpp
 	accounts/account_data.cpp
+	accounts/account_manager.cpp
+
+	configuration/config-file-data-manager.cpp
+	configuration/configuration-window.cpp
+	configuration/configuration-window-widgets.cpp
+
+	configuration/widgets/manage-accounts.cpp
+
+	protocols/protocol.cpp
+	protocols/protocols_manager.cpp
+
 	about.cpp
 	action.cpp
 	activate.cpp
@@ -67,6 +70,22 @@ set (kadu_SRCS
 )
 
 set (kadu_MOC_SRCS
+
+	accounts/account.h
+	accounts/account_data.h
+	accounts/account_manager.h
+
+	configuration/config-file-data-manager.h
+	configuration/configuration-window.h
+	configuration/configuration-window-data-manager.h
+	configuration/configuration-window-widgets.h
+
+	configuration/widgets/manage-accounts.h
+
+	protocols/protocol.h
+	protocols/protocol_factory.h
+	protocols/protocols_manager.h
+
 	about.h
 	action.h
 	activate.h
@@ -162,13 +181,7 @@ else (WIN32)
 	add_executable (kadu main.cpp main_unix.cpp ${kadu_SRCS} ${MOC_FILES})
 	set_target_properties(kadu PROPERTIES COMPILE_FLAGS "-DKADULIB" )
 
-	target_link_libraries (
-		kadu
-		accounts
-		configuration configuration_widgets
-		protocols
-		${STATIC_MODULES} ${QT_LIBRARIES} ${LIBGADU_LIBRARIES}
-	)
+	target_link_libraries (kadu ${STATIC_MODULES} ${QT_LIBRARIES} ${LIBGADU_LIBRARIES})
 endif (WIN32)
 
 
