@@ -9,6 +9,7 @@ add_subdirectory (protocols)
 	link_directories (protocols)
 
 set (kadu_SRCS
+	accounts/account_data.cpp
 	about.cpp
 	action.cpp
 	activate.cpp
@@ -160,7 +161,7 @@ if (WIN32)
 else (WIN32)
 	add_executable (kadu main.cpp main_unix.cpp ${kadu_SRCS} ${MOC_FILES})
 	set_target_properties(kadu PROPERTIES COMPILE_FLAGS "-DKADULIB" )
-	
+
 	target_link_libraries (
 		kadu
 		accounts
@@ -172,6 +173,7 @@ endif (WIN32)
 
 
 install (TARGETS kadu DESTINATION bin)
+makae instll
 
 # install desktop file
 if (UNIX AND NOT APPLE)

@@ -18,20 +18,18 @@
 class GaduAccountData : public AccountData
 {
 	UinType Uin;
-	QString Password;
 
 public:
 	GaduAccountData();
+	GaduAccountData(const QString &id, const QString &password);
 	GaduAccountData(UinType uin, const QString &password);
 
+	UinType uin() { return Uin; }
+
+	virtual bool setId(const QString &id);
+	virtual bool validateId(const QString &id);
 	virtual bool loadConfiguration(XmlConfigFile *configurationStorage, QDomElement parent);
 	virtual void storeConfiguration(XmlConfigFile *configurationStorage, QDomElement parent);
-
-	UinType uin() { return Uin; }
-	QString password() { return Password; }
-
-	void setUin(UinType uin) { Uin = uin; }
-	void setPassword(const QString &password) { Password = password; }
 
 };
 

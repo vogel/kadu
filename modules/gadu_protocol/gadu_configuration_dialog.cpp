@@ -71,7 +71,7 @@ void GaduConfigurationDialog::loadAccountData()
 
 void GaduConfigurationDialog::updateAccountData()
 {
-	AccountData->setUin(UinLineEdit->text().toInt());
+	AccountData->setId(UinLineEdit->text());
 	AccountData->setPassword(PasswordLineEdit->text());
 
 	close();

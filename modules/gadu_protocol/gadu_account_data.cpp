@@ -16,9 +16,30 @@ GaduAccountData::GaduAccountData()
 {
 }
 
-GaduAccountData::GaduAccountData(UinType uin, const QString &password)
-	: Uin(uin), Password(password)
+GaduAccountData::GaduAccountData(const QString &id, const QString &password)
+	: AccountData(id, password)
 {
+}
+
+GaduAccountData::GaduAccountData(UinType uin, const QString &password)
+	: AccountData(QString::number(uin), password)
+{
+}
+
+bool GaduAccountData::setId(const QString &id)
+{
+	if (!AccountData::setId(id))
+		return false;
+
+	Uin = id.toLong();
+	return true;
+}
+
+bool GaduAccountData::validateId(const QString &id)
+{
+	bool ok;
+	UinType tmpUin = id.toLong(&ok);
+	return ok;
 }
 
 bool GaduAccountData::loadConfiguration(XmlConfigFile *configurationStorage, QDomElement parent)
@@ -27,17 +48,14 @@ bool GaduAccountData::loadConfiguration(XmlConfigFile *configurationStorage, QDo
 	QString uinString = configurationStorage->getTextNode(gaduNode, "Uin");
 	QString passwordString = configurationStorage->getTextNode(gaduNode, "Password");
 
-	bool ok;
-	Uin = uinString.toLong(&ok);
-	if (!ok)
-		return false;
-
-	Password = pwHash(passwordString);
+	// TODO 0.6.6 if false -> error msg
+	setId(uinString);
+	setPassword(pwHash(passwordString));
 }
 
 void GaduAccountData::storeConfiguration(XmlConfigFile *configurationStorage, QDomElement parent)
 {
 	QDomElement gaduNode = configurationStorage->getNode(parent, "Gadu");
-	configurationStorage->createTextNode(gaduNode, "Uin", QString::number(Uin));
-	configurationStorage->createTextNode(gaduNode, "Password", pwHash(Password));
+	configurationStorage->createTextNode(gaduNode, "Uin", id());
+	configurationStorage->createTextNode(gaduNode, "Password", pwHash(password()));
 }
