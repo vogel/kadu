@@ -299,6 +299,7 @@ public slots:
 	void editUserActionSetParams(QString protocolName, UserListElement user);
 	void showStatusActionActivated(QAction *sender, bool toggled);
 	void showStatusActionCreated(KaduAction *action);
+	void setStatusActionsIcon();
 	void useProxyActionActivated(QAction *sender, bool toggled);
 	void useProxyActionCreated(KaduAction *action);
 	void setProxyActionsStatus(bool checked);

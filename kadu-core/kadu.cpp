@@ -1082,8 +1082,22 @@ void Kadu::showStatusActionActivated(QAction *sender, bool toggled)
 void Kadu::showStatusActionCreated(KaduAction *action)
 {
 	Account *gadu = AccountManager::instance()->defaultAccount();
+
 	if (gadu != NULL)
 		action->setIcon(gadu->protocol()->currentStatus().pixmap());
+}
+
+void Kadu::setStatusActionsIcon()
+{
+	Account *gadu = AccountManager::instance()->defaultAccount();
+
+	if (gadu != NULL)
+	{
+		QPixmap pixmap = gadu->protocol()->currentStatus().pixmap();
+
+		foreach (KaduAction *action, showStatusActionDescription->actions())
+			action->setIcon(pixmap);
+	}
 }
 
 void Kadu::useProxyActionActivated(QAction *sender, bool toggled)
@@ -1216,8 +1230,7 @@ void Kadu::changeAppearance()
 	QIcon icon(pix);
 	statusButton->setIcon(icon);
 
-	foreach(KaduAction *action, showStatusActionDescription->actions())
-		action->setIcon(icon);
+	setStatusActionsIcon();
 
 	setMainWindowIcon(pix);
 	emit statusPixmapChanged(icon, stat.toString());
