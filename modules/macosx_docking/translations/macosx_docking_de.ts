@@ -22,5 +22,15 @@
         <source>Icon Notification</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <location filename="../.configuration-ui-translations.cpp" line="13"/>
+        <source>Bounce Dock Icon on New Message</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../.configuration-ui-translations.cpp" line="13"/>
+        <source>Display New Messages Count in Dock Icon</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 </TS>
