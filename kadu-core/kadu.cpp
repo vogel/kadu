@@ -498,6 +498,10 @@ Kadu::Kadu(QWidget *parent)
 	setDocked(Docked, dontHideOnClose);
 
 	loadWindowGeometry(this, "General", "Geometry", 0, 50, 205, 465);
+#ifdef Q_OS_MAC
+	/* Dorr: On Mac OS X the saved height of the main window is reduced by 48px (toolbar size?) */
+	resize(width(), height() + 48);
+#endif
 	import_0_5_0_configuration();
 
 	IgnoredManager::loadFromConfiguration();
