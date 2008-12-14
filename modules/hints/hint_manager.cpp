@@ -177,7 +177,7 @@ void HintManager::setHint()
 
 	frame->adjustSize();
 	QSize preferredSize = frame->sizeHint();
-	QSize desktopSize = QApplication::desktop()->size();
+	QSize desktopSize = QApplication::desktop()->screenGeometry(frame).size();
 
 	emit searchingForTrayPosition(trayPosition);
 	if (config_file.readBoolEntry("Hints", "UseUserPosition") || trayPosition.isNull())
@@ -416,20 +416,21 @@ void HintManager::setLayoutDirection()
 {
 	kdebugf();
 	QPoint trayPosition;
+	QSize desktopSize=QApplication::desktop()->screenGeometry(frame).size();
 	emit searchingForTrayPosition(trayPosition);
 	switch(config_file.readNumEntry("Hints", "NewHintUnder"))
 	{
 		case 0:
 			if (trayPosition.isNull() || config_file.readBoolEntry("Hints","UseUserPosition"))
 			{
-				if (config_file.readNumEntry("Hints","HintsPositionY") < QApplication::desktop()->size().height()/2)
+				if (config_file.readNumEntry("Hints","HintsPositionY") < desktopSize.height()/2)
 					layout->setDirection(QBoxLayout::Down);
 				else
 					layout->setDirection(QBoxLayout::Up);
 			}
 			else
 			{
-				if (trayPosition.y() < QApplication::desktop()->size().height()/2)
+				if (trayPosition.y() < desktopSize.height()/2)
 					layout->setDirection(QBoxLayout::Down);
 				else
 					layout->setDirection(QBoxLayout::Up);
@@ -477,7 +478,7 @@ void HintManager::showToolTip(const QPoint &point, const UserListElement &user)
 	QPoint pos(point + QPoint(5, 5));
 
 	QSize preferredSize = tipFrame->sizeHint();
-	QSize desktopSize = QApplication::desktop()->size();
+	QSize desktopSize = QApplication::desktop()->screenGeometry(frame).size();
 	if (pos.x() + preferredSize.width() > desktopSize.width())
 		pos.setX(pos.x() - preferredSize.width() - 10);
 	if (pos.y() + preferredSize.height() > desktopSize.height())
