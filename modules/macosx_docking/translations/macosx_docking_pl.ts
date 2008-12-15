@@ -16,22 +16,22 @@
     <message>
         <location filename="../.configuration-ui-translations.cpp" line="10"/>
         <source>MacOSX Dock</source>
-        <translation>Dokowanie w MacOSX</translation>
+        <translation>Dokowanie w Mac OS X</translation>
     </message>
     <message>
         <location filename="../.configuration-ui-translations.cpp" line="13"/>
-        <source>Icon Notification</source>
-        <translation>Powiadamianie ikoną</translation>
+        <source>Show Status</source>
+        <translation>Pokazuj status</translation>
     </message>
     <message>
         <location filename="../.configuration-ui-translations.cpp" line="13"/>
         <source>Bounce Dock Icon on New Message</source>
-        <translation>Podskakująca ikona przy nadejściu nowej wiadomości</translation>
+        <translation>Podskakiwanie przy nadejściu nowej wiadomości</translation>
     </message>
     <message>
         <location filename="../.configuration-ui-translations.cpp" line="13"/>
         <source>Display New Messages Count in Dock Icon</source>
-        <translation>Wyświetlaj liczbę nowych wiadomości</translation>
+        <translation>Wyświetlanie liczby nowych wiadomości</translation>
     </message>
 </context>
 </TS>
