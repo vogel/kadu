@@ -19,7 +19,7 @@
     </message>
     <message>
         <location filename="../.configuration-ui-translations.cpp" line="13"/>
-        <source>Icon Notification</source>
+        <source>Show Status</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
