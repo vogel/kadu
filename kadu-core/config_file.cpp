@@ -181,6 +181,11 @@ QString PlainConfigFile::getEntry(const QString &group, const QString &name, boo
 		return QString::null;
 }
 
+void PlainConfigFile::writeEntry(const QString &group, const QString &name, const QVariant &value)
+{
+    changeEntry(group, name, value.toString());
+}
+
 void PlainConfigFile::writeEntry(const QString &group,const QString &name, const QString &value)
 {
 	changeEntry(group, name, value);
@@ -230,6 +235,15 @@ void PlainConfigFile::writeEntry(const QString &group,const QString &name, const
 void PlainConfigFile::writeEntry(const QString &group,const QString &name, const QPoint &value)
 {
 	changeEntry(group, name, QString("%1,%2").arg(value.x()).arg(value.y()));
+}
+
+template <class T>
+T PlainConfigFile::readEntry(const QString &group, const QString &name, const T &def ) const
+{
+	QVariant string = qVariantFromValue( getEntry(group, name));
+	if (string.canConvert<T>())
+		return string.value<T>();
+	return def;
 }
 
 QString PlainConfigFile::readEntry(const QString &group,const QString &name, const QString &def) const

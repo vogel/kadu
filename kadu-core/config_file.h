@@ -14,6 +14,7 @@
 #include <QtCore/QRect>
 #include <QtCore/QSize>
 #include <QtCore/QStringList>
+#include <QtCore/QVariant>
 #include <QtGui/QColor>
 #include <QtGui/QFont>
 #include <QtXml/QDomDocument>
@@ -61,6 +62,14 @@ public:
 		Zwraca list� sekcji
 	**/
 	QStringList getGroupList() const;
+
+	/**
+		Zapisuje warto�� "value" do grupy "group" w pole "name"
+		@param group nazwa grupy
+		@param name nazwa pola w grupie
+		@param value warto�� QVariant do wpisania
+	**/
+	void writeEntry(const QString &group, const QString &name, const QVariant &value);
 
 	/**
 		Zapisuje warto�� "value" do grupy "group" w pole "name"
@@ -141,6 +150,17 @@ public:
 		@param value warto�� QPoint do wpisania
 	**/
 	void writeEntry(const QString &group, const QString &name, const QPoint &value);
+
+	/**
+		Zwraca warto�� pola "name" z grupy "group"
+		@param group nazwa grupy
+		@param name nazwa pola w grupie
+		@param def domy�lna warto�� pola
+		@return warto�� danego pola, je�li nie istnieje zwracana
+		jest warto�� "def"
+	**/
+template <class T>
+	T readEntry(const QString &group, const QString &name, const T &def = QVariant::Invalid ) const;
 
 	/**
 		Zwraca warto�� pola "name" z grupy "group"
