@@ -116,7 +116,7 @@
     </message>
     <message>
         <source>Testing fullduplex. Please talk now.
-You should here it with one second delay.</source>
+You should hear it with one second delay.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

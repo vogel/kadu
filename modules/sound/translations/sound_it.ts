@@ -112,7 +112,7 @@
     </message>
     <message>
         <source>Testing fullduplex. Please talk now.
-You should here it with one second delay.</source>
+You should hear it with one second delay.</source>
         <translation>Prova fullduplex. Prego di parlare adesso.
 Devresti sentire con un secondo di ritardo.</translation>
     </message>

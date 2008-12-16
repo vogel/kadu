@@ -289,7 +289,7 @@ void SoundSlots::testFullDuplex()
 	sound_manager->enableThreading(FullDuplexTestDevice);
 	connect(sound_manager, SIGNAL(sampleRecorded(SoundDevice)), this, SLOT(fullDuplexTestSampleRecorded(SoundDevice)));
 
-	FullDuplexTestMsgBox = new MessageBox(tr("Testing fullduplex. Please talk now.\nYou should here it with one second delay."), MessageBox::OK);
+	FullDuplexTestMsgBox = new MessageBox(tr("Testing fullduplex. Please talk now.\nYou should hear it with one second delay."), MessageBox::OK);
 	connect(FullDuplexTestMsgBox, SIGNAL(okPressed()), this, SLOT(closeFullDuplexTest()));
 	FullDuplexTestMsgBox->show();
 
