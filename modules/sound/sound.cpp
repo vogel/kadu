@@ -442,7 +442,7 @@ void SoundManager::closeDevice(SoundDevice device)
 		disconnect(playing_thread, SIGNAL(samplePlayed(SoundDevice)), this, SIGNAL(samplePlayed(SoundDevice)));
 		playing_thread->stop();
 		PlayingThreads.remove(device);
-		delete playing_thread;
+		playing_thread->deleteLater();
 	}
 	if (RecordingThreads.contains(device))
 	{
@@ -450,7 +450,7 @@ void SoundManager::closeDevice(SoundDevice device)
 		disconnect(recording_thread, SIGNAL(sampleRecorded(SoundDevice)), this, SIGNAL(sampleRecorded(SoundDevice)));
 		recording_thread->stop();
 		RecordingThreads.remove(device);
-		delete recording_thread;
+		recording_thread->deleteLater();
 	}
 	emit closeDeviceImpl(device);
 
