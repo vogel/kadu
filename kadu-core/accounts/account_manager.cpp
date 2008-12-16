@@ -92,14 +92,18 @@ Account * AccountManager::account(const QString &name)
 
 void AccountManager::registerAccount(Account *account)
 {
-	// TODO: implement
 	Accounts.append(account);
 	emit accountRegistered(account);
 }
 
 void AccountManager::unregisterAccount(const QString &name)
 {
-	// TODO: implement
+	Account *deleteAccount = account(name);
+	if (deleteAccount)
+	{
+		Accounts.remove(deleteAccount);
+		emit accountUnregistered(deleteAccount);
+	}
 }
 
 UserStatus AccountManager::status()

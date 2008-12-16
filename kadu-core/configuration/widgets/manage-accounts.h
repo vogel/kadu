@@ -36,6 +36,7 @@ class ManageAccounts : public QWidget
 private slots:
 	void addAccount();
 	void editAccount();
+	void removeAccount();
 
 public:
 	ManageAccounts(QWidget *parent = 0);

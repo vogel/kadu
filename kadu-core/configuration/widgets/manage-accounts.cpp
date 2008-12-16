@@ -48,6 +48,7 @@ void ManageAccounts::createGui()
 	MoveDownAccountButton = new QPushButton(tr("Move down"), this);
 
 	connect(EditAccountButton, SIGNAL(clicked()), this, SLOT(editAccount()));
+	connect(RemoveAccountButton, SIGNAL(clicked()), this, SLOT(removeAccount()));
 
 	QVBoxLayout *buttonLayout = new QVBoxLayout();
 	buttonLayout->addWidget(AddAccountButton);
@@ -122,7 +123,28 @@ void ManageAccounts::addAccount()
 		return;
 	}
 
-	configurationDialog->show();
+	configurationDialog->setWindowModality(Qt::WindowModal);
+	if (configurationDialog->exec() == QDialog::Accepted)
+	{
+		Account *newAccount = AccountManager::instance()->createAccount(
+				newAccountData->name(), protocolName , newAccountData);
+		AccountManager::instance()->registerAccount(newAccount);
+		loadAccounts();
+		return;
+	}
+	delete newAccountData;
+}
+
+void ManageAccounts::removeAccount()
+{
+	QListWidgetItem *currentAccountItem = AccountsListWidget->currentItem();
+	if (0 == currentAccountItem)
+		return;
+
+	QString accountName = currentAccountItem->text();
+
+	AccountManager::instance()->unregisterAccount(accountName);
+	loadAccounts();
 }
 
 void ManageAccounts::editAccount()
