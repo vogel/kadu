@@ -13,22 +13,17 @@
 #include <QtGui/QDialog>
 #include <QtGui/QLineEdit>
 
+#include "configuration/configuration-window.h"
+#include "configuration/configuration-window-widgets.h"
+
 class GaduAccountData;
 
-class GaduConfigurationDialog : public QDialog
+class GaduConfigurationDialog : public ConfigurationWindow
 {
 	Q_OBJECT
 
 	GaduAccountData *AccountData;
-	QLineEdit *UinLineEdit;
-	QLineEdit *PasswordLineEdit;
-
 	void createGui();
-	void loadAccountData();
-
-private slots:
-	void updateAccountData();
-
 public:
 	GaduConfigurationDialog(GaduAccountData *accountData, QWidget *parent = 0);
 	~GaduConfigurationDialog();

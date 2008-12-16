@@ -12,6 +12,7 @@
 
 #include <QtCore/QVariant>
 #include "config_file.h"
+#include "debug.h"
 
 class KADUAPI ConfigurationWindowDataManager
 {

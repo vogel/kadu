@@ -10,6 +10,7 @@
 #ifndef GADU_PROTOCOL_FACTORY_H
 #define GADU_PROTOCOL_FACTORY_H
 
+#include "gadu_configuration_dialog.h"
 #include "protocols/protocol_factory.h"
 
 class GaduProtocolFactory : public ProtocolFactory
@@ -17,7 +18,7 @@ class GaduProtocolFactory : public ProtocolFactory
 public:
 	virtual Protocol * newInstance();
 	virtual AccountData * newAccountData();
-	virtual QDialog * newConfigurationDialog(AccountData *, QWidget *);
+	virtual GaduConfigurationDialog * newConfigurationDialog(AccountData *, QWidget *);
 
 	virtual QString name() { return "gadu"; }
 	virtual QString displayName() { return tr("Gadu-Gadu"); }

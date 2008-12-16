@@ -7,29 +7,32 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <QtGui/QPushButton>
-
-#include "gadu.h"
 #include "gadu_account_data.h"
-#include "gadu_configuration_dialog.h"
 
-#include "gadu_protocol_factory.h"
+#include "gadu-account-data-manager.h"
 
-Protocol * GaduProtocolFactory::newInstance()
+GaduAccountDataManager::GaduAccountDataManager(GaduAccountData* data)
+	: AccountDataManager(data)
 {
-	return new GaduProtocol(this);
 }
 
-AccountData * GaduProtocolFactory::newAccountData()
+void GaduAccountDataManager::writeEntry(const QString &section, const QString &name, const QVariant &value)
 {
-	return new GaduAccountData();
+	if (section != "Gadu-Gadu")
+	{
+		AccountDataManager::writeEntry(section, name, value);
+		return;
+	}
+
+	// other data
 }
 
-GaduConfigurationDialog * GaduProtocolFactory::newConfigurationDialog(AccountData *accountData, QWidget *parent)
+QVariant GaduAccountDataManager::readEntry(const QString &section, const QString &name)
 {
-	GaduAccountData *gaduAccountData = dynamic_cast<GaduAccountData *>(accountData);
+	if (section != "Gadu-Gadu")
+		return AccountDataManager::readEntry(section, name);
 
-	return 0 != gaduAccountData
-		? new GaduConfigurationDialog(gaduAccountData, parent)
-		: 0;
+	// other data
+
+	return QVariant(QString::null);
 }

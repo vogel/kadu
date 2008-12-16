@@ -1,5 +1,6 @@
 set (SOURCES
 	gadu.cpp
+	gadu-account-data-manager.cpp
 	gadu_account_data.cpp
 	gadu_configuration_dialog.cpp
 	gadu_formatter.cpp
@@ -20,8 +21,13 @@ set (MOC_SOURCES
 set (TRANSLATION_SOURCES
 )
 
+set (CONFIGURATION_FILES
+	configuration/gadu_protocol.ui
+)
+
 kadu_module (gadu_protocol
 	MODULE_SOURCES ${SOURCES}
 	MODULE_MOC_SOURCES ${MOC_SOURCES}
 	MODULE_TRANSLATION_SOURCES ${TRANSLATION_SOURCES}
+	MODULE_CONFIGURATION_FILES ${CONFIGURATION_FILES}
 )

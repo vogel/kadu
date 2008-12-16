@@ -17,6 +17,7 @@
 #include "accounts/account.h"
 #include "accounts/account_data.h"
 #include "accounts/account_manager.h"
+#include "configuration/configuration-window.h"
 #include "protocols/protocol.h"
 #include "protocols/protocol_factory.h"
 #include "protocols/protocols_manager.h"
@@ -114,14 +115,14 @@ void ManageAccounts::addAccount()
 	if (0 == newAccountData)
 		return;
 
-	QDialog *configurationDialog = protocolFactory->newConfigurationDialog(newAccountData, this);
+	ConfigurationWindow *configurationDialog = protocolFactory->newConfigurationDialog(newAccountData, this);
 	if (0 == configurationDialog)
 	{
 		delete newAccountData;
 		return;
 	}
 
-	configurationDialog->exec();
+	configurationDialog->show();
 }
 
 void ManageAccounts::editAccount()
@@ -143,9 +144,9 @@ void ManageAccounts::editAccount()
 	if (0 == protocolFactory)
 		return;
 
-	QDialog *configurationDialog = protocolFactory->newConfigurationDialog(account->data(), this);
+	ConfigurationWindow *configurationDialog = protocolFactory->newConfigurationDialog(account->data(), this);
 	if (0 == configurationDialog)
 		return;
 
-	configurationDialog->exec();
+	configurationDialog->show();
 }

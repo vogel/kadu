@@ -17,16 +17,15 @@
 #include "gadu_account_data.h"
 #include "icons_manager.h"
 
+#include "gadu-account-data-manager.h"
 #include "gadu_configuration_dialog.h"
 
 GaduConfigurationDialog::GaduConfigurationDialog(GaduAccountData *accountData, QWidget *parent)
-	: QDialog(parent), AccountData(accountData)
+	: ConfigurationWindow("account", tr("Gadu-Gadu account"), new GaduAccountDataManager(accountData)), AccountData(accountData)
 {
 	setAttribute(Qt::WA_DeleteOnClose);
-	setWindowTitle(tr("Gadu-Gadu account"));
 
 	createGui();
-	loadAccountData();
 }
 
 GaduConfigurationDialog::~GaduConfigurationDialog()
@@ -35,44 +34,7 @@ GaduConfigurationDialog::~GaduConfigurationDialog()
 
 void GaduConfigurationDialog::createGui()
 {
-	QVBoxLayout *main_layout = new QVBoxLayout(this);
-
-	QGridLayout *grid_layout = new QGridLayout();
-
-	grid_layout->addWidget(new QLabel(tr("Uin"), this), 0, 0);
-	grid_layout->addWidget(new QLabel(tr("Password"), this), 1, 0);
-
-	UinLineEdit = new QLineEdit(this);
-	PasswordLineEdit = new QLineEdit(this);
-	PasswordLineEdit->setEchoMode(QLineEdit::Password);
-
-	grid_layout->addWidget(UinLineEdit, 0, 1);
-	grid_layout->addWidget(PasswordLineEdit, 1, 1);
-
-	QDialogButtonBox *buttons_layout = new QDialogButtonBox(Qt::Horizontal, this);
-
-	QPushButton *okButton = new QPushButton(icons_manager->loadIcon("OkWindowButton"), tr("Ok"), this);
-	buttons_layout->addButton(okButton, QDialogButtonBox::AcceptRole);
-	QPushButton *cancelButton = new QPushButton(icons_manager->loadIcon("CloseWindowButton"), tr("Cancel"), this);
-	buttons_layout->addButton(cancelButton, QDialogButtonBox::RejectRole);
-
-	connect(okButton, SIGNAL(clicked()), this, SLOT(updateAccountData()));
-	connect(cancelButton, SIGNAL(clicked()), this, SLOT(close()));
-
-	main_layout->addItem(grid_layout);
-	main_layout->addWidget(buttons_layout);
-}
-
-void GaduConfigurationDialog::loadAccountData()
-{
-	UinLineEdit->setText(QString::number(AccountData->uin()));
-	PasswordLineEdit->setText(AccountData->password());
-}
-
-void GaduConfigurationDialog::updateAccountData()
-{
-	AccountData->setId(UinLineEdit->text());
-	AccountData->setPassword(PasswordLineEdit->text());
-
-	close();
+	appendUiFile(dataPath("kadu/modules/configuration/gadu_protocol.ui"));
+	QLineEdit *passwordLineEdit = dynamic_cast<QLineEdit *>(widgetById("password"));
+	passwordLineEdit->setEchoMode(QLineEdit::Password);
 }

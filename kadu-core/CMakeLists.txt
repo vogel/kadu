@@ -4,6 +4,7 @@ set (kadu_SRCS
 	accounts/account_data.cpp
 	accounts/account_manager.cpp
 
+	configuration/account-data-manager.cpp
 	configuration/config-file-data-manager.cpp
 	configuration/configuration-window.cpp
 	configuration/configuration-window-widgets.cpp

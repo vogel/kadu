@@ -179,7 +179,6 @@ class KADUAPI ConfigurationWindow : public QWidget
 	Q_OBJECT
 
 	QString Name;
-	ConfigurationWindowDataManager *dataManager;
 
 	QWidget *left;
 	QMap<QString, ConfigSection *> configSections;
@@ -211,6 +210,7 @@ private slots:
 
 protected:
 	virtual void keyPressEvent(QKeyEvent *e);
+	ConfigurationWindowDataManager *dataManager;
 
 public:
 	/**

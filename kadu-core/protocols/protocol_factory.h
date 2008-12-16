@@ -13,6 +13,8 @@
 #include <QtCore/QString>
 #include <QtGui/QDialog>
 
+#include "configuration/configuration-window.h"
+
 class AccountData;
 class Protocol;
 
@@ -21,7 +23,7 @@ class ProtocolFactory : public QObject
 public:
 	virtual Protocol * newInstance() = 0;
 	virtual AccountData * newAccountData() = 0;
-	virtual QDialog * newConfigurationDialog(AccountData *, QWidget *) = 0;
+	virtual ConfigurationWindow * newConfigurationDialog(AccountData *, QWidget *) = 0;
 
 	virtual QString name() = 0;
 	virtual QString displayName() = 0;
