@@ -21,6 +21,7 @@
 #include "gadu_configuration_dialog.h"
 
 GaduConfigurationDialog::GaduConfigurationDialog(GaduAccountData *accountData, QWidget *parent)
+	  // TODO: remove new GaduAccountDataManager(accountData)) after use
 	: ConfigurationWindow("account", tr("Gadu-Gadu account"), new GaduAccountDataManager(accountData)), AccountData(accountData)
 {
 	setAttribute(Qt::WA_DeleteOnClose);

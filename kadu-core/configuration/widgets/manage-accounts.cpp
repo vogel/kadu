@@ -148,5 +148,7 @@ void ManageAccounts::editAccount()
 	if (0 == configurationDialog)
 		return;
 
-	configurationDialog->show();
+	configurationDialog->setWindowModality(Qt::WindowModal);
+	if (QDialog::Accepted == configurationDialog->exec())
+		loadAccounts();
 }

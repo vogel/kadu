@@ -10,6 +10,7 @@
 #ifndef KADU_CONFIGURATION_WINDOW_H
 #define KADU_CONFIGURATION_WINDOW_H
 
+#include <QtGui/QDialog>
 #include <QtGui/QTabWidget>
 #include <QtXml/QDomNode>
 
@@ -174,7 +175,7 @@ public:
 	Atrybut catpion jest wymagany. Mo�liwe tagi widget s� opisane w dokumentacji
 	klas Config* (np.: ConfigComboBox).
  **/
-class KADUAPI ConfigurationWindow : public QWidget
+class KADUAPI ConfigurationWindow : public QDialog
 {
 	Q_OBJECT
 

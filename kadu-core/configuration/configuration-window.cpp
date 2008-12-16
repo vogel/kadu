@@ -253,7 +253,7 @@ void ConfigSection::iconThemeChanged()
 }
 
 ConfigurationWindow::ConfigurationWindow(const QString &name, const QString &caption, ConfigurationWindowDataManager *dataManager)
-	: QWidget(kadu, Qt::Window), Name(name), currentSection(0), dataManager(dataManager)
+	: QDialog(kadu, Qt::Window), Name(name), currentSection(0), dataManager(dataManager)
 {
 	setAttribute(Qt::WA_DeleteOnClose);
 	setWindowTitle(caption);
@@ -287,6 +287,7 @@ ConfigurationWindow::ConfigurationWindow(const QString &name, const QString &cap
 
 	connect(okButton, SIGNAL(clicked()), this, SLOT(updateAndCloseConfig()));
 	connect(applyButton, SIGNAL(clicked()), this, SLOT(updateConfig()));
+	connect(cancelButton, SIGNAL(clicked()), this, SLOT(reject()));
 	connect(cancelButton, SIGNAL(clicked()), this, SLOT(close()));
 
 	sectionsListWidget = new QListWidget(this);
@@ -695,6 +696,8 @@ void ConfigurationWindow::saveConfiguration(QObject *object)
 void ConfigurationWindow::updateAndCloseConfig()
 {
 	updateConfig();
+
+	accept();
 	close();
 }
 
