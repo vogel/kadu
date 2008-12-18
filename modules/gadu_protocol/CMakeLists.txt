@@ -3,8 +3,10 @@ set (SOURCES
 	gadu-account-data-manager.cpp
 	gadu_account_data.cpp
 	gadu_configuration_dialog.cpp
+	gadu-contact-account-data.cpp
 	gadu_formatter.cpp
 	gadu_images_manager.cpp
+	gadu-importer.cpp
 	gadu-private.cpp
 	gadu_protocol_factory.cpp
 	gadu_search.cpp
@@ -15,6 +17,8 @@ set (SOURCES
 set (MOC_SOURCES
 	gadu.h
 	gadu_configuration_dialog.h
+	gadu-contact-account-data.h
+	gadu-importer.h
 	gadu-private.h
 )
 

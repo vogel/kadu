@@ -28,6 +28,7 @@
 #include "chat_edit_box.h"
 #include "chat_manager.h"
 #include "config_file.h"
+#include "contacts/contact-manager.h"
 #include "debug.h"
 #include "emoticons.h"
 #include "expimp.h"
@@ -1546,6 +1547,7 @@ bool Kadu::close(bool quit)
 		pending.writeToFile();
 		IgnoredManager::writeToConfiguration();
 
+		ContactManager::instance()->storeConfiguration(xml_config_file);
 		AccountManager::instance()->storeConfiguration(xml_config_file);
 
 		Protocol *gadu = AccountManager::instance()->defaultAccount()->protocol();
@@ -2169,6 +2171,7 @@ void Kadu::startupProcedure()
 		show();
 
 	AccountManager::instance()->loadConfiguration(xml_config_file);
+	ContactManager::instance()->loadConfiguration(xml_config_file);
 	Updates::initModule();
 
 	xml_config_file->makeBackup();

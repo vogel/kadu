@@ -34,6 +34,7 @@
 #include "gadu_account_data.h"
 #include "gadu_formatter.h"
 #include "gadu_images_manager.h"
+#include "gadu-importer.h"
 #include "gadu-private.h"
 #include "gadu_protocol_factory.h"
 #include "gadu_search.h"
@@ -49,14 +50,10 @@ extern "C" int gadu_protocol_init(bool firstLoad)
 
 	if (!xml_config_file->hasNode("Accounts"))
 	{
-		GaduAccountData *gaduAccountData = new GaduAccountData(
-				config_file.readNumEntry("General", "UIN"),
-				unicode2cp(pwHash(config_file.readEntry("General", "Password"))));
-
-		Account *defaultGaduGadu = AccountManager::instance()->createAccount(
-				"DefaultGaduGadu", "gadu", gaduAccountData);
-		AccountManager::instance()->registerAccount(defaultGaduGadu);
+		GaduImporter::instance()->importAccounts();
 	}
+
+	GaduImporter::instance()->importContacts();
 
 	return 0;
 }

@@ -32,8 +32,10 @@ private:
 	void write(const QString& f = QString::null);
 
 	bool isElementNamed(const QDomElement &element, const QString &name);
+	bool isElementUuid(const QDomElement &element, const QString &uuid);
 
 	void removeNodes(QDomElement parentNode, QDomNodeList nodes);
+	void removeUuidNodes(QDomElement parentNode, QDomNodeList nodes, const QString &uuid);
 	void removeNamedNodes(QDomElement parentNode, QDomNodeList nodes, const QString &name);
 
 public:
@@ -105,12 +107,16 @@ public:
 
 	QDomElement getNode(const QString &nodeTagName, GetNodeMode getMode = ModeGet);
 	QDomElement getNamedNode(const QString &nodeTagName, const QString &nodeName, GetNodeMode getMode = ModeGet);
+	QDomElement getUuidNode(const QString &nodeTagName, const QString &uuidName, GetNodeMode getMode = ModeGet);
 	QDomElement getNode(QDomElement parentNode, const QString &nodeTagName, GetNodeMode getMode = ModeGet);
 	QDomElement getNamedNode(QDomElement parentNode, const QString &nodeTagName, const QString &nodeName, GetNodeMode getMode = ModeGet);
+	QDomElement getUuidNode(QDomElement parentNode, const QString &uuidTagName, const QString &nodeName, GetNodeMode getMode = ModeGet);
 
 	QDomNodeList getNodes(QDomElement parent, const QString &nodeTagName);
 
 	void createTextNode(QDomElement parentNode, const QString &nodeTagName, const QString &nodeContent);
+	void createNamedTextNode(QDomElement parentNode, const QString &nodeTagName, const QString &nodeName,
+			const QString &nodeContent);
 	QString getTextNode(QDomElement parentNode, const QString &nodeTagName);
 
 };

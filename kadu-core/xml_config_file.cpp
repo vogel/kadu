@@ -230,9 +230,22 @@ void XmlConfigFile::removeNamedNodes(QDomElement parentNode, QDomNodeList nodes,
 			parentNode.removeChild(nodes.item(i));
 }
 
+void XmlConfigFile::removeUuidNodes(QDomElement parentNode, QDomNodeList nodes, const QString &uuid)
+{
+	int count = nodes.count();
+	for (int i = 0; i < count; ++i)
+		if (isElementUuid(nodes.item(i).toElement(), uuid))
+			parentNode.removeChild(nodes.item(i));
+}
+
 bool XmlConfigFile::isElementNamed(const QDomElement &element, const QString &name)
 {
 	return element.hasAttribute("name") && name == element.attribute("name");
+}
+
+bool XmlConfigFile::isElementUuid(const QDomElement &element, const QString &uuid)
+{
+	return element.hasAttribute("uuid") && uuid == element.attribute("uuid");
 }
 
 bool XmlConfigFile::hasNode(const QString &nodeTagName)
@@ -253,6 +266,11 @@ QDomElement XmlConfigFile::getNode(const QString &nodeTagName, GetNodeMode getMo
 QDomElement XmlConfigFile::getNamedNode(const QString &nodeTagName, const QString &nodeName, GetNodeMode getMode)
 {
 	return getNamedNode(DomDocument.documentElement(), nodeTagName, nodeName, getMode);
+}
+
+QDomElement XmlConfigFile::getUuidNode(const QString &nodeTagName, const QString &nodeUuid, GetNodeMode getMode)
+{
+	return getNamedNode(DomDocument.documentElement(), nodeTagName, nodeUuid, getMode);
 }
 
 QDomElement XmlConfigFile::getNode(QDomElement parentNode, const QString &nodeTagName, GetNodeMode getMode)
@@ -302,6 +320,34 @@ QDomElement XmlConfigFile::getNamedNode(QDomElement parentNode, const QString &n
 	return result;
 }
 
+QDomElement XmlConfigFile::getUuidNode(QDomElement parentNode, const QString &nodeTagName, const QString &nodeUuid, GetNodeMode getMode)
+{
+	QDomElement result;
+	QDomNodeList nodes = parentNode.elementsByTagName(nodeTagName);
+
+	if (ModeCreate == getMode)
+		removeUuidNodes(parentNode, nodes, nodeUuid);
+
+	int count = nodes.count();
+	for (int i = 0; i < count; ++i)
+	{
+		QDomElement element = nodes.item(i).toElement();
+		if (element.isNull())
+			continue;
+		if (isElementUuid(element, nodeUuid))
+			return element;
+	}
+
+	if (ModeFind != getMode)
+	{
+		result = DomDocument.createElement(nodeTagName);
+		result.setAttribute("uuid", nodeUuid);
+		parentNode.appendChild(result);
+	}
+
+	return result;
+}
+
 QDomNodeList XmlConfigFile::getNodes(QDomElement parent, const QString &nodeTagName)
 {
 	return parent.elementsByTagName(nodeTagName);
@@ -310,6 +356,13 @@ QDomNodeList XmlConfigFile::getNodes(QDomElement parent, const QString &nodeTagN
 void XmlConfigFile::createTextNode(QDomElement parentNode, const QString &nodeTagName, const QString &nodeContent)
 {
 	QDomElement element = getNode(parentNode, nodeTagName, ModeCreate);
+	element.appendChild(DomDocument.createTextNode(nodeContent));
+}
+
+void XmlConfigFile::createNamedTextNode(QDomElement parentNode, const QString &nodeTagName,
+		const QString &nodeName, const QString &nodeContent)
+{
+	QDomElement element = getNamedNode(parentNode, nodeTagName, nodeName, ModeCreate);
 	element.appendChild(DomDocument.createTextNode(nodeContent));
 }
 

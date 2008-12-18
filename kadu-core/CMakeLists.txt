@@ -4,6 +4,11 @@ set (kadu_SRCS
 	accounts/account_data.cpp
 	accounts/account_manager.cpp
 
+	contacts/contact.cpp
+	contacts/contact-account-data.cpp
+	contacts/contact-data.cpp
+	contacts/contact-manager.cpp
+
 	configuration/account-data-manager.cpp
 	configuration/config-file-data-manager.cpp
 	configuration/configuration-window.cpp
@@ -75,6 +80,11 @@ set (kadu_MOC_SRCS
 	accounts/account.h
 	accounts/account_data.h
 	accounts/account_manager.h
+
+	contacts/contact.h
+	contacts/contact-account-data.h
+	contacts/contact-data.h
+	contacts/contact-manager.h
 
 	configuration/config-file-data-manager.h
 	configuration/configuration-window.h
