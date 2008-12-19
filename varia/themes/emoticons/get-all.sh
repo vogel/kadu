@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 available_emots_themes=""
 for dir in *; do
