@@ -17,7 +17,7 @@
 #include "accounts/account.h"
 #include "accounts/account_data.h"
 #include "accounts/account_manager.h"
-#include "configuration/configuration-window.h"
+#include "gui/widgets/configuration/configuration-window.h"
 #include "protocols/protocol.h"
 #include "protocols/protocol_factory.h"
 #include "protocols/protocols_manager.h"

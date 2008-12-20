@@ -6,251 +6,37 @@
  *   (at your option) any later version.                                   *
  *                                                                         *
  ***************************************************************************/
-
 #include <QtGui/QApplication>
-#include <QtGui/QGroupBox>
+#include <QtGui/QWidget>
+#include <QtGui/QListWidget>
+#include <QtXml/QDomElement>
 #include <QtGui/QHBoxLayout>
-#include <QtGui/QScrollArea>
+#include <QtGui/QVBoxLayout>
 #include <QtGui/QDialogButtonBox>
 
-#include "configuration/configuration-window-widgets.h"
-#include "config_file.h"
-#include "configuration_aware_object.h"
-#include "debug.h"
-#include "emoticons.h"
-#include "icons_manager.h"
+#include "gui/widgets/configuration/configuration-window.h"
+#include "gui/widgets/configuration/config-group-box.h"
+#include "gui/widgets/configuration/config-widget.h"
+#include "gui/widgets/configuration/config-section.h"
+#include "gui/widgets/configuration/config-line-edit.h"
+#include "gui/widgets/configuration/config-gg-password-edit.h"
+#include "gui/widgets/configuration/config-check-box.h"
+#include "gui/widgets/configuration/config-spin-box.h"
+#include "gui/widgets/configuration/config-combo-box.h"
+#include "gui/widgets/configuration/config-hot-key-edit.h"
+#include "gui/widgets/configuration/config-path-list-edit.h"
+#include "gui/widgets/configuration/config-color-button.h"
+#include "gui/widgets/configuration/config-select-font.h"
+#include "gui/widgets/configuration/config-syntax-editor.h"
+#include "gui/widgets/configuration/config-action-button.h"
+#include "gui/widgets/configuration/config-select-file.h"
+#include "gui/widgets/configuration/config-preview.h"
+#include "gui/widgets/configuration/config-slider.h"
+#include "gui/widgets/configuration/config-label.h"
+#include "gui/widgets/configuration/config-list-widget.h"
+#include "gui/widgets/configuration/config-manage-accounts.h"
+
 #include "kadu.h"
-#include "misc.h"
-
-#include "configuration-window.h"
-
-class ConfigSection;
-
-class ConfigTab
-{
-	QString name;
-	ConfigSection *configSection;
-
-	QMap<QString, ConfigGroupBox *> configGroupBoxes;
-
-	QScrollArea *scrollArea;
-	QVBoxLayout *mainLayout;
-	QWidget *mainWidget;
-
-public:
-	ConfigTab(const QString &name, ConfigSection *configSection, QTabWidget *tabWidget);
-	~ConfigTab();
-
-	ConfigGroupBox * configGroupBox(const QString &name, bool create = true);
-
-	void removedConfigGroupBox(const QString &groupBoxName);
-
-	QWidget *widget() { return mainWidget; }
-	QWidget *tabWidget() { return mainWidget; }
-
-};
-
-ConfigGroupBox::ConfigGroupBox(const QString &name, ConfigTab *configTab, QGroupBox *groupBox)
-	: name(name), configTab(configTab), groupBox(groupBox)
-{
-	container = new QWidget(groupBox);
-	groupBox->layout()->addWidget(container);
-
-	gridLayout = new QGridLayout(container);
-	gridLayout->setAutoAdd(false);
-	gridLayout->setSpacing(5);
-	gridLayout->setColStretch(1, 100);
-}
-
-ConfigGroupBox::~ConfigGroupBox()
-{
-	delete groupBox;
-
-	configTab->removedConfigGroupBox(name);
-}
-
-bool ConfigGroupBox::empty()
-{
-	return container->children().count() == 1;
-}
-
-void ConfigGroupBox::addWidget(QWidget *widget, bool fullSpace)
-{
-	int numRows = gridLayout->numRows();
-
-	if (fullSpace)
-		gridLayout->addMultiCellWidget(widget, numRows, numRows, 0, 1);
-	else
-		gridLayout->addWidget(widget, numRows, 1);
-}
-
-void ConfigGroupBox::addWidgets(QWidget *widget1, QWidget *widget2)
-{
-	int numRows = gridLayout->numRows();
-
-	if (widget1)
-		gridLayout->addWidget(widget1, numRows, 0, Qt::AlignRight);
-
-	if (widget2)
-		gridLayout->addWidget(widget2, numRows, 1);
-}
-
-class KaduScrollArea : public QScrollArea
-{
-public:
-	KaduScrollArea(QWidget *parent)
-		: QScrollArea(parent)
-	{
-	}
-
-	QSize sizeHint() const
-	{
-	    int f = 2 * frameWidth();
-		QSize sz(f, f);
-		sz += widget()->sizeHint();
-
-		if (verticalScrollBarPolicy() == Qt::ScrollBarAlwaysOn)
-			sz.setWidth(sz.width() + verticalScrollBar()->sizeHint().width());
-		if (horizontalScrollBarPolicy() == Qt::ScrollBarAlwaysOn)
-			sz.setHeight(sz.height() + horizontalScrollBar()->sizeHint().height());
-
-		return sz;
-	}
-};
-
-ConfigTab::ConfigTab(const QString &name, ConfigSection *configSection, QTabWidget *tabWidget)
-	: name(name), configSection(configSection)
-{
-	scrollArea = new KaduScrollArea(tabWidget);
-	scrollArea->setFrameStyle(QFrame::NoFrame);
-	scrollArea->setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
-	scrollArea->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-	scrollArea->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Preferred);
-
-	mainWidget = new QWidget(tabWidget);
-	mainLayout = new QVBoxLayout(mainWidget);
-	mainLayout->addStretch(1);
-
-	tabWidget->addTab(scrollArea, name);
-	scrollArea->setWidget(mainWidget);
-	scrollArea->setWidgetResizable(true);
-}
-
-ConfigTab::~ConfigTab()
-{
-	delete scrollArea;
-}
-
-ConfigGroupBox *ConfigTab::configGroupBox(const QString &name, bool create)
-{
-	if (configGroupBoxes.contains(name))
-		return configGroupBoxes[name];
-
-	if (!create)
-		return 0;
-
-	QGroupBox *groupBox = new QGroupBox(name, mainWidget);
-	QHBoxLayout *groupBoxLayout = new QHBoxLayout(groupBox);
-	groupBoxLayout->setSizeConstraint(QLayout::SetMinimumSize);
-
-	mainLayout->insertWidget(configGroupBoxes.count(), groupBox);
-
-	ConfigGroupBox *newConfigGroupBox = new ConfigGroupBox(name, this, groupBox);
-	configGroupBoxes[name] = newConfigGroupBox;
-
-	groupBox->show();
-
-	return newConfigGroupBox;
-}
-
-void ConfigTab::removedConfigGroupBox(const QString &groupBoxName)
-{
-	configGroupBoxes.remove(groupBoxName);
-
-	if (!configGroupBoxes.count())
-	{
-		configSection->removedConfigTab(name);
-		delete this;
-	}
-}
-
-ConfigSection::ConfigSection(const QString &name, ConfigurationWindow *configurationWindow, QListWidgetItem *listWidgetItem, QWidget *parentConfigGroupBoxWidget,
-		const QString &pixmap)
-	: name(name), configurationWindow(configurationWindow), pixmap(pixmap), listWidgetItem(listWidgetItem), activated(false)
-{
-	mainWidget = new QTabWidget(parentConfigGroupBoxWidget);
-	parentConfigGroupBoxWidget->layout()->addWidget(mainWidget);
-	mainWidget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-	mainWidget->hide();
-
-	connect(icons_manager, SIGNAL(themeChanged()), this, SLOT(iconThemeChanged()));
-}
-
-ConfigSection::~ConfigSection()
-{
-	config_file.writeEntry("General", "ConfigurationWindow_" + configurationWindow->name() + "_" + name,
-		mainWidget->label(mainWidget->currentPageIndex()));
-	delete mainWidget;
-}
-
-ConfigGroupBox * ConfigSection::configGroupBox(const QString &tab, const QString &groupBox, bool create)
-{
-	ConfigTab *ct = configTab(tab, create);
-	if (!ct)
-		return 0;
-
-	return ct->configGroupBox(groupBox, create);
-}
-
-void ConfigSection::activate()
-{
-	listWidgetItem->listWidget()->setCurrentItem(listWidgetItem);
-
-	if (activated)
-		return;
-
-	QString tab = config_file.readEntry("General", "ConfigurationWindow_" + configurationWindow->name() + "_" + name);
-	if (configTabs.contains(tab))
-		mainWidget->setCurrentPage(mainWidget->indexOf(configTabs[tab]->tabWidget()));
-	activated = true;
-}
-
-ConfigTab *ConfigSection::configTab(const QString &name, bool create)
-{
-	if (configTabs.contains(name))
-		return configTabs[name];
-
-	if (!create)
-		return 0;
-
-	ConfigTab *newConfigTab = new ConfigTab(name, this, mainWidget);
-	configTabs[name] = newConfigTab;
-
-	return newConfigTab;
-}
-
-void ConfigSection::removedConfigTab(const QString &configTabName)
-{
-	mainWidget->removePage(configTabs[configTabName]->widget());
-
-	configTabs.remove(configTabName);
-	if (!configTabs.count())
-	{
-		configurationWindow->removedConfigSection(name);
-// 		delete this;
-	}
-}
-
-void ConfigSection::iconThemeChanged()
-{
-	QListWidget *listWidget = listWidgetItem->listWidget();
-	bool current = listWidgetItem->isSelected();
-	delete listWidgetItem;
-
-	listWidgetItem = new QListWidgetItem(icons_manager->loadPixmap(pixmap), name, listWidget);
-	if (current)
-		listWidget->setCurrentItem(listWidgetItem);
-}
 
 ConfigurationWindow::ConfigurationWindow(const QString &name, const QString &caption, ConfigurationWindowDataManager *dataManager)
 	: QDialog(kadu, Qt::Window), Name(name), currentSection(0), dataManager(dataManager)
@@ -749,7 +535,3 @@ void ConfigurationWindow::keyPressEvent(QKeyEvent *e)
 	else
 		QWidget::keyPressEvent(e);
 }
-
-#ifdef HAVE_OPENSSL
-// 	ConfigDialog::addCheckBox("Network", "servergrid", QT_TRANSLATE_NOOP("@default", "Use TLSv1"), "UseTLS", false);
-#endif

@@ -12,7 +12,6 @@
 #include <QtGui/QApplication>
 #include <QtGui/QStyleFactory>
 
-#include "configuration/configuration-window-widgets.h"
 #include "configuration/config-file-data-manager.h"
 #include "accounts/account.h"
 #include "accounts/account_manager.h"
@@ -25,6 +24,12 @@
 #include "userlistelement.h"
 
 #include "main_configuration_window.h"
+#include "gui/widgets/configuration/config-combo-box.h"
+#include "gui/widgets/configuration/config-line-edit.h"
+#include "gui/widgets/configuration/config-preview.h"
+#include "gui/widgets/configuration/config-syntax-editor.h"
+#include "gui/widgets/configuration/config-path-list-edit.h"
+#include "gui/widgets/configuration/config-check-box.h"
 
 MainConfigurationWindow *MainConfigurationWindow::Instance = 0;
 ConfigFileDataManager *MainConfigurationWindow::InstanceDataManager = 0;

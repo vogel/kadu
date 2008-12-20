@@ -7,31 +7,33 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef PROTOCOL_FACTORY_H
-#define PROTOCOL_FACTORY_H
+#ifndef KADU_SCROLL_AREA_H
+#define KADU_SCROLL_AREA_H
 
-#include <QtCore/QString>
-#include <QtGui/QDialog>
+#include <QtGui/QScrollArea>
+#include <QtGui/QScrollBar>
 
-class AccountData;
-class ConfigurationWindow;
-class Protocol;
-
-class ProtocolFactory : public QObject
+class KaduScrollArea : public QScrollArea
 {
 public:
-	virtual Protocol * newInstance() = 0;
-	virtual AccountData * newAccountData() = 0;
-	virtual ConfigurationWindow * newConfigurationDialog(AccountData *, QWidget *) = 0;
-
-	virtual QString name() = 0;
-	virtual QString displayName() = 0;
-
-	virtual QString iconName()
+	KaduScrollArea(QWidget *parent)
+		: QScrollArea(parent)
 	{
-		return QString::null;
 	}
 
+	QSize sizeHint() const
+	{
+	    int f = 2 * frameWidth();
+		QSize sz(f, f);
+		sz += widget()->sizeHint();
+
+		if (verticalScrollBarPolicy() == Qt::ScrollBarAlwaysOn)
+			sz.setWidth(sz.width() + verticalScrollBar()->sizeHint().width());
+		if (horizontalScrollBarPolicy() == Qt::ScrollBarAlwaysOn)
+			sz.setHeight(sz.height() + horizontalScrollBar()->sizeHint().height());
+
+		return sz;
+	}
 };
 
-#endif // PROTOCOL_FACTORY_H
+#endif

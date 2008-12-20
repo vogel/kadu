@@ -11,10 +11,32 @@ set (kadu_SRCS
 
 	configuration/account-data-manager.cpp
 	configuration/config-file-data-manager.cpp
-	configuration/configuration-window.cpp
-	configuration/configuration-window-widgets.cpp
 
 	configuration/widgets/manage-accounts.cpp
+
+	gui/widgets/configuration/config-action-button.cpp
+	gui/widgets/configuration/config-check-box.cpp
+	gui/widgets/configuration/config-color-button.cpp
+	gui/widgets/configuration/config-combo-box.cpp
+	gui/widgets/configuration/config-gg-password-edit.cpp
+	gui/widgets/configuration/config-hot-key-edit.cpp
+	gui/widgets/configuration/config-label.cpp
+	gui/widgets/configuration/config-line-edit.cpp
+	gui/widgets/configuration/config-list-widget.cpp
+	gui/widgets/configuration/config-manage-accounts.cpp
+	gui/widgets/configuration/config-path-list-edit.cpp
+	gui/widgets/configuration/config-preview.cpp
+	gui/widgets/configuration/config-select-file.cpp
+	gui/widgets/configuration/config-select-font.cpp
+	gui/widgets/configuration/config-slider.cpp
+	gui/widgets/configuration/config-spin-box.cpp
+	gui/widgets/configuration/config-syntax-editor.cpp
+	gui/widgets/configuration/config-widget-value.cpp
+	gui/widgets/configuration/config-widget.cpp
+	gui/widgets/configuration/configuration-window.cpp
+	gui/widgets/configuration/config-section.cpp
+	gui/widgets/configuration/config-group-box.cpp
+	gui/widgets/configuration/config-tab.cpp
 
 	protocols/protocol.cpp
 	protocols/protocols_manager.cpp
@@ -87,9 +109,32 @@ set (kadu_MOC_SRCS
 	contacts/contact-manager.h
 
 	configuration/config-file-data-manager.h
-	configuration/configuration-window.h
 	configuration/configuration-window-data-manager.h
-	configuration/configuration-window-widgets.h
+
+	gui/widgets/configuration/config-action-button.h
+	gui/widgets/configuration/config-check-box.h
+	gui/widgets/configuration/config-color-button.h
+	gui/widgets/configuration/config-combo-box.h
+	gui/widgets/configuration/config-gg-password-edit.h
+	gui/widgets/configuration/config-hot-key-edit.h
+	gui/widgets/configuration/config-label.h
+	gui/widgets/configuration/config-line-edit.h
+	gui/widgets/configuration/config-list-widget.h
+	gui/widgets/configuration/config-manage-accounts.h
+	gui/widgets/configuration/config-path-list-edit.h
+	gui/widgets/configuration/config-preview.h
+	gui/widgets/configuration/config-select-file.h
+	gui/widgets/configuration/config-select-font.h
+	gui/widgets/configuration/config-slider.h
+	gui/widgets/configuration/config-spin-box.h
+	gui/widgets/configuration/config-syntax-editor.h
+	gui/widgets/configuration/config-widget-value.h
+	gui/widgets/configuration/config-widget.h
+	gui/widgets/configuration/configuration-window.h
+	gui/widgets/configuration/kadu-scroll-area.h
+	gui/widgets/configuration/config-section.h
+	gui/widgets/configuration/config-group-box.h	
+	gui/widgets/configuration/config-tab.h
 
 	configuration/widgets/manage-accounts.h
 
