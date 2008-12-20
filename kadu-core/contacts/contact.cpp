@@ -16,8 +16,19 @@ Contact::Contact()
 {
 }
 
+Contact::Contact(const Contact &copy)
+	: Data(copy.Data)
+{
+}
+
 Contact::~Contact()
 {
+}
+
+Contact & Contact::operator = (const Contact& copy)
+{
+	Data = copy.Data;
+	return *this;
 }
 
 void Contact::importConfiguration(XmlConfigFile *configurationStorage, QDomElement parent)

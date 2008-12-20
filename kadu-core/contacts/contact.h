@@ -28,7 +28,10 @@ class Contact : public QObject
 
 public:
 	Contact();
+	Contact(const Contact &copy);
 	virtual ~Contact();
+
+	Contact & operator = (const Contact &copy);
 
 	void importConfiguration(XmlConfigFile *configurationStorage, QDomElement parent);
 	void loadConfiguration(XmlConfigFile *configurationStorage, QDomElement parent);
