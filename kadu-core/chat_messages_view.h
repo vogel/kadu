@@ -31,11 +31,11 @@ class KADUAPI ChatMessagesView : public KaduTextBrowser, ConfigurationAwareObjec
 	unsigned int CfgHeaderSeparatorHeight; /*!< Wysoko�� separatora nag��wk�w. */
 	unsigned int CfgNoHeaderInterval; /*!< Odst�p czasu, przy jakim b�d� usuwane nag��wki. */
 	unsigned int ParagraphSeparator; /*!< Wysoko�� separatora wiadomo�ci. */
- 
+
 	bool NoServerTime; /*!< Usuwanie czasu serwera z wiadomo�ci. */
 	int NoServerTimeDiff; /*!< Maksymalna r��nica czasu serwera i lokalnego, dla kt�rej czas serwera b�dzie usuwany. */
 
-	QString style;
+	static QString style;
 
 	QString ChatSyntaxWithHeader; /*!< Sk�adnia stylu rozmowy z nag��wkiem. */
 	QString ChatSyntaxWithoutHeader; /*!< Sk�adnia stylu rozmowy bez nag��wka. */
@@ -98,6 +98,8 @@ private slots:
 public:
 	ChatMessagesView(QWidget *parent = 0);
 	virtual ~ChatMessagesView();
+
+	static const QString & chatStyle() { return style;}
 
 	/**
 		\fn void appendMessage(ChatMessage *message)

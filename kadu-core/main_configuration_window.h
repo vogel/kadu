@@ -91,7 +91,7 @@ private slots:
 
 	void onChatSyntaxEditorWindowCreated(SyntaxEditorWindow *syntaxEditorWindow);
 	void chatSyntaxFixup(QString &syntax);
-	void chatFixup(Preview *preview);
+	void chatFixup(QString &syntax);
 
 	void setIconThemes();
 	void setEmoticonThemes();

@@ -36,7 +36,7 @@ public slots:
 
 signals:
 	void needSyntaxFixup(QString &syntax);
-	void needFixup(Preview *preview);
+	void needFixup(QString &syntax);
 
 };
 
