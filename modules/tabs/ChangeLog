@@ -1,0 +1,188 @@
+2008-12-20
+- OTHER: moduł stał się oficjalnym modułem wewnętrznym Kadu (White Eagle)
+- OTHER: przejęcie modułu przez Kadu Team (White Eagle)
+- OTHER: usunięcie zbędnych plików. Lista TODO znajduje się w mantisie (White Eagle)
+- OTHER: Od tej wersji changelog nie będzie już aktualizowany (White Eagle)
+- OTHER: Wersja modułu zsynchronizowana z wersją Kadu (White Eagle)
+
+2008-09-15 - 1.2.1
+- BUGFIX: poprawka kompilacji i ladowania modulu (White Eagle)
+
+2008-09-14 - 1.2.0
+- OTHER: Port modułu do Qt4.4, cmake2.6 i api kadu 0.6.5 (Juzef/Michał/White Eagle)
+
+2008-03-29 - 1.1.6
+- BUGFIX: Poprawna poprawka tooltipa w konfiguracji (White Eagle)
+- BUGFIX: [999] Po kliknięciu w przycisk ignoruj lub blokuj z oknem rozmowy okno się "zamraża" (White Eagle)
+- BUGFIX: [1018] Moduł nie respektuje opcji' zapamiętaj otwarte okna przy
+          zamykaniu programu' i zawsze przywraca wcześniejsze rozmowy. (White Eagle)
+
+2008-03-01 - 1.1.5
+- BUGFIX: Poprawka tooltipa w konfiguracji (Arvenil)
+
+2008-02-06 - 1.1.4
+- BUGFIX: Crash przy odłączaniu karty (White Eagle)
+- BUGFIX: [901] Ikony w menu kontakstowym pod PPM na karcie nie odswierzają sie wraz ze zmianą zestawu ikon. (White Eagle)
+- OTHER: Domyślnie przycisk otwarcia nowej rozmowy jest pokazywany (Arvenil)
+
+2008-01-14 - 1.1.3
+- BUGFIX: Brak emisji sygnału chatWidgetActivated podczas przywoływania okna z kartami.
+  Poprawka niezbędna do poprawnej współpracy modułu tabs z modułem led_notify (błysk)
+  
+2008-01-07 - 1.1.2
+- BUGFIX: [837] Po zmianie zestawu nie uaktualnia się ikona tabs'ów w menu kontaktu Otwórz w nowym oknie. (White Eagle)
+- BUGFIX: [857] Nie zapamiętywane są ustawienia szerokosci kolumn w konferencji oraz szerokosci pola edycji w oknie chat z włączonym tabs. (White Eagle)
+- OTHER: poprawka chroniąca przed niezaplanowanym dnd (White Eagle)
+- Happy New Year!;)
+
+2007-11-27 - 1.1.1
+- OTHER: Zmiana obsługi akcji w module. Korzystamy z metod akcji, a nie poszczególnych przycisków. (White Eagle)
+- BUGFIX: Przystosowanie modułu do zmiany api akcji w kadu, domyślna akcja dla toolbar'u. (White Eagle)
+- BUGFIX: [731] Nieodswieżanie ikon statusu i otwierania nowej karty przy zmianie zestawu ikon. (White Eagle)
+
+2007-08-18 - 1.1.0
+- NEW: [688] Przycisk po lewej stronie kart pozwalający otworzyć nową rozmowę w karcie (White Eagle)
+- NEW: [584] Oddzielny przycisk zamknięcia karty, oddzielne przyciski na kartach oraz zamknięcie całego okna zamyka wszystkie karty (White Eagle)
+- NEW: [588] Możliwość przeciągania kontaktów na pasek kart. (White Eagle)
+- BUGFIX: [657] Karty nie przejmują zdarzenia kliknięcia w nie rolką myszki. (Arvenil)
+- BUGFIX: [642] Po dodaniu anonima do naszych kontaktów opis w karcie się nie uaktualnia. (White Eagle)
+- BUGFIX: [577] Dodawanie rozmów do kart psuje zapamiętywanie pozycji okien. (Juzef/Vogel, poprawione w kadu nie w tabsach)
+
+2007-05-07 - 1.0.2
+- OTHER: Opcja "Karty poniżej okien rozmowy" usunięta z menu kontekstowego. Rzadko używana więc wystarcza, że jest w konfiguracji. (Arvenil)
+- OTHER: Opcja "Domyślnie używaj kart" jest od teraz domyślnie włączona a opcja "Minimalna liczba kart" ustawiona domyślnie na 1. (Arvenil)
+
+2007-04-20 - 1.0.1
+- BUGFIX: po zamknięciu chat'u nie były usuwane wiadomości z listy nowych wiadomości (Arvenil)
+- BUGFIX: opcja w menu teraz znika zamiast się wyłączać (synchronizacja z kadu 0.6.0-20070420) (Arvenil)
+
+2007-04-09 - 1.0.0
+- BUGFIX: Możliwość otwarcia okna rozmowy z kontaktem nie mającym przypisanego numeru gg
+          (White Eagle/Vogel, http://www.kadu.net/forum/viewtopic.php?p=71063#71063)
+- BUGFIX: [585] Przy przywracaniu okien i kart moduł uznaje wszystkie okna jako potencjalne karty choć czasem powinny być jako karty
+          (White Eagle, http://www.kadu.net/forum/viewtopic.php?p=70215#70215)
+- OTHER: optymalizacja kodu dająca zysk w szybkości działania modułu
+	 (Vogel, http://www.kadu.net/forum/viewtopic.php?p=70175#70175)
+
+2007-02-19 - 0.52
+- NEW: [547] Możliwość ustalania pozycji tabów za pomocą drag&drop
+       (michał/Arvenil, http://www.kadu.net/forum/viewtopic.php?p=69470#69470)
+- NEW: [583] Pod PPM oprócz "Odłącz", "Zamknij", "Zamknij wszystko" jest też teraz "Odłącz wszystko", "Karty poniżej okien rozmowy" i separatory (Arvenil)
+- NEW: [561] Obsługa rozmów konferencyjnych
+       (Arvenil/uzi18, http://www.kadu.net/forum/viewtopic.php?p=69716#69716)
+- BUGFIX: Czasem następowało nie oczekiwane przełączenie na kartę nr 1 (Arvenil)
+- BUGFIX: [575] Rozmowy które były w kartach po wyjściu i ponownym uruchomieniu kadu już w nich nie są
+          (uzi18, http://starowa.one.pl/uzi/kadu/load-save-tabs.patch)
+- BUGFIX: Jeśli mieliśmy kilka przycisków tabów w oknie konferencji to tylko pierwszy był wyłączony (Arvenil)
+- BUGFIX: [579] Wysyp modułu jeśli dodamy dwa lub więcej przycisków do okna rozmowy i klikniemy któryś (Arvenil)
+- BUGFIX: [576] Przy wychodzeniu z kadu jest wyładowywany moduł tabs przez co następuje rozbicie kart na okna co chwilę trwa (Arvenil)
+- BUGFIX: [542] Brak focusa w polu edycji przy otwieraniu kolejnych kart z rozmowami
+          (Joi poprawił to bezpośrednio w kadu wraz z poprawką błędu 563. Powinno więc to działać i ze wcześniejszymi wersjami ale nie dajemy gwarancji;))
+- BUGFIX: Moduł uznawał okna otwarte przed załadowaniem za samodzielne a nie powinien. Przez to nie wliczał ich do mininmalnej liczby kart.
+          (White Eagle, http://www.kadu.net/forum/viewtopic.php?p=69284#69284)
+
+2007-01-23 - 0.51
+- NEW: Ruch rolką myszki nad kartami (i niektórymi innymi elementami okna z kartami) zmienia aktywną kartę na poprzednią/następną
+- NEW: [556] Przycisk "Dołącz rozmowę do kart" jako przycisk typu toggle
+       (White Eagle, http://www.kadu.net/forum/viewtopic.php?p=69194#69194)
+- NEW: Możliwość zamknięcia karty środkowym przyciskiem myszy
+       (White Eagle, http://www.kadu.net/forum/viewtopic.php?p=69144#69144)
+- BUGFIX: Jak się usunie przycisk dołączania jako karta jak rozmowa jest już kartą a następnie doda go z powrotem to przycisk jest nie aktywny.
+          (White Eagle, http://www.kadu.net/forum/viewtopic.php?p=69220#69220)
+- BUGFIX: W oknie konferencji można dodać przycisk dołączania okna do kart.
+          (White Eagle, http://www.kadu.net/forum/viewtopic.php?p=69220#69220)
+- BUGFIX: Jeśli wyładuje moduł tabs to na toolbarach nadal się znajdują się nadal przyciski od tego modułu (działa od kadu-0.6.0-svn-20070122)
+          (Prezu/White Eagle, http://www.kadu.net/forum/viewtopic.php?p=69220#69220)
+- BUGFIX: Przycisk dołączania(/odłączania) okna(/karty) do okna z kartami(/okna) nie był domyślnie dodawany do belki w oknie rozmowy po załadowaniu modułu (Arvenil)
+- BUGFIX: Jak "aktywny" jest tab z osobą, która właśnie przysłała mi wiadomość, a nie aktywne jest okno to nie miga "Rozmowa z..." w kickerze
+          (White Eagle, http://www.kadu.net/forum/viewtopic.php?p=69187#69187)
+- BUGFIX: [541] Przełączanie między tabami NIE ZAWSZE zmienia ikonkę statusu na pasku zadań KDE (i GNOME?)
+          chyba wreszczie działa jak należy, a nawet jeśli nie to działa już wystarczająco dobrze;) (mi nie udało się wywołać błędu)
+          (uzi18, http://www.kadu.net/forum/viewtopic.php?p=69165#69165)
+- BUGFIX: [555] Opcja "Minimalna liczba kart" ma tylko sens gdy jest włączona opcja "Domyślnie używaj kart"
+          (White Eagle, http://www.kadu.net/forum/viewtopic.php?p=69138#69138)
+- BUGFIX: [554] Jeśli mamy rozmowy w kartach to po wyładowaniu modułu są one zamykane
+          (uzi18, http://www.kadu.net/forum/viewtopic.php?p=69136#69136)
+
+2007-01-20 - 0.50
+- BUGFIX: [545] Opcja "automatyczna zmiana karty" nie działa
+          (uzi18, http://www.kadu.net/forum/viewtopic.php?p=69131#69131)
+- BUGFIX: Okna nie dołączone do kart czasem zostawały automatycznie dołączone.
+          (http://www.kadu.net/forum/viewtopic.php?p=69128#69128)
+- BUGFIX: Brak domyślnych skrótów:
+          "Przesuń kartę w lewo" => "Ctrl+Shift+Left"
+          "Przesuń kartę w prawo" => "Ctrl+Shift+Right"
+          "Przełącz do poprzedniej karty" => "Shift+Left"
+          "Przełącz do następnej karty" => "Shift+Right"
+          (Arvenil)
+- BUGFIX: [543] Nie działają skróty klawiszowe ctrl+strzałki, shift+strzałki, alt+strzałki itp.
+          (White Eagle, http://www.kadu.net/forum/viewtopic.php?p=69112#69112)
+- BUGFIX: w niektórych przypadkach okno z kartami tracilo focus podczas dodawania nowej karty
+          (White Eagle/Juzef, http://www.kadu.net/forum/viewtopic.php?p=69091#69091)
+- BUGFIX: Zminimalizowane okno z kartami nie było przywracane przy otwieraniu rozmowy już otwartej jako karta
+          (White Eagle, http://www.kadu.net/forum/viewtopic.php?p=69091#69091)
+- BUGFIX: [552] Wybranie opcji "Otwórz w nowym oknie/karcie" nie przywołuje na pierwszy plan okna z rozmową (Arvenil)
+- BUGFIX: [551] Możliwość otwarcia dwóch kart z tą samą osobą
+          (uzi18/White Eagle, http://www.kadu.net/forum/viewtopic.php?p=69062#69062)
+
+2007-01-17 - 0.49
+- BUGFIX: [546] Opcja "Otwórz w nowym oknie" jest aktywna dla mnie samego
+          (White Eagle, http://www.kadu.net/forum/viewtopic.php?p=69038#69038)
+- BUGFIX: [544] Konfiguracja skrótów klawiszowych powinna się znaleźć w Konfiguracja->Skróty
+          (White Eagle/joi, http://www.kadu.net/forum/viewtopic.php?p=69017#69017,[544]tabs.1.patch)
+- BUGFIX: poprawka źródła tłumaczenia "Mininum number ob tabs" na "Mininum number of tabs" (Arvenil)
+- BUGFIX: zmiana tłumaczenia "zakładka" na "karta" i pochodnych (Arvenil)
+- BUGFIX: rm translations/tabs_pl.qm
+          (joi, http://www.kadu.net/forum/viewtopic.php?p=68826#68826)
+
+2007-01-10 - 0.48
+- BUGFIX: brak numeru wersji w tabs.desc (Arvenil)
+- BUGFIX: przełączanie między tabami nie zmieniało ikonki statusu i tytułu na pasku zadań KDE
+          (uzi18, http://www.kadu.net/forum/viewtopic.php?p=68180#68180)
+- BUGFIX: brak focusu na oknie wpisywania wiadomości po rozpoczęciu rozmowy
+          (częściowa poprawa, działa dla pierwszej zakładki niestety kolejne nie mają już focus'a) (Arvenil)
+- porządki w ChangeLog'u i TODO (Arvenil)
+
+2007-01-10 - 0.47 (=rev46)
+- przejęcie opieki nad modułem przez Kamil "Arvenil" Dziedzic (kamil at klecza.pl)
+- sync z aktualną wersją dostępną w autodownloadzie kadu
+- przejście z wersjonowania revxx na 0.xx
+
+2005-10-01
+- to co zwykle
+
+2005-09-19
+- dostosowanie do svn-a kadu,
+- jakiś bug
+
+2005-08-21
+- dostosowanie do svn-a kadu
+- (moze) pare bugow	
+
+2005-05-12
+- konfiguracja skrótów klawiszowych
+
+2005-01-09
+- poprawka głupiego błedu przy otwieraniu n-tego okna
+  można wyłączyć automatyczną zmiane tab-a
+
+2005-01-08
+- po uaktywnieniu okna które ma tylko jedną oczekująca wiadomość
+  przełącza sie właśnie na ten tab
+
+2005-01-07
+- nie rozmawiamy z samym sobą
+
+2005-01-05
+- zakładki od X okien, tłumaczenia
+
+2005-01-04
+- Ikonka do przycisku w oknie rozmowy by Sad Mephisto
+- Poprawka błady przy rozmowie z kimś kogo sie nie ma w liście kontaktów
+  (np rozmowa w oknie szukaj)
+- Przy otwarciu nowej rozmowy tekst jest na właściwej pozycji
+- Przycisk dołączania okna do zakładek działa (chyba) prawidłowo
+- Już nie można otworzyć kilku zakładek z tą samą osobą
+
+2005-01-01
+- Powiadmonienie o nowej wiadomości, jak sie nie podoba to marudzić.
