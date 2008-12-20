@@ -182,9 +182,22 @@
 		
 				
 			QT_TRANSLATE_NOOP("@default", "Allow executing commands by parser");
-		
-			
-			
+
+
+
+			QT_TRANSLATE_NOOP("@default", "Window activation method");
+
+
+			QT_TRANSLATE_NOOP("@default", "Select method");
+
+
+			QT_TRANSLATE_NOOP("@default", "Move the window to an active desktop");
+
+
+			QT_TRANSLATE_NOOP("@default", "Switch desktop to make the window visible");
+
+
+
 			QT_TRANSLATE_NOOP("@default", "Debugging");
 		
 				

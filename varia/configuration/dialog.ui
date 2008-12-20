@@ -57,6 +57,12 @@
 			<group-box name="Parser">
 				<check-box caption="Allow executing commands by parser" config-section="General" config-item="AllowExecutingFromParser" />
 			</group-box>
+			<group-box name="Window activation method" id="windowActivationMethodGroup">
+				<combo-box caption="Select method" config-section="General" config-item="WindowActivationMethod" id="windowActivationMethod" >
+					<item value="0" caption="Move the window to an active desktop" />
+					<item value="1" caption="Switch desktop to make the window visible" />
+				</combo-box>
+			</group-box>
 			<group-box name="Debugging" id="debug">
 				<line-edit caption="Debugging mask" config-section="General" config-item="DEBUG_MASK" />
 			</group-box>

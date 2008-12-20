@@ -287,6 +287,22 @@ It&apos;s a high security risk!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <source>Window activation method</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Select method</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Move the window to an active desktop</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Switch desktop to make the window visible</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Debugging</source>
         <translation type="unfinished"></translation>
     </message>

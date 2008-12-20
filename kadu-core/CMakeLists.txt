@@ -96,6 +96,12 @@ set (kadu_SRCS
 	userlist-private.cpp
 	xml_config_file.cpp
 )
+if (UNIX AND NOT APPLE)
+	set (kadu_SRCS
+		${kadu_SRCS}
+		x11tools.cpp
+	)
+endif (UNIX AND NOT APPLE)
 
 set (kadu_MOC_SRCS
 
@@ -195,6 +201,12 @@ set (kadu_MOC_SRCS
 	userlistelement.h
 	userlist-private.h
 )
+if (UNIX AND NOT APPLE)
+	set (kadu_MOC_SRCS
+		${kadu_MOC_SRCS}
+		x11tools.h
+	)
+endif (UNIX AND NOT APPLE)
 
 if (UNIX AND NOT APPLE)
 	if (NOT DESKTOP_ENTRY)

@@ -288,6 +288,22 @@ E un rischio per la sicurezza!</translation>
         <translation>Permette il parser di lanciare i commands</translation>
     </message>
     <message>
+        <source>Window activation method</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Select method</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Move the window to an active desktop</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Switch desktop to make the window visible</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Debugging</source>
         <translation>Debugging</translation>
     </message>

@@ -1,82 +1,97 @@
-/*
-  Copyright (c) 2000 Troll Tech AS
-  Copyright (c) 2003 Lubos Lunak <l.lunak@kde.org>
-
-  Permission is hereby granted, free of charge, to any person obtaining a
-  copy of this software and associated documentation files (the "Software"),
-  to deal in the Software without restriction, including without limitation
-  the rights to use, copy, modify, merge, publish, distribute, sublicense,
-  and/or sell copies of the Software, and to permit persons to whom the
-  Software is furnished to do so, subject to the following conditions:
-
-  The above copyright notice and this permission notice shall be included in
-  all copies or substantial portions of the Software.
-
-  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL
-  THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
-  FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
-  DEALINGS IN THE SOFTWARE.
-*/
-
 #include <QtCore/QtGlobal>
 #include "activate.h"
 
+
 #ifdef Q_WS_X11
-#include <X11/Xlib.h>
 
-static Atom net_active_window = 0;
+	#include <QtGui/QApplication>
+	#include <QtGui/QDesktopWidget>
+	#include <QtGui/QMdiSubWindow>
+	#include <QtGui/QWidget>
+	#include <QtGui/QX11Info>
+	#include <math.h>
+	#include "config_file.h"
+	#include "x11tools.h"
 
-void create_netwm_atoms(Display *d)
-{
-	static const char * const names[1] =
+	void activateWindow(Qt::HANDLE id)
 	{
-	    "_NET_ACTIVE_WINDOW",
-	};
+		// unshade the window
+		X11_windowSendXEvent( QX11Info::display(), id, "_NET_WM_STATE", "_NET_WM_STATE_SHADED", false );
+		XFlush( QX11Info::display() );
+		// read user settings
+		int action = config_file.readNumEntry("General", "WindowActivationMethod");
+		// find widget
+		QWidget *widget = QWidget::find(id);
+		// desktops count
+		if( X11_getDesktopsCount( QX11Info::display() ) > 1 )
+		{
+			long desktopofwindow = X11_getDesktopOfWindow( QX11Info::display(), id );
+			long currentdesktop = X11_getCurrentDesktop( QX11Info::display() );
+			if( desktopofwindow != -1 && currentdesktop != -1 )
+			{
+				if( desktopofwindow != currentdesktop )
+				{
+					if( desktopofwindow != X11_ALLDESKTOPS )
+					{
+						if( action==0 )
+						{
+							X11_moveWindowToDesktop( QX11Info::display(), id, currentdesktop );
+						}
+						if( action==1 )
+						{
+							X11_setCurrentDesktop( QX11Info::display(), desktopofwindow );
+						}
+					}
+				}
+			}
+		}
+		else
+		{
+			// Compiz compatibility (wide single desktop)
+			QWidget *widget = QWidget::find(id);
+			if( widget != NULL )
+			{
+				QRect screenrect = QApplication::desktop()->screenGeometry();
+				QSize screensize = QSize( screenrect.width(), screenrect.height() );
+				QPoint activeDesktop;
+				activeDesktop.setX( QCursor::pos().x() / screensize.width()  );
+				activeDesktop.setY( QCursor::pos().y() / screensize.height() );
+				QPoint window_topleft;
+				window_topleft.setX( floor( 1.0 * widget->pos().x() / screensize.width()  ) );
+				window_topleft.setY( floor( 1.0 * widget->pos().y() / screensize.height() ) );
+				QPoint window_topright;
+				window_topright.setX( floor( 1.0 * ( widget->pos().x() + widget->size().width()  ) / screensize.width()  ) );
+				window_topright.setY( floor( 1.0 * widget->pos().y() / screensize.height() ) );
+				QPoint window_bottomleft;
+				window_bottomleft.setX( floor( 1.0 * widget->pos().x() / screensize.width()  ) );
+				window_bottomleft.setY( floor( 1.0 * ( widget->pos().y() + widget->size().height() ) / screensize.height() ) );
+				QPoint window_bottomright;
+				window_bottomright.setX( floor( 1.0 * ( widget->pos().x() + widget->size().width()  ) / screensize.width()  ) );
+				window_bottomright.setY( floor( 1.0 * ( widget->pos().y() + widget->size().height() ) / screensize.height() ) );
+				if( ( window_topleft != activeDesktop ) && ( window_topright != activeDesktop ) && ( window_bottomleft != activeDesktop ) && ( window_bottomright != activeDesktop ) )
+				{
+					// window is not visible on the current desktop
+					widget->move( widget->pos().x() % screensize.width(), widget->pos().y() % screensize.height() );
+				}
+			}
+		}
+		if( widget != NULL )
+		{
+			if( widget->isMinimized() ) widget->showNormal(); // unminimize
+			widget->raise();           // raise
+			widget->setActiveWindow(); // activate
+		}
+		X11_setActiveWindow( QX11Info::display(), id );
+	}
 
-	Atom atoms[1], *atomsp[1] =
-	{
-	    &net_active_window,
-	};
-
-	int i = 1;
-	while (i--)
-		atoms[i] = 0;
-
-	XInternAtoms(d, (char **) names, 1, False, atoms);
-
-	i = 1;
-	while (i--)
-		*atomsp[i] = atoms[i];
-}
-
-const unsigned long netwm_sendevent_mask = (SubstructureRedirectMask | SubstructureNotifyMask);
-
-void activateWindow(Qt::HANDLE id)
-{
-	XEvent e;
-
-	e.xclient.type = ClientMessage;
-	e.xclient.message_type = net_active_window;
-	e.xclient.display = QX11Info::display(); // QX11Info::display();
-	e.xclient.window = id;
-	e.xclient.format = 32;
-	e.xclient.data.l[0] = 2l; // NET::FromApplication;
-	e.xclient.data.l[1] = 0l;
-	e.xclient.data.l[2] = id;
-	e.xclient.data.l[3] = 0l;
-	e.xclient.data.l[4] = 0l;
-
-	XSendEvent(QX11Info::display(), QX11Info::appRootWindow(), False, netwm_sendevent_mask, &e);
-}
 #elif defined(Q_OS_WIN)
-#include <windows.h>
-#include <stdio.h>
-void activateWindow(void* id)
-{
-	SetForegroundWindow((HWND)id);	
-}
+
+	#include <windows.h>
+	#include <stdio.h>
+	
+	void activateWindow(void* id)
+	{
+		SetForegroundWindow((HWND)id);
+	}
 
 #endif

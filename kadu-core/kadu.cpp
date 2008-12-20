@@ -930,7 +930,7 @@ void Kadu::openRecentChats(QAction *action)
 {
 	kdebugf();
 
-	chat_manager->openPendingMsgs(chat_manager->closedChatUsers().at(action->data().toInt()));
+	chat_manager->openPendingMsgs(chat_manager->closedChatUsers().at(action->data().toInt()), true);
 
 	kdebugf2();
 }
@@ -2335,7 +2335,7 @@ void Kadu::customEvent(QEvent *e)
 	{
 		OpenGGChatEvent *ev = static_cast<OpenGGChatEvent *>(e);
 		if (ev->number() > 0)
-			chat_manager->openChatWidget(gadu, userlist->byID("Gadu", QString::number(ev->number())));
+			chat_manager->openChatWidget(gadu, userlist->byID("Gadu", QString::number(ev->number())), true);
 	}
 	else
 		QWidget::customEvent(e);
@@ -2513,6 +2513,7 @@ void Kadu::createDefaultConfiguration()
 	config_file.addVariable("General", "StartupStatus", "LastStatus");
 	config_file.addVariable("General", "StartupStatusInvisibleWhenLastWasOffline", true);
 	config_file.addVariable("General", "UserBoxHeight", 300);
+	config_file.addVariable("General", "WindowActivationMethod", 0);
 
 	config_file.addVariable("Look", "AlignUserboxIconsTop", true);
 	config_file.addVariable("Look", "ChatContents", "");

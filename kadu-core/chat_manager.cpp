@@ -633,7 +633,7 @@ void ChatManager::chatActionActivated(QAction *sender, bool toggled)
 	Protocol *gadu = AccountManager::instance()->defaultAccount()->protocol();
 	UserListElements users = window->userListElements();
 	if (users.count() > 0)
-		openChatWidget(gadu, users);
+		openChatWidget(gadu, users, true);
 
 	kdebugf2();
 }
@@ -749,6 +749,7 @@ int ChatManager::openChatWidget(Protocol *initialProtocol, const UserListElement
 		{
 			QWidget *win = chat->window();
 			kdebugm(KDEBUG_INFO, "parent: %p\n", win);
+//TODO 0.6.6:
 			if (forceActivate)
 			{
 				activateWindow(win->winId()); /* Dorr: this sometimes doesn't work */
@@ -784,6 +785,7 @@ int ChatManager::openChatWidget(Protocol *initialProtocol, const UserListElement
 	connect(chat, SIGNAL(messageSentAndConfirmed(UserListElements, const QString &)),
 		this, SIGNAL(messageSentAndConfirmed(UserListElements, const QString &)));
 
+//TODO 0.6.6:
 	if (forceActivate)
 	{
 		QWidget *win = chat->window();

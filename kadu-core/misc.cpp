@@ -1059,10 +1059,10 @@ void OpenChatWith::inputAccepted()
 		if (!c_protocol->currentItem())
 		{
 			if (userlist->containsAltNick(text, FalseForAnonymous))
-				chat_manager->openPendingMsgs(userlist->byAltNick(text));
+				chat_manager->openPendingMsgs(userlist->byAltNick(text), true);
 		}
 		else
-			chat_manager->openPendingMsgs(userlist->byID(c_protocol->currentText(), text));
+			chat_manager->openPendingMsgs(userlist->byID(c_protocol->currentText(), text), true);
 	}
 
 	close();

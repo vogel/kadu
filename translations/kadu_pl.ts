@@ -290,6 +290,22 @@ Jest to wysoce ryzykowne!</translation>
         <translation>Zezwól na wykonywanie komend przez parser</translation>
     </message>
     <message>
+        <source>Window activation method</source>
+        <translation>Metoda aktywacji okien</translation>
+    </message>
+    <message>
+        <source>Select method</source>
+        <translation>Wybierz metodę</translation>
+    </message>
+    <message>
+        <source>Move the window to an active desktop</source>
+        <translation>Przenieś okno na aktywny pulpit</translation>
+    </message>
+    <message>
+        <source>Switch desktop to make the window visible</source>
+        <translation>Przełącz pulpit, aby pokazać okno</translation>
+    </message>
+    <message>
         <source>Debugging</source>
         <translation>Debugowanie</translation>
     </message>
