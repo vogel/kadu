@@ -67,7 +67,6 @@ class KADUAPI MainConfigurationWindow : public ConfigurationWindow
 	ConfigComboBox *mailComboBox;
 	ConfigLineEdit *mailCommandLineEdit;
 
-	Preview *chatPreview;
 	QList<ChatMessage *> chatMessages;
 
 	void setLanguages();
@@ -88,6 +87,9 @@ private slots:
 
 	void showLookChatAdvanced();
 	void lookChatAdvancedDestroyed();
+
+	void onInfoPanelSyntaxEditorWindowCreated(SyntaxEditorWindow *syntaxEditorWindow);
+	void infoPanelFixup(QString &syntax);
 
 	void onChatSyntaxEditorWindowCreated(SyntaxEditorWindow *syntaxEditorWindow);
 	void chatSyntaxFixup(QString &syntax);

@@ -149,9 +149,12 @@ MainConfigurationWindow::MainConfigurationWindow()
 
 	Preview *infoPanelSyntaxPreview = dynamic_cast<Preview *>(widgetById("infoPanelSyntaxPreview"));
 	infoPanelSyntaxPreview->setResetBackgroundColor(config_file.readEntry("Look", "InfoPanelBgColor"));
+	connect(infoPanelSyntaxPreview, SIGNAL(needFixup(QString &)), this, SLOT(infoPanelFixup(QString &)));
 	connect(widgetById("infoPanelSyntax"), SIGNAL(syntaxChanged(const QString &)), infoPanelSyntaxPreview, SLOT(syntaxChanged(const QString &)));
+	connect(widgetById("infoPanelSyntax"), SIGNAL(onSyntaxEditorWindowCreated(SyntaxEditorWindow *)),
+		this, SLOT(onInfoPanelSyntaxEditorWindowCreated(SyntaxEditorWindow *)));
 
-	chatPreview = dynamic_cast<Preview *>(widgetById("chatSyntaxPreview"));
+	Preview *chatPreview = dynamic_cast<Preview *>(widgetById("chatSyntaxPreview"));
 	prepareChatPreview(chatPreview, true);
 
 	connect(widgetById("chatSyntax"), SIGNAL(syntaxChanged(const QString &)), widgetById("chatSyntaxPreview"), SLOT(syntaxChanged(const QString &)));
@@ -214,7 +217,6 @@ void MainConfigurationWindow::prepareChatPreview(Preview *preview, bool append)
 	example.setDNSName("Gadu", "host.server.net");
 
 	preview->setResetBackgroundColor(config_file.readEntry("Look", "ChatBgColor"));
-// 	preview->setStyleSheet(new StaticStyleSheet(chatPreview, emoticons->themePath()));
 
 	ChatMessage *chatMessage = new ChatMessage(kadu->myself(), UserListElements(example), tr("Your message"), TypeSent,
 		QDateTime::currentDateTime(), QDateTime::currentDateTime());
@@ -238,6 +240,11 @@ void MainConfigurationWindow::chatSyntaxFixup(QString &syntax)
 {
 	syntax.replace("<kadu:header>", "");
 	syntax.replace("</kadu:header>", "");
+}
+
+void MainConfigurationWindow::infoPanelFixup(QString &syntax)
+{
+	syntax = QString("<html><head><style type='text/css'>%1</style></head><body>%2</body>").arg(kadu->panelStyle(), syntax);
 }
 
 void MainConfigurationWindow::chatFixup(QString &syntax)
@@ -635,6 +642,11 @@ QString MainConfigurationWindow::emailIndexToString(int emailIndex)
 void MainConfigurationWindow::onChatSyntaxEditorWindowCreated(SyntaxEditorWindow *syntaxEditorWindow)
 {
 	prepareChatPreview(syntaxEditorWindow->preview());
+}
+
+void MainConfigurationWindow::onInfoPanelSyntaxEditorWindowCreated(SyntaxEditorWindow *syntaxEditorWindow)
+{
+	connect(syntaxEditorWindow->preview(), SIGNAL(needFixup(QString &)), this, SLOT(infoPanelFixup(QString &)));
 }
 
 void MainConfigurationWindow::showLookChatAdvanced()

@@ -240,6 +240,7 @@ public:
 	const QDateTime &startTime() const;
 	void refreshPrivateStatusFromConfigFile();
 
+	const QString & panelStyle() { return infoPanelStyle;}
 
 	void addMenuActionDescription(ActionDescription *actionDescription);
 	void insertMenuActionDescription(int pos, ActionDescription *actionDescription);
