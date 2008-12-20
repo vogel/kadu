@@ -15,6 +15,8 @@
 #include <QtGui/QPixmap>
 #include <QtGui/QWidget>
 
+#include "contacts/contact-list.h"
+
 #include "chat_messages_view.h"
 #include "configuration_aware_object.h"
 #include "userlist.h"
@@ -24,6 +26,7 @@
 
 class QSplitter;
 
+class Account;
 class ChatEditBox;
 class ChatMessage;
 class ChatWidget;
@@ -35,15 +38,7 @@ class Protocol;
 class UserBox;
 class UserGroup;
 
-/** \typedef QList<ChatWidget *> ChatList */
 typedef QList<ChatWidget *> ChatList;
-
-/**
-	Klasa tworz�ca okno rozmowy, rejestruj�ca przyciski,
-	formatuj�ca wiadomo�� itp.
-	\class ChatWidget
-	\brief Okno rozmowy
-**/
 
 class KADUAPI ChatWidget : public QWidget, ConfigurationAwareObject
 {
@@ -52,11 +47,14 @@ class KADUAPI ChatWidget : public QWidget, ConfigurationAwareObject
 private:
 	friend class ChatManager;
 
+	Account *CurrentAccount;
+	ContactList Contacts;
+
 	QString Caption; /*!< tytu� okna */
 	QString EscapedCaption;
 
-	Protocol *CurrentProtocol;
-	UserGroup *Users; /*!< lista u�ytkownik�w w danym oknie */
+
+
 	int index;	/*!< nr okna (z chat menad�era) */
 	QColor actcolor; /*!< zmienna przechowuj�ca aktualny kolor */
 	QPixmap pix;
@@ -135,13 +133,16 @@ public:
 		\param parent rodzic okna
 		\param name nazwa obiektu
 	**/
-	ChatWidget(Protocol *initialProtocol, const UserListElements &usrs, QWidget *parent = 0);
+	ChatWidget(Account *initialAccount, const ContactList &contacts, QWidget *parent = 0);
 
 	/**
 		\fn ~Chat()
 		Destruktor okna rozmowy
 	**/
 	~ChatWidget();
+
+	Account * account() { return CurrentAccount; }
+	ContactList contacts() { return Contacts; }
 
 	/**
 		Dodaje now� wiadomos� systemow� do okna.
@@ -161,6 +162,7 @@ public:
 		\param time czas
 		**/
 	void newMessage(const QString &protocolName, UserListElements senders, const QString &msg, time_t time);
+	void newMessage(Account *account, ContactList senders, const QString &message, time_t time);
 
 	/**
 		\fn const UserGroup *users() const
@@ -353,7 +355,7 @@ signals:
 	void messageSent(ChatWidget *chat);
 
 	/**
-		\fn void messageSentAndConfirmed(UserListElements receivers, const QString& message)
+		\fn void messageSentAndConfirmed(ContactList receivers, const QString& message)
 		This signal is emited when message was sent
 		and it was confirmed.
 		When confirmations are turned off signal is
@@ -362,7 +364,7 @@ signals:
 		\param receivers list of receivers
 		\param message the message
 	**/
-	void messageSentAndConfirmed(UserListElements receivers, const QString &message);
+	void messageSentAndConfirmed(ContactList receivers, const QString &message);
 
 	/**
 		\fn void fileDropped(const UserGroup *users, const QString& fileName)

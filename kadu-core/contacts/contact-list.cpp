@@ -7,32 +7,12 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GADU_IMPORTER
-#define GADU_IMPORTER
+#include "contact-list.h"
 
-#include <QtCore/QObject>
-
-class Contact;
-
-class GaduImporter : public QObject
+bool ContactList::operator == (ContactList &compare)
 {
-	Q_OBJECT
+	qSort(*this);
+	qSort(compare);
 
-	static GaduImporter *Instance;
-
-	GaduImporter() {}
-
-	void importContact(Contact &contact);
-
-private slots:
-	void contactAdded(Contact &contact);
-
-public:
-	static GaduImporter * instance();
-
-	void importAccounts();
-	void importContacts();
-
-};
-
-#endif // GADU_IMPORTER
+	return QList<Contact>::operator == (compare);
+}

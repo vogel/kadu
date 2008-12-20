@@ -24,11 +24,13 @@ public:
 	ContactAccountData();
 	ContactAccountData(Account *account, const QString &id);
 
+	virtual void loadConfiguration(XmlConfigFile *configurationStorage, QDomElement parent);
+	virtual void storeConfiguration(XmlConfigFile *configurationStorage, QDomElement parent);
+
 	Account * account() { return ContactAccount; }
 	QString id() { return Id; }
 
-	virtual void loadConfiguration(XmlConfigFile *configurationStorage, QDomElement parent);
-	virtual void storeConfiguration(XmlConfigFile *configurationStorage, QDomElement parent);
+	bool hasFeature() { return false; }
 
 };
 

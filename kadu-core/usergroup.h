@@ -15,6 +15,7 @@
 #include <QtCore/QSet>
 #include <QtCore/QVariant>
 
+#include "contacts/contact-list.h"
 #include "userlistelement.h"
 
 #include "exports.h"
@@ -446,6 +447,9 @@ public:
 	QStringList altNicks() const;
 
 	bool operator < (const UserListElements &) const;
+
+	ContactList toContactList(Account *account);
+	static UserListElements fromContactList(ContactList contacts, Account *account);
 
 };
 

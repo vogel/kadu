@@ -235,15 +235,14 @@ void ChatManager::loadOpenedWindows()
 			}
 
 			// TODO 0.6.6: fix
-			if (AccountManager::instance()->defaultAccount())
-			{
-				Protocol *gadu = AccountManager::instance()->defaultAccount()->protocol();
-				if (gadu)
-					openChatWidget(gadu, users);
-				else
-					kdebugm(KDEBUG_WARNING, "protocol %s/%s not found!\n",
-						       qPrintable(protocolId), qPrintable(accountId));
-			}
+			Account *defaultAccount = AccountManager::instance()->defaultAccount();
+			ContactList contacts = users.toContactList(defaultAccount);
+
+			if (defaultAccount)
+				openChatWidget(defaultAccount, contacts);
+			else
+				kdebugm(KDEBUG_WARNING, "protocol %s/%s not found!\n",
+					       qPrintable(protocolId), qPrintable(accountId));
 		}
 	}
 	kdebugf2();
@@ -630,10 +629,13 @@ void ChatManager::chatActionActivated(QAction *sender, bool toggled)
 	if (!window)
 		return;
 
-	Protocol *gadu = AccountManager::instance()->defaultAccount()->protocol();
+	Account *defaultAccount = AccountManager::instance()->defaultAccount();
+
 	UserListElements users = window->userListElements();
-	if (users.count() > 0)
-		openChatWidget(gadu, users, true);
+	ContactList contacts = users.toContactList(defaultAccount);
+
+	if (contacts.count() > 0)
+		openChatWidget(defaultAccount, contacts, true);
 
 	kdebugf2();
 }
@@ -652,7 +654,7 @@ int ChatManager::registerChatWidget(ChatWidget *chat)
 {
 	kdebugf();
 
-	UserListElements users = chat->users()->toUserListElements();
+	UserListElements users = UserListElements::fromContactList(chat->contacts(), chat->account());
 	users.sort();
 	ClosedChatUsers.remove(users);
 	ChatWidgets.append(chat);
@@ -709,13 +711,13 @@ void ChatManager::refreshTitlesForUser(UserListElement user)
 	kdebugf2();
 }
 
-ChatWidget* ChatManager::findChatWidget(const UserGroup *group) const
+ChatWidget * ChatManager::findChatWidget(ContactList &contacts) const
 {
-	foreach(ChatWidget *chat, ChatWidgets)
-		if (chat->users() == group)
-			return chat;
-	kdebugmf(KDEBUG_WARNING, "no such chat\n");
-	return NULL;
+	foreach (ChatWidget *chatWidget, ChatWidgets)
+		if (chatWidget->contacts() == contacts)
+			return chatWidget;
+
+	return 0;
 }
 
 ChatWidget* ChatManager::findChatWidget(UserListElements users) const
@@ -727,78 +729,75 @@ ChatWidget* ChatManager::findChatWidget(UserListElements users) const
 	return NULL;
 }
 
-int ChatManager::openChatWidget(Protocol *initialProtocol, const UserListElements &users, bool forceActivate)
+ChatWidget * ChatManager::chatWidgetForContactList(ContactList contacts)
 {
-	kdebugf();
+	foreach (ChatWidget *chatWidget, ChatWidgets)
+		if (chatWidget->contacts() == contacts)
+			return chatWidget;
 
-	Protocol *gadu = AccountManager::instance()->defaultAccount()->protocol();
-	foreach(const UserListElement &user, users)
-	{
-		QString uid = user.ID("Gadu");
-		if (!initialProtocol->validateUserID(uid))
-		{
-			kdebugf2();
-			return -1;
-		}
-	}
+	return 0;
+}
 
-	unsigned int i = 0;
-	foreach(ChatWidget *chat, ChatWidgets)
-	{
-		if (chat->users()->equals(users))
-		{
-			QWidget *win = chat->window();
-			kdebugm(KDEBUG_INFO, "parent: %p\n", win);
-//TODO 0.6.6:
-			if (forceActivate)
-			{
-				activateWindow(win->winId()); /* Dorr: this sometimes doesn't work */
-				win->setWindowState(Qt::WindowActive);
-			}
-			win->raise();
-			chat->makeActive();
-			emit chatWidgetOpen(chat);
-			return i;
-		}
-		++i;
-	}
-
-	QStringList userNames;
-	foreach(const UserListElement &user, users)
-		userNames.append(user.altNick());
-	userNames.sort();
-
-	ChatWidget *chat = new ChatWidget(initialProtocol, users);
-
-	bool handled = false;
-	emit handleNewChatWidget(chat, handled);
-	if (!handled)
-	{
-		ChatWindow *window = new ChatWindow();
-		chat->setParent(window);
-		chat->show();
-		window->setChatWidget(chat);
-		window->show();
-	}
- 	chat->refreshTitle();
-
-	connect(chat, SIGNAL(messageSentAndConfirmed(UserListElements, const QString &)),
-		this, SIGNAL(messageSentAndConfirmed(UserListElements, const QString &)));
+void ChatManager::activateChatWidget(ChatWidget *chatWidget, bool forceActivate)
+{
+	QWidget *win = chatWidget->window();
+	kdebugm(KDEBUG_INFO, "parent: %p\n", win);
 
 //TODO 0.6.6:
 	if (forceActivate)
 	{
-		QWidget *win = chat->window();
+		activateWindow(win->winId()); /* Dorr: this sometimes doesn't work */
+		win->setWindowState(Qt::WindowActive);
+	}
+
+	win->raise();
+	chatWidget->makeActive();
+	emit chatWidgetOpen(chatWidget);
+}
+
+ChatWidget * ChatManager::openChatWidget(Account *initialAccount, ContactList contacts, bool forceActivate)
+{
+	kdebugf();
+
+	ChatWidget *chatWidget = chatWidgetForContactList(contacts);
+	if (chatWidget)
+	{
+		activateChatWidget(chatWidget, forceActivate);
+		return chatWidget;
+	}
+
+	chatWidget = new ChatWidget(initialAccount, contacts);
+
+	bool handled = false;
+	emit handleNewChatWidget(chatWidget, handled);
+	if (!handled)
+	{
+		ChatWindow *window = new ChatWindow();
+		chatWidget->setParent(window);
+		chatWidget->show();
+		window->setChatWidget(chatWidget);
+		window->show();
+	}
+ 	chatWidget->refreshTitle();
+
+	connect(chatWidget, SIGNAL(messageSentAndConfirmed(ContactList, const QString &)),
+		this, SIGNAL(messageSentAndConfirmed(ContactList, const QString &)));
+
+//TODO 0.6.6:
+	if (forceActivate)
+	{
+		QWidget *win = chatWidget->window();
 		activateWindow(win->winId());
 	}
 
-	emit chatWidgetCreated(chat);
+	emit chatWidgetCreated(chatWidget);
 // TODO: remove, it is so stupid ...
-	emit chatWidgetCreated(chat, time(0));
-	emit chatWidgetOpen(chat);
+	emit chatWidgetCreated(chatWidget, time(0));
+	emit chatWidgetOpen(chatWidget);
 
 	kdebugf2();
-	return ChatWidgets.count() - 1;
+
+	return chatWidget;
 }
 
 void ChatManager::deletePendingMsgs(UserListElements users)
@@ -836,8 +835,11 @@ void ChatManager::openPendingMsgs(UserListElements users, bool forceActivate)
 	QList<ChatMessage *> messages;
 	PendingMsgs::Element elem;
 
-	Protocol *gadu = AccountManager::instance()->defaultAccount()->protocol();
-	int chat = openChatWidget(gadu, users, forceActivate);
+	Account *defaultAccount = AccountManager::instance()->defaultAccount();
+	ChatWidget *chatWidget = openChatWidget(defaultAccount, users.toContactList(defaultAccount), forceActivate);
+
+	if (!chatWidget)
+		return;
 
 	for (int i = 0; i < pending.count(); ++i)
 	{
@@ -855,8 +857,8 @@ void ChatManager::openPendingMsgs(UserListElements users, bool forceActivate)
 	if (messages.size())
 	{
 		// TODO: Lame API
-		if (!ChatWidgets[chat]->countMessages())
-			ChatWidgets[chat]->appendMessages(messages, true);
+		if (!chatWidget->countMessages())
+			chatWidget->appendMessages(messages, true);
 		UserBox::refreshAllLater();
 	}
 
@@ -884,8 +886,8 @@ void ChatManager::sendMessage(UserListElement user, UserListElements selected_us
 			return;
 		}
 
-	Protocol *gadu = AccountManager::instance()->defaultAccount()->protocol();
-	openChatWidget(gadu, selected_users, true);
+	Account *defaultAccount = AccountManager::instance()->defaultAccount();
+	openChatWidget(defaultAccount, selected_users.toContactList(defaultAccount), true);
 
 	kdebugf2();
 }

@@ -7,32 +7,19 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GADU_IMPORTER
-#define GADU_IMPORTER
+#ifndef CONTACT_LIST_H
+#define CONTACT_LIST_H
 
-#include <QtCore/QObject>
+#include <QtCore/QList>
 
-class Contact;
+#include "contact.h"
 
-class GaduImporter : public QObject
+class ContactList : public QList<Contact>
 {
-	Q_OBJECT
-
-	static GaduImporter *Instance;
-
-	GaduImporter() {}
-
-	void importContact(Contact &contact);
-
-private slots:
-	void contactAdded(Contact &contact);
 
 public:
-	static GaduImporter * instance();
-
-	void importAccounts();
-	void importContacts();
+	bool operator == (ContactList &compare);
 
 };
 
-#endif // GADU_IMPORTER
+#endif // CONTACT_LIST_H

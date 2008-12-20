@@ -15,6 +15,8 @@
 #include "protocols/protocol.h"
 #include "userlist.h"
 
+#include "accounts/account.h"
+
 #include "pending_msgs.h"
 
 PendingMsgs::Element::Element() : users(), proto(), msg(), msgclass(0), time(0)
@@ -87,6 +89,21 @@ void PendingMsgs::addMsg(QString protocolName, UserListElements users, QString m
 	Element e;
 	e.users = users;
 	e.proto = protocolName;
+	e.msg = msg;
+	e.msgclass = msgclass;
+	e.time = time;
+	msgs.append(e);
+	writeToFile();
+	emit messageFromUserAdded(users[0]);
+}
+
+void PendingMsgs::addMsg(Account *account, ContactList contacts, QString msg, int msgclass, time_t time)
+{
+	UserListElements users = UserListElements::fromContactList(contacts, account);
+
+	Element e;
+	e.users = users;
+	e.proto = account->protocol()->name();
 	e.msg = msg;
 	e.msgclass = msgclass;
 	e.time = time;

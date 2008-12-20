@@ -16,6 +16,7 @@
 #include <QtCore/QUuid>
 #include <QtXml/QDomElement>
 
+class Account;
 class ContactAccountData;
 class XmlConfigFile;
 
@@ -23,21 +24,23 @@ class ContactData : public QSharedData
 {
 	QUuid Uuid;
 	QMap<QString, QString> CustomData;
-	QMap<QString, ContactAccountData *> AccountsData;
+	QMap<Account *, ContactAccountData *> AccountsData;
 
 public:
 	ContactData(QUuid uniqueId = QUuid());
 	~ContactData();
 
+	void importConfiguration(XmlConfigFile *configurationStorage, QDomElement parent);
+	void loadConfiguration(XmlConfigFile *configurationStorage, QDomElement parent);
+	void storeConfiguration(XmlConfigFile *configurationStorage, QDomElement parent);
+
 	QUuid uuid() { return Uuid; }
+	QString id(Account *account);
 
 	QMap<QString, QString> & customData() { return CustomData; }
 
 	void addAccountData(ContactAccountData *accountData);
-
-	void importConfiguration(XmlConfigFile *configurationStorage, QDomElement parent);
-	void loadConfiguration(XmlConfigFile *configurationStorage, QDomElement parent);
-	void storeConfiguration(XmlConfigFile *configurationStorage, QDomElement parent);
+	ContactAccountData * accountData(Account *account);
 
 };
 

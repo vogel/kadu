@@ -7,6 +7,7 @@ set (kadu_SRCS
 	contacts/contact.cpp
 	contacts/contact-account-data.cpp
 	contacts/contact-data.cpp
+	contacts/contact-list.cpp
 	contacts/contact-manager.cpp
 
 	configuration/account-data-manager.cpp
@@ -112,10 +113,13 @@ set (kadu_MOC_SRCS
 	contacts/contact.h
 	contacts/contact-account-data.h
 	contacts/contact-data.h
+	contacts/contact-list.h
 	contacts/contact-manager.h
 
 	configuration/config-file-data-manager.h
 	configuration/configuration-window-data-manager.h
+
+	configuration/widgets/manage-accounts.h
 
 	gui/widgets/configuration/config-action-button.h
 	gui/widgets/configuration/config-check-box.h
@@ -141,8 +145,6 @@ set (kadu_MOC_SRCS
 	gui/widgets/configuration/config-section.h
 	gui/widgets/configuration/config-group-box.h	
 	gui/widgets/configuration/config-tab.h
-
-	configuration/widgets/manage-accounts.h
 
 	protocols/protocol.h
 	protocols/protocol_factory.h

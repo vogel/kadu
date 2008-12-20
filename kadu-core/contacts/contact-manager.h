@@ -14,7 +14,9 @@
 #include <QtCore/QObject>
 #include <QtCore/QUuid>
 
-class Contact;
+#include "contact.h"
+
+class Account;
 class XmlConfigFile;
 
 class ContactManager : public QObject
@@ -23,7 +25,7 @@ class ContactManager : public QObject
 
 	static ContactManager * Instance;
 
-	QMap<QUuid, Contact *> Contacts;
+	QMap<QUuid, Contact> Contacts;
 
 	ContactManager() {}
 	ContactManager(const ContactManager &) {}
@@ -36,10 +38,13 @@ public:
 	void loadConfiguration(XmlConfigFile *configurationStorage);
 	void storeConfiguration(XmlConfigFile *configurationStorage);
 
-	void addContact(Contact *contact);
+	QList<Contact> contacts() { return Contacts.values(); }
+	void addContact(Contact contact);
+
+	Contact getContactById(Account *account, const QString &id);
 
 signals:
-	void contactAdded(Contact *contact);
+	void contactAdded(Contact &contact);
 
 };
 

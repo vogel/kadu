@@ -26,21 +26,35 @@ class Contact : public QObject
 
 	QExplicitlySharedDataPointer<ContactData> Data;
 
+	// for creating 'null' static object
+	Contact(bool);
+
+	void checkNull();
+
 public:
 	Contact();
 	Contact(const Contact &copy);
 	virtual ~Contact();
 
+	static Contact null;
+
+	bool isNull() const { return 0 == Data.data(); }
+
 	Contact & operator = (const Contact &copy);
+	bool operator == (const Contact &compare) const;
+	int operator < (const Contact &compare) const;
 
 	void importConfiguration(XmlConfigFile *configurationStorage, QDomElement parent);
 	void loadConfiguration(XmlConfigFile *configurationStorage, QDomElement parent);
 	void storeConfiguration(XmlConfigFile *configurationStorage, QDomElement parent);
 
-	QUuid uuid() { return Data->uuid(); };
-	QMap<QString, QString> & customData() { return Data->customData(); }
+	QUuid uuid();
+	QMap<QString, QString> & customData();
 
-	void addAccountData(ContactAccountData *accountData) { Data->addAccountData(accountData); }
+	void addAccountData(ContactAccountData *accountData);
+	ContactAccountData * accountData(Account *account);
+
+	QString id(Account *account);
 
 };
 

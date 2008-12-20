@@ -14,6 +14,7 @@
 
 #include "chat_widget.h"
 #include "configuration_aware_object.h"
+#include "contacts/contact-list.h"
 
 #include "exports.h"
 
@@ -138,7 +139,7 @@ public:
 		\return wska�nik do okna je�li istnieje w przeciwnym
 		 wypadku zwraca NULL
 	**/
-	ChatWidget * findChatWidget(const UserGroup *group) const;
+	ChatWidget * findChatWidget(ContactList &contacts) const;
 
 	/**
 		\fn Chat* findChat(UserListElements users) const;
@@ -167,17 +168,11 @@ public:
 	void loadOpenedWindows();
 	void saveOpenedWindows();
 
-public slots:
+	ChatWidget * chatWidgetForContactList(ContactList contacts);
+	void activateChatWidget(ChatWidget *chatWidget, bool forceActivate);
 
-	/**
-		\fn int openChatWidget(QString initialProtocol, UserListElements users, time_t time = 0)
-		Funkcja otwiera nowe okno Chat z wymienionymi rozmowcami.
-		\param initialProtocol protok�� pocz�tkowy
-		\param users lista u�ytkownik�w identyfikuj�cych okno
-		\param time time of pending message that created a chat or 0 if not applicable
-		\return zwracany jest numer otwartego okna
-	**/
-	int openChatWidget(Protocol *initialProtocol, const UserListElements &users, bool forceActivate = false);
+public slots:
+	ChatWidget * openChatWidget(Account *initialAccount, ContactList contacts, bool forceActivate = false);
 
 	/**
 		\fn void openPendingMsgs(UserListElements users)
@@ -300,7 +295,7 @@ signals:
 	void chatWidgetTitlesUpdated();
 
 	/**
-		\fn void messageSentAndConfirmed(UserListElements receivers, const QString& message)
+		\fn void messageSentAndConfirmed(ContactList receivers, const QString& message)
 		This signal is emited when message was sent
 		and it was confirmed.
 		When confirmations are turned off signal is
@@ -308,7 +303,7 @@ signals:
 		\param receivers list of receivers
 		\param message the message
 	**/
-	void messageSentAndConfirmed(UserListElements receivers, const QString& message);
+	void messageSentAndConfirmed(ContactList receivers, const QString& message);
 
 };
 

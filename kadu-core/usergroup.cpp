@@ -15,6 +15,9 @@
 #include "userlist.h"
 #include "userlist-private.h"
 
+#include "contacts/contact-account-data.h"
+#include "contacts/contact-list.h"
+
 #include "usergroup.h"
 
 UserGroup::UserGroup()
@@ -344,4 +347,32 @@ bool UserListElements::operator < (const UserListElements &compareTo) const
 	}
 
 	return false;
+}
+
+ContactList UserListElements::toContactList(Account *account)
+{
+	ContactList result;
+
+	foreach (UserListElement ule, *this)
+	{
+		result.append(ule.toContact(account));
+	}
+
+	return result;
+}
+
+UserListElements UserListElements::fromContactList(ContactList contacts, Account *account)
+{
+	UserListElements result;
+
+	foreach (Contact contact, contacts)
+	{
+		ContactAccountData *data = contact.accountData(account);
+		if (!data)
+			continue;
+
+		result << userlist->byID("Gadu", data->id());
+	}
+
+	return result;
 }

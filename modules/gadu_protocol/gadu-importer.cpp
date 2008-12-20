@@ -42,22 +42,25 @@ void GaduImporter::importAccounts()
 
 void GaduImporter::importContacts()
 {
-	connect(ContactManager::instance(), SIGNAL(contactAdded(Contact *)),
-			this, SLOT(contactAdded(Contact *)));
+	connect(ContactManager::instance(), SIGNAL(contactAdded(Contact &)),
+			this, SLOT(contactAdded(Contact &)));
+
+	foreach (Contact contact, ContactManager::instance()->contacts())
+		contactAdded(contact);
 }
 
-void GaduImporter::importContact(Contact *contact)
+void GaduImporter::importContact(Contact &contact)
 {
-	QString id = contact->customData()["uin"];
+	QString id = contact.customData()["uin"];
 
 	Account *account = AccountManager::instance()->defaultAccount();
 
-	contact->customData().remove(id);
-	contact->addAccountData(new GaduContactAccountData(account, id));
+	contact.customData().remove("uin");
+	contact.addAccountData(new GaduContactAccountData(account, id));
 }
 
-void GaduImporter::contactAdded(Contact *contact)
+void GaduImporter::contactAdded(Contact &contact)
 {
-	if (contact->customData().contains("uin"))
+	if (contact.customData().contains("uin"))
 		importContact(contact);
 }

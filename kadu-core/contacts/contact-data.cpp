@@ -24,11 +24,6 @@ ContactData::~ContactData()
 {
 }
 
-void ContactData::addAccountData(ContactAccountData *accountData)
-{
-	AccountsData.insert(accountData->account()->name(), accountData);
-}
-
 void ContactData::importConfiguration(XmlConfigFile *configurationStorage, QDomElement parent)
 {
 	QDomNamedNodeMap attributes = parent.attributes();
@@ -61,4 +56,25 @@ void ContactData::storeConfiguration(XmlConfigFile *configurationStorage, QDomEl
 			"ContactAccountData", accountData->account()->name(), XmlConfigFile::ModeCreate);
 		accountData->storeConfiguration(configurationStorage, contactAccountData);
 	}
+}
+
+void ContactData::addAccountData(ContactAccountData *accountData)
+{
+	AccountsData.insert(accountData->account(), accountData);
+}
+
+ContactAccountData * ContactData::accountData(Account *account)
+{
+	if (!AccountsData.contains(account))
+		return 0;
+
+	return AccountsData[account];
+}
+
+QString ContactData::id(Account *account)
+{
+	if (AccountsData.contains(account))
+		return AccountsData[account]->id();
+
+	return QString::null;
 }

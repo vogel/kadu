@@ -1435,16 +1435,19 @@ void Kadu::connecting()
 }
 
 // TODO: move back to chatManager
-void Kadu::messageReceived(Protocol *protocol, UserListElements senders, const QString &msg, time_t time)
+void Kadu::messageReceived(Protocol *, UserListElements s, const QString &msg, time_t time)
 {
 	kdebugf();
 
+	Account *account = AccountManager::instance()->defaultAccount();
+	ContactList senders = s.toContactList(account);
+
 	// TODO: workaround
-	emit messageReceivedSignal(protocol, senders, msg, time);
+	emit messageReceivedSignal(account, senders, msg, time);
 
 	ChatWidget *chat = chat_manager->findChatWidget(senders);
 	if (chat)
-		chat->newMessage("Gadu", senders, msg, time);
+		chat->newMessage(account, senders, msg, time);
 	else
 	{
 		if (config_file.readBoolEntry("General","AutoRaise"))
@@ -1457,17 +1460,17 @@ void Kadu::messageReceived(Protocol *protocol, UserListElements senders, const Q
 		{
 			if (config_file.readBoolEntry("Chat", "OpenChatOnMessageWhenOnline") && !Myself.status("Gadu").isOnline())
 			{
-				pending.addMsg("Gadu", senders, msg, GG_CLASS_CHAT, time);
+				pending.addMsg(account, senders, msg, GG_CLASS_CHAT, time);
 				return;
 			}
 
 			// TODO: it is lame
-			chat_manager->openChatWidget(protocol, senders);
+			chat_manager->openChatWidget(account, senders);
 			chat = chat_manager->findChatWidget(senders);
-			chat->newMessage("Gadu", senders, msg, time);
+			chat->newMessage(account, senders, msg, time);
 		}
 		else
-			pending.addMsg("Gadu", senders, msg, GG_CLASS_CHAT, time);
+			pending.addMsg(account, senders, msg, GG_CLASS_CHAT, time);
 	}
 
 	kdebugf2();
@@ -2326,7 +2329,7 @@ const QDateTime &Kadu::startTime() const
 
 void Kadu::customEvent(QEvent *e)
 {
-	Protocol *gadu = AccountManager::instance()->defaultAccount()->protocol();
+	Account *defaultAccount = AccountManager::instance()->defaultAccount();
 
 	if (int(e->type()) == 4321)
 		show();
@@ -2335,7 +2338,12 @@ void Kadu::customEvent(QEvent *e)
 	{
 		OpenGGChatEvent *ev = static_cast<OpenGGChatEvent *>(e);
 		if (ev->number() > 0)
-			chat_manager->openChatWidget(gadu, userlist->byID("Gadu", QString::number(ev->number())), true);
+		{
+			Contact contact = userlist->byID("Gadu", QString::number(ev->number())).toContact(defaultAccount);
+			ContactList contacts;
+			contacts << contact;
+			chat_manager->openChatWidget(defaultAccount, contacts, true);
+		}
 	}
 	else
 		QWidget::customEvent(e);

@@ -15,6 +15,9 @@
 #include "status.h"
 #include "usergroup.h"
 
+#include "contacts/contact-account-data.h"
+#include "contacts/contact-manager.h"
+
 #include "userlistelement.h"
 #include "userlist-private.h"
 
@@ -533,3 +536,20 @@ ulong qHash(const UserListElement &index)
 	return (ulong)index.privateData.data();
 }
 
+Contact UserListElement::toContact(Account *account)
+{
+	return ContactManager::instance()->getContactById(account, ID("Gadu"));
+}
+
+
+UserListElement UserListElement::fromContact(Contact contact, Account *account)
+{
+	ContactAccountData *data = contact.accountData(account);
+
+	printf("UserListElement::fromContact: %p\n", data);
+
+	if (data)
+		return userlist->byID("Gadu", data->id());
+	else
+		return UserListElement();
+}

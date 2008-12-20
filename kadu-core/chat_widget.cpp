@@ -32,11 +32,14 @@
 #include "userbox.h"
 #include "usergroup.h"
 
+#include "contacts/contact-account-data.h"
+
 #include "chat_widget.h"
 
-ChatWidget::ChatWidget(Protocol *initialProtocol, const UserListElements &usrs, QWidget *parent)
-	: QWidget(parent),
-	CurrentProtocol(initialProtocol), Users(new UserGroup(usrs)), index(0), actcolor(),
+ChatWidget::ChatWidget(Account *initialAccount, const ContactList &contacts, QWidget *parent)
+	: QWidget(parent), CurrentAccount(initialAccount), Contacts(contacts),
+
+	index(0), actcolor(),
 	emoticon_selector(0), color_selector(0), WaitingForACK(false), userbox(0), horizSplit(0),
 	activationCount(0), NewMessagesCount(0), Edit(0)
 {
@@ -56,7 +59,7 @@ ChatWidget::ChatWidget(Protocol *initialProtocol, const UserListElements &usrs, 
 
 	Edit = new ChatEditBox(this);
 
-	if (Users->count() > 1)
+	if (Contacts.count() > 1)
 	{
 		horizSplit = new QSplitter(Qt::Horizontal, this, "horizSplit");
 		horizSplit->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Expanding);
@@ -67,8 +70,9 @@ ChatWidget::ChatWidget(Protocol *initialProtocol, const UserListElements &usrs, 
 		QVBoxLayout *uc_layout = new QVBoxLayout(userlistContainer);
 		uc_layout->setMargin(0);
 		uc_layout->setSpacing(0);
-		
-		userbox = new UserBox(Edit, false, Users, userlistContainer, "userbox");
+
+		UserListElements forUserBox = UserListElements::fromContactList(Contacts, CurrentAccount);
+		userbox = new UserBox(Edit, false, new UserGroup(forUserBox), userlistContainer, "userbox");
 		userbox->setMinimumSize(QSize(30,30));
 
 		connect(userbox, SIGNAL(doubleClicked(UserListElement)), kadu, SLOT(sendMessage(UserListElement)));
@@ -138,8 +142,6 @@ ChatWidget::~ChatWidget()
 
 	if (userbox)
 		delete userbox;
-
-	delete Users;
 
 	kdebugmf(KDEBUG_FUNCTION_END, "chat destroyed: index %d\n", index);
 }
@@ -250,6 +252,10 @@ void ChatWidget::setActColor(bool force)
 void ChatWidget::insertImage()
 {
 	kdebugf();
+
+	UserListElements users = UserListElements::fromContactList(Contacts,
+			AccountManager::instance()->defaultAccount());
+
 	ImageDialog* id = new ImageDialog(this);
 	id->setDir(config_file.readEntry("Chat", "LastImagePath"));
 	id->setWindowTitle(tr("Insert image"));
@@ -277,28 +283,32 @@ void ChatWidget::insertImage()
 		}
 
 		int counter = 0;
-		foreach(const UserListElement &user, *Users)
+
+		foreach (Contact contact, Contacts)
 		{
-			if (user.usesProtocol("Gadu"))//TODO: user.hasFeature("ImageSending")
+			// TODO: 0.6.6
+			ContactAccountData *contactAccountData = contact.accountData(CurrentAccount);
+			if (contactAccountData && contactAccountData->hasFeature(/*EmbedImageInChatMessage*/))
 			{
-				unsigned int maximagesize = user.protocolData("Gadu", "MaxImageSize").toUInt();
-				if (f.size() >= maximagesize * 1024)
-					++counter;
+// 				unsigned long maxImageSize = contactAccountData->maxEmbededImageSize();
+// 				if (f.size() > maxImageSize)
+					counter++;
 			}
 			else
-				++counter;
+				counter++;
+			// unsigned int maximagesize = user.protocolData("Gadu", "MaxImageSize").toUInt();
 		}
-		if (counter == 1 && Users->count() == 1)
+		if (counter == 1 && Contacts.count() == 1)
 		{
-			if (!MessageBox::ask(tr("This file is too big for %1.\nDo you really want to send this image?\n").arg((*Users->constBegin()).altNick())))
+			if (!MessageBox::ask(tr("This file is too big for %1.\nDo you really want to send this image?\n").arg((*users.constBegin()).altNick())))
 			{
 				QTimer::singleShot(0, this, SLOT(insertImage()));
 				kdebugf2();
 				return;
 			}
 		}
-		else if	(counter > 0 &&
-			!MessageBox::ask(tr("This file is too big for %1 of %2 contacts.\nDo you really want to send this image?\nSome of them probably will not get it.").arg(counter).arg(Users->count())))
+		else if (counter > 0 &&
+			!MessageBox::ask(tr("This file is too big for %1 of %2 contacts.\nDo you really want to send this image?\nSome of them probably will not get it.").arg(counter).arg(users.count())))
 		{
 			QTimer::singleShot(0, this, SLOT(insertImage()));
 			kdebugf2();
@@ -325,7 +335,10 @@ void ChatWidget::refreshTitle()
 	kdebugf();
 	QString title;
 
-	int uinsSize = Users->count();
+	int uinsSize = Contacts.count();
+	UserListElements users = UserListElements::fromContactList(Contacts,
+			AccountManager::instance()->defaultAccount());
+
 	kdebugmf(KDEBUG_FUNCTION_START, "Uins.size() = %d\n", uinsSize);
 	if (uinsSize > 1)
 	{
@@ -336,7 +349,7 @@ void ChatWidget::refreshTitle()
 		int i = 0;
 
 		if (config_file.readEntry("Look", "ConferenceContents").isEmpty())
-			foreach(const UserListElement &user, *Users)
+			foreach(const UserListElement &user, users)
 			{
 				title.append(KaduParser::parse("%a", user, false));
 
@@ -344,7 +357,7 @@ void ChatWidget::refreshTitle()
 					title.append(", ");
 			}
 		else
-			foreach(const UserListElement &user, *Users)
+			foreach(const UserListElement &user, users)
 			{
 				title.append(KaduParser::parse(config_file.readEntry("Look","ConferenceContents"), user, false));
 
@@ -356,7 +369,7 @@ void ChatWidget::refreshTitle()
 	}
 	else
 	{
-		UserListElement user = *Users->constBegin();
+		UserListElement user = UserListElement::fromContact(Contacts[0], account());
 		if (config_file.readEntry("Look", "ChatContents").isEmpty())
 		{
 			if (user.isAnonymous())
@@ -483,10 +496,31 @@ void ChatWidget::newMessage(const QString &/*protocolName*/, UserListElements se
  	emit messageReceived(this);
 }
 
+void ChatWidget::newMessage(Account* account, ContactList senders, const QString &message, time_t time)
+{
+	QDateTime date;
+	date.setTime_t(time);
+
+	UserListElement sender = UserListElement::fromContact(senders[0], account);
+	ChatMessage *chatMessage = new ChatMessage(sender, UserListElements(kadu->myself()), message,
+			TypeReceived, QDateTime::currentDateTime(), date);
+	body->appendMessage(chatMessage);
+
+	lastMsgTime = QDateTime::currentDateTime();
+	NewMessagesCount++;
+
+ 	emit messageReceived(this);
+}
+
 void ChatWidget::writeMyMessage()
 {
 	kdebugf();
-	ChatMessage *message = new ChatMessage(kadu->myself(), Users->toUserListElements(), myLastMessage.toHtml(), TypeSent, QDateTime::currentDateTime());
+
+	UserListElements users = UserListElements::fromContactList(Contacts,
+			AccountManager::instance()->defaultAccount());
+
+	ChatMessage *message = new ChatMessage(kadu->myself(), users, myLastMessage.toHtml(),
+			TypeSent, QDateTime::currentDateTime());
 	body->appendMessage(message);
 
 	if (!Edit->inputBox()->isEnabled())
@@ -555,7 +589,7 @@ void ChatWidget::messageStatusChanged(int messageId, Protocol::MessageStatus sta
 		case Protocol::StatusAcceptedDelivered:
 		case Protocol::StatusAcceptedQueued:
 			writeMyMessage();
-			emit messageSentAndConfirmed(Users->toUserListElements(), myLastMessage.toHtml());
+			emit messageSentAndConfirmed(Contacts, myLastMessage.toHtml());
 			disconnectAcknowledgeSlots();
 			changeCancelSendToSend();
 			return;
@@ -573,12 +607,16 @@ void ChatWidget::messageStatusChanged(int messageId, Protocol::MessageStatus sta
 
 void ChatWidget::connectAcknowledgeSlots()
 {
-	connect(CurrentProtocol, SIGNAL(messageStatusChanged(int, Protocol::MessageStatus)), this, SLOT(messageStatusChanged(int, Protocol::MessageStatus)));
+// TODO: 0.6.6
+// 	connect(CurrentProtocol, SIGNAL(messageStatusChanged(int, Protocol::MessageStatus)),
+// 			this, SLOT(messageStatusChanged(int, Protocol::MessageStatus)));
 }
 
 void ChatWidget::disconnectAcknowledgeSlots()
 {
-	disconnect(CurrentProtocol, SIGNAL(messageStatusChanged(int, Protocol::MessageStatus)), this, SLOT(messageStatusChanged(int, Protocol::MessageStatus)));
+// TODO: 0.6.6
+// 	disconnect(CurrentProtocol, SIGNAL(messageStatusChanged(int, Protocol::MessageStatus)),
+// 			this, SLOT(messageStatusChanged(int, Protocol::MessageStatus)));
 }
 
 void ChatWidget::changeSendToCancelSend()
@@ -633,7 +671,10 @@ void ChatWidget::sendMessage()
 
 	myLastMessage = Message::parse(Edit->inputBox()->document());
 
-	if (!currentProtocol()->sendMessage(Users->toUserListElements(), myLastMessage))
+	UserListElements users = UserListElements::fromContactList(Contacts,
+			AccountManager::instance()->defaultAccount());
+
+	if (!currentProtocol()->sendMessage(users, myLastMessage))
 	{
 		cancelMessage();
 		return;
@@ -644,7 +685,7 @@ void ChatWidget::sendMessage()
 	else
 	{
 		writeMyMessage();
-		emit messageSentAndConfirmed(Users->toUserListElements(), myLastMessage.toHtml());
+		emit messageSentAndConfirmed(Contacts, myLastMessage.toHtml());
 	}
 
 	emit messageSent(this);
@@ -708,7 +749,10 @@ void ChatWidget::addEmoticon(QString emot)
 
 const UserGroup *ChatWidget::users() const
 {
-	return Users;
+	UserListElements users = UserListElements::fromContactList(Contacts,
+			AccountManager::instance()->defaultAccount());
+
+	return new UserGroup(users);
 }
 
 const QString& ChatWidget::caption() const
@@ -784,6 +828,9 @@ void ChatWidget::dropEvent(QDropEvent *e)
 {
 	QStringList files;
 
+	UserListElements users = UserListElements::fromContactList(Contacts,
+			AccountManager::instance()->defaultAccount());
+
 	if (decodeLocalFiles(e, files))
 	{
 		e->acceptProposedAction();
@@ -792,13 +839,13 @@ void ChatWidget::dropEvent(QDropEvent *e)
 		QStringList::iterator end = files.end();
 
 		for (; i != end; i++)
-			emit fileDropped(Users, *i);
+			emit fileDropped(new UserGroup(users), *i);
 	}
 }
 
 Protocol *ChatWidget::currentProtocol()
 {
-	return CurrentProtocol;
+	return CurrentAccount->protocol();
 }
 
 // TODO: do dupy, zmieni� przed 0.6
@@ -827,10 +874,13 @@ unsigned int ChatWidget::newMessagesCount() const
 
 void ChatWidget::kaduRestoreGeometry()
 {
-	QList<int> vertSizes = toIntList(chat_manager->chatWidgetProperty(Users, "VerticalSizes").toList());
-	if (vertSizes.empty() && Users->count() == 1)
+	UserListElements users = UserListElements::fromContactList(Contacts,
+			AccountManager::instance()->defaultAccount());
+
+	QList<int> vertSizes = toIntList(chat_manager->chatWidgetProperty(new UserGroup(users), "VerticalSizes").toList());
+	if (vertSizes.empty() && users.count() == 1)
 	{
-		QString vert_sz_str = (*(Users->constBegin())).data("VerticalSizes").toString();
+		QString vert_sz_str = (*(users.constBegin())).data("VerticalSizes").toString();
 		if (!vert_sz_str.isEmpty())
 		{
 			bool ok[2];
@@ -852,7 +902,7 @@ void ChatWidget::kaduRestoreGeometry()
 
 	if (horizSplit)
 	{
-		QList<int> horizSizes = toIntList(chat_manager->chatWidgetProperty(Users, "HorizontalSizes").toList());
+		QList<int> horizSizes = toIntList(chat_manager->chatWidgetProperty(new UserGroup(users), "HorizontalSizes").toList());
 		if (!horizSizes.empty())
 			horizSplit->setSizes(horizSizes);
 	}
@@ -860,14 +910,17 @@ void ChatWidget::kaduRestoreGeometry()
 
 void ChatWidget::kaduStoreGeometry()
 {
-	QList<int> sizes = vertSplit->sizes();
-	chat_manager->setChatWidgetProperty(Users, "VerticalSizes", toVariantList(sizes));
+	UserListElements users = UserListElements::fromContactList(Contacts,
+			AccountManager::instance()->defaultAccount());
 
-	if (Users->count() == 1)
-		(*Users->begin()).setData("VerticalSizes", QString("%1,%2").arg(sizes[0]).arg(sizes[1]));
+	QList<int> sizes = vertSplit->sizes();
+	chat_manager->setChatWidgetProperty(new UserGroup(users), "VerticalSizes", toVariantList(sizes));
+
+	if (users.count() == 1)
+		(*users.begin()).setData("VerticalSizes", QString("%1,%2").arg(sizes[0]).arg(sizes[1]));
 
 	if (horizSplit)
-		chat_manager->setChatWidgetProperty(Users, "HorizontalSizes", toVariantList(horizSplit->sizes()));
+		chat_manager->setChatWidgetProperty(new UserGroup(users), "HorizontalSizes", toVariantList(horizSplit->sizes()));
 }
 
 void ChatWidget::leaveConference()
@@ -875,7 +928,9 @@ void ChatWidget::leaveConference()
 	if (!MessageBox::ask(tr("All messages received in this conference will be ignored\nfrom now on. Are you sure you want to leave this conference?"), "Warning", this))
 		return;
 
-	UserListElements users = Users->toUserListElements();
+	UserListElements users = UserListElements::fromContactList(Contacts,
+			AccountManager::instance()->defaultAccount());
+
 	if (!IgnoredManager::isIgnored(users))
 		IgnoredManager::insert(users);
 

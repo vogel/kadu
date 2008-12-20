@@ -83,8 +83,8 @@ Notify::Notify(QObject *parent, const char *name)
 	}
 
 	// TODO: workaround
-	connect(kadu, SIGNAL(messageReceivedSignal(Protocol *, UserListElements, const QString&, time_t)),
-			this, SLOT(messageReceived(Protocol *, UserListElements, const QString&, time_t)));
+	connect(kadu, SIGNAL(messageReceivedSignal(Account *, ContactList, const QString&, time_t)),
+			this, SLOT(messageReceived(Account *, ContactList, const QString&, time_t)));
 	// TODO:
 	connect(userlist, SIGNAL(statusChanged(UserListElement, QString, const UserStatus &, bool, bool)),
 		this, SLOT(statusChanged(UserListElement, QString, const UserStatus &, bool, bool)));
@@ -364,7 +364,7 @@ void Notify::statusChanged(UserListElement elem, QString protocolName,
 	kdebugf2();
 }
 
-void Notify::messageReceived(Protocol *protocol, UserListElements senders, const QString &msg, time_t t)
+void Notify::messageReceived(Account *account, ContactList contacts, const QString &msg, time_t t)
 {
 	kdebugf();
 

@@ -123,6 +123,7 @@ public slots:
 		\param time czas nades�ania wiadomo�ci.
 	**/
 	void addMsg(QString protocolName, UserListElements users, QString msg, int msgclass, time_t time);
+	void addMsg(Account *account, ContactList contacts, QString msg, int msgclass, time_t time);
 
 	/**
 		\fn bool loadFromFile()

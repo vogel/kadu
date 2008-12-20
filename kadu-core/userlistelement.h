@@ -14,10 +14,12 @@
 #include <QtCore/QObject>
 #include <QtCore/QVariant>
 
+#include "contacts/contact.h"
 #include "exports.h"
 
 class QHostAddress;
 
+class Account;
 class ULEPrivate;
 class UserGroup;
 class UserStatus;
@@ -440,6 +442,9 @@ public slots:
 		gdy domena zostanie odnaleziona.
 	**/
 	void refreshDNSName(const QString &protocolName) const;
+
+	Contact toContact(Account *account);
+	static UserListElement fromContact(Contact contact, Account *account);
 
 };
 

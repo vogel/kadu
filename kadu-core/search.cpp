@@ -296,10 +296,10 @@ void SearchDialog::addFound()
 
 void SearchDialog::chatFound()
 {
-	GaduProtocol *gadu = dynamic_cast<GaduProtocol *>(AccountManager::instance()->defaultAccount()->protocol());
+	Account *account = AccountManager::instance()->defaultAccount();
 	UserListElements found = selected();
 	if (found.size())
-		chat_manager->openChatWidget(gadu, found);
+		chat_manager->openChatWidget(account, found.toContactList(account));
 }
 
 // TODO: return real list

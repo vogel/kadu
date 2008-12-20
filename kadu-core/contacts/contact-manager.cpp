@@ -36,8 +36,8 @@ void ContactManager::importConfiguration(XmlConfigFile *configurationStorage)
 		if (contactElement.isNull())
 			continue;
 
-		Contact *contact = new Contact();
-		contact->importConfiguration(configurationStorage, contactElement);
+		Contact contact;
+		contact.importConfiguration(configurationStorage, contactElement);
 
 		addContact(contact);
 	}
@@ -57,16 +57,36 @@ void ContactManager::storeConfiguration(XmlConfigFile *configurationStorage)
 {
 	QDomElement contactsNewNode = configurationStorage->getNode("ContactsNew", XmlConfigFile::ModeCreate);
 
-	foreach (Contact *contact, Contacts.values())
+	foreach (Contact contact, Contacts.values())
 	{
-		QDomElement contactNode = configurationStorage->getUuidNode(contactsNewNode, "Contact", contact->uuid(), XmlConfigFile::ModeCreate);
-		contact->storeConfiguration(configurationStorage, contactNode);
+		if (contact.isNull())
+			continue;
+
+		QDomElement contactNode = configurationStorage->getUuidNode(contactsNewNode, "Contact", 
+				contact.uuid(), XmlConfigFile::ModeCreate);
+		contact.storeConfiguration(configurationStorage, contactNode);
 	}
 }
 
-void ContactManager::addContact(Contact *contact)
+void ContactManager::addContact(Contact contact)
 {
-	Contacts.insert(contact->uuid(), contact);
+	if (contact.isNull())
+		return;
 
+	Contacts.insert(contact.uuid(), contact);
 	emit contactAdded(contact);
+}
+
+Contact ContactManager::getContactById(Account *account, const QString &id)
+{
+	if (id.isEmpty())
+		return Contact::null;
+
+	foreach (Contact contact, Contacts.values())
+	{
+		if (id == contact.id(account))
+			return contact;
+	}
+
+	return Contact::null;
 }
