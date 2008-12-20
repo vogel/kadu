@@ -13,6 +13,7 @@
 #include <QtGui/QStyleFactory>
 
 #include "chat_message.h"
+#include "chat_messages_view.h"
 #include "config_file.h"
 #include "configuration_window_widgets.h"
 #include "debug.h"
@@ -203,7 +204,7 @@ void MainConfigurationWindow::prepareChatPreview(Preview *preview, bool append)
 		chatMessages.append(chatMessage);
 
 	connect(preview, SIGNAL(needSyntaxFixup(QString &)), this, SLOT(chatSyntaxFixup(QString &)));
-	connect(preview, SIGNAL(needFixup(Preview *)), this, SLOT(chatFixup(Preview *)));
+	connect(preview, SIGNAL(needFixup(QString &)), this, SLOT(chatFixup(QString &)));
 }
 
 void MainConfigurationWindow::chatSyntaxFixup(QString &syntax)
@@ -212,11 +213,9 @@ void MainConfigurationWindow::chatSyntaxFixup(QString &syntax)
 	syntax.replace("</kadu:header>", "");
 }
 
-void MainConfigurationWindow::chatFixup(Preview *preview)
+void MainConfigurationWindow::chatFixup(QString &syntax)
 {
-//	int i = 0;
-//	CONST_FOREACH(chatMessage, chatMessages)
-//		preview->setParagraphBackgroundColor(i++, (*chatMessage)->backgroundColor);
+	syntax = QString("<html><head><style type='text/css'>%1</style></head><body>%2</body>").arg(ChatMessagesView::chatStyle(), syntax);
 }
 
 void MainConfigurationWindow::onChangeStartupStatus(int index)

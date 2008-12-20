@@ -60,8 +60,9 @@ void Preview::syntaxChanged(const QString &content)
 	else
 		text = KaduParser::parse(syntax, ule);
 
+	emit needFixup(text);
+
 	setHtml(text);
-	emit needFixup(this);
 
 // 	viewport()->setUpdatesEnabled(true);
 // 	viewport()->repaint();

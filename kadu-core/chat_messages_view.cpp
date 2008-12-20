@@ -20,6 +20,8 @@
 
 #include "chat_messages_view.h"
 
+QString ChatMessagesView::style = "";
+
 ChatMessagesView::ChatMessagesView(QWidget *parent) : KaduTextBrowser(parent),
 	Prune(0), lastScrollValue(0), lastLine(false)
 {
