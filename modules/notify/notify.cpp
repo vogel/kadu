@@ -9,12 +9,17 @@
 
 #include <QtGui/QApplication>
 #include <QtGui/QGridLayout>
+#include <QtGui/QPushButton>
 #include <QtGui/QHBoxLayout>
 #include <QtGui/QListWidget>
+#include <QtGui/QLabel>
 
-#include "configuration/configuration-window-widgets.h"
+#include "gui/widgets/configuration/configuration-window.h"
+#include "gui/widgets/configuration/config-combo-box.h"
+#include "gui/widgets/configuration/config-group-box.h"
 #include "accounts/account.h"
 #include "accounts/account_manager.h"
+#include "contacts/contact-list.h"
 #include "chat_widget.h"
 #include "chat_manager.h"
 #include "config_file.h"
@@ -74,7 +79,7 @@ Notify::Notify(QObject *parent, const char *name)
 
 	createDefaultConfiguration();
 
-	
+
 	if (0 != AccountManager::instance()->defaultAccount())
 	{
 		Protocol *gadu = AccountManager::instance()->defaultAccount()->protocol();
@@ -369,7 +374,8 @@ void Notify::messageReceived(Account *account, ContactList contacts, const QStri
 	kdebugf();
 
 	Protocol *gadu = AccountManager::instance()->defaultAccount()->protocol();
-	ChatWidget *chat = chat_manager->findChatWidget(senders);
+	ChatWidget *chat = chat_manager->findChatWidget(contacts);
+	UserListElements senders = UserListElements::fromContactList(contacts, AccountManager::instance()->defaultAccount());
 	if (!chat) // new chat
 		notify(new MessageNotification(MessageNotification::NewChat, senders, msg, "Gadu"));
 	else // new message in chat

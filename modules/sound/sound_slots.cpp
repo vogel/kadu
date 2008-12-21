@@ -9,6 +9,7 @@
 
 #include <QtGui/QCheckBox>
 #include <QtGui/QComboBox>
+#include <QtGui/QPushButton>
 #include <QtGui/QGridLayout>
 #include <QtGui/QLabel>
 #include <QtGui/QListView>
@@ -41,7 +42,7 @@ SoundConfigurationWidget::SoundConfigurationWidget(QWidget *parent, char *name)
 	gridLayout->addWidget(new QLabel(tr("Sound file") + ":", this), 1, 0, Qt::AlignRight);
 	gridLayout->addWidget(soundFileSelectFile, 1, 1);
 	gridLayout->addWidget(testButton, 1, 2);
-	
+
 	parent->layout()->addWidget(this);
 }
 

@@ -24,6 +24,9 @@
 
 #include "sound_exports.h"
 
+
+class PathListEdit;
+
 /**
  * @defgroup sound Sound
  * The sound module.

@@ -9,8 +9,12 @@
 
 #include <QtCore/QMetaType>
 #include <QtGui/QApplication>
+#include <QtGui/QGridLayout>
+#include <QtGui/QPushButton>
 
-#include "configuration/configuration-window-widgets.h"
+#include "gui/widgets/configuration/configuration-window.h"
+#include "gui/widgets/configuration/config-combo-box.h"
+#include "path_list_edit.h"
 #include "chat_widget.h"
 #include "chat_manager.h"
 #include "config_file.h"
@@ -104,7 +108,7 @@ void SamplePlayThread::playSample(const int16_t* data, int length)
 void SamplePlayThread::stop()
 {
 	kdebugf();
-	
+
 	SampleSemaphore.acquire();
 	Stopped = true;
 	PlayingSemaphore.release();

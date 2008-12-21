@@ -8,6 +8,7 @@
  ***************************************************************************/
 
 #include <QtGui/QLabel>
+#include <QtGui/QLineEdit>
 #include <QtGui/QSpinBox>
 #include <QtGui/QComboBox>
 #include <QtGui/QGridLayout>
@@ -22,7 +23,7 @@
 Qt4NotifyConfigurationWidget::Qt4NotifyConfigurationWidget(QWidget *parent, char *name)
 	: NotifierConfigurationWidget(parent, name), currentNotifyEvent("")
 {
-	QString tooltip = qApp->translate("@default", Kadu::SyntaxTextNotify) + 
+	QString tooltip = qApp->translate("@default", Kadu::SyntaxTextNotify) +
 		tr("\n%&t - title (eg. New message) %&m - notification text (eg. Message from Jim), %&d - details (eg. message quotation),\n%&i - notification icon");
 
 	timeout = new QSpinBox(this);
@@ -35,7 +36,7 @@ Qt4NotifyConfigurationWidget::Qt4NotifyConfigurationWidget(QWidget *parent, char
 
 	syntax = new QLineEdit(this);
 	syntax->setToolTip(tooltip);
-	
+
 	QStringList iconNames;
 	iconNames << tr("NoIcon") << tr("Information") << tr("Warning") << tr("Critical");
 	icon = new QComboBox(this);
