@@ -803,9 +803,9 @@ ChatWidget * ChatManager::openChatWidget(Account *initialAccount, ContactList co
 void ChatManager::deletePendingMsgs(UserListElements users)
 {
 	kdebugf();
-
+	ContactList contacts = users.toContactList(AccountManager::instance()->defaultAccount());
 	for (int i = 0; i < pending.count(); ++i)
-		if (pending[i].users.equals(users))
+		if (pending[i].contacts == contacts)
 		{
 			pending.deleteMsg(i);
 			--i;
@@ -824,25 +824,22 @@ ChatMessage *convertPendingToMessage(PendingMsgs::Element elem)
 	date.setTime_t(elem.time);
 
 	UserListElements ules = UserListElements(kadu->myself());
-
-	Contact sender = elem.users[0].toContact(AccountManager::instance()->defaultAccount());
 	ContactList receivers = ules.toContactList(AccountManager::instance()->defaultAccount());
 
-	ChatMessage *message = new ChatMessage(sender, receivers, elem.msg,
+	ChatMessage *message = new ChatMessage(elem.contacts[0], receivers, elem.msg,
 			TypeReceived, QDateTime::currentDateTime(), date);
 
 	return message;
 }
 
-void ChatManager::openPendingMsgs(UserListElements users, bool forceActivate)
+void ChatManager::openPendingMsgs(ContactList contacts, bool forceActivate)
 {
 	kdebugf();
 
 	QList<ChatMessage *> messages;
 	PendingMsgs::Element elem;
-
 	Account *defaultAccount = AccountManager::instance()->defaultAccount();
-	ChatWidget *chatWidget = openChatWidget(defaultAccount, users.toContactList(defaultAccount), forceActivate);
+	ChatWidget *chatWidget = openChatWidget(defaultAccount, contacts, forceActivate);
 
 	if (!chatWidget)
 		return;
@@ -850,14 +847,10 @@ void ChatManager::openPendingMsgs(UserListElements users, bool forceActivate)
 	for (int i = 0; i < pending.count(); ++i)
 	{
 		elem = pending[i];
-		if (!elem.users.equals(users))
+		if (!(elem.contacts == contacts))
 			continue;
-
-		if ((elem.msgclass & GG_CLASS_CHAT) == GG_CLASS_CHAT
-			|| (elem.msgclass & GG_CLASS_MSG) == GG_CLASS_MSG
-			|| (!elem.msgclass))
-			messages.append(convertPendingToMessage(elem));
-			pending.deleteMsg(i--);
+		messages.append(convertPendingToMessage(elem));
+		pending.deleteMsg(i--);
 	}
 
 	if (messages.size())
@@ -876,7 +869,7 @@ void ChatManager::openPendingMsgs(bool forceActivate)
 	kdebugf();
 
 	if (pending.count())
-		openPendingMsgs(pending[0].users, forceActivate);
+		openPendingMsgs(pending[0].contacts, forceActivate);
 
 	kdebugf2();
 }
@@ -884,15 +877,14 @@ void ChatManager::openPendingMsgs(bool forceActivate)
 void ChatManager::sendMessage(UserListElement user, UserListElements selected_users)
 {
 	kdebugf();
-
+	Account *defaultAccount = AccountManager::instance()->defaultAccount();
 	for (int i = 0; i < pending.count(); ++i)
-		if (pending[i].users.contains(user))
+		if (pending[i].contacts.contains(user.toContact(defaultAccount)))
 		{
-			openPendingMsgs(pending[i].users);
+			openPendingMsgs(pending[i].contacts);
 			return;
 		}
 
-	Account *defaultAccount = AccountManager::instance()->defaultAccount();
 	openChatWidget(defaultAccount, selected_users.toContactList(defaultAccount), true);
 
 	kdebugf2();

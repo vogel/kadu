@@ -27,6 +27,7 @@
 #include <QtGui/QSpinBox>
 #include <QtGui/QWheelEvent>
 
+#include "accounts/account_manager.h"
 #include "action.h"
 #include "config_file.h"
 #include "debug.h"
@@ -417,7 +418,8 @@ void KaduListBoxPixmap::changeText(const QString &text)
 QPixmap KaduListBoxPixmap::pixmapForUser(const UserListElement &user)
 {
 	bool has_mobile = !user.mobile().isEmpty();
-
+	UserListElement u = user;
+	Contact contact = u.toContact(AccountManager::instance()->defaultAccount());
 	if (!user.usesProtocol("Gadu"))
 	{
 		if (has_mobile)
@@ -427,7 +429,7 @@ QPixmap KaduListBoxPixmap::pixmapForUser(const UserListElement &user)
 		else
 			return QPixmap();
 	}
-	else if (pending.pendingMsgs(user))
+	else if (pending.pendingMsgs(contact))
 		return icons_manager->loadPixmap("Message");
 	else
 	{

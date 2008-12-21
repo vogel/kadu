@@ -14,12 +14,15 @@
 #include "misc.h"
 #include "protocols/protocol.h"
 #include "userlist.h"
+#include "xml_config_file.h"
 
 #include "accounts/account.h"
+#include "accounts/account_manager.h"
+#include "contacts/contact-manager.h"
 
 #include "pending_msgs.h"
 
-PendingMsgs::Element::Element() : users(), proto(), msg(), msgclass(0), time(0)
+PendingMsgs::Element::Element() : contacts(), proto(), msg(), time(0)
 {
 }
 
@@ -31,14 +34,14 @@ PendingMsgs::PendingMsgs(QObject *parent)
 void PendingMsgs::deleteMsg(int index)
 {
 	kdebugm(KDEBUG_INFO, "PendingMsgs::(pre)deleteMsg(%d), count=%d\n", index, count());
-	UserListElement e = msgs[index].users[0];
+	Contact e = msgs[index].contacts[0];
 	msgs.removeAt(index);
-	writeToFile();
+	storeConfiguration(xml_config_file);
 	kdebugm(KDEBUG_INFO, "PendingMsgs::deleteMsg(%d), count=%d\n", index, count());
 	emit messageFromUserDeleted(e);
 }
 
-bool PendingMsgs::pendingMsgs(UserListElement user) const
+bool PendingMsgs::pendingMsgs(Contact contact) const
 {
 //	kdebugf();
 
@@ -47,7 +50,7 @@ bool PendingMsgs::pendingMsgs(UserListElement user) const
 //		return pendingMsgs();
 
 	foreach(const Element &msg, msgs)
-		if(msg.users[0] == user)
+		if(msg.contacts[0] == contact)
 		{
 //			kdebugf2();
 			return true;
@@ -56,15 +59,18 @@ bool PendingMsgs::pendingMsgs(UserListElement user) const
 	return false;
 }
 
-unsigned int PendingMsgs::pendingMsgsCount(UserListElements users) const
+unsigned int PendingMsgs::pendingMsgsCount(ContactList contacts) const
 {
 	kdebugf();
 
 	unsigned int count = 0;
-
+	ContactList c1 = ContactList(contacts);
 	foreach(const Element &msg, msgs)
-		if (msg.users.equals(users))
+	{
+		ContactList c2 = ContactList(msg.contacts);
+		if (c1 == c2)
 			count++;
+	}
 
 	return count;
 }
@@ -84,153 +90,77 @@ PendingMsgs::Element &PendingMsgs::operator[](int index)
 	return msgs[index];
 }
 
-void PendingMsgs::addMsg(QString protocolName, UserListElements users, QString msg, int msgclass, time_t time)
+void PendingMsgs::addMsg(Account *account, ContactList contacts, QString msg, time_t time)
 {
 	Element e;
-	e.users = users;
-	e.proto = protocolName;
-	e.msg = msg;
-	e.msgclass = msgclass;
-	e.time = time;
-	msgs.append(e);
-	writeToFile();
-	emit messageFromUserAdded(users[0]);
-}
-
-void PendingMsgs::addMsg(Account *account, ContactList contacts, QString msg, int msgclass, time_t time)
-{
-	UserListElements users = UserListElements::fromContactList(contacts, account);
-
-	Element e;
-	e.users = users;
+	e.contacts = contacts;
 	e.proto = account->protocol()->name();
 	e.msg = msg;
-	e.msgclass = msgclass;
 	e.time = time;
 	msgs.append(e);
-	writeToFile();
-	emit messageFromUserAdded(users[0]);
+	storeConfiguration(xml_config_file);
+	emit messageFromUserAdded(contacts[0]);
 }
 
-void PendingMsgs::writeToFile()
+void PendingMsgs::loadConfiguration(XmlConfigFile *configurationStorage)
 {
-	QString path = ggPath("kadu.msgs");
-	QFile f(path);
-	if(!f.open(QIODevice::WriteOnly))
-	{
-		kdebugmf(KDEBUG_ERROR, "Cannot open file kadu.msgs\n");
+	QDomElement pendingMsgsNode = configurationStorage->getNode("PendingMessages", XmlConfigFile::ModeFind);
+	if (pendingMsgsNode.isNull())
 		return;
+
+	QDomNodeList pendingMsgsNodes = configurationStorage->getNodes(pendingMsgsNode, "PendingMessage");
+	int count = pendingMsgsNodes.count();
+	for (int i = 0; i < count; i++)
+	{
+		QDomElement messageElement = pendingMsgsNodes.item(i).toElement();
+		if (messageElement.isNull())
+			continue;
+		Element e;
+		QDomElement accountNode = configurationStorage->getNode(pendingMsgsNodes.item(i).toElement(), "Account", XmlConfigFile::ModeFind);
+		Account *account = AccountManager::instance()->account(accountNode.text());
+
+		QDomElement timeNode = configurationStorage->getNode(pendingMsgsNodes.item(i).toElement(), "Time", XmlConfigFile::ModeFind);
+		QDateTime d = QDateTime::fromString(timeNode.text());
+		e.time = d.toTime_t();
+		
+		QDomElement messageNode = configurationStorage->getNode(pendingMsgsNodes.item(i).toElement(), "Message", XmlConfigFile::ModeFind);
+		e.msg = codec_latin2->toUnicode(messageNode.text());
+
+		QDomElement contactListNode = configurationStorage->getNode(pendingMsgsNodes.item(i).toElement(), "ContactList", XmlConfigFile::ModeFind);
+		QDomNodeList contactNodes = configurationStorage->getNodes(contactListNode, "Contact");
+		int count = contactNodes.count();
+
+		for (int i = 0; i < count; i++)
+		{
+			QDomElement contactElement = contactNodes.item(i).toElement();
+			if (contactElement.isNull())
+				continue;
+			e.contacts.append(ContactManager::instance()->getContactByUuid(contactElement.text()));
+		}
+		msgs.append(e);
+		emit messageFromUserAdded(e.contacts[0]);
 	}
-	// first we write number of messages
-	int t = msgs.count();
-	f.writeBlock((char*)&t,sizeof(int));
-	// next for each message
+}
+
+void PendingMsgs::storeConfiguration(XmlConfigFile *configurationStorage)
+{
+	QDomElement pendingMsgsNode = configurationStorage->getNode("PendingMessages");
+
 	foreach(const Element &i, msgs)
 	{
-		// saving uins, first - number of
-		t = i.users.size();
-		f.writeBlock((char*)&t,sizeof(int));
-		// uins
-		foreach(const UserListElement &user, i.users)
-		{
-			UinType uin = user.ID("Gadu").toUInt();
-			f.writeBlock((char*)&uin, sizeof(UinType));
-		}
-		// message size
-		t = i.msg.length();
-		f.writeBlock((char*)&t,sizeof(int));
-		// message content
-		QString cmsg = codec_latin2->fromUnicode(i.msg);
-		f.writeBlock(cmsg, cmsg.length());
-		// message class
-		f.writeBlock((char*)&i.msgclass,sizeof(int));
-		// and time
-		f.writeBlock((char*)&i.time,sizeof(time_t));
+		QDomElement pendingMessageNode = configurationStorage->getNode(pendingMsgsNode,
+			"PendingMessage", XmlConfigFile::ModeCreate);
+
+		configurationStorage->createTextNode(pendingMessageNode, "Account", AccountManager::instance()->defaultAccount()->uuid());
+		configurationStorage->createTextNode(pendingMessageNode, "Time", QString::number(i.time));
+
+		configurationStorage->createTextNode(pendingMessageNode, "Message", codec_latin2->fromUnicode(i.msg));
+
+		QDomElement contactListNode = configurationStorage->getNode(pendingMessageNode,
+			"ContactList", XmlConfigFile::ModeCreate);
+		foreach(Contact c, i.contacts)
+			configurationStorage->createTextNode(contactListNode, "Contact", c.uuid());
 	}
-	// close file
-	f.close();
-}
-
-bool PendingMsgs::loadFromFile()
-{
-	QString path = ggPath("kadu.msgs");
-	QFile f(path);
-	if (!f.open(QIODevice::ReadOnly)) {
-		kdebugmf(KDEBUG_WARNING, "Cannot open file kadu.msgs\n");
-		return false;
-	}
-
-	// first we read number of messages
-	int msgs_size;
-	if (f.readBlock((char*)&msgs_size,sizeof(int)) <= 0) {
-		kdebugmf(KDEBUG_ERROR, "kadu.msgs is corrupted\n");
-		return false;
-	}
-
-	// next for each message
-	for (int i = 0; i < msgs_size; ++i)
-	{
-		Element e;
-
-		// reading uins, first number of
-		int uins_size;
-		if (f.readBlock((char*)&uins_size, sizeof(int)) <= 0) {
-			--msgs_size;
-			return false;
-		}
-
-		// uins
-		for (int j = 0; j < uins_size; ++j)
-		{
-			int uin;
-			if (f.readBlock((char*)&uin, sizeof(UinType)) <= 0) {
-				--msgs_size;
-				return false;
-			}
-			e.users.append(userlist->byID("Gadu", QString::number(uin)));
-		}
-
-		// message size
-		int msg_size;
-		if (f.readBlock((char*)&msg_size, sizeof(int)) <= 0) {
-			--msgs_size;
-			return false;
-		}
-
-		// message content
-		char *buf = new char[msg_size + 1];
-		if (f.readBlock(buf, msg_size) <= 0) {
-			--msgs_size;
-			delete [] buf;
-			return false;
-		}
-		buf[msg_size] = 0;
-		e.msg = codec_latin2->toUnicode(buf);
-		delete[] buf;
-
-		// message class
-		if (f.readBlock((char*)&e.msgclass, sizeof(int)) <= 0) {
-			--msgs_size;
-			delete [] buf;
-			return false;
-		}
-
-		// and time
-		if (f.readBlock((char*)&e.time, sizeof(time_t)) <= 0) {
-			--msgs_size;
-			delete [] buf;
-			return false;
-		}
-
-		// appending to list
-		msgs.append(e);
-
-		emit messageFromUserAdded(e.users[0]);
-	}
-
-	// and closing file
-	f.close();
-	return true;
 }
 
 void PendingMsgs::openMessages()

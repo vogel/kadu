@@ -180,7 +180,7 @@ public slots:
 		z u�ytkownikami "users"
 		\param users lista u�ytkownik�w identyfikuj�cych okno
 	**/
-	void openPendingMsgs(UserListElements users, bool forceActivate = false);
+	void openPendingMsgs(ContactList contacts, bool forceActivate = false);
 
 	/**
 		\fn void openPendingMsgs()

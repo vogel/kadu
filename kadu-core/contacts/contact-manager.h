@@ -42,6 +42,7 @@ public:
 	void addContact(Contact contact);
 
 	Contact getContactById(Account *account, const QString &id);
+	Contact getContactByUuid(const QString &uuid);
 
 signals:
 	void contactAdded(Contact &contact);

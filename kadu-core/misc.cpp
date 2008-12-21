@@ -730,7 +730,7 @@ void openGGChat(const QString &gg)
 		gadu.remove(QRegExp("/*"));
 	}
 
-	chat_manager->openPendingMsgs(userlist->byID("Gadu", gadu));
+	chat_manager->openPendingMsgs(UserListElements(userlist->byID("Gadu", gadu)).toContactList(AccountManager::instance()->defaultAccount()));
 
 	kdebugf2();
 }
@@ -1059,10 +1059,10 @@ void OpenChatWith::inputAccepted()
 		if (!c_protocol->currentItem())
 		{
 			if (userlist->containsAltNick(text, FalseForAnonymous))
-				chat_manager->openPendingMsgs(userlist->byAltNick(text), true);
+				chat_manager->openPendingMsgs(UserListElements(userlist->byAltNick(text)).toContactList(AccountManager::instance()->defaultAccount()), true);
 		}
 		else
-			chat_manager->openPendingMsgs(userlist->byID(c_protocol->currentText(), text), true);
+			chat_manager->openPendingMsgs(UserListElements(userlist->byID(c_protocol->currentText(), text)).toContactList(AccountManager::instance()->defaultAccount()), true);
 	}
 
 	close();

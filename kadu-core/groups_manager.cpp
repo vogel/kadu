@@ -7,7 +7,9 @@
  *                                                                         *
  ***************************************************************************/
 
+#include "accounts/account_manager.h"
 #include "config_file.h"
+#include "contacts/contact.h"
 #include "debug.h"
 #include "icons_manager.h"
 #include "kadu.h"
@@ -873,9 +875,9 @@ AnonymousUsersWithoutMessages::~AnonymousUsersWithoutMessages()
 			this, SLOT(messageFromUserDeleted(UserListElement)));
 }
 
-static inline bool withoutMessages(const UserListElement &e)
+static inline bool withoutMessages(const Contact &c)
 {
-	return !pending.pendingMsgs(e);
+	return !pending.pendingMsgs(c);
 }
 
 void AnonymousUsersWithoutMessages::userDataChangedSlot(UserListElement elem,
@@ -885,8 +887,8 @@ void AnonymousUsersWithoutMessages::userDataChangedSlot(UserListElement elem,
 	if (name != "Anonymous")
 		return;
 //	kdebugmf(KDEBUG_WARNING, "%s %d %d %d\n", qPrintable(elem.ID("Gadu")), currentValue.toBool(), contains(elem), withoutMessages(elem));
-
-	if (currentValue.toBool() && withoutMessages(elem))
+	Contact contact = elem.toContact(AccountManager::instance()->defaultAccount());
+	if (currentValue.toBool() && withoutMessages(contact))
 		addUser(elem, massively, last);
 	else
 		removeUser(elem, massively, last);
@@ -895,8 +897,8 @@ void AnonymousUsersWithoutMessages::userDataChangedSlot(UserListElement elem,
 void AnonymousUsersWithoutMessages::userAdded(UserListElement elem, bool massively, bool last)
 {
 //	kdebugmf(KDEBUG_ERROR, "%s %d %d\n", qPrintable(elem.ID("Gadu")), elem.isAnonymous(), contains(elem));
-
-	if (elem.isAnonymous() && withoutMessages(elem))
+	Contact contact = elem.toContact(AccountManager::instance()->defaultAccount());
+	if (elem.isAnonymous() && withoutMessages(contact))
 		addUser(elem, massively, last);
 	else
 		removeUser(elem, massively, last);
@@ -905,8 +907,8 @@ void AnonymousUsersWithoutMessages::userAdded(UserListElement elem, bool massive
 void AnonymousUsersWithoutMessages::removingUser(UserListElement elem, bool massively, bool last)
 {
 //	kdebugmf(KDEBUG_WARNING, "%s %d %d %d\n", qPrintable(elem.ID("Gadu")), elem.isAnonymous(), contains(elem), withoutMessages(elem));
-
-	if (withoutMessages(elem))
+	Contact contact = elem.toContact(AccountManager::instance()->defaultAccount());
+	if (withoutMessages(contact))
 		addUser(elem, massively, last);
 	else
 		removeUser(elem, massively, last);
@@ -919,7 +921,8 @@ void AnonymousUsersWithoutMessages::messageFromUserAdded(UserListElement elem)
 
 void AnonymousUsersWithoutMessages::messageFromUserDeleted(UserListElement elem)
 {
-	if (elem.isAnonymous() && withoutMessages(elem))
+	Contact contact = elem.toContact(AccountManager::instance()->defaultAccount());
+	if (elem.isAnonymous() && withoutMessages(contact))
 		addUser(elem);
 }
 

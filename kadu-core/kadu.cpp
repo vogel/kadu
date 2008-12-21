@@ -510,7 +510,7 @@ Kadu::Kadu(QWidget *parent)
 
 	setWindowTitle(tr("Kadu: %1").arg(Myself.ID("Gadu")));
 
-	pending.loadFromFile();
+	pending.loadConfiguration(xml_config_file);
 
 	inactiveUsersAction = new ActionDescription(
 		ActionDescription::TypeUserList, "inactiveUsersAction",
@@ -928,8 +928,8 @@ void Kadu::deleteUsersActionActivated(QAction *sender, bool toggled)
 void Kadu::openRecentChats(QAction *action)
 {
 	kdebugf();
-
-	chat_manager->openPendingMsgs(chat_manager->closedChatUsers().at(action->data().toInt()), true);
+	UserListElements users = chat_manager->closedChatUsers().at(action->data().toInt());
+	chat_manager->openPendingMsgs(users.toContactList(AccountManager::instance()->defaultAccount()), true);
 
 	kdebugf2();
 }
@@ -1459,7 +1459,7 @@ void Kadu::messageReceived(Protocol *, UserListElements s, const QString &msg, t
 		{
 			if (config_file.readBoolEntry("Chat", "OpenChatOnMessageWhenOnline") && !Myself.status("Gadu").isOnline())
 			{
-				pending.addMsg(account, senders, msg, GG_CLASS_CHAT, time);
+				pending.addMsg(account, senders, msg, time);
 				return;
 			}
 
@@ -1469,7 +1469,7 @@ void Kadu::messageReceived(Protocol *, UserListElements s, const QString &msg, t
 			chat->newMessage(account, senders, msg, time);
 		}
 		else
-			pending.addMsg(account, senders, msg, GG_CLASS_CHAT, time);
+			pending.addMsg(account, senders, msg, time);
 	}
 
 	kdebugf2();
@@ -1546,7 +1546,7 @@ bool Kadu::close(bool quit)
 		if (config_file.readBoolEntry("General", "StartupLastDescription"))
 			config_file.writeEntry("General", "LastStatusDescription", userStatusChanger->status().description());
 
-		pending.writeToFile();
+		pending.storeConfiguration(xml_config_file);
 		IgnoredManager::writeToConfiguration();
 
 		ContactManager::instance()->storeConfiguration(xml_config_file);

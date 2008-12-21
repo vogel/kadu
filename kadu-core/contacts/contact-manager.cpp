@@ -90,3 +90,18 @@ Contact ContactManager::getContactById(Account *account, const QString &id)
 
 	return Contact::null;
 }
+
+Contact ContactManager::getContactByUuid(const QString &uuid)
+{
+	if (uuid.isEmpty())
+		return Contact::null;
+
+	foreach (Contact contact, Contacts.values())
+	{
+		if (uuid == contact.uuid().toString())
+			return contact;
+	}
+
+	return Contact::null;
+}
+
