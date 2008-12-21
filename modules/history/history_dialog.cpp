@@ -104,9 +104,9 @@ HistoryDialog::HistoryDialog(UinsList uins)
 	body->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 
 	QCheckBox *showStatusChanges = new QCheckBox(tr("Show status changes"), rightWidget);
-	showStatusChanges->setDisabled(config_file.readBoolEntry("History", "DontSaveStatusChanges"));
-	showStatusChanges->setChecked(!config_file.readBoolEntry("History", "DontShowStatusChanges"));
-	ShowStatus = !config_file.readBoolEntry("History", "DontShowStatusChanges");
+	ShowStatus = config_file.readBoolEntry("History", "ShowStatusChanges");
+	showStatusChanges->setDisabled(!config_file.readBoolEntry("History", "SaveStatusChanges"));
+	showStatusChanges->setChecked(ShowStatus);
 
 	connect(showStatusChanges, SIGNAL(toggled(bool)), this, SLOT(showStatusChangesSlot(bool)));
 	connect(showStatusChanges, SIGNAL(toggled(bool)), this, SIGNAL(showStatusChanges(bool)));
@@ -176,7 +176,7 @@ HistoryDialog::HistoryDialog(UinsList uins)
 
 void HistoryDialog::showStatusChangesSlot(bool showStatusChanges)
 {
-	config_file.writeEntry("History", "DontShowStatusChanges", !showStatusChanges);
+	config_file.writeEntry("History", "ShowStatusChanges", showStatusChanges);
 	ShowStatus = showStatusChanges;
 
 	if (uinsTreeWidget->currentItem())
@@ -289,7 +289,7 @@ void HistoryDialog::showHistoryEntries(int from, int count)
 {
 	kdebugf();
 
-	bool noStatus = config_file.readBoolEntry("History", "DontShowStatusChanges");
+	bool noStatus = !config_file.readBoolEntry("History", "ShowStatusChanges");
 	QList<HistoryEntry> entries = history->getHistoryEntries(uins, from, count);
 	QList<ChatMessage *> chatMessages;
 

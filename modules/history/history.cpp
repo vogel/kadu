@@ -230,7 +230,7 @@ void HistoryManager::appendStatus(UinType uin, const UserStatus &status)
 	unsigned short port;
 //	struct in_addr in;
 
-	if (config_file.readBoolEntry("History", "DontSaveStatusChanges"))
+	if (!config_file.readBoolEntry("History", "SaveStatusChanges"))
 	{
 		kdebugm(KDEBUG_INFO|KDEBUG_FUNCTION_END, "not appending\n");
 		return;

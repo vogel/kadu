@@ -14,10 +14,6 @@
         <translation>Generale</translation>
     </message>
     <message>
-        <source>Save history</source>
-        <translation>Salva Cronologia</translation>
-    </message>
-    <message>
         <source>Save messages in history</source>
         <translation>Salva messaggi nella Cronologia</translation>
     </message>
@@ -26,20 +22,20 @@
         <translation>Cambiamenti dello status</translation>
     </message>
     <message>
-        <source>Don&apos;t show status changes</source>
-        <translation>Non visualizza cambiamenti dello status</translation>
+        <source>Show status changes</source>
+        <translation>Visualizza cambiamenti dello status</translation>
     </message>
     <message>
-        <source>Don&apos;t show status changes in history</source>
-        <translation>Non visualizza cambiamenti dello status nella Cronologia</translation>
+        <source>Show status changes in history</source>
+        <translation>Visualizza cambiamenti dello status nella Cronologia</translation>
     </message>
     <message>
-        <source>Don&apos;t save status changes</source>
-        <translation>Non memorizzi cambiamenti di status</translation>
+        <source>Save status changes</source>
+        <translation>Memorizzi cambiamenti di status</translation>
     </message>
     <message>
-        <source>Don&apos;t save status changes in history</source>
-        <translation>Non memorizzi cambiamenti di status nella Cronologia</translation>
+        <source>Save status changes in history</source>
+        <translation>Memorizzi cambiamenti di status nella Cronologia</translation>
     </message>
     <message>
         <source>Citation</source>

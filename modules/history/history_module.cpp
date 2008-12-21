@@ -375,11 +375,17 @@ void HistoryModule::createDefaultConfiguration()
 {
 	config_file.addVariable("History", "ChatHistoryCitation", 10);
 	config_file.addVariable("History", "ChatHistoryQuotationTime", -24);
-	config_file.addVariable("History", "DontSaveStatusChanges", true);
-	config_file.addVariable("History", "DontShowStatusChanges", true);
 	config_file.addVariable("History", "Logging", true);
 
 	config_file.addVariable("ShortCuts", "kadu_viewhistory", "Ctrl+H");
+
+	config_file.addVariable("History", "SaveStatusChanges", 
+		!config_file.readBoolEntry("History", "DontSaveStatusChanges", true));
+	config_file.addVariable("History", "ShowStatusChanges", 
+		!config_file.readBoolEntry("History", "DontShowStatusChanges", true));
+
+	config_file.removeVariable("History", "DontSaveStatusChanges");
+	config_file.removeVariable("History", "DontShowStatusChanges");
 }
 
 HistoryModule* history_module = 0;

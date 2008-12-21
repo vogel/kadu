@@ -14,10 +14,6 @@
         <translation>Allgemein</translation>
     </message>
     <message>
-        <source>Save history</source>
-        <translation>Verlauf speichern</translation>
-    </message>
-    <message>
         <source>Save messages in history</source>
         <translation>Speichere Nachrichten im Verlauf</translation>
     </message>
@@ -26,20 +22,20 @@
         <translation>Zustandsänderungen</translation>
     </message>
     <message>
-        <source>Don&apos;t show status changes</source>
-        <translation>Zeige keine Zustandsänderungen</translation>
+        <source>Show status changes</source>
+        <translation>Zeige Zustandsänderungen</translation>
     </message>
     <message>
-        <source>Don&apos;t show status changes in history</source>
-        <translation>Zeige keine Zustandsänderungen im Verlauf</translation>
+        <source>Show status changes in history</source>
+        <translation>Zeige Zustandsänderungen im Verlauf</translation>
     </message>
     <message>
-        <source>Don&apos;t save status changes</source>
-        <translation>Speichere keine Zusandsänderungen</translation>
+        <source>Save status changes</source>
+        <translation>Speichere Zusandsänderungen</translation>
     </message>
     <message>
-        <source>Don&apos;t save status changes in history</source>
-        <translation>Speichere keine Zusandsänderungen im Verlauf</translation>
+        <source>Save status changes in history</source>
+        <translation>Speichere Zusandsänderungen im Verlauf</translation>
     </message>
     <message>
         <source>Citation</source>

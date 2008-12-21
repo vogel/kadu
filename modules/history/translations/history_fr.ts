@@ -14,10 +14,6 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Save history</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Save messages in history</source>
         <translation type="unfinished"></translation>
     </message>
@@ -26,19 +22,19 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Don&apos;t show status changes</source>
+        <source>Show status changes</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Don&apos;t show status changes in history</source>
+        <source>Show status changes in history</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Don&apos;t save status changes</source>
+        <source>Save status changes</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Don&apos;t save status changes in history</source>
+        <source>Save status changes in history</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
