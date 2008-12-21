@@ -76,7 +76,7 @@ QMenu * ManageAccounts::createGuiAddAccountMenu()
 		QString displayName = protocolFactory->displayName();
 
 		QAction *protocolAction = addAccountMenu->addAction(icon, displayName,
-			this, SLOT(addAccount()));
+				this, SLOT(addAccount()));
 		protocolAction->setData(name);
 	}
 
@@ -91,7 +91,7 @@ void ManageAccounts::loadAccounts()
 	{
 		QListWidgetItem *accountListWidgetItem = new QListWidgetItem();
 
-		accountListWidgetItem->setText(account->name());
+		accountListWidgetItem->setText(account->uuid());
 		accountListWidgetItem->setIcon(account->protocol()->icon());
 
 		AccountsListWidget->addItem(accountListWidgetItem);
