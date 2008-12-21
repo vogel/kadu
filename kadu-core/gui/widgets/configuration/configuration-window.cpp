@@ -6,6 +6,7 @@
  *   (at your option) any later version.                                   *
  *                                                                         *
  ***************************************************************************/
+
 #include <QtGui/QApplication>
 #include <QtGui/QWidget>
 #include <QtGui/QListWidget>

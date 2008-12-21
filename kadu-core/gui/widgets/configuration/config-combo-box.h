@@ -53,4 +53,4 @@ public:
 	virtual bool fromDomElement(QDomElement domElement);
 };
 
-#endif 
+#endif

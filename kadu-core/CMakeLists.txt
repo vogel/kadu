@@ -123,27 +123,11 @@ set (kadu_MOC_SRCS
 
 	gui/widgets/configuration/config-action-button.h
 	gui/widgets/configuration/config-check-box.h
-	gui/widgets/configuration/config-color-button.h
-	gui/widgets/configuration/config-combo-box.h
-	gui/widgets/configuration/config-gg-password-edit.h
-	gui/widgets/configuration/config-hot-key-edit.h
-	gui/widgets/configuration/config-label.h
-	gui/widgets/configuration/config-line-edit.h
-	gui/widgets/configuration/config-list-widget.h
-	gui/widgets/configuration/config-manage-accounts.h
-	gui/widgets/configuration/config-path-list-edit.h
-	gui/widgets/configuration/config-preview.h
-	gui/widgets/configuration/config-select-file.h
-	gui/widgets/configuration/config-select-font.h
-	gui/widgets/configuration/config-slider.h
-	gui/widgets/configuration/config-spin-box.h
-	gui/widgets/configuration/config-syntax-editor.h
 	gui/widgets/configuration/config-widget-value.h
 	gui/widgets/configuration/config-widget.h
 	gui/widgets/configuration/configuration-window.h
 	gui/widgets/configuration/kadu-scroll-area.h
 	gui/widgets/configuration/config-section.h
-	gui/widgets/configuration/config-group-box.h	
 	gui/widgets/configuration/config-tab.h
 
 	protocols/protocol.h
