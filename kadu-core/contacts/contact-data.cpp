@@ -52,8 +52,8 @@ void ContactData::storeConfiguration(XmlConfigFile *configurationStorage, QDomEl
 
 	foreach (ContactAccountData *accountData, AccountsData.values())
 	{
-		QDomElement contactAccountData = configurationStorage->getNamedNode(parent,
-			"ContactAccountData", accountData->account()->name(), XmlConfigFile::ModeCreate);
+		QDomElement contactAccountData = configurationStorage->getUuidNode(parent,
+			"ContactAccountData", accountData->account()->uuid(), XmlConfigFile::ModeCreate);
 		accountData->storeConfiguration(configurationStorage, contactAccountData);
 	}
 }

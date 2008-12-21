@@ -32,11 +32,12 @@ GaduImporter * GaduImporter::instance()
 void GaduImporter::importAccounts()
 {
 	GaduAccountData *gaduAccountData = new GaduAccountData(
+			"Gadu-Gadu",
 			config_file.readNumEntry("General", "UIN"),
 			unicode2cp(pwHash(config_file.readEntry("General", "Password"))));
 
 	Account *defaultGaduGadu = AccountManager::instance()->createAccount(
-			"Gadu-Gadu", "gadu", gaduAccountData);
+			"gadu", gaduAccountData);
 	AccountManager::instance()->registerAccount(defaultGaduGadu);
 }
 

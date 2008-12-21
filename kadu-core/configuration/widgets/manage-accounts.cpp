@@ -127,7 +127,7 @@ void ManageAccounts::addAccount()
 	if (configurationDialog->exec() == QDialog::Accepted)
 	{
 		Account *newAccount = AccountManager::instance()->createAccount(
-				newAccountData->name(), protocolName , newAccountData);
+				protocolName , newAccountData);
 		AccountManager::instance()->registerAccount(newAccount);
 		loadAccounts();
 		return;
@@ -141,10 +141,14 @@ void ManageAccounts::removeAccount()
 	if (0 == currentAccountItem)
 		return;
 
-	QString accountName = currentAccountItem->text();
+	QUuid accountUuid(currentAccountItem->text());
 
-	AccountManager::instance()->unregisterAccount(accountName);
-	loadAccounts();
+	Account *account = AccountManager::instance()->account(accountUuid);
+	if (account)
+	{
+		AccountManager::instance()->unregisterAccount(account);
+		loadAccounts();
+	}
 }
 
 void ManageAccounts::editAccount()

@@ -15,14 +15,21 @@
 
 #include "account.h"
 
-Account::Account(const QString &name)
-	: Name(name), ProtocolHandler(0), Data(0)
+Account::Account(const QUuid &uuid)
+	: ProtocolHandler(0), Data(0)
 {
+	Uuid = uuid.isNull()
+		? QUuid::createUuid()
+		: uuid;
 }
 
-Account::Account(const QString &name, Protocol *protocol, AccountData *data)
-	: Name(name), ProtocolHandler(protocol), Data(data)
+Account::Account(const QUuid &uuid, Protocol *protocol, AccountData *data)
+	: ProtocolHandler(protocol), Data(data)
 {
+	Uuid = uuid.isNull()
+		? QUuid::createUuid()
+		: uuid;
+
 	protocol->setData(Data);
 }
 
@@ -38,6 +45,10 @@ Account::~Account()
 bool Account::loadConfiguration(XmlConfigFile *configurationStorage, QDomElement parent)
 {
 	QString protocolName = configurationStorage->getTextNode(parent, "Protocol");
+	QString name  = configurationStorage->getTextNode(parent, "Name");
+
+	if (name.isEmpty())
+		name = parent.attribute("name");
 
 	ProtocolHandler = ProtocolsManager::instance()->newInstance(protocolName);
 	if (0 == ProtocolHandler)
@@ -47,19 +58,32 @@ bool Account::loadConfiguration(XmlConfigFile *configurationStorage, QDomElement
 	if (0 == Data)
 		return false;
 
+	Data->setName(name);
 	ProtocolHandler->setData(Data);
 	return Data->loadConfiguration(configurationStorage, parent);
 }
 
 void Account::storeConfiguration(XmlConfigFile *configurationStorage, QDomElement parent)
 {
+	parent.setAttribute("uuid", Uuid.toString());
+	parent.removeAttribute("name");
+
 	configurationStorage->createTextNode(
 			parent, "Protocol",
 			ProtocolHandler->protocolFactory()->name());
+	configurationStorage->createTextNode(
+			parent, "Name",
+			Data->name());
+
 	Data->storeConfiguration(configurationStorage, parent);
 }
 
 UserStatus Account::currentStatus()
 {
 	return (0 == ProtocolHandler) ? UserStatus() : ProtocolHandler->currentStatus();
+}
+
+QString Account::name()
+{
+	return Data->name();
 }

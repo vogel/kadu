@@ -46,8 +46,11 @@ void AccountManager::loadConfiguration(XmlConfigFile *configurationStorage)
 		if (accountElement.isNull())
 			continue;
 
-		QString accountName = accountElement.attribute("name");
-		Account *account = new Account(accountName);
+		QUuid uuid(accountElement.attribute("uuid"));
+		if (uuid.isNull())
+			uuid = QUuid::createUuid();
+
+		Account *account = new Account(uuid);
 
 		if (account->loadConfiguration(configurationStorage, accountElement))
 			registerAccount(account);
@@ -69,44 +72,42 @@ void AccountManager::storeConfiguration(XmlConfigFile *configurationStorage)
 
 Account * AccountManager::defaultAccount()
 {
-	return (0 == Accounts.size()) ? 0 : Accounts[0];
+	return (0 == Accounts.values().size()) ? 0 : Accounts.values()[0];
 }
 
-Account * AccountManager::createAccount(const QString &name, const QString &protocolName, AccountData *accountData)
+Account * AccountManager::createAccount(const QString &protocolName, AccountData *accountData)
 {
 	Protocol *protocol = ProtocolsManager::instance()->newInstance(protocolName);
 	if (0 == protocol)
 		return 0;
 
-	return new Account(name, protocol, accountData);
+	return new Account(QUuid::createUuid(), protocol, accountData);
 }
 
-Account * AccountManager::account(const QString &name)
+Account * AccountManager::account(const QUuid &uuid)
 {
-	foreach (Account *account, Accounts)
-		if (name == account->name())
-			return account;
+	if (Accounts.contains(uuid))
+		return Accounts[uuid];
 
 	return 0;
 }
 
 void AccountManager::registerAccount(Account *account)
 {
-	Accounts.append(account);
+	Accounts[account->uuid()] = account;
 	emit accountRegistered(account);
 }
 
-void AccountManager::unregisterAccount(const QString &name)
+void AccountManager::unregisterAccount(Account *account)
 {
-	Account *deleteAccount = account(name);
-	if (deleteAccount)
-	{
-		Accounts.remove(deleteAccount);
-		emit accountUnregistered(deleteAccount);
-	}
+	Accounts.remove(account->uuid());
+	emit accountUnregistered(account);
 }
 
 UserStatus AccountManager::status()
 {
-	return (0 == Accounts.size()) ? UserStatus() : Accounts[0]->currentStatus();
+	Account *account = defaultAccount();
+	return account
+		? account->currentStatus()
+		: UserStatus();
 }

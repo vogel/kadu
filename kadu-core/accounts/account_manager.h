@@ -10,8 +10,9 @@
 #ifndef ACCOUNT_MANAGER_H
 #define ACCOUNT_MANAGER_H
 
-#include <QtCore/QList>
+#include <QtCore/QMap>
 #include <QtCore/QObject>
+#include <QtCore/QUuid>
 
 #include "status.h"
 
@@ -28,7 +29,7 @@ class KADUAPI AccountManager : public QObject
 	AccountManager();
 	~AccountManager();
 
-	QList<Account *> Accounts;
+	QMap<QUuid, Account *> Accounts;
 
 public:
 	static AccountManager * instance();
@@ -37,13 +38,13 @@ public:
 	void storeConfiguration(XmlConfigFile *configurationStorage);
 
 	Account * defaultAccount();
-	Account * createAccount(const QString &name, const QString &protocolName, AccountData *accountData);
-	Account * account(const QString &name);
+	Account * createAccount(const QString &protocolName, AccountData *accountData);
+	Account * account(const QUuid &uuid);
 
-	const QList<Account *> accounts() { return Accounts; }
+	const QList<Account *> accounts() { return Accounts.values(); }
 
 	void registerAccount(Account *account);
-	void unregisterAccount(const QString &name);
+	void unregisterAccount(Account *account);
 
 	UserStatus status();
 

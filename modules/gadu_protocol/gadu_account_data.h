@@ -21,8 +21,8 @@ class GaduAccountData : public AccountData
 
 public:
 	GaduAccountData();
-	GaduAccountData(const QString &id, const QString &password);
-	GaduAccountData(UinType uin, const QString &password);
+	GaduAccountData(const QString &name, const QString &id, const QString &password);
+	GaduAccountData(const QString &name, UinType uin, const QString &password);
 
 	UinType uin() { return Uin; }
 

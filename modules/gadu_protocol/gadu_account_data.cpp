@@ -16,13 +16,13 @@ GaduAccountData::GaduAccountData()
 {
 }
 
-GaduAccountData::GaduAccountData(const QString &id, const QString &password)
-	: AccountData(id, password)
+GaduAccountData::GaduAccountData(const QString &name, const QString &id, const QString &password)
+	: AccountData(name, id, password)
 {
 }
 
-GaduAccountData::GaduAccountData(UinType uin, const QString &password)
-	: AccountData(QString::number(uin), password)
+GaduAccountData::GaduAccountData(const QString &name, UinType uin, const QString &password)
+	: AccountData(name, QString::number(uin), password)
 {
 }
 

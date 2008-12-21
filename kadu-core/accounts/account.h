@@ -11,6 +11,7 @@
 #define ACCOUNT_H
 
 #include <QtCore/QObject>
+#include <QtCore/QUuid>
 #include <QtXml/QDomElement>
 
 #include "status.h"
@@ -23,20 +24,21 @@ class Account : public QObject
 {
 	Q_OBJECT
 
-	QString Name;
+	QUuid Uuid;
 	Protocol *ProtocolHandler;
 	AccountData *Data;
 
 public:
-	Account(const QString &name);
-	Account(const QString &name, Protocol *protocol, AccountData *data);
+	Account(const QUuid &uuid);
+	Account(const QUuid &uuid, Protocol *protocol, AccountData *data);
 	virtual ~Account();
 
 	bool loadConfiguration(XmlConfigFile *configurationStorage, QDomElement parent);
 	void storeConfiguration(XmlConfigFile *configurationStorage, QDomElement parent);
 
-	QString name() { return Name; }
+	QUuid uuid() { return Uuid; }
 	Protocol * protocol() { return ProtocolHandler; }
+	QString name();
 	AccountData * data() { return Data; }
 
 	UserStatus currentStatus();

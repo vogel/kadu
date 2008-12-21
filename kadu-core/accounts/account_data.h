@@ -25,7 +25,7 @@ class AccountData : public QObject
 
 public:
 	AccountData();
-	AccountData(const QString &id, const QString &password);
+	AccountData(const QString &name, const QString &id, const QString &password);
 	virtual ~AccountData();
 
 	QString name() { return Name; }
