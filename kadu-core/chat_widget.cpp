@@ -482,20 +482,6 @@ void ChatWidget::appendSystemMessage(const QString &rawContent, const QString &b
 }
 
 /* invoked from outside when new message arrives, this is the window to the world */
-void ChatWidget::newMessage(const QString &/*protocolName*/, UserListElements senders, const QString &msg, time_t time)
-{
-	QDateTime date;
-	date.setTime_t(time);
-
-	ChatMessage *message = new ChatMessage(senders[0], UserListElements(kadu->myself()), msg, TypeReceived, QDateTime::currentDateTime(), date);
-	body->appendMessage(message);
-
-	lastMsgTime = QDateTime::currentDateTime();
-	NewMessagesCount++;
-
- 	emit messageReceived(this);
-}
-
 void ChatWidget::newMessage(Account* account, ContactList senders, const QString &message, time_t time)
 {
 	QDateTime date;

@@ -128,10 +128,9 @@ protected:
 public:
 	/**
 		Konstruktor okna rozmowy
-		\fn Chat(UserListElements usrs, QWidget* parent = 0, const char* name = 0)
+		\fn Chat(ContactList contacts, QWidget* parent = 0)
 		\param usrs lista kontakt�w, z kt�rymi prowadzona jest rozmowa
 		\param parent rodzic okna
-		\param name nazwa obiektu
 	**/
 	ChatWidget(Account *initialAccount, const ContactList &contacts, QWidget *parent = 0);
 
@@ -154,14 +153,14 @@ public:
 	void appendSystemMessage(const QString &rawContent, const QString &backgroundColor, const QString &fontColor);
 
 	/**
-		\fn void newMessage(const QString &protocolName, UserListElements senders, const QString &msg, time_t time)
-		Dodaje wiadomo�� do okna
-		\param protocolName nazwa protoko�u
-		\param senders lista u�ytkownik�w
-		\param msg wiadomo�c
+		\fn void newMessage(Account *account, ContactList senders, const QString &message, time_t time)
+		Add new message to window
+
+		\param account account on which the message was received
+		\param senders list of sender
+		\param message message content
 		\param time czas
 		**/
-	void newMessage(const QString &protocolName, UserListElements senders, const QString &msg, time_t time);
 	void newMessage(Account *account, ContactList senders, const QString &message, time_t time);
 
 	/**
