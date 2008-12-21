@@ -186,6 +186,7 @@ public:
 	virtual ChatWidget * chatWidget() { return 0; }
 
 	const UserListElement & myself() { return Myself; };
+	Contact myselfContact();
 
 	bool userInActiveGroup(UinType uin);
 	void removeUsers(UserListElements);

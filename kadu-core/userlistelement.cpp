@@ -541,7 +541,6 @@ Contact UserListElement::toContact(Account *account)
 	return ContactManager::instance()->getContactById(account, ID("Gadu"));
 }
 
-
 UserListElement UserListElement::fromContact(Contact contact, Account *account)
 {
 	ContactAccountData *data = contact.accountData(account);

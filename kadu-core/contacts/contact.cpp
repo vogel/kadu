@@ -49,6 +49,11 @@ bool Contact::operator == (const Contact& compare) const
 	return Data == compare.Data;
 }
 
+bool Contact::operator != (const Contact& compare) const
+{
+	return Data != compare.Data;
+}
+
 int Contact::operator < (const Contact& compare) const
 {
 	return Data.data() - compare.Data.data();

@@ -2578,3 +2578,8 @@ void Kadu::addAction(const QString &actionName, bool showLabel)
 	addToolButton(findExistingToolbar(""), actionName, showLabel);
 	kadu->refreshToolBars("");
 }
+
+Contact Kadu::myselfContact()
+{
+	return Myself.toContact(AccountManager::instance()->defaultAccount());
+}

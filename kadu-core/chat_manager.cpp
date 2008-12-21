@@ -822,8 +822,14 @@ ChatMessage *convertPendingToMessage(PendingMsgs::Element elem)
 
 	QDateTime date;
 	date.setTime_t(elem.time);
+
 	UserListElements ules = UserListElements(kadu->myself());
-	ChatMessage *message = new ChatMessage(elem.users[0], ules, elem.msg, TypeReceived, QDateTime::currentDateTime(), date);
+
+	Contact sender = elem.users[0].toContact(AccountManager::instance()->defaultAccount());
+	ContactList receivers = ules.toContactList(AccountManager::instance()->defaultAccount());
+
+	ChatMessage *message = new ChatMessage(sender, receivers, elem.msg,
+			TypeReceived, QDateTime::currentDateTime(), date);
 
 	return message;
 }

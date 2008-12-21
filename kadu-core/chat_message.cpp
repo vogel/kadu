@@ -112,8 +112,9 @@ void ChatMessage::unregisterParserTags()
 	KaduParser::unregisterObjectTag("separator", getSeparator);
 }
 
-ChatMessage::ChatMessage(const UserListElement &ule, const UserListElements &receivers, const QString &unformattedMessage, ChatMessageType type, QDateTime date, QDateTime sdate)
-	: Ule(ule), Receivers(receivers), Date(date), SDate(sdate), Type(type)
+ChatMessage::ChatMessage(const Contact &sender, const ContactList &receivers, const QString &unformattedMessage,
+		ChatMessageType type, QDateTime date, QDateTime sdate)
+	: Sender(sender), Receivers(receivers), Date(date), SDate(sdate), Type(type)
 {
 	receivedDate = printDateTime(date);
 

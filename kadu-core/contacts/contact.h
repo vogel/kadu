@@ -42,6 +42,7 @@ public:
 
 	Contact & operator = (const Contact &copy);
 	bool operator == (const Contact &compare) const;
+	bool operator != (const Contact &compare) const;
 	int operator < (const Contact &compare) const;
 
 	void importConfiguration(XmlConfigFile *configurationStorage, QDomElement parent);

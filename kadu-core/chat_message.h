@@ -13,6 +13,9 @@
 #include <QtCore/QDateTime>
 #include <QtCore/QString>
 
+#include "contacts/contact.h"
+#include "contacts/contact-list.h"
+
 #include "emoticons.h"
 #include "protocols/protocol.h"
 
@@ -47,8 +50,10 @@ class KADUAPI ChatMessage : public QObject
 		\param style styl emotikonek
 	**/
 	QString convertCharacters(QString text, const QColor &bgcolor, EmoticonsStyle style);
-	UserListElement Ule;
-	UserListElements Receivers;
+
+	Contact Sender;
+	ContactList Receivers;
+
 	QDateTime Date;
 	QDateTime SDate;
 	int SeparatorSize;
@@ -78,7 +83,7 @@ public:
 		\param date data otrzymania wiadomo�ci
 		\param sdate data wys�ania wiadomo�ci
 	**/
-	ChatMessage(const UserListElement &ule, const UserListElements &receivers, const QString &unformattedMessage, ChatMessageType type,
+	ChatMessage(const Contact &sender, const ContactList &receivers, const QString &unformattedMessage, ChatMessageType type,
 		QDateTime date, QDateTime sdate = QDateTime());
 
 	ChatMessage(const QString &rawContent, ChatMessageType type, QDateTime date,
@@ -86,10 +91,11 @@ public:
 
 	void replaceLoadingImages(UinType sender, uint32_t size, uint32_t crc32);
 
-	UserListElement sender() const { return Ule; }
+	Contact sender() const { return Sender; }
+	ContactList receivers() const { return Receivers; }
+
 	QDateTime date() const { return Date; }
 	QDateTime sdate() const { return SDate; }
-	UserListElements receivers() const { return Receivers; }
 	ChatMessageType type() const { return Type; }
 
 	void setSeparatorSize(int separatorSize) { SeparatorSize = separatorSize; }
