@@ -81,7 +81,6 @@ void ExecConfigurationWidget::switchToEvent(const QString &event)
 ExecNotify::ExecNotify(QObject *parent, const char *name) : Notifier(parent, name)
 {
 	kdebugf();
-	import_0_5_0_configuration();
 
 	config_file.addVariable("Exec Notify", "NewChatCmd", "Xdialog --msgbox \"#{protocol} %u %ids #{event}\" 10 100");
 	config_file.addVariable("Exec Notify", "NewMessageCmd", "Xdialog --msgbox \"#{protocol} %u %ids #{event}\" 10 100");
@@ -232,31 +231,6 @@ void ExecNotify::run(const QStringList &args, const QString &in)
 	connect(p, SIGNAL(finished(int, QProcess::ExitStatus)), p, SLOT(deleteLater()));
 	p->start(cmd, arguments);
 	//p->launch(stdin.local8Bit());
-}
-
-void ExecNotify::import_0_5_0_ConfigurationFromTo(const QString &from, const QString &to)
-{
-	QString syntax;
-	syntax = config_file.readEntry("Exec Notify", from + "Cmd", "");
-	if (!syntax.isEmpty())
-	{
-		syntax.replace("%id", "%u");
-		syntax.replace("%status", "%s");
-		syntax.replace("%action", "#{event}");
-		syntax.replace("%protocol", "#{protocol}");
-		config_file.addVariable("Exec Notify", to + "Cmd", syntax);
-	}
-	config_file.addVariable("Notify", to + "_Exec", config_file.readBoolEntry("Notify", from + "_Exec"));
-	config_file.removeVariable("Exec Notify", from + "_Exec");
-}
-
-void ExecNotify::import_0_5_0_configuration()
-{
-	import_0_5_0_ConfigurationFromTo("toAvailable", "StatusChanged/ToOnline");
-	import_0_5_0_ConfigurationFromTo("toInvisible", "StatusChanged/ToInvisible");
-	import_0_5_0_ConfigurationFromTo("toNotAvailableCmd", "StatusChanged/ToOffline");
-	import_0_5_0_ConfigurationFromTo("toBusy", "StatusChanged/ToBusy");
-	import_0_5_0_ConfigurationFromTo("ConnError", "ConnectionError");
 }
 
 NotifierConfigurationWidget *ExecNotify::createConfigurationWidget(QWidget *parent , char *name )

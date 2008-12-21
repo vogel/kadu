@@ -40,9 +40,6 @@ class ExecNotify : public Notifier
 {
 	Q_OBJECT
 
-	void import_0_5_0_configuration();
-	void import_0_5_0_ConfigurationFromTo(const QString &from, const QString &to);
-
 public:
 	ExecNotify(QObject *parent = 0, const char *name = 0);
 	~ExecNotify();

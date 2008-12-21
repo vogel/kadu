@@ -188,7 +188,6 @@ SoundManager::SoundManager(bool firstLoad, const QString& name, const QString& c
 {
 	kdebugf();
 
-	import_0_5_0_configuration();
 	createDefaultConfiguration();
 
 	lastsoundtime.start();
@@ -294,38 +293,6 @@ void SoundManager::configurationWindowApplied()
 
 	if (themesComboBox->currentItem() != 0)
 		applyTheme(themesComboBox->currentText());
-}
-
-void SoundManager::import_0_5_0_configuration()
-{
-	if (config_file.readEntry("Sounds", "StatusChanged/ToOnline_sound", "foobar") == "foobar")
-	{
-		QString tmp;
-
-		tmp = config_file.readEntry("Sounds", "StatusAvailable_sound", "");
-		if (!tmp.isEmpty())
-			config_file.writeEntry("Sounds", "StatusChanged/ToOnline_sound", tmp);
-
-		tmp = config_file.readEntry("Sounds", "StatusBusy_sound");
-		if (!tmp.isEmpty())
-			config_file.writeEntry("Sounds", "StatusChanged/ToBusy_sound", tmp);
-
-		tmp = config_file.readEntry("Sounds", "StatusInvisible_sound");
-		if (!tmp.isEmpty())
-			config_file.writeEntry("Sounds", "StatusChanged/ToInvisible_sound", tmp);
-
-		tmp = config_file.readEntry("Sounds", "StatusNotAvailable_sound");
-		if (!tmp.isEmpty())
-			config_file.writeEntry("Sounds", "StatusChanged/ToOffline_sound", tmp);
-
-		tmp = config_file.readEntry("Sounds", "Chat_sound");
-		if (!tmp.isEmpty())
-			config_file.writeEntry("Sounds", "NewChat_sound", tmp);
-
-		tmp = config_file.readEntry("Sounds", "Message_sound");
-		if (!tmp.isEmpty())
-			config_file.writeEntry("Sounds", "NewMessage_sound", tmp);
-	}
 }
 
 void SoundManager::createDefaultConfiguration()

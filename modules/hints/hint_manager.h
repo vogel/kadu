@@ -34,7 +34,7 @@ private:
 	QMap<QPair<UserListElements, QString>, Hint *> linkedHints;
 
 	/**
-		ustala róg, od którego bêdzie liczona pozycja grupy dymków
+		ustala rï¿½g, od ktï¿½rego bï¿½dzie liczona pozycja grupy dymkï¿½w
 	**/
 	void setLayoutDirection();
 
@@ -42,41 +42,38 @@ private:
 
 	void showNewMessage(const QString &configurationDirective, const QString &title, const QString &contentTitle, UserListElements senders, const QString &msg);
 
-	// TODO: usun±æ w 0.6
+	// TODO: usunï¿½ï¿½ w 0.6
 	void realCopyConfiguration(const QString &fromHint, const QString &toHint);
-	void import_0_5_0_Configuration();
-	void import_0_5_0_Configuration_fromTo(const QString &from, const QString &to,
-		const QString &syntax = QString::null, const QString &detailSyntax = QString::null);
 	void createDefaultConfiguration();
 
 private slots:
 	/**
-		minê³a sekunda: aktualizuje czasy wszystkich dymków
-		usuwa te, którym min±³ czas
+		minï¿½ï¿½a sekunda: aktualizuje czasy wszystkich dymkï¿½w
+		usuwa te, ktï¿½rym minï¿½ï¿½ czas
 	**/
 	void oneSecond();
 
 	/**
-		przesuwa ca³± grupê hintów zgodnie z preferowanym rozmiarem grupy
-		i wykryt±/okre¶lon± w konfiguracji pozycj± traya
+		przesuwa caï¿½ï¿½ grupï¿½ hintï¿½w zgodnie z preferowanym rozmiarem grupy
+		i wykrytï¿½/okreï¿½lonï¿½ w konfiguracji pozycjï¿½ traya
 	**/
 	void setHint();
 
 	/**
-		na dymku o numerze id klikniêto lewym przyciskiem myszy
-		w zale¿no¶ci od konfiguracji otwierana jest nowa rozmowa, dymek jest kasowany lub kasowane s± wszystkie
+		na dymku o numerze id klikniï¿½to lewym przyciskiem myszy
+		w zaleï¿½noï¿½ci od konfiguracji otwierana jest nowa rozmowa, dymek jest kasowany lub kasowane sï¿½ wszystkie
 	**/
 	void leftButtonSlot(Hint *hint);
 
 	/**
-		na dymku o numerze id klikniêto prawym przyciskiem myszy
-		w zale¿no¶ci od konfiguracji otwierana jest nowa rozmowa, dymek jest kasowany lub kasowane s± wszystkie
+		na dymku o numerze id klikniï¿½to prawym przyciskiem myszy
+		w zaleï¿½noï¿½ci od konfiguracji otwierana jest nowa rozmowa, dymek jest kasowany lub kasowane sï¿½ wszystkie
 	**/
 	void rightButtonSlot(Hint *hint);
 
 	/**
-		na dymku o numerze id klikniêto ¶rodkowym przyciskiem myszy
-		w zale¿no¶ci od konfiguracji otwierana jest nowa rozmowa, dymek jest kasowany lub kasowane s± wszystkie
+		na dymku o numerze id klikniï¿½to ï¿½rodkowym przyciskiem myszy
+		w zaleï¿½noï¿½ci od konfiguracji otwierana jest nowa rozmowa, dymek jest kasowany lub kasowane sï¿½ wszystkie
 	**/
 	void midButtonSlot(Hint *hint);
 
@@ -86,12 +83,12 @@ private slots:
 	void notificationClosed(Notification *notification);
 
 	/**
-		Pokazuje dymek zwi±zany z notyfikacj±.
+		Pokazuje dymek zwiï¿½zany z notyfikacjï¿½.
 	**/
 	Hint *addHint(Notification *notification);
 
 	/**
-		je¿eli dymek dotyczy³ konkrentej osoby lub grupy osób, to otwierane jest okno chatu
+		jeï¿½eli dymek dotyczyï¿½ konkrentej osoby lub grupy osï¿½b, to otwierane jest okno chatu
 		dymek jest kasowany
 	**/
 	void openChat(Hint *hint);
@@ -115,7 +112,7 @@ protected:
 
 signals:
 	/**
-		HintManager szuka pozycji traya, aby wy¶wietliæ w jego okolicy dymki
+		HintManager szuka pozycji traya, aby wyï¿½wietliï¿½ w jego okolicy dymki
 	**/
 	void searchingForTrayPosition(QPoint& pos);
 

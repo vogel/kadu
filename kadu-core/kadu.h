@@ -106,7 +106,6 @@ class KADUAPI Kadu : public KaduMainWindow, ConfigurationAwareObject
 
 	void showStatusOnMenu(int);
 
-	void import_0_5_0_configuration();
 	void createDefaultConfiguration();
 	void createAllDefaultToolbars();
 

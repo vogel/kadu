@@ -60,8 +60,6 @@ SpellChecker::SpellChecker()
 	spellConfig = new_aspell_config();
 	aspell_config_replace(spellConfig, "encoding", "utf-8");
 
-	import_0_5_0_Configuration();
-
 	createDefaultConfiguration();
 	// load mark settings
 	buildMarkTag();
@@ -298,19 +296,6 @@ void SpellChecker::createDefaultConfiguration()
 	config_file.addVariable("ASpell", "Checked", "pl");
 	config_file.addVariable("ASpell", "Accents", "false");
 	config_file.addVariable("ASpell", "Case", "false");
-}
-
-void SpellChecker::import_0_5_0_Configuration()
-{
-	ConfigFile *oldConfig = new ConfigFile(ggPath("spellchecker.conf"));
-	config_file.addVariable("ASpell", "Checked", oldConfig->readEntry("ASpell", "Checked"));
-	config_file.addVariable("ASpell", "Color", oldConfig->readEntry("ASpell", "Color"));
-	config_file.addVariable("ASpell", "Bold", oldConfig->readEntry("ASpell", "Bold"));
-	config_file.addVariable("ASpell", "Italic", oldConfig->readEntry("ASpell", "Italic"));
-	config_file.addVariable("ASpell", "Underline", oldConfig->readEntry("ASpell", "Underline"));
-	config_file.addVariable("ASpell", "Accents", oldConfig->readEntry("ASpell", "Accents"));
-	config_file.addVariable("ASpell", "Case", oldConfig->readEntry("ASpell", "Case"));
-	delete oldConfig;
 }
 
 bool SpellChecker::checkWord(QString word)

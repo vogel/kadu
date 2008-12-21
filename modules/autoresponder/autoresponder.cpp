@@ -47,7 +47,6 @@ AutoResponder::AutoResponder(QObject *parent, const char *name) : QObject(parent
 	connect(chat_manager, SIGNAL(chatWidgetOpen(ChatWidget *)), this, SLOT(chatOpenedClosed(ChatWidget *)));
 	connect(chat_manager, SIGNAL(chatWidgetDestroying(ChatWidget *)), this, SLOT(chatOpenedClosed(ChatWidget *)));
 
-	import_0_5_0_Configuration();
 	createDefaultConfiguration();
 	configurationUpdated();
 
@@ -121,18 +120,6 @@ void AutoResponder::configurationUpdated()
 	statusInvisible = config_file.readBoolEntry("Autoresponder", "StatusInvisible");
 
 	kdebugf2();
-}
-
-void AutoResponder::import_0_5_0_Configuration()
-{
-	ConfigFile* oldConfig = new ConfigFile(ggPath("autoresponder.conf"));
-	config_file.addVariable("Autoresponder", "Autotext", oldConfig->readEntry("Autoresponder", "Autotext", ""));
-	config_file.addVariable("Autoresponder", "OnlyFirstTime", oldConfig->readBoolEntry("Autoresponder", "OnlyFirstTime", true));
-	config_file.addVariable("Autoresponder", "RespondConf", oldConfig->readBoolEntry("Autoresponder", "RespondConf", true));
-	config_file.addVariable("Autoresponder", "StatusAvailable", oldConfig->readBoolEntry("Autoresponder", "StatusAvailable", false));
-	config_file.addVariable("Autoresponder", "StatusBusy", oldConfig->readBoolEntry("Autoresponder", "StatusBusy", true));
-	config_file.addVariable("Autoresponder", "StatusInvisible", oldConfig->readBoolEntry("Autoresponder", "StatusInvisible", false));
-	delete oldConfig;
 }
 
 void AutoResponder::createDefaultConfiguration()

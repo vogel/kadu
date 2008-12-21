@@ -22,28 +22,23 @@ class AutoResponder : public ConfigurationUiHandler, ConfigurationAwareObject
 	Q_OBJECT
 
 	private:
-		QList<UserListElements> repliedUsers; /*!< uiny osób, którym ju¿ odpowiedziano */
+		QList<UserListElements> repliedUsers; /*!< uiny osï¿½b, ktï¿½rym juï¿½ odpowiedziano */
 
-		QString autotext; /*!< tre¶æ automatycznej odpowiedzi */
+		QString autotext; /*!< treï¿½ï¿½ automatycznej odpowiedzi */
 
-		bool respondConferences; /*!< czy odpowiadaæ na konkerencje */
-		bool respondOnlyFirst; /*!< czy odpowiadaæ tylko na pierwsz± wiadomo¶æ */
+		bool respondConferences; /*!< czy odpowiadaï¿½ na konkerencje */
+		bool respondOnlyFirst; /*!< czy odpowiadaï¿½ tylko na pierwszï¿½ wiadomoï¿½ï¿½ */
 
-		bool statusAvailable; /*!< czy odpowiadamy, gdy jeste¶my dostêpni */
-		bool statusBusy; /*!< czy odpowiadamy, gdy jeste¶my zajêci */
-		bool statusInvisible; /*!< czy odpowiadamy, gdy jeste¶my niewidoczni */
+		bool statusAvailable; /*!< czy odpowiadamy, gdy jesteï¿½my dostï¿½pni */
+		bool statusBusy; /*!< czy odpowiadamy, gdy jesteï¿½my zajï¿½ci */
+		bool statusInvisible; /*!< czy odpowiadamy, gdy jesteï¿½my niewidoczni */
 
-		/**
-			\fn void import_0_5_0_Configuration()
-			Import danych konfiguracyjnych ze starszej wersji Kadu.
-		**/
-		void import_0_5_0_Configuration();
 		void createDefaultConfiguration();
 
 	protected:
 		/**
 			\fn void configurationUpdated()
-			Metoda jest wywo³ywana po zmianie w oknie konfiguracyjnym.
+			Metoda jest wywoï¿½ywana po zmianie w oknie konfiguracyjnym.
 		**/
 		virtual void configurationUpdated();
 
@@ -51,8 +46,8 @@ class AutoResponder : public ConfigurationUiHandler, ConfigurationAwareObject
 		/**
 			\fn AutoResponder(QObject *parent=0, const char *name=0)
 			Standardowy konstruktor
-			\param parent rodzic - domy¶lnie 0
-			\param name nazwa - domy¶lnie 0
+			\param parent rodzic - domyï¿½lnie 0
+			\param name nazwa - domyï¿½lnie 0
 		**/
 		AutoResponder(QObject *parent=0, const char *name=0);
 		virtual ~AutoResponder();
@@ -62,19 +57,19 @@ class AutoResponder : public ConfigurationUiHandler, ConfigurationAwareObject
 
 		/**
 			\fn void messageReceived(Protocol *protocol, UserListElements senders, const QString& msg, time_t time)
-			Slot jest wywo³ywany po odebraniu wiadomo¶ci.
-			\param protocol protokó³ po którym nadesz³a wiadomo¶æ
-			\param senders lista nadawców wiadomo¶ci
-			\param msg tre¶æ wiadomo¶ci
+			Slot jest wywoï¿½ywany po odebraniu wiadomoï¿½ci.
+			\param protocol protokï¿½ï¿½ po ktï¿½rym nadeszï¿½a wiadomoï¿½ï¿½
+			\param senders lista nadawcï¿½w wiadomoï¿½ci
+			\param msg treï¿½ï¿½ wiadomoï¿½ci
 			\param time czas
 		**/
 		void messageReceived(Protocol *protocol, UserListElements senders, const QString& msg, time_t time);
 
 		/**
 			\fn void chatOpenedClosed(ChatWidget *chat)
-			Slot jest wywo³ywany przy otwieraniu lub po zamkniêciu
+			Slot jest wywoï¿½ywany przy otwieraniu lub po zamkniï¿½ciu
 			okna chat.
-			\param chat okno wiadomo¶ci
+			\param chat okno wiadomoï¿½ci
 		**/
 		void chatOpenedClosed(ChatWidget *chat);
 };

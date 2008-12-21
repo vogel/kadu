@@ -34,7 +34,7 @@ class PathListEdit;
  */
 
 /**
-	Uogólniony deskryptor urz±dzenia d¼wiêkowego.
+	Uogï¿½lniony deskryptor urzï¿½dzenia dï¿½wiï¿½kowego.
 **/
 typedef void* SoundDevice;
 
@@ -43,8 +43,8 @@ typedef void* SoundDevice;
 typedef enum SoundDeviceType {RECORD_ONLY, PLAY_ONLY, PLAY_AND_RECORD};
 
 /**
-	To jest klasa u¿ywana wewnêtrznie przez klasê SoundManager
-	i nie powiniene¶ mieæ potrzeby jej u¿ywania.
+	To jest klasa uï¿½ywana wewnï¿½trznie przez klasï¿½ SoundManager
+	i nie powinieneï¿½ mieï¿½ potrzeby jej uï¿½ywania.
 **/
 class SamplePlayThread : public QThread
 {
@@ -72,8 +72,8 @@ class SamplePlayThread : public QThread
 };
 
 /**
-	To jest klasa u¿ywana wewnêtrznie przez klasê SoundManager
-	i nie powiniene¶ mieæ potrzeby jej u¿ywania.
+	To jest klasa uï¿½ywana wewnï¿½trznie przez klasï¿½ SoundManager
+	i nie powinieneï¿½ mieï¿½ potrzeby jej uï¿½ywania.
 **/
 class SampleRecordThread : public QThread
 {
@@ -101,8 +101,8 @@ class SampleRecordThread : public QThread
 };
 
 /**
-	To jest klasa u¿ywana wewnêtrznie przez klasê SoundManager
-	i nie powiniene¶ mieæ potrzeby jej u¿ywania.
+	To jest klasa uï¿½ywana wewnï¿½trznie przez klasï¿½ SoundManager
+	i nie powinieneï¿½ mieï¿½ potrzeby jej uï¿½ywania.
 **/
 class SndParams
 {
@@ -116,8 +116,8 @@ class SndParams
 };
 
 /**
-	To jest klasa u¿ywana wewnêtrznie przez klasê SoundManager
-	i nie powiniene¶ mieæ potrzeby jej u¿ywania.
+	To jest klasa uï¿½ywana wewnï¿½trznie przez klasï¿½ SoundManager
+	i nie powinieneï¿½ mieï¿½ potrzeby jej uï¿½ywania.
 **/
 class SoundPlayThread : public QThread
 {
@@ -164,7 +164,6 @@ class SOUNDAPI SoundManager : public Notifier, public ConfigurationUiHandler
 		void copyConfiguration(const QString &fromEvent, const QString &toEvent) {}
 
 		void applyTheme(const QString &themeName);
-		void import_0_5_0_configuration();
 		void createDefaultConfiguration();
 
 	private slots:
@@ -192,171 +191,171 @@ class SOUNDAPI SoundManager : public Notifier, public ConfigurationUiHandler
 		bool isMuted() const;
 		int timeAfterLastSound() const;
 		/**
-			Otwiera urz±dzenie d¼wiêkowe do operacji
+			Otwiera urzï¿½dzenie dï¿½wiï¿½kowe do operacji
 			odtwarzania i nagrywania sampli.
-			Niektóre implementacje pozwalaj± na otwarcie
-			wielu niezale¿nie dzia³aj±cych "po³±czeñ"
-			z urz±dzeniami. Wystarczy wtedy kilkukrotnie
-			wywo³aæ t± metodê.
-			Emituje sygna³ openDeviceImpl() w celu
-			przekazania ¿±dania do konkrentego modu³u
-			d¼wiêkowego.
+			Niektï¿½re implementacje pozwalajï¿½ na otwarcie
+			wielu niezaleï¿½nie dziaï¿½ajï¿½cych "poï¿½ï¿½czeï¿½"
+			z urzï¿½dzeniami. Wystarczy wtedy kilkukrotnie
+			wywoï¿½aï¿½ tï¿½ metodï¿½.
+			Emituje sygnaï¿½ openDeviceImpl() w celu
+			przekazania ï¿½ï¿½dania do konkrentego moduï¿½u
+			dï¿½wiï¿½kowego.
 			@param type
 			@param sample_rate sample rate - np. 8000 lub 48000
-			@param channels ilo¶æ kana³ów: 1 - mono, 2 - stereo
-			@return uogólniony deskryptor urz±dzenia lub NULL je¶li otwarcie siê nie powiod³o.
+			@param channels iloï¿½ï¿½ kanaï¿½ï¿½w: 1 - mono, 2 - stereo
+			@return uogï¿½lniony deskryptor urzï¿½dzenia lub NULL jeï¿½li otwarcie siï¿½ nie powiodï¿½o.
 		**/
 		SoundDevice openDevice(SoundDeviceType type, int sample_rate, int channels = 1);
 		/**
-			Zamyka urz±dzenie d¼wiêkowe otwarte za pomoc±
+			Zamyka urzï¿½dzenie dï¿½wiï¿½kowe otwarte za pomocï¿½
 			metody openDevice().
-			Niektóre implementacje pozwalaj± na otwarcie
-			wielu niezale¿nie dzia³aj±cych "po³±czeñ"
-			z urz±dzeniami. Ka¿de otwarte po³±czenie nale¿y
-			zamkn±æ za pomoc± tej metody.
-			Je¶li w³±czyli¶my operacje nieblokuj±ce to
-			metoda ta czeka na zakoñczenie trwaj±cych operacji
-			i koñczy dzia³anie w±tków.
-			Emituje sygna³ closeDeviceImpl() w celu
-			przekazania ¿±dania do konkrentego modu³u
-			d¼wiêkowego.
-			@param device uogólniony deskryptor urz±dzenia.
+			Niektï¿½re implementacje pozwalajï¿½ na otwarcie
+			wielu niezaleï¿½nie dziaï¿½ajï¿½cych "poï¿½ï¿½czeï¿½"
+			z urzï¿½dzeniami. Kaï¿½de otwarte poï¿½ï¿½czenie naleï¿½y
+			zamknï¿½ï¿½ za pomocï¿½ tej metody.
+			Jeï¿½li wï¿½ï¿½czyliï¿½my operacje nieblokujï¿½ce to
+			metoda ta czeka na zakoï¿½czenie trwajï¿½cych operacji
+			i koï¿½czy dziaï¿½anie wï¿½tkï¿½w.
+			Emituje sygnaï¿½ closeDeviceImpl() w celu
+			przekazania ï¿½ï¿½dania do konkrentego moduï¿½u
+			dï¿½wiï¿½kowego.
+			@param device uogï¿½lniony deskryptor urzï¿½dzenia.
 		**/
 		void closeDevice(SoundDevice device);
 		/**
-			Powo³uje do ¿ycia w±tki zajmuj±ce siê odtwarzaniem
-			i nagrywaniem próbek dla danego po³±czenia z
-			urz±dzeniem d¼wiêkowym.
+			Powoï¿½uje do ï¿½ycia wï¿½tki zajmujï¿½ce siï¿½ odtwarzaniem
+			i nagrywaniem prï¿½bek dla danego poï¿½ï¿½czenia z
+			urzï¿½dzeniem dï¿½wiï¿½kowym.
 			Od tej chwili playSample() i recordSample()
-			bêd± operacjami nieblokuj±cymi.
-			@param device uogólniony deskryptor urz±dzenia.
+			bï¿½dï¿½ operacjami nieblokujï¿½cymi.
+			@param device uogï¿½lniony deskryptor urzï¿½dzenia.
 		**/
 		void enableThreading(SoundDevice device);
 		/**
 			Standardowo po przekazaniu odtwarzanego sampla
-			do sterownika d¼wiêkowego program (w trybie blokuj±cym)
-			lub w±tek odtwarzaj±cy (w trybie nieblokuj±cym) czeka
-			na zakoñczenie emitowania d¼wiêku przez sterownik, aby
-			zagwarantowaæ, ¿e wyj¶cie z funkcji playSample() (w trybie
-			blokuj±cym) lub wyemitowanie sygna³u samplePlayed() (w
-			trybie nieblokuj±cym) nast±pi dopiero po fizycznym
-			odegraniu d¼wiêku. Inaczej mog³o by to nast±piæ dopiero
-			przy wywo³aniu metody closeDevice() co ma ró¿ne nieprzyjemne
+			do sterownika dï¿½wiï¿½kowego program (w trybie blokujï¿½cym)
+			lub wï¿½tek odtwarzajï¿½cy (w trybie nieblokujï¿½cym) czeka
+			na zakoï¿½czenie emitowania dï¿½wiï¿½ku przez sterownik, aby
+			zagwarantowaï¿½, ï¿½e wyjï¿½cie z funkcji playSample() (w trybie
+			blokujï¿½cym) lub wyemitowanie sygnaï¿½u samplePlayed() (w
+			trybie nieblokujï¿½cym) nastï¿½pi dopiero po fizycznym
+			odegraniu dï¿½wiï¿½ku. Inaczej mogï¿½o by to nastï¿½piï¿½ dopiero
+			przy wywoï¿½aniu metody closeDevice() co ma rï¿½ï¿½ne nieprzyjemne
 			efekty uboczne.
-			Czasem przy odtwarzaniu kilku ma³ych sampli jeden po drugim
-			powoduje to powstanie przerw miêdzy nimi. Aby tego unikn±æ
-			mo¿emy u¿yæ setFlushingEnabled(device, false) umo¿liwiaj±c
-			w ten sposób p³ynne odtwarzanie kilku sampli bezpo¶rednio
+			Czasem przy odtwarzaniu kilku maï¿½ych sampli jeden po drugim
+			powoduje to powstanie przerw miï¿½dzy nimi. Aby tego uniknï¿½ï¿½
+			moï¿½emy uï¿½yï¿½ setFlushingEnabled(device, false) umoï¿½liwiajï¿½c
+			w ten sposï¿½b pï¿½ynne odtwarzanie kilku sampli bezpoï¿½rednio
 			po sobie.
 		**/
 		void setFlushingEnabled(SoundDevice device, bool enabled);
 		/**
-			Odtwarza próbkê d¼wiêkow±. Standardowo jest to
-			operacja blokuj±ca. Mo¿e byæ wywo³ana z innego
-			w±tku (a nawet powinna).
-			Emituje sygna³ playSampleImpl() w celu
-			przekazania ¿±dania do konkrentego modu³u
-			d¼wiêkowego.
-			Po uprzednim wywo³aniu enableThreading() dzia³anie
-			metoda jest nieblokuj±ca i przekazuje jedynie polecenie
-			odtwarzania do w±tku.
-			W takim wypadku nale¿y uwa¿aæ, aby nie zwolniæ pamiêci
-			zajmowanej przez dane sampla zanim odtwarzanie siê nie
-			zakoñczy.
-			@param device uogólniony deskryptor urz±dzenia
-			@param data wska¼nik do danych sampla
-			@param length d³ugo¶æ danych sampla (w bajtach)
-			@return true je¶li odtwarzanie zakoñczy³o siê powodzeniem.
+			Odtwarza prï¿½bkï¿½ dï¿½wiï¿½kowï¿½. Standardowo jest to
+			operacja blokujï¿½ca. Moï¿½e byï¿½ wywoï¿½ana z innego
+			wï¿½tku (a nawet powinna).
+			Emituje sygnaï¿½ playSampleImpl() w celu
+			przekazania ï¿½ï¿½dania do konkrentego moduï¿½u
+			dï¿½wiï¿½kowego.
+			Po uprzednim wywoï¿½aniu enableThreading() dziaï¿½anie
+			metoda jest nieblokujï¿½ca i przekazuje jedynie polecenie
+			odtwarzania do wï¿½tku.
+			W takim wypadku naleï¿½y uwaï¿½aï¿½, aby nie zwolniï¿½ pamiï¿½ci
+			zajmowanej przez dane sampla zanim odtwarzanie siï¿½ nie
+			zakoï¿½czy.
+			@param device uogï¿½lniony deskryptor urzï¿½dzenia
+			@param data wskaï¿½nik do danych sampla
+			@param length dï¿½ugoï¿½ï¿½ danych sampla (w bajtach)
+			@return true jeï¿½li odtwarzanie zakoï¿½czyï¿½o siï¿½ powodzeniem.
 		**/
 		bool playSample(SoundDevice device, const int16_t* data, int length);
 		/**
-			Nagrywa próbkê d¼wiêkow±. Standardowo jest to
-			operacja blokuj±ca. Mo¿e byæ wywo³ana z innego
-			w±tku (a nawet powinna).
-			Emituje sygna³ recordSampleImpl() w celu
-			przekazania ¿±dania do konkrentego modu³u
-			d¼wiêkowego.
-			Po uprzednim wywo³aniu enableThreading() dzia³anie
-			metoda jest nieblokuj±ca i przekazuje jedynie polecenie
-			nagrywania do w±tku.
-			W takim wypadku nale¿y uwa¿aæ, aby nie zwolniæ pamiêci
-			bufora na dane sampla zanim nagrywanie siê nie
-			zakoñczy.
-			@param device uogólniony deskryptor urz±dzenia
-			@param data wska¼nik na bufor dla danych sampla
-			@param length d³ugo¶æ sampla do nagrania (wielko¶æ bufora w bajtach)
-			@return true je¶li nagrywanie zakoñczy³o siê powodzeniem.
+			Nagrywa prï¿½bkï¿½ dï¿½wiï¿½kowï¿½. Standardowo jest to
+			operacja blokujï¿½ca. Moï¿½e byï¿½ wywoï¿½ana z innego
+			wï¿½tku (a nawet powinna).
+			Emituje sygnaï¿½ recordSampleImpl() w celu
+			przekazania ï¿½ï¿½dania do konkrentego moduï¿½u
+			dï¿½wiï¿½kowego.
+			Po uprzednim wywoï¿½aniu enableThreading() dziaï¿½anie
+			metoda jest nieblokujï¿½ca i przekazuje jedynie polecenie
+			nagrywania do wï¿½tku.
+			W takim wypadku naleï¿½y uwaï¿½aï¿½, aby nie zwolniï¿½ pamiï¿½ci
+			bufora na dane sampla zanim nagrywanie siï¿½ nie
+			zakoï¿½czy.
+			@param device uogï¿½lniony deskryptor urzï¿½dzenia
+			@param data wskaï¿½nik na bufor dla danych sampla
+			@param length dï¿½ugoï¿½ï¿½ sampla do nagrania (wielkoï¿½ï¿½ bufora w bajtach)
+			@return true jeï¿½li nagrywanie zakoï¿½czyï¿½o siï¿½ powodzeniem.
 		**/
 		bool recordSample(SoundDevice device, int16_t* data, int length);
 
 	signals:
 		void playSound(const QString &sound, bool volCntrl, double vol);
 		/**
-			Sygna³ emitowany gdy odtwarzanie sampla siê
-			zakoñczy³o (odnosi siê tylko do sytuacji gdy
-			w³±czone s± operacje nieblokuj±ce).
+			Sygnaï¿½ emitowany gdy odtwarzanie sampla siï¿½
+			zakoï¿½czyï¿½o (odnosi siï¿½ tylko do sytuacji gdy
+			wï¿½ï¿½czone sï¿½ operacje nieblokujï¿½ce).
 		**/
 		void samplePlayed(SoundDevice device);
 		/**
-			Sygna³ emitowany gdy nagrywanie sampla siê
-			zakoñczy³o (odnosi siê tylko do sytuacji gdy
-			w³±czone s± operacje nieblokuj±ce).
+			Sygnaï¿½ emitowany gdy nagrywanie sampla siï¿½
+			zakoï¿½czyï¿½o (odnosi siï¿½ tylko do sytuacji gdy
+			wï¿½ï¿½czone sï¿½ operacje nieblokujï¿½ce).
 		**/
 		void sampleRecorded(SoundDevice device);
 		/**
-			Pod ten sygna³ powinien podpi±æ siê modu³
-			d¼wiêkowy je¶li obs³uguje funkcjê odtwarzania
-			próbki d¼wiêkowej.
-			Wyemitowanie sygna³u oznacza ¿±danie
-			otwarcia urz±dzenia d¼wiêkowego do operacji
+			Pod ten sygnaï¿½ powinien podpiï¿½ï¿½ siï¿½ moduï¿½
+			dï¿½wiï¿½kowy jeï¿½li obsï¿½uguje funkcjï¿½ odtwarzania
+			prï¿½bki dï¿½wiï¿½kowej.
+			Wyemitowanie sygnaï¿½u oznacza ï¿½ï¿½danie
+			otwarcia urzï¿½dzenia dï¿½wiï¿½kowego do operacji
 			odtwarzania i nagrywania sampli.
 			@param type
 			@param sample_rate sample rate - np. 8000 lub 48000
-			@param channels ilo¶æ kana³ów: 1 - mono, 2 - stereo
-			@device zwrócony uogólniony deskryptor urz±dzenia lub NULL je¶li otwarcie siê nie powiod³o.
+			@param channels iloï¿½ï¿½ kanaï¿½ï¿½w: 1 - mono, 2 - stereo
+			@device zwrï¿½cony uogï¿½lniony deskryptor urzï¿½dzenia lub NULL jeï¿½li otwarcie siï¿½ nie powiodï¿½o.
 			@param mutex - mutex to be unlock after setting the device
 		**/
 		void openDeviceImpl(SoundDeviceType type, int sample_rate, int channels, SoundDevice* device);
 		/**
-			Pod ten sygna³ powinien podpi±æ siê modu³
-			d¼wiêkowy je¶li obs³uguje funkcjê odtwarzania
-			próbki d¼wiêkowej.
-			Wyemitowanie sygna³u oznacza ¿±danie
-			Zamkniêcia urz±dzenia d¼wiêkowego otwartegp za pomoc±
+			Pod ten sygnaï¿½ powinien podpiï¿½ï¿½ siï¿½ moduï¿½
+			dï¿½wiï¿½kowy jeï¿½li obsï¿½uguje funkcjï¿½ odtwarzania
+			prï¿½bki dï¿½wiï¿½kowej.
+			Wyemitowanie sygnaï¿½u oznacza ï¿½ï¿½danie
+			Zamkniï¿½cia urzï¿½dzenia dï¿½wiï¿½kowego otwartegp za pomocï¿½
 			metody openDevice().
-			@param device uogólniony deskryptor urz±dzenia.
+			@param device uogï¿½lniony deskryptor urzï¿½dzenia.
 		**/
 		void closeDeviceImpl(SoundDevice device);
 		/**
-			Pod ten sygna³ powinien podpi±æ siê modu³
-			d¼wiêkowy je¶li obs³uguje funkcjê odtwarzania
-			próbki d¼wiêkowej.
-			Wyemitowanie sygna³u oznacza ¿±danie
-			odtworzenia próbki d¼wiêkowej.
-			Modu³ powinien oddaæ sterowanie dopiero po
-			odtworzeniu próbki.
-			Sygna³ zazwyczaj bêdzie emitowany z innego
-			w±tku i slot musi byæ do tego przystosowany.
-			@param device uogólniony deskryptor urz±dzenia
-			@param data wska¼nik do danych sampla
-			@param length d³ugo¶æ danych sampla (w bajtach)
-			@param result zwrócony rezultat operacji - true je¶li odtwarzanie zakoñczy³o siê powodzeniem.
+			Pod ten sygnaï¿½ powinien podpiï¿½ï¿½ siï¿½ moduï¿½
+			dï¿½wiï¿½kowy jeï¿½li obsï¿½uguje funkcjï¿½ odtwarzania
+			prï¿½bki dï¿½wiï¿½kowej.
+			Wyemitowanie sygnaï¿½u oznacza ï¿½ï¿½danie
+			odtworzenia prï¿½bki dï¿½wiï¿½kowej.
+			Moduï¿½ powinien oddaï¿½ sterowanie dopiero po
+			odtworzeniu prï¿½bki.
+			Sygnaï¿½ zazwyczaj bï¿½dzie emitowany z innego
+			wï¿½tku i slot musi byï¿½ do tego przystosowany.
+			@param device uogï¿½lniony deskryptor urzï¿½dzenia
+			@param data wskaï¿½nik do danych sampla
+			@param length dï¿½ugoï¿½ï¿½ danych sampla (w bajtach)
+			@param result zwrï¿½cony rezultat operacji - true jeï¿½li odtwarzanie zakoï¿½czyï¿½o siï¿½ powodzeniem.
 		**/
 		void playSampleImpl(SoundDevice device, const int16_t* data, int length, bool *result);
 		/**
-			Pod ten sygna³ powinien podpi±æ siê modu³
-			d¼wiêkowy je¶li obs³uguje funkcjê odtwarzania
-			próbki d¼wiêkowej.
-			Wyemitowanie sygna³u oznacza ¿±danie
-			nagrania próbki d¼wiêkowej.
-			Modu³ powinien oddaæ sterowanie dopiero po
-			nagraniu próbki.
-			Sygna³ zazwyczaj bêdzie emitowany z innego
-			w±tku i slot musi byæ do tego przystosowany.
-			@param device uogólniony deskryptor urz±dzenia
-			@param data wska¼nik na bufor dla danych sampla
-			@param length d³ugo¶æ sampla do nagrania (wielko¶æ bufora w bajtach)
-			@param result zwrócony rezultat operacji - true je¶li nagrywanie zakoñczy³o siê powodzeniem.
+			Pod ten sygnaï¿½ powinien podpiï¿½ï¿½ siï¿½ moduï¿½
+			dï¿½wiï¿½kowy jeï¿½li obsï¿½uguje funkcjï¿½ odtwarzania
+			prï¿½bki dï¿½wiï¿½kowej.
+			Wyemitowanie sygnaï¿½u oznacza ï¿½ï¿½danie
+			nagrania prï¿½bki dï¿½wiï¿½kowej.
+			Moduï¿½ powinien oddaï¿½ sterowanie dopiero po
+			nagraniu prï¿½bki.
+			Sygnaï¿½ zazwyczaj bï¿½dzie emitowany z innego
+			wï¿½tku i slot musi byï¿½ do tego przystosowany.
+			@param device uogï¿½lniony deskryptor urzï¿½dzenia
+			@param data wskaï¿½nik na bufor dla danych sampla
+			@param length dï¿½ugoï¿½ï¿½ sampla do nagrania (wielkoï¿½ï¿½ bufora w bajtach)
+			@param result zwrï¿½cony rezultat operacji - true jeï¿½li nagrywanie zakoï¿½czyï¿½o siï¿½ powodzeniem.
 		**/
 		void recordSampleImpl(SoundDevice device, int16_t* data, int length, bool *result);
 		/**

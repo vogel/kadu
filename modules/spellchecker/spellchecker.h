@@ -24,7 +24,6 @@ class SpellChecker : public ConfigurationUiHandler, ConfigurationAwareObject
 	QListWidget *availList;
 	QListWidget *checkList;
 
-	void import_0_5_0_Configuration();
 	void createDefaultConfiguration();
 
 private slots:

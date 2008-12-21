@@ -50,7 +50,6 @@ class SmsEraGateway : public SmsGateway
 {
 	Q_OBJECT
 
-		void import_0_5_0_configuration();
 		void createDefaultConfiguration();
 
 	protected:

@@ -503,7 +503,6 @@ Kadu::Kadu(QWidget *parent)
 	setDocked(Docked, dontHideOnClose);
 
 	loadWindowGeometry(this, "General", "Geometry", 0, 50, 205, 465);
-	import_0_5_0_configuration();
 
 	IgnoredManager::loadFromConfiguration();
 
@@ -2397,71 +2396,6 @@ void Kadu::setOffline(const QString &description)
 	status.setOffline(description);
 
 	userStatusChanger->userStatusSet(status);
-}
-
-void Kadu::import_0_5_0_configuration()
-{
-// 	config_file.removeVariable("General", "ShowAnonymousWithMsgs");
-
-	int defaultStatusIndex = config_file.readNumEntry("General", "DefaultStatusIndex", -1);
-	if (defaultStatusIndex != -1)
-	{
-		QString startupStatus;
-		switch (defaultStatusIndex)
-		{
-			case 0:
-			case 1: startupStatus = "Online";
-			        break;
-			case 2:
-			case 3: startupStatus = "Busy";
-			        break;
-			case 4:
-			case 5: startupStatus = "Invisible";
-			        break;
-			case 6: startupStatus = "Offline";
-			        break;
-			case 7:
-			case 8: startupStatus = "LastStatus";
-			        break;
-		}
-		config_file.writeEntry("General", "StartupStatus", startupStatus);
-		config_file.addVariable("General", "StartupLastDescription", defaultStatusIndex == 7 || defaultStatusIndex == 8);
-		config_file.removeVariable("General", "DefaultStatusIndex");
-	}
-
-	QString infoPanelSyntax = config_file.readEntry("Look", "PanelContents", "nothing");
-	if (infoPanelSyntax != "nothing")
-	{
-		config_file.writeEntry("Look", "InfoPanelSyntaxFile", "custom");
-		SyntaxList infoPanelList("infopanel");
-		infoPanelList.updateSyntax("custom", infoPanelSyntax);
-		config_file.removeVariable("Look", "PanelContents");
-	}
-
-	QString chatSyntax = config_file.readEntry("Look", "FullStyle", "nothing");
-	if (chatSyntax != "nothing")
-	{
-		SyntaxList chatList("chat");
-		chatSyntax = chatSyntax.replace("%1", "#{backgroundColor}");
-		chatSyntax = chatSyntax.replace("%2", "#{fontColor}");
-		chatSyntax = chatSyntax.replace("%3", "#{nickColor}");
-		chatSyntax = chatSyntax.replace("%4", "%a");
-		chatSyntax = chatSyntax.replace("%5", "#{receivedDate}");
-		chatSyntax = chatSyntax.replace("%6", "#{sentDate}");
-		chatSyntax = chatSyntax.replace("%7", "#{message}");
-		chatList.updateSyntax("custom", chatSyntax);
-		config_file.removeVariable("Look", "FullStyle");
-
-		QString oldStyle = config_file.readEntry("Look", "Style");
-		if (oldStyle != "kadu" && oldStyle != "hapi" && oldStyle != "irc")
-			config_file.writeEntry("Look", "Style", "custom");
-	}
-
-	config_file.removeVariable("Look", "UserboxBackgroundMove");
-	config_file.removeVariable("Look", "UserboxBackgroundSX");
-	config_file.removeVariable("Look", "UserboxBackgroundSY");
-	config_file.removeVariable("Look", "UserboxBackgroundSE");
-	config_file.removeVariable("Look", "UserboxBackgroundSH");
 }
 
 void Kadu::createDefaultConfiguration()

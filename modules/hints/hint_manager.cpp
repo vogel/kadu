@@ -64,7 +64,6 @@ HintManager::HintManager(QWidget *parent, const char *name)	: Notifier(parent, n
 	notification_manager->registerNotifier(QT_TRANSLATE_NOOP("@default", "Hints"), this);
 	tool_tip_class_manager->registerToolTipClass(QT_TRANSLATE_NOOP("@default", "Hints"), this);
 
-	import_0_5_0_Configuration();
 	createDefaultConfiguration();
 
 	kdebugf2();
@@ -549,53 +548,6 @@ void HintManager::realCopyConfiguration(const QString &fromHint, const QString &
 	config_file.writeEntry("Hints", toHint + "_bgcolor", config_file.readColorEntry("Hints", fromHint + "_bgcolor"));
 	config_file.writeEntry("Hints", toHint + "_timeout", (int) config_file.readUnsignedNumEntry("Hints",  fromHint + "_timeout"));
 }
-
-void HintManager::import_0_5_0_Configuration()
-{
-	if (config_file.readBoolEntry("Notify", "UserBoxChangeToolTip_Hints", false) || (config_file.readEntry("Look", "UserboxToolTipStyle", "foo") == "foo"))
-	{
-		config_file.writeEntry("Look", "UserboxToolTipStyle", "Hints");
-		tool_tip_class_manager->useToolTipClass("Hints");
-		config_file.removeVariable("Notify", "UserBoxChangeToolTip_Hints");
-	}
-
-	QString syntax = config_file.readEntry("Hints","NotifyHintSyntax");
-
-	import_0_5_0_Configuration_fromTo("HintError", "ConnectionError");
-	import_0_5_0_Configuration_fromTo("HintOnline", "StatusChanged/ToOnline", syntax);
-	import_0_5_0_Configuration_fromTo("HintBusy", "StatusChanged/ToBusy", syntax);
-	import_0_5_0_Configuration_fromTo("HintInvisible", "StatusChanged/ToInvisible", syntax);
-	import_0_5_0_Configuration_fromTo("HintOffline", "StatusChanged/ToOffline", syntax);
-	import_0_5_0_Configuration_fromTo("HintNewChat", "NewChat");
-	import_0_5_0_Configuration_fromTo("HintNewMessage", "NewMessage");
-
-	if ((config_file.readNumEntry("Hints", "SetAll_timeout", -1) == -1) && (config_file.readNumEntry("Hints", "Event_NewChat_timeout", -1) != -1))
-		realCopyConfiguration("Event_NewChat", "SetAll");
-}
-
-void HintManager::import_0_5_0_Configuration_fromTo(const QString &from, const QString &to, const QString &syntax, const QString &detailSyntax)
-{
-	if ((config_file.readNumEntry("Hints", from + "_timeout", -1) == -1) || (config_file.readNumEntry("Hints", QString("Event_") + to + "_timeout", -1) != -1))
-		return;
-
-	QWidget w;
-
-	config_file.addVariable("Hints", QString("Event_") + to + "_font", config_file.readFontEntry("Hints", from + "_font"));
-	config_file.addVariable("Hints", QString("Event_") + to + "_fgcolor", config_file.readColorEntry("Hints", from + "_fgcolor", &w.paletteBackgroundColor()));
-	config_file.addVariable("Hints", QString("Event_") + to + "_bgcolor", config_file.readColorEntry("Hints", from + "_bgcolor", &w.paletteForegroundColor()));
-	config_file.addVariable("Hints", QString("Event_") + to + "_timeout", config_file.readNumEntry("Hints", from + "_timeout", 10));
-
-	if (QString::null != syntax && syntax != "")
-		config_file.writeEntry("Hints",  QString("Event_") + to + "_syntax", syntax);
-	if (QString::null != detailSyntax && detailSyntax != "")
-		config_file.writeEntry("Hints",  QString("Event_") + to + "_detailSyntax", detailSyntax);
-
-	config_file.removeVariable("Hints", from + "_font");
-	config_file.removeVariable("Hints", from + "_fgcolor");
-	config_file.removeVariable("Hints", from + "_bgcolor");
-	config_file.removeVariable("Hints", from + "_timeout");
-}
-
 
 void HintManager::createDefaultConfiguration()
 {
