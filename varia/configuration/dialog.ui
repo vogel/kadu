@@ -33,6 +33,7 @@
 					<item value="Dillo" caption="Dillo" />
 					<item value="Galeon" caption="Galeon" />
 					<item value="Safari" caption="Safari" />
+					<item value="Camino" caption="Camino" />
 				</combo-box>
 				<line-edit caption="Custom browser" config-section="Chat" config-item="WebBrowser" id="browserPath"
 					   tool-tip="Write specific path to your browser" />

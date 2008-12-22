@@ -464,6 +464,7 @@ void Wizard::createApplicationsPage()
 	browserCombo->insertItem(tr("Dillo"));
 	browserCombo->insertItem(tr("Galeon"));
 	browserCombo->insertItem(tr("Safari"));
+	browserCombo->insertItem(tr("Camino"));
 	connect(browserCombo, SIGNAL(activated(int)), this, SLOT(browserChanged(int)));
 	gridLayout->addWidget(browserCombo, 0, 3);
 
