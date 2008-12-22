@@ -16,6 +16,9 @@
 
 class QSocketNotifier;
 
+class Account;
+class ContactList;
+
 struct gg_http;
 struct gg_session;
 
@@ -103,6 +106,8 @@ class GaduSocketNotifiers : public SocketNotifiers
 {
 	Q_OBJECT
 
+	Account *CurrentAccount;
+
 	gg_session *Sess;
 	int socketEventCalls;
 
@@ -112,10 +117,12 @@ protected:
 	virtual void socketEvent();
 
 public:
-	GaduSocketNotifiers(QObject *parent = 0);
+	GaduSocketNotifiers(Account *account, QObject *parent = 0);
 	virtual ~GaduSocketNotifiers();
 	void setSession(gg_session *sess);
 	void checkWrite();
+
+	void setAccount(Account *account) { CurrentAccount = account; }
 
 public slots:
 	virtual void dataReceived();
@@ -132,7 +139,7 @@ signals:
 		jeste�my za NAT-em.
 		TODO: zmieni� nazw�.
 	**/
-	void dccConnectionReceived(const UserListElement &);
+	void dccConnectionReceived(Contact contact);
 
 	/**
 		Sygna� jest emitowany, gdy serwer przerwa� po��czenie
@@ -142,7 +149,7 @@ signals:
 	void error(GaduError);
 	void imageReceived(UinType, uint32_t, uint32_t, const QString &filename, const char *data);
 	void imageRequestReceived(UinType, uint32_t, uint32_t);
-	void messageReceived(int, UserListElements, QString &, time_t, QByteArray &);
+	void messageReceived(int, ContactList, QString &, time_t, QByteArray &);
 	void pubdirReplyReceived(gg_pubdir50_t);
 	void systemMessageReceived(QString &, QDateTime &, int, void *);
 	void userlistReceived(const struct gg_event *);

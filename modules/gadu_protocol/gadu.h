@@ -256,6 +256,7 @@ class GADUAPI GaduProtocol : public Protocol
 	GaduProtocol & operator = (const GaduProtocol &) {}
 
 	virtual AccountData * createAccountData();
+	UinType uin(Contact contact) const;
 
 private slots:
 	/**
@@ -382,7 +383,7 @@ private slots:
 	/**
 		Slot wywo�ywany po otrzymaniu wiadomo�ci od serwera.
 	**/
-	void messageReceivedSlot(int, UserListElements, QString &msg, time_t, QByteArray &formats);
+	void messageReceivedSlot(int, ContactList, QString &msg, time_t, QByteArray &formats);
 
 	/**
 		Wykonuje zadania co minut� - pinguje sie� i zeruje licznik
@@ -486,6 +487,7 @@ public:
 	virtual ~GaduProtocol();
 
 	virtual void setData(AccountData *);
+	virtual void setAccount(Account *account);
 
 	unsigned int maxDescriptionLength();
 
@@ -591,7 +593,7 @@ public slots:
 		@param crc32 crc32 pliku
 		@todo powinno by� sendImageRequest(uniqId uint32_t) - info o obrazku zapisywa� gdzie� w �rodku
 	**/
-	bool sendImageRequest(UserListElement user, int size, uint32_t crc32);
+	bool sendImageRequest(Contact contact, int size, uint32_t crc32);
 
 	/**
 		Wywy�a obrazek o podanych parametrach.
@@ -602,7 +604,7 @@ public slots:
 		@param data zawarto�� pliku
 		@todo usun�� parametry size i data - mo�emy to chyba sami wyznaczy�
 	**/
-	bool sendImage(UserListElement user, const QString &file_name, uint32_t size, const char *data);
+	bool sendImage(Contact contact, const QString &file_name, uint32_t size, const char *data);
 
 	/**
 		Rejetrujemy nowe konto. Odpowied� przychodzi poprzez sygna� registered. Mo�e
@@ -775,7 +777,7 @@ signals:
 		@param user wywo�uj�cy
 		@todo zmieni� nazw�
 	**/
-	void dccConnectionReceived(const UserListElement &user);
+	void dccConnectionReceived(Contact contact);
 
 	/**
 		otrzymano nowe wyniki wyszukiwania w katalogu publicznym
@@ -847,7 +849,7 @@ signals:
 		Mo�na te� przerwa� dalsz� obr�bk� wiadomo�ci ustawiaj�c
 		stop na true.
 	**/
-	void rawGaduReceivedMessageFilter(Protocol *protocol, UserListElements senders, QString &msg, QByteArray &formats, bool &ignore);
+	void rawGaduReceivedMessageFilter(Account *account, ContactList senders, QString &msg, QByteArray &formats, bool &ignore);
 
 	/**
 		Wywo�ywane, gdy chcemy odczyta� token z obrazka

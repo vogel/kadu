@@ -18,6 +18,9 @@ class ContactList : public QList<Contact>
 {
 
 public:
+	ContactList();
+	ContactList(Contact constact);
+
 	bool operator == (ContactList &compare);
 
 };

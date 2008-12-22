@@ -12,6 +12,8 @@
 
 #include "contacts/contact-account-data.h"
 
+#include "gadu.h"
+
 class Account;
 
 class GaduContactAccountData : public ContactAccountData
@@ -21,6 +23,8 @@ public:
 	GaduContactAccountData(Account *account, const QString &id)
 		: ContactAccountData(account, id)
 	{}
+
+	UinType uin();
 
 };
 

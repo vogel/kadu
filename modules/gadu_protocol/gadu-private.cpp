@@ -9,6 +9,8 @@
 
 #include <QtCore/QSocketNotifier>
 
+#include "accounts/account.h"
+#include "accounts/account_manager.h"
 #include "config_file.h"
 #include "debug.h"
 #include "ignore.h"
@@ -321,8 +323,8 @@ void TokenSocketNotifiers::socketEvent()
 
 /* GaduSocketNotifiers */
 
-GaduSocketNotifiers::GaduSocketNotifiers(QObject *parent) :
-	SocketNotifiers(0, parent), Sess(0), socketEventCalls(0)
+GaduSocketNotifiers::GaduSocketNotifiers(Account *account, QObject *parent) :
+		CurrentAccount(account), SocketNotifiers(0, parent), Sess(0), socketEventCalls(0)
 {
 	kdebugf();
 	kdebugf2();
@@ -459,11 +461,19 @@ void GaduSocketNotifiers::socketEvent()
 	{
 		case GG_EVENT_MSG:
 		{
-			UserListElements users(userlist->byID("Gadu", QString::number(e->event.msg.sender)));
+			ContactList users(CurrentAccount->getContactById(QString::number(e->event.msg.sender)));
+			UserListElements ules = UserListElements::fromContactList(users, CurrentAccount);
+
+			printf("sender is: %d\n", e->event.msg.sender);
+			printf("this contact is null: %d\n", CurrentAccount->getContactById(QString::number(e->event.msg.sender)).isNull());
+			printf("this contact is null: %d\n", AccountManager::instance()->defaultAccount()->getContactById(QString::number(e->event.msg.sender)).isNull());
+
+			printf("account: %p\n", CurrentAccount);
+			printf("account: %p\n", AccountManager::instance()->defaultAccount());
 
 			if (e->event.msg.msgclass == GG_CLASS_CTCP)
 			{
-				if (config_file.readBoolEntry("Network", "AllowDCC") && !IgnoredManager::isIgnored(users) && !users[0].isAnonymous())
+				if (config_file.readBoolEntry("Network", "AllowDCC") && !IgnoredManager::isIgnored(ules) && !ules[0].isAnonymous())
 					emit dccConnectionReceived(users[0]);
 			}
 			else
@@ -471,12 +481,11 @@ void GaduSocketNotifiers::socketEvent()
 				kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "recipients_count: %d\n", e->event.msg.recipients_count);
 				if ((e->event.msg.msgclass & GG_CLASS_CHAT) == GG_CLASS_CHAT)
 					for (int i = 0; i < e->event.msg.recipients_count; ++i)
-						users.append(userlist->byID("Gadu", QString::number(e->event.msg.recipients[i])));
+						users.append(CurrentAccount->getContactById(QString::number(e->event.msg.recipients[i])));
 				QString msg((char*)e->event.msg.message);
 				QByteArray formats;
 				formats.duplicate((const char*)e->event.msg.formats, e->event.msg.formats_length);
-				emit messageReceived(e->event.msg.msgclass, users, msg,
-					e->event.msg.time, formats);
+				emit messageReceived(e->event.msg.msgclass, users, msg, e->event.msg.time, formats);
 			}
 			break;
 		}

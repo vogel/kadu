@@ -8,9 +8,13 @@
  ***************************************************************************/
 
 #include "account_data.h"
+
+#include "contacts/contact-manager.h"
+
 #include "protocols/protocol.h"
 #include "protocols/protocol_factory.h"
 #include "protocols/protocols_manager.h"
+
 #include "xml_config_file.h"
 
 #include "account.h"
@@ -88,4 +92,9 @@ UserStatus Account::currentStatus()
 QString Account::name()
 {
 	return Data->name();
+}
+
+Contact Account::getContactById(const QString& id)
+{
+	return ContactManager::instance()->getContactById(this, id);
 }

@@ -32,6 +32,7 @@
 #include "misc.h"
 
 #include "gadu_account_data.h"
+#include "gadu-contact-account-data.h"
 #include "gadu_formatter.h"
 #include "gadu_images_manager.h"
 #include "gadu-importer.h"
@@ -316,7 +317,7 @@ GaduProtocol::GaduProtocol(Account *account, ProtocolFactory *factory)
 		GaduData(0),
 		Mode(Register), DataUin(0), DataEmail(), DataPassword(), DataNewPassword(), TokenId(), TokenValue(),
 		ServerNr(0), ActiveServer(), LoginParams(), Sess(0), sendImageRequests(0), seqNumber(0), whileConnecting(false),
-		DccExternalIP(), SocketNotifiers(new GaduSocketNotifiers(this)), PingTimer(0),
+		DccExternalIP(), SocketNotifiers(new GaduSocketNotifiers(account, this)), PingTimer(0),
 		SendUserListTimer(new QTimer(this, "SendUserListTimer")), UserListClear(false), ImportReply()
 {
 	kdebugf();
@@ -331,8 +332,8 @@ GaduProtocol::GaduProtocol(Account *account, ProtocolFactory *factory)
 
 	connect(SocketNotifiers, SIGNAL(ackReceived(int, uin_t, int)), this, SLOT(ackReceived(int, uin_t, int)));
 	connect(SocketNotifiers, SIGNAL(connected()), this, SLOT(connectedSlot()));
-	connect(SocketNotifiers, SIGNAL(dccConnectionReceived(const UserListElement&)),
-		this, SIGNAL(dccConnectionReceived(const UserListElement&)));
+	connect(SocketNotifiers, SIGNAL(dccConnectionReceived(Contact)),
+		this, SIGNAL(dccConnectionReceived(Contact)));
 	connect(SocketNotifiers, SIGNAL(serverDisconnected()), this, SLOT(socketDisconnectedSlot()));
 	connect(SocketNotifiers, SIGNAL(error(GaduError)), this, SLOT(errorSlot(GaduError)));
 	connect(SocketNotifiers, SIGNAL(imageReceived(UinType, uint32_t, uint32_t, const QString &, const char *)),
@@ -341,8 +342,8 @@ GaduProtocol::GaduProtocol(Account *account, ProtocolFactory *factory)
 		this, SLOT(imageRequestReceivedSlot(UinType, uint32_t, uint32_t)));
 	connect(SocketNotifiers, SIGNAL(imageRequestReceived(UinType, uint32_t, uint32_t)),
 		this, SIGNAL(imageRequestReceived(UinType, uint32_t, uint32_t)));
-	connect(SocketNotifiers, SIGNAL(messageReceived(int, UserListElements, QString &, time_t, QByteArray &)),
-		this, SLOT(messageReceivedSlot(int, UserListElements, QString &, time_t, QByteArray &)));
+	connect(SocketNotifiers, SIGNAL(messageReceived(int, ContactList, QString &, time_t, QByteArray &)),
+		this, SLOT(messageReceivedSlot(int, ContactList, QString &, time_t, QByteArray &)));
 	connect(SocketNotifiers, SIGNAL(pubdirReplyReceived(gg_pubdir50_t)), this, SLOT(newResults(gg_pubdir50_t)));
 	connect(SocketNotifiers, SIGNAL(systemMessageReceived(QString &, QDateTime &, int, void *)),
 		this, SLOT(systemMessageReceived(QString &, QDateTime &, int, void *)));
@@ -413,7 +414,14 @@ void GaduProtocol::setData(AccountData *data)
 		GaduData = dynamic_cast<GaduAccountData *>(data);
 }
 
-UserStatus *GaduProtocol::newStatus() const
+void GaduProtocol::setAccount(Account* account) {
+	Protocol::setAccount(account);
+
+	SocketNotifiers->setAccount(account);
+}
+
+
+UserStatus * GaduProtocol::newStatus() const
 {
 	return new GaduStatus();
 }
@@ -546,6 +554,9 @@ void GaduProtocol::protocolUserDataChanged(QString protocolName, UserListElement
 	   musimy wi�c wys�a� j� w ca�o�ci (poprzez sendUserList())
 	   w takim w�a�nie przypadku (massively==true) nie robimy nic
 	*/
+
+	Contact contact = elem.toContact(account());
+
 	if (protocolName != "Gadu")
 		return;
 	if (CurrentStatus->isOffline())
@@ -559,32 +570,32 @@ void GaduProtocol::protocolUserDataChanged(QString protocolName, UserListElement
 		return;
 	}
 
-	UinType uin = elem.ID("Gadu").toUInt();
+	UinType contactUin = uin(contact);
 	if (name == "OfflineTo")
 	{
 		if (currentValue.toBool() && !oldValue.toBool())
 		{
-			gg_remove_notify_ex(Sess, uin, GG_USER_NORMAL);
-			gg_add_notify_ex(Sess, uin, GG_USER_OFFLINE);
+			gg_remove_notify_ex(Sess, contactUin, GG_USER_NORMAL);
+			gg_add_notify_ex(Sess, contactUin, GG_USER_OFFLINE);
 		}
 		else if (!currentValue.toBool() && oldValue.toBool())
 		{
-			gg_add_notify_ex(Sess, uin, GG_USER_OFFLINE);
-			gg_add_notify_ex(Sess, uin, GG_USER_NORMAL);
+			gg_add_notify_ex(Sess, contactUin, GG_USER_OFFLINE);
+			gg_add_notify_ex(Sess, contactUin, GG_USER_NORMAL);
 		}
 	}
 	else if (name == "Blocking")
 	{
 		if (currentValue.toBool() && !oldValue.toBool())
 		{
-			gg_remove_notify_ex(Sess, uin, GG_USER_NORMAL);
-			gg_add_notify_ex(Sess, uin, GG_USER_BLOCKED);
+			gg_remove_notify_ex(Sess, contactUin, GG_USER_NORMAL);
+			gg_add_notify_ex(Sess, contactUin, GG_USER_BLOCKED);
 			elem.setStatus(protocolName, GaduStatus());
 		}
 		else if (!currentValue.toBool() && oldValue.toBool())
 		{
-			gg_remove_notify_ex(Sess, uin, GG_USER_BLOCKED);
-			gg_add_notify_ex(Sess, uin, GG_USER_NORMAL);
+			gg_remove_notify_ex(Sess, contactUin, GG_USER_BLOCKED);
+			gg_add_notify_ex(Sess, contactUin, GG_USER_NORMAL);
 		}
 	}
 
@@ -594,8 +605,11 @@ void GaduProtocol::protocolUserDataChanged(QString protocolName, UserListElement
 void GaduProtocol::userDataChanged(UserListElement elem, QString name, QVariant oldValue, QVariant currentValue, bool massively, bool /*last*/)
 {
 	kdebugf();
-	if (!elem.usesProtocol("Gadu"))
+
+	Contact contact = elem.toContact(account());
+	if (!contact.accountData(account()))
 		return;
+
 	if (CurrentStatus->isOffline())
 		return;
 	if (name != "Anonymous")
@@ -606,7 +620,7 @@ void GaduProtocol::userDataChanged(UserListElement elem, QString name, QVariant 
 	else
 	{
 		if (!currentValue.toBool() && oldValue.toBool())
-			gg_add_notify(Sess, elem.ID("Gadu").toUInt());
+			gg_add_notify(Sess, uin(contact));
 	}
 	kdebugf2();
 }
@@ -614,8 +628,11 @@ void GaduProtocol::userDataChanged(UserListElement elem, QString name, QVariant 
 void GaduProtocol::userAdded(UserListElement elem, bool massively, bool /*last*/)
 {
 	kdebugmf(KDEBUG_FUNCTION_START, "start: '%s' %d\n", qPrintable(elem.altNick()), massively/*, last*/);
-	if (!elem.usesProtocol("Gadu"))
+
+	Contact contact = elem.toContact(account());
+	if (!contact.accountData(account()))
 		return;
+
 	if (CurrentStatus->isOffline())
 		return;
 
@@ -623,28 +640,36 @@ void GaduProtocol::userAdded(UserListElement elem, bool massively, bool /*last*/
 		sendUserListLater();
 	else
 		if (!elem.isAnonymous())
-			gg_add_notify(Sess, elem.ID("Gadu").toUInt());
+			gg_add_notify(Sess, uin(contact));
 	kdebugf2();
 }
 
 void GaduProtocol::removingUser(UserListElement elem, bool massively, bool /*last*/)
 {
 	kdebugmf(KDEBUG_FUNCTION_START, "start: '%s' %d\n", qPrintable(elem.altNick()), massively/*, last*/);
-	if (!elem.usesProtocol("Gadu"))
+
+	Contact contact = elem.toContact(account());
+	if (!contact.accountData(account()))
 		return;
+
 	if (CurrentStatus->isOffline())
 		return;
 	if (massively)
 		sendUserListLater();
 	else
 		if (!elem.isAnonymous())
-			gg_remove_notify(Sess, elem.ID("Gadu").toUInt());
+			gg_remove_notify(Sess, uin(contact));
 	kdebugf2();
 }
 
 void GaduProtocol::protocolAdded(UserListElement elem, QString protocolName, bool massively, bool /*last*/)
 {
 	kdebugf();
+
+	Contact contact = elem.toContact(account());
+	if (contact.isNull())
+		return;
+
 	if (protocolName != "Gadu")
 		return;
 	if (CurrentStatus->isOffline())
@@ -654,13 +679,18 @@ void GaduProtocol::protocolAdded(UserListElement elem, QString protocolName, boo
 		sendUserListLater();
 	else
 		if (!elem.isAnonymous())
-			gg_add_notify(Sess, elem.ID("Gadu").toUInt());
+			gg_add_notify(Sess, uin(contact));
 	kdebugf2();
 }
 
 void GaduProtocol::removingProtocol(UserListElement elem, QString protocolName, bool massively, bool /*last*/)
 {
 	kdebugf();
+
+	Contact contact = elem.toContact(account());
+	if (contact.isNull())
+		return;
+
 	if (protocolName != "Gadu")
 		return;
 	if (CurrentStatus->isOffline())
@@ -670,7 +700,7 @@ void GaduProtocol::removingProtocol(UserListElement elem, QString protocolName, 
 		sendUserListLater();
 	else
 		if (!elem.isAnonymous())
-			gg_remove_notify(Sess, elem.ID("Gadu").toUInt());
+			gg_remove_notify(Sess, uin(contact));
 	kdebugf2();
 }
 
@@ -906,7 +936,7 @@ void GaduProtocol::imageRequestReceivedSlot(UinType sender, uint32_t size, uint3
 	gadu_images_manager.sendImage(sender,size,crc32);
 }
 
-void GaduProtocol::messageReceivedSlot(int msgclass, UserListElements senders, QString &msg, time_t time, QByteArray &formats)
+void GaduProtocol::messageReceivedSlot(int msgclass, ContactList senders, QString &msg, time_t time, QByteArray &formats)
 {
 /*
 	najpierw sprawdzamy czy nie jest to wiadomosc systemowa (senders[0] rowne 0)
@@ -917,22 +947,23 @@ void GaduProtocol::messageReceivedSlot(int msgclass, UserListElements senders, Q
 
 	// TODO : 0.6.6
 
-	if (senders[0].isAnonymous() &&
+	UserListElements ules = UserListElements::fromContactList(senders, account());
+	if (ules[0].isAnonymous() &&
 			config_file.readBoolEntry("Chat", "IgnoreAnonymousUsers") &&
 			((senders.size() == 1) || config_file.readBoolEntry("Chat", "IgnoreAnonymousUsersInConferences")))
 	{
-		kdebugmf(KDEBUG_INFO, "Ignored anonymous. %d is ignored\n", senders[0].ID("Gadu").toUInt());
+		kdebugmf(KDEBUG_INFO, "Ignored anonymous. %d is ignored\n", uin(senders[0]));
 		return;
 	}
 
 	// ignorujemy, jesli nick na liscie ignorowanych
 	// PYTANIE CZY IGNORUJEMY CALA KONFERENCJE
 	// JESLI PIERWSZY SENDER JEST IGNOROWANY????
-	if (IgnoredManager::isIgnored(senders))
+	if (IgnoredManager::isIgnored(ules))
 		return;
 
 	bool ignore = false;
-	emit rawGaduReceivedMessageFilter(this, senders, msg, formats, ignore);
+	emit rawGaduReceivedMessageFilter(account(), senders, msg, formats, ignore);
 	if (ignore)
 		return;
 
@@ -951,7 +982,7 @@ void GaduProtocol::messageReceivedSlot(int msgclass, UserListElements senders, Q
 
 	// wiadomosci systemowe maja senders[0] = 0
 	// FIX ME!!!
-	if (senders[0].ID("Gadu").toUInt() == 0)
+	if (uin(senders[0]) == 0)
 	{
 		if (msgclass <= config_file.readNumEntry("General", "SystemMsgIndex", 0))
 		{
@@ -967,17 +998,17 @@ void GaduProtocol::messageReceivedSlot(int msgclass, UserListElements senders, Q
 		return;
 	}
 
-	if (senders[0].isAnonymous() &&
+	if (ules[0].isAnonymous() &&
 		config_file.readBoolEntry("Chat","IgnoreAnonymousRichtext"))
 	{
 		kdebugm(KDEBUG_INFO, "Richtext ignored from anonymous user\n");
-		message = GaduFormater::createMessage(senders[0].ID("Gadu").toUInt(), content, 0, 0, false);
+		message = GaduFormater::createMessage(account(), uin(senders[0]), content, 0, 0, false);
 	}
 	else
 	{
 		bool receiveImages =
-			userlist->contains(senders[0], FalseForAnonymous) &&
-			!IgnoredManager::isIgnored(senders) &&
+			userlist->contains(ules[0], FalseForAnonymous) &&
+			!IgnoredManager::isIgnored(ules) &&
 			(
 				CurrentStatus->isOnline() ||
 				CurrentStatus->isBusy() ||
@@ -987,22 +1018,21 @@ void GaduProtocol::messageReceivedSlot(int msgclass, UserListElements senders, Q
 				)
 			);
 
-		message = GaduFormater::createMessage(senders[0].ID("Gadu").toUInt(), content, (unsigned char *)formats.data(), formats.size(), receiveImages);
+		message = GaduFormater::createMessage(account(), uin(senders[0]), content,
+				(unsigned char *)formats.data(), formats.size(), receiveImages);
 	}
 
 	if (message.isEmpty())
 		return;
 
 	kdebugmf(KDEBUG_INFO, "Got message from %d saying \"%s\"\n",
-			senders[0].ID("Gadu").toUInt(), qPrintable(message.toPlain()));
+			uin(senders[0]), qPrintable(message.toPlain()));
 
-	ContactList contacts = senders.toContactList(account());
-
-	emit receivedMessageFilter(account(), contacts, message.toPlain(), time, ignore);
+	emit receivedMessageFilter(account(), senders, message.toPlain(), time, ignore);
 	if (ignore)
 		return;
 
-	emit messageReceived(account(), contacts, message.toHtml(), time);
+	emit messageReceived(account(), senders, message.toHtml(), time);
 }
 
 void GaduProtocol::everyMinuteActions()
@@ -1212,12 +1242,9 @@ void GaduProtocol::setupProxy()
 	kdebugf2();
 }
 
-bool GaduProtocol::sendMessage(ContactList c_users, Message &message)
+bool GaduProtocol::sendMessage(ContactList contacts, Message &message)
 {
 	kdebugf();
-
-	// TODO : 0.6.6
-	UserListElements users = UserListElements::fromContactList(c_users, account());
 
 	message.setId(-1);
 	QString plain = message.toPlain();
@@ -1234,7 +1261,7 @@ bool GaduProtocol::sendMessage(ContactList c_users, Message &message)
 
 	QByteArray data = unicode2cp(plain);
 
-	emit sendMessageFiltering(c_users, data, stop);
+	emit sendMessageFiltering(contacts, data, stop);
 
 	if (stop)
 	{
@@ -1249,17 +1276,17 @@ bool GaduProtocol::sendMessage(ContactList c_users, Message &message)
 		return false;
 	}
 
-	foreach(const UserListElement &user, users)
-		if (user.usesProtocol("Gadu"))
+	foreach (const Contact &contact, contacts)
+		if (contact.accountData(account()))
 			++uinsCount;
 
 	if (uinsCount > 1)
 	{
 		UinType* uins = new UinType[uinsCount];
 		unsigned int i = 0;
-		foreach(const UserListElement &user, users)
-			if (user.usesProtocol("Gadu"))
-				uins[i++] = user.ID("Gadu").toUInt();
+	foreach (const Contact &contact, contacts)
+		if (contact.accountData(account()))
+				uins[i++] = uin(contact);
 		if (formatsSize)
 			seqNumber = gg_send_message_confer_richtext(Sess, GG_CLASS_CHAT, uinsCount, uins, (unsigned char *)data.data(),
 				formats, formatsSize);
@@ -1268,14 +1295,14 @@ bool GaduProtocol::sendMessage(ContactList c_users, Message &message)
 		delete[] uins;
 	}
 	else
-		foreach (const UserListElement &user, users)
-			if (user.usesProtocol("Gadu"))
+		foreach (const Contact &contact, contacts)
+			if (contact.accountData(account()))
 			{
 				if (formatsSize)
-					seqNumber = gg_send_message_richtext(Sess, GG_CLASS_CHAT, user.ID("Gadu").toUInt(), (unsigned char *)data.data(),
+					seqNumber = gg_send_message_richtext(Sess, GG_CLASS_CHAT, uin(contact), (unsigned char *)data.data(),
 						formats, formatsSize);
 				else
-					seqNumber = gg_send_message(Sess, GG_CLASS_CHAT, user.ID("Gadu").toUInt(),(unsigned char *)data.data());
+					seqNumber = gg_send_message(Sess, GG_CLASS_CHAT, uin(contact),(unsigned char *)data.data());
 
 				break;
 			}
@@ -1376,26 +1403,26 @@ void GaduProtocol::sendUserList()
 	kdebugf2();
 }
 
-bool GaduProtocol::sendImageRequest(UserListElement user, int size, uint32_t crc32)
+bool GaduProtocol::sendImageRequest(Contact contact, int size, uint32_t crc32)
 {
 	kdebugf();
 	int res = 1;
-	if ((user.usesProtocol("Gadu")) &&
+	if (contact.accountData(account()) &&
 	    (sendImageRequests <= config_file.readUnsignedNumEntry("Chat", "MaxImageRequests")))
 	{
-		res = gg_image_request(Sess, user.ID("Gadu").toUInt(), size, crc32);
+		res = gg_image_request(Sess, uin(contact), size, crc32);
 		sendImageRequests++;
 	}
 	kdebugf2();
 	return (res == 0);
 }
 
-bool GaduProtocol::sendImage(UserListElement user, const QString &file_name, uint32_t size, const char *data)
+bool GaduProtocol::sendImage(Contact contact, const QString &file_name, uint32_t size, const char *data)
 {
 	kdebugf();
 	int res = 1;
-	if (user.usesProtocol("Gadu"))
-		res = gg_image_reply(Sess, user.ID("Gadu").toUInt(), qPrintable(file_name), data, size);
+	if (contact.accountData(account()))
+		res = gg_image_reply(Sess, uin(contact), qPrintable(file_name), data, size);
 	kdebugf2();
 	return (res == 0);
 }
@@ -2150,4 +2177,12 @@ void GaduProtocol::setDccIpAndPort(unsigned long dcc_ip, int dcc_port)
 AccountData * GaduProtocol::createAccountData()
 {
 	return new GaduAccountData();
+}
+
+unsigned int GaduProtocol::uin(Contact contact) const
+{
+	GaduContactAccountData *data = dynamic_cast<GaduContactAccountData *>(contact.accountData(account()));
+	return data
+		? data->uin()
+		: 0;
 }

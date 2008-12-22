@@ -66,7 +66,7 @@ void AccountManager::storeConfiguration(XmlConfigFile *configurationStorage)
 
 	foreach (Account *account, Accounts)
 	{
-		QDomElement accountNode = configurationStorage->getNamedNode(accountsNode, "Account", account->name(), XmlConfigFile::ModeCreate);
+		QDomElement accountNode = configurationStorage->getUuidNode(accountsNode, "Account", account->uuid(), XmlConfigFile::ModeCreate);
 		account->storeConfiguration(configurationStorage, accountNode);
 	}
 }

@@ -13,6 +13,9 @@
 
 #include "accounts/account.h"
 #include "accounts/account_manager.h"
+
+#include "contacts/contact-manager.h"
+
 #include "config_file.h"
 #include "message.h"
 
@@ -129,7 +132,8 @@ unsigned char * GaduFormater::createFormats(const Message &message, unsigned int
 	return result;
 }
 
-void GaduFormater::appendToMessage(Message &result, UinType sender, const QString &content, struct gg_msg_richtext_format &format,
+void GaduFormater::appendToMessage(Account *account, Message &result, UinType sender, const QString &content,
+		struct gg_msg_richtext_format &format,
 		struct gg_msg_richtext_color &color, struct gg_msg_richtext_image &image, bool receiveImages)
 {
 	QColor textColor;
@@ -163,9 +167,12 @@ void GaduFormater::appendToMessage(Message &result, UinType sender, const QStrin
 		}
 
 		// TODO: fix
-		GaduProtocol *gadu = dynamic_cast<GaduProtocol *>(AccountManager::instance()->defaultAccount()->protocol());
-		gadu->sendImageRequest(userlist->byID("Gadu", QString::number(sender)), size, crc32);
-		result << MessagePart(sender, size, crc32);
+		GaduProtocol *gadu = dynamic_cast<GaduProtocol *>(account->protocol());
+		if (gadu)
+		{
+			gadu->sendImageRequest(account->getContactById(QString::number(sender)), size, crc32);
+			result << MessagePart(sender, size, crc32);
+		}
 	}
 	else
 	{
@@ -182,7 +189,8 @@ void GaduFormater::appendToMessage(Message &result, UinType sender, const QStrin
 
 #define MAX_NUMBER_OF_IMAGES 5
 
-Message GaduFormater::createMessage(UinType sender, const QString &content, unsigned char *formats, unsigned int size, bool receiveImages)
+Message GaduFormater::createMessage(Account *account, UinType sender, const QString &content,
+		unsigned char *formats, unsigned int size, bool receiveImages)
 {
 	Message result;
 
@@ -234,8 +242,8 @@ Message GaduFormater::createMessage(UinType sender, const QString &content, unsi
 		}
 
 		if (!first)
-			appendToMessage(result, sender, content.mid(prevTextPosition, textPosition - prevTextPosition),
-				prevFormat, prevColor, image, receiveImages && images <= MAX_NUMBER_OF_IMAGES);
+			appendToMessage(account, result, sender, content.mid(prevTextPosition, textPosition - prevTextPosition),
+					prevFormat, prevColor, image, receiveImages && images <= MAX_NUMBER_OF_IMAGES);
 		else
 			first = false;
 
@@ -244,8 +252,8 @@ Message GaduFormater::createMessage(UinType sender, const QString &content, unsi
 		prevColor = color;
 	}
 
-	appendToMessage(result, sender, content.mid(prevTextPosition, content.length() - prevTextPosition), prevFormat, prevColor, image,
-		receiveImages && images <= MAX_NUMBER_OF_IMAGES);
+	appendToMessage(account, result, sender, content.mid(prevTextPosition, content.length() - prevTextPosition),
+			prevFormat, prevColor, image, receiveImages && images <= MAX_NUMBER_OF_IMAGES);
 
 	return result;
 }

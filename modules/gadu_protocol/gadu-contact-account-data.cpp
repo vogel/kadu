@@ -6,3 +6,10 @@
  *   (at your option) any later version.                                   *
  *                                                                         *
  ***************************************************************************/
+
+#include "gadu-contact-account-data.h"
+
+unsigned int GaduContactAccountData::uin()
+{
+	return id().toUInt();
+}

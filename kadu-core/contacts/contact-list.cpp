@@ -9,6 +9,15 @@
 
 #include "contact-list.h"
 
+ContactList::ContactList()
+{
+}
+
+ContactList::ContactList(Contact contact)
+{
+	append(contact);
+}
+
 bool ContactList::operator == (ContactList &compare)
 {
 	qSort(*this);

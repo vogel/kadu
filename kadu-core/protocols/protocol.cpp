@@ -64,3 +64,8 @@ QIcon Protocol::icon()
 		? QIcon()
 		: icons_manager->loadIcon(iconName);
 }
+
+void Protocol::setAccount(Account* account)
+{
+	CurrentAccount = account;
+}

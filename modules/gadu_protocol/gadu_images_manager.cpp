@@ -9,6 +9,7 @@
 
 #include "accounts/account.h"
 #include "accounts/account_manager.h"
+#include "contacts/contact-manager.h"
 #include "config_file.h"
 #include "debug.h"
 #include "gadu.h"
@@ -140,9 +141,11 @@ void GaduImagesManager::sendImage(UinType uin, uint32_t size, uint32_t crc32)
 			f.close();
 		}
 
-		// TODO: fix
-		GaduProtocol *gadu = dynamic_cast<GaduProtocol *>(AccountManager::instance()->defaultAccount()->protocol());
-		gadu->sendImage(userlist->byID("Gadu", QString::number(uin)), i.file_name, i.size, i.data);
+		// TODO: 0.6.6
+		Account *account = AccountManager::instance()->defaultAccount();
+		GaduProtocol *gadu = dynamic_cast<GaduProtocol *>(account->protocol());
+		gadu->sendImage(account->getContactById(QString::number(uin)), i.file_name, i.size, i.data);
+
 		delete[] i.data;
 		i.data = NULL;
 		i.lastSent = QDateTime::currentDateTime(); // to pole wykorzysta si� przy zapisywaniu listy obrazk�w do pliku, stare obrazki b�d� usuwane

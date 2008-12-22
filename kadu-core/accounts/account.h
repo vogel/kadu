@@ -17,6 +17,7 @@
 #include "status.h"
 
 class AccountData;
+class Contact;
 class Protocol;
 class XmlConfigFile;
 
@@ -42,6 +43,8 @@ public:
 	AccountData * data() { return Data; }
 
 	UserStatus currentStatus();
+
+	Contact getContactById(const QString &id);
 
 };
 

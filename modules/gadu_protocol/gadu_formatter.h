@@ -16,14 +16,16 @@ class Message;
 
 class GaduFormater
 {
-	static void appendToMessage(Message &result, UinType sender, const QString &content, struct gg_msg_richtext_format &format,
-		struct gg_msg_richtext_color &color, struct gg_msg_richtext_image &image, bool receiveImages);
+	static void appendToMessage(Account *account, Message &result, UinType sender, const QString &content,
+			struct gg_msg_richtext_format &format,
+			struct gg_msg_richtext_color &color, struct gg_msg_richtext_image &image, bool receiveImages);
 
 public:
 	static unsigned int computeFormatsSize(const Message &message);
 	static unsigned char * createFormats(const Message &message, unsigned int &size);
 
-	static Message createMessage(UinType sender, const QString &content, unsigned char * formats, unsigned int size, bool receiveImages);
+	static Message createMessage(Account *acccount, UinType sender, const QString &content, unsigned char * formats,
+			unsigned int size, bool receiveImages);
 
 };
 

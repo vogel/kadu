@@ -92,14 +92,16 @@ void Contact::addAccountData(ContactAccountData *accountData)
 	Data->addAccountData(accountData);
 }
 
-ContactAccountData * Contact::accountData(Account *account)
+ContactAccountData * Contact::accountData(Account *account) const
 {
-	checkNull();
-	return Data->accountData(account);
+	return isNull()
+		? 0
+		: Data->accountData(account);
 }
 
-QString Contact::id(Account *account)
+QString Contact::id(Account *account) const
 {
-	checkNull();
-	return Data->id(account);
+	return isNull()
+		? QString::null
+		: Data->id(account);
 }

@@ -79,7 +79,7 @@ public:
 	Protocol(Account *account, ProtocolFactory *factory);
 	virtual ~Protocol();
 
-	void setAccount(Account *account) { CurrentAccount = account; }
+	virtual void setAccount(Account *account);
 
 	/**
 		Status u�ytkownika. Za pomoc� tej metody mo�emy go zmieni�, pobra� ikon� statusu i wykona�
@@ -152,8 +152,8 @@ public:
 
 	virtual void setData(AccountData *data) = 0;
 	virtual AccountData * createAccountData() = 0;
-	ProtocolFactory * protocolFactory() { return Factory; }
-	Account * account() { return CurrentAccount; }
+	ProtocolFactory * protocolFactory() const { return Factory; }
+	Account * account() const { return CurrentAccount; }
 
 	QIcon icon();
 

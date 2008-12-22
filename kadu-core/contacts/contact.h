@@ -53,9 +53,9 @@ public:
 	QMap<QString, QString> & customData();
 
 	void addAccountData(ContactAccountData *accountData);
-	ContactAccountData * accountData(Account *account);
+	ContactAccountData * accountData(Account *account) const;
 
-	QString id(Account *account);
+	QString id(Account *account) const;
 
 };
 
