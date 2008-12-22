@@ -3,6 +3,7 @@
 
 #include <QtCore/QDateTime>
 #include <QtCore/QObject>
+#include <QtGui/QIcon>
 
 #ifdef __sun__
 #include <sys/types.h>
@@ -12,8 +13,9 @@
 #include "kinttypes.h"
 #endif
 
+#include "contacts/contact.h"
+#include "contacts/contact-list.h"
 #include "status.h"
-#include "usergroup.h"
 
 typedef uint32_t UinType;
 
@@ -35,11 +37,13 @@ public:
 	};
 
 private:
+	Account *CurrentAccount;
+
 	UserStatus & writeableStatus() { return *NextStatus; }
 	friend class Kadu;
 
 	Protocol(const Protocol &) {}
-	virtual Protocol & operator = (const Protocol &){return *this;}
+	Protocol & operator = (const Protocol &) {}
 
 protected:
 	QDateTime ConnectionTime;
@@ -72,8 +76,10 @@ protected:
 	ProtocolFactory *Factory;
 
 public:
-	Protocol(ProtocolFactory *factory);
+	Protocol(Account *account, ProtocolFactory *factory);
 	virtual ~Protocol();
+
+	void setAccount(Account *account) { CurrentAccount = account; }
 
 	/**
 		Status u�ytkownika. Za pomoc� tej metody mo�emy go zmieni�, pobra� ikon� statusu i wykona�
@@ -147,14 +153,15 @@ public:
 	virtual void setData(AccountData *data) = 0;
 	virtual AccountData * createAccountData() = 0;
 	ProtocolFactory * protocolFactory() { return Factory; }
+	Account * account() { return CurrentAccount; }
 
 	QIcon icon();
 
 public slots:
-	virtual bool sendMessage(UserListElement user, const QString &messageContent);
-	virtual bool sendMessage(UserListElements users, const QString &messageContent);
-	virtual bool sendMessage(UserListElement user, Message &message);
-	virtual bool sendMessage(UserListElements users, Message &message) = 0;
+	virtual bool sendMessage(Contact user, const QString &messageContent);
+	virtual bool sendMessage(ContactList users, const QString &messageContent);
+	virtual bool sendMessage(Contact user, Message &message);
+	virtual bool sendMessage(ContactList users, Message &message) = 0;
 
 
 signals:
@@ -175,13 +182,13 @@ signals:
 
 	/**
 		wyst�pi� b��d po��czenia
-		@param protocol protok��
+		@param account konto
 		@param reason napis do wy�wietlenia dla u�ytkownika
 	**/
-	void connectionError(Protocol *protocol, const QString &server, const QString &reason);
+	void connectionError(Account *account, const QString &server, const QString &reason);
 
 	/**
-		\fn void messageFiltering(const UserGroup *users, QCString& msg, bool& stop)
+		\fn void messageFiltering(const ContactList users, QCString& msg, bool& stop)
 		Sygnal daje mozliwosc operowania na wiadomosci
 		ktora ma byc wyslana do serwera juz w jej docelowej
 		formie po konwersji z unicode i innymi zabiegami.
@@ -193,7 +200,7 @@ signals:
 		\param msg wiadomo��
 		\param stop zako�czenie dalszej obr�bki sygna�u
 	**/
-	void sendMessageFiltering(const UserListElements users, QByteArray &msg, bool &stop);
+	void sendMessageFiltering(const ContactList users, QByteArray &msg, bool &stop);
 
 	/**
 		Message with id messageId was delivered or rejected.
@@ -201,25 +208,25 @@ signals:
 	void messageStatusChanged(int messsageId, Protocol::MessageStatus status);
 
 	/**
-		\fn receivedMessageFilter(Protocol *protocol, UserListElements senders, const QString &msg, time_t time, bool &ignore);
+		\fn receivedMessageFilter(Account *account, ContactList senders, const QString &msg, time_t time, bool &ignore);
 		Filtrujemy wiadomo��. Mo�na j� odrzuci� albo i nie.
-		\param protocol protok�� na kt�rym otrzymali�my wiadomo��
+		\param account konto na kt�rym otrzymali�my wiadomo��
 		\param senders lista nadawc�w
 		\param message komunikat w postaci Unicode HTML
 		\param time czas nadania wiadomo�ci
 		\param ignore po ustawieniu na true wiadomo�� jest ignorowana
 	**/
-	void receivedMessageFilter(Protocol *protocol, UserListElements senders, const QString &message, time_t time, bool &ignore);
+	void receivedMessageFilter(Account *account, ContactList senders, const QString &message, time_t time, bool &ignore);
 
 	/**
-		\fn messageReceived(Protocol *protocol, UserListElements senders, const QString &msg, time_t time);
+		\fn messageReceived(Account *account, ContactList senders, const QString &msg, time_t time);
 		Otrzymali�my wiadomo��.
-		\param protocol protok�� na kt�rym otrzymali�my wiadomo��
+		\param account konto na kt�rym otrzymali�my wiadomo��
 		\param senders lista nadawc�w
 		\param message komunikat w postaci Unicode HTML
 		\param time czas nadania wiadomo�ci
 	**/
-	void messageReceived(Protocol *protocol, UserListElements senders, const QString &message, time_t time);
+	void messageReceived(Account *account, ContactList senders, const QString &message, time_t time);
 
 };
 

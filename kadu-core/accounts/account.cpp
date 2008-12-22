@@ -60,6 +60,8 @@ bool Account::loadConfiguration(XmlConfigFile *configurationStorage, QDomElement
 
 	Data->setName(name);
 	ProtocolHandler->setData(Data);
+	ProtocolHandler->setAccount(this);
+
 	return Data->loadConfiguration(configurationStorage, parent);
 }
 

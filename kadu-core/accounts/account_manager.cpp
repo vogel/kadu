@@ -9,6 +9,7 @@
 
 #include "account.h"
 #include "config_file.h"
+#include "protocols/protocol.h"
 #include "protocols/protocols_manager.h"
 #include "xml_config_file.h"
 
@@ -81,7 +82,10 @@ Account * AccountManager::createAccount(const QString &protocolName, AccountData
 	if (0 == protocol)
 		return 0;
 
-	return new Account(QUuid::createUuid(), protocol, accountData);
+	Account *result = new Account(QUuid::createUuid(), protocol, accountData);
+	protocol->setAccount(result);
+
+	return result;
 }
 
 Account * AccountManager::account(const QUuid &uuid)

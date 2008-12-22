@@ -659,10 +659,7 @@ void ChatWidget::sendMessage()
 
 	myLastMessage = Message::parse(Edit->inputBox()->document());
 
-	UserListElements users = UserListElements::fromContactList(Contacts,
-			AccountManager::instance()->defaultAccount());
-
-	if (!currentProtocol()->sendMessage(users, myLastMessage))
+	if (!currentProtocol()->sendMessage(Contacts, myLastMessage))
 	{
 		cancelMessage();
 		return;
@@ -779,7 +776,7 @@ bool ChatWidget::decodeLocalFiles(QDropEvent *event, QStringList &files)
 		return false;
 
 	QList<QUrl> urls = event->mimeData()->urls();
-	
+
 	foreach(const QUrl &url, urls)
 	{
 		QString file = url.toLocalFile();
@@ -798,7 +795,7 @@ bool ChatWidget::decodeLocalFiles(QDropEvent *event, QStringList &files)
 void ChatWidget::dragEnterEvent(QDragEnterEvent *e)
 {
 	QStringList files;
-	
+
 	if (decodeLocalFiles(e, files))
 		e->acceptProposedAction();
 

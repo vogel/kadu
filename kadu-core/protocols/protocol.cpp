@@ -16,8 +16,8 @@
 
 #include "protocol.h"
 
-Protocol::Protocol(ProtocolFactory *factory)
-	: Factory(factory)
+Protocol::Protocol(Account *account, ProtocolFactory *factory)
+	: Factory(factory), CurrentAccount(account)
 {
 }
 
@@ -34,24 +34,26 @@ const QDateTime &Protocol::connectionTime() const
 	return ConnectionTime;
 }
 
-bool Protocol::sendMessage(UserListElement user, const QString &messageContent)
+bool Protocol::sendMessage(Contact user, const QString &messageContent)
 {
-	UserListElements users(user);
+	ContactList users;
+	users.append(user);
 	QTextDocument document(messageContent);
 	Message message = Message::parse(&document);
 	return sendMessage(users, message);
 }
 
-bool Protocol::sendMessage(UserListElements users, const QString &messageContent)
+bool Protocol::sendMessage(ContactList users, const QString &messageContent)
 {
 	QTextDocument document(messageContent);
 	Message message = Message::parse(&document);
 	return sendMessage(users, message);
 }
 
-bool Protocol::sendMessage(UserListElement user, Message &message)
+bool Protocol::sendMessage(Contact user, Message &message)
 {
-	UserListElements users(user);
+	ContactList users;
+	users.append(user);
 	return sendMessage(users, message);
 }
 

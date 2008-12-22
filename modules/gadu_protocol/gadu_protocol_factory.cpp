@@ -17,7 +17,7 @@
 
 Protocol * GaduProtocolFactory::newInstance()
 {
-	return new GaduProtocol(this);
+	return new GaduProtocol(0, this);
 }
 
 AccountData * GaduProtocolFactory::newAccountData()

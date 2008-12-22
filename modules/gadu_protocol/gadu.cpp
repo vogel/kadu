@@ -311,8 +311,8 @@ void GaduProtocol::initModule()
 	kdebugf2();
 }
 
-GaduProtocol::GaduProtocol(ProtocolFactory *factory)
-	: Protocol(factory),
+GaduProtocol::GaduProtocol(Account *account, ProtocolFactory *factory)
+	: Protocol(account, factory),
 		GaduData(0),
 		Mode(Register), DataUin(0), DataEmail(), DataPassword(), DataNewPassword(), TokenId(), TokenValue(),
 		ServerNr(0), ActiveServer(), LoginParams(), Sess(0), sendImageRequests(0), seqNumber(0), whileConnecting(false),
@@ -874,7 +874,7 @@ void GaduProtocol::errorSlot(GaduError err)
 		else
 			host = "HUB";
 		kdebugm(KDEBUG_INFO, "%s %s\n", qPrintable(host), qPrintable(msg));
-		emit connectionError(this, host, msg);
+		emit connectionError(account(), host, msg);
 	}
 
 	if (!continue_connecting)
@@ -906,7 +906,7 @@ void GaduProtocol::imageRequestReceivedSlot(UinType sender, uint32_t size, uint3
 	gadu_images_manager.sendImage(sender,size,crc32);
 }
 
-void GaduProtocol::messageReceivedSlot(int msgclass, UserListElements senders, QString &msg, time_t time, QByteArray &formats)
+void GaduProtocol::messageReceivedSlot(int msgclass, ContactList contacts, QString &msg, time_t time, QByteArray &formats)
 {
 /*
 	najpierw sprawdzamy czy nie jest to wiadomosc systemowa (senders[0] rowne 0)
@@ -914,6 +914,10 @@ void GaduProtocol::messageReceivedSlot(int msgclass, UserListElements senders, Q
 	i czy jest wlaczona opcja ignorowania nieznajomych
 	jezeli warunek jest spelniony przerywamy dzialanie funkcji.
 */
+
+	// TODO : 0.6.6
+	UserListElements senders = UserListElements::fromContactList(contacts, account());
+
 	if (senders[0].isAnonymous() &&
 			config_file.readBoolEntry("Chat", "IgnoreAnonymousUsers") &&
 			((senders.size() == 1) || config_file.readBoolEntry("Chat", "IgnoreAnonymousUsersInConferences")))
@@ -993,11 +997,11 @@ void GaduProtocol::messageReceivedSlot(int msgclass, UserListElements senders, Q
 	kdebugmf(KDEBUG_INFO, "Got message from %d saying \"%s\"\n",
 			senders[0].ID("Gadu").toUInt(), qPrintable(message.toPlain()));
 
-	emit receivedMessageFilter(this, senders, message.toPlain(), time, ignore);
+	emit receivedMessageFilter(account(), contacts, message.toPlain(), time, ignore);
 	if (ignore)
 		return;
 
-	emit messageReceived(this, senders, message.toHtml(), time);
+	emit messageReceived(account(), contacts, message.toHtml(), time);
 }
 
 void GaduProtocol::everyMinuteActions()
@@ -1207,9 +1211,12 @@ void GaduProtocol::setupProxy()
 	kdebugf2();
 }
 
-bool GaduProtocol::sendMessage(UserListElements users, Message &message)
+bool GaduProtocol::sendMessage(ContactList c_users, Message &message)
 {
 	kdebugf();
+
+	// TODO : 0.6.6
+	UserListElements users = UserListElements::fromContactList(c_users, account());
 
 	message.setId(-1);
 	QString plain = message.toPlain();
@@ -1226,7 +1233,7 @@ bool GaduProtocol::sendMessage(UserListElements users, Message &message)
 
 	QByteArray data = unicode2cp(plain);
 
-	emit sendMessageFiltering(users, data, stop);
+	emit sendMessageFiltering(c_users, data, stop);
 
 	if (stop)
 	{

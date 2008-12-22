@@ -252,8 +252,8 @@ class GADUAPI GaduProtocol : public Protocol
 	**/
 	void doChangePassword();
 
-	GaduProtocol(const GaduProtocol &) : Protocol(0) {}
-	GaduProtocol &operator=(const GaduProtocol &){return *this;}
+	GaduProtocol(const GaduProtocol &) : Protocol(0, 0) {}
+	GaduProtocol & operator = (const GaduProtocol &) {}
 
 	virtual AccountData * createAccountData();
 
@@ -382,7 +382,7 @@ private slots:
 	/**
 		Slot wywo�ywany po otrzymaniu wiadomo�ci od serwera.
 	**/
-	void messageReceivedSlot(int, UserListElements, QString &msg, time_t, QByteArray &formats);
+	void messageReceivedSlot(int, ContactList, QString &msg, time_t, QByteArray &formats);
 
 	/**
 		Wykonuje zadania co minut� - pinguje sie� i zeruje licznik
@@ -482,7 +482,7 @@ private slots:
 public:
 	static void initModule();
 
-	GaduProtocol(ProtocolFactory *factory);
+	GaduProtocol(Account *account, ProtocolFactory *factory);
 	virtual ~GaduProtocol();
 
 	virtual void setData(AccountData *);
@@ -581,7 +581,7 @@ public slots:
 		@param users lista u�ytkownik�w, do kt�rych wysy�amy wiadomo��
 		@param mesg wiadomo��, kt�r� wysy�amy - kodowanie zmieniane wewn�trz
 	**/
-	virtual bool sendMessage(UserListElements users, Message &message);
+	virtual bool sendMessage(ContactList users, Message &message);
 
 	/**
 		Wysy�a pro�b� o przys�anie obrazka z danymi parametrami.
