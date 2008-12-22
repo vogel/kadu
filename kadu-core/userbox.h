@@ -349,8 +349,8 @@ private slots:
 	void resetVerticalPosition();
 	void rememberVerticalPosition();
 
-	void messageFromUserAdded(UserListElement elem);
-	void messageFromUserDeleted(UserListElement elem);
+	void messageFromUserAdded(Contact elem);
+	void messageFromUserDeleted(Contact elem);
 
 	void selectionChangedSlot();
 

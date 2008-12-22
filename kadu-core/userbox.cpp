@@ -569,8 +569,8 @@ UserBox::UserBox(KaduMainWindow *mainWindow, bool fancy, UserGroup *group, QWidg
 	connect(this, SIGNAL(currentChanged(Q3ListBoxItem *)), this, SLOT(currentChangedSlot(Q3ListBoxItem *)));
 	connect(&refreshTimer, SIGNAL(timeout()), this, SLOT(refresh()));
 
-	connect(&pending, SIGNAL(messageFromUserAdded(UserListElement)), this, SLOT(messageFromUserAdded(UserListElement)));
-	connect(&pending, SIGNAL(messageFromUserDeleted(UserListElement)), this, SLOT(messageFromUserAdded(UserListElement)));
+	connect(&pending, SIGNAL(messageFromUserAdded(Contact)), this, SLOT(messageFromUserAdded(Contact)));
+	connect(&pending, SIGNAL(messageFromUserDeleted(Contact)), this, SLOT(messageFromUserAdded(Contact)));
 
 	connect(&tipTimer, SIGNAL(timeout()), this, SLOT(tipTimeout()));
 
@@ -883,15 +883,15 @@ void UserBox::refreshAllLater()
 	kdebugf2();
 }
 
-void UserBox::messageFromUserAdded(UserListElement elem)
+void UserBox::messageFromUserAdded(Contact elem)
 {
-	if (visibleUsers()->contains(elem))
+	if (visibleUsers()->contains(UserListElement::fromContact(elem, AccountManager::instance()->defaultAccount())))
 		refreshLater();
 }
 
-void UserBox::messageFromUserDeleted(UserListElement elem)
+void UserBox::messageFromUserDeleted(Contact elem)
 {
-	if (visibleUsers()->contains(elem))
+	if (visibleUsers()->contains(UserListElement::fromContact(elem, AccountManager::instance()->defaultAccount())))
 		refreshLater();
 }
 

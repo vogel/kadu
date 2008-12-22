@@ -382,7 +382,7 @@ private slots:
 	/**
 		Slot wywo�ywany po otrzymaniu wiadomo�ci od serwera.
 	**/
-	void messageReceivedSlot(int, ContactList, QString &msg, time_t, QByteArray &formats);
+	void messageReceivedSlot(int, UserListElements, QString &msg, time_t, QByteArray &formats);
 
 	/**
 		Wykonuje zadania co minut� - pinguje sie� i zeruje licznik

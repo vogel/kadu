@@ -344,8 +344,8 @@ class AnonymousUsersWithoutMessages : public UserGroup
 	Q_OBJECT
 
 private slots:
-	void messageFromUserAdded(UserListElement elem);
-	void messageFromUserDeleted(UserListElement elem);
+	void messageFromUserAdded(Contact elem);
+	void messageFromUserDeleted(Contact elem);
 
 	void userDataChangedSlot(UserListElement elem, QString name, QVariant oldValue, QVariant currentValue, bool massively, bool last);
 	void userAdded(UserListElement elem, bool massively, bool last);

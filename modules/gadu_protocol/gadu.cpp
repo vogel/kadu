@@ -906,7 +906,7 @@ void GaduProtocol::imageRequestReceivedSlot(UinType sender, uint32_t size, uint3
 	gadu_images_manager.sendImage(sender,size,crc32);
 }
 
-void GaduProtocol::messageReceivedSlot(int msgclass, ContactList contacts, QString &msg, time_t time, QByteArray &formats)
+void GaduProtocol::messageReceivedSlot(int msgclass, UserListElements senders, QString &msg, time_t time, QByteArray &formats)
 {
 /*
 	najpierw sprawdzamy czy nie jest to wiadomosc systemowa (senders[0] rowne 0)
@@ -916,7 +916,6 @@ void GaduProtocol::messageReceivedSlot(int msgclass, ContactList contacts, QStri
 */
 
 	// TODO : 0.6.6
-	UserListElements senders = UserListElements::fromContactList(contacts, account());
 
 	if (senders[0].isAnonymous() &&
 			config_file.readBoolEntry("Chat", "IgnoreAnonymousUsers") &&
@@ -996,6 +995,8 @@ void GaduProtocol::messageReceivedSlot(int msgclass, ContactList contacts, QStri
 
 	kdebugmf(KDEBUG_INFO, "Got message from %d saying \"%s\"\n",
 			senders[0].ID("Gadu").toUInt(), qPrintable(message.toPlain()));
+
+	ContactList contacts = senders.toContactList(account());
 
 	emit receivedMessageFilter(account(), contacts, message.toPlain(), time, ignore);
 	if (ignore)

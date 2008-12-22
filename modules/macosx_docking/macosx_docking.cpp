@@ -46,8 +46,8 @@ MacOSXDocking::MacOSXDocking(QObject *parent, const char *name) : QObject(parent
 	connect(docking_manager, SIGNAL(searchingForTrayPosition(QPoint &)), this, SLOT(findTrayPosition(QPoint &)));
 	connect(kadu, SIGNAL(settingMainIconBlocked(bool &)), this, SLOT(blockSettingIcon(bool &)));
 
-	connect(&pending, SIGNAL(messageFromUserAdded(UserListElement)), this, SLOT(messageListChanged(UserListElement)));
-	connect(&pending, SIGNAL(messageFromUserDeleted(UserListElement)), this, SLOT(messageListChanged(UserListElement)));
+	connect(&pending, SIGNAL(messageFromUserAdded(Contact)), this, SLOT(messageListChanged(Contact)));
+	connect(&pending, SIGNAL(messageFromUserDeleted(Contact)), this, SLOT(messageListChanged(Contact)));
 
 	docking_manager->setDocked(true);
 	

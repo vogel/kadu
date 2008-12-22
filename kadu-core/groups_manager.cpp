@@ -853,10 +853,10 @@ AnonymousUsersWithoutMessages::AnonymousUsersWithoutMessages() : UserGroup()
 	connect(userlist, SIGNAL(removingUser(UserListElement, bool, bool)),
 			this, SLOT(removingUser(UserListElement, bool, bool)));
 
-	connect(&pending, SIGNAL(messageFromUserAdded(UserListElement)),
-			this, SLOT(messageFromUserAdded(UserListElement)));
-	connect(&pending, SIGNAL(messageFromUserDeleted(UserListElement)),
-			this, SLOT(messageFromUserDeleted(UserListElement)));
+	connect(&pending, SIGNAL(messageFromUserAdded(Contact)),
+			this, SLOT(messageFromUserAdded(Contact)));
+	connect(&pending, SIGNAL(messageFromUserDeleted(Contact)),
+			this, SLOT(messageFromUserDeleted(Contact)));
 }
 
 AnonymousUsersWithoutMessages::~AnonymousUsersWithoutMessages()
@@ -869,10 +869,10 @@ AnonymousUsersWithoutMessages::~AnonymousUsersWithoutMessages()
 	disconnect(userlist, SIGNAL(removingUser(UserListElement, bool, bool)),
 			this, SLOT(removingUser(UserListElement, bool, bool)));
 
-	disconnect(&pending, SIGNAL(messageFromUserAdded(UserListElement)),
-			this, SLOT(messageFromUserAdded(UserListElement)));
-	disconnect(&pending, SIGNAL(messageFromUserDeleted(UserListElement)),
-			this, SLOT(messageFromUserDeleted(UserListElement)));
+	disconnect(&pending, SIGNAL(messageFromUserAdded(Contact)),
+			this, SLOT(messageFromUserAdded(Contact)));
+	disconnect(&pending, SIGNAL(messageFromUserDeleted(Contact)),
+			this, SLOT(messageFromUserDeleted(Contact)));
 }
 
 static inline bool withoutMessages(const Contact &c)
@@ -914,14 +914,15 @@ void AnonymousUsersWithoutMessages::removingUser(UserListElement elem, bool mass
 		removeUser(elem, massively, last);
 }
 
-void AnonymousUsersWithoutMessages::messageFromUserAdded(UserListElement elem)
+void AnonymousUsersWithoutMessages::messageFromUserAdded(Contact elem)
 {
-	removeUser(elem);
+	removeUser(UserListElement::fromContact(elem, AccountManager::instance()->defaultAccount()));
 }
 
-void AnonymousUsersWithoutMessages::messageFromUserDeleted(UserListElement elem)
+void AnonymousUsersWithoutMessages::messageFromUserDeleted(Contact contact)
 {
-	Contact contact = elem.toContact(AccountManager::instance()->defaultAccount());
+	UserListElement elem = UserListElement::fromContact(contact, AccountManager::instance()->defaultAccount());
+
 	if (elem.isAnonymous() && withoutMessages(contact))
 		addUser(elem);
 }

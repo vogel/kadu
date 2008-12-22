@@ -61,8 +61,8 @@ DockingManager::DockingManager()
 
 	connect(kadu, SIGNAL(statusPixmapChanged(const QIcon &, const QString &)),
 		this, SLOT(statusPixmapChanged(const QIcon &, const QString &)));
-	connect(&pending, SIGNAL(messageFromUserAdded(UserListElement)), this, SLOT(pendingMessageAdded()));
-	connect(&pending, SIGNAL(messageFromUserDeleted(UserListElement)), this, SLOT(pendingMessageDeleted()));
+	connect(&pending, SIGNAL(messageFromUserAdded(Contact)), this, SLOT(pendingMessageAdded()));
+	connect(&pending, SIGNAL(messageFromUserDeleted(Contact)), this, SLOT(pendingMessageDeleted()));
 
 	connect(kadu, SIGNAL(searchingForTrayPosition(QPoint&)), this, SIGNAL(searchingForTrayPosition(QPoint&)));
 
@@ -99,8 +99,8 @@ DockingManager::~DockingManager()
 
 	disconnect(kadu, SIGNAL(statusPixmapChanged(const QIcon &, const QString &)),
 		this, SLOT(statusPixmapChanged(const QIcon &, const QString &)));
-	disconnect(&pending, SIGNAL(messageFromUserAdded(UserListElement)), this, SLOT(pendingMessageAdded()));
-	disconnect(&pending, SIGNAL(messageFromUserDeleted(UserListElement)), this, SLOT(pendingMessageDeleted()));
+	disconnect(&pending, SIGNAL(messageFromUserAdded(Contact)), this, SLOT(pendingMessageAdded()));
+	disconnect(&pending, SIGNAL(messageFromUserDeleted(Contact)), this, SLOT(pendingMessageDeleted()));
 
 	disconnect(kadu, SIGNAL(searchingForTrayPosition(QPoint&)), this, SIGNAL(searchingForTrayPosition(QPoint&)));
 

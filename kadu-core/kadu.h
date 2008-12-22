@@ -127,7 +127,7 @@ private slots:
 	void lookupInDirectoryActionActivated(QAction *sender, bool toggled);
 	void deleteUsersActionActivated(QAction *sender, bool toggled);
 
-	void messageReceived(Protocol *, UserListElements s, const QString &msg, time_t time);
+	void messageReceived(Account *, ContactList s, const QString &msg, time_t time);
 	void createRecentChatsMenu();
 	void openRecentChats(QAction *action);
 	void openChatWith();

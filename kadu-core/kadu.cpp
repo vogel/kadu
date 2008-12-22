@@ -652,8 +652,8 @@ void Kadu::accountRegistered(Account *account)
 {
 	Protocol *protocol = account->protocol();
 
-	connect(protocol, SIGNAL(messageReceived(Protocol *, UserListElements, const QString &, time_t)),
-		this, SLOT(messageReceived(Protocol *, UserListElements, const QString &, time_t)));
+	connect(protocol, SIGNAL(messageReceived(Account *, ContactList, const QString &, time_t)),
+		this, SLOT(messageReceived(Account *, ContactList, const QString &, time_t)));
 	connect(protocol, SIGNAL(connecting()), this, SLOT(connecting()));
 	connect(protocol, SIGNAL(connected()), this, SLOT(connected()));
 	connect(protocol, SIGNAL(disconnected()), this, SLOT(disconnected()));
@@ -1434,12 +1434,9 @@ void Kadu::connecting()
 }
 
 // TODO: move back to chatManager
-void Kadu::messageReceived(Protocol *, UserListElements s, const QString &msg, time_t time)
+void Kadu::messageReceived(Account *account, ContactList senders, const QString &msg, time_t time)
 {
 	kdebugf();
-
-	Account *account = AccountManager::instance()->defaultAccount();
-	ContactList senders = s.toContactList(account);
 
 	// TODO: workaround
 	emit messageReceivedSignal(account, senders, msg, time);
@@ -1566,8 +1563,8 @@ bool Kadu::close(bool quit)
 		delete defaultFontInfo;
 		delete defaultFont;
 
-		disconnect(gadu, SIGNAL(messageReceived(Protocol *, UserListElements, const QString &, time_t)),
-				this, SLOT(messageReceived(Protocol *, UserListElements, const QString &, time_t)));
+		disconnect(gadu, SIGNAL(messageReceived(Account *, ContactList, const QString &, time_t)),
+				this, SLOT(messageReceived(Account *, ContactList, const QString &, time_t)));
 		disconnect(gadu, SIGNAL(connecting()), this, SLOT(connecting()));
 		disconnect(gadu, SIGNAL(connected()), this, SLOT(connected()));
 		disconnect(gadu, SIGNAL(disconnected()), this, SLOT(disconnected()));
