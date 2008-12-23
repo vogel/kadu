@@ -178,7 +178,8 @@ void MacOSXDocking::overlay(const QString& text)
 	if (text.isEmpty()) {
 		overlayed = false;
 		RestoreApplicationDockTileImage();
-		qApp->setWindowIcon(pixmap);
+		if (config_file.readBoolEntry("MacOSX Dock", "IconNotification", true))
+			qApp->setWindowIcon(pixmap);
 		return;
 	}
 
