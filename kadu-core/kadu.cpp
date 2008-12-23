@@ -1544,7 +1544,7 @@ bool Kadu::close(bool quit)
 
 #ifdef Q_OS_MACX
 		//na koniec przywracamy domy�ln� ikon�, je�eli tego nie zrobimy, to pozostanie bie��cy status
-		setMainWindowIcon(QPixmap(dataPath("kadu.png")));
+		QApplication::setWindowIcon(QPixmap(dataPath("kadu.png")));
 #endif
 
 		QWidget::close(true);
@@ -2235,6 +2235,8 @@ void Kadu::deleteOldConfigFiles()
 
 void Kadu::setMainWindowIcon(const QPixmap &icon)
 {
+	/* Dorr: On Mac OS X macosx_docking module handles this */
+#ifndef Q_OS_MAC
 	bool blocked = false;
 	emit settingMainIconBlocked(blocked);
 	if (!blocked)
@@ -2242,6 +2244,7 @@ void Kadu::setMainWindowIcon(const QPixmap &icon)
 		setWindowIcon(icon);
 		QApplication::setWindowIcon(icon);
 	}
+#endif
 }
 
 const QDateTime &Kadu::startTime() const
