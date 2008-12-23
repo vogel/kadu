@@ -22,13 +22,17 @@
 #include <unistd.h>
 #endif
 
-#include "about.h"
 #include "accounts/account.h"
+#include "accounts/account_data.h"
 #include "accounts/account_manager.h"
+
+#include "contacts/contact-account-data.h"
+#include "contacts/contact-manager.h"
+
+#include "about.h"
 #include "chat_edit_box.h"
 #include "chat_manager.h"
 #include "config_file.h"
-#include "contacts/contact-manager.h"
 #include "debug.h"
 #include "emoticons.h"
 #include "expimp.h"
@@ -47,6 +51,7 @@
 #include "misc.h"
 #include "pending_msgs.h"
 #include "personal_info.h"
+#include "protocols/protocol_factory.h"
 #include "protocols/protocols_manager.h"
 #include "search.h"
 #include "status_changer.h"
@@ -162,16 +167,16 @@ void disableNonIdUles(KaduAction *action)
 
 void disableContainsSelfUles(KaduAction *action)
 {
-	kdebugf();
-	foreach(const UserListElement &user, action->userListElements())
-		if (user.usesProtocol("Gadu") && user.ID("Gadu") == kadu->myself().ID("Gadu"))
-		{
-			action->setEnabled(false);
-			return;
-		}
+	Account *account = AccountManager::instance()->defaultAccount();
+	ContactList contacts = action->userListElements().toContactList(account);
+
+	if (contacts.contains(kadu->myself()))
+	{
+		action->setEnabled(false);
+		return;
+	}
 	
 	action->setEnabled(true);
-	kdebugf2();
 }
 
 void checkNotify(KaduAction *action)
@@ -363,9 +368,6 @@ Kadu::Kadu(QWidget *parent)
 	kadu = this;
 	blinktimer = 0;
 
-	Myself.addProtocol("Gadu", QString::number(config_file.readUnsignedNumEntry("General", "UIN", 0)));
-	Myself.setAltNick(config_file.readEntry("General", "Nick"));
-
 	createDefaultConfiguration();
 
 #ifdef Q_OS_MAC
@@ -507,8 +509,8 @@ Kadu::Kadu(QWidget *parent)
 	IgnoredManager::loadFromConfiguration();
 
 	/* a newbie? */
-
-	setWindowTitle(tr("Kadu: %1").arg(Myself.ID("Gadu")));
+// TODO: 0.6.6 some way of setting title needed
+//	setWindowTitle(tr("Kadu: %1").arg(Myself.ID("Gadu")));
 
 	pending.loadConfiguration(xml_config_file);
 
@@ -671,6 +673,10 @@ void Kadu::accountRegistered(Account *account)
 		this, SLOT(wentInvisible(const QString &)));
 	connect(&(protocol->currentStatus()), SIGNAL(goOffline(const QString &)),
 		this, SLOT(wentOffline(const QString &)));
+
+	ContactAccountData *contactAccountData = protocol->protocolFactory()->
+			newContactAccountData(account, account->data()->id());
+	Myself.addAccountData(contactAccountData);
 }
 
 QVBoxLayout * Kadu::mainLayout() const
@@ -1314,11 +1320,15 @@ void Kadu::sendMessage(UserListElement elem)
 	if (!userbox)
 		return;
 
-	UserListElements users  = userbox->selectedUsers();
+	Account *account = AccountManager::instance()->defaultAccount();
+	ContactList users = userbox->selectedUsers().toContactList(account);
+
 	if (!users.isEmpty())
 	{
-		if (elem.usesProtocol("Gadu") && elem != Myself) //TODO: elem.hasFeature("SendingMessages")
-			chat_manager->sendMessage(elem, users);
+		UserListElement elem = userbox->selectedUsers()[0];
+
+		if (users[0] != myself()) //TODO: elem.hasFeature("SendingMessages")
+			chat_manager->sendMessage(elem, userbox->selectedUsers());
 		else if (elem.mobile().isEmpty() && !elem.email().isEmpty())
 			openMailClient(elem.email());
 
@@ -1454,7 +1464,8 @@ void Kadu::messageReceived(Account *account, ContactList senders, const QString 
 
 		if (config_file.readBoolEntry("Chat", "OpenChatOnMessage"))
 		{
-			if (config_file.readBoolEntry("Chat", "OpenChatOnMessageWhenOnline") && !Myself.status("Gadu").isOnline())
+			// TODO: 0.6.6
+			if (config_file.readBoolEntry("Chat", "OpenChatOnMessageWhenOnline") && false /*!Myself.status("Gadu").isOnline()*/)
 			{
 				pending.addMsg(account, senders, msg, time);
 				return;
@@ -2075,16 +2086,7 @@ void Kadu::configurationUpdated()
 	groups_manager->refreshTabBar();
 	UserBox::setColorsOrBackgrounds();
 
-	QString uin = QString::number(config_file.readUnsignedNumEntry("General", "UIN", 0));
-	if (Myself.ID("Gadu").toUInt() != uin.toUInt())
-	{
-		// gadu->changeID(uin);
-		Myself.deleteProtocol("Gadu");
-		if (uin.toUInt())
-			Myself.addProtocol("Gadu", uin);
-		kadu->setWindowTitle(tr("Kadu: %1").arg(uin));
-	}
-	Myself.setAltNick(config_file.readEntry("General", "Nick"));
+//	Myself.setAltNick(config_file.readEntry("General", "Nick"));
 
 	kadu->setDocked(kadu->Docked, kadu->dontHideOnClose);
 
@@ -2574,9 +2576,4 @@ void Kadu::addAction(const QString &actionName, bool showLabel)
 {
 	addToolButton(findExistingToolbar(""), actionName, showLabel);
 	kadu->refreshToolBars("");
-}
-
-Contact Kadu::myselfContact()
-{
-	return Myself.toContact(AccountManager::instance()->defaultAccount());
 }

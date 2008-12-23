@@ -66,7 +66,7 @@ class KADUAPI Kadu : public KaduMainWindow, ConfigurationAwareObject
 	// TODO: remove
 	friend class Wizard;
 
-	UserListElement Myself;
+	Contact Myself;
 
 	static bool Closing;
 	KaduTextBrowser *InfoPanel;
@@ -185,8 +185,7 @@ public:
 	virtual UserListElements userListElements();
 	virtual ChatWidget * chatWidget() { return 0; }
 
-	const UserListElement & myself() { return Myself; };
-	Contact myselfContact();
+	Contact myself() { return Myself; }
 
 	bool userInActiveGroup(UinType uin);
 	void removeUsers(UserListElements);

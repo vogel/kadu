@@ -490,8 +490,7 @@ void ChatWidget::newMessage(Account* account, ContactList senders, const QString
 	UserListElement sender = UserListElement::fromContact(senders[0], account);
 
 	Contact contact = sender.toContact(account);
-	ContactList receivers;
-	receivers << kadu->myselfContact();
+	ContactList receivers(kadu->myself());
 
 	ChatMessage *chatMessage = new ChatMessage(contact, receivers, message,
 			TypeReceived, QDateTime::currentDateTime(), date);
@@ -507,7 +506,7 @@ void ChatWidget::writeMyMessage()
 {
 	kdebugf();
 
-	ChatMessage *message = new ChatMessage(kadu->myselfContact(), Contacts, myLastMessage.toHtml(),
+	ChatMessage *message = new ChatMessage(kadu->myself (), Contacts, myLastMessage.toHtml(),
 			TypeSent, QDateTime::currentDateTime());
 	body->appendMessage(message);
 

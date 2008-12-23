@@ -91,7 +91,7 @@ void Updates::initModule()
 	LastUpdateCheck.setTime_t(config_file.readNumEntry("General", "LastUpdateCheck"));
 
 	if (!UpdateChecked && LastUpdateCheck.secsTo(actualtime) >= 3600)
-	{
+	{/* TODO: 0.6.6
 		UinType myUin = (UinType)kadu->myself().ID("Gadu").toUInt();
 		if (myUin)
 		{
@@ -101,7 +101,7 @@ void Updates::initModule()
 
 			GaduProtocol *gadu = dynamic_cast<GaduProtocol *>(AccountManager::instance()->defaultAccount()->protocol());
 			connect(gadu, SIGNAL(connected()), instance, SLOT(run()));
-		}
+		}*/
 	}
 
 	kdebugf2();

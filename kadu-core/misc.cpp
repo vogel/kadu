@@ -930,6 +930,7 @@ void ChooseDescription::setPosition(const QPoint &position)
 void ChooseDescription::okPressed()
 {
 	QString description = Description->currentText();
+	Account *account = AccountManager::instance()->defaultAccount();
 
 	//je�eli ju� by� taki opis, to go usuwamy
 	defaultdescriptions.remove(description);
@@ -940,7 +941,7 @@ void ChooseDescription::okPressed()
 		defaultdescriptions.pop_back();
 
 	if (config_file.readBoolEntry("General", "ParseStatus", false))
-		description = KaduParser::parse(description, kadu->myself(), true);
+		description = KaduParser::parse(description, UserListElement::fromContact(kadu->myself(), account), true);
 
 	Status.setDescription(description);
 	kadu->setStatus(Status);
@@ -980,10 +981,12 @@ OpenChatWith::OpenChatWith(QWidget *parent)
 	QWidget *combos = new QWidget;
 
 	QHBoxLayout *combos_layout = new QHBoxLayout;
+	Account *account = AccountManager::instance()->defaultAccount();
+	UserListElement ule = UserListElement::fromContact(kadu->myself(), account);
 
 	c_protocol = new QComboBox;
 	c_protocol->insertItem(tr("Userlist"), 0);
-	c_protocol->insertStringList(kadu->myself().protocolList(), 1);
+	c_protocol->insertStringList(ule.protocolList(), 1);
 	c_protocol->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
 
 	c_text = new QComboBox;

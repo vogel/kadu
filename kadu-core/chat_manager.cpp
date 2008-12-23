@@ -44,15 +44,17 @@ void disableEmptyTextBox(KaduAction *action)
 
 void checkBlocking(KaduAction *action)
 {
-	foreach(const UserListElement &user, action->userListElements())
-		if (user.usesProtocol("Gadu") && user.ID("Gadu") == kadu->myself().ID("Gadu"))
-		{
-			action->setEnabled(false);
-			return;
-		}
+	Account *account = AccountManager::instance()->defaultAccount();
+	ContactList contacts = action->userListElements().toContactList(account);
+
+	if (contacts.contains(kadu->myself()))
+	{
+		action->setEnabled(false);
+		return;
+	}
 	
 	bool on = false;
-	foreach(const UserListElement &user, action->userListElements())
+	foreach (const UserListElement &user, action->userListElements())
 		if (user.protocolData("Gadu", "Blocking").toBool())
 		{
 			on = true;
@@ -63,12 +65,14 @@ void checkBlocking(KaduAction *action)
 
 void checkIgnoreUser(KaduAction *action)
 {
-	foreach(const UserListElement &user, action->userListElements())
-		if (user.usesProtocol("Gadu") && user.ID("Gadu") == kadu->myself().ID("Gadu"))
-		{
-			action->setEnabled(false);
-			return;
-		}
+	Account *account = AccountManager::instance()->defaultAccount();
+	ContactList contacts = action->userListElements().toContactList(account);
+
+	if (contacts.contains(kadu->myself()))
+	{
+		action->setEnabled(false);
+		return;
+	}
 
 	action->setChecked(IgnoredManager::isIgnored(action->userListElements()));
 }
@@ -823,9 +827,7 @@ ChatMessage *convertPendingToMessage(PendingMsgs::Element elem)
 	QDateTime date;
 	date.setTime_t(elem.time);
 
-	UserListElements ules = UserListElements(kadu->myself());
-	ContactList receivers = ules.toContactList(AccountManager::instance()->defaultAccount());
-
+	ContactList receivers(kadu->myself());
 	ChatMessage *message = new ChatMessage(elem.contacts[0], receivers, elem.msg,
 			TypeReceived, QDateTime::currentDateTime(), date);
 

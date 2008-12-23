@@ -220,14 +220,14 @@ void MainConfigurationWindow::prepareChatPreview(Preview *preview, bool append)
 
 	Account *account = AccountManager::instance()->defaultAccount();
 	ContactList receivers = UserListElements(example).toContactList(account);
-	ChatMessage *chatMessage = new ChatMessage(kadu->myselfContact(), receivers, tr("Your message"), TypeSent,
+	ChatMessage *chatMessage = new ChatMessage(kadu->myself(), receivers, tr("Your message"), TypeSent,
 		QDateTime::currentDateTime(), QDateTime::currentDateTime());
 	chatMessage->setSeparatorSize(0);
-	preview->addObjectToParse(kadu->myself(), chatMessage);
+	preview->addObjectToParse(UserListElement::fromContact(kadu->myself(), account), chatMessage);
 	if (append)
 		chatMessages.append(chatMessage);
 
-	chatMessage = new ChatMessage(example.toContact(account), UserListElements(kadu->myself()).toContactList(account),
+	chatMessage = new ChatMessage(example.toContact(account), kadu->myself(),
 			tr("Message from Your friend"), TypeReceived,
 			QDateTime::currentDateTime(), QDateTime::currentDateTime());
 	chatMessage->setSeparatorSize(4);
