@@ -329,7 +329,8 @@ public:
 
 };
 
-void disableContainsSelfUles(KaduAction *action);
+// Disable action for contacts illegal IDs
+void disableIllegalIdUles(KaduAction *action);
 
 extern KADUAPI Kadu *kadu;
 extern KADUAPI QMenu *dockMenu;

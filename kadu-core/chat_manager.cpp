@@ -145,7 +145,7 @@ ChatManager::ChatManager(QObject *parent)
 		ActionDescription::TypeUser, "chatAction",
 		this, SLOT(chatActionActivated(QAction *, bool)),
 		"OpenChat", tr("&Chat"), false, QString::null,
-		disableContainsSelfUles
+		disableIllegalIdUles
 	);
 
 	openChatWithActionDescription = new ActionDescription(

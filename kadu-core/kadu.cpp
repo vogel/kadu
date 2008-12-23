@@ -141,30 +141,16 @@ void Kadu::closeEvent(QCloseEvent *event)
 }
 
 
-void disableNonIdUles(KaduAction *action)
+void disableIllegalIdUles(KaduAction *action)
 {
 	kdebugf();
 	foreach(const UserListElement &user, action->userListElements())
-		if (!user.usesProtocol("Gadu"))
+		if ((!user.usesProtocol("Gadu")) || (user.usesProtocol("Gadu") && user.ID("Gadu") == kadu->myself().ID("Gadu")))
 		{
 			action->setEnabled(false);
 			return;
 		}
 
-	action->setEnabled(true);
-	kdebugf2();
-}
-
-void disableContainsSelfUles(KaduAction *action)
-{
-	kdebugf();
-	foreach(const UserListElement &user, action->userListElements())
-		if (user.usesProtocol("Gadu") && user.ID("Gadu") == kadu->myself().ID("Gadu"))
-		{
-			action->setEnabled(false);
-			return;
-		}
-	
 	action->setEnabled(true);
 	kdebugf2();
 }
