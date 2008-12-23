@@ -22,23 +22,32 @@ class XmlConfigFile;
 
 class Contact : public QObject
 {
+public:
+	enum ContactType
+	{
+		TypeNull,
+		TypeAnonymous,
+		TypeNormal
+	};
+
+private:
 	Q_OBJECT
 
 	QExplicitlySharedDataPointer<ContactData> Data;
-
-	// for creating 'null' static object
-	Contact(bool);
+	ContactType Type;
 
 	void checkNull();
 
 public:
 	Contact();
+	Contact(ContactType type);
 	Contact(const Contact &copy);
 	virtual ~Contact();
 
 	static Contact null;
 
-	bool isNull() const { return 0 == Data.data(); }
+	bool isNull() const { return TypeNull == Type; }
+	bool isAnonymous() const { return TypeNull == TypeAnonymous; }
 
 	Contact & operator = (const Contact &copy);
 	bool operator == (const Contact &compare) const;

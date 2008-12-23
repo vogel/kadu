@@ -29,3 +29,8 @@ void ContactAccountData::storeConfiguration(XmlConfigFile *configurationStorage,
 {
 	configurationStorage->createTextNode(parent, "Id", Id);
 }
+
+bool ContactAccountData::isValid()
+{
+	return validateId();
+}

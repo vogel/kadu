@@ -7,6 +7,7 @@
  *                                                                         *
  ***************************************************************************/
 
+#include "accounts/account.h"
 #include "contacts/contact.h"
 #include "xml_config_file.h"
 
@@ -79,7 +80,7 @@ void ContactManager::addContact(Contact contact)
 
 Contact ContactManager::getContactById(Account *account, const QString &id)
 {
-	if (id.isEmpty())
+	if (id.isEmpty() || 0 == account)
 		return Contact::null;
 
 	foreach (Contact contact, Contacts.values())
@@ -88,7 +89,10 @@ Contact ContactManager::getContactById(Account *account, const QString &id)
 			return contact;
 	}
 
-	return Contact::null;
+	Contact anonymous = account->createAnonymous(id);
+	addContact(anonymous);
+
+	return anonymous;
 }
 
 Contact ContactManager::getContactByUuid(const QString &uuid)

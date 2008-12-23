@@ -24,6 +24,8 @@ public:
 		: ContactAccountData(account, id)
 	{}
 
+	virtual bool validateId();
+
 	UinType uin();
 
 };

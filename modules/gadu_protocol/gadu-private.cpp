@@ -464,12 +464,9 @@ void GaduSocketNotifiers::socketEvent()
 			ContactList users(CurrentAccount->getContactById(QString::number(e->event.msg.sender)));
 			UserListElements ules = UserListElements::fromContactList(users, CurrentAccount);
 
-			printf("sender is: %d\n", e->event.msg.sender);
-			printf("this contact is null: %d\n", CurrentAccount->getContactById(QString::number(e->event.msg.sender)).isNull());
-			printf("this contact is null: %d\n", AccountManager::instance()->defaultAccount()->getContactById(QString::number(e->event.msg.sender)).isNull());
-
-			printf("account: %p\n", CurrentAccount);
-			printf("account: %p\n", AccountManager::instance()->defaultAccount());
+			// TODO: 0.6.6
+			if (e->event.msg.recipients_count)
+				break;
 
 			if (e->event.msg.msgclass == GG_CLASS_CTCP)
 			{

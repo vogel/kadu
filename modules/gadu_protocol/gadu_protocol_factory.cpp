@@ -12,6 +12,7 @@
 #include "gadu.h"
 #include "gadu_account_data.h"
 #include "gadu_configuration_dialog.h"
+#include "gadu-contact-account-data.h"
 
 #include "gadu_protocol_factory.h"
 
@@ -23,6 +24,11 @@ Protocol * GaduProtocolFactory::newInstance()
 AccountData * GaduProtocolFactory::newAccountData()
 {
 	return new GaduAccountData();
+}
+
+ContactAccountData * GaduProtocolFactory::newContactAccountData(Account *account, const QString &id)
+{
+	return new GaduContactAccountData(account, id);
 }
 
 GaduConfigurationDialog * GaduProtocolFactory::newConfigurationDialog(AccountData *accountData, QWidget *parent)

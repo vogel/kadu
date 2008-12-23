@@ -45,6 +45,7 @@ public:
 	UserStatus currentStatus();
 
 	Contact getContactById(const QString &id);
+	Contact createAnonymous(const QString &id);
 
 };
 

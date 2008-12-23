@@ -24,11 +24,14 @@ public:
 	ContactAccountData();
 	ContactAccountData(Account *account, const QString &id);
 
+	virtual bool validateId() = 0;
 	virtual void loadConfiguration(XmlConfigFile *configurationStorage, QDomElement parent);
 	virtual void storeConfiguration(XmlConfigFile *configurationStorage, QDomElement parent);
 
 	Account * account() { return ContactAccount; }
 	QString id() { return Id; }
+
+	bool isValid();
 
 	bool hasFeature() { return false; }
 

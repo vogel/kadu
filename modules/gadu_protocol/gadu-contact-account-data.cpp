@@ -13,3 +13,10 @@ unsigned int GaduContactAccountData::uin()
 {
 	return id().toUInt();
 }
+
+bool GaduContactAccountData::validateId()
+{
+	bool ok;
+	id().toUInt(&ok);
+	return ok;
+}

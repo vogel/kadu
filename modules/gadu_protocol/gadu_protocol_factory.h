@@ -18,6 +18,7 @@ class GaduProtocolFactory : public ProtocolFactory
 public:
 	virtual Protocol * newInstance();
 	virtual AccountData * newAccountData();
+	virtual ContactAccountData * newContactAccountData(Account *account, const QString &id);
 	virtual GaduConfigurationDialog * newConfigurationDialog(AccountData *, QWidget *);
 
 	virtual QString name() { return "gadu"; }

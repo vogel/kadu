@@ -13,8 +13,10 @@
 #include <QtCore/QString>
 #include <QtGui/QDialog>
 
+class Account;
 class AccountData;
 class ConfigurationWindow;
+class ContactAccountData;
 class Protocol;
 
 class ProtocolFactory : public QObject
@@ -22,6 +24,7 @@ class ProtocolFactory : public QObject
 public:
 	virtual Protocol * newInstance() = 0;
 	virtual AccountData * newAccountData() = 0;
+	virtual ContactAccountData * newContactAccountData(Account *account, const QString &id) = 0;
 	virtual ConfigurationWindow * newConfigurationDialog(AccountData *, QWidget *) = 0;
 
 	virtual QString name() = 0;

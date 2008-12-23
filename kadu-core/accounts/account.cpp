@@ -9,6 +9,7 @@
 
 #include "account_data.h"
 
+#include "contacts/contact-account-data.h"
 #include "contacts/contact-manager.h"
 
 #include "protocols/protocol.h"
@@ -97,4 +98,20 @@ QString Account::name()
 Contact Account::getContactById(const QString& id)
 {
 	return ContactManager::instance()->getContactById(this, id);
+}
+
+Contact Account::createAnonymous(const QString& id)
+{
+	Contact result(Contact::TypeAnonymous);
+
+	ProtocolFactory *protocolFactory = ProtocolHandler->protocolFactory();
+	ContactAccountData *contactAccountData = protocolFactory->newContactAccountData(this, id);
+	if (!contactAccountData->isValid())
+	{
+		delete contactAccountData;
+		return Contact::null;
+	}
+
+	result.addAccountData(contactAccountData);
+	return result;
 }

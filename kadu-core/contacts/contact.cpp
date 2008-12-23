@@ -11,20 +11,20 @@
 
 #include "contact.h"
 
-Contact Contact::null(true);
+Contact Contact::null(Contact::TypeNull);
 
 Contact::Contact()
-	: Data(new ContactData())
+	: Data(new ContactData()), Type(Contact::TypeNormal)
 {
 }
 
-Contact::Contact(bool)
-	: Data(0)
+Contact::Contact(Contact::ContactType type)
+	: Type(type)
 {
 }
 
 Contact::Contact(const Contact &copy)
-	: Data(copy.Data)
+	: Data(copy.Data), Type(copy.Type)
 {
 }
 
