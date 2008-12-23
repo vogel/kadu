@@ -124,8 +124,8 @@ TabsManager::TabsManager(bool firstload) : QObject()
 	tabdialog->setContextMenuPolicy(Qt::CustomContextMenu);
 	connect(tabdialog, SIGNAL(currentChanged(int)),
 			this, SLOT(onTabChange(int)));
-	connect(tabdialog, SIGNAL(customContextMenuRequested(const QPoint &)),
-			this, SLOT(onContextMenu(const QPoint &)));
+	connect(tabdialog, SIGNAL(contextMenu(QWidget*, const QPoint&)),
+			this, SLOT(onContextMenu(QWidget*, const QPoint&)));
 	connect(tabdialog, SIGNAL(openTab(QStringList, int)),
 			this, SLOT(openTabWith(QStringList, int)));
 
@@ -532,12 +532,12 @@ void TabsManager::onTabAttach(QAction *sender, bool toggled)
 	}
 }
 
-void TabsManager::onContextMenu(const QPoint& pos)
+void TabsManager::onContextMenu(QWidget* w, const QPoint& pos)
 {
 	kdebugf();
 	///to już powinno działać
-	selectedchat = dynamic_cast<ChatWidget *>(tabdialog->widget(tabdialog->getTabBar()->tabAt(pos)));
-	menu->popup(tabdialog->mapToGlobal(pos));
+	selectedchat = dynamic_cast<ChatWidget *>(w);
+	menu->popup(pos);
 	kdebugf2();
 }
 
@@ -596,7 +596,8 @@ bool TabsManager::detachChat(ChatWidget* chat)
 	if (tabdialog->indexOf(chat) == -1)
 		return false;
 	UserListElements users=chat->users()->toUserListElements();
-	chat->deleteLater();
+	delete chat;
+
 	no_tabs = true;
 	chat_manager->openPendingMsgs(users);
 	return true;

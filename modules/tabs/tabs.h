@@ -165,7 +165,7 @@ class TabsManager : public ConfigurationUiHandler, ConfigurationAwareObject
 
 	private slots:
 		void onTimer();
-		void onContextMenu(const QPoint& pos);
+		void onContextMenu(QWidget* w, const QPoint& pos);
 		void onMenu(int id);
 		void onMessageReceived(ChatWidget *chat);
 	signals:
