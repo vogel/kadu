@@ -470,7 +470,9 @@ void GaduSocketNotifiers::socketEvent()
 
 			if (e->event.msg.msgclass == GG_CLASS_CTCP)
 			{
-				if (config_file.readBoolEntry("Network", "AllowDCC") && !IgnoredManager::isIgnored(ules) && !ules[0].isAnonymous())
+				if (config_file.readBoolEntry("Network", "AllowDCC") &&
+						!IgnoredManager::isIgnored(ules) &&
+						!users[0].isAnonymous())
 					emit dccConnectionReceived(users[0]);
 			}
 			else

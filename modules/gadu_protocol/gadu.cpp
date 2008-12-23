@@ -639,7 +639,7 @@ void GaduProtocol::userAdded(UserListElement elem, bool massively, bool /*last*/
 	if (massively)
 		sendUserListLater();
 	else
-		if (!elem.isAnonymous())
+		if (!contact.isAnonymous())
 			gg_add_notify(Sess, uin(contact));
 	kdebugf2();
 }
@@ -657,7 +657,7 @@ void GaduProtocol::removingUser(UserListElement elem, bool massively, bool /*las
 	if (massively)
 		sendUserListLater();
 	else
-		if (!elem.isAnonymous())
+		if (!contact.isAnonymous())
 			gg_remove_notify(Sess, uin(contact));
 	kdebugf2();
 }
@@ -678,7 +678,7 @@ void GaduProtocol::protocolAdded(UserListElement elem, QString protocolName, boo
 	if (massively)
 		sendUserListLater();
 	else
-		if (!elem.isAnonymous())
+		if (!contact.isAnonymous())
 			gg_add_notify(Sess, uin(contact));
 	kdebugf2();
 }
@@ -699,7 +699,7 @@ void GaduProtocol::removingProtocol(UserListElement elem, QString protocolName, 
 	if (massively)
 		sendUserListLater();
 	else
-		if (!elem.isAnonymous())
+		if (!contact.isAnonymous())
 			gg_remove_notify(Sess, uin(contact));
 	kdebugf2();
 }
@@ -948,7 +948,7 @@ void GaduProtocol::messageReceivedSlot(int msgclass, ContactList senders, QStrin
 	// TODO : 0.6.6
 
 	UserListElements ules = UserListElements::fromContactList(senders, account());
-	if (ules[0].isAnonymous() &&
+	if (senders[0].isAnonymous() &&
 			config_file.readBoolEntry("Chat", "IgnoreAnonymousUsers") &&
 			((senders.size() == 1) || config_file.readBoolEntry("Chat", "IgnoreAnonymousUsersInConferences")))
 	{

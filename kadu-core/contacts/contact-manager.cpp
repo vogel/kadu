@@ -60,7 +60,7 @@ void ContactManager::storeConfiguration(XmlConfigFile *configurationStorage)
 
 	foreach (Contact contact, Contacts.values())
 	{
-		if (contact.isNull())
+		if (contact.isNull() || contact.isAnonymous())
 			continue;
 
 		QDomElement contactNode = configurationStorage->getUuidNode(contactsNewNode, "Contact", 
