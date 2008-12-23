@@ -1901,6 +1901,11 @@ void Kadu::currentChanged(UserListElement user)
 	updateInformationPanel(user);
 }
 
+void Kadu::infoPanelSyntaxFixup(QString &syntax)
+{
+	syntax = QString("<html><head><style type='text/css'>%1</style></head><body>%2</body>").arg(infoPanelStyle, syntax);
+}
+
 // QMenuBar* Kadu::menuBar() const
 // {
 // 	return MenuBar;

@@ -82,7 +82,6 @@ private slots:
 	void lookChatAdvancedDestroyed();
 
 	void onInfoPanelSyntaxEditorWindowCreated(SyntaxEditorWindow *syntaxEditorWindow);
-	void infoPanelFixup(QString &syntax);
 
 	void onChatSyntaxEditorWindowCreated(SyntaxEditorWindow *syntaxEditorWindow);
 	void chatSyntaxFixup(QString &syntax);

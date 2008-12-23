@@ -235,8 +235,6 @@ public:
 	const QDateTime &startTime() const;
 	void refreshPrivateStatusFromConfigFile();
 
-	const QString & panelStyle() { return infoPanelStyle;}
-
 	void addMenuActionDescription(ActionDescription *actionDescription);
 	void insertMenuActionDescription(int pos, ActionDescription *actionDescription);
 	void removeMenuActionDescription(ActionDescription *actionDescription);
@@ -296,6 +294,8 @@ public slots:
 	void showStatusActionActivated(QAction *sender, bool toggled);
 	void showStatusActionCreated(KaduAction *action);
 
+	void infoPanelSyntaxFixup(QString &syntax);
+
 signals:
 	void keyPressed(QKeyEvent *e);
 	void statusPixmapChanged(const QIcon &icon, const QString &icon_name);
@@ -328,8 +328,9 @@ public:
 	int number() const { return Number; }
 
 };
-
-// Disable action for contacts illegal IDs
+/**
+	Disable action for contacts illegal IDs
+**/
 void disableIllegalIdUles(KaduAction *action);
 
 extern KADUAPI Kadu *kadu;

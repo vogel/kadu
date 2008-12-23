@@ -122,7 +122,7 @@ MainConfigurationWindow::MainConfigurationWindow()
 
 	Preview *infoPanelSyntaxPreview = dynamic_cast<Preview *>(widgetById("infoPanelSyntaxPreview"));
 	infoPanelSyntaxPreview->setResetBackgroundColor(config_file.readEntry("Look", "InfoPanelBgColor"));
-	connect(infoPanelSyntaxPreview, SIGNAL(needFixup(QString &)), this, SLOT(infoPanelFixup(QString &)));
+	connect(infoPanelSyntaxPreview, SIGNAL(needFixup(QString &)), kadu, SLOT(infoPanelSyntaxFixup(QString &)));
 	connect(widgetById("infoPanelSyntax"), SIGNAL(syntaxChanged(const QString &)), infoPanelSyntaxPreview, SLOT(syntaxChanged(const QString &)));
 	connect(widgetById("infoPanelSyntax"), SIGNAL(onSyntaxEditorWindowCreated(SyntaxEditorWindow *)),
 		this, SLOT(onInfoPanelSyntaxEditorWindowCreated(SyntaxEditorWindow *)));
@@ -213,11 +213,6 @@ void MainConfigurationWindow::chatSyntaxFixup(QString &syntax)
 {
 	syntax.replace("<kadu:header>", "");
 	syntax.replace("</kadu:header>", "");
-}
-
-void MainConfigurationWindow::infoPanelFixup(QString &syntax)
-{
-	syntax = QString("<html><head><style type='text/css'>%1</style></head><body>%2</body>").arg(kadu->panelStyle(), syntax);
 }
 
 void MainConfigurationWindow::chatFixup(QString &syntax)
@@ -651,7 +646,7 @@ void MainConfigurationWindow::onChatSyntaxEditorWindowCreated(SyntaxEditorWindow
 
 void MainConfigurationWindow::onInfoPanelSyntaxEditorWindowCreated(SyntaxEditorWindow *syntaxEditorWindow)
 {
-	connect(syntaxEditorWindow->preview(), SIGNAL(needFixup(QString &)), this, SLOT(infoPanelFixup(QString &)));
+	connect(syntaxEditorWindow->preview(), SIGNAL(needFixup(QString &)), kadu, SLOT(infoPanelSyntaxFixup(QString &)));
 }
 
 void MainConfigurationWindow::showLookChatAdvanced()
