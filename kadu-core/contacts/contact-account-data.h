@@ -10,7 +10,10 @@
 #ifndef CONTACT_ACCOUNT_DATA
 #define CONTACT_ACCOUNT_DATA
 
+#include <QtNetwork/QHostAddress>
 #include <QtXml/QDomElement>
+
+#include "protocols/status.h"
 
 class Account;
 class XmlConfigFile;
@@ -19,6 +22,13 @@ class ContactAccountData
 {
 	Account *ContactAccount;
 	QString Id;
+
+	Status CurrentStatus;
+
+	QString ProtocolVersion;
+
+	QHostAddress Address;
+	unsigned int Port;
 
 public:
 	ContactAccountData();
@@ -34,6 +44,12 @@ public:
 	bool isValid();
 
 	bool hasFeature() { return false; }
+
+	void setProtocolVersion(const QString &protocolVersion) { ProtocolVersion = protocolVersion; }
+	void setAddressAndPort(QHostAddress address, int port);
+
+	Status status() { return CurrentStatus; }
+	void setStatus(Status status) { CurrentStatus = status; }
 
 };
 

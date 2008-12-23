@@ -34,3 +34,9 @@ bool ContactAccountData::isValid()
 {
 	return validateId();
 }
+
+void ContactAccountData::setAddressAndPort(QHostAddress address, int port)
+{
+	Address = address;
+	Port = port;
+}

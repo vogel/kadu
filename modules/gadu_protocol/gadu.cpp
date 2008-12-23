@@ -2093,11 +2093,41 @@ void GaduProtocol::userListReplyReceived(char type, char *reply)
 	kdebugf2();
 }
 
+#define GG_STATUS_INVISIBLE2 0x0009
+Status::StatusType GaduProtocol::statusTypeFromIndex(unsigned int index) const
+{
+	switch (index)
+	{
+		case GG_STATUS_AVAIL_DESCR:
+		case GG_STATUS_AVAIL:
+			return Status::Online;
+
+		case GG_STATUS_BUSY_DESCR:
+		case GG_STATUS_BUSY:
+			return Status::Busy;
+
+		case GG_STATUS_INVISIBLE_DESCR:
+		case GG_STATUS_INVISIBLE:
+		case GG_STATUS_INVISIBLE2:
+			return Status::Invisible;
+
+		case GG_STATUS_BLOCKED:
+		case GG_STATUS_NOT_AVAIL_DESCR:
+		case GG_STATUS_NOT_AVAIL:
+		default:
+			return Status::Offline;
+	}
+
+	return Status::Offline;
+}
+
 void GaduProtocol::userStatusChanged(const struct gg_event *e)
 {
 	kdebugf();
 
-	GaduStatus oldStatus, status;
+	int gadu_status_id;
+	QString description;
+
 	uint32_t uin;
 	uint32_t remote_ip;
 	uint16_t remote_port;
@@ -2107,8 +2137,8 @@ void GaduProtocol::userStatusChanged(const struct gg_event *e)
 	if (e->type == GG_EVENT_STATUS60)
 	{
 		uin = e->event.status60.uin;
-		status.fromStatusNumber(e->event.status60.status,
-			cp2unicode(e->event.status60.descr));
+		gadu_status_id = e->event.status60.status;
+		description = cp2unicode(e->event.status60.descr);
 		remote_ip = e->event.status60.remote_ip;
 		remote_port = e->event.status60.remote_port;
 		version = e->event.status60.version;
@@ -2117,32 +2147,34 @@ void GaduProtocol::userStatusChanged(const struct gg_event *e)
 	else
 	{
 		uin = e->event.status.uin;
-		status.fromStatusNumber(e->event.status.status,
-			cp2unicode(e->event.status.descr));
+		gadu_status_id = e->event.status.status;
+		description = cp2unicode(e->event.status.descr);
 		remote_ip = 0;
 		remote_port = 0;
 		version = 0;
 		image_size = 0;
 	}
 
-	QString desc = status.description();
-	desc.replace("\r\n", "\n");
-	desc.replace("\r", "\n");
-	status.setDescription(desc);
+	description.replace("\r\n", "\n");
+	description.replace("\r", "\n");
 
-	kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "User %d went %d (%s)\n", uin,
-		status.toStatusNumber(), qPrintable(status.name()));
+	Status status(statusTypeFromIndex(gadu_status_id), description);
+// TODO: 0.6.6
+//	kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "User %d went %d (%s)\n", uin,
+//		status.type(), qPrintable(status.name()));
 
-	if (!userlist->contains("Gadu", QString::number(uin), FalseForAnonymous))
+	Contact contact = account()->getContactById(QString::number(uin));
+
+	if (contact.isAnonymous())
 	{
 		// ignore!
 		kdebugmf(KDEBUG_INFO, "buddy %d not in list. Damned server!\n", uin);
 		gg_remove_notify(Sess, uin);
-		emit userStatusChangeIgnored(uin);
+		emit userStatusChangeIgnored(contact);
 		return;
 	}
 
-	UserListElement user = userlist->byID("Gadu", QString::number(uin));
+	GaduContactAccountData *data = dynamic_cast<GaduContactAccountData *>(contact.accountData(account()));
 
 	if (status.isOffline())
 	{
@@ -2151,16 +2183,20 @@ void GaduProtocol::userStatusChanged(const struct gg_event *e)
 		version = 0;
 		image_size = 0;
 	}
-	user.setAddressAndPort("Gadu", QHostAddress((quint32)(ntohl(remote_ip))), remote_port);
-	user.setProtocolData("Gadu", "Version", version);
-	user.setProtocolData("Gadu", "MaxImageSize", image_size);
 
-	user.refreshDNSName("Gadu");
+	data->setAddressAndPort(QHostAddress((quint32)(ntohl(remote_ip))), remote_port);
+	data->setProtocolVersion(QString::number(version));
+	data->setMaxImageSize(image_size);
+// 	user.setProtocolData("Gadu", "Version", version);
+// 	user.setProtocolData("Gadu", "dMaxImageSize", image_size);
 
-	oldStatus = user.status("Gadu");
-	user.setStatus("Gadu", status, false, false);
+// TODO: 0.6.5
+// 	user.refreshDNSName("Gadu");
 
-	kdebugf2();
+	Status oldStatus = data->status();
+	data->setStatus(status);
+
+	emit contactStatusChanged(account(), contact, oldStatus);
 }
 
 void GaduProtocol::dccRequest(UinType uin)

@@ -326,6 +326,9 @@ class KADUAPI UserBox : public Q3ListBox, ConfigurationAwareObject
 	void refreshBackground();
 
 private slots:
+	void accountRegistered(Account *account);
+	void accountUnregistered(Account *account);
+
 	void doubleClickedSlot(Q3ListBoxItem *item);
 	void returnPressedSlot(Q3ListBoxItem *item);
 	void currentChangedSlot(Q3ListBoxItem *item);

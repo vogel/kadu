@@ -36,6 +36,9 @@ Account::Account(const QUuid &uuid, Protocol *protocol, AccountData *data)
 		: uuid;
 
 	protocol->setData(Data);
+
+	connect(protocol, SIGNAL(contactStatusChanged(Account *, Contact, Status)),
+			this, SIGNAL(contactStatusChanged(Account*, Contact, Status)));
 }
 
 Account::~Account()

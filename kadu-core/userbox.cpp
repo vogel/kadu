@@ -27,7 +27,9 @@
 #include <QtGui/QSpinBox>
 #include <QtGui/QWheelEvent>
 
+#include "accounts/account.h"
 #include "accounts/account_manager.h"
+
 #include "action.h"
 #include "config_file.h"
 #include "debug.h"
@@ -513,6 +515,13 @@ UserBox::UserBox(KaduMainWindow *mainWindow, bool fancy, UserGroup *group, QWidg
 {
 	kdebugf();
 	Filters.append(group);
+
+	connect(AccountManager::instance(), SIGNAL(accountRegistered(Account *)),
+			this, SLOT(accountRegistered(Account *)));
+	connect(AccountManager::instance(), SIGNAL(accountUnregistered(Account *)),
+			this, SLOT(accountUnregistered(Account *)));
+	foreach (Account *account, AccountManager::instance()->accounts())
+		accountRegistered(account);
 
 	setHScrollBarMode(Q3ScrollView::AlwaysOff);
 
@@ -1610,5 +1619,18 @@ inline int compareStatus(const UserListElement &u1, const UserListElement &u2)
 	else
 		return int(u2Gadu) - int(u1Gadu);
 }
+
+void UserBox::accountRegistered(Account *account)
+{
+	connect(account, SIGNAL(contactStatusChanged(Account *, Contact, Status)),
+			this, SLOT(refreshLater()));
+}
+
+void UserBox::accountUnregistered(Account *account)
+{
+	disconnect(account, SIGNAL(contactStatusChanged(Account *, Contact, Status)),
+			this, SLOT(refreshLater()));
+}
+
 
 ToolTipClassManager *tool_tip_class_manager = 0;

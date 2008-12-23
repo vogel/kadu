@@ -41,6 +41,7 @@ set (kadu_SRCS
 
 	protocols/protocol.cpp
 	protocols/protocols_manager.cpp
+	protocols/status.cpp
 
 	about.cpp
 	action.cpp

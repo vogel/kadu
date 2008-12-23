@@ -15,8 +15,10 @@
 
 #include <libgadu.h>
 
-#include "gadu_exports.h"
 #include "protocols/protocol.h"
+#include "protocols/status.h"
+
+#include "gadu_exports.h"
 #include "userlist.h"
 
 typedef uin_t UinType;
@@ -257,6 +259,8 @@ class GADUAPI GaduProtocol : public Protocol
 
 	virtual AccountData * createAccountData();
 	UinType uin(Contact contact) const;
+
+	Status::StatusType statusTypeFromIndex(unsigned int index) const;
 
 private slots:
 	/**
@@ -759,10 +763,9 @@ signals:
 	void imageReceivedAndSaved(UinType sender, uint32_t size, uint32_t crc32, const QString &path);
 
 	/**
-		dostali�my od serwera informacj� o zmianie statusu dla kontaktu,
-		kt�rego nie mamy na li�cie
+		Served sent information about status change for unknown user.
 	**/
-	void userStatusChangeIgnored(UinType uin);
+	void userStatusChangeIgnored(Contact);
 
 	/**
 		otrzymana wiadomo�� systemow�

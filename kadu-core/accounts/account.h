@@ -14,11 +14,12 @@
 #include <QtCore/QUuid>
 #include <QtXml/QDomElement>
 
-#include "status.h"
+#include "contacts/contact.h"
+#include "protocols/status.h"
 
 class AccountData;
-class Contact;
 class Protocol;
+class UserStatus;
 class XmlConfigFile;
 
 class Account : public QObject
@@ -46,6 +47,9 @@ public:
 
 	Contact getContactById(const QString &id);
 	Contact createAnonymous(const QString &id);
+
+signals:
+	void contactStatusChanged(Account *account, Contact contact, Status oldStatus);
 
 };
 

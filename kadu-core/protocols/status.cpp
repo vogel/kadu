@@ -7,30 +7,15 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GADU_CONTACT_ACCOUNT_DATA
-#define GADU_CONTACT_ACCOUNT_DATA
+#include "status.h"
 
-#include "contacts/contact-account-data.h"
-
-#include "gadu.h"
-
-class Account;
-
-class GaduContactAccountData : public ContactAccountData
+Status::Status(Status::StatusType type, QString description)
+	: Type(type), Description(description)
 {
-	unsigned long MaxImageSize;
+}
 
-public:
-	GaduContactAccountData(Account *account, const QString &id)
-		: ContactAccountData(account, id)
-	{}
+Status::Status(const Status& copyme)
+	: Type(copyme.Type), Description(copyme.Description)
+{
+}
 
-	virtual bool validateId();
-
-	UinType uin();
-
-	void setMaxImageSize(unsigned long maxImageSize) { MaxImageSize = maxImageSize; }
-
-};
-
-#endif // GADU_CONTACT_ACCOUNT_DATA

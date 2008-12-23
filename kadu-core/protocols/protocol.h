@@ -15,6 +15,7 @@
 
 #include "contacts/contact.h"
 #include "contacts/contact-list.h"
+#include "../status.h"
 #include "status.h"
 
 typedef uint32_t UinType;
@@ -22,6 +23,7 @@ typedef uint32_t UinType;
 class AccountData;
 class Message;
 class ProtocolFactory;
+class Status;
 
 class KADUAPI Protocol : public QObject
 {
@@ -227,6 +229,8 @@ signals:
 		\param time czas nadania wiadomo�ci
 	**/
 	void messageReceived(Account *account, ContactList senders, const QString &message, time_t time);
+
+	void contactStatusChanged(Account *account, Contact contact, Status oldStatus);
 
 };
 
