@@ -24,6 +24,7 @@
 #include "misc.h"
 #include "pending_msgs.h"
 #include "userlist.h"
+#include "gadu.h"
 
 #define DOCK_FONT_NAME "LucidaGrande-Bold"
 #define DOCK_FONT_SIZE 24
@@ -51,7 +52,9 @@ MacOSXDocking::MacOSXDocking(QObject *parent, const char *name) : QObject(parent
 
 	docking_manager->setDocked(true);
 	
-	
+	const UserStatus &stat = gadu->currentStatus();
+	trayPixmapChanged(QIcon(stat.pixmap()), stat.name());
+
 	kdebugf2();
 }
 
