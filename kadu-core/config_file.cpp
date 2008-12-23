@@ -359,7 +359,8 @@ bool PlainConfigFile::changeEntry(const QString &group, const QString &name, con
 QString PlainConfigFile::getEntry(const QString &group, const QString &name, bool *ok) const
 {
 //	kdebugm(KDEBUG_FUNCTION_START, "PlainConfigFile::getEntry(%s, %s) %p\n", qPrintable(group), qPrintable(name), this);
-	if (activeGroupName!=group)
+	/* Dorr: there is crash caused by wrong cached activeGroup pointer when using weather module */
+	/*if (activeGroupName!=group)*/
 	{
 		if (!groups.contains(group))
 		{
