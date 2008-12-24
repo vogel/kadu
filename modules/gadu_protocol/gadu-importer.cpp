@@ -50,6 +50,10 @@ void GaduImporter::importContacts()
 		contactAdded(contact);
 }
 
+#define Property(name, old_name) \
+	contact.set##name(contact.customData()[#old_name]); \
+	contact.customData().remove(#old_name);
+
 void GaduImporter::importContact(Contact &contact)
 {
 	QString id = contact.customData()["uin"];
@@ -59,6 +63,14 @@ void GaduImporter::importContact(Contact &contact)
 
 	gcad->setBlocked(QVariant(contact.customData()["blocking"]).toBool());
 	gcad->setOfflineTo(QVariant(contact.customData()["offline_to"]).toBool());
+
+	Property(Nick, altnick)
+	Property(FirstName, first_name)
+	Property(LastName, last_name)
+	Property(NickName, nick_name)
+	Property(HomePhone, home_phone)
+	Property(Mobile, mobile)
+	Property(Email, email)
 
 	contact.customData().remove("uin");
 	contact.customData().remove("blocking");

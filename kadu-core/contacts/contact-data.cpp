@@ -40,6 +40,9 @@ void ContactData::loadConfiguration(XmlConfigFile *configurationStorage, QDomEle
 {
 }
 
+#define Property(name) \
+	configurationStorage->createTextNode(customDataValues, #name, name);
+
 void ContactData::storeConfiguration(XmlConfigFile *configurationStorage, QDomElement parent)
 {
 	QDomElement customDataValues = configurationStorage->getNode(parent,
@@ -49,6 +52,14 @@ void ContactData::storeConfiguration(XmlConfigFile *configurationStorage, QDomEl
 	{
 		configurationStorage->createNamedTextNode(customDataValues, "CustomDataValue", key, CustomData[key]);
 	}
+
+	Property(Nick)
+	Property(FirstName)
+	Property(LastName)
+	Property(NickName)
+	Property(HomePhone)
+	Property(Mobile)
+	Property(Email)
 
 	foreach (ContactAccountData *accountData, AccountsData.values())
 	{
