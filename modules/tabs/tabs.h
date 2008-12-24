@@ -114,7 +114,7 @@ class TabsManager : public ConfigurationUiHandler, ConfigurationAwareObject
 		* Metoda jest wywoływana po zmianie w oknie konfiguracyjnym.
 		*/
 		virtual void configurationUpdated();
-		
+
 	private:
 		ActionDescription* openInNewTabActionDescription;
 		ActionDescription* attachToTabsActionDescription;

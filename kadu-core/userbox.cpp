@@ -1656,7 +1656,7 @@ inline int compareStatus(const UserListElement &u1, const UserListElement &u2)
 	if (d1 && d2)
 		return d2->status().compareTo(d1->status());
 	else
-		return (int)d2 - (int)d1;
+		return (long int)d2 - (long int)d1;
 }
 
 void UserBox::accountRegistered(Account *account)
