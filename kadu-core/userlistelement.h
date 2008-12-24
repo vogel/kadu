@@ -437,6 +437,7 @@ public slots:
 	void refreshDNSName(const QString &protocolName) const;
 
 	Contact toContact(Account *account) const;
+	Contact toContact() const;
 	static UserListElement fromContact(Contact contact, Account *account);
 
 };

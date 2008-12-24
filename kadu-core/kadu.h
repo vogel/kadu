@@ -147,7 +147,7 @@ private slots:
 	void systemMessageReceived(const QString &msg);
 	void deleteOldConfigFiles();
 
-	void currentChanged(UserListElement);
+	void currentChanged(Contact contact);
 
 	void statusMenuAboutToHide(void);
 	void dockMenuAboutToHide(void);
@@ -251,11 +251,11 @@ public slots:
 	virtual void show();
 	virtual void hide();
 	void mouseButtonClicked(int, Q3ListBoxItem *);
-	void updateInformationPanel(UserListElement);
+	void updateInformationPanel(Contact contact);
 	void updateInformationPanel();
 	void updateInformationPanelLater();
 
-	void sendMessage(UserListElement elem);
+	void sendMessage(Contact contact);
 
 	void setStatus(const UserStatus &status);
 	void setOnline(const QString &description = QString::null);

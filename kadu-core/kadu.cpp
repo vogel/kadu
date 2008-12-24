@@ -1323,7 +1323,7 @@ void Kadu::mouseButtonClicked(int button, Q3ListBoxItem *item)
 }
 
 /* if something's pending, open it, if not, open new message */
-void Kadu::sendMessage(UserListElement elem)
+void Kadu::sendMessage(Contact contact)
 {
 	kdebugf();
 	UserBox *userbox = dynamic_cast<UserBox *>(sender());
@@ -1611,11 +1611,11 @@ bool Kadu::close(bool quit)
 		disconnect(&(gadu->currentStatus()), SIGNAL(goOffline(const QString &)),
 				this, SLOT(wentOffline(const QString &)));
 
-		disconnect(Userbox, SIGNAL(doubleClicked(UserListElement)), this, SLOT(sendMessage(UserListElement)));
-		disconnect(Userbox, SIGNAL(returnPressed(UserListElement)), this, SLOT(sendMessage(UserListElement)));
+		disconnect(Userbox, SIGNAL(doubleClicked(Contact)), this, SLOT(sendMessage(Contact)));
+		disconnect(Userbox, SIGNAL(returnPressed(Contact)), this, SLOT(sendMessage(Contact)));
 		disconnect(Userbox, SIGNAL(mouseButtonClicked(int, Q3ListBoxItem *, const QPoint &)),
 				this, SLOT(mouseButtonClicked(int, Q3ListBoxItem *)));
-		disconnect(Userbox, SIGNAL(currentChanged(UserListElement)), this, SLOT(currentChanged(UserListElement)));
+		disconnect(Userbox, SIGNAL(currentChanged(Contact)), this, SLOT(currentChanged(Contact)));
 
 #if 0
 		status_changer_manager->unregisterStatusChanger(splitStatusChanger);
@@ -1961,15 +1961,17 @@ void Kadu::updateInformationPanelLater()
 void Kadu::updateInformationPanel()
 {
 	if (Userbox->currentUserExists())
-		updateInformationPanel(Userbox->currentUser());
+		updateInformationPanel(Userbox->currentContact());
 }
 
-void Kadu::updateInformationPanel(UserListElement user)
+void Kadu::updateInformationPanel(Contact contact)
 {
 	if (!config_file.readBoolEntry("Look", "ShowInfoPanel"))
 		return;
-	if (Userbox->currentUserExists() && user == Userbox->currentUser())
+	if (Userbox->currentUserExists() && contact == Userbox->currentContact())
 	{
+		UserListElement user = UserListElement::fromContact(contact, AccountManager::instance()->defaultAccount());
+
 		kdebugmf(KDEBUG_INFO, "%s\n", qPrintable(user.altNick()));
 		QString text = QString(
 			"<html>"
@@ -1994,9 +1996,9 @@ void Kadu::updateInformationPanel(UserListElement user)
 	}
 }
 
-void Kadu::currentChanged(UserListElement user)
+void Kadu::currentChanged(Contact contact)
 {
-	updateInformationPanel(user);
+	updateInformationPanel(contact);
 }
 
 // QMenuBar* Kadu::menuBar() const
@@ -2181,8 +2183,6 @@ void Kadu::startupProcedure()
 	if (ShowMainWindowOnStart)
 		show();
 
-	AccountManager::instance()->loadConfiguration(xml_config_file);
-	ContactManager::instance()->loadConfiguration(xml_config_file);
 	Updates::initModule();
 
 	xml_config_file->makeBackup();

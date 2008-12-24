@@ -54,7 +54,7 @@ public:
 		@param point punkt, w kt�rym ma si� pojawi� tooltip
 		@param user u�ytkownik, kt�rego dotyczy informacja
 	 **/
-	virtual void showToolTip(const QPoint &point, const UserListElement &user) = 0;
+	virtual void showToolTip(const QPoint &point, Contact user) = 0;
 	/**
 		Ukrywa tooltip (je�eli by� pokazany)
 	 **/
@@ -107,7 +107,7 @@ public:
 		@param user u�ytkownik, kt�rego dotyczy informacja
 		@return true, gdy tooltip zosta� pokazany (klasa do obs�ugi jest za�adowana)
 	 **/
-	bool showToolTip(const QPoint &point, const UserListElement &user);
+	bool showToolTip(const QPoint &point, Contact contact);
 	/**
 		Ukrywa tooltip (je�eli by� pokazany)
 
@@ -182,7 +182,7 @@ protected:
 	friend class UserBox;
 	friend class Kadu; // TODO: fix
 
-	static QPixmap pixmapForUser(const UserListElement &user);
+	static QPixmap pixmapForUser(Contact contact);
 
 	/*funkcje wprowadzone �eby zaoszcz�dzi� na odwo�aniach do pliku konfiguracyjnego*/
 	/**
@@ -248,7 +248,7 @@ public:
 		\param bold warto�� logiczna informuj�ca o tym, czy nazwa kontaktu
 			ma by� wy�wietlana pogrubion� czcionk�.
 	**/
-	KaduListBoxPixmap(UserListElement user);
+	KaduListBoxPixmap(Contact contact);
 
 	/**
 		\fn bool isBold() const
@@ -276,7 +276,7 @@ public:
 	**/
 	void refreshItem();
 
-	const UserListElement User;
+	const Contact CurrentContact;
 
 };
 
@@ -304,8 +304,8 @@ class KADUAPI UserBox : public Q3ListBox, ConfigurationAwareObject
 	UserGroup *VisibleUsers;
 	QList<UserGroup *> Filters;
 	QList<UserGroup *> NegativeFilters;
-	std::vector<UserListElement> sortHelper;
-	std::vector<UserListElement> toRemove;
+	std::vector<Contact> sortHelper;
+	std::vector<Contact> toRemove;
 	QMap<const UserGroup *, UserListElements> AppendProxy;
 	QMap<const UserGroup *, UserListElements> RemoveProxy;
 
@@ -313,8 +313,7 @@ class KADUAPI UserBox : public Q3ListBox, ConfigurationAwareObject
 	void sort();
 	QTimer refreshTimer;
 
-	UserListElement lastMouseStopUser;
-	static UserListElement nullElement;
+	Contact lastMouseStopContact;
 	QTimer tipTimer;
 
 	QTimer verticalPositionTimer;
@@ -469,18 +468,18 @@ public:
 		\return bie��cy kontakt
 		\see UserBox::currentUserExists()
 	**/
-	UserListElement currentUser() const;
+	Contact currentContact() const;
 
 	class CmpFuncDesc
 	{
 		public:
-			CmpFuncDesc(QString i, QString d, int (*f)(const UserListElement &, const UserListElement &))
+			CmpFuncDesc(QString i, QString d, int (*f)(const Contact &, const Contact &))
 				: id(i), description(d), func(f) {}
 			CmpFuncDesc() : id(), description(), func(0){}
 
 			QString id;
 			QString description;
-			int (*func)(const UserListElement &, const UserListElement &);
+			int (*func)(const Contact &, const Contact &);
 
 			bool operator == (const CmpFuncDesc &compare) { return id == compare.id; }
 	};
@@ -503,7 +502,7 @@ public:
 		\param cmp funkcja por�wnuj�ca
 	**/
 	void addCompareFunction(const QString &id, const QString &trDescription,
-				int (*cmp)(const UserListElement &, const UserListElement &));
+				int (*cmp)(const Contact &, const Contact &));
 
 	/**
 		\fn static void refreshAll()
@@ -609,7 +608,7 @@ signals:
 		Tamten ze wzgl�du na od�wie�anie listy w jednym ze slot�w pod��czonych
 		do tego sygna�u czasami przekazuje wska�nik do elementu, kt�ry ju� NIE ISTNIEJE.
 	**/
-	void doubleClicked(UserListElement user);
+	void doubleClicked(Contact contact);
 
 	/**
 		\fn void returnPressed(UserListElement user)
@@ -619,7 +618,7 @@ signals:
 		Tamten ze wzgl�du na od�wie�anie listy w jednym ze slot�w pod��czonych
 		do tego sygna�u czasami przekazuje wska�nik do elementu, kt�ry ju� NIE ISTNIEJE.
 	**/
-	void returnPressed(UserListElement user);
+	void returnPressed(Contact contact);
 
 	/**
 		\fn void currentChanged(UserListElement user)
@@ -627,7 +626,7 @@ signals:
 		\attention {raczej nale�u u�ywa� tego sygna�u zamiast QListBox::currentChaned(QListBoxItem *)}
 		\param user obecnie bie��cy kontakt
 	**/
-	void currentChanged(UserListElement user);
+	void currentChanged(Contact CurrentContact);
 
 	void userListChanged();
 
@@ -637,20 +636,20 @@ signals:
 	\fn int compareAltNick(const UserListElement &u1, const UserListElement &u2)
 	Funkcja por�wnuj�ca AltNicki metod� QString::localeAwareCompare()
 **/
-int compareAltNick(const UserListElement &u1, const UserListElement &u2);
+int compareAltNick(const Contact &c1, const Contact &c2);
 
 /**
 	\fn int compareAltNickCaseInsensitive(const UserListElement &u1, const UserListElement &u2)
 	Funkcja por�wnuj�ca AltNicki metod� QString::localeAwareCompare(), wcze�niej robi�ca lower(),
 	a wi�c wolniejsza od compareAltNick
 **/
-int compareAltNickCaseInsensitive(const UserListElement &u1, const UserListElement &u2);
+int compareAltNickCaseInsensitive(const Contact &c1, const Contact &c2);
 
 /**
 	\fn int compareStatus(const UserListElement &u1, const UserListElement &u2)
 	Funkcja por�wnuj�ca statusy w protokole Gadu-Gadu. Uwa�a status "dost�pny" i "zaj�ty" za r�wnowa�ne.
 **/
-int compareStatus(const UserListElement &u1, const UserListElement &u2);
+int compareStatus(const Contact &c1, const Contact &c2);
 
 extern KADUAPI ToolTipClassManager *tool_tip_class_manager;
 

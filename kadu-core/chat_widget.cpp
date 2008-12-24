@@ -300,7 +300,7 @@ void ChatWidget::insertImage()
 		}
 		if (counter == 1 && Contacts.count() == 1)
 		{
-			if (!MessageBox::ask(tr("This file is too big for %1.\nDo you really want to send this image?\n").arg((*users.constBegin()).altNick())))
+			if (!MessageBox::ask(tr("This file is too big for %1.\nDo you really want to send this image?\n").arg(Contacts[0].nick())))
 			{
 				QTimer::singleShot(0, this, SLOT(insertImage()));
 				kdebugf2();

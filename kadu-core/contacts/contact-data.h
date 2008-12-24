@@ -17,7 +17,7 @@
 #include <QtXml/QDomElement>
 
 #define Property(type, name, capitalized_name) \
-	type name() { return capitalized_name; } \
+	type name() const { return capitalized_name; } \
 	void set##capitalized_name(const type &name) { capitalized_name = name; }
 
 class Account;

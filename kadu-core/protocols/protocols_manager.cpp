@@ -46,6 +46,11 @@ void ProtocolsManager::unregisterProtocolFactory(const QString &name)
 	}
 }
 
+bool ProtocolsManager::hasProtocolFactory(const QString& name)
+{
+	return registeredFactories.contains(name);
+}
+
 ProtocolFactory * ProtocolsManager::protocolFactory(const QString &name)
 {
 	return registeredFactories.contains(name)

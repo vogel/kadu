@@ -53,7 +53,6 @@ bool KaduListBoxPixmap::AlignUserboxIconsTop;
 bool KaduListBoxPixmap::ShowMultilineDesc;
 int KaduListBoxPixmap::ColumnCount;
 QColor KaduListBoxPixmap::descColor;
-UserListElement UserBox::nullElement;
 
 QImage *UserBox::backgroundImage = 0;
 
@@ -115,7 +114,7 @@ void ToolTipClassManager::useToolTipClass(const QString &toolTipClassName)
 		CurrentToolTipClass = 0;
 }
 
-bool ToolTipClassManager::showToolTip(const QPoint &where, const UserListElement &who)
+bool ToolTipClassManager::showToolTip(const QPoint &where, Contact who)
 {
 	if (CurrentToolTipClass)
 	{
@@ -148,10 +147,10 @@ void KaduListBoxPixmap::setFont(const QFont &f)
 	kdebugf2();
 }
 
-KaduListBoxPixmap::KaduListBoxPixmap(UserListElement user)
-	: Q3ListBoxItem(), pm(pixmapForUser(user)), buf_text(), buf_width(-1), buf_out(), buf_height(-1), User(user)
+KaduListBoxPixmap::KaduListBoxPixmap(Contact contact)
+	: Q3ListBoxItem(), pm(pixmapForUser(contact)), buf_text(), buf_width(-1), buf_out(), buf_height(-1), CurrentContact(contact)
 {
-	setText(user.altNick());
+	setText(contact.nick());
 }
 
 void KaduListBoxPixmap::setMyUIN(UinType u)
@@ -195,8 +194,7 @@ bool KaduListBoxPixmap::isBold() const
 		return false;
 
 	Account *account = AccountManager::instance()->defaultAccount();
-	Contact contact = User.toContact(account);
-	ContactAccountData *contactData = contact.accountData(account);
+	ContactAccountData *contactData = CurrentContact.accountData(account);
 
 	if (0 == contactData)
 		return false;
@@ -211,8 +209,7 @@ void KaduListBoxPixmap::paint(QPainter *painter)
 		return;
 
 	Account *account = AccountManager::instance()->defaultAccount();
-	Contact contact = User.toContact(account);
-	ContactAccountData *data = contact.accountData(account);
+	ContactAccountData *data = CurrentContact.accountData(account);
 
 //	kdebugf();
 	QColor origColor = painter->pen().color();
@@ -303,8 +300,7 @@ int KaduListBoxPixmap::height(const Q3ListBox* lb) const
 //	kdebugf();
 
 	Account *account = AccountManager::instance()->defaultAccount();
-	Contact contact = User.toContact(account);
-	ContactAccountData *data = contact.accountData(account);
+	ContactAccountData *data = CurrentContact.accountData(account);
 
 	QString description;
 	if (data)
@@ -447,19 +443,17 @@ void KaduListBoxPixmap::changeText(const QString &text)
 	setText(text);
 }
 
-QPixmap KaduListBoxPixmap::pixmapForUser(const UserListElement &user)
+QPixmap KaduListBoxPixmap::pixmapForUser(Contact contact)
 {
 	Account *account = AccountManager::instance()->defaultAccount();
 
-	bool has_mobile = !user.mobile().isEmpty();
-	UserListElement u = user;
-	Contact contact = u.toContact(account);
+	bool has_mobile = !contact.mobile().isEmpty();
 
 	if (!contact.accountData(account))
 	{
 		if (has_mobile)
 			return icons_manager->loadPixmap("Mobile");
-		else if (!user.email().isEmpty())
+		else if (!contact.email().isEmpty())
 			return icons_manager->loadPixmap("WriteEmail");
 		else
 			return QPixmap();
@@ -480,19 +474,19 @@ QPixmap KaduListBoxPixmap::pixmapForUser(const UserListElement &user)
 
 void KaduListBoxPixmap::refreshItem()
 {
-	pm = pixmapForUser(User);
-	changeText(User.altNick());
+	pm = pixmapForUser(CurrentContact);
+	changeText(CurrentContact.nick());
 }
 
 class ULEComparer
 {
 	public:
-		inline bool operator()(const UserListElement &e1, const UserListElement &e2) const;
+		inline bool operator()(const Contact &e1, const Contact &e2) const;
 		QList<UserBox::CmpFuncDesc> CmpFunctions;
 		ULEComparer() : CmpFunctions() {}
 };
 
-inline bool ULEComparer::operator()(const UserListElement &e1, const UserListElement &e2) const
+inline bool ULEComparer::operator()(const Contact &e1, const Contact &e2) const
 {
 	int ret = 0;
 	foreach(const UserBox::CmpFuncDesc &f, CmpFunctions)
@@ -545,7 +539,7 @@ QList<ActionDescription *> UserBox::ManagementActions;
 UserBox::UserBox(KaduMainWindow *mainWindow, bool fancy, UserGroup *group, QWidget* parent, const char* name, Qt::WFlags f)
 	: Q3ListBox(parent, name, f), MainWindow(mainWindow), fancy(fancy), VisibleUsers(new UserGroup()),
 	Filters(), NegativeFilters(), sortHelper(), toRemove(), AppendProxy(), RemoveProxy(), comparer(new ULEComparer()),
-	refreshTimer(), lastMouseStopUser(nullElement), tipTimer(),
+	refreshTimer(), lastMouseStopContact(Contact::null), tipTimer(),
 	verticalPositionTimer(), lastVerticalPosition(0)
 {
 	kdebugf();
@@ -648,9 +642,9 @@ UserBox::~UserBox()
 
 void UserBox::tipTimeout()
 {
-	if (lastMouseStopUser != nullElement)
+	if (!lastMouseStopContact.isNull())
 	{
-		tool_tip_class_manager->showToolTip(QCursor().pos(), lastMouseStopUser);
+		tool_tip_class_manager->showToolTip(QCursor().pos(), lastMouseStopContact);
 		tipTimer.stop();
 	}
 }
@@ -661,14 +655,14 @@ void UserBox::restartTip(const QPoint &p)
 	KaduListBoxPixmap *item = static_cast<KaduListBoxPixmap *>(itemAt(p));
 	if (item)
 	{
-		if (item->User != lastMouseStopUser)
+		if (item->CurrentContact != lastMouseStopContact)
 			hideTip();
-		lastMouseStopUser = item->User;
+		lastMouseStopContact = item->CurrentContact;
 	}
 	else
 	{
 		hideTip();
-		lastMouseStopUser = nullElement;
+		lastMouseStopContact = Contact::null;
 	}
 	tipTimer.start(TIP_TM);
 //	kdebugf2();
@@ -802,8 +796,8 @@ void UserBox::refresh()
 
 	const unsigned int Count = count();
 	unsigned int i = 0;
-printf("refresh...\n");
-	bool doRefresh = true;
+
+	bool doRefresh = false;
 
 	if (fancy && (numColumns() != config_file.readNumEntry("Look", "UserBoxColumnCount", 1)))
 		doRefresh = true;
@@ -811,10 +805,10 @@ printf("refresh...\n");
 	if (!doRefresh && (sortHelper.size() == Count))
 	{
 		kdebugm(KDEBUG_INFO, "checking if order changed\n");
-		for (std::vector<UserListElement>::const_iterator user = sortHelper.begin(),
-			userEnd = sortHelper.end(); user != userEnd; ++user)
+		for (std::vector<Contact>::const_iterator contact = sortHelper.begin(),
+			contactEnd = sortHelper.end(); contact != contactEnd; ++contact)
 		{
-			doRefresh = ((*user) != static_cast<KaduListBoxPixmap *>(item(i++))->User);
+			doRefresh = ((*contact) != static_cast<KaduListBoxPixmap *>(item(i++))->CurrentContact);
 			if (doRefresh)
 				break;
 		}
@@ -848,9 +842,9 @@ printf("refresh...\n");
 	if (fancy)
 		setColumnMode(config_file.readNumEntry("Look", "UserBoxColumnCount", 1));
 
-	for (std::vector<UserListElement>::const_iterator user = sortHelper.begin(),
-		userEnd = sortHelper.end(); user != userEnd; ++user)
-		insertItem(new KaduListBoxPixmap(*user));
+	for (std::vector<Contact>::const_iterator contact = sortHelper.begin(),
+		contactEnd = sortHelper.end(); contact != contactEnd; ++contact)
+		insertItem(new KaduListBoxPixmap(*contact));
 
 	// restore selected users
 	foreach(const QString &username, s_users)
@@ -892,12 +886,14 @@ void UserBox::rememberVerticalPosition()
 UserListElements UserBox::selectedUsers() const
 {
 	kdebugf();
-	UserListElements users;
+
+	ContactList contacts;
 	for (unsigned int i = 0, count2 = count(); i < count2; ++i)
 		if (isSelected(i))
-			users.append(static_cast<KaduListBoxPixmap *>(item(i))->User);
+			contacts.append(static_cast<KaduListBoxPixmap *>(item(i))->CurrentContact);
+
 	kdebugf2();
-	return users;
+	return UserListElements::fromContactList(contacts, AccountManager::instance()->defaultAccount());
 }
 
 void UserBox::selectionChangedSlot()
@@ -1032,12 +1028,12 @@ void UserBox::refreshBackground()
 
 void UserBox::doubleClickedSlot(Q3ListBoxItem *item)
 {
-	emit doubleClicked(static_cast<KaduListBoxPixmap *>(item)->User);
+	emit doubleClicked(static_cast<KaduListBoxPixmap *>(item)->CurrentContact);
 }
 
 void UserBox::returnPressedSlot(Q3ListBoxItem *item)
 {
-	emit returnPressed(static_cast<KaduListBoxPixmap *>(item)->User);
+	emit returnPressed(static_cast<KaduListBoxPixmap *>(item)->CurrentContact);
 }
 
 void UserBox::currentChangedSlot(Q3ListBoxItem *item)
@@ -1052,7 +1048,7 @@ void UserBox::currentChangedSlot(Q3ListBoxItem *item)
 	blockSignals(false);
 	//
 	if (item)
-		emit currentChanged(static_cast<KaduListBoxPixmap *>(item)->User);
+		emit currentChanged(static_cast<KaduListBoxPixmap *>(item)->CurrentContact);
 }
 
 void UserBox::addActionDescription(ActionDescription *actionDescription)
@@ -1299,7 +1295,7 @@ void UserBox::removeNegativeFilter(UserGroup *g, bool forceRefresh)
 }
 
 void UserBox::addCompareFunction(const QString &id, const QString &trDescription,
-			int (*cmp)(const UserListElement &, const UserListElement &))
+			int (*cmp)(const Contact &, const Contact &))
 {
 	comparer->CmpFunctions.append(CmpFuncDesc(id, trDescription, cmp));
 	refreshLater();
@@ -1411,26 +1407,26 @@ void UserBox::protocolUserDataChanged(QString protocolName, UserListElement /*el
 void UserBox::userAddedToVisible(UserListElement elem, bool /*massively*/, bool /*last*/)
 {
 //	kdebugmf(KDEBUG_FUNCTION_START, "start: mass:\n", massively);
-	lastMouseStopUser = nullElement;
-	sortHelper.push_back(elem);
+	lastMouseStopContact = Contact::null;
+	sortHelper.push_back(elem.toContact(AccountManager::instance()->defaultAccount()));
 	refreshLater();
 }
 
 class torem
 {
-	std::vector<UserListElement>::const_iterator begin;
-	std::vector<UserListElement>::const_iterator end;
+	std::vector<Contact>::const_iterator begin;
+	std::vector<Contact>::const_iterator end;
 //	std::vector<UserListElement>::const_iterator last;
 
 	public:
-	torem(const std::vector<UserListElement> &src) : begin(src.begin()), end(src.end())
+	torem(const std::vector<Contact> &src) : begin(src.begin()), end(src.end())
 	{
 //		last = begin;
 	}
 
-	inline bool operator()(const UserListElement &u) const
+	inline bool operator()(const Contact &u) const
 	{
-		for(std::vector<UserListElement>::const_iterator it = begin; it != end; ++it)
+		for(std::vector<Contact>::const_iterator it = begin; it != end; ++it)
 			if ((*it) == u)
 				return true;
 /*		std::vector<UserListElement>::const_iterator lastlast = last;
@@ -1448,11 +1444,13 @@ class torem
 void UserBox::userRemovedFromVisible(UserListElement elem, bool massively, bool last)
 {
 //	kdebugmf(KDEBUG_FUNCTION_START, "start: mass:%d\n", massively);
-	lastMouseStopUser = nullElement;
+	lastMouseStopContact = Contact::null;
+	Contact contact = elem.toContact();
+
 	if (massively)
-		toRemove.push_back(elem);
+		toRemove.push_back(contact);
 	else
-		sortHelper.erase(std::remove(sortHelper.begin(), sortHelper.end(), elem), sortHelper.end());// the most optimal
+		sortHelper.erase(std::remove(sortHelper.begin(), sortHelper.end(), contact), sortHelper.end());// the most optimal
 	if (massively && last)
 	{
 		torem pred(toRemove);
@@ -1579,16 +1577,16 @@ bool UserBox::currentUserExists() const
 	return currentItem() != -1;
 }
 
-UserListElement UserBox::currentUser() const
+Contact UserBox::currentContact() const
 {
 	Q3ListBoxItem *i = item(currentItem());
 	if (i)
-		return static_cast<KaduListBoxPixmap *>(i)->User;
+		return static_cast<KaduListBoxPixmap *>(i)->CurrentContact;
 	else
 	{
 		kdebugm(KDEBUG_ERROR, "GO AWAY and check currentUserExists() first!\n");
 		printBacktrace("currentUser");
-		return UserListElement();
+		return Contact::null;
 	}
 }
 
@@ -1632,26 +1630,30 @@ bool UlesDrag::canDecode(QDragEnterEvent *event)
 	return event->mimeData()->hasFormat("application/x-kadu-ules");
 }
 
-inline int compareAltNick(const UserListElement &u1, const UserListElement &u2)
+inline int compareAltNick(const Contact &c1, const Contact &c2)
 {
-	return u1.altNick().localeAwareCompare(u2.altNick());
+	return c1.nick().localeAwareCompare(c2.nick());
 }
 
-inline int compareAltNickCaseInsensitive(const UserListElement &u1, const UserListElement &u2)
+inline int compareAltNickCaseInsensitive(const Contact &c1, const Contact &c2)
 {
-	return u1.altNick().lower().localeAwareCompare(u2.altNick().lower());
+	return c1.nick().lower().localeAwareCompare(c2.nick().lower());
 }
 
-inline int compareStatus(const UserListElement &u1, const UserListElement &u2)
+inline int compareStatus(const Contact &c1, const Contact &c2)
 {
-	//WARNING: we are utilizing the fact, that enums in eUserStats are in "correct" order
-	// we see Busy and Online as equal here
-
 	Account *account = AccountManager::instance()->defaultAccount();
-	Contact c1 = u1.toContact(account);
-	ContactAccountData *d1 = c1.accountData(account);
-	Contact c2 = u2.toContact(account);
-	ContactAccountData *d2 = c2.accountData(account);
+
+	Contact cc1;
+	Contact cc2;
+
+	if (!c1.isNull())
+		cc1 = c1;
+	if (!c2.isNull())
+		cc2 = c2;
+
+	ContactAccountData *d1 = cc1.accountData(account);
+	ContactAccountData *d2 = cc2.accountData(account);
 
 	if (d1 && d2)
 		return d2->status().compareTo(d1->status());

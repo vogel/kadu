@@ -23,6 +23,7 @@ class GaduImporter : public QObject
 	GaduImporter() {}
 
 	void importContact(Contact &contact);
+	void importGaduContact(Contact &contact);
 
 private slots:
 	void contactAdded(Contact &contact);

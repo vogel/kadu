@@ -52,12 +52,13 @@
 
 extern "C" int gadu_protocol_init(bool firstLoad)
 {
+	if (ProtocolsManager::instance()->hasProtocolFactory("gadu"))
+		return 0;
+
 	ProtocolsManager::instance()->registerProtocolFactory("gadu", new GaduProtocolFactory());
 
 	if (!xml_config_file->hasNode("Accounts"))
-	{
 		GaduImporter::instance()->importAccounts();
-	}
 
 	GaduImporter::instance()->importContacts();
 

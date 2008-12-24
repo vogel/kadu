@@ -23,6 +23,7 @@ public:
 
 	void registerProtocolFactory(const QString &name, ProtocolFactory *factory);
 	void unregisterProtocolFactory(const QString &name);
+	bool hasProtocolFactory(const QString &name);
 
 	const QList<ProtocolFactory *> protocolFactories() { return registeredFactories.values(); }
 	ProtocolFactory * protocolFactory(const QString &name);

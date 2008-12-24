@@ -16,12 +16,19 @@
 #include <QtCore/QFile>
 #include <QtXml/QDomNodeList>
 
+extern "C" int gadu_protocol_init(bool firstLoad);
+
+#include "accounts/account_manager.h"
+
+#include "contacts/contact-manager.h"
+
+#include "protocols/protocol.h"
+#include "protocols/protocols_manager.h"
+
 #include "config_file.h"
 #include "debug.h"
 #include "../modules/gadu_protocol/gadu.h"
 #include "misc.h"
-#include "protocols/protocol.h"
-#include "protocols/protocols_manager.h"
 #include "xml_config_file.h"
 
 #include "userlist.h"
@@ -187,6 +194,12 @@ void UserList::readFromConfig()
 
 		addUser(e, true, i + 1 == cnt);
 	}
+
+	gadu_protocol_init(false);
+
+	AccountManager::instance()->loadConfiguration(xml_config_file);
+	ContactManager::instance()->loadConfiguration(xml_config_file);
+
 	emit modified();
 	kdebugf2();
 }

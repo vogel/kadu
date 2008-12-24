@@ -18,7 +18,7 @@
 #include "contact-data.h"
 
 #define Property(type, name, capitalized_name, default) \
-	type name()\
+	type name() const\
 	{\
 		return isNull()\
 			? default\
@@ -59,7 +59,7 @@ public:
 
 	static Contact null;
 
-	bool isNull() const { return TypeNull == Type; }
+	bool isNull() const { return TypeNull == Type || 0 == Data; }
 	bool isAnonymous() const { return TypeNull == TypeAnonymous; }
 
 	Contact & operator = (const Contact &copy);

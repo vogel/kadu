@@ -15,6 +15,8 @@
 #include "status.h"
 #include "usergroup.h"
 
+#include "accounts/account_manager.h"
+
 #include "contacts/contact-account-data.h"
 #include "contacts/contact-manager.h"
 
@@ -519,6 +521,11 @@ ulong qHash(const UserListElement &index)
 Contact UserListElement::toContact(Account *account) const
 {
 	return ContactManager::instance()->getContactById(account, ID("Gadu"));
+}
+
+Contact UserListElement::toContact() const
+{
+	return toContact(AccountManager::instance()->defaultAccount());
 }
 
 UserListElement UserListElement::fromContact(Contact contact, Account *account)

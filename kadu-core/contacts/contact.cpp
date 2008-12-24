@@ -19,7 +19,7 @@ Contact::Contact()
 }
 
 Contact::Contact(Contact::ContactType type)
-	: Type(type)
+	: Type(type), Data(Contact::TypeNull != type ? new ContactData() : 0)
 {
 }
 
