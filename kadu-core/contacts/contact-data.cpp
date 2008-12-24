@@ -78,3 +78,21 @@ QString ContactData::id(Account *account)
 
 	return QString::null;
 }
+
+// properties
+
+bool ContactData::isBlocked(Account *account)
+{
+	ContactAccountData *cad = accountData(account);
+	return cad
+		? cad->isBlocked()
+		: Blocked;
+}
+
+bool ContactData::isOfflineTo(Account *account)
+{
+	ContactAccountData *cad = accountData(account);
+	return cad
+		? cad->isOfflineTo()
+		: OfflineTo;
+}

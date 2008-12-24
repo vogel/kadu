@@ -15,6 +15,7 @@
 #include <QtCore/QUuid>
 
 #include "contact.h"
+#include "contact-list.h"
 
 class Account;
 class XmlConfigFile;
@@ -38,7 +39,8 @@ public:
 	void loadConfiguration(XmlConfigFile *configurationStorage);
 	void storeConfiguration(XmlConfigFile *configurationStorage);
 
-	QList<Contact> contacts() { return Contacts.values(); }
+	ContactList contacts() { return Contacts.values(); }
+	ContactList contacts(Account *account, bool includeAnonymous = false);
 	void addContact(Contact contact);
 
 	Contact getContactById(Account *account, const QString &id);

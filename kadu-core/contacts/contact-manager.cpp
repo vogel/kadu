@@ -8,7 +8,9 @@
  ***************************************************************************/
 
 #include "accounts/account.h"
-#include "contacts/contact.h"
+
+#include "contact.h"
+#include "contact-list.h"
 #include "xml_config_file.h"
 
 #include "contact-manager.h"
@@ -109,3 +111,13 @@ Contact ContactManager::getContactByUuid(const QString &uuid)
 	return Contact::null;
 }
 
+ContactList ContactManager::contacts(Account *account, bool includeAnonymous)
+{
+	ContactList result;
+
+	foreach (Contact contact, Contacts.values())
+		if (contact.accountData(account) && (includeAnonymous || !contact.isAnonymous()))
+			result << contact;
+
+	return result;
+}

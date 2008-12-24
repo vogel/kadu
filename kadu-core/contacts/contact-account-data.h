@@ -30,6 +30,9 @@ class ContactAccountData
 	QHostAddress Address;
 	unsigned int Port;
 
+	bool Blocked;
+	bool OfflineTo;
+
 public:
 	ContactAccountData();
 	ContactAccountData(Account *account, const QString &id);
@@ -50,6 +53,14 @@ public:
 
 	Status status() { return CurrentStatus; }
 	void setStatus(Status status) { CurrentStatus = status; }
+
+	// properties
+
+	bool isBlocked() { return Blocked; }
+	void setBlocked(bool blocked) { Blocked = blocked; }
+
+	bool isOfflineTo() { return OfflineTo; }
+	bool setOfflineTo(bool offlineTo) { OfflineTo = offlineTo; }
 
 };
 

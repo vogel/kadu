@@ -165,8 +165,8 @@ void UserList::readFromConfig()
 		if (contact_elem.attribute("uin").toInt())
 		{
 			e.addProtocol("Gadu", QString::number(contact_elem.attribute("uin").toUInt()), true, i + 1 == cnt);
-			e.setProtocolData("Gadu", "Blocking", contact_elem.attribute("blocking") == "true");
-			e.setProtocolData("Gadu", "OfflineTo", contact_elem.attribute("offline_to") == "true");
+// 			e.setProtocolData("Gadu", "Blocking", contact_elem.attribute("blocking") == "true");
+// 			e.setProtocolData("Gadu", "OfflineTo", contact_elem.attribute("offline_to") == "true");
 		}
 		e.setNotify(contact_elem.attribute("notify") == "true");
 		e.setData("Groups", QStringList::split(",", contact_elem.attribute("groups")));

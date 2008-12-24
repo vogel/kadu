@@ -17,6 +17,19 @@
 
 #include "contact-data.h"
 
+#define Property(type, name, capitalized_name, default) \
+	type name()\
+	{\
+		return isNull()\
+			? default\
+			: Data->name();\
+	} \
+	void set##capitalized_name(const type &name)\
+	{\
+		if (!isNull())\
+			Data->set##capitalized_name(name);\
+	}
+
 class ContactAccountData;
 class XmlConfigFile;
 
@@ -66,6 +79,21 @@ public:
 
 	QString id(Account *account) const;
 
+	// properties
+
+	bool isBlocked(Account *account) const;
+	bool isOfflineTo(Account *account) const;
+
+	Property(QString, nick, Nick, QString::null)
+	Property(QString, firstName, FirstName, QString::null)
+	Property(QString, lastName, LastName, QString::null)
+	Property(QString, nickName, NickName, QString::null)
+	Property(QString, homePhone, HomePhone, QString::null)
+	Property(QString, mobile, Mobile, QString::null)
+	Property(QString, email, Email, QString::null)
+
 };
+
+#undef Property
 
 #endif // CONTACT_H

@@ -13,6 +13,11 @@ ContactList::ContactList()
 {
 }
 
+ContactList::ContactList(QList<Contact> list)
+{
+	*this += list;
+}
+
 ContactList::ContactList(Contact contact)
 {
 	append(contact);

@@ -105,3 +105,17 @@ QString Contact::id(Account *account) const
 		? QString::null
 		: Data->id(account);
 }
+
+bool Contact::isBlocked(Account *account) const
+{
+	return isNull()
+		? false
+		: Data->isBlocked(account);
+}
+
+bool Contact::isOfflineTo(Account *account) const
+{
+	return isNull()
+		? false
+		: Data->isOfflineTo(account);
+}

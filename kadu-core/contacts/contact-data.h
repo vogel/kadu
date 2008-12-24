@@ -16,6 +16,10 @@
 #include <QtCore/QUuid>
 #include <QtXml/QDomElement>
 
+#define Property(type, name, capitalized_name) \
+	type name() { return capitalized_name; } \
+	void set##capitalized_name(const type &name) { capitalized_name = name; }
+
 class Account;
 class ContactAccountData;
 class XmlConfigFile;
@@ -25,6 +29,17 @@ class ContactData : public QSharedData
 	QUuid Uuid;
 	QMap<QString, QString> CustomData;
 	QMap<Account *, ContactAccountData *> AccountsData;
+
+	QString Nick;
+	QString FirstName;
+	QString LastName;
+	QString NickName;
+	QString HomePhone;
+	QString Mobile;
+	QString Email;
+
+	bool Blocked;
+	bool OfflineTo;
 
 public:
 	ContactData(QUuid uniqueId = QUuid());
@@ -42,6 +57,20 @@ public:
 	void addAccountData(ContactAccountData *accountData);
 	ContactAccountData * accountData(Account *account);
 
+	// properties
+	bool isBlocked(Account *account);
+	bool isOfflineTo(Account *account);
+
+	Property(QString, nick, Nick)
+	Property(QString, firstName, FirstName)
+	Property(QString, lastName, LastName)
+	Property(QString, nickName, NickName)
+	Property(QString, homePhone, HomePhone)
+	Property(QString, mobile, Mobile)
+	Property(QString, email, Email)
+
 };
+
+#undef Property
 
 #endif // CONTACT_DATA

@@ -1374,41 +1374,40 @@ void GaduProtocol::sendUserList()
 	UinType *uins;
 	char *types;
 
-	unsigned int j = 0;
-	foreach(const UserListElement &user, *userlist)
-		if (user.usesProtocol("Gadu") && !user.isAnonymous())
-			++j;
+	ContactList contacts = ContactManager::instance()->contacts(account());
 
-	if (!j)
+	if (contacts.isEmpty())
 	{
 		gg_notify_ex(Sess, NULL, NULL, 0);
 		kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "Userlist is empty\n");
 		return;
 	}
 
-	uins = new UinType[j];
-	types = new char[j];
+	uins = new UinType[contacts.count()];
+	types = new char[contacts.count()];
 
-	j = 0;
-	foreach (const UserListElement &user, *userlist)
-		if (user.usesProtocol("Gadu") && !user.isAnonymous())
-		{
-			uins[j] = user.ID("Gadu").toUInt();
-			if (user.protocolData("Gadu", "OfflineTo").toBool())
-				types[j] = GG_USER_OFFLINE;
+	int i = 0;
+
+	foreach (Contact contact, contacts)
+	{
+		uins[i] = uin(contact);
+
+		if (contact.isOfflineTo(account()))
+			types[i] = GG_USER_OFFLINE;
+		else
+			if (contact.isBlocked(account()))
+				types[i] = GG_USER_BLOCKED;
 			else
-				if (user.protocolData("Gadu", "Blocking").toBool())
-					types[j] = GG_USER_BLOCKED;
-				else
-					types[j] = GG_USER_NORMAL;
-			++j;
-		}
+				types[i] = GG_USER_NORMAL;
+		++i;
+	}
 
-	gg_notify_ex(Sess, uins, types, j);
+	gg_notify_ex(Sess, uins, types, contacts.count());
 	kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "Userlist sent\n");
 
 	delete [] uins;
 	delete [] types;
+
 	kdebugf2();
 }
 

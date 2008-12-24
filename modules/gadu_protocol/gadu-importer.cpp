@@ -55,9 +55,16 @@ void GaduImporter::importContact(Contact &contact)
 	QString id = contact.customData()["uin"];
 
 	Account *account = AccountManager::instance()->defaultAccount();
+	GaduContactAccountData *gcad = new GaduContactAccountData(account, id);
+
+	gcad->setBlocked(QVariant(contact.customData()["blocking"]).toBool());
+	gcad->setOfflineTo(QVariant(contact.customData()["offline_to"]).toBool());
 
 	contact.customData().remove("uin");
-	contact.addAccountData(new GaduContactAccountData(account, id));
+	contact.customData().remove("blocking");
+	contact.customData().remove("offline_to");
+
+	contact.addAccountData(gcad);
 }
 
 void GaduImporter::contactAdded(Contact &contact)
