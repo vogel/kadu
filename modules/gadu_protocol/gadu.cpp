@@ -23,6 +23,8 @@
 #include "accounts/account.h"
 #include "accounts/account_manager.h"
 
+#include "contacts/contact-manager.h"
+
 #include "protocols/status.h"
 
 #include "config_file.h"
@@ -431,8 +433,13 @@ UserStatus * GaduProtocol::newStatus() const
 
 void GaduProtocol::currentStatusChanged(const UserStatus &/*status*/, const UserStatus &/*oldStatus*/)
 {
-	if (userlist->contains("Gadu", QString::number(LoginParams.uin)))
-		userlist->byID("Gadu", QString::number(LoginParams.uin)).setStatus("Gadu", *CurrentStatus);
+// TODO: 0.6.6
+// 	Contact current = CurrentAccount->getContactById(QString::number(LoginParams.uin), false);
+// 	if (!current.isNull())
+// 		current.
+// 
+// 	if (userlist->contains("Gadu", QString::number(LoginParams.uin)))
+// 		userlist->byID("Gadu", QString::number(LoginParams.uin)).setStatus("Gadu", *CurrentStatus);
 }
 
 unsigned int GaduProtocol::maxDescriptionLength()
@@ -1066,15 +1073,14 @@ void GaduProtocol::systemMessageReceived(QString &message, QDateTime &time, int 
 void GaduProtocol::login()
 {
 	kdebugf();
-/*
-	if (ID() == "0" || ID().isEmpty() || config_file.readEntry("General", "Password").isEmpty())
+
+	if (0 == GaduData->uin() || QString::null == GaduData->password())
 	{
 		MessageBox::msg(tr("UIN or password not set!"), false, "Warning");
 		NextStatus->setOffline();
 		kdebugmf(KDEBUG_FUNCTION_END, "end: uin or password not set\n");
 		return;
 	}
-*/
 
 	whileConnecting = true;
 
@@ -1384,7 +1390,7 @@ void GaduProtocol::sendUserList()
 	types = new char[j];
 
 	j = 0;
-	foreach(const UserListElement &user, *userlist)
+	foreach (const UserListElement &user, *userlist)
 		if (user.usesProtocol("Gadu") && !user.isAnonymous())
 		{
 			uins[j] = user.ID("Gadu").toUInt();
