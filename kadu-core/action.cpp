@@ -7,6 +7,8 @@
  *                                                                         *
  ***************************************************************************/
 
+#include "accounts/account_manager.h"
+
 #include "hot_key.h"
 #include "icons_manager.h"
 #include "kadu.h"
@@ -61,6 +63,21 @@ UserListElements KaduAction::userListElements()
 		return kaduMainWindow->userListElements();
 	else
 		return UserListElements();
+}
+
+Contact KaduAction::contact()
+{
+	ContactList contactList = contacts();
+	if (1 != contactList.count())
+		return Contact::null;
+	else
+		return contactList[0];
+}
+
+ContactList KaduAction::contacts()
+{
+	Account *account = AccountManager::instance()->defaultAccount();
+	return userListElements().toContactList(account);
 }
 
 void KaduAction::changedSlot()

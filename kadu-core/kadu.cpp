@@ -167,10 +167,7 @@ void disableNonIdUles(KaduAction *action)
 
 void disableContainsSelfUles(KaduAction *action)
 {
-	Account *account = AccountManager::instance()->defaultAccount();
-	ContactList contacts = action->userListElements().toContactList(account);
-
-	if (contacts.contains(kadu->myself()))
+	if (action->contacts().contains(kadu->myself()))
 	{
 		action->setEnabled(false);
 		return;
@@ -189,7 +186,7 @@ void checkNotify(KaduAction *action)
 		return;
 	}
 
-	foreach(const UserListElement &user, action->userListElements())
+	foreach (const UserListElement &user, action->userListElements())
 		if (!user.usesProtocol("Gadu"))
 		{
 			action->setEnabled(false);
@@ -198,7 +195,7 @@ void checkNotify(KaduAction *action)
 	action->setEnabled(true);
 
 	bool on = true;
-	foreach(const UserListElement &user, action->userListElements())
+	foreach (const UserListElement &user, action->userListElements())
 		if (!user.notify())
 		{
 			on = false;
@@ -246,7 +243,8 @@ void checkHideDescription(KaduAction *action)
 void disableNotOneUles(KaduAction *action)
 {
 	kdebugf();
-	if (action->userListElements().count() != 1)
+
+	if (action->contact().isNull())
 	{
 		action->setEnabled(false);
 		return;
@@ -260,13 +258,15 @@ void disableNoGaduUle(KaduAction *action)
 {
 	kdebugf();
 
-	if (action->userListElements().count() != 1)
+	Contact contact = action->contact();
+
+	if (contact.isNull())
 	{
 		action->setEnabled(false);
 		return;
 	}
 
-	if (!action->userListElements()[0].usesProtocol("Gadu"))
+	if (!contact.accountData(AccountManager::instance()->defaultAccount()))
 	{
 		action->setEnabled(false);
 		return;
@@ -280,19 +280,22 @@ void disableNoGaduDescription(KaduAction *action)
 {
 	kdebugf();
 
-	if (action->userListElements().count() != 1)
+	Contact contact = action->contact();
+	Account *account = AccountManager::instance()->defaultAccount();
+
+	if (contact.isNull())
 	{
 		action->setEnabled(false);
 		return;
 	}
 
-	if (!action->userListElements()[0].usesProtocol("Gadu"))
+	if (!contact.accountData(account))
 	{
 		action->setEnabled(false);
 		return;
 	}
 
-	if (action->userListElements()[0].status("Gadu").description().isEmpty())
+	if (contact.accountData(account)->status().description().isEmpty())
 	{
 		action->setEnabled(false);
 		return;
@@ -306,25 +309,28 @@ void disableNoGaduDescriptionUrl(KaduAction *action)
 {
 	kdebugf();
 
-	if (action->userListElements().count() != 1)
+	Account *account = AccountManager::instance()->defaultAccount();
+	Contact contact = action->contact();
+
+	if (contact.isNull())
 	{
 		action->setEnabled(false);
 		return;
 	}
 
-	if (!action->userListElements()[0].usesProtocol("Gadu"))
+	if (!contact.accountData(account))
 	{
 		action->setEnabled(false);
 		return;
 	}
 
-	if (action->userListElements()[0].status("Gadu").description().isEmpty())
+	if (contact.accountData(account)->status().description().isEmpty())
 	{
 		action->setEnabled(false);
 		return;
 	}
 
-	if (action->userListElements()[0].status("Gadu").description().indexOf(HtmlDocument::urlRegExp()) < 0)
+	if (contact.accountData(account)->status().description().indexOf(HtmlDocument::urlRegExp()) < 0)
 	{
 		action->setEnabled(false);
 		return;
@@ -711,20 +717,22 @@ void Kadu::copyDescriptionActionActivated(QAction *sender, bool toggled)
 	if (!window)
 		return;
 
-	UserListElements users = window->userListElements();
-	if (users.count() < 1)
+	Contact contact = window->contact();
+	if (contact.isNull())
 		return;
 
-	UserListElement user = users[0];
-	if (!user.usesProtocol("Gadu"))
+	Account *account = AccountManager::instance()->defaultAccount();
+	ContactAccountData *data = contact.accountData(account);
+
+	if (!data)
 		return;
 
-	QString status = user.status("Gadu").description();
-	if (status.isEmpty())
+	QString description = data->status().description();
+	if (description.isEmpty())
 		return;
 
-	QApplication::clipboard()->setText(status, QClipboard::Selection);
-	QApplication::clipboard()->setText(status, QClipboard::Clipboard);
+	QApplication::clipboard()->setText(description, QClipboard::Selection);
+	QApplication::clipboard()->setText(description, QClipboard::Clipboard);
 
 	kdebugf2();
 }
@@ -737,22 +745,24 @@ void Kadu::openDescriptionLinkActionActivated(QAction *sender, bool toggled)
 	if (!window)
 		return;
 
-	UserListElements users = window->userListElements();
-	if (users.count() < 1)
+	Contact contact = window->contact();
+	if (contact.isNull())
 		return;
 
-	UserListElement user = users[0];
-	if (!user.usesProtocol("Gadu"))
+	Account *account = AccountManager::instance()->defaultAccount();
+	ContactAccountData *data = contact.accountData(account);
+
+	if (!data)
 		return;
 
-	QString status = user.status("Gadu").description();
-	if (status.isEmpty())
+	QString description = data->status().description();
+	if (description.isEmpty())
 		return;
 
 	QRegExp url = HtmlDocument::urlRegExp();
-	int idx_start = url.search(status);
+	int idx_start = url.search(description);
 	if (idx_start >= 0)
-		openWebBrowser(status.mid(idx_start, url.matchedLength()));
+		openWebBrowser(description.mid(idx_start, url.matchedLength()));
 
 	kdebugf2();
 }

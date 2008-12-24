@@ -19,6 +19,8 @@
 #include "exports.h"
 
 class ChatWidget;
+class Contact;
+class ContactList;
 class KaduMainWindow;
 class ToolBar;
 class UserBox;
@@ -49,6 +51,9 @@ public:
 	virtual ~KaduAction();
 
 	UserListElements userListElements();
+
+	Contact contact();
+	ContactList contacts();
 
 public slots:
 	void checkState();

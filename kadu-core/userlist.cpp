@@ -261,12 +261,13 @@ void UserList::setAllOffline(const QString &protocolName)
 	// zliczamy najpierw kontakty, kt�rych status przestawimy - czyli takie, kt�re maj� opis lub nie s� offline
 	foreach(const UserListElement &user, *this)
 	{
-		if (user.usesProtocol(protocolName))
-		{
-			const UserStatus &stat = user.status(protocolName);
-			if (!stat.isOffline() || stat.hasDescription())
-				++todo;
-		}
+// TODO: 0.6.6
+// 		if (user.usesProtocol(protocolName))
+// 		{
+// 			const UserStatus &stat = user.status(protocolName);
+// 			if (!stat.isOffline() || stat.hasDescription())
+// 				++todo;
+// 		}
 	}
 
 	// a teraz przestawiamy te statusy
@@ -274,12 +275,13 @@ void UserList::setAllOffline(const QString &protocolName)
 	foreach(const UserListElement &user, *this)
 	{
 //		kdebugm(KDEBUG_INFO, "%s %d\n", qPrintable(*user), qPrintable(*user));
-		if (user.usesProtocol(protocolName))
-		{
-			const UserStatus &stat = user.status(protocolName);
-			if (!stat.isOffline() || stat.hasDescription())
-				user.setStatus(protocolName, *s, true, ++i == todo);
-		}
+// TOOD: 0.6.6
+// 		if (user.usesProtocol(protocolName))
+// 		{
+// 			const UserStatus &stat = user.status(protocolName);
+// 			if (!stat.isOffline() || stat.hasDescription())
+// 				user.setStatus(protocolName, *s, true, ++i == todo);
+// 		}
 	}
 	delete s;
 	kdebugf2();

@@ -11,6 +11,10 @@
 #include <QtGui/QApplication>
 #include <QtNetwork/QHostAddress>
 
+#include "accounts/account_manager.h"
+
+#include "contacts/contact-account-data.h"
+
 #include "config_file.h"
 #include "debug.h"
 #include "html_document.h"
@@ -169,27 +173,30 @@ QString KaduParser::parse(const QString &s, const UserListElement &ule, const QO
 				break;
 			pe.type = ParseElem::PE_STRING;
 
+			Contact contact = ule.toContact(AccountManager::instance()->defaultAccount());
+			ContactAccountData *data = contact.accountData(AccountManager::instance()->defaultAccount());
+
 			switch (s[i].toAscii())
 			{
 				case 's':
 					++i;
-					if (ule.usesProtocol("Gadu"))
-						pe.str = qApp->translate("UserStatus", ule.status("Gadu").name().ascii());
+					if (data)
+						pe.str = qApp->translate("UserStatus", QString::number(data->status().type())); // TODO: 0.6.6
 					break;
 				case 't':
 					++i;
-					if (ule.usesProtocol("Gadu"))
-						pe.str = ule.status("Gadu").name();
+					if (data)
+						pe.str = QString::number(data->status().type()); // TODO: 0.6.6
 					break;
 				case 'q':
 					++i;
-					if (ule.usesProtocol("Gadu"))
-						pe.str = ule.status("Gadu").pixmapName();
+					if (data)
+						pe.str = "" ; // ule.status("Gadu").pixmapName(); TODO: 0.6.6
 					break;
 				case 'd':
 					++i;
-					if (ule.usesProtocol("Gadu"))
-						pe.str = ule.status("Gadu").description();
+					if (data)
+						pe.str = data->status().description();
 
 				 	if (escape)
 			 			HtmlDocument::escapeText(pe.str);
@@ -226,8 +233,9 @@ QString KaduParser::parse(const QString &s, const UserListElement &ule, const QO
 					break;
 				case 'h':
 					++i;
-					if (ule.protocolData("Gadu", "Version").toUInt() && !ule.status("Gadu").isOffline())
-						pe.str = versionToName(ule.protocolData("Gadu", "Version").toUInt() & 0x0000ffff);
+					if (data)
+						if (ule.protocolData("Gadu", "Version").toUInt() && !data->status().isOffline())
+							pe.str = versionToName(ule.protocolData("Gadu", "Version").toUInt() & 0x0000ffff);
 					break;
 				case 'n':
 					++i;

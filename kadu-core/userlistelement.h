@@ -100,13 +100,6 @@ public:
 	QString ID(const QString &protocolName) const;
 
 	/**
-		\fn const UserStatus &status(const QString &protocolName) const
-		\param protocolName identyfikator protoko�u
-		Zwraca status kontaktu w protokole protocolName.
-	**/
-	UserStatus & status(const QString &protocolName) const;
-
-	/**
 		\fn QVariant data(const QString &name) const
 		\param name nazwa w�asno�ci
 		Zwraca w�asno�� (kt�ra nie jest zwi�zana z �adnym protoko�em)

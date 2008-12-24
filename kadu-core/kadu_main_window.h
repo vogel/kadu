@@ -52,6 +52,8 @@ public:
 	virtual bool supportsActionType(ActionDescription::ActionType type) = 0;
 	virtual UserBox * userBox() = 0;
 	virtual UserListElements userListElements() = 0;
+	ContactList contacts();
+	Contact contact();
 
 	void actionAdded(KaduAction *action);
 

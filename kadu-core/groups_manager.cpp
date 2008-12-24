@@ -566,8 +566,9 @@ UsersWithDescription::~UsersWithDescription()
 void UsersWithDescription::statusChangedSlot(UserListElement elem, QString protocolName,
 							const UserStatus &oldStatus, bool /*massively*/, bool /*last*/)
 {
-	if (oldStatus.hasDescription() == elem.status(protocolName).hasDescription())
-		return;
+// TODO: 0.6.6
+// 	if (oldStatus.hasDescription() == elem.status(protocolName).hasDescription())
+// 		return;
 	if (oldStatus.hasDescription()) // elem.status(protocolName).hasDescription() == false
 		removeUser(elem);
 	else // elem.status(protocolName).hasDescription() == true
@@ -589,8 +590,9 @@ OnlineUsers::~OnlineUsers()
 void OnlineUsers::statusChangedSlot(UserListElement elem, QString protocolName,
 							const UserStatus &oldStatus, bool /*massively*/, bool /*last*/)
 {
-	if (oldStatus.isOffline() == elem.status(protocolName).isOffline())
-		return;
+// TODO: 0.6.6
+// 	if (oldStatus.isOffline() == elem.status(protocolName).isOffline())
+// 		return;
 	if (oldStatus.isOffline())
 		addUser(elem);
 	else
@@ -630,12 +632,13 @@ void OnlineAndDescriptionUsers::userChangedSlot(UserListElement elem, bool /*mas
 	{
 		foreach(const QString &proto, protos)
 		{
-			UserStatus status = elem.status(proto);
-			if (status.isOnline() || status.isBusy() || status.hasDescription())
-			{
-				isWanted = true;
-				break;
-			}
+// TODO: 0.6.6
+// 			UserStatus status = elem.status(proto);
+// 			if (status.isOnline() || status.isBusy() || status.hasDescription())
+// 			{
+// 				isWanted = true;
+// 				break;
+// 			}
 		}
 	}
 
@@ -666,11 +669,12 @@ OfflineUsers::OfflineUsers() : UserGroup()
 		{
 			foreach(const QString &proto, protos)
 			{
-				if (!user.status(proto).isOffline())
-				{
-					offline = false; // if online in at LEAST one proto
-					break;
-				}
+// TODO: 0.6.6
+// 				if (!user.status(proto).isOffline())
+// 				{
+// 					offline = false; // if online in at LEAST one proto
+// 					break;
+// 				}
 			}
 		}
 		else // doesn't use any proto -> so can't be offline
@@ -713,11 +717,12 @@ void OfflineUsers::userChangedSlot(UserListElement elem, bool /*massively*/, boo
 	{
 		foreach(const QString &proto, protos)
 		{
-			if (!elem.status(proto).isOffline())
-			{
-				offline = false;
-				break;
-			}
+// TODO: 0.6.6
+// 			if (!elem.status(proto).isOffline())
+// 			{
+// 				offline = false;
+// 				break;
+// 			}
 		}
 	}
 	else // elem doesn't use any protocol, so it can't be offline :)
@@ -786,10 +791,11 @@ BlockingUsers::~BlockingUsers()
 void BlockingUsers::statusChangedSlot(UserListElement elem, QString protocolName,
 							const UserStatus &oldStatus, bool /*massively*/, bool /*last*/)
 {
-	if (!oldStatus.isBlocking() && elem.status(protocolName).isBlocking())
-		addUser(elem);
-	else if (oldStatus.isBlocking() && !elem.status(protocolName).isBlocking())
-		removeUser(elem);
+// TODO: 0.6.6
+// 	if (!oldStatus.isBlocking() && elem.status(protocolName).isBlocking())
+// 		addUser(elem);
+// 	else if (oldStatus.isBlocking() && !elem.status(protocolName).isBlocking())
+// 		removeUser(elem);
 }
 
 AnonymousUsers::AnonymousUsers() : UserGroup()

@@ -10,6 +10,8 @@
 #include <QtGui/QContextMenuEvent>
 #include <QtGui/QMenu>
 
+#include "accounts/account_manager.h"
+
 #include "config_file.h"
 #include "debug.h"
 #include "toolbar.h"
@@ -275,4 +277,18 @@ void KaduMainWindow::actionAdded(KaduAction *action)
 {
 	if (userBox())
 		connect(userBox(), SIGNAL(userListChanged()), action, SLOT(checkState()));
+}
+
+ContactList KaduMainWindow::contacts()
+{
+	Account *account = AccountManager::instance()->defaultAccount();
+	return userListElements().toContactList(account);
+}
+
+Contact KaduMainWindow::contact()
+{
+	ContactList contactList = contacts();
+	return 1 == contactList.count()
+		? contactList[0]
+		: Contact::null;
 }
