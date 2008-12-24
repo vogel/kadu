@@ -22,6 +22,9 @@
 
 #include "accounts/account.h"
 #include "accounts/account_manager.h"
+
+#include "contacts/contact-account-data.h"
+
 #include "config_file.h"
 #include "debug.h"
 #include "../modules/gadu_protocol/gadu.h"
@@ -259,10 +262,16 @@ void UserInfo::setupTab1()
 		else
 			e_ver->setText(tr("(Unknown)"));
 
-		e_status->setText(tr(User.status("Gadu").name()));
-		e_status->setToolTip(User.status("Gadu").description());
+		Account *account = AccountManager::instance()->defaultAccount();
+		Contact contact = User.toContact(account);
+		ContactAccountData *contactData = contact.accountData(account);
+		Status status = contactData->status();
 
-		tw_main->setTabIconSet(generalWidget, User.status("Gadu").pixmap());
+// TODO: 0.6.6
+		e_status->setText(QString::number(status.type()));
+		e_status->setToolTip(status.description());
+
+		tw_main->setTabIconSet(generalWidget, account->statusPixmap(status));
 	}
 
 	kdebugf2();

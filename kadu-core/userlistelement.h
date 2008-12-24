@@ -443,7 +443,7 @@ public slots:
 	**/
 	void refreshDNSName(const QString &protocolName) const;
 
-	Contact toContact(Account *account);
+	Contact toContact(Account *account) const;
 	static UserListElement fromContact(Contact contact, Account *account);
 
 };

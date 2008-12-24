@@ -30,6 +30,8 @@
 #include "accounts/account.h"
 #include "accounts/account_manager.h"
 
+#include "contacts/contact-account-data.h"
+
 #include "action.h"
 #include "config_file.h"
 #include "debug.h"
@@ -189,7 +191,18 @@ void KaduListBoxPixmap::setDescriptionColor(const QColor &col)
 
 bool KaduListBoxPixmap::isBold() const
 {
-	return ShowBold && User.usesProtocol("Gadu") && (User.status("Gadu").isOnline() || User.status("Gadu").isBusy());
+	if (!ShowBold)
+		return false;
+
+	Account *account = AccountManager::instance()->defaultAccount();
+	Contact contact = User.toContact(account);
+	ContactAccountData *contactData = contact.accountData(account);
+
+	if (0 == contactData)
+		return false;
+
+	Status status = contactData->status();
+	return status.isOnline() || status.isBusy();
 }
 
 void KaduListBoxPixmap::paint(QPainter *painter)
@@ -197,20 +210,28 @@ void KaduListBoxPixmap::paint(QPainter *painter)
 	if (!descriptionFontMetrics)
 		return;
 
+	Account *account = AccountManager::instance()->defaultAccount();
+	Contact contact = User.toContact(account);
+	ContactAccountData *data = contact.accountData(account);
+
 //	kdebugf();
 	QColor origColor = painter->pen().color();
 	QString description;
-	if (User.usesProtocol("Gadu"))
+
+	if (data)
 	{
-		UserListElements users(User);
+		// TODO: 0.6.6
+/*
 		if (User.protocolData("Gadu", "Blocking").toBool())
 			painter->setPen(QColor(255, 0, 0));
-		else if (IgnoredManager::isIgnored(users))
+		else if (IgnoredManager::isIgnored(UserListElements(users)))
 			painter->setPen(QColor(192, 192, 0));
 		else if (config_file.readBoolEntry("General", "PrivateStatus") && User.protocolData("Gadu", "OfflineTo").toBool())
 			painter->setPen(QColor(128, 128, 128));
-		if (User.data("HideDescription").toString() != "true")
-			description = User.status("Gadu").description();
+*/
+//		if (User.data("HideDescription").toString() != "true")
+
+		description = data->status().description();
 	}
 
 	int itemHeight = AlignUserboxIconsTop ? lineHeight(listBox()):height(listBox());
@@ -280,9 +301,18 @@ void KaduListBoxPixmap::paint(QPainter *painter)
 int KaduListBoxPixmap::height(const Q3ListBox* lb) const
 {
 //	kdebugf();
+
+	Account *account = AccountManager::instance()->defaultAccount();
+	Contact contact = User.toContact(account);
+	ContactAccountData *data = contact.accountData(account);
+
 	QString description;
-	if (User.usesProtocol("Gadu") && User.data("HideDescription").toString() != "true")
-		description = User.status("Gadu").description();
+	if (data)
+		description = data->status().description();
+
+// 	if (User.usesProtocol("Gadu") && User.data("HideDescription").toString() != "true")
+// 		description = User.status("Gadu").description();
+
 	bool hasDescription = !description.isEmpty();
 
 	int height=lb->fontMetrics().lineSpacing()+3;
@@ -419,10 +449,13 @@ void KaduListBoxPixmap::changeText(const QString &text)
 
 QPixmap KaduListBoxPixmap::pixmapForUser(const UserListElement &user)
 {
+	Account *account = AccountManager::instance()->defaultAccount();
+
 	bool has_mobile = !user.mobile().isEmpty();
 	UserListElement u = user;
-	Contact contact = u.toContact(AccountManager::instance()->defaultAccount());
-	if (!user.usesProtocol("Gadu"))
+	Contact contact = u.toContact(account);
+
+	if (!contact.accountData(account))
 	{
 		if (has_mobile)
 			return icons_manager->loadPixmap("Mobile");
@@ -435,11 +468,13 @@ QPixmap KaduListBoxPixmap::pixmapForUser(const UserListElement &user)
 		return icons_manager->loadPixmap("Message");
 	else
 	{
-		const QPixmap &pix = user.status("Gadu").pixmap(has_mobile);
+		Status status = contact.accountData(account)->status();
+		const QPixmap &pix = account->statusPixmap(status);
+
 		if (!pix.isNull())
 			return pix;
 		else
-			return icons_manager->loadPixmap("Online");
+			return icons_manager->loadPixmap("Offline");
 	}
 }
 
@@ -767,8 +802,8 @@ void UserBox::refresh()
 
 	const unsigned int Count = count();
 	unsigned int i = 0;
-
-	bool doRefresh = false;
+printf("refresh...\n");
+	bool doRefresh = true;
 
 	if (fancy && (numColumns() != config_file.readNumEntry("Look", "UserBoxColumnCount", 1)))
 		doRefresh = true;
@@ -1611,25 +1646,30 @@ inline int compareStatus(const UserListElement &u1, const UserListElement &u2)
 {
 	//WARNING: we are utilizing the fact, that enums in eUserStats are in "correct" order
 	// we see Busy and Online as equal here
-	int r[] = {Online, Online, Invisible, Offline, Blocking};
-	bool u1Gadu = u1.usesProtocol("Gadu");
-	bool u2Gadu = u2.usesProtocol("Gadu");
-	if (u1Gadu && u2Gadu)
-		return r[u1.status("Gadu").status()] - r[u2.status("Gadu").status()];
+
+	Account *account = AccountManager::instance()->defaultAccount();
+	Contact c1 = u1.toContact(account);
+	ContactAccountData *d1 = c1.accountData(account);
+	Contact c2 = u2.toContact(account);
+	ContactAccountData *d2 = c2.accountData(account);
+
+	if (d1 && d2)
+		return d2->status().compareTo(d1->status());
 	else
-		return int(u2Gadu) - int(u1Gadu);
+		return (int)d2 - (int)d1;
 }
 
 void UserBox::accountRegistered(Account *account)
 {
+	printf("conencting ...\n");
 	connect(account, SIGNAL(contactStatusChanged(Account *, Contact, Status)),
-			this, SLOT(refreshLater()));
+			this, SLOT(refresh()));
 }
 
 void UserBox::accountUnregistered(Account *account)
 {
 	disconnect(account, SIGNAL(contactStatusChanged(Account *, Contact, Status)),
-			this, SLOT(refreshLater()));
+			this, SLOT(refresh()));
 }
 
 

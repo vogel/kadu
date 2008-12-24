@@ -19,3 +19,15 @@ Status::Status(const Status& copyme)
 {
 }
 
+Status::StatusType Status::comparableType(Status::StatusType type)
+{
+	if (Busy == type)
+		return Online;
+
+	return type;
+}
+
+int Status::compareTo(const Status &compare) const
+{
+	return comparableType(compare.Type) - comparableType(Type);
+}

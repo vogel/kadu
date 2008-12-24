@@ -118,3 +118,8 @@ Contact Account::createAnonymous(const QString& id)
 	result.addAccountData(contactAccountData);
 	return result;
 }
+
+QPixmap Account::statusPixmap(Status status)
+{
+	return ProtocolHandler->statusPixmap(status);
+}

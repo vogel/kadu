@@ -17,6 +17,8 @@
 #include "contacts/contact.h"
 #include "protocols/status.h"
 
+class QPixmap;
+
 class AccountData;
 class Protocol;
 class UserStatus;
@@ -47,6 +49,8 @@ public:
 
 	Contact getContactById(const QString &id);
 	Contact createAnonymous(const QString &id);
+
+	QPixmap statusPixmap(Status status);
 
 signals:
 	void contactStatusChanged(Account *account, Contact contact, Status oldStatus);

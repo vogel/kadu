@@ -20,6 +20,8 @@
 
 typedef uint32_t UinType;
 
+class QPixmap;
+
 class AccountData;
 class Message;
 class ProtocolFactory;
@@ -156,6 +158,8 @@ public:
 	virtual AccountData * createAccountData() = 0;
 	ProtocolFactory * protocolFactory() const { return Factory; }
 	Account * account() const { return CurrentAccount; }
+
+	virtual QPixmap statusPixmap(Status status) = 0;
 
 	QIcon icon();
 

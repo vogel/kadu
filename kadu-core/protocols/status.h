@@ -27,6 +27,8 @@ private:
 	StatusType Type;
 	QString Description;
 
+	static StatusType comparableType(StatusType type);
+
 public:
 	Status(StatusType type = Offline, QString description = QString::null);
 	Status(const Status &copyme);
@@ -41,6 +43,8 @@ public:
 	bool isBusy() { return Busy == Type; }
 	bool isInvisible() { return Invisible == Type; }
 	bool isOffline() { return Offline == Type; }
+
+	int compareTo(const Status& compare) const;
 
 };
 

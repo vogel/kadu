@@ -536,7 +536,7 @@ ulong qHash(const UserListElement &index)
 	return (ulong)index.privateData.data();
 }
 
-Contact UserListElement::toContact(Account *account)
+Contact UserListElement::toContact(Account *account) const
 {
 	return ContactManager::instance()->getContactById(account, ID("Gadu"));
 }

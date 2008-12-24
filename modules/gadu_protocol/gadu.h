@@ -27,6 +27,7 @@ class QTimer;
 
 class AccountData;
 class GaduAccountData;
+class GaduContactAccountData;
 class GaduSocketNotifiers;
 
 struct SearchRecord;
@@ -259,6 +260,7 @@ class GADUAPI GaduProtocol : public Protocol
 
 	virtual AccountData * createAccountData();
 	UinType uin(Contact contact) const;
+	GaduContactAccountData * gaduContactAccountData(Contact contact) const;
 
 	Status::StatusType statusTypeFromIndex(unsigned int index) const;
 
@@ -571,6 +573,8 @@ public:
 	bool validateUserID(QString &uid);
 
 	virtual UserStatus * newStatus() const;
+
+	virtual QPixmap statusPixmap(Status status);
 
 	// --------------------
 	//  DCC

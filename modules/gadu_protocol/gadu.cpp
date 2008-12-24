@@ -22,6 +22,9 @@
 
 #include "accounts/account.h"
 #include "accounts/account_manager.h"
+
+#include "protocols/status.h"
+
 #include "config_file.h"
 #include "debug.h"
 #include "icons_manager.h"
@@ -1974,7 +1977,6 @@ void GaduProtocol::userListReceived(const struct gg_event *e)
 {
 	kdebugf();
 
-	GaduStatus oldStatus;
 	int nr = 0;
 	//kdebugm(KDEBUG_WARNING, "%s\n", qPrintable(userListToString(*userlist)));
 	//return;
@@ -1992,15 +1994,18 @@ void GaduProtocol::userListReceived(const struct gg_event *e)
 	while (e->event.notify60[nr].uin)
 	{
 		UserListElement user = userlist->byID("Gadu", QString::number(e->event.notify60[nr].uin));
+		Contact contact = user.toContact(account());
 
-		if (user.isAnonymous())
+		if (contact.isAnonymous())
 		{
 			kdebugmf(KDEBUG_INFO, "buddy %d not in list. Damned server!\n",
-				e->event.notify60[nr].uin);
+					e->event.notify60[nr].uin);
 			gg_remove_notify(Sess, e->event.notify60[nr].uin);
 			++nr;
 			continue;
 		}
+
+		GaduContactAccountData *accountData = gaduContactAccountData(contact);
 
 		user.setProtocolData("Gadu", "DNSName", "", nr + 1 == cnt);
 		user.setProtocolData("Gadu", "IP", (unsigned int)ntohl(e->event.notify60[nr].remote_ip), nr + 1 == cnt);
@@ -2010,21 +2015,26 @@ void GaduProtocol::userListReceived(const struct gg_event *e)
 		user.setProtocolData("Gadu", "Version", e->event.notify60[nr].version, true, nr + 1 == cnt);
 		user.setProtocolData("Gadu", "MaxImageSize", e->event.notify60[nr].image_size, true, nr + 1 == cnt);
 
-		oldStatus = user.status("Gadu");
+		Status oldStatus = accountData->status();
 
-		GaduStatus status;
+		int gadu_status_id;
+		QString description;
+
 		if (e->event.notify60[nr].descr)
 		{
-			status.fromStatusNumber(e->event.notify60[nr].status,
-				cp2unicode(e->event.notify60[nr].descr));
-			QString desc = status.description();
-			desc.replace("\r\n", "\n");
-			desc.replace("\r", "\n");
-			status.setDescription(desc);
+			gadu_status_id = e->event.notify60[nr].status;
+			description = cp2unicode(e->event.notify60[nr].descr);
+
+			description.replace("\r\n", "\n");
+			description.replace("\r", "\n");
 		}
 		else
-			status.fromStatusNumber(e->event.notify60[nr].status, QString::null);
-		user.setStatus("Gadu", status, true, nr + 1 == cnt);
+			gadu_status_id = e->event.notify60[nr].status;
+
+		Status status(statusTypeFromIndex(gadu_status_id), description);
+		accountData->setStatus(status);
+
+		emit contactStatusChanged(account(), contact, oldStatus);
 
 #ifdef DEBUG_ENABLED
 #define PRINT_STAT(str) kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, str, e->event.notify60[nr].uin);
@@ -2174,7 +2184,7 @@ void GaduProtocol::userStatusChanged(const struct gg_event *e)
 		return;
 	}
 
-	GaduContactAccountData *data = dynamic_cast<GaduContactAccountData *>(contact.accountData(account()));
+	GaduContactAccountData *data = gaduContactAccountData(contact);
 
 	if (status.isOffline())
 	{
@@ -2217,8 +2227,38 @@ AccountData * GaduProtocol::createAccountData()
 
 unsigned int GaduProtocol::uin(Contact contact) const
 {
-	GaduContactAccountData *data = dynamic_cast<GaduContactAccountData *>(contact.accountData(account()));
+	GaduContactAccountData *data = gaduContactAccountData(contact);
 	return data
 		? data->uin()
 		: 0;
+}
+
+GaduContactAccountData * GaduProtocol::gaduContactAccountData(Contact contact) const
+{
+	return dynamic_cast<GaduContactAccountData *>(contact.accountData(account()));
+}
+
+QPixmap GaduProtocol::statusPixmap(Status status)
+{
+	QString description = status.description().isNull()
+			? ""
+			: "WithDescription";
+	QString pixmapName;
+
+	switch (status.type())
+	{
+		case Status::Online:
+			pixmapName = QString("Online").append(description);
+			break;
+		case Status::Busy:
+			pixmapName = QString("Busy").append(description);
+			break;
+		case Status::Invisible:
+			pixmapName = QString("Invisible").append(description);
+			break;
+		default:
+			return QString("Offline").append(description);
+	}
+
+	return icons_manager->loadPixmap(pixmapName);
 }
