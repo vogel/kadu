@@ -41,6 +41,8 @@ Updates::Updates(UinType uin)
 		platform.append("NetBSD");
 #elif defined(Q_OS_OPENBSD)
 		platform.append("OpenBSD");
+#elif defined(Q_OS_SOLARIS)
+		platform.append("Solaris");
 #elif defined(Q_OS_MAC)
 		switch (QSysInfo::MacintoshVersion)
 		{
