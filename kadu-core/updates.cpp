@@ -37,6 +37,12 @@ Updates::Updates(UinType uin)
 #if defined(Q_OS_LINUX)
 		/* TODO: obtain the distribution name and version */
 		platform.append("Linux");
+#elif defined(Q_OS_FREEBSD)
+		platform.append("FreeBSD");
+#elif defined(Q_OS_NETBSD)
+		platform.append("NetBSD");
+#elif defined(Q_OS_OPENBSD)
+		platform.append("OpenBSD");
 #elif defined(Q_OS_MAC)
 		switch (QSysInfo::MacintoshVersion)
 		{
