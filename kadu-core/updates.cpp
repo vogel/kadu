@@ -8,6 +8,7 @@
  ***************************************************************************/
 
 #include <QtNetwork/QHttp>
+#include <QtCore/QSysInfo>
 
 #include "accounts/account.h"
 #include "accounts/account_manager.h"
@@ -29,6 +30,65 @@ Updates::Updates(UinType uin)
 	kdebugf();
 
 	httpClient = new QHttp("www.kadu.net");
+	
+	if (config_file.readBoolEntry("General", "SendSysInfo"), true)
+	{
+		QString platform("&system=");
+#if defined(Q_OS_LINUX)
+		/* TODO: obtain the distribution name and version */
+		platform.append("Linux");
+#elif defined(Q_OS_MAC)
+		switch (QSysInfo::MacintoshVersion)
+		{
+			case QSysInfo::MV_PANTHER:
+				platform.append("MacOSX-Panther");
+				break;
+			case QSysInfo::MV_TIGER:
+				platform.append("MacOSX-Tiger");
+				break;
+			case QSysInfo::MV_LEOPARD:
+				platform.append("MacOSX-Leopard");
+				break;
+			default:
+				platform.append("MacOSX-Unknown");
+				break;
+		}
+#elif defined(Q_OS_WIN32)
+		switch (QSysInfo::WinVersion)
+		{
+			case QSysInfo::WV_95:
+				platform.append("Windows95");
+				break;
+			case QSysInfo::WV_98:
+				platform.append("Windows98");
+				break;
+			case QSysInfo::WV_Me:
+				platform.append("WindowsME");
+				break;
+			case QSysInfo::WV_NT:
+				platform.append("WindowsNT");
+				break;
+			case QSysInfo::WV_2000:
+				platform.append("Windows2000");
+				break;
+			case QSysInfo::WV_XP:
+				platform.append("WindowsXP");
+				break;
+			case QSysInfo::WV_2003:
+				platform.append("Windows2003");
+				break;
+			case QSysInfo::WV_VISTA:
+				platform.append("WindowsVista");
+				break;
+	    		default:
+				platform.append("Windows-Unknown");
+				break;
+		}
+#else
+		platform.append("Unknown");
+#endif
+		query.append(platform);
+	}
 
 	kdebugf2();
 }
