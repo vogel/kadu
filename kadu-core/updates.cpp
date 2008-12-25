@@ -52,7 +52,7 @@ Updates::Updates(UinType uin)
 				break;
 		}
 #elif defined(Q_OS_WIN32)
-		switch (QSysInfo::WinVersion)
+		switch (QSysInfo::WindowsVersion)
 		{
 			case QSysInfo::WV_95:
 				platform.append("Windows95");
