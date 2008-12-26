@@ -60,6 +60,12 @@ SpellChecker::SpellChecker()
 	spellConfig = new_aspell_config();
 	aspell_config_replace(spellConfig, "encoding", "utf-8");
 
+#ifdef Q_OS_WIN32
+	aspell_config_replace(spellConfig, "dict-dir", qPrintable(dataPath("aspell/dict")));
+	aspell_config_replace(spellConfig, "data-dir", qPrintable(dataPath("aspell/data")));
+	aspell_config_replace(spellConfig, "prefix", qPrintable(ggPath("dicts")));
+#endif
+
 	import_0_5_0_Configuration();
 
 	createDefaultConfiguration();
