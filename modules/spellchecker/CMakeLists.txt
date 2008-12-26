@@ -14,6 +14,11 @@ set (TRANSLATION_SOURCES
 set (CONFIGURATION_FILES
 	configuration/spellchecker.ui)
 
+if(WIN32)
+	include_directories (${CMAKE_CURRENT_SOURCE_DIR})
+	set (SOURCES ${SOURCES} ../module.rc)
+endif(WIN32)
+
 include (FindASPELL)
 
 if (NOT ASPELL_FOUND)
@@ -45,7 +50,7 @@ if (spellchecker STREQUAL STATIC)
 	set_target_properties(spellchecker PROPERTIES COMPILE_FLAGS "-DKADULIB" )
 else (spellchecker STREQUAL STATIC)
 	if (WIN32)
-		target_link_libraries(spellchecker kadu_core notify)
+		target_link_libraries(spellchecker kadu_core)
 	endif (WIN32)
 	if (APPLE)
 		set_target_properties(spellchecker PROPERTIES LINK_FLAGS "-undefined dynamic_lookup")

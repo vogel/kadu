@@ -6,7 +6,7 @@
  *  (at your option) any later version.                                    *
  *                                                                         *
  ***************************************************************************/
-
+#define ASPELL_STATIC
 #include <aspell.h>
 
 #include <QGridLayout>
@@ -26,7 +26,7 @@
 
 SpellChecker* spellcheck;
 
-extern "C" int spellchecker_init(bool firstLoad)
+extern "C" KADU_EXPORT int spellchecker_init(bool firstLoad)
 {
 	spellcheck = new SpellChecker();
 
@@ -43,7 +43,7 @@ extern "C" int spellchecker_init(bool firstLoad)
 	}
 }
 
-extern "C" void spellchecker_close()
+extern "C" KADU_EXPORT void spellchecker_close()
 {
 	if (spellcheck)
 	{
