@@ -16,7 +16,7 @@ AccountData::AccountData()
 AccountData::AccountData(const QString &name, const QString &id, const QString &password)
 {
 	setName(name);
-	setId(id);
+//	setId(id);
 	setPassword(password);
 }
 

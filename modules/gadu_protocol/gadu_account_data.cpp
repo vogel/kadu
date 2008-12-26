@@ -19,16 +19,18 @@ GaduAccountData::GaduAccountData()
 GaduAccountData::GaduAccountData(const QString &name, const QString &id, const QString &password)
 	: AccountData(name, id, password)
 {
+	setId(id);
 }
 
 GaduAccountData::GaduAccountData(const QString &name, UinType uin, const QString &password)
 	: AccountData(name, QString::number(uin), password)
 {
+	setId(QString::number(uin));
 }
 
 bool GaduAccountData::setId(const QString &id)
 {
-	if (!AccountData::setId(id))
+	if (!validateId(id))
 		return false;
 
 	Uin = id.toLong();
