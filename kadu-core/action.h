@@ -151,6 +151,6 @@ signals:
 
 void disableEmptyUles(KaduAction *action);
 
-extern Actions KaduActions;
+KADUAPI extern Actions KaduActions;
 
 #endif
