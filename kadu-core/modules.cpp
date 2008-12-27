@@ -394,10 +394,10 @@ ModulesManager::ModulesManager() : QObject(NULL, "modules_manager"),
 	ActionDescription *manageModulesActionDescription = new ActionDescription(
 		ActionDescription::TypeMainMenu, "manageModulesAction",
 		this, SLOT(showDialog(QAction *, bool)),
-		"ManageModules", tr("&Manage Modules")
+		"ManageModules", tr("&Modules")
 	);
 	manageModulesActionDescription->setShortcut("kadu_modulesmanager", Qt::ApplicationShortcut);
-	kadu->insertMenuActionDescription(2, manageModulesActionDescription);
+	kadu->insertMenuActionDescription(manageModulesActionDescription, Kadu::MenuKadu, 2);
 
 	everLoaded = QStringList::split(',', config_file.readEntry("General", "EverLoaded"));
 

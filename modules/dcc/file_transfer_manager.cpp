@@ -92,9 +92,9 @@ FileTransferManager::FileTransferManager(QObject *parent, const char *name) : QO
 	fileTransferWindowActionDescription = new ActionDescription(
 		ActionDescription::TypeMainMenu, "sendFileWindowAction",
 		this, SLOT(toggleFileTransferWindow(QAction *, bool)),
-		"SendFileWindow", tr("Toggle transfers window")
+		"SendFileWindow", tr("File transfers")
 	);
-	kadu->insertMenuActionDescription(10, fileTransferWindowActionDescription);
+	kadu->insertMenuActionDescription(fileTransferWindowActionDescription, Kadu::MenuKadu, 6); // TODO 0.6.6: update
 
 	notification_manager->registerEvent("FileTransfer/IncomingFile",  QT_TRANSLATE_NOOP("@default", "An user wants to send you a file"), CallbackRequired);
 	notification_manager->registerEvent("FileTransfer/Finished", QT_TRANSLATE_NOOP("@default", "File transfer was finished"), CallbackNotRequired);

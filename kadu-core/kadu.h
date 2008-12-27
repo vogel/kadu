@@ -35,6 +35,29 @@ class UserStatusChanger;
 class KADUAPI Kadu : public KaduMainWindow, ConfigurationAwareObject
 {
 	Q_OBJECT
+public:
+	enum MenuType
+	{
+		MenuKadu,
+		MenuContacts,
+		MenuHelp
+	};
+
+private:
+
+	struct MenuAction
+	{
+		MenuAction() {}
+		MenuAction(KaduAction *action, MenuType menu)
+		{
+			Action = action;
+			Menu = menu;
+		}
+
+ 		KaduAction* Action;
+ 		MenuType Menu;
+	};
+
 
 	ActionDescription *inactiveUsersAction;
 	ActionDescription *descriptionUsersAction;
@@ -61,7 +84,7 @@ class KADUAPI Kadu : public KaduMainWindow, ConfigurationAwareObject
 	QAction *changeStatusToOfflineDesc;
 	QAction *changePrivateStatus;
 
-	QMap<ActionDescription *, KaduAction*> mainMenuActions;
+	QMap<ActionDescription *, MenuAction> MenuActions;
 
 	// TODO: remove
 	friend class Wizard;
@@ -72,7 +95,9 @@ class KADUAPI Kadu : public KaduMainWindow, ConfigurationAwareObject
 	KaduTextBrowser *InfoPanel;
 	QString InfoPanelSyntax;
 	QMenuBar *MenuBar;
-	QMenu *MainMenu;
+	QMenu *KaduMenu;
+	QMenu *ContactsMenu;
+	QMenu *HelpMenu;
 	QMenu *RecentChatsMenu;
 	KaduTabBar *GroupBar;
 	UserBox *Userbox;
@@ -126,6 +151,7 @@ private slots:
 	void copyPersonalInfoActionActivated(QAction *sender, bool toggled);
 	void lookupInDirectoryActionActivated(QAction *sender, bool toggled);
 	void deleteUsersActionActivated(QAction *sender, bool toggled);
+	void addGroupActionActivated(QAction *sender, bool toggled);
 
 	void messageReceived(Account *, ContactList s, const QString &msg, time_t time);
 	void createRecentChatsMenu();
@@ -191,11 +217,6 @@ public:
 	void removeUsers(UserListElements);
 
 	/**
-		Zwraca wskaznik do glownego menu programu.
-	**/
-//	QMenu * mainMenu() const;
-
-	/**
 		Zwraca wskaznik do zakladek z nazwami grup.
 	**/
 	KaduTabBar * groupBar() const;
@@ -223,8 +244,6 @@ public:
 
 	void startupProcedure();
 
-	int personalInfoMenuId;//potrzebne dla modu�u account_management
-
 	/**
 		w zwi�zku z tym, �e opis sk�adni dla parsera jest u�ywany w kilku miejscach
 		dodane zosta�o to pole, �eby nie trzeba by�o zmienia� tekstu w kilku miejscach
@@ -241,11 +260,8 @@ public:
 
 	const QString & panelStyle() { return infoPanelStyle;}
 
-	void addMenuActionDescription(ActionDescription *actionDescription);
-	void insertMenuActionDescription(int pos, ActionDescription *actionDescription);
+	void insertMenuActionDescription(ActionDescription *actionDescription, MenuType Type, int pos = -1);
 	void removeMenuActionDescription(ActionDescription *actionDescription);
-	QAction * addMenuSeparator();
-	void removeMenuSeparator(QAction *separator);
 
 public slots:
 	virtual void show();
@@ -283,11 +299,15 @@ public slots:
 
 	void about(QAction *sender, bool toggled);
 
+	void bugs(QAction *sender, bool toggled);
+	void support(QAction *sender, bool toggled);
+	void getInvolved(QAction *sender, bool toggled);
+
 	void help(QAction *sender, bool toggled);
 	void hideKadu(QAction *sender, bool toggled);
 	void importExportUserlist(QAction *sender, bool toggled);
 	void manageIgnored(QAction *sender, bool toggled);
-	void personalInfo(QAction *sender, bool toggled);
+	void yourAccounts(QAction *sender, bool toggled);
 	void quit();
 
 	// odczytuje z obrazka tekst i zapisuje go w drugim parametrze

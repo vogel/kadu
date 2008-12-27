@@ -364,11 +364,11 @@ void disableNoEMail(KaduAction *action)
 /* a monstrous constructor so Kadu would take longer to start up */
 Kadu::Kadu(QWidget *parent)
 	: KaduMainWindow(parent),
-	InfoPanel(0), MenuBar(0), MainMenu(0), RecentChatsMenu(0), GroupBar(0),
+	InfoPanel(0), MenuBar(0), KaduMenu(0), ContactsMenu(0), HelpMenu(0), RecentChatsMenu(0), GroupBar(0),
 	Userbox(0), statusMenu(0), statusButton(), lastPositionBeforeStatusMenuHide(),
 	StartTime(QDateTime::currentDateTime()), updateInformationPanelTimer(), NextStatus(),
 	selectedUsers(new UserGroup()), ShowMainWindowOnStart(true),
-	DoBlink(false), BlinkOn(false),Docked(false), dontHideOnClose(false), personalInfoMenuId(-1)
+	DoBlink(false), BlinkOn(false),Docked(false), dontHideOnClose(false)
 {
 	kdebugf();
 	kadu = this;
@@ -1080,7 +1080,7 @@ void Kadu::openChatWith()
 	kdebugf2();
 }
 
-void Kadu::personalInfo(QAction *sender, bool toggled)
+void Kadu::yourAccounts(QAction *sender, bool toggled)
 {
 	(new PersonalInfoDialog(kadu))->show();
 }
@@ -1144,12 +1144,41 @@ void Kadu::searchInDirectoryActionActivated(QAction *sender, bool toggled)
 	(new SearchDialog(kadu))->show();
 }
 
+void Kadu::addGroupActionActivated(QAction *sender, bool toggled)
+{
+
+}
+
 void Kadu::help(QAction *sender, bool toggled)
 {
 	if (config_file.readEntry("General", "Language", QString(QTextCodec::locale()).mid(0,2)) == "pl")
-		openWebBrowser("http://www.kadu.net/w/Kadu:Pomoc");
+		openWebBrowser("http://www.kadu.net/w/Pomoc_online");
 	else
-		openWebBrowser("http://www.kadu.net/w/English:Kadu:Help");
+		openWebBrowser("http://www.kadu.net/w/English:Kadu:Help_online");
+}
+
+void Kadu::bugs(QAction *sender, bool toggled)
+{
+	if (config_file.readEntry("General", "Language", QString(QTextCodec::locale()).mid(0,2)) == "pl")
+		openWebBrowser("http://www.kadu.net/w/B%C5%82%C4%99dy");
+	else
+		openWebBrowser("http://www.kadu.net/w/English:Bugs");
+}
+
+void Kadu::support(QAction *sender, bool toggled)
+{
+	if (config_file.readEntry("General", "Language", QString(QTextCodec::locale()).mid(0,2)) == "pl")
+		openWebBrowser("http://www.kadu.net/w/Kadu:Site_support");
+	else
+		openWebBrowser("http://www.kadu.net/w/English:Kadu:Site_support");
+}
+
+void Kadu::getInvolved(QAction *sender, bool toggled)
+{
+	if (config_file.readEntry("General", "Language", QString(QTextCodec::locale()).mid(0,2)) == "pl")
+		openWebBrowser("http://www.kadu.net/w/Do%C5%82%C4%85cz");
+	else
+		openWebBrowser("http://www.kadu.net/w/English:GetInvolved");
 }
 
 void Kadu::about(QAction *sender, bool toggled)
@@ -1714,60 +1743,67 @@ void Kadu::createRecentChatsMenu()
 
 	kdebugf2();
 }
-void Kadu::addMenuActionDescription(ActionDescription *actionDescription)
-{
-	if (!actionDescription)
-		return;
-	KaduAction *action = actionDescription->createAction(this);
-	MainMenu->addAction(action);
-	mainMenuActions[actionDescription] = action;
-}
 
-void Kadu::insertMenuActionDescription(int pos, ActionDescription *actionDescription)
+void Kadu::insertMenuActionDescription(ActionDescription *actionDescription, MenuType type, int pos)
 {
+	kdebugf();
 	if (!actionDescription)
 		return;
 	KaduAction *action = actionDescription->createAction(this);
-	QList<QAction *> menuActions = MainMenu->actions();
-	if (pos >= menuActions.count() - 1)
-		MainMenu->addAction(action);
+
+	QMenu *menu;
+
+	switch (type)
+	{
+		case MenuKadu:
+			menu = KaduMenu;
+			break;
+		case MenuContacts:
+			menu = ContactsMenu;
+			break;
+		case MenuHelp:
+			menu = HelpMenu;
+	}
+	
+	QList<QAction *> menuActions = menu->actions();
+	if (pos >= menuActions.count() - 1 || pos == -1)
+		menu->addAction(action);
 	else
-		MainMenu->insertAction(menuActions[pos], action);
+		menu->insertAction(menuActions[pos], action);
 
-	mainMenuActions[actionDescription] = action;
-}
-
-QAction * Kadu::addMenuSeparator()
-{
-	return MainMenu->addSeparator();
-}
-
-void Kadu::removeMenuSeparator(QAction * separator)
-{
-	if (!separator)
-		return;
-	MainMenu->removeAction(separator);
+	MenuActions[actionDescription] = MenuAction(action, type);
 }
 
 void Kadu::removeMenuActionDescription(ActionDescription *actionDescription)
 {
 	if (!actionDescription)
 		return;
-	KaduAction *action = mainMenuActions[actionDescription];
+	KaduAction *action = MenuActions[actionDescription].Action;
 	
 	if (!action)
 		return;
-
-	MainMenu->removeAction(action);
-	mainMenuActions.remove(actionDescription);
+	switch (MenuActions[actionDescription].Menu)
+	{
+		case MenuKadu:
+			KaduMenu->removeAction(action);
+			break;
+		case MenuContacts:
+			ContactsMenu->removeAction(action);
+			break;
+		case MenuHelp:
+			HelpMenu->removeAction(action);
+	}
+	MenuActions.remove(actionDescription);
 
 }
 
 void Kadu::createMenu()
 {
 	kdebugf();
-	MainMenu = new QMenu;
-	MainMenu->setTitle(tr("Menu"));
+// Kadu Menu
+	KaduMenu = new QMenu;
+	KaduMenu->setTitle("Kadu");
+
 	RecentChatsMenu = new QMenu;
 	RecentChatsMenu->setIcon(icons_manager->loadIcon("OpenChat"));
 	RecentChatsMenu->setTitle(tr("Recent chats..."));
@@ -1778,63 +1814,101 @@ void Kadu::createMenu()
 		this, SLOT(manageIgnored(QAction *, bool)),
 		"Ignore", tr("Manage &ignored")
 	);
-	addMenuActionDescription(manageIgnoredActionDescription);
-	addMenuActionDescription(configurationActionDescription);
 
-	addMenuSeparator();
-	ActionDescription *personalInfoActionDescription = new ActionDescription(
-		ActionDescription::TypeMainMenu, "personalInfoAction",
-		this, SLOT(personalInfo(QAction *, bool)),
-		"PersonalInfo", tr("Personal information")
-	);
-	addMenuActionDescription(personalInfoActionDescription);
-	personalInfoMenuId = MainMenu->actions().indexOf(mainMenuActions[personalInfoActionDescription]) + 1;
+	insertMenuActionDescription(configurationActionDescription, MenuKadu);
+	
+	ActionDescription *yourAccountsActionDescription = new ActionDescription(
+		ActionDescription::TypeMainMenu, "yourAccountsAction",
+		this, SLOT(yourAccounts(QAction *, bool)),
+		"PersonalInfo", tr("Your accounts")
+	);//TODO 0.6.6: implement
+	insertMenuActionDescription(yourAccountsActionDescription, MenuKadu);
 
-	addMenuSeparator();
+	KaduMenu->addSeparator();
 
-	MainMenu->addMenu(RecentChatsMenu);
-	addMenuActionDescription(openSearchActionDescription);
-	ActionDescription *importExportUserlisActionDescription = new ActionDescription(
-		ActionDescription::TypeMainMenu, "importExportUserlisAction",
-		this, SLOT(importExportUserlist(QAction *, bool)),
-		"ImportExport", tr("I&mport / Export userlist")
-	);
-	addMenuActionDescription(importExportUserlisActionDescription);
-	addMenuActionDescription(addUserActionDescription); 
-	addMenuActionDescription(chat_manager->openChatWithActionDescription);
-
-	addMenuSeparator();
-	ActionDescription *helpActionDescription = new ActionDescription(
-		ActionDescription::TypeMainMenu, "helpAction",
-		this, SLOT(help(QAction *, bool)),
-		"HelpMenuItem", tr("H&elp")
-	);
-	addMenuActionDescription(helpActionDescription);
-
-	ActionDescription *aboutActionDescription = new ActionDescription(
-		ActionDescription::TypeMainMenu, "aboutAction",
-		this, SLOT(about(QAction *, bool)),
-		"AboutMenuItem", tr("A&bout...")
-	);
-	addMenuActionDescription(aboutActionDescription);
-
-	addMenuSeparator();
-
+	KaduMenu->addMenu(RecentChatsMenu);
+	KaduMenu->addSeparator();
 	ActionDescription *hideKaduActionDescription = new ActionDescription(
 		ActionDescription::TypeMainMenu, "hideKaduAction",
 		this, SLOT(hideKadu(QAction *, bool)),
-		"HideKadu", tr("&Hide Kadu")
+		"HideKadu", tr("&Hide")
 	);
-	addMenuActionDescription(hideKaduActionDescription);
+	insertMenuActionDescription(hideKaduActionDescription, MenuKadu);
 
 	ActionDescription *exitKaduActionDescription = new ActionDescription(
 		ActionDescription::TypeMainMenu, "exitKaduAction",
 		this, SLOT(quit()),
-		"Exit", tr("&Exit Kadu")
+		"Exit", tr("&Exit")
 	);
-	addMenuActionDescription(exitKaduActionDescription);
+	insertMenuActionDescription(exitKaduActionDescription, MenuKadu);
 
-	menuBar()->addMenu(MainMenu);
+// ContactsMenu
+	ContactsMenu = new QMenu;
+	ContactsMenu->setTitle(tr("Contacts"));
+
+	insertMenuActionDescription(addUserActionDescription, MenuContacts);
+	ActionDescription *addGroupActionDescription = new ActionDescription(
+		ActionDescription::TypeMainMenu, "addGroupAction",
+		this, SLOT(addGroupActionActivated(QAction *, bool)),
+		"", tr("Add Group")
+	);//TODO 0.6.6: implement and update icons
+	insertMenuActionDescription(addGroupActionDescription, MenuContacts);
+	insertMenuActionDescription(openSearchActionDescription, MenuContacts);
+	ContactsMenu->addSeparator();
+	insertMenuActionDescription(chat_manager->openChatWithActionDescription, MenuContacts);
+	ContactsMenu->addSeparator();
+	insertMenuActionDescription(manageIgnoredActionDescription, MenuContacts);
+
+	ActionDescription *importExportUserlisActionDescription = new ActionDescription(
+		ActionDescription::TypeMainMenu, "importExportUserlisAction",
+		this, SLOT(importExportUserlist(QAction *, bool)),
+		"ImportExport", tr("I&mport / Export userlist")
+	); //TODO 0.6.6: remove
+	insertMenuActionDescription(importExportUserlisActionDescription, MenuContacts);
+
+// Help Menu
+	HelpMenu = new QMenu;
+	HelpMenu->setTitle(tr("Help"));
+
+	ActionDescription *helpActionDescription = new ActionDescription(
+		ActionDescription::TypeMainMenu, "helpAction",
+		this, SLOT(help(QAction *, bool)),
+		"HelpMenuItem", tr("Getting H&elp")
+	);
+	insertMenuActionDescription(helpActionDescription, MenuHelp);
+	HelpMenu->addSeparator();
+	ActionDescription *bugsActionDescription = new ActionDescription(
+		ActionDescription::TypeMainMenu, "bugsAction",
+		this, SLOT(bugs(QAction *, bool)),
+		"HelpMenuItem", tr("Submitt Bug Report")
+	);//TODO 0.6.6: update icon
+	insertMenuActionDescription(bugsActionDescription, MenuHelp);
+	ActionDescription *supportActionDescription = new ActionDescription(
+		ActionDescription::TypeMainMenu, "supportAction",
+		this, SLOT(support(QAction *, bool)),
+		"HelpMenuItem", tr("Support us")
+	);//TODO 0.6.6: update icon
+	insertMenuActionDescription(supportActionDescription, MenuHelp);
+	ActionDescription *getInvolvedActionDescription = new ActionDescription(
+		ActionDescription::TypeMainMenu, "getInvolvedAction",
+		this, SLOT(getInvolved(QAction *, bool)),
+		"HelpMenuItem", tr("Get Involved")
+	);//TODO 0.6.6: update icon
+	insertMenuActionDescription(getInvolvedActionDescription, MenuHelp);
+	HelpMenu->addSeparator();
+	ActionDescription *aboutActionDescription = new ActionDescription(
+		ActionDescription::TypeMainMenu, "aboutAction",
+		this, SLOT(about(QAction *, bool)),
+		"AboutMenuItem", tr("A&bout Kadu")
+	);
+	insertMenuActionDescription(aboutActionDescription, MenuHelp);
+/*
+TODO 0.6.6:
+add new action: "History" in MenuKadu
+*/
+	menuBar()->addMenu(KaduMenu);
+	menuBar()->addMenu(ContactsMenu);
+	menuBar()->addMenu(HelpMenu);
 
 	kdebugf2();
 }

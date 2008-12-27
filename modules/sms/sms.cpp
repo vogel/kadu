@@ -468,7 +468,7 @@ SmsConfigurationUiHandler::SmsConfigurationUiHandler()
 	);
 	sendSmsActionDescription->setShortcut("kadu_sendsms");
 	UserBox::insertActionDescription(2, sendSmsActionDescription);
-	kadu->insertMenuActionDescription(10, sendSmsActionDescription);
+	kadu->insertMenuActionDescription(sendSmsActionDescription, Kadu::MenuContacts, 5); //TODO 0.6.5: update
 	kdebugf2();
 }
 
