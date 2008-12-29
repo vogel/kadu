@@ -47,7 +47,7 @@ Autostatus::Autostatus()
 	autostatusActionDescription = new ActionDescription(
 		ActionDescription::TypeMainMenu, "autostatusAction",
 		this, SLOT(onAutostatus(QAction *, bool)),
-		"Autostatus", tr("&Autostatus")
+		"Autostatus", tr("&Autostatus"), true
 	);
 	kadu->insertMenuActionDescription(0, autostatusActionDescription);
 
@@ -105,8 +105,7 @@ void Autostatus::changeStatus()
 
 void Autostatus::onAutostatus(QAction *sender, bool toggled)
 {
-	enabled = !enabled;
-	if(!enabled)
+	if (toggled)
 	{
 		currStat = gadu->currentStatus().index();
 		currDesc = gadu->currentStatus().description();

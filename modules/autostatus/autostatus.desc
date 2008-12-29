@@ -3,5 +3,5 @@ Description=Autostatus
 Description[pl]=Automatyczne zmiany statusu
 Author=PK Team, Dorregaray
 LoadByDefault=false
-Version=0.2
+Version=core
 Base=false
