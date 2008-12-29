@@ -173,13 +173,11 @@ class PasswordDialog : public QDialog
 		PasswordDialog(QDialog *parent=0, const char *name=0);
 		~PasswordDialog();
 		QString getPassword();
-		bool isCancelled();
 		
 	private:
 		QLineEdit *password;
 		QPushButton *okButton;
 		QPushButton *cancelButton;
-		bool cancelled;
 	private slots:
 		void okBtnPressed();
 		void cancelBtnPressed();

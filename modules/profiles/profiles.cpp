@@ -48,7 +48,6 @@ extern "C" void profiles_close()
 	profileManager = 0;
 }
 
-
 /*
  * ProfileManager
  */
@@ -179,10 +178,10 @@ void ProfileManager::getProfiles()
 		Profile p(profile_elem.attribute("name"), profile_elem.attribute("directory"));
 		p.uin = profile_elem.attribute("uin");
 		p.password = pwHash(profile_elem.attribute("password"));
+		p.protectPassword = pwHash(profile_elem.attribute("protectPassword"));
 		p.config = (QString::compare(profile_elem.attribute("config"), "0") == 0) ? false : true;
 		p.userlist = (QString::compare(profile_elem.attribute("userlist"), "0") == 0) ? false : true;
 		p.autostart = (QString::compare(profile_elem.attribute("autostart"), "0") == 0) ? false : true;
-		p.protectPassword = (profile_elem.attribute("protectPassword").isEmpty()) ? "" : pwHash(profile_elem.attribute("protectPassword"));
 
 		list.append(p);
 	}
@@ -210,10 +209,7 @@ void ProfileManager::addProfile(Profile p)
 	profile_elem.setAttribute("config", p.config);
 	profile_elem.setAttribute("userlist", p.userlist);
 	profile_elem.setAttribute("autostart", p.autostart);
-	if (!p.protectPassword.isEmpty())
-		profile_elem.setAttribute("protectPassword", pwHash(p.protectPassword));
-	else
-		profile_elem.setAttribute("protectPassword", "");
+	profile_elem.setAttribute("protectPassword", pwHash(p.protectPassword));
 
 	GlobalMutex.unlock();
 
@@ -291,43 +287,50 @@ void ProfileManager::runAutostarted()
 		{
 			QString profilePath = p.directory;
 			profilePath = profilePath.right(profilePath.length() - profilePath.find(".kadu"));
-			runKadu(profilePath, pwHash(p.protectPassword));
+			runKadu(profilePath, p.protectPassword);
 		}
 	}
 	
+}
+
+static inline void startThread(QString profilePath)
+{
+	MyThread *thread = new MyThread();
+	//thread_list.append(thread);
+	thread->path = profilePath;
+	thread->command = qApp->argv()[0];
+	thread->start();	
 }
 
 int ProfileManager::runKadu(QString profilePath, QString protectPassword)
 {
 	kdebugf();
 
-	if (!protectPassword.isEmpty()) 
+	if (protectPassword.isEmpty())
+	{
+		startThread(profilePath);
+		return 1;
+	}
+	else
 	{
 		PasswordDialog *p = new PasswordDialog();
-		p->exec();
-
-		if (p->isCancelled()) {
-			delete p;
-			return 0;
+		if (p->exec() != QDialog::Rejected)
+		{
+			if (p->getPassword() == protectPassword) 
+			{
+				startThread(profilePath);
+				return 1;
+			}
+			else
+			{
+				MessageBox::msg(tr("The password is invalid. Sorry"), true, "Error", NULL);
+			}
 		}
-
-		if (p->getPassword().compare(protectPassword)) {
-			MessageBox::msg(tr("The password is invalid. Sorry"), true, "Error", NULL);
-			delete p;
-			return 0;
-		}
-
 		delete p;
 	}
 
-	MyThread *thread = new MyThread();
-	//thread_list.append(thread);
-	thread->path = profilePath;
-	thread->command = qApp->argv()[0];
-	thread->start();
 	kdebugf2();
-	
-	return 1;
+	return 0;
 }
 
 void ProfileManager::createProfileMenu()
@@ -359,7 +362,8 @@ void ProfileManager::openProfile(int index)
 	Profile p = list.at(index);
 	QString profilePath = p.directory;
 	profilePath = profilePath.right(profilePath.length() - profilePath.find(".kadu"));
-	runKadu(profilePath, pwHash(p.protectPassword));
+
+	runKadu(profilePath, p.protectPassword);
 
 	kdebugf2();
 }
@@ -492,7 +496,8 @@ void ProfileConfigurationWindow::openBtnPressed()
 
 	//uruchom kadu w nowym watku
 	if (profileManager->runKadu(profilePath,
-		 	passwordProtectCheck->isChecked() ? protectPassword->text() : "")) {
+		 	passwordProtectCheck->isChecked() ? protectPassword->text() : "")) 
+	{
 		//jesli sie powiodlo zamknij okienko
 		this->close();
 	}
@@ -525,10 +530,11 @@ void ProfileConfigurationWindow::saveBtnPressed()
 	}
 
 	//sprawdz haslo przed zapisaniem profilu
-	if (!profileProtectPassword.isEmpty()) {
+	if (!profileProtectPassword.isEmpty())
+	{
 		PasswordDialog *p = new PasswordDialog();
-		p->exec();
-		if (p->isCancelled()) {
+		if (p->exec() == QDialog::Rejected)
+		{
 			delete p;
 			return;
 		}
@@ -669,14 +675,14 @@ void ProfileConfigurationWindow::profileSelected(QListWidgetItem *item)
 	profileName->setText(p.name);
 	profileDir->setText(p.directory);
 	profileUIN->setText(p.uin);
-	profilePassword->setText(pwHash(p.password));
+	profilePassword->setText(p.password);
 	configCheck->setChecked(p.config);
 	userlistCheck->setChecked(p.userlist);
 	autostartCheck->setChecked(p.autostart);
 
 	if (!p.protectPassword.isEmpty()) 
 	{
-		profileProtectPassword = pwHash(p.protectPassword);
+		profileProtectPassword = p.protectPassword;
 		protectPassword->setText(profileProtectPassword);
 		passwordProtectCheck->setChecked(true);
 	}
@@ -762,27 +768,25 @@ void MyThread::run()
 
 PasswordDialog::PasswordDialog(QDialog *parent, const char *name): QDialog(parent, name)
 {
-	cancelled = true;
 	this->resize(300, 150);
+	this->setCaption(tr("Profile Password"));
 
-	QHBoxLayout *alayout = new QHBoxLayout;
-	QWidget *a = new QWidget(this);
+	QGridLayout *grid = new QGridLayout(this);
 
-	new QLabel(tr("The profile is protected by password.\nPlease provide the password and press Ok."), a);
-	password = new QLineEdit(a);
+	grid->addWidget(new QLabel(tr("The profile is protected by password.\nPlease provide the password and press Ok.")), 0, 0, 1, 2);
+
+	grid->addWidget(new QLabel(tr("Password")), 1, 0);
+	password = new QLineEdit(this);
 	password->setEchoMode(QLineEdit::Password);
+	grid->addWidget(password, 1, 1, 1, 2);
 
-	QVBoxLayout *blayout = new QVBoxLayout;
-	QWidget *b = new QWidget(a);
-
-	okButton = new QPushButton(tr("Ok"), b);
-	cancelButton = new QPushButton(tr("Cancel"), b);
+	okButton = new QPushButton(tr("Ok"), this);
+	cancelButton = new QPushButton(tr("Cancel"), this);
+	grid->addWidget(okButton, 2, 1);
+	grid->addWidget(cancelButton, 2, 2);
 
 	QObject::connect(okButton, SIGNAL(clicked()), this, SLOT(okBtnPressed()));
 	QObject::connect(cancelButton, SIGNAL(clicked()), this, SLOT(cancelBtnPressed()));
-
-	a->setLayout(alayout);
-	b->setLayout(blayout);
 }
 
 PasswordDialog::~PasswordDialog()
@@ -798,19 +802,12 @@ QString PasswordDialog::getPassword()
 
 void PasswordDialog::okBtnPressed()
 {
-	cancelled = false;
-	close();
+	accept();
 }
 
 void PasswordDialog::cancelBtnPressed()
 {
-	close();
+	reject();
 }
 
-bool PasswordDialog::isCancelled()
-{
-	return cancelled;
-}
-
-
-ProfileManager *profileManager;
+ProfileManager *profileManager = 0;
