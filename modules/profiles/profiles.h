@@ -46,7 +46,6 @@ class Profile
 		Profile(QString name, QString dir): name(name), directory(dir), config(true), userlist(true), autostart(false) {};
 		~Profile() {};
 
-	private:
 		QString name;
 		QString directory;
 		QString uin;
@@ -55,25 +54,6 @@ class Profile
 		bool config;
 		bool userlist;
 		bool autostart;
-
-	public:
-		QString getName()            { return name; };
-		QString getDirectory()       { return directory; };
-		QString getUin()             { return uin; };
-		QString getPassword()        { return password; };
-		QString getProtectPassword() { return protectPassword; };
-		bool getConfig()             { return config; };
-		bool getUserlist()           { return userlist; };
-		bool getAutostart()          { return autostart; };
-
-		void setName(QString s)            { name = s; };
-		void setDirectory(QString s)       { directory = s; };
-		void setUin(QString s)             { uin = s; };
-		void setPassword(QString s)        { password = s; };
-		void setProtectPassword(QString s) { protectPassword = s; };
-		void setConfig(bool b)             { config = b; };
-		void setUserlist(bool b)           { userlist = b; };
-		void setAutostart(bool b)          { autostart = b; };
 };
 
 

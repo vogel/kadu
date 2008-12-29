@@ -114,7 +114,6 @@ void ProfileManager::showConfig()
 		firstRun();
 
 	dialogWindow->clear();
-	//dialogWindow->profilesList->clear();
 	dialogWindow->refreshList();
 
 	//wyswietlenie okna
@@ -178,12 +177,12 @@ void ProfileManager::getProfiles()
 		QDomElement profile_elem = profile_list.item(i).toElement();
 
 		Profile p(profile_elem.attribute("name"), profile_elem.attribute("directory"));
-		p.setUin(profile_elem.attribute("uin"));
-		p.setPassword(pwHash(profile_elem.attribute("password")));
-		(QString::compare(profile_elem.attribute("config"), "0") == 0) ? p.setConfig(false) : p.setConfig(true);
-		(QString::compare(profile_elem.attribute("userlist"), "0") == 0) ? p.setUserlist(false) :  p.setUserlist(true);
-		(QString::compare(profile_elem.attribute("autostart"), "0") == 0) ? p.setAutostart(false) : p.setAutostart(true);
-		(profile_elem.attribute("protectPassword").isEmpty()) ? p.setProtectPassword("") : p.setProtectPassword(pwHash(profile_elem.attribute("protectPassword")));
+		p.uin = profile_elem.attribute("uin");
+		p.password = pwHash(profile_elem.attribute("password"));
+		p.config = (QString::compare(profile_elem.attribute("config"), "0") == 0) ? false : true;
+		p.userlist = (QString::compare(profile_elem.attribute("userlist"), "0") == 0) ? false : true;
+		p.autostart = (QString::compare(profile_elem.attribute("autostart"), "0") == 0) ? false : true;
+		p.protectPassword = (profile_elem.attribute("protectPassword").isEmpty()) ? "" : pwHash(profile_elem.attribute("protectPassword"));
 
 		list.append(p);
 	}
@@ -204,15 +203,15 @@ void ProfileManager::addProfile(Profile p)
 		config_file_elem, "Group", "name", "Profiles");
 	
 	QDomElement profile_elem = xml_config_file->createElement(profiles_elem, "Profile");
-	profile_elem.setAttribute("name", p.getName());
-	profile_elem.setAttribute("directory", p.getDirectory());
-	profile_elem.setAttribute("uin", p.getUin());
-	profile_elem.setAttribute("password", pwHash(p.getPassword()));
-	profile_elem.setAttribute("config", p.getConfig());
-	profile_elem.setAttribute("userlist", p.getUserlist());
-	profile_elem.setAttribute("autostart", p.getAutostart());
-	if (!p.getProtectPassword().isEmpty())
-		profile_elem.setAttribute("protectPassword", pwHash(p.getProtectPassword()));
+	profile_elem.setAttribute("name", p.name);
+	profile_elem.setAttribute("directory", p.directory);
+	profile_elem.setAttribute("uin", p.uin);
+	profile_elem.setAttribute("password", pwHash(p.password));
+	profile_elem.setAttribute("config", p.config);
+	profile_elem.setAttribute("userlist", p.userlist);
+	profile_elem.setAttribute("autostart", p.autostart);
+	if (!p.protectPassword.isEmpty())
+		profile_elem.setAttribute("protectPassword", pwHash(p.protectPassword));
 	else
 		profile_elem.setAttribute("protectPassword", "");
 
@@ -236,9 +235,9 @@ void ProfileManager::deleteProfile(const QString &name)
 	profiles_elem.removeChild(profile_elem);
 
 	int i = 0;
-	foreach(Profile p, list)
+	foreach(const Profile &p, list)
 	{
-		if (p.getName() == name)
+		if (p.name == name)
 		{
 			list.removeAt(i);
 			break;
@@ -251,33 +250,8 @@ void ProfileManager::deleteProfile(const QString &name)
 
 void ProfileManager::updateProfile(Profile p)
 {
-	deleteProfile(p.getName());
+	deleteProfile(p.name);
 	addProfile(p);
-/*	GlobalMutex.lock();
-	
-	//zapisanie profilu do konfiguracji kadu
-	QDomElement root_elem = xml_config_file->rootElement();
-	QDomElement deprecated_elem = xml_config_file->accessElement(root_elem, "Deprecated");
-	QDomElement config_file_elem = xml_config_file->accessElementByProperty(
-		deprecated_elem, "ConfigFile", "name", "kadu.conf");
-	QDomElement profiles_elem = xml_config_file->accessElementByProperty(
-		config_file_elem, "Group", "name", "Profiles");
-	
-	QDomElement profile_elem = xml_config_file->accessElement(profiles_elem, "Profile");
-	profile_elem.setAttribute("name", p.getName());
-	profile_elem.setAttribute("directory", p.getDirectory());
-	profile_elem.setAttribute("uin", p.getUin());
-	profile_elem.setAttribute("password", pwHash(p.getPassword()));
-	profile_elem.setAttribute("config", p.getConfig());
-	profile_elem.setAttribute("userlist", p.getUserlist());
-	profile_elem.setAttribute("autostart", p.getAutostart());
-	if (!p.getProtectPassword().isEmpty())
-		profile_elem.setAttribute("protectPassword", pwHash(p.getProtectPassword()));
-	else
-		profile_elem.setAttribute("protectPassword", "");
-
-	GlobalMutex.unlock();
-*/
 }
 
 QList <Profile> ProfileManager::getProfileList()
@@ -288,18 +262,18 @@ QList <Profile> ProfileManager::getProfileList()
 QStringList ProfileManager::getProfileNames()
 {
 	QStringList names;
-	foreach(Profile p, list)
+	foreach(const Profile &p, list)
 	{
-		names.append(p.getName());
+		names.append(p.name);
 	}
 	return names;
 }
 
 Profile ProfileManager::getProfile(const QString &name)
 {
-	foreach(Profile p, list)
+	foreach(const Profile &p, list)
 	{
-		if (p.getName() == name)
+		if (p.name == name)
 		{
 			return p;
 		}
@@ -311,13 +285,13 @@ Profile ProfileManager::getProfile(const QString &name)
 
 void ProfileManager::runAutostarted()
 {
-	foreach(Profile p, list)
+	foreach(const Profile &p, list)
 	{
-		if (p.getAutostart() == true)
+		if (p.autostart == true)
 		{
-			QString profilePath = p.getDirectory();
+			QString profilePath = p.directory;
 			profilePath = profilePath.right(profilePath.length() - profilePath.find(".kadu"));
-			runKadu(profilePath, pwHash(p.getProtectPassword()));
+			runKadu(profilePath, pwHash(p.protectPassword));
 		}
 	}
 	
@@ -383,9 +357,9 @@ void ProfileManager::openProfile(int index)
 	kdebugf();
 
 	Profile p = list.at(index);
-	QString profilePath = p.getDirectory();
+	QString profilePath = p.directory;
 	profilePath = profilePath.right(profilePath.length() - profilePath.find(".kadu"));
-	runKadu(profilePath, pwHash(p.getProtectPassword()));
+	runKadu(profilePath, pwHash(p.protectPassword));
 
 	kdebugf2();
 }
@@ -614,12 +588,12 @@ void ProfileConfigurationWindow::saveBtnPressed()
 	
 	//zapisanie profilu do konfiguracji kadu
 	Profile p(profileName->text(), profileDir->text());
-	p.setUin(profileUIN->text());
-	p.setPassword(profilePassword->text());
-	p.setProtectPassword(protectPassword->text());
-	p.setConfig(configCheck->isChecked());
-	p.setUserlist(userlistCheck->isChecked());
-	p.setAutostart(autostartCheck->isChecked());
+	p.uin = profileUIN->text();
+	p.password = profilePassword->text();
+	p.protectPassword = protectPassword->text();
+	p.config = configCheck->isChecked();
+	p.userlist = userlistCheck->isChecked();
+	p.autostart = autostartCheck->isChecked();
 	saveProfile(p, update);
 	
 	//dodaj profil do listy
@@ -692,17 +666,17 @@ void ProfileConfigurationWindow::profileSelected(QListWidgetItem *item)
 
 	if (index == 0) return;
 
-	profileName->setText(p.getName());
-	profileDir->setText(p.getDirectory());
-	profileUIN->setText(p.getUin());
-	profilePassword->setText(pwHash(p.getPassword()));
-	configCheck->setChecked(p.getConfig());
-	userlistCheck->setChecked(p.getUserlist());
-	autostartCheck->setChecked(p.getAutostart());
+	profileName->setText(p.name);
+	profileDir->setText(p.directory);
+	profileUIN->setText(p.uin);
+	profilePassword->setText(pwHash(p.password));
+	configCheck->setChecked(p.config);
+	userlistCheck->setChecked(p.userlist);
+	autostartCheck->setChecked(p.autostart);
 
-	if (!p.getProtectPassword().isEmpty()) 
+	if (!p.protectPassword.isEmpty()) 
 	{
-		profileProtectPassword = pwHash(p.getProtectPassword());
+		profileProtectPassword = pwHash(p.protectPassword);
 		protectPassword->setText(profileProtectPassword);
 		passwordProtectCheck->setChecked(true);
 	}
