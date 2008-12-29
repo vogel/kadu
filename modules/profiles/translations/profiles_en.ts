@@ -119,5 +119,13 @@ Please notice that this module is contradictory with Linux system ideology and w
         <source>The password is invalid. Sorry</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Profiles...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>No profiles</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 </TS>

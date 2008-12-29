@@ -12,6 +12,7 @@
 #include <QtCore/QObject>
 #include <QtCore/QThread> 
 #include <QtCore/QList>
+#include <QtCore/QStringList>
 #include <QtGui/QWidget>
 #include <QtGui/QDialog>
 #include <QtGui/QLabel>
@@ -29,6 +30,53 @@
  * okno Menedzera Profili
  */
 
+/*
+ * Profile
+ * Klasa Profilu
+ * przechowuje dane profilu
+ */
+
+class Profile
+{
+	public:
+		Profile(): config(true), userlist(true), autostart(false) {};
+		Profile(const Profile &p) : name(p.name), directory(p.directory), uin(p.uin), 
+					    password(p.password), protectPassword(p.protectPassword),
+					    config(p.config), userlist(p.userlist), autostart(p.autostart) {};
+		Profile(QString name, QString dir): name(name), directory(dir), config(true), userlist(true), autostart(false) {};
+		~Profile() {};
+
+	private:
+		QString name;
+		QString directory;
+		QString uin;
+		QString password;
+		QString protectPassword;
+		bool config;
+		bool userlist;
+		bool autostart;
+
+	public:
+		QString getName()            { return name; };
+		QString getDirectory()       { return directory; };
+		QString getUin()             { return uin; };
+		QString getPassword()        { return password; };
+		QString getProtectPassword() { return protectPassword; };
+		bool getConfig()             { return config; };
+		bool getUserlist()           { return userlist; };
+		bool getAutostart()          { return autostart; };
+
+		void setName(QString s)            { name = s; };
+		void setDirectory(QString s)       { directory = s; };
+		void setUin(QString s)             { uin = s; };
+		void setPassword(QString s)        { password = s; };
+		void setProtectPassword(QString s) { protectPassword = s; };
+		void setConfig(bool b)             { config = b; };
+		void setUserlist(bool b)           { userlist = b; };
+		void setAutostart(bool b)          { autostart = b; };
+};
+
+
 class ProfileConfigurationWindow : public QDialog
 {
 	Q_OBJECT
@@ -37,9 +85,10 @@ class ProfileConfigurationWindow : public QDialog
 		~ProfileConfigurationWindow();	
 		void initConfiguration();
 		void clear();
-		void saveProfile(QString name, QString directory, QString uin, QString password, QString protectPassword, bool config, bool userlist, bool autostart);
+		void refreshList();
+		void saveProfile(Profile p, bool update);
 		void removeProfile(QString name);
-		QDomElement getProfile(QString name);
+//		QDomElement getProfile(QString name);
 		QListWidget *profilesList;
 	private:
 		QLineEdit *profileName;
@@ -85,7 +134,8 @@ class MyThread : public QThread {
 		virtual void run();
 };
 
-//typedef QValueList<MyThread *> ThreadList;
+//typedef QList<MyThread *> ThreadList;
+
 
 
 /*
@@ -105,15 +155,27 @@ class ProfileManager : public QObject
 		void runAutostarted();
 		int runKadu(QString profilePath, QString password);
 		static QString dirString();
-	
+
+		void addProfile(Profile p);
+		void updateProfile(Profile p);
+		void deleteProfile(const QString &name);
+		QList<Profile> getProfileList();
+		QStringList getProfileNames();
+		Profile getProfile(const QString &name);
+
 	private:
 		int profilePos;
 		ProfileConfigurationWindow *dialogWindow;
 		//ThreadList thread_list;
 		QMenu *ProfileMenu;
-		ActionDescription *profileMenuActionDescription;
+		ActionDescription *profileMenuActionDescription;	
+		QList<Profile> list;
+
+		void getProfiles();
+
 	private slots:
 		void showConfig();
+		void showMenu();
 		void createProfileMenu();
 		void openProfile(int index);
 };

@@ -126,5 +126,13 @@ kompatybilności z Gadu-gadu w kwestii profili użytkownika.
         <source>The password is invalid. Sorry</source>
         <translation>Podane hasło jest nieprawidłowe. Spróbuj ponownie</translation>
     </message>
+    <message>
+        <source>Profiles...</source>
+        <translation>Profile...</translation>
+    </message>
+    <message>
+        <source>No profiles</source>
+        <translation>Brak profili</translation>
+    </message>
 </context>
 </TS>
