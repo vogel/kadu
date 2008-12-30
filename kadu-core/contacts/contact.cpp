@@ -74,10 +74,9 @@ void Contact::storeConfiguration(XmlConfigFile *configurationStorage, QDomElemen
 	Data->storeConfiguration(configurationStorage, parent);
 }
 
-QUuid Contact::uuid()
+QUuid Contact::uuid() const
 {
-	checkNull();
-	return Data->uuid();
+	return isNull() ? QUuid() : Data->uuid();
 };
 
 QMap<QString, QString> & Contact::customData()
@@ -94,9 +93,7 @@ void Contact::addAccountData(ContactAccountData *accountData)
 
 ContactAccountData * Contact::accountData(Account *account) const
 {
-	return isNull()
-		? 0
-		: Data->accountData(account);
+	return isNull() ? 0 : Data->accountData(account);
 }
 
 QString Contact::id(Account *account) const
@@ -104,6 +101,11 @@ QString Contact::id(Account *account) const
 	return isNull()
 		? QString::null
 		: Data->id(account);
+}
+
+uint qHash(const Contact &contact)
+{
+	return qHash(contact.uuid().toString());
 }
 
 bool Contact::isBlocked(Account *account) const

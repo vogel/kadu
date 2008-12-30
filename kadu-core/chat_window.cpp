@@ -84,7 +84,7 @@ ChatWidget * ChatWindow::chatWidget()
 void ChatWindow::kaduRestoreGeometry()
 {
 	const UserGroup *group = currentChatWidget->users();
-	QRect geom = stringToRect(chat_manager->chatWidgetProperty(group, "Geometry").toString());
+	QRect geom = stringToRect(chat_manager->chatWidgetProperty(currentChatWidget->contacts(), "Geometry").toString());
 
 	if (geom.isEmpty() && group->count() == 1)
 		geom = stringToRect((*(group->constBegin())).data("ChatGeometry").toString());
@@ -124,10 +124,10 @@ void ChatWindow::kaduStoreGeometry()
 {
 	currentChatWidget->kaduStoreGeometry();
 
-	const UserGroup *users = currentChatWidget->users();
-	chat_manager->setChatWidgetProperty(users, "Geometry", rectToString(geometry()));
-	if (users->count() == 1)
-		(*users->begin()).setData("ChatGeometry", rectToString(geometry()));
+	const UserListElements users = currentChatWidget->users()->toUserListElements();
+	chat_manager->setChatWidgetProperty(currentChatWidget->contacts(), "Geometry", rectToString(geometry()));
+	if (users.count() == 1)
+		users[0].setData("ChatGeometry", rectToString(geometry()));
 }
 
 void ChatWindow::closeEvent(QCloseEvent *e)

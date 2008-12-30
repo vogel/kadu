@@ -3,6 +3,7 @@
 
 #include <QtGui/QWidget>
 
+#include "accounts/account_manager.h"
 #include "usergroup.h"
 
 #include "exports.h"
@@ -46,6 +47,7 @@ public:
 	static void insert(UserListElements uins, bool temporary = false);
 	static void remove(UserListElements uins);
 	static bool isIgnored(UserListElements uins);
+	static bool isIgnored(ContactList contacts);
 	static void clear();
 	static const QList<QPair<UserListElements, bool> > & getList();
 };

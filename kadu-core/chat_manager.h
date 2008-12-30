@@ -51,7 +51,7 @@ public: // TODO: 0.6.6 clean it up
 
 private:
 	ChatList ChatWidgets; /*!< lista okien*/
-	QList<UserListElements> ClosedChatUsers; /*!< u�ytkownicy, kt�rych okna zosta�y zamkni�te*/
+	QList<ContactList> ClosedChatUsers; /*!< u�ytkownicy, kt�rych okna zosta�y zamkni�te*/
 
 	/**
 		\struct ChatInfo
@@ -59,9 +59,9 @@ private:
 	**/
 	struct ChatInfo
 	{
-		UserListElements users;          /*!< lista u�ytkownik�w identyfikuj�ca okno */
+		ContactList contacts;          /*!< lista u�ytkownik�w identyfikuj�ca okno */
 		QMap<QString, QVariant> map;     /*!< parametry danego okna */
-		ChatInfo() : users(), map() {}
+		ChatInfo() : contacts(), map() {}
 	};
 	QList<ChatInfo> addons; /*!< lista parametr�w okien */
 	QTimer refreshTitlesTimer;
@@ -126,10 +126,10 @@ public:
 	const ChatList & chats() const;
 
 	/**
-		\fn QValueList<UserListElements> closedChatsUsers() const
+		\fn QValueList<ContactList> closedChatsUsers() const
 		Funkcja zwraca list� u�ytkownik�w, dla kt�rych zamkni�to okna Chat
 	**/
-	const QList<UserListElements> closedChatUsers() const;
+	const QList<ContactList> closedChatUsers() const;
 
 	/**
 		\fn ChatWidget* findChatWidget(const UserGroup *group) const;
@@ -139,17 +139,17 @@ public:
 		\return wska�nik do okna je�li istnieje w przeciwnym
 		 wypadku zwraca NULL
 	**/
-	ChatWidget * findChatWidget(ContactList &contacts) const;
+	ChatWidget * findChatWidget(ContactList contacts) const;
 
 	/**
-		\fn Chat* findChat(UserListElements users) const;
+		\fn Chat* findChat(ContactList users) const;
 		Funkcja zwraca wska�nik do okna z list�
 		u�ytkownik�w group
 		\param users lista u�ytkownik�w
 		\return wska�nik do okna je�li istnieje w przeciwnym
 		 wypadku zwraca NULL
 	**/
-	ChatWidget * findChatWidget(UserListElements users) const;
+	//ChatWidget * findChatWidget(ContactList users) const;
 
 	// co za g�upota
 	// TODO: przenie�� do klasy ChatWidget / ewentualnie do nowo-utworzonej klasy Chat
@@ -163,7 +163,7 @@ public:
 		istnieje,\n je�li nie to tworzy tak�
 		w�asno�� (ustawia na pust�)
 	**/
-	QVariant & chatWidgetProperty(const UserGroup *group, const QString &name);
+	QVariant & chatWidgetProperty(ContactList contacts, const QString &name);
 
 	void loadOpenedWindows();
 	void saveOpenedWindows();
@@ -175,7 +175,7 @@ public slots:
 	ChatWidget * openChatWidget(Account *initialAccount, ContactList contacts, bool forceActivate = false);
 
 	/**
-		\fn void openPendingMsgs(UserListElements users)
+		\fn void openPendingMsgs(ContactList users)
 		Funkcja wpisuje zakolejkowane wiadomo�ci do okna
 		z u�ytkownikami "users"
 		\param users lista u�ytkownik�w identyfikuj�cych okno
@@ -190,18 +190,18 @@ public slots:
 	void openPendingMsgs(bool forceActivate = false);
 
 	/**
-		\fn void deletePendingMsgs(UserListElements users)
+		\fn void deletePendingMsgs(ContactList users)
 		Funkcja usuwa zakolejkowane wiadomo�ci
 		z u�ytkownikami "users"
 		\param users lista u�ytkownik�w identyfikuj�cych okno
 	**/
-	void deletePendingMsgs(UserListElements users);
+	void deletePendingMsgs(ContactList users);
 
 	//TODO: opisac funkcje sendMessage(..)
 	/*
 		Niebardzo rozumiem tej funkcji (czemu jest uin i uins)
 	*/
-	void sendMessage(UserListElement user, UserListElements selected_users);
+	void sendMessage(Contact user, ContactList selected_users);
 
 	/**
 		\fn void closeAllWindows()
@@ -234,12 +234,12 @@ public slots:
 	void refreshTitlesLater();
 
 	/**
-		\fn void refreshTitlesForUser(UserListElement user)
+		\fn void refreshTitlesForUser(Contact user)
 		Funkcja od�wie�a tytu�y okien kt�re zawieraj� uin
 		\param user u�ytkownik, kt�rego
 		opis/status b�dzie od�wie�any
 	**/
-	void refreshTitlesForUser(UserListElement user);
+	void refreshTitlesForUser(Contact user);
 
 	/**
 		\fn void setChatWidgetProperty(const UserGroup *group, const QString &name, const QVariant &value)
@@ -249,7 +249,7 @@ public slots:
 		\param name nazwa w�asno�ci
 		\param value warto�� w�asno�ci
 	**/
-	void setChatWidgetProperty(const UserGroup *group, const QString &name, const QVariant &value);
+	void setChatWidgetProperty(const ContactList contacts, const QString &name, const QVariant &value);
 
 signals:
 	/**
@@ -285,7 +285,7 @@ signals:
 	void chatWidgetDestroying(ChatWidget *chat);
 
 	/**
-		\fn void chatOpen(UserListElements users)
+		\fn void chatOpen(ContactList users)
 		Sygna� ten jest wysy�aniy podczas ka�dej pr�by
 		otwarcia nowego okna chat nawet je�li ju� taki istnieje
 		\param chat otwarte okno

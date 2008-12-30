@@ -24,10 +24,10 @@
 #include "kadu_parser.h"
 
 QMap<QString, QString> KaduParser::globalVariables;
-QMap<QString, QString (*)(const UserListElement &)> KaduParser::registeredTags;
+QMap<QString, QString (*)(const Contact &)> KaduParser::registeredTags;
 QMap<QString, QString (*)(const QObject * const)> KaduParser::registeredObjectTags;
 
-bool KaduParser::registerTag(const QString &name, QString (*func)(const UserListElement &))
+bool KaduParser::registerTag(const QString &name, QString (*func)(const Contact &))
 {
 	kdebugf();
 	if (registeredTags.contains(name))
@@ -43,7 +43,7 @@ bool KaduParser::registerTag(const QString &name, QString (*func)(const UserList
 	}
 }
 
-bool KaduParser::unregisterTag(const QString &name, QString (* /*func*/)(const UserListElement &))
+bool KaduParser::unregisterTag(const QString &name, QString (* /*func*/)(const Contact &))
 {
 	kdebugf();
 	if (!registeredTags.contains(name))
@@ -114,12 +114,12 @@ QString KaduParser::executeCmd(const QString &cmd)
 	return s;
 }
 
-QString KaduParser::parse(const QString &s, const UserListElement &ule, bool escape)
+QString KaduParser::parse(const QString &s, const Contact &contact, bool escape)
 {
-	return parse(s, ule, 0, escape);
+	return parse(s, contact, 0, escape);
 }
 
-QString KaduParser::parse(const QString &s, const UserListElement &ule, const QObject * const object, bool escape)
+QString KaduParser::parse(const QString &s, const Contact &contact, const QObject * const object, bool escape)
 {
 	kdebugmf(KDEBUG_DUMP, "%s escape=%i\n", qPrintable(s), escape);
 	int index = 0, i, len = s.length();
@@ -173,7 +173,6 @@ QString KaduParser::parse(const QString &s, const UserListElement &ule, const QO
 				break;
 			pe.type = ParseElem::PE_STRING;
 
-			Contact contact = ule.toContact(AccountManager::instance()->defaultAccount());
 			ContactAccountData *data = contact.accountData(AccountManager::instance()->defaultAccount());
 
 			switch (s[i].toAscii())
@@ -208,75 +207,75 @@ QString KaduParser::parse(const QString &s, const UserListElement &ule, const QO
 					break;
 				case 'i':
 					++i;
-					if (ule.usesProtocol("Gadu") && ule.hasIP("Gadu"))
-						pe.str = ule.IP("Gadu").toString();
+					if (data)
+						pe.str = data->ip().toString();
 					break;
 				case 'v':
 					++i;
-					if (ule.usesProtocol("Gadu") && ule.hasIP("Gadu"))
-						pe.str = ule.DNSName("Gadu");
+					if (data)
+						pe.str = data->dnsName();
 					break;
 				case 'o':
 					++i;
-					if (ule.usesProtocol("Gadu") && ule.port("Gadu") == 2)
+					if (data && data->port() == 2)
 						pe.str = " ";
 					break;
 				case 'p':
 					++i;
-					if (ule.usesProtocol("Gadu") && ule.port("Gadu"))
-						pe.str = QString::number(ule.port("Gadu"));
+					if (data && data->port())
+						pe.str = QString::number(data->port());
 					break;
 				case 'u':
 					++i;
-					if (ule.usesProtocol("Gadu"))
-						pe.str = ule.ID("Gadu");
+					if (data)
+						pe.str = data->id();
 					break;
 				case 'h':
 					++i;
 					if (data)
-						if (ule.protocolData("Gadu", "Version").toUInt() && !data->status().isOffline())
-							pe.str = versionToName(ule.protocolData("Gadu", "Version").toUInt() & 0x0000ffff);
+						if (data && !data->status().isOffline())
+							pe.str = data->protocolVersion();
 					break;
 				case 'n':
 					++i;
-					pe.str = ule.nickName();
+					pe.str = contact.nickName();
 					if (escape)
 						HtmlDocument::escapeText(pe.str);
 					break;
 				case 'a':
 					++i;
-					pe.str = ule.altNick();
+					pe.str = contact.nick();
 					if (escape)
 						HtmlDocument::escapeText(pe.str);
 					break;
 				case 'f':
 					++i;
-					pe.str = ule.firstName();
+					pe.str = contact.firstName();
 					if (escape)
 						HtmlDocument::escapeText(pe.str);
 					break;
 				case 'r':
 					++i;
-					pe.str = ule.lastName();
+					pe.str = contact.lastName();
 					if (escape)
 						HtmlDocument::escapeText(pe.str);
 					break;
 				case 'm':
 					++i;
-					pe.str = ule.mobile();
+					pe.str = contact.mobile();
 					break;
 				case 'g':
 					++i;
-					pe.str = ule.data("Groups").toStringList().join(",");
+					pe.str = ""; // TODO 0.6.6 contact.data("Groups").toStringList().join(",");
 					break;
 				case 'e':
 					++i;
-					pe.str = ule.email();
+					pe.str = contact.email();
 					break;
 				case 'x':
 					++i;
-					if (ule.usesProtocol("Gadu"))
-						pe.str = QString::number(ule.protocolData("Gadu", "MaxImageSize").toUInt());
+					//if (ule.usesProtocol("Gadu"))
+						pe.str = ""; // TODO 0.6.6 QString::number(ule.protocolData("Gadu", "MaxImageSize").toUInt());
 					break;
 				case '%':
 					++i;
@@ -467,7 +466,7 @@ QString KaduParser::parse(const QString &s, const UserListElement &ule, const QO
 						parseStack.pop_back();
 						pe.type = ParseElem::PE_STRING;
 						if (registeredTags.contains(pe.str))
-							pe.str = registeredTags[pe.str](ule);
+							pe.str = registeredTags[pe.str](contact);
 						else if (object && registeredObjectTags.contains(pe.str))
 							pe.str = registeredObjectTags[pe.str](object);
 						else

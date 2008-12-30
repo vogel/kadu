@@ -23,10 +23,7 @@ ContactList::ContactList(Contact contact)
 	append(contact);
 }
 
-bool ContactList::operator == (ContactList &compare)
+bool ContactList::operator == (const ContactList &compare) const
 {
-	qSort(*this);
-	qSort(compare);
-
 	return QList<Contact>::operator == (compare);
 }

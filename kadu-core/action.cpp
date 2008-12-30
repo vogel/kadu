@@ -56,15 +56,6 @@ KaduAction::~KaduAction()
 {
 }
 
-UserListElements KaduAction::userListElements()
-{
-	KaduMainWindow *kaduMainWindow = dynamic_cast<KaduMainWindow *>(parent());
-	if (kaduMainWindow)
-		return kaduMainWindow->userListElements();
-	else
-		return UserListElements();
-}
-
 Contact KaduAction::contact()
 {
 	ContactList contactList = contacts();
@@ -76,8 +67,11 @@ Contact KaduAction::contact()
 
 ContactList KaduAction::contacts()
 {
-	Account *account = AccountManager::instance()->defaultAccount();
-	return userListElements().toContactList(account);
+	KaduMainWindow *kaduMainWindow = dynamic_cast<KaduMainWindow *>(parent());
+	if (kaduMainWindow)
+		return kaduMainWindow->contacts();
+	else
+		return ContactList();
 }
 
 void KaduAction::changedSlot()
@@ -273,7 +267,7 @@ QAction * Actions::createAction(const QString &name, KaduMainWindow *kaduMainWin
 
 void disableEmptyUles(KaduAction *action)
 {
-	action->setEnabled(!action->userListElements().isEmpty());
+	action->setEnabled(!action->contacts().isEmpty());
 }
 
 Actions KaduActions;

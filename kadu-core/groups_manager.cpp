@@ -928,7 +928,6 @@ void AnonymousUsersWithoutMessages::messageFromUserAdded(Contact elem)
 void AnonymousUsersWithoutMessages::messageFromUserDeleted(Contact contact)
 {
 	UserListElement elem = UserListElement::fromContact(contact, AccountManager::instance()->defaultAccount());
-
 	if (elem.isAnonymous() && withoutMessages(contact))
 		addUser(elem);
 }

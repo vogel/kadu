@@ -95,7 +95,7 @@ QString ggPath(const QString &subpath)
 		// in such ugly way
 		if(QFile::exists(dataPath("usbinst", ""))){
 			path=dataPath("config/");
-			KaduParser::globalVariables["KADU_CONFIG"] = path;			
+			KaduParser::globalVariables["KADU_CONFIG"] = path;
 			return (path+subpath);
 		}
 
@@ -105,7 +105,7 @@ QString ggPath(const QString &subpath)
 			homepath=_wgetenv(L"HOMEPATH");
 		}
 		home=QString::fromUtf16((const ushort*)homepath);
-		
+
 #else
 		struct passwd *pw;
 		if ((pw = getpwuid(getuid())))
@@ -124,7 +124,7 @@ QString ggPath(const QString &subpath)
 		if (config_dir.isNull())
 			path = QString("%1\\Kadu\\").arg(home);
 		else
-			path = QString("%1\\%2\\Kadu\\").arg(home).arg(config_dir);		
+			path = QString("%1\\%2\\Kadu\\").arg(home).arg(config_dir);
 #else
 		if (config_dir.isNull())
 			path = QString("%1/.kadu/").arg(home);
@@ -347,7 +347,7 @@ QString libPath(const QString &f)
 QString dataPath(const QString &p, const char *argv0)
 {
 	QString path=p;
-	
+
 	if (argv0 != 0)
 	{
 #ifdef Q_OS_MACX
@@ -689,13 +689,13 @@ void openMailClient(const QString &mail)
 	{
 		if(!mail.startsWith("mailto:"))
 			email="mailto:"+mail;
-		
+
 		if(!QDesktopServices::openUrl(email)){
 			MessageBox::msg(qApp->translate("@default", QT_TR_NOOP("Mail client was not specified. Visit the configuration section")), false, "Warning");
 			kdebugmf(KDEBUG_INFO, "Mail client NOT specified.\n");
 			return;
 		}
-		else 
+		else
 		{
 			kdebugf2();
 			return;
@@ -941,7 +941,7 @@ void ChooseDescription::okPressed()
 		defaultdescriptions.pop_back();
 
 	if (config_file.readBoolEntry("General", "ParseStatus", false))
-		description = KaduParser::parse(description, UserListElement::fromContact(kadu->myself(), account), true);
+		description = KaduParser::parse(description, kadu->myself(), true);
 
 	Status.setDescription(description);
 	kadu->setStatus(Status);
@@ -1233,13 +1233,13 @@ QRect stringToRect(const QString &value, const QRect *def)
         w = stringlist[2].toInt(&ok); if (!ok) return def ? *def : rect;
         h = stringlist[3].toInt(&ok); if (!ok) return def ? *def : rect;
         rect.setRect(l, t, w, h);
-	
-	return rect;	
+
+	return rect;
 }
 
 QString rectToString(const QRect& rect)
 {
-	return QString("%1,%2,%3,%4").arg(rect.left()).arg(rect.top()).arg(rect.width()).arg(rect.height());	
+	return QString("%1,%2,%3,%4").arg(rect.left()).arg(rect.top()).arg(rect.width()).arg(rect.height());
 }
 
 
@@ -1302,7 +1302,7 @@ void getTime(time_t *sec, int *msec)
 #else
 	struct timeval tv;
 	struct timezone tz;
-	
+
 	gettimeofday(&tv, &tz);
 
 	*sec=tv.tv_sec;

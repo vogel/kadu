@@ -78,8 +78,7 @@ QString ChatMessagesView::formatMessage(ChatMessage *message, ChatMessage *after
 		format = ChatSyntaxWithoutHeader;
 
 		message->setSeparatorSize(separatorSize);
-		return KaduParser::parse(format, UserListElement::fromContact(
-				message->sender(), AccountManager::instance()->defaultAccount()), message, true);
+		return KaduParser::parse(format, message->sender(), message, true);
 	}
 	else
 	{
@@ -105,8 +104,7 @@ QString ChatMessagesView::formatMessage(ChatMessage *message, ChatMessage *after
 		message->setShowServerTime(NoServerTime, NoServerTimeDiff);
 		message->setSeparatorSize(separatorSize);
 
-		return KaduParser::parse(format, UserListElement::fromContact(message->sender(),
-			AccountManager::instance()->defaultAccount()), message, true);
+		return KaduParser::parse(format, message->sender(), message, true);
 	}
 }
 
@@ -131,15 +129,12 @@ void ChatMessagesView::repaintMessages()
 	{
 		(*message)->setSeparatorSize(0);
 
-		UserListElement ule = UserListElement::fromContact((*message)->sender(),
-				AccountManager::instance()->defaultAccount());
-
 		if ((*message)->type() == TypeSystem)
-			text += KaduParser::parse(ChatSyntaxWithoutHeader, ule, *message);
+			text += KaduParser::parse(ChatSyntaxWithoutHeader, (*message)->sender(), *message);
 		else
 		{
 			(*message)->setShowServerTime(NoServerTime, NoServerTimeDiff);
-			text += KaduParser::parse(ChatSyntaxWithHeader, ule, *message);
+			text += KaduParser::parse(ChatSyntaxWithHeader, (*message)->sender(), *message);
 		}
 
 		prevMessage = message;

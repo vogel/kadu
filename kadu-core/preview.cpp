@@ -10,6 +10,7 @@
 #include <QtGui/QApplication>
 #include <QtNetwork/QHostAddress>
 
+#include "accounts/account_manager.h"
 #include "config_file.h"
 #include "kadu_parser.h"
 #include "misc.h"
@@ -56,9 +57,9 @@ void Preview::syntaxChanged(const QString &content)
 
 	if (count)
 		for (int i = 0; i < count; i++)
-			text += KaduParser::parse(syntax, ules[i], objectsToParse.at(i));
+			text += KaduParser::parse(syntax, ules[i].toContact(AccountManager::instance()->defaultAccount()), objectsToParse.at(i));
 	else
-		text = KaduParser::parse(syntax, ule);
+		text = KaduParser::parse(syntax, ule.toContact(AccountManager::instance()->defaultAccount()));
 
 	emit needFixup(text);
 

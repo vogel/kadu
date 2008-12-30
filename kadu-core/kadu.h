@@ -214,7 +214,7 @@ public:
 	Contact myself() { return Myself; }
 
 	bool userInActiveGroup(UinType uin);
-	void removeUsers(UserListElements);
+	void removeUsers(ContactList contacts);
 
 	/**
 		Zwraca wskaznik do zakladek z nazwami grup.

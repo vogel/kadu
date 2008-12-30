@@ -154,8 +154,8 @@ void Kadu::closeEvent(QCloseEvent *event)
 void disableNonIdUles(KaduAction *action)
 {
 	kdebugf();
-	foreach(const UserListElement &user, action->userListElements())
-		if (!user.usesProtocol("Gadu"))
+	foreach(const Contact contact, action->contacts())
+		if (contact.accountData(AccountManager::instance()->defaultAccount()) == 0)
 		{
 			action->setEnabled(false);
 			return;
@@ -172,7 +172,7 @@ void disableContainsSelfUles(KaduAction *action)
 		action->setEnabled(false);
 		return;
 	}
-	
+
 	action->setEnabled(true);
 }
 
@@ -186,8 +186,8 @@ void checkNotify(KaduAction *action)
 		return;
 	}
 
-	foreach (const UserListElement &user, action->userListElements())
-		if (!user.usesProtocol("Gadu"))
+	foreach(const Contact contact, action->contacts())
+		if (contact.accountData(AccountManager::instance()->defaultAccount()) == 0)
 		{
 			action->setEnabled(false);
 			return;
@@ -195,12 +195,15 @@ void checkNotify(KaduAction *action)
 	action->setEnabled(true);
 
 	bool on = true;
-	foreach (const UserListElement &user, action->userListElements())
+	/*
+	foreach (const Contact contact, action->contacts())
+		//TODO: 0.6.6
 		if (!user.notify())
 		{
 			on = false;
 			break;
 		}
+	*/
 	action->setChecked(on);
 
 	kdebugf2();
@@ -209,9 +212,10 @@ void checkNotify(KaduAction *action)
 void checkOfflineTo(KaduAction *action)
 {
 	kdebugf();
+	Account *account = AccountManager::instance()->defaultAccount();
 	bool on = true;
-	foreach(const UserListElement &user, action->userListElements())
-		if (!user.usesProtocol("Gadu") || !user.protocolData("Gadu", "OfflineTo").toBool())
+	foreach(const Contact contact, action->contacts())
+		if (contact.accountData(account) == 0 || !contact.isOfflineTo(account))
 		{
 			on = false;
 			break;
@@ -222,8 +226,10 @@ void checkOfflineTo(KaduAction *action)
 
 void checkHideDescription(KaduAction *action)
 {
-	foreach(const UserListElement &user, action->userListElements())
-		if (!user.usesProtocol("Gadu"))
+	Account *account = AccountManager::instance()->defaultAccount();
+
+	foreach(const Contact contact, action->contacts())
+		if (contact.accountData(account) == 0)
 		{
 			action->setEnabled(false);
 			return;
@@ -231,12 +237,15 @@ void checkHideDescription(KaduAction *action)
 	action->setEnabled(true);
 
 	bool on = false;
-	foreach(const UserListElement &user, action->userListElements())
+	/*
+	foreach(const Contact contact, action->contacts())
+		//TODO: 0.6.6
 		if (user.data("HideDescription").toString() == "true")
 		{
 			on = true;
 			break;
 		}
+	*/
 	action->setChecked(on);
 }
 
@@ -344,18 +353,20 @@ void disableNoEMail(KaduAction *action)
 {
 	kdebugf();
 
-	if (action->userListElements().count() != 1)
+	if (action->contacts().count() != 1)
 	{
 		action->setEnabled(false);
 		return;
 	}
 
-	const UserListElements &ules = action->userListElements();
+	const ContactList contacts = action->contacts();
+	/*
+	//TODO: 0.6.6
 	if (ules[0].email().isEmpty() || ules[0].email().indexOf(HtmlDocument::mailRegExp()) < 0)
 	{
 		action->setEnabled(false);
 		return;
-	}
+	}*/
 
 	action->setEnabled(true);
 	kdebugf2();
@@ -780,7 +791,7 @@ void Kadu::copyPersonalInfoActionActivated(QAction *sender, bool toggled)
 	QStringList infoList;
 	QString copyPersonalDataSyntax = config_file.readEntry("General", "CopyPersonalDataSyntax", tr("Contact: %a[ (%u)]\n[First name: %f\n][Last name: %r\n][Mobile: %m\n]"));
 	foreach(const UserListElement &user, users)
-		infoList.append(KaduParser::parse(copyPersonalDataSyntax, user, false));
+		infoList.append(KaduParser::parse(copyPersonalDataSyntax, user.toContact(AccountManager::instance()->defaultAccount()), false));
 
 	QString info = infoList.join("\n");
 	if (info.isEmpty())
@@ -827,25 +838,28 @@ void Kadu::notifyAboutUserActionActivated(QAction *sender, bool toggled)
 	if (!window)
 		return;
 
-	UserListElements users = window->userListElements();
+	ContactList contacts = window->contacts();
 
 	bool on = true;
-	foreach(const UserListElement &user, users)
+	/*
+	foreach(const ContactList contact, contacts)
+		//TODO: 0.6.6
 		if (!user.notify())
 		{
 			on = false;
 			break;
 		}
-
+	
 	foreach(const UserListElement &user, users)
+		//TODO: 0.6.6
 		if (user.notify() == on)
 			user.setNotify(!on);
-
+	*/
 	userlist->writeToConfig();
 
 	foreach(KaduAction *action, notifyAboutUserActionDescription->actions())
 	{
-		if (action->userListElements() == users)
+		if (action->contacts() == contacts)
 			action->setChecked(!on);
 	}
 
@@ -855,7 +869,7 @@ void Kadu::notifyAboutUserActionActivated(QAction *sender, bool toggled)
 void Kadu::offlineToUserActionActivated(QAction *sender, bool toggled)
 {
 	kdebugf();
-
+	Account *account = AccountManager::instance()->defaultAccount();
 	if (toggled && !config_file.readBoolEntry("General", "PrivateStatus"))
 	{
 		if (MessageBox::ask("You need to have private status to do it, would you like to set private status now?"))
@@ -871,25 +885,25 @@ void Kadu::offlineToUserActionActivated(QAction *sender, bool toggled)
 	if (!window)
 		return;
 
-	UserListElements users = window->userListElements();
-
+	ContactList contacts = window->contacts();
 	bool on = true;
-	foreach (const UserListElement &user, users)
-		if (!user.usesProtocol("Gadu") || !user.protocolData("Gadu", "OfflineTo").toBool())
+	foreach(const Contact contact, contacts)
+		if (contact.accountData(account) == 0 || !contact.isOfflineTo(account))
 		{
 			on = false;
 			break;
 		}
-
-	foreach (const UserListElement &user, users)
-		if (user.usesProtocol("Gadu") && user.protocolData("Gadu", "OfflineTo").toBool() == on)
+	/*
+	foreach(const Contact contact, contacts)
+		if (contact.accountData(account) != 0 || contact.isOfflineTo(account) == on)
+			//TODO: 0.6.6
 			user.setProtocolData("Gadu", "OfflineTo", !on); // TODO: here boolean
-
+	*/
 	userlist->writeToConfig();
 
 	foreach (KaduAction *action, offlineToUserActionDescription->actions())
 	{
-		if (action->userListElements() == users)
+		if (action->contacts() == contacts)
 			action->setChecked(!on);
 	}
 
@@ -899,14 +913,16 @@ void Kadu::offlineToUserActionActivated(QAction *sender, bool toggled)
 void Kadu::hideDescriptionActionActivated(QAction *sender, bool toggled)
 {
 	kdebugf();
-
+	Account *account = AccountManager::instance()->defaultAccount();
 	KaduMainWindow *window = dynamic_cast<KaduMainWindow *>(sender->parent());
 	if (!window)
 		return;
 
-	UserListElements users = window->userListElements();
+	ContactList contacts = window->contacts();
 	bool on = true;
+	/*
 	foreach(const UserListElement &user, users)
+		//TODO: 0.6.6
 		if (user.data("HideDescription").toString() == "true")
 		{
 			on = false;
@@ -914,13 +930,14 @@ void Kadu::hideDescriptionActionActivated(QAction *sender, bool toggled)
 		}
 
 	foreach(const UserListElement &user, users)
+		//TODO: 0.6.6
 		user.setData("HideDescription", on ? "true" : "false"); // TODO: here string, LOL
-
+	*/
 	userlist->writeToConfig();
 
 	foreach(KaduAction *action, hideDescriptionActionDescription->actions())
 	{
-		if (action->userListElements() == users)
+		if (action->contacts() == contacts)
 			action->setChecked(on);
 	}
 
@@ -935,8 +952,8 @@ void Kadu::deleteUsersActionActivated(QAction *sender, bool toggled)
 	if (!window)
 		return;
 
-	UserListElements users = window->userListElements();
-	removeUsers(users);
+	ContactList contacts = window->contacts();
+	removeUsers(contacts);
 
 	kdebugf2();
 }
@@ -944,9 +961,7 @@ void Kadu::deleteUsersActionActivated(QAction *sender, bool toggled)
 void Kadu::openRecentChats(QAction *action)
 {
 	kdebugf();
-	UserListElements users = chat_manager->closedChatUsers().at(action->data().toInt());
-	chat_manager->openPendingMsgs(users.toContactList(AccountManager::instance()->defaultAccount()), true);
-
+	chat_manager->openPendingMsgs(chat_manager->closedChatUsers().at(action->data().toInt()), true);
 	kdebugf2();
 }
 
@@ -1044,12 +1059,12 @@ void Kadu::editUserActionActivated(QAction *sender, bool toggled)
 	KaduMainWindow *window = dynamic_cast<KaduMainWindow *>(sender->parent());
 	if (!window)
 		return;
-	
+
 	UserListElements selectedUsers = window->userListElements();
-	
+
 	if (selectedUsers.count() == 1)
 		(new UserInfo(*selectedUsers.begin(), kadu))->show();
-			
+
 	kdebugf2();
 }
 
@@ -1058,7 +1073,7 @@ void Kadu::addUserActionActivated(QAction *sender, bool toggled)
  	kdebugf();
 	KaduMainWindow *window = dynamic_cast<KaduMainWindow *>(sender->parent());
 	if (window)
-	{	
+	{
 		UserListElements selectedUsers = window->userListElements();
  		if ((selectedUsers.count() == 1) && (selectedUsers[0].isAnonymous()))
 		{
@@ -1282,10 +1297,10 @@ void Kadu::changeAppearance()
 	kdebugf2();
 }
 
-void Kadu::removeUsers(UserListElements users)
+void Kadu::removeUsers(ContactList contacts)
 {
 	kdebugf();
-	
+	UserListElements users = UserListElements::fromContactList(contacts, AccountManager::instance()->defaultAccount());
 	if (users.count())
 	{
 		QString altNicks = users.altNicks().join(", ");
@@ -1367,7 +1382,7 @@ void Kadu::sendMessage(Contact contact)
 		UserListElement elem = userbox->selectedUsers()[0];
 
 		if (users[0] != myself()) //TODO: elem.hasFeature("SendingMessages")
-			chat_manager->sendMessage(elem, userbox->selectedUsers());
+			chat_manager->sendMessage(users[0], users);
 		else if (elem.mobile().isEmpty() && !elem.email().isEmpty())
 			openMailClient(elem.email());
 
@@ -1721,8 +1736,9 @@ void Kadu::createRecentChatsMenu()
 
 	unsigned int index = 0; // indeks pozycji w popupie
 
-	foreach(const UserListElements &users, chat_manager->closedChatUsers())
+	foreach(const ContactList contacts, chat_manager->closedChatUsers())
 	{
+		UserListElements users = UserListElements::fromContactList(contacts, AccountManager::instance()->defaultAccount());
 		QStringList altnicks = users.altNicks(); // lista nick�w z okna rozmowy
 		QString chat_users;
 
@@ -1764,7 +1780,7 @@ void Kadu::insertMenuActionDescription(ActionDescription *actionDescription, Men
 		case MenuHelp:
 			menu = HelpMenu;
 	}
-	
+
 	QList<QAction *> menuActions = menu->actions();
 	if (pos >= menuActions.count() - 1 || pos == -1)
 		menu->addAction(action);
@@ -1779,7 +1795,7 @@ void Kadu::removeMenuActionDescription(ActionDescription *actionDescription)
 	if (!actionDescription)
 		return;
 	KaduAction *action = MenuActions[actionDescription].Action;
-	
+
 	if (!action)
 		return;
 	switch (MenuActions[actionDescription].Menu)
@@ -1807,8 +1823,8 @@ void Kadu::createMenu()
 	RecentChatsMenu = new QMenu;
 	RecentChatsMenu->setIcon(icons_manager->loadIcon("OpenChat"));
 	RecentChatsMenu->setTitle(tr("Recent chats..."));
-	connect(RecentChatsMenu, SIGNAL(triggered(QAction *)), this, SLOT(openRecentChats(QAction *)));	
-	
+	connect(RecentChatsMenu, SIGNAL(triggered(QAction *)), this, SLOT(openRecentChats(QAction *)));
+
 	ActionDescription *manageIgnoredActionDescription = new ActionDescription(
 		ActionDescription::TypeMainMenu, "manageIgnoredAction",
 		this, SLOT(manageIgnored(QAction *, bool)),
@@ -1816,7 +1832,7 @@ void Kadu::createMenu()
 	);
 
 	insertMenuActionDescription(configurationActionDescription, MenuKadu);
-	
+
 	ActionDescription *yourAccountsActionDescription = new ActionDescription(
 		ActionDescription::TypeMainMenu, "yourAccountsAction",
 		this, SLOT(yourAccounts(QAction *, bool)),
@@ -2044,9 +2060,7 @@ void Kadu::updateInformationPanel(Contact contact)
 		return;
 	if (Userbox->currentUserExists() && contact == Userbox->currentContact())
 	{
-		UserListElement user = UserListElement::fromContact(contact, AccountManager::instance()->defaultAccount());
-
-		kdebugmf(KDEBUG_INFO, "%s\n", qPrintable(user.altNick()));
+		kdebugmf(KDEBUG_INFO, "%s\n", qPrintable(contact.nick()));
 		QString text = QString(
 			"<html>"
 			"	<head>"
@@ -2056,7 +2070,7 @@ void Kadu::updateInformationPanel(Contact contact)
 			"	</head>"
 			"	<body>";
 		HtmlDocument doc;
-		doc.parseHtml(KaduParser::parse(InfoPanelSyntax, user));
+		doc.parseHtml(KaduParser::parse(InfoPanelSyntax, contact));
 		doc.convertUrlsToHtml();
 		doc.convertMailToHtml();
 		if((EmoticonsStyle)config_file.readNumEntry("Chat", "EmoticonsStyle") != EMOTS_NONE && config_file.readBoolEntry("General", "ShowEmotPanel"))
@@ -2188,7 +2202,7 @@ void Kadu::configurationUpdated()
 	QSettings settings("HKEY_CURRENT_USER\\Software\\Microsoft\\Windows\\CurrentVersion\\Run",
 		       QSettings::NativeFormat);
 	if(config_file.readBoolEntry("General", "RunOnStartup"))
-		settings.setValue("Kadu", 
+		settings.setValue("Kadu",
 				QDir::toNativeSeparators(QCoreApplication::applicationFilePath()));
 	else
 		settings.remove("Kadu");

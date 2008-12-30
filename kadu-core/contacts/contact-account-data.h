@@ -18,8 +18,10 @@
 class Account;
 class XmlConfigFile;
 
-class ContactAccountData
+class ContactAccountData : public QObject
 {
+	Q_OBJECT
+
 	Account *ContactAccount;
 	QString Id;
 
@@ -29,6 +31,7 @@ class ContactAccountData
 
 	QHostAddress Address;
 	unsigned int Port;
+	QString DnsName;
 
 	bool Blocked;
 	bool OfflineTo;
@@ -48,8 +51,14 @@ public:
 
 	bool hasFeature() { return false; }
 
+	QString protocolVersion() { return ProtocolVersion; }
+	QHostAddress ip() { return Address; }
+	unsigned int port() { return Port; }
 	void setProtocolVersion(const QString &protocolVersion) { ProtocolVersion = protocolVersion; }
-	void setAddressAndPort(QHostAddress address, int port);
+	void setAddressAndPort(QHostAddress address, unsigned int port);
+
+	QString dnsName() { return DnsName; }
+	void refreshDNSName();
 
 	Status status() { return CurrentStatus; }
 	void setStatus(Status status) { CurrentStatus = status; }
@@ -61,6 +70,9 @@ public:
 
 	bool isOfflineTo() { return OfflineTo; }
 	bool setOfflineTo(bool offlineTo) { OfflineTo = offlineTo; }
+
+public slots:
+	void setDnsName(const QString &ident, const QString &dnsName) { DnsName = dnsName; }
 
 };
 

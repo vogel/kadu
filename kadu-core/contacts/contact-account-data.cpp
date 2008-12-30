@@ -7,6 +7,7 @@
  *                                                                         *
  ***************************************************************************/
 
+#include "dnshandler.h"
 #include "xml_config_file.h"
 
 #include "contact-account-data.h"
@@ -35,8 +36,15 @@ bool ContactAccountData::isValid()
 	return validateId();
 }
 
-void ContactAccountData::setAddressAndPort(QHostAddress address, int port)
+void ContactAccountData::setAddressAndPort(QHostAddress address, unsigned int port)
 {
 	Address = address;
 	Port = port;
+}
+
+void ContactAccountData::refreshDNSName()
+{
+	if (!(Address.isNull()))
+		connect(new DNSHandler(Id, Address), SIGNAL(result(const QString &, const QString &)),
+				this, SLOT(setDNSName(const QString &, const QString &)));
 }

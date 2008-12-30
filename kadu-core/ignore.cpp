@@ -269,6 +269,14 @@ bool IgnoredManager::isIgnored(UserListElements users)
 	return (Ignored.contains(qMakePair(users, false)) || Ignored.contains(qMakePair(users, true)));
 }
 
+bool IgnoredManager::isIgnored(ContactList contacts)
+{
+	Account *account = AccountManager::instance()->defaultAccount();
+	UserListElements users = UserListElements::fromContactList(contacts, account);
+	users.sort();
+	return (Ignored.contains(qMakePair(users, false)) || Ignored.contains(qMakePair(users, true)));
+}
+
 void IgnoredManager::clear()
 {
 	Ignored.clear();

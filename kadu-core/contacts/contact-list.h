@@ -18,11 +18,12 @@ class ContactList : public QList<Contact>
 {
 
 public:
+
 	ContactList();
 	ContactList(QList<Contact> list);
 	ContactList(Contact constact);
 
-	bool operator == (ContactList &compare);
+	bool operator == (const ContactList &compare) const;
 
 };
 

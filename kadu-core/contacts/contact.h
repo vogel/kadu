@@ -11,6 +11,7 @@
 #define CONTACT_H
 
 #include <QtCore/QExplicitlySharedDataPointer>
+#include <QtCore/QHash>
 #include <QtCore/QObject>
 #include <QtCore/QUuid>
 #include <QtXml/QDomElement>
@@ -71,14 +72,13 @@ public:
 	void loadConfiguration(XmlConfigFile *configurationStorage, QDomElement parent);
 	void storeConfiguration(XmlConfigFile *configurationStorage, QDomElement parent);
 
-	QUuid uuid();
+	QUuid uuid() const;
 	QMap<QString, QString> & customData();
 
 	void addAccountData(ContactAccountData *accountData);
 	ContactAccountData * accountData(Account *account) const;
 
 	QString id(Account *account) const;
-
 	// properties
 
 	bool isBlocked(Account *account) const;
@@ -93,6 +93,8 @@ public:
 	Property(QString, email, Email, QString::null)
 
 };
+
+	uint qHash(const Contact &contact);
 
 #undef Property
 

@@ -50,8 +50,6 @@ public:
 	KaduAction(ActionDescription *description, KaduMainWindow *parent);
 	virtual ~KaduAction();
 
-	UserListElements userListElements();
-
 	Contact contact();
 	ContactList contacts();
 

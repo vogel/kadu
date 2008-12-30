@@ -300,7 +300,7 @@ void ChatWidget::insertImage()
 		}
 		if (counter == 1 && Contacts.count() == 1)
 		{
-			if (!MessageBox::ask(tr("This file is too big for %1.\nDo you really want to send this image?\n").arg(Contacts[0].nick())))
+			if (!MessageBox::ask(tr("This file is too big for %1.\nDo you really want to send this image?\n").arg((*users.constBegin()).altNick())))
 			{
 				QTimer::singleShot(0, this, SLOT(insertImage()));
 				kdebugf2();
@@ -349,17 +349,17 @@ void ChatWidget::refreshTitle()
 		int i = 0;
 
 		if (config_file.readEntry("Look", "ConferenceContents").isEmpty())
-			foreach(const UserListElement &user, users)
+			foreach(const Contact contact, Contacts)
 			{
-				title.append(KaduParser::parse("%a", user, false));
+				title.append(KaduParser::parse("%a", contact, false));
 
 				if (++i < uinsSize)
 					title.append(", ");
 			}
 		else
-			foreach(const UserListElement &user, users)
+			foreach(const Contact contact, Contacts)
 			{
-				title.append(KaduParser::parse(config_file.readEntry("Look","ConferenceContents"), user, false));
+				title.append(KaduParser::parse(config_file.readEntry("Look","ConferenceContents"), contact, false));
 
 				if (++i < uinsSize)
 					title.append(", ");
@@ -369,18 +369,17 @@ void ChatWidget::refreshTitle()
 	}
 	else
 	{
-		UserListElement user = UserListElement::fromContact(Contacts[0], account());
 		if (config_file.readEntry("Look", "ChatContents").isEmpty())
 		{
-			if (user.isAnonymous())
-				title = KaduParser::parse(tr("Chat with ")+"%a", user, false);
+			if (Contacts[0].isAnonymous())
+				title = KaduParser::parse(tr("Chat with ")+"%a", Contacts[0], false);
 			else
-				title = KaduParser::parse(tr("Chat with ")+"%a (%s[: %d])", user, false);
+				title = KaduParser::parse(tr("Chat with ")+"%a (%s[: %d])", Contacts[0], false);
 		}
 		else
-			title = KaduParser::parse(config_file.readEntry("Look","ChatContents"), user, false);
+			title = KaduParser::parse(config_file.readEntry("Look","ChatContents"), Contacts[0], false);
 
-		pix = account()->statusPixmap(Contacts[0].accountData(account())->status());
+		pix = CurrentAccount->statusPixmap(Contacts[0].accountData(AccountManager::instance()->defaultAccount())->status());
 	}
 
 	title.replace("<br/>", " ");
@@ -490,7 +489,8 @@ void ChatWidget::newMessage(Account* account, ContactList senders, const QString
 	UserListElement sender = UserListElement::fromContact(senders[0], account);
 
 	Contact contact = sender.toContact(account);
-	ContactList receivers(kadu->myself());
+	ContactList receivers;
+	receivers << kadu->myself();
 
 	ChatMessage *chatMessage = new ChatMessage(contact, receivers, message,
 			TypeReceived, QDateTime::currentDateTime(), date);
@@ -506,7 +506,7 @@ void ChatWidget::writeMyMessage()
 {
 	kdebugf();
 
-	ChatMessage *message = new ChatMessage(kadu->myself (), Contacts, myLastMessage.toHtml(),
+	ChatMessage *message = new ChatMessage(kadu->myself(), Contacts, myLastMessage.toHtml(),
 			TypeSent, QDateTime::currentDateTime());
 	body->appendMessage(message);
 
@@ -861,7 +861,7 @@ void ChatWidget::kaduRestoreGeometry()
 	UserListElements users = UserListElements::fromContactList(Contacts,
 			AccountManager::instance()->defaultAccount());
 
-	QList<int> vertSizes = toIntList(chat_manager->chatWidgetProperty(new UserGroup(users), "VerticalSizes").toList());
+	QList<int> vertSizes = toIntList(chat_manager->chatWidgetProperty(Contacts, "VerticalSizes").toList());
 	if (vertSizes.empty() && users.count() == 1)
 	{
 		QString vert_sz_str = (*(users.constBegin())).data("VerticalSizes").toString();
@@ -886,7 +886,7 @@ void ChatWidget::kaduRestoreGeometry()
 
 	if (horizSplit)
 	{
-		QList<int> horizSizes = toIntList(chat_manager->chatWidgetProperty(new UserGroup(users), "HorizontalSizes").toList());
+		QList<int> horizSizes = toIntList(chat_manager->chatWidgetProperty(Contacts, "HorizontalSizes").toList());
 		if (!horizSizes.empty())
 			horizSplit->setSizes(horizSizes);
 	}
@@ -898,13 +898,13 @@ void ChatWidget::kaduStoreGeometry()
 			AccountManager::instance()->defaultAccount());
 
 	QList<int> sizes = vertSplit->sizes();
-	chat_manager->setChatWidgetProperty(new UserGroup(users), "VerticalSizes", toVariantList(sizes));
+	chat_manager->setChatWidgetProperty(Contacts, "VerticalSizes", toVariantList(sizes));
 
 	if (users.count() == 1)
-		(*users.begin()).setData("VerticalSizes", QString("%1,%2").arg(sizes[0]).arg(sizes[1]));
+		users[0].setData("VerticalSizes", QString("%1,%2").arg(sizes[0]).arg(sizes[1]));
 
 	if (horizSplit)
-		chat_manager->setChatWidgetProperty(new UserGroup(users), "HorizontalSizes", toVariantList(horizSplit->sizes()));
+		chat_manager->setChatWidgetProperty(Contacts, "HorizontalSizes", toVariantList(horizSplit->sizes()));
 }
 
 void ChatWidget::leaveConference()

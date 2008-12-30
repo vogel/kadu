@@ -11,6 +11,8 @@
 #include "accounts/account_manager.h"
 #include "action.h"
 #include "activate.h"
+#include "contacts/contact-account-data.h"
+#include "contacts/contact-manager.h"
 #include "chat_edit_box.h"
 #include "chat_message.h"
 #include "chat_window.h"
@@ -45,7 +47,7 @@ void disableEmptyTextBox(KaduAction *action)
 void checkBlocking(KaduAction *action)
 {
 	Account *account = AccountManager::instance()->defaultAccount();
-	ContactList contacts = action->userListElements().toContactList(account);
+	ContactList contacts = action->contacts();
 
 	if (contacts.contains(kadu->myself()))
 	{
@@ -54,8 +56,8 @@ void checkBlocking(KaduAction *action)
 	}
 	
 	bool on = false;
-	foreach (const UserListElement &user, action->userListElements())
-		if (user.protocolData("Gadu", "Blocking").toBool())
+	foreach (const Contact contact, action->contacts())
+		if (contact.isBlocked(account))
 		{
 			on = true;
 			break;
@@ -65,8 +67,7 @@ void checkBlocking(KaduAction *action)
 
 void checkIgnoreUser(KaduAction *action)
 {
-	Account *account = AccountManager::instance()->defaultAccount();
-	ContactList contacts = action->userListElements().toContactList(account);
+	ContactList contacts = action->contacts();
 
 	if (contacts.contains(kadu->myself()))
 	{
@@ -74,7 +75,7 @@ void checkIgnoreUser(KaduAction *action)
 		return;
 	}
 
-	action->setChecked(IgnoredManager::isIgnored(action->userListElements()));
+	action->setChecked(IgnoredManager::isIgnored(action->contacts()));
 }
 
 ChatManager::ChatManager(QObject *parent)
@@ -224,9 +225,11 @@ void ChatManager::loadOpenedWindows()
 				continue;
 			if (window_elem.tagName() != "Window")
 				continue;
-			QString protocolId = window_elem.attribute("protocol");
-			QString accountId = window_elem.attribute("id");
-			UserListElements users;
+			QDomElement protocolNode = xml_config_file->getNode(window_elem, "Protocol", XmlConfigFile::ModeFind);
+			QString protocolId = protocolNode.text();
+			QDomElement windowIdNode = xml_config_file->getNode(window_elem, "WindowId", XmlConfigFile::ModeFind);
+			QString accountId = windowIdNode.text();
+			ContactList contacts;
 			for (QDomNode contact = window_elem.firstChild(); !contact.isNull(); contact = contact.nextSibling())
 			{
 				const QDomElement &contact_elem = contact.toElement();
@@ -234,14 +237,12 @@ void ChatManager::loadOpenedWindows()
 					continue;
 				if (contact_elem.tagName() != "Contact")
 					continue;
-				QString id = contact_elem.attribute("id");
-				users.append(userlist->byID(protocolId, id));
+				QString uuid = contact_elem.text();
+				contacts.append(ContactManager::instance()->getContactByUuid(uuid));
 			}
 
 			// TODO 0.6.6: fix
 			Account *defaultAccount = AccountManager::instance()->defaultAccount();
-			ContactList contacts = users.toContactList(defaultAccount);
-
 			if (defaultAccount)
 				openChatWidget(defaultAccount, contacts);
 			else
@@ -259,18 +260,15 @@ void ChatManager::saveOpenedWindows()
 	QDomElement chats_elem = xml_config_file->accessElement(root_elem, "ChatWindows");
 	xml_config_file->removeChildren(chats_elem);
 	foreach(ChatWidget *chat, ChatWidgets)
-	{
-		QDomElement window_elem = xml_config_file->createElement(chats_elem, "Window");
-		Protocol *protocol = chat->currentProtocol();
-		QString protoId = "Gadu";
-		window_elem.setAttribute("protocol", "Gadu");
-		window_elem.setAttribute("id", "Gadu");
-		const UserGroup *users = chat->users();
-		foreach(const UserListElement &user, *users)
-		{
-			QDomElement user_elem = xml_config_file->createElement(window_elem, "Contact");
- 			user_elem.setAttribute("id", user.ID(protoId));
-		}
+	{	
+		QDomElement windowNode = xml_config_file->getNode(chats_elem,
+			"Window", XmlConfigFile::ModeCreate);
+		// TODO 0.6.6 - gadu raus!
+		xml_config_file->createTextNode(windowNode, "Protocol", "Gadu");
+		xml_config_file->createTextNode(windowNode, "WindowId", "Gadu");
+
+		foreach(Contact contact, chat->contacts())
+			xml_config_file->createTextNode(windowNode, "Contact", contact.uuid());
 	}
 	kdebugf2();
 }
@@ -435,16 +433,16 @@ void ChatManager::whoisActionActivated(QAction *sender, bool toggled)
 		(new SearchDialog(kadu))->show();
 		return;
 	}
+	Account *defaultAccount = AccountManager::instance()->defaultAccount();
+	ContactList contacts = window->userListElements().toContactList(defaultAccount);
 
-	UserListElements users = window->userListElements();
-
-	if (users.count() == 0)
+	if (contacts.count() == 0)
 		(new SearchDialog(kadu))->show();
 	else
 	{
-		if (users[0].usesProtocol("Gadu"))
+		if (contacts[0].accountData(AccountManager::instance()->defaultAccount()) != 0)
 		{
-			SearchDialog *sd = new SearchDialog(kadu, users[0].ID("Gadu").toUInt());
+			SearchDialog *sd = new SearchDialog(kadu, contacts[0].accountData(AccountManager::instance()->defaultAccount())->id().toUInt());
 			sd->show();
 			sd->firstSearch();
 		}
@@ -516,20 +514,19 @@ void ChatManager::colorSelectorActionActivated(QAction *sender, bool toggled)
 void ChatManager::ignoreUserActionActivated(QAction *sender, bool toggled)
 {
 	kdebugf();
-
+	Account *account = AccountManager::instance()->defaultAccount();
 	KaduMainWindow *window = dynamic_cast<KaduMainWindow *>(sender->parent());
 	if (!window)
 		return;
 
-	Protocol *gadu = AccountManager::instance()->defaultAccount()->protocol();
-	UserListElements users = window->userListElements();
-	if (users.count() > 0)
+	ContactList contacts = window->contacts();
+	if (contacts.count() > 0)
 	{
 		bool ContainsBad = false;
-		foreach(const UserListElement &user, users)
+		foreach(Contact contact, contacts)
 		{
-			QString uid = user.ID("Gadu");
-			if (!gadu->validateUserID(uid))
+			QString uid = contact.accountData(account)->id();
+			if (!account->protocol()->validateUserID(uid))
 			{
 				ContainsBad = true;
 				break;
@@ -538,12 +535,12 @@ void ChatManager::ignoreUserActionActivated(QAction *sender, bool toggled)
 
 		if (!ContainsBad)
 		{
-			if (IgnoredManager::isIgnored(users))
-				IgnoredManager::remove(users);
+			if (IgnoredManager::isIgnored(contacts))
+				IgnoredManager::remove(UserListElements::fromContactList(contacts, account));
 			else
 			{
-				IgnoredManager::insert(users);
-				ChatWidget *chat = findChatWidget(users);
+				IgnoredManager::insert(UserListElements::fromContactList(contacts, account));
+				ChatWidget *chat = findChatWidget(contacts);
 				if (chat)
 				{
 					ChatContainer *container = dynamic_cast<ChatContainer *>(chat->window());
@@ -556,8 +553,8 @@ void ChatManager::ignoreUserActionActivated(QAction *sender, bool toggled)
 
 			foreach (KaduAction *action, ignoreUserActionDescription->actions())
 			{
-				if (action->userListElements() == users)
-					action->setChecked(IgnoredManager::isIgnored(users));
+				if (action->contacts() == contacts)
+					action->setChecked(IgnoredManager::isIgnored(contacts));
 			}
 
 		}
@@ -568,34 +565,34 @@ void ChatManager::ignoreUserActionActivated(QAction *sender, bool toggled)
 void ChatManager::blockUserActionActivated(QAction *sender, bool toggled)
 {
 	kdebugf();
-
+	Account *account = AccountManager::instance()->defaultAccount();
 	KaduMainWindow *window = dynamic_cast<KaduMainWindow *>(sender->parent());
 	if (!window)
 		return;
 
-	UserListElements users = window->userListElements();
-	if (users.count() > 0)
+	ContactList contacts = window->contacts();
+	if (contacts.count() > 0)
 	{
 		bool on = true;
 		bool blocked_anonymous = false; // true, if we blocked at least one anonymous user
 
-		UserListElements copy = users;
+		ContactList copy = contacts;
 
-		foreach(const UserListElement &user, copy)
-			if (!user.usesProtocol("Gadu") || !user.protocolData("Gadu", "Blocking").toBool())
+		foreach(Contact user, copy)
+			if (user.accountData(account) == 0 || !user.isBlocked(account))
 			{
 				on = false;
 				break;
 			}
 
-		Protocol *gadu = AccountManager::instance()->defaultAccount()->protocol();
-		foreach(const UserListElement &user, copy)
+		foreach(Contact user, copy)
 		{
-			QString uid = user.ID("Gadu");
-			if (gadu->validateUserID(uid) && user.protocolData("Gadu", "Blocking").toBool() != !on)
+			QString uid = user.accountData(account)->id();
+			if (account->protocol()->validateUserID(uid) && user.isBlocked(account) != !on)
 			{
-				user.setProtocolData("Gadu", "Blocking", !on);
-				if ((!on) && (!blocked_anonymous) && (user.isAnonymous()))
+//TODO: 0.6.6
+/// 				user.setProtocolData("Gadu", "Blocking", !on);
+				if ((!on) && (!blocked_anonymous) && user.isAnonymous())
 					blocked_anonymous = true;
 			}
 		}
@@ -605,7 +602,7 @@ void ChatManager::blockUserActionActivated(QAction *sender, bool toggled)
 			if (blocked_anonymous)
 				MessageBox::msg(tr("Anonymous users will be unblocked after restarting Kadu"), false, "Information", kadu);
 
-			ChatWidget *chat = findChatWidget(users);
+			ChatWidget *chat = findChatWidget(contacts);
 			if (chat)
 			{
 				ChatContainer *container = dynamic_cast<ChatContainer *>(chat->window());
@@ -618,7 +615,7 @@ void ChatManager::blockUserActionActivated(QAction *sender, bool toggled)
 
 		foreach (KaduAction *action, blockUserActionDescription->actions())
 		{
-			if (action->userListElements() == users)
+			if (action->contacts() == contacts)
 				action->setChecked(!on);
 		}
 	}
@@ -628,18 +625,14 @@ void ChatManager::blockUserActionActivated(QAction *sender, bool toggled)
 void ChatManager::chatActionActivated(QAction *sender, bool toggled)
 {
 	kdebugf();
-
+	Account *account = AccountManager::instance()->defaultAccount();
 	KaduMainWindow *window = dynamic_cast<KaduMainWindow *>(sender->parent());
 	if (!window)
 		return;
 
-	Account *defaultAccount = AccountManager::instance()->defaultAccount();
-
-	UserListElements users = window->userListElements();
-	ContactList contacts = users.toContactList(defaultAccount);
-
+	ContactList contacts = window->contacts();
 	if (contacts.count() > 0)
-		openChatWidget(defaultAccount, contacts, true);
+		openChatWidget(account, contacts, true);
 
 	kdebugf2();
 }
@@ -649,7 +642,7 @@ const ChatList& ChatManager::chats() const
 	return ChatWidgets;
 }
 
-const QList<UserListElements> ChatManager::closedChatUsers() const
+const QList<ContactList> ChatManager::closedChatUsers() const
 {
 	return ClosedChatUsers;
 }
@@ -657,10 +650,7 @@ const QList<UserListElements> ChatManager::closedChatUsers() const
 int ChatManager::registerChatWidget(ChatWidget *chat)
 {
 	kdebugf();
-
-	UserListElements users = UserListElements::fromContactList(chat->contacts(), chat->account());
-	users.sort();
-	ClosedChatUsers.remove(users);
+	ClosedChatUsers.removeOne(chat->contacts());
 	ChatWidgets.append(chat);
 
 	return ChatWidgets.count() - 1;
@@ -675,9 +665,7 @@ void ChatManager::unregisterChatWidget(ChatWidget *chat)
 		{
 			if (chat->body->countMessages())
 			{
-				UserListElements users = chat->users()->toUserListElements();
-				users.sort();
-				ClosedChatUsers.prepend(users);
+				ClosedChatUsers.prepend(chat->contacts());
 				if (ClosedChatUsers.count() > 10)
 					ClosedChatUsers.pop_back();
 			}
@@ -706,28 +694,19 @@ void ChatManager::refreshTitles()
 	kdebugf2();
 }
 
-void ChatManager::refreshTitlesForUser(UserListElement user)
+void ChatManager::refreshTitlesForUser(Contact contact)
 {
 	kdebugf();
  	foreach(ChatWidget *chat, ChatWidgets)
- 		if (chat->users()->contains(user))
+ 		if (chat->contacts().contains(contact))
  			chat->refreshTitle();
 	kdebugf2();
 }
 
-ChatWidget * ChatManager::findChatWidget(ContactList &contacts) const
-{
-	foreach (ChatWidget *chatWidget, ChatWidgets)
-		if (chatWidget->contacts() == contacts)
-			return chatWidget;
-
-	return 0;
-}
-
-ChatWidget* ChatManager::findChatWidget(UserListElements users) const
+ChatWidget* ChatManager::findChatWidget(ContactList contacts) const
 {
 	foreach(ChatWidget *chat, ChatWidgets)
-		if (users.equals(chat->users()))
+		if (chat->contacts() == contacts)
 			return chat;
 	kdebugmf(KDEBUG_WARNING, "no such chat\n");
 	return NULL;
@@ -804,10 +783,9 @@ ChatWidget * ChatManager::openChatWidget(Account *initialAccount, ContactList co
 	return chatWidget;
 }
 
-void ChatManager::deletePendingMsgs(UserListElements users)
+void ChatManager::deletePendingMsgs(ContactList contacts)
 {
 	kdebugf();
-	ContactList contacts = users.toContactList(AccountManager::instance()->defaultAccount());
 	for (int i = 0; i < pending.count(); ++i)
 		if (pending[i].contacts == contacts)
 		{
@@ -876,30 +854,30 @@ void ChatManager::openPendingMsgs(bool forceActivate)
 	kdebugf2();
 }
 
-void ChatManager::sendMessage(UserListElement user, UserListElements selected_users)
+void ChatManager::sendMessage(Contact contact, ContactList selected_contacts)
 {
 	kdebugf();
 	Account *defaultAccount = AccountManager::instance()->defaultAccount();
 	for (int i = 0; i < pending.count(); ++i)
-		if (pending[i].contacts.contains(user.toContact(defaultAccount)))
+		if (pending[i].contacts.contains(contact))
 		{
 			openPendingMsgs(pending[i].contacts);
 			return;
 		}
 
-	openChatWidget(defaultAccount, selected_users.toContactList(defaultAccount), true);
+	openChatWidget(defaultAccount, selected_contacts, true);
 
 	kdebugf2();
 }
 
-QVariant& ChatManager::chatWidgetProperty(const UserGroup *group, const QString &name)
+QVariant& ChatManager::chatWidgetProperty(ContactList contacts, const QString &name)
 {
 	kdebugf();
 
 	QList<ChatInfo>::iterator addon;
 	for (addon = addons.begin(); addon != addons.end(); ++addon)
 	{
-		if (group->equals((*addon).users))
+		if (contacts == (*addon).contacts)
 		{
 			kdebugf2();
 			return (*addon).map[name];
@@ -907,21 +885,21 @@ QVariant& ChatManager::chatWidgetProperty(const UserGroup *group, const QString 
 	}
 
 	ChatInfo info;
-	info.users = group->toUserListElements();
+	info.contacts = contacts;
 	info.map[name] = QVariant();
 	addons.push_front(info);
 	kdebugmf(KDEBUG_FUNCTION_END, "end: %s NOT found\n", qPrintable(name));
 	return addons[0].map[name];
 }
 
-void ChatManager::setChatWidgetProperty(const UserGroup *group, const QString &name, const QVariant &value)
+void ChatManager::setChatWidgetProperty(ContactList contacts, const QString &name, const QVariant &value)
 {
 	kdebugf();
 
 	QList<ChatInfo>::iterator addon;
 	for (addon = addons.begin(); addon != addons.end(); ++addon)
 	{
-		if (group->equals((*addon).users))
+		if (contacts == (*addon).contacts)
 		{
 			(*addon).map[name] = value;
 			kdebugf2();
@@ -929,7 +907,7 @@ void ChatManager::setChatWidgetProperty(const UserGroup *group, const QString &n
 		}
 	}
 	ChatInfo info;
-	info.users = group->toUserListElements();
+	info.contacts = contacts;
 	info.map[name] = value;
 	addons.push_front(info);
 	kdebugf2();
