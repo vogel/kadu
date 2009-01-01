@@ -67,7 +67,7 @@ About::About(QWidget *parent)
 	QWidget *texts = new QWidget;
 
 	QLabel *l_info = new QLabel;
-	l_info->setText(QString("<span style=\"font-size: 12pt\">Kadu %1 %2<br />(c) 2001-2008 Kadu Team</span>").arg(VERSION)
+	l_info->setText(QString("<span style=\"font-size: 12pt\">Kadu %1 %2<br />(c) 2001-2009 Kadu Team</span>").arg(VERSION)
 			.arg(strlen(DETAILED_VERSION) > 0 ? ("(" + QString(DETAILED_VERSION) + ")") : QString::null));
 	l_info->setWordWrap(true);
 	l_info->setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Minimum));
