@@ -9,6 +9,24 @@ Je¶li jest w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 +++ wersja 0.6.5
 * wstêpny port na Qt4.4
 
++++ wersja 0.6.0.3 (01.01.2009)
+* aktualizacja libgadu - drobne poprawki, dodana obs³uga gg 8.0 (neeo)
+* zaktualizowany system budowania (neeo)
+* poprawione wyra¿enie regularne dla URLi zawieraj±cych znaki '[' i ']' (neeo)
+* poprawione zachowanie przy sprawdzaniu dostêpno¶ci aktualizacji (neeo)
+* drobne optymalizacje, usuniêty wyciek pamiêci dla obrazu listy kontaktów (neeo)
+* zaktualizowane miejsce instalacji pliku kadu.desktop (neeo)
+* zmiany statusów nie s± logowane, gdy zapis historii jest wy³±czony (neeo)
+* modu³ nextinfo dodany do autodownloadu (neeo)
+* kadu nie ³±czy ponownie po roz³±czeniu w wyniku zalogowania siê innego klienta do serwera (White Eagle)
+* pozycje na li¶cie 'Ostatnie rozmowy...' nie duplikuj± siê (neeo)
+* poprawka kolorowania przychodz±cych wiadomo¶ci (daris/neeo)
+* dostêpna d³ugo¶æ opisu ustawiana w zale¿no¶ci od u¿ywanej wersji protoko³u (neeo)
+* aktualizacja libgadu - poprawka bezpieczeñstwa, rozwi±zany problem przy kompilacji bez pthreads (neeo)
+* numer portu w panelu informacyjnym nie przyjmuje warto¶ci ujemnych (dorr/neeo)
+* brakuj±ce podpowiedzi dla opcji w oknie konfiguracji (Vogel,neeo)
+* poprawiona wspó³praca z bramk± Ery (neeo)
+
 +++ wersja 0.6.0.2 (03.07.2008)
 * poprawiona kolejno¶æ argumentów konstruktora klasy ConfigLineEdit (neeo)
 * wy¶wietlanie poprawnej ikony po zmianie zestawu lub zmianie statusu dla wcze¶niej otwartych okien (neeo)
