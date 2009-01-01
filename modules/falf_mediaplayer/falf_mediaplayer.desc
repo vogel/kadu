@@ -1,0 +1,8 @@
+[Module]
+Description=FALF media player support module
+Description[pl]=Modul obslugi odtwarzacza FALF
+Author=amdfanatyk
+Provides=media_player
+Conflicts=media_player
+Dependencies=mediaplayer
+Version=2.3
