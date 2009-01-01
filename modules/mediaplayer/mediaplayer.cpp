@@ -133,7 +133,7 @@ MediaPlayer::MediaPlayer(bool firstLoad)
 	if (menuPos)
 		popups[5] = dockMenu->insertItem(tr("Enable MediaPlayer statuses"), this, SLOT(toggleStatuses(int)), 0, -1, 10);
 	else
-		kadu->addMenuActionDescription(enableMediaPlayerStatuses);
+		kadu->insertMenuActionDescription(0, enableMediaPlayerStatuses);
 
 	// Initial values of some object variables
 	winKeyPressed = false;
@@ -567,7 +567,8 @@ ChatWidget *MediaPlayer::getCurrentChat()
 	for ( i = 0; i < cs.count(); i++ )
 	{
 		//if (cs[i]->isActiveWindow())
-		if (cs[i]->hasFocus())
+		if (cs[i]->edit() == QApplication::focusWidget() ||
+			cs[i]->hasFocus())
 			break;
 	}
 
