@@ -35,7 +35,8 @@
 
 #include "mediaplayer.h"
 
-#define MODULE_MEDIAPLAYER_VERSION 1.1
+#define MODULE_MEDIAPLAYER_VERSION 1.2
+#define CHECK_STATUS_INTERVAL 10*1000 /* 10s */
 
 const char *MediaPlayerSyntaxText = QT_TRANSLATE_NOOP
 (
@@ -105,7 +106,6 @@ MediaPlayer::MediaPlayer(bool firstLoad)
 	// Title checking timer
 	timer = new QTimer();
 	connect(timer, SIGNAL(timeout()), this, SLOT(checkTitle()));
-	timer->start(1000);
 
 	// Monitor of creating chats
 	connect(chat_manager, SIGNAL(chatWidgetCreated(ChatWidget *)), this, SLOT(chatWidgetCreated(ChatWidget *)));
@@ -117,7 +117,7 @@ MediaPlayer::MediaPlayer(bool firstLoad)
 	enableMediaPlayerStatuses = new ActionDescription(
 		ActionDescription::TypeGlobal, "enableMediaPlayerStatusesAction",
 		this, SLOT(mediaPlayerStatusChangerActivated(QAction *, bool)),
-		"", tr("Enable MediaPlayer statuses"), false, ""
+		"MediaPlayer", tr("Enable MediaPlayer statuses"), true
 	);
 	mediaPlayerMenu = new ActionDescription(
 		ActionDescription::TypeChat, "mediaplayer_button",
@@ -131,9 +131,17 @@ MediaPlayer::MediaPlayer(bool firstLoad)
 	// MediaPlayer statuses menu item
 	bool menuPos = config_file.readBoolEntry("MediaPlayer", "dockMenu", false);
 	if (menuPos)
-		popups[5] = dockMenu->insertItem(tr("Enable MediaPlayer statuses"), this, SLOT(toggleStatuses(int)), 0, -1, 10);
+	{
+		mediaplayerStatus = new QAction(tr("Enable MediaPlayer statuses"), this);
+		mediaplayerStatus->setCheckable(true);
+		connect(mediaplayerStatus, SIGNAL(toggled(bool)), this, SLOT(toggleStatuses(bool)));
+		dockMenu->addAction(mediaplayerStatus);
+	}
 	else
+	{
 		kadu->insertMenuActionDescription(0, enableMediaPlayerStatuses);
+		mediaplayerStatus = NULL;
+	}
 
 	// Initial values of some object variables
 	winKeyPressed = false;
@@ -173,11 +181,10 @@ MediaPlayer::~MediaPlayer()
 	delete timer;
 
 	// Remove menu item (statuses)
-	int idx = dockMenu->indexOf(popups[5]);
-	if (idx == -1)
+	if (mediaplayerStatus == NULL)
 		kadu->removeMenuActionDescription(enableMediaPlayerStatuses);
 	else
-		dockMenu->removeItem(popups[5]);
+		dockMenu->removeAction(mediaplayerStatus);
 }
 
 void MediaPlayer::setControlsEnabled(bool enabled)
@@ -187,9 +194,6 @@ void MediaPlayer::setControlsEnabled(bool enabled)
 	menu->setItemEnabled(popups[2], enabled);
 	menu->setItemEnabled(popups[3], enabled);
 	menu->setItemEnabled(popups[4], enabled);
-
-	if (popups[5])
-		menu->setItemEnabled(popups[5], enabled);
 }
 
 void MediaPlayer::mediaPlayerMenuActivated(QAction *sender, bool toggled)
@@ -592,6 +596,25 @@ void MediaPlayer::mediaPlayerStatusChangerActivated(QAction *sender, bool toggle
 	}
 
 	mediaPlayerStatusChanger->setDisable(!toggled);
+	if (toggled)
+		timer->start(CHECK_STATUS_INTERVAL);
+	else
+		timer->stop();
+}
+
+void MediaPlayer::toggleStatuses(bool toggled)
+{
+	if (!isActive() && toggled)
+	{
+		MessageBox::msg(tr("%1 isn't running!").arg(getPlayerName()));
+		return;
+	}
+	
+	mediaPlayerStatusChanger->setDisable(!toggled);
+	if (toggled)
+		timer->start(CHECK_STATUS_INTERVAL);
+	else
+		timer->stop();
 }
 
 void MediaPlayer::checkTitle()
