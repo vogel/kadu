@@ -72,7 +72,7 @@ public:
 	bool setOfflineTo(bool offlineTo) { OfflineTo = offlineTo; }
 
 public slots:
-	void setDnsName(const QString &ident, const QString &dnsName) { DnsName = dnsName; }
+	void setDNSName(const QString &ident, const QString &dnsName) { DnsName = dnsName; }
 
 };
 

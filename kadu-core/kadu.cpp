@@ -433,11 +433,11 @@ Kadu::Kadu(QWidget *parent)
 	hbox_layout->addWidget(Userbox);
 	hbox_layout->setAlignment(GroupBar, Qt::AlignTop);
 
-	connect(Userbox, SIGNAL(doubleClicked(UserListElement)), this, SLOT(sendMessage(UserListElement)));
-	connect(Userbox, SIGNAL(returnPressed(UserListElement)), this, SLOT(sendMessage(UserListElement)));
+	connect(Userbox, SIGNAL(doubleClicked(Contact)), this, SLOT(sendMessage(Contact)));
+	connect(Userbox, SIGNAL(returnPressed(Contact)), this, SLOT(sendMessage(Contact)));
 	connect(Userbox, SIGNAL(mouseButtonClicked(int, Q3ListBoxItem *, const QPoint &)),
 		this, SLOT(mouseButtonClicked(int, Q3ListBoxItem *)));
-	connect(Userbox, SIGNAL(currentChanged(UserListElement)), this, SLOT(currentChanged(UserListElement)));
+	connect(Userbox, SIGNAL(currentChanged(Contact)), this, SLOT(currentChanged(Contact)));
 
 
 	ActionDescription *writeEmailActionDescription = new ActionDescription(
@@ -1727,7 +1727,7 @@ void Kadu::createRecentChatsMenu()
 	QAction *action;
 	if (chat_manager->closedChatUsers().isEmpty())
 	{
-		action = RecentChatsMenu->addAction(tr("No closed chats found")/*, 0*/);
+		action = RecentChatsMenu->addAction(tr("No closed chats found"));
 		action->setEnabled(false);
 
 		kdebugf2();
@@ -1825,12 +1825,6 @@ void Kadu::createMenu()
 	RecentChatsMenu->setTitle(tr("Recent chats..."));
 	connect(RecentChatsMenu, SIGNAL(triggered(QAction *)), this, SLOT(openRecentChats(QAction *)));
 
-	ActionDescription *manageIgnoredActionDescription = new ActionDescription(
-		ActionDescription::TypeMainMenu, "manageIgnoredAction",
-		this, SLOT(manageIgnored(QAction *, bool)),
-		"Ignore", tr("Manage &ignored")
-	);
-
 	insertMenuActionDescription(configurationActionDescription, MenuKadu);
 
 	ActionDescription *yourAccountsActionDescription = new ActionDescription(
@@ -1873,6 +1867,11 @@ void Kadu::createMenu()
 	ContactsMenu->addSeparator();
 	insertMenuActionDescription(chat_manager->openChatWithActionDescription, MenuContacts);
 	ContactsMenu->addSeparator();
+	ActionDescription *manageIgnoredActionDescription = new ActionDescription(
+		ActionDescription::TypeMainMenu, "manageIgnoredAction",
+		this, SLOT(manageIgnored(QAction *, bool)),
+		"Ignore", tr("&Ignored users")
+	);
 	insertMenuActionDescription(manageIgnoredActionDescription, MenuContacts);
 
 	ActionDescription *importExportUserlisActionDescription = new ActionDescription(
@@ -1896,20 +1895,20 @@ void Kadu::createMenu()
 	ActionDescription *bugsActionDescription = new ActionDescription(
 		ActionDescription::TypeMainMenu, "bugsAction",
 		this, SLOT(bugs(QAction *, bool)),
-		"HelpMenuItem", tr("Submitt Bug Report")
-	);//TODO 0.6.6: update icon
+		"", tr("Submitt Bug Report")
+	);
 	insertMenuActionDescription(bugsActionDescription, MenuHelp);
 	ActionDescription *supportActionDescription = new ActionDescription(
 		ActionDescription::TypeMainMenu, "supportAction",
 		this, SLOT(support(QAction *, bool)),
-		"HelpMenuItem", tr("Support us")
-	);//TODO 0.6.6: update icon
+		"", tr("Support us")
+	);
 	insertMenuActionDescription(supportActionDescription, MenuHelp);
 	ActionDescription *getInvolvedActionDescription = new ActionDescription(
 		ActionDescription::TypeMainMenu, "getInvolvedAction",
 		this, SLOT(getInvolved(QAction *, bool)),
-		"HelpMenuItem", tr("Get Involved")
-	);//TODO 0.6.6: update icon
+		"", tr("Get Involved")
+	);
 	insertMenuActionDescription(getInvolvedActionDescription, MenuHelp);
 	HelpMenu->addSeparator();
 	ActionDescription *aboutActionDescription = new ActionDescription(
@@ -2089,16 +2088,6 @@ void Kadu::currentChanged(Contact contact)
 	updateInformationPanel(contact);
 }
 
-// QMenuBar* Kadu::menuBar() const
-// {
-// 	return MenuBar;
-// }
-
-//QMenu* Kadu::mainMenu() const
-//{
-//	return MainMenu;
-//}
-
 KaduTabBar* Kadu::groupBar() const
 {
 	return GroupBar;
@@ -2212,14 +2201,6 @@ void Kadu::configurationUpdated()
 	debug_mask = config_file.readNumEntry("General", "DEBUG_MASK");
 	gg_debug_level = debug_mask | ~255;
 #endif
-}
-
-void Kadu::resizeEvent(QResizeEvent *e)
-{
-//	kdebugm(KDEBUG_WARNING, "MenuBar->h4w(%d):%d, MenuBar->height():%d, MenuBar->sizeHint().height():%d\n", width(), MenuBar->heightForWidth(width()), MenuBar->height(), MenuBar->sizeHint().height());
-//hack
-// 	menuBox->setMaximumHeight(menuBar()->heightForWidth(width()));
-	QWidget::resizeEvent(e);
 }
 
 void Kadu::setDefaultStatus()
@@ -2358,17 +2339,6 @@ char *SystemUserName;
 void Kadu::deleteOldConfigFiles()
 {
 	kdebugf();
-	////////////start - to be removed at 0.6-svn
-	QDir oldConfigs(ggPath(), "kadu.conf.backup.*", QDir::Name, QDir::Files);
-//	kdebugm(KDEBUG_INFO, "%d\n", oldConfigs.count());
-	if (oldConfigs.count() > 20)
-		for (unsigned int i = 0, max = oldConfigs.count() - 20; i < max; ++i)
-		{
-//			kdebugm(KDEBUG_DUMP, "deleting %s\n", qPrintable(oldConfigs[i]));
-			QFile::remove(ggPath(oldConfigs[i]));
-		}
-//	kdebugm(KDEBUG_INFO, "configs deleted\n");
-	//////////stop - to be removed at 0.6-svn
 
 	QDir oldConfigs2(ggPath(), "kadu.conf.xml.backup.*", QDir::Name, QDir::Files);
 //	kdebugm(KDEBUG_INFO, "%d\n", oldConfigs2.count());

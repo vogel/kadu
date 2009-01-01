@@ -37,7 +37,7 @@ public:
 	void setType(StatusType type) { Type = type; }
 
 	QString description() { return Description; }
-	void setDescirption(const QString &description) { Description = description; }
+	void setDescription(const QString &description) { Description = description; }
 
 	bool isOnline() { return Online == Type; }
 	bool isBusy() { return Busy == Type; }
