@@ -193,15 +193,15 @@ void notification_timeout(CFPropertyListRef context)
 	const QObject* receiver;
 	const char* slot;
 	void* qcontext;
-	//pid_t pid;
 
 	getContext(context, &signaler, &receiver, 0, &slot, &qcontext /*, &pid*/);
 	
-	//if (pid == getpid()) {
-	QObject::connect(signaler,SIGNAL(notificationTimedOut(void*)),receiver,slot);
-	signaler->emitNotificationTimeout(qcontext);
-	QObject::disconnect(signaler,SIGNAL(notificationTimedOut(void*)),receiver,slot);
-	//}
+	if (slot != NULL)
+	{
+		QObject::connect(signaler,SIGNAL(notificationTimedOut(void*)),receiver,slot);
+		signaler->emitNotificationTimeout(qcontext);
+		QObject::disconnect(signaler,SIGNAL(notificationTimedOut(void*)),receiver,slot);
+	}
 }
 
 //------------------------------------------------------------------------------ 
