@@ -69,8 +69,8 @@ void saveWindowGeometry(const QWidget *w, const QString &section, const QString 
 	/* Dorr: on Mac OS X make sure the window will not be greater than desktop what
 	 * sometimes happends during widget resizing (because of bug in Qt?)
 	 */
-	if (geometry.height() > QApplication::desktop()->height())
-		geometry.setHeight(QApplication::desktop()->height());
+	if (geometry.height() > QApplication::desktop()->height() - 20)
+		geometry.setHeight(QApplication::desktop()->height() - 20);
 	if (geometry.width() > QApplication::desktop()->width())
 		geometry.setWidth(QApplication::desktop()->width());
 #endif
