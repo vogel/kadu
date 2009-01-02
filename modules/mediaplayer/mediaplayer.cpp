@@ -482,11 +482,13 @@ QString MediaPlayer::parse(const QString &str)
 
 	for ( uint i = 0; i < sl; i++ )
 	{
-		while (str[i] != '%' && i < sl)
+		while ((i < sl) && (str[i] != '%'))
 		{
 			r += str[i];
-			i++;
+			++i;
 		}
+
+		if (i >= sl) i = sl - 1;
 
 		if (str[i] == '%')
 		{
