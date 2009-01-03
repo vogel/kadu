@@ -91,7 +91,8 @@ void ManageAccounts::loadAccounts()
 	{
 		QListWidgetItem *accountListWidgetItem = new QListWidgetItem();
 
-		accountListWidgetItem->setText(account->uuid());
+		accountListWidgetItem->setText(account->name());
+		accountListWidgetItem->setToolTip(account->uuid());
 		accountListWidgetItem->setIcon(account->protocol()->icon());
 
 		AccountsListWidget->addItem(accountListWidgetItem);
@@ -141,7 +142,7 @@ void ManageAccounts::removeAccount()
 	if (0 == currentAccountItem)
 		return;
 
-	QUuid accountUuid(currentAccountItem->text());
+	QUuid accountUuid(currentAccountItem->toolTip());
 
 	Account *account = AccountManager::instance()->account(accountUuid);
 	if (account)
@@ -157,7 +158,7 @@ void ManageAccounts::editAccount()
 	if (0 == currentAccountItem)
 		return;
 
-	QString accountName = currentAccountItem->text();
+	QString accountName = currentAccountItem->toolTip();
 	Account *account = AccountManager::instance()->account(accountName);
 	if (0 == account)
 		return;
