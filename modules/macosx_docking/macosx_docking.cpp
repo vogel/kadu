@@ -38,7 +38,6 @@ static NMRec bounceRec;
 MacOSXDocking::MacOSXDocking(QObject *parent, const char *name) : QObject(parent, name)
 {
 	kdebugf();
-	//config_file.writeEntry("General", "RunDocked", false);
 
 	isBouncing = false;
 	overlayed = false;
@@ -118,15 +117,18 @@ void MacOSXDocking::findTrayPosition(QPoint &p)
 void MacOSXDocking::onCreateTabGeneral()
 {
 	kdebugf();
-	//ze wzgl�du na jaki� problem z Qt opcja wy��czona
-	//(okno pojawia si�, znika i znowu pojawia, wi�c nie do��, �e nie dzia�a,
-	//  to mo�e by� denerwuj�ca je�eli kto� zapomnia�, �e to w��czy�)
-	//config_file.writeEntry("General", "RunDocked", false);
 }
 
 void MacOSXDocking::mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow)
 {
-	//w tej chwili nic tu nie robimy, ale kto wie ;)
+	connect(mainConfigurationWindow->widgetById("macosx_docking/message_num_on_icon"), SIGNAL(toggled(bool)),
+		mainConfigurationWindow->widgetById("docking/newMessageIcon"), SLOT(setDisabled(bool)));
+}
+
+void MacOSXDocking::configurationUpdated()
+{
+	if (config_file.readBoolEntry("MacOSX Dock", "ShowMessgeNum", true))
+		config_file.writeEntry("Look", "NewMessageIcon", 3);
 }
 
 void MacOSXDocking::messageListChanged(UserListElement ule)

@@ -137,6 +137,8 @@ void DockingManager::changeIcon()
 					blink = false;
 				}
 				break;
+			case NoChange:
+				break;
 		}
 	}
 	else
@@ -265,7 +267,11 @@ void DockingManager::createDefaultConfiguration()
 {
 	config_file.addVariable("General", "RunDocked", false);
 	config_file.addVariable("General", "ShowTooltipInTray", true);
+#ifdef Q_OS_MAC
+	config_file.addVariable("Look", "NewMessageIcon", 3);
+#else
 	config_file.addVariable("Look", "NewMessageIcon", 0);
+#endif
 }
 
 DockingManager* docking_manager = NULL;

@@ -17,7 +17,7 @@ class DOCKINGAPI DockingManager : public ConfigurationUiHandler, ConfigurationAw
 {
 	Q_OBJECT
 
-	enum IconType {BlinkingEnvelope = 0, StaticEnvelope = 1, AnimatedEnvelope = 2} newMessageIcon;
+	enum IconType {BlinkingEnvelope = 0, StaticEnvelope = 1, AnimatedEnvelope = 2, NoChange = 3} newMessageIcon;
 	QTimer *icon_timer;
 	bool blink;
 	void defaultToolTip();

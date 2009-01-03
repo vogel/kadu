@@ -39,6 +39,10 @@
         <source>Animated envelope</source>
         <translation>Animowana</translation>
     </message>
+    <message>
+        <source>No change</source>
+        <translation>Nie zmieniaj</translation>
+    </message>
 </context>
 <context>
     <name>DockingManager</name>
