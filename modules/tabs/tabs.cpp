@@ -50,11 +50,11 @@ extern "C" KADU_EXPORT void tabs_close()
 
 void disableNewTab(KaduAction *action)
 {
-	UserListElements users = action->userListElements();
+	ContactList contacts = action->contacts();
 
 	bool config_defaultTabs = config_file.readBoolEntry("Chat", "DefaultTabs");
 
-	if (users.size() != 1 && !config_defaultTabs && !config_file.readBoolEntry("Chat", "DefaultTabs"))
+	if (contacts.count() != 1 && !config_defaultTabs && !config_file.readBoolEntry("Chat", "DefaultTabs"))
 		action->setEnabled(false);
 
 	if (config_defaultTabs)
@@ -62,7 +62,9 @@ void disableNewTab(KaduAction *action)
 	else
 		action->setText(qApp->translate("TabsManager", "Open in new tab"));
 
-	// dla siebie samego deaktywujemy opcję w menu
+	// TODO 0.6.6 dla siebie samego deaktywujemy opcję w menu
+	Account *account = AccountManager::instance()->defaultAccount();
+	UserListElements users = UserListElements::fromContactList(contacts, account);
 	QString myGGUIN = QString::number(config_file.readNumEntry("General", "UIN"));
 	foreach(UserListElement user, users)
 		if (!user.usesProtocol("Gadu") || user.ID("Gadu") == myGGUIN)
@@ -277,7 +279,7 @@ void TabsManager::onDestroyingChat(ChatWidget* chat)
 void TabsManager::onStatusChanged(UserListElement ule)
 {
 	kdebugf();
-	ChatWidget* chat=chat_manager->findChatWidget(ule);
+	ChatWidget* chat=chat_manager->findChatWidget(ule.toContact());
 
 	if (tabdialog->indexOf(chat)!=-1)
 	{
@@ -370,11 +372,11 @@ void TabsManager::onNewTab(QAction *sender, bool toggled)
 	if (!window)
 		return;
 
-	UserListElements users = window->userListElements();
-	if (users.count() == 0)
+	ContactList contacts = window->contacts();
+	if (contacts.count() == 0)
 		return;
 
-	ChatWidget* chat=chat_manager->findChatWidget(users);
+	ChatWidget* chat=chat_manager->findChatWidget(contacts);
 
 	// istnieje = przywracamy na pierwszy plan
 	if (chat)
@@ -392,10 +394,10 @@ void TabsManager::onNewTab(QAction *sender, bool toggled)
 		if (config_defaultTabs)
 			no_tabs = true;
 		// w miejsce ręcznego dodawaia chata do kart automatyczne ;)
-		else if (users.size() == 1 || config_conferencesInTabs)
+		else if (contacts.count() == 1 || config_conferencesInTabs)
 			force_tabs = true;
 
-		chat_manager->openPendingMsgs(users.toContactList(AccountManager::instance()->defaultAccount()), true);
+		chat_manager->openPendingMsgs(contacts, true);
 	}
 
 	kdebugf2();
@@ -412,12 +414,13 @@ void TabsManager::insertTab(ChatWidget* chat)
 		chat->kaduRestoreGeometry();
 
 	UserListElements ules = chat->users()->toUserListElements();
+	ContactList contacts = chat->contacts();
 
 	detachedchats.remove(chat);
 
 	foreach(KaduAction *action, attachToTabsActionDescription->actions())
 	{
-		if (action->userListElements() == ules)
+		if (action->contacts() == contacts)
 			action->setChecked(true);
 	}
 
@@ -528,13 +531,13 @@ void TabsManager::onTabAttach(QAction *sender, bool toggled)
 	KaduMainWindow *window = dynamic_cast<KaduMainWindow *>(sender->parent());
 	if (!window)
 		return;
-	ChatWidget* chat = chat_manager->findChatWidget(window->userListElements());
+	ChatWidget* chat = chat_manager->findChatWidget(window->contacts());
 
 	if (!toggled)
 		detachChat(chat);
 	else
 	{
-		if (window->userListElements().count()!=1 && !config_conferencesInTabs)
+		if (window->contacts().count()!=1 && !config_conferencesInTabs)
 			return;
 		newchats.clear();
 		insertTab(chat);
@@ -589,10 +592,10 @@ void TabsManager::onMenu(int id)
 
 void TabsManager::attachToTabsActionCreated(KaduAction *action)
 {
-	UserListElements users = action->userListElements();
-	ChatWidget* chat=chat_manager->findChatWidget(users);
+	ContactList contacts = action->contacts();
+	ChatWidget* chat=chat_manager->findChatWidget(contacts);
 
-	if (users.count() != 1 && !config_conferencesInTabs && tabdialog->indexOf(chat) == -1)
+	if (contacts.count() != 1 && !config_conferencesInTabs && tabdialog->indexOf(chat) == -1)
 		action->setEnabled(false);
 
 	action->setChecked(tabdialog->indexOf(chat) != -1);
@@ -726,7 +729,7 @@ void TabsManager::configurationUpdated()
 		if (!action || tabdialog->indexOf(chList[i])!=-1)
 			continue;
 
-		if (action->userListElements().count() > 1)
+		if (action->contacts().count() > 1)
 				action->setEnabled(config_conferencesInTabs);
 
 	}
@@ -744,10 +747,10 @@ void TabsManager::configurationUpdated()
 
 void TabsManager::openTabWith(QStringList altnicks, int index)
 {
-	UserListElements uins;
+	ContactList contacts;
 	foreach(QString altnick, altnicks)
-		uins.append(userlist->byAltNick(altnick));
-	ChatWidget* chat=chat_manager->findChatWidget(uins);
+		contacts.append(userlist->byAltNick(altnick).toContact());
+	ChatWidget* chat=chat_manager->findChatWidget(contacts);
 	if (chat)
 		if(tabdialog->indexOf(chat)!=-1)
 		// Jeśli chat istnieje i jest dodany do kart, to czynimy go aktywnym
@@ -763,7 +766,7 @@ void TabsManager::openTabWith(QStringList altnicks, int index)
 	// Jeśli chat nie istnieje to go tworzymy z wymuszonym dodaniem go do kart
 		force_tabs=true;
 		target_tabs=index;
-		chat_manager->openPendingMsgs(uins.toContactList(AccountManager::instance()->defaultAccount()), true);
+		chat_manager->openPendingMsgs(contacts, true);
 	}
 }
 
