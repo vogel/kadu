@@ -52,7 +52,7 @@ Win+ Enter/Backspace/Left/Right/Up/Down.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Replace &apos;%player%&apos; tag</source>
+        <source>Replace &apos;#{player}&apos; tag</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -60,7 +60,7 @@ Win+ Enter/Backspace/Left/Right/Up/Down.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Here specify format which will replace &apos;%player%&apos; tag when you will use it in description while setting status.</source>
+        <source>Here specify format which will replace &apos;#{player}&apos; tag when you will use it in description while setting status.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
