@@ -49,8 +49,6 @@ const QDBusArgument &operator>>(const QDBusArgument& arg, PlayerStatus& ps)
 
 MPRISController::MPRISController(QString s) : service(s)
 {
-	active_ = false;
-
 	QDBusConnection bus = QDBusConnection::sessionBus();
 
 	qDBusRegisterMetaType<PlayerStatus>();
@@ -71,6 +69,8 @@ MPRISController::MPRISController(QString s) : service(s)
 			"a{sv}",
 			this,
 			SLOT(trackChanged(QVariantMap)));
+
+	active_ = (bus.lastError().type() == QDBusError::NoError);
 
 	currentTrack_.title  = "";
 	currentTrack_.album  = "";
@@ -108,9 +108,8 @@ MPRISController::~MPRISController()
 void MPRISController::statusChanged(PlayerStatus status)
 {
 	if (!active_)
-	{
 		active_ = true;
-	}
+
 	currentStatus_ = status;
 };
 
