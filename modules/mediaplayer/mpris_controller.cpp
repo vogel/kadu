@@ -118,6 +118,7 @@ void MPRISController::trackChanged(QVariantMap map)
 	QString title = map.value("title").toString();
 	if (title != currentTrack_.title)
 	{
+		currentStatus_.i1     = 0; /* is playing */
 		currentTrack_.started = QDateTime::currentDateTime().toTime_t();
 		currentTrack_.title   = title;
 		currentTrack_.album   = map.value("album").toString();
