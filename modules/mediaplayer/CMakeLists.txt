@@ -1,6 +1,8 @@
 set (SOURCES
 	mediaplayer.cpp
 	mp_status_changer.cpp
+	mpris_controller.cpp
+	mpris_mediaplayer.cpp
 )
 
 set (MOC_SOURCES
@@ -8,6 +10,8 @@ set (MOC_SOURCES
 	mp_status_changer.h
 	player_commands.h
 	player_info.h
+	mpris_controller.h
+	mpris_mediaplayer.h
 )
 
 set (TRANSLATION_SOURCES
