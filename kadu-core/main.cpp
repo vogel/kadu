@@ -336,6 +336,7 @@ int main(int argc, char *argv[])
 	}
 
 //	delete qApp; //sometimes leads to segfault
+	qApp->deleteLater();
 //	qApp = 0;
 	kdebugm(KDEBUG_INFO, "exiting main\n");
 	return ret;
