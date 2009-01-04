@@ -1,8 +1,8 @@
 [Module]
 Description=Audacious media player support module
 Description[pl]=Modu³ obs³ugi odtwarzacza Audacious
-Author=Googie, Vogel, Dorregaray
+Author=Kadu Team
 Provides=media_player
 Conflicts=media_player
 Dependencies=mediaplayer
-Version=1.3
+Version=0.1

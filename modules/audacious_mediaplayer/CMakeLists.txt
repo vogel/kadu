@@ -13,16 +13,12 @@ if (COMMAND cmake_policy)
 	cmake_policy(SET CMP0003 NEW)
 endif (COMMAND cmake_policy)
 
-pkg_search_module (AUDACIOUS REQUIRED audacious)
-
 add_library (audacious_mediaplayer ${audacious_mediaplayer} ${SOURCES} ${MOC_FILES})
 
-target_link_libraries (audacious_mediaplayer ${AUDACIOUS_LIBRARIES})
-include_directories (${AUDACIOUS_INCLUDE_DIRS})
+#target_link_libraries (audacious_mediaplayer -lQtDbus)
 
 if (audacious_mediaplayer STREQUAL STATIC)
 	set_target_properties(audacious_mediaplayer PROPERTIES COMPILE_FLAGS "-DKADULIB" )
 else (audacious_mediaplayer STREQUAL STATIC)
 	install (TARGETS audacious_mediaplayer DESTINATION lib/kadu/modules)
 endif (audacious_mediaplayer STREQUAL STATIC)
-
