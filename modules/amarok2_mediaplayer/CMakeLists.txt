@@ -1,11 +1,9 @@
 set (SOURCES
 	amarok2.cpp
-	amarok2controller.cpp
 )
 
 set (MOC_SOURCES
 	amarok2.h
-	amarok2controller.h
 )
 
 kadu_module_desc (amarok2_mediaplayer.desc)
