@@ -135,7 +135,7 @@ void PendingMsgs::loadConfiguration(XmlConfigFile *configurationStorage)
 			QDomElement contactElement = contactNodes.item(i).toElement();
 			if (contactElement.isNull())
 				continue;
-			e.contacts.append(ContactManager::instance()->getContactByUuid(contactElement.text()));
+			e.contacts.append(ContactManager::instance()->contactByUuid(contactElement.text()));
 		}
 		msgs.append(e);
 		emit messageFromUserAdded(e.contacts[0]);

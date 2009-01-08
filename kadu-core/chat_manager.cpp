@@ -238,7 +238,7 @@ void ChatManager::loadOpenedWindows()
 				if (contact_elem.tagName() != "Contact")
 					continue;
 				QString uuid = contact_elem.text();
-				contacts.append(ContactManager::instance()->getContactByUuid(uuid));
+				contacts.append(ContactManager::instance()->contactByUuid(uuid));
 			}
 
 			// TODO 0.6.6: fix

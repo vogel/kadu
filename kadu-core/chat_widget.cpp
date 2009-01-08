@@ -336,8 +336,6 @@ void ChatWidget::refreshTitle()
 	QString title;
 
 	int uinsSize = Contacts.count();
-	UserListElements users = UserListElements::fromContactList(Contacts,
-			AccountManager::instance()->defaultAccount());
 
 	kdebugmf(KDEBUG_FUNCTION_START, "Uins.size() = %d\n", uinsSize);
 	if (uinsSize > 1)
@@ -379,7 +377,10 @@ void ChatWidget::refreshTitle()
 		else
 			title = KaduParser::parse(config_file.readEntry("Look","ChatContents"), Contacts[0], false);
 
-		pix = CurrentAccount->statusPixmap(Contacts[0].accountData(AccountManager::instance()->defaultAccount())->status());
+		ContactAccountData *cad = Contacts[0].accountData(AccountManager::instance()->defaultAccount());
+
+		if (cad)
+			pix = CurrentAccount->statusPixmap(cad->status());
 	}
 
 	title.replace("<br/>", " ");

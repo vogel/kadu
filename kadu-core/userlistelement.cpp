@@ -520,7 +520,7 @@ ulong qHash(const UserListElement &index)
 
 Contact UserListElement::toContact(Account *account) const
 {
-	return ContactManager::instance()->getContactById(account, ID("Gadu"));
+	return ContactManager::instance()->contactById(account, ID("Gadu"));
 }
 
 Contact UserListElement::toContact() const

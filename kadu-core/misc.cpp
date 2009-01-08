@@ -39,6 +39,9 @@
 
 #include "accounts/account.h"
 #include "accounts/account_manager.h"
+
+#include "contacts/contact-manager.h"
+
 #include "chat_manager.h"
 #include "config_file.h"
 #include "debug.h"
@@ -730,7 +733,9 @@ void openGGChat(const QString &gg)
 		gadu.remove(QRegExp("/*"));
 	}
 
-	chat_manager->openPendingMsgs(UserListElements(userlist->byID("Gadu", gadu)).toContactList(AccountManager::instance()->defaultAccount()));
+	Account *account = AccountManager::instance()->defaultAccount();
+	ContactList contacts = ContactList(ContactManager::instance()->contactById(account, gadu));
+	chat_manager->openPendingMsgs(contacts);
 
 	kdebugf2();
 }
@@ -996,9 +1001,8 @@ OpenChatWith::OpenChatWith(QWidget *parent)
 	c_text->setToolTip(tr("UIN or nick"));
 
 	QStringList posibilities;
-	foreach(const UserListElement &user, userlist->toUserListElements())
-		if (!(user.protocolList()).isEmpty())
-			posibilities.append(user.altNick());
+	foreach (Contact contact, ContactManager::instance()->contacts(account))
+		posibilities.append(contact.nick());
 	posibilities.sort();
 
 	c_text->insertStringList(posibilities);
@@ -1057,6 +1061,8 @@ void OpenChatWith::inputAccepted()
 	kdebugf();
 
 	QString text = c_text->currentText();
+	Account *account = AccountManager::instance()->defaultAccount();
+
 	if (!text.isEmpty())
 	{
 		if (!c_protocol->currentItem())
