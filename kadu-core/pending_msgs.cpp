@@ -20,6 +20,8 @@
 #include "accounts/account_manager.h"
 #include "contacts/contact-manager.h"
 
+#include "contacts/contact-list-configuration-helper.h"
+
 #include "pending_msgs.h"
 
 PendingMsgs::Element::Element() : contacts(), proto(), msg(), time(0)
@@ -127,16 +129,8 @@ void PendingMsgs::loadConfiguration(XmlConfigFile *configurationStorage)
 		e.msg = codec_latin2->toUnicode(messageNode.text());
 
 		QDomElement contactListNode = configurationStorage->getNode(pendingMsgsNodes.item(i).toElement(), "ContactList", XmlConfigFile::ModeFind);
-		QDomNodeList contactNodes = configurationStorage->getNodes(contactListNode, "Contact");
-		int count = contactNodes.count();
+		e.contacts = ContactListConfigurationHelper::loadFromConfiguration(configurationStorage, contactListNode);
 
-		for (int i = 0; i < count; i++)
-		{
-			QDomElement contactElement = contactNodes.item(i).toElement();
-			if (contactElement.isNull())
-				continue;
-			e.contacts.append(ContactManager::instance()->byUuid(contactElement.text()));
-		}
 		msgs.append(e);
 		emit messageFromUserAdded(e.contacts[0]);
 	}
@@ -158,8 +152,8 @@ void PendingMsgs::storeConfiguration(XmlConfigFile *configurationStorage)
 
 		QDomElement contactListNode = configurationStorage->getNode(pendingMessageNode,
 			"ContactList", XmlConfigFile::ModeCreate);
-		foreach(Contact c, i.contacts)
-			configurationStorage->createTextNode(contactListNode, "Contact", c.uuid());
+		
+		ContactListConfigurationHelper::saveToConfiguration(configurationStorage, contactListNode, i.contacts);
 	}
 }
 

@@ -9,6 +9,7 @@ set (kadu_SRCS
 	contacts/contact-data.cpp
 	contacts/contact-list.cpp
 	contacts/contact-manager.cpp
+	contacts/contact-list-configuration-helper.cpp
 
 	configuration/account-data-manager.cpp
 	configuration/config-file-data-manager.cpp
@@ -116,6 +117,7 @@ set (kadu_MOC_SRCS
 	contacts/contact-data.h
 	contacts/contact-list.h
 	contacts/contact-manager.h
+	contacts/contact-list-configuration-helper.h
 
 	configuration/config-file-data-manager.h
 	configuration/configuration-window-data-manager.h
