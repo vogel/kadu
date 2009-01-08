@@ -43,9 +43,9 @@ public:
 	ContactList contacts(Account *account, bool includeAnonymous = false);
 	void addContact(Contact contact);
 
-	Contact contactById(Account *account, const QString &id);
-	Contact contactByUuid(const QString &uuid);
-	Contact contactByNick(const QString &nick);
+	Contact byId(Account *account, const QString &id);
+	Contact byUuid(const QString &uuid);
+	Contact byDisplay(const QString &display);
 
 signals:
 	void contactAdded(Contact &contact);

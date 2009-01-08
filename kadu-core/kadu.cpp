@@ -2059,7 +2059,7 @@ void Kadu::updateInformationPanel(Contact contact)
 		return;
 	if (Userbox->currentUserExists() && contact == Userbox->currentContact())
 	{
-		kdebugmf(KDEBUG_INFO, "%s\n", qPrintable(contact.nick()));
+		kdebugmf(KDEBUG_INFO, "%s\n", qPrintable(contact.display()));
 		QString text = QString(
 			"<html>"
 			"	<head>"

@@ -50,22 +50,6 @@ void GaduImporter::importContacts()
 		contactAdded(contact);
 }
 
-#undef Property
-#define Property(name, old_name) \
-	contact.set##name(contact.customData()[#old_name]); \
-	contact.customData().remove(#old_name);
-
-void GaduImporter::importContact(Contact &contact)
-{
-	Property(Nick, altnick)
-	Property(FirstName, first_name)
-	Property(LastName, last_name)
-	Property(NickName, nick_name)
-	Property(HomePhone, home_phone)
-	Property(Mobile, mobile)
-	Property(Email, email)
-}
-
 void GaduImporter::importGaduContact(Contact& contact)
 {
 	QString id = contact.customData()["uin"];
@@ -85,8 +69,6 @@ void GaduImporter::importGaduContact(Contact& contact)
 
 void GaduImporter::contactAdded(Contact &contact)
 {
-	importContact(contact);
-
 	if (contact.customData().contains("uin"))
 		importGaduContact(contact);
 }

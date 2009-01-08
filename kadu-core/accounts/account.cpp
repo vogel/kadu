@@ -100,7 +100,7 @@ QString Account::name()
 
 Contact Account::getContactById(const QString& id)
 {
-	return ContactManager::instance()->contactById(this, id);
+	return ContactManager::instance()->byId(this, id);
 }
 
 Contact Account::createAnonymous(const QString& id)

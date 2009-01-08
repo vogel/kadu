@@ -30,7 +30,7 @@ class ContactData : public QSharedData
 	QMap<QString, QString> CustomData;
 	QMap<Account *, ContactAccountData *> AccountsData;
 
-	QString Nick;
+	QString Display;
 	QString FirstName;
 	QString LastName;
 	QString NickName;
@@ -61,7 +61,7 @@ public:
 	bool isBlocked(Account *account);
 	bool isOfflineTo(Account *account);
 
-	Property(QString, nick, Nick)
+	Property(QString, display, Display)
 	Property(QString, firstName, FirstName)
 	Property(QString, lastName, LastName)
 	Property(QString, nickName, NickName)

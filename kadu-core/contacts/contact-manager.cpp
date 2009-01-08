@@ -80,7 +80,7 @@ void ContactManager::addContact(Contact contact)
 	emit contactAdded(contact);
 }
 
-Contact ContactManager::contactById(Account *account, const QString &id)
+Contact ContactManager::byId(Account *account, const QString &id)
 {
 	if (id.isEmpty() || 0 == account)
 		return Contact::null;
@@ -97,7 +97,7 @@ Contact ContactManager::contactById(Account *account, const QString &id)
 	return anonymous;
 }
 
-Contact ContactManager::contactByUuid(const QString &uuid)
+Contact ContactManager::byUuid(const QString &uuid)
 {
 	if (uuid.isEmpty())
 		return Contact::null;
@@ -111,14 +111,14 @@ Contact ContactManager::contactByUuid(const QString &uuid)
 	return Contact::null;
 }
 
-Contact ContactManager::contactByNick(const QString &nick)
+Contact ContactManager::byDisplay(const QString &display)
 {
-	if (nick.isEmpty())
+	if (display.isEmpty())
 		return Contact::null;
 
 	foreach (Contact contact, Contacts.values())
 	{
-		if (nick == contact.nick())
+		if (display == contact.display())
 			return contact;
 	}
 

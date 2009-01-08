@@ -150,7 +150,7 @@ void KaduListBoxPixmap::setFont(const QFont &f)
 KaduListBoxPixmap::KaduListBoxPixmap(Contact contact)
 	: Q3ListBoxItem(), pm(pixmapForUser(contact)), buf_text(), buf_width(-1), buf_out(), buf_height(-1), CurrentContact(contact)
 {
-	setText(contact.nick());
+	setText(contact.display());
 }
 
 void KaduListBoxPixmap::setMyUIN(UinType u)
@@ -475,7 +475,7 @@ QPixmap KaduListBoxPixmap::pixmapForUser(Contact contact)
 void KaduListBoxPixmap::refreshItem()
 {
 	pm = pixmapForUser(CurrentContact);
-	changeText(CurrentContact.nick());
+	changeText(CurrentContact.display());
 }
 
 class ULEComparer
@@ -1632,12 +1632,12 @@ bool UlesDrag::canDecode(QDragEnterEvent *event)
 
 inline int compareAltNick(const Contact &c1, const Contact &c2)
 {
-	return c1.nick().localeAwareCompare(c2.nick());
+	return c1.display().localeAwareCompare(c2.display());
 }
 
 inline int compareAltNickCaseInsensitive(const Contact &c1, const Contact &c2)
 {
-	return c1.nick().lower().localeAwareCompare(c2.nick().lower());
+	return c1.display().lower().localeAwareCompare(c2.display().lower());
 }
 
 inline int compareStatus(const Contact &c1, const Contact &c2)

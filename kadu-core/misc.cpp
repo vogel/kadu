@@ -734,7 +734,7 @@ void openGGChat(const QString &gg)
 	}
 
 	Account *account = AccountManager::instance()->defaultAccount();
-	ContactList contacts = ContactList(ContactManager::instance()->contactById(account, gadu));
+	ContactList contacts = ContactList(ContactManager::instance()->byId(account, gadu));
 	chat_manager->openPendingMsgs(contacts);
 
 	kdebugf2();
@@ -1002,7 +1002,7 @@ OpenChatWith::OpenChatWith(QWidget *parent)
 
 	QStringList posibilities;
 	foreach (Contact contact, ContactManager::instance()->contacts(account))
-		posibilities.append(contact.nick());
+		posibilities.append(contact.display());
 	posibilities.sort();
 
 	c_text->insertStringList(posibilities);

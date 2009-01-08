@@ -84,7 +84,7 @@ public:
 	bool isBlocked(Account *account) const;
 	bool isOfflineTo(Account *account) const;
 
-	Property(QString, nick, Nick, QString::null)
+	Property(QString, display, Display, QString::null)
 	Property(QString, firstName, FirstName, QString::null)
 	Property(QString, lastName, LastName, QString::null)
 	Property(QString, nickName, NickName, QString::null)

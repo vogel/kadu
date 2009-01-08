@@ -24,6 +24,11 @@ ContactData::~ContactData()
 {
 }
 
+#undef Property
+#define Property(name, old_name) \
+	set##name(CustomData[#old_name]); \
+	CustomData.remove(#old_name);
+
 void ContactData::importConfiguration(XmlConfigFile *configurationStorage, QDomElement parent)
 {
 	QDomNamedNodeMap attributes = parent.attributes();
@@ -34,12 +39,21 @@ void ContactData::importConfiguration(XmlConfigFile *configurationStorage, QDomE
 		QDomAttr attribute = attributes.item(i).toAttr();
 		CustomData.insert(attribute.name(), attribute.value());
 	}
+
+	Property(Display, altnick)
+	Property(FirstName, first_name)
+	Property(LastName, last_name)
+	Property(NickName, nick_name)
+	Property(HomePhone, home_phone)
+	Property(Mobile, mobile)
+	Property(Email, email)
 }
 
 void ContactData::loadConfiguration(XmlConfigFile *configurationStorage, QDomElement parent)
 {
 }
 
+#undef Property
 #define Property(name) \
 	configurationStorage->createTextNode(customDataValues, #name, name);
 
@@ -53,7 +67,7 @@ void ContactData::storeConfiguration(XmlConfigFile *configurationStorage, QDomEl
 		configurationStorage->createNamedTextNode(customDataValues, "CustomDataValue", key, CustomData[key]);
 	}
 
-	Property(Nick)
+	Property(Display)
 	Property(FirstName)
 	Property(LastName)
 	Property(NickName)

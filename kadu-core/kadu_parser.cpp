@@ -244,7 +244,7 @@ QString KaduParser::parse(const QString &s, const Contact &contact, const QObjec
 					break;
 				case 'a':
 					++i;
-					pe.str = contact.nick();
+					pe.str = contact.display();
 					if (escape)
 						HtmlDocument::escapeText(pe.str);
 					break;
