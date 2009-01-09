@@ -83,18 +83,20 @@ ChatWidget * ChatWindow::chatWidget()
 // TODO: zrobi� od pocz�tku, strukturalnie spieprzone
 void ChatWindow::kaduRestoreGeometry()
 {
-	const UserGroup *group = currentChatWidget->users();
+	ContactList contacts = currentChatWidget->contacts();
+	UserListElements ules = UserListElements::fromContactList(contacts, currentChatWidget->account());
+
 	QRect geom = stringToRect(chat_manager->chatWidgetProperty(currentChatWidget->contacts(), "Geometry").toString());
 
-	if (geom.isEmpty() && group->count() == 1)
-		geom = stringToRect((*(group->constBegin())).data("ChatGeometry").toString());
+	if (geom.isEmpty() && contacts.count() == 1)
+		geom = stringToRect(ules[0].data("ChatGeometry").toString());
 
 	if (geom.isEmpty()) {
 		QSize size(0, 400);
 		int x, y;
 		x = pos().x();
 		y = pos().y();
-		if (group->count() > 1)
+		if (contacts.count() > 1)
 			size.setWidth(550);
 		else
 			size.setWidth(400);
@@ -124,10 +126,12 @@ void ChatWindow::kaduStoreGeometry()
 {
 	currentChatWidget->kaduStoreGeometry();
 
-	const UserListElements users = currentChatWidget->users()->toUserListElements();
+	ContactList contacts = currentChatWidget->contacts();
+	UserListElements ules = UserListElements::fromContactList(contacts, currentChatWidget->account());
+
 	chat_manager->setChatWidgetProperty(currentChatWidget->contacts(), "Geometry", rectToString(geometry()));
-	if (users.count() == 1)
-		users[0].setData("ChatGeometry", rectToString(geometry()));
+	if (contacts.count() == 1)
+		ules[0].setData("ChatGeometry", rectToString(geometry()));
 }
 
 void ChatWindow::closeEvent(QCloseEvent *e)

@@ -74,8 +74,8 @@ ChatWidget::ChatWidget(Account *initialAccount, const ContactList &contacts, QWi
 		userbox = new UserBox(Edit, false, Contacts, userlistContainer, "userbox");
 		userbox->setMinimumSize(QSize(30,30));
 
-		connect(userbox, SIGNAL(doubleClicked(UserListElement)), kadu, SLOT(sendMessage(UserListElement)));
-		connect(userbox, SIGNAL(returnPressed(UserListElement)), kadu, SLOT(sendMessage(UserListElement)));
+		connect(userbox, SIGNAL(doubleClicked(Contact)), kadu, SLOT(sendMessage(Contact)));
+		connect(userbox, SIGNAL(returnPressed(Contact)), kadu, SLOT(sendMessage(Contact)));
 		connect(userbox, SIGNAL(mouseButtonClicked(int, Q3ListBoxItem *, const QPoint &)),
 		kadu, SLOT(mouseButtonClicked(int, Q3ListBoxItem *)));
 
@@ -252,9 +252,6 @@ void ChatWidget::insertImage()
 {
 	kdebugf();
 
-	UserListElements users = UserListElements::fromContactList(Contacts,
-			AccountManager::instance()->defaultAccount());
-
 	ImageDialog* id = new ImageDialog(this);
 	id->setDir(config_file.readEntry("Chat", "LastImagePath"));
 	id->setWindowTitle(tr("Insert image"));
@@ -299,7 +296,7 @@ void ChatWidget::insertImage()
 		}
 		if (counter == 1 && Contacts.count() == 1)
 		{
-			if (!MessageBox::ask(tr("This file is too big for %1.\nDo you really want to send this image?\n").arg((*users.constBegin()).altNick())))
+			if (!MessageBox::ask(tr("This file is too big for %1.\nDo you really want to send this image?\n").arg(Contacts[0].display())))
 			{
 				QTimer::singleShot(0, this, SLOT(insertImage()));
 				kdebugf2();
@@ -307,7 +304,7 @@ void ChatWidget::insertImage()
 			}
 		}
 		else if (counter > 0 &&
-			!MessageBox::ask(tr("This file is too big for %1 of %2 contacts.\nDo you really want to send this image?\nSome of them probably will not get it.").arg(counter).arg(users.count())))
+			!MessageBox::ask(tr("This file is too big for %1 of %2 contacts.\nDo you really want to send this image?\nSome of them probably will not get it.").arg(counter).arg(Contacts.count())))
 		{
 			QTimer::singleShot(0, this, SLOT(insertImage()));
 			kdebugf2();
@@ -486,9 +483,7 @@ void ChatWidget::newMessage(Account* account, ContactList senders, const QString
 	QDateTime date;
 	date.setTime_t(time);
 
-	UserListElement sender = UserListElement::fromContact(senders[0], account);
-
-	Contact contact = sender.toContact(account);
+	Contact contact = senders[0];
 	ContactList receivers;
 	receivers << kadu->myself();
 
@@ -730,15 +725,6 @@ void ChatWidget::addEmoticon(QString emot)
 	emoticon_selector = NULL;
 }
 
-
-const UserGroup *ChatWidget::users() const
-{
-	UserListElements users = UserListElements::fromContactList(Contacts,
-			AccountManager::instance()->defaultAccount());
-
-	return new UserGroup(users);
-}
-
 const QString& ChatWidget::caption() const
 {
  	return Caption;
@@ -812,9 +798,6 @@ void ChatWidget::dropEvent(QDropEvent *e)
 {
 	QStringList files;
 
-	UserListElements users = UserListElements::fromContactList(Contacts,
-			AccountManager::instance()->defaultAccount());
-
 	if (decodeLocalFiles(e, files))
 	{
 		e->acceptProposedAction();
@@ -823,7 +806,7 @@ void ChatWidget::dropEvent(QDropEvent *e)
 		QStringList::iterator end = files.end();
 
 		for (; i != end; i++)
-			emit fileDropped(new UserGroup(users), *i);
+			emit fileDropped(Contacts, *i);
 	}
 }
 

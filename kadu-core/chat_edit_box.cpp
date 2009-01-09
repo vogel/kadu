@@ -62,7 +62,7 @@ bool ChatEditBox::supportsActionType(ActionDescription::ActionType type)
 UserBox * ChatEditBox::userBox()
 {
 	ChatWidget *cw = chatWidget();
-	if (cw && cw->users()->count() > 1)
+	if (cw && cw->contacts().count() > 1)
 		return cw->getUserbox();
 
 	return 0;
@@ -72,7 +72,7 @@ UserListElements ChatEditBox::userListElements()
 {
 	ChatWidget *cw = chatWidget();
 	if (cw)
-		return cw->users()->toUserListElements();
+		return UserListElements::fromContactList(cw->contacts(), cw->account());
 
 	return UserListElements();
 }

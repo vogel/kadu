@@ -164,12 +164,6 @@ public:
 	void newMessage(Account *account, ContactList senders, const QString &message, time_t time);
 
 	/**
-		\fn const UserGroup *users() const
-		Zwraca list� numer�w rozmowc�w.
-	**/
-	const UserGroup * users() const;
-
-	/**
 		\fn void repaintMessages()
 		Od�wie�a zawarto�� okna uwzgl�dniaj�c ewentualne
 		zmiany dokonane w kt�rej� wiadomo�ci z listy
@@ -372,7 +366,7 @@ signals:
 	\param users lista u�ytkownik�w
 		\param fileName nazwa pliku
 	**/
-	void fileDropped(const UserGroup *users, const QString &fileName);
+	void fileDropped(ContactList contacts, const QString &fileName);
 
 	void messageReceived(ChatWidget *);
 
