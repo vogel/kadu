@@ -568,7 +568,10 @@ Kadu::Kadu(QWidget *parent)
 	connect(statusMenu, SIGNAL(aboutToHide()), this, SLOT(statusMenuAboutToHide()));
 	connect(dockMenu, SIGNAL(aboutToHide()), this, SLOT(dockMenuAboutToHide()));
 	connect(RecentChatsMenu, SIGNAL(aboutToShow()), this, SLOT(createRecentChatsMenu()));
-
+#ifdef Q_OS_MAC
+	dockMenu->insertSeparator();
+	dockMenu->addAction(icons_manager->loadIcon("OpenChat"), tr("Show Pending Messages"), chat_manager, SLOT(openPendingMsgs()));
+#endif
 	dockMenu->insertSeparator();
 	dockMenu->addAction(icons_manager->loadIcon("Exit"), tr("&Exit Kadu"), this, SLOT(quit()));
 
