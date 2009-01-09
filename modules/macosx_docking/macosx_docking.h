@@ -25,6 +25,7 @@ class MacOSXDocking : public ConfigurationUiHandler, ConfigurationAwareObject
 		void startBounce();
 		void stopBounce();
 		void overlay(const QString& text);
+		void removeOverlay();
 	private slots:
 		void blockSettingIcon(bool &);
 		void trayPixmapChanged(const QIcon &, const QString &);

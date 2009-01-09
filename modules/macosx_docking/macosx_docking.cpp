@@ -144,7 +144,7 @@ void MacOSXDocking::messageListChanged(UserListElement ule)
 	else
 	{
 		if (overlayed)
-			overlay("");
+			removeOverlay();
 		if (isBouncing)
 			stopBounce();
 	}	
@@ -175,26 +175,35 @@ void MacOSXDocking::stopBounce()
 	}
 }
 
+void MacOSXDocking::removeOverlay()
+{
+	overlayed = false;
+
+	CGContextRef context = BeginCGContextForApplicationDockTile();
+	CGContextRestoreGState(context);
+	CGContextFlush(context);
+	EndCGContextForApplicationDockTile(context);
+
+	if (config_file.readBoolEntry("MacOSX Dock", "IconNotification", true))
+		qApp->setWindowIcon(pixmap);
+	else 
+		RestoreApplicationDockTileImage();
+}
+
 void MacOSXDocking::overlay(const QString& text)
 {
 	/* The following code is taken from PSI mac_dock sources */
 
-	// Create the context
-	if (text.isEmpty()) {
-		overlayed = false;
-		RestoreApplicationDockTileImage();
-		if (config_file.readBoolEntry("MacOSX Dock", "IconNotification", true))
-			qApp->setWindowIcon(pixmap);
-		return;
-	}
-
 	CGContextRef context = BeginCGContextForApplicationDockTile();
 
-	if (!overlayed) {
+	if (!overlayed)
+	{
+		CGContextSaveGState(context);
 		overlayed = true;
+
 		// Add some subtle drop down shadow
-		//CGSize s = { 2.0, -4.0 };
-		//CGContextSetShadow(context, s, 5.0);
+		CGSize s = { 2.0, -4.0 };
+		CGContextSetShadow(context, s, 5.0);
 	}
 
 	// Draw a circle
