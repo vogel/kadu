@@ -536,14 +536,13 @@ CreateNotifier UserBox::createNotifier;
 QList<ActionDescription *> UserBox::UserBoxActions;
 QList<ActionDescription *> UserBox::ManagementActions;
 
-UserBox::UserBox(KaduMainWindow *mainWindow, bool fancy, UserGroup *group, QWidget* parent, const char* name, Qt::WFlags f)
-	: Q3ListBox(parent, name, f), MainWindow(mainWindow), fancy(fancy), VisibleUsers(new UserGroup()),
-	Filters(), NegativeFilters(), sortHelper(), toRemove(), AppendProxy(), RemoveProxy(), comparer(new ULEComparer()),
+UserBox::UserBox(KaduMainWindow *mainWindow, bool fancy, ContactList contacts, QWidget* parent, const char* name, Qt::WFlags f)
+	: Q3ListBox(parent, name, f), MainWindow(mainWindow), fancy(fancy),
+	Contacts(contacts), sortHelper(), toRemove(), AppendProxy(), RemoveProxy(), comparer(new ULEComparer()),
 	refreshTimer(), lastMouseStopContact(Contact::null), tipTimer(),
 	verticalPositionTimer(), lastVerticalPosition(0)
 {
 	kdebugf();
-	Filters.append(group);
 
 	connect(AccountManager::instance(), SIGNAL(accountRegistered(Account *)),
 			this, SLOT(accountRegistered(Account *)));
@@ -571,12 +570,13 @@ UserBox::UserBox(KaduMainWindow *mainWindow, bool fancy, UserGroup *group, QWidg
 	setDescriptionsActionState();
 
 	connect(this, SIGNAL(selectionChanged()), this, SLOT(selectionChangedSlot()));
-
+/*
 	connect(group, SIGNAL(userAdded(UserListElement, bool, bool)),
 			this, SLOT(userAddedToGroup(UserListElement, bool, bool)));
 	connect(group, SIGNAL(userRemoved(UserListElement, bool, bool)),
 			this, SLOT(userRemovedFromGroup(UserListElement, bool, bool)));
-
+*/
+/*
 	connect(VisibleUsers, SIGNAL(userAdded(UserListElement, bool, bool)),
 			this, SLOT(userAddedToVisible(UserListElement, bool, bool)));
 	connect(VisibleUsers, SIGNAL(userRemoved(UserListElement, bool, bool)),
@@ -590,6 +590,7 @@ UserBox::UserBox(KaduMainWindow *mainWindow, bool fancy, UserGroup *group, QWidg
 			this, SLOT(removingProtocol(UserListElement, QString, bool, bool)));
 
 	VisibleUsers->addUsers(group);
+*/
 
 	addCompareFunction("Status", tr("Statuses"), compareStatus);
 	if (brokenStringCompare)
@@ -625,13 +626,13 @@ UserBox::~UserBox()
 {
 	kdebugf();
 
-	disconnect(VisibleUsers, SIGNAL(userRemoved(UserListElement, bool, bool)),
-			this, SLOT(userRemovedFromVisible(UserListElement, bool, bool)));
+// 	disconnect(VisibleUsers, SIGNAL(userRemoved(UserListElement, bool, bool)),
+// 			this, SLOT(userRemovedFromVisible(UserListElement, bool, bool)));
 
 	UserBoxes.remove(this);
 	
-	delete VisibleUsers;
-	VisibleUsers = 0;
+// 	delete VisibleUsers;
+// 	VisibleUsers = 0;
 	delete comparer;
 	comparer = 0;
 
@@ -797,7 +798,7 @@ void UserBox::refresh()
 	const unsigned int Count = count();
 	unsigned int i = 0;
 
-	bool doRefresh = false;
+	bool doRefresh = true;
 
 	if (fancy && (numColumns() != config_file.readNumEntry("Look", "UserBoxColumnCount", 1)))
 		doRefresh = true;
@@ -841,10 +842,12 @@ void UserBox::refresh()
 	// clear clears columns too...
 	if (fancy)
 		setColumnMode(config_file.readNumEntry("Look", "UserBoxColumnCount", 1));
-
+/*
 	for (std::vector<Contact>::const_iterator contact = sortHelper.begin(),
-		contactEnd = sortHelper.end(); contact != contactEnd; ++contact)
-		insertItem(new KaduListBoxPixmap(*contact));
+		contactEnd = sortHelper.end(); contact != contactEnd; ++contact)*/
+
+	foreach (Contact contact, Contacts)
+		insertItem(new KaduListBoxPixmap(contact));
 
 	// restore selected users
 	foreach(const QString &username, s_users)
@@ -925,14 +928,14 @@ void UserBox::refreshAllLater()
 
 void UserBox::messageFromUserAdded(Contact elem)
 {
-	if (visibleUsers()->contains(UserListElement::fromContact(elem, AccountManager::instance()->defaultAccount())))
-		refreshLater();
+// 	if (visibleUsers()->contains(UserListElement::fromContact(elem, AccountManager::instance()->defaultAccount())))
+// 		refreshLater();
 }
 
 void UserBox::messageFromUserDeleted(Contact elem)
 {
-	if (visibleUsers()->contains(UserListElement::fromContact(elem, AccountManager::instance()->defaultAccount())))
-		refreshLater();
+// 	if (visibleUsers()->contains(UserListElement::fromContact(elem, AccountManager::instance()->defaultAccount())))
+// 		refreshLater();
 }
 
 void UserBox::closeModule()
@@ -1151,7 +1154,7 @@ QList<UserBox::CmpFuncDesc> UserBox::compareFunctions() const
 {
 	return comparer->CmpFunctions;
 }
-
+/*
 void UserBox::applyFilter(UserGroup *g, bool forceRefresh)
 {
 	kdebugf();
@@ -1293,7 +1296,7 @@ void UserBox::removeNegativeFilter(UserGroup *g, bool forceRefresh)
 	}
 	kdebugf2();
 }
-
+*/
 void UserBox::addCompareFunction(const QString &id, const QString &trDescription,
 			int (*cmp)(const Contact &, const Contact &))
 {
@@ -1404,13 +1407,13 @@ void UserBox::protocolUserDataChanged(QString protocolName, UserListElement /*el
 }
 
 
-void UserBox::userAddedToVisible(UserListElement elem, bool /*massively*/, bool /*last*/)
-{
+// void UserBox::userAddedToVisible(UserListElement elem, bool /*massively*/, bool /*last*/)
+// {
 //	kdebugmf(KDEBUG_FUNCTION_START, "start: mass:\n", massively);
-	lastMouseStopContact = Contact::null;
-	sortHelper.push_back(elem.toContact(AccountManager::instance()->defaultAccount()));
-	refreshLater();
-}
+// 	lastMouseStopContact = Contact::null;
+// 	sortHelper.push_back(elem.toContact(AccountManager::instance()->defaultAccount()));
+// 	refreshLater();
+// }
 
 class torem
 {
@@ -1441,29 +1444,29 @@ class torem
 	}
 };
 
-void UserBox::userRemovedFromVisible(UserListElement elem, bool massively, bool last)
-{
-//	kdebugmf(KDEBUG_FUNCTION_START, "start: mass:%d\n", massively);
-	lastMouseStopContact = Contact::null;
-	Contact contact = elem.toContact();
-
-	if (massively)
-		toRemove.push_back(contact);
-	else
-		sortHelper.erase(std::remove(sortHelper.begin(), sortHelper.end(), contact), sortHelper.end());// the most optimal
-	if (massively && last)
-	{
-		torem pred(toRemove);
-		sortHelper.erase(std::remove_if(sortHelper.begin(), sortHelper.end(), pred), sortHelper.end());
-		toRemove.clear();
-	}
-	if (massively)
-		refreshLater();
-	else
-		refresh();
-//	kdebugf2();
-}
-
+// void UserBox::userRemovedFromVisible(UserListElement elem, bool massively, bool last)
+// {
+// //	kdebugmf(KDEBUG_FUNCTION_START, "start: mass:%d\n", massively);
+// 	lastMouseStopContact = Contact::null;
+// 	Contact contact = elem.toContact();
+// 
+// 	if (massively)
+// 		toRemove.push_back(contact);
+// 	else
+// 		sortHelper.erase(std::remove(sortHelper.begin(), sortHelper.end(), contact), sortHelper.end());// the most optimal
+// 	if (massively && last)
+// 	{
+// 		torem pred(toRemove);
+// 		sortHelper.erase(std::remove_if(sortHelper.begin(), sortHelper.end(), pred), sortHelper.end());
+// 		toRemove.clear();
+// 	}
+// 	if (massively)
+// 		refreshLater();
+// 	else
+// 		refresh();
+// //	kdebugf2();
+// }
+/*
 void UserBox::userAddedToGroup(UserListElement elem, bool massively, bool last)
 {
 	kdebugmf(KDEBUG_FUNCTION_START, "start: mass:%d\n", massively);
@@ -1522,7 +1525,7 @@ void UserBox::userRemovedFromGroup(UserListElement elem, bool massively, bool la
 	}
 //	kdebugf2();
 }
-
+*/
 void UserBox::contextMenuEvent(QContextMenuEvent *event)
 {
 	if (!itemAt(event->pos()))
@@ -1556,12 +1559,12 @@ void UserBox::contextMenuEvent(QContextMenuEvent *event)
 
 	menu->exec(event->globalPos());
 }
-
+/*
 const UserGroup *UserBox::visibleUsers() const
 {
 	return VisibleUsers;
-}
-
+}*/
+/*
 QList<UserGroup *> UserBox::filters() const
 {
 	return Filters;
@@ -1570,7 +1573,7 @@ QList<UserGroup *> UserBox::filters() const
 QList<UserGroup *> UserBox::negativeFilters() const
 {
 	return NegativeFilters;
-}
+}*/
 
 bool UserBox::currentUserExists() const
 {

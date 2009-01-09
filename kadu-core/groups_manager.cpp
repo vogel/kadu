@@ -41,6 +41,7 @@ void GroupsManager::closeModule()
 	groups_manager = 0;
 
 	UserBox *userbox = kadu->userbox();
+/*
 	userbox->removeNegativeFilter(blockingUsers);
 	userbox->removeNegativeFilter(blockedUsers);
 	userbox->removeFilter(onlineAndDescriptionUsers);
@@ -48,7 +49,7 @@ void GroupsManager::closeModule()
 	userbox->removeFilter(usersWithDescription);
 	userbox->removeNegativeFilter(anonymousUsers);
 	userbox->removeNegativeFilter(anonymousUsersWithoutMessages);
-
+*/
 	delete usersWithDescription;
 	usersWithDescription = 0;
 
@@ -134,9 +135,9 @@ void GroupsManager::setActiveGroup(const QString &name)
 			}
 		}
 	}
-	if (!currentGroup.isEmpty())
-		kadu->userbox()->removeFilter(group(currentGroup), false);
-	kadu->userbox()->applyFilter(group(name));
+//	if (!currentGroup.isEmpty())
+//		kadu->userbox()->removeFilter(group(currentGroup), false);
+// 	kadu->userbox()->applyFilter(group(name));
 	currentGroup = name;
 	kdebugf2();
 }
@@ -238,10 +239,10 @@ void GroupsManager::changeDisplayingBlocking(bool show)
 {
 	kdebugf();
 	showBlocking = show;
-	if (showBlocking)
-		kadu->userbox()->removeNegativeFilter(blockingUsers);
-	else
-		kadu->userbox()->applyNegativeFilter(blockingUsers);
+//	if (showBlocking)
+//		kadu->userbox()->removeNegativeFilter(blockingUsers);
+//	else
+//		kadu->userbox()->applyNegativeFilter(blockingUsers);
 	config_file.writeEntry("General", "ShowBlocking", showBlocking);
 	kdebugf2();
 }
@@ -250,10 +251,10 @@ void GroupsManager::changeDisplayingBlocked(bool show)
 {
 	kdebugf();
 	showBlocked = show;
-	if (showBlocked)
-		kadu->userbox()->removeNegativeFilter(blockedUsers);
-	else
-		kadu->userbox()->applyNegativeFilter(blockedUsers);
+//	if (showBlocked)
+//		kadu->userbox()->removeNegativeFilter(blockedUsers);
+//	else
+//		kadu->userbox()->applyNegativeFilter(blockedUsers);
 	config_file.writeEntry("General", "ShowBlocked", showBlocked);
 	kdebugf2();
 }
@@ -271,11 +272,11 @@ void GroupsManager::changeDisplayingOffline(UserBox *userBox, bool show)
 			action->setChecked(!showOffline);
 	}
 
- 	if (showOffline)
- 		userBox->removeNegativeFilter(offlineUsers);
- 	else
- 		userBox->applyNegativeFilter(offlineUsers);
- 	config_file.writeEntry("General", "ShowOffline", showOffline);
+//	if (showOffline)
+//		userBox->removeNegativeFilter(offlineUsers);
+//	else
+//		userBox->applyNegativeFilter(offlineUsers);
+	config_file.writeEntry("General", "ShowOffline", showOffline);
 	kdebugf2();
 }
 
@@ -292,10 +293,10 @@ void GroupsManager::changeDisplayingWithoutDescription(UserBox *userBox, bool sh
 			action->setChecked(!showWithoutDescription);
 	}
 
-	if (showWithoutDescription)
-		userBox->removeFilter(usersWithDescription);
-	else
-		userBox->applyFilter(usersWithDescription);
+// 	if (showWithoutDescription)
+// 		userBox->removeFilter(usersWithDescription);
+// 	else
+// 		userBox->applyFilter(usersWithDescription);
 	config_file.writeEntry("General", "ShowWithoutDescription", showWithoutDescription);
 	kdebugf2();
 }
@@ -313,10 +314,10 @@ void GroupsManager::changeDisplayingOnlineAndDescription(UserBox *userBox, bool 
 			action->setChecked(showOnlineAndDescription);
 	}
 
-	if (showOnlineAndDescription)
-		userBox->applyFilter(onlineAndDescriptionUsers);
-	else
-		userBox->removeFilter(onlineAndDescriptionUsers);
+// 	if (showOnlineAndDescription)
+// 		userBox->applyFilter(onlineAndDescriptionUsers);
+// 	else
+// 		userBox->removeFilter(onlineAndDescriptionUsers);
 
 	config_file.writeEntry("General", "ShowOnlineAndDescription", showOnlineAndDescription);
 

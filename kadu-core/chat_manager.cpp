@@ -434,7 +434,7 @@ void ChatManager::whoisActionActivated(QAction *sender, bool toggled)
 		return;
 	}
 	Account *defaultAccount = AccountManager::instance()->defaultAccount();
-	ContactList contacts = window->userListElements().toContactList(defaultAccount);
+	ContactList contacts = window->contacts();
 
 	if (contacts.count() == 0)
 		(new SearchDialog(kadu))->show();

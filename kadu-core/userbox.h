@@ -301,9 +301,12 @@ class KADUAPI UserBox : public Q3ListBox, ConfigurationAwareObject
 
 	ActionDescription *showDescriptionAction;
 
-	UserGroup *VisibleUsers;
-	QList<UserGroup *> Filters;
-	QList<UserGroup *> NegativeFilters;
+	ContactList Contacts;
+
+// 	UserGroup *VisibleUsers;
+// TOOD: 0.6.6
+// 	QList<UserGroup *> Filters;
+// 	QList<UserGroup *> NegativeFilters;
 	std::vector<Contact> sortHelper;
 	std::vector<Contact> toRemove;
 	QMap<const UserGroup *, UserListElements> AppendProxy;
@@ -332,11 +335,11 @@ private slots:
 	void returnPressedSlot(Q3ListBoxItem *item);
 	void currentChangedSlot(Q3ListBoxItem *item);
 
-	void userAddedToVisible(UserListElement elem, bool massively, bool last);
-	void userRemovedFromVisible(UserListElement elem, bool massively, bool last);
+// 	void userAddedToVisible(UserListElement elem, bool massively, bool last);
+// 	void userRemovedFromVisible(UserListElement elem, bool massively, bool last);
 
-	void userAddedToGroup(UserListElement elem, bool massively, bool last);
-	void userRemovedFromGroup(UserListElement elem, bool massively, bool last);
+// 	void userAddedToGroup(UserListElement elem, bool massively, bool last);
+// 	void userRemovedFromGroup(UserListElement elem, bool massively, bool last);
 
 	void userDataChanged(UserListElement elem, QString name, QVariant oldValue,
 						QVariant currentValue, bool massively, bool last);
@@ -404,7 +407,7 @@ public:
 		\param name nazwa kontrolki. Domy�lnie 0.
 		\param f flagi kontrolki. Domy�lnie 0.
 	**/
-	UserBox(KaduMainWindow *mainWindow, bool fancy, UserGroup *group = userlist, QWidget* parent = 0, const char* name = 0, Qt::WFlags f = 0);
+	UserBox(KaduMainWindow *mainWindow, bool fancy, ContactList contacts, QWidget* parent = 0, const char* name = 0, Qt::WFlags f = 0);
 
 	virtual ~UserBox();
 
@@ -545,14 +548,14 @@ public slots:
 		tylko te kontakty, kt�re nale�� do group.
 		\param group filtr
 	**/
-	void applyFilter(UserGroup *group, bool forceRefresh = true);
+// 	void applyFilter(UserGroup *group, bool forceRefresh = true);
 
 	/**
 		\fn void removeFilter(UserGroup *group)
 		Usuwa z bie��cego UserBoksa wskazany filtr "pozytywny".
 		\param group filtr
 	**/
-	void removeFilter(UserGroup *group, bool forceRefresh = true);
+// 	void removeFilter(UserGroup *group, bool forceRefresh = true);
 
 	/**
 		\fn void applyNegativeFilter(UserGroup *group)
@@ -560,14 +563,14 @@ public slots:
 		tylko te kontakty, kt�re nie nale�� do group.
 		\param group filtr
 	**/
-	void applyNegativeFilter(UserGroup *group, bool forceRefresh = true);
+// 	void applyNegativeFilter(UserGroup *group, bool forceRefresh = true);
 
 	/**
 		\fn void removeNegativeFilter(UserGroup *group)
 		Usuwa z bie��cego UserBoksa wskazany filtr "negatywny".
 		\param group filtr
 	**/
-	void removeNegativeFilter(UserGroup *group, bool forceRefresh = true);
+// 	void removeNegativeFilter(UserGroup *group, bool forceRefresh = true);
 
 	/**
 		\fn void removeCompareFunction(const QString &id)

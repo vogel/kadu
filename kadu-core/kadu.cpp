@@ -426,7 +426,7 @@ Kadu::Kadu(QWidget *parent)
 
 	// userbox
 	UserBox::initModule();
-	Userbox = new UserBox(this, true, userlist, this, "userbox");
+	Userbox = new UserBox(this, true, ContactManager::instance()->contacts(), this, "userbox");
 
 	hbox_layout->setStretchFactor(Userbox, 100);
 	hbox_layout->addWidget(GroupBar);
@@ -2109,10 +2109,11 @@ void Kadu::setDocked(bool docked, bool dontHideOnClose1)
 	dontHideOnClose = dontHideOnClose1;
 	qApp->setQuitOnLastWindowClosed(!Docked || dontHideOnClose);
 
+// TODO: 0.6.6
 // 	if (config_file.readBoolEntry("General", "ShowAnonymousWithMsgs") || !Docked || dontHideOnClose)
 // 	{
-	Userbox->removeNegativeFilter(anonymousUsers);
-	Userbox->applyNegativeFilter(anonymousUsersWithoutMessages);
+// 	Userbox->removeNegativeFilter(anonymousUsers);
+// 	Userbox->applyNegativeFilter(anonymousUsersWithoutMessages);
 // 	}
 // 	else
 // 	{

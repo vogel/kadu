@@ -71,8 +71,7 @@ ChatWidget::ChatWidget(Account *initialAccount, const ContactList &contacts, QWi
 		uc_layout->setMargin(0);
 		uc_layout->setSpacing(0);
 
-		UserListElements forUserBox = UserListElements::fromContactList(Contacts, CurrentAccount);
-		userbox = new UserBox(Edit, false, new UserGroup(forUserBox), userlistContainer, "userbox");
+		userbox = new UserBox(Edit, false, Contacts, userlistContainer, "userbox");
 		userbox->setMinimumSize(QSize(30,30));
 
 		connect(userbox, SIGNAL(doubleClicked(UserListElement)), kadu, SLOT(sendMessage(UserListElement)));
