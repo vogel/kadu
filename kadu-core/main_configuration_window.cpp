@@ -15,6 +15,9 @@
 #include "configuration/config-file-data-manager.h"
 #include "accounts/account.h"
 #include "accounts/account_manager.h"
+#include "contacts/contact.h"
+#include "contacts/contact-data.h"
+#include "contacts/contact-account-data.h"
 #include "chat_message.h"
 #include "chat_messages_view.h"
 #include "config_file.h"
@@ -22,6 +25,7 @@
 #include "../modules/gadu_protocol/gadu.h"
 #include "icons_manager.h"
 #include "kadu.h"
+#include "protocols/status.h"
 #include "userlistelement.h"
 
 #include "main_configuration_window.h"
@@ -200,34 +204,35 @@ void MainConfigurationWindow::prepareChatPreview(Preview *preview, bool append)
 {
 	kdebugf();
 
-	UserStatus status;
-	status.setBusy(qApp->translate("@default", "Description"));
+	Status status(Status::Busy, qApp->translate("@default", "Description"));
 
-	UserListElement example;
-	example.addProtocol("Gadu", "999999");
-	example.setStatus("Gadu", status);
+	Contact example;
+	//example.addAccountData(ContactAccountData(AccountManager::instance()->defaultAccount(), "999999"));
+	//ContactAccountData *example_data = example.accountData(AccountManager::instance()->defaultAccount());
+	//example_data->setStatus(status);
+	//example_data->setAddressAndPort(QHostAddress(2130706433), 80);
+	//example_data->setDNSName("Gadu", "host.server.net");
+
 	example.setFirstName(qApp->translate("@default", "Mark"));
 	example.setLastName(qApp->translate("@default", "Smith"));
 	example.setNickName(qApp->translate("@default", "Jimbo"));
-	example.setAltNick(qApp->translate("@default", "Jimbo"));
+	example.setDisplay(qApp->translate("@default", "Jimbo"));
 	example.setMobile("+48123456789");
 	example.setEmail("jimbo@mail.server.net");
 	example.setHomePhone("+481234567890");
-	example.setAddressAndPort("Gadu", QHostAddress(2130706433), 80);
-	example.setDNSName("Gadu", "host.server.net");
 
 	preview->setResetBackgroundColor(config_file.readEntry("Look", "ChatBgColor"));
 
-	Account *account = AccountManager::instance()->defaultAccount();
-	ContactList receivers = UserListElements(example).toContactList(account);
+	ContactList receivers;
+	receivers.append(example);
 	ChatMessage *chatMessage = new ChatMessage(kadu->myself(), receivers, tr("Your message"), TypeSent,
 		QDateTime::currentDateTime(), QDateTime::currentDateTime());
 	chatMessage->setSeparatorSize(0);
-	preview->addObjectToParse(UserListElement::fromContact(kadu->myself(), account), chatMessage);
+	preview->addObjectToParse(kadu->myself() , chatMessage);
 	if (append)
 		chatMessages.append(chatMessage);
 
-	chatMessage = new ChatMessage(example.toContact(account), kadu->myself(),
+	chatMessage = new ChatMessage(example, kadu->myself(),
 			tr("Message from Your friend"), TypeReceived,
 			QDateTime::currentDateTime(), QDateTime::currentDateTime());
 	chatMessage->setSeparatorSize(4);

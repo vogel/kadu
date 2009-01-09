@@ -13,7 +13,7 @@
 #include <QtCore/QMap>
 #include <QtGui/QWidget>
 
-#include "userlistelement.h"
+#include "contacts/contact.h"
 
 class QComboBox;
 class QLineEdit;
@@ -57,7 +57,7 @@ class SyntaxEditor : public QWidget
 {
 	Q_OBJECT
 
-	UserListElement example;
+	Contact example;
 
 	SyntaxList *syntaxList;
 	QComboBox *syntaxListCombo;

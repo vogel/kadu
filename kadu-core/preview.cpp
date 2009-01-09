@@ -12,8 +12,10 @@
 
 #include "accounts/account_manager.h"
 #include "config_file.h"
+#include "contacts/contact-account-data.h"
 #include "kadu_parser.h"
 #include "misc.h"
+#include "protocols/status.h"
 
 #include "preview.h"
 
@@ -23,20 +25,22 @@ Preview::Preview(QWidget *parent)
 	setFixedHeight(170);
 	setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored);
 
-	UserStatus status;
-	status.setBusy(qApp->translate("@default", "Description"));
+	Status status(Status::Busy, qApp->translate("@default", "Description"));
 
-	ule.addProtocol("Gadu", "999999");
-	ule.setStatus("Gadu", status);
-	ule.setFirstName(qApp->translate("@default", "Mark"));
-	ule.setLastName(qApp->translate("@default", "Smith"));
-	ule.setNickName(qApp->translate("@default", "Jimbo"));
-	ule.setAltNick(qApp->translate("@default", "Jimbo"));
-	ule.setMobile("+48123456789");
-	ule.setEmail("jimbo@mail.server.net");
-	ule.setHomePhone("+481234567890");
-	ule.setAddressAndPort("Gadu", QHostAddress(2130706433), 80);
-	ule.setDNSName("Gadu", "host.server.net");
+	//contact.addAccountData(ContactAccountData(AccountManager::instance()->defaultAccount(), "999999"));
+	//ContactAccountData *contact_data = contact.accountData(AccountManager::instance()->defaultAccount());
+	//contact_data->setStatus(status);
+	//contact_data->setAddressAndPort(QHostAddress(2130706433), 80);
+	//contact_data->setDNSName("Gadu", "host.server.net");
+
+	contact.setFirstName(qApp->translate("@default", "Mark"));
+	contact.setLastName(qApp->translate("@default", "Smith"));
+	contact.setNickName(qApp->translate("@default", "Jimbo"));
+	contact.setDisplay(qApp->translate("@default", "Jimbo"));
+	contact.setMobile("+48123456789");
+	contact.setEmail("jimbo@mail.server.net");
+	contact.setHomePhone("+481234567890");
+
 }
 
 Preview::~Preview()
@@ -57,9 +61,9 @@ void Preview::syntaxChanged(const QString &content)
 
 	if (count)
 		for (int i = 0; i < count; i++)
-			text += KaduParser::parse(syntax, ules[i].toContact(AccountManager::instance()->defaultAccount()), objectsToParse.at(i));
+			text += KaduParser::parse(syntax, contacts[i], objectsToParse.at(i));
 	else
-		text = KaduParser::parse(syntax, ule.toContact(AccountManager::instance()->defaultAccount()));
+		text = KaduParser::parse(syntax, contact);
 
 	emit needFixup(text);
 

@@ -10,18 +10,17 @@
 #ifndef PREVIEW_H
 #define PREVIEW_H
 
-#include "userlistelement.h"
-#include "usergroup.h"
-
+#include "contacts/contact.h"
+#include "contacts/contact-list.h"
 #include "kadu_text_browser.h"
 
 class Preview : public KaduTextBrowser
 {
 	Q_OBJECT
 
-	UserListElement ule;
+	Contact contact;
 	QObjectList objectsToParse;
-	UserListElements ules;
+	ContactList contacts;
 	QString resetBackgroundColor;
 
 public:
@@ -29,7 +28,7 @@ public:
 	~Preview();
 
 	void setResetBackgroundColor(const QString &resetBackgroundColor) { this->resetBackgroundColor = resetBackgroundColor; }
-	void addObjectToParse(UserListElement ule, QObject *object) { ules.append(ule); objectsToParse.append(object); }
+	void addObjectToParse(Contact contact, QObject *object) { contacts.append(contact); objectsToParse.append(object); }
 
 public slots:
 	void syntaxChanged(const QString &content);
