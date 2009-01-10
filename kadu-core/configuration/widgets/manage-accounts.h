@@ -33,6 +33,8 @@ class ManageAccounts : public QWidget
 	QMenu * createGuiAddAccountMenu();
 	void loadAccounts();
 
+	Account * currentAccount();
+
 private slots:
 	void addAccount();
 	void editAccount();

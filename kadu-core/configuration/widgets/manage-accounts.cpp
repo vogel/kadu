@@ -106,6 +106,15 @@ void ManageAccounts::loadAccounts()
 	}*/
 }
 
+Account * ManageAccounts::currentAccount()
+{
+	AccountsModel *model = dynamic_cast<AccountsModel *>(AccountsListWidget->model());
+	if (0 == model)
+		return 0;
+
+	return model->account(AccountsListWidget->currentIndex());
+}
+
 void ManageAccounts::addAccount()
 {
 	QAction *senderAction = dynamic_cast<QAction *>(sender());
@@ -145,44 +154,31 @@ void ManageAccounts::addAccount()
 
 void ManageAccounts::removeAccount()
 {
-// 	QListWidgetItem *currentAccountItem = AccountsListWidget->currentItem();
-// 	if (0 == currentAccountItem)
-// 		return;
-// 
-// 	QUuid accountUuid(currentAccountItem->toolTip());
-// 
-// 	Account *account = AccountManager::instance()->account(accountUuid);
-// 	if (account)
-// 	{
-// 		AccountManager::instance()->unregisterAccount(account);
-// 		loadAccounts();
-// 	}
+	Account *account = currentAccount();
+	if (account)
+	{
+		AccountManager::instance()->unregisterAccount(account);
+		loadAccounts();
+	}
 }
 
 void ManageAccounts::editAccount()
 {
-// 	QListWidgetItem *currentAccountItem = AccountsListWidget->currentItem();
-// 	if (0 == currentAccountItem)
-// 		return;
-// 
-// 	QString accountName = currentAccountItem->toolTip();
-// 	Account *account = AccountManager::instance()->account(accountName);
-// 	if (0 == account)
-// 		return;
-// 
-// 	Protocol *protocol = account->protocol();
-// 	if (0 == protocol)
-// 		return;
-// 
-// 	ProtocolFactory *protocolFactory = protocol->protocolFactory();
-// 	if (0 == protocolFactory)
-// 		return;
-// 
-// 	ConfigurationWindow *configurationDialog = protocolFactory->newConfigurationDialog(account->data(), this);
-// 	if (0 == configurationDialog)
-// 		return;
-// 
-// 	configurationDialog->setWindowModality(Qt::WindowModal);
-// 	if (QDialog::Accepted == configurationDialog->exec())
-// 		loadAccounts();
+	Account *account = currentAccount();
+
+	Protocol *protocol = account->protocol();
+	if (0 == protocol)
+		return;
+
+	ProtocolFactory *protocolFactory = protocol->protocolFactory();
+	if (0 == protocolFactory)
+		return;
+
+	ConfigurationWindow *configurationDialog = protocolFactory->newConfigurationDialog(account->data(), this);
+	if (0 == configurationDialog)
+		return;
+
+	configurationDialog->setWindowModality(Qt::WindowModal);
+	if (QDialog::Accepted == configurationDialog->exec())
+		loadAccounts();
 }

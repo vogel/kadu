@@ -26,20 +26,16 @@ int AccountsModel::rowCount(const QModelIndex &parent) const
 
 QVariant AccountsModel::data(const QModelIndex &index, int role) const
 {
-	if (!index.isValid())
+	Account *acc = account(index);
+	if (0 == acc)
 		return QVariant();
-
-	if (index.row() >= rowCount())
-		return QVariant();
-
-	Account *account = AccountManager::instance()->accounts().at(index.row());
 
 	switch (role)
 	{
 		case Qt::DisplayRole:
-			return account->name();
+			return acc->name();
 		case Qt::DecorationRole:
-			return account->protocol()->icon();
+			return acc->protocol()->icon();
 		default:
 			return QVariant();
 	}
@@ -54,4 +50,15 @@ QVariant AccountsModel::headerData(int section, Qt::Orientation orientation, int
 		return QString("Column %1").arg(section);
 	else
 		return QString("Row %1").arg(section);
+}
+
+Account * AccountsModel::account(const QModelIndex &index) const
+{
+	if (!index.isValid())
+		return 0;
+
+	if (index.row() >= rowCount())
+		return 0;
+
+	return AccountManager::instance()->accounts().at(index.row());
 }

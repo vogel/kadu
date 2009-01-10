@@ -14,6 +14,8 @@
 #include <QtCore/QModelIndex>
 #include <QtCore/QStringList>
 
+class Account;
+
 class AccountsModel : public QAbstractListModel
 {
 	Q_OBJECT
@@ -24,6 +26,8 @@ public:
 	virtual int rowCount(const QModelIndex &parent = QModelIndex()) const;
 	virtual QVariant data(const QModelIndex &index, int role) const;
 	virtual QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const;
+
+	Account * account(const QModelIndex &index) const;
 
 };
 
