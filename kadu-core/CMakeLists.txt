@@ -4,6 +4,8 @@ set (kadu_SRCS
 	accounts/account_data.cpp
 	accounts/account_manager.cpp
 
+	accounts/model/accounts-model.cpp
+
 	contacts/contact.cpp
 	contacts/contact-account-data.cpp
 	contacts/contact-data.cpp
@@ -111,6 +113,8 @@ set (kadu_MOC_SRCS
 	accounts/account.h
 	accounts/account_data.h
 	accounts/account_manager.h
+
+	accounts/model/accounts-model.h
 
 	contacts/contact.h
 	contacts/contact-account-data.h

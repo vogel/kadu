@@ -17,10 +17,15 @@
 #include "accounts/account.h"
 #include "accounts/account_data.h"
 #include "accounts/account_manager.h"
+
+#include "accounts/model/accounts-model.h"
+
 #include "gui/widgets/configuration/configuration-window.h"
+
 #include "protocols/protocol.h"
 #include "protocols/protocol_factory.h"
 #include "protocols/protocols_manager.h"
+
 #include "icons_manager.h"
 
 #include "manage-accounts.h"
@@ -38,7 +43,9 @@ ManageAccounts::~ManageAccounts()
 
 void ManageAccounts::createGui()
 {
-	AccountsListWidget = new QListWidget(this);
+	AccountsListWidget = new QListView(this);
+	AccountsListWidget->setModel(new AccountsModel(AccountsListWidget));
+
 	AddAccountButton = new QPushButton(tr("Add account..."), this);
 	AddAccountButton->setMenu(createGuiAddAccountMenu());
 
@@ -84,7 +91,7 @@ QMenu * ManageAccounts::createGuiAddAccountMenu()
 }
 
 void ManageAccounts::loadAccounts()
-{
+{/*
 	AccountsListWidget->clear();
 
 	foreach (Account *account, AccountManager::instance()->accounts())
@@ -96,7 +103,7 @@ void ManageAccounts::loadAccounts()
 		accountListWidgetItem->setIcon(account->protocol()->icon());
 
 		AccountsListWidget->addItem(accountListWidgetItem);
-	}
+	}*/
 }
 
 void ManageAccounts::addAccount()
@@ -138,44 +145,44 @@ void ManageAccounts::addAccount()
 
 void ManageAccounts::removeAccount()
 {
-	QListWidgetItem *currentAccountItem = AccountsListWidget->currentItem();
-	if (0 == currentAccountItem)
-		return;
-
-	QUuid accountUuid(currentAccountItem->toolTip());
-
-	Account *account = AccountManager::instance()->account(accountUuid);
-	if (account)
-	{
-		AccountManager::instance()->unregisterAccount(account);
-		loadAccounts();
-	}
+// 	QListWidgetItem *currentAccountItem = AccountsListWidget->currentItem();
+// 	if (0 == currentAccountItem)
+// 		return;
+// 
+// 	QUuid accountUuid(currentAccountItem->toolTip());
+// 
+// 	Account *account = AccountManager::instance()->account(accountUuid);
+// 	if (account)
+// 	{
+// 		AccountManager::instance()->unregisterAccount(account);
+// 		loadAccounts();
+// 	}
 }
 
 void ManageAccounts::editAccount()
 {
-	QListWidgetItem *currentAccountItem = AccountsListWidget->currentItem();
-	if (0 == currentAccountItem)
-		return;
-
-	QString accountName = currentAccountItem->toolTip();
-	Account *account = AccountManager::instance()->account(accountName);
-	if (0 == account)
-		return;
-
-	Protocol *protocol = account->protocol();
-	if (0 == protocol)
-		return;
-
-	ProtocolFactory *protocolFactory = protocol->protocolFactory();
-	if (0 == protocolFactory)
-		return;
-
-	ConfigurationWindow *configurationDialog = protocolFactory->newConfigurationDialog(account->data(), this);
-	if (0 == configurationDialog)
-		return;
-
-	configurationDialog->setWindowModality(Qt::WindowModal);
-	if (QDialog::Accepted == configurationDialog->exec())
-		loadAccounts();
+// 	QListWidgetItem *currentAccountItem = AccountsListWidget->currentItem();
+// 	if (0 == currentAccountItem)
+// 		return;
+// 
+// 	QString accountName = currentAccountItem->toolTip();
+// 	Account *account = AccountManager::instance()->account(accountName);
+// 	if (0 == account)
+// 		return;
+// 
+// 	Protocol *protocol = account->protocol();
+// 	if (0 == protocol)
+// 		return;
+// 
+// 	ProtocolFactory *protocolFactory = protocol->protocolFactory();
+// 	if (0 == protocolFactory)
+// 		return;
+// 
+// 	ConfigurationWindow *configurationDialog = protocolFactory->newConfigurationDialog(account->data(), this);
+// 	if (0 == configurationDialog)
+// 		return;
+// 
+// 	configurationDialog->setWindowModality(Qt::WindowModal);
+// 	if (QDialog::Accepted == configurationDialog->exec())
+// 		loadAccounts();
 }

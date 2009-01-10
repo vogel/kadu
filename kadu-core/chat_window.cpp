@@ -86,6 +86,9 @@ void ChatWindow::kaduRestoreGeometry()
 	ContactList contacts = currentChatWidget->contacts();
 	UserListElements ules = UserListElements::fromContactList(contacts, currentChatWidget->account());
 
+	if (0 == ules.count())
+		return;
+
 	QRect geom = stringToRect(chat_manager->chatWidgetProperty(currentChatWidget->contacts(), "Geometry").toString());
 
 	if (geom.isEmpty() && contacts.count() == 1)
@@ -130,7 +133,7 @@ void ChatWindow::kaduStoreGeometry()
 	UserListElements ules = UserListElements::fromContactList(contacts, currentChatWidget->account());
 
 	chat_manager->setChatWidgetProperty(currentChatWidget->contacts(), "Geometry", rectToString(geometry()));
-	if (contacts.count() == 1)
+	if (ules.count() == 1)
 		ules[0].setData("ChatGeometry", rectToString(geometry()));
 }
 

@@ -12,7 +12,7 @@
 
 #include <QtGui/QWidget>
 
-class QListWidget;
+class QListView;
 class QMenu;
 class QPushButton;
 
@@ -22,7 +22,7 @@ class ManageAccounts : public QWidget
 {
 	Q_OBJECT
 
-	QListWidget *AccountsListWidget;
+	QListView *AccountsListWidget;
 	QPushButton *AddAccountButton;
 	QPushButton *EditAccountButton;
 	QPushButton *RemoveAccountButton;
