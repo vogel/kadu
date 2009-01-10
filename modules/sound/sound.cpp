@@ -290,6 +290,8 @@ void SoundManager::configurationWindowApplied()
 
 	if (themesComboBox->currentItem() != 0)
 		applyTheme(themesComboBox->currentText());
+
+	configurationWidget->themeChanged(themesComboBox->currentIndex());
 }
 
 void SoundManager::import_0_5_0_configuration()

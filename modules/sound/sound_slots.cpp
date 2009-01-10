@@ -79,7 +79,14 @@ void SoundConfigurationWidget::themeChanged(int index)
 {
 	warning->setShown(index != 0);
 	soundFileSelectFile->setEnabled(index == 0);
-}
+
+	//refresh soundFiles
+	foreach (const QString &key, soundFiles.keys())
+	{
+		soundFiles[key] = config_file.readEntry("Sounds", key + "_sound");
+		if (key == currentNotifyEvent)
+			soundFileSelectFile->setFile(soundFiles[key]);
+	}}
 
 SoundSlots::SoundSlots(bool firstLoad, QObject *parent)
 	: QObject(parent),
