@@ -849,7 +849,7 @@ void Kadu::notifyAboutUserActionActivated(QAction *sender, bool toggled)
 			on = false;
 			break;
 		}
-	
+
 	foreach(const UserListElement &user, users)
 		//TODO: 0.6.6
 		if (user.notify() == on)
@@ -1622,6 +1622,17 @@ bool Kadu::close(bool quit)
 				setOffline(config_file.readEntry("General", "DisconnectDescription"));
 
 		xml_config_file->makeBackup();
+
+#if 0
+		status_changer_manager->unregisterStatusChanger(splitStatusChanger);
+		delete splitStatusChanger;
+		splitStatusChanger = 0;
+#endif
+
+		status_changer_manager->unregisterStatusChanger(userStatusChanger);
+		delete userStatusChanger;
+		userStatusChanger = 0;
+
 		ModulesManager::closeModule();
 
 		Updates::closeModule();
@@ -1660,16 +1671,6 @@ bool Kadu::close(bool quit)
 		disconnect(Userbox, SIGNAL(mouseButtonClicked(int, Q3ListBoxItem *, const QPoint &)),
 				this, SLOT(mouseButtonClicked(int, Q3ListBoxItem *)));
 		disconnect(Userbox, SIGNAL(currentChanged(Contact)), this, SLOT(currentChanged(Contact)));
-
-#if 0
-		status_changer_manager->unregisterStatusChanger(splitStatusChanger);
-		delete splitStatusChanger;
-		splitStatusChanger = 0;
-#endif
-
-		status_changer_manager->unregisterStatusChanger(userStatusChanger);
-		delete userStatusChanger;
-		userStatusChanger = 0;
 
 		StatusChangerManager::closeModule();
 

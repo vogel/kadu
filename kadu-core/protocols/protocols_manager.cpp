@@ -7,9 +7,11 @@
  *                                                                         *
  ***************************************************************************/
 
+#include "accounts/account_manager.h"
 #include "debug.h"
 #include "misc.h"
 #include "protocol_factory.h"
+#include "xml_config_file.h"
 
 #include "protocols_manager.h"
 
@@ -34,13 +36,17 @@ ProtocolsManager::~ProtocolsManager()
 void ProtocolsManager::registerProtocolFactory(const QString &name, ProtocolFactory *factory)
 {
 	if (0 != factory && !registeredFactories.contains(name))
+	{
 		registeredFactories[name] = factory;
+		AccountManager::instance()->loadConfiguration(xml_config_file, name);
+	}
 }
 
 void ProtocolsManager::unregisterProtocolFactory(const QString &name)
 {
 	if (registeredFactories.contains(name))
 	{
+		AccountManager::instance()->storeConfiguration(xml_config_file, name);
 		delete registeredFactories[name];
 		registeredFactories.remove(name);
 	}

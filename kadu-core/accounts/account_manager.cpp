@@ -8,8 +8,11 @@
  ***************************************************************************/
 
 #include "account.h"
+#include "account_data.h"
 #include "config_file.h"
+#include "debug.h"
 #include "protocols/protocol.h"
+#include "protocols/protocol_factory.h"
 #include "protocols/protocols_manager.h"
 #include "xml_config_file.h"
 
@@ -33,7 +36,7 @@ AccountManager::~AccountManager()
 {
 }
 
-void AccountManager::loadConfiguration(XmlConfigFile *configurationStorage)
+void AccountManager::loadConfiguration(XmlConfigFile *configurationStorage, const QString &name)
 {
 	QDomElement accountsNode = configurationStorage->getNode("Accounts", XmlConfigFile::ModeFind);
 	if (accountsNode.isNull())
@@ -54,20 +57,30 @@ void AccountManager::loadConfiguration(XmlConfigFile *configurationStorage)
 		Account *account = new Account(uuid);
 
 		if (account->loadConfiguration(configurationStorage, accountElement))
-			registerAccount(account);
+			{
+				if (account->protocol()->protocolFactory()->name() == name || name.isNull())
+					registerAccount(account);
+				else
+					delete account;
+			}
 		else
 			delete account;
 	}
 }
 
-void AccountManager::storeConfiguration(XmlConfigFile *configurationStorage)
+void AccountManager::storeConfiguration(XmlConfigFile *configurationStorage, const QString &name)
 {
 	QDomElement accountsNode = configurationStorage->getNode("Accounts");
 
 	foreach (Account *account, Accounts)
 	{
-		QDomElement accountNode = configurationStorage->getUuidNode(accountsNode, "Account", account->uuid(), XmlConfigFile::ModeCreate);
-		account->storeConfiguration(configurationStorage, accountNode);
+		if (account->protocol()->protocolFactory()->name() == name || name.isNull())
+		{
+			QDomElement accountNode = configurationStorage->getUuidNode(accountsNode, "Account", account->uuid(), XmlConfigFile::ModeCreate);
+			account->storeConfiguration(configurationStorage, accountNode);
+			if (!name.isNull())
+				unregisterAccount(account);
+		}
 	}
 }
 
@@ -94,6 +107,16 @@ Account * AccountManager::account(const QUuid &uuid)
 		return Accounts[uuid];
 
 	return 0;
+}
+const QList<Account *> AccountManager::byProtocolName(const QString &name)
+{
+	QList<Account *> list;
+	foreach (Account *account, Accounts)
+	{
+		if (account->protocol()->protocolFactory()->name() == name)
+			list.append(account);
+	}
+	return list;
 }
 
 void AccountManager::registerAccount(Account *account)

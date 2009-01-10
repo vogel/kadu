@@ -34,14 +34,17 @@ class KADUAPI AccountManager : public QObject
 public:
 	static AccountManager * instance();
 
-	void loadConfiguration(XmlConfigFile *configurationStorage);
-	void storeConfiguration(XmlConfigFile *configurationStorage);
+	//TODO: 0.6.6
+	void loadConfiguration(XmlConfigFile *configurationStorage, const QString &name = QString::null);
+	//TODO: 0.6.6
+	void storeConfiguration(XmlConfigFile *configurationStorage, const QString &name = QString::null);
 
 	Account * defaultAccount();
 	Account * createAccount(const QString &protocolName, AccountData *accountData);
 	Account * account(const QUuid &uuid);
 
 	const QList<Account *> accounts() { return Accounts.values(); }
+	const QList<Account *> byProtocolName(const QString &name);
 
 	void registerAccount(Account *account);
 	void unregisterAccount(Account *account);
