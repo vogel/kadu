@@ -7,35 +7,34 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef ACCOUNTS_MODEL
-#define ACCOUNTS_MODEL
+#ifndef CONTACTS_MODEL
+#define CONTACTS_MODEL
 
 #include <QtCore/QAbstractListModel>
 #include <QtCore/QModelIndex>
 
-class Account;
+class Contact;
 
-class AccountsModel : public QAbstractListModel
+class ContactsModel : public QAbstractListModel
 {
 	Q_OBJECT
 
 private slots:
-	void accountAboutToBeRegistered(Account *account);
-	void accountRegistered(Account *account);
-	void accountAboutToBeUnregistered(Account *account);
-	void accountUnregistered(Account *account);
+	void contactAboutToBeAdded(Contact &contact);
+	void contactAdded(Contact &contact);
+	void contactAboutToBeRemoved(Contact &contact);
+	void contactRemoved(Contact &contact);
 
 public:
-	AccountsModel(QObject *parent = 0);
-	virtual ~AccountsModel();
+	ContactsModel(QObject *parent = 0);
+	virtual ~ContactsModel();
 
 	virtual int rowCount(const QModelIndex &parent = QModelIndex()) const;
 	virtual QVariant data(const QModelIndex &index, int role) const;
 	virtual QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const;
 
-	Account * account(const QModelIndex &index) const;
-	int accountIndex(Account *account);
+	Contact contact(const QModelIndex &index) const;
 
 };
 
-#endif // ACCOUNTS_MODEL
+#endif // CONTACTS_MODEL

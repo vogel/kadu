@@ -13,10 +13,15 @@ set (kadu_SRCS
 	contacts/contact-manager.cpp
 	contacts/contact-list-configuration-helper.cpp
 
+	contacts/model/contacts-model.cpp
+
 	configuration/account-data-manager.cpp
 	configuration/config-file-data-manager.cpp
 
 	configuration/widgets/manage-accounts.cpp
+
+	gui/widgets/contacts-list-widget.cpp
+	gui/widgets/contacts-list-widget-delegate.cpp
 
 	gui/widgets/configuration/config-action-button.cpp
 	gui/widgets/configuration/config-check-box.cpp
@@ -123,10 +128,15 @@ set (kadu_MOC_SRCS
 	contacts/contact-manager.h
 	contacts/contact-list-configuration-helper.h
 
+	contacts/model/contacts-model.h
+
 	configuration/config-file-data-manager.h
 	configuration/configuration-window-data-manager.h
 
 	configuration/widgets/manage-accounts.h
+
+	gui/widgets/contacts-list-widget.h
+	gui/widgets/contacts-list-widget-delegate.h
 
 	gui/widgets/configuration/config-action-button.h
 	gui/widgets/configuration/config-check-box.h

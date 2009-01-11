@@ -24,6 +24,7 @@ class Q3ListBoxItem;
 
 class Account;
 class ActionDescription;
+class ContactsListWidget;
 class KaduTabBar;
 class KaduTextBrowser;
 class UserGroup;
@@ -100,7 +101,10 @@ private:
 	QMenu *HelpMenu;
 	QMenu *RecentChatsMenu;
 	KaduTabBar *GroupBar;
+
 	UserBox *Userbox;
+	ContactsListWidget *ContactsWidget;
+
 	QWidget *MainWidget;
 	QVBoxLayout *MainLayout;
 

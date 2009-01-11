@@ -17,26 +17,26 @@
 AccountsModel::AccountsModel(QObject *parent)
 	: QAbstractListModel(parent)
 {
-	connect(AccountManager::instance(), SIGNAL(accountRegistered(Account *)),
-			this, SLOT(accountRegistered(Account *)));
 	connect(AccountManager::instance(), SIGNAL(accountAboutToBeRegistered(Account *)),
 			this, SLOT(accountAboutToBeRegistered(Account *)));
-	connect(AccountManager::instance(), SIGNAL(accountUnregistered(Account *)),
-			this, SLOT(accountUnregistered(Account *)));
+	connect(AccountManager::instance(), SIGNAL(accountRegistered(Account *)),
+			this, SLOT(accountRegistered(Account *)));
 	connect(AccountManager::instance(), SIGNAL(accountAboutToBeUnregistered(Account *)),
 			this, SLOT(accountAboutToBeUnregistered(Account *)));
+	connect(AccountManager::instance(), SIGNAL(accountUnregistered(Account *)),
+			this, SLOT(accountUnregistered(Account *)));
 }
 
 AccountsModel::~AccountsModel()
 {
-	disconnect(AccountManager::instance(), SIGNAL(accountRegistered(Account *)),
-			this, SLOT(accountRegistered(Account *)));
 	disconnect(AccountManager::instance(), SIGNAL(accountAboutToBeRegistered(Account *)),
 			this, SLOT(accountAboutToBeRegistered(Account *)));
-	disconnect(AccountManager::instance(), SIGNAL(accountUnregistered(Account *)),
-			this, SLOT(accountUnregistered(Account *)));
+	disconnect(AccountManager::instance(), SIGNAL(accountRegistered(Account *)),
+			this, SLOT(accountRegistered(Account *)));
 	disconnect(AccountManager::instance(), SIGNAL(accountAboutToBeUnregistered(Account *)),
 			this, SLOT(accountAboutToBeUnregistered(Account *)));
+	disconnect(AccountManager::instance(), SIGNAL(accountUnregistered(Account *)),
+			this, SLOT(accountUnregistered(Account *)));
 }
 
 int AccountsModel::rowCount(const QModelIndex &parent) const

@@ -39,16 +39,19 @@ public:
 	void loadConfiguration(XmlConfigFile *configurationStorage);
 	void storeConfiguration(XmlConfigFile *configurationStorage);
 
-	ContactList contacts() { return Contacts.values(); }
-	ContactList contacts(Account *account, bool includeAnonymous = false);
+	ContactList contacts() const { return Contacts.values(); }
+	ContactList contacts(Account *account, bool includeAnonymous = false) const;
 	void addContact(Contact contact);
 
 	Contact byId(Account *account, const QString &id);
-	Contact byUuid(const QString &uuid);
-	Contact byDisplay(const QString &display);
+	Contact byUuid(const QString &uuid) const;
+	Contact byDisplay(const QString &display) const;
 
 signals:
+	void contactAboutToBeAdded(Contact &contact);
 	void contactAdded(Contact &contact);
+	void contactAboutToBeRemoved(Contact &contact);
+	void contactBeRemoved(Contact &contact);
 
 };
 

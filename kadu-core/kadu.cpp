@@ -29,6 +29,8 @@
 #include "contacts/contact-account-data.h"
 #include "contacts/contact-manager.h"
 
+#include "gui/widgets/contacts-list-widget.h"
+
 #include "about.h"
 #include "chat_edit_box.h"
 #include "chat_manager.h"
@@ -427,10 +429,12 @@ Kadu::Kadu(QWidget *parent)
 	// userbox
 	UserBox::initModule();
 	Userbox = new UserBox(this, true, ContactManager::instance()->contacts(), this, "userbox");
+	ContactsWidget = new ContactsListWidget(this);
 
 	hbox_layout->setStretchFactor(Userbox, 100);
 	hbox_layout->addWidget(GroupBar);
 	hbox_layout->addWidget(Userbox);
+	hbox_layout->addWidget(ContactsWidget);
 	hbox_layout->setAlignment(GroupBar, Qt::AlignTop);
 
 	connect(Userbox, SIGNAL(doubleClicked(Contact)), this, SLOT(sendMessage(Contact)));
