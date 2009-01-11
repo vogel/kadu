@@ -170,16 +170,18 @@ add_custom_target(uninstall "${CMAKE_COMMAND}" -P "${CMAKE_CURRENT_BINARY_DIR}/c
 
 add_subdirectory (modules)
 add_subdirectory (kadu-core)
+
 if (NOT WIN32)
-add_subdirectory (varia)
+	add_subdirectory (varia)
 endif (NOT WIN32)
+
 add_subdirectory (translations)
 add_subdirectory (kthxbye)
 
 message (STATUS "Kadu (version: ${KADU_VERSION}) will be build:")
 message (STATUS " * libgadu (version ${LIBGADU_VERSION}) in ${LIBGADU_LIBRARY_DIRS}")
 message (STATUS " * install prefix: ${CMAKE_INSTALL_PREFIX}")
-message (STATUS " * debug ${DEBUG} (${CMAKE_BUILD_TYPE})")
+message (STATUS " * build type: ${CMAKE_BUILD_TYPE}")
 
 # install data files
 install (FILES AUTHORS HISTORY README THANKS ChangeLog COPYING DESTINATION "share/kadu")
