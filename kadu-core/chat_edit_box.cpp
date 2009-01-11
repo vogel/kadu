@@ -68,13 +68,13 @@ UserBox * ChatEditBox::userBox()
 	return 0;
 }
 
-UserListElements ChatEditBox::userListElements()
+ContactList ChatEditBox::contacts()
 {
 	ChatWidget *cw = chatWidget();
 	if (cw)
-		return UserListElements::fromContactList(cw->contacts(), cw->account());
+		return cw->contacts();;
 
-	return UserListElements();
+	return ContactList();
 }
 
 ChatWidget * ChatEditBox::chatWidget()

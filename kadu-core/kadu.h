@@ -211,7 +211,7 @@ public:
 	virtual bool supportsActionType(ActionDescription::ActionType type) {
 		return type & (ActionDescription::TypeGlobal | ActionDescription::TypeUserList | ActionDescription::TypeUser); }
 	virtual UserBox * userBox() { return Userbox; }
-	virtual UserListElements userListElements();
+	virtual ContactList contacts();
 	virtual ChatWidget * chatWidget() { return 0; }
 
 	Contact myself() { return Myself; }

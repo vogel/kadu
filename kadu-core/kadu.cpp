@@ -31,6 +31,11 @@
 
 #include "gui/widgets/contacts-list-widget.h"
 
+#include "../modules/gadu_protocol/gadu.h"
+#include "../modules/gadu_protocol/gadu-contact-account-data.h"
+#include "../modules/gadu_protocol/gadu_images_manager.h"
+#include "../modules/gadu_protocol/gadu_status.h"
+
 #include "about.h"
 #include "chat_edit_box.h"
 #include "chat_manager.h"
@@ -38,9 +43,6 @@
 #include "debug.h"
 #include "emoticons.h"
 #include "expimp.h"
-#include "../modules/gadu_protocol/gadu.h"
-#include "../modules/gadu_protocol/gadu_images_manager.h"
-#include "../modules/gadu_protocol/gadu_status.h"
 #include "groups_manager.h"
 #include "hot_key.h"
 #include "html_document.h"
@@ -713,13 +715,13 @@ void Kadu::writeEMailActionActivated(QAction *sender, bool toggled)
 	if (!window)
 		return;
 
-	UserListElements users = window->userListElements();
-	if (users.count() < 1)
+	ContactList contacts = window->contacts();
+	if (contacts.count() < 1)
 		return;
 
-	UserListElement user = users[0];
-	if (!user.email().isEmpty())
-		openMailClient(user.email());
+	Contact contact = contacts[0];
+	if (!contact.email().isEmpty())
+		openMailClient(contact.email());
 
 	kdebugf2();
 }
@@ -790,12 +792,12 @@ void Kadu::copyPersonalInfoActionActivated(QAction *sender, bool toggled)
 	if (!window)
 		return;
 
-	UserListElements users = window->userListElements();
+	ContactList contacts = window->contacts();
 
 	QStringList infoList;
 	QString copyPersonalDataSyntax = config_file.readEntry("General", "CopyPersonalDataSyntax", tr("Contact: %a[ (%u)]\n[First name: %f\n][Last name: %r\n][Mobile: %m\n]"));
-	foreach(const UserListElement &user, users)
-		infoList.append(KaduParser::parse(copyPersonalDataSyntax, user.toContact(AccountManager::instance()->defaultAccount()), false));
+	foreach (Contact contact, contacts)
+		infoList.append(KaduParser::parse(copyPersonalDataSyntax, contact, false));
 
 	QString info = infoList.join("\n");
 	if (info.isEmpty())
@@ -815,19 +817,20 @@ void Kadu::lookupInDirectoryActionActivated(QAction *sender, bool toggled)
 	if (!window)
 		return;
 
-	UserListElements users = window->userListElements();
+	ContactList contacts = window->contacts();
 
-	if (users.count() != 1)
+	if (contacts.count() != 1)
 	{
 		searchInDirectoryActionActivated(0, false);
 		return;
 	}
 
-	UserListElement user = *(users.constBegin());
-	if (!user.usesProtocol("Gadu"))
+	Contact contact = contacts[0];
+	GaduContactAccountData *cad = dynamic_cast<GaduContactAccountData *>(AccountManager::instance()->defaultAccount());
+	if (!cad)
 		return;
 
-	SearchDialog *sd = new SearchDialog(kadu, user.ID("Gadu").toUInt());
+	SearchDialog *sd = new SearchDialog(kadu, cad->uin());
 	sd->show();
 	sd->firstSearch();
 
@@ -1017,17 +1020,17 @@ void Kadu::configurationActionActivated(QAction *sender, bool toggled)
 void Kadu::editUserActionSetParams(QString /*protocolName*/, UserListElement user)
 {
 	kdebugf();
- 	foreach(KaduAction *action, editUserActionDescription->actions())
+ 	foreach (KaduAction *action, editUserActionDescription->actions())
 	{
 		KaduMainWindow *window = dynamic_cast<KaduMainWindow *>(action->parent());
 		if (!window)
 			continue;
 
-		UserListElements users = window->userListElements();
+		Contact contact = window->contact();
 
-		if (users.count() == 1 && users[0] == user)
+		if (!contact.isNull())
 		{
-			if (user.isAnonymous())
+			if (contact.isAnonymous())
 			{
 				action->setIcon(icons_manager->loadIcon("AddUser"));
 				action->setText(tr("Add user"));
@@ -1048,8 +1051,8 @@ void Kadu::editUserActionCreated(KaduAction *action)
 	if (!window)
 		return;
 
-	UserListElements users = window->userListElements();
-	if ((users.count()) == 1 && (*users.begin()).isAnonymous())
+	Contact contact = window->contact();
+	if (contact.isAnonymous())
 	{
 		action->setIcon(icons_manager->loadIcon("AddUser"));
 		action->setText(tr("Add user"));
@@ -1064,28 +1067,26 @@ void Kadu::editUserActionActivated(QAction *sender, bool toggled)
 	if (!window)
 		return;
 
-	UserListElements selectedUsers = window->userListElements();
+	Contact contact = window->contact();
+	if (contact.isNull())
+		return;
 
-	if (selectedUsers.count() == 1)
-		(new UserInfo(*selectedUsers.begin(), kadu))->show();
+	(new UserInfo(UserListElement::fromContact(contact, AccountManager::instance()->defaultAccount()), kadu))->show();
 
 	kdebugf2();
 }
 
 void Kadu::addUserActionActivated(QAction *sender, bool toggled)
 {
- 	kdebugf();
+	kdebugf();
+
 	KaduMainWindow *window = dynamic_cast<KaduMainWindow *>(sender->parent());
-	if (window)
-	{
-		UserListElements selectedUsers = window->userListElements();
- 		if ((selectedUsers.count() == 1) && (selectedUsers[0].isAnonymous()))
-		{
- 			(new UserInfo(selectedUsers[0], kadu))->show();
-			return;
-		}
-	}
-	(new UserInfo(UserListElement(), kadu))->show();
+	Contact contact = window
+		? window->contact()
+		: Contact();
+
+	if (contact.isAnonymous() || contact.isNull())
+		(new UserInfo(UserListElement::fromContact(contact, AccountManager::instance()->defaultAccount()), kadu))->show();
 
  	kdebugf2();
 }
@@ -2103,10 +2104,9 @@ UserBox* Kadu::userbox() const
 	return Userbox;
 }
 
-UserListElements Kadu::userListElements()
+ContactList Kadu::contacts()
 {
-	return UserListElements::fromContactList(ContactsWidget->selectedContacts(),
-			AccountManager::instance()->defaultAccount());
+	return ContactsWidget->selectedContacts();
 }
 
 void Kadu::setDocked(bool docked, bool dontHideOnClose1)

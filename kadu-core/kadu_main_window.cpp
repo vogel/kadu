@@ -279,12 +279,6 @@ void KaduMainWindow::actionAdded(KaduAction *action)
 		connect(userBox(), SIGNAL(userListChanged()), action, SLOT(checkState()));
 }
 
-ContactList KaduMainWindow::contacts()
-{
-	Account *account = AccountManager::instance()->defaultAccount();
-	return userListElements().toContactList(account);
-}
-
 Contact KaduMainWindow::contact()
 {
 	ContactList contactList = contacts();
