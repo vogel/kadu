@@ -1666,7 +1666,6 @@ inline int compareStatus(const Contact &c1, const Contact &c2)
 
 void UserBox::accountRegistered(Account *account)
 {
-	printf("conencting ...\n");
 	connect(account, SIGNAL(contactStatusChanged(Account *, Contact, Status)),
 			this, SLOT(refresh()));
 }

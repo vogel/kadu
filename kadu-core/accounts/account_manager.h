@@ -52,7 +52,9 @@ public:
 	UserStatus status();
 
 signals:
+	void accountAboutToBeRegistered(Account *);
 	void accountRegistered(Account *);
+	void accountAboutToBeUnregistered(Account *);
 	void accountUnregistered(Account *);
 
 };

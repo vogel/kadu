@@ -17,6 +17,26 @@
 AccountsModel::AccountsModel(QObject *parent)
 	: QAbstractListModel(parent)
 {
+	connect(AccountManager::instance(), SIGNAL(accountRegistered(Account *)),
+			this, SLOT(accountRegistered(Account *)));
+	connect(AccountManager::instance(), SIGNAL(accountAboutToBeRegistered(Account *)),
+			this, SLOT(accountAboutToBeRegistered(Account *)));
+	connect(AccountManager::instance(), SIGNAL(accountUnregistered(Account *)),
+			this, SLOT(accountUnregistered(Account *)));
+	connect(AccountManager::instance(), SIGNAL(accountAboutToBeUnregistered(Account *)),
+			this, SLOT(accountAboutToBeUnregistered(Account *)));
+}
+
+AccountsModel::~AccountsModel()
+{
+	disconnect(AccountManager::instance(), SIGNAL(accountRegistered(Account *)),
+			this, SLOT(accountRegistered(Account *)));
+	disconnect(AccountManager::instance(), SIGNAL(accountAboutToBeRegistered(Account *)),
+			this, SLOT(accountAboutToBeRegistered(Account *)));
+	disconnect(AccountManager::instance(), SIGNAL(accountUnregistered(Account *)),
+			this, SLOT(accountUnregistered(Account *)));
+	disconnect(AccountManager::instance(), SIGNAL(accountAboutToBeUnregistered(Account *)),
+			this, SLOT(accountAboutToBeUnregistered(Account *)));
 }
 
 int AccountsModel::rowCount(const QModelIndex &parent) const
@@ -61,4 +81,31 @@ Account * AccountsModel::account(const QModelIndex &index) const
 		return 0;
 
 	return AccountManager::instance()->accounts().at(index.row());
+}
+
+int AccountsModel::accountIndex(Account *account)
+{
+	return AccountManager::instance()->accounts().indexOf(account);
+}
+
+void AccountsModel::accountAboutToBeRegistered(Account *account)
+{
+	int count = rowCount();
+	beginInsertRows(QModelIndex(), count, count);
+}
+
+void AccountsModel::accountRegistered(Account *account)
+{
+	endInsertRows();
+}
+
+void AccountsModel::accountAboutToBeUnregistered(Account *account)
+{
+	int index = accountIndex(account);
+	beginRemoveRows(QModelIndex(), index, index);
+}
+
+void AccountsModel::accountUnregistered(Account *account)
+{
+	endRemoveRows();
 }

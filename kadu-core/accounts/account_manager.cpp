@@ -121,12 +121,14 @@ const QList<Account *> AccountManager::byProtocolName(const QString &name)
 
 void AccountManager::registerAccount(Account *account)
 {
+	emit accountAboutToBeRegistered(account);
 	Accounts[account->uuid()] = account;
 	emit accountRegistered(account);
 }
 
 void AccountManager::unregisterAccount(Account *account)
 {
+	emit accountAboutToBeUnregistered(account);
 	Accounts.remove(account->uuid());
 	emit accountUnregistered(account);
 }
