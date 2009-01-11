@@ -155,16 +155,18 @@ void ManageAccounts::addAccount()
 void ManageAccounts::removeAccount()
 {
 	Account *account = currentAccount();
-	if (account)
-	{
-		AccountManager::instance()->unregisterAccount(account);
-		loadAccounts();
-	}
+	if (0 == account)
+		return;
+
+	AccountManager::instance()->unregisterAccount(account);
+	loadAccounts();
 }
 
 void ManageAccounts::editAccount()
 {
 	Account *account = currentAccount();
+	if (0 == account)
+		return;
 
 	Protocol *protocol = account->protocol();
 	if (0 == protocol)
