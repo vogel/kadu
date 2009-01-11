@@ -2105,7 +2105,8 @@ UserBox* Kadu::userbox() const
 
 UserListElements Kadu::userListElements()
 {
-	return Userbox->selectedUsers();
+	return UserListElements::fromContactList(ContactsWidget->selectedContacts(),
+			AccountManager::instance()->defaultAccount());
 }
 
 void Kadu::setDocked(bool docked, bool dontHideOnClose1)

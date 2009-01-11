@@ -289,9 +289,11 @@ class KADUAPI UserBox : public Q3ListBox, ConfigurationAwareObject
 {
 	Q_OBJECT
 
+public:
 	static QList<ActionDescription *> UserBoxActions;
 	static QList<ActionDescription *> ManagementActions;
 
+private:
 	friend class Kadu;
 
 	KaduMainWindow *MainWindow; // TODO: !!!HACK!!!

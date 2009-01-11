@@ -10,13 +10,13 @@
 #ifndef CONTACTS_LIST_WIDGET_DELEGATE_H
 #define CONTACTS_LIST_WIDGET_DELEGATE_H
 
-#include <QtGui/QAbstractItemDelegate>
+#include <QtGui/QStyledItemDelegate>
 
 #include "configuration_aware_object.h"
 
 class Contact;
 
-class ContactsListWidgetDelegate : public QAbstractItemDelegate, public ConfigurationAwareObject
+class ContactsListWidgetDelegate : public QStyledItemDelegate, public ConfigurationAwareObject
 {
 	QFontMetrics *DescriptionFontMetrics;
 
@@ -24,9 +24,6 @@ class ContactsListWidgetDelegate : public QAbstractItemDelegate, public Configur
 
 public:
 	ContactsListWidgetDelegate(QObject *parent = 0);
-
-	virtual void paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const;
-	virtual QSize sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const;
 
 	virtual void configurationUpdated();
 
