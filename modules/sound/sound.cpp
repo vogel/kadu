@@ -254,6 +254,7 @@ void SoundManager::mainConfigurationWindowCreated(MainConfigurationWindow *mainC
 
 	themesComboBox = dynamic_cast<ConfigComboBox *>(mainConfigurationWindow->widgetById("sound/themes"));
 	connect(themesComboBox, SIGNAL(activated(int)), configurationWidget, SLOT(themeChanged(int)));
+	connect(themesComboBox, SIGNAL(activated(const QString &)), sound_slots, SLOT(themeChanged(const QString &)));
 	configurationWidget->themeChanged(themesComboBox->currentItem());
 
 	themesPaths = dynamic_cast<PathListEdit *>(mainConfigurationWindow->widgetById("soundPaths"));
