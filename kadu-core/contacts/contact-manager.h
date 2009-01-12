@@ -46,6 +46,8 @@ public:
 	unsigned int count() { return Contacts.count(); }
 
 	Contact byIndex(unsigned int index);
+	int contactIndex(Contact contact) { return Contacts.indexOf(contact); }
+
 	Contact byId(Account *account, const QString &id);
 	Contact byUuid(const QString &uuid) const;
 	Contact byDisplay(const QString &display) const;

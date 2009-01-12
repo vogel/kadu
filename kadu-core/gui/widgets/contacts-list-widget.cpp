@@ -26,9 +26,10 @@
 ContactsListWidget::ContactsListWidget(KaduMainWindow *mainWindow, QWidget *parent)
 	: QListView(parent), MainWindow(mainWindow)
 {
-	Delegate = new ContactsListWidgetDelegate(this);
+	ContactsModel *model = new ContactsModel(ContactManager::instance());
+	Delegate = new ContactsListWidgetDelegate(model, this);
 
-	setModel(new ContactsModel(ContactManager::instance(), this));
+	setModel(model);
 	setItemDelegate(Delegate);
 }
 

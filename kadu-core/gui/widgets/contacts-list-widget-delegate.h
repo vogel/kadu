@@ -10,20 +10,40 @@
 #ifndef CONTACTS_LIST_WIDGET_DELEGATE_H
 #define CONTACTS_LIST_WIDGET_DELEGATE_H
 
-#include <QtGui/QStyledItemDelegate>
+#include <QtGui/QAbstractItemDelegate>
 
 #include "configuration_aware_object.h"
 
-class Contact;
+class QTextDocument;
 
-class ContactsListWidgetDelegate : public QStyledItemDelegate, public ConfigurationAwareObject
+class Account;
+class Contact;
+class ContactsModel;
+class Status;
+
+class ContactsListWidgetDelegate : public QAbstractItemDelegate, public ConfigurationAwareObject
 {
+	Q_OBJECT
+
+	ContactsModel *Model;
+
 	QFontMetrics *DescriptionFontMetrics;
 
 	Contact contact(const QModelIndex &index) const;
+	QTextDocument * getDescriptionDocument(const QString &text, int width) const;
+
+	void contactStatusChanged(Account *account, Contact contact, Status oldStatus);
+
+private slots:
+	void accountRegistered(Account *account);
+	void accountUnregistered(Account *account);
 
 public:
-	ContactsListWidgetDelegate(QObject *parent = 0);
+	ContactsListWidgetDelegate(ContactsModel *model, QObject *parent = 0);
+	virtual ~ContactsListWidgetDelegate();
+
+	virtual QSize sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index ) const;
+	virtual void paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const;
 
 	virtual void configurationUpdated();
 

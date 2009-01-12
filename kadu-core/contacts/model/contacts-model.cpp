@@ -96,6 +96,11 @@ Contact ContactsModel::contact(const QModelIndex &index) const
 	return Manager->byIndex(index.row());
 }
 
+QModelIndex ContactsModel::contactIndex(Contact contact)
+{
+	return index(Manager->contactIndex(contact), 0);
+}
+
 void ContactsModel::contactAboutToBeAdded(Contact &contact)
 {
 	int count = rowCount();
