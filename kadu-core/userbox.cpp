@@ -786,6 +786,7 @@ void UserBox::keyPressEvent(QKeyEvent *e)
 void UserBox::refresh()
 {
 	kdebugf();
+	return;
 /*	printBacktrace("UserBox::refresh()");
 
 	struct timeval t1,t2;
@@ -1526,39 +1527,7 @@ void UserBox::userRemovedFromGroup(UserListElement elem, bool massively, bool la
 //	kdebugf2();
 }
 */
-void UserBox::contextMenuEvent(QContextMenuEvent *event)
-{
-	if (!itemAt(event->pos()))
-		return;
 
-	QMenu *menu = new QMenu(this);
-
-	foreach (ActionDescription *actionDescription, UserBox::UserBoxActions)
-	{
-		if (actionDescription)
-		{
-			KaduAction *action = actionDescription->createAction(MainWindow);
-			menu->addAction(action);
-			action->checkState();
-		}
-		else
-			menu->addSeparator();
-	}
-
-	QMenu *management = menu->addMenu(tr("User management"));
-
-	foreach (ActionDescription *actionDescription, UserBox::ManagementActions)
-		if (actionDescription)
-		{
-			KaduAction *action = actionDescription->createAction(MainWindow);
-			management->addAction(action);
-			action->checkState();
-		}
-		else
-			management->addSeparator();
-
-	menu->exec(event->globalPos());
-}
 /*
 const UserGroup *UserBox::visibleUsers() const
 {

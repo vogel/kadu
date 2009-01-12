@@ -431,11 +431,11 @@ Kadu::Kadu(QWidget *parent)
 	// userbox
 	UserBox::initModule();
 	Userbox = new UserBox(this, true, ContactManager::instance()->contacts(), this, "userbox");
+	Userbox->hide();
 	ContactsWidget = new ContactsListWidget(this);
 
-	hbox_layout->setStretchFactor(Userbox, 100);
+	hbox_layout->setStretchFactor(ContactsWidget, 100);
 	hbox_layout->addWidget(GroupBar);
-	hbox_layout->addWidget(Userbox);
 	hbox_layout->addWidget(ContactsWidget);
 	hbox_layout->setAlignment(GroupBar, Qt::AlignTop);
 
@@ -1598,11 +1598,11 @@ bool Kadu::close(bool quit)
 
 		if (config_file.readBoolEntry("Look", "ShowInfoPanel"))
 		{
-			config_file.writeEntry("General", "UserBoxHeight", Userbox->size().height());
+			config_file.writeEntry("General", "UserBoxHeight", ContactsWidget->size().height());
 			config_file.writeEntry("General", "DescriptionHeight", InfoPanel->size().height());
 		}
 		if (config_file.readBoolEntry("Look", "ShowStatusButton"))
-			config_file.writeEntry("General", "UserBoxHeight", Userbox->size().height());
+			config_file.writeEntry("General", "UserBoxHeight", ContactsWidget->size().height());
  		saveWindowGeometry(this, "General", "Geometry");
 
 		config_file.writeEntry("General", "DefaultDescription", defaultdescriptions.join("<-->"));

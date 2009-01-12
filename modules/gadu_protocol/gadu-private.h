@@ -17,7 +17,6 @@
 class QSocketNotifier;
 
 class Account;
-class ContactList;
 
 struct gg_http;
 struct gg_session;

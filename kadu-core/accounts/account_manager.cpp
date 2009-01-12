@@ -86,7 +86,7 @@ void AccountManager::storeConfiguration(XmlConfigFile *configurationStorage, con
 
 Account * AccountManager::defaultAccount()
 {
-	return (0 == Accounts.values().size()) ? 0 : Accounts.values()[0];
+	return byIndex(0);
 }
 
 Account * AccountManager::createAccount(const QString &protocolName, AccountData *accountData)
@@ -101,10 +101,19 @@ Account * AccountManager::createAccount(const QString &protocolName, AccountData
 	return result;
 }
 
-Account * AccountManager::account(const QUuid &uuid)
+Account * AccountManager::byIndex(unsigned int index)
 {
-	if (Accounts.contains(uuid))
-		return Accounts[uuid];
+	if (index < 0 || index >= count())
+		return 0;
+
+	return Accounts.at(index);
+}
+
+Account * AccountManager::byUuid(const QUuid &uuid)
+{
+	foreach (Account *account, Accounts)
+		if (uuid == account->uuid())
+			return account;
 
 	return 0;
 }
@@ -122,14 +131,14 @@ const QList<Account *> AccountManager::byProtocolName(const QString &name)
 void AccountManager::registerAccount(Account *account)
 {
 	emit accountAboutToBeRegistered(account);
-	Accounts[account->uuid()] = account;
+	Accounts << account;
 	emit accountRegistered(account);
 }
 
 void AccountManager::unregisterAccount(Account *account)
 {
 	emit accountAboutToBeUnregistered(account);
-	Accounts.remove(account->uuid());
+	Accounts.remove(account);
 	emit accountUnregistered(account);
 }
 

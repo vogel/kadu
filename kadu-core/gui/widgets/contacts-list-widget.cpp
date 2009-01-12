@@ -13,6 +13,7 @@
 
 #include "contacts/contact.h"
 #include "contacts/contact-list.h"
+#include "contacts/contact-manager.h"
 #include "contacts/model/contacts-model.h"
 
 #include "action.h"
@@ -27,7 +28,7 @@ ContactsListWidget::ContactsListWidget(KaduMainWindow *mainWindow, QWidget *pare
 {
 	Delegate = new ContactsListWidgetDelegate(this);
 
-	setModel(new ContactsModel(this));
+	setModel(new ContactsModel(ContactManager::instance(), this));
 	setItemDelegate(Delegate);
 }
 

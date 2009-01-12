@@ -60,7 +60,7 @@ void ContactManager::storeConfiguration(XmlConfigFile *configurationStorage)
 {
 	QDomElement contactsNewNode = configurationStorage->getNode("ContactsNew", XmlConfigFile::ModeCreate);
 
-	foreach (Contact contact, Contacts.values())
+	foreach (Contact contact, Contacts)
 	{
 		if (contact.isNull() || contact.isAnonymous())
 			continue;
@@ -77,8 +77,16 @@ void ContactManager::addContact(Contact contact)
 		return;
 
 	emit contactAboutToBeAdded(contact);
-	Contacts.insert(contact.uuid(), contact);
+	Contacts.append(contact);
 	emit contactAdded(contact);
+}
+
+Contact ContactManager::byIndex(unsigned int index)
+{
+	if (index < 0 || index >= count())
+		return Contact::null;
+
+	return Contacts.at(index);
 }
 
 Contact ContactManager::byId(Account *account, const QString &id)
@@ -86,7 +94,7 @@ Contact ContactManager::byId(Account *account, const QString &id)
 	if (id.isEmpty() || 0 == account)
 		return Contact::null;
 
-	foreach (Contact contact, Contacts.values())
+	foreach (Contact contact, Contacts)
 	{
 		if (id == contact.id(account))
 			return contact;
@@ -103,7 +111,7 @@ Contact ContactManager::byUuid(const QString &uuid) const
 	if (uuid.isEmpty())
 		return Contact::null;
 
-	foreach (Contact contact, Contacts.values())
+	foreach (Contact contact, Contacts)
 	{
 		if (uuid == contact.uuid().toString())
 			return contact;
@@ -117,7 +125,7 @@ Contact ContactManager::byDisplay(const QString &display) const
 	if (display.isEmpty())
 		return Contact::null;
 
-	foreach (Contact contact, Contacts.values())
+	foreach (Contact contact, Contacts)
 	{
 		if (display == contact.display())
 			return contact;
@@ -130,7 +138,7 @@ ContactList ContactManager::contacts(Account *account, bool includeAnonymous) co
 {
 	ContactList result;
 
-	foreach (Contact contact, Contacts.values())
+	foreach (Contact contact, Contacts)
 		if (contact.accountData(account) && (includeAnonymous || !contact.isAnonymous()))
 			result << contact;
 

@@ -18,34 +18,37 @@
 
 #include "contacts-model.h"
 
-ContactsModel::ContactsModel(QObject *parent)
-	: QAbstractListModel(parent)
+ContactsModel::ContactsModel(ContactManager *manager, QObject *parent)
+	: QAbstractListModel(parent), Manager(manager)
 {
-	connect(ContactManager::instance(), SIGNAL(contactAboutToBeAdded(Contact &contact)),
+	connect(Manager, SIGNAL(contactAboutToBeAdded(Contact &)),
 			this, SLOT(contactAboutToBeAdded(Contact &)));
-	connect(ContactManager::instance(), SIGNAL(contactAdded(Contact &)),
+	connect(Manager, SIGNAL(contactAdded(Contact &)),
 			this, SLOT(contactAdded(Contact &)));
-	connect(ContactManager::instance(), SIGNAL(contactAboutToBeRemoved(Contact &)),
+	connect(Manager, SIGNAL(contactAboutToBeRemoved(Contact &)),
 			this, SLOT(contactAboutToBeRemoved(Contact &)));
-	connect(ContactManager::instance(), SIGNAL(contactRemoved(Contact &)),
+	connect(Manager, SIGNAL(contactRemoved(Contact &)),
 			this, SLOT(contactRemoved(Contact &)));
 }
 
 ContactsModel::~ContactsModel()
 {
-	disconnect(ContactManager::instance(), SIGNAL(contactAboutToBeAdded(Contact &contact)),
+	disconnect(Manager, SIGNAL(contactAboutToBeAdded(Contact &)),
 			this, SLOT(contactAboutToBeAdded(Contact &)));
-	disconnect(ContactManager::instance(), SIGNAL(contactAdded(Contact &)),
+	disconnect(Manager, SIGNAL(contactAdded(Contact &)),
 			this, SLOT(contactAdded(Contact &)));
-	disconnect(ContactManager::instance(), SIGNAL(contactAboutToBeRemoved(Contact &)),
+	disconnect(Manager, SIGNAL(contactAboutToBeRemoved(Contact &)),
 			this, SLOT(contactAboutToBeRemoved(Contact &)));
-	disconnect(ContactManager::instance(), SIGNAL(contactRemoved(Contact &)),
+	disconnect(Manager, SIGNAL(contactRemoved(Contact &)),
 			this, SLOT(contactRemoved(Contact &)));
 }
 
 int ContactsModel::rowCount(const QModelIndex &parent) const
 {
-	return ContactManager::instance()->contacts().count();
+	if (parent.isValid())
+		return 0;
+
+	return Manager->count();
 }
 
 QVariant ContactsModel::data(const QModelIndex &index, int role) const
@@ -87,10 +90,10 @@ Contact ContactsModel::contact(const QModelIndex &index) const
 	if (!index.isValid())
 		return Contact::null;
 
-	if (index.row() >= rowCount())
+	if (index.row() < 0 || index.row() >= rowCount())
 		return Contact::null;
 
-	return ContactManager::instance()->contacts().at(index.row());
+	return Manager->byIndex(index.row());
 }
 
 void ContactsModel::contactAboutToBeAdded(Contact &contact)

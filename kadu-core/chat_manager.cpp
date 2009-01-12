@@ -805,7 +805,8 @@ ChatMessage *convertPendingToMessage(PendingMsgs::Element elem)
 	QDateTime date;
 	date.setTime_t(elem.time);
 
-	ContactList receivers(kadu->myself());
+	ContactList receivers;
+	receivers << kadu->myself();
 	ChatMessage *message = new ChatMessage(elem.contacts[0], receivers, elem.msg,
 			TypeReceived, QDateTime::currentDateTime(), date);
 

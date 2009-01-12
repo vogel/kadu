@@ -41,7 +41,7 @@ AccountsModel::~AccountsModel()
 
 int AccountsModel::rowCount(const QModelIndex &parent) const
 {
-	return AccountManager::instance()->accounts().count();
+	return AccountManager::instance()->count();
 }
 
 QVariant AccountsModel::data(const QModelIndex &index, int role) const
@@ -77,15 +77,15 @@ Account * AccountsModel::account(const QModelIndex &index) const
 	if (!index.isValid())
 		return 0;
 
-	if (index.row() >= rowCount())
+	if (index.row() < 0 || index.row() >= rowCount())
 		return 0;
 
-	return AccountManager::instance()->accounts().at(index.row());
+	return AccountManager::instance()->byIndex(index.row());
 }
 
 int AccountsModel::accountIndex(Account *account)
 {
-	return AccountManager::instance()->accounts().indexOf(account);
+	return AccountManager::instance()->indexOf(account);
 }
 
 void AccountsModel::accountAboutToBeRegistered(Account *account)

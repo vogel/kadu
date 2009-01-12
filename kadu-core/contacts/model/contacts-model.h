@@ -14,10 +14,13 @@
 #include <QtCore/QModelIndex>
 
 class Contact;
+class ContactManager;
 
 class ContactsModel : public QAbstractListModel
 {
 	Q_OBJECT
+
+	ContactManager *Manager;
 
 private slots:
 	void contactAboutToBeAdded(Contact &contact);
@@ -26,12 +29,13 @@ private slots:
 	void contactRemoved(Contact &contact);
 
 public:
-	ContactsModel(QObject *parent = 0);
+	explicit ContactsModel(ContactManager *manager, QObject *parent = 0);
 	virtual ~ContactsModel();
 
 	virtual int rowCount(const QModelIndex &parent = QModelIndex()) const;
-	virtual QVariant data(const QModelIndex &index, int role) const;
-	virtual QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const;
+
+	QVariant data(const QModelIndex &index, int role) const;
+	QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const;
 
 	Contact contact(const QModelIndex &index) const;
 

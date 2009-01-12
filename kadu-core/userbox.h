@@ -398,8 +398,6 @@ protected:
 	**/
 	virtual void resizeEvent(QResizeEvent *);
 
-	virtual void contextMenuEvent(QContextMenuEvent *event);
-
 public:
 	/**
 		\fn UserBox(UserGroup *group = userlist, QWidget* parent = 0, const char* name = 0, WFlags f = 0)

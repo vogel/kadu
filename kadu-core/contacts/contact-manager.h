@@ -26,7 +26,7 @@ class ContactManager : public QObject
 
 	static ContactManager * Instance;
 
-	QMap<QUuid, Contact> Contacts;
+	ContactList Contacts;
 
 	ContactManager() {}
 	ContactManager(const ContactManager &) {}
@@ -39,10 +39,13 @@ public:
 	void loadConfiguration(XmlConfigFile *configurationStorage);
 	void storeConfiguration(XmlConfigFile *configurationStorage);
 
-	ContactList contacts() const { return Contacts.values(); }
+	ContactList contacts() const { return Contacts; }
 	ContactList contacts(Account *account, bool includeAnonymous = false) const;
 	void addContact(Contact contact);
 
+	unsigned int count() { return Contacts.count(); }
+
+	Contact byIndex(unsigned int index);
 	Contact byId(Account *account, const QString &id);
 	Contact byUuid(const QString &uuid) const;
 	Contact byDisplay(const QString &display) const;

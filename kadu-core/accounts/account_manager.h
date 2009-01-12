@@ -29,7 +29,7 @@ class KADUAPI AccountManager : public QObject
 	AccountManager();
 	~AccountManager();
 
-	QMap<QUuid, Account *> Accounts;
+	QList<Account *> Accounts;
 
 public:
 	static AccountManager * instance();
@@ -41,9 +41,14 @@ public:
 
 	Account * defaultAccount();
 	Account * createAccount(const QString &protocolName, AccountData *accountData);
-	Account * account(const QUuid &uuid);
 
-	const QList<Account *> accounts() { return Accounts.values(); }
+	Account * byIndex(unsigned int index);
+	Account * byUuid(const QUuid &uuid);
+
+	unsigned int indexOf(Account *account) { return Accounts.indexOf(account); }
+	unsigned int count() { return Accounts.count(); }
+
+	const QList<Account *> accounts() { return Accounts; }
 	const QList<Account *> byProtocolName(const QString &name);
 
 	void registerAccount(Account *account);

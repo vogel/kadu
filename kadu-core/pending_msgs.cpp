@@ -119,7 +119,7 @@ void PendingMsgs::loadConfiguration(XmlConfigFile *configurationStorage)
 			continue;
 		Element e;
 		QDomElement accountNode = configurationStorage->getNode(pendingMsgsNodes.item(i).toElement(), "Account", XmlConfigFile::ModeFind);
-		Account *account = AccountManager::instance()->account(accountNode.text());
+		Account *account = AccountManager::instance()->byUuid(accountNode.text());
 
 		QDomElement timeNode = configurationStorage->getNode(pendingMsgsNodes.item(i).toElement(), "Time", XmlConfigFile::ModeFind);
 		QDateTime d = QDateTime::fromString(timeNode.text());
