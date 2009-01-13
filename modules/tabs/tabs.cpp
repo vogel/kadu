@@ -24,7 +24,6 @@
 #include "contacts/contact-manager.h"
 #include "protocols/protocol.h"
 #include "protocols/protocol_factory.h"
-//#include "config_file.h"
 #include "chat_edit_box.h"
 #include "debug.h"
 #include "icons_manager.h"
@@ -528,19 +527,22 @@ void TabsManager::onTimer()
 
 void TabsManager::onTabAttach(QAction *sender, bool toggled)
 {
-	KaduMainWindow *window = dynamic_cast<KaduMainWindow *>(sender->parent());
-	if (!window)
+	ChatEditBox *chatEditBox = dynamic_cast<ChatEditBox *>(sender->parent());
+	if (!chatEditBox)
 		return;
-	ChatWidget* chat = chat_manager->findChatWidget(window->contacts());
+
+	ChatWidget *chatWidget = chatEditBox->chatWidget();
+	if (!chatWidget)
+		return;
 
 	if (!toggled)
-		detachChat(chat);
+		detachChat(chatWidget);
 	else
 	{
-		if (window->contacts().count()!=1 && !config_conferencesInTabs)
+		if (chatEditBox->contacts().count()!=1 && !config_conferencesInTabs)
 			return;
 		newchats.clear();
-		insertTab(chat);
+		insertTab(chatWidget);
 	}
 }
 
@@ -592,13 +594,19 @@ void TabsManager::onMenu(int id)
 
 void TabsManager::attachToTabsActionCreated(KaduAction *action)
 {
-	ContactList contacts = action->contacts();
-	ChatWidget* chat=chat_manager->findChatWidget(contacts);
+	ChatEditBox *chatEditBox = dynamic_cast<ChatEditBox *>(action->parent());
+	if (!chatEditBox)
+		return;
 
-	if (contacts.count() != 1 && !config_conferencesInTabs && tabdialog->indexOf(chat) == -1)
+	ChatWidget *chatWidget = chatEditBox->chatWidget();
+	if (!chatWidget)
+		return;
+	ContactList contacts = action->contacts();
+
+	if (contacts.count() != 1 && !config_conferencesInTabs && tabdialog->indexOf(chatWidget) == -1)
 		action->setEnabled(false);
 
-	action->setChecked(tabdialog->indexOf(chat) != -1);
+	action->setChecked(tabdialog->indexOf(chatWidget) != -1);
 }
 
 
