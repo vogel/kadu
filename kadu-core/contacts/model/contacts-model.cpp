@@ -96,7 +96,7 @@ Contact ContactsModel::contact(const QModelIndex &index) const
 	return Manager->byIndex(index.row());
 }
 
-QModelIndex ContactsModel::contactIndex(Contact contact)
+const QModelIndex ContactsModel::contactIndex(Contact contact) const
 {
 	return index(Manager->contactIndex(contact), 0);
 }

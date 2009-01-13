@@ -38,7 +38,7 @@ public:
 	QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const;
 
 	Contact contact(const QModelIndex &index) const;
-	QModelIndex contactIndex(Contact contact);
+	const QModelIndex contactIndex(Contact contact) const;
 
 };
 

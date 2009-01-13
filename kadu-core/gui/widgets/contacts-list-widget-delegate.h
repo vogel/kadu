@@ -28,15 +28,20 @@ class ContactsListWidgetDelegate : public QAbstractItemDelegate, public Configur
 	ContactsModel *Model;
 
 	QFontMetrics *DescriptionFontMetrics;
+	bool ShowDesc;
+	bool ShowBold;
 
 	Contact contact(const QModelIndex &index) const;
 	QTextDocument * getDescriptionDocument(const QString &text, int width) const;
 
-	void contactStatusChanged(Account *account, Contact contact, Status oldStatus);
+	bool isBold(Contact contact) const;
+	QString displayDescription(Contact contact) const;
 
 private slots:
 	void accountRegistered(Account *account);
 	void accountUnregistered(Account *account);
+
+	void contactStatusChanged(Account *account, Contact contact, Status oldStatus);
 
 public:
 	ContactsListWidgetDelegate(ContactsModel *model, QObject *parent = 0);
@@ -46,7 +51,6 @@ public:
 	virtual void paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const;
 
 	virtual void configurationUpdated();
-
 };
 
 #endif // CONTACTS_LIST_WIDGET_DELEGATE_H
