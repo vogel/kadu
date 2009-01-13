@@ -167,7 +167,7 @@ TabsManager::TabsManager(bool firstload) : QObject()
 		ChatList chList = chat_manager->chats();
 		for (uint i = 0; i < chList.count(); i++)
 		{
-			UserListElements uins = chList[i]->users()->toUserListElements();
+			UserListElements uins (UserListElements::fromContactList(chList[i]->contacts(), AccountManager::instance()->defaultAccount()));
 			if ((uins.count() > 1 && !config_conferencesInTabs) || tabdialog->indexOf(chList[i])!=-1 || detachedchats.findIndex(chList[i])!=-1)
 				continue;
 			bool handled;
@@ -225,7 +225,7 @@ void TabsManager::onNewChat(ChatWidget* chat, bool &handled)
 		return;
 	}
 
-	if (config_defaultTabs && (config_conferencesInTabs || chat->users()->count() == 1))
+	if (config_defaultTabs && (config_conferencesInTabs || chat->contacts().count() == 1))
 	{
 		// jesli jest juz otwarte okno z kartami to dodajemy bezwzglednie nowe rozmowy do kart
 		if (tabdialog->count() > 0)
@@ -413,8 +413,8 @@ void TabsManager::insertTab(ChatWidget* chat)
 	else
 		chat->kaduRestoreGeometry();
 
-	UserListElements ules = chat->users()->toUserListElements();
 	ContactList contacts = chat->contacts();
+	UserListElements ules(UserListElements::fromContactList(contacts, AccountManager::instance()->defaultAccount()));
 
 	detachedchats.remove(chat);
 
@@ -607,11 +607,11 @@ bool TabsManager::detachChat(ChatWidget* chat)
 	kdebugf();
 	if (tabdialog->indexOf(chat) == -1)
 		return false;
-	UserListElements users=chat->users()->toUserListElements();
+	ContactList contacts=chat->contacts();
 	delete chat;
 
 	no_tabs = true;
-	chat_manager->openPendingMsgs(users.toContactList(AccountManager::instance()->defaultAccount()), true);
+	chat_manager->openPendingMsgs(contacts, true);
 	return true;
 	kdebugf2();
 }
@@ -781,28 +781,28 @@ void TabsManager::repaintTabs()
 		for(int i = tabdialog->count()-1; i>=0; i--)
 		{
 			chat = dynamic_cast<ChatWidget *>(tabdialog->page(i));
-			UserListElements ules = chat->users()->toUserListElements();
+			ContactList contacts = chat->contacts();
 			//uaktualnienie ikonki
 			chat->refreshTitle();
 
-			if (ules.count()>1)
-				tabdialog->changeTab(chat, chat->icon(), tr("Conference [%1]").arg(ules.count()) +"  ");
+			if (contacts.count()>1)
+				tabdialog->changeTab(chat, chat->icon(), tr("Conference [%1]").arg(contacts.count()) +"  ");
 			else
-				tabdialog->changeTab(chat, chat->icon(), ules[0].altNick() +"  ");
+				tabdialog->changeTab(chat, chat->icon(), contacts[0].display() +"  ");
 		}
 	else
 		// jeśli nie przywracamy standardowe tytuły w kartach
 		for(int i = tabdialog->count()-1; i>=0; i--)
 		{
 			chat = dynamic_cast<ChatWidget *>(tabdialog->page(i));
-			UserListElements ules = chat->users()->toUserListElements();
+			ContactList contacts = chat->contacts();
 			//uaktualnienie ikonki
 			chat->refreshTitle();
 
-			if (ules.count()>1)
-				tabdialog->changeTab(chat, chat->icon(), tr("Conference [%1]").arg(ules.count()));
+			if (contacts.count()>1)
+				tabdialog->changeTab(chat, chat->icon(), tr("Conference [%1]").arg(contacts.count()));
 			else
-				tabdialog->changeTab(chat, chat->icon(), ules[0].altNick());
+				tabdialog->changeTab(chat, chat->icon(), contacts[0].display());
 		}
 	//uaktualnienie ikonki w oknie tabs
 	tabdialog->setIcon(dynamic_cast<ChatWidget *>(tabdialog->currentPage())->icon());
