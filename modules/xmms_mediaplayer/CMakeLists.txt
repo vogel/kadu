@@ -26,6 +26,8 @@ add_library (xmms_mediaplayer ${xmms_mediaplayer} ${SOURCES} ${MOC_FILES})
 target_link_libraries (xmms_mediaplayer ${XMMS_LIBRARIES} ${GLIB_LIBRARIES})
 include_directories (${XMMS_INCLUDE_DIRS} ${GLIB_INCLUDE_DIRS})
 
+set_target_properties(xmms_mediaplayer PROPERTIES LINK_FLAGS "-lxmms" )
+
 if (xmms_mediaplayer STREQUAL STATIC)
 	set_target_properties(xmms_mediaplayer PROPERTIES COMPILE_FLAGS "-DKADULIB" )
 else (xmms_mediaplayer STREQUAL STATIC)
