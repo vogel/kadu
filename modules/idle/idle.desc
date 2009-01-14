@@ -1,0 +1,7 @@
+[Module]
+Description=Idle Timer
+Description[pl]=Wykrywanie bezczynnosci
+Author=Kadu Team
+Base=true
+LoadByDefault=false
+Version=core
