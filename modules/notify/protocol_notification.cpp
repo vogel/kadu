@@ -11,7 +11,7 @@
 
 #include "protocol_notification.h"
 
-QString getAccountName(const QObject * const object)
+static QString getAccountName(const QObject * const object)
 {
 	const AccountNotification * const notification = dynamic_cast<const AccountNotification * const>(object);
 	return notification &&
@@ -20,7 +20,7 @@ QString getAccountName(const QObject * const object)
 		: QString::null;
 }
 
-QString getProtocolName(const QObject * const object)
+static QString getProtocolName(const QObject * const object)
 {
 	const AccountNotification * const notification = dynamic_cast<const AccountNotification * const>(object);
 	return notification &&

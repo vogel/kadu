@@ -326,7 +326,7 @@ void Notify::registerAccount(Account *account)
 	Protocol *protocol = account->protocol();
 	connect(protocol, SIGNAL(connectionError(Protocol *, const QString &, const QString &)),
 			this, SLOT(connectionError(Protocol *, const QString &, const QString &)));
-	connect(protocol, SIGNAL(messageReceivedSignal(Account *, ContactList, const QString&, time_t)),
+	connect(protocol, SIGNAL(messageReceived(Account *, ContactList, const QString&, time_t)),
 		this, SLOT(messageReceived(Account *, ContactList, const QString&, time_t)));
 	connect(account, SIGNAL(contactStatusChanged(Account *, Contact, Status)),
 		this, SLOT(statusChanged(Account *, Contact, Status)));
@@ -337,7 +337,7 @@ void Notify::unregisterAccount(Account *account)
 	Protocol *protocol = account->protocol();
 	disconnect(protocol, SIGNAL(connectionError(Protocol *, const QString &, const QString &)),
 			this, SLOT(connectionError(Protocol *, const QString &, const QString &)));
-	disconnect(protocol, SIGNAL(messageReceivedSignal(Account *, ContactList, const QString&, time_t)),
+	disconnect(protocol, SIGNAL(messageReceived(Account *, ContactList, const QString&, time_t)),
 		this, SLOT(messageReceived(Account *, ContactList, const QString&, time_t)));
 	disconnect(account, SIGNAL(contactStatusChanged(Account *, Contact, Status)),
 		this, SLOT(statusChanged(Account *, Contact, Status)));
@@ -369,10 +369,10 @@ void Notify::statusChanged(Account *account, Contact contact, Status oldStatus)
 	if (!data)
 		return;
 
-	if (config_file.readBoolEntry("Notify", "IgnoreOnlineToOnline")
-			&& (data->status().isOnline() || data->status().isBusy())
-			&& (oldStatus.isOnline() || oldStatus.isBusy()))
-		return;
+	if (config_file.readBoolEntry("Notify", "IgnoreOnlineToOnline") &&
+		(data->status().isOnline() || data->status().isBusy()) &&
+			(oldStatus.isOnline() || oldStatus.isBusy()))
+				return;
 
 	QString changedTo = "To" + Status::name(data->status(), false);
 

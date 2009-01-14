@@ -16,8 +16,6 @@ public:
 	virtual ~AccountNotification();
 
 	Account * account() const {return CurrentAccount;}
-	static QString getAccountName(const QObject * const object);
-	static QString getProtocolName(const QObject * const object);
 };
 
 #endif // ACCOUNT_NOTIFICATION_H
