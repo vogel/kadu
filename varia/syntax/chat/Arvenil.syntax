@@ -1,0 +1,6 @@
+<p>
+<kadu:header>
+<img src="@{Message}" title="">&nbsp;&nbsp;<b><font color="#{nickColor}">%a</font>&nbsp;::&nbsp;<font color="#{fontColor}">[%g&nbsp;::&nbsp;]#{receivedDate}[&nbsp;(#{sentDate})]</font></b><br>
+</kadu:header>
+<font color="#{fontColor}">#{message}</font>
+</p>

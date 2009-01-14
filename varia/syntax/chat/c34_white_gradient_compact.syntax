@@ -1,0 +1,11 @@
+<div style="background-color: #{backgroundColor};">
+   <kadu:header>
+   <div style="background: transparent url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAAKCAYAAAB10jRKAAAAGUlEQVQIHWP6//9/OxMDEMCJryDWW1zEGwASwAob6QBiSgAAAABJRU5ErkJggg==) repeat-x; text-align: center; padding-top: 2px;">
+      <p style="font-weight: bold; color: #{nickColor}">%a</p>
+   </div>
+   </kadu:header>
+   <div style="display: table; padding-bottom: 5px;">
+      <p style="display: table-cell; width: 60px; padding-right: 10px; background: transparent url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQIHWP4//9/OwAJgwOFc/Pe7wAAAABJRU5ErkJggg==) repeat-y 70px; font-size: 85%; text-align: right;">#{receivedDate}</p>
+      <p style="color: #{fontColor}">#{message}</p>
+   </div>
+</div>
