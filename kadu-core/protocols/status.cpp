@@ -19,6 +19,23 @@ Status::Status(const Status& copyme)
 {
 }
 
+QString Status::name(const Status &status, bool fullName)
+{
+	QString add((fullName && !status.Description.isNull()) ? "WithDescription" : "");
+
+	switch (status.Type)
+	{
+		case Online:
+			return QString("Online").append(add);
+		case Busy:
+			return QString("Busy").append(add);
+		case Invisible:
+			return QString("Invisible").append(add);
+		default:
+			return QString("Offline").append(add);
+	}
+}
+
 Status::StatusType Status::comparableType(Status::StatusType type)
 {
 	if (Busy == type)

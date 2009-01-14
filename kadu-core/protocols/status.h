@@ -22,6 +22,7 @@ public:
 		Invisible,
 		Offline
 	};
+	static QString name(const Status &status, bool fullName = true);
 
 private:
 	StatusType Type;
@@ -33,10 +34,10 @@ public:
 	Status(StatusType type = Offline, QString description = QString::null);
 	Status(const Status &copyme);
 
-	StatusType type() { return Type; }
+	StatusType type() const { return Type; }
 	void setType(StatusType type) { Type = type; }
 
-	QString description() { return Description; }
+	QString description() const { return Description; }
 	void setDescription(const QString &description) { Description = description; }
 
 	bool isOnline() { return Online == Type; }
