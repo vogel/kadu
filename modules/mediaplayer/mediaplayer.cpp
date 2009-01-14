@@ -562,8 +562,8 @@ QString MediaPlayer::formatLength(int length)
 	ms = QString::number(m) + ":";
 	if (s < 10)
 		ms += "0";
-	else
-		ms += QString::number(s);
+	
+	ms += QString::number(s);
 
 	return ms;
 }
