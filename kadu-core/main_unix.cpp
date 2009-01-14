@@ -136,7 +136,7 @@ static void kadu_signal_handler(int s)
 		qApp->postEvent(kadu, new QEvent((QEvent::Type)4321));
 	}
 	else if (s == SIGINT || s == SIGTERM)
-		qApp->postEvent(qApp, new QEvent(QEvent::Quit));
+		qApp->postEvent(qApp, new QEvent(QEvent::Quit), Qt::HighEventPriority);
 }
 
 #if defined (SIGRTMIN)
