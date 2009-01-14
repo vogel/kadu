@@ -12,12 +12,13 @@
 
 #include <QtGui/QAbstractItemDelegate>
 
+#include "contacts/contact.h"
+
 #include "configuration_aware_object.h"
 
 class QTextDocument;
 
 class Account;
-class Contact;
 class ContactsModel;
 class Status;
 

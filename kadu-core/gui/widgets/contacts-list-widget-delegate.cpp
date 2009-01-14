@@ -23,7 +23,6 @@
 #include "accounts/account.h"
 #include "accounts/account_manager.h"
 
-#include "contacts/contact.h"
 #include "contacts/contact-account-data.h"
 #include "contacts/model/contacts-model.h"
 
@@ -62,11 +61,6 @@ void ContactsListWidgetDelegate::accountUnregistered(Account *account)
 
 void ContactsListWidgetDelegate::contactStatusChanged(Account *account, Contact c, Status oldStatus)
 {
-	printf("contact status changed: %s\n", qPrintable(c.uuid().toString()));
-
-	QModelIndex index = Model->contactIndex(c);
-	printf("compare: %s\n", qPrintable(contact(index).uuid().toString()));
-
 	emit sizeHintChanged(Model->contactIndex(c));
 }
 

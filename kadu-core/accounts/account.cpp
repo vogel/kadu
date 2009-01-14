@@ -29,16 +29,13 @@ Account::Account(const QUuid &uuid)
 }
 
 Account::Account(const QUuid &uuid, Protocol *protocol, AccountData *data)
-	: ProtocolHandler(protocol), Data(data)
+	: Data(data)
 {
 	Uuid = uuid.isNull()
 		? QUuid::createUuid()
 		: uuid;
 
-	protocol->setData(Data);
-
-	connect(protocol, SIGNAL(contactStatusChanged(Account *, Contact, Status)),
-			this, SIGNAL(contactStatusChanged(Account*, Contact, Status)));
+	setProtocol(protocol);
 }
 
 Account::~Account()
@@ -50,6 +47,16 @@ Account::~Account()
 	}
 }
 
+void Account::setProtocol(Protocol *protocolHandler)
+{
+	ProtocolHandler = protocolHandler;
+	ProtocolHandler->setAccount(this);
+	ProtocolHandler->setData(Data);
+
+	connect(ProtocolHandler, SIGNAL(contactStatusChanged(Account *, Contact, Status)),
+			this, SIGNAL(contactStatusChanged(Account *, Contact, Status)));
+}
+
 bool Account::loadConfiguration(XmlConfigFile *configurationStorage, QDomElement parent)
 {
 	QString protocolName = configurationStorage->getTextNode(parent, "Protocol");
@@ -58,17 +65,16 @@ bool Account::loadConfiguration(XmlConfigFile *configurationStorage, QDomElement
 	if (name.isEmpty())
 		name = parent.attribute("name");
 
-	ProtocolHandler = ProtocolsManager::instance()->newInstance(protocolName);
-	if (0 == ProtocolHandler)
+	Protocol *protocol = ProtocolsManager::instance()->newInstance(protocolName);
+	if (0 == protocol)
 		return false;
 
-	Data = ProtocolHandler->createAccountData();
+	Data = protocol->createAccountData();
 	if (0 == Data)
 		return false;
 
 	Data->setName(name);
-	ProtocolHandler->setData(Data);
-	ProtocolHandler->setAccount(this);
+	setProtocol(protocol);
 
 	return Data->loadConfiguration(configurationStorage, parent);
 }

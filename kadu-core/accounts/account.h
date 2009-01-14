@@ -32,6 +32,8 @@ class Account : public QObject
 	Protocol *ProtocolHandler;
 	AccountData *Data;
 
+	void setProtocol(Protocol *protocolHandler);
+
 public:
 	Account(const QUuid &uuid);
 	Account(const QUuid &uuid, Protocol *protocol, AccountData *data);

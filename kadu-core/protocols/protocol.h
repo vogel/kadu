@@ -15,6 +15,7 @@
 
 #include "contacts/contact.h"
 #include "contacts/contact-list.h"
+
 #include "../status.h"
 #include "status.h"
 

@@ -57,12 +57,12 @@ void AccountManager::loadConfiguration(XmlConfigFile *configurationStorage, cons
 		Account *account = new Account(uuid);
 
 		if (account->loadConfiguration(configurationStorage, accountElement))
-			{
-				if (account->protocol()->protocolFactory()->name() == name || name.isNull())
-					registerAccount(account);
-				else
-					delete account;
-			}
+		{
+			if (account->protocol()->protocolFactory()->name() == name || name.isNull())
+				registerAccount(account);
+			else
+				delete account;
+		}
 		else
 			delete account;
 	}
