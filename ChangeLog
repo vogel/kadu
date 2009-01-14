@@ -6,7 +6,19 @@ Je¶li jest w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * znacznie lepszy system budowania modu³ów - makro kadu_module zamiast kilkunastu linii kodu
 * usuniêcie sygna³ów messageReceived/Queued... i zast±pienie ich przez messageStatusChanged
 
-+++ wersja 0.6.5
++++ wersja 0.6.5.1 (14.01.2009)
+* poprawiony problem z zapisywaniem rozmiaru okien przy korzystaniu z twin view (dorr)
+* poprawki zwi±zane z wyborem zestawów d¼wiêkowych (dorr, White Eagle)
+* poprawki w module profiles (dorr)
+* poprawiony segfault z modu³u screenshot (White Eagle)
+* poprawki w dzia³aniu aplikacji pod Mac OS X (dorr)
+* modu³ spellchecker dzia³a równie¿ pod windows (michal)
+* dodane nowe sk³adnie okna rozmowy (dorr)
+* dodane modu³y mx610_notify, water_notify, weather (dorr)
+* dodane modu³y odtwarzaczy audacious, amarok (1 i 2), bmpx, dragon player, falf, itunes, vlc, xmms (1 i 2) (dorr)
+* poprawki ró¿nych drobnych b³êdów
+
++++ wersja 0.6.5 (08.12.2008)
 * wstêpny port na Qt4.4
 
 +++ wersja 0.6.0.3 (01.01.2009)
