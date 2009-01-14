@@ -1,0 +1,18 @@
+<div style="margin: 0 9px 9px 9px;">
+
+<div style="margin-top:9px;">
+
+<kadu:header>
+
+<span style="font-size: 9pt;background: #{backgroundColor};color: #{fontColor};padding: 2px 6px 0 6px;border-top: 1px solid #{nickColor};border-left: 1px solid #{nickColor};border-right: 1px solid #{nickColor};margin-left: 10px;">%a</span>
+
+<span style="font-size:9pt;background:#eee;color:#222;padding:2px 6px 0 6px;border:1px solid #999;border-bottom:none;margin-left: 3px;">%u</span>
+
+<span style="font-size: 9pt;float:right;background:#eee;color:#222;padding:2px 6px 0 6px;border:1px solid #999;border-bottom:none;margin-right:10px;margin-top:-3px;">[#{sendDate}/]#{receivedDate}</span>
+
+</kadu:header>
+
+<div style="font-size: 9pt;background: #{backgroundColor};color:#{fontColor};padding: 5px 10px 4px 10px;border: 1px solid #{nickColor};">#{message}</div>
+</div>
+
+</div>

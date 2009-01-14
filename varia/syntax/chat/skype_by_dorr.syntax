@@ -1,0 +1,5 @@
+#{separator}
+<kadu:header>
+<div style="-webkit-border-radius: 5px; padding-left: 10px; background: #{backgroundColor};  color: #{fontColor} font-weight: bold; position: relative;">%a: <span style=" position: absolute; right: 0; top: 0; font-size: 0.8em; font-weight: normal; padding-right: 10px;"> #{receivedDate}[ / S #{sentDate}]</span></div>
+</kadu:header>
+<div style="margin: 0.5ex 0 1ex 10px;">#{message}</div>

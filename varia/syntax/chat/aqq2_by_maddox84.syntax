@@ -1,0 +1,26 @@
+<div style="background-color: #{backgroundColor}; border-top: solid 1px #2d4949;">
+<table width=100% cellspacing=10>
+<tr>
+   <td>
+   <kadu:header>
+      <span style="color: #{nickColor}; font-weight: bold;">
+         %a :: <span style="color: #4b6464; font-weight: normal;">%u@gg</span>
+      </span>
+   </kadu:header>
+   </td>
+   <td align=right>
+      <span style="color: #{nickColor}; font-weight: normal;">
+         Czas :: [#{sentDate} -><br/>-> ]#{receivedDate}  
+      </span>
+   </td>
+</tr>
+
+<tr>
+   <td colspan=2>
+      <span style="color: #{fontColor};">
+         #{message}
+      </span>
+   </td>
+</tr>
+</table>
+</div>
