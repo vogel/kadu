@@ -6,35 +6,41 @@
  *   (at your option) any later version.                                   *
  *                                                                         *
  ***************************************************************************/
+#include "protocols/protocol.h"
+#include "protocols/protocol_factory.h"
 
 #include "protocol_notification.h"
 
-static QString getProtocolName(const QObject * const object)
+QString getAccountName(const QObject * const object)
 {
-	const ProtocolNotification * const notification = dynamic_cast<const ProtocolNotification * const>(object);
-	if (notification)
-		return notification->protocolName();
-	else
-		return "";
+	const AccountNotification * const notification = dynamic_cast<const AccountNotification * const>(object);
+	return notification &&
+		notification->account()
+		? notification->account()->name()
+		: QString::null;
 }
 
-ProtocolNotification::ProtocolNotification(const QString &type, const QString &icon, const UserListElements &userListElements, const QString &protocolName)
-	: Notification(type, icon, userListElements), ProtocolName(protocolName)
+QString getProtocolName(const QObject * const object)
+{
+	const AccountNotification * const notification = dynamic_cast<const AccountNotification * const>(object);
+	return notification &&
+		notification->account() &&
+		notification->account()->protocol() &&
+		notification->account()->protocol()->protocolFactory()
+		? notification->account()->protocol()->protocolFactory()->displayName()
+		: QString::null;
+}
+
+AccountNotification::AccountNotification(const QString &type, const QPixmap &icon, const ContactList &contacts, Account *account)
+	: Notification(type, icon, contacts), CurrentAccount(account)
 {
 	KaduParser::registerObjectTag("protocol", getProtocolName);
+	KaduParser::registerObjectTag("account", getAccountName);
 }
 
-ProtocolNotification::~ProtocolNotification()
+AccountNotification::~AccountNotification()
 {
 	KaduParser::unregisterObjectTag("protocol", getProtocolName);
+	KaduParser::unregisterObjectTag("account", getAccountName);
 }
 
-void ProtocolNotification::setProtocolName(const QString &name)
-{
-	ProtocolName = name;
-}
-
-QString ProtocolNotification::protocolName() const
-{
-	return ProtocolName;
-}

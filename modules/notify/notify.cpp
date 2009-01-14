@@ -18,7 +18,9 @@
 #include "gui/widgets/configuration/config-combo-box.h"
 #include "gui/widgets/configuration/config-group-box.h"
 #include "accounts/account.h"
+#include "accounts/account_data.h"
 #include "accounts/account_manager.h"
+#include "contacts/contact-account-data.h"
 #include "contacts/contact-list.h"
 #include "chat_widget.h"
 #include "chat_manager.h"
@@ -79,20 +81,14 @@ Notify::Notify(QObject *parent, const char *name)
 
 	createDefaultConfiguration();
 
+	AccountManager *accountManager = AccountManager::instance();
+	connect(accountManager, SIGNAL(registerAccount(Account *)),
+		this, SLOT(registerAccount(Account *)));
+	connect(accountManager, SIGNAL(unregisterAccount(Account *)),
+		this, SLOT(unregisterAccount(Account *)));
 
-	if (0 != AccountManager::instance()->defaultAccount())
-	{
-		Protocol *gadu = AccountManager::instance()->defaultAccount()->protocol();
-		connect(gadu, SIGNAL(connectionError(Protocol *, const QString &, const QString &)),
-				this, SLOT(connectionError(Protocol *, const QString &, const QString &)));
-	}
-
-	// TODO: workaround
-	connect(kadu, SIGNAL(messageReceivedSignal(Account *, ContactList, const QString&, time_t)),
-			this, SLOT(messageReceived(Account *, ContactList, const QString&, time_t)));
-	// TODO:
-	connect(userlist, SIGNAL(statusChanged(UserListElement, QString, const UserStatus &, bool, bool)),
-		this, SLOT(statusChanged(UserListElement, QString, const UserStatus &, bool, bool)));
+	foreach (Account *account, accountManager->accounts())
+		registerAccount(account);
 
 	MessageNotification::registerEvents(this);
 	ConnectionErrorNotification::registerEvent(this);
@@ -109,13 +105,14 @@ Notify::~Notify()
 	ConnectionErrorNotification::unregisterEvent(this);
 	MessageNotification::unregisterEvents(this);
 
-	Protocol *gadu = AccountManager::instance()->defaultAccount()->protocol();
-	disconnect(gadu, SIGNAL(connectionError(Protocol *, const QString &, const QString &)), this, SLOT(connectionError(Protocol *, const QString &, const QString &)));
-	disconnect(gadu, SIGNAL(messageReceived(Protocol *, UserListElements, const QString&, time_t)),
-			this, SLOT(messageReceived(Protocol *, UserListElements, const QString&, time_t)));
-	// TODO:
-	disconnect(userlist, SIGNAL(statusChanged(UserListElement, QString, const UserStatus &, bool, bool)),
-		this, SLOT(statusChanged(UserListElement, QString, const UserStatus &, bool, bool)));
+	AccountManager *accountManager = AccountManager::instance();
+	disconnect(accountManager, SIGNAL(registerAccount(Account *)),
+		this, SLOT(registerAccount(Account *)));
+	disconnect(accountManager, SIGNAL(unregisterAccount(Account *)),
+		this, SLOT(unregisterAccount(Account *)));
+
+	foreach (Account *account, accountManager->accounts())
+		unregisterAccount(account);
 
 	if (!Notifiers.isEmpty())
 	{
@@ -172,6 +169,7 @@ void Notify::mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigu
 
 	statusGroupBox->addWidgets(0, notifyUsers);
 
+	// TODO 0.6.6
 	foreach(const UserListElement &user, *userlist)
 		if (user.usesProtocol("Gadu") && !user.isAnonymous())
 			if (!user.notify())
@@ -323,47 +321,64 @@ void Notify::moveToNotifyList()
 	notifiedUsers->sortItems();
 }
 
-void Notify::statusChanged(UserListElement elem, QString protocolName,
-					const UserStatus &oldStatus, bool massively, bool /*last*/)
+void Notify::registerAccount(Account *account)
+{
+	Protocol *protocol = account->protocol();
+	connect(protocol, SIGNAL(connectionError(Protocol *, const QString &, const QString &)),
+			this, SLOT(connectionError(Protocol *, const QString &, const QString &)));
+	connect(protocol, SIGNAL(messageReceivedSignal(Account *, ContactList, const QString&, time_t)),
+		this, SLOT(messageReceived(Account *, ContactList, const QString&, time_t)));
+	connect(account, SIGNAL(contactStatusChanged(Account *, Contact, Status)),
+		this, SLOT(statusChanged(Account *, Contact, Status)));
+}
+
+void Notify::unregisterAccount(Account *account)
+{
+	Protocol *protocol = account->protocol();
+	disconnect(protocol, SIGNAL(connectionError(Protocol *, const QString &, const QString &)),
+			this, SLOT(connectionError(Protocol *, const QString &, const QString &)));
+	disconnect(protocol, SIGNAL(messageReceivedSignal(Account *, ContactList, const QString&, time_t)),
+		this, SLOT(messageReceived(Account *, ContactList, const QString&, time_t)));
+	disconnect(account, SIGNAL(contactStatusChanged(Account *, Contact, Status)),
+		this, SLOT(statusChanged(Account *, Contact, Status)));
+}
+
+void Notify::statusChanged(Account *account, Contact contact, Status oldStatus)
 {
 	kdebugf();
 
-	if (massively && config_file.readBoolEntry("Notify", "NotifyIgnoreOnConnection"))
+	// TODO 0.6.6
+	/*if (massively && config_file.readBoolEntry("Notify", "NotifyIgnoreOnConnection"))
 	{
 		kdebugmf(KDEBUG_FUNCTION_END, "end: ignore on connection\n");
 		return;
-	}
+	}*/
 
+	// TODO 0.6.6
+	UserListElement elem(UserListElement::fromContact(contact,account));
 	if (!elem.notify() && !config_file.readBoolEntry("Notify", "NotifyAboutAll"))
 	{
 		kdebugmf(KDEBUG_FUNCTION_END, "end: not notifying user AND not notifying all users\n");
 		return;
 	}
 
-	if (elem.ID("Gadu") == config_file.readEntry("General", "UIN") &&
-	    config_file.readBoolEntry("Notify", "NotifyAboutAll"))
+	if (contact.id(account) == account->data()->id())
 		return;
 
-	if (config_file.readBoolEntry("Notify", "IgnoreOnlineToOnline"))
-		if (elem.status("Gadu").isOnline() || elem.status("Gadu").isBusy())
-			if (oldStatus.isOnline() || oldStatus.isBusy())
-				return;
+	ContactAccountData *data = contact.accountData(account);
+	if (!data)
+		return;
 
-	QString changedTo = "";
-	switch (elem.status("Gadu").status())
-	{
-		case Online:	changedTo = "ToOnline"; break;
-		case Busy:		changedTo = "ToBusy"; break;
-		case Invisible:	changedTo = "ToInvisible"; break;
-		case Offline:	changedTo = "ToOffline"; break;
-		default:
-			return;
-	}
+	if (config_file.readBoolEntry("Notify", "IgnoreOnlineToOnline")
+			&& (data->status().isOnline() || data->status().isBusy())
+			&& (oldStatus.isOnline() || oldStatus.isBusy()))
+		return;
 
-	UserListElements elems;
-	elems.append(elem);
+	QString changedTo = "To" + Status::name(data->status(), false);
 
-	StatusChangedNotification *statusChangedNotification = new StatusChangedNotification(changedTo, elems, protocolName);
+	ContactList contacts(contact);
+
+	StatusChangedNotification *statusChangedNotification = new StatusChangedNotification(changedTo, contacts, account);
 	notify(statusChangedNotification);
 
 	kdebugf2();
@@ -373,25 +388,23 @@ void Notify::messageReceived(Account *account, ContactList contacts, const QStri
 {
 	kdebugf();
 
-	Protocol *gadu = AccountManager::instance()->defaultAccount()->protocol();
 	ChatWidget *chat = chat_manager->findChatWidget(contacts);
-	UserListElements senders = UserListElements::fromContactList(contacts, AccountManager::instance()->defaultAccount());
 	if (!chat) // new chat
-		notify(new MessageNotification(MessageNotification::NewChat, senders, msg, "Gadu"));
+		notify(new MessageNotification(MessageNotification::NewChat, contacts, msg, account));
 	else // new message in chat
 		if (!chat->edit()->hasFocus() || !config_file.readBoolEntry("Notify", "NewMessageOnlyIfInactive"))
-			notify(new MessageNotification(MessageNotification::NewMessage, senders, msg, "Gadu"));
+			notify(new MessageNotification(MessageNotification::NewMessage, contacts, msg, account));
 
 	kdebugf2();
 }
 
-void Notify::connectionError(Protocol *protocol, const QString &server, const QString &message)
+void Notify::connectionError(Account *account, const QString &server, const QString &message)
 {
 	kdebugf();
 
 	if (!ConnectionErrorNotification::activeError(message))
 	{
-		ConnectionErrorNotification *connectionErrorNotification = new ConnectionErrorNotification(server, message, "Gadu");
+		ConnectionErrorNotification *connectionErrorNotification = new ConnectionErrorNotification(server, message, account);
 		notify(connectionErrorNotification);
 	}
 

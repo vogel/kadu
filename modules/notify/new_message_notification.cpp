@@ -23,10 +23,10 @@ void MessageNotification::unregisterEvents(Notify *manager)
 	manager->unregisterEvent("NewMessage");
 }
 
-MessageNotification::MessageNotification(MessageType messageType, const UserListElements &userListElements, const QString &message, const QString &protocolName)
-	: ProtocolNotification(messageType == NewChat ? "NewChat" : "NewMessage", "Message", userListElements, protocolName)
+MessageNotification::MessageNotification(MessageType messageType, const ContactList &contacts, const QString &message, Account *account)
+	: AccountNotification(messageType == NewChat ? "NewChat" : "NewMessage", icons_manager->loadIcon("Message").pixmap() , contacts, account)
 {
-	const UserListElement &ule = userListElements[0];
+	const Contact &contact = contacts[0];
 	QString syntax;
 
 	if (messageType == NewChat)
@@ -40,7 +40,7 @@ MessageNotification::MessageNotification(MessageType messageType, const UserList
 		syntax = tr("New message from <b>%1</b>");
 	}
 
-	setText(syntax.arg(Qt::escape(ule.altNick())));
+	setText(syntax.arg(Qt::escape(contact.display())));
 	setDetails(message);
 }
 

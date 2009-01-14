@@ -126,7 +126,7 @@ void KaduAction::updateIcon()
 		setIcon(icons_manager->loadIcon(Description->IconName));
 }
 
-ActionDescription::ActionDescription(ActionType Type, const QString &Name, QObject *Object, char *Slot,
+ActionDescription::ActionDescription(ActionType Type, const QString &Name, QObject *Object, const char *Slot,
 	const QString &IconName, const QString &Text, bool Checkable, const QString &CheckedText, ActionBoolCallback enableCallback)
 	: ShortcutItem(""), ShortcutContext(Qt::WidgetShortcut)
 {

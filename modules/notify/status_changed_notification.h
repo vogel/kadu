@@ -14,7 +14,7 @@
 #include "protocol_notification.h"
 #include "notify.h"
 
-class StatusChangedNotification : public ProtocolNotification
+class StatusChangedNotification : public AccountNotification
 {
 	Q_OBJECT
 public:
@@ -22,7 +22,7 @@ public:
 	static void registerEvents(Notify * manager);
 	static void unregisterEvents(Notify * manager);
 
-	StatusChangedNotification(const QString &toStatus, const UserListElements &userListElements, const QString &protocolName);
+	StatusChangedNotification(const QString &toStatus, ContactList &contacts, Account *account);
 	virtual ~StatusChangedNotification() {};
 
 };

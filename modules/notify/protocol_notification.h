@@ -1,30 +1,23 @@
-#ifndef PROTOCOL_NOTIFICATION_H
-#define PROTOCOL_NOTIFICATION_H
+#ifndef ACCOUNT_NOTIFICATION_H
+#define ACCOUNT_NOTIFICATION_H
 
+#include "accounts/account.h"
 #include "kadu_parser.h"
-
 #include "notification.h"
 
-class ProtocolNotification : public Notification
+class AccountNotification : public Notification
 {
 	Q_OBJECT
 
-	QString ProtocolName;
+	Account *CurrentAccount;
 public:
 
-	ProtocolNotification(const QString &type, const QString &icon, const UserListElements &userListElements, const QString &protocolName);
-	virtual ~ProtocolNotification();
+	AccountNotification(const QString &type, const QPixmap &icon, const ContactList &contacts, Account *account);
+	virtual ~AccountNotification();
 
-	/**
-		Ustawia nazwę protokołu.
-	 **/
-	void setProtocolName(const QString &name);
-	/**
-		Nazwa protokołu.
-
-		@return nazwa protokołu.
-	 **/
-	QString protocolName() const;
+	Account * account() const {return CurrentAccount;}
+	static QString getAccountName(const QObject * const object);
+	static QString getProtocolName(const QObject * const object);
 };
 
-#endif // PROTOCOL_NOTIFICATION_H
+#endif // ACCOUNT_NOTIFICATION_H

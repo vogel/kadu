@@ -10,6 +10,8 @@
 #include <QtGui/QApplication>
 #include <QtGui/QTextDocument>
 
+#include "accounts/account.h"
+#include "contacts/contact-account-data.h"
 #include "misc.h"
 
 #include "status_changed_notification.h"
@@ -30,21 +32,23 @@ void StatusChangedNotification::unregisterEvents(Notify *manager)
 	manager->unregisterEvent("StatusChanged/ToOffline");
 }
 
-StatusChangedNotification::StatusChangedNotification(const QString &toStatus, const UserListElements &userListElements, const QString &protocolName)
-	: ProtocolNotification(QString("StatusChanged/") + toStatus, userListElements[0].status(protocolName).pixmapName(), userListElements, protocolName)
+// TODO 0.6.6 what if accountData(account) == null ?
+StatusChangedNotification::StatusChangedNotification(const QString &toStatus, ContactList &contacts, Account *account)
+	: AccountNotification(QString("StatusChanged/") + toStatus, account->protocol()->statusPixmap(contacts[0].accountData(account)->status()), contacts, account)
 {
-	const UserListElement &ule = userListElements[0];
+	const Contact &contact = contacts[0];
+	Status status = contact.accountData(account)->status();
 	QString syntax;
 
-	if (ule.status(protocolName).hasDescription())
+	if (!status.description().isNull())
 		syntax = tr("<b>%1</b> changed status to <i>%2</i><br/> <small>%3</small>");
 	else
 		syntax = tr("<b>%1</b> changed status to <i>%2</i>");
 
 	setTitle(tr("Status changed"));
 	setText(narg(syntax,
-		Qt::escape(ule.altNick()),
-		qApp->translate("@default", ule.status(protocolName).name().ascii()),
-		Qt::escape(ule.status(protocolName).description())
+		Qt::escape(contact.display()),
+		qApp->translate("@default", Status::name(status, false)),
+		Qt::escape(status.description())
 	));
 }

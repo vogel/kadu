@@ -8,7 +8,6 @@
 #include "main_configuration_window.h"
 #include "notification.h"
 #include "protocols/protocol.h"
-#include "userlist.h"
 #include "notify_exports.h"
 
 class MessageNotification;
@@ -179,10 +178,13 @@ class NOTIFYAPI Notify : public ConfigurationUiHandler
 
 private slots:
 
+	void registerAccount(Account *account);
+	void unregisterAccount(Account *account);
+
 	void messageReceived(Account *account, ContactList contacts, const QString &msg, time_t t);
 
-	void connectionError(Protocol *protocol, const QString &server, const QString &message);
-	void statusChanged(UserListElement elem, QString protocolName, const UserStatus &oldStatus, bool massively, bool last);
+	void connectionError(Account *account, const QString &server, const QString &message);
+	void statusChanged(Account *account, Contact contact, Status oldStatus);
 
 	void moveToNotifyList();
 	void moveToAllList();

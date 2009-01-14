@@ -24,8 +24,8 @@ static QString getNotificationTitle(const QObject * const object)
 		return "";
 }
 
-Notification::Notification(const QString &type, const QString &icon, const UserListElements &userListElements)
-	: Type(type), Ule(userListElements), Title(""), Text(""), Icon(icon), DefaultCallbackTimer(0), ReferencesCount(0), Closing(false)
+Notification::Notification(const QString &type, const QPixmap &icon, const ContactList &contacts)
+	: Type(type), Contacts(contacts), Title(""), Text(""), Icon(icon), DefaultCallbackTimer(0), ReferencesCount(0), Closing(false)
 {
 	KaduParser::registerObjectTag("event", getNotificationTitle);
 }
@@ -111,9 +111,9 @@ QString Notification::type() const
 	return Type;
 }
 
-const UserListElements &Notification::userListElements() const
+const ContactList &Notification::contacts() const
 {
-	return Ule;
+	return Contacts;
 }
 
 void Notification::setTitle(const QString &title)
@@ -146,12 +146,12 @@ QString Notification::details() const
 	return Details;
 }
 
-void Notification::setIcon(const QString &icon)
+void Notification::setIcon(const QPixmap &icon)
 {
 	Icon = icon;
 }
 
-QString Notification::icon() const
+QPixmap Notification::icon() const
 {
 	return Icon;
 }

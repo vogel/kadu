@@ -9,11 +9,11 @@
 
 #ifndef CONNECTION_ERROR_NOTIFICATION_H
 #define CONNECTION_ERROR_NOTIFICATION_H
-
+// TODO account_notification
 #include "protocol_notification.h"
 #include "notify.h"
 
-class ConnectionErrorNotification : public ProtocolNotification
+class ConnectionErrorNotification : public AccountNotification
 {
 	Q_OBJECT
 
@@ -28,7 +28,7 @@ public:
 
 	static bool activeError(const QString &errorMessage);
 
-	ConnectionErrorNotification(const QString &errorServer, const QString &errorMessage, const QString &protocolName);
+	ConnectionErrorNotification(const QString &errorServer, const QString &errorMessage, Account *account);
 	virtual ~ConnectionErrorNotification();
 
 	QString errorMessage() const;

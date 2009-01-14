@@ -11,6 +11,7 @@
 #define NOTIFICATION_H
 
 #include <QtCore/QPair>
+#include <QtGui/QPixmap>
 
 #include "userlist.h"
 
@@ -78,12 +79,12 @@ public:
 private:
 
 	QString Type;
-	UserListElements Ule;
+	ContactList Contacts;
 
 	QString Title;
 	QString Text;
 	QString Details;
-	QString Icon;
+	QPixmap Icon;
 
 	QList<Callback > Callbacks;
 	QTimer *DefaultCallbackTimer;
@@ -102,7 +103,7 @@ public:
 		@arg icon nazwa ikony zdarzenia
 		@arg userListElements lista kontakt�w powi�zana ze zdarzeniem
 	 **/
-	Notification(const QString &type, const QString &icon, const UserListElements &userListElements);
+	Notification(const QString &type, const QPixmap &icon, const ContactList &contacts);
 	virtual ~Notification();
 
 	/**
@@ -153,7 +154,7 @@ public:
 
 		@return lista kontakt�w powi�zana ze zdarzeniem
 	 **/
-	const UserListElements &userListElements() const;
+	const ContactList &contacts() const;
 
 	/**
 		Ustawia tytu� zdarzenia.
@@ -189,13 +190,13 @@ public:
 	/**
 		Ustawia ikon� zdarzenia.
 	 **/
-	void setIcon(const QString &icon);
+	void setIcon(const QPixmap &icon);
 	/**
 		Ikona zdarzenia.
 
 		@return ikona zdarzenia
 	 **/
-	QString icon() const;
+	QPixmap icon() const;
 
 	/**
 		Lista akcji.
