@@ -2,6 +2,17 @@ Teksty w nawiasach na koñcu wpisu mówi± o tym, kto dokona³ poprawki lub rozbudow
 Postaæ (x/y) oznacza, ¿e x jest pomys³odawc± lub podes³a³ patcha, a zrobi³ to kto¶ oznaczony przez y.
 Je¶li jest w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 
++++ wersja 0.6.5.1
+* poprawiony problem z zapisywaniem rozmiaru okien przy korzystaniu z twin view (dorr)
+* poprawki zwi±zane z wyborem zestawów d¼wiêkowych (dorr, White Eagle)
+* poprawki w module profiles (dorr)
+* poprawiony segfault z modu³u screenshot (White Eagle)
+* poprawki w dzia³aniu aplikacji pod Mac OS X (dorr)
+* modu³ spellchecker dzia³a równie¿ pod windows (michal)
+* dodane nowe sk³adnie okna rozmowy (dorr)
+* dodane modu³y mx610_notify, water_notify, weather (dorr)
+* dodane modu³y odtwarzaczy audacious, amarok (1 i 2), bmpx, dragon player, falf, itunes, vlc, xmms (1 i 2) (dorr)
+
 +++ wersja 0.6.5
 * wstêpny port na Qt4.4
 
