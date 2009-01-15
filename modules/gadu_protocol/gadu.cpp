@@ -2263,7 +2263,8 @@ QPixmap GaduProtocol::statusPixmap(Status status)
 			pixmapName = QString("Invisible").append(description);
 			break;
 		default:
-			return QString("Offline").append(description);
+			pixmapName = QString("Offline").append(description);
+			break;
 	}
 
 	return icons_manager->loadPixmap(pixmapName);

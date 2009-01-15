@@ -28,12 +28,13 @@ class ContactsListWidgetDelegate : public QAbstractItemDelegate, public Configur
 
 	ContactsModel *Model;
 
-	QFontMetrics *DescriptionFontMetrics;
+	QFont Font;
+	QFont DescriptionFont;
 	bool ShowDesc;
 	bool ShowBold;
 
 	Contact contact(const QModelIndex &index) const;
-	QTextDocument * getDescriptionDocument(const QString &text, int width) const;
+	QTextDocument * descriptionDocument(const QString &text, int width) const;
 
 	bool isBold(Contact contact) const;
 	QString displayDescription(Contact contact) const;

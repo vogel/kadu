@@ -38,6 +38,9 @@ AccountManager::~AccountManager()
 
 void AccountManager::loadConfiguration(XmlConfigFile *configurationStorage, const QString &name)
 {
+	if (!name.isEmpty())
+		return;
+
 	QDomElement accountsNode = configurationStorage->getNode("Accounts", XmlConfigFile::ModeFind);
 	if (accountsNode.isNull())
 		return;

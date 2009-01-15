@@ -31,7 +31,7 @@
 #include "contacts-list-widget-delegate.h"
 
 ContactsListWidgetDelegate::ContactsListWidgetDelegate(ContactsModel *model, QObject *parent)
-	: QAbstractItemDelegate(parent), Model(model), DescriptionFontMetrics(0)
+	: QAbstractItemDelegate(parent), Model(model)
 {
 	connect(AccountManager::instance(), SIGNAL(accountRegistered(Account *)),
 		this, SLOT(accountRegistered(Account *)));
@@ -101,9 +101,11 @@ QString ContactsListWidgetDelegate::displayDescription(Contact contact) const
 	return cad->status().description();
 }
 
-QTextDocument * ContactsListWidgetDelegate::getDescriptionDocument(const QString &text, int width) const
+QTextDocument * ContactsListWidgetDelegate::descriptionDocument(const QString &text, int width) const
 {
 	QTextDocument *doc = new QTextDocument(text);
+
+	doc->setDefaultFont(DescriptionFont);
 
 	QTextOption opt = doc->defaultTextOption();
 	opt.setWrapMode(QTextOption::WrapAtWordBoundaryOrAnywhere);
@@ -119,6 +121,8 @@ QTextDocument * ContactsListWidgetDelegate::getDescriptionDocument(const QString
 
 QSize ContactsListWidgetDelegate::sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const
 {
+	printf("size hint\n");
+
 	QSize size(0, 0);
 
 	const QStyleOptionViewItemV4 *opt = qstyleoption_cast<const QStyleOptionViewItemV4 *>(&option);
@@ -128,23 +132,30 @@ QSize ContactsListWidgetDelegate::sizeHint(const QStyleOptionViewItem &option, c
 	const QAbstractItemView *widget = dynamic_cast<const QAbstractItemView *>(opt->widget);
 	if (!widget)
 		return size;
-	int width = 230; // widget->viewport()->width();
+	int width = widget->viewport()->width();
+	printf("width: %d\n", width);
 
-	int displayHeight = widget->fontMetrics().lineSpacing() + 3;
+	QFontMetrics fontMetrics(Font);
+	int displayHeight = fontMetrics.lineSpacing() + 3;
 
 	QString description = displayDescription(contact(index));
 	int descriptionHeight = 0;
-	if (!description.isEmpty())
-	{
-		QTextDocument *descriptionDocument = getDescriptionDocument(description, opt->rect.width());
-		descriptionHeight = (int)descriptionDocument->size().height();
-		delete descriptionDocument;
-	}
 
 	QPixmap pixmap = qvariant_cast<QPixmap>(index.data(Qt::DecorationRole));
+	int textLeft = pixmap.isNull()
+		? 5
+		: pixmap.width() + 5;
+
+	if (!description.isEmpty())
+	{
+		QTextDocument *dd = descriptionDocument(description, opt->rect.width() - textLeft);
+		descriptionHeight = (int)dd->size().height();
+		delete dd;
+	}
+
 	int pixmapHeight = pixmap.height();
 
-	int height = QMAX(displayHeight, QMAX(pixmapHeight, descriptionHeight));
+	int height = QMAX(pixmapHeight, displayHeight + descriptionHeight);
 
 	return QSize(width, height);
 }
@@ -165,9 +176,12 @@ void ContactsListWidgetDelegate::paint(QPainter *painter, const QStyleOptionView
 	painter->setClipRect(rect);
 	painter->translate(rect.topLeft());
 
+	painter->setFont(Font);
+
 	Contact con = contact(index);
 
-	int displayHeight = widget->fontMetrics().lineSpacing() + 3;
+	QFontMetrics fontMetrics(Font);
+	int displayHeight = fontMetrics.lineSpacing() + 3;
 
 	QPixmap pixmap = qvariant_cast<QPixmap>(index.data(Qt::DecorationRole));
 	int pixmapHeight = pixmap.height();
@@ -175,52 +189,48 @@ void ContactsListWidgetDelegate::paint(QPainter *painter, const QStyleOptionView
 	QString description = displayDescription(con);
 	bool hasDescription = !description.isEmpty();
 
-	QTextDocument *descriptionDocument = 0;
+	QTextDocument *dd = 0;
 	int descriptionHeight = 0;
+	int textLeft = pixmap.isNull()
+		? 5
+		: pixmap.width() + 5;
 
 	if (hasDescription)
 	{
-		descriptionDocument = getDescriptionDocument(description, rect.width());
-		descriptionHeight = (int)descriptionDocument->size().height();
+		dd = descriptionDocument(description, rect.width() - textLeft);
+		descriptionHeight = (int)dd->size().height();
 	}
 
-	int height = QMAX(displayHeight, QMAX(pixmapHeight, descriptionHeight));
+	int height = QMAX(pixmapHeight, displayHeight + descriptionHeight);
 	int itemHeight = displayHeight; // /*AlignUserboxIconsTop ?*/ widget->fontMetrics().lineSpacing() + 3/* : rect.height()*/;
-	int left = 32;
 
 	if (!pixmap.isNull())
-	{
 		painter->drawPixmap(3, (itemHeight - pixmap.height()) / 2, pixmap);
-		left = pixmap.width() + 5;
-	}
 
 	QString display = index.data(Qt::DisplayRole).toString();
 	if (display.isEmpty())
 	{
 		painter->restore();
-		if (descriptionDocument)
-			delete descriptionDocument;
+		if (dd)
+			delete dd;
 		return;
 	}
 
-	QFont oldFont = painter->font();
 	if (isBold(con))
 	{
-		QFont newFont = QFont(oldFont);
-		newFont.setWeight(QFont::Bold);
-		painter->setFont(newFont);
+		QFont bold = QFont(Font);
+		bold.setWeight(QFont::Bold);
+		painter->setFont(bold);
 	}
 
-	QFontMetrics fm = painter->fontMetrics();
-
 	int top = hasDescription
-		? fm.ascent() + 1
-		: ((itemHeight - fm.height()) / 2) + fm.ascent();
+		? fontMetrics.ascent() + 1
+		: ((itemHeight - fontMetrics.height()) / 2) + fontMetrics.ascent();
 
-	painter->drawText(left, top, display);
+	painter->drawText(textLeft, top, display);
 
 	if (isBold(con))
-		painter->setFont(oldFont);
+		painter->setFont(Font);
 
 	if (!hasDescription)
 	{
@@ -229,11 +239,9 @@ void ContactsListWidgetDelegate::paint(QPainter *painter, const QStyleOptionView
 		return;
 	}
 
-	top += fm.height() + 1;
+	top += 5;
 
-	QFont newFont = QFont(painter->font());
-	newFont.setPointSize(oldFont.pointSize() - 2);
-	painter->setFont(newFont);
+	painter->setFont(DescriptionFont);
 
 // 	if (!ShowMultilineDesc)
 // 		description.replace("\n", " ");
@@ -242,9 +250,9 @@ void ContactsListWidgetDelegate::paint(QPainter *painter, const QStyleOptionView
 // 	descriptionRect.setX(pixmap.width() + 5);
 // 	descriptionRect.setY(rect.y() + yPos);
 
-	painter->translate(left, top);
-	descriptionDocument->drawContents(painter/*, rect*/);
-	delete descriptionDocument;
+	painter->translate(textLeft, top);
+	dd->drawContents(painter);
+	delete dd;
 
 /*
 	int h;
@@ -265,15 +273,12 @@ void ContactsListWidgetDelegate::paint(QPainter *painter, const QStyleOptionView
 
 void ContactsListWidgetDelegate::configurationUpdated()
 {
-	QFont font = config_file.readFontEntry("Look", "UserboxFont");
+	Font = config_file.readFontEntry("Look", "UserboxFont");
+	DescriptionFont = Font;
+	DescriptionFont.setPointSize(Font.pointSize() - 2);
+
 	ShowDesc = config_file.readBoolEntry("Look", "ShowDesc");
 	ShowBold = config_file.readBoolEntry("Look", "ShowBold");
-
-	if (DescriptionFontMetrics)
-		delete DescriptionFontMetrics;
-
-	font.setPointSize(font.pointSize() - 2);
-	DescriptionFontMetrics = new QFontMetrics(font);
 
 	QListView *listView = dynamic_cast<QListView *>(parent());
 	if (!listView)
