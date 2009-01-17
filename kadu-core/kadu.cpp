@@ -2137,6 +2137,7 @@ void Kadu::show()
 {
 	QWidget::show();
 
+	// no columns now ...
 	// TODO: remove after 0.6
 	if (config_file.readBoolEntry("Look", "MultiColumnUserbox", false))
 	{
@@ -2144,7 +2145,7 @@ void Kadu::show()
 		if (columns < 1)
 			columns = 1;
 		config_file.writeEntry("Look", "UserBoxColumnCount", columns);
-		KaduListBoxPixmap::setColumnCount(columns);
+// 		KaduListBoxPixmap::setColumnCount(columns);
 		Userbox->refresh();
 	}
 	config_file.removeVariable("Look", "MultiColumnUserbox");

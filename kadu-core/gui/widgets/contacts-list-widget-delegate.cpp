@@ -117,9 +117,9 @@ QTextDocument * ContactsListWidgetDelegate::descriptionDocument(const QString &t
 	opt.setWrapMode(QTextOption::WrapAtWordBoundaryOrAnywhere);
 	doc->setDefaultTextOption(opt);
 
-	QTextFrameFormat fmt = doc->rootFrame()->frameFormat();
-	fmt.setMargin(0);
-	doc->rootFrame()->setFrameFormat(fmt);
+	QTextFrameFormat frameFormat = doc->rootFrame()->frameFormat();
+	frameFormat.setMargin(0);
+	doc->rootFrame()->setFrameFormat(frameFormat);
 
 	doc->setTextWidth(width);
 	return doc;
@@ -274,9 +274,7 @@ void ContactsListWidgetDelegate::paint(QPainter *painter, const QStyleOptionView
 	top += 5;
 
 	painter->setFont(DescriptionFont);
-
 	painter->translate(textLeft, top);
-	painter->setPen(DescriptionColor);
 
 	dd->drawContents(painter);
 	delete dd;

@@ -45,15 +45,6 @@
 #include "pending_msgs.h"
 #include "userbox.h"
 
-QFontMetrics* KaduListBoxPixmap::descriptionFontMetrics = NULL;
-UinType KaduListBoxPixmap::myUIN;
-bool KaduListBoxPixmap::ShowDesc;
-bool KaduListBoxPixmap::ShowBold;
-bool KaduListBoxPixmap::AlignUserboxIconsTop;
-bool KaduListBoxPixmap::ShowMultilineDesc;
-int KaduListBoxPixmap::ColumnCount;
-QColor KaduListBoxPixmap::descColor;
-
 QImage *UserBox::backgroundImage = 0;
 
 static bool brokenStringCompare;
@@ -134,348 +125,6 @@ bool ToolTipClassManager::hideToolTip()
 	}
 
 	return false;
-}
-
-void KaduListBoxPixmap::setFont(const QFont &f)
-{
-	kdebugf();
-	QFont newFont = QFont(f);
-	newFont.setPointSize(f.pointSize() - 2);
-	if (descriptionFontMetrics)
-		delete descriptionFontMetrics;
-	descriptionFontMetrics= new QFontMetrics(newFont);
-	kdebugf2();
-}
-
-KaduListBoxPixmap::KaduListBoxPixmap(Contact contact)
-	: Q3ListBoxItem(), pm(pixmapForUser(contact)), buf_text(), buf_width(-1), buf_out(), buf_height(-1), CurrentContact(contact)
-{
-	setText(contact.display());
-}
-
-void KaduListBoxPixmap::setMyUIN(UinType u)
-{
-	myUIN = u;
-}
-
-void KaduListBoxPixmap::setShowDesc(bool sd)
-{
-	ShowDesc = sd;
-}
-
-void KaduListBoxPixmap::setShowBold(bool sb)
-{
-	ShowBold = sb;
-}
-
-void KaduListBoxPixmap::setAlignTop(bool at)
-{
-	AlignUserboxIconsTop = at;
-}
-
-void KaduListBoxPixmap::setShowMultilineDesc(bool m)
-{
-	ShowMultilineDesc = m;
-}
-
-void KaduListBoxPixmap::setColumnCount(int m)
-{
-	ColumnCount = m;
-}
-
-void KaduListBoxPixmap::setDescriptionColor(const QColor &col)
-{
-	descColor = col;
-}
-
-bool KaduListBoxPixmap::isBold() const
-{
-	if (!ShowBold)
-		return false;
-
-	Account *account = AccountManager::instance()->defaultAccount();
-	ContactAccountData *contactData = CurrentContact.accountData(account);
-
-	if (0 == contactData)
-		return false;
-
-	Status status = contactData->status();
-	return status.isOnline() || status.isBusy();
-}
-
-void KaduListBoxPixmap::paint(QPainter *painter)
-{
-	if (!descriptionFontMetrics)
-		return;
-
-	Account *account = AccountManager::instance()->defaultAccount();
-	ContactAccountData *data = CurrentContact.accountData(account);
-
-//	kdebugf();
-	QColor origColor = painter->pen().color();
-	QString description;
-
-	if (data)
-	{
-		// TODO: 0.6.6
-/*
-		if (User.protocolData("Gadu", "Blocking").toBool())
-			painter->setPen(QColor(255, 0, 0));
-		else if (IgnoredManager::isIgnored(UserListElements(users)))
-			painter->setPen(QColor(192, 192, 0));
-		else if (config_file.readBoolEntry("General", "PrivateStatus") && User.protocolData("Gadu", "OfflineTo").toBool())
-			painter->setPen(QColor(128, 128, 128));
-*/
-//		if (User.data("HideDescription").toString() != "true")
-
-		description = data->status().description();
-	}
-
-	int itemHeight = AlignUserboxIconsTop ? lineHeight(listBox()):height(listBox());
-	int yPos;
-	bool hasDescription = !description.isEmpty();
-
-	if (!pm.isNull())
-	{
-		yPos = (itemHeight - pm.height()) / 2;
-		painter->drawPixmap(3, yPos, pm);
-	}
-
-	if (!text().isEmpty())
-	{
-		QFont oldFont = painter->font();
-
-		if (isBold())
-		{
-			QFont newFont = QFont(oldFont);
-			newFont.setWeight(QFont::Bold);
-			painter->setFont(newFont);
-		}
-
-		QFontMetrics fm = painter->fontMetrics();
-
-		if (ShowDesc && hasDescription)
-			yPos = fm.ascent() + 1;
-		else
-			yPos = ((itemHeight - fm.height()) / 2) + fm.ascent();
-
-		painter->drawText(pm.width() + 5, yPos, text());
-
-		if (isBold())
-			painter->setFont(oldFont);
-
-//		kdebugmf(KDEBUG_INFO, "isMyUin = %d, own_description = %s\n",
-//			isMyUin, (const char *)unicode2latin(own_description));
-		if (ShowDesc && hasDescription)
-		{
-			yPos += fm.height() - fm.descent();
-
-			QFont newFont = QFont(oldFont);
-			newFont.setPointSize(oldFont.pointSize() - 2);
-			painter->setFont(newFont);
-
-			if (!ShowMultilineDesc)
-				description.replace("\n", " ");
-			int h;
-			QStringList out;
-			calculateSize(description, width(listBox()) - 5 - pm.width(), out, h);
-			if (!out.empty() && !isSelected())
-				painter->setPen(descColor);
-			else
-				painter->setPen(origColor);
-			foreach(const QString &text, out)
-			{
-				painter->drawText(pm.width() + 5, yPos, text);
-				yPos += descriptionFontMetrics->lineSpacing();
-			}
-
-			painter->setFont(oldFont);
-		}
-	}
-//	kdebugf2();
-}
-
-int KaduListBoxPixmap::height(const Q3ListBox* lb) const
-{
-//	kdebugf();
-
-	Account *account = AccountManager::instance()->defaultAccount();
-	ContactAccountData *data = CurrentContact.accountData(account);
-
-	QString description;
-	if (data)
-		description = data->status().description();
-
-// 	if (User.usesProtocol("Gadu") && User.data("HideDescription").toString() != "true")
-// 		description = User.status("Gadu").description();
-
-	bool hasDescription = !description.isEmpty();
-
-	int height=lb->fontMetrics().lineSpacing()+3;
-	if (hasDescription && ShowDesc)
-	{
-		if (!ShowMultilineDesc)
-			description.replace("\n", " ");
-		QStringList out;
-		int h;
-		calculateSize(description, width(lb) - 5 - pm.width(), out, h);
-		height += h;
-	}
-//	kdebugf2();
-	return QMAX(pm.height(), height);
-}
-
-int KaduListBoxPixmap::lineHeight(const Q3ListBox* lb) const
-{
-	int height=lb->fontMetrics().lineSpacing()+3;
-	return QMAX(pm.height(), height);
-}
-
-
-int KaduListBoxPixmap::width(const Q3ListBox* lb) const
-{
-	if (ColumnCount == 0)
-		return QMAX(pm.width(), (lb->visibleWidth()));
-	else
-		return QMAX(pm.width(), (lb->visibleWidth()) / ColumnCount);
-}
-
-//#include <sys/time.h>
-void KaduListBoxPixmap::calculateSize(const QString &text, int width, QStringList &out, int &height) const
-{
-	if (!descriptionFontMetrics)
-		return;
-
-//	kdebugf();
-	if (text == buf_text && width == buf_width)	// we already computed it
-	{
-		out=buf_out;
-		height=buf_height;
-		return;
-	}
-
-	int tmplen;
-
-	out.clear();
-	height=0;
-
-/*	struct timeval t1,t2;
-	gettimeofday(&t1, NULL);
-	for(int j=0; j<1000; ++j)
-	{
-		out.clear();
-		height=0;
-*/
-	QStringList tmpout = QStringList::split('\n', text, true);
-
-	int wsize = descriptionFontMetrics->width('W'); //'w' is the widest letter
-	int initialLength = width / wsize; // try to guess width
-
-	if (initialLength < 1) // we are all doomed ;) there is no space fo even one letter
-	{
-		kdebugm(KDEBUG_WARNING, "no space for description!\n");
-		height = 0;
-		out = QStringList();
-		return;
-	}
-
-	while (!tmpout.isEmpty())
-	{
-		QString curtext = tmpout.front();
-		int textlen = curtext.length();
-		int len = initialLength;
-		bool tooWide = false;
-		while (1)
-		{
-			tooWide = (descriptionFontMetrics->width(curtext.left(len)) >= width);
-			if (!tooWide && len < textlen)
-				len += 5; //moving with 5 letters to make it faster
-			else
-				break;
-		}
-		if (tooWide) // crossed userbox width
-		{
-			while (descriptionFontMetrics->width(curtext.left(len)) >= width) //shortening to find the widest length
-				--len;
-			tmplen = len;
-			while (len > 0 && !curtext[len-1].isSpace()) //find word boundary
-				--len;
-			if (len == 0) //but maybe someone wrote it without spaces?
-				len = tmplen-1;
-		}
-		if (len < 1)
-		{
-			kdebugm(KDEBUG_WARNING, "no space for description ! (2)\n");
-			height = 0;
-			out = QStringList();
-			return;
-		}
-		QString next = curtext.mid(len); //moving rest to the next line
-		out.push_back(curtext.left(len));
-		tmpout.pop_front();
-		++height;
-		if (tooWide)
-		{
-			if (next[0].isSpace()) // if we are breaking line at word boundary, next line can be truncated at beginning
-				tmpout.push_front(next.mid(1));
-			else
-				tmpout.push_front(next);
-		}
-	}
-
-/*	}
-	gettimeofday(&t2, NULL);
-	kdebugm(KDEBUG_INFO, "czas: %ld\n", (t2.tv_usec-t1.tv_usec)+(t2.tv_sec*1000000)-(t1.tv_sec*1000000));
-*/
-	height*=descriptionFontMetrics->lineSpacing();
-
-	buf_text=text;
-	buf_width=width;
-	buf_out=out;
-	buf_height=height;
-//	kdebugm(KDEBUG_DUMP, "h:%d txt:%s\n", height, qPrintable(text));
-//	for(QStringList::Iterator it = out.begin(); it != out.end(); ++it )
-//		kdebugm(KDEBUG_DUMP, ">>%s\n", qPrintable(*it));
-}
-
-void KaduListBoxPixmap::changeText(const QString &text)
-{
-	setText(text);
-}
-
-QPixmap KaduListBoxPixmap::pixmapForUser(Contact contact)
-{
-	Account *account = AccountManager::instance()->defaultAccount();
-
-	bool has_mobile = !contact.mobile().isEmpty();
-
-	if (!contact.accountData(account))
-	{
-		if (has_mobile)
-			return icons_manager->loadPixmap("Mobile");
-		else if (!contact.email().isEmpty())
-			return icons_manager->loadPixmap("WriteEmail");
-		else
-			return QPixmap();
-	}
-	else if (pending.pendingMsgs(contact))
-		return icons_manager->loadPixmap("Message");
-	else
-	{
-		Status status = contact.accountData(account)->status();
-		const QPixmap &pix = account->statusPixmap(status);
-
-		if (!pix.isNull())
-			return pix;
-		else
-			return icons_manager->loadPixmap("Offline");
-	}
-}
-
-void KaduListBoxPixmap::refreshItem()
-{
-	pm = pixmapForUser(CurrentContact);
-	changeText(CurrentContact.display());
 }
 
 class ULEComparer
@@ -653,19 +302,19 @@ void UserBox::tipTimeout()
 void UserBox::restartTip(const QPoint &p)
 {
 //	kdebugf();
-	KaduListBoxPixmap *item = static_cast<KaduListBoxPixmap *>(itemAt(p));
-	if (item)
-	{
-		if (item->CurrentContact != lastMouseStopContact)
-			hideTip();
-		lastMouseStopContact = item->CurrentContact;
-	}
-	else
-	{
-		hideTip();
-		lastMouseStopContact = Contact::null;
-	}
-	tipTimer.start(TIP_TM);
+// 	KaduListBoxPixmap *item = static_cast<KaduListBoxPixmap *>(itemAt(p));
+// 	if (item)
+// 	{
+// 		if (item->CurrentContact != lastMouseStopContact)
+// 			hideTip();
+// 		lastMouseStopContact = item->CurrentContact;
+// 	}
+// 	else
+// 	{
+// 		hideTip();
+// 		lastMouseStopContact = Contact::null;
+// 	}
+// 	tipTimer.start(TIP_TM);
 //	kdebugf2();
 }
 
@@ -681,16 +330,16 @@ void UserBox::hideTip(bool waitForAnother)
 
 void UserBox::showDescriptionsActionActivated(QAction *sender, bool toggle)
 {
-	config_file.writeEntry("Look", "ShowDesc", !toggle);
-	KaduListBoxPixmap::setShowDesc(!toggle);
-	UserBox::refreshAllLater();
-	setDescriptionsActionState();
+// 	config_file.writeEntry("Look", "ShowDesc", !toggle);
+// 	KaduListBoxPixmap::setShowDesc(!toggle);
+// 	UserBox::refreshAllLater();
+// 	setDescriptionsActionState();
 }
 
 void UserBox::setDescriptionsActionState()
 {
-	foreach (KaduAction *action, showDescriptionAction->actions())
-		action->setChecked(!KaduListBoxPixmap::ShowDesc);
+// 	foreach (KaduAction *action, showDescriptionAction->actions())
+// 		action->setChecked(!KaduListBoxPixmap::ShowDesc);
 }
 
 void UserBox::wheelEvent(QWheelEvent *e)
@@ -810,15 +459,15 @@ void UserBox::refresh()
 		for (std::vector<Contact>::const_iterator contact = sortHelper.begin(),
 			contactEnd = sortHelper.end(); contact != contactEnd; ++contact)
 		{
-			doRefresh = ((*contact) != static_cast<KaduListBoxPixmap *>(item(i++))->CurrentContact);
+// 			doRefresh = ((*contact) != static_cast<KaduListBoxPixmap *>(item(i++))->CurrentContact);
 			if (doRefresh)
 				break;
 		}
 
 		if (!doRefresh)
 		{
-			for (i = 0; i < Count; ++i)
-				static_cast<KaduListBoxPixmap *>(item(i))->refreshItem();
+// 			for (i = 0; i < Count; ++i)
+// 				static_cast<KaduListBoxPixmap *>(item(i))->refreshItem();
 			triggerUpdate(true);
 
 			kdebugf2();
@@ -847,8 +496,8 @@ void UserBox::refresh()
 	for (std::vector<Contact>::const_iterator contact = sortHelper.begin(),
 		contactEnd = sortHelper.end(); contact != contactEnd; ++contact)*/
 
-	foreach (Contact contact, Contacts)
-		insertItem(new KaduListBoxPixmap(contact));
+// 	foreach (Contact contact, Contacts)
+// 		insertItem(new KaduListBoxPixmap(contact));
 
 	// restore selected users
 	foreach(const QString &username, s_users)
@@ -889,15 +538,7 @@ void UserBox::rememberVerticalPosition()
 
 UserListElements UserBox::selectedUsers() const
 {
-	kdebugf();
-
-	ContactList contacts;
-	for (unsigned int i = 0, count2 = count(); i < count2; ++i)
-		if (isSelected(i))
-			contacts.append(static_cast<KaduListBoxPixmap *>(item(i))->CurrentContact);
-
-	kdebugf2();
-	return UserListElements::fromContactList(contacts, AccountManager::instance()->defaultAccount());
+	return UserListElements();
 }
 
 void UserBox::selectionChangedSlot()
@@ -942,9 +583,6 @@ void UserBox::messageFromUserDeleted(Contact elem)
 void UserBox::closeModule()
 {
 	kdebugf();
-
-	delete KaduListBoxPixmap::descriptionFontMetrics;
-	KaduListBoxPixmap::descriptionFontMetrics = 0;
 
 	delete tool_tip_class_manager;
 	tool_tip_class_manager = 0;
@@ -1032,12 +670,12 @@ void UserBox::refreshBackground()
 
 void UserBox::doubleClickedSlot(Q3ListBoxItem *item)
 {
-	emit doubleClicked(static_cast<KaduListBoxPixmap *>(item)->CurrentContact);
+// 	emit doubleClicked(static_cast<KaduListBoxPixmap *>(item)->CurrentContact);
 }
 
 void UserBox::returnPressedSlot(Q3ListBoxItem *item)
 {
-	emit returnPressed(static_cast<KaduListBoxPixmap *>(item)->CurrentContact);
+// 	emit returnPressed(static_cast<KaduListBoxPixmap *>(item)->CurrentContact);
 }
 
 void UserBox::currentChangedSlot(Q3ListBoxItem *item)
@@ -1051,8 +689,8 @@ void UserBox::currentChangedSlot(Q3ListBoxItem *item)
 	setCurrentItem(item);
 	blockSignals(false);
 	//
-	if (item)
-		emit currentChanged(static_cast<KaduListBoxPixmap *>(item)->CurrentContact);
+// 	if (item)
+// 		emit currentChanged(static_cast<KaduListBoxPixmap *>(item)->CurrentContact);
 }
 
 void UserBox::addActionDescription(ActionDescription *actionDescription)
@@ -1103,15 +741,6 @@ void UserBox::configurationUpdated()
 	setColumnMode(columnCount);
 
 	Q3ListBox::setFont(config_file.readFontEntry("Look", "UserboxFont"));
-
-	KaduListBoxPixmap::setFont(config_file.readFontEntry("Look", "UserboxFont"));
-	KaduListBoxPixmap::setShowDesc(config_file.readBoolEntry("Look", "ShowDesc"));
-	KaduListBoxPixmap::setShowBold(config_file.readBoolEntry("Look", "ShowBold"));
-	KaduListBoxPixmap::setAlignTop(config_file.readBoolEntry("Look", "AlignUserboxIconsTop"));
-	KaduListBoxPixmap::setShowMultilineDesc(config_file.readBoolEntry("Look", "ShowMultilineDesc"));
-	KaduListBoxPixmap::setColumnCount(columnCount);
-	KaduListBoxPixmap::setMyUIN(config_file.readUnsignedNumEntry("General", "UIN"));
-	KaduListBoxPixmap::setDescriptionColor(config_file.readColorEntry("Look", "DescriptionColor"));
 
 	tool_tip_class_manager->useToolTipClass(config_file.readEntry("Look", "UserboxToolTipStyle"));
 
@@ -1551,15 +1180,7 @@ bool UserBox::currentUserExists() const
 
 Contact UserBox::currentContact() const
 {
-	Q3ListBoxItem *i = item(currentItem());
-	if (i)
-		return static_cast<KaduListBoxPixmap *>(i)->CurrentContact;
-	else
-	{
-		kdebugm(KDEBUG_ERROR, "GO AWAY and check currentUserExists() first!\n");
-		printBacktrace("currentUser");
-		return Contact::null;
-	}
+	return Contact::null;
 }
 
 UlesDrag::UlesDrag(const QStringList &ules, QWidget* dragSource)
