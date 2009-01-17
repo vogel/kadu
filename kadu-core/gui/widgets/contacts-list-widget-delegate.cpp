@@ -13,6 +13,7 @@
 #include <QtGui/QFont>
 #include <QtGui/QFontMetrics>
 #include <QtGui/QIcon>
+#include <QtGui/QLayout>
 #include <QtGui/QListView>
 #include <QtGui/QPainter>
 #include <QtGui/QStyleOption>
@@ -91,7 +92,7 @@ bool ContactsListWidgetDelegate::isBold(Contact contact) const
 
 QString ContactsListWidgetDelegate::displayDescription(Contact contact) const
 {
-	if (!ShowDesc)
+	if (!ShowDescription)
 		return QString::null;
 
 	Account *account = AccountManager::instance()->defaultAccount();
@@ -104,7 +105,11 @@ QString ContactsListWidgetDelegate::displayDescription(Contact contact) const
 
 QTextDocument * ContactsListWidgetDelegate::descriptionDocument(const QString &text, int width) const
 {
-	QTextDocument *doc = new QTextDocument(text);
+	QString description = text;
+	if (!ShowMultiLineDescription)
+		description.replace("\n", " ");
+
+	QTextDocument *doc = new QTextDocument(description);
 
 	doc->setDefaultFont(DescriptionFont);
 
@@ -122,8 +127,6 @@ QTextDocument * ContactsListWidgetDelegate::descriptionDocument(const QString &t
 
 QSize ContactsListWidgetDelegate::sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const
 {
-	printf("size hint\n");
-
 	QSize size(0, 0);
 
 	QStyleOptionViewItemV4 opt = setOptions(index, option);
@@ -191,8 +194,6 @@ void ContactsListWidgetDelegate::paint(QPainter *painter, const QStyleOptionView
 
 	painter->save();
 
-	drawBackground(painter, option, index);
-
 	painter->setClipRect(rect);
 	painter->translate(rect.topLeft());
 
@@ -222,7 +223,7 @@ void ContactsListWidgetDelegate::paint(QPainter *painter, const QStyleOptionView
 	}
 
 	int height = QMAX(pixmapHeight, displayHeight + descriptionHeight);
-	int itemHeight = displayHeight; // /*AlignUserboxIconsTop ?*/ widget->fontMetrics().lineSpacing() + 3/* : rect.height()*/;
+	int itemHeight = AlignTop ? displayHeight : rect.height();
 
 	if (!pixmap.isNull())
 		painter->drawPixmap(3, (itemHeight - pixmap.height()) / 2, pixmap);
@@ -243,6 +244,17 @@ void ContactsListWidgetDelegate::paint(QPainter *painter, const QStyleOptionView
 		painter->setFont(bold);
 	}
 
+		// TODO: 0.6.6
+/*
+		if (User.protocolData("Gadu", "Blocking").toBool())
+			painter->setPen(QColor(255, 0, 0));
+		else if (IgnoredManager::isIgnored(UserListElements(users)))
+			painter->setPen(QColor(192, 192, 0));
+		else if (config_file.readBoolEntry("General", "PrivateStatus") && User.protocolData("Gadu", "OfflineTo").toBool())
+			painter->setPen(QColor(128, 128, 128));
+*/
+//		if (User.data("HideDescription").toString() != "true")
+
 	int top = hasDescription
 		? fontMetrics.ascent() + 1
 		: ((itemHeight - fontMetrics.height()) / 2) + fontMetrics.ascent();
@@ -254,7 +266,6 @@ void ContactsListWidgetDelegate::paint(QPainter *painter, const QStyleOptionView
 
 	if (!hasDescription)
 	{
-		drawFocus(painter, opt, rect);
 		painter->restore();
 		// don't need to delete descriptionDocument here, it is for sure NULL
 		return;
@@ -264,32 +275,11 @@ void ContactsListWidgetDelegate::paint(QPainter *painter, const QStyleOptionView
 
 	painter->setFont(DescriptionFont);
 
-// 	if (!ShowMultilineDesc)
-// 		description.replace("\n", " ");
-
-// 	QRect descriptionRect = rect;
-// 	descriptionRect.setX(pixmap.width() + 5);
-// 	descriptionRect.setY(rect.y() + yPos);
-
 	painter->translate(textLeft, top);
+	painter->setPen(DescriptionColor);
+
 	dd->drawContents(painter);
 	delete dd;
-
-/*
-	int h;
-	QStringList out;
-	calculateSize(description, width(listBox()) - 5 - pm.width(), out, h);
-			if (!out.empty() && !isSelected())
-				painter->setPen(descColor);
-			else
-				painter->setPen(origColor);
-			foreach(const QString &text, out)
-			{
-				painter->drawText(pm.width() + 5, yPos, text);
-				yPos += descriptionFontMetrics->lineSpacing();
-			}*/
-
-	drawFocus(painter, opt, rect);
 
 	painter->restore();
 }
@@ -300,12 +290,16 @@ void ContactsListWidgetDelegate::configurationUpdated()
 	DescriptionFont = Font;
 	DescriptionFont.setPointSize(Font.pointSize() - 2);
 
-	ShowDesc = config_file.readBoolEntry("Look", "ShowDesc");
+	AlignTop = config_file.readBoolEntry("Look", "AlignUserboxIconsTop");
 	ShowBold = config_file.readBoolEntry("Look", "ShowBold");
+	ShowDescription = config_file.readBoolEntry("Look", "ShowDesc");
+	ShowMultiLineDescription = config_file.readBoolEntry("Look", "ShowMultilineDesc");
+	DescriptionColor = config_file.readColorEntry("Look", "DescriptionColor");
 
 	QListView *listView = dynamic_cast<QListView *>(parent());
 	if (!listView)
 		return;
 
-	listView->repaint();
+	// hack to make listViee redo the layout
+	listView->setSpacing(listView->spacing());
 }

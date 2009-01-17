@@ -30,8 +30,12 @@ class ContactsListWidgetDelegate : public QItemDelegate, public ConfigurationAwa
 
 	QFont Font;
 	QFont DescriptionFont;
-	bool ShowDesc;
+
+	bool AlignTop;
 	bool ShowBold;
+	bool ShowDescription;
+	bool ShowMultiLineDescription;
+	QColor DescriptionColor;
 
 	Contact contact(const QModelIndex &index) const;
 	QTextDocument * descriptionDocument(const QString &text, int width) const;

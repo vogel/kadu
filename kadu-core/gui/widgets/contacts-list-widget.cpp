@@ -26,6 +26,11 @@
 ContactsListWidget::ContactsListWidget(KaduMainWindow *mainWindow, QWidget *parent)
 	: QListView(parent), MainWindow(mainWindow)
 {
+	// all these tree are needed to make this view updating layout properly
+	setLayoutMode(Batched);
+	setResizeMode(Adjust);
+	setWordWrap(true);
+
 	ContactsModel *model = new ContactsModel(ContactManager::instance());
 	Delegate = new ContactsListWidgetDelegate(model, this);
 
