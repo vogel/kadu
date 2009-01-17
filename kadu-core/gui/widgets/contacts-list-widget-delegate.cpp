@@ -9,6 +9,7 @@
 
 #include <QtCore/QAbstractItemModel>
 #include <QtGui/QAbstractItemView>
+#include <QtGui/QApplication>
 #include <QtGui/QFont>
 #include <QtGui/QFontMetrics>
 #include <QtGui/QIcon>
@@ -31,7 +32,7 @@
 #include "contacts-list-widget-delegate.h"
 
 ContactsListWidgetDelegate::ContactsListWidgetDelegate(ContactsModel *model, QObject *parent)
-	: QAbstractItemDelegate(parent), Model(model)
+	: QItemDelegate(parent), Model(model)
 {
 	connect(AccountManager::instance(), SIGNAL(accountRegistered(Account *)),
 		this, SLOT(accountRegistered(Account *)));
@@ -125,15 +126,20 @@ QSize ContactsListWidgetDelegate::sizeHint(const QStyleOptionViewItem &option, c
 
 	QSize size(0, 0);
 
-	const QStyleOptionViewItemV4 *opt = qstyleoption_cast<const QStyleOptionViewItemV4 *>(&option);
-	if (!opt)
-		return size;
+	QStyleOptionViewItemV4 opt = setOptions(index, option);
 
-	const QAbstractItemView *widget = dynamic_cast<const QAbstractItemView *>(opt->widget);
+	const QStyleOptionViewItemV2 *v2 = qstyleoption_cast<const QStyleOptionViewItemV2 *>(&option);
+	opt.features = v2
+		? v2->features
+		: QStyleOptionViewItemV2::ViewItemFeatures(QStyleOptionViewItemV2::None);
+	const QStyleOptionViewItemV3 *v3 = qstyleoption_cast<const QStyleOptionViewItemV3 *>(&option);
+	opt.locale = v3 ? v3->locale : QLocale();
+	opt.widget = v3 ? v3->widget : 0;
+
+	const QAbstractItemView *widget = dynamic_cast<const QAbstractItemView *>(opt.widget);
 	if (!widget)
 		return size;
 	int width = widget->viewport()->width();
-	printf("width: %d\n", width);
 
 	QFontMetrics fontMetrics(Font);
 	int displayHeight = fontMetrics.lineSpacing() + 3;
@@ -148,7 +154,7 @@ QSize ContactsListWidgetDelegate::sizeHint(const QStyleOptionViewItem &option, c
 
 	if (!description.isEmpty())
 	{
-		QTextDocument *dd = descriptionDocument(description, opt->rect.width() - textLeft);
+		QTextDocument *dd = descriptionDocument(description, opt.rect.width() - textLeft);
 		descriptionHeight = (int)dd->size().height();
 		delete dd;
 	}
@@ -162,17 +168,31 @@ QSize ContactsListWidgetDelegate::sizeHint(const QStyleOptionViewItem &option, c
 
 void ContactsListWidgetDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const
 {
-	const QStyleOptionViewItemV4 *opt = qstyleoption_cast<const QStyleOptionViewItemV4 *>(&option);
-	if (!opt)
-		return;
+	QStyleOptionViewItemV4 opt = setOptions(index, option);
 
-	const QAbstractItemView *widget = dynamic_cast<const QAbstractItemView *>(opt->widget);
+	const QStyleOptionViewItemV2 *v2 = qstyleoption_cast<const QStyleOptionViewItemV2 *>(&option);
+	opt.features = v2
+		? v2->features
+		: QStyleOptionViewItemV2::ViewItemFeatures(QStyleOptionViewItemV2::None);
+	const QStyleOptionViewItemV3 *v3 = qstyleoption_cast<const QStyleOptionViewItemV3 *>(&option);
+	opt.locale = v3 ? v3->locale : QLocale();
+	opt.widget = v3 ? v3->widget : 0;
+	opt.showDecorationSelected = true;
+
+	const QAbstractItemView *widget = dynamic_cast<const QAbstractItemView *>(opt.widget);
+
+	QStyle *style = widget ? widget->style() : QApplication::style();
+	style->drawControl(QStyle::CE_ItemViewItem, &opt, painter, widget);
+
 	if (!widget)
 		return;
 
-	QRect rect = opt->rect;
+	QRect rect = opt.rect;
 
 	painter->save();
+
+	drawBackground(painter, option, index);
+
 	painter->setClipRect(rect);
 	painter->translate(rect.topLeft());
 
@@ -234,6 +254,7 @@ void ContactsListWidgetDelegate::paint(QPainter *painter, const QStyleOptionView
 
 	if (!hasDescription)
 	{
+		drawFocus(painter, opt, rect);
 		painter->restore();
 		// don't need to delete descriptionDocument here, it is for sure NULL
 		return;
@@ -267,6 +288,8 @@ void ContactsListWidgetDelegate::paint(QPainter *painter, const QStyleOptionView
 				painter->drawText(pm.width() + 5, yPos, text);
 				yPos += descriptionFontMetrics->lineSpacing();
 			}*/
+
+	drawFocus(painter, opt, rect);
 
 	painter->restore();
 }

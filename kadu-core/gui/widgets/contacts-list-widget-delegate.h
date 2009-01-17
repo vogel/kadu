@@ -10,7 +10,7 @@
 #ifndef CONTACTS_LIST_WIDGET_DELEGATE_H
 #define CONTACTS_LIST_WIDGET_DELEGATE_H
 
-#include <QtGui/QAbstractItemDelegate>
+#include <QtGui/QItemDelegate>
 
 #include "contacts/contact.h"
 
@@ -22,7 +22,7 @@ class Account;
 class ContactsModel;
 class Status;
 
-class ContactsListWidgetDelegate : public QAbstractItemDelegate, public ConfigurationAwareObject
+class ContactsListWidgetDelegate : public QItemDelegate, public ConfigurationAwareObject
 {
 	Q_OBJECT
 
