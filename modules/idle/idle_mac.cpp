@@ -80,7 +80,7 @@ static OSStatus LoadFrameworkBundle(CFStringRef framework, CFBundleRef *bundlePt
 	return err;
 }
 
-static pascal void IdleTimerAction(EventLoopTimerRef, EventLoopIdleTimerMessage inState, void* inUserData);
+static pascal void IdleTimerAction(EventLoopTimerRef, EventLoopIdleTimerMessage inState, void* inUserData)
 {
 	switch (inState)
 	{
@@ -88,11 +88,11 @@ static pascal void IdleTimerAction(EventLoopTimerRef, EventLoopIdleTimerMessage 
 		case kEventLoopIdleTimerStopped:
 			// Get invoked with this constant at the start of the idle period,
 			// or whenever user activity cancels the idle.
-			((IdlePlatform::Private*)inUserData)->mSecondsIdle = 0;
+			mSecondsIdle = 0;
 			break;
 		case kEventLoopIdleTimerIdling:
 			// Called every time the timer fires (i.e. every second).
-			((IdlePlatform::Private*)inUserData)->mSecondsIdle++;
+			mSecondsIdle++;
 			break;
 	}
 }
@@ -146,3 +146,10 @@ bool Idle::isActive()
 {
 	return (secondsIdle() == 0);
 }
+
+void Idle::test()
+{
+	int idle = secondsIdle();
+	printf("idle: %d\n", idle);
+}
+

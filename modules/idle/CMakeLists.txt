@@ -27,4 +27,7 @@ kadu_module (idle
 	MODULE_SOURCES ${SOURCES}
 	MODULE_MOC_SOURCES ${MOC_SOURCES}
 )
+
+if (UNIX AND NOT APPLE)
 set_target_properties(idle PROPERTIES LINK_FLAGS "-lXss")
+endif (UNIX AND NOT APPLE)
