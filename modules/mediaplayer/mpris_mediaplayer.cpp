@@ -78,6 +78,38 @@ int MPRISMediaPlayer::getInt(QString obj, QString func)
 	return -1;
 }
 
+QString MPRISMediaPlayer::getStringMapValue(QString obj, QString func, int param, QString field)
+{
+printf("getStringMapValue: obj=%s, func=%s, param=%d, filed=%s", qPrintable(obj), qPrintable(func), param, qPrintable(field));
+
+	QDBusInterface amarokApp(service, obj, "org.freedesktop.MediaPlayer");
+	QDBusReply<QVariantMap> reply = amarokApp.call(func, param);
+	if (reply.isValid())
+	{
+printf("reply is valid\n");
+		QVariantMap map = reply.value();
+printf("keys: ");
+QStringList keys = map.keys();
+ for (int i = 0; i < keys.size(); ++i)
+printf("key: %s\n", qPrintable(keys.at(i)));
+
+		return map.value(field).toString();
+	}
+	return "";
+}
+
+int MPRISMediaPlayer::getIntMapValue(QString obj, QString func, int param, QString field)
+{
+	QDBusInterface amarokApp(service, obj, "org.freedesktop.MediaPlayer");
+	QDBusReply<QVariantMap> reply = amarokApp.call(func, param);
+	if (reply.isValid())
+	{
+		QVariantMap map = reply.value();
+		return map.value(field).toInt();
+	}
+	return -1;
+}
+
 // PlayerInfo
 
 QString MPRISMediaPlayer::getPlayerName()
@@ -88,102 +120,137 @@ QString MPRISMediaPlayer::getPlayerName()
 QString MPRISMediaPlayer::getPlayerVersion()
 {
 	kdebugf();
-
 	return getString("/", "Identity");
-
 	kdebugf2();
 }
+
+// TrackList
 
 QStringList MPRISMediaPlayer::getPlayListTitles()
 {
 	kdebugf();
-
+	int i, num = getPlayListLength();
+	QVariantMap map;
 	QStringList list;
-	return list;
 
+	for (i = 0; i < num; ++i)
+	{
+		list << getStringMapValue("/TrackList", "GetMetadata", i, "title");
+	}
+
+	return list;
 	kdebugf2();
 }
 
 QStringList MPRISMediaPlayer::getPlayListFiles()
 {
 	kdebugf();
-
+	int i, num = getPlayListLength();
+	QVariantMap map;
 	QStringList list;
-	return list;
 
+	for (i = 0; i < num; ++i)
+	{
+		/* MPRIS according to the MPRIS specification the file location is stored in location field */
+		QString file = getStringMapValue("/TrackList", "GetMetadata", i, "location");
+		/* However the audacious (and maybe others) uses URI field instead */
+		if (file.isEmpty())
+			file = getStringMapValue("/TrackList", "GetMetadata", i, "URI");
+
+		list << file;
+	}
+	return list;
 	kdebugf2();
 }
 
 uint MPRISMediaPlayer::getPlayListLength()
 {
 	kdebugf();
-
 	return getInt("/TrackList", "GetLength");
-
 	kdebugf2();
 }
 
 QString MPRISMediaPlayer::getTitle(int position)
 {
 	kdebugf();
-
 	if (!isPlaying()) return "";
-	return controller->currentTrack().title;
 
+	if ((position == -1) && !controller->currentTrack().title.isEmpty())
+		return controller->currentTrack().title;
+
+	return getStringMapValue("/TrackList", "GetMetadata", position, "title");
 	kdebugf2();
 }
 
 QString MPRISMediaPlayer::getAlbum(int position)
 {
 	kdebugf();
-
 	if (!isPlaying()) return "";
-	return controller->currentTrack().album;
 
+	if ((position == -1) && !controller->currentTrack().album.isEmpty())
+		return controller->currentTrack().album;
+
+	return getStringMapValue("/TrackList", "GetMetadata", position, "album");
 	kdebugf2();
 }
 
 QString MPRISMediaPlayer::getArtist(int position)
 {
 	kdebugf();
-
 	if (!isPlaying()) return "";
-	return controller->currentTrack().artist;
 
+	if ((position == -1) && !controller->currentTrack().artist.isEmpty())
+		return controller->currentTrack().artist;
+
+	return getStringMapValue("/TrackList", "GetMetadata", position, "artist");
 	kdebugf2();
 }
 
 QString MPRISMediaPlayer::getFile(int position)
 {
 	kdebugf();
-
 	if (!isPlaying()) return "";
-	return controller->currentTrack().file;
 
+	if ((position == -1) && !controller->currentTrack().file.isEmpty())
+		return controller->currentTrack().file;
+
+	QString file = getStringMapValue("/TrackList", "GetMetadata", position, "location");
+	/* audacious goes different way... */
+	if (file.isEmpty())
+		file = getStringMapValue("/TrackList", "GetMetadata", position, "URI");
+
+	return file;
 	kdebugf2();
 }
 
 int MPRISMediaPlayer::getLength(int position)
 {
 	kdebugf();
-
 	if (!isPlaying()) return 0;
-	return controller->currentTrack().time;
 
+	if (position == -1)
+		return controller->currentTrack().time;
+
+	int len = getIntMapValue("/TrackList", "GetMetadata", position, "mtime");
+	/* here again audacious uses different filed in metafile... */
+	if (len == -1)
+		len = getIntMapValue("/TrackList", "GetMetadata", position, "length");
+
+	return len;
 	kdebugf2();
 }
+
+// Player
 
 int MPRISMediaPlayer::getCurrentPos()
 {
 	kdebugf();
 
 	if (!isPlaying()) return 0;
-	return (QDateTime::currentDateTime().toTime_t() - controller->currentTrack().started) * 1000;
+	return getInt("/Player", "PositionGet");
 
 	kdebugf2();
 }
-
-// PlayerCommands
 
 void MPRISMediaPlayer::nextTrack()
 {

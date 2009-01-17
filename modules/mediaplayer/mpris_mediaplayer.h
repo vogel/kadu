@@ -11,6 +11,8 @@ class MPRISMediaPlayer : public PlayerInfo, public PlayerCommands
 {
 	QString getString(QString obj, QString func);
 	int getInt(QString obj, QString func);
+	QString getStringMapValue(QString obj, QString func, int param, QString field);
+	int getIntMapValue(QString obj, QString func, int param, QString field);
 	void send(QString obj, QString func, int arg = -1);
 	MPRISController *controller;
 	QString service;

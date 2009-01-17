@@ -22,7 +22,6 @@
 
 #include "debug.h"
 #include "mediaplayer.h"
-//#include "mpris_mediaplayer.h"
 #include "mpris_controller.h"
 
 QDBusArgument &operator<<(QDBusArgument& arg, const PlayerStatus& ps)
@@ -85,7 +84,6 @@ MPRISController::~MPRISController()
 {
 	QDBusConnection bus = QDBusConnection::sessionBus();
 
-//	qDBusUnregisterMetaType<PlayerStatus>();
 	bus.disconnect(
 			service,
 			"/Player",
@@ -119,12 +117,15 @@ void MPRISController::trackChanged(QVariantMap map)
 	if (title != currentTrack_.title)
 	{
 		currentStatus_.i1     = 0; /* is playing */
-		currentTrack_.started = QDateTime::currentDateTime().toTime_t();
 		currentTrack_.title   = title;
 		currentTrack_.album   = map.value("album").toString();
 		currentTrack_.artist  = map.value("artist").toString();
 		currentTrack_.track   = map.value("tracknumber").toString();
 		currentTrack_.file    = map.value("location").toString();
+		if (currentTrack_.file.isEmpty())
+			currentTrack_.file    = map.value("URI").toString();
 		currentTrack_.time    = map.value("mtime").toUInt();
+		if (currentTrack_.time == 0) /* for audacious... */
+			currentTrack_.time    = map.value("length").toUInt();
 	}
 };
