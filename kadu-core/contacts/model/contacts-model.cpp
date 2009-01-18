@@ -53,7 +53,7 @@ int ContactsModel::rowCount(const QModelIndex &parent) const
 
 QVariant ContactsModel::data(const QModelIndex &index, int role) const
 {
-	Contact con = contact(index);
+	Contact con = Manager->byIndex(index.row());
 	if (con.isNull())
 		return QVariant();
 
@@ -69,6 +69,8 @@ QVariant ContactsModel::data(const QModelIndex &index, int role) const
 			if (0 == cad)
 				return QVariant();
 			return account->protocol()->statusPixmap(cad->status());
+		case ContactRole:
+			return QVariant::fromValue(con);
 		default:
 			return QVariant();
 	}
@@ -83,17 +85,6 @@ QVariant ContactsModel::headerData(int section, Qt::Orientation orientation, int
 		return QString("Column %1").arg(section);
 	else
 		return QString("Row %1").arg(section);
-}
-
-Contact ContactsModel::contact(const QModelIndex &index) const
-{
-	if (!index.isValid())
-		return Contact::null;
-
-	if (index.row() < 0 || index.row() >= rowCount())
-		return Contact::null;
-
-	return Manager->byIndex(index.row());
 }
 
 const QModelIndex ContactsModel::contactIndex(Contact contact) const

@@ -16,6 +16,7 @@ class QContextMenuEvent;
 class QModelIndex;
 
 class Contact;
+class ContactList;
 class ContactsListWidgetDelegate;
 class KaduMainWindow;
 

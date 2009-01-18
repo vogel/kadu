@@ -12,6 +12,7 @@
 
 #include <QtCore/QExplicitlySharedDataPointer>
 #include <QtCore/QHash>
+#include <QtCore/QMetaType>
 #include <QtCore/QObject>
 #include <QtCore/QUuid>
 #include <QtXml/QDomElement>
@@ -94,7 +95,9 @@ public:
 
 };
 
-	uint qHash(const Contact &contact);
+Q_DECLARE_METATYPE(Contact)
+
+uint qHash(const Contact &contact);
 
 #undef Property
 

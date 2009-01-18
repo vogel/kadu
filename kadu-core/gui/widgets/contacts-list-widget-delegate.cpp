@@ -32,7 +32,7 @@
 
 #include "contacts-list-widget-delegate.h"
 
-ContactsListWidgetDelegate::ContactsListWidgetDelegate(ContactsModel *model, QObject *parent)
+ContactsListWidgetDelegate::ContactsListWidgetDelegate(AbstractContactsModel *model, QObject *parent)
 	: QItemDelegate(parent), Model(model)
 {
 	connect(AccountManager::instance(), SIGNAL(accountRegistered(Account *)),
@@ -64,15 +64,6 @@ void ContactsListWidgetDelegate::accountUnregistered(Account *account)
 void ContactsListWidgetDelegate::contactStatusChanged(Account *account, Contact c, Status oldStatus)
 {
 	emit sizeHintChanged(Model->contactIndex(c));
-}
-
-Contact ContactsListWidgetDelegate::contact(const QModelIndex &index) const
-{
-	const ContactsModel *model = dynamic_cast<const ContactsModel *>(index.model());
-	if (!model)
-		return Contact::null;
-
-	return model->contact(index);
 }
 
 bool ContactsListWidgetDelegate::isBold(Contact contact) const
@@ -147,7 +138,7 @@ QSize ContactsListWidgetDelegate::sizeHint(const QStyleOptionViewItem &option, c
 	QFontMetrics fontMetrics(Font);
 	int displayHeight = fontMetrics.lineSpacing() + 3;
 
-	QString description = displayDescription(contact(index));
+	QString description = displayDescription(Model->contact(index));
 	int descriptionHeight = 0;
 
 	QPixmap pixmap = qvariant_cast<QPixmap>(index.data(Qt::DecorationRole));
@@ -161,6 +152,8 @@ QSize ContactsListWidgetDelegate::sizeHint(const QStyleOptionViewItem &option, c
 		descriptionHeight = (int)dd->size().height();
 		delete dd;
 	}
+
+	printf("[%s], dh: %d\n", qPrintable(description), descriptionHeight);
 
 	int pixmapHeight = pixmap.height();
 
@@ -199,7 +192,7 @@ void ContactsListWidgetDelegate::paint(QPainter *painter, const QStyleOptionView
 
 	painter->setFont(Font);
 
-	Contact con = contact(index);
+	Contact con = Model->contact(index);
 
 	QFontMetrics fontMetrics(Font);
 	int displayHeight = fontMetrics.lineSpacing() + 3;

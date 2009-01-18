@@ -10,7 +10,7 @@
 #ifndef CONFIG_TAB_H
 #define CONFIG_TAB_H
 
-#include <QMap>
+#include <QtCore/QMap>
 
 class QTabWidget;
 class QScrollArea;

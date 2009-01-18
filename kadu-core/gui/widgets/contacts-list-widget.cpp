@@ -10,11 +10,13 @@
 #include <QtCore/QModelIndex>
 #include <QtGui/QContextMenuEvent>
 #include <QtGui/QMenu>
+#include <QtGui/QSortFilterProxyModel>
 
 #include "contacts/contact.h"
 #include "contacts/contact-list.h"
 #include "contacts/contact-manager.h"
 #include "contacts/model/contacts-model.h"
+#include "contacts/model/contacts-model-proxy.h"
 
 #include "action.h"
 #include "userbox.h"
@@ -31,10 +33,14 @@ ContactsListWidget::ContactsListWidget(KaduMainWindow *mainWindow, QWidget *pare
 	setResizeMode(Adjust);
 	setWordWrap(true);
 
-	ContactsModel *model = new ContactsModel(ContactManager::instance());
-	Delegate = new ContactsListWidgetDelegate(model, this);
+	ContactsModel *model = new ContactsModel(ContactManager::instance(), this);
+	ContactsModelProxy *proxyModel = new ContactsModelProxy(this);
+	proxyModel->setSourceModel(model);
+	proxyModel->invalidate();
 
-	setModel(model);
+	Delegate = new ContactsListWidgetDelegate(proxyModel, this);
+
+	setModel(proxyModel);
 	setItemDelegate(Delegate);
 }
 
@@ -60,7 +66,7 @@ ContactList ContactsListWidget::selectedContacts() const
 
 Contact ContactsListWidget::contact(const QModelIndex &index) const
 {
-	const ContactsModel *model = dynamic_cast<const ContactsModel *>(index.model());
+	const AbstractContactsModel *model = dynamic_cast<const AbstractContactsModel *>(index.model());
 	if (!model)
 		return Contact::null;
 

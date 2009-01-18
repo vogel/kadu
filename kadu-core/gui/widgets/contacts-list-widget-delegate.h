@@ -13,20 +13,20 @@
 #include <QtGui/QItemDelegate>
 
 #include "contacts/contact.h"
+#include "protocols/status.h"
 
 #include "configuration_aware_object.h"
 
 class QTextDocument;
 
+class AbstractContactsModel;
 class Account;
-class ContactsModel;
-class Status;
 
 class ContactsListWidgetDelegate : public QItemDelegate, public ConfigurationAwareObject
 {
 	Q_OBJECT
 
-	ContactsModel *Model;
+	AbstractContactsModel *Model;
 
 	QFont Font;
 	QFont DescriptionFont;
@@ -37,7 +37,6 @@ class ContactsListWidgetDelegate : public QItemDelegate, public ConfigurationAwa
 	bool ShowMultiLineDescription;
 	QColor DescriptionColor;
 
-	Contact contact(const QModelIndex &index) const;
 	QTextDocument * descriptionDocument(const QString &text, int width) const;
 
 	bool isBold(Contact contact) const;
@@ -50,7 +49,7 @@ private slots:
 	void contactStatusChanged(Account *account, Contact contact, Status oldStatus);
 
 public:
-	ContactsListWidgetDelegate(ContactsModel *model, QObject *parent = 0);
+	ContactsListWidgetDelegate(AbstractContactsModel *model, QObject *parent = 0);
 	virtual ~ContactsListWidgetDelegate();
 
 	virtual QSize sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index ) const;

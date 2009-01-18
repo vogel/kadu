@@ -13,7 +13,9 @@ set (kadu_SRCS
 	contacts/contact-manager.cpp
 	contacts/contact-list-configuration-helper.cpp
 
+	contacts/model/abstract-contacts-model.cpp
 	contacts/model/contacts-model.cpp
+	contacts/model/contacts-model-proxy.cpp
 
 	configuration/account-data-manager.cpp
 	configuration/config-file-data-manager.cpp
@@ -128,7 +130,9 @@ set (kadu_MOC_SRCS
 	contacts/contact-manager.h
 	contacts/contact-list-configuration-helper.h
 
+	contacts/model/abstract-contacts-model.h
 	contacts/model/contacts-model.h
+	contacts/model/contacts-model-proxy.h
 
 	configuration/config-file-data-manager.h
 	configuration/configuration-window-data-manager.h

@@ -10,9 +10,10 @@
 #ifndef CONFIG_SECTION_H
 #define CONFIG_SECTION_H
 
-#include <QObject>
-#include <QMap>
+#include <QtCore/QObject>
+#include <QtCore/QMap>
 #include <QtGui/QTabWidget>
+
 #include "gui/widgets/configuration/configuration-window.h"
 
 class ConfigGroupBox;

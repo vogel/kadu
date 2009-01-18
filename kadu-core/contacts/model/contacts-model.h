@@ -13,10 +13,14 @@
 #include <QtCore/QAbstractListModel>
 #include <QtCore/QModelIndex>
 
-class Contact;
+#include "abstract-contacts-model.h"
+
+const int ContactRoles = 1000;
+const int ContactRole = ContactRoles;
+
 class ContactManager;
 
-class ContactsModel : public QAbstractListModel
+class ContactsModel : public QAbstractListModel, public AbstractContactsModel
 {
 	Q_OBJECT
 
@@ -37,8 +41,8 @@ public:
 	QVariant data(const QModelIndex &index, int role) const;
 	QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const;
 
-	Contact contact(const QModelIndex &index) const;
-	const QModelIndex contactIndex(Contact contact) const;
+	// IContactsModel implementation
+	virtual const QModelIndex contactIndex(Contact contact) const;
 
 };
 
