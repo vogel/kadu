@@ -39,22 +39,22 @@ public:
 	//TODO: 0.6.6
 	void storeConfiguration(XmlConfigFile *configurationStorage, const QString &name = QString::null);
 
-	Account * defaultAccount();
+	Account * defaultAccount() const;
 	Account * createAccount(const QString &protocolName, AccountData *accountData);
 
-	Account * byIndex(unsigned int index);
-	Account * byUuid(const QUuid &uuid);
+	Account * byIndex(unsigned int index) const;
+	Account * byUuid(const QUuid &uuid) const;
 
-	unsigned int indexOf(Account *account) { return Accounts.indexOf(account); }
-	unsigned int count() { return Accounts.count(); }
+	unsigned int indexOf(Account *account) const { return Accounts.indexOf(account); }
+	unsigned int count() const { return Accounts.count(); }
 
-	const QList<Account *> accounts() { return Accounts; }
-	const QList<Account *> byProtocolName(const QString &name);
+	const QList<Account *> accounts() const { return Accounts; }
+	const QList<Account *> byProtocolName(const QString &name) const;
 
 	void registerAccount(Account *account);
 	void unregisterAccount(Account *account);
 
-	UserStatus status();
+	UserStatus status() const;
 
 signals:
 	void accountAboutToBeRegistered(Account *);

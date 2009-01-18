@@ -87,7 +87,7 @@ void AccountManager::storeConfiguration(XmlConfigFile *configurationStorage, con
 	}
 }
 
-Account * AccountManager::defaultAccount()
+Account * AccountManager::defaultAccount() const
 {
 	return byIndex(0);
 }
@@ -104,7 +104,7 @@ Account * AccountManager::createAccount(const QString &protocolName, AccountData
 	return result;
 }
 
-Account * AccountManager::byIndex(unsigned int index)
+Account * AccountManager::byIndex(unsigned int index) const
 {
 	if (index < 0 || index >= count())
 		return 0;
@@ -112,7 +112,7 @@ Account * AccountManager::byIndex(unsigned int index)
 	return Accounts.at(index);
 }
 
-Account * AccountManager::byUuid(const QUuid &uuid)
+Account * AccountManager::byUuid(const QUuid &uuid) const
 {
 	foreach (Account *account, Accounts)
 		if (uuid == account->uuid())
@@ -120,7 +120,7 @@ Account * AccountManager::byUuid(const QUuid &uuid)
 
 	return 0;
 }
-const QList<Account *> AccountManager::byProtocolName(const QString &name)
+const QList<Account *> AccountManager::byProtocolName(const QString &name) const
 {
 	QList<Account *> list;
 	foreach (Account *account, Accounts)
@@ -145,7 +145,7 @@ void AccountManager::unregisterAccount(Account *account)
 	emit accountUnregistered(account);
 }
 
-UserStatus AccountManager::status()
+UserStatus AccountManager::status() const
 {
 	Account *account = defaultAccount();
 	return account
