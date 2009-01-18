@@ -9,6 +9,7 @@
 
 #include "account.h"
 #include "account_data.h"
+#include "accounts_aware_object.h"
 #include "config_file.h"
 #include "debug.h"
 #include "protocols/protocol.h"
@@ -136,10 +137,12 @@ void AccountManager::registerAccount(Account *account)
 	emit accountAboutToBeRegistered(account);
 	Accounts << account;
 	emit accountRegistered(account);
+	AccountsAwareObject::notifyAccountRegistered(account);
 }
 
 void AccountManager::unregisterAccount(Account *account)
 {
+	AccountsAwareObject::notifyAccountUnregistered(account);
 	emit accountAboutToBeUnregistered(account);
 	Accounts.remove(account);
 	emit accountUnregistered(account);

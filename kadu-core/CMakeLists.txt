@@ -3,6 +3,7 @@ set (kadu_SRCS
 	accounts/account.cpp
 	accounts/account_data.cpp
 	accounts/account_manager.cpp
+	accounts/accounts_aware_object.cpp
 
 	accounts/model/accounts-model.cpp
 

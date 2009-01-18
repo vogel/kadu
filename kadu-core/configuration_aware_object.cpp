@@ -25,7 +25,7 @@ void ConfigurationAwareObject::unregisterObject(ConfigurationAwareObject *object
 
 void ConfigurationAwareObject::notifyAll()
 {
-	foreach(ConfigurationAwareObject *object, objects)
+	foreach (ConfigurationAwareObject *object, objects)
 		object->configurationUpdated();
 }
 
