@@ -177,9 +177,6 @@ class NOTIFYAPI Notify : public ConfigurationUiHandler, AccountsAwareObject
 	void addConfigurationWidget(NotifierData &notifier, const QString &name);
 	void removeConfigurationWidget(NotifierData &notifier);
 
-	virtual void accountRegistered(Account *account);
-	virtual void accountUnregistered(Account *account);
-
 private slots:
 
 	void messageReceived(Account *account, ContactList contacts, const QString &msg, time_t t);
@@ -195,6 +192,10 @@ private slots:
 	void notifierToggled(const QString &notifier, bool toggled);
 
 	void mainConfigurationWindowDestroyed();
+
+protected:
+	virtual void accountRegistered(Account *account);
+	virtual void accountUnregistered(Account *account);
 
 public:
 	Notify(QObject *parent=0, const char *name=0);

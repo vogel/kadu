@@ -81,8 +81,7 @@ Notify::Notify(QObject *parent, const char *name)
 
 	createDefaultConfiguration();
 
-	foreach (Account *account, AccountManager::instance()->accounts())
-		accountRegistered(account);
+	triggerAllAccountsRegistered();
 
 	MessageNotification::registerEvents(this);
 	ConnectionErrorNotification::registerEvent(this);
@@ -99,8 +98,7 @@ Notify::~Notify()
 	ConnectionErrorNotification::unregisterEvent(this);
 	MessageNotification::unregisterEvents(this);
 
-	foreach (Account *account, AccountManager::instance()->accounts())
-		accountUnregistered(account);
+	triggerAllAccountsUnregistered();
 
 	if (!Notifiers.isEmpty())
 	{

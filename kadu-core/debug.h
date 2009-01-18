@@ -30,8 +30,8 @@
 
 /*
 	<<< kdebug >>>
-	Wy¶wietla komunikat debuguj±cy na konsoli.
-	Sk³adnia jak w printf.
+	Wyï¿½wietla komunikat debugujï¿½cy na konsoli.
+	Skï¿½adnia jak w printf.
 */
 #ifdef DEBUG_ENABLED
 #ifdef _MSC_VER
@@ -58,12 +58,12 @@
 
 /*
 	<<< kdebugf >>>
-	Wy¶wietla komunikat debuguj±cy zawieraj±cy
-	nazwê aktualnie wykonywanej funkcji.
-	Z za³o¿enia makro to powinno byæ wywo³ane
-	w pierwszej linii ka¿dej funkcji. Dziêki
-	temu mo¿na bêdzie w przysz³o¶ci ¶ledziæ
-	dzia³anie programu.
+	Wyï¿½wietla komunikat debugujï¿½cy zawierajï¿½cy
+	nazwï¿½ aktualnie wykonywanej funkcji.
+	Z zaï¿½oï¿½enia makro to powinno byï¿½ wywoï¿½ane
+	w pierwszej linii kaï¿½dej funkcji. Dziï¿½ki
+	temu moï¿½na bï¿½dzie w przyszï¿½oï¿½ci ï¿½ledziï¿½
+	dziaï¿½anie programu.
 */	
 #define kdebugf() \
 	kdebugm(KDEBUG_FUNCTION_START, "%s\n", __PRETTY_FUNCTION__)
@@ -72,7 +72,7 @@
 	kdebugm(KDEBUG_FUNCTION_END, "%s end\n", __PRETTY_FUNCTION__)
 
 /*
-	Funkcja pomocnicza. Nie u¿ywaæ.
+	Funkcja pomocnicza. Nie uï¿½ywaï¿½.
 */
 #ifdef DEBUG_ENABLED
 KADUAPI void _kdebug_with_mask(int mask, const char *file, const int line, const char *format, ...)

@@ -36,6 +36,7 @@ public:
 
 	void triggerAllAccountsRegistered();
 	void triggerAllAccountsUnregistered();
+
 };
 
 #endif // ACCOUNTS_AWARE_OBJECT
