@@ -80,19 +80,11 @@ int MPRISMediaPlayer::getInt(QString obj, QString func)
 
 QString MPRISMediaPlayer::getStringMapValue(QString obj, QString func, int param, QString field)
 {
-printf("getStringMapValue: obj=%s, func=%s, param=%d, filed=%s", qPrintable(obj), qPrintable(func), param, qPrintable(field));
-
 	QDBusInterface amarokApp(service, obj, "org.freedesktop.MediaPlayer");
 	QDBusReply<QVariantMap> reply = amarokApp.call(func, param);
 	if (reply.isValid())
 	{
-printf("reply is valid\n");
 		QVariantMap map = reply.value();
-printf("keys: ");
-QStringList keys = map.keys();
- for (int i = 0; i < keys.size(); ++i)
-printf("key: %s\n", qPrintable(keys.at(i)));
-
 		return map.value(field).toString();
 	}
 	return "";
