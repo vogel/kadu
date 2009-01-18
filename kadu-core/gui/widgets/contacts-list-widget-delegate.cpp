@@ -153,8 +153,6 @@ QSize ContactsListWidgetDelegate::sizeHint(const QStyleOptionViewItem &option, c
 		delete dd;
 	}
 
-	printf("[%s], dh: %d\n", qPrintable(description), descriptionHeight);
-
 	int pixmapHeight = pixmap.height();
 
 	int height = QMAX(pixmapHeight, displayHeight + descriptionHeight);

@@ -21,6 +21,11 @@
 ContactsModel::ContactsModel(ContactManager *manager, QObject *parent)
 	: QAbstractListModel(parent), Manager(manager)
 {
+	connect(AccountManager::instance(), SIGNAL(accountRegistered(Account *)),
+		this, SLOT(accountRegistered(Account *)));
+	foreach (Account *account, AccountManager::instance()->accounts())
+		accountRegistered(account);
+
 	connect(Manager, SIGNAL(contactAboutToBeAdded(Contact &)),
 			this, SLOT(contactAboutToBeAdded(Contact &)));
 	connect(Manager, SIGNAL(contactAdded(Contact &)),
@@ -33,6 +38,9 @@ ContactsModel::ContactsModel(ContactManager *manager, QObject *parent)
 
 ContactsModel::~ContactsModel()
 {
+	disconnect(AccountManager::instance(), SIGNAL(accountRegistered(Account *)),
+		this, SLOT(accountRegistered(Account *)));
+
 	disconnect(Manager, SIGNAL(contactAboutToBeAdded(Contact &)),
 			this, SLOT(contactAboutToBeAdded(Contact &)));
 	disconnect(Manager, SIGNAL(contactAdded(Contact &)),
@@ -41,6 +49,26 @@ ContactsModel::~ContactsModel()
 			this, SLOT(contactAboutToBeRemoved(Contact &)));
 	disconnect(Manager, SIGNAL(contactRemoved(Contact &)),
 			this, SLOT(contactRemoved(Contact &)));
+}
+
+void ContactsModel::accountRegistered(Account *account)
+{
+	connect(account, SIGNAL(contactStatusChanged(Account *, Contact, Status)),
+			this, SLOT(contactStatusChanged(Account *, Contact, Status)));
+}
+
+void ContactsModel::accountUnregistered(Account *account)
+{
+	disconnect(account, SIGNAL(contactStatusChanged(Account *, Contact, Status)),
+			this, SLOT(contactStatusChanged(Account *, Contact, Status)));
+}
+
+void ContactsModel::contactStatusChanged(Account *account, Contact contact, Status oldStatus)
+{
+	QModelIndex index = contactIndex(contact);
+
+	if (index.isValid())
+		emit dataChanged(index, index);
 }
 
 int ContactsModel::rowCount(const QModelIndex &parent) const

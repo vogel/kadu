@@ -13,6 +13,10 @@
 #include <QtCore/QAbstractListModel>
 #include <QtCore/QModelIndex>
 
+#include "accounts/account.h"
+#include "contacts/contact.h"
+#include "protocols/status.h"
+
 #include "abstract-contacts-model.h"
 
 const int ContactRoles = 1000;
@@ -31,6 +35,11 @@ private slots:
 	void contactAdded(Contact &contact);
 	void contactAboutToBeRemoved(Contact &contact);
 	void contactRemoved(Contact &contact);
+
+	void accountRegistered(Account *account);
+	void accountUnregistered(Account *account);
+
+	void contactStatusChanged(Account *account, Contact contact, Status oldStatus);
 
 public:
 	explicit ContactsModel(ContactManager *manager, QObject *parent = 0);
