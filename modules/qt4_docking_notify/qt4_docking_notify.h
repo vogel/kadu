@@ -1,7 +1,6 @@
 #ifndef QT4_DOCKING_NOTIFY_H
 #define QT4_DOCKING_NOTIFY_H
 
-#include "../gadu_protocol/gadu.h"
 #include "configuration_aware_object.h"
 #include "main_configuration_window.h"
 #include "../notify/notify.h"
@@ -9,7 +8,6 @@
 
 #include "qt4_docking_notify_configuration_widget.h"
 
-class UserListElements;
 
 /**
  * @defgroup qt4_notify Qt4 Notify
@@ -22,7 +20,7 @@ class Qt4Notify : public Notifier, public ConfigurationUiHandler, ConfigurationA
 	void createDefaultConfiguration();
 	QString toPlainText(const QString &text);
 	QString parseText(const QString &text, Notification *notification, const QString &def);
-	UserListElements senders;
+	ContactList contacts;
 	Qt4NotifyConfigurationWidget *configurationWidget;
 
 public:

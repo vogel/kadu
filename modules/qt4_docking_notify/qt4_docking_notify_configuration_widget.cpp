@@ -14,9 +14,9 @@
 #include <QtGui/QGridLayout>
 #include <QtGui/QApplication>
 
-#include "kadu.h"
 #include "config_file.h"
 #include "debug.h"
+#include "kadu.h"
 
 #include "qt4_docking_notify_configuration_widget.h"
 

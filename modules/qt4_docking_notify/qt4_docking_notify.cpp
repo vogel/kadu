@@ -15,12 +15,11 @@
 #include "../notify/notify.h"
 #include "../notify/notification.h"
 
-#include "message_box.h"
+#include "chat_manager.h"
 #include "config_file.h"
 #include "debug.h"
-#include "userlist.h"
-#include "chat_manager.h"
 #include "kadu_parser.h"
+#include "message_box.h"
 
 #include "qt4_docking_notify.h"
 
@@ -57,7 +56,7 @@ Qt4Notify::Qt4Notify(QObject *parent, const char *name) : Notifier(parent, name)
 
 	createDefaultConfiguration();
 	notification_manager->registerNotifier(QT_TRANSLATE_NOOP("@default", "Tray Icon Baloon"), this);
-	
+
 	if (qt4_tray_icon != 0)
 	{
 		connect(qt4_tray_icon, SIGNAL(messageClicked()), this, SLOT(messageClicked()));
@@ -88,15 +87,15 @@ QString Qt4Notify::toPlainText(const QString &text)
 
 QString Qt4Notify::parseText(const QString &text, Notification *notification, const QString &def)
 {
-	UserListElement ule;
+	Contact contact;
 	QString ret;
 
-	if (notification->userListElements().count())
-		ule = notification->userListElements()[0];
+	if (notification->contacts().count())
+		contact = notification->contacts()[0];
 
 	if (!text.isEmpty())
 	{
-		ret = KaduParser::parse(text, ule, notification);
+		ret = KaduParser::parse(text, contact, notification);
 		ret = ret.replace("%&m", notification->text());
 		ret = ret.replace("%&t", notification->title());
 		ret = ret.replace("%&d", notification->details());
@@ -120,7 +119,7 @@ void Qt4Notify::notify(Notification *notification)
 		QString title = config_file.readEntry("Qt4DockingNotify", QString("Event_") + notification->type() + "_title");
 		QString syntax = config_file.readEntry("Qt4DockingNotify", QString("Event_") + notification->type() + "_syntax");
 
-		senders = UserListElements(notification->userListElements());
+		contacts = notification->contacts();
 
 		qt4_tray_icon->showMessage(parseText(title, notification, notification->text()),
 			parseText(syntax, notification, notification->details()),
@@ -134,8 +133,8 @@ void Qt4Notify::notify(Notification *notification)
 
 void Qt4Notify::messageClicked()
 {
-	if (!senders.isEmpty())
-		chat_manager->openPendingMsgs(senders, true);
+	if (!contacts.isEmpty())
+		chat_manager->openPendingMsgs(contacts, true);
 }
 
 NotifierConfigurationWidget *Qt4Notify::createConfigurationWidget(QWidget *parent, char *name)
@@ -151,19 +150,19 @@ void Qt4Notify::mainConfigurationWindowCreated(MainConfigurationWindow*)
 void Qt4Notify::configurationUpdated()
 {
 }
-	
+
 void Qt4Notify::createDefaultConfiguration()
 {
 	config_file.addVariable("Qt4DockingNotify", "Event_ConnectionError_timeout", 10);
 	config_file.addVariable("Qt4DockingNotify", "Event_ConnectionError_syntax", "%&m");
 	config_file.addVariable("Qt4DockingNotify", "Event_ConnectionError_title", "%&t");
 	config_file.addVariable("Qt4DockingNotify", "Event_ConnectionError_icon", 3);
-    
+
 	config_file.addVariable("Qt4DockingNotify", "Event_NewChat_timeout", 10);
 	config_file.addVariable("Qt4DockingNotify", "Event_NewChat_syntax", "%&d");
 	config_file.addVariable("Qt4DockingNotify", "Event_NewChat_title", "%&m");
 	config_file.addVariable("Qt4DockingNotify", "Event_NewChat_icon", 1);
-	
+
 	config_file.addVariable("Qt4DockingNotify", "Event_NewMessage_timeout", 10);
 	config_file.addVariable("Qt4DockingNotify", "Event_NewMessage_syntax", "%&d");
 	config_file.addVariable("Qt4DockingNotify", "Event_NewMessage_title", "%&m");
@@ -173,7 +172,7 @@ void Qt4Notify::createDefaultConfiguration()
 	config_file.addVariable("Qt4DockingNotify", "Event_StatusChanged/ToOnline_syntax", "%&d");
 	config_file.addVariable("Qt4DockingNotify", "Event_StatusChanged/ToOnline_title", "%&m");
 	config_file.addVariable("Qt4DockingNotify", "Event_StatusChanged/ToOnline_icon", 0);
-	
+
 	config_file.addVariable("Qt4DockingNotify", "Event_StatusChanged/ToBusy_timeout", 10);
 	config_file.addVariable("Qt4DockingNotify", "Event_StatusChanged/ToBusy_syntax", "%&d");
 	config_file.addVariable("Qt4DockingNotify", "Event_StatusChanged/ToBusy_title", "%&m");
@@ -188,12 +187,12 @@ void Qt4Notify::createDefaultConfiguration()
     config_file.addVariable("Qt4DockingNotify", "Event_StatusChanged/ToInvisible_syntax", "%&d");
     config_file.addVariable("Qt4DockingNotify", "Event_StatusChanged/ToInvisible_title", "%&m");
     config_file.addVariable("Qt4DockingNotify", "Event_StatusChanged/ToInvisible_icon", 0);
-	
+
 	config_file.addVariable("Qt4DockingNotify", "Event_FileTransfer/Finished_timeout", 10);
 	config_file.addVariable("Qt4DockingNotify", "Event_FileTransfer/Finished_syntax", "%&m");
     config_file.addVariable("Qt4DockingNotify", "Event_FileTransfer/Finished_title", "%&t");
 	config_file.addVariable("Qt4DockingNotify", "Event_FileTransfer/Finished_icon", 2);
-	
+
 	config_file.addVariable("Qt4DockingNotify", "Event_FileTransfer/IncomingFile_timeout", 10);
     config_file.addVariable("Qt4DockingNotify", "Event_FileTransfer/IncomingFile_syntax", "%&m");
 	config_file.addVariable("Qt4DockingNotify", "Event_FileTransfer/IncomingFile_title", "%&t");
