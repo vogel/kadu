@@ -5,6 +5,7 @@
 
 #include <time.h>
 
+#include "accounts/accounts_aware_object.h"
 #include "main_configuration_window.h"
 #include "notification.h"
 #include "protocols/protocol.h"
@@ -138,7 +139,7 @@ signals:
 
 };
 
-class NOTIFYAPI Notify : public ConfigurationUiHandler
+class NOTIFYAPI Notify : public ConfigurationUiHandler, AccountsAwareObject
 {
 	Q_OBJECT
 
@@ -176,10 +177,10 @@ class NOTIFYAPI Notify : public ConfigurationUiHandler
 	void addConfigurationWidget(NotifierData &notifier, const QString &name);
 	void removeConfigurationWidget(NotifierData &notifier);
 
-private slots:
+	virtual void accountRegistered(Account *account);
+	virtual void accountUnregistered(Account *account);
 
-	void registerAccount(Account *account);
-	void unregisterAccount(Account *account);
+private slots:
 
 	void messageReceived(Account *account, ContactList contacts, const QString &msg, time_t t);
 

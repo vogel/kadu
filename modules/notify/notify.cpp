@@ -81,14 +81,8 @@ Notify::Notify(QObject *parent, const char *name)
 
 	createDefaultConfiguration();
 
-	AccountManager *accountManager = AccountManager::instance();
-	connect(accountManager, SIGNAL(registerAccount(Account *)),
-		this, SLOT(registerAccount(Account *)));
-	connect(accountManager, SIGNAL(unregisterAccount(Account *)),
-		this, SLOT(unregisterAccount(Account *)));
-
-	foreach (Account *account, accountManager->accounts())
-		registerAccount(account);
+	foreach (Account *account, AccountManager::instance()->accounts())
+		accountRegistered(account);
 
 	MessageNotification::registerEvents(this);
 	ConnectionErrorNotification::registerEvent(this);
@@ -105,14 +99,8 @@ Notify::~Notify()
 	ConnectionErrorNotification::unregisterEvent(this);
 	MessageNotification::unregisterEvents(this);
 
-	AccountManager *accountManager = AccountManager::instance();
-	disconnect(accountManager, SIGNAL(registerAccount(Account *)),
-		this, SLOT(registerAccount(Account *)));
-	disconnect(accountManager, SIGNAL(unregisterAccount(Account *)),
-		this, SLOT(unregisterAccount(Account *)));
-
-	foreach (Account *account, accountManager->accounts())
-		unregisterAccount(account);
+	foreach (Account *account, AccountManager::instance()->accounts())
+		accountUnregistered(account);
 
 	if (!Notifiers.isEmpty())
 	{
@@ -321,7 +309,7 @@ void Notify::moveToNotifyList()
 	notifiedUsers->sortItems();
 }
 
-void Notify::registerAccount(Account *account)
+void Notify::accountRegistered(Account *account)
 {
 	Protocol *protocol = account->protocol();
 	connect(protocol, SIGNAL(connectionError(Protocol *, const QString &, const QString &)),
@@ -332,7 +320,7 @@ void Notify::registerAccount(Account *account)
 		this, SLOT(statusChanged(Account *, Contact, Status)));
 }
 
-void Notify::unregisterAccount(Account *account)
+void Notify::accountUnregistered(Account *account)
 {
 	Protocol *protocol = account->protocol();
 	disconnect(protocol, SIGNAL(connectionError(Protocol *, const QString &, const QString &)),
