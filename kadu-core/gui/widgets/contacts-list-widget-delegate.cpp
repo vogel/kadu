@@ -174,12 +174,11 @@ void ContactsListWidgetDelegate::paint(QPainter *painter, const QStyleOptionView
 	opt.showDecorationSelected = true;
 
 	const QAbstractItemView *widget = dynamic_cast<const QAbstractItemView *>(opt.widget);
-
-	QStyle *style = widget ? widget->style() : QApplication::style();
-	style->drawControl(QStyle::CE_ItemViewItem, &opt, painter, widget);
-
 	if (!widget)
 		return;
+
+	QStyle *style = widget->style();
+	style->drawControl(QStyle::CE_ItemViewItem, &opt, painter, widget);
 
 	QRect rect = opt.rect;
 
@@ -189,6 +188,9 @@ void ContactsListWidgetDelegate::paint(QPainter *painter, const QStyleOptionView
 	painter->translate(rect.topLeft());
 
 	painter->setFont(Font);
+	painter->setPen(option.palette.color(QPalette::Normal, option.state & QStyle::State_Selected
+		? QPalette::HighlightedText
+		: QPalette::Text));
 
 	Contact con = Model->contact(index);
 
@@ -267,6 +269,7 @@ void ContactsListWidgetDelegate::paint(QPainter *painter, const QStyleOptionView
 	painter->setFont(DescriptionFont);
 	painter->translate(textLeft, top);
 
+	dd->setDefaultStyleSheet();
 	dd->drawContents(painter);
 	delete dd;
 
