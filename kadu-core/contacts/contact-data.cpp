@@ -104,6 +104,13 @@ QString ContactData::id(Account *account)
 	return QString::null;
 }
 
+Account * ContactData::prefferedAccount()
+{
+	return AccountsData.count() > 0
+		? AccountsData.keys()[0]
+		: 0;
+}
+
 // properties
 
 bool ContactData::isBlocked(Account *account)

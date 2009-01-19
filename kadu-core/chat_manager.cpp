@@ -749,7 +749,11 @@ ChatWidget * ChatManager::openChatWidget(Account *initialAccount, ContactList co
 		return chatWidget;
 	}
 
-	chatWidget = new ChatWidget(initialAccount, contacts);
+	Account *account = contacts[0].prefferedAccount();
+	if (!account)
+		return 0;
+
+	chatWidget = new ChatWidget(account, contacts);
 
 	bool handled = false;
 	emit handleNewChatWidget(chatWidget, handled);

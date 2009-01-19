@@ -85,6 +85,12 @@ QMap<QString, QString> & Contact::customData()
 	return Data->customData();
 }
 
+Account * Contact::prefferedAccount()
+{
+	checkNull();
+	return Data->prefferedAccount();
+}
+
 void Contact::addAccountData(ContactAccountData *accountData)
 {
 	checkNull();

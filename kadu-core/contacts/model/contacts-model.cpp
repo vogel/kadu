@@ -86,7 +86,10 @@ QVariant ContactsModel::data(const QModelIndex &index, int role) const
 		return QVariant();
 
 	ContactAccountData *cad;
-	Account *account = AccountManager::instance()->defaultAccount();
+
+	Account *account = con.prefferedAccount();
+	if (!account)
+		account = AccountManager::instance()->defaultAccount();
 
 	switch (role)
 	{
@@ -96,6 +99,7 @@ QVariant ContactsModel::data(const QModelIndex &index, int role) const
 			cad = con.accountData(account);
 			if (0 == cad)
 				return QVariant();
+			// TODO generic icon
 			return account->protocol()->statusPixmap(cad->status());
 		case ContactRole:
 			return QVariant::fromValue(con);

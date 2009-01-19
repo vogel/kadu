@@ -269,7 +269,6 @@ void ContactsListWidgetDelegate::paint(QPainter *painter, const QStyleOptionView
 	painter->setFont(DescriptionFont);
 	painter->translate(textLeft, top);
 
-	dd->setDefaultStyleSheet();
 	dd->drawContents(painter);
 	delete dd;
 

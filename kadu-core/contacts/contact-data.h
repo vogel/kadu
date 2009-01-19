@@ -51,6 +51,7 @@ public:
 
 	QUuid uuid() { return Uuid; }
 	QString id(Account *account);
+	Account * prefferedAccount();
 
 	QMap<QString, QString> & customData() { return CustomData; }
 
