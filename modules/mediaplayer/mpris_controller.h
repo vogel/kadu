@@ -21,7 +21,6 @@ struct TrackInfo
 	QString track;
 	QString file;
 	uint    time;
-	uint    started;
 };
 Q_DECLARE_METATYPE(TrackInfo);
 
