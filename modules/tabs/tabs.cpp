@@ -24,6 +24,7 @@
 #include "contacts/contact-manager.h"
 #include "protocols/protocol.h"
 #include "protocols/protocol_factory.h"
+#include "protocols/protocols_manager.h"
 #include "chat_edit_box.h"
 #include "debug.h"
 #include "icons_manager.h"
@@ -82,11 +83,10 @@ TabsManager::TabsManager(bool firstload) : QObject()
 	connect(chat_manager, SIGNAL(chatWidgetOpen(ChatWidget *)),
 			this, SLOT(onOpenChat(ChatWidget *)));
 
-	connect(userlist, SIGNAL(statusChanged(UserListElement, QString, const UserStatus &, bool, bool)),
-			this, SLOT(onStatusChanged(UserListElement/*, QString, const UserStatus &, bool, bool*/)));
+	triggerAllAccountsRegistered();
 
-	connect(userlist, SIGNAL(userDataChanged(UserListElement, QString, QVariant, QVariant, bool, bool)),
-			this, SLOT(userDataChanged(UserListElement, QString, QVariant, QVariant, bool, bool)));
+	//	connect(protocol, SIGNAL(userDataChanged(UserListElement, QString, QVariant, QVariant, bool, bool)),
+	//			this, SLOT(userDataChanged(UserListElement, QString, QVariant, QVariant, bool, bool)));
 
 	connect(&timer, SIGNAL(timeout()),
 			this, SLOT(onTimer()));
@@ -275,10 +275,10 @@ void TabsManager::onDestroyingChat(ChatWidget* chat)
 /*
  * XXX: jak bedzie obsluga wielu protokolow to to bedzie trzeba lekko przerobic
  */
-void TabsManager::onStatusChanged(UserListElement ule)
+void TabsManager::onStatusChanged(Account *account, Contact contact, Status oldStatus)
 {
 	kdebugf();
-	ChatWidget* chat=chat_manager->findChatWidget(ule.toContact());
+	ChatWidget* chat=chat_manager->findChatWidget(ContactList(contact));
 
 	if (tabdialog->indexOf(chat)!=-1)
 	{
@@ -293,9 +293,9 @@ void TabsManager::onStatusChanged(UserListElement ule)
 		}
 		// w zależności od opcji w konfiguracji odpowiednio uaktualniamy tytuł karty
 		if(config_closeButtonOnTab)
-			tabdialog->changeTab(chat, chat->icon(), ule.altNick()+"  ");
+			tabdialog->changeTab(chat, chat->icon(), contact.display()+"  ");
 		else
-			tabdialog->changeTab(chat, chat->icon(), ule.altNick());
+			tabdialog->changeTab(chat, chat->icon(), contact.display());
 
 	}
 	kdebugf2();
@@ -307,7 +307,8 @@ void TabsManager::userDataChanged(UserListElement ule, QString name, QVariant /*
 	if (name != "AltNick")
 		return;
 	// jeśli zmienił się nick osoby z którą mamy rozmowę w kartach to uaktualniamy tytuł karty
-	onStatusChanged(ule);
+	//TODO
+	//onStatusChanged(ule);
 
 	kdebugf2();
 }
@@ -413,7 +414,6 @@ void TabsManager::insertTab(ChatWidget* chat)
 		chat->kaduRestoreGeometry();
 
 	ContactList contacts = chat->contacts();
-	UserListElements ules(UserListElements::fromContactList(contacts, AccountManager::instance()->defaultAccount()));
 
 	detachedchats.remove(chat);
 
@@ -424,18 +424,18 @@ void TabsManager::insertTab(ChatWidget* chat)
 	}
 
 	// Ustawiam tytul karty w zaleznosci od tego czy mamy do czynienia z rozmowa czy z konferencja
-	if (ules.count()>1)
+	if (contacts.count()>1)
 		// Ustawiam tytul karty w zaleznosci od tego czy przycisk zamknięcia na kartach ma być pokazany
 		if(config_closeButtonOnTab)
-			tabdialog->insertTab(chat, chat->icon(), tr("Conference [%1]").arg(ules.count())+"  ", target_tabs);
+			tabdialog->insertTab(chat, chat->icon(), tr("Conference [%1]").arg(contacts.count())+"  ", target_tabs);
 		else
-			tabdialog->insertTab(chat, chat->icon(), tr("Conference [%1]").arg(ules.count()), target_tabs);
+			tabdialog->insertTab(chat, chat->icon(), tr("Conference [%1]").arg(contacts.count()), target_tabs);
 	else
 		// Ustawiam tytul karty w zaleznosci od tego czy przycisk zamknięcia na kartach ma być pokazany
 		if(config_closeButtonOnTab)
-			tabdialog->insertTab(chat, chat->icon(), ules[0].altNick()+"  ", target_tabs);
+			tabdialog->insertTab(chat, chat->icon(), contacts[0].display()+"  ", target_tabs);
 		else
-			tabdialog->insertTab(chat, chat->icon(), ules[0].altNick(), target_tabs);
+			tabdialog->insertTab(chat, chat->icon(), contacts[0].display(), target_tabs);
 
 	if ((config_autoTabChange && !chatsWithNewMessages.contains(chat)) || autoswith)
 		tabdialog->setCurrentPage(tabdialog->indexOf(chat));
@@ -751,6 +751,18 @@ void TabsManager::configurationUpdated()
 	menu->changeItem(2, icons_manager->loadIcon("TabsClose"), tr("Close"));
 
 	kdebugf2();
+}
+
+void TabsManager::accountRegistered(Account *account)
+{
+	connect(account, SIGNAL(contactStatusChanged(Account *, Contact, Status)),
+			this, SLOT(onStatusChanged(Account *, Contact, Status)));
+}
+
+void TabsManager::accountUnregistered(Account *account)
+{
+	disconnect(account, SIGNAL(contactStatusChanged(Account *, Contact, Status)),
+			this, SLOT(onStatusChanged(Account *, Contact, Status)));
 }
 
 void TabsManager::openTabWith(QStringList altnicks, int index)

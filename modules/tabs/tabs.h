@@ -10,6 +10,7 @@
 #include <QtCore/QObject>
 #include <QtCore/QTimer>
 
+#include "accounts/accounts_aware_object.h"
 #include "chat_manager.h"
 #include "configuration_aware_object.h"
 #include "kadu.h"
@@ -21,7 +22,7 @@
 class QMenu;
 class Action;
 
-class TabsManager : public ConfigurationUiHandler, ConfigurationAwareObject
+class TabsManager : public ConfigurationUiHandler, ConfigurationAwareObject, AccountsAwareObject
 {
 	Q_OBJECT
 
@@ -62,9 +63,11 @@ class TabsManager : public ConfigurationUiHandler, ConfigurationAwareObject
 
 		/**
 		* Slot zostaje wywołany w momencie zmiany statusu.
-		* @param ule kontakt, dla którego zmienił się status
+		* @param account konto, na którym zmienił się status
+		* @param contact kontakt, dla którego zmienił się status
+		* @param oldStatus poprzedni status
 		*/
-		void onStatusChanged(UserListElement ule);
+		void onStatusChanged(Account *account, Contact contact, Status oldStatus);
 		/**
 		* Slot zostaje wywołany w momencie zmiany danych kontaktu.
 		* @param elem kontakt, którego dane się zmieniły
@@ -114,6 +117,9 @@ class TabsManager : public ConfigurationUiHandler, ConfigurationAwareObject
 		* Metoda jest wywoływana po zmianie w oknie konfiguracyjnym.
 		*/
 		virtual void configurationUpdated();
+
+		virtual void accountRegistered(Account *account);
+		virtual void accountUnregistered(Account *account);
 
 	private:
 		ActionDescription* openInNewTabActionDescription;
