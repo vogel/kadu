@@ -49,84 +49,6 @@ QImage *UserBox::backgroundImage = 0;
 
 static bool brokenStringCompare;
 
-ToolTipClassManager::ToolTipClassManager()
-	: CurrentToolTipClass(0)
-{
-	kdebugf();
-}
-
-ToolTipClassManager::~ToolTipClassManager()
-{
-	kdebugf();
-
-	if (CurrentToolTipClass)
-		CurrentToolTipClass->hideToolTip();
-}
-
-void ToolTipClassManager::registerToolTipClass(const QString &toolTipClassName, ToolTipClass *toolTipClass)
-{
-	ToolTipClasses[toolTipClassName] = toolTipClass;
-
-	if (ToolTipClassName == toolTipClassName)
-		CurrentToolTipClass = toolTipClass;
-}
-
-void ToolTipClassManager::unregisterToolTipClass(const QString &toolTipClassName)
-{
-	kdebugf();
-
-	if (ToolTipClassName == toolTipClassName && CurrentToolTipClass)
-	{
-		CurrentToolTipClass->hideToolTip();
-		CurrentToolTipClass = 0;
-	}
-
-	if (ToolTipClasses.contains(ToolTipClassName))
-		ToolTipClasses.remove(ToolTipClassName);
-}
-
-QStringList ToolTipClassManager::getToolTipClasses()
-{
-	return ToolTipClasses.keys();
-}
-
-void ToolTipClassManager::useToolTipClass(const QString &toolTipClassName)
-{
-	kdebugf();
-
-	if (CurrentToolTipClass)
-		CurrentToolTipClass->hideToolTip();
-
-	ToolTipClassName = toolTipClassName;
-
-	if (ToolTipClasses.contains(ToolTipClassName))
-		CurrentToolTipClass = ToolTipClasses[ToolTipClassName];
-	else
-		CurrentToolTipClass = 0;
-}
-
-bool ToolTipClassManager::showToolTip(const QPoint &where, Contact who)
-{
-	if (CurrentToolTipClass)
-	{
-		CurrentToolTipClass->showToolTip(where, who);
-		return true;
-	}
-
-	return false;
-}
-
-bool ToolTipClassManager::hideToolTip()
-{
-	if (CurrentToolTipClass)
-	{
-		CurrentToolTipClass->hideToolTip();
-		return true;
-	}
-
-	return false;
-}
-
 class ULEComparer
 {
 	public:
@@ -292,7 +214,7 @@ void UserBox::tipTimeout()
 {
 	if (!lastMouseStopContact.isNull())
 	{
-		tool_tip_class_manager->showToolTip(QCursor().pos(), lastMouseStopContact);
+// 		tool_tip_class_manager->showToolTip(QCursor().pos(), lastMouseStopContact);
 		tipTimer.stop();
 	}
 }
@@ -318,7 +240,7 @@ void UserBox::restartTip(const QPoint &p)
 
 void UserBox::hideTip(bool waitForAnother)
 {
-	tool_tip_class_manager->hideToolTip();
+// 	tool_tip_class_manager->hideToolTip();
 
 	if (waitForAnother)
 		tipTimer.start(TIP_TM);
@@ -581,8 +503,8 @@ void UserBox::closeModule()
 {
 	kdebugf();
 
-	delete tool_tip_class_manager;
-	tool_tip_class_manager = 0;
+// 	delete tool_tip_class_manager;
+// 	tool_tip_class_manager = 0;
 
 	kdebugf2();
 }
@@ -591,8 +513,8 @@ void UserBox::initModule()
 {
 	kdebugf();
 
-	tool_tip_class_manager = new ToolTipClassManager();
-	tool_tip_class_manager->useToolTipClass(config_file.readEntry("Look", "UserboxToolTipStyle"));
+// 	tool_tip_class_manager = new ToolTipClassManager();
+// 	tool_tip_class_manager->useToolTipClass(config_file.readEntry("Look", "UserboxToolTipStyle"));
 
 	QStringList options;
 	QStringList values;
@@ -674,7 +596,7 @@ void UserBox::configurationUpdated()
 
 	Q3ListBox::setFont(config_file.readFontEntry("Look", "UserboxFont"));
 
-	tool_tip_class_manager->useToolTipClass(config_file.readEntry("Look", "UserboxToolTipStyle"));
+// 	tool_tip_class_manager->useToolTipClass(config_file.readEntry("Look", "UserboxToolTipStyle"));
 
 	UserBox::setColorsOrBackgrounds();
 	UserBox::setDescriptionsActionState();
@@ -1197,6 +1119,3 @@ void UserBox::accountUnregistered(Account *account)
 	disconnect(account, SIGNAL(contactStatusChanged(Account *, Contact, Status)),
 			this, SLOT(refresh()));
 }
-
-
-ToolTipClassManager *tool_tip_class_manager = 0;

@@ -27,6 +27,8 @@ set (kadu_SRCS
 	gui/widgets/contacts-list-widget-delegate.cpp
 	gui/widgets/contacts-list-widget-menu-manager.cpp
 
+	gui/widgets/tool-tip-class-manager.cpp
+
 	gui/widgets/configuration/config-action-button.cpp
 	gui/widgets/configuration/config-check-box.cpp
 	gui/widgets/configuration/config-color-button.cpp

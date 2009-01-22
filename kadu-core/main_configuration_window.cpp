@@ -13,11 +13,16 @@
 #include <QtGui/QStyleFactory>
 
 #include "configuration/config-file-data-manager.h"
+
 #include "accounts/account.h"
 #include "accounts/account_manager.h"
+
 #include "contacts/contact.h"
 #include "contacts/contact-data.h"
 #include "contacts/contact-account-data.h"
+
+#include "gui/widgets/tool-tip-class-manager.h"
+
 #include "chat_message.h"
 #include "chat_messages_view.h"
 #include "config_file.h"
@@ -350,7 +355,7 @@ void MainConfigurationWindow::setToolTipClasses()
 	captions << tr("None");
 	values << "";
 
-	QStringList toolTipClasses = tool_tip_class_manager->getToolTipClasses();
+	QStringList toolTipClasses = ToolTipClassManager::instance()->getToolTipClasses();
 	foreach(const QString &toolTipClass, toolTipClasses)
 	{
 		captions << qApp->translate("@default", toolTipClass);

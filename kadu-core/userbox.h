@@ -37,85 +37,6 @@ public:
 
 };
 
-/**
-	Klasa zdolna do pokazywania ToolTip�w nad oknem kontakt�w.
- **/
-class ToolTipClass
-{
-
-public:
-
-	ToolTipClass() {};
-	virtual ~ToolTipClass() {};
-
-	/**
-		Pokazuje tooltip w punkcie point na temat kontaktu user.
-
-		@param point punkt, w kt�rym ma si� pojawi� tooltip
-		@param user u�ytkownik, kt�rego dotyczy informacja
-	 **/
-	virtual void showToolTip(const QPoint &point, Contact user) = 0;
-	/**
-		Ukrywa tooltip (je�eli by� pokazany)
-	 **/
-	virtual void hideToolTip() = 0;
-
-};
-
-/**
-	Menad�er klas wy�wietlaj�cych tooltipy. Rejestruje klasy i pozwala na wyb�r jednej z nich w oknie konfiguracyjnym,
- **/
-class KADUAPI ToolTipClassManager
-{
-	QMap<QString, ToolTipClass *> ToolTipClasses;
-	QString ToolTipClassName;
-	ToolTipClass *CurrentToolTipClass;
-
-public:
-
-	ToolTipClassManager();
-	virtual ~ToolTipClassManager();
-
-	/**
-		Rejestruje now� klas� do pokazywania tooltip�w pod odpowiedni� nazw�.
-		Zarejestrowane klasy pojawiaj� si� w oknie konfiguracji.
-
-		@param toolTipClassName nazwa rejestrowanej klasy
-		@param toolTipClass obiekt rejestrowanej klasy
-	 **/
-	void registerToolTipClass(const QString &toolTipClassName, ToolTipClass *toolTipClass);
-	/**
-		Wyrejestrowuje klas� do pokazywania tooltip�w pod odpowiedni� nazw�.
-
-		@param toolTipClassName nazwa wyrejestrowanej klasy
-	 **/
-	void unregisterToolTipClass(const QString &toolTipClassName);
-
-	/**
-		Zwraca list� nazw zarejestrowanych klas do pokazywania tooltip�w.
-	 **/
-	QStringList getToolTipClasses();
-	/**
-		Wybiera klas�, kt�ra ma przej�� wy�wietlanie tooltip�w.
-	 **/
-	void useToolTipClass(const QString &toolTipClassName);
-
-	/**
-		Pokazuje tooltip w punkcie point na temat kontaktu user.
-
-		@param point punkt, w kt�rym ma si� pojawi� tooltip
-		@param user u�ytkownik, kt�rego dotyczy informacja
-		@return true, gdy tooltip zosta� pokazany (klasa do obs�ugi jest za�adowana)
-	 **/
-	bool showToolTip(const QPoint &point, Contact contact);
-	/**
-		Ukrywa tooltip (je�eli by� pokazany)
-
-		@return true, gdy tooltip zosta� ukryty (klasa do obs�ugi jest za�adowana)
-	 **/
-	bool hideToolTip();
-
-};
 
 /**
 	Klasa reprezentuj�ca list� kontakt�w wraz z ikonkami stan�w.
@@ -473,7 +394,5 @@ int compareAltNickCaseInsensitive(const Contact &c1, const Contact &c2);
 	Funkcja por�wnuj�ca statusy w protokole Gadu-Gadu. Uwa�a status "dost�pny" i "zaj�ty" za r�wnowa�ne.
 **/
 int compareStatus(const Contact &c1, const Contact &c2);
-
-extern KADUAPI ToolTipClassManager *tool_tip_class_manager;
 
 #endif
