@@ -21,10 +21,7 @@
 ContactsModel::ContactsModel(ContactManager *manager, QObject *parent)
 	: QAbstractListModel(parent), Manager(manager)
 {
-	connect(AccountManager::instance(), SIGNAL(accountRegistered(Account *)),
-		this, SLOT(accountRegistered(Account *)));
-	foreach (Account *account, AccountManager::instance()->accounts())
-		accountRegistered(account);
+	triggerAllAccountsRegistered();
 
 	connect(Manager, SIGNAL(contactAboutToBeAdded(Contact &)),
 			this, SLOT(contactAboutToBeAdded(Contact &)));
@@ -38,8 +35,7 @@ ContactsModel::ContactsModel(ContactManager *manager, QObject *parent)
 
 ContactsModel::~ContactsModel()
 {
-	disconnect(AccountManager::instance(), SIGNAL(accountRegistered(Account *)),
-		this, SLOT(accountRegistered(Account *)));
+	triggerAllAccountsUnregistered();
 
 	disconnect(Manager, SIGNAL(contactAboutToBeAdded(Contact &)),
 			this, SLOT(contactAboutToBeAdded(Contact &)));

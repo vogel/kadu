@@ -12,6 +12,7 @@
 
 #include <QtGui/QItemDelegate>
 
+#include "accounts/accounts_aware_object.h"
 #include "contacts/contact.h"
 #include "protocols/status.h"
 
@@ -22,7 +23,7 @@ class QTextDocument;
 class AbstractContactsModel;
 class Account;
 
-class ContactsListWidgetDelegate : public QItemDelegate, public ConfigurationAwareObject
+class ContactsListWidgetDelegate : public QItemDelegate, public ConfigurationAwareObject, public AccountsAwareObject
 {
 	Q_OBJECT
 
@@ -43,10 +44,11 @@ class ContactsListWidgetDelegate : public QItemDelegate, public ConfigurationAwa
 	QString displayDescription(Contact contact) const;
 
 private slots:
-	void accountRegistered(Account *account);
-	void accountUnregistered(Account *account);
-
 	void contactStatusChanged(Account *account, Contact contact, Status oldStatus);
+
+protected:
+	virtual void accountRegistered(Account *account);
+	virtual void accountUnregistered(Account *account);
 
 public:
 	ContactsListWidgetDelegate(AbstractContactsModel *model, QObject *parent = 0);

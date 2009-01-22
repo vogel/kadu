@@ -135,7 +135,7 @@ ChatWidget::~ChatWidget()
 
 	disconnectAcknowledgeSlots();
 
-	Protocol *gadu = AccountManager::instance()->defaultAccount()->protocol();
+	Protocol *gadu = CurrentAccount->protocol();
 	disconnect(gadu, SIGNAL(imageReceivedAndSaved(UinType,uint32_t,uint32_t,const QString&)),
 		body, SLOT(imageReceivedAndSaved(UinType,uint32_t,uint32_t,const QString&)));
 
@@ -373,7 +373,7 @@ void ChatWidget::refreshTitle()
 		else
 			title = KaduParser::parse(config_file.readEntry("Look","ChatContents"), Contacts[0], false);
 
-		ContactAccountData *cad = Contacts[0].accountData(AccountManager::instance()->defaultAccount());
+		ContactAccountData *cad = Contacts[0].accountData(CurrentAccount);
 
 		if (cad)
 			pix = CurrentAccount->statusPixmap(cad->status());

@@ -14,6 +14,7 @@
 #include <QtCore/QModelIndex>
 
 #include "accounts/account.h"
+#include "accounts/accounts_aware_object.h"
 #include "contacts/contact.h"
 #include "protocols/status.h"
 
@@ -24,7 +25,7 @@ const int ContactRole = ContactRoles;
 
 class ContactManager;
 
-class ContactsModel : public QAbstractListModel, public AbstractContactsModel
+class ContactsModel : public QAbstractListModel, public AbstractContactsModel, public AccountsAwareObject
 {
 	Q_OBJECT
 
@@ -36,10 +37,11 @@ private slots:
 	void contactAboutToBeRemoved(Contact &contact);
 	void contactRemoved(Contact &contact);
 
-	void accountRegistered(Account *account);
-	void accountUnregistered(Account *account);
-
 	void contactStatusChanged(Account *account, Contact contact, Status oldStatus);
+
+protected:
+	virtual void accountRegistered(Account *account);
+	virtual void accountUnregistered(Account *account);
 
 public:
 	explicit ContactsModel(ContactManager *manager, QObject *parent = 0);

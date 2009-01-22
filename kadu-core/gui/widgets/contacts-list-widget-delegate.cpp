@@ -35,18 +35,13 @@
 ContactsListWidgetDelegate::ContactsListWidgetDelegate(AbstractContactsModel *model, QObject *parent)
 	: QItemDelegate(parent), Model(model)
 {
-	connect(AccountManager::instance(), SIGNAL(accountRegistered(Account *)),
-		this, SLOT(accountRegistered(Account *)));
-	foreach (Account *account, AccountManager::instance()->accounts())
-		accountRegistered(account);
-
+	triggerAllAccountsRegistered();
 	configurationUpdated();
 }
 
 ContactsListWidgetDelegate::~ContactsListWidgetDelegate()
 {
-	disconnect(AccountManager::instance(), SIGNAL(accountRegistered(Account *)),
-		this, SLOT(accountRegistered(Account *)));
+	triggerAllAccountsUnregistered();
 }
 
 void ContactsListWidgetDelegate::accountRegistered(Account *account)
@@ -71,7 +66,7 @@ bool ContactsListWidgetDelegate::isBold(Contact contact) const
 	if (!ShowBold)
 		return false;
 
-	Account *account = AccountManager::instance()->defaultAccount();
+	Account *account = contact.prefferedAccount();
 	ContactAccountData *contactData = contact.accountData(account);
 
 	if (0 == contactData)
@@ -86,7 +81,7 @@ QString ContactsListWidgetDelegate::displayDescription(Contact contact) const
 	if (!ShowDescription)
 		return QString::null;
 
-	Account *account = AccountManager::instance()->defaultAccount();
+	Account *account = contact.prefferedAccount();
 	ContactAccountData *cad = contact.accountData(account);
 	if (!cad)
 		return QString::null;
