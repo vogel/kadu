@@ -6,6 +6,8 @@
 #include <QtCore/QTimer>
 #include <QtGui/QKeyEvent>
 
+#include "contacts/contact.h"
+
 #include "configuration_aware_object.h"
 #include "kadu_main_window.h"
 #include "protocols/protocol.h"

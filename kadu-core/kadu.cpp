@@ -440,8 +440,8 @@ Kadu::Kadu(QWidget *parent)
 	hbox_layout->addWidget(ContactsWidget);
 	hbox_layout->setAlignment(GroupBar, Qt::AlignTop);
 
-	connect(Userbox, SIGNAL(doubleClicked(Contact)), this, SLOT(sendMessage(Contact)));
-	connect(Userbox, SIGNAL(returnPressed(Contact)), this, SLOT(sendMessage(Contact)));
+	connect(ContactsWidget, SIGNAL(contactActivated(Contact)), this, SLOT(sendMessage(Contact)));
+
 	connect(Userbox, SIGNAL(mouseButtonClicked(int, Q3ListBoxItem *, const QPoint &)),
 		this, SLOT(mouseButtonClicked(int, Q3ListBoxItem *)));
 	connect(Userbox, SIGNAL(currentChanged(Contact)), this, SLOT(currentChanged(Contact)));
@@ -1375,25 +1375,23 @@ void Kadu::mouseButtonClicked(int button, Q3ListBoxItem *item)
 /* if something's pending, open it, if not, open new message */
 void Kadu::sendMessage(Contact contact)
 {
-	kdebugf();
-	UserBox *userbox = dynamic_cast<UserBox *>(sender());
-	if (!userbox)
+	ContactsListWidget *widget = dynamic_cast<ContactsListWidget *>(sender());
+	if (!widget)
 		return;
 
 	Account *account = AccountManager::instance()->defaultAccount();
-	ContactList users = userbox->selectedUsers().toContactList(account);
+	ContactList contacts = widget->selectedContacts();
 
-	if (!users.isEmpty())
+	if (!contacts.isEmpty())
 	{
-		UserListElement elem = userbox->selectedUsers()[0];
+		Contact contact = contacts[0];
 
-		if (users[0] != myself()) //TODO: elem.hasFeature("SendingMessages")
-			chat_manager->sendMessage(users[0], users);
-		else if (elem.mobile().isEmpty() && !elem.email().isEmpty())
-			openMailClient(elem.email());
+		if (contacts[0] != myself()) //TODO: elem.hasFeature("SendingMessages")
+			chat_manager->sendMessage(contact, contacts);
+		else if (contact.mobile().isEmpty() && !contact.email().isEmpty())
+			openMailClient(contact.email());
 
 	}
-	kdebugf2();
 }
 
 void Kadu::changeStatusSlot()

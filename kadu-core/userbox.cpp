@@ -252,8 +252,6 @@ UserBox::UserBox(KaduMainWindow *mainWindow, bool fancy, ContactList contacts, Q
 	setMinimumWidth(20);
 	setSelectionMode(Q3ListBox::Extended);
 
-	connect(this, SIGNAL(doubleClicked(Q3ListBoxItem *)), this, SLOT(doubleClickedSlot(Q3ListBoxItem *)));
-	connect(this, SIGNAL(returnPressed(Q3ListBoxItem *)), this, SLOT(returnPressedSlot(Q3ListBoxItem *)));
 	connect(this, SIGNAL(currentChanged(Q3ListBoxItem *)), this, SLOT(currentChangedSlot(Q3ListBoxItem *)));
 	connect(&refreshTimer, SIGNAL(timeout()), this, SLOT(refresh()));
 
@@ -666,16 +664,6 @@ void UserBox::refreshBackground()
 
  	viewport()->setPaletteBackgroundPixmap(QPixmap::fromImage(image));
 	*/
-}
-
-void UserBox::doubleClickedSlot(Q3ListBoxItem *item)
-{
-// 	emit doubleClicked(static_cast<KaduListBoxPixmap *>(item)->CurrentContact);
-}
-
-void UserBox::returnPressedSlot(Q3ListBoxItem *item)
-{
-// 	emit returnPressed(static_cast<KaduListBoxPixmap *>(item)->CurrentContact);
 }
 
 void UserBox::currentChangedSlot(Q3ListBoxItem *item)

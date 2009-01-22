@@ -12,29 +12,40 @@
 
 #include <QtGui/QListView>
 
+#include "contacts/contact.h"
+
 class QContextMenuEvent;
 class QModelIndex;
 
-class Contact;
 class ContactList;
 class ContactsListWidgetDelegate;
 class KaduMainWindow;
 
 class ContactsListWidget : public QListView
 {
+	Q_OBJECT
+
 	KaduMainWindow *MainWindow;
 	ContactsListWidgetDelegate *Delegate;
 
 	Contact contact(const QModelIndex &index) const;
+	void triggerActivate(const QModelIndex &index);
+
+private slots:
+	void doubleClickedSlot(const QModelIndex &index);
 
 protected:
 	virtual void contextMenuEvent(QContextMenuEvent *event);
+	virtual void keyPressEvent(QKeyEvent *event);
 
 public:
 	ContactsListWidget(KaduMainWindow *mainWindow, QWidget *parent = 0);
 	virtual ~ContactsListWidget();
 
 	ContactList selectedContacts() const;
+
+signals:
+	void contactActivated(Contact contact);
 
 };
 

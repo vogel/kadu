@@ -43,6 +43,8 @@ ContactsListWidget::ContactsListWidget(KaduMainWindow *mainWindow, QWidget *pare
 
 	setModel(proxyModel);
 	setItemDelegate(Delegate);
+
+	connect(this, SIGNAL(doubleClicked(const QModelIndex &)), this, SLOT(doubleClickedSlot(const QModelIndex &)));
 }
 
 ContactsListWidget::~ContactsListWidget()
@@ -72,6 +74,15 @@ Contact ContactsListWidget::contact(const QModelIndex &index) const
 		return Contact::null;
 
 	return model->contact(index);
+}
+
+void ContactsListWidget::triggerActivate(const QModelIndex& index)
+{
+	if (!index.isValid())
+		return;
+	Contact con = contact(index);
+	if (!con.isNull())
+		emit contactActivated(con);
 }
 
 void ContactsListWidget::contextMenuEvent(QContextMenuEvent *event)
@@ -107,4 +118,21 @@ void ContactsListWidget::contextMenuEvent(QContextMenuEvent *event)
 			management->addSeparator();
 
 	menu->exec(event->globalPos());
+}
+
+void ContactsListWidget::keyPressEvent(QKeyEvent *event)
+{
+	switch (event->key())
+	{
+		case Qt::Key_Return:
+		case Qt::Key_Enter:
+			triggerActivate(currentIndex());
+		default:
+			QAbstractItemView::keyPressEvent(event);
+	}
+}
+
+void ContactsListWidget::doubleClickedSlot(const QModelIndex &index)
+{
+	triggerActivate(index);
 }
