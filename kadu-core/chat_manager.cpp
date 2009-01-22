@@ -9,10 +9,14 @@
 
 #include "accounts/account.h"
 #include "accounts/account_manager.h"
-#include "action.h"
-#include "activate.h"
+
 #include "contacts/contact-account-data.h"
 #include "contacts/contact-manager.h"
+
+#include "gui/widgets/contacts-list-widget-menu-manager.h"
+
+#include "action.h"
+#include "activate.h"
 #include "chat_edit_box.h"
 #include "chat_message.h"
 #include "chat_window.h"
@@ -176,8 +180,8 @@ ChatManager::ChatManager(QObject *parent)
 		"Black", tr("Change color")
 	);
 
-	UserBox::addActionDescription(chatActionDescription);
-	UserBox::addSeparator();
+	ContactsListWidgetMenuManager::instance()->addActionDescription(chatActionDescription);
+	ContactsListWidgetMenuManager::instance()->addSeparator();
 
 	if (config_file.readBoolEntry("Chat", "RememberPosition"))
 	{

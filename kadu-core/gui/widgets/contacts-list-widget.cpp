@@ -22,6 +22,7 @@
 #include "userbox.h"
 
 #include "contacts-list-widget-delegate.h"
+#include "contacts-list-widget-menu-manager.h"
 
 #include "contacts-list-widget.h"
 
@@ -81,7 +82,7 @@ void ContactsListWidget::contextMenuEvent(QContextMenuEvent *event)
 
 	QMenu *menu = new QMenu(this);
 
-	foreach (ActionDescription *actionDescription, UserBox::UserBoxActions)
+	foreach (ActionDescription *actionDescription, ContactsListWidgetMenuManager::instance()->contactsListActions())
 	{
 		if (actionDescription)
 		{
@@ -95,7 +96,7 @@ void ContactsListWidget::contextMenuEvent(QContextMenuEvent *event)
 
 	QMenu *management = menu->addMenu(tr("User management"));
 
-	foreach (ActionDescription *actionDescription, UserBox::ManagementActions)
+	foreach (ActionDescription *actionDescription, ContactsListWidgetMenuManager::instance()->managementActions())
 		if (actionDescription)
 		{
 			KaduAction *action = actionDescription->createAction(MainWindow);

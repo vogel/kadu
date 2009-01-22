@@ -182,8 +182,8 @@ ScrollBarWatcher *scrollBarWatcher = 0;
 
 CreateNotifier UserBox::createNotifier;
 
-QList<ActionDescription *> UserBox::UserBoxActions;
-QList<ActionDescription *> UserBox::ManagementActions;
+
+
 
 UserBox::UserBox(KaduMainWindow *mainWindow, bool fancy, ContactList contacts, QWidget* parent, const char* name, Qt::WFlags f)
 	: Q3ListBox(parent, name, f), MainWindow(mainWindow), fancy(fancy),
@@ -691,46 +691,6 @@ void UserBox::currentChangedSlot(Q3ListBoxItem *item)
 	//
 // 	if (item)
 // 		emit currentChanged(static_cast<KaduListBoxPixmap *>(item)->CurrentContact);
-}
-
-void UserBox::addActionDescription(ActionDescription *actionDescription)
-{
-	UserBoxActions.append(actionDescription);
-}
-
-void UserBox::insertActionDescription(int pos, ActionDescription *actionDescription)
-{
-	UserBoxActions.insert(pos, actionDescription);
-}
-
-void UserBox::removeActionDescription(ActionDescription *actionDescription)
-{
-	UserBoxActions.removeAll(actionDescription);
-}
-
-void UserBox::addSeparator()
-{
-	UserBoxActions.append(0);
-}
-
-void UserBox::addManagementActionDescription(ActionDescription *actionDescription)
-{
-	ManagementActions.append(actionDescription);
-}
-
-void UserBox::insertManagementActionDescription(int pos, ActionDescription *actionDescription)
-{
-	ManagementActions.insert(pos, actionDescription);
-}
-
-void UserBox::removeManagementActionDescription(ActionDescription *actionDescription)
-{
-	ManagementActions.removeAll(actionDescription);
-}
-
-void UserBox::addManagementSeparator()
-{
-	ManagementActions.append(0);
 }
 
 void UserBox::configurationUpdated()

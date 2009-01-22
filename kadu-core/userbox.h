@@ -126,10 +126,6 @@ class KADUAPI UserBox : public Q3ListBox, ConfigurationAwareObject
 {
 	Q_OBJECT
 
-public:
-	static QList<ActionDescription *> UserBoxActions;
-	static QList<ActionDescription *> ManagementActions;
-
 private:
 	friend class Kadu;
 
@@ -247,15 +243,6 @@ public:
 	UserBox(KaduMainWindow *mainWindow, bool fancy, ContactList contacts, QWidget* parent = 0, const char* name = 0, Qt::WFlags f = 0);
 
 	virtual ~UserBox();
-
-	static void addActionDescription(ActionDescription *actionDescription);
-	static void insertActionDescription(int pos, ActionDescription *actionDescription);
-	static void removeActionDescription(ActionDescription *actionDescription);
-	static void addSeparator();
-	static void addManagementActionDescription(ActionDescription *actionDescription);
-	static void insertManagementActionDescription(int pos, ActionDescription *actionDescription);
-	static void removeManagementActionDescription(ActionDescription *actionDescription);
-	static void addManagementSeparator();
 
 	static void setColorsOrBackgrounds();
 

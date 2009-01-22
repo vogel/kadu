@@ -30,6 +30,7 @@
 #include "contacts/contact-manager.h"
 
 #include "gui/widgets/contacts-list-widget.h"
+#include "gui/widgets/contacts-list-widget-menu-manager.h"
 
 #include "../modules/gadu_protocol/gadu.h"
 #include "../modules/gadu_protocol/gadu-contact-account-data.h"
@@ -452,7 +453,7 @@ Kadu::Kadu(QWidget *parent)
 		"WriteEmail", tr("Write email message"), false, "",
 		disableNoEMail
 	);
-	UserBox::addActionDescription(writeEmailActionDescription);
+	ContactsListWidgetMenuManager::instance()->addActionDescription(writeEmailActionDescription);
 
 	ActionDescription *copyDescriptionActionDescription = new ActionDescription(
 		ActionDescription::TypeUser, "copyDescriptionAction",
@@ -460,7 +461,7 @@ Kadu::Kadu(QWidget *parent)
 		"CopyDescription", tr("Copy description"), false, "",
 		disableNoGaduDescription
 	);
-	UserBox::addActionDescription(copyDescriptionActionDescription);
+	ContactsListWidgetMenuManager::instance()->addActionDescription(copyDescriptionActionDescription);
 
 	ActionDescription *openDescriptionLinkActionDescription = new ActionDescription(
 		ActionDescription::TypeUser, "openDescriptionLinkAction",
@@ -468,14 +469,14 @@ Kadu::Kadu(QWidget *parent)
 		"OpenDescriptionLink", tr("Open description link in browser"), false, "",
 		disableNoGaduDescriptionUrl
 	);
-	UserBox::addActionDescription(openDescriptionLinkActionDescription);
+	ContactsListWidgetMenuManager::instance()->addActionDescription(openDescriptionLinkActionDescription);
 
 	ActionDescription *copyPersonalInfoActionDescription = new ActionDescription(
 		ActionDescription::TypeUser, "copyPersonalInfoAction",
 		this, SLOT(copyPersonalInfoActionActivated(QAction *, bool)),
 		"CopyPersonalInfo", tr("Copy personal info")
 	);
-	UserBox::addActionDescription(copyPersonalInfoActionDescription);
+	ContactsListWidgetMenuManager::instance()->addActionDescription(copyPersonalInfoActionDescription);
 
 	ActionDescription *lookupUserInfoActionDescription = new ActionDescription(
 		ActionDescription::TypeUser, "lookupUserInfoAction",
@@ -483,12 +484,12 @@ Kadu::Kadu(QWidget *parent)
 		"LookupUserInfo", tr("Search in directory"), false, "",
 		disableNoGaduUle
 	);
-	UserBox::addActionDescription(lookupUserInfoActionDescription);
+	ContactsListWidgetMenuManager::instance()->addActionDescription(lookupUserInfoActionDescription);
 
-	UserBox::addSeparator();
+	ContactsListWidgetMenuManager::instance()->addSeparator();
 
-	UserBox::addManagementActionDescription(chat_manager->ignoreUserActionDescription);
-	UserBox::addManagementActionDescription(chat_manager->blockUserActionDescription);
+	ContactsListWidgetMenuManager::instance()->addManagementActionDescription(chat_manager->ignoreUserActionDescription);
+	ContactsListWidgetMenuManager::instance()->addManagementActionDescription(chat_manager->blockUserActionDescription);
 
 	notifyAboutUserActionDescription = new ActionDescription(
 		ActionDescription::TypeUser, "notifyAboutUserAction",
@@ -496,7 +497,7 @@ Kadu::Kadu(QWidget *parent)
 		"NotifyAboutUser", tr("Notify about user"), true, "",
 		checkNotify
 	);
-	UserBox::addManagementActionDescription(notifyAboutUserActionDescription);
+	ContactsListWidgetMenuManager::instance()->addManagementActionDescription(notifyAboutUserActionDescription);
 
 	offlineToUserActionDescription = new ActionDescription(
 		ActionDescription::TypeUser, "offlineToUserAction",
@@ -504,7 +505,7 @@ Kadu::Kadu(QWidget *parent)
 		"Offline", tr("Offline to user"), true, "",
 		checkOfflineTo
 	);
-	UserBox::addManagementActionDescription(offlineToUserActionDescription);
+	ContactsListWidgetMenuManager::instance()->addManagementActionDescription(offlineToUserActionDescription);
 
 	hideDescriptionActionDescription = new ActionDescription(
 		ActionDescription::TypeUser, "hideDescriptionAction",
@@ -512,9 +513,9 @@ Kadu::Kadu(QWidget *parent)
 		"ShowDescription_off", tr("Hide description"), true, "",
 		checkHideDescription
 	);
-	UserBox::addManagementActionDescription(hideDescriptionActionDescription);
+	ContactsListWidgetMenuManager::instance()->addManagementActionDescription(hideDescriptionActionDescription);
 
-	UserBox::addManagementSeparator();
+	ContactsListWidgetMenuManager::instance()->addManagementSeparator();
 
 	deleteUsersActionDescription = new ActionDescription(
 		ActionDescription::TypeUser, "deleteUsersAction",
@@ -522,7 +523,7 @@ Kadu::Kadu(QWidget *parent)
 		"RemoveFromUserlist", tr("Delete")
 	);
 	deleteUsersActionDescription->setShortcut("kadu_deleteuser");
-	UserBox::addManagementActionDescription(deleteUsersActionDescription);
+	ContactsListWidgetMenuManager::instance()->addManagementActionDescription(deleteUsersActionDescription);
 
 	groups_manager->setTabBar(GroupBar);
 	setDocked(Docked, dontHideOnClose);
@@ -578,7 +579,7 @@ Kadu::Kadu(QWidget *parent)
 	);
 	connect(editUserActionDescription, SIGNAL(actionCreated(KaduAction *)), this, SLOT(editUserActionCreated(KaduAction *)));
 	editUserActionDescription->setShortcut("kadu_persinfo");
-	UserBox::addActionDescription(editUserActionDescription);
+	ContactsListWidgetMenuManager::instance()->addActionDescription(editUserActionDescription);
 
 	addUserActionDescription = new ActionDescription(
 		ActionDescription::TypeGlobal, "addUserAction",
