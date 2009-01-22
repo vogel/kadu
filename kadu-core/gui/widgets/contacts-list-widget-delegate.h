@@ -38,7 +38,7 @@ class ContactsListWidgetDelegate : public QItemDelegate, public ConfigurationAwa
 	bool ShowMultiLineDescription;
 	QColor DescriptionColor;
 
-	QTextDocument * descriptionDocument(const QString &text, int width) const;
+	QTextDocument * descriptionDocument(const QString &text, int width, QColor color) const;
 
 	bool isBold(Contact contact) const;
 	QString displayDescription(Contact contact) const;

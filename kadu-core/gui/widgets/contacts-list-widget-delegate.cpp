@@ -89,15 +89,19 @@ QString ContactsListWidgetDelegate::displayDescription(Contact contact) const
 	return cad->status().description();
 }
 
-QTextDocument * ContactsListWidgetDelegate::descriptionDocument(const QString &text, int width) const
+QTextDocument * ContactsListWidgetDelegate::descriptionDocument(const QString &text, int width, QColor color) const
 {
 	QString description = text;
 	if (!ShowMultiLineDescription)
 		description.replace("\n", " ");
 
-	QTextDocument *doc = new QTextDocument(description);
+	QTextDocument *doc = new QTextDocument();
 
 	doc->setDefaultFont(DescriptionFont);
+	if (DescriptionColor.isValid())
+		doc->setDefaultStyleSheet(QString("* { color: %1; }").arg(color.name()));
+
+	doc->setHtml(QString("<span>%1</span>").arg(description));
 
 	QTextOption opt = doc->defaultTextOption();
 	opt.setWrapMode(QTextOption::WrapAtWordBoundaryOrAnywhere);
@@ -143,7 +147,7 @@ QSize ContactsListWidgetDelegate::sizeHint(const QStyleOptionViewItem &option, c
 
 	if (!description.isEmpty())
 	{
-		QTextDocument *dd = descriptionDocument(description, opt.rect.width() - textLeft);
+		QTextDocument *dd = descriptionDocument(description, opt.rect.width() - textLeft, DescriptionColor);
 		descriptionHeight = (int)dd->size().height();
 		delete dd;
 	}
@@ -182,10 +186,12 @@ void ContactsListWidgetDelegate::paint(QPainter *painter, const QStyleOptionView
 	painter->setClipRect(rect);
 	painter->translate(rect.topLeft());
 
-	painter->setFont(Font);
-	painter->setPen(option.palette.color(QPalette::Normal, option.state & QStyle::State_Selected
+	QColor textcolor = option.palette.color(QPalette::Normal, option.state & QStyle::State_Selected
 		? QPalette::HighlightedText
-		: QPalette::Text));
+		: QPalette::Text);
+
+	painter->setFont(Font);
+	painter->setPen(textcolor);
 
 	Contact con = Model->contact(index);
 
@@ -206,7 +212,11 @@ void ContactsListWidgetDelegate::paint(QPainter *painter, const QStyleOptionView
 
 	if (hasDescription)
 	{
-		dd = descriptionDocument(description, rect.width() - textLeft);
+		dd = descriptionDocument(description, rect.width() - textLeft,
+			option.state & QStyle::State_Selected
+			? textcolor
+			: DescriptionColor);
+
 		descriptionHeight = (int)dd->size().height();
 	}
 
