@@ -39,7 +39,7 @@ AccountManager::~AccountManager()
 
 void AccountManager::loadConfiguration(XmlConfigFile *configurationStorage, const QString &name)
 {
-	if (!name.isEmpty())
+	if (name.isEmpty())
 		return;
 
 	QDomElement accountsNode = configurationStorage->getNode("Accounts", XmlConfigFile::ModeFind);
@@ -58,11 +58,13 @@ void AccountManager::loadConfiguration(XmlConfigFile *configurationStorage, cons
 		if (uuid.isNull())
 			uuid = QUuid::createUuid();
 
+		// TODO hasAccountUUID(uuid) => return
+
 		Account *account = new Account(uuid);
 
 		if (account->loadConfiguration(configurationStorage, accountElement))
 		{
-			if (account->protocol()->protocolFactory()->name() == name || name.isNull())
+			if (account->protocol()->protocolFactory()->name() == name)
 				registerAccount(account);
 			else
 				delete account;

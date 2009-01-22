@@ -197,7 +197,6 @@ void UserList::readFromConfig()
 
 	gadu_protocol_init(false);
 
-	AccountManager::instance()->loadConfiguration(xml_config_file);
 	ContactManager::instance()->loadConfiguration(xml_config_file);
 
 	emit modified();
