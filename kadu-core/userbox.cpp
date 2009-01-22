@@ -425,7 +425,6 @@ void UserBox::keyPressEvent(QKeyEvent *e)
 	Q3ListBox::keyPressEvent(e);
 //	QWidget::keyPressEvent(e);
 	Q3ListBoxItem *i = item(currentItem());
-	currentChangedSlot(i);
 //	kdebugf2();
 }
 
@@ -664,21 +663,6 @@ void UserBox::refreshBackground()
 
  	viewport()->setPaletteBackgroundPixmap(QPixmap::fromImage(image));
 	*/
-}
-
-void UserBox::currentChangedSlot(Q3ListBoxItem *item)
-{
-	/*
-	TODO 0.6.6: obejście dziwnego problemu z Q3ListBox.
-	Pomimo kilknięcia, currentItem() wskazuje na poprzednio aktywny element.
-	Blokujemy sygnał, aby ponownie nie wykonywać tej samem metody 
-	*/
-	blockSignals(true);
-	setCurrentItem(item);
-	blockSignals(false);
-	//
-// 	if (item)
-// 		emit currentChanged(static_cast<KaduListBoxPixmap *>(item)->CurrentContact);
 }
 
 void UserBox::configurationUpdated()

@@ -132,6 +132,17 @@ void ContactsListWidget::keyPressEvent(QKeyEvent *event)
 	}
 }
 
+void ContactsListWidget::currentChanged(const QModelIndex& current, const QModelIndex& previous)
+{
+	QListView::currentChanged(current, previous);
+
+	if (!current.isValid())
+		return;
+	Contact con = contact(current);
+	if (!con.isNull())
+		emit currentContactChanged(con);
+}
+
 void ContactsListWidget::doubleClickedSlot(const QModelIndex &index)
 {
 	triggerActivate(index);

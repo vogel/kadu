@@ -444,7 +444,7 @@ Kadu::Kadu(QWidget *parent)
 
 	connect(Userbox, SIGNAL(mouseButtonClicked(int, Q3ListBoxItem *, const QPoint &)),
 		this, SLOT(mouseButtonClicked(int, Q3ListBoxItem *)));
-	connect(Userbox, SIGNAL(currentChanged(Contact)), this, SLOT(currentChanged(Contact)));
+	connect(ContactsWidget, SIGNAL(currentContactChanged(Contact)), this, SLOT(currentChanged(Contact)));
 
 
 	ActionDescription *writeEmailActionDescription = new ActionDescription(
@@ -2090,6 +2090,7 @@ void Kadu::updateInformationPanel(Contact contact)
 
 void Kadu::currentChanged(Contact contact)
 {
+	printf("currentChanged!\n");
 	updateInformationPanel(contact);
 }
 

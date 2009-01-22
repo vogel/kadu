@@ -38,6 +38,9 @@ protected:
 	virtual void contextMenuEvent(QContextMenuEvent *event);
 	virtual void keyPressEvent(QKeyEvent *event);
 
+protected slots:
+	virtual void currentChanged(const QModelIndex &current, const QModelIndex &previous);
+
 public:
 	ContactsListWidget(KaduMainWindow *mainWindow, QWidget *parent = 0);
 	virtual ~ContactsListWidget();
@@ -46,6 +49,7 @@ public:
 
 signals:
 	void contactActivated(Contact contact);
+	void currentContactChanged(Contact contact);
 
 };
 

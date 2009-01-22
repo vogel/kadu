@@ -166,8 +166,6 @@ private slots:
 	void accountRegistered(Account *account);
 	void accountUnregistered(Account *account);
 
-	void currentChangedSlot(Q3ListBoxItem *item);
-
 // 	void userAddedToVisible(UserListElement elem, bool massively, bool last);
 // 	void userRemovedFromVisible(UserListElement elem, bool massively, bool last);
 
