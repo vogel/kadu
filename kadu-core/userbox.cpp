@@ -180,8 +180,6 @@ UserBox::UserBox(KaduMainWindow *mainWindow, bool fancy, ContactList contacts, Q
 	connect(&pending, SIGNAL(messageFromUserAdded(Contact)), this, SLOT(messageFromUserAdded(Contact)));
 	connect(&pending, SIGNAL(messageFromUserDeleted(Contact)), this, SLOT(messageFromUserAdded(Contact)));
 
-	connect(&tipTimer, SIGNAL(timeout()), this, SLOT(tipTimeout()));
-
 	connect(&verticalPositionTimer, SIGNAL(timeout()), this, SLOT(resetVerticalPosition()));
 	connect(kadu, SIGNAL(shown()), this, SLOT(resetVerticalPosition()));
 	connect(kadu, SIGNAL(hiding()), this, SLOT(rememberVerticalPosition()));
@@ -208,46 +206,6 @@ UserBox::~UserBox()
 	kdebugf2();
 }
 
-#define TIP_TM 1000
-
-void UserBox::tipTimeout()
-{
-	if (!lastMouseStopContact.isNull())
-	{
-// 		tool_tip_class_manager->showToolTip(QCursor().pos(), lastMouseStopContact);
-		tipTimer.stop();
-	}
-}
-
-void UserBox::restartTip(const QPoint &p)
-{
-//	kdebugf();
-// 	KaduListBoxPixmap *item = static_cast<KaduListBoxPixmap *>(itemAt(p));
-// 	if (item)
-// 	{
-// 		if (item->CurrentContact != lastMouseStopContact)
-// 			hideTip();
-// 		lastMouseStopContact = item->CurrentContact;
-// 	}
-// 	else
-// 	{
-// 		hideTip();
-// 		lastMouseStopContact = Contact::null;
-// 	}
-// 	tipTimer.start(TIP_TM);
-//	kdebugf2();
-}
-
-void UserBox::hideTip(bool waitForAnother)
-{
-// 	tool_tip_class_manager->hideToolTip();
-
-	if (waitForAnother)
-		tipTimer.start(TIP_TM);
-	else
-		tipTimer.stop();
-}
-
 void UserBox::showDescriptionsActionActivated(QAction *sender, bool toggle)
 {
 // 	config_file.writeEntry("Look", "ShowDesc", !toggle);
@@ -262,35 +220,10 @@ void UserBox::setDescriptionsActionState()
 // 		action->setChecked(!KaduListBoxPixmap::ShowDesc);
 }
 
-void UserBox::wheelEvent(QWheelEvent *e)
-{
-//	kdebugf();
-	Q3ListBox::wheelEvent(e);
-
-	// if event source (e->globalPos()) is inside this widget (QRect(...))
-	if (QRect(mapToGlobal(QPoint(0,0)), size()).contains(e->globalPos()))
-		restartTip(e->pos());
-	else
-		hideTip(false);
-}
-
-void UserBox::enterEvent(QEvent *e)
-{
-//	kdebugf();
-	Q3ListBox::enterEvent(e);
-}
-
-void UserBox::leaveEvent(QEvent *e)
-{
-//	kdebugf();
-	hideTip(false);
-	Q3ListBox::leaveEvent(e);
-}
-
 void UserBox::mousePressEvent(QMouseEvent *e)
 {
 	kdebugf();
-	hideTip(false);
+
 	if (e->button() != Qt::RightButton)
 	{
 		MouseStart = e->pos();
@@ -313,12 +246,6 @@ void UserBox::mousePressEvent(QMouseEvent *e)
 	kdebugf2();
 }
 
-void UserBox::mouseReleaseEvent(QMouseEvent *e)
-{
-	Q3ListBox::mouseReleaseEvent(e);
-	restartTip(e->pos());
-}
-
 void UserBox::mouseMoveEvent(QMouseEvent* e)
 {
 //	kdebugf();
@@ -334,19 +261,7 @@ void UserBox::mouseMoveEvent(QMouseEvent* e)
 	}
 	else
 	{
-		Q3ListBox::mouseMoveEvent(e);
-		restartTip(e->pos());
 	}
-//	kdebugf2();
-}
-
-void UserBox::keyPressEvent(QKeyEvent *e)
-{
-//	kdebugf();
-	hideTip(false);
-	Q3ListBox::keyPressEvent(e);
-//	QWidget::keyPressEvent(e);
-	Q3ListBoxItem *i = item(currentItem());
 //	kdebugf2();
 }
 
@@ -595,8 +510,6 @@ void UserBox::configurationUpdated()
 	setColumnMode(columnCount);
 
 	Q3ListBox::setFont(config_file.readFontEntry("Look", "UserboxFont"));
-
-// 	tool_tip_class_manager->useToolTipClass(config_file.readEntry("Look", "UserboxToolTipStyle"));
 
 	UserBox::setColorsOrBackgrounds();
 	UserBox::setDescriptionsActionState();

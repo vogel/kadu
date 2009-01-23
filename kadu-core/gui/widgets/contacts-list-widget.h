@@ -11,6 +11,7 @@
 #define CONTACTS_LIST_WIDGET_H
 
 #include <QtGui/QListView>
+#include <QtCore/QTimer>
 
 #include "contacts/contact.h"
 
@@ -31,12 +32,28 @@ class ContactsListWidget : public QListView
 	Contact contact(const QModelIndex &index) const;
 	void triggerActivate(const QModelIndex &index);
 
+	// Tool tips
+	Contact ToolTipContact;
+	QTimer ToolTipTimeoutTimer;
+
 private slots:
 	void doubleClickedSlot(const QModelIndex &index);
+
+	// Tool tips
+	void toolTipTimeout();
+	void toolTipRestart();
+	void toolTipHide(bool waitForAnother = true);
 
 protected:
 	virtual void contextMenuEvent(QContextMenuEvent *event);
 	virtual void keyPressEvent(QKeyEvent *event);
+
+	virtual void wheelEvent(QWheelEvent *event);
+	virtual void leaveEvent(QEvent *event);
+
+	virtual void mousePressEvent(QMouseEvent* event);
+	virtual void mouseReleaseEvent(QMouseEvent *event);
+	virtual void mouseMoveEvent(QMouseEvent *event);
 
 protected slots:
 	virtual void currentChanged(const QModelIndex &current, const QModelIndex &previous);

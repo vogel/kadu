@@ -8,6 +8,7 @@
  ***************************************************************************/
 
 #include "contacts/contact.h"
+#include "config_file.h"
 
 #include "tool-tip-class-manager.h"
 
@@ -90,4 +91,9 @@ bool ToolTipClassManager::hideToolTip()
 	}
 
 	return false;
+}
+
+void ToolTipClassManager::configurationUpdated()
+{
+	useToolTipClass(config_file.readEntry("Look", "UserboxToolTipStyle"));
 }

@@ -25,6 +25,8 @@
 #include "contacts-list-widget-menu-manager.h"
 
 #include "contacts-list-widget.h"
+#include "tool-tip-class-manager.h"
+#include "tool-tip-class-manager.h"
 
 ContactsListWidget::ContactsListWidget(KaduMainWindow *mainWindow, QWidget *parent)
 	: QListView(parent), MainWindow(mainWindow)
@@ -43,6 +45,8 @@ ContactsListWidget::ContactsListWidget(KaduMainWindow *mainWindow, QWidget *pare
 
 	setModel(proxyModel);
 	setItemDelegate(Delegate);
+
+	connect(&ToolTipTimeoutTimer, SIGNAL(timeout()), this, SLOT(toolTipTimeout()));
 
 	connect(this, SIGNAL(doubleClicked(const QModelIndex &)), this, SLOT(doubleClickedSlot(const QModelIndex &)));
 }
@@ -127,8 +131,53 @@ void ContactsListWidget::keyPressEvent(QKeyEvent *event)
 		case Qt::Key_Return:
 		case Qt::Key_Enter:
 			triggerActivate(currentIndex());
+			break;
 		default:
 			QAbstractItemView::keyPressEvent(event);
+	}
+
+	toolTipHide(false);
+}
+
+void ContactsListWidget::wheelEvent(QWheelEvent *event)
+{
+	QAbstractScrollArea::wheelEvent(event);
+
+	// if event source (e->globalPos()) is inside this widget (QRect(...))
+	if (QRect(QPoint(0, 0), size()).contains(event->pos()))
+		toolTipRestart();
+	else
+		toolTipHide(false);
+}
+
+void ContactsListWidget::leaveEvent(QEvent *event)
+{
+	QWidget::leaveEvent(event);
+	toolTipHide();
+}
+
+void ContactsListWidget::mousePressEvent(QMouseEvent *event)
+{
+	QAbstractItemView::mousePressEvent(event);
+	toolTipHide();
+}
+
+void ContactsListWidget::mouseReleaseEvent(QMouseEvent *event)
+{
+	QListView::mouseReleaseEvent(event);
+	toolTipRestart();
+}
+
+void ContactsListWidget::mouseMoveEvent(QMouseEvent *event)
+{
+	if ((event->buttons() & Qt::LeftButton))// && itemAt(MouseStart) && (e->pos() - MouseStart).manhattanLength() > QApplication::startDragDistance())
+	{
+		// TODO
+	}
+	else
+	{
+		QListView::mouseMoveEvent(event);
+		toolTipRestart();
 	}
 }
 
@@ -146,4 +195,46 @@ void ContactsListWidget::currentChanged(const QModelIndex& current, const QModel
 void ContactsListWidget::doubleClickedSlot(const QModelIndex &index)
 {
 	triggerActivate(index);
+}
+
+// Tool Tips
+
+void ContactsListWidget::toolTipTimeout()
+{
+	if (!ToolTipContact.isNull())
+	{
+		ToolTipClassManager::instance()->showToolTip(QCursor().pos(), ToolTipContact);
+		ToolTipTimeoutTimer.stop();
+	}
+}
+
+#define TOOL_TIP_TIMEOUT 1000
+
+void ContactsListWidget::toolTipRestart()
+{
+	Contact con = contact(currentIndex());
+
+	if (!con.isNull())
+	{
+		if (con != ToolTipContact)
+			toolTipHide();
+		ToolTipContact = con;
+	}
+	else
+	{
+		toolTipHide();
+		ToolTipContact = Contact::null;
+	}
+
+	ToolTipTimeoutTimer.start(TOOL_TIP_TIMEOUT);
+}
+
+void ContactsListWidget::toolTipHide(bool waitForAnother)
+{
+	ToolTipClassManager::instance()->hideToolTip();
+
+	if (waitForAnother)
+		ToolTipTimeoutTimer.start(TOOL_TIP_TIMEOUT);
+	else
+		ToolTipTimeoutTimer.stop();
 }

@@ -99,10 +99,6 @@ private slots:
 						QString name, QVariant oldValue, QVariant currentValue,
 						bool massively, bool last);
 	void removingProtocol(UserListElement elem, QString protocolName, bool massively, bool last);
-
-	void tipTimeout();
-	void restartTip(const QPoint &p);
-	void hideTip(bool waitForAnother = true);
 	void resetVerticalPosition();
 	void rememberVerticalPosition();
 
@@ -114,10 +110,6 @@ private slots:
 protected:
 	virtual void configurationUpdated();
 
-	virtual void wheelEvent(QWheelEvent *e);
-	virtual void enterEvent(QEvent *);
-	virtual void leaveEvent(QEvent *);
-
 	/**
 		\fn virtual void mousePressEvent(QMouseEvent *e)
 		Wci�ni�to kt�ry� z przycisk�w myszki na li�cie kontakt�w.
@@ -125,21 +117,12 @@ protected:
 	**/
 	virtual void mousePressEvent(QMouseEvent *e);
 
-	virtual void mouseReleaseEvent(QMouseEvent *e);
-
 	/**
 		\fn virtual void mouseMoveEvent(QMouseEvent* e)
 		Poruszono myszk� nad list� kontakt�w.
 		\param e wska�nik obiektu opisuj�cego to zdarzenie.
 	**/
 	virtual void mouseMoveEvent(QMouseEvent* e);
-
-	/**
-		\fn virtual void keyPressEvent(QKeyEvent *e)
-		Wci�ni�to kt�ry� z klawisz�w w aktywnej li�cie kontakt�w.
-		\param e wska�nik obiektu opisuj�cego to zdarzenie.
-	**/
-	virtual void keyPressEvent(QKeyEvent *e);
 
 	/**
 		\fn virtual void resizeEvent(QResizeEvent *)
@@ -344,34 +327,6 @@ public slots:
 	void refreshLater();
 
 signals:
-	/**
-		\fn void doubleClicked(UserListElement user)
-		Sygna� jest emitowany, gdy na kt�rym� z kontakt�w klikni�to dwukrotnie.
-		\param user kontakt, na kt�rym kilkni�to dwukrotnie
-		\warning U�ywaj tego sygna�u zamiast QListBox::doubleClicked(QListBoxItem *) !!!
-		Tamten ze wzgl�du na od�wie�anie listy w jednym ze slot�w pod��czonych
-		do tego sygna�u czasami przekazuje wska�nik do elementu, kt�ry ju� NIE ISTNIEJE.
-	**/
-	void doubleClicked(Contact contact);
-
-	/**
-		\fn void returnPressed(UserListElement user)
-		Sygna� jest emitowany, gdy wci�ni�to klawisz enter na wybranym kontakcie.
-		\param user kontakt, na kt�rym wci�ni�to enter
-		\warning U�ywaj tego sygna�u zamiast QListBox::returnPressed(QListBoxItem *) !!!
-		Tamten ze wzgl�du na od�wie�anie listy w jednym ze slot�w pod��czonych
-		do tego sygna�u czasami przekazuje wska�nik do elementu, kt�ry ju� NIE ISTNIEJE.
-	**/
-	void returnPressed(Contact contact);
-
-	/**
-		\fn void currentChanged(UserListElement user)
-		Sygna� jest emitowany, gdy zmieni� si� bie��cy kontakt.
-		\attention {raczej nale�u u�ywa� tego sygna�u zamiast QListBox::currentChaned(QListBoxItem *)}
-		\param user obecnie bie��cy kontakt
-	**/
-	void currentChanged(Contact CurrentContact);
-
 	void userListChanged();
 
 };

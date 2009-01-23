@@ -13,11 +13,12 @@
 #include <QtCore/QMap>
 #include <QtCore/QStringList>
 
+#include "configuration_aware_object.h"
 #include "exports.h"
 
 #include "abstract-tool-tip.h"
 
-class KADUAPI ToolTipClassManager
+class KADUAPI ToolTipClassManager : private ConfigurationAwareObject
 {
 	Q_DISABLE_COPY(ToolTipClassManager)
 
@@ -41,6 +42,8 @@ public:
 
 	bool showToolTip(const QPoint &point, Contact contact);
 	bool hideToolTip();
+
+	virtual void configurationUpdated();
 
 };
 
