@@ -144,7 +144,7 @@ void SmsOrangeGateway::httpFinished()
 			QMessageBox::critical(p,"SMS",tr("The receiver has to enable SMS STANDARD service"));
 			emit finished(false);
 		}
-		else if (Page.find("Twój SMS został wysłany")>=0)
+		else if ((Page.find("Twój SMS został wysłany")>=0) || (Page.find("Wiadomość została pomyślnie wysłana")>=0))
 		{
 			kdebugm(KDEBUG_INFO, "SMS was sent succesfully\n");
 			emit finished(true);
