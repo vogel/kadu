@@ -22,6 +22,7 @@
 #include "contacts/contact.h"
 #include "contacts/contact-list.h"
 #include "contacts/contact-manager.h"
+#include "gui/widgets/contacts-list-widget-menu-manager.h"
 #include "protocols/protocol.h"
 #include "protocols/protocol_factory.h"
 #include "protocols/protocols_manager.h"
@@ -118,7 +119,7 @@ TabsManager::TabsManager(bool firstload) : QObject()
 		this, SLOT(onNewTab(QAction *, bool)),
 		"OpenChat", tr("Open in new tab"), false, QString::null, disableNewTab
 	);
-	UserBox::insertActionDescription(1, openInNewTabActionDescription);
+	ContactsListWidgetMenuManager::instance()->insertActionDescription(1, openInNewTabActionDescription);
 
 	attachToTabsActionDescription = new ActionDescription(
 		ActionDescription::TypeChat, "attachToTabsAction",
@@ -180,7 +181,7 @@ TabsManager::~TabsManager()
 {
 	kdebugf();
 
-	UserBox::removeActionDescription(openInNewTabActionDescription);
+	ContactsListWidgetMenuManager::instance()->removeActionDescription(openInNewTabActionDescription);
 	delete openInNewTabActionDescription;
 	openInNewTabActionDescription = 0;
 
