@@ -114,12 +114,12 @@ QString KaduParser::executeCmd(const QString &cmd)
 	return s;
 }
 
-QString KaduParser::parse(const QString &s, const Contact &contact, bool escape)
+QString KaduParser::parse(const QString &s, Account *account, const Contact &contact, bool escape)
 {
-	return parse(s, contact, 0, escape);
+	return parse(s, account, contact, 0, escape);
 }
 
-QString KaduParser::parse(const QString &s, const Contact &contact, const QObject * const object, bool escape)
+QString KaduParser::parse(const QString &s, Account *account, const Contact &contact, const QObject * const object, bool escape)
 {
 	kdebugmf(KDEBUG_DUMP, "%s escape=%i\n", qPrintable(s), escape);
 	int index = 0, i, len = s.length();
@@ -173,14 +173,14 @@ QString KaduParser::parse(const QString &s, const Contact &contact, const QObjec
 				break;
 			pe.type = ParseElem::PE_STRING;
 
-			ContactAccountData *data = contact.accountData(AccountManager::instance()->defaultAccount());
+			ContactAccountData *data = contact.accountData(account);
 
 			switch (s[i].toAscii())
 			{
 				case 's':
 					++i;
 					if (data)
-						pe.str = qApp->translate("UserStatus", QString::number(data->status().type())); // TODO: 0.6.6
+						pe.str = qApp->translate("UserStatus", Status::name(data->status().type()));
 					break;
 				case 't':
 					++i;

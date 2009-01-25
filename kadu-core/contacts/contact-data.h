@@ -22,6 +22,7 @@
 
 class Account;
 class ContactAccountData;
+class ContactModuleData;
 class XmlConfigFile;
 
 class ContactData : public QSharedData
@@ -29,6 +30,7 @@ class ContactData : public QSharedData
 	QUuid Uuid;
 	QMap<QString, QString> CustomData;
 	QMap<Account *, ContactAccountData *> AccountsData;
+	QMap<QString, ContactModuleData *> ModulesData;
 
 	QString Display;
 	QString FirstName;
@@ -57,6 +59,10 @@ public:
 
 	void addAccountData(ContactAccountData *accountData);
 	ContactAccountData * accountData(Account *account);
+
+	void addModuleData(const QString &key, ContactModuleData *moduleData);
+	void removeModuleData(const QString &key);
+	ContactModuleData * moduleData(const QString &key);
 
 	// properties
 	bool isBlocked(Account *account);

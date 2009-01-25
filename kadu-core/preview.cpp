@@ -25,10 +25,11 @@ Preview::Preview(QWidget *parent)
 	setFixedHeight(170);
 	setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored);
 
+	account = AccountManager::instance()->defaultAccount();
 	Status status(Status::Busy, qApp->translate("@default", "Description"));
 
-	//contact.addAccountData(ContactAccountData(AccountManager::instance()->defaultAccount(), "999999"));
-	//ContactAccountData *contact_data = contact.accountData(AccountManager::instance()->defaultAccount());
+	//contact.addAccountData(ContactAccountData(account, "999999"));
+	//ContactAccountData *contact_data = contact.accountData(account);
 	//contact_data->setStatus(status);
 	//contact_data->setAddressAndPort(QHostAddress(2130706433), 80);
 	//contact_data->setDNSName("Gadu", "host.server.net");
@@ -61,9 +62,9 @@ void Preview::syntaxChanged(const QString &content)
 
 	if (count)
 		for (int i = 0; i < count; i++)
-			text += KaduParser::parse(syntax, contacts[i], objectsToParse.at(i));
+			text += KaduParser::parse(syntax, account, contacts[i], objectsToParse.at(i));
 	else
-		text = KaduParser::parse(syntax, contact);
+		text = KaduParser::parse(syntax, account, contact);
 
 	emit needFixup(text);
 

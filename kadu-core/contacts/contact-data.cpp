@@ -96,6 +96,25 @@ ContactAccountData * ContactData::accountData(Account *account)
 	return AccountsData[account];
 }
 
+void ContactData::addModuleData(const QString &key, ContactModuleData *moduleData)
+{
+	ModulesData.insert(key, moduleData);
+}
+
+void ContactData::removeModuleData(const QString &key)
+{
+	if (ModulesData.contains(key))
+		ModulesData.remove(key);
+}
+
+ContactModuleData * ContactData::moduleData(const QString &key)
+{
+	if (!ModulesData.contains(key))
+		return 0;
+
+	return ModulesData[key];
+}
+
 QString ContactData::id(Account *account)
 {
 	if (AccountsData.contains(account))

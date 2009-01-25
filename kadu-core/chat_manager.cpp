@@ -815,7 +815,7 @@ ChatMessage *convertPendingToMessage(PendingMsgs::Element elem)
 
 	ContactList receivers;
 	receivers << kadu->myself();
-	ChatMessage *message = new ChatMessage(elem.contacts[0], receivers, elem.msg,
+	ChatMessage *message = new ChatMessage(AccountManager::instance()->defaultAccount(), elem.contacts[0], receivers, elem.msg,
 			TypeReceived, QDateTime::currentDateTime(), date);
 
 	return message;

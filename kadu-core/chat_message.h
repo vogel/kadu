@@ -51,6 +51,7 @@ class KADUAPI ChatMessage : public QObject
 	**/
 	QString convertCharacters(QString text, const QColor &bgcolor, EmoticonsStyle style);
 
+	Account *SenderAccount;
 	Contact Sender;
 	ContactList Receivers;
 
@@ -83,7 +84,7 @@ public:
 		\param date data otrzymania wiadomo�ci
 		\param sdate data wys�ania wiadomo�ci
 	**/
-	ChatMessage(const Contact &sender, const ContactList &receivers, const QString &unformattedMessage, ChatMessageType type,
+	ChatMessage(Account *account, const Contact &sender, const ContactList &receivers, const QString &unformattedMessage, ChatMessageType type,
 		QDateTime date, QDateTime sdate = QDateTime());
 
 	ChatMessage(const QString &rawContent, ChatMessageType type, QDateTime date,
@@ -91,6 +92,7 @@ public:
 
 	void replaceLoadingImages(UinType sender, uint32_t size, uint32_t crc32);
 
+	Account * account() { return SenderAccount; }
 	Contact sender() const { return Sender; }
 	ContactList receivers() const { return Receivers; }
 

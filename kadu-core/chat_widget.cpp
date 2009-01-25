@@ -345,7 +345,7 @@ void ChatWidget::refreshTitle()
 		if (config_file.readEntry("Look", "ConferenceContents").isEmpty())
 			foreach(const Contact contact, Contacts)
 			{
-				title.append(KaduParser::parse("%a", contact, false));
+				title.append(KaduParser::parse("%a", CurrentAccount, contact, false));
 
 				if (++i < uinsSize)
 					title.append(", ");
@@ -353,7 +353,7 @@ void ChatWidget::refreshTitle()
 		else
 			foreach(const Contact contact, Contacts)
 			{
-				title.append(KaduParser::parse(config_file.readEntry("Look","ConferenceContents"), contact, false));
+				title.append(KaduParser::parse(config_file.readEntry("Look","ConferenceContents"), CurrentAccount, contact, false));
 
 				if (++i < uinsSize)
 					title.append(", ");
@@ -366,12 +366,12 @@ void ChatWidget::refreshTitle()
 		if (config_file.readEntry("Look", "ChatContents").isEmpty())
 		{
 			if (Contacts[0].isAnonymous())
-				title = KaduParser::parse(tr("Chat with ")+"%a", Contacts[0], false);
+				title = KaduParser::parse(tr("Chat with ")+"%a", CurrentAccount, Contacts[0], false);
 			else
-				title = KaduParser::parse(tr("Chat with ")+"%a (%s[: %d])", Contacts[0], false);
+				title = KaduParser::parse(tr("Chat with ")+"%a (%s[: %d])", CurrentAccount, Contacts[0], false);
 		}
 		else
-			title = KaduParser::parse(config_file.readEntry("Look","ChatContents"), Contacts[0], false);
+			title = KaduParser::parse(config_file.readEntry("Look","ChatContents"), CurrentAccount, Contacts[0], false);
 
 		ContactAccountData *cad = Contacts[0].accountData(CurrentAccount);
 
@@ -487,7 +487,7 @@ void ChatWidget::newMessage(Account* account, ContactList senders, const QString
 	ContactList receivers;
 	receivers << kadu->myself();
 
-	ChatMessage *chatMessage = new ChatMessage(contact, receivers, message,
+	ChatMessage *chatMessage = new ChatMessage(account, contact, receivers, message,
 			TypeReceived, QDateTime::currentDateTime(), date);
 	body->appendMessage(chatMessage);
 
@@ -501,7 +501,7 @@ void ChatWidget::writeMyMessage()
 {
 	kdebugf();
 
-	ChatMessage *message = new ChatMessage(kadu->myself(), Contacts, myLastMessage.toHtml(),
+	ChatMessage *message = new ChatMessage(CurrentAccount, kadu->myself(), Contacts, myLastMessage.toHtml(),
 			TypeSent, QDateTime::currentDateTime());
 	body->appendMessage(message);
 

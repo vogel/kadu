@@ -132,6 +132,7 @@ set (kadu_MOC_SRCS
 	contacts/contact-data.h
 	contacts/contact-list.h
 	contacts/contact-manager.h
+	contacts/contact-module-data.h
 	contacts/contact-list-configuration-helper.h
 
 	contacts/model/abstract-contacts-model.h

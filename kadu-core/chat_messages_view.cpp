@@ -72,13 +72,16 @@ QString ChatMessagesView::formatMessage(ChatMessage *message, ChatMessage *after
 	QString format;
 	bool includeHeader;
 
+	Contact contact = message->sender();
+	Account *account = message->account();
+
 	if (message->type() == TypeSystem)
 	{
 		separatorSize = ParagraphSeparator;
 		format = ChatSyntaxWithoutHeader;
 
 		message->setSeparatorSize(separatorSize);
-		return KaduParser::parse(format, message->sender(), message, true);
+		return KaduParser::parse(format, account, contact, message, true);
 	}
 	else
 	{
@@ -103,8 +106,8 @@ QString ChatMessagesView::formatMessage(ChatMessage *message, ChatMessage *after
 
 		message->setShowServerTime(NoServerTime, NoServerTimeDiff);
 		message->setSeparatorSize(separatorSize);
-
-		return KaduParser::parse(format, message->sender(), message, true);
+		
+		return KaduParser::parse(format, account, contact, message, true);
 	}
 }
 
@@ -128,13 +131,15 @@ void ChatMessagesView::repaintMessages()
 	if (message != end)
 	{
 		(*message)->setSeparatorSize(0);
+		Contact contact = (*message)->sender();
+		Account *account = (*message)->account();
 
 		if ((*message)->type() == TypeSystem)
-			text += KaduParser::parse(ChatSyntaxWithoutHeader, (*message)->sender(), *message);
+			text += KaduParser::parse(ChatSyntaxWithoutHeader, account, contact, *message);
 		else
 		{
 			(*message)->setShowServerTime(NoServerTime, NoServerTimeDiff);
-			text += KaduParser::parse(ChatSyntaxWithHeader, (*message)->sender(), *message);
+			text += KaduParser::parse(ChatSyntaxWithHeader, account, contact, *message);
 		}
 
 		prevMessage = message;

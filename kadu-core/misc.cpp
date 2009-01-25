@@ -946,7 +946,7 @@ void ChooseDescription::okPressed()
 		defaultdescriptions.pop_back();
 
 	if (config_file.readBoolEntry("General", "ParseStatus", false))
-		description = KaduParser::parse(description, kadu->myself(), true);
+		description = KaduParser::parse(description, account, kadu->myself(), true);
 
 	Status.setDescription(description);
 	kadu->setStatus(Status);

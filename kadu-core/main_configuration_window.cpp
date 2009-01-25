@@ -209,11 +209,12 @@ void MainConfigurationWindow::prepareChatPreview(Preview *preview, bool append)
 {
 	kdebugf();
 
+	Account * account = AccountManager::instance()->defaultAccount();
 	Status status(Status::Busy, qApp->translate("@default", "Description"));
 
 	Contact example;
-	//example.addAccountData(ContactAccountData(AccountManager::instance()->defaultAccount(), "999999"));
-	//ContactAccountData *example_data = example.accountData(AccountManager::instance()->defaultAccount());
+	//example.addAccountData(ContactAccountData(account , "999999"));
+	//ContactAccountData *example_data = example.accountData(account);
 	//example_data->setStatus(status);
 	//example_data->setAddressAndPort(QHostAddress(2130706433), 80);
 	//example_data->setDNSName("Gadu", "host.server.net");
@@ -230,14 +231,14 @@ void MainConfigurationWindow::prepareChatPreview(Preview *preview, bool append)
 
 	ContactList receivers;
 	receivers.append(example);
-	ChatMessage *chatMessage = new ChatMessage(kadu->myself(), receivers, tr("Your message"), TypeSent,
+	ChatMessage *chatMessage = new ChatMessage(account, kadu->myself(), receivers, tr("Your message"), TypeSent,
 		QDateTime::currentDateTime(), QDateTime::currentDateTime());
 	chatMessage->setSeparatorSize(0);
 	preview->addObjectToParse(kadu->myself() , chatMessage);
 	if (append)
 		chatMessages.append(chatMessage);
 
-	chatMessage = new ChatMessage(example, kadu->myself(),
+	chatMessage = new ChatMessage(account, example, kadu->myself(),
 			tr("Message from Your friend"), TypeReceived,
 			QDateTime::currentDateTime(), QDateTime::currentDateTime());
 	chatMessage->setSeparatorSize(4);

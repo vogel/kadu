@@ -798,7 +798,7 @@ void Kadu::copyPersonalInfoActionActivated(QAction *sender, bool toggled)
 	QStringList infoList;
 	QString copyPersonalDataSyntax = config_file.readEntry("General", "CopyPersonalDataSyntax", tr("Contact: %a[ (%u)]\n[First name: %f\n][Last name: %r\n][Mobile: %m\n]"));
 	foreach (Contact contact, contacts)
-		infoList.append(KaduParser::parse(copyPersonalDataSyntax, contact, false));
+		infoList.append(KaduParser::parse(copyPersonalDataSyntax, contact.prefferedAccount(), contact, false));
 
 	QString info = infoList.join("\n");
 	if (info.isEmpty())
@@ -2073,7 +2073,7 @@ void Kadu::updateInformationPanel(Contact contact)
 			"	</head>"
 			"	<body>";
 		HtmlDocument doc;
-		doc.parseHtml(KaduParser::parse(InfoPanelSyntax, contact));
+		doc.parseHtml(KaduParser::parse(InfoPanelSyntax, contact.prefferedAccount(), contact));
 		doc.convertUrlsToHtml();
 		doc.convertMailToHtml();
 		if((EmoticonsStyle)config_file.readNumEntry("Chat", "EmoticonsStyle") != EMOTS_NONE && config_file.readBoolEntry("General", "ShowEmotPanel"))

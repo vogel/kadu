@@ -142,7 +142,7 @@ void Hint::updateText()
 			contact = notification->contacts()[0];
 
 		kdebug("syntax is: %s, text is: %s\n", syntax.ascii(), notification->text().ascii());
-		text = KaduParser::parse(syntax, contact.prefferedAccount() , contact, notification);
+		text = KaduParser::parse(syntax, contact.prefferedAccount(), contact, notification);
 	}
 
 	if (config_file.readBoolEntry("Hints", "ShowContentMessage"))

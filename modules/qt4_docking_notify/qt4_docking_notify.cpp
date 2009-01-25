@@ -95,7 +95,7 @@ QString Qt4Notify::parseText(const QString &text, Notification *notification, co
 
 	if (!text.isEmpty())
 	{
-		ret = KaduParser::parse(text, contact, notification);
+		ret = KaduParser::parse(text, contact.prefferedAccount() ,contact, notification);
 		ret = ret.replace("%&m", notification->text());
 		ret = ret.replace("%&t", notification->title());
 		ret = ret.replace("%&d", notification->details());

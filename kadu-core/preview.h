@@ -18,6 +18,7 @@ class Preview : public KaduTextBrowser
 {
 	Q_OBJECT
 
+	Account *account;
 	Contact contact;
 	QObjectList objectsToParse;
 	ContactList contacts;
