@@ -92,8 +92,7 @@ QString ContactsListWidgetDelegate::displayDescription(Contact contact) const
 QTextDocument * ContactsListWidgetDelegate::descriptionDocument(const QString &text, int width, QColor color) const
 {
 	QString description = text;
-	if (!ShowMultiLineDescription)
-		description.replace("\n", " ");
+	description.replace("\n", ShowMultiLineDescription ? "<br/>" : " " );
 
 	QTextDocument *doc = new QTextDocument();
 
