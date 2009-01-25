@@ -61,20 +61,6 @@ public slots:
 	void merge(const QList<UserListElement> &list);
 
 	/**
-		\fn void readFromConfig()
-		Wczytuje list� kontakt�w z drzewa xml z konfiguracj�
-		programu. Poprzednie kontakty s� usuwane.
-	**/
-	void readFromConfig();
-
-	/**
-		\fn void writeToConfig()
-		Dodaje list� kontakt�w do drzewa xml z konfiguracj�
-		programu. Poprzednie kontakty s� usuwane.
-	**/
-	void writeToConfig();
-
-	/**
 		\fn void setAllOffline(const QString &protocolName)
 		\param protocolName identyfikator protoko�u
 		Przestawia status wszystkich kontakt�w

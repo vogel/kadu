@@ -610,7 +610,8 @@ void UserInfo::updateUserlist()
 
 	emit updateClicked(this);
 
-	userlist->writeToConfig();
+// TODO: 0.6.6
+// 	userlist->writeToConfig();
 	xml_config_file->sync();
 
 	close(true);

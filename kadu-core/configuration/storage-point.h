@@ -7,29 +7,25 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef ACCOUNTS_AWARE_OBJECT
-#define ACCOUNTS_AWARE_OBJECT
+#ifndef STORAGE_POINT_H
+#define STORAGE_POINT_H
 
-#include <QtCore/QList>
+#include <QtXml/QDomElement>
 
-#include "aware-object.h"
+class XmlConfigFile;
 
-class Account;
-
-class KADUAPI AccountsAwareObject : public AwareObject<AccountsAwareObject>
+class StoragePoint
 {
-
-protected:
-	virtual void accountRegistered(Account *account) = 0;
-	virtual void accountUnregistered(Account *account) = 0;
+	XmlConfigFile *Storage;
+	QDomElement Point;
 
 public:
-	static void notifyAccountRegistered(Account *account);
-	static void notifyAccountUnregistered(Account *account);
+	StoragePoint(XmlConfigFile *storage, QDomElement point)
+		: Storage(storage), Point(point) {}
 
-	void triggerAllAccountsRegistered();
-	void triggerAllAccountsUnregistered();
+	XmlConfigFile * storage() { return Storage; }
+	QDomElement point() { return Point; }
 
 };
 
-#endif // ACCOUNTS_AWARE_OBJECT
+#endif // STORAGE_POINT_H

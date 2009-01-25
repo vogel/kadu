@@ -12,21 +12,13 @@
 
 #include <QtCore/QList>
 
-#include "exports.h"
+#include "aware-object.h"
 
-class KADUAPI ConfigurationAwareObject
+class KADUAPI ConfigurationAwareObject : public AwareObject<ConfigurationAwareObject>
 {
-	static QList<ConfigurationAwareObject *> objects;
-
-	static void registerObject(ConfigurationAwareObject *object);
-	static void unregisterObject(ConfigurationAwareObject *object);
 
 public:
 	static void notifyAll();
-
-	ConfigurationAwareObject();
-	virtual ~ConfigurationAwareObject();
-
 	virtual void configurationUpdated() = 0;
 
 };

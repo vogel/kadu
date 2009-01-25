@@ -52,10 +52,10 @@ void GaduImporter::importContacts()
 
 void GaduImporter::importGaduContact(Contact& contact)
 {
+	Account *account = AccountManager::instance()->defaultAccount();
 	QString id = contact.customData()["uin"];
 
-	Account *account = AccountManager::instance()->defaultAccount();
-	GaduContactAccountData *gcad = new GaduContactAccountData(account, id);
+	GaduContactAccountData *gcad = new GaduContactAccountData(contact, account, id);
 
 	gcad->setBlocked(QVariant(contact.customData()["blocking"]).toBool());
 	gcad->setOfflineTo(QVariant(contact.customData()["offline_to"]).toBool());
@@ -65,6 +65,8 @@ void GaduImporter::importGaduContact(Contact& contact)
 	contact.customData().remove("offline_to");
 
 	contact.addAccountData(gcad);
+
+	printf("contact imported\n");
 }
 
 void GaduImporter::contactAdded(Contact &contact)

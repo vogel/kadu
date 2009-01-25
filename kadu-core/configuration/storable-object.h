@@ -7,29 +7,24 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef ACCOUNTS_AWARE_OBJECT
-#define ACCOUNTS_AWARE_OBJECT
+#ifndef STORABLE_OBJECT_H
+#define STORABLE_OBJECT_H
 
-#include <QtCore/QList>
+class StoragePoint;
 
-#include "aware-object.h"
-
-class Account;
-
-class KADUAPI AccountsAwareObject : public AwareObject<AccountsAwareObject>
+class StorableObject
 {
+	StoragePoint *Storage;
 
 protected:
-	virtual void accountRegistered(Account *account) = 0;
-	virtual void accountUnregistered(Account *account) = 0;
+	virtual StoragePoint * createStoragePoint() const = 0;
 
 public:
-	static void notifyAccountRegistered(Account *account);
-	static void notifyAccountUnregistered(Account *account);
+	StorableObject() : Storage(0) {}
 
-	void triggerAllAccountsRegistered();
-	void triggerAllAccountsUnregistered();
+	StoragePoint * storage();
+	void setStorage(StoragePoint *storage) { Storage = storage; }
 
 };
 
-#endif // ACCOUNTS_AWARE_OBJECT
+#endif // STORABLE_OBJECT_H

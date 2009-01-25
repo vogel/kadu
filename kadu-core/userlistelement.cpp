@@ -532,8 +532,6 @@ UserListElement UserListElement::fromContact(Contact contact, Account *account)
 {
 	ContactAccountData *data = contact.accountData(account);
 
-	printf("UserListElement::fromContact: %p\n", data);
-
 	if (data)
 		return userlist->byID("Gadu", data->id());
 	else

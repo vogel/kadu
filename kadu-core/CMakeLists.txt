@@ -10,9 +10,12 @@ set (kadu_SRCS
 	contacts/contact.cpp
 	contacts/contact-account-data.cpp
 	contacts/contact-data.cpp
+	contacts/contact-kadu-data.cpp
 	contacts/contact-list.cpp
-	contacts/contact-manager.cpp
 	contacts/contact-list-configuration-helper.cpp
+	contacts/contact-manager.cpp
+	contacts/contact-module-data.cpp
+	contacts/contacts-aware-object.cpp
 
 	contacts/model/abstract-contacts-model.cpp
 	contacts/model/contacts-model.cpp
@@ -20,6 +23,7 @@ set (kadu_SRCS
 
 	configuration/account-data-manager.cpp
 	configuration/config-file-data-manager.cpp
+	configuration/storable-object.cpp
 
 	configuration/widgets/manage-accounts.cpp
 

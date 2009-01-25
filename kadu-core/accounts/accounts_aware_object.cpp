@@ -11,27 +11,7 @@
 
 #include "accounts_aware_object.h"
 
-QList<AccountsAwareObject *> AccountsAwareObject::Objects;
-
-void AccountsAwareObject::registerObject(AccountsAwareObject *object)
-{
-	Objects.append(object);
-}
-
-void AccountsAwareObject::unregisterObject(AccountsAwareObject *object)
-{
-	Objects.remove(object);
-}
-
-AccountsAwareObject::AccountsAwareObject()
-{
-	registerObject(this);
-}
-
-AccountsAwareObject::~AccountsAwareObject()
-{
-	unregisterObject(this);
-}
+KADU_AWARE_CLASS(AccountsAwareObject)
 
 void AccountsAwareObject::notifyAccountRegistered(Account *account)
 {

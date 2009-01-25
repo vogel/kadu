@@ -7,29 +7,29 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef ACCOUNTS_AWARE_OBJECT
-#define ACCOUNTS_AWARE_OBJECT
+#ifndef CONTACTS_AWARE_OBJECT
+#define CONTACTS_AWARE_OBJECT
 
 #include <QtCore/QList>
 
 #include "aware-object.h"
 
-class Account;
+class Contact;
 
-class KADUAPI AccountsAwareObject : public AwareObject<AccountsAwareObject>
+class KADUAPI ContactsAwareObject : public AwareObject<ContactsAwareObject>
 {
 
 protected:
-	virtual void accountRegistered(Account *account) = 0;
-	virtual void accountUnregistered(Account *account) = 0;
+	virtual void contactAdded(Contact contact) = 0;
+	virtual void contactRemoved(Contact contact) = 0;
 
 public:
-	static void notifyAccountRegistered(Account *account);
-	static void notifyAccountUnregistered(Account *account);
+	static void notifyContactAdded(Contact contact);
+	static void notifyContactRemoved(Contact contact);
 
-	void triggerAllAccountsRegistered();
-	void triggerAllAccountsUnregistered();
+	void triggerAllContactsAdded();
+	void triggerAllContactsRemoved();
 
 };
 
-#endif // ACCOUNTS_AWARE_OBJECT
+#endif // CONTACTS_AWARE_OBJECT

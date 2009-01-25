@@ -36,6 +36,8 @@ Account::Account(const QUuid &uuid, Protocol *protocol, AccountData *data)
 		: uuid;
 
 	setProtocol(protocol);
+
+	triggerAllContactsAdded();
 }
 
 Account::~Account()
@@ -55,6 +57,25 @@ void Account::setProtocol(Protocol *protocolHandler)
 
 	connect(ProtocolHandler, SIGNAL(contactStatusChanged(Account *, Contact, Status)),
 			this, SIGNAL(contactStatusChanged(Account *, Contact, Status)));
+
+	triggerAllContactsAdded();
+}
+
+void Account::contactAdded(Contact contact)
+{
+	printf("contactAdded!\n");
+
+	StoragePoint *cadStorage = contact.storagePointForAccountData(this);
+	if (!cadStorage)
+		return;
+
+	printf("cadStorage created!\n");
+	contact.addAccountData(ProtocolHandler->protocolFactory()->newContactAccountData(contact, this, cadStorage));
+	printf("contact data added!\n");
+}
+
+void Account::contactRemoved(Contact contact)
+{
 }
 
 bool Account::loadConfiguration(XmlConfigFile *configurationStorage, QDomElement parent)
@@ -114,7 +135,7 @@ Contact Account::createAnonymous(const QString& id)
 	Contact result(Contact::TypeAnonymous);
 
 	ProtocolFactory *protocolFactory = ProtocolHandler->protocolFactory();
-	ContactAccountData *contactAccountData = protocolFactory->newContactAccountData(this, id);
+	ContactAccountData *contactAccountData = protocolFactory->newContactAccountData(result, this, id);
 	if (!contactAccountData->isValid())
 	{
 		delete contactAccountData;

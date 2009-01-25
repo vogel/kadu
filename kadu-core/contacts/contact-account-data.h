@@ -13,16 +13,20 @@
 #include <QtNetwork/QHostAddress>
 #include <QtXml/QDomElement>
 
+#include "configuration/storable-object.h"
 #include "protocols/status.h"
+
+#include "contact.h"
 
 class Account;
 class XmlConfigFile;
 
-class ContactAccountData : public QObject
+class ContactAccountData : public QObject, public StorableObject
 {
 	Q_OBJECT
 
 	Account *ContactAccount;
+	Contact OwnerContact;
 	QString Id;
 
 	Status CurrentStatus;
@@ -36,13 +40,17 @@ class ContactAccountData : public QObject
 	bool Blocked;
 	bool OfflineTo;
 
+protected:
+	virtual StoragePoint * createStoragePoint() const;
+
 public:
-	ContactAccountData();
-	ContactAccountData(Account *account, const QString &id);
+	ContactAccountData(Contact contact);
+	ContactAccountData(Contact contact, Account *account, const QString &id);
+	ContactAccountData(Contact contact, Account *account, StoragePoint *sp);
 
 	virtual bool validateId() = 0;
-	virtual void loadConfiguration(XmlConfigFile *configurationStorage, QDomElement parent);
-	virtual void storeConfiguration(XmlConfigFile *configurationStorage, QDomElement parent);
+	virtual void loadConfiguration();
+	virtual void storeConfiguration();
 
 	Account * account() { return ContactAccount; }
 	QString id() { return Id; }

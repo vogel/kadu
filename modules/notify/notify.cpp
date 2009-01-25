@@ -256,7 +256,8 @@ void Notify::configurationWindowApplied()
 	for (int i = 0; i < count; i++)
 		userlist->byAltNick(allUsers->item(i)->text()).setNotify(false);
 
-	userlist->writeToConfig();
+// TODO: 0.6.6
+//	userlist->writeToConfig();
 
 	foreach(const QString &key, Notifiers.keys())
 	{

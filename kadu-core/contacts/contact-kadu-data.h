@@ -7,29 +7,21 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef ACCOUNTS_AWARE_OBJECT
-#define ACCOUNTS_AWARE_OBJECT
+#ifndef CONTACT_KADU_DATA_H
+#define CONTACT_KADU_DATA_H
 
-#include <QtCore/QList>
+#include "contact-module-data.h"
 
-#include "aware-object.h"
-
-class Account;
-
-class KADUAPI AccountsAwareObject : public AwareObject<AccountsAwareObject>
+class ContactKaduData : public ContactModuleData
 {
 
-protected:
-	virtual void accountRegistered(Account *account) = 0;
-	virtual void accountUnregistered(Account *account) = 0;
-
 public:
-	static void notifyAccountRegistered(Account *account);
-	static void notifyAccountUnregistered(Account *account);
+	static QString key() { return "kadu"; }
 
-	void triggerAllAccountsRegistered();
-	void triggerAllAccountsUnregistered();
+	ContactKaduData(StoragePoint *storage);
+
+	virtual void storeConfiguration() const;
 
 };
 
-#endif // ACCOUNTS_AWARE_OBJECT
+#endif // CONTACT_KADU_DATA_H

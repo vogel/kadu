@@ -16,6 +16,8 @@
 #include <QtCore/QUuid>
 #include <QtXml/QDomElement>
 
+#include "configuration/storable-object.h"
+
 #define Property(type, name, capitalized_name) \
 	type name() const { return capitalized_name; } \
 	void set##capitalized_name(const type &name) { capitalized_name = name; }
@@ -25,7 +27,7 @@ class ContactAccountData;
 class ContactModuleData;
 class XmlConfigFile;
 
-class ContactData : public QSharedData
+class ContactData : public QSharedData, private StorableObject
 {
 	QUuid Uuid;
 	QMap<QString, QString> CustomData;
@@ -43,13 +45,20 @@ class ContactData : public QSharedData
 	bool Blocked;
 	bool OfflineTo;
 
+protected:
+	virtual StoragePoint * createStoragePoint() const;
+
 public:
 	ContactData(QUuid uniqueId = QUuid());
+	ContactData(StoragePoint *contactStoragePoint);
 	~ContactData();
 
 	void importConfiguration(XmlConfigFile *configurationStorage, QDomElement parent);
-	void loadConfiguration(XmlConfigFile *configurationStorage, QDomElement parent);
-	void storeConfiguration(XmlConfigFile *configurationStorage, QDomElement parent);
+	void loadConfiguration();
+	void storeConfiguration();
+
+	StoragePoint * storagePointForAccountData(Account *account, bool create = false);
+	StoragePoint * storagePointForModuleData(const QString &module, bool create = false);
 
 	QUuid uuid() { return Uuid; }
 	QString id(Account *account);
@@ -59,10 +68,15 @@ public:
 
 	void addAccountData(ContactAccountData *accountData);
 	ContactAccountData * accountData(Account *account);
-
-	void addModuleData(const QString &key, ContactModuleData *moduleData);
-	void removeModuleData(const QString &key);
 	ContactModuleData * moduleData(const QString &key);
+
+template<class T>
+	T * moduleData()
+	{
+		if (!ModulesData.contains(T::key()))
+			ModulesData[T::key()] = new T(storagePointForModuleData(T::key()));
+		return dynamic_cast<T *>(ModulesData[T::key()]);
+	}
 
 	// properties
 	bool isBlocked(Account *account);

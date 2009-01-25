@@ -7,29 +7,26 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef ACCOUNTS_AWARE_OBJECT
-#define ACCOUNTS_AWARE_OBJECT
+#ifndef AWARE_OBJECT
+#define AWARE_OBJECT
 
 #include <QtCore/QList>
 
-#include "aware-object.h"
+#include "exports.h"
 
-class Account;
+#define KADU_AWARE_CLASS(class) template<> QList<class *> AwareObject<class>::Objects = QList<class *>();
 
-class KADUAPI AccountsAwareObject : public AwareObject<AccountsAwareObject>
+template<class T>
+class KADUAPI AwareObject
 {
 
 protected:
-	virtual void accountRegistered(Account *account) = 0;
-	virtual void accountUnregistered(Account *account) = 0;
+	static QList<T *> Objects;
 
 public:
-	static void notifyAccountRegistered(Account *account);
-	static void notifyAccountUnregistered(Account *account);
-
-	void triggerAllAccountsRegistered();
-	void triggerAllAccountsUnregistered();
+	AwareObject() { Objects.append(reinterpret_cast<T *>(this)); }
+	virtual ~AwareObject() { Objects.remove(reinterpret_cast<T *>(this)); }
 
 };
 
-#endif // ACCOUNTS_AWARE_OBJECT
+#endif // CONFIGURATION_AWARE_OBJECT

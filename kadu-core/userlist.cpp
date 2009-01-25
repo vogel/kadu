@@ -38,7 +38,6 @@ UserList::UserList()
 	: UserGroup(), nonProtoKeys(), protoKeys()
 {
 	initKeys();
-	readFromConfig();
 }
 
 UserList::~UserList()
@@ -141,121 +140,6 @@ void UserList::merge(const QList<UserListElement> &ulist)
 
 	emit modified();
 	kdebugf2();
-}
-
-void UserList::readFromConfig()
-{
-	kdebugf();
-
-	clear();
-	QDomElement contacts_elem = xml_config_file->findElement(
-		xml_config_file->rootElement(), "Contacts");
-	if (contacts_elem.isNull())
-	{
-		emit modified();
-		kdebugf2();
-		return;
-	}
-	QDomNodeList contact_list = contacts_elem.elementsByTagName("Contact");
-
-	for (unsigned int i = 0, cnt = contact_list.count(); i < cnt; ++i)
-	{
-		UserListElement e;
-		QDomElement contact_elem = contact_list.item(i).toElement();
-		e.setAltNick(contact_elem.attribute("altnick"));
-		e.setFirstName(contact_elem.attribute("first_name"));
-		e.setLastName(contact_elem.attribute("last_name"));
-		e.setNickName(contact_elem.attribute("nick_name"));
-		e.setMobile(contact_elem.attribute("mobile"));
-		e.setEmail(contact_elem.attribute("email"));
-		e.setHomePhone(contact_elem.attribute("home_phone"));
-		if (contact_elem.attribute("uin").toInt())
-		{
-			e.addProtocol("Gadu", QString::number(contact_elem.attribute("uin").toUInt()), true, i + 1 == cnt);
-// 			e.setProtocolData("Gadu", "Blocking", contact_elem.attribute("blocking") == "true");
-// 			e.setProtocolData("Gadu", "OfflineTo", contact_elem.attribute("offline_to") == "true");
-		}
-		e.setNotify(contact_elem.attribute("notify") == "true");
-		e.setData("Groups", QStringList::split(",", contact_elem.attribute("groups")));
-		e.setAliveSound((NotifyType)contact_elem.attribute("alive_sound_type").toInt(),
-			contact_elem.attribute("alive_sound_file"));
-		e.setMessageSound((NotifyType)contact_elem.attribute("message_sound_type").toInt(),
-			contact_elem.attribute("message_sound_file"));
-
-		foreach(const QString &it, nonProtoKeys.keys())
-			if (contact_elem.hasAttribute(it))
-				e.setData(nonProtoKeys[it], contact_elem.attribute(it), true);
-
-		foreach(const QString &it, protoKeys.keys())
-			if (e.usesProtocol(it))
-				foreach(const QString &it2, protoKeys[it])
-					if (contact_elem.hasAttribute(it2))
-						e.setProtocolData(it, protoKeys[it][it2], contact_elem.attribute(it2), true);
-
-		addUser(e, true, i + 1 == cnt);
-	}
-
-	gadu_protocol_init(false);
-
-	ContactManager::instance()->loadConfiguration(xml_config_file);
-
-	emit modified();
-	kdebugf2();
-}
-
-void UserList::writeToConfig()
-{
-	QDomElement root_elem = xml_config_file->rootElement();
-	QDomElement contacts_elem = xml_config_file->accessElement(root_elem, "Contacts");
-	xml_config_file->removeChildren(contacts_elem);
-
-	foreach(const UserListElement &user, *this)
-	{
-		if (user.isAnonymous())
-			continue;
-
-		QDomElement contact_elem = xml_config_file->createElement(contacts_elem, "Contact");
-		contact_elem.setAttribute("altnick", user.altNick());
-		contact_elem.setAttribute("first_name", user.firstName());
-		contact_elem.setAttribute("last_name", user.lastName());
-		contact_elem.setAttribute("nick_name", user.nickName());
-		contact_elem.setAttribute("mobile", user.mobile());
-		contact_elem.setAttribute("email", user.email());
-		contact_elem.setAttribute("home_phone", user.homePhone());
-		if (user.usesProtocol("Gadu"))
-		{
-			contact_elem.setAttribute("uin", user.ID("Gadu"));
-			contact_elem.setAttribute("blocking",
-				user.protocolData("Gadu", "Blocking").toBool() ? QString("true") : QString("false"));
-			contact_elem.setAttribute("offline_to",
-				user.protocolData("Gadu", "OfflineTo").toBool() ? QString("true") : QString("false"));
-		}
-		contact_elem.setAttribute("notify",
-			user.notify() ? QString("true") : QString("false"));
-		contact_elem.setAttribute("groups", user.data("Groups").toStringList().join(","));
-		NotifyType type;
-		contact_elem.setAttribute("alive_sound_file", user.aliveSound(type));
-		contact_elem.setAttribute("alive_sound_type", type);
-		contact_elem.setAttribute("message_sound_file", user.messageSound(type));
-		contact_elem.setAttribute("message_sound_type", type);
-
-		foreach(const QString &it, nonProtoKeys.keys())
-		{
-			const QString &val = user.data(nonProtoKeys[it]).toString();
-//			kdebugmf(KDEBUG_WARNING, "%s %s %s\n", qPrintable((*i).altNick()), qPrintable(it.key()), qPrintable(val));
-			if (!val.isEmpty())
-				contact_elem.setAttribute(it, val);
-		}
-
-		foreach(const QString &it, protoKeys.keys())
-			if (user.usesProtocol(it))
-				foreach(const QString &it2, protoKeys[it])
-				{
-					const QString &val = user.protocolData(it, it2).toString();
-					if (!val.isEmpty())
-						contact_elem.setAttribute(it2, val);
-				}
-	}
 }
 
 #include "../modules/gadu_protocol/gadu_status.h"

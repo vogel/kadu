@@ -7,29 +7,15 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef ACCOUNTS_AWARE_OBJECT
-#define ACCOUNTS_AWARE_OBJECT
+#include "contact-kadu-data.h"
 
-#include <QtCore/QList>
-
-#include "aware-object.h"
-
-class Account;
-
-class KADUAPI AccountsAwareObject : public AwareObject<AccountsAwareObject>
+ContactKaduData::ContactKaduData(StoragePoint *storage)
+	: ContactModuleData(storage)
 {
 
-protected:
-	virtual void accountRegistered(Account *account) = 0;
-	virtual void accountUnregistered(Account *account) = 0;
+}
 
-public:
-	static void notifyAccountRegistered(Account *account);
-	static void notifyAccountUnregistered(Account *account);
-
-	void triggerAllAccountsRegistered();
-	void triggerAllAccountsUnregistered();
-
-};
-
-#endif // ACCOUNTS_AWARE_OBJECT
+void ContactKaduData::storeConfiguration() const
+{
+	// do nothing
+}

@@ -55,6 +55,7 @@ private:
 
 public:
 	Contact();
+	Contact(StoragePoint *contactStoragePoint);
 	Contact(ContactType type);
 	Contact(const Contact &copy);
 	virtual ~Contact();
@@ -70,8 +71,11 @@ public:
 	int operator < (const Contact &compare) const;
 
 	void importConfiguration(XmlConfigFile *configurationStorage, QDomElement parent);
-	void loadConfiguration(XmlConfigFile *configurationStorage, QDomElement parent);
-	void storeConfiguration(XmlConfigFile *configurationStorage, QDomElement parent);
+	void loadConfiguration();
+	void storeConfiguration();
+
+	StoragePoint * storagePointForAccountData(Account *account, bool create = false) const;
+	StoragePoint * storagePointForModuleData(const QString &module, bool create = false) const;
 
 	QUuid uuid() const;
 	QMap<QString, QString> & customData();
@@ -80,6 +84,12 @@ public:
 
 	void addAccountData(ContactAccountData *accountData);
 	ContactAccountData * accountData(Account *account) const;
+
+template<class T>
+	T * moduleData() const
+	{
+		return isNull() ? 0 : Data->moduleData<T>();
+	}
 
 	QString id(Account *account) const;
 	// properties

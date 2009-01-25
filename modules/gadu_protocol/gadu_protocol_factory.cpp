@@ -26,9 +26,14 @@ AccountData * GaduProtocolFactory::newAccountData()
 	return new GaduAccountData();
 }
 
-ContactAccountData * GaduProtocolFactory::newContactAccountData(Account *account, const QString &id)
+ContactAccountData * GaduProtocolFactory::newContactAccountData(Contact contact, Account *account, const QString &id)
 {
-	return new GaduContactAccountData(account, id);
+	return new GaduContactAccountData(contact, account, id);
+}
+
+ContactAccountData * GaduProtocolFactory::newContactAccountData(Contact contact, Account *account, StoragePoint *sp)
+{
+	return new GaduContactAccountData(contact, account, sp);
 }
 
 GaduConfigurationDialog * GaduProtocolFactory::newConfigurationDialog(AccountData *accountData, QWidget *parent)

@@ -266,7 +266,8 @@ void UserlistImportExport::makeUserlist()
 	userlist->clear();
 	userlist->merge(importedUserlist);
 	IgnoredManager::clear();
-	userlist->writeToConfig();
+// TODO: 0.6.6
+// 	userlist->writeToConfig();
 	updateUserListCount();
 
 	kdebugf2();
@@ -275,8 +276,9 @@ void UserlistImportExport::makeUserlist()
 void UserlistImportExport::updateUserlist()
 {
 	kdebugf();
-	userlist->merge(importedUserlist);
-	userlist->writeToConfig();
+// TODO: 0.6.6
+// 	userlist->merge(importedUserlist);
+// 	userlist->writeToConfig();
 	updateUserListCount();
 	kdebugf2();
 }

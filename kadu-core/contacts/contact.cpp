@@ -18,6 +18,11 @@ Contact::Contact()
 {
 }
 
+Contact::Contact(StoragePoint *contactStoragePoint)
+	: Data(new ContactData(contactStoragePoint)), Type(Contact::TypeNormal)
+{
+}
+
 Contact::Contact(Contact::ContactType type)
 	: Type(type), Data(Contact::TypeNull != type ? new ContactData() : 0)
 {
@@ -64,14 +69,24 @@ void Contact::importConfiguration(XmlConfigFile *configurationStorage, QDomEleme
 	Data->importConfiguration(configurationStorage, parent);
 }
 
-void Contact::loadConfiguration(XmlConfigFile *configurationStorage, QDomElement parent)
+void Contact::loadConfiguration()
 {
-	Data->loadConfiguration(configurationStorage, parent);
+	Data->loadConfiguration();
 }
 
-void Contact::storeConfiguration(XmlConfigFile *configurationStorage, QDomElement parent)
+void Contact::storeConfiguration()
 {
-	Data->storeConfiguration(configurationStorage, parent);
+	Data->storeConfiguration();
+}
+
+StoragePoint * Contact::storagePointForAccountData(Account* account, bool create) const
+{
+	return Data->storagePointForAccountData(account, create);
+}
+
+StoragePoint * Contact::storagePointForModuleData(const QString& module, bool create) const
+{
+	return Data->storagePointForModuleData(module, create);
 }
 
 QUuid Contact::uuid() const

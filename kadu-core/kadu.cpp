@@ -387,6 +387,9 @@ Kadu::Kadu(QWidget *parent)
 	DoBlink(false), BlinkOn(false),Docked(false), dontHideOnClose(false)
 {
 	kdebugf();
+
+	ContactManager::instance()->loadConfiguration(xml_config_file);
+
 	kadu = this;
 	blinktimer = 0;
 
@@ -699,7 +702,7 @@ void Kadu::accountRegistered(Account *account)
 		this, SLOT(wentOffline(const QString &)));
 
 	ContactAccountData *contactAccountData = protocol->protocolFactory()->
-			newContactAccountData(account, account->data()->id());
+			newContactAccountData(Myself, account, account->data()->id());
 	Myself.addAccountData(contactAccountData);
 }
 
@@ -863,7 +866,8 @@ void Kadu::notifyAboutUserActionActivated(QAction *sender, bool toggled)
 		if (user.notify() == on)
 			user.setNotify(!on);
 	*/
-	userlist->writeToConfig();
+// TODO: 0.6.6
+// 	userlist->writeToConfig();
 
 	foreach(KaduAction *action, notifyAboutUserActionDescription->actions())
 	{
@@ -907,7 +911,8 @@ void Kadu::offlineToUserActionActivated(QAction *sender, bool toggled)
 			//TODO: 0.6.6
 			user.setProtocolData("Gadu", "OfflineTo", !on); // TODO: here boolean
 	*/
-	userlist->writeToConfig();
+// TODO: 0.6.6
+// 	userlist->writeToConfig();
 
 	foreach (KaduAction *action, offlineToUserActionDescription->actions())
 	{
@@ -941,7 +946,8 @@ void Kadu::hideDescriptionActionActivated(QAction *sender, bool toggled)
 		//TODO: 0.6.6
 		user.setData("HideDescription", on ? "true" : "false"); // TODO: here string, LOL
 	*/
-	userlist->writeToConfig();
+// TODO: 0.6.6
+// 	userlist->writeToConfig();
 
 	foreach(KaduAction *action, hideDescriptionActionDescription->actions())
 	{
@@ -1319,7 +1325,8 @@ void Kadu::removeUsers(ContactList contacts)
 		{
 			emit removingUsers(users);
 			userlist->removeUsers(users);
-			userlist->writeToConfig();
+// TODO: 0.6.6
+// 			userlist->writeToConfig();
 		}
 	}
 
@@ -1681,7 +1688,8 @@ bool Kadu::close(bool quit)
 		ChatManager::closeModule();
 		SearchDialog::closeModule();
 
-		userlist->writeToConfig();//writeToConfig must be before GroupsManager::closeModule, because GM::cM removes all groups from userlist
+// TODO: 0.6.6
+// 		userlist->writeToConfig();//writeToConfig must be before GroupsManager::closeModule, because GM::cM removes all groups from userlist
 		GroupsManager::closeModule();
 		xml_config_file->sync();
 		UserList::closeModule();
@@ -2089,7 +2097,6 @@ void Kadu::updateInformationPanel(Contact contact)
 
 void Kadu::currentChanged(Contact contact)
 {
-	printf("currentChanged!\n");
 	updateInformationPanel(contact);
 }
 

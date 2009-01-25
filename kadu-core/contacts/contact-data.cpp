@@ -10,7 +10,13 @@
 #include <QtXml/QDomNamedNodeMap>
 
 #include "accounts/account.h"
+
+#include "configuration/storage-point.h"
+
 #include "contacts/contact-account-data.h"
+#include "contacts/contact-manager.h"
+#include "contacts/contact-module-data.h"
+
 #include "xml_config_file.h"
 
 #include "contact-data.h"
@@ -20,8 +26,50 @@ ContactData::ContactData(QUuid uuid)
 {
 }
 
+ContactData::ContactData(StoragePoint *contactStoragePoint)
+{
+	setStorage(contactStoragePoint);
+	loadConfiguration();
+}
+
 ContactData::~ContactData()
 {
+}
+
+StoragePoint * ContactData::createStoragePoint() const
+{
+	StoragePoint *parent = ContactManager::instance()->storage();
+	if (!parent)
+		return 0;
+
+	QDomElement contactNode = parent->storage()->getUuidNode(parent->point(), "Contact", Uuid.toString());
+	return new StoragePoint(parent->storage(), contactNode);
+}
+
+StoragePoint * ContactData::storagePointForAccountData(Account *account, bool create)
+{
+	StoragePoint *parent = storage();
+	if (!parent || !parent->storage())
+		return 0;
+
+	QDomElement accountDataNode = parent->storage()->getUuidNode(parent->point(), "ContactAccountData",
+			account->uuid().toString(), create ? XmlConfigFile::ModeGet : XmlConfigFile::ModeFind);
+	return accountDataNode.isNull()
+		? 0
+		: new StoragePoint(parent->storage(), accountDataNode);
+}
+
+StoragePoint * ContactData::storagePointForModuleData(const QString &module, bool create)
+{
+	StoragePoint *parent = storage();
+	if (!parent || !parent->storage())
+		return 0;
+
+	QDomElement moduleDataNode = parent->storage()->getNamedNode(parent->point(), "ContactModuleData",
+			module, create ? XmlConfigFile::ModeGet : XmlConfigFile::ModeFind);
+	return moduleDataNode.isNull()
+		? 0
+		: new StoragePoint(parent->storage(), moduleDataNode);
 }
 
 #undef Property
@@ -49,23 +97,61 @@ void ContactData::importConfiguration(XmlConfigFile *configurationStorage, QDomE
 	Property(Email, email)
 }
 
-void ContactData::loadConfiguration(XmlConfigFile *configurationStorage, QDomElement parent)
+#undef Property
+#define Property(name)\
+	set##name(configurationStorage->getTextNode(parent, #name));
+
+void ContactData::loadConfiguration()
 {
+	StoragePoint *sp = storage();
+	if (!sp)
+		return;
+
+	XmlConfigFile *configurationStorage = sp->storage();
+	QDomElement parent = sp->point();
+
+	QDomElement customDataValues = configurationStorage->getNode(parent, "CustomDataValues", XmlConfigFile::ModeFind);
+	QDomNodeList customDataValuesList = customDataValues.elementsByTagName("CustomDataValue");
+
+	int count = customDataValuesList.count();
+	for (int i = 0; i < count; i++)
+	{
+		QDomNode customDataNode = customDataValuesList.at(i);
+		QDomElement customDataElement = customDataNode.toElement();
+		if (customDataElement.isNull())
+			continue;
+
+		QString name = customDataElement.attribute("name");
+		if (!name.isEmpty())
+			CustomData[name] = customDataElement.text();
+	}
+
+	Property(Display)
+	Property(FirstName)
+	Property(LastName)
+	Property(NickName)
+	Property(HomePhone)
+	Property(Mobile)
+	Property(Email)
 }
 
 #undef Property
 #define Property(name) \
-	configurationStorage->createTextNode(customDataValues, #name, name);
+	configurationStorage->createTextNode(parent, #name, name);
 
-void ContactData::storeConfiguration(XmlConfigFile *configurationStorage, QDomElement parent)
+void ContactData::storeConfiguration()
 {
-	QDomElement customDataValues = configurationStorage->getNode(parent,
-			"CustomDataValues", XmlConfigFile::ModeCreate);
+	StoragePoint *sp = storage();
+	if (!sp)
+		return;
+
+	XmlConfigFile *configurationStorage = sp->storage();
+	QDomElement parent = sp->point();
+
+	QDomElement customDataValues = configurationStorage->getNode(parent, "CustomDataValues");
 
 	foreach (QString key, CustomData.keys())
-	{
 		configurationStorage->createNamedTextNode(customDataValues, "CustomDataValue", key, CustomData[key]);
-	}
 
 	Property(Display)
 	Property(FirstName)
@@ -79,8 +165,11 @@ void ContactData::storeConfiguration(XmlConfigFile *configurationStorage, QDomEl
 	{
 		QDomElement contactAccountData = configurationStorage->getUuidNode(parent,
 			"ContactAccountData", accountData->account()->uuid(), XmlConfigFile::ModeCreate);
-		accountData->storeConfiguration(configurationStorage, contactAccountData);
+		accountData->storeConfiguration();
 	}
+
+	foreach (ContactModuleData *moduleData, ModulesData.values())
+		moduleData->storeConfiguration();
 }
 
 void ContactData::addAccountData(ContactAccountData *accountData)
@@ -96,23 +185,9 @@ ContactAccountData * ContactData::accountData(Account *account)
 	return AccountsData[account];
 }
 
-void ContactData::addModuleData(const QString &key, ContactModuleData *moduleData)
-{
-	ModulesData.insert(key, moduleData);
-}
-
-void ContactData::removeModuleData(const QString &key)
-{
-	if (ModulesData.contains(key))
-		ModulesData.remove(key);
-}
-
 ContactModuleData * ContactData::moduleData(const QString &key)
 {
-	if (!ModulesData.contains(key))
-		return 0;
-
-	return ModulesData[key];
+	return 0;
 }
 
 QString ContactData::id(Account *account)

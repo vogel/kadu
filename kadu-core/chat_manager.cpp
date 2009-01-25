@@ -183,12 +183,6 @@ ChatManager::ChatManager(QObject *parent)
 	ContactsListWidgetMenuManager::instance()->addActionDescription(chatActionDescription);
 	ContactsListWidgetMenuManager::instance()->addSeparator();
 
-	if (config_file.readBoolEntry("Chat", "RememberPosition"))
-	{
-		userlist->addPerContactNonProtocolConfigEntry("chat_geometry", "ChatGeometry");
-		userlist->addPerContactNonProtocolConfigEntry("chat_vertical_sizes", "VerticalSizes");
-	}
-
 	connect(&refreshTitlesTimer, SIGNAL(timeout()), this, SLOT(refreshTitles()));
 	connect(userlist, SIGNAL(usersStatusChanged(QString)), this, SLOT(refreshTitlesLater()));
 
@@ -615,7 +609,8 @@ void ChatManager::blockUserActionActivated(QAction *sender, bool toggled)
 			}
 		}
 
-		userlist->writeToConfig();
+// TODO: 0.6.5
+// 		userlist->writeToConfig();
 
 		foreach (KaduAction *action, blockUserActionDescription->actions())
 		{
@@ -959,17 +954,6 @@ void ChatManager::autoSendActionCheck()
 void ChatManager::configurationUpdated()
 {
 	kdebugf();
-
-	if (config_file.readBoolEntry("Chat", "RememberPosition"))
-	{
-		userlist->addPerContactNonProtocolConfigEntry("chat_geometry", "ChatGeometry");
-		userlist->addPerContactNonProtocolConfigEntry("chat_vertical_sizes", "VerticalSizes");
-	}
-	else
-	{
-		userlist->removePerContactNonProtocolConfigEntry("chat_geometry");
-		userlist->removePerContactNonProtocolConfigEntry("chat_vertical_sizes");
-	}
 
 	autoSendActionCheck();
 	insertEmoticonActionEnabled();

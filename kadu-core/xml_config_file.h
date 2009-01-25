@@ -107,10 +107,10 @@ public:
 
 	QDomElement getNode(const QString &nodeTagName, GetNodeMode getMode = ModeGet);
 	QDomElement getNamedNode(const QString &nodeTagName, const QString &nodeName, GetNodeMode getMode = ModeGet);
-	QDomElement getUuidNode(const QString &nodeTagName, const QString &uuidName, GetNodeMode getMode = ModeGet);
+	QDomElement getUuidNode(const QString &nodeTagName, const QString &nodeUuid, GetNodeMode getMode = ModeGet);
 	QDomElement getNode(QDomElement parentNode, const QString &nodeTagName, GetNodeMode getMode = ModeGet);
 	QDomElement getNamedNode(QDomElement parentNode, const QString &nodeTagName, const QString &nodeName, GetNodeMode getMode = ModeGet);
-	QDomElement getUuidNode(QDomElement parentNode, const QString &uuidTagName, const QString &nodeName, GetNodeMode getMode = ModeGet);
+	QDomElement getUuidNode(QDomElement parentNode, const QString &uuidTagName, const QString &nodeUuid, GetNodeMode getMode = ModeGet);
 
 	QDomNodeList getNodes(QDomElement parent, const QString &nodeTagName);
 

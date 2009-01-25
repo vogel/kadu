@@ -15,6 +15,7 @@
 #include <QtXml/QDomElement>
 
 #include "contacts/contact.h"
+#include "contacts/contacts-aware-object.h"
 #include "protocols/status.h"
 
 class QPixmap;
@@ -24,7 +25,7 @@ class Protocol;
 class UserStatus;
 class XmlConfigFile;
 
-class Account : public QObject
+class Account : public QObject, public ContactsAwareObject
 {
 	Q_OBJECT
 
@@ -33,6 +34,10 @@ class Account : public QObject
 	AccountData *Data;
 
 	void setProtocol(Protocol *protocolHandler);
+
+protected:
+	virtual void contactAdded(Contact contact);
+	virtual void contactRemoved(Contact contact);
 
 public:
 	Account(const QUuid &uuid);

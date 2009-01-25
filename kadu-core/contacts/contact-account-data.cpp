@@ -10,25 +10,50 @@
 #include "dnshandler.h"
 #include "xml_config_file.h"
 
+#include "configuration/storage-point.h"
+
 #include "contact-account-data.h"
 
-ContactAccountData::ContactAccountData()
-	: ContactAccount(0), Id(QString::null)
+ContactAccountData::ContactAccountData(Contact contact)
+	: ContactAccount(0), OwnerContact(contact), Id(QString::null)
 {
 }
 
-ContactAccountData::ContactAccountData(Account *account, const QString &id)
-	: ContactAccount(account), Id(id)
+ContactAccountData::ContactAccountData(Contact contact, Account *account, const QString &id)
+	: ContactAccount(account), OwnerContact(contact), Id(id)
 {
 }
 
-void ContactAccountData::loadConfiguration(XmlConfigFile *configurationStorage, QDomElement parent)
+ContactAccountData::ContactAccountData(Contact contact, Account *account, StoragePoint *sp)
+	: ContactAccount(account), OwnerContact(contact)
 {
+	setStorage(sp);
+	loadConfiguration();
 }
 
-void ContactAccountData::storeConfiguration(XmlConfigFile *configurationStorage, QDomElement parent)
+StoragePoint * ContactAccountData::createStoragePoint() const
 {
-	configurationStorage->createTextNode(parent, "Id", Id);
+	return ContactAccount
+		? OwnerContact.storagePointForAccountData(ContactAccount, true)
+		: 0;
+}
+
+void ContactAccountData::loadConfiguration()
+{
+	StoragePoint *sp = storage();
+	if (!sp || !sp->storage())
+		return;
+
+	Id = sp->storage()->getTextNode(sp->point(), "Id");
+}
+
+void ContactAccountData::storeConfiguration()
+{
+	StoragePoint *sp = storage();
+	if (!sp || !sp->storage())
+		return;
+
+	sp->storage()->createTextNode(sp->point(), "Id", Id);
 }
 
 bool ContactAccountData::isValid()

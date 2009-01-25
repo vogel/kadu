@@ -13,6 +13,8 @@
 #include <QtGui/QDesktopWidget>
 #include <QtGui/QVBoxLayout>
 
+#include "contacts/contact-kadu-data.h"
+
 #include "chat_manager.h"
 #include "chat_window.h"
 #include "config_file.h"
@@ -90,6 +92,14 @@ void ChatWindow::kaduRestoreGeometry()
 		return;
 
 	QRect geom = stringToRect(chat_manager->chatWidgetProperty(currentChatWidget->contacts(), "Geometry").toString());
+
+	if (contacts.count() == 1)
+	{
+		Contact contact = contacts[0];
+		ContactKaduData *ckd = contact.moduleData<ContactKaduData>();
+// 		if (ckd)
+// 			geom = ckd->chatGeometry();
+	}
 
 	if (geom.isEmpty() && contacts.count() == 1)
 		geom = stringToRect(ules[0].data("ChatGeometry").toString());

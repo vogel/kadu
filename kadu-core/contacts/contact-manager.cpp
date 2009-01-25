@@ -9,6 +9,8 @@
 
 #include "accounts/account.h"
 
+#include "configuration/storage-point.h"
+
 #include "contact.h"
 #include "contact-list.h"
 #include "xml_config_file.h"
@@ -23,6 +25,12 @@ ContactManager *  ContactManager::instance()
 		Instance = new ContactManager();
 
 	return Instance;
+}
+
+StoragePoint * ContactManager::createStoragePoint() const
+{
+	QDomElement contactsNewNode = xml_config_file->getNode("ContactsNew");
+	return new StoragePoint(xml_config_file, contactsNewNode);
 }
 
 void ContactManager::importConfiguration(XmlConfigFile *configurationStorage)
@@ -48,26 +56,36 @@ void ContactManager::importConfiguration(XmlConfigFile *configurationStorage)
 
 void ContactManager::loadConfiguration(XmlConfigFile *configurationStorage)
 {
-	// QDomElement contactsNewNode = configurationStorage->getNode("ContactsNew", XmlConfigFile::ModeFind);
-	// if (contactsNewNode.isNull())
-	// {
+	QDomElement contactsNewNode = configurationStorage->getNode("ContactsNew", XmlConfigFile::ModeFind);
+	if (contactsNewNode.isNull())
+	{
 		importConfiguration(configurationStorage);
 		return;
-	// }
+	}
+
+	QDomNodeList contactsNodes = contactsNewNode.elementsByTagName("Contact");
+
+	int count = contactsNodes.count();
+	for (int i = 0; i < count; i++)
+	{
+		QDomNode contactNode = contactsNodes.at(i);
+		QDomElement contactElement = contactNode.toElement();
+		if (contactElement.isNull())
+			continue;
+
+		StoragePoint *contactStoragePoint = new StoragePoint(configurationStorage, contactElement);
+		addContact(Contact(contactStoragePoint));
+	}
 }
 
 void ContactManager::storeConfiguration(XmlConfigFile *configurationStorage)
 {
-	QDomElement contactsNewNode = configurationStorage->getNode("ContactsNew", XmlConfigFile::ModeCreate);
-
 	foreach (Contact contact, Contacts)
 	{
 		if (contact.isNull() || contact.isAnonymous())
 			continue;
 
-		QDomElement contactNode = configurationStorage->getUuidNode(contactsNewNode, "Contact", 
-				contact.uuid(), XmlConfigFile::ModeCreate);
-		contact.storeConfiguration(configurationStorage, contactNode);
+		contact.storeConfiguration();
 	}
 }
 

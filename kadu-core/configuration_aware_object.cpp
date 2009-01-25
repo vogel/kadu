@@ -11,31 +11,10 @@
 
 #include "configuration_aware_object.h"
 
-QList<ConfigurationAwareObject *> ConfigurationAwareObject::objects;
-
-void ConfigurationAwareObject::registerObject(ConfigurationAwareObject *object)
-{
-	objects.append(object);
-}
-
-void ConfigurationAwareObject::unregisterObject(ConfigurationAwareObject *object)
-{
-	objects.remove(object);
-}
+KADU_AWARE_CLASS(ConfigurationAwareObject)
 
 void ConfigurationAwareObject::notifyAll()
 {
-	foreach (ConfigurationAwareObject *object, objects)
+	foreach (ConfigurationAwareObject *object, Objects)
 		object->configurationUpdated();
 }
-
-ConfigurationAwareObject::ConfigurationAwareObject()
-{
-	registerObject(this);
-}
-
-ConfigurationAwareObject::~ConfigurationAwareObject()
-{
-	unregisterObject(this);
-}
-

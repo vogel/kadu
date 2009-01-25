@@ -14,14 +14,18 @@
 #include <QtXml/QDomElement>
 
 class Account;
+class StoragePoint;
 class XmlConfigFile;
 
 class ContactModuleData
 {
+	StoragePoint *Storage;
 
 public:
-	virtual void loadConfiguration(XmlConfigFile *configurationStorage, QDomElement parent) = 0;
-	virtual void storeConfiguration(XmlConfigFile *configurationStorage, QDomElement parent) = 0;
+	ContactModuleData(StoragePoint *storage);
+	virtual ~ContactModuleData();
+
+	virtual void storeConfiguration() const = 0;
 
 };
 

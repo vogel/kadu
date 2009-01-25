@@ -14,13 +14,15 @@
 #include <QtCore/QObject>
 #include <QtCore/QUuid>
 
+#include "configuration/storable-object.h"
+
 #include "contact.h"
 #include "contact-list.h"
 
 class Account;
 class XmlConfigFile;
 
-class ContactManager : public QObject
+class ContactManager : public QObject, public StorableObject
 {
 	Q_OBJECT
 
@@ -32,6 +34,9 @@ class ContactManager : public QObject
 	ContactManager(const ContactManager &) {}
 
 	void importConfiguration(XmlConfigFile *configurationStorage);
+
+protected:
+	virtual StoragePoint * createStoragePoint() const;
 
 public:
 	static ContactManager * instance();

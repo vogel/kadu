@@ -95,7 +95,8 @@ void KaduTabBar::dropEvent(QDropEvent *e)
 
 	currentGroup = QString::null;
 
-	userlist->writeToConfig();
+// TODO: 0.6.6
+// 	userlist->writeToConfig();
 
 	QApplication::restoreOverrideCursor();
 
