@@ -586,27 +586,31 @@ void GaduProtocol::protocolUserDataChanged(QString protocolName, UserListElement
 	{
 		if (currentValue.toBool() && !oldValue.toBool())
 		{
-			gg_remove_notify_ex(Sess, contactUin, GG_USER_NORMAL);
 			gg_add_notify_ex(Sess, contactUin, GG_USER_OFFLINE);
+			gg_remove_notify_ex(Sess, contactUin, GG_USER_NORMAL);
+			gg_remove_notify_ex(Sess, contactUin, GG_USER_BLOCKED);
 		}
 		else if (!currentValue.toBool() && oldValue.toBool())
 		{
-			gg_add_notify_ex(Sess, contactUin, GG_USER_OFFLINE);
 			gg_add_notify_ex(Sess, contactUin, GG_USER_NORMAL);
+			gg_remove_notify_ex(Sess, contactUin, GG_USER_OFFLINE);
+			gg_remove_notify_ex(Sess, contactUin, GG_USER_BLOCKED);
 		}
 	}
 	else if (name == "Blocking")
 	{
 		if (currentValue.toBool() && !oldValue.toBool())
 		{
-			gg_remove_notify_ex(Sess, contactUin, GG_USER_NORMAL);
 			gg_add_notify_ex(Sess, contactUin, GG_USER_BLOCKED);
+			gg_remove_notify_ex(Sess, contactUin, GG_USER_NORMAL);
+			gg_remove_notify_ex(Sess, contactUin, GG_USER_OFFLINE);
 			elem.setStatus(protocolName, GaduStatus());
 		}
 		else if (!currentValue.toBool() && oldValue.toBool())
 		{
-			gg_remove_notify_ex(Sess, contactUin, GG_USER_BLOCKED);
 			gg_add_notify_ex(Sess, contactUin, GG_USER_NORMAL);
+			gg_remove_notify_ex(Sess, contactUin, GG_USER_OFFLINE);
+			gg_remove_notify_ex(Sess, contactUin, GG_USER_BLOCKED);
 		}
 	}
 

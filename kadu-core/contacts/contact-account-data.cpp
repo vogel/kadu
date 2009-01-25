@@ -15,17 +15,17 @@
 #include "contact-account-data.h"
 
 ContactAccountData::ContactAccountData(Contact contact)
-	: ContactAccount(0), OwnerContact(contact), Id(QString::null)
+	: ContactAccount(0), OwnerContact(contact), Id(QString::null), Blocked(false), OfflineTo(false)
 {
 }
 
 ContactAccountData::ContactAccountData(Contact contact, Account *account, const QString &id)
-	: ContactAccount(account), OwnerContact(contact), Id(id)
+	: ContactAccount(account), OwnerContact(contact), Id(id), Blocked(false), OfflineTo(false)
 {
 }
 
 ContactAccountData::ContactAccountData(Contact contact, Account *account, StoragePoint *sp)
-	: ContactAccount(account), OwnerContact(contact)
+	: ContactAccount(account), OwnerContact(contact), Blocked(false), OfflineTo(false)
 {
 	setStorage(sp);
 	loadConfiguration();

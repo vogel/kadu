@@ -22,11 +22,12 @@
 #include "contact-data.h"
 
 ContactData::ContactData(QUuid uuid)
-	: Uuid(uuid.isNull() ? QUuid::createUuid() : uuid)
+	: Uuid(uuid.isNull() ? QUuid::createUuid() : uuid), Blocked(false), OfflineTo(false)
 {
 }
 
 ContactData::ContactData(StoragePoint *contactStoragePoint)
+	: Blocked(false), OfflineTo(false)
 {
 	setStorage(contactStoragePoint);
 	loadConfiguration();
