@@ -40,7 +40,7 @@ Hint::Hint(QWidget *parent, Notification *notification)
 	else
 		startSecs = secs = config_file.readNumEntry("Hints", "Event_" + notification->type() + "_timeout", 10);
 
-	createLabels(icons_manager->loadPixmap(notification->icon()));
+	createLabels(notification->icon());
 	updateText();
 
 	const QList<Notification::Callback> callbacks = notification->getCallbacks();
@@ -137,12 +137,12 @@ void Hint::updateText()
 		text = notification->text();
 	else
 	{
-		UserListElement ule;
-		if (notification->userListElements().count())
-			ule = notification->userListElements()[0];
+		Contact contact;
+		if (notification->contacts().count())
+			contact = notification->contacts()[0];
 
 		kdebug("syntax is: %s, text is: %s\n", syntax.ascii(), notification->text().ascii());
-		text = KaduParser::parse(syntax, ule, notification);
+		text = KaduParser::parse(syntax, contact.prefferedAccount() , contact, notification);
 	}
 
 	if (config_file.readBoolEntry("Hints", "ShowContentMessage"))
@@ -216,14 +216,14 @@ void Hint::addDetail(const QString &detail)
 	updateText();
 }
 
-bool Hint::hasUsers() const
+bool Hint::hasContacts() const
 {
-	return notification->userListElements().count() != 0;
+	return notification->contacts().count() != 0;
 }
 
-const UserListElements & Hint::getUsers() const
+const ContactList & Hint::getContacts() const
 {
-	return notification->userListElements();
+	return notification->contacts();
 }
 
 void Hint::mouseReleaseEvent(QMouseEvent *event)

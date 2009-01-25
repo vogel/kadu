@@ -20,13 +20,12 @@
 #include "debug.h"
 #include "hint_manager.h"
 #include "hints_configuration_widget.h"
+#include "gui/widgets/tool-tip-class-manager.h"
 #include "icons_manager.h"
 #include "kadu.h"
 #include "kadu_parser.h"
 #include "misc.h"
-#include "userbox.h"
 #include "userlist.h"
-
 #include "../notify/notify.h"
 
 /**
@@ -35,7 +34,7 @@
  */
 #define FRAME_WIDTH 1
 
-HintManager::HintManager(QWidget *parent, const char *name)	: Notifier(parent, name), ToolTipClass(),
+HintManager::HintManager(QWidget *parent, const char *name)	: Notifier(parent, name), AbstractToolTip(),
 	hint_timer(new QTimer(this, "hint_timer")),
 	hints(), tipFrame(0)
 {
@@ -62,7 +61,7 @@ HintManager::HintManager(QWidget *parent, const char *name)	: Notifier(parent, n
 	connect(this, SIGNAL(searchingForTrayPosition(QPoint &)), kadu, SIGNAL(searchingForTrayPosition(QPoint &)));
 
 	notification_manager->registerNotifier(QT_TRANSLATE_NOOP("@default", "Hints"), this);
-	tool_tip_class_manager->registerToolTipClass(QT_TRANSLATE_NOOP("@default", "Hints"), this);
+	ToolTipClassManager::instance()->registerToolTipClass(QT_TRANSLATE_NOOP("@default", "Hints"), this);
 
 	createDefaultConfiguration();
 
@@ -73,7 +72,7 @@ HintManager::~HintManager()
 {
 	kdebugf();
 
-	tool_tip_class_manager->unregisterToolTipClass("Hints");
+	ToolTipClassManager::instance()->unregisterToolTipClass("Hints");
 	notification_manager->unregisterNotifier("Hints");
 
 	disconnect(this, SIGNAL(searchingForTrayPosition(QPoint &)), kadu, SIGNAL(searchingForTrayPosition(QPoint &)));
@@ -289,8 +288,8 @@ void HintManager::processButtonPress(const QString &buttonName, Hint *hint)
 			break;
 
 		case 2:
-			if (hint->hasUsers() && config_file.readBoolEntry("Hints", "DeletePendingMsgWhenHintDeleted"))
-				chat_manager->deletePendingMsgs(hint->getUsers());
+			if (hint->hasContacts() && config_file.readBoolEntry("Hints", "DeletePendingMsgWhenHintDeleted"))
+				chat_manager->deletePendingMsgs(hint->getContacts());
 
 			hint->discardNotification();
 			deleteHintAndUpdate(hint);
@@ -324,16 +323,16 @@ void HintManager::openChat(Hint *hint)
 {
 	kdebugf();
 
-	if (!hint->hasUsers())
+	if (!hint->hasContacts())
 		return;
 
 	if (!config_file.readBoolEntry("Hints", "OpenChatOnEveryNotification"))
 		if ((hint->getNotification()->type() != "NewChat") && (hint->getNotification()->type() != "NewMessage"))
 			return;
 
-	const UserListElements & senders = hint->getUsers();
-	if (!senders.isEmpty())
-		chat_manager->openPendingMsgs(senders, true);
+	const ContactList & contacts = hint->getContacts();
+	if (!contacts.isEmpty())
+		chat_manager->openPendingMsgs(contacts, true);
 	deleteHintAndUpdate(hint);
 
 	kdebugf2();
@@ -341,8 +340,8 @@ void HintManager::openChat(Hint *hint)
 
 void HintManager::chatWidgetActivated(ChatWidget *chat)
 {
-	QPair<UserListElements, QString> newChat = qMakePair(chat->users()->toUserListElements(), QString("NewChat"));
-	QPair<UserListElements, QString> newMessage = qMakePair(chat->users()->toUserListElements(), QString("NewMessage"));
+	QPair<ContactList *, QString> newChat = qMakePair(& chat->contacts(), QString("NewChat"));
+	QPair<ContactList *, QString> newMessage = qMakePair(& chat->contacts(), QString("NewMessage"));
 
 	if (linkedHints.count(newChat))
 	{
@@ -358,7 +357,7 @@ void HintManager::chatWidgetActivated(ChatWidget *chat)
 
 	foreach(Hint *h, hints)
 	{
-		if (h->getUsers().equals(chat->users()) && !h->requireManualClosing())
+		if (h->getContacts() == (chat->contacts()) && !h->requireManualClosing())
 			deleteHint(h);
 	}
 
@@ -445,11 +444,11 @@ void HintManager::setLayoutDirection()
 	kdebugf2();
 }
 
-void HintManager::showToolTip(const QPoint &point, const UserListElement &user)
+void HintManager::showToolTip(const QPoint &point, Contact contact)
 {
 	kdebugf();
 
-	QString text = KaduParser::parse(config_file.readEntry("Hints", "MouseOverUserSyntax"), user);
+	QString text = KaduParser::parse(config_file.readEntry("Hints", "MouseOverUserSyntax"), (Contact (contact)).prefferedAccount(), contact);
 
 	while (text.endsWith("<br/>"))
 		text.setLength(text.length() - 5 /* 5 == QString("<br/>").length()*/);
@@ -515,16 +514,16 @@ void HintManager::notify(Notification *notification)
 		return;
 	}
 
-	const UserListElements &ules = notification->userListElements();
-	if (linkedHints.count(qMakePair(ules, notification->type())))
+	ContactList contacts = notification->contacts();
+	if (linkedHints.count(qMakePair(&contacts, notification->type())))
 	{
-		Hint *linkedHint = linkedHints[qMakePair(ules, notification->type())];
+		Hint *linkedHint = linkedHints[qMakePair(&contacts, notification->type())];
 		linkedHint->addDetail(notification->details());
 	}
 	else
 	{
 		Hint *linkedHint = addHint(notification);
-		linkedHints[qMakePair(ules, notification->type())] = linkedHint;
+		linkedHints[qMakePair(&contacts, notification->type())] = linkedHint;
 	}
 
 	kdebugf2();
@@ -532,9 +531,9 @@ void HintManager::notify(Notification *notification)
 
 void HintManager::notificationClosed(Notification *notification)
 {
-	const UserListElements &ules = notification->userListElements();
-	if (linkedHints.count(qMakePair(ules, notification->type())))
-		linkedHints.remove(qMakePair(ules, notification->type()));
+	ContactList contacts = notification->contacts();
+	if (linkedHints.count(qMakePair(&contacts, notification->type())))
+		linkedHints.remove(qMakePair(&contacts, notification->type()));
 }
 
 void HintManager::copyConfiguration(const QString &fromEvent, const QString &toEvent)

@@ -414,33 +414,11 @@ void UserBox::messageFromUserDeleted(Contact elem)
 // 		refreshLater();
 }
 
-void UserBox::closeModule()
-{
-	kdebugf();
-
-// 	delete tool_tip_class_manager;
-// 	tool_tip_class_manager = 0;
-
-	kdebugf2();
-}
-
 void UserBox::initModule()
 {
-	kdebugf();
-
-// 	tool_tip_class_manager = new ToolTipClassManager();
-// 	tool_tip_class_manager->useToolTipClass(config_file.readEntry("Look", "UserboxToolTipStyle"));
-
-	QStringList options;
-	QStringList values;
-
-	userlist->addPerContactNonProtocolConfigEntry("hide_description", "HideDescription");
-
 	brokenStringCompare = (QString("a").localeAwareCompare(QString("B")) > 0);
 	if (brokenStringCompare)
 		fprintf(stderr, "There's something wrong with native string compare function. Applying workaround (slower).\n");
-
-	kdebugf2();
 }
 
 void UserBox::resizeEvent(QResizeEvent *r)

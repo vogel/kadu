@@ -10,6 +10,7 @@
 #include <QtGui/QApplication>
 #include <QtGui/QGridLayout>
 #include <QtGui/QLabel>
+#include <QtGui/QLineEdit>
 #include <QtGui/QSpinBox>
 
 #include "color_button.h"

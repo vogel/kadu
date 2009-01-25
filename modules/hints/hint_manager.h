@@ -2,20 +2,17 @@
 #define HINT_MANAGER_H
 
 #include "configuration_aware_object.h"
-#include "../modules/gadu_protocol/gadu.h"
+#include "gui/widgets/abstract-tool-tip.h"
 #include "hint.h"
 #include "main_configuration_window.h"
-#include "userbox.h"
-
 #include "../notify/notify.h"
-
-class ChatWidget;
 
 class QSpinBox;
 
+class ChatWidget;
 class HintsConfigurationWidget;
 
-class HintManager : public Notifier, public ConfigurationUiHandler, public ToolTipClass, ConfigurationAwareObject
+class HintManager : public Notifier, public ConfigurationUiHandler, public AbstractToolTip, public ConfigurationAwareObject
 {
 	Q_OBJECT
 
@@ -31,7 +28,7 @@ private:
 	QWidget *overUserSyntax;
 	HintsConfigurationWidget *configurationWidget;
 
-	QMap<QPair<UserListElements, QString>, Hint *> linkedHints;
+	QMap<QPair<ContactList *, QString>, Hint *> linkedHints;
 
 	/**
 		ustala r�g, od kt�rego b�dzie liczona pozycja grupy dymk�w
@@ -40,7 +37,7 @@ private:
 
 	void processButtonPress(const QString &buttonName, Hint *hint);
 
-	void showNewMessage(const QString &configurationDirective, const QString &title, const QString &contentTitle, UserListElements senders, const QString &msg);
+	void showNewMessage(const QString &configurationDirective, const QString &title, const QString &contentTitle, ContactList contacts, const QString &msg);
 
 	// TODO: usun�� w 0.6
 	void realCopyConfiguration(const QString &fromHint, const QString &toHint);
@@ -123,7 +120,7 @@ public:
 	virtual CallbackCapacity callbackCapacity() { return CallbackSupported; }
 	virtual void notify(Notification *notification);
 
-	virtual void showToolTip(const QPoint &, const UserListElement &);
+	virtual void showToolTip(const QPoint &, Contact);
 	virtual void hideToolTip();
 
 	virtual void copyConfiguration(const QString &fromEvent, const QString &toEvent);

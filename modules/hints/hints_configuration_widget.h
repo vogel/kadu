@@ -15,6 +15,9 @@
 class QLineEdit;
 class QSpinBox;
 
+class ColorButton;
+class SelectFont;
+
 struct HintProperties
 {
 	QString eventName;

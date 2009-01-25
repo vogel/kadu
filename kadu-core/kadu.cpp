@@ -1678,7 +1678,6 @@ bool Kadu::close(bool quit)
 
 		StatusChangerManager::closeModule();
 
-		UserBox::closeModule();
 		ChatManager::closeModule();
 		SearchDialog::closeModule();
 

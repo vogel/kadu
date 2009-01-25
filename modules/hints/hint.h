@@ -5,12 +5,12 @@
 #include <QtGui/QVBoxLayout>
 
 #include "configuration_aware_object.h"
-#include "../modules/gadu_protocol/gadu.h"
 
 class QLabel;
 class QVBoxLayout;
 
-
+class Contact;
+class ContactList;
 class Notification;
 
 class Hint : public QWidget, ConfigurationAwareObject
@@ -59,8 +59,8 @@ public:
 
 	void addDetail(const QString &detail);
 
-	bool hasUsers() const;
-	const UserListElements & getUsers() const;
+	bool hasContacts() const;
+	const ContactList & getContacts() const;
 
 	Notification * getNotification() { return notification; }
 
