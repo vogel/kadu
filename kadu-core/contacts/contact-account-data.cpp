@@ -17,6 +17,7 @@
 ContactAccountData::ContactAccountData(Contact contact, Account *account, const QString &id)
 	: ContactAccount(account), OwnerContact(contact), Id(id), Blocked(false), OfflineTo(false)
 {
+	// TODO: 0.6.6 by loadFromStorage, please
 	if (id.isNull())
 		loadConfiguration();
 }
@@ -24,7 +25,7 @@ ContactAccountData::ContactAccountData(Contact contact, Account *account, const 
 StoragePoint * ContactAccountData::createStoragePoint() const
 {
 	return ContactAccount
-		? OwnerContact.storagePointForAccountData(ContactAccount, true)
+		? OwnerContact.storagePointForAccountData(ContactAccount)
 		: 0;
 }
 
@@ -39,16 +40,9 @@ void ContactAccountData::loadConfiguration()
 
 void ContactAccountData::storeConfiguration()
 {
-	printf("store configuration\n");
-
 	StoragePoint *sp = storage();
 	if (!sp || !sp->storage())
-	{
-		printf("lack of something\n");
 		return;
-	}
-
-	printf("all ok\n");
 
 	sp->storage()->createTextNode(sp->point(), "Id", Id);
 }

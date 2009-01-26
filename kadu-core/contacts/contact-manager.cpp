@@ -81,12 +81,8 @@ void ContactManager::loadConfiguration(XmlConfigFile *configurationStorage)
 void ContactManager::storeConfiguration(XmlConfigFile *configurationStorage)
 {
 	foreach (Contact contact, Contacts)
-	{
-		if (contact.isNull() || contact.isAnonymous())
-			continue;
-
-		contact.storeConfiguration();
-	}
+		if (!contact.isNull() && !contact.isAnonymous())
+			contact.storeConfiguration();
 }
 
 void ContactManager::addContact(Contact contact)

@@ -49,14 +49,14 @@ StoragePoint * ContactData::createStoragePoint() const
 	return new StoragePoint(parent->storage(), contactNode);
 }
 
-StoragePoint * ContactData::storagePointForAccountData(Account *account, bool create)
+StoragePoint * ContactData::storagePointForAccountData(Account *account)
 {
 	StoragePoint *parent = storage();
 	if (!parent || !parent->storage())
 		return 0;
 
 	QDomElement accountDataNode = parent->storage()->getUuidNode(parent->point(), "ContactAccountData",
-			account->uuid().toString(), create ? XmlConfigFile::ModeGet : XmlConfigFile::ModeFind);
+			account->uuid().toString(), XmlConfigFile::ModeGet);
 	return accountDataNode.isNull()
 		? 0
 		: new StoragePoint(parent->storage(), accountDataNode);
@@ -167,11 +167,7 @@ void ContactData::storeConfiguration()
 	Property(Email)
 
 	foreach (ContactAccountData *accountData, AccountsData.values())
-	{
-		QDomElement contactAccountData = configurationStorage->getUuidNode(parent,
-			"ContactAccountData", accountData->account()->uuid(), XmlConfigFile::ModeCreate);
 		accountData->storeConfiguration();
-	}
 
 	foreach (ContactModuleData *moduleData, ModulesData.values())
 		moduleData->storeConfiguration();

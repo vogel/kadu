@@ -77,7 +77,7 @@ public:
 	void loadConfiguration();
 	void storeConfiguration();
 
-	StoragePoint * storagePointForAccountData(Account *account, bool create = false) const;
+	StoragePoint * storagePointForAccountData(Account *account) const;
 	StoragePoint * storagePointForModuleData(const QString &module, bool create = false) const;
 
 	QUuid uuid() const;

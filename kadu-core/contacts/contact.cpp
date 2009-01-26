@@ -84,9 +84,9 @@ void Contact::storeConfiguration()
 	Data->storeConfiguration();
 }
 
-StoragePoint * Contact::storagePointForAccountData(Account* account, bool create) const
+StoragePoint * Contact::storagePointForAccountData(Account* account) const
 {
-	return Data->storagePointForAccountData(account, create);
+	return Data->storagePointForAccountData(account);
 }
 
 StoragePoint * Contact::storagePointForModuleData(const QString& module, bool create) const
