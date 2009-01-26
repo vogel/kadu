@@ -13,13 +13,18 @@
 
 Contact Contact::null(Contact::TypeNull);
 
-Contact::Contact()
-	: Data(new ContactData()), Type(Contact::TypeNormal)
+Contact Contact::loadFromStorage(StoragePoint* contactStoragePoint)
+{
+	return Contact(ContactData::loadFromStorage(contactStoragePoint));
+}
+
+Contact::Contact(ContactData *contactData)
+	: Data(contactData), Type(Contact::TypeNormal)
 {
 }
 
-Contact::Contact(StoragePoint *contactStoragePoint)
-	: Data(new ContactData(contactStoragePoint)), Type(Contact::TypeNormal)
+Contact::Contact()
+	: Data(new ContactData()), Type(Contact::TypeNormal)
 {
 }
 
@@ -108,13 +113,25 @@ Account * Contact::prefferedAccount()
 
 void Contact::addAccountData(ContactAccountData *accountData)
 {
+	if (!accountData)
+		return;
+
 	checkNull();
 	Data->addAccountData(accountData);
 }
 
 ContactAccountData * Contact::accountData(Account *account) const
 {
-	return isNull() ? 0 : Data->accountData(account);
+	return isNull()
+		? 0
+		: Data->accountData(account);
+}
+
+bool Contact::hasStoredAccountData(Account *account) const
+{
+	return isNull()
+		? false
+		: Data->hasStoredAccountData(account);
 }
 
 QString Contact::id(Account *account) const

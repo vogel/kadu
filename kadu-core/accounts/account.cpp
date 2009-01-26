@@ -63,15 +63,9 @@ void Account::setProtocol(Protocol *protocolHandler)
 
 void Account::contactAdded(Contact contact)
 {
-	printf("contactAdded!\n");
-
-	StoragePoint *cadStorage = contact.storagePointForAccountData(this);
-	if (!cadStorage)
-		return;
-
-	printf("cadStorage created!\n");
-	contact.addAccountData(ProtocolHandler->protocolFactory()->newContactAccountData(contact, this, cadStorage));
-	printf("contact data added!\n");
+	ContactAccountData *cad = ProtocolHandler->protocolFactory()->loadContactAccountData(contact, this);
+	if (cad)
+		contact.addAccountData(cad);
 }
 
 void Account::contactRemoved(Contact contact)

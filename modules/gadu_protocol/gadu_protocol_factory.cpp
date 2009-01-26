@@ -31,9 +31,11 @@ ContactAccountData * GaduProtocolFactory::newContactAccountData(Contact contact,
 	return new GaduContactAccountData(contact, account, id);
 }
 
-ContactAccountData * GaduProtocolFactory::newContactAccountData(Contact contact, Account *account, StoragePoint *sp)
+ContactAccountData * GaduProtocolFactory::loadContactAccountData(Contact contact, Account *account)
 {
-	return new GaduContactAccountData(contact, account, sp);
+	return contact.hasStoredAccountData(account)
+		? new GaduContactAccountData(contact, account, QString::null)
+		: 0;
 }
 
 GaduConfigurationDialog * GaduProtocolFactory::newConfigurationDialog(AccountData *accountData, QWidget *parent)

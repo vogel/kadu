@@ -26,15 +26,17 @@ ContactData::ContactData(QUuid uuid)
 {
 }
 
-ContactData::ContactData(StoragePoint *contactStoragePoint)
-	: Blocked(false), OfflineTo(false)
-{
-	setStorage(contactStoragePoint);
-	loadConfiguration();
-}
-
 ContactData::~ContactData()
 {
+}
+
+ContactData * ContactData::loadFromStorage(StoragePoint *contactStoragePoint)
+{
+	ContactData *result = new ContactData(QUuid());
+	result->setStorage(contactStoragePoint);
+	result->loadConfiguration();
+
+	return result;
 }
 
 StoragePoint * ContactData::createStoragePoint() const
@@ -111,6 +113,8 @@ void ContactData::loadConfiguration()
 	XmlConfigFile *configurationStorage = sp->storage();
 	QDomElement parent = sp->point();
 
+	Uuid = QUuid(parent.attribute("uuid"));
+
 	QDomElement customDataValues = configurationStorage->getNode(parent, "CustomDataValues", XmlConfigFile::ModeFind);
 	QDomNodeList customDataValuesList = customDataValues.elementsByTagName("CustomDataValue");
 
@@ -175,7 +179,8 @@ void ContactData::storeConfiguration()
 
 void ContactData::addAccountData(ContactAccountData *accountData)
 {
-	AccountsData.insert(accountData->account(), accountData);
+	if (accountData)
+		AccountsData.insert(accountData->account(), accountData);
 }
 
 ContactAccountData * ContactData::accountData(Account *account)
@@ -184,6 +189,15 @@ ContactAccountData * ContactData::accountData(Account *account)
 		return 0;
 
 	return AccountsData[account];
+}
+
+bool ContactData::hasStoredAccountData(Account *account)
+{
+	StoragePoint *sp = storage();
+	if (!sp || !sp->storage())
+		return false;
+
+	return !sp->storage()->getUuidNode(sp->point(), "ContactAccountData", account->uuid().toString(), XmlConfigFile::ModeFind).isNull();
 }
 
 ContactModuleData * ContactData::moduleData(const QString &key)

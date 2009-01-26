@@ -14,21 +14,11 @@
 
 #include "contact-account-data.h"
 
-ContactAccountData::ContactAccountData(Contact contact)
-	: ContactAccount(0), OwnerContact(contact), Id(QString::null), Blocked(false), OfflineTo(false)
-{
-}
-
 ContactAccountData::ContactAccountData(Contact contact, Account *account, const QString &id)
 	: ContactAccount(account), OwnerContact(contact), Id(id), Blocked(false), OfflineTo(false)
 {
-}
-
-ContactAccountData::ContactAccountData(Contact contact, Account *account, StoragePoint *sp)
-	: ContactAccount(account), OwnerContact(contact), Blocked(false), OfflineTo(false)
-{
-	setStorage(sp);
-	loadConfiguration();
+	if (id.isNull())
+		loadConfiguration();
 }
 
 StoragePoint * ContactAccountData::createStoragePoint() const
@@ -49,9 +39,16 @@ void ContactAccountData::loadConfiguration()
 
 void ContactAccountData::storeConfiguration()
 {
+	printf("store configuration\n");
+
 	StoragePoint *sp = storage();
 	if (!sp || !sp->storage())
+	{
+		printf("lack of something\n");
 		return;
+	}
+
+	printf("all ok\n");
 
 	sp->storage()->createTextNode(sp->point(), "Id", Id);
 }

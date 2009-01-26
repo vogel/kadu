@@ -27,7 +27,7 @@ public:
 	virtual Protocol * newInstance() = 0;
 	virtual AccountData * newAccountData() = 0;
 	virtual ContactAccountData * newContactAccountData(Contact contact, Account *account, const QString &id) = 0;
-	virtual ContactAccountData * newContactAccountData(Contact contact, Account *account, StoragePoint *sp) = 0;
+	virtual ContactAccountData * loadContactAccountData(Contact contact, Account *account) = 0;
 	virtual ConfigurationWindow * newConfigurationDialog(AccountData *, QWidget *) = 0;
 
 	virtual QString name() = 0;

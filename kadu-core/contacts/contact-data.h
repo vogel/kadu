@@ -49,8 +49,9 @@ protected:
 	virtual StoragePoint * createStoragePoint() const;
 
 public:
+	static ContactData * loadFromStorage(StoragePoint *contactStoragePoint);
+
 	ContactData(QUuid uniqueId = QUuid());
-	ContactData(StoragePoint *contactStoragePoint);
 	~ContactData();
 
 	void importConfiguration(XmlConfigFile *configurationStorage, QDomElement parent);
@@ -68,6 +69,8 @@ public:
 
 	void addAccountData(ContactAccountData *accountData);
 	ContactAccountData * accountData(Account *account);
+	bool hasStoredAccountData(Account *account);
+
 	ContactModuleData * moduleData(const QString &key);
 
 template<class T>

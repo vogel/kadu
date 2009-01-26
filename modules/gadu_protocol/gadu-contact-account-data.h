@@ -21,10 +21,8 @@ class GaduContactAccountData : public ContactAccountData
 	unsigned long MaxImageSize;
 
 public:
-	GaduContactAccountData(Contact contact, Account *account, const QString &id)
+	GaduContactAccountData(Contact contact, Account *account, const QString &id = QString::null)
 		: ContactAccountData(contact, account, id) {}
-	GaduContactAccountData(Contact contact, Account *account, StoragePoint *sp)
-		: ContactAccountData(contact, account, sp) {}
 
 	virtual bool validateId();
 

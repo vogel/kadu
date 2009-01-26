@@ -74,7 +74,7 @@ void ContactManager::loadConfiguration(XmlConfigFile *configurationStorage)
 			continue;
 
 		StoragePoint *contactStoragePoint = new StoragePoint(configurationStorage, contactElement);
-		addContact(Contact(contactStoragePoint));
+		addContact(Contact::loadFromStorage(contactStoragePoint));
 	}
 }
 

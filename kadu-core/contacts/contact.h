@@ -51,11 +51,14 @@ private:
 	QExplicitlySharedDataPointer<ContactData> Data;
 	ContactType Type;
 
+	Contact(ContactData *contactData);
+
 	void checkNull();
 
 public:
+	static Contact loadFromStorage(StoragePoint *contactStoragePoint);
+
 	Contact();
-	Contact(StoragePoint *contactStoragePoint);
 	Contact(ContactType type);
 	Contact(const Contact &copy);
 	virtual ~Contact();
@@ -84,6 +87,7 @@ public:
 
 	void addAccountData(ContactAccountData *accountData);
 	ContactAccountData * accountData(Account *account) const;
+	bool hasStoredAccountData(Account *account) const;
 
 template<class T>
 	T * moduleData() const
