@@ -31,6 +31,9 @@ GaduImporter * GaduImporter::instance()
 
 void GaduImporter::importAccounts()
 {
+	if (0 == config_file.readNumEntry("General", "UIN"))
+		return;
+
 	GaduAccountData *gaduAccountData = new GaduAccountData(
 			"Gadu-Gadu",
 			config_file.readNumEntry("General", "UIN"),

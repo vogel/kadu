@@ -114,9 +114,13 @@ MainConfigurationWindow::MainConfigurationWindow()
 	QLineEdit *disconnectDescription = dynamic_cast<QLineEdit *>(widgetById("disconnectDescription"));
 	QLineEdit *onStartupSetDescription = dynamic_cast<QLineEdit *>(widgetById("onStartupSetDescription"));
 
-	GaduProtocol *gadu = dynamic_cast<GaduProtocol *>(AccountManager::instance()->defaultAccount()->protocol());
-	disconnectDescription->setMaxLength(gadu->maxDescriptionLength());
-	onStartupSetDescription->setMaxLength(gadu->maxDescriptionLength());
+	Account * account = AccountManager::instance()->defaultAccount();
+	if ( 0 != account && 0 != account->protocol())
+	{
+		GaduProtocol *gadu = dynamic_cast<GaduProtocol *>(account->protocol());
+		disconnectDescription->setMaxLength(gadu->maxDescriptionLength());
+		onStartupSetDescription->setMaxLength(gadu->maxDescriptionLength());
+	}
 
 	connect(widgetById("disconnectWithCurrentDescription"), SIGNAL(toggled(bool)), disconnectDescription, SLOT(setDisabled(bool)));
 	connect(onStartupSetLastDescription, SIGNAL(toggled(bool)), onStartupSetDescription, SLOT(setDisabled(bool)));

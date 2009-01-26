@@ -1484,7 +1484,14 @@ void Kadu::changeStatus(UserStatus newStatus)
 		changeStatusToOffline->setChecked(true);
 	}
 
-	Protocol *gadu = AccountManager::instance()->defaultAccount()->protocol();
+	Account *account = AccountManager::instance()->defaultAccount();
+	if (!account)
+		return;
+
+	Protocol *gadu = account->protocol();
+	if (!gadu)
+		return;
+
 	if (gadu->nextStatus() == newStatus)
 		return;
 
