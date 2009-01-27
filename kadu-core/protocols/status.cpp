@@ -46,5 +46,10 @@ Status::StatusType Status::comparableType(Status::StatusType type)
 
 int Status::compareTo(const Status &compare) const
 {
-	return comparableType(compare.Type) - comparableType(Type);
+	return comparableType(Type) - comparableType(compare.Type);
+}
+
+bool Status::operator < (const Status &compare) const
+{
+	return compareTo(compare) < 0;
 }

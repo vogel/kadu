@@ -23,6 +23,10 @@ ContactsModelProxy::ContactsModelProxy(QObject *parent)
 {
 	setDynamicSortFilter(true);
 	sort(0);
+
+	BrokenStringCompare = (QString("a").localeAwareCompare(QString("B")) > 0);
+	if (BrokenStringCompare)
+		fprintf(stderr, "There's something wrong with native string compare function. Applying workaround (slower).\n");
 }
 
 void ContactsModelProxy::setSourceModel(QAbstractItemModel *sourceModel)
@@ -34,6 +38,13 @@ void ContactsModelProxy::setSourceModel(QAbstractItemModel *sourceModel)
 	sort(0);
 }
 
+int  ContactsModelProxy::compareNames(QString n1, QString n2) const
+{
+	return BrokenStringCompare
+		? n1.lower().localeAwareCompare(n2.lower())
+		: n1.localeAwareCompare(n2);
+}
+
 bool ContactsModelProxy::lessThan(const QModelIndex &left, const QModelIndex &right) const
 {
 	if (!SourceContactModel)
@@ -42,25 +53,27 @@ bool ContactsModelProxy::lessThan(const QModelIndex &left, const QModelIndex &ri
 	Contact leftContact = SourceContactModel->contact(left);
 	Contact rightContact = SourceContactModel->contact(right);
 
-	Account *account = AccountManager::instance()->defaultAccount();
-	ContactAccountData *leftContactAccountData = leftContact.accountData(account);
-	ContactAccountData *rightContactAccountData = rightContact.accountData(account);
+	Account *leftAccount = leftContact.prefferedAccount();
+	Account *rightAccount = rightContact.prefferedAccount();
 
-	if (!leftContactAccountData && !rightContactAccountData)
-		return leftContact.display() < rightContact.display();
+	ContactAccountData *leftContactAccountData = leftContact.accountData(leftAccount);
+	ContactAccountData *rightContactAccountData = rightContact.accountData(rightAccount);
 
-	if (!leftContactAccountData)
-		return -1;
+	Status leftStatus = leftContactAccountData
+		? leftContactAccountData->status()
+		: Status();
+	Status rightStatus = rightContactAccountData
+		? rightContactAccountData->status()
+		: Status();
 
-	if (!rightContactAccountData)
-		return 1;
-
-	Status leftStatus = leftContactAccountData->status();
-	Status rightStatus = rightContactAccountData->status();
-
-	return 0 == leftStatus.compareTo(rightStatus)
-		? leftContact.display() < rightContact.display()
-		: leftStatus.compareTo(rightStatus);
+	int statusCompare = leftStatus.compareTo(rightStatus);
+	if (statusCompare < 0)
+		return true;
+	if (statusCompare > 0)
+		return false;
+	
+	int displayCompare = compareNames(leftContact.display(), rightContact.display());
+	return displayCompare < 0;
 }
 
 const QModelIndex ContactsModelProxy::contactIndex(Contact contact) const
