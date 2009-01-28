@@ -222,47 +222,10 @@ void UserBox::setDescriptionsActionState()
 
 void UserBox::mousePressEvent(QMouseEvent *e)
 {
-	kdebugf();
-
-	if (e->button() != Qt::RightButton)
-	{
-		MouseStart = e->pos();
-		Q3ListBox::mousePressEvent(e);
-	}
-	else
-	{
-		Q3ListBoxItem *item = itemAt(e->pos());
-		if (item)
-		{
-			if (!item->isSelected())
-				if (!(e->state() & Qt::ControlButton))
-					for (unsigned int i = 0, count2 = count(); i < count2; ++i)
-						setSelected(i, FALSE);
-			setSelected(item, TRUE);
-			setCurrentItem(item);
-			emit rightButtonPressed(item, e->globalPos());
-		}
-	}
-	kdebugf2();
 }
 
 void UserBox::mouseMoveEvent(QMouseEvent* e)
 {
-//	kdebugf();
-	if ((e->buttons() & Qt::LeftButton) && itemAt(MouseStart) && (e->pos() - MouseStart).manhattanLength() > QApplication::startDragDistance())
-	{
-		QStringList ules;
-		for(int i = 0, count1 = count(); i < count1; ++i)
-			if (isSelected(i))
-				ules.append(item(i)->text());
-
-		QDrag* drag = new UlesDrag(ules, this);
-		drag->exec(Qt::CopyAction);
-	}
-	else
-	{
-	}
-//	kdebugf2();
 }
 
 //#include <sys/time.h>
@@ -926,46 +889,6 @@ bool UserBox::currentUserExists() const
 Contact UserBox::currentContact() const
 {
 	return Contact::null;
-}
-
-UlesDrag::UlesDrag(const QStringList &ules, QWidget* dragSource)
-	: QDrag(dragSource)
-{
-	kdebugf();
-
-	QByteArray data;
-	QMimeData *mimeData = new QMimeData;
-	QString allUles = ules.join("\n");
-
-	data = allUles.toUtf8(); 
-
-     	mimeData->setData("application/x-kadu-ules", data);
-
-	setMimeData(mimeData);
-
-	kdebugf2();
-}
-
-bool UlesDrag::decode(QDropEvent *event, QStringList &ules)
-{
-	const QMimeData *mimeData = event->mimeData();
-
-	if (!mimeData->hasFormat("application/x-kadu-ules"))
-		return false;
-
-	QTextStream stream(mimeData->data("application/x-kadu-ules"), QIODevice::ReadOnly);
-	stream.setCodec("UTF-8");
-
-	QString allUles = stream.readAll();
-
-	ules = QStringList::split("\n", allUles);
-
-	return ules.count() > 0;
-}
-
-bool UlesDrag::canDecode(QDragEnterEvent *event)
-{
-	return event->mimeData()->hasFormat("application/x-kadu-ules");
 }
 
 inline int compareAltNick(const Contact &c1, const Contact &c2)

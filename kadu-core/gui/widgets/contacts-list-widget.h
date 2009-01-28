@@ -11,6 +11,7 @@
 #define CONTACTS_LIST_WIDGET_H
 
 #include <QtGui/QListView>
+#include <QtCore/QDateTime>
 #include <QtCore/QTimer>
 
 #include "contacts/contact.h"
@@ -35,6 +36,10 @@ class ContactsListWidget : public QListView
 	// Tool tips
 	Contact ToolTipContact;
 	QTimer ToolTipTimeoutTimer;
+
+	// D&D
+	QPoint DragStartPosition;
+	QDateTime DragStartTime;
 
 private slots:
 	void doubleClickedSlot(const QModelIndex &index);

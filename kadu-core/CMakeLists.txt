@@ -13,6 +13,7 @@ set (kadu_SRCS
 	contacts/contact-kadu-data.cpp
 	contacts/contact-list.cpp
 	contacts/contact-list-configuration-helper.cpp
+	contacts/contact-list-mime-data-helper.cpp
 	contacts/contact-manager.cpp
 	contacts/contact-module-data.cpp
 	contacts/contacts-aware-object.cpp

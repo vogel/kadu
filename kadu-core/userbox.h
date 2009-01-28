@@ -27,17 +27,6 @@ class ActionDescription;
 class KaduMainWindow;
 class ULEComparer;
 
-class KADUAPI UlesDrag : public QDrag
-{
-
-public:
-	UlesDrag(const QStringList &ules, QWidget* dragSource = 0);
-	static bool decode(QDropEvent *event, QStringList &ules);
-	static bool canDecode(QDragEnterEvent *event);
-
-};
-
-
 /**
 	Klasa reprezentuj�ca list� kontakt�w wraz z ikonkami stan�w.
 	\class UserBox

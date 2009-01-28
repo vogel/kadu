@@ -8,12 +8,14 @@
  ***************************************************************************/
 
 #include <QtCore/QModelIndex>
+#include <QtGui/QApplication>
 #include <QtGui/QContextMenuEvent>
 #include <QtGui/QMenu>
 #include <QtGui/QSortFilterProxyModel>
 
 #include "contacts/contact.h"
 #include "contacts/contact-list.h"
+#include "contacts/contact-list-mime-data-helper.h"
 #include "contacts/contact-manager.h"
 #include "contacts/model/contacts-model.h"
 #include "contacts/model/contacts-model-proxy.h"
@@ -160,6 +162,12 @@ void ContactsListWidget::mousePressEvent(QMouseEvent *event)
 {
 	QAbstractItemView::mousePressEvent(event);
 	toolTipHide();
+
+	if (Qt::LeftButton == event->button())
+	{
+		DragStartPosition = event->pos();
+		DragStartTime = QDateTime();
+	}
 }
 
 void ContactsListWidget::mouseReleaseEvent(QMouseEvent *event)
@@ -170,9 +178,21 @@ void ContactsListWidget::mouseReleaseEvent(QMouseEvent *event)
 
 void ContactsListWidget::mouseMoveEvent(QMouseEvent *event)
 {
-	if ((event->buttons() & Qt::LeftButton))// && itemAt(MouseStart) && (e->pos() - MouseStart).manhattanLength() > QApplication::startDragDistance())
+	if (Qt::LeftButton == event->buttons() &&
+	    indexAt(DragStartPosition).isValid() &&
+	    (event->pos() - DragStartPosition).manhattanLength() >= QApplication::startDragDistance() &&
+	    DragStartTime.secsTo(QDateTime()) >= QApplication::startDragTime() * 1000)
 	{
 		// TODO
+		QMimeData *dragData = ContactListMimeDataHelper::toMimeData(selectedContacts());
+		if (dragData)
+		{
+			QDrag *drag = new QDrag(this);
+			drag->setMimeData(dragData);
+
+			Qt::DropAction dropAction = drag->exec(Qt::CopyAction | Qt::MoveAction);
+			delete dragData;
+		}
 	}
 	else
 	{

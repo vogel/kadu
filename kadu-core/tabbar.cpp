@@ -27,12 +27,10 @@ KaduTabBar::KaduTabBar(QWidget *parent)
 	setAcceptDrops(true);
 }
 
-void KaduTabBar::dragEnterEvent(QDragEnterEvent *e)
+void KaduTabBar::dragEnterEvent(QDragEnterEvent *event)
 {
-	kdebugf();
-	if (UlesDrag::canDecode(e))
-		e->acceptProposedAction();
-	kdebugf2();
+     if (event->mimeData()->hasFormat("application/x-kadu-ules"))
+         event->acceptProposedAction();
 }
 
 QString KaduTabBar::getNewGroupNameFromUser(bool *ok)
@@ -54,19 +52,19 @@ QString KaduTabBar::getNewGroupNameFromUser(bool *ok)
 	return group;
 }
 
-void KaduTabBar::dropEvent(QDropEvent *e)
+void KaduTabBar::dropEvent(QDropEvent *event)
 {
 	kdebugf();
 
 	QStringList ules;
-	if (!UlesDrag::decode(e, ules))
+	if (!event->mimeData()->hasFormat("application/x-kadu-ules"))
 		return;
 
-	e->acceptProposedAction();
+	event->acceptProposedAction();
 
 	QApplication::setOverrideCursor(QCursor(Qt::ArrowCursor));
 	QString group;
-	int tabIndex = tabAt(e->pos());
+	int tabIndex = tabAt(event->pos());
 
 	if (tabIndex == -1)
 	{
