@@ -7,34 +7,29 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GADU_IMPORTER
-#define GADU_IMPORTER
+#include "contact.h"
+#include "contact-list.h"
 
-#include <QtCore/QObject>
+#include "ignored-helper.h"
 
-class Contact;
-
-class GaduImporter : public QObject
+bool IgnoredHelper::isIgnored(ContactList contacts)
 {
-	Q_OBJECT
+	if (1 == contacts.count())
+		return contacts[0].isIgnored();
+	else
+	{
+		// TODO: 0.6.6 implement
+		// ConferenceManager::instance()->byContactList(senders)->isIgnored(true)
+	}
+}
 
-	static GaduImporter *Instance;
-
-	GaduImporter() {}
-
-	void importContact(Contact &contact);
-	void importGaduContact(Contact &contact);
-	void importIgnored();
-
-private slots:
-	void contactAdded(Contact &contact);
-
-public:
-	static GaduImporter * instance();
-
-	void importAccounts();
-	void importContacts();
-
-};
-
-#endif // GADU_IMPORTER
+void IgnoredHelper::setIgnored(ContactList contacts, bool ignored)
+{
+	if (1 == contacts.count())
+		contacts[0].setIgnored(ignored);
+	else
+	{
+		// TODO: 0.6.6 implement
+		// ConferenceManager::instance()->byContactList(senders)->isIgnored(true)
+	}
+}

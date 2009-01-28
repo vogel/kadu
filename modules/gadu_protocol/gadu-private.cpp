@@ -11,9 +11,11 @@
 
 #include "accounts/account.h"
 #include "accounts/account_manager.h"
+
+#include "contacts/ignored-helper.h"
+
 #include "config_file.h"
 #include "debug.h"
-#include "ignore.h"
 #include "misc.h"
 
 #include "gadu-private.h"
@@ -461,8 +463,7 @@ void GaduSocketNotifiers::socketEvent()
 	{
 		case GG_EVENT_MSG:
 		{
-			ContactList users(CurrentAccount->getContactById(QString::number(e->event.msg.sender)));
-			UserListElements ules = UserListElements::fromContactList(users, CurrentAccount);
+			ContactList senders(CurrentAccount->getContactById(QString::number(e->event.msg.sender)));
 
 			// TODO: 0.6.6
 			if (e->event.msg.recipients_count)
@@ -471,20 +472,20 @@ void GaduSocketNotifiers::socketEvent()
 			if (e->event.msg.msgclass == GG_CLASS_CTCP)
 			{
 				if (config_file.readBoolEntry("Network", "AllowDCC") &&
-						!IgnoredManager::isIgnored(ules) &&
-						!users[0].isAnonymous())
-					emit dccConnectionReceived(users[0]);
+						!IgnoredHelper::isIgnored(senders) &&
+						!senders[0].isAnonymous())
+					emit dccConnectionReceived(senders[0]);
 			}
 			else
 			{
 				kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "recipients_count: %d\n", e->event.msg.recipients_count);
 				if ((e->event.msg.msgclass & GG_CLASS_CHAT) == GG_CLASS_CHAT)
 					for (int i = 0; i < e->event.msg.recipients_count; ++i)
-						users.append(CurrentAccount->getContactById(QString::number(e->event.msg.recipients[i])));
+						senders.append(CurrentAccount->getContactById(QString::number(e->event.msg.recipients[i])));
 				QString msg((char*)e->event.msg.message);
 				QByteArray formats;
 				formats.duplicate((const char*)e->event.msg.formats, e->event.msg.formats_length);
-				emit messageReceived(e->event.msg.msgclass, users, msg, e->event.msg.time, formats);
+				emit messageReceived(e->event.msg.msgclass, senders, msg, e->event.msg.time, formats);
 			}
 			break;
 		}

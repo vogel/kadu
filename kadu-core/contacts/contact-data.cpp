@@ -7,6 +7,7 @@
  *                                                                         *
  ***************************************************************************/
 
+#include <QtCore/QVariant>
 #include <QtXml/QDomNamedNodeMap>
 
 #include "accounts/account.h"
@@ -22,7 +23,7 @@
 #include "contact-data.h"
 
 ContactData::ContactData(QUuid uuid)
-	: Uuid(uuid.isNull() ? QUuid::createUuid() : uuid), Blocked(false), OfflineTo(false)
+	: Uuid(uuid.isNull() ? QUuid::createUuid() : uuid), Ignored(false), Blocked(false), OfflineTo(false)
 {
 }
 
@@ -138,6 +139,8 @@ void ContactData::loadConfiguration()
 	Property(HomePhone)
 	Property(Mobile)
 	Property(Email)
+
+	Ignored = QVariant(configurationStorage->getTextNode(parent, "Ignored")).toBool();
 }
 
 #undef Property
@@ -155,7 +158,7 @@ void ContactData::storeConfiguration()
 
 	QDomElement customDataValues = configurationStorage->getNode(parent, "CustomDataValues");
 
-	foreach (QString key, CustomData.keys())
+	foreach (const QString &key, CustomData.keys())
 		configurationStorage->createNamedTextNode(customDataValues, "CustomDataValue", key, CustomData[key]);
 
 	Property(Display)
@@ -165,6 +168,8 @@ void ContactData::storeConfiguration()
 	Property(HomePhone)
 	Property(Mobile)
 	Property(Email)
+
+	configurationStorage->createTextNode(parent, "Ignored", QVariant(Ignored).toString());
 
 	foreach (ContactAccountData *accountData, AccountsData.values())
 		accountData->storeConfiguration();
@@ -217,6 +222,16 @@ Account * ContactData::prefferedAccount()
 }
 
 // properties
+
+bool ContactData::isIgnored()
+{
+	return Ignored;
+}
+
+bool ContactData::setIgnored(bool ignored)
+{
+	Ignored = ignored;
+}
 
 bool ContactData::isBlocked(Account *account)
 {

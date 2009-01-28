@@ -98,6 +98,8 @@ template<class T>
 	QString id(Account *account) const;
 	// properties
 
+	bool isIgnored() const;
+	bool setIgnored(bool ignored = true);
 	bool isBlocked(Account *account) const;
 	bool isOfflineTo(Account *account) const;
 

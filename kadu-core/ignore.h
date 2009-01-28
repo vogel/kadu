@@ -33,23 +33,4 @@ public:
 
 };
 
-class KADUAPI IgnoredManager
-{
-public:
-	typedef QPair<UserListElements, bool> IgnoredEntry;
-
-private:
-	static QList<IgnoredEntry> Ignored;
-
-public:
-	static void loadFromConfiguration();
-	static void writeToConfiguration();
-	static void insert(UserListElements uins, bool temporary = false);
-	static void remove(UserListElements uins);
-	static bool isIgnored(UserListElements uins);
-	static bool isIgnored(ContactList contacts);
-	static void clear();
-	static const QList<QPair<UserListElements, bool> > & getList();
-};
-
 #endif

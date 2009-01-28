@@ -146,6 +146,20 @@ uint qHash(const Contact &contact)
 	return qHash(contact.uuid().toString());
 }
 
+bool Contact::isIgnored() const
+{
+	return isNull()
+		? false
+		: Data->isIgnored();
+}
+
+bool Contact::setIgnored(bool ignored)
+{
+	return isNull()
+		? false
+		: Data->setIgnored(ignored);
+}
+
 bool Contact::isBlocked(Account *account) const
 {
 	return isNull()

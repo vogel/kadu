@@ -12,6 +12,7 @@
 
 #include "contacts/contact-account-data.h"
 #include "contacts/contact-manager.h"
+#include "contacts/ignored-helper.h"
 
 #include "gui/widgets/contacts-list-widget-menu-manager.h"
 
@@ -24,7 +25,6 @@
 #include "custom_input.h"
 #include "debug.h"
 #include "icons_manager.h"
-#include "ignore.h"
 #include "kadu.h"
 #include "message_box.h"
 #include "misc.h"
@@ -79,7 +79,7 @@ void checkIgnoreUser(KaduAction *action)
 		return;
 	}
 
-	action->setChecked(IgnoredManager::isIgnored(action->contacts()));
+	action->setChecked(IgnoredHelper::isIgnored(action->contacts()));
 }
 
 ChatManager::ChatManager(QObject *parent)
@@ -533,11 +533,11 @@ void ChatManager::ignoreUserActionActivated(QAction *sender, bool toggled)
 
 		if (!ContainsBad)
 		{
-			if (IgnoredManager::isIgnored(contacts))
-				IgnoredManager::remove(UserListElements::fromContactList(contacts, account));
+			if (IgnoredHelper::isIgnored(contacts))
+				IgnoredHelper::setIgnored(contacts, false);
 			else
 			{
-				IgnoredManager::insert(UserListElements::fromContactList(contacts, account));
+				IgnoredHelper::setIgnored(contacts);
 				ChatWidget *chat = findChatWidget(contacts);
 				if (chat)
 				{
@@ -547,12 +547,11 @@ void ChatManager::ignoreUserActionActivated(QAction *sender, bool toggled)
 				}
 			}
 			kadu->userbox()->refresh();
-			IgnoredManager::writeToConfiguration();
 
 			foreach (KaduAction *action, ignoreUserActionDescription->actions())
 			{
 				if (action->contacts() == contacts)
-					action->setChecked(IgnoredManager::isIgnored(contacts));
+					action->setChecked(IgnoredHelper::isIgnored(contacts));
 			}
 
 		}

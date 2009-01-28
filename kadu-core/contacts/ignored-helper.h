@@ -7,34 +7,20 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GADU_IMPORTER
-#define GADU_IMPORTER
+#ifndef IGNORED_HELPER_H
+#define IGNORED_HELPER_H
 
-#include <QtCore/QObject>
+#include "exports.h"
 
-class Contact;
+class ContactList;
 
-class GaduImporter : public QObject
+class KADUAPI IgnoredHelper
 {
-	Q_OBJECT
-
-	static GaduImporter *Instance;
-
-	GaduImporter() {}
-
-	void importContact(Contact &contact);
-	void importGaduContact(Contact &contact);
-	void importIgnored();
-
-private slots:
-	void contactAdded(Contact &contact);
 
 public:
-	static GaduImporter * instance();
-
-	void importAccounts();
-	void importContacts();
+	static bool isIgnored(ContactList contacts);
+	static void setIgnored(ContactList contacts, bool ignored = true);
 
 };
 
-#endif // GADU_IMPORTER
+#endif // IGNORED_HELPER_H

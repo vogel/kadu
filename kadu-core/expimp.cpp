@@ -265,7 +265,9 @@ void UserlistImportExport::makeUserlist()
 
 	userlist->clear();
 	userlist->merge(importedUserlist);
-	IgnoredManager::clear();
+
+// TODO: 0.6.6
+//	IgnoredManager::clear();
 // TODO: 0.6.6
 // 	userlist->writeToConfig();
 	updateUserListCount();

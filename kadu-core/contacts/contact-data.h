@@ -42,6 +42,7 @@ class ContactData : public QSharedData, private StorableObject
 	QString Mobile;
 	QString Email;
 
+	bool Ignored;
 	bool Blocked;
 	bool OfflineTo;
 
@@ -82,6 +83,8 @@ template<class T>
 	}
 
 	// properties
+	bool isIgnored();
+	bool setIgnored(bool ignored = true);
 	bool isBlocked(Account *account);
 	bool isOfflineTo(Account *account);
 

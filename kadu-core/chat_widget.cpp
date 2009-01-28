@@ -24,7 +24,6 @@
 #include "emoticons.h"
 #include "hot_key.h"
 #include "icons_manager.h"
-#include "ignore.h"
 #include "kadu.h"
 #include "kadu_parser.h"
 #include "message_box.h"
@@ -895,11 +894,9 @@ void ChatWidget::leaveConference()
 	if (!MessageBox::ask(tr("All messages received in this conference will be ignored\nfrom now on. Are you sure you want to leave this conference?"), "Warning", this))
 		return;
 
-	UserListElements users = UserListElements::fromContactList(Contacts,
-			AccountManager::instance()->defaultAccount());
-
-	if (!IgnoredManager::isIgnored(users))
-		IgnoredManager::insert(users);
+// TODO: 0.6.6
+// 	if (!IgnoredHelper::isIgnored(Contacts))
+// 		IgnoredHelper::insert(Contacts);
 
 	emit closed();
 }

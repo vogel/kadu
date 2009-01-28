@@ -16,6 +16,7 @@ set (kadu_SRCS
 	contacts/contact-manager.cpp
 	contacts/contact-module-data.cpp
 	contacts/contacts-aware-object.cpp
+	contacts/ignored-helper.cpp
 
 	contacts/model/abstract-contacts-model.cpp
 	contacts/model/contacts-model.cpp

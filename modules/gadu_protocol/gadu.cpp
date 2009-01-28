@@ -24,13 +24,13 @@
 #include "accounts/account_manager.h"
 
 #include "contacts/contact-manager.h"
+#include "contacts/ignored-helper.h"
 
 #include "protocols/status.h"
 
 #include "config_file.h"
 #include "debug.h"
 #include "icons_manager.h"
-#include "ignore.h"
 #include "kadu.h"
 #include "message.h"
 #include "message_box.h"
@@ -974,7 +974,7 @@ void GaduProtocol::messageReceivedSlot(int msgclass, ContactList senders, QStrin
 	// ignorujemy, jesli nick na liscie ignorowanych
 	// PYTANIE CZY IGNORUJEMY CALA KONFERENCJE
 	// JESLI PIERWSZY SENDER JEST IGNOROWANY????
-	if (IgnoredManager::isIgnored(ules))
+	if (IgnoredHelper::isIgnored(senders))
 		return;
 
 	bool ignore = false;
@@ -1013,7 +1013,7 @@ void GaduProtocol::messageReceivedSlot(int msgclass, ContactList senders, QStrin
 		return;
 	}
 
-	if (ules[0].isAnonymous() &&
+	if (senders[0].isAnonymous() &&
 		config_file.readBoolEntry("Chat","IgnoreAnonymousRichtext"))
 	{
 		kdebugm(KDEBUG_INFO, "Richtext ignored from anonymous user\n");
@@ -1022,8 +1022,7 @@ void GaduProtocol::messageReceivedSlot(int msgclass, ContactList senders, QStrin
 	else
 	{
 		bool receiveImages =
-			userlist->contains(ules[0], FalseForAnonymous) &&
-			!IgnoredManager::isIgnored(ules) &&
+			!senders[0].isAnonymous() &&
 			(
 				CurrentStatus->isOnline() ||
 				CurrentStatus->isBusy() ||

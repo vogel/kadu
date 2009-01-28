@@ -533,7 +533,7 @@ Kadu::Kadu(QWidget *parent)
 
 	loadWindowGeometry(this, "General", "Geometry", 0, 50, 205, 465);
 
-	IgnoredManager::loadFromConfiguration();
+// 	IgnoredManager::loadFromConfiguration();
 
 	/* a newbie? */
 // TODO: 0.6.6 some way of setting title needed
@@ -1627,7 +1627,7 @@ bool Kadu::close(bool quit)
 			config_file.writeEntry("General", "LastStatusDescription", userStatusChanger->status().description());
 
 		pending.storeConfiguration(xml_config_file);
-		IgnoredManager::writeToConfiguration();
+// 		IgnoredManager::writeToConfiguration();
 
 		ContactManager::instance()->storeConfiguration(xml_config_file);
 		AccountManager::instance()->storeConfiguration(xml_config_file);
