@@ -438,7 +438,7 @@ void GaduProtocol::currentStatusChanged(const UserStatus &/*status*/, const User
 // 	Contact current = CurrentAccount->getContactById(QString::number(LoginParams.uin), false);
 // 	if (!current.isNull())
 // 		current.
-// 
+//
 // 	if (userlist->contains("Gadu", QString::number(LoginParams.uin)))
 // 		userlist->byID("Gadu", QString::number(LoginParams.uin)).setStatus("Gadu", *CurrentStatus);
 }
@@ -805,7 +805,7 @@ void GaduProtocol::disconnectedSlot()
 	// kt�re powoduj� od�wie�enie panelu informacyjnego, zapisanie status�w,
 	// od�wie�enie okien chat�w, od�wie�enie userboksa
 	if (!Kadu::closing())
-		userlist->setAllOffline("Gadu");
+		setAllOffline();
 
 	if (!CurrentStatus->isOffline())
 		CurrentStatus->setOffline(QString::null);

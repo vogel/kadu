@@ -80,6 +80,8 @@ protected:
 
 	ProtocolFactory *Factory;
 
+	void setAllOffline();
+
 public:
 	Protocol(Account *account, ProtocolFactory *factory);
 	virtual ~Protocol();

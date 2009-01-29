@@ -117,10 +117,10 @@ void UserList::merge(const QList<UserListElement> &ulist)
 			user2.setLastName(user.lastName());
 			user2.setFirstName(user.firstName());
 			user2.setData("Groups", user.data("Groups"));
-			
+
 			NotifyType nt;
 			QString path;
-			
+
 			path = user2.aliveSound(nt);
 			user2.setAliveSound(nt, path);
 
@@ -139,47 +139,6 @@ void UserList::merge(const QList<UserListElement> &ulist)
 	addUsers(toAppend);
 
 	emit modified();
-	kdebugf2();
-}
-
-#include "../modules/gadu_protocol/gadu_status.h"
-
-void UserList::setAllOffline(const QString &protocolName)
-{
-	kdebugf();
-//	printBacktrace("setAllOffline");
-	UserStatus *s;
-	s = new GaduStatus();
-//	s = protocols_manager->byProtocolID(protocolName)[0]->newStatus();
-	s->setOffline();
-
-	int todo = 0;
-	// zliczamy najpierw kontakty, kt�rych status przestawimy - czyli takie, kt�re maj� opis lub nie s� offline
-	foreach(const UserListElement &user, *this)
-	{
-// TODO: 0.6.6
-// 		if (user.usesProtocol(protocolName))
-// 		{
-// 			const UserStatus &stat = user.status(protocolName);
-// 			if (!stat.isOffline() || stat.hasDescription())
-// 				++todo;
-// 		}
-	}
-
-	// a teraz przestawiamy te statusy
-	int i = 0;
-	foreach(const UserListElement &user, *this)
-	{
-//		kdebugm(KDEBUG_INFO, "%s %d\n", qPrintable(*user), qPrintable(*user));
-// TOOD: 0.6.6
-// 		if (user.usesProtocol(protocolName))
-// 		{
-// 			const UserStatus &stat = user.status(protocolName);
-// 			if (!stat.isOffline() || stat.hasDescription())
-// 				user.setStatus(protocolName, *s, true, ++i == todo);
-// 		}
-	}
-	delete s;
 	kdebugf2();
 }
 

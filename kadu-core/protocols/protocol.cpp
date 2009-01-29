@@ -10,9 +10,12 @@
 #include <QtGui/QIcon>
 #include <QtGui/QTextDocument>
 
+#include "contacts/contact-account-data.h"
+#include "contacts/contact-manager.h"
 #include "icons_manager.h"
 #include "message.h"
 #include "protocols/protocol_factory.h"
+#include "protocols/status.h"
 
 #include "protocol.h"
 
@@ -63,6 +66,22 @@ QIcon Protocol::icon()
 	return iconName.isEmpty()
 		? QIcon()
 		: icons_manager->loadIcon(iconName);
+}
+
+
+void Protocol::setAllOffline()
+{
+	Status status(Status::Offline);
+	Status oldStatus;
+	ContactAccountData *data;
+
+	foreach (Contact contact, ContactManager::instance()->contacts(CurrentAccount, true))
+	{
+		data = contact.accountData(CurrentAccount);
+		oldStatus = data->status();
+		data->setStatus(status);
+		emit contactStatusChanged(CurrentAccount, contact, oldStatus);
+	}
 }
 
 void Protocol::setAccount(Account* account)

@@ -61,14 +61,6 @@ public slots:
 	void merge(const QList<UserListElement> &list);
 
 	/**
-		\fn void setAllOffline(const QString &protocolName)
-		\param protocolName identyfikator protoko�u
-		Przestawia status wszystkich kontakt�w
-		dla wskazanego protoko�u na "niedost�pny".
-	**/
-	void setAllOffline(const QString &protocolName);
-
-	/**
 		\fn void clear()
 		Usuwa wszystkie kontakty.
 	**/
