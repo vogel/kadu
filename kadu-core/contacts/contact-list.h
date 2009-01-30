@@ -21,7 +21,7 @@ public:
 
 	ContactList();
 	ContactList(QList<Contact> list);
-	ContactList(Contact constact);
+	ContactList(Contact contact);
 
 	bool operator == (const ContactList &compare) const;
 
