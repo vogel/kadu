@@ -10,10 +10,17 @@
 #ifndef CONTACT_KADU_DATA_H
 #define CONTACT_KADU_DATA_H
 
+#include <QtCore/QRect>
+
 #include "contact-module-data.h"
+
+#define Property(type, name, capitalized_name) \
+	type name() const { return capitalized_name; } \
+	void set##capitalized_name(const type &name) { capitalized_name = name; }
 
 class ContactKaduData : public ContactModuleData
 {
+	QRect ChatGeometry;
 
 public:
 	static QString key() { return "kadu"; }
@@ -22,6 +29,10 @@ public:
 
 	virtual void storeConfiguration() const;
 
+	Property(QRect, chatGeometry, ChatGeometry)
+
 };
+
+#undef Property
 
 #endif // CONTACT_KADU_DATA_H

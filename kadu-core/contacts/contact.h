@@ -90,9 +90,9 @@ public:
 	bool hasStoredAccountData(Account *account) const;
 
 template<class T>
-	T * moduleData() const
+	T * moduleData(bool create = false, bool cache = false) const
 	{
-		return isNull() ? 0 : Data->moduleData<T>();
+		return isNull() ? 0 : Data->moduleData<T>(create, cache);
 	}
 
 	QString id(Account *account) const;

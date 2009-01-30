@@ -7,6 +7,11 @@
  *                                                                         *
  ***************************************************************************/
 
+#include "configuration/storage-point.h"
+
+#include "misc.h"
+#include "xml_config_file.h"
+
 #include "contact-kadu-data.h"
 
 ContactKaduData::ContactKaduData(StoragePoint *storage)
@@ -17,5 +22,12 @@ ContactKaduData::ContactKaduData(StoragePoint *storage)
 
 void ContactKaduData::storeConfiguration() const
 {
-	// do nothing
+	StoragePoint *sp = storage();
+	if (!sp)
+		return;
+
+	XmlConfigFile *configurationStorage = sp->storage();
+	QDomElement parent = sp->point();
+
+	configurationStorage->createTextNode(parent, "ChatGeometry", rectToString(ChatGeometry));
 }

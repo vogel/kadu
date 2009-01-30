@@ -21,6 +21,9 @@ class ContactModuleData
 {
 	StoragePoint *Storage;
 
+protected:
+	StoragePoint * storage() const { return Storage; }
+
 public:
 	ContactModuleData(StoragePoint *storage);
 	virtual ~ContactModuleData();

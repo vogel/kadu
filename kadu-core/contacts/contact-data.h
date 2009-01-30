@@ -75,10 +75,12 @@ public:
 	ContactModuleData * moduleData(const QString &key);
 
 template<class T>
-	T * moduleData()
+	T * moduleData(bool create = false, bool cache = false)
 	{
-		if (!ModulesData.contains(T::key()))
-			ModulesData[T::key()] = new T(storagePointForModuleData(T::key()));
+		if (!cache)
+			return new T(storagePointForModuleData(T::key(), create));
+		if (ModulesData.contains(T::key()))
+			ModulesData[T::key()] = new T(storagePointForModuleData(T::key(), create));
 		return dynamic_cast<T *>(ModulesData[T::key()]);
 	}
 

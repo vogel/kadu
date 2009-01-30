@@ -86,9 +86,8 @@ ChatWidget * ChatWindow::chatWidget()
 void ChatWindow::kaduRestoreGeometry()
 {
 	ContactList contacts = currentChatWidget->contacts();
-	UserListElements ules = UserListElements::fromContactList(contacts, currentChatWidget->account());
 
-	if (0 == ules.count())
+	if (0 == contacts.count())
 		return;
 
 	QRect geom = stringToRect(chat_manager->chatWidgetProperty(currentChatWidget->contacts(), "Geometry").toString());
@@ -97,12 +96,15 @@ void ChatWindow::kaduRestoreGeometry()
 	{
 		Contact contact = contacts[0];
 		ContactKaduData *ckd = contact.moduleData<ContactKaduData>();
-// 		if (ckd)
-// 			geom = ckd->chatGeometry();
+		if (ckd)
+		{
+			geom = ckd->chatGeometry();
+			delete ckd;
+		}
 	}
 
-	if (geom.isEmpty() && contacts.count() == 1)
-		geom = stringToRect(ules[0].data("ChatGeometry").toString());
+// 	if (geom.isEmpty() && contacts.count() == 1)
+// 		geom = stringToRect(ules[0].data("ChatGeometry").toString());
 
 	if (geom.isEmpty()) {
 		QSize size(0, 400);
@@ -140,11 +142,21 @@ void ChatWindow::kaduStoreGeometry()
 	currentChatWidget->kaduStoreGeometry();
 
 	ContactList contacts = currentChatWidget->contacts();
-	UserListElements ules = UserListElements::fromContactList(contacts, currentChatWidget->account());
 
 	chat_manager->setChatWidgetProperty(currentChatWidget->contacts(), "Geometry", rectToString(geometry()));
-	if (ules.count() == 1)
-		ules[0].setData("ChatGeometry", rectToString(geometry()));
+
+	if (contacts.count() == 1)
+	{
+		Contact contact = contacts[0];
+		ContactKaduData *ckd = contact.moduleData<ContactKaduData>(true);
+		if (ckd)
+		{
+			ckd->setChatGeometry(geometry());
+			ckd->storeConfiguration();
+			delete ckd;
+		}
+	}
+
 }
 
 void ChatWindow::closeEvent(QCloseEvent *e)
