@@ -79,7 +79,7 @@ void KaduTabBar::dropEvent(QDropEvent *event)
 	else
 		group = tabText(tabIndex);
 
-	if (group == GroupsManager::tr("All"))
+	if (group == GroupsManagerOld::tr("All"))
 		group = QString::null;
 
 	currentGroup = group;
@@ -87,7 +87,7 @@ void KaduTabBar::dropEvent(QDropEvent *event)
 
 	QMenu menu(this);
 	menu.addAction(tr("Add to group %1").arg(group), this, SLOT(addToGroup()));
-	if (tabText(currentIndex()) != GroupsManager::tr("All"))
+	if (tabText(currentIndex()) != GroupsManagerOld::tr("All"))
 		menu.addAction(tr("Move to group %1").arg(group), this, SLOT(moveToGroup()));
 	menu.exec(QCursor::pos());
 

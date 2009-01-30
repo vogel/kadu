@@ -18,12 +18,12 @@ class KaduTabBar;
 	\class GroupsManager
 	\brief
 **/
-class KADUAPI GroupsManager : public QObject, ConfigurationAwareObject
+class KADUAPI GroupsManagerOld : public QObject, ConfigurationAwareObject
 {
 	Q_OBJECT
 
-	GroupsManager();
-	~GroupsManager();
+	GroupsManagerOld();
+	~GroupsManagerOld();
 	QMap<QString, UserGroup *> Groups;
 	KaduTabBar *GroupBar;
 	int lastId;
@@ -183,7 +183,7 @@ public slots:
 
 };
 
-extern KADUAPI GroupsManager *groups_manager;
+extern KADUAPI GroupsManagerOld *groups_manager;
 
 /**
 	\class UsersWithDescription
