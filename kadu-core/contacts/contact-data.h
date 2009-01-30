@@ -13,6 +13,7 @@
 #include <QtCore/QMap>
 #include <QtCore/QSharedData>
 #include <QtCore/QString>
+#include <QtCore/QStringList>
 #include <QtCore/QUuid>
 #include <QtXml/QDomElement>
 
@@ -41,6 +42,7 @@ class ContactData : public QSharedData, private StorableObject
 	QString HomePhone;
 	QString Mobile;
 	QString Email;
+	QStringList Groups;
 
 	bool Ignored;
 	bool Blocked;
@@ -97,6 +99,7 @@ template<class T>
 	Property(QString, homePhone, HomePhone)
 	Property(QString, mobile, Mobile)
 	Property(QString, email, Email)
+	Property(QStringList, groups, Groups)
 
 };
 

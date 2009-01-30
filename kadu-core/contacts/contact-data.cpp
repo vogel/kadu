@@ -92,6 +92,8 @@ void ContactData::importConfiguration(XmlConfigFile *configurationStorage, QDomE
 		CustomData.insert(attribute.name(), attribute.value());
 	}
 
+	setGroups(CustomData["groups"].split(','));
+	CustomData.remove("groups");
 	Property(Display, altnick)
 	Property(FirstName, first_name)
 	Property(LastName, last_name)
@@ -131,7 +133,26 @@ void ContactData::loadConfiguration()
 		if (!name.isEmpty())
 			CustomData[name] = customDataElement.text();
 	}
+	
+	QDomElement groupsNode = configurationStorage->getNode(parent, "Groups", XmlConfigFile::ModeFind);
+	if (!groupsNode.isNull())
+	{
+		QDomNodeList groupsList = groupsNode.elementsByTagName("Group");
 
+		QStringList groups;
+		count = groupsList.count();
+		for (int i = 0; i < count; i++)
+		{
+			QDomElement groupElement = groupsList.at(i).toElement();
+			if (groupElement.isNull())
+				continue;
+			groups.append(groupElement.text());
+		}
+		
+		if (!groups.isEmpty())
+			setGroups(groups);
+	}
+	
 	Property(Display)
 	Property(FirstName)
 	Property(LastName)
@@ -168,6 +189,10 @@ void ContactData::storeConfiguration()
 	Property(HomePhone)
 	Property(Mobile)
 	Property(Email)
+	
+	QDomElement groupsNode = configurationStorage->getNode(parent, "Groups", XmlConfigFile::ModeCreate);
+	foreach (QString group, Groups)
+		configurationStorage->createTextNode(groupsNode, "Group", group);
 
 	configurationStorage->createTextNode(parent, "Ignored", QVariant(Ignored).toString());
 
