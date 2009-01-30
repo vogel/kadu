@@ -120,7 +120,7 @@ public:
 	static void closeModule();
 
 	virtual bool supportsActionType(ActionDescription::ActionType type) { return type & ActionDescription::TypeSearch; }
-	virtual UserBox * userBox() { return 0; }
+	virtual ContactsListWidget * contactsListWidget() { return 0; }
 	virtual ContactList contacts() { return ContactList(); }
 	virtual ChatWidget * chatWidget() { return 0; }
 

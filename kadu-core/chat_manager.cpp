@@ -546,7 +546,8 @@ void ChatManager::ignoreUserActionActivated(QAction *sender, bool toggled)
 						container->closeChatWidget(chat);
 				}
 			}
-			kadu->userbox()->refresh();
+// TODO: 0.6.6
+// 			kadu->userbox()->refresh();
 
 			foreach (KaduAction *action, ignoreUserActionDescription->actions())
 			{
@@ -795,7 +796,8 @@ void ChatManager::deletePendingMsgs(ContactList contacts)
 			--i;
 		}
 
-	UserBox::refreshAllLater();
+// TODO: 0.6.6
+// 	UserBox::refreshAllLater();
 	kdebugf2();
 }
 
@@ -841,7 +843,8 @@ void ChatManager::openPendingMsgs(ContactList contacts, bool forceActivate)
 		// TODO: Lame API
 		if (!chatWidget->countMessages())
 			chatWidget->appendMessages(messages, true);
-		UserBox::refreshAllLater();
+// TODO: 0.6.6
+// 		UserBox::refreshAllLater();
 	}
 
 	kdebugf2();

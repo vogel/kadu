@@ -275,8 +275,9 @@ void KaduMainWindow::addRightToolbar()
 
 void KaduMainWindow::actionAdded(KaduAction *action)
 {
-	if (userBox())
-		connect(userBox(), SIGNAL(userListChanged()), action, SLOT(checkState()));
+// TODO: 0.6.6
+// 	if (contactsListWidget())
+// 		connect(contactsListWidget(), SIGNAL(userListChanged()), action, SLOT(checkState()));
 }
 
 Contact KaduMainWindow::contact()

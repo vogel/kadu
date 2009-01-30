@@ -381,7 +381,7 @@ void disableNoEMail(KaduAction *action)
 Kadu::Kadu(QWidget *parent)
 	: KaduMainWindow(parent),
 	InfoPanel(0), MenuBar(0), KaduMenu(0), ContactsMenu(0), HelpMenu(0), RecentChatsMenu(0), GroupBar(0),
-	Userbox(0), statusMenu(0), statusButton(), lastPositionBeforeStatusMenuHide(),
+	ContactsWidget(0), statusMenu(0), statusButton(), lastPositionBeforeStatusMenuHide(),
 	StartTime(QDateTime::currentDateTime()), updateInformationPanelTimer(), NextStatus(),
 	selectedUsers(new UserGroup()), ShowMainWindowOnStart(true),
 	DoBlink(false), BlinkOn(false),Docked(false), dontHideOnClose(false)
@@ -432,10 +432,6 @@ Kadu::Kadu(QWidget *parent)
 	ChatManager::initModule();
 	SearchDialog::initModule();
 
-	// userbox
-	UserBox::initModule();
-	Userbox = new UserBox(this, true, ContactManager::instance()->contacts(), this, "userbox");
-	Userbox->hide();
 	ContactsWidget = new ContactsListWidget(this);
 
 	hbox_layout->setStretchFactor(ContactsWidget, 100);
@@ -445,8 +441,8 @@ Kadu::Kadu(QWidget *parent)
 
 	connect(ContactsWidget, SIGNAL(contactActivated(Contact)), this, SLOT(sendMessage(Contact)));
 
-	connect(Userbox, SIGNAL(mouseButtonClicked(int, Q3ListBoxItem *, const QPoint &)),
-		this, SLOT(mouseButtonClicked(int, Q3ListBoxItem *)));
+// 	connect(Userbox, SIGNAL(mouseButtonClicked(int, Q3ListBoxItem *, const QPoint &)),
+// 		this, SLOT(mouseButtonClicked(int, Q3ListBoxItem *)));
 	connect(ContactsWidget, SIGNAL(currentContactChanged(Contact)), this, SLOT(currentChanged(Contact)));
 
 
@@ -985,7 +981,7 @@ void Kadu::inactiveUsersActionActivated(QAction *sender, bool toggled)
 	if (!window)
 		return;
 
-	groups_manager->changeDisplayingOffline(window->userBox(), !toggled);
+// 	groups_manager->changeDisplayingOffline(window->userBox(), !toggled);
 }
 
 void Kadu::descriptionUsersActionActivated(QAction *sender, bool toggled)
@@ -994,7 +990,7 @@ void Kadu::descriptionUsersActionActivated(QAction *sender, bool toggled)
 	if (!window)
 		return;
 
-	groups_manager->changeDisplayingWithoutDescription(window->userBox(), !toggled);
+// 	groups_manager->changeDisplayingWithoutDescription(window->userBox(), !toggled);
 }
 
 void Kadu::onlineAndDescUsersActionActivated(QAction *sender, bool toggled)
@@ -1003,7 +999,7 @@ void Kadu::onlineAndDescUsersActionActivated(QAction *sender, bool toggled)
 	if (!window)
 		return;
 
-	groups_manager->changeDisplayingOnlineAndDescription(window->userBox(), toggled);
+// 	groups_manager->changeDisplayingOnlineAndDescription(window->userBox(), toggled);
 }
 
 void Kadu::inactiveUsersActionCreated(KaduAction *action)
@@ -1425,7 +1421,6 @@ void Kadu::changePrivateStatusSlot(bool toggled)
 	setStatus(status);
 
 	config_file.writeEntry("General", "PrivateStatus", toggled);
-	UserBox::refreshAllLater();
 }
 
 /* when we want to change the status */
@@ -1683,12 +1678,6 @@ bool Kadu::close(bool quit)
 				this, SLOT(wentInvisible(const QString &)));
 		disconnect(&(gadu->currentStatus()), SIGNAL(goOffline(const QString &)),
 				this, SLOT(wentOffline(const QString &)));
-
-		disconnect(Userbox, SIGNAL(doubleClicked(Contact)), this, SLOT(sendMessage(Contact)));
-		disconnect(Userbox, SIGNAL(returnPressed(Contact)), this, SLOT(sendMessage(Contact)));
-		disconnect(Userbox, SIGNAL(mouseButtonClicked(int, Q3ListBoxItem *, const QPoint &)),
-				this, SLOT(mouseButtonClicked(int, Q3ListBoxItem *)));
-		disconnect(Userbox, SIGNAL(currentChanged(Contact)), this, SLOT(currentChanged(Contact)));
 
 		StatusChangerManager::closeModule();
 
@@ -2068,15 +2057,16 @@ void Kadu::updateInformationPanelLater()
 
 void Kadu::updateInformationPanel()
 {
-	if (Userbox->currentUserExists())
-		updateInformationPanel(Userbox->currentContact());
+// 	if (ContactsWidget->cur ->currentUserExists())
+// 		updateInformationPanel(Userbox->currentContact());
 }
 
 void Kadu::updateInformationPanel(Contact contact)
 {
 	if (!config_file.readBoolEntry("Look", "ShowInfoPanel"))
 		return;
-	if (Userbox->currentUserExists() && contact == Userbox->currentContact())
+// 	if (Userbox->currentUserExists() && contact == Userbox->currentContact())
+	if (false)
 	{
 		kdebugmf(KDEBUG_INFO, "%s\n", qPrintable(contact.display()));
 		QString text = QString(
@@ -2110,11 +2100,6 @@ void Kadu::currentChanged(Contact contact)
 KaduTabBar* Kadu::groupBar() const
 {
 	return GroupBar;
-}
-
-UserBox* Kadu::userbox() const
-{
-	return Userbox;
 }
 
 ContactList Kadu::contacts()
@@ -2154,12 +2139,12 @@ void Kadu::show()
 	// TODO: remove after 0.6
 	if (config_file.readBoolEntry("Look", "MultiColumnUserbox", false))
 	{
-		int columns = Userbox->visibleWidth() / config_file.readUnsignedNumEntry("Look", "MultiColumnUserboxWidth", Userbox->visibleWidth());
-		if (columns < 1)
-			columns = 1;
-		config_file.writeEntry("Look", "UserBoxColumnCount", columns);
+// 		int columns = Userbox->visibleWidth() / config_file.readUnsignedNumEntry("Look", "MultiColumnUserboxWidth", Userbox->visibleWidth());
+// 		if (columns < 1)
+// 			columns = 1;
+// 		config_file.writeEntry("Look", "UserBoxColumnCount", columns);
 // 		KaduListBoxPixmap::setColumnCount(columns);
-		Userbox->refresh();
+// 		Userbox->refresh();
 	}
 	config_file.removeVariable("Look", "MultiColumnUserbox");
 	config_file.removeVariable("Look", "MultiColumnUserboxWidth");
@@ -2194,7 +2179,6 @@ void Kadu::configurationUpdated()
 
 	changeAppearance();
 	groups_manager->refreshTabBar();
-	UserBox::setColorsOrBackgrounds();
 
 //	Myself.setAltNick(config_file.readEntry("General", "Nick"));
 

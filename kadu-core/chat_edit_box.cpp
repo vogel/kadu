@@ -59,11 +59,11 @@ bool ChatEditBox::supportsActionType(ActionDescription::ActionType type)
 	return (type == ActionDescription::TypeGlobal || type == ActionDescription::TypeChat || type == ActionDescription::TypeUser);
 }
 
-UserBox * ChatEditBox::userBox()
+ContactsListWidget * ChatEditBox::contactsListWidget()
 {
 	ChatWidget *cw = chatWidget();
 	if (cw && cw->contacts().count() > 1)
-		return cw->getUserbox();
+		return cw->contactsListWidget();
 
 	return 0;
 }

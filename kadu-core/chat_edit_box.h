@@ -36,7 +36,7 @@ public:
 	CustomInput * inputBox();
 
 	virtual bool supportsActionType(ActionDescription::ActionType type);
-	virtual UserBox * userBox();
+	virtual ContactsListWidget * contactsListWidget();
 	virtual ContactList contacts();
 	ChatWidget * chatWidget();
 

@@ -31,11 +31,11 @@ class ChatEditBox;
 class ChatMessage;
 class ChatWidget;
 class ColorSelector;
+class ContactsListWidget;
 class CustomInput;
 class EmoticonSelector;
 class KaduAction;
 class Protocol;
-class UserBox;
 class UserGroup;
 
 typedef QList<ChatWidget *> ChatList;
@@ -63,7 +63,7 @@ private:
 	ColorSelector *color_selector; /*!< okienko do wyboru koloru */
 	bool AutoSend; /*!< okre�la czy Return powoduje wys�anie wiadomo�ci */
 	bool WaitingForACK;
-	UserBox *userbox; /*!< lista kontakt�w przydatna gdy jeste�my w konferencji */
+	ContactsListWidget *ContactsWidget; /*!< lista kontakt�w przydatna gdy jeste�my w konferencji */
 	Message myLastMessage; /*!< zmienna przechowuj�ca nasz� ostatni� wiadomo�� */
 	QSplitter *vertSplit, *horizSplit; /*!< obiekty oddzielaj�ce kontrolki od siebie */
 
@@ -189,7 +189,7 @@ public:
 		\fn UserBox* userbox()
 		Zwraca wska�nik do userboxa konferencji, je�li on istnieje
 	**/
-	UserBox * getUserbox();
+	ContactsListWidget * contactsListWidget() { return ContactsWidget; }
 
 	ChatEditBox * getChatEditBox() { return Edit; }
 

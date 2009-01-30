@@ -11,7 +11,6 @@
 #include "exports.h"
 
 class KaduTabBar;
-class UserBox;
 
 /**
 	Klasa s�u��ca przede wszystkim zarz�dzaniu nazwanymi grupami kontakt�w,
@@ -162,7 +161,7 @@ public slots:
 		\param userBox lista kontakt�w
 		\param show stan akcji
 	**/
-	void changeDisplayingOffline(UserBox *userBox, bool show);
+// 	void changeDisplayingOffline(UserBox *userBox, bool show);
 
 	/**
 		\fn void changeDisplayingWithoutDescription(UserBox *userBox, bool show)
@@ -171,7 +170,7 @@ public slots:
 		\param userBox lista kontakt�w
 		\param show stan akcji
 	**/
-	void changeDisplayingWithoutDescription(UserBox *userBox, bool show);
+// 	void changeDisplayingWithoutDescription(UserBox *userBox, bool show);
 
 	/**
 		\fn void changeDisplayingOnlineAndDescription(UserBox *userBox, bool show)
@@ -180,7 +179,7 @@ public slots:
 		\param userBox lista kontakt�w
 		\param show stan akcji
 	**/
-	void changeDisplayingOnlineAndDescription(UserBox *userBox, bool show);
+// 	void changeDisplayingOnlineAndDescription(UserBox *userBox, bool show);
 
 };
 

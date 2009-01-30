@@ -20,6 +20,8 @@
 
 class QContextMenuEvent;
 
+class ContactsListWidget;
+
 class KADUAPI KaduMainWindow : public QMainWindow
 {
 	Q_OBJECT
@@ -50,7 +52,7 @@ public:
 	virtual QMenu * createPopupMenu() { return 0; }
 
 	virtual bool supportsActionType(ActionDescription::ActionType type) = 0;
-	virtual UserBox * userBox() = 0;
+	virtual ContactsListWidget * contactsListWidget() = 0;
 	virtual ContactList contacts() = 0;
 	Contact contact();
 

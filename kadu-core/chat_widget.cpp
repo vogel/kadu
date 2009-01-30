@@ -13,6 +13,9 @@
 
 #include "accounts/account.h"
 #include "accounts/account_manager.h"
+
+#include "gui/widgets/contacts-list-widget.h"
+
 #include "action.h"
 #include "chat_edit_box.h"
 #include "chat_manager.h"
@@ -39,7 +42,7 @@ ChatWidget::ChatWidget(Account *initialAccount, const ContactList &contacts, QWi
 	: QWidget(parent), CurrentAccount(initialAccount), Contacts(contacts),
 
 	index(0), actcolor(),
-	emoticon_selector(0), color_selector(0), WaitingForACK(false), userbox(0), horizSplit(0),
+	emoticon_selector(0), color_selector(0), WaitingForACK(false), ContactsWidget(0), horizSplit(0),
 	activationCount(0), NewMessagesCount(0), Edit(0)
 {
 	kdebugf();
@@ -70,19 +73,20 @@ ChatWidget::ChatWidget(Account *initialAccount, const ContactList &contacts, QWi
 		uc_layout->setMargin(0);
 		uc_layout->setSpacing(0);
 
-		userbox = new UserBox(Edit, false, Contacts, userlistContainer, "userbox");
-		userbox->setMinimumSize(QSize(30,30));
+// TODO: 0.6.5
+// 		userbox = new UserBox(Edit, false, Contacts, userlistContainer, "userbox");
+// 		userbox->setMinimumSize(QSize(30,30));
 
-		connect(userbox, SIGNAL(doubleClicked(Contact)), kadu, SLOT(sendMessage(Contact)));
-		connect(userbox, SIGNAL(returnPressed(Contact)), kadu, SLOT(sendMessage(Contact)));
-		connect(userbox, SIGNAL(mouseButtonClicked(int, Q3ListBoxItem *, const QPoint &)),
-		kadu, SLOT(mouseButtonClicked(int, Q3ListBoxItem *)));
+// 		connect(userbox, SIGNAL(doubleClicked(Contact)), kadu, SLOT(sendMessage(Contact)));
+// 		connect(userbox, SIGNAL(returnPressed(Contact)), kadu, SLOT(sendMessage(Contact)));
+// 		connect(userbox, SIGNAL(mouseButtonClicked(int, Q3ListBoxItem *, const QPoint &)),
+// 		kadu, SLOT(mouseButtonClicked(int, Q3ListBoxItem *)));
 
 		QPushButton *leaveConference = new QPushButton(tr("Leave conference"), userlistContainer);
-		leaveConference->setMinimumWidth(userbox->minimumWidth());
+		leaveConference->setMinimumWidth(ContactsWidget->minimumWidth());
 		connect(leaveConference, SIGNAL(clicked()), this, SLOT(leaveConference()));
 
-		uc_layout->addWidget(userbox);
+		uc_layout->addWidget(ContactsWidget);
 		uc_layout->addWidget(leaveConference);
 
 		sizes.append(3);
@@ -138,9 +142,6 @@ ChatWidget::~ChatWidget()
 	disconnect(gadu, SIGNAL(imageReceivedAndSaved(UinType,uint32_t,uint32_t,const QString&)),
 		body, SLOT(imageReceivedAndSaved(UinType,uint32_t,uint32_t,const QString&)));
 
-	if (userbox)
-		delete userbox;
-
 	kdebugmf(KDEBUG_FUNCTION_END, "chat destroyed: index %d\n", index);
 }
 
@@ -150,13 +151,13 @@ void ChatWidget::configurationUpdated()
 		body->setPrune(config_file.readUnsignedNumEntry("Chat", "ChatPruneLen"));
 	else
 		body->setPrune(0);
-
-	if (userbox)
+/* TODO: 0.6.5
+	if (ContactsWidget)
 	{
-		userbox->viewport()->setStyleSheet(QString("QWidget {background-color:%1}").arg(config_file.readColorEntry("Look","UserboxBgColor").name()));
-		userbox->setStyleSheet(QString("QFrame {color:%1}").arg(config_file.readColorEntry("Look","UserboxFgColor").name()));
-		userbox->Q3ListBox::setFont(config_file.readFontEntry("Look","UserboxFont"));
-	}
+		ContactsWidget->viewport()->setStyleSheet(QString("QWidget {background-color:%1}").arg(config_file.readColorEntry("Look","UserboxBgColor").name()));
+		ContactsWidget->setStyleSheet(QString("QFrame {color:%1}").arg(config_file.readColorEntry("Look","UserboxFgColor").name()));
+		ContactsWidget->Q3ListBox::setFont(config_file.readFontEntry("Look","UserboxFont"));
+	}*/
 
 	Edit->inputBox()->setFont(config_file.readFontEntry("Look","ChatFont"));
  	Edit->inputBox()->setStyleSheet(QString("QTextEdit {background-color: %1}").arg(config_file.readColorEntry("Look", "ChatTextBgColor").name()));
@@ -737,11 +738,6 @@ const QString& ChatWidget::escapedCaption() const
 CustomInput* ChatWidget::edit()
 {
 	return Edit->inputBox();
-}
-
-UserBox* ChatWidget::getUserbox()
-{
-	return userbox;
 }
 
 bool ChatWidget::autoSend() const

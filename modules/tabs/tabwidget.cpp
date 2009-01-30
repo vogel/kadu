@@ -1,5 +1,7 @@
 #include <QtGui/QDrag>
 
+#include "gui/widgets/contacts-list-widget.h"
+
 #include "config_file.h"
 #include "hot_key.h"
 #include "icons_manager.h"
@@ -154,11 +156,11 @@ void TabWidget::dragEnterEvent(QDragEnterEvent* e)
 {
 	kdebugf();
 	// Akceptujemu dnd jeśli pochodzi on z UserBox'a lub paska kart
-	if ((UlesDrag::canDecode(e) && (dynamic_cast<UserBox*>(e->source()))) || (e->mimeData()->hasText() && dynamic_cast<TabBar*>(e->source())))
-		e->acceptProposedAction();
-	else
+// 	if ((UlesDrag::canDecode(e) && (dynamic_cast<ContactsListWidget *>(e->source()))) || (e->mimeData()->hasText() && dynamic_cast<TabBar*>(e->source())))
+// 		e->acceptProposedAction();
+// 	else
 		e->ignore();
-		
+// 		
 	kdebugf2();
 }
 
@@ -168,7 +170,7 @@ void TabWidget::dropEvent(QDropEvent* e)
 	QStringList ules;
 
 	// Jeśli dnd pochodził z userboxa próbujemy dodać nową kartę
-	if (dynamic_cast<UserBox*>(e->source()) && UlesDrag::decode(e, ules))
+	if (dynamic_cast<ContactsListWidget *>(e->source()) && false)/*UlesDrag::decode(e, ules))*/
 	{
 		if (tabbar->tabAt(e->pos()) != -1)
 		// Jeśli w miejscu upuszczenia jest karta, dodajemy na jej pozycji

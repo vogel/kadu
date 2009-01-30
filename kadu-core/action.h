@@ -23,7 +23,6 @@ class Contact;
 class ContactList;
 class KaduMainWindow;
 class ToolBar;
-class UserBox;
 class UserListElements;
 
 class ActionDescription;

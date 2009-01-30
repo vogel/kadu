@@ -40,7 +40,7 @@ void GroupsManager::closeModule()
 	delete groups_manager;
 	groups_manager = 0;
 
-	UserBox *userbox = kadu->userbox();
+// 	UserBox *userbox = kadu->userbox();
 /*
 	userbox->removeNegativeFilter(blockingUsers);
 	userbox->removeNegativeFilter(blockedUsers);
@@ -99,9 +99,9 @@ void GroupsManager::setTabBar(KaduTabBar *bar)
 
 	changeDisplayingBlocking(config_file.readBoolEntry("General", "ShowBlocking"));
 	changeDisplayingBlocked(config_file.readBoolEntry("General", "ShowBlocked"));
-	changeDisplayingOffline(kadu->userbox(), config_file.readBoolEntry("General", "ShowOffline"));
- 	changeDisplayingWithoutDescription(kadu->userbox(), config_file.readBoolEntry("General", "ShowWithoutDescription"));
-	changeDisplayingOnlineAndDescription(kadu->userbox(), config_file.readBoolEntry("General", "ShowOnlineAndDescription"));
+// 	changeDisplayingOffline(kadu->userbox(), config_file.readBoolEntry("General", "ShowOffline"));
+//  	changeDisplayingWithoutDescription(kadu->userbox(), config_file.readBoolEntry("General", "ShowWithoutDescription"));
+// 	changeDisplayingOnlineAndDescription(kadu->userbox(), config_file.readBoolEntry("General", "ShowOnlineAndDescription"));
 	kdebugf2();
 }
 
@@ -223,10 +223,10 @@ void GroupsManager::configurationUpdated()
 		changeDisplayingBlocking(!showBlocking);
 	if (config_file.readBoolEntry("General", "ShowBlocked") != showBlocked)
 		changeDisplayingBlocked(!showBlocked);
-	if (config_file.readBoolEntry("General", "ShowOffline") != showOffline)
-		changeDisplayingOffline(kadu->userbox(), !showOffline);
- 	if (config_file.readBoolEntry("General", "ShowWithoutDescription") != showWithoutDescription)
- 		changeDisplayingWithoutDescription(kadu->userbox(), !showWithoutDescription);
+// 	if (config_file.readBoolEntry("General", "ShowOffline") != showOffline)
+// 		changeDisplayingOffline(kadu->userbox(), !showOffline);
+//  	if (config_file.readBoolEntry("General", "ShowWithoutDescription") != showWithoutDescription)
+//  		changeDisplayingWithoutDescription(kadu->userbox(), !showWithoutDescription);
 }
 
 void GroupsManager::iconThemeChanged()
@@ -259,70 +259,70 @@ void GroupsManager::changeDisplayingBlocked(bool show)
 	kdebugf2();
 }
 
-void GroupsManager::changeDisplayingOffline(UserBox *userBox, bool show)
-{
-	kdebugf();
-
- 	showOffline = show;
-
-	if (KaduActions["inactiveUsersAction"])
-	{
-		KaduAction *action = KaduActions["inactiveUsersAction"]->action(userBox->mainWindow());
-		if (action)
-			action->setChecked(!showOffline);
-	}
+// void GroupsManager::changeDisplayingOffline(UserBox *userBox, bool show)
+// {
+// 	kdebugf();
+// 
+//  	showOffline = show;
+// 
+// 	if (KaduActions["inactiveUsersAction"])
+// 	{
+// 		KaduAction *action = KaduActions["inactiveUsersAction"]->action(userBox->mainWindow());
+// 		if (action)
+// 			action->setChecked(!showOffline);
+// 	}
 
 //	if (showOffline)
 //		userBox->removeNegativeFilter(offlineUsers);
 //	else
 //		userBox->applyNegativeFilter(offlineUsers);
-	config_file.writeEntry("General", "ShowOffline", showOffline);
-	kdebugf2();
-}
+// 	config_file.writeEntry("General", "ShowOffline", showOffline);
+// 	kdebugf2();
+// }
 
-void GroupsManager::changeDisplayingWithoutDescription(UserBox *userBox, bool show)
-{
-	kdebugf();
-
-	showWithoutDescription = show;
-
-	if (KaduActions["descriptionUsersAction"])
-	{
-		KaduAction *action = KaduActions["descriptionUsersAction"]->action(userBox->mainWindow());
-		if (action)
-			action->setChecked(!showWithoutDescription);
-	}
+// void GroupsManager::changeDisplayingWithoutDescription(UserBox *userBox, bool show)
+// {
+// 	kdebugf();
+// 
+// 	showWithoutDescription = show;
+// 
+// 	if (KaduActions["descriptionUsersAction"])
+// 	{
+// 		KaduAction *action = KaduActions["descriptionUsersAction"]->action(userBox->mainWindow());
+// 		if (action)
+// 			action->setChecked(!showWithoutDescription);
+// 	}
 
 // 	if (showWithoutDescription)
 // 		userBox->removeFilter(usersWithDescription);
 // 	else
 // 		userBox->applyFilter(usersWithDescription);
-	config_file.writeEntry("General", "ShowWithoutDescription", showWithoutDescription);
-	kdebugf2();
-}
+// 	config_file.writeEntry("General", "ShowWithoutDescription", showWithoutDescription);
+// 	kdebugf2();
+// }
 
-void GroupsManager::changeDisplayingOnlineAndDescription(UserBox *userBox, bool show)
-{
-	kdebugf();
-
-	showOnlineAndDescription = show;
-
-	if (KaduActions["onlineAndDescriptionUsersAction"])
-	{
-		KaduAction *action = KaduActions["onlineAndDescriptionUsersAction"]->action(userBox->mainWindow());
-		if (action)
-			action->setChecked(showOnlineAndDescription);
-	}
+// void GroupsManager::changeDisplayingOnlineAndDescription(UserBox *userBox, bool show)
+// {
+// 	kdebugf();
+// 
+// 	showOnlineAndDescription = show;
+// 
+// 	if (KaduActions["onlineAndDescriptionUsersAction"])
+// 	{
+// 		KaduAction *action = KaduActions["onlineAndDescriptionUsersAction"]->action(userBox->mainWindow());
+// 		if (action)
+// 			action->setChecked(showOnlineAndDescription);
+// 	}
 
 // 	if (showOnlineAndDescription)
 // 		userBox->applyFilter(onlineAndDescriptionUsers);
 // 	else
 // 		userBox->removeFilter(onlineAndDescriptionUsers);
-
+/*
 	config_file.writeEntry("General", "ShowOnlineAndDescription", showOnlineAndDescription);
 
 	kdebugf2();
-}
+}*/
 
 GroupsManager::GroupsManager()
 	: QObject(), Groups(), GroupBar(0), lastId(-1), currentGroup(), showBlocked(true),

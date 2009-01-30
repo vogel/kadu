@@ -104,7 +104,6 @@ private:
 	QMenu *RecentChatsMenu;
 	KaduTabBar *GroupBar;
 
-	UserBox *Userbox;
 	ContactsListWidget *ContactsWidget;
 
 	QWidget *MainWidget;
@@ -212,7 +211,7 @@ public:
 
 	virtual bool supportsActionType(ActionDescription::ActionType type) {
 		return type & (ActionDescription::TypeGlobal | ActionDescription::TypeUserList | ActionDescription::TypeUser); }
-	virtual UserBox * userBox() { return Userbox; }
+	virtual ContactsListWidget * contactsListWidget() { return ContactsWidget; }
 	virtual ContactList contacts();
 	virtual ChatWidget * chatWidget() { return 0; }
 
@@ -225,11 +224,6 @@ public:
 		Zwraca wskaznik do zakladek z nazwami grup.
 	**/
 	KaduTabBar * groupBar() const;
-
-	/**
-		Zwraca wskaznik do userbox-a w glownym oknie.
-	**/
-	UserBox * userbox() const;
 
 	/**
 		Zwraca wska�nik na g��wny layout w obiekcie, teraz jest to QVBoxLayout.
