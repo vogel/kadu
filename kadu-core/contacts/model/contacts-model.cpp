@@ -12,6 +12,7 @@
 
 #include "contacts/contact.h"
 #include "contacts/contact-account-data.h"
+#include "contacts/contact-list-mime-data-helper.h"
 #include "contacts/contact-manager.h"
 
 #include "protocols/protocol.h"
@@ -75,6 +76,14 @@ int ContactsModel::rowCount(const QModelIndex &parent) const
 	return Manager->count();
 }
 
+QFlags<Qt::ItemFlag> ContactsModel::flags(const QModelIndex& index) const
+{
+	if (index.isValid())
+		return QAbstractItemModel::flags(index) | Qt::ItemIsDragEnabled;
+	else
+		return QAbstractItemModel::flags(index);
+}
+
 QVariant ContactsModel::data(const QModelIndex &index, int role) const
 {
 	Contact con = Manager->byIndex(index.row());
@@ -115,6 +124,30 @@ QVariant ContactsModel::headerData(int section, Qt::Orientation orientation, int
 		return QString("Column %1").arg(section);
 	else
 		return QString("Row %1").arg(section);
+}
+
+// D&D
+
+QStringList ContactsModel::mimeTypes() const
+{
+	return ContactListMimeDataHelper::mimeTypes();
+}
+
+QMimeData * ContactsModel::mimeData(const QList<QModelIndex> indexes) const
+{
+	ContactList list;
+	foreach (QModelIndex index, indexes)
+	{
+		QVariant conVariant = index.data(ContactRole);;
+		if (!conVariant.canConvert<Contact>())
+			continue;
+		Contact con = conVariant.value<Contact>();
+		if (con.isNull())
+			continue;
+		list << con;
+	}
+
+	return ContactListMimeDataHelper::toMimeData(list);
 }
 
 const QModelIndex ContactsModel::contactIndex(Contact contact) const

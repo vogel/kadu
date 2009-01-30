@@ -49,8 +49,14 @@ public:
 
 	virtual int rowCount(const QModelIndex &parent = QModelIndex()) const;
 
-	QVariant data(const QModelIndex &index, int role) const;
-	QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const;
+	virtual QFlags<Qt::ItemFlag> flags(const QModelIndex &index) const;
+
+	virtual QVariant data(const QModelIndex &index, int role) const;
+	virtual QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const;
+
+	// D&D
+	virtual QStringList mimeTypes() const;
+	virtual QMimeData* mimeData(const QList<QModelIndex> indexes) const;
 
 	// IContactsModel implementation
 	virtual const QModelIndex contactIndex(Contact contact) const;

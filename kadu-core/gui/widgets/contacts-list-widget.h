@@ -37,10 +37,6 @@ class ContactsListWidget : public QListView
 	Contact ToolTipContact;
 	QTimer ToolTipTimeoutTimer;
 
-	// D&D
-	QPoint DragStartPosition;
-	QDateTime DragStartTime;
-
 private slots:
 	void doubleClickedSlot(const QModelIndex &index);
 

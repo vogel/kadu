@@ -18,7 +18,10 @@ class ContactList;
 
 class ContactListMimeDataHelper
 {
+	static QLatin1String MimeType;
+
 public:
+	static QStringList mimeTypes();
 	static QMimeData * toMimeData(ContactList contactList);
 	static ContactList fromMimeData(QMimeData *mimeData);
 

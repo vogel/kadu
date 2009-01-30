@@ -15,6 +15,15 @@
 #include "contact-list-mime-data-helper.h"
 #include "contact-manager.h"
 
+QLatin1String ContactListMimeDataHelper::MimeType("application/x-kadu-ules");
+
+QStringList ContactListMimeDataHelper::mimeTypes()
+{
+	QStringList result;
+	result << MimeType;
+	return result;
+}
+
 QMimeData * ContactListMimeDataHelper::toMimeData(ContactList contactList)
 {
 	if (!contactList.count())
@@ -26,7 +35,7 @@ QMimeData * ContactListMimeDataHelper::toMimeData(ContactList contactList)
 	foreach (Contact contact, contactList)
 		contactListStrings << contact.uuid().toString();
 
-	mimeData->setData("application/x-kadu-ules", contactListStrings.join(":").toAscii());
+	mimeData->setData(MimeType, contactListStrings.join(":").toAscii());
 	return mimeData;
 }
 
@@ -34,7 +43,7 @@ ContactList ContactListMimeDataHelper::fromMimeData(QMimeData * mimeData)
 {
 	ContactList result;
 
-	QString contactListString(mimeData->data("application/x-kadu-ules"));
+	QString contactListString(mimeData->data(MimeType));
 	if (contactListString.isEmpty())
 		return result;
 

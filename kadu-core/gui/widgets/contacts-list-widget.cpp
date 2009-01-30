@@ -38,6 +38,9 @@ ContactsListWidget::ContactsListWidget(KaduMainWindow *mainWindow, QWidget *pare
 	setResizeMode(Adjust);
 	setWordWrap(true);
 
+	setDragEnabled(true);
+	setSelectionMode(QAbstractItemView::ExtendedSelection);
+
 	ContactsModel *model = new ContactsModel(ContactManager::instance(), this);
 	ContactsModelProxy *proxyModel = new ContactsModelProxy(this);
 	proxyModel->setSourceModel(model);
@@ -162,12 +165,6 @@ void ContactsListWidget::mousePressEvent(QMouseEvent *event)
 {
 	QAbstractItemView::mousePressEvent(event);
 	toolTipHide();
-
-	if (Qt::LeftButton == event->button())
-	{
-		DragStartPosition = event->pos();
-		DragStartTime = QDateTime();
-	}
 }
 
 void ContactsListWidget::mouseReleaseEvent(QMouseEvent *event)
@@ -178,27 +175,8 @@ void ContactsListWidget::mouseReleaseEvent(QMouseEvent *event)
 
 void ContactsListWidget::mouseMoveEvent(QMouseEvent *event)
 {
-	if (Qt::LeftButton == event->buttons() &&
-	    indexAt(DragStartPosition).isValid() &&
-	    (event->pos() - DragStartPosition).manhattanLength() >= QApplication::startDragDistance() &&
-	    DragStartTime.secsTo(QDateTime()) >= QApplication::startDragTime() * 1000)
-	{
-		// TODO
-		QMimeData *dragData = ContactListMimeDataHelper::toMimeData(selectedContacts());
-		if (dragData)
-		{
-			QDrag *drag = new QDrag(this);
-			drag->setMimeData(dragData);
-
-			Qt::DropAction dropAction = drag->exec(Qt::CopyAction | Qt::MoveAction);
-			delete dragData;
-		}
-	}
-	else
-	{
-		QListView::mouseMoveEvent(event);
-		toolTipRestart();
-	}
+	QListView::mouseMoveEvent(event);
+	toolTipRestart();
 }
 
 void ContactsListWidget::currentChanged(const QModelIndex& current, const QModelIndex& previous)
