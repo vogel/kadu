@@ -145,7 +145,7 @@ QSize ContactsListWidgetDelegate::sizeHint(const QStyleOptionViewItem &option, c
 	QPixmap pixmap = qvariant_cast<QPixmap>(index.data(Qt::DecorationRole));
 	int textLeft = pixmap.isNull()
 		? textMargin
-		: pixmap.width() + textMargin;
+		: pixmap.width() + textMargin * 2;
 
 	if (!description.isEmpty())
 	{
