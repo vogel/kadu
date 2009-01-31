@@ -25,13 +25,13 @@ class XmlConfigFile;
 class ContactManager : public QObject, public StorableObject
 {
 	Q_OBJECT
+	Q_DISABLE_COPY(ContactManager)
 
 	static ContactManager * Instance;
 
 	ContactList Contacts;
 
 	ContactManager() {}
-	ContactManager(const ContactManager &) {}
 
 	void importConfiguration(XmlConfigFile *configurationStorage);
 

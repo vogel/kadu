@@ -12,6 +12,8 @@
 
 #include <QtGui/QTabBar>
 
+class Group;
+
 /**
 	Klasa ta jest odpowiedzialna za obs�ug� zak�adek grup kontakt�w.
 	\class KaduTabBar
@@ -53,6 +55,8 @@ public:
 		\param name nazwa kontrolki.
 	**/
 	KaduTabBar(QWidget *parent = 0);
+
+	void setGroups(QList<Group *> groups);
 
 };
 

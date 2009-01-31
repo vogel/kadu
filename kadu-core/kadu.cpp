@@ -28,6 +28,7 @@
 
 #include "contacts/contact-account-data.h"
 #include "contacts/contact-manager.h"
+#include "contacts/group-manager.h"
 
 #include "gui/widgets/contacts-list-widget.h"
 #include "gui/widgets/contacts-list-widget-menu-manager.h"
@@ -412,8 +413,11 @@ Kadu::Kadu(QWidget *parent)
 	hbox_layout->setMargin(0);
 	hbox_layout->setSpacing(0);
 
+	GroupManager::instance()->loadConfiguration();
+
 	// groupbar
 	GroupBar = new KaduTabBar(this);
+	GroupBar->setGroups(GroupManager::instance()->groups());
 	hbox_layout->setStretchFactor(GroupBar, 1);
 
 	StatusChangerManager::initModule();
@@ -1624,6 +1628,7 @@ bool Kadu::close(bool quit)
 		pending.storeConfiguration(xml_config_file);
 // 		IgnoredManager::writeToConfiguration();
 
+		GroupManager::instance()->storeConfiguration();
 		ContactManager::instance()->storeConfiguration(xml_config_file);
 		AccountManager::instance()->storeConfiguration(xml_config_file);
 

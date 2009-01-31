@@ -280,7 +280,7 @@ QDomElement XmlConfigFile::getNode(QDomElement parentNode, const QString &nodeTa
 
 	if (ModeCreate == getMode)
 		removeNodes(parentNode, nodes);
-	else if (!nodes.isEmpty())
+	else if (ModeAppend != getMode && !nodes.isEmpty())
 		return nodes.item(0).toElement();
 
 	if (ModeFind != getMode)
@@ -296,6 +296,9 @@ QDomElement XmlConfigFile::getNamedNode(QDomElement parentNode, const QString &n
 {
 	QDomElement result;
 	QDomNodeList nodes = parentNode.elementsByTagName(nodeTagName);
+
+	if (ModeAppend == getMode)
+		return result;
 
 	if (ModeCreate == getMode)
 		removeNamedNodes(parentNode, nodes, nodeName);
@@ -325,6 +328,9 @@ QDomElement XmlConfigFile::getUuidNode(QDomElement parentNode, const QString &no
 	QDomElement result;
 	QDomNodeList nodes = parentNode.elementsByTagName(nodeTagName);
 
+	if (ModeAppend == getMode)
+		return result;
+
 	if (ModeCreate == getMode)
 		removeUuidNodes(parentNode, nodes, nodeUuid);
 
@@ -353,6 +359,12 @@ QDomNodeList XmlConfigFile::getNodes(QDomElement parent, const QString &nodeTagN
 	return parent.elementsByTagName(nodeTagName);
 }
 
+void XmlConfigFile::appendTextNode(QDomElement parentNode, const QString &nodeTagName, const QString &nodeContent)
+{
+	QDomElement element = getNode(parentNode, nodeTagName, ModeAppend);
+	element.appendChild(DomDocument.createTextNode(nodeContent));
+}
+
 void XmlConfigFile::createTextNode(QDomElement parentNode, const QString &nodeTagName, const QString &nodeContent)
 {
 	QDomElement element = getNode(parentNode, nodeTagName, ModeCreate);
@@ -373,6 +385,16 @@ QString XmlConfigFile::getTextNode(QDomElement parentNode, const QString &nodeTa
 		return "";
 
 	return element.text();
+}
+
+void XmlConfigFile::removeNode(QDomElement parentNode, const QString& nodeTagName)
+{
+	QDomElement elementToRemove = getNode(parentNode, nodeTagName, ModeFind);
+	while (!elementToRemove.isNull())
+	{
+		parentNode.removeChild(elementToRemove);
+		elementToRemove = getNode(parentNode, nodeTagName, ModeFind);
+	}
 }
 
 XmlConfigFile* xml_config_file = NULL;

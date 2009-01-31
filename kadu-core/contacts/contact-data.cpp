@@ -17,6 +17,8 @@
 #include "contacts/contact-account-data.h"
 #include "contacts/contact-manager.h"
 #include "contacts/contact-module-data.h"
+#include "contacts/group.h"
+#include "contacts/group-manager.h"
 
 #include "xml_config_file.h"
 
@@ -92,8 +94,11 @@ void ContactData::importConfiguration(XmlConfigFile *configurationStorage, QDomE
 		CustomData.insert(attribute.name(), attribute.value());
 	}
 
-	setGroups(CustomData["groups"].split(','));
+	QStringList groups = CustomData["groups"].split(',', QString::SkipEmptyParts);
+	foreach (const QString &group, groups)
+		Groups << GroupManager::instance()->byName(group);
 	CustomData.remove("groups");
+
 	Property(Display, altnick)
 	Property(FirstName, first_name)
 	Property(LastName, last_name)
@@ -133,24 +138,23 @@ void ContactData::loadConfiguration()
 		if (!name.isEmpty())
 			CustomData[name] = customDataElement.text();
 	}
-	
+
+	Groups.clear();
 	QDomElement groupsNode = configurationStorage->getNode(parent, "Groups", XmlConfigFile::ModeFind);
 	if (!groupsNode.isNull())
 	{
 		QDomNodeList groupsList = groupsNode.elementsByTagName("Group");
 
-		QStringList groups;
 		count = groupsList.count();
 		for (int i = 0; i < count; i++)
 		{
 			QDomElement groupElement = groupsList.at(i).toElement();
 			if (groupElement.isNull())
 				continue;
-			groups.append(groupElement.text());
+			Group *group = GroupManager::instance()->byUuid(groupElement.text());
+			if (group)
+				Groups << group;
 		}
-		
-		if (!groups.isEmpty())
-			setGroups(groups);
 	}
 	
 	Property(Display)
@@ -189,10 +193,15 @@ void ContactData::storeConfiguration()
 	Property(HomePhone)
 	Property(Mobile)
 	Property(Email)
-	
-	QDomElement groupsNode = configurationStorage->getNode(parent, "Groups", XmlConfigFile::ModeCreate);
-	foreach (QString group, Groups)
-		configurationStorage->createTextNode(groupsNode, "Group", group);
+
+	if (Groups.count())
+	{
+		QDomElement groupsNode = configurationStorage->getNode(parent, "Groups", XmlConfigFile::ModeCreate);
+		foreach (const Group *group, Groups)
+			configurationStorage->appendTextNode(groupsNode, "Group", group->uuid().toString());
+	}
+	else
+		configurationStorage->removeNode(parent, "Groups");
 
 	configurationStorage->createTextNode(parent, "Ignored", QVariant(Ignored).toString());
 

@@ -24,7 +24,8 @@ public:
 	{
 		ModeGet,
 		ModeFind,
-		ModeCreate
+		ModeCreate,
+		ModeAppend
 	};
 
 private:
@@ -114,10 +115,13 @@ public:
 
 	QDomNodeList getNodes(QDomElement parent, const QString &nodeTagName);
 
+	void appendTextNode(QDomElement parentNode, const QString &nodeTagName, const QString &nodeContent);
 	void createTextNode(QDomElement parentNode, const QString &nodeTagName, const QString &nodeContent);
 	void createNamedTextNode(QDomElement parentNode, const QString &nodeTagName, const QString &nodeName,
 			const QString &nodeContent);
 	QString getTextNode(QDomElement parentNode, const QString &nodeTagName);
+
+	void removeNode(QDomElement parentNode, const QString &nodeTagName);
 
 };
 

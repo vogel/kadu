@@ -17,6 +17,8 @@ set (kadu_SRCS
 	contacts/contact-manager.cpp
 	contacts/contact-module-data.cpp
 	contacts/contacts-aware-object.cpp
+	contacts/group.cpp
+	contacts/group-manager.cpp
 	contacts/ignored-helper.cpp
 
 	contacts/model/abstract-contacts-model.cpp
@@ -140,6 +142,7 @@ set (kadu_MOC_SRCS
 	contacts/contact-manager.h
 	contacts/contact-module-data.h
 	contacts/contact-list-configuration-helper.h
+	contacts/group-manager.h
 
 	contacts/model/abstract-contacts-model.h
 	contacts/model/contacts-model.h

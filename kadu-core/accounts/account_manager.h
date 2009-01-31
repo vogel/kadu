@@ -23,6 +23,7 @@ class XmlConfigFile;
 class KADUAPI AccountManager : public QObject
 {
 	Q_OBJECT
+	Q_DISABLE_COPY(AccountManager)
 
 	static AccountManager *Instance;
 

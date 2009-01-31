@@ -26,6 +26,7 @@
 class Account;
 class ContactAccountData;
 class ContactModuleData;
+class Group;
 class XmlConfigFile;
 
 class ContactData : public QSharedData, private StorableObject
@@ -42,7 +43,7 @@ class ContactData : public QSharedData, private StorableObject
 	QString HomePhone;
 	QString Mobile;
 	QString Email;
-	QStringList Groups;
+	QList<Group *> Groups;
 
 	bool Ignored;
 	bool Blocked;
@@ -54,7 +55,7 @@ protected:
 public:
 	static ContactData * loadFromStorage(StoragePoint *contactStoragePoint);
 
-	ContactData(QUuid uniqueId = QUuid());
+	ContactData(QUuid uuid = QUuid());
 	~ContactData();
 
 	void importConfiguration(XmlConfigFile *configurationStorage, QDomElement parent);
@@ -99,7 +100,6 @@ template<class T>
 	Property(QString, homePhone, HomePhone)
 	Property(QString, mobile, Mobile)
 	Property(QString, email, Email)
-	Property(QStringList, groups, Groups)
 
 };
 

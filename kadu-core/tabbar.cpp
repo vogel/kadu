@@ -12,6 +12,8 @@
 #include <QtGui/QInputDialog>
 #include <QtGui/QMenu>
 
+#include "contacts/group.h"
+
 #include "debug.h"
 #include "groups_manager.h"
 #include "userbox.h"
@@ -29,8 +31,8 @@ KaduTabBar::KaduTabBar(QWidget *parent)
 
 void KaduTabBar::dragEnterEvent(QDragEnterEvent *event)
 {
-     if (event->mimeData()->hasFormat("application/x-kadu-ules"))
-         event->acceptProposedAction();
+	if (event->mimeData()->hasFormat("application/x-kadu-ules"))
+		event->acceptProposedAction();
 }
 
 QString KaduTabBar::getNewGroupNameFromUser(bool *ok)
@@ -126,4 +128,10 @@ void KaduTabBar::moveToGroup()
 
 	foreach(const QString &ule, currentUles)
 		userlist->byAltNick(ule).setData("Groups", groups);
+}
+
+void KaduTabBar::setGroups(QList<Group *> groups)
+{
+	foreach (const Group *group, groups)
+		addTab(group->name());
 }
