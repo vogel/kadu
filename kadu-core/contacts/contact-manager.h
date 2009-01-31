@@ -61,7 +61,7 @@ signals:
 	void contactAboutToBeAdded(Contact &contact);
 	void contactAdded(Contact &contact);
 	void contactAboutToBeRemoved(Contact &contact);
-	void contactBeRemoved(Contact &contact);
+	void contactRemoved(Contact &contact);
 
 };
 
