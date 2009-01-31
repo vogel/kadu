@@ -133,6 +133,9 @@ QSize ContactsListWidgetDelegate::sizeHint(const QStyleOptionViewItem &option, c
 		return size;
 	int width = widget->viewport()->width();
 
+	QStyle *style = widget ? widget->style() : QApplication::style();
+	const int textMargin = style->pixelMetric(QStyle::PM_FocusFrameHMargin, 0, widget) + 1;
+
 	QFontMetrics fontMetrics(Font);
 	int displayHeight = fontMetrics.lineSpacing() + 3;
 
@@ -141,12 +144,12 @@ QSize ContactsListWidgetDelegate::sizeHint(const QStyleOptionViewItem &option, c
 
 	QPixmap pixmap = qvariant_cast<QPixmap>(index.data(Qt::DecorationRole));
 	int textLeft = pixmap.isNull()
-		? 5
-		: pixmap.width() + 5;
+		? textMargin
+		: pixmap.width() + textMargin;
 
 	if (!description.isEmpty())
 	{
-		QTextDocument *dd = descriptionDocument(description, opt.rect.width() - textLeft, DescriptionColor);
+		QTextDocument *dd = descriptionDocument(description, opt.rect.width() - textLeft - textMargin, DescriptionColor);
 		descriptionHeight = (int)dd->size().height();
 		delete dd;
 	}
@@ -178,6 +181,8 @@ void ContactsListWidgetDelegate::paint(QPainter *painter, const QStyleOptionView
 	QStyle *style = widget->style();
 	style->drawControl(QStyle::CE_ItemViewItem, &opt, painter, widget);
 
+	const int textMargin = style->pixelMetric(QStyle::PM_FocusFrameHMargin, 0, widget) + 1;
+
 	QRect rect = opt.rect;
 
 	painter->save();
@@ -206,12 +211,12 @@ void ContactsListWidgetDelegate::paint(QPainter *painter, const QStyleOptionView
 	QTextDocument *dd = 0;
 	int descriptionHeight = 0;
 	int textLeft = pixmap.isNull()
-		? 5
-		: pixmap.width() + 5;
+		? textMargin
+		: pixmap.width() + 2 * textMargin;
 
 	if (hasDescription)
 	{
-		dd = descriptionDocument(description, rect.width() - textLeft,
+		dd = descriptionDocument(description, rect.width() - textLeft - textMargin,
 			option.state & QStyle::State_Selected
 			? textcolor
 			: DescriptionColor);
@@ -223,7 +228,7 @@ void ContactsListWidgetDelegate::paint(QPainter *painter, const QStyleOptionView
 	int itemHeight = AlignTop ? displayHeight : rect.height();
 
 	if (!pixmap.isNull())
-		painter->drawPixmap(3, (itemHeight - pixmap.height()) / 2, pixmap);
+		painter->drawPixmap(textMargin, (itemHeight - pixmap.height()) / 2, pixmap);
 
 	QString display = index.data(Qt::DisplayRole).toString();
 	if (display.isEmpty())
