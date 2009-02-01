@@ -30,7 +30,7 @@ GaduAccountData::GaduAccountData(const QString &name, UinType uin, const QString
 
 bool GaduAccountData::setId(const QString &id)
 {
-	if (!validateId(id) || !AccountData::setId(id))
+	if (!AccountData::setId(id))
 		return false;
 
 	Uin = id.toLong();
