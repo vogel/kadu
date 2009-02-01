@@ -36,6 +36,8 @@
 
 #include "contacts/contact-account-data.h"
 
+#include "contacts/model/contact-list-model.h"
+
 #include "chat_widget.h"
 
 ChatWidget::ChatWidget(Account *initialAccount, const ContactList &contacts, QWidget *parent)
@@ -74,13 +76,16 @@ ChatWidget::ChatWidget(Account *initialAccount, const ContactList &contacts, QWi
 		uc_layout->setSpacing(0);
 
 // TODO: 0.6.5
-// 		userbox = new UserBox(Edit, false, Contacts, userlistContainer, "userbox");
-// 		userbox->setMinimumSize(QSize(30,30));
-
-// 		connect(userbox, SIGNAL(doubleClicked(Contact)), kadu, SLOT(sendMessage(Contact)));
-// 		connect(userbox, SIGNAL(returnPressed(Contact)), kadu, SLOT(sendMessage(Contact)));
 // 		connect(userbox, SIGNAL(mouseButtonClicked(int, Q3ListBoxItem *, const QPoint &)),
 // 		kadu, SLOT(mouseButtonClicked(int, Q3ListBoxItem *)));
+
+		ContactsWidget = new ContactsListWidget(getChatEditBox(), userlistContainer);
+		ContactsWidget->setModel(new ContactListModel(Contacts, this));
+
+		ContactsWidget->setMinimumSize(QSize(30, 30));
+
+		connect(ContactsWidget, SIGNAL(contactActivated(Contact)),
+				kadu, SLOT(sendMessage(Contact)));
 
 		QPushButton *leaveConference = new QPushButton(tr("Leave conference"), userlistContainer);
 		leaveConference->setMinimumWidth(ContactsWidget->minimumWidth());

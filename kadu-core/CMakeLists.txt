@@ -22,6 +22,7 @@ set (kadu_SRCS
 	contacts/ignored-helper.cpp
 
 	contacts/model/abstract-contacts-model.cpp
+	contacts/model/contact-list-model.cpp
 	contacts/model/contacts-model.cpp
 	contacts/model/contacts-model-proxy.cpp
 
@@ -145,6 +146,7 @@ set (kadu_MOC_SRCS
 	contacts/group-manager.h
 
 	contacts/model/abstract-contacts-model.h
+	contacts/model/contact-list-model.h
 	contacts/model/contacts-model.h
 	contacts/model/contacts-model-proxy.h
 
