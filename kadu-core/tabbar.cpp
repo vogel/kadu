@@ -14,8 +14,10 @@
 
 #include "contacts/group.h"
 
+#include "config_file.h"
 #include "debug.h"
 #include "groups_manager.h"
+#include "icons_manager.h"
 #include "userbox.h"
 #include "userinfo.h"
 
@@ -27,6 +29,11 @@ KaduTabBar::KaduTabBar(QWidget *parent)
 	kdebugf();
 	setSizePolicy(QSizePolicy(QSizePolicy::Maximum, QSizePolicy::Preferred));
 	setAcceptDrops(true);
+
+	setShape(QTabBar::RoundedWest);
+	addTab(icons_manager->loadIcon("PersonalInfo"), tr("All"));
+	setFont(QFont(config_file.readFontEntry("Look", "UserboxFont").family(), config_file.readFontEntry("Look", "UserboxFont").pointSize(), QFont::Bold));
+	setIconSize(QSize(16,16));
 }
 
 void KaduTabBar::dragEnterEvent(QDragEnterEvent *event)
@@ -81,8 +88,8 @@ void KaduTabBar::dropEvent(QDropEvent *event)
 	else
 		group = tabText(tabIndex);
 
-	if (group == GroupsManagerOld::tr("All"))
-		group = QString::null;
+// 	if (group == GroupsManagerOld::tr("All"))
+// 		group = QString::null;
 
 	currentGroup = group;
 	currentUles = ules;

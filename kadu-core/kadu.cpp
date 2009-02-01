@@ -528,7 +528,7 @@ Kadu::Kadu(QWidget *parent)
 	deleteUsersActionDescription->setShortcut("kadu_deleteuser");
 	ContactsListWidgetMenuManager::instance()->addManagementActionDescription(deleteUsersActionDescription);
 
-	groups_manager->setTabBar(GroupBar);
+// 	groups_manager->setTabBar(GroupBar);
 	setDocked(Docked, dontHideOnClose);
 
 	loadWindowGeometry(this, "General", "Geometry", 0, 50, 205, 465);
@@ -1691,7 +1691,7 @@ bool Kadu::close(bool quit)
 
 // TODO: 0.6.6
 // 		userlist->writeToConfig();//writeToConfig must be before GroupsManager::closeModule, because GM::cM removes all groups from userlist
-		GroupsManagerOld::closeModule();
+// 		GroupsManagerOld::closeModule();
 		xml_config_file->sync();
 		UserList::closeModule();
 		EmoticonsManager::closeModule();
@@ -2183,7 +2183,7 @@ void Kadu::configurationUpdated()
 	refreshPrivateStatusFromConfigFile();
 
 	changeAppearance();
-	groups_manager->refreshTabBar();
+// 	groups_manager->refreshTabBar();
 
 //	Myself.setAltNick(config_file.readEntry("General", "Nick"));
 

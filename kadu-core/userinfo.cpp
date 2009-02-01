@@ -407,12 +407,12 @@ bool UserInfo::acceptableGroupName(const QString &groupName)
 		kdebugf2();
 		return false;
 	}
-	if (groupName == GroupsManagerOld::tr("All") || groups_manager->groupExists(groupName))
-	{
-		MessageBox::msg(tr("This group already exists!"), true, "Warning");
-		kdebugf2();
-		return false;
-	}
+// 	if (groupName == GroupsManagerOld::tr("All") || groups_manager->groupExists(groupName))
+// 	{
+// 		MessageBox::msg(tr("This group already exists!"), true, "Warning");
+// 		kdebugf2();
+// 		return false;
+// 	}
 	kdebugf2();
 	return true;
 }
@@ -677,5 +677,5 @@ void UserInfo::deleteIcon()
 
 	pixmapLabels[groupName]->setPixmap(QPixmap());
 
-	groups_manager->setIconForTab(groupName);
+// 	groups_manager->setIconForTab(groupName);
 }
