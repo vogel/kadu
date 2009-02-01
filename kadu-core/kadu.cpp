@@ -389,6 +389,7 @@ Kadu::Kadu(QWidget *parent)
 {
 	kdebugf();
 
+	GroupManager::instance()->loadConfiguration();
 	ContactManager::instance()->loadConfiguration(xml_config_file);
 
 	kadu = this;
@@ -412,8 +413,6 @@ Kadu::Kadu(QWidget *parent)
 	QHBoxLayout *hbox_layout = new QHBoxLayout(hbox);
 	hbox_layout->setMargin(0);
 	hbox_layout->setSpacing(0);
-
-	GroupManager::instance()->loadConfiguration();
 
 	// groupbar
 	GroupBar = new KaduTabBar(this);
