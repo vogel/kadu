@@ -311,8 +311,8 @@ void Notify::moveToNotifyList()
 void Notify::accountRegistered(Account *account)
 {
 	Protocol *protocol = account->protocol();
-	connect(protocol, SIGNAL(connectionError(Protocol *, const QString &, const QString &)),
-			this, SLOT(connectionError(Protocol *, const QString &, const QString &)));
+	connect(protocol, SIGNAL(connectionError(Account *, const QString &, const QString &)),
+			this, SLOT(connectionError(Account *, const QString &, const QString &)));
 	connect(protocol, SIGNAL(messageReceived(Account *, ContactList, const QString&, time_t)),
 		this, SLOT(messageReceived(Account *, ContactList, const QString&, time_t)));
 	connect(account, SIGNAL(contactStatusChanged(Account *, Contact, Status)),
@@ -322,8 +322,8 @@ void Notify::accountRegistered(Account *account)
 void Notify::accountUnregistered(Account *account)
 {
 	Protocol *protocol = account->protocol();
-	disconnect(protocol, SIGNAL(connectionError(Protocol *, const QString &, const QString &)),
-			this, SLOT(connectionError(Protocol *, const QString &, const QString &)));
+	disconnect(protocol, SIGNAL(connectionError(Account *, const QString &, const QString &)),
+			this, SLOT(connectionError(Account *, const QString &, const QString &)));
 	disconnect(protocol, SIGNAL(messageReceived(Account *, ContactList, const QString&, time_t)),
 		this, SLOT(messageReceived(Account *, ContactList, const QString&, time_t)));
 	disconnect(account, SIGNAL(contactStatusChanged(Account *, Contact, Status)),
