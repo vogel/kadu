@@ -17,7 +17,7 @@
 #include "contacts/contact-list.h"
 #include "contacts/contact-list-mime-data-helper.h"
 #include "contacts/contact-manager.h"
-#include "contacts/model/contacts-model.h"
+
 #include "contacts/model/contacts-model-proxy.h"
 
 #include "action.h"
@@ -31,7 +31,7 @@
 #include "tool-tip-class-manager.h"
 
 ContactsListWidget::ContactsListWidget(KaduMainWindow *mainWindow, QWidget *parent)
-	: QListView(parent), MainWindow(mainWindow)
+	: QListView(parent), MainWindow(mainWindow), ProxyModel(new ContactsModelProxy(this)), Delegate(0)
 {
 	// all these tree are needed to make this view updating layout properly
 	setLayoutMode(Batched);
@@ -41,28 +41,41 @@ ContactsListWidget::ContactsListWidget(KaduMainWindow *mainWindow, QWidget *pare
 	setDragEnabled(true);
 	setSelectionMode(QAbstractItemView::ExtendedSelection);
 
-	ContactsModel *model = new ContactsModel(ContactManager::instance(), this);
-	ContactsModelProxy *proxyModel = new ContactsModelProxy(this);
-	proxyModel->setSourceModel(model);
-	proxyModel->invalidate();
-
-	Delegate = new ContactsListWidgetDelegate(proxyModel, this);
-
-	setModel(proxyModel);
+	Delegate = new ContactsListWidgetDelegate(this);
 	setItemDelegate(Delegate);
 
-	connect(&ToolTipTimeoutTimer, SIGNAL(timeout()), this, SLOT(toolTipTimeout()));
+	Delegate->setModel(ProxyModel);
+	QAbstractItemView::setModel(ProxyModel);
 
+	connect(&ToolTipTimeoutTimer, SIGNAL(timeout()), this, SLOT(toolTipTimeout()));
 	connect(this, SIGNAL(doubleClicked(const QModelIndex &)), this, SLOT(doubleClickedSlot(const QModelIndex &)));
 }
 
 ContactsListWidget::~ContactsListWidget()
 {
+	if (ProxyModel->sourceModel())
+	{
+		delete ProxyModel->sourceModel();
+		ProxyModel->setSourceModel(0);
+	}
+
 	if (Delegate)
 	{
 		delete Delegate;
 		Delegate = 0;
 	}
+}
+
+void ContactsListWidget::setModel(AbstractContactsModel *model)
+{
+	if (ProxyModel->sourceModel())
+	{
+		delete ProxyModel->sourceModel();
+		ProxyModel->setSourceModel(0);
+	}
+
+	ProxyModel->setSourceModel(dynamic_cast<QAbstractItemModel *>(model));
+	ProxyModel->invalidate();
 }
 
 ContactList ContactsListWidget::selectedContacts() const

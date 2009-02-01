@@ -51,8 +51,10 @@ protected:
 	virtual void accountUnregistered(Account *account);
 
 public:
-	ContactsListWidgetDelegate(AbstractContactsModel *model, QObject *parent = 0);
+	ContactsListWidgetDelegate(QObject *parent = 0);
 	virtual ~ContactsListWidgetDelegate();
+
+	virtual void setModel(AbstractContactsModel *model);
 
 	virtual QSize sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index ) const;
 	virtual void paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const;

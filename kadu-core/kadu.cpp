@@ -30,6 +30,8 @@
 #include "contacts/contact-manager.h"
 #include "contacts/group-manager.h"
 
+#include "contacts/model/contacts-model.h"
+
 #include "gui/widgets/contacts-list-widget.h"
 #include "gui/widgets/contacts-list-widget-menu-manager.h"
 
@@ -436,6 +438,7 @@ Kadu::Kadu(QWidget *parent)
 	SearchDialog::initModule();
 
 	ContactsWidget = new ContactsListWidget(this);
+	ContactsWidget->setModel(new ContactsModel(ContactManager::instance(), this));
 
 	hbox_layout->setStretchFactor(ContactsWidget, 100);
 	hbox_layout->addWidget(GroupBar);

@@ -19,8 +19,10 @@
 class QContextMenuEvent;
 class QModelIndex;
 
+class AbstractContactsModel;
 class ContactList;
 class ContactsListWidgetDelegate;
+class ContactsModelProxy;
 class KaduMainWindow;
 
 class ContactsListWidget : public QListView
@@ -29,6 +31,7 @@ class ContactsListWidget : public QListView
 
 	KaduMainWindow *MainWindow;
 	ContactsListWidgetDelegate *Delegate;
+	ContactsModelProxy *ProxyModel;
 
 	Contact contact(const QModelIndex &index) const;
 	void triggerActivate(const QModelIndex &index);
@@ -62,6 +65,8 @@ protected slots:
 public:
 	ContactsListWidget(KaduMainWindow *mainWindow, QWidget *parent = 0);
 	virtual ~ContactsListWidget();
+
+	virtual void setModel(AbstractContactsModel *model);
 
 	ContactList selectedContacts() const;
 
