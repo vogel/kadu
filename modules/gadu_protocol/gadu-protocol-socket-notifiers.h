@@ -7,101 +7,16 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GADU_PRIVATE_H
-#define GADU_PRIVATE_H
+#ifndef GADU_PROTOCOL_SOCKET_NOTIFIERS_H
+#define GADU_PROTOCOL_SOCKET_NOTIFIERS_H
+
+#include "contacts/contact.h"
 
 #include "gadu.h"
-#include "protocols/protocol.h"
-#include "protocols/protocols_manager.h"
 
-class QSocketNotifier;
+#include "gadu-socket-notifiers.h"
 
-class Account;
-
-struct gg_http;
-struct gg_session;
-
-// ------------------------------------
-//             Notifiers
-// ------------------------------------
-#ifndef _MSC_VER
-#pragma GCC visibility push(hidden)
-#endif
-
-class SocketNotifiers : public QObject
-{
-	Q_OBJECT
-
-protected:
-	int Fd;
-	QSocketNotifier *Snr;
-	QSocketNotifier *Snw;
-
-	void createSocketNotifiers();
-	void deleteSocketNotifiers();
-	void recreateSocketNotifiers();
-	virtual void socketEvent() = 0;
-
-protected slots:
-	virtual void dataReceived() = 0;
-	virtual void dataSent() = 0;
-
-public:
-	SocketNotifiers(int fd, QObject *parent = 0);
-	virtual ~SocketNotifiers();
-	virtual void start();
-	virtual void stop();
-
-};
-
-class PubdirSocketNotifiers : public SocketNotifiers
-{
-	Q_OBJECT
-
-	struct gg_http *H;
-
-protected:
-	virtual void socketEvent();
-
-protected slots:
-	virtual void dataReceived();
-	virtual void dataSent();
-
-public:
-	PubdirSocketNotifiers(struct gg_http *, QObject *parent = 0);
-	virtual ~PubdirSocketNotifiers();
-
-signals:
-	void done(bool ok, struct gg_http *);
-
-};
-
-class TokenSocketNotifiers : public SocketNotifiers
-{
-	Q_OBJECT
-
-	struct gg_http *H;
-
-protected:
-	virtual void socketEvent();
-
-protected slots:
-	virtual void dataReceived();
-	virtual void dataSent();
-
-public:
-	TokenSocketNotifiers(QObject *parent = 0);
-	virtual ~TokenSocketNotifiers();
-
-	virtual void start();
-
-signals:
-	void gotToken(QString, QPixmap);
-	void tokenError();
-
-};
-
-class GaduSocketNotifiers : public SocketNotifiers
+class GaduProtocolSocketNotifiers : public GaduSocketNotifiers
 {
 	Q_OBJECT
 
@@ -116,8 +31,8 @@ protected:
 	virtual void socketEvent();
 
 public:
-	GaduSocketNotifiers(Account *account, QObject *parent = 0);
-	virtual ~GaduSocketNotifiers();
+	GaduProtocolSocketNotifiers(Account *account, QObject *parent = 0);
+	virtual ~GaduProtocolSocketNotifiers();
 	void setSession(gg_session *sess);
 	void checkWrite();
 
@@ -161,8 +76,4 @@ signals:
 
 };
 
-#ifndef _MSC_VER
-#pragma GCC visibility pop
-#endif
-
-#endif
+#endif // GADU_PROTOCOL_SOCKET_NOTIFIERS_H

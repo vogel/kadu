@@ -26,6 +26,7 @@
 #include "contacts/contact-manager.h"
 #include "contacts/ignored-helper.h"
 
+#include "protocols/protocols_manager.h"
 #include "protocols/status.h"
 
 #include "config_file.h"
@@ -41,8 +42,10 @@
 #include "gadu_formatter.h"
 #include "gadu_images_manager.h"
 #include "gadu-importer.h"
-#include "gadu-private.h"
 #include "gadu_protocol_factory.h"
+#include "gadu-protocol-socket-notifiers.h"
+#include "gadu-pubdir-socket-notifiers.h"
+#include "gadu-token-socket-notifiers.h"
 #include "gadu_search.h"
 #include "gadu_status.h"
 #include "uins_list.h"
@@ -323,7 +326,7 @@ GaduProtocol::GaduProtocol(Account *account, ProtocolFactory *factory)
 		GaduData(0),
 		Mode(Register), DataUin(0), DataEmail(), DataPassword(), DataNewPassword(), TokenId(), TokenValue(),
 		ServerNr(0), ActiveServer(), LoginParams(), Sess(0), sendImageRequests(0), seqNumber(0), whileConnecting(false),
-		DccExternalIP(), SocketNotifiers(new GaduSocketNotifiers(account, this)), PingTimer(0),
+		DccExternalIP(), SocketNotifiers(new GaduProtocolSocketNotifiers(account, this)), PingTimer(0),
 		SendUserListTimer(new QTimer(this, "SendUserListTimer")), UserListClear(false), ImportReply()
 {
 	kdebugf();
@@ -1582,7 +1585,7 @@ void GaduProtocol::setPersonalInfo(SearchRecord &searchRecord, SearchResult &new
 
 void GaduProtocol::getToken()
 {
-	TokenSocketNotifiers *sn = new TokenSocketNotifiers(this);
+	GaduTokenSocketNotifiers *sn = new GaduTokenSocketNotifiers(this);
 	connect(sn, SIGNAL(tokenError()), this, SLOT(tokenError()));
 	connect(sn, SIGNAL(gotToken(QString, QPixmap)), this, SLOT(gotToken(QString, QPixmap)));
 	sn->start();
@@ -1645,7 +1648,7 @@ void GaduProtocol::doRegisterAccount()
 		unicode2cp(TokenId).data(), unicode2cp(TokenValue).data(), 1);
 	if (h)
 	{
-		PubdirSocketNotifiers *sn = new PubdirSocketNotifiers(h, this);
+		GaduPubdirSocketNotifiers *sn = new GaduPubdirSocketNotifiers(h, this);
 		connect(sn, SIGNAL(done(bool, struct gg_http *)), this, SLOT(registerDone(bool, struct gg_http *)));
 		sn->start();
 	}
@@ -1668,7 +1671,7 @@ void GaduProtocol::doUnregisterAccount()
 		unicode2cp(TokenValue).data(), 1);
 	if (h)
 	{
-		PubdirSocketNotifiers *sn = new PubdirSocketNotifiers(h, this);
+		GaduPubdirSocketNotifiers *sn = new GaduPubdirSocketNotifiers(h, this);
 		connect(sn, SIGNAL(done(bool, struct gg_http *)),
 			this, SLOT(unregisterDone(bool, struct gg_http *)));
 		sn->start();
@@ -1693,7 +1696,7 @@ void GaduProtocol::doRemindPassword()
 		unicode2cp(TokenValue).data(), 1);
 	if (h)
 	{
-		PubdirSocketNotifiers *sn = new PubdirSocketNotifiers(h, this);
+		GaduPubdirSocketNotifiers *sn = new GaduPubdirSocketNotifiers(h, this);
 		connect(sn, SIGNAL(done(bool, struct gg_http *)), this, SLOT(remindDone(bool, struct gg_http *)));
 		sn->start();
 	}
@@ -1718,7 +1721,7 @@ void GaduProtocol::doChangePassword()
 		unicode2cp(TokenId).data(), unicode2cp(TokenValue).data(), 1);
 	if (h)
 	{
-		PubdirSocketNotifiers *sn = new PubdirSocketNotifiers(h, this);
+		GaduPubdirSocketNotifiers *sn = new GaduPubdirSocketNotifiers(h, this);
 		connect(sn, SIGNAL(done(bool, struct gg_http *)), this,
 			SLOT(changePasswordDone(bool, struct gg_http *)));
 		sn->start();

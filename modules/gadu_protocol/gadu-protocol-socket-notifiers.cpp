@@ -9,8 +9,9 @@
 
 #include <QtCore/QSocketNotifier>
 
+#include <libgadu.h>
+
 #include "accounts/account.h"
-#include "accounts/account_manager.h"
 
 #include "contacts/ignored-helper.h"
 
@@ -18,331 +19,28 @@
 #include "debug.h"
 #include "misc.h"
 
-#include "gadu-private.h"
+#include "gadu.h"
 
-SocketNotifiers::SocketNotifiers(int fd, QObject *parent)
-	: QObject(parent), Fd(fd), Snr(0), Snw(0)
+#include "gadu-protocol-socket-notifiers.h"
+
+GaduProtocolSocketNotifiers::GaduProtocolSocketNotifiers(Account *account, QObject *parent) :
+		CurrentAccount(account), GaduSocketNotifiers(0, parent), Sess(0), socketEventCalls(0)
 {
 	kdebugf();
 	kdebugf2();
 }
 
-SocketNotifiers::~SocketNotifiers()
-{
-	kdebugf();
-	deleteSocketNotifiers();
-	kdebugf2();
-}
-
-void SocketNotifiers::start()
-{
-	kdebugf();
-	createSocketNotifiers();
-	kdebugf2();
-}
-
-void SocketNotifiers::stop()
-{
-	kdebugf();
-	deleteSocketNotifiers();
-	kdebugf2();
-}
-
-void SocketNotifiers::createSocketNotifiers()
-{
-	kdebugf();
-
-	Snr = new QSocketNotifier(Fd, QSocketNotifier::Read, this, "read_socket_notifier");
-	connect(Snr, SIGNAL(activated(int)), this, SLOT(dataReceived()));
-
-	Snw = new QSocketNotifier(Fd, QSocketNotifier::Write, this, "write_socket_notifier");
-	connect(Snw, SIGNAL(activated(int)), this, SLOT(dataSent()));
-
-	kdebugf2();
-}
-
-void SocketNotifiers::deleteSocketNotifiers()
-{
-	kdebugf();
-
-	if (Snr)
-	{
-		Snr->setEnabled(false);
-		Snr->deleteLater();
-		Snr = NULL;
-	}
-
-	if (Snw)
-	{
-		Snw->setEnabled(false);
-		Snw->deleteLater();
-		Snw = NULL;
-	}
-
-	kdebugf2();
-}
-
-void SocketNotifiers::recreateSocketNotifiers()
-{
-	kdebugf();
-
-	deleteSocketNotifiers();
-	createSocketNotifiers();
-
-	kdebugf2();
-}
-
-/* PubdirSocketNotifiers */
-
-PubdirSocketNotifiers::PubdirSocketNotifiers(struct gg_http *h, QObject *parent)
-	: SocketNotifiers(h->fd, parent), H(h)
-{
-	kdebugf();
-	kdebugf2();
-}
-
-PubdirSocketNotifiers::~PubdirSocketNotifiers()
-{
-	kdebugf();
-	deleteSocketNotifiers();
-	kdebugf2();
-}
-
-void PubdirSocketNotifiers::dataReceived()
-{
-	kdebugf();
-
-	Snr->setEnabled(false);
-
-	if (H->check & GG_CHECK_READ)
-		socketEvent();
-
-	if(Snr) Snr->setEnabled(true);
-
-	kdebugf2();
-}
-
-void PubdirSocketNotifiers::dataSent()
-{
-	kdebugf();
-
-	Snw->setEnabled(false);
-	if (H->check & GG_CHECK_WRITE)
-		socketEvent();
-
-	kdebugf2();
-}
-
-void PubdirSocketNotifiers::socketEvent()
-{
-	kdebugf();
-
-	if (gg_pubdir_watch_fd(H) == -1)
-	{
-		deleteSocketNotifiers();
-		emit done(false, H);
-		gg_pubdir_free(H);
-		deleteLater();
-		return;
-	}
-
-	struct gg_pubdir *p = (struct gg_pubdir *)H->data;
-
-	switch (H->state)
-	{
-		case GG_STATE_CONNECTING:
-			kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "changing QSocketNotifiers\n");
-			recreateSocketNotifiers();
-
-			if (H->check & GG_CHECK_WRITE)
-				Snw->setEnabled(true);
-
-			break;
-
-		case GG_STATE_ERROR:
-			kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "error!\n");
-			deleteSocketNotifiers();
-			emit done(false, H);
-			gg_pubdir_free(H);
-			deleteLater();
-			break;
-
-		case GG_STATE_DONE:
-			deleteSocketNotifiers();
-
-			if (p->success)
-			{
-				kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "success!\n");
-				emit done(true, H);
-			}
-			else
-			{
-				kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "error!\n");
-				emit done(false, H);
-			}
-			gg_pubdir_free(H);
-			deleteLater();
-			break;
-
-		default:
-			if (H->check & GG_CHECK_WRITE)
-				Snw->setEnabled(true);
-	}
-	kdebugf2();
-}
-
-/* TokenSocketNotifier */
-
-TokenSocketNotifiers::TokenSocketNotifiers(QObject *parent)
-	: SocketNotifiers(0, parent), H(0)
-{
-	kdebugf();
-	kdebugf2();
-}
-
-TokenSocketNotifiers::~TokenSocketNotifiers()
-{
-	kdebugf();
-	deleteSocketNotifiers();
-	kdebugf2();
-}
-
-void TokenSocketNotifiers::start()
-{
-	kdebugf();
-
-	if (!(H = gg_token(1)))
-	{
-		emit tokenError();
-		return;
-	}
-
-	Fd = H->fd;
-	createSocketNotifiers();
-	kdebugf2();
-}
-
-void TokenSocketNotifiers::dataReceived()
-{
-	kdebugf();
-
-	Snr->setEnabled(false);
-	
-	if (H->check & GG_CHECK_READ)
-		socketEvent();
-
-	if(Snr) Snr->setEnabled(true);
-	
-	kdebugf2();
-}
-
-void TokenSocketNotifiers::dataSent()
-{
-	kdebugf();
-
-	Snw->setEnabled(false);
-	if (H->check & GG_CHECK_WRITE)
-		socketEvent();
-
-	kdebugf2();
-}
-
-void TokenSocketNotifiers::socketEvent()
-{
-	kdebugf();
-
-	if (gg_token_watch_fd(H) == -1)
-	{
-		deleteSocketNotifiers();
-		emit tokenError();
-		gg_token_free(H);
-		H = NULL;
-		kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "getting token error\n");
-		deleteLater();
-		return;
-	}
-
-	struct gg_pubdir *p = (struct gg_pubdir *)H->data;
-
-	switch (H->state)
-	{
-
-		case GG_STATE_CONNECTING:
-			kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "changing QSocketNotifiers.\n");
-			deleteSocketNotifiers();
-			createSocketNotifiers();
-			if (H->check & GG_CHECK_WRITE)
-				Snw->setEnabled(true);
-			break;
-
-		case GG_STATE_ERROR:
-			deleteSocketNotifiers();
-			emit tokenError();
-			gg_token_free(H);
-			H = NULL;
-			kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "getting token error\n");
-			deleteLater();
-			break;
-
-		case GG_STATE_DONE:
-			deleteSocketNotifiers();
-			if (p->success)
-			{
-				kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "success\n");
-
-				struct gg_token *t = (struct gg_token *)H->data;
-				QString tokenId = cp2unicode(t->tokenid);
-
-				//nie optymalizowac!!!
-				QByteArray buf(H->body_size);
-				for (unsigned int i = 0; i < H->body_size; ++i)
-					buf[i] = H->body[i];
-
-				QPixmap tokenImage;
-				tokenImage.loadFromData(buf);
-
-				emit gotToken(tokenId, tokenImage);
-			}
-
-			else
-			{
-				kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "getting token error\n");
-				emit tokenError();
-			}
-
-			gg_token_free(H);
-			H = NULL;
-			deleteLater();
-			break;
-
-		default:
-			if (H->check & GG_CHECK_WRITE)
-				Snw->setEnabled(true);
-	}
-
-	kdebugf2();
-}
-
-/* GaduSocketNotifiers */
-
-GaduSocketNotifiers::GaduSocketNotifiers(Account *account, QObject *parent) :
-		CurrentAccount(account), SocketNotifiers(0, parent), Sess(0), socketEventCalls(0)
-{
-	kdebugf();
-	kdebugf2();
-}
-
-GaduSocketNotifiers::~GaduSocketNotifiers()
+GaduProtocolSocketNotifiers::~GaduProtocolSocketNotifiers()
 {
 }
 
-void GaduSocketNotifiers::setSession(gg_session *sess)
+void GaduProtocolSocketNotifiers::setSession(gg_session *sess)
 {
 	Sess = sess;
 	Fd = Sess->fd;
 }
 
-void GaduSocketNotifiers::checkWrite()
+void GaduProtocolSocketNotifiers::checkWrite()
 {
 	kdebugf();
 	//kiedy� tu si� sypa�o, ale b��d zosta� naprawiony
@@ -350,21 +48,21 @@ void GaduSocketNotifiers::checkWrite()
 	if (Sess == NULL)
 	{
 		kdebugm(KDEBUG_PANIC, "Sess == NULL !!\n");
-		printBacktrace("GaduSocketNotifiers::checkWrite(): Sess==null");
+		printBacktrace("GaduProtocolSocketNotifiers::checkWrite(): Sess==null");
 	}
 	if (Sess->check & GG_CHECK_WRITE)
 	{
 		if (Snw == NULL)
 		{
 			kdebugm(KDEBUG_PANIC, "Snw == NULL !!\n");
-			printBacktrace("GaduSocketNotifiers::checkWrite(): Snw==null");
+			printBacktrace("GaduProtocolSocketNotifiers::checkWrite(): Snw==null");
 		}
 		Snw->setEnabled(true);
 	}
 	kdebugf2();
 }
 
-void GaduSocketNotifiers::dataReceived()
+void GaduProtocolSocketNotifiers::dataReceived()
 {
 	kdebugf();
 
@@ -379,19 +77,19 @@ void GaduSocketNotifiers::dataReceived()
 	kdebugf2();
 }
 
-void GaduSocketNotifiers::dataSent()
+void GaduProtocolSocketNotifiers::dataSent()
 {
 	kdebugf();
 
 	if (Sess==NULL)
 	{
 		kdebugm(KDEBUG_PANIC, "Sess == NULL !!\n");
-		printBacktrace("GaduSocketNotifiers::dataSent(): Sess==null");
+		printBacktrace("GaduProtocolSocketNotifiers::dataSent(): Sess==null");
 	}
 	if (Snw==NULL)
 	{
 		kdebugm(KDEBUG_PANIC, "Snw == NULL !!\n");
-		printBacktrace("GaduSocketNotifiers::dataSent(): Snw==null");
+		printBacktrace("GaduProtocolSocketNotifiers::dataSent(): Snw==null");
 	}
 
 	Snw->setEnabled(false);
@@ -401,13 +99,13 @@ void GaduSocketNotifiers::dataSent()
 	kdebugf2();
 }
 
-void GaduSocketNotifiers::socketEvent()
+void GaduProtocolSocketNotifiers::socketEvent()
 {
 	kdebugf();
 
 	++socketEventCalls;
 	if (socketEventCalls > 1)
-		kdebugm(KDEBUG_WARNING, "************* GaduSocketNotifiers::socketEvent(): Recursive socketEvent calls detected!\n");
+		kdebugm(KDEBUG_WARNING, "************* GaduProtocolSocketNotifiers::socketEvent(): Recursive socketEvent calls detected!\n");
 
 	gg_event* e;
 	if (!(e = gg_watch_fd(Sess)))
@@ -569,7 +267,7 @@ void GaduSocketNotifiers::socketEvent()
 	kdebugf2();
 }
 
-void GaduSocketNotifiers::connectionFailed(int failure)
+void GaduProtocolSocketNotifiers::connectionFailed(int failure)
 {
 	kdebugf();
 	GaduError err;

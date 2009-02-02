@@ -7,10 +7,13 @@ set (SOURCES
 	gadu_formatter.cpp
 	gadu_images_manager.cpp
 	gadu-importer.cpp
-	gadu-private.cpp
 	gadu_protocol_factory.cpp
+	gadu-protocol-socket-notifiers.cpp
+	gadu-pubdir-socket-notifiers.cpp
 	gadu_search.cpp
+	gadu-socket-notifiers.cpp
 	gadu_status.cpp
+	gadu-token-socket-notifiers.cpp
 	uins_list.cpp
 )
 
@@ -19,7 +22,10 @@ set (MOC_SOURCES
 	gadu_configuration_dialog.h
 	gadu-contact-account-data.h
 	gadu-importer.h
-	gadu-private.h
+	gadu-protocol-socket-notifiers.h
+	gadu-pubdir-socket-notifiers.h
+	gadu-socket-notifiers.h
+	gadu-token-socket-notifiers.h
 )
 
 set (TRANSLATION_SOURCES

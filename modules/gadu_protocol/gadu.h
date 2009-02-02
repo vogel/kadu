@@ -28,7 +28,7 @@ class QTimer;
 class AccountData;
 class GaduAccountData;
 class GaduContactAccountData;
-class GaduSocketNotifiers;
+class GaduProtocolSocketNotifiers;
 
 struct SearchRecord;
 struct SearchResult;
@@ -154,7 +154,7 @@ class GADUAPI GaduProtocol : public Protocol
 		(po��czenie, zerwanie po��czenia, nowa wiadomo��).
 			@see GaduSocketNotifiers
 	**/
-	GaduSocketNotifiers *SocketNotifiers;
+	GaduProtocolSocketNotifiers *SocketNotifiers;
 
 	/**
 		Zegar pinguj�cy serwer.
