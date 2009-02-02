@@ -40,6 +40,20 @@ class ContactsListWidget : public QListView
 	Contact ToolTipContact;
 	QTimer ToolTipTimeoutTimer;
 
+public:
+	enum BackgroundMode
+	{
+		BackgroundNone,
+		BackgroundCentered,
+		BackgroundTiled,
+		BackgroundTiledAndCentered,
+		BackgroundStretched
+	};
+
+private:
+	BackgroundMode BackgroundImageMode;
+	QString BackgroundImageFile;
+
 private slots:
 	void doubleClickedSlot(const QModelIndex &index);
 
@@ -69,6 +83,8 @@ public:
 	virtual void setModel(AbstractContactsModel *model);
 
 	ContactList selectedContacts() const;
+	void setBackground(const QString &file = QString::null, BackgroundMode mode = BackgroundNone);
+	void updateBackground();
 
 signals:
 	void contactActivated(Contact contact);

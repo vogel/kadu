@@ -208,6 +208,48 @@ void ContactsListWidget::doubleClickedSlot(const QModelIndex &index)
 	triggerActivate(index);
 }
 
+void ContactsListWidget::setBackground(const QString &file, BackgroundMode mode)
+{
+	BackgroundImageMode = mode;
+	BackgroundImageFile = file;
+	updateBackground();
+}
+
+void ContactsListWidget::updateBackground()
+{
+	// TODO 0.6.6 fix image "Stretched" + update on resize event - write image into resource tree
+
+	QString style;
+
+	if (BackgroundImageMode == BackgroundNone)
+	{
+		setStyleSheet(style);
+		return;
+	}
+
+	QImage *backgroundImage = 0;
+
+	if (BackgroundImageMode == BackgroundStretched)
+	{
+		/*if (!file.isEmpty() && QFile::exists(file))
+			backgroundImage = new QImage(file);
+		QImage stretchedImage = backgroundImage->smoothScale(
+			ContactsWidget->viewport()->width(), ContactsWidget->viewport()->height());
+		QFile file2(":/backgroundImage.png");
+		file2.open(QIODevice::WriteOnly);
+		stretchedImage.save(&file2, "PNG");
+		file = ":/backgroundImage.png";*/
+	}
+
+	style = QString("QFrame { background-image: url(%1);").arg(BackgroundImageFile);
+	if (BackgroundImageMode != BackgroundTiled && BackgroundImageMode != BackgroundTiledAndCentered)
+		style.append(" background-repeat: no-repeat;");
+	if (BackgroundImageMode == BackgroundCentered || BackgroundImageMode == BackgroundTiledAndCentered)
+		style.append("background-position: center;");
+	style.append("background-attachment:fixed;}");
+	setStyleSheet(style);
+}
+
 // Tool Tips
 
 void ContactsListWidget::toolTipTimeout()
