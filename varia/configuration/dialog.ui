@@ -263,6 +263,7 @@ Text is plain black." />
 				<combo-box caption="Display style" config-section="Look" config-item="UserboxBackgroundDisplayStyle"
 					   tool-tip="Choose userbox background style" id="userboxBackgroundDisplayStyle" >
 					<item value="Tiled" caption="Tiled" />
+					<item value="TiledAndCentered" caption="Tiled and centered" />
 					<item value="Centered" caption="Centered" />
 					<item value="Stretched" caption="Stretched" />
 				</combo-box>

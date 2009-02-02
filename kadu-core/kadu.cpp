@@ -2185,6 +2185,36 @@ void Kadu::configurationUpdated()
 	refreshPrivateStatusFromConfigFile();
 
 	changeAppearance();
+
+	// TODO 0.6.6 fix image "Stretched" + update on resize event - write image into resource tree
+	QString style;
+	QString type = config_file.readEntry("Look", "UserboxBackgroundDisplayStyle");
+	if (config_file.readBoolEntry("Look", "UseUserboxBackground", true))
+	{
+		QString file = config_file.readEntry("Look", "UserboxBackground");
+		QImage *backgroundImage = 0;
+
+		if (type == "Stretched")
+		{
+			/*if (!file.isEmpty() && QFile::exists(file))
+				backgroundImage = new QImage(file);
+			QImage stretchedImage = backgroundImage->smoothScale(
+				ContactsWidget->viewport()->width(), ContactsWidget->viewport()->height());
+			QFile file2(":/backgroundImage.png");
+			file2.open(QIODevice::WriteOnly);
+			stretchedImage.save(&file2, "PNG");*/
+			file = ":/backgroundImage.png";
+		}
+
+		style = QString("QFrame { background-image: url(%1);").arg(file);
+		if (type != "Tiled" && type != "TiledAndCentered")
+			style.append(" background-repeat: no-repeat;");
+		if (type == "Centered" || type == "TiledAndCentered")
+			style.append("background-position: center;");
+		style.append("background-attachment:fixed;}");
+	}
+	ContactsWidget->setStyleSheet(style);
+
 // 	groups_manager->refreshTabBar();
 
 //	Myself.setAltNick(config_file.readEntry("General", "Nick"));
