@@ -14,6 +14,10 @@
 
 #include "gadu-socket-notifiers.h"
 
+#ifndef _MSC_VER
+#pragma GCC visibility push(hidden)
+#endif
+
 class GaduTokenSocketNotifiers : public GaduSocketNotifiers
 {
 	Q_OBJECT

@@ -16,6 +16,10 @@
 
 #include "gadu-socket-notifiers.h"
 
+#ifndef _MSC_VER
+#pragma GCC visibility push(hidden)
+#endif
+
 class GaduProtocolSocketNotifiers : public GaduSocketNotifiers
 {
 	Q_OBJECT
@@ -75,5 +79,9 @@ signals:
 	void dcc7Rejected(struct gg_dcc7 *);
 
 };
+
+#ifndef _MSC_VER
+#pragma GCC visibility pop
+#endif
 
 #endif // GADU_PROTOCOL_SOCKET_NOTIFIERS_H
