@@ -12,7 +12,7 @@
 
 #include <QtCore/QObject>
 
-#include "status.h"
+#include "protocols/status.h"
 
 #include "exports.h"
 
@@ -48,7 +48,7 @@ public:
 
 		@arg status aktualny status u�ytkownika, metoda mo�e zmieni� warto�� argumentu
 	 **/
-	virtual void changeStatus(UserStatus &status) = 0;
+	virtual void changeStatus(Status &status) = 0;
 
 signals:
 	void statusChanged();
@@ -67,14 +67,14 @@ class KADUAPI UserStatusChanger : public StatusChanger
 {
 	Q_OBJECT
 
-	UserStatus userStatus;
+	Status UserStatus;
 
 public:
 	UserStatusChanger();
 	virtual ~UserStatusChanger();
 
-	virtual void changeStatus(UserStatus &status);
-	const UserStatus & status() { return userStatus; }
+	virtual void changeStatus(Status &status);
+	const Status & status() { return UserStatus; }
 
 public slots:
 	/**
@@ -82,7 +82,7 @@ public slots:
 
 		@param status status u�ytkownika
 	 **/
-	void userStatusSet(UserStatus &status);
+	void userStatusSet(const Status &status);
 
 };
 
@@ -129,7 +129,7 @@ public:
 	SplitStatusChanger(unsigned int splitSize);
 	virtual ~SplitStatusChanger();
 
-	virtual void changeStatus(UserStatus &status);
+	virtual void changeStatus(Status &status);
 
 	void enable();
 	void disable();
@@ -179,7 +179,7 @@ signals:
 	/**
 		Sygna� wysy�any, gdy zostanie ustalony ostateczny status u�ytkownika.
 	 **/
-	void statusChanged(UserStatus);
+	void statusChanged(Status);
 
 };
 

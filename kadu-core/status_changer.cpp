@@ -37,20 +37,20 @@ UserStatusChanger::~UserStatusChanger()
 {
 }
 
-void UserStatusChanger::changeStatus(UserStatus &status)
+void UserStatusChanger::changeStatus(Status &status)
 {
 	kdebugf();
 
-	status = userStatus;
+	status = UserStatus;
 
 	kdebugf2();
 }
 
-void UserStatusChanger::userStatusSet(UserStatus &status)
+void UserStatusChanger::userStatusSet(const Status &status)
 {
 	kdebugf();
 
-	userStatus.setStatus(status);
+	UserStatus = status;
 	emit statusChanged();
 
 	kdebugf2();
@@ -94,7 +94,7 @@ void SplitStatusChanger::disable()
 	enabled = false;
 }
 
-void SplitStatusChanger::changeStatus(UserStatus &status)
+void SplitStatusChanger::changeStatus(Status &status)
 {
 	kdebugf();
 
@@ -215,7 +215,7 @@ void StatusChangerManager::statusChanged()
 	if (!enabled)
 		return;
 
-	UserStatus status;
+	Status status;
 	for (int i = 0; i < statusChangers.count(); i++)
 		statusChangers.at(i)->changeStatus(status);
 

@@ -291,6 +291,23 @@ void UserStatus::setStatus(const UserStatus &stat)
 	}
 }
 
+void UserStatus::setStatus(const Status &stat)
+{
+	FriendsOnly = false;
+	Changed = true;
+
+	switch (stat.type())
+	{
+		case Status::Online: setOnline(stat.description()); break;
+		case Status::Busy: setBusy(stat.description()); break;
+		case Status::Invisible: setInvisible(stat.description()); break;
+		case Status::Offline:
+		default:
+			setOffline(stat.description());
+			break;
+	}
+}
+
 void UserStatus::setIndex(int index, const QString &desc)
 {
 // 	if (index % 2 == 0)

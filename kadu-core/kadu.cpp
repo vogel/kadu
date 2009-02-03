@@ -422,7 +422,7 @@ Kadu::Kadu(QWidget *parent)
 	hbox_layout->setStretchFactor(GroupBar, 1);
 
 	StatusChangerManager::initModule();
-	connect(status_changer_manager, SIGNAL(statusChanged(UserStatus)), this, SLOT(changeStatus(UserStatus)));
+	connect(status_changer_manager, SIGNAL(statusChanged(Status)), this, SLOT(changeStatus(Status)));
 
 	userStatusChanger = new UserStatusChanger();
 	status_changer_manager->registerStatusChanger(userStatusChanger);
@@ -1421,9 +1421,9 @@ void Kadu::changeStatusSlot()
 
 void Kadu::changePrivateStatusSlot(bool toggled)
 {
-	UserStatus status;
-	status.setStatus(userStatusChanger->status());
-	status.setFriendsOnly(toggled);
+	Status status(userStatusChanger->status());
+// TODO: 0.6.6
+// 	status.setFriendsOnly(toggled);
 	setStatus(status);
 
 	config_file.writeEntry("General", "PrivateStatus", toggled);
@@ -1435,41 +1435,44 @@ void Kadu::slotHandleState(int command)
 {
 	kdebugf();
 
-	UserStatus status;
+	Status status(userStatusChanger->status().type());
 
-	status.setStatus(userStatusChanger->status());
 	switch (command)
 	{
 		case 0:
-			status.setOnline();
+			status.setType(Status::Online);
 			setStatus(status);
 			break;
 		case 1:
-			status.setOnline(status.description());
+			status.setType(Status::Online);
+			status.setDescription(status.description());
 			ChooseDescription::show(status, lastPositionBeforeStatusMenuHide);
 			break;
 		case 2:
-			status.setBusy();
+			status.setType(Status::Busy);
 			setStatus(status);
 			break;
 		case 3:
-			status.setBusy(status.description());
+			status.setType(Status::Busy);
+			status.setDescription(status.description());
 			ChooseDescription::show(status, lastPositionBeforeStatusMenuHide);
 			break;
 		case 4:
-			status.setInvisible();
+			status.setType(Status::Invisible);
 			setStatus(status);
 			break;
 		case 5:
-			status.setInvisible(status.description());
+			status.setType(Status::Invisible);
+			status.setDescription(status.description());
 			ChooseDescription::show(status, lastPositionBeforeStatusMenuHide);
 			break;
 		case 6:
-			status.setOffline();
+			status.setType(Status::Offline);
 			setStatus(status);
 			break;
 		case 7:
-			status.setOffline(status.description());
+			status.setType(Status::Offline);
+			status.setDescription(status.description());
 			ChooseDescription::show(status, lastPositionBeforeStatusMenuHide);
 			break;
 	}
@@ -1477,8 +1480,10 @@ void Kadu::slotHandleState(int command)
 	kdebugf2();
 }
 
-void Kadu::changeStatus(UserStatus newStatus)
+void Kadu::changeStatus(Status newStatus)
 {
+	kdebugf();
+
 	if (NextStatus.isOffline())
 	{
 		changeStatusToOfflineDesc->setEnabled(false);
@@ -1493,8 +1498,9 @@ void Kadu::changeStatus(UserStatus newStatus)
 	if (!gadu)
 		return;
 
-	if (gadu->nextStatus() == newStatus)
-		return;
+// TODO: 0.6.6
+// 	if (gadu->nextStatus() == newStatus)
+// 		return;
 
 	NextStatus.setStatus(newStatus);
 	gadu->writeableStatus().setStatus(NextStatus);
@@ -1621,8 +1627,9 @@ bool Kadu::close(bool quit)
 
 		config_file.writeEntry("General", "DefaultDescription", defaultdescriptions.join("<-->"));
 
-		if (config_file.readEntry("General", "StartupStatus") == "LastStatus")
-			config_file.writeEntry("General", "LastStatusIndex", userStatusChanger->status().index());
+// TODO: 0.6.6
+// 		if (config_file.readEntry("General", "StartupStatus") == "LastStatus")
+// 			config_file.writeEntry("General", "LastStatusIndex", userStatusChanger->status().index());
 
 		if (config_file.readBoolEntry("General", "StartupLastDescription"))
 			config_file.writeEntry("General", "LastStatusDescription", userStatusChanger->status().description());
@@ -2173,8 +2180,9 @@ void Kadu::refreshPrivateStatusFromConfigFile()
 	if (changePrivateStatus->isChecked() == privateStatus)
 		return;
 
-	UserStatus status = userStatusChanger->status();
-	status.setFriendsOnly(privateStatus);
+	Status status = userStatusChanger->status();
+// TODO: 0.6.6
+// 	status.setFriendsOnly(privateStatus);
 	userStatusChanger->userStatusSet(status);
 
 	changePrivateStatus->setChecked(privateStatus);
@@ -2235,37 +2243,58 @@ void Kadu::setDefaultStatus()
 
 	QString description;
 	QString startupStatus = config_file.readEntry("General", "StartupStatus");
-	UserStatus status;
+	Status status;
 
 	if (config_file.readBoolEntry("General", "StartupLastDescription"))
 		description = config_file.readEntry("General", "LastStatusDescription");
 	else
 		description = config_file.readEntry("General", "StartupDescription");
 
-	int statusIndex;
-
 	bool offlineToInvisible = false;
+	Status::StatusType type;
 
 	if (startupStatus == "LastStatus")
 	{
-		statusIndex = config_file.readNumEntry("General", "LastStatusIndex", UserStatus::index(Offline, false));
+		int statusIndex = config_file.readNumEntry("General", "LastStatusIndex", UserStatus::index(Offline, false));
+		switch (statusIndex)
+		{
+			case 0:
+			case 1:
+				type = Status::Online;
+				break;
+			case 2:
+			case 3:
+				type = Status::Busy;
+				break;
+			case 4:
+			case 5:
+				type = Status::Invisible;
+				break;
+			case 6:
+			case 7:
+				type = Status::Offline;
+				break;
+		}
+
 		offlineToInvisible = config_file.readBoolEntry("General", "StartupStatusInvisibleWhenLastWasOffline");
 	}
 	else if (startupStatus == "Online")
-		statusIndex = 1;
+		type = Status::Online;
 	else if (startupStatus == "Busy")
-		statusIndex = 3;
+		type = Status::Busy;
 	else if (startupStatus == "Invisible")
-		statusIndex = 5;
+		type = Status::Invisible;
 	else if (startupStatus == "Offline")
-		statusIndex = 6;
+		type = Status::Offline;
 
-	if ((statusIndex == 6 || statusIndex == 7) && offlineToInvisible)
-		status.setInvisible(description);
-	else
-		status.setIndex(statusIndex, description);
+	if ((Status::Offline == type) && offlineToInvisible)
+		type = Status::Invisible;
 
-	status.setFriendsOnly(config_file.readBoolEntry("General", "PrivateStatus"));
+	status.setType(type);
+	status.setDescription(description);
+
+// TODO: 0.6.6
+// 	status.setFriendsOnly(config_file.readBoolEntry("General", "PrivateStatus"));
 	userStatusChanger->userStatusSet(status);
 
 	kdebugf2();
@@ -2441,54 +2470,29 @@ void Kadu::customEvent(QEvent *e)
 		QWidget::customEvent(e);
 }
 
-void Kadu::setStatus(const UserStatus &status)
+void Kadu::setStatus(const Status &status)
 {
-	UserStatus notConst = status;
-	userStatusChanger->userStatusSet(notConst);
+	userStatusChanger->userStatusSet(status);
 }
 
 void Kadu::setOnline(const QString &description)
 {
-	UserStatus status;
-
-	Protocol *gadu = AccountManager::instance()->defaultAccount()->protocol();
-	status.setStatus(gadu->currentStatus());
-	status.setOnline(description);
-
-	userStatusChanger->userStatusSet(status);
+	userStatusChanger->userStatusSet(Status(Status::Online, description));
 }
 
 void Kadu::setBusy(const QString &description)
 {
-	UserStatus status;
-
-	Protocol *gadu = AccountManager::instance()->defaultAccount()->protocol();
-	status.setStatus(gadu->currentStatus());
-	status.setBusy(description);
-
-	userStatusChanger->userStatusSet(status);
+	userStatusChanger->userStatusSet(Status(Status::Busy, description));
 }
 
 void Kadu::setInvisible(const QString &description)
 {
-	UserStatus status;
-
-	Protocol *gadu = AccountManager::instance()->defaultAccount()->protocol();
-	status.setStatus(gadu->currentStatus());
-	status.setInvisible(description);
-
-	userStatusChanger->userStatusSet(status);
+	userStatusChanger->userStatusSet(Status(Status::Invisible, description));
 }
 
 void Kadu::setOffline(const QString &description)
 {
-	UserStatus status;
-
-	Protocol *gadu = AccountManager::instance()->defaultAccount()->protocol();
-	status.setStatus(gadu->currentStatus());
-	status.setOffline(description);
-
-	userStatusChanger->userStatusSet(status);
+	userStatusChanger->userStatusSet(Status(Status::Offline, description));
 }
 
 void Kadu::createDefaultConfiguration()

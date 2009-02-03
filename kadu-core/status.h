@@ -4,6 +4,8 @@
 #include <QtCore/QObject>
 #include <QtCore/QStringList>
 
+#include "protocols/status.h"
+
 #include "exports.h"
 
 class QPixmap;
@@ -350,6 +352,7 @@ public slots:
 		\param stat status kt�ry chcemy ustawi�
 	**/
 	void setStatus(const UserStatus &stat);
+	void setStatus(const Status &stat);
 
 	/**
 		\fn void setStatus(eUserStatus stat, const QString& desc = "")

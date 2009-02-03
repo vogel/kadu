@@ -8,9 +8,11 @@
 
 #include "contacts/contact.h"
 
+#include "protocols/protocol.h"
+#include "protocols/status.h"
+
 #include "configuration_aware_object.h"
 #include "kadu_main_window.h"
-#include "protocols/protocol.h"
 #include "exports.h"
 
 class QAction;
@@ -183,7 +185,7 @@ private slots:
 	void statusMenuAboutToHide(void);
 	void dockMenuAboutToHide(void);
 
-	void changeStatus(UserStatus status);
+	void changeStatus(Status status);
 
 	void inactiveUsersActionCreated(KaduAction *action);
 	void descriptionUsersActionCreated(KaduAction *action);
@@ -272,7 +274,7 @@ public slots:
 
 	void sendMessage(Contact contact);
 
-	void setStatus(const UserStatus &status);
+	void setStatus(const Status &status);
 	void setOnline(const QString &description = QString::null);
 	void setBusy(const QString &description = QString::null);
 	void setInvisible(const QString &description = QString::null);

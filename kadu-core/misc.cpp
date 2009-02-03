@@ -52,6 +52,7 @@
 #include "../modules/gadu_protocol/gadu.h"
 #include "message_box.h"
 #include "userlist.h"
+#include "status.h"
 
 #include "misc.h"
 
@@ -824,7 +825,7 @@ void stringHeapSort(QStringList &c)
 
 ChooseDescription *ChooseDescription::Dialog = 0;
 
-void ChooseDescription::show(const UserStatus &status, const QPoint &position)
+void ChooseDescription::show(const Status &status, const QPoint &position)
 {
 	if (!Dialog)
 	{
@@ -884,22 +885,22 @@ ChooseDescription::~ChooseDescription()
 {
 }
 
-void ChooseDescription::setStatus(const UserStatus &status)
+void ChooseDescription::setStatus(const Status &status)
 {
-	Status = status;
+	CurrentStatus = status;
 
-	switch (Status.status())
+	switch (CurrentStatus.type())
 	{
-		case Online:
+		case Status::Online:
 			OkButton->setIcon(icons_manager->loadIcon("OnlineWithDescription"));
 			break;
-		case Busy:
+		case Status::Busy:
 			OkButton->setIcon(icons_manager->loadIcon("BusyWithDescription"));
 			break;
-		case Invisible:
+		case Status::Invisible:
 			OkButton->setIcon(icons_manager->loadIcon("InvisibleWithDescription"));
 			break;
-		case Offline:
+		case Status::Offline:
 			OkButton->setIcon(icons_manager->loadIcon("OfflineWithDescription"));
 			break;
 		default:
@@ -948,8 +949,8 @@ void ChooseDescription::okPressed()
 	if (config_file.readBoolEntry("General", "ParseStatus", false))
 		description = KaduParser::parse(description, account, kadu->myself(), true);
 
-	Status.setDescription(description);
-	kadu->setStatus(Status);
+	CurrentStatus.setDescription(description);
+	kadu->setStatus(CurrentStatus);
 
 	cancelPressed();
 }

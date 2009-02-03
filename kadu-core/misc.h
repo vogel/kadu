@@ -4,7 +4,8 @@
 // TODO remove
 #include <Qt3Support/Q3FileDialog>
 
-#include "status.h"
+#include "protocols/status.h"
+
 #include "exports.h"
 
 class QComboBox;
@@ -81,7 +82,7 @@ class ChooseDescription : public QDialog
 	QComboBox *Description;
 	QLabel *AvailableChars;
 
-	UserStatus Status;
+	Status CurrentStatus;
 
 private slots:
 	void okPressed();
@@ -89,12 +90,12 @@ private slots:
 	void updateAvailableChars(const QString &);
 
 public:
-	static void show(const UserStatus &status, const QPoint &position);
+	static void show(const Status &status, const QPoint &position);
 
 	ChooseDescription(QWidget *parent = 0);
 	virtual ~ChooseDescription();
 
-	void setStatus(const UserStatus &status);
+	void setStatus(const Status &status);
 	void setPosition(const QPoint &position);
 
 };
