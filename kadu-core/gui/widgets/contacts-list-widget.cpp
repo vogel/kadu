@@ -28,7 +28,6 @@
 
 #include "contacts-list-widget.h"
 #include "tool-tip-class-manager.h"
-#include "tool-tip-class-manager.h"
 
 ContactsListWidget::ContactsListWidget(KaduMainWindow *mainWindow, QWidget *parent)
 	: QListView(parent), MainWindow(mainWindow), ProxyModel(new ContactsModelProxy(this)), Delegate(0)
