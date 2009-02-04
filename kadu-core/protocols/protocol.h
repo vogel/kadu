@@ -31,8 +31,16 @@ class Status;
 class KADUAPI Protocol : public QObject
 {
 	Q_OBJECT
+	Q_DISABLE_COPY(Protocol)
 
 public:
+	enum NetworkState {
+		NetworkDisconnected,
+		NetworkConnecting,
+		NetworkConnected,
+		NetworkDisconnecting
+	};
+
 	enum MessageStatus {
 		StatusAcceptedDelivered,
 		StatusAcceptedQueued,
@@ -42,42 +50,37 @@ public:
 	};
 
 private:
+	ProtocolFactory *Factory;
+
 	Account *CurrentAccount;
+
+	NetworkState State;
 	Status CurrentStatus;
 	Status NextStatus;
 
-	Protocol(const Protocol &) {}
-	Protocol & operator = (const Protocol &) {}
-
 protected:
-	QDateTime ConnectionTime;
-
-	ProtocolFactory *Factory;
-
 	void setAllOffline();
 
 	virtual void changeStatus(Status status) = 0;
 	void statusChanged(Status status);
 
+	void networkStateChanged(NetworkState state);
+
 public:
 	Protocol(Account *account, ProtocolFactory *factory);
 	virtual ~Protocol();
 
-	virtual void setAccount(Account *account);
-
-	void setStatus(Status status);
-
-	const Status & status() const { return CurrentStatus; }
-	const Status & nextStatus() const { return NextStatus; }
-
-	virtual bool validateUserID(QString &uid) = 0;
-
-	const QDateTime & connectionTime() const;
-
-	virtual void setData(AccountData *data) = 0;
-	virtual AccountData * createAccountData() = 0;
 	ProtocolFactory * protocolFactory() const { return Factory; }
 	Account * account() const { return CurrentAccount; }
+
+	virtual void setAccount(Account *account); 
+	virtual bool validateUserID(QString &uid) = 0;
+
+	NetworkState state() { return State; }
+
+	void setStatus(Status status);
+	const Status & status() const { return CurrentStatus; }
+	const Status & nextStatus() const { return NextStatus; }
 
 	virtual QPixmap statusPixmap(Status status) = 0;
 	QPixmap statusPixmap() { return statusPixmap(CurrentStatus); }
@@ -90,73 +93,23 @@ public slots:
 	virtual bool sendMessage(Contact user, Message &message);
 	virtual bool sendMessage(ContactList users, Message &message) = 0;
 
-
 signals:
-	/**
-		uda�o si� zalogowa�
-	**/
-	void connected();
-
-	/**
-		rozpoczynamy procedur� logowania si�
-	**/
-	void connecting();
-
-	/**
-		roz��czyli�my si� z serwerem
-	**/
-	void disconnected();
-
-	/**
-		wyst�pi� b��d po��czenia
-		@param account konto
-		@param reason napis do wy�wietlenia dla u�ytkownika
-	**/
-	void connectionError(Account *account, const QString &server, const QString &reason);
-
-	/**
-		\fn void messageFiltering(const ContactList users, QCString& msg, bool& stop)
-		Sygnal daje mozliwosc operowania na wiadomosci
-		ktora ma byc wyslana do serwera juz w jej docelowej
-		formie po konwersji z unicode i innymi zabiegami.
-		Tresc wiadomosci mozna zmienic podmieniajac wskaznik
-		msg na nowy bufor i zwalniajac stary (za pomoca free).
-		Mozna tez przerwac dalsza jej obrobke ustawiajac
-		wskaznik stop na true.
-		\param users lista u�ytkownik�w
-		\param msg wiadomo��
-		\param stop zako�czenie dalszej obr�bki sygna�u
-	**/
-	void sendMessageFiltering(const ContactList users, QByteArray &msg, bool &stop);
-
-	/**
-		Message with id messageId was delivered or rejected.
-	**/
-	void messageStatusChanged(int messsageId, Protocol::MessageStatus status);
-
-	/**
-		\fn receivedMessageFilter(Account *account, ContactList senders, const QString &msg, time_t time, bool &ignore);
-		Filtrujemy wiadomo��. Mo�na j� odrzuci� albo i nie.
-		\param account konto na kt�rym otrzymali�my wiadomo��
-		\param senders lista nadawc�w
-		\param message komunikat w postaci Unicode HTML
-		\param time czas nadania wiadomo�ci
-		\param ignore po ustawieniu na true wiadomo�� jest ignorowana
-	**/
-	void receivedMessageFilter(Account *account, ContactList senders, const QString &message, time_t time, bool &ignore);
-
-	/**
-		\fn messageReceived(Account *account, ContactList senders, const QString &msg, time_t time);
-		Otrzymali�my wiadomo��.
-		\param account konto na kt�rym otrzymali�my wiadomo��
-		\param senders lista nadawc�w
-		\param message komunikat w postaci Unicode HTML
-		\param time czas nadania wiadomo�ci
-	**/
-	void messageReceived(Account *account, ContactList senders, const QString &message, time_t time);
+	void connecting(Account *account);
+	void connected(Account *account);
+	void disconnecting(Account *account);
+	void disconnected(Account *account);
 
 	void statusChanged(Account *account, Status newStatus);
 	void contactStatusChanged(Account *account, Contact contact, Status oldStatus);
+
+
+// TODO: REVIEW
+	void connectionError(Account *account, const QString &server, const QString &reason);
+
+	void sendMessageFiltering(const ContactList users, QByteArray &msg, bool &stop);
+	void messageStatusChanged(int messsageId, Protocol::MessageStatus status);
+	void receivedMessageFilter(Account *account, ContactList senders, const QString &message, time_t time, bool &ignore);
+	void messageReceived(Account *account, ContactList senders, const QString &message, time_t time);
 
 };
 

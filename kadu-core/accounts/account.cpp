@@ -53,7 +53,6 @@ void Account::setProtocol(Protocol *protocolHandler)
 {
 	ProtocolHandler = protocolHandler;
 	ProtocolHandler->setAccount(this);
-	ProtocolHandler->setData(Data);
 
 	connect(ProtocolHandler, SIGNAL(contactStatusChanged(Account *, Contact, Status)),
 			this, SIGNAL(contactStatusChanged(Account *, Contact, Status)));
@@ -84,7 +83,7 @@ bool Account::loadConfiguration(XmlConfigFile *configurationStorage, QDomElement
 	if (0 == protocol)
 		return false;
 
-	Data = protocol->createAccountData();
+	Data = protocol->protocolFactory()->newAccountData();
 	if (0 == Data)
 		return false;
 

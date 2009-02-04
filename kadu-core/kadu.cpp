@@ -684,9 +684,9 @@ void Kadu::accountRegistered(Account *account)
 
 	connect(protocol, SIGNAL(messageReceived(Account *, ContactList, const QString &, time_t)),
 		this, SLOT(messageReceived(Account *, ContactList, const QString &, time_t)));
-	connect(protocol, SIGNAL(connecting()), this, SLOT(connecting()));
-	connect(protocol, SIGNAL(connected()), this, SLOT(connected()));
-	connect(protocol, SIGNAL(disconnected()), this, SLOT(disconnected()));
+	connect(protocol, SIGNAL(connecting(Account *)), this, SLOT(connecting()));
+	connect(protocol, SIGNAL(connected(Account *)), this, SLOT(connected()));
+	connect(protocol, SIGNAL(disconnected(Account *)), this, SLOT(disconnected()));
 	connect(protocol, SIGNAL(imageReceivedAndSaved(UinType, uint32_t, uint32_t, const QString &)),
 		this, SLOT(imageReceivedAndSaved(UinType, uint32_t, uint32_t, const QString &)));
 	connect(protocol, SIGNAL(needTokenValue(QPixmap, QString &)),

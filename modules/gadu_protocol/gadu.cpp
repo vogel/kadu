@@ -322,7 +322,6 @@ void GaduProtocol::initModule()
 
 GaduProtocol::GaduProtocol(Account *account, ProtocolFactory *factory)
 	: Protocol(account, factory),
-		GaduData(0),
 		Mode(Register), DataUin(0), DataEmail(), DataPassword(), DataNewPassword(), TokenId(), TokenValue(),
 		ServerNr(0), ActiveServer(), LoginParams(), Sess(0), sendImageRequests(0), seqNumber(0), whileConnecting(false),
 		DccExternalIP(), SocketNotifiers(new GaduProtocolSocketNotifiers(account, this)), PingTimer(0),
@@ -403,12 +402,11 @@ bool GaduProtocol::validateUserID(QString &uid)
 */
 }
 
-void GaduProtocol::setData(AccountData *data)
+GaduAccountData * GaduProtocol::gaduAccountData() const
 {
-	if (0 == data)
-		GaduData = 0;
-	else
-		GaduData = dynamic_cast<GaduAccountData *>(data);
+	return account()
+		? dynamic_cast<GaduAccountData *>(account()->data())
+		: 0;
 }
 
 void GaduProtocol::setAccount(Account* account) {
@@ -686,7 +684,6 @@ void GaduProtocol::connectedSlot()
 {
 	kdebugf();
 	ConnectionTimeoutTimer::off();
-	ConnectionTime = QDateTime::currentDateTime();
 
 	whileConnecting = false;
 	sendUserList();
@@ -704,7 +701,7 @@ void GaduProtocol::connectedSlot()
 	PingTimer->start(60000);
 
 	statusChanged(nextStatus());
-	emit connected();
+	emit connected(account());
 
 	// po po��czeniu z sewerem niestety trzeba ponownie ustawi�
 	// status, inaczej nie b�dziemy widoczni - raczej b��d serwer�w
@@ -766,7 +763,7 @@ void GaduProtocol::disconnectedSlot()
 	if (!status().isOffline())
 		setStatus(Status::Offline);
 
-	emit disconnected();
+	emit disconnected(account());
 	kdebugf2();
 }
 
@@ -1034,7 +1031,7 @@ void GaduProtocol::login()
 {
 	kdebugf();
 
-	if (0 == GaduData->uin() || QString::null == GaduData->password())
+	if (0 == gaduAccountData()->uin() || QString::null == gaduAccountData()->password())
 	{
 		MessageBox::msg(tr("UIN or password not set!"), false, "Warning");
 		setStatus(Status::Offline);
@@ -1044,7 +1041,7 @@ void GaduProtocol::login()
 
 	whileConnecting = true;
 
-	emit connecting();
+	emit connecting(account());
 
 	memset(&LoginParams, 0, sizeof(LoginParams));
 	LoginParams.async = 1;
@@ -1062,7 +1059,7 @@ void GaduProtocol::login()
 	if (!nextStatus().description().isEmpty())
 		LoginParams.status_descr = strdup((const char *)unicode2cp(nextStatus().description()).data());
 
-	LoginParams.uin = GaduData->uin();
+	LoginParams.uin = gaduAccountData()->uin();
 	LoginParams.has_audio = config_file.readBoolEntry("Network", "AllowDCC");
 	// GG 6.0 build 147 ustawia indeks ostatnio odczytanej wiadomosci systemowej na 1389
 	LoginParams.last_sysmsg = config_file.readNumEntry("General", "SystemMsgIndex", 1389);
@@ -1151,7 +1148,7 @@ void GaduProtocol::login()
 	ConnectionTimeoutTimer::on();
 	ConnectionTimeoutTimer::connectTimeoutRoutine(this, SLOT(connectionTimeoutTimerSlot()));
 
-	LoginParams.password = strdup(GaduData->password().toAscii().data());
+	LoginParams.password = strdup(gaduAccountData()->password().toAscii().data());
 		// strdup((const char *)unicode2cp(pwHash(config_file.readEntry("General", "Password"))));
 	Sess = gg_login(&LoginParams);
 	memset(LoginParams.password, 0, strlen(LoginParams.password));
@@ -2185,11 +2182,6 @@ void GaduProtocol::setDccIpAndPort(unsigned long dcc_ip, int dcc_port)
 {
 	gg_dcc_ip = dcc_ip;
 	gg_dcc_port = dcc_port;
-}
-
-AccountData * GaduProtocol::createAccountData()
-{
-	return new GaduAccountData();
 }
 
 unsigned int GaduProtocol::uin(Contact contact) const

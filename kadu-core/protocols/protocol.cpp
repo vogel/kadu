@@ -20,17 +20,12 @@
 #include "protocol.h"
 
 Protocol::Protocol(Account *account, ProtocolFactory *factory)
-	: Factory(factory), CurrentAccount(account)
+	: State(NetworkDisconnected), Factory(factory), CurrentAccount(account)
 {
 }
 
 Protocol::~Protocol()
 {
-}
-
-const QDateTime &Protocol::connectionTime() const
-{
-	return ConnectionTime;
 }
 
 bool Protocol::sendMessage(Contact user, const QString &messageContent)
@@ -95,4 +90,9 @@ void Protocol::statusChanged(Status status)
 {
 	CurrentStatus = status;
 	emit statusChanged(CurrentAccount, CurrentStatus);
+}
+
+void Protocol::networkStateChanged(NetworkState state)
+{
+	State = state;
 }

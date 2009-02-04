@@ -99,8 +99,6 @@ class GADUAPI GaduProtocol : public Protocol
 		ChangePassword
 	} Mode;
 
-	GaduAccountData *GaduData;
-
 	/** Identyfikator u�ytkownika **/
 	UinType DataUin;
 	/** e-mail u�ytkownika **/
@@ -258,7 +256,8 @@ class GADUAPI GaduProtocol : public Protocol
 	GaduProtocol(const GaduProtocol &) : Protocol(0, 0) {}
 	GaduProtocol & operator = (const GaduProtocol &) {}
 
-	virtual AccountData * createAccountData();
+	GaduAccountData * gaduAccountData() const;
+
 	UinType uin(Contact contact) const;
 	GaduContactAccountData * gaduContactAccountData(Contact contact) const;
 
@@ -458,7 +457,6 @@ public:
 	GaduProtocol(Account *account, ProtocolFactory *factory);
 	virtual ~GaduProtocol();
 
-	virtual void setData(AccountData *);
 	virtual void setAccount(Account *account);
 
 	unsigned int maxDescriptionLength();
