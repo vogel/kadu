@@ -693,6 +693,8 @@ void Kadu::accountRegistered(Account *account)
 	connect(protocol, SIGNAL(needTokenValue(QPixmap, QString &)),
 		this, SLOT(readTokenValue(QPixmap, QString &)));
 	connect(protocol, SIGNAL(systemMessageReceived(const QString &)), this, SLOT(systemMessageReceived(const QString &)));
+	connect(protocol, SIGNAL(statusChanged(Account *, Status)),
+			this, SLOT(statusChanged(Account *, Status)));
 
 	ContactAccountData *contactAccountData = protocol->protocolFactory()->
 			newContactAccountData(Myself, account, account->data()->id());
@@ -2304,32 +2306,29 @@ void Kadu::setShowMainWindowOnStart(bool show)
 	ShowMainWindowOnStart = show;
 }
 
-void Kadu::wentOnline(const QString &desc)
+void Kadu::statusChanged(Account *account, Status status)
 {
-	kdebugf();
 	DoBlink = false;
-	showStatusOnMenu(desc.isEmpty() ? 0 : 1);
-}
 
-void Kadu::wentBusy(const QString &desc)
-{
-	kdebugf();
-	DoBlink = false;
-	showStatusOnMenu(desc.isEmpty() ? 2 : 3);
-}
+	bool hasDescription = !status.description().isEmpty();
+	int index;
 
-void Kadu::wentInvisible(const QString &desc)
-{
-	kdebugf();
-	DoBlink = false;
-	showStatusOnMenu(desc.isEmpty() ? 4 : 5);
-}
+	switch (status.type())
+	{
+		case Status::Online:
+			index = hasDescription ? 1 : 0;
+			break;
+		case Status::Busy:
+			index = hasDescription ? 3 : 2;
+			break;
+		case Status::Invisible:
+			index = hasDescription ? 5 : 4;
+			break;
+		default:
+			index = hasDescription ? 7 : 6;
+	}
 
-void Kadu::wentOffline(const QString &desc)
-{
-	kdebugf();
-	DoBlink = false;
-	showStatusOnMenu(desc.isEmpty() ? 6 : 7);
+	showStatusOnMenu(index);
 }
 
 void Kadu::showStatusOnMenu(int statusNr)

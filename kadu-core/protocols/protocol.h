@@ -157,6 +157,7 @@ signals:
 	**/
 	void messageReceived(Account *account, ContactList senders, const QString &message, time_t time);
 
+	void statusChanged(Account *account, Status newStatus);
 	void contactStatusChanged(Account *account, Contact contact, Status oldStatus);
 
 };

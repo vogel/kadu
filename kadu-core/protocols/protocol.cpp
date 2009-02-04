@@ -94,4 +94,5 @@ void Protocol::setStatus(Status status)
 void Protocol::statusChanged(Status status)
 {
 	CurrentStatus = status;
+	emit statusChanged(CurrentAccount, CurrentStatus);
 }

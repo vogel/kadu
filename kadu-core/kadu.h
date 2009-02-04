@@ -169,10 +169,6 @@ private slots:
 
 	void changePrivateStatusSlot(bool toggled);
 
-	void wentOnline(const QString &);
-	void wentBusy(const QString &);
-	void wentInvisible(const QString &);
-	void wentOffline(const QString &);
 	void connected();
 	void connecting();
 	void disconnected();
@@ -194,7 +190,8 @@ private slots:
 	void quitApplication();
 
 	// new API
-	void accountRegistered(Account *);
+	void accountRegistered(Account *account);
+	void statusChanged(Account *account, Status status);
 
 protected:
 	void keyPressEvent(QKeyEvent *e);
