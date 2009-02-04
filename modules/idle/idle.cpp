@@ -21,10 +21,6 @@ extern "C" KADU_EXPORT int idle_init(bool firstLoad)
 	kdebugf();
 
 	idle = new Idle();
-	
-	QTimer *timer = new QTimer(idle);
-	QObject::connect(timer, SIGNAL(timeout()), idle, SLOT(test()));
-	timer->start(1000);
 
 	kdebugf2();
 	return 0;

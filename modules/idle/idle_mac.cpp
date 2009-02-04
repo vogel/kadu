@@ -146,10 +146,3 @@ bool Idle::isActive()
 {
 	return (secondsIdle() == 0);
 }
-
-void Idle::test()
-{
-	int idle = secondsIdle();
-	printf("idle: %d\n", idle);
-}
-

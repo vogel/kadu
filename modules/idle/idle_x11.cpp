@@ -82,9 +82,3 @@ int Idle::secondsIdle()
 
 	return ss_info->idle / 1000;
 }
-
-void Idle::test()
-{
-	int idle = secondsIdle();
-	printf("idle: %d\n", idle);
-}
