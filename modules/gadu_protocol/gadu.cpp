@@ -47,7 +47,6 @@
 #include "gadu-pubdir-socket-notifiers.h"
 #include "gadu-token-socket-notifiers.h"
 #include "gadu_search.h"
-#include "gadu_status.h"
 #include "uins_list.h"
 #include "xml_config_file.h"
 
@@ -184,7 +183,7 @@ void SearchResult::setData(const char *uin, const char *first, const char *last,
 	FamilyName = cp2unicode(familyName);
 	FamilyCity = cp2unicode(familyCity);
 	if (status)
-		Stat.fromStatusNumber(atoi(status) & 127, QString::null);
+		Stat = GaduProtocol::typeToStatus(atoi(status) & 0x7F);
 	if (gender)
 		Gender = atoi(gender);
 	else
@@ -415,13 +414,7 @@ void GaduProtocol::setData(AccountData *data)
 void GaduProtocol::setAccount(Account* account) {
 	Protocol::setAccount(account);
 
-	SocketNotifiers->setAccount(account);
-}
-
-
-UserStatus * GaduProtocol::newStatus() const
-{
-	return new GaduStatus();
+	SocketNotifiers->setAccount(account);/**/
 }
 
 void GaduProtocol::currentStatusChanged(const UserStatus &/*status*/, const UserStatus &/*oldStatus*/)
@@ -453,12 +446,30 @@ int GaduProtocol::statusToType(Status status)
 		case Status::Online:
 			return hasDescription ? GG_STATUS_AVAIL_DESCR : GG_STATUS_AVAIL;
 		case Status::Busy:
-			return hasDescription ? GG_STATUS_BUSY_DESCR : GG_STATUS_BUSY_DESCR;
+			return hasDescription ? GG_STATUS_BUSY_DESCR : GG_STATUS_BUSY;
 		case Status::Invisible:
 			return hasDescription ? GG_STATUS_INVISIBLE_DESCR : GG_STATUS_INVISIBLE;
 			break;
 		default:
 			return hasDescription ? GG_STATUS_NOT_AVAIL_DESCR : GG_STATUS_NOT_AVAIL;
+	}
+}
+
+Status GaduProtocol::typeToStatus(int type)
+{
+	switch (type)
+	{
+		case GG_STATUS_AVAIL:
+		case GG_STATUS_AVAIL_DESCR:
+			return Status::Online;
+		case GG_STATUS_BUSY:
+		case GG_STATUS_BUSY_DESCR:
+			return Status::Busy;
+		case GG_STATUS_INVISIBLE:
+		case GG_STATUS_INVISIBLE_DESCR:
+			return Status::Invisible;
+		default:
+			return Status::Offline;
 	}
 }
 
@@ -546,7 +557,7 @@ void GaduProtocol::protocolUserDataChanged(QString protocolName, UserListElement
 			gg_add_notify_ex(Sess, contactUin, GG_USER_BLOCKED);
 			gg_remove_notify_ex(Sess, contactUin, GG_USER_NORMAL);
 			gg_remove_notify_ex(Sess, contactUin, GG_USER_OFFLINE);
-			elem.setStatus(protocolName, GaduStatus());
+//			elem.setStatus(protocolName, GaduStatus());
 		}
 		else if (!currentValue.toBool() && oldValue.toBool())
 		{

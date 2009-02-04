@@ -10,7 +10,7 @@
 #ifndef GADU_SEARCH_H
 #define GADU_SEARCH_H
 
-#include "gadu_status.h"
+#include "protocols/status.h"
 
 struct SearchResult
 {
@@ -23,7 +23,7 @@ struct SearchResult
 	QString FamilyName;
 	QString FamilyCity;
 	int Gender;
-	GaduStatus Stat;
+	Status Stat;
 
 	SearchResult();
 	SearchResult(const SearchResult &);

@@ -71,7 +71,7 @@ public:
 
 };
 
-class GaduStatus;
+//class ;
 class ProtocolData : public QObject
 {
 

@@ -72,8 +72,6 @@ public:
 
 	virtual bool validateUserID(QString &uid) = 0;
 
-	virtual UserStatus * newStatus() const = 0;
-
 	const QDateTime & connectionTime() const;
 
 	virtual void setData(AccountData *data) = 0;

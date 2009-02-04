@@ -484,8 +484,8 @@ void SearchDialog::newSearchResults(SearchResults& searchResults, int seq, int f
 		QList <QTreeWidgetItem *> items = results->findItems(searchResult.Uin, Qt::MatchExactly, 1);
 		if (items.count())
 			qlv = items[0];
-
-		pix = searchResult.Stat.pixmap(searchResult.Stat.status(), false, false);
+// TODO: 0.6.6
+// 		pix = searchResult.Stat.pixmap(searchResult.Stat.status(), false, false);
 
 		if (qlv)
 		{

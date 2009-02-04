@@ -38,7 +38,6 @@
 #include "../modules/gadu_protocol/gadu.h"
 #include "../modules/gadu_protocol/gadu-contact-account-data.h"
 #include "../modules/gadu_protocol/gadu_images_manager.h"
-#include "../modules/gadu_protocol/gadu_status.h"
 
 #include "about.h"
 #include "chat_edit_box.h"
@@ -1957,44 +1956,44 @@ void Kadu::createStatusPopupMenu()
 	changeStatusActionGroup = new QActionGroup(this);
 	changeStatusActionGroup->setExclusive(false); // HACK
 
-	GaduStatus s;
+	// TODO: 0.6.6
 
-	changeStatusToOnline = new QAction(icons_manager->loadIcon(s.pixmapName(Online, false, false)), tr("Online"), this);
+	changeStatusToOnline = new QAction(/*icons_manager->loadIcon(s.pixmapName(Online, false, false)), */tr("Online"), this);
 	changeStatusToOnline->setCheckable(true);
 	changeStatusToOnline->setData(0);
 	connect(changeStatusToOnline, SIGNAL(triggered()), this, SLOT(changeStatusSlot()));
 
-	changeStatusToOnlineDesc = new QAction(icons_manager->loadIcon(s.pixmapName(Online, true, false)), tr("Online (d.)"), this);
+	changeStatusToOnlineDesc = new QAction(/*icons_manager->loadIcon(s.pixmapName(Online, true, false)), */tr("Online (d.)"), this);
 	changeStatusToOnlineDesc->setCheckable(true);
 	changeStatusToOnlineDesc->setData(1);
 	connect(changeStatusToOnlineDesc, SIGNAL(triggered()), this, SLOT(changeStatusSlot()));
 
-	changeStatusToBusy = new QAction(icons_manager->loadIcon(s.pixmapName(Busy, false, false)), tr("Busy"), this);
+	changeStatusToBusy = new QAction(/*icons_manager->loadIcon(s.pixmapName(Busy, false, false)), */tr("Busy"), this);
 	changeStatusToBusy->setCheckable(true);
 	changeStatusToBusy->setData(2);
 	connect(changeStatusToBusy, SIGNAL(triggered()), this, SLOT(changeStatusSlot()));
 
-	changeStatusToBusyDesc = new QAction(icons_manager->loadIcon(s.pixmapName(Busy, true, false)), tr("Busy (d.)"), this);
+	changeStatusToBusyDesc = new QAction(/*icons_manager->loadIcon(s.pixmapName(Busy, true, false)), */tr("Busy (d.)"), this);
 	changeStatusToBusyDesc->setCheckable(true);
 	changeStatusToBusyDesc->setData(3);
 	connect(changeStatusToBusyDesc, SIGNAL(triggered()), this, SLOT(changeStatusSlot()));
 
-	changeStatusToInvisible = new QAction(icons_manager->loadIcon(s.pixmapName(Invisible, false, false)), tr("Invisible"), this);
+	changeStatusToInvisible = new QAction(/*icons_manager->loadIcon(s.pixmapName(Invisible, false, false)), */tr("Invisible"), this);
 	changeStatusToInvisible->setCheckable(true);
 	changeStatusToInvisible->setData(4);
 	connect(changeStatusToInvisible, SIGNAL(triggered()), this, SLOT(changeStatusSlot()));
 
-	changeStatusToInvisibleDesc = new QAction(icons_manager->loadIcon(s.pixmapName(Invisible, true, false)), tr("Invisible (d.)"), this);
+	changeStatusToInvisibleDesc = new QAction(/*icons_manager->loadIcon(s.pixmapName(Invisible, true, false)), */tr("Invisible (d.)"), this);
 	changeStatusToInvisibleDesc->setCheckable(true);
 	changeStatusToInvisibleDesc->setData(5);
 	connect(changeStatusToInvisibleDesc, SIGNAL(triggered()), this, SLOT(changeStatusSlot()));
 
-	changeStatusToOffline = new QAction(icons_manager->loadIcon(s.pixmapName(Offline, false, false)), tr("Offline"), this);
+	changeStatusToOffline = new QAction(/*icons_manager->loadIcon(s.pixmapName(Offline, false, false)), */tr("Offline"), this);
 	changeStatusToOffline->setCheckable(true);
 	changeStatusToOffline->setData(6);
 	connect(changeStatusToOffline, SIGNAL(triggered()), this, SLOT(changeStatusSlot()));
 
-	changeStatusToOfflineDesc = new QAction(icons_manager->loadIcon(s.pixmapName(Offline, true, false)), tr("Offline (d.)"), this);
+	changeStatusToOfflineDesc = new QAction(/*icons_manager->loadIcon(s.pixmapName(Offline, true, false)), */tr("Offline (d.)"), this);
 	changeStatusToOfflineDesc->setCheckable(true);
 	changeStatusToOfflineDesc->setData(7);
 	connect(changeStatusToOfflineDesc, SIGNAL(triggered()), this, SLOT(changeStatusSlot()));

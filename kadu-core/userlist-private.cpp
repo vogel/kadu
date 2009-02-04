@@ -9,7 +9,6 @@
 
 #include "debug.h"
 #include "../modules/gadu_protocol/gadu.h"
-#include "../modules/gadu_protocol/gadu_status.h"
 
 #include "userlist-private.h"
 
@@ -23,13 +22,13 @@ ULEPrivate::~ULEPrivate()
 }
 
 ProtocolData::ProtocolData(const QString &/*protocolName*/, const QString &id)
-	: ID(id), Stat(new SharedStatus(new GaduStatus()))
+	: ID(id), Stat(0)//new SharedStatus(new GaduStatus()))
 {
 	//Stat = ProtocolManager::newStatus(protocolName);
 }
 
 ProtocolData::ProtocolData()
-	: ID(), Stat(new SharedStatus(new GaduStatus()))
+	: ID(), Stat(0)//new SharedStatus(new GaduStatus()))
 {
 }
 

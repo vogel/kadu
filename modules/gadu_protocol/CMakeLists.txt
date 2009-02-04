@@ -12,7 +12,6 @@ set (SOURCES
 	gadu-pubdir-socket-notifiers.cpp
 	gadu_search.cpp
 	gadu-socket-notifiers.cpp
-	gadu_status.cpp
 	gadu-token-socket-notifiers.cpp
 	uins_list.cpp
 )

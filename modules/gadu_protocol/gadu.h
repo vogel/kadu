@@ -190,8 +190,6 @@ class GADUAPI GaduProtocol : public Protocol
 	**/
 	void setupProxy();
 
-	int statusToType(Status status);
-
 	/**
 		Za pomoc� klasy TokenSocketNotifiers metoda pobiera z serwera GaduGadu token wraz
 		z identyfikatorem. Pobrany token jest obs�ugiwany za pomoc� slota gotToken,
@@ -454,6 +452,9 @@ protected:
 public:
 	static void initModule();
 
+	static int statusToType(Status status);
+	static Status typeToStatus(int type);
+
 	GaduProtocol(Account *account, ProtocolFactory *factory);
 	virtual ~GaduProtocol();
 
@@ -536,8 +537,6 @@ public:
 	void setDccExternalIP(const QHostAddress& ip);
 	int seqNum() { return seqNumber; }
 	bool validateUserID(QString &uid);
-
-	virtual UserStatus * newStatus() const;
 
 	virtual QPixmap statusPixmap(Status status);
 
