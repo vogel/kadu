@@ -439,46 +439,6 @@ private slots:
 	void userStatusChanged(const struct gg_event *);
 
 	/**
-		Kto� wykona� gadu.status().setOnline(). ��czymy z serwerem, je�eli jeszcze tego nie
-		zrobili�my, i zmieniamy status.
-
-		@see CurrentStatus
-		@see NextStatus
-		@see login
-	**/
-	void iWantGoOnline(const QString &);
-
-	/**
-		Kto� wykona� gadu.status().setBusy(). ��czymy z serwerem, je�eli jeszcze tego nie
-		zrobili�my, i zmieniamy status.
-
-		@see CurrentStatus
-		@see NextStatus
-		@see login
-	**/
-	void iWantGoBusy(const QString &);
-
-	/**
-		Kto� wykona� gadu.status().setInvisible(). ��czymy z serwerem, je�eli jeszcze tego nie
-		zrobili�my, i zmieniamy status.
-
-		@see CurrentStatus
-		@see NextStatus
-		@see login
-	**/
-	void iWantGoInvisible(const QString &);
-
-	/**
-		Kto� wykona� gadu.status().setOffline(). Roz��czamy si� z serwerem i ustawiamy opis (je�eli
-		byli�my po��czeni).
-
-		@see CurrentStatus
-		@see NextStatus
-		@see logout
-	**/
-	void iWantGoOffline(const QString &);
-
-	/**
 		Przysz�a informacja o dostarczeniu (lub nie) wiadomo�ci.
 		Na podstawie statusu emituje odpowiednie sygna�y message*
 	**/

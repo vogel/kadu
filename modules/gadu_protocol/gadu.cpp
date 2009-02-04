@@ -334,11 +334,6 @@ GaduProtocol::GaduProtocol(Account *account, ProtocolFactory *factory)
 	CurrentStatus = new GaduStatus();
 	NextStatus = new GaduStatus();
 
-	connect(NextStatus, SIGNAL(goOnline(const QString &)), this, SLOT(iWantGoOnline(const QString &)));
-	connect(NextStatus, SIGNAL(goBusy(const QString &)), this, SLOT(iWantGoBusy(const QString &)));
-	connect(NextStatus, SIGNAL(goInvisible(const QString &)), this, SLOT(iWantGoInvisible(const QString &)));
-	connect(NextStatus, SIGNAL(goOffline(const QString &)), this, SLOT(iWantGoOffline(const QString &)));
-
 	connect(SocketNotifiers, SIGNAL(ackReceived(int, uin_t, int)), this, SLOT(ackReceived(int, uin_t, int)));
 	connect(SocketNotifiers, SIGNAL(connected()), this, SLOT(connectedSlot()));
 	connect(SocketNotifiers, SIGNAL(dccConnectionReceived(Contact)),
@@ -456,110 +451,9 @@ unsigned int GaduProtocol::maxDescriptionLength()
 	return GG_STATUS_DESCR_MAXSIZE;
 }
 
-void GaduProtocol::setStatus(Status status)
+void GaduProtocol::setStatus(Status newStatus)
 {
-	NextStatus->setStatus(status);
-	switch (status.type())
-	{
-		case Status::Online:
-			iWantGoOnline(status.description());
-			break;
-		case Status::Busy:
-			iWantGoBusy(status.description());
-			break;
-		case Status::Invisible:
-			iWantGoInvisible(status.description());
-			break;
-		case Status::Offline:
-			iWantGoOffline(status.description());
-			break;
-	}
-}
-
-void GaduProtocol::iWantGoOnline(const QString &desc)
-{
-	kdebugf();
-
-	//nie pozwalamy na zmian� statusu lub ponowne logowanie gdy jeste�my
-	//w trakcie ��czenia si� z serwerem, bo serwer zwr�ci nam g�upoty
-	if (whileConnecting)
-		return;
-
-	if (CurrentStatus->isOffline())
-	{
-		login();
-		return;
-	}
-
-	int friends = (NextStatus->isFriendsOnly() ? GG_STATUS_FRIENDS_MASK : 0);
-
-	if (!desc.isEmpty())
-		gg_change_status_descr(Sess, GG_STATUS_AVAIL_DESCR | friends, unicode2cp(desc));
-	else
-		gg_change_status(Sess, GG_STATUS_AVAIL | friends);
-
-	CurrentStatus->setStatus(*NextStatus);
-
-	kdebugf2();
-}
-
-void GaduProtocol::iWantGoBusy(const QString &desc)
-{
-	kdebugf();
-
-	//patrz iWantGoOnline()
-	if (whileConnecting)
-		return;
-
-	if (CurrentStatus->isOffline())
-	{
-		login();
-		return;
-	}
-
-	int friends = (NextStatus->isFriendsOnly() ? GG_STATUS_FRIENDS_MASK : 0);
-
-	if (!desc.isEmpty())
-		gg_change_status_descr(Sess, GG_STATUS_BUSY_DESCR | friends, unicode2cp(desc));
-	else
-		gg_change_status(Sess, GG_STATUS_BUSY | friends);
-
-	CurrentStatus->setStatus(*NextStatus);
-
-	kdebugf2();
-}
-
-void GaduProtocol::iWantGoInvisible(const QString &desc)
-{
-	kdebugf();
-
-	//patrz iWantGoOnline()
-	if (whileConnecting)
-		return;
-
-	if (CurrentStatus->isOffline())
-	{
-		login();
-		return;
-	}
-
-	int friends = (NextStatus->isFriendsOnly() ? GG_STATUS_FRIENDS_MASK : 0);
-
-	if (!desc.isEmpty())
-		gg_change_status_descr(Sess, GG_STATUS_INVISIBLE_DESCR | friends, unicode2cp(desc));
-	else
-		gg_change_status(Sess, GG_STATUS_INVISIBLE | friends);
-
-	CurrentStatus->setStatus(*NextStatus);
-
-	kdebugf2();
-}
-
-void GaduProtocol::iWantGoOffline(const QString &desc)
-{
-	kdebugf();
-
-	if (CurrentStatus->isOffline())
+	if (newStatus.isOffline() && CurrentStatus->isOffline())
 	{
 		if (whileConnecting)
 		{
@@ -569,15 +463,46 @@ void GaduProtocol::iWantGoOffline(const QString &desc)
 		return;
 	}
 
-	if (!desc.isEmpty())
-		gg_change_status_descr(Sess, GG_STATUS_NOT_AVAIL_DESCR, unicode2cp(desc));
+	if (whileConnecting)
+		return;
+
+	NextStatus->setStatus(newStatus);
+
+	if (CurrentStatus->isOffline())
+	{
+		login();
+		return;
+	}
+
+	int friends = (!NextStatus->isOffline() && NextStatus->isFriendsOnly() ? GG_STATUS_FRIENDS_MASK : 0);
+	int type;
+	bool hasDescription = !newStatus.description().isEmpty();
+
+	switch (newStatus.type())
+	{
+		case Status::Online:
+			type = hasDescription ? GG_STATUS_AVAIL_DESCR : GG_STATUS_AVAIL;
+			break;
+		case Status::Busy:
+			type = hasDescription ? GG_STATUS_BUSY_DESCR : GG_STATUS_BUSY_DESCR;
+			break;
+		case Status::Invisible:
+			type = hasDescription ? GG_STATUS_INVISIBLE_DESCR : GG_STATUS_INVISIBLE;
+			break;
+		case Status::Offline:
+			type = hasDescription ? GG_STATUS_NOT_AVAIL_DESCR : GG_STATUS_NOT_AVAIL;
+			break;
+	}
+
+	if (hasDescription)
+		gg_change_status_descr(Sess, type | friends, unicode2cp(newStatus.description()));
 	else
-		gg_change_status(Sess, GG_STATUS_NOT_AVAIL);
+		gg_change_status(Sess, type | friends);
 
 	CurrentStatus->setStatus(*NextStatus);
-	disconnectedSlot();
 
-	kdebugf2();
+	if (newStatus.isOffline())
+		disconnectedSlot();
 }
 
 void GaduProtocol::protocolUserDataChanged(QString protocolName, UserListElement elem, QString name, QVariant oldValue, QVariant currentValue, bool massively, bool /*last*/)
