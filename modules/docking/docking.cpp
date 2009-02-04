@@ -134,13 +134,14 @@ void DockingManager::changeIcon()
 				}
 				else
 				{
-					if (0 == AccountManager::instance()->defaultAccount())
+					Account *account = AccountManager::instance()->defaultAccount();
+					if (!account || !account->protocol())
 					{
 						return;
 					}
 
-					const UserStatus &stat = AccountManager::instance()->defaultAccount()->protocol()->currentStatus();
-					emit trayPixmapChanged(QIcon(stat.pixmap()), stat.toString());
+					const Status &stat = account->protocol()->status();
+					emit trayPixmapChanged(QIcon(account->protocol()->statusPixmap(stat)), Status::name(stat, false));
 					icon_timer->start(500,TRUE);
 					blink = false;
 				}
@@ -169,8 +170,13 @@ void DockingManager::pendingMessageDeleted()
 {
 	if (!pending.pendingMsgs())
 	{
-		const UserStatus &stat = AccountManager::instance()->defaultAccount()->protocol()->currentStatus();
-		emit trayPixmapChanged(QIcon(stat.pixmap()), stat.toString());
+		Account *account = AccountManager::instance()->defaultAccount();
+		if (!account || !account->protocol())
+		{
+			return;
+		}
+		const Status &stat = account->protocol()->status();
+		emit trayPixmapChanged(QIcon(account->protocol()->statusPixmap(stat)), Status::name(stat, false));
 	}
 }
 
@@ -248,12 +254,12 @@ void DockingManager::statusPixmapChanged(const QIcon &icon, const QString &iconN
 
 QIcon DockingManager::defaultPixmap()
 {
-	if (0 == AccountManager::instance()->defaultAccount())
+	Account *account = AccountManager::instance()->defaultAccount();
+	if (!account || !account->protocol())
 	{
 		return QIcon();
 	}
-
-	return QIcon(AccountManager::instance()->defaultAccount()->protocol()->currentStatus().pixmap());
+	return QIcon(account->protocol()->statusPixmap(account->protocol()->status()));
 }
 
 void DockingManager::setDocked(bool docked, bool butDontHideOnClose)
