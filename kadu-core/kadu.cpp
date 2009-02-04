@@ -1503,7 +1503,7 @@ void Kadu::changeStatus(Status newStatus)
 // 		return;
 
 	NextStatus.setStatus(newStatus);
-	gadu->writeableStatus().setStatus(NextStatus);
+	gadu->setStatus(newStatus);
 }
 
 void Kadu::connecting()

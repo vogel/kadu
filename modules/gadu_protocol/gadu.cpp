@@ -456,6 +456,26 @@ unsigned int GaduProtocol::maxDescriptionLength()
 	return GG_STATUS_DESCR_MAXSIZE;
 }
 
+void GaduProtocol::setStatus(Status status)
+{
+	NextStatus->setStatus(status);
+	switch (status.type())
+	{
+		case Status::Online:
+			iWantGoOnline(status.description());
+			break;
+		case Status::Busy:
+			iWantGoBusy(status.description());
+			break;
+		case Status::Invisible:
+			iWantGoInvisible(status.description());
+			break;
+		case Status::Offline:
+			iWantGoOffline(status.description());
+			break;
+	}
+}
+
 void GaduProtocol::iWantGoOnline(const QString &desc)
 {
 	kdebugf();

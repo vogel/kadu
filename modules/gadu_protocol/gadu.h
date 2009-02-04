@@ -499,6 +499,8 @@ public:
 
 	gg_session * session() { return Sess; }
 
+	virtual void setStatus(Status status);
+
 	void changeID(const QString &id);
 	/**
 		Zwraca serwer z kt�rym jeste�my po��czeni lub do kt�rego si� w�a�nie ��czymy.

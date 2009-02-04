@@ -44,9 +44,6 @@ public:
 private:
 	Account *CurrentAccount;
 
-	UserStatus & writeableStatus() { return *NextStatus; }
-	friend class Kadu;
-
 	Protocol(const Protocol &) {}
 	Protocol & operator = (const Protocol &) {}
 
@@ -142,6 +139,8 @@ public:
 		@see currentStatus
 	**/
 	const UserStatus & nextStatus() const { return *NextStatus; }
+
+	virtual void setStatus(Status status) = 0;
 
 	/**
 		Rzeczywisty aktualny status. Mo�na go wykorzysta� tylko w trybie do odczytu (pobranie
