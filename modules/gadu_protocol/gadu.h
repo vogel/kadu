@@ -190,6 +190,8 @@ class GADUAPI GaduProtocol : public Protocol
 	**/
 	void setupProxy();
 
+	int statusToType(Status status);
+
 	/**
 		Za pomoc� klasy TokenSocketNotifiers metoda pobiera z serwera GaduGadu token wraz
 		z identyfikatorem. Pobrany token jest obs�ugiwany za pomoc� slota gotToken,
@@ -446,6 +448,9 @@ private slots:
 
 	void currentStatusChanged(const UserStatus &status, const UserStatus &oldStatus);
 
+protected:
+	virtual void changeStatus(Status status);
+
 public:
 	static void initModule();
 
@@ -458,8 +463,6 @@ public:
 	unsigned int maxDescriptionLength();
 
 	gg_session * session() { return Sess; }
-
-	virtual void setStatus(Status status);
 
 	void changeID(const QString &id);
 	/**

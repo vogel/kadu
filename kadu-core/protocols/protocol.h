@@ -43,6 +43,8 @@ public:
 
 private:
 	Account *CurrentAccount;
+	Status CurrentStatus;
+	Status NextStatus;
 
 	Protocol(const Protocol &) {}
 	Protocol & operator = (const Protocol &) {}
@@ -50,34 +52,12 @@ private:
 protected:
 	QDateTime ConnectionTime;
 
-	/**
-		Bie��cy status. Zmieniany po po��czeniu, oraz w przypadku zmiany statusu kiedy po��czenie
-		jest ju� zainicjowane.
-
-		@see login
-		@see connected
-		@see NextStatus
-		@see UserStatus
-		@see status
-	**/
-	UserStatus *CurrentStatus;
-
-	/**
-		Nast�pny status. Ustalany zewn�trznie przy wykorzystaniu metody status i odpowiednich
-		slot�w klasy UserStatus. Zmiana wywo�uje jedn� z metod iWantGo... i w konsekwencji zmian�
-		statusu (w razie konieczno�ci te� zalogowanie).
-
-		@see login
-		@see connected
-		@see CurrentStatus
-		@see UserStatus
-		@see status
-	**/
-	UserStatus *NextStatus;
-
 	ProtocolFactory *Factory;
 
 	void setAllOffline();
+
+	virtual void changeStatus(Status status) = 0;
+	void statusChanged(Status status);
 
 public:
 	Protocol(Account *account, ProtocolFactory *factory);
@@ -85,70 +65,10 @@ public:
 
 	virtual void setAccount(Account *account);
 
-	/**
-		Status u�ytkownika. Za pomoc� tej metody mo�emy go zmieni�, pobra� ikon� statusu i wykona�
-		kilka innych ciekawych rzeczy.
+	void setStatus(Status status);
 
-		1. Zmiana statusu:
-		<code>
-			Protocol *proto;
-
-			...
-
-			proto->status().setOnline("Jestem zalogowany"); // zalogowanie i ustawienie opisu
-			proto->status().setFriendsOnly(true);           // tryb tylko dla przyjaci��
-			...
-			proto->status().setOffline();                   // wylogowanie, usuni�cie opisu
-		</code>
-
-		2. Sprawdzenie statusu:
-		<code>
-			Protocol *proto;
-
-			if (proto->status().isOnline())                 // jeste�my online
-				...
-			else if (proto->status().isInvisible())         // jeste�my niewidzialni
-			...
-
-			// mo�na te�:
-			switch (proto->status().status())
-			{
-				case Online:
-					break;
-				case Busy:
-					break;
-				case Invisible:
-					break;
-				case Offline:
-					break;
-			}
-		</code>
-
-		3. Pobranie ikony i nazwy statusu
-		<code>
-			QPixmap pix;
-			QString name;
-			Protocol *proto;
-
-			...
-
-			pix = proto->status().pixmap();
-			name = proto->status().name();
-		</code>
-
-		@see currentStatus
-	**/
-	const UserStatus & nextStatus() const { return *NextStatus; }
-
-	virtual void setStatus(Status status) = 0;
-
-	/**
-		Rzeczywisty aktualny status. Mo�na go wykorzysta� tylko w trybie do odczytu (pobranie
-		ikony, nazwy, sprawdzenie rzeczywistego stanu po��czenia).
-
-		@see status
-	**/
-	const UserStatus & currentStatus() const { return *CurrentStatus; }
+	const Status & status() const { return CurrentStatus; }
+	const Status & nextStatus() const { return NextStatus; }
 
 	virtual bool validateUserID(QString &uid) = 0;
 
@@ -162,6 +82,7 @@ public:
 	Account * account() const { return CurrentAccount; }
 
 	virtual QPixmap statusPixmap(Status status) = 0;
+	QPixmap statusPixmap() { return statusPixmap(CurrentStatus); }
 
 	QIcon icon();
 

@@ -331,9 +331,6 @@ GaduProtocol::GaduProtocol(Account *account, ProtocolFactory *factory)
 {
 	kdebugf();
 
-	CurrentStatus = new GaduStatus();
-	NextStatus = new GaduStatus();
-
 	connect(SocketNotifiers, SIGNAL(ackReceived(int, uin_t, int)), this, SLOT(ackReceived(int, uin_t, int)));
 	connect(SocketNotifiers, SIGNAL(connected()), this, SLOT(connectedSlot()));
 	connect(SocketNotifiers, SIGNAL(dccConnectionReceived(Contact)),
@@ -360,9 +357,6 @@ GaduProtocol::GaduProtocol(Account *account, ProtocolFactory *factory)
 	connect(SocketNotifiers, SIGNAL(dcc7New(struct gg_dcc7 *)), this, SIGNAL(dcc7New(struct gg_dcc7 *)));
 	connect(SocketNotifiers, SIGNAL(dcc7Accepted(struct gg_dcc7 *)), this, SIGNAL(dcc7Accepted(struct gg_dcc7 *)));
 	connect(SocketNotifiers, SIGNAL(dcc7Rejected(struct gg_dcc7 *)), this, SIGNAL(dcc7Rejected(struct gg_dcc7 *)));
-
-	connect(CurrentStatus, SIGNAL(changed(const UserStatus &, const UserStatus &)),
-			this, SLOT(currentStatusChanged(const UserStatus &, const UserStatus &)));
 
 	connect(userlist, SIGNAL(userDataChanged(UserListElement, QString, QVariant, QVariant, bool, bool)),
 			this, SLOT(userDataChanged(UserListElement, QString, QVariant, QVariant, bool, bool)));
@@ -451,9 +445,26 @@ unsigned int GaduProtocol::maxDescriptionLength()
 	return GG_STATUS_DESCR_MAXSIZE;
 }
 
-void GaduProtocol::setStatus(Status newStatus)
+int GaduProtocol::statusToType(Status status)
 {
-	if (newStatus.isOffline() && CurrentStatus->isOffline())
+	bool hasDescription = !status.description().isEmpty();
+	switch (status.type())
+	{
+		case Status::Online:
+			return hasDescription ? GG_STATUS_AVAIL_DESCR : GG_STATUS_AVAIL;
+		case Status::Busy:
+			return hasDescription ? GG_STATUS_BUSY_DESCR : GG_STATUS_BUSY_DESCR;
+		case Status::Invisible:
+			return hasDescription ? GG_STATUS_INVISIBLE_DESCR : GG_STATUS_INVISIBLE;
+			break;
+		default:
+			return hasDescription ? GG_STATUS_NOT_AVAIL_DESCR : GG_STATUS_NOT_AVAIL;
+	}
+}
+
+void GaduProtocol::changeStatus(Status newStatus)
+{
+	if (newStatus.isOffline() && status().isOffline())
 	{
 		if (whileConnecting)
 		{
@@ -466,43 +477,26 @@ void GaduProtocol::setStatus(Status newStatus)
 	if (whileConnecting)
 		return;
 
-	NextStatus->setStatus(newStatus);
-
-	if (CurrentStatus->isOffline())
+	if (status().isOffline())
 	{
 		login();
 		return;
 	}
 
-	int friends = (!NextStatus->isOffline() && NextStatus->isFriendsOnly() ? GG_STATUS_FRIENDS_MASK : 0);
-	int type;
+// TODO: 0.6.6
+	int friends = (!newStatus.isOffline() && false /*newStatus.isFriendsOnly()*/ ? GG_STATUS_FRIENDS_MASK : 0);
+	int type = statusToType(newStatus);
 	bool hasDescription = !newStatus.description().isEmpty();
-
-	switch (newStatus.type())
-	{
-		case Status::Online:
-			type = hasDescription ? GG_STATUS_AVAIL_DESCR : GG_STATUS_AVAIL;
-			break;
-		case Status::Busy:
-			type = hasDescription ? GG_STATUS_BUSY_DESCR : GG_STATUS_BUSY_DESCR;
-			break;
-		case Status::Invisible:
-			type = hasDescription ? GG_STATUS_INVISIBLE_DESCR : GG_STATUS_INVISIBLE;
-			break;
-		case Status::Offline:
-			type = hasDescription ? GG_STATUS_NOT_AVAIL_DESCR : GG_STATUS_NOT_AVAIL;
-			break;
-	}
 
 	if (hasDescription)
 		gg_change_status_descr(Sess, type | friends, unicode2cp(newStatus.description()));
 	else
 		gg_change_status(Sess, type | friends);
 
-	CurrentStatus->setStatus(*NextStatus);
-
 	if (newStatus.isOffline())
 		disconnectedSlot();
+
+	statusChanged(newStatus);
 }
 
 void GaduProtocol::protocolUserDataChanged(QString protocolName, UserListElement elem, QString name, QVariant oldValue, QVariant currentValue, bool massively, bool /*last*/)
@@ -518,7 +512,7 @@ void GaduProtocol::protocolUserDataChanged(QString protocolName, UserListElement
 
 	if (protocolName != "Gadu")
 		return;
-	if (CurrentStatus->isOffline())
+	if (status().isOffline())
 		return;
 	if (name != "OfflineTo" && name != "Blocking")
 		return;
@@ -573,7 +567,7 @@ void GaduProtocol::userDataChanged(UserListElement elem, QString name, QVariant 
 	if (!contact.accountData(account()))
 		return;
 
-	if (CurrentStatus->isOffline())
+	if (status().isOffline())
 		return;
 	if (name != "Anonymous")
 		return;
@@ -596,7 +590,7 @@ void GaduProtocol::userAdded(UserListElement elem, bool massively, bool /*last*/
 	if (!contact.accountData(account()))
 		return;
 
-	if (CurrentStatus->isOffline())
+	if (status().isOffline())
 		return;
 
 	if (massively)
@@ -615,7 +609,7 @@ void GaduProtocol::removingUser(UserListElement elem, bool massively, bool /*las
 	if (!contact.accountData(account()))
 		return;
 
-	if (CurrentStatus->isOffline())
+	if (status().isOffline())
 		return;
 	if (massively)
 		sendUserListLater();
@@ -635,7 +629,7 @@ void GaduProtocol::protocolAdded(UserListElement elem, QString protocolName, boo
 
 	if (protocolName != "Gadu")
 		return;
-	if (CurrentStatus->isOffline())
+	if (status().isOffline())
 		return;
 
 	if (massively)
@@ -656,7 +650,7 @@ void GaduProtocol::removingProtocol(UserListElement elem, QString protocolName, 
 
 	if (protocolName != "Gadu")
 		return;
-	if (CurrentStatus->isOffline())
+	if (status().isOffline())
 		return;
 
 	if (massively)
@@ -698,13 +692,16 @@ void GaduProtocol::connectedSlot()
 	connect(PingTimer, SIGNAL(timeout()), this, SLOT(everyMinuteActions()));
 	PingTimer->start(60000);
 
-	CurrentStatus->setStatus(*NextStatus);
+	statusChanged(nextStatus());
 	emit connected();
 
 	// po po��czeniu z sewerem niestety trzeba ponownie ustawi�
 	// status, inaczej nie b�dziemy widoczni - raczej b��d serwer�w
-	if (NextStatus->isInvisible() || (LoginParams.status&~GG_STATUS_FRIENDS_MASK) != static_cast<GaduStatus *>(NextStatus)->toStatusNumber())
-		NextStatus->refresh();
+	if (status().isInvisible() 
+// TODO: 0.6.6
+//|| (LoginParams.status&~GG_STATUS_FRIENDS_MASK) != static_cast<GaduStatus *>(NextStatus)->toStatusNumber())
+		)
+		setStatus(status());
 
 	/*
 		UWAGA: je�eli robimy refresh(), to przy przechodzeniu z niedost�pnego z opisem
@@ -755,8 +752,8 @@ void GaduProtocol::disconnectedSlot()
 	if (!Kadu::closing())
 		setAllOffline();
 
-	if (!CurrentStatus->isOffline())
-		CurrentStatus->setOffline(QString::null);
+	if (!status().isOffline())
+		setStatus(Status::Offline);
 
 	emit disconnected();
 	kdebugf2();
@@ -766,7 +763,7 @@ void GaduProtocol::socketDisconnectedSlot()
 {
 	kdebugf();
 
-	NextStatus->setOffline(QString::null);
+	setStatus(Status::Offline);
 	disconnectedSlot();
 
 	kdebugf2();
@@ -871,12 +868,12 @@ void GaduProtocol::errorSlot(GaduError err)
 	}
 
 	if (!continue_connecting)
-		NextStatus->setOffline();
+		setStatus(Status::Offline);
 
 	// je�li b��d kt�ry wyst�pi� umo�liwia dalsze pr�by po��czenia
 	// i w mi�dzyczasie u�ytkownik nie zmieni� statusu na niedost�pny
 	// to za sekund� pr�bujemy ponownie
-	if (continue_connecting && !NextStatus->isOffline())
+	if (continue_connecting && !nextStatus().isOffline())
 		connectAfterOneSecond();
 
 	kdebugf2();
@@ -972,10 +969,10 @@ void GaduProtocol::messageReceivedSlot(int msgclass, ContactList senders, QStrin
 		bool receiveImages =
 			!senders[0].isAnonymous() &&
 			(
-				CurrentStatus->isOnline() ||
-				CurrentStatus->isBusy() ||
+				status().isOnline() ||
+				status().isBusy() ||
 				(
-					CurrentStatus->isInvisible() &&
+					status().isInvisible() &&
 					config_file.readBoolEntry("Chat", "ReceiveImagesDuringInvisibility")
 				)
 			);
@@ -1029,7 +1026,7 @@ void GaduProtocol::login()
 	if (0 == GaduData->uin() || QString::null == GaduData->password())
 	{
 		MessageBox::msg(tr("UIN or password not set!"), false, "Warning");
-		NextStatus->setOffline();
+		setStatus(Status::Offline);
 		kdebugmf(KDEBUG_FUNCTION_END, "end: uin or password not set\n");
 		return;
 	}
@@ -1046,11 +1043,13 @@ void GaduProtocol::login()
 
 	setupProxy();
 
-	LoginParams.status = static_cast<GaduStatus *>(NextStatus)->toStatusNumber();
-	if (NextStatus->isFriendsOnly())
-		LoginParams.status |= GG_STATUS_FRIENDS_MASK;
-	if (NextStatus->hasDescription())
-		LoginParams.status_descr = strdup((const char *)unicode2cp(NextStatus->description()).data());
+	LoginParams.status = statusToType(nextStatus());
+// TODO: 0.6.6
+// 	LoginParams.status = static_cast<GaduStatus *>(NextStatus)->toStatusNumber();
+// 	if (NextStatus->isFriendsOnly())
+// 		LoginParams.status |= GG_STATUS_FRIENDS_MASK;
+	if (!nextStatus().description().isEmpty())
+		LoginParams.status_descr = strdup((const char *)unicode2cp(nextStatus().description()).data());
 
 	LoginParams.uin = GaduData->uin();
 	LoginParams.has_audio = config_file.readBoolEntry("Network", "AllowDCC");
@@ -1158,7 +1157,7 @@ void GaduProtocol::login()
 	else
 	{
 		whileConnecting = false;
-		NextStatus->setOffline();
+		setStatus(Status::Offline);
 		disconnectedSlot();
 		emit error(Disconnected);
 	}

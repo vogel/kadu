@@ -40,10 +40,10 @@ public:
 	QString description() const { return Description; }
 	void setDescription(const QString &description) { Description = description; }
 
-	bool isOnline() { return Online == Type; }
-	bool isBusy() { return Busy == Type; }
-	bool isInvisible() { return Invisible == Type; }
-	bool isOffline() { return Offline == Type; }
+	bool isOnline() const { return Online == Type; }
+	bool isBusy() const { return Busy == Type; }
+	bool isInvisible() const { return Invisible == Type; }
+	bool isOffline() const { return Offline == Type; }
 
 	int compareTo(const Status& compare) const;
 	bool operator < (const Status &compare) const;

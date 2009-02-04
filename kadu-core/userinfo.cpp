@@ -227,7 +227,7 @@ void UserInfo::setupTab1()
 
 	if (User.usesProtocol("Gadu"))
 	{
-		if (gadu->currentStatus().isOffline())
+		if (gadu->status().isOffline())
 			e_status->setText(tr("(Unknown)"));
 
 		e_uin->setText(User.ID("Gadu"));

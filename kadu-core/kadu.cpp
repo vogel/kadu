@@ -694,15 +694,6 @@ void Kadu::accountRegistered(Account *account)
 		this, SLOT(readTokenValue(QPixmap, QString &)));
 	connect(protocol, SIGNAL(systemMessageReceived(const QString &)), this, SLOT(systemMessageReceived(const QString &)));
 
-	connect(&(protocol->currentStatus()), SIGNAL(goOnline(const QString &)),
-		this, SLOT(wentOnline(const QString &)));
-	connect(&(protocol->currentStatus()), SIGNAL(goBusy(const QString &)),
-		this, SLOT(wentBusy(const QString &)));
-	connect(&(protocol->currentStatus()), SIGNAL(goInvisible(const QString &)),
-		this, SLOT(wentInvisible(const QString &)));
-	connect(&(protocol->currentStatus()), SIGNAL(goOffline(const QString &)),
-		this, SLOT(wentOffline(const QString &)));
-
 	ContactAccountData *contactAccountData = protocol->protocolFactory()->
 			newContactAccountData(Myself, account, account->data()->id());
 	Myself.addAccountData(contactAccountData);
@@ -1129,7 +1120,7 @@ void Kadu::showStatusActionCreated(KaduAction *action)
 	Account *gadu = AccountManager::instance()->defaultAccount();
 
 	if (gadu != NULL)
-		action->setIcon(gadu->protocol()->currentStatus().pixmap());
+		action->setIcon(gadu->protocol()->statusPixmap());
 }
 
 void Kadu::setStatusActionsIcon()
@@ -1138,7 +1129,7 @@ void Kadu::setStatusActionsIcon()
 
 	if (gadu != NULL)
 	{
-		QPixmap pixmap = gadu->protocol()->currentStatus().pixmap();
+		QPixmap pixmap = gadu->protocol()->statusPixmap();
 
 		foreach (KaduAction *action, showStatusActionDescription->actions())
 			action->setIcon(pixmap);
@@ -1342,11 +1333,11 @@ void Kadu::blink()
 	kdebugf();
 
 	Protocol *gadu = AccountManager::instance()->defaultAccount()->protocol();
-	if (!DoBlink && !gadu->currentStatus().isOffline())
+	if (!DoBlink && !gadu->status().isOffline())
 		return;
-	else if (!DoBlink && gadu->currentStatus().isOffline())
+	else if (!DoBlink && gadu->status().isOffline())
 	{
-		icon = QIcon(gadu->nextStatus().pixmap(Offline, false));
+		icon = QIcon(gadu->statusPixmap(Status::Offline));
 		statusButton->setIcon(icon);
 		emit statusPixmapChanged(icon, "Offline");
 		return;
@@ -1355,14 +1346,14 @@ void Kadu::blink()
 	QString iconName;
 	if (BlinkOn)
 	{
-		icon = QIcon(gadu->nextStatus().pixmap(Offline, false));
+		icon = QIcon(gadu->statusPixmap(Status::Offline));
 		iconName = "Offline";
 	}
 	else
 	{
-		const UserStatus &stat = gadu->nextStatus();
-		icon = QIcon(stat.pixmap(NextStatus));
-		iconName = stat.toString();
+		const Status &stat = gadu->nextStatus();
+		icon = QIcon(gadu->statusPixmap(stat));
+		iconName = Status::name(stat);
 	}
 
 	statusButton->setIcon(icon);
@@ -1413,8 +1404,8 @@ void Kadu::changeStatusSlot()
 	QAction *action = dynamic_cast<QAction *>(sender());
 	if (action)
 	{
-		foreach(QAction *action, changeStatusActionGroup->actions())
-			action->setChecked(action->data().toInt() == gadu->currentStatus().index());
+		foreach (QAction *a, changeStatusActionGroup->actions())
+			a->setChecked(a == action);
 		slotHandleState(action->data().toInt());
 	}
 }
@@ -1642,9 +1633,9 @@ bool Kadu::close(bool quit)
 		AccountManager::instance()->storeConfiguration(xml_config_file);
 
 		Protocol *gadu = AccountManager::instance()->defaultAccount()->protocol();
-		if (!gadu->currentStatus().isOffline())
+		if (!gadu->status().isOffline())
 			if (config_file.readBoolEntry("General", "DisconnectWithCurrentDescription"))
-				setOffline(gadu->currentStatus().description());
+				setOffline(gadu->status().description());
 			else
 				setOffline(config_file.readEntry("General", "DisconnectDescription"));
 
@@ -1683,15 +1674,6 @@ bool Kadu::close(bool quit)
 		disconnect(userlist, SIGNAL(usersDataChanged(QString)), this, SLOT(updateInformationPanelLater()));
 		disconnect(userlist, SIGNAL(protocolUsersDataChanged(QString, QString)), this, SLOT(updateInformationPanelLater()));
 		disconnect(userlist, SIGNAL(usersStatusChanged(QString)), this, SLOT(updateInformationPanelLater()));
-
-		disconnect(&(gadu->currentStatus()), SIGNAL(goOnline(const QString &)),
-				this, SLOT(wentOnline(const QString &)));
-		disconnect(&(gadu->currentStatus()), SIGNAL(goBusy(const QString &)),
-				this, SLOT(wentBusy(const QString &)));
-		disconnect(&(gadu->currentStatus()), SIGNAL(goInvisible(const QString &)),
-				this, SLOT(wentInvisible(const QString &)));
-		disconnect(&(gadu->currentStatus()), SIGNAL(goOffline(const QString &)),
-				this, SLOT(wentOffline(const QString &)));
 
 		StatusChangerManager::closeModule();
 
@@ -2359,15 +2341,16 @@ void Kadu::showStatusOnMenu(int statusNr)
 		statusActions[i]->setChecked(i == statusNr);
 
 	Protocol *gadu = AccountManager::instance()->defaultAccount()->protocol();
-	changePrivateStatus->setChecked(gadu->currentStatus().isFriendsOnly());
+// 	changePrivateStatus->setChecked(gadu->status().isFriendsOnly());
+// TODO: 0.6.6
 
-	statusButton->setText(qApp->translate("@default", gadu->currentStatus().name().ascii()));
+	statusButton->setText(qApp->translate("@default", Status::name(gadu->status()).ascii()));
 	changeStatusToOfflineDesc->setEnabled(statusNr != 6);
 	changeStatusToOffline->setEnabled(statusNr != 7);
 
-	QPixmap pix = gadu->currentStatus().pixmap();
+	QPixmap pix = gadu->statusPixmap();
 	QIcon icon(pix);
-	QString iconName = gadu->currentStatus().toString();
+	QString iconName = Status::name(gadu->status());
 
 	statusButton->setIcon(icon);
 	setMainWindowIcon(pix);

@@ -111,7 +111,11 @@ void Account::storeConfiguration(XmlConfigFile *configurationStorage, QDomElemen
 
 UserStatus Account::currentStatus()
 {
-	return (0 == ProtocolHandler) ? UserStatus() : ProtocolHandler->currentStatus();
+	UserStatus x;
+	if (0 != ProtocolHandler)
+		x.setStatus(ProtocolHandler->status());
+
+	return x;
 }
 
 QString Account::name()

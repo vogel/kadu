@@ -26,10 +26,6 @@ Protocol::Protocol(Account *account, ProtocolFactory *factory)
 
 Protocol::~Protocol()
 {
-	if (CurrentStatus)
-		delete CurrentStatus;
-	if (NextStatus)
-		delete NextStatus;
 }
 
 const QDateTime &Protocol::connectionTime() const
@@ -87,4 +83,15 @@ void Protocol::setAllOffline()
 void Protocol::setAccount(Account* account)
 {
 	CurrentAccount = account;
+}
+
+void Protocol::setStatus(Status status)
+{
+	NextStatus = status;
+	changeStatus(status);
+}
+
+void Protocol::statusChanged(Status status)
+{
+	CurrentStatus = status;
 }
