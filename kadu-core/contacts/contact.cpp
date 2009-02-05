@@ -111,6 +111,12 @@ Account * Contact::prefferedAccount()
 	return Data->prefferedAccount();
 }
 
+QList<Account *> Contact::accounts()
+{
+	checkNull();
+	return Data->accounts();
+}
+
 void Contact::addAccountData(ContactAccountData *accountData)
 {
 	if (!accountData)

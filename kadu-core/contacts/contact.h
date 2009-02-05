@@ -84,6 +84,7 @@ public:
 	QMap<QString, QString> & customData();
 
 	Account * prefferedAccount();
+	QList<Account *> accounts();
 
 	void addAccountData(ContactAccountData *accountData);
 	ContactAccountData * accountData(Account *account) const;

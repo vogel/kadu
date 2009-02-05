@@ -255,6 +255,14 @@ Account * ContactData::prefferedAccount()
 		: 0;
 }
 
+QList<Account *> ContactData::accounts()
+{
+	return AccountsData.count() > 0
+		? AccountsData.keys()
+		: QList<Account *>();
+;
+}
+
 // properties
 
 bool ContactData::isIgnored()
