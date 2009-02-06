@@ -25,6 +25,8 @@ set (kadu_SRCS
 	contacts/model/contact-list-model.cpp
 	contacts/model/contacts-model.cpp
 	contacts/model/contacts-model-proxy.cpp
+	
+	contacts/model/filter/group-contact-filter.cpp
 
 	configuration/account-data-manager.cpp
 	configuration/config-file-data-manager.cpp
@@ -149,6 +151,9 @@ set (kadu_MOC_SRCS
 	contacts/model/contact-list-model.h
 	contacts/model/contacts-model.h
 	contacts/model/contacts-model-proxy.h
+	
+	contacts/model/filter/abstract-contact-filter.h
+	contacts/model/filter/group-contact-filter.h
 
 	configuration/config-file-data-manager.h
 	configuration/configuration-window-data-manager.h

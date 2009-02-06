@@ -6,21 +6,22 @@
  *   (at your option) any later version.                                   *
  *                                                                         *
  ***************************************************************************/
+#include "group-contact-filter.h"
+#include "contacts/contact.h"
 
-#ifndef ABSTRACT_CONTACT_FILTER
-#define ABSTRACT_CONTACT_FILTER
-
-#include <QtCore/QObject>
-
-class Contact;
-
-class AbstractContactFilter : public QObject
+GroupContactFilter::GroupContactFilter() : CurrentGroup(0)
 {
-	Q_OBJECT
-public:
-	virtual bool acceptContact(Contact contact) = 0;
-signals:
-	void filterChanged();
-};
+}
 
-#endif // ABSTRACT_CONTACT_FILTER
+void GroupContactFilter::setGroup(Group *group)
+{
+	if (CurrentGroup == group)
+		return;
+	CurrentGroup = group;
+	emit filterChanged();
+}
+
+bool GroupContactFilter::acceptContact(Contact contact)
+{
+	return (0 == CurrentGroup) || contact.isInGroup(CurrentGroup);
+}

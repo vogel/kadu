@@ -93,12 +93,14 @@ void ContactsModelProxy::addFilter(AbstractContactFilter *filter)
 {
 	Filters.append(filter);
 	invalidateFilter();
+	connect(filter, SIGNAL(filterChanged()), this, SLOT(invalidateFilter()));
 }
 
 void ContactsModelProxy::removeFilter(AbstractContactFilter *filter)
 {
 	Filters.remove(filter);
 	invalidateFilter();
+	connect(filter, SIGNAL(filterChanged()), this, SLOT(invalidateFilter()));
 }
 
 const QModelIndex ContactsModelProxy::contactIndex(Contact contact) const

@@ -7,20 +7,21 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef ABSTRACT_CONTACT_FILTER
-#define ABSTRACT_CONTACT_FILTER
+#ifndef GROUP_CONTACT_FILTER
+#define GROUP_CONTACT_FILTER
 
-#include <QtCore/QObject>
+#include "abstract-contact-filter.h"
+#include "contacts/group.h"
 
-class Contact;
-
-class AbstractContactFilter : public QObject
+class GroupContactFilter : public AbstractContactFilter
 {
 	Q_OBJECT
+	Group *CurrentGroup;
 public:
-	virtual bool acceptContact(Contact contact) = 0;
-signals:
-	void filterChanged();
+	GroupContactFilter(); 
+	void setGroup(Group *group);
+	virtual bool acceptContact(Contact contact);
 };
 
-#endif // ABSTRACT_CONTACT_FILTER
+#endif // GROUP_CONTACT_FILTER
+

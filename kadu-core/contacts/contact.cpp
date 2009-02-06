@@ -179,3 +179,10 @@ bool Contact::isOfflineTo(Account *account) const
 		? false
 		: Data->isOfflineTo(account);
 }
+
+bool Contact::isInGroup(Group *group) const
+{
+	return isNull()
+		? false
+		: Data->isInGroup(group);
+}

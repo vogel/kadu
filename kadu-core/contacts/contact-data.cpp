@@ -290,3 +290,8 @@ bool ContactData::isOfflineTo(Account *account)
 		? cad->isOfflineTo()
 		: OfflineTo;
 }
+
+bool ContactData::isInGroup(Group *group)
+{
+	return Groups.contains(group);
+}
