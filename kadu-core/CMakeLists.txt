@@ -65,6 +65,7 @@ set (kadu_SRCS
 	gui/widgets/configuration/config-tab.cpp
 
 	protocols/protocol.cpp
+	protocols/protocol-menu-manager.cpp
 	protocols/protocols_manager.cpp
 	protocols/status.cpp
 

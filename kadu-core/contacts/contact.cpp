@@ -140,6 +140,13 @@ bool Contact::hasStoredAccountData(Account *account) const
 		: Data->hasStoredAccountData(account);
 }
 
+bool Contact::hasAccountData(Account *account) const
+{
+	return isNull()
+		? false
+		: 0 != Data->accountData(account);
+}
+
 QString Contact::id(Account *account) const
 {
 	return isNull()

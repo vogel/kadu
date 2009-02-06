@@ -13,6 +13,8 @@
 #include <QtGui/QMenu>
 #include <QtGui/QSortFilterProxyModel>
 
+#include "accounts/account.h"
+
 #include "contacts/contact.h"
 #include "contacts/contact-list.h"
 #include "contacts/contact-list-mime-data-helper.h"
@@ -20,7 +22,12 @@
 
 #include "contacts/model/contacts-model-proxy.h"
 
+#include "protocols/protocol_factory.h"
+#include "protocols/protocol-menu-manager.h"
+#include "protocols/protocols_manager.h"
+
 #include "action.h"
+#include "icons_manager.h"
 #include "userbox.h"
 
 #include "contacts-list-widget-delegate.h"
@@ -137,6 +144,31 @@ void ContactsListWidget::contextMenuEvent(QContextMenuEvent *event)
 		}
 		else
 			management->addSeparator();
+
+	foreach (Account * account, con.accounts())
+	{
+		if (!account || !account->protocol())
+			continue;
+
+		ProtocolFactory *protocolFactory = account->protocol()->protocolFactory();
+
+		if (!protocolFactory || !protocolFactory->getProtocolMenuManager())
+			continue;
+
+		QMenu *account_menu = menu->addMenu(account->name());
+		if (!protocolFactory->iconName().isEmpty())
+			account_menu->setIcon(icons_manager->loadIcon(protocolFactory->iconName()));
+
+		foreach (ActionDescription *actionDescription, protocolFactory->getProtocolMenuManager()->protocolActions(account, con))
+			if (actionDescription)
+			{
+				KaduAction *action = actionDescription->createAction(MainWindow);
+				account_menu->addAction(action);
+				action->checkState();
+			}
+			else
+				account_menu->addSeparator();
+	}
 
 	menu->exec(event->globalPos());
 }

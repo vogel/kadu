@@ -19,6 +19,7 @@ class ConfigurationWindow;
 class Contact;
 class ContactAccountData;
 class Protocol;
+class ProtocolMenuManager;
 class StoragePoint;
 
 class ProtocolFactory : public QObject
@@ -29,6 +30,7 @@ public:
 	virtual ContactAccountData * newContactAccountData(Contact contact, Account *account, const QString &id) = 0;
 	virtual ContactAccountData * loadContactAccountData(Contact contact, Account *account) = 0;
 	virtual ConfigurationWindow * newConfigurationDialog(AccountData *, QWidget *) = 0;
+	virtual ProtocolMenuManager * getProtocolMenuManager() { return 0; }
 
 	virtual QString name() = 0;
 	virtual QString displayName() = 0;
