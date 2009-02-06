@@ -383,7 +383,7 @@ void SearchDialog::firstSearch()
 	if (r_pers->isChecked() && isPersonalDataEmpty())
 		return;
 
-	if (gadu->status().isOffline())
+	if (!gadu->isConnected())
 	{
 		MessageBox::msg(tr("Cannot search contacts in offline mode"), false, "Critical", this);
 		kdebugf2();
@@ -445,7 +445,7 @@ void SearchDialog::nextSearch()
 	kdebugf();
 
 	GaduProtocol *gadu = dynamic_cast<GaduProtocol *>(AccountManager::instance()->defaultAccount()->protocol());
-	if (gadu->status().isOffline())
+	if (!gadu->isConnected())
 		return;
 
 	searching = true;

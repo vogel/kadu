@@ -245,7 +245,7 @@ void UserlistImportExport::startImportTransfer()
 	kdebugf();
 
 	GaduProtocol *gadu = dynamic_cast<GaduProtocol *>(AccountManager::instance()->defaultAccount()->protocol());
-	if (gadu->status().isOffline())
+	if (!gadu->isConnected())
 	{
 		MessageBox::msg(tr("Cannot import user list from server in offline mode"), false, "Critical", this);
 		return;
@@ -314,7 +314,7 @@ void UserlistImportExport::startExportTransfer()
 	kdebugf();
 
 	GaduProtocol *gadu = dynamic_cast<GaduProtocol *>(AccountManager::instance()->defaultAccount()->protocol());
-	if (gadu->status().isOffline())
+	if (!gadu->isConnected())
 	{
 		MessageBox::msg(tr("Cannot export user list to server in offline mode"), false, "Critical", this);
 		kdebugf2();
@@ -371,7 +371,7 @@ void UserlistImportExport::clean()
 	kdebugf();
 
 	GaduProtocol *gadu = dynamic_cast<GaduProtocol *>(AccountManager::instance()->defaultAccount()->protocol());
-	if (gadu->status().isOffline())
+	if (!gadu->isConnected())
 	{
 		MessageBox::msg(tr("Cannot clear user list on server in offline mode"), false, "Critical", this);
 		kdebugf2();

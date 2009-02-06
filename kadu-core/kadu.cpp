@@ -1334,9 +1334,9 @@ void Kadu::blink()
 	kdebugf();
 
 	Protocol *gadu = AccountManager::instance()->defaultAccount()->protocol();
-	if (!DoBlink && !gadu->status().isOffline())
+	if (!DoBlink && gadu->isConnected())
 		return;
-	else if (!DoBlink && gadu->status().isOffline())
+	else if (!DoBlink && !gadu->isConnected())
 	{
 		icon = QIcon(gadu->statusPixmap(Status::Offline));
 		statusButton->setIcon(icon);
@@ -1634,7 +1634,7 @@ bool Kadu::close(bool quit)
 		AccountManager::instance()->storeConfiguration(xml_config_file);
 
 		Protocol *gadu = AccountManager::instance()->defaultAccount()->protocol();
-		if (!gadu->status().isOffline())
+		if (gadu->isConnected())
 			if (config_file.readBoolEntry("General", "DisconnectWithCurrentDescription"))
 				setOffline(gadu->status().description());
 			else

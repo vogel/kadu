@@ -412,7 +412,7 @@ GaduAccountData * GaduProtocol::gaduAccountData() const
 void GaduProtocol::setAccount(Account* account) {
 	Protocol::setAccount(account);
 
-	SocketNotifiers->setAccount(account);/**/
+	SocketNotifiers->setAccount(account);
 }
 
 void GaduProtocol::currentStatusChanged(const UserStatus &/*status*/, const UserStatus &/*oldStatus*/)
@@ -701,7 +701,7 @@ void GaduProtocol::connectedSlot()
 	PingTimer->start(60000);
 
 	statusChanged(nextStatus());
-	emit connected(account());
+	networkStateChanged(NetworkConnected);
 
 	// po po��czeniu z sewerem niestety trzeba ponownie ustawi�
 	// status, inaczej nie b�dziemy widoczni - raczej b��d serwer�w
@@ -763,7 +763,7 @@ void GaduProtocol::disconnectedSlot()
 	if (!status().isOffline())
 		setStatus(Status::Offline);
 
-	emit disconnected(account());
+	networkStateChanged(NetworkDisconnected);
 	kdebugf2();
 }
 
@@ -1040,8 +1040,7 @@ void GaduProtocol::login()
 	}
 
 	whileConnecting = true;
-
-	emit connecting(account());
+	networkStateChanged(NetworkConnecting);
 
 	memset(&LoginParams, 0, sizeof(LoginParams));
 	LoginParams.async = 1;

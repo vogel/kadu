@@ -218,7 +218,7 @@ void PersonalInfoDialog::reloadInfo()
 	kdebugf();
 
 	GaduProtocol *gadu = dynamic_cast<GaduProtocol *>(AccountManager::instance()->defaultAccount()->protocol());
-	if (!gadu->status().isOffline())
+	if (gadu->isConnected())
 	{
 		State = READING;
 		gadu->getPersonalInfo(*data);
@@ -233,7 +233,7 @@ void PersonalInfoDialog::saveButtonClicked()
 	kdebugf();
 
 	GaduProtocol *gadu = dynamic_cast<GaduProtocol *>(AccountManager::instance()->defaultAccount()->protocol());
-	if (gadu->status().isOffline())
+	if (!gadu->isConnected())
 		return;
 
 	SearchResult save;

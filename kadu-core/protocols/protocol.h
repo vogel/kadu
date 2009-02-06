@@ -77,6 +77,7 @@ public:
 	virtual bool validateUserID(QString &uid) = 0;
 
 	NetworkState state() { return State; }
+	bool isConnected() { return (State == NetworkConnected); }
 
 	void setStatus(Status status);
 	const Status & status() const { return CurrentStatus; }

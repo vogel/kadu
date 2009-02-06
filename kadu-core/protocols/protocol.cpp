@@ -94,5 +94,15 @@ void Protocol::statusChanged(Status status)
 
 void Protocol::networkStateChanged(NetworkState state)
 {
+	if (State == state)
+		return;
 	State = state;
+	if (state == NetworkConnecting)
+		emit connecting(CurrentAccount);
+	else if (state == NetworkConnected)
+		emit connected(CurrentAccount);
+	else if (state == NetworkDisconnecting)
+		emit disconnecting(CurrentAccount);
+	else if (state == NetworkDisconnected)
+		emit disconnected(CurrentAccount);
 }

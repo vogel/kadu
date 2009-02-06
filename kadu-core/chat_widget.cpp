@@ -640,7 +640,7 @@ void ChatWidget::sendMessage()
 
 	emit messageSendRequested(this);
 
-	if (currentProtocol()->status().isOffline())
+	if (!currentProtocol()->isConnected())
 	{
 		MessageBox::msg(tr("Cannot send message while being offline."), false, "Critical", this);
 		kdebugmf(KDEBUG_FUNCTION_END, "not connected!\n");
