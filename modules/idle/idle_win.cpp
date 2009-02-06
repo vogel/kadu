@@ -31,11 +31,7 @@ typedef struct tagLASTINPUTINFO
 } LASTINPUTINFO, *PLASTINPUTINFO;
 #endif
 
-GetLastInputInfo = 0;
-IdleUIGetLastInputTime = 0;
-lib = 0;
-
-BOOL (__stdcall * GetLastInputInfo)(PLASTINPUTINFO);
+BOOL (__stdcall * GetLastInputInfoFun)(PLASTINPUTINFO);
 DWORD (__stdcall * IdleUIGetLastInputTime)(void);
 QLibrary *lib;
 
@@ -43,13 +39,17 @@ Idle::Idle()
 {
 	void *p;
 
+	GetLastInputInfoFun = 0;
+	IdleUIGetLastInputTime = 0;
+	lib = 0;
+
 	if (lib == 0)
 	{
 		// try to find the built-in Windows 2000 function
 		lib = new QLibrary("user32");
 		if(lib->load() && (p = lib->resolve("GetLastInputInfo"))) 
 		{
-			GetLastInputInfo = (BOOL (__stdcall *)(PLASTINPUTINFO))p;
+			GetLastInputInfoFun = (BOOL (__stdcall *)(PLASTINPUTINFO))p;
 		}
 		else 
 		{
@@ -79,11 +79,11 @@ Idle::~Idle()
 int Idle::secondsIdle()
 {
 	int i;
-	if (GetLastInputInfo != 0)
+	if (GetLastInputInfoFun != 0)
 	{
 		LASTINPUTINFO li;
 		li.cbSize = sizeof(LASTINPUTINFO);
-		bool ok = GetLastInputInfo(&li);
+		bool ok = GetLastInputInfoFun(&li);
 		if (!ok)
 			return -1;
 		i = li.dwTime;
@@ -98,7 +98,7 @@ int Idle::secondsIdle()
 	return (GetTickCount() - i) / 1000;
 }
 
-int Idle::isActive()
+bool Idle::isActive()
 {
 	return (secondsIdle() == 0);
 }
