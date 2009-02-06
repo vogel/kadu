@@ -76,6 +76,31 @@ bool ContactsModelProxy::lessThan(const QModelIndex &left, const QModelIndex &ri
 	return displayCompare < 0;
 }
 
+bool ContactsModelProxy::filterAcceptsRow(int sourceRow, const QModelIndex & sourceParent) const
+{
+	QVariant conVariant = sourceParent.data(ContactRole);
+	if (conVariant.canConvert<Contact>())
+	{
+		Contact contact = conVariant.value<Contact>();
+		foreach (AbstractContactFilter *filter, Filters)
+		if (!filter->acceptContact(contact))
+			return false;
+	}
+	return true;
+}
+
+void ContactsModelProxy::addFilter(AbstractContactFilter *filter)
+{
+	Filters.append(filter);
+	invalidateFilter();
+}
+
+void ContactsModelProxy::removeFilter(AbstractContactFilter *filter)
+{
+	Filters.remove(filter);
+	invalidateFilter();
+}
+
 const QModelIndex ContactsModelProxy::contactIndex(Contact contact) const
 {
 	if (!SourceContactModel)

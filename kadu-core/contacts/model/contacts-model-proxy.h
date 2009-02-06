@@ -13,23 +13,28 @@
 #include <QtGui/QSortFilterProxyModel>
 
 #include "abstract-contacts-model.h"
+#include "filter/abstract-contact-filter.h"
 
 class ContactsModelProxy : public QSortFilterProxyModel, public AbstractContactsModel
 {
 	Q_OBJECT
 
 	AbstractContactsModel *SourceContactModel;
+	QList<AbstractContactFilter *> Filters;
 
 	bool BrokenStringCompare;
 	int compareNames(QString n1, QString n2) const;
 
 protected:
 	virtual bool lessThan(const QModelIndex &left, const QModelIndex &right) const;
+	virtual bool filterAcceptsRow(int source_row, const QModelIndex & source_parent) const;
 
 public:
 	ContactsModelProxy(QObject *parent = 0);
 
 	virtual void setSourceModel(QAbstractItemModel* sourceModel);
+	void addFilter(AbstractContactFilter *filter);
+	void removeFilter(AbstractContactFilter *filter);
 
 	// IContactsModel implementation
 	virtual const QModelIndex contactIndex(Contact contact) const;
