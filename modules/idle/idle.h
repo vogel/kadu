@@ -13,9 +13,6 @@ public:
 
 	bool isActive();
 	int secondsIdle();
-
-public slots:
-	void test();
 };
 
 extern Idle *idle;
