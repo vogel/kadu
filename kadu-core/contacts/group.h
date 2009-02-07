@@ -38,6 +38,7 @@ public:
 	QString icon() const { return Icon; }
 
 	void setName(const QString &name) { Name = name; }
+	void setIcon(const QString &icon) { Icon = icon; }
 
 };
 
