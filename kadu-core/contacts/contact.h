@@ -104,7 +104,7 @@ template<class T>
 	bool setIgnored(bool ignored = true);
 	bool isBlocked(Account *account) const;
 	bool isOfflineTo(Account *account) const;
-	bool isInGroup(Group *group) const; 
+	bool isInGroup(Group *group) const;
 
 	Property(QString, display, Display, QString::null)
 	Property(QString, firstName, FirstName, QString::null)

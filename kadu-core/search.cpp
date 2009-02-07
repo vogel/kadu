@@ -21,6 +21,8 @@
 #include "accounts/account.h"
 #include "accounts/account_manager.h"
 
+#include "contacts/contact-manager.h"
+
 #include "gui/widgets/contact-data-window.h"
 
 #include "chat_manager.h"
@@ -287,27 +289,23 @@ QTreeWidgetItem * SearchDialog::selectedItem()
 
 void SearchDialog::addFound()
 {
-	UserListElements found = selected();
+	ContactList found = selected();
 
-	foreach (const UserListElement &user, found)
-		if (user.isAnonymous())
-			(new ContactDataWindow(user, kadu))->show();
-		else
-			(new ContactDataWindow(user, kadu))->show();
+	foreach (Contact contact, found)
+		(new ContactDataWindow(UserListElement::fromContact(contact, AccountManager::instance()->defaultAccount()), kadu))->show();
 }
 
 void SearchDialog::chatFound()
 {
 	Account *account = AccountManager::instance()->defaultAccount();
-	UserListElements found = selected();
+	ContactList found = selected();
 	if (found.size())
-		chat_manager->openChatWidget(account, found.toContactList(account));
+		chat_manager->openChatWidget(account, found);
 }
 
-// TODO: return real list
-UserListElements SearchDialog::selected()
+ContactList SearchDialog::selected()
 {
-	UserListElements result;
+	ContactList result;
 
 	QTreeWidgetItem *selected = selectedItem();
 
@@ -322,21 +320,21 @@ UserListElements SearchDialog::selected()
 	if (uin.toUInt(&ok) == 0 || !ok)
 		return result;
 
-	QString altnick;
+	QString display;
 	if (!nickname.isEmpty()) // Build altnick. Trying user nick first.
-		altnick = nickname;
+		display = nickname;
 	else if (!firstname.isEmpty()) // If nick is empty, try firstname.
-		altnick = firstname;
+		display = firstname;
 	else
-		altnick = uin; // If above are empty, use uin.
+		display = uin; // If above are empty, use uin.
 
-	UserListElement e = userlist->byID("Gadu", uin);
+	Contact e = ContactManager::instance()->byId(AccountManager::instance()->defaultAccount(), uin);
 
 	if (e.isAnonymous())
 	{
 		e.setFirstName(firstname);
 		e.setNickName(nickname);
-		e.setAltNick(altnick);
+		e.setDisplay(display);
 	}
 
 	result.append(e);
@@ -625,19 +623,18 @@ void SearchDialog::uinClicked()
 void SearchDialog::updateInfoClicked()
 {
 	kdebugf();
-
+	// TODO: review this code
 	QTreeWidgetItem *selected = selectedItem();
 
 	if (!selected)
 		return;
 
-	QString suin = selected->text(1);
+	QString uin = selected->text(1);
 	QString firstname = selected->text(2);
 //	QString lastname = selected->text(3);
 	QString nickname = selected->text(4);
 
-	UinType uin = suin.toUInt();
-	UserListElement ule = userlist->byID("Gadu", QString::number(uin));
+	Contact con = ContactManager::instance()->byId(AccountManager::instance()->defaultAccount(), uin);
 
 	// Build altnick. Try user nick first.
 	QString altnick = nickname;
@@ -653,9 +650,10 @@ void SearchDialog::updateInfoClicked()
 	if (altnick.isEmpty())
 		altnick = uin;
 
-	ule.setFirstName(firstname);
-	ule.setNickName(nickname);
-	(new ContactDataWindow(ule, kadu))->show();
+	con.setFirstName(firstname);
+	con.setNickName(nickname);
+
+	(new ContactDataWindow(UserListElement::fromContact(con, AccountManager::instance()->defaultAccount()), kadu))->show();
 	kdebugf2();
 }
 

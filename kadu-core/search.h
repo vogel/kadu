@@ -12,6 +12,8 @@ class QRadioButton;
 class QTreeWidget;
 class QTreeWidgetItem;
 
+class ContactList;
+
 // TODO: a better name
 class SearchActionsSlots : public QObject
 {
@@ -77,7 +79,7 @@ class KADUAPI SearchDialog : public KaduMainWindow
 
 	bool isPersonalDataEmpty() const;
 
-	UserListElements selected();
+	ContactList selected();
 
 	QTreeWidgetItem * selectedItem();
 
