@@ -760,7 +760,7 @@ void GaduProtocol::disconnectedSlot()
 	if (!Kadu::closing())
 		setAllOffline();
 
-	if (!status().isOffline())
+	if (!status().isOffline() && !nextStatus().isOffline())
 		setStatus(Status::Offline);
 
 	networkStateChanged(NetworkDisconnected);
