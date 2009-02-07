@@ -7,8 +7,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef KADU_USERINFO_H
-#define KADU_USERINFO_H
+#ifndef CONTACT_DATA_WIDGET_H
+#define CONTACT_DATA_WIDGET_H
 
 #include <QtCore/QList>
 #include <QtCore/QMap>
@@ -33,10 +33,10 @@ class CreateNotifier;
 /**
 	Klasa ta reprezentuje okno, z kt�rym mamy do czynienia podczas dodawania nowego kontaktu,
 	lub podczas edycji danych istniej�cego ju� kontaktu.
-	\class UserInfo
+	\class ContactDataWindow
 	\brief Okno dialogowe pokazuj�ce informacje o wybranym kontakcie
 **/
-class KADUAPI UserInfo : public QWidget
+class KADUAPI ContactDataWindow : public QWidget
 {
 	Q_OBJECT
 
@@ -133,8 +133,8 @@ public:
 		\param parent wska�nik do obiektu stanowi�cego rodzica. Domy�lnie 0.
 		\param name nazwa kontrolki. Domy�lnie 0.
 	**/
-	UserInfo(UserListElement user, QWidget *parent = 0);
-	~UserInfo();
+	ContactDataWindow(UserListElement user, QWidget *parent = 0);
+	~ContactDataWindow();
 
 	QTabWidget *tabs() { return tw_main; }
 	UserListElement user() const { return User; }
@@ -149,7 +149,7 @@ public slots:
 	void updateAltNick();
 
 signals:
-	void updateClicked(UserInfo *);
+	void updateClicked(ContactDataWindow *);
 
 };
 

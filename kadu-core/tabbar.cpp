@@ -14,12 +14,13 @@
 
 #include "contacts/group.h"
 
+#include "gui/widgets/contact-data-window.h"
+
 #include "config_file.h"
 #include "debug.h"
 #include "groups_manager.h"
 #include "icons_manager.h"
 #include "userbox.h"
-#include "userinfo.h"
 
 #include "tabbar.h"
 
@@ -53,7 +54,7 @@ QString KaduTabBar::getNewGroupNameFromUser(bool *ok)
 		if (!*ok)
 			return QString::null;
 
-		if (UserInfo::acceptableGroupName(text))
+		if (ContactDataWindow::acceptableGroupName(text))
 			group = text;
 	}
 	while (group.isEmpty());

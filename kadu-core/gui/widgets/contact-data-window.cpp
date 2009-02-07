@@ -35,11 +35,11 @@
 #include "userlist.h"
 #include "xml_config_file.h"
 
-#include "userinfo.h"
+#include "contact-data-window.h"
 
-CreateNotifier UserInfo::createNotifier;
+CreateNotifier ContactDataWindow::createNotifier;
 
-UserInfo::UserInfo(UserListElement user, QWidget *parent)
+ContactDataWindow::ContactDataWindow(UserListElement user, QWidget *parent)
 	: QWidget(parent, Qt::Dialog), User(user),
 	e_firstname(0), e_lastname(0), e_nickname(0), e_altnick(0), e_mobile(0), e_uin(0),
 	e_addr(0), e_ver(0), e_email(0), e_dnsname(0), c_blocking(0), c_offtouser(0),
@@ -77,7 +77,8 @@ UserInfo::UserInfo(UserListElement user, QWidget *parent)
 
 	// create our Tabs
 	setupTab1();
-	setupTab2();
+	// TODO: 0.6.6 rewrite - hangs on GroupsManagerOld::groups()
+	//setupTab2();
 	setupTab3();
 
 	// create buttons and fill icon and app info
@@ -119,7 +120,7 @@ UserInfo::UserInfo(UserListElement user, QWidget *parent)
 	kdebugf2();
 }
 
-void UserInfo::setupTab1()
+void ContactDataWindow::setupTab1()
 {
 	kdebugf();
 
@@ -277,7 +278,7 @@ void UserInfo::setupTab1()
 	kdebugf2();
 }
 
-void UserInfo::updateAltNick()
+void ContactDataWindow::updateAltNick()
 {
 	QStringList list;
 	if (!e_altnick->currentText().isEmpty())
@@ -298,7 +299,7 @@ void UserInfo::updateAltNick()
 	e_altnick->addItems(list);
 }
 
-void UserInfo::setupTab2()
+void ContactDataWindow::setupTab2()
 {
 	kdebugf();
 
@@ -379,7 +380,7 @@ void UserInfo::setupTab2()
 	kdebugf2();
 }
 
-bool UserInfo::acceptableGroupName(const QString &groupName)
+bool ContactDataWindow::acceptableGroupName(const QString &groupName)
 {
 	kdebugf();
 	if (groupName.isEmpty())
@@ -417,7 +418,7 @@ bool UserInfo::acceptableGroupName(const QString &groupName)
 	return true;
 }
 
-void UserInfo::newGroupClicked()
+void ContactDataWindow::newGroupClicked()
 {
 	kdebugf();
 	QString groupName = newGroup->text();
@@ -481,7 +482,7 @@ void UserInfo::newGroupClicked()
 }
 
 
-void UserInfo::setupTab3()
+void ContactDataWindow::setupTab3()
 {
 	kdebugf();
 
@@ -517,26 +518,26 @@ void UserInfo::setupTab3()
 	kdebugf2();
 }
 
-UserInfo::~UserInfo()
+ContactDataWindow::~ContactDataWindow()
 {
 	kdebugf();
  	saveWindowGeometry(this, "General", "ManageUsersDialogGeometry");
 	kdebugf2();
 }
 
-void UserInfo::keyPressEvent(QKeyEvent *ke_event)
+void ContactDataWindow::keyPressEvent(QKeyEvent *ke_event)
 {
 	if (ke_event->key() == Qt::Key_Escape)
 		close();
 }
 
-void UserInfo::resultsReady(const QHostInfo &host)
+void ContactDataWindow::resultsReady(const QHostInfo &host)
 {
     	if (host.error() == QHostInfo::NoError)
 		e_dnsname->setText(host.hostName());
 }
 
-void UserInfo::updateUserlist()
+void ContactDataWindow::updateUserlist()
 {
 	kdebugf();
 
@@ -620,12 +621,12 @@ void UserInfo::updateUserlist()
 }
 
 
-void UserInfo::scrollToBottom()
+void ContactDataWindow::scrollToBottom()
 {
 	scrollArea->verticalScrollBar()->setValue(scrollArea->widget()->height());
 }
 
-void UserInfo::selectIcon()
+void ContactDataWindow::selectIcon()
 {
 	ImageDialog* iDialog = new ImageDialog(this);
 	iDialog->setDir(config_file.readEntry("GroupIcon", "recentPath", "~/"));
@@ -657,7 +658,7 @@ void UserInfo::selectIcon()
 	delete iDialog;
 }
 
-void UserInfo::deleteIcon()
+void ContactDataWindow::deleteIcon()
 {
 	QString groupName;
 	const QCheckBox *checkBox = 0;

@@ -32,6 +32,8 @@
 
 #include "contacts/model/contacts-model.h"
 
+#include "gui/widgets/contact-data-window.h"
+
 #include "gui/widgets/contacts-list-widget.h"
 #include "gui/widgets/contacts-list-widget-menu-manager.h"
 
@@ -67,7 +69,6 @@
 #include "toolbar.h"
 #include "updates.h"
 #include "userbox.h"
-#include "userinfo.h"
 #include "xml_config_file.h"
 
 #include "kadu.h"
@@ -1072,7 +1073,7 @@ void Kadu::editUserActionActivated(QAction *sender, bool toggled)
 	if (contact.isNull())
 		return;
 
-	(new UserInfo(UserListElement::fromContact(contact, AccountManager::instance()->defaultAccount()), kadu))->show();
+	(new ContactDataWindow(UserListElement::fromContact(contact, AccountManager::instance()->defaultAccount()), kadu))->show();
 
 	kdebugf2();
 }
@@ -1087,7 +1088,7 @@ void Kadu::addUserActionActivated(QAction *sender, bool toggled)
 		: Contact();
 
 	if (contact.isAnonymous() || contact.isNull())
-		(new UserInfo(UserListElement::fromContact(contact, AccountManager::instance()->defaultAccount()), kadu))->show();
+		(new ContactDataWindow(UserListElement::fromContact(contact, AccountManager::instance()->defaultAccount()), kadu))->show();
 
  	kdebugf2();
 }

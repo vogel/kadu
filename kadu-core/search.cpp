@@ -20,6 +20,9 @@
 
 #include "accounts/account.h"
 #include "accounts/account_manager.h"
+
+#include "gui/widgets/contact-data-window.h"
+
 #include "chat_manager.h"
 #include "config_file.h"
 #include "debug.h"
@@ -27,7 +30,6 @@
 #include "message_box.h"
 #include "misc.h"
 #include "toolbar.h"
-#include "userinfo.h"
 #include "xml_config_file.h"
 
 #include "../modules/gadu_protocol/gadu_search.h"
@@ -289,9 +291,9 @@ void SearchDialog::addFound()
 
 	foreach (const UserListElement &user, found)
 		if (user.isAnonymous())
-			(new UserInfo(user, kadu))->show();
+			(new ContactDataWindow(user, kadu))->show();
 		else
-			(new UserInfo(user, kadu))->show();
+			(new ContactDataWindow(user, kadu))->show();
 }
 
 void SearchDialog::chatFound()
@@ -653,7 +655,7 @@ void SearchDialog::updateInfoClicked()
 
 	ule.setFirstName(firstname);
 	ule.setNickName(nickname);
-	(new UserInfo(ule, kadu))->show();
+	(new ContactDataWindow(ule, kadu))->show();
 	kdebugf2();
 }
 

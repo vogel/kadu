@@ -34,6 +34,8 @@ set (kadu_SRCS
 
 	configuration/widgets/manage-accounts.cpp
 
+	gui/widgets/contact-data-window.cpp
+
 	gui/widgets/contacts-list-widget.cpp
 	gui/widgets/contacts-list-widget-delegate.cpp
 	gui/widgets/contacts-list-widget-menu-manager.cpp
@@ -118,7 +120,6 @@ set (kadu_SRCS
 	updates.cpp
 	userbox.cpp
 	usergroup.cpp
-	userinfo.cpp
 	userlist.cpp
 	userlistelement.cpp
 	userlist-private.cpp
@@ -160,6 +161,8 @@ set (kadu_MOC_SRCS
 	configuration/configuration-window-data-manager.h
 
 	configuration/widgets/manage-accounts.h
+
+	gui/widgets/contact-data-window.h
 
 	gui/widgets/contacts-list-widget.h
 	gui/widgets/contacts-list-widget-delegate.h
@@ -225,7 +228,6 @@ set (kadu_MOC_SRCS
 	updates.h
 	userbox.h
 	usergroup.h
-	userinfo.h
 	userlist.h
 	userlistelement.h
 	userlist-private.h
