@@ -257,6 +257,7 @@ void SoundManager::mainConfigurationWindowCreated(MainConfigurationWindow *mainC
 
 	themesComboBox = dynamic_cast<ConfigComboBox *>(mainConfigurationWindow->widgetById("sound/themes"));
 	connect(themesComboBox, SIGNAL(activated(int)), configurationWidget, SLOT(themeChanged(int)));
+	connect(themesComboBox, SIGNAL(activated(const QString &)), sound_slots, SLOT(themeChanged(const QString &)));
 	configurationWidget->themeChanged(themesComboBox->currentItem());
 
 	themesPaths = dynamic_cast<PathListEdit *>(mainConfigurationWindow->widgetById("soundPaths"));
@@ -293,6 +294,8 @@ void SoundManager::configurationWindowApplied()
 
 	if (themesComboBox->currentItem() != 0)
 		applyTheme(themesComboBox->currentText());
+
+	configurationWidget->themeChanged(themesComboBox->currentIndex());
 }
 
 void SoundManager::createDefaultConfiguration()
@@ -413,7 +416,7 @@ void SoundManager::closeDevice(SoundDevice device)
 		disconnect(playing_thread, SIGNAL(samplePlayed(SoundDevice)), this, SIGNAL(samplePlayed(SoundDevice)));
 		playing_thread->stop();
 		PlayingThreads.remove(device);
-		delete playing_thread;
+		playing_thread->deleteLater();
 	}
 	if (RecordingThreads.contains(device))
 	{
@@ -421,7 +424,7 @@ void SoundManager::closeDevice(SoundDevice device)
 		disconnect(recording_thread, SIGNAL(sampleRecorded(SoundDevice)), this, SIGNAL(sampleRecorded(SoundDevice)));
 		recording_thread->stop();
 		RecordingThreads.remove(device);
-		delete recording_thread;
+		recording_thread->deleteLater();
 	}
 	emit closeDeviceImpl(device);
 

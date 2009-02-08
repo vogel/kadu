@@ -44,40 +44,42 @@ class SoundSlots : public QObject, public ConfigurationAwareObject
 {
 	Q_OBJECT
 
-		ActionDescription* mute_action;
-		QMap<QString, QString> soundfiles;
-		QStringList soundNames;
-		QStringList soundTexts;
+	ActionDescription* mute_action;
+	QMap<QString, QString> soundfiles;
+	QStringList soundNames;
+	QStringList soundTexts;
 
-		MessageBox* SamplePlayingTestMsgBox;
-		SoundDevice SamplePlayingTestDevice;
-		int16_t*    SamplePlayingTestSample;
+	MessageBox* SamplePlayingTestMsgBox;
+	SoundDevice SamplePlayingTestDevice;
+	int16_t*    SamplePlayingTestSample;
 
-		MessageBox* SampleRecordingTestMsgBox;
-		SoundDevice SampleRecordingTestDevice;
-		int16_t*    SampleRecordingTestSample;
+	MessageBox* SampleRecordingTestMsgBox;
+	SoundDevice SampleRecordingTestDevice;
+	int16_t*    SampleRecordingTestSample;
 
-		MessageBox* FullDuplexTestMsgBox;
-		SoundDevice FullDuplexTestDevice;
-		int16_t*    FullDuplexTestSample;
+	MessageBox* FullDuplexTestMsgBox;
+	SoundDevice FullDuplexTestDevice;
+	int16_t*    FullDuplexTestSample;
 
-	private slots:
-		void muteActionActivated(QAction *action, bool is_on);
-		void setMuteActionState();
-		void muteUnmuteSounds();
-		void testSamplePlaying();
-		void samplePlayingTestSamplePlayed(SoundDevice device);
-		void testSampleRecording();
-		void sampleRecordingTestSampleRecorded(SoundDevice device);
-		void sampleRecordingTestSamplePlayed(SoundDevice device);
-		void testFullDuplex();
-		void fullDuplexTestSampleRecorded(SoundDevice device);
-		void closeFullDuplexTest();
-	protected:
-		void configurationUpdated();
-	public:
-		SoundSlots(bool firstLoad, QObject *parent = 0);
-		~SoundSlots();
+private slots:
+	void muteActionActivated(QAction *action, bool is_on);
+	void setMuteActionState();
+	void muteUnmuteSounds();
+	void testSamplePlaying();
+	void samplePlayingTestSamplePlayed(SoundDevice device);
+	void testSampleRecording();
+	void sampleRecordingTestSampleRecorded(SoundDevice device);
+	void sampleRecordingTestSamplePlayed(SoundDevice device);
+	void testFullDuplex();
+	void fullDuplexTestSampleRecorded(SoundDevice device);
+	void closeFullDuplexTest();
+protected:
+	void configurationUpdated();
+public:
+	SoundSlots(bool firstLoad, QObject *parent = 0);
+	~SoundSlots();
+public slots:
+	void themeChanged(const QString &theme);
 };
 
 /** @} */

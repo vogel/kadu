@@ -80,6 +80,14 @@ void SoundConfigurationWidget::themeChanged(int index)
 {
 	warning->setShown(index != 0);
 	soundFileSelectFile->setEnabled(index == 0);
+
+	//refresh soundFiles
+	foreach (const QString &key, soundFiles.keys())
+	{
+		soundFiles[key] = config_file.readEntry("Sounds", key + "_sound");
+		if (key == currentNotifyEvent)
+			soundFileSelectFile->setFile(soundFiles[key]);
+	}
 }
 
 SoundSlots::SoundSlots(bool firstLoad, QObject *parent)
@@ -113,6 +121,11 @@ SoundSlots::~SoundSlots()
 	delete mute_action;
 	mute_action = 0;
 	kdebugf2();
+}
+
+void SoundSlots::themeChanged(const QString &theme)
+{
+	sound_manager->theme()->setTheme(theme);
 }
 
 void SoundSlots::muteActionActivated(QAction  *action, bool is_on)
@@ -149,8 +162,16 @@ void SoundSlots::testSamplePlaying()
 	kdebugf();
 	if (SamplePlayingTestMsgBox != NULL)
 		return;
-	QString chatsound = config_file.readEntry("Sounds", "NewChat_sound");
 
+	QString chatsound = sound_manager->theme()->themePath() + sound_manager->theme()->getThemeEntry("NewChat");
+
+	/* Dorr: I know that this brokes the test sample idea but
+	   at least there are no noises when playing sample songs
+	   from sound themes.
+	*/
+#if 1
+	sound_manager->play(chatsound, true);
+#else
 	QFile file(chatsound);
 	if (!file.open(IO_ReadOnly))
 	{
@@ -186,6 +207,7 @@ void SoundSlots::testSamplePlaying()
 	SamplePlayingTestMsgBox->show();
 
 	sound_manager->playSample(SamplePlayingTestDevice, SamplePlayingTestSample, file.size());
+#endif
 	kdebugf2();
 }
 
