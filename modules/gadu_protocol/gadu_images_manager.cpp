@@ -16,6 +16,8 @@
 #include "icons_manager.h"
 #include "misc.h"
 
+#include "gadu-protocol.h"
+
 #include "gadu_images_manager.h"
 
 GaduImagesManager::ImageToSend::ImageToSend()

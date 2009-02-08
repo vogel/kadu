@@ -14,7 +14,7 @@
 #include "accounts/account_manager.h"
 #include "config_file.h"
 #include "debug.h"
-#include "../modules/gadu_protocol/gadu.h"
+#include "../modules/gadu_protocol/gadu-protocol.h"
 #include "kadu.h"
 #include "message_box.h"
 

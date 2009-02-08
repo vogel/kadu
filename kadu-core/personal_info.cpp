@@ -18,7 +18,7 @@
 #include "accounts/account.h"
 #include "accounts/account_manager.h"
 #include "debug.h"
-#include "../modules/gadu_protocol/gadu.h"
+#include "../modules/gadu_protocol/gadu-protocol.h"
 #include "../modules/gadu_protocol/gadu_search.h"
 #include "icons_manager.h"
 

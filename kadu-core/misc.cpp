@@ -49,7 +49,7 @@
 #include "icons_manager.h"
 #include "kadu.h"
 #include "kadu_parser.h"
-#include "../modules/gadu_protocol/gadu.h"
+#include "../modules/gadu_protocol/gadu-protocol.h"
 #include "message_box.h"
 #include "userlist.h"
 #include "status.h"

@@ -7,31 +7,21 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GADU_H
-#define GADU_H
+#ifndef CONNECTION_TIMEOUT_TIMER_H
+#define CONNECTION_TIMEOUT_TIMER_H
 
-#include <QtGui/QPixmap>
-#include <QtNetwork/QHostAddress>
+#include <QtCore/QTimer>
 
-#include <libgadu.h>
+class ConnectionTimeoutTimer : public QTimer
+{
+	ConnectionTimeoutTimer(QObject *parent = 0);
+	static ConnectionTimeoutTimer *Instance;
 
-#include "protocols/protocol.h"
-#include "protocols/status.h"
+public:
+	static void on();
+	static void off();
+	static bool connectTimeoutRoutine(const QObject *receiver, const char *member);
 
-#include "gadu_exports.h"
-#include "userlist.h"
+};
 
-typedef uin_t UinType;
-
-class QTimer;
-
-class AccountData;
-class GaduAccountData;
-class GaduContactAccountData;
-class GaduProtocolSocketNotifiers;
-
-struct SearchRecord;
-struct SearchResult;
-typedef class QList<SearchResult> SearchResults;
-
-#endif
+#endif // CONNECTION_TIMEOUT_TIMER_H

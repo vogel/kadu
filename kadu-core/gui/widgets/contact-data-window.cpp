@@ -27,7 +27,7 @@
 
 #include "config_file.h"
 #include "debug.h"
-#include "../modules/gadu_protocol/gadu.h"
+#include "../modules/gadu_protocol/gadu-protocol.h"
 #include "groups_manager.h"
 #include "icons_manager.h"
 #include "message_box.h"

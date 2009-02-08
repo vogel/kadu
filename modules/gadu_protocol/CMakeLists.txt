@@ -1,4 +1,5 @@
 set (SOURCES
+	connection-timeout-timer.cpp
 	gadu.cpp
 	gadu-account-data-manager.cpp
 	gadu_account_data.cpp
@@ -7,6 +8,7 @@ set (SOURCES
 	gadu_formatter.cpp
 	gadu_images_manager.cpp
 	gadu-importer.cpp
+	gadu-protocol.cpp
 	gadu_protocol_factory.cpp
 	gadu-protocol-socket-notifiers.cpp
 	gadu-pubdir-socket-notifiers.cpp
@@ -17,10 +19,12 @@ set (SOURCES
 )
 
 set (MOC_SOURCES
+	connection-timeout-timer.h
 	gadu.h
 	gadu_configuration_dialog.h
 	gadu-contact-account-data.h
 	gadu-importer.h
+	gadu-protocol.h
 	gadu-protocol-socket-notifiers.h
 	gadu-pubdir-socket-notifiers.h
 	gadu-socket-notifiers.h

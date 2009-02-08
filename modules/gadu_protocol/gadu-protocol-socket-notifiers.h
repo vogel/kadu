@@ -12,7 +12,7 @@
 
 #include "contacts/contact.h"
 
-#include "gadu.h"
+#include "gadu-protocol.h"
 
 #include "gadu-socket-notifiers.h"
 
@@ -64,7 +64,7 @@ signals:
 	**/
 	void serverDisconnected();
 
-	void error(GaduError);
+	void error(GaduProtocol::GaduError);
 	void imageReceived(UinType, uint32_t, uint32_t, const QString &filename, const char *data);
 	void imageRequestReceived(UinType, uint32_t, uint32_t);
 	void messageReceived(int, ContactList, QString &, time_t, QByteArray &);

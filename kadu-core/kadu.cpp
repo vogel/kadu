@@ -41,9 +41,9 @@
 #include "gui/widgets/contacts-list-widget-menu-manager.h"
 #include "gui/widgets/group-tab-bar.h"
 
-#include "../modules/gadu_protocol/gadu.h"
 #include "../modules/gadu_protocol/gadu-contact-account-data.h"
 #include "../modules/gadu_protocol/gadu_images_manager.h"
+#include "../modules/gadu_protocol/gadu-protocol.h"
 
 #include "about.h"
 #include "chat_edit_box.h"

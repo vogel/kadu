@@ -27,7 +27,7 @@
 #include "chat_messages_view.h"
 #include "config_file.h"
 #include "debug.h"
-#include "../modules/gadu_protocol/gadu.h"
+#include "../modules/gadu_protocol/gadu-protocol.h"
 #include "icons_manager.h"
 #include "kadu.h"
 #include "protocols/status.h"

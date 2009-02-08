@@ -20,7 +20,7 @@
 #include <QtGui/QTreeWidget>
 #include <QtGui/QVBoxLayout>
 
-#include "../modules/gadu_protocol/gadu.h"
+#include "../modules/gadu_protocol/gadu-protocol.h"
 
 #include "accounts/account.h"
 #include "accounts/account_manager.h"

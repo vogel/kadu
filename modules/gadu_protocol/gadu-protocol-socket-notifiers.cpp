@@ -110,7 +110,7 @@ void GaduProtocolSocketNotifiers::socketEvent()
 	gg_event* e;
 	if (!(e = gg_watch_fd(Sess)))
 	{
-		emit error(ConnectionUnknow);
+		emit error(GaduProtocol::ConnectionUnknow);
 //		gg_free_event(e);//nulla nie zwalniamy, bo i po co?
 		--socketEventCalls;
 		return;
@@ -270,23 +270,23 @@ void GaduProtocolSocketNotifiers::socketEvent()
 void GaduProtocolSocketNotifiers::connectionFailed(int failure)
 {
 	kdebugf();
-	GaduError err;
+	GaduProtocol::GaduError err;
 
 	switch (failure)
 	{
-		case GG_FAILURE_RESOLVING:	err = ConnectionServerNotFound; break;
-		case GG_FAILURE_CONNECTING:	err = ConnectionCannotConnect; break;
-		case GG_FAILURE_NEED_EMAIL:	err = ConnectionNeedEmail; break;
-		case GG_FAILURE_INVALID:	err = ConnectionInvalidData; break;
-		case GG_FAILURE_READING:	err = ConnectionCannotRead; break;
-		case GG_FAILURE_WRITING:	err = ConnectionCannotWrite; break;
-		case GG_FAILURE_PASSWORD:	err = ConnectionIncorrectPassword; break;
-		case GG_FAILURE_TLS:		err = ConnectionTlsError; break;
-		case GG_FAILURE_INTRUDER:	err = ConnectionIntruderError; break;
-		case GG_FAILURE_UNAVAILABLE:	err = ConnectionUnavailableError; break;
+		case GG_FAILURE_RESOLVING:	err = GaduProtocol::ConnectionServerNotFound; break;
+		case GG_FAILURE_CONNECTING:	err = GaduProtocol::ConnectionCannotConnect; break;
+		case GG_FAILURE_NEED_EMAIL:	err = GaduProtocol::ConnectionNeedEmail; break;
+		case GG_FAILURE_INVALID:	err = GaduProtocol::ConnectionInvalidData; break;
+		case GG_FAILURE_READING:	err = GaduProtocol::ConnectionCannotRead; break;
+		case GG_FAILURE_WRITING:	err = GaduProtocol::ConnectionCannotWrite; break;
+		case GG_FAILURE_PASSWORD:	err = GaduProtocol::ConnectionIncorrectPassword; break;
+		case GG_FAILURE_TLS:		err = GaduProtocol::ConnectionTlsError; break;
+		case GG_FAILURE_INTRUDER:	err = GaduProtocol::ConnectionIntruderError; break;
+		case GG_FAILURE_UNAVAILABLE:	err = GaduProtocol::ConnectionUnavailableError; break;
 		default:
 			kdebugm(KDEBUG_ERROR, "ERROR: unhandled/unknown connection error! %d\n", failure);
-			err=ConnectionUnknow;
+			err = GaduProtocol::ConnectionUnknow;
 	}
 
 	emit error(err);

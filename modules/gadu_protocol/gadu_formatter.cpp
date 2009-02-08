@@ -19,8 +19,10 @@
 #include "config_file.h"
 #include "message.h"
 
-#include "gadu_formatter.h"
 #include "gadu_images_manager.h"
+#include "gadu-protocol.h"
+
+#include "gadu_formatter.h"
 
 unsigned int GaduFormater::computeFormatsSize(const Message &message)
 {

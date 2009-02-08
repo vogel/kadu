@@ -34,6 +34,7 @@
 #include "toolbar.h"
 #include "xml_config_file.h"
 
+#include "../modules/gadu_protocol/gadu-protocol.h"
 #include "../modules/gadu_protocol/gadu_search.h"
 
 #include "search.h"

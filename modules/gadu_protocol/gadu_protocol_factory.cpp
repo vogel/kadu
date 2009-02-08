@@ -9,10 +9,10 @@
 
 #include <QtGui/QPushButton>
 
-#include "gadu.h"
 #include "gadu_account_data.h"
 #include "gadu_configuration_dialog.h"
 #include "gadu-contact-account-data.h"
+#include "gadu-protocol.h"
 
 #include "gadu_protocol_factory.h"
 
