@@ -1,4 +1,6 @@
-<!DOCTYPE TS><TS>
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS><TS version="1.1" language="fi">
+<defaultcodec></defaultcodec>
 <context>
     <name>WordFix</name>
     <message>
@@ -28,6 +30,17 @@
     <message>
         <source>Replace with</source>
         <translation>Zamień na</translation>
+    </message>
+</context>
+<context>
+    <name>@default</name>
+    <message>
+        <source>Words fix</source>
+        <translation>Korekta słów</translation>
+    </message>
+    <message>
+        <source>Enable word fix</source>
+        <translation>Włącz korektę słów</translation>
     </message>
 </context>
 </TS>
