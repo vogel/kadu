@@ -1,80 +1,5 @@
 <!DOCTYPE TS><TS>
 <context>
-    <name>ConfigurationWindow</name>
-    <message>
-        <source>Profile Manager</source>
-        <translation type="obsolete">Menedżer profili</translation>
-    </message>
-    <message>
-        <source>Profile Settings</source>
-        <translation type="obsolete">Ustawienia profilu</translation>
-    </message>
-    <message>
-        <source>Name</source>
-        <translation type="obsolete">Nazwa</translation>
-    </message>
-    <message>
-        <source>UIN</source>
-        <translation type="obsolete">UIN</translation>
-    </message>
-    <message>
-        <source>Directory</source>
-        <translation type="obsolete">Katalog</translation>
-    </message>
-    <message>
-        <source>Advanced</source>
-        <translation type="obsolete">Zaawansowane</translation>
-    </message>
-    <message>
-        <source>Copy Configuration</source>
-        <translation type="obsolete">Kopiuj konfigurację</translation>
-    </message>
-    <message>
-        <source>Add</source>
-        <translation type="obsolete">Dodaj</translation>
-    </message>
-    <message>
-        <source>Delete</source>
-        <translation type="obsolete">Usuń</translation>
-    </message>
-    <message>
-        <source>Run</source>
-        <translation type="obsolete">Uruchom</translation>
-    </message>
-    <message>
-        <source>Close</source>
-        <translation type="obsolete">Zamknij</translation>
-    </message>
-    <message>
-        <source>Profile Name contains wrong characters (&quot;..&quot;).</source>
-        <translation type="obsolete">Nazwa profilu zawiera niepoprawne znaki (&quot;..&quot;).</translation>
-    </message>
-    <message>
-        <source>Are you sure to continue? Directory (with all contents) will be deleted.</source>
-        <translation type="obsolete">Jesteś pewien? Katalog profilu wraz z całą zawartością zostanie usunięty.</translation>
-    </message>
-    <message>
-        <source>Password</source>
-        <translation type="obsolete">Hasło</translation>
-    </message>
-    <message>
-        <source>Copy Userlist</source>
-        <translation type="obsolete">Kopiuj listę kontaktów</translation>
-    </message>
-    <message>
-        <source>Autostart</source>
-        <translation type="obsolete">Uruchamiaj automatycznie</translation>
-    </message>
-    <message>
-        <source>Please write at least the name of the Profile</source>
-        <translation type="obsolete">Proszę podać co najmniej nazwę dla profilu</translation>
-    </message>
-    <message>
-        <source>New</source>
-        <translation type="obsolete">Nowy</translation>
-    </message>
-</context>
-<context>
     <name>PasswordDialog</name>
     <message>
         <source>The profile is protected by password.
@@ -136,10 +61,6 @@ Proszę podać hasło i nacisnąć Ok.</translation>
     <message>
         <source>Autostart</source>
         <translation>Uruchamiaj automatycznie</translation>
-    </message>
-    <message>
-        <source>Add</source>
-        <translation type="obsolete">Dodaj</translation>
     </message>
     <message>
         <source>Delete</source>

@@ -12,6 +12,7 @@
 #include <QtCore/QObject>
 #include <QtCore/QThread> 
 #include <QtCore/QList>
+#include <QtCore/QStringList>
 #include <QtGui/QWidget>
 #include <QtGui/QDialog>
 #include <QtGui/QLabel>
@@ -29,6 +30,33 @@
  * okno Menedzera Profili
  */
 
+/*
+ * Profile
+ * Klasa Profilu
+ * przechowuje dane profilu
+ */
+
+class Profile
+{
+	public:
+		Profile(): config(true), userlist(true), autostart(false) {};
+		Profile(const Profile &p) : name(p.name), directory(p.directory), uin(p.uin), 
+					    password(p.password), protectPassword(p.protectPassword),
+					    config(p.config), userlist(p.userlist), autostart(p.autostart) {};
+		Profile(QString name, QString dir): name(name), directory(dir), config(true), userlist(true), autostart(false) {};
+		~Profile() {};
+
+		QString name;
+		QString directory;
+		QString uin;
+		QString password;
+		QString protectPassword;
+		bool config;
+		bool userlist;
+		bool autostart;
+};
+
+
 class ProfileConfigurationWindow : public QDialog
 {
 	Q_OBJECT
@@ -37,9 +65,10 @@ class ProfileConfigurationWindow : public QDialog
 		~ProfileConfigurationWindow();	
 		void initConfiguration();
 		void clear();
-		void saveProfile(QString name, QString directory, QString uin, QString password, QString protectPassword, bool config, bool userlist, bool autostart);
+		void refreshList();
+		void saveProfile(Profile p, bool update);
 		void removeProfile(QString name);
-		QDomElement getProfile(QString name);
+//		QDomElement getProfile(QString name);
 		QListWidget *profilesList;
 	private:
 		QLineEdit *profileName;
@@ -85,7 +114,8 @@ class MyThread : public QThread {
 		virtual void run();
 };
 
-//typedef QValueList<MyThread *> ThreadList;
+//typedef QList<MyThread *> ThreadList;
+
 
 
 /*
@@ -105,15 +135,27 @@ class ProfileManager : public QObject
 		void runAutostarted();
 		int runKadu(QString profilePath, QString password);
 		static QString dirString();
-	
+
+		void addProfile(Profile p);
+		void updateProfile(Profile p);
+		void deleteProfile(const QString &name);
+		QList<Profile> getProfileList();
+		QStringList getProfileNames();
+		Profile getProfile(const QString &name);
+
 	private:
 		int profilePos;
 		ProfileConfigurationWindow *dialogWindow;
 		//ThreadList thread_list;
 		QMenu *ProfileMenu;
-		ActionDescription *profileMenuActionDescription;
+		ActionDescription *profileMenuActionDescription;	
+		QList<Profile> list;
+
+		void getProfiles();
+
 	private slots:
 		void showConfig();
+		void showMenu();
 		void createProfileMenu();
 		void openProfile(int index);
 };
@@ -131,13 +173,11 @@ class PasswordDialog : public QDialog
 		PasswordDialog(QDialog *parent=0, const char *name=0);
 		~PasswordDialog();
 		QString getPassword();
-		bool isCancelled();
 		
 	private:
 		QLineEdit *password;
 		QPushButton *okButton;
 		QPushButton *cancelButton;
-		bool cancelled;
 	private slots:
 		void okBtnPressed();
 		void cancelBtnPressed();
