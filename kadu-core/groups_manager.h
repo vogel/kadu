@@ -102,26 +102,6 @@ public:
 extern KADUAPI GroupsManagerOld *groups_manager;
 
 /**
-	\class UsersWithDescription
-	Klasa grupuj�ca kontakty o statusie z opisem,
-	automatycznie synchronizuj�ca si� z g��wn� list� kontakt�w
-**/
-class UsersWithDescription : public UserGroup
-{
-	Q_OBJECT
-
-private slots:
-	void statusChangedSlot(UserListElement elem, QString protocolName, const UserStatus &oldStatus, bool massively, bool last);
-
-public:
-	UsersWithDescription();
-	virtual ~UsersWithDescription();
-
-};
-
-extern UsersWithDescription *usersWithDescription;
-
-/**
 	\class OnlineUsers
 	Klasa grupuj�ca kontakty o statusie "dost�pny" lub "zaj�ty",
 	automatycznie synchronizuj�ca si� z g��wn� list� kontakt�w

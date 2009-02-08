@@ -22,7 +22,6 @@ void GroupsManagerOld::initModule()
 {
 	kdebugf();
 	groups_manager = new GroupsManagerOld();
-	usersWithDescription = new UsersWithDescription();
 	onlineUsers = new OnlineUsers();
 	onlineAndDescriptionUsers = new OnlineAndDescriptionUsers();
 	offlineUsers = new OfflineUsers();
@@ -45,13 +44,9 @@ void GroupsManagerOld::closeModule()
 	userbox->removeNegativeFilter(blockedUsers);
 	userbox->removeFilter(onlineAndDescriptionUsers);
 	userbox->removeNegativeFilter(offlineUsers);
-	userbox->removeFilter(usersWithDescription);
 	userbox->removeNegativeFilter(anonymousUsers);
 	userbox->removeNegativeFilter(anonymousUsersWithoutMessages);
 */
-	delete usersWithDescription;
-	usersWithDescription = 0;
-
 	delete onlineUsers;
 	onlineUsers = 0;
 
@@ -154,12 +149,6 @@ void GroupsManagerOld::configurationUpdated()
 // 			action->setChecked(!showWithoutDescription);
 // 	}
 
-// 	if (showWithoutDescription)
-// 		userBox->removeFilter(usersWithDescription);
-// 	else
-// 		userBox->applyFilter(usersWithDescription);
-// 	config_file.writeEntry("General", "ShowWithoutDescription", showWithoutDescription);
-// 	kdebugf2();
 // }
 
 // void GroupsManager::changeDisplayingOnlineAndDescription(UserBox *userBox, bool show)
@@ -368,30 +357,6 @@ void GroupsManagerOld::removeGroup(const QString &name)
 // 	refreshTabBarLater();
 //	kdebugf2();
 // }
-
-UsersWithDescription::UsersWithDescription() : UserGroup()
-{
-	connect(userlist, SIGNAL(statusChanged(UserListElement, QString, const UserStatus &, bool, bool)),
-			this, SLOT(statusChangedSlot(UserListElement, QString, const UserStatus &, bool, bool)));
-}
-
-UsersWithDescription::~UsersWithDescription()
-{
-	disconnect(userlist, SIGNAL(statusChanged(UserListElement, QString, const UserStatus &, bool, bool)),
-			this, SLOT(statusChangedSlot(UserListElement, QString, const UserStatus &, bool, bool)));
-}
-
-void UsersWithDescription::statusChangedSlot(UserListElement elem, QString protocolName,
-							const UserStatus &oldStatus, bool /*massively*/, bool /*last*/)
-{
-// TODO: 0.6.6
-// 	if (oldStatus.hasDescription() == elem.status(protocolName).hasDescription())
-// 		return;
-	if (oldStatus.hasDescription()) // elem.status(protocolName).hasDescription() == false
-		removeUser(elem);
-	else // elem.status(protocolName).hasDescription() == true
-		addUser(elem);
-}
 
 OnlineUsers::OnlineUsers() : UserGroup()
 {
@@ -752,7 +717,6 @@ void AnonymousUsersWithoutMessages::messageFromUserDeleted(Contact contact)
 
 BlockedUsers *blockedUsers;
 BlockingUsers *blockingUsers;
-UsersWithDescription *usersWithDescription;
 OnlineUsers *onlineUsers;
 OnlineAndDescriptionUsers *onlineAndDescriptionUsers;
 OfflineUsers *offlineUsers;
