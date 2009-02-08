@@ -33,6 +33,7 @@
 #include "contacts/model/contacts-model.h"
 
 #include "contacts/model/filter/group-contact-filter.h"
+#include "contacts/model/filter/has-description-contact-filter.h"
 
 #include "gui/widgets/contact-data-window.h"
 
@@ -441,6 +442,10 @@ Kadu::Kadu(QWidget *parent)
 	ContactsWidget = new ContactsListWidget(this);
 	ContactsWidget->setModel(new ContactsModel(ContactManager::instance(), this));
 	ContactsWidget->addFilter(GroupBar->filter());
+
+	//HasDescriptionContactFilter *hdcf = new HasDescriptionContactFilter(ContactsWidget);
+	//hdcf->setEnabled(true);
+	//ContactsWidget->addFilter(hdcf);
 
 	hbox_layout->setStretchFactor(ContactsWidget, 100);
 	hbox_layout->addWidget(GroupBar);
@@ -1007,10 +1012,12 @@ void Kadu::inactiveUsersActionCreated(KaduAction *action)
 {
 	action->setChecked(!config_file.readBoolEntry("General", "ShowOffline"));
 }
+
 void Kadu::descriptionUsersActionCreated(KaduAction *action)
 {
 	action->setChecked(!config_file.readBoolEntry("General", "ShowWithoutDescription"));
 }
+
 void Kadu::onlineAndDescUsersActionCreated(KaduAction *action)
 {
 	action->setChecked(config_file.readBoolEntry("General", "ShowOnlineAndDescription"));
