@@ -13,6 +13,8 @@ set (SOURCES
 	gadu-protocol-socket-notifiers.cpp
 	gadu-pubdir-socket-notifiers.cpp
 	gadu_search.cpp
+	gadu-server-connector.cpp
+	gadu-server-register-account.cpp
 	gadu-socket-notifiers.cpp
 	gadu-token-socket-notifiers.cpp
 	uins_list.cpp
@@ -27,6 +29,8 @@ set (MOC_SOURCES
 	gadu-protocol.h
 	gadu-protocol-socket-notifiers.h
 	gadu-pubdir-socket-notifiers.h
+	gadu-server-connector.h
+	gadu-server-register-account.h
 	gadu-socket-notifiers.h
 	gadu-token-socket-notifiers.h
 )

@@ -7,44 +7,35 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GADU_TOKEN_SOCKET_NOTIFIERS_H
-#define GADU_TOKEN_SOCKET_NOTIFIERS_H
+#ifndef GADU_SERVER_CONNECTOR_H
+#define GADU_SERVER_CONNECTOR_H
 
+#include <QtCore/QObject>
 #include <QtGui/QPixmap>
 
-#include "gadu-socket-notifiers.h"
+#include "token-reader.h"
 
-#ifndef _MSC_VER
-#pragma GCC visibility push(hidden)
-#endif
-
-class GaduTokenSocketNotifiers : public GaduSocketNotifiers
+class GaduServerConnector : public QObject
 {
 	Q_OBJECT
 
-	struct gg_http *H;
+	TokenReader *Reader;
+
+private slots:
+	void tokenFetched(const QString &, const QPixmap &);
 
 protected:
-	virtual void socketEvent();
-
-protected slots:
-	virtual void dataReceived();
-	virtual void dataSent();
+	virtual void performAction(const QString &tokenId, const QString &tokenValue) = 0;
 
 public:
-	GaduTokenSocketNotifiers(QObject *parent = 0);
-	virtual ~GaduTokenSocketNotifiers();
+	GaduServerConnector(TokenReader *reader)
+		: Reader(reader) {}
 
-	virtual void start();
+	void perform();
 
 signals:
-	void gotToken(const QString &, const QPixmap &);
-	void tokenError();
+	void result(bool);
 
 };
 
-#ifndef _MSC_VER
-#pragma GCC visibility pop
-#endif
-
-#endif // GADU_TOKEN_SOCKET_NOTIFIERS_H
+#endif // GADU_SERVER_CONNECTOR_H
