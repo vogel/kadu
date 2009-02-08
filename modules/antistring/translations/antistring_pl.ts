@@ -1,4 +1,6 @@
-<!DOCTYPE TS><TS>
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS><TS version="1.1" language="pl">
+<defaultcodec></defaultcodec>
 <context>
     <name>Antistring</name>
     <message>
@@ -39,9 +41,28 @@
         <source>Don&apos;t use</source>
         <translation>Nie używaj</translation>
     </message>
+</context>
+<context>
+    <name>@default</name>
+    <message>
+        <source>Conditions</source>
+        <translation>Warunki</translation>
+    </message>
     <message>
         <source>Antistring</source>
-        <translation type="unfinished">Antyłańcuszek</translation>
+        <translation>Antyłańcuszek</translation>
+    </message>
+    <message>
+        <source>Enable Antistring</source>
+        <translation>Włącz antyłańcuszek</translation>
+    </message>
+    <message>
+        <source>Block message</source>
+        <translation>Blokuj wiadomość</translation>
+    </message>
+    <message>
+        <source>Admonition:</source>
+        <translation>Pouczenie:</translation>
     </message>
 </context>
 </TS>
