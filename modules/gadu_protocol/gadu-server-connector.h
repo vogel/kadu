@@ -20,21 +20,26 @@ class GaduServerConnector : public QObject
 	Q_OBJECT
 
 	TokenReader *Reader;
+	bool Result;
 
 private slots:
 	void tokenFetched(const QString &, const QPixmap &);
+	void tokenFetchFailed();
 
 protected:
 	virtual void performAction(const QString &tokenId, const QString &tokenValue) = 0;
+
+	void finished(bool result);
 
 public:
 	GaduServerConnector(TokenReader *reader)
 		: Reader(reader) {}
 
 	void perform();
+	bool result() { return Result; }
 
 signals:
-	void result(bool);
+	void finished(GaduServerConnector *);
 
 };
 

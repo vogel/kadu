@@ -1157,6 +1157,11 @@ void TokenDialog::getValue(QString &tokenValue)
 	tokenValue = tokenedit->text();
 }
 
+QString TokenDialog::getValue()
+{
+	return tokenedit->text();
+}
+
 void CreateNotifier::notify(QObject *new_object)
 {
 	emit objectCreated(new_object);

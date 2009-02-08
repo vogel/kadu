@@ -2388,6 +2388,18 @@ void Kadu::readTokenValue(QPixmap tokenImage, QString &tokenValue)
 	delete td;
 }
 
+QString Kadu::readToken(const QPixmap &tokenPixmap)
+{
+	TokenDialog *td = new TokenDialog(tokenPixmap, 0);
+	QString result;
+
+	if (td->exec() == QDialog::Accepted)
+		result = td->getValue();
+	delete td;
+
+	return result;
+}
+
 char *SystemUserName;
 void Kadu::deleteOldConfigFiles()
 {

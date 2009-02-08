@@ -6,6 +6,8 @@
 #include <QtCore/QTimer>
 #include <QtGui/QKeyEvent>
 
+#include "../modules/gadu_protocol/token-reader.h"
+
 #include "contacts/contact.h"
 
 #include "protocols/protocol.h"
@@ -37,7 +39,7 @@ class UserStatusChanger;
 /**
 	G��wne okno Kadu
 **/
-class KADUAPI Kadu : public KaduMainWindow, ConfigurationAwareObject
+class KADUAPI Kadu : public KaduMainWindow, public TokenReader, ConfigurationAwareObject
 {
 	Q_OBJECT
 public:
@@ -305,6 +307,9 @@ public slots:
 
 	// odczytuje z obrazka tekst i zapisuje go w drugim parametrze
 	void readTokenValue(QPixmap, QString &);
+
+	// Token Reader
+	virtual QString readToken(const QPixmap &);
 
 	void setMainWindowIcon(const QPixmap &);
 

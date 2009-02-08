@@ -143,6 +143,7 @@ class TokenDialog : public QDialog
 public:
 	TokenDialog(QPixmap tokenImage, QDialog *parent = 0);
 	void getValue(QString &tokenValue);
+	QString getValue();
 
 };
 

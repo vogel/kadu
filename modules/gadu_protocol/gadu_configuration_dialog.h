@@ -16,6 +16,7 @@
 #include "gui/widgets/configuration/configuration-window.h"
 
 class GaduAccountData;
+class GaduServerConnector;
 
 class GaduConfigurationDialog : public ConfigurationWindow
 {
@@ -23,6 +24,11 @@ class GaduConfigurationDialog : public ConfigurationWindow
 
 	GaduAccountData *AccountData;
 	void createGui();
+
+private slots:
+	void registerNewAccountClicked();
+	void registerNewAccountFinished(GaduServerConnector *);
+
 public:
 	GaduConfigurationDialog(GaduAccountData *accountData, QWidget *parent = 0);
 	~GaduConfigurationDialog();

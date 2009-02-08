@@ -29,7 +29,7 @@ void GaduServerRegisterAccount::performAction(const QString &tokenId, const QStr
 		sn->start();
 	}
 	else
-		emit result(false);
+		finished(false);
 }
 
 void GaduServerRegisterAccount::done(bool ok, struct gg_http *h)
@@ -37,5 +37,5 @@ void GaduServerRegisterAccount::done(bool ok, struct gg_http *h)
 	if (ok)
 		Uin = ((struct gg_pubdir *)h->data)->uin;
 
-	emit result(ok);
+	finished(ok);
 }

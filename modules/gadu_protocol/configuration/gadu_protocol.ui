@@ -6,8 +6,13 @@
 				<line-edit caption="Name" config-section="Account" config-item="Name" />
 			</group-box>
 			<group-box name="Gadu-Gadu">
-				<line-edit caption="UIN" config-section="Account" config-item="Id" />
-				<line-edit caption="Password" config-section="Account" config-item="Password" id="password" />
+				<line-edit caption="UIN" config-section="Account" config-item="Id" id="gaduId" />
+				<line-edit caption="Password" config-section="Account" config-item="Password" id="gaduPassword" />
+			</group-box>
+			<group-box name="New account">
+				<line-edit caption="E-mail" id="gaduEmail" />
+				<line-edit caption="New password" id="gaduNewPassword" />
+				<action-button caption="Register new account..." id="gaduRegisterNewAccount" />
 			</group-box>
 		</tab>
 	</section>

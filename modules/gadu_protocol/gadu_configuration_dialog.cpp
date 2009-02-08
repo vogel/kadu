@@ -14,10 +14,15 @@
 #include <QtGui/QPushButton>
 #include <QtGui/QVBoxLayout>
 
-#include "gadu_account_data.h"
+#include "html_document.h"
 #include "icons_manager.h"
+#include "kadu.h"
+#include "message_box.h"
 
+#include "gadu_account_data.h"
 #include "gadu-account-data-manager.h"
+#include "gadu-server-register-account.h"
+
 #include "gadu_configuration_dialog.h"
 
 GaduConfigurationDialog::GaduConfigurationDialog(GaduAccountData *accountData, QWidget *parent)
@@ -36,6 +41,66 @@ GaduConfigurationDialog::~GaduConfigurationDialog()
 void GaduConfigurationDialog::createGui()
 {
 	appendUiFile(dataPath("kadu/modules/configuration/gadu_protocol.ui"));
-	QLineEdit *passwordLineEdit = dynamic_cast<QLineEdit *>(widgetById("password"));
+
+	QLineEdit *passwordLineEdit = dynamic_cast<QLineEdit *>(widgetById("gaduPassword"));
 	passwordLineEdit->setEchoMode(QLineEdit::Password);
+
+	QLineEdit *newPasswordLineEdit = dynamic_cast<QLineEdit *>(widgetById("gaduNewPassword"));
+	newPasswordLineEdit->setEchoMode(QLineEdit::Password);
+
+	QPushButton *registerNewAccountButton = dynamic_cast<QPushButton *>(widgetById("gaduRegisterNewAccount"));
+	connect(registerNewAccountButton, SIGNAL(clicked()), this, SLOT(registerNewAccountClicked()));
+}
+
+void GaduConfigurationDialog::registerNewAccountClicked()
+{
+	QLineEdit *newPasswordLineEdit = dynamic_cast<QLineEdit *>(widgetById("gaduNewPassword"));
+	QLineEdit *emailLineEdit = dynamic_cast<QLineEdit *>(widgetById("gaduNewPassword"));
+
+	QString password = newPasswordLineEdit->text();
+	QString mail = emailLineEdit->text();
+
+	if (password.isEmpty() || mail.isEmpty())
+	{
+		MessageBox::msg(tr("Please fill out all fields"), false, "Warning", this);
+		return;
+	}
+/* TODO: 0.6.6
+	if (mail.find(HtmlDocument::mailRegExp()) == -1)
+	{
+		MessageBox::msg(tr("Email address you have entered is not valid"), false, "Warning", this);
+		return;
+	}
+*/
+	setEnabled(false);
+
+	GaduServerRegisterAccount *gsra = new GaduServerRegisterAccount(kadu, mail, password);
+	connect(gsra, SIGNAL(finished(GaduServerConnector *)),
+			this, SLOT(registerNewAccountFinished(GaduServerConnector *)));
+
+	gsra->perform();
+}
+
+void GaduConfigurationDialog::registerNewAccountFinished(GaduServerConnector *gsc)
+{
+	GaduServerRegisterAccount *gsra = dynamic_cast<GaduServerRegisterAccount *>(gsc);
+	if (!gsra)
+		return;
+
+	if (gsra->result())
+	{
+		QLineEdit *idLineEdit = dynamic_cast<QLineEdit *>(widgetById("gaduId"));
+		idLineEdit->setText(QString::number(gsra->uin()));
+
+		QLineEdit *passwordLineEdit = dynamic_cast<QLineEdit *>(widgetById("gaduPassword"));
+		QLineEdit *newPasswordLineEdit = dynamic_cast<QLineEdit *>(widgetById("gaduNewPassword"));
+		passwordLineEdit->setText(newPasswordLineEdit->text());
+
+		MessageBox::msg(tr("Registration was successful. Your new number is %1.\nStore it in a safe place along with the password.\nNow add your friends to the userlist.").arg(gsra->uin()), false, "Information", this);
+	}
+	else
+		MessageBox::msg(tr("An error has occured while registration. Please try again later."), false, "Warning", this);
+
+	delete gsra;
+	setEnabled(true);
 }

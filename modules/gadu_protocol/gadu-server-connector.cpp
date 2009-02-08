@@ -11,23 +11,33 @@
 
 #include "gadu-server-connector.h"
 
+void GaduServerConnector::finished(bool result)
+{
+	Result = result;
+	emit finished(this);
+}
+
 void GaduServerConnector::perform()
 {
 	GaduTokenSocketNotifiers *sn = new GaduTokenSocketNotifiers(this);
-	connect(sn, SIGNAL(tokenError()), this, SLOT(tokenError()));
+	connect(sn, SIGNAL(tokenError()), this, SLOT(tokenFetchFailed()));
 	connect(sn, SIGNAL(gotToken(const QString &, const QPixmap &)),
 			this, SLOT(tokenFetched(const QString &, const QPixmap &)));
 	sn->start();
 }
 
+void GaduServerConnector::tokenFetchFailed()
+{
+	finished(false);
+}
+
 void GaduServerConnector::tokenFetched(const QString &tokenId, const QPixmap &tokenPixmap)
 {
-	if (!Reader)
+	if (Reader)
 	{
-		emit result(false);
-		return;
+		QString tokenValue = Reader->readToken(tokenPixmap);
+		performAction(tokenId, tokenValue);
 	}
-
-	QString tokenValue = Reader->readToken(tokenPixmap);
-	performAction(tokenId, tokenValue);
+	else
+		finished(false);
 }
