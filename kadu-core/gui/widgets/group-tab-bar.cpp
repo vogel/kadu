@@ -7,35 +7,49 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <QtGui/QApplication>
-#include <QtGui/QDragEnterEvent>
-#include <QtGui/QInputDialog>
-#include <QtGui/QMenu>
-
 #include "contacts/group.h"
+#include "contacts/group-manager.h"
 
-#include "gui/widgets/contact-data-window.h"
+#include "contacts/model/filter/group-contact-filter.h"
 
 #include "config_file.h"
-#include "debug.h"
-#include "groups_manager.h"
 #include "icons_manager.h"
-#include "userbox.h"
 
-#include "tabbar.h"
+#include "group-tab-bar.h"
 
-KaduTabBar::KaduTabBar(QWidget *parent)
+GroupTabBar::GroupTabBar(QWidget *parent)
 	: QTabBar(parent)
 {
-	kdebugf();
+	Filter = new GroupContactFilter(this);
+
 	setSizePolicy(QSizePolicy(QSizePolicy::Maximum, QSizePolicy::Preferred));
-	setAcceptDrops(true);
+// 	setAcceptDrops(true);
 
 	setShape(QTabBar::RoundedWest);
 	addTab(icons_manager->loadIcon("PersonalInfo"), tr("All"));
-	setFont(QFont(config_file.readFontEntry("Look", "UserboxFont").family(), config_file.readFontEntry("Look", "UserboxFont").pointSize(), QFont::Bold));
-	setIconSize(QSize(16,16));
+	setFont(QFont(config_file.readFontEntry("Look", "UserboxFont").family(),
+			config_file.readFontEntry("Look", "UserboxFont").pointSize(), QFont::Bold));
+	setIconSize(QSize(16, 16));
+
+	foreach (const Group *group, GroupManager::instance()->groups())
+		addTab(group->name());
+
+	connect(this, SIGNAL(currentChanged(int)), this, SLOT(currentChangedSlot(int)));
 }
+
+void GroupTabBar::currentChangedSlot(int index)
+{
+	Group *group = GroupManager::instance()->byName(tabText(index), false);
+	emit currentGroupChanged(group);
+	Filter->setGroup(group);
+}
+
+
+// 	if (GroupBar)
+// 		config_file.writeEntry("Look", "CurrentGroupTab", GroupBar->currentIndex());
+
+
+/*
 
 void KaduTabBar::dragEnterEvent(QDragEnterEvent *event)
 {
@@ -136,10 +150,4 @@ void KaduTabBar::moveToGroup()
 
 	foreach(const QString &ule, currentUles)
 		userlist->byAltNick(ule).setData("Groups", groups);
-}
-
-void KaduTabBar::setGroups(QList<Group *> groups)
-{
-	foreach (const Group *group, groups)
-		addTab(group->name());
-}
+}*/

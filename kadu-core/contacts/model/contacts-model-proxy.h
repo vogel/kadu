@@ -27,7 +27,7 @@ class ContactsModelProxy : public QSortFilterProxyModel, public AbstractContacts
 
 protected:
 	virtual bool lessThan(const QModelIndex &left, const QModelIndex &right) const;
-	virtual bool filterAcceptsRow(int source_row, const QModelIndex & source_parent) const;
+	virtual bool filterAcceptsRow(int sourceRow, const QModelIndex &sourceParent) const;
 
 public:
 	ContactsModelProxy(QObject *parent = 0);

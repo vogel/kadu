@@ -19,6 +19,7 @@
 class QContextMenuEvent;
 class QModelIndex;
 
+class AbstractContactFilter;
 class AbstractContactsModel;
 class ContactList;
 class ContactsListWidgetDelegate;
@@ -81,6 +82,8 @@ public:
 	virtual ~ContactsListWidget();
 
 	virtual void setModel(AbstractContactsModel *model);
+	void addFilter(AbstractContactFilter *filter);
+	void removeFilter(AbstractContactFilter *filter);
 
 	ContactList selectedContacts() const;
 	void setBackground(const QString &file = QString::null, BackgroundMode mode = BackgroundNone);

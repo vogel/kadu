@@ -76,16 +76,13 @@ bool ContactsModelProxy::lessThan(const QModelIndex &left, const QModelIndex &ri
 	return displayCompare < 0;
 }
 
-bool ContactsModelProxy::filterAcceptsRow(int sourceRow, const QModelIndex & sourceParent) const
+bool ContactsModelProxy::filterAcceptsRow(int sourceRow, const QModelIndex &sourceParent) const
 {
-	QVariant conVariant = sourceParent.data(ContactRole);
-	if (conVariant.canConvert<Contact>())
-	{
-		Contact contact = conVariant.value<Contact>();
-		foreach (AbstractContactFilter *filter, Filters)
+	Contact contact = SourceContactModel->contact(sourceModel()->index(sourceRow, 0));
+	foreach (AbstractContactFilter *filter, Filters)
 		if (!filter->acceptContact(contact))
 			return false;
-	}
+
 	return true;
 }
 
@@ -93,14 +90,14 @@ void ContactsModelProxy::addFilter(AbstractContactFilter *filter)
 {
 	Filters.append(filter);
 	invalidateFilter();
-	connect(filter, SIGNAL(filterChanged()), this, SLOT(invalidateFilter()));
+	connect(filter, SIGNAL(filterChanged()), this, SLOT(invalidate()));
 }
 
 void ContactsModelProxy::removeFilter(AbstractContactFilter *filter)
 {
 	Filters.remove(filter);
 	invalidateFilter();
-	connect(filter, SIGNAL(filterChanged()), this, SLOT(invalidateFilter()));
+	connect(filter, SIGNAL(filterChanged()), this, SLOT(invalidate()));
 }
 
 const QModelIndex ContactsModelProxy::contactIndex(Contact contact) const

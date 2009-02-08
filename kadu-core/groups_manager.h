@@ -10,8 +10,6 @@
 #include "userlistelement.h"
 #include "exports.h"
 
-class KaduTabBar;
-
 /**
 	Klasa s�u��ca przede wszystkim zarz�dzaniu nazwanymi grupami kontakt�w,
 	ale tak�e zarz�dza grupami typu: blokowani, blokuj�cy, tylko z opisami, tylko dost�pni, anonimowi
@@ -25,7 +23,6 @@ class KADUAPI GroupsManagerOld : public QObject, ConfigurationAwareObject
 	GroupsManagerOld();
 	~GroupsManagerOld();
 	QMap<QString, UserGroup *> Groups;
-	KaduTabBar *GroupBar;
 	int lastId;
 	QString currentGroup;
 	bool showBlocked;
@@ -34,17 +31,6 @@ class KADUAPI GroupsManagerOld : public QObject, ConfigurationAwareObject
 	bool showWithoutDescription;
 	bool showOnlineAndDescription;
 	QTimer refreshTimer;
-
-private slots:
-	void userDataChanged(UserListElement elem, QString name, QVariant oldValue, QVariant currentValue, bool massively, bool last);
-	void userAddedToMainUserlist(UserListElement elem, bool massively, bool last);
-	void userRemovedFromMainUserlist(UserListElement elem, bool massively, bool last);
-
-	void userAdded(UserListElement elem, bool massively, bool last);
-	void userRemoved(UserListElement elem, bool massively, bool last);
-
-	void tabSelected(int id);
-	void iconThemeChanged();
 
 protected:
 	virtual void configurationUpdated();
@@ -86,14 +72,6 @@ public:
 	void removeGroup(const QString &name);
 
 	/**
-		\fn void setTabBar(KaduTabBar *bar)
-		ustawia pas zak�adek, na kt�rym klasa b�dzie operowa� oraz inicjuje
-		wewn�trzne dane klasy
-		\param bar pas zak�adek, w kt�rym b�d� umieszczane zak�adki grup
-	**/
-	void setTabBar(KaduTabBar *bar);
-
-	/**
 		\fn QStringList groups() const
 		\return lista grup
 	**/
@@ -118,68 +96,6 @@ public:
 		\param name nazwa grupy
 	**/
 	void setIconForTab(const QString &name);
-
-public slots:
-
-	/**
-		\fn void setActiveGroup(const QString &name)
-		ustawia aktywn� grup� na name
-		\param name nazwa grupy
-	**/
-	void setActiveGroup(const QString &group);
-
-	/**
-		\fn void refreshTabBar()
-		od�wie�a pasek zak�adek grup
-	**/
-	void refreshTabBar();
-
-	/**
-		\fn void refreshTabBarLater()
-		od�wie�a pasek zak�adek grup, ale po zako�czeniu bie�acych operacji
-	**/
-	inline void refreshTabBarLater() { refreshTimer.start(0, true); }
-
-	/**
-		\fn void changeDisplayingBlocking()
-		w��cza lub wy��cza wy�wietlanie kontakt�w blokuj�cych
-		w g��wnej li�cie kontakt�w w zale�no�ci od poprzedniego stanu
-	**/
-	void changeDisplayingBlocking(bool show);
-
-	/**
-		\fn void changeDisplayingBlocked()
-		w��cza lub wy��cza wy�wietlanie kontakt�w blokowanych
-		w g��wnej li�cie kontakt�w w zale�no�ci od poprzedniego stanu
-	**/
-	void changeDisplayingBlocked(bool show);
-
-	/**
-		\fn void changeDisplayingOffline(UserBox *userBox, bool show);
-		w��cza lub wy��cza wy�wietlanie kontakt�w niedost�pnych
-		w li�cie kontakt�w w zale�no�ci od poprzedniego stanu
-		\param userBox lista kontakt�w
-		\param show stan akcji
-	**/
-// 	void changeDisplayingOffline(UserBox *userBox, bool show);
-
-	/**
-		\fn void changeDisplayingWithoutDescription(UserBox *userBox, bool show)
-		w��cza lub wy��cza wy�wietlanie kontakt�w o statusach bez opisu
-		w li�cie kontakt�w w zale�no�ci od poprzedniego stanu
-		\param userBox lista kontakt�w
-		\param show stan akcji
-	**/
-// 	void changeDisplayingWithoutDescription(UserBox *userBox, bool show);
-
-	/**
-		\fn void changeDisplayingOnlineAndDescription(UserBox *userBox, bool show)
-		w��cza lub wy��cza wy�wietlanie kontatk�w o statusach "dost�pny"
-		lub "zaj�ty" oraz kontatk�w z opisem
-		\param userBox lista kontakt�w
-		\param show stan akcji
-	**/
-// 	void changeDisplayingOnlineAndDescription(UserBox *userBox, bool show);
 
 };
 

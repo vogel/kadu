@@ -17,10 +17,16 @@ class Contact;
 class AbstractContactFilter : public QObject
 {
 	Q_OBJECT
+
 public:
+	AbstractContactFilter(QObject *parent = 0)
+		: QObject(parent) {}
+
 	virtual bool acceptContact(Contact contact) = 0;
+
 signals:
 	void filterChanged();
+
 };
 
 #endif // ABSTRACT_CONTACT_FILTER

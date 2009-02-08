@@ -84,6 +84,16 @@ void ContactsListWidget::setModel(AbstractContactsModel *model)
 	ProxyModel->invalidate();
 }
 
+void ContactsListWidget::addFilter(AbstractContactFilter *filter)
+{
+	ProxyModel->addFilter(filter);
+}
+
+void ContactsListWidget::removeFilter(AbstractContactFilter *filter)
+{
+	ProxyModel->removeFilter(filter);
+}
+
 ContactList ContactsListWidget::selectedContacts() const
 {
 	ContactList result;

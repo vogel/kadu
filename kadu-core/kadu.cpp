@@ -32,10 +32,13 @@
 
 #include "contacts/model/contacts-model.h"
 
+#include "contacts/model/filter/group-contact-filter.h"
+
 #include "gui/widgets/contact-data-window.h"
 
 #include "gui/widgets/contacts-list-widget.h"
 #include "gui/widgets/contacts-list-widget-menu-manager.h"
+#include "gui/widgets/group-tab-bar.h"
 
 #include "../modules/gadu_protocol/gadu.h"
 #include "../modules/gadu_protocol/gadu-contact-account-data.h"
@@ -65,7 +68,6 @@
 #include "search.h"
 #include "status_changer.h"
 #include "syntax_editor.h"
-#include "tabbar.h"
 #include "toolbar.h"
 #include "updates.h"
 #include "userbox.h"
@@ -417,8 +419,7 @@ Kadu::Kadu(QWidget *parent)
 	hbox_layout->setSpacing(0);
 
 	// groupbar
-	GroupBar = new KaduTabBar(this);
-	GroupBar->setGroups(GroupManager::instance()->groups());
+	GroupBar = new GroupTabBar(this);
 	hbox_layout->setStretchFactor(GroupBar, 1);
 
 	StatusChangerManager::initModule();
@@ -439,6 +440,7 @@ Kadu::Kadu(QWidget *parent)
 
 	ContactsWidget = new ContactsListWidget(this);
 	ContactsWidget->setModel(new ContactsModel(ContactManager::instance(), this));
+	ContactsWidget->addFilter(GroupBar->filter());
 
 	hbox_layout->setStretchFactor(ContactsWidget, 100);
 	hbox_layout->addWidget(GroupBar);
@@ -2093,11 +2095,6 @@ void Kadu::updateInformationPanel(Contact contact)
 void Kadu::currentChanged(Contact contact)
 {
 	updateInformationPanel(contact);
-}
-
-KaduTabBar* Kadu::groupBar() const
-{
-	return GroupBar;
 }
 
 ContactList Kadu::contacts()

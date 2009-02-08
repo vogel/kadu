@@ -9,7 +9,8 @@
 #include "group-contact-filter.h"
 #include "contacts/contact.h"
 
-GroupContactFilter::GroupContactFilter() : CurrentGroup(0)
+GroupContactFilter::GroupContactFilter(QObject *parent)
+	: AbstractContactFilter(parent), CurrentGroup(0)
 {
 }
 
@@ -17,6 +18,7 @@ void GroupContactFilter::setGroup(Group *group)
 {
 	if (CurrentGroup == group)
 		return;
+
 	CurrentGroup = group;
 	emit filterChanged();
 }

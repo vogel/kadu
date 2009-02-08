@@ -29,7 +29,7 @@ class Q3ListBoxItem;
 class Account;
 class ActionDescription;
 class ContactsListWidget;
-class KaduTabBar;
+class GroupTabBar;
 class KaduTextBrowser;
 class UserGroup;
 class UserStatusChanger;
@@ -104,7 +104,7 @@ private:
 	QMenu *ContactsMenu;
 	QMenu *HelpMenu;
 	QMenu *RecentChatsMenu;
-	KaduTabBar *GroupBar;
+	GroupTabBar *GroupBar;
 
 	ContactsListWidget *ContactsWidget;
 
@@ -218,11 +218,6 @@ public:
 
 	bool userInActiveGroup(UinType uin);
 	void removeUsers(ContactList contacts);
-
-	/**
-		Zwraca wskaznik do zakladek z nazwami grup.
-	**/
-	KaduTabBar * groupBar() const;
 
 	/**
 		Zwraca wska�nik na g��wny layout w obiekcie, teraz jest to QVBoxLayout.

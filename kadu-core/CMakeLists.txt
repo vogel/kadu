@@ -39,7 +39,7 @@ set (kadu_SRCS
 	gui/widgets/contacts-list-widget.cpp
 	gui/widgets/contacts-list-widget-delegate.cpp
 	gui/widgets/contacts-list-widget-menu-manager.cpp
-
+	gui/widgets/group-tab-bar.cpp
 	gui/widgets/tool-tip-class-manager.cpp
 
 	gui/widgets/configuration/config-action-button.cpp
@@ -114,7 +114,6 @@ set (kadu_SRCS
 	status_changer.cpp
 	status.cpp
 	syntax_editor.cpp
-	tabbar.cpp
 	themes.cpp
 	toolbar.cpp
 	updates.cpp
@@ -166,6 +165,7 @@ set (kadu_MOC_SRCS
 
 	gui/widgets/contacts-list-widget.h
 	gui/widgets/contacts-list-widget-delegate.h
+	gui/widgets/group-tab-bar.h
 
 	gui/widgets/configuration/config-action-button.h
 	gui/widgets/configuration/config-check-box.h
@@ -222,7 +222,6 @@ set (kadu_MOC_SRCS
 	status_changer.h
 	status.h
 	syntax_editor.h
-	tabbar.h
 	themes.h
 	toolbar.h
 	updates.h

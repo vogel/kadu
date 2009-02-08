@@ -11,17 +11,21 @@
 #define GROUP_CONTACT_FILTER
 
 #include "abstract-contact-filter.h"
-#include "contacts/group.h"
+
+class Group;
 
 class GroupContactFilter : public AbstractContactFilter
 {
 	Q_OBJECT
+
 	Group *CurrentGroup;
+
 public:
-	GroupContactFilter(); 
+	GroupContactFilter(QObject *parent = 0);
+
 	void setGroup(Group *group);
 	virtual bool acceptContact(Contact contact);
+
 };
 
 #endif // GROUP_CONTACT_FILTER
-

@@ -14,7 +14,6 @@
 #include "icons_manager.h"
 #include "kadu.h"
 #include "pending_msgs.h"
-#include "tabbar.h"
 #include "userbox.h"
 
 #include "groups_manager.h"
@@ -77,71 +76,6 @@ void GroupsManagerOld::closeModule()
 	kdebugf2();
 }
 
-void GroupsManagerOld::setTabBar(KaduTabBar *bar)
-{
-	kdebugf();
-	GroupBar = bar;
-
-	bar->setShape(QTabBar::RoundedWest);
-	bar->addTab(icons_manager->loadIcon("PersonalInfo"), tr("All"));
-	bar->setFont(QFont(config_file.readFontEntry("Look", "UserboxFont").family(), config_file.readFontEntry("Look", "UserboxFont").pointSize(), QFont::Bold));
-	bar->setIconSize(QSize(16,16));
-	connect(bar, SIGNAL(selected(int)), this, SLOT(tabSelected(int)));
-	connect(userlist, SIGNAL(modified()), this, SLOT(refreshTabBarLater()));
-	connect(&refreshTimer, SIGNAL(timeout()), this, SLOT(refreshTabBar()));
-	lastId = -1;
-
-	refreshTabBar();
-
-	int configTab = config_file.readNumEntry( "Look", "CurrentGroupTab" );
-	if (configTab >= 0 && configTab < GroupBar->count())
-		((QTabBar*) GroupBar)->setCurrentTab(configTab);
-
-	changeDisplayingBlocking(config_file.readBoolEntry("General", "ShowBlocking"));
-	changeDisplayingBlocked(config_file.readBoolEntry("General", "ShowBlocked"));
-// 	changeDisplayingOffline(kadu->userbox(), config_file.readBoolEntry("General", "ShowOffline"));
-//  	changeDisplayingWithoutDescription(kadu->userbox(), config_file.readBoolEntry("General", "ShowWithoutDescription"));
-// 	changeDisplayingOnlineAndDescription(kadu->userbox(), config_file.readBoolEntry("General", "ShowOnlineAndDescription"));
-	kdebugf2();
-}
-
-void GroupsManagerOld::tabSelected(int id)
-{
-	if (lastId != id) // od�wie�amy UserBoksa dopiero gdy grupa naprawd� si� zmieni...
-	{
-		lastId = id;
-		if (id == 0)
-			setActiveGroup(QString::null);
-		else
-			setActiveGroup(GroupBar->tabText(id));
-	}
-}
-
-void GroupsManagerOld::setActiveGroup(const QString &name)
-{
-	kdebugf();
-	if (name == currentGroup)
-		return;
-	if (GroupBar->tabText(GroupBar->currentIndex()) != name)
-	{
-		for (int i = 0, cnt = GroupBar->count(); i < cnt; ++i)
-		{
-			QString tab = GroupBar->tabText(i);
-			if (tab == name)
-			{
-				GroupBar->setCurrentIndex(i);
-				kdebugf2();
-				return;
-			}
-		}
-	}
-//	if (!currentGroup.isEmpty())
-//		kadu->userbox()->removeFilter(group(currentGroup), false);
-// 	kadu->userbox()->applyFilter(group(name));
-	currentGroup = name;
-	kdebugf2();
-}
-
 QString GroupsManagerOld::currentGroupName() const
 {
 	if (currentGroup.isEmpty() || group(currentGroup)->count() == 0)
@@ -150,114 +84,41 @@ QString GroupsManagerOld::currentGroupName() const
 		return currentGroup;
 }
 
-void GroupsManagerOld::refreshTabBar()
-{
-	kdebugf();
-
-	if (!GroupBar)
-	{
-		kdebugf2();
-		return;
-	}
-
-	if (!config_file.readBoolEntry("Look", "DisplayGroupTabs"))
-	{
-		if (!currentGroup.isEmpty())
-			setActiveGroup(QString::null);
-		GroupBar->hide();
-		kdebugf2();
-		return;
-	}
-
-	/* budujemy list� grup */
-	QStringList group_list = groups();
-	kdebugm(KDEBUG_INFO, "%u groups found: %s\n", group_list.count(), qPrintable(group_list.join(",")));
-
-	/* usuwamy wszystkie niepotrzebne zakladki - od tylu,
-	   bo indeksy sie przesuwaja po usunieciu */
-	for (int i = GroupBar->count() - 1; i >= 1; --i)
-		if (!group_list.contains(GroupBar->tabText(i)))
-			GroupBar->removeTab(i);
-
-	if (group_list.isEmpty())
-	{
-		GroupBar->hide();
-		setActiveGroup(QString::null);
-		kdebugf2();
-		return;
-	}
-
-	/* dodajemy nowe zakladki */
-	foreach(const QString &group, group_list)
-	{
-		bool createNewTab = true;
-
-		for (int j = 0, count = GroupBar->count(); j < count; ++j)
-		{
-			if (GroupBar->tabText(j) == group)
-			{
-				createNewTab = false;
-				break;
-			}
-		}
-
-		if (createNewTab)
-		{
-			QString iconPath = config_file.readEntry("GroupIcon", group);
-			if (!iconPath.isEmpty()) 
-				GroupBar->addTab(icons_manager->loadIcon(iconPath), group);
-			else 
-				GroupBar->addTab(group);
-		}
-	}
-
-	kdebugm(KDEBUG_INFO, "%i group tabs\n", GroupBar->count());
-	GroupBar->show();
-
-	kdebugf2();
-}
-
 void GroupsManagerOld::configurationUpdated()
-{
+{/*
 	if (config_file.readBoolEntry("General", "ShowBlocking") != showBlocking)
 		changeDisplayingBlocking(!showBlocking);
 	if (config_file.readBoolEntry("General", "ShowBlocked") != showBlocked)
-		changeDisplayingBlocked(!showBlocked);
+		changeDisplayingBlocked(!showBlocked);*/
 // 	if (config_file.readBoolEntry("General", "ShowOffline") != showOffline)
 // 		changeDisplayingOffline(kadu->userbox(), !showOffline);
 //  	if (config_file.readBoolEntry("General", "ShowWithoutDescription") != showWithoutDescription)
 //  		changeDisplayingWithoutDescription(kadu->userbox(), !showWithoutDescription);
 }
 
-void GroupsManagerOld::iconThemeChanged()
-{
-	if (GroupBar)
-		GroupBar->setTabIcon(0, icons_manager->loadIcon("PersonalInfo"));
-}
-
-void GroupsManagerOld::changeDisplayingBlocking(bool show)
-{
-	kdebugf();
-	showBlocking = show;
+// void GroupsManagerOld::changeDisplayingBlocking(bool show)
+// {
+// 	kdebugf();
+// 	showBlocking = show;
 //	if (showBlocking)
 //		kadu->userbox()->removeNegativeFilter(blockingUsers);
 //	else
 //		kadu->userbox()->applyNegativeFilter(blockingUsers);
-	config_file.writeEntry("General", "ShowBlocking", showBlocking);
-	kdebugf2();
-}
+// 	config_file.writeEntry("General", "ShowBlocking", showBlocking);
+// 	kdebugf2();
+// }
 
-void GroupsManagerOld::changeDisplayingBlocked(bool show)
-{
-	kdebugf();
-	showBlocked = show;
+// void GroupsManagerOld::changeDisplayingBlocked(bool show)
+// {
+// 	kdebugf();
+// 	showBlocked = show;
 //	if (showBlocked)
 //		kadu->userbox()->removeNegativeFilter(blockedUsers);
 //	else
-//		kadu->userbox()->applyNegativeFilter(blockedUsers);
-	config_file.writeEntry("General", "ShowBlocked", showBlocked);
-	kdebugf2();
-}
+// //		kadu->userbox()->applyNegativeFilter(blockedUsers);
+// 	config_file.writeEntry("General", "ShowBlocked", showBlocked);
+// 	kdebugf2();
+// }
 
 // void GroupsManager::changeDisplayingOffline(UserBox *userBox, bool show)
 // {
@@ -325,7 +186,7 @@ void GroupsManagerOld::changeDisplayingBlocked(bool show)
 }*/
 
 GroupsManagerOld::GroupsManagerOld()
-	: QObject(), Groups(), GroupBar(0), lastId(-1), currentGroup(), showBlocked(true),
+	: QObject(), Groups(), lastId(-1), currentGroup(), showBlocked(true),
 	showBlocking(true), showOffline(true), showWithoutDescription(true), refreshTimer()
 {
 	kdebugf();
@@ -351,9 +212,6 @@ GroupsManagerOld::~GroupsManagerOld()
 {
 	kdebugf();
 
-	if (GroupBar)
-		config_file.writeEntry("Look", "CurrentGroupTab", GroupBar->currentIndex());
-
 	disconnect(icons_manager, SIGNAL(themeChanged()), this, SLOT(iconThemeChanged()));
 	disconnect(userlist, SIGNAL(userRemoved(UserListElement, bool, bool)),
 			this, SLOT(userRemovedFromMainUserlist(UserListElement, bool, bool)));
@@ -367,23 +225,6 @@ GroupsManagerOld::~GroupsManagerOld()
 	kdebugf2();
 }
 
-void GroupsManagerOld::userAddedToMainUserlist(UserListElement elem, bool /*massively*/, bool /*last*/)
-{
-	kdebugf();
-	QStringList groups = elem.data("Groups").toStringList();
-	foreach(const QString &group, groups)
-		addGroup(group)->addUser(elem, true, false);
-	kdebugf2();
-}
-
-void GroupsManagerOld::userRemovedFromMainUserlist(UserListElement elem, bool /*massively*/, bool /*last*/)
-{
-	kdebugf();
-	QStringList groups = elem.data("Groups").toStringList();
-	foreach(const QString &group, groups)
-		addGroup(group)->removeUser(elem, true, false);
-	kdebugf2();
-}
 
 UserGroup *GroupsManagerOld::group(const QString &name) const
 {
@@ -429,7 +270,7 @@ UserGroup *GroupsManagerOld::addGroup(const QString &name)
 			this, SLOT(userAdded(UserListElement, bool, bool)));
 	connect(group, SIGNAL(userRemoved(UserListElement, bool, bool)),
 			this, SLOT(userRemoved(UserListElement, bool, bool)));
-	refreshTabBarLater();
+// 	refreshTabBarLater();
 	kdebugf2();
 	return group;
 }
@@ -452,105 +293,81 @@ void GroupsManagerOld::removeGroup(const QString &name)
 	disconnect(group, SIGNAL(userRemoved(UserListElement, bool, bool)),
 				this, SLOT(userRemoved(UserListElement, bool, bool)));
 
-	setActiveGroup(currentGroupName());
+// 	setActiveGroup(currentGroupName());
 	Groups.remove(name);
 	group->deleteLater();
-	refreshTabBarLater();
+// 	refreshTabBarLater();
 	kdebugf2();
 }
 
-void GroupsManagerOld::userDataChanged(UserListElement elem, QString name, QVariant oldValue,
-							QVariant currentValue, bool /*massively*/, bool /*last*/)
-{
+// void GroupsManagerOld::userDataChanged(UserListElement elem, QString name, QVariant oldValue,
+// 							QVariant currentValue, bool /*massively*/, bool /*last*/)
+// {
 //dodanie(usuni�cie) u�ytkownika do grupy poprzez zmian� pola Groups powinno aktualizowa� UserGrup�
-	if (name != "Groups")
-		return;
-	kdebugf();
-	QStringList oldGroups = oldValue.toStringList();
-	QStringList newGroups = currentValue.toStringList();
-	foreach(const QString &v, oldGroups)
-	{
-		if (!newGroups.contains(v)) //usuni�cie z grupy
-			group(v)->removeUser(elem);
-
-		if (group(v)->count() == 0)
-		{
-			removeGroup(v);
-			config_file.removeVariable("GroupIcon", (v));
-		}
-	}
-
-	foreach(const QString &v, newGroups)
-		if (!oldGroups.contains(v)) //dodanie grupy
-		{
-			if (!groupExists(v))
-				addGroup(v);
-			group(v)->addUser(elem);
-		}
-	refreshTabBarLater();
-	kdebugf2();
-}
-
+// 	if (name != "Groups")
+// 		return;
+// 	kdebugf();
+// 	QStringList oldGroups = oldValue.toStringList();
+// 	QStringList newGroups = currentValue.toStringList();
+// 	foreach(const QString &v, oldGroups)
+// 	{
+// 		if (!newGroups.contains(v)) //usuni�cie z grupy
+// 			group(v)->removeUser(elem);
+// 
+// 		if (group(v)->count() == 0)
+// 		{
+// 			removeGroup(v);
+// 			config_file.removeVariable("GroupIcon", (v));
+// 		}
+// 	}
+// 
+// 	foreach(const QString &v, newGroups)
+// 		if (!oldGroups.contains(v)) //dodanie grupy
+// 		{
+// 			if (!groupExists(v))
+// 				addGroup(v);
+// 			group(v)->addUser(elem);
+// 		}
+// 	refreshTabBarLater();
+// 	kdebugf2();
+// }
+// 
 //dodanie(usuni�cie) u�ytkownika do grupy poprzez addUser (removeUser) powinno modyfikowa� pole Groups
-void GroupsManagerOld::userAdded(UserListElement elem, bool /*massively*/, bool /*last*/)
-{
+// void GroupsManagerOld::userAdded(UserListElement elem, bool /*massively*/, bool /*last*/)
+// {
 //	kdebugf();
-	foreach(const QString &key, Groups.keys())
-		if (sender() == Groups[key])
-		{
-			QStringList ule_groups = elem.data("Groups").toStringList();
-			if (!ule_groups.contains(key))
-			{
-				ule_groups.append(key);
-				elem.setData("Groups", ule_groups);
-			}
-			break;
-		}
-	refreshTabBarLater();
+// 	foreach(const QString &key, Groups.keys())
+// 		if (sender() == Groups[key])
+// 		{
+// 			QStringList ule_groups = elem.data("Groups").toStringList();
+// 			if (!ule_groups.contains(key))
+// 			{
+// 				ule_groups.append(key);
+// 				elem.setData("Groups", ule_groups);
+// 			}
+// 			break;
+// 		}
+// 	refreshTabBarLater();
 //	kdebugf2();
-}
+// }
 
-void GroupsManagerOld::userRemoved(UserListElement elem, bool /*massively*/, bool /*last*/)
-{
+// void GroupsManagerOld::userRemoved(UserListElement elem, bool /*massively*/, bool /*last*/)
+// {
 //	kdebugf();
-	foreach(const QString &key, Groups.keys())
-		if (sender() == Groups[key])
-		{
-			QStringList ule_groups = elem.data("Groups").toStringList();
-			if (ule_groups.contains(key))
-			{
-				ule_groups.remove(key);
-				elem.setData("Groups", ule_groups);
-			}
-			break;
-		}
-	refreshTabBarLater();
+// 	foreach(const QString &key, Groups.keys())
+// 		if (sender() == Groups[key])
+// 		{
+// 			QStringList ule_groups = elem.data("Groups").toStringList();
+// 			if (ule_groups.contains(key))
+// 			{
+// 				ule_groups.remove(key);
+// 				elem.setData("Groups", ule_groups);
+// 			}
+// 			break;
+// 		}
+// 	refreshTabBarLater();
 //	kdebugf2();
-}
-
-void GroupsManagerOld::setIconForTab(const QString &name)
-{
-	if (!GroupBar || !config_file.readBoolEntry("Look", "DisplayGroupTabs") || !Groups.contains(name))
-	{
-		kdebugf2();
-		return;
-	}
-
-	for (int index = 0, count = GroupBar->count(); index < count; ++index)
-	{
-		if (GroupBar->tabText(index) == name)
-		{
-			QString iconPath = config_file.readEntry("GroupIcon", name);	
-
-			if (!iconPath.isEmpty()) 
-				GroupBar->setTabIcon(index, icons_manager->loadIcon(iconPath));
-			else 
-				GroupBar->setTabIcon(index, QIcon());
-
-			return;
-		}
-	}
-}
+// }
 
 UsersWithDescription::UsersWithDescription() : UserGroup()
 {

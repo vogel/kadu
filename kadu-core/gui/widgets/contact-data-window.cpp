@@ -651,7 +651,8 @@ void ContactDataWindow::selectIcon()
 		config_file.writeEntry("GroupIcon", "recentPath", iDialog->dirPath());
 		config_file.writeEntry("GroupIcon", groupName, iDialog->selectedFile());
 
-		groups_manager->setIconForTab(groupName);
+// TODO: 0.6.6
+// 		groups_manager->setIconForTab(groupName);
 
 		pixmapLabels[groupName]->setPixmap(icons_manager->loadPixmap(iDialog->selectedFile()).scaled(QSize(16,16)));
 	}
