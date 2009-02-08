@@ -1,7 +1,7 @@
 #ifndef KADU_SEARCH_H
 #define KADU_SEARCH_H
 
-#include "../modules/gadu_protocol/gadu.h"
+#include "../modules/gadu_protocol/gadu-protocol.h"
 #include "kadu_main_window.h"
 
 class QCheckBox;
@@ -44,6 +44,9 @@ class KADUAPI SearchDialog : public KaduMainWindow
 {
 	Q_OBJECT
 
+	Account * SearchAccount;
+	GaduProtocol * SearchProtocol;
+
 	friend class SearchActionsSlots;
 	static SearchActionsSlots *searchActionsSlot;
 
@@ -69,7 +72,6 @@ class KADUAPI SearchDialog : public KaduMainWindow
 	QRadioButton *r_pers;
 	UinType _whoisSearchUin;
 	uint32_t seq;
-	UserGroup *selectedUsers;
 
 	SearchRecord *searchRecord;
 

@@ -52,7 +52,7 @@ SearchDialog::SearchDialog(QWidget *parent, UinType whoisSearchUin)
 	: KaduMainWindow(parent),
 	only_active(0), e_uin(0), e_name(0), e_nick(0), e_byrFrom(0), e_byrTo(0), e_surname(0),
 	c_gender(0), e_city(0), results(0), progress(0), r_uin(0), r_pers(0), _whoisSearchUin(whoisSearchUin),
-	seq(0), selectedUsers(new UserGroup()), searchRecord(new SearchRecord()), searchhidden(false), searching(false), workaround(false)
+	seq(0), searchRecord(new SearchRecord()), searchhidden(false), searching(false), workaround(false)
 {
 	kdebugf();
 
@@ -204,8 +204,9 @@ SearchDialog::SearchDialog(QWidget *parent, UinType whoisSearchUin)
 
 	loadWindowGeometry(this, "General", "SearchDialogGeometry", 0, 50, 800, 350);
 
-	GaduProtocol *gadu = dynamic_cast<GaduProtocol *>(AccountManager::instance()->defaultAccount()->protocol());
-	connect(gadu, SIGNAL(newSearchResults(SearchResults &, int, int)), this, SLOT(newSearchResults(SearchResults &, int, int)));
+	SearchAccount = AccountManager::instance()->defaultAccount();
+	SearchProtocol = dynamic_cast<GaduProtocol *>(SearchAccount->protocol());
+	connect(SearchProtocol, SIGNAL(newSearchResults(SearchResults &, int, int)), this, SLOT(newSearchResults(SearchResults &, int, int)));
 
 	kdebugf2();
 }
@@ -218,7 +219,6 @@ SearchDialog::~SearchDialog()
 
  	saveWindowGeometry(this, "General", "SearchDialogGeometry");
 	delete searchRecord;
-	delete selectedUsers;
 	kdebugf2();
 }
 
@@ -293,15 +293,14 @@ void SearchDialog::addFound()
 	ContactList found = selected();
 
 	foreach (Contact contact, found)
-		(new ContactDataWindow(UserListElement::fromContact(contact, AccountManager::instance()->defaultAccount()), kadu))->show();
+		(new ContactDataWindow(UserListElement::fromContact(contact, SearchAccount), kadu))->show();
 }
 
 void SearchDialog::chatFound()
 {
-	Account *account = AccountManager::instance()->defaultAccount();
 	ContactList found = selected();
 	if (found.size())
-		chat_manager->openChatWidget(account, found);
+		chat_manager->openChatWidget(SearchAccount, found);
 }
 
 ContactList SearchDialog::selected()
@@ -329,7 +328,7 @@ ContactList SearchDialog::selected()
 	else
 		display = uin; // If above are empty, use uin.
 
-	Contact e = ContactManager::instance()->byId(AccountManager::instance()->defaultAccount(), uin);
+	Contact e = ContactManager::instance()->byId(SearchAccount, uin);
 
 	if (e.isAnonymous())
 	{
@@ -355,8 +354,7 @@ void SearchDialog::stopSearch()
 {
 	kdebugf();
 
-	GaduProtocol *gadu = dynamic_cast<GaduProtocol *>(AccountManager::instance()->defaultAccount()->protocol());
-	gadu->stopSearchInPubdir(*searchRecord);
+	SearchProtocol->stopSearchInPubdir(*searchRecord);
 
 	setActionState(stopSearchAction, false);
 
@@ -380,11 +378,10 @@ void SearchDialog::firstSearch()
 {
 	kdebugf();
 
-	GaduProtocol *gadu = dynamic_cast<GaduProtocol *>(AccountManager::instance()->defaultAccount()->protocol());
 	if (r_pers->isChecked() && isPersonalDataEmpty())
 		return;
 
-	if (!gadu->isConnected())
+	if (!SearchProtocol->isConnected())
 	{
 		MessageBox::msg(tr("Cannot search contacts in offline mode"), false, "Critical", this);
 		kdebugf2();
@@ -395,7 +392,7 @@ void SearchDialog::firstSearch()
 		clearResults();
 
 	if (searching)
-		gadu->stopSearchInPubdir(*searchRecord);
+		SearchProtocol->stopSearchInPubdir(*searchRecord);
 
 	searchRecord->clearData();
 
@@ -434,7 +431,7 @@ void SearchDialog::firstSearch()
  	setActionState(addFoundAction, false);
  	setActionState(chatFoundAction, false);
 
-	gadu->searchInPubdir(*searchRecord);
+	SearchProtocol->searchInPubdir(*searchRecord);
 
 	progress->setText(tr("Searching..."));
 
@@ -445,8 +442,7 @@ void SearchDialog::nextSearch()
 {
 	kdebugf();
 
-	GaduProtocol *gadu = dynamic_cast<GaduProtocol *>(AccountManager::instance()->defaultAccount()->protocol());
-	if (!gadu->isConnected())
+	if (!SearchProtocol->isConnected())
 		return;
 
 	searching = true;
@@ -457,7 +453,7 @@ void SearchDialog::nextSearch()
  	setActionState(addFoundAction, false);
 	setActionState(chatFoundAction, false);
 
-	gadu->searchNextInPubdir(*searchRecord);
+	SearchProtocol->searchNextInPubdir(*searchRecord);
 
 	progress->setText(tr("Searching..."));
 
@@ -485,8 +481,9 @@ void SearchDialog::newSearchResults(SearchResults& searchResults, int seq, int f
 		QList <QTreeWidgetItem *> items = results->findItems(searchResult.Uin, Qt::MatchExactly, 1);
 		if (items.count())
 			qlv = items[0];
-// TODO: 0.6.6
-// 		pix = searchResult.Stat.pixmap(searchResult.Stat.status(), false, false);
+
+		if (SearchProtocol)
+			pix = SearchProtocol->statusPixmap(searchResult.Stat);
 
 		if (qlv)
 		{
@@ -635,7 +632,7 @@ void SearchDialog::updateInfoClicked()
 //	QString lastname = selected->text(3);
 	QString nickname = selected->text(4);
 
-	Contact con = ContactManager::instance()->byId(AccountManager::instance()->defaultAccount(), uin);
+	Contact con = ContactManager::instance()->byId(SearchAccount, uin);
 
 	// Build altnick. Try user nick first.
 	QString altnick = nickname;
@@ -654,7 +651,7 @@ void SearchDialog::updateInfoClicked()
 	con.setFirstName(firstname);
 	con.setNickName(nickname);
 
-	(new ContactDataWindow(UserListElement::fromContact(con, AccountManager::instance()->defaultAccount()), kadu))->show();
+	(new ContactDataWindow(UserListElement::fromContact(con, SearchAccount), kadu))->show();
 	kdebugf2();
 }
 
