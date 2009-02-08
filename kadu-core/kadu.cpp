@@ -443,10 +443,6 @@ Kadu::Kadu(QWidget *parent)
 	ContactsWidget->setModel(new ContactsModel(ContactManager::instance(), this));
 	ContactsWidget->addFilter(GroupBar->filter());
 
-	//HasDescriptionContactFilter *hdcf = new HasDescriptionContactFilter(ContactsWidget);
-	//hdcf->setEnabled(true);
-	//ContactsWidget->addFilter(hdcf);
-
 	hbox_layout->setStretchFactor(ContactsWidget, 100);
 	hbox_layout->addWidget(GroupBar);
 	hbox_layout->addWidget(ContactsWidget);
@@ -996,7 +992,12 @@ void Kadu::descriptionUsersActionActivated(QAction *sender, bool toggled)
 	if (!window)
 		return;
 
-// 	groups_manager->changeDisplayingWithoutDescription(window->userBox(), !toggled);
+	QVariant v = sender->data();
+	if (v.canConvert<HasDescriptionContactFilter *>())
+	{
+		HasDescriptionContactFilter *hdcf = v.value<HasDescriptionContactFilter *>();
+		hdcf->setEnabled(toggled);
+	}
 }
 
 void Kadu::onlineAndDescUsersActionActivated(QAction *sender, bool toggled)
@@ -1015,7 +1016,18 @@ void Kadu::inactiveUsersActionCreated(KaduAction *action)
 
 void Kadu::descriptionUsersActionCreated(KaduAction *action)
 {
-	action->setChecked(!config_file.readBoolEntry("General", "ShowWithoutDescription"));
+	KaduMainWindow *window = qobject_cast<KaduMainWindow *>(action->parent());
+	if (!window)
+		return;
+
+	bool enabled = !config_file.readBoolEntry("General", "ShowWithoutDescription");
+	HasDescriptionContactFilter *hdcf = new HasDescriptionContactFilter(action);
+	hdcf->setEnabled(enabled);
+
+	action->setData(QVariant::fromValue(hdcf));
+	action->setChecked(enabled);
+
+	window->contactsListWidget()->addFilter(hdcf);
 }
 
 void Kadu::onlineAndDescUsersActionCreated(KaduAction *action)

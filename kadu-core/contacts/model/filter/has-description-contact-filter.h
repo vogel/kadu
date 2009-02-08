@@ -10,6 +10,8 @@
 #ifndef HAS_DESCRIPTION_CONTACT_FILTER_H
 #define HAS_DESCRIPTION_CONTACT_FILTER_H
 
+#include <QtCore/QMetaType>
+
 #include "abstract-contact-filter.h"
 
 class HasDescriptionContactFilter : public AbstractContactFilter
@@ -25,5 +27,7 @@ public:
 	virtual bool acceptContact(Contact contact);
 
 };
+
+Q_DECLARE_METATYPE(HasDescriptionContactFilter *)
 
 #endif // HAS_DESCRIPTION_CONTACT_FILTER_H
