@@ -14,7 +14,7 @@ class QPixmap;
  * @defgroup mac_os_docking MacOS docking
  * @{
  */
-class MacOSXDocking : public ConfigurationUiHandler
+class MacOSXDocking : public ConfigurationUiHandler, ConfigurationAwareObject
 {
 	Q_OBJECT
 	private:
@@ -25,6 +25,7 @@ class MacOSXDocking : public ConfigurationUiHandler
 		void startBounce();
 		void stopBounce();
 		void overlay(const QString& text);
+		void removeOverlay();
 	private slots:
 		void blockSettingIcon(bool &);
 		void trayPixmapChanged(const QIcon &, const QString &);
@@ -32,6 +33,8 @@ class MacOSXDocking : public ConfigurationUiHandler
 		void onCreateTabGeneral();
 		void toggleKaduVisibility();
 		void messageListChanged(UserListElement ule);
+	protected:
+		virtual void configurationUpdated();
 	public:
 		MacOSXDocking(QObject *parent = 0, const char *name = 0);
 		~MacOSXDocking();

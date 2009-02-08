@@ -24,6 +24,7 @@
 #include "misc.h"
 #include "pending_msgs.h"
 #include "userlist.h"
+#include "gadu.h"
 
 #define DOCK_FONT_NAME "LucidaGrande-Bold"
 #define DOCK_FONT_SIZE 24
@@ -37,7 +38,6 @@ static NMRec bounceRec;
 MacOSXDocking::MacOSXDocking(QObject *parent, const char *name) : QObject(parent, name)
 {
 	kdebugf();
-	//config_file.writeEntry("General", "RunDocked", false);
 
 	isBouncing = false;
 	overlayed = false;
@@ -46,12 +46,14 @@ MacOSXDocking::MacOSXDocking(QObject *parent, const char *name) : QObject(parent
 	connect(docking_manager, SIGNAL(searchingForTrayPosition(QPoint &)), this, SLOT(findTrayPosition(QPoint &)));
 	connect(kadu, SIGNAL(settingMainIconBlocked(bool &)), this, SLOT(blockSettingIcon(bool &)));
 
-	connect(&pending, SIGNAL(messageFromUserAdded(Contact)), this, SLOT(messageListChanged(Contact)));
-	connect(&pending, SIGNAL(messageFromUserDeleted(Contact)), this, SLOT(messageListChanged(Contact)));
+	connect(&pending, SIGNAL(messageFromUserAdded(UserListElement)), this, SLOT(messageListChanged(UserListElement)));
+	connect(&pending, SIGNAL(messageFromUserDeleted(UserListElement)), this, SLOT(messageListChanged(UserListElement)));
 
 	docking_manager->setDocked(true);
 	
-	
+	const UserStatus &stat = gadu->currentStatus();
+	trayPixmapChanged(QIcon(stat.pixmap()), stat.name());
+
 	kdebugf2();
 }
 
@@ -115,15 +117,18 @@ void MacOSXDocking::findTrayPosition(QPoint &p)
 void MacOSXDocking::onCreateTabGeneral()
 {
 	kdebugf();
-	//ze wzgl�du na jaki� problem z Qt opcja wy��czona
-	//(okno pojawia si�, znika i znowu pojawia, wi�c nie do��, �e nie dzia�a,
-	//  to mo�e by� denerwuj�ca je�eli kto� zapomnia�, �e to w��czy�)
-	//config_file.writeEntry("General", "RunDocked", false);
 }
 
 void MacOSXDocking::mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow)
 {
-	//w tej chwili nic tu nie robimy, ale kto wie ;)
+	connect(mainConfigurationWindow->widgetById("macosx_docking/message_num_on_icon"), SIGNAL(toggled(bool)),
+		mainConfigurationWindow->widgetById("docking/newMessageIcon"), SLOT(setDisabled(bool)));
+}
+
+void MacOSXDocking::configurationUpdated()
+{
+	if (config_file.readBoolEntry("MacOSX Dock", "ShowMessgeNum", true))
+		config_file.writeEntry("Look", "NewMessageIcon", 3);
 }
 
 void MacOSXDocking::messageListChanged(UserListElement ule)
@@ -139,7 +144,7 @@ void MacOSXDocking::messageListChanged(UserListElement ule)
 	else
 	{
 		if (overlayed)
-			overlay("");
+			removeOverlay();
 		if (isBouncing)
 			stopBounce();
 	}	
@@ -170,25 +175,35 @@ void MacOSXDocking::stopBounce()
 	}
 }
 
+void MacOSXDocking::removeOverlay()
+{
+	overlayed = false;
+
+	CGContextRef context = BeginCGContextForApplicationDockTile();
+	CGContextRestoreGState(context);
+	CGContextFlush(context);
+	EndCGContextForApplicationDockTile(context);
+
+	if (config_file.readBoolEntry("MacOSX Dock", "IconNotification", true))
+		qApp->setWindowIcon(pixmap);
+	else 
+		RestoreApplicationDockTileImage();
+}
+
 void MacOSXDocking::overlay(const QString& text)
 {
 	/* The following code is taken from PSI mac_dock sources */
 
-	// Create the context
-	if (text.isEmpty()) {
-		overlayed = false;
-		RestoreApplicationDockTileImage();
-		qApp->setWindowIcon(pixmap);
-		return;
-	}
-
 	CGContextRef context = BeginCGContextForApplicationDockTile();
 
-	if (!overlayed) {
+	if (!overlayed)
+	{
+		CGContextSaveGState(context);
 		overlayed = true;
+
 		// Add some subtle drop down shadow
-		//CGSize s = { 2.0, -4.0 };
-		//CGContextSetShadow(context, s, 5.0);
+		CGSize s = { 2.0, -4.0 };
+		CGContextSetShadow(context, s, 5.0);
 	}
 
 	// Draw a circle
