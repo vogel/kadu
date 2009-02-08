@@ -28,6 +28,7 @@ class MediaPlayer : public ConfigurationUiHandler, ConfigurationAwareObject
 
 	ActionDescription *enableMediaPlayerStatuses;
 	ActionDescription *mediaPlayerMenu;
+	QAction *mediaplayerStatus;
 
 	QTimer *timer;
 	QString currentTitle;
@@ -98,6 +99,7 @@ private slots:
 
 	void mediaPlayerStatusChangerActivated(QAction *sender, bool toggled);
 	void mediaPlayerMenuActivated(QAction *sender, bool toggled);
+	void toggleStatuses(bool toggled);
 
 protected:
 	void configurationUpdated();

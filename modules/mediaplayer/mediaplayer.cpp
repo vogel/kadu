@@ -12,8 +12,6 @@
 #include <QtGui/QMenu>
 #include <QtGui/QToolTip>
 
-#include "accounts/account.h"
-#include "accounts/account_manager.h"
 #include "action.h"
 #include "chat_edit_box.h"
 #include "chat_manager.h"
@@ -21,6 +19,7 @@
 #include "config_file.h"
 #include "custom_input.h"
 #include "debug.h"
+#include "gadu.h"
 #include "html_document.h"
 #include "icons_manager.h"
 #include "kadu.h"
@@ -36,7 +35,8 @@
 
 #include "mediaplayer.h"
 
-#define MODULE_MEDIAPLAYER_VERSION 1.1
+#define MODULE_MEDIAPLAYER_VERSION 1.2
+#define CHECK_STATUS_INTERVAL 10*1000 /* 10s */
 
 const char *MediaPlayerSyntaxText = QT_TRANSLATE_NOOP
 (
@@ -106,7 +106,6 @@ MediaPlayer::MediaPlayer(bool firstLoad)
 	// Title checking timer
 	timer = new QTimer();
 	connect(timer, SIGNAL(timeout()), this, SLOT(checkTitle()));
-	timer->start(1000);
 
 	// Monitor of creating chats
 	connect(chat_manager, SIGNAL(chatWidgetCreated(ChatWidget *)), this, SLOT(chatWidgetCreated(ChatWidget *)));
@@ -118,7 +117,7 @@ MediaPlayer::MediaPlayer(bool firstLoad)
 	enableMediaPlayerStatuses = new ActionDescription(
 		ActionDescription::TypeGlobal, "enableMediaPlayerStatusesAction",
 		this, SLOT(mediaPlayerStatusChangerActivated(QAction *, bool)),
-		"", tr("Enable MediaPlayer statuses"), false, ""
+		"MediaPlayer", tr("Enable MediaPlayer statuses"), true
 	);
 	mediaPlayerMenu = new ActionDescription(
 		ActionDescription::TypeChat, "mediaplayer_button",
@@ -132,9 +131,17 @@ MediaPlayer::MediaPlayer(bool firstLoad)
 	// MediaPlayer statuses menu item
 	bool menuPos = config_file.readBoolEntry("MediaPlayer", "dockMenu", false);
 	if (menuPos)
-		popups[5] = dockMenu->insertItem(tr("Enable MediaPlayer statuses"), this, SLOT(toggleStatuses(int)), 0, -1, 10);
+	{
+		mediaplayerStatus = new QAction(tr("Enable MediaPlayer statuses"), this);
+		mediaplayerStatus->setCheckable(true);
+		connect(mediaplayerStatus, SIGNAL(toggled(bool)), this, SLOT(toggleStatuses(bool)));
+		dockMenu->addAction(mediaplayerStatus);
+	}
 	else
-		kadu->addMenuActionDescription(enableMediaPlayerStatuses);
+	{
+		kadu->insertMenuActionDescription(0, enableMediaPlayerStatuses);
+		mediaplayerStatus = NULL;
+	}
 
 	// Initial values of some object variables
 	winKeyPressed = false;
@@ -174,11 +181,10 @@ MediaPlayer::~MediaPlayer()
 	delete timer;
 
 	// Remove menu item (statuses)
-	int idx = dockMenu->indexOf(popups[5]);
-	if (idx == -1)
+	if (mediaplayerStatus == NULL)
 		kadu->removeMenuActionDescription(enableMediaPlayerStatuses);
 	else
-		dockMenu->removeItem(popups[5]);
+		dockMenu->removeAction(mediaplayerStatus);
 }
 
 void MediaPlayer::setControlsEnabled(bool enabled)
@@ -188,9 +194,6 @@ void MediaPlayer::setControlsEnabled(bool enabled)
 	menu->setItemEnabled(popups[2], enabled);
 	menu->setItemEnabled(popups[3], enabled);
 	menu->setItemEnabled(popups[4], enabled);
-
-	if (popups[5])
-		menu->setItemEnabled(popups[5], enabled);
 }
 
 void MediaPlayer::mediaPlayerMenuActivated(QAction *sender, bool toggled)
@@ -479,11 +482,13 @@ QString MediaPlayer::parse(const QString &str)
 
 	for ( uint i = 0; i < sl; i++ )
 	{
-		while (str[i] != '%' && i < sl)
+		while ((i < sl) && (str[i] != '%'))
 		{
 			r += str[i];
-			i++;
+			++i;
 		}
+
+		if (i >= sl) i = sl - 1;
 
 		if (str[i] == '%')
 		{
@@ -517,9 +522,13 @@ QString MediaPlayer::parse(const QString &str)
 				case 'p':
 				{
 					QString tmp;
-					int perc = 100 * getCurrentPos() / getLength();
-					tmp = QString::number(perc) + "%";
-					r += tmp;
+					int len = getLength();
+					if (len != 0)
+					{
+						int perc = 100 * getCurrentPos() / len;
+						tmp = QString::number(perc) + "%";
+						r += tmp;
+					}
 					break;
 				}
 
@@ -542,14 +551,18 @@ QString MediaPlayer::parse(const QString &str)
 QString MediaPlayer::formatLength(int length)
 {
 	kdebugf();
+
 	QString ms;
+	if (length < 1000)
+		length = 1000;
+
 	int lgt = length / 1000, m, s;
 	m = lgt / 60;
 	s = lgt % 60;
 	ms = QString::number(m) + ":";
 	if (s < 10)
 		ms += "0";
-
+	
 	ms += QString::number(s);
 
 	return ms;
@@ -568,7 +581,8 @@ ChatWidget *MediaPlayer::getCurrentChat()
 	for ( i = 0; i < cs.count(); i++ )
 	{
 		//if (cs[i]->isActiveWindow())
-		if (cs[i]->hasFocus())
+		if (cs[i]->edit() == QApplication::focusWidget() ||
+			cs[i]->hasFocus())
 			break;
 	}
 
@@ -592,6 +606,25 @@ void MediaPlayer::mediaPlayerStatusChangerActivated(QAction *sender, bool toggle
 	}
 
 	mediaPlayerStatusChanger->setDisable(!toggled);
+	if (toggled)
+		timer->start(CHECK_STATUS_INTERVAL);
+	else
+		timer->stop();
+}
+
+void MediaPlayer::toggleStatuses(bool toggled)
+{
+	if (!isActive() && toggled)
+	{
+		MessageBox::msg(tr("%1 isn't running!").arg(getPlayerName()));
+		return;
+	}
+	
+	mediaPlayerStatusChanger->setDisable(!toggled);
+	if (toggled)
+		timer->start(CHECK_STATUS_INTERVAL);
+	else
+		timer->stop();
 }
 
 void MediaPlayer::checkTitle()
@@ -613,7 +646,6 @@ void MediaPlayer::checkTitle()
 		else
 			checked = false;
 
-	Protocol *gadu = AccountManager::instance()->defaultAccount()->protocol();
 	if (!gadu->currentStatus().isOffline() && checked)
 	{
 		if (title != currentTitle || !gadu->currentStatus().hasDescription())

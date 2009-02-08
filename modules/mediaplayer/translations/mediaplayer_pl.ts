@@ -40,16 +40,16 @@
         <translation>Dodaj na końcu</translation>
     </message>
     <message>
-        <source>Replace &apos;%player%&apos; tag</source>
-        <translation>Zastąp frazę &apos;%player%&apos;</translation>
+        <source>Replace &apos;#{player}&apos; tag</source>
+        <translation>Zastąp frazę &apos;#{player}&apos;</translation>
     </message>
     <message>
         <source>MediaPlayer description format</source>
         <translation>Format opisu</translation>
     </message>
     <message>
-        <source>Here specify format which will replace &apos;%player%&apos; tag when you will use it in description while setting status.</source>
-        <translation>Podaj format, który zastąpi frazę &apos;%player%&apos; użytą w statusie opisowym.</translation>
+        <source>Here specify format which will replace &apos;#{player}&apos; tag when you will use it in description while setting status.</source>
+        <translation>Podaj format, który zastąpi frazę &apos;#{player}&apos; użytą w statusie opisowym.</translation>
     </message>
     <message>
         <source>Signatures cutting</source>

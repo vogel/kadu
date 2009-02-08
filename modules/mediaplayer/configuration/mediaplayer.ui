@@ -11,10 +11,10 @@
 					<item value="0" caption="Replace" />
 					<item value="1" caption="Add in front" />
 					<item value="2" caption="Add at the back" />
-					<item value="3" caption="Replace '%player%' tag" />
+					<item value="3" caption="Replace '#{player}' tag" />
 				</combo-box>
 				<line-edit caption="MediaPlayer description format" config-section="MediaPlayer" config-item="statusTagString"
-						   tool-tip="Here specify format which will replace '%player%' tag when you will use it in description while setting status." />
+						   tool-tip="Here specify format which will replace '#{player}' tag when you will use it in description while setting status." />
 			</group-box>
 
 			<group-box name="Signatures cutting">
