@@ -276,6 +276,11 @@ ChatMessage * HistoryDialog::createChatMessage(const HistoryEntry &entry)
 	else
 		messageText = entry.message;
 
+	if (finding) {
+		/* Dorr: this is nasty but works quite well ;) */
+		messageText = messageText.replace(QRegExp(findRec.data), "<a style='background: #000000; color: #ffffff;'>" + findRec.data + "</a>");
+	}
+
 	bool isMyMessage = entry.type & (HISTORYMANAGER_ENTRY_CHATSEND | HISTORYMANAGER_ENTRY_MSGSEND | HISTORYMANAGER_ENTRY_SMSSEND);
 
 	UserListElement sender = userlist->byID("Gadu", QString::number(entry.uin));
