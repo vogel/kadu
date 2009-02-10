@@ -31,7 +31,7 @@ qt4_add_translation (TRANSLATION_FILES ${TRANSLATION_SOURCES})
 install (FILES ${TRANSLATION_FILES}
 	DESTINATION "share/kadu/modules/translations")
 
-install (DIRECTORY ${DATA_FILES}
+install (DIRECTORY ${DATA_DIRECTORIES}
 	DESTINATION share/kadu/modules/data/config_wizard
 	PATTERN ".svn" EXCLUDE
 )
