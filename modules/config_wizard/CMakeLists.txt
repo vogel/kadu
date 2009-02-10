@@ -25,7 +25,7 @@ kadu_module (config_wizard
 	MODULE_CONFIGURATION_FILES ${CONFIGURATION_FILES}
 )
 
-install (DIRECTORY ${DATA_FILES}
+install (DIRECTORY ${DATA_DIRECTORIES}
 	DESTINATION share/kadu/modules/data/config_wizard
 	PATTERN ".svn" EXCLUDE
 )
