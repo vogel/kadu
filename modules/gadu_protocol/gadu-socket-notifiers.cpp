@@ -45,6 +45,9 @@ void GaduSocketNotifiers::createSocketNotifiers()
 {
 	kdebugf();
 
+	if (0 == Fd)
+		return;
+
 	Snr = new QSocketNotifier(Fd, QSocketNotifier::Read, this, "read_socket_notifier");
 	connect(Snr, SIGNAL(activated(int)), this, SLOT(dataReceived()));
 
@@ -81,6 +84,35 @@ void GaduSocketNotifiers::recreateSocketNotifiers()
 
 	deleteSocketNotifiers();
 	createSocketNotifiers();
+
+	kdebugf2();
+}
+
+void GaduSocketNotifiers::dataReceived()
+{
+	kdebugf();
+
+	if (Snr)
+		Snr->setEnabled(false);
+
+	if (checkRead())
+		socketEvent();
+
+	if (Snr)
+		Snr->setEnabled(true);
+
+	kdebugf2();
+}
+
+void GaduSocketNotifiers::dataSent()
+{
+	kdebugf();
+
+	if (Snw)
+		Snw->setEnabled(false);
+
+	if (checkWrite())
+		socketEvent();
 
 	kdebugf2();
 }

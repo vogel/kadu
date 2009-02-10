@@ -19,7 +19,7 @@ void GaduServerConnector::finished(bool result)
 
 void GaduServerConnector::perform()
 {
-	GaduTokenSocketNotifiers *sn = new GaduTokenSocketNotifiers(this);
+	GaduTokenSocketNotifiers *sn = new GaduTokenSocketNotifiers();
 	connect(sn, SIGNAL(tokenError()), this, SLOT(tokenFetchFailed()));
 	connect(sn, SIGNAL(gotToken(const QString &, const QPixmap &)),
 			this, SLOT(tokenFetched(const QString &, const QPixmap &)));

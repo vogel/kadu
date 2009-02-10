@@ -27,7 +27,6 @@
 #include "config_file.h"
 #include "debug.h"
 #include "emoticons.h"
-#include "groups_manager.h"
 #include "icons_manager.h"
 #include "kadu.h"
 #include "../modules/gadu_protocol/gadu.h"

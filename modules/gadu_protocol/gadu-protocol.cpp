@@ -1074,7 +1074,6 @@ bool GaduProtocol::sendMessage(ContactList contacts, Message &message)
 
 	message.setId(seqNumber);
 
-	SocketNotifiers->checkWrite();
 	if (formats)
 		delete[] formats;
 

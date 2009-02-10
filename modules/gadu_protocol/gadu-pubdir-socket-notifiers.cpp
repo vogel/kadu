@@ -29,29 +29,14 @@ GaduPubdirSocketNotifiers::~GaduPubdirSocketNotifiers()
 	kdebugf2();
 }
 
-void GaduPubdirSocketNotifiers::dataReceived()
+bool GaduPubdirSocketNotifiers::checkRead()
 {
-	kdebugf();
-
-	Snr->setEnabled(false);
-
-	if (H->check & GG_CHECK_READ)
-		socketEvent();
-
-	if(Snr) Snr->setEnabled(true);
-
-	kdebugf2();
+	return H && (H->check & GG_CHECK_READ);
 }
 
-void GaduPubdirSocketNotifiers::dataSent()
+bool GaduPubdirSocketNotifiers::checkWrite()
 {
-	kdebugf();
-
-	Snw->setEnabled(false);
-	if (H->check & GG_CHECK_WRITE)
-		socketEvent();
-
-	kdebugf2();
+	return H && (H->check & GG_CHECK_WRITE);
 }
 
 void GaduPubdirSocketNotifiers::socketEvent()

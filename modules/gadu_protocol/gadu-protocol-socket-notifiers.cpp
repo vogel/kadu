@@ -40,63 +40,14 @@ void GaduProtocolSocketNotifiers::setSession(gg_session *sess)
 	Fd = Sess->fd;
 }
 
-void GaduProtocolSocketNotifiers::checkWrite()
+bool GaduProtocolSocketNotifiers::checkRead()
 {
-	kdebugf();
-	//kiedy� tu si� sypa�o, ale b��d zosta� naprawiony
-	//mimo to niech kdebugi zostan� w razie gdyby ten b��d kiedy� powr�ci�
-	if (Sess == NULL)
-	{
-		kdebugm(KDEBUG_PANIC, "Sess == NULL !!\n");
-		printBacktrace("GaduProtocolSocketNotifiers::checkWrite(): Sess==null");
-	}
-	if (Sess->check & GG_CHECK_WRITE)
-	{
-		if (Snw == NULL)
-		{
-			kdebugm(KDEBUG_PANIC, "Snw == NULL !!\n");
-			printBacktrace("GaduProtocolSocketNotifiers::checkWrite(): Snw==null");
-		}
-		Snw->setEnabled(true);
-	}
-	kdebugf2();
+	return Sess->check & GG_CHECK_READ;
 }
 
-void GaduProtocolSocketNotifiers::dataReceived()
+bool GaduProtocolSocketNotifiers::checkWrite()
 {
-	kdebugf();
-
-	Snr->setEnabled(false);
-
-	if (Sess->check & GG_CHECK_READ)
-		socketEvent();
-
-	if(Snr) Snr->setEnabled(true);
-	
-
-	kdebugf2();
-}
-
-void GaduProtocolSocketNotifiers::dataSent()
-{
-	kdebugf();
-
-	if (Sess==NULL)
-	{
-		kdebugm(KDEBUG_PANIC, "Sess == NULL !!\n");
-		printBacktrace("GaduProtocolSocketNotifiers::dataSent(): Sess==null");
-	}
-	if (Snw==NULL)
-	{
-		kdebugm(KDEBUG_PANIC, "Snw == NULL !!\n");
-		printBacktrace("GaduProtocolSocketNotifiers::dataSent(): Snw==null");
-	}
-
-	Snw->setEnabled(false);
-	if (Sess->check & GG_CHECK_WRITE)
-		socketEvent();
-
-	kdebugf2();
+	return Sess->check & GG_CHECK_WRITE;
 }
 
 void GaduProtocolSocketNotifiers::socketEvent()

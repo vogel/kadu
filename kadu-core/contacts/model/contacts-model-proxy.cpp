@@ -38,7 +38,7 @@ void ContactsModelProxy::setSourceModel(QAbstractItemModel *sourceModel)
 	sort(0);
 }
 
-int  ContactsModelProxy::compareNames(QString n1, QString n2) const
+int ContactsModelProxy::compareNames(QString n1, QString n2) const
 {
 	return BrokenStringCompare
 		? n1.lower().localeAwareCompare(n2.lower())

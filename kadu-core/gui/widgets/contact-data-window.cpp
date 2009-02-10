@@ -7,6 +7,7 @@
  *                                                                         *
  ***************************************************************************/
 
+#include <QtCore/QTimer>
 #include <QtGui/QCheckBox>
 #include <QtGui/QIntValidator>
 #include <QtGui/QKeyEvent>
@@ -28,7 +29,6 @@
 #include "config_file.h"
 #include "debug.h"
 #include "../modules/gadu_protocol/gadu-protocol.h"
-#include "groups_manager.h"
 #include "icons_manager.h"
 #include "message_box.h"
 #include "misc.h"
@@ -316,7 +316,7 @@ void ContactDataWindow::setupTab2()
 	scrollArea->setWidget(groupsTab);
 	scrollArea->setWidgetResizable(true);
 
-	QStringList allGroups = groups_manager->groups();
+	QStringList allGroups = QStringList(); // groups_manager->groups();
 
 	QStringList userGroups = User.data("Groups").toStringList();
 
@@ -474,7 +474,7 @@ void ContactDataWindow::newGroupClicked()
 
 	box->show();
 
-	groups.append(checkBox);
+// 	groups.append(checkBox);
 
 	QTimer::singleShot(0, this, SLOT(scrollToBottom()));
 

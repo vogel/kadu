@@ -36,5 +36,5 @@ bool AnonymousContactFilter::acceptContact(Contact contact)
 	if (!prefferedAccount)
 		return false;
 
-	return contact.isAnonymous();
+	return !contact.isAnonymous();
 }

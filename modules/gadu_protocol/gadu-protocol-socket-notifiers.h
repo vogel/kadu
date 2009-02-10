@@ -32,20 +32,16 @@ class GaduProtocolSocketNotifiers : public GaduSocketNotifiers
 	void connectionFailed(int);
 
 protected:
+	virtual bool checkRead();
+	virtual bool checkWrite();
 	virtual void socketEvent();
 
 public:
 	GaduProtocolSocketNotifiers(Account *account, QObject *parent = 0);
 	virtual ~GaduProtocolSocketNotifiers();
 	void setSession(gg_session *sess);
-	void checkWrite();
 
 	void setAccount(Account *account) { CurrentAccount = account; }
-
-public slots:
-	virtual void dataReceived();
-	virtual void dataSent();
-
 
 signals:
 	void ackReceived(int seq, uin_t uin, int status);

@@ -36,5 +36,22 @@ bool OnlineContactFilter::acceptContact(Contact contact)
 	if (!prefferedAccount)
 		return false;
 
-	return contact.accountData(prefferedAccount)->status().isOnline() || contact.accountData(prefferedAccount)->status().isBusy();
+	Status status = contact.accountData(prefferedAccount)->status();
+	return status.isOnline() || status.isBusy();
 }
+
+
+/*
+	if (config_file.readBoolEntry("General", "ShowBlocking") != showBlocking)
+		changeDisplayingBlocking(!showBlocking);
+	if (config_file.readBoolEntry("General", "ShowBlocked") != showBlocked)
+		changeDisplayingBlocked(!showBlocked);*/
+// 	if (config_file.readBoolEntry("General", "ShowOffline") != showOffline)
+// 		changeDisplayingOffline(kadu->userbox(), !showOffline);
+//  	if (config_file.readBoolEntry("General", "ShowWithoutDescription") != showWithoutDescription)
+//  		changeDisplayingWithoutDescription(kadu->userbox(), !showWithoutDescription);
+
+// BlockedUsers::BlockedUsers() : UserGroup()
+// 		if (user.usesProtocol("Gadu") && user.protocolData("Gadu", "Blocking").toBool())
+// 			addUser(user);
+

@@ -25,11 +25,9 @@ class GaduTokenSocketNotifiers : public GaduSocketNotifiers
 	struct gg_http *H;
 
 protected:
+	virtual bool checkRead();
+	virtual bool checkWrite();
 	virtual void socketEvent();
-
-protected slots:
-	virtual void dataReceived();
-	virtual void dataSent();
 
 public:
 	GaduTokenSocketNotifiers(QObject *parent = 0);

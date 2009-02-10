@@ -95,7 +95,6 @@ set (kadu_SRCS
 	dnshandler.cpp
 	emoticons.cpp
 	expimp.cpp
-	groups_manager.cpp
 	hot_key.cpp
 	html_document.cpp
 	http_client.cpp
@@ -209,7 +208,6 @@ set (kadu_MOC_SRCS
 	dnshandler.h
 	emoticons.h
 	expimp.h
-	groups_manager.h
 	hot_key.h
 	html_document.h
 	http_client.h

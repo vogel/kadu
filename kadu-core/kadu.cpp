@@ -57,7 +57,6 @@
 #include "debug.h"
 #include "emoticons.h"
 #include "expimp.h"
-#include "groups_manager.h"
 #include "hot_key.h"
 #include "html_document.h"
 #include "icons_manager.h"

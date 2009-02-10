@@ -40,35 +40,25 @@ void GaduTokenSocketNotifiers::start()
 		return;
 	}
 
+	if (!H->fd)
+	{
+		emit tokenError();
+		return;
+	}
+
 	Fd = H->fd;
 	createSocketNotifiers();
 	kdebugf2();
 }
 
-void GaduTokenSocketNotifiers::dataReceived()
+bool GaduTokenSocketNotifiers::checkRead()
 {
-	kdebugf();
-
-	Snr->setEnabled(false);
-	
-	if (H->check & GG_CHECK_READ)
-		socketEvent();
-
-	if (Snr)
-		Snr->setEnabled(true);
-	
-	kdebugf2();
+	return H && (H->check & GG_CHECK_READ);
 }
 
-void GaduTokenSocketNotifiers::dataSent()
+bool GaduTokenSocketNotifiers::checkWrite()
 {
-	kdebugf();
-
-	Snw->setEnabled(false);
-	if (H->check & GG_CHECK_WRITE)
-		socketEvent();
-
-	kdebugf2();
+	return H && (H->check & GG_CHECK_WRITE);
 }
 
 void GaduTokenSocketNotifiers::socketEvent()
