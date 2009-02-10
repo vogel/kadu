@@ -120,7 +120,7 @@ void GaduProtocol::initModule()
 
 GaduProtocol::GaduProtocol(Account *account, ProtocolFactory *factory)
 	: Protocol(account, factory),
-		Mode(Register), DataUin(0), DataEmail(), DataPassword(), DataNewPassword(), TokenId(), TokenValue(),
+		Mode(Unregister), DataUin(0), DataEmail(), DataPassword(), DataNewPassword(), TokenId(), TokenValue(),
 		ServerNr(0), ActiveServer(), LoginParams(), Sess(0), sendImageRequests(0), seqNumber(0), whileConnecting(false),
 		DccExternalIP(), SocketNotifiers(new GaduProtocolSocketNotifiers(account, this)), PingTimer(0),
 		SendUserListTimer(new QTimer(this, "SendUserListTimer")), UserListClear(false), ImportReply()
@@ -1339,18 +1339,6 @@ void GaduProtocol::getToken()
 	sn->start();
 }
 
-void GaduProtocol::registerAccount(const QString &mail, const QString &password)
-{
-	kdebugf();
-
-	Mode = Register;
-	DataEmail = mail;
-	DataPassword = password;
-	getToken();
-
-	kdebugf2();
-}
-
 void GaduProtocol::unregisterAccount(UinType uin, const QString &password)
 {
 	kdebugf();
@@ -1386,29 +1374,6 @@ void GaduProtocol::changePassword(UinType uin, const QString &mail, const QStrin
 	DataNewPassword = newPassword;
 	getToken();
 
-	kdebugf2();
-}
-
-void GaduProtocol::doRegisterAccount()
-{
-	kdebugf();
-	struct gg_http *h = gg_register3(unicode2cp(DataEmail).data(), unicode2cp(DataPassword).data(),
-		unicode2cp(TokenId).data(), unicode2cp(TokenValue).data(), 1);
-	if (h)
-	{
-		GaduPubdirSocketNotifiers *sn = new GaduPubdirSocketNotifiers(h, this);
-		connect(sn, SIGNAL(done(bool, struct gg_http *)), this, SLOT(registerDone(bool, struct gg_http *)));
-		sn->start();
-	}
-	else
-		emit registered(false, 0);
-	kdebugf2();
-}
-
-void GaduProtocol::registerDone(bool ok, struct gg_http *h)
-{
-	kdebugf();
-	emit registered(ok, ok ? (((struct gg_pubdir *)h->data)->uin) : 0);
 	kdebugf2();
 }
 
@@ -1493,9 +1458,6 @@ void GaduProtocol::tokenError()
 	kdebugf();
 	switch (Mode)
 	{
-		case Register:
-			emit registered(false, 0);
-			break;
 		case Unregister:
 			emit unregistered(false);
 			break;
@@ -1521,9 +1483,6 @@ void GaduProtocol::gotToken(QString tokenId, QPixmap tokenImage)
 
 	switch (Mode)
 	{
-		case Register:
-			doRegisterAccount();
-			break;
 		case Unregister:
 			doUnregisterAccount();
 			break;

@@ -55,8 +55,6 @@ private:
 		@see TokenSocketNotifiers
 		@see gotToken
 		@see needTokenValue
-		@see register
-		@see doRegister
 		@see unregister
 		@see doUnregister
 		@see remindPassword
@@ -76,8 +74,6 @@ private:
 	**/
 	enum
 	{
-		/** Rejestrowanie nowego u�ytkownika **/
-		Register,
 		/** Wyrejestrowywanie istniej�cego u�ytkownika **/
 		Unregister,
 		/** Przypominanie has�a **/
@@ -184,25 +180,12 @@ private:
 
 		@see TokenSocketNotifiers
 		@see gotToken
-		@see doRegisterAccount
 		@see doUnregisterAccount
 		@see doRemindPassword
 		@see doChangePassword
 		@see Mode
 	**/
 	void getToken();
-
-	/**
-		Rejestruje nowe konto. Wywo�ywane przez gotToken (kt�re jest wywo�ane po�rednio przez
-		registerAccount). Korzysta z pomocy PubdirSocketNotifiers oraz slotu registerDone,
-		kt�ry emituje sygna� registered.
-
-		@see registerAccount
-		@see registered
-		@see registerDone
-		@see gotToken
-	**/
-	void doRegisterAccount();
 
 	/**
 		Wyrejestrowuje konto. Wywo�ywane przez gotToken (kt�re jest wywo�ane po�rednio przez
@@ -272,15 +255,6 @@ private slots:
 		@see ServerNr
 	**/
 	void login();
-
-	/**
-		Wywo�ywany po zarejestrowaniu konta. Emituje registered/
-
-		@see registerAccount
-		@see doRegisterAccount
-		@see registered
-	**/
-	void registerDone(bool ok, struct gg_http *);
 
 	/**
 		Wywo�ywany po wyrejestrowaniu konta. Emituje unregistered.
@@ -564,18 +538,6 @@ public slots:
 	bool sendImage(Contact contact, const QString &file_name, uint32_t size, const char *data);
 
 	/**
-		Rejetrujemy nowe konto. Odpowied� przychodzi poprzez sygna� registered. Mo�e
-		zosta� tak�e wywo�any sygna� needTokenValue.
-
-		@param mail nasz email, pole nieobowi�zkowe
-		@param password nasze has�o, pole obowi�zkowe
-		@see registered
-		@see needTokenValue
-		@see unregisterAccount
-	**/
-	void registerAccount(const QString &mail, const QString &password);
-
-	/**
 		Wyrejestrowujemy stare konto. Odpowied� przychodzi poprzez sygna� unregistered. Mo�e
 		zosta� tak�e wywo�any sygna� needTokenValue.
 
@@ -742,14 +704,6 @@ signals:
 		@param lastUin ?
 	**/
 	void newSearchResults(SearchResults &searchResults, int seq, int lastUin);
-
-	/**
-		operacja rejestracji nowego konta zosta�a zako�czona
-		@param ok powodzenie operacji
-		@param uin nowy numer
-		@see doRegisterAccount
-	**/
-	void registered(bool ok, UinType uin);
 
 	/**
 		operacja wyrejestrowania konta zosta�a zako�czona
