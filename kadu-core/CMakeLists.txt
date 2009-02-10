@@ -26,8 +26,13 @@ set (kadu_SRCS
 	contacts/model/contacts-model.cpp
 	contacts/model/contacts-model-proxy.cpp
 	
+	contacts/model/filter/anonymous-contact-filter.cpp
+	contacts/model/filter/anonymous-without-messages-contact-filter.cpp
 	contacts/model/filter/group-contact-filter.cpp
 	contacts/model/filter/has-description-contact-filter.cpp
+	contacts/model/filter/offline-contact-filter.cpp
+	contacts/model/filter/online-and-description-contact-filter.cpp
+	contacts/model/filter/online-contact-filter.cpp
 
 	configuration/account-data-manager.cpp
 	configuration/config-file-data-manager.cpp
@@ -155,8 +160,13 @@ set (kadu_MOC_SRCS
 	contacts/model/contacts-model-proxy.h
 	
 	contacts/model/filter/abstract-contact-filter.h
+	contacts/model/filter/anonymous-contact-filter.h
+	contacts/model/filter/anonymous-without-messages-contact-filter.h
 	contacts/model/filter/group-contact-filter.h
 	contacts/model/filter/has-description-contact-filter.h
+	contacts/model/filter/offline-contact-filter.h
+	contacts/model/filter/online-and-description-contact-filter.h
+	contacts/model/filter/online-contact-filter.h
 
 	configuration/config-file-data-manager.h
 	configuration/configuration-window-data-manager.h

@@ -34,6 +34,11 @@
 
 #include "contacts/model/filter/group-contact-filter.h"
 #include "contacts/model/filter/has-description-contact-filter.h"
+#include "contacts/model/filter/online-contact-filter.h"
+#include "contacts/model/filter/online-and-description-contact-filter.h"
+#include "contacts/model/filter/offline-contact-filter.h"
+#include "contacts/model/filter/anonymous-contact-filter.h"
+#include "contacts/model/filter/anonymous-without-messages-contact-filter.h"
 
 #include "gui/widgets/contact-data-window.h"
 
@@ -983,7 +988,12 @@ void Kadu::inactiveUsersActionActivated(QAction *sender, bool toggled)
 	if (!window)
 		return;
 
-// 	groups_manager->changeDisplayingOffline(window->userBox(), !toggled);
+	QVariant v = sender->data();
+	if (v.canConvert<OfflineContactFilter *>())
+	{
+		OfflineContactFilter *ofcf = v.value<OfflineContactFilter *>();
+		ofcf->setEnabled(toggled);
+	}
 }
 
 void Kadu::descriptionUsersActionActivated(QAction *sender, bool toggled)
@@ -1006,12 +1016,27 @@ void Kadu::onlineAndDescUsersActionActivated(QAction *sender, bool toggled)
 	if (!window)
 		return;
 
-// 	groups_manager->changeDisplayingOnlineAndDescription(window->userBox(), toggled);
+	QVariant v = sender->data();
+	if (v.canConvert<OnlineAndDescriptionContactFilter *>())
+	{
+		OnlineAndDescriptionContactFilter *oadcf = v.value<OnlineAndDescriptionContactFilter *>();
+		oadcf->setEnabled(toggled);
+	}
 }
 
 void Kadu::inactiveUsersActionCreated(KaduAction *action)
 {
-	action->setChecked(!config_file.readBoolEntry("General", "ShowOffline"));
+	KaduMainWindow *window = qobject_cast<KaduMainWindow *>(action->parent());
+	if (!window)
+		return;
+	bool enabled = !config_file.readBoolEntry("General", "ShowOffline");
+	OfflineContactFilter *ofcf = new OfflineContactFilter(action);
+	ofcf->setEnabled(enabled);
+
+	action->setData(QVariant::fromValue(ofcf));
+	action->setChecked(enabled);
+
+	window->contactsListWidget()->addFilter(ofcf);
 }
 
 void Kadu::descriptionUsersActionCreated(KaduAction *action)
@@ -1032,7 +1057,17 @@ void Kadu::descriptionUsersActionCreated(KaduAction *action)
 
 void Kadu::onlineAndDescUsersActionCreated(KaduAction *action)
 {
-	action->setChecked(config_file.readBoolEntry("General", "ShowOnlineAndDescription"));
+	KaduMainWindow *window = qobject_cast<KaduMainWindow *>(action->parent());
+	if (!window)
+		return;
+	bool enabled = !config_file.readBoolEntry("General", "ShowOnlineAndDescription");
+	OnlineAndDescriptionContactFilter *oadcf = new OnlineAndDescriptionContactFilter(action);
+	oadcf->setEnabled(enabled);
+
+	action->setData(QVariant::fromValue(oadcf));
+	action->setChecked(enabled);
+
+	window->contactsListWidget()->addFilter(oadcf);
 }
 
 void Kadu::configurationActionActivated(QAction *sender, bool toggled)
