@@ -1954,6 +1954,9 @@ void GaduProtocol::userStatusChanged(const struct gg_event *e)
 		image_size = 0;
 	}
 
+	if (!data)
+		return;
+
 	data->setAddressAndPort(QHostAddress((quint32)(ntohl(remote_ip))), remote_port);
 	data->setProtocolVersion(QString::number(version));
 	data->setMaxImageSize(image_size);
