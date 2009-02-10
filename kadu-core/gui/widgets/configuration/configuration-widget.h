@@ -7,8 +7,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef CONFIGURATION_WINDOW_H
-#define CONFIGURATION_WINDOW_H
+#ifndef CONFIGURATION_WIDGET_H
+#define CONFIGURATION_WIDGET_H
 
 #include <QtGui/QDialog>
 
@@ -27,7 +27,7 @@ class QVBoxLayout;
 class QDialogButtonBox;
 
 /**
-	@class ConfigurationWindow
+	@class ConfigurationWidget
 	@author Vogel
 	@short Widget okna konfigruacyjnego.
 
@@ -76,7 +76,7 @@ class QDialogButtonBox;
 	klas Config* (np.: ConfigComboBox).
  **/
 
-class KADUAPI ConfigurationWindow : public QDialog
+class KADUAPI ConfigurationWidget : public QWidget
 {
 	Q_OBJECT
 
@@ -105,13 +105,9 @@ class KADUAPI ConfigurationWindow : public QDialog
 	void removeUiElementFromDom(QDomNode uiElementNode, ConfigGroupBox *configGroupBox);
 
 private slots:
-	void updateAndCloseConfig();
-	void updateConfig();
-
 	void changeSection(const QString &newSectionName);
 
 protected:
-	virtual void keyPressEvent(QKeyEvent *e);
 	ConfigurationWindowDataManager *dataManager;
 
 public:
@@ -120,8 +116,8 @@ public:
 		jest przy zapamiętywaniu pozycji okna oraz jego ostatnio
 		otwartej karty.
 	 **/
-	ConfigurationWindow(const QString &name, const QString &caption, ConfigurationWindowDataManager *dataManager);
-	virtual ~ConfigurationWindow();
+	ConfigurationWidget(ConfigurationWindowDataManager *dataManager, QWidget *parent = 0);
+	virtual ~ConfigurationWidget();
 
 	QString name() { return Name; }
 
@@ -133,12 +129,6 @@ public:
 		Dla crate == false zostanie zwrócony NULL.
 	 **/
 	ConfigGroupBox * configGroupBox(const QString &section, const QString &tab, const QString &groupBox, bool create = true);
-
-	/**
-		Jeżeli okno jest ukryte wczytuje wartości elementów z pliku
-		konfiguracyjnego i pokazuje okno.
-	 **/
-	virtual void show();
 
 	/**
 		Dodaje do okna konfiguracyjnego widgety wczytane z pliku fileName.
@@ -159,6 +149,11 @@ public:
 
 	// TODO: make private or sth
 	void removedConfigSection(const QString &sectionName);
+
+	void init();
+
+	void loadConfiguration();
+	void saveConfiguration();
 
 signals:
 	/**

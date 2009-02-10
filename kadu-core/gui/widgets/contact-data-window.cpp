@@ -302,7 +302,7 @@ void ContactDataWindow::updateAltNick()
 void ContactDataWindow::setupTab2()
 {
 	kdebugf();
-
+	/*
 	scrollArea = new QScrollArea(tw_main);
 	scrollArea->setFrameStyle(QFrame::NoFrame);
 	scrollArea->setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
@@ -376,7 +376,7 @@ void ContactDataWindow::setupTab2()
 
 	connect(addNewGroup, SIGNAL(clicked()), this, SLOT(newGroupClicked()));
 	connect(newGroup, SIGNAL(returnPressed()), this, SLOT(newGroupClicked()));
-
+	*/
 	kdebugf2();
 }
 

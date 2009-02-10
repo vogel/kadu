@@ -67,10 +67,12 @@ set (kadu_SRCS
 	gui/widgets/configuration/config-syntax-editor.cpp
 	gui/widgets/configuration/config-widget-value.cpp
 	gui/widgets/configuration/config-widget.cpp
-	gui/widgets/configuration/configuration-window.cpp
+	gui/widgets/configuration/configuration-widget.cpp
 	gui/widgets/configuration/config-section.cpp
 	gui/widgets/configuration/config-group-box.cpp
 	gui/widgets/configuration/config-tab.cpp
+
+	gui/windows/configuration-window.cpp
 
 	protocols/protocol.cpp
 	protocols/protocol-menu-manager.cpp
@@ -182,10 +184,12 @@ set (kadu_MOC_SRCS
 	gui/widgets/configuration/config-check-box.h
 	gui/widgets/configuration/config-widget-value.h
 	gui/widgets/configuration/config-widget.h
-	gui/widgets/configuration/configuration-window.h
+	gui/widgets/configuration/configuration-widget.h
 	gui/widgets/configuration/kadu-scroll-area.h
 	gui/widgets/configuration/config-section.h
 	gui/widgets/configuration/config-tab.h
+
+	gui/windows/configuration-window.h
 
 	protocols/protocol.h
 	protocols/protocol_factory.h

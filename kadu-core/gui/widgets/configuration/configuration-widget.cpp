@@ -15,7 +15,7 @@
 #include <QtGui/QVBoxLayout>
 #include <QtGui/QDialogButtonBox>
 
-#include "gui/widgets/configuration/configuration-window.h"
+#include "gui/widgets/configuration/configuration-widget.h"
 #include "gui/widgets/configuration/config-group-box.h"
 #include "gui/widgets/configuration/config-widget.h"
 #include "gui/widgets/configuration/config-section.h"
@@ -36,19 +36,14 @@
 #include "gui/widgets/configuration/config-label.h"
 #include "gui/widgets/configuration/config-list-widget.h"
 #include "gui/widgets/configuration/config-manage-accounts.h"
+#include "gui/windows/configuration-window.h"
 
 #include "kadu.h"
 
-ConfigurationWindow::ConfigurationWindow(const QString &name, const QString &caption, ConfigurationWindowDataManager *dataManager)
-	: QDialog(kadu, Qt::Window), Name(name), currentSection(0), dataManager(dataManager)
+ConfigurationWidget::ConfigurationWidget(ConfigurationWindowDataManager *dataManager, QWidget *parent)
+	: QWidget(parent), currentSection(0), dataManager(dataManager)
 {
-	setAttribute(Qt::WA_DeleteOnClose);
-	setWindowTitle(caption);
-
-	QVBoxLayout *main_layout = new QVBoxLayout(this);
-
-	QWidget *center = new QWidget();
-	QHBoxLayout *center_layout = new QHBoxLayout(center);
+	QHBoxLayout *center_layout = new QHBoxLayout(this);
 	center_layout->setMargin(0);
 	center_layout->setSpacing(0);
 
@@ -63,20 +58,6 @@ ConfigurationWindow::ConfigurationWindow(const QString &name, const QString &cap
 	QHBoxLayout *container_layout = new QHBoxLayout(container);
 	Q_UNUSED(container_layout)
 
-	QDialogButtonBox *buttons_layout = new QDialogButtonBox(Qt::Horizontal, this);
-
-	QPushButton *okButton = new QPushButton(icons_manager->loadIcon("OkWindowButton"), tr("Ok"), this);
-	buttons_layout->addButton(okButton, QDialogButtonBox::AcceptRole);
-	QPushButton *applyButton = new QPushButton(icons_manager->loadIcon("ApplyWindowButton"), tr("Apply"), this);
-	buttons_layout->addButton(applyButton, QDialogButtonBox::ApplyRole);
-	QPushButton *cancelButton = new QPushButton(icons_manager->loadIcon("CloseWindowButton"), tr("Cancel"), this);
-	buttons_layout->addButton(cancelButton, QDialogButtonBox::RejectRole);
-
-	connect(okButton, SIGNAL(clicked()), this, SLOT(updateAndCloseConfig()));
-	connect(applyButton, SIGNAL(clicked()), this, SLOT(updateConfig()));
-	connect(cancelButton, SIGNAL(clicked()), this, SLOT(reject()));
-	connect(cancelButton, SIGNAL(clicked()), this, SLOT(close()));
-
 	sectionsListWidget = new QListWidget(this);
 	sectionsListWidget->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Expanding);
  	sectionsListWidget->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
@@ -84,40 +65,27 @@ ConfigurationWindow::ConfigurationWindow(const QString &name, const QString &cap
 	connect(sectionsListWidget, SIGNAL(currentTextChanged(const QString &)), this, SLOT(changeSection(const QString &)));
 	left_layout->addWidget(sectionsListWidget);
 
-	main_layout->addWidget(center);
-	main_layout->addWidget(buttons_layout);
 	center_layout->addWidget(left);
 	center_layout->addWidget(container);
 }
 
-ConfigurationWindow::~ConfigurationWindow()
+ConfigurationWidget::~ConfigurationWidget()
 {
 	if (sectionsListWidget->currentItem())
 		config_file.writeEntry("General", "ConfigurationWindow_" + Name, sectionsListWidget->currentItem()->text());
 	qDeleteAll(configSections);
 }
 
-void ConfigurationWindow::show()
+void ConfigurationWidget::init()
 {
-	if (!isShown())
-	{
-		QString lastSection = config_file.readEntry("General", "ConfigurationWindow_" + Name);
-		if (configSections.contains(lastSection))
-			configSections[lastSection]->activate();
-		else
-			sectionsListWidget->setCurrentItem(0);
-
-		loadConfiguration(this);
-		QWidget::show();
-	}
+	QString lastSection = config_file.readEntry("General", "ConfigurationWindow_" + Name);
+	if (configSections.contains(lastSection))
+		configSections[lastSection]->activate();
 	else
-	{
-		setActiveWindow();
-		raise();
-	}
+		sectionsListWidget->setCurrentItem(0);
 }
 
-QList<ConfigWidget *> ConfigurationWindow::appendUiFile(const QString &fileName, bool load)
+QList<ConfigWidget *> ConfigurationWidget::appendUiFile(const QString &fileName, bool load)
 {
 	QList<ConfigWidget *> widgets = processUiFile(fileName);
 
@@ -131,12 +99,12 @@ QList<ConfigWidget *> ConfigurationWindow::appendUiFile(const QString &fileName,
 	return widgets;
 }
 
-void ConfigurationWindow::removeUiFile(const QString &fileName)
+void ConfigurationWidget::removeUiFile(const QString &fileName)
 {
 	processUiFile(fileName, false);
 }
 
-QList<ConfigWidget *>  ConfigurationWindow::processUiFile(const QString &fileName, bool append)
+QList<ConfigWidget *>  ConfigurationWidget::processUiFile(const QString &fileName, bool append)
 {
 	kdebugf();
 
@@ -171,7 +139,7 @@ QList<ConfigWidget *>  ConfigurationWindow::processUiFile(const QString &fileNam
 	return result;
 }
 
-QList<ConfigWidget *> ConfigurationWindow::processUiSectionFromDom(QDomNode sectionNode, bool append)
+QList<ConfigWidget *> ConfigurationWidget::processUiSectionFromDom(QDomNode sectionNode, bool append)
 {
 	kdebugf();
 
@@ -209,7 +177,7 @@ QList<ConfigWidget *> ConfigurationWindow::processUiSectionFromDom(QDomNode sect
 	return result;
 }
 
-QList<ConfigWidget *> ConfigurationWindow::processUiTabFromDom(QDomNode tabNode, const QString &iconName,
+QList<ConfigWidget *> ConfigurationWidget::processUiTabFromDom(QDomNode tabNode, const QString &iconName,
 	const QString &sectionName, bool append)
 {
 	kdebugf();
@@ -244,7 +212,7 @@ QList<ConfigWidget *> ConfigurationWindow::processUiTabFromDom(QDomNode tabNode,
 	return result;
 }
 
-QList<ConfigWidget *> ConfigurationWindow::processUiGroupBoxFromDom(QDomNode groupBoxNode, const QString &sectionName, const QString &tabName, bool append)
+QList<ConfigWidget *> ConfigurationWidget::processUiGroupBoxFromDom(QDomNode groupBoxNode, const QString &sectionName, const QString &tabName, bool append)
 {
 	kdebugf();
 
@@ -293,7 +261,7 @@ QList<ConfigWidget *> ConfigurationWindow::processUiGroupBoxFromDom(QDomNode gro
 	return result;
 }
 
-ConfigWidget * ConfigurationWindow::appendUiElementFromDom(QDomNode uiElementNode, ConfigGroupBox *configGroupBox)
+ConfigWidget * ConfigurationWidget::appendUiElementFromDom(QDomNode uiElementNode, ConfigGroupBox *configGroupBox)
 {
 	kdebugf();
 
@@ -364,7 +332,7 @@ ConfigWidget * ConfigurationWindow::appendUiElementFromDom(QDomNode uiElementNod
 	return widget;
 }
 
-void ConfigurationWindow::removeUiElementFromDom(QDomNode uiElementNode, ConfigGroupBox *configGroupBox)
+void ConfigurationWidget::removeUiElementFromDom(QDomNode uiElementNode, ConfigGroupBox *configGroupBox)
 {
 	kdebugf();
 
@@ -396,7 +364,7 @@ void ConfigurationWindow::removeUiElementFromDom(QDomNode uiElementNode, ConfigG
 	kdebugf2();
 }
 
-QWidget * ConfigurationWindow::widgetById(const QString &id)
+QWidget * ConfigurationWidget::widgetById(const QString &id)
 {
 	if (widgets.contains(id))
 		return widgets[id];
@@ -404,7 +372,7 @@ QWidget * ConfigurationWindow::widgetById(const QString &id)
 	return 0;
 }
 
-ConfigGroupBox * ConfigurationWindow::configGroupBox(const QString &section, const QString &tab, const QString &groupBox, bool create)
+ConfigGroupBox * ConfigurationWidget::configGroupBox(const QString &section, const QString &tab, const QString &groupBox, bool create)
 {
 	ConfigSection *s = configSection(qApp->translate("@default", section));
 	if (!s)
@@ -413,12 +381,12 @@ ConfigGroupBox * ConfigurationWindow::configGroupBox(const QString &section, con
 	return s->configGroupBox(qApp->translate("@default", tab), qApp->translate("@default", groupBox), create);
 }
 
-ConfigSection *ConfigurationWindow::configSection(const QString &name)
+ConfigSection *ConfigurationWidget::configSection(const QString &name)
 {
 	return configSections[name];
 }
 
-ConfigSection *ConfigurationWindow::configSection(const QString &pixmap, const QString &name, bool create)
+ConfigSection *ConfigurationWidget::configSection(const QString &pixmap, const QString &name, bool create)
 {
 	if (configSections.contains(name))
 		return configSections[name];
@@ -448,7 +416,7 @@ ConfigSection *ConfigurationWindow::configSection(const QString &pixmap, const Q
 	return newConfigSection;
 }
 
-void ConfigurationWindow::loadConfiguration(QObject *object)
+void ConfigurationWidget::loadConfiguration(QObject *object)
 {
 	kdebugf();
 
@@ -464,7 +432,12 @@ void ConfigurationWindow::loadConfiguration(QObject *object)
 		configWidget->loadConfiguration();
 }
 
-void ConfigurationWindow::saveConfiguration(QObject *object)
+void ConfigurationWidget::loadConfiguration()
+{
+	loadConfiguration(this);
+}
+
+void ConfigurationWidget::saveConfiguration(QObject *object)
 {
 	kdebugf();
 
@@ -480,23 +453,12 @@ void ConfigurationWindow::saveConfiguration(QObject *object)
 		configWidget->saveConfiguration();
 }
 
-void ConfigurationWindow::updateAndCloseConfig()
+void ConfigurationWidget::saveConfiguration()
 {
-	updateConfig();
-
-	accept();
-	close();
-}
-
-void ConfigurationWindow::updateConfig()
-{
-	emit configurationWindowApplied();
 	saveConfiguration(this);
-
-	ConfigurationAwareObject::notifyAll();
 }
 
-void ConfigurationWindow::changeSection(const QString &newSectionName)
+void ConfigurationWidget::changeSection(const QString &newSectionName)
 {
 	if (!configSections.contains(newSectionName))
 		return;
@@ -513,7 +475,7 @@ void ConfigurationWindow::changeSection(const QString &newSectionName)
 	newSection->activate();
 }
 
-void ConfigurationWindow::removedConfigSection(const QString &sectionName)
+void ConfigurationWidget::removedConfigSection(const QString &sectionName)
 {
 	configSections.remove(sectionName);
 
@@ -524,15 +486,4 @@ void ConfigurationWindow::removedConfigSection(const QString &sectionName)
 			delete item;
 			break;
 		}
-}
-
-void ConfigurationWindow::keyPressEvent(QKeyEvent *e)
-{
-	if (e->key() == Qt::Key_Escape)
-	{
-		e->accept();
-		close();
-	}
-	else
-		QWidget::keyPressEvent(e);
 }

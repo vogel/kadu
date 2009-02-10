@@ -11,7 +11,6 @@
 #define CONFIG_WIDGET_H
 
 #include "configuration/configuration-window-data-manager.h"
-#include "gui/widgets/configuration/configuration-window.h"
 
 class QDomElement;
 class ConfigGroupBox;
@@ -24,7 +23,7 @@ class ConfigGroupBox;
  **/
 class KADUAPI ConfigWidget
 {
-	friend class ConfigurationWindow;
+	friend class ConfigurationWidget;
 
 protected:
 	ConfigGroupBox *parentConfigGroupBox;

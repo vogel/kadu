@@ -20,7 +20,8 @@
 
 #include "accounts/model/accounts-model.h"
 
-#include "gui/widgets/configuration/configuration-window.h"
+#include "gui/windows/configuration-window.h"
+#include "gui/widgets/configuration/configuration-widget.h"
 
 #include "protocols/protocol.h"
 #include "protocols/protocol_factory.h"

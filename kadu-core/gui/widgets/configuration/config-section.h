@@ -14,11 +14,11 @@
 #include <QtCore/QMap>
 #include <QtGui/QTabWidget>
 
-#include "gui/widgets/configuration/configuration-window.h"
+#include "gui/widgets/configuration/configuration-widget.h"
 
 class ConfigGroupBox;
 class ConfigTab;
-//class ConfigurationWindow;
+class ConfigurationWidget;
 class ConfigWidget;
 
 class QGridLayout;
@@ -31,7 +31,7 @@ class ConfigSection : public QObject
 	Q_OBJECT
 
 	QString name;
-	ConfigurationWindow *configurationWindow;
+	ConfigurationWidget *configurationWidget;
 	QString pixmap;
 
 	QListWidgetItem *listWidgetItem;
@@ -46,7 +46,7 @@ private slots:
 	void iconThemeChanged();
 
 public:
-	ConfigSection(const QString &name, ConfigurationWindow *configurationWindow, QListWidgetItem *listWidgetItem, QWidget *parentConfigGroupBoxWidget,
+	ConfigSection(const QString &name, ConfigurationWidget *configurationWidget, QListWidgetItem *listWidgetItem, QWidget *parentConfigGroupBoxWidget,
 		const QString &pixmap);
 	~ConfigSection();
 

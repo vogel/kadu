@@ -20,9 +20,9 @@
 #include "config_file.h"
 #include "icons_manager.h"
 
-ConfigSection::ConfigSection(const QString &name, ConfigurationWindow *configurationWindow, QListWidgetItem *listWidgetItem, QWidget *parentConfigGroupBoxWidget,
+ConfigSection::ConfigSection(const QString &name, ConfigurationWidget *configurationWidget, QListWidgetItem *listWidgetItem, QWidget *parentConfigGroupBoxWidget,
 		const QString &pixmap)
-	: name(name), configurationWindow(configurationWindow), pixmap(pixmap), listWidgetItem(listWidgetItem), activated(false)
+	: name(name), configurationWidget(configurationWidget), pixmap(pixmap), listWidgetItem(listWidgetItem), activated(false)
 {
 	mainWidget = new QTabWidget(parentConfigGroupBoxWidget);
 	parentConfigGroupBoxWidget->layout()->addWidget(mainWidget);
@@ -34,7 +34,7 @@ ConfigSection::ConfigSection(const QString &name, ConfigurationWindow *configura
 
 ConfigSection::~ConfigSection()
 {
-	config_file.writeEntry("General", "ConfigurationWindow_" + configurationWindow->name() + "_" + name,
+	config_file.writeEntry("General", "ConfigurationWindow_" + configurationWidget->name() + "_" + name,
 		mainWidget->label(mainWidget->currentPageIndex()));
 	delete mainWidget;
 }
@@ -55,7 +55,7 @@ void ConfigSection::activate()
 	if (activated)
 		return;
 
-	QString tab = config_file.readEntry("General", "ConfigurationWindow_" + configurationWindow->name() + "_" + name);
+	QString tab = config_file.readEntry("General", "ConfigurationWindow_" + configurationWidget->name() + "_" + name);
 	if (configTabs.contains(tab))
 		mainWidget->setCurrentPage(mainWidget->indexOf(configTabs[tab]->tabWidget()));
 	activated = true;
@@ -82,7 +82,7 @@ void ConfigSection::removedConfigTab(const QString &configTabName)
 	configTabs.remove(configTabName);
 	if (!configTabs.count())
 	{
-		configurationWindow->removedConfigSection(name);
+		configurationWidget->removedConfigSection(name);
 // 		delete this;
 	}
 }

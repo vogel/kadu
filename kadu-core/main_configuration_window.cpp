@@ -21,6 +21,8 @@
 #include "contacts/contact-data.h"
 #include "contacts/contact-account-data.h"
 
+#include "gui/widgets/configuration/configuration-widget.h"
+
 #include "gui/widgets/tool-tip-class-manager.h"
 
 #include "chat_message.h"
@@ -62,7 +64,7 @@ void MainConfigurationWindow::registerUiFile(const QString &uiFile, Configuratio
 	UiFiles.append(qMakePair(uiFile, uiHandler));
 	if (Instance)
 	{
-		QList<ConfigWidget *> widgets = Instance->appendUiFile(uiFile);
+		QList<ConfigWidget *> widgets = Instance->widget()->appendUiFile(uiFile);
 
 		if (uiHandler)
 			uiHandler->mainConfigurationWindowCreated(Instance);
@@ -79,7 +81,7 @@ void MainConfigurationWindow::unregisterUiFile(const QString &uiFile, Configurat
 {
 	UiFiles.remove(qMakePair(uiFile, uiHandler));
 	if (Instance)
-		Instance->removeUiFile(uiFile);
+		Instance->widget()->removeUiFile(uiFile);
 }
 
 void MainConfigurationWindow::instanceCreated()
@@ -87,7 +89,7 @@ void MainConfigurationWindow::instanceCreated()
 	foreach(const ConfigurationHandelUiPair &configurationUiHandlerPair, UiFiles)
 	{
 		ConfigurationUiHandler *uiHandler = configurationUiHandlerPair.second;
-		Instance->appendUiFile(configurationUiHandlerPair.first);
+		Instance->widget()->appendUiFile(configurationUiHandlerPair.first);
 		if (uiHandler)
 			uiHandler->mainConfigurationWindowCreated(Instance);
 	}
@@ -96,23 +98,23 @@ void MainConfigurationWindow::instanceCreated()
 MainConfigurationWindow::MainConfigurationWindow()
 	: ConfigurationWindow("main", tr("Kadu configuration"), InstanceDataManager), lookChatAdvanced(0)
 {
-	appendUiFile(dataPath("kadu/configuration/dialog.ui"));
+	widget()->appendUiFile(dataPath("kadu/configuration/dialog.ui"));
 
 #ifndef DEBUG_ENABLED
-	((QWidget *)(widgetById("debug")->parent()))->hide();
+	((QWidget *)(widget()->widgetById("debug")->parent()))->hide();
 #endif
 
 #ifndef Q_WS_X11
-	((QWidget *)(widgetById("windowActivationMethodGroup")->parent()))->hide();
+	((QWidget *)(widget()->widgetById("windowActivationMethodGroup")->parent()))->hide();
 #endif
 
 #ifndef Q_OS_WIN
-	((QWidget *)(widgetById("startup")->parent()))->hide();
+	((QWidget *)(widget()->widgetById("startup")->parent()))->hide();
 #endif
 
-	onStartupSetLastDescription = dynamic_cast<QCheckBox *>(widgetById("onStartupSetLastDescription"));
-	QLineEdit *disconnectDescription = dynamic_cast<QLineEdit *>(widgetById("disconnectDescription"));
-	QLineEdit *onStartupSetDescription = dynamic_cast<QLineEdit *>(widgetById("onStartupSetDescription"));
+	onStartupSetLastDescription = dynamic_cast<QCheckBox *>(widget()->widgetById("onStartupSetLastDescription"));
+	QLineEdit *disconnectDescription = dynamic_cast<QLineEdit *>(widget()->widgetById("disconnectDescription"));
+	QLineEdit *onStartupSetDescription = dynamic_cast<QLineEdit *>(widget()->widgetById("onStartupSetDescription"));
 
 	Account * account = AccountManager::instance()->defaultAccount();
 	if ( 0 != account && 0 != account->protocol())
@@ -122,69 +124,69 @@ MainConfigurationWindow::MainConfigurationWindow()
 		onStartupSetDescription->setMaxLength(gadu->maxDescriptionLength());
 	}
 
-	connect(widgetById("disconnectWithCurrentDescription"), SIGNAL(toggled(bool)), disconnectDescription, SLOT(setDisabled(bool)));
+	connect(widget()->widgetById("disconnectWithCurrentDescription"), SIGNAL(toggled(bool)), disconnectDescription, SLOT(setDisabled(bool)));
 	connect(onStartupSetLastDescription, SIGNAL(toggled(bool)), onStartupSetDescription, SLOT(setDisabled(bool)));
-	connect(widgetById("foldLink"), SIGNAL(toggled(bool)), widgetById("linkFoldTreshold"), SLOT(setEnabled(bool)));
-	connect(widgetById("chatPrune"), SIGNAL(toggled(bool)), widgetById("chatPruneLen"), SLOT(setEnabled(bool)));
-	connect(widgetById("chatCloseTimer"), SIGNAL(toggled(bool)), widgetById("chatCloseTimerPeriod"), SLOT(setEnabled(bool)));
-	connect(widgetById("startupStatus"), SIGNAL(activated(int)), this, SLOT(onChangeStartupStatus(int)));
-	connect(widgetById("showDescription"), SIGNAL(toggled(bool)), widgetById("multilineDescription"), SLOT(setEnabled(bool)));
-	connect(widgetById("useDefaultServers"), SIGNAL(toggled(bool)), widgetById("serverList"), SLOT(setDisabled(bool)));
-	connect(widgetById("openChatOnMessage"), SIGNAL(toggled(bool)), widgetById("openChatOnMessageWhenOnline"), SLOT(setEnabled(bool)));
+	connect(widget()->widgetById("foldLink"), SIGNAL(toggled(bool)), widget()->widgetById("linkFoldTreshold"), SLOT(setEnabled(bool)));
+	connect(widget()->widgetById("chatPrune"), SIGNAL(toggled(bool)), widget()->widgetById("chatPruneLen"), SLOT(setEnabled(bool)));
+	connect(widget()->widgetById("chatCloseTimer"), SIGNAL(toggled(bool)), widget()->widgetById("chatCloseTimerPeriod"), SLOT(setEnabled(bool)));
+	connect(widget()->widgetById("startupStatus"), SIGNAL(activated(int)), this, SLOT(onChangeStartupStatus(int)));
+	connect(widget()->widgetById("showDescription"), SIGNAL(toggled(bool)), widget()->widgetById("multilineDescription"), SLOT(setEnabled(bool)));
+	connect(widget()->widgetById("useDefaultServers"), SIGNAL(toggled(bool)), widget()->widgetById("serverList"), SLOT(setDisabled(bool)));
+	connect(widget()->widgetById("openChatOnMessage"), SIGNAL(toggled(bool)), widget()->widgetById("openChatOnMessageWhenOnline"), SLOT(setEnabled(bool)));
 
-	emoticonsStyleComboBox = dynamic_cast<ConfigComboBox *>(widgetById("emoticonsStyle"));
-	emoticonsThemeComboBox = dynamic_cast<ConfigComboBox *>(widgetById("emoticonsTheme"));
+	emoticonsStyleComboBox = dynamic_cast<ConfigComboBox *>(widget()->widgetById("emoticonsStyle"));
+	emoticonsThemeComboBox = dynamic_cast<ConfigComboBox *>(widget()->widgetById("emoticonsTheme"));
 	connect(emoticonsStyleComboBox, SIGNAL(activated(int)), this, SLOT(onChangeEmoticonsStyle(int)));
-	connect(widgetById("emoticonsPaths"), SIGNAL(changed()), this, SLOT(setEmoticonThemes()));
+	connect(widget()->widgetById("emoticonsPaths"), SIGNAL(changed()), this, SLOT(setEmoticonThemes()));
 
-	QWidget *showInformationPanel = widgetById("showInformationPanel");
-	connect(showInformationPanel, SIGNAL(toggled(bool)), widgetById("showVerticalScrollbar"), SLOT(setEnabled(bool)));
-	connect(showInformationPanel, SIGNAL(toggled(bool)), widgetById("showEmoticonsInPanel"), SLOT(setEnabled(bool)));
+	QWidget *showInformationPanel = widget()->widgetById("showInformationPanel");
+	connect(showInformationPanel, SIGNAL(toggled(bool)), widget()->widgetById("showVerticalScrollbar"), SLOT(setEnabled(bool)));
+	connect(showInformationPanel, SIGNAL(toggled(bool)), widget()->widgetById("showEmoticonsInPanel"), SLOT(setEnabled(bool)));
 
-	browserComboBox = dynamic_cast<ConfigComboBox *>(widgetById("browser"));
-	browserCommandLineEdit = dynamic_cast<ConfigLineEdit *>(widgetById("browserPath"));
+	browserComboBox = dynamic_cast<ConfigComboBox *>(widget()->widgetById("browser"));
+	browserCommandLineEdit = dynamic_cast<ConfigLineEdit *>(widget()->widgetById("browserPath"));
 	connect(browserComboBox, SIGNAL(activated(int)), this, SLOT(onChangeBrowser(int)));
 
-	mailComboBox = dynamic_cast<ConfigComboBox *>(widgetById("mail"));
-	mailCommandLineEdit = dynamic_cast<ConfigLineEdit *>(widgetById("mailPath"));
+	mailComboBox = dynamic_cast<ConfigComboBox *>(widget()->widgetById("mail"));
+	mailCommandLineEdit = dynamic_cast<ConfigLineEdit *>(widget()->widgetById("mailPath"));
 	connect(mailComboBox, SIGNAL(activated(int)), this, SLOT(onChangeMail(int)));
 
-	QWidget *useProxy = widgetById("useProxy");
-	QLineEdit *proxyPassword = (dynamic_cast<QLineEdit *>(widgetById("proxyPassword")));
+	QWidget *useProxy = widget()->widgetById("useProxy");
+	QLineEdit *proxyPassword = (dynamic_cast<QLineEdit *>(widget()->widgetById("proxyPassword")));
 	proxyPassword->setEchoMode(QLineEdit::Password);
 
-	connect(useProxy, SIGNAL(toggled(bool)), widgetById("proxyHost"), SLOT(setEnabled(bool)));
-	connect(useProxy, SIGNAL(toggled(bool)), widgetById("proxyPort"), SLOT(setEnabled(bool)));
-	connect(useProxy, SIGNAL(toggled(bool)), widgetById("proxyUser"), SLOT(setEnabled(bool)));
+	connect(useProxy, SIGNAL(toggled(bool)), widget()->widgetById("proxyHost"), SLOT(setEnabled(bool)));
+	connect(useProxy, SIGNAL(toggled(bool)), widget()->widgetById("proxyPort"), SLOT(setEnabled(bool)));
+	connect(useProxy, SIGNAL(toggled(bool)), widget()->widgetById("proxyUser"), SLOT(setEnabled(bool)));
 	connect(useProxy, SIGNAL(toggled(bool)), proxyPassword, SLOT(setEnabled(bool)));
 
-	connect(widgetById("lookChatAdvanced"), SIGNAL(clicked()), this, SLOT(showLookChatAdvanced()));
+	connect(widget()->widgetById("lookChatAdvanced"), SIGNAL(clicked()), this, SLOT(showLookChatAdvanced()));
 
-	Preview *infoPanelSyntaxPreview = dynamic_cast<Preview *>(widgetById("infoPanelSyntaxPreview"));
+	Preview *infoPanelSyntaxPreview = dynamic_cast<Preview *>(widget()->widgetById("infoPanelSyntaxPreview"));
 	infoPanelSyntaxPreview->setResetBackgroundColor(config_file.readEntry("Look", "InfoPanelBgColor"));
 	connect(infoPanelSyntaxPreview, SIGNAL(needFixup(QString &)), this, SLOT(infoPanelFixup(QString &)));
-	connect(widgetById("infoPanelSyntax"), SIGNAL(syntaxChanged(const QString &)), infoPanelSyntaxPreview, SLOT(syntaxChanged(const QString &)));
-	connect(widgetById("infoPanelSyntax"), SIGNAL(onSyntaxEditorWindowCreated(SyntaxEditorWindow *)),
+	connect(widget()->widgetById("infoPanelSyntax"), SIGNAL(syntaxChanged(const QString &)), infoPanelSyntaxPreview, SLOT(syntaxChanged(const QString &)));
+	connect(widget()->widgetById("infoPanelSyntax"), SIGNAL(onSyntaxEditorWindowCreated(SyntaxEditorWindow *)),
 		this, SLOT(onInfoPanelSyntaxEditorWindowCreated(SyntaxEditorWindow *)));
 
-	Preview *chatPreview = dynamic_cast<Preview *>(widgetById("chatSyntaxPreview"));
+	Preview *chatPreview = dynamic_cast<Preview *>(widget()->widgetById("chatSyntaxPreview"));
 	prepareChatPreview(chatPreview, true);
 
-	connect(widgetById("chatSyntax"), SIGNAL(syntaxChanged(const QString &)), widgetById("chatSyntaxPreview"), SLOT(syntaxChanged(const QString &)));
-	connect(widgetById("chatSyntax"), SIGNAL(onSyntaxEditorWindowCreated(SyntaxEditorWindow *)),
+	connect(widget()->widgetById("chatSyntax"), SIGNAL(syntaxChanged(const QString &)), widget()->widgetById("chatSyntaxPreview"), SLOT(syntaxChanged(const QString &)));
+	connect(widget()->widgetById("chatSyntax"), SIGNAL(onSyntaxEditorWindowCreated(SyntaxEditorWindow *)),
 		this, SLOT(onChatSyntaxEditorWindowCreated(SyntaxEditorWindow *)));
 
- 	connect(widgetById("iconPaths"), SIGNAL(changed()), this, SLOT(setIconThemes()));
+ 	connect(widget()->widgetById("iconPaths"), SIGNAL(changed()), this, SLOT(setIconThemes()));
 
-	connect(widgetById("ignoreMessagesFromAnonymous"), SIGNAL(toggled(bool)), widgetById("ignoreMessagesFromAnonymousInConferences"), SLOT(setEnabled(bool)));
+	connect(widget()->widgetById("ignoreMessagesFromAnonymous"), SIGNAL(toggled(bool)), widget()->widgetById("ignoreMessagesFromAnonymousInConferences"), SLOT(setEnabled(bool)));
 
-	QWidget *useUserboxBackground = widgetById("useUserboxBackground");
-	connect(useUserboxBackground, SIGNAL(toggled(bool)), widgetById("userboxBackground"), SLOT(setEnabled(bool)));
-	connect(useUserboxBackground, SIGNAL(toggled(bool)), widgetById("userboxBackgroundDisplayStyle"), SLOT(setEnabled(bool)));
+	QWidget *useUserboxBackground = widget()->widgetById("useUserboxBackground");
+	connect(useUserboxBackground, SIGNAL(toggled(bool)), widget()->widgetById("userboxBackground"), SLOT(setEnabled(bool)));
+	connect(useUserboxBackground, SIGNAL(toggled(bool)), widget()->widgetById("userboxBackgroundDisplayStyle"), SLOT(setEnabled(bool)));
 
-	widgetById("parseStatus")->setToolTip(qApp->translate("@default", Kadu::SyntaxText));
-	(dynamic_cast<ConfigSyntaxEditor *>(widgetById("chatSyntax")))->setSyntaxHint(qApp->translate("@default", Kadu::SyntaxTextExtended));
-	(dynamic_cast<ConfigSyntaxEditor *>(widgetById("infoPanelSyntax")))->setSyntaxHint(qApp->translate("@default", Kadu::SyntaxText));
+	widget()->widgetById("parseStatus")->setToolTip(qApp->translate("@default", Kadu::SyntaxText));
+	(dynamic_cast<ConfigSyntaxEditor *>(widget()->widgetById("chatSyntax")))->setSyntaxHint(qApp->translate("@default", Kadu::SyntaxTextExtended));
+	(dynamic_cast<ConfigSyntaxEditor *>(widget()->widgetById("infoPanelSyntax")))->setSyntaxHint(qApp->translate("@default", Kadu::SyntaxText));
 
 	loadWindowGeometry(this, "General", "ConfigGeometry", 0, 50, 790, 480);
 }
@@ -273,13 +275,13 @@ void MainConfigurationWindow::chatFixup(QString &syntax)
 void MainConfigurationWindow::onChangeStartupStatus(int index)
 {
 	onStartupSetLastDescription->setEnabled(index != 4);
-	widgetById("startupStatusInvisibleWhenLastWasOffline")->setEnabled(index == 0);
-	widgetById("onStartupSetDescription")->setEnabled(!onStartupSetLastDescription->isChecked() && index != 4);
+	widget()->widgetById("startupStatusInvisibleWhenLastWasOffline")->setEnabled(index == 0);
+	widget()->widgetById("onStartupSetDescription")->setEnabled(!onStartupSetLastDescription->isChecked() && index != 4);
 }
 
 void MainConfigurationWindow::setLanguages()
 {
-	ConfigComboBox *languages = dynamic_cast<ConfigComboBox *>(widgetById("languages"));
+	ConfigComboBox *languages = dynamic_cast<ConfigComboBox *>(widget()->widgetById("languages"));
 
 	QStringList files;
 	files.append("kadu_pl.qm");
@@ -304,7 +306,7 @@ void MainConfigurationWindow::setLanguages()
 
 void MainConfigurationWindow::setQtThemes()
 {
-	ConfigComboBox *qtThemes = dynamic_cast<ConfigComboBox *>(widgetById("qtThemes"));
+	ConfigComboBox *qtThemes = dynamic_cast<ConfigComboBox *>(widget()->widgetById("qtThemes"));
 
 	QStringList themes = QStyleFactory::keys();
 	QString currentStyle = QApplication::style()->name();
@@ -326,8 +328,8 @@ void MainConfigurationWindow::setQtThemes()
 
 void MainConfigurationWindow::setIconThemes()
 {
-	ConfigComboBox *iconThemes = dynamic_cast<ConfigComboBox *>(widgetById("iconThemes"));
-	icons_manager->setPaths((dynamic_cast<PathListEdit *>(widgetById("iconPaths")))->pathList());
+	ConfigComboBox *iconThemes = dynamic_cast<ConfigComboBox *>(widget()->widgetById("iconThemes"));
+	icons_manager->setPaths((dynamic_cast<PathListEdit *>(widget()->widgetById("iconPaths")))->pathList());
 
 	QT_TRANSLATE_NOOP("@default", "default");
 	QStringList themes = icons_manager->themes();
@@ -343,8 +345,8 @@ void MainConfigurationWindow::setIconThemes()
 
 void MainConfigurationWindow::setEmoticonThemes()
 {
-	ConfigComboBox *emoticonsTheme = dynamic_cast<ConfigComboBox *>(widgetById("emoticonsTheme"));
-	emoticons->setPaths((dynamic_cast<PathListEdit *>(widgetById("emoticonsPaths")))->pathList());
+	ConfigComboBox *emoticonsTheme = dynamic_cast<ConfigComboBox *>(widget()->widgetById("emoticonsTheme"));
+	emoticons->setPaths((dynamic_cast<PathListEdit *>(widget()->widgetById("emoticonsPaths")))->pathList());
 
 	QStringList themes = emoticons->themes();
 	themes.sort();
@@ -367,7 +369,7 @@ void MainConfigurationWindow::setToolTipClasses()
 		values << toolTipClass;
 	}
 
-	dynamic_cast<ConfigComboBox *>(widgetById("toolTipClasses"))->setItems(values, captions);
+	dynamic_cast<ConfigComboBox *>(widget()->widgetById("toolTipClasses"))->setItems(values, captions);
 }
 
 QString MainConfigurationWindow::findExecutable(const QStringList &paths, const QStringList &executableNames)
@@ -704,14 +706,14 @@ void MainConfigurationWindow::showLookChatAdvanced()
 	if (!lookChatAdvanced)
 	{
 		lookChatAdvanced = new ConfigurationWindow("dialog-look-chat-advanced", tr("Advenced chat's look configuration"), InstanceDataManager);
-		lookChatAdvanced->appendUiFile(dataPath("kadu/configuration/dialog-look-chat-advanced.ui"));
+		lookChatAdvanced->widget()->appendUiFile(dataPath("kadu/configuration/dialog-look-chat-advanced.ui"));
 
-		connect(lookChatAdvanced->widgetById("removeServerTime"), SIGNAL(toggled(bool)), lookChatAdvanced->widgetById("maxTimeDifference"), SLOT(setEnabled(bool)));
-		connect(lookChatAdvanced->widgetById("noHeaderRepeat"), SIGNAL(toggled(bool)), lookChatAdvanced->widgetById("noHeaderInterval"), SLOT(setEnabled(bool)));
+		connect(lookChatAdvanced->widget()->widgetById("removeServerTime"), SIGNAL(toggled(bool)), lookChatAdvanced->widget()->widgetById("maxTimeDifference"), SLOT(setEnabled(bool)));
+		connect(lookChatAdvanced->widget()->widgetById("noHeaderRepeat"), SIGNAL(toggled(bool)), lookChatAdvanced->widget()->widgetById("noHeaderInterval"), SLOT(setEnabled(bool)));
 
-		lookChatAdvanced->widgetById("chatSyntax")->setToolTip(qApp->translate("@default", Kadu::SyntaxText));
-		lookChatAdvanced->widgetById("conferencePrefix")->setToolTip(qApp->translate("@default", Kadu::SyntaxText));
-		lookChatAdvanced->widgetById("conferenceSyntax")->setToolTip(qApp->translate("@default", Kadu::SyntaxText));
+		lookChatAdvanced->widget()->widgetById("chatSyntax")->setToolTip(qApp->translate("@default", Kadu::SyntaxText));
+		lookChatAdvanced->widget()->widgetById("conferencePrefix")->setToolTip(qApp->translate("@default", Kadu::SyntaxText));
+		lookChatAdvanced->widget()->widgetById("conferenceSyntax")->setToolTip(qApp->translate("@default", Kadu::SyntaxText));
 
 		connect(lookChatAdvanced, SIGNAL(destroyed()), this, SLOT(lookChatAdvancedDestroyed()));
 	}
