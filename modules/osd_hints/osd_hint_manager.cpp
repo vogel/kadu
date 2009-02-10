@@ -465,6 +465,11 @@ void OSDHintManager::showToolTip(const QPoint &point, const UserListElement &use
 
 	QString text = KaduParser::parse(config_file.readEntry("OSDHints", "MouseOverUserSyntax"), user);
 
+	/* Dorr: the file:// in img tag doesn't generate the image on hint.
+	 * for compatibility with other syntaxes we're allowing to put the file://
+	 * so we have to remove it here */
+	text = text.replace("file://", "");
+
 	while (text.endsWith("<br/>"))
 		text.setLength(text.length() - 5 /* 5 == QString("<br/>").length()*/);
 	while (text.startsWith("<br/>"))

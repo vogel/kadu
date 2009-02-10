@@ -154,6 +154,10 @@ void OSDHint::updateText()
 
 		kdebug("syntax is: %s, text is: %s\n", syntax.ascii(), notification->text().ascii());
 		text = KaduParser::parse(syntax, ule, notification);
+		/* Dorr: the file:// in img tag doesn't generate the image on hint.
+		 * for compatibility with other syntaxes we're allowing to put the file://
+		 * so we have to remove it here */
+		text = text.replace("file://", "");
 	}
 
 	if (config_file.readBoolEntry("OSDHints", "ShowContentMessage"))
