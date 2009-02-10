@@ -450,6 +450,11 @@ void HintManager::showToolTip(const QPoint &point, Contact contact)
 
 	QString text = KaduParser::parse(config_file.readEntry("Hints", "MouseOverUserSyntax"), (Contact (contact)).prefferedAccount(), contact);
 
+	/* Dorr: the file:// in img tag doesn't generate the image on hint.
+	 * for compatibility with other syntaxes we're allowing to put the file://
+	 * so we have to remove it here */
+	text = text.replace("file://", "");
+
 	while (text.endsWith("<br/>"))
 		text.setLength(text.length() - 5 /* 5 == QString("<br/>").length()*/);
 	while (text.startsWith("<br/>"))
