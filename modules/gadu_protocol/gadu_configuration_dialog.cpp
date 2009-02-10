@@ -55,7 +55,7 @@ void GaduConfigurationDialog::createGui()
 void GaduConfigurationDialog::registerNewAccountClicked()
 {
 	QLineEdit *newPasswordLineEdit = dynamic_cast<QLineEdit *>(widgetById("gaduNewPassword"));
-	QLineEdit *emailLineEdit = dynamic_cast<QLineEdit *>(widgetById("gaduNewPassword"));
+	QLineEdit *emailLineEdit = dynamic_cast<QLineEdit *>(widgetById("gaduEmail"));
 
 	QString password = newPasswordLineEdit->text();
 	QString mail = emailLineEdit->text();
