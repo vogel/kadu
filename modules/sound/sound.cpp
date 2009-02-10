@@ -12,7 +12,8 @@
 #include <QtGui/QGridLayout>
 #include <QtGui/QPushButton>
 
-#include "gui/widgets/configuration/configuration-window.h"
+#include "gui/windows/configuration-window.h"
+#include "gui/widgets/configuration/configuration-widget.h"
 #include "gui/widgets/configuration/config-combo-box.h"
 #include "path_list_edit.h"
 #include "chat_widget.h"
@@ -241,26 +242,26 @@ void SoundManager::mainConfigurationWindowCreated(MainConfigurationWindow *mainC
 {
 	connect(mainConfigurationWindow, SIGNAL(configurationWindowApplied()), this, SLOT(configurationWindowApplied()));
 
-	connect(mainConfigurationWindow->widgetById("sound/use"), SIGNAL(toggled(bool)),
-		mainConfigurationWindow->widgetById("sound/theme"), SLOT(setEnabled(bool)));
-	connect(mainConfigurationWindow->widgetById("sound/use"), SIGNAL(toggled(bool)),
-		mainConfigurationWindow->widgetById("sound/volume"), SLOT(setEnabled(bool)));
-	connect(mainConfigurationWindow->widgetById("sound/use"), SIGNAL(toggled(bool)),
-		mainConfigurationWindow->widgetById("sound/samples"), SLOT(setEnabled(bool)));
+	connect(mainConfigurationWindow->widget()->widgetById("sound/use"), SIGNAL(toggled(bool)),
+		mainConfigurationWindow->widget()->widgetById("sound/theme"), SLOT(setEnabled(bool)));
+	connect(mainConfigurationWindow->widget()->widgetById("sound/use"), SIGNAL(toggled(bool)),
+		mainConfigurationWindow->widget()->widgetById("sound/volume"), SLOT(setEnabled(bool)));
+	connect(mainConfigurationWindow->widget()->widgetById("sound/use"), SIGNAL(toggled(bool)),
+		mainConfigurationWindow->widget()->widgetById("sound/samples"), SLOT(setEnabled(bool)));
 
-	connect(mainConfigurationWindow->widgetById("sound/enableVolumeControl"), SIGNAL(toggled(bool)),
-		mainConfigurationWindow->widgetById("sound/volumeControl"), SLOT(setEnabled(bool)));
+	connect(mainConfigurationWindow->widget()->widgetById("sound/enableVolumeControl"), SIGNAL(toggled(bool)),
+		mainConfigurationWindow->widget()->widgetById("sound/volumeControl"), SLOT(setEnabled(bool)));
 
-	connect(mainConfigurationWindow->widgetById("sound/testPlay"), SIGNAL(clicked()), sound_slots, SLOT(testSamplePlaying()));
-	connect(mainConfigurationWindow->widgetById("sound/testRecord"), SIGNAL(clicked()), sound_slots, SLOT(testSampleRecording()));
-	connect(mainConfigurationWindow->widgetById("sound/testDuplex"), SIGNAL(clicked()), sound_slots, SLOT(testFullDuplex()));
+	connect(mainConfigurationWindow->widget()->widgetById("sound/testPlay"), SIGNAL(clicked()), sound_slots, SLOT(testSamplePlaying()));
+	connect(mainConfigurationWindow->widget()->widgetById("sound/testRecord"), SIGNAL(clicked()), sound_slots, SLOT(testSampleRecording()));
+	connect(mainConfigurationWindow->widget()->widgetById("sound/testDuplex"), SIGNAL(clicked()), sound_slots, SLOT(testFullDuplex()));
 
-	themesComboBox = dynamic_cast<ConfigComboBox *>(mainConfigurationWindow->widgetById("sound/themes"));
+	themesComboBox = dynamic_cast<ConfigComboBox *>(mainConfigurationWindow->widget()->widgetById("sound/themes"));
 	connect(themesComboBox, SIGNAL(activated(int)), configurationWidget, SLOT(themeChanged(int)));
 	connect(themesComboBox, SIGNAL(activated(const QString &)), sound_slots, SLOT(themeChanged(const QString &)));
 	configurationWidget->themeChanged(themesComboBox->currentItem());
 
-	themesPaths = dynamic_cast<PathListEdit *>(mainConfigurationWindow->widgetById("soundPaths"));
+	themesPaths = dynamic_cast<PathListEdit *>(mainConfigurationWindow->widget()->widgetById("soundPaths"));
 	connect(themesPaths, SIGNAL(changed()), sound_manager, SLOT(setSoundThemes()));
 
 	setSoundThemes();

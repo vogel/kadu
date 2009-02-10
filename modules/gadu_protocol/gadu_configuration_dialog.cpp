@@ -14,6 +14,8 @@
 #include <QtGui/QPushButton>
 #include <QtGui/QVBoxLayout>
 
+#include "gui/widgets/configuration/configuration-widget.h"
+
 #include "html_document.h"
 #include "icons_manager.h"
 #include "kadu.h"
@@ -40,22 +42,22 @@ GaduConfigurationDialog::~GaduConfigurationDialog()
 
 void GaduConfigurationDialog::createGui()
 {
-	appendUiFile(dataPath("kadu/modules/configuration/gadu_protocol.ui"));
+	widget()->appendUiFile(dataPath("kadu/modules/configuration/gadu_protocol.ui"));
 
-	QLineEdit *passwordLineEdit = dynamic_cast<QLineEdit *>(widgetById("gaduPassword"));
+	QLineEdit *passwordLineEdit = dynamic_cast<QLineEdit *>(widget()->widgetById("gaduPassword"));
 	passwordLineEdit->setEchoMode(QLineEdit::Password);
 
-	QLineEdit *newPasswordLineEdit = dynamic_cast<QLineEdit *>(widgetById("gaduNewPassword"));
+	QLineEdit *newPasswordLineEdit = dynamic_cast<QLineEdit *>(widget()->widgetById("gaduNewPassword"));
 	newPasswordLineEdit->setEchoMode(QLineEdit::Password);
 
-	QPushButton *registerNewAccountButton = dynamic_cast<QPushButton *>(widgetById("gaduRegisterNewAccount"));
+	QPushButton *registerNewAccountButton = dynamic_cast<QPushButton *>(widget()->widgetById("gaduRegisterNewAccount"));
 	connect(registerNewAccountButton, SIGNAL(clicked()), this, SLOT(registerNewAccountClicked()));
 }
 
 void GaduConfigurationDialog::registerNewAccountClicked()
 {
-	QLineEdit *newPasswordLineEdit = dynamic_cast<QLineEdit *>(widgetById("gaduNewPassword"));
-	QLineEdit *emailLineEdit = dynamic_cast<QLineEdit *>(widgetById("gaduEmail"));
+	QLineEdit *newPasswordLineEdit = dynamic_cast<QLineEdit *>(widget()->widgetById("gaduNewPassword"));
+	QLineEdit *emailLineEdit = dynamic_cast<QLineEdit *>(widget()->widgetById("gaduEmail"));
 
 	QString password = newPasswordLineEdit->text();
 	QString mail = emailLineEdit->text();
@@ -89,11 +91,11 @@ void GaduConfigurationDialog::registerNewAccountFinished(GaduServerConnector *gs
 
 	if (gsra->result())
 	{
-		QLineEdit *idLineEdit = dynamic_cast<QLineEdit *>(widgetById("gaduId"));
+		QLineEdit *idLineEdit = dynamic_cast<QLineEdit *>(widget()->widgetById("gaduId"));
 		idLineEdit->setText(QString::number(gsra->uin()));
 
-		QLineEdit *passwordLineEdit = dynamic_cast<QLineEdit *>(widgetById("gaduPassword"));
-		QLineEdit *newPasswordLineEdit = dynamic_cast<QLineEdit *>(widgetById("gaduNewPassword"));
+		QLineEdit *passwordLineEdit = dynamic_cast<QLineEdit *>(widget()->widgetById("gaduPassword"));
+		QLineEdit *newPasswordLineEdit = dynamic_cast<QLineEdit *>(widget()->widgetById("gaduNewPassword"));
 		passwordLineEdit->setText(newPasswordLineEdit->text());
 
 		MessageBox::msg(tr("Registration was successful. Your new number is %1.\nStore it in a safe place along with the password.\nNow add your friends to the userlist.").arg(gsra->uin()), false, "Information", this);

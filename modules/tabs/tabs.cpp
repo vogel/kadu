@@ -23,6 +23,7 @@
 #include "contacts/contact-list.h"
 #include "contacts/contact-manager.h"
 #include "gui/widgets/contacts-list-widget-menu-manager.h"
+#include "gui/widgets/configuration/configuration-widget.h"
 #include "protocols/protocol.h"
 #include "protocols/protocol_factory.h"
 #include "protocols/protocols_manager.h"
@@ -711,7 +712,7 @@ void TabsManager::saveTabs()
 
 void TabsManager::mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow)
 {
-	connect(mainConfigurationWindow->widgetById("tabs/DefaultTabs"), SIGNAL(toggled(bool)), mainConfigurationWindow->widgetById("tabs/MinTabs"), SLOT(setEnabled(bool)));
+	connect(mainConfigurationWindow->widget()->widgetById("tabs/DefaultTabs"), SIGNAL(toggled(bool)), mainConfigurationWindow->widget()->widgetById("tabs/MinTabs"), SLOT(setEnabled(bool)));
 }
 
 void TabsManager::configurationUpdated()

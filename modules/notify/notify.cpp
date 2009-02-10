@@ -14,7 +14,8 @@
 #include <QtGui/QListWidget>
 #include <QtGui/QLabel>
 
-#include "gui/widgets/configuration/configuration-window.h"
+#include "gui/windows/configuration-window.h"
+#include "gui/widgets/configuration/configuration-widget.h"
 #include "gui/widgets/configuration/config-combo-box.h"
 #include "gui/widgets/configuration/config-group-box.h"
 #include "accounts/account.h"
@@ -115,7 +116,7 @@ void Notify::mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigu
 {
 	connect(mainConfigurationWindow, SIGNAL(destroyed()), this, SLOT(mainConfigurationWindowDestroyed()));
 
-	notifications = dynamic_cast<ConfigComboBox *>(mainConfigurationWindow->widgetById("notify/notifications"));
+	notifications = dynamic_cast<ConfigComboBox *>(mainConfigurationWindow->widget()->widgetById("notify/notifications"));
 	connect(notifications, SIGNAL(activated(int)), this, SLOT(eventSwitched(int)));
 
 	QStringList captions;
@@ -129,7 +130,7 @@ void Notify::mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigu
 
 	notifications->setItems(values, captions);
 
-	ConfigGroupBox *statusGroupBox = mainConfigurationWindow->configGroupBox("Notifications", "Options", "Status change");
+	ConfigGroupBox *statusGroupBox = mainConfigurationWindow->widget()->configGroupBox("Notifications", "Options", "Status change");
 
 	QWidget *notifyUsers = new QWidget(statusGroupBox->widget());
 	QGridLayout *notifyUsersLayout = new QGridLayout(notifyUsers);
@@ -171,10 +172,10 @@ void Notify::mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigu
 	connect(notifiedUsers, SIGNAL(itemDoubleClicked(QListWidgetItem *)), this, SLOT(moveToAllList()));
 	connect(allUsers, SIGNAL(itemDoubleClicked(QListWidgetItem *)), this, SLOT(moveToNotifyList()));
 
-	connect(mainConfigurationWindow->widgetById("notify/notifyAll"), SIGNAL(toggled(bool)), notifyUsers, SLOT(setDisabled(bool)));
+	connect(mainConfigurationWindow->widget()->widgetById("notify/notifyAll"), SIGNAL(toggled(bool)), notifyUsers, SLOT(setDisabled(bool)));
 	connect(mainConfigurationWindow, SIGNAL(configurationWindowApplied()), this, SLOT(configurationWindowApplied()));
 
-	notificationsGroupBox = mainConfigurationWindow->configGroupBox("Notifications", "General", "Notifications");
+	notificationsGroupBox = mainConfigurationWindow->widget()->configGroupBox("Notifications", "General", "Notifications");
 
 	foreach(const QString &key, Notifiers.keys())
 		addConfigurationWidget(Notifiers[key], key);

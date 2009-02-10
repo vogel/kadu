@@ -21,6 +21,7 @@
 #include "hint_manager.h"
 #include "hints_configuration_widget.h"
 #include "gui/widgets/tool-tip-class-manager.h"
+#include "gui/widgets/configuration/configuration-widget.h"
 #include "icons_manager.h"
 #include "kadu.h"
 #include "kadu_parser.h"
@@ -95,34 +96,34 @@ HintManager::~HintManager()
 
 void HintManager::mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow)
 {
-	connect(mainConfigurationWindow->widgetById("hints/showContent"), SIGNAL(toggled(bool)),
-		mainConfigurationWindow->widgetById("hints/showContentCount"), SLOT(setEnabled(bool)));
+	connect(mainConfigurationWindow->widget()->widgetById("hints/showContent"), SIGNAL(toggled(bool)),
+		mainConfigurationWindow->widget()->widgetById("hints/showContentCount"), SLOT(setEnabled(bool)));
 
-	QWidget *ownPosition = mainConfigurationWindow->widgetById("hints/ownPosition");
-	connect(ownPosition, SIGNAL(toggled(bool)), mainConfigurationWindow->widgetById("hints/ownPositionX"), SLOT(setEnabled(bool)));
-	connect(ownPosition, SIGNAL(toggled(bool)), mainConfigurationWindow->widgetById("hints/ownPositionY"), SLOT(setEnabled(bool)));
-	connect(ownPosition, SIGNAL(toggled(bool)), mainConfigurationWindow->widgetById("hints/ownPositionCorner"), SLOT(setEnabled(bool)));
+	QWidget *ownPosition = mainConfigurationWindow->widget()->widgetById("hints/ownPosition");
+	connect(ownPosition, SIGNAL(toggled(bool)), mainConfigurationWindow->widget()->widgetById("hints/ownPositionX"), SLOT(setEnabled(bool)));
+	connect(ownPosition, SIGNAL(toggled(bool)), mainConfigurationWindow->widget()->widgetById("hints/ownPositionY"), SLOT(setEnabled(bool)));
+	connect(ownPosition, SIGNAL(toggled(bool)), mainConfigurationWindow->widget()->widgetById("hints/ownPositionCorner"), SLOT(setEnabled(bool)));
 
-	QCheckBox *setAll = dynamic_cast<QCheckBox *>(mainConfigurationWindow->widgetById("hints/setAll"));
-	connect(setAll, SIGNAL(toggled(bool)), mainConfigurationWindow->widgetById("hints/setAllPreview"), SLOT(setEnabled(bool)));
-	connect(setAll, SIGNAL(toggled(bool)), mainConfigurationWindow->widgetById("hints/setAll_timeout"), SLOT(setEnabled(bool)));
-	connect(setAll, SIGNAL(toggled(bool)), mainConfigurationWindow->widgetById("hints/setAll_fgcolor"), SLOT(setEnabled(bool)));
-	connect(setAll, SIGNAL(toggled(bool)), mainConfigurationWindow->widgetById("hints/setAll_bgcolor"), SLOT(setEnabled(bool)));
-	connect(setAll, SIGNAL(toggled(bool)), mainConfigurationWindow->widgetById("hints/setAll_font"), SLOT(setEnabled(bool)));
+	QCheckBox *setAll = dynamic_cast<QCheckBox *>(mainConfigurationWindow->widget()->widgetById("hints/setAll"));
+	connect(setAll, SIGNAL(toggled(bool)), mainConfigurationWindow->widget()->widgetById("hints/setAllPreview"), SLOT(setEnabled(bool)));
+	connect(setAll, SIGNAL(toggled(bool)), mainConfigurationWindow->widget()->widgetById("hints/setAll_timeout"), SLOT(setEnabled(bool)));
+	connect(setAll, SIGNAL(toggled(bool)), mainConfigurationWindow->widget()->widgetById("hints/setAll_fgcolor"), SLOT(setEnabled(bool)));
+	connect(setAll, SIGNAL(toggled(bool)), mainConfigurationWindow->widget()->widgetById("hints/setAll_bgcolor"), SLOT(setEnabled(bool)));
+	connect(setAll, SIGNAL(toggled(bool)), mainConfigurationWindow->widget()->widgetById("hints/setAll_font"), SLOT(setEnabled(bool)));
 	connect(setAll, SIGNAL(toggled(bool)), configurationWidget, SLOT(setAllEnabled(bool)));
 	configurationWidget->setAllEnabled(setAll->isChecked());
 
-	(dynamic_cast<QSpinBox *>(mainConfigurationWindow->widgetById("hints/setAll_timeout")))->setSpecialValueText(tr("Dont hide"));
+	(dynamic_cast<QSpinBox *>(mainConfigurationWindow->widget()->widgetById("hints/setAll_timeout")))->setSpecialValueText(tr("Dont hide"));
 
-	minimumWidth = dynamic_cast<QSpinBox *>(mainConfigurationWindow->widgetById("hints/minimumWidth"));
-	maximumWidth = dynamic_cast<QSpinBox *>(mainConfigurationWindow->widgetById("hints/maximumWidth"));
+	minimumWidth = dynamic_cast<QSpinBox *>(mainConfigurationWindow->widget()->widgetById("hints/minimumWidth"));
+	maximumWidth = dynamic_cast<QSpinBox *>(mainConfigurationWindow->widget()->widgetById("hints/maximumWidth"));
 	connect(minimumWidth, SIGNAL(valueChanged(int)), this, SLOT(minimumWidthChanged(int)));
 	connect(maximumWidth, SIGNAL(valueChanged(int)), this, SLOT(maximumWidthChanged(int)));
 
-	overUserSyntax = mainConfigurationWindow->widgetById("hints/overUserSyntax");
+	overUserSyntax = mainConfigurationWindow->widget()->widgetById("hints/overUserSyntax");
 	overUserSyntax->setToolTip(qApp->translate("@default", Kadu::SyntaxText));
 
-	connect(mainConfigurationWindow->widgetById("toolTipClasses"), SIGNAL(currentIndexChanged(const QString &)),
+	connect(mainConfigurationWindow->widget()->widgetById("toolTipClasses"), SIGNAL(currentIndexChanged(const QString &)),
 		this, SLOT(toolTipClassesHighlighted(const QString &)));
 }
 

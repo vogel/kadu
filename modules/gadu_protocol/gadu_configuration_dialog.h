@@ -13,7 +13,7 @@
 #include <QtGui/QDialog>
 #include <QtGui/QLineEdit>
 
-#include "gui/widgets/configuration/configuration-window.h"
+#include "gui/windows/configuration-window.h"
 
 class GaduAccountData;
 class GaduServerConnector;
