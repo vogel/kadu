@@ -169,6 +169,9 @@ void ContactsListWidget::contextMenuEvent(QContextMenuEvent *event)
 		if (!protocolFactory->iconName().isEmpty())
 			account_menu->setIcon(icons_manager->loadIcon(protocolFactory->iconName()));
 
+		if (protocolFactory->getProtocolMenuManager()->protocolActions(account, con).size() == 0)
+			continue;
+
 		foreach (ActionDescription *actionDescription, protocolFactory->getProtocolMenuManager()->protocolActions(account, con))
 			if (actionDescription)
 			{
