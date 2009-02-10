@@ -14,7 +14,7 @@
 #include <QtCore/QMap>
 #include <QtGui/QWidget>
 
-#include "userlistelement.h"
+#include "contacts/contact.h"
 
 #include "exports.h"
 
@@ -29,6 +29,7 @@ class QTabWidget;
 class QVBoxLayout;
 
 class CreateNotifier;
+class Contact;
 
 /**
 	Klasa ta reprezentuje okno, z kt�rym mamy do czynienia podczas dodawania nowego kontaktu,
@@ -40,13 +41,14 @@ class KADUAPI ContactDataWindow : public QWidget
 {
 	Q_OBJECT
 
-	UserListElement User;
+	Contact User;
+	Account *UserAccount;
 	QLineEdit *e_firstname;
 	QLineEdit *e_lastname;
 	QLineEdit *e_nickname;
-	QComboBox *e_altnick;
+	QComboBox *e_display;
 	QLineEdit *e_mobile;
-	QLineEdit *e_uin;
+	QLineEdit *e_id;
 	QLineEdit *e_addr;
 	QLineEdit *e_ver;
 	QLineEdit *e_email;
@@ -133,11 +135,11 @@ public:
 		\param parent wska�nik do obiektu stanowi�cego rodzica. Domy�lnie 0.
 		\param name nazwa kontrolki. Domy�lnie 0.
 	**/
-	ContactDataWindow(UserListElement user, QWidget *parent = 0);
+	ContactDataWindow(Contact user, QWidget *parent = 0);
 	~ContactDataWindow();
 
 	QTabWidget *tabs() { return tw_main; }
-	UserListElement user() const { return User; }
+	Contact user() const { return User; }
 	static bool acceptableGroupName(const QString &groupName);
 
 public slots:
@@ -146,7 +148,7 @@ public slots:
 		Wci�ni�cie przycisku Dodaj/Uaktualnij
 	**/
 	void updateUserlist();
-	void updateAltNick();
+	void updateDisplay();
 
 signals:
 	void updateClicked(ContactDataWindow *);

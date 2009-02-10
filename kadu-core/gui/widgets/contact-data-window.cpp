@@ -25,10 +25,12 @@
 #include "accounts/account_manager.h"
 
 #include "contacts/contact-account-data.h"
+#include "contacts/group.h"
+#include "contacts/group-manager.h"
 
 #include "config_file.h"
 #include "debug.h"
-#include "../modules/gadu_protocol/gadu-protocol.h"
+//#include "../modules/gadu_protocol/gadu-protocol.h"
 #include "icons_manager.h"
 #include "message_box.h"
 #include "misc.h"
@@ -39,13 +41,15 @@
 
 CreateNotifier ContactDataWindow::createNotifier;
 
-ContactDataWindow::ContactDataWindow(UserListElement user, QWidget *parent)
+ContactDataWindow::ContactDataWindow(Contact user, QWidget *parent)
 	: QWidget(parent, Qt::Dialog), User(user),
-	e_firstname(0), e_lastname(0), e_nickname(0), e_altnick(0), e_mobile(0), e_uin(0),
+	e_firstname(0), e_lastname(0), e_nickname(0), e_display(0), e_mobile(0), e_id(0),
 	e_addr(0), e_ver(0), e_email(0), e_dnsname(0), c_blocking(0), c_offtouser(0),
 	c_notify(0), pb_addapply(0), tw_main(0), groups(), newGroup(0), groupsWidget(0), groupsLayout(0)
 {
 	kdebugf();
+
+	UserAccount = User.prefferedAccount();
 
 	setAttribute(Qt::WA_DeleteOnClose);
 	setWindowModality(Qt::WindowModal);
@@ -77,14 +81,13 @@ ContactDataWindow::ContactDataWindow(UserListElement user, QWidget *parent)
 
 	// create our Tabs
 	setupTab1();
-	// TODO: 0.6.6 rewrite - hangs on GroupsManagerOld::groups()
-	//setupTab2();
+	setupTab2();
 	setupTab3();
 
 	// create buttons and fill icon and app info
 	QWidget *bottom = new QWidget;
 
-	if (!userlist->contains(User, FalseForAnonymous))
+	if (User.isAnonymous())
 	{
 		setWindowTitle(tr("Add user"));
 		l_icon->setPixmap(icons_manager->loadPixmap("AddUserWindowIcon"));
@@ -92,7 +95,7 @@ ContactDataWindow::ContactDataWindow(UserListElement user, QWidget *parent)
 	}
 	else
 	{
-		setWindowTitle(tr("User info on %1").arg(User.altNick()));
+		setWindowTitle(tr("User info on %1").arg(User.display()));
 		l_icon->setPixmap(icons_manager->loadPixmap("ManageUsersWindowIcon"));
 		pb_addapply = new QPushButton(icons_manager->loadIcon("UpdateUserButton"), tr("Update"));
 	}
@@ -128,14 +131,15 @@ void ContactDataWindow::setupTab1()
 
 	tw_main->addTab(generalWidget, tr("General"));
 
-	// UIN and disp
-	e_uin = new QLineEdit(generalWidget);
-	e_uin->setMaxLength(8);
-	e_uin->setValidator(new QIntValidator(1, 99999999, this));
+	// ID and disp
+	e_id = new QLineEdit(generalWidget);
+	e_id->setMaxLength(8);
+	// TODO: validateId from protocol
+	//e_id->setValidator(new QIntValidator(1, 99999999, this));
 
-	e_altnick = new QComboBox(generalWidget);
-	e_altnick->setEditable(true);
-	// end UIN and disp
+	e_display = new QComboBox(generalWidget);
+	e_display->setEditable(true);
+	// end ID and disp
 
 	// name and nick
 	e_firstname = new QLineEdit(generalWidget);
@@ -181,9 +185,9 @@ void ContactDataWindow::setupTab1()
 	QGridLayout * generalLayout = new QGridLayout(generalWidget);
 	generalLayout->setSpacing(3);
 	generalLayout->addWidget(new QLabel(tr("Uin"), generalWidget), 0, 0);
-	generalLayout->addWidget(e_uin, 1, 0);
-	generalLayout->addWidget(new QLabel(tr("AltNick"), generalWidget), 0, 1);
-	generalLayout->addWidget(e_altnick, 1, 1);
+	generalLayout->addWidget(e_id, 1, 0);
+	generalLayout->addWidget(new QLabel(tr("Display"), generalWidget), 0, 1);
+	generalLayout->addWidget(e_display, 1, 1);
 	generalLayout->addWidget(new QLabel(tr("First name"), generalWidget), 2, 0);
 	generalLayout->addWidget(e_firstname, 3, 0);
 	generalLayout->addWidget(new QLabel(tr("Nickname"), generalWidget), 2, 1);
@@ -217,21 +221,21 @@ void ContactDataWindow::setupTab1()
 	e_mobile->setText(User.mobile());
 	e_email->setText(User.email());
 
-	GaduProtocol *gadu = dynamic_cast<GaduProtocol *>(AccountManager::instance()->defaultAccount()->protocol());
+	Protocol *userProtocol = UserAccount->protocol();
 
-	connect(e_nickname, SIGNAL(editingFinished()), this, SLOT(updateAltNick()));
-	connect(e_firstname, SIGNAL(editingFinished()), this, SLOT(updateAltNick()));
-	connect(e_lastname, SIGNAL(editingFinished()), this, SLOT(updateAltNick()));
+	connect(e_nickname, SIGNAL(editingFinished()), this, SLOT(updateDisplay()));
+	connect(e_firstname, SIGNAL(editingFinished()), this, SLOT(updateDisplay()));
+	connect(e_lastname, SIGNAL(editingFinished()), this, SLOT(updateDisplay()));
 
-	e_altnick->setEditText(User.altNick());
-	updateAltNick();
-
-	if (User.usesProtocol("Gadu"))
+	e_display->setEditText(User.display());
+	updateDisplay();
+	// TODO move to gadu.ui and add as contact account data widget ...
+	/*if (User.usesProtocol("Gadu"))
 	{
-		if (!gadu->isConnected())
+		if (!userProtocol->isConnected())
 			e_status->setText(tr("(Unknown)"));
 
-		e_uin->setText(User.ID("Gadu"));
+		e_id->setText(User.id(UserAccount));
 
 		if (User.hasIP("Gadu"))
 		{
@@ -263,9 +267,7 @@ void ContactDataWindow::setupTab1()
 		else
 			e_ver->setText(tr("(Unknown)"));
 
-		Account *account = AccountManager::instance()->defaultAccount();
-		Contact contact = User.toContact(account);
-		ContactAccountData *contactData = contact.accountData(account);
+		ContactAccountData *contactData = User.accountData(UserAccount);
 		Status status = contactData->status();
 
 // TODO: 0.6.6
@@ -273,16 +275,16 @@ void ContactDataWindow::setupTab1()
 		e_status->setToolTip(status.description());
 
 		tw_main->setTabIconSet(generalWidget, account->statusPixmap(status));
-	}
+	}*/
 
 	kdebugf2();
 }
 
-void ContactDataWindow::updateAltNick()
+void ContactDataWindow::updateDisplay()
 {
 	QStringList list;
-	if (!e_altnick->currentText().isEmpty())
-		list << e_altnick->currentText();
+	if (!e_display->currentText().isEmpty())
+		list << e_display->currentText();
 	if (!e_nickname->text().isEmpty() && !list.contains(e_nickname->text()))
 		list << e_nickname->text();
 	if (!e_firstname->text().isEmpty())
@@ -295,14 +297,14 @@ void ContactDataWindow::updateAltNick()
 			list << e_lastname->text() + " " + e_firstname->text();
 		}
 	}
-	e_altnick->clear();
-	e_altnick->addItems(list);
+	e_display->clear();
+	e_display->addItems(list);
 }
 
 void ContactDataWindow::setupTab2()
 {
 	kdebugf();
-	/*
+
 	scrollArea = new QScrollArea(tw_main);
 	scrollArea->setFrameStyle(QFrame::NoFrame);
 	scrollArea->setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
@@ -316,32 +318,28 @@ void ContactDataWindow::setupTab2()
 	scrollArea->setWidget(groupsTab);
 	scrollArea->setWidgetResizable(true);
 
-	QStringList allGroups = QStringList(); // groups_manager->groups();
-
-	QStringList userGroups = User.data("Groups").toStringList();
-
 	groupsWidget = new QWidget(groupsTab);
 	groupsLayout = new QVBoxLayout(groupsWidget);
 	groupsLayout->setSpacing(3);
 
-	foreach(const QString &it, allGroups)
+	foreach(Group* group , GroupManager::instance()->groups())
 	{
 		QWidget *box = new QWidget(groupsWidget);
 		QHBoxLayout *boxLayout = new QHBoxLayout(box);
 		boxLayout->setSpacing(3);
-		QCheckBox *checkBox = new QCheckBox(it, box);
-		checkBox->setChecked(userGroups.contains(it));
+		QCheckBox *checkBox = new QCheckBox(group->name(), box);
+		checkBox->setChecked(User.isInGroup(group));
 
 		QLabel *textLabel = new QLabel(box);
 		textLabel->setText(tr("Icon:"));
 		textLabel->setMaximumWidth(40);
 
 		QLabel *pixmapLabel = new QLabel(box);
-		QPixmap icon = icons_manager->loadPixmap(config_file.readEntry("GroupIcon", it, ""));
+		QPixmap icon = icons_manager->loadPixmap(group->icon());
 		pixmapLabel->setPixmap(icon.xForm(QWMatrix().scale((double)16/icon.width(), (double)16/icon.height())));
 		pixmapLabel->setMaximumWidth(22);
 		pixmapLabel->setMaximumHeight(22);
-		pixmapLabels[it] = pixmapLabel;
+  pixmapLabels[group->name()] = pixmapLabel;
 
 		QPushButton *changeIconButton = new QPushButton(box);
 		changeIconButton->setPixmap(icons_manager->loadPixmap("AddSelectPathDialogButton"));
@@ -376,7 +374,7 @@ void ContactDataWindow::setupTab2()
 
 	connect(addNewGroup, SIGNAL(clicked()), this, SLOT(newGroupClicked()));
 	connect(newGroup, SIGNAL(returnPressed()), this, SLOT(newGroupClicked()));
-	*/
+
 	kdebugf2();
 }
 
@@ -408,12 +406,13 @@ bool ContactDataWindow::acceptableGroupName(const QString &groupName)
 		kdebugf2();
 		return false;
 	}
-// 	if (groupName == GroupsManagerOld::tr("All") || groups_manager->groupExists(groupName))
-// 	{
-// 		MessageBox::msg(tr("This group already exists!"), true, "Warning");
-// 		kdebugf2();
-// 		return false;
-// 	}
+	// TODO All translation
+ 	if (groupName == tr("All") || GroupManager::instance()->byName(groupName, false))
+ 	{
+ 		MessageBox::msg(tr("This group already exists!"), true, "Warning");
+ 		kdebugf2();
+ 		return false;
+ 	}
 	kdebugf2();
 	return true;
 }
@@ -474,7 +473,7 @@ void ContactDataWindow::newGroupClicked()
 
 	box->show();
 
-// 	groups.append(checkBox);
+	groups.append(checkBox);
 
 	QTimer::singleShot(0, this, SLOT(scrollToBottom()));
 
@@ -493,23 +492,23 @@ void ContactDataWindow::setupTab3()
 
 	QVBoxLayout *othersLayout = new QVBoxLayout(othersWidget);
 
-	c_blocking = new QCheckBox(tr("Block user"), othersWidget);
-	c_offtouser = new QCheckBox(tr("Offline to user"), othersWidget);
-	c_notify = new QCheckBox(tr("Notify about status changes"), othersWidget);
+	/*c_blocking = new QCheckBox(tr("Block user"), othersWidget);
+	c_offtouser = new QCheckBox(tr("Offline to user"), othersWidget);*/
+	//c_notify = new QCheckBox(tr("Notify about status changes"), othersWidget);
 
-	if (!config_file.readBoolEntry("General", "PrivateStatus"))
-		c_offtouser->setEnabled(false);
+	//if (!config_file.readBoolEntry("General", "PrivateStatus"))
+	//	c_offtouser->setEnabled(false);
 
-	if (User.usesProtocol("Gadu"))
+	/*if (User.usesProtocol("Gadu"))
 	{
 		c_blocking->setChecked(User.protocolData("Gadu", "Blocking").toBool());
 		c_offtouser->setChecked(User.protocolData("Gadu", "OfflineTo").toBool());
-	}
-	c_notify->setChecked(User.notify());
+	}*/
+	//c_notify->setChecked(User.notify());
 
-	othersLayout->addWidget(c_blocking);
-	othersLayout->addWidget(c_offtouser);
-	othersLayout->addWidget(c_notify);
+	//othersLayout->addWidget(c_blocking);
+	//othersLayout->addWidget(c_offtouser);
+	//othersLayout->addWidget(c_notify);
 	othersLayout->addStretch();
 
 	tw_main->addTab(othersWidget, tr("Others"));
@@ -540,12 +539,12 @@ void ContactDataWindow::resultsReady(const QHostInfo &host)
 void ContactDataWindow::updateUserlist()
 {
 	kdebugf();
-
+/*
 	QString id = QString::number(0);
-	if (!e_uin->text().isEmpty())
-		id = e_uin->text();
+	if (!e_id->text().isEmpty())
+		id = e_id->text();
 
-	if (e_altnick->currentText().isEmpty())
+	if (e_id->currentText().isEmpty())
 	{
 		MessageBox::msg(tr("Altnick field cannot be empty."), false, "Warning", this);
 
@@ -576,7 +575,7 @@ void ContactDataWindow::updateUserlist()
 	User.setFirstName(e_firstname->text());
 	User.setLastName(e_lastname->text());
 	User.setNickName(e_nickname->text());
-	User.setAltNick(e_altnick->currentText());
+	User.setDisplay(e_display->currentText());
 	User.setMobile(e_mobile->text());
 
 	if (User.usesProtocol("Gadu")) // there was an UIN so far?
@@ -614,7 +613,7 @@ void ContactDataWindow::updateUserlist()
 // TODO: 0.6.6
 // 	userlist->writeToConfig();
 	xml_config_file->sync();
-
+*/
 	close(true);
 
 	kdebugf2();
@@ -649,10 +648,7 @@ void ContactDataWindow::selectIcon()
 		}
 
 		config_file.writeEntry("GroupIcon", "recentPath", iDialog->dirPath());
-		config_file.writeEntry("GroupIcon", groupName, iDialog->selectedFile());
-
-// TODO: 0.6.6
-// 		groups_manager->setIconForTab(groupName);
+		GroupManager::instance()->byName(groupName)->setIcon(iDialog->selectedFile());
 
 		pixmapLabels[groupName]->setPixmap(icons_manager->loadPixmap(iDialog->selectedFile()).scaled(QSize(16,16)));
 	}
@@ -675,9 +671,6 @@ void ContactDataWindow::deleteIcon()
 		}
 	}
 
-	config_file.removeVariable("GroupIcon", groupName);
-
+	GroupManager::instance()->byName(groupName)->setIcon("");
 	pixmapLabels[groupName]->setPixmap(QPixmap());
-
-// 	groups_manager->setIconForTab(groupName);
 }

@@ -293,7 +293,7 @@ void SearchDialog::addFound()
 	ContactList found = selected();
 
 	foreach (Contact contact, found)
-		(new ContactDataWindow(UserListElement::fromContact(contact, SearchAccount), kadu))->show();
+		(new ContactDataWindow(contact, kadu))->show();
 }
 
 void SearchDialog::chatFound()
@@ -651,7 +651,7 @@ void SearchDialog::updateInfoClicked()
 	con.setFirstName(firstname);
 	con.setNickName(nickname);
 
-	(new ContactDataWindow(UserListElement::fromContact(con, SearchAccount), kadu))->show();
+	(new ContactDataWindow(con, kadu))->show();
 	kdebugf2();
 }
 

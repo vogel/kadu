@@ -1128,7 +1128,7 @@ void Kadu::editUserActionActivated(QAction *sender, bool toggled)
 	if (contact.isNull())
 		return;
 
-	(new ContactDataWindow(UserListElement::fromContact(contact, AccountManager::instance()->defaultAccount()), kadu))->show();
+	(new ContactDataWindow(contact, kadu))->show();
 
 	kdebugf2();
 }
@@ -1143,7 +1143,7 @@ void Kadu::addUserActionActivated(QAction *sender, bool toggled)
 		: Contact();
 
 	if (contact.isAnonymous() || contact.isNull())
-		(new ContactDataWindow(UserListElement::fromContact(contact, AccountManager::instance()->defaultAccount()), kadu))->show();
+		(new ContactDataWindow(contact, kadu))->show();
 
  	kdebugf2();
 }
