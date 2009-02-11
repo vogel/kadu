@@ -49,51 +49,6 @@ public:
 	};
 
 private:
-	/**
-		@enum Mode
-		@short Tryb pracy obiektu
-		@see TokenSocketNotifiers
-		@see gotToken
-		@see needTokenValue
-		@see unregister
-		@see doUnregister
-		@see remindPassword
-		@see doRemindPassword
-		@see changePassword
-		@see doChangePassword
-
-		Kilka operacji w protokole Gadu-Gadu wymaga od klienta wys�ania do serwera, opr�cz
-		standardowych pakiet�w, tak zwanego 'tokena'. Najpierw pobierany jest z serwera identyfikator
-		tokena oraz obrazek. Nast�pnie z obrazka odczytywana jest warto�c tokena (w za�o�eniach
-		mia�o to zapobiega� rejestrowaniu nowych u�ytkownik�w przez automaty.
-
-		Sloty register, unregister, remindPassword i changePassword inicjuj� pobieranie tokena
-		i ustalaj� warto�� pola Mode. Pobieranie obrazka realizowane jest przez klas�
-		TokenSocketNotifiers. Po pobraniu wywo�ywany jest slot gotToken, kt�ry na podstawie warto�ci
-		pola Mode wywo�uje jedn� z funkcji doRegister, doUnregister, doRemindPassword i doChangePassword.
-	**/
-	enum
-	{
-		/** Wyrejestrowywanie istniej�cego u�ytkownika **/
-		Unregister,
-		/** Przypominanie has�a **/
-		RemindPassword,
-		/** Zmienianie has�a **/
-		ChangePassword
-	} Mode;
-
-	/** Identyfikator u�ytkownika **/
-	UinType DataUin;
-	/** e-mail u�ytkownika **/
-	QString DataEmail;
-	/** stare has�o u�ytkownika **/
-	QString DataPassword;
-	/** nowe has�o u�ytkownika **/
-	QString DataNewPassword;
-	/** identyfikator tokena **/
-	QString TokenId;
-	/** warto�� tokena **/
-	QString TokenValue;
 
 	/** Serwery, z kt�rymi �aczy si� obiekt. **/
 	static QList<QHostAddress> ConfigServers;
@@ -171,58 +126,6 @@ private:
 	**/
 	void setupProxy();
 
-	/**
-		Za pomoc� klasy TokenSocketNotifiers metoda pobiera z serwera GaduGadu token wraz
-		z identyfikatorem. Pobrany token jest obs�ugiwany za pomoc� slota gotToken,
-		kt�ry pobiera warto�� tokena emituj�c sygna� needTokenValue i nast�pnie wywo�uj�c
-		jedn� z metod  doRegisterAccount, doUnregisterAccount(), doRemindPassword(),
-		doChangePassword() na podstawie warto�ci pola Mode.
-
-		@see TokenSocketNotifiers
-		@see gotToken
-		@see doUnregisterAccount
-		@see doRemindPassword
-		@see doChangePassword
-		@see Mode
-	**/
-	void getToken();
-
-	/**
-		Wyrejestrowuje konto. Wywo�ywane przez gotToken (kt�re jest wywo�ane po�rednio przez
-		unregisterAccount). Korzysta z pomocy PubdirSocketNotifiers oraz slotu unregisterDone,
-		kt�ry emituje sygna� unregistered.
-
-		@see unregisterAccount
-		@see unregistered
-		@see unregisterDone
-		@see gotToken
-	**/
-	void doUnregisterAccount();
-
-	/**
-		Przypomina has�o. Wywo�ywane przez gotToken (kt�re jest wywo�ane po�rednio przez
-		remindPassword). Korzysta z pomocy PubdirSocketNotifiers oraz slotu remindDone,
-		kt�ry emituje sygna� reminded.
-
-		@see remindPassword
-		@see reminded
-		@see remindDone
-		@see gotToken
-	**/
-	void doRemindPassword();
-
-	/**
-		Zmienia has�o. Wywo�ywane przez gotToken (kt�re jest wywo�ane po�rednio przez
-		changePassword). Korzysta z pomocy PubdirSocketNotifiers oraz slotu changePasswordDone,
-		kt�ry emituje sygna� passwordChanged.
-
-		@see changePassword
-		@see passwordChanged
-		@see changePasswordDone
-		@see gotToken
-	**/
-	void doChangePassword();
-
 	GaduProtocol(const GaduProtocol &) : Protocol(0, 0) {}
 	GaduProtocol & operator = (const GaduProtocol &) {}
 
@@ -255,48 +158,6 @@ private slots:
 		@see ServerNr
 	**/
 	void login();
-
-	/**
-		Wywo�ywany po wyrejestrowaniu konta. Emituje unregistered.
-
-		@see unregisterAccount
-		@see doUnregisterAccount
-		@see unregistered
-	**/
-	void unregisterDone(bool ok, struct gg_http *);
-
-	/**
-		Wywo�ywany po przypomnieniu has�a. Emituje reminded.
-
-		@see remindPassword
-		@see doRemindPassword
-		@see reminded
-	**/
-	void remindDone(bool ok, struct gg_http *);
-
-	/**
-		Wywo�ywany po zmianie has�a. Emituje passwordChanged.
-
-		@see changePassword
-		@see doChangePassword
-		@see passwordChanged
-	**/
-	void changePasswordDone(bool ok, struct gg_http *);
-
-	/**
-		Slot wywo�ywany, gdy pobieranie tokena si� nie uda�o.
-
-		@see getToken
-	**/
-	void tokenError();
-
-	/**
-		Slot wywo�ywany, gdy pobieranie tokena si� powiod�o. Emituje needTokenValue
-
-		@see getToken
-		@see needTokenValue
-	**/
-	void gotToken(QString, QPixmap);
 
 	/**
 		Slot wywo�ywany po po��czeniu z serwerem. Emituje connected i w��cza pingowanie
@@ -538,38 +399,6 @@ public slots:
 	bool sendImage(Contact contact, const QString &file_name, uint32_t size, const char *data);
 
 	/**
-		Wyrejestrowujemy stare konto. Odpowied� przychodzi poprzez sygna� unregistered. Mo�e
-		zosta� tak�e wywo�any sygna� needTokenValue.
-
-		@param uin nasz uin
-		@param password nasze has�o
-		@todo parametr uin naprawd� potrzebny?
-	**/
-	void unregisterAccount(UinType uin, const QString &password);
-
-	/**
-		Wysy�a has�o na email. Odpowied� przychodzi poprzez sygna� reminded. Mo�e
-		zosta� tak�e wywo�any sygna� needTokenValue.
-
-		@param uin nasz uin
-		@param email nasz email (musi by� taki sam jak podczas rejestracji)
-		@todo parametr uin naprawd� potrzebny?
-	**/
-	void remindPassword(UinType uin, const QString &mail);
-
-	/**
-		Zmienia nasze has�o. Odpowied� przychodzi poprzez sygna� passwordChanged. Mo�e
-		zosta� tak�e wywo�any sygna� needTokenValue.
-
-		@param uin nasz uin
-		@param mail nasz email, jaki podali�my przy rejestracji
-		@param password stare has�o
-		@param newPassword nowe has�o
-		@todo parametr uin naprawd� potrzebny?
-	**/
-	void changePassword(UinType uin, const QString &mail, const QString &password, const QString &newPassword);
-
-	/**
 		Wysy�a list� u�ytkownik�w na serwer. Odpowied� przychodzi przez sygna� userListExported.
 
 		@return false, je�li operacja si� nie powiod�a
@@ -706,27 +535,6 @@ signals:
 	void newSearchResults(SearchResults &searchResults, int seq, int lastUin);
 
 	/**
-		operacja wyrejestrowania konta zosta�a zako�czona
-		@param ok powodzenie operacji
-		@see doUnregisterAccount
-	**/
-	void unregistered(bool ok);
-
-	/**
-		operacja przypomnienia has�a zosta�a zako�czona
-		@param ok powodzenie operacji
-		@see doRemindPassword
-	**/
-	void reminded(bool ok);
-
-	/**
-		operacja zmiany has�a zosta�a zako�czona
-		@param ok powodzenie operacji
-		@see doChangePassword
-	**/
-	void passwordChanged(bool ok);
-
-	/**
 		operacja eksportu listy kontakt�w na serwer zosta�a zako�czona
 		@param ok powodzenie operacji
 		@see doExportUserList
@@ -760,11 +568,6 @@ signals:
 		stop na true.
 	**/
 	void rawGaduReceivedMessageFilter(Account *account, ContactList senders, QString &msg, QByteArray &formats, bool &ignore);
-
-	/**
-		Wywo�ywane, gdy chcemy odczyta� token z obrazka
-	**/
-	void needTokenValue(QPixmap in, QString &out);
 
 	void dcc7New(struct gg_dcc7 *);
 	void dcc7Accepted(struct gg_dcc7 *);
