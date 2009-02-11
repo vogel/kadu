@@ -8,6 +8,7 @@ set (SOURCES
 	gadu_formatter.cpp
 	gadu_images_manager.cpp
 	gadu-importer.cpp
+	gadu-list-helper.cpp
 	gadu-protocol.cpp
 	gadu_protocol_factory.cpp
 	gadu-protocol-socket-notifiers.cpp

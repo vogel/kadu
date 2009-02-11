@@ -193,3 +193,21 @@ bool Contact::isInGroup(Group *group) const
 		? false
 		: Data->isInGroup(group);
 }
+
+QList<Group *> Contact::groups() const
+{
+	return isNull()
+		? QList<Group *>()
+		: Data->groups();
+}
+
+QString Contact::display() const
+{
+	return isNull()
+		? QString::null
+		: Data->display().isEmpty()
+			? Data->nickName().isEmpty()
+				? Data->firstName()
+				: Data->nickName()
+			: Data->display();
+}

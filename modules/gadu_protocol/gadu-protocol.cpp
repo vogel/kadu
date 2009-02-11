@@ -29,6 +29,7 @@
 #include "gadu-contact-account-data.h"
 #include "gadu_formatter.h"
 #include "gadu_images_manager.h"
+#include "gadu-list-helper.h"
 #include "gadu-protocol-socket-notifiers.h"
 #include "gadu-pubdir-socket-notifiers.h"
 #include "gadu-token-socket-notifiers.h"
@@ -1328,45 +1329,6 @@ void GaduProtocol::setPersonalInfo(SearchRecord &searchRecord, SearchResult &new
 
 /* lista u�ytkownik�w */
 
-QString GaduProtocol::userListToString(const UserList &userList) const
-{
-	kdebugf();
-	NotifyType type;
-	QString file;
-	QString contacts;
-
-	foreach(const UserListElement &user, *userlist)
-		if (!user.isAnonymous() && (user.usesProtocol("Gadu") || !user.mobile().isEmpty()))
-		{
-			contacts += user.firstName();					contacts += ';';
-			contacts += user.lastName();					contacts += ';';
-			contacts += user.nickName();					contacts += ';';
-			contacts += user.altNick();						contacts += ';';
-			contacts += user.mobile();						contacts += ';';
-			contacts += user.data("Groups").toStringList().join(";");	contacts += ';';
-			if (user.usesProtocol("Gadu"))
-				contacts += user.ID("Gadu");				contacts += ';';
-			contacts += user.email();						contacts += ';';
-			file = user.aliveSound(type);
-			contacts += QString::number(type);				contacts += ';';
-			contacts += file;								contacts += ';';
-			file = user.messageSound(type);
-			contacts += QString::number(type);				contacts += ';';
-			contacts += file;								contacts += ';';
-			if (user.usesProtocol("Gadu"))
-				contacts += QString::number(user.protocolData("Gadu", "OfflineTo").toBool());
-			contacts += ';';
-			contacts += user.homePhone();					//contacts += ';';
-			contacts += "\r\n";
-		}
-
-	contacts.remove("(null)");
-
-//	kdebugm(KDEBUG_DUMP, "%s\n", qPrintable(contacts));
-	kdebugf2();
-	return contacts;
-}
-
 QList<UserListElement> GaduProtocol::stringToUserList(const QString &string) const
 {
 	QString s = string;
@@ -1467,45 +1429,28 @@ void GaduProtocol::connectAfterOneSecond()
 	kdebugf2();
 }
 
-bool GaduProtocol::doExportUserList(const UserList &userList)
+void GaduProtocol::exportContactList()
+{
+	exportContactList(ContactManager::instance()->contacts(account()));
+}
+
+void GaduProtocol::exportContactList(ContactList contacts)
 {
 	kdebugf();
 
-	QString contacts = userListToString(userList);
-	char *dup = strdup(unicode2cp(contacts));
+	QString contactsString = GaduListHelper::contactListToString(account(), contacts);
 
-	kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "\n%s\n", dup);
-//	free(dup);
+	kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "\n%s\n", unicode2cp(contactsString));
 
 	UserListClear = false;
 
-//	dup = strdup(unicode2std(contacts));
-	bool success=(gg_userlist_request(Sess, GG_USERLIST_PUT, dup)!=-1);
-	if (!success)
+	if (-1 == gg_userlist_request(Sess, GG_USERLIST_PUT, unicode2cp(contactsString)))
 	{
+		emit contactListExported(false);
 		kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "failed\n");
-		emit userListExported(false);
 	}
-	free(dup);
+
 	kdebugf2();
-	return success;
-}
-
-bool GaduProtocol::doClearUserList()
-{
-	kdebugf();
-
-	UserListClear = true;
-
-	const char *dup = "";
-	bool success=(gg_userlist_request(Sess, GG_USERLIST_PUT, dup) != -1);
-	if (!success)
-	{
-		kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "failed\n");
-		emit userListCleared(false);
-	}
-	kdebugf2();
-	return success;
 }
 
 bool GaduProtocol::doImportUserList()
@@ -1615,14 +1560,11 @@ void GaduProtocol::userListReplyReceived(char type, char *reply)
 	if (type == GG_USERLIST_PUT_REPLY)
 	{
 		kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "Done\n");
-
-		if (UserListClear)
-			emit userListCleared(true);
-		else
-			emit userListExported(true);
-
+		emit contactListExported(true);
+		return;
 	}
-	else if ((type == GG_USERLIST_GET_REPLY) || (type == GG_USERLIST_GET_MORE_REPLY))
+
+	if ((type == GG_USERLIST_GET_REPLY) || (type == GG_USERLIST_GET_MORE_REPLY))
 	{
 		kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "get\n");
 

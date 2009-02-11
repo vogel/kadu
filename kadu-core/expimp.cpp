@@ -21,9 +21,13 @@
 #include <QtGui/QVBoxLayout>
 
 #include "../modules/gadu_protocol/gadu-protocol.h"
+#include "../modules/gadu_protocol/gadu-list-helper.h"
 
 #include "accounts/account.h"
 #include "accounts/account_manager.h"
+
+#include "contacts/contact-manager.h"
+
 #include "debug.h"
 #include "icons_manager.h"
 #include "ignore.h"
@@ -321,12 +325,11 @@ void UserlistImportExport::startExportTransfer()
 		return;
 	}
 
-	if (gadu->doExportUserList(*userlist))
-	{
-		pb_send->setEnabled(false);
-		pb_delete->setEnabled(false);
-		pb_tofile->setEnabled(false);
-	}
+	gadu->exportContactList();
+	pb_send->setEnabled(false);
+	pb_delete->setEnabled(false);
+	pb_tofile->setEnabled(false);
+
 	kdebugf2();
 }
 
@@ -337,7 +340,8 @@ void UserlistImportExport::ExportToFile(void)
 	pb_delete->setEnabled(false);
 	pb_tofile->setEnabled(false);
 
-	GaduProtocol *gadu = dynamic_cast<GaduProtocol *>(AccountManager::instance()->defaultAccount()->protocol());
+	Account *account = AccountManager::instance()->defaultAccount();
+	GaduProtocol *gadu = dynamic_cast<GaduProtocol *>(account->protocol());
 
 	QString fname = QFileDialog::getSaveFileName(QString(getenv("HOME")), QString::null, this);
 	if (!fname.isEmpty())
@@ -349,7 +353,7 @@ void UserlistImportExport::ExportToFile(void)
 			{
 				QTextStream stream(&file);
 				stream.setCodec(codec_latin2);
-				stream << gadu->userListToString(*userlist);
+				stream << GaduListHelper::contactListToString(account, ContactManager::instance()->contacts(account));
 				file.close();
 				MessageBox::msg(tr("Your userlist has been successfully exported to file"), false, "Information", this);
 			}
@@ -378,12 +382,11 @@ void UserlistImportExport::clean()
 		return;
 	}
 
-	if (gadu->doClearUserList())
-	{
-		pb_send->setEnabled(false);
-		pb_delete->setEnabled(false);
-		pb_tofile->setEnabled(false);
-	}
+	gadu->exportContactList(ContactList());
+	pb_send->setEnabled(false);
+	pb_delete->setEnabled(false);
+	pb_tofile->setEnabled(false);
+
 	kdebugf2();
 }
 

@@ -19,18 +19,22 @@
 
 #include "contact-data.h"
 
-#define Property(type, name, capitalized_name, default) \
+#define PropertyRead(type, name, capitalized_name, default) \
 	type name() const\
 	{\
 		return isNull()\
 			? default\
 			: Data->name();\
-	} \
+	}
+#define PropertyWrite(type, name, capitalized_name, default) \
 	void set##capitalized_name(const type &name)\
 	{\
 		if (!isNull())\
 			Data->set##capitalized_name(name);\
 	}
+#define Property(type, name, capitalized_name, default) \
+	PropertyRead(type, name, capitalized_name, default) \
+	PropertyWrite(type, name, capitalized_name, default)
 
 class ContactAccountData;
 class XmlConfigFile;
@@ -105,8 +109,11 @@ template<class T>
 	bool isBlocked(Account *account) const;
 	bool isOfflineTo(Account *account) const;
 	bool isInGroup(Group *group) const;
+	QList<Group *> groups() const;
 
-	Property(QString, display, Display, QString::null)
+	QString display() const;
+
+	PropertyWrite(QString, display, Display, QString::null)
 	Property(QString, firstName, FirstName, QString::null)
 	Property(QString, lastName, LastName, QString::null)
 	Property(QString, nickName, NickName, QString::null)

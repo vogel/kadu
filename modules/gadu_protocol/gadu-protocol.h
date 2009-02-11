@@ -398,24 +398,8 @@ public slots:
 	**/
 	bool sendImage(Contact contact, const QString &file_name, uint32_t size, const char *data);
 
-	/**
-		Wysy�a list� u�ytkownik�w na serwer. Odpowied� przychodzi przez sygna� userListExported.
-
-		@return false, je�li operacja si� nie powiod�a
-		@param userList lista do wys�ania
-		@see userListExported
-		@todo usun�� warto�� zwracan�
-	**/
-	bool doExportUserList(const UserList &userList);
-
-	/**
-		Usuwa list� u�ytkownik�w z serwera. Odpowied� przychodzi przez sygna� userListCleared.
-
-		@return false, je�li operacja si� nie powiod�a
-		@see userListCleared
-		@todo usun�� warto�� zwracan�
-	**/
-	bool doClearUserList();
+	void exportContactList();
+	void exportContactList(ContactList contacts);
 
 	/**
 		Importuje list� u�ytkownik�w z serwera. Odpowied� przychodzi przez sygna� userListImported.
@@ -534,19 +518,7 @@ signals:
 	**/
 	void newSearchResults(SearchResults &searchResults, int seq, int lastUin);
 
-	/**
-		operacja eksportu listy kontakt�w na serwer zosta�a zako�czona
-		@param ok powodzenie operacji
-		@see doExportUserList
-	**/
-	void userListExported(bool ok);
-
-	/**
-		operacja usuni�cia listy kontakt�w z serwera zosta�a zako�czona
-		@param ok powodzenie operacji
-		@see doClearUserList
-	**/
-	void userListCleared(bool ok);
+	void contactListExported(bool ok);
 
 	/**
 		operacja importu listy kontakt�w z serwera zosta�a zako�czona
