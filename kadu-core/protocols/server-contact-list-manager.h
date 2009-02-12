@@ -7,23 +7,29 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GADU_LIST_HELPER_H
-#define GADU_LIST_HELPER_H
+#ifndef SERVER_CONTAT_LIST_MANAGER_H
+#define SERVER_CONTAT_LIST_MANAGER_H
 
-class QString;
-class QTextStream;
+#include <QtCore/QObject>
 
-class Account;
-class ContactList;
+#include "contacts/contact-list.h"
 
-class GaduListHelper
+class ServerContactListManager : public QObject
 {
+	Q_OBJECT
 
 public:
-	static QString contactListToString(Account *account, ContactList contacts);
-	static ContactList stringToContactList(Account *account, QString &content);
-	static ContactList streamToContactList(Account *account, QTextStream &content);
+	ServerContactListManager(QObject *parent = 0)
+		: QObject(parent) {}
+
+	virtual void importContactList() = 0;
+	virtual void exportContactList() = 0;
+	virtual void exportContactList(ContactList contacts) = 0;
+
+signals:
+	void contactListImported(bool ok, ContactList contacts);
+	void contactListExported(bool ok);
 
 };
 
-#endif // GADU_LIST_HELPER_H
+#endif // SERVER_CONTAT_LIST_MANAGER_H

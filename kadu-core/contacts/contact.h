@@ -108,8 +108,8 @@ template<class T>
 	bool setIgnored(bool ignored = true);
 	bool isBlocked(Account *account) const;
 	bool isOfflineTo(Account *account) const;
+	void setOfflineTo(Account *account, bool offlineTo) const;
 	bool isInGroup(Group *group) const;
-	QList<Group *> groups() const;
 
 	QString display() const;
 
@@ -120,6 +120,7 @@ template<class T>
 	Property(QString, homePhone, HomePhone, QString::null)
 	Property(QString, mobile, Mobile, QString::null)
 	Property(QString, email, Email, QString::null)
+	Property(QList<Group *>, groups, Groups, QList<Group *>());
 
 };
 

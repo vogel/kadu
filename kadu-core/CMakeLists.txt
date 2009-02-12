@@ -194,6 +194,7 @@ set (kadu_MOC_SRCS
 	protocols/protocol.h
 	protocols/protocol_factory.h
 	protocols/protocols_manager.h
+	protocols/server-contact-list-manager.h
 
 	about.h
 	action.h

@@ -119,13 +119,16 @@ void GaduProtocol::initModule()
 	kdebugf2();
 }
 
-GaduProtocol::GaduProtocol(Account *account, ProtocolFactory *factory)
-	: Protocol(account, factory),
+GaduProtocol::GaduProtocol(Account *account, ProtocolFactory *factory) :
+		Protocol(account, factory),
 		ServerNr(0), ActiveServer(), LoginParams(), Sess(0), sendImageRequests(0), seqNumber(0), whileConnecting(false),
-		DccExternalIP(), SocketNotifiers(new GaduProtocolSocketNotifiers(account, this)), PingTimer(0),
-		SendUserListTimer(new QTimer(this, "SendUserListTimer")), UserListClear(false), ImportReply()
+		DccExternalIP(), PingTimer(0),
+		SendUserListTimer(new QTimer(this, "SendUserListTimer"))
 {
 	kdebugf();
+
+	SocketNotifiers = new GaduProtocolSocketNotifiers(account, this);
+	ContactListManager = new GaduServerContactListManager(this);
 
 	connect(SocketNotifiers, SIGNAL(ackReceived(int, uin_t, int)), this, SLOT(ackReceived(int, uin_t, int)));
 	connect(SocketNotifiers, SIGNAL(connected()), this, SLOT(connectedSlot()));
@@ -146,8 +149,6 @@ GaduProtocol::GaduProtocol(Account *account, ProtocolFactory *factory)
 		this, SLOT(systemMessageReceived(QString &, QDateTime &, int, void *)));
 	connect(SocketNotifiers, SIGNAL(userlistReceived(const struct gg_event *)),
 		this, SLOT(userListReceived(const struct gg_event *)));
-	connect(SocketNotifiers, SIGNAL(userlistReplyReceived(char, char *)),
-		this, SLOT(userListReplyReceived(char, char *)));
 	connect(SocketNotifiers, SIGNAL(userStatusChanged(const struct gg_event *)),
 		this, SLOT(userStatusChanged(const struct gg_event *)));
 	connect(SocketNotifiers, SIGNAL(dcc7New(struct gg_dcc7 *)), this, SIGNAL(dcc7New(struct gg_dcc7 *)));
@@ -1327,99 +1328,9 @@ void GaduProtocol::setPersonalInfo(SearchRecord &searchRecord, SearchResult &new
 	kdebugf2();
 }
 
-/* lista u�ytkownik�w */
-
-QList<UserListElement> GaduProtocol::stringToUserList(const QString &string) const
-{
-	QString s = string;
-	QTextStream stream(&s, QIODevice::ReadOnly);
-	return streamToUserList(stream);
-}
-
 QList<UserListElement> GaduProtocol::streamToUserList(QTextStream &stream) const
 {
-	kdebugf();
 
-	QStringList sections, groupNames;
-	QString line;
-	QList<UserListElement> ret;
-	unsigned int i, secCount;
-	bool ok;
-
-	stream.setCodec(codec_latin2);
-
-	while (!stream.atEnd())
-	{
-		UserListElement e;
-		line = stream.readLine();
-//		kdebugm(KDEBUG_DUMP, ">>%s\n", qPrintable(line));
-		sections = QStringList::split(";", line, true);
-		secCount = sections.count();
-
-		if (secCount < 7)
-			continue;
-
-		e.setFirstName(sections[0]);
-		e.setLastName(sections[1]);
-		e.setNickName(sections[2]);
-		e.setAltNick(sections[3]);
-		e.setMobile(sections[4]);
-
-		groupNames.clear();
-		if (!sections[5].isEmpty())
-			groupNames.append(sections[5]);
-
-		i = 6;
-		ok = false;
-		while (!ok && i < secCount)
-		{
-//			kdebugm(KDEBUG_DUMP, "checking: '%s'\n", qPrintable(sections[i]));
-			sections[i].toULong(&ok);
-			ok = ok || sections[i].isEmpty();
-			if (!ok)
-			{
-//				kdebugm(KDEBUG_DUMP, "adding: '%s'\n", qPrintable(sections[i]));
-				groupNames.append(sections[i]);
-			}
-			++i;
-		}
-		e.setData("Groups", groupNames);
-		--i;
-
-		if (i < secCount)
-		{
-			UinType uin = sections[i++].toULong(&ok);
-			if (!ok)
-				uin = 0;
-			if (uin)
-				e.addProtocol("Gadu", QString::number(uin));
-		}
-
-		if (i < secCount)
-			e.setEmail(sections[i++]);
-		if (i+1 < secCount)
-		{
-			e.setAliveSound((NotifyType)sections[i].toInt(), sections[i+1]);
-			i+=2;
-		}
-		if (i+1 < secCount)
-		{
-			e.setMessageSound((NotifyType)sections[i].toInt(), sections[i+1]);
-			i+=2;
-		}
-		if (i < secCount)
-		{
-			if (e.usesProtocol("Gadu"))
-				e.setProtocolData("Gadu", "OfflineTo", bool(sections[i].toInt()));
-			i++;
-		}
-		if (i < secCount)
-			e.setHomePhone(sections[i++]);
-
-		ret.append(e);
-	}
-	kdebugf2();
-	return ret;
 }
 
 void GaduProtocol::connectAfterOneSecond()
@@ -1427,43 +1338,6 @@ void GaduProtocol::connectAfterOneSecond()
 	kdebugf();
 	QTimer::singleShot(1000, this, SLOT(login()));
 	kdebugf2();
-}
-
-void GaduProtocol::exportContactList()
-{
-	exportContactList(ContactManager::instance()->contacts(account()));
-}
-
-void GaduProtocol::exportContactList(ContactList contacts)
-{
-	kdebugf();
-
-	QString contactsString = GaduListHelper::contactListToString(account(), contacts);
-
-	kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "\n%s\n", unicode2cp(contactsString));
-
-	UserListClear = false;
-
-	if (-1 == gg_userlist_request(Sess, GG_USERLIST_PUT, unicode2cp(contactsString)))
-	{
-		emit contactListExported(false);
-		kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "failed\n");
-	}
-
-	kdebugf2();
-}
-
-bool GaduProtocol::doImportUserList()
-{
-	kdebugf();
-
-	ImportReply.truncate(0);
-
-	bool success=(gg_userlist_request(Sess, GG_USERLIST_GET, NULL) != -1);
-	if (!success)
-		emit userListImported(false, QList<UserListElement>());
-	kdebugf2();
-	return success;
 }
 
 void GaduProtocol::userListReceived(const struct gg_event *e)
@@ -1548,46 +1422,6 @@ void GaduProtocol::userListReceived(const struct gg_event *e)
 #endif
 
 		++nr;
-	}
-
-	kdebugf2();
-}
-
-void GaduProtocol::userListReplyReceived(char type, char *reply)
-{
-	kdebugf();
-
-	if (type == GG_USERLIST_PUT_REPLY)
-	{
-		kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "Done\n");
-		emit contactListExported(true);
-		return;
-	}
-
-	if ((type == GG_USERLIST_GET_REPLY) || (type == GG_USERLIST_GET_MORE_REPLY))
-	{
-		kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "get\n");
-
-		if (!reply)
-		{
-			kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "error!\n");
-
-			emit userListImported(false, QList<UserListElement>());
-			return;
-		}
-
-		if (reply[0] != 0)
-			ImportReply += cp2unicode(reply);
-
-		if (type == GG_USERLIST_GET_MORE_REPLY)
-		{
-			kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "next portion\n");
-			return;
-		}
-
-		kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "\n%s\n", unicode2latin(ImportReply).data());
-
-		emit userListImported(true, stringToUserList(ImportReply));
 	}
 
 	kdebugf2();

@@ -187,18 +187,17 @@ bool Contact::isOfflineTo(Account *account) const
 		: Data->isOfflineTo(account);
 }
 
+void Contact::setOfflineTo(Account *account, bool offlineTo) const
+{
+	if (!isNull())
+		Data->setOfflineTo(account, offlineTo);
+}
+
 bool Contact::isInGroup(Group *group) const
 {
 	return isNull()
 		? false
 		: Data->isInGroup(group);
-}
-
-QList<Group *> Contact::groups() const
-{
-	return isNull()
-		? QList<Group *>()
-		: Data->groups();
 }
 
 QString Contact::display() const

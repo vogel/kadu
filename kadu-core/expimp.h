@@ -4,6 +4,8 @@
 #include <QtCore/QList>
 #include <QtGui/QWidget>
 
+#include "contacts/contact-list.h"
+
 #include "userlistelement.h"
 
 class QLabel;
@@ -18,8 +20,10 @@ class QTreeWidget;
 class UserlistImportExport : public QWidget {
 	Q_OBJECT
 
+	ContactList ImprotedContacts;
+	bool Clear;
+
 	QPushButton *pb_fetch; /*!< przycisk pobierania listy */
-	QList<UserListElement> importedUserlist;
 	QPushButton *pb_send; /*!< przycisk wysy�ania listy */
 	QPushButton *pb_delete; /*!< przycisk kasuj�cy list� */
 	QPushButton *pb_tofile;
@@ -27,16 +31,16 @@ class UserlistImportExport : public QWidget {
 	QTreeWidget *lv_userlist;
 
 private slots:
+	void contactListImported(bool ok, ContactList contacts);
+	void contactListExported(bool ok);
+
 	void startImportTransfer(void);
 	void makeUserlist(void);
 	void updateUserlist(void);
 	void fromfile();
-	void userListImported(bool ok, QList<UserListElement> userList);
 	void startExportTransfer(void);
 	void clean(void);
 	void ExportToFile(void);
-	void userListExported(bool ok);
-	void userListCleared(bool ok);
 	void keyPressEvent(QKeyEvent *);
 	void updateUserListCount();
 

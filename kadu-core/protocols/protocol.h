@@ -26,6 +26,7 @@ class QPixmap;
 class AccountData;
 class Message;
 class ProtocolFactory;
+class ServerContactListManager;
 class Status;
 
 class KADUAPI Protocol : public QObject
@@ -72,6 +73,8 @@ public:
 
 	ProtocolFactory * protocolFactory() const { return Factory; }
 	Account * account() const { return CurrentAccount; }
+
+	virtual ServerContactListManager * serverContactListManager() { return 0; }
 
 	virtual void setAccount(Account *account); 
 	virtual bool validateUserID(QString &uid) = 0;

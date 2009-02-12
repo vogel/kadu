@@ -7,23 +7,30 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GADU_LIST_HELPER_H
-#define GADU_LIST_HELPER_H
+#ifndef GADU_SERVER_CONTACT_LIST_MANAGER_H
+#define GADU_SERVER_CONTACT_LIST_MANAGER_H
 
-class QString;
-class QTextStream;
+#include "protocols/server-contact-list-manager.h"
 
-class Account;
-class ContactList;
+class GaduProtocol;
 
-class GaduListHelper
+class GaduServerContactListManager : public ServerContactListManager
 {
+	Q_OBJECT
+
+	GaduProtocol *Protocol;
+	QString ImportReply;
+
+private slots:
+	void contactListReplyReceived(char type, char *content);
 
 public:
-	static QString contactListToString(Account *account, ContactList contacts);
-	static ContactList stringToContactList(Account *account, QString &content);
-	static ContactList streamToContactList(Account *account, QTextStream &content);
+	GaduServerContactListManager(GaduProtocol *protocol);
+
+	virtual void importContactList();
+	virtual void exportContactList();
+	virtual void exportContactList(ContactList contacts);
 
 };
 
-#endif // GADU_LIST_HELPER_H
+#endif // GADU_SERVER_CONTACT_LIST_MANAGER_H

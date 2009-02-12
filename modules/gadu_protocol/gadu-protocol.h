@@ -19,6 +19,7 @@
 
 #include "gadu_exports.h"
 #include "gadu_search.h"
+#include "gadu-server-contact-list-manager.h"
 
 #include "protocols/protocol.h"
 
@@ -29,6 +30,7 @@ class GaduProtocolSocketNotifiers;
 class GADUAPI GaduProtocol : public Protocol
 {
 	Q_OBJECT
+	Q_DISABLE_COPY(GaduProtocol);
 
 public:
 	enum GaduError
@@ -49,6 +51,7 @@ public:
 	};
 
 private:
+	GaduServerContactListManager *ContactListManager;
 
 	/** Serwery, z kt�rymi �aczy si� obiekt. **/
 	static QList<QHostAddress> ConfigServers;
@@ -100,34 +103,11 @@ private:
 	QTimer *SendUserListTimer;
 
 	/**
-		Zmienna ustawiana w zale�no�ci od tego, czy wysy�amy list� kontakt�w na serwer
-		czy te� usuwamy j� z tego serwera. Zako�czenie obydwu tych czynno�ci wywo�uje
-		sygna� podpi�ty do slotu userListReplyReceived, kt�ry w zale�no�ci od warto�ci
-		tego pola wywo�uje userListCleared albo userListExported.
-
-		@see userListReplyReceived
-		@see userListCleared
-		@see userListExported
-	**/
-	bool UserListClear;
-
-	/**
-		Lista u�ytkownik�w pobrana z serwera w postaci �a�cucha. Warto�� ustalana w slocie
-		userListReplyReceived.
-
-		@see userListReplyReceived
-	**/
-	QString ImportReply;
-
-	/**
 		Ustawianie parametr�w po��czenia proxy. Metoda wywo�ywana podczas logowania.
 
 		@see login
 	**/
 	void setupProxy();
-
-	GaduProtocol(const GaduProtocol &) : Protocol(0, 0) {}
-	GaduProtocol & operator = (const GaduProtocol &) {}
 
 	GaduAccountData * gaduAccountData() const;
 
@@ -135,6 +115,9 @@ private:
 	GaduContactAccountData * gaduContactAccountData(Contact contact) const;
 
 	Status::StatusType statusTypeFromIndex(unsigned int index) const;
+
+	friend class GaduServerContactListManager;
+	GaduProtocolSocketNotifiers * socketNotifiers() { return SocketNotifiers; }
 
 private slots:
 	/**
@@ -242,16 +225,6 @@ private slots:
 	void userListReceived(const struct gg_event *);
 
 	/**
-		Odpowied� od serwera na temat operacji na li�cie u�ytkownik�w. Emituje, w zale�no�ci
-		od trybu dzia�ania: userListCleared, userListExported, userListImported.
-
-		@see userListCleared
-		@see userListExported
-		@see userListImported
-	**/
-	void userListReplyReceived(char, char *);
-
-	/**
 		Informacja o zmianie statusu kontaktu. Emituje userStatusChanged oraz userListChanged.
 
 		@see userStatusChanged
@@ -283,6 +256,7 @@ public:
 
 	unsigned int maxDescriptionLength();
 
+	virtual ServerContactListManager * serverContactListManager() { return ContactListManager; }
 	gg_session * session() { return Sess; }
 
 	void changeID(const QString &id);
@@ -398,18 +372,6 @@ public slots:
 	**/
 	bool sendImage(Contact contact, const QString &file_name, uint32_t size, const char *data);
 
-	void exportContactList();
-	void exportContactList(ContactList contacts);
-
-	/**
-		Importuje list� u�ytkownik�w z serwera. Odpowied� przychodzi przez sygna� userListImported.
-
-		@return false, je�li operacja si� nie powiod�a
-		@see userListImported
-		@todo usun�� warto�� zwracan�
-	**/
-	bool doImportUserList();
-
 	/**
 		Wysy�a nasz� list� u�ytkownik�w na serwer. Uwaga: nie ma to nic wsp�lnego z importem/eksportem.
 	**/
@@ -517,16 +479,6 @@ signals:
 		@param lastUin ?
 	**/
 	void newSearchResults(SearchResults &searchResults, int seq, int lastUin);
-
-	void contactListExported(bool ok);
-
-	/**
-		operacja importu listy kontakt�w z serwera zosta�a zako�czona
-		@param ok powodzenie operacji
-		@param list je�eli operacja si� powiod�a, to zaimportowana lista
-		@see doImportUserList
-	**/
-	void userListImported(bool ok, QList<UserListElement> list);
 
 	/**
 		Sygna� daje mozliwo�� operowania na wiadomo�ci

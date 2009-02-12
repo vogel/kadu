@@ -26,7 +26,9 @@
 #include "accounts/account.h"
 #include "accounts/account_manager.h"
 
+#include "contacts/contact-account-data.h"
 #include "contacts/contact-manager.h"
+#include "contacts/group.h"
 
 #include "debug.h"
 #include "icons_manager.h"
@@ -38,7 +40,8 @@
 #include "expimp.h"
 
 UserlistImportExport::UserlistImportExport(QWidget *parent)
-	: QWidget(parent, Qt::Window), pb_fetch(0), importedUserlist(), pb_send(0), pb_delete(0), pb_tofile(0), l_itemscount(0), lv_userlist(0)
+	: QWidget(parent, Qt::Window), pb_fetch(0),
+		pb_send(0), pb_delete(0), pb_tofile(0), l_itemscount(0), lv_userlist(0)
 {
 	kdebugf();
 	setWindowTitle(tr("Import / export userlist"));
@@ -161,9 +164,10 @@ UserlistImportExport::UserlistImportExport(QWidget *parent)
 	connect(pb_delete, SIGNAL(clicked()), this, SLOT(clean()));
 
 	Protocol *gadu = AccountManager::instance()->defaultAccount()->protocol();
-	connect(gadu, SIGNAL(userListExported(bool)), this, SLOT(userListExported(bool)));
-	connect(gadu, SIGNAL(userListCleared(bool)), this, SLOT(userListCleared(bool)));
-	connect(gadu, SIGNAL(userListImported(bool, QList<UserListElement>)), this, SLOT(userListImported(bool, QList<UserListElement>)));
+	ServerContactListManager *manager = gadu->serverContactListManager();
+	connect(manager, SIGNAL(contactListExported(bool)), this, SLOT(contactListExported(bool)));
+	connect(manager, SIGNAL(contactListImported(bool, ContactList)),
+		this, SLOT(contactListImported(bool, ContactList)));
 	// end connect
 
 	center_layout->addWidget(l_info);
@@ -222,21 +226,22 @@ void UserlistImportExport::fromfile()
 		QFile file(fname);
  		if (file.open(QIODevice::ReadOnly))
 		{
-			QTextStream stream(&file);
-			importedUserlist = gadu->streamToUserList(stream);
-			file.close();
-
-			foreach(const UserListElement &user, importedUserlist)
-			{
-				QString id;
-				if (user.usesProtocol("Gadu"))
-					id = user.ID("Gadu");
-
-				QStringList values;
-				values << id << user.nickName() << user.altNick() << user.firstName() << user.lastName() << user.mobile() <<
-					user.data("Groups").toStringList().join(",") << user.email();
-				new QTreeWidgetItem(lv_userlist, values);
-			}
+// TODO: 0.6.6
+// 			QTextStream stream(&file);
+// 			importedUserlist = gadu->streamToUserList(stream);
+// 			file.close();
+// 
+// 			foreach(const UserListElement &user, importedUserlist)
+// 			{
+// 				QString id;
+// 				if (user.usesProtocol("Gadu"))
+// 					id = user.ID("Gadu");
+// 
+// 				QStringList values;
+// 				values << id << user.nickName() << user.altNick() << user.firstName() << user.lastName() << user.mobile() <<
+// 					user.data("Groups").toStringList().join(",") << user.email();
+// 				new QTreeWidgetItem(lv_userlist, values);
+// 			}
 		}
 		else
 			MessageBox::msg(tr("The application encountered an internal error\nThe import userlist from file was unsuccessful"), false, "Critical", this);
@@ -255,8 +260,11 @@ void UserlistImportExport::startImportTransfer()
 		return;
 	}
 
-	if (gadu->doImportUserList())
-		pb_fetch->setEnabled(false);
+	pb_fetch->setEnabled(false);
+
+	ServerContactListManager *manager = gadu->serverContactListManager();
+	manager->importContactList();
+
 	kdebugf2();
 }
 
@@ -267,8 +275,8 @@ void UserlistImportExport::makeUserlist()
 	if (!MessageBox::ask(tr("This operation will delete your current user list. Are you sure you want this?")))
 		return;
 
-	userlist->clear();
-	userlist->merge(importedUserlist);
+	// userlist->clear();
+	// userlist->merge(importedUserlist);
 
 // TODO: 0.6.6
 //	IgnoredManager::clear();
@@ -289,27 +297,42 @@ void UserlistImportExport::updateUserlist()
 	kdebugf2();
 }
 
-void UserlistImportExport::userListImported(bool ok, QList<UserListElement> userList)
+void UserlistImportExport::contactListImported(bool ok, ContactList contacts)
 {
 	kdebugf();
 
-	importedUserlist = userList;
+	ImprotedContacts = contacts;
 	lv_userlist->clear();
 
 	pb_fetch->setEnabled(true);
 
-	if (ok)
-		foreach(const UserListElement &user, userList)
-		{
-			QString id;
-			if (user.usesProtocol("Gadu"))
-				id = user.ID("Gadu");
+	if (!ok)
+		return;
 
-			QStringList values;
-			values << id << user.nickName() << user.altNick() << user.firstName() << user.lastName() << user.mobile() <<
-				user.data("Groups").toStringList().join(",") << user.email();
-			new QTreeWidgetItem(lv_userlist, values);
-		}
+	Account *account = AccountManager::instance()->defaultAccount();
+	foreach (Contact contact, contacts)
+	{
+		QString id;
+		if (contact.hasAccountData(account))
+			id = contact.accountData(account)->id();
+
+		QStringList groups;
+		foreach (Group *group, contact.groups())
+			groups << group->name();
+
+		QStringList values;
+		values
+			<< id
+			<< contact.nickName()
+			<< contact.display()
+			<< contact.firstName()
+			<< contact.lastName()
+			<< contact.mobile()
+			<< groups.join(",") 
+			<< contact.email();
+		new QTreeWidgetItem(lv_userlist, values);
+	}
+
 	kdebugf2();
 }
 
@@ -325,10 +348,13 @@ void UserlistImportExport::startExportTransfer()
 		return;
 	}
 
-	gadu->exportContactList();
 	pb_send->setEnabled(false);
 	pb_delete->setEnabled(false);
 	pb_tofile->setEnabled(false);
+
+	ServerContactListManager *manager = gadu->serverContactListManager();
+	Clear = false;
+	manager->exportContactList();
 
 	kdebugf2();
 }
@@ -367,6 +393,7 @@ void UserlistImportExport::ExportToFile(void)
 	pb_send->setEnabled(true);
 	pb_delete->setEnabled(true);
 	pb_tofile->setEnabled(true);
+
 	kdebugf2();
 }
 
@@ -382,39 +409,35 @@ void UserlistImportExport::clean()
 		return;
 	}
 
-	gadu->exportContactList(ContactList());
 	pb_send->setEnabled(false);
 	pb_delete->setEnabled(false);
 	pb_tofile->setEnabled(false);
 
+	ServerContactListManager *manager = gadu->serverContactListManager();
+	Clear = true;
+	manager->exportContactList(ContactList());
+
 	kdebugf2();
 }
 
-void UserlistImportExport::userListExported(bool ok)
+void UserlistImportExport::contactListExported(bool ok)
 {
 	kdebugf();
-	if (ok)
-		MessageBox::msg(tr("Your userlist has been successfully exported to server"), false, "Information", this);
+
+	if (Clear)
+		if (ok)
+			MessageBox::msg(tr("Your userlist has been successfully deleted on server"), false, "Infromation", this);
+		else
+			MessageBox::msg(tr("The application encountered an internal error\nThe delete userlist on server was unsuccessful"), false, "Critical", this);
 	else
-		MessageBox::msg(tr("The application encountered an internal error\nThe export was unsuccessful"), false, "Critical", this);
+		if (ok)
+			MessageBox::msg(tr("Your userlist has been successfully exported to server"), false, "Information", this);
+		else
+			MessageBox::msg(tr("The application encountered an internal error\nThe export was unsuccessful"), false, "Critical", this);
 
 	pb_send->setEnabled(true);
 	pb_delete->setEnabled(true);
 	pb_tofile->setEnabled(true);
+
 	kdebugf2();
 }
-
-void UserlistImportExport::userListCleared(bool ok)
-{
-	kdebugf();
-	if (ok)
-		MessageBox::msg(tr("Your userlist has been successfully deleted on server"), false, "Infromation", this);
-	else
-		MessageBox::msg(tr("The application encountered an internal error\nThe delete userlist on server was unsuccessful"), false, "Critical", this);
-
-	pb_send->setEnabled(true);
-	pb_delete->setEnabled(true);
-	pb_tofile->setEnabled(true);
-	kdebugf2();
-}
-

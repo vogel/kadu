@@ -291,6 +291,15 @@ bool ContactData::isOfflineTo(Account *account)
 		: OfflineTo;
 }
 
+bool ContactData::setOfflineTo(Account *account, bool offlineTo)
+{
+	ContactAccountData *cad = accountData(account);
+	if (cad)
+		cad->setOfflineTo(offlineTo);
+	else
+		OfflineTo = offlineTo;
+}
+
 bool ContactData::isInGroup(Group *group)
 {
 	return Groups.contains(group);
