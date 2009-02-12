@@ -127,11 +127,9 @@ set (kadu_SRCS
 	themes.cpp
 	toolbar.cpp
 	updates.cpp
-	usergroup.cpp
-	userlistelement.cpp
-	userlist-private.cpp
 	xml_config_file.cpp
 )
+
 if (UNIX AND NOT APPLE)
 	set (kadu_SRCS
 		${kadu_SRCS}
@@ -243,10 +241,8 @@ set (kadu_MOC_SRCS
 	themes.h
 	toolbar.h
 	updates.h
-	usergroup.h
-	userlistelement.h
-	userlist-private.h
 )
+
 if (UNIX AND NOT APPLE)
 	set (kadu_MOC_SRCS
 		${kadu_MOC_SRCS}

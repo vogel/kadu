@@ -30,11 +30,9 @@
 
 #include "config_file.h"
 #include "debug.h"
-//#include "../modules/gadu_protocol/gadu-protocol.h"
 #include "icons_manager.h"
 #include "message_box.h"
 #include "misc.h"
-#include "userlist.h"
 #include "xml_config_file.h"
 
 #include "contact-data-window.h"

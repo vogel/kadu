@@ -33,7 +33,6 @@ class ActionDescription;
 class ContactsListWidget;
 class GroupTabBar;
 class KaduTextBrowser;
-class UserGroup;
 class UserStatusChanger;
 
 /**
@@ -122,9 +121,8 @@ private:
 	QString infoPanelStyle;
 
 	UserStatus NextStatus;
-	UserGroup *selectedUsers; //don't touch! TODO: remove in near future
-
 	UserStatusChanger *userStatusChanger;
+
 #if 0
 	SplitStatusChanger *splitStatusChanger;
 #endif

@@ -20,7 +20,6 @@
 #include "config_file.h"
 #include "debug.h"
 #include "message_box.h"
-#include "usergroup.h"
 #include "misc.h"
 
 ChatWindow::ChatWindow(QWidget *parent)

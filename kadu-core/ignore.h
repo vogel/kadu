@@ -4,7 +4,6 @@
 #include <QtGui/QWidget>
 
 #include "accounts/account_manager.h"
-#include "usergroup.h"
 
 #include "exports.h"
 

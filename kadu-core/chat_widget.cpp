@@ -14,7 +14,13 @@
 #include "accounts/account.h"
 #include "accounts/account_manager.h"
 
+#include "contacts/contact-account-data.h"
+
+#include "contacts/model/contact-list-model.h"
+
 #include "gui/widgets/contacts-list-widget.h"
+
+#include "protocols/protocol.h"
 
 #include "action.h"
 #include "chat_edit_box.h"
@@ -31,12 +37,6 @@
 #include "kadu_parser.h"
 #include "message_box.h"
 #include "misc.h"
-#include "protocols/protocol.h"
-#include "usergroup.h"
-
-#include "contacts/contact-account-data.h"
-
-#include "contacts/model/contact-list-model.h"
 
 #include "chat_widget.h"
 
@@ -844,7 +844,8 @@ unsigned int ChatWidget::newMessagesCount() const
 }
 
 void ChatWidget::kaduRestoreGeometry()
-{
+{// TODO: 0.6.6
+/*
 	UserListElements users = UserListElements::fromContactList(Contacts,
 			AccountManager::instance()->defaultAccount());
 
@@ -876,11 +877,11 @@ void ChatWidget::kaduRestoreGeometry()
 		QList<int> horizSizes = toIntList(chat_manager->chatWidgetProperty(Contacts, "HorizontalSizes").toList());
 		if (!horizSizes.empty())
 			horizSplit->setSizes(horizSizes);
-	}
+	}*/
 }
 
 void ChatWidget::kaduStoreGeometry()
-{
+{/* TODO: 0.6.6
 	UserListElements users = UserListElements::fromContactList(Contacts,
 			AccountManager::instance()->defaultAccount());
 
@@ -891,7 +892,7 @@ void ChatWidget::kaduStoreGeometry()
 		users[0].setData("VerticalSizes", QString("%1,%2").arg(sizes[0]).arg(sizes[1]));
 
 	if (horizSplit)
-		chat_manager->setChatWidgetProperty(Contacts, "HorizontalSizes", toVariantList(horizSplit->sizes()));
+		chat_manager->setChatWidgetProperty(Contacts, "HorizontalSizes", toVariantList(horizSplit->sizes()));*/
 }
 
 void ChatWidget::leaveConference()

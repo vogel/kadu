@@ -37,7 +37,6 @@ class CustomInput;
 class EmoticonSelector;
 class KaduAction;
 class Protocol;
-class UserGroup;
 
 typedef QList<ChatWidget *> ChatList;
 

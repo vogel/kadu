@@ -392,7 +392,7 @@ Kadu::Kadu(QWidget *parent)
 	InfoPanel(0), MenuBar(0), KaduMenu(0), ContactsMenu(0), HelpMenu(0), RecentChatsMenu(0), GroupBar(0),
 	ContactsWidget(0), statusMenu(0), statusButton(), lastPositionBeforeStatusMenuHide(),
 	StartTime(QDateTime::currentDateTime()), updateInformationPanelTimer(), NextStatus(),
-	selectedUsers(new UserGroup()), ShowMainWindowOnStart(true),
+	ShowMainWindowOnStart(true),
 	DoBlink(false), BlinkOn(false),Docked(false), dontHideOnClose(false)
 {
 	kdebugf();
@@ -1354,7 +1354,7 @@ void Kadu::changeAppearance()
 }
 
 void Kadu::removeUsers(ContactList contacts)
-{
+{/*
 	kdebugf();
 	UserListElements users = UserListElements::fromContactList(contacts, AccountManager::instance()->defaultAccount());
 	if (users.count())
@@ -1366,16 +1366,16 @@ void Kadu::removeUsers(ContactList contacts)
 			tmp += (altNicks.section(", ", i, (i + 9)) + ",\n");
 
 		if (MessageBox::ask(tr("Selected users:\n%0will be deleted. Are you sure?").arg(tmp), "Warning", kadu))
-		{
+		{*/
 // TODO: 0.6.6
 // 			emit removingUsers(users);
 // 			userlist->removeUsers(users);
 // TODO: 0.6.6
 // 			userlist->writeToConfig();
-		}
-	}
-
-	kdebugf2();
+// 		}
+// 	}
+// 
+// 	kdebugf2();
 }
 
 void Kadu::blink()
@@ -1755,8 +1755,6 @@ Kadu::~Kadu(void)
 
 	qDeleteAll(KaduActions.values());
 
-	delete selectedUsers;
-
 	kdebugf2();
 }
 
@@ -1779,23 +1777,24 @@ void Kadu::createRecentChatsMenu()
 
 	foreach(const ContactList contacts, chat_manager->closedChatUsers())
 	{
-		UserListElements users = UserListElements::fromContactList(contacts, AccountManager::instance()->defaultAccount());
-		QStringList altnicks = users.altNicks(); // lista nick�w z okna rozmowy
-		QString chat_users;
-
-		if (altnicks.count() <= 5)
-			chat_users = altnicks.join(", ");
-		else // je�eli jest wi�cej ni� pi�ciu u�ytkownik�w...
-		{
-			for (int i = 0; i < 4; i++) // to i tak dodajemy tylko pierwszych pi�ciu :)
-				chat_users.append(*altnicks.at(i) + ", ");
-			chat_users.append(*altnicks.at(4) + " [...]");
-		}
-		action = new QAction(icons_manager->loadIcon("OpenChat"), chat_users, this);
-		action->setData(index);
-		RecentChatsMenu->addAction(action);
-
-		index++;
+// TODO: 0.6.6
+// 		UserListElements users = UserListElements::fromContactList(contacts, AccountManager::instance()->defaultAccount());
+// 		QStringList altnicks = users.altNicks(); // lista nick�w z okna rozmowy
+// 		QString chat_users;
+// 
+// 		if (altnicks.count() <= 5)
+// 			chat_users = altnicks.join(", ");
+// 		else // je�eli jest wi�cej ni� pi�ciu u�ytkownik�w...
+// 		{
+// 			for (int i = 0; i < 4; i++) // to i tak dodajemy tylko pierwszych pi�ciu :)
+// 				chat_users.append(*altnicks.at(i) + ", ");
+// 			chat_users.append(*altnicks.at(4) + " [...]");
+// 		}
+// 		action = new QAction(icons_manager->loadIcon("OpenChat"), chat_users, this);
+// 		action->setData(index);
+// 		RecentChatsMenu->addAction(action);
+// 
+// 		index++;
 	}
 
 	kdebugf2();

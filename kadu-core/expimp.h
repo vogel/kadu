@@ -6,8 +6,6 @@
 
 #include "contacts/contact-list.h"
 
-#include "userlistelement.h"
-
 class QLabel;
 class QPushButton;
 class QTreeWidget;
