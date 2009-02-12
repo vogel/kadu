@@ -13,18 +13,18 @@
 #include <QtGui/QDialog>
 
 #include "configuration/configuration-window-data-manager.h"
-#include "userbox.h" 
 #include "icons_manager.h"
 
 class QDomNode;
+class QDialogButtonBox;
+class QHBoxLayout;
 class QListWidget;
 class QWidget;
+class QVBoxLayout;
+
+class ConfigGroupBox;
 class ConfigSection;
 class ConfigWidget;
-class ConfigGroupBox;
-class QHBoxLayout;
-class QVBoxLayout;
-class QDialogButtonBox;
 
 /**
 	@class ConfigurationWidget

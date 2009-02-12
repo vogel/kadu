@@ -150,19 +150,6 @@ GaduProtocol::GaduProtocol(Account *account, ProtocolFactory *factory) :
 	connect(SocketNotifiers, SIGNAL(dcc7Accepted(struct gg_dcc7 *)), this, SIGNAL(dcc7Accepted(struct gg_dcc7 *)));
 	connect(SocketNotifiers, SIGNAL(dcc7Rejected(struct gg_dcc7 *)), this, SIGNAL(dcc7Rejected(struct gg_dcc7 *)));
 
-	connect(userlist, SIGNAL(userDataChanged(UserListElement, QString, QVariant, QVariant, bool, bool)),
-			this, SLOT(userDataChanged(UserListElement, QString, QVariant, QVariant, bool, bool)));
-	connect(userlist, SIGNAL(protocolUserDataChanged(QString, UserListElement, QString, QVariant, QVariant, bool, bool)),
-			this, SLOT(protocolUserDataChanged(QString, UserListElement, QString, QVariant, QVariant, bool, bool)));
-	connect(userlist, SIGNAL(userAdded(UserListElement, bool, bool)),
-			this, SLOT(userAdded(UserListElement, bool, bool)));
-	connect(userlist, SIGNAL(removingUser(UserListElement, bool, bool)),
-			this, SLOT(removingUser(UserListElement, bool, bool)));
-	connect(userlist, SIGNAL(protocolAdded(UserListElement, QString, bool, bool)),
-			this, SLOT(protocolAdded(UserListElement, QString, bool, bool)));
-	connect(userlist, SIGNAL(removingProtocol(UserListElement, QString, bool, bool)),
-			this, SLOT(removingProtocol(UserListElement, QString, bool, bool)));
-
 	connect(SendUserListTimer, SIGNAL(timeout()), this, SLOT(sendUserList()));
 
 	useLastServer = lastServerIP.setAddress(config_file.readEntry("Network", "LastServerIP"));
@@ -301,16 +288,16 @@ void GaduProtocol::changeStatus(Status newStatus)
 
 	statusChanged(newStatus);
 }
-
-void GaduProtocol::protocolUserDataChanged(QString protocolName, UserListElement elem, QString name, QVariant oldValue, QVariant currentValue, bool massively, bool /*last*/)
+/*
+void GaduProtocol::protocolUserDataChanged(QString protocolName, UserListElement elem, QString name, QVariant oldValue, QVariant currentValue, bool massively, bool /*last* /)
 {
-	kdebugf();
+	kdebugf();*/
 	/*
 	   je�eli list� kontakt�w b�dziemy wysy�a� po kawa�ku, to serwer zgubi cz��� danych!
 	   musimy wi�c wys�a� j� w ca�o�ci (poprzez sendUserList())
 	   w takim w�a�nie przypadku (massively==true) nie robimy nic
 	*/
-
+/*
 	Contact contact = elem.toContact(account());
 
 	if (protocolName != "Gadu")
@@ -360,9 +347,9 @@ void GaduProtocol::protocolUserDataChanged(QString protocolName, UserListElement
 	}
 
 	kdebugf2();
-}
-
-void GaduProtocol::userDataChanged(UserListElement elem, QString name, QVariant oldValue, QVariant currentValue, bool massively, bool /*last*/)
+}*/
+/*
+void GaduProtocol::userDataChanged(UserListElement elem, QString name, QVariant oldValue, QVariant currentValue, bool massively, bool /*last* /)
 {
 	kdebugf();
 
@@ -383,11 +370,11 @@ void GaduProtocol::userDataChanged(UserListElement elem, QString name, QVariant 
 			gg_add_notify(Sess, uin(contact));
 	}
 	kdebugf2();
-}
-
-void GaduProtocol::userAdded(UserListElement elem, bool massively, bool /*last*/)
+}*/
+/*
+void GaduProtocol::userAdded(UserListElement elem, bool massively, bool /*last* /)
 {
-	kdebugmf(KDEBUG_FUNCTION_START, "start: '%s' %d\n", qPrintable(elem.altNick()), massively/*, last*/);
+	kdebugmf(KDEBUG_FUNCTION_START, "start: '%s' %d\n", qPrintable(elem.altNick()), massively/*, last* /);
 
 	Contact contact = elem.toContact(account());
 	if (!contact.accountData(account()))
@@ -402,11 +389,11 @@ void GaduProtocol::userAdded(UserListElement elem, bool massively, bool /*last*/
 		if (!contact.isAnonymous())
 			gg_add_notify(Sess, uin(contact));
 	kdebugf2();
-}
-
-void GaduProtocol::removingUser(UserListElement elem, bool massively, bool /*last*/)
+}*/
+/*
+void GaduProtocol::removingUser(UserListElement elem, bool massively, bool /*last* /)
 {
-	kdebugmf(KDEBUG_FUNCTION_START, "start: '%s' %d\n", qPrintable(elem.altNick()), massively/*, last*/);
+	kdebugmf(KDEBUG_FUNCTION_START, "start: '%s' %d\n", qPrintable(elem.altNick()), massively/*, last* /);
 
 	Contact contact = elem.toContact(account());
 	if (!contact.accountData(account()))
@@ -420,9 +407,9 @@ void GaduProtocol::removingUser(UserListElement elem, bool massively, bool /*las
 		if (!contact.isAnonymous())
 			gg_remove_notify(Sess, uin(contact));
 	kdebugf2();
-}
-
-void GaduProtocol::protocolAdded(UserListElement elem, QString protocolName, bool massively, bool /*last*/)
+}*/
+/*
+void GaduProtocol::protocolAdded(UserListElement elem, QString protocolName, bool massively, bool /*last * /)
 {
 	kdebugf();
 
@@ -441,9 +428,9 @@ void GaduProtocol::protocolAdded(UserListElement elem, QString protocolName, boo
 		if (!contact.isAnonymous())
 			gg_add_notify(Sess, uin(contact));
 	kdebugf2();
-}
-
-void GaduProtocol::removingProtocol(UserListElement elem, QString protocolName, bool massively, bool /*last*/)
+}*/
+/*
+void GaduProtocol::removingProtocol(UserListElement elem, QString protocolName, bool massively, bool /*last* /)
 {
 	kdebugf();
 
@@ -462,7 +449,7 @@ void GaduProtocol::removingProtocol(UserListElement elem, QString protocolName, 
 		if (!contact.isAnonymous())
 			gg_remove_notify(Sess, uin(contact));
 	kdebugf2();
-}
+}*/
 
 QHostAddress GaduProtocol::activeServer()
 {
@@ -1004,11 +991,6 @@ void GaduProtocol::setPersonalInfo(SearchRecord &searchRecord, SearchResult &new
 	kdebugf2();
 }
 
-QList<UserListElement> GaduProtocol::streamToUserList(QTextStream &stream) const
-{
-
-}
-
 void GaduProtocol::connectAfterOneSecond()
 {
 	kdebugf();
@@ -1027,7 +1009,7 @@ void GaduProtocol::userListReceived(const struct gg_event *e)
 	int cnt = 0;
 	while (e->event.notify60[nr].uin) // zliczamy najpierw ile zmian status�w zostanie wyemitowanych
 	{
-		if (!userlist->byID("Gadu", QString::number(e->event.notify60[nr].uin)).isAnonymous())
+		if (!ContactManager::instance()->byId(account(), QString::number(e->event.notify60[nr].uin)).isAnonymous())
 			++cnt;
 		++nr;
 	}
@@ -1036,8 +1018,7 @@ void GaduProtocol::userListReceived(const struct gg_event *e)
 
 	while (e->event.notify60[nr].uin)
 	{
-		UserListElement user = userlist->byID("Gadu", QString::number(e->event.notify60[nr].uin));
-		Contact contact = user.toContact(account());
+		Contact contact = ContactManager::instance()->byId(account(), QString::number(e->event.notify60[nr].uin));
 
 		if (contact.isAnonymous())
 		{
@@ -1050,13 +1031,14 @@ void GaduProtocol::userListReceived(const struct gg_event *e)
 
 		GaduContactAccountData *accountData = gaduContactAccountData(contact);
 
-		user.setProtocolData("Gadu", "DNSName", "", nr + 1 == cnt);
-		user.setProtocolData("Gadu", "IP", (unsigned int)ntohl(e->event.notify60[nr].remote_ip), nr + 1 == cnt);
-		user.setProtocolData("Gadu", "Port", e->event.notify60[nr].remote_port, nr + 1 == cnt);
-		user.refreshDNSName("Gadu");
+// TODO: 0.6.6
+// 		user.setProtocolData("Gadu", "DNSName", "", nr + 1 == cnt);
+// 		user.setProtocolData("Gadu", "IP", (unsigned int)ntohl(e->event.notify60[nr].remote_ip), nr + 1 == cnt);
+// 		user.setProtocolData("Gadu", "Port", e->event.notify60[nr].remote_port, nr + 1 == cnt);
+// 		user.refreshDNSName("Gadu");
 
-		user.setProtocolData("Gadu", "Version", e->event.notify60[nr].version, true, nr + 1 == cnt);
-		user.setProtocolData("Gadu", "MaxImageSize", e->event.notify60[nr].image_size, true, nr + 1 == cnt);
+// 		user.setProtocolData("Gadu", "Version", e->event.notify60[nr].version, true, nr + 1 == cnt);
+// 		user.setProtocolData("Gadu", "MaxImageSize", e->event.notify60[nr].image_size, true, nr + 1 == cnt);
 
 		Status oldStatus = accountData->status();
 

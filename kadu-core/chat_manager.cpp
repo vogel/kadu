@@ -31,7 +31,6 @@
 #include "pending_msgs.h"
 #include "protocols/protocols_manager.h"
 #include "search.h"
-#include "userbox.h"
 #include "xml_config_file.h"
 
 #include "chat_manager.h"
@@ -184,7 +183,8 @@ ChatManager::ChatManager(QObject *parent)
 	ContactsListWidgetMenuManager::instance()->addSeparator();
 
 	connect(&refreshTitlesTimer, SIGNAL(timeout()), this, SLOT(refreshTitles()));
-	connect(userlist, SIGNAL(usersStatusChanged(QString)), this, SLOT(refreshTitlesLater()));
+// TODO: 0.6.6
+// 	connect(userlist, SIGNAL(usersStatusChanged(QString)), this, SLOT(refreshTitlesLater()));
 
 	configurationUpdated();
 
@@ -276,7 +276,8 @@ ChatManager::~ChatManager()
 	kdebugf();
 
 	disconnect(&refreshTitlesTimer, SIGNAL(timeout()), this, SLOT(refreshTitles()));
-	disconnect(userlist, SIGNAL(usersStatusChanged(QString)), this, SLOT(refreshTitlesLater()));
+// TODO: 0.6.6
+//	disconnect(userlist, SIGNAL(usersStatusChanged(QString)), this, SLOT(refreshTitlesLater()));
 
 	closeAllWindows();
 

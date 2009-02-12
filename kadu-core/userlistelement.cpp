@@ -527,13 +527,3 @@ Contact UserListElement::toContact() const
 {
 	return toContact(AccountManager::instance()->defaultAccount());
 }
-
-UserListElement UserListElement::fromContact(Contact contact, Account *account)
-{
-	ContactAccountData *data = contact.accountData(account);
-
-	if (data)
-		return userlist->byID("Gadu", data->id());
-	else
-		return UserListElement();
-}

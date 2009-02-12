@@ -127,9 +127,7 @@ set (kadu_SRCS
 	themes.cpp
 	toolbar.cpp
 	updates.cpp
-	userbox.cpp
 	usergroup.cpp
-	userlist.cpp
 	userlistelement.cpp
 	userlist-private.cpp
 	xml_config_file.cpp
@@ -245,9 +243,7 @@ set (kadu_MOC_SRCS
 	themes.h
 	toolbar.h
 	updates.h
-	userbox.h
 	usergroup.h
-	userlist.h
 	userlistelement.h
 	userlist-private.h
 )

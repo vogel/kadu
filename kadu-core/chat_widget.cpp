@@ -30,8 +30,8 @@
 #include "kadu.h"
 #include "kadu_parser.h"
 #include "message_box.h"
+#include "misc.h"
 #include "protocols/protocol.h"
-#include "userbox.h"
 #include "usergroup.h"
 
 #include "contacts/contact-account-data.h"

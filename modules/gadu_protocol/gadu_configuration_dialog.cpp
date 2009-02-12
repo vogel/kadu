@@ -20,6 +20,7 @@
 #include "icons_manager.h"
 #include "kadu.h"
 #include "message_box.h"
+#include "misc.h"
 
 #include "gadu_account_data.h"
 #include "gadu-account-data-manager.h"

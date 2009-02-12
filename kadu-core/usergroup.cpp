@@ -12,7 +12,6 @@
 
 #include "debug.h"
 #include "kadu.h"
-#include "userlist.h"
 #include "userlist-private.h"
 
 #include "contacts/contact-account-data.h"
@@ -217,36 +216,6 @@ void UserGroup::removeUsers(QList<UserListElement> users)
 
 void UserGroup::removeUser(const UserListElement &ule, bool massively, bool last)
 {
-//	kdebugmf(KDEBUG_FUNCTION_START, "start: group:'%s' altNick:'%s' mass:%d last:%d\n", name(), qPrintable(ule.altNick()), massively, last);
-//	printBacktrace("xxx");
-
-//	kdebugf();
-
-// 	ule.privateData->lock();
-
-	if (contains(ule))
-	{
-		emit removingUser(ule, massively, last);
-		// very ugly hack :|
-		UserListElement ule2(ule);
-		if (this == userlist && !Kadu::closing())
-			ule.setAnonymous(true);
-		else
-		{
-			ule.removeGroup(this);
-			QSet<UserListElement>::remove(ule);
-		}
-		// ule can be deleted, so use a copy
-		emit userRemoved(ule2, massively, last);
-		emit modified();
-	}
-
-	if (!massively || (massively && last))
-		emit usersRemoved();
-
-// 	ule.privateData->unlock();
-
-//	kdebugf2();
 }
 
 UserListElements UserGroup::toUserListElements() const
@@ -363,16 +332,4 @@ ContactList UserListElements::toContactList(Account *account)
 
 UserListElements UserListElements::fromContactList(ContactList contacts, Account *account)
 {
-	UserListElements result;
-
-	foreach (Contact contact, contacts)
-	{
-		ContactAccountData *data = contact.accountData(account);
-		if (!data)
-			continue;
-
-		result << userlist->byID("Gadu", data->id());
-	}
-
-	return result;
 }

@@ -13,7 +13,6 @@
 #include <QtGui/QDialog>
 
 #include "configuration/configuration-window-data-manager.h"
-#include "userbox.h" 
 #include "icons_manager.h"
 
 class QWidget;

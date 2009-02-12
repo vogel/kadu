@@ -75,7 +75,6 @@
 #include "syntax_editor.h"
 #include "toolbar.h"
 #include "updates.h"
-#include "userbox.h"
 #include "xml_config_file.h"
 
 #include "kadu.h"
@@ -664,13 +663,6 @@ Kadu::Kadu(QWidget *parent)
 	foreach (Account *account, AccountManager::instance()->accounts())
 		accountRegistered(account);
 
-	connect(userlist, SIGNAL(usersDataChanged(QString)), this, SLOT(updateInformationPanelLater()));
-	connect(userlist, SIGNAL(protocolUsersDataChanged(QString, QString)), this, SLOT(updateInformationPanelLater()));
-	connect(userlist, SIGNAL(usersStatusChanged(QString)), this, SLOT(updateInformationPanelLater()));
-
-	connect(userlist, SIGNAL(protocolUserDataChanged(QString, UserListElement, QString, QVariant, QVariant, bool, bool)),
-		this, SLOT(editUserActionSetParams(QString, UserListElement)));
-
 	MainLayout->setResizeMode(QLayout::Minimum);
 	setCentralWidget(MainWidget);
 
@@ -1075,8 +1067,8 @@ void Kadu::configurationActionActivated(QAction *sender, bool toggled)
 {
 	MainConfigurationWindow::instance()->show();
 }
-
-void Kadu::editUserActionSetParams(QString /*protocolName*/, UserListElement user)
+/*
+void Kadu::editUserActionSetParams(QString / *protocolName* /, UserListElement user)
 {
 	kdebugf();
  	foreach (KaduAction *action, editUserActionDescription->actions())
@@ -1102,7 +1094,7 @@ void Kadu::editUserActionSetParams(QString /*protocolName*/, UserListElement use
 		}
 	}
 	kdebugf2();
-}
+}*/
 
 void Kadu::editUserActionCreated(KaduAction *action)
 {
@@ -1375,8 +1367,9 @@ void Kadu::removeUsers(ContactList contacts)
 
 		if (MessageBox::ask(tr("Selected users:\n%0will be deleted. Are you sure?").arg(tmp), "Warning", kadu))
 		{
-			emit removingUsers(users);
-			userlist->removeUsers(users);
+// TODO: 0.6.6
+// 			emit removingUsers(users);
+// 			userlist->removeUsers(users);
 // TODO: 0.6.6
 // 			userlist->writeToConfig();
 		}
@@ -1723,23 +1716,12 @@ bool Kadu::close(bool quit)
 		disconnect(gadu, SIGNAL(needTokenValue(QPixmap, QString &)),
 				this, SLOT(readTokenValue(QPixmap, QString &)));
 
-		disconnect(userlist, SIGNAL(protocolUserDataChanged(QString, UserListElement, QString, QVariant, QVariant, bool, bool)),
-				this, SLOT(editUserActionSetParams(QString, UserListElement)));
-
-		disconnect(userlist, SIGNAL(usersDataChanged(QString)), this, SLOT(updateInformationPanelLater()));
-		disconnect(userlist, SIGNAL(protocolUsersDataChanged(QString, QString)), this, SLOT(updateInformationPanelLater()));
-		disconnect(userlist, SIGNAL(usersStatusChanged(QString)), this, SLOT(updateInformationPanelLater()));
-
 		StatusChangerManager::closeModule();
 
 		ChatManager::closeModule();
 		SearchDialog::closeModule();
-
-// TODO: 0.6.6
-// 		userlist->writeToConfig();//writeToConfig must be before GroupsManager::closeModule, because GM::cM removes all groups from userlist
-// 		GroupsManagerOld::closeModule();
+;
 		xml_config_file->sync();
-		UserList::closeModule();
 		EmoticonsManager::closeModule();
 		IconsManager::closeModule();
 
@@ -2492,24 +2474,25 @@ const QDateTime &Kadu::startTime() const
 
 void Kadu::customEvent(QEvent *e)
 {
-	Account *defaultAccount = AccountManager::instance()->defaultAccount();
-
-	if (int(e->type()) == 4321)
-		show();
+// TODO: 0.6.6
+// 	Account *defaultAccount = AccountManager::instance()->defaultAccount();
+// 
+// 	if (int(e->type()) == 4321)
+// 		show();
 //		QTimer::singleShot(0, this, SLOT(show()));
-	else if (int(e->type()) == 5432)
-	{
-		OpenGGChatEvent *ev = static_cast<OpenGGChatEvent *>(e);
-		if (ev->number() > 0)
-		{
-			Contact contact = userlist->byID("Gadu", QString::number(ev->number())).toContact(defaultAccount);
-			ContactList contacts;
-			contacts << contact;
-			chat_manager->openChatWidget(defaultAccount, contacts, true);
-		}
-	}
-	else
-		QWidget::customEvent(e);
+// 	else if (int(e->type()) == 5432)
+// 	{
+// 		OpenGGChatEvent *ev = static_cast<OpenGGChatEvent *>(e);
+// 		if (ev->number() > 0)
+// 		{
+// 			Contact contact = userlist->byID("Gadu", QString::number(ev->number())).toContact(defaultAccount);
+// 			ContactList contacts;
+// 			contacts << contact;
+// 			chat_manager->openChatWidget(defaultAccount, contacts, true);
+// 		}
+// 	}
+// 	else
+// 		QWidget::customEvent(e);
 }
 
 void Kadu::setStatus(const Status &status)

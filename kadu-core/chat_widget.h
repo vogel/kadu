@@ -21,7 +21,6 @@
 
 #include "chat_messages_view.h"
 #include "configuration_aware_object.h"
-#include "userlist.h"
 #include "message.h"
 
 #include "exports.h"

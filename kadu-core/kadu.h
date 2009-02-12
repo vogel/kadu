@@ -313,7 +313,6 @@ public slots:
 	void setMainWindowIcon(const QPixmap &);
 
 	void editUserActionCreated(KaduAction *action);
-	void editUserActionSetParams(QString protocolName, UserListElement user);
 	void showStatusActionActivated(QAction *sender, bool toggled);
 	void showStatusActionCreated(KaduAction *action);
 	void setStatusActionsIcon();
@@ -341,7 +340,6 @@ signals:
 	**/
 	void searchingForTrayPosition(QPoint &point);
 	void settingMainIconBlocked(bool &);
-	void removingUsers(UserListElements users);
 
 };
 

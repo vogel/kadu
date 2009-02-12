@@ -19,7 +19,6 @@
 #include "protocols/status.h"
 
 #include "gadu_exports.h"
-#include "userlist.h"
 
 typedef uin_t UinType;
 

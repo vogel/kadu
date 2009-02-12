@@ -438,7 +438,6 @@ public slots:
 
 	Contact toContact(Account *account) const;
 	Contact toContact() const;
-	static UserListElement fromContact(Contact contact, Account *account);
 
 };
 

@@ -13,7 +13,6 @@
 #include "debug.h"
 #include "misc.h"
 #include "protocols/protocol.h"
-#include "userlist.h"
 #include "xml_config_file.h"
 
 #include "accounts/account.h"

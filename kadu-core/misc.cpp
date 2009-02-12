@@ -42,6 +42,8 @@
 
 #include "contacts/contact-manager.h"
 
+#include "../modules/gadu_protocol/gadu-protocol.h"
+
 #include "chat_manager.h"
 #include "config_file.h"
 #include "debug.h"
@@ -49,9 +51,7 @@
 #include "icons_manager.h"
 #include "kadu.h"
 #include "kadu_parser.h"
-#include "../modules/gadu_protocol/gadu-protocol.h"
 #include "message_box.h"
-#include "userlist.h"
 #include "status.h"
 
 #include "misc.h"
@@ -984,7 +984,8 @@ OpenChatWith::OpenChatWith(QWidget *parent)
 	: QWidget(parent, Qt::Window)
 {
 	kdebugf();
-
+// TODO: 0.6.6
+/*
 	setWindowTitle(tr("Open chat with..."));
 	setAttribute(Qt::WA_DeleteOnClose);
 
@@ -1041,7 +1042,7 @@ OpenChatWith::OpenChatWith(QWidget *parent)
 	setLayout(layout);
 
 	loadWindowGeometry(this, "General", "OpenChatWith", 100, 100, 250, 80);
-	setFixedHeight(sizeHint().height());
+	setFixedHeight(sizeHint().height());*/
 
 	kdebugf2();
 }
@@ -1063,25 +1064,27 @@ void OpenChatWith::keyPressEvent(QKeyEvent *e)
 
 void OpenChatWith::inputAccepted()
 {
-	kdebugf();
-
-	QString text = c_text->currentText();
-	Account *account = AccountManager::instance()->defaultAccount();
-
-	if (!text.isEmpty())
-	{
-		if (!c_protocol->currentItem())
-		{
-			if (userlist->containsAltNick(text, FalseForAnonymous))
-				chat_manager->openPendingMsgs(UserListElements(userlist->byAltNick(text)).toContactList(AccountManager::instance()->defaultAccount()), true);
-		}
-		else
-			chat_manager->openPendingMsgs(UserListElements(userlist->byID(c_protocol->currentText(), text)).toContactList(AccountManager::instance()->defaultAccount()), true);
-	}
-
-	close();
-
-	kdebugf2();
+// TODO: 0.6.6
+// THIS SUX HARD
+// 	kdebugf();
+// 
+// 	QString text = c_text->currentText();
+// 	Account *account = AccountManager::instance()->defaultAccount();
+// 
+// 	if (!text.isEmpty())
+// 	{
+// 		if (!c_protocol->currentItem())
+// 		{
+// 			if (userlist->containsAltNick(text, FalseForAnonymous))
+// 				chat_manager->openPendingMsgs(UserListElements(userlist->byAltNick(text)).toContactList(AccountManager::instance()->defaultAccount()), true);
+// 		}
+// 		else
+// 			chat_manager->openPendingMsgs(UserListElements(userlist->byID(c_protocol->currentText(), text)).toContactList(AccountManager::instance()->defaultAccount()), true);
+// 	}
+// 
+// 	close();
+// 
+// 	kdebugf2();
 }
 
 ImageWidget::ImageWidget(QWidget *parent)

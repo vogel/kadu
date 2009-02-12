@@ -7,6 +7,7 @@
  *                                                                         *
  ***************************************************************************/
 
+#include <QtCore/QDir>
 #include <QtCore/QList>
 #include <QtCore/QPair>
 #include <QtGui/QApplication>
@@ -25,13 +26,15 @@
 
 #include "gui/widgets/tool-tip-class-manager.h"
 
+#include "../modules/gadu_protocol/gadu-protocol.h"
+
 #include "chat_message.h"
 #include "chat_messages_view.h"
 #include "config_file.h"
 #include "debug.h"
-#include "../modules/gadu_protocol/gadu-protocol.h"
 #include "icons_manager.h"
 #include "kadu.h"
+#include "misc.h"
 #include "protocols/status.h"
 #include "userlistelement.h"
 

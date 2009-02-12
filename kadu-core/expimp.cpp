@@ -197,11 +197,12 @@ UserlistImportExport::UserlistImportExport(QWidget *parent)
 
 void UserlistImportExport::updateUserListCount()
 {
-	int realUserCount = 0;
-	foreach(const UserListElement &user, *userlist)
-		if (!user.isAnonymous())
-			++realUserCount;
-	l_itemscount->setText(tr("%1 entries will be exported").arg(realUserCount));
+// TODO: 0.6.6
+// 	int realUserCount = 0;
+// 	foreach(const UserListElement &user, *userlist)
+// 		if (!user.isAnonymous())
+// 			++realUserCount;
+// 	l_itemscount->setText(tr("%1 entries will be exported").arg(realUserCount));
 }
 
 UserlistImportExport::~UserlistImportExport()

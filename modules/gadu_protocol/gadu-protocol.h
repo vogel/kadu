@@ -15,8 +15,6 @@
 
 #include <libgadu.h>
 
-#include "userlist.h"
-
 #include "services/gadu-chat-service.h"
 #include "services/gadu-contact-list-service.h"
 
@@ -247,57 +245,6 @@ public:
 	QHostAddress activeServer();
 
 	/**
-		Konwertuje list� u�ytkownik�w do postaci �a�cucha.
-
-		�a�cuch wynikowy ma posta�:
-		<code>
-			opis_u�ytkownika<CR><LF>
-			opis_u�ytkownika<CR><LF>
-			...
-			opis_u�ytkownika<CR><LF>
-		</code>
-
-		opis_u�ytkownika ma posta�:
-		<code>
-			firstName;lastName;nickName;altNick;mobile;grupy;uin;email;0;;0;
-		</code>
-
-		grupy maj� posta�:
-		<code>
-			grupa_1;grupa_2;grupa_3
-		</code>
-
-		@param userList lista u�ytkownik�w, kt�ra zostanie skonwertowana
-		@return �a�cuch reprezentuj�cy list� u�ytkownik�w
-		@see stringToUserList
-		@see streamToUserList
-	**/
-	QString userListToString(const UserList &userList) const;
-
-	/**
-		Konwertuj� �a�cuch do listy u�ytkownik�w.
-
-		Format �a�cucha jest anologiczny do tego z funkcji userListToString.
-
-		@param source �a�uch, b�d�cy reprezentacj� listy u�ytkownik�w
-		@see userListToString
-		@see streamToUserList
-	**/
-	QList<UserListElement> stringToUserList(const QString &source) const;
-
-	/**
-		Odczytuje ze strumienia �a�cuch reprezentuj�cy list� u�ytkownik�w i konwertuje
-		go go postaci obiektu UserList.
-
-		Format �a�cucha jest anologiczny do tego z funkcji userListToString.
-
-		@param source strumie�, z kt�rego odczytane zostan� dane
-		@see userListToString
-		@see stringToUserList
-	**/
-	QList<UserListElement> streamToUserList(QTextStream &source) const;
-
-	/**
 		Po jedno sekundowym op��nieniu wykonuje pr�b� po��czenia.
 	**/
 	void connectAfterOneSecond();
@@ -363,15 +310,6 @@ public slots:
 		@todo jak to w og�le dzia�a, bo zapomnia�em??
 	**/
 	void setPersonalInfo(SearchRecord &searchRecord, SearchResult &newData);
-
-protected slots:
-	/* sloty pod��czane do sygna��w z klasy UserList */
-	void protocolUserDataChanged(QString protocolName, UserListElement elem, QString name, QVariant oldValue, QVariant currentValue, bool massively, bool last);
-	void userDataChanged(UserListElement elem, QString name, QVariant oldValue, QVariant currentValue, bool massively, bool last);
-	void userAdded(UserListElement elem, bool massively, bool last);
-	void removingUser(UserListElement elem, bool massively, bool last);
-	void protocolAdded(UserListElement elem, QString protocolName, bool massively, bool last);
-	void removingProtocol(UserListElement elem, QString protocolName, bool massively, bool last);
 
 signals:
 	/**

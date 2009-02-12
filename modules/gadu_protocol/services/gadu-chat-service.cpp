@@ -113,9 +113,6 @@ void GaduChatService::messageReceivedSlot(int msgclass, ContactList senders, QSt
 	jezeli warunek jest spelniony przerywamy dzialanie funkcji.
 */
 
-	// TODO : 0.6.6
-
-	UserListElements ules = UserListElements::fromContactList(senders, Protocol->account());
 	if (senders[0].isAnonymous() &&
 			config_file.readBoolEntry("Chat", "IgnoreAnonymousUsers") &&
 			((senders.size() == 1) || config_file.readBoolEntry("Chat", "IgnoreAnonymousUsersInConferences")))

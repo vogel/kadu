@@ -11,7 +11,6 @@
 #include "config_file.h"
 #include "debug.h"
 #include "kadu.h"
-#include "userbox.h"
 
 #include "icons_manager.h"
 

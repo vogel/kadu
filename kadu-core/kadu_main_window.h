@@ -14,12 +14,12 @@
 #include <QtXml/QDomElement>
 
 #include "action.h"
-#include "userlist.h"
 
 #include "exports.h"
 
 class QContextMenuEvent;
 
+class Contact;
 class ContactsListWidget;
 
 class KADUAPI KaduMainWindow : public QMainWindow

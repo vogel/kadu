@@ -255,9 +255,7 @@ int main(int argc, char *argv[])
 		return 1;
 	}
 
-	UserList::initModule();
 	IconsManager::initModule();
-// 	GroupsManagerOld::initModule();
 	EmoticonsManager::initModule();
 
 	new Kadu(0);

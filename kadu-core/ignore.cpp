@@ -15,13 +15,13 @@
 #include <QtGui/QPushButton>
 #include <QtGui/QGroupBox>
 
+#include "../modules/gadu_protocol/gadu.h"
+
 #include "config_file.h"
 #include "debug.h"
-#include "../modules/gadu_protocol/gadu.h"
 #include "icons_manager.h"
 #include "ignore.h"
 #include "misc.h"
-#include "userlist.h"
 #include "xml_config_file.h"
 
 Ignored::Ignored(QWidget *parent, const char *name) : QWidget(parent, name, Qt::Window),
