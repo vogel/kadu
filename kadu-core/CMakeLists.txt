@@ -36,6 +36,7 @@ set (kadu_SRCS
 
 	configuration/account-data-manager.cpp
 	configuration/config-file-data-manager.cpp
+	configuration/contact-account-data-manager.cpp
 	configuration/storable-object.cpp
 
 	configuration/widgets/manage-accounts.cpp

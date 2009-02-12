@@ -7,26 +7,24 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GADU_CONTACT_ACCOUNT_DATA_WIDGET
-#define GADU_CONTACT_ACCOUNT_DATA_WIDGET
+#ifndef CONTACT_ACCOUNT_DATA_MANAGER_H
+#define CONTACT_ACCOUNT_DATA_MANAGER_H
 
-#include <QtGui/QDialog>
-#include <QtGui/QLineEdit>
+#include "configuration-window-data-manager.h"
 
-#include "gui/widgets/configuration/configuration-window.h"
+class ContactAccountData;
 
-class GaduContactAccountData;
-
-class GaduContactAccountDataWidget : public QWidget
+class KADUAPI ContactAccountDataManager : public ConfigurationWindowDataManager
 {
-	Q_OBJECT
+	ContactAccountData *Data;
 
-	GaduContactAccountData *ContactAccountData;
-	void createGui();
+protected:
+	ContactAccountData * data() { return Data; }
+
 public:
-	GaduContactAccountDataWidget(GaduContactAccountData *contactAccountData, QWidget *parent = 0);
-	~GaduContactAccountDataWidget();
-
+	ContactAccountDataManager(ContactAccountData* data);
+	virtual void writeEntry(const QString &section, const QString &name, const QVariant &value);
+	virtual QVariant readEntry(const QString &section, const QString &name);
 };
 
-#endif // GADU_CONTACT_ACCOUNT_DATA_WIDGET
+#endif 

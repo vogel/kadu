@@ -5,6 +5,7 @@ set (SOURCES
 	gadu_account_data.cpp
 	gadu_configuration_dialog.cpp
 	gadu-contact-account-data.cpp
+	gadu-contact-account-data-manager.cpp
 	gadu_formatter.cpp
 	gadu_images_manager.cpp
 	gadu-importer.cpp
