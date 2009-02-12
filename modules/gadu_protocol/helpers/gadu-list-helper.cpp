@@ -21,7 +21,7 @@
 #include "debug.h"
 #include "misc.h"
 
-#include "gadu-contact-account-data.h"
+#include "../gadu-contact-account-data.h"
 
 #include "gadu-list-helper.h"
 

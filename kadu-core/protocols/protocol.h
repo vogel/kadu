@@ -24,9 +24,10 @@ typedef uint32_t UinType;
 class QPixmap;
 
 class AccountData;
+class ChatService;
+class ContactListService;
 class Message;
 class ProtocolFactory;
-class ServerContactListManager;
 class Status;
 
 class KADUAPI Protocol : public QObject
@@ -40,14 +41,6 @@ public:
 		NetworkConnecting,
 		NetworkConnected,
 		NetworkDisconnecting
-	};
-
-	enum MessageStatus {
-		StatusAcceptedDelivered,
-		StatusAcceptedQueued,
-		StatusRejectedBlocked,
-		StatusRejectedBoxFull,
-		StatusRejectedUnknown
 	};
 
 private:
@@ -74,7 +67,8 @@ public:
 	ProtocolFactory * protocolFactory() const { return Factory; }
 	Account * account() const { return CurrentAccount; }
 
-	virtual ServerContactListManager * serverContactListManager() { return 0; }
+	virtual ChatService * chatService() { return 0; }
+	virtual ContactListService * contactListService() { return 0; }
 
 	virtual void setAccount(Account *account); 
 	virtual bool validateUserID(QString &uid) = 0;
@@ -91,12 +85,6 @@ public:
 
 	QIcon icon();
 
-public slots:
-	virtual bool sendMessage(Contact user, const QString &messageContent);
-	virtual bool sendMessage(ContactList users, const QString &messageContent);
-	virtual bool sendMessage(Contact user, Message &message);
-	virtual bool sendMessage(ContactList users, Message &message) = 0;
-
 signals:
 	void connecting(Account *account);
 	void connected(Account *account);
@@ -109,11 +97,6 @@ signals:
 
 // TODO: REVIEW
 	void connectionError(Account *account, const QString &server, const QString &reason);
-
-	void sendMessageFiltering(const ContactList users, QByteArray &msg, bool &stop);
-	void messageStatusChanged(int messsageId, Protocol::MessageStatus status);
-	void receivedMessageFilter(Account *account, ContactList senders, const QString &message, time_t time, bool &ignore);
-	void messageReceived(Account *account, ContactList senders, const QString &message, time_t time);
 
 };
 

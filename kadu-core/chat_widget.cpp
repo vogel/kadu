@@ -566,26 +566,26 @@ void ChatWidget::cancelMessage()
 	kdebugf2();
 }
 
-void ChatWidget::messageStatusChanged(int messageId, Protocol::MessageStatus status)
+void ChatWidget::messageStatusChanged(int messageId, ChatService::MessageStatus status)
 {
 	if (messageId != myLastMessage.id())
 		return;
 
 	switch (status)
 	{
-		case Protocol::StatusAcceptedDelivered:
-		case Protocol::StatusAcceptedQueued:
+		case ChatService::StatusAcceptedDelivered:
+		case ChatService::StatusAcceptedQueued:
 			writeMyMessage();
 			emit messageSentAndConfirmed(Contacts, myLastMessage.toHtml());
 			disconnectAcknowledgeSlots();
 			changeCancelSendToSend();
 			return;
 
-		case Protocol::StatusRejectedBlocked:
+		case ChatService::StatusRejectedBlocked:
 			MessageBox::msg("Message blocked", true, "Warning", this);
-		case Protocol::StatusRejectedBoxFull:
+		case ChatService::StatusRejectedBoxFull:
 			MessageBox::msg("Message box if full", true, "Warning", this);
-		case Protocol::StatusRejectedUnknown:
+		case ChatService::StatusRejectedUnknown:
 			MessageBox::msg("Message not delivered", true, "Warning", this);
 	}
 
@@ -594,16 +594,18 @@ void ChatWidget::messageStatusChanged(int messageId, Protocol::MessageStatus sta
 
 void ChatWidget::connectAcknowledgeSlots()
 {
-// TODO: 0.6.6
-// 	connect(CurrentProtocol, SIGNAL(messageStatusChanged(int, Protocol::MessageStatus)),
-// 			this, SLOT(messageStatusChanged(int, Protocol::MessageStatus)));
+	ChatService *chatService = CurrentAccount->protocol()->chatService();
+	if (chatService)
+		connect(chatService, SIGNAL(messageStatusChanged(int, Protocol::MessageStatus)),
+				this, SLOT(messageStatusChanged(int, Protocol::MessageStatus)));
 }
 
 void ChatWidget::disconnectAcknowledgeSlots()
 {
-// TODO: 0.6.6
-// 	disconnect(CurrentProtocol, SIGNAL(messageStatusChanged(int, Protocol::MessageStatus)),
-// 			this, SLOT(messageStatusChanged(int, Protocol::MessageStatus)));
+	ChatService *chatService = CurrentAccount->protocol()->chatService();
+	if (chatService)
+		disconnect(chatService, SIGNAL(messageStatusChanged(int, Protocol::MessageStatus)),
+				this, SLOT(messageStatusChanged(int, Protocol::MessageStatus)));
 }
 
 void ChatWidget::changeSendToCancelSend()
@@ -658,7 +660,9 @@ void ChatWidget::sendMessage()
 
 	myLastMessage = Message::parse(Edit->inputBox()->document());
 
-	if (!currentProtocol()->sendMessage(Contacts, myLastMessage))
+	ChatService *chatService = currentProtocol()->chatService();
+
+	if (!chatService || !chatService->sendMessage(Contacts, myLastMessage))
 	{
 		cancelMessage();
 		return;

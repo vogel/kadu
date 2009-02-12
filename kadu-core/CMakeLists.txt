@@ -80,6 +80,8 @@ set (kadu_SRCS
 	protocols/protocols_manager.cpp
 	protocols/status.cpp
 
+	protocols/services/chat-service.cpp
+
 	about.cpp
 	action.cpp
 	activate.cpp
@@ -195,7 +197,9 @@ set (kadu_MOC_SRCS
 	protocols/protocol.h
 	protocols/protocol_factory.h
 	protocols/protocols_manager.h
-	protocols/server-contact-list-manager.h
+
+	protocols/services/chat-service.h
+	protocols/services/contact-list-service.h
 
 	about.h
 	action.h

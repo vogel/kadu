@@ -21,7 +21,7 @@
 #include <QtGui/QVBoxLayout>
 
 #include "../modules/gadu_protocol/gadu-protocol.h"
-#include "../modules/gadu_protocol/gadu-list-helper.h"
+#include "../modules/gadu_protocol/helpers/gadu-list-helper.h"
 
 #include "accounts/account.h"
 #include "accounts/account_manager.h"
@@ -30,12 +30,15 @@
 #include "contacts/contact-manager.h"
 #include "contacts/group.h"
 
+#include "protocols/protocol.h"
+
+#include "protocols/services/contact-list-service.h"
+
 #include "debug.h"
 #include "icons_manager.h"
 #include "ignore.h"
 #include "message_box.h"
 #include "misc.h"
-#include "protocols/protocol.h"
 
 #include "expimp.h"
 
@@ -164,7 +167,7 @@ UserlistImportExport::UserlistImportExport(QWidget *parent)
 	connect(pb_delete, SIGNAL(clicked()), this, SLOT(clean()));
 
 	Protocol *gadu = AccountManager::instance()->defaultAccount()->protocol();
-	ServerContactListManager *manager = gadu->serverContactListManager();
+	ContactListService *manager = gadu->contactListService();
 	connect(manager, SIGNAL(contactListExported(bool)), this, SLOT(contactListExported(bool)));
 	connect(manager, SIGNAL(contactListImported(bool, ContactList)),
 		this, SLOT(contactListImported(bool, ContactList)));
@@ -262,7 +265,7 @@ void UserlistImportExport::startImportTransfer()
 
 	pb_fetch->setEnabled(false);
 
-	ServerContactListManager *manager = gadu->serverContactListManager();
+	ContactListService *manager = gadu->contactListService();
 	manager->importContactList();
 
 	kdebugf2();
@@ -352,7 +355,7 @@ void UserlistImportExport::startExportTransfer()
 	pb_delete->setEnabled(false);
 	pb_tofile->setEnabled(false);
 
-	ServerContactListManager *manager = gadu->serverContactListManager();
+	ContactListService *manager = gadu->contactListService();
 	Clear = false;
 	manager->exportContactList();
 
@@ -413,7 +416,7 @@ void UserlistImportExport::clean()
 	pb_delete->setEnabled(false);
 	pb_tofile->setEnabled(false);
 
-	ServerContactListManager *manager = gadu->serverContactListManager();
+	ContactListService *manager = gadu->contactListService();
 	Clear = true;
 	manager->exportContactList(ContactList());
 

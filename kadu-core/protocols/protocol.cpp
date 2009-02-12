@@ -28,29 +28,6 @@ Protocol::~Protocol()
 {
 }
 
-bool Protocol::sendMessage(Contact user, const QString &messageContent)
-{
-	ContactList users;
-	users.append(user);
-	QTextDocument document(messageContent);
-	Message message = Message::parse(&document);
-	return sendMessage(users, message);
-}
-
-bool Protocol::sendMessage(ContactList users, const QString &messageContent)
-{
-	QTextDocument document(messageContent);
-	Message message = Message::parse(&document);
-	return sendMessage(users, message);
-}
-
-bool Protocol::sendMessage(Contact user, Message &message)
-{
-	ContactList users;
-	users.append(user);
-	return sendMessage(users, message);
-}
-
 QIcon Protocol::icon()
 {
 	QString iconName = Factory->iconName();
@@ -58,7 +35,6 @@ QIcon Protocol::icon()
 		? QIcon()
 		: icons_manager->loadIcon(iconName);
 }
-
 
 void Protocol::setAllOffline()
 {

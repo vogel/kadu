@@ -690,8 +690,11 @@ void Kadu::accountRegistered(Account *account)
 {
 	Protocol *protocol = account->protocol();
 
-	connect(protocol, SIGNAL(messageReceived(Account *, ContactList, const QString &, time_t)),
-		this, SLOT(messageReceived(Account *, ContactList, const QString &, time_t)));
+	ChatService *chatService = protocol->chatService();
+	if (chatService)
+		connect(chatService, SIGNAL(messageReceived(Account *, ContactList, const QString &, time_t)),
+			this, SLOT(messageReceived(Account *, ContactList, const QString &, time_t)));
+
 	connect(protocol, SIGNAL(connecting(Account *)), this, SLOT(connecting()));
 	connect(protocol, SIGNAL(connected(Account *)), this, SLOT(connected()));
 	connect(protocol, SIGNAL(disconnected(Account *)), this, SLOT(disconnected()));
@@ -699,7 +702,6 @@ void Kadu::accountRegistered(Account *account)
 		this, SLOT(imageReceivedAndSaved(UinType, uint32_t, uint32_t, const QString &)));
 	connect(protocol, SIGNAL(needTokenValue(QPixmap, QString &)),
 		this, SLOT(readTokenValue(QPixmap, QString &)));
-	connect(protocol, SIGNAL(systemMessageReceived(const QString &)), this, SLOT(systemMessageReceived(const QString &)));
 	connect(protocol, SIGNAL(statusChanged(Account *, Status)),
 			this, SLOT(statusChanged(Account *, Status)));
 
@@ -1626,12 +1628,6 @@ void Kadu::imageReceivedAndSaved(UinType sender, uint32_t size, uint32_t crc32, 
 	}
 }
 
-// TODO: remove
-void Kadu::systemMessageReceived(const QString &msg)
-{
-//	MessageBox::msg(msg);
-}
-
 void Kadu::disconnected()
 {
 	kdebugmf(KDEBUG_FUNCTION_START, "Disconnection has occured\n");
@@ -1714,8 +1710,11 @@ bool Kadu::close(bool quit)
 		delete defaultFontInfo;
 		delete defaultFont;
 
-		disconnect(gadu, SIGNAL(messageReceived(Account *, ContactList, const QString &, time_t)),
-				this, SLOT(messageReceived(Account *, ContactList, const QString &, time_t)));
+		ChatService *chatService = gadu->chatService();
+		if (chatService)
+			disconnect(chatService, SIGNAL(messageReceived(Account *, ContactList, const QString &, time_t)),
+					this, SLOT(messageReceived(Account *, ContactList, const QString &, time_t)));
+
 		disconnect(gadu, SIGNAL(connecting()), this, SLOT(connecting()));
 		disconnect(gadu, SIGNAL(connected()), this, SLOT(connected()));
 		disconnect(gadu, SIGNAL(disconnected()), this, SLOT(disconnected()));
@@ -1723,7 +1722,6 @@ bool Kadu::close(bool quit)
 				this, SLOT(imageReceivedAndSaved(UinType, uint32_t, uint32_t, const QString &)));
 		disconnect(gadu, SIGNAL(needTokenValue(QPixmap, QString &)),
 				this, SLOT(readTokenValue(QPixmap, QString &)));
-		disconnect(gadu, SIGNAL(systemMessageReceived(const QString &)), this, SLOT(systemMessageReceived(const QString &)));
 
 		disconnect(userlist, SIGNAL(protocolUserDataChanged(QString, UserListElement, QString, QVariant, QVariant, bool, bool)),
 				this, SLOT(editUserActionSetParams(QString, UserListElement)));

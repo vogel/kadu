@@ -7,29 +7,30 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef SERVER_CONTAT_LIST_MANAGER_H
-#define SERVER_CONTAT_LIST_MANAGER_H
+#ifndef GADU_CONTACT_LIST_SERVICE_H
+#define GADU_CONTACT_LIST_SERVICE_H
 
-#include <QtCore/QObject>
+#include "protocols/services/contact-list-service.h"
 
-#include "contacts/contact-list.h"
+class GaduProtocol;
 
-class ServerContactListManager : public QObject
+class GaduContactListService : public ContactListService
 {
 	Q_OBJECT
 
+	GaduProtocol *Protocol;
+	QString ImportReply;
+
+private slots:
+	void contactListReplyReceived(char type, char *content);
+
 public:
-	ServerContactListManager(QObject *parent = 0)
-		: QObject(parent) {}
+	GaduContactListService(GaduProtocol *protocol);
 
-	virtual void importContactList() = 0;
-	virtual void exportContactList() = 0;
-	virtual void exportContactList(ContactList contacts) = 0;
-
-signals:
-	void contactListImported(bool ok, ContactList contacts);
-	void contactListExported(bool ok);
+	virtual void importContactList();
+	virtual void exportContactList();
+	virtual void exportContactList(ContactList contacts);
 
 };
 
-#endif // SERVER_CONTAT_LIST_MANAGER_H
+#endif // GADU_CONTACT_LIST_SERVICE_H

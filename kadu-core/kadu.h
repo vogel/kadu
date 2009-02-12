@@ -175,7 +175,6 @@ private slots:
 	void connecting();
 	void disconnected();
 	void imageReceivedAndSaved(UinType sender, uint32_t size, uint32_t crc32, const QString &path);
-	void systemMessageReceived(const QString &msg);
 	void deleteOldConfigFiles();
 
 	void currentChanged(Contact contact);

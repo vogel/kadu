@@ -17,10 +17,12 @@
 
 #include "userlist.h"
 
+#include "services/gadu-chat-service.h"
+#include "services/gadu-contact-list-service.h"
+
 #include "gadu_exports.h"
 #include "gadu-search-record.h"
 #include "gadu-search-result.h"
-#include "gadu-server-contact-list-manager.h"
 
 #include "protocols/protocol.h"
 
@@ -52,7 +54,8 @@ public:
 	};
 
 private:
-	GaduServerContactListManager *ContactListManager;
+	GaduChatService *CurrentChatService;
+	GaduContactListService *CurrentContactListService;
 
 	/** Serwery, z kt�rymi �aczy si� obiekt. **/
 	static QList<QHostAddress> ConfigServers;
@@ -80,9 +83,6 @@ private:
 
 	/** liczba ��da� obrazk�w wys�anych w ci�gu ostatniej minuty**/
 	unsigned int sendImageRequests;
-
-	/** numer sekwencyjny ostatnio wys�anej wiadomo�ci **/
-	int seqNumber;
 
 	/** czy jeste�my w trakcie ��czenia si� z serwerem **/
 	bool whileConnecting;
@@ -117,8 +117,10 @@ private:
 
 	Status::StatusType statusTypeFromIndex(unsigned int index) const;
 
-	friend class GaduServerContactListManager;
 	GaduProtocolSocketNotifiers * socketNotifiers() { return SocketNotifiers; }
+
+	friend class GaduChatService;
+	friend class GaduContactListService;
 
 private slots:
 	/**
@@ -192,22 +194,10 @@ private slots:
 	void imageRequestReceivedSlot(UinType, uint32_t, uint32_t);
 
 	/**
-		Slot wywo�ywany po otrzymaniu wiadomo�ci od serwera.
-	**/
-	void messageReceivedSlot(int, ContactList, QString &msg, time_t, QByteArray &formats);
-
-	/**
 		Wykonuje zadania co minut� - pinguje sie� i zeruje licznik
 		odebranych obrazk�w (je�li jeste�my po��czeni).
 	**/
 	void everyMinuteActions();
-
-	/**
-		Nowa wiadomo�� od serwera. Emituje systemMessageReceived
-
-		@see systemMessageReceived
-	**/
-	void systemMessageReceived(QString &, QDateTime &, int, void *);
 
 	/**
 		Pobrano list� u�ytkownik�w z serwera. Emituje userStatusChanged dla ka�dego
@@ -226,12 +216,6 @@ private slots:
 	**/
 	void userStatusChanged(const struct gg_event *);
 
-	/**
-		Przysz�a informacja o dostarczeniu (lub nie) wiadomo�ci.
-		Na podstawie statusu emituje odpowiednie sygna�y message*
-	**/
-	void ackReceived(int seq, uin_t uin, int status);
-
 	void currentStatusChanged(const UserStatus &status, const UserStatus &oldStatus);
 
 protected:
@@ -246,11 +230,13 @@ public:
 	GaduProtocol(Account *account, ProtocolFactory *factory);
 	virtual ~GaduProtocol();
 
+	virtual ChatService * chatService() { return CurrentChatService; }
+	virtual ContactListService * contactListService() { return CurrentContactListService; }
+
 	virtual void setAccount(Account *account);
 
 	unsigned int maxDescriptionLength();
 
-	virtual ServerContactListManager * serverContactListManager() { return ContactListManager; }
 	gg_session * session() { return Sess; }
 
 	void changeID(const QString &id);
@@ -323,7 +309,6 @@ public:
 		z serwerem.
 	**/
 	void setDccExternalIP(const QHostAddress& ip);
-	int seqNum() { return seqNumber; }
 	bool validateUserID(QString &uid);
 
 	virtual QPixmap statusPixmap(Status status);
@@ -336,14 +321,6 @@ public:
 	void setDccIpAndPort(unsigned long dcc_ip, int dcc_port);
 
 public slots:
-	/**
-		Wysy�a wiadomo�� bez formatowania tekstu. Je�li adresat�w jest wi�cej ni� jeden, to wysy�ana
-		jest wiadomo�� konferencyjna. Zwracany jest numer sekwencyjny wiadomo�ci, je�li
-		przypadkiem by�my chcieli �ledzi� jej potwierdzenie.
-		@param users lista u�ytkownik�w, do kt�rych wysy�amy wiadomo��
-		@param mesg wiadomo��, kt�r� wysy�amy - kodowanie zmieniane wewn�trz
-	**/
-	virtual bool sendMessage(ContactList users, Message &message);
 
 	/**
 		Wysy�a pro�b� o przys�anie obrazka z danymi parametrami.
@@ -427,12 +404,6 @@ signals:
 	void userStatusChangeIgnored(Contact);
 
 	/**
-		otrzymana wiadomo�� systemow�
-		@param message tre�� wiadomo�ci wraz z dat�
-	**/
-	void systemMessageReceived(const QString &message);
-
-	/**
 		Otrzymano wiadomo�� CTCP.
 		Kto� nas prosi o po��czenie dcc, poniewa�
 		jeste�my za NAT-em
@@ -440,19 +411,6 @@ signals:
 		@todo zmieni� nazw�
 	**/
 	void dccConnectionReceived(Contact contact);
-
-	/**
-		Sygna� daje mozliwo�� operowania na wiadomo�ci
-		kt�ra przysz�a z serwera jeszcze w jej oryginalnej
-		formie przed konwersj� na unicode i innymi zabiegami.
-		Tre�� wiadomo�ci mo�na zmieni� grzebi�c w buforze msg,
-		ale uwaga: mo�na zepsu� formatowanie tekstu zapisane
-		w formats. Oczywi�cie je r�wnie� mo�na zmienia� wed�ug
-		opisu protoko�u GG ;)
-		Mo�na te� przerwa� dalsz� obr�bk� wiadomo�ci ustawiaj�c
-		stop na true.
-	**/
-	void rawGaduReceivedMessageFilter(Account *account, ContactList senders, QString &msg, QByteArray &formats, bool &ignore);
 
 	void dcc7New(struct gg_dcc7 *);
 	void dcc7Accepted(struct gg_dcc7 *);

@@ -7,25 +7,30 @@
  *                                                                         *
  ***************************************************************************/
 
+#include <libgadu.h>
+
+#include <QtCore/QByteArray>
+
 #include "contacts/contact-manager.h"
 
 #include "debug.h"
 #include "misc.h"
 
-#include "gadu-list-helper.h"
-#include "gadu-protocol.h"
-#include "gadu-protocol-socket-notifiers.h"
+#include "../helpers/gadu-list-helper.h"
 
-#include "gadu-server-contact-list-manager.h"
+#include "../gadu-protocol.h"
+#include "../gadu-protocol-socket-notifiers.h"
 
-GaduServerContactListManager::GaduServerContactListManager(GaduProtocol *protocol)
-	: ServerContactListManager(protocol), Protocol(protocol)
+#include "gadu-contact-list-service.h"
+
+GaduContactListService::GaduContactListService(GaduProtocol *protocol)
+	: ContactListService(protocol), Protocol(protocol)
 {
 	connect(Protocol->socketNotifiers(), SIGNAL(userlistReplyReceived(char, char *)),
 		this, SLOT(contactListReplyReceived(char, char *)));
 }
 
-void GaduServerContactListManager::importContactList()
+void GaduContactListService::importContactList()
 {
 	ImportReply.truncate(0);
 
@@ -33,22 +38,22 @@ void GaduServerContactListManager::importContactList()
 		emit contactListImported(false, ContactList());
 }
 
-void GaduServerContactListManager::exportContactList()
+void GaduContactListService::exportContactList()
 {
 	exportContactList(ContactManager::instance()->contacts(Protocol->account()));
 }
 
-void GaduServerContactListManager::exportContactList(ContactList contacts)
+void GaduContactListService::exportContactList(ContactList contacts)
 {
 	QString contactsString = GaduListHelper::contactListToString(Protocol->account(), contacts);
 
-	kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "\n%s\n", unicode2cp(contactsString));
+	kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "\n%s\n", unicode2cp(contactsString).data());
 
 	if (-1 == gg_userlist_request(Protocol->session(), GG_USERLIST_PUT, unicode2cp(contactsString)))
 		emit contactListExported(false);
 }
 
-void GaduServerContactListManager::contactListReplyReceived(char type, char *content)
+void GaduContactListService::contactListReplyReceived(char type, char *content)
 {
 	kdebugf();
 

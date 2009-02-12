@@ -17,6 +17,8 @@
 
 #include "contacts/contact-list.h"
 
+#include "protocols/services/chat-service.h"
+
 #include "chat_messages_view.h"
 #include "configuration_aware_object.h"
 #include "userlist.h"
@@ -234,7 +236,7 @@ public slots:
 	**/
 	void addEmoticon(QString);
 
-	void messageStatusChanged(int messageId, Protocol::MessageStatus status);
+	void messageStatusChanged(int messageId, ChatService::MessageStatus status);
 
 	/**
 		\fn void appendMessages(const QValueList<ChatMessage *> &)
