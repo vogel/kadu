@@ -47,7 +47,8 @@
 #include "gadu-protocol-socket-notifiers.h"
 #include "gadu-pubdir-socket-notifiers.h"
 #include "gadu-token-socket-notifiers.h"
-#include "gadu_search.h"
+#include "gadu-search-record.h"
+#include "gadu-search-result.h"
 #include "uins_list.h"
 #include "xml_config_file.h"
 

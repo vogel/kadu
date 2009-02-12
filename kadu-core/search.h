@@ -2,6 +2,8 @@
 #define KADU_SEARCH_H
 
 #include "../modules/gadu_protocol/gadu-protocol.h"
+#include "../modules/gadu_protocol/gadu-search.h"
+
 #include "kadu_main_window.h"
 
 class QCheckBox;
@@ -46,6 +48,7 @@ class KADUAPI SearchDialog : public KaduMainWindow
 
 	Account * SearchAccount;
 	GaduProtocol * SearchProtocol;
+	GaduSearch *GGSearch;
 
 	friend class SearchActionsSlots;
 	static SearchActionsSlots *searchActionsSlot;

@@ -35,7 +35,6 @@
 #include "xml_config_file.h"
 
 #include "../modules/gadu_protocol/gadu-protocol.h"
-#include "../modules/gadu_protocol/gadu_search.h"
 
 #include "search.h"
 
@@ -206,7 +205,8 @@ SearchDialog::SearchDialog(QWidget *parent, UinType whoisSearchUin)
 
 	SearchAccount = AccountManager::instance()->defaultAccount();
 	SearchProtocol = dynamic_cast<GaduProtocol *>(SearchAccount->protocol());
-	connect(SearchProtocol, SIGNAL(newSearchResults(SearchResults &, int, int)), this, SLOT(newSearchResults(SearchResults &, int, int)));
+	GaduSearch* GGSearch = new GaduSearch(SearchProtocol->session());
+	connect(GGSearch, SIGNAL(newSearchResults(SearchResults &, int, int)), this, SLOT(newSearchResults(SearchResults &, int, int)));
 
 	kdebugf2();
 }
@@ -354,7 +354,7 @@ void SearchDialog::stopSearch()
 {
 	kdebugf();
 
-	SearchProtocol->stopSearchInPubdir(*searchRecord);
+	GGSearch->stopSearchInPubdir(*searchRecord);
 
 	setActionState(stopSearchAction, false);
 
@@ -392,7 +392,7 @@ void SearchDialog::firstSearch()
 		clearResults();
 
 	if (searching)
-		SearchProtocol->stopSearchInPubdir(*searchRecord);
+		GGSearch->stopSearchInPubdir(*searchRecord);
 
 	searchRecord->clearData();
 
@@ -431,7 +431,7 @@ void SearchDialog::firstSearch()
  	setActionState(addFoundAction, false);
  	setActionState(chatFoundAction, false);
 
-	SearchProtocol->searchInPubdir(*searchRecord);
+	GGSearch->searchInPubdir(*searchRecord);
 
 	progress->setText(tr("Searching..."));
 
@@ -453,7 +453,7 @@ void SearchDialog::nextSearch()
  	setActionState(addFoundAction, false);
 	setActionState(chatFoundAction, false);
 
-	SearchProtocol->searchNextInPubdir(*searchRecord);
+	GGSearch->searchNextInPubdir(*searchRecord);
 
 	progress->setText(tr("Searching..."));
 

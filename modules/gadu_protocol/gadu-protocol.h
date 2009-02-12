@@ -18,7 +18,8 @@
 #include "userlist.h"
 
 #include "gadu_exports.h"
-#include "gadu_search.h"
+#include "gadu-search-record.h"
+#include "gadu-search-result.h"
 #include "gadu-server-contact-list-manager.h"
 
 #include "protocols/protocol.h"
@@ -202,13 +203,6 @@ private slots:
 	void everyMinuteActions();
 
 	/**
-		Obs�uguje otrzymanie nowych wynik�w wyszukiwania z serwera. Emituje newSearchResults.
-
-		@see newSearchResults
-	**/
-	void newResults(gg_pubdir50_t res);
-
-	/**
 		Nowa wiadomo�� od serwera. Emituje systemMessageReceived
 
 		@see systemMessageReceived
@@ -380,31 +374,6 @@ public slots:
 	void sendUserListLater();
 
 	/**
-		Szuka ludzi w katalogu publicznym. Wyniki przychodz� za pomoca sygna�u newSearchResults.
-
-		@param searchRecord dane do szukania
-		@see newSearchResults
-		@see searchNextInPubdir
-	**/
-	void searchInPubdir(SearchRecord &searchRecord);
-
-	/**
-		Szuka ludzi w katalogu publicznym. Wyniki przychodz� za pomoca sygna�u newSearchResults.
-		@param searchRecord dane do szukania
-		@see newSearchResults
-		@see searchInPubdir
-	**/
-	void searchNextInPubdir(SearchRecord &searchRecord);
-
-	/**
-		Zatrzymuje wyszukiwanie.
-
-		@param searchRecord dane u�yte w wyszukiwaniu
-		@see searchInPubdir
-	**/
-	void stopSearchInPubdir(SearchRecord &searchRecord);
-
-	/**
 		Pobiera informacje o danych osobowych z katalogu publicznego.
 
 		@todo jak to w og�le dzia�a, bo zapomnia�em??
@@ -471,14 +440,6 @@ signals:
 		@todo zmieni� nazw�
 	**/
 	void dccConnectionReceived(Contact contact);
-
-	/**
-		otrzymano nowe wyniki wyszukiwania w katalogu publicznym
-		@param searchResults wyniki
-		@param seq numer sekwencyjny
-		@param lastUin ?
-	**/
-	void newSearchResults(SearchResults &searchResults, int seq, int lastUin);
 
 	/**
 		Sygna� daje mozliwo�� operowania na wiadomo�ci
