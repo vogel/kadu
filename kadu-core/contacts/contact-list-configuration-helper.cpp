@@ -11,7 +11,6 @@
 
 #include "xml_config_file.h"
 #include "contacts/contact-manager.h"
-#include "userlist.h"
 #include "contacts/contact.h"
 
 #include "pending_msgs.h"
