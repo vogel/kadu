@@ -195,15 +195,11 @@ void MainConfigurationWindow::prepareChatPreview(Preview *preview, bool append)
 		QDateTime::currentDateTime(), QDateTime::currentDateTime());
 	chatMessage->setSeparatorSize(0);
 	preview->addObjectToParse(kadu->myself(), chatMessage);
-	if (append)
-		chatMessages.append(chatMessage);
 
 	chatMessage = new ChatMessage(example, UserListElements(kadu->myself()), tr("Message from Your friend"), TypeReceived,
 		QDateTime::currentDateTime(), QDateTime::currentDateTime());
 	chatMessage->setSeparatorSize(4);
 	preview->addObjectToParse(example, chatMessage);
-	if (append)
-		chatMessages.append(chatMessage);
 
 	connect(preview, SIGNAL(needSyntaxFixup(QString &)), this, SLOT(chatSyntaxFixup(QString &)));
 	connect(preview, SIGNAL(needFixup(QString &)), this, SLOT(chatFixup(QString &)));

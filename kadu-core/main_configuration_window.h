@@ -60,8 +60,6 @@ class KADUAPI MainConfigurationWindow : public ConfigurationWindow
 	ConfigComboBox *mailComboBox;
 	ConfigLineEdit *mailCommandLineEdit;
 
-	QList<ChatMessage *> chatMessages;
-
 	void setLanguages();
 
 	void setQtThemes();
