@@ -29,6 +29,7 @@ set (kadu_SRCS
 	contacts/model/abstract-contacts-model.cpp
 	contacts/model/contact-list-model.cpp
 	contacts/model/contacts-model.cpp
+	contacts/model/contacts-model-base.cpp
 	contacts/model/contacts-model-proxy.cpp
 	
 	contacts/model/filter/anonymous-contact-filter.cpp
@@ -162,6 +163,7 @@ set (kadu_MOC_SRCS
 	contacts/model/abstract-contacts-model.h
 	contacts/model/contact-list-model.h
 	contacts/model/contacts-model.h
+	contacts/model/contacts-model-base.h
 	contacts/model/contacts-model-proxy.h
 	
 	contacts/model/filter/abstract-contact-filter.h

@@ -100,6 +100,14 @@ void ContactsModelProxy::removeFilter(AbstractContactFilter *filter)
 	connect(filter, SIGNAL(filterChanged()), this, SLOT(invalidate()));
 }
 
+Contact ContactsModelProxy::contact(const QModelIndex &index) const
+{
+	if (!SourceContactModel)
+		return Contact::null;
+
+	return SourceContactModel->contact(mapToSource(index));
+}
+
 const QModelIndex ContactsModelProxy::contactIndex(Contact contact) const
 {
 	if (!SourceContactModel)

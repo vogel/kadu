@@ -36,7 +36,8 @@ public:
 	void addFilter(AbstractContactFilter *filter);
 	void removeFilter(AbstractContactFilter *filter);
 
-	// IContactsModel implementation
+	// AbstractContactsModel implementation
+	virtual Contact contact(const QModelIndex &index) const;
 	virtual const QModelIndex contactIndex(Contact contact) const;
 
 };

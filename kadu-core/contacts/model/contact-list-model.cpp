@@ -19,116 +19,23 @@
 #include "contact-list-model.h"
 
 ContactListModel::ContactListModel(ContactList list, QObject *parent)
-	: QAbstractListModel(parent), List(list)
+	: ContactsModelBase(parent), List(list)
 {
 	triggerAllAccountsRegistered();
 }
 
-ContactListModel::~ContactListModel()
-{
-	triggerAllAccountsUnregistered();
-}
-
-void ContactListModel::accountRegistered(Account *account)
-{
-	connect(account, SIGNAL(contactStatusChanged(Account *, Contact, Status)),
-			this, SLOT(contactStatusChanged(Account *, Contact, Status)));
-}
-
-void ContactListModel::accountUnregistered(Account *account)
-{
-	disconnect(account, SIGNAL(contactStatusChanged(Account *, Contact, Status)),
-			this, SLOT(contactStatusChanged(Account *, Contact, Status)));
-}
-
-void ContactListModel::contactStatusChanged(Account *account, Contact contact, Status oldStatus)
-{
-	QModelIndex index = contactIndex(contact);
-
-	if (index.isValid())
-		emit dataChanged(index, index);
-}
-
 int ContactListModel::rowCount(const QModelIndex &parent) const
 {
-	if (parent.isValid())
-		return 0;
-
-	return List.count();
+	return parent.isValid()
+		? 0
+		: List.count();
 }
 
-QFlags<Qt::ItemFlag> ContactListModel::flags(const QModelIndex& index) const
+Contact ContactListModel::contact(const QModelIndex &index) const
 {
-	if (index.isValid())
-		return QAbstractItemModel::flags(index) | Qt::ItemIsDragEnabled;
-	else
-		return QAbstractItemModel::flags(index);
-}
-
-QVariant ContactListModel::data(const QModelIndex &index, int role) const
-{
-	Contact con = List.at(index.row());
-	if (con.isNull())
-		return QVariant();
-
-	ContactAccountData *cad;
-
-	Account *account = con.prefferedAccount();
-	if (!account)
-		account = AccountManager::instance()->defaultAccount();
-
-	switch (role)
-	{
-		case Qt::DisplayRole:
-			return con.display();
-		case Qt::DecorationRole:
-			cad = con.accountData(account);
-			if (0 == cad)
-				return QVariant();
-			// TODO generic icon
-			return account && account->protocol()
-				? account->protocol()->statusPixmap(cad->status())
-				: QVariant();
-		case ContactRole:
-			return QVariant::fromValue(con);
-		default:
-			return QVariant();
-	}
-}
-
-QVariant ContactListModel::headerData(int section, Qt::Orientation orientation, int role) const
-{
-	if (role != Qt::DisplayRole)
-		return QVariant();
-
-	if (orientation == Qt::Horizontal)
-		return QString("Column %1").arg(section);
-	else
-		return QString("Row %1").arg(section);
-}
-
-// D&D
-
-QStringList ContactListModel::mimeTypes() const
-{
-	return ContactListMimeDataHelper::mimeTypes();
-}
-
-QMimeData * ContactListModel::mimeData(const QList<QModelIndex> indexes) const
-{
-	ContactList list;
-	foreach (QModelIndex index, indexes)
-	{
-		QVariant conVariant = index.data(ContactRole);;
-		if (!conVariant.canConvert<Contact>())
-			continue;
-		Contact con = conVariant.value<Contact>();
-		if (con.isNull())
-			continue;
-		list << con;
-	}
-
-	return ContactListMimeDataHelper::toMimeData(list);
+	return index.isValid()
+		? List.at(index.row())
+		: Contact::null;
 }
 
 const QModelIndex ContactListModel::contactIndex(Contact contact) const

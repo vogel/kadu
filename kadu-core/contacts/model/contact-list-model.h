@@ -20,40 +20,21 @@
 
 #include "protocols/status.h"
 
-#include "abstract-contacts-model.h"
+#include "contacts-model-base.h"
 
-const int ContactRoles = 1000;
-const int ContactRole = ContactRoles;
-
-class ContactListModel : public QAbstractListModel, public AbstractContactsModel, public AccountsAwareObject
+class ContactListModel : public ContactsModelBase
 {
 	Q_OBJECT
 
 	ContactList List;
 
-private slots:
-	void contactStatusChanged(Account *account, Contact contact, Status oldStatus);
-
-protected:
-	virtual void accountRegistered(Account *account);
-	virtual void accountUnregistered(Account *account);
-
 public:
 	explicit ContactListModel(ContactList list, QObject *parent = 0);
-	virtual ~ContactListModel();
 
 	virtual int rowCount(const QModelIndex &parent = QModelIndex()) const;
 
-	virtual QFlags<Qt::ItemFlag> flags(const QModelIndex &index) const;
-
-	virtual QVariant data(const QModelIndex &index, int role) const;
-	virtual QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const;
-
-	// D&D
-	virtual QStringList mimeTypes() const;
-	virtual QMimeData* mimeData(const QList<QModelIndex> indexes) const;
-
-	// IContactsModel implementation
+	// AbstractContactsModel implementation
+	virtual Contact contact(const QModelIndex& index) const;
 	virtual const QModelIndex contactIndex(Contact contact) const;
 
 };
