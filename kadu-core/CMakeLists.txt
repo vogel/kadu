@@ -12,6 +12,7 @@ set (kadu_SRCS
 	chat/chat_styles_manager.cpp
 
 	chat/message/message.cpp
+	chat/message/message-part.cpp
 
 	chat/style-engines/chat_engine_kadu.cpp
 
