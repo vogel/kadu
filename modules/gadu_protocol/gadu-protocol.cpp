@@ -13,6 +13,8 @@
 
 #include "accounts/account.h"
 
+#include "chat/message/message.h"
+
 #include "contacts/contact-manager.h"
 #include "contacts/ignored-helper.h"
 
@@ -20,7 +22,6 @@
 #include "debug.h"
 #include "icons_manager.h"
 #include "kadu.h"
-#include "message.h"
 #include "message_box.h"
 #include "misc.h"
 

@@ -13,7 +13,6 @@
 #include "contacts/contact-account-data.h"
 #include "contacts/contact-manager.h"
 #include "icons_manager.h"
-#include "message.h"
 #include "protocols/protocol_factory.h"
 #include "protocols/status.h"
 

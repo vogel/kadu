@@ -14,10 +14,11 @@
 #include "accounts/account.h"
 #include "accounts/account_manager.h"
 
+#include "chat/message/message.h"
+
 #include "contacts/contact-manager.h"
 
 #include "config_file.h"
-#include "message.h"
 
 #include "gadu_images_manager.h"
 #include "gadu-protocol.h"

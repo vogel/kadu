@@ -10,6 +10,9 @@ set (kadu_SRCS
 	chat/chat_manager.cpp
 	chat/chat_message.cpp
 	chat/chat_styles_manager.cpp
+
+	chat/message/message.cpp
+
 	chat/style-engines/chat_engine_kadu.cpp
 
 	contacts/contact.cpp
@@ -116,7 +119,6 @@ set (kadu_SRCS
 	kadu_main_window.cpp
 	kadu_parser.cpp
 	main_configuration_window.cpp
-	message.cpp
 	message_box.cpp
 	misc.cpp
 	modules.cpp
@@ -232,7 +234,6 @@ set (kadu_MOC_SRCS
 	kadu_main_window.h
 	kadu_parser.h
 	main_configuration_window.h
-	message.h
 	message_box.h
 	misc.h
 	modules.h

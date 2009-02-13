@@ -15,13 +15,14 @@
 #include <QtGui/QPixmap>
 #include <QtGui/QWidget>
 
+#include "chat/message/message.h"
+
 #include "contacts/contact-list.h"
 
 #include "protocols/services/chat-service.h"
 
 #include "chat_messages_view.h"
 #include "configuration_aware_object.h"
-#include "message.h"
 
 #include "exports.h"
 

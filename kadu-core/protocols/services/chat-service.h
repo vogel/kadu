@@ -14,7 +14,7 @@
 
 #include "contacts/contact-list.h"
 
-#include "message.h"
+#include "chat/message/message.h"
 
 class ChatService : public QObject
 {
