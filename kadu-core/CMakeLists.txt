@@ -122,7 +122,6 @@ set (kadu_SRCS
 	select_file.cpp
 	select_font.cpp
 	status_changer.cpp
-	status.cpp
 	syntax_editor.cpp
 	themes.cpp
 	toolbar.cpp
@@ -236,7 +235,6 @@ set (kadu_MOC_SRCS
 	select_file.h
 	select_font.h
 	status_changer.h
-	status.h
 	syntax_editor.h
 	themes.h
 	toolbar.h

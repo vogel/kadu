@@ -47,6 +47,7 @@ public:
 
 	int compareTo(const Status& compare) const;
 	bool operator < (const Status &compare) const;
+	bool operator == (const Status &compare) const;
 
 };
 

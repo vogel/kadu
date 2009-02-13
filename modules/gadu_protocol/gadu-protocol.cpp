@@ -104,7 +104,8 @@ void GaduProtocol::initModule()
 	gg_debug_level = 1;
 #endif
 
-	defaultdescriptions = QStringList::split("<-->", config_file.readEntry("General","DefaultDescription", tr("I am busy.")), true);
+// TODO: 0.6.6
+//	defaultdescriptions = QStringList::split("<-->", config_file.readEntry("General","DefaultDescription", tr("I am busy.")), true);
 
 	QStringList servers;
 	QHostAddress ip2;
@@ -194,17 +195,6 @@ void GaduProtocol::setAccount(Account* account) {
 	Protocol::setAccount(account);
 
 	SocketNotifiers->setAccount(account);
-}
-
-void GaduProtocol::currentStatusChanged(const UserStatus &/*status*/, const UserStatus &/*oldStatus*/)
-{
-// TODO: 0.6.6
-// 	Contact current = CurrentAccount->getContactById(QString::number(LoginParams.uin), false);
-// 	if (!current.isNull())
-// 		current.
-//
-// 	if (userlist->contains("Gadu", QString::number(LoginParams.uin)))
-// 		userlist->byID("Gadu", QString::number(LoginParams.uin)).setStatus("Gadu", *CurrentStatus);
 }
 
 unsigned int GaduProtocol::maxDescriptionLength()

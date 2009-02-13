@@ -214,8 +214,6 @@ private slots:
 	**/
 	void userStatusChanged(const struct gg_event *);
 
-	void currentStatusChanged(const UserStatus &status, const UserStatus &oldStatus);
-
 protected:
 	virtual void changeStatus(Status status);
 

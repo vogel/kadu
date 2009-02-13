@@ -22,7 +22,7 @@ class QPixmap;
 
 class AccountData;
 class Protocol;
-class UserStatus;
+class Status;
 class XmlConfigFile;
 
 class Account : public QObject, public ContactsAwareObject
@@ -52,7 +52,7 @@ public:
 	QString name();
 	AccountData * data() { return Data; }
 
-	UserStatus currentStatus();
+	Status currentStatus();
 
 	Contact getContactById(const QString &id);
 	Contact createAnonymous(const QString &id);

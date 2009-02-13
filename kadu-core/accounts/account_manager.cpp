@@ -150,10 +150,10 @@ void AccountManager::unregisterAccount(Account *account)
 	emit accountUnregistered(account);
 }
 
-UserStatus AccountManager::status() const
+Status AccountManager::status() const
 {
 	Account *account = defaultAccount();
 	return account
 		? account->currentStatus()
-		: UserStatus();
+		: Status();
 }

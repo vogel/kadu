@@ -52,7 +52,6 @@
 #include "kadu.h"
 #include "kadu_parser.h"
 #include "message_box.h"
-#include "status.h"
 
 #include "misc.h"
 
@@ -849,12 +848,13 @@ ChooseDescription::ChooseDescription(QWidget *parent)
 	setWindowTitle(tr("Select description"));
 	setAttribute(Qt::WA_DeleteOnClose);
 
-	while (defaultdescriptions.count() > config_file.readNumEntry("General", "NumberOfDescriptions"))
-		defaultdescriptions.pop_back();
+// TODO: 0.6.6
+// 	while (defaultdescriptions.count() > config_file.readNumEntry("General", "NumberOfDescriptions"))
+// 		defaultdescriptions.pop_back();
 
   	Description = new QComboBox(TRUE, this, "description");
 	Description->setMaxVisibleItems(30);
-	Description->insertStringList(defaultdescriptions);
+// 	Description->insertStringList(defaultdescriptions);
 
 	QLineEdit *ss = new QLineEdit(this, "LineEdit");
 #if 1
@@ -941,14 +941,14 @@ void ChooseDescription::okPressed()
 {
 	QString description = Description->currentText();
 	Account *account = AccountManager::instance()->defaultAccount();
-
+// TODO: 0.6.6
 	//je�eli ju� by� taki opis, to go usuwamy
-	defaultdescriptions.remove(description);
+// 	defaultdescriptions.remove(description);
 	//i dodajemy na pocz�tek
-	defaultdescriptions.prepend(description);
+// 	defaultdescriptions.prepend(description);
 
-	while (defaultdescriptions.count() > config_file.readNumEntry("General", "NumberOfDescriptions"))
-		defaultdescriptions.pop_back();
+// 	while (defaultdescriptions.count() > config_file.readNumEntry("General", "NumberOfDescriptions"))
+// 		defaultdescriptions.pop_back();
 
 	if (config_file.readBoolEntry("General", "ParseStatus", false))
 		description = KaduParser::parse(description, account, kadu->myself(), true);

@@ -1340,16 +1340,20 @@ void Kadu::changeAppearance()
 
 	kadu->statusButton->setShown(config_file.readBoolEntry("Look", "ShowStatusButton"));
 
-	const UserStatus &stat = AccountManager::instance()->status();
+	const Status &stat = AccountManager::instance()->status();
 
-	QPixmap pix = stat.pixmap();
+	Account *account = AccountManager::instance()->defaultAccount();
+	QPixmap pix;
+	if (account)
+		pix = account->statusPixmap(stat);
+
 	QIcon icon(pix);
 	statusButton->setIcon(icon);
 
 	setStatusActionsIcon();
 
 	setMainWindowIcon(pix);
-	emit statusPixmapChanged(icon, stat.toString());
+	emit statusPixmapChanged(icon, Status::name(stat));
 	kdebugf2();
 }
 
@@ -1541,11 +1545,10 @@ void Kadu::changeStatus(Status newStatus)
 	if (!gadu)
 		return;
 
-// TODO: 0.6.6
-// 	if (gadu->nextStatus() == newStatus)
-// 		return;
+	if (gadu->nextStatus() == newStatus)
+		return;
 
-	NextStatus.setStatus(newStatus);
+	NextStatus = newStatus;
 	gadu->setStatus(newStatus);
 }
 
@@ -1662,7 +1665,8 @@ bool Kadu::close(bool quit)
 			config_file.writeEntry("General", "UserBoxHeight", ContactsWidget->size().height());
  		saveWindowGeometry(this, "General", "Geometry");
 
-		config_file.writeEntry("General", "DefaultDescription", defaultdescriptions.join("<-->"));
+// TODO: 0.6.6
+//		config_file.writeEntry("General", "DefaultDescription", defaultdescriptions.join("<-->"));
 
 // TODO: 0.6.6
 // 		if (config_file.readEntry("General", "StartupStatus") == "LastStatus")
@@ -2268,7 +2272,7 @@ void Kadu::setDefaultStatus()
 
 	if (startupStatus == "LastStatus")
 	{
-		int statusIndex = config_file.readNumEntry("General", "LastStatusIndex", UserStatus::index(Offline, false));
+		int statusIndex = config_file.readNumEntry("General", "LastStatusIndex", 6);
 		switch (statusIndex)
 		{
 			case 0:

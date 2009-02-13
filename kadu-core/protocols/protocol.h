@@ -13,10 +13,11 @@
 #include "kinttypes.h"
 #endif
 
+#include "exports.h"
+
 #include "contacts/contact.h"
 #include "contacts/contact-list.h"
 
-#include "../status.h"
 #include "status.h"
 
 typedef uint32_t UinType;

@@ -26,6 +26,8 @@
 
 #include "gui/widgets/tool-tip-class-manager.h"
 
+#include "protocols/status.h"
+
 #include "../modules/gadu_protocol/gadu-protocol.h"
 
 #include "chat_message.h"
@@ -35,8 +37,6 @@
 #include "icons_manager.h"
 #include "kadu.h"
 #include "misc.h"
-#include "protocols/status.h"
-#include "userlistelement.h"
 
 #include "main_configuration_window.h"
 #include "gui/widgets/configuration/config-combo-box.h"

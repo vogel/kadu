@@ -53,3 +53,8 @@ bool Status::operator < (const Status &compare) const
 {
 	return compareTo(compare) < 0;
 }
+
+bool Status::operator == (const Status &compare) const
+{
+	return Type == compare.Type && Description == compare.Description;
+}

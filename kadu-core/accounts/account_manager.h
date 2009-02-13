@@ -14,10 +14,11 @@
 #include <QtCore/QObject>
 #include <QtCore/QUuid>
 
-#include "status.h"
+#include "exports.h"
 
 class Account;
 class AccountData;
+class Status;
 class XmlConfigFile;
 
 class KADUAPI AccountManager : public QObject
@@ -55,7 +56,7 @@ public:
 	void registerAccount(Account *account);
 	void unregisterAccount(Account *account);
 
-	UserStatus status() const;
+	Status status() const;
 
 signals:
 	void accountAboutToBeRegistered(Account *);

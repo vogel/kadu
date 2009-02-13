@@ -120,7 +120,7 @@ private:
 
 	QString infoPanelStyle;
 
-	UserStatus NextStatus;
+	Status NextStatus;
 	UserStatusChanger *userStatusChanger;
 
 #if 0
