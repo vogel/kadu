@@ -38,7 +38,7 @@ QVariant ContactAccountDataManager::readEntry(const QString &section, const QStr
 		return Data->id();
 
 	if (name == "Addr")
-		return QString("%1:%2").arg(Data->ip().toString()).arg(QString::number(Data->port()));
+		return QString("%1:%2").arg(Data->ip().toString(), QString::number(Data->port()));
 
 	if (name == "DnsName")
 		return Data->dnsName();

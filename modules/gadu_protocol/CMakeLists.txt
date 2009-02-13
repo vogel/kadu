@@ -60,6 +60,7 @@ set (TRANSLATION_SOURCES
 
 set (CONFIGURATION_FILES
 	configuration/gadu_protocol.ui
+	configuration/gadu_contact.ui
 )
 
 kadu_module (gadu_protocol

@@ -28,6 +28,11 @@
 #include "contacts/group.h"
 #include "contacts/group-manager.h"
 
+#include "gui/widgets/contact-account-data-widget.h"
+
+#include "protocols/protocol.h"
+#include "protocols/protocol_factory.h"
+
 #include "config_file.h"
 #include "debug.h"
 #include "icons_manager.h"
@@ -483,34 +488,29 @@ void ContactDataWindow::setupTab3()
 {
 	kdebugf();
 
-	// Misc options
-	QWidget *othersWidget = new QWidget(tw_main);
-
-	othersWidget->setSizePolicy(QSizePolicy(QSizePolicy::Minimum, QSizePolicy::Expanding));
-
-	QVBoxLayout *othersLayout = new QVBoxLayout(othersWidget);
-
-	/*c_blocking = new QCheckBox(tr("Block user"), othersWidget);
-	c_offtouser = new QCheckBox(tr("Offline to user"), othersWidget);*/
-	//c_notify = new QCheckBox(tr("Notify about status changes"), othersWidget);
-
-	//if (!config_file.readBoolEntry("General", "PrivateStatus"))
-	//	c_offtouser->setEnabled(false);
-
-	/*if (User.usesProtocol("Gadu"))
+	foreach (Account * account, User.accounts())
 	{
-		c_blocking->setChecked(User.protocolData("Gadu", "Blocking").toBool());
-		c_offtouser->setChecked(User.protocolData("Gadu", "OfflineTo").toBool());
-	}*/
-	//c_notify->setChecked(User.notify());
+		if (!account || !account->protocol())
+			continue;
 
-	//othersLayout->addWidget(c_blocking);
-	//othersLayout->addWidget(c_offtouser);
-	//othersLayout->addWidget(c_notify);
-	othersLayout->addStretch();
+		ProtocolFactory *protocolFactory = account->protocol()->protocolFactory();
 
-	tw_main->addTab(othersWidget, tr("Others"));
-	// end Misc options
+		if (!User.hasAccountData(account) || !protocolFactory)
+			continue;
+
+		ContactAccountData* contactAccountData = User.accountData(account);
+
+		ContactAccountDataWidget* contactAccountDataWidget = protocolFactory-> newContactAccountDataWidget(contactAccountData, tw_main);
+
+		if (!contactAccountDataWidget)
+			continue;
+
+		contactAccountDataWidget->setSizePolicy(QSizePolicy(QSizePolicy::Minimum, QSizePolicy::Expanding));
+		//contactAccountDataWidget->init();
+		contactAccountDataWidget->loadConfiguration();
+
+		tw_main->addTab(contactAccountDataWidget, account->name());
+	}
 
 	kdebugf2();
 }
