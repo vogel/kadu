@@ -10,6 +10,7 @@
 #include <QtGui/QPushButton>
 
 #include "gadu_account_data.h"
+#include "gadu-contact-account-data-widget.h"
 #include "gadu_configuration_dialog.h"
 #include "gadu-contact-account-data.h"
 #include "gadu-protocol.h"
@@ -44,5 +45,14 @@ GaduConfigurationDialog * GaduProtocolFactory::newConfigurationDialog(AccountDat
 
 	return 0 != gaduAccountData
 		? new GaduConfigurationDialog(gaduAccountData, parent)
+		: 0;
+}
+
+ContactAccountDataWidget * GaduProtocolFactory::newContactAccountDataWidget(ContactAccountData *contactAccountData, QWidget *parent)
+{
+	GaduContactAccountData *gaduContactAccountData = dynamic_cast<GaduContactAccountData *>(contactAccountData);
+
+	return 0 != gaduContactAccountData
+		? new GaduContactAccountDataWidget(gaduContactAccountData, parent)
 		: 0;
 }

@@ -13,6 +13,9 @@
 #include "gadu_configuration_dialog.h"
 #include "protocols/protocol_factory.h"
 
+class ContactAccountDataWidget;
+class GaduContactAccountData;
+
 class GaduProtocolFactory : public ProtocolFactory
 {
 public:
@@ -20,6 +23,7 @@ public:
 	virtual AccountData * newAccountData();
 	virtual ContactAccountData * newContactAccountData(Contact contact, Account *account, const QString &id);
 	virtual ContactAccountData * loadContactAccountData(Contact contact, Account *account);
+	virtual ContactAccountDataWidget * newContactAccountDataWidget(ContactAccountData *contactAccountData, QWidget *parent = 0);
 	virtual GaduConfigurationDialog * newConfigurationDialog(AccountData *, QWidget *);
 
 	virtual QString name() { return "gadu"; }
