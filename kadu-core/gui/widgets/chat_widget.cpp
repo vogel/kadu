@@ -69,7 +69,8 @@ ChatWidget::ChatWidget(Account *initialAccount, const ContactList &contacts, QWi
 		horizSplit = new QSplitter(Qt::Horizontal, this, "horizSplit");
 		horizSplit->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Expanding);
 
-		body = new ChatMessagesView(horizSplit);
+		body = new ChatMessagesView(this);
+		horizSplit->addWidget(body);
 
 		QWidget *userlistContainer = new QWidget(horizSplit);
 		QVBoxLayout *uc_layout = new QVBoxLayout(userlistContainer);
@@ -153,10 +154,6 @@ ChatWidget::~ChatWidget()
 
 void ChatWidget::configurationUpdated()
 {
-	if (config_file.readBoolEntry("Chat", "ChatPrune"))
-		body->setPrune(config_file.readUnsignedNumEntry("Chat", "ChatPruneLen"));
-	else
-		body->setPrune(0);
 /* TODO: 0.6.5
 	if (ContactsWidget)
 	{

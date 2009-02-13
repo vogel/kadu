@@ -5,12 +5,12 @@
 
 #include "protocols/protocol.h"
 
-#include "configuration_aware_object.h"
 #include "kadu_text_browser.h"
 
 #include "exports.h"
 
 class ChatMessage;
+class ChatWidget;
 class QResizeEvent;
 
 /**
@@ -18,7 +18,7 @@ class QResizeEvent;
 	\class ChatMessagesView
 	\brief Okno przegl�dania listy wiadomo�ci.
 **/
-class KADUAPI ChatMessagesView : public KaduTextBrowser, ConfigurationAwareObject
+class KADUAPI ChatMessagesView : public KaduTextBrowser
 {
 	Q_OBJECT
 
@@ -26,39 +26,7 @@ class KADUAPI ChatMessagesView : public KaduTextBrowser, ConfigurationAwareObjec
 	bool lastLine;
 
 	QList<ChatMessage *> Messages; /*!< Lista wiadomo�ci wy�wietlanych w danym obiekcie. */
-	unsigned int Prune; /*!< Maksymalna ilo�� wy�wietlanych wiadomo�ci. */
  
-	bool CfgNoHeaderRepeat; /*!< Usuwanie powtarzaj�cych si� nag��wk�w wiadomo�ci. */
-	unsigned int CfgHeaderSeparatorHeight; /*!< Wysoko�� separatora nag��wk�w. */
-	unsigned int CfgNoHeaderInterval; /*!< Odst�p czasu, przy jakim b�d� usuwane nag��wki. */
-	unsigned int ParagraphSeparator; /*!< Wysoko�� separatora wiadomo�ci. */
-
-	bool NoServerTime; /*!< Usuwanie czasu serwera z wiadomo�ci. */
-	int NoServerTimeDiff; /*!< Maksymalna r��nica czasu serwera i lokalnego, dla kt�rej czas serwera b�dzie usuwany. */
-
-	static QString style;
-
-	QString ChatSyntaxWithHeader; /*!< Sk�adnia stylu rozmowy z nag��wkiem. */
-	QString ChatSyntaxWithoutHeader; /*!< Sk�adnia stylu rozmowy bez nag��wka. */
- 
-	/**
-		\fn void repaintMessages()
-		Funkcja od�wie�aj�ca widok wiadomo�ci.
-	**/
-	void repaintMessages(); 
-	/**
-		\fn void updateBackgrounds()
-		Funkcja od�wie�aj�ca kolory t�a wiadomo�ci.
-	**/
-	void updateBackgroundsAndColors();
-	/**
-		\fn QString formatMessage(ChatMessage *message, ChatMessage *after)
-		Funkcja formatuj�ca wiadomo�ci wed�ug ustawie� w konfiguracji.
-		@param message wiadomo�� do sformatowania
-		@param after wtf?
-	**/
- 	QString formatMessage(ChatMessage *message, ChatMessage *after);
-
 	/**
 		\fn void pruneMessages()
 		Funkcja ograniczaj�ca ilo�� wy�wietlanych wiadomo�ci do maksymalnej ustawionej w konfiguracji.
@@ -66,8 +34,9 @@ class KADUAPI ChatMessagesView : public KaduTextBrowser, ConfigurationAwareObjec
 	**/
 	void pruneMessages();
 
+	ChatWidget *Chat;
+	ChatMessage *PrevMessage;
 protected:
-	virtual void configurationUpdated();
 	virtual void resizeEvent(QResizeEvent *e);
 
 private slots:
@@ -100,8 +69,6 @@ public:
 	ChatMessagesView(QWidget *parent = 0);
 	virtual ~ChatMessagesView();
 
-	static const QString & chatStyle() { return style;}
-
 	/**
 		\fn void appendMessage(ChatMessage *message)
 		Dodaje pojedyncz� wiadomo�� do danego okna.
@@ -123,12 +90,18 @@ public:
  	unsigned int countMessages();
 
 	/**
-		\fn void setPrune(unsigned int prune)
-		Ustawia maksymaln� ilo�� wiadomo�ci w danym oknie.
-		@param prune Maksymalna ilo�� wiadomo�ci.
-		@see Prune
+		\fn void updateBackgrounds()
+		Funkcja od�wie�aj�ca kolory t�a wiadomo�ci.
 	**/
-	void setPrune(unsigned int prune);
+	void updateBackgroundsAndColors();
+
+
+	const QList<ChatMessage *> messages() { return Messages; }
+
+	void rememberScrollBarPosition();
+
+	ChatWidget *chat() const { return Chat; }
+	ChatMessage *prevMessage() { return PrevMessage; }
 
 public slots:
 	/**

@@ -9,6 +9,8 @@ set (kadu_SRCS
 
 	chat/chat_manager.cpp
 	chat/chat_message.cpp
+	chat/chat_styles_manager.cpp
+	chat/style-engines/chat_engine_kadu.cpp
 
 	contacts/contact.cpp
 	contacts/contact-account-data.cpp

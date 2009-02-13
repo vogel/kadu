@@ -19,6 +19,7 @@
 #include "accounts/account_manager.h"
 
 #include "chat/chat_message.h"
+#include "chat/chat_styles_manager.h"
 
 #include "contacts/contact.h"
 #include "contacts/contact-data.h"
@@ -275,7 +276,7 @@ void MainConfigurationWindow::infoPanelFixup(QString &syntax)
 
 void MainConfigurationWindow::chatFixup(QString &syntax)
 {
-	syntax = QString("<html><head><style type='text/css'>%1</style></head><body>%2</body>").arg(ChatMessagesView::chatStyle(), syntax);
+	syntax = QString("<html><head><style type='text/css'>%1</style></head><body>%2</body>").arg(ChatStylesManager::instance()->mainStyle(), syntax);
 }
 
 void MainConfigurationWindow::onChangeStartupStatus(int index)
