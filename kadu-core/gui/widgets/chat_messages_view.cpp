@@ -17,6 +17,8 @@
 #include "chat/chat_styles_manager.h"
 #include "chat/style-engines/chat_style_engine.h"
 
+#include "protocols/services/chat-image-service.h"
+
 #include "chat_widget.h"
 #include "config_file.h"
 #include "debug.h"
@@ -34,9 +36,12 @@ ChatMessagesView::ChatMessagesView(QWidget *parent) : KaduTextBrowser(parent),
 	// maybe Qt bug?
   	setStyleSheet("QWidget { }");
 
-	Protocol *gadu = AccountManager::instance()->defaultAccount()->protocol();
-	connect(gadu, SIGNAL(imageReceivedAndSaved(UinType, uint32_t, uint32_t, const QString &)),
-		this, SLOT(imageReceivedAndSaved(UinType, uint32_t, uint32_t, const QString &)));
+	Protocol *protocol = AccountManager::instance()->defaultAccount()->protocol();
+	ChatImageService *chatImageService = protocol->chatImageService();
+	if (chatImageService)
+			connect(chatImageService, SIGNAL(imageReceived(const QString &, const QString &)),
+				this, SLOT(imageReceived(const QString &, const QString &)));
+
 
 	connect(this, SIGNAL(loadFinished(bool)), this, SLOT(scrollToLine()));
 
@@ -53,6 +58,12 @@ ChatMessagesView::~ChatMessagesView()
 	qDeleteAll(Messages);
 	Messages.clear();
  	ChatStylesManager::instance()->chatViewDestroyed(this);
+
+	Protocol *protocol = AccountManager::instance()->defaultAccount()->protocol();
+	ChatImageService *chatImageService = protocol->chatImageService();
+	if (chatImageService)
+			disconnect(chatImageService, SIGNAL(imageReceived(const QString &, const QString &)),
+				this, SLOT(imageReceived(const QString &, const QString &)));
 }
 
 void ChatMessagesView::pageUp()
@@ -67,10 +78,10 @@ void ChatMessagesView::pageDown()
 	keyPressEvent(&event);
 }
 
-void ChatMessagesView::imageReceivedAndSaved(UinType sender, uint32_t size, uint32_t crc32,const QString & /*path*/)
+void ChatMessagesView::imageReceived(const QString &messageId, const QString &messagePath)
 {
-	foreach(ChatMessage *message, Messages)
-		message->replaceLoadingImages(sender, size, crc32);
+	foreach (ChatMessage *message, Messages)
+		message->replaceLoadingImages(messageId, messagePath);
 
  	ChatStylesManager::instance()->currentEngine()->refreshView(this);
 }

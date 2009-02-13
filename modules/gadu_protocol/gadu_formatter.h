@@ -24,6 +24,8 @@ public:
 	static unsigned int computeFormatsSize(const Message &message);
 	static unsigned char * createFormats(const Message &message, unsigned int &size);
 
+	static QString createImageId(UinType sender, unsigned int size, unsigned int crc32);
+
 	static Message createMessage(Account *acccount, UinType sender, const QString &content, unsigned char * formats,
 			unsigned int size, bool receiveImages);
 

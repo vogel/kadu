@@ -16,6 +16,7 @@
 #include "icons_manager.h"
 #include "misc.h"
 
+#include "gadu_formatter.h"
 #include "gadu-protocol.h"
 
 #include "gadu_images_manager.h"
@@ -57,12 +58,6 @@ QString GaduImagesManager::imageHtml(const QString &file_name)
 		return narg(QString("<img bgcolor=\"\" animated=\"1\" src=\"file:///%1\" title=\"%2\"/>"), file_name, file_name);
 	else
 		return QString("<img src=\"file:///%1\"/>").arg(file_name);
-}
-
-QString GaduImagesManager::loadingImageHtml(UinType uin, uint32_t size, uint32_t crc32)
-{
-	return narg(QString("<img src=\"file:///%1\" gg_sender=\"%2\" gg_size=\"%3\" gg_crc=\"%4\"/>"),
-		icons_manager->iconPath("LoadingImage"), QString::number(uin), QString::number(size), QString::number(crc32));
 }
 
 void GaduImagesManager::addImageToSend(const QString &file_name, uint32_t &size, uint32_t &crc32)
@@ -212,7 +207,7 @@ QString GaduImagesManager::getSavedImageFileName(uint32_t size, uint32_t crc32)
 QString GaduImagesManager::replaceLoadingImages(const QString &text, UinType sender, uint32_t size, uint32_t crc32)
 {
 	kdebugf();
-	QString loading_string = GaduImagesManager::loadingImageHtml(sender,size,crc32);
+	QString loading_string = MessagePart::loadingImageHtml(GaduFormater::createImageId(sender, size, crc32));
 	QString image_string;
 	QString new_text = text;
 	int pos;

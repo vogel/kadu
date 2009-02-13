@@ -10,25 +10,32 @@
 #include <QtGui/QTextBlock>
 #include <QtGui/QTextDocument>
 
-#include "../modules/gadu_protocol/gadu_images_manager.h"
-
 #include "icons_manager.h"
 
 #include "message-part.h"
 
+QString MessagePart::loadingImageHtml(const QString &imageId)
+{
+	return QString("<img src=\"file:///%1\" id=\"%2\" />")
+			.arg(icons_manager->iconPath("LoadingImage"))
+			.arg(imageId);
+}
+
+QString MessagePart::replaceLoadingImages(QString message, const QString &imageId, const QString &imagePath)
+{
+	QString img = QString("<img src=\"file:///%1\" />").arg(imagePath);
+	return message.replace(loadingImageHtml(imageId), img);
+}
+
 MessagePart::MessagePart(const QString &content, bool bold, bool italic, bool underline, QColor color)
-	: Image(false), Content(content), Bold(bold), Italic(italic), Underline(underline), Color(color)
+	: Image(false), ImageDelayed(false), Content(content), Bold(bold), Italic(italic), Underline(underline), Color(color)
 {
 }
 
-MessagePart::MessagePart(const QString &imagePath)
-	: Image(true), ImagePath(imagePath), ImageSender(0), ImageSize(0), ImageCrc32(0)
-{
-}
-
-MessagePart::MessagePart(UinType imageSender, int imageSize, int imageCrc32)
-	: Image(true), ImagePath(icons_manager->iconPath("LoadingImage")),
-		ImageSender(imageSender), ImageSize(imageSize), ImageCrc32(imageCrc32)
+MessagePart::MessagePart(const QString &image, bool imageDelayed) :
+		Image(true), ImageDelayed(imageDelayed),
+		ImagePath(imageDelayed ? QString::null : image),
+		ImageId(imageDelayed ? image : QString::null)
 {
 }
 
@@ -38,9 +45,9 @@ MessagePart::~MessagePart()
 
 QString MessagePart::toHtml() const
 {
-	if (Image && ImageSender)
+	if (Image && ImageDelayed)
 	{
-		return GaduImagesManager::loadingImageHtml(ImageSender, ImageSize,ImageCrc32);;
+		return MessagePart::loadingImageHtml(ImageId);;
 	}
 	else if (Image)
 	{

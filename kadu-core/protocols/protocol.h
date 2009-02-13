@@ -25,6 +25,7 @@ typedef uint32_t UinType;
 class QPixmap;
 
 class AccountData;
+class ChatImageService;
 class ChatService;
 class ContactListService;
 class Message;
@@ -68,6 +69,7 @@ public:
 	ProtocolFactory * protocolFactory() const { return Factory; }
 	Account * account() const { return CurrentAccount; }
 
+	virtual ChatImageService * chatImageService() { return 0; }
 	virtual ChatService * chatService() { return 0; }
 	virtual ContactListService * contactListService() { return 0; }
 

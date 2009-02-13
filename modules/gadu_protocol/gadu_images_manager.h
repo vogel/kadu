@@ -45,7 +45,6 @@ public:
 	GaduImagesManager();
 	static void setBackgroundsForAnimatedImages(HtmlDocument &doc, const QColor &col);
 		
-	static QString loadingImageHtml(UinType uin, uint32_t size, uint32_t crc32);
 	static QString imageHtml(const QString &file_name);
 	void addImageToSend(const QString &file_name, uint32_t &size, uint32_t &crc32);
 	void sendImage(UinType uin, uint32_t size, uint32_t crc32);

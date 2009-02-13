@@ -152,7 +152,7 @@ void GaduFormater::appendToMessage(Account *account, Message &result, UinType se
 		QString file_name = gadu_images_manager.getSavedImageFileName(size, crc32);
 		if (!file_name.isEmpty())
 		{
-			result << MessagePart(file_name);
+			result << MessagePart(file_name, false);
 			return;
 		}
 
@@ -174,7 +174,7 @@ void GaduFormater::appendToMessage(Account *account, Message &result, UinType se
 		if (gadu)
 		{
 			gadu->sendImageRequest(account->getContactById(QString::number(sender)), size, crc32);
-			result << MessagePart(sender, size, crc32);
+			result << MessagePart(createImageId(sender, size, crc32), true);
 		}
 	}
 	else
@@ -191,6 +191,14 @@ void GaduFormater::appendToMessage(Account *account, Message &result, UinType se
 }
 
 #define MAX_NUMBER_OF_IMAGES 5
+
+QString GaduFormater::createImageId(unsigned int sender, unsigned int size, unsigned int crc32)
+{
+	return QString("gadu-%1-%2-%3")
+		.arg(sender)
+		.arg(size)
+		.arg(crc32);
+}
 
 Message GaduFormater::createMessage(Account *account, UinType sender, const QString &content,
 		unsigned char *formats, unsigned int size, bool receiveImages)

@@ -35,7 +35,7 @@ void Message::parseImages(Message &message, const QString &messageString, bool b
 
 		QString fileName = ImageRegExp.cap(1);
 		if (!fileName.isEmpty())
-			message << MessagePart(fileName);
+			message << MessagePart(fileName, false);
 
 		pos += ImageRegExp.matchedLength();
 		lastPos = pos;

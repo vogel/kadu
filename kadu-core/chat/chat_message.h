@@ -91,7 +91,7 @@ public:
 	ChatMessage(const QString &rawContent, ChatMessageType type, QDateTime date,
 		QString backgroundColor, QString fontColor, QString nickColor);
 
-	void replaceLoadingImages(UinType sender, uint32_t size, uint32_t crc32);
+	void replaceLoadingImages(const QString &imageId, const QString &imagePath);
 
 	Account * account() { return SenderAccount; }
 	Contact sender() const { return Sender; }

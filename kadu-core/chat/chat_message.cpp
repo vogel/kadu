@@ -7,6 +7,8 @@
  *                                                                         *
  ***************************************************************************/
 
+#include "chat/message/message-part.h"
+
 #include "config_file.h"
 #include "kadu_parser.h"
 #include "misc.h"
@@ -183,9 +185,9 @@ QString ChatMessage::convertCharacters(QString edit, const QColor &bgcolor, Emot
 	return edit;
 }
 
-void ChatMessage::replaceLoadingImages(UinType sender, uint32_t size, uint32_t crc32)
+void ChatMessage::replaceLoadingImages(const QString &imageId, const QString &imagePath)
 {
-	unformattedMessage = gadu_images_manager.replaceLoadingImages(unformattedMessage, sender, size, crc32);
+	unformattedMessage = MessagePart::replaceLoadingImages(unformattedMessage, imageId, imagePath);
 }
 
 void ChatMessage::setShowServerTime(bool noServerTime, int noServerTimeDiff)

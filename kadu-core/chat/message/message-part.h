@@ -39,20 +39,21 @@ class QTextDocument;
  */
 class MessagePart
 {
-	bool Image;
-	UinType ImageSender;
-	int ImageSize;
-	int ImageCrc32;
-
 	QString Content;
 	bool Bold;
 	bool Italic;
 	bool Underline;
 	QColor Color;
 
+	bool Image;
+	bool ImageDelayed;
 	QString ImagePath;
+	QString ImageId;
 
 public:
+	static QString loadingImageHtml(const QString &imageId);
+	static QString replaceLoadingImages(QString message, const QString &imageId, const QString &imagePath);
+
 	/**
 	 * Creates text message part with formatting.
 	 * @arg content content of message
@@ -64,20 +65,10 @@ public:
 	MessagePart(const QString &content, bool bold, bool italic, bool underline, QColor color);
 
 	/**
-	 * Creates image message part. All informations are used to
-	 * assign an image to this part, when the real image is received from sender.
-	 *
-	 * @arg imageSender sender of the image
-	 * @arg imageSize size of the image
-	 * @arg imageCrc32 crc32 of the image
-	 */
-	MessagePart(UinType imageSender, int imageSize, int imageCrc32);
-
-	/**
-	 * Creates image message part.
+	 * Creates image message part (ready or to-be-received).
 	 * @arg imagePath local image path
 	 */
-	MessagePart(const QString &imagePath);
+	MessagePart(const QString &image, bool delayed);
 	virtual ~MessagePart();
 
 	bool isImage() const { return Image; }

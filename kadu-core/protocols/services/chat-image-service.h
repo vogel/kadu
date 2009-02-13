@@ -15,6 +15,10 @@
 class ChatImageService : public QObject
 {
 	Q_OBJECT
+
+signals:
+	virtual void imageReceived(const QString &id, const QString &fileName);
+
 };
 
 #endif // CHAT_IMAGE_SERVICE_H

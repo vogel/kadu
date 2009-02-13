@@ -133,7 +133,6 @@ ChatWidget::ChatWidget(Account *initialAccount, const ContactList &contacts, QWi
 
 	connect(chat_manager->colorSelectorActionDescription, SIGNAL(actionCreated(KaduAction *)), this, SLOT(colorSelectorActionCreated(KaduAction *)));
 
-
 	kdebugf2();
 }
 
@@ -144,10 +143,6 @@ ChatWidget::~ChatWidget()
 	chat_manager->unregisterChatWidget(this);
 
 	disconnectAcknowledgeSlots();
-
-	Protocol *gadu = CurrentAccount->protocol();
-	disconnect(gadu, SIGNAL(imageReceivedAndSaved(UinType,uint32_t,uint32_t,const QString&)),
-		body, SLOT(imageReceivedAndSaved(UinType,uint32_t,uint32_t,const QString&)));
 
 	kdebugmf(KDEBUG_FUNCTION_END, "chat destroyed: index %d\n", index);
 }

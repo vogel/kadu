@@ -23,8 +23,8 @@ class GaduChatImageService : public ChatImageService
 	GaduProtocol *Protocol;
 
 private slots:
-	void imageReceived(UinType sender, uint32_t size, uint32_t crc32, const QString &filename, const char *data);
-	void imageRequestReceived(UinType, uint32_t, uint32_t);
+	void imageReceivedSlot(UinType sender, uint32_t size, uint32_t crc32, const QString &filename, const char *data);
+	void imageRequestReceivedSlot(UinType, uint32_t, uint32_t);
 
 public:
 	GaduChatImageService(GaduProtocol *protocol);
