@@ -594,16 +594,16 @@ void ChatWidget::connectAcknowledgeSlots()
 {
 	ChatService *chatService = CurrentAccount->protocol()->chatService();
 	if (chatService)
-		connect(chatService, SIGNAL(messageStatusChanged(int, Protocol::MessageStatus)),
-				this, SLOT(messageStatusChanged(int, Protocol::MessageStatus)));
+		connect(chatService, SIGNAL(messageStatusChanged(int, ChatService::MessageStatus)),
+				this, SLOT(messageStatusChanged(int, ChatService::MessageStatus)));
 }
 
 void ChatWidget::disconnectAcknowledgeSlots()
 {
 	ChatService *chatService = CurrentAccount->protocol()->chatService();
 	if (chatService)
-		disconnect(chatService, SIGNAL(messageStatusChanged(int, Protocol::MessageStatus)),
-				this, SLOT(messageStatusChanged(int, Protocol::MessageStatus)));
+		disconnect(chatService, SIGNAL(messageStatusChanged(int, ChatService::MessageStatus)),
+				this, SLOT(messageStatusChanged(int, ChatService::MessageStatus)));
 }
 
 void ChatWidget::changeSendToCancelSend()
