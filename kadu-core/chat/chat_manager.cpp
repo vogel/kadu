@@ -14,22 +14,24 @@
 #include "contacts/contact-manager.h"
 #include "contacts/ignored-helper.h"
 
+#include "gui/widgets/chat_edit_box.h"
 #include "gui/widgets/contacts-list-widget-menu-manager.h"
+#include "gui/widgets/custom_input.h"
+
+#include "gui/windows/chat_window.h"
+
+#include "protocols/protocols_manager.h"
 
 #include "action.h"
 #include "activate.h"
-#include "chat_edit_box.h"
 #include "chat_message.h"
-#include "chat_window.h"
 #include "config_file.h"
-#include "custom_input.h"
 #include "debug.h"
 #include "icons_manager.h"
 #include "kadu.h"
 #include "message_box.h"
 #include "misc.h"
 #include "pending_msgs.h"
-#include "protocols/protocols_manager.h"
 #include "search.h"
 #include "xml_config_file.h"
 

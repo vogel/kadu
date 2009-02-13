@@ -13,8 +13,6 @@
 #include <QtCore/QMap>
 #include <QtGui/QWidget>
 
-#include "contacts/contact.h"
-
 class QComboBox;
 class QLineEdit;
 class QPushButton;
@@ -56,8 +54,6 @@ signals:
 class SyntaxEditor : public QWidget
 {
 	Q_OBJECT
-
-	Contact example;
 
 	SyntaxList *syntaxList;
 	QComboBox *syntaxListCombo;

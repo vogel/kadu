@@ -16,8 +16,9 @@
 #include "contacts/contact.h"
 #include "contacts/contact-list.h"
 
-#include "emoticons.h"
 #include "protocols/protocol.h"
+
+#include "emoticons.h"
 
 #include "exports.h"
 

@@ -14,14 +14,16 @@
 #include <QtGui/QLabel>
 #include <QtGui/QSpinBox>
 
-#include "chat_widget.h"
-#include "chat_manager.h"
+#include "chat/chat_manager.h"
+
+#include "gui/widgets/tool-tip-class-manager.h"
+#include "gui/widgets/chat_widget.h"
+#include "gui/widgets/configuration/configuration-widget.h"
+
 #include "config_file.h"
 #include "debug.h"
 #include "hint_manager.h"
 #include "hints_configuration_widget.h"
-#include "gui/widgets/tool-tip-class-manager.h"
-#include "gui/widgets/configuration/configuration-widget.h"
 #include "icons_manager.h"
 #include "kadu.h"
 #include "kadu_parser.h"

@@ -7,6 +7,9 @@ set (kadu_SRCS
 
 	accounts/model/accounts-model.cpp
 
+	chat/chat_manager.cpp
+	chat/chat_message.cpp
+
 	contacts/contact.cpp
 	contacts/contact-account-data.cpp
 	contacts/contact-data.cpp
@@ -43,10 +46,16 @@ set (kadu_SRCS
 
 	gui/widgets/contact-account-data-widget.cpp
 
+	gui/widgets/chat_edit_box.cpp
+	gui/widgets/chat_messages_view.cpp
+	gui/widgets/chat_widget.cpp
 	gui/widgets/contacts-list-widget.cpp
 	gui/widgets/contacts-list-widget-delegate.cpp
 	gui/widgets/contacts-list-widget-menu-manager.cpp
+	gui/widgets/custom_input.cpp
 	gui/widgets/group-tab-bar.cpp
+	gui/widgets/kadu_text_browser.cpp
+	gui/widgets/preview.cpp
 	gui/widgets/tool-tip-class-manager.cpp
 
 	gui/widgets/configuration/config-action-button.cpp
@@ -73,6 +82,7 @@ set (kadu_SRCS
 	gui/widgets/configuration/config-group-box.cpp
 	gui/widgets/configuration/config-tab.cpp
 
+	gui/windows/chat_window.cpp
 	gui/windows/configuration-window.cpp
 	gui/windows/contact-data-window.cpp
 
@@ -86,17 +96,10 @@ set (kadu_SRCS
 	about.cpp
 	action.cpp
 	activate.cpp
-	chat_edit_box.cpp
-	chat_manager.cpp
-	chat_message.cpp
-	chat_messages_view.cpp
-	chat_widget.cpp
-	chat_window.cpp
 	color_button.cpp
 	color_selector.cpp
 	config_file.cpp
 	configuration_aware_object.cpp
-	custom_input.cpp
 	debug.cpp
 	dnshandler.cpp
 	emoticons.cpp
@@ -109,7 +112,6 @@ set (kadu_SRCS
 	kadu.cpp
 	kadu_main_window.cpp
 	kadu_parser.cpp
-	kadu_text_browser.cpp
 	main_configuration_window.cpp
 	message.cpp
 	message_box.cpp
@@ -118,7 +120,6 @@ set (kadu_SRCS
 	path_list_edit.cpp
 	pending_msgs.cpp
 	personal_info.cpp
-	preview.cpp
 	search.cpp
 	select_file.cpp
 	select_font.cpp
@@ -144,6 +145,8 @@ set (kadu_MOC_SRCS
 	accounts/account_manager.h
 
 	accounts/model/accounts-model.h
+
+	chat/chat_manager.h
 
 	contacts/contact.h
 	contacts/contact-account-data.h
@@ -173,11 +176,16 @@ set (kadu_MOC_SRCS
 
 	configuration/widgets/manage-accounts.h
 
+	gui/widgets/chat_edit_box.h
+	gui/widgets/chat_messages_view.h
+	gui/widgets/chat_widget.h
 	gui/widgets/contact-account-data-widget.h
-
 	gui/widgets/contacts-list-widget.h
 	gui/widgets/contacts-list-widget-delegate.h
+	gui/widgets/custom_input.h
 	gui/widgets/group-tab-bar.h
+	gui/widgets/kadu_text_browser.h
+	gui/widgets/preview.h
 
 	gui/widgets/configuration/config-action-button.h
 	gui/widgets/configuration/config-check-box.h
@@ -188,6 +196,7 @@ set (kadu_MOC_SRCS
 	gui/widgets/configuration/config-section.h
 	gui/widgets/configuration/config-tab.h
 
+	gui/windows/chat_window.h
 	gui/windows/configuration-window.h
 	gui/windows/contact-data-window.h
 
@@ -201,16 +210,10 @@ set (kadu_MOC_SRCS
 	about.h
 	action.h
 	activate.h
-	chat_edit_box.h
-	chat_manager.h
-	chat_messages_view.h
-	chat_widget.h
-	chat_window.h
 	color_button.h
 	color_selector.h
 	config_file.h
 	configuration_aware_object.h
-	custom_input.h
 	debug.h
 	dnshandler.h
 	emoticons.h
@@ -223,7 +226,6 @@ set (kadu_MOC_SRCS
 	kadu.h
 	kadu_main_window.h
 	kadu_parser.h
-	kadu_text_browser.h
 	main_configuration_window.h
 	message.h
 	message_box.h
@@ -232,7 +234,6 @@ set (kadu_MOC_SRCS
 	path_list_edit.h
 	pending_msgs.h
 	personal_info.h
-	preview.h
 	search.h
 	select_file.h
 	select_font.h

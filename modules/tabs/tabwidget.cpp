@@ -6,7 +6,8 @@
 #include "hot_key.h"
 #include "icons_manager.h"
 #include "tabwidget.h"
-#include "userbox.h"
+//TODO: 0.6.6:
+//#include "userbox.h"
 
 TabWidget::TabWidget()
 {

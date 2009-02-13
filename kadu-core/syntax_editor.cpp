@@ -19,12 +19,12 @@
 #include <QtGui/QVBoxLayout>
 #include <QtNetwork/QHostAddress>
 
+#include "gui/widgets/preview.h"
+
 #include "config_file.h"
 #include "icons_manager.h"
 #include "message_box.h"
 #include "misc.h"
-#include "preview.h"
-#include "protocols/status.h"
 
 #include "syntax_editor.h"
 
@@ -200,22 +200,6 @@ bool SyntaxList::isGlobal(const QString &name)
 SyntaxEditor::SyntaxEditor(QWidget *parent)
 	: QWidget(parent), syntaxList(0)
 {
-	Status status(Status::Busy, qApp->translate("@default", "Description"));
-
-	//example.addAccountData(ContactAccountData(AccountManager::instance()->defaultAccount(), "999999"));
-	//ContactAccountData *example_data = example.accountData(AccountManager::instance()->defaultAccount());
-	//example_data->setStatus(status);
-	//example_data->setAddressAndPort(QHostAddress(2130706433), 80);
-	//example_data->setDNSName("Gadu", "host.server.net");
-
-	example.setFirstName(qApp->translate("@default", "Mark"));
-	example.setLastName(qApp->translate("@default", "Smith"));
-	example.setNickName(qApp->translate("@default", "Jimbo"));
-	example.setDisplay(qApp->translate("@default", "Jimbo"));
-	example.setMobile("+48123456789");
-	example.setEmail("jimbo@mail.server.net");
-	example.setHomePhone("+481234567890");
-
 	QHBoxLayout *layout = new QHBoxLayout(this);
 
 	syntaxListCombo = new QComboBox(this);

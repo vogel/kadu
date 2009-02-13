@@ -12,7 +12,9 @@
 
 #include "accounts/account.h"
 #include "accounts/account_manager.h"
-#include "chat_message.h"
+
+#include "chat/chat_message.h"
+
 #include "config_file.h"
 #include "debug.h"
 #include "kadu_parser.h"

@@ -15,23 +15,26 @@
 #include <QtGui/QApplication>
 #include <QtGui/QMenu>
 
-#include "action.h"
 #include "accounts/account.h"
 #include "accounts/account_data.h"
 #include "accounts/account_manager.h"
+
 #include "contacts/contact.h"
 #include "contacts/contact-list.h"
 #include "contacts/contact-manager.h"
+
+#include "gui/widgets/chat_edit_box.h"
 #include "gui/widgets/contacts-list-widget-menu-manager.h"
 #include "gui/widgets/configuration/configuration-widget.h"
+
 #include "protocols/protocol.h"
 #include "protocols/protocol_factory.h"
 #include "protocols/protocols_manager.h"
-#include "chat_edit_box.h"
+
+#include "action.h"
 #include "debug.h"
 #include "icons_manager.h"
 #include "toolbar.h"
-#include "userbox.h"
 #include "xml_config_file.h"
 
 #include "tabs.h"

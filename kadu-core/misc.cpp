@@ -40,11 +40,12 @@
 #include "accounts/account.h"
 #include "accounts/account_manager.h"
 
+#include "chat/chat_manager.h"
+
 #include "contacts/contact-manager.h"
 
 #include "../modules/gadu_protocol/gadu-protocol.h"
 
-#include "chat_manager.h"
 #include "config_file.h"
 #include "debug.h"
 #include "html_document.h"

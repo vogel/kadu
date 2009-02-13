@@ -26,6 +26,8 @@
 #include "accounts/account_data.h"
 #include "accounts/account_manager.h"
 
+#include "chat/chat_manager.h"
+
 #include "contacts/contact-account-data.h"
 #include "contacts/contact-manager.h"
 #include "contacts/group-manager.h"
@@ -40,19 +42,21 @@
 #include "contacts/model/filter/anonymous-contact-filter.h"
 #include "contacts/model/filter/anonymous-without-messages-contact-filter.h"
 
+#include "gui/widgets/chat_edit_box.h"
 #include "gui/widgets/contacts-list-widget.h"
 #include "gui/widgets/contacts-list-widget-menu-manager.h"
 #include "gui/widgets/group-tab-bar.h"
 
 #include "gui/windows/contact-data-window.h"
 
+#include "protocols/protocol_factory.h"
+#include "protocols/protocols_manager.h"
+
 #include "../modules/gadu_protocol/gadu-contact-account-data.h"
 #include "../modules/gadu_protocol/gadu_images_manager.h"
 #include "../modules/gadu_protocol/gadu-protocol.h"
 
 #include "about.h"
-#include "chat_edit_box.h"
-#include "chat_manager.h"
 #include "config_file.h"
 #include "debug.h"
 #include "emoticons.h"
@@ -68,8 +72,6 @@
 #include "misc.h"
 #include "pending_msgs.h"
 #include "personal_info.h"
-#include "protocols/protocol_factory.h"
-#include "protocols/protocols_manager.h"
 #include "search.h"
 #include "status_changer.h"
 #include "syntax_editor.h"

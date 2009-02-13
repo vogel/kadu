@@ -11,8 +11,8 @@
 #define CONFIG_PREVIEW_H
 
 #include "gui/widgets/configuration/config-widget.h"
+#include "gui/widgets/preview.h"
 #include "configuration/configuration-window-data-manager.h"
-#include "preview.h"
 
 class QLabel;
 class ConfigGroupBox;

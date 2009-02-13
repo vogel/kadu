@@ -6,8 +6,9 @@
 #include <QtGui/QTabWidget>
 #include <QtGui/QToolButton>
 
-#include "chat_widget.h"
-#include "custom_input.h"
+#include "gui/widgets/chat_widget.h"
+#include "gui/widgets/custom_input.h"
+
 #include "debug.h"
 
 class OpenChatWith;

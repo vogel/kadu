@@ -7,12 +7,13 @@
  *                                                                         *
  ***************************************************************************/
 
+#include <QtGui/QMenu>
+#include <QtGui/QAction>
+
 #include "debug.h"
 #include "hot_key.h"
 
 #include "custom_input.h"
-#include <QtGui/QMenu>
-#include <QtGui/QAction>
 
 CustomInput::CustomInput(QWidget *parent)
 	: QTextEdit(parent), autosend_enabled(true), CopyPossible(false)

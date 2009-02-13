@@ -9,17 +9,20 @@
 
 #include <QtCore/QTextCodec>
 
-#include "chat_manager.h"
+#include "accounts/account.h"
+#include "accounts/account_manager.h"
+
+#include "chat/chat_manager.h"
+
+#include "contacts/contact-manager.h"
+
+#include "contacts/contact-list-configuration-helper.h"
+
 #include "debug.h"
 #include "misc.h"
 #include "protocols/protocol.h"
 #include "xml_config_file.h"
 
-#include "accounts/account.h"
-#include "accounts/account_manager.h"
-#include "contacts/contact-manager.h"
-
-#include "contacts/contact-list-configuration-helper.h"
 
 #include "pending_msgs.h"
 

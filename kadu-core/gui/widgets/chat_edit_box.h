@@ -10,8 +10,8 @@
 #ifndef CHAT_EDIT_BOX_H
 #define CHAT_EDIT_BOX_H
 
-#include <action.h>
-#include <kadu_main_window.h>
+#include "action.h"
+#include "kadu_main_window.h"
 
 #include "configuration_aware_object.h"
 

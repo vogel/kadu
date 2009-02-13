@@ -14,28 +14,34 @@
 #include <QtGui/QListWidget>
 #include <QtGui/QLabel>
 
-#include "gui/windows/configuration-window.h"
-#include "gui/widgets/configuration/configuration-widget.h"
-#include "gui/widgets/configuration/config-combo-box.h"
-#include "gui/widgets/configuration/config-group-box.h"
 #include "accounts/account.h"
 #include "accounts/account_data.h"
 #include "accounts/account_manager.h"
+
+#include "chat/chat_manager.h"
+
 #include "contacts/contact-account-data.h"
 #include "contacts/contact-list.h"
-#include "chat_widget.h"
-#include "chat_manager.h"
+
+#include "gui/widgets/chat_widget.h"
+#include "gui/widgets/configuration/configuration-widget.h"
+#include "gui/widgets/configuration/config-combo-box.h"
+#include "gui/widgets/configuration/config-group-box.h"
+#include "gui/widgets/custom_input.h"
+
+#include "gui/windows/configuration-window.h"
+
 #include "config_file.h"
 #include "connection_error_notification.h"
-#include "custom_input.h"
 #include "debug.h"
 #include "kadu.h"
 #include "misc.h"
 #include "new_message_notification.h"
-#include "notify.h"
 #include "message_box.h"
 #include "status_changed_notification.h"
 #include "userbox.h"
+
+#include "notify.h"
 
 
 extern "C" KADU_EXPORT int notify_init(bool firstLoad)

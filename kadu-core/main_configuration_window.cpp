@@ -18,20 +18,29 @@
 #include "accounts/account.h"
 #include "accounts/account_manager.h"
 
+#include "chat/chat_message.h"
+
 #include "contacts/contact.h"
 #include "contacts/contact-data.h"
 #include "contacts/contact-account-data.h"
 
+#include "gui/widgets/configuration/config-combo-box.h"
+#include "gui/widgets/configuration/config-line-edit.h"
+#include "gui/widgets/configuration/config-preview.h"
+#include "gui/widgets/configuration/config-syntax-editor.h"
+#include "gui/widgets/configuration/config-path-list-edit.h"
+
+#include "gui/widgets/configuration/config-check-box.h"
+
 #include "gui/widgets/configuration/configuration-widget.h"
 
+#include "gui/widgets/chat_messages_view.h"
 #include "gui/widgets/tool-tip-class-manager.h"
 
 #include "protocols/status.h"
 
 #include "../modules/gadu_protocol/gadu-protocol.h"
 
-#include "chat_message.h"
-#include "chat_messages_view.h"
 #include "config_file.h"
 #include "debug.h"
 #include "icons_manager.h"
@@ -39,12 +48,6 @@
 #include "misc.h"
 
 #include "main_configuration_window.h"
-#include "gui/widgets/configuration/config-combo-box.h"
-#include "gui/widgets/configuration/config-line-edit.h"
-#include "gui/widgets/configuration/config-preview.h"
-#include "gui/widgets/configuration/config-syntax-editor.h"
-#include "gui/widgets/configuration/config-path-list-edit.h"
-#include "gui/widgets/configuration/config-check-box.h"
 
 MainConfigurationWindow *MainConfigurationWindow::Instance = 0;
 ConfigFileDataManager *MainConfigurationWindow::InstanceDataManager = 0;

@@ -12,9 +12,11 @@
 
 #include <QtCore/QTimer>
 
-#include "chat_widget.h"
-#include "configuration_aware_object.h"
 #include "contacts/contact-list.h"
+
+#include "gui/widgets/chat_widget.h"
+
+#include "configuration_aware_object.h"
 
 #include "exports.h"
 

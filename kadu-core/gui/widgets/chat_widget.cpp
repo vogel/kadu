@@ -14,6 +14,9 @@
 #include "accounts/account.h"
 #include "accounts/account_manager.h"
 
+#include "chat/chat_manager.h"
+#include "chat/chat_message.h"
+
 #include "contacts/contact-account-data.h"
 
 #include "contacts/model/contact-list-model.h"
@@ -24,8 +27,6 @@
 
 #include "action.h"
 #include "chat_edit_box.h"
-#include "chat_manager.h"
-#include "chat_message.h"
 #include "color_selector.h"
 #include "config_file.h"
 #include "custom_input.h"

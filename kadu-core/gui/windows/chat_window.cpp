@@ -13,14 +13,16 @@
 #include <QtGui/QDesktopWidget>
 #include <QtGui/QVBoxLayout>
 
+#include "chat/chat_manager.h"
+
 #include "contacts/contact-kadu-data.h"
 
-#include "chat_manager.h"
-#include "chat_window.h"
 #include "config_file.h"
 #include "debug.h"
 #include "message_box.h"
 #include "misc.h"
+
+#include "chat_window.h"
 
 ChatWindow::ChatWindow(QWidget *parent)
 	: QWidget(parent), currentChatWidget(0), title_timer(new QTimer(this, "title_timer"))

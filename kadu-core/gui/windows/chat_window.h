@@ -1,7 +1,8 @@
 #ifndef KADU_CHAT_WINDOW_H
 #define KADU_CHAT_WINDOW_H
 
-#include "chat_widget.h"
+#include "gui/widgets/chat_widget.h"
+
 #include "configuration_aware_object.h"
 
 class QTimer;
