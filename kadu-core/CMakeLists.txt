@@ -41,8 +41,6 @@ set (kadu_SRCS
 
 	configuration/widgets/manage-accounts.cpp
 
-	gui/widgets/contact-data-window.cpp
-
 	gui/widgets/contact-account-data-widget.cpp
 
 	gui/widgets/contacts-list-widget.cpp
@@ -76,6 +74,7 @@ set (kadu_SRCS
 	gui/widgets/configuration/config-tab.cpp
 
 	gui/windows/configuration-window.cpp
+	gui/windows/contact-data-window.cpp
 
 	protocols/protocol.cpp
 	protocols/protocol-menu-manager.cpp
@@ -174,8 +173,6 @@ set (kadu_MOC_SRCS
 
 	configuration/widgets/manage-accounts.h
 
-	gui/widgets/contact-data-window.h
-
 	gui/widgets/contact-account-data-widget.h
 
 	gui/widgets/contacts-list-widget.h
@@ -192,6 +189,7 @@ set (kadu_MOC_SRCS
 	gui/widgets/configuration/config-tab.h
 
 	gui/windows/configuration-window.h
+	gui/windows/contact-data-window.h
 
 	protocols/protocol.h
 	protocols/protocol_factory.h

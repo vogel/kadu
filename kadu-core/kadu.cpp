@@ -40,11 +40,11 @@
 #include "contacts/model/filter/anonymous-contact-filter.h"
 #include "contacts/model/filter/anonymous-without-messages-contact-filter.h"
 
-#include "gui/widgets/contact-data-window.h"
-
 #include "gui/widgets/contacts-list-widget.h"
 #include "gui/widgets/contacts-list-widget-menu-manager.h"
 #include "gui/widgets/group-tab-bar.h"
+
+#include "gui/windows/contact-data-window.h"
 
 #include "../modules/gadu_protocol/gadu-contact-account-data.h"
 #include "../modules/gadu_protocol/gadu_images_manager.h"

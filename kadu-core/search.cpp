@@ -23,7 +23,7 @@
 
 #include "contacts/contact-manager.h"
 
-#include "gui/widgets/contact-data-window.h"
+#include "gui/windows/contact-data-window.h"
 
 #include "chat_manager.h"
 #include "config_file.h"
