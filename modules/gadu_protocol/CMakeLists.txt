@@ -11,6 +11,7 @@ set (SOURCES
 	gadu_configuration_dialog.cpp
 	gadu-contact-account-data.cpp
 	gadu-contact-account-data-manager.cpp
+	gadu-contact-account-data-widget.cpp
 	gadu_formatter.cpp
 	gadu_images_manager.cpp
 	gadu-importer.cpp
@@ -37,6 +38,7 @@ set (MOC_SOURCES
 	gadu.h
 	gadu_configuration_dialog.h
 	gadu-contact-account-data.h
+	gadu-contact-account-data-widget.h
 	gadu-importer.h
 	gadu-protocol.h
 	gadu-protocol-socket-notifiers.h

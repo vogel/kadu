@@ -14,15 +14,16 @@
 #include <QtGui/QPushButton>
 #include <QtGui/QVBoxLayout>
 
-#include "gadu_account_data.h"
-#include "icons_manager.h"
+#include "gadu-contact-account-data.h"
+#include "gadu-contact-account-data-manager.h"
+#include "misc.h"
 
-#include "gadu-account-data-manager.h"
-#include "gadu_contact_account_data_window.h"
+#include "gadu-contact-account-data-widget.h"
 
 GaduContactAccountDataWidget::GaduContactAccountDataWidget(GaduContactAccountData *contactAccountData, QWidget *parent)
-	  // TODO: remove new GaduAccountDataManager(accountData)) after use
-	: ConfigurationWindow("account", tr("Gadu-Gadu account")), ContactAccountData(contactAccountData)
+	// TODO: remove new GaduAccountDataManager(accountData)) after use
+	: ContactAccountDataWidget(new GaduContactAccountDataManager(contactAccountData), contactAccountData, parent), 
+	    Data(contactAccountData)
 {
 	setAttribute(Qt::WA_DeleteOnClose);
 
@@ -35,7 +36,7 @@ GaduContactAccountDataWidget::~GaduContactAccountDataWidget()
 
 void GaduContactAccountDataWidget::createGui()
 {
-	appendUiFile(dataPath("kadu/modules/configuration/gadu_protocol.ui"));
-	QLineEdit *passwordLineEdit = dynamic_cast<QLineEdit *>(widgetById("password"));
-	passwordLineEdit->setEchoMode(QLineEdit::Password);
+	appendUiFile(dataPath("kadu/modules/configuration/gadu_contact.ui"));
+	//QLineEdit *passwordLineEdit = dynamic_cast<QLineEdit *>(widgetById("password"));
+	//passwordLineEdit->setEchoMode(QLineEdit::Password);
 }

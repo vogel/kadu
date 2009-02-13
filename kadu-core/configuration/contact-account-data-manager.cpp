@@ -8,6 +8,7 @@
  ***************************************************************************/
 
 #include "contacts/contact-account-data.h"
+#include "protocols/status.h"
 
 #include "contact-account-data-manager.h"
 
@@ -15,8 +16,6 @@ ContactAccountDataManager::ContactAccountDataManager(ContactAccountData *data)
 	: Data(data)
 {
 }
-
-// TODO: add rest data
 
 void ContactAccountDataManager::writeEntry(const QString &section, const QString &name, const QVariant &value)
 {
@@ -37,6 +36,18 @@ QVariant ContactAccountDataManager::readEntry(const QString &section, const QStr
 
 	if (name == "Id")
 		return Data->id();
+
+	if (name == "Addr")
+		return QString("%1:%2").arg(Data->ip().toString()).arg(QString::number(Data->port()));
+
+	if (name == "DnsName")
+		return Data->dnsName();
+
+	if (name == "Version")
+		return Data->protocolVersion();
+
+	if (name == "Status")
+		return Status::name(Data->status());
 
 	if (name == "Blocked")
 		return Data->isBlocked();

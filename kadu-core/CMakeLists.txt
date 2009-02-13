@@ -43,6 +43,8 @@ set (kadu_SRCS
 
 	gui/widgets/contact-data-window.cpp
 
+	gui/widgets/contact-account-data-widget.cpp
+
 	gui/widgets/contacts-list-widget.cpp
 	gui/widgets/contacts-list-widget-delegate.cpp
 	gui/widgets/contacts-list-widget-menu-manager.cpp
@@ -173,6 +175,8 @@ set (kadu_MOC_SRCS
 	configuration/widgets/manage-accounts.h
 
 	gui/widgets/contact-data-window.h
+
+	gui/widgets/contact-account-data-widget.h
 
 	gui/widgets/contacts-list-widget.h
 	gui/widgets/contacts-list-widget-delegate.h

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration-ui>
+	<section name="Contacts" icon="GeneralTab">
+		<group-box name="Contact">
+			<line-edit caption="Id" config-section="Contact" config-item="Id" id="Id" />
+			<check-box caption="Blocked" config-section="Contact" config-item="Blocked" id="Blocked" />
+			<check-box caption="OfflineTo" config-section="Contact" config-item="OfflineTo" id="OfflineTo" />
+			<line-edit caption="Address IP and Port" config-section="Contact" config-item="Addr" id="Addr" />
+			<line-edit caption="DNS name" config-section="Contact" config-item="DnsName" id="DnsName" />
+			<line-edit caption="Protocol version" config-section="Contact" config-item="Version" id="Ver"/>
+			<line-edit caption="Status" config-section="Contact" config-item="Status" id="Status" />
+		</group-box>
+	</section>
+</configuration-ui>
