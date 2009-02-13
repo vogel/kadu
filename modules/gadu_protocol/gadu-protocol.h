@@ -15,6 +15,7 @@
 
 #include <libgadu.h>
 
+#include "services/gadu-chat-image-service.h"
 #include "services/gadu-chat-service.h"
 #include "services/gadu-contact-list-service.h"
 
@@ -52,6 +53,7 @@ public:
 	};
 
 private:
+	GaduChatImageService *CurrentChatImageService;
 	GaduChatService *CurrentChatService;
 	GaduContactListService *CurrentContactListService;
 
@@ -117,6 +119,7 @@ private:
 
 	GaduProtocolSocketNotifiers * socketNotifiers() { return SocketNotifiers; }
 
+	friend class GaduChatImageService;
 	friend class GaduChatService;
 	friend class GaduContactListService;
 
@@ -180,18 +183,6 @@ private slots:
 	void errorSlot(GaduError);
 
 	/**
-		Slot wywo�ywany po otrzymaniu obrazka od serwera. Emituje imageReceivedAndSaved
-
-		@see imageReceivedAndSaved
-	**/
-	void imageReceived(UinType sender, uint32_t size, uint32_t crc32, const QString &filename, const char *data);
-
-	/**
-		Slot wywo�ywany po otrzymaniu pro�by o obrazek od serwera. Wysy�a obrazek.
-	**/
-	void imageRequestReceivedSlot(UinType, uint32_t, uint32_t);
-
-	/**
 		Wykonuje zadania co minut� - pinguje sie� i zeruje licznik
 		odebranych obrazk�w (je�li jeste�my po��czeni).
 	**/
@@ -226,6 +217,7 @@ public:
 	GaduProtocol(Account *account, ProtocolFactory *factory);
 	virtual ~GaduProtocol();
 
+	virtual ChatImageService * chatImageService() { return CurrentChatImageService; }
 	virtual ChatService * chatService() { return CurrentChatService; }
 	virtual ContactListService * contactListService() { return CurrentContactListService; }
 
@@ -316,23 +308,6 @@ signals:
 		@see connectionError
 	**/
 	void error(GaduError err);
-
-	/**
-		dostali�my pro�b� o przys�anie obrazka
-		@param sender od kogo
-		@param size rozmiar pliku
-		@param crc32 jego suma kontrolna obliczana przy pomocy crc32
-	**/
-	void imageRequestReceived(UinType sender, uint32_t size, uint32_t crc32);
-
-	/**
-		Otrzymano dane obrazka i zapisano go do pliku.
-		@param sender od kogo
-		@param size rozmiar pliku
-		@param crc32 jego suma kontrolna obliczana przy pomocy crc32
-		@param path �cie�ka do zapisanego pliku
-	**/
-	void imageReceivedAndSaved(UinType sender, uint32_t size, uint32_t crc32, const QString &path);
 
 	/**
 		Served sent information about status change for unknown user.

@@ -208,6 +208,7 @@ set (kadu_MOC_SRCS
 	protocols/protocol_factory.h
 	protocols/protocols_manager.h
 
+	protocols/services/chat-image-service.h
 	protocols/services/chat-service.h
 	protocols/services/contact-list-service.h
 

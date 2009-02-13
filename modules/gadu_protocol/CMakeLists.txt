@@ -1,6 +1,7 @@
 set (SOURCES
 	helpers/gadu-list-helper.cpp
 
+	services/gadu-chat-image-service.cpp
 	services/gadu-chat-service.cpp
 	services/gadu-contact-list-service.cpp
 
@@ -31,6 +32,7 @@ set (SOURCES
 )
 
 set (MOC_SOURCES
+	services/gadu-chat-image-service.h
 	services/gadu-chat-service.h
 	services/gadu-contact-list-service.h
 

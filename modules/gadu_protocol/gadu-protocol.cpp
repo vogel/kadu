@@ -128,6 +128,7 @@ GaduProtocol::GaduProtocol(Account *account, ProtocolFactory *factory) :
 
 	SocketNotifiers = new GaduProtocolSocketNotifiers(account, this);
 
+	CurrentChatImageService = new GaduChatImageService(this);
 	CurrentChatService = new GaduChatService(this);
 	CurrentContactListService = new GaduContactListService(this);
 
@@ -136,12 +137,6 @@ GaduProtocol::GaduProtocol(Account *account, ProtocolFactory *factory) :
 		this, SIGNAL(dccConnectionReceived(Contact)));
 	connect(SocketNotifiers, SIGNAL(serverDisconnected()), this, SLOT(socketDisconnectedSlot()));
 	connect(SocketNotifiers, SIGNAL(error(GaduError)), this, SLOT(errorSlot(GaduError)));
-	connect(SocketNotifiers, SIGNAL(imageReceived(UinType, uint32_t, uint32_t, const QString &, const char *)),
-		this, SLOT(imageReceived(UinType, uint32_t, uint32_t, const QString &, const char *)));
-	connect(SocketNotifiers, SIGNAL(imageRequestReceived(UinType, uint32_t, uint32_t)),
-		this, SLOT(imageRequestReceivedSlot(UinType, uint32_t, uint32_t)));
-	connect(SocketNotifiers, SIGNAL(imageRequestReceived(UinType, uint32_t, uint32_t)),
-		this, SIGNAL(imageRequestReceived(UinType, uint32_t, uint32_t)));
 	connect(SocketNotifiers, SIGNAL(pubdirReplyReceived(gg_pubdir50_t)), this, SLOT(newResults(gg_pubdir50_t)));
 	connect(SocketNotifiers, SIGNAL(userlistReceived(const struct gg_event *)),
 		this, SLOT(userListReceived(const struct gg_event *)));
@@ -656,23 +651,6 @@ void GaduProtocol::errorSlot(GaduError err)
 		connectAfterOneSecond();
 
 	kdebugf2();
-}
-
-void GaduProtocol::imageReceived(UinType sender, uint32_t size, uint32_t crc32, const QString &filename, const char *data)
-{
-	kdebugm(KDEBUG_INFO, qPrintable(QString("Received image. sender: %1, size: %2, crc32: %3,filename: %4\n")
-		.arg(sender).arg(size).arg(crc32).arg(filename)));
-
-	QString full_path = gadu_images_manager.saveImage(sender,size,crc32,filename,data);
-	emit imageReceivedAndSaved(sender, size, crc32, full_path);
-}
-
-void GaduProtocol::imageRequestReceivedSlot(UinType sender, uint32_t size, uint32_t crc32)
-{
-	kdebugm(KDEBUG_INFO, qPrintable(QString("Received image request. sender: %1, size: %2, crc32: %3\n")
-		.arg(sender).arg(size).arg(crc32)));
-
-	gadu_images_manager.sendImage(sender,size,crc32);
 }
 
 void GaduProtocol::everyMinuteActions()
