@@ -134,9 +134,11 @@ void ContactDataWindow::setupTab1()
 
 	tw_main->addTab(generalWidget, tr("General"));
 
+	// TODO: 0.6.6 we need it if we use only one account
+
 	// ID and disp
-	e_id = new QLineEdit(generalWidget);
-	e_id->setMaxLength(8);
+	//e_id = new QLineEdit(generalWidget);
+	//e_id->setMaxLength(8);
 	// TODO: validateId from protocol
 	//e_id->setValidator(new QIntValidator(1, 99999999, this));
 
@@ -164,31 +166,31 @@ void ContactDataWindow::setupTab1()
 	e_email = new QLineEdit(generalWidget);
 	// end Email
 
-	QFrame *line1 = new QFrame(generalWidget);
-	line1->setFrameShape(QFrame::HLine);
-	line1->setFrameShadow(QFrame::Sunken);
-	line1->setFrameShape(QFrame::HLine);
+	//QFrame *line1 = new QFrame(generalWidget);
+	//line1->setFrameShape(QFrame::HLine);
+	//line1->setFrameShadow(QFrame::Sunken);
+	//line1->setFrameShape(QFrame::HLine);
 
 	// IP and DNS
-	e_addr = new QLineEdit(generalWidget);
-	e_addr->setBackgroundMode(Qt::PaletteButton);
+	//e_addr = new QLineEdit(generalWidget);
+	//e_addr->setBackgroundMode(Qt::PaletteButton);
 
-	e_dnsname = new QLineEdit(generalWidget);
-	e_dnsname->setBackgroundMode(Qt::PaletteButton);
+	//e_dnsname = new QLineEdit(generalWidget);
+	//e_dnsname->setBackgroundMode(Qt::PaletteButton);
 	// end IP and DNS
 
 	// Protocol Version and status
-	e_ver = new QLineEdit(generalWidget);
-	e_ver->setBackgroundMode(Qt::PaletteButton);
+	//e_ver = new QLineEdit(generalWidget);
+	//e_ver->setBackgroundMode(Qt::PaletteButton);
 
-	QLineEdit *e_status = new QLineEdit(generalWidget);
-	e_status->setBackgroundMode(Qt::PaletteButton);
+	//QLineEdit *e_status = new QLineEdit(generalWidget);
+	//e_status->setBackgroundMode(Qt::PaletteButton);
 	// end Protocol Version and status
 
 	QGridLayout * generalLayout = new QGridLayout(generalWidget);
 	generalLayout->setSpacing(3);
-	generalLayout->addWidget(new QLabel(tr("Uin"), generalWidget), 0, 0);
-	generalLayout->addWidget(e_id, 1, 0);
+	//generalLayout->addWidget(new QLabel(tr("Uin"), generalWidget), 0, 0);
+	//generalLayout->addWidget(e_id, 1, 0);
 	generalLayout->addWidget(new QLabel(tr("Display"), generalWidget), 0, 1);
 	generalLayout->addWidget(e_display, 1, 1);
 	generalLayout->addWidget(new QLabel(tr("First name"), generalWidget), 2, 0);
@@ -203,20 +205,20 @@ void ContactDataWindow::setupTab1()
 	generalLayout->addWidget(e_email, 7, 0);
 	generalLayout->addWidget(emptyWidget, 6, 1);
 	generalLayout->addWidget(emptyWidget2, 7, 1);
-	generalLayout->addWidget(line1, 8, 0, 1, 2);
-	generalLayout->addWidget(new QLabel(tr("Address IP and Port"), generalWidget), 9, 0);
-	generalLayout->addWidget(e_addr, 10, 0);
-	generalLayout->addWidget(new QLabel(tr("DNS name"), generalWidget), 9, 1);
-	generalLayout->addWidget(e_dnsname, 10, 1);
-	generalLayout->addWidget(new QLabel(tr("Protocol version"), generalWidget), 11, 0);
-	generalLayout->addWidget(e_ver, 12, 0);
-	generalLayout->addWidget(new QLabel(tr("Status"), generalWidget), 11, 1);
-	generalLayout->addWidget(e_status, 12, 1);
+	//generalLayout->addWidget(line1, 8, 0, 1, 2);
+	//generalLayout->addWidget(new QLabel(tr("Address IP and Port"), generalWidget), 9, 0);
+	//generalLayout->addWidget(e_addr, 10, 0);
+	//generalLayout->addWidget(new QLabel(tr("DNS name"), generalWidget), 9, 1);
+	//generalLayout->addWidget(e_dnsname, 10, 1);
+	//generalLayout->addWidget(new QLabel(tr("Protocol version"), generalWidget), 11, 0);
+	//generalLayout->addWidget(e_ver, 12, 0);
+	//generalLayout->addWidget(new QLabel(tr("Status"), generalWidget), 11, 1);
+	//generalLayout->addWidget(e_status, 12, 1);
 
-	e_status->setReadOnly(true);
-	e_addr->setReadOnly(true);
-	e_ver->setReadOnly(true);
-	e_dnsname->setReadOnly(true);
+	//e_status->setReadOnly(true);
+	//e_addr->setReadOnly(true);
+	//e_ver->setReadOnly(true);
+	//e_dnsname->setReadOnly(true);
 
 	e_nickname->setText(User.nickName());
 	e_firstname->setText(User.firstName());
@@ -224,7 +226,7 @@ void ContactDataWindow::setupTab1()
 	e_mobile->setText(User.mobile());
 	e_email->setText(User.email());
 
-	Protocol *userProtocol = UserAccount->protocol();
+	//Protocol *userProtocol = UserAccount->protocol();
 
 	connect(e_nickname, SIGNAL(editingFinished()), this, SLOT(updateDisplay()));
 	connect(e_firstname, SIGNAL(editingFinished()), this, SLOT(updateDisplay()));
@@ -308,6 +310,8 @@ void ContactDataWindow::setupTab2()
 {
 	kdebugf();
 
+	// TODO: 0.6.6 move to ContactGroupsConfigurationWidget
+
 	scrollArea = new QScrollArea(tw_main);
 	scrollArea->setFrameStyle(QFrame::NoFrame);
 	scrollArea->setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
@@ -342,7 +346,7 @@ void ContactDataWindow::setupTab2()
 		pixmapLabel->setPixmap(icon.xForm(QWMatrix().scale((double)16/icon.width(), (double)16/icon.height())));
 		pixmapLabel->setMaximumWidth(22);
 		pixmapLabel->setMaximumHeight(22);
-  pixmapLabels[group->name()] = pixmapLabel;
+		pixmapLabels[group->name()] = pixmapLabel;
 
 		QPushButton *changeIconButton = new QPushButton(box);
 		changeIconButton->setPixmap(icons_manager->loadPixmap("AddSelectPathDialogButton"));
@@ -506,10 +510,11 @@ void ContactDataWindow::setupTab3()
 			continue;
 
 		contactAccountDataWidget->setSizePolicy(QSizePolicy(QSizePolicy::Minimum, QSizePolicy::Expanding));
-		//contactAccountDataWidget->init();
 		contactAccountDataWidget->loadConfiguration();
 
 		tw_main->addTab(contactAccountDataWidget, account->name());
+
+		dataWidgets.append(contactAccountDataWidget);
 	}
 
 	kdebugf2();
@@ -537,6 +542,10 @@ void ContactDataWindow::resultsReady(const QHostInfo &host)
 void ContactDataWindow::updateUserlist()
 {
 	kdebugf();
+
+	foreach (ContactAccountDataWidget* widget, widgets())
+		widget->saveConfiguration();
+
 /*
 	QString id = QString::number(0);
 	if (!e_id->text().isEmpty())

@@ -15,7 +15,7 @@
 #include "contact-account-data.h"
 
 ContactAccountData::ContactAccountData(Contact contact, Account *account, const QString &id)
-	: ContactAccount(account), OwnerContact(contact), Id(id), Blocked(false), OfflineTo(false)
+	: ContactAccount(account), OwnerContact(contact), Id(id), Blocked(false), OfflineTo(false), Port(0)
 {
 	// TODO: 0.6.6 by loadFromStorage, please
 	if (id.isNull())

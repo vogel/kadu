@@ -10,10 +10,11 @@
 #include <QtGui/QDialogButtonBox>
 #include <QtGui/QHBoxLayout>
 #include <QtGui/QLabel>
-#include <QtGui/QLineEdit>
 #include <QtGui/QPushButton>
 #include <QtGui/QVBoxLayout>
 */
+#include <QtGui/QLineEdit>
+
 //#include "icons_manager.h"
 
 #include "configuration/contact-account-data-manager.h"
@@ -37,7 +38,24 @@ ContactAccountDataWidget::~ContactAccountDataWidget()
 void ContactAccountDataWidget::createGui()
 {
 	appendUiFile(dataPath("kadu/configuration/contact-account-data.ui"));
-	// TODO add all needed attributes for widgets
-	//QLineEdit *passwordLineEdit = dynamic_cast<QLineEdit *>(widgetById("password"));
-	//passwordLineEdit->setEchoMode(QLineEdit::Password);
+
+	QLineEdit *idLineEdit = dynamic_cast<QLineEdit *>(widgetById("Id"));
+	idLineEdit->setReadOnly(true);
+	idLineEdit->setBackgroundMode(Qt::PaletteButton);
+
+	QLineEdit *addrLineEdit = dynamic_cast<QLineEdit *>(widgetById("Addr"));
+	addrLineEdit->setReadOnly(true);
+	addrLineEdit->setBackgroundMode(Qt::PaletteButton);
+
+	QLineEdit *versionLineEdit = dynamic_cast<QLineEdit *>(widgetById("Version"));
+	versionLineEdit->setReadOnly(true);
+	versionLineEdit->setBackgroundMode(Qt::PaletteButton);
+
+	QLineEdit *dnsLineEdit = dynamic_cast<QLineEdit *>(widgetById("DnsName"));
+	dnsLineEdit->setReadOnly(true);
+	dnsLineEdit->setBackgroundMode(Qt::PaletteButton);
+
+	QLineEdit *statusLineEdit = dynamic_cast<QLineEdit *>(widgetById("Status"));
+	statusLineEdit->setReadOnly(true);
+	statusLineEdit->setBackgroundMode(Qt::PaletteButton);
 }

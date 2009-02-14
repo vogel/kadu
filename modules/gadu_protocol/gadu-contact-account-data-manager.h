@@ -16,6 +16,11 @@ class GaduContactAccountData;
 
 class GaduContactAccountDataManager : public ContactAccountDataManager
 {
+	GaduContactAccountData *Data;
+
+protected:
+	GaduContactAccountData * data() { return Data; }
+
 public:
 	GaduContactAccountDataManager(GaduContactAccountData *data);
 

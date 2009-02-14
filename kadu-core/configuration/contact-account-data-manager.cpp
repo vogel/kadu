@@ -38,6 +38,7 @@ QVariant ContactAccountDataManager::readEntry(const QString &section, const QStr
 		return Data->id();
 
 	if (name == "Addr")
+	// TODO : if not valid : (unknown):(unknown)
 		return QString("%1:%2").arg(Data->ip().toString(), QString::number(Data->port()));
 
 	if (name == "DnsName")

@@ -30,6 +30,7 @@ class QVBoxLayout;
 
 class CreateNotifier;
 class Contact;
+class ContactAccountDataWidget;
 
 /**
 	Klasa ta reprezentuje okno, z kt�rym mamy do czynienia podczas dodawania nowego kontaktu,
@@ -64,6 +65,8 @@ class KADUAPI ContactDataWindow : public QWidget
 	QLineEdit *newGroup;
 	QWidget *groupsWidget;
 	QVBoxLayout *groupsLayout;
+
+	QList<ContactAccountDataWidget *> dataWidgets;
 
 	QMap<QString, QLabel *> pixmapLabels;
 
@@ -139,6 +142,7 @@ public:
 	~ContactDataWindow();
 
 	QTabWidget *tabs() { return tw_main; }
+	QList<ContactAccountDataWidget *> widgets() { return dataWidgets; }
 	Contact user() const { return User; }
 	static bool acceptableGroupName(const QString &groupName);
 

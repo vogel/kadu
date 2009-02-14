@@ -10,7 +10,7 @@
 				<line-edit caption="Id" config-section="Contact" config-item="Id" id="Id" />
 				<line-edit caption="Address IP and Port" config-section="Contact" config-item="Addr" id="Addr" />
 				<line-edit caption="DNS name" config-section="Contact" config-item="DnsName" id="DnsName" />
-				<line-edit caption="Protocol version" config-section="Contact" config-item="Version" id="Ver"/>
+				<line-edit caption="Protocol version" config-section="Contact" config-item="Version" id="Version"/>
 				<line-edit caption="Status" config-section="Contact" config-item="Status" id="Status" />
 			</group-box>
 		</tab>
