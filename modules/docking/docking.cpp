@@ -22,12 +22,12 @@
 #include "icons_manager.h"
 #include "kadu.h"
 #include "pending_msgs.h"
-#include "status.h"
+#include "protocols/status.h"
 #include "misc.h"
 
 #include "activate.h"
 
-#include "../modules/gadu_protocol/gadu.h"
+//#include "../modules/gadu_protocol/gadu.h"
 
 /**
  * @ingroup docking
@@ -184,13 +184,13 @@ void DockingManager::defaultToolTip()
 {
 	if (config_file.readBoolEntry("General", "ShowTooltipInTray"))
 	{
-		UserStatus status = AccountManager::instance()->status();
+		Status status = AccountManager::instance()->status();
 
 		QString tiptext;
 		tiptext.append(tr("Current status:\n%1")
-			.arg(qApp->translate("@default", UserStatus::name(status.index()).ascii())));
+			.arg(qApp->translate("@default", Status::name(status))));
 
-		if (status.hasDescription())
+		if (!status.description().isEmpty())
 			tiptext.append(tr("\n\nDescription:\n%2").arg(status.description()));
 
 		emit trayTooltipChanged(tiptext);

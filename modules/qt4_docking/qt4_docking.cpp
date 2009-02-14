@@ -13,7 +13,7 @@
 
 #include "chat/chat_manager.h"
 
-#include "gui/widgets.chat_widget.h"
+#include "gui/widgets/chat_widget.h"
 
 #include "config_file.h"
 #include "debug.h"
