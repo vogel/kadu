@@ -5,9 +5,9 @@
 #include "config_file.h"
 #include "hot_key.h"
 #include "icons_manager.h"
+#include "misc.h"
+
 #include "tabwidget.h"
-//TODO: 0.6.6:
-//#include "userbox.h"
 
 TabWidget::TabWidget()
 {

@@ -68,12 +68,12 @@ void disableNewTab(KaduAction *action)
 		action->setText(qApp->translate("TabsManager", "Open in new tab"));
 
 	// TODO 0.6.6 dla siebie samego deaktywujemy opcję w menu
-	Account *account = AccountManager::instance()->defaultAccount();
-	UserListElements users = UserListElements::fromContactList(contacts, account);
-	QString myGGUIN = QString::number(config_file.readNumEntry("General", "UIN"));
-	foreach(UserListElement user, users)
-		if (!user.usesProtocol("Gadu") || user.ID("Gadu") == myGGUIN)
-			action->setEnabled(false);
+	//Account *account = AccountManager::instance()->defaultAccount();
+	//UserListElements users = UserListElements::fromContactList(contacts, account);
+	//QString myGGUIN = QString::number(config_file.readNumEntry("General", "UIN"));
+	//foreach(UserListElement user, contacts)
+		//if (!user.usesProtocol("Gadu") || user.ID("Gadu") == myGGUIN)
+			//action->setEnabled(false);
 }
 
 TabsManager::TabsManager(bool firstload) : QObject()
@@ -141,8 +141,9 @@ TabsManager::TabsManager(bool firstload) : QObject()
 			this, SLOT(onTabChange(int)));
 	connect(tabdialog, SIGNAL(contextMenu(QWidget*, const QPoint&)),
 			this, SLOT(onContextMenu(QWidget*, const QPoint&)));
-	connect(tabdialog, SIGNAL(openTab(QStringList, int)),
-			this, SLOT(openTabWith(QStringList, int)));
+	// TODO: 0.6.6 - implement ContactList ContactManager::byAltNicks(QString)
+	//connect(tabdialog, SIGNAL(openTab(QStringList, int)),
+	//		this, SLOT(openTabWith(QStringList, int)));
 
 	loadWindowGeometry(tabdialog, "Chat", "TabWindowsGeometry", 30, 30, 400, 400);
 
@@ -171,8 +172,8 @@ TabsManager::TabsManager(bool firstload) : QObject()
 		ChatList chList = chat_manager->chats();
 		for (uint i = 0; i < chList.count(); i++)
 		{
-			UserListElements uins (UserListElements::fromContactList(chList[i]->contacts(), AccountManager::instance()->defaultAccount()));
-			if ((uins.count() > 1 && !config_conferencesInTabs) || tabdialog->indexOf(chList[i])!=-1 || detachedchats.findIndex(chList[i])!=-1)
+			//UserListElements uins (UserListElements::fromContactList(chList[i]->contacts(), AccountManager::instance()->defaultAccount()));
+			if ((chList[i]->contacts().count() > 1 && !config_conferencesInTabs) || tabdialog->indexOf(chList[i])!=-1 || detachedchats.findIndex(chList[i])!=-1)
 				continue;
 			bool handled;
 			onNewChat(chList[i],handled);
@@ -306,17 +307,17 @@ void TabsManager::onStatusChanged(Account *account, Contact contact, Status oldS
 	kdebugf2();
 }
 
-void TabsManager::userDataChanged(UserListElement ule, QString name, QVariant /*oldValue*/,QVariant /*currentValue*/ , bool /*massively*/, bool /*last*/)
-{
-	kdebugf();
-	if (name != "AltNick")
-		return;
+//void TabsManager::userDataChanged(UserListElement ule, QString name, QVariant /*oldValue*/,QVariant /*currentValue*/ , bool /*massively*/, bool /*last*/)
+//{
+//	kdebugf();
+//	if (name != "AltNick")
+//		return;
 	// jeśli zmienił się nick osoby z którą mamy rozmowę w kartach to uaktualniamy tytuł karty
 	//TODO
 	//onStatusChanged(ule);
 
-	kdebugf2();
-}
+//	kdebugf2();
+//}
 
 void TabsManager::onTabChange(int index)
 {
@@ -773,8 +774,8 @@ void TabsManager::accountUnregistered(Account *account)
 void TabsManager::openTabWith(QStringList altnicks, int index)
 {
 	ContactList contacts;
-	foreach(QString altnick, altnicks)
-		contacts.append(userlist->byAltNick(altnick).toContact());
+	//foreach(QString altnick, altnicks)
+	//	contacts.append(userlist->byAltNick(altnick).toContact());
 	ChatWidget* chat=chat_manager->findChatWidget(contacts);
 	if (chat)
 		if(tabdialog->indexOf(chat)!=-1)

@@ -79,7 +79,8 @@ class TabsManager : public ConfigurationUiHandler, ConfigurationAwareObject, Acc
 		* @param massively true, gdy jest to cześć większych zmian
 		* @param last true, gdy massively == true i jest to ostatnia zmiana
 		*/
-		void userDataChanged(UserListElement ule, QString name, QVariant, QVariant, bool, bool);
+		// TODO 0.6.6 - to new api
+		//void userDataChanged(UserListElement ule, QString name, QVariant, QVariant, bool, bool);
 		/**
 		* Slot zostaje wywołany w momencie zmiany aktywnej karty
 		* @param index numer aktywowanej karty
