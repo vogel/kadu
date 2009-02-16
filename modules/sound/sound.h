@@ -19,8 +19,6 @@
 #include "message_box.h"
 #include "modules.h"
 #include "themes.h"
-#include "usergroup.h"
-#include "userlist.h"
 
 #include "sound_exports.h"
 

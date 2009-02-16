@@ -22,6 +22,7 @@
 
 #include "contacts/contact-account-data.h"
 #include "contacts/contact-list.h"
+#include "contacts/contact-manager.h"
 
 #include "gui/widgets/chat_widget.h"
 #include "gui/widgets/configuration/configuration-widget.h"
@@ -32,14 +33,15 @@
 #include "gui/windows/configuration-window.h"
 
 #include "config_file.h"
-#include "connection_error_notification.h"
 #include "debug.h"
 #include "kadu.h"
-#include "misc.h"
-#include "new_message_notification.h"
 #include "message_box.h"
+#include "misc.h"
+
+#include "connection_error_notification.h"
+#include "contact-notify-data.h"
+#include "new_message_notification.h"
 #include "status_changed_notification.h"
-#include "userbox.h"
 
 #include "notify.h"
 
@@ -162,13 +164,19 @@ void Notify::mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigu
 
 	statusGroupBox->addWidgets(0, notifyUsers);
 
-	// TODO 0.6.6
-	foreach(const UserListElement &user, *userlist)
-		if (user.usesProtocol("Gadu") && !user.isAnonymous())
-			if (!user.notify())
-				allUsers->addItem(user.altNick());
+	// TODO 0.6.6 display -> uuid?
+	foreach(Contact contact, ContactManager::instance()->contacts())
+		if (!contact.isAnonymous())
+		{
+			ContactNotifyData *cnd = contact.moduleData<ContactNotifyData>();
+
+			if (!cnd || !cnd->notify())
+				allUsers->addItem(contact.display());
 			else
-				notifiedUsers->addItem(user.altNick());
+				notifiedUsers->addItem(contact.display());
+
+			delete cnd;
+		}
 
 	allUsers->sortItems();
 	notifiedUsers->sortItems();
@@ -257,11 +265,35 @@ void Notify::configurationWindowApplied()
 {
 	int count = notifiedUsers->count();
 	for (int i = 0; i < count; i++)
-		userlist->byAltNick(notifiedUsers->item(i)->text()).setNotify(true);
+	{
+		Contact contact = ContactManager::instance()->byDisplay(notifiedUsers->item(i)->text());
+		if (contact.isNull() || contact.isAnonymous())
+			continue;
+
+		ContactNotifyData *cnd = contact.moduleData<ContactNotifyData>();
+		if (!cnd)
+			continue;
+
+		cnd->setNotify(true);
+		cnd->storeConfiguration();
+		delete cnd;
+	}
 
 	count = allUsers->count();
 	for (int i = 0; i < count; i++)
-		userlist->byAltNick(allUsers->item(i)->text()).setNotify(false);
+	{
+		Contact contact = ContactManager::instance()->byDisplay(allUsers->item(i)->text());
+		if (contact.isNull() || contact.isAnonymous())
+			continue;
+
+		ContactNotifyData *cnd = contact.moduleData<ContactNotifyData>();
+		if (!cnd)
+			continue;
+
+		cnd->setNotify(false);
+		cnd->storeConfiguration();
+		delete cnd;
+	}
 
 // TODO: 0.6.6
 //	userlist->writeToConfig();
@@ -348,9 +380,16 @@ void Notify::statusChanged(Account *account, Contact contact, Status oldStatus)
 		return;
 	}*/
 
-	// TODO 0.6.6
-	UserListElement elem(UserListElement::fromContact(contact,account));
-	if (!elem.notify() && !config_file.readBoolEntry("Notify", "NotifyAboutAll"))
+	// TODO 0.6.6 display -> uuid?
+	bool notify_contact = true;
+	ContactNotifyData *cnd = contact.moduleData<ContactNotifyData>();
+
+	if (!cnd || !cnd->notify())
+		notify_contact = false;
+
+	delete cnd;
+
+	if (!notify_contact && !config_file.readBoolEntry("Notify", "NotifyAboutAll"))
 	{
 		kdebugmf(KDEBUG_FUNCTION_END, "end: not notifying user AND not notifying all users\n");
 		return;

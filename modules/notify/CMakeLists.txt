@@ -1,5 +1,6 @@
 set (SOURCES
 	connection_error_notification.cpp
+	contact-notify-data.cpp
 	new_message_notification.cpp
 	notification.cpp
 	notify.cpp

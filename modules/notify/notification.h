@@ -13,7 +13,7 @@
 #include <QtCore/QPair>
 #include <QtGui/QPixmap>
 
-#include "userlist.h"
+#include "contacts/contact-list.h"
 
 #include "../notify/notification.h"
 #include "notify_exports.h"
