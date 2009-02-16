@@ -414,6 +414,10 @@ void SyntaxEditorWindow::saveAs()
 		if (newSyntaxName == syntaxName && !syntaxList->isGlobal(newSyntaxName))
 			break;
 
+		emit isNameValid(syntaxName, ok);
+		if (!ok)
+			continue;
+
 		if (!syntaxList->contains(newSyntaxName))
 			break;
 
@@ -431,6 +435,7 @@ void SyntaxEditorWindow::saveAs()
 
 	syntaxList->updateSyntax(newSyntaxName, editor->text());
 	emit updated(newSyntaxName);
+	emit syntaxAdded(newSyntaxName);
 	close();
 }
 

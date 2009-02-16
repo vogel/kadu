@@ -120,6 +120,8 @@ public slots:
 
 signals:
 	void updated(const QString &syntaxName);
+	void syntaxAdded(const QString &syntaxName);
+	void isNameValid(const QString &syntaxName, bool &valid);
 
 };
 

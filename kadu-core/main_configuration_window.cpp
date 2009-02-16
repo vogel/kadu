@@ -93,6 +93,7 @@ void MainConfigurationWindow::unregisterUiFile(const QString &uiFile, Configurat
 
 void MainConfigurationWindow::instanceCreated()
 {
+	ChatStylesManager::instance()->mainConfigurationWindowCreated(Instance);
 	foreach(const ConfigurationHandelUiPair &configurationUiHandlerPair, UiFiles)
 	{
 		ConfigurationUiHandler *uiHandler = configurationUiHandlerPair.second;
@@ -176,13 +177,6 @@ MainConfigurationWindow::MainConfigurationWindow()
 	connect(widget()->widgetById("infoPanelSyntax"), SIGNAL(onSyntaxEditorWindowCreated(SyntaxEditorWindow *)),
 		this, SLOT(onInfoPanelSyntaxEditorWindowCreated(SyntaxEditorWindow *)));
 
-	Preview *chatPreview = dynamic_cast<Preview *>(widget()->widgetById("chatSyntaxPreview"));
-	prepareChatPreview(chatPreview, true);
-
-	connect(widget()->widgetById("chatSyntax"), SIGNAL(syntaxChanged(const QString &)), widget()->widgetById("chatSyntaxPreview"), SLOT(syntaxChanged(const QString &)));
-	connect(widget()->widgetById("chatSyntax"), SIGNAL(onSyntaxEditorWindowCreated(SyntaxEditorWindow *)),
-		this, SLOT(onChatSyntaxEditorWindowCreated(SyntaxEditorWindow *)));
-
  	connect(widget()->widgetById("iconPaths"), SIGNAL(changed()), this, SLOT(setIconThemes()));
 
 	connect(widget()->widgetById("ignoreMessagesFromAnonymous"), SIGNAL(toggled(bool)), widget()->widgetById("ignoreMessagesFromAnonymousInConferences"), SLOT(setEnabled(bool)));
@@ -192,7 +186,6 @@ MainConfigurationWindow::MainConfigurationWindow()
 	connect(useUserboxBackground, SIGNAL(toggled(bool)), widget()->widgetById("userboxBackgroundDisplayStyle"), SLOT(setEnabled(bool)));
 
 	widget()->widgetById("parseStatus")->setToolTip(qApp->translate("@default", Kadu::SyntaxText));
-	(dynamic_cast<ConfigSyntaxEditor *>(widget()->widgetById("chatSyntax")))->setSyntaxHint(qApp->translate("@default", Kadu::SyntaxTextExtended));
 	(dynamic_cast<ConfigSyntaxEditor *>(widget()->widgetById("infoPanelSyntax")))->setSyntaxHint(qApp->translate("@default", Kadu::SyntaxText));
 
 	loadWindowGeometry(this, "General", "ConfigGeometry", 0, 50, 790, 480);
@@ -218,65 +211,9 @@ void MainConfigurationWindow::show()
 	ConfigurationWindow::show();
 }
 
-void MainConfigurationWindow::prepareChatPreview(Preview *preview, bool append)
-{
-	kdebugf();
-
-	Account * account = AccountManager::instance()->defaultAccount();
-	Status status(Status::Busy, qApp->translate("@default", "Description"));
-
-	Contact example;
-	//example.addAccountData(ContactAccountData(account , "999999"));
-	//ContactAccountData *example_data = example.accountData(account);
-	//example_data->setStatus(status);
-	//example_data->setAddressAndPort(QHostAddress(2130706433), 80);
-	//example_data->setDNSName("Gadu", "host.server.net");
-
-	example.setFirstName(qApp->translate("@default", "Mark"));
-	example.setLastName(qApp->translate("@default", "Smith"));
-	example.setNickName(qApp->translate("@default", "Jimbo"));
-	example.setDisplay(qApp->translate("@default", "Jimbo"));
-	example.setMobile("+48123456789");
-	example.setEmail("jimbo@mail.server.net");
-	example.setHomePhone("+481234567890");
-
-	preview->setResetBackgroundColor(config_file.readEntry("Look", "ChatBgColor"));
-
-	ContactList receivers;
-	receivers.append(example);
-	ChatMessage *chatMessage = new ChatMessage(account, kadu->myself(), receivers, tr("Your message"), TypeSent,
-		QDateTime::currentDateTime(), QDateTime::currentDateTime());
-	chatMessage->setSeparatorSize(0);
-	preview->addObjectToParse(kadu->myself() , chatMessage);
-	if (append)
-		chatMessages.append(chatMessage);
-
-	chatMessage = new ChatMessage(account, example, kadu->myself(),
-			tr("Message from Your friend"), TypeReceived,
-			QDateTime::currentDateTime(), QDateTime::currentDateTime());
-	chatMessage->setSeparatorSize(4);
-	preview->addObjectToParse(example, chatMessage);
-	if (append)
-		chatMessages.append(chatMessage);
-
-	connect(preview, SIGNAL(needSyntaxFixup(QString &)), this, SLOT(chatSyntaxFixup(QString &)));
-	connect(preview, SIGNAL(needFixup(QString &)), this, SLOT(chatFixup(QString &)));
-}
-
-void MainConfigurationWindow::chatSyntaxFixup(QString &syntax)
-{
-	syntax.replace("<kadu:header>", "");
-	syntax.replace("</kadu:header>", "");
-}
-
 void MainConfigurationWindow::infoPanelFixup(QString &syntax)
 {
 	syntax = QString("<html><head><style type='text/css'>%1</style></head><body>%2</body>").arg(kadu->panelStyle(), syntax);
-}
-
-void MainConfigurationWindow::chatFixup(QString &syntax)
-{
-	syntax = QString("<html><head><style type='text/css'>%1</style></head><body>%2</body>").arg(ChatStylesManager::instance()->mainStyle(), syntax);
 }
 
 void MainConfigurationWindow::onChangeStartupStatus(int index)
@@ -696,11 +633,6 @@ QString MainConfigurationWindow::emailIndexToString(int emailIndex)
 		case 5: return "Mail";
 		default: return QString::null;
 	}
-}
-
-void MainConfigurationWindow::onChatSyntaxEditorWindowCreated(SyntaxEditorWindow *syntaxEditorWindow)
-{
-	prepareChatPreview(syntaxEditorWindow->preview());
 }
 
 void MainConfigurationWindow::onInfoPanelSyntaxEditorWindowCreated(SyntaxEditorWindow *syntaxEditorWindow)

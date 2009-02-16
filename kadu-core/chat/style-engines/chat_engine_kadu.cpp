@@ -9,10 +9,13 @@
 
 #include <QtCore/QFileInfo>
 
+#include "accounts/account_manager.h"
+
 #include "chat/chat_message.h"
 #include "chat/chat_styles_manager.h"
 
 #include "gui/widgets/chat_messages_view.h"
+#include "gui/widgets/preview.h"
 
 #include "config_file.h"
 #include "kadu_parser.h"
@@ -23,6 +26,16 @@
 KaduChatStyleEngine::KaduChatStyleEngine()
 {
 	EngineName = "Kadu";
+	syntaxList = new SyntaxList("chat");
+}
+
+KaduChatStyleEngine::~KaduChatStyleEngine()
+{
+	if (syntaxList)
+	{
+		delete syntaxList;
+		syntaxList = 0;
+	}
 }
 
 void KaduChatStyleEngine::clearMessages(ChatMessagesView *view)
@@ -51,7 +64,7 @@ bool KaduChatStyleEngine::isThemeValid(QString stylePath)
 	return fi.suffix() == "syntax";
 }
 
-void KaduChatStyleEngine::loadTheme(QString &styleName)
+void KaduChatStyleEngine::loadTheme(const QString &styleName)
 {
 	QString chatSyntax = SyntaxList::readSyntax("chat", styleName,
 		"<p style=\"background-color: #{backgroundColor};\">#{separator}"
@@ -167,4 +180,74 @@ void KaduChatStyleEngine::configurationUpdated()
 	QString chatSyntax = SyntaxList::readSyntax("chat", CurrentStyleName, "");
 	if (ChatSyntaxWithHeader != chatSyntax)
 		loadTheme(CurrentStyleName);
+}
+
+void KaduChatStyleEngine::prepareStylePreview(Preview *preview, QString styleName, QString variantName)
+{
+	QString content = SyntaxList::readSyntax("chat", styleName, "");
+
+	content.replace(QRegExp("%o"),  " ");
+	content.replace("<kadu:header>", "");
+	content.replace("</kadu:header>", "");
+
+	int count = preview->getObjectsToParse().count();
+	QString text;
+	if (count)
+		for (int i = 0; i < count; i++)
+			text += KaduParser::parse(content, AccountManager::instance()->defaultAccount(),
+				preview->getContactList().at(i), preview->getObjectsToParse().at(i));
+	preview->setHtml(QString("<html><head><style type='text/css'>%1</style></head><body>%2</body>").arg(ChatStylesManager::instance()->mainStyle(), text));
+}
+
+void KaduChatStyleEngine::styleEditionRequested(QString styleName)
+{
+	QString syntaxHint = QT_TRANSLATE_NOOP
+	(
+		"@default", "Syntax: %s - status, %d - description, %i - ip, %n - nick, %a - altnick, %f - first name\n"
+		"%r - surname, %m - mobile, %u - uin, %g - group, %o - return _space_ if user doesn't have us in userlist\n"
+		"%h - gg version, %v - revDNS, %p - port, %e - email, %x - max image size,\n"
+		"#{message} - message content,\n"
+		"#{backgroundColor} - background color of message,\n"
+		"#{fontColor} - font color of message,\n"
+		"#{nickColor} - font color of nick,\n"
+		"#{sentDate} - when message was sent,\n"
+		"#{receivedDate} - when message was received,\n"
+		"#{separator} - separator between messages,\n"
+		"<kadu:header>text</kadu:header> - text will not be displayed in 'Remove repeated headers' mode\n"
+	);
+	SyntaxEditorWindow *editor = new SyntaxEditorWindow(syntaxList, styleName, "Chat", syntaxHint);
+	connect(editor, SIGNAL(updated(const QString &)), ChatStylesManager::instance(), SLOT(syntaxUpdated(const QString &)));
+	connect(editor, SIGNAL(syntaxAdded(const QString &)), this, SLOT(syntaxAdded(const QString &)));
+	connect(editor, SIGNAL(isNameValid(const QString &, bool &)), this, SLOT(validateStyleName(const QString &, bool &)));
+	ChatStylesManager::instance()->preparaPreview(editor->preview());
+	connect(editor->preview(), SIGNAL(needSyntaxFixup(QString &)), this, SLOT(chatSyntaxFixup(QString &)));
+	connect(editor->preview(), SIGNAL(needFixup(QString &)), this, SLOT(chatFixup(QString &)));
+	editor->refreshPreview();
+	editor->show();
+}
+
+void KaduChatStyleEngine::chatSyntaxFixup(QString &syntax)
+{
+	syntax.replace("<kadu:header>", "");
+	syntax.replace("</kadu:header>", "");
+}
+
+void KaduChatStyleEngine::chatFixup(QString &syntax)
+{
+	syntax = QString("<html><head><style type='text/css'>%1</style></head><body>%2</body>").arg(ChatStylesManager::instance()->mainStyle(), syntax);
+}
+
+void KaduChatStyleEngine::validateStyleName(const QString &name, bool &valid)
+{
+	valid = !ChatStylesManager::instance()->hasChatStyle(name) || (ChatStylesManager::instance()->hasChatStyle(name) && syntaxList->contains(name));
+}
+
+bool KaduChatStyleEngine::removeStyle(const QString &styleName)
+{
+	return syntaxList && syntaxList->deleteSyntax(styleName);
+}
+
+void KaduChatStyleEngine::syntaxAdded(const QString &syntaxName)
+{
+	ChatStylesManager::instance()->addStyle(syntaxName, this);
 }

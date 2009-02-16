@@ -77,7 +77,7 @@ ChatWidget::ChatWidget(Account *initialAccount, const ContactList &contacts, QWi
 		uc_layout->setMargin(0);
 		uc_layout->setSpacing(0);
 
-// TODO: 0.6.5
+// TODO: 0.6.6
 // 		connect(userbox, SIGNAL(mouseButtonClicked(int, Q3ListBoxItem *, const QPoint &)),
 // 		kadu, SLOT(mouseButtonClicked(int, Q3ListBoxItem *)));
 
@@ -149,7 +149,7 @@ ChatWidget::~ChatWidget()
 
 void ChatWidget::configurationUpdated()
 {
-/* TODO: 0.6.5
+/* TODO: 0.6.6
 	if (ContactsWidget)
 	{
 		ContactsWidget->viewport()->setStyleSheet(QString("QWidget {background-color:%1}").arg(config_file.readColorEntry("Look","UserboxBgColor").name()));

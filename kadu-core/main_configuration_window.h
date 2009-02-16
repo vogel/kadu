@@ -7,7 +7,6 @@
 
 class QCheckBox;
 
-class ChatMessage;
 class ConfigComboBox;
 class ConfigLineEdit;
 class Preview;
@@ -67,16 +66,12 @@ class KADUAPI MainConfigurationWindow : public ConfigurationWindow
 	ConfigComboBox *mailComboBox;
 	ConfigLineEdit *mailCommandLineEdit;
 
-	QList<ChatMessage *> chatMessages;
-
 	void setLanguages();
 
 	void setQtThemes();
 	void setToolTipClasses();
 
 	static QString findExecutable(const QStringList &paths, const QStringList &executableNames);
-	// TODO: remove append parameter
-	void prepareChatPreview(Preview *preview, bool append = false);
 
 private slots:
 	void onChangeEmoticonsStyle(int index);
@@ -90,10 +85,6 @@ private slots:
 
 	void onInfoPanelSyntaxEditorWindowCreated(SyntaxEditorWindow *syntaxEditorWindow);
 	void infoPanelFixup(QString &syntax);
-
-	void onChatSyntaxEditorWindowCreated(SyntaxEditorWindow *syntaxEditorWindow);
-	void chatSyntaxFixup(QString &syntax);
-	void chatFixup(QString &syntax);
 
 	void setIconThemes();
 	void setEmoticonThemes();

@@ -49,6 +49,7 @@ Preview::Preview(QWidget *parent)
 
 Preview::~Preview()
 {
+	qDeleteAll(objectsToParse);
 }
 
 void Preview::syntaxChanged(const QString &content)

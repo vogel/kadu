@@ -1,22 +1,37 @@
 #ifndef CHAT_STYLES_MANAGER_H
 #define CHAT_STYLES_MANAGER_H
 
+#include <QtCore/QObject>
 #include <QtCore/QMap>
 
 #include "configuration_aware_object.h"
+#include "main_configuration_window.h"
+
+class QPushButton;
+class QComboBox;
 
 class ChatMessagesView;
 class ChatStyleEngine;
 class KaduChatStyleEngine;
+class Preview;
 
-class ChatStylesManager : public ConfigurationAwareObject
+//TODO: review
+struct StyleInfo
 {
+	bool global;
+	ChatStyleEngine *engine;
+};
+
+class ChatStylesManager : public QObject, public ConfigurationAwareObject
+{
+	Q_OBJECT
+
 	static ChatStylesManager *Instance;
 	ChatStylesManager();
 
 	QMap<QString, ChatStyleEngine *> registeredEngines;
 	QList<ChatMessagesView *> chatViews;
-	QMap<QString, ChatStyleEngine *> availableStyles;
+	QMap<QString, StyleInfo> availableStyles;
 
 	ChatStyleEngine *CurrentEngine;
 
@@ -34,6 +49,23 @@ class ChatStylesManager : public ConfigurationAwareObject
 
 	KaduChatStyleEngine *kaduEngine;
 
+	//configuration
+	QComboBox *syntaxListCombo;
+	QPushButton *editButton;
+	QPushButton *deleteButton;
+
+	QComboBox *variantListCombo;
+
+	Preview *preview;
+
+private slots:
+	void styleChangedSlot(const QString &styleName);
+	void variantChangedSlot(const QString &variantName);
+	void editStyleClicked();
+	void deleteStyleClicked();
+	void configurationWindowDestroyed();
+	void configurationApplied();
+
 protected:
 	virtual void configurationUpdated();
 
@@ -46,10 +78,9 @@ public:
 	void chatViewDestroyed(ChatMessagesView * view);
 	void registerChatStyleEngine(const QString &name, ChatStyleEngine *engine);
 	void unregisterChatStyleEngine(const QString &name);
-	bool hasChatStyleEngine(const QString &name);
 
-	const QList<ChatStyleEngine *> protocolFactories() { return registeredEngines.values(); }
-	ChatStyleEngine * getChatStylesEngine(const QString &name);
+	bool hasChatStyle(const QString &name) { return  availableStyles.contains(name); }
+
 	ChatStyleEngine * currentEngine() { return CurrentEngine; }
 
 	void loadThemes();
@@ -65,5 +96,14 @@ public:
 	unsigned int prune() { return Prune; }
 
 	QString mainStyle() { return MainStyle; }
+
+	void mainConfigurationWindowCreated(MainConfigurationWindow *window);
+
+	void preparaPreview(Preview *preview);
+	void addStyle(const QString &syntaxName, ChatStyleEngine *engine);
+
+public slots:
+	void syntaxUpdated(const QString &syntaxName);
 };
+
 #endif

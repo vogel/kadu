@@ -2,6 +2,7 @@
 #define CHAT_STYLE_ENGINE_H
 
 #include <QtCore/QString>
+#include <QtCore/QStringList>
 
 class ChatMessage;
 class ChatMessagesView;
@@ -15,8 +16,9 @@ protected:
 public:
 	virtual QString engineName() { return EngineName; }
 	virtual QString currentStyleName() { return CurrentStyleName; }
-	virtual QString currentStyleVariant() { return QString::null; } 
-	
+	virtual QString currentStyleVariant() { return QString::null; }
+	virtual QStringList styleVariants(QString) { return QStringList(); }	
+
 	virtual bool supportVariants() = 0;
 	virtual bool supportEditing() = 0;
 	virtual bool isThemeValid(QString) = 0;
@@ -27,13 +29,15 @@ public:
 	virtual void pruneMessage(ChatMessagesView *) = 0;
 	virtual void refreshView(ChatMessagesView *) = 0;
 
-	virtual void createStylePreview(Preview *, QString&) = 0;
+	virtual void prepareStylePreview(Preview *, QString, QString) = 0;
 
 	virtual void configurationUpdated() = 0;
 
-	virtual void loadTheme(QString &) = 0;
+	virtual void loadTheme(const QString &) = 0;
 
-	virtual void styleEditionRequested(QString &) = 0;
+	virtual void styleEditionRequested(QString) = 0;
+
+	virtual bool removeStyle(const QString &) = 0;
 };
 
 #endif // CHAT_STYLE_ENGINE_H

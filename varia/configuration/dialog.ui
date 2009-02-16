@@ -210,9 +210,7 @@ Text is plain black." />
 			</group-box>
 
 			<group-box name="Style">
-				<syntax-editor caption="Style" config-section="Look" config-item="Style" category="Chat" id="chatSyntax"
-							   tool-tip="Choose style of chat window" />
-				<preview caption="Preview" id="chatSyntaxPreview" />
+
 			</group-box>
 
 			<group-box name="Emoticons">

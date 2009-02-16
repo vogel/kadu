@@ -32,6 +32,10 @@ public:
 	void setResetBackgroundColor(const QString &resetBackgroundColor) { this->resetBackgroundColor = resetBackgroundColor; }
 	void addObjectToParse(Contact contact, QObject *object) { contacts.append(contact); objectsToParse.append(object); }
 
+	const QObjectList getObjectsToParse() const { return objectsToParse; }
+	const ContactList getContactList() const { return contacts; }
+
+
 public slots:
 	void syntaxChanged(const QString &content);
 

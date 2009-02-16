@@ -153,6 +153,8 @@ set (kadu_MOC_SRCS
 	accounts/model/accounts-model.h
 
 	chat/chat_manager.h
+	chat/chat_styles_manager.h
+	chat/style-engines/chat_engine_kadu.h
 
 	contacts/contact.h
 	contacts/contact-account-data.h
