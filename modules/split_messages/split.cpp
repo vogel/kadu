@@ -11,14 +11,15 @@
 #include <QtCore/QFile>
 #include <QtCore/QStringList>
 #include <QtGui/QTextDocument>
-#include "split.h"
 
-#include "custom_input.h"
+#include "gui/widgets/custom_input.h"
 #include "config_file.h"
-#include "chat_manager.h"
-#include "usergroup.h"
+#include "chat/chat_manager.h"
 #include "debug.h"
+#include "misc.h"
 #include "../gadu_protocol/gadu.h"
+
+#include "split.h"
 
 Split *split;
 
@@ -129,8 +130,8 @@ SendSplitted::SendSplitted(ChatWidget *chat, QStringList messagesToSend, QObject
 	kdebugf();
 	messages = messagesToSend;
 	chatWindow = chat;
-	connect(chat, SIGNAL( messageSentAndConfirmed(UserListElements, const QString &) ),
-		this, SLOT( onMessageSent(UserListElements, const QString &) ));
+	connect(chat, SIGNAL( messageSentAndConfirmed(ContactList , const QString &) ),
+		this, SLOT( onMessageSent(ContactList , const QString &) ));
 	connect(&destroingTimer, SIGNAL( timeout() ), this, SLOT( onDestroyThis() ));
 	connect(chat, SIGNAL( destroyed() ), this, SLOT( onDestroyThis() ));
 	
@@ -149,7 +150,7 @@ SendSplitted::~SendSplitted()
 	kdebugf2();
 }
 
-void SendSplitted::onMessageSent(UserListElements receivers, const QString& message)
+void SendSplitted::onMessageSent(ContactList receivers, const QString &message)
 {
 	kdebugf();
 	if(messages.count() == 0)
