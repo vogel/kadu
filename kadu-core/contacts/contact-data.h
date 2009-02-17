@@ -79,12 +79,13 @@ public:
 
 	ContactModuleData * moduleData(const QString &key);
 
+	// TODO: 0.6.6 - check create and cache implementation
 template<class T>
 	T * moduleData(bool create = false, bool cache = false)
 	{
 		if (!cache)
 			return new T(storagePointForModuleData(T::key(), create));
-		if (ModulesData.contains(T::key()))
+		if (!ModulesData.contains(T::key()))
 			ModulesData[T::key()] = new T(storagePointForModuleData(T::key(), create));
 		return dynamic_cast<T *>(ModulesData[T::key()]);
 	}
