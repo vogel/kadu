@@ -91,7 +91,8 @@ public:
 	void rememberScrollBarPosition();
 
 	ChatWidget *chat() const { return Chat; }
-	ChatMessage *prevMessage() { return PrevMessage; }
+
+	ChatMessage *&prevMessage() { return PrevMessage; }
 
 public slots:
 	/**

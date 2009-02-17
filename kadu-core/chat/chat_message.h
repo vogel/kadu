@@ -109,4 +109,6 @@ public:
 	void setColorsAndBackground(QString &backgroundColor, QString &nickColor, QString &fontColor);
 };
 
+QString formatMessage(const QString &text, const QString &backgroundColor);
+
 #endif

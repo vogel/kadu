@@ -2150,7 +2150,7 @@ void Kadu::configurationUpdated()
 
 // 	groups_manager->refreshTabBar();
 
-//	Myself.setAltNick(config_file.readEntry("General", "Nick"));
+	Myself.setDisplay(config_file.readEntry("General", "Nick"));
 
 	kadu->setDocked(kadu->Docked, kadu->dontHideOnClose);
 

@@ -44,7 +44,7 @@ public:
 
 	virtual void configurationUpdated();
 
-	virtual void loadTheme(const QString &styleName);
+	virtual void loadTheme(const QString &styleName, const QString &variantName);
 
 	virtual void styleEditionRequested(QString styleName);
 

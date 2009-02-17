@@ -17,6 +17,7 @@
 #include "accounts/account_manager.h"
 
 #include "chat/chat_message.h"
+#include "chat/style-engines/chat_engine_adium.h"
 #include "chat/style-engines/chat_engine_kadu.h"
 
 #include "gui/widgets/chat_messages_view.h"
@@ -47,6 +48,9 @@ ChatStylesManager::ChatStylesManager() : CurrentEngine(0), kaduEngine(0)
 	kaduEngine = new KaduChatStyleEngine();
 	registerChatStyleEngine("Kadu", kaduEngine);
 
+	adiumEngine = new AdiumChatStyleEngine();
+	registerChatStyleEngine("Adium", adiumEngine);
+
 	loadThemes();
 	configurationUpdated();
 }
@@ -54,6 +58,7 @@ ChatStylesManager::ChatStylesManager() : CurrentEngine(0), kaduEngine(0)
 ChatStylesManager::~ChatStylesManager()
 {
 	unregisterChatStyleEngine("Kadu");
+	unregisterChatStyleEngine("Adium");
 }
 
 void ChatStylesManager::registerChatStyleEngine(const QString &name, ChatStyleEngine *engine)
@@ -74,7 +79,10 @@ void ChatStylesManager::unregisterChatStyleEngine(const QString &name)
 void ChatStylesManager::chatViewCreated(ChatMessagesView *view)
 {
 	if (0 != view)
+	{
 		chatViews.append(view);
+		CurrentEngine->refreshView(view);
+	}
 }
 
 void ChatStylesManager::chatViewDestroyed(ChatMessagesView *view)
@@ -149,14 +157,14 @@ void ChatStylesManager::configurationUpdated()
 	NoServerTimeDiff = config_file.readUnsignedNumEntry("Look", "NoServerTimeDiff");
 
 	QString newStyleName = config_file.readEntry("Look", "Style");
-	
+	QString newVariantName = config_file.readEntry("Look", "ChatStyleVariant");
 	// if theme was changed, load new theme
 //TODO: addVariantsSupport
-	if (!CurrentEngine || CurrentEngine->currentStyleName() != newStyleName)
+	if (!CurrentEngine || CurrentEngine->currentStyleName() != newStyleName || CurrentEngine->currentStyleVariant() != newVariantName)
 	{
 		if (availableStyles[newStyleName].engine != CurrentEngine)
 			CurrentEngine = availableStyles[newStyleName].engine;
-		CurrentEngine->loadTheme(newStyleName);
+		CurrentEngine->loadTheme(newStyleName, newVariantName);
 	}
 	else
 	{//FIXME
@@ -178,7 +186,7 @@ void ChatStylesManager::loadThemes()
 	QFileInfo fi;
 	QStringList files;
 
-	path = ggPath() + "/syntax/chat/";
+	path = ggPath() + "syntax/chat/";
 	dir.setPath(path);
 
 	files = dir.entryList();
@@ -256,8 +264,9 @@ void ChatStylesManager::mainConfigurationWindowCreated(MainConfigurationWindow *
 	editorLayout->addWidget(deleteButton);
 //variants
 	variantListCombo = new QComboBox();
+	variantListCombo->addItem("Standard");
 	variantListCombo->addItems(CurrentEngine->styleVariants(CurrentEngine->currentStyleName()));
-	variantListCombo->setCurrentText(CurrentEngine->currentStyleVariant());
+	variantListCombo->setCurrentText(CurrentEngine->currentStyleVariant() != QString::null ? CurrentEngine->currentStyleVariant() : "Standard");
 	variantListCombo->setEnabled(CurrentEngine->supportVariants());
 	connect(variantListCombo, SIGNAL(activated(const QString &)), this, SLOT(variantChangedSlot(const QString &)));
 //preview
@@ -275,7 +284,7 @@ void ChatStylesManager::mainConfigurationWindowCreated(MainConfigurationWindow *
 void ChatStylesManager::configurationApplied()
 {
 	config_file.writeEntry("Look", "Style", syntaxListCombo->currentText());
-	config_file.writeEntry("Look", "ChatStyleVariant", syntaxListCombo->currentText());
+	config_file.writeEntry("Look", "ChatStyleVariant", variantListCombo->currentText());
 }
 
 void ChatStylesManager::preparaPreview(Preview *preview)
@@ -312,6 +321,7 @@ void ChatStylesManager::styleChangedSlot(const QString &styleName)
 	deleteButton->setEnabled(!availableStyles[styleName].global);
 	syntaxListCombo->setCurrentText(styleName);
 	variantListCombo->clear();
+	variantListCombo->addItem("Standard");
 	variantListCombo->addItems(engine->styleVariants(styleName));
 	variantListCombo->setEnabled(engine->supportVariants());
 	engine->prepareStylePreview(preview, styleName, variantListCombo->currentText());
@@ -349,7 +359,7 @@ void ChatStylesManager::syntaxUpdated(const QString &syntaxName)
 		styleChangedSlot(syntaxName);
 
 	if (CurrentEngine->currentStyleName() == syntaxName)
-		CurrentEngine->loadTheme(syntaxName);
+		CurrentEngine->loadTheme(syntaxName, variantListCombo->currentText());
 }
 
 void ChatStylesManager::addStyle(const QString &syntaxName, ChatStyleEngine *engine)

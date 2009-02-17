@@ -33,7 +33,7 @@ public:
 
 	virtual void configurationUpdated() = 0;
 
-	virtual void loadTheme(const QString &) = 0;
+	virtual void loadTheme(const QString &, const QString &) = 0;
 
 	virtual void styleEditionRequested(QString) = 0;
 

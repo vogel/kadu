@@ -10,6 +10,7 @@
 class QPushButton;
 class QComboBox;
 
+class AdiumChatStyleEngine;
 class ChatMessagesView;
 class ChatStyleEngine;
 class KaduChatStyleEngine;
@@ -48,6 +49,7 @@ class ChatStylesManager : public QObject, public ConfigurationAwareObject
 	QString MainStyle;
 
 	KaduChatStyleEngine *kaduEngine;
+	AdiumChatStyleEngine *adiumEngine;
 
 	//configuration
 	QComboBox *syntaxListCombo;

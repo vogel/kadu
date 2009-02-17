@@ -14,6 +14,7 @@ set (kadu_SRCS
 	chat/message/message.cpp
 	chat/message/message-part.cpp
 
+	chat/style-engines/chat_engine_adium.cpp
 	chat/style-engines/chat_engine_kadu.cpp
 
 	contacts/contact.cpp
@@ -321,6 +322,8 @@ install (FILES hi48-app-kadu.png DESTINATION "share/pixmaps" RENAME kadu-48.png)
 install (FILES hi64-app-kadu.png DESTINATION "share/pixmaps" RENAME kadu-64.png)
 install (FILES hi128-app-kadu.png DESTINATION "share/pixmaps" RENAME kadu-128.png)
 install (FILES hi256-app-kadu.png DESTINATION "share/pixmaps" RENAME kadu-256.png)
+
+install (FILES "chat/style-engines/adium_style_scripts.js" DESTINATION "share/kadu/scripts")
 
 if (APPLE)
 	pkg_search_module (SNDFILE REQUIRED sndfile>=1.0)

@@ -64,7 +64,7 @@ bool KaduChatStyleEngine::isThemeValid(QString stylePath)
 	return fi.suffix() == "syntax";
 }
 
-void KaduChatStyleEngine::loadTheme(const QString &styleName)
+void KaduChatStyleEngine::loadTheme(const QString &styleName, const QString &variantName)
 {
 	QString chatSyntax = SyntaxList::readSyntax("chat", styleName,
 		"<p style=\"background-color: #{backgroundColor};\">#{separator}"
@@ -179,7 +179,7 @@ void KaduChatStyleEngine::configurationUpdated()
 {
 	QString chatSyntax = SyntaxList::readSyntax("chat", CurrentStyleName, "");
 	if (ChatSyntaxWithHeader != chatSyntax)
-		loadTheme(CurrentStyleName);
+		loadTheme(CurrentStyleName, "");
 }
 
 void KaduChatStyleEngine::prepareStylePreview(Preview *preview, QString styleName, QString variantName)
