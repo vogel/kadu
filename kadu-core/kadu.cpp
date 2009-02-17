@@ -192,39 +192,6 @@ void disableContainsSelfUles(KaduAction *action)
 	action->setEnabled(true);
 }
 
-void checkNotify(KaduAction *action)
-{
-	kdebugf();
-
-	if (config_file.readBoolEntry("Notify", "NotifyAboutAll"))
-	{
-		action->setEnabled(false);
-		return;
-	}
-
-	foreach(const Contact contact, action->contacts())
-		if (contact.accountData(AccountManager::instance()->defaultAccount()) == 0)
-		{
-			action->setEnabled(false);
-			return;
-		}
-	action->setEnabled(true);
-
-	bool on = true;
-	/*
-	foreach (const Contact contact, action->contacts())
-		//TODO: 0.6.6
-		if (!user.notify())
-		{
-			on = false;
-			break;
-		}
-	*/
-	action->setChecked(on);
-
-	kdebugf2();
-}
-
 void checkOfflineTo(KaduAction *action)
 {
 	kdebugf();
@@ -503,14 +470,6 @@ Kadu::Kadu(QWidget *parent)
 
 	ContactsListWidgetMenuManager::instance()->addManagementActionDescription(chat_manager->ignoreUserActionDescription);
 	ContactsListWidgetMenuManager::instance()->addManagementActionDescription(chat_manager->blockUserActionDescription);
-
-	notifyAboutUserActionDescription = new ActionDescription(
-		ActionDescription::TypeUser, "notifyAboutUserAction",
-		this, SLOT(notifyAboutUserActionActivated(QAction *, bool)),
-		"NotifyAboutUser", tr("Notify about user"), true, "",
-		checkNotify
-	);
-	ContactsListWidgetMenuManager::instance()->addManagementActionDescription(notifyAboutUserActionDescription);
 
 	offlineToUserActionDescription = new ActionDescription(
 		ActionDescription::TypeUser, "offlineToUserAction",
@@ -835,43 +794,6 @@ void Kadu::lookupInDirectoryActionActivated(QAction *sender, bool toggled)
 	SearchDialog *sd = new SearchDialog(kadu, cad->uin());
 	sd->show();
 	sd->firstSearch();
-
-	kdebugf2();
-}
-
-void Kadu::notifyAboutUserActionActivated(QAction *sender, bool toggled)
-{
-	kdebugf();
-
-	KaduMainWindow *window = dynamic_cast<KaduMainWindow *>(sender->parent());
-	if (!window)
-		return;
-
-	ContactList contacts = window->contacts();
-
-	bool on = true;
-	/*
-	foreach(const ContactList contact, contacts)
-		//TODO: 0.6.6
-		if (!user.notify())
-		{
-			on = false;
-			break;
-		}
-
-	foreach(const UserListElement &user, users)
-		//TODO: 0.6.6
-		if (user.notify() == on)
-			user.setNotify(!on);
-	*/
-// TODO: 0.6.6
-// 	userlist->writeToConfig();
-
-	foreach(KaduAction *action, notifyAboutUserActionDescription->actions())
-	{
-		if (action->contacts() == contacts)
-			action->setChecked(!on);
-	}
 
 	kdebugf2();
 }

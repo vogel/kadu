@@ -28,6 +28,7 @@
 #include "gui/widgets/configuration/configuration-widget.h"
 #include "gui/widgets/configuration/config-combo-box.h"
 #include "gui/widgets/configuration/config-group-box.h"
+#include "gui/widgets/contacts-list-widget-menu-manager.h"
 #include "gui/widgets/custom_input.h"
 
 #include "gui/windows/configuration-window.h"
@@ -96,12 +97,24 @@ Notify::Notify(QObject *parent, const char *name)
 	ConnectionErrorNotification::registerEvent(this);
 	StatusChangedNotification::registerEvents(this);
 
+	notifyAboutUserActionDescription = new ActionDescription(
+		ActionDescription::TypeUser, "notifyAboutUserAction",
+		this, SLOT(notifyAboutUserActionActivated(QAction *, bool)),
+		"NotifyAboutUser", tr("Notify about user"), true, "",
+		checkNotify
+	);
+
+	ContactsListWidgetMenuManager::instance()->addManagementActionDescription(notifyAboutUserActionDescription);
+
 	kdebugf2();
 }
 
 Notify::~Notify()
 {
 	kdebugf();
+
+	ContactsListWidgetMenuManager::instance()->removeManagementActionDescription(notifyAboutUserActionDescription);
+	delete notifyAboutUserActionDescription;
 
 	StatusChangedNotification::unregisterEvents(this);
 	ConnectionErrorNotification::unregisterEvent(this);
@@ -115,6 +128,56 @@ Notify::~Notify()
 		QStringList notifierNames = Notifiers.keys();
 		foreach(const QString &name, notifierNames)
 			unregisterNotifier(name);
+	}
+
+	kdebugf2();
+}
+
+void Notify::notifyAboutUserActionActivated(QAction *sender, bool toggled)
+{
+	kdebugf();
+
+	KaduMainWindow *window = dynamic_cast<KaduMainWindow *>(sender->parent());
+	if (!window)
+		return;
+
+	ContactList contacts = window->contacts();
+
+	bool on = true;
+	foreach (const Contact contact, contacts)
+	{
+		ContactNotifyData *cnd = contact.moduleData<ContactNotifyData>();
+
+		if (!cnd || !cnd->notify())
+		{
+			on = false;
+			break;
+		}
+
+		delete cnd;
+	}
+
+	foreach (const Contact contact, contacts)
+	{
+		if (contact.isNull() || contact.isAnonymous())
+			continue;
+
+		ContactNotifyData *cnd = contact.moduleData<ContactNotifyData>();
+		if (!cnd)
+			continue;
+
+		if (cnd->notify() == on)
+		{
+			cnd->setNotify(!on);
+			cnd->storeConfiguration();
+			delete cnd;
+		}
+	}
+
+	foreach(KaduAction *action, notifyAboutUserActionDescription->actions())
+	{
+		if (action->contacts() == contacts)
+			action->setChecked(!on);
 	}
 
 	kdebugf2();
@@ -294,9 +357,6 @@ void Notify::configurationWindowApplied()
 		cnd->storeConfiguration();
 		delete cnd;
 	}
-
-// TODO: 0.6.6
-//	userlist->writeToConfig();
 
 	foreach(const QString &key, Notifiers.keys())
 	{
@@ -604,6 +664,44 @@ void Notify::createDefaultConfiguration()
 	config_file.addVariable("Notify", "NewMessageOnlyIfInactive", true);
 	config_file.addVariable("Notify", "NotifyAboutAll", true);
 	config_file.addVariable("Notify", "NotifyIgnoreOnConnection", true);
+}
+
+void checkNotify(KaduAction *action)
+{
+	kdebugf();
+
+	if (config_file.readBoolEntry("Notify", "NotifyAboutAll"))
+	{
+		action->setEnabled(false);
+		return;
+	}
+
+	foreach(Contact contact, action->contacts())
+		if (!contact.hasAccountData(contact.prefferedAccount()))
+		{
+			action->setEnabled(false);
+			return;
+		}
+
+	action->setEnabled(true);
+
+	bool on = true;
+	foreach (const Contact contact, action->contacts())
+	{
+		ContactNotifyData *cnd = contact.moduleData<ContactNotifyData>();
+
+		if (!cnd || !cnd->notify())
+		{
+			on = false;
+			break;
+		}
+
+		delete cnd;
+	}
+
+	action->setChecked(on);
+
+	kdebugf2();
 }
 
 Notify *notification_manager = 0;

@@ -11,6 +11,9 @@
 #include "protocols/protocol.h"
 #include "notify_exports.h"
 
+class ActionDescription;
+class KaduAction;
+
 class MessageNotification;
 
 class QListWidget;
@@ -148,6 +151,8 @@ class NOTIFYAPI Notify : public ConfigurationUiHandler, AccountsAwareObject
 	ConfigComboBox *notifications;
 	ConfigGroupBox *notificationsGroupBox;
 
+	ActionDescription *notifyAboutUserActionDescription;
+
 	struct NotifierData
 	{
 		Notifier *notifier;
@@ -184,6 +189,8 @@ private slots:
 	void connectionError(Account *account, const QString &server, const QString &message);
 	void statusChanged(Account *account, Contact contact, Status oldStatus);
 
+	void notifyAboutUserActionActivated(QAction *sender, bool toggled);
+
 	void moveToNotifyList();
 	void moveToAllList();
 
@@ -215,6 +222,8 @@ public:
 	const QList<Notify::NotifyEvent> &notifyEvents();
 
 };
+
+void checkNotify(KaduAction*);
 
 extern NOTIFYAPI Notify *notification_manager;
 

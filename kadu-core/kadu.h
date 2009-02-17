@@ -74,7 +74,6 @@ private:
 	ActionDescription *openSearchActionDescription;
 	ActionDescription *offlineToUserActionDescription;
 	ActionDescription *hideDescriptionActionDescription;
-	ActionDescription *notifyAboutUserActionDescription;
 	ActionDescription *showStatusActionDescription;
 	ActionDescription *deleteUsersActionDescription;
 	ActionDescription *useProxyActionDescription;
@@ -149,7 +148,6 @@ private slots:
 	void addUserActionActivated(QAction *sender, bool toggled);
 	void editUserActionActivated(QAction *sender, bool toggled);
 	void searchInDirectoryActionActivated(QAction *sender, bool toggled);
-	void notifyAboutUserActionActivated(QAction *sender, bool toggled);
 	void offlineToUserActionActivated(QAction *sender, bool toggled);
 	void hideDescriptionActionActivated(QAction *sender, bool toggled);
 	void writeEMailActionActivated(QAction *sender, bool toggled);

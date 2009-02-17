@@ -14,7 +14,6 @@
 ContactModuleData::ContactModuleData(StoragePoint *storage)
 	: Storage(storage)
 {
-
 }
 
 ContactModuleData::~ContactModuleData()
