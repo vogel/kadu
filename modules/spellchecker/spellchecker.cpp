@@ -12,12 +12,16 @@
 #include <QGridLayout>
 #include <QLabel>
 #include <QListWidget>
+#include <QPushButton>
 
-#include "chat_manager.h"
-#include "chat_widget.h"
+#include "chat/chat_manager.h"
+#include "gui/widgets/chat_widget.h"
+#include "gui/widgets/configuration/config-group-box.h"
+#include "gui/widgets/configuration/configuration-widget.h"
 #include "config_file.h"
-#include "custom_input.h"
+#include "gui/widgets/custom_input.h"
 #include "message_box.h"
+#include "misc.h"
 
 #include "highlighter.h"
 #include "spellchecker.h"
@@ -245,7 +249,7 @@ void SpellChecker::mainConfigurationWindowCreated(MainConfigurationWindow *mainC
 {
 	connect(mainConfigurationWindow, SIGNAL(configurationWindowApplied()), this, SLOT(configurationWindowApplied()));
 
-	ConfigGroupBox *optionsGroupBox = mainConfigurationWindow->configGroupBox("Chat", "SpellChecker", tr("ASpell options"));
+	ConfigGroupBox *optionsGroupBox = mainConfigurationWindow->widget()->configGroupBox("Chat", "SpellChecker", tr("ASpell options"));
 
 	QWidget *options = new QWidget(optionsGroupBox->widget());
 	QGridLayout *optionsLayout = new QGridLayout(options);

@@ -11,6 +11,7 @@ class AspellSpeller;
 class AspellConfig;
 class ChatWidget;
 
+class QListWidget;
 class QListWidgetItem;
 
 class SpellChecker : public ConfigurationUiHandler, ConfigurationAwareObject
