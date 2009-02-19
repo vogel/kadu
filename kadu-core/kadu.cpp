@@ -1077,7 +1077,7 @@ void Kadu::openChatWith()
 
 void Kadu::yourAccounts(QAction *sender, bool toggled)
 {
-	(new PersonalInfoDialog(kadu))->show();
+	(new PersonalInfoDialog(AccountManager::instance()->defaultAccount()->protocol(), kadu))->show();
 }
 
 void Kadu::manageIgnored(QAction *sender, bool toggled)

@@ -3,13 +3,16 @@
 
 #include <QtGui/QWidget>
 
-#include "search.h"
+#include "contacts/contact.h"
 
 class QComboBox;
 class QKeyEvent;
 class QLineEdit;
 class QPushButton;
 class QResizeEvent;
+
+class PersonalInfoService;
+class Protocol;
 
 /**
 	\class PersonalInfoDialog
@@ -21,6 +24,16 @@ class PersonalInfoDialog : public QWidget
 {
 	Q_OBJECT
 
+	enum DialogState
+	{
+		Ready,
+		Reading,
+		Writing
+	};
+
+	Protocol *CurrentProtocol;
+	PersonalInfoService *CurrentService;
+
 	QLineEdit *le_nickname;
 	QLineEdit *le_name;
 	QLineEdit *le_surname;
@@ -30,14 +43,15 @@ class PersonalInfoDialog : public QWidget
 	QLineEdit *le_familyname;
 	QLineEdit *le_familycity;
 	QPushButton *pb_save;
-	enum DialogState { READY, READING, WRITING };
 	DialogState State;
-	SearchRecord *data;
 
 private slots:
 	void saveButtonClicked();
 	void keyPressEvent(QKeyEvent *);
 	void reloadInfo();
+
+	void personalInfoAvailable(Contact contact);
+	void personalInfoUpdated(bool);
 
 public:
 	/**
@@ -46,19 +60,8 @@ public:
 		\param parent rodzic kontrolki. Domy�lnie 0.
 		\param name nazwa kontrolki. Domy�lnie 0.
 	**/
-	PersonalInfoDialog(QWidget *parent = 0);
+	PersonalInfoDialog(Protocol *protocol, QWidget *parent = 0);
 	~PersonalInfoDialog();
-
-public slots:
-	/**
-		\fn void fillFields(SearchResults& searchResults, int seq, int)
-		Metoda ta wype�nia pola danych osobowych w tym oknie wg. otrzymanych
-		- aktualnych - danych z serwera.
-		\param searchResults dane otrzymane z serwera.
-		\param seq unikalny identyfikator zapytania do serwera Gadu-Gadu.
-		Trzeci parametr w tym przypadku jest pomijany.
-	**/
-	void fillFields(SearchResults &searchResults, int seq, int);
 
 };
 

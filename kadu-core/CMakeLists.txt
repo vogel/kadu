@@ -200,7 +200,6 @@ set (kadu_MOC_SRCS
 	gui/widgets/configuration/config-action-button.h
 	gui/widgets/configuration/config-check-box.h
 	gui/widgets/configuration/config-widget-value.h
-	gui/widgets/configuration/config-widget.h
 	gui/widgets/configuration/configuration-widget.h
 	gui/widgets/configuration/kadu-scroll-area.h
 	gui/widgets/configuration/config-section.h
@@ -211,12 +210,12 @@ set (kadu_MOC_SRCS
 	gui/windows/contact-data-window.h
 
 	protocols/protocol.h
-	protocols/protocol_factory.h
 	protocols/protocols_manager.h
 
 	protocols/services/chat-image-service.h
 	protocols/services/chat-service.h
 	protocols/services/contact-list-service.h
+	protocols/services/personal-info-service.h
 
 	about.h
 	action.h

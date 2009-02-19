@@ -4,6 +4,7 @@ set (SOURCES
 	services/gadu-chat-image-service.cpp
 	services/gadu-chat-service.cpp
 	services/gadu-contact-list-service.cpp
+	services/gadu-personal-info-service.cpp
 
 	connection-timeout-timer.cpp
 	gadu.cpp
@@ -35,6 +36,7 @@ set (MOC_SOURCES
 	services/gadu-chat-image-service.h
 	services/gadu-chat-service.h
 	services/gadu-contact-list-service.h
+	services/gadu-personal-info-service.h
 
 	connection-timeout-timer.h
 	gadu.h

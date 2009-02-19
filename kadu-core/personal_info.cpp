@@ -25,14 +25,24 @@
 
 #include "personal_info.h"
 
-PersonalInfoDialog::PersonalInfoDialog(QWidget *parent)
-	: QWidget(parent, Qt::Window),
-	le_nickname(0), le_name(0), le_surname(0), cb_gender(0), le_birthyear(0), le_city(0), le_familyname(0),
-	le_familycity(0), pb_save(0), State(READY), data(new SearchRecord())
+PersonalInfoDialog::PersonalInfoDialog(Protocol *protocol, QWidget *parent) :
+		QWidget(parent, Qt::Window),
+		CurrentProtocol(protocol), CurrentService(protocol->personalInfoService()),
+		le_nickname(0), le_name(0), le_surname(0), cb_gender(0), le_birthyear(0), le_city(0), le_familyname(0),
+		le_familycity(0), pb_save(0), State(Ready)
 {
 	kdebugf();
+
 	setWindowTitle(tr("Personal Information"));
 	setAttribute(Qt::WA_DeleteOnClose);
+
+	if (CurrentService)
+	{
+		connect(CurrentService, SIGNAL(personalInfoAvailable(Contact)),
+				this, SLOT(personalInfoAvailable(Contact)));
+		connect(CurrentService, SIGNAL(personalInfoUpdated(bool)),
+				this, SLOT(personalInfoUpdated(bool)));
+	}
 
 	// create main QLabel widgets (icon and app info)
 	QWidget *left = new QWidget();
@@ -201,7 +211,6 @@ PersonalInfoDialog::PersonalInfoDialog(QWidget *parent)
 PersonalInfoDialog::~PersonalInfoDialog()
 {
 	kdebugf();
-	delete data;
 // 	saveGeometry(this, "General", "PersonalInfoDialogGeometry");
 	kdebugf2();
 }
@@ -218,11 +227,10 @@ void PersonalInfoDialog::reloadInfo()
 {
 	kdebugf();
 
-	GaduProtocol *gadu = dynamic_cast<GaduProtocol *>(AccountManager::instance()->defaultAccount()->protocol());
-	if (gadu->isConnected())
+	if (CurrentService)
 	{
-		State = READING;
-		gadu->getPersonalInfo(*data);
+		State = Reading;
+		CurrentService->fetchPersonalInfo();
 	}
 	else
 		pb_save->setEnabled(false);
@@ -233,70 +241,48 @@ void PersonalInfoDialog::saveButtonClicked()
 {
 	kdebugf();
 
-	GaduProtocol *gadu = dynamic_cast<GaduProtocol *>(AccountManager::instance()->defaultAccount()->protocol());
-	if (!gadu->isConnected())
-		return;
-
 	SearchResult save;
+	Contact contact;
 
-	State = WRITING;
-	save.First = le_name->text();
-	save.Last = le_surname->text();
-	save.Nick = le_nickname->text();
-	save.City = le_city->text();
-	save.Born = le_birthyear->text();
-	save.Gender = cb_gender->currentItem();
-	save.FamilyName = le_familyname->text();
-	save.FamilyCity = le_familycity->text();
+	State = Writing;
+	contact.setFirstName(le_name->text());
+	contact.setLastName(le_surname->text());
+	contact.setNickName(le_nickname->text());
+	contact.setCity(le_city->text());
+	contact.setBirthYear(le_birthyear->text().toUShort());
+	contact.setGender((ContactData::ContactGender)cb_gender->currentItem());
+	contact.setFamilyName(le_familyname->text());
+	contact.setFamilyCity(le_familycity->text());
 
-	gadu->setPersonalInfo(*data, save);
+	if (CurrentService)
+		CurrentService->updatePersonalInfo(contact);
 
 	setEnabled(false);
 
 	kdebugf2();
 }
 
-void PersonalInfoDialog::fillFields(SearchResults &searchResults, int seq, int)
+void PersonalInfoDialog::personalInfoAvailable(Contact contact)
 {
 	kdebugf();
 
-	if (data->Seq != seq)
-		return;
+	le_name->setText(contact.firstName());
+	le_surname->setText(contact.lastName());
+	le_nickname->setText(contact.nickName());
+	le_birthyear->setText(QString::number(contact.birthYear()));
+	le_city->setText(contact.city());
+	le_familyname->setText(contact.familyName());
+	le_familycity->setText(contact.familyCity());
+	cb_gender->setCurrentItem((int)contact.gender());
+	State = Ready;
 
-	SearchResult result;
+	setEnabled(true);
+};
 
-	switch (State)
-	{
-
-		case READING:
-			kdebugmf(KDEBUG_INFO, "Done reading info,\n");
-			if (searchResults.isEmpty())
-			{
-				State = READY;
-				break;
-			}
-
-			result = searchResults[0];
-			le_name->setText(result.First);
-			le_surname->setText(result.Last);
-			le_nickname->setText(result.Nick);
-			le_birthyear->setText(result.Born);
-			le_city->setText(result.City);
-			le_familyname->setText(result.FamilyName);
-			le_familycity->setText(result.FamilyCity);
-			cb_gender->setCurrentItem(result.Gender);
-			State = READY;
-			break;
-
-		case WRITING:
-			kdebugmf(KDEBUG_INFO, "Done writing info.\n");
-			State = READY;
-			break;
-
-		default:
-			break;
-	}
-
+void PersonalInfoDialog::personalInfoUpdated(bool)
+{
+	kdebugmf(KDEBUG_INFO, "Done writing info.\n");
+	State = Ready;
 	setEnabled(true);
 	kdebugf2();
 }

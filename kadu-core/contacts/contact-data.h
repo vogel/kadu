@@ -31,6 +31,15 @@ class XmlConfigFile;
 
 class ContactData : public QSharedData, private StorableObject
 {
+public:
+	enum ContactGender
+	{
+		GenderUnknown,
+		GenderMale,
+		GenderFemale
+	};
+
+private:
 	QUuid Uuid;
 	QMap<QString, QString> CustomData;
 	QMap<Account *, ContactAccountData *> AccountsData;
@@ -39,10 +48,15 @@ class ContactData : public QSharedData, private StorableObject
 	QString Display;
 	QString FirstName;
 	QString LastName;
+	QString FamilyName;
+	QString City;
+	QString FamilyCity;
 	QString NickName;
 	QString HomePhone;
 	QString Mobile;
 	QString Email;
+	unsigned short BirthYear;
+	ContactGender Gender;
 	QList<Group *> Groups;
 
 	bool Ignored;
@@ -101,10 +115,15 @@ template<class T>
 	Property(QString, display, Display)
 	Property(QString, firstName, FirstName)
 	Property(QString, lastName, LastName)
+	Property(QString, familyName, FamilyName)
+	Property(QString, city, City)
+	Property(QString, familyCity, FamilyCity)
 	Property(QString, nickName, NickName)
 	Property(QString, homePhone, HomePhone)
 	Property(QString, mobile, Mobile)
 	Property(QString, email, Email)
+	Property(unsigned short, birthYear, BirthYear)
+	Property(ContactGender, gender, Gender)
 	Property(QList<Group *>, groups, Groups);
 
 };

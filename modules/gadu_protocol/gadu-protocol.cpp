@@ -132,6 +132,7 @@ GaduProtocol::GaduProtocol(Account *account, ProtocolFactory *factory) :
 	CurrentChatImageService = new GaduChatImageService(this);
 	CurrentChatService = new GaduChatService(this);
 	CurrentContactListService = new GaduContactListService(this);
+	CurrentPersonalInfoService = new GaduPersonalInfoService(this);
 
 	connect(SocketNotifiers, SIGNAL(connected()), this, SLOT(connectedSlot()));
 	connect(SocketNotifiers, SIGNAL(dccConnectionReceived(Contact)),

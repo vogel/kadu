@@ -7,34 +7,27 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GADU_SEARCH_H
-#define GADU_SEARCH_H
+#ifndef PERSONAL_INFO_SERVICE_H
+#define PERSONAL_INFO_SERVICE_H
 
 #include <QtCore/QObject>
 
-#include "gadu-search-record.h"
-#include "gadu-search-result.h"
+#include "contacts/contact.h"
 
-#include <libgadu.h>
-
-class GaduSearch : public QObject
+class PersonalInfoService : public QObject
 {
 	Q_OBJECT
 
-	gg_session *Session;
-
 public:
-	GaduSearch(gg_session *sess) : Session(sess) {}
-	
+	PersonalInfoService(QObject *parent = 0) : QObject(parent) {}
+
+	virtual void updatePersonalInfo(Contact contact) = 0;
+	virtual void fetchPersonalInfo() = 0;
+
 signals:
-	void newSearchResults(SearchResults &searchResults, int seq, int lastUin);
-	
-public slots:
-	void newResults(gg_pubdir50_t res);
-	void searchInPubdir(SearchRecord &searchRecord);
-	void searchNextInPubdir(SearchRecord &searchRecord);
-	void stopSearchInPubdir(SearchRecord &searchRecord);
+	void personalInfoAvailable(Contact contact);
+	void personalInfoUpdated(bool);
 
 };
 
-#endif // GADU_SEARCH_H
+#endif // PERSONAL_INFO_SERVICE_H

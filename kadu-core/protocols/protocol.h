@@ -1,3 +1,12 @@
+/***************************************************************************
+ *                                                                         *
+ *   This program is free software; you can redistribute it and/or modify  *
+ *   it under the terms of the GNU General Public License as published by  *
+ *   the Free Software Foundation; either version 2 of the License, or     *
+ *   (at your option) any later version.                                   *
+ *                                                                         *
+ ***************************************************************************/
+
 #ifndef KADU_PROTOCOL_H
 #define KADU_PROTOCOL_H
 
@@ -29,6 +38,7 @@ class ChatImageService;
 class ChatService;
 class ContactListService;
 class Message;
+class PersonalInfoService;
 class ProtocolFactory;
 class Status;
 
@@ -72,6 +82,7 @@ public:
 	virtual ChatImageService * chatImageService() { return 0; }
 	virtual ChatService * chatService() { return 0; }
 	virtual ContactListService * contactListService() { return 0; }
+	virtual PersonalInfoService * personalInfoService() { return 0; }
 
 	virtual void setAccount(Account *account); 
 	virtual bool validateUserID(QString &uid) = 0;

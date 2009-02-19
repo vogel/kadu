@@ -116,10 +116,15 @@ template<class T>
 	PropertyWrite(QString, display, Display, QString::null)
 	Property(QString, firstName, FirstName, QString::null)
 	Property(QString, lastName, LastName, QString::null)
+	Property(QString, familyName, FamilyName, QString::null)
+	Property(QString, city, City, QString::null)
+	Property(QString, familyCity, FamilyCity, QString::null)
 	Property(QString, nickName, NickName, QString::null)
 	Property(QString, homePhone, HomePhone, QString::null)
 	Property(QString, mobile, Mobile, QString::null)
 	Property(QString, email, Email, QString::null)
+	Property(unsigned short, birthYear, BirthYear, 0)
+	Property(ContactData::ContactGender, gender, Gender, ContactData::GenderUnknown)
 	Property(QList<Group *>, groups, Groups, QList<Group *>());
 
 };
