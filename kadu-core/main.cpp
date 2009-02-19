@@ -153,6 +153,11 @@ int main(int argc, char *argv[])
 	}
 
 #endif
+
+	kdebugm(KDEBUG_INFO, "before creation of new KaduApplication\n");
+	new KaduApplication(argc, argv);
+	kdebugm(KDEBUG_INFO, "after creation of new KaduApplication\n");
+
 	debug_mask = -1;
 	qInstallMsgHandler(kaduQtMessageHandler);
 	xml_config_file = new XmlConfigFile();
@@ -226,10 +231,6 @@ int main(int argc, char *argv[])
 
 		exit(10);
 	}
-
-	kdebugm(KDEBUG_INFO, "before creation of new KaduApplication\n");
-	new KaduApplication(argc, argv);
-	kdebugm(KDEBUG_INFO, "after creation of new KaduApplication\n");
 
 	defaultFont = new QFont(qApp->font());
 	defaultFontInfo = new QFontInfo(*defaultFont);
