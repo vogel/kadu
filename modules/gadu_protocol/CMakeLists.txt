@@ -5,6 +5,7 @@ set (SOURCES
 	services/gadu-chat-service.cpp
 	services/gadu-contact-list-service.cpp
 	services/gadu-personal-info-service.cpp
+	services/gadu-search-service.cpp
 
 	connection-timeout-timer.cpp
 	gadu.cpp
@@ -21,7 +22,6 @@ set (SOURCES
 	gadu_protocol_factory.cpp
 	gadu-protocol-socket-notifiers.cpp
 	gadu-pubdir-socket-notifiers.cpp
-	gadu-search.cpp
 	gadu-server-connector.cpp
 	gadu-server-change-password.cpp
 	gadu-server-register-account.cpp
@@ -37,6 +37,7 @@ set (MOC_SOURCES
 	services/gadu-chat-service.h
 	services/gadu-contact-list-service.h
 	services/gadu-personal-info-service.h
+	services/gadu-search-service.h
 
 	connection-timeout-timer.h
 	gadu.h

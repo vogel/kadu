@@ -188,7 +188,8 @@ GaduAccountData * GaduProtocol::gaduAccountData() const
 		: 0;
 }
 
-void GaduProtocol::setAccount(Account* account) {
+void GaduProtocol::setAccount(Account* account)
+{
 	Protocol::setAccount(account);
 
 	SocketNotifiers->setAccount(account);
