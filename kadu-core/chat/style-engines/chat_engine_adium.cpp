@@ -8,6 +8,7 @@
  ***************************************************************************/
 
 #include <QtCore/QDir>
+#include <QtCore/QTextCodec>
 #include <QtCore/QTextStream>
 #include <QtWebKit/QWebFrame>
 //TODO:
@@ -57,7 +58,7 @@ const char *AdiumChatStyleEngine::xhtmlBase =
 
 void AdiumChatStyleEngine::pruneMessage(ChatMessagesView *view)
 {
-	if(!ChatStylesManager::instance()->cfgNoHeaderRepeat())
+	if (!ChatStylesManager::instance()->cfgNoHeaderRepeat())
 		view->page()->mainFrame()->evaluateJavaScript("kadu_removeFirstMessage()");	
 }
 
@@ -95,7 +96,7 @@ QStringList AdiumChatStyleEngine::styleVariants(QString styleName)
 	if (!dir.exists(styleBaseHref))
 		styleBaseHref = dataPath("kadu") + "/syntax/chat/" + styleName + "/Contents/Resources/Variants/";
 	dir.setPath(styleBaseHref);
-	dir.setNameFilter("*.css");
+	dir.setNameFilters(QStringList("*.css"));
 	return dir.entryList(); 
 }
 
@@ -110,7 +111,7 @@ void AdiumChatStyleEngine::appendMessage(ChatMessagesView *view, ChatMessage *me
 	QString formattedMessageHtml;
 	bool includeHeader = true;
 
-	if(ChatStylesManager::instance()->cfgNoHeaderRepeat() && view->prevMessage())
+	if (ChatStylesManager::instance()->cfgNoHeaderRepeat() && view->prevMessage())
 	{
 		includeHeader =
 			(view->prevMessage()->type() != TypeSystem) &&
@@ -149,7 +150,7 @@ void AdiumChatStyleEngine::appendMessage(ChatMessagesView *view, ChatMessage *me
 
 	view->rememberScrollBarPosition();
 
-	if(includeHeader)
+	if (includeHeader)
 		view->page()->mainFrame()->evaluateJavaScript("kadu_appendNextMessage(\'"+ formattedMessageHtml +"\')");
 	else
 		view->page()->mainFrame()->evaluateJavaScript("kadu_appendConsecutiveMessage(\'"+ formattedMessageHtml +"\')");

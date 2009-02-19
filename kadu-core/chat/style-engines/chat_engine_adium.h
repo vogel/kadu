@@ -34,7 +34,8 @@ public:
 	virtual bool supportVariants() { return true; }
 	virtual bool supportEditing() { return false; }
 	virtual bool isThemeValid(QString styleName);
-	
+	virtual QString currentStyleVariant() { return StyleVariantName; }	
+
 	virtual QStringList styleVariants(QString styleName);
 
 	virtual void clearMessages(ChatMessagesView *view);

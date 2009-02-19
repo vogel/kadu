@@ -108,7 +108,7 @@ void GaduTokenSocketNotifiers::socketEvent()
 				QString tokenId = cp2unicode(t->tokenid);
 
 				//nie optymalizowac!!!
-				QByteArray buf(H->body_size);
+				QByteArray buf(H->body_size, '0');
 				for (unsigned int i = 0; i < H->body_size; ++i)
 					buf[i] = H->body[i];
 

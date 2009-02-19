@@ -132,8 +132,7 @@ void GaduProtocolSocketNotifiers::socketEvent()
 					for (int i = 0; i < e->event.msg.recipients_count; ++i)
 						senders.append(CurrentAccount->getContactById(QString::number(e->event.msg.recipients[i])));
 				QString msg((char*)e->event.msg.message);
-				QByteArray formats;
-				formats.duplicate((const char*)e->event.msg.formats, e->event.msg.formats_length);
+				QByteArray formats((const char*)e->event.msg.formats, e->event.msg.formats_length);
 				emit messageReceived(e->event.msg.msgclass, senders, msg, e->event.msg.time, formats);
 			}
 			break;

@@ -25,7 +25,7 @@ protected:
 
 public:
 	AwareObject() { Objects.append(reinterpret_cast<T *>(this)); }
-	virtual ~AwareObject() { Objects.remove(reinterpret_cast<T *>(this)); }
+	virtual ~AwareObject() { Objects.removeAll(reinterpret_cast<T *>(this)); }
 
 };
 

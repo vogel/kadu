@@ -47,11 +47,12 @@ void GaduSocketNotifiers::createSocketNotifiers()
 
 	if (0 == Fd)
 		return;
-
-	Snr = new QSocketNotifier(Fd, QSocketNotifier::Read, this, "read_socket_notifier");
+	// read_socket_notifier
+	Snr = new QSocketNotifier(Fd, QSocketNotifier::Read, this);
 	connect(Snr, SIGNAL(activated(int)), this, SLOT(dataReceived()));
 
-	Snw = new QSocketNotifier(Fd, QSocketNotifier::Write, this, "write_socket_notifier");
+	//write_socket_notifier
+	Snw = new QSocketNotifier(Fd, QSocketNotifier::Write, this);
 	connect(Snw, SIGNAL(activated(int)), this, SLOT(dataSent()));
 
 	kdebugf2();

@@ -17,7 +17,8 @@ ConnectionTimeoutTimer *ConnectionTimeoutTimer::Instance = 0;
 ConnectionTimeoutTimer::ConnectionTimeoutTimer(QObject *parent)
 	: QTimer(parent)
 {
-	start(config_file.readUnsignedNumEntry("Network", "TimeoutInMs"), true);
+	setSingleShot(true);
+	start(config_file.readUnsignedNumEntry("Network", "TimeoutInMs"));
 }
 
 bool ConnectionTimeoutTimer::connectTimeoutRoutine(const QObject *receiver, const char *member)

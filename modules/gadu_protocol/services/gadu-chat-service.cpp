@@ -132,7 +132,7 @@ void GaduChatService::messageReceivedSlot(int msgclass, ContactList senders, QSt
 	if (ignore)
 		return;
 
-	const char* msg_c = msg;
+	const char* msg_c = msg.toAscii().constData();
 
 	Message message;
 	QString content = cp2unicode(msg_c);

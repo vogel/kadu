@@ -41,7 +41,7 @@ void ContactsModelProxy::setSourceModel(QAbstractItemModel *sourceModel)
 int ContactsModelProxy::compareNames(QString n1, QString n2) const
 {
 	return BrokenStringCompare
-		? n1.lower().localeAwareCompare(n2.lower())
+		? n1.toLower().localeAwareCompare(n2.toLower())
 		: n1.localeAwareCompare(n2);
 }
 
@@ -95,7 +95,7 @@ void ContactsModelProxy::addFilter(AbstractContactFilter *filter)
 
 void ContactsModelProxy::removeFilter(AbstractContactFilter *filter)
 {
-	Filters.remove(filter);
+	Filters.removeAll(filter);
 	invalidateFilter();
 	connect(filter, SIGNAL(filterChanged()), this, SLOT(invalidate()));
 }

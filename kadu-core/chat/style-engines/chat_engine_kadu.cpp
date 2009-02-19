@@ -72,8 +72,8 @@ void KaduChatStyleEngine::loadTheme(const QString &styleName, const QString &var
 			"#{receivedDate}[ / S #{sentDate}]</b><br /></kadu:header>"
 		"#{message}</font></p>"
 	);
-	int beginOfHeader = chatSyntax.find("<kadu:header>");
-	int endOfHeader = chatSyntax.find("</kadu:header>");
+	int beginOfHeader = chatSyntax.indexOf("<kadu:header>");
+	int endOfHeader = chatSyntax.indexOf("</kadu:header>");
 	ChatSyntaxWithHeader = chatSyntax;
 	ChatSyntaxWithHeader.replace("<kadu:header>", "");
 	ChatSyntaxWithHeader.replace("</kadu:header>", "");

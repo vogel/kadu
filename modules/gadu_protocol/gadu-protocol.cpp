@@ -1,4 +1,4 @@
-/***************************************************************************
+ /***************************************************************************
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -110,7 +110,7 @@ void GaduProtocol::initModule()
 
 	QStringList servers;
 	QHostAddress ip2;
-	servers = QStringList::split(";", config_file.readEntry("Network", "Server"));
+	servers = config_file.readEntry("Network", "Server").split(";", QString::SkipEmptyParts);
 	ConfigServers.clear();
 	foreach(const QString &server, servers)
 		if (ip2.setAddress(server))
@@ -123,7 +123,7 @@ GaduProtocol::GaduProtocol(Account *account, ProtocolFactory *factory) :
 		Protocol(account, factory),
 		ServerNr(0), ActiveServer(), LoginParams(), Sess(0), sendImageRequests(0), whileConnecting(false),
 		DccExternalIP(), PingTimer(0),
-		SendUserListTimer(new QTimer(this, "SendUserListTimer"))
+		SendUserListTimer(new QTimer(this))
 {
 	kdebugf();
 
@@ -463,7 +463,7 @@ void GaduProtocol::connectedSlot()
 
 	/* jezeli sie rozlaczymy albo stracimy polaczenie, proces laczenia sie z serwerami zaczyna sie od poczatku */
 	ServerNr = 0;
-	PingTimer = new QTimer(NULL, "PingTimer");
+	PingTimer = new QTimer(0);
 	connect(PingTimer, SIGNAL(timeout()), this, SLOT(everyMinuteActions()));
 	PingTimer->start(60000);
 
@@ -698,9 +698,9 @@ void GaduProtocol::login()
 	// GG 6.0 build 147 ustawia indeks ostatnio odczytanej wiadomosci systemowej na 1389
 	LoginParams.last_sysmsg = config_file.readNumEntry("General", "SystemMsgIndex", 1389);
 
-	if (config_file.readBoolEntry("Network", "AllowDCC") && DccExternalIP.ip4Addr() && config_file.readNumEntry("Network", "ExternalPort") > 1023)
+	if (config_file.readBoolEntry("Network", "AllowDCC") && DccExternalIP.toIPv4Address() && config_file.readNumEntry("Network", "ExternalPort") > 1023)
 	{
-		LoginParams.external_addr = htonl(DccExternalIP.ip4Addr());
+		LoginParams.external_addr = htonl(DccExternalIP.toIPv4Address());
 		LoginParams.external_port = config_file.readNumEntry("Network", "ExternalPort");
 	}
 	else
@@ -756,7 +756,7 @@ void GaduProtocol::login()
 	if (!ActiveServer.isNull())
 	{
 		kdebugm(KDEBUG_INFO, "port: %d\n", server_port);
-		LoginParams.server_addr = htonl(ActiveServer.ip4Addr());
+		LoginParams.server_addr = htonl(ActiveServer.toIPv4Address());
 		LoginParams.server_port = server_port;
 	}
 	else
@@ -847,7 +847,8 @@ void GaduProtocol::setupProxy()
 void GaduProtocol::sendUserListLater()
 {
 //	kdebugf();
-	SendUserListTimer->start(0, true);
+	SendUserListTimer->setSingleShot(true);
+	SendUserListTimer->start(0);
 //	kdebugf2();
 }
 
@@ -949,7 +950,7 @@ void GaduProtocol::setPersonalInfo(SearchRecord &searchRecord, SearchResult &new
 	if (!newData.Born.isEmpty())
 		gg_pubdir50_add(req, GG_PUBDIR50_BIRTHYEAR, (const char *)(unicode2cp(newData.Born).data()));
 	if (newData.Gender)
-		gg_pubdir50_add(req, GG_PUBDIR50_GENDER, QString::number(newData.Gender).latin1());
+		gg_pubdir50_add(req, GG_PUBDIR50_GENDER, QString::number(newData.Gender).toLatin1());
 	if (!newData.FamilyName.isEmpty())
 		gg_pubdir50_add(req, GG_PUBDIR50_FAMILYNAME, (const char *)(unicode2cp(newData.FamilyName).data()));
 	if (!newData.FamilyCity.isEmpty())

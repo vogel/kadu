@@ -32,7 +32,7 @@ UinsList::UinsList(UinType uin)
 
 UinsList::UinsList(const QString &uins)
 {
-	QStringList list = QStringList::split(",", uins);
+	QStringList list = uins.split(",", QString::SkipEmptyParts);
 	foreach(const QString &uin, list)
 		append(uin.toUInt());
 }

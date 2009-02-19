@@ -54,7 +54,7 @@ void GaduImagesManager::setBackgroundsForAnimatedImages(HtmlDocument &doc, const
 
 QString GaduImagesManager::imageHtml(const QString &file_name)
 {
-	if (file_name.right(4).lower() == ".gif")
+	if (file_name.right(4).toLower() == ".gif")
 		return narg(QString("<img bgcolor=\"\" animated=\"1\" src=\"file:///%1\" title=\"%2\"/>"), file_name, file_name);
 	else
 		return QString("<img src=\"file:///%1\"/>").arg(file_name);
@@ -80,7 +80,7 @@ void GaduImagesManager::addImageToSend(const QString &file_name, uint32_t &size,
 	int tmp;
 	while (readBytes < img.size)
 	{
-		tmp = f.readBlock(img.data + readBytes, img.size - readBytes);
+		tmp = f.read(img.data + readBytes, img.size - readBytes);
 		if (tmp >= 0)
 			readBytes += tmp;
 		else
@@ -123,7 +123,7 @@ void GaduImagesManager::sendImage(UinType uin, uint32_t size, uint32_t crc32)
 			int tmp;
 			while (readBytes < i.size)
 			{
-				tmp = f.readBlock(i.data + readBytes, i.size - readBytes);
+				tmp = f.read(i.data + readBytes, i.size - readBytes);
 				if (tmp >= 0)
 					readBytes += tmp;
 				else
@@ -165,7 +165,7 @@ QString GaduImagesManager::saveImage(UinType sender, uint32_t size, uint32_t crc
 	img.file_name = path + '/' + file_name;
 	QFile f(img.file_name);
 	f.open(QIODevice::WriteOnly);
-	f.writeBlock(data,size);
+	f.write(data,size);
 	f.close();
 	SavedImages.append(img);
 	kdebugf2();
@@ -213,13 +213,13 @@ QString GaduImagesManager::replaceLoadingImages(const QString &text, UinType sen
 	int pos;
 
 	QString file_name = getSavedImageFileName(size,crc32);
-	if (file_name.right(4).lower()==".gif")
+	if (file_name.right(4).toLower()==".gif")
 		image_string = narg(QString("<img bgcolor=\"%1\" animated=\"1\" src=\"file:///%2\" title=\"%3\"/>"),
 			config_file.readColorEntry("Look","ChatUsrBgColor").name(), file_name, file_name);
 	else
 		image_string = QString("<img src=\"file:///%1\"/>").arg(file_name);
 
-	while ((pos = new_text.find(loading_string)) != -1)
+	while ((pos = new_text.indexOf(loading_string)) != -1)
 	{
 		kdebugm(KDEBUG_INFO, "Found coresponding loading image at pos %i, replacing\n",pos);
 		new_text = new_text.replace(pos, loading_string.length(), image_string);

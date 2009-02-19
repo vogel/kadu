@@ -146,7 +146,7 @@ void AccountManager::unregisterAccount(Account *account)
 {
 	AccountsAwareObject::notifyAccountUnregistered(account);
 	emit accountAboutToBeUnregistered(account);
-	Accounts.remove(account);
+	Accounts.removeAll(account);
 	emit accountUnregistered(account);
 }
 

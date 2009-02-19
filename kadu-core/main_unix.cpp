@@ -128,7 +128,7 @@ static void kadu_signal_handler(int s)
 #else
 		kdebugm(KDEBUG_PANIC, "backtrace not available\n");
 #endif
-		xml_config_file->saveTo(ggPath(f.latin1()));
+		xml_config_file->saveTo(ggPath(f.toLatin1()));
 		abort();
 	}
 	else if (s == SIGUSR1)

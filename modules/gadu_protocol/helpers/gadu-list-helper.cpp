@@ -92,7 +92,7 @@ ContactList GaduListHelper::streamToContactList(Account *account, QTextStream &c
 		Contact contact;
 		line = content.readLine();
 //		kdebugm(KDEBUG_DUMP, ">>%s\n", qPrintable(line));
-		sections = QStringList::split(";", line, true);
+		line.split(";", QString::KeepEmptyParts);
 		secCount = sections.count();
 
 		if (secCount < 7)

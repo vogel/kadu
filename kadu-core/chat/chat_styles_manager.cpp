@@ -88,7 +88,7 @@ void ChatStylesManager::chatViewCreated(ChatMessagesView *view)
 void ChatStylesManager::chatViewDestroyed(ChatMessagesView *view)
 {
 	if (chatViews.contains(view))
-		chatViews.remove(view);
+		chatViews.removeAll(view);
 }
 
 void ChatStylesManager::configurationUpdated()
@@ -248,7 +248,7 @@ void ChatStylesManager::mainConfigurationWindowCreated(MainConfigurationWindow *
 
 	syntaxListCombo = new QComboBox(editor);
 	syntaxListCombo->addItems(availableStyles.keys());
-	syntaxListCombo->setCurrentText(CurrentEngine->currentStyleName());
+	syntaxListCombo->setCurrentIndex(syntaxListCombo->findText(CurrentEngine->currentStyleName()));
 	connect(syntaxListCombo, SIGNAL(activated(const QString &)), this, SLOT(styleChangedSlot(const QString &)));
 
 	editButton = new QPushButton(tr("Edit"), editor);
@@ -264,9 +264,9 @@ void ChatStylesManager::mainConfigurationWindowCreated(MainConfigurationWindow *
 	editorLayout->addWidget(deleteButton);
 //variants
 	variantListCombo = new QComboBox();
-	variantListCombo->addItem("Standard");
+	variantListCombo->addItem("Default");
 	variantListCombo->addItems(CurrentEngine->styleVariants(CurrentEngine->currentStyleName()));
-	variantListCombo->setCurrentText(CurrentEngine->currentStyleVariant() != QString::null ? CurrentEngine->currentStyleVariant() : "Standard");
+	variantListCombo->setCurrentIndex(variantListCombo->findText(CurrentEngine->currentStyleVariant().isNull() ? "Default" : CurrentEngine->currentStyleVariant()));
 	variantListCombo->setEnabled(CurrentEngine->supportVariants());
 	connect(variantListCombo, SIGNAL(activated(const QString &)), this, SLOT(variantChangedSlot(const QString &)));
 //preview
@@ -319,9 +319,8 @@ void ChatStylesManager::styleChangedSlot(const QString &styleName)
 	ChatStyleEngine *engine = availableStyles[styleName].engine;
 	editButton->setEnabled(engine->supportEditing());
 	deleteButton->setEnabled(!availableStyles[styleName].global);
-	syntaxListCombo->setCurrentText(styleName);
 	variantListCombo->clear();
-	variantListCombo->addItem("Standard");
+	variantListCombo->addItem("Default");
 	variantListCombo->addItems(engine->styleVariants(styleName));
 	variantListCombo->setEnabled(engine->supportVariants());
 	engine->prepareStylePreview(preview, styleName, variantListCombo->currentText());

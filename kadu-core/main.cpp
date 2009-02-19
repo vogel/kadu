@@ -7,7 +7,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <QtCore/QTextCodec>
+#include <QtCore/QLocale>
 #include <QtCore/QTranslator>
 #include <QtGui/QApplication>
 
@@ -234,11 +234,13 @@ int main(int argc, char *argv[])
 	defaultFont = new QFont(qApp->font());
 	defaultFontInfo = new QFontInfo(*defaultFont);
 	// loading translation
-	QTranslator qt_qm(0, "Translator_qt");
-	QString lang = config_file.readEntry("General", "Language", QString(QTextCodec::locale()).mid(0,2));
+	// Translator_qt
+	QTranslator qt_qm(0);
+	QString lang = config_file.readEntry("General", "Language", QLocale::system().name().mid(0,2));
 	qt_qm.load(dataPath(QString("kadu/translations/qt_") + lang), ".");
 	qApp->installTranslator(&qt_qm);
-	QTranslator kadu_qm(0, "Translator_kadu");
+	// Translator_kadu
+	QTranslator kadu_qm(0);
 	kadu_qm.load(dataPath(QString("kadu/translations/kadu_") + lang), ".");
 	qApp->installTranslator(&kadu_qm);
 

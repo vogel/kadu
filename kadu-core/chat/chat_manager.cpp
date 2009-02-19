@@ -88,6 +88,8 @@ ChatManager::ChatManager(QObject *parent)
 {
 	kdebugf();
 
+	refreshTitlesTimer.setSingleShot(true);
+
 	autoSendActionDescription = new ActionDescription(
 		ActionDescription::TypeChat, "autoSendAction",
 		this, SLOT(autoSendActionActivated(QAction *, bool)),
@@ -358,7 +360,7 @@ void ChatManager::boldActionActivated(QAction *sender, bool toggled)
 	if (!chatEditBox)
 		return;
 
-	chatEditBox->inputBox()->setBold(toggled);
+	chatEditBox->inputBox()->setFontWeight(toggled ? QFont::Bold : QFont::Normal);
 
 	kdebugf2();
 }
@@ -673,7 +675,7 @@ void ChatManager::unregisterChatWidget(ChatWidget *chat)
 			}
 
 			emit chatWidgetDestroying(chat);
-			ChatWidgets.remove(curChat);
+			ChatWidgets.removeAll(curChat);
 
 			kdebugf2();
 			return;
@@ -684,7 +686,7 @@ void ChatManager::unregisterChatWidget(ChatWidget *chat)
 
 void ChatManager::refreshTitlesLater()
 {
-	refreshTitlesTimer.start(0, true);
+	refreshTitlesTimer.start(0);
 }
 
 void ChatManager::refreshTitles()
