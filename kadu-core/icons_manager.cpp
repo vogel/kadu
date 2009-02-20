@@ -25,10 +25,15 @@ IconsManager::IconsManager(const QString &name, const QString &configname)
 QString IconsManager::iconPath(const QString &name) const
 {
 	QString fname;
+	QString absoluteName;
 	if(name.contains('/'))
 		fname = name;
 	else
 		fname = themePath() + getThemeEntry(name);
+
+	absoluteName = dataPath() + fname;
+	if(!QFile::exists(fname) && QFile::exists(absoluteName))
+		fname = absoluteName;
 
 	return fname;
 }
