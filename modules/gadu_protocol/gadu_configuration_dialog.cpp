@@ -22,9 +22,10 @@
 #include "message_box.h"
 #include "misc.h"
 
+#include "server/gadu-server-register-account.h"
+
 #include "gadu_account_data.h"
 #include "gadu-account-data-manager.h"
-#include "gadu-server-register-account.h"
 
 #include "gadu_configuration_dialog.h"
 

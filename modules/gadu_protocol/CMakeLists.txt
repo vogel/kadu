@@ -3,6 +3,12 @@ set (SOURCES
 	helpers/gadu-importer.cpp
 	helpers/gadu-list-helper.cpp
 
+	server/gadu-server-connector.cpp
+	server/gadu-server-change-password.cpp
+	server/gadu-server-register-account.cpp
+	server/gadu-server-remind-password.cpp
+	server/gadu-server-unregister-account.cpp
+
 	services/gadu-chat-image-service.cpp
 	services/gadu-chat-service.cpp
 	services/gadu-contact-list-service.cpp
@@ -25,16 +31,17 @@ set (SOURCES
 	gadu_images_manager.cpp
 	gadu-protocol.cpp
 	gadu_protocol_factory.cpp
-	gadu-server-connector.cpp
-	gadu-server-change-password.cpp
-	gadu-server-register-account.cpp
-	gadu-server-remind-password.cpp
-	gadu-server-unregister-account.cpp
 	uins_list.cpp
 )
 
 set (MOC_SOURCES
 	helpers/gadu-importer.h
+
+	server/gadu-server-connector.h
+	server/gadu-server-change-password.h
+	server/gadu-server-register-account.h
+	server/gadu-server-remind-password.h
+	server/gadu-server-unregister-account.h
 
 	services/gadu-chat-image-service.h
 	services/gadu-chat-service.h
@@ -53,11 +60,6 @@ set (MOC_SOURCES
 	gadu-contact-account-data.h
 	gadu-contact-account-data-widget.h
 	gadu-protocol.h
-	gadu-server-connector.h
-	gadu-server-change-password.h
-	gadu-server-register-account.h
-	gadu-server-remind-password.h
-	gadu-server-unregister-account.h
 )
 
 set (TRANSLATION_SOURCES
