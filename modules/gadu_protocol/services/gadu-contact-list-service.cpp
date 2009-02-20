@@ -34,7 +34,7 @@ void GaduContactListService::importContactList()
 {
 	ImportReply.truncate(0);
 
-	if (-1 == gg_userlist_request(Protocol->session(), GG_USERLIST_GET, 0) != -1)
+	if (-1 == gg_userlist_request(Protocol->gaduSession(), GG_USERLIST_GET, 0) != -1)
 		emit contactListImported(false, ContactList());
 }
 
@@ -49,7 +49,7 @@ void GaduContactListService::exportContactList(ContactList contacts)
 
 	kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "\n%s\n", unicode2cp(contactsString).data());
 
-	if (-1 == gg_userlist_request(Protocol->session(), GG_USERLIST_PUT, unicode2cp(contactsString)))
+	if (-1 == gg_userlist_request(Protocol->gaduSession(), GG_USERLIST_PUT, unicode2cp(contactsString)))
 		emit contactListExported(false);
 }
 

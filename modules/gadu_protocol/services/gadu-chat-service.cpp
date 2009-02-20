@@ -77,10 +77,12 @@ bool GaduChatService::sendMessage(ContactList contacts, Message &message)
 			if (contact.accountData(Protocol->account()))
 				uins[i++] = Protocol->uin(contact);
 		if (formatsSize)
-			LastMessageId = gg_send_message_confer_richtext(Protocol->session(), GG_CLASS_CHAT, uinsCount, uins, (unsigned char *)data.data(),
-				formats, formatsSize);
+			LastMessageId = gg_send_message_confer_richtext(
+					Protocol->gaduSession(), GG_CLASS_CHAT, uinsCount, uins, (unsigned char *)data.data(),
+					formats, formatsSize);
 		else
-			LastMessageId = gg_send_message_confer(Protocol->session(), GG_CLASS_CHAT, uinsCount, uins,(unsigned char *)data.data());
+			LastMessageId = gg_send_message_confer(
+					Protocol->gaduSession(), GG_CLASS_CHAT, uinsCount, uins, (unsigned char *)data.data());
 		delete[] uins;
 	}
 	else
@@ -88,10 +90,12 @@ bool GaduChatService::sendMessage(ContactList contacts, Message &message)
 			if (contact.accountData(Protocol->account()))
 			{
 				if (formatsSize)
-					LastMessageId = gg_send_message_richtext(Protocol->session(), GG_CLASS_CHAT, Protocol->uin(contact), (unsigned char *)data.data(),
-						formats, formatsSize);
+					LastMessageId = gg_send_message_richtext(
+							Protocol->gaduSession(), GG_CLASS_CHAT, Protocol->uin(contact), (unsigned char *)data.data(),
+							formats, formatsSize);
 				else
-					LastMessageId = gg_send_message(Protocol->session(), GG_CLASS_CHAT, Protocol->uin(contact),(unsigned char *)data.data());
+					LastMessageId = gg_send_message(
+							Protocol->gaduSession(), GG_CLASS_CHAT, Protocol->uin(contact), (unsigned char *)data.data());
 
 				break;
 			}

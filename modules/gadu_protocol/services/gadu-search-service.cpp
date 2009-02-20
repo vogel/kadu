@@ -67,7 +67,7 @@ void GaduSearchService::searchNext()
 
 	gg_pubdir50_add(req, GG_PUBDIR50_START, qPrintable(QString::number(From)));
 
-	SearchSeq = gg_pubdir50(Protocol->session(), req);
+	SearchSeq = gg_pubdir50(Protocol->gaduSession(), req);
 	gg_pubdir50_free(req);
 }
 

@@ -117,7 +117,7 @@ void GaduProtocol::initModule()
 
 GaduProtocol::GaduProtocol(Account *account, ProtocolFactory *factory) :
 		Protocol(account, factory),
-		ActiveServer(), LoginParams(), Sess(0), sendImageRequests(0), whileConnecting(false),
+		ActiveServer(), GaduLoginParams(), GaduSession(0), sendImageRequests(0),
 		DccExternalIP(), PingTimer(0),
 		SendUserListTimer(new QTimer(this))
 {
@@ -191,7 +191,7 @@ void GaduProtocol::setAccount(Account* account)
 unsigned int GaduProtocol::maxDescriptionLength()
 {
 #ifdef GG_STATUS_DESCR_MAXSIZE_PRE_8_0
-	if (LoginParams.protocol_version <= 0x2a)
+	if (GaduLoginParams.protocol_version <= 0x2a)
 		return GG_STATUS_DESCR_MAXSIZE_PRE_8_0;
 #endif
 
@@ -237,15 +237,12 @@ void GaduProtocol::changeStatus(Status newStatus)
 {
 	if (newStatus.isOffline() && status().isOffline())
 	{
-		if (whileConnecting)
-		{
-			whileConnecting = false;
+		if (NetworkConnecting == state())
 			disconnectedSlot();
-		}
 		return;
 	}
 
-	if (whileConnecting)
+	if (NetworkConnecting == state())
 		return;
 
 	if (status().isOffline())
@@ -260,9 +257,9 @@ void GaduProtocol::changeStatus(Status newStatus)
 	bool hasDescription = !newStatus.description().isEmpty();
 
 	if (hasDescription)
-		gg_change_status_descr(Sess, type | friends, unicode2cp(newStatus.description()));
+		gg_change_status_descr(GaduSession, type | friends, unicode2cp(newStatus.description()));
 	else
-		gg_change_status(Sess, type | friends);
+		gg_change_status(GaduSession, type | friends);
 
 	if (newStatus.isOffline())
 		disconnectedSlot();
@@ -299,31 +296,31 @@ void GaduProtocol::protocolUserDataChanged(QString protocolName, UserListElement
 	{
 		if (currentValue.toBool() && !oldValue.toBool())
 		{
-			gg_add_notify_ex(Sess, contactUin, GG_USER_OFFLINE);
-			gg_remove_notify_ex(Sess, contactUin, GG_USER_NORMAL);
-			gg_remove_notify_ex(Sess, contactUin, GG_USER_BLOCKED);
+			gg_add_notify_ex(GaduSession, contactUin, GG_USER_OFFLINE);
+			gg_remove_notify_ex(GaduSession, contactUin, GG_USER_NORMAL);
+			gg_remove_notify_ex(GaduSession, contactUin, GG_USER_BLOCKED);
 		}
 		else if (!currentValue.toBool() && oldValue.toBool())
 		{
-			gg_add_notify_ex(Sess, contactUin, GG_USER_NORMAL);
-			gg_remove_notify_ex(Sess, contactUin, GG_USER_OFFLINE);
-			gg_remove_notify_ex(Sess, contactUin, GG_USER_BLOCKED);
+			gg_add_notify_ex(GaduSession, contactUin, GG_USER_NORMAL);
+			gg_remove_notify_ex(GaduSession, contactUin, GG_USER_OFFLINE);
+			gg_remove_notify_ex(GaduSession, contactUin, GG_USER_BLOCKED);
 		}
 	}
 	else if (name == "Blocking")
 	{
 		if (currentValue.toBool() && !oldValue.toBool())
 		{
-			gg_add_notify_ex(Sess, contactUin, GG_USER_BLOCKED);
-			gg_remove_notify_ex(Sess, contactUin, GG_USER_NORMAL);
-			gg_remove_notify_ex(Sess, contactUin, GG_USER_OFFLINE);
+			gg_add_notify_ex(GaduSession, contactUin, GG_USER_BLOCKED);
+			gg_remove_notify_ex(GaduSession, contactUin, GG_USER_NORMAL);
+			gg_remove_notify_ex(GaduSession, contactUin, GG_USER_OFFLINE);
 //			elem.setStatus(protocolName, GaduStatus());
 		}
 		else if (!currentValue.toBool() && oldValue.toBool())
 		{
-			gg_add_notify_ex(Sess, contactUin, GG_USER_NORMAL);
-			gg_remove_notify_ex(Sess, contactUin, GG_USER_OFFLINE);
-			gg_remove_notify_ex(Sess, contactUin, GG_USER_BLOCKED);
+			gg_add_notify_ex(GaduSession, contactUin, GG_USER_NORMAL);
+			gg_remove_notify_ex(GaduSession, contactUin, GG_USER_OFFLINE);
+			gg_remove_notify_ex(GaduSession, contactUin, GG_USER_BLOCKED);
 		}
 	}
 
@@ -348,7 +345,7 @@ void GaduProtocol::userDataChanged(UserListElement elem, QString name, QVariant 
 	else
 	{
 		if (!currentValue.toBool() && oldValue.toBool())
-			gg_add_notify(Sess, uin(contact));
+			gg_add_notify(GaduSession, uin(contact));
 	}
 	kdebugf2();
 }*/
@@ -368,7 +365,7 @@ void GaduProtocol::userAdded(UserListElement elem, bool massively, bool /*last* 
 		sendUserListLater();
 	else
 		if (!contact.isAnonymous())
-			gg_add_notify(Sess, uin(contact));
+			gg_add_notify(GaduSession, uin(contact));
 	kdebugf2();
 }*/
 /*
@@ -386,7 +383,7 @@ void GaduProtocol::removingUser(UserListElement elem, bool massively, bool /*las
 		sendUserListLater();
 	else
 		if (!contact.isAnonymous())
-			gg_remove_notify(Sess, uin(contact));
+			gg_remove_notify(GaduSession, uin(contact));
 	kdebugf2();
 }*/
 /*
@@ -407,7 +404,7 @@ void GaduProtocol::protocolAdded(UserListElement elem, QString protocolName, boo
 		sendUserListLater();
 	else
 		if (!contact.isAnonymous())
-			gg_add_notify(Sess, uin(contact));
+			gg_add_notify(GaduSession, uin(contact));
 	kdebugf2();
 }*/
 /*
@@ -428,7 +425,7 @@ void GaduProtocol::removingProtocol(UserListElement elem, QString protocolName, 
 		sendUserListLater();
 	else
 		if (!contact.isAnonymous())
-			gg_remove_notify(Sess, uin(contact));
+			gg_remove_notify(GaduSession, uin(contact));
 	kdebugf2();
 }*/
 
@@ -447,11 +444,10 @@ void GaduProtocol::connectedSlot()
 	kdebugf();
 	ConnectionTimeoutTimer::off();
 
-	whileConnecting = false;
 	sendUserList();
 
-	GaduServersManager::instance()->markServerAsGood(QHostAddress(ntohl(Sess->server_addr)));
-	GaduServersManager::instance()->markPortAsGood(Sess->port);
+	GaduServersManager::instance()->markServerAsGood(QHostAddress(ntohl(GaduSession->server_addr)));
+	GaduServersManager::instance()->markPortAsGood(GaduSession->port);
 
 	/* jezeli sie rozlaczymy albo stracimy polaczenie, proces laczenia sie z serwerami zaczyna sie od poczatku */
 	PingTimer = new QTimer(0);
@@ -465,7 +461,7 @@ void GaduProtocol::connectedSlot()
 	// status, inaczej nie b�dziemy widoczni - raczej b��d serwer�w
 	if (status().isInvisible() 
 // TODO: 0.6.6
-//|| (LoginParams.status&~GG_STATUS_FRIENDS_MASK) != static_cast<GaduStatus *>(NextStatus)->toStatusNumber())
+//|| (GaduLoginParams.status&~GG_STATUS_FRIENDS_MASK) != static_cast<GaduStatus *>(NextStatus)->toStatusNumber())
 		)
 		setStatus(status());
 
@@ -503,11 +499,11 @@ void GaduProtocol::disconnectedSlot()
 
 	SocketNotifiers->watchFor(0); // stop watching
 
-	if (Sess)
+	if (GaduSession)
 	{
-		gg_logoff(Sess);
-		gg_free_session(Sess);
-		Sess = 0;
+		gg_logoff(GaduSession);
+		gg_free_session(GaduSession);
+		GaduSession = 0;
 	}
 
 	// du�o bezsensownej roboty, wi�c gdy jeste�my w trakcie wy��czania,
@@ -648,7 +644,7 @@ void GaduProtocol::errorSlot(GaduError err)
 void GaduProtocol::everyMinuteActions()
 {
 	kdebugf();
-	gg_ping(Sess);
+	gg_ping(GaduSession);
 	sendImageRequests = 0;
 	kdebugf2();
 }
@@ -665,88 +661,86 @@ void GaduProtocol::login()
 		return;
 	}
 
-	whileConnecting = true;
 	networkStateChanged(NetworkConnecting);
 
-	memset(&LoginParams, 0, sizeof(LoginParams));
-	LoginParams.async = 1;
+	memset(&GaduLoginParams, 0, sizeof(GaduLoginParams));
+	GaduLoginParams.async = 1;
 
 	// maksymalny rozmiar grafiki w kb
-	LoginParams.image_size = config_file.readUnsignedNumEntry("Chat", "MaxImageSize", 0);
+	GaduLoginParams.image_size = config_file.readUnsignedNumEntry("Chat", "MaxImageSize", 0);
 
 	setupProxy();
 
-	LoginParams.status = statusToType(nextStatus());
+	GaduLoginParams.status = statusToType(nextStatus());
 // TODO: 0.6.6
-// 	LoginParams.status = static_cast<GaduStatus *>(NextStatus)->toStatusNumber();
+// 	GaduLoginParams.status = static_cast<GaduStatus *>(NextStatus)->toStatusNumber();
 // 	if (NextStatus->isFriendsOnly())
-// 		LoginParams.status |= GG_STATUS_FRIENDS_MASK;
+// 		GaduLoginParams.status |= GG_STATUS_FRIENDS_MASK;
 	if (!nextStatus().description().isEmpty())
-		LoginParams.status_descr = strdup((const char *)unicode2cp(nextStatus().description()).data());
+		GaduLoginParams.status_descr = strdup((const char *)unicode2cp(nextStatus().description()).data());
 
-	LoginParams.uin = gaduAccountData()->uin();
-	LoginParams.has_audio = config_file.readBoolEntry("Network", "AllowDCC");
+	GaduLoginParams.uin = gaduAccountData()->uin();
+	GaduLoginParams.has_audio = config_file.readBoolEntry("Network", "AllowDCC");
 	// GG 6.0 build 147 ustawia indeks ostatnio odczytanej wiadomosci systemowej na 1389
-	LoginParams.last_sysmsg = config_file.readNumEntry("General", "SystemMsgIndex", 1389);
+	GaduLoginParams.last_sysmsg = config_file.readNumEntry("General", "SystemMsgIndex", 1389);
 
 	if (config_file.readBoolEntry("Network", "AllowDCC") && DccExternalIP.toIPv4Address() && 
 			config_file.readNumEntry("Network", "ExternalPort") > 1023)
 	{
-		LoginParams.external_addr = htonl(DccExternalIP.toIPv4Address());
-		LoginParams.external_port = config_file.readNumEntry("Network", "ExternalPort");
+		GaduLoginParams.external_addr = htonl(DccExternalIP.toIPv4Address());
+		GaduLoginParams.external_port = config_file.readNumEntry("Network", "ExternalPort");
 	}
 	else
 	{
-		LoginParams.external_addr = 0;
-		LoginParams.external_port = 0;
+		GaduLoginParams.external_addr = 0;
+		GaduLoginParams.external_port = 0;
 	}
 
 	ActiveServer = GaduServersManager::instance()->getGoodServer();
 	if (!ActiveServer.isNull())
 	{
-		LoginParams.server_addr = htonl(ActiveServer.toIPv4Address());
-		LoginParams.server_port = GaduServersManager::instance()->getGoodPort();
-		kdebugm(KDEBUG_INFO, "port: %d\n", LoginParams.server_port);
+		GaduLoginParams.server_addr = htonl(ActiveServer.toIPv4Address());
+		GaduLoginParams.server_port = GaduServersManager::instance()->getGoodPort();
+		kdebugm(KDEBUG_INFO, "port: %d\n", GaduLoginParams.server_port);
 	}
 	else
 	{
 		kdebugm(KDEBUG_INFO, "trying hub\n");
-		LoginParams.server_addr = 0;
-		LoginParams.server_port = 0;
+		GaduLoginParams.server_addr = 0;
+		GaduLoginParams.server_port = 0;
 	}
 
 //	polaczenia TLS z serwerami GG na razie nie dzialaja
-//	LoginParams.tls = config_file.readBoolEntry("Network", "UseTLS");
-	LoginParams.tls = 0;
-	LoginParams.client_version = "7, 7, 0, 3351"; //tego si� nie zwalnia...
+//	GaduLoginParams.tls = config_file.readBoolEntry("Network", "UseTLS");
+	GaduLoginParams.tls = 0;
+	GaduLoginParams.client_version = "7, 7, 0, 3351"; //tego si� nie zwalnia...
 		// = GG_DEFAULT_CLIENT_VERSION
-	LoginParams.protocol_version = 0x2a; // we are gg 7.7 now
+	GaduLoginParams.protocol_version = 0x2a; // we are gg 7.7 now
 		// =  GG_DEFAULT_PROTOCOL_VERSION;
-	if (LoginParams.tls)
+	if (GaduLoginParams.tls)
 	{
 		kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "using TLS\n");
-		LoginParams.server_port = 443;
+		GaduLoginParams.server_port = 443;
 	}
 
 	ConnectionTimeoutTimer::on();
 	ConnectionTimeoutTimer::connectTimeoutRoutine(this, SLOT(connectionTimeoutTimerSlot()));
 
-	LoginParams.password = strdup(gaduAccountData()->password().toAscii().data());
+	GaduLoginParams.password = strdup(gaduAccountData()->password().toAscii().data());
 		// strdup((const char *)unicode2cp(pwHash(config_file.readEntry("General", "Password"))));
-	Sess = gg_login(&LoginParams);
-	memset(LoginParams.password, 0, strlen(LoginParams.password));
-	free(LoginParams.password);
+	GaduSession = gg_login(&GaduLoginParams);
+	memset(GaduLoginParams.password, 0, strlen(GaduLoginParams.password));
+	free(GaduLoginParams.password);
 
-	if (LoginParams.status_descr)
-		free(LoginParams.status_descr);
+	if (GaduLoginParams.status_descr)
+		free(GaduLoginParams.status_descr);
 
-	if (Sess)
+	if (GaduSession)
 	{
-		SocketNotifiers->watchFor(Sess);
+		SocketNotifiers->watchFor(GaduSession);
 	}
 	else
 	{
-		whileConnecting = false;
 		setStatus(Status::Offline);
 		disconnectedSlot();
 		emit error(Disconnected);
@@ -810,7 +804,7 @@ void GaduProtocol::sendUserList()
 
 	if (contacts.isEmpty())
 	{
-		gg_notify_ex(Sess, NULL, NULL, 0);
+		gg_notify_ex(GaduSession, NULL, NULL, 0);
 		kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "Userlist is empty\n");
 		return;
 	}
@@ -834,7 +828,7 @@ void GaduProtocol::sendUserList()
 		++i;
 	}
 
-	gg_notify_ex(Sess, uins, types, contacts.count());
+	gg_notify_ex(GaduSession, uins, types, contacts.count());
 	kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "Userlist sent\n");
 
 	delete [] uins;
@@ -850,7 +844,7 @@ bool GaduProtocol::sendImageRequest(Contact contact, int size, uint32_t crc32)
 	if (contact.accountData(account()) &&
 	    (sendImageRequests <= config_file.readUnsignedNumEntry("Chat", "MaxImageRequests")))
 	{
-		res = gg_image_request(Sess, uin(contact), size, crc32);
+		res = gg_image_request(GaduSession, uin(contact), size, crc32);
 		sendImageRequests++;
 	}
 	kdebugf2();
@@ -862,7 +856,7 @@ bool GaduProtocol::sendImage(Contact contact, const QString &file_name, uint32_t
 	kdebugf();
 	int res = 1;
 	if (contact.accountData(account()))
-		res = gg_image_reply(Sess, uin(contact), qPrintable(file_name), data, size);
+		res = gg_image_reply(GaduSession, uin(contact), qPrintable(file_name), data, size);
 	kdebugf2();
 	return (res == 0);
 }
@@ -875,7 +869,7 @@ void GaduProtocol::getPersonalInfo(SearchRecord &searchRecord)
 	gg_pubdir50_t req;
 
 	req = gg_pubdir50_new(GG_PUBDIR50_READ);
-	searchRecord.Seq = gg_pubdir50(Sess, req);
+	searchRecord.Seq = gg_pubdir50(GaduSession, req);
 	gg_pubdir50_free(req);
 	kdebugf2();
 }
@@ -904,7 +898,7 @@ void GaduProtocol::setPersonalInfo(SearchRecord &searchRecord, SearchResult &new
 	if (!newData.FamilyCity.isEmpty())
 		gg_pubdir50_add(req, GG_PUBDIR50_FAMILYCITY, (const char *)(unicode2cp(newData.FamilyCity).data()));
 
-	searchRecord.Seq = gg_pubdir50(Sess, req);
+	searchRecord.Seq = gg_pubdir50(GaduSession, req);
 	gg_pubdir50_free(req);
 	kdebugf2();
 }
@@ -942,7 +936,7 @@ void GaduProtocol::userListReceived(const struct gg_event *e)
 		{
 			kdebugmf(KDEBUG_INFO, "buddy %d not in list. Damned server!\n",
 					e->event.notify60[nr].uin);
-			gg_remove_notify(Sess, e->event.notify60[nr].uin);
+			gg_remove_notify(GaduSession, e->event.notify60[nr].uin);
 			++nr;
 			continue;
 		}
@@ -1079,7 +1073,7 @@ void GaduProtocol::userStatusChanged(const struct gg_event *e)
 	{
 		// ignore!
 		kdebugmf(KDEBUG_INFO, "buddy %d not in list. Damned server!\n", uin);
-		gg_remove_notify(Sess, uin);
+		gg_remove_notify(GaduSession, uin);
 		emit userStatusChangeIgnored(contact);
 		return;
 	}
@@ -1114,7 +1108,7 @@ void GaduProtocol::userStatusChanged(const struct gg_event *e)
 
 void GaduProtocol::dccRequest(UinType uin)
 {
-	gg_dcc_request(Sess, uin);
+	gg_dcc_request(GaduSession, uin);
 }
 
 void GaduProtocol::setDccIpAndPort(unsigned long dcc_ip, int dcc_port)

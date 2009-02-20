@@ -61,37 +61,18 @@ private:
 	GaduPersonalInfoService *CurrentPersonalInfoService;
 	GaduSearchService *CurrentSearchService;
 
-	/** Serwery, z kt�rymi �aczy si� obiekt. **/
-	
-	/** Adres serwera, do kt�rego obiekt jest pod��czony. **/
 	QHostAddress ActiveServer;
 
-	/** Parametry logowania - wymagane przez bibliotek� libgadu **/
-	struct gg_login_params LoginParams;
+	struct gg_login_params GaduLoginParams;
+	gg_session *GaduSession;
 
-	/** Sesja po��czenia - wymagane przez bibliotek� libgadu **/
-	gg_session *Sess;
-
-	/** liczba ��da� obrazk�w wys�anych w ci�gu ostatniej minuty**/
 	unsigned int sendImageRequests;
-
-	/** czy jeste�my w trakcie ��czenia si� z serwerem **/
-	bool whileConnecting;
 
 	QHostAddress DccExternalIP;
 
-	/**
-		Klasa gniazdek ��cz�ca si� z serwerem. Wysy�a sygna�y po wyst�pieniu zdarzenia protoko�u
-		(po��czenie, zerwanie po��czenia, nowa wiadomo��).
-			@see GaduSocketNotifiers
-	**/
 	GaduProtocolSocketNotifiers *SocketNotifiers;
 
-	/**
-		Zegar pinguj�cy serwer.
-	**/
 	QTimer *PingTimer;
-
 	QTimer *SendUserListTimer;
 
 	/**
@@ -220,7 +201,7 @@ public:
 
 	unsigned int maxDescriptionLength();
 
-	gg_session * session() { return Sess; }
+	gg_session * gaduSession() { return GaduSession; }
 
 	void changeID(const QString &id);
 	/**

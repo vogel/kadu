@@ -67,7 +67,7 @@ void GaduPersonalInfoService::updateReplyReceived(gg_pubdir50_t res)
 void GaduPersonalInfoService::fetchPersonalInfo()
 {
 	gg_pubdir50_t req = gg_pubdir50_new(GG_PUBDIR50_READ);
-	FetchSeq = gg_pubdir50(Protocol->session(), req);
+	FetchSeq = gg_pubdir50(Protocol->gaduSession(), req);
 	gg_pubdir50_free(req);
 }
 
@@ -93,7 +93,7 @@ void GaduPersonalInfoService::updatePersonalInfo(Contact contact)
 	if (!contact.familyCity().isEmpty())
 		gg_pubdir50_add(req, GG_PUBDIR50_FAMILYCITY, (const char *)(unicode2cp(contact.familyCity()).data()));
 
-	UpdateSeq = gg_pubdir50(Protocol->session(), req);
+	UpdateSeq = gg_pubdir50(Protocol->gaduSession(), req);
 	gg_pubdir50_free(req);
 }
 
