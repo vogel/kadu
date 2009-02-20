@@ -7,6 +7,8 @@
  *                                                                         *
  ***************************************************************************/
 
+#include <libgadu.h>
+
 #include "socket-notifiers/gadu-token-socket-notifiers.h"
 
 #include "gadu-server-connector.h"
@@ -19,7 +21,14 @@ void GaduServerConnector::finished(bool result)
 
 void GaduServerConnector::perform()
 {
-	GaduTokenSocketNotifiers *sn = new GaduTokenSocketNotifiers();
+	gg_http *TokenSocketHandle = gg_token(1);
+	if (!TokenSocketHandle || TokenSocketHandle->fd <= 0)
+	{
+		tokenFetchFailed();
+		return;
+	}
+
+	GaduTokenSocketNotifiers *sn = new GaduTokenSocketNotifiers(TokenSocketHandle);
 	connect(sn, SIGNAL(tokenError()), this, SLOT(tokenFetchFailed()));
 	connect(sn, SIGNAL(gotToken(const QString &, const QPixmap &)),
 			this, SLOT(tokenFetched(const QString &, const QPixmap &)));

@@ -16,38 +16,18 @@
 
 #include "gadu-token-socket-notifiers.h"
 
-GaduTokenSocketNotifiers::GaduTokenSocketNotifiers(QObject *parent)
-	: GaduSocketNotifiers(0, parent), H(0)
+GaduTokenSocketNotifiers::GaduTokenSocketNotifiers(struct gg_http *h, QObject *parent)
+	: GaduSocketNotifiers(0, parent), H(h)
 {
 	kdebugf();
+	setSocket(H->fd);
 	kdebugf2();
 }
 
 GaduTokenSocketNotifiers::~GaduTokenSocketNotifiers()
 {
 	kdebugf();
-	deleteSocketNotifiers();
-	kdebugf2();
-}
-
-void GaduTokenSocketNotifiers::start()
-{
-	kdebugf();
-
-	if (!(H = gg_token(1)))
-	{
-		emit tokenError();
-		return;
-	}
-
-	if (!H->fd)
-	{
-		emit tokenError();
-		return;
-	}
-
-	setSocket(H->fd);
-	createSocketNotifiers();
+	finished();
 	kdebugf2();
 }
 
@@ -67,7 +47,7 @@ void GaduTokenSocketNotifiers::socketEvent()
 
 	if (gg_token_watch_fd(H) == -1)
 	{
-		deleteSocketNotifiers();
+		finished();
 		emit tokenError();
 		gg_token_free(H);
 		H = NULL;
@@ -83,14 +63,13 @@ void GaduTokenSocketNotifiers::socketEvent()
 
 		case GG_STATE_CONNECTING:
 			kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "changing QSocketNotifiers.\n");
-			deleteSocketNotifiers();
-			createSocketNotifiers();
+			setNewSocket(H->fd);
 			if (H->check & GG_CHECK_WRITE)
 				setWriteEnabled(true);
 			break;
 
 		case GG_STATE_ERROR:
-			deleteSocketNotifiers();
+			finished();
 			emit tokenError();
 			gg_token_free(H);
 			H = NULL;
@@ -99,7 +78,7 @@ void GaduTokenSocketNotifiers::socketEvent()
 			break;
 
 		case GG_STATE_DONE:
-			deleteSocketNotifiers();
+			finished();
 			if (p->success)
 			{
 				kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "success\n");

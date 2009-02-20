@@ -25,7 +25,7 @@ GaduPubdirSocketNotifiers::GaduPubdirSocketNotifiers(struct gg_http *h, QObject 
 GaduPubdirSocketNotifiers::~GaduPubdirSocketNotifiers()
 {
 	kdebugf();
-	deleteSocketNotifiers();
+	finished();
 	kdebugf2();
 }
 
@@ -45,7 +45,8 @@ void GaduPubdirSocketNotifiers::socketEvent()
 
 	if (gg_pubdir_watch_fd(H) == -1)
 	{
-		deleteSocketNotifiers();
+		finished();
+
 		emit done(false, H);
 		gg_pubdir_free(H);
 		deleteLater();
@@ -58,7 +59,7 @@ void GaduPubdirSocketNotifiers::socketEvent()
 	{
 		case GG_STATE_CONNECTING:
 			kdebugmf(KDEBUG_NETWORK | KDEBUG_INFO, "changing QSocketNotifiers\n");
-			recreateSocketNotifiers();
+			setNewSocket(H->fd);
 
 			if (H->check & GG_CHECK_WRITE)
 				setWriteEnabled(true);
@@ -67,14 +68,14 @@ void GaduPubdirSocketNotifiers::socketEvent()
 
 		case GG_STATE_ERROR:
 			kdebugmf(KDEBUG_NETWORK | KDEBUG_INFO, "error!\n");
-			deleteSocketNotifiers();
+			finished();
 			emit done(false, H);
 			gg_pubdir_free(H);
 			deleteLater();
 			break;
 
 		case GG_STATE_DONE:
-			deleteSocketNotifiers();
+			finished();
 
 			if (p->success)
 			{

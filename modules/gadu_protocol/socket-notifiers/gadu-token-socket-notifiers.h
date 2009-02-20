@@ -30,10 +30,8 @@ protected:
 	virtual void socketEvent();
 
 public:
-	GaduTokenSocketNotifiers(QObject *parent = 0);
+	GaduTokenSocketNotifiers(struct gg_http *h, QObject *parent = 0);
 	virtual ~GaduTokenSocketNotifiers();
-
-	virtual void start();
 
 signals:
 	void gotToken(const QString &, const QPixmap &);

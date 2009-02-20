@@ -71,7 +71,7 @@ void GaduProtocolSocketNotifiers::socketEvent()
 	{
 		kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "changing QSocketNotifiers.\n");
 
-		recreateSocketNotifiers();
+		setNewSocket(Sess->fd);
 	}
 
 	switch (Sess->state)
