@@ -26,6 +26,8 @@ class GaduTokenSocketNotifiers : public GaduSocketNotifiers
 
 	struct gg_http *H;
 
+	void finished(const QString &tokenId, const QPixmap &tokenPixmap);
+
 protected:
 	virtual bool checkRead();
 	virtual bool checkWrite();
@@ -38,8 +40,7 @@ public:
 	void watchFor(struct gg_http *h);
 
 signals:
-	void gotToken(const QString &, const QPixmap &);
-	void tokenError();
+	void done(const QString &, const QPixmap &);
 
 };
 

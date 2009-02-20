@@ -28,7 +28,6 @@ class GaduServerConnector : public QObject
 
 private slots:
 	void tokenFetched(const QString &, const QPixmap &);
-	void tokenFetchFailed();
 
 protected:
 	virtual void performAction(const QString &tokenId, const QString &tokenValue) = 0;

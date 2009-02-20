@@ -68,18 +68,6 @@ void GaduSocketNotifiers::deleteSocketNotifiers()
 	kdebugf2();
 }
 
-void GaduSocketNotifiers::setReadEnabled(bool enabled)
-{
-	if (ReadNotifier)
-		ReadNotifier->setEnabled(enabled);
-}
-
-void GaduSocketNotifiers::setWriteEnabled(bool enabled)
-{
-	if (WriteNotifier)
-		WriteNotifier->setEnabled(enabled);
-}
-
 void GaduSocketNotifiers::watchFor(int socket)
 {
 	if (Socket == socket)
@@ -87,6 +75,12 @@ void GaduSocketNotifiers::watchFor(int socket)
 
 	Socket = socket;
 	createSocketNotifiers();
+}
+
+void GaduSocketNotifiers::watchWriting()
+{
+	if (WriteNotifier && checkWrite())
+		WriteNotifier->setEnabled(true);
 }
 
 void GaduSocketNotifiers::dataReceived()

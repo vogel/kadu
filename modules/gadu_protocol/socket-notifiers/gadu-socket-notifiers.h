@@ -34,10 +34,8 @@ private slots:
 	void dataSent();
 
 protected:
-	void setReadEnabled(bool enabled);
-	void setWriteEnabled(bool enabled);
-
 	void watchFor(int socket);
+	void watchWriting();
 
 	virtual bool checkRead() = 0;
 	virtual bool checkWrite() = 0;

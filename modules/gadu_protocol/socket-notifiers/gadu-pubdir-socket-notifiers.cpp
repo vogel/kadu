@@ -31,15 +31,20 @@ bool GaduPubdirSocketNotifiers::checkWrite()
 	return H && (H->check & GG_CHECK_WRITE);
 }
 
+void GaduPubdirSocketNotifiers::finished(bool ok)
+{
+	emit done(ok, H);
+	watchFor(0);
+	deleteLater();
+}
+
 void GaduPubdirSocketNotifiers::socketEvent()
 {
 	kdebugf();
 
 	if (gg_pubdir_watch_fd(H) == -1)
 	{
-		emit done(false, H);
-		watchFor(0);
-		deleteLater();
+		finished(false);
 		return;
 	}
 
@@ -50,41 +55,25 @@ void GaduPubdirSocketNotifiers::socketEvent()
 		case GG_STATE_CONNECTING:
 			kdebugmf(KDEBUG_NETWORK | KDEBUG_INFO, "changing QSocketNotifiers\n");
 			watchFor(H);
-
-			if (H->check & GG_CHECK_WRITE)
-				setWriteEnabled(true);
-
+			watchWriting();
 			break;
 
 		case GG_STATE_ERROR:
 			kdebugmf(KDEBUG_NETWORK | KDEBUG_INFO, "error!\n");
-			watchFor(0);
-
-			emit done(false, H);
-			gg_pubdir_free(H);
-			deleteLater();
+			finished(false);
 			break;
 
 		case GG_STATE_DONE:
-			watchFor(0);
-
 			if (p->success)
-			{
-				kdebugmf(KDEBUG_NETWORK | KDEBUG_INFO, "success!\n");
-				emit done(true, H);
-			}
+				kdebugmf(KDEBUG_NETWORK | KDEBUG_INFO,  "success!\n");
 			else
-			{
-				kdebugmf(KDEBUG_NETWORK | KDEBUG_INFO, "error!\n");
-				emit done(false, H);
-			}
-			gg_pubdir_free(H);
-			deleteLater();
+			kdebugmf(KDEBUG_NETWORK | KDEBUG_INFO, "error!\n");
+			finished(p->success);
 			break;
 
 		default:
-			if (H->check & GG_CHECK_WRITE)
-				setWriteEnabled(true);
+			watchWriting();
 	}
+
 	kdebugf2();
 }

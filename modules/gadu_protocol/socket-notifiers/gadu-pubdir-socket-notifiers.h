@@ -24,6 +24,8 @@ class GaduPubdirSocketNotifiers : public GaduSocketNotifiers
 
 	struct gg_http *H;
 
+	void finished(bool ok);
+
 protected:
 	virtual bool checkRead();
 	virtual bool checkWrite();

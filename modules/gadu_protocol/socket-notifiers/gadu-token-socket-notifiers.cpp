@@ -32,16 +32,21 @@ bool GaduTokenSocketNotifiers::checkWrite()
 	return H && (H->check & GG_CHECK_WRITE);
 }
 
+void GaduTokenSocketNotifiers::finished(const QString& tokenId, const QPixmap& tokenPixmap)
+{
+	emit done(tokenId, tokenPixmap);
+	watchFor(0);
+	deleteLater();
+}
+
 void GaduTokenSocketNotifiers::socketEvent()
 {
 	kdebugf();
 
 	if (gg_token_watch_fd(H) == -1)
 	{
-		emit tokenError();
-		watchFor(0);
 		kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "getting token error\n");
-		deleteLater();
+		finished(QString::null, QPixmap());
 		return;
 	}
 
@@ -53,16 +58,12 @@ void GaduTokenSocketNotifiers::socketEvent()
 		case GG_STATE_CONNECTING:
 			kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "changing QSocketNotifiers.\n");
 			watchFor(H);
-
-			if (H->check & GG_CHECK_WRITE)
-				setWriteEnabled(true);
+			watchWriting();
 			break;
 
 		case GG_STATE_ERROR:
-			emit tokenError();
-			watchFor(0);
 			kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "getting token error\n");
-			deleteLater();
+			finished(QString::null, QPixmap());
 			break;
 
 		case GG_STATE_DONE:
@@ -81,21 +82,18 @@ void GaduTokenSocketNotifiers::socketEvent()
 				QPixmap tokenImage;
 				tokenImage.loadFromData(buf);
 
-				emit gotToken(tokenId, tokenImage);
+				finished(tokenId, tokenImage);
 			}
 			else
 			{
 				kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "getting token error\n");
-				emit tokenError();
+				finished(QString::null, QPixmap());
 			}
 
-			watchFor(0);
-			deleteLater();
 			break;
 
 		default:
-			if (H->check & GG_CHECK_WRITE)
-				setWriteEnabled(true);
+			watchWriting();
 	}
 
 	kdebugf2();

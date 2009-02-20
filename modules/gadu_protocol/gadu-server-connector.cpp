@@ -22,31 +22,19 @@ void GaduServerConnector::perform()
 	H = gg_token(1);
 	if (!H || H->fd <= 0)
 	{
-		tokenFetchFailed();
+		tokenFetched(QString::null, QPixmap());
 		return;
 	}
 
 	GaduTokenSocketNotifiers *sn = new GaduTokenSocketNotifiers();
-	connect(sn, SIGNAL(tokenError()), this, SLOT(tokenFetchFailed()));
-	connect(sn, SIGNAL(gotToken(const QString &, const QPixmap &)),
+	connect(sn, SIGNAL(done(const QString &, const QPixmap &)),
 			this, SLOT(tokenFetched(const QString &, const QPixmap &)));
 	sn->watchFor(H);
 }
 
-void GaduServerConnector::tokenFetchFailed()
-{
-	finished(false);
-
-	if (H)
-	{
-		delete H;
-		H = 0;
-	}
-}
-
 void GaduServerConnector::tokenFetched(const QString &tokenId, const QPixmap &tokenPixmap)
 {
-	if (Reader)
+	if (Reader && !tokenId.isEmpty())
 	{
 		QString tokenValue = Reader->readToken(tokenPixmap);
 		performAction(tokenId, tokenValue);
