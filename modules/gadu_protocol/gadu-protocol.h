@@ -73,7 +73,6 @@ private:
 	GaduProtocolSocketNotifiers *SocketNotifiers;
 
 	QTimer *PingTimer;
-	QTimer *SendUserListTimer;
 
 	/**
 		Ustawianie parametr�w po��czenia proxy. Metoda wywo�ywana podczas logowania.
@@ -260,7 +259,6 @@ public slots:
 		Wysy�a nasz� list� u�ytkownik�w na serwer. Uwaga: nie ma to nic wsp�lnego z importem/eksportem.
 	**/
 	void sendUserList();
-
 	void sendUserListLater();
 
 	/**

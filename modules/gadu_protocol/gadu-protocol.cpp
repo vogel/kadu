@@ -118,8 +118,7 @@ void GaduProtocol::initModule()
 GaduProtocol::GaduProtocol(Account *account, ProtocolFactory *factory) :
 		Protocol(account, factory),
 		ActiveServer(), GaduLoginParams(), GaduSession(0), sendImageRequests(0),
-		DccExternalIP(), PingTimer(0),
-		SendUserListTimer(new QTimer(this))
+		DccExternalIP(), PingTimer(0)
 {
 	kdebugf();
 
@@ -136,7 +135,6 @@ GaduProtocol::GaduProtocol(Account *account, ProtocolFactory *factory) :
 		this, SIGNAL(dccConnectionReceived(Contact)));
 	connect(SocketNotifiers, SIGNAL(serverDisconnected()), this, SLOT(socketDisconnectedSlot()));
 	connect(SocketNotifiers, SIGNAL(error(GaduError)), this, SLOT(errorSlot(GaduError)));
-	connect(SocketNotifiers, SIGNAL(pubdirReplyReceived(gg_pubdir50_t)), this, SLOT(newResults(gg_pubdir50_t)));
 	connect(SocketNotifiers, SIGNAL(userlistReceived(const struct gg_event *)),
 		this, SLOT(userListReceived(const struct gg_event *)));
 	connect(SocketNotifiers, SIGNAL(userStatusChanged(const struct gg_event *)),
@@ -144,8 +142,6 @@ GaduProtocol::GaduProtocol(Account *account, ProtocolFactory *factory) :
 	connect(SocketNotifiers, SIGNAL(dcc7New(struct gg_dcc7 *)), this, SIGNAL(dcc7New(struct gg_dcc7 *)));
 	connect(SocketNotifiers, SIGNAL(dcc7Accepted(struct gg_dcc7 *)), this, SIGNAL(dcc7Accepted(struct gg_dcc7 *)));
 	connect(SocketNotifiers, SIGNAL(dcc7Rejected(struct gg_dcc7 *)), this, SIGNAL(dcc7Rejected(struct gg_dcc7 *)));
-
-	connect(SendUserListTimer, SIGNAL(timeout()), this, SLOT(sendUserList()));
 
 	kdebugf2();
 }
@@ -788,10 +784,7 @@ void GaduProtocol::setupProxy()
 
 void GaduProtocol::sendUserListLater()
 {
-//	kdebugf();
-	SendUserListTimer->setSingleShot(true);
-	SendUserListTimer->start(0);
-//	kdebugf2();
+	QTimer::singleShot(0, this, SLOT(sendUserList()));
 }
 
 void GaduProtocol::sendUserList()
