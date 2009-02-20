@@ -9,7 +9,7 @@
 
 #include "misc.h"
 
-#include "gadu-pubdir-socket-notifiers.h"
+#include "socket-notifiers/gadu-pubdir-socket-notifiers.h"
 
 #include "gadu-server-unregister-account.h"
 
@@ -20,7 +20,7 @@ GaduServerUnregisterAccount::GaduServerUnregisterAccount(TokenReader *reader, Ui
 
 void GaduServerUnregisterAccount::performAction(const QString &tokenId, const QString &tokenValue)
 {
-	struct gg_http* h = gg_unregister3(Uin, unicode2cp(Password).data(), unicode2cp(tokenId).data(),
+	struct gg_http *h = gg_unregister3(Uin, unicode2cp(Password).data(), unicode2cp(tokenId).data(),
 		unicode2cp(tokenValue).data(), 1);
 	if (h)
 	{

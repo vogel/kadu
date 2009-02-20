@@ -14,9 +14,10 @@
 #include "message_box.h"
 #include "misc.h"
 
-#include "../gadu_formatter.h"
-#include "../gadu-protocol.h"
-#include "../gadu-protocol-socket-notifiers.h"
+#include "helpers/gadu-formatter.h"
+#include "socket-notifiers/gadu-protocol-socket-notifiers.h"
+
+#include "gadu-protocol.h"
 
 #include "gadu-chat-service.h"
 

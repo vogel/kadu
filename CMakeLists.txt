@@ -86,6 +86,8 @@ macro (kadu_module)
 	set (MODULE_BUILDDEF "")
 	set (MODULE_DEPENDENCIES "")
 
+	include_directories (".")
+
 	foreach (ARG ${ARGV})
 
 		if ("${VARIABLE_NAME}" STREQUAL "MODULE_NAME")

@@ -7,7 +7,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "gadu-token-socket-notifiers.h"
+#include "socket-notifiers/gadu-token-socket-notifiers.h"
 
 #include "gadu-server-connector.h"
 

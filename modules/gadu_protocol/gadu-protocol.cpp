@@ -25,13 +25,15 @@
 #include "message_box.h"
 #include "misc.h"
 
+#include "helpers/gadu-formatter.h"
+
+#include "socket-notifiers/gadu-protocol-socket-notifiers.h"
+#include "socket-notifiers/gadu-pubdir-socket-notifiers.h"
+
 #include "connection-timeout-timer.h"
 #include "gadu_account_data.h"
 #include "gadu-contact-account-data.h"
-#include "gadu_formatter.h"
 #include "gadu_images_manager.h"
-#include "gadu-protocol-socket-notifiers.h"
-#include "gadu-pubdir-socket-notifiers.h"
 
 #include "gadu-protocol.h"
 

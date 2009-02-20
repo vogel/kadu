@@ -36,19 +36,22 @@
 #include "message_box.h"
 #include "misc.h"
 
+#include "helpers/gadu-formatter.h"
+#include "helpers/gadu-importer.h"
+
+#include "socket-notifiers/gadu-protocol-socket-notifiers.h"
+#include "socket-notifiers/gadu-pubdir-socket-notifiers.h"
+#include "socket-notifiers/gadu-token-socket-notifiers.h"
+
 #include "gadu_account_data.h"
 #include "gadu-contact-account-data.h"
-#include "gadu_formatter.h"
 #include "gadu_images_manager.h"
-#include "gadu-importer.h"
 #include "gadu-protocol.h"
 #include "gadu_protocol_factory.h"
-#include "gadu-protocol-socket-notifiers.h"
-#include "gadu-pubdir-socket-notifiers.h"
-#include "gadu-token-socket-notifiers.h"
 #include "gadu-search-record.h"
 #include "gadu-search-result.h"
 #include "uins_list.h"
+
 #include "xml_config_file.h"
 
 #include "gadu.h"

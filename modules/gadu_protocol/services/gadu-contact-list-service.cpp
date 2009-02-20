@@ -19,7 +19,7 @@
 #include "../helpers/gadu-list-helper.h"
 
 #include "../gadu-protocol.h"
-#include "../gadu-protocol-socket-notifiers.h"
+#include "socket-notifiers/gadu-protocol-socket-notifiers.h"
 
 #include "gadu-contact-list-service.h"
 

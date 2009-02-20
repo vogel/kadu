@@ -7,8 +7,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef KADU_PROTOCOL_H
-#define KADU_PROTOCOL_H
+#ifndef PROTOCOL_H
+#define PROTOCOL_H
 
 #include <QtCore/QDateTime>
 #include <QtCore/QObject>
@@ -110,10 +110,9 @@ signals:
 	void statusChanged(Account *account, Status newStatus);
 	void contactStatusChanged(Account *account, Contact contact, Status oldStatus);
 
-
 // TODO: REVIEW
 	void connectionError(Account *account, const QString &server, const QString &reason);
 
 };
 
-#endif
+#endif // PROTOCOL_H

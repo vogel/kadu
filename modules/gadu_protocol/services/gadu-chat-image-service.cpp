@@ -9,10 +9,12 @@
 
 #include "debug.h"
 
-#include "../gadu_formatter.h"
-#include "../gadu_images_manager.h"
-#include "../gadu-protocol.h"
-#include "../gadu-protocol-socket-notifiers.h"
+#include "helpers/gadu-formatter.h"
+
+#include "socket-notifiers/gadu-protocol-socket-notifiers.h"
+
+#include "gadu_images_manager.h"
+#include "gadu-protocol.h"
 
 #include "gadu-chat-image-service.h"
 

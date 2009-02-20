@@ -9,7 +9,7 @@
 
 #include "misc.h"
 
-#include "gadu-pubdir-socket-notifiers.h"
+#include "socket-notifiers/gadu-pubdir-socket-notifiers.h"
 
 #include "gadu-server-remind-password.h"
 

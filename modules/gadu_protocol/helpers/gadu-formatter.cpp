@@ -23,7 +23,7 @@
 #include "gadu_images_manager.h"
 #include "gadu-protocol.h"
 
-#include "gadu_formatter.h"
+#include "gadu-formatter.h"
 
 unsigned int GaduFormater::computeFormatsSize(const Message &message)
 {

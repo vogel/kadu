@@ -16,7 +16,7 @@
 #include "icons_manager.h"
 #include "misc.h"
 
-#include "gadu_formatter.h"
+#include "helpers/gadu-formatter.h"
 #include "gadu-protocol.h"
 
 #include "gadu_images_manager.h"
