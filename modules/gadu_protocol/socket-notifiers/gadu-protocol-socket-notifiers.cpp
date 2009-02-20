@@ -37,7 +37,7 @@ GaduProtocolSocketNotifiers::~GaduProtocolSocketNotifiers()
 void GaduProtocolSocketNotifiers::setSession(gg_session *sess)
 {
 	Sess = sess;
-	Fd = Sess->fd;
+	setSocket(Sess->fd);
 }
 
 bool GaduProtocolSocketNotifiers::checkRead()

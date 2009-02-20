@@ -61,7 +61,7 @@ void GaduPubdirSocketNotifiers::socketEvent()
 			recreateSocketNotifiers();
 
 			if (H->check & GG_CHECK_WRITE)
-				Snw->setEnabled(true);
+				setWriteEnabled(true);
 
 			break;
 
@@ -92,7 +92,7 @@ void GaduPubdirSocketNotifiers::socketEvent()
 
 		default:
 			if (H->check & GG_CHECK_WRITE)
-				Snw->setEnabled(true);
+				setWriteEnabled(true);
 	}
 	kdebugf2();
 }

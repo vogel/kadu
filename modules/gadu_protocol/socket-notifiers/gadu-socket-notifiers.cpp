@@ -13,8 +13,8 @@
 
 #include "gadu-socket-notifiers.h"
 
-GaduSocketNotifiers::GaduSocketNotifiers(int fd, QObject *parent)
-	: QObject(parent), Fd(fd), Snr(0), Snw(0)
+GaduSocketNotifiers::GaduSocketNotifiers(int socket, QObject *parent)
+	: QObject(parent), Socket(socket), ReadNotifier(0), WriteNotifier(0)
 {
 	kdebugf();
 	kdebugf2();
@@ -45,15 +45,16 @@ void GaduSocketNotifiers::createSocketNotifiers()
 {
 	kdebugf();
 
-	if (0 == Fd)
+	if (0 == Socket)
 		return;
+
 	// read_socket_notifier
-	Snr = new QSocketNotifier(Fd, QSocketNotifier::Read, this);
-	connect(Snr, SIGNAL(activated(int)), this, SLOT(dataReceived()));
+	ReadNotifier = new QSocketNotifier(Socket, QSocketNotifier::Read, this);
+	connect(ReadNotifier, SIGNAL(activated(int)), this, SLOT(dataReceived()));
 
 	//write_socket_notifier
-	Snw = new QSocketNotifier(Fd, QSocketNotifier::Write, this);
-	connect(Snw, SIGNAL(activated(int)), this, SLOT(dataSent()));
+	WriteNotifier = new QSocketNotifier(Socket, QSocketNotifier::Write, this);
+	connect(WriteNotifier, SIGNAL(activated(int)), this, SLOT(dataSent()));
 
 	kdebugf2();
 }
@@ -62,18 +63,18 @@ void GaduSocketNotifiers::deleteSocketNotifiers()
 {
 	kdebugf();
 
-	if (Snr)
+	if (ReadNotifier)
 	{
-		Snr->setEnabled(false);
-		Snr->deleteLater();
-		Snr = 0;
+		ReadNotifier->setEnabled(false);
+		ReadNotifier->deleteLater();
+		ReadNotifier = 0;
 	}
 
-	if (Snw)
+	if (WriteNotifier)
 	{
-		Snw->setEnabled(false);
-		Snw->deleteLater();
-		Snw = 0;
+		WriteNotifier->setEnabled(false);
+		WriteNotifier->deleteLater();
+		WriteNotifier = 0;
 	}
 
 	kdebugf2();
@@ -89,18 +90,30 @@ void GaduSocketNotifiers::recreateSocketNotifiers()
 	kdebugf2();
 }
 
+void GaduSocketNotifiers::setReadEnabled(bool enabled)
+{
+	if (ReadNotifier)
+		ReadNotifier->setEnabled(enabled);
+}
+
+void GaduSocketNotifiers::setWriteEnabled(bool enabled)
+{
+	if (WriteNotifier)
+		WriteNotifier->setEnabled(enabled);
+}
+
 void GaduSocketNotifiers::dataReceived()
 {
 	kdebugf();
 
-	if (Snr)
-		Snr->setEnabled(false);
+	if (ReadNotifier)
+		ReadNotifier->setEnabled(false);
 
 	if (checkRead())
 		socketEvent();
 
-	if (Snr)
-		Snr->setEnabled(true);
+	if (ReadNotifier)
+		ReadNotifier->setEnabled(true);
 
 	kdebugf2();
 }
@@ -109,8 +122,8 @@ void GaduSocketNotifiers::dataSent()
 {
 	kdebugf();
 
-	if (Snw)
-		Snw->setEnabled(false);
+	if (WriteNotifier)
+		WriteNotifier->setEnabled(false);
 
 	if (checkWrite())
 		socketEvent();

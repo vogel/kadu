@@ -46,7 +46,7 @@ void GaduTokenSocketNotifiers::start()
 		return;
 	}
 
-	Fd = H->fd;
+	setSocket(H->fd);
 	createSocketNotifiers();
 	kdebugf2();
 }
@@ -86,7 +86,7 @@ void GaduTokenSocketNotifiers::socketEvent()
 			deleteSocketNotifiers();
 			createSocketNotifiers();
 			if (H->check & GG_CHECK_WRITE)
-				Snw->setEnabled(true);
+				setWriteEnabled(true);
 			break;
 
 		case GG_STATE_ERROR:
@@ -131,7 +131,7 @@ void GaduTokenSocketNotifiers::socketEvent()
 
 		default:
 			if (H->check & GG_CHECK_WRITE)
-				Snw->setEnabled(true);
+				setWriteEnabled(true);
 	}
 
 	kdebugf2();

@@ -22,25 +22,31 @@ class GaduSocketNotifiers : public QObject
 {
 	Q_OBJECT
 
+	int Socket;
+	QSocketNotifier *ReadNotifier;
+	QSocketNotifier *WriteNotifier;
+
 private slots:
 	void dataReceived();
 	void dataSent();
 
 protected:
-	int Fd;
-	QSocketNotifier *Snr;
-	QSocketNotifier *Snw;
-
 	void createSocketNotifiers();
 	void deleteSocketNotifiers();
 	void recreateSocketNotifiers();
+
+	void setReadEnabled(bool enabled);
+	void setWriteEnabled(bool enabled);
+
+	void setSocket(int socket) { Socket = socket; }
+	int socket() { return Socket; }
 
 	virtual bool checkRead() = 0;
 	virtual bool checkWrite() = 0;
 	virtual void socketEvent() = 0;
 
 public:
-	GaduSocketNotifiers(int fd, QObject *parent = 0);
+	GaduSocketNotifiers(int socket, QObject *parent = 0);
 	virtual ~GaduSocketNotifiers();
 
 	virtual void start();
