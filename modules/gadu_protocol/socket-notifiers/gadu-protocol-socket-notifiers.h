@@ -39,7 +39,8 @@ protected:
 public:
 	GaduProtocolSocketNotifiers(Account *account, QObject *parent = 0);
 	virtual ~GaduProtocolSocketNotifiers();
-	void setSession(gg_session *sess);
+
+	void watchFor(gg_session *sess);
 
 	void setAccount(Account *account) { CurrentAccount = account; }
 

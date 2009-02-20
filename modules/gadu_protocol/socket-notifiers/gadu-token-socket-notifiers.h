@@ -12,6 +12,8 @@
 
 #include <QtGui/QPixmap>
 
+#include <libgadu.h>
+
 #include "gadu-socket-notifiers.h"
 
 #ifndef _MSC_VER
@@ -30,8 +32,10 @@ protected:
 	virtual void socketEvent();
 
 public:
-	GaduTokenSocketNotifiers(struct gg_http *h, QObject *parent = 0);
+	GaduTokenSocketNotifiers(QObject *parent = 0);
 	virtual ~GaduTokenSocketNotifiers();
+
+	void watchFor(struct gg_http *h);
 
 signals:
 	void gotToken(const QString &, const QPixmap &);

@@ -28,11 +28,11 @@ void GaduServerConnector::perform()
 		return;
 	}
 
-	GaduTokenSocketNotifiers *sn = new GaduTokenSocketNotifiers(TokenSocketHandle);
+	GaduTokenSocketNotifiers *sn = new GaduTokenSocketNotifiers();
 	connect(sn, SIGNAL(tokenError()), this, SLOT(tokenFetchFailed()));
 	connect(sn, SIGNAL(gotToken(const QString &, const QPixmap &)),
 			this, SLOT(tokenFetched(const QString &, const QPixmap &)));
-	sn->start();
+	sn->watchFor(TokenSocketHandle);
 }
 
 void GaduServerConnector::tokenFetchFailed()

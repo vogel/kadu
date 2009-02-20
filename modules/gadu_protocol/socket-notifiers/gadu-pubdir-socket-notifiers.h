@@ -10,6 +10,8 @@
 #ifndef GADU_PUBDIR_SOCKET_NOTIFIERS_H
 #define GADU_PUBDIR_SOCKET_NOTIFIERS_H
 
+#include <libgadu.h>
+
 #include "gadu-socket-notifiers.h"
 
 #ifndef _MSC_VER
@@ -28,8 +30,10 @@ protected:
 	virtual void socketEvent();
 
 public:
-	GaduPubdirSocketNotifiers(struct gg_http *, QObject *parent = 0);
+	GaduPubdirSocketNotifiers(QObject *parent = 0);
 	virtual ~GaduPubdirSocketNotifiers();
+
+	void watchFor(struct gg_http *h);
 
 signals:
 	void done(bool ok, struct gg_http *);

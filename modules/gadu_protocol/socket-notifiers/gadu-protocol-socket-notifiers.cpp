@@ -34,10 +34,10 @@ GaduProtocolSocketNotifiers::~GaduProtocolSocketNotifiers()
 {
 }
 
-void GaduProtocolSocketNotifiers::setSession(gg_session *sess)
+void GaduProtocolSocketNotifiers::watchFor(gg_session *sess)
 {
 	Sess = sess;
-	setSocket(Sess->fd);
+	GaduSocketNotifiers::watchFor(Sess->fd);
 }
 
 bool GaduProtocolSocketNotifiers::checkRead()
@@ -70,8 +70,7 @@ void GaduProtocolSocketNotifiers::socketEvent()
 	if (Sess->state == GG_STATE_CONNECTING_HUB || Sess->state == GG_STATE_CONNECTING_GG)
 	{
 		kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "changing QSocketNotifiers.\n");
-
-		setNewSocket(Sess->fd);
+		watchFor(Sess); // maybe fd has changed
 	}
 
 	switch (Sess->state)

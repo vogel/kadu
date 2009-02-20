@@ -24,9 +24,9 @@ void GaduServerRegisterAccount::performAction(const QString &tokenId, const QStr
 			unicode2cp(tokenId).data(), unicode2cp(tokenValue).data(), 1);
 	if (h)
 	{
-		GaduPubdirSocketNotifiers *sn = new GaduPubdirSocketNotifiers(h);
+		GaduPubdirSocketNotifiers *sn = new GaduPubdirSocketNotifiers();
 		connect(sn, SIGNAL(done(bool, struct gg_http *)), this, SLOT(done(bool, struct gg_http *)));
-		sn->start();
+		sn->watchFor(h);
 	}
 	else
 		finished(false);

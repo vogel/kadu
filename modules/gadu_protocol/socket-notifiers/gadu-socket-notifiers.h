@@ -39,13 +39,7 @@ protected:
 	void setReadEnabled(bool enabled);
 	void setWriteEnabled(bool enabled);
 
-	void setSocket(int socket) { Socket = socket; }
-	void setNewSocket(int socket)
-	{
-		setSocket(socket);
-		recreateSocketNotifiers();
-	}
-	int socket() { return Socket; }
+	void watchFor(int socket);
 
 	void finished()
 	{
@@ -60,7 +54,6 @@ public:
 	GaduSocketNotifiers(int socket, QObject *parent = 0);
 	virtual ~GaduSocketNotifiers();
 
-	void start();
 	void stop();
 
 };

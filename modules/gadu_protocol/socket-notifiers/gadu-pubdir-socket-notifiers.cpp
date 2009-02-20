@@ -15,8 +15,8 @@
 
 #include "gadu-pubdir-socket-notifiers.h"
 
-GaduPubdirSocketNotifiers::GaduPubdirSocketNotifiers(struct gg_http *h, QObject *parent)
-	: GaduSocketNotifiers(h->fd, parent), H(h)
+GaduPubdirSocketNotifiers::GaduPubdirSocketNotifiers(QObject *parent)
+	: GaduSocketNotifiers(0, parent), H(0)
 {
 	kdebugf();
 	kdebugf2();
@@ -27,6 +27,12 @@ GaduPubdirSocketNotifiers::~GaduPubdirSocketNotifiers()
 	kdebugf();
 	finished();
 	kdebugf2();
+}
+
+void GaduPubdirSocketNotifiers::watchFor(struct gg_http *h)
+{
+	H = h;
+	GaduSocketNotifiers::watchFor(h->fd);
 }
 
 bool GaduPubdirSocketNotifiers::checkRead()
@@ -59,7 +65,7 @@ void GaduPubdirSocketNotifiers::socketEvent()
 	{
 		case GG_STATE_CONNECTING:
 			kdebugmf(KDEBUG_NETWORK | KDEBUG_INFO, "changing QSocketNotifiers\n");
-			setNewSocket(H->fd);
+			watchFor(H);
 
 			if (H->check & GG_CHECK_WRITE)
 				setWriteEnabled(true);

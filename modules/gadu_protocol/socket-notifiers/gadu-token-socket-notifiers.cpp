@@ -16,11 +16,10 @@
 
 #include "gadu-token-socket-notifiers.h"
 
-GaduTokenSocketNotifiers::GaduTokenSocketNotifiers(struct gg_http *h, QObject *parent)
-	: GaduSocketNotifiers(0, parent), H(h)
+GaduTokenSocketNotifiers::GaduTokenSocketNotifiers(QObject *parent)
+	: GaduSocketNotifiers(0, parent), H(0)
 {
 	kdebugf();
-	setSocket(H->fd);
 	kdebugf2();
 }
 
@@ -29,6 +28,12 @@ GaduTokenSocketNotifiers::~GaduTokenSocketNotifiers()
 	kdebugf();
 	finished();
 	kdebugf2();
+}
+
+void GaduTokenSocketNotifiers::watchFor(struct gg_http *h)
+{
+	H = h;
+	GaduSocketNotifiers::watchFor(h->fd);
 }
 
 bool GaduTokenSocketNotifiers::checkRead()
@@ -63,7 +68,8 @@ void GaduTokenSocketNotifiers::socketEvent()
 
 		case GG_STATE_CONNECTING:
 			kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "changing QSocketNotifiers.\n");
-			setNewSocket(H->fd);
+			watchFor(H);
+
 			if (H->check & GG_CHECK_WRITE)
 				setWriteEnabled(true);
 			break;

@@ -798,8 +798,7 @@ void GaduProtocol::login()
 
 	if (Sess)
 	{
-		SocketNotifiers->setSession(Sess);
-		SocketNotifiers->start();
+		SocketNotifiers->watchFor(Sess);
 	}
 	else
 	{
