@@ -515,7 +515,7 @@ void GaduProtocol::disconnectedSlot()
 		PingTimer = 0;
 	}
 
-	SocketNotifiers->stop();
+	SocketNotifiers->watchFor(0); // stop watching
 
 	if (Sess)
 	{

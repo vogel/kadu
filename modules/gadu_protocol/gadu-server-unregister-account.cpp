@@ -20,14 +20,14 @@ GaduServerUnregisterAccount::GaduServerUnregisterAccount(TokenReader *reader, Ui
 
 void GaduServerUnregisterAccount::performAction(const QString &tokenId, const QString &tokenValue)
 {
-	struct gg_http *h = gg_unregister3(Uin, unicode2cp(Password).data(), unicode2cp(tokenId).data(),
+	H = gg_unregister3(Uin, unicode2cp(Password).data(), unicode2cp(tokenId).data(),
 		unicode2cp(tokenValue).data(), 1);
-	if (h)
+	if (H)
 	{
 		GaduPubdirSocketNotifiers *sn = new GaduPubdirSocketNotifiers();
 		connect(sn, SIGNAL(done(bool, struct gg_http *)),
 			this, SLOT(done(bool, struct gg_http *)));
-		sn->watchFor(h);
+		sn->watchFor(H);
 	}
 	else
 		finished(false);
@@ -36,4 +36,10 @@ void GaduServerUnregisterAccount::performAction(const QString &tokenId, const QS
 void GaduServerUnregisterAccount::done(bool ok, struct gg_http *h)
 {
 	finished(ok);
+
+	if (H)
+	{
+		delete H;
+		H = 0;
+	}
 }

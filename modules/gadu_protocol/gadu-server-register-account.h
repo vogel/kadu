@@ -20,6 +20,8 @@ class GaduServerRegisterAccount : public GaduServerConnector
 {
 	Q_OBJECT
 
+	struct gg_http *H;
+
 	UinType Uin;
 	QString Mail;
 	QString Password;

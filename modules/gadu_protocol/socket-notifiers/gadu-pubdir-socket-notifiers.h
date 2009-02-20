@@ -30,13 +30,13 @@ protected:
 	virtual void socketEvent();
 
 public:
-	GaduPubdirSocketNotifiers(QObject *parent = 0);
-	virtual ~GaduPubdirSocketNotifiers();
+	GaduPubdirSocketNotifiers(QObject *parent = 0) :
+			GaduSocketNotifiers(parent), H(0) {}
 
 	void watchFor(struct gg_http *h);
 
 signals:
-	void done(bool ok, struct gg_http *);
+	void done(bool ok, struct gg_http *h);
 
 };
 

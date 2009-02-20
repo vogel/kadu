@@ -28,33 +28,24 @@ class GaduSocketNotifiers : public QObject
 
 	void createSocketNotifiers();
 	void deleteSocketNotifiers();
-	void recreateSocketNotifiers();
 
 private slots:
 	void dataReceived();
 	void dataSent();
 
 protected:
-
 	void setReadEnabled(bool enabled);
 	void setWriteEnabled(bool enabled);
 
 	void watchFor(int socket);
-
-	void finished()
-	{
-		deleteSocketNotifiers();
-	}
 
 	virtual bool checkRead() = 0;
 	virtual bool checkWrite() = 0;
 	virtual void socketEvent() = 0;
 
 public:
-	GaduSocketNotifiers(int socket, QObject *parent = 0);
+	GaduSocketNotifiers(QObject *parent = 0);
 	virtual ~GaduSocketNotifiers();
-
-	void stop();
 
 };
 

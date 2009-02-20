@@ -16,24 +16,10 @@
 
 #include "gadu-token-socket-notifiers.h"
 
-GaduTokenSocketNotifiers::GaduTokenSocketNotifiers(QObject *parent)
-	: GaduSocketNotifiers(0, parent), H(0)
-{
-	kdebugf();
-	kdebugf2();
-}
-
-GaduTokenSocketNotifiers::~GaduTokenSocketNotifiers()
-{
-	kdebugf();
-	finished();
-	kdebugf2();
-}
-
 void GaduTokenSocketNotifiers::watchFor(struct gg_http *h)
 {
 	H = h;
-	GaduSocketNotifiers::watchFor(h->fd);
+	GaduSocketNotifiers::watchFor(H ? H->fd : 0);
 }
 
 bool GaduTokenSocketNotifiers::checkRead()
@@ -52,10 +38,8 @@ void GaduTokenSocketNotifiers::socketEvent()
 
 	if (gg_token_watch_fd(H) == -1)
 	{
-		finished();
 		emit tokenError();
-		gg_token_free(H);
-		H = NULL;
+		watchFor(0);
 		kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "getting token error\n");
 		deleteLater();
 		return;
@@ -75,16 +59,13 @@ void GaduTokenSocketNotifiers::socketEvent()
 			break;
 
 		case GG_STATE_ERROR:
-			finished();
 			emit tokenError();
-			gg_token_free(H);
-			H = NULL;
+			watchFor(0);
 			kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "getting token error\n");
 			deleteLater();
 			break;
 
 		case GG_STATE_DONE:
-			finished();
 			if (p->success)
 			{
 				kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "success\n");
@@ -102,15 +83,13 @@ void GaduTokenSocketNotifiers::socketEvent()
 
 				emit gotToken(tokenId, tokenImage);
 			}
-
 			else
 			{
 				kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "getting token error\n");
 				emit tokenError();
 			}
 
-			gg_token_free(H);
-			H = NULL;
+			watchFor(0);
 			deleteLater();
 			break;
 

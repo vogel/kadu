@@ -13,8 +13,8 @@
 
 #include "gadu-socket-notifiers.h"
 
-GaduSocketNotifiers::GaduSocketNotifiers(int socket, QObject *parent)
-	: QObject(parent), Socket(socket), ReadNotifier(0), WriteNotifier(0)
+GaduSocketNotifiers::GaduSocketNotifiers(QObject *parent)
+	: QObject(parent), Socket(0), ReadNotifier(0), WriteNotifier(0)
 {
 	kdebugf();
 	kdebugf2();
@@ -27,16 +27,11 @@ GaduSocketNotifiers::~GaduSocketNotifiers()
 	kdebugf2();
 }
 
-void GaduSocketNotifiers::stop()
-{
-	kdebugf();
-	deleteSocketNotifiers();
-	kdebugf2();
-}
-
 void GaduSocketNotifiers::createSocketNotifiers()
 {
 	kdebugf();
+
+	deleteSocketNotifiers();
 
 	if (0 >= Socket)
 		return;
@@ -73,16 +68,6 @@ void GaduSocketNotifiers::deleteSocketNotifiers()
 	kdebugf2();
 }
 
-void GaduSocketNotifiers::recreateSocketNotifiers()
-{
-	kdebugf();
-
-	deleteSocketNotifiers();
-	createSocketNotifiers();
-
-	kdebugf2();
-}
-
 void GaduSocketNotifiers::setReadEnabled(bool enabled)
 {
 	if (ReadNotifier)
@@ -101,7 +86,7 @@ void GaduSocketNotifiers::watchFor(int socket)
 		return;
 
 	Socket = socket;
-	recreateSocketNotifiers();
+	createSocketNotifiers();
 }
 
 void GaduSocketNotifiers::dataReceived()

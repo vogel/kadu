@@ -20,13 +20,13 @@ GaduServerRemindPassword::GaduServerRemindPassword(TokenReader *reader, UinType 
 
 void GaduServerRemindPassword::performAction(const QString &tokenId, const QString &tokenValue)
 {
-	struct gg_http *h = gg_remind_passwd3(Uin, unicode2cp(Mail).data(), unicode2cp(tokenId).data(),
+	H = gg_remind_passwd3(Uin, unicode2cp(Mail).data(), unicode2cp(tokenId).data(),
 		unicode2cp(tokenValue).data(), 1);
-	if (h)
+	if (H)
 	{
 		GaduPubdirSocketNotifiers *sn = new GaduPubdirSocketNotifiers();
 		connect(sn, SIGNAL(done(bool, struct gg_http *)), this, SLOT(done(bool, struct gg_http *)));
-		sn->watchFor(h);
+		sn->watchFor(H);
 	}
 	else
 		finished(false);
@@ -35,4 +35,10 @@ void GaduServerRemindPassword::performAction(const QString &tokenId, const QStri
 void GaduServerRemindPassword::done(bool ok, struct gg_http *h)
 {
 	finished(ok);
+
+	if (H)
+	{
+		delete H;
+		H = 0;
+	}
 }

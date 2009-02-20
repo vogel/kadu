@@ -20,6 +20,8 @@ class GaduServerUnregisterAccount : public GaduServerConnector
 {
 	Q_OBJECT
 
+	struct gg_http *H;
+
 	UinType Uin;
 	QString Password;
 

@@ -15,24 +15,10 @@
 
 #include "gadu-pubdir-socket-notifiers.h"
 
-GaduPubdirSocketNotifiers::GaduPubdirSocketNotifiers(QObject *parent)
-	: GaduSocketNotifiers(0, parent), H(0)
-{
-	kdebugf();
-	kdebugf2();
-}
-
-GaduPubdirSocketNotifiers::~GaduPubdirSocketNotifiers()
-{
-	kdebugf();
-	finished();
-	kdebugf2();
-}
-
 void GaduPubdirSocketNotifiers::watchFor(struct gg_http *h)
 {
 	H = h;
-	GaduSocketNotifiers::watchFor(h->fd);
+	GaduSocketNotifiers::watchFor(H ? H->fd : 0);
 }
 
 bool GaduPubdirSocketNotifiers::checkRead()
@@ -51,10 +37,8 @@ void GaduPubdirSocketNotifiers::socketEvent()
 
 	if (gg_pubdir_watch_fd(H) == -1)
 	{
-		finished();
-
 		emit done(false, H);
-		gg_pubdir_free(H);
+		watchFor(0);
 		deleteLater();
 		return;
 	}
@@ -74,14 +58,15 @@ void GaduPubdirSocketNotifiers::socketEvent()
 
 		case GG_STATE_ERROR:
 			kdebugmf(KDEBUG_NETWORK | KDEBUG_INFO, "error!\n");
-			finished();
+			watchFor(0);
+
 			emit done(false, H);
 			gg_pubdir_free(H);
 			deleteLater();
 			break;
 
 		case GG_STATE_DONE:
-			finished();
+			watchFor(0);
 
 			if (p->success)
 			{

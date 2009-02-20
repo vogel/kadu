@@ -32,8 +32,8 @@ protected:
 	virtual void socketEvent();
 
 public:
-	GaduTokenSocketNotifiers(QObject *parent = 0);
-	virtual ~GaduTokenSocketNotifiers();
+	GaduTokenSocketNotifiers(QObject *parent = 0)
+		: GaduSocketNotifiers(parent), H(0) {}
 
 	void watchFor(struct gg_http *h);
 

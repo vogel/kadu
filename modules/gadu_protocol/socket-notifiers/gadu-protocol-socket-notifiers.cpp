@@ -23,21 +23,10 @@
 
 #include "gadu-protocol-socket-notifiers.h"
 
-GaduProtocolSocketNotifiers::GaduProtocolSocketNotifiers(Account *account, QObject *parent) :
-		CurrentAccount(account), GaduSocketNotifiers(0, parent), Sess(0), socketEventCalls(0)
-{
-	kdebugf();
-	kdebugf2();
-}
-
-GaduProtocolSocketNotifiers::~GaduProtocolSocketNotifiers()
-{
-}
-
 void GaduProtocolSocketNotifiers::watchFor(gg_session *sess)
 {
 	Sess = sess;
-	GaduSocketNotifiers::watchFor(Sess->fd);
+	GaduSocketNotifiers::watchFor(Sess ? Sess->fd : 0);
 }
 
 bool GaduProtocolSocketNotifiers::checkRead()
