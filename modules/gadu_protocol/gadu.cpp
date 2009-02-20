@@ -194,7 +194,3 @@ void SearchRecord::clearData()
 	IgnoreResults = false;
 	kdebugf2();
 }
-
-/* GaduProtocol */
-
-QList<QHostAddress> GaduProtocol::ConfigServers;

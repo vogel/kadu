@@ -8,6 +8,7 @@ set (SOURCES
 	server/gadu-server-register-account.cpp
 	server/gadu-server-remind-password.cpp
 	server/gadu-server-unregister-account.cpp
+	server/gadu-servers-manager.cpp
 
 	services/gadu-chat-image-service.cpp
 	services/gadu-chat-service.cpp

@@ -62,22 +62,9 @@ private:
 	GaduSearchService *CurrentSearchService;
 
 	/** Serwery, z kt�rymi �aczy si� obiekt. **/
-	static QList<QHostAddress> ConfigServers;
-	/** Numer serwera, do kt�rego obiekt ostatnio pr�bowa� si� pod��czy�. **/
-	unsigned int ServerNr;
+	
 	/** Adres serwera, do kt�rego obiekt jest pod��czony. **/
 	QHostAddress ActiveServer;
-
-	/** IP serwera, do kt�rego uda�o si� pod��czy� ostatnim razem **/
-	QHostAddress lastServerIP;
-
-	/** port serwera, do kt�rego uda�o si� pod��czy� ostatnim razem **/
-	int lastServerPort;
-
-	/** czy w procedurze ��czenia mamy korzysta� z informacji o IP/portu ostatniego serwera? **/
-	bool useLastServer;
-
-	int lastTriedServerPort;
 
 	/** Parametry logowania - wymagane przez bibliotek� libgadu **/
 	struct gg_login_params LoginParams;

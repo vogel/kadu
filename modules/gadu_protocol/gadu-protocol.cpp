@@ -27,6 +27,8 @@
 
 #include "helpers/gadu-formatter.h"
 
+#include "server/gadu-servers-manager.h"
+
 #include "socket-notifiers/gadu-protocol-socket-notifiers.h"
 #include "socket-notifiers/gadu-pubdir-socket-notifiers.h"
 
@@ -110,20 +112,12 @@ void GaduProtocol::initModule()
 // TODO: 0.6.6
 //	defaultdescriptions = QStringList::split("<-->", config_file.readEntry("General","DefaultDescription", tr("I am busy.")), true);
 
-	QStringList servers;
-	QHostAddress ip2;
-	servers = config_file.readEntry("Network", "Server").split(";", QString::SkipEmptyParts);
-	ConfigServers.clear();
-	foreach(const QString &server, servers)
-		if (ip2.setAddress(server))
-			ConfigServers.append(ip2);
-
 	kdebugf2();
 }
 
 GaduProtocol::GaduProtocol(Account *account, ProtocolFactory *factory) :
 		Protocol(account, factory),
-		ServerNr(0), ActiveServer(), LoginParams(), Sess(0), sendImageRequests(0), whileConnecting(false),
+		ActiveServer(), LoginParams(), Sess(0), sendImageRequests(0), whileConnecting(false),
 		DccExternalIP(), PingTimer(0),
 		SendUserListTimer(new QTimer(this))
 {
@@ -152,10 +146,6 @@ GaduProtocol::GaduProtocol(Account *account, ProtocolFactory *factory) :
 	connect(SocketNotifiers, SIGNAL(dcc7Rejected(struct gg_dcc7 *)), this, SIGNAL(dcc7Rejected(struct gg_dcc7 *)));
 
 	connect(SendUserListTimer, SIGNAL(timeout()), this, SLOT(sendUserList()));
-
-	useLastServer = lastServerIP.setAddress(config_file.readEntry("Network", "LastServerIP"));
-	lastServerPort = config_file.readNumEntry("Network", "LastServerPort");
-	lastTriedServerPort = config_file.readNumEntry("Network", "DefaultPort");
 
 	kdebugf2();
 }
@@ -460,14 +450,10 @@ void GaduProtocol::connectedSlot()
 	whileConnecting = false;
 	sendUserList();
 
-	lastServerIP = QHostAddress(ntohl(Sess->server_addr));
-	lastServerPort = Sess->port;
-	useLastServer = true;
-	config_file.writeEntry("Network", "LastServerIP", lastServerIP.toString());
-	config_file.writeEntry("Network", "LastServerPort", lastServerPort);
+	GaduServersManager::instance()->markServerAsGood(QHostAddress(ntohl(Sess->server_addr)));
+	GaduServersManager::instance()->markPortAsGood(Sess->port);
 
 	/* jezeli sie rozlaczymy albo stracimy polaczenie, proces laczenia sie z serwerami zaczyna sie od poczatku */
-	ServerNr = 0;
 	PingTimer = new QTimer(0);
 	connect(PingTimer, SIGNAL(timeout()), this, SLOT(everyMinuteActions()));
 	PingTimer->start(60000);
@@ -703,7 +689,8 @@ void GaduProtocol::login()
 	// GG 6.0 build 147 ustawia indeks ostatnio odczytanej wiadomosci systemowej na 1389
 	LoginParams.last_sysmsg = config_file.readNumEntry("General", "SystemMsgIndex", 1389);
 
-	if (config_file.readBoolEntry("Network", "AllowDCC") && DccExternalIP.toIPv4Address() && config_file.readNumEntry("Network", "ExternalPort") > 1023)
+	if (config_file.readBoolEntry("Network", "AllowDCC") && DccExternalIP.toIPv4Address() && 
+			config_file.readNumEntry("Network", "ExternalPort") > 1023)
 	{
 		LoginParams.external_addr = htonl(DccExternalIP.toIPv4Address());
 		LoginParams.external_port = config_file.readNumEntry("Network", "ExternalPort");
@@ -714,55 +701,12 @@ void GaduProtocol::login()
 		LoginParams.external_port = 0;
 	}
 
-	int server_port;
-	int default_port = config_file.readNumEntry("Network", "DefaultPort");
-	bool connectionSequenceRestarted = false;
-	if (useLastServer)
-	{
-		useLastServer = false;
-		ActiveServer = lastServerIP;
-		server_port = lastServerPort;
-		lastTriedServerPort = lastServerPort;
-	}
-	else if (!ConfigServers.isEmpty() && !config_file.readBoolEntry("Network", "isDefServers"))
-	{
-		connectionSequenceRestarted = ServerNr >= ConfigServers.count();
-		if (connectionSequenceRestarted)
-			ServerNr = 0;
-
-		ActiveServer = ConfigServers[ServerNr++];
-	}
-	else
-	{
-		connectionSequenceRestarted = ServerNr > gg_servers.count();
-		if (connectionSequenceRestarted)
-			ServerNr = 0;
-
-		if (ServerNr > 0)
-			ActiveServer = gg_servers[ServerNr - 1];
-		else
-			ActiveServer = QHostAddress();
-		++ServerNr;
-	}
-
-	if (connectionSequenceRestarted)
-	{
-		if (lastTriedServerPort == 0)
-			server_port = GG_HTTPS_PORT;
-		else if (default_port == 0)
-			server_port = 0;
-		else
-			server_port = default_port;
-		lastTriedServerPort = server_port;
-	}
-	else
-		server_port = lastTriedServerPort;
-
+	ActiveServer = GaduServersManager::instance()->getGoodServer();
 	if (!ActiveServer.isNull())
 	{
-		kdebugm(KDEBUG_INFO, "port: %d\n", server_port);
 		LoginParams.server_addr = htonl(ActiveServer.toIPv4Address());
-		LoginParams.server_port = server_port;
+		LoginParams.server_port = GaduServersManager::instance()->getGoodPort();
+		kdebugm(KDEBUG_INFO, "port: %d\n", LoginParams.server_port);
 	}
 	else
 	{
