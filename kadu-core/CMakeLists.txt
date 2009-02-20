@@ -52,6 +52,9 @@ set (kadu_SRCS
 
 	configuration/widgets/manage-accounts.cpp
 
+	file-transfer/file-transfer.cpp
+	file-transfer/file-transfer-manager.cpp
+
 	gui/widgets/contact-account-data-widget.cpp
 
 	gui/widgets/chat_edit_box.cpp
@@ -186,6 +189,9 @@ set (kadu_MOC_SRCS
 
 	configuration/widgets/manage-accounts.h
 
+	file-transfer/file-transfer.h
+	file-transfer/file-transfer-manager.h
+
 	gui/widgets/chat_edit_box.h
 	gui/widgets/chat_messages_view.h
 	gui/widgets/chat_widget.h
@@ -215,6 +221,7 @@ set (kadu_MOC_SRCS
 	protocols/services/chat-image-service.h
 	protocols/services/chat-service.h
 	protocols/services/contact-list-service.h
+	protocols/services/file-transfer-service.h
 	protocols/services/personal-info-service.h
 	protocols/services/search-service.h
 

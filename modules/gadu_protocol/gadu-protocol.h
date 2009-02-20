@@ -18,6 +18,7 @@
 #include "services/gadu-chat-image-service.h"
 #include "services/gadu-chat-service.h"
 #include "services/gadu-contact-list-service.h"
+#include "services/gadu-file-transfer-service.h"
 #include "services/gadu-personal-info-service.h"
 #include "services/gadu-search-service.h"
 
@@ -27,6 +28,7 @@
 
 #include "protocols/protocol.h"
 
+class DccManager;
 class GaduAccountData;
 class GaduContactAccountData;
 class GaduProtocolSocketNotifiers;
@@ -58,8 +60,11 @@ private:
 	GaduChatImageService *CurrentChatImageService;
 	GaduChatService *CurrentChatService;
 	GaduContactListService *CurrentContactListService;
+	GaduFileTransferService *CurrentFileTransferService;
 	GaduPersonalInfoService *CurrentPersonalInfoService;
 	GaduSearchService *CurrentSearchService;
+
+	DccManager *Dcc;
 
 	QHostAddress ActiveServer;
 
@@ -81,6 +86,9 @@ private:
 	**/
 	void setupProxy();
 
+	void networkConnected();
+	void networkDisconnected();
+
 	GaduAccountData * gaduAccountData() const;
 
 	UinType uin(Contact contact) const;
@@ -93,6 +101,7 @@ private:
 	friend class GaduChatImageService;
 	friend class GaduChatService;
 	friend class GaduContactListService;
+	friend class GaduFileTransferService;
 	friend class GaduPersonalInfoService;
 	friend class GaduSearchService;
 
@@ -193,6 +202,7 @@ public:
 	virtual ChatImageService * chatImageService() { return CurrentChatImageService; }
 	virtual ChatService * chatService() { return CurrentChatService; }
 	virtual ContactListService * contactListService() { return CurrentContactListService; }
+	virtual FileTransferService * fileTransferService() { return CurrentFileTransferService; }
 	virtual PersonalInfoService * personalInfoService() { return CurrentPersonalInfoService; }
 	virtual SearchService * searchService() { return CurrentSearchService; }
 

@@ -12,20 +12,24 @@
 
 #include <QtCore/QObject>
 
-#include "dcc.h"
+#include <libgadu.h>
 
-#include "dcc_exports.h"
+#include "protocols/protocol.h"
+
+#include "dcc/dcc-manager.h"
 
 class QSocketNotifier;
 class QTimer;
 
 class DccHandler;
+class DccManager;
 
-class DCCAPI DccSocket : public QObject
+class DccSocket : public QObject
 {
 	Q_OBJECT
 
 	DccVersion Version;
+	DccManager *Manager;
 
 	struct gg_dcc *Dcc6Struct;
 	struct gg_dcc7 *Dcc7Struct;
@@ -69,8 +73,8 @@ protected:
 	bool checkWrite();
 
 public:
-	DccSocket(struct gg_dcc *dccStruct);
-	DccSocket(struct gg_dcc7 *dccStruct);
+	DccSocket(DccManager *manager, struct gg_dcc *dccStruct);
+	DccSocket(DccManager *manager, struct gg_dcc7 *dccStruct);
 	~DccSocket();
 
 	struct gg_event * ggDccEvent() const;

@@ -29,7 +29,7 @@ class KADUAPI AccountManager : public QObject
 	static AccountManager *Instance;
 
 	AccountManager();
-	~AccountManager();
+	virtual ~AccountManager();
 
 	QList<Account *> Accounts;
 

@@ -7,82 +7,37 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <QtCore/QFileInfo>
-#include <QtCore/QSocketNotifier>
-#include <QtGui/QCheckBox>
-#include <QtGui/QFileDialog>
-#include <QtGui/QLayout>
-#include <QtGui/QMessageBox>
-#include <QtGui/QPushButton>
-
-#ifdef _WIN32
-#include <winsock2.h>
-#undef MessageBox
-#else
-#include <stdlib.h>
-#include <fcntl.h>
-#include <unistd.h>
-#include <sys/socket.h>
-#include <sys/un.h>
-#include <netinet/in.h>
-#endif
+#include <arpa/inet.h>
 
 #include "accounts/account.h"
-#include "accounts/account_manager.h"
+#include "contacts/contact-account-data.h"
+#include "contacts/contact-manager.h"
+
 #include "config_file.h"
-#include "dcc.h"
-#include "dcc_socket.h"
 #include "debug.h"
-#include "file_transfer_manager.h"
-#include "hot_key.h"
-#include "ignore.h"
-#include "misc.h"
-#include "kadu.h"
-#include "message_box.h"
-#include "userlist.h"
 
-/**
- * @ingroup dcc
- * @{
- */
-extern "C" KADU_EXPORT int dcc_init(bool firstLoad)
-{
-	kdebugf();
-	dcc_manager = new DccManager();
-	file_transfer_manager = new FileTransferManager(dcc_manager, "file_transfer_manager");
+#include "dcc/dcc-manager.h"
+#include "dcc/dcc-socket.h"
+#include "gadu_account_data.h"
+#include "gadu-contact-account-data.h"
 
-	MainConfigurationWindow::registerUiFile(dataPath("kadu/modules/configuration/dcc.ui"), dcc_manager);
+#include "gadu-protocol.h"
 
-	return 0;
-}
-
-extern "C" KADU_EXPORT void dcc_close()
-{
-	kdebugf();
-
-	MainConfigurationWindow::unregisterUiFile(dataPath("kadu/modules/configuration/dcc.ui"), dcc_manager);
-
-	delete file_transfer_manager;
-	file_transfer_manager = 0;
-	delete dcc_manager;
-	dcc_manager = 0;
-}
-
-DccManager::DccManager()
-	: MainSocket(0), TimeoutTimer(), requests(), DccEnabled(false)
+DccManager::DccManager(GaduProtocol *protocol) :
+		QObject(protocol), Protocol(protocol),
+		MainSocket(0), TimeoutTimer(), requests(), DccEnabled(false)
 {
 	kdebugf();
 
 	createDefaultConfiguration();
 
-	Protocol *gadu = AccountManager::instance()->defaultAccount()->protocol();
 	connect(&TimeoutTimer, SIGNAL(timeout()), this, SLOT(timeout()));
 
-	connect(gadu, SIGNAL(connecting()), this, SLOT(setupDcc()));
-	connect(gadu, SIGNAL(disconnected()), this, SLOT(closeDcc()));
-	connect(gadu, SIGNAL(dccConnectionReceived(const UserListElement&)),
-		this, SLOT(dccConnectionReceived(const UserListElement&)));
-	connect(gadu, SIGNAL(dcc7New(struct gg_dcc7 *)), this, SLOT(dcc7New(struct gg_dcc7 *)));
+	connect(Protocol, SIGNAL(dccConnectionReceived(Contact)),
+	        this, SLOT(dccConnectionReceived(Contact)));
+	connect(Protocol, SIGNAL(dcc7New(struct gg_dcc7 *)), this, SLOT(dcc7New(struct gg_dcc7 *)));
+	
+	setUpDcc();
 
 	kdebugf2();
 }
@@ -91,18 +46,15 @@ DccManager::~DccManager()
 {
 	kdebugf();
 
-	Protocol *gadu = AccountManager::instance()->defaultAccount()->protocol();
-	disconnect(gadu, SIGNAL(connecting()), this, SLOT(setupDcc()));
-	disconnect(gadu, SIGNAL(disconnected()), this, SLOT(closeDcc()));
-	disconnect(gadu, SIGNAL(dccConnectionReceived(const UserListElement&)),
-		this, SLOT(dccConnectionReceived(const UserListElement&)));
-	disconnect(gadu, SIGNAL(dcc7New(struct gg_dcc7 *)), this, SLOT(dcc7New(struct gg_dcc7 *)));
+	disconnect(Protocol, SIGNAL(dccConnectionReceived(Contact)),
+	           this, SLOT(dccConnectionReceived(Contact)));
+	disconnect(Protocol, SIGNAL(dcc7New(struct gg_dcc7 *)), this, SLOT(dcc7New(struct gg_dcc7 *)));
 
 	closeDcc();
 
 	kdebugf2();
 }
-
+/*
 void DccManager::mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow)
 {
 	QWidget *allowDCC = mainConfigurationWindow->widgetById("dcc/AllowDCC");
@@ -125,8 +77,65 @@ void DccManager::mainConfigurationWindowCreated(MainConfigurationWindow *mainCon
 
 	connect(ipAutotetect, SIGNAL(toggled(bool)), ipAddress, SLOT(setDisabled(bool)));
 	connect(ipAutotetect, SIGNAL(toggled(bool)), this, SLOT(onIpAutotetectToggled(bool)));
-}
+}*/
 
+void DccManager::setUpDcc()
+{
+	kdebugf();
+
+	Account *account = Protocol->account();
+	GaduAccountData *gad = dynamic_cast<GaduAccountData *>(account->data());
+	if (!gad)
+		return;
+
+	struct gg_dcc *socket = gg_dcc_socket_create(gad->uin(), config_file.readNumEntry("Network", "LocalPort"));
+
+	if (!socket)
+	{
+		kdebugmf(KDEBUG_NETWORK | KDEBUG_INFO, "Couldn't bind DCC socket.\n");
+
+		// TODO: 0.6.6
+		// MessageBox::msg(tr("Couldn't create DCC socket.\nDirect connections disabled."), true, "Warning");
+		kdebugf2();
+		return;
+	}
+
+	MainSocket = new DccSocket(this, socket);
+
+	MainSocket->setHandler(this);
+
+	QHostAddress DCCIP;
+	short int DCCPort;
+
+	if (config_file.readBoolEntry("Network", "DccIpDetect"))
+		DCCIP.setAddress("255.255.255.255");
+	else
+		DCCIP.setAddress(config_file.readEntry("Network", "DccIP"));
+
+	QHostAddress ext_ip;
+
+	bool forwarding = config_file.readBoolEntry("Network", "DccForwarding") && ext_ip.setAddress(config_file.readEntry("Network", "ExternalIP"));
+
+	if (forwarding)
+	{
+		Protocol->setDccExternalIP(ext_ip);
+		DCCPort = config_file.readNumEntry("Network", "ExternalPort");
+	}
+	else
+	{
+		Protocol->setDccExternalIP(QHostAddress());
+		DCCPort = socket->port;
+	}
+
+	Protocol->setDccIpAndPort(htonl(DCCIP.ip4Addr()), DCCPort);
+
+	kdebugmf(KDEBUG_NETWORK | KDEBUG_INFO, "DCC_IP=%s DCC_PORT=%d\n", qPrintable(DCCIP.toString()), DCCPort);
+
+	DccEnabled = true;
+
+	kdebugf2();
+}
+/*
 void DccManager::onIpAutotetectToggled(bool toggled)
 {
 	forwarding->setEnabled(!toggled);
@@ -143,13 +152,15 @@ void DccManager::onIpAutotetectToggled(bool toggled)
 		forwardingExternalPort->setEnabled(forwarding->isChecked());
 		forwardingLocalPort->setEnabled(forwarding->isChecked());
 	}
-}
+}*/
 
 void DccManager::configurationUpdated()
 {
 	QHostAddress host;
+
 	if (!host.setAddress(config_file.readEntry("Network", "DccIP")))
 		config_file.writeEntry("Network", "DccIP", "0.0.0.0");
+
 	if (!host.setAddress(config_file.readEntry("Network", "ExternalIP")))
 		config_file.writeEntry("Network", "ExternalIP", "0.0.0.0");
 
@@ -164,7 +175,7 @@ bool DccManager::dccEnabled() const
 void DccManager::timeout()
 {
 	// TODO: change into notification
-	MessageBox::msg(tr("Direct connection timeout!\nThe receiver doesn't support direct connections or\nboth machines are behind routers with NAT."), true, "Warning");
+// 	MessageBox::msg(tr("Direct connection timeout!\nThe receiver doesn't support direct connections or\nboth machines are behind routers with NAT."), true, "Warning");
 }
 
 void DccManager::startTimeout()
@@ -177,62 +188,6 @@ void DccManager::cancelTimeout()
 	TimeoutTimer.stop();
 }
 
-void DccManager::setupDcc()
-{
-	kdebugf();
-
-	if (!config_file.readBoolEntry("Network", "AllowDCC"))
-	{
-		kdebugf2();
-		return;
-	}
-
-	struct gg_dcc *socket = gg_dcc_socket_create(config_file.readNumEntry("General", "UIN"), config_file.readNumEntry("Network", "LocalPort"));
-
-	if (!socket)
-	{
-		kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "Couldn't bind DCC socket.\n");
-
-		MessageBox::msg(tr("Couldn't create DCC socket.\nDirect connections disabled."), true, "Warning");
-		kdebugf2();
-		return;
-	}
-
-	MainSocket = new DccSocket(socket);
-	MainSocket->setHandler(this);
-
-	QHostAddress DCCIP;
-	short int DCCPort;
-
-	if (config_file.readBoolEntry("Network", "DccIpDetect"))
-		DCCIP.setAddress("255.255.255.255");
-	else
-		DCCIP.setAddress(config_file.readEntry("Network", "DccIP"));
-
-	QHostAddress ext_ip;
-	bool forwarding = config_file.readBoolEntry("Network", "DccForwarding") && ext_ip.setAddress(config_file.readEntry("Network", "ExternalIP"));
-
-	GaduProtocol *gadu = dynamic_cast<GaduProtocol *>(AccountManager::instance()->defaultAccount()->protocol());
-	if (forwarding)
-	{
-		gadu->setDccExternalIP(ext_ip);
-		DCCPort = config_file.readNumEntry("Network", "ExternalPort");
-	}
-	else
-	{
-		gadu->setDccExternalIP(QHostAddress());
-		DCCPort = socket->port;
-	}
-
-	gadu->setDccIpAndPort(htonl(DCCIP.ip4Addr()), DCCPort);
-
-	kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "DCC_IP=%s DCC_PORT=%d\n", qPrintable(DCCIP.toString()), DCCPort);
-
-	DccEnabled = true;
-
-	kdebugf2();
-}
-
 void DccManager::closeDcc()
 {
 	kdebugf();
@@ -242,8 +197,7 @@ void DccManager::closeDcc()
 		delete MainSocket;
 		MainSocket = 0;
 
-		GaduProtocol *gadu = dynamic_cast<GaduProtocol *>(AccountManager::instance()->defaultAccount()->protocol());
-		gadu->setDccIpAndPort(0, 0);
+		Protocol->setDccIpAndPort(0, 0);
 	}
 
 	DccEnabled = false;
@@ -251,17 +205,25 @@ void DccManager::closeDcc()
 	kdebugf2();
 }
 
-void DccManager::dccConnectionReceived(const UserListElement& sender)
+void DccManager::dccConnectionReceived(Contact contact)
 {
 	kdebugf();
 
-	struct gg_dcc *dcc_new = gg_dcc_get_file(htonl(sender.IP("Gadu").ip4Addr()), sender.port("Gadu"),
-		config_file.readNumEntry("General","UIN"),
-		sender.ID("Gadu").toUInt());
+	ContactAccountData *cad = contact.accountData(Protocol->account());
+	if (!cad)
+		return;
+	GaduContactAccountData *gcad = dynamic_cast<GaduContactAccountData *>(cad);
+	if (!gcad)
+		return;
+	GaduAccountData *gad = dynamic_cast<GaduAccountData *>(Protocol->account()->data());
+	if (!gad)
+		return;
+
+	struct gg_dcc *dcc_new = gg_dcc_get_file(htonl(gcad->ip().ip4Addr()), gcad->port(), gad->uin(), gcad->uin());
 
 	if (dcc_new)
-	{
-		DccSocket* dcc_socket = new DccSocket(dcc_new);
+{
+		DccSocket* dcc_socket = new DccSocket(this, dcc_new);
 		dcc_socket->setHandler(this);
 	}
 
@@ -282,7 +244,8 @@ void DccManager::dcc7New(struct gg_dcc7 *dcc)
 	switch (dcc->dcc_type)
 	{
 		case GG_DCC7_TYPE_FILE:
-			file_transfer_manager->dcc7IncomingFileTransfer(new DccSocket(dcc));
+// 			TODO: ZARAZ
+// 			file_transfer_manager->dcc7IncomingFileTransfer(new DccSocket(dcc));
 			return;
 
 		default:
@@ -300,20 +263,20 @@ void DccManager::getFileTransferSocket(uint32_t ip, uint16_t port, UinType myUin
 
 	if ((port >= 10) && !request)
 	{
+
 		struct gg_dcc *sock = gg_dcc_send_file(htonl(ip), port, myUin, peerUin);
 
 		if (sock)
 		{
-			DccSocket *result = new DccSocket(sock);
+			DccSocket *result = new DccSocket(this, sock);
 			result->setHandler(handler);
 			return;
 		}
 	}
 
-	GaduProtocol *gadu = dynamic_cast<GaduProtocol *>(AccountManager::instance()->defaultAccount()->protocol());
 	startTimeout();
 	requests.insert(peerUin, handler);
-	gadu->dccRequest(peerUin);
+	Protocol->dccRequest(peerUin);
 
 	kdebugf2();
 }
@@ -324,20 +287,20 @@ void DccManager::getVoiceSocket(uint32_t ip, uint16_t port, UinType myUin, UinTy
 
 	if ((port >= 10) && !request)
 	{
+
 		struct gg_dcc *sock = gg_dcc_voice_chat(htonl(ip), port, myUin, peerUin);
 
 		if (sock)
 		{
-			DccSocket *result = new DccSocket(sock);
+			DccSocket *result = new DccSocket(this, sock);
 			result->setHandler(handler);
 			return;
 		}
 	}
 
-	GaduProtocol *gadu = dynamic_cast<GaduProtocol *>(AccountManager::instance()->defaultAccount()->protocol());
 	startTimeout();
 	requests.insert(peerUin, handler);
-	gadu->dccRequest(peerUin);
+	Protocol->dccRequest(peerUin);
 
 	kdebugf2();
 }
@@ -349,6 +312,7 @@ void DccManager::callbackReceived(DccSocket *socket)
 	cancelTimeout();
 
 	UinType peerUin = socket->peerUin();
+
 	if (requests.contains(peerUin))
 	{
 		DccHandler *handler = requests[peerUin];
@@ -411,7 +375,7 @@ void DccManager::removeHandler(DccHandler *handler)
 
 void DccManager::connectionError(DccSocket *socket)
 {
-	kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "Connection broken unexpectedly!\n");
+	kdebugmf(KDEBUG_NETWORK | KDEBUG_INFO, "Connection broken unexpectedly!\n");
 }
 
 bool DccManager::socketEvent(DccSocket *socket, bool &lock)
@@ -420,11 +384,13 @@ bool DccManager::socketEvent(DccSocket *socket, bool &lock)
 
 	DccSocket *dccSocket;
 
-	switch (socket->ggDccEvent()->type) {
-		case GG_EVENT_DCC_NEW:
-			kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "GG_EVENT_DCC_NEW\n");
+	switch (socket->ggDccEvent()->type)
+	{
 
-			dccSocket = new DccSocket(socket->ggDccEvent()->event.dcc_new);
+		case GG_EVENT_DCC_NEW:
+			kdebugmf(KDEBUG_NETWORK | KDEBUG_INFO, "GG_EVENT_DCC_NEW\n");
+
+			dccSocket = new DccSocket(this, socket->ggDccEvent()->event.dcc_new);
 			dccSocket->setHandler(this);
 			return true;
 
@@ -433,8 +399,9 @@ bool DccManager::socketEvent(DccSocket *socket, bool &lock)
 	}
 
 	foreach(DccHandler *handler, SocketHandlers)
-		if (handler->socketEvent(socket, lock))
-			return true;
+
+	if (handler->socketEvent(socket, lock))
+		return true;
 
 	return false;
 }
@@ -443,38 +410,49 @@ bool DccManager::acceptClient(UinType uin, UinType peerUin, int remoteAddr)
 {
 	kdebugf();
 
-	if (uin != (UinType)config_file.readNumEntry("General", "UIN") || !userlist->contains("Gadu", QString::number(peerUin)))
+	GaduAccountData *gad = dynamic_cast<GaduAccountData *>(Protocol->account()->data());
+	if (!gad)
+		return false;
+
+	Contact contact = ContactManager::instance()->byId(Protocol->account(), QString::number(peerUin));
+	if (uin != gad->uin() || contact.isAnonymous() || contact.isNull())
 	{
 		kdebugm(KDEBUG_WARNING, "insane values: uin:%d peer_uin:%d\n", uin, peerUin);
 		return false;
 	}
 
-	UserListElement peer = userlist->byID("Gadu", QString::number(peerUin));
-	UserListElements users;
-	users.append(peer);
+	ContactAccountData *cad = contact.accountData(Protocol->account());
+	if (!cad)
+		return false;
+	GaduContactAccountData *gcad = dynamic_cast<GaduContactAccountData *>(cad);
+	if (!gcad)
+		return false;
+	
+	ContactList contacts(contact);
 
-	if (peer.isAnonymous() || IgnoredManager::isIgnored(users))
+	if (contact.isIgnored())
 	{
 		kdebugm(KDEBUG_WARNING, "unbidden user: %d\n", peerUin);
 		return false;
 	}
 
 	QHostAddress remoteAddress(ntohl(remoteAddr));
-	if (remoteAddress == peer.IP("Gadu")) // TODO: make it async, make DccSocket no-ui-aware
+
+	if (remoteAddress == cad->ip())
 		return true;
 
 	kdebugm(KDEBUG_WARNING, "possible spoofing attempt from %s (uin:%d)\n", qPrintable(remoteAddress.toString()), peerUin);
-	return MessageBox::ask(narg(
-		tr("%1 is asking for direct connection but his/her\n"
-			"IP address (%2) differs from what GG server returned\n"
-			"as his/her IP address (%3). It may be spoofing\n"
-			"or he/she has port forwarding. Continue connection?"),
-			peer.altNick(),
-			remoteAddress.toString(),
-			peer.IP("Gadu").toString()));
+
+	return false;
+	// TODO: make async
+// 	return MessageBox::ask(narg(
+// 	                           tr("%1 is asking for direct connection but his/her\n"
+// 	                              "IP address (%2) differs from what GG server returned\n"
+// 	                              "as his/her IP address (%3). It may be spoofing\n"
+// 	                              "or he/she has port forwarding. Continue connection?"),
+// 	                           contact.display(),
+// 	                           remoteAddress.toString(),
+// 	                           cad.ip().toString()));
 }
 
-DccManager* dcc_manager = NULL;
-
-/** @} */
-
+// kate: indent-mode cstyle; replace-tabs off; tab-width 4; 

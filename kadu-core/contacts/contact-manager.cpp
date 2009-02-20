@@ -29,8 +29,7 @@ ContactManager *  ContactManager::instance()
 
 StoragePoint * ContactManager::createStoragePoint() const
 {
-	QDomElement contactsNewNode = xml_config_file->getNode("ContactsNew");
-	return new StoragePoint(xml_config_file, contactsNewNode);
+	return new StoragePoint(xml_config_file, xml_config_file->getNode("ContactsNew"));
 }
 
 void ContactManager::importConfiguration(XmlConfigFile *configurationStorage)

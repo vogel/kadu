@@ -1,4 +1,8 @@
 set (SOURCES
+	dcc/dcc-handler.cpp
+	dcc/dcc-manager.cpp
+	dcc/dcc-socket.cpp
+
 	helpers/gadu-formatter.cpp
 	helpers/gadu-importer.cpp
 	helpers/gadu-list-helper.cpp
@@ -13,6 +17,7 @@ set (SOURCES
 	services/gadu-chat-image-service.cpp
 	services/gadu-chat-service.cpp
 	services/gadu-contact-list-service.cpp
+	services/gadu-file-transfer-service.cpp
 	services/gadu-personal-info-service.cpp
 	services/gadu-search-service.cpp
 
@@ -36,6 +41,10 @@ set (SOURCES
 )
 
 set (MOC_SOURCES
+	dcc/dcc-handler.h
+	dcc/dcc-manager.h
+	dcc/dcc-socket.h
+
 	helpers/gadu-importer.h
 
 	server/gadu-server-connector.h
@@ -47,6 +56,7 @@ set (MOC_SOURCES
 	services/gadu-chat-image-service.h
 	services/gadu-chat-service.h
 	services/gadu-contact-list-service.h
+	services/gadu-file-transfer-service.h
 	services/gadu-personal-info-service.h
 	services/gadu-search-service.h
 

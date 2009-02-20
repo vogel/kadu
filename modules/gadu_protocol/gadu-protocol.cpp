@@ -25,10 +25,9 @@
 #include "message_box.h"
 #include "misc.h"
 
+#include "dcc/dcc-manager.h"
 #include "helpers/gadu-formatter.h"
-
 #include "server/gadu-servers-manager.h"
-
 #include "socket-notifiers/gadu-protocol-socket-notifiers.h"
 #include "socket-notifiers/gadu-pubdir-socket-notifiers.h"
 
@@ -116,7 +115,7 @@ void GaduProtocol::initModule()
 }
 
 GaduProtocol::GaduProtocol(Account *account, ProtocolFactory *factory) :
-		Protocol(account, factory),
+		Protocol(account, factory), Dcc(0),
 		ActiveServer(), GaduLoginParams(), GaduSession(0), sendImageRequests(0),
 		DccExternalIP(), PingTimer(0)
 {
@@ -127,6 +126,7 @@ GaduProtocol::GaduProtocol(Account *account, ProtocolFactory *factory) :
 	CurrentChatImageService = new GaduChatImageService(this);
 	CurrentChatService = new GaduChatService(this);
 	CurrentContactListService = new GaduContactListService(this);
+	CurrentFileTransferService = new GaduFileTransferService(this);
 	CurrentPersonalInfoService = new GaduPersonalInfoService(this);
 	CurrentSearchService = new GaduSearchService(this);
 
@@ -451,7 +451,7 @@ void GaduProtocol::connectedSlot()
 	PingTimer->start(60000);
 
 	statusChanged(nextStatus());
-	networkStateChanged(NetworkConnected);
+	networkConnected();
 
 	// po po��czeniu z sewerem niestety trzeba ponownie ustawi�
 	// status, inaczej nie b�dziemy widoczni - raczej b��d serwer�w
@@ -513,7 +513,7 @@ void GaduProtocol::disconnectedSlot()
 	if (!status().isOffline() && !nextStatus().isOffline())
 		setStatus(Status::Offline);
 
-	networkStateChanged(NetworkDisconnected);
+	networkDisconnected();
 	kdebugf2();
 }
 
@@ -780,6 +780,30 @@ void GaduProtocol::setupProxy()
 	}
 
 	kdebugf2();
+}
+
+void GaduProtocol::networkConnected()
+{
+	networkStateChanged(NetworkConnected);
+
+	if (!config_file.readBoolEntry("Network", "AllowDCC"))
+	{
+		kdebugf2();
+		return;
+	}
+
+	Dcc = new DccManager(this);
+}
+
+void GaduProtocol::networkDisconnected()
+{
+	networkStateChanged(NetworkDisconnected);
+
+	if (Dcc)
+	{
+		delete Dcc;
+		Dcc = 0;
+	}
 }
 
 void GaduProtocol::sendUserListLater()

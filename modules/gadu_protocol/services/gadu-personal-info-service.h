@@ -32,12 +32,12 @@ private slots:
 
 public:
 	GaduPersonalInfoService(GaduProtocol *protocol);
-	
+
 	virtual void fetchPersonalInfo();
 	virtual void updatePersonalInfo(Contact contact);
 
 };
 
-#endif // GADU-PERSONAL-INFO-SERVICE_H
+#endif // GADU_PERSONAL_INFO_SERVICE_H
 
 // kate: indent-mode cstyle; replace-tabs off; tab-width 4; 

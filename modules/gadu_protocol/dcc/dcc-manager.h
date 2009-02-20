@@ -7,42 +7,31 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef KADU_DCC_H
-#define KADU_DCC_H
+#ifndef DCC_MANAGER_H
+#define DCC_MANAGER_H
 
-#include <QtCore/QList>
+#include <QtCore/QObject>
 #include <QtCore/QTimer>
-#include <QtNetwork/QHostAddress>
 
-#include "configuration_aware_object.h"
-#include "dcc_handler.h"
-#include "../modules/gadu_protocol/gadu.h"
-#include "main_configuration_window.h"
+#include "protocols/protocol.h"
 
-#include "dcc_exports.h"
-
-class QCheckBox;
-class QSocketNotifier;
-class QWidget;
-
-/**
- * @defgroup dcc Dcc
- * @{
- */
+#include "dcc/dcc-handler.h"
 
 class DccSocket;
+class GaduProtocol;
 
-enum DccVersion {
+enum DccVersion
+{
 	DccUnknow,
 	Dcc6,
 	Dcc7
 };
 
-class DCCAPI DccManager : public ConfigurationUiHandler, ConfigurationAwareObject, DccHandler
+class DccManager : public QObject, public DccHandler
 {
 	Q_OBJECT
 
-	friend class DccSocket;
+	GaduProtocol *Protocol;
 
 	DccSocket *MainSocket;
 
@@ -52,20 +41,21 @@ class DCCAPI DccManager : public ConfigurationUiHandler, ConfigurationAwareObjec
 	QTimer TimeoutTimer;
 	QMap<UinType, DccHandler *> requests;
 	bool DccEnabled;
-
+/*
 	QWidget *ipAddress;
 	QCheckBox *forwarding;
 	QWidget *forwardingExternalIp;
 	QWidget *forwardingExternalPort;
-	QWidget *forwardingLocalPort;
+	QWidget *forwardingLocalPort;*/
+
+	void setUpDcc();
+	void closeDcc();
 
 	void createDefaultConfiguration();
 
 private slots:
 	void startTimeout();
 	void cancelTimeout();
-	void setupDcc();
-	void closeDcc();
 
 	void dcc7New(struct gg_dcc7 *);
 
@@ -74,17 +64,19 @@ private slots:
 		Kto� nas prosi o po��czenie dcc, poniewa�
 		jeste�my za NAT-em.
 	**/
-	void dccConnectionReceived(const UserListElement& sender);
+	void dccConnectionReceived(Contact contact);
 	void timeout();
+
+	friend class DccSocket;
 	void callbackReceived(DccSocket *socket);
 
-	void onIpAutotetectToggled(bool toggled);
+// 	void onIpAutotetectToggled(bool toggled);
 
 protected:
 	virtual void configurationUpdated();
 
 public:
-	DccManager();
+	DccManager(GaduProtocol *protocol);
 	virtual ~DccManager();
 
 	bool addSocket(DccSocket *socket);
@@ -93,14 +85,19 @@ public:
 	void addHandler(DccHandler *handler);
 	void removeHandler(DccHandler *handler);
 
-	int dccType() { return 0; }
+	int dccType()
+	{
+		return 0;
+	}
 
 	bool socketEvent(DccSocket *socket, bool &lock);
 
 	void connectionDone(DccSocket *socket) {}
+
 	void connectionError(DccSocket *socket);
 
 	void connectionAccepted(DccSocket *socket) {}
+
 	void connectionRejected(DccSocket *socket) {}
 
 	void getFileTransferSocket(uint32_t ip, uint16_t port, UinType myUin, UinType peerUin, DccHandler *handler, bool request = false);
@@ -110,7 +107,7 @@ public:
 
 	bool acceptClient(UinType uin, UinType peerUin, int remoteAddr);
 
-	virtual void mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow);
+// 	virtual void mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow);
 
 signals:
 	void socketDestroying(DccSocket* socket);
@@ -118,8 +115,6 @@ signals:
 
 };
 
-extern DCCAPI DccManager* dcc_manager;
+#endif // DCC_MANAGER_H
 
-/** @} */
-
-#endif
+// kate: indent-mode cstyle; replace-tabs off; tab-width 4; 

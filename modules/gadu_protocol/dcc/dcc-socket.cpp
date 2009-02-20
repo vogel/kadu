@@ -12,22 +12,28 @@
 #include "accounts/account.h"
 #include "accounts/account_manager.h"
 #include "config_file.h"
-#include "dcc.h"
+#include "dcc-manager.h"
 #include "debug.h"
 #include "ignore.h"
 #include "message_box.h"
 #include "misc.h"
 
-#include "dcc_socket.h"
+#include "dcc-socket.h"
 
-DccSocket::DccSocket(struct gg_dcc *dccStruct)
-	: Version(Dcc6), Dcc6Struct(dccStruct), Dcc7Struct(0), DccCheckField(dccStruct->check), DccEvent(0), destroying(false), ReadSocketNotifier(0), WriteSocketNotifier(0), ConnectionClosed(false),  Timeout(0), Handler(0) 
+DccSocket::DccSocket(DccManager *manager, struct gg_dcc *dccStruct) :
+		Version(Dcc6), Dcc6Struct(dccStruct), Dcc7Struct(0),
+		DccCheckField(dccStruct->check), DccEvent(0), destroying(false), 
+		ReadSocketNotifier(0), WriteSocketNotifier(0), ConnectionClosed(false),  Timeout(0), Handler(0) 
 {
+	Manager = manager;
 }
 
-DccSocket::DccSocket(struct gg_dcc7 *dccStruct)
-	: Version(Dcc7), Dcc6Struct(0), Dcc7Struct(dccStruct), DccCheckField(dccStruct->check), DccEvent(0), destroying(false), ReadSocketNotifier(0), WriteSocketNotifier(0), ConnectionClosed(false), Timeout(0), Handler(0)
+DccSocket::DccSocket(DccManager *manager, struct gg_dcc7 *dccStruct) :
+	Version(Dcc7), Dcc6Struct(0), Dcc7Struct(dccStruct),
+	DccCheckField(dccStruct->check), DccEvent(0), destroying(false),
+	ReadSocketNotifier(0), WriteSocketNotifier(0), ConnectionClosed(false), Timeout(0), Handler(0)
 {
+	Manager = manager;
 }
 
 DccSocket::~DccSocket()
@@ -357,7 +363,7 @@ void DccSocket::watchDcc()
 			kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "GG_EVENT_DCC_CLIENT_ACCEPT! uin:%d peer_uin:%d\n",
 				Dcc6Struct->uin, Dcc6Struct->peer_uin);
 
-			if (!dcc_manager->acceptClient(Dcc6Struct->uin, Dcc6Struct->peer_uin, Dcc6Struct->remote_addr))
+			if (!Manager->acceptClient(Dcc6Struct->uin, Dcc6Struct->peer_uin, Dcc6Struct->remote_addr))
 				connectionError();
 			break;
 
@@ -366,7 +372,7 @@ void DccSocket::watchDcc()
 			kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "GG_EVENT_DCC_CALLBACK! uin:%d peer_uin:%d\n",
 				Dcc6Struct->uin, Dcc6Struct->peer_uin);
 			gg_dcc_set_type(Dcc6Struct, GG_SESSION_DCC_SEND);
-			dcc_manager->callbackReceived(this);
+			Manager->callbackReceived(this);
 			break;
 
 		case GG_EVENT_DCC7_DONE:
