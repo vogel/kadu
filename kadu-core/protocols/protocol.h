@@ -40,6 +40,7 @@ class ContactListService;
 class Message;
 class PersonalInfoService;
 class ProtocolFactory;
+class SearchService;
 class Status;
 
 class KADUAPI Protocol : public QObject
@@ -83,6 +84,7 @@ public:
 	virtual ChatService * chatService() { return 0; }
 	virtual ContactListService * contactListService() { return 0; }
 	virtual PersonalInfoService * personalInfoService() { return 0; }
+	virtual SearchService * searchService() { return 0; }
 
 	virtual void setAccount(Account *account); 
 	virtual bool validateUserID(QString &uid) = 0;

@@ -445,7 +445,7 @@ void ChatManager::whoisActionActivated(QAction *sender, bool toggled)
 	{
 		if (contacts[0].accountData(AccountManager::instance()->defaultAccount()) != 0)
 		{
-			SearchDialog *sd = new SearchDialog(kadu, contacts[0].accountData(AccountManager::instance()->defaultAccount())->id().toUInt());
+			SearchDialog *sd = new SearchDialog(kadu/*, contacts[0].accountData(AccountManager::instance()->defaultAccount())->id().toUInt()*/);
 			sd->show();
 			sd->firstSearch();
 		}

@@ -216,6 +216,7 @@ set (kadu_MOC_SRCS
 	protocols/services/chat-service.h
 	protocols/services/contact-list-service.h
 	protocols/services/personal-info-service.h
+	protocols/services/search-service.h
 
 	about.h
 	action.h

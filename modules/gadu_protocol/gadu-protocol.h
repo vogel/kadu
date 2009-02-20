@@ -19,6 +19,7 @@
 #include "services/gadu-chat-service.h"
 #include "services/gadu-contact-list-service.h"
 #include "services/gadu-personal-info-service.h"
+#include "services/gadu-search-service.h"
 
 #include "gadu_exports.h"
 #include "gadu-search-record.h"
@@ -58,6 +59,7 @@ private:
 	GaduChatService *CurrentChatService;
 	GaduContactListService *CurrentContactListService;
 	GaduPersonalInfoService *CurrentPersonalInfoService;
+	GaduSearchService *CurrentSearchService;
 
 	/** Serwery, z kt�rymi �aczy si� obiekt. **/
 	static QList<QHostAddress> ConfigServers;
@@ -125,6 +127,7 @@ private:
 	friend class GaduChatService;
 	friend class GaduContactListService;
 	friend class GaduPersonalInfoService;
+	friend class GaduSearchService;
 
 private slots:
 	/**
@@ -224,6 +227,7 @@ public:
 	virtual ChatService * chatService() { return CurrentChatService; }
 	virtual ContactListService * contactListService() { return CurrentContactListService; }
 	virtual PersonalInfoService * personalInfoService() { return CurrentPersonalInfoService; }
+	virtual SearchService * searchService() { return CurrentSearchService; }
 
 	virtual void setAccount(Account *account);
 

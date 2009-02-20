@@ -6,102 +6,106 @@
  *   (at your option) any later version.                                   *
  *                                                                         *
  ***************************************************************************/
-#include <QtCore/QString>
 
 #include "debug.h"
 #include "misc.h"
 
-#include "gadu-search.h"
+#include "../gadu-contact-account-data.h"
+#include "../gadu-protocol.h"
+#include "../gadu-protocol-socket-notifiers.h"
 
-void GaduSearch::searchInPubdir(SearchRecord& searchRecord)
+#include "gadu-search-service.h"
+
+GaduSearchService::GaduSearchService(GaduProtocol *protocol) :
+		SearchService(protocol), Protocol(protocol), Query(Contact::TypeNull),
+		SearchSeq(0), From(0), Stopped(false)
 {
-	kdebugf();
-	searchRecord.FromUin = 0;
-	searchNextInPubdir(searchRecord);
-	kdebugf2();
+	connect(Protocol->socketNotifiers(), SIGNAL(pubdirReplyReceived(gg_pubdir50_t)),
+			this, SLOT(pubdirReplyReceived(gg_pubdir50_t)));
 }
 
-void GaduSearch::searchNextInPubdir(SearchRecord& searchRecord)
+void GaduSearchService::searchFirst(Contact contact)
 {
-	kdebugf();
-	QString bufYear;
-	gg_pubdir50_t req;
+	Query = contact;
+	From = 0;
+	searchNext();
+}
 
-	req = gg_pubdir50_new(GG_PUBDIR50_SEARCH);
+void GaduSearchService::searchNext()
+{
+	Stopped = false;
 
-	if (!searchRecord.Uin.isEmpty())
-		gg_pubdir50_add(req, GG_PUBDIR50_UIN, (const char *)unicode2cp(searchRecord.Uin).data());
-	if (!searchRecord.FirstName.isEmpty())
-		gg_pubdir50_add(req, GG_PUBDIR50_FIRSTNAME, (const char *)unicode2cp(searchRecord.FirstName).data());
-	if (!searchRecord.LastName.isEmpty())
-		gg_pubdir50_add(req, GG_PUBDIR50_LASTNAME, (const char *)unicode2cp(searchRecord.LastName).data());
-	if (!searchRecord.NickName.isEmpty())
-		gg_pubdir50_add(req, GG_PUBDIR50_NICKNAME, (const char *)unicode2cp(searchRecord.NickName).data());
-	if (!searchRecord.City.isEmpty())
-		gg_pubdir50_add(req, GG_PUBDIR50_CITY, (const char *)unicode2cp(searchRecord.City).data());
-	if (!searchRecord.BirthYearFrom.isEmpty())
+	gg_pubdir50_t req = gg_pubdir50_new(GG_PUBDIR50_SEARCH);
+
+// 	if (!Query.Uin.isEmpty()) TODO: 0.6.6
+// 		gg_pubdir50_add(req, GG_PUBDIR50_UIN, (const char *)unicode2cp(searchRecord.Uin).data());
+	if (!Query.firstName().isEmpty())
+		gg_pubdir50_add(req, GG_PUBDIR50_FIRSTNAME, (const char *)unicode2cp(Query.firstName()).data());
+	if (!Query.lastName().isEmpty())
+		gg_pubdir50_add(req, GG_PUBDIR50_LASTNAME, (const char *)unicode2cp(Query.lastName()).data());
+	if (!Query.nickName().isEmpty())
+		gg_pubdir50_add(req, GG_PUBDIR50_NICKNAME, (const char *)unicode2cp(Query.nickName()).data());
+	if (!Query.city().isEmpty())
+		gg_pubdir50_add(req, GG_PUBDIR50_CITY, (const char *)unicode2cp(Query.city()).data());
+// 	if (!Query.BirthYearFrom.isEmpty()) TODO: 0.6.6
+	if (0 != Query.birthYear())
+		gg_pubdir50_add(req, GG_PUBDIR50_BIRTHYEAR, (const char *)unicode2cp(QString::number(Query.birthYear())).data());
+
+	switch (Query.gender())
 	{
-		QString bufYear = searchRecord.BirthYearFrom + ' ' + searchRecord.BirthYearTo;
-		gg_pubdir50_add(req, GG_PUBDIR50_BIRTHYEAR, (const char *)unicode2cp(bufYear).data());
-	}
-
-	switch (searchRecord.Gender)
-	{
-		case 1:
+		case ContactData::GenderMale:
 			gg_pubdir50_add(req, GG_PUBDIR50_GENDER, GG_PUBDIR50_GENDER_MALE);
 			break;
-		case 2:
+		case ContactData::GenderFemale:
 			gg_pubdir50_add(req, GG_PUBDIR50_GENDER, GG_PUBDIR50_GENDER_FEMALE);
 			break;
 	}
 
-	if (searchRecord.Active)
-		gg_pubdir50_add(req, GG_PUBDIR50_ACTIVE, GG_PUBDIR50_ACTIVE_TRUE);
+	// TODO: 0.6.6
+// 	if (searchRecord.Active)
+// 		gg_pubdir50_add(req, GG_PUBDIR50_ACTIVE, GG_PUBDIR50_ACTIVE_TRUE);
 
-	gg_pubdir50_add(req, GG_PUBDIR50_START, qPrintable(QString::number(searchRecord.FromUin)));
+	gg_pubdir50_add(req, GG_PUBDIR50_START, qPrintable(QString::number(From)));
 
-	searchRecord.Seq = gg_pubdir50(Session, req);
+	SearchSeq = gg_pubdir50(Protocol->session(), req);
 	gg_pubdir50_free(req);
-	kdebugf2();
 }
 
-void GaduSearch::stopSearchInPubdir(SearchRecord &searchRecord)
+void GaduSearchService::stop()
 {
-	kdebugf();
-	searchRecord.IgnoreResults = true;
-	kdebugf2();
+	Stopped = true;
 }
 
-void GaduSearch::newResults(gg_pubdir50_t res)
+void GaduSearchService::pubdirReplyReceived(gg_pubdir50_t res)
 {
-	kdebugf();
-	int count, fromUin;
-	SearchResult searchResult;
-	SearchResults searchResults;
+	ContactList results;
 
-	count = gg_pubdir50_count(res);
-
+	int count = gg_pubdir50_count(res);
 	kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "found %d results\n", count);
 
-	for (int i = 0; i < count; ++i)
+	for (int i = 0; i < count; i++)
 	{
-		searchResult.setData(
-			gg_pubdir50_get(res, i, GG_PUBDIR50_UIN),
-			gg_pubdir50_get(res, i, GG_PUBDIR50_FIRSTNAME),
-			gg_pubdir50_get(res, i, GG_PUBDIR50_LASTNAME),
-			gg_pubdir50_get(res, i, GG_PUBDIR50_NICKNAME),
-			gg_pubdir50_get(res, i, GG_PUBDIR50_BIRTHYEAR),
-			gg_pubdir50_get(res, i, GG_PUBDIR50_CITY),
-			gg_pubdir50_get(res, i, GG_PUBDIR50_FAMILYNAME),
-			gg_pubdir50_get(res, i, GG_PUBDIR50_FAMILYCITY),
-			gg_pubdir50_get(res, i, GG_PUBDIR50_GENDER),
-			gg_pubdir50_get(res, i, GG_PUBDIR50_STATUS)
-		);
-		searchResults.append(searchResult);
+		Contact result;
+
+		GaduContactAccountData *gcad = new GaduContactAccountData(result, Protocol->account(),
+				gg_pubdir50_get(res, 0, GG_PUBDIR50_UIN));
+
+		result.addAccountData(gcad);
+		result.setFirstName(cp2unicode(gg_pubdir50_get(res, 0, GG_PUBDIR50_FIRSTNAME)));
+		result.setLastName(cp2unicode(gg_pubdir50_get(res, 0, GG_PUBDIR50_LASTNAME)));
+		result.setNickName(cp2unicode(gg_pubdir50_get(res, 0, GG_PUBDIR50_NICKNAME)));
+		result.setBirthYear(QString::fromAscii(gg_pubdir50_get(res, 0, GG_PUBDIR50_BIRTHYEAR)).toUShort());
+		result.setCity(cp2unicode(gg_pubdir50_get(res, 0, GG_PUBDIR50_CITY)));
+		result.setFamilyName(cp2unicode(gg_pubdir50_get(res, 0, GG_PUBDIR50_FAMILYNAME)));
+		result.setFamilyCity(cp2unicode(gg_pubdir50_get(res, 0, GG_PUBDIR50_FAMILYCITY)));
+		result.setGender((ContactData::ContactGender)QString::fromAscii(gg_pubdir50_get(res, 0, GG_PUBDIR50_GENDER)).toUShort());
+		// TODO: 0.6.6
+		// result.setStatus(gg_pubdir50_get(res, 0, GG_PUBDIR50_STATUS));
+
+		results.append(result);
 	}
-	fromUin = gg_pubdir50_next(res);
 
-	emit newSearchResults(searchResults, res->seq, fromUin);
-	kdebugf2();
+	From = gg_pubdir50_next(res);
+
+	emit newResults(results);
 }
-

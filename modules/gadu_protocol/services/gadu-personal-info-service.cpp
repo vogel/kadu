@@ -44,6 +44,7 @@ void GaduPersonalInfoService::fetchReplyReceived(gg_pubdir50_t res)
 	GaduContactAccountData *gcad = new GaduContactAccountData(result, Protocol->account(),
 			gg_pubdir50_get(res, 0, GG_PUBDIR50_UIN));
 
+	result.addAccountData(gcad);
 	result.setFirstName(cp2unicode(gg_pubdir50_get(res, 0, GG_PUBDIR50_FIRSTNAME)));
 	result.setLastName(cp2unicode(gg_pubdir50_get(res, 0, GG_PUBDIR50_LASTNAME)));
 	result.setNickName(cp2unicode(gg_pubdir50_get(res, 0, GG_PUBDIR50_NICKNAME)));

@@ -125,6 +125,9 @@ void ContactsListWidget::triggerActivate(const QModelIndex& index)
 
 void ContactsListWidget::contextMenuEvent(QContextMenuEvent *event)
 {
+	if (!MainWindow)
+		return;
+
 	Contact con = contact(indexAt(event->pos()));
 	if (con.isNull())
 		return;

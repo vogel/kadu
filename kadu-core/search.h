@@ -1,8 +1,7 @@
 #ifndef KADU_SEARCH_H
 #define KADU_SEARCH_H
 
-#include "../modules/gadu_protocol/gadu-protocol.h"
-#include "../modules/gadu_protocol/gadu-search.h"
+#include "contacts/contact-list.h"
 
 #include "kadu_main_window.h"
 
@@ -14,7 +13,11 @@ class QRadioButton;
 class QTreeWidget;
 class QTreeWidgetItem;
 
-class ContactList;
+class Account;
+class ContactListModel;
+class ContactsListWidget;
+class Protocol;
+class SearchService;
 
 // TODO: a better name
 class SearchActionsSlots : public QObject
@@ -47,8 +50,8 @@ class KADUAPI SearchDialog : public KaduMainWindow
 	Q_OBJECT
 
 	Account * SearchAccount;
-	GaduProtocol * SearchProtocol;
-	GaduSearch *GGSearch;
+	Protocol * SearchProtocol;
+	SearchService *Service;
 
 	friend class SearchActionsSlots;
 	static SearchActionsSlots *searchActionsSlot;
@@ -60,6 +63,10 @@ class KADUAPI SearchDialog : public KaduMainWindow
 	static ActionDescription *addFoundAction;
 	static ActionDescription *chatFoundAction;
 
+	ContactList results;
+	ContactListModel *resultsModel;
+	ContactsListWidget *resultsWidget;
+
 	QCheckBox *only_active;
 	QLineEdit *e_uin;
 	QLineEdit *e_name;
@@ -69,14 +76,10 @@ class KADUAPI SearchDialog : public KaduMainWindow
 	QLineEdit *e_surname;
 	QComboBox *c_gender;
 	QLineEdit *e_city;
-	QTreeWidget *results;
 	QLabel *progress;
 	QRadioButton *r_uin;
 	QRadioButton *r_pers;
-	UinType _whoisSearchUin;
 	uint32_t seq;
-
-	SearchRecord *searchRecord;
 
 	bool searchhidden;
 	bool searching;
@@ -85,8 +88,6 @@ class KADUAPI SearchDialog : public KaduMainWindow
 	bool isPersonalDataEmpty() const;
 
 	ContactList selected();
-
-	QTreeWidgetItem * selectedItem();
 
 	void setActionState(ActionDescription *action, bool toogle);
 
@@ -97,7 +98,7 @@ private slots:
 	void persClicked();
 	void uinClicked();
 	void updateInfoClicked();
-	void selectionChanged();
+	void selectionChanged(Contact contact);
 
 protected:
 	/**
@@ -118,7 +119,7 @@ public:
 		\param whoisSearchUin warto�� logiczna informuj�ca o tym, czy wst�pnie ma by� wybrane
 		wyszukiwanie po numerze UIN (1) czy po danych osobowych (0). Domy�lnie 0.
 	**/
-	SearchDialog(QWidget *parent=0, UinType whoisSearchUin = 0);
+	SearchDialog(QWidget *parent = 0);
 	~SearchDialog(void);
 
 	static void createDefaultToolbars(QDomElement parentConfig);
@@ -160,7 +161,7 @@ public slots:
 		\param fromUin numer UIN, od kt�rego rozpocz�to wyszukiwanie (jest r��ny dla kolejnych
 		wywo�a� - najpierw SearchDialog::firstSearch, a potem kolejne SearchDialog::nextSearch).
 	**/
-	void newSearchResults(SearchResults& searchResults, int seq, int fromUin);
+	void newResults(ContactList);
 
 	/**
 		\fn void firstSearch()
@@ -171,6 +172,7 @@ public slots:
 		bierz�cych, nale�y dokona� wt�rnego zapytania metod� SearchDialog::nextSearch.
 	**/
 	void firstSearch();
+
 };
 
 #endif

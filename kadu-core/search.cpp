@@ -25,6 +25,10 @@
 
 #include "contacts/contact-manager.h"
 
+#include "contacts/model/contact-list-model.h"
+
+#include "gui/widgets/contacts-list-widget.h"
+
 #include "gui/windows/contact-data-window.h"
 
 #include "config_file.h"
@@ -48,11 +52,11 @@ ActionDescription *SearchDialog::clearResultsAction;
 ActionDescription *SearchDialog::addFoundAction;
 ActionDescription *SearchDialog::chatFoundAction;
 
-SearchDialog::SearchDialog(QWidget *parent, UinType whoisSearchUin)
+SearchDialog::SearchDialog(QWidget *parent)
 	: KaduMainWindow(parent),
 	only_active(0), e_uin(0), e_name(0), e_nick(0), e_byrFrom(0), e_byrTo(0), e_surname(0),
-	c_gender(0), e_city(0), results(0), progress(0), r_uin(0), r_pers(0), _whoisSearchUin(whoisSearchUin),
-	seq(0), searchRecord(new SearchRecord()), searchhidden(false), searching(false), workaround(false)
+	c_gender(0), e_city(0), progress(0), r_uin(0), r_pers(0),
+	seq(0), searchhidden(false), searching(false), workaround(false)
 {
 	kdebugf();
 
@@ -130,8 +134,8 @@ SearchDialog::SearchDialog(QWidget *parent, UinType whoisSearchUin)
 
 	progress = new QLabel(centralWidget);
 
-	results = new QTreeWidget(centralWidget);
-	connect(results, SIGNAL(itemSelectionChanged()), this, SLOT(selectionChanged()));
+	resultsWidget = new ContactsListWidget(0, centralWidget);
+	connect(resultsWidget, SIGNAL(contactActivated(Contact)), this, SLOT(selectionChanged(Contact)));
 
 	QGroupBox * btngrp = new QGroupBox(tr("Search criteria"), centralWidget);
 	QButtonGroup *buttonGroup = new QButtonGroup(btngrp);
@@ -164,7 +168,7 @@ SearchDialog::SearchDialog(QWidget *parent, UinType whoisSearchUin)
 	grid->addMultiCellWidget(only_active, 2, 2, 10, 11);
 	grid->addMultiCellWidget(qgrp1, 3, 3, 0, 3);
 	grid->addMultiCellWidget(btngrp, 3, 3, 4, 11);
-	grid->addMultiCellWidget(results, 5, 5, 0, 11);
+	grid->addMultiCellWidget(resultsWidget, 5, 5, 0, 11);
 	grid->addMultiCellWidget(progress, 6, 6, 0, 1);
 
 	grid->addColSpacing(2, 10);
@@ -175,18 +179,19 @@ SearchDialog::SearchDialog(QWidget *parent, UinType whoisSearchUin)
 	
 	QStringList headers;
 	headers << tr("Status") << tr("Uin") << tr("Name") << tr("City") << tr("Nickname") << tr("Birth year");
-	results->setHeaderLabels(headers);
-	results->setSortingEnabled(true);
-	results->setAllColumnsShowFocus(true);
-	results->setSelectionMode(QAbstractItemView::SingleSelection);
-	results->setIndentation(false);
+// TODO: 0.6.6
+// 	results->setHeaderLabels(headers);
+// 	results->setSortingEnabled(true);
+// 	results->setAllColumnsShowFocus(true);
+// 	results->setSelectionMode(QAbstractItemView::SingleSelection);
+// 	results->setIndentation(false);
 //	results->setResizeMode(Q3ListView::AllColumns);
 //	for (int i = 1; i < 5; ++i)
 //		results->setColumnWidthMode(i, Q3ListView::Maximum);
 
 //	searchhidden = false;
-	if (_whoisSearchUin)
-		e_uin->insert(QString::number(_whoisSearchUin));
+// 	if (_whoisSearchUin)
+// 		e_uin->insert(QString::number(_whoisSearchUin));
 
 	setCentralWidget(centralWidget);
 
@@ -205,9 +210,11 @@ SearchDialog::SearchDialog(QWidget *parent, UinType whoisSearchUin)
 	loadWindowGeometry(this, "General", "SearchDialogGeometry", 0, 50, 800, 350);
 
 	SearchAccount = AccountManager::instance()->defaultAccount();
-	SearchProtocol = dynamic_cast<GaduProtocol *>(SearchAccount->protocol());
-	GaduSearch* GGSearch = new GaduSearch(SearchProtocol->session());
-	connect(GGSearch, SIGNAL(newSearchResults(SearchResults &, int, int)), this, SLOT(newSearchResults(SearchResults &, int, int)));
+	SearchProtocol = SearchAccount->protocol();
+	Service = SearchProtocol->searchService();
+
+	connect(Service, SIGNAL(newResults(ContactList)),
+			this, SLOT(newResults(ContactList)));
 
 	kdebugf2();
 }
@@ -219,7 +226,6 @@ SearchDialog::~SearchDialog()
 	writeToolBarsToConfig("search");
 
  	saveWindowGeometry(this, "General", "SearchDialogGeometry");
-	delete searchRecord;
 	kdebugf2();
 }
 
@@ -279,16 +285,6 @@ void SearchDialog::closeModule()
 	delete searchActionsSlot;
 }
 
-QTreeWidgetItem * SearchDialog::selectedItem()
-{
-	if (results->selectedItems().count())
-		return results->selectedItems()[0];
-	else if (results->children().count() == 1)
-		return dynamic_cast<QTreeWidgetItem *>(results->children()[0]);
-	else 
-		return NULL;
-}
-
 void SearchDialog::addFound()
 {
 	ContactList found = selected();
@@ -308,19 +304,19 @@ ContactList SearchDialog::selected()
 {
 	ContactList result;
 
-	QTreeWidgetItem *selected = selectedItem();
+// 	QTreeWidgetItem *selected = selectedItem();
 
-	if (!selected)
+// 	if (!selected)
+// 		return result;
+// 
+// 	QString uin = selected->text(1);
+// 	QString firstname = selected->text(2);
+// 	QString nickname = selected->text(4);
+// 
+// 	bool ok;
+// 	if (uin.toUInt(&ok) == 0 || !ok)
 		return result;
-
-	QString uin = selected->text(1);
-	QString firstname = selected->text(2);
-	QString nickname = selected->text(4);
-
-	bool ok;
-	if (uin.toUInt(&ok) == 0 || !ok)
-		return result;
-
+/*
 	QString display;
 	if (!nickname.isEmpty()) // Build altnick. Trying user nick first.
 		display = nickname;
@@ -329,8 +325,8 @@ ContactList SearchDialog::selected()
 	else
 		display = uin; // If above are empty, use uin.
 
-	Contact e = ContactManager::instance()->byId(SearchAccount, uin);
-
+	Contact e = ContactManager::instance()->byId(SearchAccount, uin);*/
+/*
 	if (e.isAnonymous())
 	{
 		e.setFirstName(firstname);
@@ -339,12 +335,12 @@ ContactList SearchDialog::selected()
 	}
 
 	result.append(e);
-	return result;
+	return result;*/
 }
 
 void SearchDialog::clearResults()
 {
-	results->clear();
+	results.clear();
 
  	setActionState(addFoundAction, false);
  	setActionState(clearResultsAction, false);
@@ -355,21 +351,21 @@ void SearchDialog::stopSearch()
 {
 	kdebugf();
 
-	GGSearch->stopSearchInPubdir(*searchRecord);
+	Service->stop();
 
 	setActionState(stopSearchAction, false);
 
 	if ((r_pers->isChecked() && !isPersonalDataEmpty()) || (r_uin->isChecked() && !e_uin->text().isEmpty()))
 		setActionState(firstSearchAction, true);
-	if (!results->selectedItems().isEmpty())
-	{
-		if (r_pers->isChecked() && !isPersonalDataEmpty())
-			setActionState(nextResultsAction, true);
-
-		setActionState(addFoundAction, true);
-		setActionState(chatFoundAction, true);
-	}
-	if (results->topLevelItemCount() > 0)
+// 	if (!results->selectedItems().isEmpty())
+// 	{
+// 		if (r_pers->isChecked() && !isPersonalDataEmpty())
+// 			setActionState(nextResultsAction, true);
+// 
+// 		setActionState(addFoundAction, true);
+// 		setActionState(chatFoundAction, true);
+// 	}
+// 	if (results->topLevelItemCount() > 0)
 		setActionState(clearResultsAction, true);
 
 	kdebugf2();
@@ -382,47 +378,52 @@ void SearchDialog::firstSearch()
 	if (r_pers->isChecked() && isPersonalDataEmpty())
 		return;
 
-	if (!SearchProtocol->isConnected())
+	if (!Service)
 	{
 		MessageBox::msg(tr("Cannot search contacts in offline mode"), false, "Critical", this);
 		kdebugf2();
 		return;
 	}
 
-	if (!results->children().isEmpty())
-		clearResults();
+	if (!results.isEmpty())
+		results = ContactList();
 
 	if (searching)
-		GGSearch->stopSearchInPubdir(*searchRecord);
+		Service->stop();
 
-	searchRecord->clearData();
+	Contact query;
 
 	if (r_pers->isChecked())
 	{
-		searchRecord->reqFirstName(e_name->text());
-		searchRecord->reqLastName(e_surname->text());
-		searchRecord->reqNickName(e_nick->text());
-		searchRecord->reqCity(e_city->text());
+		query.setFirstName(e_name->text());
+		query.setLastName(e_surname->text());
+		query.setNickName(e_nick->text());
+		query.setCity(e_city->text());
+
 		if (((e_byrTo->text().isEmpty()) && (!e_byrFrom->text().isEmpty()))
 		    || ((e_byrTo->text().toUShort()) < (e_byrFrom->text().toUShort())))
+		{
+			// TODo: 0.6.6
 			e_byrTo->setText(e_byrFrom->text());
-		searchRecord->reqBirthYear(e_byrFrom->text(), e_byrTo->text());
+			query.setBirthYear(e_byrFrom->text().toUShort());
+		}
 
 		switch (c_gender->currentItem())
 		{
 			case 1:
-				searchRecord->reqGender(false);
+				query.setGender(ContactData::GenderMale);
 				break;
 			case 2:
-				searchRecord->reqGender(true);
+				query.setGender(ContactData::GenderFemale);
 				break;
 		}
 
-		if (only_active->isChecked())
-			searchRecord->reqActive();
+		// TODO: 0.6.6
+// 		if (only_active->isChecked())
+// 			searchRecord->reqActive();
 	}
-	else if (r_uin->isChecked())
-		searchRecord->reqUin(e_uin->text());
+// 	else if (r_uin->isChecked()) TODO: 0.6.6
+// 		searchRecord->reqUin(e_uin->text());
 
 	searching = true;
 
@@ -432,7 +433,7 @@ void SearchDialog::firstSearch()
  	setActionState(addFoundAction, false);
  	setActionState(chatFoundAction, false);
 
-	GGSearch->searchInPubdir(*searchRecord);
+	Service->searchFirst(query);
 
 	progress->setText(tr("Searching..."));
 
@@ -443,7 +444,7 @@ void SearchDialog::nextSearch()
 {
 	kdebugf();
 
-	if (!SearchProtocol->isConnected())
+	if (!Service)
 		return;
 
 	searching = true;
@@ -454,67 +455,21 @@ void SearchDialog::nextSearch()
  	setActionState(addFoundAction, false);
 	setActionState(chatFoundAction, false);
 
-	GGSearch->searchNextInPubdir(*searchRecord);
+	Service->searchNext();
 
 	progress->setText(tr("Searching..."));
 
 	kdebugf2();
 }
 
-void SearchDialog::newSearchResults(SearchResults& searchResults, int seq, int fromUin)
+void SearchDialog::newResults(ContactList contacts)
 {
 	kdebugf();
 
-	if ((seq != searchRecord->Seq) || searchRecord->IgnoreResults)
-		return;
-
-	QTreeWidgetItem *qlv = 0;
-	QPixmap pix;
-
-	searchRecord->FromUin = fromUin;
-
-	int items = results->topLevelItemCount(); // number of items already in results
-
-	// ??	if ((status && atoi(status) <= 1 && only_active->isChecked()) || !status)
-
-	foreach(const SearchResult &searchResult, searchResults)
-	{
-		QList <QTreeWidgetItem *> items = results->findItems(searchResult.Uin, Qt::MatchExactly, 1);
-		if (items.count())
-			qlv = items[0];
-
-		if (SearchProtocol)
-			pix = SearchProtocol->statusPixmap(searchResult.Stat);
-
-		if (qlv)
-		{
-//			if (!searchhidden) {
-			qlv->setText(1, searchResult.Uin);
-			qlv->setText(2, searchResult.First);
-			qlv->setText(3, searchResult.City);
-			qlv->setText(4, searchResult.Nick);
-			qlv->setText(5, searchResult.Born);
-//	}
-//			else
-//				searchhidden = false;
-		}
-		else
-		{
-			QStringList strings;
-			strings << QString::null << searchResult.Uin << searchResult.First << searchResult.City << searchResult.Nick << searchResult.Born;
-			qlv = new QTreeWidgetItem(results, strings);
-//			if (count == 1 && r_uin->isChecked() && !searchhidden
-//				&& (statuscode == GG_STATUS_NOT_AVAIL || statuscode == GG_STATUS_NOT_AVAIL_DESCR)) {
-//				qlv->setPixmap(0, pix);
-//				searchhidden = true;
-//				nextSearch();
-//				return;
-//				}
-		//	}
-			qlv->setIcon(0, QIcon(pix));
-			qlv = 0;
-		}
-	}
+	results += contacts;
+	resultsWidget->setModel(0);
+	resultsModel = new ContactListModel(results);
+	resultsWidget->setModel(resultsModel);
 
 	progress->setText(tr("Done searching"));
 
@@ -526,26 +481,26 @@ void SearchDialog::newSearchResults(SearchResults& searchResults, int seq, int f
 		setActionState(firstSearchAction, true);
 	setActionState(stopSearchAction, false);
 
-	if (searchResults.isEmpty()  || ((int)searchResults.count() == items))
-	{
-		kdebugmf(KDEBUG_INFO, "No results. Exit.\n");
-		MessageBox::msg(tr("There were no results of your search"), false, "Information", this);
+// 	if (searchResults.isEmpty()  || ((int)searchResults.count() == items))
+// 	{
+// 		kdebugmf(KDEBUG_INFO, "No results. Exit.\n");
+// 		MessageBox::msg(tr("There were no results of your search"), false, "Information", this);
 //		searchhidden = false;
-	}
-	else
-	{
-		if (r_pers->isChecked() && !isPersonalDataEmpty())
-			setActionState(nextResultsAction, true);
+// 	}
+// 	else
+// 	{
+// 		if (r_pers->isChecked() && !isPersonalDataEmpty())
+// 			setActionState(nextResultsAction, true);
 
-		if (results->topLevelItemCount() > 0)
-			setActionState(clearResultsAction, true);
-	}
+// 		if (results->topLevelItemCount() > 0)
+// 			setActionState(clearResultsAction, true);
+// 	}
 
-	if (!results->selectedItems().isEmpty())
-	{
-		setActionState(addFoundAction, true);
-		setActionState(chatFoundAction, true);
-	}
+// 	if (!results->selectedItems().isEmpty())
+// 	{
+// 		setActionState(addFoundAction, true);
+// 		setActionState(chatFoundAction, true);
+// 	}
 
 	searching = false;
 
@@ -621,39 +576,39 @@ void SearchDialog::uinClicked()
 
 void SearchDialog::updateInfoClicked()
 {
-	kdebugf();
+// 	kdebugf();
 	// TODO: review this code
-	QTreeWidgetItem *selected = selectedItem();
-
-	if (!selected)
-		return;
-
-	QString uin = selected->text(1);
-	QString firstname = selected->text(2);
+// 	QTreeWidgetItem *selected = selectedItem();
+// 
+// 	if (!selected)
+// 		return;
+// 
+// 	QString uin = selected->text(1);
+// 	QString firstname = selected->text(2);
 //	QString lastname = selected->text(3);
-	QString nickname = selected->text(4);
+// 	QString nickname = selected->text(4);
 
-	Contact con = ContactManager::instance()->byId(SearchAccount, uin);
+// 	Contact con = ContactManager::instance()->byId(SearchAccount, uin);
 
 	// Build altnick. Try user nick first.
-	QString altnick = nickname;
+// 	QString altnick = nickname;
 	// If nick is empty, try firstname+lastname.
-	if (altnick.isEmpty())
-	{
-		altnick = firstname;
+// 	if (altnick.isEmpty())
+// 	{
+// 		altnick = firstname;
 //		if (firstname.length() && lastname.length())
 //			altnick += " ";
 //		altnick += lastname;
-	}
+// 	}
 	// If nick is empty, use uin.
-	if (altnick.isEmpty())
-		altnick = uin;
+// 	if (altnick.isEmpty())
+// 		altnick = uin;
 
-	con.setFirstName(firstname);
-	con.setNickName(nickname);
+// 	con.setFirstName(firstname);
+// 	con.setNickName(nickname);
 
-	(new ContactDataWindow(con, kadu))->show();
-	kdebugf2();
+// 	(new ContactDataWindow(con, kadu))->show();
+// 	kdebugf2();
 }
 
 bool SearchDialog::isPersonalDataEmpty() const
@@ -667,10 +622,11 @@ bool SearchDialog::isPersonalDataEmpty() const
 		e_city->text().isEmpty();
 }
 
-void SearchDialog::selectionChanged()
+void SearchDialog::selectionChanged(Contact contact)
 {
 	//kdebugmf(KDEBUG_FUNCTION_START, "%p\n", );
- 	bool enableActions = results->selectedItems().count() > 0;
+//  	bool enableActions = results->selectedItems().count() > 0;
+	bool enableActions = false;
  	setActionState(addFoundAction, enableActions);
  	setActionState(chatFoundAction, enableActions);
 }
@@ -736,8 +692,8 @@ void SearchActionsSlots::clearResultsActionCreated(KaduAction *action)
 	SearchDialog *search = dynamic_cast<SearchDialog *>(action->parent());
 	if (!search)
 		return;
-	if (!search->results->topLevelItemCount())
-		action->setEnabled(false);
+// 	if (!search->results->topLevelItemCount())
+// 		action->setEnabled(false);
 }
 
 void SearchActionsSlots::actionsFoundActionCreated(KaduAction *action)
@@ -745,8 +701,8 @@ void SearchActionsSlots::actionsFoundActionCreated(KaduAction *action)
 	SearchDialog *search = dynamic_cast<SearchDialog *>(action->parent());
 	if (!search)
 		return;
-	if (search->results->selectedItems().count() == 0)
-		action->setEnabled(false);
+// 	if (search->results->selectedItems().count() == 0)
+// 		action->setEnabled(false);
 }
 
 void SearchActionsSlots::nextResultsActionActivated(QAction *sender, bool toggled)

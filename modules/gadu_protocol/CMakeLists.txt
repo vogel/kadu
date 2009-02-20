@@ -48,7 +48,6 @@ set (MOC_SOURCES
 	gadu-protocol.h
 	gadu-protocol-socket-notifiers.h
 	gadu-pubdir-socket-notifiers.h
-	gadu-search.h
 	gadu-server-connector.h
 	gadu-server-change-password.h
 	gadu-server-register-account.h

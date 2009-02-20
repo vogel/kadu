@@ -791,7 +791,7 @@ void Kadu::lookupInDirectoryActionActivated(QAction *sender, bool toggled)
 	if (!cad)
 		return;
 
-	SearchDialog *sd = new SearchDialog(kadu, cad->uin());
+	SearchDialog *sd = new SearchDialog(kadu/*, cad->uin()*/);
 	sd->show();
 	sd->firstSearch();
 

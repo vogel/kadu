@@ -7,34 +7,40 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GADU_SEARCH_H
-#define GADU_SEARCH_H
+#ifndef GADU_SEARCH_SERVICE_H
+#define GADU_SEARCH_SERVICE_H
 
 #include <QtCore/QObject>
 
-#include "gadu-search-record.h"
-#include "gadu-search-result.h"
-
 #include <libgadu.h>
 
-class GaduSearch : public QObject
+#include "contacts/contact.h"
+
+#include "protocols/services/search-service.h"
+
+class GaduProtocol;
+
+class GaduSearchService : public SearchService
 {
 	Q_OBJECT
 
-	gg_session *Session;
+	GaduProtocol *Protocol;
+	Contact Query;
+	unsigned int SearchSeq;
+	unsigned int From;
+	bool Stopped;
+
+private slots:
+	void pubdirReplyReceived(gg_pubdir50_t res);
 
 public:
-	GaduSearch(gg_session *sess) : Session(sess) {}
-	
-signals:
-	void newSearchResults(SearchResults &searchResults, int seq, int lastUin);
-	
-public slots:
-	void newResults(gg_pubdir50_t res);
-	void searchInPubdir(SearchRecord &searchRecord);
-	void searchNextInPubdir(SearchRecord &searchRecord);
-	void stopSearchInPubdir(SearchRecord &searchRecord);
+	GaduSearchService(GaduProtocol *protocol);
+
+	// TODO 0.6.6: restore SearchRecord or QMap<QString, QString> or sth?
+	virtual void searchFirst(Contact contact);
+	virtual void searchNext();
+	virtual void stop();
 
 };
 
-#endif // GADU_SEARCH_H
+#endif // GADU_SEARCH_SERVICE_H
