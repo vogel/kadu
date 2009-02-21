@@ -7,28 +7,18 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "debug.h"
+#ifndef GADU_FILE_TRANSFER_H
+#define GADU_FILE_TRANSFER_H
 
-#include "dcc-socket.h"
+#include "file-transfer/file-transfer.h"
 
-#include "dcc-main-socket-notifiers.h"
+class DccSocketNotifiers;
 
-void DccMainSocketNotifiers::handleEvent(struct gg_event *e)
+class GaduFileTransfer : public FileTransfer
 {
-	switch (e->type)
-	{
-		case GG_EVENT_DCC_NEW:
-		{
-			kdebugmf(KDEBUG_NETWORK | KDEBUG_INFO, "GG_EVENT_DCC_NEW\n");
+public:
+	void setFileTransferNotifiers(DccSocketNotifiers *) {}
 
-			DccSocket *dccSocket = new DccSocket(manager(), e->event.dcc_new);
-// 			dccSocket->setHandler(this);
-			break;
-		}
+};
 
-		default:
-			DccMainSocketNotifiers::handleEvent(e);
-			break;
-	}
-
-}
+#endif // GADU_FILE_TRANSFER_H

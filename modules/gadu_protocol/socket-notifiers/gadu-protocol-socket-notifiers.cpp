@@ -110,8 +110,9 @@ void GaduProtocolSocketNotifiers::socketEvent()
 			{
 				if (config_file.readBoolEntry("Network", "AllowDCC") &&
 						!IgnoredHelper::isIgnored(senders) &&
-						!senders[0].isAnonymous())
-					emit dccConnectionReceived(senders[0]);
+						!senders[0].isAnonymous() &&
+						e->event.msg.message[0] == '\002')
+					emit dccConnectionRequestReceived(senders[0]);
 			}
 			else
 			{

@@ -11,6 +11,7 @@
 
 #include "socket-notifiers/gadu-protocol-socket-notifiers.h"
 
+#include "connection-acceptor.h"
 #include "dcc-socket-notifiers.h"
 
 void DccSocketNotifiers::watchFor(struct gg_dcc *socket)
@@ -18,8 +19,14 @@ void DccSocketNotifiers::watchFor(struct gg_dcc *socket)
 	Version = Dcc6;
 	Socket = socket;
 	Socket7 = 0;
-	DccCheckField = &Socket->check;
-	GaduSocketNotifiers::watchFor(Socket->fd);
+
+	if (Socket)
+	{
+		DccCheckField = &Socket->check;
+		GaduSocketNotifiers::watchFor(Socket->fd);
+	}
+	else
+		GaduSocketNotifiers::watchFor(0);
 }
 
 void DccSocketNotifiers::watchFor(struct gg_dcc7 *socket)
@@ -27,18 +34,24 @@ void DccSocketNotifiers::watchFor(struct gg_dcc7 *socket)
 	Version = Dcc7;
 	Socket = 0;
 	Socket7 = socket;
-	DccCheckField = &Socket7->check;
 
-	if (-1 == Socket7->fd) // wait for accept/reject
+	if (Socket7)
 	{
-		connect(Protocol->socketNotifiers(), SIGNAL(dcc7Accepted(struct gg_dcc7 *)), 
-				this, SLOT(dcc7Accepted(struct gg_dcc7 *)));
-		connect(Protocol->socketNotifiers(), SIGNAL(dcc7Rejected(struct gg_dcc7 *)),
-				this, SLOT(dcc7Rejected(struct gg_dcc7 *)));
-		return;
-	}
+		DccCheckField = &Socket7->check;
 
-	GaduSocketNotifiers::watchFor(Socket7->fd);
+		if (-1 == Socket7->fd) // wait for accept/reject
+		{
+			connect(Protocol->socketNotifiers(), SIGNAL(dcc7Accepted(struct gg_dcc7 *)), 
+					this, SLOT(dcc7Accepted(struct gg_dcc7 *)));
+			connect(Protocol->socketNotifiers(), SIGNAL(dcc7Rejected(struct gg_dcc7 *)),
+					this, SLOT(dcc7Rejected(struct gg_dcc7 *)));
+			return;
+		}
+
+		GaduSocketNotifiers::watchFor(Socket7->fd);
+	}
+	else
+		GaduSocketNotifiers::watchFor(0);
 }
 
 void DccSocketNotifiers::dcc7Accepted(struct gg_dcc7 *socket)
@@ -48,6 +61,8 @@ void DccSocketNotifiers::dcc7Accepted(struct gg_dcc7 *socket)
 
 	disconnect(Protocol->socketNotifiers(), SIGNAL(dcc7Accepted(struct gg_dcc7 *)), this, SLOT(dcc7Accepted(struct gg_dcc7 *)));
 	disconnect(Protocol->socketNotifiers(), SIGNAL(dcc7Rejected(struct gg_dcc7 *)), this, SLOT(dcc7Rejected(struct gg_dcc7 *)));
+
+	watchFor(Socket7);
 }
 
 void DccSocketNotifiers::dcc7Rejected(struct gg_dcc7 *socket)
@@ -57,6 +72,8 @@ void DccSocketNotifiers::dcc7Rejected(struct gg_dcc7 *socket)
 
 	disconnect(Protocol->socketNotifiers(), SIGNAL(dcc7Accepted(struct gg_dcc7 *)), this, SLOT(dcc7Accepted(struct gg_dcc7 *)));
 	disconnect(Protocol->socketNotifiers(), SIGNAL(dcc7Rejected(struct gg_dcc7 *)), this, SLOT(dcc7Rejected(struct gg_dcc7 *)));
+
+// TODO: 0.6.6 emit finished
 }
 
 bool DccSocketNotifiers::checkRead()
@@ -90,7 +107,7 @@ void DccSocketNotifiers::socketEvent()
 	if (!e)
 	{
 		kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "Connection broken unexpectedly!\n");
-		deleteLater(); // TODO 0.6.6: emit SIGNAL
+		done(false);
 		return;
 	}
 
@@ -102,19 +119,26 @@ void DccSocketNotifiers::socketEvent()
 	kdebugf2();
 }
 
+void DccSocketNotifiers::finished(bool ok)
+{
+	watchFor((struct gg_dcc *)0);
+	deleteLater();
+	emit done(ok);
+}
+
 void DccSocketNotifiers::handleEvent(struct gg_event *e)
 {
 	switch (e->type)
 	{
 		case GG_EVENT_DCC7_CONNECTED:
-			// Dcc7Struct->fd is changed, we need new socket notifiers
+			// Dcc7Struct->fd changed, we need new socket notifiers
 			watchFor(Socket7);
 			break;
 
 		case GG_EVENT_DCC7_ERROR:
 		case GG_EVENT_DCC_ERROR:
 			kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "GG_EVENT_DCC_ERROR\n");
-			deleteLater(); // TODO 0.6.6: emit signal
+			finished(false);
 			return;
 
 		// only in version 6
@@ -122,9 +146,10 @@ void DccSocketNotifiers::handleEvent(struct gg_event *e)
 			kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "GG_EVENT_DCC_CLIENT_ACCEPT! uin:%d peer_uin:%d\n",
 				Socket->uin, Socket->peer_uin);
 
-			if (!Manager->acceptClient(Socket->uin, Socket->peer_uin, Socket->remote_addr))
+			// TODO: make async
+			if (!Acceptor || !Acceptor->acceptConnection(Socket->uin, Socket->peer_uin, Socket->remote_addr))
 			{
-				deleteLater(); // TODO 0.6.6: emit signal
+				done(false);
 				return;
 			}
 			break;
@@ -133,14 +158,18 @@ void DccSocketNotifiers::handleEvent(struct gg_event *e)
 		case GG_EVENT_DCC_CALLBACK:
 			kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "GG_EVENT_DCC_CALLBACK! uin:%d peer_uin:%d\n",
 				Socket->uin, Socket->peer_uin);
-			gg_dcc_set_type(Socket, GG_SESSION_DCC_SEND);
-			Manager->callbackReceived(this);
+			gg_dcc_set_type(Socket, GG_SESSION_DCC_SEND); // for voice it wont look that way
+			emit callbackReceived(this);
 			break;
 
 		case GG_EVENT_DCC7_DONE:
 		case GG_EVENT_DCC_DONE:
 			kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "GG_EVENT_DCC_DONE\n");
-			deleteLater(); // TODO: 0.6.6 some message or sth?
+			finished(true);
+			break;
+
+		case GG_EVENT_DCC_NEED_FILE_INFO:
+// 			Socket->fillFileInfo(FileName); // TODO: 0.6.6 implement
 			break;
 
 		case GG_EVENT_DCC_NEED_VOICE_ACK:
@@ -170,11 +199,33 @@ void DccSocketNotifiers::handleEvent(struct gg_event *e)
 		case GG_EVENT_DCC_NEED_FILE_ACK:
 // 			kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "GG_EVENT_DCC_NEED_FILE_ACK! uin:%d peer_uin:%d\n",
 // 				socket->uin(), socket->peerUin());
+//			lock();
 // 			needFileAccept(socket);
 // 			lock = true;
+			done(true); // TODO: 0.6.6, implement
 			break;
+
+		case GG_EVENT_DCC_NEW:
+		{
+			kdebugmf(KDEBUG_NETWORK | KDEBUG_INFO, "GG_EVENT_DCC_NEW\n");
+			emit incomingConnection(e->event.dcc_new);
+			break;
+		}
 
 		default:
 			break;
 	}
+}
+
+UinType DccSocketNotifiers::peerUin()
+{
+	switch (Version)
+	{
+		case Dcc6:
+			return Socket->peer_uin;
+		case Dcc7:
+			return Socket7->peer_uin;
+	}
+
+	return 0;
 }

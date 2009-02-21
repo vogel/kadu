@@ -1,8 +1,9 @@
 set (SOURCES
 	dcc/dcc-manager.cpp
-	dcc/dcc-main-socket-notifiers.cpp
 	dcc/dcc-socket.cpp
 	dcc/dcc-socket-notifiers.cpp
+
+	file-transfer/gadu-file-transfer.cpp
 
 	helpers/gadu-formatter.cpp
 	helpers/gadu-importer.cpp
@@ -42,12 +43,13 @@ set (SOURCES
 )
 
 set (MOC_SOURCES
-	dcc/dcc-main-socket-notifiers.h
 	dcc/dcc-manager.h
 	dcc/dcc-socket.h
 	dcc/dcc-socket-notifiers.h
 
 	helpers/gadu-importer.h
+
+	file-transfer/gadu-file-transfer.h
 
 	server/gadu-server-connector.h
 	server/gadu-server-change-password.h

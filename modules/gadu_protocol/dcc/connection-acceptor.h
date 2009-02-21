@@ -7,32 +7,14 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef DCC_MAIN_SOCKET_NOTIFIERS_H
-#define DCC_MAIN_SOCKET_NOTIFIERS_H
+#ifndef CONNECTION_ACCEPTOR_H
+#define CONNECTION_ACCEPTOR_H
 
-#include <libgadu.h>
-
-#include "dcc/dcc-socket-notifiers.h"
-
-#ifndef _MSC_VER
-#pragma GCC visibility push(hidden)
-#endif
-
-class DccMainSocketNotifiers : public DccSocketNotifiers
+class ConnectionAcceptor
 {
-	Q_OBJECT
-
-protected:
-	virtual void handleEvent(struct gg_event *e);
-
 public:
-	DccMainSocketNotifiers(GaduProtocol *protocol, DccManager *manager, QObject *parent = 0) :
-			DccSocketNotifiers(protocol, manager, parent) {}
+	virtual bool acceptConnection(unsigned int uin, unsigned int peerUin, unsigned int peerAddr) = 0;
 
 };
 
-#ifndef _MSC_VER
-#pragma GCC visibility pop
-#endif
-
-#endif // DCC_MAIN_SOCKET_NOTIFIERS_H
+#endif // CONNECTION_ACCEPTOR_H

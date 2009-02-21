@@ -14,7 +14,7 @@
 #include "gadu-socket-notifiers.h"
 
 GaduSocketNotifiers::GaduSocketNotifiers(QObject *parent)
-	: QObject(parent), Socket(0), ReadNotifier(0), WriteNotifier(0)
+	: QObject(parent), Socket(0), ReadNotifier(0), WriteNotifier(0), Lock(0)
 {
 	kdebugf();
 	kdebugf2();
@@ -83,6 +83,16 @@ void GaduSocketNotifiers::watchWriting()
 		WriteNotifier->setEnabled(true);
 }
 
+void GaduSocketNotifiers::lock()
+{
+	Lock++;
+}
+
+void GaduSocketNotifiers::unlock()
+{
+	Lock--;
+}
+
 void GaduSocketNotifiers::dataReceived()
 {
 	kdebugf();
@@ -93,7 +103,7 @@ void GaduSocketNotifiers::dataReceived()
 	if (checkRead())
 		socketEvent();
 
-	if (ReadNotifier)
+	if ((0 == Lock) && ReadNotifier)
 		ReadNotifier->setEnabled(true);
 
 	kdebugf2();

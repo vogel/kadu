@@ -656,6 +656,9 @@ void GaduProtocol::login()
 
 	networkStateChanged(NetworkConnecting);
 
+	if (config_file.readBoolEntry("Network", "AllowDCC"))
+		Dcc = new DccManager(this);
+
 	memset(&GaduLoginParams, 0, sizeof(GaduLoginParams));
 	GaduLoginParams.async = 1;
 
@@ -782,14 +785,6 @@ void GaduProtocol::setupProxy()
 void GaduProtocol::networkConnected()
 {
 	networkStateChanged(NetworkConnected);
-
-	if (!config_file.readBoolEntry("Network", "AllowDCC"))
-	{
-		kdebugf2();
-		return;
-	}
-
-	Dcc = new DccManager(this);
 }
 
 void GaduProtocol::networkDisconnected()

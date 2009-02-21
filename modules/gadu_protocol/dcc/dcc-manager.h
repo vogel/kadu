@@ -15,8 +15,10 @@
 
 #include "protocols/protocol.h"
 
+#include "connection-acceptor.h"
+
 class DccSocketNotifiers;
-class DccMainSocketNotifiers;
+class GaduFileTransfer;
 class GaduProtocol;
 
 enum DccVersion
@@ -26,15 +28,16 @@ enum DccVersion
 	Dcc7
 };
 
-class DccManager : public QObject
+class DccManager : public QObject, private ConnectionAcceptor
 {
 	Q_OBJECT
 
 	GaduProtocol *Protocol;
 
-	DccMainSocketNotifiers *SocketNotifiers;
+	DccSocketNotifiers *MainSocketNotifiers;
+	QList<DccSocketNotifiers *> SocketNotifiers;
+	QList<GaduFileTransfer *> WaitingFileTransfers;
 
-	QTimer TimeoutTimer;
 	bool DccEnabled;
 /*
 	QWidget *ipAddress;
@@ -46,26 +49,24 @@ class DccManager : public QObject
 	void setUpDcc();
 	void closeDcc();
 
+	void connectSocketNotifiers(DccSocketNotifiers *notifiers);
+	void disconnectSocketNotifiers(DccSocketNotifiers *notifiers);
+
+	virtual bool acceptConnection(unsigned int uin, unsigned int peerUin, unsigned int peerAddr);
+
 	void createDefaultConfiguration();
 
 private slots:
-	void startTimeout();
-	void cancelTimeout();
-
 	void dcc7New(struct gg_dcc7 *);
-
-	/**
-		Otrzymano wiadomo�� CTCP.
-		Kto� nas prosi o po��czenie dcc, poniewa�
-		jeste�my za NAT-em.
-	**/
-	void dccConnectionReceived(Contact contact);
-	void timeout();
+	void dccConnectionRequestReceived(Contact contact);
 
 	friend class DccSocketNotifiers;
-	void callbackReceived(DccSocketNotifiers *socket);
 
 // 	void onIpAutotetectToggled(bool toggled);
+
+	void socketNotifiersDestroyed(QObject *socketNotifiers);
+	void dccIncomingConnection(struct gg_dcc *incomingConnection);
+	void callbackReceived(DccSocketNotifiers *socket);
 
 protected:
 	virtual void configurationUpdated();
@@ -74,17 +75,12 @@ public:
 	DccManager(GaduProtocol *protocol);
 	virtual ~DccManager();
 
-	int dccType()
-	{
-		return 0;
-	}
+	void attachFileTransferSocket(GaduFileTransfer *gft);
 
 // 	void getFileTransferSocket(uint32_t ip, uint16_t port, UinType myUin, UinType peerUin, DccHandler *handler, bool request = false);
 // 	void getVoiceSocket(uint32_t ip, uint16_t port, UinType myUin, UinType peerUin, DccHandler *handler, bool request = false);
 
 	bool dccEnabled() const;
-
-	bool acceptClient(UinType uin, UinType peerUin, int remoteAddr);
 
 // 	virtual void mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow);
 

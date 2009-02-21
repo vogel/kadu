@@ -19,16 +19,20 @@ class Account;
 class GaduContactAccountData : public ContactAccountData
 {
 	unsigned long MaxImageSize;
+	unsigned int GaduProtocolVersion;
 
 public:
 	GaduContactAccountData(Contact contact, Account *account, const QString &id = QString::null)
-		: ContactAccountData(contact, account, id) {}
+			: ContactAccountData(contact, account, id), GaduProtocolVersion(0) {}
 
 	virtual bool validateId();
 
 	UinType uin();
 
 	void setMaxImageSize(unsigned long maxImageSize) { MaxImageSize = maxImageSize; }
+
+	int gaduProtocolVersion() { return GaduProtocolVersion; }
+	void setGaduProtocolVersion(int gaduProtocolVersion) { GaduProtocolVersion = gaduProtocolVersion; }
 
 };
 

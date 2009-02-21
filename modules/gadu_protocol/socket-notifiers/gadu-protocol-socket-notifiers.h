@@ -48,13 +48,7 @@ signals:
 	void ackReceived(int seq, uin_t uin, int status);
 	void connected();
 
-	/**
-		Otrzymano wiadomo�� CTCP.
-		Kto� nas prosi o po��czenie dcc, poniewa�
-		jeste�my za NAT-em.
-		TODO: zmieni� nazw�.
-	**/
-	void dccConnectionReceived(Contact contact);
+	void dccConnectionRequestReceived(Contact contact);
 
 	/**
 		Sygna� jest emitowany, gdy serwer przerwa� po��czenie

@@ -26,6 +26,8 @@ class GaduSocketNotifiers : public QObject
 	QSocketNotifier *ReadNotifier;
 	QSocketNotifier *WriteNotifier;
 
+	int Lock;
+
 	void createSocketNotifiers();
 	void deleteSocketNotifiers();
 
@@ -36,6 +38,9 @@ private slots:
 protected:
 	void watchFor(int socket);
 	void watchWriting();
+
+	void lock();
+	void unlock();
 
 	virtual bool checkRead() = 0;
 	virtual bool checkWrite() = 0;

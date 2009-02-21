@@ -22,17 +22,23 @@
 #pragma GCC visibility push(hidden)
 #endif
 
+class ConnectionAcceptor;
+
 class DccSocketNotifiers : public GaduSocketNotifiers
 {
 	Q_OBJECT
 
 	GaduProtocol *Protocol;
 	DccManager *Manager;
+	ConnectionAcceptor *Acceptor;
 
 	DccVersion Version;
 	struct gg_dcc *Socket;
 	struct gg_dcc7 *Socket7;
 	int *DccCheckField;
+
+	void finished(bool ok);
+	void handleEvent(struct gg_event *e);
 
 private slots:
 	void dcc7Accepted(struct gg_dcc7 *);
@@ -44,14 +50,22 @@ protected:
 	virtual bool checkRead();
 	virtual bool checkWrite();
 	virtual void socketEvent();
-	virtual void handleEvent(struct gg_event *e);
 
 public:
-	DccSocketNotifiers(GaduProtocol *protocol, DccManager *manager, QObject *parent = 0) :
-			GaduSocketNotifiers(parent), Protocol(protocol), Manager(manager), DccCheckField(0) {}
+	DccSocketNotifiers(GaduProtocol *protocol, DccManager *manager, ConnectionAcceptor *acceptor, QObject *parent = 0) :
+			GaduSocketNotifiers(parent), Protocol(protocol),
+			Manager(manager), Acceptor(acceptor), DccCheckField(0) {}
 
 	void watchFor(struct gg_dcc *socket);
 	void watchFor(struct gg_dcc7 *socket);
+
+	UinType peerUin();
+
+signals:
+	void done(bool ok);
+
+	void incomingConnection(struct gg_dcc *incomingConnection);
+	void callbackReceived(DccSocketNotifiers *);
 
 };
 

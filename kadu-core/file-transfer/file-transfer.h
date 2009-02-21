@@ -11,7 +11,9 @@
 #define FILE_TRANSFER_H
 
 #include <QtCore/QObject>
-/*
+
+#include "contacts/contact.h"
+
 class Contact;
 
 class FileTransfer : public QObject
@@ -43,11 +45,13 @@ public:
 	};
 
 public:
-	FileTransfer(FileTransferType type, const Contact &contact, const QString &fileName);
-	virtual ~FileTransfer();
+// 	FileTransfer(FileTransferType type, const Contact &contact, const QString &fileName);
+// 	virtual ~FileTransfer();
 
-	virtual void start(StartType startType = StartNew) = 0;
-	virtual void stop(StopType stopType = StopTemporary) = 0;*/
+	Contact contact() { return Contact::null; }
+
+// 	virtual void start(StartType startType = StartNew) = 0;
+// 	virtual void stop(StopType stopType = StopTemporary) = 0;
 
 // 	void connectionAccepted(DccSocket *socket) {}
 // 	void connectionRejected(DccSocket *socket);
@@ -72,6 +76,6 @@ public:
 // 	void fileTransferStatusChanged(FileTransfer *);
 // 	void fileTransferFinished(FileTransfer *);
 // 	void fileTransferDestroying(FileTransfer *);
-// };
+};
 
 #endif
