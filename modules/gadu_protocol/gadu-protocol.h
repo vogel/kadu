@@ -98,6 +98,8 @@ private:
 
 	GaduProtocolSocketNotifiers * socketNotifiers() { return SocketNotifiers; }
 
+	friend class DccManager;
+	friend class DccSocketNotifiers;
 	friend class GaduChatImageService;
 	friend class GaduChatService;
 	friend class GaduContactListService;
@@ -297,15 +299,6 @@ signals:
 		Served sent information about status change for unknown user.
 	**/
 	void userStatusChangeIgnored(Contact);
-
-	/**
-		Otrzymano wiadomo�� CTCP.
-		Kto� nas prosi o po��czenie dcc, poniewa�
-		jeste�my za NAT-em
-		@param user wywo�uj�cy
-		@todo zmieni� nazw�
-	**/
-	void dccConnectionReceived(Contact contact);
 
 	void dcc7New(struct gg_dcc7 *);
 	void dcc7Accepted(struct gg_dcc7 *);

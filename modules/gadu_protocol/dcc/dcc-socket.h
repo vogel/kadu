@@ -45,17 +45,11 @@ class DccSocket : public QObject
 
 	QTimer *Timeout;
 
-	void initializeNotifiers();
-	void finalizeNotifiers();
-
 	void startTimeout();
 	void cancelTimeout();
 
 private slots:
 	void socketDataEvent();
-
-	void dcc7Accepted(struct gg_dcc7 *);
-	void dcc7Rejected(struct gg_dcc7 *);
 
 	void timeout();
 
@@ -67,10 +61,6 @@ protected:
 
 	void connectionError();
 	void closeSocket(bool error);
-
-	void watchDcc();
-	bool checkRead();
-	bool checkWrite();
 
 public:
 	DccSocket(DccManager *manager, struct gg_dcc *dccStruct);
@@ -90,8 +80,6 @@ public:
 
 	bool setFile(int fd);
 	void setOffset(long offset);
-
-	void setHandler(DccHandler *handler);
 
 	void stop();
 	void accept();

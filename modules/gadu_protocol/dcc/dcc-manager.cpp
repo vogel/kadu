@@ -16,16 +16,18 @@
 #include "config_file.h"
 #include "debug.h"
 
+#include "dcc/dcc-main-socket-notifiers.h"
 #include "dcc/dcc-manager.h"
 #include "dcc/dcc-socket.h"
+#include "socket-notifiers/gadu-protocol-socket-notifiers.h"
 #include "gadu_account_data.h"
 #include "gadu-contact-account-data.h"
 
 #include "gadu-protocol.h"
 
 DccManager::DccManager(GaduProtocol *protocol) :
-		QObject(protocol), Protocol(protocol),
-		MainSocket(0), TimeoutTimer(), requests(), DccEnabled(false)
+		QObject(protocol), Protocol(protocol), SocketNotifiers(0),
+		TimeoutTimer(), DccEnabled(false)
 {
 	kdebugf();
 
@@ -33,9 +35,10 @@ DccManager::DccManager(GaduProtocol *protocol) :
 
 	connect(&TimeoutTimer, SIGNAL(timeout()), this, SLOT(timeout()));
 
-	connect(Protocol, SIGNAL(dccConnectionReceived(Contact)),
-	        this, SLOT(dccConnectionReceived(Contact)));
-	connect(Protocol, SIGNAL(dcc7New(struct gg_dcc7 *)), this, SLOT(dcc7New(struct gg_dcc7 *)));
+	connect(Protocol->socketNotifiers(), SIGNAL(dccConnectionReceived(Contact)),
+			this, SLOT(dccConnectionReceived(Contact)));
+	connect(Protocol->socketNotifiers(), SIGNAL(dcc7New(struct gg_dcc7 *)),
+			this, SLOT(dcc7New(struct gg_dcc7 *)));
 	
 	setUpDcc();
 
@@ -100,9 +103,7 @@ void DccManager::setUpDcc()
 		return;
 	}
 
-	MainSocket = new DccSocket(this, socket);
-
-	MainSocket->setHandler(this);
+	SocketNotifiers = new DccMainSocketNotifiers(Protocol, this, this);
 
 	QHostAddress DCCIP;
 	short int DCCPort;
@@ -192,14 +193,7 @@ void DccManager::closeDcc()
 {
 	kdebugf();
 
-	if (MainSocket)
-	{
-		delete MainSocket;
-		MainSocket = 0;
-
-		Protocol->setDccIpAndPort(0, 0);
-	}
-
+	Protocol->setDccIpAndPort(0, 0);
 	DccEnabled = false;
 
 	kdebugf2();
@@ -224,7 +218,7 @@ void DccManager::dccConnectionReceived(Contact contact)
 	if (dcc_new)
 {
 		DccSocket* dcc_socket = new DccSocket(this, dcc_new);
-		dcc_socket->setHandler(this);
+// 		dcc_socket->setHandler(this);
 	}
 
 	kdebugf2();
@@ -257,30 +251,30 @@ void DccManager::dcc7New(struct gg_dcc7 *dcc)
 	kdebugf2();
 }
 
-void DccManager::getFileTransferSocket(uint32_t ip, uint16_t port, UinType myUin, UinType peerUin, DccHandler *handler, bool request)
-{
-	kdebugf();
-
-	if ((port >= 10) && !request)
-	{
-
-		struct gg_dcc *sock = gg_dcc_send_file(htonl(ip), port, myUin, peerUin);
-
-		if (sock)
-		{
-			DccSocket *result = new DccSocket(this, sock);
-			result->setHandler(handler);
-			return;
-		}
-	}
-
-	startTimeout();
-	requests.insert(peerUin, handler);
-	Protocol->dccRequest(peerUin);
-
-	kdebugf2();
-}
-
+// void DccManager::getFileTransferSocket(uint32_t ip, uint16_t port, UinType myUin, UinType peerUin, DccHandler *handler, bool request)
+// {
+// 	kdebugf();
+// 
+// 	if ((port >= 10) && !request)
+// 	{
+// 
+// 		struct gg_dcc *sock = gg_dcc_send_file(htonl(ip), port, myUin, peerUin);
+// 
+// 		if (sock)
+// 		{
+// 			DccSocket *result = new DccSocket(this, sock);
+// 			result->setHandler(handler);
+// 			return;
+// 		}
+// 	}
+// 
+// 	startTimeout();
+// 	requests.insert(peerUin, handler);
+// 	Protocol->dccRequest(peerUin);
+// 
+// 	kdebugf2();
+// }
+/*
 void DccManager::getVoiceSocket(uint32_t ip, uint16_t port, UinType myUin, UinType peerUin, DccHandler *handler, bool request)
 {
 	kdebugf();
@@ -303,26 +297,26 @@ void DccManager::getVoiceSocket(uint32_t ip, uint16_t port, UinType myUin, UinTy
 	Protocol->dccRequest(peerUin);
 
 	kdebugf2();
-}
+}*/
 
-void DccManager::callbackReceived(DccSocket *socket)
+void DccManager::callbackReceived(DccSocketNotifiers *socket)
 {
 	kdebugf();
 
 	cancelTimeout();
 
-	UinType peerUin = socket->peerUin();
+// 	UinType peerUin = socket->peerUin();
 
-	if (requests.contains(peerUin))
-	{
-		DccHandler *handler = requests[peerUin];
-		socket->setType(handler->dccType());
-		requests.remove(peerUin);
-
-		socket->setHandler(handler);
-	}
-	else
-		delete socket;
+// 	if (requests.contains(peerUin))
+// 	{
+// 		DccHandler *handler = requests[peerUin];
+// 		socket->setType(handler->dccType());
+// 		requests.remove(peerUin);
+// 
+// 		socket->setHandler(handler);
+// 	}
+// 	else
+		delete socket;/**/
 
 	kdebugf2();
 }
@@ -342,68 +336,6 @@ void DccManager::createDefaultConfiguration()
 
 	config_file.addVariable("ShortCuts", "kadu_sendfile", "F8");
 	config_file.addVariable("ShortCuts", "kadu_voicechat", "F7");
-}
-
-bool DccManager::addSocket(DccSocket *socket)
-{
-	kdebugf();
-
-	UnhandledSockets.append(socket);
-	return true;
-}
-
-void DccManager::removeSocket(DccSocket *socket)
-{
-	kdebugf();
-
-	UnhandledSockets.remove(socket);
-}
-
-void DccManager::addHandler(DccHandler *handler)
-{
-	kdebugf();
-
-	SocketHandlers.append(handler);
-}
-
-void DccManager::removeHandler(DccHandler *handler)
-{
-	kdebugf();
-
-	SocketHandlers.remove(handler);
-}
-
-void DccManager::connectionError(DccSocket *socket)
-{
-	kdebugmf(KDEBUG_NETWORK | KDEBUG_INFO, "Connection broken unexpectedly!\n");
-}
-
-bool DccManager::socketEvent(DccSocket *socket, bool &lock)
-{
-	kdebugf();
-
-	DccSocket *dccSocket;
-
-	switch (socket->ggDccEvent()->type)
-	{
-
-		case GG_EVENT_DCC_NEW:
-			kdebugmf(KDEBUG_NETWORK | KDEBUG_INFO, "GG_EVENT_DCC_NEW\n");
-
-			dccSocket = new DccSocket(this, socket->ggDccEvent()->event.dcc_new);
-			dccSocket->setHandler(this);
-			return true;
-
-		default:
-			break;
-	}
-
-	foreach(DccHandler *handler, SocketHandlers)
-
-	if (handler->socketEvent(socket, lock))
-		return true;
-
-	return false;
 }
 
 bool DccManager::acceptClient(UinType uin, UinType peerUin, int remoteAddr)

@@ -45,29 +45,11 @@ DccSocket::~DccSocket()
 		Timeout = 0;
 	}
 
-	finalizeNotifiers();
-
 	if (Dcc6Struct)
 		gg_dcc_free(Dcc6Struct);
 
 	if (Dcc7Struct)
 		gg_dcc7_free(Dcc7Struct);
-}
-
-void DccSocket::setHandler(DccHandler *handler)
-{
-	kdebugf();
-
-	if (Handler)
-		Handler->removeSocket(this);
-
-	Handler = handler;
-
-	if (Handler)
-	{
-		if (Handler->addSocket(this))
-			initializeNotifiers();
-	}
 }
 
 struct gg_event * DccSocket::ggDccEvent() const
@@ -120,65 +102,6 @@ int DccSocket::type()
 	}
 }
 
-void DccSocket::initializeNotifiers()
-{
-	kdebugf();
-
-	if (ReadSocketNotifier)
-		return;
-
-	int socketFd;
-	switch (Version)
-	{
-		case Dcc6:
-			socketFd = Dcc6Struct->fd;
-			break;
-		case Dcc7:
-			socketFd = Dcc7Struct->fd;
-			if (socketFd == -1) // wait for accept/reject
-			{
-				Protocol *gadu = AccountManager::instance()->defaultAccount()->protocol();
-				connect(gadu, SIGNAL(dcc7Accepted(struct gg_dcc7 *)), this, SLOT(dcc7Accepted(struct gg_dcc7 *)));
-				connect(gadu, SIGNAL(dcc7Rejected(struct gg_dcc7 *)), this, SLOT(dcc7Rejected(struct gg_dcc7 *)));
-				return;
-			}
-			break;
-		default:
-			return;
-	}
-
-	ReadSocketNotifier = new QSocketNotifier(socketFd, QSocketNotifier::Read, this);
-	QObject::connect(ReadSocketNotifier, SIGNAL(activated(int)), this, SLOT(socketDataEvent()));
-	if (!checkRead())
-		ReadSocketNotifier->setEnabled(false);
-
-	WriteSocketNotifier = new QSocketNotifier(socketFd, QSocketNotifier::Write, this);
-	QObject::connect(WriteSocketNotifier, SIGNAL(activated(int)), this, SLOT(socketDataEvent()));
-	if (!checkWrite())
-		WriteSocketNotifier->setEnabled(false);
-
-	kdebugf2();
-}
-
-void DccSocket::finalizeNotifiers()
-{
-	kdebugf();
-
-	if (ReadSocketNotifier)
-	{
-		delete ReadSocketNotifier;
-		ReadSocketNotifier = 0;
-	}
-
-	if (WriteSocketNotifier)
-	{
-		delete WriteSocketNotifier;
-		WriteSocketNotifier = 0;
-	}
-
-	kdebugf2();
-}
-
 void DccSocket::startTimeout()
 {
 	kdebugf();
@@ -227,7 +150,7 @@ void DccSocket::cancelTimeout()
 void DccSocket::timeout()
 {
 	kdebugf();
-
+/*
 	switch (Version)
 	{
 		case Dcc6:
@@ -241,48 +164,19 @@ void DccSocket::timeout()
 			break;
 		default:
 			return;
-	}
+	}*/
 }
 
 void DccSocket::enableNotifiers()
 {
-	kdebugf();
-
-	startTimeout();
-
-	if (checkRead())
-		ReadSocketNotifier->setEnabled(true);
-
-	if (checkWrite())
-		WriteSocketNotifier->setEnabled(true);
 }
 
 void DccSocket::disableNotifiers()
 {
-	if (ReadSocketNotifier)
-		ReadSocketNotifier->setEnabled(false);
-
-	if (WriteSocketNotifier)
-		WriteSocketNotifier->setEnabled(false);
-}
-
-bool DccSocket::checkRead()
-{
-	return DccCheckField & GG_CHECK_READ;
-}
-
-bool DccSocket::checkWrite()
-{
-	return DccCheckField & GG_CHECK_WRITE;
 }
 
 void DccSocket::socketDataEvent()
 {
-	if (destroying)
-		return;
-
-	disableNotifiers();
-	watchDcc();
 }
 
 void DccSocket::stop()
@@ -304,103 +198,7 @@ void DccSocket::closeSocket(bool error)
 	ConnectionClosed = true;
 
 	disableNotifiers();
-
-	if (Handler)
-	{
-		if (error)
-			Handler->connectionError(this);
-		else
-			Handler->connectionDone(this);
-
-		Handler->removeSocket(this);
-		Handler = 0;
-	}
-	else
-		delete this;
-
-	kdebugf2();
-}
-
-void DccSocket::watchDcc()
-{
-	kdebugf();
-
-	switch (Version)
-	{
-		case Dcc6:
-			DccEvent = gg_dcc_watch_fd(Dcc6Struct);
-			break;
-		case Dcc7:
-			DccEvent = gg_dcc7_watch_fd(Dcc7Struct);
-			break;
-		default:
-			return;
-	}
-
-	if (!DccEvent)
-	{
-		kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "Connection broken unexpectedly!\n");
-		connectionError();
-		return;
-	}
-
-	switch (DccEvent->type)
-	{
-		case GG_EVENT_DCC7_CONNECTED:
-			// Dcc7Struct->fd is changed, we need new socket notifiers
-			finalizeNotifiers();
-			initializeNotifiers();
-			break;
-
-		case GG_EVENT_DCC7_ERROR:
-		case GG_EVENT_DCC_ERROR:
-			kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "GG_EVENT_DCC_ERROR\n");
-			connectionError();
-			break;
-
-		// only in version 6
-		case GG_EVENT_DCC_CLIENT_ACCEPT:
-			kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "GG_EVENT_DCC_CLIENT_ACCEPT! uin:%d peer_uin:%d\n",
-				Dcc6Struct->uin, Dcc6Struct->peer_uin);
-
-			if (!Manager->acceptClient(Dcc6Struct->uin, Dcc6Struct->peer_uin, Dcc6Struct->remote_addr))
-				connectionError();
-			break;
-
-		// only in version 6
-		case GG_EVENT_DCC_CALLBACK:
-			kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "GG_EVENT_DCC_CALLBACK! uin:%d peer_uin:%d\n",
-				Dcc6Struct->uin, Dcc6Struct->peer_uin);
-			gg_dcc_set_type(Dcc6Struct, GG_SESSION_DCC_SEND);
-			Manager->callbackReceived(this);
-			break;
-
-		case GG_EVENT_DCC7_DONE:
-		case GG_EVENT_DCC_DONE:
-			kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "GG_EVENT_DCC_DONE\n");
-			closeSocket(false);
-			break;
-
-		default:
-			break;
-	}
-
-	if (!connectionClosed())
-	{
-		bool lock = false;
-
-		if (Handler)
-			Handler->socketEvent(this, lock);
-
-		if (!lock)
-			enableNotifiers();
-	}
-
-	if (DccEvent)
-	{
-		gg_free_event(DccEvent);
-		DccEvent = 0;
-	}
+	deleteLater();
 
 	kdebugf2();
 }
@@ -489,47 +287,6 @@ void DccSocket::setOffset(long offset)
 		default:
 			break;
 	}
-}
-
-void DccSocket::dcc7Accepted(struct gg_dcc7 *dcc7)
-{
-	if (dcc7 != Dcc7Struct)
-		return;
-
-	kdebugf();
-
-	Protocol *gadu = AccountManager::instance()->defaultAccount()->protocol();
-	disconnect(gadu, SIGNAL(dcc7Accepted(struct gg_dcc7 *)), this, SLOT(dcc7Accepted(struct gg_dcc7 *)));
-	disconnect(gadu, SIGNAL(dcc7Rejected(struct gg_dcc7 *)), this, SLOT(dcc7Rejected(struct gg_dcc7 *)));
-
-	if (Handler)
-		Handler->connectionAccepted(this);
-
-	initializeNotifiers();
-}
-
-void DccSocket::dcc7Rejected(struct gg_dcc7 *dcc7)
-{
-	if (dcc7 != Dcc7Struct)
-		return;
-
-	kdebugf();
-
-	Protocol *gadu = AccountManager::instance()->defaultAccount()->protocol();
-	disconnect(gadu, SIGNAL(dcc7Accepted(struct gg_dcc7 *)), this, SLOT(dcc7Accepted(struct gg_dcc7 *)));
-	disconnect(gadu, SIGNAL(dcc7Rejected(struct gg_dcc7 *)), this, SLOT(dcc7Rejected(struct gg_dcc7 *)));
-
-	ConnectionClosed = true;
-	disableNotifiers();
-
-	if (Handler)
-	{
-		Handler->connectionRejected(this);
-		Handler->removeSocket(this);
-		Handler = 0;
-	}
-// 	else
-// 		delete this;
 }
 
 void DccSocket::accept()

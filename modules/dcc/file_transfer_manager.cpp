@@ -347,22 +347,6 @@ void FileTransferManager::fileTransferWindowDestroyed()
 	fileTransferWindow = 0;
 }
 
-bool FileTransferManager::socketEvent(DccSocket *socket, bool &lock)
-{
-	switch (socket->ggDccEvent()->type)
-	{
-		case GG_EVENT_DCC_NEED_FILE_ACK:
-			kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "GG_EVENT_DCC_NEED_FILE_ACK! uin:%d peer_uin:%d\n",
-				socket->uin(), socket->peerUin());
-			needFileAccept(socket);
-			lock = true;
-			return true;
-
-		default:
-			return false;
-	}
-}
-
 void FileTransferManager::needFileAccept(DccSocket *socket)
 {
 	kdebugf();

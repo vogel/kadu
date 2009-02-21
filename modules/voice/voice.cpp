@@ -757,41 +757,6 @@ void VoiceManager::chatKeyPressed(QKeyEvent *e, ChatWidget *chatWidget, bool &ha
 	}
 }
 
-bool VoiceManager::socketEvent(DccSocket *socket, bool &lock)
-{
-	kdebugf();
-
-	switch (socket->ggDccEvent()->type)
-	{
-		case GG_EVENT_DCC_NEED_VOICE_ACK:
-			kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "GG_EVENT_DCC_NEED_VOICE_ACK! uin:%d peer_uin:%d\n",
-				socket->uin(), socket->peerUin());
-			if (askAcceptVoiceChat(socket))
-			{
-				VoiceChatDialog *voiceChatDialog = new VoiceChatDialog();
-				socket->setHandler(voiceChatDialog);
-			}
-			else
-			{
-				socket->reject();
-// 				delete socket;
-			}
-			return true;
-
-		case GG_EVENT_DCC_ACK:
-			kdebugmf(KDEBUG_INFO, "GG_EVENT_DCC_ACK\n");
-			if (socket->type() == GG_SESSION_DCC_VOICE)
-			{
-				VoiceChatDialog *voiceChatDialog = new VoiceChatDialog();
-				socket->setHandler(voiceChatDialog);
-			}
-			return true;
-
-		default:
-			return false;
-	}
-}
-
 void VoiceManager::createDefaultConfiguration()
 {
 	config_file.addVariable("ShortCuts", "kadu_voicechat", "");

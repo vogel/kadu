@@ -131,15 +131,12 @@ GaduProtocol::GaduProtocol(Account *account, ProtocolFactory *factory) :
 	CurrentSearchService = new GaduSearchService(this);
 
 	connect(SocketNotifiers, SIGNAL(connected()), this, SLOT(connectedSlot()));
-	connect(SocketNotifiers, SIGNAL(dccConnectionReceived(Contact)),
-		this, SIGNAL(dccConnectionReceived(Contact)));
 	connect(SocketNotifiers, SIGNAL(serverDisconnected()), this, SLOT(socketDisconnectedSlot()));
 	connect(SocketNotifiers, SIGNAL(error(GaduError)), this, SLOT(errorSlot(GaduError)));
 	connect(SocketNotifiers, SIGNAL(userlistReceived(const struct gg_event *)),
 		this, SLOT(userListReceived(const struct gg_event *)));
 	connect(SocketNotifiers, SIGNAL(userStatusChanged(const struct gg_event *)),
 		this, SLOT(userStatusChanged(const struct gg_event *)));
-	connect(SocketNotifiers, SIGNAL(dcc7New(struct gg_dcc7 *)), this, SIGNAL(dcc7New(struct gg_dcc7 *)));
 	connect(SocketNotifiers, SIGNAL(dcc7Accepted(struct gg_dcc7 *)), this, SIGNAL(dcc7Accepted(struct gg_dcc7 *)));
 	connect(SocketNotifiers, SIGNAL(dcc7Rejected(struct gg_dcc7 *)), this, SIGNAL(dcc7Rejected(struct gg_dcc7 *)));
 

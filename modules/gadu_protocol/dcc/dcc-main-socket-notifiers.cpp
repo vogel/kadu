@@ -7,29 +7,28 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef DCC_HANDLER_H
-#define DCC_HANDLER_H
+#include "debug.h"
 
-class DccSocket;
+#include "dcc-socket.h"
 
-class DccHandler
+#include "dcc-main-socket-notifiers.h"
+
+void DccMainSocketNotifiers::handleEvent(struct gg_event *e)
 {
-public:
-	virtual ~DccHandler() {}
+	switch (e->type)
+	{
+		case GG_EVENT_DCC_NEW:
+		{
+			kdebugmf(KDEBUG_NETWORK | KDEBUG_INFO, "GG_EVENT_DCC_NEW\n");
 
-	virtual bool addSocket(DccSocket *socket) = 0;
-	virtual void removeSocket(DccSocket *socket) = 0;
+			DccSocket *dccSocket = new DccSocket(manager(), e->event.dcc_new);
+// 			dccSocket->setHandler(this);
+			break;
+		}
 
-	virtual int dccType() = 0;
+		default:
+			DccMainSocketNotifiers::handleEvent(e);
+			break;
+	}
 
-	virtual bool socketEvent(DccSocket *socket, bool &lock) = 0;
-
-	virtual void connectionDone(DccSocket *socket) = 0;
-	virtual void connectionError(DccSocket *socket) = 0;
-
-	virtual void connectionAccepted(DccSocket *socket) = 0;
-	virtual void connectionRejected(DccSocket *socket) = 0;
-
-};
-
-#endif // DCC_HANDLER_H
+}

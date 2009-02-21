@@ -15,9 +15,8 @@
 
 #include "protocols/protocol.h"
 
-#include "dcc/dcc-handler.h"
-
-class DccSocket;
+class DccSocketNotifiers;
+class DccMainSocketNotifiers;
 class GaduProtocol;
 
 enum DccVersion
@@ -27,19 +26,15 @@ enum DccVersion
 	Dcc7
 };
 
-class DccManager : public QObject, public DccHandler
+class DccManager : public QObject
 {
 	Q_OBJECT
 
 	GaduProtocol *Protocol;
 
-	DccSocket *MainSocket;
-
-	QList<DccSocket *> UnhandledSockets;
-	QList<DccHandler *> SocketHandlers;
+	DccMainSocketNotifiers *SocketNotifiers;
 
 	QTimer TimeoutTimer;
-	QMap<UinType, DccHandler *> requests;
 	bool DccEnabled;
 /*
 	QWidget *ipAddress;
@@ -67,8 +62,8 @@ private slots:
 	void dccConnectionReceived(Contact contact);
 	void timeout();
 
-	friend class DccSocket;
-	void callbackReceived(DccSocket *socket);
+	friend class DccSocketNotifiers;
+	void callbackReceived(DccSocketNotifiers *socket);
 
 // 	void onIpAutotetectToggled(bool toggled);
 
@@ -79,29 +74,13 @@ public:
 	DccManager(GaduProtocol *protocol);
 	virtual ~DccManager();
 
-	bool addSocket(DccSocket *socket);
-	void removeSocket(DccSocket *socket);
-
-	void addHandler(DccHandler *handler);
-	void removeHandler(DccHandler *handler);
-
 	int dccType()
 	{
 		return 0;
 	}
 
-	bool socketEvent(DccSocket *socket, bool &lock);
-
-	void connectionDone(DccSocket *socket) {}
-
-	void connectionError(DccSocket *socket);
-
-	void connectionAccepted(DccSocket *socket) {}
-
-	void connectionRejected(DccSocket *socket) {}
-
-	void getFileTransferSocket(uint32_t ip, uint16_t port, UinType myUin, UinType peerUin, DccHandler *handler, bool request = false);
-	void getVoiceSocket(uint32_t ip, uint16_t port, UinType myUin, UinType peerUin, DccHandler *handler, bool request = false);
+// 	void getFileTransferSocket(uint32_t ip, uint16_t port, UinType myUin, UinType peerUin, DccHandler *handler, bool request = false);
+// 	void getVoiceSocket(uint32_t ip, uint16_t port, UinType myUin, UinType peerUin, DccHandler *handler, bool request = false);
 
 	bool dccEnabled() const;
 
@@ -109,9 +88,9 @@ public:
 
 // 	virtual void mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow);
 
-signals:
-	void socketDestroying(DccSocket* socket);
-	void dcc7IncomingFileTransfer(DccSocket *socket);
+// signals:
+// 	void socketDestroying(DccSocket* socket);
+// 	void dcc7IncomingFileTransfer(DccSocket *socket);
 
 };
 

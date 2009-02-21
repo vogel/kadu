@@ -1,7 +1,8 @@
 set (SOURCES
-	dcc/dcc-handler.cpp
 	dcc/dcc-manager.cpp
+	dcc/dcc-main-socket-notifiers.cpp
 	dcc/dcc-socket.cpp
+	dcc/dcc-socket-notifiers.cpp
 
 	helpers/gadu-formatter.cpp
 	helpers/gadu-importer.cpp
@@ -41,9 +42,10 @@ set (SOURCES
 )
 
 set (MOC_SOURCES
-	dcc/dcc-handler.h
+	dcc/dcc-main-socket-notifiers.h
 	dcc/dcc-manager.h
 	dcc/dcc-socket.h
+	dcc/dcc-socket-notifiers.h
 
 	helpers/gadu-importer.h
 
