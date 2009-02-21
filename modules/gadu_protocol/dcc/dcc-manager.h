@@ -15,8 +15,6 @@
 
 #include "protocols/protocol.h"
 
-#include "connection-acceptor.h"
-
 class DccSocketNotifiers;
 class GaduFileTransfer;
 class GaduProtocol;
@@ -28,7 +26,7 @@ enum DccVersion
 	Dcc7
 };
 
-class DccManager : public QObject, private ConnectionAcceptor
+class DccManager : public QObject
 {
 	Q_OBJECT
 
@@ -52,21 +50,22 @@ class DccManager : public QObject, private ConnectionAcceptor
 	void connectSocketNotifiers(DccSocketNotifiers *notifiers);
 	void disconnectSocketNotifiers(DccSocketNotifiers *notifiers);
 
-	virtual bool acceptConnection(unsigned int uin, unsigned int peerUin, unsigned int peerAddr);
-
 	void createDefaultConfiguration();
+
+	friend class DccSocketNotifiers;
+	bool acceptConnection(unsigned int uin, unsigned int peerUin, unsigned int peerAddr);
+	void needIncomingFileTransferAccept(DccSocketNotifiers *socket);
 
 private slots:
 	void dcc7New(struct gg_dcc7 *);
 	void dccConnectionRequestReceived(Contact contact);
 
-	friend class DccSocketNotifiers;
-
 // 	void onIpAutotetectToggled(bool toggled);
 
 	void socketNotifiersDestroyed(QObject *socketNotifiers);
+
 	void dccIncomingConnection(struct gg_dcc *incomingConnection);
-	void callbackReceived(DccSocketNotifiers *socket);
+	void dccCallbackReceived(DccSocketNotifiers *socket);
 
 protected:
 	virtual void configurationUpdated();

@@ -22,7 +22,7 @@
 #pragma GCC visibility push(hidden)
 #endif
 
-class ConnectionAcceptor;
+class GaduFileTransfer;
 
 class DccSocketNotifiers : public GaduSocketNotifiers
 {
@@ -30,7 +30,7 @@ class DccSocketNotifiers : public GaduSocketNotifiers
 
 	GaduProtocol *Protocol;
 	DccManager *Manager;
-	ConnectionAcceptor *Acceptor;
+	GaduFileTransfer *FileTransfer;
 
 	DccVersion Version;
 	struct gg_dcc *Socket;
@@ -52,14 +52,18 @@ protected:
 	virtual void socketEvent();
 
 public:
-	DccSocketNotifiers(GaduProtocol *protocol, DccManager *manager, ConnectionAcceptor *acceptor, QObject *parent = 0) :
-			GaduSocketNotifiers(parent), Protocol(protocol),
-			Manager(manager), Acceptor(acceptor), DccCheckField(0) {}
+	DccSocketNotifiers(GaduProtocol *protocol, DccManager *manager) :
+			GaduSocketNotifiers(manager), Protocol(protocol),
+			Manager(manager), FileTransfer(0), DccCheckField(0) {}
 
 	void watchFor(struct gg_dcc *socket);
 	void watchFor(struct gg_dcc7 *socket);
 
 	UinType peerUin();
+
+	void setFileTransfer(GaduFileTransfer *fileTransfer) { FileTransfer = fileTransfer; }
+	void acceptFileTransfer();
+	void rejectFileTransfer();
 
 signals:
 	void done(bool ok);

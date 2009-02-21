@@ -8,10 +8,11 @@
  ***************************************************************************/
 
 #include "debug.h"
+#include "misc.h"
 
+#include "file-transfer/gadu-file-transfer.h"
 #include "socket-notifiers/gadu-protocol-socket-notifiers.h"
 
-#include "connection-acceptor.h"
 #include "dcc-socket-notifiers.h"
 
 void DccSocketNotifiers::watchFor(struct gg_dcc *socket)
@@ -147,7 +148,7 @@ void DccSocketNotifiers::handleEvent(struct gg_event *e)
 				Socket->uin, Socket->peer_uin);
 
 			// TODO: make async
-			if (!Acceptor || !Acceptor->acceptConnection(Socket->uin, Socket->peer_uin, Socket->remote_addr))
+			if (!Manager->acceptConnection(Socket->uin, Socket->peer_uin, Socket->remote_addr))
 			{
 				done(false);
 				return;
@@ -158,7 +159,7 @@ void DccSocketNotifiers::handleEvent(struct gg_event *e)
 		case GG_EVENT_DCC_CALLBACK:
 			kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "GG_EVENT_DCC_CALLBACK! uin:%d peer_uin:%d\n",
 				Socket->uin, Socket->peer_uin);
-			gg_dcc_set_type(Socket, GG_SESSION_DCC_SEND); // for voice it wont look that way
+			gg_dcc_set_type(Socket, GG_SESSION_DCC_SEND); // TODO: 0.6.6 for voice it wont look that way
 			emit callbackReceived(this);
 			break;
 
@@ -169,7 +170,10 @@ void DccSocketNotifiers::handleEvent(struct gg_event *e)
 			break;
 
 		case GG_EVENT_DCC_NEED_FILE_INFO:
-// 			Socket->fillFileInfo(FileName); // TODO: 0.6.6 implement
+			if (Version == Dcc6 && FileTransfer)
+				gg_dcc_fill_file_info2(Socket, unicode2cp(FileTransfer->localFileName()), qPrintable(FileTransfer->localFileName()));
+			else
+				finished(false);
 			break;
 
 		case GG_EVENT_DCC_NEED_VOICE_ACK:
@@ -199,10 +203,8 @@ void DccSocketNotifiers::handleEvent(struct gg_event *e)
 		case GG_EVENT_DCC_NEED_FILE_ACK:
 // 			kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "GG_EVENT_DCC_NEED_FILE_ACK! uin:%d peer_uin:%d\n",
 // 				socket->uin(), socket->peerUin());
-//			lock();
-// 			needFileAccept(socket);
-// 			lock = true;
-			done(true); // TODO: 0.6.6, implement
+			lock();
+			Manager->needIncomingFileTransferAccept(this);
 			break;
 
 		case GG_EVENT_DCC_NEW:
@@ -228,4 +230,20 @@ UinType DccSocketNotifiers::peerUin()
 	}
 
 	return 0;
+}
+
+void DccSocketNotifiers::acceptFileTransfer()
+{
+	if (Dcc7 == Version)
+		gg_dcc7_accept(Socket7, Socket7->offset);
+
+	unlock();
+}
+
+void DccSocketNotifiers::rejectFileTransfer()
+{
+	if (Dcc7 == Version)
+		gg_dcc7_reject(Socket7, Socket7->offset);
+	else
+		finished(true);
 }

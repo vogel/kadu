@@ -91,6 +91,8 @@ void GaduSocketNotifiers::lock()
 void GaduSocketNotifiers::unlock()
 {
 	Lock--;
+	if ((0 == Lock) && ReadNotifier)
+		ReadNotifier->setEnabled(true);
 }
 
 void GaduSocketNotifiers::dataReceived()

@@ -50,6 +50,8 @@ public:
 
 	Contact contact() { return Contact::null; }
 
+	QString localFileName() { return ""; }
+
 // 	virtual void start(StartType startType = StartNew) = 0;
 // 	virtual void stop(StopType stopType = StopTemporary) = 0;
 

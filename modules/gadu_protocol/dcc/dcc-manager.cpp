@@ -103,7 +103,7 @@ void DccManager::setUpDcc()
 		return;
 	}
 
-	MainSocketNotifiers = new DccSocketNotifiers(Protocol, this, this);
+	MainSocketNotifiers = new DccSocketNotifiers(Protocol, this);
 	SocketNotifiers = QList<DccSocketNotifiers *>();
 
 	QHostAddress DCCIP;
@@ -198,7 +198,7 @@ void DccManager::connectSocketNotifiers(DccSocketNotifiers *notifiers)
 	connect(notifiers, SIGNAL(incomingConnection(struct gg_dcc *)),
 			this, SLOT(dccIncomingConnection(struct gg_dcc *)));
 	connect(notifiers, SIGNAL(callbackReceived(DccSocketNotifiers *)),
-			this, SLOT(callbackReceived(DccSocketNotifiers *)));
+			this, SLOT(dccCallbackReceived(DccSocketNotifiers *)));
 }
 
 void DccManager::disconnectSocketNotifiers(DccSocketNotifiers *notifiers)
@@ -208,7 +208,7 @@ void DccManager::disconnectSocketNotifiers(DccSocketNotifiers *notifiers)
 	disconnect(notifiers, SIGNAL(incomingConnection(struct gg_dcc *)),
 			this, SLOT(dccIncomingConnection(struct gg_dcc *)));
 	disconnect(notifiers, SIGNAL(callbackReceived(DccSocketNotifiers *)),
-			this, SLOT(callbackReceived(DccSocketNotifiers *)));
+			this, SLOT(dccCallbackReceived(DccSocketNotifiers *)));
 }
 
 void DccManager::socketNotifiersDestroyed(QObject *socketNotifiers)
@@ -220,14 +220,13 @@ void DccManager::dccIncomingConnection(struct gg_dcc *incomingConnection)
 {
 	kdebugf();
 
-	DccSocketNotifiers *newSocketNotifiers = new DccSocketNotifiers(Protocol, this, this);
+	DccSocketNotifiers *newSocketNotifiers = new DccSocketNotifiers(Protocol, this);
 	SocketNotifiers << newSocketNotifiers;
-
 	connectSocketNotifiers(newSocketNotifiers);
 	newSocketNotifiers->watchFor(incomingConnection);
 }
 
-void DccManager::callbackReceived(DccSocketNotifiers *socketNotifiers)
+void DccManager::dccCallbackReceived(DccSocketNotifiers *socketNotifiers)
 {
 	kdebugf();
 
@@ -243,7 +242,7 @@ void DccManager::callbackReceived(DccSocketNotifiers *socketNotifiers)
 		}
 	}
 
-	// TODO: 0.6.6 close socket notifiers
+	socketNotifiers->deleteLater();
 
 	kdebugf2();
 }
@@ -295,6 +294,11 @@ bool DccManager::acceptConnection(unsigned int uin, unsigned int peerUin, unsign
 // 	                           cad.ip().toString()));
 }
 
+void DccManager::needIncomingFileTransferAccept(DccSocketNotifiers *socket)
+{
+	socket->acceptFileTransfer();
+}
+
 void DccManager::dccConnectionRequestReceived(Contact contact)
 {
 	kdebugf();
@@ -312,7 +316,7 @@ void DccManager::dccConnectionRequestReceived(Contact contact)
 	struct gg_dcc *dcc = gg_dcc_get_file(htonl(gcad->ip().toIPv4Address()), gcad->port(), gad->uin(), gcad->uin());
 	if (dcc)
 	{
-		DccSocketNotifiers *dccSocketNotifiers = new DccSocketNotifiers(Protocol, this, this, this);
+		DccSocketNotifiers *dccSocketNotifiers = new DccSocketNotifiers(Protocol, this);
 		SocketNotifiers << dccSocketNotifiers;
 		connectSocketNotifiers(dccSocketNotifiers);
 		dccSocketNotifiers->watchFor(dcc);
@@ -367,7 +371,7 @@ void DccManager::attachFileTransferSocket(GaduFileTransfer *gft)
 		struct gg_dcc *socket = gg_dcc_send_file(htonl(gcad->ip().toIPv4Address()), port, uin, gcad->uin());
 		if (socket)
 		{
-			DccSocketNotifiers *fileTransferNotifiers = new DccSocketNotifiers(Protocol, this, this, this);
+			DccSocketNotifiers *fileTransferNotifiers = new DccSocketNotifiers(Protocol, this);
 			gft->setFileTransferNotifiers(fileTransferNotifiers);
 			fileTransferNotifiers->watchFor(socket);
 			return;
