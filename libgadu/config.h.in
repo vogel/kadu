@@ -42,6 +42,9 @@
 /* Defined if this machine has __va_copy(). */
 #undef GG_CONFIG_HAVE___VA_COPY
 
+/* Defined if pthread resolver is the default one. */
+#undef GG_CONFIG_PTHREAD_DEFAULT
+
 /* Library version */
 #undef GG_LIBGADU_VERSION
 
