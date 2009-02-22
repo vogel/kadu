@@ -17,6 +17,8 @@
 
 void DccSocketNotifiers::watchFor(struct gg_dcc *socket)
 {
+	printf("watch for 6: %p\n", socket);
+
 	Version = Dcc6;
 	Socket = socket;
 	Socket7 = 0;
@@ -32,6 +34,8 @@ void DccSocketNotifiers::watchFor(struct gg_dcc *socket)
 
 void DccSocketNotifiers::watchFor(struct gg_dcc7 *socket)
 {
+	printf("watch for 7: %p, %d\n", socket, socket->fd);
+
 	Version = Dcc7;
 	Socket = 0;
 	Socket7 = socket;
@@ -79,11 +83,13 @@ void DccSocketNotifiers::dcc7Rejected(struct gg_dcc7 *socket)
 
 bool DccSocketNotifiers::checkRead()
 {
+	printf("dcc check read %d\n", DccCheckField && (*DccCheckField & GG_CHECK_READ));
 	return DccCheckField && (*DccCheckField & GG_CHECK_READ);
 }
 
 bool DccSocketNotifiers::checkWrite()
 {
+	printf("dcc check write %d\n", DccCheckField && (*DccCheckField & GG_CHECK_WRITE));
 	return DccCheckField && (*DccCheckField & GG_CHECK_WRITE);
 }
 
@@ -92,6 +98,7 @@ void DccSocketNotifiers::socketEvent()
 	kdebugf();
 
 	struct gg_event *e;
+	printf("dcc socket event\n");
 
 	switch (Version)
 	{
@@ -102,6 +109,8 @@ void DccSocketNotifiers::socketEvent()
 			e = gg_dcc7_watch_fd(Socket7);
 			break;
 		default:
+			kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "DCC version not set!\n");
+			done(false);
 			return;
 	}
 
@@ -129,7 +138,7 @@ void DccSocketNotifiers::finished(bool ok)
 
 void DccSocketNotifiers::handleEvent(struct gg_event *e)
 {
-	printf("dcc handle event\n");
+	printf("dcc handle event: %d\n", e->type);
 
 	switch (e->type)
 	{
@@ -227,6 +236,8 @@ void DccSocketNotifiers::handleEvent(struct gg_event *e)
 		default:
 			break;
 	}
+
+	watchWriting();
 }
 
 UinType DccSocketNotifiers::peerUin()
@@ -279,6 +290,12 @@ QString DccSocketNotifiers::gaduFileName()
 	}
 
 	return QString::null;
+}
+
+void DccSocketNotifiers::setGaduFileTransfer(GaduFileTransfer *fileTransfer)
+{
+	FileTransfer = fileTransfer;
+	watchWriting();
 }
 
 void DccSocketNotifiers::acceptFileTransfer()

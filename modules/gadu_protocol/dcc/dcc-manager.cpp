@@ -402,9 +402,7 @@ void DccManager::attachSendFileTransferSocket7(unsigned int uin, GaduContactAcco
 		fileTransferNotifiers->watchFor(dcc);
 	}
 	else
-	{
 		gft->socketNotAvailable();
-	}
 }
 
 void DccManager::attachSendFileTransferSocket(GaduFileTransfer *gft)

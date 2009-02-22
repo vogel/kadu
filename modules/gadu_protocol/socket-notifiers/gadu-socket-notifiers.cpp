@@ -79,7 +79,7 @@ void GaduSocketNotifiers::watchFor(int socket)
 
 void GaduSocketNotifiers::watchWriting()
 {
-	if (WriteNotifier && checkWrite())
+	if ((0 == Lock) && WriteNotifier && checkWrite())
 		WriteNotifier->setEnabled(true);
 }
 
@@ -91,8 +91,10 @@ void GaduSocketNotifiers::lock()
 void GaduSocketNotifiers::unlock()
 {
 	Lock--;
-	if ((0 == Lock) && ReadNotifier)
+	if ((0 == Lock) && checkRead() && ReadNotifier)
 		ReadNotifier->setEnabled(true);
+	if ((0 == Lock) && checkWrite() && WriteNotifier)
+		WriteNotifier->setEnabled(true);
 }
 
 void GaduSocketNotifiers::dataReceived()
@@ -105,7 +107,7 @@ void GaduSocketNotifiers::dataReceived()
 	if (checkRead())
 		socketEvent();
 
-	if ((0 == Lock) && ReadNotifier)
+	if ((0 == Lock) && checkRead() && ReadNotifier)
 		ReadNotifier->setEnabled(true);
 
 	kdebugf2();
@@ -120,6 +122,9 @@ void GaduSocketNotifiers::dataSent()
 
 	if (checkWrite())
 		socketEvent();
+
+	if ((0 == Lock) && checkWrite() && WriteNotifier)
+		ReadNotifier->setEnabled(true);
 
 	kdebugf2();
 }

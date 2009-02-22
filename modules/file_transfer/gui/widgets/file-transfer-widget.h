@@ -7,38 +7,47 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef FILE_TRANSFER_WINDOW
-#define FILE_TRANSFER_WINDOW
+#ifndef FILE_TRANSFER_WIDGET
+#define FILE_TRANSFER_WIDGET
 
 #include <QtGui/QFrame>
 
-class QScrollArea;
-class QVBoxLayout;
+class QLabel;
+class QProgressBar;
+class QPushButton;
 
-class FileTransferWindow : public QFrame
+class FileTransfer;
+
+class FileTransferWidget : public QFrame
 {
 	Q_OBJECT
 
-	QScrollArea *ScrollView;
+	FileTransfer *CurrentTransfer;
 
-	QFrame *InnerFrame;
-	QVBoxLayout *TransfersLayout;
-// 	QMap<FileTransfer *, FileTransferWidget *> map;
+	QLabel *DescriptionLabel;
+	QLabel *StatusLabel;
+	QProgressBar *ProgressBar;
+	QPushButton *PauseButton;
+	QPushButton *ContinueButton;
 
 	void createGui();
 
 private slots:
-	void clearClicked();
+	void fileTransferDestroyed(QObject *);
 
-protected:
-	virtual void keyPressEvent(QKeyEvent *e);
-
-	void contentsChanged();
+	void remove();
+	void pauseTransfer();
+	void continueTransfer();
 
 public:
-	FileTransferWindow(QWidget *parent = 0);
-	virtual ~FileTransferWindow();
+	FileTransferWidget(FileTransfer *fileTransfer = 0, QWidget *parent = 0);
+	virtual ~FileTransferWidget();
+
+	FileTransfer * fileTransfer() { return CurrentTransfer; }
+
+public slots:
+	void fileTransferStatusChanged();
 
 };
 
-#endif
+#endif // FILE_TRANSFER_WIDGET

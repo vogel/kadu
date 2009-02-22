@@ -33,6 +33,9 @@ public:
 	void socketNotAvailable();
 
 	virtual void send();
+	virtual void stop();
+	virtual void pause();
+	virtual void restore();
 
 };
 

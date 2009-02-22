@@ -1,8 +1,14 @@
 set (SOURCES
+	gui/windows/file-transfer-window.cpp
+	gui/widgets/file-transfer-widget.cpp
+
 	file-transfer-module.cpp
 )
 
 set (MOC_SOURCES
+	gui/windows/file-transfer-window.h
+	gui/widgets/file-transfer-widget.h
+
 	file-transfer-module.h
 )
 

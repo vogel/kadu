@@ -58,6 +58,9 @@ void GaduFileTransfer::socketNotAvailable()
 
 void GaduFileTransfer::send()
 {
+	if (FileTransfer::TypeSend != transferType()) // maybe assert here?
+		return;
+
 	if (SocketNotifiers || WaitingForSocketNotifiers) // already sending/receiving
 		return;
 
@@ -80,4 +83,25 @@ void GaduFileTransfer::send()
 	changeFileTransferStatus(FileTransfer::StatusWaitingForConnection);
 	WaitingForSocketNotifiers = true;
 	Protocol->dccManager()->attachSendFileTransferSocket(this);
+}
+
+void GaduFileTransfer::stop()
+{
+	if (SocketNotifiers)
+	{
+		delete SocketNotifiers;
+		SocketNotifiers = 0;
+		changeFileTransferStatus(FileTransfer::StatusNotConnected);
+	}
+}
+
+void GaduFileTransfer::pause()
+{
+	stop();
+}
+
+void GaduFileTransfer::restore()
+{
+	if (FileTransfer::TypeSend == transferType())
+		send();
 }
