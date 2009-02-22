@@ -528,6 +528,7 @@ void GaduProtocol::connectionTimeoutTimerSlot()
 {
 	kdebugf();
 
+	return;
 	kdebugm(KDEBUG_INFO, "Timeout, breaking connection\n");
 	errorSlot(ConnectionTimeout);
 
@@ -536,6 +537,8 @@ void GaduProtocol::connectionTimeoutTimerSlot()
 
 void GaduProtocol::errorSlot(GaduError err)
 {
+	return;
+
 	kdebugf();
 	QString msg = QString::null;
 

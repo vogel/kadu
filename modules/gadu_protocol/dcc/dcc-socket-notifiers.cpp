@@ -221,7 +221,7 @@ void DccSocketNotifiers::handleEvent(struct gg_event *e)
 			printf("need file ack\n");
 // 			kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "GG_EVENT_DCC_NEED_FILE_ACK! uin:%d peer_uin:%d\n",
 // 				socket->uin(), socket->peerUin());
-			lock();
+// 			lock();
 			Manager->needIncomingFileTransferAccept(this);
 			break;
 
@@ -279,7 +279,7 @@ unsigned long DccSocketNotifiers::transferredFileSize()
 	return 0;
 }
 
-QString DccSocketNotifiers::gaduFileName()
+QString DccSocketNotifiers::remoteFileName()
 {
 	switch (Version)
 	{

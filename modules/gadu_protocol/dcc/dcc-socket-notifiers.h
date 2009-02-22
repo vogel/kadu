@@ -63,7 +63,7 @@ public:
 
 	unsigned long fileSize();
 	unsigned long transferredFileSize();
-	QString gaduFileName();
+	QString remoteFileName();
 
 	void setGaduFileTransfer(GaduFileTransfer *fileTransfer);
 	void acceptFileTransfer();

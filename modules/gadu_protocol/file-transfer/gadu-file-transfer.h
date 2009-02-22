@@ -21,8 +21,6 @@ class GaduFileTransfer : public FileTransfer
 	DccSocketNotifiers *SocketNotifiers;
 	bool WaitingForSocketNotifiers;
 
-	QString GaduFileName;
-
 protected:
 	virtual void updateFileInfo();
 

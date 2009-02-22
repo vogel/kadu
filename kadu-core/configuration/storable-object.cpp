@@ -7,6 +7,8 @@
  *                                                                         *
  ***************************************************************************/
 
+#include "xml_config_file.h"
+
 #include "storable-object.h"
 
 StoragePoint * StorableObject::storage()
@@ -15,4 +17,9 @@ StoragePoint * StorableObject::storage()
 		Storage = createStoragePoint();
 
 	return Storage;
+}
+
+void StorableObject::storeValue(const QString &name, const QVariant value)
+{
+	Storage->storage()->createTextNode(Storage->point(), name, value.toString());
 }

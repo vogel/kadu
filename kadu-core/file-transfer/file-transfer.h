@@ -12,11 +12,13 @@
 
 #include <QtCore/QObject>
 
+#include "configuration/storable-object.h"
 #include "contacts/contact.h"
 
+class Account;
 class Contact;
 
-class FileTransfer : public QObject
+class FileTransfer : public QObject, public StorableObject
 {
 	Q_OBJECT
 
@@ -46,8 +48,13 @@ public:
 	};
 
 private:
+	QUuid Uuid;
+
+	Account *CurrentAccount;
 	Contact Peer;
 	QString LocalFileName;
+	QString RemoteFileName;
+
 	FileTransferType TransferType;
 	FileTransferStatus TransferStatus;
 	FileTransferError TransferError;
@@ -56,17 +63,22 @@ private:
 	unsigned long TransferredSize;
 
 protected:
+	virtual StoragePoint * createStoragePoint() const;
+
 	void changeFileTransferStatus(FileTransferStatus transferStatus);
 	void changeFileTransferError(FileTransferError transferError);
 
 	void setFileSize(unsigned long fileSize) { FileSize = fileSize; }
 	void setTransferredSize(unsigned long transferredSize) { TransferredSize = transferredSize; }
+	void setRemoteFile(const QString &remoteFileName) { RemoteFileName = remoteFileName; }
 
 	virtual void updateFileInfo() = 0;
 
 public:
-	FileTransfer(Contact peer, FileTransferType transferType);
+	FileTransfer(Account *account, Contact peer, FileTransferType transferType);
 	virtual ~FileTransfer();
+
+	void storeConfiguration();
 
 	Contact contact() { return Peer; }
 
@@ -76,6 +88,7 @@ public:
 
 	void setLocalFileName(const QString &localFileName) { LocalFileName = localFileName; }
 	QString localFileName() { return LocalFileName; }
+	QString remoteFileName() { return RemoteFileName; }
 
 	virtual void send() = 0;
 	virtual void stop() = 0;
@@ -89,4 +102,4 @@ signals:
 
 };
 
-#endif
+#endif // FILE_TRANSFER_H

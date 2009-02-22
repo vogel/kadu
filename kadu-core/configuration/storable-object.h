@@ -10,7 +10,9 @@
 #ifndef STORABLE_OBJECT_H
 #define STORABLE_OBJECT_H
 
-class StoragePoint;
+#include <QtCore/QVariant>
+
+#include "storage-point.h"
 
 class StorableObject
 {
@@ -24,6 +26,9 @@ public:
 
 	StoragePoint * storage();
 	void setStorage(StoragePoint *storage) { Storage = storage; }
+	bool isValidStorage() { return Storage && Storage->storage(); }
+
+	void storeValue(const QString &name, const QVariant value);
 
 };
 

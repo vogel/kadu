@@ -42,6 +42,8 @@
 #include "contacts/model/filter/anonymous-contact-filter.h"
 #include "contacts/model/filter/anonymous-without-messages-contact-filter.h"
 
+#include "file-transfer/file-transfer-manager.h"
+
 #include "gui/widgets/chat_edit_box.h"
 #include "gui/widgets/contacts-list-widget.h"
 #include "gui/widgets/contacts-list-widget-menu-manager.h"
@@ -368,6 +370,7 @@ Kadu::Kadu(QWidget *parent)
 
 	GroupManager::instance()->loadConfiguration();
 	ContactManager::instance()->loadConfiguration(xml_config_file);
+	FileTransferManager::instance()->loadConfiguration();
 
 	kadu = this;
 	blinktimer = 0;
@@ -1605,6 +1608,7 @@ bool Kadu::close(bool quit)
 		GroupManager::instance()->storeConfiguration();
 		ContactManager::instance()->storeConfiguration(xml_config_file);
 		AccountManager::instance()->storeConfiguration(xml_config_file);
+		FileTransferManager::instance()->loadConfiguration();
 
 		Protocol *gadu = AccountManager::instance()->defaultAccount()->protocol();
 		if (gadu->isConnected())

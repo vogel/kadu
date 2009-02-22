@@ -15,7 +15,8 @@
 #include "gadu-file-transfer.h"
 
 GaduFileTransfer::GaduFileTransfer(GaduProtocol *protocol, Contact peer, FileTransfer::FileTransferType transferType) :
-		FileTransfer(peer, transferType), Protocol(protocol), SocketNotifiers(0), WaitingForSocketNotifiers(false)
+		FileTransfer(protocol->account(), peer, transferType), Protocol(protocol),
+		SocketNotifiers(0), WaitingForSocketNotifiers(false)
 {
 }
 
@@ -44,7 +45,7 @@ void GaduFileTransfer::setFileTransferNotifiers(DccSocketNotifiers *socketNotifi
 	SocketNotifiers = socketNotifiers;
 	SocketNotifiers->setGaduFileTransfer(this);
 	WaitingForSocketNotifiers = false;
-	GaduFileName = socketNotifiers->gaduFileName();
+	setRemoteFile(socketNotifiers->remoteFileName());
 
 	changeFileTransferStatus(FileTransfer::StatusTransfer);
 }
@@ -64,7 +65,7 @@ void GaduFileTransfer::send()
 	if (SocketNotifiers || WaitingForSocketNotifiers) // already sending/receiving
 		return;
 
-	GaduFileName = QString::null;
+	setRemoteFile(QString::null);
 
 	if (!Protocol || localFileName().isEmpty())
 	{

@@ -34,7 +34,7 @@ FileTransferManager::~FileTransferManager()
 
 StoragePoint * FileTransferManager::createStoragePoint() const
 {
-	return new StoragePoint(xml_config_file, xml_config_file->getNode("FileTransfers"));
+	return new StoragePoint(xml_config_file, xml_config_file->getNode("FileTransfersNew"));
 }
 
 void FileTransferManager::loadConfiguration()
@@ -43,6 +43,8 @@ void FileTransferManager::loadConfiguration()
 
 void FileTransferManager::storeConfiguration()
 {
+	foreach (FileTransfer *fileTransfer, FileTransfers)
+		fileTransfer->storeConfiguration();
 }
 
 void FileTransferManager::addFileTransfer(FileTransfer *fileTransfer)
