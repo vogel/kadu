@@ -53,9 +53,15 @@ if(MINGW)
 	set (CMAKE_SHARED_LIBRARY_PREFIX "")
 endif(MINGW)
 
-set (DATADIR ${CMAKE_INSTALL_PREFIX}/share)
-set (LIBDIR ${CMAKE_INSTALL_PREFIX}/lib)
-set (BINDIR ${CMAKE_INSTALL_PREFIX}/bin)
+if (NOT DATADIR)
+	set (DATADIR ${CMAKE_INSTALL_PREFIX}/share)
+endif (NOT DATADIR)
+if (NOT LIBDIR)
+	set (LIBDIR ${CMAKE_INSTALL_PREFIX}/lib${LIB_SUFFIX})
+endif (NOT LIBDIR)
+if (NOT BINDIR)
+	set (BINDIR ${CMAKE_INSTALL_PREFIX}/bin)
+endif (NOT BINDIR)
 
 # macros
 
@@ -140,7 +146,7 @@ macro (kadu_module)
 		if (APPLE)
 			set_target_properties (${MODULE_NAME} PROPERTIES LINK_FLAGS "-undefined dynamic_lookup")
 		endif (APPLE)
-		install (TARGETS ${MODULE_NAME} DESTINATION lib/kadu/modules)
+		install (TARGETS ${MODULE_NAME} DESTINATION lib${LIB_SUFFIX}/kadu/modules)
 	endif (${${MODULE_NAME}} STREQUAL STATIC)
 
 endmacro (kadu_module)
