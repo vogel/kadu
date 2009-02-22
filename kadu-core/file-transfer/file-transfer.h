@@ -55,12 +55,12 @@ private:
 	QString LocalFileName;
 	QString RemoteFileName;
 
+	unsigned long FileSize;
+	unsigned long TransferredSize;
+
 	FileTransferType TransferType;
 	FileTransferStatus TransferStatus;
 	FileTransferError TransferError;
-
-	unsigned long FileSize;
-	unsigned long TransferredSize;
 
 protected:
 	virtual StoragePoint * createStoragePoint() const;

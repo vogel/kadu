@@ -59,7 +59,14 @@ ChatMessagesView::~ChatMessagesView()
 	Messages.clear();
  	ChatStylesManager::instance()->chatViewDestroyed(this);
 
-	Protocol *protocol = AccountManager::instance()->defaultAccount()->protocol();
+	Account *account = AccountManager::instance()->defaultAccount();
+	if (!account)
+		return;
+
+	Protocol *protocol = account->protocol();
+	if (!protocol)
+		return;
+
 	ChatImageService *chatImageService = protocol->chatImageService();
 	if (chatImageService)
 			disconnect(chatImageService, SIGNAL(imageReceived(const QString &, const QString &)),

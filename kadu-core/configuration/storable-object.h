@@ -26,7 +26,7 @@ public:
 
 	StoragePoint * storage();
 	void setStorage(StoragePoint *storage) { Storage = storage; }
-	bool isValidStorage() { return Storage && Storage->storage(); }
+	bool isValidStorage() { return storage() && storage()->storage(); }
 
 	void storeValue(const QString &name, const QVariant value);
 

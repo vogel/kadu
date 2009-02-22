@@ -43,6 +43,8 @@ void FileTransferManager::loadConfiguration()
 
 void FileTransferManager::storeConfiguration()
 {
+	printf("storing all\n");
+
 	foreach (FileTransfer *fileTransfer, FileTransfers)
 		fileTransfer->storeConfiguration();
 }

@@ -45,7 +45,6 @@ FileTransferWidget::~FileTransferWidget()
 		disconnect(CurrentTransfer, SIGNAL(statusChanged()), this, SLOT(fileTransferStatusChanged()));
 		disconnect(CurrentTransfer, SIGNAL(destroyed(QObject *)), this, SLOT(fileTransferDestroyed(QObject *)));
 
-		// TODO: ?????
 		delete CurrentTransfer;
 		CurrentTransfer = 0;
 	}

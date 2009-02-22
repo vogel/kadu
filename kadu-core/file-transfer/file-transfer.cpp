@@ -16,13 +16,13 @@
 
 FileTransfer::FileTransfer(Account *account, Contact peer, FileTransferType transferType) :
 		Uuid(QUuid::createUuid()), CurrentAccount(account), Peer(peer),
+		FileSize(0), TransferredSize(0),
 		TransferType(transferType), TransferStatus(StatusNotConnected), TransferError(ErrorOk)
 {
 }
 
 FileTransfer::~FileTransfer()
 {
-	storeConfiguration(); // TODO: 0.6.6 do not du if removed ;D
 }
 
 StoragePoint * FileTransfer::createStoragePoint() const

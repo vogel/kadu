@@ -528,7 +528,6 @@ void GaduProtocol::connectionTimeoutTimerSlot()
 {
 	kdebugf();
 
-	return;
 	kdebugm(KDEBUG_INFO, "Timeout, breaking connection\n");
 	errorSlot(ConnectionTimeout);
 
@@ -537,14 +536,12 @@ void GaduProtocol::connectionTimeoutTimerSlot()
 
 void GaduProtocol::errorSlot(GaduError err)
 {
-	return;
-
 	kdebugf();
 	QString msg = QString::null;
 
 	disconnectedSlot();
 
-	emit error(err);
+// 	emit error(err);
 
 	bool continue_connecting = true;
 	switch (err)
@@ -612,7 +609,7 @@ void GaduProtocol::errorSlot(GaduError err)
 			kdebugm(KDEBUG_ERROR, "Unhandled error? (%d)\n", int(err));
 			break;
 	}
-
+/*
 	if (msg != QString::null)
 	{
 		QHostAddress server = activeServer();
@@ -623,7 +620,7 @@ void GaduProtocol::errorSlot(GaduError err)
 			host = "HUB";
 		kdebugm(KDEBUG_INFO, "%s %s\n", qPrintable(host), qPrintable(msg));
 		emit connectionError(account(), host, msg);
-	}
+	}*/
 
 	if (!continue_connecting)
 		setStatus(Status::Offline);
