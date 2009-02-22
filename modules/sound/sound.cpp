@@ -220,10 +220,6 @@ SoundManager::~SoundManager()
 {
 	kdebugf();
 	play_thread->endThread();
-
-	delete sound_slots;
-	sound_slots = NULL;
-
 	notification_manager->unregisterNotifier("Sound");
 
 	play_thread->wait(2000);
@@ -233,6 +229,8 @@ SoundManager::~SoundManager()
 		play_thread->terminate();
 	}
 	delete play_thread;
+	delete sound_slots;
+	sound_slots = NULL;
 	delete themes;
 
 	kdebugf2();
