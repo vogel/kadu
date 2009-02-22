@@ -1,7 +1,10 @@
 set (SOURCES
 	encryption.cpp
+	kadu_encryption_factory.cpp
+	kadu_encryption_rsa.cpp
+	kadu_encryption_simlite.cpp
 	keys_manager.cpp
-	simlite.c
+	pkcs1_certificate.cpp
 )
 
 set (MOC_SOURCES
@@ -38,12 +41,12 @@ if (COMMAND cmake_policy)
 	cmake_policy(SET CMP0003 NEW)
 endif (COMMAND cmake_policy)
 
-pkg_search_module (OPENSSL REQUIRED openssl)
-include_directories (${OPENSSL_INCLUDE_DIRS})
-link_directories (${OPENSSL_INCLUDE_DIRS})
+pkg_search_module (QCA2 REQUIRED qca2)
+include_directories (${QCA2_INCLUDE_DIRS})
+link_directories (${QCA2_INCLUDE_DIRS})
 
 add_library (encryption ${encryption} ${SOURCES} ${MOC_FILES})
-target_link_libraries(encryption ${OPENSSL_LIBRARIES})
+target_link_libraries(encryption ${QCA2_LIBRARIES})
 add_custom_target (encryption-translations DEPENDS ${TRANSLATION_FILES})
 add_dependencies (encryption encryption-translations)
 if (encryption STREQUAL STATIC)
