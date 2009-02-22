@@ -417,7 +417,7 @@ void GaduSocketNotifiers::socketEvent()
 	if (Sess->state == GG_STATE_CONNECTING_HUB || Sess->state == GG_STATE_CONNECTING_GG)
 	{
 		kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "changing QSocketNotifiers.\n");
-
+		Fd = Sess->fd;
 		recreateSocketNotifiers();
 	}
 
