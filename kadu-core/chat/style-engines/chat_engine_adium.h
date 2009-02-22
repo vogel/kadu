@@ -28,6 +28,8 @@ class AdiumChatStyleEngine : public ChatStyleEngine
 	QString replaceKeywords(ChatMessagesView *view, QString &style);
 	QString replaceKeywords(ChatMessagesView *view, QString &source, ChatMessage *message);
 
+	bool clearDirectory(const QString &directory);
+
 public:
 	AdiumChatStyleEngine();
 

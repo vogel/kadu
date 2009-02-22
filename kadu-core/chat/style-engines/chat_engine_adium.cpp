@@ -242,19 +242,43 @@ void AdiumChatStyleEngine::prepareStylePreview(Preview *preview, QString styleNa
 
 }
 
+bool AdiumChatStyleEngine::clearDirectory(const QString &directory)
+{
+	QDir dir(directory);
+	QFileInfo fi;
+
+	foreach (const QString &fileName, dir.entryList(QDir::AllEntries | QDir::NoDotAndDotDot | QDir::Hidden))
+	{
+		fi.setFile(dir, fileName);
+		if (!fi.isDir())
+		{
+			if (!dir.remove(fileName))
+				return false;
+		}
+		else
+		{
+			if (!clearDirectory(QString(directory + "/" + fileName)) || !dir.rmdir(fileName))
+				return false;
+				
+		}	
+	}
+	return dir.entryList(QDir::AllEntries | QDir::NoDotAndDotDot | QDir::Hidden).isEmpty();
+}
+
 bool AdiumChatStyleEngine::removeStyle(const QString &styleName)
 {
-
+	QDir dir(QString(ggPath() + "/syntax/chat/" + styleName));
+	return clearDirectory(dir.absolutePath()) && dir.cdUp() && dir.rmdir(styleName);
 }
 
 // Some parts of the code below are borrowed from Kopete project (http://kopete.kde.org/)
 QString AdiumChatStyleEngine::replaceKeywords(ChatMessagesView *view, QString &style)
 {
 	QString result = style;
-	
 	QString name;
+/*
 //TODO: get Chat name (contacts' nicks?)
-/*	if (!view->chat()->contacts().isEmpty())
+	if (!view->chat()->contacts().count() > 0)
 	{
 		// Replace %chatName% //TODO. Find way to dynamic uptade this tag (add id ?)
 		int uinsSize = view->chat()->contacts().count();
