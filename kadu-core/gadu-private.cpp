@@ -405,6 +405,9 @@ void GaduSocketNotifiers::socketEvent()
 	{
 		kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "changing QSocketNotifiers.\n");
 
+		// fixes bug with 'Bad password' errors on reconnect
+		Fd = Sess->fd;
+
 		recreateSocketNotifiers();
 	}
 
