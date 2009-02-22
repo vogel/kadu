@@ -143,7 +143,7 @@ void AdiumChatStyleEngine::appendMessage(ChatMessagesView *view, ChatMessage *me
 		}
 	}
 	
-	formattedMessageHtml = replaceKeywords(view, formattedMessageHtml, message);
+	formattedMessageHtml = replaceKeywords(view, formattedMessageHtml, BaseHref, message);
 	formattedMessageHtml.replace("\n", " ");
 	formattedMessageHtml.prepend("<span>");
 	formattedMessageHtml.append("</span>");
@@ -161,8 +161,8 @@ void AdiumChatStyleEngine::appendMessage(ChatMessagesView *view, ChatMessage *me
 void AdiumChatStyleEngine::refreshView(ChatMessagesView *view)
 {
 	QString styleBaseHtml = QString(xhtmlBase).arg(BaseHref)
-		.arg(replaceKeywords(view, HeaderHtml))
-		.arg(replaceKeywords(view, FooterHtml))
+		.arg(replaceKeywords(view, BaseHref, HeaderHtml))
+		.arg(replaceKeywords(view, BaseHref, FooterHtml))
 		.arg("Variants/" + StyleVariantName)
 		.arg(ChatStylesManager::instance()->mainStyle());
 	view->setHtml(styleBaseHtml);
@@ -236,12 +236,6 @@ void AdiumChatStyleEngine::loadTheme(const QString &styleName, const QString &va
 	StatusHtml = readThemePart(BaseHref + "Status.html");
 }
 
-//TODO:
-void AdiumChatStyleEngine::prepareStylePreview(Preview *preview, QString styleName, QString variantName)
-{
-
-}
-
 bool AdiumChatStyleEngine::clearDirectory(const QString &directory)
 {
 	QDir dir(directory);
@@ -271,34 +265,69 @@ bool AdiumChatStyleEngine::removeStyle(const QString &styleName)
 	return clearDirectory(dir.absolutePath()) && dir.cdUp() && dir.rmdir(styleName);
 }
 
+void AdiumChatStyleEngine::prepareStylePreview(Preview *preview, QString styleName, QString variantName)
+{
+	QDir dir;
+	QString styleHref = ggPath() + "/syntax/chat/" + styleName + "/Contents/Resources/";
+	if (!dir.exists(styleHref))
+		styleHref = dataPath("kadu") + "/syntax/chat/" + styleName + "/Contents/Resources/";
+
+	QString incomingHtml = readThemePart(styleHref + "Incoming/Content.html");
+	QString outgoingHtml;
+	if (dir.exists("Outgoing/Content.html"))
+		outgoingHtml = readThemePart(styleHref + "Outgoing/Content.html");
+	else
+		outgoingHtml = incomingHtml;
+
+	QString headerHtml = readThemePart(styleHref + "Header.html");
+	QString footerHtml = readThemePart(styleHref + "Footer.html");
+
+	QString styleBaseHtml = QString(xhtmlBase).arg(styleHref)
+		.arg(replaceKeywords(0, styleHref, headerHtml))
+		.arg(replaceKeywords(0, styleHref, footerHtml))
+		.arg("Variants/" + variantName)
+		.arg(ChatStylesManager::instance()->mainStyle());
+	preview->setHtml(styleBaseHtml);
+
+	preview->page()->mainFrame()->evaluateJavaScript(jsCode);
+	ChatMessage *message = dynamic_cast<ChatMessage *>(preview->getObjectsToParse().at(0));
+
+	incomingHtml = replaceKeywords(0, styleHref, incomingHtml, message);
+	incomingHtml.replace("\n", " ");
+	incomingHtml.prepend("<span>");
+	incomingHtml.append("</span>");
+	preview->page()->mainFrame()->evaluateJavaScript("kadu_appendNextMessage(\'"+ incomingHtml +"\')");
+
+	message = dynamic_cast<ChatMessage *>(preview->getObjectsToParse().at(1));
+	outgoingHtml = replaceKeywords(0, styleHref, outgoingHtml, message);
+	outgoingHtml.replace("\n", " ");
+	outgoingHtml.prepend("<span>");
+	outgoingHtml.append("</span>");
+	preview->page()->mainFrame()->evaluateJavaScript("kadu_appendNextMessage(\'"+ outgoingHtml +"\')");
+
+}
+
 // Some parts of the code below are borrowed from Kopete project (http://kopete.kde.org/)
-QString AdiumChatStyleEngine::replaceKeywords(ChatMessagesView *view, QString &style)
+QString AdiumChatStyleEngine::replaceKeywords(ChatMessagesView *view, QString &styleHref, QString &style)
 {
 	QString result = style;
 	QString name;
-/*
+
 //TODO: get Chat name (contacts' nicks?)
-	if (!view->chat()->contacts().count() > 0)
+	if (view && view->chat())
 	{
-		// Replace %chatName% //TODO. Find way to dynamic uptade this tag (add id ?)
+		// Replace %chatName% //TODO. Find way to dynamic update this tag (add id ?)
 		int uinsSize = view->chat()->contacts().count();
-		if (uinsSize > 1)
-		{
-			int i = 0;
+		int i = 0;
 
-			foreach(const Contact &contact, view->chat()->contacts())
-			{
-				name.append(KaduParser::parse("%a", AccountManager::instance()->defaultAccount(), contact, false));
-
-				if (++i < uinsSize)
-					name.append(", ");
-			}
-		}
-		else
+		foreach(const Contact &contact, view->chat()->contacts())
 		{
-			name = view->chat()->contacts()[0].display();
+			name.append(contact.display());
+
+			if (++i < uinsSize)
+				name.append(", ");
 		}
-	}*/
+	}
 	result.replace(QString("%chatName%"), name);
 	// Replace %sourceName%. TODO: Do sth with it!
 	result.replace(QString("%sourceName%"), AccountManager::instance()->defaultAccount()->data()->name());
@@ -316,15 +345,15 @@ QString AdiumChatStyleEngine::replaceKeywords(ChatMessagesView *view, QString &s
 	QString photoIncoming;
 	QString photoOutgoing;
 
-	photoIncoming = QString("file://") + BaseHref + QString("Incoming/buddy_icon.png");
-	photoOutgoing = QString("file://") + BaseHref + QString("Outgoing/buddy_icon.png");
+	photoIncoming = QString("file://") + styleHref + QString("Incoming/buddy_icon.png");
+	photoOutgoing = QString("file://") + styleHref + QString("Outgoing/buddy_icon.png");
 
 	result.replace(QString("%incomingIconPath%"), photoIncoming);
 	result.replace(QString("%outgoingIconPath%"), photoOutgoing);
 
 	return result;
 }
-QString AdiumChatStyleEngine::replaceKeywords(ChatMessagesView *view, QString &source, ChatMessage *message)
+QString AdiumChatStyleEngine::replaceKeywords(ChatMessagesView *view, QString &styleHref, QString &source, ChatMessage *message)
 {
 	QString result = source;
 	QString nick, contactId, service, protocolIcon, nickLink;
@@ -332,11 +361,14 @@ QString AdiumChatStyleEngine::replaceKeywords(ChatMessagesView *view, QString &s
 	// Replace sender (contact nick)
 	result.replace(QString("%sender%"), message->sender().display());
 	// Replace time
-	result.replace(QString("%time%"), printDateTime(message->sdate()));
-	// Replace %screenName% (contact ID) TODO:
+	result.replace(QString("%time%"), printDateTime(message->sdate().isNull() ? message->date(): message->sdate()));
+	// Replace %screenName% (contact ID)
 	result.replace(QString("%senderScreenName%"), message->sender().id(message->sender().prefferedAccount()));
 	// Replace service name (protocol name) TODO:
-	result.replace(QString("%service%"), view->chat()->currentProtocol()->protocolFactory()->displayName());
+	if (view)
+		result.replace(QString("%service%"), view->chat()->currentProtocol()->protocolFactory()->displayName());
+	else
+		result.replace(QString("%service%"), AccountManager::instance()->defaultAccount()->protocol()->protocolFactory()->displayName());
 	// Replace protocolIcon (sender statusIcon)
 	result.replace(QString("%senderStatusIcon%"), "");
 
@@ -358,12 +390,12 @@ QString AdiumChatStyleEngine::replaceKeywords(ChatMessagesView *view, QString &s
 	if(message->type() == TypeReceived)
 	{
    		result.replace(QString("%messageClasses%"), "message incoming");
-		photoPath = QString("file://") + BaseHref + QString("Incoming/buddy_icon.png");
+		photoPath = QString("file://") + styleHref + QString("Incoming/buddy_icon.png");
 	}
 	else
 	{
    		result.replace(QString("%messageClasses%"), "message outgoing");
-		photoPath = QString("file://") + BaseHref + QString("Outgoing/buddy_icon.png");
+		photoPath = QString("file://") + styleHref + QString("Outgoing/buddy_icon.png");
 	}
 	result.replace(QString("%userIconPath%"), photoPath);
 

@@ -30,6 +30,9 @@ ChatMessagesView::ChatMessagesView(QWidget *parent) : KaduTextBrowser(parent),
 {
 	setMinimumSize(QSize(100,100));
 
+	if (parent)
+		Chat = dynamic_cast<ChatWidget *>(parent);
+
  	ChatStylesManager::instance()->chatViewCreated(this);
 
 	// TODO: for me with empty styleSheet if has artifacts on scrollbars...
@@ -44,9 +47,6 @@ ChatMessagesView::ChatMessagesView(QWidget *parent) : KaduTextBrowser(parent),
 
 
 	connect(this, SIGNAL(loadFinished(bool)), this, SLOT(scrollToLine()));
-
-	if (parent)
-		Chat = dynamic_cast<ChatWidget *>(parent);
 
 	settings()->setAttribute(QWebSettings::JavascriptEnabled, true);
 
