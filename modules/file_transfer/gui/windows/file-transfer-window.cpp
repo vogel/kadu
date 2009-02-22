@@ -13,8 +13,13 @@
 #include <QtGui/QPushButton>
 #include <QtGui/QScrollArea>
 
+#include "file-transfer/file-transfer.h"
+#include "file-transfer/file-transfer-manager.h"
+
 #include "debug.h"
 #include "misc.h"
+
+#include "gui/widgets/file-transfer-widget.h"
 
 #include "file-transfer-window.h"
 
@@ -25,12 +30,11 @@ FileTransferWindow::FileTransferWindow(QWidget *parent) :
 
 	createGui();
 	loadWindowGeometry(this, "General", "TransferWindowGeometry", 200, 200, 500, 300);
-/*
-	foreach(FileTransfer *i, file_transfer_manager->transfers())
-	{
-		i->addListener(this, true);
-		newFileTransfer(i);
-	}*/
+
+	foreach (FileTransfer *fileTransfer, FileTransferManager::instance()->fileTransfer())
+			fileTransferAdded(fileTransfer);
+	connect(FileTransferManager::instance(), SIGNAL(fileTransferAdded(FileTransfer*)),
+			this, SLOT(fileTransferAdded(FileTransfer *)));
 
 	contentsChanged();
 
@@ -103,11 +107,17 @@ void FileTransferWindow::keyPressEvent(QKeyEvent *e)
 		QFrame::keyPressEvent(e);
 }
 
+void FileTransferWindow::fileTransferAdded(FileTransfer *fileTransfer)
+{
+	FileTransferWidget *ftm = new FileTransferWidget(fileTransfer, InnerFrame);
+	TransfersLayout->addWidget(ftm);
+
+	contentsChanged();
+}
+
 void FileTransferWindow::clearClicked()
 {
-// 	foreach (FileTransfer *i, file_transfer_manager->transfers())
-// 		if (i->status() == FileTransfer::StatusFinished)
-// 			i->deleteLater();
+	FileTransferManager::instance()->cleanUp();
 }
 
 void FileTransferWindow::contentsChanged()
@@ -118,22 +128,4 @@ void FileTransferWindow::contentsChanged()
 
 	InnerFrame->setMinimumHeight(boxSize.height());
 	InnerFrame->setMaximumHeight(boxSize.height());
-
-	// workaround
-	// without this sometimes this scroll to strange positions
-// 	int y = scrollView->contentsY();
-// 	scrollView->scrollBy(0, -y);
-// 	frame->setGeometry(0, 0, frame->width(), boxSize.height());
-// 	scrollView->scrollBy(0, y);
 }
-/*
-void FileTransferWindow::newFileTransfer(FileTransfer *ft)
-{
-	kdebugf();
-
-	FileTransferWidget *ftm = new FileTransferWidget(frame, ft);
-	transfersLayout->addWidget(ftm);
-	map.insert(ft, ftm);
-
-	contentsChanged();
-}*/

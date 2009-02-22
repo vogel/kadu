@@ -8,11 +8,12 @@
  ***************************************************************************/
 
 #include "configuration/storage-point.h"
+#include "file-transfer/file-transfer.h"
 
 #include "xml_config_file.h"
 
 #include "file-transfer-manager.h"
-/*
+
 FileTransferManager * FileTransferManager::Instance = 0;
 
 FileTransferManager * FileTransferManager::instance()
@@ -21,6 +22,14 @@ FileTransferManager * FileTransferManager::instance()
 		Instance = new FileTransferManager();
 
 	return Instance;
+}
+
+FileTransferManager::FileTransferManager()
+{
+}
+
+FileTransferManager::~FileTransferManager()
+{
 }
 
 StoragePoint * FileTransferManager::createStoragePoint() const
@@ -34,4 +43,28 @@ void FileTransferManager::loadConfiguration()
 
 void FileTransferManager::storeConfiguration()
 {
-}*/
+}
+
+void FileTransferManager::addFileTransfer(FileTransfer *fileTransfer)
+{
+	emit fileTransferAboutToBeAdded(fileTransfer);
+	FileTransfers.append(fileTransfer);
+	emit fileTransferAdded(fileTransfer);
+}
+
+void FileTransferManager::removeFileTransfer(FileTransfer *fileTransfer)
+{
+	emit fileTransferAboutToBeRemoved(fileTransfer);
+	FileTransfers.removeAll(fileTransfer);
+	emit fileTransferRemoved(fileTransfer);
+}
+
+void FileTransferManager::cleanUp()
+{
+	foreach (FileTransfer *fileTransfer, FileTransfers)
+		if (FileTransfer::StatusFinished == fileTransfer->transferStatus())
+		{
+			removeFileTransfer(fileTransfer);
+			fileTransfer->deleteLater();
+		}
+}

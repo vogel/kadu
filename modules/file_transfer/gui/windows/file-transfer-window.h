@@ -15,6 +15,8 @@
 class QScrollArea;
 class QVBoxLayout;
 
+class FileTransfer;
+
 class FileTransferWindow : public QFrame
 {
 	Q_OBJECT
@@ -23,11 +25,12 @@ class FileTransferWindow : public QFrame
 
 	QFrame *InnerFrame;
 	QVBoxLayout *TransfersLayout;
-// 	QMap<FileTransfer *, FileTransferWidget *> map;
 
 	void createGui();
 
 private slots:
+	void fileTransferAdded(FileTransfer *fileTransfer);
+
 	void clearClicked();
 
 protected:

@@ -84,33 +84,9 @@ public:
 
 	unsigned int percent();
 
-// 	virtual void start(StartType startType = StartNew) = 0;
-// 	virtual void stop(StopType stopType = StopTemporary) = 0;
-
-// 	void connectionAccepted(DccSocket *socket) {}
-// 	void connectionRejected(DccSocket *socket);
-// 
-// 	QDomElement toDomElement(const QDomElement &root);
-// 	static FileTransfer * fromDomElement(const QDomElement &dom, FileTransferManager *listener);
-/*
-	FileTransferType type();
-	FileTransferStatus status();*/
-
-// 	UinType contact();
-// 	QString fileName();
-// 
-// 	int percent();
-// 	long int speed();
-// 	long long int fileSize();
-// 	long long int transferedSize();
-// 
 signals:
 	void statusChanged();
-// 	void newFileTransfer(FileTransfer *);
-// // 	void fileTransferFailed(FileTransfer *, FileTransfer::FileTransferError);
-// 	void fileTransferStatusChanged(FileTransfer *);
-// 	void fileTransferFinished(FileTransfer *);
-// 	void fileTransferDestroying(FileTransfer *);
+
 };
 
 #endif

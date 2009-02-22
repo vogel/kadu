@@ -16,7 +16,7 @@
 #include "configuration/storable-object.h"
 
 #include "exports.h"
-/*
+
 class FileTransfer;
 class XmlConfigFile;
 
@@ -41,8 +41,18 @@ public:
 	void loadConfiguration();
 	void storeConfiguration();
 
+	QList<FileTransfer *> fileTransfer() { return FileTransfers; }
 	void addFileTransfer(FileTransfer *fileTransfer);
+	void removeFileTransfer(FileTransfer *fileTransfer);
 
-};*/
+	void cleanUp();
+
+signals:
+	void fileTransferAboutToBeAdded(FileTransfer *contact);
+	void fileTransferAdded(FileTransfer *contact);
+	void fileTransferAboutToBeRemoved(FileTransfer *contact);
+	void fileTransferRemoved(FileTransfer *contact);
+
+};
 
 #endif // FILE_TRANSFER_MANAGER_H
