@@ -58,10 +58,13 @@ public:
 	bool hasFeature() { return false; }
 
 	QString protocolVersion() { return ProtocolVersion; }
+	void setProtocolVersion(QString protocolVersion) { ProtocolVersion = protocolVersion; }
+
 	QHostAddress ip() { return Address; }
+	void setIp(QHostAddress addres) { Address = addres; }
+
 	unsigned int port() { return Port; }
-	void setProtocolVersion(const QString &protocolVersion) { ProtocolVersion = protocolVersion; }
-	void setAddressAndPort(QHostAddress address, unsigned int port);
+	void setPort(int port) { Port = port; }
 
 	QString dnsName() { return DnsName; }
 	void refreshDNSName();

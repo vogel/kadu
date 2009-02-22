@@ -16,6 +16,7 @@
 
 #include "config_file.h"
 #include "debug.h"
+#include "misc.h"
 
 #include "dcc/dcc-manager.h"
 #include "dcc/dcc-socket.h"
@@ -38,6 +39,10 @@ DccManager::DccManager(GaduProtocol *protocol) :
 			this, SLOT(dccConnectionRequestReceived(Contact)));
 	connect(Protocol->socketNotifiers(), SIGNAL(dcc7New(struct gg_dcc7 *)),
 			this, SLOT(dcc7New(struct gg_dcc7 *)));
+	connect(Protocol->socketNotifiers(), SIGNAL(dcc7Rejected(struct gg_dcc7 *)),
+			this, SLOT(dcc7Rejected(struct gg_dcc7 *)));
+	connect(Protocol->socketNotifiers(), SIGNAL(dcc7Erorr(struct gg_dcc7 *)),
+			this, SLOT(dcc7Erorr(struct gg_dcc7 *)));
 	
 	setUpDcc();
 
@@ -50,7 +55,12 @@ DccManager::~DccManager()
 
 	disconnect(Protocol, SIGNAL(dccConnectionRequestReceived(Contact)),
 			this, SLOT(dccConnectionRequestReceived(Contact)));
-	disconnect(Protocol, SIGNAL(dcc7New(struct gg_dcc7 *)), this, SLOT(dcc7New(struct gg_dcc7 *)));
+	disconnect(Protocol->socketNotifiers(), SIGNAL(dcc7New(struct gg_dcc7 *)),
+			this, SLOT(dcc7New(struct gg_dcc7 *)));
+	disconnect(Protocol->socketNotifiers(), SIGNAL(dcc7Rejected(struct gg_dcc7 *)),
+			this, SLOT(dcc7Rejected(struct gg_dcc7 *)));
+	disconnect(Protocol->socketNotifiers(), SIGNAL(dcc7Erorr(struct gg_dcc7 *)),
+			this, SLOT(dcc7Erorr(struct gg_dcc7 *)));
 
 	closeDcc();
 
@@ -129,7 +139,7 @@ void DccManager::setUpDcc()
 		DCCPort = socket->port;
 	}
 
-	Protocol->setDccIpAndPort(htonl(DCCIP.ip4Addr()), DCCPort);
+	Protocol->setDccIpAndPort(htonl(DCCIP.toIPv4Address()), DCCPort);
 
 	kdebugmf(KDEBUG_NETWORK | KDEBUG_INFO, "DCC_IP=%s DCC_PORT=%d\n", qPrintable(DCCIP.toString()), DCCPort);
 
@@ -260,10 +270,7 @@ bool DccManager::acceptConnection(unsigned int uin, unsigned int peerUin, unsign
 		return false;
 	}
 
-	ContactAccountData *cad = contact.accountData(Protocol->account());
-	if (!cad)
-		return false;
-	GaduContactAccountData *gcad = dynamic_cast<GaduContactAccountData *>(cad);
+	GaduContactAccountData *gcad = Protocol->gaduContactAccountData(contact);
 	if (!gcad)
 		return false;
 
@@ -277,7 +284,7 @@ bool DccManager::acceptConnection(unsigned int uin, unsigned int peerUin, unsign
 
 	QHostAddress remoteAddress(ntohl(peerAddr));
 
-	if (remoteAddress == cad->ip())
+	if (remoteAddress == gcad->ip())
 		return true;
 
 	kdebugm(KDEBUG_WARNING, "possible spoofing attempt from %s (uin:%d)\n", qPrintable(remoteAddress.toString()), peerUin);
@@ -303,10 +310,7 @@ void DccManager::dccConnectionRequestReceived(Contact contact)
 {
 	kdebugf();
 
-	ContactAccountData *cad = contact.accountData(Protocol->account());
-	if (!cad)
-		return;
-	GaduContactAccountData *gcad = dynamic_cast<GaduContactAccountData *>(cad);
+	GaduContactAccountData *gcad = Protocol->gaduContactAccountData(contact);
 	if (!gcad)
 		return;
 	GaduAccountData *gad = dynamic_cast<GaduAccountData *>(Protocol->account()->data());
@@ -352,25 +356,27 @@ void DccManager::dcc7New(struct gg_dcc7 *dcc)
 	kdebugf2();
 }
 
-void DccManager::attachFileTransferSocket(GaduFileTransfer *gft)
+void DccManager::dcc7Rejected(struct gg_dcc7 *dcc)
 {
-	Contact peer = gft->contact();
-	ContactAccountData *cad = peer.accountData(Protocol->account());
-	if (!cad)
-		return;
-	GaduContactAccountData *gcad = dynamic_cast<GaduContactAccountData *>(cad);
-	if (!gcad)
-		return;
-	UinType uin = dynamic_cast<GaduAccountData *>(Protocol->account())->uin();
 
-	gcad->protocolVersion();
+}
 
+void DccManager::dcc7Error(struct gg_dcc7 *dcc)
+{
+
+}
+
+void DccManager::attachSendFileTransferSocket6(unsigned int uin, GaduContactAccountData *gcad, GaduFileTransfer *gft)
+{
 	int port = gcad->port();
 	if (port >= 10)
 	{
+		printf("port >= 10\n");
+
 		struct gg_dcc *socket = gg_dcc_send_file(htonl(gcad->ip().toIPv4Address()), port, uin, gcad->uin());
 		if (socket)
 		{
+			printf("have socket\n");
 			DccSocketNotifiers *fileTransferNotifiers = new DccSocketNotifiers(Protocol, this);
 			gft->setFileTransferNotifiers(fileTransferNotifiers);
 			fileTransferNotifiers->watchFor(socket);
@@ -379,8 +385,52 @@ void DccManager::attachFileTransferSocket(GaduFileTransfer *gft)
 	}
 
 // startTimeOut
+	printf("will wait..\n");
 	WaitingFileTransfers << gft;
 	Protocol->dccRequest(gcad->uin());
+}
+
+void DccManager::attachSendFileTransferSocket7(unsigned int uin, GaduContactAccountData *gcad, GaduFileTransfer *gft)
+{
+	gg_dcc7 *dcc = gg_dcc7_send_file(Protocol->gaduSession(), gcad->uin(),
+			qPrintable(gft->localFileName()), unicode2cp(gft->localFileName()).data(), 0);
+
+	if (dcc)
+	{
+		DccSocketNotifiers *fileTransferNotifiers = new DccSocketNotifiers(Protocol, this);
+		gft->setFileTransferNotifiers(fileTransferNotifiers);
+		fileTransferNotifiers->watchFor(dcc);
+	}
+	else
+	{
+		gft->socketNotAvailable();
+	}
+}
+
+void DccManager::attachSendFileTransferSocket(GaduFileTransfer *gft)
+{
+	Contact peer = gft->contact();
+	GaduContactAccountData *gcad = Protocol->gaduContactAccountData(peer);
+	if (!gcad)
+		return;
+
+	GaduAccountData *gad = dynamic_cast<GaduAccountData *>(Protocol->account()->data());
+	if (!gad)
+		return;
+
+	DccVersion version = (gcad->gaduProtocolVersion() & 0x0000ffff) >= 0x29
+		? Dcc7
+		: Dcc6;
+
+	switch (version)
+	{
+		case Dcc6:
+			attachSendFileTransferSocket6(gad->uin(), gcad, gft);
+			break;
+		case Dcc7:
+			attachSendFileTransferSocket7(gad->uin(), gcad, gft);
+			break;
+	}
 }
 
 /*void DccManager::getVoiceSocket(uint32_t ip, uint16_t port, UinType myUin, UinType peerUin, DccHandler *handler, bool request)

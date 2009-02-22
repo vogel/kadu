@@ -924,18 +924,6 @@ void GaduProtocol::userListReceived(const struct gg_event *e)
 	kdebugf();
 
 	int nr = 0;
-	//kdebugm(KDEBUG_WARNING, "%s\n", qPrintable(userListToString(*userlist)));
-	//return;
-
-	int cnt = 0;
-	while (e->event.notify60[nr].uin) // zliczamy najpierw ile zmian status�w zostanie wyemitowanych
-	{
-		if (!ContactManager::instance()->byId(account(), QString::number(e->event.notify60[nr].uin)).isAnonymous())
-			++cnt;
-		++nr;
-	}
-	nr = 0;
-	//a teraz b�dziemy przetwarza�
 
 	while (e->event.notify60[nr].uin)
 	{
@@ -951,15 +939,15 @@ void GaduProtocol::userListReceived(const struct gg_event *e)
 		}
 
 		GaduContactAccountData *accountData = gaduContactAccountData(contact);
+		accountData->setIp(QHostAddress((unsigned int)ntohl(e->event.notify60[nr].remote_ip)));
+		accountData->setPort(e->event.notify60[nr].remote_port);
+		accountData->setProtocolVersion(QString::number(e->event.notify60[nr].version));
+		accountData->setGaduProtocolVersion(e->event.notify60[nr].version);
+		accountData->setMaxImageSize(e->event.notify60[nr].image_size);
 
 // TODO: 0.6.6
 // 		user.setProtocolData("Gadu", "DNSName", "", nr + 1 == cnt);
-// 		user.setProtocolData("Gadu", "IP", (unsigned int)ntohl(e->event.notify60[nr].remote_ip), nr + 1 == cnt);
-// 		user.setProtocolData("Gadu", "Port", e->event.notify60[nr].remote_port, nr + 1 == cnt);
 // 		user.refreshDNSName("Gadu");
-
-// 		user.setProtocolData("Gadu", "Version", e->event.notify60[nr].version, true, nr + 1 == cnt);
-// 		user.setProtocolData("Gadu", "MaxImageSize", e->event.notify60[nr].image_size, true, nr + 1 == cnt);
 
 		Status oldStatus = accountData->status();
 
@@ -1100,11 +1088,11 @@ void GaduProtocol::userStatusChanged(const struct gg_event *e)
 	if (!data)
 		return;
 
-	data->setAddressAndPort(QHostAddress((quint32)(ntohl(remote_ip))), remote_port);
+	data->setIp(QHostAddress((quint32)(ntohl(remote_ip))));
+	data->setPort(remote_port);
 	data->setProtocolVersion(QString::number(version));
+	data->setGaduProtocolVersion(version);
 	data->setMaxImageSize(image_size);
-// 	user.setProtocolData("Gadu", "Version", version);
-// 	user.setProtocolData("Gadu", "dMaxImageSize", image_size);
 
 // TODO: 0.6.5
 // 	user.refreshDNSName("Gadu");

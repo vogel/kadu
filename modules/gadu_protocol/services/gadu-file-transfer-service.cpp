@@ -9,6 +9,7 @@
 
 #include "misc.h"
 
+#include "file-transfer/gadu-file-transfer.h"
 #include "socket-notifiers/gadu-protocol-socket-notifiers.h"
 #include "gadu-contact-account-data.h"
 #include "gadu-protocol.h"
@@ -22,7 +23,8 @@ GaduFileTransferService::GaduFileTransferService(GaduProtocol *protocol) :
 
 FileTransfer * GaduFileTransferService::createOutgoingFileTransfer(Contact contact)
 {
-
+	GaduFileTransfer *gft = new GaduFileTransfer(Protocol, contact, FileTransfer::TypeSend);
+	return gft;
 }
 
 // kate: indent-mode cstyle; replace-tabs off; tab-width 4; 

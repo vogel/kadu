@@ -91,21 +91,7 @@ private:
 
 	GaduAccountData * gaduAccountData() const;
 
-	UinType uin(Contact contact) const;
-	GaduContactAccountData * gaduContactAccountData(Contact contact) const;
-
 	Status::StatusType statusTypeFromIndex(unsigned int index) const;
-
-	GaduProtocolSocketNotifiers * socketNotifiers() { return SocketNotifiers; }
-
-	friend class DccManager;
-	friend class DccSocketNotifiers;
-	friend class GaduChatImageService;
-	friend class GaduChatService;
-	friend class GaduContactListService;
-	friend class GaduFileTransferService;
-	friend class GaduPersonalInfoService;
-	friend class GaduSearchService;
 
 private slots:
 	/**
@@ -210,9 +196,14 @@ public:
 
 	virtual void setAccount(Account *account);
 
+	UinType uin(Contact contact) const;
+	GaduContactAccountData * gaduContactAccountData(Contact contact) const;
+
 	unsigned int maxDescriptionLength();
 
 	gg_session * gaduSession() { return GaduSession; }
+	GaduProtocolSocketNotifiers * socketNotifiers() { return SocketNotifiers; }
+	DccManager * dccManager() { return Dcc; }
 
 	void changeID(const QString &id);
 	/**

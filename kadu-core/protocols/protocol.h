@@ -37,6 +37,7 @@ class AccountData;
 class ChatImageService;
 class ChatService;
 class ContactListService;
+class FileTransferService;
 class Message;
 class PersonalInfoService;
 class ProtocolFactory;
@@ -83,6 +84,7 @@ public:
 	virtual ChatImageService * chatImageService() { return 0; }
 	virtual ChatService * chatService() { return 0; }
 	virtual ContactListService * contactListService() { return 0; }
+	virtual FileTransferService * fileTransferService() { return 0; }
 	virtual PersonalInfoService * personalInfoService() { return 0; }
 	virtual SearchService * searchService() { return 0; }
 

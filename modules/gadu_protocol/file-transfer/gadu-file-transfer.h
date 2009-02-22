@@ -13,11 +13,26 @@
 #include "file-transfer/file-transfer.h"
 
 class DccSocketNotifiers;
+class GaduProtocol;
 
 class GaduFileTransfer : public FileTransfer
 {
+	GaduProtocol *Protocol;
+	DccSocketNotifiers *SocketNotifiers;
+	bool WaitingForSocketNotifiers;
+
+	QString GaduFileName;
+
+protected:
+	virtual void updateFileInfo();
+
 public:
-	void setFileTransferNotifiers(DccSocketNotifiers *) {}
+	GaduFileTransfer(GaduProtocol *protocol, Contact peer, FileTransferType transferType);
+
+	void setFileTransferNotifiers(DccSocketNotifiers *);
+	void socketNotAvailable();
+
+	virtual void send();
 
 };
 

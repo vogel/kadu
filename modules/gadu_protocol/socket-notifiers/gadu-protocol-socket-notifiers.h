@@ -66,8 +66,8 @@ signals:
 	void userStatusChanged(const struct gg_event *);
 
 	void dcc7New(struct gg_dcc7 *);
-	void dcc7Accepted(struct gg_dcc7 *);
 	void dcc7Rejected(struct gg_dcc7 *);
+	void dcc7Error(struct gg_dcc7 *);
 
 };
 

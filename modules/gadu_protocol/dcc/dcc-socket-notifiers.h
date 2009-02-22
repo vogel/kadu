@@ -61,7 +61,11 @@ public:
 
 	UinType peerUin();
 
-	void setFileTransfer(GaduFileTransfer *fileTransfer) { FileTransfer = fileTransfer; }
+	unsigned long fileSize();
+	unsigned long transferredFileSize();
+	QString gaduFileName();
+
+	void setGaduFileTransfer(GaduFileTransfer *fileTransfer) { FileTransfer = fileTransfer; }
 	void acceptFileTransfer();
 	void rejectFileTransfer();
 

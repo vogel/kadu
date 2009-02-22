@@ -31,55 +31,12 @@
 
 #include "file_transfer_manager.h"
 
-void disableNonDccUles(KaduAction *action)
-{
-	kdebugf();
-
-	const UserListElements &ules = action->userListElements();
-
-	if (!ules.count())
-	{
-		action->setEnabled(false);
-		return;
-	}
-
-	bool dccEnabled = config_file.readBoolEntry("Network", "AllowDCC");
-	bool dccKeyEnabled = true;
-
-	if (!dccEnabled)
-	{
-		action->setEnabled(false);
-		return;
-	}
-
-	unsigned int myUin = config_file.readUnsignedNumEntry("General", "UIN");
-	foreach(const UserListElement &user, ules)
-	{
-		if (!user.usesProtocol("Gadu") || user.ID("Gadu").toUInt() == myUin)
-		{
-			action->setEnabled(false);
-			return;
-		}
-	}
-
-	action->setEnabled(true);
-}
-
 FileTransferManager::FileTransferManager(QObject *parent, const char *name) : QObject(parent, name),
 	fileTransferWindow(0), toggleFileTransferWindowMenuId(0)
 {
 	kdebugf();
 
 	connect(kadu, SIGNAL(keyPressed(QKeyEvent *)), this, SLOT(kaduKeyPressed(QKeyEvent *)));
-
-	sendFileActionDescription = new ActionDescription(
-		ActionDescription::TypeUser, "sendFileAction",
-		this, SLOT(sendFileActionActivated(QAction *, bool)),
-		"SendFile", tr("Send file"), false, QString::null,
-		disableNonDccUles
-	); 
-	sendFileActionDescription->setShortcut("kadu_sendfile");
-	UserBox::insertActionDescription(1, sendFileActionDescription);
 
 	connect(chat_manager, SIGNAL(chatWidgetCreated(ChatWidget *)), this, SLOT(chatCreated(ChatWidget *)));
 	connect(chat_manager, SIGNAL(chatWidgetDestroying(ChatWidget *)), this, SLOT(chatDestroying(ChatWidget*)));
@@ -88,13 +45,6 @@ FileTransferManager::FileTransferManager(QObject *parent, const char *name) : QO
 		chatCreated(it);
 
 	dcc_manager->addHandler(this);
-
-	fileTransferWindowActionDescription = new ActionDescription(
-		ActionDescription::TypeMainMenu, "sendFileWindowAction",
-		this, SLOT(toggleFileTransferWindow(QAction *, bool)),
-		"SendFileWindow", tr("File transfers")
-	);
-	kadu->insertMenuActionDescription(fileTransferWindowActionDescription, Kadu::MenuKadu, 6); // TODO 0.6.6: update
 
 	notification_manager->registerEvent("FileTransfer/IncomingFile",  QT_TRANSLATE_NOOP("@default", "An user wants to send you a file"), CallbackRequired);
 	notification_manager->registerEvent("FileTransfer/Finished", QT_TRANSLATE_NOOP("@default", "File transfer was finished"), CallbackNotRequired);
@@ -175,14 +125,6 @@ void FileTransferManager::writeToConfig()
 	kdebugf2();
 }
 
-QStringList FileTransferManager::selectFilesToSend()
-{
-	return QFileDialog::getOpenFileNames(
-		QString::null,
-		config_file.readEntry("Network", "LastUploadDirectory"),
-		0, "open file", tr("Select file location"));
-}
-
 void FileTransferManager::sendFile(UinType receiver, const QString &filename)
 {
 	kdebugf();
@@ -216,21 +158,6 @@ void FileTransferManager::sendFile(UinType receiver)
 
 	foreach(const QString &file, files)
 		sendFile(receiver, file);
-
-	kdebugf2();
-}
-
-void FileTransferManager::sendFileActionActivated(QAction *sender, bool toggled)
-{
-	kdebugf();
-
-	KaduMainWindow *kaduMainWindow = dynamic_cast<KaduMainWindow *>(sender->parent());
-	if (!kaduMainWindow)
-		return;
-
-	UserListElements users = kaduMainWindow->userListElements();
-	if (users.count())
-		sendFile(users);
 
 	kdebugf2();
 }

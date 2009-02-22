@@ -105,16 +105,18 @@ QMap<QString, QString> & Contact::customData()
 	return Data->customData();
 }
 
-Account * Contact::prefferedAccount()
+Account * Contact::prefferedAccount() const
 {
-	checkNull();
-	return Data->prefferedAccount();
+	return isNull()
+		? 0
+		: Data->prefferedAccount();
 }
 
-QList<Account *> Contact::accounts()
+QList<Account *> Contact::accounts() const
 {
-	checkNull();
-	return Data->accounts();
+	return isNull()
+		? QList<Account *>()
+		: Data->accounts();
 }
 
 void Contact::addAccountData(ContactAccountData *accountData)

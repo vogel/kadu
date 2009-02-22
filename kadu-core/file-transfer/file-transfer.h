@@ -27,8 +27,8 @@ public:
 	};
 
 	enum FileTransferStatus {
-		StatusFrozen,
-		StatusWaitForConnection,
+		StatusNotConnected,
+		StatusWaitingForConnection,
 		StatusTransfer,
 		StatusFinished,
 		StatusRejected
@@ -44,13 +44,33 @@ public:
 		StopFinally
 	};
 
+private:
+	Contact Peer;
+	QString LocalFileName;
+	FileTransferType TransferType;
+	FileTransferStatus TransferStatus;
+
+	unsigned long FileSize;
+	unsigned long TransferredSize;
+
+protected:
+	void changeFileTransferStatus(FileTransferStatus transferStatus);
+
+	void setFileSize(unsigned long fileSize) { FileSize = fileSize; }
+	void setTransferredSize(unsigned long transferredSize) { TransferredSize = transferredSize; }
+
+	virtual void updateFileInfo() = 0;
+
 public:
-// 	FileTransfer(FileTransferType type, const Contact &contact, const QString &fileName);
-// 	virtual ~FileTransfer();
+	FileTransfer(Contact peer, FileTransferType transferType);
+	virtual ~FileTransfer();
 
-	Contact contact() { return Contact::null; }
+	Contact contact() { return Peer; }
 
-	QString localFileName() { return ""; }
+	void setLocalFileName(const QString &localFileName) { LocalFileName = localFileName; }
+	QString localFileName() { return LocalFileName; }
+
+	virtual void send() = 0;
 
 // 	virtual void start(StartType startType = StartNew) = 0;
 // 	virtual void stop(StopType stopType = StopTemporary) = 0;
@@ -72,7 +92,8 @@ public:
 // 	long long int fileSize();
 // 	long long int transferedSize();
 // 
-// signals:
+signals:
+	void statusChanged(FileTransferStatus status);
 // 	void newFileTransfer(FileTransfer *);
 // // 	void fileTransferFailed(FileTransfer *, FileTransfer::FileTransferError);
 // 	void fileTransferStatusChanged(FileTransfer *);

@@ -16,6 +16,7 @@
 #include "protocols/protocol.h"
 
 class DccSocketNotifiers;
+class GaduContactAccountData;
 class GaduFileTransfer;
 class GaduProtocol;
 
@@ -58,6 +59,9 @@ class DccManager : public QObject
 
 private slots:
 	void dcc7New(struct gg_dcc7 *);
+	void dcc7Rejected(struct gg_dcc7 *);
+	void dcc7Error(struct gg_dcc7 *);
+
 	void dccConnectionRequestReceived(Contact contact);
 
 // 	void onIpAutotetectToggled(bool toggled);
@@ -67,6 +71,9 @@ private slots:
 	void dccIncomingConnection(struct gg_dcc *incomingConnection);
 	void dccCallbackReceived(DccSocketNotifiers *socket);
 
+	void attachSendFileTransferSocket6(unsigned int uin, GaduContactAccountData *gcad, GaduFileTransfer *gft);
+	void attachSendFileTransferSocket7(unsigned int uin, GaduContactAccountData *gcad, GaduFileTransfer *gft);
+
 protected:
 	virtual void configurationUpdated();
 
@@ -74,7 +81,7 @@ public:
 	DccManager(GaduProtocol *protocol);
 	virtual ~DccManager();
 
-	void attachFileTransferSocket(GaduFileTransfer *gft);
+	void attachSendFileTransferSocket(GaduFileTransfer *gft);
 
 // 	void getFileTransferSocket(uint32_t ip, uint16_t port, UinType myUin, UinType peerUin, DccHandler *handler, bool request = false);
 // 	void getVoiceSocket(uint32_t ip, uint16_t port, UinType myUin, UinType peerUin, DccHandler *handler, bool request = false);

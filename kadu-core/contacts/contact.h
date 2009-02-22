@@ -87,8 +87,8 @@ public:
 	QUuid uuid() const;
 	QMap<QString, QString> & customData();
 
-	Account * prefferedAccount();
-	QList<Account *> accounts();
+	Account * prefferedAccount() const;
+	QList<Account *> accounts() const;
 
 	void addAccountData(ContactAccountData *accountData);
 	ContactAccountData * accountData(Account *account) const;

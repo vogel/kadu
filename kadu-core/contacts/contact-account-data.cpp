@@ -52,12 +52,6 @@ bool ContactAccountData::isValid()
 	return validateId();
 }
 
-void ContactAccountData::setAddressAndPort(QHostAddress address, unsigned int port)
-{
-	Address = address;
-	Port = port;
-}
-
 void ContactAccountData::refreshDNSName()
 {
 	if (!(Address.isNull()))

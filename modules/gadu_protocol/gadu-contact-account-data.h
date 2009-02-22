@@ -31,8 +31,8 @@ public:
 
 	void setMaxImageSize(unsigned long maxImageSize) { MaxImageSize = maxImageSize; }
 
-	int gaduProtocolVersion() { return GaduProtocolVersion; }
-	void setGaduProtocolVersion(int gaduProtocolVersion) { GaduProtocolVersion = gaduProtocolVersion; }
+	unsigned int gaduProtocolVersion() { return GaduProtocolVersion; }
+	void setGaduProtocolVersion(unsigned int gaduProtocolVersion) { GaduProtocolVersion = gaduProtocolVersion; }
 
 };
 

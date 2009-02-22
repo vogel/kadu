@@ -1,20 +1,9 @@
 set (SOURCES
-	dcc.cpp
-	dcc_handler.cpp
-	dcc_socket.cpp
-	file_transfer.cpp
-	file_transfer_manager.cpp
-	file_transfer_notifications.cpp
-	file_transfer_window.cpp
+	file-transfer-module.cpp
 )
 
 set (MOC_SOURCES
-	dcc.h
-	dcc_socket.h
-	file_transfer.h
-	file_transfer_manager.h
-	file_transfer_notifications.h
-	file_transfer_window.h
+	file-transfer-module.h
 )
 
 set (TRANSLATION_SOURCES
@@ -25,9 +14,10 @@ set (TRANSLATION_SOURCES
 )
 
 set (CONFIGURATION_FILES
-	configuration/dcc.ui)
+	configuration/dcc.ui
+)
 
-kadu_module (dcc
+kadu_module (file_transfer
 	MODULE_SOURCES ${SOURCES}
 	MODULE_MOC_SOURCES ${MOC_SOURCES}
 	MODULE_TRANSLATION_SOURCES ${TRANSLATION_SOURCES}
