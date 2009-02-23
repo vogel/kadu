@@ -145,6 +145,8 @@ void DccManager::setUpDcc()
 	kdebugmf(KDEBUG_NETWORK | KDEBUG_INFO, "DCC_IP=%s DCC_PORT=%d\n", qPrintable(DCCIP.toString()), DCCPort);
 
 	DccEnabled = true;
+
+	connectSocketNotifiers(MainSocketNotifiers);
 	MainSocketNotifiers->watchFor(socket);
 
 	kdebugf2();
@@ -231,6 +233,8 @@ void DccManager::dccIncomingConnection(struct gg_dcc *incomingConnection)
 {
 	kdebugf();
 
+	printf("creating new connection\n");
+
 	DccSocketNotifiers *newSocketNotifiers = new DccSocketNotifiers(Protocol, this);
 	SocketNotifiers << newSocketNotifiers;
 	connectSocketNotifiers(newSocketNotifiers);
@@ -305,7 +309,9 @@ void DccManager::needIncomingFileTransferAccept(DccSocketNotifiers *socket)
 	GaduFileTransfer *fileTransfer = new GaduFileTransfer(Protocol->account(),
 			ContactManager::instance()->byId(Protocol->account(), QString::number(socket->peerUin())),
 			FileTransfer::TypeReceive);
-	socket->acceptFileTransfer();
+
+	emit incomingFileTransfer(fileTransfer);
+// 	socket->acceptFileTransfer();
 }
 
 void DccManager::dccConnectionRequestReceived(Contact contact)

@@ -58,7 +58,6 @@ void GaduTokenSocketNotifiers::socketEvent()
 		case GG_STATE_CONNECTING:
 			kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "changing QSocketNotifiers.\n");
 			watchFor(H);
-			watchWriting();
 			break;
 
 		case GG_STATE_ERROR:
@@ -91,9 +90,6 @@ void GaduTokenSocketNotifiers::socketEvent()
 			}
 
 			break;
-
-		default:
-			watchWriting();
 	}
 
 	kdebugf2();

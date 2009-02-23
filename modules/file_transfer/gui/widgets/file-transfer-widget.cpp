@@ -8,6 +8,7 @@
  ***************************************************************************/
 
 #include <QtCore/QFileInfo>
+#include <QtCore/QTimer>
 #include <QtGui/QGridLayout>
 #include <QtGui/QLabel>
 #include <QtGui/QProgressBar>
@@ -24,17 +25,15 @@
 #include "file-transfer-widget.h"
 
 FileTransferWidget::FileTransferWidget(FileTransfer *ft, QWidget *parent)
-	: QFrame(parent), CurrentTransfer(ft)
+	: QFrame(parent), CurrentTransfer(ft), UpdateTimer(0)
 {
 	kdebugf();
-
-	printf("transfer: %p\n", CurrentTransfer);
 
 	connect(CurrentTransfer, SIGNAL(statusChanged()), this, SLOT(fileTransferStatusChanged()));
 	connect(CurrentTransfer, SIGNAL(destroyed(QObject *)), this, SLOT(fileTransferDestroyed(QObject *)));
 
 	createGui();
-	fileTransferStatusChanged();
+	fileTransferUpdate();
 
 	show();
 }
@@ -139,7 +138,7 @@ void FileTransferWidget::remove()
 		return;
 
 	if (FileTransfer::StatusFinished != CurrentTransfer->transferStatus())
-		if (!MessageBox::ask(tr("Are you sure you want to remove this transfer?")))
+		if (!MessageBox::ask(tr("Are you sure you want to remove this transfer?"), QString::null, this))
 			return;
 		else
 			CurrentTransfer->stop();
@@ -167,6 +166,29 @@ void FileTransferWidget::continueTransfer()
 }
 
 void FileTransferWidget::fileTransferStatusChanged()
+{
+	if (FileTransfer::StatusTransfer == CurrentTransfer->transferStatus())
+	{
+		if (!UpdateTimer)
+		{
+			UpdateTimer = new QTimer(this);
+			connect(UpdateTimer, SIGNAL(timeout()), this, SLOT(fileTransferUpdate()));
+			UpdateTimer->start(1000);
+		}
+	}
+	else
+	{
+		if (UpdateTimer)
+		{
+			delete UpdateTimer;
+			UpdateTimer = 0;
+		}
+	}
+
+	fileTransferUpdate();
+}
+
+void FileTransferWidget::fileTransferUpdate()
 {
 	if (!CurrentTransfer)
 	{

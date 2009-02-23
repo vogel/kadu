@@ -728,7 +728,7 @@ void GaduProtocol::login()
 	GaduLoginParams.tls = 0;
 	GaduLoginParams.client_version = "7, 7, 0, 3351"; //tego si� nie zwalnia...
 		// = GG_DEFAULT_CLIENT_VERSION
-	GaduLoginParams.protocol_version = 0x2a; // we are gg 7.7 now
+	GaduLoginParams.protocol_version = 0x20; // we are gg 7.7 now
 		// =  GG_DEFAULT_PROTOCOL_VERSION;
 	if (GaduLoginParams.tls)
 	{

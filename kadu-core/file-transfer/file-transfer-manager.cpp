@@ -10,6 +10,8 @@
 #include "accounts/account.h"
 #include "configuration/storage-point.h"
 #include "file-transfer/file-transfer.h"
+#include "protocols/protocol.h"
+#include "protocols/services/file-transfer-service.h"
 
 #include "xml_config_file.h"
 
@@ -40,7 +42,7 @@ StoragePoint * FileTransferManager::createStoragePoint() const
 	return new StoragePoint(xml_config_file, xml_config_file->getNode("FileTransfersNew"));
 }
 
-void FileTransferManager::accountRegistered(Account *account)
+void FileTransferManager::loadConfigurationForAccount(Account *account)
 {
 	if (!isValidStorage())
 		return;
@@ -75,11 +77,43 @@ void FileTransferManager::accountRegistered(Account *account)
 	}
 }
 
-void FileTransferManager::accountUnregistered(Account *account)
+void FileTransferManager::accountRegistered(Account *account)
+{
+	loadConfigurationForAccount(account);
+
+	Protocol *protocol = account->protocol();
+	if (!protocol)
+		return;
+
+	FileTransferService *service = protocol->fileTransferService();
+	if (!service)
+		return;
+
+	connect(service, SIGNAL(incomingFileTransfer(FileTransfer *)),
+			this, SLOT(incomingFileTransfer(FileTransfer *)));
+}
+
+void FileTransferManager::storeConfigurationForAccount(Account *account)
 {
 	foreach (FileTransfer *fileTransfer, FileTransfers)
 		if (fileTransfer->account() == account)
 			fileTransfer->storeConfiguration();
+}
+
+void FileTransferManager::accountUnregistered(Account *account)
+{
+	storeConfigurationForAccount(account);
+
+	Protocol *protocol = account->protocol();
+	if (!protocol)
+		return;
+
+	FileTransferService *service = protocol->fileTransferService();
+	if (!service)
+		return;
+
+	disconnect(service, SIGNAL(incomingFileTransfer(FileTransfer *)),
+			this, SLOT(incomingFileTransfer(FileTransfer *)));
 }
 
 void FileTransferManager::addFileTransfer(FileTransfer *fileTransfer)
@@ -107,4 +141,9 @@ void FileTransferManager::cleanUp()
 			removeFileTransfer(fileTransfer);
 			fileTransfer->deleteLater();
 		}
+}
+
+void FileTransferManager::incomingFileTransfer(FileTransfer *fileTransfer)
+{
+	printf("oh lol!!!, incoming file transfer!\n");
 }

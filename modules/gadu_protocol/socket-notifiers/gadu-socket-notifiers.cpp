@@ -14,7 +14,7 @@
 #include "gadu-socket-notifiers.h"
 
 GaduSocketNotifiers::GaduSocketNotifiers(QObject *parent)
-	: QObject(parent), Socket(0), ReadNotifier(0), WriteNotifier(0), Lock(0)
+	: QObject(parent), Socket(0), ReadNotifier(0), WriteNotifier(0), Lock(false)
 {
 	kdebugf();
 	kdebugf2();
@@ -68,6 +68,22 @@ void GaduSocketNotifiers::deleteSocketNotifiers()
 	kdebugf2();
 }
 
+void GaduSocketNotifiers::disable()
+{
+	if (ReadNotifier)
+		ReadNotifier->setEnabled(false);
+	if (WriteNotifier)
+		WriteNotifier->setEnabled(false);
+}
+
+void GaduSocketNotifiers::enable()
+{
+	if (!Lock && checkRead() && ReadNotifier)
+		ReadNotifier->setEnabled(true);
+	if (!Lock && checkWrite() && WriteNotifier)
+		WriteNotifier->setEnabled(true);
+}
+
 void GaduSocketNotifiers::watchFor(int socket)
 {
 	if (Socket == socket)
@@ -77,38 +93,25 @@ void GaduSocketNotifiers::watchFor(int socket)
 	createSocketNotifiers();
 }
 
-void GaduSocketNotifiers::watchWriting()
-{
-	if ((0 == Lock) && WriteNotifier && checkWrite())
-		WriteNotifier->setEnabled(true);
-}
-
 void GaduSocketNotifiers::lock()
 {
-	Lock++;
+	Lock = true;
 }
 
 void GaduSocketNotifiers::unlock()
 {
-	Lock--;
-	if ((0 == Lock) && checkRead() && ReadNotifier)
-		ReadNotifier->setEnabled(true);
-	if ((0 == Lock) && checkWrite() && WriteNotifier)
-		WriteNotifier->setEnabled(true);
+	Lock = false;
+	enable();
 }
 
 void GaduSocketNotifiers::dataReceived()
 {
 	kdebugf();
 
-	if (ReadNotifier)
-		ReadNotifier->setEnabled(false);
-
+	disable();
 	if (checkRead())
 		socketEvent();
-
-	if ((0 == Lock) && checkRead() && ReadNotifier)
-		ReadNotifier->setEnabled(true);
+	enable();
 
 	kdebugf2();
 }
@@ -117,14 +120,10 @@ void GaduSocketNotifiers::dataSent()
 {
 	kdebugf();
 
-	if (WriteNotifier)
-		WriteNotifier->setEnabled(false);
-
+	disable();
 	if (checkWrite())
 		socketEvent();
-
-	if ((0 == Lock) && checkWrite() && WriteNotifier)
-		ReadNotifier->setEnabled(true);
+	enable();
 
 	kdebugf2();
 }

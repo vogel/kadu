@@ -15,6 +15,7 @@
 class QLabel;
 class QProgressBar;
 class QPushButton;
+class QTimer;
 
 class FileTransfer;
 
@@ -24,6 +25,7 @@ class FileTransferWidget : public QFrame
 
 	FileTransfer *CurrentTransfer;
 
+	QTimer *UpdateTimer;
 	QLabel *DescriptionLabel;
 	QLabel *StatusLabel;
 	QProgressBar *ProgressBar;
@@ -33,6 +35,8 @@ class FileTransferWidget : public QFrame
 	void createGui();
 
 private slots:
+	void fileTransferStatusChanged();
+	void fileTransferUpdate();
 	void fileTransferDestroyed(QObject *);
 
 	void remove();
@@ -44,9 +48,6 @@ public:
 	virtual ~FileTransferWidget();
 
 	FileTransfer * fileTransfer() { return CurrentTransfer; }
-
-public slots:
-	void fileTransferStatusChanged();
 
 };
 

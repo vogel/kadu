@@ -160,12 +160,12 @@ void DccSocketNotifiers::handleEvent(struct gg_event *e)
 			kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "GG_EVENT_DCC_CLIENT_ACCEPT! uin:%d peer_uin:%d\n",
 				Socket->uin, Socket->peer_uin);
 
-			// TODO: make async
-			if (!Manager->acceptConnection(Socket->uin, Socket->peer_uin, Socket->remote_addr))
-			{
-				done(false);
-				return;
-			}
+			// TODO: make async TODO: 0.6.6
+// 			if (!Manager->acceptConnection(Socket->uin, Socket->peer_uin, Socket->remote_addr))
+// 			{
+// 				done(false);
+// 				return;
+// 			}
 			break;
 
 		// only in version 6
@@ -218,12 +218,33 @@ void DccSocketNotifiers::handleEvent(struct gg_event *e)
 			break;
 
 		case GG_EVENT_DCC_NEED_FILE_ACK:
+		{
 			printf("need file ack\n");
 // 			kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "GG_EVENT_DCC_NEED_FILE_ACK! uin:%d peer_uin:%d\n",
 // 				socket->uin(), socket->peerUin());
 // 			lock();
-			Manager->needIncomingFileTransferAccept(this);
+// TODO: 0.6.6
+
+			QIODevice::OpenMode flags = QIODevice::WriteOnly | QIODevice::Truncate;
+			QFile file("/home/vogel/gg-download");
+			file.open(flags);
+
+			printf("handle: %d\n", file.handle());
+			printf("version: %d\n", Version);
+
+			switch (Version)
+			{
+				case Dcc6:
+					Socket->file_fd = file.handle();
+					break;
+				case Dcc7:
+					Socket7->file_fd = file.handle();
+					break;
+			}
+
+			//Manager->needIncomingFileTransferAccept(this);
 			break;
+		}
 
 		case GG_EVENT_DCC_NEW:
 		{
@@ -236,8 +257,6 @@ void DccSocketNotifiers::handleEvent(struct gg_event *e)
 		default:
 			break;
 	}
-
-	watchWriting();
 }
 
 UinType DccSocketNotifiers::peerUin()
@@ -295,7 +314,7 @@ QString DccSocketNotifiers::remoteFileName()
 void DccSocketNotifiers::setGaduFileTransfer(GaduFileTransfer *fileTransfer)
 {
 	FileTransfer = fileTransfer;
-	watchWriting();
+	unlock();
 }
 
 void DccSocketNotifiers::acceptFileTransfer()
