@@ -37,7 +37,7 @@
 
 static QList<QHostAddress> gg_servers;
 
-#define GG_SERVERS_COUNT 22
+#define GG_SERVERS_COUNT 39
 static const char *gg_servers_ip[GG_SERVERS_COUNT] = {
 	"91.197.13.2",
 	"91.197.12.4",
