@@ -23,15 +23,16 @@ GaduFileTransferService::GaduFileTransferService(GaduProtocol *protocol) :
 
 FileTransfer * GaduFileTransferService::loadFileTransferFromStorage(StoragePoint *storage)
 {
-	GaduFileTransfer *gft = new GaduFileTransfer(Protocol);
+	GaduFileTransfer *gft = new GaduFileTransfer(Protocol->account());
 	gft->setStorage(storage);
 	gft->loadConfiguration();
+
+	return gft;
 }
 
 FileTransfer * GaduFileTransferService::createOutgoingFileTransfer(Contact contact)
 {
-	GaduFileTransfer *gft = new GaduFileTransfer(Protocol, contact, FileTransfer::TypeSend);
-	return gft;
+	return new GaduFileTransfer(Protocol->account(), contact, FileTransfer::TypeSend);
 }
 
 // kate: indent-mode cstyle; replace-tabs off; tab-width 4; 

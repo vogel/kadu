@@ -7,7 +7,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <QtCore/QUrl>
+#include <QtCore/QFileInfo>
 #include <QtGui/QGridLayout>
 #include <QtGui/QLabel>
 #include <QtGui/QProgressBar>
@@ -26,6 +26,8 @@ FileTransferWidget::FileTransferWidget(FileTransfer *ft, QWidget *parent)
 	: QFrame(parent), CurrentTransfer(ft)
 {
 	kdebugf();
+
+	printf("transfer: %p\n", CurrentTransfer);
 
 	connect(CurrentTransfer, SIGNAL(statusChanged()), this, SLOT(fileTransferStatusChanged()));
 	connect(CurrentTransfer, SIGNAL(destroyed(QObject *)), this, SLOT(fileTransferDestroyed(QObject *)));
@@ -117,17 +119,17 @@ void FileTransferWidget::createGui()
 
 	Contact contact = CurrentTransfer->contact();
 
-	QUrl url(CurrentTransfer->localFileName());
+	QString fileName = QFileInfo(CurrentTransfer->localFileName()).fileName();
 
 	if (FileTransfer::TypeSend == CurrentTransfer->transferType())
 	{
 		icon->setPixmap(icons_manager->loadPixmap("FileTransferSend"));
-		DescriptionLabel->setText(tr("<b>File</b> %1 <b>to</b> %2").arg(url.fileName()).arg(contact.display()));
+		DescriptionLabel->setText(tr("<b>File</b> %1 <b>to</b> %2").arg(fileName).arg(contact.display()));
 	}
 	else
 	{
 		icon->setPixmap(icons_manager->loadPixmap("FileTransferReceive"));
-		DescriptionLabel->setText(tr("<b>File</b> %1 <b>from</b> %2").arg(url.fileName()).arg(contact.display()));
+		DescriptionLabel->setText(tr("<b>File</b> %1 <b>from</b> %2").arg(fileName).arg(contact.display()));
 	}
 }
 

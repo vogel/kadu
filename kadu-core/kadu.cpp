@@ -370,7 +370,6 @@ Kadu::Kadu(QWidget *parent)
 
 	GroupManager::instance()->loadConfiguration();
 	ContactManager::instance()->loadConfiguration(xml_config_file);
-	FileTransferManager::instance()->loadConfiguration();
 
 	kadu = this;
 	blinktimer = 0;
@@ -1608,7 +1607,6 @@ bool Kadu::close(bool quit)
 		GroupManager::instance()->storeConfiguration();
 		ContactManager::instance()->storeConfiguration(xml_config_file);
 		AccountManager::instance()->storeConfiguration(xml_config_file);
-		FileTransferManager::instance()->storeConfiguration();
 
 		Protocol *gadu = AccountManager::instance()->defaultAccount()->protocol();
 		if (gadu->isConnected())

@@ -302,7 +302,7 @@ bool DccManager::acceptConnection(unsigned int uin, unsigned int peerUin, unsign
 
 void DccManager::needIncomingFileTransferAccept(DccSocketNotifiers *socket)
 {
-	GaduFileTransfer *fileTransfer = new GaduFileTransfer(Protocol,
+	GaduFileTransfer *fileTransfer = new GaduFileTransfer(Protocol->account(),
 			ContactManager::instance()->byId(Protocol->account(), QString::number(socket->peerUin())),
 			FileTransfer::TypeReceive);
 	socket->acceptFileTransfer();

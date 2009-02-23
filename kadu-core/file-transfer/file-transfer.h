@@ -84,6 +84,7 @@ public:
 	virtual void loadConfiguration();
 	virtual void storeConfiguration();
 
+	Account * account() { return CurrentAccount; }
 	Contact contact() { return Peer; }
 
 	FileTransferType transferType() { return TransferType; }

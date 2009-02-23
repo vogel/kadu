@@ -7,6 +7,7 @@
  *                                                                         *
  ***************************************************************************/
 
+#include "accounts/account.h"
 #include "dcc/dcc-manager.h"
 #include "dcc/dcc-socket-notifiers.h"
 #include "gadu-contact-account-data.h"
@@ -14,13 +15,13 @@
 
 #include "gadu-file-transfer.h"
 
-GaduFileTransfer::GaduFileTransfer(GaduProtocol *protocol) :
-		FileTransfer(protocol->account())
+GaduFileTransfer::GaduFileTransfer(Account *account) :
+		FileTransfer(account)
 {
 }
 
-GaduFileTransfer::GaduFileTransfer(GaduProtocol *protocol, Contact peer, FileTransfer::FileTransferType transferType) :
-		FileTransfer(protocol->account(), peer, transferType), Protocol(protocol),
+GaduFileTransfer::GaduFileTransfer(Account *account, Contact peer, FileTransfer::FileTransferType transferType) :
+		FileTransfer(account, peer, transferType),
 		SocketNotifiers(0), WaitingForSocketNotifiers(false)
 {
 }
@@ -72,13 +73,20 @@ void GaduFileTransfer::send()
 
 	setRemoteFile(QString::null);
 
-	if (!Protocol || localFileName().isEmpty())
+	if (!account() || localFileName().isEmpty())
 	{
 		changeFileTransferStatus(FileTransfer::StatusNotConnected);
 		return; // TODO: notify
 	}
 
-	GaduContactAccountData *gcad = Protocol->gaduContactAccountData(contact());
+	GaduProtocol *gaduProtocol = dynamic_cast<GaduProtocol *>(account()->protocol());
+	if (!gaduProtocol)
+	{
+		changeFileTransferStatus(FileTransfer::StatusNotConnected);
+		return;
+	}
+
+	GaduContactAccountData *gcad = gaduProtocol->gaduContactAccountData(contact());
 	if (!gcad)
 	{
 		changeFileTransferStatus(FileTransfer::StatusNotConnected);
@@ -88,7 +96,7 @@ void GaduFileTransfer::send()
 	// async call, will return in setFileTransferNotifiers
 	changeFileTransferStatus(FileTransfer::StatusWaitingForConnection);
 	WaitingForSocketNotifiers = true;
-	Protocol->dccManager()->attachSendFileTransferSocket(this);
+	gaduProtocol->dccManager()->attachSendFileTransferSocket(this);
 }
 
 void GaduFileTransfer::stop()

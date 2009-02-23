@@ -7,6 +7,7 @@
  *                                                                         *
  ***************************************************************************/
 
+#include "accounts/account.h"
 #include "configuration/storage-point.h"
 #include "file-transfer/file-transfer.h"
 
@@ -26,10 +27,12 @@ FileTransferManager * FileTransferManager::instance()
 
 FileTransferManager::FileTransferManager()
 {
+	triggerAllAccountsRegistered();
 }
 
 FileTransferManager::~FileTransferManager()
 {
+	triggerAllAccountsUnregistered();
 }
 
 StoragePoint * FileTransferManager::createStoragePoint() const
@@ -37,7 +40,7 @@ StoragePoint * FileTransferManager::createStoragePoint() const
 	return new StoragePoint(xml_config_file, xml_config_file->getNode("FileTransfersNew"));
 }
 
-void FileTransferManager::loadConfiguration()
+void FileTransferManager::accountRegistered(Account *account)
 {
 	if (!isValidStorage())
 		return;
@@ -51,14 +54,20 @@ void FileTransferManager::loadConfiguration()
 	QDomNodeList fileTransferNodes = transfersNewNode.elementsByTagName("FileTransfer");
 
 	int count = fileTransferNodes.count();
+
+	QString uuid = account->uuid().toString();
 	for (int i = 0; i < count; i++)
 	{
 		QDomElement fileTransferElement = fileTransferNodes.at(i).toElement();
 		if (fileTransferElement.isNull())
 			continue;
 
+		if (configurationStorage->getTextNode(fileTransferElement, "Account") != uuid)
+			continue;
+
 		StoragePoint *contactStoragePoint = new StoragePoint(configurationStorage, fileTransferElement);
 		FileTransfer *fileTransfer = FileTransfer::loadFromStorage(contactStoragePoint);
+
 		if (fileTransfer)
 			addFileTransfer(fileTransfer);
 // 		else TODO: remove?
@@ -66,10 +75,11 @@ void FileTransferManager::loadConfiguration()
 	}
 }
 
-void FileTransferManager::storeConfiguration()
+void FileTransferManager::accountUnregistered(Account *account)
 {
 	foreach (FileTransfer *fileTransfer, FileTransfers)
-		fileTransfer->storeConfiguration();
+		if (fileTransfer->account() == account)
+			fileTransfer->storeConfiguration();
 }
 
 void FileTransferManager::addFileTransfer(FileTransfer *fileTransfer)

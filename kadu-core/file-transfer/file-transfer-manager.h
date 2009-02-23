@@ -13,6 +13,7 @@
 #include <QtCore/QObject>
 #include <QtCore/QUuid>
 
+#include "accounts/accounts_aware_object.h"
 #include "configuration/storable-object.h"
 
 #include "exports.h"
@@ -20,7 +21,7 @@
 class FileTransfer;
 class XmlConfigFile;
 
-class KADUAPI FileTransferManager : public QObject, public StorableObject
+class KADUAPI FileTransferManager : public QObject, public AccountsAwareObject, public StorableObject
 {
 	Q_OBJECT
 	Q_DISABLE_COPY(FileTransferManager)
@@ -35,11 +36,11 @@ class KADUAPI FileTransferManager : public QObject, public StorableObject
 protected:
 	virtual StoragePoint * createStoragePoint() const;
 
+	virtual void accountRegistered(Account *account);
+	virtual void accountUnregistered(Account *account);
+
 public:
 	static FileTransferManager * instance();
-
-	void loadConfiguration();
-	void storeConfiguration();
 
 	QList<FileTransfer *> fileTransfer() { return FileTransfers; }
 	void addFileTransfer(FileTransfer *fileTransfer);

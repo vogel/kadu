@@ -17,7 +17,6 @@ class GaduProtocol;
 
 class GaduFileTransfer : public FileTransfer
 {
-	GaduProtocol *Protocol;
 	DccSocketNotifiers *SocketNotifiers;
 	bool WaitingForSocketNotifiers;
 
@@ -25,8 +24,8 @@ protected:
 	virtual void updateFileInfo();
 
 public:
-	GaduFileTransfer(GaduProtocol *protocol);
-	GaduFileTransfer(GaduProtocol *protocol, Contact peer, FileTransferType transferType);
+	GaduFileTransfer(Account *account);
+	GaduFileTransfer(Account *account, Contact peer, FileTransferType transferType);
 
 	void setFileTransferNotifiers(DccSocketNotifiers *);
 	void socketNotAvailable();
