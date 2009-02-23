@@ -25,6 +25,7 @@ protected:
 	virtual void updateFileInfo();
 
 public:
+	GaduFileTransfer(GaduProtocol *protocol);
 	GaduFileTransfer(GaduProtocol *protocol, Contact peer, FileTransferType transferType);
 
 	void setFileTransferNotifiers(DccSocketNotifiers *);

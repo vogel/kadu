@@ -21,6 +21,13 @@ GaduFileTransferService::GaduFileTransferService(GaduProtocol *protocol) :
 {
 }
 
+FileTransfer * GaduFileTransferService::loadFileTransferFromStorage(StoragePoint *storage)
+{
+	GaduFileTransfer *gft = new GaduFileTransfer(Protocol);
+	gft->setStorage(storage);
+	gft->loadConfiguration();
+}
+
 FileTransfer * GaduFileTransferService::createOutgoingFileTransfer(Contact contact)
 {
 	GaduFileTransfer *gft = new GaduFileTransfer(Protocol, contact, FileTransfer::TypeSend);

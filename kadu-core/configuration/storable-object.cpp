@@ -7,8 +7,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "xml_config_file.h"
-
 #include "storable-object.h"
 
 StoragePoint * StorableObject::storage()

@@ -8,11 +8,23 @@
  ***************************************************************************/
 
 #include "accounts/account.h"
+#include "accounts/account_manager.h"
 #include "configuration/storage-point.h"
 #include "file-transfer/file-transfer-manager.h"
+#include "protocols/protocol.h"
+#include "protocols/services/file-transfer-service.h"
 #include "xml_config_file.h"
 
 #include "file-transfer.h"
+#include <contacts/contact-manager.h>
+#include <contacts/contact-manager.h>
+
+FileTransfer::FileTransfer(Account *account) :
+		Uuid(QUuid::createUuid()), CurrentAccount(account), Peer(Contact::null),
+		FileSize(0), TransferredSize(0),
+		TransferType(TypeReceive), TransferStatus(StatusNotConnected), TransferError(ErrorOk)
+{
+}
 
 FileTransfer::FileTransfer(Account *account, Contact peer, FileTransferType transferType) :
 		Uuid(QUuid::createUuid()), CurrentAccount(account), Peer(peer),
@@ -25,6 +37,25 @@ FileTransfer::~FileTransfer()
 {
 }
 
+FileTransfer * FileTransfer::loadFromStorage(StoragePoint *fileTransferStoragePoint)
+{
+	if (!fileTransferStoragePoint || !fileTransferStoragePoint->storage())
+		return 0;
+
+	XmlConfigFile *storage = fileTransferStoragePoint->storage();
+	QDomElement point = fileTransferStoragePoint->point();
+
+	Account *account = AccountManager::instance()->byUuid(QUuid(storage->getTextNode(point, "Account")));
+	if (!account)
+		return 0;
+
+	FileTransferService *service = account->protocol()->fileTransferService();
+	if (!service)
+		return 0;
+
+	return service->loadFileTransferFromStorage(fileTransferStoragePoint);
+}
+
 StoragePoint * FileTransfer::createStoragePoint() const
 {
 	StoragePoint *parent = FileTransferManager::instance()->storage();
@@ -33,6 +64,20 @@ StoragePoint * FileTransfer::createStoragePoint() const
 
 	QDomElement contactNode = parent->storage()->getUuidNode(parent->point(), "FileTransfer", Uuid.toString());
 	return new StoragePoint(parent->storage(), contactNode);
+}
+
+void FileTransfer::loadConfiguration()
+{
+	if (!isValidStorage())
+		return;
+
+	CurrentAccount = AccountManager::instance()->byUuid(QUuid(loadValue<QString>("Account")));
+	Peer = ContactManager::instance()->byUuid(QUuid(loadValue<QString>("Peer")));
+	LocalFileName = loadValue<QString>("LocalFileName");
+	RemoteFileName = loadValue<QString>("RemoteFileName");
+	TransferType = ("Send" == loadValue<QString>("TransferType")) ? TypeSend : TypeReceive;
+	FileSize = loadValue<qulonglong>("FileSize");
+	TransferredSize = loadValue<qulonglong>("TransferredSize");
 }
 
 void FileTransfer::storeConfiguration()

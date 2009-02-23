@@ -75,10 +75,14 @@ protected:
 	virtual void updateFileInfo() = 0;
 
 public:
+	static FileTransfer * loadFromStorage(StoragePoint *fileTransferStoragePoint);
+
+	FileTransfer(Account *account);
 	FileTransfer(Account *account, Contact peer, FileTransferType transferType);
 	virtual ~FileTransfer();
 
-	void storeConfiguration();
+	virtual void loadConfiguration();
+	virtual void storeConfiguration();
 
 	Contact contact() { return Peer; }
 

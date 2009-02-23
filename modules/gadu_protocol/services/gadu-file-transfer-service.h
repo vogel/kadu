@@ -25,6 +25,7 @@ class GaduFileTransferService : public FileTransferService
 public:
 	GaduFileTransferService(GaduProtocol *protocol);
 
+	virtual FileTransfer * loadFileTransferFromStorage(StoragePoint *storage);
 	virtual FileTransfer * createOutgoingFileTransfer(Contact contact);
 
 };

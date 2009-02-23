@@ -39,12 +39,35 @@ StoragePoint * FileTransferManager::createStoragePoint() const
 
 void FileTransferManager::loadConfiguration()
 {
+	if (!isValidStorage())
+		return;
+
+	XmlConfigFile *configurationStorage = storage()->storage();
+	QDomElement transfersNewNode = storage()->point();
+
+	if (transfersNewNode.isNull())
+		return;
+
+	QDomNodeList fileTransferNodes = transfersNewNode.elementsByTagName("FileTransfer");
+
+	int count = fileTransferNodes.count();
+	for (int i = 0; i < count; i++)
+	{
+		QDomElement fileTransferElement = fileTransferNodes.at(i).toElement();
+		if (fileTransferElement.isNull())
+			continue;
+
+		StoragePoint *contactStoragePoint = new StoragePoint(configurationStorage, fileTransferElement);
+		FileTransfer *fileTransfer = FileTransfer::loadFromStorage(contactStoragePoint);
+		if (fileTransfer)
+			addFileTransfer(fileTransfer);
+// 		else TODO: remove?
+// 			transfersNewNode.removeChild(fileTransferElement);
+	}
 }
 
 void FileTransferManager::storeConfiguration()
 {
-	printf("storing all\n");
-
 	foreach (FileTransfer *fileTransfer, FileTransfers)
 		fileTransfer->storeConfiguration();
 }

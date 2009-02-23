@@ -14,6 +14,11 @@
 
 #include "gadu-file-transfer.h"
 
+GaduFileTransfer::GaduFileTransfer(GaduProtocol *protocol) :
+		FileTransfer(protocol->account())
+{
+}
+
 GaduFileTransfer::GaduFileTransfer(GaduProtocol *protocol, Contact peer, FileTransfer::FileTransferType transferType) :
 		FileTransfer(protocol->account(), peer, transferType), Protocol(protocol),
 		SocketNotifiers(0), WaitingForSocketNotifiers(false)

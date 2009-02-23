@@ -12,6 +12,8 @@
 
 #include <QtCore/QVariant>
 
+#include "xml_config_file.h"
+
 #include "storage-point.h"
 
 class StorableObject
@@ -27,6 +29,17 @@ public:
 	StoragePoint * storage();
 	void setStorage(StoragePoint *storage) { Storage = storage; }
 	bool isValidStorage() { return storage() && storage()->storage(); }
+
+template<class T>
+	T loadValue(const QString &name) const
+	{
+		QVariant value;
+
+		if (Storage->storage()->hasNode(Storage->point(), name))
+			value = Storage->storage()->getTextNode(Storage->point(), name);
+
+		return value.value<T>();
+	}
 
 	void storeValue(const QString &name, const QVariant value);
 

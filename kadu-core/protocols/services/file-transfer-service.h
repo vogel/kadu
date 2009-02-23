@@ -15,6 +15,7 @@
 #include "contacts/contact.h"
 
 class FileTransfer;
+class StoragePoint;
 
 class FileTransferService : public QObject
 {
@@ -23,6 +24,7 @@ class FileTransferService : public QObject
 public:
 	FileTransferService(QObject *parent = 0) : QObject(parent) {}
 
+	virtual FileTransfer * loadFileTransferFromStorage(StoragePoint *storage) = 0;
 	virtual FileTransfer * createOutgoingFileTransfer(Contact contact) = 0;
 
 signals:
