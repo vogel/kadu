@@ -27,6 +27,8 @@ public:
 	StorableObject() : Storage(0) {}
 
 	StoragePoint * storage();
+	void removeFromStorage();
+
 	void setStorage(StoragePoint *storage) { Storage = storage; }
 	bool isValidStorage() { return storage() && storage()->storage(); }
 

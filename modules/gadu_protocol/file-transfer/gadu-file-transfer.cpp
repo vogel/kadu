@@ -16,7 +16,8 @@
 #include "gadu-file-transfer.h"
 
 GaduFileTransfer::GaduFileTransfer(Account *account) :
-		FileTransfer(account)
+		FileTransfer(account),
+		SocketNotifiers(0), WaitingForSocketNotifiers(false)
 {
 }
 
@@ -24,6 +25,11 @@ GaduFileTransfer::GaduFileTransfer(Account *account, Contact peer, FileTransfer:
 		FileTransfer(account, peer, transferType),
 		SocketNotifiers(0), WaitingForSocketNotifiers(false)
 {
+}
+
+GaduFileTransfer::~GaduFileTransfer()
+{
+	stop();
 }
 
 void GaduFileTransfer::updateFileInfo()

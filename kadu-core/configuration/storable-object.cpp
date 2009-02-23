@@ -17,6 +17,16 @@ StoragePoint * StorableObject::storage()
 	return Storage;
 }
 
+void StorableObject::removeFromStorage()
+{
+	if (!Storage)
+		return;
+
+	Storage->point().parentNode().removeChild(Storage->point());
+	delete Storage;
+	Storage = 0;
+}
+
 void StorableObject::storeValue(const QString &name, const QVariant value)
 {
 	Storage->storage()->createTextNode(Storage->point(), name, value.toString());

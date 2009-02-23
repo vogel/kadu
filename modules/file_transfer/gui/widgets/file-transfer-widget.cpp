@@ -15,6 +15,7 @@
 
 #include "contacts/contact.h"
 #include "file-transfer/file-transfer.h"
+#include "file-transfer/file-transfer-manager.h"
 
 #include "debug.h"
 #include "icons_manager.h"
@@ -46,9 +47,6 @@ FileTransferWidget::~FileTransferWidget()
 	{
 		disconnect(CurrentTransfer, SIGNAL(statusChanged()), this, SLOT(fileTransferStatusChanged()));
 		disconnect(CurrentTransfer, SIGNAL(destroyed(QObject *)), this, SLOT(fileTransferDestroyed(QObject *)));
-
-		delete CurrentTransfer;
-		CurrentTransfer = 0;
 	}
 }
 
@@ -146,8 +144,7 @@ void FileTransferWidget::remove()
 		else
 			CurrentTransfer->stop();
 
-	delete CurrentTransfer;
-	CurrentTransfer = 0;
+	FileTransferManager::instance()->removeFileTransfer(CurrentTransfer);
 
 	// it will destroy widget too, see FileTransferWidget::fileTransferDestroying
 	deleteLater();

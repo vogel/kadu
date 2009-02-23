@@ -26,6 +26,7 @@ protected:
 public:
 	GaduFileTransfer(Account *account);
 	GaduFileTransfer(Account *account, Contact peer, FileTransferType transferType);
+	virtual ~GaduFileTransfer();
 
 	void setFileTransferNotifiers(DccSocketNotifiers *);
 	void socketNotAvailable();

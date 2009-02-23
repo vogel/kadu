@@ -93,7 +93,10 @@ void FileTransferManager::removeFileTransfer(FileTransfer *fileTransfer)
 {
 	emit fileTransferAboutToBeRemoved(fileTransfer);
 	FileTransfers.removeAll(fileTransfer);
+	fileTransfer->removeFromStorage();
 	emit fileTransferRemoved(fileTransfer);
+
+	delete fileTransfer;
 }
 
 void FileTransferManager::cleanUp()
