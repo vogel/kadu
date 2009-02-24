@@ -326,13 +326,13 @@ void DccManager::dccConnectionRequestReceived(Contact contact)
 		return;
 
 	struct gg_dcc *dcc = gg_dcc_get_file(htonl(gcad->ip().toIPv4Address()), gcad->port(), gad->uin(), gcad->uin());
-	if (dcc)
-	{
-		DccSocketNotifiers *dccSocketNotifiers = new DccSocketNotifiers(Protocol, this);
-		SocketNotifiers << dccSocketNotifiers;
-		connectSocketNotifiers(dccSocketNotifiers);
-		dccSocketNotifiers->watchFor(dcc);
-	}
+	if (!dcc)
+		return;
+	
+	DccSocketNotifiers *dccSocketNotifiers = new DccSocketNotifiers(Protocol, this);
+	SocketNotifiers << dccSocketNotifiers;
+	connectSocketNotifiers(dccSocketNotifiers);
+	dccSocketNotifiers->watchFor(dcc);
 
 	kdebugf2();
 }

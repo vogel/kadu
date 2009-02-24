@@ -162,7 +162,7 @@ public:
 		\param message message content
 		\param time czas
 		**/
-	void newMessage(Account *account, ContactList senders, const QString &message, time_t time);
+	void newMessage(Account *account, Contact sender, ContactList receipients, const QString &message, time_t time);
 
 	/**
 		\fn void repaintMessages()

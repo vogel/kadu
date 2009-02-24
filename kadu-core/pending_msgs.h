@@ -118,7 +118,7 @@ public slots:
 		\param msg message content. TODO: const QString &
 		\param time message send time.
 	**/
-	void addMsg(Account *account, ContactList contacts, QString msg, time_t time);
+	void addMsg(Account *account, Contact sender, ContactList receipients, QString msg, time_t time);
 
 	/**
 		\fn void loadConfiguration(XmlConfigFile *configurationStorage)

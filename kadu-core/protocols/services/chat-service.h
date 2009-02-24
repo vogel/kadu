@@ -41,8 +41,10 @@ public slots:
 signals:
 	void sendMessageFiltering(const ContactList users, QByteArray &msg, bool &stop);
 	void messageStatusChanged(int messsageId, ChatService::MessageStatus status);
-	void receivedMessageFilter(Account *account, ContactList senders, const QString &message, time_t time, bool &ignore);
-	void messageReceived(Account *account, ContactList senders, const QString &message, time_t time);
+	void receivedMessageFilter(Account *account, Contact sender, ContactList receipients,
+			const QString &message, time_t time, bool &ignore);
+	void messageReceived(Account *account, Contact sender,
+			ContactList receipients, const QString &message, time_t time);
 
 };
 

@@ -39,6 +39,34 @@ bool GaduProtocolSocketNotifiers::checkWrite()
 	return Sess->check & GG_CHECK_WRITE;
 }
 
+void GaduProtocolSocketNotifiers::handleEventMsg(struct gg_event *e)
+{
+	Contact sender(CurrentAccount->getContactById(QString::number(e->event.msg.sender)));
+	ContactList recipients;
+
+	if (GG_CLASS_CTCP == e->event.msg.msgclass)
+	{
+		if (config_file.readBoolEntry("Network", "AllowDCC") &&
+				!IgnoredHelper::isIgnored(sender) &&
+				!sender.isAnonymous())
+			emit dccConnectionRequestReceived(sender);
+
+		return;
+	}
+
+	kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "recipients_count: %d\n", e->event.msg.recipients_count);
+	for (int i = 0; i < e->event.msg.recipients_count; ++i)
+	{
+		Contact recipient = CurrentAccount->getContactById(QString::number(e->event.msg.recipients[i]));
+		recipients.append(recipient);
+	}
+
+	QString message((char*)e->event.msg.message);
+	QByteArray formats((const char*)e->event.msg.formats, e->event.msg.formats_length);
+
+	emit messageReceived(sender, recipients, message, e->event.msg.time, formats);
+}
+
 void GaduProtocolSocketNotifiers::socketEvent()
 {
 	kdebugf();
@@ -101,32 +129,8 @@ void GaduProtocolSocketNotifiers::socketEvent()
 	switch (e->type)
 	{
 		case GG_EVENT_MSG:
-		{
-			ContactList senders(CurrentAccount->getContactById(QString::number(e->event.msg.sender)));
-
-			// TODO: 0.6.6
-			if (e->event.msg.recipients_count)
-				break;
-
-			if (e->event.msg.msgclass == GG_CLASS_CTCP)
-			{
-				if (config_file.readBoolEntry("Network", "AllowDCC") &&
-						!IgnoredHelper::isIgnored(senders) &&
-						!senders[0].isAnonymous())
-					emit dccConnectionRequestReceived(senders[0]);
-			}
-			else
-			{
-				kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "recipients_count: %d\n", e->event.msg.recipients_count);
-				if ((e->event.msg.msgclass & GG_CLASS_CHAT) == GG_CLASS_CHAT)
-					for (int i = 0; i < e->event.msg.recipients_count; ++i)
-						senders.append(CurrentAccount->getContactById(QString::number(e->event.msg.recipients[i])));
-				QString msg((char*)e->event.msg.message);
-				QByteArray formats((const char*)e->event.msg.formats, e->event.msg.formats_length);
-				emit messageReceived(e->event.msg.msgclass, senders, msg, e->event.msg.time, formats);
-			}
+			handleEventMsg(e);
 			break;
-		}
 
 		case GG_EVENT_IMAGE_REQUEST:
 			kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "Image request received\n");

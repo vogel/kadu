@@ -158,7 +158,7 @@ private slots:
 	void deleteUsersActionActivated(QAction *sender, bool toggled);
 	void addGroupActionActivated(QAction *sender, bool toggled);
 
-	void messageReceived(Account *, ContactList s, const QString &msg, time_t time);
+	void messageReceived(Account *account, Contact sender, ContactList receipients, const QString &message, time_t time);
 	void createRecentChatsMenu();
 	void openRecentChats(QAction *action);
 	void openChatWith();
@@ -322,7 +322,7 @@ signals:
 	void statusPixmapChanged(const QIcon &icon, const QString &icon_name);
 
 	// TODO: workaround
-	void messageReceivedSignal(Account *, ContactList, const QString &, time_t);
+	void messageReceivedSignal(Account *account, Contact sender, ContactList receipients, const QString &message, time_t time);
 
 	/**
 		wywo�ana zosta�a funkcja show() na g��wnym oknie

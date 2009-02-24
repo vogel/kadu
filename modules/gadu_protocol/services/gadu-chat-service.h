@@ -24,7 +24,7 @@ class GaduChatService : public ChatService
 	int LastMessageId;
 
 private slots:
-	void messageReceivedSlot(int, ContactList, QString &msg, time_t, QByteArray &formats);
+	void messageReceivedSlot(Contact sender, ContactList recipients, const QString &message, time_t time, QByteArray &formats);
 	void ackReceived(int messageId, uin_t uin, int status);
 
 public:

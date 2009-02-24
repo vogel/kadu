@@ -647,8 +647,8 @@ void Kadu::accountRegistered(Account *account)
 
 	ChatService *chatService = protocol->chatService();
 	if (chatService)
-		connect(chatService, SIGNAL(messageReceived(Account *, ContactList, const QString &, time_t)),
-			this, SLOT(messageReceived(Account *, ContactList, const QString &, time_t)));
+		connect(chatService, SIGNAL(messageReceived(Account *, Contact, ContactList, const QString &, time_t)),
+			this, SLOT(messageReceived(Account *, Contact, ContactList, const QString &, time_t)));
 
 	connect(protocol, SIGNAL(connecting(Account *)), this, SLOT(connecting()));
 	connect(protocol, SIGNAL(connected(Account *)), this, SLOT(connected()));
@@ -1495,16 +1495,19 @@ void Kadu::connecting()
 }
 
 // TODO: move back to chatManager
-void Kadu::messageReceived(Account *account, ContactList senders, const QString &msg, time_t time)
+void Kadu::messageReceived(Account *account, Contact sender, ContactList receipients, const QString &msg, time_t time)
 {
 	kdebugf();
 
 	// TODO: workaround
-	emit messageReceivedSignal(account, senders, msg, time);
+	emit messageReceivedSignal(account, sender, receipients, msg, time);
 
-	ChatWidget *chat = chat_manager->findChatWidget(senders);
+	ContactList conference = receipients;
+	conference << sender;
+
+	ChatWidget *chat = chat_manager->findChatWidget(conference);
 	if (chat)
-		chat->newMessage(account, senders, msg, time);
+		chat->newMessage(account, sender, receipients, msg, time);
 	else
 	{
 		if (config_file.readBoolEntry("General","AutoRaise"))
@@ -1518,17 +1521,17 @@ void Kadu::messageReceived(Account *account, ContactList senders, const QString 
 			// TODO: 0.6.6
 			if (config_file.readBoolEntry("Chat", "OpenChatOnMessageWhenOnline") && false /*!Myself.status("Gadu").isOnline()*/)
 			{
-				pending.addMsg(account, senders, msg, time);
+				pending.addMsg(account, sender, receipients, msg, time);
 				return;
 			}
 
 			// TODO: it is lame
-			chat_manager->openChatWidget(account, senders);
-			chat = chat_manager->findChatWidget(senders);
-			chat->newMessage(account, senders, msg, time);
+			chat_manager->openChatWidget(account, conference);
+			chat = chat_manager->findChatWidget(conference);
+			chat->newMessage(account, sender, receipients, msg, time);
 		}
 		else
-			pending.addMsg(account, senders, msg, time);
+			pending.addMsg(account, sender, receipients, msg, time);
 	}
 
 	kdebugf2();

@@ -31,6 +31,16 @@ class GaduProtocolSocketNotifiers : public GaduSocketNotifiers
 
 	void connectionFailed(int);
 
+	void handleEventMsg(struct gg_event *e);
+	void handleEventNotify(struct gg_event *e);
+	void handleEventNotifyDescr(struct gg_event *e);
+	void handleEventStatus(struct gg_event *e);
+	void handleEventAck(struct gg_event *e);
+	void handleEventPong(struct gg_event *e);
+	void handleEventConnFailed(struct gg_event *e);
+	void handleEventConnSuccess(struct gg_event *e);
+	void handleEventDisconnect(struct gg_event *e);
+
 protected:
 	virtual bool checkRead();
 	virtual bool checkWrite();
@@ -45,6 +55,8 @@ public:
 	void setAccount(Account *account) { CurrentAccount = account; }
 
 signals:
+	void messageReceived(Contact sender, ContactList recipients, const QString &message, time_t time, QByteArray &formats);
+
 	void ackReceived(int seq, uin_t uin, int status);
 	void connected();
 
@@ -58,7 +70,6 @@ signals:
 	void error(GaduProtocol::GaduError);
 	void imageReceived(UinType, uint32_t, uint32_t, const QString &filename, const char *data);
 	void imageRequestReceived(UinType, uint32_t, uint32_t);
-	void messageReceived(int, ContactList, QString &, time_t, QByteArray &);
 	void pubdirReplyReceived(gg_pubdir50_t);
 	void systemMessageReceived(QString &, QDateTime &, int, void *);
 	void userlistReceived(const struct gg_event *);

@@ -94,16 +94,19 @@ PendingMsgs::Element &PendingMsgs::operator[](int index)
 	return msgs[index];
 }
 
-void PendingMsgs::addMsg(Account *account, ContactList contacts, QString msg, time_t time)
+void PendingMsgs::addMsg(Account *account, Contact sender, ContactList receipients, QString msg, time_t time)
 {
 	Element e;
-	e.contacts = contacts;
+	ContactList conference = receipients;
+	conference << sender;
+
+	e.contacts = conference;
 	e.proto = account->protocol()->name();
 	e.msg = msg;
 	e.time = time;
 	msgs.append(e);
 	storeConfiguration(xml_config_file);
-	emit messageFromUserAdded(contacts[0]);
+	emit messageFromUserAdded(sender);
 }
 
 void PendingMsgs::loadConfiguration(XmlConfigFile *configurationStorage)

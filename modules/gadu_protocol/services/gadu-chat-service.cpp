@@ -26,8 +26,8 @@ GaduChatService::GaduChatService(GaduProtocol *protocol)
 {
 	connect(protocol->socketNotifiers(), SIGNAL(ackReceived(int, uin_t, int)), 
 		this, SLOT(ackReceived(int, uin_t, int)));
-	connect(protocol->socketNotifiers(), SIGNAL(messageReceived(int, ContactList, QString &, time_t, QByteArray &)),
-		this, SLOT(messageReceivedSlot(int, ContactList, QString &, time_t, QByteArray &)));
+	connect(protocol->socketNotifiers(), SIGNAL(messageReceived(Contact, ContactList, const QString &, time_t, QByteArray &)),
+		this, SLOT(messageReceivedSlot(Contact, ContactList, const QString &, time_t, QByteArray &)));
 }
 
 bool GaduChatService::sendMessage(ContactList contacts, Message &message)
@@ -109,7 +109,7 @@ bool GaduChatService::sendMessage(ContactList contacts, Message &message)
 	return true;
 }
 
-void GaduChatService::messageReceivedSlot(int msgclass, ContactList senders, QString &msg, time_t time, QByteArray &formats)
+void GaduChatService::messageReceivedSlot(Contact sender, ContactList recipients, const QString &messageContent, time_t time, QByteArray &formats)
 {
 /*
 	najpierw sprawdzamy czy nie jest to wiadomosc systemowa (senders[0] rowne 0)
@@ -118,26 +118,29 @@ void GaduChatService::messageReceivedSlot(int msgclass, ContactList senders, QSt
 	jezeli warunek jest spelniony przerywamy dzialanie funkcji.
 */
 
-	if (senders[0].isAnonymous() &&
+	if (sender.isAnonymous() &&
 			config_file.readBoolEntry("Chat", "IgnoreAnonymousUsers") &&
-			((senders.size() == 1) || config_file.readBoolEntry("Chat", "IgnoreAnonymousUsersInConferences")))
+			((recipients.size() == 0) || config_file.readBoolEntry("Chat", "IgnoreAnonymousUsersInConferences")))
 	{
-		kdebugmf(KDEBUG_INFO, "Ignored anonymous. %d is ignored\n", Protocol->uin(senders[0]));
+		kdebugmf(KDEBUG_INFO, "Ignored anonymous. %d is ignored\n", Protocol->uin(sender));
 		return;
 	}
+
+	ContactList conference = recipients;
+	conference << sender;
 
 	// ignorujemy, jesli nick na liscie ignorowanych
 	// PYTANIE CZY IGNORUJEMY CALA KONFERENCJE
 	// JESLI PIERWSZY SENDER JEST IGNOROWANY????
-	if (IgnoredHelper::isIgnored(senders))
+	if (IgnoredHelper::isIgnored(conference))
 		return;
 
 	bool ignore = false;
-	emit rawGaduReceivedMessageFilter(Protocol->account(), senders, msg, formats, ignore);
+	//emit rawGaduReceivedMessageFilter(Protocol->account(), senders, msg, formats, ignore); TODO: 0.6.6
 	if (ignore)
 		return;
 
-	const char* msg_c = msg.toAscii().constData();
+	const char* msg_c = messageContent.toAscii().constData();
 
 	Message message;
 	QString content = cp2unicode(msg_c);
@@ -152,30 +155,19 @@ void GaduChatService::messageReceivedSlot(int msgclass, ContactList senders, QSt
 
 	// wiadomosci systemowe maja senders[0] = 0
 	// FIX ME!!!
-	if (Protocol->uin(senders[0]) == 0)
-	{
-		if (msgclass <= config_file.readNumEntry("General", "SystemMsgIndex", 0))
-		{
-			kdebugm(KDEBUG_INFO, "Already had this message, ignoring\n");
-			return;
-		}
-
-		config_file.writeEntry("General", "SystemMsgIndex", msgclass);
-		kdebugm(KDEBUG_INFO, "System message index %d\n", msgclass);
-
+	if (Protocol->uin(sender) == 0)
 		return;
-	}
 
-	if (senders[0].isAnonymous() &&
+	if (sender.isAnonymous() &&
 		config_file.readBoolEntry("Chat","IgnoreAnonymousRichtext"))
 	{
 		kdebugm(KDEBUG_INFO, "Richtext ignored from anonymous user\n");
-		message = GaduFormater::createMessage(Protocol->account(), Protocol->uin(senders[0]), content, 0, 0, false);
+		message = GaduFormater::createMessage(Protocol->account(), Protocol->uin(sender), content, 0, 0, false);
 	}
 	else
 	{
 		bool receiveImages =
-			!senders[0].isAnonymous() &&
+			!sender.isAnonymous() &&
 			(
 				Protocol->status().isOnline() ||
 				Protocol->status().isBusy() ||
@@ -185,7 +177,7 @@ void GaduChatService::messageReceivedSlot(int msgclass, ContactList senders, QSt
 				)
 			);
 
-		message = GaduFormater::createMessage(Protocol->account(), Protocol->uin(senders[0]), content,
+		message = GaduFormater::createMessage(Protocol->account(), Protocol->uin(sender), content,
 				(unsigned char *)formats.data(), formats.size(), receiveImages);
 	}
 
@@ -193,13 +185,13 @@ void GaduChatService::messageReceivedSlot(int msgclass, ContactList senders, QSt
 		return;
 
 	kdebugmf(KDEBUG_INFO, "Got message from %d saying \"%s\"\n",
-			Protocol->uin(senders[0]), qPrintable(message.toPlain()));
+			Protocol->uin(sender), qPrintable(message.toPlain()));
 
-	emit receivedMessageFilter(Protocol->account(), senders, message.toPlain(), time, ignore);
+	emit receivedMessageFilter(Protocol->account(), sender, recipients, message.toPlain(), time, ignore);
 	if (ignore)
 		return;
 
-	emit messageReceived(Protocol->account(), senders, message.toHtml(), time);
+	emit messageReceived(Protocol->account(), sender, recipients, message.toHtml(), time);
 }
 
 void GaduChatService::ackReceived(int messageId, uin_t uin, int status)
