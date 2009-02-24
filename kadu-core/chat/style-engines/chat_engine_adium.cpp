@@ -143,7 +143,7 @@ void AdiumChatStyleEngine::appendMessage(ChatMessagesView *view, ChatMessage *me
 		}
 	}
 	
-	formattedMessageHtml = replaceKeywords(view, formattedMessageHtml, BaseHref, message);
+	formattedMessageHtml = replaceKeywords(view, BaseHref, formattedMessageHtml, message);
 	formattedMessageHtml.replace("\n", " ");
 	formattedMessageHtml.prepend("<span>");
 	formattedMessageHtml.append("</span>");
@@ -360,8 +360,6 @@ QString AdiumChatStyleEngine::replaceKeywords(ChatMessagesView *view, QString &s
 
 	// Replace sender (contact nick)
 	result.replace(QString("%sender%"), message->sender().display());
-	// Replace time
-	result.replace(QString("%time%"), printDateTime(message->sdate().isNull() ? message->date(): message->sdate()));
 	// Replace %screenName% (contact ID)
 	result.replace(QString("%senderScreenName%"), message->sender().id(message->sender().prefferedAccount()));
 	// Replace service name (protocol name) TODO:
@@ -372,16 +370,19 @@ QString AdiumChatStyleEngine::replaceKeywords(ChatMessagesView *view, QString &s
 	// Replace protocolIcon (sender statusIcon)
 	result.replace(QString("%senderStatusIcon%"), "");
 
+	// Replace time
+	QDateTime time = message->sdate().isNull() ? message->date(): message->sdate();
+	result.replace(QString("%time%"), printDateTime(time));
 	// Look for %time{X}%
 	QRegExp timeRegExp("%time\\{([^}]*)\\}%");
 	int pos = 0;
 	while((pos = timeRegExp.indexIn(result , pos)) != -1)
-		result.replace(pos, timeRegExp.cap(0).length(), message->sdate().toString(timeRegExp.cap(1)));
+		result.replace(pos, timeRegExp.cap(0).length(), time.toString(timeRegExp.cap(1)));
 
 	// Look for %textbackgroundcolor{X}%
 	// TODO: highlight background color: use the X value.
 	QRegExp textBackgroundRegExp("%textbackgroundcolor\\{([^}]*)\\}%");
-	int textPos=0;
+	int textPos = 0;
 	while((textPos=textBackgroundRegExp.indexIn(result, textPos)) != -1)
 		result.replace(textPos, textBackgroundRegExp.cap(0).length(), "inherit");
 
