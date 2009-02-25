@@ -129,6 +129,23 @@ void DccSocketNotifiers::socketEvent()
 	kdebugf2();
 }
 
+int DccSocketNotifiers::timeout()
+{
+	switch (Version)
+	{
+		case Dcc6:
+			return Socket
+				? Socket->timeout
+				: 0;
+		case Dcc7:
+			return Socket7
+				? Socket7->timeout
+				: 0;
+	}
+
+	return 0;
+}
+
 void DccSocketNotifiers::finished(bool ok)
 {
 	watchFor((struct gg_dcc *)0);

@@ -73,3 +73,10 @@ void GaduPubdirSocketNotifiers::socketEvent()
 
 	kdebugf2();
 }
+
+int GaduPubdirSocketNotifiers::timeout()
+{
+	return H
+		? H->timeout
+		: 0;
+}

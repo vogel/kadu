@@ -50,6 +50,7 @@ protected:
 	virtual bool checkRead();
 	virtual bool checkWrite();
 	virtual void socketEvent();
+	virtual int timeout();
 
 public:
 	DccSocketNotifiers(GaduProtocol *protocol, DccManager *manager) :

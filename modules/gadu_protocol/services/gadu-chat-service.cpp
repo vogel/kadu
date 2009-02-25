@@ -194,7 +194,7 @@ void GaduChatService::messageReceivedSlot(Contact sender, ContactList recipients
 	emit messageReceived(Protocol->account(), sender, recipients, message.toHtml(), time);
 }
 
-void GaduChatService::ackReceived(int messageId, uin_t uin, int status)
+void GaduChatService::socketAckReceived(unsigned int uin, int messageId, int status)
 {
 	kdebugf();
 

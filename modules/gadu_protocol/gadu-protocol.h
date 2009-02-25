@@ -75,6 +75,7 @@ private:
 
 	QHostAddress DccExternalIP;
 
+	friend class GaduProtocolSocketNotifiers;
 	GaduProtocolSocketNotifiers *SocketNotifiers;
 
 	QTimer *PingTimer;
@@ -92,6 +93,12 @@ private:
 	GaduAccountData * gaduAccountData() const;
 
 	Status::StatusType statusTypeFromIndex(unsigned int index) const;
+
+	void socketContactStatusChanged(unsigned int uin, unsigned int status, const QString &description,
+			const QHostAddress &ip, unsigned short port, unsigned int maxImageSize, unsigned int version);
+	void socketConnFailed(GaduError error);
+	void socketConnSuccess();
+	void socketDisconnected();
 
 private slots:
 	/**
@@ -117,14 +124,6 @@ private slots:
 	void login();
 
 	/**
-		Slot wywo�ywany po po��czeniu z serwerem. Emituje connected i w��cza pingowanie
-		serwera.
-
-		@see connected
-	**/
-	void connectedSlot();
-
-	/**
 		Slot wywo�ywany po roz��czeniu z serwerem. Emituje disconnected i wy��cza pingowanie
 		serwera.
 
@@ -143,14 +142,6 @@ private slots:
 		Slot wywo�ywany po przekroczeniu czasu po��czenia. Pr�buje po�aczy� ponownie.
 	**/
 	void connectionTimeoutTimerSlot();
-
-	/**
-		Slot wywo�ywane po wyst�pieniu b��du po��czenia. Emituje disconnected i error.
-
-		@see error
-		@see disconnected
-	**/
-	void errorSlot(GaduError);
 
 	/**
 		Wykonuje zadania co minut� - pinguje sie� i zeruje licznik

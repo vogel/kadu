@@ -23,9 +23,11 @@ class GaduChatService : public ChatService
 	GaduProtocol *Protocol;
 	int LastMessageId;
 
+	friend class GaduProtocolSocketNotifiers;
+	void socketAckReceived(unsigned int uin, int ackId, int status);
+
 private slots:
 	void messageReceivedSlot(Contact sender, ContactList recipients, const QString &message, time_t time, QByteArray &formats);
-	void ackReceived(int messageId, uin_t uin, int status);
 
 public:
 	GaduChatService(GaduProtocol *protocol);

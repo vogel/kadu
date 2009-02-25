@@ -13,6 +13,7 @@
 #include <QtCore/QObject>
 
 class QSocketNotifier;
+class QTimer;
 
 #ifndef _MSC_VER
 #pragma GCC visibility push(hidden)
@@ -23,8 +24,10 @@ class GaduSocketNotifiers : public QObject
 	Q_OBJECT
 
 	int Socket;
+	bool Started;
 	QSocketNotifier *ReadNotifier;
 	QSocketNotifier *WriteNotifier;
+	QTimer *TimeoutTimer;
 
 	bool Lock;
 
@@ -35,6 +38,7 @@ class GaduSocketNotifiers : public QObject
 	void enable();
 
 private slots:
+	void socketTimeout();
 	void dataReceived();
 	void dataSent();
 
@@ -47,6 +51,7 @@ protected:
 	virtual bool checkRead() = 0;
 	virtual bool checkWrite() = 0;
 	virtual void socketEvent() = 0;
+	virtual int timeout() = 0;
 
 public:
 	GaduSocketNotifiers(QObject *parent = 0);

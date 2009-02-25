@@ -147,9 +147,7 @@ GaduProtocol::GaduProtocol(Account *account, ProtocolFactory *factory) :
 	CurrentPersonalInfoService = new GaduPersonalInfoService(this);
 	CurrentSearchService = new GaduSearchService(this);
 
-	connect(SocketNotifiers, SIGNAL(connected()), this, SLOT(connectedSlot()));
 	connect(SocketNotifiers, SIGNAL(serverDisconnected()), this, SLOT(socketDisconnectedSlot()));
-	connect(SocketNotifiers, SIGNAL(error(GaduError)), this, SLOT(errorSlot(GaduError)));
 	connect(SocketNotifiers, SIGNAL(userlistReceived(const struct gg_event *)),
 		this, SLOT(userListReceived(const struct gg_event *)));
 	connect(SocketNotifiers, SIGNAL(userStatusChanged(const struct gg_event *)),
@@ -449,52 +447,6 @@ void GaduProtocol::setDccExternalIP(const QHostAddress &ip)
 	DccExternalIP = ip;
 }
 
-void GaduProtocol::connectedSlot()
-{
-	kdebugf();
-	ConnectionTimeoutTimer::off();
-
-	sendUserList();
-
-	GaduServersManager::instance()->markServerAsGood(QHostAddress(ntohl(GaduSession->server_addr)));
-	GaduServersManager::instance()->markPortAsGood(GaduSession->port);
-
-	/* jezeli sie rozlaczymy albo stracimy polaczenie, proces laczenia sie z serwerami zaczyna sie od poczatku */
-	PingTimer = new QTimer(0);
-	connect(PingTimer, SIGNAL(timeout()), this, SLOT(everyMinuteActions()));
-	PingTimer->start(60000);
-
-	statusChanged(nextStatus());
-	networkConnected();
-
-	// po po��czeniu z sewerem niestety trzeba ponownie ustawi�
-	// status, inaczej nie b�dziemy widoczni - raczej b��d serwer�w
-	if (status().isInvisible() 
-// TODO: 0.6.6
-//|| (GaduLoginParams.status&~GG_STATUS_FRIENDS_MASK) != static_cast<GaduStatus *>(NextStatus)->toStatusNumber())
-		)
-		setStatus(status());
-
-	/*
-		UWAGA: je�eli robimy refresh(), to przy przechodzeniu z niedost�pnego z opisem
-		na niewidoczny z opisem ta zmiana jest ujawniana naszym kontaktom!
-		przy przechodzeniu z niedost�pnego na niewidoczny efekt nie wyst�puje
-
-		je�eli NIE zrobimy refresh(), to powy�szy efekt nie wyst�puje, ale przy
-		przechodzeniu z niedost�pnego z opisem na niewidoczny (bez opisu), nasz
-		opis u innych pozostaje! (a� do czasu naszej zmiany statusu lub ich
-		roz��czenia i po��czenia)
-	*/
-
-	/*
-		UWAGA 2: procedura ��czenia si� z serwerem w chwili obecnej wykorzystuje
-		fakt ponownego ustawienia statusu po zalogowaniu, bo iWantGo* blokuj�
-		zmiany status�w w trakcie ��czenia si� z serwerem
-	*/
-
-	kdebugf2();
-}
-
 void GaduProtocol::disconnectedSlot()
 {
 	kdebugf();
@@ -507,11 +459,13 @@ void GaduProtocol::disconnectedSlot()
 		PingTimer = 0;
 	}
 
-	SocketNotifiers->watchFor(0); // stop watching
+//	socket notifiers are not watching any more
+// 	SocketNotifiers->watchFor(0); // stop watching
 
 	if (GaduSession)
 	{
-		gg_logoff(GaduSession);
+// we are disconnected, we cannot logoff
+// 		gg_logoff(GaduSession);
 		gg_free_session(GaduSession);
 		GaduSession = 0;
 	}
@@ -546,107 +500,7 @@ void GaduProtocol::connectionTimeoutTimerSlot()
 	kdebugf();
 
 	kdebugm(KDEBUG_INFO, "Timeout, breaking connection\n");
-	errorSlot(ConnectionTimeout);
-
-	kdebugf2();
-}
-
-void GaduProtocol::errorSlot(GaduError err)
-{
-	kdebugf();
-	QString msg = QString::null;
-
-	disconnectedSlot();
-
-// 	emit error(err);
-
-	bool continue_connecting = true;
-	switch (err)
-	{
-		case ConnectionServerNotFound:
-			msg = tr("Unable to connect, server has not been found");
-			break;
-
-		case ConnectionCannotConnect:
-			msg = tr("Unable to connect");
-			break;
-
-		case ConnectionNeedEmail:
-			msg = tr("Please change your email in \"Change password / email\" window. "
-				"Leave new password field blank.");
-			continue_connecting = false;
-			MessageBox::msg(msg, false, "Warning");
-			break;
-
-		case ConnectionInvalidData:
-			msg = tr("Unable to connect, server has returned unknown data");
-			break;
-
-		case ConnectionCannotRead:
-			msg = tr("Unable to connect, connection break during reading");
-			break;
-
-		case ConnectionCannotWrite:
-			msg = tr("Unable to connect, connection break during writing");
-			break;
-
-		case ConnectionIncorrectPassword:
-			msg = tr("Unable to connect, incorrect password");
-			continue_connecting = false;
-			MessageBox::msg(tr("Connection will be stopped\nYour password is incorrect!"), false, "Critical");
-			break;
-
-		case ConnectionTlsError:
-			msg = tr("Unable to connect, error of negotiation TLS");
-			break;
-
-		case ConnectionIntruderError:
-			msg = tr("Too many connection attempts with bad password!");
-			continue_connecting = false;
-			MessageBox::msg(tr("Connection will be stopped\nToo many attempts with bad password"), false, "Critical");
-			break;
-
-		case ConnectionUnavailableError:
-			msg = tr("Unable to connect, servers are down");
-			break;
-
-		case ConnectionUnknow:
-			kdebugm(KDEBUG_INFO, "Connection broken unexpectedly!\nUnscheduled connection termination\n");
-			break;
-
-		case ConnectionTimeout:
-			msg = tr("Connection timeout!");
-			break;
-
-		case Disconnected:
-			msg = tr("Disconnection has occured");
-			break;
-
-		default:
-			kdebugm(KDEBUG_ERROR, "Unhandled error? (%d)\n", int(err));
-			break;
-	}
-/*
-	if (msg != QString::null)
-	{
-		QHostAddress server = activeServer();
-		QString host;
-		if (!server.isNull())
-			host = server.toString();
-		else
-			host = "HUB";
-		kdebugm(KDEBUG_INFO, "%s %s\n", qPrintable(host), qPrintable(msg));
-		emit connectionError(account(), host, msg);
-	}*/
-
-	if (!continue_connecting)
-		setStatus(Status::Offline);
-
-	// je�li b��d kt�ry wyst�pi� umo�liwia dalsze pr�by po��czenia
-	// i w mi�dzyczasie u�ytkownik nie zmieni� statusu na niedost�pny
-	// to za sekund� pr�bujemy ponownie
-	if (continue_connecting && !nextStatus().isOffline())
-		connectAfterOneSecond();
+	socketConnFailed(ConnectionTimeout);
 
 	kdebugf2();
 }
@@ -934,6 +788,161 @@ void GaduProtocol::connectAfterOneSecond()
 	kdebugf();
 	QTimer::singleShot(1000, this, SLOT(login()));
 	kdebugf2();
+}
+
+void GaduProtocol::socketContactStatusChanged(unsigned int uin, unsigned int status, const QString &description,
+		const QHostAddress &ip, unsigned short port, unsigned int maxImageSize, unsigned int version)
+{
+	Contact contact = ContactManager::instance()->byId(account(), QString::number(uin));
+
+	if (contact.isAnonymous())
+	{
+		kdebugmf(KDEBUG_INFO, "buddy %d not in list. Damned server!\n", uin);
+		gg_remove_notify(GaduSession, uin);
+		return;
+	}
+
+	GaduContactAccountData *accountData = gaduContactAccountData(contact);
+	accountData->setIp(ip);
+	accountData->setPort(port);
+	accountData->setMaxImageSize(maxImageSize);
+	accountData->setProtocolVersion(QString::number(version));
+	accountData->setGaduProtocolVersion(version);
+}
+
+void GaduProtocol::socketConnFailed(GaduError error)
+{
+	kdebugf();
+	QString msg = QString::null;
+
+	disconnectedSlot();
+
+// 	emit error(err);
+
+	bool continue_connecting = true;
+	switch (error)
+	{
+		case ConnectionServerNotFound:
+			msg = tr("Unable to connect, server has not been found");
+			break;
+
+		case ConnectionCannotConnect:
+			msg = tr("Unable to connect");
+			break;
+
+		case ConnectionNeedEmail:
+			msg = tr("Please change your email in \"Change password / email\" window. "
+				"Leave new password field blank.");
+			continue_connecting = false;
+			MessageBox::msg(msg, false, "Warning");
+			break;
+
+		case ConnectionInvalidData:
+			msg = tr("Unable to connect, server has returned unknown data");
+			break;
+
+		case ConnectionCannotRead:
+			msg = tr("Unable to connect, connection break during reading");
+			break;
+
+		case ConnectionCannotWrite:
+			msg = tr("Unable to connect, connection break during writing");
+			break;
+
+		case ConnectionIncorrectPassword:
+			msg = tr("Unable to connect, incorrect password");
+			continue_connecting = false;
+			MessageBox::msg(tr("Connection will be stopped\nYour password is incorrect!"), false, "Critical");
+			break;
+
+		case ConnectionTlsError:
+			msg = tr("Unable to connect, error of negotiation TLS");
+			break;
+
+		case ConnectionIntruderError:
+			msg = tr("Too many connection attempts with bad password!");
+			continue_connecting = false;
+			MessageBox::msg(tr("Connection will be stopped\nToo many attempts with bad password"), false, "Critical");
+			break;
+
+		case ConnectionUnavailableError:
+			msg = tr("Unable to connect, servers are down");
+			break;
+
+		case ConnectionUnknow:
+			kdebugm(KDEBUG_INFO, "Connection broken unexpectedly!\nUnscheduled connection termination\n");
+			break;
+
+		case ConnectionTimeout:
+			msg = tr("Connection timeout!");
+			break;
+
+		case Disconnected:
+			msg = tr("Disconnection has occured");
+			break;
+
+		default:
+			kdebugm(KDEBUG_ERROR, "Unhandled error? (%d)\n", int(error));
+			break;
+	}
+/*
+	if (msg != QString::null)
+	{
+		QHostAddress server = activeServer();
+		QString host;
+		if (!server.isNull())
+			host = server.toString();
+		else
+			host = "HUB";
+		kdebugm(KDEBUG_INFO, "%s %s\n", qPrintable(host), qPrintable(msg));
+		emit connectionError(account(), host, msg);
+	}*/
+
+	if (!continue_connecting)
+		setStatus(Status::Offline);
+
+	// je�li b��d kt�ry wyst�pi� umo�liwia dalsze pr�by po��czenia
+	// i w mi�dzyczasie u�ytkownik nie zmieni� statusu na niedost�pny
+	// to za sekund� pr�bujemy ponownie
+	if (continue_connecting && !nextStatus().isOffline())
+		connectAfterOneSecond();
+
+	kdebugf2();
+}
+
+void GaduProtocol::socketConnSuccess()
+{
+	kdebugf();
+
+	ConnectionTimeoutTimer::off();
+
+	sendUserList();
+
+	GaduServersManager::instance()->markServerAsGood(QHostAddress(ntohl(GaduSession->server_addr)));
+	GaduServersManager::instance()->markPortAsGood(GaduSession->port);
+
+	/* jezeli sie rozlaczymy albo stracimy polaczenie, proces laczenia sie z serwerami zaczyna sie od poczatku */
+	PingTimer = new QTimer(0);
+	connect(PingTimer, SIGNAL(timeout()), this, SLOT(everyMinuteActions()));
+	PingTimer->start(60000);
+
+	statusChanged(nextStatus());
+	networkConnected();
+
+	// po po��czeniu z sewerem niestety trzeba ponownie ustawi�
+	// status, inaczej nie b�dziemy widoczni - raczej b��d serwer�w
+	if (status().isInvisible()
+// TODO: 0.6.6
+//|| (GaduLoginParams.status&~GG_STATUS_FRIENDS_MASK) != static_cast<GaduStatus *>(NextStatus)->toStatusNumber())
+		)
+		setStatus(status());
+
+	kdebugf2();
+}
+
+void GaduProtocol::socketDisconnected()
+{
+	disconnectedSlot();
 }
 
 void GaduProtocol::userListReceived(const struct gg_event *e)

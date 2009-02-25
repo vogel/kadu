@@ -30,6 +30,7 @@ protected:
 	virtual bool checkRead();
 	virtual bool checkWrite();
 	virtual void socketEvent();
+	virtual int timeout();
 
 public:
 	GaduPubdirSocketNotifiers(QObject *parent = 0) :

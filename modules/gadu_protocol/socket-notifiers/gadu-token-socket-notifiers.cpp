@@ -94,3 +94,10 @@ void GaduTokenSocketNotifiers::socketEvent()
 
 	kdebugf2();
 }
+
+int GaduTokenSocketNotifiers::timeout()
+{
+	return H
+		? H->timeout
+		: 0;
+}

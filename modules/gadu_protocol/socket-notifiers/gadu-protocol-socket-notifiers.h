@@ -25,18 +25,17 @@ class GaduProtocolSocketNotifiers : public GaduSocketNotifiers
 	Q_OBJECT
 
 	Account *CurrentAccount;
+	GaduProtocol *CurrentProtocol;
 
 	gg_session *Sess;
 	int socketEventCalls;
 
-	void connectionFailed(int);
+	void dumpConnectionState();
 
 	void handleEventMsg(struct gg_event *e);
 	void handleEventNotify(struct gg_event *e);
-	void handleEventNotifyDescr(struct gg_event *e);
 	void handleEventStatus(struct gg_event *e);
 	void handleEventAck(struct gg_event *e);
-	void handleEventPong(struct gg_event *e);
 	void handleEventConnFailed(struct gg_event *e);
 	void handleEventConnSuccess(struct gg_event *e);
 	void handleEventDisconnect(struct gg_event *e);
@@ -45,10 +44,12 @@ protected:
 	virtual bool checkRead();
 	virtual bool checkWrite();
 	virtual void socketEvent();
+	virtual int timeout();
 
 public:
-	GaduProtocolSocketNotifiers(Account *account, QObject *parent = 0) :
-			CurrentAccount(account), GaduSocketNotifiers(parent), Sess(0), socketEventCalls(0) {}
+	GaduProtocolSocketNotifiers(Account *account, GaduProtocol *protocol, QObject *parent = 0) :
+			CurrentAccount(account), CurrentProtocol(protocol),
+			GaduSocketNotifiers(parent), Sess(0), socketEventCalls(0) {}
 
 	void watchFor(gg_session *sess);
 
@@ -57,7 +58,6 @@ public:
 signals:
 	void messageReceived(Contact sender, ContactList recipients, const QString &message, time_t time, QByteArray &formats);
 
-	void ackReceived(int seq, uin_t uin, int status);
 	void connected();
 
 	void dccConnectionRequestReceived(Contact contact);
@@ -74,7 +74,6 @@ signals:
 	void systemMessageReceived(QString &, QDateTime &, int, void *);
 	void userlistReceived(const struct gg_event *);
 	void userlistReplyReceived(char, char *);
-	void userStatusChanged(const struct gg_event *);
 
 	void dcc7New(struct gg_dcc7 *);
 	void dcc7Accepted(struct gg_dcc7 *);

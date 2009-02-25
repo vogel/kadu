@@ -8,13 +8,14 @@
  ***************************************************************************/
 
 #include <QtCore/QSocketNotifier>
+#include <QtCore/QTimer>
 
 #include "debug.h"
 
 #include "gadu-socket-notifiers.h"
 
 GaduSocketNotifiers::GaduSocketNotifiers(QObject *parent)
-	: QObject(parent), Socket(0), ReadNotifier(0), WriteNotifier(0), Lock(false)
+	: QObject(parent), Socket(0), Started(false), ReadNotifier(0), WriteNotifier(0), Lock(false)
 {
 	kdebugf();
 	kdebugf2();
@@ -44,6 +45,11 @@ void GaduSocketNotifiers::createSocketNotifiers()
 	WriteNotifier = new QSocketNotifier(Socket, QSocketNotifier::Write, this);
 	connect(WriteNotifier, SIGNAL(activated(int)), this, SLOT(dataSent()));
 
+	TimeoutTimer = new QTimer();
+	connect(TimeoutTimer, SIGNAL(timeout()), this, SLOT(socketTimeout()));
+
+	Started = true;
+
 	kdebugf2();
 }
 
@@ -51,37 +57,47 @@ void GaduSocketNotifiers::deleteSocketNotifiers()
 {
 	kdebugf();
 
-	if (ReadNotifier)
-	{
-		ReadNotifier->setEnabled(false);
-		ReadNotifier->deleteLater();
-		ReadNotifier = 0;
-	}
+	if (!Started)
+		return;
 
-	if (WriteNotifier)
-	{
-		WriteNotifier->setEnabled(false);
-		WriteNotifier->deleteLater();
-		WriteNotifier = 0;
-	}
+	Started = false;
+
+	ReadNotifier->setEnabled(false);
+	ReadNotifier->deleteLater();
+	ReadNotifier = 0;
+
+	WriteNotifier->setEnabled(false);
+	WriteNotifier->deleteLater();
+	WriteNotifier = 0;
+
+	TimeoutTimer->stop();
+	TimeoutTimer->deleteLater();
+	TimeoutTimer = 0;
 
 	kdebugf2();
 }
 
 void GaduSocketNotifiers::disable()
 {
-	if (ReadNotifier)
-		ReadNotifier->setEnabled(false);
-	if (WriteNotifier)
-		WriteNotifier->setEnabled(false);
+	if (!Started)
+		return;
+
+	ReadNotifier->setEnabled(false);
+	WriteNotifier->setEnabled(false);
+	TimeoutTimer->stop();
 }
 
 void GaduSocketNotifiers::enable()
 {
-	if (!Lock && checkRead() && ReadNotifier)
+	if (!Started)
+		return;
+
+	if (!Lock && checkRead())
 		ReadNotifier->setEnabled(true);
-	if (!Lock && checkWrite() && WriteNotifier)
+	if (!Lock && checkWrite())
 		WriteNotifier->setEnabled(true);
+	if (0 != timeout())
+		TimeoutTimer->start(timeout()); // TODO: 0.6.6 connect to something
 }
 
 void GaduSocketNotifiers::watchFor(int socket)
@@ -104,13 +120,17 @@ void GaduSocketNotifiers::unlock()
 	enable();
 }
 
+void GaduSocketNotifiers::socketTimeout()
+{
+	// TODO: disconnected
+}
+
 void GaduSocketNotifiers::dataReceived()
 {
 	kdebugf();
 
 	disable();
-	if (checkRead())
-		socketEvent();
+	socketEvent();
 	enable();
 
 	kdebugf2();
@@ -121,8 +141,7 @@ void GaduSocketNotifiers::dataSent()
 	kdebugf();
 
 	disable();
-	if (checkWrite())
-		socketEvent();
+	socketEvent();
 	enable();
 
 	kdebugf2();
