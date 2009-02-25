@@ -67,26 +67,27 @@ void AdiumChatStyleEngine::clearMessages(ChatMessagesView *view)
 	view->page()->mainFrame()->evaluateJavaScript("kadu_clearMessages()");
 }
 
-bool AdiumChatStyleEngine::isThemeValid(QString styleName)
+QString AdiumChatStyleEngine::isThemeValid(QString stylePath)
 {
 	// Minimal Adium style layout
-	QDir dir(styleName);
+	QDir dir(stylePath);
 	if (!dir.cd("Contents/Resources/"))
-		return false;
+		return QString::null;
 
 	QFileInfo fi(dir, "Incoming/Content.html");	
 	if (!fi.isReadable())
-		return false;
+		return QString::null;
 	
 	fi.setFile(dir, "main.css");
 	if (!fi.isReadable())
-		return false;
+		return QString::null;
 
 	fi.setFile(dir, "Status.html");
 	if (!fi.isReadable())
-		return false;
-
-	return true;
+		return QString::null;
+	
+	dir.setPath(stylePath);
+	return dir.dirName();
 }
 
 QStringList AdiumChatStyleEngine::styleVariants(QString styleName)

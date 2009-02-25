@@ -32,7 +32,7 @@ public:
 	~KaduChatStyleEngine();
 	virtual bool supportVariants() { return false; }
 	virtual bool supportEditing() { return true; }
-	virtual bool isThemeValid(QString styleName);
+	virtual QString isThemeValid(QString styleName);
 	
 	virtual void clearMessages(ChatMessagesView *view);
 	virtual void appendMessages(ChatMessagesView *view, QList<ChatMessage *> messages);

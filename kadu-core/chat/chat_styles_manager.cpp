@@ -183,7 +183,7 @@ void ChatStylesManager::configurationUpdated()
 void ChatStylesManager::loadThemes()
 {
 	QDir dir;
-	QString path;
+	QString path, themeName;
 	QFileInfo fi;
 	QStringList files;
 
@@ -199,10 +199,10 @@ void ChatStylesManager::loadThemes()
 		{
 			foreach (ChatStyleEngine *engine, registeredEngines.values())
 			{//bug! is theme valid shoud return theme name?
-				if (engine->isThemeValid(path + file))
+				if ((themeName = engine->isThemeValid(path + file)) != QString::null)
 				{
-					availableStyles[fi.baseName()].engine = engine;
-					availableStyles[fi.baseName()].global = false;
+					availableStyles[themeName].engine = engine;
+					availableStyles[themeName].global = false;
 					break;
 				}
 			}
@@ -221,10 +221,10 @@ void ChatStylesManager::loadThemes()
 		{
 			foreach (ChatStyleEngine *engine, registeredEngines.values())
 			{//bug!
-				if (engine->isThemeValid(path + file))
+				if ((themeName = engine->isThemeValid(path + file)) != QString::null)
 				{
-					availableStyles[fi.baseName()].engine = engine;
-					availableStyles[fi.baseName()].global = true;
+					availableStyles[themeName].engine = engine;
+					availableStyles[themeName].global = true;
 					break;
 				}
 			}

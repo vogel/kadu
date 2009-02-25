@@ -21,7 +21,7 @@ public:
 
 	virtual bool supportVariants() = 0;
 	virtual bool supportEditing() = 0;
-	virtual bool isThemeValid(QString) = 0;
+	virtual QString isThemeValid(QString) = 0; //return QString::null, if theme is not valid
 	
 	virtual void clearMessages(ChatMessagesView *) = 0;
 	virtual void appendMessages(ChatMessagesView *, QList<ChatMessage *>) = 0;

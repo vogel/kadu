@@ -57,11 +57,11 @@ void KaduChatStyleEngine::refreshView(ChatMessagesView *view)
 	repaintMessages(view);
 }
 
-bool KaduChatStyleEngine::isThemeValid(QString stylePath)
+QString KaduChatStyleEngine::isThemeValid(QString stylePath)
 {
 	QFileInfo fi;
 	fi.setFile(stylePath);
-	return fi.suffix() == "syntax";
+	return fi.suffix() == "syntax" ? fi.completeBaseName() : QString::null;
 }
 
 void KaduChatStyleEngine::loadTheme(const QString &styleName, const QString &variantName)
