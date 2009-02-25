@@ -159,9 +159,10 @@ void ChatStylesManager::configurationUpdated()
 	QString newStyleName = config_file.readEntry("Look", "Style");
 	QString newVariantName = config_file.readEntry("Look", "ChatStyleVariant");
 	// if theme was changed, load new theme
-//TODO: addVariantsSupport
 	if (!CurrentEngine || CurrentEngine->currentStyleName() != newStyleName || CurrentEngine->currentStyleVariant() != newVariantName)
 	{
+		if (!availableStyles.contains(newStyleName))// if theme not exists load kadu theme
+			newStyleName = "kadu";
 		if (availableStyles[newStyleName].engine != CurrentEngine)
 			CurrentEngine = availableStyles[newStyleName].engine;
 		CurrentEngine->loadTheme(newStyleName, newVariantName);
@@ -197,7 +198,7 @@ void ChatStylesManager::loadThemes()
 		if (fi.isReadable() && !availableStyles.contains(file))
 		{
 			foreach (ChatStyleEngine *engine, registeredEngines.values())
-			{
+			{//bug! is theme valid shoud return theme name?
 				if (engine->isThemeValid(path + file))
 				{
 					availableStyles[fi.baseName()].engine = engine;
@@ -219,7 +220,7 @@ void ChatStylesManager::loadThemes()
 		if (fi.isReadable() && !availableStyles.contains(file))
 		{
 			foreach (ChatStyleEngine *engine, registeredEngines.values())
-			{
+			{//bug!
 				if (engine->isThemeValid(path + file))
 				{
 					availableStyles[fi.baseName()].engine = engine;
