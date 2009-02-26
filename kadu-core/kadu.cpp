@@ -1708,26 +1708,24 @@ void Kadu::createRecentChatsMenu()
 
 	unsigned int index = 0; // indeks pozycji w popupie
 
-	foreach(const ContactList contacts, chat_manager->closedChatUsers())
+	foreach (const ContactList contacts, chat_manager->closedChatUsers())
 	{
-// TODO: 0.6.6
-// 		UserListElements users = UserListElements::fromContactList(contacts, AccountManager::instance()->defaultAccount());
-// 		QStringList altnicks = users.altNicks(); // lista nick�w z okna rozmowy
-// 		QString chat_users;
-// 
-// 		if (altnicks.count() <= 5)
-// 			chat_users = altnicks.join(", ");
-// 		else // je�eli jest wi�cej ni� pi�ciu u�ytkownik�w...
-// 		{
-// 			for (int i = 0; i < 4; i++) // to i tak dodajemy tylko pierwszych pi�ciu :)
-// 				chat_users.append(*altnicks.at(i) + ", ");
-// 			chat_users.append(*altnicks.at(4) + " [...]");
-// 		}
-// 		action = new QAction(icons_manager->loadIcon("OpenChat"), chat_users, this);
-// 		action->setData(index);
-// 		RecentChatsMenu->addAction(action);
-// 
-// 		index++;
+ 		QString chat_users = contacts[0].display();
+		int contactsCount = contacts.count();
+		int i = 1;
+		while (i < contactsCount && i < 5)
+		{
+			chat_users.append(", " + contacts.at(i).display());
+			++i;
+		}
+		if (i < contactsCount)
+			chat_users.append(" [...]");
+
+ 		action = new QAction(icons_manager->loadIcon("OpenChat"), chat_users, this);
+ 		action->setData(index);
+ 		RecentChatsMenu->addAction(action);
+ 
+ 		index++;
 	}
 
 	kdebugf2();
