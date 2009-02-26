@@ -202,8 +202,6 @@ void DccManager::connectSocketNotifiers(DccSocketNotifiers *notifiers)
 			this, SLOT(socketNotifiersDestroyed(QObject *)));
 	connect(notifiers, SIGNAL(incomingConnection(struct gg_dcc *)),
 			this, SLOT(dccIncomingConnection(struct gg_dcc *)));
-	connect(notifiers, SIGNAL(callbackReceived(DccSocketNotifiers *)),
-			this, SLOT(dccCallbackReceived(DccSocketNotifiers *)));
 }
 
 void DccManager::disconnectSocketNotifiers(DccSocketNotifiers *notifiers)
@@ -212,46 +210,11 @@ void DccManager::disconnectSocketNotifiers(DccSocketNotifiers *notifiers)
 			this, SLOT(socketNotifiersDestroyed(QObject *)));
 	disconnect(notifiers, SIGNAL(incomingConnection(struct gg_dcc *)),
 			this, SLOT(dccIncomingConnection(struct gg_dcc *)));
-	disconnect(notifiers, SIGNAL(callbackReceived(DccSocketNotifiers *)),
-			this, SLOT(dccCallbackReceived(DccSocketNotifiers *)));
 }
 
 void DccManager::socketNotifiersDestroyed(QObject *socketNotifiers)
 {
 	SocketNotifiers.removeAll(dynamic_cast<DccSocketNotifiers *>(socketNotifiers));
-}
-
-void DccManager::dccIncomingConnection(struct gg_dcc *incomingConnection)
-{
-	kdebugf();
-
-	printf("creating new connection\n");
-
-	DccSocketNotifiers *newSocketNotifiers = new DccSocketNotifiers(Protocol, this);
-	SocketNotifiers << newSocketNotifiers;
-	connectSocketNotifiers(newSocketNotifiers);
-	newSocketNotifiers->watchFor(incomingConnection);
-}
-
-void DccManager::dccCallbackReceived(DccSocketNotifiers *socketNotifiers)
-{
-	kdebugf();
-
-	foreach (GaduFileTransfer *gft, WaitingFileTransfers)
-	{
-		UinType uin = Protocol->uin(gft->contact());
-		if (uin == socketNotifiers->peerUin())
-		{
-			disconnectSocketNotifiers(socketNotifiers);
-			SocketNotifiers.removeAll(socketNotifiers);
-			gft->setFileTransferNotifiers(socketNotifiers);
-			return;
-		}
-	}
-
-	socketNotifiers->deleteLater();
-
-	kdebugf2();
 }
 
 bool DccManager::acceptConnection(unsigned int uin, unsigned int peerUin, unsigned int peerAddr)
@@ -327,6 +290,31 @@ void DccManager::dccConnectionRequestReceived(Contact contact)
 	dccSocketNotifiers->watchFor(dcc);
 
 	kdebugf2();
+}
+
+GaduFileTransfer * DccManager::findFileTransfer(DccSocketNotifiers *notifiers)
+{
+	foreach (GaduFileTransfer *gft, WaitingFileTransfers)
+	{
+		UinType uin = Protocol->uin(gft->contact());
+		if (uin == notifiers->peerUin())
+		{
+			disconnectSocketNotifiers(notifiers);
+			SocketNotifiers.removeAll(notifiers);
+			return gft;
+		}
+	}
+
+	return 0;
+}
+
+void DccManager::handleEventDccNew(struct gg_event *e) {
+	kdebugmf(KDEBUG_NETWORK | KDEBUG_INFO, "GG_EVENT_DCC_NEW\n");
+
+	DccSocketNotifiers *newSocketNotifiers = new DccSocketNotifiers(Protocol, this);
+	SocketNotifiers << newSocketNotifiers;
+	connectSocketNotifiers(newSocketNotifiers);
+	newSocketNotifiers->watchFor(e->event.dcc_new);
 }
 
 void DccManager::handleEventDcc7New(struct gg_event *e)

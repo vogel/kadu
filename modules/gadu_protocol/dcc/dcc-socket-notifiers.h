@@ -38,7 +38,15 @@ class DccSocketNotifiers : public GaduSocketNotifiers
 	int *DccCheckField;
 
 	void finished(bool ok);
-	void handleEvent(struct gg_event *e);
+
+	void handleEventDccError(struct gg_event *e);
+	void handleEventDccDone(struct gg_event *e);
+	void handleEventDccClientAccept(struct gg_event *e);
+	void handleEventDccCallback(struct gg_event *e);
+	void handleEventDccNeedFileInfo(struct gg_event *e);
+	void handleEventDccNeedFileAck(struct gg_event *e);
+	void handleEventDccNeedVoiceAck(struct gg_event *e);
+	void handleEventDccVoiceData(struct gg_event *e);
 
 private slots:
 	void dcc7Accepted(struct gg_dcc7 *);

@@ -93,6 +93,94 @@ bool DccSocketNotifiers::checkWrite()
 	return DccCheckField && (*DccCheckField & GG_CHECK_WRITE);
 }
 
+void DccSocketNotifiers::handleEventDccError(struct gg_event *e)
+{
+	finished(false);
+}
+
+void DccSocketNotifiers::handleEventDccDone(struct gg_event *e)
+{
+	finished(true);
+}
+
+void DccSocketNotifiers::handleEventDccClientAccept(struct gg_event *e)
+{
+	kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "GG_EVENT_DCC_CLIENT_ACCEPT! uin:%d peer_uin:%d\n",
+			Socket->uin, Socket->peer_uin);
+
+	// TODO: make async TODO: 0.6.6
+//	if (!Manager->acceptConnection(Socket->uin, Socket->peer_uin, Socket->remote_addr))
+//	{
+//		done(false);
+//		return;
+//	}
+}
+
+void DccSocketNotifiers::handleEventDccCallback(struct gg_event *e)
+{
+	kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "GG_EVENT_DCC_CALLBACK! uin:%d peer_uin:%d\n",
+		Socket->uin, Socket->peer_uin);
+
+	printf("callback\n");
+
+	GaduFileTransfer *gft = Manager->findFileTransfer(this);
+	if (gft)
+	{
+		gg_dcc_set_type(Socket, GG_SESSION_DCC_SEND); // TODO: 0.6.6 for voice it wont look that way
+		gft->setFileTransferNotifiers(this);
+		return;
+	}
+	else
+		done(false);
+}
+
+void DccSocketNotifiers::handleEventDccNeedFileInfo(struct gg_event *e)
+{
+	kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "GG_EVENT_DCC_NEED_FILE_INFO\n");
+	printf("need file info\n");
+
+	if (Version == Dcc6 && FileTransfer)
+		gg_dcc_fill_file_info2(Socket, unicode2cp(FileTransfer->localFileName()), qPrintable(FileTransfer->localFileName()));
+	else
+		finished(false);
+}
+
+void DccSocketNotifiers::handleEventDccNeedFileAck(struct gg_event *e)
+{
+	printf("need file ack\n");
+//	kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "GG_EVENT_DCC_NEED_FILE_ACK! uin:%d peer_uin:%d\n",
+//			socket->uin(), socket->peerUin());
+// 	lock();
+// TODO: 0.6.6
+
+	QIODevice::OpenMode flags = QIODevice::WriteOnly | QIODevice::Truncate;
+	QFile file("/home/vogel/gg-download");
+	file.open(flags);
+
+	printf("handle: %d\n", file.handle());
+	printf("version: %d\n", Version);
+
+	switch (Version)
+	{
+		case Dcc6:
+			Socket->file_fd = file.handle();
+			break;
+		case Dcc7:
+			Socket7->file_fd = file.handle();
+			break;
+	}
+
+	//Manager->needIncomingFileTransferAccept(this);
+}
+
+void DccSocketNotifiers::handleEventDccNeedVoiceAck(struct gg_event *e)
+{
+}
+
+void DccSocketNotifiers::handleEventDccVoiceData(struct gg_event *e)
+{
+}
+
 void DccSocketNotifiers::socketEvent()
 {
 	kdebugf();
@@ -121,7 +209,44 @@ void DccSocketNotifiers::socketEvent()
 		return;
 	}
 
-	handleEvent(e);
+	switch (e->type)
+	{
+		case GG_EVENT_DCC_NEW:
+			Manager->handleEventDccNew(e);
+			break;
+
+		case GG_EVENT_DCC_ERROR:
+			handleEventDccError(e);
+			break;
+
+		case GG_EVENT_DCC_DONE:
+			handleEventDccDone(e);
+			break;
+
+		case GG_EVENT_DCC_CLIENT_ACCEPT:
+			handleEventDccClientAccept(e);
+			break;
+
+		case GG_EVENT_DCC_CALLBACK:
+			handleEventDccCallback(e);
+			break;
+
+		case GG_EVENT_DCC_NEED_FILE_INFO:
+			handleEventDccNeedFileInfo(e);
+			break;
+
+		case GG_EVENT_DCC_NEED_FILE_ACK:
+			handleEventDccNeedFileAck(e);
+			break;
+
+		case GG_EVENT_DCC_NEED_VOICE_ACK:
+			handleEventDccNeedVoiceAck(e);
+			break;
+
+		case GG_EVENT_DCC_VOICE_DATA:
+			handleEventDccVoiceData(e);
+			break;
+	}
 
 	if (e)
 		gg_free_event(e);
@@ -153,64 +278,24 @@ void DccSocketNotifiers::finished(bool ok)
 	emit done(ok);
 }
 
-void DccSocketNotifiers::handleEvent(struct gg_event *e)
-{
-	printf("dcc handle event: %d\n", e->type);
-
-	switch (e->type)
-	{
-		case GG_EVENT_DCC7_CONNECTED:
+// 		case GG_EVENT_DCC7_CONNECTED:
 			// Dcc7Struct->fd changed, we need new socket notifiers
-			printf("dcc7 connected\n");
-			watchFor(Socket7);
-			break;
+// 			printf("dcc7 connected\n");
+// 			watchFor(Socket7);
+// 			break;
 
-		case GG_EVENT_DCC_ERROR:
-		case GG_EVENT_DCC7_ERROR:
-			kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "GG_EVENT_DCC_ERROR\n");
-			finished(false);
-			return;
+// 		case GG_EVENT_DCC7_ERROR:
+// 			kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "GG_EVENT_DCC_ERROR\n");
+// 			finished(false);
+// 			return;
 
-		// only in version 6
-		case GG_EVENT_DCC_CLIENT_ACCEPT:
-			printf("dcc client accept\n");
-			kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "GG_EVENT_DCC_CLIENT_ACCEPT! uin:%d peer_uin:%d\n",
-				Socket->uin, Socket->peer_uin);
+// 		case GG_EVENT_DCC7_DONE:
+// 			printf("event done\n");
+// 			kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "GG_EVENT_DCC_DONE\n");
+// 			finished(true);
+// 			break;
 
-			// TODO: make async TODO: 0.6.6
-// 			if (!Manager->acceptConnection(Socket->uin, Socket->peer_uin, Socket->remote_addr))
-// 			{
-// 				done(false);
-// 				return;
-// 			}
-			break;
-
-		// only in version 6
-		case GG_EVENT_DCC_CALLBACK:
-			kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "GG_EVENT_DCC_CALLBACK! uin:%d peer_uin:%d\n",
-				Socket->uin, Socket->peer_uin);
-			printf("callback\n");
-			gg_dcc_set_type(Socket, GG_SESSION_DCC_SEND); // TODO: 0.6.6 for voice it wont look that way
-			emit callbackReceived(this);
-			break;
-
-		case GG_EVENT_DCC7_DONE:
-		case GG_EVENT_DCC_DONE:
-			printf("event done\n");
-			kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "GG_EVENT_DCC_DONE\n");
-			finished(true);
-			break;
-
-		case GG_EVENT_DCC_NEED_FILE_INFO:
-			kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "GG_EVENT_DCC_NEED_FILE_INFO\n");
-			printf("need file info\n");
-			if (Version == Dcc6 && FileTransfer)
-				gg_dcc_fill_file_info2(Socket, unicode2cp(FileTransfer->localFileName()), qPrintable(FileTransfer->localFileName()));
-			else
-				finished(false);
-			break;
-
-		case GG_EVENT_DCC_NEED_VOICE_ACK:
+// 		case GG_EVENT_DCC_NEED_VOICE_ACK:
 // 			kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "GG_EVENT_DCC_NEED_VOICE_ACK! uin:%d peer_uin:%d\n",
 // 				socket->uin(), socket->peerUin());
 // 			if (askAcceptVoiceChat(socket))
@@ -223,58 +308,16 @@ void DccSocketNotifiers::handleEvent(struct gg_event *e)
 // 				socket->reject();
 // 				delete socket;
 // 			}
-			break;
+// 			break;
 
-		case GG_EVENT_DCC_ACK:
+// 		case GG_EVENT_DCC_ACK:
 // 			kdebugmf(KDEBUG_INFO, "GG_EVENT_DCC_ACK\n");
 // 			if (socket->type() == GG_SESSION_DCC_VOICE)
 // 			{
 // 				VoiceChatDialog *voiceChatDialog = new VoiceChatDialog();
 // 				socket->setHandler(voiceChatDialog);
 // 			}
-			break;
-
-		case GG_EVENT_DCC_NEED_FILE_ACK:
-		{
-			printf("need file ack\n");
-// 			kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "GG_EVENT_DCC_NEED_FILE_ACK! uin:%d peer_uin:%d\n",
-// 				socket->uin(), socket->peerUin());
-// 			lock();
-// TODO: 0.6.6
-
-			QIODevice::OpenMode flags = QIODevice::WriteOnly | QIODevice::Truncate;
-			QFile file("/home/vogel/gg-download");
-			file.open(flags);
-
-			printf("handle: %d\n", file.handle());
-			printf("version: %d\n", Version);
-
-			switch (Version)
-			{
-				case Dcc6:
-					Socket->file_fd = file.handle();
-					break;
-				case Dcc7:
-					Socket7->file_fd = file.handle();
-					break;
-			}
-
-			//Manager->needIncomingFileTransferAccept(this);
-			break;
-		}
-
-		case GG_EVENT_DCC_NEW:
-		{
-			kdebugmf(KDEBUG_NETWORK | KDEBUG_INFO, "GG_EVENT_DCC_NEW\n");
-			printf("event new\n");
-			emit incomingConnection(e->event.dcc_new);
-			break;
-		}
-
-		default:
-			break;
-	}
-}
+// 			break;
 
 UinType DccSocketNotifiers::peerUin()
 {
