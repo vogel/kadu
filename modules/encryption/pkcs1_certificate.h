@@ -3,7 +3,7 @@
   Copyright: (C) 2009 Tomasz Kazmierczak
 
   Creation date: 2009-02-12
-  Last modification date: 2009-02-18
+  Last modification date: 2009-02-25
 
   This file is part of Kadu encryption module
 
@@ -89,6 +89,8 @@ class PKCS1Certificate
 		QCA::RSAPrivateKey privateKeyFromDER(const QCA::SecureArray &certificate, ConversionStatus &status);
 
 	private:
+		enum DERTag {Integer = 0x02, Sequence = 0x30};
+
 		QCA::SecureArray *Certificate;
 		int               CertificateReadOffset;
 		ConversionStatus  Status;

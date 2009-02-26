@@ -3,7 +3,7 @@
   Copyright: (C) 2009 Tomasz Kazmierczak
 
   Creation date: 2009-02-12
-  Last modification date: 2009-02-18
+  Last modification date: 2009-02-25
 
   This file is part of Kadu encryption module
 
@@ -30,6 +30,7 @@
  *
  */
 
+#include <limits.h>
 #include "pkcs1_certificate.h"
 
 PKCS1Certificate::~PKCS1Certificate()
@@ -55,14 +56,14 @@ bool PKCS1Certificate::storePublicKey(QCA::SecureArray &output, const QCA::BigIn
 	//first we will write it's contents, and at the end we will prepend
 	//the SEQUENCE information
 	//INTEGER - the modulus
-	Certificate->append(QCA::SecureArray(1, 0x02));
+	Certificate->append(QCA::SecureArray(1, Integer));
 	QCA::SecureArray array = modulus.toArray();
 	if(!writeDefiniteLength(array.size()))
 		return false;
 	Certificate->append(array);
 
 	//INTEGER - the exponent
-	Certificate->append(QCA::SecureArray(1, 0x02));
+	Certificate->append(QCA::SecureArray(1, Integer));
 	array.clear();
 	array = exponent.toArray();
 	if(!writeDefiniteLength(array.size()))
@@ -74,7 +75,7 @@ bool PKCS1Certificate::storePublicKey(QCA::SecureArray &output, const QCA::BigIn
 	QCA::SecureArray certContent(*Certificate);
 	Certificate->clear();
 	//add the SEQUENCE tag, the length and the contents
-	Certificate->append(QCA::SecureArray(1, 0x30));
+	Certificate->append(QCA::SecureArray(1, Sequence));
 	if(!writeDefiniteLength(certContent.size()))
 		return false;
 	Certificate->append(certContent);
@@ -102,7 +103,7 @@ bool PKCS1Certificate::extractPublicKey(const QCA::SecureArray &certificate,
 
 	uint8_t octet = readNextOctet();
 	//we expect the SEQUENCE tag at the begining
-	if(octet != 0x30)
+	if(octet != Sequence)
 	{
 		Status = UnknownCertificate;
 		return false;
@@ -121,7 +122,7 @@ bool PKCS1Certificate::extractPublicKey(const QCA::SecureArray &certificate,
 
 	octet = readNextOctet();
 	//we expect an integer (the modulus)
-	if(octet != 0x02)
+	if(octet != Integer)
 	{
 		Status = UnknownCertificate;
 		return false;
@@ -144,7 +145,7 @@ bool PKCS1Certificate::extractPublicKey(const QCA::SecureArray &certificate,
 
 	octet = readNextOctet();
 	//we expect an integer (the exponent)
-	if(octet != 0x02)
+	if(octet != Integer)
 	{
 		Status = UnknownCertificate;
 		return false;
@@ -181,21 +182,21 @@ bool PKCS1Certificate::storePrivateKey(QCA::SecureArray &output, const QCA::BigI
 	//first we will write it's contents, and at the end we will prepend
 	//the SEQUENCE information
 	//INTEGER - the version (0)
-	Certificate->append(QCA::SecureArray(1, 0x02));
+	Certificate->append(QCA::SecureArray(1, Integer));
 	QCA::SecureArray array(1, 0);
 	if(!writeDefiniteLength(array.size()))
 		return false;
 	Certificate->append(array);
 
 	//INTEGER - the modulus
-	Certificate->append(QCA::SecureArray(1, 0x02));
+	Certificate->append(QCA::SecureArray(1, Integer));
 	array = modulus.toArray();
 	if(!writeDefiniteLength(array.size()))
 		return false;
 	Certificate->append(array);
 
 	//INTEGER - the public exponent (e)
-	Certificate->append(QCA::SecureArray(1, 0x02));
+	Certificate->append(QCA::SecureArray(1, Integer));
 	array.clear();
 	array = e.toArray();
 	if(!writeDefiniteLength(array.size()))
@@ -203,7 +204,7 @@ bool PKCS1Certificate::storePrivateKey(QCA::SecureArray &output, const QCA::BigI
 	Certificate->append(array);
 
 	//INTEGER - the private exponent (d)
-	Certificate->append(QCA::SecureArray(1, 0x02));
+	Certificate->append(QCA::SecureArray(1, Integer));
 	array.clear();
 	array = d.toArray();
 	if(!writeDefiniteLength(array.size()))
@@ -211,7 +212,7 @@ bool PKCS1Certificate::storePrivateKey(QCA::SecureArray &output, const QCA::BigI
 	Certificate->append(array);
 
 	//INTEGER - the first prime (p)
-	Certificate->append(QCA::SecureArray(1, 0x02));
+	Certificate->append(QCA::SecureArray(1, Integer));
 	array.clear();
 	array = p.toArray();
 	if(!writeDefiniteLength(array.size()))
@@ -219,7 +220,7 @@ bool PKCS1Certificate::storePrivateKey(QCA::SecureArray &output, const QCA::BigI
 	Certificate->append(array);
 
 	//INTEGER - the second prime (q)
-	Certificate->append(QCA::SecureArray(1, 0x02));
+	Certificate->append(QCA::SecureArray(1, Integer));
 	array.clear();
 	array = q.toArray();
 	if(!writeDefiniteLength(array.size()))
@@ -227,7 +228,7 @@ bool PKCS1Certificate::storePrivateKey(QCA::SecureArray &output, const QCA::BigI
 	Certificate->append(array);
 
 	//INTEGER - exponent1 (d mod (p-1))
-	Certificate->append(QCA::SecureArray(1, 0x02));
+	Certificate->append(QCA::SecureArray(1, Integer));
 	array.clear();
 	QCA::BigInteger temp = p;
 	temp -= QCA::BigInteger(1);
@@ -239,7 +240,7 @@ bool PKCS1Certificate::storePrivateKey(QCA::SecureArray &output, const QCA::BigI
 	Certificate->append(array);
 
 	//INTEGER - exponent2 (d mod (q-1))
-	Certificate->append(QCA::SecureArray(1, 0x02));
+	Certificate->append(QCA::SecureArray(1, Integer));
 	array.clear();
 	temp = q;
 	temp -= QCA::BigInteger(1);
@@ -251,7 +252,7 @@ bool PKCS1Certificate::storePrivateKey(QCA::SecureArray &output, const QCA::BigI
 	Certificate->append(array);
 
 	//INTEGER - coefficient ((1/q) mod p)
-	Certificate->append(QCA::SecureArray(1, 0x02));
+	Certificate->append(QCA::SecureArray(1, Integer));
 	array.clear();
 	exp = QCA::BigInteger(1);
 	exp /= q;
@@ -266,7 +267,7 @@ bool PKCS1Certificate::storePrivateKey(QCA::SecureArray &output, const QCA::BigI
 	QCA::SecureArray certContent(*Certificate);
 	Certificate->clear();
 	//add the SEQUENCE tag, the length and the contents
-	Certificate->append(QCA::SecureArray(1, 0x30));
+	Certificate->append(QCA::SecureArray(1, Sequence));
 	if(!writeDefiniteLength(certContent.size()))
 		return false;
 	Certificate->append(certContent);
@@ -295,7 +296,7 @@ bool PKCS1Certificate::extractPrivateKey(const QCA::SecureArray &certificate, QC
 
 	uint8_t octet = readNextOctet();
 	//we expect the SEQUENCE tag at the begining
-	if(octet != 0x30)
+	if(octet != Sequence)
 	{
 		Status = UnknownCertificate;
 		return false;
@@ -314,7 +315,7 @@ bool PKCS1Certificate::extractPrivateKey(const QCA::SecureArray &certificate, QC
 
 	octet = readNextOctet();
 	//we expect an integer (version information)
-	if(octet != 0x02)
+	if(octet != Integer)
 	{
 		Status = UnknownCertificate;
 		return false;
@@ -343,7 +344,7 @@ bool PKCS1Certificate::extractPrivateKey(const QCA::SecureArray &certificate, QC
 
 	octet = readNextOctet();
 	//we expect an integer (the modulus)
-	if(octet != 0x02)
+	if(octet != Integer)
 	{
 		Status = UnknownCertificate;
 		return false;
@@ -366,7 +367,7 @@ bool PKCS1Certificate::extractPrivateKey(const QCA::SecureArray &certificate, QC
 
 	octet = readNextOctet();
 	//we expect an integer (the public exponent)
-	if(octet != 0x02)
+	if(octet != Integer)
 	{
 		Status = UnknownCertificate;
 		return false;
@@ -389,7 +390,7 @@ bool PKCS1Certificate::extractPrivateKey(const QCA::SecureArray &certificate, QC
 
 	octet = readNextOctet();
 	//we expect an integer (the private exponent)
-	if(octet != 0x02)
+	if(octet != Integer)
 	{
 		Status = UnknownCertificate;
 		return false;
@@ -412,7 +413,7 @@ bool PKCS1Certificate::extractPrivateKey(const QCA::SecureArray &certificate, QC
 
 	octet = readNextOctet();
 	//we expect an integer (the first prime, p)
-	if(octet != 0x02)
+	if(octet != Integer)
 	{
 		Status = UnknownCertificate;
 		return false;
@@ -435,7 +436,7 @@ bool PKCS1Certificate::extractPrivateKey(const QCA::SecureArray &certificate, QC
 
 	octet = readNextOctet();
 	//we expect an integer (the second prime, q)
-	if(octet != 0x02)
+	if(octet != Integer)
 	{
 		Status = UnknownCertificate;
 		return false;
@@ -550,6 +551,14 @@ uint64_t PKCS1Certificate::readDefiniteLength()
 		uint64_t length = 0;
 		for(uint8_t i = lengthOctetsCount; i > 0; i--)
 			length |= readNextOctet() << (i-1);
+		//the SecureArray stores it's size in an int variable, so we must check
+		//if the read length is not greater than the maximum value that int can
+		//store
+		if(length > INT_MAX)
+		{
+			Status = UnsupportedCertSize;
+			return 0;
+		}
 		return length;
 	}
 	//if the short form
@@ -585,6 +594,7 @@ bool PKCS1Certificate::writeDefiniteLength(uint64_t length)
 			Status = UnsupportedCertSize;
 			return false;
 		}
+		//128 (bit number 8 set) means that this is the long form of the length field
 		uint8_t octet = 128 | lengthOctetsCount;
 		Certificate->append(QCA::SecureArray(1, octet));
 		Certificate->append(array);
