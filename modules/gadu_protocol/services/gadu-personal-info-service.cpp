@@ -22,18 +22,15 @@ GaduPersonalInfoService::GaduPersonalInfoService(GaduProtocol *protocol) :
 			this, SLOT(pubdirReplyReceived(gg_pubdir50_t)));
 }
 
-void GaduPersonalInfoService::pubdirReplyReceived(gg_pubdir50_t res)
+void GaduPersonalInfoService::handleEventPubdir50Read(struct gg_event *e)
 {
-	if (FetchSeq == res->seq)
-		fetchReplyReceived(res);
-	else if (UpdateSeq == res->seq)
-		updateReplyReceived(res);
-}
+	gg_pubdir50_t res = e->event.pubdir50;
 
-void GaduPersonalInfoService::fetchReplyReceived(gg_pubdir50_t res)
-{
+	if (FetchSeq != res->seq)
+		return;
+
 	Contact result;
-	
+
 	int count = gg_pubdir50_count(res);
 	if (1 != count)
 	{
@@ -59,8 +56,13 @@ void GaduPersonalInfoService::fetchReplyReceived(gg_pubdir50_t res)
 	emit personalInfoAvailable(result);
 }
 
-void GaduPersonalInfoService::updateReplyReceived(gg_pubdir50_t res)
+void GaduPersonalInfoService::handleEventPubdir50Write(struct gg_event *e)
 {
+	gg_pubdir50_t res = e->event.pubdir50;
+
+	if (UpdateSeq != res->seq)
+		return;
+
 	emit personalInfoUpdated(true);
 }
 

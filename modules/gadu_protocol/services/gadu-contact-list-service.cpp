@@ -30,6 +30,51 @@ GaduContactListService::GaduContactListService(GaduProtocol *protocol)
 		this, SLOT(contactListReplyReceived(char, char *)));
 }
 
+void GaduContactListService::handleEventUserlistGetReply(struct gg_event *e)
+{
+	char *content = e->event.userlist.reply;
+	if (!content)
+	{
+		kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "error!\n");
+
+		emit contactListImported(false, ContactList());
+		return;
+	}
+
+	if (content[0] != 0)
+		ImportReply += cp2unicode(content);
+
+	if (e->event.userlist.type == GG_USERLIST_GET_MORE_REPLY)
+	{
+		kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "next portion\n");
+		return;
+	}
+
+	kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "\n%s\n", unicode2latin(ImportReply).data());
+
+	emit contactListImported(true, GaduListHelper::stringToContactList(Protocol->account(), ImportReply));
+}
+
+void GaduContactListService::handleEventUserlistPutReply(struct gg_event *e)
+{
+	emit contactListExported(true);
+	return;
+}
+
+void GaduContactListService::handleEventUserlist(struct gg_event *e)
+{
+	switch (e->event.userlist.type)
+	{
+		case GG_USERLIST_GET_REPLY:
+		case GG_USERLIST_GET_MORE_REPLY:
+			handleEventUserlistGetReply(e);
+			break;
+		case GG_USERLIST_PUT_REPLY:
+			handleEventUserlistPutReply(e);
+			break;
+	}
+}
+
 void GaduContactListService::importContactList()
 {
 	ImportReply.truncate(0);
@@ -51,43 +96,4 @@ void GaduContactListService::exportContactList(ContactList contacts)
 
 	if (-1 == gg_userlist_request(Protocol->gaduSession(), GG_USERLIST_PUT, unicode2cp(contactsString)))
 		emit contactListExported(false);
-}
-
-void GaduContactListService::contactListReplyReceived(char type, char *content)
-{
-	kdebugf();
-
-	if (type == GG_USERLIST_PUT_REPLY)
-	{
-		kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "Done\n");
-		emit contactListExported(true);
-		return;
-	}
-
-	if ((type != GG_USERLIST_GET_REPLY) && (type != GG_USERLIST_GET_MORE_REPLY))
-		return;
-
-	kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "get\n");
-
-	if (!content)
-	{
-		kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "error!\n");
-
-		emit contactListImported(false, ContactList());
-		return;
-	}
-
-	if (content[0] != 0)
-		ImportReply += cp2unicode(content);
-
-	if (type == GG_USERLIST_GET_MORE_REPLY)
-	{
-		kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "next portion\n");
-		return;
-	}
-
-	kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "\n%s\n", unicode2latin(ImportReply).data());
-
-	emit contactListImported(true, GaduListHelper::stringToContactList(Protocol->account(), ImportReply));
-	kdebugf2();
 }

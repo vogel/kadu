@@ -27,8 +27,9 @@ class GaduPersonalInfoService : public PersonalInfoService
 	void fetchReplyReceived(gg_pubdir50_t res);
 	void updateReplyReceived(gg_pubdir50_t res);
 
-private slots:
-	void pubdirReplyReceived(gg_pubdir50_t res);
+	friend class GaduProtocolSocketNotifiers;
+	void handleEventPubdir50Read(struct gg_event *e);
+	void handleEventPubdir50Write(struct gg_event *e);
 
 public:
 	GaduPersonalInfoService(GaduProtocol *protocol);

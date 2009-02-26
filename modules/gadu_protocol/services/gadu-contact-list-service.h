@@ -21,8 +21,10 @@ class GaduContactListService : public ContactListService
 	GaduProtocol *Protocol;
 	QString ImportReply;
 
-private slots:
-	void contactListReplyReceived(char type, char *content);
+	friend class GaduProtocolSocketNotifiers;
+	void handleEventUserlistGetReply(struct gg_event *e);
+	void handleEventUserlistPutReply(struct gg_event *e);
+	void handleEventUserlist(struct gg_event *e);
 
 public:
 	GaduContactListService(GaduProtocol *protocol);

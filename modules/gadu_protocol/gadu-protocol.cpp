@@ -808,6 +808,13 @@ void GaduProtocol::socketContactStatusChanged(unsigned int uin, unsigned int sta
 	accountData->setMaxImageSize(maxImageSize);
 	accountData->setProtocolVersion(QString::number(version));
 	accountData->setGaduProtocolVersion(version);
+
+	Status oldStatus = accountData->status();
+	Status newStatus = typeToStatus(status);
+	newStatus.setDescription(description);
+	accountData->setStatus(newStatus);
+
+	emit contactStatusChanged(account(), contact, oldStatus);
 }
 
 void GaduProtocol::socketConnFailed(GaduError error)

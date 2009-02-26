@@ -53,13 +53,16 @@ class DccManager : public QObject
 
 	void createDefaultConfiguration();
 
+	friend class GaduProtocolSocketNotifiers;
+	void handleEventDcc7New(struct gg_event *e);
+	void handleEventDcc7Accept(struct gg_event *e);
+	void handleEventDcc7Reject(struct gg_event *e);
+
 	friend class DccSocketNotifiers;
 	bool acceptConnection(unsigned int uin, unsigned int peerUin, unsigned int peerAddr);
 	void needIncomingFileTransferAccept(DccSocketNotifiers *socket);
 
 private slots:
-	void dcc7New(struct gg_dcc7 *);
-	void dcc7Rejected(struct gg_dcc7 *);
 	void dcc7Error(struct gg_dcc7 *);
 
 	void dccConnectionRequestReceived(Contact contact);

@@ -38,10 +38,6 @@ DccManager::DccManager(GaduProtocol *protocol) :
 
 	connect(Protocol->socketNotifiers(), SIGNAL(dccConnectionRequestReceived(Contact)),
 			this, SLOT(dccConnectionRequestReceived(Contact)));
-	connect(Protocol->socketNotifiers(), SIGNAL(dcc7New(struct gg_dcc7 *)),
-			this, SLOT(dcc7New(struct gg_dcc7 *)));
-	connect(Protocol->socketNotifiers(), SIGNAL(dcc7Rejected(struct gg_dcc7 *)),
-			this, SLOT(dcc7Rejected(struct gg_dcc7 *)));
 	connect(Protocol->socketNotifiers(), SIGNAL(dcc7Erorr(struct gg_dcc7 *)),
 			this, SLOT(dcc7Erorr(struct gg_dcc7 *)));
 	
@@ -56,10 +52,6 @@ DccManager::~DccManager()
 
 	disconnect(Protocol, SIGNAL(dccConnectionRequestReceived(Contact)),
 			this, SLOT(dccConnectionRequestReceived(Contact)));
-	disconnect(Protocol->socketNotifiers(), SIGNAL(dcc7New(struct gg_dcc7 *)),
-			this, SLOT(dcc7New(struct gg_dcc7 *)));
-	disconnect(Protocol->socketNotifiers(), SIGNAL(dcc7Rejected(struct gg_dcc7 *)),
-			this, SLOT(dcc7Rejected(struct gg_dcc7 *)));
 	disconnect(Protocol->socketNotifiers(), SIGNAL(dcc7Erorr(struct gg_dcc7 *)),
 			this, SLOT(dcc7Erorr(struct gg_dcc7 *)));
 
@@ -337,10 +329,12 @@ void DccManager::dccConnectionRequestReceived(Contact contact)
 	kdebugf2();
 }
 
-void DccManager::dcc7New(struct gg_dcc7 *dcc)
+void DccManager::handleEventDcc7New(struct gg_event *e)
 {
 	kdebugf();
 
+	struct gg_dcc7 *dcc = e->event.dcc7_new;
+	
 	if (!acceptConnection(dcc->uin, dcc->peer_uin, dcc->remote_addr))
 	{
 		gg_dcc7_reject(dcc, 0);
@@ -353,18 +347,23 @@ void DccManager::dcc7New(struct gg_dcc7 *dcc)
 		case GG_DCC7_TYPE_FILE:
 // 			TODO: ZARAZ
 // 			file_transfer_manager->dcc7IncomingFileTransfer(new DccSocket(dcc));
-			return;
+			break;
 
 		default:
-			gg_dcc7_reject(dcc, 0);
+			gg_dcc7_reject(dcc, GG_DCC7_REJECT_USER);
 			gg_dcc7_free(dcc);
-			return;
+			break;
 	}
 
 	kdebugf2();
 }
 
-void DccManager::dcc7Rejected(struct gg_dcc7 *dcc)
+void DccManager::handleEventDcc7Accept(struct gg_event *e)
+{
+
+}
+
+void DccManager::handleEventDcc7Reject(struct gg_event *e)
 {
 
 }

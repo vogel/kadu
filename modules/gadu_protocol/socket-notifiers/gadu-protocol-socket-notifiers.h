@@ -34,6 +34,7 @@ class GaduProtocolSocketNotifiers : public GaduSocketNotifiers
 
 	void handleEventMsg(struct gg_event *e);
 	void handleEventNotify(struct gg_event *e);
+	void handleEventNotify60(struct gg_event *e);
 	void handleEventStatus(struct gg_event *e);
 	void handleEventAck(struct gg_event *e);
 	void handleEventConnFailed(struct gg_event *e);

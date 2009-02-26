@@ -20,6 +20,7 @@
 #include "debug.h"
 #include "misc.h"
 
+#include "dcc/dcc-manager.h"
 #include "gadu.h"
 
 #include "gadu-protocol-socket-notifiers.h"
@@ -123,6 +124,19 @@ void GaduProtocolSocketNotifiers::handleEventNotify(struct gg_event *e)
 	}
 }
 
+void GaduProtocolSocketNotifiers::handleEventNotify60(struct gg_event *e)
+{
+	struct gg_event_notify60 *notify = e->event.notify60;
+
+	while (notify->uin)
+	{
+		CurrentProtocol->socketContactStatusChanged(notify->uin, notify->status, QString(notify->descr),
+				QHostAddress((unsigned int)ntohl(notify->remote_ip)), notify->remote_port, notify->image_size, notify->version);
+
+		notify++;
+	}
+}
+
 void GaduProtocolSocketNotifiers::handleEventStatus(struct gg_event *e)
 {
 	if (GG_EVENT_STATUS60 == e->type)
@@ -219,6 +233,10 @@ void GaduProtocolSocketNotifiers::socketEvent()
 			handleEventNotify(e);
 			break;
 
+		case GG_EVENT_NOTIFY60:
+			handleEventNotify60(e);
+			break;
+
 		case GG_EVENT_STATUS:
 		case GG_EVENT_STATUS60:
 			handleEventStatus(e);
@@ -240,73 +258,63 @@ void GaduProtocolSocketNotifiers::socketEvent()
 			handleEventDisconnect(e);
 			break;
 
-		case GG_EVENT_IMAGE_REQUEST:
-			kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "Image request received\n");
-			emit imageRequestReceived(
-				e->event.image_request.sender,
-				e->event.image_request.size,
-				e->event.image_request.crc32);
-			break;
-
-		case GG_EVENT_IMAGE_REPLY:
-			kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "Image reply received\n");
-			emit imageReceived(
-				e->event.image_reply.sender,
-				e->event.image_reply.size,
-				e->event.image_reply.crc32,
-				e->event.image_reply.filename,
-				e->event.image_reply.image);
-			break;
-
-		case GG_EVENT_NOTIFY60:
-			emit userlistReceived(e);
-			break;
-
 		case GG_EVENT_PUBDIR50_SEARCH_REPLY:
+			CurrentProtocol->CurrentSearchService->handleEventPubdir50SearchReply(e);
+			break;
+
 		case GG_EVENT_PUBDIR50_READ:
+			CurrentProtocol->CurrentPersonalInfoService->handleEventPubdir50Read(e);
+			break;
+
 		case GG_EVENT_PUBDIR50_WRITE:
-			emit pubdirReplyReceived(e->event.pubdir50);
+			CurrentProtocol->CurrentPersonalInfoService->handleEventPubdir50Write(e);
 			break;
 
 		case GG_EVENT_USERLIST:
-			emit userlistReplyReceived(e->event.userlist.type, e->event.userlist.reply);
+			CurrentProtocol->CurrentContactListService->handleEventUserlist(e);
 			break;
 
-		case GG_EVENT_NONE:
-			kdebugm(KDEBUG_NETWORK, "GG_EVENT_NONE\n");
+		case GG_EVENT_IMAGE_REQUEST:
+			CurrentProtocol->CurrentChatImageService->handleEventImageRequest(e);
+			break;
+
+		case GG_EVENT_IMAGE_REPLY:
+			CurrentProtocol->CurrentChatImageService->handleEventImageReply(e);
 			break;
 
 		case GG_EVENT_DCC7_NEW:
-			emit dcc7New(e->event.dcc7_new);
+			if (!CurrentProtocol->Dcc)
+			{
+				gg_dcc7_reject(e->event.dcc7_new, GG_DCC7_REJECT_USER);
+				gg_dcc7_free(e->event.dcc7_new);
+				e->event.dcc7_new = NULL;
+			}
+			else
+				CurrentProtocol->Dcc->handleEventDcc7New(e);
 			break;
 
 		case GG_EVENT_DCC7_ACCEPT:
-			emit dcc7Accepted(e->event.dcc7_accept.dcc7);
+			if (!CurrentProtocol->Dcc)
+			{
+				gg_dcc7_reject(e->event.dcc7_new, GG_DCC7_REJECT_USER);
+				gg_dcc7_free(e->event.dcc7_new);
+				e->event.dcc7_new = NULL;
+			}
+			else
+				CurrentProtocol->Dcc->handleEventDcc7Accept(e);
 			break;
 
 		case GG_EVENT_DCC7_REJECT:
-			emit dcc7Rejected(e->event.dcc7_reject.dcc7);
-			break;
-
-		case GG_EVENT_XML_EVENT:
-			kdebugm(KDEBUG_NETWORK, "GG_EVENT_XML_EVENT\n");
+			if (!CurrentProtocol->Dcc)
+			{
+				gg_dcc7_reject(e->event.dcc7_new, GG_DCC7_REJECT_USER);
+				gg_dcc7_free(e->event.dcc7_new);
+				e->event.dcc7_new = NULL;
+			}
+			else
+				CurrentProtocol->Dcc->handleEventDcc7Reject(e);
 			break;
 	}
-
-
-/*
-	if (!broken && g->sess->state != GG_STATE_IDLE && g->sess->state != GG_STATE_ERROR) {
-		watch_t *w;
-		if ((watch == g->sess->check) && g->sess->fd == fd) {
-			if ((w = watch_find(&gg_plugin, fd, watch)))
-				watch_timeout_set(w, g->sess->timeout);
-			else debug("[gg] watches managment went to hell?\n");
-			gg_event_free(e);
-			return 0;
-		}
-		w = watch_add_session(s, g->sess->fd, g->sess->check, gg_session_handler);
-		watch_timeout_set(w, g->sess->timeout);
-	}*/
 
 	gg_free_event(e);
 	--socketEventCalls;

@@ -30,8 +30,8 @@ class GaduSearchService : public SearchService
 	unsigned int From;
 	bool Stopped;
 
-private slots:
-	void pubdirReplyReceived(gg_pubdir50_t res);
+	friend class GaduProtocolSocketNotifiers;
+	void handleEventPubdir50SearchReply(struct gg_event *e);
 
 public:
 	GaduSearchService(GaduProtocol *protocol);
