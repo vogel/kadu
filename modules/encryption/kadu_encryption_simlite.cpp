@@ -3,7 +3,7 @@
   Copyright: (C) 2007, 2008 - 2009 Tomasz Kazmierczak
 
   Creation date: 2007-10-25
-  Last modification date: 2009-02-18
+  Last modification date: 2009-02-27
 
   This file is part of Kadu encryption module.
   This is a QCA2 implementation of the SIMLite algorithm, used by kadu,
@@ -138,7 +138,7 @@ bool KaduEncryptionSIMLite::readPublicKey(PublicKey &key, QString &keyId)
 
 	//open the file containing the certificate
 	QFile file(keyFilePath);
-	if(!file.open(QIODevice::ReadOnly))
+	if(!file.open(QIODevice::ReadOnly | QIODevice::Text))
 		return false;
 	//check if the first line is the RSA 'begin public key' clause
 	QString line(file.readLine());
@@ -190,7 +190,7 @@ bool KaduEncryptionSIMLite::readPrivateKey(PrivateKey &key)
 
 	//open the file containing the certificate
 	QFile file(keyFilePath);
-	if(!file.open(QIODevice::ReadOnly))
+	if(!file.open(QIODevice::ReadOnly | QIODevice::Text))
 		return false;
 	//check if the first line is the RSA 'begin private key' clause
 	QString line(file.readLine());
