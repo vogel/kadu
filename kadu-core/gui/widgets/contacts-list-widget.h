@@ -21,6 +21,7 @@ class QModelIndex;
 
 class AbstractContactFilter;
 class AbstractContactsModel;
+class Contact;
 class ContactList;
 class ContactsListWidgetDelegate;
 class ContactsModelProxy;
@@ -85,6 +86,7 @@ public:
 	void addFilter(AbstractContactFilter *filter);
 	void removeFilter(AbstractContactFilter *filter);
 
+	Contact currentContact() const;
 	ContactList selectedContacts() const;
 	void setBackground(const QString &file = QString::null, BackgroundMode mode = BackgroundNone);
 	void updateBackground();

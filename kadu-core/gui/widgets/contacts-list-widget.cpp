@@ -94,6 +94,11 @@ void ContactsListWidget::removeFilter(AbstractContactFilter *filter)
 	ProxyModel->removeFilter(filter);
 }
 
+Contact ContactsListWidget::currentContact() const
+{
+	return contact(currentIndex());
+}
+
 ContactList ContactsListWidget::selectedContacts() const
 {
 	ContactList result;

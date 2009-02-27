@@ -979,7 +979,7 @@ void Kadu::onlineAndDescUsersActionCreated(KaduAction *action)
 	KaduMainWindow *window = qobject_cast<KaduMainWindow *>(action->parent());
 	if (!window)
 		return;
-	bool enabled = !config_file.readBoolEntry("General", "ShowOnlineAndDescription");
+	bool enabled = config_file.readBoolEntry("General", "ShowOnlineAndDescription");
 	OnlineAndDescriptionContactFilter *oadcf = new OnlineAndDescriptionContactFilter(action);
 	oadcf->setEnabled(enabled);
 
@@ -2012,7 +2012,7 @@ void Kadu::showdesc(bool show)
 	else
 		InfoPanel->QWidget::hide();
 }
-
+//TODO 0.6.6:
 void Kadu::updateInformationPanelLater()
 {
 	updateInformationPanelTimer.start(0, true);
@@ -2020,16 +2020,16 @@ void Kadu::updateInformationPanelLater()
 
 void Kadu::updateInformationPanel()
 {
-// 	if (ContactsWidget->cur ->currentUserExists())
-// 		updateInformationPanel(Userbox->currentContact());
+	updateInformationPanel(ContactsWidget->currentContact());
 }
 
 void Kadu::updateInformationPanel(Contact contact)
 {
 	if (!config_file.readBoolEntry("Look", "ShowInfoPanel"))
-		return;
-// 	if (Userbox->currentUserExists() && contact == Userbox->currentContact())
-	if (false)
+		return;qDebug("SSSSSSSSSSS");
+	//if (ContactsWidget->currentContact() == Contact::null)
+	//	InfoPanel->setHtml("<body bgcolor=\"" + config_file.readEntry("Look", "InfoPanelBgColor") + "\"></body>");
+ 	if (ContactsWidget->currentContact() != Contact::null && contact == ContactsWidget->currentContact())
 	{
 		kdebugmf(KDEBUG_INFO, "%s\n", qPrintable(contact.display()));
 		QString text = QString(
@@ -2059,7 +2059,7 @@ void Kadu::currentChanged(Contact contact)
 {
 	updateInformationPanel(contact);
 }
-
+//
 ContactList Kadu::contacts()
 {
 	return ContactsWidget->selectedContacts();

@@ -37,5 +37,5 @@ bool OnlineAndDescriptionContactFilter::acceptContact(Contact contact)
 		return false;
 
 	Status status = contact.accountData(prefferedAccount)->status();
-	return status.isOnline() && !status.description().isEmpty();
+	return (!status.isInvisible() && !status.isOffline()) || !status.description().isEmpty();
 }
