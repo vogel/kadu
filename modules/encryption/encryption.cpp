@@ -313,10 +313,10 @@ void EncryptionManager::decryptMessage(Protocol *protocol, UserListElements send
 	{
 		//TODO: this should be moved outside this function, as this function may not
 		//know what chararacter encoding is used
-		QTextStream encodingConverter(&msg);
-		encodingConverter.setCodec("Windows-1250");
-		encodingConverter << message;
-
+		//QTextStream encodingConverter(&msg);
+		//encodingConverter.setCodec("Windows-1250");
+		//encodingConverter << message;
+		msg = message;
 		// FIXME: remove
 		gg_msg_richtext_format format;
 		format.position = 0;
