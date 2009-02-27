@@ -107,7 +107,8 @@ void ChatWindow::kaduRestoreGeometry()
 // 	if (geom.isEmpty() && contacts.count() == 1)
 // 		geom = stringToRect(ules[0].data("ChatGeometry").toString());
 
-	if (geom.isEmpty()) {
+	if (geom.isEmpty())
+	{
 		QSize size(0, 400);
 		int x, y;
 		x = pos().x();
@@ -130,7 +131,8 @@ void ChatWindow::kaduRestoreGeometry()
 		move(x, y);
 		resize(size);
 	}
-	else {
+	else
+	{
 		setGeometry(geom);
 		currentChatWidget->setGeometry(geom);
 

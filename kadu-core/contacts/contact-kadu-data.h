@@ -27,6 +27,8 @@ public:
 
 	ContactKaduData(StoragePoint *storage);
 
+	virtual void loadFromStorage();
+
 	virtual void storeConfiguration() const;
 
 	Property(QRect, chatGeometry, ChatGeometry)

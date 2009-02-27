@@ -97,11 +97,25 @@ public:
 template<class T>
 	T * moduleData(bool create = false, bool cache = false)
 	{
+		T *result = 0;
 		if (!cache)
-			return new T(storagePointForModuleData(T::key(), create));
-		if (!ModulesData.contains(T::key()))
-			ModulesData[T::key()] = new T(storagePointForModuleData(T::key(), create));
-		return dynamic_cast<T *>(ModulesData[T::key()]);
+		{
+			result = new T(storagePointForModuleData(T::key(), create));
+			result->loadFromStorage();
+		}
+		else
+		{
+			if (!ModulesData.contains(T::key()))
+			{
+				result = new T(storagePointForModuleData(T::key(), create));
+				ModulesData[T::key()] = result;
+				result->loadFromStorage();
+			}
+			else
+				result = dynamic_cast<T *>(ModulesData[T::key()]);
+
+		}
+		return result;
 	}
 
 	// properties

@@ -29,7 +29,7 @@ public:
 	virtual ~ContactModuleData();
 
 	virtual void storeConfiguration() const = 0;
-
+	virtual void loadFromStorage() = 0;
 };
 
 #endif

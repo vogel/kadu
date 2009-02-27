@@ -2026,9 +2026,8 @@ void Kadu::updateInformationPanel()
 void Kadu::updateInformationPanel(Contact contact)
 {
 	if (!config_file.readBoolEntry("Look", "ShowInfoPanel"))
-		return;qDebug("SSSSSSSSSSS");
-	//if (ContactsWidget->currentContact() == Contact::null)
-	//	InfoPanel->setHtml("<body bgcolor=\"" + config_file.readEntry("Look", "InfoPanelBgColor") + "\"></body>");
+		return;
+
  	if (ContactsWidget->currentContact() != Contact::null && contact == ContactsWidget->currentContact())
 	{
 		kdebugmf(KDEBUG_INFO, "%s\n", qPrintable(contact.display()));

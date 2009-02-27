@@ -17,6 +17,18 @@
 ContactKaduData::ContactKaduData(StoragePoint *storage)
 	: ContactModuleData(storage)
 {
+}
+
+void ContactKaduData::loadFromStorage()
+{
+	StoragePoint *sp = storage();
+	if (!sp)
+		return;
+
+	XmlConfigFile *configurationStorage = sp->storage();
+	QDomElement parent = sp->point();
+
+	ChatGeometry = stringToRect(configurationStorage->getTextNode(parent, "ChatGeometry"));
 
 }
 
