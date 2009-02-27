@@ -29,6 +29,7 @@
 #include "chat/chat_manager.h"
 
 #include "contacts/contact-account-data.h"
+#include "contacts/contact-kadu-data.h"
 #include "contacts/contact-manager.h"
 #include "contacts/group-manager.h"
 
@@ -222,15 +223,19 @@ void checkHideDescription(KaduAction *action)
 	action->setEnabled(true);
 
 	bool on = false;
-	/*
 	foreach(const Contact contact, action->contacts())
-		//TODO: 0.6.6
-		if (user.data("HideDescription").toString() == "true")
+	{
+		ContactKaduData *ckd = contact.moduleData<ContactKaduData>(true);
+		if (!ckd)
+			continue;
+
+		if (ckd->hideDescription())
 		{
 			on = true;
 			break;
 		}
-	*/
+	}
+
 	action->setChecked(on);
 }
 
@@ -848,33 +853,34 @@ void Kadu::offlineToUserActionActivated(QAction *sender, bool toggled)
 void Kadu::hideDescriptionActionActivated(QAction *sender, bool toggled)
 {
 	kdebugf();
-	Account *account = AccountManager::instance()->defaultAccount();
+
 	KaduMainWindow *window = dynamic_cast<KaduMainWindow *>(sender->parent());
 	if (!window)
 		return;
 
 	ContactList contacts = window->contacts();
-	bool on = true;
-	/*
-	foreach(const UserListElement &user, users)
-		//TODO: 0.6.6
-		if (user.data("HideDescription").toString() == "true")
-		{
-			on = false;
-			break;
-		}
 
-	foreach(const UserListElement &user, users)
-		//TODO: 0.6.6
-		user.setData("HideDescription", on ? "true" : "false"); // TODO: here string, LOL
-	*/
-// TODO: 0.6.6
-// 	userlist->writeToConfig();
+	foreach(const Contact &contact, contacts)
+	{
+		if (contact.isNull() || contact.isAnonymous())
+			continue;
+
+		ContactKaduData *ckd = contact.moduleData<ContactKaduData>(true);
+		if (!ckd)
+			continue;
+
+		if (ckd->hideDescription() != toggled)
+		{
+			ckd->setHideDescription(toggled);
+			ckd->storeConfiguration();
+			delete ckd;
+		}
+	}
 
 	foreach(KaduAction *action, hideDescriptionActionDescription->actions())
 	{
 		if (action->contacts() == contacts)
-			action->setChecked(on);
+			action->setChecked(toggled);
 	}
 
 	kdebugf2();

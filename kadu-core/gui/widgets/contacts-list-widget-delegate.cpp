@@ -26,6 +26,7 @@
 #include "accounts/account_manager.h"
 
 #include "contacts/contact-account-data.h"
+#include "contacts/contact-kadu-data.h"
 #include "contacts/model/contacts-model.h"
 
 #include "config_file.h"
@@ -91,7 +92,17 @@ QString ContactsListWidgetDelegate::displayDescription(Contact contact) const
 	ContactAccountData *cad = contact.accountData(account);
 	if (!cad)
 		return QString::null;
-
+//TODO 0.6.6:
+//	ContactKaduData *ckd = contact.moduleData<ContactKaduData>(true);
+//	if (!ckd)
+//		return QString::null;	
+//	if (ckd->hideDescription())
+//	{
+//		delete ckd;
+//		return QString::null;	
+//	}
+//	delete ckd;
+//
 	return cad->status().description();
 }
 

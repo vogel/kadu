@@ -21,6 +21,7 @@
 class ContactKaduData : public ContactModuleData
 {
 	QRect ChatGeometry;
+	bool HideDescription;
 
 public:
 	static QString key() { return "kadu"; }
@@ -32,6 +33,7 @@ public:
 	virtual void storeConfiguration() const;
 
 	Property(QRect, chatGeometry, ChatGeometry)
+	Property(bool, hideDescription, HideDescription)
 
 };
 

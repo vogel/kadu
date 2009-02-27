@@ -22,6 +22,18 @@ ContactNotifyData::ContactNotifyData(StoragePoint *storage)
 
 }
 
+void ContactNotifyData::loadFromStorage()
+{
+	StoragePoint *sp = storage();
+	if (!sp)
+		return;
+
+	XmlConfigFile *configurationStorage = sp->storage();
+	QDomElement parent = sp->point();
+
+	Notify = QVariant(configurationStorage->getTextNode(parent, "Notify")).toBool();
+}
+
 void ContactNotifyData::storeConfiguration() const
 {
 	StoragePoint *sp = storage();

@@ -25,6 +25,8 @@ public:
 
 	ContactNotifyData(StoragePoint *storage);
 
+	virtual void loadFromStorage();
+
 	virtual void storeConfiguration() const;
 
 	Property(bool, notify, Notify)

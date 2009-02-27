@@ -7,6 +7,8 @@
  *                                                                         *
  ***************************************************************************/
 
+#include "QtCore/QVariant"
+
 #include "configuration/storage-point.h"
 
 #include "misc.h"
@@ -29,6 +31,7 @@ void ContactKaduData::loadFromStorage()
 	QDomElement parent = sp->point();
 
 	ChatGeometry = stringToRect(configurationStorage->getTextNode(parent, "ChatGeometry"));
+	HideDescription = QVariant(configurationStorage->getTextNode(parent, "HideDescription")).toBool();
 
 }
 
@@ -42,4 +45,5 @@ void ContactKaduData::storeConfiguration() const
 	QDomElement parent = sp->point();
 
 	configurationStorage->createTextNode(parent, "ChatGeometry", rectToString(ChatGeometry));
+	configurationStorage->createTextNode(parent, "HideDescription", QVariant(HideDescription).toString());
 }
