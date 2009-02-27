@@ -139,6 +139,8 @@ void PendingMsgs::loadConfiguration(XmlConfigFile *configurationStorage)
 		msgs.append(e);
 		emit messageFromUserAdded(e.contacts[0]);
 	}
+
+	configurationStorage->removeChildren(pendingMsgsNode);
 }
 
 void PendingMsgs::storeConfiguration(XmlConfigFile *configurationStorage)
