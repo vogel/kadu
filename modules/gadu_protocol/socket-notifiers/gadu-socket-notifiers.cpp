@@ -37,13 +37,15 @@ void GaduSocketNotifiers::createSocketNotifiers()
 	if (0 >= Socket)
 		return;
 
-	// read_socket_notifier
 	ReadNotifier = new QSocketNotifier(Socket, QSocketNotifier::Read, this);
 	connect(ReadNotifier, SIGNAL(activated(int)), this, SLOT(dataReceived()));
+	if (!checkRead())
+		ReadNotifier->setEnabled(false);
 
-	//write_socket_notifier
 	WriteNotifier = new QSocketNotifier(Socket, QSocketNotifier::Write, this);
 	connect(WriteNotifier, SIGNAL(activated(int)), this, SLOT(dataSent()));
+	if (!checkWrite())
+		WriteNotifier->setEnabled(false);
 
 	TimeoutTimer = new QTimer();
 	connect(TimeoutTimer, SIGNAL(timeout()), this, SLOT(socketTimeout()));
@@ -96,12 +98,14 @@ void GaduSocketNotifiers::enable()
 		ReadNotifier->setEnabled(true);
 	if (!Lock && checkWrite())
 		WriteNotifier->setEnabled(true);
-	if (0 != timeout())
+	if (0 < timeout())
 		TimeoutTimer->start(timeout()); // TODO: 0.6.6 connect to something
 }
 
 void GaduSocketNotifiers::watchFor(int socket)
 {
+	kdebugmf(KDEBUG_NETWORK | KDEBUG_INFO, "notifier: %p, socket: %d\n", this, socket);
+
 	if (Socket == socket)
 		return;
 

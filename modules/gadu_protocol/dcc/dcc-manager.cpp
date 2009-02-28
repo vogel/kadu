@@ -315,6 +315,8 @@ void DccManager::handleEventDccNew(struct gg_event *e) {
 	SocketNotifiers << newSocketNotifiers;
 	connectSocketNotifiers(newSocketNotifiers);
 	newSocketNotifiers->watchFor(e->event.dcc_new);
+
+	e->event.dcc_new = 0;
 }
 
 void DccManager::handleEventDcc7New(struct gg_event *e)
@@ -322,14 +324,14 @@ void DccManager::handleEventDcc7New(struct gg_event *e)
 	kdebugf();
 
 	struct gg_dcc7 *dcc = e->event.dcc7_new;
-	
+/*
 	if (!acceptConnection(dcc->uin, dcc->peer_uin, dcc->remote_addr))
 	{
 		gg_dcc7_reject(dcc, 0);
 		gg_dcc7_free(dcc);
 		return;
 	}
-
+*/
 	switch (dcc->dcc_type)
 	{
 		case GG_DCC7_TYPE_FILE:
@@ -414,6 +416,7 @@ void DccManager::attachSendFileTransferSocket(GaduFileTransfer *gft)
 	DccVersion version = (gcad->gaduProtocolVersion() & 0x0000ffff) >= 0x29
 		? Dcc7
 		: Dcc6;
+	version = Dcc6;
 
 	switch (version)
 	{

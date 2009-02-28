@@ -17,7 +17,7 @@
 
 void DccSocketNotifiers::watchFor(struct gg_dcc *socket)
 {
-	printf("watch for 6: %p\n", socket);
+	kdebugmf(KDEBUG_NETWORK | KDEBUG_INFO, "%p\n", socket);
 
 	Version = Dcc6;
 	Socket = socket;
@@ -34,7 +34,7 @@ void DccSocketNotifiers::watchFor(struct gg_dcc *socket)
 
 void DccSocketNotifiers::watchFor(struct gg_dcc7 *socket)
 {
-	printf("watch for 7: %p, %d\n", socket, socket->fd);
+	kdebugmf(KDEBUG_NETWORK | KDEBUG_INFO, "%p\n", socket);
 
 	Version = Dcc7;
 	Socket = 0;
@@ -83,30 +83,31 @@ void DccSocketNotifiers::dcc7Rejected(struct gg_dcc7 *socket)
 
 bool DccSocketNotifiers::checkRead()
 {
-	printf("dcc check read %d\n", DccCheckField && (*DccCheckField & GG_CHECK_READ));
 	return DccCheckField && (*DccCheckField & GG_CHECK_READ);
 }
 
 bool DccSocketNotifiers::checkWrite()
 {
-	printf("dcc check write %d\n", DccCheckField && (*DccCheckField & GG_CHECK_WRITE));
 	return DccCheckField && (*DccCheckField & GG_CHECK_WRITE);
 }
 
 void DccSocketNotifiers::handleEventDccError(struct gg_event *e)
 {
+	kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "%d\n", e->event.dcc_error);
+
 	finished(false);
 }
 
 void DccSocketNotifiers::handleEventDccDone(struct gg_event *e)
 {
+	kdebugf();
+
 	finished(true);
 }
 
 void DccSocketNotifiers::handleEventDccClientAccept(struct gg_event *e)
 {
-	kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "GG_EVENT_DCC_CLIENT_ACCEPT! uin:%d peer_uin:%d\n",
-			Socket->uin, Socket->peer_uin);
+	kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "uin:%d peer_uin:%d\n", Socket->uin, Socket->peer_uin);
 
 	// TODO: make async TODO: 0.6.6
 //	if (!Manager->acceptConnection(Socket->uin, Socket->peer_uin, Socket->remote_addr))
@@ -118,10 +119,7 @@ void DccSocketNotifiers::handleEventDccClientAccept(struct gg_event *e)
 
 void DccSocketNotifiers::handleEventDccCallback(struct gg_event *e)
 {
-	kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "GG_EVENT_DCC_CALLBACK! uin:%d peer_uin:%d\n",
-		Socket->uin, Socket->peer_uin);
-
-	printf("callback\n");
+	kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "uin:%d peer_uin:%d\n", Socket->uin, Socket->peer_uin);
 
 	GaduFileTransfer *gft = Manager->findFileTransfer(this);
 	if (gft)
@@ -136,8 +134,7 @@ void DccSocketNotifiers::handleEventDccCallback(struct gg_event *e)
 
 void DccSocketNotifiers::handleEventDccNeedFileInfo(struct gg_event *e)
 {
-	kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "GG_EVENT_DCC_NEED_FILE_INFO\n");
-	printf("need file info\n");
+	kdebugf();
 
 	if (Version == Dcc6 && FileTransfer)
 		gg_dcc_fill_file_info2(Socket, unicode2cp(FileTransfer->localFileName()), qPrintable(FileTransfer->localFileName()));
@@ -145,28 +142,31 @@ void DccSocketNotifiers::handleEventDccNeedFileInfo(struct gg_event *e)
 		finished(false);
 }
 
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <fcntl.h>
+
 void DccSocketNotifiers::handleEventDccNeedFileAck(struct gg_event *e)
 {
-	printf("need file ack\n");
-//	kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "GG_EVENT_DCC_NEED_FILE_ACK! uin:%d peer_uin:%d\n",
-//			socket->uin(), socket->peerUin());
+	kdebugf();
+
 // 	lock();
 // TODO: 0.6.6
 
-	QIODevice::OpenMode flags = QIODevice::WriteOnly | QIODevice::Truncate;
-	QFile file("/home/vogel/gg-download");
-	file.open(flags);
+	int handle = creat("/home/vogel/gg-download", 0640);
 
-	printf("handle: %d\n", file.handle());
+	printf("handle: %d\n", handle);
 	printf("version: %d\n", Version);
 
 	switch (Version)
 	{
 		case Dcc6:
-			Socket->file_fd = file.handle();
+			Socket->file_fd = handle;
+			Socket->offset = 0;
 			break;
 		case Dcc7:
-			Socket7->file_fd = file.handle();
+			Socket7->file_fd = handle;
+			Socket7->offset = 0;
 			break;
 	}
 
@@ -175,10 +175,12 @@ void DccSocketNotifiers::handleEventDccNeedFileAck(struct gg_event *e)
 
 void DccSocketNotifiers::handleEventDccNeedVoiceAck(struct gg_event *e)
 {
+	kdebugf();
 }
 
 void DccSocketNotifiers::handleEventDccVoiceData(struct gg_event *e)
 {
+	kdebugf();
 }
 
 void DccSocketNotifiers::socketEvent()
@@ -186,7 +188,6 @@ void DccSocketNotifiers::socketEvent()
 	kdebugf();
 
 	struct gg_event *e;
-	printf("dcc socket event\n");
 
 	switch (Version)
 	{
