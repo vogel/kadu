@@ -7,6 +7,8 @@
  *                                                                         *
  ***************************************************************************/
 
+#include <QtCore/QFile>
+
 #include "debug.h"
 #include "misc.h"
 
@@ -110,11 +112,11 @@ void DccSocketNotifiers::handleEventDccClientAccept(struct gg_event *e)
 	kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "uin:%d peer_uin:%d\n", Socket->uin, Socket->peer_uin);
 
 	// TODO: make async TODO: 0.6.6
-//	if (!Manager->acceptConnection(Socket->uin, Socket->peer_uin, Socket->remote_addr))
-//	{
-//		done(false);
-//		return;
-//	}
+	if (!Manager->acceptConnection(Socket->uin, Socket->peer_uin, Socket->remote_addr))
+	{
+		done(false);
+		return;
+	}
 }
 
 void DccSocketNotifiers::handleEventDccCallback(struct gg_event *e)
@@ -150,9 +152,10 @@ void DccSocketNotifiers::handleEventDccNeedFileAck(struct gg_event *e)
 {
 	kdebugf();
 
-// 	lock();
 // TODO: 0.6.6
-
+	lock();
+	Manager->needIncomingFileTransferAccept(this);
+/*
 	int handle = creat("/home/vogel/gg-download", 0640);
 
 	printf("handle: %d\n", handle);
@@ -169,8 +172,7 @@ void DccSocketNotifiers::handleEventDccNeedFileAck(struct gg_event *e)
 			Socket7->offset = 0;
 			break;
 	}
-
-	//Manager->needIncomingFileTransferAccept(this);
+*/
 }
 
 void DccSocketNotifiers::handleEventDccNeedVoiceAck(struct gg_event *e)
@@ -375,19 +377,36 @@ QString DccSocketNotifiers::remoteFileName()
 void DccSocketNotifiers::setGaduFileTransfer(GaduFileTransfer *fileTransfer)
 {
 	FileTransfer = fileTransfer;
-	unlock();
 }
 
-void DccSocketNotifiers::acceptFileTransfer()
+bool DccSocketNotifiers::acceptFileTransfer(const QFile &file)
 {
-	if (Dcc7 == Version)
-		gg_dcc7_accept(Socket7, Socket7->offset);
+	kdebugf();
 
-	unlock();
+	switch (Version)
+	{
+		case Dcc6:
+			Socket->file_fd = dup(file.handle());
+			Socket->offset = file.size();
+
+			unlock();
+			break;
+
+		case Dcc7:
+			gg_dcc7_accept(Socket7, Socket7->offset);
+			break;
+
+		default:
+			return false;
+	}
+
+	return true;
 }
 
 void DccSocketNotifiers::rejectFileTransfer()
 {
+	kdebugf();
+
 	if (Dcc7 == Version)
 		gg_dcc7_reject(Socket7, Socket7->offset);
 	else

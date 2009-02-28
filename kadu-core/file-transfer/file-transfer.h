@@ -15,6 +15,8 @@
 #include "configuration/storable-object.h"
 #include "contacts/contact.h"
 
+class QFile;
+
 class Account;
 class Contact;
 
@@ -99,6 +101,9 @@ public:
 	virtual void stop() = 0;
 	virtual void pause() = 0;
 	virtual void restore() = 0;
+
+	virtual bool accept(const QFile &file) = 0;
+	virtual void reject() = 0;
 
 	unsigned int percent();
 

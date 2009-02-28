@@ -145,7 +145,7 @@ void ManageAccounts::addAccount()
 	if (configurationDialog->exec() == QDialog::Accepted)
 	{
 		Account *newAccount = AccountManager::instance()->createAccount(
-				protocolName , newAccountData);
+				protocolName, newAccountData);
 		AccountManager::instance()->registerAccount(newAccount);
 		loadAccounts();
 		return;

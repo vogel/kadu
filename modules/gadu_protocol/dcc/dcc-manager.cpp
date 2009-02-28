@@ -23,6 +23,7 @@
 #include "dcc/dcc-socket.h"
 #include "dcc/dcc-socket-notifiers.h"
 #include "file-transfer/gadu-file-transfer.h"
+#include "services/gadu-file-transfer-service.h"
 #include "socket-notifiers/gadu-protocol-socket-notifiers.h"
 #include "gadu_account_data.h"
 #include "gadu-contact-account-data.h"
@@ -261,12 +262,14 @@ bool DccManager::acceptConnection(unsigned int uin, unsigned int peerUin, unsign
 
 void DccManager::needIncomingFileTransferAccept(DccSocketNotifiers *socket)
 {
-	GaduFileTransfer *fileTransfer = new GaduFileTransfer(Protocol->account(),
+	GaduFileTransfer *gft = new GaduFileTransfer(Protocol->account(),
 			ContactManager::instance()->byId(Protocol->account(), QString::number(socket->peerUin())),
 			FileTransfer::TypeReceive);
 
-	emit incomingFileTransfer(fileTransfer);
-// 	socket->acceptFileTransfer();
+	gft->setFileTransferNotifiers(socket);
+	socket->setGaduFileTransfer(gft);
+
+	emit Protocol->CurrentFileTransferService->incomingFileTransfer(gft);
 }
 
 void DccManager::dccConnectionRequestReceived(Contact contact)

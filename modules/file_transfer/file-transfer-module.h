@@ -12,6 +12,8 @@
 
 #include <QtCore/QObject>
 
+#include "file-transfer/file-transfer.h"
+
 class QAction;
 class QStringList;
 
@@ -45,6 +47,8 @@ private slots:
 	void showFileTransferWindow();
 
 	void fileTransferWindowDestroyed();
+
+	void incomingFileTransferNeedAccept(FileTransfer *fileTransfer);
 
 };
 

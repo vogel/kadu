@@ -36,6 +36,9 @@ public:
 	virtual void pause();
 	virtual void restore();
 
+	virtual bool accept(const QFile &file);
+	virtual void reject();
+
 };
 
 #endif // GADU_FILE_TRANSFER_H

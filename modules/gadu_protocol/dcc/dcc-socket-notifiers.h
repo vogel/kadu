@@ -22,6 +22,8 @@
 #pragma GCC visibility push(hidden)
 #endif
 
+class QFile;
+
 class GaduFileTransfer;
 
 class DccSocketNotifiers : public GaduSocketNotifiers
@@ -30,6 +32,7 @@ class DccSocketNotifiers : public GaduSocketNotifiers
 
 	GaduProtocol *Protocol;
 	DccManager *Manager;
+
 	GaduFileTransfer *FileTransfer;
 
 	DccVersion Version;
@@ -75,7 +78,7 @@ public:
 	QString remoteFileName();
 
 	void setGaduFileTransfer(GaduFileTransfer *fileTransfer);
-	void acceptFileTransfer();
+	bool acceptFileTransfer(const QFile &file);
 	void rejectFileTransfer();
 
 signals:

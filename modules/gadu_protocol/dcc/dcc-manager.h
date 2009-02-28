@@ -98,9 +98,6 @@ public:
 // 	void socketDestroying(DccSocket* socket);
 // 	void dcc7IncomingFileTransfer(DccSocket *socket);
 
-signals:
-	void incomingFileTransfer(GaduFileTransfer *fileTransfer);
-
 };
 
 #endif // DCC_MANAGER_H

@@ -21,6 +21,8 @@ class FileTransferService : public QObject
 {
 	Q_OBJECT
 
+	friend class DccManager;
+
 public:
 	FileTransferService(QObject *parent = 0) : QObject(parent) {}
 

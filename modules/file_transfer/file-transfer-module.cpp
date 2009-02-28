@@ -10,6 +10,7 @@
 #include <stdio.h>
 
 #include <QtGui/QFileDialog>
+#include <QtGui/QMessageBox>
 
 #include "accounts/account.h"
 #include "contacts/contact.h"
@@ -24,6 +25,7 @@
 #include "debug.h"
 #include "exports.h"
 #include "kadu.h"
+#include "message_box.h"
 
 #include "gui/windows/file-transfer-window.h"
 
@@ -74,10 +76,16 @@ FileTransferModule::FileTransferModule() :
 		Window(0)
 {
 	createActionDecriptions();
+
+	connect(FileTransferManager::instance(), SIGNAL(incomingFileTransferNeedAccept(FileTransfer *)),
+		this, SLOT(incomingFileTransferNeedAccept(FileTransfer *)));
 }
 
 FileTransferModule::~FileTransferModule()
 {
+	disconnect(FileTransferManager::instance(), SIGNAL(incomingFileTransferNeedAccept(FileTransfer *)),
+		this, SLOT(incomingFileTransferNeedAccept(FileTransfer *)));
+
 	deleteActionDecriptions();
 
 	if (Window)
@@ -193,4 +201,71 @@ void FileTransferModule::selectFilesAndSend(ContactList contacts)
 			showFileTransferWindow();
 		}
 	}
+}
+
+void FileTransferModule::incomingFileTransferNeedAccept(FileTransfer *fileTransfer)
+{
+	QString fileName;
+
+	bool resume = false;
+	bool haveFileName = false;
+
+	QFileInfo fi;
+
+	while (fileName.isEmpty())
+	{
+		if (!haveFileName || fileName.isEmpty())
+			fileName = QFileDialog::getSaveFileName(kadu, tr("Select file location"),
+					config_file.readEntry("Network", "LastDownloadDirectory") + fileTransfer->remoteFileName(),
+					QString::null, 0, QFileDialog::DontConfirmOverwrite);
+
+		if (fileName.isEmpty())
+		{
+			kdebugmf(KDEBUG_INFO, "rejected\n");
+			fileTransfer->reject();
+			return;
+		}
+
+		config_file.writeEntry("Network", "LastDownloadDirectory", QFileInfo(fileName).absolutePath() + '/');
+		fi.setFile(fileName);
+
+		if (!haveFileName && fi.exists())
+		{
+			QString question;
+			question = tr("File %1 already exists.").arg(fileName);
+
+			switch (QMessageBox::question(0, tr("Save file"), question, tr("Overwrite"), tr("Resume"),
+			                                 tr("Select another file"), 0, 2))
+			{
+				case 0:
+					resume = false;
+					break;
+
+				case 1:
+					resume = true;
+					break;
+
+				case 2:
+					continue;
+			}
+		}
+
+		QFile file(fileName);
+		QIODevice::OpenMode flags = QIODevice::WriteOnly;
+		if (resume)
+			flags |= QIODevice::Append;
+		else
+			flags |= QIODevice::Truncate;
+
+		if (!file.open(flags))
+			MessageBox::msg(tr("Could not open file. Select another one."), true, "Warning");
+		else
+		{
+			printf("file aaccepted: %d\n", file.handle());
+
+			fileTransfer->accept(file);
+			showFileTransferWindow();
+		}
+	}
+
 }

@@ -20,8 +20,6 @@
 GaduFileTransferService::GaduFileTransferService(GaduProtocol *protocol) :
 		FileTransferService(protocol), Protocol(protocol)
 {
-	connect(Protocol->dccManager(), SIGNAL(incomingFileTransfer(GaduFileTransfer *)),
-			this, SIGNAL(incomingFileTransfer(FileTransfer *)));
 }
 
 FileTransfer * GaduFileTransferService::loadFileTransferFromStorage(StoragePoint *storage)

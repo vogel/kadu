@@ -81,6 +81,8 @@ void GaduSocketNotifiers::deleteSocketNotifiers()
 
 void GaduSocketNotifiers::disable()
 {
+	kdebugf();
+
 	if (!Started)
 		return;
 
@@ -91,15 +93,19 @@ void GaduSocketNotifiers::disable()
 
 void GaduSocketNotifiers::enable()
 {
-	if (!Started)
+	kdebugf();
+
+	if (!Started || Lock)
 		return;
 
-	if (!Lock && checkRead())
+	if (checkRead())
 		ReadNotifier->setEnabled(true);
-	if (!Lock && checkWrite())
+	if (checkWrite())
 		WriteNotifier->setEnabled(true);
-	if (0 < timeout())
-		TimeoutTimer->start(timeout()); // TODO: 0.6.6 connect to something
+
+	int tout = timeout();
+	if (0 < tout)
+		TimeoutTimer->start(tout); // TODO: 0.6.6 connect to something
 }
 
 void GaduSocketNotifiers::watchFor(int socket)
@@ -115,11 +121,15 @@ void GaduSocketNotifiers::watchFor(int socket)
 
 void GaduSocketNotifiers::lock()
 {
+	kdebugf();
+
 	Lock = true;
 }
 
 void GaduSocketNotifiers::unlock()
 {
+	kdebugf();
+
 	Lock = false;
 	enable();
 }

@@ -64,6 +64,7 @@ private:
 	GaduPersonalInfoService *CurrentPersonalInfoService;
 	GaduSearchService *CurrentSearchService;
 
+	friend class DccManager;
 	DccManager *Dcc;
 
 	QHostAddress ActiveServer;

@@ -125,3 +125,16 @@ void GaduFileTransfer::restore()
 	if (FileTransfer::TypeSend == transferType())
 		send();
 }
+
+bool GaduFileTransfer::accept(const QFile &file)
+{
+	return SocketNotifiers->acceptFileTransfer(file);
+}
+
+void GaduFileTransfer::reject()
+{
+	if (SocketNotifiers)
+		SocketNotifiers->rejectFileTransfer();
+
+	deleteLater();
+}

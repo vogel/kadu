@@ -13,6 +13,7 @@
 #include "protocols/protocol.h"
 #include "protocols/services/file-transfer-service.h"
 
+#include "modules.h"
 #include "xml_config_file.h"
 
 #include "file-transfer-manager.h"
@@ -145,5 +146,8 @@ void FileTransferManager::cleanUp()
 
 void FileTransferManager::incomingFileTransfer(FileTransfer *fileTransfer)
 {
-	printf("oh lol!!!, incoming file transfer!\n");
+	if (!modules_manager->loadedModules().contains("file_transfer"))
+		fileTransfer->reject();
+
+	emit incomingFileTransferNeedAccept(fileTransfer);
 }

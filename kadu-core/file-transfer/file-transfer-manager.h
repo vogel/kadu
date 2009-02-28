@@ -60,6 +60,8 @@ signals:
 	void fileTransferAboutToBeRemoved(FileTransfer *contact);
 	void fileTransferRemoved(FileTransfer *contact);
 
+	void incomingFileTransferNeedAccept(FileTransfer *fileTransfer);
+
 };
 
 #endif // FILE_TRANSFER_MANAGER_H
