@@ -385,60 +385,15 @@ void ContactDataWindow::setupTab2()
 	kdebugf2();
 }
 
-bool ContactDataWindow::acceptableGroupName(const QString &groupName)
-{
-	kdebugf();
-	if (groupName.isEmpty())
-	{
-		kdebugf2();
-		return false;
-	}
-	if (groupName.contains(","))
-	{
-		MessageBox::msg(tr("'%1' is prohibited").arg(','), true, "Warning");
-		kdebugf2();
-		return false;
-	}
-	if (groupName.contains(";"))
-	{
-		MessageBox::msg(tr("'%1' is prohibited").arg(';'), true, "Warning");
-		kdebugf2();
-		return false;
-	}
-	bool number;
-	groupName.toLong(&number);
-	if (number)
-	{
-		MessageBox::msg(tr("Numbers are prohibited"), true, "Warning");//because of gadu-gadu contact list format...
-		kdebugf2();
-		return false;
-	}
-	// TODO All translation
- 	if (groupName == tr("All") || GroupManager::instance()->byName(groupName, false))
- 	{
- 		MessageBox::msg(tr("This group already exists!"), true, "Warning");
- 		kdebugf2();
- 		return false;
- 	}
-	kdebugf2();
-	return true;
-}
-
 void ContactDataWindow::newGroupClicked()
 {
 	kdebugf();
 	QString groupName = newGroup->text();
-	if (!acceptableGroupName(groupName))
+	if (!GroupManager::instance()->acceptableGroupName(groupName))
 	{
 		kdebugf2();
 		return;
 	}
-	foreach(QCheckBox *checkbox, groups)
-		if (checkbox->text() == groupName)
-		{
-			MessageBox::msg(tr("This group already exists!"), true, "Warning", this);
-			return;
-		}
 
 	QWidget *box = new QWidget(groupsWidget);
 	QHBoxLayout *boxLayout = new QHBoxLayout(box);
@@ -483,6 +438,9 @@ void ContactDataWindow::newGroupClicked()
 	groups.append(checkBox);
 
 	QTimer::singleShot(0, this, SLOT(scrollToBottom()));
+
+	//create new group
+	GroupManager::instance()->byName(groupName, true);
 
 	kdebugf2();
 }

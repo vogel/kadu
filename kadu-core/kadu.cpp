@@ -1659,8 +1659,7 @@ bool Kadu::close(bool quit)
 
 		ChatManager::closeModule();
 		SearchDialog::closeModule();
-;
-		xml_config_file->sync();
+
 		EmoticonsManager::closeModule();
 		IconsManager::closeModule();
 
@@ -1674,6 +1673,9 @@ bool Kadu::close(bool quit)
 		kdebugmf(KDEBUG_INFO, "Graceful shutdown...\n");
 
 		qDeleteAll(children());
+
+		kdebugmf(KDEBUG_INFO, "Sync configuration...\n");
+		xml_config_file->sync();
 
 		delete xml_config_file;
 		delete config_file_ptr;

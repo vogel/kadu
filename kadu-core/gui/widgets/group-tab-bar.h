@@ -31,13 +31,19 @@ protected:
 	void dragEnterEvent(QDragEnterEvent* e);
 	void dropEvent(QDropEvent *e);*/
 
-public:
-	GroupTabBar(QWidget *parent = 0);
-
-	GroupContactFilter * filter() { return Filter; }
-
 private slots:
 	void currentChangedSlot(int index);
+	void groupAdded(Group *group);
+	void groupIconChanged(const Group *group);
+	void groupNameChanged(const Group *group);
+
+public:
+	GroupTabBar(QWidget *parent = 0);
+	~GroupTabBar();
+
+	void addGroup(const Group *group);
+
+	GroupContactFilter * filter() { return Filter; }
 
 signals:
 	void currentGroupChanged(Group *group);

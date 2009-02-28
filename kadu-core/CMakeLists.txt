@@ -167,6 +167,7 @@ set (kadu_MOC_SRCS
 	contacts/contact-manager.h
 	contacts/contact-module-data.h
 	contacts/contact-list-configuration-helper.h
+	contacts/group.h
 	contacts/group-manager.h
 
 	contacts/model/abstract-contacts-model.h

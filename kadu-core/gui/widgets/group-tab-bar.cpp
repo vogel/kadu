@@ -32,22 +32,67 @@ GroupTabBar::GroupTabBar(QWidget *parent)
 	setIconSize(QSize(16, 16));
 
 	foreach (const Group *group, GroupManager::instance()->groups())
-		addTab(group->name());
+		addGroup(group);
 
 	connect(this, SIGNAL(currentChanged(int)), this, SLOT(currentChangedSlot(int)));
+
+	connect(GroupManager::instance(), SIGNAL(groupAdded(Group *)), this, SLOT(groupAdded(Group *)));
+
+	setCurrentIndex(config_file.readNumEntry("Look", "CurrentGroupTab", 0));
+}
+
+GroupTabBar::~GroupTabBar()
+{
+	config_file.writeEntry("Look", "CurrentGroupTab", currentIndex());
+}
+
+void GroupTabBar::addGroup(const Group *group)
+{
+	int index = addTab(QIcon(group->icon()), group->name());
+	setTabData(index, group->uuid().toString());
+	connect(group, SIGNAL(iconChanged(const Group *)), this, SLOT(groupIconChanged(const Group *)));
+	connect(group, SIGNAL(nameChanged(const Group *)), this, SLOT(groupNameChanged(const Group *)));
 }
 
 void GroupTabBar::currentChangedSlot(int index)
 {
-	Group *group = GroupManager::instance()->byName(tabText(index), false);
+	Group *group = GroupManager::instance()->byUuid(tabData(index).toString());
 	emit currentGroupChanged(group);
 	Filter->setGroup(group);
 }
 
+void GroupTabBar::groupAdded(Group *group)
+{
+	QString groupUuid = group->uuid().toString();
+	for (int i = 0; i < count(); ++i)
+		if (tabData(i).toString() == groupUuid) //group is already in tabbar
+			return;
+	addGroup(group);
+			
+}
 
-// 	if (GroupBar)
-// 		config_file.writeEntry("Look", "CurrentGroupTab", GroupBar->currentIndex());
+void GroupTabBar::groupIconChanged(const Group *group)
+{	
+	QString groupUuid = group->uuid().toString();
+	for (int i = 0; i < count(); ++i)
+		if (tabData(i).toString() == groupUuid)
+		{
+			setTabIcon(i, QIcon(group->icon()));
+			break;
+		}
+			
+}
 
+void GroupTabBar::groupNameChanged(const Group *group)
+{
+	QString groupUuid = group->uuid().toString();
+	for (int i = 0; i < count(); ++i)
+		if (tabData(i).toString() == groupUuid)
+		{
+			setTabText(i, group->name());
+			break;
+		}
+}
 
 /*
 

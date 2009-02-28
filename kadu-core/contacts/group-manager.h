@@ -50,6 +50,8 @@ public:
 	Group * byUuid(const QString &uuid) const;
 	Group * byName(const QString &name, bool create = true);
 
+	bool acceptableGroupName(const QString &groupName);
+
 signals:
 	void groupAboutToBeAdded(Group *group);
 	void groupAdded(Group *group);

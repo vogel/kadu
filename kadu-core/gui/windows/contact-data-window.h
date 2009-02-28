@@ -144,7 +144,6 @@ public:
 	QTabWidget *tabs() { return tw_main; }
 	QList<ContactAccountDataWidget *> widgets() { return dataWidgets; }
 	Contact user() const { return User; }
-	static bool acceptableGroupName(const QString &groupName);
 
 public slots:
 	/**

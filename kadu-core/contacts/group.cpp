@@ -46,6 +46,8 @@ StoragePoint * Group::createStoragePoint() const
 
 void Group::importConfiguration(const QString &name)
 {
+	if (!storage())
+		createStoragePoint();
 	Name = name;
 	Icon = config_file.readEntry("GroupIcon", name);
 }
@@ -75,4 +77,15 @@ void Group::storeConfiguration()
 
 	configurationStorage->createTextNode(parent, "Name", Name);
 	configurationStorage->createTextNode(parent, "Icon", Icon);
+}
+
+void Group::setName(const QString &name)
+{
+	Name = name;
+	emit nameChanged(this);
+}
+void Group::setIcon(const QString &icon)
+{
+	Icon = icon;
+	emit iconChanged(this);
 }

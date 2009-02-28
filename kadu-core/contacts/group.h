@@ -10,12 +10,15 @@
 #ifndef GROUP_H
 #define GROUP_H
 
+#include <QtCore/QObject>
 #include <QtCore/QUuid>
 
 #include "configuration/storable-object.h"
 
-class Group : private StorableObject
+class Group : public QObject, private StorableObject 
 {
+	Q_OBJECT
+
 	QUuid Uuid;
 	QString Name;
 	QString Icon;
@@ -37,9 +40,12 @@ public:
 	QString name() const { return Name; }
 	QString icon() const { return Icon; }
 
-	void setName(const QString &name) { Name = name; }
-	void setIcon(const QString &icon) { Icon = icon; }
+	void setName(const QString &name);
+	void setIcon(const QString &icon);
 
+signals:
+	void iconChanged(const Group *group);
+	void nameChanged(const Group *group);
 };
 
 #endif // GROUP_H
