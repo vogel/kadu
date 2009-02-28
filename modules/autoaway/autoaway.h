@@ -1,7 +1,6 @@
 #ifndef AUTOAWAY_H
 #define AUTOAWAY_H
 
-#include <QtCore/QEvent>
 #include <QtCore/QTimer>
 #include <QtCore/QObject>
 
@@ -48,7 +47,7 @@ public:
 	AutoAwayStatusChanger();
 	virtual ~AutoAwayStatusChanger();
 
-	virtual void changeStatus(UserStatus &status);
+	virtual void changeStatus(Status &status);
 
 	void setChangeStatusTo(ChangeStatusTo newChangeStatusTo);
 	void setChangeDescriptionTo(ChangeDescriptionTo newChangeDescriptionTo, const QString &newDescriptionAddon);
@@ -109,7 +108,6 @@ private slots:
 	void off();
 
 protected:
-	bool eventFilter(QObject *, QEvent *);
 	virtual void configurationUpdated();
 
 public:

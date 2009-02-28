@@ -9,19 +9,21 @@
 
 #include <QtGui/QApplication>
 #include <QtGui/QCheckBox>
+#include <QtGui/QLineEdit>
 #include <QtGui/QSpinBox>
-
-#ifdef Q_OS_WIN
-#include <windows.h>
-#endif
 
 #include "accounts/account.h"
 #include "accounts/account_manager.h"
+
+#include "gui/widgets/configuration/configuration-widget.h"
+
 #include "config_file.h"
 #include "debug.h"
 #include "kadu.h"
 #include "kadu_parser.h"
 #include "misc.h"
+
+#include "../idle/idle.h"
 
 #include "autoaway.h"
 
@@ -64,7 +66,7 @@ AutoAwayStatusChanger::~AutoAwayStatusChanger()
 {
 }
 
-void AutoAwayStatusChanger::changeStatus(UserStatus &status)
+void AutoAwayStatusChanger::changeStatus(Status &status)
 {
 	if (changeStatusTo == NoChangeStatus)
 		return;
@@ -93,7 +95,8 @@ void AutoAwayStatusChanger::changeStatus(UserStatus &status)
 
 	if (changeStatusTo == ChangeStatusToOffline)
 	{
-		status.setOffline(description);
+		status.setType(Status::Offline);
+		status.setDescription(description);
 		return;
 	}
 
@@ -102,7 +105,8 @@ void AutoAwayStatusChanger::changeStatus(UserStatus &status)
 
 	if (changeStatusTo == ChangeStatusToInvisible)
 	{
-		status.setInvisible(description);
+		status.setType(Status::Invisible);
+		status.setDescription(description);
 		return;
 	}
 
@@ -111,7 +115,8 @@ void AutoAwayStatusChanger::changeStatus(UserStatus &status)
 
 	if (changeStatusTo == ChangeStatusToBusy)
 	{
-		status.setBusy(description);
+		status.setType(Status::Busy);
+		status.setDescription(description);
 		return;
 	}
 }
@@ -131,10 +136,11 @@ void AutoAwayStatusChanger::setChangeDescriptionTo(ChangeDescriptionTo newChange
 AutoAway::AutoAway()
 	: autoAwayStatusChanger(0), timer(0), updateDescripion(true)
 {
+//TODO 0.6.6:
 	Protocol *gadu = AccountManager::instance()->defaultAccount()->protocol();
 
-	connect(gadu, SIGNAL(connected()), this, SLOT(on()));
-	connect(gadu, SIGNAL(disconnected()), this, SLOT(off()));
+	connect(gadu, SIGNAL(connected(Account *)), this, SLOT(on()));
+	connect(gadu, SIGNAL(disconnected(Account *)), this, SLOT(off()));
 
 	createDefaultConfiguration();
 	configurationUpdated();
@@ -154,10 +160,10 @@ AutoAway::~AutoAway()
 		delete autoAwayStatusChanger;
 		autoAwayStatusChanger = 0;
 	}
-
+//TODO 0.6.6:
 	Protocol *gadu = AccountManager::instance()->defaultAccount()->protocol();
-	disconnect(gadu, SIGNAL(connected()), this, SLOT(on()));
-	disconnect(gadu, SIGNAL(disconnected()), this, SLOT(off()));
+	disconnect(gadu, SIGNAL(connected(Account *)), this, SLOT(on()));
+	disconnect(gadu, SIGNAL(disconnected(Account *)), this, SLOT(off()));
 
 	qApp->removeEventFilter(this);
 }
@@ -171,8 +177,6 @@ void AutoAway::on()
 	}
 
 	autoAwayStatusChanger->setChangeDescriptionTo(changeTo, parseDescription(autoStatusText));
-
-	qApp->installEventFilter(this);
 
 	if (!timer)
 	{
@@ -190,16 +194,6 @@ void AutoAway::off()
 		delete timer;
 		timer = 0;
 	}
-
-	qApp->removeEventFilter(this);
-}
-
-// jesli wciskamy klawisze lub poruszamy myszk± w obrêbie okna programu to zerujemy czas nieaktywno¶ci
-bool AutoAway::eventFilter(QObject *o, QEvent *e)
-{
-	if (e->type() == QEvent::KeyPress || e->type() == QEvent::Enter || e->type() == QEvent::MouseMove)
-		idleTime = 0;
-	return QObject::eventFilter(o, e);
 }
 
 //metoda wywo³ywana co sekundê(mo¿liwa zmiana w konfiguracji) w celu sprawdzenia czy mamy zmieniæ status
@@ -207,62 +201,7 @@ void AutoAway::checkIdleTime()
 {
 	kdebugf();
 
-	const static int INTCOUNT = 16;
-	static unsigned long interrupts[INTCOUNT] = {0};
-	unsigned long currentInterrupts[INTCOUNT] = {0};
-
-	static QPoint MousePosition(0, 0);
-	QPoint currentMousePosition;
-
-	currentMousePosition = QCursor::pos();
-	if (currentMousePosition != MousePosition)
-	{
-		MousePosition = currentMousePosition;
-		idleTime = 0;
-	}
-
-#ifdef Q_OS_WIN
-	LASTINPUTINFO lpi;
-	lpi.cbSize=sizeof(LASTINPUTINFO);
-	GetLastInputInfo(&lpi);
-	idleTime=(GetTickCount() - lpi.dwTime)/1000;
-#else
-
-//	sprawdzenie czy wzrosla liczba obsluzonych przerwan klawiatury lub myszki
-	QFile f("/proc/interrupts");
-	if (f.open(IO_ReadOnly))
-	{
-		QString line;
-		QStringList strlist;
-
-		QString intNum;
-		int interrupt;
-
-		QTextStream stream(&f);
-		while (!stream.atEnd() && (line = stream.readLine()) != QString::null)
-		{
-			if (line.contains("i8042") || line.contains("keyboard") || line.contains("mouse", false))
-			{
-				strlist = QStringList::split(" ", line);
-
-				intNum = strlist[0];
-				intNum.truncate(intNum.length()-1);
-				interrupt = intNum.toUInt();
-				if (interrupt>=0 && interrupt<INTCOUNT)
-					currentInterrupts[interrupt] = strlist[1].toULong();
-			}
-		}
-		f.close();
-
-		if (memcmp(interrupts, currentInterrupts, INTCOUNT*sizeof(interrupts[0]))!=0)
-		{
-			idleTime = 0;
-			memcpy(interrupts, currentInterrupts, INTCOUNT*sizeof(interrupts[0]));
-		}
-	}
-#endif
-
-	idleTime += checkInterval;
+	idleTime = idle->secondsIdle();
 
 	if (refreshStatusInterval > 0 && idleTime >= refreshStatusTime)
 	{
@@ -298,24 +237,24 @@ void AutoAway::checkIdleTime()
 
 void AutoAway::mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow)
 {
-	autoAwaySpinBox = dynamic_cast<QSpinBox *>(mainConfigurationWindow->widgetById("autoaway/autoAway"));
-	autoInvisibleSpinBox = dynamic_cast<QSpinBox *>(mainConfigurationWindow->widgetById("autoaway/autoInvisible"));
-	autoOfflineSpinBox = dynamic_cast<QSpinBox *>(mainConfigurationWindow->widgetById("autoaway/autoOffline"));
-	autoRefreshSpinBox = dynamic_cast<QSpinBox *>(mainConfigurationWindow->widgetById("autoaway/autoRefresh"));
+	autoAwaySpinBox = dynamic_cast<QSpinBox *>(mainConfigurationWindow->widget()->widgetById("autoaway/autoAway"));
+	autoInvisibleSpinBox = dynamic_cast<QSpinBox *>(mainConfigurationWindow->widget()->widgetById("autoaway/autoInvisible"));
+	autoOfflineSpinBox = dynamic_cast<QSpinBox *>(mainConfigurationWindow->widget()->widgetById("autoaway/autoOffline"));
+	autoRefreshSpinBox = dynamic_cast<QSpinBox *>(mainConfigurationWindow->widget()->widgetById("autoaway/autoRefresh"));
 
-	descriptionTextLineEdit = dynamic_cast<QLineEdit *>(mainConfigurationWindow->widgetById("autoaway/descriptionText"));
+	descriptionTextLineEdit = dynamic_cast<QLineEdit *>(mainConfigurationWindow->widget()->widgetById("autoaway/descriptionText"));
 
-	parseStatusCheckBox = dynamic_cast<QCheckBox *>(mainConfigurationWindow->widgetById("autoaway/enableParseStatus"));
+	parseStatusCheckBox = dynamic_cast<QCheckBox *>(mainConfigurationWindow->widget()->widgetById("autoaway/enableParseStatus"));
 
-	connect(mainConfigurationWindow->widgetById("autoaway/enableAutoAway"), SIGNAL(toggled(bool)), autoAwaySpinBox, SLOT(setEnabled(bool)));
-	connect(mainConfigurationWindow->widgetById("autoaway/enableAutoInvisible"), SIGNAL(toggled(bool)), autoInvisibleSpinBox, SLOT(setEnabled(bool)));
-	connect(mainConfigurationWindow->widgetById("autoaway/enableAutoOffline"), SIGNAL(toggled(bool)), autoOfflineSpinBox, SLOT(setEnabled(bool)));
+	connect(mainConfigurationWindow->widget()->widgetById("autoaway/enableAutoAway"), SIGNAL(toggled(bool)), autoAwaySpinBox, SLOT(setEnabled(bool)));
+	connect(mainConfigurationWindow->widget()->widgetById("autoaway/enableAutoInvisible"), SIGNAL(toggled(bool)), autoInvisibleSpinBox, SLOT(setEnabled(bool)));
+	connect(mainConfigurationWindow->widget()->widgetById("autoaway/enableAutoOffline"), SIGNAL(toggled(bool)), autoOfflineSpinBox, SLOT(setEnabled(bool)));
 
 	connect(autoAwaySpinBox, SIGNAL(valueChanged(int)), this, SLOT(autoAwaySpinBoxValueChanged(int)));
 	connect(autoInvisibleSpinBox, SIGNAL(valueChanged(int)), this, SLOT(autoInvisibleSpinBoxValueChanged(int)));
 	connect(autoOfflineSpinBox, SIGNAL(valueChanged(int)), this, SLOT(autoOfflineSpinBoxValueChanged(int)));
 
-	connect(mainConfigurationWindow->widgetById("autoaway/descriptionChange"), SIGNAL(activated(int)), this, SLOT(descriptionChangeChanged(int)));
+	connect(mainConfigurationWindow->widget()->widgetById("autoaway/descriptionChange"), SIGNAL(activated(int)), this, SLOT(descriptionChangeChanged(int)));
 
 	autoRefreshSpinBox->setSpecialValueText(tr("Don't refresh"));
 }
@@ -339,9 +278,9 @@ void AutoAway::configurationUpdated()
 	autoStatusText = config_file.readEntry("General", "AutoStatusText");
 
 	changeTo = (AutoAwayStatusChanger::ChangeDescriptionTo)config_file.readNumEntry("General", "AutoChangeDescription");
-
-	Protocol *gadu = AccountManager::instance()->defaultAccount()->protocol();
-	if ((autoAwayEnabled || autoInvisibleEnabled || autoDisconnectEnabled) && !gadu->currentStatus().isOffline())
+//TODO 0.6.6:
+	Protocol *protocol = AccountManager::instance()->defaultAccount()->protocol();
+	if ((autoAwayEnabled || autoInvisibleEnabled || autoDisconnectEnabled) && protocol->isConnected())
 		on();
 	else
 		off();
@@ -376,8 +315,8 @@ void AutoAway::descriptionChangeChanged(int index)
 
 QString AutoAway::parseDescription(const QString &parseDescription)
 {
-	if (parseAutoStatus)
-		return (KaduParser::parse(parseDescription, kadu->myself(), true));
+	if (parseAutoStatus)//TODO 0.6.6:
+		return (KaduParser::parse(parseDescription, AccountManager::instance()->defaultAccount(), kadu->myself(), true));
 	else
 		return parseDescription;
 }
