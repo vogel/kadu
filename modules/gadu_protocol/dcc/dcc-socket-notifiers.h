@@ -51,6 +51,12 @@ class DccSocketNotifiers : public GaduSocketNotifiers
 	void handleEventDccNeedVoiceAck(struct gg_event *e);
 	void handleEventDccVoiceData(struct gg_event *e);
 
+	void handleEventDcc7Accept(struct gg_event *e);
+	void handleEventDcc7Connected(struct gg_event *e);
+	void handleEventDcc7Error(struct gg_event *e);
+	void handleEventDcc7Done(struct gg_event *e);
+	void handleEventDcc7Pending(struct gg_event *e);
+
 private slots:
 	void dcc7Accepted(struct gg_dcc7 *);
 	void dcc7Rejected(struct gg_dcc7 *);

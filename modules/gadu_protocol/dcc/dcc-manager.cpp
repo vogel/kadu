@@ -338,9 +338,16 @@ void DccManager::handleEventDcc7New(struct gg_event *e)
 	switch (dcc->dcc_type)
 	{
 		case GG_DCC7_TYPE_FILE:
+		{
 // 			TODO: ZARAZ
+			DccSocketNotifiers *newSocketNotifiers = new DccSocketNotifiers(Protocol, this);
+			SocketNotifiers << newSocketNotifiers;
+			connectSocketNotifiers(newSocketNotifiers);
+			newSocketNotifiers->watchFor(e->event.dcc7_new);
+			needIncomingFileTransferAccept(newSocketNotifiers);
 // 			file_transfer_manager->dcc7IncomingFileTransfer(new DccSocket(dcc));
 			break;
+		}
 
 		default:
 			gg_dcc7_reject(dcc, GG_DCC7_REJECT_USER);

@@ -144,35 +144,12 @@ void DccSocketNotifiers::handleEventDccNeedFileInfo(struct gg_event *e)
 		finished(false);
 }
 
-#include <sys/types.h>
-#include <sys/stat.h>
-#include <fcntl.h>
-
 void DccSocketNotifiers::handleEventDccNeedFileAck(struct gg_event *e)
 {
 	kdebugf();
 
-// TODO: 0.6.6
 	lock();
 	Manager->needIncomingFileTransferAccept(this);
-/*
-	int handle = creat("/home/vogel/gg-download", 0640);
-
-	printf("handle: %d\n", handle);
-	printf("version: %d\n", Version);
-
-	switch (Version)
-	{
-		case Dcc6:
-			Socket->file_fd = handle;
-			Socket->offset = 0;
-			break;
-		case Dcc7:
-			Socket7->file_fd = handle;
-			Socket7->offset = 0;
-			break;
-	}
-*/
 }
 
 void DccSocketNotifiers::handleEventDccNeedVoiceAck(struct gg_event *e)
@@ -183,6 +160,41 @@ void DccSocketNotifiers::handleEventDccNeedVoiceAck(struct gg_event *e)
 void DccSocketNotifiers::handleEventDccVoiceData(struct gg_event *e)
 {
 	kdebugf();
+}
+
+void DccSocketNotifiers::handleEventDcc7Accept(struct gg_event *e)
+{
+	kdebugf();
+
+	watchFor(Socket7); // socket may change
+}
+
+void DccSocketNotifiers::handleEventDcc7Connected(struct gg_event *e)
+{
+	kdebugf();
+
+	watchFor(Socket7); // socket may change
+}
+
+void DccSocketNotifiers::handleEventDcc7Error(struct gg_event *e)
+{
+	kdebugf();
+
+	done(false);
+}
+
+void DccSocketNotifiers::handleEventDcc7Done(struct gg_event *e)
+{
+	kdebugf();
+
+	done(true);
+}
+
+void DccSocketNotifiers::handleEventDcc7Pending(struct gg_event *e)
+{
+	kdebugf();
+
+	watchFor(Socket7); // socket may change
 }
 
 void DccSocketNotifiers::socketEvent()
@@ -248,6 +260,26 @@ void DccSocketNotifiers::socketEvent()
 
 		case GG_EVENT_DCC_VOICE_DATA:
 			handleEventDccVoiceData(e);
+			break;
+
+		case GG_EVENT_DCC7_ACCEPT:
+			handleEventDcc7Accept(e);
+			break;
+
+		case GG_EVENT_DCC7_CONNECTED:
+			handleEventDcc7Connected(e);
+			break;
+
+		case GG_EVENT_DCC7_ERROR:
+			handleEventDcc7Error(e);
+			break;
+
+		case GG_EVENT_DCC7_DONE:
+			handleEventDcc7Done(e);
+			break;
+
+		case GG_EVENT_DCC7_PENDING:
+			handleEventDcc7Pending(e);
 			break;
 	}
 
@@ -393,7 +425,10 @@ bool DccSocketNotifiers::acceptFileTransfer(const QFile &file)
 			break;
 
 		case Dcc7:
+			Socket7->file_fd = dup(file.handle());
+			Socket7->offset = file.size();
 			gg_dcc7_accept(Socket7, Socket7->offset);
+			watchFor(Socket7); // descriptor may be changed
 			break;
 
 		default:
