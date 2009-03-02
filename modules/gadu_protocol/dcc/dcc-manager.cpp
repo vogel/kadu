@@ -360,12 +360,29 @@ void DccManager::handleEventDcc7New(struct gg_event *e)
 
 void DccManager::handleEventDcc7Accept(struct gg_event *e)
 {
+	kdebugf();
 
+	foreach (DccSocketNotifiers *socketNotifiers, SocketNotifiers)
+	{
+		if (socketNotifiers->Socket7 == e->event.dcc7_accept.dcc7)
+		{
+			socketNotifiers->accepted();
+			return;
+		}
+	}
 }
 
 void DccManager::handleEventDcc7Reject(struct gg_event *e)
 {
-
+	kdebugf();
+	foreach (DccSocketNotifiers *socketNotifiers, SocketNotifiers)
+	{
+		if (socketNotifiers->Socket7 == e->event.dcc7_accept.dcc7)
+		{
+			socketNotifiers->rejected();
+			return;
+		}
+	}
 }
 
 void DccManager::dcc7Error(struct gg_dcc7 *dcc)
@@ -399,6 +416,8 @@ void DccManager::attachSendFileTransferSocket6(unsigned int uin, GaduContactAcco
 
 void DccManager::attachSendFileTransferSocket7(unsigned int uin, GaduContactAccountData *gcad, GaduFileTransfer *gft)
 {
+	kdebugf();
+
 	gg_dcc7 *dcc = gg_dcc7_send_file(Protocol->gaduSession(), gcad->uin(),
 			qPrintable(gft->localFileName()), unicode2cp(gft->localFileName()).data(), 0);
 
@@ -406,7 +425,10 @@ void DccManager::attachSendFileTransferSocket7(unsigned int uin, GaduContactAcco
 	{
 		DccSocketNotifiers *fileTransferNotifiers = new DccSocketNotifiers(Protocol, this);
 		gft->setFileTransferNotifiers(fileTransferNotifiers);
+		gft->changeFileTransferStatus(FileTransfer::StatusWaitingForAccept);
 		fileTransferNotifiers->watchFor(dcc);
+
+		SocketNotifiers << fileTransferNotifiers;
 	}
 	else
 		gft->socketNotAvailable();
@@ -426,7 +448,7 @@ void DccManager::attachSendFileTransferSocket(GaduFileTransfer *gft)
 	DccVersion version = (gcad->gaduProtocolVersion() & 0x0000ffff) >= 0x29
 		? Dcc7
 		: Dcc6;
-	version = Dcc6;
+	version = Dcc7;
 
 	switch (version)
 	{

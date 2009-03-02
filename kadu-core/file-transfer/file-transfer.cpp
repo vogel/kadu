@@ -59,9 +59,6 @@ FileTransfer * FileTransfer::loadFromStorage(StoragePoint *fileTransferStoragePo
 	if (!ft)
 		return 0;
 
-	if (ft->fileSize() == ft->transferredSize())
-		ft->changeFileTransferStatus(StatusFinished);
-
 	return ft;
 }
 
@@ -87,6 +84,9 @@ void FileTransfer::loadConfiguration()
 	TransferType = ("Send" == loadValue<QString>("TransferType")) ? TypeSend : TypeReceive;
 	FileSize = loadValue<qulonglong>("FileSize");
 	TransferredSize = loadValue<qulonglong>("TransferredSize");
+
+	if (FileSize == TransferredSize)
+		changeFileTransferStatus(StatusFinished);
 }
 
 void FileTransfer::storeConfiguration()

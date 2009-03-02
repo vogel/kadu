@@ -220,7 +220,7 @@ void GaduProtocolSocketNotifiers::socketEvent()
 	}
 
 	dumpConnectionState();
-	printf("main event: %d\n", e->type);
+	kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "event: %d\n", e->type);
 
 	switch (e->type)
 	{

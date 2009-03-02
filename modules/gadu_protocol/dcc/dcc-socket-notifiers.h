@@ -42,6 +42,8 @@ class DccSocketNotifiers : public GaduSocketNotifiers
 	struct gg_dcc7 *Socket7;
 	int *DccCheckField;
 
+	void accepted();
+	void rejected();
 	void finished(bool ok);
 
 	void handleEventDccError(struct gg_event *e);

@@ -33,6 +33,7 @@ public:
 	enum FileTransferStatus {
 		StatusNotConnected,
 		StatusWaitingForConnection,
+		StatusWaitingForAccept,
 		StatusTransfer,
 		StatusFinished,
 		StatusRejected

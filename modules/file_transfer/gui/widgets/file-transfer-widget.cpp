@@ -209,7 +209,11 @@ void FileTransferWidget::fileTransferUpdate()
 		return;
 	}
 
-	ProgressBar->setValue(CurrentTransfer->percent());
+	if (FileTransfer::StatusFinished != CurrentTransfer->transferStatus())
+		ProgressBar->setValue(CurrentTransfer->percent());
+	else
+		ProgressBar->setValue(100);
+
 	unsigned long speed = 0;
 
 	if (LastUpdateTime.isValid())
@@ -233,6 +237,10 @@ void FileTransferWidget::fileTransferUpdate()
 
 		case FileTransfer::StatusWaitingForConnection:
 			StatusLabel->setText(tr("<b>Wait for connection</b>"));
+			break;
+
+		case FileTransfer::StatusWaitingForAccept:
+			StatusLabel->setText(tr("<b>Wait for accept</b>"));
 			break;
 
 		case FileTransfer::StatusTransfer:

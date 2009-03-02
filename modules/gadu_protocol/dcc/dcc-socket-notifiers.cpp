@@ -317,6 +317,20 @@ int DccSocketNotifiers::timeout()
 	return 0;
 }
 
+void DccSocketNotifiers::accepted()
+{
+	if (FileTransfer)
+		FileTransfer->changeFileTransferStatus(FileTransfer::StatusTransfer);
+	watchFor(Socket7);
+}
+
+void DccSocketNotifiers::rejected()
+{
+	if (FileTransfer)
+		FileTransfer->changeFileTransferStatus(FileTransfer::StatusRejected);
+	deleteLater();
+}
+
 void DccSocketNotifiers::finished(bool ok)
 {
 	watchFor((struct gg_dcc *)0);

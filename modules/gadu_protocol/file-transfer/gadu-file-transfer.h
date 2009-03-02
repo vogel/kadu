@@ -19,6 +19,7 @@ class GaduFileTransfer : public FileTransfer
 {
 	Q_OBJECT
 
+	friend class DccManager;
 	friend class DccSocketNotifiers;
 	DccSocketNotifiers *SocketNotifiers;
 	bool WaitingForSocketNotifiers;
