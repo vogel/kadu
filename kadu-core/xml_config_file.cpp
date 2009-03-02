@@ -37,11 +37,11 @@ void XmlConfigFile::read()
 
 	foreach(const QString &fileName, files)
 	{
-		file.setName(ggPath(fileName));
+		file.setFileName(ggPath(fileName));
 		fileOpened = file.open(QIODevice::ReadOnly);
 		if (fileOpened && file.size() > 0)
 		{
-			kdebugm(KDEBUG_INFO, "file %s opened!\n", qPrintable(file.name()));
+			kdebugm(KDEBUG_INFO, "configuration file %s opened!\n", qPrintable(file.name()));
 			break;
 		}
 		if (fileOpened) // && file.size() == 0

@@ -131,7 +131,7 @@ void DccSocketNotifiers::handleEventDccCallback(struct gg_event *e)
 		return;
 	}
 	else
-		done(false);
+		finished(false);
 }
 
 void DccSocketNotifiers::handleEventDccNeedFileInfo(struct gg_event *e)
@@ -139,7 +139,10 @@ void DccSocketNotifiers::handleEventDccNeedFileInfo(struct gg_event *e)
 	kdebugf();
 
 	if (Version == Dcc6 && FileTransfer)
+	{
 		gg_dcc_fill_file_info2(Socket, unicode2cp(FileTransfer->localFileName()), qPrintable(FileTransfer->localFileName()));
+		watchFor(Socket);
+	}
 	else
 		finished(false);
 }
@@ -180,14 +183,14 @@ void DccSocketNotifiers::handleEventDcc7Error(struct gg_event *e)
 {
 	kdebugf();
 
-	done(false);
+	finished(false);
 }
 
 void DccSocketNotifiers::handleEventDcc7Done(struct gg_event *e)
 {
 	kdebugf();
 
-	done(true);
+	finished(true);
 }
 
 void DccSocketNotifiers::handleEventDcc7Pending(struct gg_event *e)
@@ -207,22 +210,30 @@ void DccSocketNotifiers::socketEvent()
 	{
 		case Dcc6:
 			e = gg_dcc_watch_fd(Socket);
+			if (FileTransfer)
+				FileTransfer->updateFileInfo();
 			break;
+
 		case Dcc7:
 			e = gg_dcc7_watch_fd(Socket7);
+			if (FileTransfer)
+				FileTransfer->updateFileInfo();
 			break;
+
 		default:
-			kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "DCC version not set!\n");
-			done(false);
+			kdebugmf(KDEBUG_NETWORK | KDEBUG_INFO, "DCC version not set!\n");
+			finished(false);
 			return;
 	}
 
 	if (!e)
 	{
-		kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "Connection broken unexpectedly!\n");
-		done(false);
+		kdebugmf(KDEBUG_NETWORK | KDEBUG_INFO, "Connection broken unexpectedly!\n");
+		finished(false);
 		return;
 	}
+
+	kdebugmf(KDEBUG_NETWORK | KDEBUG_INFO, "event: %d\n", e->type);
 
 	switch (e->type)
 	{
@@ -311,48 +322,10 @@ void DccSocketNotifiers::finished(bool ok)
 	watchFor((struct gg_dcc *)0);
 	deleteLater();
 	emit done(ok);
+
+	if (FileTransfer)
+		FileTransfer->finished(ok);
 }
-
-// 		case GG_EVENT_DCC7_CONNECTED:
-			// Dcc7Struct->fd changed, we need new socket notifiers
-// 			printf("dcc7 connected\n");
-// 			watchFor(Socket7);
-// 			break;
-
-// 		case GG_EVENT_DCC7_ERROR:
-// 			kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "GG_EVENT_DCC_ERROR\n");
-// 			finished(false);
-// 			return;
-
-// 		case GG_EVENT_DCC7_DONE:
-// 			printf("event done\n");
-// 			kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "GG_EVENT_DCC_DONE\n");
-// 			finished(true);
-// 			break;
-
-// 		case GG_EVENT_DCC_NEED_VOICE_ACK:
-// 			kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "GG_EVENT_DCC_NEED_VOICE_ACK! uin:%d peer_uin:%d\n",
-// 				socket->uin(), socket->peerUin());
-// 			if (askAcceptVoiceChat(socket))
-// 			{
-// 				VoiceChatDialog *voiceChatDialog = new VoiceChatDialog();
-// 				socket->setHandler(voiceChatDialog);
-// 			}
-// 			else
-// 			{
-// 				socket->reject();
-// 				delete socket;
-// 			}
-// 			break;
-
-// 		case GG_EVENT_DCC_ACK:
-// 			kdebugmf(KDEBUG_INFO, "GG_EVENT_DCC_ACK\n");
-// 			if (socket->type() == GG_SESSION_DCC_VOICE)
-// 			{
-// 				VoiceChatDialog *voiceChatDialog = new VoiceChatDialog();
-// 				socket->setHandler(voiceChatDialog);
-// 			}
-// 			break;
 
 UinType DccSocketNotifiers::peerUin()
 {
@@ -372,9 +345,9 @@ unsigned long DccSocketNotifiers::fileSize()
 	switch (Version)
 	{
 		case Dcc6:
-			return Socket->file_info.size;
+			return gg_fix32(Socket->file_info.size);
 		case Dcc7:
-			return Socket7->size;
+			return gg_fix32( Socket7->size);
 	}
 
 	return 0;
@@ -385,9 +358,9 @@ unsigned long DccSocketNotifiers::transferredFileSize()
 	switch (Version)
 	{
 		case Dcc6:
-			return Socket->offset;
+			return gg_fix32(Socket->offset);
 		case Dcc7:
-			return Socket7->offset;
+			return gg_fix32(Socket7->offset);
 	}
 
 	return 0;

@@ -10,6 +10,7 @@
 #ifndef FILE_TRANSFER_WIDGET
 #define FILE_TRANSFER_WIDGET
 
+#include <QtCore/QDateTime>
 #include <QtGui/QFrame>
 
 class QLabel;
@@ -26,6 +27,9 @@ class FileTransferWidget : public QFrame
 	FileTransfer *CurrentTransfer;
 
 	QTimer *UpdateTimer;
+	QDateTime LastUpdateTime;
+	unsigned long LastTransferredSize;
+
 	QLabel *DescriptionLabel;
 	QLabel *StatusLabel;
 	QProgressBar *ProgressBar;

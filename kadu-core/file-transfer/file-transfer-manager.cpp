@@ -131,17 +131,14 @@ void FileTransferManager::removeFileTransfer(FileTransfer *fileTransfer)
 	fileTransfer->removeFromStorage();
 	emit fileTransferRemoved(fileTransfer);
 
-	delete fileTransfer;
+	fileTransfer->deleteLater();
 }
 
 void FileTransferManager::cleanUp()
 {
 	foreach (FileTransfer *fileTransfer, FileTransfers)
 		if (FileTransfer::StatusFinished == fileTransfer->transferStatus())
-		{
 			removeFileTransfer(fileTransfer);
-			fileTransfer->deleteLater();
-		}
 }
 
 void FileTransferManager::incomingFileTransfer(FileTransfer *fileTransfer)

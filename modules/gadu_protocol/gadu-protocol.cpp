@@ -1136,11 +1136,6 @@ void GaduProtocol::userStatusChanged(const struct gg_event *e)
 	emit contactStatusChanged(account(), contact, oldStatus);
 }
 
-void GaduProtocol::dccRequest(UinType uin)
-{
-	gg_dcc_request(GaduSession, uin);
-}
-
 void GaduProtocol::setDccIpAndPort(unsigned long dcc_ip, int dcc_port)
 {
 	gg_dcc_ip = dcc_ip;

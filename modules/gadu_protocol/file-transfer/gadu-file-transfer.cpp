@@ -29,7 +29,11 @@ GaduFileTransfer::GaduFileTransfer(Account *account, Contact peer, FileTransfer:
 
 GaduFileTransfer::~GaduFileTransfer()
 {
-	stop();
+	if (SocketNotifiers)
+	{
+		delete SocketNotifiers;
+		SocketNotifiers = 0;
+	}
 }
 
 void GaduFileTransfer::updateFileInfo()
@@ -37,13 +41,15 @@ void GaduFileTransfer::updateFileInfo()
 	if (SocketNotifiers)
 	{
 		setFileSize(SocketNotifiers->fileSize());
-		setFileSize(SocketNotifiers->transferredFileSize());
+		setTransferredSize(SocketNotifiers->transferredFileSize());
 	}
 	else
 	{
 		setFileSize(0);
 		setTransferredSize(0);
 	}
+
+// 	emit statusChanged();
 }
 
 void GaduFileTransfer::setFileTransferNotifiers(DccSocketNotifiers *socketNotifiers)
@@ -55,6 +61,8 @@ void GaduFileTransfer::setFileTransferNotifiers(DccSocketNotifiers *socketNotifi
 	}
 
 	SocketNotifiers = socketNotifiers;
+	connect(SocketNotifiers, SIGNAL(destroyed(QObject *)), this, SLOT(socketNotifiersDeleted()));
+
 	SocketNotifiers->setGaduFileTransfer(this);
 	WaitingForSocketNotifiers = false;
 	setRemoteFile(socketNotifiers->remoteFileName());
@@ -67,6 +75,16 @@ void GaduFileTransfer::socketNotAvailable()
 	WaitingForSocketNotifiers = false;
 
 	changeFileTransferStatus(FileTransfer::StatusFinished);
+}
+
+void GaduFileTransfer::finished(bool ok)
+{
+	changeFileTransferStatus(FileTransfer::StatusFinished);
+}
+
+void GaduFileTransfer::socketNotifiersDeleted()
+{
+	SocketNotifiers = 0;
 }
 
 void GaduFileTransfer::send()

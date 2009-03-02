@@ -32,8 +32,10 @@ FileTransferWidget::FileTransferWidget(FileTransfer *ft, QWidget *parent)
 	connect(CurrentTransfer, SIGNAL(statusChanged()), this, SLOT(fileTransferStatusChanged()));
 	connect(CurrentTransfer, SIGNAL(destroyed(QObject *)), this, SLOT(fileTransferDestroyed(QObject *)));
 
+	LastTransferredSize = CurrentTransfer->transferredSize();
+
 	createGui();
-	fileTransferUpdate();
+	fileTransferStatusChanged();
 
 	show();
 }
@@ -167,13 +169,20 @@ void FileTransferWidget::continueTransfer()
 
 void FileTransferWidget::fileTransferStatusChanged()
 {
+	printf("new file transfer status: %d\n", CurrentTransfer->transferStatus());
+	printf("new file transfer status: %d\n", CurrentTransfer->transferStatus());
+	printf("new file transfer status: %d\n", CurrentTransfer->transferStatus());
+	printf("new file transfer status: %d\n", CurrentTransfer->transferStatus());
+	printf("new file transfer status: %d\n", CurrentTransfer->transferStatus());
+
 	if (FileTransfer::StatusTransfer == CurrentTransfer->transferStatus())
 	{
 		if (!UpdateTimer)
 		{
 			UpdateTimer = new QTimer(this);
 			connect(UpdateTimer, SIGNAL(timeout()), this, SLOT(fileTransferUpdate()));
-			UpdateTimer->start(1000);
+			UpdateTimer->setSingleShot(false);
+			UpdateTimer->start(2500);
 		}
 	}
 	else
@@ -207,6 +216,18 @@ void FileTransferWidget::fileTransferUpdate()
 	}
 
 	ProgressBar->setValue(CurrentTransfer->percent());
+	unsigned long speed = 0;
+
+	if (LastUpdateTime.isValid())
+	{
+		QDateTime now = QDateTime::currentDateTime();
+		int timeDiff = now.toTime_t() - LastUpdateTime.toTime_t();
+		if (0 < timeDiff)
+			speed = (CurrentTransfer->transferredSize() - LastTransferredSize) / 1024;
+	}
+
+	LastUpdateTime = QDateTime::currentDateTime();
+	LastTransferredSize = CurrentTransfer->transferredSize();
 
 	switch (CurrentTransfer->transferStatus())
 	{
@@ -222,7 +243,7 @@ void FileTransferWidget::fileTransferUpdate()
 
 		case FileTransfer::StatusTransfer:
 			// TOdO: 0.6.6
-			StatusLabel->setText(tr("<b>Transfer</b>: %1 kB/s").arg(0 /*QString::number(ft->speed())*/));
+			StatusLabel->setText(tr("<b>Transfer</b>: %1 kB/s").arg(QString::number(speed)));
 			PauseButton->show();
 			ContinueButton->hide();
 			break;

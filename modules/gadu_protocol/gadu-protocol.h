@@ -224,7 +224,6 @@ public:
 	//  DCC
 	// --------------------
 
-	void dccRequest(UinType);
 	void setDccIpAndPort(unsigned long dcc_ip, int dcc_port);
 
 public slots:

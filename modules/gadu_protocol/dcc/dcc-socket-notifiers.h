@@ -31,6 +31,8 @@ class DccSocketNotifiers : public GaduSocketNotifiers
 	Q_OBJECT
 
 	GaduProtocol *Protocol;
+
+	friend class DccManager;
 	DccManager *Manager;
 
 	GaduFileTransfer *FileTransfer;

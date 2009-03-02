@@ -17,8 +17,16 @@ class GaduProtocol;
 
 class GaduFileTransfer : public FileTransfer
 {
+	Q_OBJECT
+
+	friend class DccSocketNotifiers;
 	DccSocketNotifiers *SocketNotifiers;
 	bool WaitingForSocketNotifiers;
+
+	void finished(bool ok);
+
+private slots:
+	void socketNotifiersDeleted();
 
 protected:
 	virtual void updateFileInfo();

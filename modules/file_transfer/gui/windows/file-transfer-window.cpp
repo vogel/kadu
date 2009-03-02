@@ -33,7 +33,7 @@ FileTransferWindow::FileTransferWindow(QWidget *parent) :
 
 	foreach (FileTransfer *fileTransfer, FileTransferManager::instance()->fileTransfer())
 			fileTransferAdded(fileTransfer);
-	connect(FileTransferManager::instance(), SIGNAL(fileTransferAdded(FileTransfer*)),
+	connect(FileTransferManager::instance(), SIGNAL(fileTransferAdded(FileTransfer *)),
 			this, SLOT(fileTransferAdded(FileTransfer *)));
 
 	contentsChanged();
@@ -45,7 +45,7 @@ FileTransferWindow::~FileTransferWindow()
 {
 	kdebugf();
 
-	disconnect(FileTransferManager::instance(), SIGNAL(fileTransferAdded(FileTransfer*)),
+	disconnect(FileTransferManager::instance(), SIGNAL(fileTransferAdded(FileTransfer *)),
 			this, SLOT(fileTransferAdded(FileTransfer *)));
 
 // TODO: 0.6.6

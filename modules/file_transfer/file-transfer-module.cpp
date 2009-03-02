@@ -261,11 +261,10 @@ void FileTransferModule::incomingFileTransferNeedAccept(FileTransfer *fileTransf
 			MessageBox::msg(tr("Could not open file. Select another one."), true, "Warning");
 		else
 		{
-			printf("file aaccepted: %d\n", file.handle());
-
 			fileTransfer->accept(file);
 			showFileTransferWindow();
 		}
 	}
 
+	FileTransferManager::instance()->addFileTransfer(fileTransfer);
 }

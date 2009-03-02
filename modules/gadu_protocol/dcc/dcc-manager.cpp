@@ -375,15 +375,14 @@ void DccManager::dcc7Error(struct gg_dcc7 *dcc)
 
 void DccManager::attachSendFileTransferSocket6(unsigned int uin, GaduContactAccountData *gcad, GaduFileTransfer *gft)
 {
+	kdebugf();
+
 	int port = gcad->port();
 	if (port >= 10)
 	{
-		printf("port >= 10\n");
-
 		struct gg_dcc *socket = gg_dcc_send_file(htonl(gcad->ip().toIPv4Address()), port, uin, gcad->uin());
 		if (socket)
 		{
-			printf("have socket\n");
 			DccSocketNotifiers *fileTransferNotifiers = new DccSocketNotifiers(Protocol, this);
 			gft->setFileTransferNotifiers(fileTransferNotifiers);
 			fileTransferNotifiers->watchFor(socket);
@@ -391,10 +390,11 @@ void DccManager::attachSendFileTransferSocket6(unsigned int uin, GaduContactAcco
 		}
 	}
 
+	kdebugmf(KDEBUG_INFO | KDEBUG_NETWORK, "needs callback\n");
+
 // startTimeOut
-	printf("will wait..\n");
 	WaitingFileTransfers << gft;
-	Protocol->dccRequest(gcad->uin());
+	gg_dcc_request(Protocol->gaduSession(), gcad->uin());
 }
 
 void DccManager::attachSendFileTransferSocket7(unsigned int uin, GaduContactAccountData *gcad, GaduFileTransfer *gft)
@@ -433,6 +433,7 @@ void DccManager::attachSendFileTransferSocket(GaduFileTransfer *gft)
 		case Dcc6:
 			attachSendFileTransferSocket6(gad->uin(), gcad, gft);
 			break;
+
 		case Dcc7:
 			attachSendFileTransferSocket7(gad->uin(), gcad, gft);
 			break;

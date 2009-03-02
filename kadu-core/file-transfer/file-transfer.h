@@ -93,6 +93,9 @@ public:
 	FileTransferStatus transferStatus() { return TransferStatus; }
 	FileTransferError transferError() { return TransferError; }
 
+	unsigned long fileSize() { return FileSize; }
+	unsigned long transferredSize() { return TransferredSize; }
+
 	void setLocalFileName(const QString &localFileName) { LocalFileName = localFileName; }
 	QString localFileName() { return LocalFileName; }
 	QString remoteFileName() { return RemoteFileName; }
