@@ -72,7 +72,7 @@ void FileTransferWindow::createGui()
 	ScrollView->move(0, 0);
 
 	InnerFrame = new QFrame(this);
- 	InnerFrame->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Minimum);
+ 	InnerFrame->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Maximum);
 
 	TransfersLayout = new QVBoxLayout(InnerFrame, 0, 1);
 	TransfersLayout->setDirection(QBoxLayout::Up);
@@ -125,8 +125,5 @@ void FileTransferWindow::contentsChanged()
 {
 	kdebugf();
 
-	QSize boxSize = InnerFrame->sizeHint();
-
-	InnerFrame->setMinimumHeight(boxSize.height());
-	InnerFrame->setMaximumHeight(boxSize.height());
+	TransfersLayout->invalidate();
 }

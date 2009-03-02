@@ -63,7 +63,7 @@ void FileTransferWidget::fileTransferDestroyed(QObject *)
 void FileTransferWidget::createGui()
 {
 	setBackgroundRole(QPalette::Base);
-	setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Minimum);
+	setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
 
 	setMinimumSize(QSize(100, 100));
 
