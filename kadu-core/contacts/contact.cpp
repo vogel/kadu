@@ -51,6 +51,7 @@ void Contact::checkNull()
 Contact & Contact::operator = (const Contact& copy)
 {
 	Data = copy.Data;
+	Type = copy.Type;
 	return *this;
 }
 

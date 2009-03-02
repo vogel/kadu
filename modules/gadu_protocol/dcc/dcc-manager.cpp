@@ -448,7 +448,6 @@ void DccManager::attachSendFileTransferSocket(GaduFileTransfer *gft)
 	DccVersion version = (gcad->gaduProtocolVersion() & 0x0000ffff) >= 0x29
 		? Dcc7
 		: Dcc6;
-	version = Dcc7;
 
 	switch (version)
 	{

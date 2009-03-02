@@ -78,12 +78,14 @@ void GaduFileTransfer::socketNotAvailable()
 {
 	WaitingForSocketNotifiers = false;
 
-	changeFileTransferStatus(FileTransfer::StatusFinished);
+	changeFileTransferStatus(FileTransfer::StatusNotConnected);
 }
 
 void GaduFileTransfer::finished(bool ok)
 {
-	changeFileTransferStatus(FileTransfer::StatusFinished);
+	changeFileTransferStatus(ok
+			? FileTransfer::StatusFinished
+			: FileTransfer::StatusNotConnected);
 }
 
 void GaduFileTransfer::socketNotifiersDeleted()

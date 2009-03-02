@@ -77,8 +77,8 @@ void FileTransfer::loadConfiguration()
 	if (!isValidStorage())
 		return;
 
-	CurrentAccount = AccountManager::instance()->byUuid(QUuid(loadValue<QString>("Account")));
-	Peer = ContactManager::instance()->byUuid(QUuid(loadValue<QString>("Peer")));
+	CurrentAccount = AccountManager::instance()->byUuid(loadValue<QString>("Account"));
+	Peer = ContactManager::instance()->byUuid(loadValue<QString>("Peer"));
 	LocalFileName = loadValue<QString>("LocalFileName");
 	RemoteFileName = loadValue<QString>("RemoteFileName");
 	TransferType = ("Send" == loadValue<QString>("TransferType")) ? TypeSend : TypeReceive;
