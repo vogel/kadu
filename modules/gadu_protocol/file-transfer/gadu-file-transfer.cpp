@@ -60,6 +60,10 @@ void GaduFileTransfer::setFileTransferNotifiers(DccSocketNotifiers *socketNotifi
 		return;
 	}
 
+	setRemoteFile(socketNotifiers->remoteFileName());
+	setFileSize(socketNotifiers->fileSize());
+	setTransferredSize(socketNotifiers->transferredFileSize());
+
 	SocketNotifiers = socketNotifiers;
 	connect(SocketNotifiers, SIGNAL(destroyed(QObject *)), this, SLOT(socketNotifiersDeleted()));
 
@@ -146,6 +150,7 @@ void GaduFileTransfer::restore()
 
 bool GaduFileTransfer::accept(const QFile &file)
 {
+	FileTransfer::accept(file);
 	return SocketNotifiers->acceptFileTransfer(file);
 }
 

@@ -43,7 +43,7 @@ private slots:
 	void fileTransferUpdate();
 	void fileTransferDestroyed(QObject *);
 
-	void remove();
+	void removeTransfer();
 	void pauseTransfer();
 	void continueTransfer();
 

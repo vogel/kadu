@@ -7,6 +7,8 @@
  *                                                                         *
  ***************************************************************************/
 
+#include <QtCore/QFile>
+
 #include "accounts/account.h"
 #include "accounts/account_manager.h"
 #include "configuration/storage-point.h"
@@ -53,7 +55,14 @@ FileTransfer * FileTransfer::loadFromStorage(StoragePoint *fileTransferStoragePo
 	if (!service)
 		return 0;
 
-	return service->loadFileTransferFromStorage(fileTransferStoragePoint);
+	FileTransfer *ft = service->loadFileTransferFromStorage(fileTransferStoragePoint);
+	if (!ft)
+		return 0;
+
+	if (ft->fileSize() == ft->transferredSize())
+		ft->changeFileTransferStatus(StatusFinished);
+
+	return ft;
 }
 
 StoragePoint * FileTransfer::createStoragePoint() const
@@ -119,4 +128,9 @@ unsigned int FileTransfer::percent()
 		return (100 * TransferredSize) / FileSize;
 	else
 		return 0;
+}
+
+bool FileTransfer::accept(const QFile &file)
+{
+	LocalFileName = file.fileName();
 }

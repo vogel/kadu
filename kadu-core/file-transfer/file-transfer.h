@@ -105,7 +105,7 @@ public:
 	virtual void pause() = 0;
 	virtual void restore() = 0;
 
-	virtual bool accept(const QFile &file) = 0;
+	virtual bool accept(const QFile &file);
 	virtual void reject() = 0;
 
 	unsigned int percent();

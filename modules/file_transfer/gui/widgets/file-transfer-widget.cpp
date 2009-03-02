@@ -57,6 +57,7 @@ void FileTransferWidget::fileTransferDestroyed(QObject *)
 	disconnect(CurrentTransfer, SIGNAL(destroyed(QObject *)), this, SLOT(fileTransferDestroyed(QObject *)));
 
 	CurrentTransfer = 0;
+	deleteLater();
 }
 
 void FileTransferWidget::createGui()
@@ -77,12 +78,12 @@ void FileTransferWidget::createGui()
 
 	QLabel *icon = new QLabel(this);
 	icon->setBackgroundRole(QPalette::Base);
-	layout->addWidget(icon, 0, 2, 0, 0);
+	layout->addWidget(icon, 0, 0, 3, 1);
 
 	DescriptionLabel = new QLabel(this);
 	DescriptionLabel->setBackgroundRole(QPalette::Base);
 	DescriptionLabel->setScaledContents(true);
-	layout->addWidget(DescriptionLabel, 0, 0, 1, 2);
+	layout->addWidget(DescriptionLabel, 0, 1, 1, 2);
 
 	ProgressBar = new QProgressBar;
 	ProgressBar->setMinimum(0);
@@ -108,7 +109,7 @@ void FileTransferWidget::createGui()
 	connect(ContinueButton, SIGNAL(clicked()), this, SLOT(continueTransfer()));
 
 	QPushButton *deleteThis = new QPushButton(tr("Remove"), this);
-	connect(deleteThis, SIGNAL(clicked()), this, SLOT(remove()));
+	connect(deleteThis, SIGNAL(clicked()), this, SLOT(removeTransfer()));
 
 	buttons_layout->addWidget(PauseButton);
 	buttons_layout->addWidget(ContinueButton);
@@ -132,7 +133,7 @@ void FileTransferWidget::createGui()
 	}
 }
 
-void FileTransferWidget::remove()
+void FileTransferWidget::removeTransfer()
 {
 	kdebugf();
 
@@ -147,7 +148,6 @@ void FileTransferWidget::remove()
 
 	FileTransferManager::instance()->removeFileTransfer(CurrentTransfer);
 
-	// it will destroy widget too, see FileTransferWidget::fileTransferDestroying
 	deleteLater();
 }
 
@@ -169,12 +169,6 @@ void FileTransferWidget::continueTransfer()
 
 void FileTransferWidget::fileTransferStatusChanged()
 {
-	printf("new file transfer status: %d\n", CurrentTransfer->transferStatus());
-	printf("new file transfer status: %d\n", CurrentTransfer->transferStatus());
-	printf("new file transfer status: %d\n", CurrentTransfer->transferStatus());
-	printf("new file transfer status: %d\n", CurrentTransfer->transferStatus());
-	printf("new file transfer status: %d\n", CurrentTransfer->transferStatus());
-
 	if (FileTransfer::StatusTransfer == CurrentTransfer->transferStatus())
 	{
 		if (!UpdateTimer)
