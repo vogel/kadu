@@ -10,6 +10,7 @@
 #include <QtCore/QFile>
 #include <QtGui/QApplication>
 #include <QtGui/QClipboard>
+#include <QtGui/QContextMenuEvent>
 #include <QtGui/QFileDialog>
 #include <QtGui/QMenu>
 #include <QtGui/QToolTip>
@@ -45,7 +46,8 @@ KaduTextBrowser::KaduTextBrowser(QWidget *parent)
 
 void KaduTextBrowser::refreshLater()
 {
-	refreshTimer.start(10, true);
+	refreshTimer.setSingleShot(true);
+	refreshTimer.start(10);
 }
 
 void KaduTextBrowser::linkHighlighted(const QString & link)
@@ -98,16 +100,16 @@ void KaduTextBrowser::contextMenuEvent(QContextMenuEvent *event)
 void KaduTextBrowser::hyperlinkClicked(const QUrl &anchor) const
 {
 	const QString &link = anchor.toString();
-	if (link.find(HtmlDocument::urlRegExp()) != -1)
+	if (link.contains(HtmlDocument::urlRegExp()))
 	{
 		if (link.startsWith("www."))
 			openWebBrowser("http://" + link);
 		else
 			openWebBrowser(link);
 	}
-	else if (link.find(HtmlDocument::mailRegExp()) != -1)
+	else if (link.contains(HtmlDocument::mailRegExp()))
 		openMailClient(link);
-	else if (link.find(HtmlDocument::ggRegExp()) != -1)
+	else if (link.contains(HtmlDocument::ggRegExp()))
 		openGGChat(link);
 }
 
@@ -137,8 +139,8 @@ void KaduTextBrowser::saveImage()
 	QString fileExt = '.' + image.section('.', -1);
 
 	QFileDialog fd(this);
-	fd.setMode(QFileDialog::AnyFile);
-	fd.setDir(config_file.readEntry("Chat", "LastImagePath"));
+	fd.setFileMode(QFileDialog::AnyFile);
+	fd.setDirectory(config_file.readEntry("Chat", "LastImagePath"));
 	fd.setFilter(QString("%1 (*%2)").arg(qApp->translate("ImageDialog", "Images"), fileExt));
 	fd.setLabelText(QFileDialog::FileName, image.section('/', -1));
 	fd.setWindowTitle(tr("Save image"));
@@ -147,11 +149,14 @@ void KaduTextBrowser::saveImage()
 	{
 		if (fd.exec() != QFileDialog::Accepted)
 			break;
+		if (fd.selectedFiles().count() < 1)
+			break;
 
-		if (QFile::exists(fd.selectedFile()))
+		QString file = fd.selectedFiles()[0];
+		if (QFile::exists(file))
 			if (MessageBox::ask(tr("File already exists. Overwrite?")))
 			{
-				QFile removeMe(fd.selectedFile());
+				QFile removeMe(file);
 				if (!removeMe.remove())
 				{
 					MessageBox::msg(tr("Cannot save image: %1").arg(removeMe.errorString()), false, "Warning");
@@ -161,7 +166,7 @@ void KaduTextBrowser::saveImage()
 			else
 				continue;
 
-		QString dst = fd.selectedFile();
+		QString dst = file;
 		if (!dst.endsWith(fileExt))
 			dst.append(fileExt);
 

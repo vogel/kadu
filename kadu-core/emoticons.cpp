@@ -41,7 +41,7 @@ void EmoticonsManager::initModule()
 	kdebugf();
 
 	emoticons = new EmoticonsManager("emoticons", "emots.txt");
-	emoticons->setPaths(QStringList::split(QRegExp("(;|:)"), config_file.readEntry("Chat", "EmoticonsPaths")));
+	emoticons->setPaths(config_file.readEntry("Chat", "EmoticonsPaths").split(QRegExp("(;|:)")));
 	emoticons->setEmoticonsTheme(config_file.readEntry("Chat", "EmoticonsTheme"));
 
 	kdebugf2();
@@ -114,7 +114,7 @@ QString EmoticonsManager::getQuoted(const QString& s, unsigned int& pos)
 	QString r;
 	++pos; // eat '"'
 
-	int pos2 = s.find('"', pos);
+	int pos2 = s.indexOf('"', pos);
 	if (pos2 >= 0)
 	{
 		r = s.mid(pos, uint(pos2) - pos);
@@ -220,7 +220,7 @@ bool EmoticonsManager::loadGGEmoticonTheme()
 		// put all emots into dictionary, to allow easy finding
 		// their occurrences in text
 		foreach(const EmoticonsListItem &item, Aliases)
-			walker->insertString(item.alias.lower(), i++);
+			walker->insertString(item.alias.toLower(), i++);
 	}
 
 	kdebugmf(KDEBUG_FUNCTION_END | KDEBUG_INFO, "loaded: %d\n", something_loaded);
@@ -263,7 +263,7 @@ void EmoticonsManager::expandEmoticons(HtmlDocument& doc, const QColor& bgcolor,
 			continue;
 
 		// analyze text of this text part
-		QString text = doc.elementText(e_i).lower();
+		QString text = doc.elementText(e_i).toLower();
 		// variables storing position of last occurrence
 		// of emot matching current emots dictionary
 		unsigned int lastBegin = 10000;
@@ -355,7 +355,7 @@ EmoticonsManager *emoticons;
 EmoticonSelectorButton::EmoticonSelectorButton(const QString& emoticon_string, const QString& anim_path, const QString& static_path, QWidget *parent)
 	: QToolButton(parent), EmoticonString(emoticon_string), AnimPath(anim_path), StaticPath(static_path), Movie(0)
 {
-	setPixmap(QPixmap(StaticPath));
+	setIcon(QPixmap(StaticPath));
 	setAutoRaise(true);
 	setMouseTracking(true);
 	setToolTip(emoticon_string);
@@ -378,7 +378,7 @@ void EmoticonSelectorButton::buttonClicked()
 
 void EmoticonSelectorButton::movieUpdate()
 {
-	setPixmap(Movie->framePixmap());
+	setIcon(Movie->currentPixmap());
 }
 
 void EmoticonSelectorButton::enterEvent(QEvent* e)
@@ -402,7 +402,7 @@ void EmoticonSelectorButton::leaveEvent(QEvent* e)
 		Movie->stop();
 		delete Movie;
 		Movie = NULL;
-		setPixmap(QPixmap(StaticPath));
+		setIcon(QPixmap(StaticPath));
 	}
 }
 

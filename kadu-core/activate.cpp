@@ -79,7 +79,7 @@
 		{
 			if( widget->isMinimized() ) widget->showNormal(); // unminimize
 			widget->raise();           // raise
-			widget->setActiveWindow(); // activate
+			widget->activateWindow();  // activate
 		}
 		X11_setActiveWindow( QX11Info::display(), id );
 	}

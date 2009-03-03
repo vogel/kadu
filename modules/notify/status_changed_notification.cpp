@@ -48,7 +48,7 @@ StatusChangedNotification::StatusChangedNotification(const QString &toStatus, Co
 	setTitle(tr("Status changed"));
 	setText(narg(syntax,
 		Qt::escape(contact.display()),
-		qApp->translate("@default", Status::name(status, false)),
+		qApp->tr("@default", Status::name(status, false).toAscii().data()),
 		Qt::escape(status.description())
 	));
 }

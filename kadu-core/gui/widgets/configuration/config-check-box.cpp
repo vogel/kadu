@@ -13,14 +13,14 @@
 #include "gui/widgets/configuration/config-check-box.h"
 #include "gui/widgets/configuration/config-group-box.h"
 
-ConfigCheckBox::ConfigCheckBox(const QString &section, const QString &item, const QString &widgetCaption, const QString &toolTip, ConfigGroupBox *parentConfigGroupBox, ConfigurationWindowDataManager *dataManager, char *name)
-	: QCheckBox(widgetCaption, parentConfigGroupBox->widget(), name), ConfigWidgetValue(section, item, widgetCaption, toolTip, parentConfigGroupBox, dataManager)
+ConfigCheckBox::ConfigCheckBox(const QString &section, const QString &item, const QString &widgetCaption, const QString &toolTip, ConfigGroupBox *parentConfigGroupBox, ConfigurationWindowDataManager *dataManager)
+	: QCheckBox(widgetCaption, parentConfigGroupBox->widget()), ConfigWidgetValue(section, item, widgetCaption, toolTip, parentConfigGroupBox, dataManager)
 {
 	createWidgets();
 }
 
 ConfigCheckBox::ConfigCheckBox(ConfigGroupBox *parentConfigGroupBox, ConfigurationWindowDataManager *dataManager, char *name)
-	: QCheckBox(parentConfigGroupBox->widget(), name), ConfigWidgetValue(parentConfigGroupBox, dataManager)
+	: QCheckBox(parentConfigGroupBox->widget()), ConfigWidgetValue(parentConfigGroupBox, dataManager)
 {
 }
 
@@ -28,11 +28,11 @@ void ConfigCheckBox::createWidgets()
 {
 	kdebugf();
 
-	setText(qApp->translate("@default", widgetCaption));
+	setText(qApp->tr("@default", widgetCaption.toAscii().data()));
 	parentConfigGroupBox->addWidget(this, true);
 
 	if (!ConfigWidget::toolTip.isEmpty())
-		setToolTip(qApp->translate("@default", ConfigWidget::toolTip));
+		setToolTip(qApp->tr("@default", ConfigWidget::toolTip.toAscii().data()));
 }
 
 void ConfigCheckBox::loadConfiguration()

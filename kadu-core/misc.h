@@ -1,8 +1,7 @@
 #ifndef KADU_MISC_H
 #define KADU_MISC_H
 
-// TODO remove
-#include <Qt3Support/Q3FileDialog>
+#include <QtGui/QFileDialog>
 
 #include "protocols/status.h"
 
@@ -134,6 +133,8 @@ public:
 
 };
 
+class QLineEdit;
+
 class TokenDialog : public QDialog
 {
 	Q_OBJECT
@@ -176,7 +177,7 @@ class PixmapPreview : public QLabel, public Q3FilePreview
 		void previewUrl(const Q3Url& url);
 };*/
 
-class ImageDialog : public Q3FileDialog
+class ImageDialog : public QFileDialog
 {
 public:
 	ImageDialog(QWidget *parent);

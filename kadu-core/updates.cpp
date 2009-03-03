@@ -133,16 +133,16 @@ bool Updates::ifNewerVersion(const QString &newestversion)
 
 QString Updates::stripVersion(const QString stripversion)
 {
-	bool cs = false; // find and replace are NOT case sensitive
+	Qt::CaseSensitivity cs = Qt::CaseInsensitive; // find and replace are NOT case sensitive
  	QString version = stripversion;
  
-	if (version.find("-svn", 0, cs) != -1)
+	if (version.contains("-svn", cs))
 		version.replace("-svn", "01", cs);
-	else if (version.find("-alpha", 0, cs) != -1)
+	else if (version.contains("-alpha", cs))
 		version.replace("-alpha", "02", cs);
-	else if (version.find("-beta", 0, cs) != -1)
+	else if (version.contains("-beta", cs))
 		version.replace("-beta", "03", cs);
-	else if (version.find("-rc", 0, cs) != -1)
+	else if (version.contains("-rc", cs))
 		version.replace("-rc", "04", cs);
 	else
 		version.append("05");

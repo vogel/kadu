@@ -26,8 +26,8 @@ QStringList Themes::getSubDirs(const QString &path, bool validate) const
 	QDir dir(path);
 	dir.setFilter(QDir::Dirs);
 	QStringList dirs = dir.entryList();
-	dirs.remove(".");
-	dirs.remove("..");
+	dirs.removeAll(".");
+	dirs.removeAll("..");
 
 	if (!validate)
 		return dirs;
@@ -53,7 +53,7 @@ bool Themes::validateDir(const QString &path) const
 	{
 		foreach(const QString &dir, subdirs)
 		{
-			f.setName(path + '/' + dir + '/' + ConfigName);
+			f.setFileName(path + '/' + dir + '/' + ConfigName);
 			if (!f.exists())
 				return false;
 		}
@@ -100,14 +100,14 @@ QString Themes::fixFileName(const QString &path, const QString &fn) const
 	if(QFile::exists(path + '/' + fn))
 		return fn;
 	// maybe all lowercase?
-	if(QFile::exists(path + '/' + fn.lower()))
-		return fn.lower();
+	if(QFile::exists(path + '/' + fn.toLower()))
+		return fn.toLower();
 	// split for name and extension
 	QString name = fn.section('.', 0, 0);
 	QString ext = fn.section('.', 1);
 	// maybe extension uppercase?
-	if(QFile::exists(path + '/' + name + '.' + ext.upper()))
-		return name + '.' + ext.upper();
+	if(QFile::exists(path + '/' + name + '.' + ext.toUpper()))
+		return name + '.' + ext.toUpper();
 	// we cannot fix it, return original
 	return fn;
 }
@@ -123,7 +123,7 @@ void Themes::setPaths(const QStringList &paths)
 	{
 		if (validateDir(it))
 		{
-			if (paths.findIndex(it) != -1)
+			if (paths.indexOf(it) != -1)
 				additional.append(it);
 			ThemesPaths.append(it);
 			ThemesList.append(it.section("/", -1, -1, QString::SectionSkipEmpty));
@@ -169,12 +169,12 @@ QString Themes::themePath(const QString &theme) const
 	if (ThemesPaths.isEmpty())
 		return "Custom";
 
-	QList<QString> list = ThemesPaths.grep(QRegExp("(/" + t + "/)$"));
+	QRegExp r("(/" + t + "/)$");
+	foreach (QString theme, ThemesPaths)
+		if (-1 != r.indexIn(theme))
+			return theme;
 
-	if (list.isEmpty())
-		return "Custom";
-
-	return list.first();
+	return "Custom";;
 }
 
 QString Themes::getThemeEntry(const QString &name) const

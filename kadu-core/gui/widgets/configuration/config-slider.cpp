@@ -15,14 +15,17 @@
 #include "gui/widgets/configuration/config-group-box.h"
 
 ConfigSlider::ConfigSlider(const QString &section, const QString &item, const QString &widgetCaption, const QString &toolTip,
-		int minValue, int maxValue, int pageStep, ConfigGroupBox *parentConfigGroupBox, ConfigurationWindowDataManager *dataManager, const char *name)
-	: QSlider(minValue, maxValue, pageStep, 0, Qt::Horizontal, parentConfigGroupBox->widget(), name),
+		int minValue, int maxValue, int pageStep, ConfigGroupBox *parentConfigGroupBox, ConfigurationWindowDataManager *dataManager)
+	: QSlider(Qt::Horizontal, parentConfigGroupBox->widget()),
 		ConfigWidgetValue(section, item, widgetCaption, toolTip, parentConfigGroupBox, dataManager), label(0)
 {
+	setMinimum(minValue);
+	setMaximum(maxValue);
+	setPageStep(pageStep);
 }
 
-ConfigSlider::ConfigSlider(ConfigGroupBox *parentConfigGroupBox, ConfigurationWindowDataManager *dataManager, char *name)
-	: QSlider(Qt::Horizontal, parentConfigGroupBox->widget(), name), ConfigWidgetValue(parentConfigGroupBox, dataManager), label(0)
+ConfigSlider::ConfigSlider(ConfigGroupBox *parentConfigGroupBox, ConfigurationWindowDataManager *dataManager)
+	: QSlider(Qt::Horizontal, parentConfigGroupBox->widget()), ConfigWidgetValue(parentConfigGroupBox, dataManager), label(0)
 {
 }
 
@@ -36,13 +39,13 @@ void ConfigSlider::createWidgets()
 {
 	kdebugf();
 
-	label = new QLabel(this, qApp->translate("@default", widgetCaption) + ":", parentConfigGroupBox->widget());
+	label = new QLabel(qApp->tr("@default", widgetCaption.toAscii().data()) + ":", parentConfigGroupBox->widget());
 	parentConfigGroupBox->addWidgets(label, this);
 
 	if (!ConfigWidget::toolTip.isEmpty())
 	{
-		setToolTip(qApp->translate("@default", ConfigWidget::toolTip));
-		label->setToolTip(qApp->translate("@default", ConfigWidget::toolTip));
+		setToolTip(qApp->tr("@default", ConfigWidget::toolTip.toAscii().data()));
+		label->setToolTip(qApp->tr("@default", ConfigWidget::toolTip.toAscii().data()));
 	}
 }
 
@@ -83,11 +86,11 @@ bool ConfigSlider::fromDomElement(QDomElement domElement)
 
 	bool ok;
 
-	setMinValue(minValue.toInt(&ok));
+	setMinimum(minValue.toInt(&ok));
 	if (!ok)
 		return false;
 
-	setMaxValue(maxValue.toInt(&ok));
+	setMaximum(maxValue.toInt(&ok));
 	if (!ok)
 		return false;
 

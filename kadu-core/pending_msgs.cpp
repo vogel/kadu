@@ -101,7 +101,7 @@ void PendingMsgs::addMsg(Account *account, Contact sender, ContactList receipien
 	conference << sender;
 
 	e.contacts = conference;
-	e.proto = account->protocol()->name();
+	e.proto = account->protocol()->account()->name();
 	e.msg = msg;
 	e.time = time;
 	msgs.append(e);
@@ -131,7 +131,7 @@ void PendingMsgs::loadConfiguration(XmlConfigFile *configurationStorage)
 		e.time = d.toTime_t();
 		
 		QDomElement messageNode = configurationStorage->getNode(pendingMsgsNodes.item(i).toElement(), "Message", XmlConfigFile::ModeFind);
-		e.msg = codec_latin2->toUnicode(messageNode.text());
+		e.msg = codec_latin2->toUnicode(messageNode.text().toLocal8Bit().data());
 
 		QDomElement contactListNode = configurationStorage->getNode(pendingMsgsNodes.item(i).toElement(), "ContactList", XmlConfigFile::ModeFind);
 		e.contacts = ContactListConfigurationHelper::loadFromConfiguration(configurationStorage, contactListNode);

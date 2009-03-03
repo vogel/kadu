@@ -10,6 +10,7 @@
 #include <QtCore/QDateTime>
 #include <QtCore/QDir>
 #include <QtCore/QFile>
+#include <QtCore/QTextCodec>
 #include <QtCore/QTextStream>
 #include <QtXml/QDomElement>
 #include <QtXml/QDomNodeList>
@@ -41,17 +42,17 @@ void XmlConfigFile::read()
 		fileOpened = file.open(QIODevice::ReadOnly);
 		if (fileOpened && file.size() > 0)
 		{
-			kdebugm(KDEBUG_INFO, "configuration file %s opened!\n", qPrintable(file.name()));
+			kdebugm(KDEBUG_INFO, "configuration file %s opened!\n", qPrintable(file.fileName()));
 			break;
 		}
 		if (fileOpened) // && file.size() == 0
 		{
-			kdebugm(KDEBUG_INFO, "config file (%s) is empty, looking for backup\n", qPrintable(file.name()));
+			kdebugm(KDEBUG_INFO, "config file (%s) is empty, looking for backup\n", qPrintable(file.fileName()));
 			file.close();
 			fileOpened = false;
 		}
 		else
-			kdebugm(KDEBUG_INFO, "config file (%s) not opened, looking for backup\n", qPrintable(file.name()));
+			kdebugm(KDEBUG_INFO, "config file (%s) not opened, looking for backup\n", qPrintable(file.fileName()));
 	}
 
 	if (fileOpened)
@@ -93,12 +94,12 @@ void XmlConfigFile::write(const QString& f)
 	else
 		fileName = f;
 	tmpFileName = fileName + ".tmp"; // saving to another file to avoid truncation of output file when segfault occurs :|
-	file.setName(tmpFileName);
+	file.setFileName(tmpFileName);
 	if (file.open(QIODevice::WriteOnly | QIODevice::Truncate))
 	{
-		kdebugm(KDEBUG_INFO, "file opened '%s'\n", qPrintable(file.name()));
+		kdebugm(KDEBUG_INFO, "file opened '%s'\n", qPrintable(file.fileName()));
 		QTextStream stream(&file);
-		stream.setEncoding(QTextStream::UnicodeUTF8);
+		stream.setCodec(QTextCodec::codecForName("UTF-8"));
 		stream << DomDocument.toString();
 		file.close();
 		// remove old file (win32)
@@ -111,7 +112,7 @@ void XmlConfigFile::write(const QString& f)
 	}
 	else
 	{
-		fprintf(stderr, "cannot open '%s': %s\n", qPrintable(file.name()), qPrintable(file.errorString()));
+		fprintf(stderr, "cannot open '%s': %s\n", qPrintable(file.fileName()), qPrintable(file.errorString()));
 		fflush(stderr);
 	}
 	kdebugf2();

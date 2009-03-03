@@ -180,7 +180,7 @@ QString KaduParser::parse(const QString &s, Account *account, const Contact &con
 				case 's':
 					++i;
 					if (data)
-						pe.str = qApp->translate("UserStatus", Status::name(data->status().type()));
+						pe.str = qApp->tr("UserStatus", Status::name(data->status().type()).toAscii().data());
 					break;
 				case 't':
 					++i;
@@ -419,7 +419,7 @@ QString KaduParser::parse(const QString &s, Account *account, const Contact &con
 						// zmienna potrzebna, bo pop_back() zniszczy nam zmienn� pe2, kt�r� pobrali�my przez referencj�
 						bool check_file_exists = pe2.type == ParseElem::PE_CHECK_FILE_EXISTS;
 
-						int spacePos = pe.str.find(' ', 0);
+						int spacePos = pe.str.indexOf(' ', 0);
 						parseStack.pop_back();
 						QString file;
 //						kdebugm(KDEBUG_INFO, "spacePos: %d\n", spacePos);

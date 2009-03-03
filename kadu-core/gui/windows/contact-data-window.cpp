@@ -157,10 +157,10 @@ void ContactDataWindow::setupTab1()
 	// end Surname & mobile
 
 	QLabel *emptyWidget = new QLabel("", generalWidget);
-	emptyWidget->setName("space_for_advanced_userlist_label");
+	emptyWidget->setObjectName("space_for_advanced_userlist_label");
 
 	QWidget *emptyWidget2 = new QWidget(generalWidget);
-	emptyWidget2->setName("space_for_advanced_userlist_spinbox");
+	emptyWidget2->setObjectName("space_for_advanced_userlist_spinbox");
 
 	// Email
 	e_email = new QLineEdit(generalWidget);
@@ -342,19 +342,20 @@ void ContactDataWindow::setupTab2()
 		textLabel->setMaximumWidth(40);
 
 		QLabel *pixmapLabel = new QLabel(box);
-		QPixmap icon = icons_manager->loadPixmap(group->icon());
-		pixmapLabel->setPixmap(icon.xForm(QWMatrix().scale((double)16/icon.width(), (double)16/icon.height())));
+		QIcon icon(icons_manager->loadPixmap(group->icon()));
+
+		pixmapLabel->setPixmap(icon.pixmap(16, 16));
 		pixmapLabel->setMaximumWidth(22);
 		pixmapLabel->setMaximumHeight(22);
 		pixmapLabels[group->name()] = pixmapLabel;
 
 		QPushButton *changeIconButton = new QPushButton(box);
-		changeIconButton->setPixmap(icons_manager->loadPixmap("AddSelectPathDialogButton"));
+		changeIconButton->setIcon(icons_manager->loadPixmap("AddSelectPathDialogButton"));
 		changeIconButton->setToolTip(tr("Change icon"));
 		changeIconButton->setMaximumWidth(30);
 
 		QPushButton *deleteIconButton = new QPushButton(box);
-		deleteIconButton->setPixmap(icons_manager->loadPixmap("RemoveSelectPathDialogButton"));
+		deleteIconButton->setIcon(icons_manager->loadPixmap("RemoveSelectPathDialogButton"));
 		deleteIconButton->setToolTip(tr("Delete icon"));
 		deleteIconButton->setMaximumWidth(30);
 
@@ -413,12 +414,12 @@ void ContactDataWindow::newGroupClicked()
 	pixmapLabels[groupName] = pixmapLabel;
 
 	QPushButton *changeIconButton = new QPushButton(box);
-	changeIconButton->setPixmap(icons_manager->loadPixmap("AddSelectPathDialogButton"));
+	changeIconButton->setIcon(icons_manager->loadPixmap("AddSelectPathDialogButton"));
 	changeIconButton->setToolTip(tr("Change icon"));
 	changeIconButton->setMaximumWidth(30);
 
 	QPushButton *deleteIconButton = new QPushButton(box);
-	deleteIconButton->setPixmap(icons_manager->loadPixmap("RemoveSelectPathDialogButton"));
+	deleteIconButton->setIcon(icons_manager->loadPixmap("RemoveSelectPathDialogButton"));
 	deleteIconButton->setToolTip(tr("Delete icon"));
 	deleteIconButton->setMaximumWidth(30);
 
@@ -579,7 +580,7 @@ void ContactDataWindow::updateUserlist()
 // 	userlist->writeToConfig();
 	xml_config_file->sync();
 */
-	close(true);
+	close();
 
 	kdebugf2();
 }
@@ -593,10 +594,10 @@ void ContactDataWindow::scrollToBottom()
 void ContactDataWindow::selectIcon()
 {
 	ImageDialog* iDialog = new ImageDialog(this);
-	iDialog->setDir(config_file.readEntry("GroupIcon", "recentPath", "~/"));
-	iDialog->setCaption(tr("Choose an icon"));
+	iDialog->setDirectory(config_file.readEntry("GroupIcon", "recentPath", "~/"));
+	iDialog->setWindowTitle(tr("Choose an icon"));
 	iDialog->setFilter(tr("Icons (*.png *.xpm *.jpg)"));
-	if (iDialog->exec() == QDialog::Accepted)
+	if (iDialog->exec() == QDialog::Accepted && 1 == iDialog->selectedFiles().count())
 	{
 		QString groupName;
 		const QCheckBox *checkBox = 0;
@@ -612,10 +613,10 @@ void ContactDataWindow::selectIcon()
 			}
 		}
 
-		config_file.writeEntry("GroupIcon", "recentPath", iDialog->dirPath());
-		GroupManager::instance()->byName(groupName)->setIcon(iDialog->selectedFile());
+		config_file.writeEntry("GroupIcon", "recentPath", iDialog->directory().absolutePath());
+		GroupManager::instance()->byName(groupName)->setIcon(iDialog->selectedFiles()[0]);
 
-		pixmapLabels[groupName]->setPixmap(icons_manager->loadPixmap(iDialog->selectedFile()).scaled(QSize(16,16)));
+		pixmapLabels[groupName]->setPixmap(icons_manager->loadPixmap(iDialog->selectedFiles()[0]).scaled(QSize(16,16)));
 	}
 	delete iDialog;
 }

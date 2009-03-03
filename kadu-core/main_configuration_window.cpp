@@ -86,7 +86,7 @@ void MainConfigurationWindow::registerUiFile(const QString &uiFile, Configuratio
 
 void MainConfigurationWindow::unregisterUiFile(const QString &uiFile, ConfigurationUiHandler *uiHandler)
 {
-	UiFiles.remove(qMakePair(uiFile, uiHandler));
+	UiFiles.removeAll(qMakePair(uiFile, uiHandler));
 	if (Instance)
 		Instance->widget()->removeUiFile(uiFile);
 }
@@ -199,7 +199,7 @@ MainConfigurationWindow::~MainConfigurationWindow()
 
 void MainConfigurationWindow::show()
 {
-	if (!isShown())
+	if (!isVisible())
 	{
 		setLanguages();
 		setQtThemes();
@@ -253,12 +253,12 @@ void MainConfigurationWindow::setQtThemes()
 	ConfigComboBox *qtThemes = dynamic_cast<ConfigComboBox *>(widget()->widgetById("qtThemes"));
 
 	QStringList themes = QStyleFactory::keys();
-	QString currentStyle = QApplication::style()->name();
+	QString currentStyle = QApplication::style()->objectName();
 
-	foreach(const QString& it, themes)
-		if(it.lower()==currentStyle.lower())
+	foreach (const QString& it, themes)
+		if (it.toLower() == currentStyle.toLower())
 		{
-			currentStyle=it;
+			currentStyle = it;
 			break;
 		}
 
@@ -281,10 +281,10 @@ void MainConfigurationWindow::setIconThemes()
 	themes.sort();
 
 	foreach(const QString &theme, themes)
-		captions.append(qApp->translate("@default", theme));
+		captions.append(qApp->tr("@default", theme.toAscii().data()));
 
 	iconThemes->setItems(themes, captions);
-	iconThemes->setCurrentText(icons_manager->theme());
+	iconThemes->setEditText(icons_manager->theme());
 }
 
 void MainConfigurationWindow::setEmoticonThemes()
@@ -296,7 +296,7 @@ void MainConfigurationWindow::setEmoticonThemes()
 	themes.sort();
 
 	emoticonsTheme->setItems(themes, themes);
-	emoticonsTheme->setCurrentText(emoticons->theme());
+	emoticonsTheme->setEditText(emoticons->theme());
 }
 
 void MainConfigurationWindow::setToolTipClasses()
@@ -309,7 +309,7 @@ void MainConfigurationWindow::setToolTipClasses()
 	QStringList toolTipClasses = ToolTipClassManager::instance()->getToolTipClasses();
 	foreach(const QString &toolTipClass, toolTipClasses)
 	{
-		captions << qApp->translate("@default", toolTipClass);
+		captions << qApp->tr("@default", toolTipClass.toAscii().data());
 		values << toolTipClass;
 	}
 
@@ -338,7 +338,7 @@ void MainConfigurationWindow::onChangeEmoticonsStyle(int index)
 
 QString MainConfigurationWindow::getBrowserExecutable(int browserIndex)
 {
-	QStringList searchPath = QStringList::split(":", QString(getenv("PATH")));
+	QStringList searchPath = QString(getenv("PATH")).split(':');
 	QStringList executableName;
 // 	QStringList options;
 
@@ -388,7 +388,7 @@ QString MainConfigurationWindow::getBrowserExecutable(int browserIndex)
 			prefix = "open -a ";
 #else
 			QString homePath = getenv("HOME");
-			QStringList dirList = QDir("/usr/lib").entryList("mozilla*", QDir::All, QDir::Name | QDir::Reversed);
+			QStringList dirList = QDir("/usr/lib").entryList(QStringList("mozilla*"), QDir::AllEntries, QDir::Name | QDir::Reversed);
 			foreach(const QString &dir, dirList)
 				searchPath.append("/usr/lib/" + dir);
 
@@ -414,7 +414,7 @@ QString MainConfigurationWindow::getBrowserExecutable(int browserIndex)
 			prefix = "open -a ";
 #else
 			QString homePath = getenv("HOME");
-			QStringList dirList = QDir("/usr/lib").entryList("seamonkey*", QDir::All, QDir::Name | QDir::Reversed);
+			QStringList dirList = QDir("/usr/lib").entryList(QStringList("seamonkey*"), QDir::AllEntries, QDir::Name | QDir::Reversed);
 			foreach(const QString &dir, dirList)
 				searchPath.append("/usr/lib/" + dir);
 
@@ -437,10 +437,10 @@ QString MainConfigurationWindow::getBrowserExecutable(int browserIndex)
 #else
 			QString homePath = getenv("HOME");
 
-			QStringList dirList = QDir("/usr/lib").entryList("mozilla-firefox*", QDir::All, QDir::Name | QDir::Reversed);
+			QStringList dirList = QDir("/usr/lib").entryList(QStringList("mozilla-firefox*"), QDir::AllEntries, QDir::Name | QDir::Reversed);
 			foreach(const QString &dir, dirList)
 				searchPath.append("/usr/lib/" + dir);
-			dirList = QDir("/usr/lib").entryList("firefox*", QDir::All, QDir::Name | QDir::Reversed);
+			dirList = QDir("/usr/lib").entryList(QStringList("firefox*"), QDir::AllEntries, QDir::Name | QDir::Reversed);
 			foreach(const QString &dir, dirList)
 				searchPath.append("/usr/lib/" + dir);
 
@@ -458,7 +458,7 @@ QString MainConfigurationWindow::getBrowserExecutable(int browserIndex)
 // 			executableName.append("mozilla-firefox-xremote-client");
 // 			executableName.append("firefox-xremote-client");
 
-			dirList = QDir("/usr/lib").entryList("mozilla*", QDir::All, QDir::Name | QDir::Reversed);
+			dirList = QDir("/usr/lib").entryList(QStringList("mozilla*"), QDir::AllEntries, QDir::Name | QDir::Reversed);
 			foreach(const QString &dir, dirList)
 				searchPath.append("/usr/lib/" + dir);
 #endif
@@ -514,7 +514,8 @@ void MainConfigurationWindow::onChangeBrowser(int index)
 
 	if (index != 0 && browser.isEmpty())
 		if (!browserComboBox->currentText().contains(tr("Not found")))
-			browserComboBox->changeItem(browserComboBox->currentText() + " (" + tr("Not found") + ")", index);
+			browserComboBox->setItemText(browserComboBox->currentIndex(),
+					browserComboBox->currentText() + " (" + tr("Not found") + ")");
 }
 
 // void MainConfigurationWindow::onChangeBrowserOption(int index)
@@ -523,7 +524,7 @@ void MainConfigurationWindow::onChangeBrowser(int index)
 
 QString MainConfigurationWindow::getEMailExecutable(int emailIndex)
 {
-	QStringList searchPath = QStringList::split(":", QString(getenv("PATH")));
+	QStringList searchPath = QString(getenv("PATH")).split(':');
 	QStringList executableName;
 	QString parameters;
 	QString prefix = "";
@@ -599,7 +600,8 @@ void MainConfigurationWindow::onChangeMail(int index)
 
 	if (index != 0 && mail.isEmpty())
 		if (!mailComboBox->currentText().contains(tr("Not found")))
-			mailComboBox->changeItem(mailComboBox->currentText() + " (" + tr("Not found") + ")", index);
+			mailComboBox->setItemData(mailComboBox->currentIndex(),
+					mailComboBox->currentText() + " (" + tr("Not found") + ")", index);
 }
 
 QString MainConfigurationWindow::browserIndexToString(int browserIndex)

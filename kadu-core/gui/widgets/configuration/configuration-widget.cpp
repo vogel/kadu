@@ -166,7 +166,7 @@ QList<ConfigWidget *> ConfigurationWidget::processUiSectionFromDom(QDomNode sect
 		return result;
 	}
 
-	configSection(iconName, qApp->translate("@default", sectionName), true);
+	configSection(iconName, qApp->tr("@default", sectionName.toAscii().data()), true);
 
 	const QDomNodeList children = sectionElement.childNodes();
 	int length = children.length();
@@ -374,11 +374,11 @@ QWidget * ConfigurationWidget::widgetById(const QString &id)
 
 ConfigGroupBox * ConfigurationWidget::configGroupBox(const QString &section, const QString &tab, const QString &groupBox, bool create)
 {
-	ConfigSection *s = configSection(qApp->translate("@default", section));
+	ConfigSection *s = configSection(qApp->tr("@default", section.toAscii().data()));
 	if (!s)
 		return 0;
 
-	return s->configGroupBox(qApp->translate("@default", tab), qApp->translate("@default", groupBox), create);
+	return s->configGroupBox(qApp->tr("@default", tab.toAscii().data()), qApp->tr("@default", groupBox.toAscii().data()), create);
 }
 
 ConfigSection *ConfigurationWidget::configSection(const QString &name)
@@ -480,7 +480,7 @@ void ConfigurationWidget::removedConfigSection(const QString &sectionName)
 	configSections.remove(sectionName);
 
 	for (unsigned int i = 0; i < sectionsListWidget->count(); i++)
-		if (sectionsListWidget->item(i)->text() == tr(sectionName))
+		if (sectionsListWidget->item(i)->text() == tr(sectionName.toAscii().data()))
 		{
 			QListWidgetItem *item = sectionsListWidget->takeItem(i);
 			delete item;

@@ -34,8 +34,8 @@ protected:
 	virtual void createWidgets();
 
 public:
-	ConfigSpinBox(const QString &section, const QString &item, const QString &widgetCaption, const QString &toolTip, int minValue, int maxValue, int step, ConfigGroupBox *parentConfigGroupBox, ConfigurationWindowDataManager *dataManager, const char *name = 0);
-	ConfigSpinBox(ConfigGroupBox *parentConfigGroupBox, ConfigurationWindowDataManager *dataManager, const char *name = 0);
+	ConfigSpinBox(const QString &section, const QString &item, const QString &widgetCaption, const QString &toolTip, int minValue, int maxValue, int step, ConfigGroupBox *parentConfigGroupBox, ConfigurationWindowDataManager *dataManager);
+	ConfigSpinBox(ConfigGroupBox *parentConfigGroupBox, ConfigurationWindowDataManager *dataManager);
 	virtual ~ConfigSpinBox();
 
 	virtual void loadConfiguration();

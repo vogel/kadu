@@ -54,10 +54,10 @@ void SelectFile::selectFileClicked()
 	if (Type == "image")
 	{
 		ImageDialog imageDialog(this);
-		imageDialog.setDir(LineEdit->text());
-		imageDialog.setCaption(tr("Insert image"));
-		if (imageDialog.exec() == QDialog::Accepted)
-			LineEdit->setText(imageDialog.selectedFile());
+		imageDialog.setDirectory(LineEdit->text());
+		imageDialog.setWindowTitle(tr("Insert image"));
+		if (imageDialog.exec() == QDialog::Accepted && 1 == imageDialog.selectedFiles().count())
+			LineEdit->setText(imageDialog.selectedFiles()[0]);
 	}
 	else if (Type == "all")
 	{

@@ -51,7 +51,7 @@ extern "C" KADU_EXPORT int notify_init(bool firstLoad)
 {
 	kdebugf();
 
-	notification_manager = new Notify(NULL, "notify");
+	notification_manager = new Notify();
 	MainConfigurationWindow::registerUiFile(dataPath("kadu/modules/configuration/notify.ui"), notification_manager);
 
 	kdebugf2();
@@ -84,8 +84,8 @@ void NotifyGroupBox::toggledSlot(bool toggle)
 	emit toggled(Notificator, toggle);
 }
 
-Notify::Notify(QObject *parent, const char *name)
-	: QObject(parent, name), notificationsGroupBox(0)
+Notify::Notify(QObject *parent)
+	: QObject(parent), notificationsGroupBox(0)
 {
 	kdebugf();
 
@@ -271,7 +271,7 @@ void Notify::mainConfigurationWindowDestroyed()
 
 void Notify::addConfigurationWidget(NotifierData &notifier, const QString &name)
 {
-	NotifyGroupBox *configurationGroupBox = new NotifyGroupBox(name, qApp->translate("@default", name), notificationsGroupBox->widget());
+	NotifyGroupBox *configurationGroupBox = new NotifyGroupBox(name, qApp->tr("@default", name.toAscii().data()), notificationsGroupBox->widget());
 	connect(configurationGroupBox, SIGNAL(toggled(const QString &, bool)), this, SLOT(notifierToggled(const QString &, bool)));
 
 	notifier.configurationGroupBox = configurationGroupBox;

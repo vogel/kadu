@@ -35,7 +35,7 @@ ConfigSection::ConfigSection(const QString &name, ConfigurationWidget *configura
 ConfigSection::~ConfigSection()
 {
 	config_file.writeEntry("General", "ConfigurationWindow_" + configurationWidget->name() + "_" + name,
-		mainWidget->label(mainWidget->currentPageIndex()));
+		mainWidget->tabText(mainWidget->currentIndex()));
 	delete mainWidget;
 }
 
@@ -57,7 +57,7 @@ void ConfigSection::activate()
 
 	QString tab = config_file.readEntry("General", "ConfigurationWindow_" + configurationWidget->name() + "_" + name);
 	if (configTabs.contains(tab))
-		mainWidget->setCurrentPage(mainWidget->indexOf(configTabs[tab]->tabWidget()));
+		mainWidget->setCurrentWidget(configTabs[tab]->tabWidget());
 	activated = true;
 }
 
@@ -77,7 +77,7 @@ ConfigTab *ConfigSection::configTab(const QString &name, bool create)
 
 void ConfigSection::removedConfigTab(const QString &configTabName)
 {
-	mainWidget->removePage(configTabs[configTabName]->widget());
+	mainWidget->removeTab(mainWidget->indexOf(configTabs[configTabName]->widget()));
 
 	configTabs.remove(configTabName);
 	if (!configTabs.count())

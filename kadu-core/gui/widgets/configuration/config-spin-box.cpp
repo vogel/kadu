@@ -15,14 +15,17 @@
 #include "gui/widgets/configuration/config-group-box.h"
 
 ConfigSpinBox::ConfigSpinBox(const QString &section, const QString &item, const QString &widgetCaption, const QString &toolTip,
-		int minValue, int maxValue, int step, ConfigGroupBox *parentConfigGroupBox, ConfigurationWindowDataManager *dataManager, const char *name)
-	: QSpinBox(minValue, maxValue, step, parentConfigGroupBox->widget(), name), ConfigWidgetValue(section, item, widgetCaption, toolTip, parentConfigGroupBox, dataManager),
+		int minValue, int maxValue, int step, ConfigGroupBox *parentConfigGroupBox, ConfigurationWindowDataManager *dataManager)
+	: QSpinBox(parentConfigGroupBox->widget()), ConfigWidgetValue(section, item, widgetCaption, toolTip, parentConfigGroupBox, dataManager),
 		label(0)
 {
+	setMinimum(minValue);
+	setMaximum(maxValue);
+	setSingleStep(step);
 }
 
-ConfigSpinBox::ConfigSpinBox(ConfigGroupBox *parentConfigGroupBox, ConfigurationWindowDataManager *dataManager, const char *name)
-	: QSpinBox(parentConfigGroupBox->widget(), name), ConfigWidgetValue(parentConfigGroupBox, dataManager), label(0)
+ConfigSpinBox::ConfigSpinBox(ConfigGroupBox *parentConfigGroupBox, ConfigurationWindowDataManager *dataManager)
+	: QSpinBox(parentConfigGroupBox->widget()), ConfigWidgetValue(parentConfigGroupBox, dataManager), label(0)
 {
 }
 
@@ -36,13 +39,13 @@ void ConfigSpinBox::createWidgets()
 {
 	kdebugf();
 
-	label = new QLabel(this, qApp->translate("@default", widgetCaption) + ":", parentConfigGroupBox->widget());
+	label = new QLabel(qApp->tr("@default", widgetCaption.toAscii().data()) + ":", parentConfigGroupBox->widget());
 	parentConfigGroupBox->addWidgets(label, this);
 
 	if (!ConfigWidget::toolTip.isEmpty())
 	{
-		setToolTip(qApp->translate("@default", ConfigWidget::toolTip));
-		label->setToolTip(qApp->translate("@default", ConfigWidget::toolTip));
+		setToolTip(qApp->tr("@default", ConfigWidget::toolTip.toAscii().data()));
+		label->setToolTip(qApp->tr("@default", ConfigWidget::toolTip.toAscii().data()));
 	}
 }
 
@@ -84,17 +87,17 @@ bool ConfigSpinBox::fromDomElement(QDomElement domElement)
 
 	bool ok;
 
-	setMinValue(minValue.toInt(&ok));
+	setMinimum(minValue.toInt(&ok));
 	if (!ok)
 		return false;
 
-	setMaxValue(maxValue.toInt(&ok));
+	setMaximum(maxValue.toInt(&ok));
 	if (!ok)
 		return false;
 
-	setLineStep(step.toInt(&ok));
+	setSingleStep(step.toInt(&ok));
 	if (!ok)
-		setLineStep(1);
+		setSingleStep(1);
 
 	return ConfigWidgetValue::fromDomElement(domElement);
 }

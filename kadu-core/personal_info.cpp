@@ -113,9 +113,9 @@ PersonalInfoDialog::PersonalInfoDialog(Protocol *protocol, QWidget *parent) :
 	QVBoxLayout *city_layout = new QVBoxLayout(city);
 
 	cb_gender = new QComboBox();
-	cb_gender->insertItem(QString::null);
-	cb_gender->insertItem(tr("Male"));
-	cb_gender->insertItem(tr("Female"));
+	cb_gender->addItem(QString::null);
+	cb_gender->addItem(tr("Male"));
+	cb_gender->addItem(tr("Female"));
 	cb_gender->setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Maximum));
 	gender_layout->addWidget(new QLabel(tr("Gender")));
 	gender_layout->addWidget(cb_gender);
@@ -168,13 +168,13 @@ PersonalInfoDialog::PersonalInfoDialog(Protocol *protocol, QWidget *parent) :
 	// buttons
 	QWidget *bottom = new QWidget;
 
-	pb_save = new QPushButton(icons_manager->loadIcon("SavePersonalInfoButton"), tr("&Save"), bottom, "save");
+	pb_save = new QPushButton(icons_manager->loadIcon("SavePersonalInfoButton"), tr("&Save"), bottom);
 	connect(pb_save, SIGNAL(clicked()), this, SLOT(saveButtonClicked()));
 
-	QPushButton *pb_reload = new QPushButton(icons_manager->loadIcon("ReloadPersonalInfoButton"), tr("&Reload"), bottom, "save");
+	QPushButton *pb_reload = new QPushButton(icons_manager->loadIcon("ReloadPersonalInfoButton"), tr("&Reload"), bottom);
 	connect(pb_reload, SIGNAL(clicked()), this, SLOT(reloadInfo()));
 
-	QPushButton *pb_close = new QPushButton(icons_manager->loadIcon("CloseWindow"), tr("&Close"), bottom, "close");
+	QPushButton *pb_close = new QPushButton(icons_manager->loadIcon("CloseWindow"), tr("&Close"), bottom);
 	connect(pb_close, SIGNAL(clicked()), this, SLOT(close()));
 
 	QHBoxLayout *bottom_layout = new QHBoxLayout(bottom);
@@ -250,7 +250,7 @@ void PersonalInfoDialog::saveButtonClicked()
 	contact.setNickName(le_nickname->text());
 	contact.setCity(le_city->text());
 	contact.setBirthYear(le_birthyear->text().toUShort());
-	contact.setGender((ContactData::ContactGender)cb_gender->currentItem());
+	contact.setGender((ContactData::ContactGender)cb_gender->currentIndex());
 	contact.setFamilyName(le_familyname->text());
 	contact.setFamilyCity(le_familycity->text());
 
@@ -273,7 +273,7 @@ void PersonalInfoDialog::personalInfoAvailable(Contact contact)
 	le_city->setText(contact.city());
 	le_familyname->setText(contact.familyName());
 	le_familycity->setText(contact.familyCity());
-	cb_gender->setCurrentItem((int)contact.gender());
+	cb_gender->setCurrentIndex((int)contact.gender());
 	State = Ready;
 
 	setEnabled(true);

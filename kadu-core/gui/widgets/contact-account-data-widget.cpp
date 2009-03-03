@@ -41,21 +41,21 @@ void ContactAccountDataWidget::createGui()
 
 	QLineEdit *idLineEdit = dynamic_cast<QLineEdit *>(widgetById("Id"));
 	idLineEdit->setReadOnly(true);
-	idLineEdit->setBackgroundMode(Qt::PaletteButton);
+	idLineEdit->setBackgroundRole(QPalette::Button);
 
 	QLineEdit *addrLineEdit = dynamic_cast<QLineEdit *>(widgetById("Addr"));
 	addrLineEdit->setReadOnly(true);
-	addrLineEdit->setBackgroundMode(Qt::PaletteButton);
+	addrLineEdit->setBackgroundRole(QPalette::Button);
 
 	QLineEdit *versionLineEdit = dynamic_cast<QLineEdit *>(widgetById("Version"));
 	versionLineEdit->setReadOnly(true);
-	versionLineEdit->setBackgroundMode(Qt::PaletteButton);
+	versionLineEdit->setBackgroundRole(QPalette::Button);
 
 	QLineEdit *dnsLineEdit = dynamic_cast<QLineEdit *>(widgetById("DnsName"));
 	dnsLineEdit->setReadOnly(true);
-	dnsLineEdit->setBackgroundMode(Qt::PaletteButton);
+	dnsLineEdit->setBackgroundRole(QPalette::Button);
 
 	QLineEdit *statusLineEdit = dynamic_cast<QLineEdit *>(widgetById("Status"));
 	statusLineEdit->setReadOnly(true);
-	statusLineEdit->setBackgroundMode(Qt::PaletteButton);
+	statusLineEdit->setBackgroundRole(QPalette::Button);
 }

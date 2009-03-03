@@ -10,6 +10,7 @@
 #include <QtCore/QDateTime>
 #include <QtCore/QTimer>
 #include <QtGui/QApplication>
+#include <QtGui/QCloseEvent>
 #include <QtGui/QDesktopWidget>
 #include <QtGui/QVBoxLayout>
 
@@ -25,7 +26,7 @@
 #include "chat_window.h"
 
 ChatWindow::ChatWindow(QWidget *parent)
-	: QWidget(parent), currentChatWidget(0), title_timer(new QTimer(this, "title_timer"))
+	: QWidget(parent), currentChatWidget(0), title_timer(new QTimer(this))
 {
 	kdebugf();
 
@@ -61,11 +62,11 @@ void ChatWindow::setChatWidget(ChatWidget *newChatWidget)
 	QVBoxLayout *layout = new QVBoxLayout(this);
 
 	currentChatWidget = newChatWidget;
-	newChatWidget->reparent(this, QPoint(0, 0));
+	newChatWidget->setParent(this);
 	newChatWidget->show();
 
 	layout->addWidget(newChatWidget);
-	layout->setMargin(0);
+	layout->setContentsMargins(0, 0, 0, 0);
 	layout->setSpacing(0);
 
 	connect(currentChatWidget, SIGNAL(closed()), this, SLOT(close()));
@@ -186,7 +187,7 @@ void ChatWindow::closeEvent(QCloseEvent *e)
 
 void ChatWindow::updateTitle()
 {
-	setIcon(currentChatWidget->icon());
+	setWindowIcon(currentChatWidget->icon());
 	setWindowTitle(currentChatWidget->escapedCaption());
 
 	if (showNewMessagesNum && currentChatWidget->newMessagesCount()) // if we don't have new messages or don't want them to be shown
@@ -197,7 +198,7 @@ void ChatWindow::blinkTitle()
 {
  	if (!isActiveWindow())
   	{
-		if (!caption().contains(currentChatWidget->caption()) || !blinkChatTitle)
+		if (!windowTitle().contains(currentChatWidget->caption()) || !blinkChatTitle)
 		{
   			if (!showNewMessagesNum) // if we don't show number od new messages waiting
   				setWindowTitle(currentChatWidget->escapedCaption());
@@ -208,7 +209,10 @@ void ChatWindow::blinkTitle()
 			setWindowTitle(QString().fill(' ', (currentChatWidget->caption().length() + 5)));
 
 		if (blinkChatTitle) // timer will not be started, if configuration option was changed
-			title_timer->start(500,TRUE);
+		{
+			title_timer->setSingleShot(true);
+			title_timer->start(500);
+		}
 	}
 }
 
@@ -241,7 +245,7 @@ void ChatWindow::alertNewMessage()
 	{
 		if (activateWithNewMessages && qApp->activeWindow() && !isMinimized())
 		{
-			currentChatWidget->setActiveWindow();
+			currentChatWidget->activateWindow();
 			raise();
 		}
 		else if (blinkChatTitle)

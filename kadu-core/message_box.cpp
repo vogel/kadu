@@ -37,11 +37,12 @@ MessageBox::MessageBox(const QString &message, int components, bool modal, const
 	setModal(modal);
 
 	QVBoxLayout *vbox = new QVBoxLayout(this);
-	vbox->setMargin(10);
+	vbox->setContentsMargins(10, 10, 10, 10);
 	vbox->setSpacing(10);
 
-	QHBoxLayout *hboxlabels = new QHBoxLayout(vbox);
+	QHBoxLayout *hboxlabels = new QHBoxLayout(this);
 	hboxlabels->addStretch(1);
+	vbox->addLayout(hboxlabels);
 
 	if (!iconName.isEmpty())
 	{
@@ -57,7 +58,9 @@ MessageBox::MessageBox(const QString &message, int components, bool modal, const
 	hboxlabels->addWidget(label, 0, Qt::AlignCenter);
 	hboxlabels->addStretch(1);
 
-	QHBoxLayout *hboxbuttons = new QHBoxLayout(vbox);
+	QHBoxLayout *hboxbuttons = new QHBoxLayout(this);
+	vbox->addLayout(hboxbuttons);
+
 	QWidget *buttons = new QWidget;
 	QHBoxLayout *buttons_layout = new QHBoxLayout;
 	buttons_layout->setSpacing(20);

@@ -37,7 +37,6 @@ public:
 	HttpClient();
 	int status() const;
 	const QByteArray & data() const;
-	static QString encode(const QString &text);
 
 	const QString & cookie(const QString &name) const;
 	const QMap<QString, QString> & cookies() const;

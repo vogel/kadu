@@ -8,6 +8,7 @@
  ***************************************************************************/
 
 #include <QtCore/QSettings>
+#include <QtCore/QTextCodec>
 #include <QtGui/QApplication>
 #include <QtGui/QClipboard>
 #include <QtGui/QMenuBar>
@@ -597,7 +598,7 @@ Kadu::Kadu(QWidget *parent)
 	connect(dockMenu, SIGNAL(aboutToHide()), this, SLOT(dockMenuAboutToHide()));
 	connect(RecentChatsMenu, SIGNAL(aboutToShow()), this, SLOT(createRecentChatsMenu()));
 
-	dockMenu->insertSeparator();
+	dockMenu->addSeparator();
 	dockMenu->addAction(icons_manager->loadIcon("Exit"), tr("&Exit Kadu"), this, SLOT(quit()));
 
 	InfoPanel = new KaduTextBrowser(split);
@@ -612,9 +613,9 @@ Kadu::Kadu(QWidget *parent)
 		InfoPanel->QWidget::hide();
 	connect(&updateInformationPanelTimer, SIGNAL(timeout()), this, SLOT(updateInformationPanel()));
 
-	statusButton = new QPushButton(icons_manager->loadIcon("Offline"), tr("Offline"), this, "statusButton");
+	statusButton = new QPushButton(icons_manager->loadIcon("Offline"), tr("Offline"), this);
 	MainLayout->addWidget(statusButton);
-	statusButton->setPopup(statusMenu);
+	statusButton->setMenu(statusMenu);
 
 	if (!config_file.readBoolEntry("Look", "ShowStatusButton"))
 		statusButton->hide();
@@ -631,7 +632,7 @@ Kadu::Kadu(QWidget *parent)
 	foreach (Account *account, AccountManager::instance()->accounts())
 		accountRegistered(account);
 
-	MainLayout->setResizeMode(QLayout::Minimum);
+	setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
 	setCentralWidget(MainWidget);
 
 #ifdef Q_OS_MAC
@@ -745,7 +746,7 @@ void Kadu::openDescriptionLinkActionActivated(QAction *sender, bool toggled)
 		return;
 
 	QRegExp url = HtmlDocument::urlRegExp();
-	int idx_start = url.search(description);
+	int idx_start = url.indexIn(description);
 	if (idx_start >= 0)
 		openWebBrowser(description.mid(idx_start, url.matchedLength()));
 
@@ -1090,7 +1091,7 @@ void Kadu::yourAccounts(QAction *sender, bool toggled)
 
 void Kadu::manageIgnored(QAction *sender, bool toggled)
 {
-	(new Ignored(kadu, "ignored"))->show();
+	(new Ignored(kadu))->show();
 }
 
 void Kadu::showStatusActionActivated(QAction *sender, bool toggled)
@@ -1154,7 +1155,7 @@ void Kadu::addGroupActionActivated(QAction *sender, bool toggled)
 
 void Kadu::help(QAction *sender, bool toggled)
 {
-	if (config_file.readEntry("General", "Language", QString(QTextCodec::locale()).mid(0,2)) == "pl")
+	if (config_file.readEntry("General", "Language", QString(qApp->keyboardInputLocale().name()).mid(0,2)) == "pl")
 		openWebBrowser("http://www.kadu.net/w/Pomoc_online");
 	else
 		openWebBrowser("http://www.kadu.net/w/English:Kadu:Help_online");
@@ -1162,7 +1163,7 @@ void Kadu::help(QAction *sender, bool toggled)
 
 void Kadu::bugs(QAction *sender, bool toggled)
 {
-	if (config_file.readEntry("General", "Language", QString(QTextCodec::locale()).mid(0,2)) == "pl")
+	if (config_file.readEntry("General", "Language", QString(qApp->keyboardInputLocale().name()).mid(0,2)) == "pl")
 		openWebBrowser("http://www.kadu.net/w/B%C5%82%C4%99dy");
 	else
 		openWebBrowser("http://www.kadu.net/w/English:Bugs");
@@ -1170,7 +1171,7 @@ void Kadu::bugs(QAction *sender, bool toggled)
 
 void Kadu::support(QAction *sender, bool toggled)
 {
-	if (config_file.readEntry("General", "Language", QString(QTextCodec::locale()).mid(0,2)) == "pl")
+	if (config_file.readEntry("General", "Language", QString(qApp->keyboardInputLocale().name()).mid(0,2)) == "pl")
 		openWebBrowser("http://www.kadu.net/w/Kadu:Site_support");
 	else
 		openWebBrowser("http://www.kadu.net/w/English:Kadu:Site_support");
@@ -1178,7 +1179,7 @@ void Kadu::support(QAction *sender, bool toggled)
 
 void Kadu::getInvolved(QAction *sender, bool toggled)
 {
-	if (config_file.readEntry("General", "Language", QString(QTextCodec::locale()).mid(0,2)) == "pl")
+	if (config_file.readEntry("General", "Language", QString(qApp->keyboardInputLocale().name()).mid(0,2)) == "pl")
 		openWebBrowser("http://www.kadu.net/w/Do%C5%82%C4%85cz");
 	else
 		openWebBrowser("http://www.kadu.net/w/English:GetInvolved");
@@ -1349,7 +1350,8 @@ void Kadu::blink()
 
 	BlinkOn = !BlinkOn;
 
-	blinktimer->start(1000, TRUE);
+	blinktimer->setSingleShot(true);
+	blinktimer->start(1000);
 }
 
 void Kadu::mouseButtonClicked(int button, Q3ListBoxItem *item)
@@ -1492,11 +1494,12 @@ void Kadu::connecting()
 
 	if (!blinktimer)
 	{
-		blinktimer = new QTimer(this, "blinktimer");
+		blinktimer = new QTimer(this);
 		QObject::connect(blinktimer, SIGNAL(timeout()), kadu, SLOT(blink()));
 	}
 
-	blinktimer->start(1000, true);
+	blinktimer->setSingleShot(true);
+	blinktimer->start(1000);
 	kdebugf2();
 }
 
@@ -1668,7 +1671,7 @@ bool Kadu::close(bool quit)
 		setMainWindowIcon(QPixmap(dataPath("kadu.png")));
 #endif
 
-		QWidget::close(true);
+		QWidget::close();
 
 		kdebugmf(KDEBUG_INFO, "Graceful shutdown...\n");
 
@@ -2023,7 +2026,8 @@ void Kadu::showdesc(bool show)
 //TODO 0.6.6:
 void Kadu::updateInformationPanelLater()
 {
-	updateInformationPanelTimer.start(0, true);
+	updateInformationPanelTimer.setSingleShot(true);
+	updateInformationPanelTimer.start(0);
 }
 
 void Kadu::updateInformationPanel()
@@ -2310,7 +2314,7 @@ void Kadu::showStatusOnMenu(int statusNr)
 // 	changePrivateStatus->setChecked(gadu->status().isFriendsOnly());
 // TODO: 0.6.6
 
-	statusButton->setText(qApp->translate("@default", Status::name(gadu->status()).ascii()));
+	statusButton->setText(qApp->translate("@default", Status::name(gadu->status()).toAscii().data()));
 	changeStatusToOfflineDesc->setEnabled(statusNr != 6);
 	changeStatusToOffline->setEnabled(statusNr != 7);
 
@@ -2497,7 +2501,7 @@ void Kadu::createDefaultConfiguration()
 	config_file.addVariable("General", "DescriptionHeight", 60);
 	config_file.addVariable("General", "DisconnectWithCurrentDescription", true);
 	config_file.addVariable("General", "HideBaseModules", true);
-	config_file.addVariable("General", "Language",  QString(QTextCodec::locale()).mid(0,2));
+	config_file.addVariable("General", "Language",  QString(qApp->keyboardInputLocale().name()).mid(0,2));
 	config_file.addVariable("General", "Nick", tr("Me"));
 	config_file.addVariable("General", "NumberOfDescriptions", 20);
 	config_file.addVariable("General", "ParseStatus", false);
@@ -2529,13 +2533,13 @@ void Kadu::createDefaultConfiguration()
 	config_file.addVariable("Look", "ChatUsrNickColor", QColor("#000000"));
 	config_file.addVariable("Look", "ConferenceContents", "");
 	config_file.addVariable("Look", "ConferencePrefix", "");
-	config_file.addVariable("Look", "DescriptionColor", w.paletteForegroundColor());
+	config_file.addVariable("Look", "DescriptionColor", w.palette().foreground().color());
 	config_file.addVariable("Look", "DisplayGroupTabs", true);
 	config_file.addVariable("Look", "HeaderSeparatorHeight", 1);
 	config_file.addVariable("Look", "IconsPaths", "");
 	config_file.addVariable("Look", "IconTheme", "default");
-	config_file.addVariable("Look", "InfoPanelBgColor", w.paletteBackgroundColor());
-	config_file.addVariable("Look", "InfoPanelFgColor", w.paletteForegroundColor());
+	config_file.addVariable("Look", "InfoPanelBgColor", w.palette().background().color());
+	config_file.addVariable("Look", "InfoPanelFgColor", w.palette().foreground().color());
 	config_file.addVariable("Look", "InfoPanelSyntaxFile", "default");
 	config_file.addVariable("Look", "NiceDateFormat", true);
 	config_file.addVariable("Look", "NoHeaderInterval", 30);
@@ -2552,9 +2556,9 @@ void Kadu::createDefaultConfiguration()
 	config_file.addVariable("Look", "ShowStatusButton", true);
 	config_file.addVariable("Look", "Style", "kadu");
 	config_file.addVariable("Look", "UserboxBackgroundDisplayStyle", "Stretched");
-	config_file.addVariable("Look", "UserboxBgColor", w.paletteBackgroundColor());
+	config_file.addVariable("Look", "UserboxBgColor", w.palette().background().color());
 	config_file.addVariable("Look", "UserBoxColumnCount", 1);
-	config_file.addVariable("Look", "UserboxFgColor", w.paletteForegroundColor());
+	config_file.addVariable("Look", "UserboxFgColor", w.palette().foreground().color());
 	QFont userboxfont(*defaultFont);
 	userboxfont.setPointSize(defaultFont->pointSize()+1);
 	config_file.addVariable("Look", "UserboxFont", userboxfont);

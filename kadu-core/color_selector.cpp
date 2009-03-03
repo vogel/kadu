@@ -29,7 +29,7 @@ ColorSelectorButton::ColorSelectorButton(const QColor &qcolor, int width, QWidge
 
 	QPixmap p(WIDTH1 * width + (width - 1) * (BORDER1 * 2), WIDTH1);
 	p.fill(qcolor);
-	setPixmap(p);
+	setIcon(p);
 //	setAutoRaise(true);
 	setMouseTracking(true);
 	setFixedSize(WIDTH1 * width + (BORDER1 * 2) + (width - 1) * (BORDER1 * 2), WIDTH1 + (BORDER1 * 2));
@@ -56,7 +56,7 @@ ColorSelector::ColorSelector(const QColor &defColor, QWidget *parent)
 		qcolors.append(colors[i]);
 
 	int selector_width = 4; //sqrt(16)
-	QGridLayout *grid = new QGridLayout(this, 0, selector_width, 0, 0);
+	QGridLayout *grid = new QGridLayout(this);
 
 	i = 0;
 	foreach(const QColor &color, qcolors)
@@ -69,7 +69,7 @@ ColorSelector::ColorSelector(const QColor &defColor, QWidget *parent)
 	if (!qcolors.contains(defColor))
 	{
 		ColorSelectorButton* btn = new ColorSelectorButton(defColor, 4, this);
-		grid->addMultiCellWidget(btn, 4, 4, 0, 3);
+		grid->addWidget(btn, 4, 4, 0, 3);
 		connect(btn, SIGNAL(clicked(const QColor&)), this, SLOT(iconClicked(const QColor&)));
 	}
 	kdebugf2();

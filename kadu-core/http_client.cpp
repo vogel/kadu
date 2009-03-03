@@ -8,6 +8,7 @@
  ***************************************************************************/
 
 #include <QtCore/QTime>
+#include <QtCore/QUrl>
 
 #include "config_file.h"
 #include "debug.h"
@@ -78,7 +79,7 @@ void HttpClient::onConnected()
 	if (!PostData.isEmpty())
 		query += QString(PostData);
 	kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "HttpClient: Sending query:\n%s\n", qPrintable(query));
-	Socket.writeBlock(qPrintable(query), query.length());
+	Socket.write(qPrintable(query), query.length());
 	kdebugf2();
 }
 
@@ -89,7 +90,7 @@ void HttpClient::onReadyRead()
 	kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "HttpClient: Data Block Retreived: %i bytes\n", size);
 	// Dodaj nowe dane do starych
 	char *buf=new char[size];
-	Socket.readBlock(buf, size);
+	Socket.read(buf, size);
 	//
 //	kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "%s\n",buf);
 	//
@@ -104,7 +105,7 @@ void HttpClient::onReadyRead()
 		kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "HttpClient: Trying to parse header\n");
 		// Kontynuuj odczyt jesli naglowek niekompletny
 		QString s = QString(Data);
-		int p = s.find("\r\n\r\n");
+		int p = s.indexOf("\r\n\r\n");
 		if (p < 0)
 			return;
 		// Dostalismy naglowek,
@@ -112,7 +113,7 @@ void HttpClient::onReadyRead()
 		HeaderParsed = true;
 		// Wyci�gamy status
 		QRegExp status_regexp("HTTP/1\\.[01] (\\d+)");
-		if (status_regexp.search(s) < 0)
+		if (status_regexp.indexIn(s) < 0)
 		{
 			Socket.close();
 			emit error();
@@ -124,7 +125,7 @@ void HttpClient::onReadyRead()
 		if (StatusCode == 302)
 		{
 			QRegExp location_regexp("Location: ([^\\r\\n]+)");
-			if (location_regexp.search(s) < 0)
+			if (location_regexp.indexIn(s) < 0)
 			{
 				Socket.close();
 				emit error();
@@ -151,7 +152,7 @@ void HttpClient::onReadyRead()
 		}
 		// Wyci�gamy Content-Length
 		QRegExp cl_regexp("Content-Length: (\\d+)");
-		ContentLengthNotFound = cl_regexp.search(s) < 0;
+		ContentLengthNotFound = cl_regexp.indexIn(s) < 0;
 		if (ContentLengthNotFound)
 		{
 			ContentLength = 0;
@@ -165,7 +166,7 @@ void HttpClient::onReadyRead()
 
 		// Wyciagamy ewentualne cookie (dla uproszczenia tylko jedno)
 		QRegExp cookie_regexp("Set-Cookie: ([^=]+)=([^;]+);");
-		if (cookie_regexp.search(s) >= 0)
+		if (cookie_regexp.indexIn(s) >= 0)
 		{
 			QString cookie_name = cookie_regexp.cap(1);
 			QString cookie_val = cookie_regexp.cap(2);
@@ -250,7 +251,7 @@ void HttpClient::post(const QString &path, const QByteArray& data, bool redirect
 	Referer = Path;
 	Path = path;
 	Data.resize(0);
-	PostData.duplicate(data);
+	PostData = data;
 	HeaderParsed = false;
 	FollowRedirect = redirectFollow;
 
@@ -265,7 +266,7 @@ void HttpClient::post(const QString &path, const QByteArray& data, bool redirect
 void HttpClient::post(const QString &path, const QString& data, bool redirectFollow)
 {
 	QByteArray PostData;
-	PostData.duplicate(qPrintable(data), data.length());
+	PostData = qPrintable(data);
 	post(path, PostData, redirectFollow);
 }
 
@@ -277,13 +278,6 @@ int HttpClient::status() const
 const QByteArray & HttpClient::data() const
 {
 	return Data;
-}
-
-QString HttpClient::encode(const QString& text)
-{
-	QString encoded = text;
-	Q3Url::encode(encoded);
-	return encoded;
 }
 
 const QString & HttpClient::cookie(const QString& name) const

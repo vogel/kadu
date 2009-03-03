@@ -38,8 +38,8 @@ protected:
 	virtual void createWidgets();
 
 public:
-	ConfigComboBox(const QString &section, const QString &item, const QString &widgetCaption, const QString &toolTip, const QStringList &itemValues, const QStringList &itemCaptions, ConfigGroupBox *parentConfigGroupBox, ConfigurationWindowDataManager *dataManager, const char *name = 0);
-	ConfigComboBox(ConfigGroupBox *parentConfigGroupBox, ConfigurationWindowDataManager *dataManager, const char *name = 0);
+	ConfigComboBox(const QString &section, const QString &item, const QString &widgetCaption, const QString &toolTip, const QStringList &itemValues, const QStringList &itemCaptions, ConfigGroupBox *parentConfigGroupBox, ConfigurationWindowDataManager *dataManager);
+	ConfigComboBox(ConfigGroupBox *parentConfigGroupBox, ConfigurationWindowDataManager *dataManager);
 	virtual ~ConfigComboBox();
 
 	void setItems(const QStringList &itemValues, const QStringList &itemCaptions);

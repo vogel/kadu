@@ -13,14 +13,14 @@
 #include "gui/widgets/configuration/config-line-edit.h"
 #include "gui/widgets/configuration/config-group-box.h"
 
-ConfigLineEdit::ConfigLineEdit(const QString &section, const QString &item, const QString &widgetCaption, const QString &toolTip, ConfigGroupBox *parentConfigGroupBox, ConfigurationWindowDataManager *dataManager, char *name)
-	: QLineEdit(parentConfigGroupBox->widget(), name), ConfigWidgetValue(section, item, widgetCaption, toolTip, parentConfigGroupBox, dataManager), label(0)
+ConfigLineEdit::ConfigLineEdit(const QString &section, const QString &item, const QString &widgetCaption, const QString &toolTip, ConfigGroupBox *parentConfigGroupBox, ConfigurationWindowDataManager *dataManager)
+	: QLineEdit(parentConfigGroupBox->widget()), ConfigWidgetValue(section, item, widgetCaption, toolTip, parentConfigGroupBox, dataManager), label(0)
 {
 	createWidgets();
 }
 
-ConfigLineEdit::ConfigLineEdit(ConfigGroupBox *parentConfigGroupBox, ConfigurationWindowDataManager *dataManager, char *name)
-	: QLineEdit(parentConfigGroupBox->widget(), name), ConfigWidgetValue(parentConfigGroupBox, dataManager), label(0)
+ConfigLineEdit::ConfigLineEdit(ConfigGroupBox *parentConfigGroupBox, ConfigurationWindowDataManager *dataManager)
+	: QLineEdit(parentConfigGroupBox->widget()), ConfigWidgetValue(parentConfigGroupBox, dataManager), label(0)
 {
 }
 
@@ -34,13 +34,13 @@ void ConfigLineEdit::createWidgets()
 {
 	kdebugf();
 
-	label = new QLabel(this, qApp->translate("@default", widgetCaption) + ":", parentConfigGroupBox->widget());
+	label = new QLabel(qApp->tr("@default", widgetCaption.toAscii().data()) + ":", parentConfigGroupBox->widget());
 	parentConfigGroupBox->addWidgets(label, this);
 
 	if (!ConfigWidget::toolTip.isEmpty())
 	{
-		setToolTip(qApp->translate("@default", ConfigWidget::toolTip));
-		label->setToolTip(qApp->translate("@default", ConfigWidget::toolTip));
+		setToolTip(qApp->tr("@default", ConfigWidget::toolTip.toAscii().data()));
+		label->setToolTip(qApp->tr("@default", ConfigWidget::toolTip.toAscii().data()));
 	}
 }
 

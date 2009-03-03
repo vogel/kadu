@@ -14,14 +14,14 @@
 #include "gui/widgets/configuration/config-action-button.h"
 #include "gui/widgets/configuration/config-group-box.h"
 
-ConfigActionButton::ConfigActionButton(const QString &widgetCaption, const QString &toolTip, ConfigGroupBox *parentConfigGroupBox, ConfigurationWindowDataManager *dataManager, char *name)
-	: QPushButton(parentConfigGroupBox->widget(), name), ConfigWidget(widgetCaption, toolTip, parentConfigGroupBox, dataManager)
+ConfigActionButton::ConfigActionButton(const QString &widgetCaption, const QString &toolTip, ConfigGroupBox *parentConfigGroupBox, ConfigurationWindowDataManager *dataManager)
+	: QPushButton(parentConfigGroupBox->widget()), ConfigWidget(widgetCaption, toolTip, parentConfigGroupBox, dataManager)
 {
 	createWidgets();
 }
 
-ConfigActionButton::ConfigActionButton(ConfigGroupBox *parentConfigGroupBox, ConfigurationWindowDataManager *dataManager, char *name)
-	: QPushButton(parentConfigGroupBox->widget(), name), ConfigWidget(parentConfigGroupBox, dataManager)
+ConfigActionButton::ConfigActionButton(ConfigGroupBox *parentConfigGroupBox, ConfigurationWindowDataManager *dataManager)
+	: QPushButton(parentConfigGroupBox->widget()), ConfigWidget(parentConfigGroupBox, dataManager)
 {
 }
 
@@ -29,11 +29,11 @@ void ConfigActionButton::createWidgets()
 {
 	kdebugf();
 
-	setText(qApp->translate("@default", widgetCaption));
+	setText(qApp->tr("@default", widgetCaption.toAscii().data()));
 	parentConfigGroupBox->addWidget(this);
 
 	if (!ConfigWidget::toolTip.isEmpty())
-		setToolTip(qApp->translate("@default", ConfigWidget::toolTip));
+		setToolTip(qApp->tr("@default", ConfigWidget::toolTip.toAscii().data()));
 }
 
 void ConfigActionButton::show()

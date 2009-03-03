@@ -175,7 +175,7 @@ QSize ContactsListWidgetDelegate::sizeHint(const QStyleOptionViewItem &option, c
 
 	int pixmapHeight = pixmap.height();
 
-	int height = QMAX(pixmapHeight, displayHeight + descriptionHeight);
+	int height = qMax(pixmapHeight, displayHeight + descriptionHeight);
 
 	return QSize(width, height);
 }
@@ -245,7 +245,7 @@ void ContactsListWidgetDelegate::paint(QPainter *painter, const QStyleOptionView
 		descriptionHeight = (int)dd->size().height();
 	}
 
-	int height = QMAX(pixmapHeight, displayHeight + descriptionHeight);
+	int height = qMax(pixmapHeight, displayHeight + descriptionHeight);
 	int itemHeight = AlignTop ? displayHeight : rect.height();
 
 	if (!pixmap.isNull())

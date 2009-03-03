@@ -35,8 +35,8 @@ protected:
 
 public:
 	ConfigSlider(const QString &section, const QString &item, const QString &widgetCaption, const QString &toolTip,
-		int minValue, int maxValue, int pageStep, ConfigGroupBox *parentConfigGroupBox, ConfigurationWindowDataManager *dataManager, const char *name);
-	ConfigSlider(ConfigGroupBox *parentConfigGroupBox, ConfigurationWindowDataManager *dataManager, char *name = 0);
+		int minValue, int maxValue, int pageStep, ConfigGroupBox *parentConfigGroupBox, ConfigurationWindowDataManager *dataManager);
+	ConfigSlider(ConfigGroupBox *parentConfigGroupBox, ConfigurationWindowDataManager *dataManager);
 	virtual ~ConfigSlider();
 
 	virtual void loadConfiguration();

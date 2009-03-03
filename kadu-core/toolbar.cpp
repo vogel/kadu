@@ -164,7 +164,7 @@ void ToolBar::moveAction(const QString &actionName, bool showLabel, QAction *aft
 			else
 			{
 				removeAction(toolBarAction.action);
-				ToolBarActions.remove(toolBarAction);
+				ToolBarActions.removeAll(toolBarAction);
 			}
 
 		}
@@ -609,7 +609,7 @@ void ToolBar::deleteButton()
 			removeAction(currentButton->defaultAction());
 			currentButton = 0;
 
-			ToolBarActions.remove(toolBarAction);
+			ToolBarActions.removeAll(toolBarAction);
 			return;
 		}
 }
@@ -620,7 +620,7 @@ void ToolBar::deleteAction(const QString &actionName)
 		if (toolBarAction.actionName == actionName)
 		{
 			removeAction(toolBarAction.action);
-			ToolBarActions.remove(toolBarAction);
+			ToolBarActions.removeAll(toolBarAction);
 			return;
 		}
 

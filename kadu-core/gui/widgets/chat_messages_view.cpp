@@ -7,6 +7,7 @@
  *                                                                         *
  ***************************************************************************/
 
+#include <QtGui/QKeyEvent>
 #include <QtGui/QScrollBar>
 #include <QtWebKit/QWebFrame>
 
@@ -154,7 +155,7 @@ void ChatMessagesView::pruneMessages()
 		return;
 
 	QList<ChatMessage *>::iterator start = Messages.begin();
-	QList<ChatMessage *>::iterator stop = Messages.find(Messages.at(Messages.size() - ChatStylesManager::instance()->prune()));
+	QList<ChatMessage *>::iterator stop = Messages.end() - ChatStylesManager::instance()->prune();
 	for (QList<ChatMessage *>::iterator it = start; it != stop; ++it)
 	{
 		delete *it;

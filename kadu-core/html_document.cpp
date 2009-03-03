@@ -112,10 +112,10 @@ void HtmlDocument::parseHtml(const QString &html)
 				}
 				break;
 			default:
-				pos1 = html.find('>', i + 1);
+				pos1 = html.indexOf('>', i + 1);
 				if (pos1 == -1)
 					pos1 = len;
-				pos2 = html.find('<', i + 1);
+				pos2 = html.indexOf('<', i + 1);
 				if (pos2 == -1)
 					pos2 = len;
 				if (pos2 < pos1)
@@ -211,7 +211,7 @@ void HtmlDocument::convertUrlsToHtml()
 			continue;
 
 		QString text = elementText(i);
-		int p = r.search(text);
+		int p = r.indexIn(text);
 		if (p < 0)
 			continue;
 
@@ -254,7 +254,7 @@ void HtmlDocument::convertMailToHtml()
 			continue;
 
 		QString text = elementText(i);
-		int p = m.search(text);
+		int p = m.indexIn(text);
 		if (p < 0)
 			continue;
 		unsigned int l = m.matchedLength();
@@ -283,7 +283,7 @@ void HtmlDocument::convertGGToHtml()
 			continue;
 
 		QString text = elementText(i);
-		int p = g.search(text);
+		int p = g.indexIn(text);
 		if (p < 0)
 			continue;
 		unsigned int l = g.matchedLength();

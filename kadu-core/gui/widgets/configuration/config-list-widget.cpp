@@ -16,13 +16,13 @@
 #include "configuration/configuration-window-data-manager.h"
 
 ConfigListWidget::ConfigListWidget(const QString &widgetCaption, const QString &toolTip,
-		const QStringList &itemValues, const QStringList &itemCaptions, ConfigGroupBox *parentConfigGroupBox, ConfigurationWindowDataManager *dataManager, const char *name)
+		const QStringList &itemValues, const QStringList &itemCaptions, ConfigGroupBox *parentConfigGroupBox, ConfigurationWindowDataManager *dataManager)
 	: QListWidget(parentConfigGroupBox->widget()), ConfigWidget(widgetCaption, toolTip, parentConfigGroupBox, dataManager), label(0)
 {
 	createWidgets();
 }
 
-ConfigListWidget::ConfigListWidget(ConfigGroupBox *parentConfigGroupBox, ConfigurationWindowDataManager *dataManager, const char *name)
+ConfigListWidget::ConfigListWidget(ConfigGroupBox *parentConfigGroupBox, ConfigurationWindowDataManager *dataManager)
 	: QListWidget(parentConfigGroupBox->widget()), ConfigWidget(parentConfigGroupBox, dataManager), label(0)
 {
 }
@@ -46,7 +46,7 @@ void ConfigListWidget::createWidgets()
 {
 	kdebugf();
 
-	label = new QLabel(this, qApp->translate("@default", widgetCaption) + ":", parentConfigGroupBox->widget());
+	label = new QLabel(qApp->tr("@default", widgetCaption.toAscii().data()) + ":", parentConfigGroupBox->widget());
 	parentConfigGroupBox->addWidgets(label, this);
 
 	clear();
@@ -54,8 +54,8 @@ void ConfigListWidget::createWidgets()
 
 	if (!ConfigWidget::toolTip.isEmpty())
 	{
-		setToolTip(qApp->translate("@default", ConfigWidget::toolTip));
-		label->setToolTip(qApp->translate("@default", ConfigWidget::toolTip));
+		setToolTip(qApp->tr("@default", ConfigWidget::toolTip.toAscii().data()));
+		label->setToolTip(qApp->tr("@default", ConfigWidget::toolTip.toAscii().data()));
 	}
 }
 
@@ -87,7 +87,7 @@ bool ConfigListWidget::fromDomElement(QDomElement domElement)
 			itemValues.append(element.attribute("value"));
 			itemCaptions.append(element.attribute("caption"));
 
-			addItem(qApp->translate("@default", element.attribute("caption")));
+			addItem(qApp->tr("@default", element.attribute("caption").toAscii().data()));
 		}
 	}
 

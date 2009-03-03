@@ -70,7 +70,7 @@ void FileTransferWidget::createGui()
 	setFrameStyle(QFrame::Box | QFrame::Sunken);
 	setLineWidth(1);
 
-	QGridLayout *layout = new QGridLayout(this, 3, 4, 2);
+	QGridLayout *layout = new QGridLayout(this);
 	layout->setMargin(10);
 	layout->setColumnStretch(0, 1);
 	layout->setColumnStretch(1, 20);

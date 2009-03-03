@@ -15,14 +15,14 @@
 #include "gui/widgets/configuration/config-group-box.h"
 
 ConfigComboBox::ConfigComboBox(const QString &section, const QString &item, const QString &widgetCaption, const QString &toolTip,
-		const QStringList &itemValues, const QStringList &itemCaptions, ConfigGroupBox *parentConfigGroupBox, ConfigurationWindowDataManager *dataManager, const char *name)
-	: QComboBox(parentConfigGroupBox->widget(), name), ConfigWidgetValue(section, item, widgetCaption, toolTip, parentConfigGroupBox, dataManager), label(0)
+		const QStringList &itemValues, const QStringList &itemCaptions, ConfigGroupBox *parentConfigGroupBox, ConfigurationWindowDataManager *dataManager)
+	: QComboBox(parentConfigGroupBox->widget()), ConfigWidgetValue(section, item, widgetCaption, toolTip, parentConfigGroupBox, dataManager), label(0)
 {
 	createWidgets();
 }
 
-ConfigComboBox::ConfigComboBox(ConfigGroupBox *parentConfigGroupBox, ConfigurationWindowDataManager *dataManager, const char *name)
-	: QComboBox(parentConfigGroupBox->widget(), name), ConfigWidgetValue(parentConfigGroupBox, dataManager), label(0)
+ConfigComboBox::ConfigComboBox(ConfigGroupBox *parentConfigGroupBox, ConfigurationWindowDataManager *dataManager)
+	: QComboBox(parentConfigGroupBox->widget()), ConfigWidgetValue(parentConfigGroupBox, dataManager), label(0)
 {
 }
 
@@ -38,12 +38,12 @@ void ConfigComboBox::setItems(const QStringList &itemValues, const QStringList &
 	this->itemCaptions = itemCaptions;
 
 	clear();
-	insertStringList(itemCaptions);
+	insertItems(0, itemCaptions);
 }
 
 QString ConfigComboBox::currentItemValue()
 {
-	int index = currentItem();
+	int index = currentIndex();
 
 	if ((index < 0) || (index >= itemValues.size()))
 		return QString::null;
@@ -55,16 +55,16 @@ void ConfigComboBox::createWidgets()
 {
 	kdebugf();
 
-	label = new QLabel(this, qApp->translate("@default", widgetCaption) + ":", parentConfigGroupBox->widget());
+	label = new QLabel(qApp->tr("@default", widgetCaption.toAscii().data()) + ":", parentConfigGroupBox->widget());
 	parentConfigGroupBox->addWidgets(label, this);
 
 	clear();
-	insertStringList(itemCaptions);
+	insertItems(0, itemCaptions);
 
 	if (!ConfigWidget::toolTip.isEmpty())
 	{
-		setToolTip(qApp->translate("@default", ConfigWidget::toolTip));
-		label->setToolTip(qApp->translate("@default", ConfigWidget::toolTip));
+		setToolTip(qApp->tr("@default", ConfigWidget::toolTip.toAscii().data()));
+		label->setToolTip(qApp->tr("@default", ConfigWidget::toolTip.toAscii().data()));
 	}
 }
 
@@ -73,9 +73,9 @@ void ConfigComboBox::loadConfiguration()
 	if (section.isEmpty())
 		return;
 
-	setCurrentItem(itemValues.findIndex(dataManager->readEntry(section, item).toString()));
+	setCurrentIndex(itemValues.indexOf(dataManager->readEntry(section, item).toString()));
 
-	emit activated(currentItem());
+	emit activated(currentIndex());
 }
 
 void ConfigComboBox::saveConfiguration()
@@ -83,12 +83,12 @@ void ConfigComboBox::saveConfiguration()
 	if (section.isEmpty())
 		return;
 
-	int index = currentItem();
+	int index = currentIndex();
 
 	if ((index < 0) || (index >= itemValues.size()))
 		return;
 
-	dataManager->writeEntry(section, item, QVariant(itemValues[currentItem()]));
+	dataManager->writeEntry(section, item, QVariant(itemValues[currentIndex()]));
 }
 
 void ConfigComboBox::show()
@@ -117,9 +117,9 @@ bool ConfigComboBox::fromDomElement(QDomElement domElement)
 				continue;
 
 			itemValues.append(element.attribute("value"));
-			itemCaptions.append(qApp->translate("@default", element.attribute("caption")));
+			itemCaptions.append(qApp->tr("@default", element.attribute("caption").toAscii().data()));
 
-			insertItem(qApp->translate("@default", element.attribute("caption")));
+			addItem(qApp->tr("@default", element.attribute("caption").toAscii().data()));
 		}
 	}
 

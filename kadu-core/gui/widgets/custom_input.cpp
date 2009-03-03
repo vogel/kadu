@@ -7,8 +7,9 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <QtGui/QMenu>
 #include <QtGui/QAction>
+#include <QtGui/QKeyEvent>
+#include <QtGui/QMenu>
 
 #include "debug.h"
 #include "hot_key.h"
@@ -40,7 +41,8 @@ void CustomInput::keyPressEvent(QKeyEvent *e)
 		return;
 	}
 
-	if (autosend_enabled && ((HotKey::shortCut(e, "ShortCuts", "chat_newline")) || e->key() == Qt::Key_Enter) && !(e->state() & Qt::ShiftButton))
+	if (autosend_enabled && ((HotKey::shortCut(e, "ShortCuts", "chat_newline"))
+		|| e->key() == Qt::Key_Enter) && !(e->modifiers() & Qt::ShiftModifier))
 	{
 		kdebugmf(KDEBUG_INFO, "emit sendMessage()\n");
 		emit sendMessage();
@@ -71,7 +73,7 @@ void CustomInput::keyPressEvent(QKeyEvent *e)
  			kdebugf2();
  			return;
  		}
-		if (e->key() == Qt::Key_A && (e->state() & Qt::ControlButton))
+		if (e->key() == Qt::Key_A && (e->modifiers() & Qt::ControlModifier))
 		{
 			selectAll();	
 			e->accept();

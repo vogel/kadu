@@ -13,6 +13,7 @@
 #include <QtGui/QGridLayout>
 #include <QtGui/QHBoxLayout>
 #include <QtGui/QInputDialog>
+#include <QtGui/QKeyEvent>
 #include <QtGui/QLineEdit>
 #include <QtGui/QPushButton>
 #include <QtGui/QTextEdit>
@@ -40,12 +41,12 @@ QString SyntaxList::readSyntax(const QString &category, const QString &name, con
 	QFile syntaxFile;
 	path = dataPath("kadu") + "/syntax/" + category + "/" + name + ".syntax";
 
-	syntaxFile.setName(path);
+	syntaxFile.setFileName(path);
 	if (!syntaxFile.open(QIODevice::ReadOnly))
 	{
 		path = ggPath() + "/syntax/" + category + "/" + name + ".syntax";
 
-		syntaxFile.setName(path);
+		syntaxFile.setFileName(path);
 		if (!syntaxFile.open(QIODevice::ReadOnly))
 			return defaultSyntax;
 	}
@@ -53,7 +54,7 @@ QString SyntaxList::readSyntax(const QString &category, const QString &name, con
 	QString result;
 	QTextStream stream(&syntaxFile);
 	stream.setCodec("UTF-8");
-	result = stream.read();
+	result = stream.readLine();
 	syntaxFile.close();
 
 	if (result.isEmpty())
@@ -75,7 +76,7 @@ void SyntaxList::reload()
 	path = ggPath() + "/syntax/" + category + "/";
 	dir.setPath(path);
 
-	dir.setNameFilter("*.syntax");
+	dir.setNameFilters(QStringList("*.syntax"));
 	files = dir.entryList();
 
 	foreach(const QString &file, files)
@@ -122,7 +123,7 @@ bool SyntaxList::updateSyntax(const QString &name, const QString &syntax)
 			return false;
 
 	QFile syntaxFile;
-	syntaxFile.setName(path + name + ".syntax");
+	syntaxFile.setFileName(path + name + ".syntax");
 	if (!syntaxFile.open(QIODevice::WriteOnly))
 		return false;
 
@@ -153,14 +154,14 @@ QString SyntaxList::readSyntax(const QString &name)
 		path = ggPath() + "/syntax/" + category + "/" + name + ".syntax";
 
 	QFile syntaxFile;
-	syntaxFile.setName(path);
+	syntaxFile.setFileName(path);
 	if (!syntaxFile.open(QIODevice::ReadOnly))
 		return QString();
 
 	QString result;
 	QTextStream stream(&syntaxFile);
 	stream.setCodec("UTF-8");
-	result = stream.read();
+	result = stream.readLine();
 	syntaxFile.close();
 
 	return result;
@@ -177,7 +178,7 @@ bool SyntaxList::deleteSyntax(const QString &name)
 
 	QString path = ggPath() + "/syntax/" + category + "/" + name + ".syntax";
 	QFile file;
-	file.setName(path);
+	file.setFileName(path);
 
 	if (!file.remove())
 		return false;
@@ -226,7 +227,7 @@ SyntaxEditor::~SyntaxEditor()
 
 void SyntaxEditor::setCurrentSyntax(const QString &syntax)
 {
-	syntaxListCombo->setCurrentText(syntax);
+	syntaxListCombo->setEditText(syntax);
 	syntaxChangedSlot(syntax);
 }
 
@@ -281,17 +282,17 @@ void SyntaxEditor::syntaxChangedSlot(const QString &newSyntax)
 
 	SyntaxInfo info = (*syntaxList)[newSyntax];
 	if (info.global)
-		fileName = dataPath("kadu") + "/syntax/" + category.lower() + "/" + newSyntax + ".syntax";
+		fileName = dataPath("kadu") + "/syntax/" + category.toLower() + "/" + newSyntax + ".syntax";
 	else
-		fileName = ggPath() + "/syntax/" + category.lower() + "/" + newSyntax + ".syntax";
+		fileName = ggPath() + "/syntax/" + category.toLower() + "/" + newSyntax + ".syntax";
 
-	file.setName(fileName);
+	file.setFileName(fileName);
 	if (!file.open(QIODevice::ReadOnly))
 		return;
 
 	QTextStream stream(&file);
 	stream.setCodec("UTF-8");
-	content = stream.read();
+	content = stream.readLine();
 	file.close();
 
 	content.replace(QRegExp("%o"),  " ");
@@ -304,10 +305,10 @@ void SyntaxEditor::updateSyntaxList()
 {
 	if (syntaxList)
 		delete syntaxList;
-	syntaxList = new SyntaxList(category.lower());
+	syntaxList = new SyntaxList(category.toLower());
 
 	syntaxListCombo->clear();
-	syntaxListCombo->insertStringList(syntaxList->keys());
+	syntaxListCombo->addItems(syntaxList->keys());
 
 	connect(syntaxList, SIGNAL(updated()), this, SLOT(syntaxListUpdated()));
 }
@@ -315,7 +316,7 @@ void SyntaxEditor::updateSyntaxList()
 void SyntaxEditor::syntaxListUpdated()
 {
 	syntaxListCombo->clear();
-	syntaxListCombo->insertStringList(syntaxList->keys());
+	syntaxListCombo->addItems(syntaxList->keys());
 }
 
 SyntaxEditorWindow::SyntaxEditorWindow(SyntaxList *syntaxList, const QString &syntaxName, const QString &category, const QString &syntaxHint, QWidget* parent)
@@ -327,18 +328,18 @@ SyntaxEditorWindow::SyntaxEditorWindow(SyntaxList *syntaxList, const QString &sy
 	QFrame *syntax = new QFrame();
 
 	QGridLayout *syntax_layout = new QGridLayout(syntax);
-	syntax_layout->setColStretch(0, 2);
-	syntax_layout->setColStretch(1, 1);
+// 	syntax_layout->setColStretch(0, 2);
+// 	syntax_layout->setColStretch(1, 1);
 	syntax_layout->setSpacing(5);
 
 	editor = new QTextEdit(syntax);
-	editor->setTextFormat(Qt::PlainText);
+	editor->setAcceptRichText(true);
 	editor->setText(syntaxList->readSyntax(syntaxName));
 
 	if (!syntaxHint.isEmpty())
 		editor->setToolTip(syntaxHint);
 
-	syntax_layout->addMultiCellWidget(editor, 0, 1, 0, 0);
+	syntax_layout->addWidget(editor, 0, 1, 0, 0);
 
 	previewPanel = new Preview(syntax);
 	previewPanel->setResetBackgroundColor(config_file.readEntry("Look", category + "BgColor"));
@@ -386,13 +387,13 @@ SyntaxEditorWindow::~SyntaxEditorWindow()
 
 void SyntaxEditorWindow::refreshPreview()
 {
-	QString content = editor->text();
+	QString content = editor->toPlainText();
 	previewPanel->syntaxChanged(content);
 }
 
 void SyntaxEditorWindow::save()
 {
-	syntaxList->updateSyntax(syntaxName, editor->text());
+	syntaxList->updateSyntax(syntaxName, editor->toPlainText());
 	emit updated(syntaxName);
 	close();
 }
@@ -404,7 +405,7 @@ void SyntaxEditorWindow::saveAs()
 
 	while (true)
 	{
-		newSyntaxName = QInputDialog::getText(tr("New syntax name"), tr("Enter new syntax name"), QLineEdit::Normal, newSyntaxName, &ok);
+		newSyntaxName = QInputDialog::getText(0, tr("New syntax name"), tr("Enter new syntax name"), QLineEdit::Normal, newSyntaxName, &ok);
 		if (!ok)
 			return;
 
@@ -433,7 +434,7 @@ void SyntaxEditorWindow::saveAs()
 		}
 	}
 
-	syntaxList->updateSyntax(newSyntaxName, editor->text());
+	syntaxList->updateSyntax(newSyntaxName, editor->toPlainText());
 	emit updated(newSyntaxName);
 	emit syntaxAdded(newSyntaxName);
 	close();

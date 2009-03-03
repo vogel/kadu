@@ -540,7 +540,7 @@ QString printDateTime(const QDateTime &datetime)
 			else if (delta < 7) // less than week ago
 			{
 				ret.prepend(datetime.toString(qApp->translate("@default", "dddd at ")));
-				ret[0] = ret[0].upper(); // looks ugly lowercase ;)
+				ret[0] = ret[0].toUpper(); // looks ugly lowercase ;)
 			}
 			else if ((delta > 7) && (delta < 14))
 			{
@@ -853,11 +853,11 @@ ChooseDescription::ChooseDescription(QWidget *parent)
 // 	while (defaultdescriptions.count() > config_file.readNumEntry("General", "NumberOfDescriptions"))
 // 		defaultdescriptions.pop_back();
 
-  	Description = new QComboBox(TRUE, this, "description");
+  	Description = new QComboBox(this);
 	Description->setMaxVisibleItems(30);
 // 	Description->insertStringList(defaultdescriptions);
 
-	QLineEdit *ss = new QLineEdit(this, "LineEdit");
+	QLineEdit *ss = new QLineEdit(this);
 #if 1
 	GaduProtocol *gadu = dynamic_cast<GaduProtocol *>(AccountManager::instance()->defaultAccount()->protocol());
 	ss->setMaxLength(gadu->maxDescriptionLength());
@@ -1094,7 +1094,7 @@ ImageWidget::ImageWidget(QWidget *parent)
 }
 
 ImageWidget::ImageWidget(const QByteArray &image, QWidget *parent)
-	: QWidget(parent), Image(image)
+	: QWidget(parent), Image(image.data())
 {
 	setMinimumSize(Image.width(), Image.height());
 }
@@ -1107,7 +1107,7 @@ void ImageWidget::setImage(const QByteArray &image)
 
 void ImageWidget::setImage(const QPixmap &image)
 {
-	Image = image;
+	Image = image.toImage();
 	setMinimumSize(Image.width(), Image.height());
 }
 
@@ -1193,13 +1193,13 @@ void PixmapPreview::previewUrl(const Q3Url& url)
 }*/
 
 ImageDialog::ImageDialog(QWidget *parent)
-	: Q3FileDialog(parent,"image dialog",true)
+	: QFileDialog(parent)
 {
 // 	PixmapPreview* pp = new PixmapPreview();
 	setFilter(qApp->translate("ImageDialog", "Images")+" (*.png *.PNG *.jpg *.JPG *.jpeg *.JPEG *.gif *.GIF *.bmp *.BMP)");
 // 	setContentsPreviewEnabled(true);
 // 	setContentsPreview(pp, pp);
-	setPreviewMode(Q3FileDialog::Contents);
+// 	setPreviewMode(Q3FileDialog::Contents);
 }
 
 
@@ -1245,14 +1245,14 @@ QRect stringToRect(const QString &value, const QRect *def)
 	int l, t, w, h;
 	bool ok;
 
-        stringlist = QStringList::split(",", value);
-        if (stringlist.count() != 4)
-                return def ? *def : rect;
-        l = stringlist[0].toInt(&ok); if (!ok) return def ? *def : rect;
-        t = stringlist[1].toInt(&ok); if (!ok) return def ? *def : rect;
-        w = stringlist[2].toInt(&ok); if (!ok) return def ? *def : rect;
-        h = stringlist[3].toInt(&ok); if (!ok) return def ? *def : rect;
-        rect.setRect(l, t, w, h);
+	stringlist = value.split(',');
+	if (stringlist.count() != 4)
+		return def ? *def : rect;
+	l = stringlist[0].toInt(&ok); if (!ok) return def ? *def : rect;
+	t = stringlist[1].toInt(&ok); if (!ok) return def ? *def : rect;
+	w = stringlist[2].toInt(&ok); if (!ok) return def ? *def : rect;
+	h = stringlist[3].toInt(&ok); if (!ok) return def ? *def : rect;
+	rect.setRect(l, t, w, h);
 
 	return rect;
 }
@@ -1278,7 +1278,7 @@ QString narg(const QString &s, const QString **tab, int count)
 	{
 		if (*d == '%' && d + 1 < dend && *(d + 1) >= '1' && *(d + 1) <= maxc)
 		{
-			out.append(QConstString(d - j, j).string());
+			out.append(QString(d - j, j));
 			++d;
 			out.append(*(tab[d->digitValue() - 1]));
 			j = 0;
@@ -1287,7 +1287,7 @@ QString narg(const QString &s, const QString **tab, int count)
 			++j;
 		++d;
 	}
-	out.append(QConstString(d - j, j).string());
+	out.append(QString(d - j, j));
 //	kdebugm(KDEBUG_DUMP, "out: '%s'\n", qPrintable(out));
 	kdebugf2();
 

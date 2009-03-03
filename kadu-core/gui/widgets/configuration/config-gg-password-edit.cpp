@@ -14,14 +14,14 @@
 #include "gui/widgets/configuration/config-gg-password-edit.h"
 #include "gui/widgets/configuration/config-group-box.h"
 
-ConfigGGPasswordEdit::ConfigGGPasswordEdit(const QString &section, const QString &item, const QString &widgetCaption, const QString &toolTip, ConfigGroupBox *parentConfigGroupBox, ConfigurationWindowDataManager *dataManager, char *name)
-	: ConfigLineEdit(section, item, widgetCaption, toolTip, parentConfigGroupBox, dataManager, name)
+ConfigGGPasswordEdit::ConfigGGPasswordEdit(const QString &section, const QString &item, const QString &widgetCaption, const QString &toolTip, ConfigGroupBox *parentConfigGroupBox, ConfigurationWindowDataManager *dataManager)
+	: ConfigLineEdit(section, item, widgetCaption, toolTip, parentConfigGroupBox, dataManager)
 {
 	setEchoMode(QLineEdit::Password);
 }
 
-ConfigGGPasswordEdit::ConfigGGPasswordEdit(ConfigGroupBox *parentConfigGroupBox, ConfigurationWindowDataManager *dataManager, char *name)
-	: ConfigLineEdit(parentConfigGroupBox, dataManager, name)
+ConfigGGPasswordEdit::ConfigGGPasswordEdit(ConfigGroupBox *parentConfigGroupBox, ConfigurationWindowDataManager *dataManager)
+	: ConfigLineEdit(parentConfigGroupBox, dataManager)
 {
 	setEchoMode(QLineEdit::Password);
 }

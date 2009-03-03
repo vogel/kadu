@@ -51,7 +51,7 @@ extern "C" KADU_EXPORT void docking_close()
 }
 
 DockingManager::DockingManager()
-	: newMessageIcon(StaticEnvelope), icon_timer(new QTimer(this, "icon_timer")), blink(false)
+	: newMessageIcon(StaticEnvelope), icon_timer(new QTimer(this)), blink(false)
 {
 	kdebugf();
 
@@ -129,7 +129,8 @@ void DockingManager::changeIcon()
 				if (!blink)
 				{
 					emit trayPixmapChanged(icons_manager->loadIcon("Message"), "Message");
-					icon_timer->start(500,TRUE);
+					icon_timer->setSingleShot(true);
+					icon_timer->start(500);
 					blink = true;
 				}
 				else
@@ -142,7 +143,8 @@ void DockingManager::changeIcon()
 
 					const Status &stat = account->protocol()->status();
 					emit trayPixmapChanged(QIcon(account->protocol()->statusPixmap(stat)), Status::name(stat, false));
-					icon_timer->start(500,TRUE);
+					icon_timer->setSingleShot(true);
+					icon_timer->start(500);
 					blink = false;
 				}
 				break;
@@ -188,7 +190,7 @@ void DockingManager::defaultToolTip()
 
 		QString tiptext;
 		tiptext.append(tr("Current status:\n%1")
-			.arg(qApp->translate("@default", Status::name(status))));
+			.arg(qApp->tr("@default", Status::name(status).toLocal8Bit().data())));
 
 		if (!status.description().isEmpty())
 			tiptext.append(tr("\n\nDescription:\n%2").arg(status.description()));

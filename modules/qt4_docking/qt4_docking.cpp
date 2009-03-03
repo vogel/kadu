@@ -118,7 +118,7 @@ void Qt4TrayIcon::setTrayMovie(const QString &movie)
 
 void Qt4TrayIcon::movieUpdate()
 {
-	setIcon(Movie->framePixmap());
+	setIcon(Movie->currentPixmap());
 }
 
 void Qt4TrayIcon::setTrayTooltip(const QString& tooltip)

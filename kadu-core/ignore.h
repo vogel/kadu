@@ -27,7 +27,7 @@ private slots:
 	void keyPressEvent(QKeyEvent *);
 
 public:
-	Ignored(QWidget *parent = 0, const char *name = 0);
+	Ignored(QWidget *parent = 0);
 	~Ignored();
 
 };

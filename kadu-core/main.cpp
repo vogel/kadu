@@ -263,7 +263,6 @@ int main(int argc, char *argv[])
 
 	new Kadu(0);
 
-	qApp->setMainWidget(kadu);
 	QPixmap pix;
 #ifdef Q_OS_MACX
 	pix = icons_manager->loadPixmap("BigOffline");

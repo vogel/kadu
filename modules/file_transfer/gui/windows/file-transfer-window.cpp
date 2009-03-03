@@ -61,7 +61,7 @@ void FileTransferWindow::createGui()
 
 	setAttribute(Qt::WA_DeleteOnClose);
 
-	QGridLayout *mainGrid = new QGridLayout(this, 1, 1);
+	QGridLayout *mainGrid = new QGridLayout(this);
 	mainGrid->setSpacing(2);
 	mainGrid->setMargin(2);
 
@@ -74,7 +74,7 @@ void FileTransferWindow::createGui()
 	InnerFrame = new QFrame(this);
  	InnerFrame->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Maximum);
 
-	TransfersLayout = new QVBoxLayout(InnerFrame, 0, 1);
+	TransfersLayout = new QVBoxLayout(InnerFrame);
 	TransfersLayout->setDirection(QBoxLayout::Up);
 
  	ScrollView->setWidget(InnerFrame);

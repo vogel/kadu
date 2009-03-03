@@ -165,7 +165,7 @@ ModulesDialog::ModulesDialog(QWidget *parent)
 	hideBaseModules = new QCheckBox(tr("Hide base modules"), bottom);
 	hideBaseModules->setChecked(config_file.readBoolEntry("General", "HideBaseModules"));
 	connect(hideBaseModules, SIGNAL(clicked()), this, SLOT(refreshList()));
-	QPushButton *pb_close = new QPushButton(icons_manager->loadIcon("CloseWindow"), tr("&Close"), bottom, "close");
+	QPushButton *pb_close = new QPushButton(icons_manager->loadIcon("CloseWindow"), tr("&Close"), bottom);
 
 	bottomLayout->addWidget(hideBaseModules);
 	bottomLayout->addStretch();
@@ -381,8 +381,8 @@ void ModulesManager::closeModule()
 	delete modules_manager;
 }
 
-ModulesManager::ModulesManager() : QObject(NULL, "modules_manager"),
-	StaticModules(), Modules(), Dialog(0), translators(new QObject(this, "translators"))
+ModulesManager::ModulesManager() : QObject(),
+	StaticModules(), Modules(), Dialog(0), translators(new QObject(this))
 {
 	kdebugf();
 	// it's important to initiate that variable before loading modules
@@ -399,14 +399,14 @@ ModulesManager::ModulesManager() : QObject(NULL, "modules_manager"),
 	manageModulesActionDescription->setShortcut("kadu_modulesmanager", Qt::ApplicationShortcut);
 	kadu->insertMenuActionDescription(manageModulesActionDescription, Kadu::MenuKadu, 2);
 
-	everLoaded = QStringList::split(',', config_file.readEntry("General", "EverLoaded"));
+	everLoaded = config_file.readEntry("General", "EverLoaded").split(',');
 
 	// load modules as config file say
 	QStringList installed_list = installedModules();
 	QString loaded_str = config_file.readEntry("General", "LoadedModules");
-	QStringList loaded_list = QStringList::split(',', loaded_str);
+	QStringList loaded_list = loaded_str.split(',');
 	QString unloaded_str = config_file.readEntry("General", "UnloadedModules");
-	QStringList unloaded_list = QStringList::split(',', unloaded_str);
+	QStringList unloaded_list = unloaded_str.split(',');
 	bool load_error = false;
 
 	registerStaticModules();
@@ -490,8 +490,9 @@ ModulesManager::~ModulesManager()
 
 QTranslator* ModulesManager::loadModuleTranslation(const QString& module_name)
 {
-	QTranslator* translator = new QTranslator(translators, "module_translator");
-	if (translator->load(dataPath("kadu/modules/translations/" + module_name + '_' + config_file.readEntry("General", "Language", QString(QTextCodec::locale()).mid(0,2))), "."))
+	QTranslator* translator = new QTranslator(translators);
+	if (translator->load(dataPath("kadu/modules/translations/" + module_name + '_' + config_file.readEntry("General", "Language",
+			qApp->keyboardInputLocale().name().mid(0, 2))), "."))
 	{
 		qApp->installTranslator(translator);
 		return translator;
@@ -627,7 +628,8 @@ bool ModulesManager::moduleInfo(const QString& module_name, ModuleInfo& info) co
 
 	PlainConfigFile desc_file(dataPath("kadu/modules/" + module_name + ".desc"));
 
-	QString lang = config_file.readEntry("General", "Language", QString(QTextCodec::locale()).mid(0,2));
+	QString lang = config_file.readEntry("General", "Language",
+			QString(qApp->keyboardInputLocale().name()).mid(0,2));
 
 	info.description = desc_file.readEntry("Module", "Description[" + lang + ']');
 	if(info.description.isEmpty())
@@ -640,14 +642,9 @@ bool ModulesManager::moduleInfo(const QString& module_name, ModuleInfo& info) co
 	else
 		info.version = desc_file.readEntry("Module", "Version");
 
-	info.depends = QStringList::split(" ",
-		desc_file.readEntry("Module", "Dependencies"));
-
-	info.conflicts=QStringList::split(" ",
-		desc_file.readEntry("Module", "Conflicts"));
-
-	info.provides=QStringList::split(" ",
-		desc_file.readEntry("Module", "Provides"));
+	info.depends = desc_file.readEntry("Module", "Dependencies").split(' ');
+	info.conflicts = desc_file.readEntry("Module", "Conflicts").split(' ');
+	info.provides = desc_file.readEntry("Module", "Provides").split(' ');
 
 	info.load_by_def = desc_file.readBoolEntry("Module", "LoadByDefault");
 	info.base = desc_file.readBoolEntry("Module", "Base");
@@ -850,7 +847,7 @@ void ModulesManager::showDialog(QAction *sender, bool toggled)
 	}
 
 	Dialog->raise();
-	Dialog->setActiveWindow();
+	Dialog->activateWindow();
 
 	kdebugf2();
 }

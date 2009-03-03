@@ -41,8 +41,8 @@ protected:
 public:
 	ConfigListWidget(const QString &widgetCaption, const QString &toolTip,
 		const QStringList &itemValues, const QStringList &itemCaptions,
-		ConfigGroupBox *parentConfigGroupBox, ConfigurationWindowDataManager *dataManager, const char *name = 0);
-	ConfigListWidget(ConfigGroupBox *parentConfigGroupBox, ConfigurationWindowDataManager *dataManager, const char *name = 0);
+		ConfigGroupBox *parentConfigGroupBox, ConfigurationWindowDataManager *dataManager);
+	ConfigListWidget(ConfigGroupBox *parentConfigGroupBox, ConfigurationWindowDataManager *dataManager);
 	virtual ~ConfigListWidget();
 
 	void setItems(const QStringList &itemValues, const QStringList &itemCaptions);

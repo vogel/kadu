@@ -47,11 +47,11 @@ void ConnectionErrorNotification::unregisterEvent(Notify *manager)
 
 bool ConnectionErrorNotification::activeError(const QString &errorMessage)
 {
-	return ActiveErrors.find(errorMessage) != ActiveErrors.end();
+	return ActiveErrors.contains(errorMessage);
 }
 
 ConnectionErrorNotification::ConnectionErrorNotification(const QString &errorServer, const QString &errorMessage, Account *account)
-	: AccountNotification("ConnectionError", icons_manager->loadIcon("CriticalSmall").pixmap() , contacts(), account), ErrorServer(errorServer), ErrorMessage(errorMessage)
+	: AccountNotification("ConnectionError", icons_manager->loadIcon("CriticalSmall") , contacts(), account), ErrorServer(errorServer), ErrorMessage(errorMessage)
 {
 	setTitle(tr("Connection error"));
 	setText(tr("<b>Error:</b> (%1) %2").arg(ErrorServer).arg(ErrorMessage));
@@ -61,7 +61,7 @@ ConnectionErrorNotification::ConnectionErrorNotification(const QString &errorSer
 
 ConnectionErrorNotification::~ConnectionErrorNotification()
 {
-	ActiveErrors.remove(ErrorMessage);
+	ActiveErrors.removeAll(ErrorMessage);
 }
 
 QString ConnectionErrorNotification::errorMessage() const

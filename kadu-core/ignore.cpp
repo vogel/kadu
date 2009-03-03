@@ -24,7 +24,7 @@
 #include "misc.h"
 #include "xml_config_file.h"
 
-Ignored::Ignored(QWidget *parent, const char *name) : QWidget(parent, name, Qt::Window),
+Ignored::Ignored(QWidget *parent) : QWidget(parent, Qt::Window),
 	lb_list(0), e_uin(0)
 {
 // 	kdebugf();

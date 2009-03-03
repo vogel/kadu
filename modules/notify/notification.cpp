@@ -24,7 +24,7 @@ static QString getNotificationTitle(const QObject * const object)
 		return "";
 }
 
-Notification::Notification(const QString &type, const QPixmap &icon, const ContactList &contacts)
+Notification::Notification(const QString &type, const QIcon &icon, const ContactList &contacts)
 	: Type(type), Contacts(contacts), Title(""), Text(""), Icon(icon), DefaultCallbackTimer(0), ReferencesCount(0), Closing(false)
 {
 	KaduParser::registerObjectTag("event", getNotificationTitle);
@@ -83,8 +83,9 @@ void Notification::addCallback(const QString &caption, const char *slot)
 void Notification::setDefaultCallback(int timeout, const char *defaultSlot)
 {
 	DefaultCallbackTimer = new QTimer(this);
+	DefaultCallbackTimer->setSingleShot(true);
 	connect(DefaultCallbackTimer, SIGNAL(timeout()), this, defaultSlot);
-	DefaultCallbackTimer->start(timeout, true);
+	DefaultCallbackTimer->start(timeout);
 }
 
 void Notification::callbackAccept()
@@ -151,7 +152,7 @@ void Notification::setIcon(const QPixmap &icon)
 	Icon = icon;
 }
 
-QPixmap Notification::icon() const
+QIcon Notification::icon() const
 {
 	return Icon;
 }

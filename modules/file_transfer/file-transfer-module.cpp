@@ -170,9 +170,8 @@ void FileTransferModule::fileTransferWindowDestroyed()
 QStringList FileTransferModule::selectFilesToSend()
 {
 	return QFileDialog::getOpenFileNames(
-		QString::null,
-		config_file.readEntry("Network", "LastUploadDirectory"),
-		0, "open file", tr("Select file location"));
+			0, tr("Select file location"),
+			config_file.readEntry("Network", "LastUploadDirectory"));
 }
 
 void FileTransferModule::selectFilesAndSend(ContactList contacts)

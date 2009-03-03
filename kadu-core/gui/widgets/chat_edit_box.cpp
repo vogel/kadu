@@ -26,7 +26,7 @@ ChatEditBox::ChatEditBox(QWidget *parent)
 
 	InputBox = new CustomInput(this);
 	InputBox->setWordWrapMode(QTextOption::WordWrap);
-	InputBox->setTextFormat(Qt::RichText);
+	InputBox->setAcceptRichText(true);
 
 	setCentralWidget(InputBox);
 
@@ -44,7 +44,7 @@ ChatEditBox::ChatEditBox(QWidget *parent)
 
 ChatEditBox::~ChatEditBox()
 {
-	chatEditBoxes.remove(this);
+	chatEditBoxes.removeAll(this);
 
 	writeToolBarsToConfig("chat");
 }

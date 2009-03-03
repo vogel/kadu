@@ -10,6 +10,7 @@
 #include <QtGui/QApplication>
 #include <QtGui/QWidget>
 #include <QtGui/QLayout>
+#include <QtGui/QGridLayout>
 #include <QtGui/QGroupBox>
 
 #include "gui/widgets/configuration/config-group-box.h"
@@ -22,9 +23,8 @@ ConfigGroupBox::ConfigGroupBox(const QString &name, ConfigTab *configTab, QGroup
 	groupBox->layout()->addWidget(container);
 
 	gridLayout = new QGridLayout(container);
-	gridLayout->setAutoAdd(false);
-	gridLayout->setSpacing(5);
-	gridLayout->setColStretch(1, 100);
+	gridLayout->setContentsMargins(5, 5, 5, 5);
+	gridLayout->setColumnStretch(1, 100);
 }
 
 ConfigGroupBox::~ConfigGroupBox()
@@ -41,17 +41,17 @@ bool ConfigGroupBox::empty()
 
 void ConfigGroupBox::addWidget(QWidget *widget, bool fullSpace)
 {
-	int numRows = gridLayout->numRows();
+	int numRows = gridLayout->rowCount();
 
 	if (fullSpace)
-		gridLayout->addMultiCellWidget(widget, numRows, numRows, 0, 1);
+		gridLayout->addWidget(widget, numRows, numRows, 0, 1);
 	else
 		gridLayout->addWidget(widget, numRows, 1);
 }
 
 void ConfigGroupBox::addWidgets(QWidget *widget1, QWidget *widget2)
 {
-	int numRows = gridLayout->numRows();
+	int numRows = gridLayout->rowCount();
 
 	if (widget1)
 		gridLayout->addWidget(widget1, numRows, 0, Qt::AlignRight);

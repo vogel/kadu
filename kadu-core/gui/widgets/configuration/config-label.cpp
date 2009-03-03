@@ -12,14 +12,14 @@
 #include "gui/widgets/configuration/config-label.h"
 #include "gui/widgets/configuration/config-group-box.h"
 
-ConfigLabel::ConfigLabel(const QString &widgetCaption, const QString &toolTip, ConfigGroupBox *parentConfigGroupBox, ConfigurationWindowDataManager *dataManager, char *name)
-	: QLabel(parentConfigGroupBox->widget(), name), ConfigWidget(widgetCaption, toolTip, parentConfigGroupBox, dataManager)
+ConfigLabel::ConfigLabel(const QString &widgetCaption, const QString &toolTip, ConfigGroupBox *parentConfigGroupBox, ConfigurationWindowDataManager *dataManager)
+	: QLabel(parentConfigGroupBox->widget()), ConfigWidget(widgetCaption, toolTip, parentConfigGroupBox, dataManager)
 {
 	createWidgets();
 }
 
-ConfigLabel::ConfigLabel(ConfigGroupBox *parentConfigGroupBox, ConfigurationWindowDataManager *dataManager, char *name)
-	: QLabel(parentConfigGroupBox->widget(), name), ConfigWidget(parentConfigGroupBox, dataManager)
+ConfigLabel::ConfigLabel(ConfigGroupBox *p0arentConfigGroupBox, ConfigurationWindowDataManager *dataManager)
+	: QLabel(parentConfigGroupBox->widget()), ConfigWidget(parentConfigGroupBox, dataManager)
 {
 }
 
@@ -27,11 +27,11 @@ void ConfigLabel::createWidgets()
 {
 	kdebugf();
 
-	setText(qApp->translate("@default", widgetCaption));
+	setText(qApp->tr("@default", widgetCaption.toAscii().data()));
 	parentConfigGroupBox->addWidget(this);
 
 	if (!ConfigWidget::toolTip.isEmpty())
-		setToolTip(qApp->translate("@default", ConfigWidget::toolTip));
+		setToolTip(qApp->tr("@default", ConfigWidget::toolTip.toAscii().data()));
 }
 
 void ConfigLabel::show()

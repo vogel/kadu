@@ -12,7 +12,7 @@ class AccountNotification : public Notification
 	Account *CurrentAccount;
 public:
 
-	AccountNotification(const QString &type, const QPixmap &icon, const ContactList &contacts, Account *account);
+	AccountNotification(const QString &type, const QIcon &icon, const ContactList &contacts, Account *account);
 	virtual ~AccountNotification();
 
 	Account * account() const {return CurrentAccount;}

@@ -74,7 +74,7 @@ ConfigurationWindow::~ConfigurationWindow()
 
 void ConfigurationWindow::show()
 {
-	if (!isShown())
+	if (!isVisible())
   	{
 		widget()->init();
 		widget()->loadConfiguration();
@@ -82,7 +82,7 @@ void ConfigurationWindow::show()
 	}
 	else
 	{
-		setActiveWindow();
+		activateWindow();
 		raise();
 	}
 }

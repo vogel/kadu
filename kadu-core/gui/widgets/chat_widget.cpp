@@ -66,7 +66,7 @@ ChatWidget::ChatWidget(Account *initialAccount, const ContactList &contacts, QWi
 
 	if (Contacts.count() > 1)
 	{
-		horizSplit = new QSplitter(Qt::Horizontal, this, "horizSplit");
+		horizSplit = new QSplitter(Qt::Horizontal, this);
 		horizSplit->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Expanding);
 
 		body = new ChatMessagesView(this);
@@ -74,7 +74,7 @@ ChatWidget::ChatWidget(Account *initialAccount, const ContactList &contacts, QWi
 
 		QWidget *userlistContainer = new QWidget(horizSplit);
 		QVBoxLayout *uc_layout = new QVBoxLayout(userlistContainer);
-		uc_layout->setMargin(0);
+		uc_layout->setContentsMargins(0, 0, 0, 0);
 		uc_layout->setSpacing(0);
 
 // TODO: 0.6.6
@@ -177,7 +177,7 @@ void ChatWidget::specialKeyPressed(int key)
  			action = chat_manager->boldActionDescription->action(Edit);
 			if (action)
 				action->setChecked(!action->isChecked());
- 			Edit->inputBox()->setBold(action->isChecked());
+ 			Edit->inputBox()->setFontWeight(action->isChecked() ? QFont::Bold : QFont::Normal);
  			break;
  		case CustomInput::KEY_ITALIC:
  			action = chat_manager->italicActionDescription->action(Edit);
@@ -227,15 +227,15 @@ void ChatWidget::setActColor(bool force)
 
 	KaduAction *action = chat_manager->colorSelectorActionDescription->action(Edit);
 
-	if (action && (force || (Edit->inputBox()->color() != actcolor)))
+	if (action && (force || (Edit->inputBox()->textColor() != actcolor)))
 	{
 		int i;
 		for (i = 0; i < 16; ++i)
-			if (Edit->inputBox()->color() == QColor(colors[i]))
+			if (Edit->inputBox()->textColor() == QColor(colors[i]))
 				break;
 		QPixmap p(12, 12);
 		if (i >= 16)
-			actcolor = Edit->paletteForegroundColor();
+			actcolor = Edit->palette().foreground().color();
 		else
 			actcolor = colors[i];
 		p.fill(actcolor);
@@ -251,12 +251,12 @@ void ChatWidget::insertImage()
 	kdebugf();
 
 	ImageDialog* id = new ImageDialog(this);
-	id->setDir(config_file.readEntry("Chat", "LastImagePath"));
+	id->setDirectory(config_file.readEntry("Chat", "LastImagePath"));
 	id->setWindowTitle(tr("Insert image"));
-	if (id->exec() == QDialog::Accepted)
+	if (id->exec() == QDialog::Accepted && 0 < id->selectedFiles().count())
 	{
-		config_file.writeEntry("Chat", "LastImagePath", id->dirPath());
-		QString selectedFile = id->selectedFile();
+		config_file.writeEntry("Chat", "LastImagePath", id->directory().absolutePath());
+		QString selectedFile = id->selectedFiles()[0];
 		QFileInfo f(selectedFile);
 		delete id;
 		id = NULL;
@@ -308,7 +308,7 @@ void ChatWidget::insertImage()
 			kdebugf2();
 			return;
 		}
-		Edit->inputBox()->insert(QString("[IMAGE ") + selectedFile + ']');
+		Edit->inputBox()->insertPlainText(QString("[IMAGE %1]").arg(selectedFile));
 	}
 	else
 		delete id;
@@ -508,7 +508,7 @@ void ChatWidget::writeMyMessage()
 	KaduAction *action;
 	action = chat_manager->boldActionDescription->action(Edit);
 	if (action)
-		Edit->inputBox()->setBold(action->isChecked());
+		Edit->inputBox()->setFontWeight(action->isChecked() ? QFont::Bold : QFont::Normal);
 
 	action = chat_manager->italicActionDescription->action(Edit);
 	if (action)
@@ -527,7 +527,7 @@ void ChatWidget::clearChatWindow()
 	if (!config_file.readBoolEntry("Chat", "ConfirmChatClear") || MessageBox::ask(tr("Chat window will be cleared. Continue?")))
 	{
 		body->clearMessages();
-		setActiveWindow();
+		activateWindow();
 	}
 	kdebugf2();
 }
@@ -684,7 +684,7 @@ void ChatWidget::openEmoticonSelector(const QWidget *activating_widget)
 void ChatWidget::changeColor(const QWidget *activating_widget)
 {
 	//sytuacja podobna jak w przypadku emoticon_selectora
-	color_selector = new ColorSelector(Edit->paletteForegroundColor(), this);
+	color_selector = new ColorSelector(Edit->palette().foreground().color(), this);
 	color_selector->alignTo(const_cast<QWidget*>(activating_widget)); //TODO: do something about const_cast
 	color_selector->show();
 	connect(color_selector, SIGNAL(colorSelect(const QColor&)), this, SLOT(colorChanged(const QColor&)));
@@ -709,7 +709,7 @@ void ChatWidget::colorChanged(const QColor &color)
 	if (action)
 		action->setIcon(p);
 
-	Edit->inputBox()->setColor(color);
+	Edit->inputBox()->setTextColor(color);
 	actcolor = color;
 }
 
@@ -720,7 +720,7 @@ void ChatWidget::addEmoticon(QString emot)
 	{
 		emot.replace("&lt;", "<");
 		emot.replace("&gt;", ">");
-		Edit->inputBox()->insert(emot);
+		Edit->inputBox()->insertHtml(emot);
 	}
 	emoticon_selector = NULL;
 }
@@ -815,7 +815,7 @@ void ChatWidget::makeActive()
 {
 	kdebugf();
 	QWidget *win = this->window();
-	win->setActiveWindow();
+	win->activateWindow();
 	// workaround for kwin which sometimes don't make window active when it's requested right after "unminimization"
 	if (!win->isActiveWindow() && activationCount++ < 20)
 		QTimer::singleShot(100, this, SLOT(makeActive()));

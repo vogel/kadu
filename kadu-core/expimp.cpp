@@ -94,10 +94,10 @@ UserlistImportExport::UserlistImportExport(QWidget *parent)
 	QHBoxLayout *importbuttons_layout = new QHBoxLayout(importbuttons);
 	importbuttons_layout->setSpacing(5);
 
-	pb_fetch = new QPushButton(icons_manager->loadIcon("FetchUserList"), tr("&Fetch userlist"), this, "fetch");
-	QPushButton *pb_file = new QPushButton(icons_manager->loadIcon("ImportFromFile"), tr("&Import from file"), this, "file");
-	QPushButton *pb_save = new QPushButton(icons_manager->loadIcon("SaveUserlist"), tr("&Save results"), this, "save");
-	QPushButton *pb_merge = new QPushButton(icons_manager->loadIcon("MergeUserlist"), tr("&Merge results"), this, "merge");
+	pb_fetch = new QPushButton(icons_manager->loadIcon("FetchUserList"), tr("&Fetch userlist"), this);
+	QPushButton *pb_file = new QPushButton(icons_manager->loadIcon("ImportFromFile"), tr("&Import from file"), this);
+	QPushButton *pb_save = new QPushButton(icons_manager->loadIcon("SaveUserlist"), tr("&Save results"), this);
+	QPushButton *pb_merge = new QPushButton(icons_manager->loadIcon("MergeUserlist"), tr("&Merge results"), this);
 	// end buttons
 	
 	importbuttons_layout->addStretch();
@@ -128,9 +128,9 @@ UserlistImportExport::UserlistImportExport(QWidget *parent)
 	QWidget *w_blank3 = new QWidget;
 	w_blank3->setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Maximum));
 
-	pb_send = new QPushButton(icons_manager->loadIcon("SendUserlist"), tr("Se&nd userlist"), this, "send");
-	pb_delete = new QPushButton(icons_manager->loadIcon("DeleteUserlist"), tr("&Delete userlist"), this, "delete");
-	pb_tofile = new QPushButton(icons_manager->loadIcon("ExportUserlist"), tr("&Export to file"), this, "tofile");
+	pb_send = new QPushButton(icons_manager->loadIcon("SendUserlist"), tr("Se&nd userlist"), this);
+	pb_delete = new QPushButton(icons_manager->loadIcon("DeleteUserlist"), tr("&Delete userlist"), this);
+	pb_tofile = new QPushButton(icons_manager->loadIcon("ExportUserlist"), tr("&Export to file"), this);
 	// end export buttons
 
 	exportbuttons_layout->addWidget(w_blank3);
@@ -150,7 +150,7 @@ UserlistImportExport::UserlistImportExport(QWidget *parent)
 	QWidget *w_blank4 = new QWidget;
 	w_blank4->setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Maximum));
 
-	QPushButton *pb_close = new QPushButton(icons_manager->loadIcon("CloseWindow"), tr("&Close"), this, "close");
+	QPushButton *pb_close = new QPushButton(icons_manager->loadIcon("CloseWindow"), tr("&Close"), this);
 	// end buttons
 	bottom_layout->addWidget(w_blank4);
 	bottom_layout->addWidget(pb_close);
@@ -224,7 +224,7 @@ void UserlistImportExport::fromfile()
 
 	GaduProtocol *gadu = dynamic_cast<GaduProtocol *>(AccountManager::instance()->defaultAccount()->protocol());
 
-	QString fname = QFileDialog::getOpenFileName("/", QString::null, this);
+	QString fname = QFileDialog::getOpenFileName(this, QString::null, "/");
 	if (!fname.isEmpty())
 	{
 		QFile file(fname);
@@ -373,7 +373,7 @@ void UserlistImportExport::ExportToFile(void)
 	Account *account = AccountManager::instance()->defaultAccount();
 	GaduProtocol *gadu = dynamic_cast<GaduProtocol *>(account->protocol());
 
-	QString fname = QFileDialog::getSaveFileName(QString(getenv("HOME")), QString::null, this);
+	QString fname = QFileDialog::getSaveFileName(this, QString::null, QString(getenv("HOME")));
 	if (!fname.isEmpty())
 	{
 		QFile file(fname);

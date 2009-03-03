@@ -82,9 +82,9 @@ SearchDialog::SearchDialog(QWidget *parent)
 
 	l_gender = new QLabel(tr("Gender"), centralWidget);
 	c_gender = new QComboBox(centralWidget);
-	c_gender->insertItem(" ", 0);
-	c_gender->insertItem(tr("Male"), 1);
-	c_gender->insertItem(tr("Female"), 2);
+	c_gender->insertItem(0, " ");
+	c_gender->insertItem(1, tr("Male"));
+	c_gender->insertItem(2, tr("Female"));
 	connect(c_gender, SIGNAL(activated(const QString &)), this, SLOT(personalDataTyped()));
 
 	l_name = new QLabel(tr("Name"), centralWidget);
@@ -165,17 +165,17 @@ SearchDialog::SearchDialog(QWidget *parent)
 	grid->addWidget(l_byrTo, 2, 7, Qt::AlignRight); grid->addWidget(e_byrTo, 2, 8);
 	grid->addWidget(l_city, 1, 10, Qt::AlignRight); grid->addWidget(e_city, 1, 11);
 
-	grid->addMultiCellWidget(only_active, 2, 2, 10, 11);
-	grid->addMultiCellWidget(qgrp1, 3, 3, 0, 3);
-	grid->addMultiCellWidget(btngrp, 3, 3, 4, 11);
-	grid->addMultiCellWidget(resultsWidget, 5, 5, 0, 11);
-	grid->addMultiCellWidget(progress, 6, 6, 0, 1);
+	grid->addWidget(only_active, 2, 2, 10, 11);
+	grid->addWidget(qgrp1, 3, 3, 0, 3);
+	grid->addWidget(btngrp, 3, 3, 4, 11);
+	grid->addWidget(resultsWidget, 5, 5, 0, 11);
+	grid->addWidget(progress, 6, 6, 0, 1);
+// TODO: 0.6.6
+// 	grid->setCol(2, 10);
+// 	grid->addColSpacing(5, 10);
+// 	grid->addColSpacing(9, 10);
 
-	grid->addColSpacing(2, 10);
-	grid->addColSpacing(5, 10);
-	grid->addColSpacing(9, 10);
-
-	grid->setResizeMode(QLayout::Minimum);
+	centralWidget->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
 	
 	QStringList headers;
 	headers << tr("Status") << tr("Uin") << tr("Name") << tr("City") << tr("Nickname") << tr("Birth year");
@@ -408,7 +408,7 @@ void SearchDialog::firstSearch()
 			query.setBirthYear(e_byrFrom->text().toUShort());
 		}
 
-		switch (c_gender->currentItem())
+		switch (c_gender->currentIndex())
 		{
 			case 1:
 				query.setGender(ContactData::GenderMale);
@@ -618,7 +618,7 @@ bool SearchDialog::isPersonalDataEmpty() const
 		e_nick->text().isEmpty() &&
 		e_byrFrom->text().isEmpty() &&
 		e_surname->text().isEmpty() &&
-		c_gender->currentItem() == 0 &&
+		c_gender->currentIndex() == 0 &&
 		e_city->text().isEmpty();
 }
 

@@ -56,7 +56,7 @@ class NOTIFYAPI NotifierConfigurationWidget : public QWidget
 	Q_OBJECT
 
 public:
-	NotifierConfigurationWidget(QWidget *parent = 0, char *name = 0) : QWidget(parent, name) {}
+	NotifierConfigurationWidget(QWidget *parent = 0) : QWidget(parent) {}
 
 	/**
 		W tej metodzie widget mo�e wczyta� konfigruacje wszystkich zdarze�.
@@ -93,7 +93,7 @@ public slots:
 class NOTIFYAPI Notifier : public virtual QObject
 {
 	public:
-		Notifier(QObject *parent = 0, const char *name = 0) : QObject(parent, name) {};
+		Notifier(QObject *parent = 0) : QObject(parent) {};
 		virtual ~Notifier() {};
 
 		/**
@@ -205,7 +205,7 @@ protected:
 	virtual void accountUnregistered(Account *account);
 
 public:
-	Notify(QObject *parent=0, const char *name=0);
+	Notify(QObject *parent = 0);
 	virtual ~Notify();
 
 	virtual void mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow);

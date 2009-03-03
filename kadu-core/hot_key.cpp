@@ -26,16 +26,16 @@ bool HotKey::shortCut(QKeyEvent *e, const QString &groupname, const QString &nam
 QString HotKey::keyEventToString(QKeyEvent *e)
 {
 	QString result;
-	if ((e->state() & Qt::ControlButton) || (e->key() == Qt::Key_Control))
+	if ((e->modifiers() & Qt::ControlModifier) || (e->key() == Qt::Key_Control))
 		result = "Ctrl+";
 
-	if ((e->state() & Qt::MetaButton) || (e->key() == Qt::Key_Meta))
+	if ((e->modifiers() & Qt::MetaModifier) || (e->key() == Qt::Key_Meta))
 		result += "Shift+Alt+";
 	else
 	{
-		if ((e->state() & Qt::ShiftButton) || (e->key() == Qt::Key_Shift))
+		if ((e->modifiers() & Qt::ShiftModifier) || (e->key() == Qt::Key_Shift))
 			result+= "Shift+";
-		if ((e->state() & Qt::AltButton) || (e->key() == Qt::Key_Alt))
+		if ((e->modifiers() & Qt::AltModifier) || (e->key() == Qt::Key_Alt))
 			result += "Alt+";
 	}
 

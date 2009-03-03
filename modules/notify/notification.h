@@ -11,7 +11,7 @@
 #define NOTIFICATION_H
 
 #include <QtCore/QPair>
-#include <QtGui/QPixmap>
+#include <QtGui/QIcon>
 
 #include "contacts/contact-list.h"
 
@@ -84,7 +84,7 @@ private:
 	QString Title;
 	QString Text;
 	QString Details;
-	QPixmap Icon;
+	QIcon Icon;
 
 	QList<Callback > Callbacks;
 	QTimer *DefaultCallbackTimer;
@@ -103,7 +103,7 @@ public:
 		@arg icon nazwa ikony zdarzenia
 		@arg userListElements lista kontakt�w powi�zana ze zdarzeniem
 	 **/
-	Notification(const QString &type, const QPixmap &icon, const ContactList &contacts);
+	Notification(const QString &type, const QIcon &icon, const ContactList &contacts);
 	virtual ~Notification();
 
 	/**
@@ -196,7 +196,7 @@ public:
 
 		@return ikona zdarzenia
 	 **/
-	QPixmap icon() const;
+	QIcon icon() const;
 
 	/**
 		Lista akcji.

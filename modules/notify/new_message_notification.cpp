@@ -24,7 +24,7 @@ void MessageNotification::unregisterEvents(Notify *manager)
 }
 
 MessageNotification::MessageNotification(MessageType messageType, const ContactList &contacts, const QString &message, Account *account)
-	: AccountNotification(messageType == NewChat ? "NewChat" : "NewMessage", icons_manager->loadIcon("Message").pixmap() , contacts, account)
+	: AccountNotification(messageType == NewChat ? "NewChat" : "NewMessage", icons_manager->loadIcon("Message"), contacts, account)
 {
 	const Contact &contact = contacts[0];
 	QString syntax;
