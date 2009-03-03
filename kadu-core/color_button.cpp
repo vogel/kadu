@@ -19,7 +19,7 @@ ColorButton::ColorButton(QWidget *parent)
 
 void ColorButton::onClick()
 {
-	if (setColor(QColorDialog::getColor(currentColor, this, "Color dialog")))
+	if (setColor(QColorDialog::getColor(currentColor, this)))
 		emit changed(currentColor);
 }
 
