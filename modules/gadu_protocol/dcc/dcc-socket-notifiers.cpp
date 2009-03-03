@@ -169,7 +169,14 @@ void DccSocketNotifiers::handleEventDcc7Accept(struct gg_event *e)
 {
 	kdebugf();
 
-	watchFor(Socket7); // socket may change
+	accepted();
+}
+
+void DccSocketNotifiers::handleEventDcc7Reject(struct gg_event *e)
+{
+	kdebugf();
+
+	rejected();
 }
 
 void DccSocketNotifiers::handleEventDcc7Connected(struct gg_event *e)
@@ -233,7 +240,7 @@ void DccSocketNotifiers::socketEvent()
 		return;
 	}
 
-	kdebugmf(KDEBUG_NETWORK | KDEBUG_INFO, "event: %d\n", e->type);
+	kdebugmf(KDEBUG_NETWORK | KDEBUG_INFO, "dcc event: %d\n", e->type);
 
 	switch (e->type)
 	{

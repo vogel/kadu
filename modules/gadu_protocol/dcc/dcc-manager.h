@@ -65,10 +65,10 @@ class DccManager : public QObject
 	void handleEventDcc7New(struct gg_event *e);
 	void handleEventDcc7Accept(struct gg_event *e);
 	void handleEventDcc7Reject(struct gg_event *e);
+	void handleEventDcc7Pending(struct gg_event *e);
+	void handleEventDcc7Error(struct gg_event *e);
 
 private slots:
-	void dcc7Error(struct gg_dcc7 *);
-
 	void dccConnectionRequestReceived(Contact contact);
 
 // 	void onIpAutotetectToggled(bool toggled);

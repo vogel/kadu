@@ -20,7 +20,6 @@
 #include "misc.h"
 
 #include "dcc/dcc-manager.h"
-#include "dcc/dcc-socket.h"
 #include "dcc/dcc-socket-notifiers.h"
 #include "file-transfer/gadu-file-transfer.h"
 #include "services/gadu-file-transfer-service.h"
@@ -366,7 +365,7 @@ void DccManager::handleEventDcc7Accept(struct gg_event *e)
 	{
 		if (socketNotifiers->Socket7 == e->event.dcc7_accept.dcc7)
 		{
-			socketNotifiers->accepted();
+			socketNotifiers->handleEventDcc7Accept(e);
 			return;
 		}
 	}
@@ -375,19 +374,40 @@ void DccManager::handleEventDcc7Accept(struct gg_event *e)
 void DccManager::handleEventDcc7Reject(struct gg_event *e)
 {
 	kdebugf();
+
 	foreach (DccSocketNotifiers *socketNotifiers, SocketNotifiers)
 	{
 		if (socketNotifiers->Socket7 == e->event.dcc7_accept.dcc7)
 		{
-			socketNotifiers->rejected();
+			socketNotifiers->handleEventDcc7Reject(e);
 			return;
 		}
 	}
 }
 
-void DccManager::dcc7Error(struct gg_dcc7 *dcc)
+void DccManager::handleEventDcc7Pending(struct gg_event *e)
 {
+	kdebugf();
 
+	foreach (DccSocketNotifiers *socketNotifiers, SocketNotifiers)
+	{
+		socketNotifiers->handleEventDcc7Pending(e);
+		return;
+	}
+}
+
+void DccManager::handleEventDcc7Error(struct gg_event *e)
+{
+	kdebugf();
+
+	foreach (DccSocketNotifiers *socketNotifiers, SocketNotifiers)
+	{
+// 		if (socketNotifiers->Socket7 == e->event.dcc7_error)
+// 		{
+// 			socketNotifiers->handleEventDcc7Error(e);
+// 			return;
+// 		}
+	}
 }
 
 void DccManager::attachSendFileTransferSocket6(unsigned int uin, GaduContactAccountData *gcad, GaduFileTransfer *gft)

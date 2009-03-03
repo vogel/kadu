@@ -314,6 +314,28 @@ void GaduProtocolSocketNotifiers::socketEvent()
 			else
 				CurrentProtocol->Dcc->handleEventDcc7Reject(e);
 			break;
+
+		case GG_EVENT_DCC7_ERROR:
+			if (!CurrentProtocol->Dcc)
+			{
+				gg_dcc7_reject(e->event.dcc7_new, GG_DCC7_REJECT_USER);
+				gg_dcc7_free(e->event.dcc7_new);
+				e->event.dcc7_new = NULL;
+			}
+			else
+				CurrentProtocol->Dcc->handleEventDcc7Error(e);
+			break;
+
+		case GG_EVENT_DCC7_PENDING:
+			if (!CurrentProtocol->Dcc)
+			{
+				gg_dcc7_reject(e->event.dcc7_new, GG_DCC7_REJECT_USER);
+				gg_dcc7_free(e->event.dcc7_new);
+				e->event.dcc7_new = NULL;
+			}
+			else
+				CurrentProtocol->Dcc->handleEventDcc7Pending(e);
+			break;
 	}
 
 	gg_free_event(e);
