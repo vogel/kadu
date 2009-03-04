@@ -190,7 +190,7 @@ void DockingManager::defaultToolTip()
 
 		QString tiptext;
 		tiptext.append(tr("Current status:\n%1")
-			.arg(qApp->tr("@default", Status::name(status).toLocal8Bit().data())));
+			.arg(qApp->translate("@default", Status::name(status).toLocal8Bit().data())));
 
 		if (!status.description().isEmpty())
 			tiptext.append(tr("\n\nDescription:\n%2").arg(status.description()));

@@ -180,7 +180,7 @@ QString KaduParser::parse(const QString &s, Account *account, const Contact &con
 				case 's':
 					++i;
 					if (data)
-						pe.str = qApp->tr("UserStatus", Status::name(data->status().type()).toAscii().data());
+						pe.str = qApp->translate("UserStatus", Status::name(data->status().type()).toAscii().data());
 					break;
 				case 't':
 					++i;

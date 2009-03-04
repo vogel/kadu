@@ -281,7 +281,7 @@ void MainConfigurationWindow::setIconThemes()
 	themes.sort();
 
 	foreach(const QString &theme, themes)
-		captions.append(qApp->tr("@default", theme.toAscii().data()));
+		captions.append(qApp->translate("@default", theme.toAscii().data()));
 
 	iconThemes->setItems(themes, captions);
 	iconThemes->setEditText(icons_manager->theme());
@@ -309,7 +309,7 @@ void MainConfigurationWindow::setToolTipClasses()
 	QStringList toolTipClasses = ToolTipClassManager::instance()->getToolTipClasses();
 	foreach(const QString &toolTipClass, toolTipClasses)
 	{
-		captions << qApp->tr("@default", toolTipClass.toAscii().data());
+		captions << qApp->translate("@default", toolTipClass.toAscii().data());
 		values << toolTipClass;
 	}
 

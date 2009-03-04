@@ -55,7 +55,7 @@ void ConfigComboBox::createWidgets()
 {
 	kdebugf();
 
-	label = new QLabel(qApp->tr("@default", widgetCaption.toAscii().data()) + ":", parentConfigGroupBox->widget());
+	label = new QLabel(qApp->translate("@default", widgetCaption.toAscii().data()) + ":", parentConfigGroupBox->widget());
 	parentConfigGroupBox->addWidgets(label, this);
 
 	clear();
@@ -63,8 +63,8 @@ void ConfigComboBox::createWidgets()
 
 	if (!ConfigWidget::toolTip.isEmpty())
 	{
-		setToolTip(qApp->tr("@default", ConfigWidget::toolTip.toAscii().data()));
-		label->setToolTip(qApp->tr("@default", ConfigWidget::toolTip.toAscii().data()));
+		setToolTip(qApp->translate("@default", ConfigWidget::toolTip.toAscii().data()));
+		label->setToolTip(qApp->translate("@default", ConfigWidget::toolTip.toAscii().data()));
 	}
 }
 
@@ -117,9 +117,9 @@ bool ConfigComboBox::fromDomElement(QDomElement domElement)
 				continue;
 
 			itemValues.append(element.attribute("value"));
-			itemCaptions.append(qApp->tr("@default", element.attribute("caption").toAscii().data()));
+			itemCaptions.append(qApp->translate("@default", element.attribute("caption").toAscii().data()));
 
-			addItem(qApp->tr("@default", element.attribute("caption").toAscii().data()));
+			addItem(qApp->translate("@default", element.attribute("caption").toAscii().data()));
 		}
 	}
 

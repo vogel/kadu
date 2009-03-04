@@ -32,7 +32,7 @@ ConfigManageAccounts::~ConfigManageAccounts()
 void ConfigManageAccounts::createWidgets()
 {
 	if (!ConfigWidget::toolTip.isEmpty())
-		setToolTip(qApp->tr("@default", ConfigWidget::toolTip.toAscii().data()));
+		setToolTip(qApp->translate("@default", ConfigWidget::toolTip.toAscii().data()));
 
 	parentConfigGroupBox->addWidget(this, true);
 }

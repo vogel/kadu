@@ -271,7 +271,7 @@ void Notify::mainConfigurationWindowDestroyed()
 
 void Notify::addConfigurationWidget(NotifierData &notifier, const QString &name)
 {
-	NotifyGroupBox *configurationGroupBox = new NotifyGroupBox(name, qApp->tr("@default", name.toAscii().data()), notificationsGroupBox->widget());
+	NotifyGroupBox *configurationGroupBox = new NotifyGroupBox(name, qApp->translate("@default", name.toAscii().data()), notificationsGroupBox->widget());
 	connect(configurationGroupBox, SIGNAL(toggled(const QString &, bool)), this, SLOT(notifierToggled(const QString &, bool)));
 
 	notifier.configurationGroupBox = configurationGroupBox;

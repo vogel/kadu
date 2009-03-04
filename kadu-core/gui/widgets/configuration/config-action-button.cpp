@@ -29,11 +29,11 @@ void ConfigActionButton::createWidgets()
 {
 	kdebugf();
 
-	setText(qApp->tr("@default", widgetCaption.toAscii().data()));
+	setText(qApp->translate("@default", widgetCaption.toAscii().data()));
 	parentConfigGroupBox->addWidget(this);
 
 	if (!ConfigWidget::toolTip.isEmpty())
-		setToolTip(qApp->tr("@default", ConfigWidget::toolTip.toAscii().data()));
+		setToolTip(qApp->translate("@default", ConfigWidget::toolTip.toAscii().data()));
 }
 
 void ConfigActionButton::show()
