@@ -40,7 +40,7 @@ MessageBox::MessageBox(const QString &message, int components, bool modal, const
 	vbox->setContentsMargins(10, 10, 10, 10);
 	vbox->setSpacing(10);
 
-	QHBoxLayout *hboxlabels = new QHBoxLayout(this);
+	QHBoxLayout *hboxlabels = new QHBoxLayout();
 	hboxlabels->addStretch(1);
 	vbox->addLayout(hboxlabels);
 
@@ -58,11 +58,11 @@ MessageBox::MessageBox(const QString &message, int components, bool modal, const
 	hboxlabels->addWidget(label, 0, Qt::AlignCenter);
 	hboxlabels->addStretch(1);
 
-	QHBoxLayout *hboxbuttons = new QHBoxLayout(this);
+	QHBoxLayout *hboxbuttons = new QHBoxLayout();
 	vbox->addLayout(hboxbuttons);
 
 	QWidget *buttons = new QWidget;
-	QHBoxLayout *buttons_layout = new QHBoxLayout;
+	QHBoxLayout *buttons_layout = new QHBoxLayout(buttons);
 	buttons_layout->setSpacing(20);
 
 	if (components & OK)
@@ -77,7 +77,6 @@ MessageBox::MessageBox(const QString &message, int components, bool modal, const
 	if (components & CANCEL)
 		addButton(buttons_layout, tr("&Cancel"), SLOT(cancelClicked()));
 
-	buttons->setLayout(buttons_layout);
 	hboxbuttons->addWidget(buttons, 0, Qt::AlignCenter);
  	buttons->setMaximumSize(buttons_layout->sizeHint());
 	kdebugf2();
