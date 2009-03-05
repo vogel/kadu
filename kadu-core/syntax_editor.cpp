@@ -54,7 +54,7 @@ QString SyntaxList::readSyntax(const QString &category, const QString &name, con
 	QString result;
 	QTextStream stream(&syntaxFile);
 	stream.setCodec("UTF-8");
-	result = stream.readLine();
+	result = stream.readAll();
 	syntaxFile.close();
 
 	if (result.isEmpty())
@@ -161,7 +161,7 @@ QString SyntaxList::readSyntax(const QString &name)
 	QString result;
 	QTextStream stream(&syntaxFile);
 	stream.setCodec("UTF-8");
-	result = stream.readLine();
+	result = stream.readAll();
 	syntaxFile.close();
 
 	return result;
@@ -292,7 +292,7 @@ void SyntaxEditor::syntaxChangedSlot(const QString &newSyntax)
 
 	QTextStream stream(&file);
 	stream.setCodec("UTF-8");
-	content = stream.readLine();
+	content = stream.readAll();
 	file.close();
 
 	content.replace(QRegExp("%o"),  " ");
