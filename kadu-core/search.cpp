@@ -165,11 +165,11 @@ SearchDialog::SearchDialog(QWidget *parent)
 	grid->addWidget(l_byrTo, 2, 7, Qt::AlignRight); grid->addWidget(e_byrTo, 2, 8);
 	grid->addWidget(l_city, 1, 10, Qt::AlignRight); grid->addWidget(e_city, 1, 11);
 
-	grid->addWidget(only_active, 2, 2, 10, 11);
-	grid->addWidget(qgrp1, 3, 3, 0, 3);
-	grid->addWidget(btngrp, 3, 3, 4, 11);
-	grid->addWidget(resultsWidget, 5, 5, 0, 11);
-	grid->addWidget(progress, 6, 6, 0, 1);
+	grid->addWidget(only_active, 2, 10, 1, 2);
+	grid->addWidget(qgrp1, 3, 0, 1, 4);
+	grid->addWidget(btngrp, 3, 4, 1, 7);
+	grid->addWidget(resultsWidget, 5, 0, 1, 12);
+	grid->addWidget(progress, 6, 0, 1, 2);
 // TODO: 0.6.6
 // 	grid->setCol(2, 10);
 // 	grid->addColSpacing(5, 10);

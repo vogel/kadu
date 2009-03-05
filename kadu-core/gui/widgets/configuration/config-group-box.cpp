@@ -44,7 +44,7 @@ void ConfigGroupBox::addWidget(QWidget *widget, bool fullSpace)
 	int numRows = gridLayout->rowCount();
 
 	if (fullSpace)
-		gridLayout->addWidget(widget, numRows, numRows, 0, 1);
+		gridLayout->addWidget(widget, numRows, 0, 1, 2);
 	else
 		gridLayout->addWidget(widget, numRows, 1);
 }

@@ -69,7 +69,7 @@ ColorSelector::ColorSelector(const QColor &defColor, QWidget *parent)
 	if (!qcolors.contains(defColor))
 	{
 		ColorSelectorButton* btn = new ColorSelectorButton(defColor, 4, this);
-		grid->addWidget(btn, 4, 4, 0, 3);
+		grid->addWidget(btn, 4, 0, 1, 4);
 		connect(btn, SIGNAL(clicked(const QColor&)), this, SLOT(iconClicked(const QColor&)));
 	}
 	kdebugf2();

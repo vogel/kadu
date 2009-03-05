@@ -328,8 +328,8 @@ SyntaxEditorWindow::SyntaxEditorWindow(SyntaxList *syntaxList, const QString &sy
 	QFrame *syntax = new QFrame();
 
 	QGridLayout *syntax_layout = new QGridLayout(syntax);
-// 	syntax_layout->setColStretch(0, 2);
-// 	syntax_layout->setColStretch(1, 1);
+ 	syntax_layout->setColumnStretch(0, 2);
+ 	syntax_layout->setColumnStretch(1, 1);
 	syntax_layout->setSpacing(5);
 
 	editor = new QTextEdit(syntax);
@@ -339,7 +339,7 @@ SyntaxEditorWindow::SyntaxEditorWindow(SyntaxList *syntaxList, const QString &sy
 	if (!syntaxHint.isEmpty())
 		editor->setToolTip(syntaxHint);
 
-	syntax_layout->addWidget(editor, 0, 1, 0, 0);
+	syntax_layout->addWidget(editor, 0, 0, 2, 1);
 
 	previewPanel = new Preview(syntax);
 	previewPanel->setResetBackgroundColor(config_file.readEntry("Look", category + "BgColor"));

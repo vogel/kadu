@@ -69,7 +69,7 @@ PathListEditWindow::PathListEditWindow(const QStringList &pathList, QWidget *par
 	Layout->setSpacing(5);
 
 	PathListWidget = new QListWidget(this);
-	Layout->addWidget(PathListWidget, 0, 3, 0, 0);
+	Layout->addWidget(PathListWidget, 0, 0, 4, 1);
 
 
 	QPushButton *add = new QPushButton(icons_manager->loadIcon("AddSelectPathDialogButton"), tr("Add"), this);
@@ -98,7 +98,7 @@ PathListEditWindow::PathListEditWindow(const QStringList &pathList, QWidget *par
 	bottom_layout->addWidget(cancel);
 	bottom->setLayout(bottom_layout);
 
-	Layout->addWidget(bottom, 5, 5, 0, 1);
+	Layout->addWidget(bottom, 5, 0, 1, 2);
 	connect(ok, SIGNAL(clicked()), this, SLOT(okClicked()));
 	connect(cancel, SIGNAL(clicked()), this, SLOT(close()));
 
