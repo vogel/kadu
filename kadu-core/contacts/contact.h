@@ -92,6 +92,7 @@ public:
 
 	void addAccountData(ContactAccountData *accountData);
 	ContactAccountData * accountData(Account *account) const;
+	QList<ContactAccountData *> accountDatas() const;
 	bool hasStoredAccountData(Account *account) const;
 	bool hasAccountData(Account *account) const;
 

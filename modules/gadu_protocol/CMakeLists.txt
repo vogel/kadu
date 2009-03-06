@@ -8,6 +8,8 @@ set (SOURCES
 	helpers/gadu-importer.cpp
 	helpers/gadu-list-helper.cpp
 
+	open-chat-with/gadu-open-chat-with-runner.cpp
+
 	server/gadu-server-connector.cpp
 	server/gadu-server-change-password.cpp
 	server/gadu-server-register-account.cpp
@@ -48,6 +50,8 @@ set (MOC_SOURCES
 	helpers/gadu-importer.h
 
 	file-transfer/gadu-file-transfer.h
+	
+	open-chat-with/gadu-open-chat-with-runner.h
 
 	server/gadu-server-connector.h
 	server/gadu-server-change-password.h

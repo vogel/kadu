@@ -36,7 +36,6 @@ Account::Account(const QUuid &uuid, Protocol *protocol, AccountData *data)
 		: uuid;
 
 	setProtocol(protocol);
-
 	triggerAllContactsAdded();
 }
 

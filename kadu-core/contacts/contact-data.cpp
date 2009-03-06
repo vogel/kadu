@@ -226,6 +226,11 @@ ContactAccountData * ContactData::accountData(Account *account)
 	return AccountsData[account];
 }
 
+QList<ContactAccountData *> ContactData::accountDatas()
+{
+	return AccountsData.values();
+}
+
 bool ContactData::hasStoredAccountData(Account *account)
 {
 	StoragePoint *sp = storage();

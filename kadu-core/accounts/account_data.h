@@ -13,6 +13,8 @@
 #include <QtCore/QObject>
 #include <QtXml/QDomElement>
 
+#include "account.h"
+
 class XmlConfigFile;
 
 class AccountData : public QObject
@@ -22,6 +24,8 @@ class AccountData : public QObject
 	QString Name;
 	QString Id;
 	QString Password;
+protected:
+	Account *ParentAccount;
 
 public:
 	AccountData();
@@ -31,10 +35,12 @@ public:
 	QString name() { return Name; }
 	QString password() { return Password; }
 	QString id() { return Id; }
+	Account * account() { return ParentAccount; } 
 
 	void setName(const QString &name) { Name = name; }
 	void setPassword(const QString &password) { Password = password; }
 	virtual bool setId(const QString &id);
+	void setAccount(Account *account) { ParentAccount = account; }
 
 	virtual bool validateId(const QString &id) = 0;
 	virtual bool loadConfiguration(XmlConfigFile *configurationStorage, QDomElement parent) = 0;

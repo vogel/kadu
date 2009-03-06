@@ -12,6 +12,8 @@
 
 #include <QtCore/QString>
 
+#include "open-chat-with/gadu-open-chat-with-runner.h"
+
 #include "accounts/account_data.h"
 #include "gadu.h"
 

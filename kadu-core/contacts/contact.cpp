@@ -136,6 +136,13 @@ ContactAccountData * Contact::accountData(Account *account) const
 		: Data->accountData(account);
 }
 
+QList<ContactAccountData *> Contact::accountDatas() const
+{
+	return isNull()
+		? QList<ContactAccountData *>()
+		: Data->accountDatas();
+}
+
 bool Contact::hasStoredAccountData(Account *account) const
 {
 	return isNull()

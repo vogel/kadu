@@ -96,6 +96,9 @@ set (kadu_SRCS
 	gui/windows/chat_window.cpp
 	gui/windows/configuration-window.cpp
 	gui/windows/contact-data-window.cpp
+	gui/windows/open-chat-with/open-chat-with.cpp
+	gui/windows/open-chat-with/open-chat-with-contact-list-runner.cpp
+	gui/windows/open-chat-with/open-chat-with-runner-manager.cpp
 
 	protocols/protocol.cpp
 	protocols/protocol-menu-manager.cpp
@@ -215,7 +218,10 @@ set (kadu_MOC_SRCS
 	gui/windows/chat_window.h
 	gui/windows/configuration-window.h
 	gui/windows/contact-data-window.h
-
+	gui/windows/open-chat-with/open-chat-with.h
+	gui/windows/open-chat-with/open-chat-with-contact-list-runner.h
+	gui/windows/open-chat-with/open-chat-with-runner-manager.h
+	
 	protocols/protocol.h
 	protocols/protocols_manager.h
 

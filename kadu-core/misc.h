@@ -99,25 +99,6 @@ public:
 
 };
 
-class KADUAPI OpenChatWith : public QWidget
-{
-	Q_OBJECT
-
-	QComboBox *c_text;
-	QComboBox *c_protocol;
-
-private slots:
-	void inputAccepted();
-
-protected:
-	virtual void keyPressEvent(QKeyEvent *e);
-
-public:
-	OpenChatWith(QWidget *parent = 0);
-	virtual ~OpenChatWith();
-
-};
-
 class KADUAPI ImageWidget : public QWidget
 {
 	QImage Image;

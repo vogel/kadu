@@ -7,6 +7,8 @@
  *                                                                         *
  ***************************************************************************/
 
+#include "gui/windows/open-chat-with/open-chat-with-runner-manager.h"
+
 #include "misc.h"
 #include "xml_config_file.h"
 
@@ -14,18 +16,24 @@
 
 GaduAccountData::GaduAccountData()
 {
+// 	OpenChatRunner = new GaduOpenChatWithRunner();
+// 	OpenChatWithRunnerManager::instance()->registerRunner(OpenChatRunner);
 }
 
 GaduAccountData::GaduAccountData(const QString &name, const QString &id, const QString &password)
 	: AccountData(name, id, password)
 {
 	setId(id);
+// 	OpenChatRunner = new GaduOpenChatWithRunner();
+// 	OpenChatWithRunnerManager::instance()->registerRunner(OpenChatRunner);
 }
 
 GaduAccountData::GaduAccountData(const QString &name, UinType uin, const QString &password)
 	: AccountData(name, QString::number(uin), password)
 {
 	setId(QString::number(uin));
+// 	OpenChatRunner = new GaduOpenChatWithRunner();
+// 	OpenChatWithRunnerManager::instance()->registerRunner(OpenChatRunner);
 }
 
 bool GaduAccountData::setId(const QString &id)
@@ -44,13 +52,19 @@ bool GaduAccountData::validateId(const QString &id)
 	return ok;
 }
 
+// void GaduAccountData::setAccount(Account *account) 
+// {
+// 	ParentAccount = account;
+// 	OpenChatRunner->setAccount(account);
+// }
+
 bool GaduAccountData::loadConfiguration(XmlConfigFile *configurationStorage, QDomElement parent)
 {
 	QDomElement gaduNode = configurationStorage->getNode(parent, "Gadu");
 	QString uinString = configurationStorage->getTextNode(gaduNode, "Uin");
 	QString passwordString = configurationStorage->getTextNode(gaduNode, "Password");
 
-	// TODO 0.6.6 if false -> error msg
+	// TODO 0.6.6 if false -> error msgg
 	setId(uinString);
 	setPassword(pwHash(passwordString));
 }

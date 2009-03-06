@@ -89,6 +89,7 @@ public:
 
 	void addAccountData(ContactAccountData *accountData);
 	ContactAccountData * accountData(Account *account);
+	QList<ContactAccountData *> accountDatas();
 	bool hasStoredAccountData(Account *account);
 
 	ContactModuleData * moduleData(const QString &key);

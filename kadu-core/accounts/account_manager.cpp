@@ -103,7 +103,7 @@ Account * AccountManager::createAccount(const QString &protocolName, AccountData
 
 	Account *result = new Account(QUuid::createUuid(), protocol, accountData);
 	protocol->setAccount(result);
-
+	accountData->setAccount(result);
 	return result;
 }
 
