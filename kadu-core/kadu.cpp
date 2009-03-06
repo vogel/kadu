@@ -104,21 +104,6 @@ const char *Kadu::SyntaxText = QT_TRANSLATE_NOOP
 	"%h - gg version, %v - revDNS, %p - port, %e - email, %x - max image size\n"
 );
 
-const char *Kadu::SyntaxTextExtended = QT_TRANSLATE_NOOP
-(
-	"@default", "Syntax: %s - status, %d - description, %i - ip, %n - nick, %a - altnick, %f - first name\n"
-	"%r - surname, %m - mobile, %u - uin, %g - group, %o - return _space_ if user doesn't have us in userlist\n"
-	"%h - gg version, %v - revDNS, %p - port, %e - email, %x - max image size,\n"
-	"#{message} - message content,\n"
-	"#{backgroundColor} - background color of message,\n"
-	"#{fontColor} - font color of message,\n"
-	"#{nickColor} - font color of nick,\n"
-	"#{sentDate} - when message was sent,\n"
-	"#{receivedDate} - when message was received,\n"
-	"#{separator} - separator between messages,\n"
-	"<kadu:header>text</kadu:header> - text will not be displayed in 'Remove repeated headers' mode\n"
-);
-
 const char *Kadu::SyntaxTextNotify = QT_TRANSLATE_NOOP
 (
 	"@default", "Syntax: %s - status, %d - description, %i - ip, %n - nick, %a - altnick, %f - first name\n"
@@ -351,13 +336,12 @@ void disableNoEMail(KaduAction *action)
 	}
 
 	const ContactList contacts = action->contacts();
-	/*
-	//TODO: 0.6.6
-	if (ules[0].email().isEmpty() || ules[0].email().indexOf(HtmlDocument::mailRegExp()) < 0)
+
+	if (contacts[0].email().isEmpty() || contacts[0].email().indexOf(HtmlDocument::mailRegExp()) < 0)
 	{
 		action->setEnabled(false);
 		return;
-	}*/
+	}
 
 	action->setEnabled(true);
 	kdebugf2();

@@ -239,7 +239,6 @@ public:
 		dodane zosta�o to pole, �eby nie trzeba by�o zmienia� tekstu w kilku miejscach
 	**/
 	static const char *SyntaxText;
-	static const char *SyntaxTextExtended;
 	static const char *SyntaxTextNotify;
 
 	static bool closing() { return Closing; }
