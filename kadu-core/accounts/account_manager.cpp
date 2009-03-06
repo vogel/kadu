@@ -53,10 +53,6 @@ void AccountManager::loadConfiguration(XmlConfigFile *configurationStorage, cons
 		if (accountElement.isNull())
 			continue;
 
-		QUuid uuid(accountElement.attribute("uuid"));
-		if (uuid.isNull())
-			uuid = QUuid::createUuid();
-
 		// TODO hasAccountUUID(uuid) => return
 		QString protocolName = configurationStorage->getTextNode(accountElement, "Protocol");
 		if (protocolName.isEmpty())
@@ -109,6 +105,7 @@ Account * AccountManager::byUuid(const QUuid &uuid) const
 
 	return 0;
 }
+
 const QList<Account *> AccountManager::byProtocolName(const QString &name) const
 {
 	QList<Account *> list;

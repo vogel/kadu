@@ -26,7 +26,6 @@ class StoragePoint;
 class ProtocolFactory : public QObject
 {
 public:
-// 	virtual Protocol * newInstance() = 0;
 	virtual Account * newAccount() = 0;
 	virtual ContactAccountData * newContactAccountData(Contact contact, Account *account, const QString &id) = 0;
 	virtual ContactAccountData * loadContactAccountData(Contact contact, Account *account) = 0;

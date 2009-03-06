@@ -42,8 +42,6 @@ void Account::setProtocol(Protocol *protocolHandler)
 
 	connect(ProtocolHandler, SIGNAL(contactStatusChanged(Account *, Contact, Status)),
 			this, SIGNAL(contactStatusChanged(Account *, Contact, Status)));
-
-	triggerAllContactsAdded();
 }
 
 bool Account::setId(const QString &id)
@@ -64,10 +62,12 @@ void Account::contactRemoved(Contact contact)
 
 void Account::loadConfiguration(XmlConfigFile *configurationStorage, QDomElement parent)
 {
-	Uuid = parent.attribute("uuid");
-	Name  = configurationStorage->getTextNode(parent, "Name");
+	Uuid = QUuid(parent.attribute("uuid"));
+	Name = configurationStorage->getTextNode(parent, "Name");
 	setId(configurationStorage->getTextNode(parent, "Id"));
 	Password = pwHash(configurationStorage->getTextNode(parent, "Password"));
+
+	triggerAllContactsAdded();
 }
 
 void Account::storeConfiguration(XmlConfigFile *configurationStorage, QDomElement parent)

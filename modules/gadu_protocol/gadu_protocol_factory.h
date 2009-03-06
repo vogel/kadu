@@ -19,7 +19,6 @@ class GaduContactAccountData;
 class GaduProtocolFactory : public ProtocolFactory
 {
 public:
-// 	virtual Protocol * newInstance();
 	virtual Account * newAccount();
 	virtual ContactAccountData * newContactAccountData(Contact contact, Account *account, const QString &id);
 	virtual ContactAccountData * loadContactAccountData(Contact contact, Account *account);

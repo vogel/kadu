@@ -65,7 +65,7 @@ void disableNonFileTransferContacts(KaduAction *action)
 			return;
 
 		Account *account = contact.prefferedAccount();
-		if (0 == account->protocol()->fileTransferService())
+		if (!account || !account->protocol()->fileTransferService())
 			return;
 	}
 
