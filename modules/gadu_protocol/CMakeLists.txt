@@ -1,4 +1,6 @@
 set (SOURCES
+	conference/gadu-conference.cpp
+
 	dcc/dcc-manager.cpp
 	dcc/dcc-socket-notifiers.cpp
 
@@ -44,6 +46,8 @@ set (SOURCES
 )
 
 set (MOC_SOURCES
+	conference/gadu-conference.h
+
 	dcc/dcc-manager.h
 	dcc/dcc-socket-notifiers.h
 

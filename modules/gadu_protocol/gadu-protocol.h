@@ -15,6 +15,7 @@
 
 #include <libgadu.h>
 
+#include "conference/gadu-conference.h"
 #include "services/gadu-chat-image-service.h"
 #include "services/gadu-chat-service.h"
 #include "services/gadu-contact-list-service.h"
@@ -187,6 +188,7 @@ public:
 	virtual SearchService * searchService() { return CurrentSearchService; }
 
 	virtual void setAccount(Account *account);
+	virtual Conference * loadConferenceFromStorage(StoragePoint *storage);
 
 	UinType uin(Contact contact) const;
 	GaduContactAccountData * gaduContactAccountData(Contact contact) const;
@@ -217,6 +219,7 @@ public:
 	**/
 	void setDccExternalIP(const QHostAddress& ip);
 	bool validateUserID(QString &uid);
+	GaduConference * conference(ContactList contacts);
 
 	virtual QPixmap statusPixmap(Status status);
 

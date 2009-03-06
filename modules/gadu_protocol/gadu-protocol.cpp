@@ -15,6 +15,7 @@
 
 #include "chat/message/message.h"
 
+#include "conference/conference-manager.h"
 #include "contacts/contact-manager.h"
 #include "contacts/ignored-helper.h"
 
@@ -1180,3 +1181,30 @@ QPixmap GaduProtocol::statusPixmap(Status status)
 
 	return icons_manager->loadPixmap(pixmapName);
 }
+
+GaduConference * GaduProtocol::conference(ContactList contacts)
+{
+	foreach (Conference *c, ConferenceManager::instance()->conferences())
+	{
+		if (c->account() != account())
+			continue;
+		GaduConference *gc = dynamic_cast<GaduConference *>(c);
+		if (!gc)
+			continue;
+		if (gc->contacts() == contacts)
+			return gc;
+	}
+	GaduConference *conference = new GaduConference(account(), contacts);
+	ConferenceManager::instance()->addConference(conference);
+	return conference;
+}
+
+Conference * GaduProtocol::loadConferenceFromStorage(StoragePoint *storage)
+{
+	Conference *result = new Conference(account(), QUuid());
+	result->setStorage(storage);
+	result->loadConfiguration();
+	return result;
+}
+
+

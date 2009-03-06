@@ -24,6 +24,7 @@
 
 #include "exports.h"
 
+#include "conference/conference.h"
 #include "contacts/contact.h"
 #include "contacts/contact-list.h"
 
@@ -90,6 +91,8 @@ public:
 
 	virtual void setAccount(Account *account); 
 	virtual bool validateUserID(QString &uid) = 0;
+
+	virtual Conference *loadConferenceFromStorage(StoragePoint *storage) = 0;
 
 	NetworkState state() { return State; }
 	bool isConnected() { return (State == NetworkConnected); }
