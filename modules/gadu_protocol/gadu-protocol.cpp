@@ -33,7 +33,7 @@
 #include "socket-notifiers/gadu-pubdir-socket-notifiers.h"
 
 #include "connection-timeout-timer.h"
-#include "gadu_account_data.h"
+#include "gadu-account.h"
 #include "gadu-contact-account-data.h"
 #include "gadu_images_manager.h"
 
@@ -181,20 +181,6 @@ bool GaduProtocol::validateUserID(QString &uid)
 
 	return false;
 */
-}
-
-GaduAccountData * GaduProtocol::gaduAccountData() const
-{
-	return account()
-		? dynamic_cast<GaduAccountData *>(account()->data())
-		: 0;
-}
-
-void GaduProtocol::setAccount(Account* account)
-{
-	Protocol::setAccount(account);
-
-	SocketNotifiers->setAccount(account);
 }
 
 unsigned int GaduProtocol::maxDescriptionLength()
@@ -518,7 +504,9 @@ void GaduProtocol::login()
 {
 	kdebugf();
 
-	if (0 == gaduAccountData()->uin() || QString::null == gaduAccountData()->password())
+	GaduAccount *gaduAccount = dynamic_cast<GaduAccount *>(account());
+
+	if (0 == gaduAccount->uin() || QString::null == gaduAccount->password())
 	{
 		MessageBox::msg(tr("UIN or password not set!"), false, "Warning");
 		setStatus(Status::Offline);
@@ -547,7 +535,7 @@ void GaduProtocol::login()
 	if (!nextStatus().description().isEmpty())
 		GaduLoginParams.status_descr = strdup((const char *)unicode2cp(nextStatus().description()).data());
 
-	GaduLoginParams.uin = gaduAccountData()->uin();
+	GaduLoginParams.uin = gaduAccount->id().toULong();
 	GaduLoginParams.has_audio = config_file.readBoolEntry("Network", "AllowDCC");
 	// GG 6.0 build 147 ustawia indeks ostatnio odczytanej wiadomosci systemowej na 1389
 	GaduLoginParams.last_sysmsg = config_file.readNumEntry("General", "SystemMsgIndex", 1389);
@@ -594,7 +582,10 @@ void GaduProtocol::login()
 	ConnectionTimeoutTimer::on();
 	ConnectionTimeoutTimer::connectTimeoutRoutine(this, SLOT(connectionTimeoutTimerSlot()));
 
-	GaduLoginParams.password = strdup(gaduAccountData()->password().toAscii().data());
+	GaduLoginParams.password = strdup(gaduAccount->password().toAscii().data());
+
+	printf("login using data: %d %s\n", GaduLoginParams.uin, GaduLoginParams.password);
+
 		// strdup((const char *)unicode2cp(pwHash(config_file.readEntry("General", "Password"))));
 	GaduSession = gg_login(&GaduLoginParams);
 	memset(GaduLoginParams.password, 0, strlen(GaduLoginParams.password));

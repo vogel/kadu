@@ -13,7 +13,6 @@
 #include <QtWebKit/QWebFrame>
 //TODO:
 #include "accounts/account.h"
-#include "accounts/account_data.h"
 #include "accounts/account_manager.h"
 
 #include "chat/chat_message.h"
@@ -331,7 +330,7 @@ QString AdiumChatStyleEngine::replaceKeywords(ChatMessagesView *view, QString &s
 	}
 	result.replace(QString("%chatName%"), name);
 	// Replace %sourceName%. TODO: Do sth with it!
-	result.replace(QString("%sourceName%"), AccountManager::instance()->defaultAccount()->data()->name());
+	result.replace(QString("%sourceName%"), AccountManager::instance()->defaultAccount()->name());
 	// Replace %destinationName%
 	result.replace(QString("%destinationName%"), name);
 	// For %timeOpened%, display the date and time. TODO: get real time 

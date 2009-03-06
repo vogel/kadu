@@ -43,7 +43,7 @@
 #include "socket-notifiers/gadu-pubdir-socket-notifiers.h"
 #include "socket-notifiers/gadu-token-socket-notifiers.h"
 
-#include "gadu_account_data.h"
+#include "gadu-account.h"
 #include "gadu-contact-account-data.h"
 #include "gadu_images_manager.h"
 #include "gadu-protocol.h"

@@ -8,7 +8,6 @@
  ***************************************************************************/
 
 #include "account.h"
-#include "account_data.h"
 #include "accounts_aware_object.h"
 #include "config_file.h"
 #include "debug.h"
@@ -59,18 +58,17 @@ void AccountManager::loadConfiguration(XmlConfigFile *configurationStorage, cons
 			uuid = QUuid::createUuid();
 
 		// TODO hasAccountUUID(uuid) => return
+		QString protocolName = configurationStorage->getTextNode(accountElement, "Protocol");
+		if (protocolName.isEmpty())
+			continue;
 
-		Account *account = new Account(uuid);
+		ProtocolFactory *protocolFactory = ProtocolsManager::instance()->protocolFactory(protocolName);
+		if (!protocolFactory)
+			continue;
 
-		if (account->loadConfiguration(configurationStorage, accountElement))
-		{
-			if (account->protocol()->protocolFactory()->name() == name)
-				registerAccount(account);
-			else
-				delete account;
-		}
-		else
-			delete account;
+		Account *account = protocolFactory->newAccount();
+		account->loadConfiguration(configurationStorage, accountElement);
+		registerAccount(account);
 	}
 }
 
@@ -93,18 +91,6 @@ void AccountManager::storeConfiguration(XmlConfigFile *configurationStorage, con
 Account * AccountManager::defaultAccount() const
 {
 	return byIndex(0);
-}
-
-Account * AccountManager::createAccount(const QString &protocolName, AccountData *accountData)
-{
-	Protocol *protocol = ProtocolsManager::instance()->newInstance(protocolName);
-	if (0 == protocol)
-		return 0;
-
-	Account *result = new Account(QUuid::createUuid(), protocol, accountData);
-	protocol->setAccount(result);
-	accountData->setAccount(result);
-	return result;
 }
 
 Account * AccountManager::byIndex(unsigned int index) const

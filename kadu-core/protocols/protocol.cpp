@@ -21,6 +21,7 @@
 Protocol::Protocol(Account *account, ProtocolFactory *factory)
 	: State(NetworkDisconnected), Factory(factory), CurrentAccount(account)
 {
+	CurrentAccount->setProtocol(this);
 }
 
 Protocol::~Protocol()
@@ -48,11 +49,6 @@ void Protocol::setAllOffline()
 		data->setStatus(status);
 		emit contactStatusChanged(CurrentAccount, contact, oldStatus);
 	}
-}
-
-void Protocol::setAccount(Account* account)
-{
-	CurrentAccount = account;
 }
 
 void Protocol::setStatus(Status status)

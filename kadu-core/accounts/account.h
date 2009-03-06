@@ -31,26 +31,33 @@ class Account : public QObject, public ContactsAwareObject
 
 	QUuid Uuid;
 	Protocol *ProtocolHandler;
-	AccountData *Data;
 
-	void setProtocol(Protocol *protocolHandler);
+	QString Name;
+	QString Id;
+	QString Password;
 
 protected:
 	virtual void contactAdded(Contact contact);
 	virtual void contactRemoved(Contact contact);
 
 public:
-	Account(const QUuid &uuid);
-	Account(const QUuid &uuid, Protocol *protocol, AccountData *data);
+	Account(const QUuid &uuid = QUuid());
 	virtual ~Account();
 
-	bool loadConfiguration(XmlConfigFile *configurationStorage, QDomElement parent);
-	void storeConfiguration(XmlConfigFile *configurationStorage, QDomElement parent);
+	virtual void loadConfiguration(XmlConfigFile *configurationStorage, QDomElement parent);
+	virtual void storeConfiguration(XmlConfigFile *configurationStorage, QDomElement parent);
 
 	QUuid uuid() { return Uuid; }
+	void setProtocol(Protocol *protocolHandler);
 	Protocol * protocol() { return ProtocolHandler; }
-	QString name();
-	AccountData * data() { return Data; }
+
+	void setName(const QString &name) { Name = name; }
+	void setPassword(const QString &password) { Password = password; }
+	virtual bool setId(const QString &id);
+
+	QString name() { return Name; }
+	QString password() { return Password; }
+	QString id() { return Id; }
 
 	Status currentStatus();
 

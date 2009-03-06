@@ -89,7 +89,6 @@ public:
 	virtual PersonalInfoService * personalInfoService() { return 0; }
 	virtual SearchService * searchService() { return 0; }
 
-	virtual void setAccount(Account *account); 
 	virtual bool validateUserID(QString &uid) = 0;
 
 	virtual Conference *loadConferenceFromStorage(StoragePoint *storage) = 0;

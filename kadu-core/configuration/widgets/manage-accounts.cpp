@@ -15,7 +15,6 @@
 #include <QtGui/QVBoxLayout>
 
 #include "accounts/account.h"
-#include "accounts/account_data.h"
 #include "accounts/account_manager.h"
 
 #include "accounts/model/accounts-model.h"
@@ -130,27 +129,25 @@ void ManageAccounts::addAccount()
 	if (0 == protocolFactory)
 		return;
 
-	AccountData *newAccountData = protocolFactory->newAccountData();
-	if (0 == newAccountData)
+	Account *newAccount = protocolFactory->newAccount();
+	if (!newAccount)
 		return;
 
-	ConfigurationWindow *configurationDialog = protocolFactory->newConfigurationDialog(newAccountData, this);
+	ConfigurationWindow *configurationDialog = protocolFactory->newConfigurationDialog(newAccount, this);
 	if (0 == configurationDialog)
 	{
-		delete newAccountData;
+		delete newAccount;
 		return;
 	}
 
 	configurationDialog->setWindowModality(Qt::WindowModal);
 	if (configurationDialog->exec() == QDialog::Accepted)
 	{
-		Account *newAccount = AccountManager::instance()->createAccount(
-				protocolName, newAccountData);
 		AccountManager::instance()->registerAccount(newAccount);
 		loadAccounts();
 		return;
 	}
-	delete newAccountData;
+	delete newAccount;
 }
 
 void ManageAccounts::removeAccount()
@@ -177,7 +174,7 @@ void ManageAccounts::editAccount()
 	if (0 == protocolFactory)
 		return;
 
-	ConfigurationWindow *configurationDialog = protocolFactory->newConfigurationDialog(account->data(), this);
+	ConfigurationWindow *configurationDialog = protocolFactory->newConfigurationDialog(account, this);
 	if (0 == configurationDialog)
 		return;
 

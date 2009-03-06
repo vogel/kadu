@@ -7,27 +7,24 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "accounts/account_data.h"
+#ifndef GADU_ACCOUNT
+#define GADU_ACCOUNT
 
-AccountData::AccountData()
+#include "accounts/account.h"
+
+#include "gadu-protocol.h"
+
+class GaduAccount : public Account
 {
-}
+	UinType Uin;
 
-AccountData::AccountData(const QString &name, const QString &id, const QString &password)
-{
-	setName(name);
-	setPassword(password);
-}
+public:
+	GaduAccount(const QUuid &uuid = QUuid());
 
-AccountData::~AccountData()
-{
-}
+	UinType uin() { return Uin; }
 
-bool AccountData::setId(const QString &id)
-{
-	if (!validateId(id))
-		return false;
+	virtual bool setId(const QString &id);
 
-	Id = id;
-	return true;
-}
+};
+
+#endif // GADU_ACCOUNT

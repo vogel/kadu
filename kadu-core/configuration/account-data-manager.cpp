@@ -7,11 +7,11 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "accounts/account_data.h"
+#include "accounts/account.h"
 
 #include "account-data-manager.h"
 
-AccountDataManager::AccountDataManager(AccountData *data)
+AccountDataManager::AccountDataManager(Account *data)
 	: Data(data)
 {
 }

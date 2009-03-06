@@ -24,7 +24,6 @@ typedef uin_t UinType;
 
 class QTimer;
 
-class AccountData;
 class GaduAccountData;
 class GaduContactAccountData;
 class GaduProtocolSocketNotifiers;

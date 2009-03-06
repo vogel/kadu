@@ -42,7 +42,6 @@ public:
 	void storeConfiguration(XmlConfigFile *configurationStorage, const QString &name = QString::null);
 
 	Account * defaultAccount() const;
-	Account * createAccount(const QString &protocolName, AccountData *accountData);
 
 	Account * byIndex(unsigned int index) const;
 	Account * byUuid(const QUuid &uuid) const;

@@ -34,7 +34,7 @@ set (SOURCES
 	connection-timeout-timer.cpp
 	gadu.cpp
 	gadu-account-data-manager.cpp
-	gadu_account_data.cpp
+	gadu-account.cpp
 	gadu_configuration_dialog.cpp
 	gadu-contact-account-data.cpp
 	gadu-contact-account-data-manager.cpp
@@ -77,6 +77,7 @@ set (MOC_SOURCES
 
 	connection-timeout-timer.h
 	gadu.h
+	gadu-account.h
 	gadu_configuration_dialog.h
 	gadu-contact-account-data.h
 	gadu-contact-account-data-widget.h

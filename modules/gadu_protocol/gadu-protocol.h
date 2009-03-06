@@ -30,7 +30,6 @@
 #include "protocols/protocol.h"
 
 class DccManager;
-class GaduAccountData;
 class GaduContactAccountData;
 class GaduProtocolSocketNotifiers;
 
@@ -91,8 +90,6 @@ private:
 
 	void networkConnected();
 	void networkDisconnected();
-
-	GaduAccountData * gaduAccountData() const;
 
 	Status::StatusType statusTypeFromIndex(unsigned int index) const;
 
@@ -187,7 +184,6 @@ public:
 	virtual PersonalInfoService * personalInfoService() { return CurrentPersonalInfoService; }
 	virtual SearchService * searchService() { return CurrentSearchService; }
 
-	virtual void setAccount(Account *account);
 	virtual Conference * loadConferenceFromStorage(StoragePoint *storage);
 
 	UinType uin(Contact contact) const;

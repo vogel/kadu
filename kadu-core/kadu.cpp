@@ -24,7 +24,6 @@
 #endif
 
 #include "accounts/account.h"
-#include "accounts/account_data.h"
 #include "accounts/account_manager.h"
 
 #include "chat/chat_manager.h"
@@ -668,7 +667,7 @@ void Kadu::accountRegistered(Account *account)
 			this, SLOT(statusChanged(Account *, Status)));
 
 	ContactAccountData *contactAccountData = protocol->protocolFactory()->
-			newContactAccountData(Myself, account, account->data()->id());
+			newContactAccountData(Myself, account, account->id());
 	Myself.addAccountData(contactAccountData);
 }
 

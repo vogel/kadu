@@ -15,7 +15,6 @@
 #include <QtGui/QLabel>
 
 #include "accounts/account.h"
-#include "accounts/account_data.h"
 #include "accounts/account_manager.h"
 
 #include "chat/chat_manager.h"
@@ -455,7 +454,7 @@ void Notify::statusChanged(Account *account, Contact contact, Status oldStatus)
 		return;
 	}
 
-	if (contact.id(account) == account->data()->id())
+	if (contact.id(account) == account->id())
 		return;
 
 	ContactAccountData *data = contact.accountData(account);

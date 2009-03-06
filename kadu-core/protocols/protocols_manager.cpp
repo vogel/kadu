@@ -63,11 +63,3 @@ ProtocolFactory * ProtocolsManager::protocolFactory(const QString &name)
 		? registeredFactories[name]
 		: 0;
 }
-
-Protocol * ProtocolsManager::newInstance(const QString &name)
-{
-	if (registeredFactories.contains(name))
-		return registeredFactories[name]->newInstance();
-
-	return 0;
-}

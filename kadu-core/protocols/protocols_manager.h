@@ -28,8 +28,6 @@ public:
 	const QList<ProtocolFactory *> protocolFactories() { return registeredFactories.values(); }
 	ProtocolFactory * protocolFactory(const QString &name);
 
-	Protocol * newInstance(const QString &name);
-
 };
 
 #endif

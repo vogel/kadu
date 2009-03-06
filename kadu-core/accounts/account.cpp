@@ -7,8 +7,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "account_data.h"
-
 #include "contacts/contact-account-data.h"
 #include "contacts/contact-manager.h"
 
@@ -16,27 +14,17 @@
 #include "protocols/protocol_factory.h"
 #include "protocols/protocols_manager.h"
 
+#include "misc.h"
 #include "xml_config_file.h"
 
 #include "account.h"
 
 Account::Account(const QUuid &uuid)
-	: ProtocolHandler(0), Data(0)
+	: ProtocolHandler(0)
 {
 	Uuid = uuid.isNull()
 		? QUuid::createUuid()
 		: uuid;
-}
-
-Account::Account(const QUuid &uuid, Protocol *protocol, AccountData *data)
-	: Data(data)
-{
-	Uuid = uuid.isNull()
-		? QUuid::createUuid()
-		: uuid;
-
-	setProtocol(protocol);
-	triggerAllContactsAdded();
 }
 
 Account::~Account()
@@ -51,12 +39,16 @@ Account::~Account()
 void Account::setProtocol(Protocol *protocolHandler)
 {
 	ProtocolHandler = protocolHandler;
-	ProtocolHandler->setAccount(this);
 
 	connect(ProtocolHandler, SIGNAL(contactStatusChanged(Account *, Contact, Status)),
 			this, SIGNAL(contactStatusChanged(Account *, Contact, Status)));
 
 	triggerAllContactsAdded();
+}
+
+bool Account::setId(const QString &id)
+{
+	Id = id;
 }
 
 void Account::contactAdded(Contact contact)
@@ -70,41 +62,23 @@ void Account::contactRemoved(Contact contact)
 {
 }
 
-bool Account::loadConfiguration(XmlConfigFile *configurationStorage, QDomElement parent)
+void Account::loadConfiguration(XmlConfigFile *configurationStorage, QDomElement parent)
 {
-	QString protocolName = configurationStorage->getTextNode(parent, "Protocol");
-	QString name  = configurationStorage->getTextNode(parent, "Name");
-
-	if (name.isEmpty())
-		name = parent.attribute("name");
-
-	Protocol *protocol = ProtocolsManager::instance()->newInstance(protocolName);
-	if (0 == protocol)
-		return false;
-
-	Data = protocol->protocolFactory()->newAccountData();
-	if (0 == Data)
-		return false;
-
-	Data->setName(name);
-	setProtocol(protocol);
-
-	return Data->loadConfiguration(configurationStorage, parent);
+	Uuid = parent.attribute("uuid");
+	Name  = configurationStorage->getTextNode(parent, "Name");
+	setId(configurationStorage->getTextNode(parent, "Id"));
+	Password = pwHash(configurationStorage->getTextNode(parent, "Password"));
 }
 
 void Account::storeConfiguration(XmlConfigFile *configurationStorage, QDomElement parent)
 {
 	parent.setAttribute("uuid", Uuid.toString());
-	parent.removeAttribute("name");
 
-	configurationStorage->createTextNode(
-			parent, "Protocol",
+	configurationStorage->createTextNode(parent, "Protocol",
 			ProtocolHandler->protocolFactory()->name());
-	configurationStorage->createTextNode(
-			parent, "Name",
-			Data->name());
-
-	Data->storeConfiguration(configurationStorage, parent);
+	configurationStorage->createTextNode( parent, "Name", Name);
+	configurationStorage->createTextNode(parent, "Id", id());
+	configurationStorage->createTextNode(parent, "Password", pwHash(password()));
 }
 
 Status Account::currentStatus()
@@ -112,11 +86,6 @@ Status Account::currentStatus()
 	return 0 != ProtocolHandler
 		? ProtocolHandler->status()
 		: Status();
-}
-
-QString Account::name()
-{
-	return Data->name();
 }
 
 Contact Account::getContactById(const QString& id)

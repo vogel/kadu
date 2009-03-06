@@ -15,14 +15,14 @@
 
 #include "gui/windows/configuration-window.h"
 
-class GaduAccountData;
+class GaduAccount;
 class GaduServerConnector;
 
 class GaduConfigurationDialog : public ConfigurationWindow
 {
 	Q_OBJECT
 
-	GaduAccountData *AccountData;
+	GaduAccount *AccountData;
 	void createGui();
 
 private slots:
@@ -30,7 +30,7 @@ private slots:
 	void registerNewAccountFinished(GaduServerConnector *);
 
 public:
-	GaduConfigurationDialog(GaduAccountData *accountData, QWidget *parent = 0);
+	GaduConfigurationDialog(GaduAccount *accountData, QWidget *parent = 0);
 	~GaduConfigurationDialog();
 
 };

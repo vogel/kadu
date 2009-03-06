@@ -7,21 +7,32 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GADU_ACCOUNT_DATA_MANAGER_H
-#define GADU_ACCOUNT_DATA_MANAGER_H
+#include "gui/windows/open-chat-with/open-chat-with-runner-manager.h"
 
-#include "configuration/account-data-manager.h"
+#include "misc.h"
+#include "xml_config_file.h"
 
-class GaduAccount;
+#include "gadu-account.h"
 
-class GaduAccountDataManager : public AccountDataManager
+GaduAccount::GaduAccount(const QUuid &uuid) :
+	Account(uuid)
 {
-public:
-	GaduAccountDataManager(GaduAccount *data);
+// 	OpenChatRunner = new GaduOpenChatWithRunner();
+// 	OpenChatWithRunnerManager::instance()->registerRunner(OpenChatRunner);
+}
 
-	virtual void writeEntry(const QString &section, const QString &name, const QVariant &value);
-	virtual QVariant readEntry(const QString &section, const QString &name);
+bool GaduAccount::setId(const QString &id)
+{
+	if (!Account::setId(id))
+		return false;
 
-};
-
-#endif // GADU_ACCOUNT_DATA_MANAGER_H
+	Uin = id.toLong();
+	return true;
+}
+/*
+bool GaduAccountData::validateId(const QString &id)
+{
+	bool ok;
+	UinType tmpUin = id.toLong(&ok);
+	return ok;
+}*/

@@ -7,11 +7,11 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "gadu_account_data.h"
+#include "gadu-account.h"
 
 #include "gadu-account-data-manager.h"
 
-GaduAccountDataManager::GaduAccountDataManager(GaduAccountData* data)
+GaduAccountDataManager::GaduAccountDataManager(GaduAccount *data)
 	: AccountDataManager(data)
 {
 }

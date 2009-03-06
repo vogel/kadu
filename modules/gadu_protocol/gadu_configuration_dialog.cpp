@@ -24,12 +24,12 @@
 
 #include "server/gadu-server-register-account.h"
 
-#include "gadu_account_data.h"
+#include "gadu-account.h"
 #include "gadu-account-data-manager.h"
 
 #include "gadu_configuration_dialog.h"
 
-GaduConfigurationDialog::GaduConfigurationDialog(GaduAccountData *accountData, QWidget *parent)
+GaduConfigurationDialog::GaduConfigurationDialog(GaduAccount *accountData, QWidget *parent)
 	  // TODO: remove new GaduAccountDataManager(accountData)) after use
 	: ConfigurationWindow("account", tr("Gadu-Gadu account"), new GaduAccountDataManager(accountData)), AccountData(accountData)
 {

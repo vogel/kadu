@@ -19,12 +19,12 @@ class GaduContactAccountData;
 class GaduProtocolFactory : public ProtocolFactory
 {
 public:
-	virtual Protocol * newInstance();
-	virtual AccountData * newAccountData();
+// 	virtual Protocol * newInstance();
+	virtual Account * newAccount();
 	virtual ContactAccountData * newContactAccountData(Contact contact, Account *account, const QString &id);
 	virtual ContactAccountData * loadContactAccountData(Contact contact, Account *account);
 	virtual ContactAccountDataWidget * newContactAccountDataWidget(ContactAccountData *contactAccountData, QWidget *parent = 0);
-	virtual GaduConfigurationDialog * newConfigurationDialog(AccountData *, QWidget *);
+	virtual GaduConfigurationDialog * newConfigurationDialog(Account *, QWidget *);
 
 	virtual QString name() { return "gadu"; }
 	virtual QString displayName() { return tr("Gadu-Gadu"); }

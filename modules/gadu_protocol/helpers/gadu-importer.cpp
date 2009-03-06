@@ -14,12 +14,15 @@
 #include "contacts/contact.h"
 #include "contacts/ignored-helper.h"
 
+#include "protocols/protocols_manager.h"
+
 #include "config_file.h"
 #include "misc.h"
 #include "xml_config_file.h"
 
-#include "gadu_account_data.h"
+#include "gadu-account.h"
 #include "gadu-contact-account-data.h"
+#include "gadu_protocol_factory.h"
 
 #include "gadu-importer.h"
 
@@ -38,13 +41,13 @@ void GaduImporter::importAccounts()
 	if (0 == config_file.readNumEntry("General", "UIN"))
 		return;
 
-	GaduAccountData *gaduAccountData = new GaduAccountData(
-			"Gadu-Gadu",
-			config_file.readNumEntry("General", "UIN"),
-			unicode2cp(pwHash(config_file.readEntry("General", "Password"))));
+	GaduAccount *defaultGaduGadu = dynamic_cast<GaduAccount *>(
+		ProtocolsManager::instance()->protocolFactory("gadu")->newAccount());
 
-	Account *defaultGaduGadu = AccountManager::instance()->createAccount(
-			"gadu", gaduAccountData);
+	defaultGaduGadu->setName("Gadu-Gadu");
+	defaultGaduGadu->setId(config_file.readEntry("General", "UIN"));
+	defaultGaduGadu->setPassword(unicode2cp(pwHash(config_file.readEntry("General", "Password"))));
+
 	AccountManager::instance()->registerAccount(defaultGaduGadu);
 }
 
