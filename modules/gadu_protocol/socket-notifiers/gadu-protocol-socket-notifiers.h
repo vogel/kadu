@@ -56,10 +56,6 @@ public:
 	void setAccount(Account *account) { CurrentAccount = account; }
 
 signals:
-	void connected();
-
-	void dccConnectionRequestReceived(Contact contact);
-
 	/**
 		Sygna� jest emitowany, gdy serwer przerwa� po��czenie
 	**/

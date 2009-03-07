@@ -87,10 +87,13 @@ void GaduProtocolSocketNotifiers::handleEventMsg(struct gg_event *e)
 
 	if (GG_CLASS_CTCP == e->event.msg.msgclass)
 	{
+		if (!CurrentProtocol->dccManager())
+			return; // we don't support dcc connections now
+
 		if (config_file.readBoolEntry("Network", "AllowDCC") &&
 				!IgnoredHelper::isIgnored(sender) &&
 				!sender.isAnonymous())
-			emit dccConnectionRequestReceived(sender);
+			CurrentProtocol->dccManager()->connectionRequestReceived(sender);
 
 		return;
 	}

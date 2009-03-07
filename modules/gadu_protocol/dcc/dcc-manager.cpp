@@ -36,8 +36,6 @@ DccManager::DccManager(GaduProtocol *protocol) :
 
 	createDefaultConfiguration();
 
-	connect(Protocol->socketNotifiers(), SIGNAL(dccConnectionRequestReceived(Contact)),
-			this, SLOT(dccConnectionRequestReceived(Contact)));
 	connect(Protocol->socketNotifiers(), SIGNAL(dcc7Erorr(struct gg_dcc7 *)),
 			this, SLOT(dcc7Erorr(struct gg_dcc7 *)));
 	
@@ -50,8 +48,6 @@ DccManager::~DccManager()
 {
 	kdebugf();
 
-	disconnect(Protocol, SIGNAL(dccConnectionRequestReceived(Contact)),
-			this, SLOT(dccConnectionRequestReceived(Contact)));
 	disconnect(Protocol->socketNotifiers(), SIGNAL(dcc7Erorr(struct gg_dcc7 *)),
 			this, SLOT(dcc7Erorr(struct gg_dcc7 *)));
 
@@ -216,6 +212,29 @@ void DccManager::socketNotifiersDestroyed(QObject *socketNotifiers)
 	SocketNotifiers.removeAll(dynamic_cast<DccSocketNotifiers *>(socketNotifiers));
 }
 
+void DccManager::connectionRequestReceived(Contact contact)
+{
+	kdebugf();
+
+	GaduContactAccountData *gcad = Protocol->gaduContactAccountData(contact);
+	if (!gcad)
+		return;
+	GaduAccount *account = dynamic_cast<GaduAccount *>(Protocol->account());
+	if (!account)
+		return;
+
+	struct gg_dcc *dcc = gg_dcc_get_file(htonl(gcad->ip().toIPv4Address()), gcad->port(), account->uin(), gcad->uin());
+	if (!dcc)
+		return;
+
+	DccSocketNotifiers *dccSocketNotifiers = new DccSocketNotifiers(Protocol, this);
+	SocketNotifiers << dccSocketNotifiers;
+	connectSocketNotifiers(dccSocketNotifiers);
+	dccSocketNotifiers->watchFor(dcc);
+
+	kdebugf2();
+}
+
 bool DccManager::acceptConnection(unsigned int uin, unsigned int peerUin, unsigned int peerAddr)
 {
 	GaduAccount *account = dynamic_cast<GaduAccount *>(Protocol->account());
@@ -268,29 +287,6 @@ void DccManager::needIncomingFileTransferAccept(DccSocketNotifiers *socket)
 	socket->setGaduFileTransfer(gft);
 
 	emit Protocol->CurrentFileTransferService->incomingFileTransfer(gft);
-}
-
-void DccManager::dccConnectionRequestReceived(Contact contact)
-{
-	kdebugf();
-
-	GaduContactAccountData *gcad = Protocol->gaduContactAccountData(contact);
-	if (!gcad)
-		return;
-	GaduAccount *account = dynamic_cast<GaduAccount *>(Protocol->account());
-	if (!account)
-		return;
-
-	struct gg_dcc *dcc = gg_dcc_get_file(htonl(gcad->ip().toIPv4Address()), gcad->port(), account->uin(), gcad->uin());
-	if (!dcc)
-		return;
-	
-	DccSocketNotifiers *dccSocketNotifiers = new DccSocketNotifiers(Protocol, this);
-	SocketNotifiers << dccSocketNotifiers;
-	connectSocketNotifiers(dccSocketNotifiers);
-	dccSocketNotifiers->watchFor(dcc);
-
-	kdebugf2();
 }
 
 GaduFileTransfer * DccManager::findFileTransfer(DccSocketNotifiers *notifiers)

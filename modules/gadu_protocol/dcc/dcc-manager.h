@@ -58,6 +58,7 @@ class DccManager : public QObject
 	friend class DccSocketNotifiers;
 	void handleEventDccNew(struct gg_event *e);
 
+	void connectionRequestReceived(Contact contact);
 	bool acceptConnection(unsigned int uin, unsigned int peerUin, unsigned int peerAddr);
 	void needIncomingFileTransferAccept(DccSocketNotifiers *socket);
 
@@ -67,9 +68,6 @@ class DccManager : public QObject
 	void handleEventDcc7Reject(struct gg_event *e);
 	void handleEventDcc7Pending(struct gg_event *e);
 	void handleEventDcc7Error(struct gg_event *e);
-
-private slots:
-	void dccConnectionRequestReceived(Contact contact);
 
 // 	void onIpAutotetectToggled(bool toggled);
 
