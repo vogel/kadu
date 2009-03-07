@@ -80,8 +80,12 @@ void GaduProtocolSocketNotifiers::dumpConnectionState()
 
 void GaduProtocolSocketNotifiers::handleEventMsg(struct gg_event *e)
 {
-	Contact sender(CurrentAccount->getContactById(QString::number(e->event.msg.sender)));
-	ContactList recipients;
+	if (0 == e->event.msg.sender)
+	{
+		return;
+	}
+
+	Contact sender = CurrentAccount->getContactById(QString::number(e->event.msg.sender));
 
 	if (GG_CLASS_CTCP == e->event.msg.msgclass)
 	{
@@ -93,17 +97,7 @@ void GaduProtocolSocketNotifiers::handleEventMsg(struct gg_event *e)
 		return;
 	}
 
-	kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "recipients_count: %d\n", e->event.msg.recipients_count);
-	for (int i = 0; i < e->event.msg.recipients_count; ++i)
-	{
-		Contact recipient = CurrentAccount->getContactById(QString::number(e->event.msg.recipients[i]));
-		recipients.append(recipient);
-	}
-
-	QString message((char*)e->event.msg.message);
-	QByteArray formats((const char*)e->event.msg.formats, e->event.msg.formats_length);
-
-	emit messageReceived(sender, recipients, message, e->event.msg.time, formats);
+	CurrentProtocol->CurrentChatService->handleEventMsg(e);
 }
 
 void GaduProtocolSocketNotifiers::handleEventNotify(struct gg_event *e)

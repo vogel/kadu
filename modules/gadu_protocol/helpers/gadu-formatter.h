@@ -26,7 +26,7 @@ public:
 
 	static QString createImageId(UinType sender, unsigned int size, unsigned int crc32);
 
-	static Message createMessage(Account *acccount, UinType sender, const QString &content, unsigned char * formats,
+	static Message createMessage(Account *acccount, UinType sender, const QString &content, unsigned char *formats,
 			unsigned int size, bool receiveImages);
 
 };

@@ -26,8 +26,6 @@ GaduChatService::GaduChatService(GaduProtocol *protocol)
 {
 	connect(protocol->socketNotifiers(), SIGNAL(ackReceived(int, uin_t, int)), 
 		this, SLOT(ackReceived(int, uin_t, int)));
-	connect(protocol->socketNotifiers(), SIGNAL(messageReceived(Contact, ContactList, const QString &, time_t, QByteArray &)),
-		this, SLOT(messageReceivedSlot(Contact, ContactList, const QString &, time_t, QByteArray &)));
 }
 
 bool GaduChatService::sendMessage(ContactList contacts, Message &message)
@@ -109,54 +107,52 @@ bool GaduChatService::sendMessage(ContactList contacts, Message &message)
 	return true;
 }
 
-void GaduChatService::messageReceivedSlot(Contact sender, ContactList recipients, const QString &messageContent, time_t time, QByteArray &formats)
+void GaduChatService::handleEventMsg(gg_event *e)
 {
-/*
-	najpierw sprawdzamy czy nie jest to wiadomosc systemowa (senders[0] rowne 0)
-	potem sprawdzamy czy user jest na naszej liscie, jezeli nie to anonymous zwroci true
-	i czy jest wlaczona opcja ignorowania nieznajomych
-	jezeli warunek jest spelniony przerywamy dzialanie funkcji.
-*/
+	kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "recipients_count: %d\n", e->event.msg.recipients_count);
+
+	if (0 == e->event.msg.sender) // system message, ignore
+	{
+		kdebugmf(KDEBUG_INFO, "Ignored system message.\n");
+		return;
+	}
+
+	Contact sender(Protocol->account()->getContactById(QString::number(e->event.msg.sender)));
 
 	if (sender.isAnonymous() &&
 			config_file.readBoolEntry("Chat", "IgnoreAnonymousUsers") &&
-			((recipients.size() == 0) || config_file.readBoolEntry("Chat", "IgnoreAnonymousUsersInConferences")))
+			((e->event.msg.recipients_count == 0) || config_file.readBoolEntry("Chat", "IgnoreAnonymousUsersInConferences")))
 	{
 		kdebugmf(KDEBUG_INFO, "Ignored anonymous. %d is ignored\n", Protocol->uin(sender));
 		return;
 	}
 
+	ContactList recipients;
+	for (int i = 0; i < e->event.msg.recipients_count; ++i)
+	{
+		Contact recipient = Protocol->account()->getContactById(QString::number(e->event.msg.recipients[i]));
+		recipients.append(recipient);
+	}
+
 	ContactList conference = recipients;
 	conference << sender;
-
-	// ignorujemy, jesli nick na liscie ignorowanych
-	// PYTANIE CZY IGNORUJEMY CALA KONFERENCJE
-	// JESLI PIERWSZY SENDER JEST IGNOROWANY????
 	if (IgnoredHelper::isIgnored(conference))
 		return;
 
-	bool ignore = false;
-	//emit rawGaduReceivedMessageFilter(Protocol->account(), senders, msg, formats, ignore); TODO: 0.6.6
-	if (ignore)
-		return;
-
-	const char* msg_c = messageContent.toAscii().constData();
+// 	bool ignore = false;
+// 	emit rawGaduReceivedMessageFilter(Protocol->account(), senders, msg, formats, ignore); TODO: 0.6.6
+// 	if (ignore)
+// 		return;
 
 	Message message;
-	QString content = cp2unicode(msg_c);
+	QString content = cp2unicode((const char *)e->event.msg.message);
 
-	QDateTime datetime;
-	datetime.setTime_t(time);
+	QDateTime time = QDateTime::fromTime_t(e->event.msg.time);
 
 // 	bool grab = false;
 // 	emit chatMsgReceived0(this, senders, mesg, time, grab);
 // 	if (grab)
 // 		return;
-
-	// wiadomosci systemowe maja senders[0] = 0
-	// FIX ME!!!
-	if (Protocol->uin(sender) == 0)
-		return;
 
 	if (sender.isAnonymous() &&
 		config_file.readBoolEntry("Chat","IgnoreAnonymousRichtext"))
@@ -178,7 +174,7 @@ void GaduChatService::messageReceivedSlot(Contact sender, ContactList recipients
 			);
 
 		message = GaduFormater::createMessage(Protocol->account(), Protocol->uin(sender), content,
-				(unsigned char *)formats.data(), formats.size(), receiveImages);
+				(unsigned char *)e->event.msg.formats, e->event.msg.formats_length, receiveImages);
 	}
 
 	if (message.isEmpty())
@@ -187,11 +183,12 @@ void GaduChatService::messageReceivedSlot(Contact sender, ContactList recipients
 	kdebugmf(KDEBUG_INFO, "Got message from %d saying \"%s\"\n",
 			Protocol->uin(sender), qPrintable(message.toPlain()));
 
-	emit receivedMessageFilter(Protocol->account(), sender, recipients, message.toPlain(), time, ignore);
+	bool ignore;
+	emit receivedMessageFilter(Protocol->account(), sender, recipients, message.toPlain(), time.toTime_t(), ignore);
 	if (ignore)
 		return;
 
-	emit messageReceived(Protocol->account(), sender, recipients, message.toHtml(), time);
+	emit messageReceived(Protocol->account(), sender, recipients, message.toHtml(), time.toTime_t());
 }
 
 void GaduChatService::socketAckReceived(unsigned int uin, int messageId, int status)

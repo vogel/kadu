@@ -57,8 +57,6 @@ public:
 	void setAccount(Account *account) { CurrentAccount = account; }
 
 signals:
-	void messageReceived(Contact sender, ContactList recipients, const QString &message, time_t time, QByteArray &formats);
-
 	void connected();
 
 	void dccConnectionRequestReceived(Contact contact);
