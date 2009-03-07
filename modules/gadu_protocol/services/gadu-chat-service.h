@@ -24,9 +24,9 @@ class GaduChatService : public ChatService
 	int LastMessageId;
 
 	friend class GaduProtocolSocketNotifiers;
-	void socketAckReceived(unsigned int uin, int ackId, int status);
 
-	void handleEventMsg(gg_event *e);
+	void handleEventMsg(struct gg_event *e);
+	void handleEventAck(struct gg_event *e);
 
 public:
 	GaduChatService(GaduProtocol *protocol);

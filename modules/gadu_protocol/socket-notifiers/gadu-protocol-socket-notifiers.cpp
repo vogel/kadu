@@ -81,9 +81,7 @@ void GaduProtocolSocketNotifiers::dumpConnectionState()
 void GaduProtocolSocketNotifiers::handleEventMsg(struct gg_event *e)
 {
 	if (0 == e->event.msg.sender)
-	{
 		return;
-	}
 
 	Contact sender = CurrentAccount->getContactById(QString::number(e->event.msg.sender));
 
@@ -140,11 +138,6 @@ void GaduProtocolSocketNotifiers::handleEventStatus(struct gg_event *e)
 	else
 		CurrentProtocol->socketContactStatusChanged(e->event.status.uin, e->event.status.status, QString(e->event.status.descr),
 				QHostAddress(), 0, 0, 0);
-}
-
-void GaduProtocolSocketNotifiers::handleEventAck(struct gg_event *e)
-{
-	CurrentProtocol->CurrentChatService->socketAckReceived(e->event.ack.recipient, e->event.ack.seq, e->event.ack.status);
 }
 
 void GaduProtocolSocketNotifiers::handleEventConnFailed(struct gg_event *e)
@@ -237,7 +230,7 @@ void GaduProtocolSocketNotifiers::socketEvent()
 			break;
 
 		case GG_EVENT_ACK:
-			handleEventAck(e);
+			CurrentProtocol->CurrentChatService->handleEventAck(e);
 			break;
 
 		case GG_EVENT_CONN_FAILED:

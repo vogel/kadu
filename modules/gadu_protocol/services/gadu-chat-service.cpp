@@ -107,7 +107,7 @@ bool GaduChatService::sendMessage(ContactList contacts, Message &message)
 	return true;
 }
 
-void GaduChatService::handleEventMsg(gg_event *e)
+void GaduChatService::handleEventMsg(struct gg_event *e)
 {
 	kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "recipients_count: %d\n", e->event.msg.recipients_count);
 
@@ -191,14 +191,16 @@ void GaduChatService::handleEventMsg(gg_event *e)
 	emit messageReceived(Protocol->account(), sender, recipients, message.toHtml(), time.toTime_t());
 }
 
-void GaduChatService::socketAckReceived(unsigned int uin, int messageId, int status)
+void GaduChatService::handleEventAck(struct gg_event *e)
 {
 	kdebugf();
 
+	int messageId = e->event.ack.seq;
+	int uin = e->event.ack.recipient;
 	if (messageId != LastMessageId)
 		return;
 
-	switch (status)
+	switch (e->event.ack.status)
 	{
 		case GG_ACK_DELIVERED:
 			kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "message delivered (uin: %d, seq: %d)\n", uin, messageId);
@@ -221,8 +223,9 @@ void GaduChatService::socketAckReceived(unsigned int uin, int messageId, int sta
 			emit messageStatusChanged(messageId, StatusRejectedUnknown);
 			break;
 		default:
-			kdebugm(KDEBUG_NETWORK|KDEBUG_WARNING, "unknown acknowledge! (uin: %d, seq: %d, status:%d)\n", uin, messageId, status);
+			kdebugm(KDEBUG_NETWORK|KDEBUG_WARNING, "unknown acknowledge! (uin: %d, seq: %d, status:%d)\n", uin, messageId, e->event.ack.status);
 			break;
 	}
+
 	kdebugf2();
 }
