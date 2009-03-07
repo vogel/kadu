@@ -584,8 +584,6 @@ void GaduProtocol::login()
 
 	GaduLoginParams.password = strdup(gaduAccount->password().toAscii().data());
 
-	printf("login using data: %d %s\n", GaduLoginParams.uin, GaduLoginParams.password);
-
 		// strdup((const char *)unicode2cp(pwHash(config_file.readEntry("General", "Password"))));
 	GaduSession = gg_login(&GaduLoginParams);
 	memset(GaduLoginParams.password, 0, strlen(GaduLoginParams.password));

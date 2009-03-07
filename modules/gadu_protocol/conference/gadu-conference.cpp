@@ -6,7 +6,6 @@
  *   (at your option) any later version.                                   *
  *                                                                         *
  ***************************************************************************/
-
 #include "contacts/contact-list-configuration-helper.h"
 
 #include "gadu-conference.h"
@@ -39,5 +38,4 @@ void GaduConference::storeConfiguration()
 	QDomElement contactListNode = storage()->storage()->getNode(storage()->point(), "ContactList", XmlConfigFile::ModeCreate);
 	ContactListConfigurationHelper::saveToConfiguration(storage()->storage(), contactListNode, Contacts);
 }
-
 

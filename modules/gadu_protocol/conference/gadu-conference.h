@@ -14,25 +14,19 @@
 #include <QtCore/QUuid>
 
 #include "accounts/account.h"
-
 #include "contacts/contact-list.h"
-
 #include "conference/conference.h"
 
 class GaduConference : public Conference
 {
 	ContactList Contacts;
-
 public:
 	GaduConference(Account *parentAccount, ContactList contacts, QUuid uuid = QUuid());
 	virtual ~GaduConference();
-
 	ContactList contacts() { return Contacts; }
 
 	virtual void loadConfiguration();
 	virtual void storeConfiguration();
-
 };
 
 #endif // GADU_CONFERENCE_H
-
