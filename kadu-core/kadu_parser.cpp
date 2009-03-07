@@ -94,22 +94,27 @@ bool KaduParser::unregisterObjectTag(const QString &name, ObjectTagCallback)
 QString KaduParser::executeCmd(const QString &cmd)
 {
 	kdebugf();
+
 	QString s(cmd);
 	s.remove(QRegExp("`|>|<"));
-	s.append(" >");
-	s.append(ggPath("execoutput"));
+	s.append(" > " + ggPath("execoutput"));
 
-	system(qPrintable(s));
-	QFile *f = new QFile(ggPath("execoutput"));
-	if (f->open(QIODevice::ReadOnly))
+	int ret = system(qPrintable(s));
+
+	s = QString::null;
+
+	if (ret != -1)
 	{
-		s = QString(f->readAll());
-		f->close();
-		QFile::remove(ggPath("execoutput"));
+		QFile *f = new QFile(ggPath("execoutput"));
+		if (f->open(QIODevice::ReadOnly))
+		{
+			s = QString(f->readAll());
+			f->close();
+			QFile::remove(ggPath("execoutput"));
+		}
+		delete f;
 	}
-	else
-		s = QString::null;
-	delete f;
+
 	kdebugf2();
 	return s;
 }

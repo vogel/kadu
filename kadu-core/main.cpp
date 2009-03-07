@@ -331,7 +331,7 @@ int main(int argc, char *argv[])
 	{
 		getTime(&sec, &msec);
 		exitingTime = (sec % 1000) * 1000 + msec;
-		fprintf(stderr, "init time:%lld, run time:%lld, ending time:%lld\n", beforeExecTime - startTime, endingTime - beforeExecTime, exitingTime - endingTime);
+		fprintf(stderr, "init time: %ld, run time: %ld, ending time: %ld\n", beforeExecTime - startTime, endingTime - beforeExecTime, exitingTime - endingTime);
 	}
 
 //	delete qApp; //sometimes leads to segfault
