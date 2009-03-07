@@ -189,20 +189,20 @@ void ContactDataWindow::setupTab1()
 
 	QGridLayout * generalLayout = new QGridLayout(generalWidget);
 	generalLayout->setSpacing(3);
-	//generalLayout->addWidget(new QLabel(tr("Uin"), generalWidget), 0, 0);
-	//generalLayout->addWidget(e_id, 1, 0);
-	generalLayout->addWidget(new QLabel(tr("Display"), generalWidget), 0, 1);
-	generalLayout->addWidget(e_display, 1, 1);
+	generalLayout->addWidget(new QLabel(tr("Display"), generalWidget), 0, 0);
+	generalLayout->addWidget(e_display, 1, 0);
+	generalLayout->addWidget(new QLabel(tr("Nickname"), generalWidget), 0, 1);
+	generalLayout->addWidget(e_nickname, 1, 1);
 	generalLayout->addWidget(new QLabel(tr("First name"), generalWidget), 2, 0);
 	generalLayout->addWidget(e_firstname, 3, 0);
-	generalLayout->addWidget(new QLabel(tr("Nickname"), generalWidget), 2, 1);
-	generalLayout->addWidget(e_nickname, 3, 1);
-	generalLayout->addWidget(new QLabel(tr("Surname"), generalWidget), 4, 0);
-	generalLayout->addWidget(e_lastname, 5, 0);
+	generalLayout->addWidget(new QLabel(tr("Surname"), generalWidget), 2, 1);
+	generalLayout->addWidget(e_lastname, 3, 1);
+	generalLayout->addWidget(new QLabel(tr("Email"), generalWidget), 4, 0);
+	generalLayout->addWidget(e_email, 5, 0);
 	generalLayout->addWidget(new QLabel(tr("Mobile"), generalWidget), 4, 1);
 	generalLayout->addWidget(e_mobile, 5, 1);
-	generalLayout->addWidget(new QLabel(tr("Email"), generalWidget), 6, 0);
-	generalLayout->addWidget(e_email, 7, 0);
+	//generalLayout->addWidget(new QLabel(tr("Email"), generalWidget), 6, 0);
+	//generalLayout->addWidget(e_email, 7, 0);
 	generalLayout->addWidget(emptyWidget, 6, 1);
 	generalLayout->addWidget(emptyWidget2, 7, 1);
 	//generalLayout->addWidget(line1, 8, 0, 1, 2);
@@ -403,11 +403,11 @@ void ContactDataWindow::newGroupClicked()
 	QCheckBox *checkBox = new QCheckBox(groupName, box);
 
 	checkBox->setChecked(true);
-	
+
 	QLabel *textLabel = new QLabel(box);
 	textLabel->setText(tr("Icon:"));
 	textLabel->setMaximumWidth(40);
-	
+
 	QLabel *pixmapLabel = new QLabel(box);
 	pixmapLabel->setMaximumWidth(22);
 	pixmapLabel->setMaximumHeight(22);
@@ -601,11 +601,11 @@ void ContactDataWindow::selectIcon()
 	{
 		QString groupName;
 		const QCheckBox *checkBox = 0;
-		
+
 		foreach(QObject *child, sender()->parent()->children())
 		{
 			checkBox = dynamic_cast<const QCheckBox*>(child);
-			
+
 			if(checkBox)
 			{
 				groupName = checkBox->text();
@@ -625,11 +625,11 @@ void ContactDataWindow::deleteIcon()
 {
 	QString groupName;
 	const QCheckBox *checkBox = 0;
-	
+
 	foreach(QObject *child, sender()->parent()->children())
 	{
 		checkBox = dynamic_cast<const QCheckBox*>(child);
-		
+
 		if (checkBox)
 		{
 			groupName = checkBox->text();
