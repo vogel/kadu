@@ -55,7 +55,7 @@ void AccountManager::loadConfiguration(XmlConfigFile *configurationStorage, cons
 
 		// TODO hasAccountUUID(uuid) => return
 		QString protocolName = configurationStorage->getTextNode(accountElement, "Protocol");
-		if (protocolName.isEmpty())
+		if (protocolName.isEmpty() || protocolName != name)
 			continue;
 
 		ProtocolFactory *protocolFactory = ProtocolsManager::instance()->protocolFactory(protocolName);
