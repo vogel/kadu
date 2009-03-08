@@ -127,6 +127,7 @@ SampleRecordThread::SampleRecordThread(SoundDevice device)
 	RecordingSemaphore(1), SampleSemaphore(1)
 {
 	kdebugf();
+	setTerminationEnabled(true);
 	RecordingSemaphore.acquire();
 	kdebugf2();
 }
@@ -533,6 +534,7 @@ void SoundManager::stop()
 SoundPlayThread::SoundPlayThread() : QThread(),
 	mutex(), semaphore(new QSemaphore(100)), end(false), list()
 {
+	setTerminationEnabled(true);
 	(*semaphore).acquire(100);
 }
 
