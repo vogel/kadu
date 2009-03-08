@@ -39,10 +39,6 @@ void ContactAccountDataWidget::createGui()
 {
 	appendUiFile(dataPath("kadu/configuration/contact-account-data.ui"));
 
-	QLineEdit *idLineEdit = dynamic_cast<QLineEdit *>(widgetById("Id"));
-	idLineEdit->setReadOnly(true);
-	idLineEdit->setBackgroundRole(QPalette::Button);
-
 	QLineEdit *addrLineEdit = dynamic_cast<QLineEdit *>(widgetById("Addr"));
 	addrLineEdit->setReadOnly(true);
 	addrLineEdit->setBackgroundRole(QPalette::Button);
