@@ -80,3 +80,8 @@ int GaduPubdirSocketNotifiers::timeout()
 		? H->timeout
 		: 0;
 }
+
+bool GaduPubdirSocketNotifiers::handleSoftTimeout()
+{
+	return false;
+}

@@ -136,7 +136,10 @@ void GaduSocketNotifiers::unlock()
 
 void GaduSocketNotifiers::socketTimeout()
 {
-	// TODO: disconnected
+	if (!handleSoftTimeout())
+	{
+		// TODO: disconnected
+	}
 }
 
 void GaduSocketNotifiers::dataReceived()

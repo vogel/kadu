@@ -339,3 +339,13 @@ int GaduProtocolSocketNotifiers::timeout()
 		? Sess->timeout
 		: 0;
 }
+
+bool GaduProtocolSocketNotifiers::handleSoftTimeout()
+{
+	if (!Sess || !Sess->soft_timeout)
+		return false;
+
+	Sess->timeout = 0;
+	socketEvent();
+	return true;
+}

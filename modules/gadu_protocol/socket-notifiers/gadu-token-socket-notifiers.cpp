@@ -101,3 +101,8 @@ int GaduTokenSocketNotifiers::timeout()
 		? H->timeout
 		: 0;
 }
+
+bool GaduTokenSocketNotifiers::handleSoftTimeout()
+{
+	return false;
+}

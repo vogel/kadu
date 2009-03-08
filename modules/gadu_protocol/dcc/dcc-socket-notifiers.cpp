@@ -324,6 +324,19 @@ int DccSocketNotifiers::timeout()
 	return 0;
 }
 
+bool DccSocketNotifiers::handleSoftTimeout()
+{
+	if (Dcc7 != Version)
+		return false;
+
+	if (!Socket7 || !Socket7->soft_timeout)
+		return false;
+
+	Socket7->timeout = 0;
+	socketEvent();
+	return true;
+}
+
 void DccSocketNotifiers::accepted()
 {
 	if (FileTransfer)

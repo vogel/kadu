@@ -52,6 +52,7 @@ protected:
 	virtual bool checkWrite() = 0;
 	virtual void socketEvent() = 0;
 	virtual int timeout() = 0;
+	virtual bool handleSoftTimeout() = 0;
 
 public:
 	GaduSocketNotifiers(QObject *parent = 0);
