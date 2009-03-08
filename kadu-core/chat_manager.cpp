@@ -55,6 +55,8 @@ void checkBlocking(KaduAction *action)
 			on = true;
 			break;
 		}
+
+	action->setEnabled(true);
 	action->setChecked(on);
 }
 
@@ -67,6 +69,7 @@ void checkIgnoreUser(KaduAction *action)
 			return;
 		}
 
+	action->setEnabled(true);
 	action->setChecked(IgnoredManager::isIgnored(action->userListElements()));
 }
 
