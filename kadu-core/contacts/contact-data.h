@@ -126,6 +126,8 @@ template<class T>
 	bool isOfflineTo(Account *account);
 	bool setOfflineTo(Account *account, bool offlineTo);
 	bool isInGroup(Group *group);
+	void addToGroup(Group *group);
+	void removeFromGroup(Group *group);
 
 	Property(QString, display, Display)
 	Property(QString, firstName, FirstName)

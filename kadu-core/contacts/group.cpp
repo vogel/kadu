@@ -50,6 +50,11 @@ void Group::importConfiguration(const QString &name)
 		createStoragePoint();
 	Name = name;
 	Icon = config_file.readEntry("GroupIcon", name);
+	NotifyAboutStatusChanges = true;
+	ShowInAllGroup = true;
+	OfflineToGroup = false;
+	ShowIcon = !Icon.isEmpty(); 
+	ShowName = true;
 }
 
 void Group::loadConfiguration()
@@ -64,6 +69,16 @@ void Group::loadConfiguration()
 	Uuid = QUuid(parent.attribute("uuid"));
 	Name = configurationStorage->getTextNode(parent, "Name");
 	Icon = configurationStorage->getTextNode(parent, "Icon");
+	QVariant v(configurationStorage->getTextNode(parent, "NotifyAboutStatusChanges"));
+	NotifyAboutStatusChanges = v.toBool();
+	v.setValue(configurationStorage->getTextNode(parent, "ShowInAllGroup"));
+	ShowInAllGroup = v.toBool();
+	v.setValue(configurationStorage->getTextNode(parent, "OfflineTo"));
+	OfflineToGroup = v.toBool();
+	v.setValue(configurationStorage->getTextNode(parent, "ShowIcon"));
+	ShowIcon = v.toBool();
+	v.setValue(configurationStorage->getTextNode(parent, "ShowName")); 
+	ShowName = v.toBool();
 }
 
 void Group::storeConfiguration()
@@ -77,6 +92,17 @@ void Group::storeConfiguration()
 
 	configurationStorage->createTextNode(parent, "Name", Name);
 	configurationStorage->createTextNode(parent, "Icon", Icon);
+
+	QVariant v(NotifyAboutStatusChanges);
+	configurationStorage->createTextNode(parent, "NotifyAboutStatusChanges", v.toString());
+	v.setValue(ShowInAllGroup);
+	configurationStorage->createTextNode(parent, "ShowInAllGroup", v.toString());
+	v.setValue(OfflineToGroup);
+	configurationStorage->createTextNode(parent, "OfflineTo", v.toString());
+	v.setValue(ShowIcon);
+	configurationStorage->createTextNode(parent, "ShowIcon", v.toString());
+	v.setValue(ShowName);
+	configurationStorage->createTextNode(parent, "ShowName", v.toString()); 
 }
 
 void Group::setName(const QString &name)
@@ -84,8 +110,24 @@ void Group::setName(const QString &name)
 	Name = name;
 	emit nameChanged(this);
 }
-void Group::setIcon(const QString &icon)
+void Group::setAppearance(bool showName, bool showIcon, const QString &icon)
 {
 	Icon = icon;
-	emit iconChanged(this);
+	ShowIcon = showIcon;
+	ShowName = showName;
+
+	emit appearanceChanged(this);
+}
+//TODO 0.6.6:
+void Group::setNotifyAboutStatuses(bool notify)
+{
+	NotifyAboutStatusChanges = notify;
+}
+void Group::setOfflineTo(bool offline)
+{
+	OfflineToGroup = offline;
+}
+void Group::setShowInAllGroup(bool show)
+{
+	ShowInAllGroup = show;
 }

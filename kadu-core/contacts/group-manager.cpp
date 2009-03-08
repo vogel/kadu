@@ -14,6 +14,7 @@
 #include "configuration/storage-point.h"
 
 #include "debug.h"
+#include "contact-manager.h"
 #include "group.h"
 #include "message_box.h"
 #include "xml_config_file.h"
@@ -107,6 +108,24 @@ void GroupManager::addGroup(Group *newGroup)
 	emit groupAboutToBeAdded(newGroup);
 	Groups << newGroup;
 	emit groupAdded(newGroup);
+}
+
+void GroupManager::removeGroup(QString groupUuid)
+{
+	Group *group = byUuid(groupUuid);
+	if (group)
+	{
+		emit groupAboutToBeRemoved(group);
+
+		ContactManager::instance()->contactGroupRemoved(group);
+
+		group->removeFromStorage();
+
+		Groups.removeAll(group);
+		delete group;
+
+		emit groupRemoved(groupUuid);
+	}
 }
 
 Group * GroupManager::byUuid(const QString &uuid) const

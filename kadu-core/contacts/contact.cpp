@@ -210,6 +210,18 @@ bool Contact::isInGroup(Group *group) const
 		: Data->isInGroup(group);
 }
 
+void Contact::addToGroup(Group *group)
+{
+	if (!isNull() && !Data->isInGroup(group))
+		Data->addToGroup(group);
+
+}
+void Contact::removeFromGroup(Group *group)
+{
+	if (!isNull() && Data->isInGroup(group))
+		Data->removeFromGroup(group);
+}
+
 QString Contact::display() const
 {
 	return isNull()

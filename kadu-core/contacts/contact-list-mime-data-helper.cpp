@@ -39,7 +39,7 @@ QMimeData * ContactListMimeDataHelper::toMimeData(ContactList contactList)
 	return mimeData;
 }
 
-ContactList ContactListMimeDataHelper::fromMimeData(QMimeData * mimeData)
+ContactList ContactListMimeDataHelper::fromMimeData(const QMimeData * mimeData)
 {
 	ContactList result;
 

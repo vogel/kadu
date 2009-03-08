@@ -50,6 +50,7 @@
 #include "gui/widgets/contacts-list-widget-menu-manager.h"
 #include "gui/widgets/group-tab-bar.h"
 
+#include "gui/windows/add-group-window.h"
 #include "gui/windows/contact-data-window.h"
 #include "gui/windows/open-chat-with/open-chat-with.h"
 
@@ -1134,7 +1135,7 @@ void Kadu::searchInDirectoryActionActivated(QAction *sender, bool toggled)
 
 void Kadu::addGroupActionActivated(QAction *sender, bool toggled)
 {
-
+	(new AddGroupWindow(kadu))->show();
 }
 
 void Kadu::help(QAction *sender, bool toggled)

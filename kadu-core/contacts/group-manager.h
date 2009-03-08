@@ -46,9 +46,10 @@ public:
 	QList<Group *> groups() { return Groups; }
 
 	void addGroup(Group *newGroup);
+	void removeGroup(QString groupUuid);
 
 	Group * byUuid(const QString &uuid) const;
-	Group * byName(const QString &name, bool create = true);
+	Group * byName(const QString &name, bool create = false);
 
 	bool acceptableGroupName(const QString &groupName);
 
@@ -56,7 +57,7 @@ signals:
 	void groupAboutToBeAdded(Group *group);
 	void groupAdded(Group *group);
 	void groupAboutToBeRemoved(Group *group);
-	void groupRemoved(Group *group);
+	void groupRemoved(QString &groupUuid);
 
 };
 

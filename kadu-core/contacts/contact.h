@@ -111,6 +111,8 @@ template<class T>
 	bool isOfflineTo(Account *account) const;
 	void setOfflineTo(Account *account, bool offlineTo) const;
 	bool isInGroup(Group *group) const;
+	void addToGroup(Group *group);
+	void removeFromGroup(Group *group);
 
 	QString display() const;
 

@@ -13,6 +13,7 @@
 
 #include "contact.h"
 #include "contact-list.h"
+#include "group.h"
 #include "xml_config_file.h"
 
 #include "contact-manager.h"
@@ -154,4 +155,10 @@ ContactList ContactManager::contacts(Account *account, bool includeAnonymous) co
 			result << contact;
 
 	return result;
+}
+//TODO 0.6.6: review:
+void ContactManager::contactGroupRemoved(Group *group)
+{
+	foreach (Contact contact, Contacts)
+		contact.removeFromGroup(group);
 }

@@ -49,7 +49,7 @@ OpenChatWith::OpenChatWith(QWidget *parent)
 	MainLayout->addWidget(ContactsWidget);
 	
 	QWidget *buttons = new QWidget;
-	QHBoxLayout *buttons_layout = new QHBoxLayout;
+	QHBoxLayout *buttons_layout = new QHBoxLayout(buttons);
 
 	QPushButton *b_cancel = new QPushButton(tr("&Cancel"));
 	connect(b_cancel, SIGNAL(clicked()), this, SLOT(close()));
@@ -61,7 +61,6 @@ OpenChatWith::OpenChatWith(QWidget *parent)
 	buttons_layout->addWidget(b_ok);
 	buttons_layout->addWidget(b_cancel);
 
-	buttons->setLayout(buttons_layout);
 	MainLayout->addWidget(buttons);
 	
 	OpenChatRunner = new OpenChatWithContactListRunner();

@@ -68,8 +68,6 @@ class KADUAPI ContactDataWindow : public QWidget
 
 	QList<ContactAccountDataWidget *> dataWidgets;
 
-	QMap<QString, QLabel *> pixmapLabels;
-
 	void keyPressEvent(QKeyEvent *);
 
 private slots:
@@ -91,18 +89,6 @@ private slots:
 	**/
 	void scrollToBottom();
 		
-	/**
-		void selectIcon()
-		wci�ni�to przycisk dodania ikony dla grupy
-	**/
-	void selectIcon();
-
-	/**
-		void deleteIcon()
-		wci�ni�to przycisk usuni�cia ikony grupy
-	**/
-	void deleteIcon();
-
 protected:
 	/**
 		\fn void setupTab1()

@@ -12,6 +12,8 @@
 
 #include <QtGui/QTabBar>
 
+#include "contacts/contact-list.h"
+
 class GroupContactFilter;
 class Group;
 
@@ -20,22 +22,30 @@ class GroupTabBar : public QTabBar
 	Q_OBJECT
 
 	GroupContactFilter *Filter;
-
-//	QString getNewGroupNameFromUser(bool *ok);
-
-// private slots:
-// 	void addToGroup();
-// 	void moveToGroup();
-/*
-protected:
-	void dragEnterEvent(QDragEnterEvent* e);
-	void dropEvent(QDropEvent *e);*/
+	//for dnd support
+	Group *currentGroup;
+	ContactList currentContacts;
 
 private slots:
 	void currentChangedSlot(int index);
 	void groupAdded(Group *group);
-	void groupIconChanged(const Group *group);
+	void groupRemoved(Group *group);
+	void groupAppearanceChanged(const Group *group);
 	void groupNameChanged(const Group *group);
+
+	void renameGroup();
+	void deleteGroup();
+	void createNewGroup();
+	void groupProperties();
+
+ 	void addToGroup();
+ 	void moveToGroup();
+
+protected:
+	void contextMenuEvent(QContextMenuEvent *event);
+
+	void dragEnterEvent(QDragEnterEvent *event);
+	void dropEvent(QDropEvent *event);
 
 public:
 	GroupTabBar(QWidget *parent = 0);
@@ -46,7 +56,7 @@ public:
 	GroupContactFilter * filter() { return Filter; }
 
 signals:
-	void currentGroupChanged(Group *group);
+	void currentGroupChanged(const Group *group);
 
 };
 

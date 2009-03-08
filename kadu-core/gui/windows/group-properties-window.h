@@ -7,27 +7,42 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GROUP_CONTACT_FILTER
-#define GROUP_CONTACT_FILTER
+#ifndef GROUP_PROPERTIES_WINDOW
+#define GROUP_PROPERTIES_WINDOW
 
-#include "abstract-contact-filter.h"
+#include <QtGui/QWidget>
+
+class QCheckBox;
+class QLabel;
+class QPushButton;
 
 class Group;
 
-class GroupContactFilter : public AbstractContactFilter
+class GroupPropertiesWindow : public QWidget
 {
 	Q_OBJECT
 
-	Group *CurrentGroup;
+	Group *group;
+
+	QCheckBox *notifyCheckBox;
+	QCheckBox *offlineCheckBox;
+	QCheckBox *allGroupCheckBox;
+	QCheckBox *iconCheckBox;
+	QCheckBox *nameCheckBox;
+
+	QLabel *info;
+
+	QPushButton *icon;
+	QString iconPath;
+
+private slots:
+	void applyClicked();
+	void okClicked();	
+	void selectIcon();
 
 public:
-	GroupContactFilter(QObject *parent = 0);
-
-	void setGroup(Group *group);
-	virtual bool acceptContact(Contact contact);
-
-	void refresh();
+	GroupPropertiesWindow(Group *editedGroup, QWidget *parent = 0);
 
 };
 
-#endif // GROUP_CONTACT_FILTER
+#endif // GROUP_PROPERTIES_WINDOW

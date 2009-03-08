@@ -331,44 +331,10 @@ void ContactDataWindow::setupTab2()
 
 	foreach(Group* group , GroupManager::instance()->groups())
 	{
-		QWidget *box = new QWidget(groupsWidget);
-		QHBoxLayout *boxLayout = new QHBoxLayout(box);
-		boxLayout->setSpacing(3);
-		QCheckBox *checkBox = new QCheckBox(group->name(), box);
+		QCheckBox *checkBox = new QCheckBox(group->name());
 		checkBox->setChecked(User.isInGroup(group));
 
-		QLabel *textLabel = new QLabel(box);
-		textLabel->setText(tr("Icon:"));
-		textLabel->setMaximumWidth(40);
-
-		QLabel *pixmapLabel = new QLabel(box);
-		QIcon icon(icons_manager->loadPixmap(group->icon()));
-
-		pixmapLabel->setPixmap(icon.pixmap(16, 16));
-		pixmapLabel->setMaximumWidth(22);
-		pixmapLabel->setMaximumHeight(22);
-		pixmapLabels[group->name()] = pixmapLabel;
-
-		QPushButton *changeIconButton = new QPushButton(box);
-		changeIconButton->setIcon(icons_manager->loadPixmap("AddSelectPathDialogButton"));
-		changeIconButton->setToolTip(tr("Change icon"));
-		changeIconButton->setMaximumWidth(30);
-
-		QPushButton *deleteIconButton = new QPushButton(box);
-		deleteIconButton->setIcon(icons_manager->loadPixmap("RemoveSelectPathDialogButton"));
-		deleteIconButton->setToolTip(tr("Delete icon"));
-		deleteIconButton->setMaximumWidth(30);
-
-		boxLayout->addWidget(checkBox);
-		boxLayout->addWidget(textLabel);
-		boxLayout->addWidget(pixmapLabel);
-		boxLayout->addWidget(changeIconButton);
-		boxLayout->addWidget(deleteIconButton);
-
-		groupsLayout->addWidget(box);
-
-		connect(changeIconButton, SIGNAL(clicked()), this, SLOT(selectIcon()));
-		connect(deleteIconButton, SIGNAL(clicked()), this, SLOT(deleteIcon()));
+		groupsLayout->addWidget(checkBox);
 
 		groups.append(checkBox);
 	}
@@ -396,45 +362,13 @@ void ContactDataWindow::newGroupClicked()
 		return;
 	}
 
-	QWidget *box = new QWidget(groupsWidget);
-	QHBoxLayout *boxLayout = new QHBoxLayout(box);
-	boxLayout->setSpacing(3);
-
-	QCheckBox *checkBox = new QCheckBox(groupName, box);
+	QCheckBox *checkBox = new QCheckBox(groupName);
 
 	checkBox->setChecked(true);
 
-	QLabel *textLabel = new QLabel(box);
-	textLabel->setText(tr("Icon:"));
-	textLabel->setMaximumWidth(40);
+	groupsLayout->addWidget(checkBox);
 
-	QLabel *pixmapLabel = new QLabel(box);
-	pixmapLabel->setMaximumWidth(22);
-	pixmapLabel->setMaximumHeight(22);
-	pixmapLabels[groupName] = pixmapLabel;
-
-	QPushButton *changeIconButton = new QPushButton(box);
-	changeIconButton->setIcon(icons_manager->loadPixmap("AddSelectPathDialogButton"));
-	changeIconButton->setToolTip(tr("Change icon"));
-	changeIconButton->setMaximumWidth(30);
-
-	QPushButton *deleteIconButton = new QPushButton(box);
-	deleteIconButton->setIcon(icons_manager->loadPixmap("RemoveSelectPathDialogButton"));
-	deleteIconButton->setToolTip(tr("Delete icon"));
-	deleteIconButton->setMaximumWidth(30);
-
-	boxLayout->addWidget(checkBox);
-	boxLayout->addWidget(textLabel);
-	boxLayout->addWidget(pixmapLabel);
-	boxLayout->addWidget(changeIconButton);
-	boxLayout->addWidget(deleteIconButton);
-
-	groupsLayout->addWidget(box);
-
-	connect(changeIconButton, SIGNAL(clicked()), this, SLOT(selectIcon()));
-	connect(deleteIconButton, SIGNAL(clicked()), this, SLOT(deleteIcon()));
-
-	box->show();
+	checkBox->show();
 
 	groups.append(checkBox);
 
@@ -504,7 +438,13 @@ void ContactDataWindow::updateUserlist()
 
 	foreach (ContactAccountDataWidget* widget, widgets())
 		widget->saveConfiguration();
-
+//TODO
+	foreach(QCheckBox *checkbox, groups)
+		if (checkbox->isChecked())
+		{
+			Group *group = GroupManager::instance()->byName(checkbox->text(), false);
+			User.addToGroup(group);
+		}
 /*
 	QString id = QString::number(0);
 	if (!e_id->text().isEmpty())
@@ -557,10 +497,7 @@ void ContactDataWindow::updateUserlist()
 		if (id.toUInt() != 0) // if it was filled, then we add new protocol
 			User.addProtocol("Gadu", id);
 
-	QStringList l;
-	foreach(QCheckBox *checkbox, groups)
-		if (checkbox->isChecked())
-			l.append(checkbox->text());
+
 	User.setData("Groups", l);
 
 	User.setEmail(e_email->text());
@@ -591,52 +528,3 @@ void ContactDataWindow::scrollToBottom()
 	scrollArea->verticalScrollBar()->setValue(scrollArea->widget()->height());
 }
 
-void ContactDataWindow::selectIcon()
-{
-	ImageDialog* iDialog = new ImageDialog(this);
-	iDialog->setDirectory(config_file.readEntry("GroupIcon", "recentPath", "~/"));
-	iDialog->setWindowTitle(tr("Choose an icon"));
-	iDialog->setFilter(tr("Icons (*.png *.xpm *.jpg)"));
-	if (iDialog->exec() == QDialog::Accepted && 1 == iDialog->selectedFiles().count())
-	{
-		QString groupName;
-		const QCheckBox *checkBox = 0;
-
-		foreach(QObject *child, sender()->parent()->children())
-		{
-			checkBox = dynamic_cast<const QCheckBox*>(child);
-
-			if(checkBox)
-			{
-				groupName = checkBox->text();
-				break;
-			}
-		}
-
-		config_file.writeEntry("GroupIcon", "recentPath", iDialog->directory().absolutePath());
-		GroupManager::instance()->byName(groupName)->setIcon(iDialog->selectedFiles()[0]);
-
-		pixmapLabels[groupName]->setPixmap(icons_manager->loadPixmap(iDialog->selectedFiles()[0]).scaled(QSize(16,16)));
-	}
-	delete iDialog;
-}
-
-void ContactDataWindow::deleteIcon()
-{
-	QString groupName;
-	const QCheckBox *checkBox = 0;
-
-	foreach(QObject *child, sender()->parent()->children())
-	{
-		checkBox = dynamic_cast<const QCheckBox*>(child);
-
-		if (checkBox)
-		{
-			groupName = checkBox->text();
-			break;
-		}
-	}
-
-	GroupManager::instance()->byName(groupName)->setIcon("");
-	pixmapLabels[groupName]->setPixmap(QPixmap());
-}

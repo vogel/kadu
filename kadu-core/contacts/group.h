@@ -17,11 +17,18 @@
 
 class Group : public QObject, private StorableObject 
 {
+friend class GroupManager;
+
 	Q_OBJECT
 
 	QUuid Uuid;
 	QString Name;
 	QString Icon;
+	bool NotifyAboutStatusChanges;
+	bool ShowInAllGroup;
+	bool OfflineToGroup;
+	bool ShowIcon; 
+	bool ShowName;
 
 protected:
 	virtual StoragePoint * createStoragePoint() const;
@@ -39,12 +46,21 @@ public:
 	QUuid uuid() const { return Uuid; }
 	QString name() const { return Name; }
 	QString icon() const { return Icon; }
+	bool showIcon() const { return ShowIcon; }
+	bool showName() const { return ShowName; }
+	bool offlineToGroup() const { return OfflineToGroup; }
+	bool showInAllGroup() const {	return ShowInAllGroup; }
+	bool notifyAboutStatusChanges() const { return NotifyAboutStatusChanges; }
+	
 
 	void setName(const QString &name);
-	void setIcon(const QString &icon);
+	void setAppearance(bool showName, bool showIcon, const QString &icon);
+	void setNotifyAboutStatuses(bool notify);
+	void setOfflineTo(bool offline);
+	void setShowInAllGroup(bool show);
 
 signals:
-	void iconChanged(const Group *group);
+	void appearanceChanged(const Group *group);
 	void nameChanged(const Group *group);
 };
 

@@ -95,9 +95,11 @@ set (kadu_SRCS
 	gui/widgets/configuration/config-group-box.cpp
 	gui/widgets/configuration/config-tab.cpp
 
+	gui/windows/add-group-window.cpp
 	gui/windows/chat_window.cpp
 	gui/windows/configuration-window.cpp
 	gui/windows/contact-data-window.cpp
+	gui/windows/group-properties-window.cpp
 	gui/windows/open-chat-with/open-chat-with.cpp
 	gui/windows/open-chat-with/open-chat-with-contact-list-runner.cpp
 	gui/windows/open-chat-with/open-chat-with-runner-manager.cpp
@@ -219,9 +221,11 @@ set (kadu_MOC_SRCS
 	gui/widgets/configuration/config-section.h
 	gui/widgets/configuration/config-tab.h
 
+	gui/windows/add-group-window.h
 	gui/windows/chat_window.h
 	gui/windows/configuration-window.h
 	gui/windows/contact-data-window.h
+	gui/windows/group-properties-window.h
 	gui/windows/open-chat-with/open-chat-with.h
 	gui/windows/open-chat-with/open-chat-with-contact-list-runner.h
 	gui/windows/open-chat-with/open-chat-with-runner-manager.h

@@ -27,3 +27,9 @@ bool GroupContactFilter::acceptContact(Contact contact)
 {
 	return (0 == CurrentGroup) || contact.isInGroup(CurrentGroup);
 }
+
+void GroupContactFilter::refresh()
+{
+	emit filterChanged();
+}
+

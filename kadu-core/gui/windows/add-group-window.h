@@ -7,27 +7,35 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GROUP_CONTACT_FILTER
-#define GROUP_CONTACT_FILTER
+#ifndef ADD_GROUP_WINDOW
+#define ADD_GROUP_WINDOW
 
-#include "abstract-contact-filter.h"
+#include <QtGui/QWidget>
 
-class Group;
+#include "contacts/contact-list.h"
 
-class GroupContactFilter : public AbstractContactFilter
+class QLineEdit;
+class QPushButton;
+
+class AddGroupWindow : public QWidget
 {
 	Q_OBJECT
 
-	Group *CurrentGroup;
+	ContactList contacts;
+
+	QLineEdit *edit;
+	QPushButton *okButton;
+
+	void createGui();
+
+private slots:
+	void okClicked();
+	void textChanged(const QString & groupName);
 
 public:
-	GroupContactFilter(QObject *parent = 0);
-
-	void setGroup(Group *group);
-	virtual bool acceptContact(Contact contact);
-
-	void refresh();
+	AddGroupWindow(QWidget *parent = 0);
+	AddGroupWindow(ContactList &contactsToAdd, QWidget *parent = 0);
 
 };
 
-#endif // GROUP_CONTACT_FILTER
+#endif // ADD_GROUP_WINDOW

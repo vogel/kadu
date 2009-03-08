@@ -20,6 +20,7 @@
 #include "contact-list.h"
 
 class Account;
+class Group;
 class XmlConfigFile;
 
 class ContactManager : public QObject, public StorableObject
@@ -56,6 +57,8 @@ public:
 	Contact byId(Account *account, const QString &id);
 	Contact byUuid(const QString &uuid) const;
 	Contact byDisplay(const QString &display) const;
+//TODO 0.6.6: review
+	void contactGroupRemoved(Group *group);
 
 signals:
 	void contactAboutToBeAdded(Contact &contact);

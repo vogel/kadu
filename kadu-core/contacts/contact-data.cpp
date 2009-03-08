@@ -140,7 +140,7 @@ void ContactData::loadConfiguration()
 	}
 
 	Groups.clear();
-	QDomElement groupsNode = configurationStorage->getNode(parent, "Groups", XmlConfigFile::ModeFind);
+	QDomElement groupsNode = configurationStorage->getNode(parent, "ContactGroups", XmlConfigFile::ModeFind);
 	if (!groupsNode.isNull())
 	{
 		QDomNodeList groupsList = groupsNode.elementsByTagName("Group");
@@ -196,12 +196,12 @@ void ContactData::storeConfiguration()
 
 	if (Groups.count())
 	{
-		QDomElement groupsNode = configurationStorage->getNode(parent, "Groups", XmlConfigFile::ModeCreate);
+		QDomElement groupsNode = configurationStorage->getNode(parent, "ContactGroups", XmlConfigFile::ModeCreate);
 		foreach (const Group *group, Groups)
 			configurationStorage->appendTextNode(groupsNode, "Group", group->uuid().toString());
 	}
 	else
-		configurationStorage->removeNode(parent, "Groups");
+		configurationStorage->removeNode(parent, "ContactGroups");
 
 	configurationStorage->createTextNode(parent, "Ignored", QVariant(Ignored).toString());
 
@@ -308,4 +308,14 @@ bool ContactData::setOfflineTo(Account *account, bool offlineTo)
 bool ContactData::isInGroup(Group *group)
 {
 	return Groups.contains(group);
+}
+
+void ContactData::addToGroup(Group *group)
+{
+	Groups.append(group);
+
+}
+void ContactData::removeFromGroup(Group *group)
+{
+	Groups.removeAll(group);
 }

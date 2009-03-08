@@ -106,7 +106,7 @@ QStringList ContactsModelBase::mimeTypes() const
 	return ContactListMimeDataHelper::mimeTypes();
 }
 
-QMimeData * ContactsModelBase::mimeData(const QList<QModelIndex> indexes) const
+QMimeData * ContactsModelBase::mimeData(const QModelIndexList & indexes) const
 {
 	ContactList list;
 	foreach (QModelIndex index, indexes)

@@ -23,7 +23,7 @@ class ContactListMimeDataHelper
 public:
 	static QStringList mimeTypes();
 	static QMimeData * toMimeData(ContactList contactList);
-	static ContactList fromMimeData(QMimeData *mimeData);
+	static ContactList fromMimeData(const QMimeData *mimeData);
 
 };
 
