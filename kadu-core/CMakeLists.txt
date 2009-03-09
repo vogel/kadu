@@ -175,14 +175,15 @@ endif (UNIX AND NOT APPLE)
 
 
 # install icons
-install (FILES hi16-app-kadu.png DESTINATION "share/pixmaps" RENAME kadu-16.png)
-install (FILES hi22-app-kadu.png DESTINATION "share/pixmaps" RENAME kadu-22.png)
-install (FILES hi24-app-kadu.png DESTINATION "share/pixmaps" RENAME kadu-24.png)
-install (FILES hi32-app-kadu.png DESTINATION "share/pixmaps" RENAME kadu.png)
-install (FILES hi48-app-kadu.png DESTINATION "share/pixmaps" RENAME kadu-48.png)
-install (FILES hi64-app-kadu.png DESTINATION "share/pixmaps" RENAME kadu-64.png)
-install (FILES hi128-app-kadu.png DESTINATION "share/pixmaps" RENAME kadu-128.png)
-install (FILES hi256-app-kadu.png DESTINATION "share/pixmaps" RENAME kadu-256.png)
+install (FILES hi16-app-kadu.png DESTINATION "share/icons/hicolor/16x16/apps" RENAME kadu.png)
+install (FILES hi22-app-kadu.png DESTINATION "share/icons/hicolor/22x22/apps" RENAME kadu.png)
+install (FILES hi24-app-kadu.png DESTINATION "share/icons/hicolor/24x24/apps" RENAME kadu.png)
+install (FILES hi32-app-kadu.png DESTINATION "share/icons/hicolor/32x32/apps" RENAME kadu.png)
+install (FILES hi48-app-kadu.png DESTINATION "share/icons/hicolor/48x48/apps" RENAME kadu.png)
+install (FILES hi64-app-kadu.png DESTINATION "share/icons/hicolor/64x64/apps" RENAME kadu.png)
+install (FILES hi128-app-kadu.png DESTINATION "share/icons/hicolor/128x128/apps" RENAME kadu.png)
+# As of icon-theme-0.5 maximum supported pixmap size is 192, for anything larger one should use SVG.
+#install (FILES hi256-app-kadu.png DESTINATION "share/icons/hicolor/256x256/apps" RENAME kadu.png)
 
 if (APPLE)
 	pkg_search_module (SNDFILE REQUIRED sndfile>=1.0)
