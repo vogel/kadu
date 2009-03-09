@@ -19,7 +19,7 @@
 #else
 #include <winsock2.h>
 #endif
-#ifdef Q_WS_MAC
+#ifdef Q_OS_BSD4
 #include <sys/types.h>
 #include <sys/stat.h>
 #endif
