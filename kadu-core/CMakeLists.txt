@@ -162,6 +162,7 @@ if (WIN32)
 	target_link_libraries (kadu_c kadu_core)
 else (WIN32)
 	add_executable (kadu main.cpp main_unix.cpp ${kadu_SRCS} ${MOC_FILES})
+	set_target_properties (kadu PROPERTIES ENABLE_EXPORTS ON)
 	target_link_libraries (kadu ${STATIC_MODULES} ${QT_LIBRARIES} ${LIBGADU_LIBRARIES})
 endif (WIN32)
 
