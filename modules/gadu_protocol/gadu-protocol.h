@@ -81,12 +81,10 @@ private:
 
 	QTimer *PingTimer;
 
-	/**
-		Ustawianie parametr�w po��czenia proxy. Metoda wywo�ywana podczas logowania.
-
-		@see login
-	**/
 	void setupProxy();
+	void setupDcc();
+	void setupLoginParams();
+	void cleanUpLoginParams();
 
 	void networkConnected();
 	void networkDisconnected();
