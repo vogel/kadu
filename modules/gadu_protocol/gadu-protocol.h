@@ -87,8 +87,6 @@ private:
 
 	void sendUserList();
 
-	Status::StatusType statusTypeFromIndex(unsigned int index) const;
-
 	void socketContactStatusChanged(unsigned int uin, unsigned int status, const QString &description,
 			const QHostAddress &ip, unsigned short port, unsigned int maxImageSize, unsigned int version);
 	void socketConnFailed(GaduError error);
@@ -145,8 +143,8 @@ protected:
 public:
 	static void initModule();
 
-	static int statusToType(Status status);
-	static Status typeToStatus(int type);
+	static Status::StatusType statusTypeFromGaduStatus(unsigned int index);
+	static unsigned int gaduStatusFromStatus(const Status &status);
 
 	GaduProtocol(Account *account, ProtocolFactory *factory);
 	virtual ~GaduProtocol();

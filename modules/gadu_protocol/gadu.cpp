@@ -83,7 +83,7 @@ extern "C" void gadu_protocol_close()
 // ------------------------------------
 //        Timers - implementation
 // ------------------------------------
-
+/*
 SearchResult::SearchResult() :
 	Uin(), First(), Last(), Nick(), Born(), City(),
 	FamilyName(), FamilyCity(), Gender(0), Stat()
@@ -193,4 +193,4 @@ void SearchRecord::clearData()
 	Active = false;
 	IgnoreResults = false;
 	kdebugf2();
-}
+}*/

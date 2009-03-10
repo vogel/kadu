@@ -241,7 +241,6 @@ void PersonalInfoDialog::saveButtonClicked()
 {
 	kdebugf();
 
-	SearchResult save;
 	Contact contact;
 
 	State = Writing;

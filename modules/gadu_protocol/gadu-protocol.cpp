@@ -57,6 +57,51 @@ void GaduProtocol::initModule()
 	kdebugf2();
 }
 
+#define GG_STATUS_INVISIBLE2 0x0009
+Status::StatusType GaduProtocol::statusTypeFromGaduStatus(unsigned int index)
+{
+	switch (index)
+	{
+		case GG_STATUS_AVAIL_DESCR:
+		case GG_STATUS_AVAIL:
+			return Status::Online;
+
+		case GG_STATUS_BUSY_DESCR:
+		case GG_STATUS_BUSY:
+			return Status::Busy;
+
+		case GG_STATUS_INVISIBLE_DESCR:
+		case GG_STATUS_INVISIBLE:
+		case GG_STATUS_INVISIBLE2:
+			return Status::Invisible;
+
+		case GG_STATUS_BLOCKED:
+		case GG_STATUS_NOT_AVAIL_DESCR:
+		case GG_STATUS_NOT_AVAIL:
+		default:
+			return Status::Offline;
+	}
+
+	return Status::Offline;
+}
+
+unsigned int GaduProtocol::gaduStatusFromStatus(const Status &status)
+{
+	bool hasDescription = !status.description().isEmpty();
+	switch (status.type())
+	{
+		case Status::Online:
+			return hasDescription ? GG_STATUS_AVAIL_DESCR : GG_STATUS_AVAIL;
+		case Status::Busy:
+			return hasDescription ? GG_STATUS_BUSY_DESCR : GG_STATUS_BUSY;
+		case Status::Invisible:
+			return hasDescription ? GG_STATUS_INVISIBLE_DESCR : GG_STATUS_INVISIBLE;
+			break;
+		default:
+			return hasDescription ? GG_STATUS_NOT_AVAIL_DESCR : GG_STATUS_NOT_AVAIL;
+	}
+}
+
 GaduProtocol::GaduProtocol(Account *account, ProtocolFactory *factory) :
 		Protocol(account, factory), Dcc(0),
 		ActiveServer(), GaduLoginParams(), GaduSession(0), PingTimer(0)
@@ -109,41 +154,6 @@ unsigned int GaduProtocol::maxDescriptionLength()
 	return GG_STATUS_DESCR_MAXSIZE;
 }
 
-int GaduProtocol::statusToType(Status status)
-{
-	bool hasDescription = !status.description().isEmpty();
-	switch (status.type())
-	{
-		case Status::Online:
-			return hasDescription ? GG_STATUS_AVAIL_DESCR : GG_STATUS_AVAIL;
-		case Status::Busy:
-			return hasDescription ? GG_STATUS_BUSY_DESCR : GG_STATUS_BUSY;
-		case Status::Invisible:
-			return hasDescription ? GG_STATUS_INVISIBLE_DESCR : GG_STATUS_INVISIBLE;
-			break;
-		default:
-			return hasDescription ? GG_STATUS_NOT_AVAIL_DESCR : GG_STATUS_NOT_AVAIL;
-	}
-}
-
-Status GaduProtocol::typeToStatus(int type)
-{
-	switch (type)
-	{
-		case GG_STATUS_AVAIL:
-		case GG_STATUS_AVAIL_DESCR:
-			return Status::Online;
-		case GG_STATUS_BUSY:
-		case GG_STATUS_BUSY_DESCR:
-			return Status::Busy;
-		case GG_STATUS_INVISIBLE:
-		case GG_STATUS_INVISIBLE_DESCR:
-			return Status::Invisible;
-		default:
-			return Status::Offline;
-	}
-}
-
 void GaduProtocol::changeStatus(Status newStatus)
 {
 	if (newStatus.isOffline() && status().isOffline())
@@ -164,7 +174,7 @@ void GaduProtocol::changeStatus(Status newStatus)
 
 // TODO: 0.6.6
 	int friends = (!newStatus.isOffline() && false /*newStatus.isFriendsOnly()*/ ? GG_STATUS_FRIENDS_MASK : 0);
-	int type = statusToType(newStatus);
+	int type = gaduStatusFromStatus(newStatus);
 	bool hasDescription = !newStatus.description().isEmpty();
 
 	if (hasDescription)
@@ -497,7 +507,7 @@ void GaduProtocol::setupLoginParams()
 	GaduLoginParams.password = strdup(gaduAccount->password().toAscii().data());
 
 	GaduLoginParams.async = 1;
-	GaduLoginParams.status = statusToType(nextStatus()); // TODO: 0.6.6 support is friend only
+	GaduLoginParams.status = gaduStatusFromStatus(nextStatus()); // TODO: 0.6.6 support is friend only
 	if (!nextStatus().description().isEmpty())
 		GaduLoginParams.status_descr = strdup((const char *)unicode2cp(nextStatus().description()).data());
 
@@ -618,7 +628,8 @@ void GaduProtocol::socketContactStatusChanged(unsigned int uin, unsigned int sta
 	accountData->setGaduProtocolVersion(version);
 
 	Status oldStatus = accountData->status();
-	Status newStatus = typeToStatus(status);
+	Status newStatus;
+	newStatus.setType(statusTypeFromGaduStatus(status));
 	newStatus.setDescription(description);
 	accountData->setStatus(newStatus);
 
@@ -761,34 +772,6 @@ void GaduProtocol::socketDisconnected()
 	disconnectedSlot();
 
 	kdebugf2();
-}
-
-#define GG_STATUS_INVISIBLE2 0x0009
-Status::StatusType GaduProtocol::statusTypeFromIndex(unsigned int index) const
-{
-	switch (index)
-	{
-		case GG_STATUS_AVAIL_DESCR:
-		case GG_STATUS_AVAIL:
-			return Status::Online;
-
-		case GG_STATUS_BUSY_DESCR:
-		case GG_STATUS_BUSY:
-			return Status::Busy;
-
-		case GG_STATUS_INVISIBLE_DESCR:
-		case GG_STATUS_INVISIBLE:
-		case GG_STATUS_INVISIBLE2:
-			return Status::Invisible;
-
-		case GG_STATUS_BLOCKED:
-		case GG_STATUS_NOT_AVAIL_DESCR:
-		case GG_STATUS_NOT_AVAIL:
-		default:
-			return Status::Offline;
-	}
-
-	return Status::Offline;
 }
 
 unsigned int GaduProtocol::uin(Contact contact) const
