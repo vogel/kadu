@@ -7,6 +7,7 @@
  *                                                                         *
  ***************************************************************************/
 
+#include "gui/windows/open-chat-with/open-chat-with-runner.h"
 #include "gui/windows/open-chat-with/open-chat-with-runner-manager.h"
 
 #include "misc.h"
@@ -17,8 +18,13 @@
 GaduAccount::GaduAccount(const QUuid &uuid) :
 	Account(uuid)
 {
-// 	OpenChatRunner = new GaduOpenChatWithRunner();
-// 	OpenChatWithRunnerManager::instance()->registerRunner(OpenChatRunner);
+	OpenChatRunner = new GaduOpenChatWithRunner(this);
+	OpenChatWithRunnerManager::instance()->registerRunner(OpenChatRunner);
+}
+
+GaduAccount::~GaduAccount()
+{
+	OpenChatWithRunnerManager::instance()->unregisterRunner(OpenChatRunner);
 }
 
 bool GaduAccount::setId(const QString &id)

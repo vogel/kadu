@@ -21,6 +21,10 @@
 #include "gadu-contact-account-data.h"
 #include "gadu-open-chat-with-runner.h"
 
+GaduOpenChatWithRunner::GaduOpenChatWithRunner(Account *account) : ParentAccount(account)
+{
+}
+
 ContactList GaduOpenChatWithRunner::matchingContacts(const QString &query)
 {
 	kdebugf();

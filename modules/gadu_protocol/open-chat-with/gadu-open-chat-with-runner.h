@@ -21,6 +21,7 @@ class GaduOpenChatWithRunner : public OpenChatWithRunner
 	bool validateUserID(const QString &uid);
 
 public:
+	GaduOpenChatWithRunner(Account *account);
 	virtual ContactList matchingContacts(const QString &query);
 	void setAccount(Account *account) { ParentAccount = account; }
 
