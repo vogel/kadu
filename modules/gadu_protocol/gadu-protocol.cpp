@@ -124,7 +124,7 @@ GaduProtocol::~GaduProtocol()
 {
 	kdebugf();
 
-	disconnectedSlot();
+	networkDisconnected(false);
 	delete SocketNotifiers;
 
 	kdebugf2();
@@ -159,7 +159,7 @@ void GaduProtocol::changeStatus(Status newStatus)
 	if (newStatus.isOffline() && status().isOffline())
 	{
 		if (NetworkConnecting == state())
-			disconnectedSlot();
+			networkDisconnected(false);
 		return;
 	}
 
@@ -183,7 +183,7 @@ void GaduProtocol::changeStatus(Status newStatus)
 		gg_change_status(GaduSession, type | friends);
 
 	if (newStatus.isOffline())
-		disconnectedSlot();
+		networkDisconnected(false);
 
 	statusChanged(newStatus);
 }
@@ -355,44 +355,6 @@ QHostAddress GaduProtocol::activeServer()
 	return ActiveServer;
 }
 
-void GaduProtocol::disconnectedSlot()
-{
-	kdebugf();
-	ConnectionTimeoutTimer::off();
-
-	if (PingTimer)
-	{
-		PingTimer->stop();
-		delete PingTimer;
-		PingTimer = 0;
-	}
-
-//	socket notifiers are not watching any more
-// 	SocketNotifiers->watchFor(0); // stop watching
-
-	if (GaduSession)
-	{
-// we are disconnected, we cannot logoff
-// 		gg_logoff(GaduSession);
-		gg_free_session(GaduSession);
-		GaduSession = 0;
-	}
-
-	// du�o bezsensownej roboty, wi�c gdy jeste�my w trakcie wy��czania,
-	// to jej nie wykonujemy
-	// dla ka�dego kontaktu po ustawieniu statusu emitowane s� sygna�y,
-	// kt�re powoduj� od�wie�enie panelu informacyjnego, zapisanie status�w,
-	// od�wie�enie okien chat�w, od�wie�enie userboksa
-	if (!Kadu::closing())
-		setAllOffline();
-
-	if (!status().isOffline() && !nextStatus().isOffline())
-		setStatus(Status::Offline);
-
-	networkDisconnected();
-	kdebugf2();
-}
-
 void GaduProtocol::connectionTimeoutTimerSlot()
 {
 	kdebugf();
@@ -441,10 +403,7 @@ void GaduProtocol::login()
 	if (GaduSession)
 		SocketNotifiers->watchFor(GaduSession);
 	else
-	{
-		setStatus(Status::Offline);
-		disconnectedSlot();
-	}
+		networkDisconnected(false);
 
 	kdebugf2();
 }
@@ -548,15 +507,42 @@ void GaduProtocol::networkConnected()
 	networkStateChanged(NetworkConnected);
 }
 
-void GaduProtocol::networkDisconnected()
+void GaduProtocol::networkDisconnected(bool tryAgain)
 {
-	networkStateChanged(NetworkDisconnected);
+	if (!tryAgain)
+		networkStateChanged(NetworkDisconnected);
 
 	if (Dcc)
 	{
 		delete Dcc;
 		Dcc = 0;
 	}
+
+	ConnectionTimeoutTimer::off();
+
+	if (PingTimer)
+	{
+		PingTimer->stop();
+		delete PingTimer;
+		PingTimer = 0;
+	}
+
+//	socket notifiers are not watching any more
+	SocketNotifiers->watchFor(0); // stop watching
+
+	if (GaduSession)
+	{
+		gg_free_session(GaduSession);
+		GaduSession = 0;
+	}
+
+	if (!Kadu::closing())
+		setAllOffline();
+
+	if (tryAgain && !nextStatus().isOffline()) // user still wants to login
+		connectAfterOneSecond();
+	else if (!nextStatus().isOffline())
+		setStatus(Status::Offline);
 }
 
 void GaduProtocol::sendUserList()
@@ -641,9 +627,7 @@ void GaduProtocol::socketConnFailed(GaduError error)
 	kdebugf();
 	QString msg = QString::null;
 
-	disconnectedSlot();
-
-	bool continue_connecting = true;
+	bool tryAgain = true;
 	switch (error)
 	{
 		case ConnectionServerNotFound:
@@ -657,7 +641,7 @@ void GaduProtocol::socketConnFailed(GaduError error)
 		case ConnectionNeedEmail:
 			msg = tr("Please change your email in \"Change password / email\" window. "
 				"Leave new password field blank.");
-			continue_connecting = false;
+			tryAgain = false;
 			MessageBox::msg(msg, false, "Warning");
 			break;
 
@@ -675,7 +659,7 @@ void GaduProtocol::socketConnFailed(GaduError error)
 
 		case ConnectionIncorrectPassword:
 			msg = tr("Unable to connect, incorrect password");
-			continue_connecting = false;
+			tryAgain = false;
 			MessageBox::msg(tr("Connection will be stopped\nYour password is incorrect!"), false, "Critical");
 			break;
 
@@ -685,7 +669,7 @@ void GaduProtocol::socketConnFailed(GaduError error)
 
 		case ConnectionIntruderError:
 			msg = tr("Too many connection attempts with bad password!");
-			continue_connecting = false;
+			tryAgain = false;
 			MessageBox::msg(tr("Connection will be stopped\nToo many attempts with bad password"), false, "Critical");
 			break;
 
@@ -722,14 +706,7 @@ void GaduProtocol::socketConnFailed(GaduError error)
 		emit connectionError(account(), host, msg);
 	}*/
 
-	if (!continue_connecting)
-		setStatus(Status::Offline);
-
-	// je�li b��d kt�ry wyst�pi� umo�liwia dalsze pr�by po��czenia
-	// i w mi�dzyczasie u�ytkownik nie zmieni� statusu na niedost�pny
-	// to za sekund� pr�bujemy ponownie
-	if (continue_connecting && !nextStatus().isOffline())
-		connectAfterOneSecond();
+	networkDisconnected(tryAgain);
 
 	kdebugf2();
 }
@@ -768,8 +745,7 @@ void GaduProtocol::socketDisconnected()
 {
 	kdebugf();
 
-	setStatus(Status::Offline);
-	disconnectedSlot();
+	networkDisconnected(false);
 
 	kdebugf2();
 }

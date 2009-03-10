@@ -83,7 +83,7 @@ private:
 	void cleanUpLoginParams();
 
 	void networkConnected();
-	void networkDisconnected();
+	void networkDisconnected(bool tryAgain);
 
 	void sendUserList();
 
@@ -95,35 +95,8 @@ private:
 	void connectionBroken();
 
 private slots:
-	/**
-		Loguje si� do serwera Gadu-Gadu. Po uruchomieniu emituje sygna� connecting. Parametry
-		logowania odczytuje z konfiguracji, status logowania pobiera z pola NextStatus.
-		��cz�c si�, wybiera kolejne serwery (w przypadku nieudanego po��czenia) wykorzystuj�c
-		pola ConfigServers i i ServerNr.
-
-		Po poprawnym zalogowaniu wywo�ywany jest slot connectedSlot, kt�ry emituje sygna�
-		GaduProtocol::connected
-
-		Metod� mo�na uruchomi� po�rednio poprzez wywo�anie typu gadu->status().setOnline(),
-		kt�re wywo�a slot iWantToGoOnline, kt�ry z kolei (gdy stwierdzi, �e nie jeste�my zalogowani)
-		wywo�a procedur�.
-
-		@see connecting
-		@see connected
-		@see connectedSlot
-		@see NextStatus
-		@see ConfigServers
-		@see ServerNr
-	**/
 	void login();
 
-	/**
-		Slot wywo�ywany po roz��czeniu z serwerem. Emituje disconnected i wy��cza pingowanie
-		serwera.
-
-		@see disconnected
-	**/
-	void disconnectedSlot();
 
 
 	/**
