@@ -34,9 +34,6 @@ class GaduSocketNotifiers : public QObject
 	void createSocketNotifiers();
 	void deleteSocketNotifiers();
 
-	void disable();
-	void enable();
-
 private slots:
 	void socketTimeout();
 	void dataReceived();
@@ -44,6 +41,8 @@ private slots:
 
 protected:
 	void watchFor(int socket);
+	void disable();
+	void enable();
 
 	void lock();
 	void unlock();

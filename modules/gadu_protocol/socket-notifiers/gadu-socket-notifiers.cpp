@@ -110,7 +110,7 @@ void GaduSocketNotifiers::enable()
 
 void GaduSocketNotifiers::watchFor(int socket)
 {
-	kdebugmf(KDEBUG_NETWORK | KDEBUG_INFO, "notifier: %p, socket: %d\n", this, socket);
+	kdebugmf(KDEBUG_NETWORK | KDEBUG_INFO, "notifier: %p, old socket: %d, socket: %d\n", this, Socket, socket);
 
 	if (Socket == socket)
 		return;

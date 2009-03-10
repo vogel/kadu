@@ -333,7 +333,11 @@ bool DccSocketNotifiers::handleSoftTimeout()
 		return false;
 
 	Socket7->timeout = 0;
+
+	disable();
 	socketEvent();
+	enable();
+
 	return true;
 }
 
