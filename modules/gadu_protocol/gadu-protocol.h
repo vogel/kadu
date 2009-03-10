@@ -96,18 +96,7 @@ private:
 
 private slots:
 	void login();
-
-
-
-	/**
-		Slot wywo�ywany po przekroczeniu czasu po��czenia. Pr�buje po�aczy� ponownie.
-	**/
 	void connectionTimeoutTimerSlot();
-
-	/**
-		Wykonuje zadania co minut� - pinguje sie� i zeruje licznik
-		odebranych obrazk�w (je�li jeste�my po��czeni).
-	**/
 	void everyMinuteActions();
 
 protected:
@@ -130,6 +119,8 @@ public:
 	virtual SearchService * searchService() { return CurrentSearchService; }
 
 	virtual Conference * loadConferenceFromStorage(StoragePoint *storage);
+	virtual bool validateUserID(QString &uid);
+	virtual QPixmap statusPixmap(Status status);
 
 	UinType uin(Contact contact) const;
 	GaduContactAccountData * gaduContactAccountData(Contact contact) const;
@@ -140,22 +131,7 @@ public:
 	GaduProtocolSocketNotifiers * socketNotifiers() { return SocketNotifiers; }
 	DccManager * dccManager() { return Dcc; }
 
-	void changeID(const QString &id);
-	/**
-		Zwraca serwer z kt�rym jeste�my po��czeni lub do kt�rego si� w�a�nie ��czymy.
-		isNull() = hub.
-	**/
-	QHostAddress activeServer();
-
-	/**
-		Po jedno sekundowym op��nieniu wykonuje pr�b� po��czenia.
-	**/
-	void connectAfterOneSecond();
-
-	bool validateUserID(QString &uid);
 	GaduConference * conference(ContactList contacts);
-
-	virtual QPixmap statusPixmap(Status status);
 
 signals:
 	/**

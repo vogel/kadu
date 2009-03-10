@@ -350,11 +350,6 @@ void GaduProtocol::removingProtocol(UserListElement elem, QString protocolName, 
 	kdebugf2();
 }*/
 
-QHostAddress GaduProtocol::activeServer()
-{
-	return ActiveServer;
-}
-
 void GaduProtocol::connectionTimeoutTimerSlot()
 {
 	kdebugf();
@@ -540,7 +535,7 @@ void GaduProtocol::networkDisconnected(bool tryAgain)
 		setAllOffline();
 
 	if (tryAgain && !nextStatus().isOffline()) // user still wants to login
-		connectAfterOneSecond();
+		QTimer::singleShot(1000, this, SLOT(login())); // try again after one second
 	else if (!nextStatus().isOffline())
 		setStatus(Status::Offline);
 }
@@ -583,13 +578,6 @@ void GaduProtocol::sendUserList()
 	delete [] uins;
 	delete [] types;
 
-	kdebugf2();
-}
-
-void GaduProtocol::connectAfterOneSecond()
-{
-	kdebugf();
-	QTimer::singleShot(1000, this, SLOT(login()));
 	kdebugf2();
 }
 
@@ -813,5 +801,3 @@ Conference * GaduProtocol::loadConferenceFromStorage(StoragePoint *storage)
 	result->loadConfiguration();
 	return result;
 }
-
-
