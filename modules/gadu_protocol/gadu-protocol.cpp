@@ -59,7 +59,7 @@ void GaduProtocol::initModule()
 
 GaduProtocol::GaduProtocol(Account *account, ProtocolFactory *factory) :
 		Protocol(account, factory), Dcc(0),
-		ActiveServer(), GaduLoginParams(), GaduSession(0), sendImageRequests(0),
+		ActiveServer(), GaduLoginParams(), GaduSession(0),
 		DccExternalIP(), PingTimer(0)
 {
 	kdebugf();
@@ -402,9 +402,9 @@ void GaduProtocol::connectionTimeoutTimerSlot()
 void GaduProtocol::everyMinuteActions()
 {
 	kdebugf();
+
 	gg_ping(GaduSession);
-	sendImageRequests = 0;
-	kdebugf2();
+	CurrentChatImageService->resetSendImageRequests();
 }
 
 void GaduProtocol::login()
@@ -604,30 +604,6 @@ void GaduProtocol::sendUserList()
 	delete [] types;
 
 	kdebugf2();
-}
-
-bool GaduProtocol::sendImageRequest(Contact contact, int size, uint32_t crc32)
-{
-	kdebugf();
-	int res = 1;
-	if (contact.accountData(account()) &&
-	    (sendImageRequests <= config_file.readUnsignedNumEntry("Chat", "MaxImageRequests")))
-	{
-		res = gg_image_request(GaduSession, uin(contact), size, crc32);
-		sendImageRequests++;
-	}
-	kdebugf2();
-	return (res == 0);
-}
-
-bool GaduProtocol::sendImage(Contact contact, const QString &file_name, uint32_t size, const char *data)
-{
-	kdebugf();
-	int res = 1;
-	if (contact.accountData(account()))
-		res = gg_image_reply(GaduSession, uin(contact), qPrintable(file_name), data, size);
-	kdebugf2();
-	return (res == 0);
 }
 
 /* informacje osobiste */

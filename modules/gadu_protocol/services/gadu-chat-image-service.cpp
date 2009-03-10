@@ -7,6 +7,7 @@
  *                                                                         *
  ***************************************************************************/
 
+#include "config_file.h"
 #include "debug.h"
 
 #include "helpers/gadu-formatter.h"
@@ -19,7 +20,7 @@
 #include "gadu-chat-image-service.h"
 
 GaduChatImageService::GaduChatImageService(GaduProtocol *protocol)
-	: Protocol(protocol)
+	: Protocol(protocol), CurrentMinuteSendImageRequests(0)
 {
 }
 
@@ -42,4 +43,27 @@ void GaduChatImageService::handleEventImageReply(struct gg_event *e)
 			e->event.image_reply.filename, e->event.image_reply.image);
 	emit imageReceived(GaduFormater::createImageId(e->event.image_reply.sender,
 			e->event.image_reply.size, e->event.image_reply.crc32), fullPath);
+}
+
+bool GaduChatImageService::sendImageRequest(Contact contact, int size, uint32_t crc32)
+{
+	kdebugf();
+
+	if (!contact.accountData(Protocol->account()) ||
+			(CurrentMinuteSendImageRequests > config_file.readUnsignedNumEntry("Chat", "MaxImageRequests")))
+		return false;
+
+	CurrentMinuteSendImageRequests++;
+	return 0 == gg_image_request(Protocol->gaduSession(), Protocol->uin(contact), size, crc32);
+}
+
+
+bool GaduChatImageService::sendImage(Contact contact, const QString &file_name, uint32_t size, const char *data)
+{
+	kdebugf();
+
+	if (!contact.accountData(Protocol->account()))
+		return false;
+
+	return 0 == gg_image_reply(Protocol->gaduSession(), Protocol->uin(contact), qPrintable(file_name), data, size);
 }

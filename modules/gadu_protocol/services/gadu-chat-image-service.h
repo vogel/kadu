@@ -21,6 +21,7 @@ class GaduChatImageService : public ChatImageService
 	Q_OBJECT
 
 	GaduProtocol *Protocol;
+	unsigned int CurrentMinuteSendImageRequests;
 
 	friend class GaduProtocolSocketNotifiers;
 	void handleEventImageRequest(struct gg_event *e);
@@ -28,6 +29,11 @@ class GaduChatImageService : public ChatImageService
 
 public:
 	GaduChatImageService(GaduProtocol *protocol);
+
+	void resetSendImageRequests() { CurrentMinuteSendImageRequests = 0; }
+
+	bool sendImageRequest(Contact contact, int size, uint32_t crc32);
+	bool sendImage(Contact contact, const QString &file_name, uint32_t size, const char *data);
 
 };
 

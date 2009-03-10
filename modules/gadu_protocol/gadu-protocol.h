@@ -72,8 +72,6 @@ private:
 	struct gg_login_params GaduLoginParams;
 	gg_session *GaduSession;
 
-	unsigned int sendImageRequests;
-
 	QHostAddress DccExternalIP;
 
 	friend class GaduProtocolSocketNotifiers;
@@ -210,28 +208,6 @@ public:
 	void setDccIpAndPort(unsigned long dcc_ip, int dcc_port);
 
 public slots:
-
-	/**
-		Wysy�a pro�b� o przys�anie obrazka z danymi parametrami.
-
-		@param user u�ytkownik, od kt�rego chcemy obrazek
-		@param size rozmiar obrazka w bajtach
-		@param crc32 crc32 pliku
-		@todo powinno by� sendImageRequest(uniqId uint32_t) - info o obrazku zapisywa� gdzie� w �rodku
-	**/
-	bool sendImageRequest(Contact contact, int size, uint32_t crc32);
-
-	/**
-		Wywy�a obrazek o podanych parametrach.
-
-		@param user u�ytkownik, kt�remu wysy�amy obrazek
-		@param file_name nazwa pliku obrazka
-		@param size rozmiar obrazka w bajtach
-		@param data zawarto�� pliku
-		@todo usun�� parametry size i data - mo�emy to chyba sami wyznaczy�
-	**/
-	bool sendImage(Contact contact, const QString &file_name, uint32_t size, const char *data);
-
 	/**
 		Wysy�a nasz� list� u�ytkownik�w na serwer. Uwaga: nie ma to nic wsp�lnego z importem/eksportem.
 	**/

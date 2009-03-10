@@ -141,7 +141,8 @@ void GaduImagesManager::sendImage(UinType uin, uint32_t size, uint32_t crc32)
 		// TODO: 0.6.6
 		Account *account = AccountManager::instance()->defaultAccount();
 		GaduProtocol *gadu = dynamic_cast<GaduProtocol *>(account->protocol());
-		gadu->sendImage(account->getContactById(QString::number(uin)), i.file_name, i.size, i.data);
+		dynamic_cast<GaduChatImageService *>(gadu->chatImageService())->
+				sendImage(account->getContactById(QString::number(uin)), i.file_name, i.size, i.data);
 
 		delete[] i.data;
 		i.data = NULL;
