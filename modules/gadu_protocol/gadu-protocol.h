@@ -141,14 +141,6 @@ private slots:
 	**/
 	void everyMinuteActions();
 
-	/**
-		Informacja o zmianie statusu kontaktu. Emituje userStatusChanged oraz userListChanged.
-
-		@see userStatusChanged
-		@see userListChanged
-	**/
-	void userStatusChanged(const struct gg_event *);
-
 protected:
 	virtual void changeStatus(Status status);
 
@@ -209,29 +201,7 @@ public:
 
 	void setDccIpAndPort(unsigned long dcc_ip, int dcc_port);
 
-public slots:
-	/**
-		Pobiera informacje o danych osobowych z katalogu publicznego.
-
-		@todo jak to w og�le dzia�a, bo zapomnia�em??
-	**/
-	void getPersonalInfo(SearchRecord &searchRecord);
-
-	/**
-		Ustawia informacje o danych osobowych w katalogu publicznym.
-
-		@todo jak to w og�le dzia�a, bo zapomnia�em??
-	**/
-	void setPersonalInfo(SearchRecord &searchRecord, SearchResult &newData);
-
 signals:
-	/**
-		wyst�pi� b��d po��czenia
-		@param err przyczyna
-		@see connectionError
-	**/
-	void error(GaduError err);
-
 	/**
 		Served sent information about status change for unknown user.
 	**/

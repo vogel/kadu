@@ -440,7 +440,6 @@ void GaduProtocol::login()
 	{
 		setStatus(Status::Offline);
 		disconnectedSlot();
-		emit error(Disconnected);
 	}
 
 	kdebugf2();
@@ -599,48 +598,6 @@ void GaduProtocol::sendUserList()
 	kdebugf2();
 }
 
-/* informacje osobiste */
-void GaduProtocol::getPersonalInfo(SearchRecord &searchRecord)
-{
-	kdebugf();
-
-	gg_pubdir50_t req;
-
-	req = gg_pubdir50_new(GG_PUBDIR50_READ);
-	searchRecord.Seq = gg_pubdir50(GaduSession, req);
-	gg_pubdir50_free(req);
-	kdebugf2();
-}
-
-void GaduProtocol::setPersonalInfo(SearchRecord &searchRecord, SearchResult &newData)
-{
-	kdebugf();
-
-	gg_pubdir50_t req;
-	req = gg_pubdir50_new(GG_PUBDIR50_WRITE);
-
-	if (!newData.First.isEmpty())
-		gg_pubdir50_add(req, GG_PUBDIR50_FIRSTNAME, (const char *)(unicode2cp(newData.First).data()));
-	if (!newData.Last.isEmpty())
-		gg_pubdir50_add(req, GG_PUBDIR50_LASTNAME, (const char *)(unicode2cp(newData.Last).data()));
-	if (!newData.Nick.isEmpty())
-		gg_pubdir50_add(req, GG_PUBDIR50_NICKNAME, (const char *)(unicode2cp(newData.Nick).data()));
-	if (!newData.City.isEmpty())
-		gg_pubdir50_add(req, GG_PUBDIR50_CITY, (const char *)(unicode2cp(newData.City).data()));
-	if (!newData.Born.isEmpty())
-		gg_pubdir50_add(req, GG_PUBDIR50_BIRTHYEAR, (const char *)(unicode2cp(newData.Born).data()));
-	if (newData.Gender)
-		gg_pubdir50_add(req, GG_PUBDIR50_GENDER, QString::number(newData.Gender).toLatin1());
-	if (!newData.FamilyName.isEmpty())
-		gg_pubdir50_add(req, GG_PUBDIR50_FAMILYNAME, (const char *)(unicode2cp(newData.FamilyName).data()));
-	if (!newData.FamilyCity.isEmpty())
-		gg_pubdir50_add(req, GG_PUBDIR50_FAMILYCITY, (const char *)(unicode2cp(newData.FamilyCity).data()));
-
-	searchRecord.Seq = gg_pubdir50(GaduSession, req);
-	gg_pubdir50_free(req);
-	kdebugf2();
-}
-
 void GaduProtocol::connectAfterOneSecond()
 {
 	kdebugf();
@@ -656,6 +613,7 @@ void GaduProtocol::socketContactStatusChanged(unsigned int uin, unsigned int sta
 	if (contact.isAnonymous())
 	{
 		kdebugmf(KDEBUG_INFO, "buddy %d not in list. Damned server!\n", uin);
+		emit userStatusChangeIgnored(contact);
 		gg_remove_notify(GaduSession, uin);
 		return;
 	}
@@ -681,8 +639,6 @@ void GaduProtocol::socketConnFailed(GaduError error)
 	QString msg = QString::null;
 
 	disconnectedSlot();
-
-// 	emit error(err);
 
 	bool continue_connecting = true;
 	switch (error)
@@ -841,87 +797,6 @@ Status::StatusType GaduProtocol::statusTypeFromIndex(unsigned int index) const
 	}
 
 	return Status::Offline;
-}
-
-void GaduProtocol::userStatusChanged(const struct gg_event *e)
-{
-	kdebugf();
-
-	int gadu_status_id;
-	QString description;
-
-	uint32_t uin;
-	uint32_t remote_ip;
-	uint16_t remote_port;
-	uint8_t version;
-	uint8_t image_size;
-
-	if (e->type == GG_EVENT_STATUS60)
-	{
-		uin = e->event.status60.uin;
-		gadu_status_id = e->event.status60.status;
-		description = cp2unicode(e->event.status60.descr);
-		remote_ip = e->event.status60.remote_ip;
-		remote_port = e->event.status60.remote_port;
-		version = e->event.status60.version;
-		image_size = e->event.status60.image_size;
-	}
-	else
-	{
-		uin = e->event.status.uin;
-		gadu_status_id = e->event.status.status;
-		description = cp2unicode(e->event.status.descr);
-		remote_ip = 0;
-		remote_port = 0;
-		version = 0;
-		image_size = 0;
-	}
-
-	description.replace("\r\n", "\n");
-	description.replace("\r", "\n");
-
-	Status status(statusTypeFromIndex(gadu_status_id), description);
-// TODO: 0.6.6
-//	kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "User %d went %d (%s)\n", uin,
-//		status.type(), qPrintable(status.name()));
-
-	Contact contact = account()->getContactById(QString::number(uin));
-
-	if (contact.isAnonymous())
-	{
-		// ignore!
-		kdebugmf(KDEBUG_INFO, "buddy %d not in list. Damned server!\n", uin);
-		gg_remove_notify(GaduSession, uin);
-		emit userStatusChangeIgnored(contact);
-		return;
-	}
-
-	GaduContactAccountData *data = gaduContactAccountData(contact);
-
-	if (status.isOffline())
-	{
-		remote_ip = 0;
-		remote_port = 0;
-		version = 0;
-		image_size = 0;
-	}
-
-	if (!data)
-		return;
-
-	data->setIp(QHostAddress((quint32)(ntohl(remote_ip))));
-	data->setPort(remote_port);
-	data->setProtocolVersion(QString::number(version));
-	data->setGaduProtocolVersion(version);
-	data->setMaxImageSize(image_size);
-
-// TODO: 0.6.5
-// 	user.refreshDNSName("Gadu");
-
-	Status oldStatus = data->status();
-	data->setStatus(status);
-
-	emit contactStatusChanged(account(), contact, oldStatus);
 }
 
 void GaduProtocol::setDccIpAndPort(unsigned long dcc_ip, int dcc_port)
