@@ -17,6 +17,7 @@ class GaduServersManager
 {
 	Q_DISABLE_COPY(GaduServersManager);
 
+	static const char *Ips[];
 	static GaduServersManager * Instance;
 
 	QList<int> Ports;

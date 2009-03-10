@@ -39,51 +39,6 @@
 
 #include "gadu-protocol.h"
 
-#define GG_SERVERS_COUNT 39
-static const char *gg_servers_ip[GG_SERVERS_COUNT] = {
-	"91.197.13.2",
-	"91.197.12.4",
-	"91.197.12.5",
-	"91.197.12.6",
-	"91.197.13.11",
-	"91.197.13.12",
-	"91.197.13.13",
-	"91.197.13.14",
-	"91.197.13.17",
-	"91.197.13.18",
-	"91.197.13.19",
-	"91.197.13.20",
-	"91.197.13.21",
-	"91.197.13.24",
-	"91.197.13.25",
-	"91.197.13.26",
-	"91.197.13.27",
-	"91.197.13.28",
-	"91.197.13.29",
-	"91.197.13.31",
-	"91.197.13.32",
-	"91.197.13.33",
-	"217.17.41.83",
-	"217.17.41.84",
-	"217.17.41.85",
-	"217.17.41.86",
-	"217.17.41.87",
-	"217.17.41.88",
-	"217.17.41.89",
-	"217.17.41.90",
-	"217.17.41.91",
-	"217.17.41.92",
-	"217.17.41.93",
-	"217.17.45.133",
-	"217.17.45.143",
-	"217.17.45.144",
-	"217.17.45.145",
-	"217.17.45.146",
-	"217.17.45.147"
-};
-
-static QList<QHostAddress> gg_servers;
-
 static inline int getRand(int min, int max)
 {
 	int i = int((double(rand()) / RAND_MAX) * (max - min)) + min;
@@ -97,26 +52,6 @@ static inline int getRand(int min, int max)
 void GaduProtocol::initModule()
 {
 	kdebugf();
-
-	QHostAddress ip;
-	for (int i = 0; i < GG_SERVERS_COUNT; ++i)
-	{
-		ip.setAddress(QString(gg_servers_ip[i]));
-		gg_servers.append(ip);
-	}
-	srand(time(NULL));
-	for (int i = 0; i < GG_SERVERS_COUNT * 2; ++i)
-	{
-		int idx1 = getRand(0, GG_SERVERS_COUNT - 1);
-		int idx2 = getRand(0, GG_SERVERS_COUNT - 1);
-
-		if (idx1 != idx2)
-		{
-			QHostAddress a = gg_servers[idx1];
-			gg_servers[idx1] = gg_servers[idx2];
-			gg_servers[idx2] = a;
-		}
-	}
 
 	gg_proxy_host = NULL;
 	gg_proxy_username = NULL;
