@@ -72,8 +72,6 @@ private:
 	struct gg_login_params GaduLoginParams;
 	gg_session *GaduSession;
 
-	QHostAddress DccExternalIP;
-
 	friend class GaduProtocolSocketNotifiers;
 	GaduProtocolSocketNotifiers *SocketNotifiers;
 
@@ -183,23 +181,10 @@ public:
 	**/
 	void connectAfterOneSecond();
 
-	/**
-		Ustawia adres IP kt�ry ma by� przekazany do serwera GG
-		jako adres komputera, kt�ry przekierowuje do nas port DCC.
-		Zmiana jest uwzgl�dniana dopiero przy ponownym po��czeniu
-		z serwerem.
-	**/
-	void setDccExternalIP(const QHostAddress& ip);
 	bool validateUserID(QString &uid);
 	GaduConference * conference(ContactList contacts);
 
 	virtual QPixmap statusPixmap(Status status);
-
-	// --------------------
-	//  DCC
-	// --------------------
-
-	void setDccIpAndPort(unsigned long dcc_ip, int dcc_port);
 
 signals:
 	/**

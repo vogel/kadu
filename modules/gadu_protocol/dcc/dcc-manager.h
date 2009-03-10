@@ -10,8 +10,11 @@
 #ifndef DCC_MANAGER_H
 #define DCC_MANAGER_H
 
+#include <libgadu.h>
+
 #include <QtCore/QObject>
 #include <QtCore/QTimer>
+#include <QtNetwork/QHostAddress>
 
 #include "protocols/protocol.h"
 
@@ -38,6 +41,8 @@ class DccManager : public QObject
 	QList<GaduFileTransfer *> WaitingFileTransfers;
 
 	bool DccEnabled;
+	QHostAddress DccExternalIP;
+	unsigned int DccExternalPort;
 /*
 	QWidget *ipAddress;
 	QCheckBox *forwarding;
@@ -82,6 +87,8 @@ protected:
 public:
 	DccManager(GaduProtocol *protocol);
 	virtual ~DccManager();
+
+	void setUpExternalAddress(gg_login_params &loginParams);
 
 	void attachSendFileTransferSocket(GaduFileTransfer *gft);
 

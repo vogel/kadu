@@ -59,8 +59,7 @@ void GaduProtocol::initModule()
 
 GaduProtocol::GaduProtocol(Account *account, ProtocolFactory *factory) :
 		Protocol(account, factory), Dcc(0),
-		ActiveServer(), GaduLoginParams(), GaduSession(0),
-		DccExternalIP(), PingTimer(0)
+		ActiveServer(), GaduLoginParams(), GaduSession(0), PingTimer(0)
 {
 	kdebugf();
 
@@ -346,11 +345,6 @@ QHostAddress GaduProtocol::activeServer()
 	return ActiveServer;
 }
 
-void GaduProtocol::setDccExternalIP(const QHostAddress &ip)
-{
-	DccExternalIP = ip;
-}
-
 void GaduProtocol::disconnectedSlot()
 {
 	kdebugf();
@@ -518,10 +512,8 @@ void GaduProtocol::setupLoginParams()
 	GaduLoginParams.has_audio = config_file.readBoolEntry("Network", "AllowDCC");
 	GaduLoginParams.last_sysmsg = config_file.readNumEntry("General", "SystemMsgIndex", 1389);
 
-	bool haveDcc = config_file.readBoolEntry("Network", "AllowDCC") && DccExternalIP.toIPv4Address() &&
-			config_file.readNumEntry("Network", "ExternalPort") > 1023;
-	GaduLoginParams.external_addr = haveDcc ? htonl(DccExternalIP.toIPv4Address()) : 0;
-	GaduLoginParams.external_port = haveDcc ? config_file.readNumEntry("Network", "ExternalPort") : 0;
+	if (Dcc)
+		Dcc->setUpExternalAddress(GaduLoginParams);
 
 	GaduLoginParams.tls = 0;
 	GaduLoginParams.image_size = config_file.readUnsignedNumEntry("Chat", "MaxImageSize", 0);
@@ -797,12 +789,6 @@ Status::StatusType GaduProtocol::statusTypeFromIndex(unsigned int index) const
 	}
 
 	return Status::Offline;
-}
-
-void GaduProtocol::setDccIpAndPort(unsigned long dcc_ip, int dcc_port)
-{
-	gg_dcc_ip = dcc_ip;
-	gg_dcc_port = dcc_port;
 }
 
 unsigned int GaduProtocol::uin(Contact contact) const

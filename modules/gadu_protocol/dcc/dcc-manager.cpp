@@ -36,9 +36,6 @@ DccManager::DccManager(GaduProtocol *protocol) :
 
 	createDefaultConfiguration();
 
-	connect(Protocol->socketNotifiers(), SIGNAL(dcc7Erorr(struct gg_dcc7 *)),
-			this, SLOT(dcc7Erorr(struct gg_dcc7 *)));
-	
 	setUpDcc();
 
 	kdebugf2();
@@ -48,13 +45,19 @@ DccManager::~DccManager()
 {
 	kdebugf();
 
-	disconnect(Protocol->socketNotifiers(), SIGNAL(dcc7Erorr(struct gg_dcc7 *)),
-			this, SLOT(dcc7Erorr(struct gg_dcc7 *)));
-
 	closeDcc();
 
 	kdebugf2();
 }
+
+void DccManager::setUpExternalAddress(gg_login_params &loginParams)
+{
+	bool haveExternalDcc = !DccExternalIP.isNull() && DccExternalPort > 1023;
+	loginParams.external_addr = haveExternalDcc ? htonl(DccExternalIP.toIPv4Address()) : 0;
+	loginParams.external_port = haveExternalDcc ? DccExternalPort : 0;
+}
+
+
 /*
 void DccManager::mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow)
 {
@@ -114,20 +117,14 @@ void DccManager::setUpDcc()
 
 	QHostAddress ext_ip;
 
-	bool forwarding = config_file.readBoolEntry("Network", "DccForwarding") && ext_ip.setAddress(config_file.readEntry("Network", "ExternalIP"));
+	bool forwarding = config_file.readBoolEntry("Network", "DccForwarding") &&
+			ext_ip.setAddress(config_file.readEntry("Network", "ExternalIP"));
 
-	if (forwarding)
-	{
-		Protocol->setDccExternalIP(ext_ip);
-		DCCPort = config_file.readNumEntry("Network", "ExternalPort");
-	}
-	else
-	{
-		Protocol->setDccExternalIP(QHostAddress());
-		DCCPort = socket->port;
-	}
+	DccExternalIP = forwarding ? ext_ip : QHostAddress();
+	DccExternalPort = forwarding ? config_file.readNumEntry("Network", "ExternalPort") : 0;
 
-	Protocol->setDccIpAndPort(htonl(DCCIP.toIPv4Address()), DCCPort);
+	gg_dcc_ip = htonl(DCCIP.toIPv4Address());
+	gg_dcc_port = socket->port;
 
 	kdebugmf(KDEBUG_NETWORK | KDEBUG_INFO, "DCC_IP=%s DCC_PORT=%d\n", qPrintable(DCCIP.toString()), DCCPort);
 
@@ -185,7 +182,8 @@ void DccManager::closeDcc()
 {
 	kdebugf();
 
-	Protocol->setDccIpAndPort(0, 0);
+	gg_dcc_ip = 0;
+	gg_dcc_port = 0;
 	DccEnabled = false;
 
 	kdebugf2();
