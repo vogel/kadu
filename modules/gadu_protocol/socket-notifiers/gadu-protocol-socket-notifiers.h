@@ -28,7 +28,6 @@ class GaduProtocolSocketNotifiers : public GaduSocketNotifiers
 	GaduProtocol *CurrentProtocol;
 
 	gg_session *Sess;
-	int socketEventCalls;
 
 	void dumpConnectionState();
 
@@ -50,20 +49,10 @@ protected:
 public:
 	GaduProtocolSocketNotifiers(Account *account, GaduProtocol *protocol, QObject *parent = 0) :
 			CurrentAccount(account), CurrentProtocol(protocol),
-			GaduSocketNotifiers(parent), Sess(0), socketEventCalls(0) {}
-
-	void watchFor(gg_session *sess);
-
+			GaduSocketNotifiers(parent), Sess(0) {}
 	void setAccount(Account *account) { CurrentAccount = account; }
 
-signals:
-	void error(GaduProtocol::GaduError);
-	void userlistReplyReceived(char, char *);
-
-	void dcc7New(struct gg_dcc7 *);
-	void dcc7Accepted(struct gg_dcc7 *);
-	void dcc7Rejected(struct gg_dcc7 *);
-	void dcc7Error(struct gg_dcc7 *);
+	void watchFor(gg_session *sess);
 
 };
 

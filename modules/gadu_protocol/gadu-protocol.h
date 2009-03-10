@@ -96,6 +96,7 @@ private:
 	void socketConnFailed(GaduError error);
 	void socketConnSuccess();
 	void socketDisconnected();
+	void connectionBroken();
 
 private slots:
 	/**
@@ -263,10 +264,6 @@ signals:
 		Served sent information about status change for unknown user.
 	**/
 	void userStatusChangeIgnored(Contact);
-
-	void dcc7New(struct gg_dcc7 *);
-	void dcc7Accepted(struct gg_dcc7 *);
-	void dcc7Rejected(struct gg_dcc7 *);
 
 };
 

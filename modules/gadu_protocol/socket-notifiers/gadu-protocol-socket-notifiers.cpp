@@ -190,20 +190,14 @@ void GaduProtocolSocketNotifiers::socketEvent()
 {
 	kdebugf();
 
-	++socketEventCalls;
-	if (socketEventCalls > 1)
-		kdebugm(KDEBUG_WARNING, "************* GaduProtocolSocketNotifiers::socketEvent(): Recursive socketEvent calls detected!\n");
-
-	gg_event* e;
-	if (!(e = gg_watch_fd(Sess)))
+	gg_event *e;
+	if (!(e = gg_watch_fd(Sess)) || GG_STATE_IDLE == Sess->state)
 	{
-		emit error(GaduProtocol::ConnectionUnknow);
-//		gg_free_event(e);//nulla nie zwalniamy, bo i po co?
-		--socketEventCalls;
+		CurrentProtocol->socketConnFailed(GaduProtocol::ConnectionUnknow);
 		return;
 	}
 
-	if (Sess->state == GG_STATE_CONNECTING_HUB || Sess->state == GG_STATE_CONNECTING_GG)
+	if (GG_STATE_CONNECTING_HUB == Sess->state || GG_STATE_CONNECTING_GG == Sess->state)
 	{
 		kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "changing QSocketNotifiers.\n");
 		watchFor(Sess); // maybe fd has changed
@@ -329,7 +323,6 @@ void GaduProtocolSocketNotifiers::socketEvent()
 	}
 
 	gg_free_event(e);
-	--socketEventCalls;
 	kdebugf2();
 }
 

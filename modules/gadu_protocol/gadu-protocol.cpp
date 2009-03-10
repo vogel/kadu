@@ -73,11 +73,6 @@ GaduProtocol::GaduProtocol(Account *account, ProtocolFactory *factory) :
 	CurrentPersonalInfoService = new GaduPersonalInfoService(this);
 	CurrentSearchService = new GaduSearchService(this);
 
-	connect(SocketNotifiers, SIGNAL(userStatusChanged(const struct gg_event *)),
-		this, SLOT(userStatusChanged(const struct gg_event *)));
-	connect(SocketNotifiers, SIGNAL(dcc7Accepted(struct gg_dcc7 *)), this, SIGNAL(dcc7Accepted(struct gg_dcc7 *)));
-	connect(SocketNotifiers, SIGNAL(dcc7Rejected(struct gg_dcc7 *)), this, SIGNAL(dcc7Rejected(struct gg_dcc7 *)));
-
 	kdebugf2();
 }
 

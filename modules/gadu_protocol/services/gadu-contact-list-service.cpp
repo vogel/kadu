@@ -26,8 +26,6 @@
 GaduContactListService::GaduContactListService(GaduProtocol *protocol)
 	: ContactListService(protocol), Protocol(protocol)
 {
-	connect(Protocol->socketNotifiers(), SIGNAL(userlistReplyReceived(char, char *)),
-		this, SLOT(contactListReplyReceived(char, char *)));
 }
 
 void GaduContactListService::handleEventUserlistGetReply(struct gg_event *e)
