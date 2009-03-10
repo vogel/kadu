@@ -128,12 +128,6 @@ private slots:
 	**/
 	void disconnectedSlot();
 
-	/**
-		Slot wywo�ywany po zerwaniu po��czenia przez serwer. Wywo�uje disconnectedSlot(),
-		oraz dodatkowo zmienia NextStatus.
-	**/
-	void socketDisconnectedSlot();
-
 
 	/**
 		Slot wywo�ywany po przekroczeniu czasu po��czenia. Pr�buje po�aczy� ponownie.
@@ -145,15 +139,6 @@ private slots:
 		odebranych obrazk�w (je�li jeste�my po��czeni).
 	**/
 	void everyMinuteActions();
-
-	/**
-		Pobrano list� u�ytkownik�w z serwera. Emituje userStatusChanged dla ka�dego
-		otrzymanego kontaktu oraz userListChanged przed zako�czeniem dzia�ania.
-
-		@see userStatusChanged
-		@see userListChanged
-	**/
-	void userListReceived(const struct gg_event *);
 
 	/**
 		Informacja o zmianie statusu kontaktu. Emituje userStatusChanged oraz userListChanged.

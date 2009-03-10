@@ -20,8 +20,6 @@ GaduSearchService::GaduSearchService(GaduProtocol *protocol) :
 		SearchService(protocol), Protocol(protocol), Query(Contact::TypeAnonymous),
 		SearchSeq(0), From(0), Stopped(false)
 {
-	connect(Protocol->socketNotifiers(), SIGNAL(pubdirReplyReceived(gg_pubdir50_t)),
-			this, SLOT(pubdirReplyReceived(gg_pubdir50_t)));
 }
 
 void GaduSearchService::searchFirst(Contact contact)

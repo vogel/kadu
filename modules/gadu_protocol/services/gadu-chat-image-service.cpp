@@ -21,10 +21,6 @@
 GaduChatImageService::GaduChatImageService(GaduProtocol *protocol)
 	: Protocol(protocol)
 {
-	connect(Protocol->socketNotifiers(), SIGNAL(imageReceived(UinType, uint32_t, uint32_t, const QString &, const char *)),
-		this, SLOT(imageReceivedSlot(UinType, uint32_t, uint32_t, const QString &, const char *)));
-	connect(Protocol->socketNotifiers(), SIGNAL(imageRequestReceived(UinType, uint32_t, uint32_t)),
-		this, SLOT(imageRequestReceivedSlot(UinType, uint32_t, uint32_t)));
 }
 
 void GaduChatImageService::handleEventImageRequest(struct gg_event *e)

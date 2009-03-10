@@ -57,17 +57,7 @@ public:
 	void setAccount(Account *account) { CurrentAccount = account; }
 
 signals:
-	/**
-		Sygna� jest emitowany, gdy serwer przerwa� po��czenie
-	**/
-	void serverDisconnected();
-
 	void error(GaduProtocol::GaduError);
-	void imageReceived(UinType, uint32_t, uint32_t, const QString &filename, const char *data);
-	void imageRequestReceived(UinType, uint32_t, uint32_t);
-	void pubdirReplyReceived(gg_pubdir50_t);
-	void systemMessageReceived(QString &, QDateTime &, int, void *);
-	void userlistReceived(const struct gg_event *);
 	void userlistReplyReceived(char, char *);
 
 	void dcc7New(struct gg_dcc7 *);

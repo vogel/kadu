@@ -39,23 +39,13 @@
 
 #include "gadu-protocol.h"
 
-static inline int getRand(int min, int max)
-{
-	int i = int((double(rand()) / RAND_MAX) * (max - min)) + min;
-	if (i < min)
-		i = min;
-	if (i > max)
-		i = max;
-	return i;
-}
-
 void GaduProtocol::initModule()
 {
 	kdebugf();
 
-	gg_proxy_host = NULL;
-	gg_proxy_username = NULL;
-	gg_proxy_password = NULL;
+	gg_proxy_host = 0;
+	gg_proxy_username = 0;
+	gg_proxy_password = 0;
 
 #ifndef DEBUG_ENABLED
 	gg_debug_level = 1;
@@ -83,9 +73,6 @@ GaduProtocol::GaduProtocol(Account *account, ProtocolFactory *factory) :
 	CurrentPersonalInfoService = new GaduPersonalInfoService(this);
 	CurrentSearchService = new GaduSearchService(this);
 
-	connect(SocketNotifiers, SIGNAL(serverDisconnected()), this, SLOT(socketDisconnectedSlot()));
-	connect(SocketNotifiers, SIGNAL(userlistReceived(const struct gg_event *)),
-		this, SLOT(userListReceived(const struct gg_event *)));
 	connect(SocketNotifiers, SIGNAL(userStatusChanged(const struct gg_event *)),
 		this, SLOT(userStatusChanged(const struct gg_event *)));
 	connect(SocketNotifiers, SIGNAL(dcc7Accepted(struct gg_dcc7 *)), this, SIGNAL(dcc7Accepted(struct gg_dcc7 *)));
@@ -404,16 +391,6 @@ void GaduProtocol::disconnectedSlot()
 		setStatus(Status::Offline);
 
 	networkDisconnected();
-	kdebugf2();
-}
-
-void GaduProtocol::socketDisconnectedSlot()
-{
-	kdebugf();
-
-	setStatus(Status::Offline);
-	disconnectedSlot();
-
 	kdebugf2();
 }
 
@@ -866,80 +843,10 @@ void GaduProtocol::socketConnSuccess()
 
 void GaduProtocol::socketDisconnected()
 {
-	disconnectedSlot();
-}
-
-void GaduProtocol::userListReceived(const struct gg_event *e)
-{
 	kdebugf();
 
-	int nr = 0;
-
-	while (e->event.notify60[nr].uin)
-	{
-		Contact contact = ContactManager::instance()->byId(account(), QString::number(e->event.notify60[nr].uin));
-
-		if (contact.isAnonymous())
-		{
-			kdebugmf(KDEBUG_INFO, "buddy %d not in list. Damned server!\n",
-					e->event.notify60[nr].uin);
-			gg_remove_notify(GaduSession, e->event.notify60[nr].uin);
-			++nr;
-			continue;
-		}
-
-		GaduContactAccountData *accountData = gaduContactAccountData(contact);
-		accountData->setIp(QHostAddress((unsigned int)ntohl(e->event.notify60[nr].remote_ip)));
-		accountData->setPort(e->event.notify60[nr].remote_port);
-		accountData->setProtocolVersion(QString::number(e->event.notify60[nr].version));
-		accountData->setGaduProtocolVersion(e->event.notify60[nr].version);
-		accountData->setMaxImageSize(e->event.notify60[nr].image_size);
-
-// TODO: 0.6.6
-// 		user.setProtocolData("Gadu", "DNSName", "", nr + 1 == cnt);
-// 		user.refreshDNSName("Gadu");
-
-		Status oldStatus = accountData->status();
-
-		int gadu_status_id;
-		QString description;
-
-		if (e->event.notify60[nr].descr)
-		{
-			gadu_status_id = e->event.notify60[nr].status;
-			description = cp2unicode(e->event.notify60[nr].descr);
-
-			description.replace("\r\n", "\n");
-			description.replace("\r", "\n");
-		}
-		else
-			gadu_status_id = e->event.notify60[nr].status;
-
-		Status status(statusTypeFromIndex(gadu_status_id), description);
-		accountData->setStatus(status);
-
-		emit contactStatusChanged(account(), contact, oldStatus);
-
-#ifdef DEBUG_ENABLED
-#define PRINT_STAT(str) kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, str, e->event.notify60[nr].uin);
-		switch (e->event.notify60[nr].status)
-		{
-			case GG_STATUS_AVAIL:			PRINT_STAT("User %d went online\n");					break;
-			case GG_STATUS_BUSY:			PRINT_STAT("User %d went busy\n");						break;
-			case GG_STATUS_NOT_AVAIL:		PRINT_STAT("User %d went offline\n");					break;
-			case GG_STATUS_BLOCKED:			PRINT_STAT("User %d has blocked us\n");					break;
-			case GG_STATUS_BUSY_DESCR:		PRINT_STAT("User %d went busy with description\n");		break;
-			case GG_STATUS_NOT_AVAIL_DESCR:	PRINT_STAT("User %d went offline with description\n");	break;
-			case GG_STATUS_AVAIL_DESCR:		PRINT_STAT("User %d went online with description\n");	break;
-			case GG_STATUS_INVISIBLE_DESCR:	PRINT_STAT("User %d went invisible with description\n");break;
-			default:
-				kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "Unknown status for user %d: %d\n", e->event.notify60[nr].uin, e->event.notify60[nr].status);
-				break;
-		}
-#endif
-
-		++nr;
-	}
+	setStatus(Status::Offline);
+	disconnectedSlot();
 
 	kdebugf2();
 }

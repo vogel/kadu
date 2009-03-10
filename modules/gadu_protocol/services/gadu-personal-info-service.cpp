@@ -18,8 +18,6 @@
 GaduPersonalInfoService::GaduPersonalInfoService(GaduProtocol *protocol) :
 		PersonalInfoService(protocol), Protocol(protocol), FetchSeq(0), UpdateSeq(0)
 {
-	connect(Protocol->socketNotifiers(), SIGNAL(pubdirReplyReceived(gg_pubdir50_t)),
-			this, SLOT(pubdirReplyReceived(gg_pubdir50_t)));
 }
 
 void GaduPersonalInfoService::handleEventPubdir50Read(struct gg_event *e)
