@@ -87,6 +87,8 @@ private:
 	void networkConnected();
 	void networkDisconnected();
 
+	void sendUserList();
+
 	Status::StatusType statusTypeFromIndex(unsigned int index) const;
 
 	void socketContactStatusChanged(unsigned int uin, unsigned int status, const QString &description,
@@ -208,12 +210,6 @@ public:
 	void setDccIpAndPort(unsigned long dcc_ip, int dcc_port);
 
 public slots:
-	/**
-		Wysy�a nasz� list� u�ytkownik�w na serwer. Uwaga: nie ma to nic wsp�lnego z importem/eksportem.
-	**/
-	void sendUserList();
-	void sendUserListLater();
-
 	/**
 		Pobiera informacje o danych osobowych z katalogu publicznego.
 

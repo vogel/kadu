@@ -558,14 +558,10 @@ void GaduProtocol::networkDisconnected()
 	}
 }
 
-void GaduProtocol::sendUserListLater()
-{
-	QTimer::singleShot(0, this, SLOT(sendUserList()));
-}
-
 void GaduProtocol::sendUserList()
 {
 	kdebugf();
+
 	UinType *uins;
 	char *types;
 
@@ -573,7 +569,7 @@ void GaduProtocol::sendUserList()
 
 	if (contacts.isEmpty())
 	{
-		gg_notify_ex(GaduSession, NULL, NULL, 0);
+		gg_notify_ex(GaduSession, 0, 0, 0);
 		kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "Userlist is empty\n");
 		return;
 	}
@@ -586,14 +582,11 @@ void GaduProtocol::sendUserList()
 	foreach (Contact contact, contacts)
 	{
 		uins[i] = uin(contact);
-
-		if (contact.isOfflineTo(account()))
-			types[i] = GG_USER_OFFLINE;
-		else
-			if (contact.isBlocked(account()))
-				types[i] = GG_USER_BLOCKED;
-			else
-				types[i] = GG_USER_NORMAL;
+		types[i] = contact.isOfflineTo(account())
+			? GG_USER_OFFLINE
+			: contact.isBlocked(account())
+				? GG_USER_BLOCKED
+				: GG_USER_NORMAL;
 		++i;
 	}
 
