@@ -843,8 +843,10 @@ void GaduProtocol::socketDisconnectedSlot()
 {
 	kdebugf();
 
+	whileConnecting = false;
 	NextStatus->setOffline(QString::null);
 	disconnectedSlot();
+	emit error(Disconnected);
 
 	kdebugf2();
 }
@@ -1226,6 +1228,7 @@ void GaduProtocol::login()
 		SocketNotifiers->setSession(Sess);
 		SocketNotifiers->start();
 	}
+#if 0 /* now is handled in socketDisconnectedSlot */
 	else
 	{
 		whileConnecting = false;
@@ -1233,7 +1236,7 @@ void GaduProtocol::login()
 		disconnectedSlot();
 		emit error(Disconnected);
 	}
-
+#endif
 	kdebugf2();
 }
 
