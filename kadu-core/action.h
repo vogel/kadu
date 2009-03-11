@@ -91,7 +91,7 @@ private:
 	ActionType Type;
 	QString Name;
 	QObject *Object;
-	char *Slot;
+	const char *Slot;
 	QString IconName;
 	QString Text;
 	QString CheckedText;
@@ -107,7 +107,7 @@ protected:
 	virtual void configurationUpdated();
 
 public:
-	ActionDescription(ActionType Type, const QString &Name, QObject *Object, char *Slot,
+	ActionDescription(ActionType Type, const QString &Name, QObject *Object, const char *Slot,
 		const QString &IconName, const QString &Text, bool Checkable = false, const QString &CheckedText = "", ActionBoolCallback enableCallback = 0);
 	virtual ~ActionDescription();
 
