@@ -25,5 +25,11 @@ ContactList::ContactList(Contact contact)
 
 bool ContactList::operator == (const ContactList &compare) const
 {
-	return QList<Contact>::operator == (compare);
+	if (size() != compare.size())
+		return false;
+
+	foreach (Contact contact, compare)
+		if (!contains(contact))
+			return false;
+	return true;
 }

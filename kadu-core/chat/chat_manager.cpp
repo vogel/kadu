@@ -20,6 +20,7 @@
 
 #include "gui/windows/chat_window.h"
 
+#include "protocols/protocol_factory.h"
 #include "protocols/protocols_manager.h"
 
 #include "action.h"
@@ -266,7 +267,7 @@ void ChatManager::saveOpenedWindows()
 		QDomElement windowNode = xml_config_file->getNode(chats_elem,
 			"Window", XmlConfigFile::ModeCreate);
 		// TODO 0.6.6 - gadu raus!
-		xml_config_file->createTextNode(windowNode, "Protocol", "Gadu");
+		xml_config_file->createTextNode(windowNode, "Protocol", chat->currentProtocol()->protocolFactory()->displayName());
 		xml_config_file->createTextNode(windowNode, "WindowId", "Gadu");
 
 		foreach(Contact contact, chat->contacts())
