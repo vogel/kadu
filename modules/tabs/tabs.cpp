@@ -58,6 +58,7 @@ void disableNewTab(KaduAction *action)
 	ContactList contacts = action->contacts();
 
 	bool config_defaultTabs = config_file.readBoolEntry("Chat", "DefaultTabs");
+	action->setEnabled(true);
 
 	if (contacts.count() != 1 && !config_defaultTabs && !config_file.readBoolEntry("Chat", "DefaultTabs"))
 		action->setEnabled(false);

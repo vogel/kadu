@@ -119,7 +119,7 @@ public:
 	void createTextNode(QDomElement parentNode, const QString &nodeTagName, const QString &nodeContent);
 	void createNamedTextNode(QDomElement parentNode, const QString &nodeTagName, const QString &nodeName,
 			const QString &nodeContent);
-	QString getTextNode(QDomElement parentNode, const QString &nodeTagName);
+	QString getTextNode(QDomElement parentNode, const QString &nodeTagName, const QString &defaultValue = "");
 
 	void removeNode(QDomElement parentNode, const QString &nodeTagName);
 

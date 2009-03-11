@@ -379,11 +379,11 @@ void XmlConfigFile::createNamedTextNode(QDomElement parentNode, const QString &n
 	element.appendChild(DomDocument.createTextNode(nodeContent));
 }
 
-QString XmlConfigFile::getTextNode(QDomElement parentNode, const QString &nodeTagName)
+QString XmlConfigFile::getTextNode(QDomElement parentNode, const QString &nodeTagName, const QString &defaultValue)
 {
 	QDomElement element = getNode(parentNode, nodeTagName, ModeFind);
 	if (element.isNull())
-		return "";
+		return defaultValue;
 
 	return element.text();
 }

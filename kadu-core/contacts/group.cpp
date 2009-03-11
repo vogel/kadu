@@ -69,15 +69,15 @@ void Group::loadConfiguration()
 	Uuid = QUuid(parent.attribute("uuid"));
 	Name = configurationStorage->getTextNode(parent, "Name");
 	Icon = configurationStorage->getTextNode(parent, "Icon");
-	QVariant v(configurationStorage->getTextNode(parent, "NotifyAboutStatusChanges"));
+	QVariant v(configurationStorage->getTextNode(parent, "NotifyAboutStatusChanges", "true"));
 	NotifyAboutStatusChanges = v.toBool();
-	v.setValue(configurationStorage->getTextNode(parent, "ShowInAllGroup"));
+	v.setValue(configurationStorage->getTextNode(parent, "ShowInAllGroup", "true"));
 	ShowInAllGroup = v.toBool();
 	v.setValue(configurationStorage->getTextNode(parent, "OfflineTo"));
 	OfflineToGroup = v.toBool();
 	v.setValue(configurationStorage->getTextNode(parent, "ShowIcon"));
 	ShowIcon = v.toBool();
-	v.setValue(configurationStorage->getTextNode(parent, "ShowName")); 
+	v.setValue(configurationStorage->getTextNode(parent, "ShowName", "true")); 
 	ShowName = v.toBool();
 }
 
