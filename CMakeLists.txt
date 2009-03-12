@@ -2,7 +2,7 @@ project (kadu)
 
 # configuration
 
-option (ENABLE_AUTDOWNLOAD "Use automatic download of modules/icons/emoticons" ON)
+option (ENABLE_AUTODOWNLOAD "Use automatic download of modules/icons/emoticons" ON)
 option (SIG_HANDLING_ENABLED "Define if you want system signals handling" ON)
 
 if (NOT BUILD_DESCRIPTION)
