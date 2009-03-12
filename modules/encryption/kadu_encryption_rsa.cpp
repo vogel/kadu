@@ -3,7 +3,7 @@
   Copyright: (C) 2007, 2008-2009 Tomasz Kazmierczak
 
   Creation date: 2007-10-25
-  Last modification date: 2009-02-14
+  Last modification date: 2009-03-08
 
   This file is part of Kadu encryption module
 
@@ -18,9 +18,7 @@
  *   GNU General Public License for more details.                          *
  *                                                                         *
  *   You should have received a copy of the GNU General Public License     *
- *   along with this program; if not, write to the                         *
- *   Free Software Foundation, Inc.,                                       *
- *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
+ *   along with this program. If not, see <http://www.gnu.org/licenses/>.  *
  *
  */
 #include <QtCore>
@@ -147,6 +145,20 @@ bool KaduEncryptionRSA::decrypt(QByteArray &message)
 	//put the decrypted data into the message string
 	message = decrypted.data();
 	return true;
+}
+
+QString KaduEncryptionRSA::calculatePublicKeyFingerprint(QString keyId)
+{
+	//read the desired key
+	PublicKey pubkey;
+	if(!readPubKey(pubkey, keyId))
+		return QString();
+
+	//the fingerprint is an SHA1 hash of the key certificate
+	Hash sha1Hash("sha1");
+	QString fingerprint = arrayToHex(sha1Hash.hash(pubkey.toDER()).toByteArray());
+	//the QCA::arrayToHex() function doesn't put colons between bytes, so insert them manually
+	return fingerprint.replace(QRegExp("([\\da-fA-F]{2}(?!$))"), "\\1:");
 }
 
 const char *KaduEncryptionRSA::errorDescription()

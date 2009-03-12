@@ -3,7 +3,7 @@
   Copyright: (C) 2007, 2008 - 2009 Tomasz Kazmierczak
 
   Creation date: 2007-10-25
-  Last modification date: 2009-02-27
+  Last modification date: 2009-03-08
 
   This file is part of Kadu encryption module.
   This is a QCA2 implementation of the SIMLite algorithm, used by kadu,
@@ -21,9 +21,7 @@
  *   GNU General Public License for more details.                          *
  *                                                                         *
  *   You should have received a copy of the GNU General Public License     *
- *   along with this program; if not, write to the                         *
- *   Free Software Foundation, Inc.,                                       *
- *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
+ *   along with this program. If not, see <http://www.gnu.org/licenses/>.  *
  *
  */
 #include <QtCore>
@@ -39,8 +37,8 @@ bool KaduEncryptionSIMLite::writePublicKey(const RSAPublicKey &key, const QStrin
 
 	//put the key into a PKCS#1 certificate
 	SecureArray certificate;
-	PKCS1Certificate pkcs1Cert;
-	PKCS1Certificate::ConversionStatus status = pkcs1Cert.publicKeyToDER(key, certificate);
+	PKCS1Certificate pkcs1;
+	PKCS1Certificate::ConversionStatus status = pkcs1.publicKeyToDER(key, certificate);
 	if(status != PKCS1Certificate::OK)
 		return false;
 
@@ -72,8 +70,8 @@ bool KaduEncryptionSIMLite::writePrivateKey(const RSAPrivateKey &key)
 
 	//put the key into a PKCS#1 certificate
 	SecureArray certificate;
-	PKCS1Certificate pkcs1Cert;
-	PKCS1Certificate::ConversionStatus status = pkcs1Cert.privateKeyToDER(key, certificate);
+	PKCS1Certificate pkcs1;
+	PKCS1Certificate::ConversionStatus status = pkcs1.privateKeyToDER(key, certificate);
 	if(status != PKCS1Certificate::OK)
 		return false;
 
@@ -130,7 +128,7 @@ bool KaduEncryptionSIMLite::generateKeys(QString keyId)
 	return true;
 }
 
-bool KaduEncryptionSIMLite::readPublicKey(PublicKey &key, QString &keyId)
+bool KaduEncryptionSIMLite::publicKeyCertificateFromFile(QString &keyId, SecureArray &out)
 {
 	//construct the path to the key file
 	QString keyFilePath;
@@ -169,20 +167,29 @@ bool KaduEncryptionSIMLite::readPublicKey(PublicKey &key, QString &keyId)
 	//Base64 decode the certificate
 	Base64 decoder(Decode);
 	decoder.setLineBreaksEnabled(true);
-	SecureArray decodedCert = decoder.decode(certificate);
-	decodedCert += decoder.final();
+	out = decoder.decode(certificate);
+	out += decoder.final();
 	if(!decoder.ok())
 		return false;
 
+	return true;
+}
+
+bool KaduEncryptionSIMLite::readPublicKey(PublicKey &key, QString &keyId)
+{
+	SecureArray certificate;
+	if(!publicKeyCertificateFromFile(keyId, certificate))
+		return false;
+
 	PKCS1Certificate::ConversionStatus status;
-	PKCS1Certificate cert;
-	key = cert.publicKeyFromDER(decodedCert, status);
+	PKCS1Certificate pkcs1;
+	key = pkcs1.publicKeyFromDER(certificate, status);
 	if(status != PKCS1Certificate::OK)
 		return false;
 	return true;
 }
 
-bool KaduEncryptionSIMLite::readPrivateKey(PrivateKey &key)
+bool KaduEncryptionSIMLite::privateKeyCertificateFromFile(SecureArray &out)
 {
 	//construct the path to the key file
 	QString keyFilePath;
@@ -222,14 +229,23 @@ bool KaduEncryptionSIMLite::readPrivateKey(PrivateKey &key)
 	Base64 decoder(Decode);
 	decoder.setLineBreaksEnabled(true);
 	decoder.setLineBreaksColumn(64);
-	SecureArray decodedCert = decoder.decode(certificate);
-	decodedCert += decoder.final();
+	out = decoder.decode(certificate);
+	out += decoder.final();
 	if(!decoder.ok())
 		return false;
 
+	return true;
+}
+
+bool KaduEncryptionSIMLite::readPrivateKey(PrivateKey &key)
+{
+	SecureArray certificate;
+	if(!privateKeyCertificateFromFile(certificate))
+		return false;
+
 	PKCS1Certificate::ConversionStatus status;
-	PKCS1Certificate cert;
-	key = cert.privateKeyFromDER(decodedCert, status);
+	PKCS1Certificate pkcs1;
+	key = pkcs1.privateKeyFromDER(certificate, status);
 	if(status != PKCS1Certificate::OK)
 		return false;
 	return true;
@@ -251,9 +267,9 @@ bool KaduEncryptionSIMLite::encrypt(QByteArray &message, QString keyId)
 		return false;
 	}
 
-	//generate a symmetrical key for Blowfish (16 bytes in length)
+	//generate a symmetric key for Blowfish (16 bytes in length)
 	SymmetricKey blowfishKey(16);
-	//encrypt the symmetrical key using the RSA public key
+	//encrypt the symmetric key using the RSA public key
 	SecureArray encryptedBlowfishKey = publicKey.encrypt(blowfishKey, EME_PKCS1_OAEP);
 	if(encryptedBlowfishKey.isEmpty())
 	{
@@ -360,7 +376,7 @@ bool KaduEncryptionSIMLite::decrypt(QByteArray &message)
 	//recreate the initialization vector (should be the same as the one used for ciphering)
 	char ivec[8] = {0, 0, 0, 0, 0, 0, 0, 0};
 	InitializationVector iv(QByteArray(ivec, 8));
-	//now that we have the symmetrical Blowfish key, we can decrypt the message;
+	//now that we have the symmetric Blowfish key, we can decrypt the message;
 	//create a 128 bit Blowfish cipher object using Cipher Block Chaining (CBC) mode,
 	//with default padding and for decoding
 	Cipher cipher(QString("blowfish"), Cipher::CBC, Cipher::DefaultPadding, Decode, blowfishKey, iv);
@@ -403,6 +419,19 @@ bool KaduEncryptionSIMLite::decrypt(QByteArray &message)
 	//put it into the input/output byte array
 	message = &plainText.data()[sizeof(sim_message_header)];
 	return true;
+}
+
+QString KaduEncryptionSIMLite::calculatePublicKeyFingerprint(QString keyId)
+{
+	SecureArray certificate;
+	if(!publicKeyCertificateFromFile(keyId, certificate))
+		return QString();
+
+	//the fingerprint is an SHA1 hash of the key certificate
+	Hash sha1Hash("sha1");
+	QString fingerprint = arrayToHex(sha1Hash.hash(certificate).toByteArray());
+	//the QCA::arrayToHex() function doesn't put colons between bytes, so insert them manually
+	return fingerprint.replace(QRegExp("([\\da-fA-F]{2}(?!$))"), "\\1:");
 }
 
 const char *KaduEncryptionSIMLite::errorDescription()

@@ -3,7 +3,7 @@
   Copyright: (C) 2008-2009 Tomasz Kazmierczak
 
   Creation date: 2008-08-14
-  Last modification date: 2009-02-18
+  Last modification date: 2009-03-08
 
   This file is part of Kadu encryption module
 
@@ -18,9 +18,7 @@
  *   GNU General Public License for more details.                          *
  *                                                                         *
  *   You should have received a copy of the GNU General Public License     *
- *   along with this program; if not, write to the                         *
- *   Free Software Foundation, Inc.,                                       *
- *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
+ *   along with this program. If not, see <http://www.gnu.org/licenses/>.  *
  *
  */
 
@@ -45,7 +43,8 @@ KaduEncryptionInterface *KaduEncryptionFactory::createEncryptionObject(KaduEncry
 		{
 			//we need support for the RSA algorithm
 			if(!QCA::isSupported("pkey") ||
-			   !QCA::PKey::supportedIOTypes().contains(QCA::PKey::RSA))
+			   !QCA::PKey::supportedIOTypes().contains(QCA::PKey::RSA) ||
+			   !QCA::isSupported("sha1"))
 				ErrorInfo = "The QCA OSSL plugin for libqca2 is not present!";
 			else
 			{
@@ -60,7 +59,8 @@ KaduEncryptionInterface *KaduEncryptionFactory::createEncryptionObject(KaduEncry
 			//we need support for the RSA and Blowfish algorithms
 			if(!QCA::isSupported("pkey") ||
 			   !QCA::PKey::supportedIOTypes().contains(QCA::PKey::RSA) ||
-			   !QCA::isSupported("blowfish-cbc-pkcs7"))
+			   !QCA::isSupported("blowfish-cbc-pkcs7") ||
+			   !QCA::isSupported("sha1"))
 				ErrorInfo = "The QCA OSSL plugin for libqca2 is not present!";
 			else
 			{

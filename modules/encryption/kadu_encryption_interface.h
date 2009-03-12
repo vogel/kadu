@@ -3,7 +3,7 @@
   Copyright: (C) 2008-2009 Tomasz Kazmierczak
 
   Creation date: 2008-08-14
-  Last modification date: 2009-02-16
+  Last modification date: 2009-03-07
 
   This file is part of Kadu encryption module
 
@@ -18,9 +18,7 @@
  *   GNU General Public License for more details.                          *
  *                                                                         *
  *   You should have received a copy of the GNU General Public License     *
- *   along with this program; if not, write to the                         *
- *   Free Software Foundation, Inc.,                                       *
- *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
+ *   along with this program. If not, see <http://www.gnu.org/licenses/>.  *
  *
  */
 
@@ -77,6 +75,14 @@ class KaduEncryptionInterface
 		 * @return true if the decryption succeeded, false otherwise.
 		 */
 		virtual bool decrypt(QByteArray &message) = 0;
+
+		/**
+		 * Calculates public key's fingerprint.
+		 * 
+		 * @param keyId an identifier of a public key of which to calculate the fingerprint
+		 * @return The calculated fingerprint.
+		 */
+		virtual QString calculatePublicKeyFingerprint(QString keyId) = 0;
 
 		/**
 		 * Returns a code of the last error.
