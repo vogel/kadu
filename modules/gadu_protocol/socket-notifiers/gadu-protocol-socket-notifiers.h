@@ -45,6 +45,7 @@ protected:
 	virtual void socketEvent();
 	virtual int timeout();
 	virtual bool handleSoftTimeout();
+	virtual void connectionTimeout();
 
 public:
 	GaduProtocolSocketNotifiers(Account *account, GaduProtocol *protocol, QObject *parent = 0) :

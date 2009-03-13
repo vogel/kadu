@@ -32,7 +32,6 @@
 #include "socket-notifiers/gadu-protocol-socket-notifiers.h"
 #include "socket-notifiers/gadu-pubdir-socket-notifiers.h"
 
-#include "connection-timeout-timer.h"
 #include "gadu-account.h"
 #include "gadu-contact-account-data.h"
 #include "gadu_images_manager.h"
@@ -388,9 +387,6 @@ void GaduProtocol::login()
 	setupDcc();
 	setupLoginParams();
 
-	ConnectionTimeoutTimer::on();
-	ConnectionTimeoutTimer::connectTimeoutRoutine(this, SLOT(connectionTimeoutTimerSlot()));
-
 	GaduSession = gg_login(&GaduLoginParams);
 
 	cleanUpLoginParams();
@@ -512,8 +508,6 @@ void GaduProtocol::networkDisconnected(bool tryAgain)
 		delete Dcc;
 		Dcc = 0;
 	}
-
-	ConnectionTimeoutTimer::off();
 
 	if (PingTimer)
 	{
@@ -702,8 +696,6 @@ void GaduProtocol::socketConnFailed(GaduError error)
 void GaduProtocol::socketConnSuccess()
 {
 	kdebugf();
-
-	ConnectionTimeoutTimer::off();
 
 	sendUserList();
 

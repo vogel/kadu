@@ -74,6 +74,7 @@ protected:
 	virtual void socketEvent();
 	virtual int timeout();
 	virtual bool handleSoftTimeout();
+	virtual void connectionTimeout();
 
 public:
 	DccSocketNotifiers(GaduProtocol *protocol, DccManager *manager) :

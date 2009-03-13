@@ -106,3 +106,8 @@ bool GaduTokenSocketNotifiers::handleSoftTimeout()
 {
 	return false;
 }
+
+void GaduTokenSocketNotifiers::connectionTimeout()
+{
+	finished(QString::null, QPixmap());
+}

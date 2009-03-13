@@ -32,6 +32,7 @@ protected:
 	virtual void socketEvent();
 	virtual int timeout();
 	virtual bool handleSoftTimeout();
+	virtual void connectionTimeout();
 
 public:
 	GaduPubdirSocketNotifiers(QObject *parent = 0) :

@@ -92,7 +92,6 @@ private:
 	void socketConnFailed(GaduError error);
 	void socketConnSuccess();
 	void socketDisconnected();
-	void connectionBroken();
 
 private slots:
 	void login();

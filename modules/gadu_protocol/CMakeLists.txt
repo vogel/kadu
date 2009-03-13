@@ -31,7 +31,6 @@ set (SOURCES
 	socket-notifiers/gadu-socket-notifiers.cpp
 	socket-notifiers/gadu-token-socket-notifiers.cpp
 
-	connection-timeout-timer.cpp
 	gadu.cpp
 	gadu-account-data-manager.cpp
 	gadu-account.cpp
@@ -75,7 +74,6 @@ set (MOC_SOURCES
 	socket-notifiers/gadu-socket-notifiers.h
 	socket-notifiers/gadu-token-socket-notifiers.h
 
-	connection-timeout-timer.h
 	gadu.h
 	gadu-account.h
 	gadu_configuration_dialog.h

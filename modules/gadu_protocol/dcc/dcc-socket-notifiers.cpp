@@ -341,6 +341,11 @@ bool DccSocketNotifiers::handleSoftTimeout()
 	return true;
 }
 
+void DccSocketNotifiers::connectionTimeout()
+{
+	finished(false);
+}
+
 void DccSocketNotifiers::accepted()
 {
 	if (FileTransfer)

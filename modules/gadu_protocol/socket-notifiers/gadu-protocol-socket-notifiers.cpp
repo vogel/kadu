@@ -346,3 +346,8 @@ bool GaduProtocolSocketNotifiers::handleSoftTimeout()
 
 	return true;
 }
+
+void GaduProtocolSocketNotifiers::connectionTimeout()
+{
+	CurrentProtocol->socketConnFailed(GaduProtocol::ConnectionTimeout);
+}

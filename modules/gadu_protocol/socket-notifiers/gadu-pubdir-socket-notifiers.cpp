@@ -85,3 +85,8 @@ bool GaduPubdirSocketNotifiers::handleSoftTimeout()
 {
 	return false;
 }
+
+void GaduPubdirSocketNotifiers::connectionTimeout()
+{
+	finished(false);
+}
