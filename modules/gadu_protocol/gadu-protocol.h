@@ -99,7 +99,8 @@ private slots:
 	void everyMinuteActions();
 
 protected:
-	virtual void changeStatus(Status status);
+	virtual void changeStatus();
+	virtual void changePrivateMode();
 
 public:
 	static void initModule();

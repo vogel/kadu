@@ -1387,10 +1387,7 @@ void Kadu::changeStatusSlot()
 
 void Kadu::changePrivateStatusSlot(bool toggled)
 {
-	Status status(userStatusChanger->status());
-// TODO: 0.6.6
-// 	status.setFriendsOnly(toggled);
-	setStatus(status);
+	AccountManager::instance()->defaultAccount()->protocol()->setPrivateMode(toggled);
 
 	config_file.writeEntry("General", "PrivateStatus", toggled);
 }

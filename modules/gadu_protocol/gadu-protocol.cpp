@@ -153,8 +153,10 @@ unsigned int GaduProtocol::maxDescriptionLength()
 	return GG_STATUS_DESCR_MAXSIZE;
 }
 
-void GaduProtocol::changeStatus(Status newStatus)
+void GaduProtocol::changeStatus()
 {
+	Status newStatus = nextStatus();
+
 	if (newStatus.isOffline() && status().isOffline())
 	{
 		if (NetworkConnecting == state())
@@ -172,7 +174,7 @@ void GaduProtocol::changeStatus(Status newStatus)
 	}
 
 // TODO: 0.6.6
-	int friends = (!newStatus.isOffline() && false /*newStatus.isFriendsOnly()*/ ? GG_STATUS_FRIENDS_MASK : 0);
+	int friends = (!newStatus.isOffline() && privateMode() ? GG_STATUS_FRIENDS_MASK : 0);
 	int type = gaduStatusFromStatus(newStatus);
 	bool hasDescription = !newStatus.description().isEmpty();
 
@@ -186,6 +188,12 @@ void GaduProtocol::changeStatus(Status newStatus)
 
 	statusChanged(newStatus);
 }
+
+void GaduProtocol::changePrivateMode()
+{
+	changeStatus();
+}
+
 /*
 void GaduProtocol::protocolUserDataChanged(QString protocolName, UserListElement elem, QString name, QVariant oldValue, QVariant currentValue, bool massively, bool /*last* /)
 {
@@ -406,14 +414,14 @@ void GaduProtocol::setupProxy()
 	if (gg_proxy_host)
 	{
 		free(gg_proxy_host);
-		gg_proxy_host = NULL;
+		gg_proxy_host = 0;
 	}
 
 	if (gg_proxy_username)
 	{
 		free(gg_proxy_username);
 		free(gg_proxy_password);
-		gg_proxy_username = gg_proxy_password = NULL;
+		gg_proxy_username = gg_proxy_password = 0;
 	}
 
 	gg_proxy_enabled = config_file.readBoolEntry("Network", "UseProxy");
@@ -438,14 +446,19 @@ void GaduProtocol::setupProxy()
 
 void GaduProtocol::setupDcc()
 {
-	if (Dcc) // TODO 0.6.6: do not recreate on each login attempt
-	{
-		delete Dcc;
-		Dcc = 0;
-	}
-
 	if (config_file.readBoolEntry("Network", "AllowDCC"))
-		Dcc = new DccManager(this);
+	{
+		if (!Dcc)
+			Dcc = new DccManager(this);
+	}
+	else
+	{
+		if (Dcc)
+		{
+			delete Dcc;
+			Dcc = 0;
+		}
+	}
 }
 
 void GaduProtocol::setupLoginParams()
@@ -492,7 +505,6 @@ void GaduProtocol::cleanUpLoginParams()
 	}
 }
 
-
 void GaduProtocol::networkConnected()
 {
 	networkStateChanged(NetworkConnected);
@@ -516,7 +528,6 @@ void GaduProtocol::networkDisconnected(bool tryAgain)
 		PingTimer = 0;
 	}
 
-//	socket notifiers are not watching any more
 	SocketNotifiers->watchFor(0); // stop watching
 
 	if (GaduSession)
@@ -710,12 +721,8 @@ void GaduProtocol::socketConnSuccess()
 	statusChanged(nextStatus());
 	networkConnected();
 
-	// po po��czeniu z sewerem niestety trzeba ponownie ustawi�
-	// status, inaczej nie b�dziemy widoczni - raczej b��d serwer�w
-	if (status().isInvisible()
-// TODO: 0.6.6
-//|| (GaduLoginParams.status&~GG_STATUS_FRIENDS_MASK) != static_cast<GaduStatus *>(NextStatus)->toStatusNumber())
-		)
+	// workaround about servers errors
+	if (status().isInvisible())
 		setStatus(status());
 
 	kdebugf2();
@@ -781,6 +788,7 @@ GaduConference * GaduProtocol::conference(ContactList contacts)
 		if (gc->contacts() == contacts)
 			return gc;
 	}
+
 	GaduConference *conference = new GaduConference(account(), contacts);
 	ConferenceManager::instance()->addConference(conference);
 	return conference;

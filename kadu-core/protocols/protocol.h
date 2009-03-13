@@ -66,12 +66,16 @@ private:
 	NetworkState State;
 	Status CurrentStatus;
 	Status NextStatus;
+	bool PrivateMode;
 
 protected:
 	void setAllOffline();
 
-	virtual void changeStatus(Status status) = 0;
-	void statusChanged(Status status);
+	virtual void changeStatus() = 0;
+	void statusChanged(Status newStatus);
+
+	bool privateMode() { return PrivateMode; }
+	virtual void changePrivateMode() = 0;
 
 	void networkStateChanged(NetworkState state);
 
@@ -99,6 +103,8 @@ public:
 	void setStatus(Status status);
 	const Status & status() const { return CurrentStatus; }
 	const Status & nextStatus() const { return NextStatus; }
+
+	void setPrivateMode(bool privateMode);
 
 	virtual QPixmap statusPixmap(Status status) = 0;
 	QPixmap statusPixmap() { return statusPixmap(CurrentStatus); }

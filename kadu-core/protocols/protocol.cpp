@@ -54,7 +54,7 @@ void Protocol::setAllOffline()
 void Protocol::setStatus(Status status)
 {
 	NextStatus = status;
-	changeStatus(status);
+	changeStatus();
 }
 
 void Protocol::statusChanged(Status status)
@@ -63,17 +63,34 @@ void Protocol::statusChanged(Status status)
 	emit statusChanged(CurrentAccount, CurrentStatus);
 }
 
+void Protocol::setPrivateMode(bool privateMode)
+{
+	if (PrivateMode != privateMode)
+	{
+		PrivateMode = privateMode;
+		changePrivateMode();
+	}
+}
+
 void Protocol::networkStateChanged(NetworkState state)
 {
 	if (State == state)
 		return;
+
 	State = state;
-	if (state == NetworkConnecting)
-		emit connecting(CurrentAccount);
-	else if (state == NetworkConnected)
-		emit connected(CurrentAccount);
-	else if (state == NetworkDisconnecting)
-		emit disconnecting(CurrentAccount);
-	else if (state == NetworkDisconnected)
-		emit disconnected(CurrentAccount);
+	switch (State)
+	{
+		case NetworkConnecting:
+			emit connecting(CurrentAccount);
+			break;
+		case NetworkConnected:
+			emit connected(CurrentAccount);
+			break;
+		case NetworkDisconnecting:
+			emit disconnecting(CurrentAccount);
+			break;
+		case NetworkDisconnected:
+			emit disconnected(CurrentAccount);
+			break;
+	}
 }
