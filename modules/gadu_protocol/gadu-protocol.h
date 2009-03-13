@@ -56,6 +56,8 @@ public:
 		Disconnected
 	};
 
+	typedef unsigned int UinType;
+
 private:
 	GaduChatImageService *CurrentChatImageService;
 	GaduChatService *CurrentChatService;

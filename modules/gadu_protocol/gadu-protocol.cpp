@@ -19,6 +19,8 @@
 #include "contacts/contact-manager.h"
 #include "contacts/ignored-helper.h"
 
+#include "protocols/protocols_manager.h"
+
 #include "config_file.h"
 #include "debug.h"
 #include "icons_manager.h"
@@ -32,15 +34,39 @@
 #include "socket-notifiers/gadu-protocol-socket-notifiers.h"
 #include "socket-notifiers/gadu-pubdir-socket-notifiers.h"
 
+#include "helpers/gadu-importer.h"
 #include "gadu-account.h"
 #include "gadu-contact-account-data.h"
 #include "gadu_images_manager.h"
+#include "gadu_protocol_factory.h"
 
 #include "gadu-protocol.h"
+
+extern "C" int gadu_protocol_init(bool firstLoad)
+{
+	if (ProtocolsManager::instance()->hasProtocolFactory("gadu"))
+		return 0;
+
+	ProtocolsManager::instance()->registerProtocolFactory("gadu", new GaduProtocolFactory());
+
+	if (!xml_config_file->hasNode("Accounts"))
+		GaduImporter::instance()->importAccounts();
+
+	GaduImporter::instance()->importContacts();
+
+	return 0;
+}
+
+extern "C" void gadu_protocol_close()
+{
+	ProtocolsManager::instance()->unregisterProtocolFactory("gadu");
+}
 
 void GaduProtocol::initModule()
 {
 	kdebugf();
+
+	gg_debug_level = debug_mask | ~255;
 
 	gg_proxy_host = 0;
 	gg_proxy_username = 0;

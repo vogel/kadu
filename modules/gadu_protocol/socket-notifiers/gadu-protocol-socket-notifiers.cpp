@@ -21,7 +21,6 @@
 #include "misc.h"
 
 #include "dcc/dcc-manager.h"
-#include "gadu.h"
 
 #include "gadu-protocol-socket-notifiers.h"
 

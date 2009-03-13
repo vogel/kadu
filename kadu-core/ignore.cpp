@@ -15,8 +15,6 @@
 #include <QtGui/QPushButton>
 #include <QtGui/QGroupBox>
 
-#include "../modules/gadu_protocol/gadu.h"
-
 #include "config_file.h"
 #include "debug.h"
 #include "icons_manager.h"

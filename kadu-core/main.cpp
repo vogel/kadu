@@ -29,7 +29,6 @@
 #include "emoticons.h"
 #include "icons_manager.h"
 #include "kadu.h"
-#include "../modules/gadu_protocol/gadu.h"
 #include "message_box.h"
 #include "misc.h"
 #include "modules.h"
@@ -173,7 +172,6 @@ int main(int argc, char *argv[])
 	char *d = getenv("DEBUG_MASK");
 	if (d)
 		debug_mask = atol(d);
-	gg_debug_level = debug_mask | ~255;
 
 	bool saveStdErr = config_file.readBoolEntry("General", "SaveStdErr");
 	d = getenv("SAVE_STDERR");

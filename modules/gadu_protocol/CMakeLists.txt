@@ -31,7 +31,6 @@ set (SOURCES
 	socket-notifiers/gadu-socket-notifiers.cpp
 	socket-notifiers/gadu-token-socket-notifiers.cpp
 
-	gadu.cpp
 	gadu-account-data-manager.cpp
 	gadu-account.cpp
 	gadu_configuration_dialog.cpp
@@ -74,10 +73,8 @@ set (MOC_SOURCES
 	socket-notifiers/gadu-socket-notifiers.h
 	socket-notifiers/gadu-token-socket-notifiers.h
 
-	gadu.h
 	gadu-account.h
 	gadu_configuration_dialog.h
-	gadu-contact-account-data.h
 	gadu-contact-account-data-widget.h
 	gadu-protocol.h
 )

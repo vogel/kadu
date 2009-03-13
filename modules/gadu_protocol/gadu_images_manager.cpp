@@ -12,7 +12,6 @@
 #include "contacts/contact-manager.h"
 #include "config_file.h"
 #include "debug.h"
-#include "gadu.h"
 #include "icons_manager.h"
 #include "misc.h"
 

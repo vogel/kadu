@@ -12,7 +12,7 @@
 
 #include "contacts/contact-account-data.h"
 
-#include "gadu.h"
+#include "gadu-protocol.h"
 
 class Account;
 
@@ -27,7 +27,7 @@ public:
 
 	virtual bool validateId();
 
-	UinType uin();
+	GaduProtocol::UinType uin();
 
 	void setMaxImageSize(unsigned long maxImageSize) { MaxImageSize = maxImageSize; }
 
