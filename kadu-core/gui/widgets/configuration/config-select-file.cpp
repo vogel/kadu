@@ -14,6 +14,8 @@
 #include "gui/widgets/configuration/config-select-file.h"
 #include "gui/widgets/configuration/config-group-box.h"
 
+#include "debug.h"
+
 ConfigSelectFile::ConfigSelectFile(const QString &section, const QString &item, const QString &widgetCaption, const QString &toolTip,
 		const QString &type, ConfigGroupBox *parentConfigGroupBox, ConfigurationWindowDataManager *dataManager)
 	: SelectFile(type, parentConfigGroupBox->widget()), ConfigWidgetValue(section, item, widgetCaption, toolTip, parentConfigGroupBox, dataManager), label(0)

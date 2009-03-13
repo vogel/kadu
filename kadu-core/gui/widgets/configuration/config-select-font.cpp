@@ -13,6 +13,8 @@
 #include "gui/widgets/configuration/config-select-font.h"
 #include "gui/widgets/configuration/config-group-box.h"
 
+#include "debug.h"
+
 ConfigSelectFont::ConfigSelectFont(const QString &section, const QString &item, const QString &widgetCaption, const QString &toolTip,
 		ConfigGroupBox *parentConfigGroupBox, ConfigurationWindowDataManager *dataManager)
 	: SelectFont(parentConfigGroupBox->widget()), ConfigWidgetValue(section, item, widgetCaption, toolTip, parentConfigGroupBox, dataManager), label(0)

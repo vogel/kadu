@@ -38,6 +38,8 @@
 #include "gui/widgets/configuration/config-manage-accounts.h"
 #include "gui/windows/configuration-window.h"
 
+#include "config_file.h"
+#include "debug.h"
 #include "kadu.h"
 
 ConfigurationWidget::ConfigurationWidget(ConfigurationWindowDataManager *dataManager, QWidget *parent)

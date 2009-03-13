@@ -20,10 +20,9 @@
 
 #include "gadu-contact-account-data-widget.h"
 
-GaduContactAccountDataWidget::GaduContactAccountDataWidget(GaduContactAccountData *contactAccountData, QWidget *parent)
-	// TODO: remove new GaduAccountDataManager(accountData)) after use
-	: ContactAccountDataWidget(new GaduContactAccountDataManager(contactAccountData), contactAccountData, parent), 
-	    Data(contactAccountData)
+GaduContactAccountDataWidget::GaduContactAccountDataWidget(GaduContactAccountData *contactAccountData, QWidget *parent) :
+		ContactAccountDataWidget(new GaduContactAccountDataManager(contactAccountData, this),
+		contactAccountData, parent), Data(contactAccountData)
 {
 	setAttribute(Qt::WA_DeleteOnClose);
 
@@ -37,6 +36,4 @@ GaduContactAccountDataWidget::~GaduContactAccountDataWidget()
 void GaduContactAccountDataWidget::createGui()
 {
 	appendUiFile(dataPath("kadu/modules/configuration/gadu_contact.ui"));
-	//QLineEdit *passwordLineEdit = dynamic_cast<QLineEdit *>(widgetById("password"));
-	//passwordLineEdit->setEchoMode(QLineEdit::Password);
 }

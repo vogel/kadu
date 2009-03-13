@@ -12,8 +12,8 @@
 
 #include "contact-account-data-manager.h"
 
-ContactAccountDataManager::ContactAccountDataManager(ContactAccountData *data)
-	: Data(data)
+ContactAccountDataManager::ContactAccountDataManager(ContactAccountData *data, QObject *parent)
+	: ConfigurationWindowDataManager(parent), Data(data)
 {
 }
 

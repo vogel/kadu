@@ -14,6 +14,8 @@
 #include "gui/widgets/configuration/config-slider.h"
 #include "gui/widgets/configuration/config-group-box.h"
 
+#include "debug.h"
+
 ConfigSlider::ConfigSlider(const QString &section, const QString &item, const QString &widgetCaption, const QString &toolTip,
 		int minValue, int maxValue, int pageStep, ConfigGroupBox *parentConfigGroupBox, ConfigurationWindowDataManager *dataManager)
 	: QSlider(Qt::Horizontal, parentConfigGroupBox->widget()),

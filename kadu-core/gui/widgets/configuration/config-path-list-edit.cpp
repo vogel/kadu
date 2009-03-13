@@ -14,6 +14,8 @@
 #include "gui/widgets/configuration/config-group-box.h"
 #include "configuration/configuration-window-data-manager.h"
 
+#include "debug.h"
+
 ConfigPathListEdit::ConfigPathListEdit(const QString &section, const QString &item, const QString &widgetCaption, const QString &toolTip,
 		ConfigGroupBox *parentConfigGroupBox, ConfigurationWindowDataManager *dataManager)
 	: PathListEdit(parentConfigGroupBox->widget()), ConfigWidgetValue(section, item, widgetCaption, toolTip, parentConfigGroupBox, dataManager), label(0)

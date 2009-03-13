@@ -25,6 +25,8 @@ GaduAccount::GaduAccount(const QUuid &uuid) :
 GaduAccount::~GaduAccount()
 {
 	OpenChatWithRunnerManager::instance()->unregisterRunner(OpenChatRunner);
+	delete OpenChatRunner;
+	OpenChatRunner = 0;
 }
 
 bool GaduAccount::setId(const QString &id)

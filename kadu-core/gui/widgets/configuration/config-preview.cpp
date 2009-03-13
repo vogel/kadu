@@ -13,6 +13,8 @@
 #include "gui/widgets/configuration/config-preview.h"
 #include "gui/widgets/configuration/config-group-box.h"
 
+#include "debug.h"
+
 ConfigPreview::ConfigPreview(const QString &widgetCaption, const QString &toolTip, ConfigGroupBox *parentConfigGroupBox, ConfigurationWindowDataManager *dataManager)
 	: Preview(parentConfigGroupBox->widget()), ConfigWidget(widgetCaption, toolTip, parentConfigGroupBox, dataManager), label(0)
 {

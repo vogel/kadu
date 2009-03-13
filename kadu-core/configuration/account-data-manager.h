@@ -22,9 +22,11 @@ protected:
 	Account * data() { return Data; }
 
 public:
-	AccountDataManager(Account* data);
+	AccountDataManager(Account *data, QObject *parent = 0);
+
 	virtual void writeEntry(const QString &section, const QString &name, const QVariant &value);
 	virtual QVariant readEntry(const QString &section, const QString &name);
+
 };
 
 #endif 

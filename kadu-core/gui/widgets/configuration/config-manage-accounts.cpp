@@ -14,6 +14,8 @@
 #include "gui/widgets/configuration/config-group-box.h"
 #include "configuration/configuration-window-data-manager.h"
 
+#include "debug.h"
+
 ConfigManageAccounts::ConfigManageAccounts(const QString &widgetCaption,
 		const QString &toolTip, ConfigGroupBox *parentConfigGroupBox, ConfigurationWindowDataManager *dataManager, const char *name)
 	: ManageAccounts(parentConfigGroupBox->widget()), ConfigWidget(widgetCaption, toolTip, parentConfigGroupBox, dataManager)

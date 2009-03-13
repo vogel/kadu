@@ -15,6 +15,8 @@
 #include "gui/widgets/configuration/config-group-box.h"
 #include "configuration/configuration-window-data-manager.h"
 
+#include "debug.h"
+
 ConfigListWidget::ConfigListWidget(const QString &widgetCaption, const QString &toolTip,
 		const QStringList &itemValues, const QStringList &itemCaptions, ConfigGroupBox *parentConfigGroupBox, ConfigurationWindowDataManager *dataManager)
 	: QListWidget(parentConfigGroupBox->widget()), ConfigWidget(widgetCaption, toolTip, parentConfigGroupBox, dataManager), label(0)

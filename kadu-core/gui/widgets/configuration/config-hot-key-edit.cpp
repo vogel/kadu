@@ -13,6 +13,8 @@
 #include "gui/widgets/configuration/config-hot-key-edit.h"
 #include "gui/widgets/configuration/config-group-box.h"
 
+#include "debug.h"
+
 ConfigHotKeyEdit::ConfigHotKeyEdit(const QString &section, const QString &item, const QString &widgetCaption, const QString &toolTip, ConfigGroupBox *parentConfigGroupBox, ConfigurationWindowDataManager *dataManager, char *name)
 	: HotKeyEdit(parentConfigGroupBox->widget()), ConfigWidgetValue(section, item, widgetCaption, toolTip, parentConfigGroupBox, dataManager), label(0)
 {

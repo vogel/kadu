@@ -13,6 +13,8 @@
 #include "gui/widgets/configuration/config-widget-value.h"
 #include "gui/widgets/configuration/config-group-box.h"
 
+#include "debug.h"
+
 ConfigWidgetValue::ConfigWidgetValue(ConfigGroupBox *parentConfigGroupBox, ConfigurationWindowDataManager *dataManager)
 	: ConfigWidget(parentConfigGroupBox, dataManager)
 {

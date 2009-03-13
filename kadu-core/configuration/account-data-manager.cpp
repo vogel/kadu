@@ -11,8 +11,8 @@
 
 #include "account-data-manager.h"
 
-AccountDataManager::AccountDataManager(Account *data)
-	: Data(data)
+AccountDataManager::AccountDataManager(Account *data, QObject *parent)
+	: ConfigurationWindowDataManager(parent), Data(data)
 {
 }
 

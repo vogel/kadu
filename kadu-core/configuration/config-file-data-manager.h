@@ -14,9 +14,13 @@
 
 class KADUAPI ConfigFileDataManager : public ConfigurationWindowDataManager
 {
+
 public:
+	ConfigFileDataManager(QObject *parent = 0) : ConfigurationWindowDataManager(parent) {}
+
 	virtual void writeEntry(const QString &section, const QString &name, const QVariant &value);
 	virtual QVariant readEntry(const QString &section, const QString &name);
+
 };
 
 #endif 

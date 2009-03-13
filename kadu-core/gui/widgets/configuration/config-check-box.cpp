@@ -6,12 +6,15 @@
  *   (at your option) any later version.                                   *
  *                                                                         *
  ***************************************************************************/
+
 #include <QtGui/QApplication>
 #include <QtGui/QLabel>
 #include <QtGui/QListWidget>
 
 #include "gui/widgets/configuration/config-check-box.h"
 #include "gui/widgets/configuration/config-group-box.h"
+
+#include "debug.h"
 
 ConfigCheckBox::ConfigCheckBox(const QString &section, const QString &item, const QString &widgetCaption, const QString &toolTip, ConfigGroupBox *parentConfigGroupBox, ConfigurationWindowDataManager *dataManager)
 	: QCheckBox(widgetCaption, parentConfigGroupBox->widget()), ConfigWidgetValue(section, item, widgetCaption, toolTip, parentConfigGroupBox, dataManager)

@@ -14,6 +14,8 @@
 #include "gui/widgets/configuration/config-group-box.h"
 #include "gui/widgets/configuration/configuration-widget.h"
 
+#include "debug.h"
+
 ConfigWidget::ConfigWidget(ConfigGroupBox *parentConfigGroupBox, ConfigurationWindowDataManager *dataManager)
 	: parentConfigGroupBox(parentConfigGroupBox), dataManager(dataManager)
 {

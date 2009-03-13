@@ -10,17 +10,21 @@
 #ifndef CONFIGURATION_WINDOW_DATA_MANAGER_H
 #define CONFIGURATION_WINDOW_DATA_MANAGER_H
 
+#include <QtCore/QObject>
 #include <QtCore/QVariant>
-#include "config_file.h"
-#include "debug.h"
 
-class KADUAPI ConfigurationWindowDataManager
+#include "exports.h"
+
+class KADUAPI ConfigurationWindowDataManager : public QObject
 {
+	Q_OBJECT
 
 public:
+	ConfigurationWindowDataManager(QObject *parent = 0) : QObject(parent) {}
+
 	virtual void writeEntry(const QString &section, const QString &name, const QVariant &value) = 0;
 	virtual QVariant readEntry(const QString &section, const QString &name) = 0;
 
 };
 
-#endif 
+#endif // CONFIGURATION_WINDOW_DATA_MANAGER_H

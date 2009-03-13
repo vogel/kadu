@@ -14,6 +14,8 @@
 #include "gui/widgets/configuration/config-gg-password-edit.h"
 #include "gui/widgets/configuration/config-group-box.h"
 
+#include "debug.h"
+
 ConfigGGPasswordEdit::ConfigGGPasswordEdit(const QString &section, const QString &item, const QString &widgetCaption, const QString &toolTip, ConfigGroupBox *parentConfigGroupBox, ConfigurationWindowDataManager *dataManager)
 	: ConfigLineEdit(section, item, widgetCaption, toolTip, parentConfigGroupBox, dataManager)
 {
