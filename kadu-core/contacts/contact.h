@@ -83,6 +83,7 @@ public:
 
 	StoragePoint * storagePointForAccountData(Account *account) const;
 	StoragePoint * storagePointForModuleData(const QString &module, bool create = false) const;
+	void removeFromStorage();
 
 	QUuid uuid() const;
 	QMap<QString, QString> & customData();
@@ -115,6 +116,7 @@ template<class T>
 	void removeFromGroup(Group *group);
 
 	QString display() const;
+	void setType(ContactType type) { Type = type; }
 
 	PropertyWrite(QString, display, Display, QString::null)
 	Property(QString, firstName, FirstName, QString::null)

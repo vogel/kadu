@@ -29,7 +29,7 @@ class ContactModuleData;
 class Group;
 class XmlConfigFile;
 
-class ContactData : public QSharedData, private StorableObject
+class ContactData : public QSharedData, public StorableObject
 {
 public:
 	enum ContactGender

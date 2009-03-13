@@ -85,6 +85,11 @@ void Contact::storeConfiguration()
 	Data->storeConfiguration();
 }
 
+void Contact::removeFromStorage()
+{
+	Data->removeFromStorage();
+}
+
 StoragePoint * Contact::storagePointForAccountData(Account* account) const
 {
 	return Data->storagePointForAccountData(account);

@@ -1276,28 +1276,21 @@ void Kadu::changeAppearance()
 }
 
 void Kadu::removeUsers(ContactList contacts)
-{/*
+{
 	kdebugf();
-	UserListElements users = UserListElements::fromContactList(contacts, AccountManager::instance()->defaultAccount());
-	if (users.count())
+	if (!contacts.isEmpty())
 	{
-		QString altNicks = users.altNicks().join(", ");
-		QString tmp;
-
-		for (unsigned int i = 0; i < users.count(); i+=10)
-			tmp += (altNicks.section(", ", i, (i + 9)) + ",\n");
-
-		if (MessageBox::ask(tr("Selected users:\n%0will be deleted. Are you sure?").arg(tmp), "Warning", kadu))
-		{*/
-// TODO: 0.6.6
-// 			emit removingUsers(users);
-// 			userlist->removeUsers(users);
-// TODO: 0.6.6
-// 			userlist->writeToConfig();
-// 		}
-// 	}
-// 
-// 	kdebugf2();
+		QStringList altNicks;
+		foreach (Contact contact, contacts)
+			altNicks.append(contact.display());
+		if (MessageBox::ask(tr("Selected users:\n%0 will be deleted. Are you sure?").arg(altNicks.join(QString(','))), "Warning", kadu))
+		{
+			foreach (Contact contact, contacts)
+				ContactManager::instance()->removeContact(contact);
+			ContactManager::instance()->storeConfiguration(xml_config_file);
+		}
+	}
+	kdebugf2();
 }
 
 void Kadu::blink()

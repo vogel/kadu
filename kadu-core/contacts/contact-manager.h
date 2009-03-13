@@ -48,6 +48,7 @@ public:
 	ContactList contacts() const { return Contacts; }
 	ContactList contacts(Account *account, bool includeAnonymous = false) const;
 	void addContact(Contact contact);
+	void removeContact(Contact contact);
 
 	unsigned int count() { return Contacts.count(); }
 

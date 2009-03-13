@@ -13,6 +13,7 @@
 
 #include "contact.h"
 #include "contact-list.h"
+#include "debug.h"
 #include "group.h"
 #include "xml_config_file.h"
 
@@ -93,6 +94,21 @@ void ContactManager::addContact(Contact contact)
 	emit contactAboutToBeAdded(contact);
 	Contacts.append(contact);
 	emit contactAdded(contact);
+}
+
+void ContactManager::removeContact(Contact contact)
+{
+	kdebugf();
+	if (contact.isNull())
+		return;
+
+	emit contactAboutToBeRemoved(contact);
+	Contacts.removeAll(contact);
+	contact.removeFromStorage();
+	emit contactRemoved(contact);
+	contact.setType(Contact::TypeAnonymous);
+
+	kdebugf();
 }
 
 Contact ContactManager::byIndex(unsigned int index)
