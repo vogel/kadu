@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 awk=$1
 shift

@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 # skrypt ma za zadanie stworzenie wersji universal binary z wszystkich binarnych plików u¿ywanych przez Kadu
 # autorzy: max & joi
 # licencja: gpl v2 lub wy¿sza

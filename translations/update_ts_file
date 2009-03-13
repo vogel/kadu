@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 PWD=`pwd`
 LOG=$PWD/update_ts_file.log

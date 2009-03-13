@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 available_icon_themes=""
 for dir in *; do

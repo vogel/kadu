@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 available_modules=""
 for dir in *; do

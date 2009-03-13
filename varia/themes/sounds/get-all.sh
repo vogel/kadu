@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 available_sound_themes=""
 for dir in *; do
