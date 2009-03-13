@@ -81,7 +81,8 @@ void ContactsListWidget::setModel(AbstractContactsModel *model)
 	}
 
 	ProxyModel->setSourceModel(dynamic_cast<QAbstractItemModel *>(model));
-	ProxyModel->invalidate();
+	ProxyModel->sort(1);
+	ProxyModel->sort(0); // something is wrong with sorting in my Qt version
 }
 
 void ContactsListWidget::addFilter(AbstractContactFilter *filter)
