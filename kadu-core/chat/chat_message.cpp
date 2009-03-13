@@ -13,7 +13,7 @@
 #include "kadu_parser.h"
 #include "misc.h"
 
-#include "../modules/gadu_protocol/gadu_images_manager.h"
+#include "../modules/gadu_protocol/gadu-images-manager.h"
 
 #include "chat_message.h"
 

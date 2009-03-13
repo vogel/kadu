@@ -11,11 +11,11 @@
 
 #include "gadu-account.h"
 #include "gadu-contact-account-data-widget.h"
-#include "gadu_configuration_dialog.h"
+#include "gadu-configuration-dialog.h"
 #include "gadu-contact-account-data.h"
 #include "gadu-protocol.h"
 
-#include "gadu_protocol_factory.h"
+#include "gadu-protocol-factory.h"
 
 Account * GaduProtocolFactory::newAccount()
 {

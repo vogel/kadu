@@ -18,7 +18,7 @@
 #include "helpers/gadu-formatter.h"
 #include "gadu-protocol.h"
 
-#include "gadu_images_manager.h"
+#include "gadu-images-manager.h"
 
 GaduImagesManager::ImageToSend::ImageToSend()
 	: size(0), crc32(0), file_name(), lastSent(), data(0)

@@ -10,7 +10,7 @@
 #ifndef GADU_PROTOCOL_FACTORY_H
 #define GADU_PROTOCOL_FACTORY_H
 
-#include "gadu_configuration_dialog.h"
+#include "gadu-configuration-dialog.h"
 #include "protocols/protocol_factory.h"
 
 class ContactAccountDataWidget;

@@ -58,7 +58,7 @@
 #include "protocols/protocols_manager.h"
 
 #include "../modules/gadu_protocol/gadu-contact-account-data.h"
-#include "../modules/gadu_protocol/gadu_images_manager.h"
+#include "../modules/gadu_protocol/gadu-images-manager.h"
 #include "../modules/gadu_protocol/gadu-protocol.h"
 
 #include "about.h"

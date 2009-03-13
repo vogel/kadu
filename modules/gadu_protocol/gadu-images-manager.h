@@ -17,7 +17,7 @@
 #include "html_document.h"
 #include "protocols/protocol.h"
 
-#include "gadu_exports.h"
+#include "gadu-exports.h"
 
 class GADUAPI GaduImagesManager
 {

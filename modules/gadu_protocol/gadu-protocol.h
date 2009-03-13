@@ -23,7 +23,7 @@
 #include "services/gadu-personal-info-service.h"
 #include "services/gadu-search-service.h"
 
-#include "gadu_exports.h"
+#include "gadu-exports.h"
 #include "gadu-search-record.h"
 #include "gadu-search-result.h"
 

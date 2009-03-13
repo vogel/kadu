@@ -33,14 +33,13 @@ set (SOURCES
 
 	gadu-account-data-manager.cpp
 	gadu-account.cpp
-	gadu_configuration_dialog.cpp
+	gadu-configuration-dialog.cpp
 	gadu-contact-account-data.cpp
 	gadu-contact-account-data-manager.cpp
 	gadu-contact-account-data-widget.cpp
-	gadu_images_manager.cpp
+	gadu-images-manager.cpp
 	gadu-protocol.cpp
-	gadu_protocol_factory.cpp
-	uins_list.cpp
+	gadu-protocol-factory.cpp
 )
 
 set (MOC_SOURCES
@@ -74,7 +73,7 @@ set (MOC_SOURCES
 	socket-notifiers/gadu-token-socket-notifiers.h
 
 	gadu-account.h
-	gadu_configuration_dialog.h
+	gadu-configuration-dialog.h
 	gadu-contact-account-data-widget.h
 	gadu-protocol.h
 )

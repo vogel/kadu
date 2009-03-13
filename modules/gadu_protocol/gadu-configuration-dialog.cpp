@@ -27,7 +27,7 @@
 #include "gadu-account.h"
 #include "gadu-account-data-manager.h"
 
-#include "gadu_configuration_dialog.h"
+#include "gadu-configuration-dialog.h"
 
 GaduConfigurationDialog::GaduConfigurationDialog(GaduAccount *accountData, QWidget *parent)
 	  // TODO: remove new GaduAccountDataManager(accountData)) after use

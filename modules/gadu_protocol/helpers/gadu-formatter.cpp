@@ -20,7 +20,7 @@
 
 #include "config_file.h"
 
-#include "gadu_images_manager.h"
+#include "gadu-images-manager.h"
 #include "gadu-protocol.h"
 
 #include "gadu-formatter.h"

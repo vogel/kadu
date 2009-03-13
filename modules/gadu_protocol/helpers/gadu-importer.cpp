@@ -22,7 +22,7 @@
 
 #include "gadu-account.h"
 #include "gadu-contact-account-data.h"
-#include "gadu_protocol_factory.h"
+#include "gadu-protocol-factory.h"
 
 #include "gadu-importer.h"
 
