@@ -13,8 +13,6 @@
 #include "kadu_parser.h"
 #include "misc.h"
 
-#include "../modules/gadu_protocol/gadu-images-manager.h"
-
 #include "chat_message.h"
 
 QString formatMessage(const QString &text, const QString &backgroundColor)
@@ -24,7 +22,7 @@ QString formatMessage(const QString &text, const QString &backgroundColor)
 	htmlDocument.convertUrlsToHtml();
 	htmlDocument.convertMailToHtml();
 	emoticons->expandEmoticons(htmlDocument, backgroundColor, (EmoticonsStyle)config_file.readNumEntry("Chat", "EmoticonsStyle"));
-	GaduImagesManager::setBackgroundsForAnimatedImages(htmlDocument, backgroundColor);
+// 	GaduImagesManager::setBackgroundsForAnimatedImages(htmlDocument, backgroundColor);
 
 	return htmlDocument.generateHtml();
 }
@@ -170,7 +168,7 @@ QString ChatMessage::convertCharacters(QString edit, const QColor &bgcolor, Emot
 	if (style != EMOTS_NONE)
 		emoticons->expandEmoticons(doc, bgcolor, style);
 
-	GaduImagesManager::setBackgroundsForAnimatedImages(doc, bgcolor);
+// 	GaduImagesManager::setBackgroundsForAnimatedImages(doc, bgcolor);
 	edit = doc.generateHtml();
 
 	// workaround for bug in Qt - if there's a space after image, Qt does not show it, so we are replacing it with &nbsp;

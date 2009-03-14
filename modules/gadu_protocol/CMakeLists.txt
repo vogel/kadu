@@ -37,7 +37,6 @@ set (SOURCES
 	gadu-contact-account-data.cpp
 	gadu-contact-account-data-manager.cpp
 	gadu-contact-account-data-widget.cpp
-	gadu-images-manager.cpp
 	gadu-protocol.cpp
 	gadu-protocol-factory.cpp
 )

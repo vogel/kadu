@@ -37,7 +37,6 @@
 #include "helpers/gadu-importer.h"
 #include "gadu-account.h"
 #include "gadu-contact-account-data.h"
-#include "gadu-images-manager.h"
 #include "gadu-protocol-factory.h"
 
 #include "gadu-protocol.h"

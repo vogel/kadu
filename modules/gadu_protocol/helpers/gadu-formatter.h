@@ -22,7 +22,7 @@ class GaduFormater
 
 public:
 	static unsigned int computeFormatsSize(const Message &message);
-	static unsigned char * createFormats(const Message &message, unsigned int &size);
+	static unsigned char * createFormats(Account *account, const Message &message, unsigned int &size);
 
 	static QString createImageId(GaduProtocol::UinType sender, unsigned int size, unsigned int crc32);
 

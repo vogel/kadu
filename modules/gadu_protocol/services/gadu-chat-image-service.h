@@ -20,8 +20,28 @@ class GaduChatImageService : public ChatImageService
 {
 	Q_OBJECT
 
+	struct ImageToSend
+	{
+		QString fileName;
+		QDateTime lastSent;
+		QByteArray content;
+		uint32_t crc32;
+	};
+	QMap<QPair<uint32_t, uint32_t>, ImageToSend> ImagesToSend;
+
+	struct SavedImage
+	{
+		QString fileName;
+		uint32_t size;
+		uint32_t crc32;
+	};
+	QList<SavedImage> SavedImages;
+
 	GaduProtocol *Protocol;
 	unsigned int CurrentMinuteSendImageRequests;
+
+	QString saveImage(UinType sender, uint32_t size, uint32_t crc32, const QString &fileName, const char *data);
+	void loadImageContent(ImageToSend &image);
 
 	friend class GaduProtocolSocketNotifiers;
 	void handleEventImageRequest(struct gg_event *e);
@@ -33,7 +53,9 @@ public:
 	void resetSendImageRequests() { CurrentMinuteSendImageRequests = 0; }
 
 	bool sendImageRequest(Contact contact, int size, uint32_t crc32);
-	bool sendImage(Contact contact, const QString &file_name, uint32_t size, const char *data);
+
+	QString getSavedImageFileName(uint32_t size, uint32_t crc32);
+	void prepareImageToSend(const QString &imageFileName, uint32_t &size, uint32_t &crc32);
 
 };
 

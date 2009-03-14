@@ -58,7 +58,6 @@
 #include "protocols/protocols_manager.h"
 
 #include "../modules/gadu_protocol/gadu-contact-account-data.h"
-#include "../modules/gadu_protocol/gadu-images-manager.h"
 #include "../modules/gadu_protocol/gadu-protocol.h"
 
 #include "about.h"
@@ -1533,7 +1532,8 @@ void Kadu::imageReceivedAndSaved(UinType sender, uint32_t size, uint32_t crc32, 
 	for (int i = 0, count = pending.count(); i < count; i++)
 	{
 		PendingMsgs::Element& e = pending[i];
-		e.msg = gadu_images_manager.replaceLoadingImages(e.msg, sender, size, crc32);
+//	TODO: 0.6.6 or sth?
+// 		e.msg = gadu_images_manager.replaceLoadingImages(e.msg, sender, size, crc32);
 	}
 }
 

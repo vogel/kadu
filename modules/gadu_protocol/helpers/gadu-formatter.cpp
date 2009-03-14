@@ -13,14 +13,11 @@
 
 #include "accounts/account.h"
 #include "accounts/account_manager.h"
-
 #include "chat/message/message.h"
-
 #include "contacts/contact-manager.h"
 
 #include "config_file.h"
 
-#include "gadu-images-manager.h"
 #include "gadu-protocol.h"
 
 #include "gadu-formatter.h"
@@ -55,7 +52,7 @@ unsigned int GaduFormater::computeFormatsSize(const Message &message)
 	return first ? 0 : size;
 }
 
-unsigned char * GaduFormater::createFormats(const Message &message, unsigned int &size)
+unsigned char * GaduFormater::createFormats(Account *account, const Message &message, unsigned int &size)
 {
 	size = computeFormatsSize(message);
 	if (!size)
@@ -110,7 +107,9 @@ unsigned char * GaduFormater::createFormats(const Message &message, unsigned int
 		{
 			uint32_t size;
 			uint32_t crc32;
-			gadu_images_manager.addImageToSend(part.imagePath(), size, crc32);
+
+			GaduChatImageService *gcis = dynamic_cast<GaduChatImageService *>(account->protocol()->chatImageService());
+			gcis->prepareImageToSend(part.imagePath(), size, crc32);
 
 			image.unknown1 = 0x0109;
 			image.size = gg_fix32(size);
@@ -149,7 +148,9 @@ void GaduFormater::appendToMessage(Account *account, Message &result, UinType se
 		if (size == 20 && (crc32 == 4567 || crc32 == 99)) // fake spy images
 			return;
 
-		QString file_name = gadu_images_manager.getSavedImageFileName(size, crc32);
+		GaduChatImageService *gcis = dynamic_cast<GaduChatImageService *>(account->protocol()->chatImageService());
+
+		QString file_name = gcis->getSavedImageFileName(size, crc32);
 		if (!file_name.isEmpty())
 		{
 			result << MessagePart(file_name, false);

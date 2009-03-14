@@ -37,7 +37,7 @@ bool GaduChatService::sendMessage(ContactList contacts, Message &message)
 
 	unsigned int uinsCount = 0;
 	unsigned int formatsSize = 0;
-	unsigned char *formats = GaduFormater::createFormats(message, formatsSize);
+	unsigned char *formats = GaduFormater::createFormats(Protocol->account(), message, formatsSize);
 	bool stop = false;
 
 	plain.replace("\r\n", "\n");
