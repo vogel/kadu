@@ -1,0 +1,191 @@
+Teksty w nawiasach na koñcu wpisu mówi± o tym, kto dokona³ poprawki
+lub rozbudowy. Postaæ (x/y) oznacza, ¿e x jest pomysodawc± lub
+autorem patcha, a commitn±³ to kto¶ oznaczony przez y. Je¶li jest
+w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
+
++++ wersja 2.1 (Kadu 0.6.5)
+* Przepisanie do Qt4 i nowego API Kadu 0.6.5
+
++++ wersja 2.0.3 (Kadu 0.6.1)
+* Dodany modul last_seen (Dorregaray)
+
++++ wersja 2.0.2 (Kadu 0.6)
+* Przeniesiona pozycja O Power Kadu wyzej w menu
+
++++ wersja 2.0.1 (Kadu 0.6)
+
+--- 24.02.2008
+* Mini modu³y wydzielone z Powerkadu i przeportowane do Kadu 0.6:
+  anonymous_check (Prezu), antistring (Dorregaray), auto_hide (Dorregaray), 
+  cenzor (Dorregaray), parser_extender (Dorregaray), split_messages (Dorregaray), 
+  word_fix (Dorregaray)
+* PowerKadu jako meta-modu³ ³aduj±cego poszczególne minimodu³y (Dorregaray)
+
+
++++ wersja 0.3.0 (Kadu 0.5)
+
+--- 29.04.2007
+* Poprawienie notyfikacji: hint_manager zmienione na notification_manager
+  w antistiong.cpp, i_hide_from_u.cpp i cenzor.cpp (Prezu)
+
+--- 29.04.2007
+* Wy¶wietlanie hintów uaktualnione do nowego API Kadu (Prezu)
+
+--- 12.04.2007
+* MimeTeX usuniêty z PK - teraz jako osobny modu³ (Prezu)
+
+--- 28.03.2007
+* PowerStatusChanger: Na pro¶bê Vogela ustawi³em na sztywno priotytet na 300
+  (Prezu)
+
+--- 24.03.2007
+* Dostosowanie kodu do ostatnich zmian w API (StatusChanger, sygna³y
+  chatCreated(Chat *) i chatCreated(Chat *) i usuniêcie kilku warningów z
+  kompilacji (Prezu)
+
+--- 29.01.2007
+* mimetex/Makefile: Zwiêkszona domy¶lna czcionka w generowanych gifach (Prezu)
+
+--- 22.01.2007
+* mime_tex.h/cpp: Akcja TeXAction jest usuwana przez destruktor (Prezu)
+
+--- 15.01.2007
+* Poprawiony segfault po wyladowaniu modulu (wiazany z niekompletnym usuwaniem
+  kontrolek z config dialoga).
+  
+--- 07.01.2007
+* Poprawa interfejsu konfiguracji WordFix - by³ beznadziejny :) (Googie)
+* Nie¶mia³a próba zrobienia czego¶ z interfejsem konfiguracji Cenzora,
+  póki co bez ciekawszych efektów (jedynie zmieniona szeroko¶æ listy przekleñstw) (Googie)
+* Drobna poprawka w powerkadu_link.cpp - link ustawia kursor na wskazuj±c± d³oñ
+  po najechaniu myszk± (Googie)
+
+--- 08.11.2006
+* Dodane do repozytorium parser_extender.h/.cpp - wczoraj zapomnialem (Prezu)
+
+--- 08.11.2006
+* Dodany ParserExtender (Dorr/Prezu)
+
+--- 26.10.2006
+* Dostosowanie do zmian API akcji wprowadzonych 2006-10-25 18:44:40 w
+  rewizji 3995 (Prezu)
+
+--- 28.09.2006
+* about_dialog.cpp: Usuniêty ¶mieæ z includów (Prezu)
+
+--- 26.09.2006
+* cmdline_hist.cpp: Za³atane crash-owania (joi/Prezu)
+* Changelog przeniesiony do katalogu data i dodany do okienka
+  "O PowerKadu..." (Prezu)
+* Kilka drobnych poprawek w dokumentacji dla Doxygena (Prezu)
+
+--- 10.09.2006
+* Dodanie brakujcych tumaczeñ (Prezu)
+
+--- 08.09.2006
+* tex_formula_dialog.cpp: Dodanie "\limits" do sumy, iloczynu i ca³ek (Prezu)
+
+--- 07.09.2006
+* formula_view.h, infos_list_view_item.h: Dokumentacja dla Doxygena (Prezu)
+* InfosListViewItem: Zmieniony kolor nieparzystych wierszy na jasny niebieski
+  (Prezu)
+* anonymous_check.h, InfosListViewItem: Poprawki dokumentacji dla Doxygena
+  (Prezu)
+* about_dialog.cpp:
+  - "&Ok" -> "&Close" (Prezu)
+  - dodanie ikonki do przycisku Close (Prezu)
+* Generalne porzdki w dokumentacji dla Doxygen-a; wszystkie opisy jak w
+  przykadach Doxygen-a (dla lepszej czytelnoci) (Prezu)
+
+--- 02.09.2006
+* AutoHide: Dodanie eventFilter() (Prezu)
+* Infos: Przy tworzeniu listy pomijane s anonimowe kontakty (Prezu)
+
+--- 29.08.2006
+* AUTHORS, AUTHORS.PL: Drobna zmiana tagowania (Prezu)
+
+--- 28.08.2006
+* AUTHORS, AUTHORS.PL: Dodane imiï¿½ nazwisko i adres email Graffiego (Prezu)
+
+--- 24.08.2006
+* data/AUTHORS, data/AUHTORS.pl:
+  - Dodany adres email Kubis-ia (Prezu)
+  - Wszystkie adresy email w postaci user [dot] name [at] domain [dot] name
+    (Prezu)
+
+--- 23.08.2006
+* Dodany dialog "About PowerKadu" (Prezu)
+* Zmiana wersji z 0.0.1 na 0.3-svn (Prezu)
+* infos.cpp: Zmiana "&Show infos about contacts" na "&Show infos about
+  contacts..." (Prezu)
+
+--- 22.08.2006
+* okno "Pokaz informacje na temat kontaktow":
+  - Drobna korekta layoutu (Prezu)
+
+--- 21.08.2006
+* Dodany Cenzor (Maverick/Prezu)
+
+--- 21.08.2006
+* okno "Pokaz informacje na temat kontaktow":
+  - Nieparzyste wiersze maja teraz biale tlo, nieparzyste jasno-szare (Prezu)
+  - W polu opisu wszystkie '\n' sa zamieniane na ' ' (Prezu)
+
+--- 14.08.2006:
+* Poprawiony bd krytyczny w historii pola wiadomoci (wywraca cae Kadu)
+  (Googie)
+* Dodany limit w historii do 30 wpisï¿½ dla kadego okna chat,
+  eby historia nie rozrosa siï¿½za bardzo. (Googie)
+
+--- 13.08.2006:
+* Mala poprawka czyszczenia obrazka z formula matematyczna w dialogu edytora
+  formul TeX-owych (Prezu)
+
+--- 12.08.2006:
+* Dodana historia pola wiadomoci w oknie chat. (ctrl+up/ctrl+down) (Googie)
+
+--- Starsze:
+* Generalna obsuga "/komend" w oknie chat. (Googie)
+* Kodowanie morsa (i dekodowanie), oraz h4ck1ng c0d3 (Prezu)
+* Ostatnio widziany, IP, DNS, opis - SEEN. (Prezu)
+* Klasa EKGCmds (Prezu)
+* Konfigurowalne kolory dla showPkMsg (Prezu)
+* Dodane komendy close, minimize, online, busy, invisible, offline do
+  EKGCmds (Prezu)
+* Filtrowanie ³añcuszków szczê¶cia (Graffi)
+* poprawiony problem nieusuwania sie jednego "lineEdit`a" z
+  Antistring`a (Graffi)
+* dodana konfigurowalnosc Antylancuszka wlacz/wylacz filtrowanie (Graffi)
+* Dodanie konfigurowalnej listy komend ignorowanych przez CmdLine (Prezu)
+* Poprawka ma³ego b³êdu; ramka listy ignorowanych komend (QVGroupBox) jest
+  teraz te¿ klasyfikowana jako "Advanced", a nie domylnie "Beginner" (Prezu)
+* Dodany checkbox, umo¿liwiaj±cy bezwarunkowe przepuszczanie nierozpoznanych
+  komend w config dialogu (Prezu)
+* Dodana obsluga dopelniania komend/emotek/ksywek/uniow klawiszem TAB (Googie)
+* W ConfigDialog zaznaczany jest ca³y wiersz, a nie tylko 1-sza kolumna,
+  zmienione "Let unknown commands through" w cmdline.cpp na
+  "Let all unknown commands through" (Prezu)
+* Poprawiony bug w opcji "Let all unknown commands through" (Prezu)
+* Osobne menu dla PowerKadu, wyszarzanie buttonów gdy
+  "Let all unknown commands through" aktywne. (Prezu)
+* Komenda "massmsg",
+  CmdLine: dodanie przekazywania treci caej wiadomoci slotom komend (Prezu)
+* Dokoñczenie menu w infos.cpp (Prezu)
+* Korzystanie z powerKadu->cfg() zamiast config_file (Prezu)
+* "IHideFromU" (Prezu)
+* konfiguracja lancuszkow szczescia z poziomu konfiguracji Kadu (Graffi)
+* AutoStatus autorstwa Maverick'a (Prezu)
+* Dorbne poprawki przy usuwaniu kontrolek z config dialogu (Prezu)
+* Edytor formul w TeX-u (Prezu)
+* Nowa klasa: FormulaView dla widoku formuly TeX-owej. (Prezu)
+* Nalozona latka joi-a, usuwajaca problem z ustaleniem przodka (Chat) klasy
+  CustomEdit. (Prezu)
+* AutoHide (ukrywanie g³ównego okna Kadu po okre¶lonym czasie) (Prezu)
+* Dodany pierwiasek do TeX formula (Prezu)
+* Dokumentacja dla Doxygena w auto_hide.h, tex_formula_dialog.h, split.h,
+  mime_tex.h (Prezu)
+* Poprawka kolorow dymka z IHideFromU (Prezu)
+* Poprawione czyszczenie okna rozmowy poleceniem /clear, akcja TeXAction
+  uyteczna tylko w oknie czata (Prezu)
+* Literowka, kilka dodatkowych tlumaczen (Prezu)
+* Poprawienie nazwy pliku z obrazkiem formuly - nie moze byc ":" (Prezu)

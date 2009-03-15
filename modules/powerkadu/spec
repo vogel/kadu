@@ -1,0 +1,4 @@
+MODULE_SOURCES="powerkadu.cpp about_dialog.cpp"
+MODULE_MOC_HEADERS="powerkadu.h about_dialog.h"
+
+

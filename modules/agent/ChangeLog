@@ -1,0 +1,71 @@
+2008-11-12 Tomasz "Dorregaray" Rostanski <rozteck@interia.pl>
+	* Wersja 0.5: Przeportowanie do Kadu 0.6.5
+
+2007-12-27 Micha³ ¯ar³ok <mishaaq*wytnij_to*@gmail.com>
+
+	* Wersja 0.4.3: Przygotowania do Kadu 0.6.0
+	* Korzystamy z ikony z zestawu. Ikona agent32.png
+	usuniêta.
+	* Wyszarzanie nieaktywnych ikon jak w ca³ym Kadu.
+	* Poprawiony crash Kadu przy zamykaniu okna "Kto..."
+	* Po dodaniu znalezionej osoby do listy kontaktów, osoba ta
+	znika z listy znalezionych osób.
+
+2007-12-16 Micha³ ¯ar³ok <mishaaq*wytnij_to*@gmail.com>
+
+	* Wersja 0.4.2: Lekkie poprawki
+	* Usuniêcie tekstu o dzia³aniu modu³u z okna
+	"Kto ma mnie na li¶cie".
+
+2007-08-16 Micha³ ¯ar³ok <mishaaq*wytnij_to*@gmail.com>
+
+	* Wersja 0.4.1: Czy¿by autodownload?
+	* Okno z rezultatami wyszukiwania zapamiêtuje ju¿ swoj± pozycjê
+	i wymiary.
+	* Gdy nie ma zaznaczonego u¿ytkownika na li¶cie wyszukanych
+	osób to przyciski s± wy³±czone, a nie, jak dotychczas, pokazywane
+	by³o okienko z pro¶b± o zaznaczenie osoby.
+	* Kilka ma³ych, kosmetycznych poprawek.
+
+2007-08-14 Micha³ ¯ar³ok <mishaaq*wytnij_to*@gmail.com>
+
+	* Wersja 0.4.1: Poprawka backtrace'a.
+	* Poprawiony backtrace o dodawaniu layouta do okna, które
+	ju¿ layout posiada.
+
+2007-07-12  Micha³ ¯ar³ok  <mishaaq*wytnij_to*@gmail.com>
+
+	* Wersja 0.4.0: Port do Kadu 0.6.0.
+	* Korzystamy z nowych powiadomieñ i mamy mo¿liwo¶æ wyszukania
+	znalezionego osobnika wprost z dymka.
+
+2007-07-18  Micha³ ¯ar³ok  <mishaaq*wytnij_to*@gmail.com>
+
+	* Wersja 0.3.0: Wtyczka szybko siê rozwija.
+	* Przycisk dodania osoby do listy kontaktów.
+	* Dodane powiadomienia przez modu³ notify.
+	* Mo¿liwo¶æ automatycznego przeniesienia listy osób z modu³u
+	"spy" przy pierwszym uruchomieniu.
+	* Ikonka agent32.png.
+	* Dodano polskie t³umaczenie.
+	* Odnalezienie nowej osoby przy w³±czonym okienku z list±
+	automatycznie dodaje j± do tej listy i wyszukuje - nie trzeba
+	otwieraæ okienka na nowo.
+	* Lekkie zmiany UI - dodana informacja oraz ikonki na przyciskach.
+
+2007-07-15  Micha³ ¯ar³ok  <mishaaq*wytnij_to*@gmail.com>
+
+	* Wersja 0.2.0: Plugin ju¿ co¶ sob± reprezentuje.
+	* Modu³ przechowuje listê znalezionych osób w pliku wraz z
+	dat± ostatniego wyst±pienia.
+	* Dodane okienko wy¶wietlaj±ce listê znalezionych numerów UIN.
+	Automatyczne wyszukiwanie numerów z listy w katalogu.
+	* Przycisk rozpoczêcia rozmowy oraz usuniêcia numeru z listy.
+
+2007-07-12  Micha³ ¯ar³ok  <mishaaq*wytnij_to*@gmail.com>
+
+	* Wersja 0.1.0: Pierwsze wydanie. Modu³ nie umo¿liwia nic poza
+	poinformowaniem, ¿e dany numer UIN ma nas na li¶cie. Nie
+	przeznaczone dla ogó³u :) - chodzi³o o sprawdzenie czy ta metoda
+	dalej dzia³a.
+
