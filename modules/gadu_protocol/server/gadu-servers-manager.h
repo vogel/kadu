@@ -17,27 +17,26 @@ class GaduServersManager
 {
 	Q_DISABLE_COPY(GaduServersManager);
 
+public:
+	typedef QPair<QHostAddress, int> GaduServer;
+
+private:
 	static const char *Ips[];
 	static GaduServersManager * Instance;
 
-	QList<int> Ports;
-	int LastGoodPort;
-	QList<QHostAddress> Servers;
-	QHostAddress LastGoodServer;
-
-	int LastPortTriedIndex;
-	int LastServerTriedIndex;
+	QList<QHostAddress> AllServers;
+	QList<int> AllPorts;
+	QList<GaduServer> GoodServers;
+	QList<GaduServer> BadServers;
 
 	GaduServersManager();
 
 public:
 	static GaduServersManager * instance();
 
-	QHostAddress getGoodServer();
-	int getGoodPort() { return Ports[LastPortTriedIndex]; }
-
-	void markServerAsGood(const QHostAddress &goodServer);
-	void markPortAsGood(int port);
+	QPair<QHostAddress, int> getServer();
+	void markServerAsGood(GaduServer server);
+	void markServerAsBad(GaduServer server);
 
 };
 

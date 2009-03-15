@@ -23,6 +23,7 @@
 #include "services/gadu-personal-info-service.h"
 #include "services/gadu-search-service.h"
 
+#include "server/gadu-servers-manager.h"
 #include "gadu-exports.h"
 #include "gadu-search-record.h"
 #include "gadu-search-result.h"
@@ -69,7 +70,7 @@ private:
 	friend class DccManager;
 	DccManager *Dcc;
 
-	QHostAddress ActiveServer;
+	GaduServersManager::GaduServer ActiveServer;
 
 	struct gg_login_params GaduLoginParams;
 	gg_session *GaduSession;

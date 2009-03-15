@@ -68,84 +68,60 @@ GaduServersManager * GaduServersManager::instance()
 
 GaduServersManager::GaduServersManager()
 {
-	Ports << 8074;
-	Ports << 443;
-
-	LastGoodPort = config_file.readNumEntry("Network", "LastServerPort",
+	int LastGoodPort = config_file.readNumEntry("Network", "LastServerPort",
 			config_file.readNumEntry("Network", "DefaultPort", 8074));
-	if (!Ports.contains(LastGoodPort))
-		Ports << LastGoodPort;
 
-	LastPortTriedIndex = Ports.indexOf(LastGoodPort);
+	if (8074 == LastGoodPort || 443 == LastGoodPort)
+		AllPorts << LastGoodPort;
+	if (8074 != LastGoodPort)
+		AllPorts << 8074;
+	if (443 != LastGoodPort)
+		AllPorts << 443;
 
 	QHostAddress ip;
+	if (ip.setAddress(config_file.readEntry("Network", "LastServerIP")))
+	foreach (int port, AllPorts)
+		GoodServers.append(qMakePair(ip, port));
+
 	if (config_file.readBoolEntry("Network", "isDefServers", true))
 	{
 		for (int i = 0; i < GG_SERVERS_COUNT; i++)
 			if (ip.setAddress(QString::fromLatin1(Ips[i])))
-				Servers.append(ip);
+				foreach (int port, AllPorts)
+					GoodServers.append(qMakePair(ip, port));
 	}
 	else
 	{
 		QStringList servers = config_file.readEntry("Network", "Server").split(";", QString::SkipEmptyParts);
 
 		foreach (const QString &server, servers)
-			if (ip.setAddress(server))
-				Servers.append(ip);
+				foreach (int port, AllPorts)
+					GoodServers.append(qMakePair(ip, port));
 	}
-
-	if (LastGoodServer.setAddress(config_file.readEntry("Network", "LastServerIP")))
-		if (!Servers.contains(LastGoodServer))
-			Servers << LastGoodServer;
-
-	LastServerTriedIndex = LastGoodServer.isNull()
-		? 0
-		: Servers.indexOf(LastGoodServer);
 }
 
-QHostAddress GaduServersManager::getGoodServer()
+GaduServersManager::GaduServer GaduServersManager::getServer()
 {
-	QHostAddress result;
-
-	if (!LastGoodServer.isNull())
+	if (0 == GoodServers.count())
 	{
-		result = LastGoodServer;
-		LastGoodServer = QHostAddress();
-		return result;
+		GoodServers = BadServers;
+		BadServers.clear();
 	}
 
-	if (Servers.empty())
-		return QHostAddress();
+	if (0 == GoodServers.count())
+		return qMakePair(QHostAddress(), 0);
 
-	result = Servers[LastServerTriedIndex];
-	LastServerTriedIndex++;
-	if (LastServerTriedIndex >= Servers.count())
-	{
-		LastServerTriedIndex = Servers.count() - 1;
-		LastPortTriedIndex++;
-		if (LastPortTriedIndex >= Ports.count())
-			LastPortTriedIndex = 0;
-	}
-
-	return result;
+	return GoodServers[0];
 }
 
-void GaduServersManager::markServerAsGood(const QHostAddress &goodServer)
+void GaduServersManager::markServerAsGood(GaduServersManager::GaduServer server)
 {
-	LastGoodServer = goodServer;
-	if (!Servers.contains(LastGoodServer))
-		Servers << LastGoodServer;
-	LastServerTriedIndex = Servers.indexOf(LastGoodServer);
-
-	config_file.writeEntry("Network", "LastServerIP", LastGoodServer.toString());
+	config_file.writeEntry("Network", "LastServerIP", server.first.toString());
+	config_file.writeEntry("Network", "LastServerIP", server.second);
 }
 
-void GaduServersManager::markPortAsGood(int port)
+void GaduServersManager::markServerAsBad(GaduServersManager::GaduServer server)
 {
-	LastGoodPort = port;
-	if (!Ports.contains(LastGoodPort))
-		Ports << LastGoodPort;
-	LastPortTriedIndex = Ports.indexOf(LastGoodPort);
-
-	config_file.writeEntry("Network", "LastServerPort", LastGoodPort);
+	GoodServers.removeAll(server);
+	BadServers.append(server);
 }

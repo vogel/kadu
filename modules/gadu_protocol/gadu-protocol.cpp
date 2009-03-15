@@ -499,10 +499,10 @@ void GaduProtocol::setupLoginParams()
 	if (!nextStatus().description().isEmpty())
 		GaduLoginParams.status_descr = strdup((const char *)unicode2cp(nextStatus().description()).data());
 
-	ActiveServer = GaduServersManager::instance()->getGoodServer();
-	bool haveServer = !ActiveServer.isNull();
-	GaduLoginParams.server_addr = haveServer ? htonl(ActiveServer.toIPv4Address()) : 0;
-	GaduLoginParams.server_port = haveServer ? GaduServersManager::instance()->getGoodPort() : 0;
+	ActiveServer = GaduServersManager::instance()->getServer();
+	bool haveServer = !ActiveServer.first.isNull();
+	GaduLoginParams.server_addr = haveServer ? htonl(ActiveServer.first.toIPv4Address()) : 0;
+	GaduLoginParams.server_port = haveServer ? ActiveServer.second : 0;
 
 	GaduLoginParams.protocol_version = 0x2a; // we are gg 7.7 now
 	GaduLoginParams.client_version = "7, 7, 0, 3351";
@@ -724,6 +724,8 @@ void GaduProtocol::socketConnFailed(GaduError error)
 		emit connectionError(account(), host, msg);
 	}*/
 
+	if (tryAgain)
+		GaduServersManager::instance()->markServerAsGood(ActiveServer);
 	networkDisconnected(tryAgain);
 
 	kdebugf2();
@@ -735,10 +737,8 @@ void GaduProtocol::socketConnSuccess()
 
 	sendUserList();
 
-	GaduServersManager::instance()->markServerAsGood(QHostAddress(ntohl(GaduSession->server_addr)));
-	GaduServersManager::instance()->markPortAsGood(GaduSession->port);
+	GaduServersManager::instance()->markServerAsGood(ActiveServer);
 
-	/* jezeli sie rozlaczymy albo stracimy polaczenie, proces laczenia sie z serwerami zaczyna sie od poczatku */
 	PingTimer = new QTimer(0);
 	connect(PingTimer, SIGNAL(timeout()), this, SLOT(everyMinuteActions()));
 	PingTimer->start(60000);

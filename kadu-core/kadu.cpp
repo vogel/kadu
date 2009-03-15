@@ -1379,7 +1379,8 @@ void Kadu::changeStatusSlot()
 
 void Kadu::changePrivateStatusSlot(bool toggled)
 {
-	AccountManager::instance()->defaultAccount()->protocol()->setPrivateMode(toggled);
+	if (AccountManager::instance()->defaultAccount())
+		AccountManager::instance()->defaultAccount()->protocol()->setPrivateMode(toggled);
 
 	config_file.writeEntry("General", "PrivateStatus", toggled);
 }
