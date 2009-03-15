@@ -26,12 +26,6 @@ class AutoHide : public ConfigurationUiHandler, ConfigurationAwareObject
 		virtual void mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow);
 		
 	protected:
-		/*!
-		 * \brief Prevents from hiding the window on keyboard/mouse event
-		 * \param o Object
-		 * \param e Event
-		*/
-		bool eventFilter(QObject *o, QEvent *e);
 		virtual void configurationUpdated();
 	
 	private slots:

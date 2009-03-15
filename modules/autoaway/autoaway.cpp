@@ -11,16 +11,13 @@
 #include <QtGui/QCheckBox>
 #include <QtGui/QSpinBox>
 
-#ifdef Q_OS_WIN
-#include <windows.h>
-#endif
-
 #include "autoaway.h"
 #include "config_file.h"
 #include "debug.h"
 #include "kadu.h"
 #include "kadu_parser.h"
 #include "misc.h"
+#include "../idle/idle.h"
 
 /**
  * @ingroup autoaway
@@ -215,47 +212,7 @@ void AutoAway::checkIdleTime()
 		idleTime = 0;
 	}
 
-#ifdef Q_OS_WIN
-	LASTINPUTINFO lpi;
-	lpi.cbSize=sizeof(LASTINPUTINFO);
-	GetLastInputInfo(&lpi);
-	idleTime=(GetTickCount() - lpi.dwTime)/1000;
-#else
-
-//	sprawdzenie czy wzrosla liczba obsluzonych przerwan klawiatury lub myszki
-	QFile f("/proc/interrupts");
-	if (f.open(IO_ReadOnly))
-	{
-		QString line;
-		QStringList strlist;
-
-		QString intNum;
-		int interrupt;
-
-		QTextStream stream(&f);
-		while (!stream.atEnd() && (line = stream.readLine()) != QString::null)
-		{
-			if (line.contains("i8042") || line.contains("keyboard") || line.contains("mouse", false))
-			{
-				strlist = QStringList::split(" ", line);
-
-				intNum = strlist[0];
-				intNum.truncate(intNum.length()-1);
-				interrupt = intNum.toUInt();
-				if (interrupt>=0 && interrupt<INTCOUNT)
-					currentInterrupts[interrupt] = strlist[1].toULong();
-			}
-		}
-		f.close();
-
-		if (memcmp(interrupts, currentInterrupts, INTCOUNT*sizeof(interrupts[0]))!=0)
-		{
-			idleTime = 0;
-			memcpy(interrupts, currentInterrupts, INTCOUNT*sizeof(interrupts[0]));
-		}
-	}
-#endif
-
+	idleTime = idle->secondsIdle();
 	idleTime += checkInterval;
 
 	if (refreshStatusInterval > 0 && idleTime >= refreshStatusTime)

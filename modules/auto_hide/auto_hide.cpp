@@ -19,6 +19,7 @@
 #include "config_file.h"
 #include "kadu.h"
 #include "debug.h"
+#include "../idle/idle.h"
 
 AutoHide *autoHide;
 
@@ -50,11 +51,10 @@ AutoHide::AutoHide(QObject *parent, const char *name)
 : QObject(parent, name), idleTime(0)
 {
 	kdebugf();
-
 	
 	connect(&timer, SIGNAL(timeout()), this, SLOT(timerTimeoutSlot()));
 	timer.start(1000);
-	qApp->installEventFilter(this);
+
 	kdebugf2();
 }
 
@@ -64,73 +64,13 @@ AutoHide::~AutoHide()
 	kdebugf2();
 }
 
-bool AutoHide::eventFilter(QObject *o, QEvent *e)
-{
-	if (e->type() == QEvent::KeyPress || e->type() == QEvent::Enter || e->type() == QEvent::MouseMove)
-		idleTime = 0;
-	return QObject::eventFilter(o, e);
-}
-
 void AutoHide::timerTimeoutSlot()
 {
-	//kdebugf();
 	if(config_file.readBoolEntry("PowerKadu", "auto_hide_use_auto_hide", false))
 	{
-		idleTime++;
-		
-		// Copied from autoaway.cpp  in autoaway module
-		const static int INTCOUNT=16;
-		static unsigned long interrupts[INTCOUNT]={0};
-		unsigned long currentInterrupts[INTCOUNT]={0};
-	
-		static QPoint MousePosition(0, 0);
-		QPoint currentMousePosition;
-	
-		currentMousePosition = QCursor::pos();
-		if (currentMousePosition != MousePosition)
-			idleTime = 0;
-		
-		MousePosition = currentMousePosition;
-
-		QFile f("/proc/interrupts");
-		if (f.open(IO_ReadOnly))
-		{
-			QString line;
-			QStringList strlist;
-	
-			QString intNum;
-			int interrupt;
-			
-			QTextStream stream(&f);
-			while (!stream.atEnd() && (line = stream.readLine()) != QString::null)
-			{
-				if (line.contains("i8042") || line.contains("keyboard") || line.contains("mouse", false))
-				{
-					strlist = QStringList::split(" ", line);
-	
-					intNum = strlist[0];
-					intNum.truncate(intNum.length()-1);
-					interrupt = intNum.toUInt();
-					if (interrupt >= 0 && interrupt < INTCOUNT)
-						currentInterrupts[interrupt] = strlist[1].toULong();
-				}
-			}
-			f.close();
-		
-			if (memcmp(interrupts, currentInterrupts, INTCOUNT * sizeof(interrupts[0])) != 0)
-			{
-				idleTime = 0;
-				memcpy(interrupts, currentInterrupts, INTCOUNT * sizeof(interrupts[0]));
-			}
-		}
-
-		if(idleTime >= config_file.readNumEntry("PowerKadu", "auto_hide_idle_time", 5 * 60))
+		if (idle->secondsIdle() >= config_file.readNumEntry("PowerKadu", "auto_hide_idle_time", 5 * 60))
 			kadu->close();
-	
-		//kdebugm(KDEBUG_INFO, "idleTime: %d\n", idleTime);
-		//kdebugm(KDEBUG_INFO, "Musi byc: %d\n", config_file.readNumEntry("PowerKadu", "auto_hide_idle_time", 5 * 60));
 	}
-	//kdebugf2();
 }
 
 void AutoHide::configurationUpdated()

@@ -3,5 +3,6 @@ Description=Auto hide Kadu window
 Description[pl]=Automatyczne ukrywanie okna Kadu
 Author=PK Team, Dorregaray
 LoadByDefault=false
+Dependencies=idle
 Version=0.3
 Base=false
