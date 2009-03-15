@@ -68,44 +68,6 @@ void ContactsListWidgetDelegate::contactStatusChanged(Account *account, Contact 
 		emit sizeHintChanged(Model->contactIndex(c));
 }
 
-bool ContactsListWidgetDelegate::isBold(Contact contact) const
-{
-	if (!ShowBold)
-		return false;
-
-	Account *account = contact.prefferedAccount();
-	ContactAccountData *contactData = contact.accountData(account);
-
-	if (0 == contactData)
-		return false;
-
-	Status status = contactData->status();
-	return status.isOnline() || status.isBusy();
-}
-
-QString ContactsListWidgetDelegate::displayDescription(Contact contact) const
-{
-	if (!ShowDescription)
-		return QString::null;
-
-	Account *account = contact.prefferedAccount();
-	ContactAccountData *cad = contact.accountData(account);
-	if (!cad)
-		return QString::null;
-//TODO 0.6.6:
-//	ContactKaduData *ckd = contact.moduleData<ContactKaduData>(true);
-//	if (!ckd)
-//		return QString::null;	
-//	if (ckd->hideDescription())
-//	{
-//		delete ckd;
-//		return QString::null;	
-//	}
-//	delete ckd;
-//
-	return cad->status().description();
-}
-
 QTextDocument * ContactsListWidgetDelegate::descriptionDocument(const QString &text, int width, QColor color) const
 {
 	QString description = text;
@@ -156,9 +118,7 @@ QSize ContactsListWidgetDelegate::sizeHint(const QStyleOptionViewItem &option, c
 	QFontMetrics fontMetrics(Font);
 	int displayHeight = fontMetrics.lineSpacing() + 3;
 
-	QString description = Model
-		? displayDescription(Model->contact(index))
-		: "";
+	QString description = ShowDescription ? index.data(DescriptionRole).toString() : QString::null;
 	int descriptionHeight = 0;
 
 	QPixmap pixmap = qvariant_cast<QPixmap>(index.data(Qt::DecorationRole));
@@ -205,7 +165,6 @@ void ContactsListWidgetDelegate::paint(QPainter *painter, const QStyleOptionView
 	QRect rect = opt.rect;
 
 	painter->save();
-
 	painter->setClipRect(rect);
 	painter->translate(rect.topLeft());
 
@@ -216,17 +175,13 @@ void ContactsListWidgetDelegate::paint(QPainter *painter, const QStyleOptionView
 	painter->setFont(Font);
 	painter->setPen(textcolor);
 
-	Contact con = Model
-		? Model->contact(index)
-		: Contact::null;
-
 	QFontMetrics fontMetrics(Font);
 	int displayHeight = fontMetrics.lineSpacing() + 3;
 
 	QPixmap pixmap = qvariant_cast<QPixmap>(index.data(Qt::DecorationRole));
 	int pixmapHeight = pixmap.height();
 
-	QString description = displayDescription(con);
+	QString description = ShowDescription ? index.data(DescriptionRole).toString() : QString::null;
 	bool hasDescription = !description.isEmpty();
 
 	QTextDocument *dd = 0;
@@ -260,7 +215,7 @@ void ContactsListWidgetDelegate::paint(QPainter *painter, const QStyleOptionView
 		return;
 	}
 
-	if (isBold(con))
+	if (isBold(index))
 	{
 		QFont bold = QFont(Font);
 		bold.setWeight(QFont::Bold);
@@ -284,7 +239,7 @@ void ContactsListWidgetDelegate::paint(QPainter *painter, const QStyleOptionView
 
 	painter->drawText(textLeft, top, display);
 
-	if (isBold(con))
+	if (isBold(index))
 		painter->setFont(Font);
 
 	if (!hasDescription)
@@ -303,6 +258,19 @@ void ContactsListWidgetDelegate::paint(QPainter *painter, const QStyleOptionView
 	delete dd;
 
 	painter->restore();
+}
+
+bool ContactsListWidgetDelegate::isBold(const QModelIndex &index) const
+{
+	if (!ShowBold)
+		return false;
+
+	QVariant statVariant = index.data(StatusRole);
+	if (!statVariant.canConvert<Status>())
+		return false;
+
+	Status status = statVariant.value<Status>();
+	return status.isOnline() || status.isBusy();
 }
 
 void ContactsListWidgetDelegate::configurationUpdated()

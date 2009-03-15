@@ -74,18 +74,19 @@ QVariant ContactsModelBase::data(const QModelIndex &index, int role) const
 	if (con.isNull())
 		return QVariant();
 
-	ContactAccountData *cad;
-
 	Account *account = con.prefferedAccount();
 	if (!account)
 		account = AccountManager::instance()->defaultAccount();
+
+	ContactAccountData *cad = con.accountData(account);
+	if (!cad)
+		return QVariant();
 
 	switch (role)
 	{
 		case Qt::DisplayRole:
 			return con.display();
 		case Qt::DecorationRole:
-			cad = con.accountData(account);
 			if (0 == cad)
 				return QVariant();
 			// TODO generic icon
@@ -94,6 +95,21 @@ QVariant ContactsModelBase::data(const QModelIndex &index, int role) const
 				: QVariant();
 		case ContactRole:
 			return QVariant::fromValue(con);
+		case DescriptionRole:
+			//TODO 0.6.6:
+			//	ContactKaduData *ckd = contact.moduleData<ContactKaduData>(true);
+			//	if (!ckd)
+			//		return QString::null;	
+			//	if (ckd->hideDescription())
+			//	{
+			//		delete ckd;
+			//		return QString::null;	
+			//	}
+			//	delete ckd;
+			//
+			return cad->status().description();
+		case StatusRole:
+			return QVariant::fromValue(cad->status());
 		default:
 			return QVariant();
 	}

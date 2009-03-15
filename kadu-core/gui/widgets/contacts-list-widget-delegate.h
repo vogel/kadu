@@ -39,9 +39,7 @@ class ContactsListWidgetDelegate : public QItemDelegate, public ConfigurationAwa
 	QColor DescriptionColor;
 
 	QTextDocument * descriptionDocument(const QString &text, int width, QColor color) const;
-
-	bool isBold(Contact contact) const;
-	QString displayDescription(Contact contact) const;
+	bool isBold(const QModelIndex &index) const;
 
 private slots:
 	void contactStatusChanged(Account *account, Contact contact, Status oldStatus);

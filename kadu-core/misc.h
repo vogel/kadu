@@ -1,6 +1,7 @@
 #ifndef KADU_MISC_H
 #define KADU_MISC_H
 
+#include <QtGui/QComboBox>
 #include <QtGui/QFileDialog>
 
 #include "protocols/status.h"

@@ -10,6 +10,7 @@
 #ifndef STATUS_H
 #define STATUS_H
 
+#include <QtCore/QMetaType>
 #include <QtCore/QString>
 
 class Status
@@ -50,5 +51,7 @@ public:
 	bool operator == (const Status &compare) const;
 
 };
+
+Q_DECLARE_METATYPE(Status)
 
 #endif // STATUS_H
