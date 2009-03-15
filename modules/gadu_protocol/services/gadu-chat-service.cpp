@@ -183,7 +183,7 @@ void GaduChatService::handleEventMsg(struct gg_event *e)
 	kdebugmf(KDEBUG_INFO, "Got message from %d saying \"%s\"\n",
 			Protocol->uin(sender), qPrintable(message.toPlain()));
 
-	bool ignore;
+	bool ignore = false;
 	emit receivedMessageFilter(Protocol->account(), sender, recipients, message.toPlain(), time.toTime_t(), ignore);
 	if (ignore)
 		return;
