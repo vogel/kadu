@@ -417,7 +417,7 @@ bool ChatWidget::keyPressEventHandled(QKeyEvent *e)
 		return false;
 }
 
-QPixmap ChatWidget::icon()
+QIcon ChatWidget::icon()
 {
 	return pix;
 }

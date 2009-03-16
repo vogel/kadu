@@ -12,7 +12,7 @@
 
 #include <QtCore/QDateTime>
 #include <QtCore/QList>
-#include <QtGui/QPixmap>
+#include <QtGui/QIcon>
 #include <QtGui/QWidget>
 
 #include "chat/message/message.h"
@@ -58,7 +58,7 @@ private:
 
 	int index;	/*!< nr okna (z chat menad�era) */
 	QColor actcolor; /*!< zmienna przechowuj�ca aktualny kolor */
-	QPixmap pix;
+	QIcon pix;
 //	Q3MimeSourceFactory *bodyformat; /*!< zmienna ustawiaj�ca format */
 	EmoticonSelector *emoticon_selector; /*!< okienko do wyboru emotikonek */
 	ColorSelector *color_selector; /*!< okienko do wyboru koloru */
@@ -106,7 +106,7 @@ private slots:
 		\fn void colorSelectorActionCreated(KaduAction *action)
 		Slot jest wywo�ywany, po dodaniu do paska narz�dzi akcji zmieniaj�cej
 		kolor wiadomo�ci. U�ywa setActColor() wymuszaj�c od�wie�enie koloru na przycisku.
-		Metoda jest wywoływana jedynia dla dodanych akcji po otwarciu chata. 
+		Metoda jest wywoływana jedynia dla dodanych akcji po otwarciu chata.
 		Przy tworzeniu chata metoda setActColor() wywoływana jest z poziomu configurationUpdated()
 	**/
 	void colorSelectorActionCreated(KaduAction *action);
@@ -214,7 +214,7 @@ public:
 	unsigned int newMessagesCount() const;
 
 	QDateTime getLastMsgTime();
-	QPixmap icon();
+	QIcon icon();
 
 	void kaduStoreGeometry();
 	void kaduRestoreGeometry();
@@ -382,10 +382,10 @@ signals:
 	@class ChatContainer
 	@brief Klasa abstrakcyjna opisuj�ca rodzica klasy ChatWidget.
 
-	Klasa abstrakcyjna z kt�rej powinny dziedziczy� klasy b�d�ce rodzicami obiekt�w 
+	Klasa abstrakcyjna z kt�rej powinny dziedziczy� klasy b�d�ce rodzicami obiekt�w
 	klasy ChatWidget.
-	
-	Informuje kt�ry chat powinien zosta� zamkni�ty w przypadku np. ignorowania kontaktu 
+
+	Informuje kt�ry chat powinien zosta� zamkni�ty w przypadku np. ignorowania kontaktu
 	z kt�rym prowadzona jest rozmowa
 **/
 
