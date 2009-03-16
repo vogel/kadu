@@ -5,5 +5,5 @@ Author=Kadu Team
 Dependencies=notify
 Provides=notify_method
 LoadByDefault=false
-Version=0.1.3
+Version=0.1.4
 Base=false

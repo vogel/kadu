@@ -495,7 +495,7 @@ void OSDHintManager::showToolTip(const QPoint &point, const UserListElement &use
 	lay->setResizeMode(QLayout::Fixed);
 
 	int iconSize = config_file.readNumEntry("OSDHints", "IconSize", 32);
-	QString pic = dataPath("kadu/modules/data/osd_hints/") + user.status("Gadu").name().lower() + QString::number(iconSize) + ".png";
+	QString pic = dataPath("kadu/modules/data/osd_hints/") + user.status("Gadu").pixmapName().lower() + QString::number(iconSize) + ".png";
 
 	QPixmap pixmap = icons_manager->loadPixmap(pic);
     	if (pixmap.isNull())

@@ -3,7 +3,7 @@
 	<section name="Look">
 		<tab name="Userbox">
 			<group-box name="General">
-				<line-edit caption="Hints over userlist" config-section="OSD Hints" config-item="MouseOverUserSyntax" id="osdhints/overUserSyntax" />
+				<line-edit caption="Hints over userlist" config-section="OSDHints" config-item="MouseOverUserSyntax" id="osdhints/overUserSyntax" />
 			</group-box>
 		</tab>
 	</section>
@@ -12,7 +12,7 @@
 
 		<tab name="OSD Hints">
 			<group-box name="Layout">
-				<combo-box caption="New hints go" config-section="Hints" config-item="NewHintUnder">
+				<combo-box caption="New hints go" config-section="OSDHints" config-item="NewHintUnder">
 					<item value="0" caption="Auto" />
 					<item value="1" caption="On top" />
 					<item value="2" caption="On bottom" />
