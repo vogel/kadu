@@ -34,10 +34,11 @@
  * @{
  */
 #define FRAME_WIDTH 2
-#define BORDER_RADIUS 10
+#define BORDER_RADIUS 5
 
 static QRegion roundedRect(const QRect& rect, int r)
 {
+	r -= BORDER_RADIUS/5;
 	QRegion region;
         // middle and borders
 	region += rect.adjusted(r, 0, -r, 0);
@@ -54,7 +55,7 @@ static QRegion roundedRect(const QRect& rect, int r)
 	// bottom right
 	corner.moveBottomRight(rect.bottomRight());
 	region += QRegion(corner, QRegion::Ellipse);
-	return region; 
+	return region;
 }
 
 OSDHintManager::OSDHintManager(QWidget *parent, const char *name)	: Notifier(parent, name), ToolTipClass(),
@@ -634,7 +635,7 @@ void OSDHintManager::createDefaultConfiguration()
 	config_file.addVariable("OSDHints", "SetAll_bdcolor", w.paletteForegroundColor());
 	config_file.addVariable("OSDHints", "SetAll_font", *defaultFont);
 	config_file.addVariable("OSDHints", "SetAll_timeout", 10);
-	config_file.addVariable("OSDHints", "SetAll_borderWidth", 2);
+	config_file.addVariable("OSDHints", "SetAll_borderWidth", 1);
 	config_file.addVariable("OSDHints", "ShowContentMessage", true);
 	config_file.addVariable("OSDHints", "UseUserPosition", false);
 	config_file.addVariable("OSDHints", "OpenChatOnEveryNotification", false);

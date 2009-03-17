@@ -220,7 +220,7 @@ bool OSDHint::isDeprecated()
 void OSDHint::addDetail(const QString &detail)
 {
 	details.append(detail);
-	if (details.count() > 5)
+	//if (details.count() > 5)
 		details.pop_front();
 
 	resetTimeout();
