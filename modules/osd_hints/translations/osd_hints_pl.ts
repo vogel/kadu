@@ -1,4 +1,5 @@
-<!DOCTYPE TS><TS>
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS><TS version="1.1" language="hi">
 <defaultcodec></defaultcodec>
 <context>
     <name>@default</name>
@@ -161,6 +162,18 @@
     <message>
         <source>&apos;Open chat&apos; works on all events</source>
         <translation>&apos;Otwórz rozmowę&apos; działa z każdym zdarzeniem</translation>
+    </message>
+    <message>
+        <source>Icon size</source>
+        <translation>Rozmiar ikon</translation>
+    </message>
+    <message>
+        <source>Opacity</source>
+        <translation>Przezroczystość</translation>
+    </message>
+    <message>
+        <source>Border width</source>
+        <translation>Szerokość ramki</translation>
     </message>
 </context>
 <context>

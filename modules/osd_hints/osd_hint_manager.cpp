@@ -29,6 +29,13 @@
 
 #include "../notify/notify.h"
 
+/**
+ * @ingroup hints
+ * @{
+ */
+#define FRAME_WIDTH 2
+#define BORDER_RADIUS 10
+
 static QRegion roundedRect(const QRect& rect, int r)
 {
 	QRegion region;
@@ -50,12 +57,6 @@ static QRegion roundedRect(const QRect& rect, int r)
 	return region; 
 }
 
-/**
- * @ingroup hints
- * @{
- */
-#define FRAME_WIDTH 2
-
 OSDHintManager::OSDHintManager(QWidget *parent, const char *name)	: Notifier(parent, name), ToolTipClass(),
 	hint_timer(new QTimer(this, "hint_timer")),
 	hints(), tipFrame(0)
@@ -69,7 +70,9 @@ OSDHintManager::OSDHintManager(QWidget *parent, const char *name)	: Notifier(par
 	frame->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
 	frame->setFrameStyle(QFrame::Box | QFrame::Plain);
 	frame->setLineWidth(FRAME_WIDTH);
-	frame->setStyleSheet("QFrame {border-width: 2px; border-style: solid; border-color: #535353; border-radius: 10px;} ");
+
+	QString style = QString("QFrame {border-width: %1px; border-style: solid; border-color: %2; border-radius: %3px;}").arg(config_file.readNumEntry("OSDHints", "SetAll_borderWidth", FRAME_WIDTH)).arg(config_file.readColorEntry("OSDHints", "SetAll_bdcolor").name()).arg(BORDER_RADIUS);
+	frame->setStyleSheet(style);
 
 	layout = new QVBoxLayout(frame, FRAME_WIDTH, 0, "grid");
 	layout->setResizeMode(QLayout::Fixed);
@@ -264,7 +267,7 @@ void OSDHintManager::setHint()
 	frame->setGeometry(newPosition.x(), newPosition.y(), preferredSize.width(), preferredSize.height());
 
 	frame->resize(preferredSize.width(), preferredSize.height());
-	frame->setMask(roundedRect(frame->rect(), 10));
+	frame->setMask(roundedRect(frame->rect(), BORDER_RADIUS));
 	frame->setWindowOpacity(opacity);
 
 	kdebugf2();
@@ -508,7 +511,9 @@ void OSDHintManager::showToolTip(const QPoint &point, const UserListElement &use
 #endif
 	tipFrame->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
 	tipFrame->setFrameStyle(QFrame::Box | QFrame::Plain);
-	tipFrame->setStyleSheet("QFrame#tip_frame {border-width: 2px; border-style: solid; border-color: #535353; border-radius: 10px;} ");
+
+	QString style = QString("QFrame#tip_frame {border-width: %1px; border-style: solid; border-color: %2; border-radius: %3px;}").arg(config_file.readNumEntry("OSDHints", "SetAll_borderWidth", FRAME_WIDTH)).arg(config_file.readColorEntry("OSDHints", "SetAll_bdcolor").name()).arg(BORDER_RADIUS);
+	tipFrame->setStyleSheet(style);
 
 	opacity = config_file.readNumEntry("OSDHints", "Opacity", 100);
 	opacity /= 100;
@@ -543,13 +548,13 @@ void OSDHintManager::showToolTip(const QPoint &point, const UserListElement &use
 	QSize preferredSize = tipFrame->sizeHint();
 	QSize desktopSize = QApplication::desktop()->size();
 	if (pos.x() + preferredSize.width() > desktopSize.width())
-		pos.setX(pos.x() - preferredSize.width() - 10);
+		pos.setX(pos.x() - preferredSize.width() - lay->margin());
 	if (pos.y() + preferredSize.height() > desktopSize.height())
-		pos.setY(pos.y() - preferredSize.height() - 10);
+		pos.setY(pos.y() - preferredSize.height() - lay->margin());
 
 	tipFrame->resize(preferredSize.width(), preferredSize.height());
 	tipFrame->move(pos);
-	tipFrame->setMask(roundedRect(tipFrame->rect(), 10));
+	tipFrame->setMask(roundedRect(tipFrame->rect(), BORDER_RADIUS));
 	tipFrame->show();
 
 	kdebugf2();
@@ -626,8 +631,10 @@ void OSDHintManager::createDefaultConfiguration()
 	config_file.addVariable("OSDHints", "SetAll", false); // TODO: fix
 	config_file.addVariable("OSDHints", "SetAll_bgcolor", w.paletteBackgroundColor());
 	config_file.addVariable("OSDHints", "SetAll_fgcolor", w.paletteForegroundColor());
+	config_file.addVariable("OSDHints", "SetAll_bdcolor", w.paletteForegroundColor());
 	config_file.addVariable("OSDHints", "SetAll_font", *defaultFont);
 	config_file.addVariable("OSDHints", "SetAll_timeout", 10);
+	config_file.addVariable("OSDHints", "SetAll_borderWidth", 2);
 	config_file.addVariable("OSDHints", "ShowContentMessage", true);
 	config_file.addVariable("OSDHints", "UseUserPosition", false);
 	config_file.addVariable("OSDHints", "OpenChatOnEveryNotification", false);
