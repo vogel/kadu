@@ -29,6 +29,27 @@
 
 #include "../notify/notify.h"
 
+static QRegion roundedRect(const QRect& rect, int r)
+{
+	QRegion region;
+        // middle and borders
+	region += rect.adjusted(r, 0, -r, 0);
+	region += rect.adjusted(0, r, 0, -r);
+	// top left
+	QRect corner(rect.topLeft(), QSize(r * 2, r * 2));
+	region += QRegion(corner, QRegion::Ellipse);
+	// top right
+	corner.moveTopRight(rect.topRight());
+	region += QRegion(corner, QRegion::Ellipse);
+	// bottom left
+	corner.moveBottomLeft(rect.bottomLeft());
+	region += QRegion(corner, QRegion::Ellipse);
+	// bottom right
+	corner.moveBottomRight(rect.bottomRight());
+	region += QRegion(corner, QRegion::Ellipse);
+	return region; 
+}
+
 /**
  * @ingroup hints
  * @{
@@ -48,7 +69,7 @@ OSDHintManager::OSDHintManager(QWidget *parent, const char *name)	: Notifier(par
 	frame->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
 	frame->setFrameStyle(QFrame::Box | QFrame::Plain);
 	frame->setLineWidth(FRAME_WIDTH);
-	frame->setStyleSheet("QFrame {border-width: 1px; border-style: solid; border-color: #535353; border-radius: 3px;} ");
+	frame->setStyleSheet("QFrame {border-width: 2px; border-style: solid; border-color: #535353; border-radius: 10px;} ");
 
 	layout = new QVBoxLayout(frame, FRAME_WIDTH, 0, "grid");
 	layout->setResizeMode(QLayout::Fixed);
@@ -242,6 +263,10 @@ void OSDHintManager::setHint()
 
 	frame->setGeometry(newPosition.x(), newPosition.y(), preferredSize.width(), preferredSize.height());
 
+	frame->resize(preferredSize.width(), preferredSize.height());
+	frame->setMask(roundedRect(frame->rect(), 10));
+	frame->setWindowOpacity(opacity);
+
 	kdebugf2();
 }
 
@@ -419,8 +444,6 @@ OSDHint *OSDHintManager::addHint(Notification *notification)
 	if (frame->isHidden())
 		frame->show();
 
-	frame->setWindowOpacity(opacity);
-
 	kdebugf2();
 
 	return hint;
@@ -485,6 +508,7 @@ void OSDHintManager::showToolTip(const QPoint &point, const UserListElement &use
 #endif
 	tipFrame->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
 	tipFrame->setFrameStyle(QFrame::Box | QFrame::Plain);
+	tipFrame->setStyleSheet("QFrame#tip_frame {border-width: 2px; border-style: solid; border-color: #535353; border-radius: 10px;} ");
 
 	opacity = config_file.readNumEntry("OSDHints", "Opacity", 100);
 	opacity /= 100;
@@ -523,7 +547,9 @@ void OSDHintManager::showToolTip(const QPoint &point, const UserListElement &use
 	if (pos.y() + preferredSize.height() > desktopSize.height())
 		pos.setY(pos.y() - preferredSize.height() - 10);
 
+	tipFrame->resize(preferredSize.width(), preferredSize.height());
 	tipFrame->move(pos);
+	tipFrame->setMask(roundedRect(tipFrame->rect(), 10));
 	tipFrame->show();
 
 	kdebugf2();
