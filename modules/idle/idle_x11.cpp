@@ -79,6 +79,6 @@ int Idle::secondsIdle()
 
 	if (!XScreenSaverQueryInfo(QApplication::desktop()->screen()->x11Display(), QX11Info::appRootWindow(), ss_info))
 		return -1;
-printf("idle: %d\n", ss_info->idle / 1000);
+
 	return ss_info->idle / 1000;
 }
