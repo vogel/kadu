@@ -39,10 +39,9 @@
 
 #include "accounts/account.h"
 #include "accounts/account_manager.h"
-
 #include "chat/chat_manager.h"
-
 #include "contacts/contact-manager.h"
+#include "core/core.h"
 
 #include "../modules/gadu_protocol/gadu-protocol.h"
 
@@ -952,7 +951,7 @@ void ChooseDescription::okPressed()
 // 		defaultdescriptions.pop_back();
 
 	if (config_file.readBoolEntry("General", "ParseStatus", false))
-		description = KaduParser::parse(description, account, kadu->myself(), true);
+		description = KaduParser::parse(description, account, Core::instance()->myself(), true);
 
 	CurrentStatus.setDescription(description);
 	kadu->setStatus(CurrentStatus);

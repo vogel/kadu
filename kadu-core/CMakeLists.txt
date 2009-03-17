@@ -15,7 +15,7 @@ set (kadu_SRCS
 
 	chat/style-engines/chat_engine_adium.cpp
 	chat/style-engines/chat_engine_kadu.cpp
-	
+
 	conference/conference.cpp
 	conference/conference-manager.cpp
 
@@ -53,6 +53,9 @@ set (kadu_SRCS
 	configuration/storable-object.cpp
 
 	configuration/widgets/manage-accounts.cpp
+
+	core/core.cpp
+	core/core-actions.cpp
 
 	file-transfer/file-transfer.cpp
 	file-transfer/file-transfer-manager.cpp
@@ -100,6 +103,7 @@ set (kadu_SRCS
 	gui/windows/configuration-window.cpp
 	gui/windows/contact-data-window.cpp
 	gui/windows/group-properties-window.cpp
+	gui/windows/kadu-window.cpp
 	gui/windows/open-chat-with/open-chat-with.cpp
 	gui/windows/open-chat-with/open-chat-with-contact-list-runner.cpp
 	gui/windows/open-chat-with/open-chat-with-runner-manager.cpp
@@ -199,6 +203,8 @@ set (kadu_MOC_SRCS
 
 	configuration/widgets/manage-accounts.h
 
+	core/core.h
+
 	file-transfer/file-transfer.h
 	file-transfer/file-transfer-manager.h
 
@@ -226,10 +232,11 @@ set (kadu_MOC_SRCS
 	gui/windows/configuration-window.h
 	gui/windows/contact-data-window.h
 	gui/windows/group-properties-window.h
+	gui/windows/kadu-window.h
 	gui/windows/open-chat-with/open-chat-with.h
 	gui/windows/open-chat-with/open-chat-with-contact-list-runner.h
 	gui/windows/open-chat-with/open-chat-with-runner-manager.h
-	
+
 	protocols/protocol.h
 	protocols/protocols_manager.h
 

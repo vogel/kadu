@@ -14,6 +14,7 @@
 
 #include "accounts/account.h"
 #include "contacts/contact.h"
+#include "core/core.h"
 #include "file-transfer/file-transfer.h"
 #include "file-transfer/file-transfer-manager.h"
 #include "protocols/protocol.h"
@@ -61,7 +62,7 @@ void disableNonFileTransferContacts(KaduAction *action)
 
 	foreach (const Contact &contact, contacts)
 	{
-		if (kadu->myself() == contact)
+		if (Core::instance()->myself() == contact)
 			return;
 
 		Account *account = contact.prefferedAccount();

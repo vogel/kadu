@@ -16,13 +16,10 @@
 
 #include "chat/chat_manager.h"
 #include "chat/chat_message.h"
-
 #include "contacts/contact-account-data.h"
-
 #include "contacts/model/contact-list-model.h"
-
+#include "core/core.h"
 #include "gui/widgets/contacts-list-widget.h"
-
 #include "protocols/protocol.h"
 
 #include "action.h"
@@ -504,7 +501,7 @@ void ChatWidget::newMessage(Account* account, Contact sender, ContactList receiv
 	QDateTime date;
 	date.setTime_t(time);
 
-	receivers << kadu->myself();
+	receivers << Core::instance()->myself();
 
 	ChatMessage *chatMessage = new ChatMessage(account, sender, receivers, message,
 			TypeReceived, QDateTime::currentDateTime(), date);
@@ -520,7 +517,7 @@ void ChatWidget::writeMyMessage()
 {
 	kdebugf();
 
-	ChatMessage *message = new ChatMessage(CurrentAccount, kadu->myself(), Contacts, myLastMessage.toHtml(),
+	ChatMessage *message = new ChatMessage(CurrentAccount, Core::instance()->myself(), Contacts, myLastMessage.toHtml(),
 			TypeSent, QDateTime::currentDateTime());
 	body->appendMessage(message);
 

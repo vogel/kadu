@@ -17,6 +17,7 @@
 #include "chat/chat_manager.h"
 #include "contacts/model/contact-list-model.h"
 #include "contacts/contact-manager.h"
+#include "core/core.h"
 
 #include "debug.h"
 #include "kadu.h"
@@ -108,7 +109,7 @@ void OpenChatWith::openChat(Contact contact)
 	{
 		Contact contact = contacts[0];
 
-		if (contacts[0] != kadu->myself()) //TODO: elem.hasFeature("SendingMessages")
+		if (contacts[0] != Core::instance()->myself()) //TODO: elem.hasFeature("SendingMessages")
 			chat_manager->sendMessage(contact, contacts);
 		else if (contact.mobile().isEmpty() && !contact.email().isEmpty())
 			openMailClient(contact.email());

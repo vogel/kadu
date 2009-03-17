@@ -41,6 +41,7 @@ class UserStatusChanger;
 class KADUAPI Kadu : public KaduMainWindow, public TokenReader, ConfigurationAwareObject
 {
 	Q_OBJECT
+
 public:
 	enum MenuType
 	{
@@ -63,7 +64,6 @@ private:
  		KaduAction* Action;
  		MenuType Menu;
 	};
-
 
 	ActionDescription *inactiveUsersAction;
 	ActionDescription *descriptionUsersAction;
@@ -93,8 +93,6 @@ private:
 
 	// TODO: remove
 	friend class Wizard;
-
-	Contact Myself;
 
 	static bool Closing;
 	KaduTextBrowser *InfoPanel;
@@ -158,7 +156,6 @@ private slots:
 	void deleteUsersActionActivated(QAction *sender, bool toggled);
 	void addGroupActionActivated(QAction *sender, bool toggled);
 
-	void messageReceived(Account *account, Contact sender, ContactList receipients, const QString &message, time_t time);
 	void createRecentChatsMenu();
 	void openRecentChats(QAction *action);
 	void openChatWith();
@@ -187,7 +184,6 @@ private slots:
 	void quitApplication();
 
 	// new API
-	void accountRegistered(Account *account);
 	void statusChanged(Account *account, Status status);
 
 protected:
@@ -210,8 +206,6 @@ public:
 	virtual ContactsListWidget * contactsListWidget() { return ContactsWidget; }
 	virtual ContactList contacts();
 	virtual ChatWidget * chatWidget() { return 0; }
-
-	Contact myself() { return Myself; }
 
 	bool userInActiveGroup(UinType uin);
 	void removeUsers(ContactList contacts);
@@ -319,9 +313,6 @@ public slots:
 signals:
 	void keyPressed(QKeyEvent *e);
 	void statusPixmapChanged(const QIcon &icon, const QString &icon_name);
-
-	// TODO: workaround
-	void messageReceivedSignal(Account *account, Contact sender, ContactList receipients, const QString &message, time_t time);
 
 	/**
 		wywo�ana zosta�a funkcja show() na g��wnym oknie

@@ -43,6 +43,8 @@
 #include "contacts/model/filter/anonymous-contact-filter.h"
 #include "contacts/model/filter/anonymous-without-messages-contact-filter.h"
 
+#include "core/core.h"
+
 #include "file-transfer/file-transfer-manager.h"
 
 #include "gui/widgets/chat_edit_box.h"
@@ -155,7 +157,6 @@ void Kadu::closeEvent(QCloseEvent *event)
 	kdebugf2();
 }
 
-
 void disableNonIdUles(KaduAction *action)
 {
 	kdebugf();
@@ -172,7 +173,7 @@ void disableNonIdUles(KaduAction *action)
 
 void disableContainsSelfUles(KaduAction *action)
 {
-	if (action->contacts().contains(kadu->myself()))
+	if (action->contacts().contains(Core::instance()->myself()))
 	{
 		action->setEnabled(false);
 		return;
@@ -357,6 +358,11 @@ Kadu::Kadu(QWidget *parent)
 	DoBlink(false), BlinkOn(false),Docked(false), dontHideOnClose(false)
 {
 	kdebugf();
+
+	Core *core = Core::instance();
+	connect(core, SIGNAL(connecting()), this, SLOT(connecting()));
+	connect(core, SIGNAL(connected()), this, SLOT(connected()));
+	connect(core, SIGNAL(disconnected()), this, SLOT(disconnected()));
 
 	GroupManager::instance()->loadConfiguration();
 	ContactManager::instance()->loadConfiguration(xml_config_file);
@@ -611,11 +617,6 @@ Kadu::Kadu(QWidget *parent)
 
 	split->setSizes(splitsizes);
 
-	connect(AccountManager::instance(), SIGNAL(accountRegistered(Account *)),
-		this, SLOT(accountRegistered(Account *)));
-	foreach (Account *account, AccountManager::instance()->accounts())
-		accountRegistered(account);
-
 	setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
 	setCentralWidget(MainWidget);
 
@@ -629,30 +630,6 @@ Kadu::Kadu(QWidget *parent)
 	configurationUpdated();
 
 	kdebugf2();
-}
-
-void Kadu::accountRegistered(Account *account)
-{
-	Protocol *protocol = account->protocol();
-
-	ChatService *chatService = protocol->chatService();
-	if (chatService)
-		connect(chatService, SIGNAL(messageReceived(Account *, Contact, ContactList, const QString &, time_t)),
-			this, SLOT(messageReceived(Account *, Contact, ContactList, const QString &, time_t)));
-
-	connect(protocol, SIGNAL(connecting(Account *)), this, SLOT(connecting()));
-	connect(protocol, SIGNAL(connected(Account *)), this, SLOT(connected()));
-	connect(protocol, SIGNAL(disconnected(Account *)), this, SLOT(disconnected()));
-	connect(protocol, SIGNAL(imageReceivedAndSaved(UinType, uint32_t, uint32_t, const QString &)),
-		this, SLOT(imageReceivedAndSaved(UinType, uint32_t, uint32_t, const QString &)));
-	connect(protocol, SIGNAL(needTokenValue(QPixmap, QString &)),
-		this, SLOT(readTokenValue(QPixmap, QString &)));
-	connect(protocol, SIGNAL(statusChanged(Account *, Status)),
-			this, SLOT(statusChanged(Account *, Status)));
-
-	ContactAccountData *contactAccountData = protocol->protocolFactory()->
-			newContactAccountData(Myself, account, account->id());
-	Myself.addAccountData(contactAccountData);
 }
 
 QVBoxLayout * Kadu::mainLayout() const
@@ -1353,7 +1330,7 @@ void Kadu::sendMessage(Contact contact)
 	{
 		Contact contact = contacts[0];
 
-		if (contacts[0] != myself()) //TODO: elem.hasFeature("SendingMessages")
+		if (contacts[0] != Core::instance()->myself()) //TODO: elem.hasFeature("SendingMessages")
 			chat_manager->sendMessage(contact, contacts);
 		else if (contact.mobile().isEmpty() && !contact.email().isEmpty())
 			openMailClient(contact.email());
@@ -1475,49 +1452,6 @@ void Kadu::connecting()
 
 	blinktimer->setSingleShot(true);
 	blinktimer->start(1000);
-	kdebugf2();
-}
-
-// TODO: move back to chatManager
-void Kadu::messageReceived(Account *account, Contact sender, ContactList receipients, const QString &msg, time_t time)
-{
-	kdebugf();
-
-	// TODO: workaround
-	emit messageReceivedSignal(account, sender, receipients, msg, time);
-
-	ContactList conference = receipients;
-	conference << sender;
-
-	ChatWidget *chat = chat_manager->findChatWidget(conference);
-	if (chat)
-		chat->newMessage(account, sender, receipients, msg, time);
-	else
-	{
-		if (config_file.readBoolEntry("General","AutoRaise"))
-		{
-			kadu->showNormal();
-			kadu->setFocus();
-		}
-
-		if (config_file.readBoolEntry("Chat", "OpenChatOnMessage"))
-		{
-			// TODO: 0.6.6
-			if (config_file.readBoolEntry("Chat", "OpenChatOnMessageWhenOnline") && false /*!Myself.status("Gadu").isOnline()*/)
-			{
-				pending.addMsg(account, sender, receipients, msg, time);
-				return;
-			}
-
-			// TODO: it is lame
-			chat_manager->openChatWidget(account, conference);
-			chat = chat_manager->findChatWidget(conference);
-			chat->newMessage(account, sender, receipients, msg, time);
-		}
-		else
-			pending.addMsg(account, sender, receipients, msg, time);
-	}
-
 	kdebugf2();
 }
 
@@ -2139,8 +2073,6 @@ void Kadu::configurationUpdated()
 		ContactsWidget->setBackground();
 
 // 	groups_manager->refreshTabBar();
-
-	Myself.setDisplay(config_file.readEntry("General", "Nick"));
 
 	kadu->setDocked(kadu->Docked, kadu->dontHideOnClose);
 

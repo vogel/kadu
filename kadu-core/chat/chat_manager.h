@@ -91,6 +91,8 @@ private slots:
 	void insertEmoticonActionCreated(KaduAction *action);
 	void insertEmoticonActionActivated(QAction *sender, bool toggled);
 
+	void messageReceived(Account *account, Contact sender, ContactList receipients, const QString &message, time_t time);
+
 protected:
 	virtual void configurationUpdated();
 

@@ -20,6 +20,8 @@
 #include "chat/style-engines/chat_engine_adium.h"
 #include "chat/style-engines/chat_engine_kadu.h"
 
+#include "core/core.h"
+
 #include "gui/widgets/chat_messages_view.h"
 #include "gui/widgets/preview.h"
 #include "gui/widgets/configuration/configuration-widget.h"
@@ -303,12 +305,12 @@ void ChatStylesManager::preparaPreview(Preview *preview)
 
 	ContactList receivers;
 	receivers.append(example);
-	ChatMessage *chatMessage = new ChatMessage(account, kadu->myself(), receivers, tr("Your message"), TypeSent,
+	ChatMessage *chatMessage = new ChatMessage(account, Core::instance()->myself(), receivers, tr("Your message"), TypeSent,
 		QDateTime::currentDateTime(), QDateTime::currentDateTime());
 	chatMessage->setSeparatorSize(CfgHeaderSeparatorHeight);
-	preview->addObjectToParse(kadu->myself() , chatMessage);
+	preview->addObjectToParse(Core::instance()->myself() , chatMessage);
 
-	chatMessage = new ChatMessage(account, example, kadu->myself(),
+	chatMessage = new ChatMessage(account, example, Core::instance()->myself(),
 			tr("Message from Your friend"), TypeReceived,
 			QDateTime::currentDateTime(), QDateTime::currentDateTime());
 	chatMessage->setSeparatorSize(CfgHeaderSeparatorHeight);

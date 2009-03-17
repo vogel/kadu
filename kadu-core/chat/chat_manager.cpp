@@ -14,6 +14,8 @@
 #include "contacts/contact-manager.h"
 #include "contacts/ignored-helper.h"
 
+#include "core/core.h"
+
 #include "gui/widgets/chat_edit_box.h"
 #include "gui/widgets/contacts-list-widget-menu-manager.h"
 #include "gui/widgets/custom_input.h"
@@ -55,7 +57,7 @@ void checkBlocking(KaduAction *action)
 	Account *account = AccountManager::instance()->defaultAccount();
 	ContactList contacts = action->contacts();
 
-	if (contacts.contains(kadu->myself()))
+	if (contacts.contains(Core::instance()->myself()))
 	{
 		action->setEnabled(false);
 		return;
@@ -75,7 +77,7 @@ void checkIgnoreUser(KaduAction *action)
 {
 	ContactList contacts = action->contacts();
 
-	if (contacts.contains(kadu->myself()))
+	if (contacts.contains(Core::instance()->myself()))
 	{
 		action->setEnabled(false);
 		return;
@@ -88,6 +90,9 @@ ChatManager::ChatManager(QObject *parent)
 	: QObject(parent), ChatWidgets(), ClosedChatUsers(), addons(), refreshTitlesTimer()
 {
 	kdebugf();
+
+	connect(Core::instance(), SIGNAL(messageReceived(Account *, Contact, ContactList, const QString &, time_t)),
+			this, SLOT(messageReceived(Account *, Contact, ContactList, const QString &, time_t)));
 
 	refreshTitlesTimer.setSingleShot(true);
 
@@ -279,6 +284,9 @@ void ChatManager::saveOpenedWindows()
 ChatManager::~ChatManager()
 {
 	kdebugf();
+
+	disconnect(Core::instance(), SIGNAL(messageReceived(Account *, Contact, ContactList, const QString &, time_t)),
+			this, SLOT(messageReceived(Account *, Contact, ContactList, const QString &, time_t)));
 
 	disconnect(&refreshTitlesTimer, SIGNAL(timeout()), this, SLOT(refreshTitles()));
 // TODO: 0.6.6
@@ -816,7 +824,7 @@ ChatMessage *convertPendingToMessage(PendingMsgs::Element elem)
 	date.setTime_t(elem.time);
 
 	ContactList receivers;
-	receivers << kadu->myself();
+	receivers << Core::instance()->myself();
 	ChatMessage *message = new ChatMessage(AccountManager::instance()->defaultAccount(), elem.contacts[0], receivers, elem.msg,
 			TypeReceived, QDateTime::currentDateTime(), date);
 
@@ -969,4 +977,44 @@ void ChatManager::configurationUpdated()
 	kdebugf2();
 }
 
-ChatManager* chat_manager=NULL;
+void ChatManager::messageReceived(Account *account, Contact sender, ContactList receipients,
+		const QString &message, time_t time)
+{
+	kdebugf();
+
+	ContactList conference = receipients;
+	conference << sender;
+
+	ChatWidget *chat = findChatWidget(conference);
+	if (chat)
+		chat->newMessage(account, sender, receipients, message, time);
+	else
+	{
+		if (config_file.readBoolEntry("General","AutoRaise"))
+		{
+			kadu->showNormal();
+			kadu->setFocus();
+		}
+
+		if (config_file.readBoolEntry("Chat", "OpenChatOnMessage"))
+		{
+			// TODO: 0.6.6
+			if (config_file.readBoolEntry("Chat", "OpenChatOnMessageWhenOnline") && false /*!Myself.status("Gadu").isOnline()*/)
+			{
+				pending.addMsg(account, sender, receipients, message, time);
+				return;
+			}
+
+			// TODO: it is lame
+			openChatWidget(account, conference);
+			chat = findChatWidget(conference);
+			chat->newMessage(account, sender, receipients, message, time);
+		}
+		else
+			pending.addMsg(account, sender, receipients, message, time);
+	}
+
+	kdebugf2();
+}
+
+ChatManager* chat_manager = 0;

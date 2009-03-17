@@ -218,6 +218,11 @@ void ContactData::addAccountData(ContactAccountData *accountData)
 		AccountsData.insert(accountData->account(), accountData);
 }
 
+void ContactData::removeAccountData(Account *account)
+{
+	AccountsData.remove(account);
+}
+
 ContactAccountData * ContactData::accountData(Account *account)
 {
 	if (!AccountsData.contains(account))

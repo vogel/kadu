@@ -134,6 +134,12 @@ void Contact::addAccountData(ContactAccountData *accountData)
 	Data->addAccountData(accountData);
 }
 
+void Contact::removeAccountData(Account* account) const
+{
+	if (!isNull())
+		Data->removeAccountData(account);
+}
+
 ContactAccountData * Contact::accountData(Account *account) const
 {
 	return isNull()
