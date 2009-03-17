@@ -752,7 +752,7 @@ void TabsManager::configurationUpdated()
 	config_blinkChatTitle = config_file.readBoolEntry("Chat", "BlinkChatTitle");
 	config_showNewMessagesNum = config_file.readBoolEntry("Chat", "NewMessagesInChatTitle");
 
-	tabdialog->setTabPosition(config_tabsBelowChats ? QTabWidget::North : QTabWidget::South);
+	tabdialog->setTabPosition(config_tabsBelowChats ? QTabWidget::South : QTabWidget::North);
 
 	// Sprawdzam czy są jakieś konferencje a jeśli są to ustawiam w nich poprawnie przyciski w zaleznosci
 	// czy opcja "Konferencje w kartach" jest włączona/wyłączona
