@@ -250,6 +250,8 @@ GrowlNotifier::GrowlNotifier(
 
 	// Register with Growl
 	Growl_SetDelegate(&delegate_);
+	CFRelease(delegate_.registrationDictionary);
+
 }
 	
 
