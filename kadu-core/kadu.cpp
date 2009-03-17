@@ -419,11 +419,7 @@ Kadu::Kadu(QWidget *parent)
 	hbox_layout->setAlignment(GroupBar, Qt::AlignTop);
 
 	connect(ContactsWidget, SIGNAL(contactActivated(Contact)), this, SLOT(sendMessage(Contact)));
-
-// 	connect(Userbox, SIGNAL(mouseButtonClicked(int, Q3ListBoxItem *, const QPoint &)),
-// 		this, SLOT(mouseButtonClicked(int, Q3ListBoxItem *)));
 	connect(ContactsWidget, SIGNAL(currentContactChanged(Contact)), this, SLOT(currentChanged(Contact)));
-
 
 	ActionDescription *writeEmailActionDescription = new ActionDescription(
 		ActionDescription::TypeUser, "writeEmailAction",

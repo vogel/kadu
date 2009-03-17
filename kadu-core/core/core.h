@@ -37,6 +37,8 @@ public:
 
 	Contact myself() { return Myself; }
 
+	void createGui();
+
 signals:
 	void connecting();
 	void connected();

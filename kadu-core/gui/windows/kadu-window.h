@@ -12,7 +12,10 @@
 
 #include <QtCore/QMap>
 #include <QtCore/QPair>
-#include <QtGui/QWidget>
+
+#include "contacts/contact-list.h"
+
+#include "kadu_main_window.h"
 
 class QMenu;
 class QMenuBar;
@@ -26,7 +29,7 @@ class KaduAction;
 class KaduTextBrowser;
 class UserStatusChanger;
 
-class KaduWindow : public QWidget
+class KaduWindow : public KaduMainWindow
 {
 	Q_OBJECT
 
@@ -64,9 +67,32 @@ private:
 
 	UserStatusChanger *StatusChanger;
 
+	QActionGroup *ChangeStatusActionGroup;
+	QAction *ChangeStatusToOnline;
+	QAction *ChangeStatusToOnlineDesc;
+	QAction *ChangeStatusToBusy;
+	QAction *ChangeStatusToBusyDesc;
+	QAction *ChangeStatusToInvisible;
+	QAction *ChangeStatusToInvisibleDesc;
+	QAction *ChangeStatusToOffline;
+	QAction *ChangeStatusToOfflineDesc;
+	QAction *ChangePrivateStatus;
+
+	void createGui();
+	void createMenu();
+	void createStatusPopupMenu();
+
+protected:
+	virtual bool supportsActionType(ActionDescription::ActionType type) { return false; }
+	virtual ContactsListWidget * contactsListWidget() { return 0; }
+	virtual ContactList contacts() { return ContactList(); }
+
 public:
 	explicit KaduWindow(QWidget *parent = 0);
 	virtual ~KaduWindow();
+
+	void insertMenuActionDescription(ActionDescription *actionDescription, MenuType Type, int pos = -1);
+	void removeMenuActionDescription(ActionDescription *actionDescription);
 
 };
 

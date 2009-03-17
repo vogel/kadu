@@ -24,6 +24,9 @@
 #include <sys/stat.h>
 #endif
 
+#include "core/core.h"
+#include "protocols/protocols_manager.h"
+
 #include "config_file.h"
 #include "debug.h"
 #include "emoticons.h"
@@ -32,7 +35,6 @@
 #include "message_box.h"
 #include "misc.h"
 #include "modules.h"
-#include "protocols/protocols_manager.h"
 #include "xml_config_file.h"
 
 #ifdef Q_OS_MAC
@@ -259,7 +261,7 @@ int main(int argc, char *argv[])
 	IconsManager::initModule();
 	EmoticonsManager::initModule();
 
-	new Kadu(0);
+	Core::instance()->createGui();
 
 	QPixmap pix;
 #ifdef Q_OS_MACX

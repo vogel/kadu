@@ -7,11 +7,13 @@
  *                                                                         *
  ***************************************************************************/
 
+#include "gui/windows/kadu-window.h"
 #include "protocols/protocol.h"
 #include "protocols/protocol_factory.h"
 #include "protocols/services/chat-service.h"
 
 #include "config_file.h"
+#include "kadu.h"
 
 #include "core.h"
 
@@ -73,4 +75,10 @@ void Core::accountUnregistered(Account *account)
 			this, SLOT(statusChanged(Account *, Status)));
 
 	Myself.removeAccountData(account);
+}
+
+void Core::createGui()
+{
+	new Kadu(0);
+	(new KaduWindow(0))->show();
 }
