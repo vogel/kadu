@@ -160,6 +160,8 @@ class TabsManager : public ConfigurationUiHandler, ConfigurationAwareObject, Acc
 		*/
 		void repaintTabs();
 
+		QString formatTabName(ChatWidget * chat);
+
 		/**
 		* Zmienne konfiguracyjne.
 		*/

@@ -302,16 +302,9 @@ void TabsManager::onStatusChanged(Account *account, Contact contact, Status oldS
 	}
 
 	tabdialog->setTabIcon(chatIndex, chat->icon());
+
 	// w zale��no��ci od opcji w konfiguracji odpowiednio uaktualniamy tytu�� karty
-	if (chat->contacts().count()>1)
-		// Ustawiam tytul karty w zaleznosci od tego czy przycisk zamknięcia na kartach ma być pokazany
-		if(config_closeButtonOnTab)
-			tabdialog->setTabText(chatIndex, tr("Conference [%1]").arg(chat->contacts().count())+"  ");
-		else
-			tabdialog->setTabText(chatIndex, tr("Conference [%1]").arg(chat->contacts().count()));
-	else
-		// Ustawiam tytul karty w zaleznosci od tego czy przycisk zamknięcia na kartach ma być pokazany
-		tabdialog->setTabText(chatIndex, chat->contacts()[0].display()+"\t\t");
+	tabdialog->setTabText(chatIndex, formatTabName(chat));
 
 	kdebugf2();
 }
@@ -343,15 +336,7 @@ void TabsManager::onTabChange(int index)
 	tabdialog->setTabToolTip(index, chat->caption());
 
 	// w zale��no��ci od opcji w konfiguracji odpowiednio uaktualniamy tytu�� karty
-	if (chat->contacts().count()>1)
-		// Ustawiam tytul karty w zaleznosci od tego czy przycisk zamknięcia na kartach ma być pokazany
-		if(config_closeButtonOnTab)
-			tabdialog->setTabText(index, tr("Conference [%1]").arg(chat->contacts().count())+"  ");
-		else
-			tabdialog->setTabText(index, tr("Conference [%1]").arg(chat->contacts().count()));
-	else
-		// Ustawiam tytul karty w zaleznosci od tego czy przycisk zamknięcia na kartach ma być pokazany
-		tabdialog->setTabText(index, chat->contacts()[0].display()+"\t\t");
+	tabdialog->setTabText(index, formatTabName(chat));
 
 	tabdialog->setWindowTitle(chat->caption());
 	tabdialog->setWindowIcon(chat->icon());
@@ -452,15 +437,7 @@ void TabsManager::insertTab(ChatWidget* chat)
 	}
 
 	// Ustawiam tytul karty w zaleznosci od tego czy mamy do czynienia z rozmowa czy z konferencja
-	if (contacts.count()>1)
-		// Ustawiam tytul karty w zaleznosci od tego czy przycisk zamknięcia na kartach ma być pokazany
-		if(config_closeButtonOnTab)
-			tabdialog->insertTab(target_tabs, chat, chat->icon(), tr("Conference [%1]").arg(contacts.count())+"  ");
-		else
-			tabdialog->insertTab(target_tabs, chat, chat->icon(), tr("Conference [%1]").arg(contacts.count()));
-	else
-		// Ustawiam tytul karty w zaleznosci od tego czy przycisk zamknięcia na kartach ma być pokazany
-		tabdialog->insertTab(target_tabs, chat, chat->icon(), contacts[0].display()+"\t\t");
+	tabdialog->insertTab(target_tabs, chat, chat->icon(), formatTabName(chat));
 
 	tabdialog->setTabToolTip(target_tabs, chat->caption());
 
@@ -822,41 +799,39 @@ void TabsManager::repaintTabs()
 	if(!tabdialog->count())
 		return;
 	ChatWidget *chat;
-	// jeśli przycisk zamknięcia na kartach ma być pokazany
-	if(config_closeButtonOnTab)
-		// do tytułów wszystkich kart dodaj2my 2 spacje jako miejsce dla przycisku zamknięcia
-		for(int i = tabdialog->count()-1; i>=0; i--)
-		{
-			chat = dynamic_cast<ChatWidget *>(tabdialog->widget(i));
-			ContactList contacts = chat->contacts();
-			//uaktualnienie ikonki
-			chat->refreshTitle();
 
-			tabdialog->setTabIcon(i, chat->icon());
+	for(int i = tabdialog->count()-1; i>=0; i--)
+	{
+		chat = dynamic_cast<ChatWidget *>(tabdialog->widget(i));
 
-			if (contacts.count()>1)
-				tabdialog->setTabText(i, tr("Conference [%1]").arg(contacts.count()) +"  ");
-			else
-				tabdialog->setTabText(i, contacts[0].display() +"\t\t");
-		}
-	else
-		// jeśli nie przywracamy standardowe tytuły w kartach
-		for(int i = tabdialog->count()-1; i>=0; i--)
-		{
-			chat = dynamic_cast<ChatWidget *>(tabdialog->widget(i));
-			ContactList contacts = chat->contacts();
-			//uaktualnienie ikonki
-			chat->refreshTitle();
+		chat->refreshTitle();
 
-			tabdialog->setTabIcon(i, chat->icon());
+		//uaktualnienie ikonki
+		tabdialog->setTabIcon(i, chat->icon());
+		tabdialog->setTabText(i, formatTabName(chat));
+	}
 
-			if (contacts.count()>1)
-				tabdialog->setTabText(i, tr("Conference [%1]").arg(contacts.count()));
-			else
-				tabdialog->setTabText(i, contacts[0].display() + "\t\t");
-		}
 	//uaktualnienie ikonki w oknie tabs
 	tabdialog->setWindowIcon(dynamic_cast<ChatWidget *>(tabdialog->currentWidget())->icon());
+}
+
+QString TabsManager::formatTabName(ChatWidget * chat)
+{
+	int contactsCount = chat->contacts().count();
+
+	QString TabName;
+
+	if (contactsCount > 1)
+		TabName = tr("Conference [%1]").arg(contactsCount);
+	else
+		TabName = chat->contacts()[0].display();
+
+	// jeśli przycisk zamknięcia na kartach ma być pokazany
+	// do tytułów wszystkich kart dodajemy 3 tabulatory jako miejsce dla przycisku zamknięcia
+	if (config_closeButtonOnTab)
+		TabName.append("\t\t\t");
+
+	return TabName;
 }
 
 void TabsManager::closeChat()
