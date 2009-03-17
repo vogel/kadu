@@ -289,22 +289,13 @@ void TabsManager::onStatusChanged(Account *account, Contact contact, Status oldS
 	if (chatIndex!=-1 || 0 == chat)
 		return;
 
-	// zdarzenie nie uaktualniala opisu - trzeba o to zadbac
-	// TODO : remove?
-	//chat->refreshtitle();
-
-	tabdialog->setTabToolTip(chatIndex, chat->caption());
+	refreshTab(chatIndex, chat);
 
 	if (tabdialog->currentIndex()==chatIndex)
 	{
 		tabdialog->setWindowTitle(chat->caption());
 		tabdialog->setWindowIcon(chat->icon());
 	}
-
-	tabdialog->setTabIcon(chatIndex, chat->icon());
-
-	// w zale��no��ci od opcji w konfiguracji odpowiednio uaktualniamy tytu�� karty
-	tabdialog->setTabText(chatIndex, formatTabName(chat));
 
 	kdebugf2();
 }
@@ -332,11 +323,7 @@ void TabsManager::onTabChange(int index)
 	if (chatsWithNewMessages.contains(chat))
 		chatsWithNewMessages.removeOne(chat);
 
-	tabdialog->setTabIcon(index, chat->icon());
-	tabdialog->setTabToolTip(index, chat->caption());
-
-	// w zale��no��ci od opcji w konfiguracji odpowiednio uaktualniamy tytu�� karty
-	tabdialog->setTabText(index, formatTabName(chat));
+	refreshTab(index, chat);
 
 	tabdialog->setWindowTitle(chat->caption());
 	tabdialog->setWindowIcon(chat->icon());
@@ -804,11 +791,7 @@ void TabsManager::repaintTabs()
 	{
 		chat = dynamic_cast<ChatWidget *>(tabdialog->widget(i));
 
-		chat->refreshTitle();
-
-		//uaktualnienie ikonki
-		tabdialog->setTabIcon(i, chat->icon());
-		tabdialog->setTabText(i, formatTabName(chat));
+		refreshTab(i, chat);
 	}
 
 	//uaktualnienie ikonki w oknie tabs
@@ -832,6 +815,21 @@ QString TabsManager::formatTabName(ChatWidget * chat)
 		TabName.append("\t\t\t");
 
 	return TabName;
+}
+
+void TabsManager::refreshTab(int tabIndex, ChatWidget * chat)
+{
+	// odsw. tytul chata
+	chat->refreshTitle();
+
+	// uaktualnienie podp.
+	tabdialog->setTabToolTip(tabIndex, chat->caption());
+
+	//uaktualnienie ikonki
+	tabdialog->setTabIcon(tabIndex, chat->icon());
+
+	// uaktualnienie nazwy
+	tabdialog->setTabText(tabIndex, formatTabName(chat));
 }
 
 void TabsManager::closeChat()
