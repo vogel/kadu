@@ -131,6 +131,8 @@ ChatWidget::ChatWidget(Account *initialAccount, const ContactList &contacts, QWi
 
 	configurationUpdated();
 
+	triggerAllAccountsRegistered();
+
 	connect(chat_manager->colorSelectorActionDescription, SIGNAL(actionCreated(KaduAction *)), this, SLOT(colorSelectorActionCreated(KaduAction *)));
 
 	kdebugf2();
@@ -139,6 +141,8 @@ ChatWidget::ChatWidget(Account *initialAccount, const ContactList &contacts, QWi
 ChatWidget::~ChatWidget()
 {
 	kdebugf();
+
+	triggerAllAccountsUnregistered();
 
 	chat_manager->unregisterChatWidget(this);
 
@@ -432,6 +436,25 @@ void ChatWidget::keyPressEvent(QKeyEvent *e)
 	kdebugf2();
 }
 
+void ChatWidget::accountRegistered(Account *account)
+{
+	connect(account, SIGNAL(contactStatusChanged(Account *, Contact, Status)),
+			this, SLOT(onStatusChanged(Account *, Contact, Status)));
+}
+
+void ChatWidget::accountUnregistered(Account *account)
+{
+	disconnect(account, SIGNAL(contactStatusChanged(Account *, Contact, Status)),
+			this, SLOT(onStatusChanged(Account *, Contact, Status)));
+}
+
+void ChatWidget::onStatusChanged(Account *account, Contact contact, Status oldStatus)
+{
+	if (account != CurrentAccount && Contacts[0] != contact)
+		return;
+
+	refreshTitle();
+}
 
 // TODO: remove
 bool ChatWidget::eventFilter(QObject *watched, QEvent *ev)

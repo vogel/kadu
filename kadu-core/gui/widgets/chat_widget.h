@@ -15,6 +15,8 @@
 #include <QtGui/QIcon>
 #include <QtGui/QWidget>
 
+#include "accounts/accounts_aware_object.h"
+
 #include "chat/message/message.h"
 
 #include "contacts/contact-list.h"
@@ -41,7 +43,7 @@ class Protocol;
 
 typedef QList<ChatWidget *> ChatList;
 
-class KADUAPI ChatWidget : public QWidget, ConfigurationAwareObject
+class KADUAPI ChatWidget : public QWidget, ConfigurationAwareObject, AccountsAwareObject
 {
 	Q_OBJECT
 
@@ -125,6 +127,9 @@ protected:
 	bool keyPressEventHandled(QKeyEvent *);
 
 	virtual void configurationUpdated();
+
+	virtual void accountRegistered(Account *account);
+	virtual void accountUnregistered(Account *account);
 
 public:
 	/**
@@ -236,6 +241,8 @@ public slots:
 	void addEmoticon(QString);
 
 	void messageStatusChanged(int messageId, ChatService::MessageStatus status);
+
+	void onStatusChanged(Account *account, Contact contact, Status oldStatus);
 
 	/**
 		\fn void appendMessages(const QValueList<ChatMessage *> &)
