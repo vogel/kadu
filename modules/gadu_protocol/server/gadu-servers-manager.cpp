@@ -80,8 +80,8 @@ GaduServersManager::GaduServersManager()
 
 	QHostAddress ip;
 	if (ip.setAddress(config_file.readEntry("Network", "LastServerIP")))
-	foreach (int port, AllPorts)
-		GoodServers.append(qMakePair(ip, port));
+		foreach (int port, AllPorts)
+			GoodServers.append(qMakePair(ip, port));
 
 	if (config_file.readBoolEntry("Network", "isDefServers", true))
 	{
@@ -95,6 +95,7 @@ GaduServersManager::GaduServersManager()
 		QStringList servers = config_file.readEntry("Network", "Server").split(";", QString::SkipEmptyParts);
 
 		foreach (const QString &server, servers)
+			if (ip.setAddress(server))
 				foreach (int port, AllPorts)
 					GoodServers.append(qMakePair(ip, port));
 	}
