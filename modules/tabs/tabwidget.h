@@ -2,6 +2,7 @@
 #define TABS_TABWIDGET_H
 
 #include <QtGui/QCursor>
+#include <QtGui/QMouseEvent>
 #include <QtGui/QTabBar>
 #include <QtGui/QTabWidget>
 #include <QtGui/QToolButton>
@@ -35,7 +36,7 @@ class TabBar: public QTabBar
 	 	/**
 		* Metoda wywoływana w momencie przesunięcia wskaźnika myszy
 		* nad tabbarem
-		* Tu aktywuje dnd lub ustawia przycisk zamykania karty we 	
+		* Tu aktywuje dnd lub ustawia przycisk zamykania karty we
 		* właściwym miejscu na karcie w zależności od zdarzenia
 		* @param e wskaźnik obiektu opisującego to zdarzenie.
 		*/
@@ -63,7 +64,7 @@ class TabBar: public QTabBar
 		*/
 		virtual void wheelEvent(QWheelEvent* e);
 
-		virtual void tabLayoutChange(); 
+		virtual void tabLayoutChange();
 
 	signals:
 		void contextMenu(int id, const QPoint& pos);
@@ -79,15 +80,15 @@ class TabBar: public QTabBar
 
 	private slots:
 		/**
-		* Slot zostaje wywołany w momencie naciźnięcia przycisku 
+		* Slot zostaje wywołany w momencie naciźnięcia przycisku
 		* zamknij na karcie
 		* Tu emituje sygnał void deleteTab(int);
 		*/
 		void closeTab();
 
 		/**
-		* Slot zostaje wywołany w momencie jakiejkolwiek zmiany wyglądu tabbara 
-		* Tu uaktualnia pozycję przycisku zamknięcia na karcie 
+		* Slot zostaje wywołany w momencie jakiejkolwiek zmiany wyglądu tabbara
+		* Tu uaktualnia pozycję przycisku zamknięcia na karcie
 		*/
 		void replaceCross();
 
@@ -122,14 +123,14 @@ class TabWidget: public QTabWidget, public ChatContainer
 		void moveTabRight();
 
 		/**
-		* Metoda wywoływana w momencie zaakceptowania zmian 
+		* Metoda wywoływana w momencie zaakceptowania zmian
 		* w oknie konfiguracji kadu. Ustawua opcje modułu zgodnie
 		* z konfiguracją
 		*/
 		void configurationUpdated();
 
 		/**
-		* Metoda wywoływana w momencie ignorowania/blokowania kontaktu 
+		* Metoda wywoływana w momencie ignorowania/blokowania kontaktu
 		* Informuje, który chat powinien zostać zamknięty
 		* @param chat który powinien zostać zamknięty
 		*/
@@ -173,7 +174,7 @@ class TabWidget: public QTabWidget, public ChatContainer
 
 		/**
 		* Slot zostaje wywołany w chwili naciśnięcia przycisku
-		* otwracia nowej karty. 
+		* otwracia nowej karty.
 		* Tu otwiera okienko lub przywraca ja na pierwszy plan
 		*/
 		void newChat();
@@ -221,7 +222,7 @@ class TabWidget: public QTabWidget, public ChatContainer
 
 	public slots:
 		/**
-		* Slot zostaje wywołany w momencie wprowadzenia znaku w polu edycji 
+		* Slot zostaje wywołany w momencie wprowadzenia znaku w polu edycji
 		* okna chat. Odpowiada za skórty klawiaturowe modułu, Jeśli handled
 		* zostanie ustawione na true, skrót został przyęjty i wykonany
 		* @param e wskaźnik obiektu opisującego to zdarzenie.
