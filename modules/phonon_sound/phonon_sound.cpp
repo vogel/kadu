@@ -11,9 +11,6 @@
 #include <QtGui/QFileDialog>
 #include <QtGui/QSound>
 #include <QtGui/QApplication>
-
-#include <phonon/mediaobject.h>
-#include <phonon/phononnamespace.h>
  
 #include "../sound/sound.h"
 
@@ -56,6 +53,7 @@ PhononPlayer::PhononPlayer()
 {
 	kdebugf();
 
+	music = Phonon::createPlayer(Phonon::NotificationCategory);
 	connect(sound_manager, SIGNAL(playSound(const QString &, bool, double)),
 			this, SLOT(playSound(const QString &, bool, double)));
 
@@ -66,6 +64,7 @@ PhononPlayer::~PhononPlayer()
 {
 	kdebugf();
 
+	delete music;
 	disconnect(sound_manager, SIGNAL(playSound(const QString &, bool, double)),
 			this, SLOT(playSound(const QString &, bool, double)));
 
@@ -76,7 +75,7 @@ void PhononPlayer::playSound(const QString &s, bool volCntrl, double vol)
 {
 	kdebugf();
 
-	Phonon::MediaObject *music = Phonon::createPlayer(Phonon::NotificationCategory, Phonon::MediaSource(s));
+	music->setCurrentSource(Phonon::MediaSource(s));
 	music->play();
 
 	kdebugf2();
