@@ -4,6 +4,9 @@
 #include <QtCore/QObject>
 #include <QtCore/QString>
 
+#include <phonon/mediaobject.h>
+#include <phonon/phononnamespace.h>
+
 /**
  * @defgroup phonon_sound Phonon sound
  * @{
@@ -12,6 +15,7 @@ class PhononPlayer : public QObject
 {
 	Q_OBJECT
 
+	Phonon::MediaObject *music;
 private slots:
 	void playSound(const QString &s, bool volCntrl, double vol);
 
