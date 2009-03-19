@@ -58,7 +58,7 @@ class KaduApplication: public QApplication
 		};
 		void commitData(QSessionManager & manager)
 		{
-			kadu->quit();
+			qApp->quit();
 		}
 #ifdef Q_OS_MAC
 	private:

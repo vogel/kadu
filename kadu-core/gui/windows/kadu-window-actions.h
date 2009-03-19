@@ -12,6 +12,8 @@
 
 #include <QtCore/QObject>
 
+class QAction;
+
 class ActionDescription;
 
 class KaduWindowActions : QObject
@@ -33,6 +35,22 @@ class KaduWindowActions : QObject
 	ActionDescription *Support;
 	ActionDescription *GetInvolved;
 	ActionDescription *About;
+
+private slots:
+	void configurationActionActivated(QAction *sender, bool toggled);
+	void yourAccountsActionActivated(QAction *sender, bool toggled);
+	void hideKaduActionActivated(QAction *sender, bool toggled);
+	void exitKaduActionActivated(QAction *sender, bool toggled);
+	void addUserActionActivated(QAction *sender, bool toggled);
+	void addGroupActionActivated(QAction *sender, bool toggled);
+	void searchInDirectoryActionActivated(QAction *sender, bool toggled);
+	void manageIgnoredActionActivated(QAction *sender, bool toggled);
+	void importExportContactsActionActivated(QAction *sender, bool toggled);
+	void helpActionActivated(QAction *sender, bool toggled);
+	void bugsActionActivated(QAction *sender, bool toggled);
+	void supportActionActivated(QAction *sender, bool toggled);
+	void getInvolvedActionActivated(QAction *sender, bool toggled);
+	void aboutActionActivated(QAction *sender, bool toggled);
 
 public:
 	explicit KaduWindowActions(QObject *parent);

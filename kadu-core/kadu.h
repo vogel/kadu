@@ -141,10 +141,8 @@ private slots:
 	void inactiveUsersActionActivated(QAction *sender, bool toggled);
 	void descriptionUsersActionActivated(QAction *sender, bool toggled);
 	void onlineAndDescUsersActionActivated(QAction *sender, bool toggled);
-	void configurationActionActivated(QAction *sender, bool toggled);
-	void addUserActionActivated(QAction *sender, bool toggled);
+	
 	void editUserActionActivated(QAction *sender, bool toggled);
-	void searchInDirectoryActionActivated(QAction *sender, bool toggled);
 	void offlineToUserActionActivated(QAction *sender, bool toggled);
 	void hideDescriptionActionActivated(QAction *sender, bool toggled);
 	void writeEMailActionActivated(QAction *sender, bool toggled);
@@ -153,7 +151,6 @@ private slots:
 	void copyPersonalInfoActionActivated(QAction *sender, bool toggled);
 	void lookupInDirectoryActionActivated(QAction *sender, bool toggled);
 	void deleteUsersActionActivated(QAction *sender, bool toggled);
-	void addGroupActionActivated(QAction *sender, bool toggled);
 
 	void createRecentChatsMenu();
 	void openRecentChats(QAction *action);
@@ -275,19 +272,6 @@ public slots:
 		wiedzialo, ze jest zadokowane.
 	**/
 	void setDocked(bool docked, bool dontHideOnClose);
-
-	void about(QAction *sender, bool toggled);
-
-	void bugs(QAction *sender, bool toggled);
-	void support(QAction *sender, bool toggled);
-	void getInvolved(QAction *sender, bool toggled);
-
-	void help(QAction *sender, bool toggled);
-	void hideKadu(QAction *sender, bool toggled);
-	void importExportUserlist(QAction *sender, bool toggled);
-	void manageIgnored(QAction *sender, bool toggled);
-	void yourAccounts(QAction *sender, bool toggled);
-	void quit();
 
 	// odczytuje z obrazka tekst i zapisuje go w drugim parametrze
 	void readTokenValue(QPixmap, QString &);

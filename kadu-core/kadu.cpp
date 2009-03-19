@@ -725,7 +725,7 @@ void Kadu::lookupInDirectoryActionActivated(QAction *sender, bool toggled)
 
 	if (contacts.count() != 1)
 	{
-		searchInDirectoryActionActivated(0, false);
+//		searchInDirectoryActionActivated(0, false); TODO: 0.6.6
 		return;
 	}
 
@@ -931,10 +931,6 @@ void Kadu::onlineAndDescUsersActionCreated(KaduAction *action)
 	window->contactsListWidget()->addFilter(oadcf);
 }
 
-void Kadu::configurationActionActivated(QAction *sender, bool toggled)
-{
-	MainConfigurationWindow::instance()->show();
-}
 /*
 void Kadu::editUserActionSetParams(QString / *protocolName* /, UserListElement user)
 {
@@ -995,21 +991,6 @@ void Kadu::editUserActionActivated(QAction *sender, bool toggled)
 	kdebugf2();
 }
 
-void Kadu::addUserActionActivated(QAction *sender, bool toggled)
-{
-	kdebugf();
-
-	KaduMainWindow *window = dynamic_cast<KaduMainWindow *>(sender->parent());
-	Contact contact = window
-		? window->contact()
-		: Contact();
-
-	if (contact.isAnonymous() || contact.isNull())
-		(new ContactDataWindow(contact, kadu))->show();
-
- 	kdebugf2();
-}
-
 void Kadu::openChatWith()
 {
 	kdebugf();
@@ -1017,16 +998,6 @@ void Kadu::openChatWith()
 	(new OpenChatWith(this))->show();
 
 	kdebugf2();
-}
-
-void Kadu::yourAccounts(QAction *sender, bool toggled)
-{
-	(new PersonalInfoDialog(AccountManager::instance()->defaultAccount()->protocol(), kadu))->show();
-}
-
-void Kadu::manageIgnored(QAction *sender, bool toggled)
-{
-	(new Ignored(kadu))->show();
 }
 
 void Kadu::showStatusActionActivated(QAction *sender, bool toggled)
@@ -1076,81 +1047,6 @@ void Kadu::setProxyActionsStatus(bool checked)
 void Kadu::setProxyActionsStatus()
 {
 	setProxyActionsStatus(config_file.readBoolEntry("Network", "UseProxy", false));
-}
-
-void Kadu::searchInDirectoryActionActivated(QAction *sender, bool toggled)
-{
-	(new SearchDialog(kadu))->show();
-}
-
-void Kadu::addGroupActionActivated(QAction *sender, bool toggled)
-{
-	(new AddGroupWindow(kadu))->show();
-}
-
-void Kadu::help(QAction *sender, bool toggled)
-{
-	if (config_file.readEntry("General", "Language", QString(qApp->keyboardInputLocale().name()).mid(0,2)) == "pl")
-		openWebBrowser("http://www.kadu.net/w/Pomoc_online");
-	else
-		openWebBrowser("http://www.kadu.net/w/English:Kadu:Help_online");
-}
-
-void Kadu::bugs(QAction *sender, bool toggled)
-{
-	if (config_file.readEntry("General", "Language", QString(qApp->keyboardInputLocale().name()).mid(0,2)) == "pl")
-		openWebBrowser("http://www.kadu.net/w/B%C5%82%C4%99dy");
-	else
-		openWebBrowser("http://www.kadu.net/w/English:Bugs");
-}
-
-void Kadu::support(QAction *sender, bool toggled)
-{
-	if (config_file.readEntry("General", "Language", QString(qApp->keyboardInputLocale().name()).mid(0,2)) == "pl")
-		openWebBrowser("http://www.kadu.net/w/Kadu:Site_support");
-	else
-		openWebBrowser("http://www.kadu.net/w/English:Kadu:Site_support");
-}
-
-void Kadu::getInvolved(QAction *sender, bool toggled)
-{
-	if (config_file.readEntry("General", "Language", QString(qApp->keyboardInputLocale().name()).mid(0,2)) == "pl")
-		openWebBrowser("http://www.kadu.net/w/Do%C5%82%C4%85cz");
-	else
-		openWebBrowser("http://www.kadu.net/w/English:GetInvolved");
-}
-
-void Kadu::about(QAction *sender, bool toggled)
-{
-	(new About(kadu))->show();
-}
-
-void Kadu::quit()
-{
-	kdebugf();
-
-	if (measureTime)
-	{
-		time_t sec;
-		int msec;
-		getTime(&sec, &msec);
-		endingTime = (sec % 1000) * 1000 + msec;
-	}
-	qApp->quit();
-}
-
-void Kadu::importExportUserlist(QAction *sender, bool toggled)
-{
-	(new UserlistImportExport(kadu))->show();
-}
-
-void Kadu::hideKadu(QAction *sender, bool toggled)
-{
-	if (Docked)
-		if (dontHideOnClose)
-			showMinimized();
-		else
-			close();
 }
 
 void Kadu::changeAppearance()
