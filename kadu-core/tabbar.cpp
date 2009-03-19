@@ -25,6 +25,8 @@ KaduTabBar::KaduTabBar(QWidget *parent)
 	kdebugf();
 	setSizePolicy(QSizePolicy(QSizePolicy::Maximum, QSizePolicy::Preferred));
 	setAcceptDrops(true);
+	setIconSize(QSize(16, 16));
+	setContentsMargins(0, 0, 0, 0);
 }
 
 void KaduTabBar::dragEnterEvent(QDragEnterEvent *e)
