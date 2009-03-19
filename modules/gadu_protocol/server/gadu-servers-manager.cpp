@@ -118,7 +118,7 @@ GaduServersManager::GaduServer GaduServersManager::getServer()
 void GaduServersManager::markServerAsGood(GaduServersManager::GaduServer server)
 {
 	config_file.writeEntry("Network", "LastServerIP", server.first.toString());
-	config_file.writeEntry("Network", "LastServerIP", server.second);
+	config_file.writeEntry("Network", "LastServerPort", server.second);
 }
 
 void GaduServersManager::markServerAsBad(GaduServersManager::GaduServer server)

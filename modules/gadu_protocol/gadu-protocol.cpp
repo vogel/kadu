@@ -725,7 +725,7 @@ void GaduProtocol::socketConnFailed(GaduError error)
 	}*/
 
 	if (tryAgain)
-		GaduServersManager::instance()->markServerAsGood(ActiveServer);
+		GaduServersManager::instance()->markServerAsBad(ActiveServer);
 	networkDisconnected(tryAgain);
 
 	kdebugf2();

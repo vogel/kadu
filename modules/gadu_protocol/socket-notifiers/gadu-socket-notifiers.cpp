@@ -51,6 +51,10 @@ void GaduSocketNotifiers::createSocketNotifiers()
 	connect(TimeoutTimer, SIGNAL(timeout()), this, SLOT(socketTimeout()));
 
 	Started = true;
+        
+	int tout = timeout();
+	if (0 < tout)
+		TimeoutTimer->start(tout);
 
 	kdebugf2();
 }
@@ -105,7 +109,7 @@ void GaduSocketNotifiers::enable()
 
 	int tout = timeout();
 	if (0 < tout)
-		TimeoutTimer->start(tout); // TODO: 0.6.6 connect to something
+		TimeoutTimer->start(tout);
 }
 
 void GaduSocketNotifiers::watchFor(int socket)
