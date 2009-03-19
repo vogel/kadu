@@ -17,7 +17,7 @@
 #include "file-transfer/file-transfer-manager.h"
 
 #include "debug.h"
-#include "misc.h"
+#include "misc/misc.h"
 
 #include "gui/widgets/file-transfer-widget.h"
 

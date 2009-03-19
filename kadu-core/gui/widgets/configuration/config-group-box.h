@@ -10,7 +10,7 @@
 #ifndef CONFIG_GROUP_BOX_H
 #define CONFIG_GROUP_BOX_H
 
-#include "misc.h"
+#include "misc/misc.h"
 
 class ConfigTab;
 class QGridLayout;

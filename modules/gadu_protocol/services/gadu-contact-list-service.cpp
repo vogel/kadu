@@ -14,7 +14,7 @@
 #include "contacts/contact-manager.h"
 
 #include "debug.h"
-#include "misc.h"
+#include "misc/misc.h"
 
 #include "../helpers/gadu-list-helper.h"
 

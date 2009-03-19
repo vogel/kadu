@@ -30,7 +30,7 @@
 #include "config_file.h"
 #include "kadu.h"
 #include "message_box.h"
-#include "misc.h"
+#include "misc/misc.h"
 
 #include "chat_styles_manager.h"
 

@@ -12,7 +12,7 @@
 
 #include "accounts/account.h"
 #include "accounts/account_manager.h"
-#include "misc.h"
+#include "misc/misc.h"
 #include "debug.h"
 #include "protocols/protocol.h"
 #include "config_file.h"

@@ -25,7 +25,7 @@
 #include "config_file.h"
 #include "debug.h"
 #include "icons_manager.h"
-#include "misc.h"
+#include "misc/misc.h"
 
 #include "kadu-window.h"
 

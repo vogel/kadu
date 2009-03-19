@@ -25,7 +25,7 @@
 #include "protocols/protocol_factory.h"
 
 #include "kadu_parser.h"
-#include "misc.h"
+#include "misc/misc.h"
 
 #include "chat_engine_adium.h"
 

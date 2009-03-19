@@ -13,7 +13,7 @@
 #include <QtGui/QPushButton>
 
 #include "icons_manager.h"
-#include "misc.h"
+#include "misc/misc.h"
 
 #include "select_file.h"
 

@@ -7,7 +7,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "misc.h"
+#include "misc/misc.h"
 
 #include "socket-notifiers/gadu-pubdir-socket-notifiers.h"
 

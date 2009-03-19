@@ -10,7 +10,7 @@
 #include "gui/windows/open-chat-with/open-chat-with-runner.h"
 #include "gui/windows/open-chat-with/open-chat-with-runner-manager.h"
 
-#include "misc.h"
+#include "misc/misc.h"
 #include "xml_config_file.h"
 
 #include "gadu-account.h"

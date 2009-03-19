@@ -23,7 +23,7 @@
 #include "debug.h"
 #include "icons_manager.h"
 #include "message_box.h"
-#include "misc.h"
+#include "misc/misc.h"
 #include "kadu.h"
 #include "userlistelement.h"
 

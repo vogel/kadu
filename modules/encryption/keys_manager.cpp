@@ -20,7 +20,7 @@
 #include "userlist.h"
 #include "icons_manager.h"
 #include "encryption.h"
-#include "misc.h"
+#include "misc/misc.h"
 #include "message_box.h"
 
 #include "keys_manager.h"

@@ -7,7 +7,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "misc.h"
+#include "misc/misc.h"
 #include "debug.h"
 
 #include "idle.h"

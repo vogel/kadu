@@ -24,7 +24,7 @@
 #include "history_dialog.h"
 #include "hot_key.h"
 #include "kadu.h"
-#include "misc.h"
+#include "misc/misc.h"
 #include "message_box.h"
 #include "pending_msgs.h"
 #include "toolbar.h"

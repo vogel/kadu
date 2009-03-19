@@ -10,7 +10,7 @@
 #include "hot_key.h"
 #include "kadu.h"
 #include "main_configuration_window.h"
-#include "misc.h"
+#include "misc/misc.h"
 #include "userbox.h"
 #include "userlist.h"
 

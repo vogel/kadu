@@ -18,7 +18,7 @@
 #include "contacts/group.h"
 #include "config_file.h"
 #include "icons_manager.h"
-#include "misc.h"
+#include "misc/misc.h"
 
 #include "group-properties-window.h"
 

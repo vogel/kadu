@@ -7,7 +7,7 @@
 #include "config_file.h"
 #include "configuration_aware_object.h"
 #include "main_configuration_window.h"
-#include "misc.h"
+#include "misc/misc.h"
 #include "protocols/protocol.h"
 #include "usergroup.h"
 /**

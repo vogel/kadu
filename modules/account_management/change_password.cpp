@@ -20,7 +20,7 @@
 #include "debug.h"
 #include "icons_manager.h"
 #include "message_box.h"
-#include "misc.h"
+#include "misc/misc.h"
 #include "../modules/gadu_protocol/gadu.h"
 #include "config_file.h"
 

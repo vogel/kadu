@@ -13,7 +13,7 @@
 #include <QtGui/QPixmap>
 
 #include "debug.h"
-#include "misc.h"
+#include "misc/misc.h"
 
 #include "color_selector.h"
 

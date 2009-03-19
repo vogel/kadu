@@ -16,7 +16,7 @@
 
 #include "infos_dialog.h"
 
-#include "misc.h"
+#include "misc/misc.h"
 #include "modules.h"
 #include "userlist.h"
 #include "debug.h"

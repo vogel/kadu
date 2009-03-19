@@ -7,7 +7,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "misc.h"
+#include "misc/misc.h"
 
 #include "socket-notifiers/gadu-protocol-socket-notifiers.h"
 #include "gadu-contact-account-data.h"

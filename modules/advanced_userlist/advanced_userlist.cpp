@@ -17,7 +17,7 @@
 #include "debug.h"
 #include "kadu.h"
 #include "kadu_parser.h"
-#include "misc.h"
+#include "misc/misc.h"
 #include "pending_msgs.h"
 #include "userbox.h"
 #include "userinfo.h"

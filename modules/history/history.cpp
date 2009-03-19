@@ -18,7 +18,7 @@
 #include "../modules/gadu_protocol/gadu_images_manager.h"
 #include "html_document.h"
 #include "kadu.h"
-#include "misc.h"
+#include "misc/misc.h"
 
 #include "history.h"
 

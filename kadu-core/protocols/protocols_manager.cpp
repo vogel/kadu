@@ -9,7 +9,7 @@
 
 #include "accounts/account_manager.h"
 #include "debug.h"
-#include "misc.h"
+#include "misc/misc.h"
 #include "protocol_factory.h"
 #include "xml_config_file.h"
 

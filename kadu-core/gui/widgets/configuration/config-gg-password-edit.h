@@ -12,7 +12,7 @@
 
 #include "gui/widgets/configuration/config-line-edit.h"
 #include "configuration/configuration-window-data-manager.h"
-#include "misc.h"
+#include "misc/misc.h"
 
 class ConfigGroupBox;
 

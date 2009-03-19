@@ -11,7 +11,7 @@
 
 #include "configuration/storage-point.h"
 
-#include "misc.h"
+#include "misc/misc.h"
 #include "xml_config_file.h"
 
 #include "contact-kadu-data.h"

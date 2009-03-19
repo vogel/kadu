@@ -19,7 +19,7 @@
 #include "debug.h"
 #include "icons_manager.h"
 #include "ignore.h"
-#include "misc.h"
+#include "misc/misc.h"
 #include "xml_config_file.h"
 
 Ignored::Ignored(QWidget *parent) : QWidget(parent, Qt::Window),

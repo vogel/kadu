@@ -17,7 +17,7 @@
 #include "pcspeaker_configuration_widget.h"
 #include "debug.h"
 #include "config_file.h"
-#include "misc.h"
+#include "misc/misc.h"
 #include <modules.h>
 
 #include <QtGui/QLineEdit>

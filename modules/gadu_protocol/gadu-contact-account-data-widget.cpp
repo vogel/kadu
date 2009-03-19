@@ -16,7 +16,7 @@
 
 #include "gadu-contact-account-data.h"
 #include "gadu-contact-account-data-manager.h"
-#include "misc.h"
+#include "misc/misc.h"
 
 #include "gadu-contact-account-data-widget.h"
 

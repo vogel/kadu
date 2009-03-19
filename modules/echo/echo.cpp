@@ -11,7 +11,7 @@
 
 //#include "message_box.h"
 #include "debug.h"
-#include "misc.h"
+#include "misc/misc.h"
 
 extern "C" KADU_EXPORT int echo_init(bool firstLoad)
 {

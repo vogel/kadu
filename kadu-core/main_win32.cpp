@@ -14,7 +14,7 @@
 
 #include "config_file.h"
 #include "kadu.h"
-#include "misc.h"
+#include "misc/misc.h"
 
 #include <windows.h>
 #include <dbghelp.h>

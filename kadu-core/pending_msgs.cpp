@@ -19,7 +19,7 @@
 #include "contacts/contact-list-configuration-helper.h"
 
 #include "debug.h"
-#include "misc.h"
+#include "misc/misc.h"
 #include "protocols/protocol.h"
 #include "xml_config_file.h"
 

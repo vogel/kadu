@@ -18,7 +18,7 @@
 
 #include "config_file.h"
 #include "debug.h"
-#include "misc.h"
+#include "misc/misc.h"
 #include "modules.h"
 #include "kadu.h"
 #include "xml_config_file.h"

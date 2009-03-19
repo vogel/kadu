@@ -75,7 +75,7 @@
 #include "main_configuration_window.h"
 #include "message_box.h"
 #include "modules.h"
-#include "misc.h"
+#include "misc/misc.h"
 #include "pending_msgs.h"
 #include "personal_info.h"
 #include "search.h"

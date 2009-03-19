@@ -27,7 +27,7 @@
 #include "icons_manager.h"
 #include "kadu.h"
 #include "kadu_parser.h"
-#include "misc.h"
+#include "misc/misc.h"
 #include "userlist.h"
 #include "../notify/notify.h"
 

@@ -41,7 +41,7 @@ Nowa funkcjonalnosc - Dorregaray
 #include "accounts/account_manager.h"
 #include "config_file.h"
 #include "icons_manager.h"
-#include "misc.h"
+#include "misc/misc.h"
 #include "search.h"
 #include "kadu.h"
 #include "chat_manager.h"

@@ -8,7 +8,7 @@
  ***************************************************************************/
 
 #include "debug.h"
-#include "misc.h"
+#include "misc/misc.h"
 
 int debug_mask;
 

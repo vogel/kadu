@@ -24,7 +24,7 @@
 #include "debug.h"
 #include "html_document.h"
 #include "usergroup.h"
-#include "misc.h"
+#include "misc/misc.h"
 #include "config_file.h"
 
 WordFix *wordFix;

@@ -21,7 +21,7 @@
 #include "debug.h"
 #include "html_document.h"
 #include "message_box.h"
-#include "misc.h"
+#include "misc/misc.h"
 
 #include "kadu_text_browser.h"
 

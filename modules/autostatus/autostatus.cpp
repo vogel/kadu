@@ -18,7 +18,7 @@
 #include "config_file.h"
 #include "debug.h"
 #include "kadu.h"
-#include "misc.h"
+#include "misc/misc.h"
 
 #include "autostatus.h"
 #include "power_status_changer.h"

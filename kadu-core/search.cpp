@@ -35,7 +35,7 @@
 #include "debug.h"
 #include "kadu.h"
 #include "message_box.h"
-#include "misc.h"
+#include "misc/misc.h"
 #include "toolbar.h"
 #include "xml_config_file.h"
 

@@ -26,7 +26,7 @@
 #include "icons_manager.h"
 #include "kadu.h"
 #include "message_box.h"
-#include "misc.h"
+#include "misc/misc.h"
 
 #include "dcc/dcc-manager.h"
 #include "helpers/gadu-formatter.h"

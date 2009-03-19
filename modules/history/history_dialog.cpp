@@ -22,7 +22,7 @@
 #include "emoticons.h"
 #include "../modules/gadu_protocol/gadu_images_manager.h"
 #include "kadu.h"
-#include "misc.h"
+#include "misc/misc.h"
 
 #include "history_dialog.h"
 

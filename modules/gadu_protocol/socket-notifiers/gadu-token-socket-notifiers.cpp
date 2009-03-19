@@ -12,7 +12,7 @@
 #include <libgadu.h>
 
 #include "debug.h"
-#include "misc.h"
+#include "misc/misc.h"
 
 #include "gadu-token-socket-notifiers.h"
 

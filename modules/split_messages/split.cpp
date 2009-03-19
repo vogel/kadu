@@ -16,7 +16,7 @@
 #include "config_file.h"
 #include "chat/chat_manager.h"
 #include "debug.h"
-#include "misc.h"
+#include "misc/misc.h"
 #include "../gadu_protocol/gadu.h"
 
 #include "split.h"

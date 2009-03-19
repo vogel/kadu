@@ -23,7 +23,7 @@
 #include "kadu.h"
 #include "pending_msgs.h"
 #include "protocols/status.h"
-#include "misc.h"
+#include "misc/misc.h"
 
 #include "activate.h"
 

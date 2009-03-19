@@ -25,7 +25,7 @@
 #include "config_file.h"
 #include "icons_manager.h"
 #include "message_box.h"
-#include "misc.h"
+#include "misc/misc.h"
 
 #include "syntax_editor.h"
 

@@ -6,7 +6,7 @@
 #include "config_file.h"
 #include "hot_key.h"
 #include "icons_manager.h"
-#include "misc.h"
+#include "misc/misc.h"
 
 #include "tabwidget.h"
 

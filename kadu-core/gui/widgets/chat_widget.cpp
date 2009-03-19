@@ -34,7 +34,7 @@
 #include "kadu.h"
 #include "kadu_parser.h"
 #include "message_box.h"
-#include "misc.h"
+#include "misc/misc.h"
 
 #include "chat_widget.h"
 

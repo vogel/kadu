@@ -21,7 +21,7 @@
 #include "icons_manager.h"
 #include "kadu_main_window.h"
 #include "message_box.h"
-#include "misc.h"
+#include "misc/misc.h"
 #include "xml_config_file.h"
 
 #include "toolbar.h"

@@ -33,7 +33,7 @@
 #include "icons_manager.h"
 #include "kadu.h"
 #include "message_box.h"
-#include "misc.h"
+#include "misc/misc.h"
 #include "pending_msgs.h"
 #include "search.h"
 #include "xml_config_file.h"

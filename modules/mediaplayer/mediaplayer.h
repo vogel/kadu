@@ -3,7 +3,7 @@
 
 #include "configuration_aware_object.h"
 #include "modules.h"
-#include "misc.h"
+#include "misc/misc.h"
 #include "main_configuration_window.h"
 
 class QTimer;

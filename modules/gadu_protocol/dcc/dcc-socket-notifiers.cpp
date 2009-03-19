@@ -10,7 +10,7 @@
 #include <QtCore/QFile>
 
 #include "debug.h"
-#include "misc.h"
+#include "misc/misc.h"
 
 #include "file-transfer/gadu-file-transfer.h"
 #include "socket-notifiers/gadu-protocol-socket-notifiers.h"

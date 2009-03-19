@@ -2,7 +2,7 @@
 #include "accounts/account_manager.h"
 #include "protocols/protocol.h"
 #include "debug.h"
-#include "misc.h"
+#include "misc/misc.h"
 #include "config_file.h"
 #include "modules/notify/notify.h"
 #include "icons_manager.h"

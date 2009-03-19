@@ -26,7 +26,7 @@
 
 #include "config_file.h"
 #include "debug.h"
-#include "misc.h"
+#include "misc/misc.h"
 
 #include "emoticons.h"
 

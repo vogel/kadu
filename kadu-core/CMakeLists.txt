@@ -108,6 +108,13 @@ set (kadu_SRCS
 	gui/windows/open-chat-with/open-chat-with.cpp
 	gui/windows/open-chat-with/open-chat-with-contact-list-runner.cpp
 	gui/windows/open-chat-with/open-chat-with-runner-manager.cpp
+	
+	misc/choose-description.cpp
+	misc/create-notifier.cpp
+	misc/image-dialog.cpp
+	misc/image-widget.cpp
+	misc/misc.cpp
+	misc/token-dialog.cpp
 
 	protocols/protocol.cpp
 	protocols/protocol-menu-manager.cpp
@@ -137,7 +144,6 @@ set (kadu_SRCS
 	kadu_parser.cpp
 	main_configuration_window.cpp
 	message_box.cpp
-	misc.cpp
 	modules.cpp
 	path_list_edit.cpp
 	pending_msgs.cpp
@@ -238,6 +244,14 @@ set (kadu_MOC_SRCS
 	gui/windows/open-chat-with/open-chat-with.h
 	gui/windows/open-chat-with/open-chat-with-contact-list-runner.h
 	gui/windows/open-chat-with/open-chat-with-runner-manager.h
+	
+	misc/base.h
+	misc/choose-description.h
+	misc/create-notifier.h
+	misc/image-dialog.h
+	misc/image-widget.h
+	misc/misc.h
+	misc/token-dialog.h
 
 	protocols/protocol.h
 	protocols/protocols_manager.h
@@ -270,7 +284,6 @@ set (kadu_MOC_SRCS
 	kadu_parser.h
 	main_configuration_window.h
 	message_box.h
-	misc.h
 	modules.h
 	path_list_edit.h
 	pending_msgs.h

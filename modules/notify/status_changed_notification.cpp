@@ -12,7 +12,7 @@
 
 #include "accounts/account.h"
 #include "contacts/contact-account-data.h"
-#include "misc.h"
+#include "misc/misc.h"
 
 #include "status_changed_notification.h"
 

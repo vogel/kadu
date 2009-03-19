@@ -23,7 +23,7 @@
 #include "sound.h"
 #include "kadu.h"
 #include "kadu_parser.h"
-#include "misc.h"
+#include "misc/misc.h"
 #include "../notify/notify.h"
 #include "sound_file.h"
 

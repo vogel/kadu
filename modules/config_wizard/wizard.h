@@ -8,7 +8,7 @@
 #include "../account_management/register.h"
 
 #include "chat_widget.h"
-#include "misc.h"
+#include "misc/misc.h"
 
 class ActionDescription;
 class QComboBox;

@@ -16,7 +16,7 @@
 
 #include "debug.h"
 #include "icons_manager.h"
-#include "misc.h"
+#include "misc/misc.h"
 
 #include "path_list_edit.h"
 

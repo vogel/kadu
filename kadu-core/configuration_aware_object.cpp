@@ -7,7 +7,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "misc.h"
+#include "misc/misc.h"
 
 #include "configuration_aware_object.h"
 

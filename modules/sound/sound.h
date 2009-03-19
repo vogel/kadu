@@ -14,7 +14,7 @@
 
 #include "config_file.h"
 #include "main_configuration_window.h"
-#include "misc.h"
+#include "misc/misc.h"
 #include "message_box.h"
 #include "modules.h"
 #include "themes.h"

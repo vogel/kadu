@@ -23,7 +23,7 @@
 #include "html_document.h"
 #include "icons_manager.h"
 #include "message_box.h"
-#include "misc.h"
+#include "misc/misc.h"
 #include "register.h"
 
 #ifndef Q_OS_WIN

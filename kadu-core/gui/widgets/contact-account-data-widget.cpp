@@ -19,7 +19,7 @@
 
 #include "configuration/contact-account-data-manager.h"
 #include "contacts/contact-account-data.h"
-#include "misc.h"
+#include "misc/misc.h"
 
 #include "contact-account-data-widget.h"
 

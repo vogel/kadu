@@ -11,7 +11,7 @@
 
 #include "config_file.h"
 #include "debug.h"
-#include "misc.h"
+#include "misc/misc.h"
 
 #include "helpers/gadu-formatter.h"
 #include "socket-notifiers/gadu-protocol-socket-notifiers.h"

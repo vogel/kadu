@@ -25,7 +25,7 @@
 #include "message_box.h"
 #include "action.h"
 #include "kadu.h"
-#include "misc.h"
+#include "misc/misc.h"
 #include "search.h"
 #include "icons_manager.h"
 #include "modules/notify/notify.h"

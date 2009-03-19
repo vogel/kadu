@@ -21,7 +21,7 @@
 #include "config_file.h"
 #include "gui/widgets/custom_input.h"
 #include "message_box.h"
-#include "misc.h"
+#include "misc/misc.h"
 
 #include "highlighter.h"
 #include "spellchecker.h"

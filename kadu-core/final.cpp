@@ -34,7 +34,7 @@
 #include "main.cpp"
 #include "main_configuration_window.cpp"
 #include "message_box.cpp"
-#include "misc.cpp"
+#include "misc/misc.cpp"
 #include "modules.cpp"
 #include "path_list_edit.cpp"
 #include "pending_msgs.cpp"

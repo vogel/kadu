@@ -34,7 +34,7 @@
 #include "sql_history.h"
 #include "icons_manager.h"
 #include "kadu.h"
-#include "misc.h"
+#include "misc/misc.h"
 #include "search.h"
 
 #include "history_dialog.h"

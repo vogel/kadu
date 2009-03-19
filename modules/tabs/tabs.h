@@ -17,7 +17,7 @@
 #include "configuration_aware_object.h"
 #include "kadu.h"
 #include "main_configuration_window.h"
-#include "misc.h"
+#include "misc/misc.h"
 
 #include "tabwidget.h"
 

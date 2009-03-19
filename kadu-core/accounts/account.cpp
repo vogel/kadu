@@ -14,7 +14,7 @@
 #include "protocols/protocol_factory.h"
 #include "protocols/protocols_manager.h"
 
-#include "misc.h"
+#include "misc/misc.h"
 #include "xml_config_file.h"
 
 #include "account.h"

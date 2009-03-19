@@ -7,7 +7,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "misc.h"
+#include "misc/misc.h"
 
 #include "dcc/dcc-manager.h"
 #include "file-transfer/gadu-file-transfer.h"

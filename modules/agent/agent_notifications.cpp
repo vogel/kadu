@@ -12,7 +12,7 @@
 
 #include "usergroup.h"
 #include "config_file.h"
-#include "misc.h"
+#include "misc/misc.h"
 #include "debug.h"
 
 NewUserFoundNotification::NewUserFoundNotification(UserListElements &users) : Notification("Agent/NewFound", dataPath("kadu/modules/data/agent/agent32.png"), users)

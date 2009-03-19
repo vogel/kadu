@@ -19,7 +19,7 @@
 #include "protocols/protocol.h"
 
 #include "debug.h"
-#include "misc.h"
+#include "misc/misc.h"
 
 #include "../gadu-contact-account-data.h"
 

@@ -14,7 +14,7 @@
 #include <QTextStream>
 
 #include "kadu.h"
-#include "misc.h"
+#include "misc/misc.h"
 #include "debug.h"
 
 #include "infos.h"

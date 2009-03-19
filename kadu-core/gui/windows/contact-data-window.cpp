@@ -37,7 +37,7 @@
 #include "debug.h"
 #include "icons_manager.h"
 #include "message_box.h"
-#include "misc.h"
+#include "misc/misc.h"
 #include "xml_config_file.h"
 
 #include "contact-data-window.h"

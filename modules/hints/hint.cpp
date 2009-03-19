@@ -16,7 +16,7 @@
 #include "hint.h"
 #include "icons_manager.h"
 #include "kadu_parser.h"
-#include "misc.h"
+#include "misc/misc.h"
 
 #include "../notify/notification.h"
 

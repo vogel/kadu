@@ -17,7 +17,7 @@
 #include "protocols/protocols_manager.h"
 
 #include "config_file.h"
-#include "misc.h"
+#include "misc/misc.h"
 #include "xml_config_file.h"
 
 #include "gadu-account.h"
