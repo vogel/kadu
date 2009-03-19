@@ -96,44 +96,44 @@ ChatManager::ChatManager(QObject *parent)
 
 	refreshTitlesTimer.setSingleShot(true);
 
-	autoSendActionDescription = new ActionDescription(
+	autoSendActionDescription = new ActionDescription(0,
 		ActionDescription::TypeChat, "autoSendAction",
 		this, SLOT(autoSendActionActivated(QAction *, bool)),
 		"AutoSendMessage", tr("%1 sends message").arg(config_file.readEntry("ShortCuts", "chat_newline")), true
 	);
 	connect(autoSendActionDescription, SIGNAL(actionCreated(KaduAction *)), this, SLOT(autoSendActionCreated(KaduAction *)));
 
-	clearChatActionDescription = new ActionDescription(
+	clearChatActionDescription = new ActionDescription(0,
 		ActionDescription::TypeChat, "clearChatAction",
 		this, SLOT(clearActionActivated(QAction *, bool)),
 		"ClearChat", tr("Clear messages in chat window")
 	);
 
-	insertImageActionDescription = new ActionDescription(
+	insertImageActionDescription = new ActionDescription(0,
 		ActionDescription::TypeChat, "insertImageAction",
 		this, SLOT(insertImageActionActivated(QAction *, bool)),
 		"ChooseImage", tr("Insert image")
 	);
 
-	boldActionDescription = new ActionDescription(
+	boldActionDescription = new ActionDescription(0,
 		ActionDescription::TypeChat, "boldAction",
 		this, SLOT(boldActionActivated(QAction *, bool)),
 		"Bold", tr("Bold"), true
 	);
 
-	italicActionDescription = new ActionDescription(
+	italicActionDescription = new ActionDescription(0,
 		ActionDescription::TypeChat, "italicAction",
 		this, SLOT(italicActionActivated(QAction *, bool)),
 		"Italic", tr("Italic"), true
 	);
 
-	underlineActionDescription = new ActionDescription(
+	underlineActionDescription = new ActionDescription(0,
 		ActionDescription::TypeChat, "underlineAction",
 		this, SLOT(underlineActionActivated(QAction *, bool)),
 		"Underline", tr("Underline"), true
 	);
 
-	sendActionDescription = new ActionDescription(
+	sendActionDescription = new ActionDescription(0,
 		ActionDescription::TypeChat, "sendAction",
 		this, SLOT(sendActionActivated(QAction *, bool)),
 		"SendMessage", tr("&Send"), false, QString::null,
@@ -141,49 +141,49 @@ ChatManager::ChatManager(QObject *parent)
 	);
 	connect(sendActionDescription, SIGNAL(actionCreated(KaduAction *)), this, SLOT(sendActionCreated(KaduAction *)));
 
-	whoisActionDescription = new ActionDescription(
+	whoisActionDescription = new ActionDescription(0,
 		ActionDescription::TypeChat, "whoisAction",
 		this, SLOT(whoisActionActivated(QAction *, bool)),
 		"LookupUserInfo", tr("Search this user in directory"), false, QString::null,
 		disableEmptyUles
 	);
 
-	ignoreUserActionDescription = new ActionDescription(
+	ignoreUserActionDescription = new ActionDescription(0,
 		ActionDescription::TypeUser, "ignoreUserAction",
 		this, SLOT(ignoreUserActionActivated(QAction *, bool)),
 		"Ignore", tr("Ignore user"), true, QString::null,
 		checkIgnoreUser
 	);
 
-	blockUserActionDescription = new ActionDescription(
+	blockUserActionDescription = new ActionDescription(0,
 		ActionDescription::TypeUser, "blockUserAction",
 		this, SLOT(blockUserActionActivated(QAction *, bool)),
 		"Blocking", tr("Block user"), true, QString::null,
 		checkBlocking
 	);
 
-	chatActionDescription = new ActionDescription(
+	chatActionDescription = new ActionDescription(0,
 		ActionDescription::TypeUser, "chatAction",
 		this, SLOT(chatActionActivated(QAction *, bool)),
 		"OpenChat", tr("&Chat"), false, QString::null,
 		disableContainsSelfUles
 	);
 
-	openChatWithActionDescription = new ActionDescription(
+	openChatWithActionDescription = new ActionDescription(0,
 		ActionDescription::TypeGlobal, "openChatWithAction",
 		kadu, SLOT(openChatWith()),
 		"OpenChat", tr("Open chat with...")
 	);
 	openChatWithActionDescription->setShortcut("kadu_openchatwith", Qt::ApplicationShortcut);
 
-	insertEmoticonActionDescription = new ActionDescription(
+	insertEmoticonActionDescription = new ActionDescription(0,
 		ActionDescription::TypeChat, "insertEmoticonAction",
 		this, SLOT(insertEmoticonActionActivated(QAction *, bool)),
 		"ChooseEmoticon", tr("Insert emoticon")
 	);
 	connect(insertEmoticonActionDescription, SIGNAL(actionCreated(KaduAction *)), this, SLOT(insertEmoticonActionCreated(KaduAction *)));
 
-	colorSelectorActionDescription = new ActionDescription(
+	colorSelectorActionDescription = new ActionDescription(0,
 		ActionDescription::TypeChat, "colorAction",
 		this, SLOT(colorSelectorActionActivated(QAction *, bool)),
 		"Black", tr("Change color")

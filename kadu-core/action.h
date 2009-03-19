@@ -109,7 +109,7 @@ protected:
 	virtual void configurationUpdated();
 
 public:
-	ActionDescription(ActionType Type, const QString &Name, QObject *Object, const char *Slot,
+	ActionDescription(QObject *parent, ActionType Type, const QString &Name, QObject *Object, const char *Slot,
 		const QString &IconName, const QString &Text, bool Checkable = false, const QString &CheckedText = "", ActionBoolCallback enableCallback = 0);
 	virtual ~ActionDescription();
 

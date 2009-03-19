@@ -26,6 +26,9 @@
 #include <dlfcn.h>
 #endif
 
+#include "core/core.h"
+#include "gui/windows/kadu-window.h"
+
 #include "config_file.h"
 #include "debug.h"
 #include "hot_key.h"
@@ -391,13 +394,13 @@ ModulesManager::ModulesManager() : QObject(),
 	// the same is true for menu - modules should load up at end
 	modules_manager = this;
 
-	ActionDescription *manageModulesActionDescription = new ActionDescription(
+	ActionDescription *manageModulesActionDescription = new ActionDescription(0,
 		ActionDescription::TypeMainMenu, "manageModulesAction",
 		this, SLOT(showDialog(QAction *, bool)),
 		"ManageModules", tr("&Modules")
 	);
 	manageModulesActionDescription->setShortcut("kadu_modulesmanager", Qt::ApplicationShortcut);
-	kadu->insertMenuActionDescription(manageModulesActionDescription, Kadu::MenuKadu, 2);
+	Core::instance()->kaduWindow()->insertMenuActionDescription(manageModulesActionDescription, KaduWindow::MenuKadu, 2);
 
 	everLoaded = config_file.readEntry("General", "EverLoaded").split(',', QString::SkipEmptyParts);
 

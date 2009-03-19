@@ -235,42 +235,42 @@ void SearchDialog::initModule()
 
 	searchActionsSlot = new SearchActionsSlots();
 
-	firstSearchAction = new ActionDescription(
+	firstSearchAction = new ActionDescription(0,
 		ActionDescription::TypeSearch, "firstSearchAction",
 		searchActionsSlot, SLOT(firstSearchActionActivated(QAction *, bool)),
 		"LookupUserInfo", tr("&Search")
 	);
 	QObject::connect(firstSearchAction, SIGNAL(actionCreated(KaduAction *)), searchActionsSlot, SLOT(firstSearchActionCreated(KaduAction *)));
 
-	nextResultsAction = new ActionDescription(
+	nextResultsAction = new ActionDescription(0,
 		ActionDescription::TypeSearch, "nextResultsAction",
 		searchActionsSlot, SLOT(nextResultsActionActivated(QAction *, bool)),
 		"NextSearchResults", tr("&Next results")
 	);
 	QObject::connect(nextResultsAction, SIGNAL(actionCreated(KaduAction *)), searchActionsSlot, SLOT(nextResultsActionCreated(KaduAction *)));
 
-	stopSearchAction = new ActionDescription(
+	stopSearchAction = new ActionDescription(0,
 		ActionDescription::TypeSearch, "stopSearchAction",
 		searchActionsSlot, SLOT(stopSearchActionActivated(QAction *, bool)),
 		"CloseWindow", tr("Stop")
 	);
 	QObject::connect(stopSearchAction, SIGNAL(actionCreated(KaduAction *)), searchActionsSlot, SLOT(stopSearchActionCreated(KaduAction *)));
 
-	clearResultsAction = new ActionDescription(
+	clearResultsAction = new ActionDescription(0,
 		ActionDescription::TypeSearch, "clearSearchAction",
 		searchActionsSlot, SLOT(clearResultsActionActivated(QAction *, bool)),
 		"ClearSearchResults", tr("Clear results")
 	);
 	QObject::connect(clearResultsAction, SIGNAL(actionCreated(KaduAction *)), searchActionsSlot, SLOT(clearResultsActionCreated(KaduAction *)));
 
-	addFoundAction = new ActionDescription(
+	addFoundAction = new ActionDescription(0,
 		ActionDescription::TypeSearch, "addSearchedAction",
 		searchActionsSlot, SLOT(addFoundActionActivated(QAction *, bool)),
 		"AddUser", tr("Add selected user")
 	);
 	QObject::connect(addFoundAction, SIGNAL(actionCreated(KaduAction *)), searchActionsSlot, SLOT(actionsFoundActionCreated(KaduAction *)));
 
-	chatFoundAction = new ActionDescription(
+	chatFoundAction = new ActionDescription(0,
 		ActionDescription::TypeSearch, "chatSearchedAction",
 		searchActionsSlot, SLOT(chatFoundActionActivated(QAction *, bool)),
 		"OpenChat", tr("&Chat")

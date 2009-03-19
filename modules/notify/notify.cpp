@@ -96,7 +96,7 @@ Notify::Notify(QObject *parent)
 	ConnectionErrorNotification::registerEvent(this);
 	StatusChangedNotification::registerEvents(this);
 
-	notifyAboutUserActionDescription = new ActionDescription(
+	notifyAboutUserActionDescription = new ActionDescription(0,
 		ActionDescription::TypeUser, "notifyAboutUserAction",
 		this, SLOT(notifyAboutUserActionActivated(QAction *, bool)),
 		"NotifyAboutUser", tr("Notify about user"), true, "",

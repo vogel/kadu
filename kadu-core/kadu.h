@@ -130,7 +130,6 @@ private:
 	bool Docked;
 	bool dontHideOnClose;
 
-	void createMenu();
 	void createStatusPopupMenu();
 
 	void showStatusOnMenu(int);
@@ -242,9 +241,6 @@ public:
 	void refreshPrivateStatusFromConfigFile();
 
 	const QString & panelStyle() { return infoPanelStyle;}
-
-	void insertMenuActionDescription(ActionDescription *actionDescription, MenuType Type, int pos = -1);
-	void removeMenuActionDescription(ActionDescription *actionDescription);
 
 public slots:
 	virtual void show();

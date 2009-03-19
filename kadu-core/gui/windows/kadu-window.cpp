@@ -20,6 +20,7 @@
 #include "gui/widgets/contacts-list-widget.h"
 #include "gui/widgets/group-tab-bar.h"
 #include "gui/widgets/kadu_text_browser.h"
+#include "gui/windows/kadu-window-actions.h"
 
 #include "config_file.h"
 #include "debug.h"
@@ -31,6 +32,8 @@
 KaduWindow::KaduWindow(QWidget *parent) :
 		KaduMainWindow(parent)
 {
+	Actions = new KaduWindowActions(this);
+
 	createGui();
 }
 
@@ -52,25 +55,25 @@ void KaduWindow::createGui()
 	MainLayout->addWidget(split);
 
 	QWidget* hbox = new QWidget(split);
-	QHBoxLayout *hbox_layout = new QHBoxLayout(hbox);
-	hbox_layout->setMargin(0);
-	hbox_layout->setSpacing(0);
+	QHBoxLayout *hboxLayout = new QHBoxLayout(hbox);
+	hboxLayout->setMargin(0);
+	hboxLayout->setSpacing(0);
 
 	// groupbar
 	GroupBar = new GroupTabBar(this);
-	hbox_layout->setStretchFactor(GroupBar, 1);
 
 	ContactsWidget = new ContactsListWidget(this);
 	ContactsWidget->setModel(new ContactsModel(ContactManager::instance(), this));
 	ContactsWidget->addFilter(GroupBar->filter());
 
-	hbox_layout->setStretchFactor(ContactsWidget, 100);
-	hbox_layout->addWidget(GroupBar);
-	hbox_layout->addWidget(ContactsWidget);
-	hbox_layout->setAlignment(GroupBar, Qt::AlignTop);
-
 	connect(ContactsWidget, SIGNAL(contactActivated(Contact)), this, SLOT(sendMessage(Contact)));
 	connect(ContactsWidget, SIGNAL(currentContactChanged(Contact)), this, SLOT(currentChanged(Contact)));
+
+	hboxLayout->addWidget(GroupBar);
+	hboxLayout->setStretchFactor(GroupBar, 1);
+	hboxLayout->addWidget(ContactsWidget);
+	hboxLayout->setStretchFactor(ContactsWidget, 100);
+	hboxLayout->setAlignment(GroupBar, Qt::AlignTop);
 
 	InfoPanel = new KaduTextBrowser(split);
 // TODO: 0.6.5
@@ -90,12 +93,12 @@ void KaduWindow::createGui()
 	if (!config_file.readBoolEntry("Look", "ShowStatusButton"))
 		StatusButton->hide();
 
-	QList<int> splitsizes;
+	QList<int> splitSizes;
 
-	splitsizes.append(config_file.readNumEntry("General", "UserBoxHeight"));
-	splitsizes.append(config_file.readNumEntry("General", "DescriptionHeight"));
+	splitSizes.append(config_file.readNumEntry("General", "UserBoxHeight"));
+	splitSizes.append(config_file.readNumEntry("General", "DescriptionHeight"));
 
-	split->setSizes(splitsizes);
+	split->setSizes(splitSizes);
 
 	setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
 	setCentralWidget(MainWidget);
@@ -109,117 +112,67 @@ void KaduWindow::createGui()
 
 void KaduWindow::createMenu()
 {
-	kdebugf();
-// Kadu Menu
-	KaduMenu = new QMenu;
+	createKaduMenu();
+	createContactsMenu();
+	createHelpMenu();
+}
+
+void KaduWindow::createKaduMenu()
+{
+	KaduMenu = new QMenu();
 	KaduMenu->setTitle("Kadu");
 
-	RecentChatsMenu = new QMenu;
+	RecentChatsMenu = new QMenu();
 	RecentChatsMenu->setIcon(icons_manager->loadIcon("OpenChat"));
 	RecentChatsMenu->setTitle(tr("Recent chats..."));
 	connect(RecentChatsMenu, SIGNAL(triggered(QAction *)), this, SLOT(openRecentChats(QAction *)));
 
-// 	insertMenuActionDescription(configurationActionDescription, MenuKadu);
-
-	ActionDescription *yourAccountsActionDescription = new ActionDescription(
-		ActionDescription::TypeMainMenu, "yourAccountsAction",
-		this, SLOT(yourAccounts(QAction *, bool)),
-		"PersonalInfo", tr("Your accounts")
-	);//TODO 0.6.6: implement
-	insertMenuActionDescription(yourAccountsActionDescription, MenuKadu);
+	insertMenuActionDescription(Actions->Configuration, MenuKadu);
+	insertMenuActionDescription(Actions->YourAccounts, MenuKadu);
 
 	KaduMenu->addSeparator();
-
 	KaduMenu->addMenu(RecentChatsMenu);
 	KaduMenu->addSeparator();
-	ActionDescription *hideKaduActionDescription = new ActionDescription(
-		ActionDescription::TypeMainMenu, "hideKaduAction",
-		this, SLOT(hideKadu(QAction *, bool)),
-		"HideKadu", tr("&Hide")
-	);
-	insertMenuActionDescription(hideKaduActionDescription, MenuKadu);
 
-	ActionDescription *exitKaduActionDescription = new ActionDescription(
-		ActionDescription::TypeMainMenu, "exitKaduAction",
-		this, SLOT(quit()),
-		"Exit", tr("&Exit")
-	);
-	insertMenuActionDescription(exitKaduActionDescription, MenuKadu);
+	insertMenuActionDescription(Actions->HideKadu, MenuKadu);
+	insertMenuActionDescription(Actions->ExitKadu, MenuKadu);
 
-// ContactsMenu
-	ContactsMenu = new QMenu;
+	menuBar()->addMenu(KaduMenu);
+}
+
+void KaduWindow::createContactsMenu()
+{
+	ContactsMenu = new QMenu();
 	ContactsMenu->setTitle(tr("Contacts"));
 
-// 	insertMenuActionDescription(addUserActionDescription, MenuContacts);
-	ActionDescription *addGroupActionDescription = new ActionDescription(
-		ActionDescription::TypeMainMenu, "addGroupAction",
-		this, SLOT(addGroupActionActivated(QAction *, bool)),
-		"", tr("Add Group")
-	);//TODO 0.6.6: implement and update icons
-	insertMenuActionDescription(addGroupActionDescription, MenuContacts);
-// 	insertMenuActionDescription(openSearchActionDescription, MenuContacts);
+	insertMenuActionDescription(Actions->AddUser, MenuContacts);
+	insertMenuActionDescription(Actions->AddGroup, MenuContacts);
+	insertMenuActionDescription(Actions->OpenSearch, MenuContacts);
+
 	ContactsMenu->addSeparator();
 	insertMenuActionDescription(chat_manager->openChatWithActionDescription, MenuContacts);
 	ContactsMenu->addSeparator();
-	ActionDescription *manageIgnoredActionDescription = new ActionDescription(
-		ActionDescription::TypeMainMenu, "manageIgnoredAction",
-		this, SLOT(manageIgnored(QAction *, bool)),
-		"Ignore", tr("&Ignored users")
-	);
-	insertMenuActionDescription(manageIgnoredActionDescription, MenuContacts);
 
-	ActionDescription *importExportUserlisActionDescription = new ActionDescription(
-		ActionDescription::TypeMainMenu, "importExportUserlisAction",
-		this, SLOT(importExportUserlist(QAction *, bool)),
-		"ImportExport", tr("I&mport / Export userlist")
-	); //TODO 0.6.6: remove
-	insertMenuActionDescription(importExportUserlisActionDescription, MenuContacts);
+	insertMenuActionDescription(Actions->ManageIgnored, MenuContacts);
+	insertMenuActionDescription(Actions->ImportExportContacts, MenuContacts);
 
-// Help Menu
-	HelpMenu = new QMenu;
+	menuBar()->addMenu(ContactsMenu);
+}
+
+void KaduWindow::createHelpMenu()
+{
+	HelpMenu = new QMenu();
 	HelpMenu->setTitle(tr("Help"));
 
-	ActionDescription *helpActionDescription = new ActionDescription(
-		ActionDescription::TypeMainMenu, "helpAction",
-		this, SLOT(help(QAction *, bool)),
-		"HelpMenuItem", tr("Getting H&elp")
-	);
-	insertMenuActionDescription(helpActionDescription, MenuHelp);
+	insertMenuActionDescription(Actions->Help, MenuHelp);
 	HelpMenu->addSeparator();
-	ActionDescription *bugsActionDescription = new ActionDescription(
-		ActionDescription::TypeMainMenu, "bugsAction",
-		this, SLOT(bugs(QAction *, bool)),
-		"", tr("Submitt Bug Report")
-	);
-	insertMenuActionDescription(bugsActionDescription, MenuHelp);
-	ActionDescription *supportActionDescription = new ActionDescription(
-		ActionDescription::TypeMainMenu, "supportAction",
-		this, SLOT(support(QAction *, bool)),
-		"", tr("Support us")
-	);
-	insertMenuActionDescription(supportActionDescription, MenuHelp);
-	ActionDescription *getInvolvedActionDescription = new ActionDescription(
-		ActionDescription::TypeMainMenu, "getInvolvedAction",
-		this, SLOT(getInvolved(QAction *, bool)),
-		"", tr("Get Involved")
-	);
-	insertMenuActionDescription(getInvolvedActionDescription, MenuHelp);
+	insertMenuActionDescription(Actions->Bugs, MenuHelp);
+	insertMenuActionDescription(Actions->Support, MenuHelp);
+	insertMenuActionDescription(Actions->GetInvolved, MenuHelp);
 	HelpMenu->addSeparator();
-	ActionDescription *aboutActionDescription = new ActionDescription(
-		ActionDescription::TypeMainMenu, "aboutAction",
-		this, SLOT(about(QAction *, bool)),
-		"AboutMenuItem", tr("A&bout Kadu")
-	);
-	insertMenuActionDescription(aboutActionDescription, MenuHelp);
-/*
-TODO 0.6.6:
-add new action: "History" in MenuKadu
-*/
-	menuBar()->addMenu(KaduMenu);
-	menuBar()->addMenu(ContactsMenu);
-	menuBar()->addMenu(HelpMenu);
+	insertMenuActionDescription(Actions->About, MenuHelp);
 
-	kdebugf2();
+	menuBar()->addMenu(HelpMenu);
 }
 
 void KaduWindow::createStatusPopupMenu()

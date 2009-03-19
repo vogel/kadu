@@ -27,6 +27,7 @@ class ContactsListWidget;
 class GroupTabBar;
 class KaduAction;
 class KaduTextBrowser;
+class KaduWindowActions;
 class UserStatusChanger;
 
 class KaduWindow : public KaduMainWindow
@@ -44,6 +45,8 @@ public:
 private:
 	typedef QPair<KaduAction *, MenuType> MenuAction;
 	QMap<ActionDescription *, MenuAction> MenuActions;
+
+	KaduWindowActions *Actions;
 
 	KaduTextBrowser *InfoPanel;
 	QString InfoPanelSyntax;
@@ -80,6 +83,9 @@ private:
 
 	void createGui();
 	void createMenu();
+	void createKaduMenu();
+	void createContactsMenu();
+	void createHelpMenu();
 	void createStatusPopupMenu();
 
 protected:

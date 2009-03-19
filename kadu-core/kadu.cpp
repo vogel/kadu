@@ -421,7 +421,7 @@ Kadu::Kadu(QWidget *parent)
 	connect(ContactsWidget, SIGNAL(contactActivated(Contact)), this, SLOT(sendMessage(Contact)));
 	connect(ContactsWidget, SIGNAL(currentContactChanged(Contact)), this, SLOT(currentChanged(Contact)));
 
-	ActionDescription *writeEmailActionDescription = new ActionDescription(
+	ActionDescription *writeEmailActionDescription = new ActionDescription(0,
 		ActionDescription::TypeUser, "writeEmailAction",
 		this, SLOT(writeEMailActionActivated(QAction *, bool)),
 		"WriteEmail", tr("Write email message"), false, "",
@@ -429,7 +429,7 @@ Kadu::Kadu(QWidget *parent)
 	);
 	ContactsListWidgetMenuManager::instance()->addActionDescription(writeEmailActionDescription);
 
-	ActionDescription *copyDescriptionActionDescription = new ActionDescription(
+	ActionDescription *copyDescriptionActionDescription = new ActionDescription(0,
 		ActionDescription::TypeUser, "copyDescriptionAction",
 		this, SLOT(copyDescriptionActionActivated(QAction *, bool)),
 		"CopyDescription", tr("Copy description"), false, "",
@@ -437,7 +437,7 @@ Kadu::Kadu(QWidget *parent)
 	);
 	ContactsListWidgetMenuManager::instance()->addActionDescription(copyDescriptionActionDescription);
 
-	ActionDescription *openDescriptionLinkActionDescription = new ActionDescription(
+	ActionDescription *openDescriptionLinkActionDescription = new ActionDescription(0,
 		ActionDescription::TypeUser, "openDescriptionLinkAction",
 		this, SLOT(openDescriptionLinkActionActivated(QAction *, bool)),
 		"OpenDescriptionLink", tr("Open description link in browser"), false, "",
@@ -445,14 +445,14 @@ Kadu::Kadu(QWidget *parent)
 	);
 	ContactsListWidgetMenuManager::instance()->addActionDescription(openDescriptionLinkActionDescription);
 
-	ActionDescription *copyPersonalInfoActionDescription = new ActionDescription(
+	ActionDescription *copyPersonalInfoActionDescription = new ActionDescription(0,
 		ActionDescription::TypeUser, "copyPersonalInfoAction",
 		this, SLOT(copyPersonalInfoActionActivated(QAction *, bool)),
 		"CopyPersonalInfo", tr("Copy personal info")
 	);
 	ContactsListWidgetMenuManager::instance()->addActionDescription(copyPersonalInfoActionDescription);
 
-	ActionDescription *lookupUserInfoActionDescription = new ActionDescription(
+	ActionDescription *lookupUserInfoActionDescription = new ActionDescription(0,
 		ActionDescription::TypeUser, "lookupUserInfoAction",
 		this, SLOT(lookupInDirectoryActionActivated(QAction *, bool)),
 		"LookupUserInfo", tr("Search in directory"), false, "",
@@ -465,7 +465,7 @@ Kadu::Kadu(QWidget *parent)
 	ContactsListWidgetMenuManager::instance()->addManagementActionDescription(chat_manager->ignoreUserActionDescription);
 	ContactsListWidgetMenuManager::instance()->addManagementActionDescription(chat_manager->blockUserActionDescription);
 
-	offlineToUserActionDescription = new ActionDescription(
+	offlineToUserActionDescription = new ActionDescription(0,
 		ActionDescription::TypeUser, "offlineToUserAction",
 		this, SLOT(offlineToUserActionActivated(QAction *, bool)),
 		"Offline", tr("Offline to user"), true, "",
@@ -473,7 +473,7 @@ Kadu::Kadu(QWidget *parent)
 	);
 	ContactsListWidgetMenuManager::instance()->addManagementActionDescription(offlineToUserActionDescription);
 
-	hideDescriptionActionDescription = new ActionDescription(
+	hideDescriptionActionDescription = new ActionDescription(0,
 		ActionDescription::TypeUser, "hideDescriptionAction",
 		this, SLOT(hideDescriptionActionActivated(QAction *, bool)),
 		"ShowDescription_off", tr("Hide description"), true, "",
@@ -483,7 +483,7 @@ Kadu::Kadu(QWidget *parent)
 
 	ContactsListWidgetMenuManager::instance()->addManagementSeparator();
 
-	deleteUsersActionDescription = new ActionDescription(
+	deleteUsersActionDescription = new ActionDescription(0,
 		ActionDescription::TypeUser, "deleteUsersAction",
 		this, SLOT(deleteUsersActionActivated(QAction *, bool)),
 		"RemoveFromUserlist", tr("Delete")
@@ -504,7 +504,7 @@ Kadu::Kadu(QWidget *parent)
 
 	pending.loadConfiguration(xml_config_file);
 
-	inactiveUsersAction = new ActionDescription(
+	inactiveUsersAction = new ActionDescription(0,
 		ActionDescription::TypeUserList, "inactiveUsersAction",
 		this, SLOT(inactiveUsersActionActivated(QAction *, bool)),
 		"ShowHideInactiveUsers", tr("Hide offline users"),
@@ -513,7 +513,7 @@ Kadu::Kadu(QWidget *parent)
 	connect(inactiveUsersAction, SIGNAL(actionCreated(KaduAction *)), this, SLOT(inactiveUsersActionCreated(KaduAction *)));
 	inactiveUsersAction->setShortcut("kadu_showoffline");
 
-	descriptionUsersAction = new ActionDescription(
+	descriptionUsersAction = new ActionDescription(0,
 		ActionDescription::TypeUserList, "descriptionUsersAction",
 		this, SLOT(descriptionUsersActionActivated(QAction *, bool)),
 		"ShowOnlyDescriptionUsers", tr("Hide users without description"),
@@ -522,7 +522,7 @@ Kadu::Kadu(QWidget *parent)
 	connect(descriptionUsersAction, SIGNAL(actionCreated(KaduAction *)), this, SLOT(descriptionUsersActionCreated(KaduAction *)));
 	descriptionUsersAction->setShortcut("kadu_showonlydesc");
 
-	onlineAndDescriptionUsersAction = new ActionDescription(
+	onlineAndDescriptionUsersAction = new ActionDescription(0,
 		ActionDescription::TypeUserList, "onlineAndDescriptionUsersAction",
 		this, SLOT(onlineAndDescUsersActionActivated(QAction *, bool)),
 		"ShowOnlineAndDescriptionUsers", tr("Show only online and description users"),
@@ -530,14 +530,7 @@ Kadu::Kadu(QWidget *parent)
 	);
 	connect(onlineAndDescriptionUsersAction, SIGNAL(actionCreated(KaduAction *)), this, SLOT(onlineAndDescUsersActionCreated(KaduAction *)));
 
-	configurationActionDescription = new ActionDescription(
-		ActionDescription::TypeGlobal, "configurationAction",
-		this, SLOT(configurationActionActivated(QAction *, bool)),
-		"Configuration", tr("Configuration")
-	);
-	configurationActionDescription->setShortcut("kadu_configure", Qt::ApplicationShortcut);
-
-	editUserActionDescription = new ActionDescription(
+	editUserActionDescription = new ActionDescription(0,
 		ActionDescription::TypeUser, "editUserAction",
 		this, SLOT(editUserActionActivated(QAction *, bool)),
 		"EditUserInfo", tr("Contact data"), false, QString::null,
@@ -547,28 +540,14 @@ Kadu::Kadu(QWidget *parent)
 	editUserActionDescription->setShortcut("kadu_persinfo");
 	ContactsListWidgetMenuManager::instance()->addActionDescription(editUserActionDescription);
 
-	addUserActionDescription = new ActionDescription(
-		ActionDescription::TypeGlobal, "addUserAction",
-		this, SLOT(addUserActionActivated(QAction *, bool)),
-		"AddUser", tr("Add user")
-	);
-	addUserActionDescription->setShortcut("kadu_adduser", Qt::ApplicationShortcut);
-
-	openSearchActionDescription = new ActionDescription(
-		ActionDescription::TypeGlobal, "openSearchAction",
-		this, SLOT(searchInDirectoryActionActivated(QAction *, bool)),
-		"LookupUserInfo", tr("Search user in directory")
-	);
-	openSearchActionDescription->setShortcut("kadu_searchuser");
-
-	showStatusActionDescription = new ActionDescription(
+	showStatusActionDescription = new ActionDescription(0,
 		ActionDescription::TypeGlobal, "openStatusAction",
 		this, SLOT(showStatusActionActivated(QAction *, bool)),
 		"Offline", tr("Change status")
 	);
 	connect(showStatusActionDescription, SIGNAL(actionCreated(KaduAction *)), this, SLOT(showStatusActionCreated(KaduAction *)));
 
-	useProxyActionDescription = new ActionDescription(
+	useProxyActionDescription = new ActionDescription(0,
 		ActionDescription::TypeGlobal, "useProxyAction",
 		this, SLOT(useProxyActionActivated(QAction *, bool)),
 		"UseProxy", tr("Use proxy"), true, tr("Don't use proxy")
@@ -576,7 +555,6 @@ Kadu::Kadu(QWidget *parent)
 	connect(useProxyActionDescription, SIGNAL(actionCreated(KaduAction *)), this, SLOT(useProxyActionCreated(KaduAction *)));
 
 	/* guess what */
-	createMenu();
 	createStatusPopupMenu();
 	loadToolBarsFromConfig("");
 
@@ -1644,174 +1622,6 @@ void Kadu::createRecentChatsMenu()
  
  		index++;
 	}
-
-	kdebugf2();
-}
-
-void Kadu::insertMenuActionDescription(ActionDescription *actionDescription, MenuType type, int pos)
-{
-	kdebugf();
-	if (!actionDescription)
-		return;
-	KaduAction *action = actionDescription->createAction(this);
-
-	QMenu *menu;
-
-	switch (type)
-	{
-		case MenuKadu:
-			menu = KaduMenu;
-			break;
-		case MenuContacts:
-			menu = ContactsMenu;
-			break;
-		case MenuHelp:
-			menu = HelpMenu;
-	}
-
-	QList<QAction *> menuActions = menu->actions();
-	if (pos >= menuActions.count() - 1 || pos == -1)
-		menu->addAction(action);
-	else
-		menu->insertAction(menuActions[pos], action);
-
-	MenuActions[actionDescription] = MenuAction(action, type);
-}
-
-void Kadu::removeMenuActionDescription(ActionDescription *actionDescription)
-{
-	if (!actionDescription)
-		return;
-	KaduAction *action = MenuActions[actionDescription].Action;
-
-	if (!action)
-		return;
-	switch (MenuActions[actionDescription].Menu)
-	{
-		case MenuKadu:
-			KaduMenu->removeAction(action);
-			break;
-		case MenuContacts:
-			ContactsMenu->removeAction(action);
-			break;
-		case MenuHelp:
-			HelpMenu->removeAction(action);
-	}
-	MenuActions.remove(actionDescription);
-
-}
-
-void Kadu::createMenu()
-{
-	kdebugf();
-// Kadu Menu
-	KaduMenu = new QMenu;
-	KaduMenu->setTitle("Kadu");
-
-	RecentChatsMenu = new QMenu;
-	RecentChatsMenu->setIcon(icons_manager->loadIcon("OpenChat"));
-	RecentChatsMenu->setTitle(tr("Recent chats..."));
-	connect(RecentChatsMenu, SIGNAL(triggered(QAction *)), this, SLOT(openRecentChats(QAction *)));
-
-	insertMenuActionDescription(configurationActionDescription, MenuKadu);
-
-	ActionDescription *yourAccountsActionDescription = new ActionDescription(
-		ActionDescription::TypeMainMenu, "yourAccountsAction",
-		this, SLOT(yourAccounts(QAction *, bool)),
-		"PersonalInfo", tr("Your accounts")
-	);//TODO 0.6.6: implement
-	insertMenuActionDescription(yourAccountsActionDescription, MenuKadu);
-
-	KaduMenu->addSeparator();
-
-	KaduMenu->addMenu(RecentChatsMenu);
-	KaduMenu->addSeparator();
-	ActionDescription *hideKaduActionDescription = new ActionDescription(
-		ActionDescription::TypeMainMenu, "hideKaduAction",
-		this, SLOT(hideKadu(QAction *, bool)),
-		"HideKadu", tr("&Hide")
-	);
-	insertMenuActionDescription(hideKaduActionDescription, MenuKadu);
-
-	ActionDescription *exitKaduActionDescription = new ActionDescription(
-		ActionDescription::TypeMainMenu, "exitKaduAction",
-		this, SLOT(quit()),
-		"Exit", tr("&Exit")
-	);
-	insertMenuActionDescription(exitKaduActionDescription, MenuKadu);
-
-// ContactsMenu
-	ContactsMenu = new QMenu;
-	ContactsMenu->setTitle(tr("Contacts"));
-
-	insertMenuActionDescription(addUserActionDescription, MenuContacts);
-	ActionDescription *addGroupActionDescription = new ActionDescription(
-		ActionDescription::TypeMainMenu, "addGroupAction",
-		this, SLOT(addGroupActionActivated(QAction *, bool)),
-		"", tr("Add Group")
-	);//TODO 0.6.6: implement and update icons
-	insertMenuActionDescription(addGroupActionDescription, MenuContacts);
-	insertMenuActionDescription(openSearchActionDescription, MenuContacts);
-	ContactsMenu->addSeparator();
-	insertMenuActionDescription(chat_manager->openChatWithActionDescription, MenuContacts);
-	ContactsMenu->addSeparator();
-	ActionDescription *manageIgnoredActionDescription = new ActionDescription(
-		ActionDescription::TypeMainMenu, "manageIgnoredAction",
-		this, SLOT(manageIgnored(QAction *, bool)),
-		"Ignore", tr("&Ignored users")
-	);
-	insertMenuActionDescription(manageIgnoredActionDescription, MenuContacts);
-
-	ActionDescription *importExportUserlisActionDescription = new ActionDescription(
-		ActionDescription::TypeMainMenu, "importExportUserlisAction",
-		this, SLOT(importExportUserlist(QAction *, bool)),
-		"ImportExport", tr("I&mport / Export userlist")
-	); //TODO 0.6.6: remove
-	insertMenuActionDescription(importExportUserlisActionDescription, MenuContacts);
-
-// Help Menu
-	HelpMenu = new QMenu;
-	HelpMenu->setTitle(tr("Help"));
-
-	ActionDescription *helpActionDescription = new ActionDescription(
-		ActionDescription::TypeMainMenu, "helpAction",
-		this, SLOT(help(QAction *, bool)),
-		"HelpMenuItem", tr("Getting H&elp")
-	);
-	insertMenuActionDescription(helpActionDescription, MenuHelp);
-	HelpMenu->addSeparator();
-	ActionDescription *bugsActionDescription = new ActionDescription(
-		ActionDescription::TypeMainMenu, "bugsAction",
-		this, SLOT(bugs(QAction *, bool)),
-		"", tr("Submitt Bug Report")
-	);
-	insertMenuActionDescription(bugsActionDescription, MenuHelp);
-	ActionDescription *supportActionDescription = new ActionDescription(
-		ActionDescription::TypeMainMenu, "supportAction",
-		this, SLOT(support(QAction *, bool)),
-		"", tr("Support us")
-	);
-	insertMenuActionDescription(supportActionDescription, MenuHelp);
-	ActionDescription *getInvolvedActionDescription = new ActionDescription(
-		ActionDescription::TypeMainMenu, "getInvolvedAction",
-		this, SLOT(getInvolved(QAction *, bool)),
-		"", tr("Get Involved")
-	);
-	insertMenuActionDescription(getInvolvedActionDescription, MenuHelp);
-	HelpMenu->addSeparator();
-	ActionDescription *aboutActionDescription = new ActionDescription(
-		ActionDescription::TypeMainMenu, "aboutAction",
-		this, SLOT(about(QAction *, bool)),
-		"AboutMenuItem", tr("A&bout Kadu")
-	);
-	insertMenuActionDescription(aboutActionDescription, MenuHelp);
-/*
-TODO 0.6.6:
-add new action: "History" in MenuKadu
-*/
-	menuBar()->addMenu(KaduMenu);
-	menuBar()->addMenu(ContactsMenu);
-	menuBar()->addMenu(HelpMenu);
 
 	kdebugf2();
 }

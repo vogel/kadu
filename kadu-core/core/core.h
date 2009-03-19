@@ -16,6 +16,8 @@
 #include "contacts/contact.h"
 #include "contacts/contact-list.h"
 
+class KaduWindow;
+
 class Core : public QObject, private AccountsAwareObject
 {
 	Q_OBJECT
@@ -24,6 +26,7 @@ class Core : public QObject, private AccountsAwareObject
 	static Core *Instance;
 
 	Contact Myself;
+	KaduWindow *Window;
 
 	Core();
 	virtual ~Core();
@@ -38,6 +41,7 @@ public:
 	Contact myself() { return Myself; }
 
 	void createGui();
+	KaduWindow * kaduWindow();
 
 signals:
 	void connecting();

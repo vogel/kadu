@@ -27,7 +27,7 @@ Core * Core::instance()
 	return Instance;
 }
 
-Core::Core()
+Core::Core() : Window(0)
 {
 	Myself.setDisplay(config_file.readEntry("General", "Nick"));
 
@@ -80,5 +80,12 @@ void Core::accountUnregistered(Account *account)
 void Core::createGui()
 {
 	new Kadu(0);
-	(new KaduWindow(0))->show();
+
+	Window = new KaduWindow(0);
+	Window->show();
+}
+
+KaduWindow * Core::kaduWindow()
+{
+	return Window;
 }

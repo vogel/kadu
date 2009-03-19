@@ -104,6 +104,7 @@ set (kadu_SRCS
 	gui/windows/contact-data-window.cpp
 	gui/windows/group-properties-window.cpp
 	gui/windows/kadu-window.cpp
+	gui/windows/kadu-window-actions.cpp
 	gui/windows/open-chat-with/open-chat-with.cpp
 	gui/windows/open-chat-with/open-chat-with-contact-list-runner.cpp
 	gui/windows/open-chat-with/open-chat-with-runner-manager.cpp
@@ -233,6 +234,7 @@ set (kadu_MOC_SRCS
 	gui/windows/contact-data-window.h
 	gui/windows/group-properties-window.h
 	gui/windows/kadu-window.h
+	gui/windows/kadu-window-actions.h
 	gui/windows/open-chat-with/open-chat-with.h
 	gui/windows/open-chat-with/open-chat-with-contact-list-runner.h
 	gui/windows/open-chat-with/open-chat-with-runner-manager.h

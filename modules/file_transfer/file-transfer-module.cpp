@@ -20,6 +20,7 @@
 #include "protocols/protocol.h"
 #include "protocols/services/file-transfer-service.h"
 #include "gui/widgets/contacts-list-widget-menu-manager.h"
+#include "gui/windows/kadu-window.h"
 
 #include "action.h"
 #include "config_file.h"
@@ -98,7 +99,7 @@ FileTransferModule::~FileTransferModule()
 
 void FileTransferModule::createActionDecriptions()
 {
-	SendFileActionDescription = new ActionDescription(
+	SendFileActionDescription = new ActionDescription(0,
 		ActionDescription::TypeUser, "sendFileAction",
 		this, SLOT(sendFileActionActivated(QAction *, bool)),
 		"SendFile", tr("Send file"), false, QString::null,
@@ -107,12 +108,13 @@ void FileTransferModule::createActionDecriptions()
 	SendFileActionDescription->setShortcut("kadu_sendfile");
 	ContactsListWidgetMenuManager::instance()->insertActionDescription(1, SendFileActionDescription);
 
-	FileTransferWindowActionDescription = new ActionDescription(
+	FileTransferWindowActionDescription = new ActionDescription(0,
 		ActionDescription::TypeMainMenu, "sendFileWindowAction",
 		this, SLOT(toggleFileTransferWindow(QAction *, bool)),
 		"SendFileWindow", tr("File transfers")
 	);
-	kadu->insertMenuActionDescription(FileTransferWindowActionDescription, Kadu::MenuKadu, 6); // TODO 0.6.6: update
+
+	Core::instance()->kaduWindow()->insertMenuActionDescription(FileTransferWindowActionDescription, KaduWindow::MenuKadu, 6); // TODO 0.6.6: update
 }
 
 void FileTransferModule::deleteActionDecriptions()
