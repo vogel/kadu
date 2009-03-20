@@ -75,7 +75,6 @@
 #include "message_box.h"
 #include "modules.h"
 #include "misc/misc.h"
-#include "pending_msgs.h"
 #include "personal_info.h"
 #include "search.h"
 #include "status_changer.h"
@@ -115,46 +114,6 @@ const char *Kadu::SyntaxTextNotify = QT_TRANSLATE_NOOP
 );
 
 bool Kadu::Closing = false;
-
-void Kadu::keyPressEvent(QKeyEvent *e)
-{
-//	kdebugf();
-	if (e->key() == Qt::Key_Escape)
-	{
-		if (Docked)
-		{
-			kdebugm(KDEBUG_INFO, "Kadu::keyPressEvent(Key_Escape): Kadu hide\n");
-			if (dontHideOnClose)
-				showMinimized();
-			else
-				hide();
-		}
-	}
-	else if (HotKey::shortCut(e,"ShortCuts", "kadu_deleteuser"))
-		deleteUsersActionDescription->createAction(this)->trigger();
-	else if (e->key() == Qt::Key_C && e->modifiers() & Qt::ControlModifier)
-		InfoPanel->pageAction(QWebPage::Copy)->trigger();
-
-	emit keyPressed(e);
-
-	QWidget::keyPressEvent(e);
-//	kdebugf2();
-}
-
-void Kadu::closeEvent(QCloseEvent *event)
-{
-	kdebugf();
-
-	if (!Closing)
-	{
-		event->ignore();
-		close();
-	}
-	else
-		event->accept();
-
-	kdebugf2();
-}
 
 void disableNonIdUles(KaduAction *action)
 {
@@ -352,9 +311,9 @@ Kadu::Kadu(QWidget *parent)
 	: KaduMainWindow(parent),
 	InfoPanel(0), MenuBar(0), KaduMenu(0), ContactsMenu(0), HelpMenu(0), RecentChatsMenu(0), GroupBar(0),
 	ContactsWidget(0), statusMenu(0), statusButton(), lastPositionBeforeStatusMenuHide(),
-	StartTime(QDateTime::currentDateTime()), updateInformationPanelTimer(), NextStatus(),
+	StartTime(QDateTime::currentDateTime()), updateInformationPanelTimer(),
 	ShowMainWindowOnStart(true),
-	DoBlink(false), BlinkOn(false),Docked(false), dontHideOnClose(false)
+	DoBlink(false), BlinkOn(false)
 {
 	kdebugf();
 
@@ -391,12 +350,6 @@ Kadu::Kadu(QWidget *parent)
 	// groupbar
 	GroupBar = new GroupTabBar(this);
 	hbox_layout->setStretchFactor(GroupBar, 1);
-
-	StatusChangerManager::initModule();
-	connect(status_changer_manager, SIGNAL(statusChanged(Status)), this, SLOT(changeStatus(Status)));
-
-	userStatusChanger = new UserStatusChanger();
-	status_changer_manager->registerStatusChanger(userStatusChanger);
 
 #if 0
 	splitStatusChanger = new SplitStatusChanger(GG_STATUS_DESCR_MAXSIZE);
@@ -491,9 +444,8 @@ Kadu::Kadu(QWidget *parent)
 	ContactsListWidgetMenuManager::instance()->addManagementActionDescription(deleteUsersActionDescription);
 
 // 	groups_manager->setTabBar(GroupBar);
-	setDocked(Docked, dontHideOnClose);
 
-	loadWindowGeometry(this, "General", "Geometry", 0, 50, 205, 465);
+//	loadWindowGeometry(this, "General", "Geometry", 0, 50, 205, 465);
 
 // 	IgnoredManager::loadFromConfiguration();
 
@@ -501,7 +453,6 @@ Kadu::Kadu(QWidget *parent)
 // TODO: 0.6.6 some way of setting title needed
 //	setWindowTitle(tr("Kadu: %1").arg(Myself.ID("Gadu")));
 
-	pending.loadConfiguration(xml_config_file);
 
 	inactiveUsersAction = new ActionDescription(0,
 		ActionDescription::TypeUserList, "inactiveUsersAction",
@@ -1240,13 +1191,14 @@ void Kadu::slotHandleState(int command)
 {
 	kdebugf();
 
-	Status status(userStatusChanger->status().type());
+// 	Status status(userStatusChanger->status().type());
+	Status status;
 
 	switch (command)
 	{
 		case 0:
 			status.setType(Status::Online);
-			setStatus(status);
+			Core::instance()->setStatus(status);
 			break;
 		case 1:
 			status.setType(Status::Online);
@@ -1255,7 +1207,7 @@ void Kadu::slotHandleState(int command)
 			break;
 		case 2:
 			status.setType(Status::Busy);
-			setStatus(status);
+			Core::instance()->setStatus(status);
 			break;
 		case 3:
 			status.setType(Status::Busy);
@@ -1264,7 +1216,7 @@ void Kadu::slotHandleState(int command)
 			break;
 		case 4:
 			status.setType(Status::Invisible);
-			setStatus(status);
+			Core::instance()->setStatus(status);
 			break;
 		case 5:
 			status.setType(Status::Invisible);
@@ -1273,7 +1225,7 @@ void Kadu::slotHandleState(int command)
 			break;
 		case 6:
 			status.setType(Status::Offline);
-			setStatus(status);
+			Core::instance()->setStatus(status);
 			break;
 		case 7:
 			status.setType(Status::Offline);
@@ -1283,31 +1235,6 @@ void Kadu::slotHandleState(int command)
 	}
 
 	kdebugf2();
-}
-
-void Kadu::changeStatus(Status newStatus)
-{
-	kdebugf();
-
-	if (NextStatus.isOffline())
-	{
-		changeStatusToOfflineDesc->setEnabled(false);
-		changeStatusToOffline->setChecked(true);
-	}
-
-	Account *account = AccountManager::instance()->defaultAccount();
-	if (!account)
-		return;
-
-	Protocol *gadu = account->protocol();
-	if (!gadu)
-		return;
-
-	if (gadu->nextStatus() == newStatus)
-		return;
-
-	NextStatus = newStatus;
-	gadu->setStatus(newStatus);
 }
 
 void Kadu::connecting()
@@ -1336,12 +1263,12 @@ void Kadu::connected()
 
 void Kadu::imageReceivedAndSaved(UinType sender, uint32_t size, uint32_t crc32, const QString &/*path*/)
 {
-	for (int i = 0, count = pending.count(); i < count; i++)
-	{
-		PendingMsgs::Element& e = pending[i];
+// 	for (int i = 0, count = pending.count(); i < count; i++)
+// 	{
+// 		PendingMsgs::Element& e = pending[i];
 //	TODO: 0.6.6 or sth?
 // 		e.msg = gadu_images_manager.replaceLoadingImages(e.msg, sender, size, crc32);
-	}
+// 	}
 }
 
 void Kadu::disconnected()
@@ -1364,7 +1291,7 @@ void Kadu::disconnected()
 
 bool Kadu::close(bool quit)
 {
-	if (!quit && Docked && !dontHideOnClose)
+	if (!quit/* && Docked*/)
 	{
 		kdebugmf(KDEBUG_INFO, "hiding\n");
 		hide();
@@ -1374,50 +1301,11 @@ bool Kadu::close(bool quit)
 	{
 		Closing = true;
 
-		if (config_file.readBoolEntry("Look", "ShowInfoPanel"))
-		{
-			config_file.writeEntry("General", "UserBoxHeight", ContactsWidget->size().height());
-			config_file.writeEntry("General", "DescriptionHeight", InfoPanel->size().height());
-		}
-		if (config_file.readBoolEntry("Look", "ShowStatusButton"))
-			config_file.writeEntry("General", "UserBoxHeight", ContactsWidget->size().height());
- 		saveWindowGeometry(this, "General", "Geometry");
-
-// TODO: 0.6.6
-//		config_file.writeEntry("General", "DefaultDescription", defaultdescriptions.join("<-->"));
-
-// TODO: 0.6.6
-// 		if (config_file.readEntry("General", "StartupStatus") == "LastStatus")
-// 			config_file.writeEntry("General", "LastStatusIndex", userStatusChanger->status().index());
-
-		if (config_file.readBoolEntry("General", "StartupLastDescription"))
-			config_file.writeEntry("General", "LastStatusDescription", userStatusChanger->status().description());
-
-		pending.storeConfiguration(xml_config_file);
-// 		IgnoredManager::writeToConfiguration();
-
-		GroupManager::instance()->storeConfiguration();
-		ContactManager::instance()->storeConfiguration(xml_config_file);
-		AccountManager::instance()->storeConfiguration(xml_config_file);
-
-		Protocol *gadu = AccountManager::instance()->defaultAccount()->protocol();
-		if (gadu->isConnected())
-			if (config_file.readBoolEntry("General", "DisconnectWithCurrentDescription"))
-				setOffline(gadu->status().description());
-			else
-				setOffline(config_file.readEntry("General", "DisconnectDescription"));
-
-		xml_config_file->makeBackup();
-
 #if 0
 		status_changer_manager->unregisterStatusChanger(splitStatusChanger);
 		delete splitStatusChanger;
 		splitStatusChanger = 0;
 #endif
-
-		status_changer_manager->unregisterStatusChanger(userStatusChanger);
-		delete userStatusChanger;
-		userStatusChanger = 0;
 
 		ModulesManager::closeModule();
 
@@ -1425,20 +1313,9 @@ bool Kadu::close(bool quit)
 		delete defaultFontInfo;
 		delete defaultFont;
 
-		ChatService *chatService = gadu->chatService();
-		if (chatService)
-			disconnect(chatService, SIGNAL(messageReceived(Account *, ContactList, const QString &, time_t)),
-					this, SLOT(messageReceived(Account *, ContactList, const QString &, time_t)));
-
-		disconnect(gadu, SIGNAL(connecting()), this, SLOT(connecting()));
-		disconnect(gadu, SIGNAL(connected()), this, SLOT(connected()));
-		disconnect(gadu, SIGNAL(disconnected()), this, SLOT(disconnected()));
-		disconnect(gadu, SIGNAL(imageReceivedAndSaved(UinType, uint32_t, uint32_t, const QString &)),
-				this, SLOT(imageReceivedAndSaved(UinType, uint32_t, uint32_t, const QString &)));
-		disconnect(gadu, SIGNAL(needTokenValue(QPixmap, QString &)),
-				this, SLOT(readTokenValue(QPixmap, QString &)));
-
-		StatusChangerManager::closeModule();
+// TODO: 0.6.6
+// 		disconnect(gadu, SIGNAL(imageReceivedAndSaved(UinType, uint32_t, uint32_t, const QString &)),
+// 				this, SLOT(imageReceivedAndSaved(UinType, uint32_t, uint32_t, const QString &)));
 
 		ChatManager::closeModule();
 		SearchDialog::closeModule();
@@ -1465,12 +1342,6 @@ bool Kadu::close(bool quit)
 
 		return true;
 	}
-}
-
-void Kadu::quitApplication()
-{
-	kdebugf();
-	close(true);
 }
 
 Kadu::~Kadu(void)
@@ -1688,30 +1559,6 @@ ContactList Kadu::contacts()
 	return ContactsWidget->selectedContacts();
 }
 
-void Kadu::setDocked(bool docked, bool dontHideOnClose1)
-{
-	Docked = docked;
-	dontHideOnClose = dontHideOnClose1;
-	qApp->setQuitOnLastWindowClosed(!Docked || dontHideOnClose);
-
-// TODO: 0.6.6
-// 	if (config_file.readBoolEntry("General", "ShowAnonymousWithMsgs") || !Docked || dontHideOnClose)
-// 	{
-// 	Userbox->removeNegativeFilter(anonymousUsers);
-// 	Userbox->applyNegativeFilter(anonymousUsersWithoutMessages);
-// 	}
-// 	else
-// 	{
-// 		Userbox->removeNegativeFilter(anonymousUsersWithoutMessages);
-// 		Userbox->applyNegativeFilter(anonymousUsers);
-// 	}
-}
-
-bool Kadu::docked() const
-{
-	return Docked;
-}
-
 void Kadu::show()
 {
 	QWidget::show();
@@ -1747,10 +1594,10 @@ void Kadu::refreshPrivateStatusFromConfigFile()
 	if (changePrivateStatus->isChecked() == privateStatus)
 		return;
 
-	Status status = userStatusChanger->status();
+// 	Status status = userStatusChanger->status();
 // TODO: 0.6.6
 // 	status.setFriendsOnly(privateStatus);
-	userStatusChanger->userStatusSet(status);
+// 	userStatusChanger->userStatusSet(status);
 
 	changePrivateStatus->setChecked(privateStatus);
 }
@@ -1775,8 +1622,6 @@ void Kadu::configurationUpdated()
 		ContactsWidget->setBackground();
 
 // 	groups_manager->refreshTabBar();
-
-	kadu->setDocked(kadu->Docked, kadu->dontHideOnClose);
 
 	InfoPanelSyntax = SyntaxList::readSyntax("infopanel", config_file.readEntry("Look", "InfoPanelSyntaxFile"),
 		"<table><tr><td><img width=\"32\" height=\"32\" align=\"left\" valign=\"top\" src=\"file:///@{ManageUsersWindowIcon}\"></td><td> "
@@ -1860,7 +1705,7 @@ void Kadu::setDefaultStatus()
 
 // TODO: 0.6.6
 // 	status.setFriendsOnly(config_file.readBoolEntry("General", "PrivateStatus"));
-	userStatusChanger->userStatusSet(status);
+	Core::instance()->setStatus(status);
 
 	kdebugf2();
 }
@@ -1869,8 +1714,8 @@ void Kadu::startupProcedure()
 {
 	kdebugf();
 
-	if (ShowMainWindowOnStart)
-		show();
+//	if (ShowMainWindowOnStart)
+//		show();
 
 	Updates::initModule();
 
@@ -2044,31 +1889,6 @@ void Kadu::customEvent(QEvent *e)
 // 	}
 // 	else
 // 		QWidget::customEvent(e);
-}
-
-void Kadu::setStatus(const Status &status)
-{
-	userStatusChanger->userStatusSet(status);
-}
-
-void Kadu::setOnline(const QString &description)
-{
-	userStatusChanger->userStatusSet(Status(Status::Online, description));
-}
-
-void Kadu::setBusy(const QString &description)
-{
-	userStatusChanger->userStatusSet(Status(Status::Busy, description));
-}
-
-void Kadu::setInvisible(const QString &description)
-{
-	userStatusChanger->userStatusSet(Status(Status::Invisible, description));
-}
-
-void Kadu::setOffline(const QString &description)
-{
-	userStatusChanger->userStatusSet(Status(Status::Offline, description));
 }
 
 void Kadu::createDefaultConfiguration()

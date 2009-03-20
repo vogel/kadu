@@ -28,9 +28,8 @@ class GroupTabBar;
 class KaduAction;
 class KaduTextBrowser;
 class KaduWindowActions;
-class UserStatusChanger;
 
-class KaduWindow : public KaduMainWindow
+class KaduWindow : public KaduMainWindow, private ConfigurationAwareObject
 {
 	Q_OBJECT
 
@@ -45,6 +44,8 @@ public:
 private:
 	typedef QPair<KaduAction *, MenuType> MenuAction;
 	QMap<ActionDescription *, MenuAction> MenuActions;
+
+	bool Docked; // TODO: 0.7.1 it is a hack
 
 	KaduWindowActions *Actions;
 
@@ -68,8 +69,6 @@ private:
 
 	QString InfoPanelStyle;
 
-	UserStatusChanger *StatusChanger;
-
 	QActionGroup *ChangeStatusActionGroup;
 	QAction *ChangeStatusToOnline;
 	QAction *ChangeStatusToOnlineDesc;
@@ -90,13 +89,15 @@ private:
 
 	void storeConfiguration();
 
-private slots:
-	void aboutToQuit();
-
 protected:
+	virtual void closeEvent(QCloseEvent *);
+	virtual void keyPressEvent(QKeyEvent *);
+
 	virtual bool supportsActionType(ActionDescription::ActionType type);
 	virtual ContactsListWidget * contactsListWidget();
 	virtual ContactList contacts();
+
+	virtual void configurationUpdated();
 
 public:
 	static void createDefaultToolbars(QDomElement parentConfig);
@@ -106,6 +107,12 @@ public:
 
 	void insertMenuActionDescription(ActionDescription *actionDescription, MenuType Type, int pos = -1);
 	void removeMenuActionDescription(ActionDescription *actionDescription);
+
+	void setDocked(bool);
+	bool docked() { return Docked; }
+
+signals:
+	void keyPressed(QKeyEvent *e);
 
 };
 

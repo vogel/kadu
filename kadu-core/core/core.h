@@ -15,8 +15,10 @@
 #include "accounts/accounts_aware_object.h"
 #include "contacts/contact.h"
 #include "contacts/contact-list.h"
+#include "protocols/status.h"
 
 class KaduWindow;
+class UserStatusChanger;
 
 class Core : public QObject, private AccountsAwareObject
 {
@@ -28,8 +30,18 @@ class Core : public QObject, private AccountsAwareObject
 	Contact Myself;
 	KaduWindow *Window;
 
+	Status NextStatus;
+	UserStatusChanger *StatusChanger;
+
 	Core();
 	virtual ~Core();
+
+	void loadConfiguration();
+	void storeConfiguration();
+
+private slots:
+	void changeStatus(Status status);
+	void kaduWindowDestroyed();
 
 protected:
 	virtual void accountRegistered(Account* account);
@@ -42,6 +54,15 @@ public:
 
 	void createGui();
 	KaduWindow * kaduWindow();
+
+public slots:
+	void setStatus(const Status &status);
+	void setOnline(const QString &description = QString::null);
+	void setBusy(const QString &description = QString::null);
+	void setInvisible(const QString &description = QString::null);
+	void setOffline(const QString &description = QString::null);
+
+	void quit();
 
 signals:
 	void connecting();

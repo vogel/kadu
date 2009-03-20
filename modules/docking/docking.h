@@ -49,7 +49,7 @@ public slots:
 		na true przy starcie i false przy zamknieciu, aby
 		kadu wiedzialo, ze jest zadokowane.
 	**/
-	void setDocked(bool docked, bool butDontHideOnClose = false);
+	void setDocked(bool docked);
 
  signals:
 	void trayPixmapChanged(const QIcon& icon, const QString &name);

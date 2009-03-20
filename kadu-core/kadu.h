@@ -33,7 +33,6 @@ class ActionDescription;
 class ContactsListWidget;
 class GroupTabBar;
 class KaduTextBrowser;
-class UserStatusChanger;
 
 /**
 	G��wne okno Kadu
@@ -117,9 +116,6 @@ private:
 
 	QString infoPanelStyle;
 
-	Status NextStatus;
-	UserStatusChanger *userStatusChanger;
-
 #if 0
 	SplitStatusChanger *splitStatusChanger;
 #endif
@@ -127,8 +123,6 @@ private:
 	bool ShowMainWindowOnStart;
 	bool DoBlink;
 	bool BlinkOn;
-	bool Docked;
-	bool dontHideOnClose;
 
 	void createStatusPopupMenu();
 
@@ -171,21 +165,15 @@ private slots:
 	void statusMenuAboutToHide(void);
 	void dockMenuAboutToHide(void);
 
-	void changeStatus(Status status);
-
 	void inactiveUsersActionCreated(KaduAction *action);
 	void descriptionUsersActionCreated(KaduAction *action);
 	void onlineAndDescUsersActionCreated(KaduAction *action);
-
-	void quitApplication();
 
 	// new API
 	void statusChanged(Account *account, Status status);
 
 protected:
-	void keyPressEvent(QKeyEvent *e);
 	virtual void customEvent(QEvent *);
-	virtual void closeEvent(QCloseEvent *event);
 		
 	virtual void configurationUpdated();
 //	virtual void moveEvent(QMoveEvent *);
@@ -248,12 +236,6 @@ public slots:
 
 	void sendMessage(Contact contact);
 
-	void setStatus(const Status &status);
-	void setOnline(const QString &description = QString::null);
-	void setBusy(const QString &description = QString::null);
-	void setInvisible(const QString &description = QString::null);
-	void setOffline(const QString &description = QString::null);
-
 	void slotHandleState(int command);
 	void changeAppearance();
 	void blink();
@@ -265,12 +247,6 @@ public slots:
 		g��wne okno nie miga�o przy starcie...
 	**/
 	void setShowMainWindowOnStart(bool show);
-
-	/**
-		Modu� dokowania powinien to ustawic, aby kadu
-		wiedzialo, ze jest zadokowane.
-	**/
-	void setDocked(bool docked, bool dontHideOnClose);
 
 	// odczytuje z obrazka tekst i zapisuje go w drugim parametrze
 	void readTokenValue(QPixmap, QString &);
@@ -290,7 +266,6 @@ public slots:
 	void setProxyActionsStatus();
 
 signals:
-	void keyPressed(QKeyEvent *e);
 	void statusPixmapChanged(const QIcon &icon, const QString &icon_name);
 
 	/**

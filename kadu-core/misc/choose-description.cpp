@@ -128,7 +128,7 @@ void ChooseDescription::okPressed()
 		description = KaduParser::parse(description, account, Core::instance()->myself(), true);
 
 	CurrentStatus.setDescription(description);
-	kadu->setStatus(CurrentStatus);
+	Core::instance()->setStatus(CurrentStatus);
 
 	cancelPressed();
 }

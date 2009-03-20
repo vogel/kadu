@@ -52,7 +52,7 @@ void GaduSocketNotifiers::createSocketNotifiers()
 	connect(TimeoutTimer, SIGNAL(timeout()), this, SLOT(socketTimeout()));
 
 	Started = true;
-        
+
 	int tout = timeout();
 	if (0 < tout)
 		TimeoutTimer->start(tout);

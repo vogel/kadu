@@ -22,25 +22,31 @@
 #include "gui/widgets/kadu_text_browser.h"
 #include "gui/windows/kadu-window-actions.h"
 
+#include "misc/misc.h"
 #include "config_file.h"
 #include "debug.h"
+#include "hot_key.h"
 #include "icons_manager.h"
-#include "misc/misc.h"
 
 #include "kadu-window.h"
 
 KaduWindow::KaduWindow(QWidget *parent) :
-		KaduMainWindow(parent)
+		KaduMainWindow(parent), Docked(false)
 {
+	setAttribute(Qt::WA_DeleteOnClose, true);
+
 	Actions = new KaduWindowActions(this);
 
-	QObject::connect(qApp, SIGNAL(aboutToQuit()), this, SLOT(aboutToQuit()));
-
 	createGui();
+	loadToolBarsFromConfig("");
+	configurationUpdated();
+
+	loadWindowGeometry(this, "General", "Geometry", 0, 50, 205, 465);
 }
 
 KaduWindow::~KaduWindow()
 {
+	storeConfiguration();
 }
 
 void KaduWindow::createGui()
@@ -108,10 +114,6 @@ void KaduWindow::createGui()
 #ifdef Q_OS_MAC
 	qt_mac_set_dock_menu(dockMenu);
 #endif
-
-	loadToolBarsFromConfig("");
-
-	loadWindowGeometry(this, "General", "Geometry", 0, 50, 205, 465);
 }
 
 void KaduWindow::createMenu()
@@ -266,11 +268,51 @@ void KaduWindow::createStatusPopupMenu()
 void KaduWindow::storeConfiguration()
 {
 	writeToolBarsToConfig("");
+	saveWindowGeometry(this, "General", "Geometry");
+
+	if (config_file.readBoolEntry("Look", "ShowInfoPanel"))
+	{
+		config_file.writeEntry("General", "UserBoxHeight", ContactsWidget->size().height());
+		config_file.writeEntry("General", "DescriptionHeight", InfoPanel->size().height());
+	}
+	if (config_file.readBoolEntry("Look", "ShowStatusButton"))
+		config_file.writeEntry("General", "UserBoxHeight", ContactsWidget->size().height());
+
+// TODO: 0.6.6
+//	config_file.writeEntry("General", "DefaultDescription", defaultdescriptions.join("<-->"));
 }
 
-void KaduWindow::aboutToQuit()
+void KaduWindow::closeEvent(QCloseEvent *e)
 {
-	storeConfiguration();
+	if (Docked)
+	{
+		e->ignore();
+		hide();
+	}
+	else
+		e->accept();
+}
+
+void KaduWindow::keyPressEvent(QKeyEvent *e)
+{
+	if (e->key() == Qt::Key_Escape)
+	{
+		if (Docked)
+		{
+			kdebugm(KDEBUG_INFO, "Kadu::keyPressEvent(Key_Escape): Kadu hide\n");
+			hide();
+		}
+	}
+	// TODO: 0.6.6 THIS SUXX
+	// after action moving this could be restored
+	// else if (HotKey::shortCut(e,"ShortCuts", "kadu_deleteuser"))
+	//	deleteUsersActionDescription->createAction(this)->trigger();
+	else if (e->key() == Qt::Key_C && e->modifiers() & Qt::ControlModifier)
+		InfoPanel->pageAction(QWebPage::Copy)->trigger();
+
+	emit keyPressed(e);
+
+	KaduMainWindow::keyPressEvent(e);
 }
 
 bool KaduWindow::supportsActionType(ActionDescription::ActionType type)
@@ -286,6 +328,11 @@ ContactsListWidget * KaduWindow::contactsListWidget()
 ContactList KaduWindow::contacts()
 {
 	return ContactsWidget->selectedContacts();
+}
+
+void KaduWindow::configurationUpdated()
+{
+	setDocked(Docked);
 }
 
 void KaduWindow::insertMenuActionDescription(ActionDescription *actionDescription, MenuType type, int pos)
@@ -351,4 +398,22 @@ void KaduWindow::createDefaultToolbars(QDomElement parentConfig)
 	addToolButton(toolbarConfig, "editUserAction");
 	addToolButton(toolbarConfig, "openSearchAction");
 	addToolButton(toolbarConfig, "addUserAction");
+}
+
+void KaduWindow::setDocked(bool docked)
+{
+	Docked = docked;
+	qApp->setQuitOnLastWindowClosed(!Docked);
+
+// TODO: 0.6.6
+// 	if (config_file.readBoolEntry("General", "ShowAnonymousWithMsgs") || !Docked || dontHideOnClose)
+// 	{
+// 	Userbox->removeNegativeFilter(anonymousUsers);
+// 	Userbox->applyNegativeFilter(anonymousUsersWithoutMessages);
+// 	}
+// 	else
+// 	{
+// 		Userbox->removeNegativeFilter(anonymousUsersWithoutMessages);
+// 		Userbox->applyNegativeFilter(anonymousUsers);
+// 	}
 }

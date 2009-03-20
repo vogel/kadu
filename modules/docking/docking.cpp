@@ -16,14 +16,16 @@
 
 #include "accounts/account.h"
 #include "accounts/account_manager.h"
+#include "gui/windows/kadu-window.h"
+#include "misc/misc.h"
+#include "protocols/status.h"
 #include "config_file.h"
 #include "docking.h"
 #include "debug.h"
 #include "icons_manager.h"
 #include "kadu.h"
 #include "pending_msgs.h"
-#include "protocols/status.h"
-#include "misc/misc.h"
+
 
 #include "activate.h"
 
@@ -160,7 +162,7 @@ void DockingManager::dockletChange(int id)
 	if (id < 9)
 		kadu->slotHandleState(id);
 	else
-		kadu->close(true);
+		Core::instance()->quit();
 }
 
 void DockingManager::pendingMessageAdded()
@@ -264,7 +266,7 @@ QIcon DockingManager::defaultPixmap()
 	return QIcon(account->protocol()->statusPixmap(account->protocol()->status()));
 }
 
-void DockingManager::setDocked(bool docked, bool butDontHideOnClose)
+void DockingManager::setDocked(bool docked)
 {
 	kdebugf();
 	if (docked)
@@ -280,7 +282,7 @@ void DockingManager::setDocked(bool docked, bool butDontHideOnClose)
 		if (!Kadu::closing())
 			kadu->show();
 	}
-	kadu->setDocked(docked, butDontHideOnClose);
+	Core::instance()->kaduWindow()->setDocked(docked);
 	kdebugf2();
 }
 

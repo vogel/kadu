@@ -16,6 +16,8 @@
 
 #include "auto_hide.h"
 
+#include "core/core.h"
+#include "gui/windows/kadu-window.h"
 #include "config_file.h"
 #include "kadu.h"
 #include "debug.h"
@@ -66,10 +68,14 @@ AutoHide::~AutoHide()
 
 void AutoHide::timerTimeoutSlot()
 {
-	if(config_file.readBoolEntry("PowerKadu", "auto_hide_use_auto_hide", false))
+	if (config_file.readBoolEntry("PowerKadu", "auto_hide_use_auto_hide", false))
 	{
 		if (idle->secondsIdle() >= config_file.readNumEntry("PowerKadu", "auto_hide_idle_time", 5 * 60))
-			kadu->close();
+		{
+			KaduWindow *window = Core::instance()->kaduWindow();
+			if (window->docked())
+				window->hide();
+		}
 	}
 }
 
