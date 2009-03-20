@@ -372,7 +372,9 @@ void ToolBar::updateButtons()
 
 	QList<ToolBarAction>::iterator toolBarAction;
 	QList<ToolBarAction>::iterator toolBarNextAction;
- 	for (toolBarAction = ToolBarActions.begin(), toolBarNextAction = ToolBarActions.begin() + 1; toolBarAction != ToolBarActions.end(); ++toolBarAction, ++toolBarNextAction)
+
+ 	for (toolBarAction = ToolBarActions.begin(), toolBarNextAction = ToolBarActions.begin() + 1;
+			toolBarAction != ToolBarActions.end(); ++toolBarAction, ++toolBarNextAction)
 	{
 		const QString &actionName = (*toolBarAction).actionName;
 

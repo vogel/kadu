@@ -34,6 +34,8 @@ KaduWindow::KaduWindow(QWidget *parent) :
 {
 	Actions = new KaduWindowActions(this);
 
+	QObject::connect(qApp, SIGNAL(aboutToQuit()), this, SLOT(aboutToQuit()));
+
 	createGui();
 }
 
@@ -106,6 +108,8 @@ void KaduWindow::createGui()
 #ifdef Q_OS_MAC
 	qt_mac_set_dock_menu(dockMenu);
 #endif
+
+	loadToolBarsFromConfig("");
 
 	loadWindowGeometry(this, "General", "Geometry", 0, 50, 205, 465);
 }
@@ -259,6 +263,31 @@ void KaduWindow::createStatusPopupMenu()
 	kdebugf2();
 }
 
+void KaduWindow::storeConfiguration()
+{
+	writeToolBarsToConfig("");
+}
+
+void KaduWindow::aboutToQuit()
+{
+	storeConfiguration();
+}
+
+bool KaduWindow::supportsActionType(ActionDescription::ActionType type)
+{
+	return type & (ActionDescription::TypeGlobal | ActionDescription::TypeUserList | ActionDescription::TypeUser);
+}
+
+ContactsListWidget * KaduWindow::contactsListWidget()
+{
+	return ContactsWidget;
+}
+
+ContactList KaduWindow::contacts()
+{
+	return ContactsWidget->selectedContacts();
+}
+
 void KaduWindow::insertMenuActionDescription(ActionDescription *actionDescription, MenuType type, int pos)
 {
 	kdebugf();
@@ -309,5 +338,17 @@ void KaduWindow::removeMenuActionDescription(ActionDescription *actionDescriptio
 			HelpMenu->removeAction(action);
 	}
 	MenuActions.remove(actionDescription);
+}
 
+void KaduWindow::createDefaultToolbars(QDomElement parentConfig)
+{
+	QDomElement dockAreaConfig = getDockAreaConfigElement(parentConfig, "topDockArea");
+	QDomElement toolbarConfig = xml_config_file->createElement(dockAreaConfig, "ToolBar");
+
+	addToolButton(toolbarConfig, "inactiveUsersAction");
+	addToolButton(toolbarConfig, "descriptionUsersAction");
+	addToolButton(toolbarConfig, "configurationAction");
+	addToolButton(toolbarConfig, "editUserAction");
+	addToolButton(toolbarConfig, "openSearchAction");
+	addToolButton(toolbarConfig, "addUserAction");
 }

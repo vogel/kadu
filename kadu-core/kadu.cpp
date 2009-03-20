@@ -556,7 +556,6 @@ Kadu::Kadu(QWidget *parent)
 
 	/* guess what */
 	createStatusPopupMenu();
-	loadToolBarsFromConfig("");
 
 	connect(statusMenu, SIGNAL(aboutToHide()), this, SLOT(statusMenuAboutToHide()));
 	connect(dockMenu, SIGNAL(aboutToHide()), this, SLOT(dockMenuAboutToHide()));
@@ -890,6 +889,8 @@ void Kadu::inactiveUsersActionCreated(KaduAction *action)
 	KaduMainWindow *window = qobject_cast<KaduMainWindow *>(action->parent());
 	if (!window)
 		return;
+	if (!window->contactsListWidget())
+		return;
 	bool enabled = !config_file.readBoolEntry("General", "ShowOffline");
 	OfflineContactFilter *ofcf = new OfflineContactFilter(action);
 	ofcf->setEnabled(enabled);
@@ -904,6 +905,8 @@ void Kadu::descriptionUsersActionCreated(KaduAction *action)
 {
 	KaduMainWindow *window = qobject_cast<KaduMainWindow *>(action->parent());
 	if (!window)
+		return;
+	if (!window->contactsListWidget())
 		return;
 
 	bool enabled = !config_file.readBoolEntry("General", "ShowWithoutDescription");
@@ -1371,8 +1374,6 @@ bool Kadu::close(bool quit)
 	else
 	{
 		Closing = true;
-
-		writeToolBarsToConfig("");
 
 		if (config_file.readBoolEntry("Look", "ShowInfoPanel"))
 		{
@@ -2216,6 +2217,8 @@ void Kadu::createDefaultConfiguration()
 	createAllDefaultToolbars();
 }
 
+#include "gui/windows/kadu-window.h"
+
 void Kadu::createAllDefaultToolbars()
 {
 	// dont use getToolbarsConfigElement here, we have to be sure that this element don'e exists
@@ -2226,24 +2229,11 @@ void Kadu::createAllDefaultToolbars()
 
 	toolbarsConfig = xml_config_file->createElement(xml_config_file->rootElement(), "Toolbars");
 
-	Kadu::createDefaultToolbars(toolbarsConfig);
+	KaduWindow::createDefaultToolbars(toolbarsConfig);
 	ChatEditBox::createDefaultToolbars(toolbarsConfig);
 	SearchDialog::createDefaultToolbars(toolbarsConfig);
 
 	xml_config_file->sync();
-}
-
-void Kadu::createDefaultToolbars(QDomElement toolbarsConfig)
-{
-	QDomElement dockAreaConfig = getDockAreaConfigElement(toolbarsConfig, "topDockArea");
-	QDomElement toolbarConfig = xml_config_file->createElement(dockAreaConfig, "ToolBar");
-
-	addToolButton(toolbarConfig, "inactiveUsersAction");
-	addToolButton(toolbarConfig, "descriptionUsersAction");
-	addToolButton(toolbarConfig, "configurationAction");
-	addToolButton(toolbarConfig, "editUserAction");
-	addToolButton(toolbarConfig, "openSearchAction");
-	addToolButton(toolbarConfig, "addUserAction");
 }
 
 void Kadu::addAction(const QString &actionName, bool showLabel)

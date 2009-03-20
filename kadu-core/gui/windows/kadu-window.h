@@ -88,12 +88,19 @@ private:
 	void createHelpMenu();
 	void createStatusPopupMenu();
 
+	void storeConfiguration();
+
+private slots:
+	void aboutToQuit();
+
 protected:
-	virtual bool supportsActionType(ActionDescription::ActionType type) { return false; }
-	virtual ContactsListWidget * contactsListWidget() { return 0; }
-	virtual ContactList contacts() { return ContactList(); }
+	virtual bool supportsActionType(ActionDescription::ActionType type);
+	virtual ContactsListWidget * contactsListWidget();
+	virtual ContactList contacts();
 
 public:
+	static void createDefaultToolbars(QDomElement parentConfig);
+
 	explicit KaduWindow(QWidget *parent = 0);
 	virtual ~KaduWindow();
 

@@ -194,7 +194,6 @@ public:
 	Kadu(QWidget *parent = 0);
 	~Kadu();
 
-	static void createDefaultToolbars(QDomElement parentConfig);
 	static void addAction(const QString &actionName, bool showLabel = false);
 
 	virtual bool supportsActionType(ActionDescription::ActionType type) {
