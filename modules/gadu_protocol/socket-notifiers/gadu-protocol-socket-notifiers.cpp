@@ -334,6 +334,11 @@ int GaduProtocolSocketNotifiers::timeout()
 
 bool GaduProtocolSocketNotifiers::handleSoftTimeout()
 {
+	kdebugf();
+
+	if (GG_STATE_CONNECTED == Sess->state)
+		return true;
+
 	if (!Sess || !Sess->soft_timeout)
 		return false;
 
