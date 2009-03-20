@@ -313,11 +313,11 @@ int DccSocketNotifiers::timeout()
 	{
 		case Dcc6:
 			return Socket
-				? Socket->timeout
+				? Socket->timeout * 1000
 				: 0;
 		case Dcc7:
 			return Socket7
-				? Socket7->timeout
+				? Socket7->timeout * 1000
 				: 0;
 	}
 

@@ -77,7 +77,7 @@ void GaduPubdirSocketNotifiers::socketEvent()
 int GaduPubdirSocketNotifiers::timeout()
 {
 	return H
-		? H->timeout
+		? H->timeout * 1000
 		: 0;
 }
 

@@ -29,6 +29,8 @@ class GaduProtocolSocketNotifiers : public GaduSocketNotifiers
 
 	gg_session *Sess;
 
+	int Timeout;
+
 	void dumpConnectionState();
 
 	void handleEventMsg(struct gg_event *e);
@@ -48,9 +50,7 @@ protected:
 	virtual void connectionTimeout();
 
 public:
-	GaduProtocolSocketNotifiers(Account *account, GaduProtocol *protocol, QObject *parent = 0) :
-			CurrentAccount(account), CurrentProtocol(protocol),
-			GaduSocketNotifiers(parent), Sess(0) {}
+	GaduProtocolSocketNotifiers(Account *account, GaduProtocol *protocol, QObject *parent = 0);
 	void setAccount(Account *account) { CurrentAccount = account; }
 
 	void watchFor(gg_session *sess);

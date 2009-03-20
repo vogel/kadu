@@ -24,6 +24,13 @@
 
 #include "gadu-protocol-socket-notifiers.h"
 
+GaduProtocolSocketNotifiers::GaduProtocolSocketNotifiers(Account *account, GaduProtocol *protocol, QObject *parent) :
+			CurrentAccount(account), CurrentProtocol(protocol),
+			GaduSocketNotifiers(parent), Sess(0),
+			Timeout(config_file.readUnsignedNumEntry("Network", "TimeoutInMs"))
+{
+}
+
 void GaduProtocolSocketNotifiers::watchFor(gg_session *sess)
 {
 	Sess = sess;
@@ -327,9 +334,7 @@ void GaduProtocolSocketNotifiers::socketEvent()
 
 int GaduProtocolSocketNotifiers::timeout()
 {
-	return Sess
-		? Sess->timeout
-		: 0;
+	return Timeout;
 }
 
 bool GaduProtocolSocketNotifiers::handleSoftTimeout()

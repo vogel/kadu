@@ -98,7 +98,7 @@ void GaduTokenSocketNotifiers::socketEvent()
 int GaduTokenSocketNotifiers::timeout()
 {
 	return H
-		? H->timeout
+		? H->timeout * 1000
 		: 0;
 }
 

@@ -48,6 +48,7 @@ void GaduSocketNotifiers::createSocketNotifiers()
 		WriteNotifier->setEnabled(false);
 
 	TimeoutTimer = new QTimer();
+	TimeoutTimer->setSingleShot(true);
 	connect(TimeoutTimer, SIGNAL(timeout()), this, SLOT(socketTimeout()));
 
 	Started = true;
@@ -140,6 +141,8 @@ void GaduSocketNotifiers::unlock()
 
 void GaduSocketNotifiers::socketTimeout()
 {
+	kdebugf();
+
 	if (!handleSoftTimeout())
 		connectionTimeout();
 }
