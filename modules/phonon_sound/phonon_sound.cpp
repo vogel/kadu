@@ -28,12 +28,6 @@ extern "C" KADU_EXPORT int phonon_sound_init(bool firstLoad)
 {
 	kdebugf();
 
-/*	if (!QSound::isAvailable ())
-	{
-		MessageBox::msg("QSound API is not available on this platform");
-		return 1;
-	}
-*/
 	phonon_player = new PhononPlayer();
 
 	kdebugf2();
@@ -53,7 +47,10 @@ PhononPlayer::PhononPlayer()
 {
 	kdebugf();
 
-	music = Phonon::createPlayer(Phonon::NotificationCategory);
+	music  = new Phonon::MediaObject(this);
+	output = new Phonon::AudioOutput(Phonon::NotificationCategory, this);
+	Phonon::createPath(music, output);
+
 	connect(sound_manager, SIGNAL(playSound(const QString &, bool, double)),
 			this, SLOT(playSound(const QString &, bool, double)));
 
@@ -65,6 +62,8 @@ PhononPlayer::~PhononPlayer()
 	kdebugf();
 
 	delete music;
+	delete output;
+
 	disconnect(sound_manager, SIGNAL(playSound(const QString &, bool, double)),
 			this, SLOT(playSound(const QString &, bool, double)));
 
@@ -74,6 +73,9 @@ PhononPlayer::~PhononPlayer()
 void PhononPlayer::playSound(const QString &s, bool volCntrl, double vol)
 {
 	kdebugf();
+
+	if (volCntrl)
+		output->setVolume(vol);
 
 	music->setCurrentSource(Phonon::MediaSource(s));
 	music->play();
