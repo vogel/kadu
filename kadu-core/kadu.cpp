@@ -309,9 +309,9 @@ void disableNoEMail(KaduAction *action)
 /* a monstrous constructor so Kadu would take longer to start up */
 Kadu::Kadu(QWidget *parent)
 	: KaduMainWindow(parent),
-	InfoPanel(0), MenuBar(0), KaduMenu(0), ContactsMenu(0), HelpMenu(0), RecentChatsMenu(0), GroupBar(0),
+	MenuBar(0), KaduMenu(0), ContactsMenu(0), HelpMenu(0), RecentChatsMenu(0), GroupBar(0),
 	ContactsWidget(0), statusMenu(0), statusButton(), lastPositionBeforeStatusMenuHide(),
-	StartTime(QDateTime::currentDateTime()), updateInformationPanelTimer(),
+	StartTime(QDateTime::currentDateTime()),
 	ShowMainWindowOnStart(true),
 	DoBlink(false), BlinkOn(false)
 {
@@ -513,18 +513,6 @@ Kadu::Kadu(QWidget *parent)
 
 	dockMenu->addSeparator();
 	dockMenu->addAction(icons_manager->loadIcon("Exit"), tr("&Exit Kadu"), this, SLOT(quit()));
-
-	InfoPanel = new KaduTextBrowser(split);
-// TODO: 0.6.5
-// 	InfoPanel->setFrameStyle(QFrame::NoFrame);
-// 	InfoPanel->setMinimumHeight(int(1.5 * QFontMetrics(InfoPanel->QTextEdit::font()).height()));
-//	InfoPanel->resize(InfoPanel->size().width(), int(1.5 * QFontMetrics(InfoPanel->font()).height()));
-// 	InfoPanel->setTextFormat(Qt::RichText);
-// 	InfoPanel->setAlignment(Qt::AlignVCenter/** | Qt::WordBreak | Qt::DontClip*/);
-
-	if (!config_file.readBoolEntry("Look", "ShowInfoPanel"))
-		InfoPanel->QWidget::hide();
-	connect(&updateInformationPanelTimer, SIGNAL(timeout()), this, SLOT(updateInformationPanel()));
 
 	statusButton = new QPushButton(icons_manager->loadIcon("Offline"), tr("Offline"), this);
 	MainLayout->addWidget(statusButton);
@@ -1010,51 +998,6 @@ void Kadu::changeAppearance()
 
 	GroupBar->setFont(QFont(config_file.readFontEntry("Look", "UserboxFont").family(), config_file.readFontEntry("Look", "UserboxFont").pointSize(),75));
 
-	if (config_file.readBoolEntry("Look", "ShowInfoPanel"))
-	{
-		InfoPanel->show();
-
-
-		QFont font = config_file.readFontEntry("Look", "PanelFont");
-
-		QString fontFamily = font.family();
-		QString fontSize;
-		if (font.pointSize() > 0)
-			fontSize = QString::number(font.pointSize()) + "pt";
-		else
-			fontSize = QString::number(font.pixelSize()) + "px";
-		QString fontStyle = font.italic() ? "italic" : "normal";
-		QString fontWeight = font.bold() ? "bold" : "normal";
-		QString textDecoration = font.underline() ? "underline" : "none";
-		QString backgroundColor = config_file.readColorEntry("Look","InfoPanelBgColor").name();
-		QString fontColor = config_file.readColorEntry("Look","InfoPanelFgColor").name();
-
-		infoPanelStyle = QString(
-			"html {"
-			"	color: %1;"
-			"	font: %2 %3 %4 %5;"
-			"	text-decoration: %6;"
-			"	margin: 0;"
-			"	padding: 0;"
-			"	background-color: %7;"
-			"}"
-			"div {"
-			"	color: %1;"
-			"	font: %2 %3 %4 %5;"
-			"	text-decoration: %6;"
-			"	margin: 0;"
-			"	padding: 0;"
-			"	background-color: %7;"
-			"}").arg(fontColor, fontStyle, fontWeight, fontSize, fontFamily, textDecoration, backgroundColor);
-
- 		if (config_file.readBoolEntry("Look", "PanelVerticalScrollbar"))
- 			InfoPanel->page()->mainFrame()->setScrollBarPolicy (Qt::Vertical, Qt::ScrollBarAsNeeded);
- 		else
- 			InfoPanel->page()->mainFrame()->setScrollBarPolicy (Qt::Vertical, Qt::ScrollBarAlwaysOff);
-	}
-	else
-		dynamic_cast<QWidget *>(InfoPanel)->hide();
-
 	kadu->statusButton->setShown(config_file.readBoolEntry("Look", "ShowStatusButton"));
 
 	const Status &stat = AccountManager::instance()->status();
@@ -1134,8 +1077,8 @@ void Kadu::blink()
 void Kadu::mouseButtonClicked(int button, Q3ListBoxItem *item)
 {
 	kdebugmf(KDEBUG_FUNCTION_START, "button=%d\n", button);
-	if (!item)
-		InfoPanel->setHtml("<body bgcolor=\"" + config_file.readEntry("Look", "InfoPanelBgColor") + "\"></body>");
+// 	if (!item)
+// 		InfoPanel->setHtml("<body bgcolor=\"" + config_file.readEntry("Look", "InfoPanelBgColor") + "\"></body>");
 	kdebugf2();
 }
 
@@ -1499,60 +1442,6 @@ void Kadu::createStatusPopupMenu()
 	kdebugf2();
 }
 
-void Kadu::showdesc(bool show)
-{
-	if (show)
-		InfoPanel->show();
-	else
-		InfoPanel->QWidget::hide();
-}
-//TODO 0.6.6:
-void Kadu::updateInformationPanelLater()
-{
-	updateInformationPanelTimer.setSingleShot(true);
-	updateInformationPanelTimer.start(0);
-}
-
-void Kadu::updateInformationPanel()
-{
-	updateInformationPanel(ContactsWidget->currentContact());
-}
-
-void Kadu::updateInformationPanel(Contact contact)
-{
-	if (!config_file.readBoolEntry("Look", "ShowInfoPanel"))
-		return;
-
- 	if (ContactsWidget->currentContact() != Contact::null && contact == ContactsWidget->currentContact())
-	{
-		kdebugmf(KDEBUG_INFO, "%s\n", qPrintable(contact.display()));
-		QString text = QString(
-			"<html>"
-			"	<head>"
-			"		<style type='text/css'>") +
-			infoPanelStyle +
-			"		</style>"
-			"	</head>"
-			"	<body>";
-		HtmlDocument doc;
-		doc.parseHtml(KaduParser::parse(InfoPanelSyntax, contact.prefferedAccount(), contact));
-		doc.convertUrlsToHtml();
-		doc.convertMailToHtml();
-		if((EmoticonsStyle)config_file.readNumEntry("Chat", "EmoticonsStyle") != EMOTS_NONE && config_file.readBoolEntry("General", "ShowEmotPanel"))
-			emoticons->expandEmoticons(doc, config_file.readColorEntry("Look", "InfoPanelBgColor"), (EmoticonsStyle)config_file.readNumEntry("Chat", "EmoticonsStyle"));
-
-		text += doc.generateHtml();
-		text += "</body></html>";
-		InfoPanel->setHtml(text);
-
-		kdebugf2();
-	}
-}
-
-void Kadu::currentChanged(Contact contact)
-{
-	updateInformationPanel(contact);
-}
 //
 ContactList Kadu::contacts()
 {
@@ -1622,12 +1511,6 @@ void Kadu::configurationUpdated()
 		ContactsWidget->setBackground();
 
 // 	groups_manager->refreshTabBar();
-
-	InfoPanelSyntax = SyntaxList::readSyntax("infopanel", config_file.readEntry("Look", "InfoPanelSyntaxFile"),
-		"<table><tr><td><img width=\"32\" height=\"32\" align=\"left\" valign=\"top\" src=\"file:///@{ManageUsersWindowIcon}\"></td><td> "
-		"<div align=\"left\"> [<b>%a</b>][ (%u)] [<br>tel.: %m][<br>IP: %i]</div></td></tr></table> <hr> <b>%s</b> [<br>%d]");
-	InfoPanel->setHtml("<body bgcolor=\"" + config_file.readEntry("Look", "InfoPanelBgColor") + "\"></body>");
-	updateInformationPanel();
 
 	setProxyActionsStatus();
 

@@ -213,7 +213,8 @@ void MainConfigurationWindow::show()
 
 void MainConfigurationWindow::infoPanelFixup(QString &syntax)
 {
-	syntax = QString("<html><head><style type='text/css'>%1</style></head><body>%2</body>").arg(kadu->panelStyle(), syntax);
+// TODO: 0.6.6
+// 	syntax = QString("<html><head><style type='text/css'>%1</style></head><body>%2</body>").arg(kadu->panelStyle(), syntax);
 }
 
 void MainConfigurationWindow::onChangeStartupStatus(int index)

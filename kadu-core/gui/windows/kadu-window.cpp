@@ -17,6 +17,7 @@
 #include "contacts/contact-manager.h"
 #include "contacts/model/contacts-model.h"
 #include "contacts/model/filter/group-contact-filter.h"
+#include "gui/widgets/contact-info-panel.h"
 #include "gui/widgets/contacts-list-widget.h"
 #include "gui/widgets/group-tab-bar.h"
 #include "gui/widgets/kadu_text_browser.h"
@@ -75,7 +76,6 @@ void KaduWindow::createGui()
 	ContactsWidget->addFilter(GroupBar->filter());
 
 	connect(ContactsWidget, SIGNAL(contactActivated(Contact)), this, SLOT(sendMessage(Contact)));
-	connect(ContactsWidget, SIGNAL(currentContactChanged(Contact)), this, SLOT(currentChanged(Contact)));
 
 	hboxLayout->addWidget(GroupBar);
 	hboxLayout->setStretchFactor(GroupBar, 1);
@@ -83,13 +83,8 @@ void KaduWindow::createGui()
 	hboxLayout->setStretchFactor(ContactsWidget, 100);
 	hboxLayout->setAlignment(GroupBar, Qt::AlignTop);
 
-	InfoPanel = new KaduTextBrowser(split);
-// TODO: 0.6.5
-// 	InfoPanel->setFrameStyle(QFrame::NoFrame);
-// 	InfoPanel->setMinimumHeight(int(1.5 * QFontMetrics(InfoPanel->QTextEdit::font()).height()));
-//	InfoPanel->resize(InfoPanel->size().width(), int(1.5 * QFontMetrics(InfoPanel->font()).height()));
-// 	InfoPanel->setTextFormat(Qt::RichText);
-// 	InfoPanel->setAlignment(Qt::AlignVCenter/** | Qt::WordBreak | Qt::DontClip*/);
+	InfoPanel = new ContactInfoPanel(split);
+	connect(ContactsWidget, SIGNAL(currentContactChanged(Contact)), InfoPanel, SLOT(displayContact(Contact)));
 
 	if (!config_file.readBoolEntry("Look", "ShowInfoPanel"))
 		InfoPanel->QWidget::hide();
@@ -282,6 +277,11 @@ void KaduWindow::storeConfiguration()
 //	config_file.writeEntry("General", "DefaultDescription", defaultdescriptions.join("<-->"));
 }
 
+void KaduWindow::updateInformationPanel()
+{
+	InfoPanel->displayContact(ContactsWidget->currentContact());
+}
+
 void KaduWindow::closeEvent(QCloseEvent *e)
 {
 	if (Docked)
@@ -332,6 +332,7 @@ ContactList KaduWindow::contacts()
 
 void KaduWindow::configurationUpdated()
 {
+	InfoPanel->setVisible(config_file.readBoolEntry("Look", "ShowInfoPanel"));
 	setDocked(Docked);
 }
 

@@ -94,8 +94,6 @@ private:
 	friend class Wizard;
 
 	static bool Closing;
-	KaduTextBrowser *InfoPanel;
-	QString InfoPanelSyntax;
 	QMenuBar *MenuBar;
 	QMenu *KaduMenu;
 	QMenu *ContactsMenu;
@@ -113,8 +111,6 @@ private:
 	QPoint lastPositionBeforeStatusMenuHide;
 	QDateTime StartTime;
 	QTimer updateInformationPanelTimer;
-
-	QString infoPanelStyle;
 
 #if 0
 	SplitStatusChanger *splitStatusChanger;
@@ -159,8 +155,6 @@ private slots:
 	void disconnected();
 	void imageReceivedAndSaved(UinType sender, uint32_t size, uint32_t crc32, const QString &path);
 	void deleteOldConfigFiles();
-
-	void currentChanged(Contact contact);
 
 	void statusMenuAboutToHide(void);
 	void dockMenuAboutToHide(void);
@@ -224,22 +218,16 @@ public:
 	const QDateTime &startTime() const;
 	void refreshPrivateStatusFromConfigFile();
 
-	const QString & panelStyle() { return infoPanelStyle;}
-
 public slots:
 	virtual void show();
 	virtual void hide();
 	void mouseButtonClicked(int, Q3ListBoxItem *);
-	void updateInformationPanel(Contact contact);
-	void updateInformationPanel();
-	void updateInformationPanelLater();
 
 	void sendMessage(Contact contact);
 
 	void slotHandleState(int command);
 	void changeAppearance();
 	void blink();
-	void showdesc(bool show = true);
 	virtual bool close(bool quit = false);
 
 	/**

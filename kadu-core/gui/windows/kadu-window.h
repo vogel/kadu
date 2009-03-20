@@ -23,6 +23,7 @@ class QPushButton;
 class QVBoxLayout;
 
 class ActionDescription;
+class ContactInfoPanel;
 class ContactsListWidget;
 class GroupTabBar;
 class KaduAction;
@@ -49,7 +50,7 @@ private:
 
 	KaduWindowActions *Actions;
 
-	KaduTextBrowser *InfoPanel;
+	ContactInfoPanel *InfoPanel;
 	QString InfoPanelSyntax;
 	QMenuBar *MenuBar;
 	QMenu *KaduMenu;
@@ -88,6 +89,9 @@ private:
 	void createStatusPopupMenu();
 
 	void storeConfiguration();
+
+	void updateInformationPanel();
+	void updateInformationPanel(Contact contact);
 
 protected:
 	virtual void closeEvent(QCloseEvent *);
