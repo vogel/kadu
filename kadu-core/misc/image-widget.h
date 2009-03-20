@@ -15,7 +15,6 @@ public:
 	ImageWidget(const QByteArray &image, QWidget *parent);
 	void setImage(const QByteArray &image);
 	void setImage(const QPixmap &image);
-
 };
 
 #endif

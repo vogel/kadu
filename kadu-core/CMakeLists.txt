@@ -110,10 +110,13 @@ set (kadu_SRCS
 	gui/windows/open-chat-with/open-chat-with-runner-manager.cpp
 	
 	misc/choose-description.cpp
+	misc/coding-conversion.cpp
 	misc/create-notifier.cpp
+	misc/date-time.cpp
 	misc/image-dialog.cpp
 	misc/image-widget.cpp
 	misc/misc.cpp
+	misc/path-conversion.cpp
 	misc/token-dialog.cpp
 
 	protocols/protocol.cpp
@@ -247,10 +250,13 @@ set (kadu_MOC_SRCS
 	
 	misc/base.h
 	misc/choose-description.h
+	misc/coding-conversion.h
 	misc/create-notifier.h
+	misc/date-time.h
 	misc/image-dialog.h
 	misc/image-widget.h
 	misc/misc.h
+	misc/path-conversion.h
 	misc/token-dialog.h
 
 	protocols/protocol.h

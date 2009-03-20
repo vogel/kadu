@@ -3,12 +3,10 @@
 
 #include "base.h"
 
-
 class ImageDialog : public QFileDialog
 {
 public:
 	ImageDialog(QWidget *parent);
-
 };
 
 #endif
