@@ -18,13 +18,13 @@
 
 #include "contacts/model/filter/group-contact-filter.h"
 
-#include "gui/windows/add-group-window.h"
 #include "gui/windows/group-properties-window.h"
 
 #include "config_file.h"
 #include "debug.h"
 #include "icons_manager.h"
 #include "kadu.h"
+#include "message_box.h"
 
 #include "group-tab-bar.h"
 
@@ -134,6 +134,7 @@ void GroupTabBar::contextMenuEvent(QContextMenuEvent *event)
 
 	QMenu *menu = new QMenu(this);
 	
+	menu->addAction(tr("Add Buddy"), this, SLOT(addBuddy()))->setEnabled(tabIndex != -1 && currentGroup);
 	menu->addAction(tr("Rename Group"), this, SLOT(renameGroup()))->setEnabled(tabIndex != -1 && currentGroup);
 	menu->addSeparator();
 	menu->addAction(tr("Delete Group"), this, SLOT(deleteGroup()))->setEnabled(tabIndex != -1 && currentGroup);
@@ -168,9 +169,27 @@ void GroupTabBar::dropEvent(QDropEvent *event)
 
 	if (tabIndex == -1)
 	{
-		QApplication::restoreOverrideCursor();
+		bool ok;
+		QString newGroupName;
+		do
+		{
+			newGroupName = QInputDialog::getText(this, tr("New Group"),
+				tr("Please enter the name for the new group:"), QLineEdit::Normal,
+				QString::null, &ok);
 
-		(new AddGroupWindow(contacts, kadu))->show();
+			if (!ok)
+				return;
+
+			ok = !newGroupName.isEmpty() && GroupManager::instance()->acceptableGroupName(newGroupName);
+		}
+		while (!ok);
+
+		Group *group = GroupManager::instance()->byName(newGroupName, true);
+
+		foreach (Contact contact, contacts)
+			contact.addToGroup(group);
+
+		QApplication::restoreOverrideCursor();
 
 		return;
 	}
@@ -194,32 +213,47 @@ void GroupTabBar::dropEvent(QDropEvent *event)
 	kdebugf2();
 }
 
+void GroupTabBar::addBuddy()
+{
+
+}
+
+
 void GroupTabBar::renameGroup()
 {
 	if (!currentGroup)
 		return;
 	bool ok;
 	QString text = QInputDialog::getText(this, tr("Rename Group"),
-				tr("New group name:"), QLineEdit::Normal,
+				tr("Please enter a new name for this group"), QLineEdit::Normal,
 				QString::null, &ok);
 
 	if (ok && !text.isEmpty() && GroupManager::instance()->acceptableGroupName(text))
 		currentGroup->setName(text);
 }
+
 void GroupTabBar::deleteGroup()
 {
-	if (!currentGroup)
-		return;
-	GroupManager::instance()->removeGroup(currentGroup->uuid().toString());
+	if (currentGroup && MessageBox::ask(tr("Selected group:\n%0 will be deleted. Are you sure?").arg(currentGroup->name()), "Warning", kadu))
+		GroupManager::instance()->removeGroup(currentGroup->uuid().toString());
 }
+
 void GroupTabBar::createNewGroup()
 {
-	(new AddGroupWindow(kadu))->show();
+	bool ok;
+	QString newGroupName = QInputDialog::getText(this, tr("New Group"),
+				tr("Please enter the name for the new group:"), QLineEdit::Normal,
+				QString::null, &ok);
+
+	if (ok && !newGroupName.isEmpty() && GroupManager::instance()->acceptableGroupName(newGroupName))
+		Group *group = GroupManager::instance()->byName(newGroupName, true);
 }
+
 void GroupTabBar::groupProperties()
 {
 	if (!currentGroup)
 		return;
+
 	(new GroupPropertiesWindow(currentGroup, kadu))->show();
 }
 

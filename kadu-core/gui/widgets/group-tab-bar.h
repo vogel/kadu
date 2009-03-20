@@ -33,6 +33,7 @@ private slots:
 	void groupAppearanceChanged(const Group *group);
 	void groupNameChanged(const Group *group);
 
+	void addBuddy();
 	void renameGroup();
 	void deleteGroup();
 	void createNewGroup();

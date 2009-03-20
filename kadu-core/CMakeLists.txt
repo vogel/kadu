@@ -98,7 +98,6 @@ set (kadu_SRCS
 	gui/widgets/configuration/config-group-box.cpp
 	gui/widgets/configuration/config-tab.cpp
 
-	gui/windows/add-group-window.cpp
 	gui/windows/chat_window.cpp
 	gui/windows/configuration-window.cpp
 	gui/windows/contact-data-window.cpp
@@ -237,7 +236,6 @@ set (kadu_MOC_SRCS
 	gui/widgets/configuration/config-section.h
 	gui/widgets/configuration/config-tab.h
 
-	gui/windows/add-group-window.h
 	gui/windows/chat_window.h
 	gui/windows/configuration-window.h
 	gui/windows/contact-data-window.h

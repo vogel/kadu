@@ -59,23 +59,33 @@ GroupPropertiesWindow::GroupPropertiesWindow(Group *editedGroup, QWidget *parent
 
 	QGroupBox *lookGroupBox = new QGroupBox;
 	QVBoxLayout *look_layout = new QVBoxLayout(lookGroupBox);
-	look_layout->setSpacing(5);
 	lookGroupBox->setTitle(tr("Look"));
 
 	QWidget *iconWidget = new QWidget(this);
 	QHBoxLayout *icon_layout = new QHBoxLayout(iconWidget);
+	icon_layout->setContentsMargins(0, 0, 0, 0);
 
 	iconCheckBox = new QCheckBox(tr("Use custom icon"), lookGroupBox);
 	iconCheckBox->setChecked(group->showIcon());
 
 	iconPath = group->icon();
 	icon = new QPushButton(iconWidget);
-	icon->setIcon(QIcon(iconPath));
+
+	if (iconPath.isEmpty())
+	{
+		icon->setIcon(icons_manager->loadIcon("OpenFile"));
+		icon->setText(tr(" Set Icon"));
+	}
+	else
+		icon->setIcon(QIcon(iconPath));
+
 	icon->setEnabled(iconCheckBox->isChecked());
 	connect(iconCheckBox, SIGNAL(toggled(bool)), icon, SLOT(setEnabled(bool)));
 	connect(icon, SIGNAL(clicked()), this, SLOT(selectIcon()));
 
 	icon_layout->addWidget(iconCheckBox);
+	icon_layout->setStretchFactor(iconCheckBox, 100);
+
 	icon_layout->addWidget(icon);
 
 	nameCheckBox = new QCheckBox(tr("Show group name"), lookGroupBox);
@@ -113,6 +123,7 @@ void GroupPropertiesWindow::selectIcon()
 	{
 		iconPath = iDialog->selectedFiles()[0];
 		config_file.writeEntry("GroupIcon", "recentPath", iDialog->directory().absolutePath());
+		icon->setText("");
 		icon->setIcon(QIcon(iconPath));
 	}
 	delete iDialog;

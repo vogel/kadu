@@ -8,10 +8,11 @@
  ***************************************************************************/
 
 #include <QtGui/QApplication>
+#include <QtGui/QInputDialog>
 
 #include "accounts/account.h"
 #include "accounts/account_manager.h"
-#include "gui/windows/add-group-window.h"
+#include "contacts/group-manager.h"
 #include "gui/windows/contact-data-window.h"
 #include "misc/misc.h"
 #include "about.h"
@@ -63,7 +64,7 @@ KaduWindowActions::KaduWindowActions(QObject *parent) : QObject(parent)
 		ActionDescription::TypeMainMenu, "addGroupAction",
 		this, SLOT(addGroupActionActivated(QAction *, bool)),
 		"", tr("Add Group")
-	);//TODO 0.6.6: implement and update icons
+	);
 
 	OpenSearch = new ActionDescription(this,
 		ActionDescription::TypeGlobal, "openSearchAction",
@@ -170,7 +171,13 @@ void KaduWindowActions::addUserActionActivated(QAction *sender, bool toggled)
 
 void KaduWindowActions::addGroupActionActivated(QAction *sender, bool toggled)
 {
-	(new AddGroupWindow(dynamic_cast<QWidget *>(sender->parent())))->show();
+	bool ok;
+	QString newGroupName = QInputDialog::getText(dynamic_cast<QWidget *>(sender->parent()), tr("New Group"),
+				tr("Please enter the name for the new group:"), QLineEdit::Normal,
+				QString::null, &ok);
+
+	if (ok && !newGroupName.isEmpty() && GroupManager::instance()->acceptableGroupName(newGroupName))
+		GroupManager::instance()->byName(newGroupName, true);
 }
 
 void KaduWindowActions::searchInDirectoryActionActivated(QAction *sender, bool toggled)
