@@ -112,10 +112,6 @@ MainConfigurationWindow::MainConfigurationWindow()
 	((QWidget *)(widget()->widgetById("debug")->parent()))->hide();
 #endif
 
-#ifndef Q_WS_X11
-	((QWidget *)(widget()->widgetById("windowActivationMethodGroup")->parent()))->hide();
-#endif
-
 #ifndef Q_OS_WIN
 	((QWidget *)(widget()->widgetById("startup")->parent()))->hide();
 #endif

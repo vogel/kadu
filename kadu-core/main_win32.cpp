@@ -14,6 +14,7 @@
 
 #include "config_file.h"
 #include "misc/misc.h"
+#include "kadu.h"
 
 #include <windows.h>
 #include <dbghelp.h>
@@ -98,7 +99,7 @@ void enableSignalHandling()
 	char *t=getenv("DISABLE_DUMPS");
 	if(!t){
 		MiniDumpWriteDump_f=(MiniDumpWriteDump_t)QLibrary::resolve("dbghelp", "MiniDumpWriteDump");
-		SetUnhandledExceptionFilter(exception_handler);
+//		SetUnhandledExceptionFilter(exception_handler);
 	}
 }
 

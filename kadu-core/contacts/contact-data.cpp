@@ -283,6 +283,7 @@ bool ContactData::isIgnored()
 bool ContactData::setIgnored(bool ignored)
 {
 	Ignored = ignored;
+	return Ignored; // XXX: nie wiem co to
 }
 
 bool ContactData::isBlocked(Account *account)
@@ -308,6 +309,8 @@ bool ContactData::setOfflineTo(Account *account, bool offlineTo)
 		cad->setOfflineTo(offlineTo);
 	else
 		OfflineTo = offlineTo;
+
+	return true; // XXX
 }
 
 bool ContactData::isInGroup(Group *group)

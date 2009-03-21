@@ -19,11 +19,13 @@
 #include "contact.h"
 #include "contact-list.h"
 
+#include "exports.h"
+
 class Account;
 class Group;
 class XmlConfigFile;
 
-class ContactManager : public QObject, public StorableObject
+class KADUAPI ContactManager : public QObject, public StorableObject
 {
 	Q_OBJECT
 	Q_DISABLE_COPY(ContactManager)

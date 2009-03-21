@@ -7,11 +7,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifdef _MSC_VER
-#include "kadu-core/kinttypes.h"
-#else
-#include <stdint.h>
-#endif
+#include <QtGlobal>
 
 #include <sndfile.h>
 #include <string.h>
@@ -49,7 +45,7 @@ SoundFile::SoundFile(const char *path):length(0),data(NULL),channels(-1),speed(0
 	if (format == SF_FORMAT_FLOAT || format == SF_FORMAT_DOUBLE)
 	{
 		length *= channels;
-		data = new int16_t[length];
+		data = new qint16[length];
 		float *buffer = new float [length];
 		double scale;
 
@@ -61,13 +57,13 @@ SoundFile::SoundFile(const char *path):length(0),data(NULL),channels(-1),speed(0
 
 		int readcount = sf_read_float (f, buffer, length);
 		for (int m = 0; m < readcount; ++m)
-			data [m] = int16_t(scale * buffer [m]);
+			data [m] = qint16(scale * buffer [m]);
 		delete buffer;
 	}
 	else
 	{
 		length *= channels;
-		data = new int16_t[length];
+		data = new qint16[length];
 		sf_read_short (f, data, length);
 	}
 
@@ -77,7 +73,7 @@ SoundFile::SoundFile(const char *path):length(0),data(NULL),channels(-1),speed(0
 #define SAMPLE_MAX 0x7fff
 #define SAMPLE_MIN -0x7ffe
 
-void SoundFile::setVolume(int16_t *data, int length, float vol)
+void SoundFile::setVolume(qint16 *data, int length, float vol)
 {
 	short *end=data+length;
 	while (data!=end)
@@ -87,7 +83,7 @@ void SoundFile::setVolume(int16_t *data, int length, float vol)
 			tmp = SAMPLE_MAX;
 		else if (tmp < SAMPLE_MIN)
 			tmp = SAMPLE_MIN;
-		*data++=(int16_t)tmp;
+		*data++=(qint16)tmp;
 	}
 }
 

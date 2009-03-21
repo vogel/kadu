@@ -9,7 +9,13 @@
 
 #include <QtCore/QTimer>
 
+#ifdef Q_OS_WIN
+#include <winsock2.h>
+// name conflict..
+#undef MessageBox
+#else
 #include <arpa/inet.h>
+#endif
 
 #include "accounts/account.h"
 

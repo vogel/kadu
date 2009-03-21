@@ -14,7 +14,9 @@
 
 #include "contact.h"
 
-class ContactList : public QList<Contact>
+#include "exports.h"
+
+class KADUAPI ContactList : public QList<Contact>
 {
 
 public:

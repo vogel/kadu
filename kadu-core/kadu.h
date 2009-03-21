@@ -95,7 +95,7 @@ private slots:
 	void connected();
 	void connecting();
 	void disconnected();
-	void imageReceivedAndSaved(UinType sender, uint32_t size, uint32_t crc32, const QString &path);
+	void imageReceivedAndSaved(UinType sender, quint32 size, quint32 crc32, const QString &path);
 	void deleteOldConfigFiles();
 
 	void statusMenuAboutToHide(void);

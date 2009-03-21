@@ -79,7 +79,7 @@ class KADUAPI SearchDialog : public KaduMainWindow
 	QLabel *progress;
 	QRadioButton *r_uin;
 	QRadioButton *r_pers;
-	uint32_t seq;
+	quint32 seq;
 
 	bool searchhidden;
 	bool searching;

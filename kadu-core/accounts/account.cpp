@@ -47,6 +47,7 @@ void Account::setProtocol(Protocol *protocolHandler)
 bool Account::setId(const QString &id)
 {
 	Id = id;
+	return true;
 }
 
 void Account::contactAdded(Contact contact)

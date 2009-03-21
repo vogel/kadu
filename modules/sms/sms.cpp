@@ -15,6 +15,7 @@
 #include <QtGui/QListWidget>
 #include <QtCore/QProcess>
 #include <QtGui/QTextEdit>
+#include <QtGui/QPushButton>
 
 #include "action.h"
 #include "config_file.h"

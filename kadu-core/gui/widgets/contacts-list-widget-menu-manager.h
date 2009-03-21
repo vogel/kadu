@@ -12,9 +12,11 @@
 
 #include <QtCore/QList>
 
+#include "exports.h"
+
 class ActionDescription;
 
-class ContactsListWidgetMenuManager
+class KADUAPI ContactsListWidgetMenuManager
 {
 	Q_DISABLE_COPY(ContactsListWidgetMenuManager)
 

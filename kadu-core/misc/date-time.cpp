@@ -10,7 +10,11 @@
 #include <QtCore/QDateTime>
 #include <QtGui/QApplication>
 
+#ifdef Q_OS_WIN
+#include <sys/timeb.h>
+#else
 #include <sys/time.h>
+#endif
 #include <time.h>
 
 #include "config_file.h"

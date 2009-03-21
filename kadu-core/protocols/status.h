@@ -13,7 +13,9 @@
 #include <QtCore/QMetaType>
 #include <QtCore/QString>
 
-class Status
+#include "exports.h"
+
+class KADUAPI Status
 {
 public:
 	enum StatusType

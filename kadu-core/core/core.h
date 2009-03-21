@@ -17,10 +17,13 @@
 #include "contacts/contact-list.h"
 #include "protocols/status.h"
 
+#include "exports.h"
+
+
 class KaduWindow;
 class UserStatusChanger;
 
-class Core : public QObject, private AccountsAwareObject
+class KADUAPI Core : public QObject, private AccountsAwareObject
 {
 	Q_OBJECT
 	Q_DISABLE_COPY(Core)

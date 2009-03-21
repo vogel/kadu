@@ -18,6 +18,7 @@
 #include <QtXml/QDomElement>
 
 #include "contact-data.h"
+#include "exports.h"
 
 #define PropertyRead(type, name, capitalized_name, default) \
 	type name() const\
@@ -39,7 +40,7 @@
 class ContactAccountData;
 class XmlConfigFile;
 
-class Contact : public QObject
+class KADUAPI Contact : public QObject
 {
 public:
 	enum ContactType

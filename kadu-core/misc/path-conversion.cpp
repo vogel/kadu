@@ -7,21 +7,27 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <sys/types.h>
-#include <pwd.h>
+#include <QtGlobal>
+
+#ifdef Q_OS_WIN
+#include <windows.h>
+#include <shlobj.h>
+#include <QFile>
+#endif
 
 #include "debug.h"
 #include "kadu_parser.h"
 
 #include "path-conversion.h"
 
-#ifndef Q_WS_WIN
+#ifndef Q_OS_WIN
 #include <unistd.h>
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <stdlib.h>
 #include <string.h>
 #include <errno.h>
+#include <pwd.h>
 
 /**
 	sprawdza czy wskazana �cie�ka jest linkiem symbolicznym	i je�eli jest,
@@ -60,7 +66,6 @@ static bool delinkify(char *path, int maxlen)
 	kdebugf2();
 	return true;
 }
-#endif
 
 /**
 	funkcja poszukuje binarki programu na podstawie argv[0] oraz zmiennej PATH
@@ -70,7 +75,6 @@ static bool delinkify(char *path, int maxlen)
 	w obu przypadkach gwarantowane jest, �e path ko�czy si� znakiem 0
 	(len musi by� > 2)
 **/
-#ifndef Q_OS_WIN
 static char *findMe(const char *argv0, char *path, int len)
 {
 	kdebugf();

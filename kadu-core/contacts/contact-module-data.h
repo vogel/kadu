@@ -13,11 +13,14 @@
 #include <QtNetwork/QHostAddress>
 #include <QtXml/QDomElement>
 
+#include "exports.h"
+
+
 class Account;
 class StoragePoint;
 class XmlConfigFile;
 
-class ContactModuleData
+class KADUAPI ContactModuleData
 {
 	StoragePoint *Storage;
 

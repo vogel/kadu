@@ -17,7 +17,6 @@
 #include "contacts/contact.h"
 #include "contacts/contacts-aware-object.h"
 #include "protocols/status.h"
-
 class QPixmap;
 
 class AccountData;
@@ -25,7 +24,7 @@ class Protocol;
 class Status;
 class XmlConfigFile;
 
-class Account : public QObject, public ContactsAwareObject
+class KADUAPI Account : public QObject, public ContactsAwareObject
 {
 	Q_OBJECT
 

@@ -133,4 +133,6 @@ unsigned int FileTransfer::percent()
 bool FileTransfer::accept(const QFile &file)
 {
 	LocalFileName = file.fileName();
+	// XXX
+	return true;
 }

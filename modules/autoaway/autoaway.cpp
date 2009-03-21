@@ -11,6 +11,7 @@
 #include <QtGui/QCheckBox>
 #include <QtGui/QLineEdit>
 #include <QtGui/QSpinBox>
+#include <QtGui/QLineEdit>
 
 #include "accounts/account.h"
 #include "accounts/account_manager.h"

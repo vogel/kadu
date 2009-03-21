@@ -7,7 +7,14 @@
  *                                                                         *
  ***************************************************************************/
 
+#include <QtGlobal>
+
+#ifdef Q_OS_WIN
+#include <winsock2.h>
+#undef MessageBox
+#else
 #include <arpa/inet.h>
+#endif
 
 #include "accounts/account.h"
 #include "contacts/contact.h"
@@ -28,6 +35,7 @@
 #include "gadu-contact-account-data.h"
 
 #include "gadu-protocol.h"
+
 
 DccManager::DccManager(GaduProtocol *protocol) :
 		QObject(protocol), Protocol(protocol), MainSocketNotifiers(0)

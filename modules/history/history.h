@@ -84,7 +84,7 @@ class HISTORYAPI HistoryManager : public QObject
 
 	private slots:
 		void messageReceived(Protocol *protocol, UserListElements senders, const QString& msg, time_t time);
-		void imageReceivedAndSaved(UinType sender, uint32_t size, uint32_t crc32, const QString &path);
+		void imageReceivedAndSaved(UinType sender, quint32 size, quint32 crc32, const QString &path);
 		void checkImagesTimeouts();
 		void statusChanged(UserListElement elem, QString protocolName,
 					const UserStatus &oldStatus, bool massively, bool last);

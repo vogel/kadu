@@ -78,7 +78,7 @@ public:
 	void setBlocked(bool blocked) { Blocked = blocked; }
 
 	bool isOfflineTo() { return OfflineTo; }
-	bool setOfflineTo(bool offlineTo) { OfflineTo = offlineTo; }
+	void setOfflineTo(bool offlineTo) { OfflineTo = offlineTo; }
 
 public slots:
 	void setDNSName(const QString &ident, const QString &dnsName) { DnsName = dnsName; }

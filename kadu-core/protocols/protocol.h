@@ -18,10 +18,6 @@
 #include <sys/types.h>
 #endif /* __sun__ */
 
-#ifdef _MSC_VER
-#include "kinttypes.h"
-#endif
-
 #include "exports.h"
 
 #include "conference/conference.h"
@@ -30,7 +26,7 @@
 
 #include "status.h"
 
-typedef uint32_t UinType;
+typedef quint32 UinType;
 
 class QPixmap;
 

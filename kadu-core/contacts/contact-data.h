@@ -19,6 +19,8 @@
 
 #include "configuration/storable-object.h"
 
+#include "exports.h"
+
 #define Property(type, name, capitalized_name) \
 	type name() const { return capitalized_name; } \
 	void set##capitalized_name(const type &name) { capitalized_name = name; }
@@ -29,7 +31,7 @@ class ContactModuleData;
 class Group;
 class XmlConfigFile;
 
-class ContactData : public QSharedData, public StorableObject
+class KADUAPI ContactData : public QSharedData, public StorableObject
 {
 public:
 	enum ContactGender

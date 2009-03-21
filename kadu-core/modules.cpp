@@ -765,8 +765,8 @@ bool ModulesManager::activateModule(const QString& module_name)
 			kdebugf2();
 			return false;
 		}
-		init = (InitModuleFunc *)m.lib->resolve(module_name+"_init");
-		m.close = (CloseModuleFunc *)m.lib->resolve(module_name+"_close");
+		init = (InitModuleFunc *)m.lib->resolve(qPrintable(module_name+"_init"));
+		m.close = (CloseModuleFunc *)m.lib->resolve(qPrintable(module_name+"_close"));
 		if (init==NULL||m.close==NULL)
 		{
 			MessageBox::msg(tr("Cannot find required functions in module %1.\nMaybe it's not Kadu-compatible Module.").arg(module_name));

@@ -9,7 +9,12 @@
 
 #include <QtCore/QSocketNotifier>
 
+#ifdef Q_OS_WIN
+#include <winsock2.h>
+#else
 #include <arpa/inet.h>
+#endif
+
 #include <libgadu.h>
 
 #include "accounts/account.h"
