@@ -42,8 +42,6 @@ set (SOURCES
 )
 
 set (MOC_SOURCES
-	conference/gadu-conference.h
-
 	dcc/dcc-manager.h
 	dcc/dcc-socket-notifiers.h
 
@@ -51,8 +49,6 @@ set (MOC_SOURCES
 
 	file-transfer/gadu-file-transfer.h
 	
-	open-chat-with/gadu-open-chat-with-runner.h
-
 	server/gadu-server-connector.h
 	server/gadu-server-change-password.h
 	server/gadu-server-register-account.h
@@ -71,7 +67,6 @@ set (MOC_SOURCES
 	socket-notifiers/gadu-socket-notifiers.h
 	socket-notifiers/gadu-token-socket-notifiers.h
 
-	gadu-account.h
 	gadu-configuration-dialog.h
 	gadu-contact-account-data-widget.h
 	gadu-protocol.h

@@ -248,12 +248,6 @@ set (kadu_MOC_SRCS
 	gui/windows/open-chat-with/open-chat-with-runner-manager.h
 	
 	misc/choose-description.h
-	misc/coding-conversion.h
-	misc/date-time.h
-	misc/image-dialog.h
-	misc/image-widget.h
-	misc/misc.h
-	misc/path-conversion.h
 	misc/token-dialog.h
 
 	protocols/protocol.h
