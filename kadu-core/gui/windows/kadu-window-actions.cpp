@@ -7,6 +7,7 @@
  *                                                                         *
  ***************************************************************************/
 
+#include <QtCore/QLocale>
 #include <QtGui/QApplication>
 #include <QtGui/QClipboard>
 #include <QtGui/QInputDialog>
