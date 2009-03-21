@@ -1300,12 +1300,18 @@ bool GaduProtocol::sendMessage(UserListElements users, Message &message)
 
 	if (stop)
 	{
+                if (formats)
+                        delete[] formats;
+
 		kdebugmf(KDEBUG_FUNCTION_END, "end: filter stopped processing\n");
 		return false;
 	}
 
 	if (data.length() >= 2000)
 	{
+                if (formats)
+                        delete[] formats;
+
 		MessageBox::msg(tr("Filtered message too long (%1>=%2)").arg(data.length()).arg(2000), false, "Warning");
 		kdebugmf(KDEBUG_FUNCTION_END, "end: filtered message too long\n");
 		return false;
