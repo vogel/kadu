@@ -321,7 +321,7 @@ bool ContactData::isInGroup(Group *group)
 bool ContactData::showInAllGroup()
 {
 	foreach (const Group *group, Groups)
-		if (!group->showInAllGroup())
+		if (0 != group && !group->showInAllGroup())
 			return false;
 	return true;
 }
