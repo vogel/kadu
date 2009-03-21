@@ -12,6 +12,7 @@
 #include <QtGui/QComboBox>
 #include <QtGui/QGroupBox>
 #include <QtGui/QGridLayout>
+#include <QtGui/QKeyEvent>
 #include <QtGui/QLabel>
 #include <QtGui/QLineEdit>
 #include <QtGui/QRadioButton>
@@ -20,20 +21,16 @@
 
 #include "accounts/account.h"
 #include "accounts/account_manager.h"
-
 #include "chat/chat_manager.h"
-
 #include "contacts/contact-manager.h"
-
 #include "contacts/model/contact-list-model.h"
-
+#include "core/core.h"
 #include "gui/widgets/contacts-list-widget.h"
-
 #include "gui/windows/contact-data-window.h"
+#include "gui/windows/kadu-window.h"
 
 #include "config_file.h"
 #include "debug.h"
-#include "kadu.h"
 #include "message_box.h"
 #include "misc/misc.h"
 #include "toolbar.h"
@@ -290,7 +287,7 @@ void SearchDialog::addFound()
 	ContactList found = selected();
 
 	foreach (Contact contact, found)
-		(new ContactDataWindow(contact, kadu))->show();
+		(new ContactDataWindow(contact, Core::instance()->kaduWindow()))->show();
 }
 
 void SearchDialog::chatFound()

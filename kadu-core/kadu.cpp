@@ -113,217 +113,16 @@ const char *Kadu::SyntaxTextNotify = QT_TRANSLATE_NOOP
 	"#{event} - name of event,\n"
 );
 
-bool Kadu::Closing = false;
-
-void disableNonIdUles(KaduAction *action)
-{
-	kdebugf();
-	foreach(const Contact contact, action->contacts())
-		if (contact.accountData(AccountManager::instance()->defaultAccount()) == 0)
-		{
-			action->setEnabled(false);
-			return;
-		}
-
-	action->setEnabled(true);
-	kdebugf2();
-}
-
-void disableContainsSelfUles(KaduAction *action)
-{
-	if (action->contacts().contains(Core::instance()->myself()))
-	{
-		action->setEnabled(false);
-		return;
-	}
-
-	action->setEnabled(true);
-}
-
-void checkOfflineTo(KaduAction *action)
-{
-	kdebugf();
-	Account *account = AccountManager::instance()->defaultAccount();
-	bool on = true;
-	foreach(const Contact contact, action->contacts())
-		if (contact.accountData(account) == 0 || !contact.isOfflineTo(account))
-		{
-			on = false;
-			break;
-		}
-	action->setChecked(on);
-	kdebugf2();
-}
-
-void checkHideDescription(KaduAction *action)
-{
-	Account *account = AccountManager::instance()->defaultAccount();
-
-	foreach(const Contact contact, action->contacts())
-		if (contact.accountData(account) == 0)
-		{
-			action->setEnabled(false);
-			return;
-		}
-	action->setEnabled(true);
-
-	bool on = false;
-	foreach(const Contact contact, action->contacts())
-	{
-		ContactKaduData *ckd = contact.moduleData<ContactKaduData>(true);
-		if (!ckd)
-			continue;
-
-		if (ckd->hideDescription())
-		{
-			on = true;
-			break;
-		}
-	}
-
-	action->setChecked(on);
-}
-
-void disableNotOneUles(KaduAction *action)
-{
-	kdebugf();
-
-	if (action->contact().isNull())
-	{
-		action->setEnabled(false);
-		return;
-	}
-
-	action->setEnabled(true);
-	kdebugf2();
-}
-
-void disableNoGaduUle(KaduAction *action)
-{
-	kdebugf();
-
-	Contact contact = action->contact();
-
-	if (contact.isNull())
-	{
-		action->setEnabled(false);
-		return;
-	}
-
-	if (!contact.accountData(AccountManager::instance()->defaultAccount()))
-	{
-		action->setEnabled(false);
-		return;
-	}
-
-	action->setEnabled(true);
-	kdebugf2();
-}
-
-void disableNoGaduDescription(KaduAction *action)
-{
-	kdebugf();
-
-	Contact contact = action->contact();
-	Account *account = AccountManager::instance()->defaultAccount();
-
-	if (contact.isNull())
-	{
-		action->setEnabled(false);
-		return;
-	}
-
-	if (!contact.accountData(account))
-	{
-		action->setEnabled(false);
-		return;
-	}
-
-	if (contact.accountData(account)->status().description().isEmpty())
-	{
-		action->setEnabled(false);
-		return;
-	}
-
-	action->setEnabled(true);
-	kdebugf2();
-}
-
-void disableNoGaduDescriptionUrl(KaduAction *action)
-{
-	kdebugf();
-
-	Account *account = AccountManager::instance()->defaultAccount();
-	Contact contact = action->contact();
-
-	if (contact.isNull())
-	{
-		action->setEnabled(false);
-		return;
-	}
-
-	if (!contact.accountData(account))
-	{
-		action->setEnabled(false);
-		return;
-	}
-
-	if (contact.accountData(account)->status().description().isEmpty())
-	{
-		action->setEnabled(false);
-		return;
-	}
-
-	if (contact.accountData(account)->status().description().indexOf(HtmlDocument::urlRegExp()) < 0)
-	{
-		action->setEnabled(false);
-		return;
-	}
-
-	action->setEnabled(true);
-	kdebugf2();
-}
-
-void disableNoEMail(KaduAction *action)
-{
-	kdebugf();
-
-	if (action->contacts().count() != 1)
-	{
-		action->setEnabled(false);
-		return;
-	}
-
-	const ContactList contacts = action->contacts();
-
-	if (contacts[0].email().isEmpty() || contacts[0].email().indexOf(HtmlDocument::mailRegExp()) < 0)
-	{
-		action->setEnabled(false);
-		return;
-	}
-
-	action->setEnabled(true);
-	kdebugf2();
-}
-
 /* a monstrous constructor so Kadu would take longer to start up */
 Kadu::Kadu(QWidget *parent)
-	: KaduMainWindow(parent),
-	MenuBar(0), KaduMenu(0), ContactsMenu(0), HelpMenu(0), RecentChatsMenu(0), GroupBar(0),
-	ContactsWidget(0), statusMenu(0), statusButton(), lastPositionBeforeStatusMenuHide(),
-	StartTime(QDateTime::currentDateTime()),
-	ShowMainWindowOnStart(true),
-	DoBlink(false), BlinkOn(false)
-{
+	: KaduMainWindow(parent)
+{/*
 	kdebugf();
 
 	Core *core = Core::instance();
 	connect(core, SIGNAL(connecting()), this, SLOT(connecting()));
 	connect(core, SIGNAL(connected()), this, SLOT(connected()));
 	connect(core, SIGNAL(disconnected()), this, SLOT(disconnected()));
-
-	GroupManager::instance()->loadConfiguration();
-	ContactManager::instance()->loadConfiguration(xml_config_file);
 
 	kadu = this;
 	blinktimer = 0;
@@ -349,7 +148,7 @@ Kadu::Kadu(QWidget *parent)
 
 	// groupbar
 	GroupBar = new GroupTabBar(this);
-	hbox_layout->setStretchFactor(GroupBar, 1);
+	hbox_layout->setStretchFactor(GroupBar, 1);*/
 
 #if 0
 	splitStatusChanger = new SplitStatusChanger(GG_STATUS_DESCR_MAXSIZE);
@@ -357,9 +156,7 @@ Kadu::Kadu(QWidget *parent)
 #endif
 
 	// gadu, chat, search
-	GaduProtocol::initModule();
-	ChatManager::initModule();
-	SearchDialog::initModule();
+/*
 
 	ContactsWidget = new ContactsListWidget(this);
 	ContactsWidget->setModel(new ContactsModel(ContactManager::instance(), this));
@@ -372,76 +169,7 @@ Kadu::Kadu(QWidget *parent)
 
 	connect(ContactsWidget, SIGNAL(contactActivated(Contact)), this, SLOT(sendMessage(Contact)));
 	connect(ContactsWidget, SIGNAL(currentContactChanged(Contact)), this, SLOT(currentChanged(Contact)));
-
-	ActionDescription *writeEmailActionDescription = new ActionDescription(0,
-		ActionDescription::TypeUser, "writeEmailAction",
-		this, SLOT(writeEMailActionActivated(QAction *, bool)),
-		"WriteEmail", tr("Write email message"), false, "",
-		disableNoEMail
-	);
-	ContactsListWidgetMenuManager::instance()->addActionDescription(writeEmailActionDescription);
-
-	ActionDescription *copyDescriptionActionDescription = new ActionDescription(0,
-		ActionDescription::TypeUser, "copyDescriptionAction",
-		this, SLOT(copyDescriptionActionActivated(QAction *, bool)),
-		"CopyDescription", tr("Copy description"), false, "",
-		disableNoGaduDescription
-	);
-	ContactsListWidgetMenuManager::instance()->addActionDescription(copyDescriptionActionDescription);
-
-	ActionDescription *openDescriptionLinkActionDescription = new ActionDescription(0,
-		ActionDescription::TypeUser, "openDescriptionLinkAction",
-		this, SLOT(openDescriptionLinkActionActivated(QAction *, bool)),
-		"OpenDescriptionLink", tr("Open description link in browser"), false, "",
-		disableNoGaduDescriptionUrl
-	);
-	ContactsListWidgetMenuManager::instance()->addActionDescription(openDescriptionLinkActionDescription);
-
-	ActionDescription *copyPersonalInfoActionDescription = new ActionDescription(0,
-		ActionDescription::TypeUser, "copyPersonalInfoAction",
-		this, SLOT(copyPersonalInfoActionActivated(QAction *, bool)),
-		"CopyPersonalInfo", tr("Copy personal info")
-	);
-	ContactsListWidgetMenuManager::instance()->addActionDescription(copyPersonalInfoActionDescription);
-
-	ActionDescription *lookupUserInfoActionDescription = new ActionDescription(0,
-		ActionDescription::TypeUser, "lookupUserInfoAction",
-		this, SLOT(lookupInDirectoryActionActivated(QAction *, bool)),
-		"LookupUserInfo", tr("Search in directory"), false, "",
-		disableNoGaduUle
-	);
-	ContactsListWidgetMenuManager::instance()->addActionDescription(lookupUserInfoActionDescription);
-
-	ContactsListWidgetMenuManager::instance()->addSeparator();
-
-	ContactsListWidgetMenuManager::instance()->addManagementActionDescription(chat_manager->ignoreUserActionDescription);
-	ContactsListWidgetMenuManager::instance()->addManagementActionDescription(chat_manager->blockUserActionDescription);
-
-	offlineToUserActionDescription = new ActionDescription(0,
-		ActionDescription::TypeUser, "offlineToUserAction",
-		this, SLOT(offlineToUserActionActivated(QAction *, bool)),
-		"Offline", tr("Offline to user"), true, "",
-		checkOfflineTo
-	);
-	ContactsListWidgetMenuManager::instance()->addManagementActionDescription(offlineToUserActionDescription);
-
-	hideDescriptionActionDescription = new ActionDescription(0,
-		ActionDescription::TypeUser, "hideDescriptionAction",
-		this, SLOT(hideDescriptionActionActivated(QAction *, bool)),
-		"ShowDescription_off", tr("Hide description"), true, "",
-		checkHideDescription
-	);
-	ContactsListWidgetMenuManager::instance()->addManagementActionDescription(hideDescriptionActionDescription);
-
-	ContactsListWidgetMenuManager::instance()->addManagementSeparator();
-
-	deleteUsersActionDescription = new ActionDescription(0,
-		ActionDescription::TypeUser, "deleteUsersAction",
-		this, SLOT(deleteUsersActionActivated(QAction *, bool)),
-		"RemoveFromUserlist", tr("Delete")
-	);
-	deleteUsersActionDescription->setShortcut("kadu_deleteuser");
-	ContactsListWidgetMenuManager::instance()->addManagementActionDescription(deleteUsersActionDescription);
+*/
 
 // 	groups_manager->setTabBar(GroupBar);
 
@@ -453,7 +181,7 @@ Kadu::Kadu(QWidget *parent)
 // TODO: 0.6.6 some way of setting title needed
 //	setWindowTitle(tr("Kadu: %1").arg(Myself.ID("Gadu")));
 
-
+/*
 	inactiveUsersAction = new ActionDescription(0,
 		ActionDescription::TypeUserList, "inactiveUsersAction",
 		this, SLOT(inactiveUsersActionActivated(QAction *, bool)),
@@ -504,7 +232,6 @@ Kadu::Kadu(QWidget *parent)
 	);
 	connect(useProxyActionDescription, SIGNAL(actionCreated(KaduAction *)), this, SLOT(useProxyActionCreated(KaduAction *)));
 
-	/* guess what */
 	createStatusPopupMenu();
 
 	connect(statusMenu, SIGNAL(aboutToHide()), this, SLOT(statusMenuAboutToHide()));
@@ -540,237 +267,7 @@ Kadu::Kadu(QWidget *parent)
 
 	configurationUpdated();
 
-	kdebugf2();
-}
-
-QVBoxLayout * Kadu::mainLayout() const
-{
-	return MainLayout;
-}
-
-void Kadu::writeEMailActionActivated(QAction *sender, bool toggled)
-{
-	kdebugf();
-
-	KaduMainWindow *window = dynamic_cast<KaduMainWindow *>(sender->parent());
-	if (!window)
-		return;
-
-	ContactList contacts = window->contacts();
-	if (contacts.count() < 1)
-		return;
-
-	Contact contact = contacts[0];
-	if (!contact.email().isEmpty())
-		openMailClient(contact.email());
-
-	kdebugf2();
-}
-
-void Kadu::copyDescriptionActionActivated(QAction *sender, bool toggled)
-{
-	kdebugf();
-
-	KaduMainWindow *window = dynamic_cast<KaduMainWindow *>(sender->parent());
-	if (!window)
-		return;
-
-	Contact contact = window->contact();
-	if (contact.isNull())
-		return;
-
-	Account *account = AccountManager::instance()->defaultAccount();
-	ContactAccountData *data = contact.accountData(account);
-
-	if (!data)
-		return;
-
-	QString description = data->status().description();
-	if (description.isEmpty())
-		return;
-
-	QApplication::clipboard()->setText(description, QClipboard::Selection);
-	QApplication::clipboard()->setText(description, QClipboard::Clipboard);
-
-	kdebugf2();
-}
-
-void Kadu::openDescriptionLinkActionActivated(QAction *sender, bool toggled)
-{
-	kdebugf();
-
-	KaduMainWindow *window = dynamic_cast<KaduMainWindow *>(sender->parent());
-	if (!window)
-		return;
-
-	Contact contact = window->contact();
-	if (contact.isNull())
-		return;
-
-	Account *account = AccountManager::instance()->defaultAccount();
-	ContactAccountData *data = contact.accountData(account);
-
-	if (!data)
-		return;
-
-	QString description = data->status().description();
-	if (description.isEmpty())
-		return;
-
-	QRegExp url = HtmlDocument::urlRegExp();
-	int idx_start = url.indexIn(description);
-	if (idx_start >= 0)
-		openWebBrowser(description.mid(idx_start, url.matchedLength()));
-
-	kdebugf2();
-}
-
-void Kadu::copyPersonalInfoActionActivated(QAction *sender, bool toggled)
-{
-	kdebugf();
-
-	KaduMainWindow *window = dynamic_cast<KaduMainWindow *>(sender->parent());
-	if (!window)
-		return;
-
-	ContactList contacts = window->contacts();
-
-	QStringList infoList;
-	QString copyPersonalDataSyntax = config_file.readEntry("General", "CopyPersonalDataSyntax", tr("Contact: %a[ (%u)]\n[First name: %f\n][Last name: %r\n][Mobile: %m\n]"));
-	foreach (Contact contact, contacts)
-		infoList.append(KaduParser::parse(copyPersonalDataSyntax, contact.prefferedAccount(), contact, false));
-
-	QString info = infoList.join("\n");
-	if (info.isEmpty())
-		return;
-
-	QApplication::clipboard()->setText(info, QClipboard::Selection);
-	QApplication::clipboard()->setText(info, QClipboard::Clipboard);
-
-	kdebugf2();
-}
-
-void Kadu::lookupInDirectoryActionActivated(QAction *sender, bool toggled)
-{
-	kdebugf();
-
-	KaduMainWindow *window = dynamic_cast<KaduMainWindow *>(sender->parent());
-	if (!window)
-		return;
-
-	ContactList contacts = window->contacts();
-
-	if (contacts.count() != 1)
-	{
-//		searchInDirectoryActionActivated(0, false); TODO: 0.6.6
-		return;
-	}
-
-	Contact contact = contacts[0];
-	GaduContactAccountData *cad = dynamic_cast<GaduContactAccountData *>(AccountManager::instance()->defaultAccount());
-	if (!cad)
-		return;
-
-	SearchDialog *sd = new SearchDialog(kadu/*, cad->uin()*/);
-	sd->show();
-	sd->firstSearch();
-
-	kdebugf2();
-}
-
-void Kadu::offlineToUserActionActivated(QAction *sender, bool toggled)
-{
-	kdebugf();
-	Account *account = AccountManager::instance()->defaultAccount();
-	if (toggled && !config_file.readBoolEntry("General", "PrivateStatus"))
-	{
-		if (MessageBox::ask("You need to have private status to do it, would you like to set private status now?"))
-			changePrivateStatus->setChecked(true);
-		else
-		{
-			sender->setChecked(!toggled);
-			return;
-		}
-	}
-
-	KaduMainWindow *window = dynamic_cast<KaduMainWindow *>(sender->parent());
-	if (!window)
-		return;
-
-	ContactList contacts = window->contacts();
-	bool on = true;
-	foreach(const Contact contact, contacts)
-		if (contact.accountData(account) == 0 || !contact.isOfflineTo(account))
-		{
-			on = false;
-			break;
-		}
-	/*
-	foreach(const Contact contact, contacts)
-		if (contact.accountData(account) != 0 || contact.isOfflineTo(account) == on)
-			//TODO: 0.6.6
-			user.setProtocolData("Gadu", "OfflineTo", !on); // TODO: here boolean
-	*/
-// TODO: 0.6.6
-// 	userlist->writeToConfig();
-
-	foreach (KaduAction *action, offlineToUserActionDescription->actions())
-	{
-		if (action->contacts() == contacts)
-			action->setChecked(!on);
-	}
-
-	kdebugf2();
-}
-
-void Kadu::hideDescriptionActionActivated(QAction *sender, bool toggled)
-{
-	kdebugf();
-
-	KaduMainWindow *window = dynamic_cast<KaduMainWindow *>(sender->parent());
-	if (!window)
-		return;
-
-	ContactList contacts = window->contacts();
-
-	foreach(const Contact &contact, contacts)
-	{
-		if (contact.isNull() || contact.isAnonymous())
-			continue;
-
-		ContactKaduData *ckd = contact.moduleData<ContactKaduData>(true);
-		if (!ckd)
-			continue;
-
-		if (ckd->hideDescription() != toggled)
-		{
-			ckd->setHideDescription(toggled);
-			ckd->storeConfiguration();
-			delete ckd;
-		}
-	}
-
-	foreach(KaduAction *action, hideDescriptionActionDescription->actions())
-	{
-		if (action->contacts() == contacts)
-			action->setChecked(toggled);
-	}
-
-	kdebugf2();
-}
-
-void Kadu::deleteUsersActionActivated(QAction *sender, bool toggled)
-{
-	kdebugf();
-
-	KaduMainWindow *window = dynamic_cast<KaduMainWindow *>(sender->parent());
-	if (!window)
-		return;
-
-	ContactList contacts = window->contacts();
-	removeUsers(contacts);
-
-	kdebugf2();
+	kdebugf2();*/
 }
 
 void Kadu::openRecentChats(QAction *action)
@@ -943,7 +440,7 @@ void Kadu::openChatWith()
 
 void Kadu::showStatusActionActivated(QAction *sender, bool toggled)
 {
-	statusMenu->exec(QCursor::pos());
+// 	statusMenu->exec(QCursor::pos());
 }
 
 void Kadu::showStatusActionCreated(KaduAction *action)
@@ -996,9 +493,9 @@ void Kadu::changeAppearance()
 
 	QApplication::setStyle(config_file.readEntry("Look", "QtStyle"));
 
-	GroupBar->setFont(QFont(config_file.readFontEntry("Look", "UserboxFont").family(), config_file.readFontEntry("Look", "UserboxFont").pointSize(),75));
+// 	GroupBar->setFont(QFont(config_file.readFontEntry("Look", "UserboxFont").family(), config_file.readFontEntry("Look", "UserboxFont").pointSize(),75));
 
-	kadu->statusButton->setShown(config_file.readBoolEntry("Look", "ShowStatusButton"));
+// 	kadu->statusButton->setShown(config_file.readBoolEntry("Look", "ShowStatusButton"));
 
 	const Status &stat = AccountManager::instance()->status();
 
@@ -1008,30 +505,13 @@ void Kadu::changeAppearance()
 		pix = account->statusPixmap(stat);
 
 	QIcon icon(pix);
-	statusButton->setIcon(icon);
+// 	statusButton->setIcon(icon);
 
 	setStatusActionsIcon();
 
-	setMainWindowIcon(pix);
-	emit statusPixmapChanged(icon, Status::name(stat));
-	kdebugf2();
-}
+	Core::instance()->setIcon(pix);
 
-void Kadu::removeUsers(ContactList contacts)
-{
-	kdebugf();
-	if (!contacts.isEmpty())
-	{
-		QStringList altNicks;
-		foreach (Contact contact, contacts)
-			altNicks.append(contact.display());
-		if (MessageBox::ask(tr("Selected users:\n%0 will be deleted. Are you sure?").arg(altNicks.join(QString(','))), "Warning", kadu))
-		{
-			foreach (Contact contact, contacts)
-				ContactManager::instance()->removeContact(contact);
-			ContactManager::instance()->storeConfiguration(xml_config_file);
-		}
-	}
+	emit statusPixmapChanged(icon, Status::name(stat));
 	kdebugf2();
 }
 
@@ -1047,7 +527,7 @@ void Kadu::blink()
 	else if (!DoBlink && !gadu->isConnected())
 	{
 		icon = QIcon(gadu->statusPixmap(Status::Offline));
-		statusButton->setIcon(icon);
+// 		statusButton->setIcon(icon);
 		emit statusPixmapChanged(icon, "Offline");
 		return;
 	}
@@ -1065,7 +545,7 @@ void Kadu::blink()
 		iconName = Status::name(stat);
 	}
 
-	statusButton->setIcon(icon);
+// 	statusButton->setIcon(icon);
 	emit statusPixmapChanged(icon, iconName);
 
 	BlinkOn = !BlinkOn;
@@ -1146,7 +626,7 @@ void Kadu::slotHandleState(int command)
 		case 1:
 			status.setType(Status::Online);
 			status.setDescription(status.description());
-			ChooseDescription::show(status, lastPositionBeforeStatusMenuHide);
+// 			ChooseDescription::show(status, lastPositionBeforeStatusMenuHide);
 			break;
 		case 2:
 			status.setType(Status::Busy);
@@ -1155,7 +635,7 @@ void Kadu::slotHandleState(int command)
 		case 3:
 			status.setType(Status::Busy);
 			status.setDescription(status.description());
-			ChooseDescription::show(status, lastPositionBeforeStatusMenuHide);
+// 			ChooseDescription::show(status, lastPositionBeforeStatusMenuHide);
 			break;
 		case 4:
 			status.setType(Status::Invisible);
@@ -1164,7 +644,7 @@ void Kadu::slotHandleState(int command)
 		case 5:
 			status.setType(Status::Invisible);
 			status.setDescription(status.description());
-			ChooseDescription::show(status, lastPositionBeforeStatusMenuHide);
+// 			ChooseDescription::show(status, lastPositionBeforeStatusMenuHide);
 			break;
 		case 6:
 			status.setType(Status::Offline);
@@ -1173,7 +653,7 @@ void Kadu::slotHandleState(int command)
 		case 7:
 			status.setType(Status::Offline);
 			status.setDescription(status.description());
-			ChooseDescription::show(status, lastPositionBeforeStatusMenuHide);
+// 			ChooseDescription::show(status, lastPositionBeforeStatusMenuHide);
 			break;
 	}
 
@@ -1242,7 +722,6 @@ bool Kadu::close(bool quit)
 	}
 	else
 	{
-		Closing = true;
 
 #if 0
 		status_changer_manager->unregisterStatusChanger(splitStatusChanger);
@@ -1299,7 +778,7 @@ Kadu::~Kadu(void)
 void Kadu::createRecentChatsMenu()
 {
 	kdebugf();
-
+/*
 	RecentChatsMenu->clear();
 	QAction *action;
 	if (chat_manager->closedChatUsers().isEmpty())
@@ -1307,9 +786,9 @@ void Kadu::createRecentChatsMenu()
 		action = RecentChatsMenu->addAction(tr("No closed chats found"));
 		action->setEnabled(false);
 
-		kdebugf2();
+		kdebugf2();*/
 		return;
-	}
+// 	}
 
 	unsigned int index = 0; // indeks pozycji w popupie
 
@@ -1325,11 +804,11 @@ void Kadu::createRecentChatsMenu()
 		}
 		if (i < contactsCount)
 			chat_users.append(" [...]");
-
+/*
  		action = new QAction(icons_manager->loadIcon("OpenChat"), chat_users, this);
  		action->setData(index);
  		RecentChatsMenu->addAction(action);
- 
+ */
  		index++;
 	}
 
@@ -1338,12 +817,12 @@ void Kadu::createRecentChatsMenu()
 
 void Kadu::statusMenuAboutToHide()
 {
-	lastPositionBeforeStatusMenuHide = statusMenu->pos();
+// 	lastPositionBeforeStatusMenuHide = statusMenu->pos();
 }
 
 void Kadu::dockMenuAboutToHide()
 {
-	lastPositionBeforeStatusMenuHide = dockMenu->pos();
+// 	lastPositionBeforeStatusMenuHide = dockMenu->pos();
 }
 
 void Kadu::createStatusPopupMenu()
@@ -1353,7 +832,7 @@ void Kadu::createStatusPopupMenu()
 	QPixmap pix;
 	QIcon icon;
 
-	statusMenu = new QMenu(this);
+// 	statusMenu = new QMenu(this);
 	dockMenu = new QMenu(this);
 
 	changeStatusActionGroup = new QActionGroup(this);
@@ -1416,7 +895,7 @@ void Kadu::createStatusPopupMenu()
 	changeStatusActionGroup->addAction(changeStatusToInvisibleDesc);
 	changeStatusActionGroup->addAction(changeStatusToOffline);
 	changeStatusActionGroup->addAction(changeStatusToOfflineDesc);
-
+/*
 	statusMenu->addAction(changeStatusToOnline);
 	statusMenu->addAction(changeStatusToOnlineDesc);
 	statusMenu->addAction(changeStatusToBusy);
@@ -1426,7 +905,7 @@ void Kadu::createStatusPopupMenu()
 	statusMenu->addAction(changeStatusToOffline);
 	statusMenu->addAction(changeStatusToOfflineDesc);
 	statusMenu->addSeparator();
-	statusMenu->addAction(changePrivateStatus);
+	statusMenu->addAction(changePrivateStatus);*/
 
 	dockMenu->addAction(changeStatusToOnline);
 	dockMenu->addAction(changeStatusToOnlineDesc);
@@ -1445,7 +924,8 @@ void Kadu::createStatusPopupMenu()
 //
 ContactList Kadu::contacts()
 {
-	return ContactsWidget->selectedContacts();
+	return ContactList();
+// 	return ContactsWidget->selectedContacts();
 }
 
 void Kadu::show()
@@ -1496,19 +976,6 @@ void Kadu::configurationUpdated()
 	refreshPrivateStatusFromConfigFile();
 
 	changeAppearance();
-
-	if (config_file.readBoolEntry("Look", "UseUserboxBackground", true))
-	{
-		QString type = config_file.readEntry("Look", "UserboxBackgroundDisplayStyle");
-		ContactsWidget->setBackground(config_file.readEntry("Look", "UserboxBackground"),
-			type == "Centered" ? ContactsListWidget::BackgroundCentered
-			: type == "Tiled" ? ContactsListWidget::BackgroundTiled
-			: type == "Stretched" ? ContactsListWidget::BackgroundStretched
-			: type == "TiledAndCentered" ? ContactsListWidget::BackgroundTiledAndCentered
-			: ContactsListWidget::BackgroundNone);
-	}
-	else
-		ContactsWidget->setBackground();
 
 // 	groups_manager->refreshTabBar();
 
@@ -1597,22 +1064,10 @@ void Kadu::startupProcedure()
 {
 	kdebugf();
 
-//	if (ShowMainWindowOnStart)
-//		show();
-
-	Updates::initModule();
-
-	xml_config_file->makeBackup();
-
 	status_changer_manager->enable();
 	setDefaultStatus();
 
 	kdebugf2();
-}
-
-void Kadu::setShowMainWindowOnStart(bool show)
-{
-	ShowMainWindowOnStart = show;
 }
 
 void Kadu::statusChanged(Account *account, Status status)
@@ -1652,7 +1107,7 @@ void Kadu::showStatusOnMenu(int statusNr)
 // 	changePrivateStatus->setChecked(gadu->status().isFriendsOnly());
 // TODO: 0.6.6
 
-	statusButton->setText(qApp->translate("@default", Status::name(gadu->status()).toAscii().data()));
+// 	statusButton->setText(qApp->translate("@default", Status::name(gadu->status()).toAscii().data()));
 	changeStatusToOfflineDesc->setEnabled(statusNr != 6);
 	changeStatusToOffline->setEnabled(statusNr != 7);
 
@@ -1660,8 +1115,8 @@ void Kadu::showStatusOnMenu(int statusNr)
 	QIcon icon(pix);
 	QString iconName = Status::name(gadu->status());
 
-	statusButton->setIcon(icon);
-	setMainWindowIcon(pix);
+// 	statusButton->setIcon(icon);
+	Core::instance()->setIcon(pix);
 
 	foreach(KaduAction *action, showStatusActionDescription->actions())
 		action->setIcon(icon);
@@ -1735,20 +1190,10 @@ void Kadu::deleteOldConfigFiles()
 	kdebugf2();
 }
 
-void Kadu::setMainWindowIcon(const QPixmap &icon)
-{
-	bool blocked = false;
-	emit settingMainIconBlocked(blocked);
-	if (!blocked)
-	{
-		setWindowIcon(icon);
-		QApplication::setWindowIcon(icon);
-	}
-}
-
 const QDateTime &Kadu::startTime() const
 {
-	return StartTime;
+	return QDateTime();
+// 	return StartTime;
 }
 
 void Kadu::customEvent(QEvent *e)

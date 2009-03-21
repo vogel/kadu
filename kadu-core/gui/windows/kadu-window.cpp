@@ -7,6 +7,8 @@
  *                                                                         *
  ***************************************************************************/
 
+#include <QtGui/QApplication>
+#include <QtGui/QCloseEvent>
 #include <QtGui/QHBoxLayout>
 #include <QtGui/QMenu>
 #include <QtGui/QMenuBar>
@@ -334,6 +336,19 @@ void KaduWindow::configurationUpdated()
 {
 	InfoPanel->setVisible(config_file.readBoolEntry("Look", "ShowInfoPanel"));
 	setDocked(Docked);
+
+	if (config_file.readBoolEntry("Look", "UseUserboxBackground", true))
+	{
+		QString type = config_file.readEntry("Look", "UserboxBackgroundDisplayStyle");
+		ContactsWidget->setBackground(config_file.readEntry("Look", "UserboxBackground"),
+			type == "Centered" ? ContactsListWidget::BackgroundCentered
+			: type == "Tiled" ? ContactsListWidget::BackgroundTiled
+			: type == "Stretched" ? ContactsListWidget::BackgroundStretched
+			: type == "TiledAndCentered" ? ContactsListWidget::BackgroundTiledAndCentered
+			: ContactsListWidget::BackgroundNone);
+	}
+	else
+		ContactsWidget->setBackground();
 }
 
 void KaduWindow::insertMenuActionDescription(ActionDescription *actionDescription, MenuType type, int pos)

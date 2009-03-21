@@ -20,7 +20,6 @@
 #include "core/core.h"
 
 #include "debug.h"
-#include "kadu.h"
 #include "misc/misc.h"
 #include "xml_config_file.h"
 
@@ -44,7 +43,7 @@ OpenChatWith::OpenChatWith(QWidget *parent)
 	connect(ContactID, SIGNAL(textChanged(const QString &)), this, SLOT(inputChanged(const QString &)));
 	MainLayout->addWidget(ContactID);
 	
-	ContactsWidget = new ContactsListWidget(kadu);
+	ContactsWidget = new ContactsListWidget(0); // TODO: 0.6.6 fix that one
 	//ContactsWidget->setModel(new ContactsModel(ContactManager::instance(), this));
 	connect(ContactsWidget, SIGNAL(contactActivated(Contact)), this, SLOT(openChat(Contact)));
 	MainLayout->addWidget(ContactsWidget);

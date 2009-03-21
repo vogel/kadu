@@ -33,7 +33,6 @@
 #include "debug.h"
 #include "hot_key.h"
 #include "icons_manager.h"
-#include "kadu.h"
 #include "message_box.h"
 #include "misc/misc.h"
 

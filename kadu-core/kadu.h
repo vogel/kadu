@@ -41,28 +41,7 @@ class KADUAPI Kadu : public KaduMainWindow, public TokenReader, ConfigurationAwa
 {
 	Q_OBJECT
 
-public:
-	enum MenuType
-	{
-		MenuKadu,
-		MenuContacts,
-		MenuHelp
-	};
-
 private:
-
-	struct MenuAction
-	{
-		MenuAction() {}
-		MenuAction(KaduAction *action, MenuType menu)
-		{
-			Action = action;
-			Menu = menu;
-		}
-
- 		KaduAction* Action;
- 		MenuType Menu;
-	};
 
 	ActionDescription *inactiveUsersAction;
 	ActionDescription *descriptionUsersAction;
@@ -88,35 +67,6 @@ private:
 	QAction *changeStatusToOfflineDesc;
 	QAction *changePrivateStatus;
 
-	QMap<ActionDescription *, MenuAction> MenuActions;
-
-	// TODO: remove
-	friend class Wizard;
-
-	static bool Closing;
-	QMenuBar *MenuBar;
-	QMenu *KaduMenu;
-	QMenu *ContactsMenu;
-	QMenu *HelpMenu;
-	QMenu *RecentChatsMenu;
-	GroupTabBar *GroupBar;
-
-	ContactsListWidget *ContactsWidget;
-
-	QWidget *MainWidget;
-	QVBoxLayout *MainLayout;
-
-	QMenu *statusMenu;
-	QPushButton *statusButton;
-	QPoint lastPositionBeforeStatusMenuHide;
-	QDateTime StartTime;
-	QTimer updateInformationPanelTimer;
-
-#if 0
-	SplitStatusChanger *splitStatusChanger;
-#endif
-
-	bool ShowMainWindowOnStart;
 	bool DoBlink;
 	bool BlinkOn;
 
@@ -133,14 +83,6 @@ private slots:
 	void onlineAndDescUsersActionActivated(QAction *sender, bool toggled);
 	
 	void editUserActionActivated(QAction *sender, bool toggled);
-	void offlineToUserActionActivated(QAction *sender, bool toggled);
-	void hideDescriptionActionActivated(QAction *sender, bool toggled);
-	void writeEMailActionActivated(QAction *sender, bool toggled);
-	void copyDescriptionActionActivated(QAction *sender, bool toggled);
-	void openDescriptionLinkActionActivated(QAction *sender, bool toggled);
-	void copyPersonalInfoActionActivated(QAction *sender, bool toggled);
-	void lookupInDirectoryActionActivated(QAction *sender, bool toggled);
-	void deleteUsersActionActivated(QAction *sender, bool toggled);
 
 	void createRecentChatsMenu();
 	void openRecentChats(QAction *action);
@@ -180,12 +122,9 @@ public:
 
 	virtual bool supportsActionType(ActionDescription::ActionType type) {
 		return type & (ActionDescription::TypeGlobal | ActionDescription::TypeUserList | ActionDescription::TypeUser); }
-	virtual ContactsListWidget * contactsListWidget() { return ContactsWidget; }
+	virtual ContactsListWidget * contactsListWidget() { return 0; }
 	virtual ContactList contacts();
 	virtual ChatWidget * chatWidget() { return 0; }
-
-	bool userInActiveGroup(UinType uin);
-	void removeUsers(ContactList contacts);
 
 	/**
 		Zwraca wska�nik na g��wny layout w obiekcie, teraz jest to QVBoxLayout.
@@ -212,9 +151,6 @@ public:
 	static const char *SyntaxText;
 	static const char *SyntaxTextNotify;
 
-	static bool closing() { return Closing; }
-	static void setClosing() { Closing = true; }
-
 	const QDateTime &startTime() const;
 	void refreshPrivateStatusFromConfigFile();
 
@@ -230,19 +166,11 @@ public slots:
 	void blink();
 	virtual bool close(bool quit = false);
 
-	/**
-		Potrzebne dla modu�u dokuj�cego �eby
-		g��wne okno nie miga�o przy starcie...
-	**/
-	void setShowMainWindowOnStart(bool show);
-
 	// odczytuje z obrazka tekst i zapisuje go w drugim parametrze
 	void readTokenValue(QPixmap, QString &);
 
 	// Token Reader
 	virtual QString readToken(const QPixmap &);
-
-	void setMainWindowIcon(const QPixmap &);
 
 	void editUserActionCreated(KaduAction *action);
 	void showStatusActionActivated(QAction *sender, bool toggled);

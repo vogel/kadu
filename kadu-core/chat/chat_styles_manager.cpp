@@ -28,7 +28,6 @@
 #include "gui/widgets/configuration/config-group-box.h"
 
 #include "config_file.h"
-#include "kadu.h"
 #include "message_box.h"
 #include "misc/misc.h"
 

@@ -1,3 +1,20 @@
+/***************************************************************************
+ *                                                                         *
+ *   This program is free software; you can redistribute it and/or modify  *
+ *   it under the terms of the GNU General Public License as published by  *
+ *   the Free Software Foundation; either version 2 of the License, or     *
+ *   (at your option) any later version.                                   *
+ *                                                                         *
+ ***************************************************************************/
+
+#include <QtGui/QGridLayout>
+#include <QtGui/QLabel>
+#include <QtGui/QLineEdit>
+#include <QtGui/QPushButton>
+
+#include "misc/image-widget.h"
+#include "debug.h"
+
 #include "token-dialog.h"
 
 TokenDialog::TokenDialog(QPixmap tokenImage, QDialog *parent)

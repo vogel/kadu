@@ -7,6 +7,7 @@
  *                                                                         *
  ***************************************************************************/
 
+#include <QtGui/QKeyEvent>
 #include <QtGui/QShortcut>
 #include <QtGui/QSplitter>
 #include <QtGui/QVBoxLayout>
@@ -20,6 +21,7 @@
 #include "contacts/model/contact-list-model.h"
 #include "core/core.h"
 #include "gui/widgets/contacts-list-widget.h"
+#include "gui/windows/kadu-window.h"
 #include "protocols/protocol.h"
 
 #include "action.h"
@@ -31,7 +33,6 @@
 #include "emoticons.h"
 #include "hot_key.h"
 #include "icons_manager.h"
-#include "kadu.h"
 #include "kadu_parser.h"
 #include "message_box.h"
 #include "misc/misc.h"
@@ -84,7 +85,7 @@ ChatWidget::ChatWidget(Account *initialAccount, const ContactList &contacts, QWi
 		ContactsWidget->setMinimumSize(QSize(30, 30));
 
 		connect(ContactsWidget, SIGNAL(contactActivated(Contact)),
-				kadu, SLOT(sendMessage(Contact)));
+				Core::instance()->kaduWindow(), SLOT(sendMessage(Contact)));
 
 		QPushButton *leaveConference = new QPushButton(tr("Leave conference"), userlistContainer);
 		leaveConference->setMinimumWidth(ContactsWidget->minimumWidth());

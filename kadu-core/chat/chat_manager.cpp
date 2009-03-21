@@ -21,6 +21,8 @@
 #include "gui/widgets/custom_input.h"
 
 #include "gui/windows/chat_window.h"
+#include "gui/windows/kadu-window.h"
+#include "gui/windows/kadu-window-actions.h"
 
 #include "protocols/protocol_factory.h"
 #include "protocols/protocols_manager.h"
@@ -31,7 +33,6 @@
 #include "config_file.h"
 #include "debug.h"
 #include "icons_manager.h"
-#include "kadu.h"
 #include "message_box.h"
 #include "misc/misc.h"
 #include "pending_msgs.h"
@@ -171,7 +172,7 @@ ChatManager::ChatManager(QObject *parent)
 
 	openChatWithActionDescription = new ActionDescription(0,
 		ActionDescription::TypeGlobal, "openChatWithAction",
-		kadu, SLOT(openChatWith()),
+		Core::instance()->kaduWindow(), SLOT(openChatWith()),
 		"OpenChat", tr("Open chat with...")
 	);
 	openChatWithActionDescription->setShortcut("kadu_openchatwith", Qt::ApplicationShortcut);
@@ -442,19 +443,19 @@ void ChatManager::whoisActionActivated(QAction *sender, bool toggled)
 	KaduMainWindow *window = dynamic_cast<KaduMainWindow *>(sender->parent());
 	if (!window)
 	{
-		(new SearchDialog(kadu))->show();
+		(new SearchDialog(Core::instance()->kaduWindow()))->show();
 		return;
 	}
 	Account *defaultAccount = AccountManager::instance()->defaultAccount();
 	ContactList contacts = window->contacts();
 
 	if (contacts.count() == 0)
-		(new SearchDialog(kadu))->show();
+		(new SearchDialog(Core::instance()->kaduWindow()))->show();
 	else
 	{
 		if (contacts[0].accountData(AccountManager::instance()->defaultAccount()) != 0)
 		{
-			SearchDialog *sd = new SearchDialog(kadu/*, contacts[0].accountData(AccountManager::instance()->defaultAccount())->id().toUInt()*/);
+			SearchDialog *sd = new SearchDialog(Core::instance()->kaduWindow()/*, contacts[0].accountData(AccountManager::instance()->defaultAccount())->id().toUInt()*/);
 			sd->show();
 			sd->firstSearch();
 		}
@@ -612,7 +613,7 @@ void ChatManager::blockUserActionActivated(QAction *sender, bool toggled)
 		if (!on) // if we were blocking, we also close the chat (and show info if blocked anonymous)
 		{
 			if (blocked_anonymous)
-				MessageBox::msg(tr("Anonymous users will be unblocked after restarting Kadu"), false, "Information", kadu);
+				MessageBox::msg(tr("Anonymous users will be unblocked after restarting Kadu"), false, "Information", Core::instance()->kaduWindow());
 
 			ChatWidget *chat = findChatWidget(contacts);
 			if (chat)
@@ -950,7 +951,7 @@ void ChatManager::initModule()
 
 	ChatMessage::registerParserTags();
 	emoticons->setEmoticonsTheme(config_file.readEntry("Chat", "EmoticonsTheme"));
-	chat_manager = new ChatManager(kadu);
+	chat_manager = new ChatManager(Core::instance()->kaduWindow());
 
 	kdebugf2();
 }
@@ -992,8 +993,8 @@ void ChatManager::messageReceived(Account *account, Contact sender, ContactList 
 	{
 		if (config_file.readBoolEntry("General","AutoRaise"))
 		{
-			kadu->showNormal();
-			kadu->setFocus();
+			Core::instance()->kaduWindow()->showNormal();
+			Core::instance()->kaduWindow()->setFocus();
 		}
 
 		if (config_file.readBoolEntry("Chat", "OpenChatOnMessage"))

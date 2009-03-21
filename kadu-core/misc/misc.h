@@ -1,10 +1,17 @@
+/***************************************************************************
+ *                                                                         *
+ *   This program is free software; you can redistribute it and/or modify  *
+ *   it under the terms of the GNU General Public License as published by  *
+ *   the Free Software Foundation; either version 2 of the License, or     *
+ *   (at your option) any later version.                                   *
+ *                                                                         *
+ ***************************************************************************/
+
 #ifndef KADU_MISC_H
 #define KADU_MISC_H
 
-#include "base.h"
 #include "choose-description.h"
 #include "coding-conversion.h"
-#include "create-notifier.h"
 #include "date-time.h"
 #include "image-dialog.h"
 #include "image-widget.h"
@@ -69,4 +76,4 @@ KADUAPI QString narg(const QString &s, const QString &arg1, const QString &arg2,
 **/
 KADUAPI QString narg(const QString &s, const QString **tab, int count);
 
-#endif
+#endif // MISC_H

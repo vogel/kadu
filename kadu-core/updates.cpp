@@ -12,10 +12,11 @@
 
 #include "accounts/account.h"
 #include "accounts/account_manager.h"
+#include "core/core.h"
+#include "gui/windows/kadu-window.h"
 #include "config_file.h"
 #include "debug.h"
 #include "../modules/gadu_protocol/gadu-protocol.h"
-#include "kadu.h"
 #include "message_box.h"
 
 #include "updates.h"
@@ -209,7 +210,7 @@ void Updates::gotUpdatesInfo(const QHttpResponseHeader &responseHeader)
 		
 		QString newestversion(data);
 		if (ifNewerVersion(newestversion))
-			MessageBox::msg(tr("The newest Kadu version is %1").arg(newestversion), false, "Information", kadu);
+			MessageBox::msg(tr("The newest Kadu version is %1").arg(newestversion), false, "Information", Core::instance()->kaduWindow());
 	}
 	disconnect(gadu, SIGNAL(connected()), this, SLOT(run()));
 	UpdateChecked = true;

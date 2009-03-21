@@ -15,15 +15,14 @@
 #include "contacts/contact-list-mime-data-helper.h"
 #include "contacts/group.h"
 #include "contacts/group-manager.h"
-
 #include "contacts/model/filter/group-contact-filter.h"
-
+#include "core/core.h"
 #include "gui/windows/group-properties-window.h"
+#include "gui/windows/kadu-window.h"
 
 #include "config_file.h"
 #include "debug.h"
 #include "icons_manager.h"
-#include "kadu.h"
 #include "message_box.h"
 
 #include "group-tab-bar.h"
@@ -234,7 +233,7 @@ void GroupTabBar::renameGroup()
 
 void GroupTabBar::deleteGroup()
 {
-	if (currentGroup && MessageBox::ask(tr("Selected group:\n%0 will be deleted. Are you sure?").arg(currentGroup->name()), "Warning", kadu))
+	if (currentGroup && MessageBox::ask(tr("Selected group:\n%0 will be deleted. Are you sure?").arg(currentGroup->name()), "Warning", Core::instance()->kaduWindow()))
 		GroupManager::instance()->removeGroup(currentGroup->uuid().toString());
 }
 
@@ -254,7 +253,7 @@ void GroupTabBar::groupProperties()
 	if (!currentGroup)
 		return;
 
-	(new GroupPropertiesWindow(currentGroup, kadu))->show();
+	(new GroupPropertiesWindow(currentGroup, Core::instance()->kaduWindow()))->show();
 }
 
 void GroupTabBar::addToGroup()

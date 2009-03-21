@@ -40,7 +40,6 @@
 
 #include "config_file.h"
 #include "debug.h"
-#include "kadu.h"
 
 ConfigurationWidget::ConfigurationWidget(ConfigurationWindowDataManager *dataManager, QWidget *parent)
 	: QWidget(parent), currentSection(0), dataManager(dataManager)

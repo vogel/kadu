@@ -13,7 +13,6 @@
 #include <QtGui/QMessageBox>
 
 #include "config_file.h"
-#include "kadu.h"
 #include "misc/misc.h"
 
 #include <windows.h>

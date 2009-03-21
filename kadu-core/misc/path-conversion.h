@@ -1,7 +1,18 @@
+/***************************************************************************
+ *                                                                         *
+ *   This program is free software; you can redistribute it and/or modify  *
+ *   it under the terms of the GNU General Public License as published by  *
+ *   the Free Software Foundation; either version 2 of the License, or     *
+ *   (at your option) any later version.                                   *
+ *                                                                         *
+ ***************************************************************************/
+
 #ifndef PATH_CONVERSION_H
 #define PATH_CONVERSION_H
 
-#include "base.h"
+#include <QtCore/QString>
+
+#include "exports.h"
 
 KADUAPI void printBacktrace(const QString &header = QString::null);
 
@@ -21,4 +32,4 @@ KADUAPI QString dataPath(const QString &f = QString::null, const char *argv0 = 0
 
 KADUAPI QString libPath(const QString &f = QString::null);
 
-#endif
+#endif // PATH_CONVERSION_H

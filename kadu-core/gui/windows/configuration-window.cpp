@@ -8,13 +8,15 @@
  ***************************************************************************/
 
 #include <QtGui/QApplication>
-#include <QtGui/QWidget>
-#include <QtGui/QListWidget>
-#include <QtXml/QDomElement>
-#include <QtGui/QHBoxLayout>
-#include <QtGui/QVBoxLayout>
 #include <QtGui/QDialogButtonBox>
+#include <QtGui/QHBoxLayout>
+#include <QtGui/QKeyEvent>
+#include <QtGui/QListWidget>
+#include <QtGui/QVBoxLayout>
+#include <QtGui/QWidget>
+#include <QtXml/QDomElement>
 
+#include "core/core.h"
 #include "gui/widgets/configuration/config-group-box.h"
 #include "gui/widgets/configuration/config-widget.h"
 #include "gui/widgets/configuration/config-section.h"
@@ -37,11 +39,10 @@
 #include "gui/widgets/configuration/config-manage-accounts.h"
 #include "gui/widgets/configuration/configuration-widget.h"
 #include "gui/windows/configuration-window.h"
-
-#include "kadu.h"
+#include "gui/windows/kadu-window.h"
 
 ConfigurationWindow::ConfigurationWindow(const QString &name, const QString &caption, ConfigurationWindowDataManager *dataManager)
-	: QDialog(kadu, Qt::Window), Name(name)
+	: QDialog(Core::instance()->kaduWindow(), Qt::Window), Name(name)
 {
 	setAttribute(Qt::WA_DeleteOnClose);
 	setWindowTitle(caption);

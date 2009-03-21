@@ -8,10 +8,10 @@
  ***************************************************************************/
 
 #include "accounts/account_manager.h"
-
+#include "contacts/contact.h"
+#include "contacts/contact-list.h"
 #include "hot_key.h"
 #include "icons_manager.h"
-#include "kadu.h"
 #include "kadu_main_window.h"
 
 #include "action.h"
@@ -248,8 +248,7 @@ void Actions::remove(ActionDescription *action)
 {
 	QMap<QString, ActionDescription *>::remove(action->name());
 
-	if (!Kadu::closing())
-		emit actionUnloaded(action->name());
+	emit actionUnloaded(action->name());
 }
 
 QAction * Actions::createAction(const QString &name, KaduMainWindow *kaduMainWindow)

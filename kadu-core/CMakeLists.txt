@@ -111,7 +111,6 @@ set (kadu_SRCS
 	
 	misc/choose-description.cpp
 	misc/coding-conversion.cpp
-	misc/create-notifier.cpp
 	misc/date-time.cpp
 	misc/image-dialog.cpp
 	misc/image-widget.cpp
@@ -248,10 +247,8 @@ set (kadu_MOC_SRCS
 	gui/windows/open-chat-with/open-chat-with-contact-list-runner.h
 	gui/windows/open-chat-with/open-chat-with-runner-manager.h
 	
-	misc/base.h
 	misc/choose-description.h
 	misc/coding-conversion.h
-	misc/create-notifier.h
 	misc/date-time.h
 	misc/image-dialog.h
 	misc/image-widget.h

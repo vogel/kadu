@@ -16,6 +16,7 @@
 
 #include "accounts/account.h"
 #include "accounts/account_manager.h"
+#include "core/core.h"
 #include "gui/windows/kadu-window.h"
 #include "misc/misc.h"
 #include "protocols/status.h"
@@ -274,13 +275,12 @@ void DockingManager::setDocked(bool docked)
 		changeIcon();
 		defaultToolTip();
 		if (config_file.readBoolEntry("General", "RunDocked"))
-			kadu->setShowMainWindowOnStart(false);
+			Core::instance()->setShowMainWindowOnStart(false);
 	}
 	else
 	{
-		kdebugm(KDEBUG_INFO, "closing: %d\n", Kadu::closing());
-		if (!Kadu::closing())
-			kadu->show();
+// 		kdebugm(KDEBUG_INFO, "closing: %d\n", Kadu::closing());
+		kadu->show(); // isClosing? TODO: 0.6.6
 	}
 	Core::instance()->kaduWindow()->setDocked(docked);
 	kdebugf2();

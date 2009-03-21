@@ -1,3 +1,30 @@
+/***************************************************************************
+ *                                                                         *
+ *   This program is free software; you can redistribute it and/or modify  *
+ *   it under the terms of the GNU General Public License as published by  *
+ *   the Free Software Foundation; either version 2 of the License, or     *
+ *   (at your option) any later version.                                   *
+ *                                                                         *
+ ***************************************************************************/
+
+#include <QtGui/QApplication>
+#include <QtGui/QComboBox>
+#include <QtGui/QDesktopWidget>
+#include <QtGui/QGridLayout>
+#include <QtGui/QLabel>
+#include <QtGui/QLineEdit>
+#include <QtGui/QPushButton>
+
+#include "accounts/account_manager.h"
+#include "core/core.h"
+#include "gui/windows/kadu-window.h"
+#include "config_file.h"
+#include "debug.h"
+#include "icons_manager.h"
+#include "kadu_parser.h"
+
+#include "../modules/gadu_protocol/gadu-protocol.h"
+
 #include "choose-description.h"
 
 ChooseDescription *ChooseDescription::Dialog = 0;
@@ -6,7 +33,7 @@ void ChooseDescription::show(const Status &status, const QPoint &position)
 {
 	if (!Dialog)
 	{
-		Dialog = new ChooseDescription(kadu);
+		Dialog = new ChooseDescription(Core::instance()->kaduWindow());
 		Dialog->setPosition(position);
 	}
 

@@ -17,11 +17,16 @@
 #include "protocols/protocol_factory.h"
 #include "protocols/services/chat-service.h"
 
+#include "../modules/gadu_protocol/gadu-protocol.h"
+
+#include "chat/chat_manager.h"
 #include "config_file.h"
 #include "debug.h"
-#include "kadu.h"
+#include "icons_manager.h"
 #include "pending_msgs.h"
+#include "search.h"
 #include "status_changer.h"
+#include "updates.h"
 
 #include "core.h"
 
@@ -30,22 +35,22 @@ Core * Core::Instance = 0;
 Core * Core::instance()
 {
 	if (!Instance)
+	{
 		Instance = new Core();
+		Instance->init();
+	}
 
 	return Instance;
 }
 
-Core::Core() : Window(0)
+Core::Core() : Window(0), ShowMainWindowOnStart(true)
 {
 	QObject::connect(qApp, SIGNAL(aboutToQuit()), this, SLOT(quit()));
 
 	Myself.setDisplay(config_file.readEntry("General", "Nick"));
 
-	StatusChangerManager::initModule();
-	connect(status_changer_manager, SIGNAL(statusChanged(Status)), this, SLOT(changeStatus(Status)));
-
-	StatusChanger = new UserStatusChanger();
-	status_changer_manager->registerStatusChanger(StatusChanger);
+	xml_config_file->makeBackup();
+	loadConfiguration();
 
 	triggerAllAccountsRegistered();
 }
@@ -65,9 +70,32 @@ Core::~Core()
 	triggerAllAccountsUnregistered();
 }
 
+void Core::init()
+{
+	StatusChangerManager::initModule();
+	connect(status_changer_manager, SIGNAL(statusChanged(Status)), this, SLOT(changeStatus(Status)));
+
+	StatusChanger = new UserStatusChanger();
+	status_changer_manager->registerStatusChanger(StatusChanger);
+
+	Updates::initModule();
+	GaduProtocol::initModule();
+	ChatManager::initModule();
+	SearchDialog::initModule();
+
+#ifdef Q_OS_MACX
+	setIcon(icons_manager->loadPixmap("BigOffline"));
+#else
+	setIcon(icons_manager->loadPixmap("Offline"));
+#endif
+}
+
 void Core::loadConfiguration()
 {
 	pending.loadConfiguration(xml_config_file);
+
+	GroupManager::instance()->loadConfiguration();
+	ContactManager::instance()->loadConfiguration(xml_config_file);
 }
 
 void Core::storeConfiguration()
@@ -167,17 +195,35 @@ void Core::accountUnregistered(Account *account)
 
 void Core::createGui()
 {
-	new Kadu(0);
-
 	Window = new KaduWindow(0);
+	Window->setWindowIcon(QApplication::windowIcon());
 	connect(Window, SIGNAL(destroyed(QObject *)), this, SLOT(kaduWindowDestroyed()));
 
-	Window->show();
+	if (ShowMainWindowOnStart)
+		Window->show();
+}
+
+void Core::setShowMainWindowOnStart(bool show)
+{
+	ShowMainWindowOnStart = show;
 }
 
 KaduWindow * Core::kaduWindow()
 {
 	return Window;
+}
+
+void Core::setIcon(const QPixmap &icon)
+{
+	bool blocked = false;
+	emit settingMainIconBlocked(blocked);
+
+	if (!blocked)
+	{
+		if (Window)
+			Window->setWindowIcon(icon);
+		QApplication::setWindowIcon(icon);
+	}
 }
 
 void Core::setStatus(const Status &status)
@@ -204,6 +250,8 @@ void Core::setOffline(const QString &description)
 {
 	StatusChanger->userStatusSet(Status(Status::Offline, description));
 }
+
+#include <QtGui/QApplication>
 
 void Core::quit()
 {

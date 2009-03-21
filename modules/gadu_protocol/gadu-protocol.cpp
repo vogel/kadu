@@ -561,8 +561,7 @@ void GaduProtocol::networkDisconnected(bool tryAgain)
 		GaduSession = 0;
 	}
 
-	if (!Kadu::closing())
-		setAllOffline();
+	setAllOffline();
 
 	if (tryAgain && !nextStatus().isOffline()) // user still wants to login
 		QTimer::singleShot(1000, this, SLOT(login())); // try again after one second

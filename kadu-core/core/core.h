@@ -29,12 +29,15 @@ class Core : public QObject, private AccountsAwareObject
 
 	Contact Myself;
 	KaduWindow *Window;
+	bool ShowMainWindowOnStart; // TODO: 0.7.1, it is a hack
 
 	Status NextStatus;
 	UserStatusChanger *StatusChanger;
 
 	Core();
 	virtual ~Core();
+
+	void init();
 
 	void loadConfiguration();
 	void storeConfiguration();
@@ -53,7 +56,10 @@ public:
 	Contact myself() { return Myself; }
 
 	void createGui();
+	void setShowMainWindowOnStart(bool show);
 	KaduWindow * kaduWindow();
+
+	void setIcon(const QPixmap &icon);
 
 public slots:
 	void setStatus(const Status &status);
@@ -70,6 +76,9 @@ signals:
 	void disconnected();
 
 	void messageReceived(Account *account, Contact sender, ContactList receipients, const QString &message, time_t time);
+
+	// TODO: remove
+	void settingMainIconBlocked(bool &blocked);
 
 };
 

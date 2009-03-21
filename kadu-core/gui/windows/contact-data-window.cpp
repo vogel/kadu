@@ -42,8 +42,6 @@
 
 #include "contact-data-window.h"
 
-CreateNotifier ContactDataWindow::createNotifier;
-
 ContactDataWindow::ContactDataWindow(Contact user, QWidget *parent)
 	: QWidget(parent, Qt::Dialog), User(user),
 	e_firstname(0), e_lastname(0), e_nickname(0), e_display(0), e_mobile(0), e_id(0),
@@ -119,8 +117,6 @@ ContactDataWindow::ContactDataWindow(Contact user, QWidget *parent)
 	QHBoxLayout *layout = new QHBoxLayout(this);
 	layout->addWidget(left);
 	layout->addWidget(center);
-
-	createNotifier.notify(this);
 
 	loadWindowGeometry(this, "General", "ManageUsersDialogGeometry", 0, 50, 425, 500);
 	kdebugf2();

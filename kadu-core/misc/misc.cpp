@@ -7,6 +7,21 @@
  *                                                                         *
  ***************************************************************************/
 
+#include <QtCore/QProcess>
+#include <QtCore/QUrl>
+#include <QtGui/QApplication>
+#include <QtGui/QDesktopServices>
+
+#include "accounts/account.h"
+#include "accounts/account_manager.h"
+#include "contacts/contact-list.h"
+#include "contacts/contact-manager.h"
+#include "chat/chat_manager.h"
+#include "config_file.h"
+#include "debug.h"
+#include "html_document.h"
+#include "message_box.h"
+
 #include "misc.h"
 
 QFont *defaultFont;

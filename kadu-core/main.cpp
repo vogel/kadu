@@ -248,8 +248,9 @@ int main(int argc, char *argv[])
 	// plugins path (win32)
 	qApp->addLibraryPath(libPath("qt"));
 
-	if(isRuning(ggnumber)){
-		Kadu::setClosing();
+	if (isRuning(ggnumber))
+	{
+		// setClosing? TODO: 0.6.6
 		delete defaultFont;
 		delete defaultFontInfo;
 		delete config_file_ptr;
@@ -262,14 +263,6 @@ int main(int argc, char *argv[])
 	EmoticonsManager::initModule();
 
 	Core::instance()->createGui();
-
-	QPixmap pix;
-#ifdef Q_OS_MACX
-	pix = icons_manager->loadPixmap("BigOffline");
-#else
-	pix = icons_manager->loadPixmap("Offline");
-#endif
-	kadu->setMainWindowIcon(pix);
 
 	QString path_ = ggPath(QString::null);
 #ifndef Q_OS_WIN

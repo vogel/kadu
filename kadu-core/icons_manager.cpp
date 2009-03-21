@@ -10,7 +10,6 @@
 #include "action.h"
 #include "config_file.h"
 #include "debug.h"
-#include "kadu.h"
 #include "misc/misc.h"
 
 #include "icons_manager.h"
@@ -82,7 +81,7 @@ void IconsManager::configurationUpdated()
 
 	icons_manager->clear();
 	icons_manager->setTheme(config_file.readEntry("Look", "IconTheme"));
-	kadu->changeAppearance();
+// 	kadu->changeAppearance(); TODO: 0.6.6
 
 	// TODO: Make it standard
 	if (themeWasChanged)
