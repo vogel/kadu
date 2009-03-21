@@ -515,12 +515,13 @@ void Kadu::changeAppearance()
 	kdebugf2();
 }
 
+// TODO: 0.6.6 remove blink from here
 void Kadu::blink()
 {
 	QIcon icon;
 
 	kdebugf();
-
+/*
 	Protocol *gadu = AccountManager::instance()->defaultAccount()->protocol();
 	if (!DoBlink && gadu->isConnected())
 		return;
@@ -530,8 +531,8 @@ void Kadu::blink()
 // 		statusButton->setIcon(icon);
 		emit statusPixmapChanged(icon, "Offline");
 		return;
-	}
-
+	}*/
+/*
 	QString iconName;
 	if (BlinkOn)
 	{
@@ -543,15 +544,15 @@ void Kadu::blink()
 		const Status &stat = gadu->nextStatus();
 		icon = QIcon(gadu->statusPixmap(stat));
 		iconName = Status::name(stat);
-	}
+	}*/
 
 // 	statusButton->setIcon(icon);
-	emit statusPixmapChanged(icon, iconName);
-
-	BlinkOn = !BlinkOn;
-
+// 	emit statusPixmapChanged(icon, iconName);
+/*
+	BlinkOn = !BlinkOn;*/
+/*
 	blinktimer->setSingleShot(true);
-	blinktimer->start(1000);
+	blinktimer->start(1000);*/
 }
 
 void Kadu::mouseButtonClicked(int button, Q3ListBoxItem *item)
@@ -584,86 +585,10 @@ void Kadu::sendMessage(Contact contact)
 	}
 }
 
-void Kadu::changeStatusSlot()
-{
-	if (0 == AccountManager::instance()->defaultAccount())
-		return;
-
-	Protocol *gadu = AccountManager::instance()->defaultAccount()->protocol();
-
-	QAction *action = dynamic_cast<QAction *>(sender());
-	if (action)
-	{
-		foreach (QAction *a, changeStatusActionGroup->actions())
-			a->setChecked(a == action);
-		slotHandleState(action->data().toInt());
-	}
-}
-
-void Kadu::changePrivateStatusSlot(bool toggled)
-{
-	if (AccountManager::instance()->defaultAccount())
-		AccountManager::instance()->defaultAccount()->protocol()->setPrivateMode(toggled);
-
-	config_file.writeEntry("General", "PrivateStatus", toggled);
-}
-
-/* when we want to change the status */
-// TODO: fix it
-void Kadu::slotHandleState(int command)
-{
-	kdebugf();
-
-// 	Status status(userStatusChanger->status().type());
-	Status status;
-
-	switch (command)
-	{
-		case 0:
-			status.setType(Status::Online);
-			Core::instance()->setStatus(status);
-			break;
-		case 1:
-			status.setType(Status::Online);
-			status.setDescription(status.description());
-// 			ChooseDescription::show(status, lastPositionBeforeStatusMenuHide);
-			break;
-		case 2:
-			status.setType(Status::Busy);
-			Core::instance()->setStatus(status);
-			break;
-		case 3:
-			status.setType(Status::Busy);
-			status.setDescription(status.description());
-// 			ChooseDescription::show(status, lastPositionBeforeStatusMenuHide);
-			break;
-		case 4:
-			status.setType(Status::Invisible);
-			Core::instance()->setStatus(status);
-			break;
-		case 5:
-			status.setType(Status::Invisible);
-			status.setDescription(status.description());
-// 			ChooseDescription::show(status, lastPositionBeforeStatusMenuHide);
-			break;
-		case 6:
-			status.setType(Status::Offline);
-			Core::instance()->setStatus(status);
-			break;
-		case 7:
-			status.setType(Status::Offline);
-			status.setDescription(status.description());
-// 			ChooseDescription::show(status, lastPositionBeforeStatusMenuHide);
-			break;
-	}
-
-	kdebugf2();
-}
-
 void Kadu::connecting()
 {
 	kdebugf();
-
+/*
 	DoBlink = true;
 
 	if (!blinktimer)
@@ -673,14 +598,14 @@ void Kadu::connecting()
 	}
 
 	blinktimer->setSingleShot(true);
-	blinktimer->start(1000);
+	blinktimer->start(1000);*/
 	kdebugf2();
 }
 
 void Kadu::connected()
 {
 	kdebugf();
-	DoBlink = false;
+// 	DoBlink = false;
 	kdebugf2();
 }
 
@@ -699,7 +624,7 @@ void Kadu::disconnected()
 	kdebugmf(KDEBUG_FUNCTION_START, "Disconnection has occured\n");
 
 	chat_manager->refreshTitles();
-
+/*
 	DoBlink = false;
 
 	if (blinktimer)
@@ -707,7 +632,7 @@ void Kadu::disconnected()
 		blinktimer->stop();
 		delete blinktimer;
 		blinktimer = NULL;
-	}
+	}*/
 
 	kdebugf2();
 }
@@ -815,112 +740,6 @@ void Kadu::createRecentChatsMenu()
 	kdebugf2();
 }
 
-void Kadu::statusMenuAboutToHide()
-{
-// 	lastPositionBeforeStatusMenuHide = statusMenu->pos();
-}
-
-void Kadu::dockMenuAboutToHide()
-{
-// 	lastPositionBeforeStatusMenuHide = dockMenu->pos();
-}
-
-void Kadu::createStatusPopupMenu()
-{
-	kdebugf();
-
-	QPixmap pix;
-	QIcon icon;
-
-// 	statusMenu = new QMenu(this);
-	dockMenu = new QMenu(this);
-
-	changeStatusActionGroup = new QActionGroup(this);
-	changeStatusActionGroup->setExclusive(false); // HACK
-
-	// TODO: 0.6.6
-
-	changeStatusToOnline = new QAction(/*icons_manager->loadIcon(s.pixmapName(Online, false, false)), */tr("Online"), this);
-	changeStatusToOnline->setCheckable(true);
-	changeStatusToOnline->setData(0);
-	connect(changeStatusToOnline, SIGNAL(triggered()), this, SLOT(changeStatusSlot()));
-
-	changeStatusToOnlineDesc = new QAction(/*icons_manager->loadIcon(s.pixmapName(Online, true, false)), */tr("Online (d.)"), this);
-	changeStatusToOnlineDesc->setCheckable(true);
-	changeStatusToOnlineDesc->setData(1);
-	connect(changeStatusToOnlineDesc, SIGNAL(triggered()), this, SLOT(changeStatusSlot()));
-
-	changeStatusToBusy = new QAction(/*icons_manager->loadIcon(s.pixmapName(Busy, false, false)), */tr("Busy"), this);
-	changeStatusToBusy->setCheckable(true);
-	changeStatusToBusy->setData(2);
-	connect(changeStatusToBusy, SIGNAL(triggered()), this, SLOT(changeStatusSlot()));
-
-	changeStatusToBusyDesc = new QAction(/*icons_manager->loadIcon(s.pixmapName(Busy, true, false)), */tr("Busy (d.)"), this);
-	changeStatusToBusyDesc->setCheckable(true);
-	changeStatusToBusyDesc->setData(3);
-	connect(changeStatusToBusyDesc, SIGNAL(triggered()), this, SLOT(changeStatusSlot()));
-
-	changeStatusToInvisible = new QAction(/*icons_manager->loadIcon(s.pixmapName(Invisible, false, false)), */tr("Invisible"), this);
-	changeStatusToInvisible->setCheckable(true);
-	changeStatusToInvisible->setData(4);
-	connect(changeStatusToInvisible, SIGNAL(triggered()), this, SLOT(changeStatusSlot()));
-
-	changeStatusToInvisibleDesc = new QAction(/*icons_manager->loadIcon(s.pixmapName(Invisible, true, false)), */tr("Invisible (d.)"), this);
-	changeStatusToInvisibleDesc->setCheckable(true);
-	changeStatusToInvisibleDesc->setData(5);
-	connect(changeStatusToInvisibleDesc, SIGNAL(triggered()), this, SLOT(changeStatusSlot()));
-
-	changeStatusToOffline = new QAction(/*icons_manager->loadIcon(s.pixmapName(Offline, false, false)), */tr("Offline"), this);
-	changeStatusToOffline->setCheckable(true);
-	changeStatusToOffline->setData(6);
-	connect(changeStatusToOffline, SIGNAL(triggered()), this, SLOT(changeStatusSlot()));
-
-	changeStatusToOfflineDesc = new QAction(/*icons_manager->loadIcon(s.pixmapName(Offline, true, false)), */tr("Offline (d.)"), this);
-	changeStatusToOfflineDesc->setCheckable(true);
-	changeStatusToOfflineDesc->setData(7);
-	connect(changeStatusToOfflineDesc, SIGNAL(triggered()), this, SLOT(changeStatusSlot()));
-
-	changePrivateStatus = new QAction(tr("Private"), this);
-	changePrivateStatus->setCheckable(true);
-	connect(changePrivateStatus, SIGNAL(toggled(bool)), this, SLOT(changePrivateStatusSlot(bool)));
-
-	bool privateStatus = config_file.readBoolEntry("General", "PrivateStatus");
-	changePrivateStatus->setChecked(privateStatus);
-
-	changeStatusActionGroup->addAction(changeStatusToOnline);
-	changeStatusActionGroup->addAction(changeStatusToOnlineDesc);
-	changeStatusActionGroup->addAction(changeStatusToBusy);
-	changeStatusActionGroup->addAction(changeStatusToBusyDesc);
-	changeStatusActionGroup->addAction(changeStatusToInvisible);
-	changeStatusActionGroup->addAction(changeStatusToInvisibleDesc);
-	changeStatusActionGroup->addAction(changeStatusToOffline);
-	changeStatusActionGroup->addAction(changeStatusToOfflineDesc);
-/*
-	statusMenu->addAction(changeStatusToOnline);
-	statusMenu->addAction(changeStatusToOnlineDesc);
-	statusMenu->addAction(changeStatusToBusy);
-	statusMenu->addAction(changeStatusToBusyDesc);
-	statusMenu->addAction(changeStatusToInvisible);
-	statusMenu->addAction(changeStatusToInvisibleDesc);
-	statusMenu->addAction(changeStatusToOffline);
-	statusMenu->addAction(changeStatusToOfflineDesc);
-	statusMenu->addSeparator();
-	statusMenu->addAction(changePrivateStatus);*/
-
-	dockMenu->addAction(changeStatusToOnline);
-	dockMenu->addAction(changeStatusToOnlineDesc);
-	dockMenu->addAction(changeStatusToBusy);
-	dockMenu->addAction(changeStatusToBusyDesc);
-	dockMenu->addAction(changeStatusToInvisible);
-	dockMenu->addAction(changeStatusToInvisibleDesc);
-	dockMenu->addAction(changeStatusToOffline);
-	dockMenu->addAction(changeStatusToOfflineDesc);
-	dockMenu->addSeparator();
-	dockMenu->addAction(changePrivateStatus);
-
-	kdebugf2();
-}
-
 //
 ContactList Kadu::contacts()
 {
@@ -960,15 +779,15 @@ void Kadu::refreshPrivateStatusFromConfigFile()
 	bool privateStatus = config_file.readBoolEntry("General", "PrivateStatus");
 
 	// je�li stan nie uleg� zmianie to nic nie robimy
-	if (changePrivateStatus->isChecked() == privateStatus)
-		return;
+// 	if (changePrivateStatus->isChecked() == privateStatus)
+// 		return;
 
 // 	Status status = userStatusChanger->status();
 // TODO: 0.6.6
 // 	status.setFriendsOnly(privateStatus);
 // 	userStatusChanger->userStatusSet(status);
 
-	changePrivateStatus->setChecked(privateStatus);
+// 	changePrivateStatus->setChecked(privateStatus);
 }
 
 void Kadu::configurationUpdated()
@@ -1072,7 +891,7 @@ void Kadu::startupProcedure()
 
 void Kadu::statusChanged(Account *account, Status status)
 {
-	DoBlink = false;
+// 	DoBlink = false;
 
 	bool hasDescription = !status.description().isEmpty();
 	int index;
@@ -1099,29 +918,7 @@ void Kadu::showStatusOnMenu(int statusNr)
 {
 	kdebugf();
 
-	QList<QAction*> statusActions = changeStatusActionGroup->actions();
-	for (int i = 0; i < 8; ++i)
-		statusActions[i]->setChecked(i == statusNr);
-
-	Protocol *gadu = AccountManager::instance()->defaultAccount()->protocol();
-// 	changePrivateStatus->setChecked(gadu->status().isFriendsOnly());
-// TODO: 0.6.6
-
-// 	statusButton->setText(qApp->translate("@default", Status::name(gadu->status()).toAscii().data()));
-	changeStatusToOfflineDesc->setEnabled(statusNr != 6);
-	changeStatusToOffline->setEnabled(statusNr != 7);
-
-	QPixmap pix = gadu->statusPixmap();
-	QIcon icon(pix);
-	QString iconName = Status::name(gadu->status());
-
-// 	statusButton->setIcon(icon);
-	Core::instance()->setIcon(pix);
-
-	foreach(KaduAction *action, showStatusActionDescription->actions())
-		action->setIcon(icon);
-
-	emit statusPixmapChanged(icon, iconName);
+// 	emit statusPixmapChanged(icon, iconName);
 }
 
 void Kadu::readTokenValue(QPixmap tokenImage, QString &tokenValue)

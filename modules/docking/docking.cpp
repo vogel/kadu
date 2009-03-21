@@ -160,10 +160,10 @@ void DockingManager::changeIcon()
 
 void DockingManager::dockletChange(int id)
 {
-	if (id < 9)
-		kadu->slotHandleState(id);
-	else
-		Core::instance()->quit();
+// 	if (id < 9)
+// 		kadu->slotHandleState(id);
+// 	else
+// 		Core::instance()->quit();
 }
 
 void DockingManager::pendingMessageAdded()

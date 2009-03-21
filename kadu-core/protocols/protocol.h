@@ -70,7 +70,6 @@ protected:
 	virtual void changeStatus() = 0;
 	void statusChanged(Status newStatus);
 
-	bool privateMode() { return PrivateMode; }
 	virtual void changePrivateMode() = 0;
 
 	void networkStateChanged(NetworkState state);
@@ -101,6 +100,7 @@ public:
 	const Status & nextStatus() const { return NextStatus; }
 
 	void setPrivateMode(bool privateMode);
+	bool privateMode() { return PrivateMode; }
 
 	virtual QPixmap statusPixmap(Status status) = 0;
 	QPixmap statusPixmap() { return statusPixmap(CurrentStatus); }

@@ -64,22 +64,11 @@ private:
 	QWidget *MainWidget;
 	QVBoxLayout *MainLayout;
 
-	QMenu *StatusMenu;
+	QMenu *StatusButtonMenu;
 	QPushButton *StatusButton;
 	QPoint LastPositionBeforeStatusMenuHide;
 
 	QString InfoPanelStyle;
-
-	QActionGroup *ChangeStatusActionGroup;
-	QAction *ChangeStatusToOnline;
-	QAction *ChangeStatusToOnlineDesc;
-	QAction *ChangeStatusToBusy;
-	QAction *ChangeStatusToBusyDesc;
-	QAction *ChangeStatusToInvisible;
-	QAction *ChangeStatusToInvisibleDesc;
-	QAction *ChangeStatusToOffline;
-	QAction *ChangeStatusToOfflineDesc;
-	QAction *ChangePrivateStatus;
 
 	void createGui();
 	void createMenu();

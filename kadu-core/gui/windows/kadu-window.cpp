@@ -24,6 +24,7 @@
 #include "gui/widgets/group-tab-bar.h"
 #include "gui/widgets/kadu_text_browser.h"
 #include "gui/windows/kadu-window-actions.h"
+#include "gui/widgets/status-menu.h"
 
 #include "misc/misc.h"
 #include "config_file.h"
@@ -93,7 +94,7 @@ void KaduWindow::createGui()
 
 	StatusButton = new QPushButton(icons_manager->loadIcon("Offline"), tr("Offline"), this);
 	MainLayout->addWidget(StatusButton);
-	StatusButton->setMenu(StatusMenu);
+	StatusButton->setMenu(StatusButtonMenu);
 
 	if (!config_file.readBoolEntry("Look", "ShowStatusButton"))
 		StatusButton->hide();
@@ -233,79 +234,9 @@ void KaduWindow::createStatusPopupMenu()
 	QPixmap pix;
 	QIcon icon;
 
-	StatusMenu = new QMenu(this);
-
-	ChangeStatusActionGroup = new QActionGroup(this);
-	ChangeStatusActionGroup->setExclusive(false); // HACK
-
-	// TODO: 0.6.6
-
-	ChangeStatusToOnline = new QAction(/*icons_manager->loadIcon(s.pixmapName(Online, false, false)), */tr("Online"), this);
-	ChangeStatusToOnline->setCheckable(true);
-	ChangeStatusToOnline->setData(0);
-	connect(ChangeStatusToOnline, SIGNAL(triggered()), this, SLOT(changeStatusSlot()));
-
-	ChangeStatusToOnlineDesc = new QAction(/*icons_manager->loadIcon(s.pixmapName(Online, true, false)), */tr("Online (d.)"), this);
-	ChangeStatusToOnlineDesc->setCheckable(true);
-	ChangeStatusToOnlineDesc->setData(1);
-	connect(ChangeStatusToOnlineDesc, SIGNAL(triggered()), this, SLOT(changeStatusSlot()));
-
-	ChangeStatusToBusy = new QAction(/*icons_manager->loadIcon(s.pixmapName(Busy, false, false)), */tr("Busy"), this);
-	ChangeStatusToBusy->setCheckable(true);
-	ChangeStatusToBusy->setData(2);
-	connect(ChangeStatusToBusy, SIGNAL(triggered()), this, SLOT(changeStatusSlot()));
-
-	ChangeStatusToBusyDesc = new QAction(/*icons_manager->loadIcon(s.pixmapName(Busy, true, false)), */tr("Busy (d.)"), this);
-	ChangeStatusToBusyDesc->setCheckable(true);
-	ChangeStatusToBusyDesc->setData(3);
-	connect(ChangeStatusToBusyDesc, SIGNAL(triggered()), this, SLOT(changeStatusSlot()));
-
-	ChangeStatusToInvisible = new QAction(/*icons_manager->loadIcon(s.pixmapName(Invisible, false, false)), */tr("Invisible"), this);
-	ChangeStatusToInvisible->setCheckable(true);
-	ChangeStatusToInvisible->setData(4);
-	connect(ChangeStatusToInvisible, SIGNAL(triggered()), this, SLOT(changeStatusSlot()));
-
-	ChangeStatusToInvisibleDesc = new QAction(/*icons_manager->loadIcon(s.pixmapName(Invisible, true, false)), */tr("Invisible (d.)"), this);
-	ChangeStatusToInvisibleDesc->setCheckable(true);
-	ChangeStatusToInvisibleDesc->setData(5);
-	connect(ChangeStatusToInvisibleDesc, SIGNAL(triggered()), this, SLOT(changeStatusSlot()));
-
-	ChangeStatusToOffline = new QAction(/*icons_manager->loadIcon(s.pixmapName(Offline, false, false)), */tr("Offline"), this);
-	ChangeStatusToOffline->setCheckable(true);
-	ChangeStatusToOffline->setData(6);
-	connect(ChangeStatusToOffline, SIGNAL(triggered()), this, SLOT(changeStatusSlot()));
-
-	ChangeStatusToOfflineDesc = new QAction(/*icons_manager->loadIcon(s.pixmapName(Offline, true, false)), */tr("Offline (d.)"), this);
-	ChangeStatusToOfflineDesc->setCheckable(true);
-	ChangeStatusToOfflineDesc->setData(7);
-	connect(ChangeStatusToOfflineDesc, SIGNAL(triggered()), this, SLOT(changeStatusSlot()));
-
-	ChangePrivateStatus = new QAction(tr("Private"), this);
-	ChangePrivateStatus->setCheckable(true);
-	connect(ChangePrivateStatus, SIGNAL(toggled(bool)), this, SLOT(changePrivateStatusSlot(bool)));
-
-	bool privateStatus = config_file.readBoolEntry("General", "PrivateStatus");
-	ChangePrivateStatus->setChecked(privateStatus);
-
-	ChangeStatusActionGroup->addAction(ChangeStatusToOnline);
-	ChangeStatusActionGroup->addAction(ChangeStatusToOnlineDesc);
-	ChangeStatusActionGroup->addAction(ChangeStatusToBusy);
-	ChangeStatusActionGroup->addAction(ChangeStatusToBusyDesc);
-	ChangeStatusActionGroup->addAction(ChangeStatusToInvisible);
-	ChangeStatusActionGroup->addAction(ChangeStatusToInvisibleDesc);
-	ChangeStatusActionGroup->addAction(ChangeStatusToOffline);
-	ChangeStatusActionGroup->addAction(ChangeStatusToOfflineDesc);
-
-	StatusMenu->addAction(ChangeStatusToOnline);
-	StatusMenu->addAction(ChangeStatusToOnlineDesc);
-	StatusMenu->addAction(ChangeStatusToBusy);
-	StatusMenu->addAction(ChangeStatusToBusyDesc);
-	StatusMenu->addAction(ChangeStatusToInvisible);
-	StatusMenu->addAction(ChangeStatusToInvisibleDesc);
-	StatusMenu->addAction(ChangeStatusToOffline);
-	StatusMenu->addAction(ChangeStatusToOfflineDesc);
-	StatusMenu->addSeparator();
-	StatusMenu->addAction(ChangePrivateStatus);
+	StatusButtonMenu = new QMenu(this);
+	StatusMenu *statusMenu = new StatusMenu(this);
+	statusMenu->addToMenu(StatusButtonMenu);
 
 	kdebugf2();
 }

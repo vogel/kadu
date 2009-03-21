@@ -60,11 +60,10 @@ set (kadu_SRCS
 	file-transfer/file-transfer.cpp
 	file-transfer/file-transfer-manager.cpp
 
-	gui/widgets/contact-account-data-widget.cpp
-
 	gui/widgets/chat_edit_box.cpp
 	gui/widgets/chat_messages_view.cpp
 	gui/widgets/chat_widget.cpp
+	gui/widgets/contact-account-data-widget.cpp
 	gui/widgets/contact-info-panel.cpp
 	gui/widgets/contacts-list-widget.cpp
 	gui/widgets/contacts-list-widget-delegate.cpp
@@ -73,6 +72,7 @@ set (kadu_SRCS
 	gui/widgets/group-tab-bar.cpp
 	gui/widgets/kadu_text_browser.cpp
 	gui/widgets/preview.cpp
+	gui/widgets/status-menu.cpp
 	gui/widgets/tool-tip-class-manager.cpp
 
 	gui/widgets/configuration/config-action-button.cpp
@@ -228,6 +228,7 @@ set (kadu_MOC_SRCS
 	gui/widgets/group-tab-bar.h
 	gui/widgets/kadu_text_browser.h
 	gui/widgets/preview.h
+	gui/widgets/status-menu.h
 
 	gui/widgets/configuration/config-action-button.h
 	gui/widgets/configuration/config-check-box.h

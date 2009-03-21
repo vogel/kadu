@@ -193,6 +193,11 @@ void Core::accountUnregistered(Account *account)
 	Myself.removeAccountData(account);
 }
 
+Status Core::status()
+{
+	return StatusChanger->status();
+}
+
 void Core::createGui()
 {
 	Window = new KaduWindow(0);

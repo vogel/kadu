@@ -46,31 +46,10 @@ private:
 	ActionDescription *inactiveUsersAction;
 	ActionDescription *descriptionUsersAction;
 	ActionDescription *onlineAndDescriptionUsersAction;
-	ActionDescription *configurationActionDescription;
 	ActionDescription *editUserActionDescription;
-	ActionDescription *addUserActionDescription;
 	ActionDescription *openSearchActionDescription;
-	ActionDescription *offlineToUserActionDescription;
-	ActionDescription *hideDescriptionActionDescription;
 	ActionDescription *showStatusActionDescription;
-	ActionDescription *deleteUsersActionDescription;
 	ActionDescription *useProxyActionDescription;
-
-	QActionGroup *changeStatusActionGroup;
-	QAction *changeStatusToOnline;
-	QAction *changeStatusToOnlineDesc;
-	QAction *changeStatusToBusy;
-	QAction *changeStatusToBusyDesc;
-	QAction *changeStatusToInvisible;
-	QAction *changeStatusToInvisibleDesc;
-	QAction *changeStatusToOffline;
-	QAction *changeStatusToOfflineDesc;
-	QAction *changePrivateStatus;
-
-	bool DoBlink;
-	bool BlinkOn;
-
-	void createStatusPopupMenu();
 
 	void showStatusOnMenu(int);
 
@@ -88,18 +67,11 @@ private slots:
 	void openRecentChats(QAction *action);
 	void openChatWith();
 
-	void changeStatusSlot();
-
-	void changePrivateStatusSlot(bool toggled);
-
 	void connected();
 	void connecting();
 	void disconnected();
 	void imageReceivedAndSaved(UinType sender, quint32 size, quint32 crc32, const QString &path);
 	void deleteOldConfigFiles();
-
-	void statusMenuAboutToHide(void);
-	void dockMenuAboutToHide(void);
 
 	void inactiveUsersActionCreated(KaduAction *action);
 	void descriptionUsersActionCreated(KaduAction *action);
@@ -161,7 +133,6 @@ public slots:
 
 	void sendMessage(Contact contact);
 
-	void slotHandleState(int command);
 	void changeAppearance();
 	void blink();
 	virtual bool close(bool quit = false);

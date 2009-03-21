@@ -57,6 +57,7 @@ public:
 	static Core * instance();
 
 	Contact myself() { return Myself; }
+	Status status();
 
 	void createGui();
 	void setShowMainWindowOnStart(bool show);
