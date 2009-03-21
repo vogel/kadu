@@ -120,14 +120,14 @@ TabsManager::TabsManager(bool firstload) : QObject()
 	config_file.addVariable("Tabs", "CloseButtonOnTab", "false");
 
 	openInNewTabActionDescription = new ActionDescription(
-		ActionDescription::TypeUser, "openInNewTabAction",
+		0, ActionDescription::TypeUser, "openInNewTabAction",
 		this, SLOT(onNewTab(QAction *, bool)),
 		"OpenChat", tr("Open in new tab"), false, QString::null, disableNewTab
 	);
 	ContactsListWidgetMenuManager::instance()->insertActionDescription(1, openInNewTabActionDescription);
 
 	attachToTabsActionDescription = new ActionDescription(
-		ActionDescription::TypeChat, "attachToTabsAction",
+		0, ActionDescription::TypeChat, "attachToTabsAction",
 		this, SLOT(onTabAttach(QAction *, bool)),
 		"TabsDetached", tr("Attach chat to tabs"), true, tr("Detach chat from tabs")
 	);
@@ -199,13 +199,14 @@ TabsManager::~TabsManager()
 	saveWindowGeometry(tabdialog, "Chat", "TabWindowsGeometry");
 
 	// jesli kadu nie konczy dzialania to znaczy ze modul zostal tylko wyladowany wiec odlaczamy rozmowy z kart
-	if (!Kadu::closing())
-	{
+	//if (!Kadu::closing())
+	//{
 		for(int i = tabdialog->count() - 1; i >= 0; i--)
 			detachChat(dynamic_cast<ChatWidget *>(tabdialog->widget(i)));
-	}
-	else if (config_file.readBoolEntry("Chat", "SaveOpenedWindows", true))
-		saveTabs();
+	//}
+	//else 
+	//if (config_file.readBoolEntry("Chat", "SaveOpenedWindows", true))
+	//	saveTabs();
 
 	delete tabdialog;
 	tabdialog = 0;
