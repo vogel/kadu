@@ -782,7 +782,7 @@ GaduContactAccountData * GaduProtocol::gaduContactAccountData(Contact contact) c
 
 QPixmap GaduProtocol::statusPixmap(Status status)
 {
-	QString description = status.description().isNull()
+	QString description = status.description().isEmpty()
 			? ""
 			: "WithDescription";
 	QString pixmapName;

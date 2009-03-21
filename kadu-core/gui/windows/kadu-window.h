@@ -29,6 +29,7 @@ class GroupTabBar;
 class KaduAction;
 class KaduTextBrowser;
 class KaduWindowActions;
+class StatusButton;
 
 class KaduWindow : public KaduMainWindow, private ConfigurationAwareObject
 {
@@ -65,7 +66,7 @@ private:
 	QVBoxLayout *MainLayout;
 
 	QMenu *StatusButtonMenu;
-	QPushButton *StatusButton;
+	StatusButton *ChangeStatusButton;
 	QPoint LastPositionBeforeStatusMenuHide;
 
 	QString InfoPanelStyle;

@@ -21,7 +21,7 @@ Status::Status(const Status& copyme)
 
 QString Status::name(const Status &status, bool fullName)
 {
-	QString add((fullName && !status.Description.isNull()) ? "WithDescription" : "");
+	QString add((fullName && !status.Description.isEmpty()) ? "WithDescription" : "");
 
 	switch (status.Type)
 	{

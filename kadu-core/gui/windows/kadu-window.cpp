@@ -24,6 +24,7 @@
 #include "gui/widgets/group-tab-bar.h"
 #include "gui/widgets/kadu_text_browser.h"
 #include "gui/windows/kadu-window-actions.h"
+#include "gui/widgets/status-button.h"
 #include "gui/widgets/status-menu.h"
 
 #include "misc/misc.h"
@@ -92,12 +93,12 @@ void KaduWindow::createGui()
 	if (!config_file.readBoolEntry("Look", "ShowInfoPanel"))
 		InfoPanel->QWidget::hide();
 
-	StatusButton = new QPushButton(icons_manager->loadIcon("Offline"), tr("Offline"), this);
-	MainLayout->addWidget(StatusButton);
-	StatusButton->setMenu(StatusButtonMenu);
+	ChangeStatusButton = new StatusButton(icons_manager->loadIcon("Offline"), tr("Offline"), this);
+	MainLayout->addWidget(ChangeStatusButton);
+	ChangeStatusButton->setMenu(StatusButtonMenu);
 
 	if (!config_file.readBoolEntry("Look", "ShowStatusButton"))
-		StatusButton->hide();
+		ChangeStatusButton->hide();
 
 	QList<int> splitSizes;
 

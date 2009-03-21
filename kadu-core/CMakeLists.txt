@@ -72,6 +72,7 @@ set (kadu_SRCS
 	gui/widgets/group-tab-bar.cpp
 	gui/widgets/kadu_text_browser.cpp
 	gui/widgets/preview.cpp
+	gui/widgets/status-button.cpp
 	gui/widgets/status-menu.cpp
 	gui/widgets/tool-tip-class-manager.cpp
 
@@ -228,6 +229,7 @@ set (kadu_MOC_SRCS
 	gui/widgets/group-tab-bar.h
 	gui/widgets/kadu_text_browser.h
 	gui/widgets/preview.h
+	gui/widgets/status-button.h
 	gui/widgets/status-menu.h
 
 	gui/widgets/configuration/config-action-button.h
@@ -247,7 +249,7 @@ set (kadu_MOC_SRCS
 	gui/windows/open-chat-with/open-chat-with.h
 	gui/windows/open-chat-with/open-chat-with-contact-list-runner.h
 	gui/windows/open-chat-with/open-chat-with-runner-manager.h
-	
+
 	misc/choose-description.h
 	misc/token-dialog.h
 
