@@ -270,13 +270,6 @@ Kadu::Kadu(QWidget *parent)
 	kdebugf2();*/
 }
 
-void Kadu::openRecentChats(QAction *action)
-{
-	kdebugf();
-	chat_manager->openPendingMsgs(chat_manager->closedChatUsers().at(action->data().toInt()), true);
-	kdebugf2();
-}
-
 void Kadu::inactiveUsersActionActivated(QAction *sender, bool toggled)
 {
 	KaduMainWindow *window = dynamic_cast<KaduMainWindow *>(sender->parent());
@@ -700,46 +693,6 @@ Kadu::~Kadu(void)
 	kdebugf2();
 }
 
-void Kadu::createRecentChatsMenu()
-{
-	kdebugf();
-/*
-	RecentChatsMenu->clear();
-	QAction *action;
-	if (chat_manager->closedChatUsers().isEmpty())
-	{
-		action = RecentChatsMenu->addAction(tr("No closed chats found"));
-		action->setEnabled(false);
-
-		kdebugf2();*/
-		return;
-// 	}
-
-	unsigned int index = 0; // indeks pozycji w popupie
-
-	foreach (const ContactList contacts, chat_manager->closedChatUsers())
-	{
- 		QString chat_users = contacts[0].display();
-		int contactsCount = contacts.count();
-		int i = 1;
-		while (i < contactsCount && i < 5)
-		{
-			chat_users.append(", " + contacts.at(i).display());
-			++i;
-		}
-		if (i < contactsCount)
-			chat_users.append(" [...]");
-/*
- 		action = new QAction(icons_manager->loadIcon("OpenChat"), chat_users, this);
- 		action->setData(index);
- 		RecentChatsMenu->addAction(action);
- */
- 		index++;
-	}
-
-	kdebugf2();
-}
-
 //
 ContactList Kadu::contacts()
 {
@@ -1104,6 +1057,7 @@ void Kadu::createDefaultConfiguration()
 	config_file.addVariable("Look", "PanelFont", *defaultFont);
 	config_file.addVariable("Look", "PanelVerticalScrollBar", false);
 	config_file.addVariable("Look", "ParagraphSeparator", 4);
+	config_file.addVariable("Look", "ShowGroupAll", true);
 	config_file.addVariable("Look", "ShowBold", true);
 	config_file.addVariable("Look", "ShowDesc", true);
 	config_file.addVariable("Look", "ShowInfoPanel", true);

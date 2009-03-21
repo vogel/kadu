@@ -10,7 +10,7 @@
 #include "contacts/contact.h"
 
 GroupContactFilter::GroupContactFilter(QObject *parent)
-	: AbstractContactFilter(parent), CurrentGroup(0)
+	: AbstractContactFilter(parent), CurrentGroup(0), AllGroupShown(true)
 {
 }
 
@@ -25,7 +25,7 @@ void GroupContactFilter::setGroup(Group *group)
 
 bool GroupContactFilter::acceptContact(Contact contact)
 {
-	return (0 == CurrentGroup) || contact.isInGroup(CurrentGroup);
+	return (0 == CurrentGroup && (AllGroupShown && contact.showInAllGroup() || !AllGroupShown && contact.groups().isEmpty())) || contact.isInGroup(CurrentGroup);
 }
 
 void GroupContactFilter::refresh()
@@ -33,3 +33,7 @@ void GroupContactFilter::refresh()
 	emit filterChanged();
 }
 
+void GroupContactFilter::setAllGroupShown(bool shown)
+{
+	AllGroupShown = shown;
+}

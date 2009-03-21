@@ -12,12 +12,13 @@
 
 #include <QtGui/QTabBar>
 
+#include "configuration_aware_object.h"
 #include "contacts/contact-list.h"
 
 class GroupContactFilter;
 class Group;
 
-class GroupTabBar : public QTabBar
+class GroupTabBar : public QTabBar, ConfigurationAwareObject
 {
 	Q_OBJECT
 
@@ -26,12 +27,15 @@ class GroupTabBar : public QTabBar
 	Group *currentGroup;
 	ContactList currentContacts;
 
+	bool showAllGroup;
+
 private slots:
 	void currentChangedSlot(int index);
 	void groupAdded(Group *group);
 	void groupRemoved(Group *group);
 	void groupAppearanceChanged(const Group *group);
 	void groupNameChanged(const Group *group);
+	void showInAllGroupChanged();
 
 	void addBuddy();
 	void renameGroup();
@@ -47,6 +51,8 @@ protected:
 
 	void dragEnterEvent(QDragEnterEvent *event);
 	void dropEvent(QDropEvent *event);
+
+	virtual void configurationUpdated();
 
 public:
 	GroupTabBar(QWidget *parent = 0);

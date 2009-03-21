@@ -128,6 +128,7 @@ template<class T>
 	bool isBlocked(Account *account);
 	bool isOfflineTo(Account *account);
 	bool setOfflineTo(Account *account, bool offlineTo);
+	bool showInAllGroup();
 	bool isInGroup(Group *group);
 	void addToGroup(Group *group);
 	void removeFromGroup(Group *group);

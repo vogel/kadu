@@ -19,6 +19,7 @@ class GroupContactFilter : public AbstractContactFilter
 	Q_OBJECT
 
 	Group *CurrentGroup;
+	bool AllGroupShown;
 
 public:
 	GroupContactFilter(QObject *parent = 0);
@@ -28,6 +29,7 @@ public:
 
 	void refresh();
 
+	void setAllGroupShown(bool shown);
 };
 
 #endif // GROUP_CONTACT_FILTER

@@ -49,7 +49,7 @@ public:
 	bool showIcon() const { return ShowIcon; }
 	bool showName() const { return ShowName; }
 	bool offlineToGroup() const { return OfflineToGroup; }
-	bool showInAllGroup() const {	return ShowInAllGroup; }
+	bool showInAllGroup() const { return ShowInAllGroup; }
 	bool notifyAboutStatusChanges() const { return NotifyAboutStatusChanges; }
 	
 
@@ -62,6 +62,8 @@ public:
 signals:
 	void appearanceChanged(const Group *group);
 	void nameChanged(const Group *group);
+	void showInAllChanged();
+
 };
 
 #endif // GROUP_H

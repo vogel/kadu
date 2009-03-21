@@ -63,8 +63,6 @@ private slots:
 	
 	void editUserActionActivated(QAction *sender, bool toggled);
 
-	void createRecentChatsMenu();
-	void openRecentChats(QAction *action);
 	void openChatWith();
 
 	void connected();

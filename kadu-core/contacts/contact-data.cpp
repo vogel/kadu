@@ -318,6 +318,14 @@ bool ContactData::isInGroup(Group *group)
 	return Groups.contains(group);
 }
 
+bool ContactData::showInAllGroup()
+{
+	foreach (const Group *group, Groups)
+		if (!group->showInAllGroup())
+			return false;
+	return true;
+}
+
 void ContactData::addToGroup(Group *group)
 {
 	Groups.append(group);

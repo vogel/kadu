@@ -52,6 +52,8 @@ GroupTabBar::GroupTabBar(QWidget *parent)
 	connect(GroupManager::instance(), SIGNAL(groupAdded(Group *)), this, SLOT(groupAdded(Group *)));
 	connect(GroupManager::instance(), SIGNAL(groupAboutToBeRemoved(Group *)), this, SLOT(groupRemoved(Group *)));
 
+	configurationUpdated();
+
 	setCurrentIndex(config_file.readNumEntry("Look", "CurrentGroupTab", 0));
 }
 
@@ -66,6 +68,7 @@ void GroupTabBar::addGroup(const Group *group)
 	setTabData(index, group->uuid().toString());
 	connect(group, SIGNAL(appearanceChanged(const Group *)), this, SLOT(groupAppearanceChanged(const Group *)));
 	connect(group, SIGNAL(nameChanged(const Group *)), this, SLOT(groupNameChanged(const Group *)));
+	connect(group, SIGNAL(showInAllChanged()), this, SLOT(showInAllGroupChanged()));
 
 	groupAppearanceChanged(group);
 }
@@ -122,6 +125,12 @@ void GroupTabBar::groupNameChanged(const Group *group)
 			setTabText(i, group->name());
 			break;
 		}
+}
+
+void GroupTabBar::showInAllGroupChanged()
+{
+    if (tabData(currentIndex()).toString() == "AllTab")
+		Filter->refresh();
 }
 
 void GroupTabBar::contextMenuEvent(QContextMenuEvent *event)
@@ -279,4 +288,28 @@ void GroupTabBar::moveToGroup()
 
 		Filter->refresh();
 	}
+}
+//TODO 0.6.6:
+void GroupTabBar::configurationUpdated()
+{
+	bool show = config_file.readBoolEntry("Look", "ShowGroupAll", true);
+	Filter->setAllGroupShown(show);
+
+	for (int i = 0; i < count(); ++i)
+		if (tabData(i).toString() == "AllTab")
+		{
+			if (show && tabText(i) != tr("All"))
+			{
+				setTabText(i, tr("All"));
+				if (tabData(currentIndex()).toString() == "AllTab")
+					Filter->refresh();
+			}
+			else if (!show && tabText(i) == tr("All"))
+			{
+				setTabText(i, tr("Ungrouped"));
+				if (tabData(currentIndex()).toString() == "AllTab")
+					Filter->refresh();
+			}
+			return;
+		}
 }

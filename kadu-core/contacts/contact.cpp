@@ -221,6 +221,13 @@ bool Contact::isInGroup(Group *group) const
 		: Data->isInGroup(group);
 }
 
+bool Contact::showInAllGroup() const
+{
+	return isNull()
+		? false
+		: Data->showInAllGroup();
+}
+
 void Contact::addToGroup(Group *group)
 {
 	if (!isNull() && !Data->isInGroup(group))

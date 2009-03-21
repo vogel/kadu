@@ -130,4 +130,6 @@ void Group::setOfflineTo(bool offline)
 void Group::setShowInAllGroup(bool show)
 {
 	ShowInAllGroup = show;
+	emit showInAllChanged();
+
 }
