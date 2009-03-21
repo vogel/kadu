@@ -128,6 +128,7 @@ void KaduWindow::createKaduMenu()
 	RecentChatsMenu = new QMenu();
 	RecentChatsMenu->setIcon(icons_manager->loadIcon("OpenChat"));
 	RecentChatsMenu->setTitle(tr("Recent chats..."));
+	connect(RecentChatsMenu, SIGNAL(aboutToShow()), this, SLOT(createRecentChatsMenu()));
 	connect(RecentChatsMenu, SIGNAL(triggered(QAction *)), this, SLOT(openRecentChats(QAction *)));
 
 	insertMenuActionDescription(Actions->Configuration, MenuKadu);
@@ -176,6 +177,53 @@ void KaduWindow::createHelpMenu()
 	insertMenuActionDescription(Actions->About, MenuHelp);
 
 	menuBar()->addMenu(HelpMenu);
+}
+
+void KaduWindow::createRecentChatsMenu()
+{
+	kdebugf();
+
+	RecentChatsMenu->clear();
+	QAction *action;
+	if (chat_manager->closedChatUsers().isEmpty())
+	{
+		action = RecentChatsMenu->addAction(tr("No closed chats found"));
+		action->setEnabled(false);
+
+		kdebugf2();
+		return;
+	}
+
+	unsigned int index = 0; // indeks pozycji w popupie
+
+	foreach (const ContactList contacts, chat_manager->closedChatUsers())
+	{
+		QString chat_users = contacts[0].display();
+		int contactsCount = contacts.count();
+		int i = 1;
+		while (i < contactsCount && i < 5)
+		{
+			chat_users.append(", " + contacts.at(i).display());
+			++i;
+		}
+		if (i < contactsCount)
+			chat_users.append(" [...]");
+
+		action = new QAction(icons_manager->loadIcon("OpenChat"), chat_users, this);
+		action->setData(index);
+		RecentChatsMenu->addAction(action);
+
+		index++;
+	}
+
+	kdebugf2();
+}
+
+void KaduWindow::openRecentChats(QAction *action)
+{
+	kdebugf();
+	chat_manager->openPendingMsgs(chat_manager->closedChatUsers().at(action->data().toInt()), true);
+	kdebugf2();
 }
 
 void KaduWindow::createStatusPopupMenu()
