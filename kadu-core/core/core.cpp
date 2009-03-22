@@ -64,6 +64,8 @@ Core::Core() : Window(0), ShowMainWindowOnStart(true)
 
 Core::~Core()
 {
+	storeConfiguration();
+
 	status_changer_manager->unregisterStatusChanger(StatusChanger);
 	delete StatusChanger;
 	StatusChanger = 0;
@@ -83,7 +85,6 @@ Core::~Core()
 	delete Window;
 	Window = 0;
 
-	storeConfiguration();
 	triggerAllAccountsUnregistered();
 
 	xml_config_file->sync();
