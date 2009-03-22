@@ -15,7 +15,6 @@
 #include "chat/chat_manager.h"
 
 #include "configuration_aware_object.h"
-#include "kadu.h"
 #include "main_configuration_window.h"
 #include "misc/misc.h"
 
