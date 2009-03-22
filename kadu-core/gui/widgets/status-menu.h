@@ -42,7 +42,7 @@ private slots:
 	void aboutToHide();
 	void changeStatus();
 	void changeStatusPrivate(bool toggled);
-	void statusChanged(Account *account, Status status);
+	void statusChanged(Status status);
 
 public:
 	explicit StatusMenu(QObject *parent = 0);

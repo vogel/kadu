@@ -14,6 +14,7 @@
 #include <QtGui/QPushButton>
 #include <QtGui/QVBoxLayout>
 
+#include "core/core.h"
 #include "gui/widgets/configuration/configuration-widget.h"
 
 #include "html_document.h"
@@ -78,7 +79,7 @@ void GaduConfigurationDialog::registerNewAccountClicked()
 */
 	setEnabled(false);
 
-	GaduServerRegisterAccount *gsra = new GaduServerRegisterAccount(kadu, mail, password);
+	GaduServerRegisterAccount *gsra = new GaduServerRegisterAccount(Core::instance(), mail, password);
 	connect(gsra, SIGNAL(finished(GaduServerConnector *)),
 			this, SLOT(registerNewAccountFinished(GaduServerConnector *)));
 

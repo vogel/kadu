@@ -23,6 +23,7 @@
 #include "gui/windows/chat_window.h"
 #include "gui/windows/kadu-window.h"
 #include "gui/windows/kadu-window-actions.h"
+#include "gui/windows/open-chat-with/open-chat-with.h"
 
 #include "protocols/protocol_factory.h"
 #include "protocols/protocols_manager.h"
@@ -172,7 +173,7 @@ ChatManager::ChatManager(QObject *parent)
 
 	openChatWithActionDescription = new ActionDescription(0,
 		ActionDescription::TypeGlobal, "openChatWithAction",
-		Core::instance()->kaduWindow(), SLOT(openChatWith()),
+		this, SLOT(openChatWith()),
 		"OpenChat", tr("Open chat with...")
 	);
 	openChatWithActionDescription->setShortcut("kadu_openchatwith", Qt::ApplicationShortcut);
@@ -311,6 +312,11 @@ ChatManager::~ChatManager()
 #endif
 
 	kdebugf2();
+}
+
+void ChatManager::openChatWith()
+{
+	(new OpenChatWith(Core::instance()->kaduWindow()))->show();
 }
 
 void ChatManager::autoSendActionActivated(QAction *sender, bool toggled)

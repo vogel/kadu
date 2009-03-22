@@ -18,9 +18,6 @@
 #include "path-conversion.h"
 #include "token-dialog.h"
 
-extern KADUAPI QFont *defaultFont;
-extern KADUAPI QFontInfo *defaultFontInfo;
-
 extern KADUAPI QTextCodec *codec_cp1250;
 extern KADUAPI QTextCodec *codec_latin2;
 // private

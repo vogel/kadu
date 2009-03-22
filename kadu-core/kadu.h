@@ -6,8 +6,6 @@
 #include <QtCore/QTimer>
 #include <QtGui/QKeyEvent>
 
-#include "../modules/gadu_protocol/token-reader.h"
-
 #include "contacts/contact.h"
 
 #include "protocols/protocol.h"
@@ -34,18 +32,11 @@ class KaduTextBrowser;
 /**
 	G��wne okno Kadu
 **/
-class KADUAPI Kadu : public KaduMainWindow, public TokenReader, ConfigurationAwareObject
+class KADUAPI Kadu : public KaduMainWindow, ConfigurationAwareObject
 {
 	Q_OBJECT
 
-private:
-	void createDefaultConfiguration();
-	void createAllDefaultToolbars();
-
 private slots:
-
-	void openChatWith();
-
 	void connected();
 	void connecting();
 	void disconnected();
@@ -56,14 +47,11 @@ private slots:
 
 protected:
 	virtual void customEvent(QEvent *);
-		
 	virtual void configurationUpdated();
 
 public:
 	Kadu(QWidget *parent = 0);
 	~Kadu();
-
-	static void addAction(const QString &actionName, bool showLabel = false);
 
 	virtual bool supportsActionType(ActionDescription::ActionType type) {
 		return type & (ActionDescription::TypeGlobal | ActionDescription::TypeUserList | ActionDescription::TypeUser); }
@@ -93,10 +81,6 @@ public slots:
 	void changeAppearance();
 	void blink();
 	virtual bool close(bool quit = false);
-
-	void readTokenValue(QPixmap, QString &);
-
-	virtual QString readToken(const QPixmap &);
 
 	void setStatusActionsIcon();
 

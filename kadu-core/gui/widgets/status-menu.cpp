@@ -175,7 +175,7 @@ void StatusMenu::changeStatusPrivate(bool toggled)
 	config_file.writeEntry("General", "PrivateStatus", toggled);
 }
 
-void StatusMenu::statusChanged(Account *account, Status status)
+void StatusMenu::statusChanged(Status status)
 {
 	int index;
 
@@ -203,18 +203,6 @@ void StatusMenu::statusChanged(Account *account, Status status)
 	Protocol *protocol = AccountManager::instance()->defaultAccount()->protocol();
 	ChangePrivateStatus->setChecked(protocol->privateMode());
 
-// 	statusButton->setText(qApp->translate("@default", Status::name(gadu->status()).toAscii().data()));
 	ChangeStatusToOfflineDesc->setEnabled(index != 6);
 	ChangeStatusToOffline->setEnabled(index != 7);
-/*
-	QPixmap pix = gadu->statusPixmap();
-	QIcon icon(pix);
-	QString iconName = Status::name(gadu->status());*/
-
-// 	statusButton->setIcon(icon);
-// 	Core::instance()->setIcon(pix);
-/*
-	foreach(KaduAction *action, showStatusActionDescription->actions())
-		action->setIcon(icon);*/
-
 }

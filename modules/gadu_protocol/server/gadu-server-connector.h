@@ -15,7 +15,7 @@
 
 #include <libgadu.h>
 
-#include "token-reader.h"
+#include "misc/token-reader.h"
 
 class GaduServerConnector : public QObject
 {

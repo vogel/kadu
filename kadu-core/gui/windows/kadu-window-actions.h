@@ -12,6 +12,8 @@
 
 #include <QtCore/QObject>
 
+#include "protocols/status.h"
+
 class QAction;
 
 class ActionDescription;
@@ -54,6 +56,8 @@ class KaduWindowActions : QObject
 	ActionDescription *UseProxy;
 
 private slots:
+	void statusChanged(Status status);
+
 	void inactiveUsersActionCreated(KaduAction *action);
 	void descriptionUsersActionCreated(KaduAction *action);
 	void onlineAndDescUsersActionCreated(KaduAction *action);

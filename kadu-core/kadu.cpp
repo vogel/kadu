@@ -250,15 +250,6 @@ void Kadu::editUserActionSetParams(QString / *protocolName* /, UserListElement u
 	kdebugf2();
 }*/
 
-void Kadu::openChatWith()
-{
-	kdebugf();
-
-	(new OpenChatWith(this))->show();
-
-	kdebugf2();
-}
-
 void Kadu::setStatusActionsIcon()
 {
 // 	Account *gadu = AccountManager::instance()->defaultAccount();
@@ -434,8 +425,6 @@ bool Kadu::close(bool quit)
 		ModulesManager::closeModule();
 
 		Updates::closeModule();
-		delete defaultFontInfo;
-		delete defaultFont;
 
 // TODO: 0.6.6
 // 		disconnect(gadu, SIGNAL(imageReceivedAndSaved(UinType, uint32_t, uint32_t, const QString &)),
@@ -651,30 +640,6 @@ void Kadu::statusChanged(Account *account, Status status)
 // 	showStatusOnMenu(index);
 }
 
-void Kadu::readTokenValue(QPixmap tokenImage, QString &tokenValue)
-{
-	TokenDialog *td = new TokenDialog(tokenImage, 0);
-
-	if (td->exec() == QDialog::Accepted)
-		td->getValue(tokenValue);
-	else
-		tokenValue.truncate(0);
-
-	delete td;
-}
-
-QString Kadu::readToken(const QPixmap &tokenPixmap)
-{
-	TokenDialog *td = new TokenDialog(tokenPixmap, 0);
-	QString result;
-
-	if (td->exec() == QDialog::Accepted)
-		result = td->getValue();
-	delete td;
-
-	return result;
-}
-
 char *SystemUserName;
 void Kadu::deleteOldConfigFiles()
 {
@@ -744,175 +709,4 @@ void Kadu::customEvent(QEvent *e)
 // 	}
 // 	else
 // 		QWidget::customEvent(e);
-}
-
-void Kadu::createDefaultConfiguration()
-{
-	QWidget w;
-
-	config_file.addVariable("Chat", "ActivateWithNewMessages", false);
-	config_file.addVariable("Chat", "AutoSend", true);
-	config_file.addVariable("Chat", "BlinkChatTitle", true);
-	config_file.addVariable("Chat", "ChatCloseTimer", true);
-	config_file.addVariable("Chat", "ChatCloseTimerPeriod", 2);
-	config_file.addVariable("Chat", "ChatPrune", false);
-	config_file.addVariable("Chat", "ChatPruneLen", 20);
-	config_file.addVariable("Chat", "ConfirmChatClear", true);
-	config_file.addVariable("Chat", "EmoticonsPaths", "");
-	config_file.addVariable("Chat", "EmoticonsStyle", EMOTS_ANIMATED);
-	config_file.addVariable("Chat", "EmoticonsTheme", "penguins");
-	config_file.addVariable("Chat", "FoldLink", true);
-	config_file.addVariable("Chat", "LinkFoldTreshold", 50);
-	config_file.addVariable("Chat", "IgnoreAnonymousRichtext", true);
-	config_file.addVariable("Chat", "IgnoreAnonymousUsers", false);
-	config_file.addVariable("Chat", "IgnoreAnonymousUsersInConferences", false);
-	config_file.addVariable("Chat", "LastImagePath", QString(getenv("HOME")) + '/');
-	config_file.addVariable("Chat", "MaxImageRequests", 5);
-	config_file.addVariable("Chat", "MaxImageSize", 255);
-	config_file.addVariable("Chat", "MessageAcks", false);
-	config_file.addVariable("Chat", "NewMessagesInChatTitle", false);
-	config_file.addVariable("Chat", "OpenChatOnMessage", true);
-	config_file.addVariable("Chat", "OpenChatOnMessageWhenOnline", false);
-	config_file.addVariable("Chat", "SaveOpenedWindows", true);
-	config_file.addVariable("Chat", "ReceiveMessages", true);
-	config_file.addVariable("Chat", "ReceiveImagesDuringInvisibility", true);
-	config_file.addVariable("Chat", "RememberPosition", true);
-	config_file.addVariable("Chat", "ShowEditWindowLabel", true);
-
-	config_file.addVariable("General", "AllowExecutingFromParser", false);
-	config_file.addVariable("General", "AutoRaise", false);
-	config_file.addVariable("General", "CheckUpdates", true);
-	config_file.addVariable("General", "DEBUG_MASK", KDEBUG_ALL & ~KDEBUG_FUNCTION_END);
-	config_file.addVariable("General", "DescriptionHeight", 60);
-	config_file.addVariable("General", "DisconnectWithCurrentDescription", true);
-	config_file.addVariable("General", "HideBaseModules", true);
-	config_file.addVariable("General", "Language",  QString(qApp->keyboardInputLocale().name()).mid(0,2));
-	config_file.addVariable("General", "Nick", tr("Me"));
-	config_file.addVariable("General", "NumberOfDescriptions", 20);
-	config_file.addVariable("General", "ParseStatus", false);
-	config_file.addVariable("General", "PrivateStatus", false);
-	config_file.addVariable("General", "SaveStdErr", false);
-	config_file.addVariable("General", "ShowBlocked", true);
-	config_file.addVariable("General", "ShowBlocking", true);
-	config_file.addVariable("General", "ShowEmotPanel", true);
-	config_file.addVariable("General", "ShowOffline", true);
-	config_file.addVariable("General", "ShowOnlineAndDescription", false);
-	config_file.addVariable("General", "ShowWithoutDescription", true);
-	config_file.addVariable("General", "StartDelay", 0);
-	config_file.addVariable("General", "StartupLastDescription", true);
-	config_file.addVariable("General", "StartupStatus", "LastStatus");
-	config_file.addVariable("General", "StartupStatusInvisibleWhenLastWasOffline", true);
-	config_file.addVariable("General", "UserBoxHeight", 300);
-	config_file.addVariable("General", "WindowActivationMethod", 0);
-
-	config_file.addVariable("Look", "AlignUserboxIconsTop", true);
-	config_file.addVariable("Look", "ChatContents", "");
-	config_file.addVariable("Look", "ChatFont", *defaultFont);
-	config_file.addVariable("Look", "ChatBgColor", QColor("#ffffff"));
-	config_file.addVariable("Look", "ChatMyBgColor", QColor("#E0E0E0"));
-	config_file.addVariable("Look", "ChatMyFontColor", QColor("#000000"));
-	config_file.addVariable("Look", "ChatMyNickColor", QColor("#000000"));
-	config_file.addVariable("Look", "ChatTextBgColor", QColor("#ffffff"));
-	config_file.addVariable("Look", "ChatUsrBgColor", QColor("#F0F0F0"));
-	config_file.addVariable("Look", "ChatUsrFontColor", QColor("#000000"));
-	config_file.addVariable("Look", "ChatUsrNickColor", QColor("#000000"));
-	config_file.addVariable("Look", "ConferenceContents", "");
-	config_file.addVariable("Look", "ConferencePrefix", "");
-	config_file.addVariable("Look", "DescriptionColor", w.palette().foreground().color());
-	config_file.addVariable("Look", "DisplayGroupTabs", true);
-	config_file.addVariable("Look", "HeaderSeparatorHeight", 1);
-	config_file.addVariable("Look", "IconsPaths", "");
-	config_file.addVariable("Look", "IconTheme", "default");
-	config_file.addVariable("Look", "InfoPanelBgColor", w.palette().background().color());
-	config_file.addVariable("Look", "InfoPanelFgColor", w.palette().foreground().color());
-	config_file.addVariable("Look", "InfoPanelSyntaxFile", "default");
-	config_file.addVariable("Look", "NiceDateFormat", true);
-	config_file.addVariable("Look", "NoHeaderInterval", 30);
-	config_file.addVariable("Look", "NoHeaderRepeat", false);
-	config_file.addVariable("Look", "NoServerTime", true);
-	config_file.addVariable("Look", "NoServerTimeDiff", 60);
-	config_file.addVariable("Look", "PanelFont", *defaultFont);
-	config_file.addVariable("Look", "PanelVerticalScrollBar", false);
-	config_file.addVariable("Look", "ParagraphSeparator", 4);
-	config_file.addVariable("Look", "ShowGroupAll", true);
-	config_file.addVariable("Look", "ShowBold", true);
-	config_file.addVariable("Look", "ShowDesc", true);
-	config_file.addVariable("Look", "ShowInfoPanel", true);
-	config_file.addVariable("Look", "ShowMultilineDesc", true);
-	config_file.addVariable("Look", "ShowStatusButton", true);
-	config_file.addVariable("Look", "Style", "kadu");
-	config_file.addVariable("Look", "UserboxBackgroundDisplayStyle", "Stretched");
-	config_file.addVariable("Look", "UserboxBgColor", w.palette().background().color());
-	config_file.addVariable("Look", "UserBoxColumnCount", 1);
-	config_file.addVariable("Look", "UserboxFgColor", w.palette().foreground().color());
-	QFont userboxfont(*defaultFont);
-	userboxfont.setPointSize(defaultFont->pointSize()+1);
-	config_file.addVariable("Look", "UserboxFont", userboxfont);
-	config_file.addVariable("Look", "UseUserboxBackground", false);
-#ifdef Q_OS_MAC
-	/* Dorr: for MacOS X define the icon notification to animated which
-	 * will prevent from blinking the dock icon
-	 */
-	config_file.addVariable("Look", "NewMessageIcon", 2);
-#endif
-
-	config_file.addVariable("Network", "AllowDCC", true);
-	config_file.addVariable("Network", "DefaultPort", 0);
-	config_file.addVariable("Network", "isDefServers", true);
-	config_file.addVariable("Network", "Server", "");
-	config_file.addVariable("Network", "TimeoutInMs", 5000);
-	config_file.addVariable("Network", "UseProxy", false);
-
-#ifdef Q_OS_MAC
-	/* Dorr: for MacOS X define the function keys with 'apple' button
-	 * as it is the default system configuration */
-	config_file.addVariable("ShortCuts", "chat_clear", "Ctrl+F9");
-	config_file.addVariable("ShortCuts", "kadu_configure", "Ctrl+F2");
-	config_file.addVariable("ShortCuts", "kadu_modulesmanager", "Ctrl+F4");
-	config_file.addVariable("ShortCuts", "kadu_showoffline", "Ctrl+F9");
-	config_file.addVariable("ShortCuts", "kadu_showonlydesc", "Ctrl+F10");
-#else
-	config_file.addVariable("ShortCuts", "chat_clear", "F9");
-	config_file.addVariable("ShortCuts", "kadu_configure", "F2");
-	config_file.addVariable("ShortCuts", "kadu_modulesmanager", "F4");
-	config_file.addVariable("ShortCuts", "kadu_showoffline", "F9");
-	config_file.addVariable("ShortCuts", "kadu_showonlydesc", "F10");
-#endif
-	config_file.addVariable("ShortCuts", "chat_bold", "Ctrl+B");
-	config_file.addVariable("ShortCuts", "chat_close", "Esc");
-	config_file.addVariable("ShortCuts", "chat_italic", "Ctrl+I");
-	config_file.addVariable("ShortCuts", "chat_newline", "Return");
-	config_file.addVariable("ShortCuts", "chat_underline", "Ctrl+U");
-	config_file.addVariable("ShortCuts", "kadu_adduser", "Ctrl+N");
-	config_file.addVariable("ShortCuts", "kadu_deleteuser", "Del");
-	config_file.addVariable("ShortCuts", "kadu_openchatwith", "Ctrl+L");
-	config_file.addVariable("ShortCuts", "kadu_persinfo", "Ins");
-	config_file.addVariable("ShortCuts", "kadu_searchuser", "Ctrl+F");
-
-	createAllDefaultToolbars();
-}
-
-#include "gui/windows/kadu-window.h"
-
-void Kadu::createAllDefaultToolbars()
-{
-	// dont use getToolbarsConfigElement here, we have to be sure that this element don'e exists
-	QDomElement toolbarsConfig = xml_config_file->findElement(xml_config_file->rootElement(), "Toolbars");
-
-	if (!toolbarsConfig.isNull())
-		return; // no need for defaults...
-
-	toolbarsConfig = xml_config_file->createElement(xml_config_file->rootElement(), "Toolbars");
-
-	KaduWindow::createDefaultToolbars(toolbarsConfig);
-	ChatEditBox::createDefaultToolbars(toolbarsConfig);
-	SearchDialog::createDefaultToolbars(toolbarsConfig);
-
-	xml_config_file->sync();
-}
-
-void Kadu::addAction(const QString &actionName, bool showLabel)
-{
-	addToolButton(findExistingToolbar(""), actionName, showLabel);
-	kadu->refreshToolBars("");
 }

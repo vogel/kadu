@@ -72,6 +72,8 @@ private:
 	void insertEmoticonActionEnabled();
 
 private slots:
+	void openChatWith();
+
 	void autoSendActionActivated(QAction *sender, bool toggled);
 	void clearActionActivated(QAction *sender, bool toggled);
 	void boldActionActivated(QAction *sender, bool toggled);

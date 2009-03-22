@@ -42,6 +42,7 @@
 #include "message_box.h"
 #include "personal_info.h"
 #include "search.h"
+#include "status_changer.h"
 
 #include "../modules/gadu_protocol/gadu-contact-account-data.h"
 
@@ -50,7 +51,7 @@
 void disableNonIdUles(KaduAction *action)
 {
 	kdebugf();
-	foreach(const Contact contact, action->contacts())
+	foreach (const Contact contact, action->contacts())
 		if (contact.accountData(AccountManager::instance()->defaultAccount()) == 0)
 		{
 			action->setEnabled(false);
@@ -77,7 +78,7 @@ void checkOfflineTo(KaduAction *action)
 	kdebugf();
 	Account *account = AccountManager::instance()->defaultAccount();
 	bool on = true;
-	foreach(const Contact contact, action->contacts())
+	foreach (const Contact contact, action->contacts())
 		if (contact.accountData(account) == 0 || !contact.isOfflineTo(account))
 		{
 			on = false;
@@ -91,7 +92,7 @@ void checkHideDescription(KaduAction *action)
 {
 	Account *account = AccountManager::instance()->defaultAccount();
 
-	foreach(const Contact contact, action->contacts())
+	foreach (const Contact contact, action->contacts())
 		if (contact.accountData(account) == 0)
 		{
 			action->setEnabled(false);
@@ -100,7 +101,7 @@ void checkHideDescription(KaduAction *action)
 	action->setEnabled(true);
 
 	bool on = false;
-	foreach(const Contact contact, action->contacts())
+	foreach (const Contact contact, action->contacts())
 	{
 		ContactKaduData *ckd = contact.moduleData<ContactKaduData>(true);
 		if (!ckd)
@@ -445,10 +446,23 @@ KaduWindowActions::KaduWindowActions(QObject *parent) : QObject(parent)
 		"UseProxy", tr("Use proxy"), true, tr("Don't use proxy")
 	);
 	connect(UseProxy, SIGNAL(actionCreated(KaduAction *)), this, SLOT(useProxyActionCreated(KaduAction *)));
+
+	connect(status_changer_manager, SIGNAL(statusChanged(Status)), this, SLOT(statusChanged(Status)));
 }
 
 KaduWindowActions::~KaduWindowActions()
 {
+}
+
+void KaduWindowActions::statusChanged(Status status)
+{
+	Account *account = AccountManager::instance()->defaultAccount();
+	if (!account)
+		return;
+
+	QIcon icon = account->statusPixmap(status);
+	foreach (KaduAction *action, ShowStatus->actions())
+		action->setIcon(icon);
 }
 
 void KaduWindowActions::inactiveUsersActionCreated(KaduAction *action)

@@ -15,6 +15,7 @@
 #include "accounts/accounts_aware_object.h"
 #include "contacts/contact.h"
 #include "contacts/contact-list.h"
+#include "misc/token-reader.h"
 #include "protocols/status.h"
 
 #include "exports.h"
@@ -23,7 +24,7 @@
 class KaduWindow;
 class UserStatusChanger;
 
-class KADUAPI Core : public QObject, private AccountsAwareObject
+class KADUAPI Core : public QObject, private AccountsAwareObject, public TokenReader
 {
 	Q_OBJECT
 	Q_DISABLE_COPY(Core)
@@ -40,6 +41,9 @@ class KADUAPI Core : public QObject, private AccountsAwareObject
 	Core();
 	virtual ~Core();
 
+	void createDefaultConfiguration();
+	void createAllDefaultToolbars();
+
 	void init();
 
 	void loadConfiguration();
@@ -55,6 +59,8 @@ protected:
 
 public:
 	static Core * instance();
+
+	virtual QString readToken(const QPixmap &tokenPixmap);
 
 	Contact myself() { return Myself; }
 	Status status();

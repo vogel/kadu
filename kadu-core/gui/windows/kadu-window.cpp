@@ -19,6 +19,7 @@
 #include "contacts/contact-manager.h"
 #include "contacts/model/contacts-model.h"
 #include "contacts/model/filter/group-contact-filter.h"
+#include "core/core.h"
 #include "gui/widgets/contact-info-panel.h"
 #include "gui/widgets/contacts-list-widget.h"
 #include "gui/widgets/group-tab-bar.h"
@@ -394,6 +395,12 @@ void KaduWindow::createDefaultToolbars(QDomElement parentConfig)
 	addToolButton(toolbarConfig, "editUserAction");
 	addToolButton(toolbarConfig, "openSearchAction");
 	addToolButton(toolbarConfig, "addUserAction");
+}
+
+void KaduWindow::addAction(const QString &actionName, bool showLabel)
+{
+	addToolButton(findExistingToolbar(""), actionName, showLabel);
+	Core::instance()->kaduWindow()->refreshToolBars("");
 }
 
 void KaduWindow::setDocked(bool docked)

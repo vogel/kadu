@@ -232,8 +232,6 @@ int main(int argc, char *argv[])
 		exit(10);
 	}
 
-	defaultFont = new QFont(qApp->font());
-	defaultFontInfo = new QFontInfo(*defaultFont);
 	// loading translation
 	// Translator_qt
 	QTranslator qt_qm(0);
@@ -251,8 +249,6 @@ int main(int argc, char *argv[])
 	if (isRuning(ggnumber))
 	{
 		// setClosing? TODO: 0.6.6
-		delete defaultFont;
-		delete defaultFontInfo;
 		delete config_file_ptr;
 		delete xml_config_file;
 //		delete qApp;
