@@ -45,7 +45,6 @@
 #include "config_file.h"
 #include "debug.h"
 #include "icons_manager.h"
-#include "kadu.h"
 #include "misc/misc.h"
 
 #include "main_configuration_window.h"
@@ -53,6 +52,22 @@
 MainConfigurationWindow *MainConfigurationWindow::Instance = 0;
 ConfigFileDataManager *MainConfigurationWindow::InstanceDataManager = 0;
 QList<QPair<QString, ConfigurationUiHandler *> > MainConfigurationWindow::UiFiles;
+
+const char *MainConfigurationWindow::SyntaxText = QT_TRANSLATE_NOOP
+(
+	"@default", "Syntax: %s - status, %d - description, %i - ip, %n - nick, %a - altnick, %f - first name\n"
+	"%r - surname, %m - mobile, %u - uin, %g - group, %o - return _space_ if user doesn't have us in userlist\n"
+	"%h - gg version, %v - revDNS, %p - port, %e - email, %x - max image size\n"
+);
+
+const char *MainConfigurationWindow::SyntaxTextNotify = QT_TRANSLATE_NOOP
+(
+	"@default", "Syntax: %s - status, %d - description, %i - ip, %n - nick, %a - altnick, %f - first name\n"
+	"%r - surname, %m - mobile, %u - uin, %g - group, %o - return _space_ if user doesn't have us in userlist\n"
+	"%h - gg version, %v - revDNS, %p - port, %e - email, %x - max image size,\n"
+	"#{protocol} - protocol that triggered event,\n"
+	"#{event} - name of event,\n"
+);
 
 MainConfigurationWindow * MainConfigurationWindow::instance()
 {
@@ -181,8 +196,8 @@ MainConfigurationWindow::MainConfigurationWindow()
 	connect(useUserboxBackground, SIGNAL(toggled(bool)), widget()->widgetById("userboxBackground"), SLOT(setEnabled(bool)));
 	connect(useUserboxBackground, SIGNAL(toggled(bool)), widget()->widgetById("userboxBackgroundDisplayStyle"), SLOT(setEnabled(bool)));
 
-	widget()->widgetById("parseStatus")->setToolTip(qApp->translate("@default", Kadu::SyntaxText));
-	(dynamic_cast<ConfigSyntaxEditor *>(widget()->widgetById("infoPanelSyntax")))->setSyntaxHint(qApp->translate("@default", Kadu::SyntaxText));
+	widget()->widgetById("parseStatus")->setToolTip(qApp->translate("@default", SyntaxText));
+	(dynamic_cast<ConfigSyntaxEditor *>(widget()->widgetById("infoPanelSyntax")))->setSyntaxHint(qApp->translate("@default", SyntaxText));
 
 	loadWindowGeometry(this, "General", "ConfigGeometry", 0, 50, 790, 480);
 }
@@ -649,9 +664,9 @@ void MainConfigurationWindow::showLookChatAdvanced()
 		connect(lookChatAdvanced->widget()->widgetById("removeServerTime"), SIGNAL(toggled(bool)), lookChatAdvanced->widget()->widgetById("maxTimeDifference"), SLOT(setEnabled(bool)));
 		connect(lookChatAdvanced->widget()->widgetById("noHeaderRepeat"), SIGNAL(toggled(bool)), lookChatAdvanced->widget()->widgetById("noHeaderInterval"), SLOT(setEnabled(bool)));
 
-		lookChatAdvanced->widget()->widgetById("chatSyntax")->setToolTip(qApp->translate("@default", Kadu::SyntaxText));
-		lookChatAdvanced->widget()->widgetById("conferencePrefix")->setToolTip(qApp->translate("@default", Kadu::SyntaxText));
-		lookChatAdvanced->widget()->widgetById("conferenceSyntax")->setToolTip(qApp->translate("@default", Kadu::SyntaxText));
+		lookChatAdvanced->widget()->widgetById("chatSyntax")->setToolTip(qApp->translate("@default", SyntaxText));
+		lookChatAdvanced->widget()->widgetById("conferencePrefix")->setToolTip(qApp->translate("@default", SyntaxText));
+		lookChatAdvanced->widget()->widgetById("conferenceSyntax")->setToolTip(qApp->translate("@default", SyntaxText));
 
 		connect(lookChatAdvanced, SIGNAL(destroyed()), this, SLOT(lookChatAdvancedDestroyed()));
 	}

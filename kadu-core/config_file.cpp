@@ -794,3 +794,5 @@ void ConfigFile::addVariable(const QString &group, const QString &name, const QP
 	if (getEntry(group, name).isEmpty())
 		writeEntry(group,name,defvalue);
 }
+
+ConfigFile *config_file_ptr;

@@ -142,7 +142,6 @@ set (kadu_SRCS
 	http_client.cpp
 	icons_manager.cpp
 	ignore.cpp
-	kadu.cpp
 	kadu_main_window.cpp
 	kadu_parser.cpp
 	main_configuration_window.cpp
@@ -279,7 +278,6 @@ set (kadu_MOC_SRCS
 	http_client.h
 	icons_manager.h
 	ignore.h
-	kadu.h
 	kadu_main_window.h
 	kadu_parser.h
 	main_configuration_window.h

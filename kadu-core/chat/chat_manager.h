@@ -203,10 +203,6 @@ public slots:
 	**/
 	void deletePendingMsgs(ContactList users);
 
-	//TODO: opisac funkcje sendMessage(..)
-	/*
-		Niebardzo rozumiem tej funkcji (czemu jest uin i uins)
-	*/
 	void sendMessage(Contact user, ContactList selected_users);
 
 	/**

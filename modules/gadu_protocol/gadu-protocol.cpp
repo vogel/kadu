@@ -30,7 +30,6 @@
 #include "config_file.h"
 #include "debug.h"
 #include "icons_manager.h"
-#include "kadu.h"
 #include "message_box.h"
 #include "misc/misc.h"
 

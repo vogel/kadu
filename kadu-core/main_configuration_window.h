@@ -49,6 +49,9 @@ class KADUAPI MainConfigurationWindow : public ConfigurationWindow
 	static MainConfigurationWindow *Instance;
 	static ConfigFileDataManager *InstanceDataManager;
 
+	static const char *SyntaxText;
+	static const char *SyntaxTextNotify;
+
 	static QList<ConfigurationHandelUiPair> UiFiles;
 
 	static void instanceCreated();

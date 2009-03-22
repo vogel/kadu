@@ -7,6 +7,7 @@
  *                                                                         *
  ***************************************************************************/
 
+#include <QtCore/QDir>
 #include <QtGui/QApplication>
 
 #include "accounts/account_manager.h"
@@ -14,6 +15,7 @@
 #include "contacts/group-manager.h"
 #include "gui/widgets/chat_edit_box.h"
 #include "gui/windows/kadu-window.h"
+#include "misc/misc.h"
 #include "misc/token-dialog.h"
 #include "protocols/protocol.h"
 #include "protocols/protocol_factory.h"
@@ -26,6 +28,7 @@
 #include "debug.h"
 #include "emoticons.h"
 #include "icons_manager.h"
+#include "modules.h"
 #include "pending_msgs.h"
 #include "search.h"
 #include "status_changer.h"
@@ -65,12 +68,30 @@ Core::~Core()
 	StatusChanger = 0;
 
 	StatusChangerManager::closeModule();
+	ModulesManager::closeModule();
+	Updates::closeModule();
+	ChatManager::closeModule();
+	SearchDialog::closeModule();
+	EmoticonsManager::closeModule();
+	IconsManager::closeModule();
+
+#ifdef Q_OS_MACX
+	setIcon(QPixmap(dataPath("kadu.png")));
+#endif // Q_OS_MACX
 
 	delete Window;
 	Window = 0;
 
 	storeConfiguration();
 	triggerAllAccountsUnregistered();
+
+	xml_config_file->sync();
+
+	delete xml_config_file;
+	delete config_file_ptr;
+
+	xml_config_file = 0;
+	config_file_ptr = 0;
 }
 
 void Core::createDefaultConfiguration()
@@ -243,6 +264,7 @@ void Core::init()
 
 	StatusChanger = new UserStatusChanger();
 	status_changer_manager->registerStatusChanger(StatusChanger);
+	status_changer_manager->enable();
 
 	Updates::initModule();
 	GaduProtocol::initModule();
@@ -254,6 +276,61 @@ void Core::init()
 #else
 	setIcon(icons_manager->loadPixmap("Offline"));
 #endif
+
+	loadDefaultStatus();
+
+	QTimer::singleShot(15000, this, SLOT(deleteOldConfigFiles()));
+}
+
+void Core::loadDefaultStatus()
+{
+	kdebugf();
+
+	QString description;
+	QString startupStatus = config_file.readEntry("General", "StartupStatus");
+	Status status;
+
+	if (config_file.readBoolEntry("General", "StartupLastDescription"))
+		description = config_file.readEntry("General", "LastStatusDescription");
+	else
+		description = config_file.readEntry("General", "StartupDescription");
+
+	bool offlineToInvisible = false;
+	Status::StatusType type;
+
+	if (startupStatus == "LastStatus")
+	{
+		int typeIndex = config_file.readNumEntry("General", "LastStatusType", -1);
+		if (typeIndex == -1)
+		{
+			typeIndex = config_file.readNumEntry("General", "LastStatusIndex", 6) / 2;
+			config_file.removeVariable("General", "LastStatusIndex");
+		}
+
+		type = (Status::StatusType)typeIndex;
+		offlineToInvisible = config_file.readBoolEntry("General", "StartupStatusInvisibleWhenLastWasOffline");
+	}
+	else if (startupStatus == "Online")
+		type = Status::Online;
+	else if (startupStatus == "Busy")
+		type = Status::Busy;
+	else if (startupStatus == "Invisible")
+		type = Status::Invisible;
+	else if (startupStatus == "Offline")
+		type = Status::Offline;
+
+	if ((Status::Offline == type) && offlineToInvisible)
+		type = Status::Invisible;
+
+	status.setType(type);
+	status.setDescription(description);
+
+	Account *account = AccountManager::instance()->defaultAccount();
+	if (account)
+		account->protocol()->setPrivateMode(config_file.readBoolEntry("General", "PrivateStatus"));
+	setStatus(status);
+
+	kdebugf2();
 }
 
 void Core::loadConfiguration()
@@ -267,7 +344,7 @@ void Core::loadConfiguration()
 void Core::storeConfiguration()
 {
 	if (config_file.readEntry("General", "StartupStatus") == "LastStatus")
-		config_file.writeEntry("General", "LastStatusIndex", (int)StatusChanger->status().type());
+		config_file.writeEntry("General", "LastStatusType", (int)StatusChanger->status().type());
 
 	if (config_file.readBoolEntry("General", "StartupLastDescription"))
 		config_file.writeEntry("General", "LastStatusDescription", StatusChanger->status().description());
@@ -287,6 +364,38 @@ void Core::storeConfiguration()
 			setOffline(config_file.readEntry("General", "DisconnectDescription"));
 
 	xml_config_file->makeBackup();
+}
+
+char *SystemUserName;
+void Core::deleteOldConfigurationFiles()
+{
+	kdebugf();
+
+	QDir oldConfigs2(ggPath(), "kadu.conf.xml.backup.*", QDir::Name, QDir::Files);
+
+	if (oldConfigs2.count() > 20)
+		for (unsigned int i = 0, max = oldConfigs2.count() - 20; i < max; ++i)
+			QFile::remove(ggPath(oldConfigs2[i]));
+
+	QDir oldBacktraces(ggPath(), "kadu.backtrace.*", QDir::Name, QDir::Files);
+	if (oldBacktraces.count() > 20)
+		for (unsigned int i = 0, max = oldBacktraces.count() - 20; i < max; ++i)
+			QFile::remove(ggPath(oldBacktraces[i]));
+
+#ifdef Q_OS_WIN
+	QString tmp(getenv("TEMP") ? getenv("TEMP") : ".");
+	QString mask("kadu-dbg-*.txt");
+#else
+	QString tmp("/tmp");
+	QString mask=QString("kadu-%1-*.dbg").arg(SystemUserName);
+#endif
+
+	QDir oldDebugs(tmp, mask, QDir::Name, QDir::Files);
+	if (oldDebugs.count() > 5)
+		for (unsigned int i = 0, max = oldDebugs.count() - 5; i < max; ++i)
+			QFile::remove(tmp + "/" + oldDebugs[i]);
+
+	kdebugf2();
 }
 
 void Core::changeStatus(Status newStatus)
@@ -351,6 +460,32 @@ void Core::accountUnregistered(Account *account)
 			this, SLOT(statusChanged(Account *, Status)));
 
 	Myself.removeAccountData(account);
+}
+
+void Core::configurationUpdated()
+{
+	QApplication::setStyle(config_file.readEntry("Look", "QtStyle"));
+
+	Account *account = AccountManager::instance()->defaultAccount();
+	if (account)
+	{
+		setIcon(account->protocol()->statusPixmap());
+		account->protocol()->setPrivateMode(config_file.readBoolEntry("General", "PrivateStatus"));
+	}
+#ifdef Q_OS_WIN
+	QSettings settings("HKEY_CURRENT_USER\\Software\\Microsoft\\Windows\\CurrentVersion\\Run",
+		       QSettings::NativeFormat);
+	if(config_file.readBoolEntry("General", "RunOnStartup"))
+		settings.setValue("Kadu",
+				QDir::toNativeSeparators(QCoreApplication::applicationFilePath()));
+	else
+		settings.remove("Kadu");
+#endif
+
+#ifdef DEBUG_ENABLED
+	debug_mask = config_file.readNumEntry("General", "DEBUG_MASK");
+	gg_debug_level = debug_mask | ~255;
+#endif
 }
 
 QString Core::readToken(const QPixmap &tokenPixmap)

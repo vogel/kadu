@@ -18,13 +18,13 @@
 #include "misc/token-reader.h"
 #include "protocols/status.h"
 
+#include "configuration_aware_object.h"
 #include "exports.h"
-
 
 class KaduWindow;
 class UserStatusChanger;
 
-class KADUAPI Core : public QObject, private AccountsAwareObject, public TokenReader
+class KADUAPI Core : public QObject, private AccountsAwareObject, public ConfigurationAwareObject, public TokenReader
 {
 	Q_OBJECT
 	Q_DISABLE_COPY(Core)
@@ -45,17 +45,20 @@ class KADUAPI Core : public QObject, private AccountsAwareObject, public TokenRe
 	void createAllDefaultToolbars();
 
 	void init();
+	void loadDefaultStatus();
 
 	void loadConfiguration();
 	void storeConfiguration();
 
 private slots:
 	void changeStatus(Status status);
+	void deleteOldConfigurationFiles();
 	void kaduWindowDestroyed();
 
 protected:
 	virtual void accountRegistered(Account* account);
 	virtual void accountUnregistered(Account* account);
+	virtual void configurationUpdated();
 
 public:
 	static Core * instance();

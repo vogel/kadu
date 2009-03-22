@@ -15,6 +15,7 @@
 #include <QtGui/QPushButton>
 #include <QtGui/QSplitter>
 
+#include "accounts/account_manager.h"
 #include "chat/chat_manager.h"
 #include "contacts/contact-manager.h"
 #include "contacts/model/contacts-model.h"
@@ -80,7 +81,7 @@ void KaduWindow::createGui()
 	ContactsWidget->setModel(new ContactsModel(ContactManager::instance(), this));
 	ContactsWidget->addFilter(GroupBar->filter());
 
-	connect(ContactsWidget, SIGNAL(contactActivated(Contact)), this, SLOT(sendMessage(Contact)));
+	connect(ContactsWidget, SIGNAL(contactActivated(Contact)), this, SLOT(openChatWindow(Contact)));
 
 	hboxLayout->addWidget(GroupBar);
 	hboxLayout->setStretchFactor(GroupBar, 1);
@@ -182,6 +183,27 @@ void KaduWindow::createHelpMenu()
 	menuBar()->addMenu(HelpMenu);
 }
 
+void KaduWindow::openChatWindow(Contact contact)
+{
+	ContactsListWidget *widget = dynamic_cast<ContactsListWidget *>(sender());
+	if (!widget)
+		return;
+
+	Account *account = AccountManager::instance()->defaultAccount();
+	ContactList contacts = widget->selectedContacts();
+
+	if (!contacts.isEmpty())
+	{
+		Contact contact = contacts[0];
+
+		if (contacts[0] != Core::instance()->myself()) //TODO: elem.hasFeature("SendingMessages")
+			chat_manager->sendMessage(contact, contacts);
+		else if (contact.mobile().isEmpty() && !contact.email().isEmpty())
+			openMailClient(contact.email());
+
+	}
+}
+
 void KaduWindow::createRecentChatsMenu()
 {
 	kdebugf();
@@ -276,6 +298,28 @@ void KaduWindow::closeEvent(QCloseEvent *e)
 		e->accept();
 }
 
+void KaduWindow::customEvent(QEvent *e)
+{
+// TODO: 0.6.6
+// 	Account *defaultAccount = AccountManager::instance()->defaultAccount();
+// 
+// 	if (int(e->type()) == 4321)
+// 		show();
+// 	else if (int(e->type()) == 5432)
+// 	{
+// 		OpenGGChatEvent *ev = static_cast<OpenGGChatEvent *>(e);
+// 		if (ev->number() > 0)
+// 		{
+// 			Contact contact = userlist->byID("Gadu", QString::number(ev->number())).toContact(defaultAccount);
+// 			ContactList contacts;
+// 			contacts << contact;
+// 			chat_manager->openChatWidget(defaultAccount, contacts, true);
+// 		}
+// 	}
+// 	else
+// 		KaduMainWIndow::customEvent(e);
+}
+
 void KaduWindow::keyPressEvent(QKeyEvent *e)
 {
 	if (e->key() == Qt::Key_Escape)
@@ -315,6 +359,9 @@ ContactList KaduWindow::contacts()
 
 void KaduWindow::configurationUpdated()
 {
+	QFont userboxFont = QFont(config_file.readFontEntry("Look", "UserboxFont"));
+	GroupBar->setFont(QFont(userboxFont.family(), userboxFont.pointSize(), 75));
+
 	InfoPanel->setVisible(config_file.readBoolEntry("Look", "ShowInfoPanel"));
 	setDocked(Docked);
 
@@ -330,6 +377,8 @@ void KaduWindow::configurationUpdated()
 	}
 	else
 		ContactsWidget->setBackground();
+
+	ChangeStatusButton->setVisible(config_file.readBoolEntry("Look", "ShowStatusButton"));
 }
 
 void KaduWindow::insertMenuActionDescription(ActionDescription *actionDescription, MenuType type, int pos)

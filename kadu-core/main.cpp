@@ -8,6 +8,7 @@
  ***************************************************************************/
 
 #include <QtCore/QLocale>
+#include <QtCore/QTimer>
 #include <QtCore/QTranslator>
 #include <QtGui/QApplication>
 
@@ -31,7 +32,6 @@
 #include "debug.h"
 #include "emoticons.h"
 #include "icons_manager.h"
-#include "kadu.h"
 #include "message_box.h"
 #include "misc/misc.h"
 #include "modules.h"
@@ -187,7 +187,7 @@ int main(int argc, char *argv[])
 		struct passwd *p = getpwuid(getuid());
 		if (t && p)
 		{
-			SystemUserName=strdup(p->pw_name);
+			SystemUserName = strdup(p->pw_name);
 			sprintf(path, "/tmp/kadu-%s-%04d-%02d-%02d-%02d-%02d-%02d.dbg", SystemUserName, 1900 + t->tm_year, 1 + t->tm_mon, t->tm_mday, t->tm_hour, t->tm_min, t->tm_sec);
 			if (freopen(path, "w+", stderr) == 0)
 				fprintf(stdout, "freopen: %s\n", strerror(errno));
@@ -271,10 +271,6 @@ int main(int argc, char *argv[])
 
 	ModulesManager::initModule();
 
-	kadu->startupProcedure();
-
-	QObject::connect(qApp, SIGNAL(aboutToQuit()), kadu, SLOT(quitApplication()));
-
 	// if someone is running Kadu from root account, let's remind him
 	// that it's a "bad thing"(tm) ;) (usually for win32 users)
 	// and disable this feature for win32 ;)
@@ -282,9 +278,9 @@ int main(int argc, char *argv[])
 	if (geteuid() == 0)
 		MessageBox::msg(qApp->translate("@default", QT_TR_NOOP("Please do not run Kadu as a root!\nIt's a high security risk!")), false, "Warning");
 #endif
-	QTimer::singleShot(15000, kadu, SLOT(deleteOldConfigFiles()));
-	if (ggnumber)
-		qApp->postEvent(kadu, new OpenGGChatEvent(ggnumber));
+
+// 	if (ggnumber)
+// 		qApp->postEvent(kadu, new OpenGGChatEvent(ggnumber));
 
 	/* for testing of startup / close time */
 	char *close_after = getenv("CLOSE_AFTER");
@@ -292,7 +288,7 @@ int main(int argc, char *argv[])
 	{
 		int tm = atoi(close_after);
 		if (tm >= 0)
-			QTimer::singleShot(tm, kadu, SLOT(quit()));
+			QTimer::singleShot(tm, Core::instance(), SLOT(quit()));
 	}
 
 	/* for testing of startup / close time */

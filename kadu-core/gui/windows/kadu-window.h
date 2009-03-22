@@ -84,11 +84,14 @@ private:
 	void updateInformationPanel(Contact contact);
 
 private slots:
+	void openChatWindow(Contact contact);
+
 	void createRecentChatsMenu();
 	void openRecentChats(QAction *action);
 
 protected:
 	virtual void closeEvent(QCloseEvent *);
+	virtual void customEvent(QEvent *);
 	virtual void keyPressEvent(QKeyEvent *);
 
 	virtual bool supportsActionType(ActionDescription::ActionType type);

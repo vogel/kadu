@@ -19,7 +19,6 @@
 
 #include "html_document.h"
 #include "icons_manager.h"
-#include "kadu.h"
 #include "message_box.h"
 #include "misc/misc.h"
 

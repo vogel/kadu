@@ -13,13 +13,17 @@
 #include <QtGui/QPushButton>
 
 #include "protocols/status.h"
+#include "configuration_aware_object.h"
 
-class StatusButton : public QPushButton
+class StatusButton : public QPushButton, private ConfigurationAwareObject
 {
 	Q_OBJECT
 
 private slots:
 	void statusChanged(Status status);
+
+protected:
+	virtual void configurationUpdated();
 
 public:
 	explicit StatusButton(QIcon icon, const QString &text, QWidget *parent = 0);

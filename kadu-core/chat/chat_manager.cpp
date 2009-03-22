@@ -95,6 +95,7 @@ ChatManager::ChatManager(QObject *parent)
 
 	connect(Core::instance(), SIGNAL(messageReceived(Account *, Contact, ContactList, const QString &, time_t)),
 			this, SLOT(messageReceived(Account *, Contact, ContactList, const QString &, time_t)));
+	connect(Core::instance(), SIGNAL(disconnected()), this, SLOT(refreshTitles()));
 
 	refreshTitlesTimer.setSingleShot(true);
 

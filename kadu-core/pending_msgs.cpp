@@ -170,3 +170,14 @@ void PendingMsgs::openMessages()
 }
 
 PendingMsgs pending(0);
+
+
+// void Kadu::imageReceivedAndSaved(UinType sender, uint32_t size, uint32_t crc32, const QString &/*path*/)
+// {
+// 	for (int i = 0, count = pending.count(); i < count; i++)
+// 	{
+// 		PendingMsgs::Element& e = pending[i];
+//	TODO: 0.6.6 or sth?
+// 		e.msg = gadu_images_manager.replaceLoadingImages(e.msg, sender, size, crc32);
+// 	}
+// }

@@ -16,9 +16,11 @@
 #include <sys/time.h>
 #include <sys/types.h>
 
+#include "core/core.h"
+#include "gui/windows/kadu-window.h"
+
 #include "config_file.h"
 #include "debug.h"
-#include "kadu.h"
 #include "misc/misc.h"
 #include "modules.h"
 #include "xml_config_file.h"
@@ -134,10 +136,10 @@ static void kadu_signal_handler(int s)
 	else if (s == SIGUSR1)
 	{
 		kdebugm(KDEBUG_INFO, "ok, got a signal to show up\n");
-		qApp->postEvent(kadu, new QEvent((QEvent::Type)4321));
+		Core::instance()->kaduWindow()->show();
 	}
 	else if (s == SIGINT || s == SIGTERM)
-		qApp->postEvent(qApp, new QEvent(QEvent::Quit), Qt::HighEventPriority);
+		Core::instance()->quit();
 }
 
 #if defined (SIGRTMIN)
@@ -146,8 +148,8 @@ void kadu_realtime_signal(int sig, siginfo_t *info, void *)
 	if (sig != OPEN_CHAT_SIGNAL)
 		return;
 	int ggnum = info->si_value.sival_int;
-	if (ggnum > 0)
-		qApp->postEvent(kadu, new OpenGGChatEvent(ggnum));
+// 	if (ggnum > 0) TODO: 0.6.6
+// 		qApp->postEvent(kadu, new OpenGGChatEvent(ggnum));
 }
 #endif
 

@@ -26,7 +26,6 @@
 #include "config_file.h"
 #include "debug.h"
 #include "exports.h"
-#include "kadu.h"
 #include "message_box.h"
 
 #include "gui/windows/file-transfer-window.h"
@@ -217,7 +216,7 @@ void FileTransferModule::incomingFileTransferNeedAccept(FileTransfer *fileTransf
 	while (fileName.isEmpty())
 	{
 		if (!haveFileName || fileName.isEmpty())
-			fileName = QFileDialog::getSaveFileName(kadu, tr("Select file location"),
+			fileName = QFileDialog::getSaveFileName(Core::instance()->kaduWindow(), tr("Select file location"),
 					config_file.readEntry("Network", "LastDownloadDirectory") + fileTransfer->remoteFileName(),
 					QString::null, 0, QFileDialog::DontConfirmOverwrite);
 

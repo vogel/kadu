@@ -32,9 +32,10 @@
 
 #include "gui/windows/configuration-window.h"
 
+#include "action.h"
 #include "config_file.h"
 #include "debug.h"
-#include "kadu.h"
+#include "kadu_main_window.h"
 #include "message_box.h"
 #include "misc/misc.h"
 
