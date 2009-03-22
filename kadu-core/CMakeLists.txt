@@ -119,6 +119,14 @@ set (kadu_SRCS
 	misc/path-conversion.cpp
 	misc/token-dialog.cpp
 
+	notify/connection_error_notification.cpp
+	notify/contact-notify-data.cpp
+	notify/new_message_notification.cpp
+	notify/notification.cpp
+	notify/notify.cpp
+	notify/protocol_notification.cpp
+	notify/status_changed_notification.cpp
+
 	protocols/protocol.cpp
 	protocols/protocol-menu-manager.cpp
 	protocols/protocols_manager.cpp
@@ -251,6 +259,13 @@ set (kadu_MOC_SRCS
 
 	misc/choose-description.h
 	misc/token-dialog.h
+
+	notify/connection_error_notification.h
+	notify/new_message_notification.h
+	notify/notification.h
+	notify/notify.h
+	notify/protocol_notification.h
+	notify/status_changed_notification.h
 
 	protocols/protocol.h
 	protocols/protocols_manager.h

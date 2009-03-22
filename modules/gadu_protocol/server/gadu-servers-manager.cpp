@@ -79,6 +79,11 @@ GaduServersManager::GaduServersManager()
 		AllPorts << 443;
 
 	QHostAddress ip;
+
+	// for GG hub
+	ip.setAddress((quint32)0);
+	GoodServers.append(qMakePair(ip, 0));
+
 	if (ip.setAddress(config_file.readEntry("Network", "LastServerIP")))
 		foreach (int port, AllPorts)
 			GoodServers.append(qMakePair(ip, port));
