@@ -8,6 +8,7 @@
  ***************************************************************************/
 
 #include <QtCore/QDir>
+#include <QtCore/QLocale>
 #include <QtGui/QApplication>
 
 #include "accounts/account_manager.h"
