@@ -182,55 +182,6 @@ Kadu::Kadu(QWidget *parent)
 //	setWindowTitle(tr("Kadu: %1").arg(Myself.ID("Gadu")));
 
 /*
-	inactiveUsersAction = new ActionDescription(0,
-		ActionDescription::TypeUserList, "inactiveUsersAction",
-		this, SLOT(inactiveUsersActionActivated(QAction *, bool)),
-		"ShowHideInactiveUsers", tr("Hide offline users"),
-		true, tr("Show offline users")
-	);
-	connect(inactiveUsersAction, SIGNAL(actionCreated(KaduAction *)), this, SLOT(inactiveUsersActionCreated(KaduAction *)));
-	inactiveUsersAction->setShortcut("kadu_showoffline");
-
-	descriptionUsersAction = new ActionDescription(0,
-		ActionDescription::TypeUserList, "descriptionUsersAction",
-		this, SLOT(descriptionUsersActionActivated(QAction *, bool)),
-		"ShowOnlyDescriptionUsers", tr("Hide users without description"),
-		true, tr("Show users without description")
-	);
-	connect(descriptionUsersAction, SIGNAL(actionCreated(KaduAction *)), this, SLOT(descriptionUsersActionCreated(KaduAction *)));
-	descriptionUsersAction->setShortcut("kadu_showonlydesc");
-
-	onlineAndDescriptionUsersAction = new ActionDescription(0,
-		ActionDescription::TypeUserList, "onlineAndDescriptionUsersAction",
-		this, SLOT(onlineAndDescUsersActionActivated(QAction *, bool)),
-		"ShowOnlineAndDescriptionUsers", tr("Show only online and description users"),
-		true, tr("Show all users")
-	);
-	connect(onlineAndDescriptionUsersAction, SIGNAL(actionCreated(KaduAction *)), this, SLOT(onlineAndDescUsersActionCreated(KaduAction *)));
-
-	editUserActionDescription = new ActionDescription(0,
-		ActionDescription::TypeUser, "editUserAction",
-		this, SLOT(editUserActionActivated(QAction *, bool)),
-		"EditUserInfo", tr("Contact data"), false, QString::null,
-		disableNotOneUles
-	);
-	connect(editUserActionDescription, SIGNAL(actionCreated(KaduAction *)), this, SLOT(editUserActionCreated(KaduAction *)));
-	editUserActionDescription->setShortcut("kadu_persinfo");
-	ContactsListWidgetMenuManager::instance()->addActionDescription(editUserActionDescription);
-
-	showStatusActionDescription = new ActionDescription(0,
-		ActionDescription::TypeGlobal, "openStatusAction",
-		this, SLOT(showStatusActionActivated(QAction *, bool)),
-		"Offline", tr("Change status")
-	);
-	connect(showStatusActionDescription, SIGNAL(actionCreated(KaduAction *)), this, SLOT(showStatusActionCreated(KaduAction *)));
-
-	useProxyActionDescription = new ActionDescription(0,
-		ActionDescription::TypeGlobal, "useProxyAction",
-		this, SLOT(useProxyActionActivated(QAction *, bool)),
-		"UseProxy", tr("Use proxy"), true, tr("Don't use proxy")
-	);
-	connect(useProxyActionDescription, SIGNAL(actionCreated(KaduAction *)), this, SLOT(useProxyActionCreated(KaduAction *)));
 
 	createStatusPopupMenu();
 
@@ -270,98 +221,6 @@ Kadu::Kadu(QWidget *parent)
 	kdebugf2();*/
 }
 
-void Kadu::inactiveUsersActionActivated(QAction *sender, bool toggled)
-{
-	KaduMainWindow *window = dynamic_cast<KaduMainWindow *>(sender->parent());
-	if (!window)
-		return;
-
-	QVariant v = sender->data();
-	if (v.canConvert<OfflineContactFilter *>())
-	{
-		OfflineContactFilter *ofcf = v.value<OfflineContactFilter *>();
-		ofcf->setEnabled(toggled);
-	}
-}
-
-void Kadu::descriptionUsersActionActivated(QAction *sender, bool toggled)
-{
-	KaduMainWindow *window = dynamic_cast<KaduMainWindow *>(sender->parent());
-	if (!window)
-		return;
-
-	QVariant v = sender->data();
-	if (v.canConvert<HasDescriptionContactFilter *>())
-	{
-		HasDescriptionContactFilter *hdcf = v.value<HasDescriptionContactFilter *>();
-		hdcf->setEnabled(toggled);
-	}
-}
-
-void Kadu::onlineAndDescUsersActionActivated(QAction *sender, bool toggled)
-{
-	KaduMainWindow *window = dynamic_cast<KaduMainWindow *>(sender->parent());
-	if (!window)
-		return;
-
-	QVariant v = sender->data();
-	if (v.canConvert<OnlineAndDescriptionContactFilter *>())
-	{
-		OnlineAndDescriptionContactFilter *oadcf = v.value<OnlineAndDescriptionContactFilter *>();
-		oadcf->setEnabled(toggled);
-	}
-}
-
-void Kadu::inactiveUsersActionCreated(KaduAction *action)
-{
-	KaduMainWindow *window = qobject_cast<KaduMainWindow *>(action->parent());
-	if (!window)
-		return;
-	if (!window->contactsListWidget())
-		return;
-	bool enabled = !config_file.readBoolEntry("General", "ShowOffline");
-	OfflineContactFilter *ofcf = new OfflineContactFilter(action);
-	ofcf->setEnabled(enabled);
-
-	action->setData(QVariant::fromValue(ofcf));
-	action->setChecked(enabled);
-
-	window->contactsListWidget()->addFilter(ofcf);
-}
-
-void Kadu::descriptionUsersActionCreated(KaduAction *action)
-{
-	KaduMainWindow *window = qobject_cast<KaduMainWindow *>(action->parent());
-	if (!window)
-		return;
-	if (!window->contactsListWidget())
-		return;
-
-	bool enabled = !config_file.readBoolEntry("General", "ShowWithoutDescription");
-	HasDescriptionContactFilter *hdcf = new HasDescriptionContactFilter(action);
-	hdcf->setEnabled(enabled);
-
-	action->setData(QVariant::fromValue(hdcf));
-	action->setChecked(enabled);
-
-	window->contactsListWidget()->addFilter(hdcf);
-}
-
-void Kadu::onlineAndDescUsersActionCreated(KaduAction *action)
-{
-	KaduMainWindow *window = qobject_cast<KaduMainWindow *>(action->parent());
-	if (!window)
-		return;
-	bool enabled = config_file.readBoolEntry("General", "ShowOnlineAndDescription");
-	OnlineAndDescriptionContactFilter *oadcf = new OnlineAndDescriptionContactFilter(action);
-	oadcf->setEnabled(enabled);
-
-	action->setData(QVariant::fromValue(oadcf));
-	action->setChecked(enabled);
-
-	window->contactsListWidget()->addFilter(oadcf);
-}
-
 /*
 void Kadu::editUserActionSetParams(QString / *protocolName* /, UserListElement user)
 {
@@ -391,37 +250,6 @@ void Kadu::editUserActionSetParams(QString / *protocolName* /, UserListElement u
 	kdebugf2();
 }*/
 
-void Kadu::editUserActionCreated(KaduAction *action)
-{
-	KaduMainWindow *window = dynamic_cast<KaduMainWindow *>(action->parent());
-	if (!window)
-		return;
-
-	Contact contact = window->contact();
-	if (contact.isAnonymous())
-	{
-		action->setIcon(icons_manager->loadIcon("AddUser"));
-		action->setText(tr("Add user"));
-	}
-}
-
-void Kadu::editUserActionActivated(QAction *sender, bool toggled)
-{
-	kdebugf();
-
-	KaduMainWindow *window = dynamic_cast<KaduMainWindow *>(sender->parent());
-	if (!window)
-		return;
-
-	Contact contact = window->contact();
-	if (contact.isNull())
-		return;
-
-	(new ContactDataWindow(contact, kadu))->show();
-
-	kdebugf2();
-}
-
 void Kadu::openChatWith()
 {
 	kdebugf();
@@ -431,53 +259,17 @@ void Kadu::openChatWith()
 	kdebugf2();
 }
 
-void Kadu::showStatusActionActivated(QAction *sender, bool toggled)
-{
-// 	statusMenu->exec(QCursor::pos());
-}
-
-void Kadu::showStatusActionCreated(KaduAction *action)
-{
-	Account *gadu = AccountManager::instance()->defaultAccount();
-
-	if (gadu != NULL)
-		action->setIcon(gadu->protocol()->statusPixmap());
-}
-
 void Kadu::setStatusActionsIcon()
 {
-	Account *gadu = AccountManager::instance()->defaultAccount();
-
-	if (gadu != NULL)
-	{
-		QPixmap pixmap = gadu->protocol()->statusPixmap();
-
-		foreach (KaduAction *action, showStatusActionDescription->actions())
-			action->setIcon(pixmap);
-	}
-}
-
-void Kadu::useProxyActionActivated(QAction *sender, bool toggled)
-{
-	config_file.writeEntry("Network", "UseProxy", toggled);
-
-	setProxyActionsStatus(toggled);
-}
-
-void Kadu::useProxyActionCreated(KaduAction *action)
-{
-	action->setChecked(config_file.readBoolEntry("Network", "UseProxy", false));
-}
-
-void Kadu::setProxyActionsStatus(bool checked)
-{
-	foreach (KaduAction *action, useProxyActionDescription->actions())
-		action->setChecked(checked);
-}
-
-void Kadu::setProxyActionsStatus()
-{
-	setProxyActionsStatus(config_file.readBoolEntry("Network", "UseProxy", false));
+// 	Account *gadu = AccountManager::instance()->defaultAccount();
+// 
+// 	if (gadu != NULL)
+// 	{
+// 		QPixmap pixmap = gadu->protocol()->statusPixmap();
+// 
+// 		foreach (KaduAction *action, ShowStatus->actions())
+// 			action->setIcon(pixmap);
+// 	}
 }
 
 void Kadu::changeAppearance()
@@ -546,14 +338,6 @@ void Kadu::blink()
 /*
 	blinktimer->setSingleShot(true);
 	blinktimer->start(1000);*/
-}
-
-void Kadu::mouseButtonClicked(int button, Q3ListBoxItem *item)
-{
-	kdebugmf(KDEBUG_FUNCTION_START, "button=%d\n", button);
-// 	if (!item)
-// 		InfoPanel->setHtml("<body bgcolor=\"" + config_file.readEntry("Look", "InfoPanelBgColor") + "\"></body>");
-	kdebugf2();
 }
 
 /* if something's pending, open it, if not, open new message */
@@ -751,7 +535,7 @@ void Kadu::configurationUpdated()
 
 // 	groups_manager->refreshTabBar();
 
-	setProxyActionsStatus();
+// 	setProxyActionsStatus();
 
 #ifdef Q_OS_WIN
 	QSettings settings("HKEY_CURRENT_USER\\Software\\Microsoft\\Windows\\CurrentVersion\\Run",
@@ -845,7 +629,7 @@ void Kadu::startupProcedure()
 void Kadu::statusChanged(Account *account, Status status)
 {
 // 	DoBlink = false;
-
+/*
 	bool hasDescription = !status.description().isEmpty();
 	int index;
 
@@ -862,16 +646,9 @@ void Kadu::statusChanged(Account *account, Status status)
 			break;
 		default:
 			index = hasDescription ? 7 : 6;
-	}
+	}*/
 
-	showStatusOnMenu(index);
-}
-
-void Kadu::showStatusOnMenu(int statusNr)
-{
-	kdebugf();
-
-// 	emit statusPixmapChanged(icon, iconName);
+// 	showStatusOnMenu(index);
 }
 
 void Kadu::readTokenValue(QPixmap tokenImage, QString &tokenValue)

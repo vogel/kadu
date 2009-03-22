@@ -7,7 +7,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <QtGlobal>
+#include <QtCore/QtGlobal>
 
 #ifdef Q_OS_WIN
 #include <windows.h>

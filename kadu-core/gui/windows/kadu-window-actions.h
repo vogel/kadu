@@ -46,14 +46,28 @@ class KaduWindowActions : QObject
 	ActionDescription *HideDescription;
 	ActionDescription *DeleteUsers;
 
+	ActionDescription *InactiveUsers;
+	ActionDescription *DescriptionUsers;
+	ActionDescription *OnlineAndDescriptionUsers;
+	ActionDescription *EditUser;
+	ActionDescription *ShowStatus;
+	ActionDescription *UseProxy;
+
 private slots:
+	void inactiveUsersActionCreated(KaduAction *action);
+	void descriptionUsersActionCreated(KaduAction *action);
+	void onlineAndDescUsersActionCreated(KaduAction *action);
+	void editUserActionCreated(KaduAction *action);
+	void showStatusActionCreated(KaduAction *action);
+	void useProxyActionCreated(KaduAction *action);
+
 	void configurationActionActivated(QAction *sender, bool toggled);
 	void yourAccountsActionActivated(QAction *sender, bool toggled);
 	void hideKaduActionActivated(QAction *sender, bool toggled);
 	void exitKaduActionActivated(QAction *sender, bool toggled);
 	void addUserActionActivated(QAction *sender, bool toggled);
 	void addGroupActionActivated(QAction *sender, bool toggled);
-	void searchInDirectoryActionActivated(QAction *sender, bool toggled);
+	void openSearchActionActivated(QAction *sender, bool toggled);
 	void manageIgnoredActionActivated(QAction *sender, bool toggled);
 	void importExportContactsActionActivated(QAction *sender, bool toggled);
 	void helpActionActivated(QAction *sender, bool toggled);
@@ -70,6 +84,13 @@ private slots:
 	void offlineToUserActionActivated(QAction *sender, bool toggled);
 	void hideDescriptionActionActivated(QAction *sender, bool toggled);
 	void deleteUsersActionActivated(QAction *sender, bool toggled);
+
+	void inactiveUsersActionActivated(QAction *sender, bool toggled);
+	void descriptionUsersActionActivated(QAction *sender, bool toggled);
+	void onlineAndDescUsersActionActivated(QAction *sender, bool toggled);
+	void editUserActionActivated(QAction *sender, bool toggled);
+	void showStatusActionActivated(QAction *sender, bool toggled);
+	void useProxyActionActivated(QAction *sender, bool toggled);
 
 public:
 	explicit KaduWindowActions(QObject *parent);

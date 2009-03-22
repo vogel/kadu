@@ -25,9 +25,6 @@ class QMenuBar;
 class QPushButton;
 class QVBoxLayout;
 
-// TODO: remove
-class Q3ListBoxItem;
-
 class Account;
 class ActionDescription;
 class ContactsListWidget;
@@ -42,26 +39,10 @@ class KADUAPI Kadu : public KaduMainWindow, public TokenReader, ConfigurationAwa
 	Q_OBJECT
 
 private:
-
-	ActionDescription *inactiveUsersAction;
-	ActionDescription *descriptionUsersAction;
-	ActionDescription *onlineAndDescriptionUsersAction;
-	ActionDescription *editUserActionDescription;
-	ActionDescription *openSearchActionDescription;
-	ActionDescription *showStatusActionDescription;
-	ActionDescription *useProxyActionDescription;
-
-	void showStatusOnMenu(int);
-
 	void createDefaultConfiguration();
 	void createAllDefaultToolbars();
 
 private slots:
-	void inactiveUsersActionActivated(QAction *sender, bool toggled);
-	void descriptionUsersActionActivated(QAction *sender, bool toggled);
-	void onlineAndDescUsersActionActivated(QAction *sender, bool toggled);
-	
-	void editUserActionActivated(QAction *sender, bool toggled);
 
 	void openChatWith();
 
@@ -71,18 +52,12 @@ private slots:
 	void imageReceivedAndSaved(UinType sender, quint32 size, quint32 crc32, const QString &path);
 	void deleteOldConfigFiles();
 
-	void inactiveUsersActionCreated(KaduAction *action);
-	void descriptionUsersActionCreated(KaduAction *action);
-	void onlineAndDescUsersActionCreated(KaduAction *action);
-
-	// new API
 	void statusChanged(Account *account, Status status);
 
 protected:
 	virtual void customEvent(QEvent *);
 		
 	virtual void configurationUpdated();
-//	virtual void moveEvent(QMoveEvent *);
 
 public:
 	Kadu(QWidget *parent = 0);
@@ -96,28 +71,13 @@ public:
 	virtual ContactList contacts();
 	virtual ChatWidget * chatWidget() { return 0; }
 
-	/**
-		Zwraca wska�nik na g��wny layout w obiekcie, teraz jest to QVBoxLayout.
-		(hint) U�ywaj�c nale�y bada� nazwy i klasy obiekt�w GUI dost�pnych przez ten obiekt.
-	**/
 	QVBoxLayout * mainLayout() const;
 
-	/**
-		Zwraca true je�li kadu jest zadokowane.
-	**/
 	bool docked() const;
 
-	/**
-		Set default status based on values in configuration file
-	**/
 	void setDefaultStatus();
-
 	void startupProcedure();
 
-	/**
-		w zwi�zku z tym, �e opis sk�adni dla parsera jest u�ywany w kilku miejscach
-		dodane zosta�o to pole, �eby nie trzeba by�o zmienia� tekstu w kilku miejscach
-	**/
 	static const char *SyntaxText;
 	static const char *SyntaxTextNotify;
 
@@ -127,7 +87,6 @@ public:
 public slots:
 	virtual void show();
 	virtual void hide();
-	void mouseButtonClicked(int, Q3ListBoxItem *);
 
 	void sendMessage(Contact contact);
 
@@ -135,34 +94,18 @@ public slots:
 	void blink();
 	virtual bool close(bool quit = false);
 
-	// odczytuje z obrazka tekst i zapisuje go w drugim parametrze
 	void readTokenValue(QPixmap, QString &);
 
-	// Token Reader
 	virtual QString readToken(const QPixmap &);
 
-	void editUserActionCreated(KaduAction *action);
-	void showStatusActionActivated(QAction *sender, bool toggled);
-	void showStatusActionCreated(KaduAction *action);
 	void setStatusActionsIcon();
-	void useProxyActionActivated(QAction *sender, bool toggled);
-	void useProxyActionCreated(KaduAction *action);
-	void setProxyActionsStatus(bool checked);
-	void setProxyActionsStatus();
 
 signals:
 	void statusPixmapChanged(const QIcon &icon, const QString &icon_name);
 
-	/**
-		wywo�ana zosta�a funkcja show() na g��wnym oknie
-	**/
 	void shown();
 	void hiding();
 
-	/**
-		u�ywany przez modu� hints do zdobycia pozycji traya od modu�u docking
-		TODO: trzeba wymy�li� jaki� elegancki spos�b na komunikacj� pomi�dzy modu�ami, kt�re nie zale�� od siebie
-	**/
 	void searchingForTrayPosition(QPoint &point);
 	void settingMainIconBlocked(bool &);
 
