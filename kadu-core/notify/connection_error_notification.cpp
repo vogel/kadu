@@ -7,6 +7,7 @@
  *                                                                         *
  ***************************************************************************/
 
+#include "notify/notification-manager.h"
 #include "debug.h"
 #include "kadu_parser.h"
 

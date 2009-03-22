@@ -27,6 +27,8 @@
 #include "gui/widgets/configuration/configuration-widget.h"
 #include "gui/widgets/configuration/config-combo-box.h"
 #include "gui/widgets/configuration/config-group-box.h"
+#include "gui/widgets/configuration/notify-group-box.h"
+#include "gui/widgets/configuration/notifier-configuration-widget.h"
 #include "gui/widgets/contacts-list-widget-menu-manager.h"
 #include "gui/widgets/custom_input.h"
 
@@ -43,9 +45,6 @@
 #include "contact-notify-data.h"
 #include "new_message_notification.h"
 #include "status_changed_notification.h"
-
-#include "notify.h"
-
 
 extern "C" KADU_EXPORT int notify_init(bool firstLoad)
 {
@@ -67,21 +66,6 @@ extern "C" KADU_EXPORT void notify_close()
 	notification_manager = 0;
 
 	kdebugf2();
-}
-
-NotifyGroupBox::NotifyGroupBox(const QString &notificator, const QString &caption, QWidget *parent, char *name)
-	: QGroupBox(caption, parent), Notificator(notificator)
-{
-	setCheckable(true);
-	QHBoxLayout *layout = new QHBoxLayout(this);
-	Q_UNUSED(layout)
-
-	connect(this, SIGNAL(toggled(bool)), this, SLOT(toggledSlot(bool)));
-}
-
-void NotifyGroupBox::toggledSlot(bool toggle)
-{
-	emit toggled(Notificator, toggle);
 }
 
 Notify::Notify(QObject *parent)

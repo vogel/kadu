@@ -7,30 +7,29 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef NEW_MESSAGE_NOTIFICATION_H
-#define NEW_MESSAGE_NOTIFICATION_H
+#ifndef NOTIFY_GROUP_BOX
+#define NOTIFY_GROUP_BOX
 
-#include "protocol_notification.h"
+#include <QtGui/QGroupBox>
 
-class Notify;
-
-class MessageNotification : public AccountNotification
+class NotifyGroupBox : public QGroupBox
 {
 	Q_OBJECT
 
+	QString Notificator;
+
+private slots:
+	void toggledSlot(bool toggled);
+
 public:
+	NotifyGroupBox(const QString &notificator, const QString &caption, QWidget *parent = 0);
+	virtual ~NotifyGroupBox() {}
 
-	enum MessageType {
-		NewChat,
-		NewMessage
-	};
+	QString notificator() { return Notificator; }
 
-	static void registerEvents(Notify * manager);
-	static void unregisterEvents(Notify * manager);
-
-	MessageNotification(MessageType messageType, const ContactList &contacts, const QString &message, Account *account);
-	virtual ~MessageNotification() {};
+signals:
+	void toggled(const QString &notificator, bool toggled);
 
 };
 
-#endif // NEW_MESSAGE_NOTIFICATION_H
+#endif // NOTIFY_GROUP_BOX

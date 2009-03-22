@@ -7,19 +7,18 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef _NOTIFY_EXPORTS_H
+#include "notifier.h"
 
-#include "exports.h"
+Notifier::Notifier(QObject *parent) :
+		QObject(parent)
+{
+}
 
-#ifdef KADULIB
-#define NOTIFYAPI KADUAPI
-#else
-#ifdef NOTIFY_BUILD
-#define NOTIFYAPI KADU_EXPORT
-#else
-#define NOTIFYAPI KADU_IMPORT
-#endif
-#endif
+Notifier::~Notifier()
+{
+}
 
-#define _NOTIFY_EXPORTS_H
-#endif
+CallbackCapacity Notifier::callbackCapacity()
+{
+	return CallbackNotSupported;
+}

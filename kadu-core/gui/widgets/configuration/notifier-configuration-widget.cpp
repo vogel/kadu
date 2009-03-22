@@ -7,30 +7,9 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef NEW_MESSAGE_NOTIFICATION_H
-#define NEW_MESSAGE_NOTIFICATION_H
+#include "notifier-configuration-widget.h"
 
-#include "protocol_notification.h"
-
-class Notify;
-
-class MessageNotification : public AccountNotification
+NotifierConfigurationWidget::NotifierConfigurationWidget(QWidget *parent) :
+		QWidget(parent)
 {
-	Q_OBJECT
-
-public:
-
-	enum MessageType {
-		NewChat,
-		NewMessage
-	};
-
-	static void registerEvents(Notify * manager);
-	static void unregisterEvents(Notify * manager);
-
-	MessageNotification(MessageType messageType, const ContactList &contacts, const QString &message, Account *account);
-	virtual ~MessageNotification() {};
-
-};
-
-#endif // NEW_MESSAGE_NOTIFICATION_H
+}

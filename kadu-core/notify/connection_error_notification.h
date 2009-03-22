@@ -11,7 +11,8 @@
 #define CONNECTION_ERROR_NOTIFICATION_H
 // TODO account_notification
 #include "protocol_notification.h"
-#include "notify.h"
+
+class Notify;
 
 class ConnectionErrorNotification : public AccountNotification
 {

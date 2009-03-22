@@ -99,6 +99,8 @@ set (kadu_SRCS
 	gui/widgets/configuration/config-section.cpp
 	gui/widgets/configuration/config-group-box.cpp
 	gui/widgets/configuration/config-tab.cpp
+	gui/widgets/configuration/notifier-configuration-widget.cpp
+	gui/widgets/configuration/notify-group-box.cpp
 
 	gui/windows/chat_window.cpp
 	gui/windows/configuration-window.cpp
@@ -123,7 +125,8 @@ set (kadu_SRCS
 	notify/contact-notify-data.cpp
 	notify/new_message_notification.cpp
 	notify/notification.cpp
-	notify/notify.cpp
+	notify/notification-manager.cpp
+	notify/notifier.cpp
 	notify/protocol_notification.cpp
 	notify/status_changed_notification.cpp
 
@@ -246,6 +249,8 @@ set (kadu_MOC_SRCS
 	gui/widgets/configuration/kadu-scroll-area.h
 	gui/widgets/configuration/config-section.h
 	gui/widgets/configuration/config-tab.h
+	gui/widgets/configuration/notifier-configuration-widget.h
+	gui/widgets/configuration/notify-group-box.h
 
 	gui/windows/chat_window.h
 	gui/windows/configuration-window.h
@@ -263,7 +268,8 @@ set (kadu_MOC_SRCS
 	notify/connection_error_notification.h
 	notify/new_message_notification.h
 	notify/notification.h
-	notify/notify.h
+	notify/notification-manager.h
+	notify/notifier.h
 	notify/protocol_notification.h
 	notify/status_changed_notification.h
 

@@ -9,6 +9,8 @@
 
 #include <QtGui/QTextDocument>
 
+#include "notify/notification-manager.h"
+
 #include "new_message_notification.h"
 
 void MessageNotification::registerEvents(Notify *manager)

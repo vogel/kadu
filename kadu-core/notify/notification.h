@@ -14,10 +14,7 @@
 #include <QtGui/QIcon>
 
 #include "contacts/contact-list.h"
-
-#include "../notify/notification.h"
-#include "notify_exports.h"
-
+#include "exports.h"
 
 class QTimer;
 
@@ -70,7 +67,7 @@ class QTimer;
 
 	Notyfikacja, co do kt�rej pewna akcja zosta�a wykonana, wywo�uje sygna� closed().
  **/
-class NOTIFYAPI Notification : public QObject {
+class KADUAPI Notification : public QObject {
 	Q_OBJECT
 
 public:
