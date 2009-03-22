@@ -42,8 +42,6 @@ DccManager::DccManager(GaduProtocol *protocol) :
 {
 	kdebugf();
 
-	createDefaultConfiguration();
-
 	setUpDcc();
 
 	kdebugf2();
@@ -101,7 +99,7 @@ void DccManager::setUpDcc()
 	if (!account)
 		return;
 
-	struct gg_dcc *socket = gg_dcc_socket_create(account->uin(), config_file.readNumEntry("Network", "LocalPort"));
+	struct gg_dcc *socket = gg_dcc_socket_create(account->uin(), account->dccLocalPort());
 	if (!socket)
 	{
 		kdebugmf(KDEBUG_NETWORK | KDEBUG_INFO, "Couldn't bind DCC socket.\n");
@@ -118,18 +116,17 @@ void DccManager::setUpDcc()
 	QHostAddress DCCIP;
 	short int DCCPort;
 
-	if (config_file.readBoolEntry("Network", "DccIpDetect"))
+	if (account->dccIpDetect())
 		DCCIP.setAddress("255.255.255.255");
 	else
-		DCCIP.setAddress(config_file.readEntry("Network", "DccIP"));
+		DCCIP = account->dccIP();
 
 	QHostAddress ext_ip;
 
-	bool forwarding = config_file.readBoolEntry("Network", "DccForwarding") &&
-			ext_ip.setAddress(config_file.readEntry("Network", "ExternalIP"));
+	bool forwarding = account->dccForwarding() && !account->dccExternalIP().isNull();
 
 	DccExternalIP = forwarding ? ext_ip : QHostAddress();
-	DccExternalPort = forwarding ? config_file.readNumEntry("Network", "ExternalPort") : 0;
+	DccExternalPort = forwarding ? account->dccExternalPort() : 0;
 
 	gg_dcc_ip = htonl(DCCIP.toIPv4Address());
 	gg_dcc_port = socket->port;
@@ -164,13 +161,12 @@ void DccManager::onIpAutotetectToggled(bool toggled)
 
 void DccManager::configurationUpdated()
 {
-	QHostAddress host;
-
-	if (!host.setAddress(config_file.readEntry("Network", "DccIP")))
-		config_file.writeEntry("Network", "DccIP", "0.0.0.0");
-
-	if (!host.setAddress(config_file.readEntry("Network", "ExternalIP")))
-		config_file.writeEntry("Network", "ExternalIP", "0.0.0.0");
+// 		GaduAccount *account = dynamic_cast<GaduAccount *>(Protocol->account());
+// 		if (!account)
+// 				return;
+// 		account->loadConfiguration(xml_config_file);
+		
+  
 
 	// kadu->reconnect() ??
 }
@@ -506,21 +502,3 @@ void DccManager::attachSendFileTransferSocket(GaduFileTransfer *gft)
 	kdebugf2();
 }*/
 
-void DccManager::createDefaultConfiguration()
-{
-	config_file.addVariable("Network", "AllowDCC", true);
-	config_file.addVariable("Network", "DccIP", "0.0.0.0");
-	config_file.addVariable("Network", "DccIpDetect", true);
-	config_file.addVariable("Network", "ExternalIP", "0.0.0.0");
-	config_file.addVariable("Network", "ExternalPort", 0);
-	config_file.addVariable("Network", "DccForwarding", false);
-	config_file.addVariable("Network", "LastDownloadDirectory", QString(getenv("HOME")) + '/');
-	config_file.addVariable("Network", "LastUploadDirectory", QString(getenv("HOME")) + '/');
-	config_file.addVariable("Network", "LocalPort", 0);
-	config_file.addVariable("Network", "RemoveCompletedTransfers", false);
-
-	config_file.addVariable("ShortCuts", "kadu_sendfile", "F8");
-	config_file.addVariable("ShortCuts", "kadu_voicechat", "F7");
-}
-
-// kate: indent-mode cstyle; replace-tabs off; tab-width 4; 

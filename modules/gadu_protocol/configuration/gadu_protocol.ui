@@ -15,5 +15,21 @@
 				<action-button caption="Register new account..." id="gaduRegisterNewAccount" />
 			</group-box>
 		</tab>
+		<tab name="File transfers">
+			<group-box name="General">
+				<check-box caption="Allow file transfers" config-section="Account" config-item="AllowDcc" id="dcc/AllowDCC" />
+			</group-box>
+			<group-box name="File transfers" id="dcc/fileTransfers">
+				<check-box caption="Remove completed transfers from transfers list" config-section="Account" config-item="RemoveCompletedTransfers" />
+			</group-box>
+			<group-box name="IP" id="dcc/ip">
+				<check-box caption="DCC IP autodetection" config-section="Account" config-item="DccIpDetect" id="dcc/ipAutodetect" />
+				<line-edit caption="IP address" config-section="Account" config-item="DccIP" id="dcc/ipAddress" />
+				<check-box caption="DCC forwarding enabled" config-section="Account" config-item="DccForwarding" id="dcc/forwarding" />
+				<line-edit caption="External IP address" config-section="Account" config-item="DccExternalIp" id="dcc/dccExternalIp" />
+				<line-edit caption="External TCP port" config-section="Account" config-item="DccExternalPort" id="dcc/forwardingExternalPort" />
+				<line-edit caption="Local TCP port" config-section="Account" config-item="DccLocalPort" id="dcc/forwardingLocalPort" />
+			</group-box>
+		</tab>
 	</section>
 </configuration-ui>

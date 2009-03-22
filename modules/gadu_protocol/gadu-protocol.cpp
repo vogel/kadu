@@ -476,7 +476,10 @@ void GaduProtocol::setupProxy()
 
 void GaduProtocol::setupDcc()
 {
-	if (config_file.readBoolEntry("Network", "AllowDCC"))
+	GaduAccount *gaduAccount = dynamic_cast<GaduAccount *>(account());
+	if (!gaduAccount)
+		return;
+	if (gaduAccount->allowDCC())
 	{
 		if (!Dcc)
 			Dcc = new DccManager(this);
@@ -496,6 +499,8 @@ void GaduProtocol::setupLoginParams()
 	memset(&GaduLoginParams, 0, sizeof(GaduLoginParams));
 
 	GaduAccount *gaduAccount = dynamic_cast<GaduAccount *>(account());
+	if (!gaduAccount)
+		return;
 	GaduLoginParams.uin = gaduAccount->id().toULong();
 	GaduLoginParams.password = strdup(gaduAccount->password().toAscii().data());
 
@@ -512,7 +517,7 @@ void GaduProtocol::setupLoginParams()
 	GaduLoginParams.protocol_version = 0x2a; // we are gg 7.7 now
 	GaduLoginParams.client_version = "7, 7, 0, 3351";
 
-	GaduLoginParams.has_audio = config_file.readBoolEntry("Network", "AllowDCC");
+	GaduLoginParams.has_audio = gaduAccount->allowDCC();
 	GaduLoginParams.last_sysmsg = config_file.readNumEntry("General", "SystemMsgIndex", 1389);
 
 	if (Dcc)

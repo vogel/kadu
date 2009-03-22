@@ -18,15 +18,45 @@
 class GaduAccount : public Account
 {
 	UinType Uin;
+	bool AllowDcc;
+	QHostAddress DccIP;
+	bool DccIpDetect;
+	short int DccPort;
+	QHostAddress DccExternalIP;
+	short int DccExternalPort;
+	short int DccLocalPort;
+	bool RemoveCompletedTransfers;
+	bool DccForwarding;
 	GaduOpenChatWithRunner *OpenChatRunner;
 
 public:
 	GaduAccount(const QUuid &uuid = QUuid());
 	virtual ~GaduAccount();
 
+	virtual void loadConfiguration(XmlConfigFile *configurationStorage, QDomElement parent);
+	virtual void storeConfiguration(XmlConfigFile *configurationStorage, QDomElement parent);
+
 	UinType uin() { return Uin; }
+	bool allowDCC() { return AllowDcc; }
+	QHostAddress dccIP() { return DccIP; }
+	QHostAddress dccExternalIP() { return DccExternalIP; }
+	bool dccIpDetect() { return DccIpDetect; }
+	short int dccPort() { return DccPort; }
+	short int dccExternalPort() { return DccExternalPort; }
+	short int dccLocalPort() { return DccLocalPort; }
+	bool removeCompletedTransfers() { return RemoveCompletedTransfers; }
+	bool dccForwarding() { return DccForwarding; }
 
 	virtual bool setId(const QString &id);
+	void setAllowDcc(bool allow) { AllowDcc = allow; }
+	void setDccIP(QHostAddress ip) { DccIP = ip; }
+	void setDccExternalIP(QHostAddress ip) { DccExternalIP = ip; }
+	void setDccIpDetect(bool detect) { DccIpDetect = detect; }
+	void setDccPort(short int port) { DccPort = port; }
+	void setDccExternalPort(short int port) { DccExternalPort = port; }
+	void setDccLocalPort(short int port) { DccLocalPort = port; }
+	void setRemoveCompletedTransfers(bool remove) { RemoveCompletedTransfers = remove; }
+	void setDccForwarding(bool forwarding) { DccForwarding = forwarding; }
 
 };
 

@@ -56,8 +56,6 @@ class DccManager : public QObject
 	void connectSocketNotifiers(DccSocketNotifiers *notifiers);
 	void disconnectSocketNotifiers(DccSocketNotifiers *notifiers);
 
-	void createDefaultConfiguration();
-
 	GaduFileTransfer * findFileTransfer(DccSocketNotifiers *notifiers);
 
 	friend class DccSocketNotifiers;
