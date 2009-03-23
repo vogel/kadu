@@ -154,6 +154,7 @@ QString ChatMessage::convertCharacters(QString edit, const QColor &bgcolor, Emot
 	edit.replace("\r\n", "<br/>");
 	edit.replace("\n",   "<br/>");
 	edit.replace("\r",   "<br/>");
+	edit.replace(QChar::LineSeparator, "<br />");
 
 	HtmlDocument doc;
 	doc.parseHtml(edit);

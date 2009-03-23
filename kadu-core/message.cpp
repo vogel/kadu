@@ -52,6 +52,7 @@ QString MessagePart::toHtml() const
 	{
 		QString result = Qt::escape(Content);
 		result.replace("\n", "<br />");
+		result.replace(QChar::LineSeparator, "<br />");
 
 		if (!Bold && !Italic && !Underline && !Color.isValid())
 			return result;
