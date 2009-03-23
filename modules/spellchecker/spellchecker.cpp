@@ -322,7 +322,7 @@ void SpellChecker::import_0_5_0_Configuration()
 bool SpellChecker::checkWord(QString word)
 {
 	bool isWordValid = checkers.size() == 0;
-	if (word.indexOf(QRegExp("\\D")) == -1)
+	if (QRegExp("\\D").indexIn(word) == -1)
 		isWordValid = true;
 	else
 	{

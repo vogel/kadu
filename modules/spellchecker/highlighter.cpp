@@ -34,15 +34,14 @@ void Highlighter::highlightBlock(const QString& text)
 {
 	QRegExp word("\\b\\w+\\b");
 
-	int index = text.indexOf(word);
+	int index = word.indexIn(text);
 	while (index >= 0)
 	{
 		int length = word.matchedLength();
 		if (!spellcheck->checkWord(word.cap()))
 			setFormat(index, length, highlightFormat);
-		index = text.indexOf(word, index + length);
+		index = word.indexIn(text, index + length);
 	}
-       
 }
 
 void Highlighter::setHighlightFormat(QTextCharFormat format)
