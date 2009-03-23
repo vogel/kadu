@@ -27,7 +27,8 @@
 
 /**
  * \class GrowlNotifier
- * \todo Write a destructor, which CFReleases all datastructures
+ * \todo Update destructor to CFRelease all datastructures
+ * \todo Fix the problem with recovered files after restart
  */ 
 
 extern "C" {
@@ -38,9 +39,6 @@ extern "C" {
 #include <QStringList>
 #include <QPixmap>
 #include <QBuffer>
-
-//#include <sys/types.h>
-//#include <unistd.h>
 
 #include "growlnotifier.h"
 
@@ -91,7 +89,7 @@ void getContext( CFPropertyListRef context, GrowlNotifierSignaler** signaler, co
 		CFDataGetBytes(data, CFRangeMake(0,CFDataGetLength(data)), (UInt8*) signaler);
 	}
 
-	if (receiver){
+	if (receiver) {
 		data = (CFDataRef) CFArrayGetValueAtIndex((CFArrayRef) context, 1);
 		CFDataGetBytes(data, CFRangeMake(0,CFDataGetLength(data)), (UInt8*) receiver);
 	}
@@ -110,11 +108,6 @@ void getContext( CFPropertyListRef context, GrowlNotifierSignaler** signaler, co
 		data = (CFDataRef) CFArrayGetValueAtIndex((CFArrayRef) context, 4);
 		CFDataGetBytes(data, CFRangeMake(0,CFDataGetLength(data)), (UInt8*) qcontext);
 	}
-
-	//if (pid) {
-	//	data = (CFDataRef) CFArrayGetValueAtIndex((CFArrayRef) context, 5);
-	//	CFDataGetBytes(data, CFRangeMake(0,CFDataGetLength(data)), (UInt8*) pid);
-	//}
 }
 
 //------------------------------------------------------------------------------ 
@@ -140,7 +133,6 @@ CFPropertyListRef createContext( GrowlNotifierSignaler* signaler, const QObject*
 	context[2] = CFDataCreate(kCFAllocatorDefault, (const UInt8*) &clicked_slot, sizeof(const char*));
 	context[3] = CFDataCreate(kCFAllocatorDefault, (const UInt8*) &timeout_slot, sizeof(const char*));
 	context[4] = CFDataCreate(kCFAllocatorDefault, (const UInt8*) &qcontext, sizeof(void*));
-	//context[5] = CFDataCreate(kCFAllocatorDefault, (const UInt8*) &pid, sizeof(pid_t));
 
 	CFArrayRef array = CFArrayCreate( kCFAllocatorDefault, 
                 (const void **)context, 5, &kCFTypeArrayCallBacks );
@@ -151,7 +143,6 @@ CFPropertyListRef createContext( GrowlNotifierSignaler* signaler, const QObject*
 	CFRelease(context[2]);
 	CFRelease(context[3]);
 	CFRelease(context[4]);
-	//CFRelease(context[5]);
 
 	return array;
 }
@@ -169,15 +160,12 @@ void notification_clicked(CFPropertyListRef context)
 	const QObject* receiver;
 	const char* slot;
 	void* qcontext;
-	//pid_t pid;
 
 	getContext(context, &signaler, &receiver, &slot, 0, &qcontext/*, &pid*/);
 	
-	//if (pid == getpid()) {
 	QObject::connect(signaler,SIGNAL(notificationClicked(void*)),receiver,slot);
 	signaler->emitNotificationClicked(qcontext);
 	QObject::disconnect(signaler,SIGNAL(notificationClicked(void*)),receiver,slot);
-	//}
 }
 
 //------------------------------------------------------------------------------ 
@@ -193,18 +181,24 @@ void notification_timeout(CFPropertyListRef context)
 	const QObject* receiver;
 	const char* slot;
 	void* qcontext;
-	//pid_t pid;
 
 	getContext(context, &signaler, &receiver, 0, &slot, &qcontext /*, &pid*/);
 	
-	//if (pid == getpid()) {
 	QObject::connect(signaler,SIGNAL(notificationTimedOut(void*)),receiver,slot);
 	signaler->emitNotificationTimeout(qcontext);
 	QObject::disconnect(signaler,SIGNAL(notificationTimedOut(void*)),receiver,slot);
-	//}
 }
 
 //------------------------------------------------------------------------------ 
+
+/**
+ * Returns whether growl is installed or not.
+ * Used in growl_notify_init
+ */
+bool grow_is_installed()
+{
+	return Growl_IsInstalled();
+}
 
 /**
  * Constructs a GrowlNotifier.
@@ -240,20 +234,32 @@ GrowlNotifier::GrowlNotifier(
 	InitGrowlDelegate(&delegate_);
 	if (!app.isEmpty())
 		delegate_.applicationName = qString2CFString(app);
+
 	CFTypeRef keys[] = { GROWL_NOTIFICATIONS_ALL, GROWL_NOTIFICATIONS_DEFAULT };
 	CFTypeRef values[] = { allNotifications, defaultNotifications };
+
 	delegate_.registrationDictionary = CFDictionaryCreate(
 		kCFAllocatorDefault, keys, values, 2, 
 		&kCFTypeDictionaryKeyCallBacks, &kCFTypeDictionaryValueCallBacks);
+
 	delegate_.growlNotificationWasClicked = &notification_clicked;
 	delegate_.growlNotificationTimedOut = &notification_timeout;
 
+	CFRelease(allNotifications);
+	CFRelease(defaultNotifications);
+
 	// Register with Growl
 	Growl_SetDelegate(&delegate_);
+}
+
+GrowlNotifier::~GrowlNotifier()
+{
+	// Release registration dictionary
 	CFRelease(delegate_.registrationDictionary);
 
+	// Release delegate
+	delegate_.release(&delegate_);
 }
-	
 
 /**
  * \brief Sends a notification to Growl.

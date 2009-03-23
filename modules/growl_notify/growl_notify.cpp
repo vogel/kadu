@@ -38,6 +38,12 @@ extern "C" KADU_EXPORT int growl_notify_init(bool firstLoad)
 	/* growl is only supported on MacOSX */
 	return 1;
 #endif
+	if (!grow_is_installed())
+	{
+		MessageBox::msg("Growl is not installed in your system");
+		return 1;
+	}
+
 	growl_notify = new GrowlNotify(0, "growl_notify");
 	return 0;
 }
