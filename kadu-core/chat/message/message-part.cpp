@@ -33,7 +33,7 @@ MessagePart::MessagePart(const QString &content, bool bold, bool italic, bool un
 }
 
 MessagePart::MessagePart(const QString &image, bool imageDelayed) :
-		Image(true), ImageDelayed(imageDelayed),
+		Image(true), ImageDelayed(imageDelayed), Content("\n"),
 		ImagePath(imageDelayed ? QString::null : image),
 		ImageId(imageDelayed ? image : QString::null)
 {
