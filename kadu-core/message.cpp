@@ -24,7 +24,7 @@ MessagePart::MessagePart(const QString &content, bool bold, bool italic, bool un
 }
 
 MessagePart::MessagePart(const QString &imagePath)
-	: Image(true), ImagePath(imagePath), ImageSender(0), ImageSize(0), ImageCrc32(0)
+	: Image(true), ImagePath(imagePath), ImageSender(0), ImageSize(0), ImageCrc32(0), Content("\n")
 {
 }
 
