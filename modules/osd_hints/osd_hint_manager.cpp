@@ -33,12 +33,12 @@
  * @ingroup hints
  * @{
  */
-#define FRAME_WIDTH 2
-#define BORDER_RADIUS 5
+#define FRAME_WIDTH 1
+#define BORDER_RADIUS 10
 
 static QRegion roundedRect(const QRect& rect, int r)
 {
-	r -= BORDER_RADIUS/5;
+	r -= FRAME_WIDTH;
 	QRegion region;
         // middle and borders
 	region += rect.adjusted(r, 0, -r, 0);
@@ -48,12 +48,15 @@ static QRegion roundedRect(const QRect& rect, int r)
 	region += QRegion(corner, QRegion::Ellipse);
 	// top right
 	corner.moveTopRight(rect.topRight());
+	corner.translate(-1,0);
 	region += QRegion(corner, QRegion::Ellipse);
 	// bottom left
 	corner.moveBottomLeft(rect.bottomLeft());
+	corner.translate(0,-1);
 	region += QRegion(corner, QRegion::Ellipse);
 	// bottom right
 	corner.moveBottomRight(rect.bottomRight());
+	corner.translate(-1,-1);
 	region += QRegion(corner, QRegion::Ellipse);
 	return region;
 }
