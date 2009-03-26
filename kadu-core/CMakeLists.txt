@@ -127,6 +127,7 @@ set (kadu_SRCS
 	notify/notification.cpp
 	notify/notification-manager.cpp
 	notify/notifier.cpp
+	notify/notify-configuration-ui-handler.cpp
 	notify/protocol_notification.cpp
 	notify/status_changed_notification.cpp
 
@@ -270,6 +271,7 @@ set (kadu_MOC_SRCS
 	notify/notification.h
 	notify/notification-manager.h
 	notify/notifier.h
+	notify/notify-configuration-ui-handler.h
 	notify/protocol_notification.h
 	notify/status_changed_notification.h
 

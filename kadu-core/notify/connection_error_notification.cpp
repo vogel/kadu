@@ -9,6 +9,7 @@
 
 #include "notify/notification-manager.h"
 #include "debug.h"
+#include "icons_manager.h"
 #include "kadu_parser.h"
 
 #include "connection_error_notification.h"

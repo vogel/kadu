@@ -10,6 +10,7 @@
 #include <QtGui/QTextDocument>
 
 #include "notify/notification-manager.h"
+#include "icons_manager.h"
 
 #include "new_message_notification.h"
 
