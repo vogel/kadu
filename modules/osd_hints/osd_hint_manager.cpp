@@ -34,7 +34,7 @@
  * @{
  */
 #define FRAME_WIDTH 1
-#define BORDER_RADIUS 10
+#define BORDER_RADIUS 0
 
 static QRegion roundedRect(const QRect& rect, int r)
 {
@@ -71,9 +71,6 @@ OSDHintManager::OSDHintManager(QWidget *parent, const char *name)	: Notifier(par
 #else
 	frame = new QFrame(parent, name, Qt::FramelessWindowHint | Qt::Tool | Qt::X11BypassWindowManagerHint | Qt::WindowStaysOnTopHint |Qt::MSWindowsOwnDC);
 #endif
-	frame->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
-	frame->setFrameStyle(QFrame::Box | QFrame::Plain);
-	frame->setLineWidth(FRAME_WIDTH);
 
 	QString style = QString("QFrame {border-width: %1px; border-style: solid; border-color: %2; border-radius: %3px;}").arg(config_file.readNumEntry("OSDHints", "SetAll_borderWidth", FRAME_WIDTH)).arg(config_file.readColorEntry("OSDHints", "SetAll_bdcolor").name()).arg(BORDER_RADIUS);
 	frame->setStyleSheet(style);
@@ -271,7 +268,7 @@ void OSDHintManager::setHint()
 	frame->setGeometry(newPosition.x(), newPosition.y(), preferredSize.width(), preferredSize.height());
 
 	frame->resize(preferredSize.width(), preferredSize.height());
-	frame->setMask(roundedRect(frame->rect(), BORDER_RADIUS));
+	//frame->setMask(roundedRect(frame->rect(), BORDER_RADIUS));
 	frame->setWindowOpacity(opacity);
 
 	kdebugf2();
@@ -513,10 +510,8 @@ void OSDHintManager::showToolTip(const QPoint &point, const UserListElement &use
 #else
 	tipFrame = new QFrame(0, "tip_frame", Qt::FramelessWindowHint | Qt::Tool | Qt::X11BypassWindowManagerHint | Qt::WindowStaysOnTopHint |Qt::MSWindowsOwnDC);
 #endif
-	tipFrame->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
-	tipFrame->setFrameStyle(QFrame::Box | QFrame::Plain);
 
-	QString style = QString("QFrame#tip_frame {border-width: %1px; border-style: solid; border-color: %2; border-radius: %3px;}").arg(config_file.readNumEntry("OSDHints", "SetAll_borderWidth", FRAME_WIDTH)).arg(config_file.readColorEntry("OSDHints", "SetAll_bdcolor").name()).arg(BORDER_RADIUS);
+	QString style = QString("QFrame#tip_frame {border-width: %1px; border-style: solid; border-color: %2; border-radius: %3px; background-color: %4}").arg(config_file.readNumEntry("OSDHints", "SetAll_borderWidth", FRAME_WIDTH)).arg(config_file.readColorEntry("OSDHints", "SetAll_bdcolor").name()).arg(BORDER_RADIUS).arg(config_file.readColorEntry("OSDHints", "SetAll_bgcolor").name());
 	tipFrame->setStyleSheet(style);
 
 	opacity = config_file.readNumEntry("OSDHints", "Opacity", 100);
@@ -558,7 +553,7 @@ void OSDHintManager::showToolTip(const QPoint &point, const UserListElement &use
 
 	tipFrame->resize(preferredSize.width(), preferredSize.height());
 	tipFrame->move(pos);
-	tipFrame->setMask(roundedRect(tipFrame->rect(), BORDER_RADIUS));
+	//tipFrame->setMask(roundedRect(tipFrame->rect(), BORDER_RADIUS));
 	tipFrame->show();
 
 	kdebugf2();
