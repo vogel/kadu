@@ -285,7 +285,7 @@ int main(int argc, char *argv[])
 
 	kadu->startupProcedure();
 
-	QObject::connect(qApp, SIGNAL(aboutToQuit()), kadu, SLOT(quitApplication()));
+	QObject::connect(qApp, SIGNAL(aboutToQuit()), kadu, SLOT(quitApplication()), Qt::DirectConnection);
 
 	// if someone is running Kadu from root account, let's remind him
 	// that it's a "bad thing"(tm) ;) (usually for win32 users)
