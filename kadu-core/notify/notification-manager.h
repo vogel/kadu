@@ -26,9 +26,12 @@ class QListWidget;
  * @{
  */
 
-class KADUAPI Notify : public ConfigurationUiHandler, AccountsAwareObject
+class KADUAPI NotificationManager : public ConfigurationUiHandler, AccountsAwareObject
 {
 	Q_OBJECT
+	Q_DISABLE_COPY(NotificationManager)
+
+	static NotificationManager *Instance;
 
 	QListWidget *allUsers;
 	QListWidget *notifiedUsers;
@@ -60,7 +63,9 @@ class KADUAPI Notify : public ConfigurationUiHandler, AccountsAwareObject
 
 	QString CurrentEvent;
 
-	void import_connection_from_0_5_0(const QString &notifierName, const QString &oldConnectionName, const QString &newConnectionName);
+	NotificationManager();
+	virtual ~NotificationManager();
+
 	void createDefaultConfiguration();
 
 	void addConfigurationWidget(NotifierData &notifier, const QString &name);
@@ -89,8 +94,7 @@ protected:
 	virtual void accountUnregistered(Account *account);
 
 public:
-	Notify(QObject *parent = 0);
-	virtual ~Notify();
+	static NotificationManager * instance();
 
 	virtual void mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow);
 
@@ -103,13 +107,11 @@ public:
 	void unregisterEvent(const QString &name);
 
 	QStringList notifiersList() const;
-	const QList<Notify::NotifyEvent> &notifyEvents();
+	const QList<NotificationManager::NotifyEvent> &notifyEvents();
 
 };
 
 void checkNotify(KaduAction*);
-
-extern KADUAPI Notify *notification_manager;
 
 /** @} */
 

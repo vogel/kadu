@@ -1,4 +1,6 @@
-<!DOCTYPE TS><TS>
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
+<TS version="2.0" language="de_DE">
 <context>
     <name>@default</name>
     <message>
@@ -394,10 +396,6 @@ It&apos;s a high security risk!</source>
     <message>
         <source>Contacts</source>
         <translation>Kontate</translation>
-    </message>
-    <message>
-        <source>General</source>
-        <translation>Allgemein</translation>
     </message>
     <message>
         <source>Filters</source>
@@ -1103,7 +1101,7 @@ It&apos;s a high security risk!</source>
         <source>Display dates is nice format, like Today, Yesterday or Friday</source>
         <translation type="unfinished"></translation>
     </message>
-          <message>
+    <message>
         <source>Connection error</source>
         <translation>Verbindungsfehler</translation>
     </message>
@@ -1188,7 +1186,6 @@ kurz nachdem Sie sich mit dem Server verbunden haben</translation>
         <source>&lt;b&gt;Error:&lt;/b&gt; (%1) %2</source>
         <translation>&lt;b&gt;Fehler:&lt;/b&gt; (%1) %2</translation>
     </message>
-
 </context>
 <context>
     <name>About</name>
@@ -2724,7 +2721,7 @@ Das Löschen der Kontaktliste vom Server ist misslungen</translation>
         <translation>Datei exisitert. Sind Sie sicher, dass Sie es überschreiben wollen?</translation>
     </message>
 </context>
-  <context>
+<context>
     <name>MessageNotification</name>
     <message>
         <source>Chat with &lt;b&gt;%1&lt;/b&gt;</source>
@@ -2773,5 +2770,4 @@ Das Löschen der Kontaktliste vom Server ist misslungen</translation>
         <translation>&lt;b&gt;%1&lt;/b&gt; änderte Zustand in &lt;i&gt;%2&lt;/i&gt;</translation>
     </message>
 </context>
-
 </TS>

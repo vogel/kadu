@@ -16,20 +16,20 @@
 
 #include "status_changed_notification.h"
 
-void StatusChangedNotification::registerEvents(Notify *manager)
+void StatusChangedNotification::registerEvents()
 {
-	manager->registerEvent("StatusChanged/ToOnline", QT_TRANSLATE_NOOP("@default", "User changed status to online"), CallbackNotRequired);
-	manager->registerEvent("StatusChanged/ToBusy", QT_TRANSLATE_NOOP("@default", "User changed status to busy"), CallbackNotRequired);
-	manager->registerEvent("StatusChanged/ToInvisible", QT_TRANSLATE_NOOP("@default", "User changed status to invisible"), CallbackNotRequired);
-	manager->registerEvent("StatusChanged/ToOffline", QT_TRANSLATE_NOOP("@default", "User changed status to offline"), CallbackNotRequired);
+	NotificationManager::instance()->registerEvent("StatusChanged/ToOnline", QT_TRANSLATE_NOOP("@default", "User changed status to online"), CallbackNotRequired);
+	NotificationManager::instance()->registerEvent("StatusChanged/ToBusy", QT_TRANSLATE_NOOP("@default", "User changed status to busy"), CallbackNotRequired);
+	NotificationManager::instance()->registerEvent("StatusChanged/ToInvisible", QT_TRANSLATE_NOOP("@default", "User changed status to invisible"), CallbackNotRequired);
+	NotificationManager::instance()->registerEvent("StatusChanged/ToOffline", QT_TRANSLATE_NOOP("@default", "User changed status to offline"), CallbackNotRequired);
 }
 
-void StatusChangedNotification::unregisterEvents(Notify *manager)
+void StatusChangedNotification::unregisterEvents()
 {
-	manager->unregisterEvent("StatusChanged/ToOnline");
-	manager->unregisterEvent("StatusChanged/ToBusy");
-	manager->unregisterEvent("StatusChanged/ToInvisible");
-	manager->unregisterEvent("StatusChanged/ToOffline");
+	NotificationManager::instance()->unregisterEvent("StatusChanged/ToOnline");
+	NotificationManager::instance()->unregisterEvent("StatusChanged/ToBusy");
+	NotificationManager::instance()->unregisterEvent("StatusChanged/ToInvisible");
+	NotificationManager::instance()->unregisterEvent("StatusChanged/ToOffline");
 }
 
 // TODO 0.6.6 what if accountData(account) == null ?

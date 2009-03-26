@@ -396,10 +396,6 @@ E un rischio per la sicurezza!</translation>
         <translation>Contatti</translation>
     </message>
     <message>
-        <source>General</source>
-        <translation>Generale</translation>
-    </message>
-    <message>
         <source>Filters</source>
         <translation>Filtri</translation>
     </message>

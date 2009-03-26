@@ -397,10 +397,6 @@ Attention danger!
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>General</source>
-        <translation type="unfinished">Géneral</translation>
-    </message>
-    <message>
         <source>Filters</source>
         <translation type="unfinished"></translation>
     </message>

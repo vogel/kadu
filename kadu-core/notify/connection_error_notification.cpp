@@ -33,17 +33,17 @@ static QString getErrorServer(const QObject * const object)
 		return "";
 }
 
-void ConnectionErrorNotification::registerEvent(Notify *manager)
+void ConnectionErrorNotification::registerEvent()
 {
-	manager->registerEvent("ConnectionError", QT_TRANSLATE_NOOP("@default", "Connection error"), CallbackNotRequired);
+	NotificationManager::instance()->registerEvent("ConnectionError", QT_TRANSLATE_NOOP("@default", "Connection error"), CallbackNotRequired);
 	KaduParser::registerObjectTag("error", getErrorMessage);
 	KaduParser::registerObjectTag("errorServer", getErrorServer);
 }
 
-void ConnectionErrorNotification::unregisterEvent(Notify *manager)
+void ConnectionErrorNotification::unregisterEvent()
 {
 	KaduParser::unregisterObjectTag("error", getErrorMessage);
-	manager->unregisterEvent("ConnectionError");
+	NotificationManager::instance()->unregisterEvent("ConnectionError");
 }
 
 bool ConnectionErrorNotification::activeError(const QString &errorMessage)

@@ -13,16 +13,16 @@
 
 #include "new_message_notification.h"
 
-void MessageNotification::registerEvents(Notify *manager)
+void MessageNotification::registerEvents()
 {
-	manager->registerEvent("NewChat", QT_TRANSLATE_NOOP("@default", "New chat"), CallbackNotRequired);
-	manager->registerEvent("NewMessage", QT_TRANSLATE_NOOP("@default", "New message"), CallbackNotRequired);
+	NotificationManager::instance()->registerEvent("NewChat", QT_TRANSLATE_NOOP("@default", "New chat"), CallbackNotRequired);
+	NotificationManager::instance()->registerEvent("NewMessage", QT_TRANSLATE_NOOP("@default", "New message"), CallbackNotRequired);
 }
 
-void MessageNotification::unregisterEvents(Notify *manager)
+void MessageNotification::unregisterEvents()
 {
-	manager->unregisterEvent("NewChat");
-	manager->unregisterEvent("NewMessage");
+	NotificationManager::instance()->unregisterEvent("NewChat");
+	NotificationManager::instance()->unregisterEvent("NewMessage");
 }
 
 MessageNotification::MessageNotification(MessageType messageType, const ContactList &contacts, const QString &message, Account *account)

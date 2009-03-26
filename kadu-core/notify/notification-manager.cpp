@@ -50,8 +50,7 @@ extern "C" KADU_EXPORT int notify_init(bool firstLoad)
 {
 	kdebugf();
 
-	notification_manager = new Notify();
-	MainConfigurationWindow::registerUiFile(dataPath("kadu/modules/configuration/notify.ui"), notification_manager);
+	MainConfigurationWindow::registerUiFile(dataPath("kadu/modules/configuration/notify.ui"), NotificationManager::instance());
 
 	kdebugf2();
 	return 0;
@@ -61,25 +60,35 @@ extern "C" KADU_EXPORT void notify_close()
 {
 	kdebugf();
 
-	MainConfigurationWindow::unregisterUiFile(dataPath("kadu/modules/configuration/notify.ui"), notification_manager);
-	delete notification_manager;
-	notification_manager = 0;
+	MainConfigurationWindow::unregisterUiFile(dataPath("kadu/modules/configuration/notify.ui"), NotificationManager::instance());
 
 	kdebugf2();
 }
 
-Notify::Notify(QObject *parent)
-	: QObject(parent), notificationsGroupBox(0)
+NotificationManager *NotificationManager::Instance = 0;
+
+NotificationManager * NotificationManager::instance()
+{
+	if (!Instance)
+	{
+		Instance = new NotificationManager();
+
+		MessageNotification::registerEvents();
+		ConnectionErrorNotification::registerEvent();
+		StatusChangedNotification::registerEvents();
+	}
+
+	return Instance;
+}
+
+NotificationManager::NotificationManager()
+	: notificationsGroupBox(0)
 {
 	kdebugf();
 
 	createDefaultConfiguration();
 
 	triggerAllAccountsRegistered();
-
-	MessageNotification::registerEvents(this);
-	ConnectionErrorNotification::registerEvent(this);
-	StatusChangedNotification::registerEvents(this);
 
 	notifyAboutUserActionDescription = new ActionDescription(0,
 		ActionDescription::TypeUser, "notifyAboutUserAction",
@@ -93,16 +102,16 @@ Notify::Notify(QObject *parent)
 	kdebugf2();
 }
 
-Notify::~Notify()
+NotificationManager::~NotificationManager()
 {
 	kdebugf();
 
 	ContactsListWidgetMenuManager::instance()->removeManagementActionDescription(notifyAboutUserActionDescription);
 	delete notifyAboutUserActionDescription;
 
-	StatusChangedNotification::unregisterEvents(this);
-	ConnectionErrorNotification::unregisterEvent(this);
-	MessageNotification::unregisterEvents(this);
+	StatusChangedNotification::unregisterEvents();
+	ConnectionErrorNotification::unregisterEvent();
+	MessageNotification::unregisterEvents();
 
 	triggerAllAccountsUnregistered();
 
@@ -117,7 +126,7 @@ Notify::~Notify()
 	kdebugf2();
 }
 
-void Notify::notifyAboutUserActionActivated(QAction *sender, bool toggled)
+void NotificationManager::notifyAboutUserActionActivated(QAction *sender, bool toggled)
 {
 	kdebugf();
 
@@ -167,7 +176,7 @@ void Notify::notifyAboutUserActionActivated(QAction *sender, bool toggled)
 	kdebugf2();
 }
 
-void Notify::mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow)
+void NotificationManager::mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow)
 {
 	connect(mainConfigurationWindow, SIGNAL(destroyed()), this, SLOT(mainConfigurationWindowDestroyed()));
 
@@ -244,7 +253,7 @@ void Notify::mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigu
 	eventSwitched(0);
 }
 
-void Notify::mainConfigurationWindowDestroyed()
+void NotificationManager::mainConfigurationWindowDestroyed()
 {
 	notificationsGroupBox = 0;
 
@@ -253,7 +262,7 @@ void Notify::mainConfigurationWindowDestroyed()
 		(*notifierData).configurationWidget = 0;
 }
 
-void Notify::addConfigurationWidget(NotifierData &notifier, const QString &name)
+void NotificationManager::addConfigurationWidget(NotifierData &notifier, const QString &name)
 {
 	NotifyGroupBox *configurationGroupBox = new NotifyGroupBox(name, qApp->translate("@default", name.toAscii().data()), notificationsGroupBox->widget());
 	connect(configurationGroupBox, SIGNAL(toggled(const QString &, bool)), this, SLOT(notifierToggled(const QString &, bool)));
@@ -276,7 +285,7 @@ void Notify::addConfigurationWidget(NotifierData &notifier, const QString &name)
 	configurationGroupBox->show();
 }
 
-void Notify::removeConfigurationWidget(NotifierData &notifier)
+void NotificationManager::removeConfigurationWidget(NotifierData &notifier)
 {
 	if (notifier.configurationWidget)
 	{
@@ -288,7 +297,7 @@ void Notify::removeConfigurationWidget(NotifierData &notifier)
 	notifier.configurationGroupBox = 0;
 }
 
-void Notify::eventSwitched(int index)
+void NotificationManager::eventSwitched(int index)
 {
 	kdebugf();
 
@@ -308,7 +317,7 @@ void Notify::eventSwitched(int index)
 	}
 }
 
-void Notify::configurationWindowApplied()
+void NotificationManager::configurationWindowApplied()
 {
 	int count = notifiedUsers->count();
 	for (int i = 0; i < count; i++)
@@ -354,14 +363,14 @@ void Notify::configurationWindowApplied()
 	}
 }
 
-void Notify::notifierToggled(const QString &notifier, bool toggled)
+void NotificationManager::notifierToggled(const QString &notifier, bool toggled)
 {
 	kdebugf();
 
 	Notifiers[notifier].events[CurrentEvent] = toggled;
 }
 
-void Notify::moveToAllList()
+void NotificationManager::moveToAllList()
 {
 	int count = notifiedUsers->count();
 
@@ -376,7 +385,7 @@ void Notify::moveToAllList()
 	allUsers->sortItems();
 }
 
-void Notify::moveToNotifyList()
+void NotificationManager::moveToNotifyList()
 {
 	int count = allUsers->count();
 
@@ -391,7 +400,7 @@ void Notify::moveToNotifyList()
 	notifiedUsers->sortItems();
 }
 
-void Notify::accountRegistered(Account *account)
+void NotificationManager::accountRegistered(Account *account)
 {
 	Protocol *protocol = account->protocol();
 	connect(protocol, SIGNAL(connectionError(Account *, const QString &, const QString &)),
@@ -402,7 +411,7 @@ void Notify::accountRegistered(Account *account)
 		this, SLOT(statusChanged(Account *, Contact, Status)));
 }
 
-void Notify::accountUnregistered(Account *account)
+void NotificationManager::accountUnregistered(Account *account)
 {
 	Protocol *protocol = account->protocol();
 	disconnect(protocol, SIGNAL(connectionError(Account *, const QString &, const QString &)),
@@ -413,7 +422,7 @@ void Notify::accountUnregistered(Account *account)
 		this, SLOT(statusChanged(Account *, Contact, Status)));
 }
 
-void Notify::statusChanged(Account *account, Contact contact, Status oldStatus)
+void NotificationManager::statusChanged(Account *account, Contact contact, Status oldStatus)
 {
 	kdebugf();
 
@@ -461,7 +470,7 @@ void Notify::statusChanged(Account *account, Contact contact, Status oldStatus)
 	kdebugf2();
 }
 
-void Notify::messageReceived(Account *account, ContactList contacts, const QString &msg, time_t t)
+void NotificationManager::messageReceived(Account *account, ContactList contacts, const QString &msg, time_t t)
 {
 	kdebugf();
 
@@ -475,7 +484,7 @@ void Notify::messageReceived(Account *account, ContactList contacts, const QStri
 	kdebugf2();
 }
 
-void Notify::connectionError(Account *account, const QString &server, const QString &message)
+void NotificationManager::connectionError(Account *account, const QString &server, const QString &message)
 {
 	kdebugf();
 
@@ -488,7 +497,7 @@ void Notify::connectionError(Account *account, const QString &server, const QStr
 	kdebugf2();
 }
 
-void Notify::registerEvent(const QString &name, const char *description, CallbackRequirement callbackRequirement)
+void NotificationManager::registerEvent(const QString &name, const char *description, CallbackRequirement callbackRequirement)
 {
 	kdebugf();
 
@@ -502,7 +511,7 @@ void Notify::registerEvent(const QString &name, const char *description, Callbac
 	kdebugf2();
 }
 
-void Notify::unregisterEvent(const QString &name)
+void NotificationManager::unregisterEvent(const QString &name)
 {
 	kdebugf();
 
@@ -513,16 +522,7 @@ void Notify::unregisterEvent(const QString &name)
 	kdebugf2();
 }
 
-void Notify::import_connection_from_0_5_0(const QString &notifierName, const QString &oldConnectionName, const QString &newConnectionName)
-{
-	if (config_file.readBoolEntry("Notify", oldConnectionName + "_" + notifierName, false))
-	{
-		config_file.writeEntry("Notify", newConnectionName + "_" + notifierName, true);
-		config_file.removeVariable("Notify", oldConnectionName + "_" + notifierName);
-	}
-}
-
-void Notify::registerNotifier(const QString &name, Notifier *notifier)
+void NotificationManager::registerNotifier(const QString &name, Notifier *notifier)
 {
 	kdebugf();
 	if (Notifiers.contains(name))
@@ -551,12 +551,6 @@ void Notify::registerNotifier(const QString &name, Notifier *notifier)
 		config_file.removeVariable("Notify", "StatusChanged_" + name);
 	}
 
-	import_connection_from_0_5_0(name, "ConnError", "ConnectionError");
-	import_connection_from_0_5_0(name, "toAvailable", "StatusChanged/ToOnline");
-	import_connection_from_0_5_0(name, "toBusy", "StatusChanged/ToBusy");
-	import_connection_from_0_5_0(name, "toInvisible", "StatusChanged/ToInvisible");
-	import_connection_from_0_5_0(name, "toOffline", "StatusChanged/ToOffline");
-
 	Notifiers[name].notifier = notifier;
 	Notifiers[name].configurationWidget = 0;
 	Notifiers[name].configurationGroupBox = 0;
@@ -567,7 +561,7 @@ void Notify::registerNotifier(const QString &name, Notifier *notifier)
 	kdebugf2();
 }
 
-void Notify::unregisterNotifier(const QString &name)
+void NotificationManager::unregisterNotifier(const QString &name)
 {
 	kdebugf();
 
@@ -585,17 +579,17 @@ void Notify::unregisterNotifier(const QString &name)
 	kdebugf2();
 }
 
-QStringList Notify::notifiersList() const
+QStringList NotificationManager::notifiersList() const
 {
 	return QStringList(Notifiers.keys());
 }
 
-const QList<Notify::NotifyEvent> &Notify::notifyEvents()
+const QList<NotificationManager::NotifyEvent> &NotificationManager::notifyEvents()
 {
 	return NotifyEvents;
 }
 
-void Notify::notify(Notification *notification)
+void NotificationManager::notify(Notification *notification)
 {
 	kdebugf();
 
@@ -642,7 +636,7 @@ void Notify::notify(Notification *notification)
 	kdebugf2();
 }
 
-void Notify::createDefaultConfiguration()
+void NotificationManager::createDefaultConfiguration()
 {
 	config_file.addVariable("Notify", "IgnoreOnlineToOnline", false);
 	config_file.addVariable("Notify", "NewMessageOnlyIfInactive", true);
@@ -687,5 +681,3 @@ void checkNotify(KaduAction *action)
 
 	kdebugf2();
 }
-
-Notify *notification_manager = 0;

@@ -12,8 +12,6 @@
 // TODO account_notification
 #include "protocol_notification.h"
 
-class Notify;
-
 class ConnectionErrorNotification : public AccountNotification
 {
 	Q_OBJECT
@@ -24,8 +22,8 @@ class ConnectionErrorNotification : public AccountNotification
 
 public:
 
-	static void registerEvent(Notify * manager);
-	static void unregisterEvent(Notify * manager);
+	static void registerEvent();
+	static void unregisterEvent();
 
 	static bool activeError(const QString &errorMessage);
 

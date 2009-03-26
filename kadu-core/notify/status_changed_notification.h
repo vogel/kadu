@@ -18,8 +18,8 @@ class StatusChangedNotification : public AccountNotification
 	Q_OBJECT
 public:
 
-	static void registerEvents(Notify * manager);
-	static void unregisterEvents(Notify * manager);
+	static void registerEvents();
+	static void unregisterEvents();
 
 	StatusChangedNotification(const QString &toStatus, ContactList &contacts, Account *account);
 	virtual ~StatusChangedNotification() {};

@@ -11,7 +11,7 @@
 
 #include "gadu-contact-account-data-manager.h"
 
-GaduContactAccountDataManager::GaduContactAccountDataManager(GaduContactAccountData* data, QObject *parent)
+GaduContactAccountDataManager::GaduContactAccountDataManager(GaduContactAccountData *data, QObject *parent)
 	: ContactAccountDataManager(data, parent), Data(data)
 {
 }

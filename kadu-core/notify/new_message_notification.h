@@ -12,8 +12,6 @@
 
 #include "protocol_notification.h"
 
-class Notify;
-
 class MessageNotification : public AccountNotification
 {
 	Q_OBJECT
@@ -25,8 +23,8 @@ public:
 		NewMessage
 	};
 
-	static void registerEvents(Notify * manager);
-	static void unregisterEvents(Notify * manager);
+	static void registerEvents();
+	static void unregisterEvents();
 
 	MessageNotification(MessageType messageType, const ContactList &contacts, const QString &message, Account *account);
 	virtual ~MessageNotification() {};

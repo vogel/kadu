@@ -398,10 +398,6 @@ Jest to wysoce ryzykowne!</translation>
         <translation>Kontakty</translation>
     </message>
     <message>
-        <source>General</source>
-        <translation>Ogólne</translation>
-    </message>
-    <message>
         <source>Filters</source>
         <translation>Filtry</translation>
     </message>

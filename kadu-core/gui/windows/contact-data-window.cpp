@@ -391,9 +391,9 @@ void ContactDataWindow::setupTab3()
 		if (!User.hasAccountData(account) || !protocolFactory)
 			continue;
 
-		ContactAccountData* contactAccountData = User.accountData(account);
+		ContactAccountData *contactAccountData = User.accountData(account);
 
-		ContactAccountDataWidget* contactAccountDataWidget = protocolFactory-> newContactAccountDataWidget(contactAccountData, tw_main);
+		ContactAccountDataWidget *contactAccountDataWidget = protocolFactory->newContactAccountDataWidget(contactAccountData, tw_main);
 
 		if (!contactAccountDataWidget)
 			continue;
