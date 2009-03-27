@@ -27,6 +27,7 @@ KaduTabBar::KaduTabBar(QWidget *parent)
 	setAcceptDrops(true);
 	setIconSize(QSize(16, 16));
 	setContentsMargins(0, 0, 0, 0);
+	setFixedWidth(26); /* Dorr: mantis 0001130 */
 }
 
 void KaduTabBar::dragEnterEvent(QDragEnterEvent *e)
