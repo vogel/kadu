@@ -46,8 +46,12 @@ void Protocol::setAllOffline()
 	{
 		data = contact.accountData(CurrentAccount);
 		oldStatus = data->status();
-		data->setStatus(status);
-		emit contactStatusChanged(CurrentAccount, contact, oldStatus);
+
+		if (oldStatus != status)
+		{
+			data->setStatus(status);
+			emit contactStatusChanged(CurrentAccount, contact, oldStatus);
+		}
 	}
 }
 

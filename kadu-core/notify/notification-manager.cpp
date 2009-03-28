@@ -28,7 +28,6 @@
 #include "message_box.h"
 #include "misc/misc.h"
 
-#include "connection_error_notification.h"
 #include "new_message_notification.h"
 #include "status_changed_notification.h"
 
@@ -41,7 +40,6 @@ NotificationManager * NotificationManager::instance()
 		Instance = new NotificationManager();
 
 		MessageNotification::registerEvents();
-		ConnectionErrorNotification::registerEvent();
 		StatusChangedNotification::registerEvents();
 	}
 
@@ -85,7 +83,6 @@ NotificationManager::~NotificationManager()
 	notifyAboutUserActionDescription = 0;
 
 	StatusChangedNotification::unregisterEvents();
-	ConnectionErrorNotification::unregisterEvent();
 	MessageNotification::unregisterEvents();
 
 	triggerAllAccountsUnregistered();
@@ -205,6 +202,9 @@ void NotificationManager::statusChanged(Account *account, Contact contact, Statu
 	if (!data)
 		return;
 
+	if (oldStatus == data->status())
+		return;
+
 	if (config_file.readBoolEntry("Notify", "IgnoreOnlineToOnline") &&
 		(data->status().isOnline() || data->status().isBusy()) &&
 			(oldStatus.isOnline() || oldStatus.isBusy()))
@@ -230,19 +230,6 @@ void NotificationManager::messageReceived(Account *account, ContactList contacts
 	else // new message in chat
 		if (!chat->edit()->hasFocus() || !config_file.readBoolEntry("Notify", "NewMessageOnlyIfInactive"))
 			notify(new MessageNotification(MessageNotification::NewMessage, contacts, msg, account));
-
-	kdebugf2();
-}
-
-void NotificationManager::connectionError(Account *account, const QString &server, const QString &message)
-{
-	kdebugf();
-
-	if (!ConnectionErrorNotification::activeError(message))
-	{
-		ConnectionErrorNotification *connectionErrorNotification = new ConnectionErrorNotification(server, message, account);
-		notify(connectionErrorNotification);
-	}
 
 	kdebugf2();
 }

@@ -514,6 +514,8 @@ void GaduProtocol::setupLoginParams()
 	GaduLoginParams.server_addr = haveServer ? htonl(ActiveServer.first.toIPv4Address()) : 0;
 	GaduLoginParams.server_port = haveServer ? ActiveServer.second : 0;
 
+	printf("connecting to: %d, %d\n", GaduLoginParams.server_addr, GaduLoginParams.server_port);
+
 	GaduLoginParams.protocol_version = 0x2a; // we are gg 7.7 now
 	GaduLoginParams.client_version = "7, 7, 0, 3351";
 
@@ -705,6 +707,7 @@ void GaduProtocol::socketConnFailed(GaduError error)
 			break;
 
 		case ConnectionUnknow:
+			msg = tr("Connection broken");
 			kdebugm(KDEBUG_INFO, "Connection broken unexpectedly!\nUnscheduled connection termination\n");
 			break;
 
@@ -718,20 +721,21 @@ void GaduProtocol::socketConnFailed(GaduError error)
 
 		default:
 			kdebugm(KDEBUG_ERROR, "Unhandled error? (%d)\n", int(error));
+			msg = tr("Connection broken");
 			break;
 	}
-/*
-	if (msg != QString::null)
+
+	if (!msg.isEmpty())
 	{
-		QHostAddress server = activeServer();
+		QHostAddress server = ActiveServer.first;
 		QString host;
 		if (!server.isNull())
-			host = server.toString();
+			host = QString("%1:%2").arg(server.toString()).arg(ActiveServer.second);
 		else
 			host = "HUB";
 		kdebugm(KDEBUG_INFO, "%s %s\n", qPrintable(host), qPrintable(msg));
 		emit connectionError(account(), host, msg);
-	}*/
+	}
 
 	if (tryAgain)
 		GaduServersManager::instance()->markServerAsBad(ActiveServer);

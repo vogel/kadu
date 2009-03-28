@@ -11,7 +11,7 @@
 #define STATUS_CHANGED_NOTIFICATION_H
 
 #include "notify/notification-manager.h"
-#include "protocol_notification.h"
+#include "account-notification.h"
 
 class NotifyEvent;
 

@@ -7,13 +7,15 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "account.h"
-#include "accounts_aware_object.h"
-#include "config_file.h"
-#include "debug.h"
+#include "accounts/account.h"
+#include "accounts/accounts_aware_object.h"
+#include "notify/notification-manager.h"
+#include "protocols/connection-error-notification.h"
 #include "protocols/protocol.h"
 #include "protocols/protocol_factory.h"
 #include "protocols/protocols_manager.h"
+#include "config_file.h"
+#include "debug.h"
 #include "xml_config_file.h"
 
 #include "account_manager.h"
@@ -123,10 +125,16 @@ void AccountManager::registerAccount(Account *account)
 	Accounts << account;
 	emit accountRegistered(account);
 	AccountsAwareObject::notifyAccountRegistered(account);
+
+	connect(account->protocol(), SIGNAL(connectionError(Account *, const QString &, const QString &)),
+			this, SLOT(connectionError(Account *, const QString &, const QString &)));
 }
 
 void AccountManager::unregisterAccount(Account *account)
 {
+	disconnect(account->protocol(), SIGNAL(connectionError(Account *, const QString &, const QString &)),
+			this, SLOT(connectionError(Account *, const QString &, const QString &)));
+
 	AccountsAwareObject::notifyAccountUnregistered(account);
 	emit accountAboutToBeUnregistered(account);
 	Accounts.removeAll(account);
@@ -139,4 +147,18 @@ Status AccountManager::status() const
 	return account
 		? account->currentStatus()
 		: Status();
+}
+
+void AccountManager::connectionError(Account *account, const QString &server, const QString &message)
+{
+	kdebugf();
+
+	if (!ConnectionErrorNotification::activeError(account, message))
+	{
+		ConnectionErrorNotification *connectionErrorNotification = new ConnectionErrorNotification(account,
+				server, message);
+		NotificationManager::instance()->notify(connectionErrorNotification);
+	}
+
+	kdebugf2();
 }

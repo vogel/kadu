@@ -9,8 +9,8 @@
 
 #ifndef CONNECTION_ERROR_NOTIFICATION_H
 #define CONNECTION_ERROR_NOTIFICATION_H
-// TODO account_notification
-#include "protocol_notification.h"
+
+#include "notify/account-notification.h"
 
 class NotifyEvent;
 
@@ -19,18 +19,17 @@ class ConnectionErrorNotification : public AccountNotification
 	Q_OBJECT
 
 	static NotifyEvent *ConnectionErrorNotifyEvent;
-	static QStringList ActiveErrors;
+	static QMap<Account *, QStringList> ActiveErrors;
 	QString ErrorServer;
 	QString ErrorMessage;
 
 public:
-
 	static void registerEvent();
 	static void unregisterEvent();
 
-	static bool activeError(const QString &errorMessage);
+	static bool activeError(Account *account, const QString &errorMessage);
 
-	ConnectionErrorNotification(const QString &errorServer, const QString &errorMessage, Account *account);
+	ConnectionErrorNotification(Account *account, const QString &errorServer, const QString &errorMessage);
 	virtual ~ConnectionErrorNotification();
 
 	QString errorMessage() const;

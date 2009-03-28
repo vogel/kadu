@@ -13,10 +13,10 @@
 #include "icons_manager.h"
 #include "kadu_parser.h"
 
-#include "connection_error_notification.h"
+#include "connection-error-notification.h"
 
 NotifyEvent *ConnectionErrorNotification::ConnectionErrorNotifyEvent = 0;
-QStringList ConnectionErrorNotification::ActiveErrors;
+QMap<Account *, QStringList> ConnectionErrorNotification::ActiveErrors;
 
 static QString getErrorMessage(const QObject * const object)
 {
@@ -57,23 +57,23 @@ void ConnectionErrorNotification::unregisterEvent()
 	ConnectionErrorNotifyEvent = 0;
 }
 
-bool ConnectionErrorNotification::activeError(const QString &errorMessage)
+bool ConnectionErrorNotification::activeError(Account *account, const QString &errorMessage)
 {
-	return ActiveErrors.contains(errorMessage);
+	return ActiveErrors.contains(account) && ActiveErrors[account].contains(errorMessage);
 }
 
-ConnectionErrorNotification::ConnectionErrorNotification(const QString &errorServer, const QString &errorMessage, Account *account)
-	: AccountNotification("ConnectionError", icons_manager->loadIcon("CriticalSmall") , contacts(), account), ErrorServer(errorServer), ErrorMessage(errorMessage)
+ConnectionErrorNotification::ConnectionErrorNotification(Account *account, const QString &errorServer, const QString &errorMessage)
+	: AccountNotification(account, "ConnectionError", icons_manager->loadIcon("CriticalSmall"), ContactList()), ErrorServer(errorServer), ErrorMessage(errorMessage)
 {
 	setTitle(tr("Connection error"));
 	setText(tr("<b>Error:</b> (%1) %2").arg(ErrorServer).arg(ErrorMessage));
 
-	ActiveErrors.append(ErrorMessage);
+	ActiveErrors[account].append(ErrorMessage);
 }
 
 ConnectionErrorNotification::~ConnectionErrorNotification()
 {
-	ActiveErrors.removeAll(ErrorMessage);
+	ActiveErrors[account()].removeAll(ErrorMessage);
 }
 
 QString ConnectionErrorNotification::errorMessage() const

@@ -54,7 +54,6 @@ class KADUAPI NotificationManager : public QObject, AccountsAwareObject
 private slots:
 	void messageReceived(Account *account, ContactList contacts, const QString &msg, time_t t);
 
-	void connectionError(Account *account, const QString &server, const QString &message);
 	void statusChanged(Account *account, Contact contact, Status oldStatus);
 
 	void notifyAboutUserActionActivated(QAction *sender, bool toggled);

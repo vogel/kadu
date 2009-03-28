@@ -58,3 +58,8 @@ bool Status::operator == (const Status &compare) const
 {
 	return Type == compare.Type && Description == compare.Description;
 }
+
+bool Status::operator != (const Status& compare) const
+{
+	return !(*this == compare);
+}

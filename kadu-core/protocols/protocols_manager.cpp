@@ -8,9 +8,11 @@
  ***************************************************************************/
 
 #include "accounts/account_manager.h"
-#include "debug.h"
 #include "misc/misc.h"
-#include "protocol_factory.h"
+#include "protocols/connection-error-notification.h"
+#include "protocols/protocol_factory.h"
+
+#include "debug.h"
 #include "xml_config_file.h"
 
 #include "protocols_manager.h"
@@ -27,10 +29,12 @@ ProtocolsManager * ProtocolsManager::instance()
 
 ProtocolsManager::ProtocolsManager()
 {
+	ConnectionErrorNotification::registerEvent();
 }
 
 ProtocolsManager::~ProtocolsManager()
 {
+	ConnectionErrorNotification::unregisterEvent();
 }
 
 void ProtocolsManager::registerProtocolFactory(const QString &name, ProtocolFactory *factory)

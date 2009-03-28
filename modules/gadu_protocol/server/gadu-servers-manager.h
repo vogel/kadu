@@ -13,7 +13,9 @@
 #include <QtCore/QList>
 #include <QtNetwork/QHostAddress>
 
-class GaduServersManager
+#include "configuration_aware_object.h"
+
+class GaduServersManager : public ConfigurationAwareObject
 {
 	Q_DISABLE_COPY(GaduServersManager);
 
@@ -30,6 +32,11 @@ private:
 	QList<GaduServer> BadServers;
 
 	GaduServersManager();
+
+	void buildServerList();
+
+protected:
+	virtual void configurationUpdated();
 
 public:
 	static GaduServersManager * instance();

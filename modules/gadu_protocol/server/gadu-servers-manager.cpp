@@ -80,6 +80,14 @@ GaduServersManager * GaduServersManager::instance()
 
 GaduServersManager::GaduServersManager()
 {
+	buildServerList();
+}
+
+void GaduServersManager::buildServerList()
+{
+	GoodServers.clear();
+	BadServers.clear();
+
 	int LastGoodPort = config_file.readNumEntry("Network", "LastServerPort",
 			config_file.readNumEntry("Network", "DefaultPort", 8074));
 
@@ -116,6 +124,11 @@ GaduServersManager::GaduServersManager()
 				foreach (int port, AllPorts)
 					GoodServers.append(qMakePair(ip, port));
 	}
+}
+
+void GaduServersManager::configurationUpdated()
+{
+	buildServerList();
 }
 
 GaduServersManager::GaduServer GaduServersManager::getServer()

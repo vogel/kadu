@@ -14,9 +14,9 @@
 #include <QtCore/QObject>
 #include <QtCore/QUuid>
 
+#include "accounts/account.h"
 #include "exports.h"
 
-class Account;
 class AccountData;
 class Status;
 class XmlConfigFile;
@@ -32,6 +32,9 @@ class KADUAPI AccountManager : public QObject
 	virtual ~AccountManager();
 
 	QList<Account *> Accounts;
+
+private slots:
+	void connectionError(Account *account, const QString &server, const QString &message);
 
 public:
 	static AccountManager * instance();
