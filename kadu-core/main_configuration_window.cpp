@@ -51,7 +51,8 @@
 
 MainConfigurationWindow *MainConfigurationWindow::Instance = 0;
 ConfigFileDataManager *MainConfigurationWindow::InstanceDataManager = 0;
-QList<QPair<QString, ConfigurationUiHandler *> > MainConfigurationWindow::UiFiles;
+QList<QString> MainConfigurationWindow::UiFiles;
+QList<ConfigurationUiHandler *> MainConfigurationWindow::ConfigurationUiHandlers;
 
 const char *MainConfigurationWindow::SyntaxText = QT_TRANSLATE_NOOP
 (
@@ -81,15 +82,12 @@ MainConfigurationWindow * MainConfigurationWindow::instance()
 	return Instance;
 }
 
-void MainConfigurationWindow::registerUiFile(const QString &uiFile, ConfigurationUiHandler *uiHandler)
+void MainConfigurationWindow::registerUiFile(const QString &uiFile)
 {
-	UiFiles.append(qMakePair(uiFile, uiHandler));
+	UiFiles.append(uiFile);
 	if (Instance)
 	{
 		QList<ConfigWidget *> widgets = Instance->widget()->appendUiFile(uiFile);
-
-		if (uiHandler)
-			uiHandler->mainConfigurationWindowCreated(Instance);
 
 		// allow uiHandler handle this...
 		// TODO: make it pretty
@@ -99,23 +97,34 @@ void MainConfigurationWindow::registerUiFile(const QString &uiFile, Configuratio
 	}
 }
 
-void MainConfigurationWindow::unregisterUiFile(const QString &uiFile, ConfigurationUiHandler *uiHandler)
+void MainConfigurationWindow::unregisterUiFile(const QString &uiFile)
 {
-	UiFiles.removeAll(qMakePair(uiFile, uiHandler));
+	UiFiles.removeAll(uiFile);
 	if (Instance)
 		Instance->widget()->removeUiFile(uiFile);
+}
+
+void MainConfigurationWindow::registerUiHandler(ConfigurationUiHandler *uiHandler)
+{
+	ConfigurationUiHandlers.append(uiHandler);
+	if (Instance)
+		uiHandler->mainConfigurationWindowCreated(Instance);
+}
+
+void MainConfigurationWindow::unregisterUiHandler(ConfigurationUiHandler *uiHandler)
+{
+	ConfigurationUiHandlers.removeAll(uiHandler);
 }
 
 void MainConfigurationWindow::instanceCreated()
 {
 	ChatStylesManager::instance()->mainConfigurationWindowCreated(Instance);
-	foreach(const ConfigurationHandelUiPair &configurationUiHandlerPair, UiFiles)
-	{
-		ConfigurationUiHandler *uiHandler = configurationUiHandlerPair.second;
-		Instance->widget()->appendUiFile(configurationUiHandlerPair.first);
+	foreach (const QString &uiFile, UiFiles)
+		Instance->widget()->appendUiFile(uiFile);
+
+	foreach (ConfigurationUiHandler *uiHandler, ConfigurationUiHandlers)
 		if (uiHandler)
 			uiHandler->mainConfigurationWindowCreated(Instance);
-	}
 }
 
 MainConfigurationWindow::MainConfigurationWindow()

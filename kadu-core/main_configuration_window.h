@@ -45,14 +45,14 @@ class KADUAPI MainConfigurationWindow : public ConfigurationWindow
 {
 	Q_OBJECT
 
-	typedef QPair<QString, ConfigurationUiHandler *> ConfigurationHandelUiPair;
 	static MainConfigurationWindow *Instance;
 	static ConfigFileDataManager *InstanceDataManager;
 
 	static const char *SyntaxText;
 	static const char *SyntaxTextNotify;
 
-	static QList<ConfigurationHandelUiPair> UiFiles;
+	static QList<QString> UiFiles;
+	static QList<ConfigurationUiHandler *> ConfigurationUiHandlers;
 
 	static void instanceCreated();
 
@@ -101,11 +101,14 @@ public:
 		Obiekt uiHandle zostanie poinformowany o stworzeniu okna i b�dzie m�g� doda�
 		do niego w�asne interakcje.
 	 **/
-	static void registerUiFile(const QString &uiFile, ConfigurationUiHandler *uiHandler);
+	static void registerUiFile(const QString &uiFile);
 	/**
 		Wyrejestrowanie pliku *.ui i klasy obs�uguj�cej okno konfiguracyjne.
 	 **/
-	static void unregisterUiFile(const QString &uiFile, ConfigurationUiHandler *uiHandler);
+	static void unregisterUiFile(const QString &uiFile);
+
+	static void registerUiHandler(ConfigurationUiHandler *uiHandler);
+	static void unregisterUiHandler(ConfigurationUiHandler *uiHandler);
 
 	MainConfigurationWindow();
 	virtual ~MainConfigurationWindow();

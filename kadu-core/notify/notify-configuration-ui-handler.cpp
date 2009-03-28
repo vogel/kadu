@@ -93,7 +93,7 @@ void NotifyConfigurationUiHandler::removeConfigurationWidget(Notifier *notifier)
 
 void NotifyConfigurationUiHandler::mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow)
 {
-	connect(mainConfigurationWindow, SIGNAL(destroyed()), this, SLOT(mainConfigurationWindowDestroyed()));
+	connect(mainConfigurationWindow, SIGNAL(destroyed(QObject *)), this, SLOT(mainConfigurationWindowDestroyed()));
 
 	notifications = dynamic_cast<ConfigComboBox *>(mainConfigurationWindow->widget()->widgetById("notify/notifications"));
 	connect(notifications, SIGNAL(activated(int)), this, SLOT(eventSwitched(int)));

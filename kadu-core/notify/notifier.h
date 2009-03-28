@@ -61,12 +61,6 @@ public:
 	virtual void notify(Notification *notification) = 0;
 
 	/**
-		Kopiuje konfiguracje jednego zdarzenia do drugiego.
-		U�ywane przy przej�ciu z 0.5 na 0.6 - po 0.6 zostanie usuni�te.
-	 **/
-	virtual void copyConfiguration(const QString &fromEvent, const QString &toEvent) = 0;
-
-	/**
 		Zwraca widget, jaki zostanie dodany do okna konfiguracyjnego
 		na prawo od odpowiedniego CheckBoxa.
 		Mo�e zwr�ci� zero.

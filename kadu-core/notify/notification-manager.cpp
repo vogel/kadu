@@ -18,6 +18,7 @@
 #include "notify/contact-notify-data.h"
 #include "notify/notifier.h"
 #include "notify/notify-configuration-ui-handler.h"
+#include "notify/window-notifier.h"
 
 #include "action.h"
 #include "config_file.h"
@@ -53,7 +54,7 @@ NotificationManager::NotificationManager()
 
 	Instance = this; // TODO: 0.6.6, hack
 	UiHandler = new NotifyConfigurationUiHandler(this);
-	MainConfigurationWindow::registerUiFile(dataPath("kadu/modules/configuration/notify.ui"), UiHandler);
+	MainConfigurationWindow::registerUiHandler(UiHandler);
 
 	createDefaultConfiguration();
 
@@ -68,12 +69,16 @@ NotificationManager::NotificationManager()
 
 	ContactsListWidgetMenuManager::instance()->addManagementActionDescription(notifyAboutUserActionDescription);
 
+	new WindowNotifier(this);
+
 	kdebugf2();
 }
 
 NotificationManager::~NotificationManager()
 {
 	kdebugf();
+
+	MainConfigurationWindow::unregisterUiHandler(UiHandler);
 
 	ContactsListWidgetMenuManager::instance()->removeManagementActionDescription(notifyAboutUserActionDescription);
 	delete notifyAboutUserActionDescription;
@@ -85,7 +90,8 @@ NotificationManager::~NotificationManager()
 
 	triggerAllAccountsUnregistered();
 
-	while (!Notifiers.isEmpty()) {
+	while (!Notifiers.isEmpty())
+	{
 		kdebugm(KDEBUG_WARNING, "WARNING: not unregistered notifiers found! (%u)\n", Notifiers.size());
 		unregisterNotifier(Notifiers[0]);
 	}

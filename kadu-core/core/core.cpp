@@ -18,6 +18,7 @@
 #include "gui/windows/kadu-window.h"
 #include "misc/misc.h"
 #include "misc/token-dialog.h"
+#include "notify/notification-manager.h"
 #include "protocols/protocol.h"
 #include "protocols/protocol_factory.h"
 #include "protocols/services/chat-service.h"
@@ -45,6 +46,8 @@ Core * Core::instance()
 	{
 		Instance = new Core();
 		Instance->init();
+
+		NotificationManager::instance(); // TODO: 0.6.6
 	}
 
 	return Instance;
