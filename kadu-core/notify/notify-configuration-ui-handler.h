@@ -20,6 +20,14 @@ class NotifyConfigurationUiHandler : public ConfigurationUiHandler
 {
 	Q_OBJECT
 
+	struct NotifierGuiItem
+	{
+		NotifierConfigurationWidget *ConfigurationWidget;
+		NotifyGroupBox *ConfigurationGroupBox;
+	};
+
+	QMap<Notifier *, NotifierGuiItem> NotifierGui;
+
 	QListWidget *allUsers;
 	QListWidget *notifiedUsers;
 	ConfigComboBox *notifications;
@@ -27,15 +35,15 @@ class NotifyConfigurationUiHandler : public ConfigurationUiHandler
 
 	QString CurrentEvent;
 
-	void registerNotifier(const QString &name);
-	void unregisterNotifier(const QString &name);
-
-	void addConfigurationWidget(NotificationManager::NotifierData &notifier, const QString &name);
-	void removeConfigurationWidget(NotificationManager::NotifierData &notifier);
+	void addConfigurationWidget(Notifier *notifier);
+	void removeConfigurationWidget(Notifier *notifier);
 
 	friend class NotificationManager;
 
 private slots:
+	void notifierRegistered(Notifier *notifier);
+	void notifierUnregistered(Notifier *notifier);
+
 	void configurationWindowApplied();
 	void mainConfigurationWindowDestroyed();
 

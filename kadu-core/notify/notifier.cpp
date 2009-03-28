@@ -9,8 +9,8 @@
 
 #include "notifier.h"
 
-Notifier::Notifier(QObject *parent) :
-		QObject(parent)
+Notifier::Notifier(QString name, QObject *parent) :
+		QObject(parent), Name(name)
 {
 }
 

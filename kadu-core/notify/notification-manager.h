@@ -48,8 +48,6 @@ class KADUAPI NotificationManager : QObject, AccountsAwareObject
 	struct NotifierData
 	{
 		Notifier *notifier;
-		NotifierConfigurationWidget *configurationWidget;
-		NotifyGroupBox *configurationGroupBox;
 		QMap<QString, bool> events;
 	};
 
@@ -88,9 +86,17 @@ public:
 	void unregisterNotifyEvent(NotifyEvent *notifyEvent);
 
 	QStringList notifiersList() const;
+	QList<Notifier *> notifiers();
 	QList<NotifyEvent *> notifyEvents();
 
 	ConfigurationUiHandler * configurationUiHandler();
+
+signals:
+	void notiferRegistered(Notifier *notifier);
+	void notiferUnregistered(Notifier *notifier);
+
+	void notifyEventRegisterd(NotifyEvent *notifyEvent);
+	void notifyEventUnregistered(NotifyEvent *notifyEvent);
 
 };
 

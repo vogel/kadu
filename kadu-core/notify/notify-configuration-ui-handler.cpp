@@ -25,6 +25,7 @@
 #include "gui/widgets/configuration/notify-group-box.h"
 #include "gui/widgets/configuration/notifier-configuration-widget.h"
 #include "gui/windows/configuration-window.h"
+#include "notify/notifier.h"
 #include "notify/notify-event.h"
 
 #include "notify-configuration-ui-handler.h"
@@ -35,6 +36,10 @@
 NotifyConfigurationUiHandler::NotifyConfigurationUiHandler(QObject *parent) :
 		QObject(parent), notificationsGroupBox(0)
 {
+	connect(NotificationManager::instance(), SIGNAL(notiferRegistered(Notifier *)),
+			this, SLOT(notifierRegistered(Notifier *)));
+	connect(NotificationManager::instance(), SIGNAL(notiferUnregistered(Notifier *)),
+			this, SLOT(notifierUnregistered(Notifier *)));
 }
 
 NotifyConfigurationUiHandler::~NotifyConfigurationUiHandler()
@@ -42,17 +47,21 @@ NotifyConfigurationUiHandler::~NotifyConfigurationUiHandler()
 
 }
 
-void NotifyConfigurationUiHandler::addConfigurationWidget(NotificationManager::NotifierData &notifier, const QString &name)
+void NotifyConfigurationUiHandler::addConfigurationWidget(Notifier *notifier)
 {
-	NotifyGroupBox *configurationGroupBox = new NotifyGroupBox(name, qApp->translate("@default", name.toAscii().data()), notificationsGroupBox->widget());
+	NotifyGroupBox *configurationGroupBox = new NotifyGroupBox(notifier->name(),
+			qApp->translate("@default", notifier->name().toAscii().data()), notificationsGroupBox->widget());
 	connect(configurationGroupBox, SIGNAL(toggled(const QString &, bool)), this, SLOT(notifierToggled(const QString &, bool)));
 
-	notifier.configurationGroupBox = configurationGroupBox;
+	if (!NotifierGui.contains(notifier))
+		NotifierGui.insert(notifier, NotifierGuiItem());
 
-	NotifierConfigurationWidget *notifyConfigurationWidget = notifier.notifier->createConfigurationWidget(configurationGroupBox);
+	NotifierGui[notifier].ConfigurationGroupBox = configurationGroupBox;
+
+	NotifierConfigurationWidget *notifyConfigurationWidget = notifier->createConfigurationWidget(configurationGroupBox);
 	if (notifyConfigurationWidget)
 	{
-		notifier.configurationWidget = notifyConfigurationWidget;
+		NotifierGui[notifier].ConfigurationWidget = notifyConfigurationWidget;
 		notifyConfigurationWidget->loadNotifyConfigurations();
 	}
 //	else
@@ -65,28 +74,21 @@ void NotifyConfigurationUiHandler::addConfigurationWidget(NotificationManager::N
 	configurationGroupBox->show();
 }
 
-void NotifyConfigurationUiHandler::removeConfigurationWidget(NotificationManager::NotifierData &notifier)
+void NotifyConfigurationUiHandler::removeConfigurationWidget(Notifier *notifier)
 {
-	if (notifier.configurationWidget)
+	if (!NotifierGui.contains(notifier))
+		return;
+
+	if (NotifierGui[notifier].ConfigurationWidget)
 	{
-		delete notifier.configurationWidget;
-		notifier.configurationWidget = 0;
+		delete NotifierGui[notifier].ConfigurationWidget;
+		NotifierGui[notifier].ConfigurationWidget = 0;
 	}
 
-	delete notifier.configurationGroupBox;
-	notifier.configurationGroupBox = 0;
-}
+	delete NotifierGui[notifier].ConfigurationGroupBox;
+	NotifierGui[notifier].ConfigurationGroupBox = 0;
 
-void NotifyConfigurationUiHandler::registerNotifier(const QString &name)
-{
-	if (notificationsGroupBox)
-		addConfigurationWidget(NotificationManager::instance()->Notifiers[name], name);
-}
-
-void NotifyConfigurationUiHandler::unregisterNotifier(const QString &name)
-{
-	if (notificationsGroupBox)
-		removeConfigurationWidget(NotificationManager::instance()->Notifiers[name]);
+	NotifierGui.remove(notifier);
 }
 
 void NotifyConfigurationUiHandler::mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow)
@@ -160,10 +162,25 @@ void NotifyConfigurationUiHandler::mainConfigurationWindowCreated(MainConfigurat
 
 	notificationsGroupBox = mainConfigurationWindow->widget()->configGroupBox("Notifications", "General", "Notifications");
 
-	foreach(const QString &key, NotificationManager::instance()->Notifiers.keys())
-		addConfigurationWidget(NotificationManager::instance()->Notifiers[key], key);
+	foreach (Notifier *notifier, NotificationManager::instance()->notifiers())
+		addConfigurationWidget(notifier);
 
 	eventSwitched(0);
+}
+
+void NotifyConfigurationUiHandler::notifierRegistered(Notifier *notifier)
+{
+	if (notificationsGroupBox)
+		addConfigurationWidget(notifier);
+}
+
+void NotifyConfigurationUiHandler::notifierUnregistered(Notifier *notifier)
+{
+	if (notificationsGroupBox)
+		removeConfigurationWidget(notifier);
+
+	if (NotifierGui.contains(notifier))
+		NotifierGui.remove(notifier);
 }
 
 void NotifyConfigurationUiHandler::configurationWindowApplied()
@@ -203,9 +220,10 @@ void NotifyConfigurationUiHandler::configurationWindowApplied()
 	foreach (const QString &key, NotificationManager::instance()->Notifiers.keys())
 	{
 		NotificationManager::NotifierData notifierData = NotificationManager::instance()->Notifiers[key];
+		Notifier *notifier = NotificationManager::instance()->Notifiers[key].notifier;
 
-		if (notifierData.configurationWidget)
-			notifierData.configurationWidget->saveNotifyConfigurations();
+		if (NotifierGui.contains(notifier) && NotifierGui[notifier].ConfigurationWidget)
+			NotifierGui[notifier].ConfigurationWidget->saveNotifyConfigurations();
 
 		foreach (const QString &eventKey, notifierData.events.keys())
 			config_file.writeEntry("Notify", eventKey + '_' + key, notifierData.events[eventKey]);
@@ -215,11 +233,7 @@ void NotifyConfigurationUiHandler::configurationWindowApplied()
 void NotifyConfigurationUiHandler::mainConfigurationWindowDestroyed()
 {
 	notificationsGroupBox = 0;
-
-	QMap<QString, NotificationManager::NotifierData>::iterator notifierData;
-	for (notifierData = NotificationManager::instance()->Notifiers.begin();
-			notifierData != NotificationManager::instance()->Notifiers.end(); ++notifierData)
-		(*notifierData).configurationWidget = 0;
+	NotifierGui.clear();
 }
 
 void NotifyConfigurationUiHandler::moveToNotifyList()
@@ -257,18 +271,22 @@ void NotifyConfigurationUiHandler::eventSwitched(int index)
 	kdebugf();
 
 	CurrentEvent = notifications->currentItemValue();
-	foreach(const QString &key, NotificationManager::instance()->Notifiers.keys())
+	foreach (const QString &key, NotificationManager::instance()->Notifiers.keys())
 	{
 		NotificationManager::NotifierData notifierData = NotificationManager::instance()->Notifiers[key];
 
 		if (!notifierData.events.contains(CurrentEvent))
 			notifierData.events[CurrentEvent] = config_file.readBoolEntry("Notify", CurrentEvent + '_' + key);
 
-		if (notifierData.configurationWidget)
-			notifierData.configurationWidget->switchToEvent(CurrentEvent);
+		Notifier *notifier = NotificationManager::instance()->Notifiers[key].notifier;
+		if (!NotifierGui.contains(notifier))
+			continue;
 
-		if (notifierData.configurationGroupBox)
-			notifierData.configurationGroupBox->setChecked(notifierData.events[CurrentEvent]);
+		if (NotifierGui[notifier].ConfigurationWidget)
+			NotifierGui[notifier].ConfigurationWidget->switchToEvent(CurrentEvent);
+
+		if (NotifierGui[notifier].ConfigurationGroupBox)
+			NotifierGui[notifier].ConfigurationGroupBox->setChecked(notifierData.events[CurrentEvent]);
 	}
 }
 

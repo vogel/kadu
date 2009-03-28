@@ -41,9 +41,13 @@ class KADUAPI Notifier : public virtual QObject
 {
 	Q_OBJECT
 
+	QString Name;
+
 public:
-	explicit Notifier(QObject *parent = 0);
+	explicit Notifier(const QString name, QObject *parent = 0);
 	virtual ~Notifier();
+
+	QString name() { return Name; }
 
 	virtual CallbackCapacity callbackCapacity();
 

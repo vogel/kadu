@@ -70,6 +70,7 @@ NotificationManager::NotificationManager()
 {
 	kdebugf();
 
+	Instance = this; // TODO: 0.6.6, hack
 	UiHandler = new NotifyConfigurationUiHandler(this);
 
 	createDefaultConfiguration();
@@ -264,6 +265,7 @@ void NotificationManager::registerNotifyEvent(NotifyEvent *notifyEvent)
 	kdebugf();
 
 	NotifyEvents.append(notifyEvent);
+	emit notifyEventRegisterd(notifyEvent);
 
 	kdebugf2();
 }
@@ -273,6 +275,7 @@ void NotificationManager::unregisterNotifyEvent(NotifyEvent *notifyEvent)
 	kdebugf();
 
 	NotifyEvents.removeAll(notifyEvent);
+	emit notifyEventUnregistered(notifyEvent);
 
 	kdebugf2();
 }
@@ -288,29 +291,8 @@ void NotificationManager::registerNotifier(const QString &name, Notifier *notifi
 		unregisterNotifier(name);
 	}
 
-	// TODO: remove after 0.6 release
-	if (config_file.readBoolEntry("Notify", "StatusChanged_" + name, false))
-	{
-		QStringList addToMe;
-		addToMe << "toAvailable" << "toBusy" << "toInvisible" << "toNotAvailable";
-
-		foreach(const QString &i, addToMe)
-		{
-			if (!config_file.readBoolEntry("Notify", i + '_' + name))
-			{
-				notifier->copyConfiguration("StatusChanged", i);
-				config_file.writeEntry("Notify", i + '_' + name, true);
-			}
-		}
-
-		config_file.removeVariable("Notify", "StatusChanged_" + name);
-	}
-
 	Notifiers[name].notifier = notifier;
-	Notifiers[name].configurationWidget = 0;
-	Notifiers[name].configurationGroupBox = 0;
-
-	UiHandler->registerNotifier(name);
+	emit notiferRegistered(notifier);
 
 	kdebugf2();
 }
@@ -325,7 +307,7 @@ void NotificationManager::unregisterNotifier(const QString &name)
 		return;
 	}
 
-	UiHandler->unregisterNotifier(name);
+	emit notiferUnregistered(Notifiers[name].notifier);
 	Notifiers.remove(name);
 
 	kdebugf2();
@@ -334,6 +316,15 @@ void NotificationManager::unregisterNotifier(const QString &name)
 QStringList NotificationManager::notifiersList() const
 {
 	return QStringList(Notifiers.keys());
+}
+
+QList<Notifier *> NotificationManager::notifiers()
+{
+	QList<Notifier *> result;
+	foreach (NotifierData notifier, Notifiers.values())
+		result.append(notifier.notifier);
+
+	return result;
 }
 
 QList<NotifyEvent *> NotificationManager::notifyEvents()
