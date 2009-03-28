@@ -14,6 +14,7 @@
 #include "contacts/contact-account-data.h"
 #include "misc/misc.h"
 #include "notify/notify-event.h"
+#include "protocols/protocol.h"
 
 #include "status_changed_notification.h"
 

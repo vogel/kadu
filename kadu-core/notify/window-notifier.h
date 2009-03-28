@@ -7,18 +7,33 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "notifier.h"
+#ifndef WINDOW_NOTIFIER_H
+#define WINDOW_NOTIFIER_H
 
-Notifier::Notifier(QString name, QObject *parent) :
-		QObject(parent), Name(name)
-{
-}
+#include "notify/notifier.h"
 
-Notifier::~Notifier()
-{
-}
+/**
+ * @defgroup window_notify Window notify
+ * @{
+ */
 
-Notifier::CallbackCapacity Notifier::callbackCapacity()
+class WindowNotifier : public Notifier
 {
-	return CallbackNotSupported;
-}
+	Q_OBJECT
+
+	void createDefaultConfiguration();
+
+public:
+	explicit WindowNotifier(QObject *parent = 0);
+	virtual ~WindowNotifier();
+
+	virtual void notify(Notification *notification);
+
+	virtual CallbackCapacity callbackCapacity() { return CallbackSupported; }
+	virtual NotifierConfigurationWidget *createConfigurationWidget(QWidget *parent = 0) { return 0; };
+
+};
+
+/** @} */
+
+#endif // WINDOW_NOTIFIER_H

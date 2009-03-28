@@ -7,18 +7,24 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "notifier.h"
+#ifndef WINDOW_NOTIFIER_WINDOW_H
+#define WINDOW_NOTIFIER_WINDOW_H
 
-Notifier::Notifier(QString name, QObject *parent) :
-		QObject(parent), Name(name)
-{
-}
+#include <QtGui/QDialog>
 
-Notifier::~Notifier()
-{
-}
+class Notification;
 
-Notifier::CallbackCapacity Notifier::callbackCapacity()
+class WindowNotifierWindow : public QDialog
 {
-	return CallbackNotSupported;
-}
+	Notification *CurrentNotification;
+
+	void createGui();
+	void addButton(QWidget *parent, const QString &caption, const char *slot);
+
+public:
+	WindowNotifierWindow(Notification *notification, QWidget *parent = 0);
+	virtual ~WindowNotifierWindow();
+
+};
+
+#endif // WINDOW_NOTIFIER_WINDOW_H

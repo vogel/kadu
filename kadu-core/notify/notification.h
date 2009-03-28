@@ -67,7 +67,8 @@ class QTimer;
 
 	Notyfikacja, co do kt�rej pewna akcja zosta�a wykonana, wywo�uje sygna� closed().
  **/
-class KADUAPI Notification : public QObject {
+class KADUAPI Notification : public QObject
+{
 	Q_OBJECT
 
 public:

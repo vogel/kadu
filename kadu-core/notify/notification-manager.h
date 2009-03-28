@@ -15,20 +15,18 @@
 #include <time.h>
 
 #include "accounts/accounts_aware_object.h"
-#include "notification.h"
-#include "notifier.h"
-#include "protocols/protocol.h"
+#include "contacts/contact.h"
+#include "contacts/contact-list.h"
+#include "protocols/status.h"
 
 class ActionDescription;
 class KaduAction;
 
 class ConfigurationUiHandler;
-class MessageNotification;
+class Notification;
 class Notifier;
-class NotifierConfigurationWidget;
 class NotifyConfigurationUiHandler;
 class NotifyEvent;
-class NotifyGroupBox;
 
 /**
  * @defgroup notify Notify

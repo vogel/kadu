@@ -18,15 +18,6 @@ class Notification;
 class NotifierConfigurationWidget;
 
 /**
-	@enum CallbackCapacity
-	Okre�la, czy dany notifikator potrafi obs�u�y� zdarzenia wymagajace od u�ytkownika akcji innej ni� domy�lne zaakceptowanie/odrzucenie.
- **/
-enum CallbackCapacity {
-	CallbackSupported,
-	CallbackNotSupported
-};
-
-/**
 	@class Notifier
 	@brief Klasa abstrakcyjna opisuj�ca notifikator.
 
@@ -41,6 +32,17 @@ class KADUAPI Notifier : public virtual QObject
 {
 	Q_OBJECT
 
+public:
+	/**
+		@enum CallbackCapacity
+		Okre�la, czy dany notifikator potrafi obs�u�y� zdarzenia wymagajace od u�ytkownika akcji innej ni� domy�lne zaakceptowanie/odrzucenie.
+	 **/
+	enum CallbackCapacity {
+		CallbackSupported,
+		CallbackNotSupported
+	};
+
+private:
 	QString Name;
 
 public:

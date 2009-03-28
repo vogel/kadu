@@ -111,7 +111,8 @@ set (kadu_SRCS
 	gui/windows/open-chat-with/open-chat-with.cpp
 	gui/windows/open-chat-with/open-chat-with-contact-list-runner.cpp
 	gui/windows/open-chat-with/open-chat-with-runner-manager.cpp
-	
+	gui/windows/window-notifier-window.cpp
+
 	misc/choose-description.cpp
 	misc/coding-conversion.cpp
 	misc/date-time.cpp
@@ -131,6 +132,7 @@ set (kadu_SRCS
 	notify/notify-event.cpp
 	notify/protocol_notification.cpp
 	notify/status_changed_notification.cpp
+	notify/window-notifier.cpp
 
 	protocols/protocol.cpp
 	protocols/protocol-menu-manager.cpp
@@ -263,6 +265,7 @@ set (kadu_MOC_SRCS
 	gui/windows/open-chat-with/open-chat-with.h
 	gui/windows/open-chat-with/open-chat-with-contact-list-runner.h
 	gui/windows/open-chat-with/open-chat-with-runner-manager.h
+	gui/windows/window-notifier-window.h
 
 	misc/choose-description.h
 	misc/token-dialog.h
@@ -275,6 +278,7 @@ set (kadu_MOC_SRCS
 	notify/notify-configuration-ui-handler.h
 	notify/protocol_notification.h
 	notify/status_changed_notification.h
+	notify/window-notifier.h
 
 	protocols/protocol.h
 	protocols/protocols_manager.h

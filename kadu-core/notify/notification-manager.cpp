@@ -15,6 +15,9 @@
 #include "contacts/contact-account-data.h"
 #include "gui/widgets/contacts-list-widget-menu-manager.h"
 #include "gui/widgets/custom_input.h"
+#include "notify/contact-notify-data.h"
+#include "notify/notifier.h"
+#include "notify/notify-configuration-ui-handler.h"
 
 #include "action.h"
 #include "config_file.h"
@@ -24,31 +27,9 @@
 #include "message_box.h"
 #include "misc/misc.h"
 
-#include "contact-notify-data.h"
-#include "notify-configuration-ui-handler.h"
-
 #include "connection_error_notification.h"
 #include "new_message_notification.h"
 #include "status_changed_notification.h"
-
-extern "C" KADU_EXPORT int notify_init(bool firstLoad)
-{
-	kdebugf();
-
-	MainConfigurationWindow::registerUiFile(dataPath("kadu/modules/configuration/notify.ui"), NotificationManager::instance()->configurationUiHandler());
-
-	kdebugf2();
-	return 0;
-}
-
-extern "C" KADU_EXPORT void notify_close()
-{
-	kdebugf();
-
-	MainConfigurationWindow::unregisterUiFile(dataPath("kadu/modules/configuration/notify.ui"), NotificationManager::instance()->configurationUiHandler());
-
-	kdebugf2();
-}
 
 NotificationManager *NotificationManager::Instance = 0;
 
@@ -72,6 +53,7 @@ NotificationManager::NotificationManager()
 
 	Instance = this; // TODO: 0.6.6, hack
 	UiHandler = new NotifyConfigurationUiHandler(this);
+	MainConfigurationWindow::registerUiFile(dataPath("kadu/modules/configuration/notify.ui"), UiHandler);
 
 	createDefaultConfiguration();
 
@@ -95,6 +77,7 @@ NotificationManager::~NotificationManager()
 
 	ContactsListWidgetMenuManager::instance()->removeManagementActionDescription(notifyAboutUserActionDescription);
 	delete notifyAboutUserActionDescription;
+	notifyAboutUserActionDescription = 0;
 
 	StatusChangedNotification::unregisterEvents();
 	ConnectionErrorNotification::unregisterEvent();
@@ -102,12 +85,9 @@ NotificationManager::~NotificationManager()
 
 	triggerAllAccountsUnregistered();
 
-	if (!Notifiers.isEmpty())
-	{
+	while (!Notifiers.isEmpty()) {
 		kdebugm(KDEBUG_WARNING, "WARNING: not unregistered notifiers found! (%u)\n", Notifiers.size());
-
-		while (!Notifiers.isEmpty())
-			unregisterNotifier(Notifiers[0]);
+		unregisterNotifier(Notifiers[0]);
 	}
 
 	kdebugf2();
@@ -203,7 +183,8 @@ void NotificationManager::statusChanged(Account *account, Contact contact, Statu
 	if (!cnd || !cnd->notify())
 		notify_contact = false;
 
-	delete cnd;
+	if (cnd)
+		delete cnd;
 
 	if (!notify_contact && !config_file.readBoolEntry("Notify", "NotifyAboutAll"))
 	{
@@ -211,7 +192,7 @@ void NotificationManager::statusChanged(Account *account, Contact contact, Statu
 		return;
 	}
 
-	if (contact.id(account) == account->id())
+	if (contact.id(account) == account->id()) // myself
 		return;
 
 	ContactAccountData *data = contact.accountData(account);
@@ -340,14 +321,14 @@ void NotificationManager::notify(Notification *notification)
 			notifier->notify(notification);
 			foundNotifier = true;
 			foundNotifierWithCallbackSupported = foundNotifierWithCallbackSupported ||
-					(CallbackSupported == notifier->callbackCapacity());
+					(Notifier::CallbackSupported == notifier->callbackCapacity());
 		}
 	}
 
 	if (!foundNotifierWithCallbackSupported)
 		foreach (Notifier *notifier, Notifiers)
 		{
-			if (CallbackSupported == notifier->callbackCapacity())
+			if (Notifier::CallbackSupported == notifier->callbackCapacity())
 			{
 				notifier->notify(notification);
 				foundNotifier = true;
@@ -373,6 +354,11 @@ void NotificationManager::createDefaultConfiguration()
 	config_file.addVariable("Notify", "NewMessageOnlyIfInactive", true);
 	config_file.addVariable("Notify", "NotifyAboutAll", true);
 	config_file.addVariable("Notify", "NotifyIgnoreOnConnection", true);
+}
+
+ConfigurationUiHandler * NotificationManager::configurationUiHandler()
+{
+	return UiHandler;
 }
 
 void checkNotify(KaduAction *action)
@@ -411,9 +397,4 @@ void checkNotify(KaduAction *action)
 	action->setChecked(on);
 
 	kdebugf2();
-}
-
-ConfigurationUiHandler * NotificationManager::configurationUiHandler()
-{
-	return UiHandler;
 }

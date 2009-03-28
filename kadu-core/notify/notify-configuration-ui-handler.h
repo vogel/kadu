@@ -16,6 +16,9 @@
 
 class QListWidget;
 
+class NotifierConfigurationWidget;
+class NotifyGroupBox;
+
 class NotifyConfigurationUiHandler : public ConfigurationUiHandler
 {
 	Q_OBJECT
