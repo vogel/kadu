@@ -128,6 +128,7 @@ set (kadu_SRCS
 	notify/notification-manager.cpp
 	notify/notifier.cpp
 	notify/notify-configuration-ui-handler.cpp
+	notify/notify-event.cpp
 	notify/protocol_notification.cpp
 	notify/status_changed_notification.cpp
 

@@ -17,17 +17,15 @@
 #include "contacts/contact-account-data.h"
 #include "contacts/contact-list.h"
 #include "contacts/contact-manager.h"
-
 #include "contact-notify-data.h"
-
 #include "gui/widgets/chat_widget.h"
 #include "gui/widgets/configuration/configuration-widget.h"
 #include "gui/widgets/configuration/config-combo-box.h"
 #include "gui/widgets/configuration/config-group-box.h"
 #include "gui/widgets/configuration/notify-group-box.h"
 #include "gui/widgets/configuration/notifier-configuration-widget.h"
-
 #include "gui/windows/configuration-window.h"
+#include "notify/notify-event.h"
 
 #include "notify-configuration-ui-handler.h"
 
@@ -101,10 +99,10 @@ void NotifyConfigurationUiHandler::mainConfigurationWindowCreated(MainConfigurat
 	QStringList captions;
 	QStringList values;
 
-	foreach(const NotificationManager::NotifyEvent &notifyEvent, NotificationManager::instance()->NotifyEvents)
+	foreach (NotifyEvent *notifyEvent, NotificationManager::instance()->notifyEvents())
 	{
-		captions.append(qApp->translate("@default", notifyEvent.description));
-		values.append(notifyEvent.name);
+		captions.append(qApp->translate("@default", notifyEvent->description()));
+		values.append(notifyEvent->name());
 	}
 
 	notifications->setItems(values, captions);

@@ -13,9 +13,17 @@
 #include "notify/notification-manager.h"
 #include "protocol_notification.h"
 
+class NotifyEvent;
+
 class StatusChangedNotification : public AccountNotification
 {
 	Q_OBJECT
+
+	static NotifyEvent *StatusChangedToOnlineNotifyEvent;
+	static NotifyEvent *StatusChangedToBusyNotifyEvent;
+	static NotifyEvent *StatusChangedToInvisibleNotifyEvent;
+	static NotifyEvent *StatusChangedToOfflineNotifyEvent;
+
 public:
 
 	static void registerEvents();

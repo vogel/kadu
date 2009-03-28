@@ -8,12 +8,14 @@
  ***************************************************************************/
 
 #include "notify/notification-manager.h"
+#include "notify/notify-event.h"
 #include "debug.h"
 #include "icons_manager.h"
 #include "kadu_parser.h"
 
 #include "connection_error_notification.h"
 
+NotifyEvent *ConnectionErrorNotification::ConnectionErrorNotifyEvent = 0;
 QStringList ConnectionErrorNotification::ActiveErrors;
 
 static QString getErrorMessage(const QObject * const object)
@@ -36,15 +38,23 @@ static QString getErrorServer(const QObject * const object)
 
 void ConnectionErrorNotification::registerEvent()
 {
-	NotificationManager::instance()->registerEvent("ConnectionError", QT_TRANSLATE_NOOP("@default", "Connection error"), CallbackNotRequired);
+	if (ConnectionErrorNotifyEvent)
+		return;
+
+	ConnectionErrorNotifyEvent = new NotifyEvent("ConnectionError", NotifyEvent::CallbackNotRequired, QT_TRANSLATE_NOOP("@default", "Connection error"));
+	NotificationManager::instance()->registerNotifyEvent(ConnectionErrorNotifyEvent);
 	KaduParser::registerObjectTag("error", getErrorMessage);
 	KaduParser::registerObjectTag("errorServer", getErrorServer);
 }
 
 void ConnectionErrorNotification::unregisterEvent()
 {
+	KaduParser::registerObjectTag("errorServer", getErrorServer);
 	KaduParser::unregisterObjectTag("error", getErrorMessage);
-	NotificationManager::instance()->unregisterEvent("ConnectionError");
+
+	NotificationManager::instance()->unregisterNotifyEvent(ConnectionErrorNotifyEvent);
+	delete ConnectionErrorNotifyEvent;
+	ConnectionErrorNotifyEvent = 0;
 }
 
 bool ConnectionErrorNotification::activeError(const QString &errorMessage)

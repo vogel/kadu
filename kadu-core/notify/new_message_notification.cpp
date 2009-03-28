@@ -10,20 +10,38 @@
 #include <QtGui/QTextDocument>
 
 #include "notify/notification-manager.h"
+#include "notify/notify-event.h"
 #include "icons_manager.h"
 
 #include "new_message_notification.h"
 
+NotifyEvent *MessageNotification::NewChatNotifyEvent = 0;
+NotifyEvent *MessageNotification::NewMessageNotifyEvent = 0;
+
 void MessageNotification::registerEvents()
 {
-	NotificationManager::instance()->registerEvent("NewChat", QT_TRANSLATE_NOOP("@default", "New chat"), CallbackNotRequired);
-	NotificationManager::instance()->registerEvent("NewMessage", QT_TRANSLATE_NOOP("@default", "New message"), CallbackNotRequired);
+	if (NewChatNotifyEvent)
+		return;
+
+	NewChatNotifyEvent = new NotifyEvent("NewChat", NotifyEvent::CallbackNotRequired,
+			QT_TRANSLATE_NOOP("@default", "New chat"));
+	NewMessageNotifyEvent = new NotifyEvent("NewMessage", NotifyEvent::CallbackNotRequired,
+			QT_TRANSLATE_NOOP("@default", "New message"));
+
+	NotificationManager::instance()->registerNotifyEvent(NewChatNotifyEvent);
+	NotificationManager::instance()->registerNotifyEvent(NewMessageNotifyEvent);
 }
 
 void MessageNotification::unregisterEvents()
 {
-	NotificationManager::instance()->unregisterEvent("NewChat");
-	NotificationManager::instance()->unregisterEvent("NewMessage");
+	NotificationManager::instance()->unregisterNotifyEvent(NewChatNotifyEvent);
+	NotificationManager::instance()->unregisterNotifyEvent(NewMessageNotifyEvent);
+
+	delete NewChatNotifyEvent;
+	NewChatNotifyEvent = 0;
+
+	delete NewMessageNotifyEvent;
+	NewMessageNotifyEvent = 0;
 }
 
 MessageNotification::MessageNotification(MessageType messageType, const ContactList &contacts, const QString &message, Account *account)

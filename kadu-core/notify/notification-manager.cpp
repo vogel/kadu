@@ -259,27 +259,20 @@ void NotificationManager::connectionError(Account *account, const QString &serve
 	kdebugf2();
 }
 
-void NotificationManager::registerEvent(const QString &name, const char *description, CallbackRequirement callbackRequirement)
+void NotificationManager::registerNotifyEvent(NotifyEvent *notifyEvent)
 {
 	kdebugf();
 
-	NotifyEvent event;
-	event.name = name;
-	event.description = description;
-	event.callbackRequirement = callbackRequirement;
-
-	NotifyEvents.append(event);
+	NotifyEvents.append(notifyEvent);
 
 	kdebugf2();
 }
 
-void NotificationManager::unregisterEvent(const QString &name)
+void NotificationManager::unregisterNotifyEvent(NotifyEvent *notifyEvent)
 {
 	kdebugf();
 
-	NotifyEvent remove;
-	remove.name = name;
-	NotifyEvents.removeAll(remove);
+	NotifyEvents.removeAll(notifyEvent);
 
 	kdebugf2();
 }
@@ -343,7 +336,7 @@ QStringList NotificationManager::notifiersList() const
 	return QStringList(Notifiers.keys());
 }
 
-const QList<NotificationManager::NotifyEvent> &NotificationManager::notifyEvents()
+QList<NotifyEvent *> NotificationManager::notifyEvents()
 {
 	return NotifyEvents;
 }

@@ -18,15 +18,6 @@ class Notification;
 class NotifierConfigurationWidget;
 
 /**
-	@enum CallbackRequirement
-	Okre�la, czy dane zdarzenie wymaga podj�cia od u�ytkownika akcji innej ni� domy�lne zaakceptowanie/odrzucenie.
- **/
-enum CallbackRequirement {
-	CallbackRequired,
-	CallbackNotRequired
-};
-
-/**
 	@enum CallbackCapacity
 	Okre�la, czy dany notifikator potrafi obs�u�y� zdarzenia wymagajace od u�ytkownika akcji innej ni� domy�lne zaakceptowanie/odrzucenie.
  **/

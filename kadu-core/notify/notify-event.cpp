@@ -7,32 +7,14 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef NEW_MESSAGE_NOTIFICATION_H
-#define NEW_MESSAGE_NOTIFICATION_H
+#include "notify-event.h"
 
-#include "protocol_notification.h"
-
-class NotifyEvent;
-
-class MessageNotification : public AccountNotification
+NotifyEvent::NotifyEvent(const QString &name, NotifyEvent::CallbackRequirement isCallbackRequired, const char *description) :
+		Name(name), IsCallbackRequired(isCallbackRequired), Description(description)
 {
-	Q_OBJECT
+}
 
-	static NotifyEvent *NewChatNotifyEvent;
-	static NotifyEvent *NewMessageNotifyEvent;
-
-public:
-	enum MessageType {
-		NewChat,
-		NewMessage
-	};
-
-	static void registerEvents();
-	static void unregisterEvents();
-
-	MessageNotification(MessageType messageType, const ContactList &contacts, const QString &message, Account *account);
-	virtual ~MessageNotification() {};
-
-};
-
-#endif // NEW_MESSAGE_NOTIFICATION_H
+bool NotifyEvent::operator == (const NotifyEvent &compare)
+{
+	return Name == compare.Name;
+}

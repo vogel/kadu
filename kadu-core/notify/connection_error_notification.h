@@ -12,10 +12,13 @@
 // TODO account_notification
 #include "protocol_notification.h"
 
+class NotifyEvent;
+
 class ConnectionErrorNotification : public AccountNotification
 {
 	Q_OBJECT
 
+	static NotifyEvent *ConnectionErrorNotifyEvent;
 	static QStringList ActiveErrors;
 	QString ErrorServer;
 	QString ErrorMessage;

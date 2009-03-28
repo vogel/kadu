@@ -27,6 +27,7 @@ class MessageNotification;
 class Notifier;
 class NotifierConfigurationWidget;
 class NotifyConfigurationUiHandler;
+class NotifyEvent;
 class NotifyGroupBox;
 
 /**
@@ -54,16 +55,7 @@ class KADUAPI NotificationManager : QObject, AccountsAwareObject
 
 	QMap<QString, NotifierData> Notifiers; //nazwa powiadamiacza("Hints") -> obiekt powiadomienia
 
-	struct NotifyEvent
-	{
-		QString name;
-		CallbackRequirement callbackRequirement;
-		const char *description;
-		NotifyEvent() : name(), callbackRequirement(CallbackNotRequired), description(0){}
-
-		bool operator == (const NotifyEvent &compare) { return name == compare.name; }
-	};
-	QList<NotifyEvent> NotifyEvents;
+	QList<NotifyEvent *> NotifyEvents;
 
 	NotificationManager();
 	virtual ~NotificationManager();
@@ -92,11 +84,11 @@ public:
 	void registerNotifier(const QString &name, Notifier *notifier);
 	void unregisterNotifier(const QString &name);
 
-	void registerEvent(const QString &name, const char *description, CallbackRequirement callbackRequirement);
-	void unregisterEvent(const QString &name);
+	void registerNotifyEvent(NotifyEvent *notifyEvent);
+	void unregisterNotifyEvent(NotifyEvent *notifyEvent);
 
 	QStringList notifiersList() const;
-	const QList<NotificationManager::NotifyEvent> &notifyEvents();
+	QList<NotifyEvent *> notifyEvents();
 
 	ConfigurationUiHandler * configurationUiHandler();
 
