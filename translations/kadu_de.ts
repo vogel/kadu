@@ -1483,6 +1483,9 @@ Zu viel Versuche mit falschem Passwort</translation>
         <source>&amp;Exit Kadu</source>
         <translation>Kadu &amp;verlassen</translation>
     </message>
+	<source>Show Pending Messages</source>
+		<translation type="unfinished"></translation>
+	</message>
     <message>
         <source>Notify about user</source>
         <translation>Benachrichtige über Kontakt</translation>
