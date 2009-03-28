@@ -35,7 +35,7 @@ class NotifyGroupBox;
  * @{
  */
 
-class KADUAPI NotificationManager : QObject, AccountsAwareObject
+class KADUAPI NotificationManager : public QObject, AccountsAwareObject
 {
 	Q_OBJECT
 	Q_DISABLE_COPY(NotificationManager)
@@ -45,14 +45,7 @@ class KADUAPI NotificationManager : QObject, AccountsAwareObject
 	ActionDescription *notifyAboutUserActionDescription;
 	NotifyConfigurationUiHandler *UiHandler;
 
-	struct NotifierData
-	{
-		Notifier *notifier;
-		QMap<QString, bool> events;
-	};
-
-	QMap<QString, NotifierData> Notifiers; //nazwa powiadamiacza("Hints") -> obiekt powiadomienia
-
+	QList<Notifier *> Notifiers;
 	QList<NotifyEvent *> NotifyEvents;
 
 	NotificationManager();
@@ -68,8 +61,6 @@ private slots:
 
 	void notifyAboutUserActionActivated(QAction *sender, bool toggled);
 
-	friend class NotifyConfigurationUiHandler;
-
 protected:
 	virtual void accountRegistered(Account *account);
 	virtual void accountUnregistered(Account *account);
@@ -79,13 +70,12 @@ public:
 
 	void notify(Notification *notification);
 
-	void registerNotifier(const QString &name, Notifier *notifier);
-	void unregisterNotifier(const QString &name);
+	void registerNotifier(Notifier *notifier);
+	void unregisterNotifier(Notifier *notifier);
 
 	void registerNotifyEvent(NotifyEvent *notifyEvent);
 	void unregisterNotifyEvent(NotifyEvent *notifyEvent);
 
-	QStringList notifiersList() const;
 	QList<Notifier *> notifiers();
 	QList<NotifyEvent *> notifyEvents();
 
@@ -100,7 +90,7 @@ signals:
 
 };
 
-void checkNotify(KaduAction*);
+void checkNotify(KaduAction *);
 
 /** @} */
 

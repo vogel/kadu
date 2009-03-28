@@ -24,6 +24,7 @@ class NotifyConfigurationUiHandler : public ConfigurationUiHandler
 	{
 		NotifierConfigurationWidget *ConfigurationWidget;
 		NotifyGroupBox *ConfigurationGroupBox;
+		QMap<QString, bool> Events;
 	};
 
 	QMap<Notifier *, NotifierGuiItem> NotifierGui;
@@ -38,8 +39,6 @@ class NotifyConfigurationUiHandler : public ConfigurationUiHandler
 	void addConfigurationWidget(Notifier *notifier);
 	void removeConfigurationWidget(Notifier *notifier);
 
-	friend class NotificationManager;
-
 private slots:
 	void notifierRegistered(Notifier *notifier);
 	void notifierUnregistered(Notifier *notifier);
@@ -51,7 +50,7 @@ private slots:
 	void moveToAllList();
 
 	void eventSwitched(int index);
-	void notifierToggled(const QString &notifier, bool toggled);
+	void notifierToggled(Notifier *notifier, bool toggled);
 
 protected:
 	virtual void mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow);

@@ -12,23 +12,25 @@
 
 #include <QtGui/QGroupBox>
 
+#include "notify/notifier.h"
+
 class NotifyGroupBox : public QGroupBox
 {
 	Q_OBJECT
 
-	QString Notificator;
+	Notifier *Notificator;
 
 private slots:
 	void toggledSlot(bool toggled);
 
 public:
-	NotifyGroupBox(const QString &notificator, const QString &caption, QWidget *parent = 0);
+	NotifyGroupBox(Notifier *Notificator, const QString &caption, QWidget *parent = 0);
 	virtual ~NotifyGroupBox() {}
 
-	QString notificator() { return Notificator; }
+	Notifier * notificator() { return Notificator; }
 
 signals:
-	void toggled(const QString &notificator, bool toggled);
+	void toggled(Notifier *notificator, bool toggled);
 
 };
 

@@ -105,9 +105,9 @@ NotificationManager::~NotificationManager()
 	if (!Notifiers.isEmpty())
 	{
 		kdebugm(KDEBUG_WARNING, "WARNING: not unregistered notifiers found! (%u)\n", Notifiers.size());
-		QStringList notifierNames = Notifiers.keys();
-		foreach(const QString &name, notifierNames)
-			unregisterNotifier(name);
+
+		while (!Notifiers.isEmpty())
+			unregisterNotifier(Notifiers[0]);
 	}
 
 	kdebugf2();
@@ -280,51 +280,42 @@ void NotificationManager::unregisterNotifyEvent(NotifyEvent *notifyEvent)
 	kdebugf2();
 }
 
-void NotificationManager::registerNotifier(const QString &name, Notifier *notifier)
+void NotificationManager::registerNotifier(Notifier *notifier)
 {
 	kdebugf();
-	if (Notifiers.contains(name))
+	if (Notifiers.contains(notifier))
 	{
 		kdebugm(KDEBUG_WARNING, "WARNING: '%s' already exists in notifiers! "
-		"strange... unregistering old Notifier\n", qPrintable(name));
+		"strange... unregistering old Notifier\n", qPrintable(notifier->name()));
 
-		unregisterNotifier(name);
+		unregisterNotifier(notifier);
 	}
 
-	Notifiers[name].notifier = notifier;
+	Notifiers.append(notifier);
 	emit notiferRegistered(notifier);
 
 	kdebugf2();
 }
 
-void NotificationManager::unregisterNotifier(const QString &name)
+void NotificationManager::unregisterNotifier(Notifier *notifier)
 {
 	kdebugf();
 
-	if (!Notifiers.contains(name))
+	if (!Notifiers.contains(notifier))
 	{
-		kdebugm(KDEBUG_WARNING, "WARNING: '%s' not registered!\n", qPrintable(name));
+		kdebugm(KDEBUG_WARNING, "WARNING: '%s' not registered!\n", qPrintable(notifier->name()));
 		return;
 	}
 
-	emit notiferUnregistered(Notifiers[name].notifier);
-	Notifiers.remove(name);
+	emit notiferUnregistered(notifier);
+	Notifiers.removeAll(notifier);
 
 	kdebugf2();
 }
 
-QStringList NotificationManager::notifiersList() const
-{
-	return QStringList(Notifiers.keys());
-}
-
 QList<Notifier *> NotificationManager::notifiers()
 {
-	QList<Notifier *> result;
-	foreach (NotifierData notifier, Notifiers.values())
-		result.append(notifier.notifier);
-
-	return result;
+	return Notifiers;
 }
 
 QList<NotifyEvent *> NotificationManager::notifyEvents()
@@ -342,26 +333,23 @@ void NotificationManager::notify(Notification *notification)
 
 	notification->acquire();
 
-	foreach(const QString &key, Notifiers.keys())
+	foreach (Notifier *notifier, Notifiers)
 	{
-		NotifierData notifier = Notifiers[key];
-
-		if (config_file.readBoolEntry("Notify", notifyType + '_' + key))
+		if (config_file.readBoolEntry("Notify", notifyType + '_' + notifier->name()))
 		{
-			notifier.notifier->notify(notification);
+			notifier->notify(notification);
 			foundNotifier = true;
-			foundNotifierWithCallbackSupported = foundNotifierWithCallbackSupported || (notifier.notifier->callbackCapacity() == CallbackSupported);
+			foundNotifierWithCallbackSupported = foundNotifierWithCallbackSupported ||
+					(CallbackSupported == notifier->callbackCapacity());
 		}
 	}
 
 	if (!foundNotifierWithCallbackSupported)
-		foreach(const QString &key, Notifiers.keys())
+		foreach (Notifier *notifier, Notifiers)
 		{
-			NotifierData notifier = Notifiers[key];
-
-			if (notifier.notifier->callbackCapacity() == CallbackSupported)
+			if (CallbackSupported == notifier->callbackCapacity())
 			{
-				notifier.notifier->notify(notification);
+				notifier->notify(notification);
 				foundNotifier = true;
 				foundNotifierWithCallbackSupported = true;
 				break;

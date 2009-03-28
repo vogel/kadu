@@ -49,9 +49,9 @@ NotifyConfigurationUiHandler::~NotifyConfigurationUiHandler()
 
 void NotifyConfigurationUiHandler::addConfigurationWidget(Notifier *notifier)
 {
-	NotifyGroupBox *configurationGroupBox = new NotifyGroupBox(notifier->name(),
+	NotifyGroupBox *configurationGroupBox = new NotifyGroupBox(notifier,
 			qApp->translate("@default", notifier->name().toAscii().data()), notificationsGroupBox->widget());
-	connect(configurationGroupBox, SIGNAL(toggled(const QString &, bool)), this, SLOT(notifierToggled(const QString &, bool)));
+	connect(configurationGroupBox, SIGNAL(toggled(Notifier *, bool)), this, SLOT(notifierToggled(Notifier *, bool)));
 
 	if (!NotifierGui.contains(notifier))
 		NotifierGui.insert(notifier, NotifierGuiItem());
@@ -217,16 +217,17 @@ void NotifyConfigurationUiHandler::configurationWindowApplied()
 		delete cnd;
 	}
 
-	foreach (const QString &key, NotificationManager::instance()->Notifiers.keys())
+	foreach (Notifier *notifier, NotificationManager::instance()->notifiers())
 	{
-		NotificationManager::NotifierData notifierData = NotificationManager::instance()->Notifiers[key];
-		Notifier *notifier = NotificationManager::instance()->Notifiers[key].notifier;
+		if (!NotifierGui.contains(notifier))
+			continue;
 
-		if (NotifierGui.contains(notifier) && NotifierGui[notifier].ConfigurationWidget)
-			NotifierGui[notifier].ConfigurationWidget->saveNotifyConfigurations();
+		NotifierGuiItem &gui = NotifierGui[notifier];
+		if (gui.ConfigurationWidget)
+			gui.ConfigurationWidget->saveNotifyConfigurations();
 
-		foreach (const QString &eventKey, notifierData.events.keys())
-			config_file.writeEntry("Notify", eventKey + '_' + key, notifierData.events[eventKey]);
+		foreach (const QString &eventKey, gui.Events.keys())
+			config_file.writeEntry("Notify", eventKey + '_' + notifier->name(), gui.Events[eventKey]);
 	}
 }
 
@@ -271,28 +272,29 @@ void NotifyConfigurationUiHandler::eventSwitched(int index)
 	kdebugf();
 
 	CurrentEvent = notifications->currentItemValue();
-	foreach (const QString &key, NotificationManager::instance()->Notifiers.keys())
+	foreach (Notifier *notifier, NotificationManager::instance()->notifiers())
 	{
-		NotificationManager::NotifierData notifierData = NotificationManager::instance()->Notifiers[key];
-
-		if (!notifierData.events.contains(CurrentEvent))
-			notifierData.events[CurrentEvent] = config_file.readBoolEntry("Notify", CurrentEvent + '_' + key);
-
-		Notifier *notifier = NotificationManager::instance()->Notifiers[key].notifier;
 		if (!NotifierGui.contains(notifier))
-			continue;
+			NotifierGui.insert(notifier, NotifierGuiItem());
 
-		if (NotifierGui[notifier].ConfigurationWidget)
-			NotifierGui[notifier].ConfigurationWidget->switchToEvent(CurrentEvent);
+		NotifierGuiItem &gui = NotifierGui[notifier];
 
-		if (NotifierGui[notifier].ConfigurationGroupBox)
-			NotifierGui[notifier].ConfigurationGroupBox->setChecked(notifierData.events[CurrentEvent]);
+		if (!gui.Events.contains(CurrentEvent))
+			gui.Events[CurrentEvent] = config_file.readBoolEntry("Notify", CurrentEvent + '_' + notifier->name());
+
+		if (gui.ConfigurationWidget)
+			gui.ConfigurationWidget->switchToEvent(CurrentEvent);
+
+		if (gui.ConfigurationGroupBox)
+			gui.ConfigurationGroupBox->setChecked(gui.Events[CurrentEvent]);
 	}
 }
 
-void NotifyConfigurationUiHandler::notifierToggled(const QString &notifier, bool toggled)
+void NotifyConfigurationUiHandler::notifierToggled(Notifier *notifier, bool toggled)
 {
 	kdebugf();
 
-	NotificationManager::instance()->Notifiers[notifier].events[CurrentEvent] = toggled;
+	if (!NotifierGui.contains(notifier))
+		NotifierGui.insert(notifier, NotifierGuiItem());
+	NotifierGui[notifier].Events[CurrentEvent] = toggled;
 }

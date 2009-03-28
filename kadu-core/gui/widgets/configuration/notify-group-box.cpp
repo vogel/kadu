@@ -11,7 +11,7 @@
 
 #include "notify-group-box.h"
 
-NotifyGroupBox::NotifyGroupBox(const QString &notificator, const QString &caption, QWidget *parent) :
+NotifyGroupBox::NotifyGroupBox(Notifier *notificator, const QString &caption, QWidget *parent) :
 		QGroupBox(caption, parent), Notificator(notificator)
 {
 	setCheckable(true);
