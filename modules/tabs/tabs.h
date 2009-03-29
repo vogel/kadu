@@ -12,7 +12,7 @@
 
 #include "accounts/accounts_aware_object.h"
 
-#include "chat/chat_manager.h"
+#include "chat/chat_manager-old.h"
 
 #include "configuration_aware_object.h"
 #include "main_configuration_window.h"

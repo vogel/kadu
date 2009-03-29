@@ -26,7 +26,7 @@
 
 #include "action.h"
 #include "chat_widget.h"
-#include "chat_manager.h"
+#include "chat_manager-old.h"
 #include "config_file.h"
 #include "debug.h"
 #include "../modules/gadu_protocol/gadu.h"

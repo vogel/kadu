@@ -12,7 +12,7 @@
 #include "accounts/account.h"
 #include "accounts/account_manager.h"
 
-#include "chat/chat_manager.h"
+#include "chat/chat_manager-old.h"
 
 #include "contacts/contact-manager.h"
 

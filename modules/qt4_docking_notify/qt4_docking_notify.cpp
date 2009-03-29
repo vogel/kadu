@@ -15,7 +15,7 @@
 #include "../notify/notify.h"
 #include "../notify/notification.h"
 
-#include "chat_manager.h"
+#include "chat_manager-old.h"
 #include "config_file.h"
 #include "debug.h"
 #include "kadu_parser.h"

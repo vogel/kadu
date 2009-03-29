@@ -44,7 +44,7 @@ Nowa funkcjonalnosc - Dorregaray
 #include "misc/misc.h"
 #include "search.h"
 #include "kadu.h"
-#include "chat_manager.h"
+#include "chat_manager-old.h"
 #include "usergroup.h"
 #include "debug.h"
 

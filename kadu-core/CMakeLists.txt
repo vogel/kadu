@@ -6,7 +6,12 @@ set (kadu_SRCS
 
 	accounts/model/accounts-model.cpp
 
-	chat/chat_manager.cpp
+	chat/chat.cpp
+	chat/chat-manager.cpp	
+	chat/chat_manager-old.cpp
+	chat/conference-chat.cpp
+	chat/simple-chat.cpp
+
 	chat/chat_message.cpp
 	chat/chat_styles_manager.cpp
 
@@ -15,9 +20,6 @@ set (kadu_SRCS
 
 	chat/style-engines/chat_engine_adium.cpp
 	chat/style-engines/chat_engine_kadu.cpp
-
-	conference/conference.cpp
-	conference/conference-manager.cpp
 
 	contacts/contact.cpp
 	contacts/contact-account-data.cpp
@@ -190,12 +192,14 @@ set (kadu_MOC_SRCS
 
 	accounts/model/accounts-model.h
 
-	chat/chat_manager.h
+	chat/chat.h
+	chat/chat-manager.h
+	chat/chat_manager-old.h
+	chat/conference-chat.h
+	chat/simple-chat.h
+
 	chat/chat_styles_manager.h
 	chat/style-engines/chat_engine_kadu.h
-
-	conference/conference.h
-	conference/conference-manager.h
 
 	contacts/contact.h
 	contacts/contact-account-data.h

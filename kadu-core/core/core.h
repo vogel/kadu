@@ -13,6 +13,7 @@
 #include <QtCore/QObject>
 
 #include "accounts/accounts_aware_object.h"
+#include "chat/chat.h"
 #include "contacts/contact.h"
 #include "contacts/contact-list.h"
 #include "misc/token-reader.h"
@@ -88,7 +89,7 @@ signals:
 	void connected();
 	void disconnected();
 
-	void messageReceived(Account *account, Contact sender, ContactList receipients, const QString &message, time_t time);
+	void messageReceived(Chat *chat, Contact sender, const QString &message);
 
 	// TODO: remove
 	void settingMainIconBlocked(bool &blocked);

@@ -27,7 +27,7 @@
 #include "action.h"
 #include "toolbar.h"
 #include "config_file.h"
-#include "chat_manager.h"
+#include "chat_manager-old.h"
 #include "debug.h"
 #include "emoticons.h"
 #include "message_box.h"

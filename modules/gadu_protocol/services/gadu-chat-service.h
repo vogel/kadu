@@ -12,6 +12,7 @@
 
 #include <libgadu.h>
 
+#include "chat/chat.h"
 #include "protocols/services/chat-service.h"
 
 class GaduProtocol;
@@ -32,7 +33,7 @@ public:
 	GaduChatService(GaduProtocol *protocol);
 
 public slots:
-	virtual bool sendMessage(ContactList users, Message &message);
+	virtual bool sendMessage(Chat *chat, Message &message);
 
 signals:
 	/**
@@ -46,7 +47,7 @@ signals:
 		Mo�na te� przerwa� dalsz� obr�bk� wiadomo�ci ustawiaj�c
 		stop na true.
 	**/
-	void rawGaduReceivedMessageFilter(Account *account, ContactList senders, QString &msg, QByteArray &formats, bool &ignore);
+	void rawGaduReceivedMessageFilter(Chat *chat, QString &msg, QByteArray &formats, bool &ignore);
 
 };
 

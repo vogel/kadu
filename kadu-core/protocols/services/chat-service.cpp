@@ -11,25 +11,9 @@
 
 #include "chat-service.h"
 
-bool ChatService::sendMessage(Contact user, const QString &messageContent)
-{
-	ContactList users;
-	users.append(user);
-	QTextDocument document(messageContent);
-	Message message = Message::parse(&document);
-	return sendMessage(users, message);
-}
-
-bool ChatService::sendMessage(ContactList users, const QString &messageContent)
+bool ChatService::sendMessage(Chat *chat, const QString &messageContent)
 {
 	QTextDocument document(messageContent);
 	Message message = Message::parse(&document);
-	return sendMessage(users, message);
-}
-
-bool ChatService::sendMessage(Contact user, Message &message)
-{
-	ContactList users;
-	users.append(user);
-	return sendMessage(users, message);
+	return sendMessage(chat, message);
 }

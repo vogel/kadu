@@ -21,7 +21,7 @@
 #include "icons_manager.h"
 #include "message_box.h"
 #include "userlist.h"
-#include "chat_manager.h"
+#include "chat_manager-old.h"
 #include "kadu_parser.h"
 
 #include "growl_notify.h"

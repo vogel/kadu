@@ -15,7 +15,8 @@
 #include "accounts/account.h"
 #include "accounts/account_manager.h"
 
-#include "chat/chat_manager.h"
+#include "chat/chat-manager.h"
+#include "chat/chat_manager-old.h"
 #include "chat/chat_message.h"
 #include "contacts/contact-account-data.h"
 #include "contacts/model/contact-list-model.h"
@@ -132,6 +133,7 @@ ChatWidget::ChatWidget(Account *initialAccount, const ContactList &contacts, QWi
 	triggerAllAccountsRegistered();
 
 	connect(chat_manager->colorSelectorActionDescription, SIGNAL(actionCreated(KaduAction *)), this, SLOT(colorSelectorActionCreated(KaduAction *)));
+	CurrentChat = currentProtocol()->findChat(Contacts);
 
 	kdebugf2();
 }
@@ -674,7 +676,7 @@ void ChatWidget::sendMessage()
 
 	ChatService *chatService = currentProtocol()->chatService();
 
-	if (!chatService || !chatService->sendMessage(Contacts, myLastMessage))
+	if (!chatService || !chatService->sendMessage(CurrentChat, myLastMessage))
 	{
 		cancelMessage();
 		return;

@@ -25,7 +25,7 @@
 
 #include "../modules/gadu_protocol/gadu-protocol.h"
 
-#include "chat/chat_manager.h"
+#include "chat/chat_manager-old.h"
 #include "config_file.h"
 #include "debug.h"
 #include "emoticons.h"
@@ -76,7 +76,7 @@ Core::~Core()
 	StatusChangerManager::closeModule();
 	ModulesManager::closeModule();
 	Updates::closeModule();
-	ChatManager::closeModule();
+	ChatManagerOld::closeModule();
 	SearchDialog::closeModule();
 	EmoticonsManager::closeModule();
 	IconsManager::closeModule();
@@ -273,7 +273,7 @@ void Core::init()
 
 	Updates::initModule();
 	GaduProtocol::initModule();
-	ChatManager::initModule();
+	ChatManagerOld::initModule();
 	SearchDialog::initModule();
 
 #ifdef Q_OS_MACX
@@ -435,8 +435,8 @@ void Core::accountRegistered(Account *account)
 
 	ChatService *chatService = protocol->chatService();
 	if (chatService)
-		connect(chatService, SIGNAL(messageReceived(Account *, Contact, ContactList, const QString &, time_t)),
-			this, SIGNAL(messageReceived(Account *, Contact, ContactList, const QString &, time_t)));
+		connect(chatService, SIGNAL(messageReceived(Chat *, Contact , const QString &)),
+			this, SIGNAL(messageReceived(Chat *, Contact , const QString &)));
 
 	connect(protocol, SIGNAL(connecting(Account *)), this, SIGNAL(connecting()));
 	connect(protocol, SIGNAL(connected(Account *)), this, SIGNAL(connected()));
@@ -455,8 +455,8 @@ void Core::accountUnregistered(Account *account)
 
 	ChatService *chatService = protocol->chatService();
 	if (chatService)
-		disconnect(chatService, SIGNAL(messageReceived(Account *, Contact, ContactList, const QString &, time_t)),
-			this, SIGNAL(messageReceived(Account *, Contact, ContactList, const QString &, time_t)));
+		disconnect(chatService, SIGNAL(messageReceived(Chat *, Contact , const QString &)),
+			this, SIGNAL(messageReceived(Chat *, Contact , const QString &)));
 
 	disconnect(protocol, SIGNAL(connecting(Account *)), this, SIGNAL(connecting()));
 	disconnect(protocol, SIGNAL(connected(Account *)), this, SIGNAL(connected()));

@@ -14,6 +14,7 @@
 
 #include "contacts/contact-list.h"
 
+#include "chat/chat.h"
 #include "chat/message/message.h"
 
 class ChatService : public QObject
@@ -33,18 +34,14 @@ public:
 		: QObject(parent) {}
 
 public slots:
-	virtual bool sendMessage(Contact user, const QString &messageContent);
-	virtual bool sendMessage(ContactList users, const QString &messageContent);
-	virtual bool sendMessage(Contact user, Message &message);
-	virtual bool sendMessage(ContactList users, Message &message) = 0;
+	virtual bool sendMessage(Chat *chat, const QString &messageContent);
+	virtual bool sendMessage(Chat *chat, Message &message) = 0;
 
 signals:
-	void sendMessageFiltering(const ContactList users, QByteArray &msg, bool &stop);
+	void sendMessageFiltering(Chat *chat, QByteArray &msg, bool &stop);
 	void messageStatusChanged(int messsageId, ChatService::MessageStatus status);
-	void receivedMessageFilter(Account *account, Contact sender, ContactList receipients,
-			const QString &message, time_t time, bool &ignore);
-	void messageReceived(Account *account, Contact sender,
-			ContactList receipients, const QString &message, time_t time);
+	void receivedMessageFilter(Chat *chat, Contact sender, const QString &message, time_t time, bool &ignore);
+	void messageReceived(Chat *chat, Contact sender, const QString &message);
 
 };
 

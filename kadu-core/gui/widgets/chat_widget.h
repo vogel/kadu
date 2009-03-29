@@ -17,6 +17,7 @@
 
 #include "accounts/accounts_aware_object.h"
 
+#include "chat/chat.h"
 #include "chat/message/message.h"
 
 #include "contacts/contact-list.h"
@@ -48,10 +49,11 @@ class KADUAPI ChatWidget : public QWidget, ConfigurationAwareObject, AccountsAwa
 	Q_OBJECT
 
 private:
-	friend class ChatManager;
+	friend class ChatManagerOld;
 
 	Account *CurrentAccount;
 	ContactList Contacts;
+	Chat *CurrentChat;
 
 	QString Caption; /*!< tytu� okna */
 	QString EscapedCaption;

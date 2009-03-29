@@ -16,7 +16,7 @@
 #include "debug.h"
 #include "protocols/protocol.h"
 #include "config_file.h"
-#include "chat_manager.h"
+#include "chat_manager-old.h"
 #include "icons_manager.h"
 
 #include <QtCore/QMap>

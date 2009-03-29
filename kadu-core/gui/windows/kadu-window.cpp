@@ -16,7 +16,7 @@
 #include <QtGui/QSplitter>
 
 #include "accounts/account_manager.h"
-#include "chat/chat_manager.h"
+#include "chat/chat_manager-old.h"
 #include "contacts/contact-manager.h"
 #include "contacts/model/contacts-model.h"
 #include "contacts/model/filter/group-contact-filter.h"

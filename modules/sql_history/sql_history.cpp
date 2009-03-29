@@ -19,7 +19,7 @@
 #include "accounts/account.h"
 #include "accounts/account_manager.h"
 #include "action.h"
-#include "chat_manager.h"
+#include "chat_manager-old.h"
 #include "debug.h"
 #include "icons_manager.h"
 #include "message_box.h"

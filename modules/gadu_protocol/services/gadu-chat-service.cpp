@@ -28,12 +28,13 @@ GaduChatService::GaduChatService(GaduProtocol *protocol)
 		this, SLOT(ackReceived(int, uin_t, int)));
 }
 
-bool GaduChatService::sendMessage(ContactList contacts, Message &message)
+bool GaduChatService::sendMessage(Chat *chat, Message &message)
 {
 	kdebugf();
 
 	message.setId(-1);
 	QString plain = message.toPlain();
+	ContactList contacts = chat->currentContacts();
 
 	unsigned int uinsCount = 0;
 	unsigned int formatsSize = 0;
@@ -47,7 +48,7 @@ bool GaduChatService::sendMessage(ContactList contacts, Message &message)
 
 	QByteArray data = unicode2cp(plain);
 
-	emit sendMessageFiltering(contacts, data, stop);
+	emit sendMessageFiltering(chat, data, stop);
 
 	if (stop)
 	{
@@ -190,11 +191,12 @@ void GaduChatService::handleEventMsg(struct gg_event *e)
 			Protocol->uin(sender), qPrintable(message.toPlain()));
 
 	bool ignore = false;
-	emit receivedMessageFilter(Protocol->account(), sender, recipients, message.toPlain(), time.toTime_t(), ignore);
+	Chat *chat = Protocol->findChat(recipients); 
+	emit receivedMessageFilter(chat, sender, message.toPlain(), time.toTime_t(), ignore);
 	if (ignore)
 		return;
 
-	emit messageReceived(Protocol->account(), sender, recipients, message.toHtml(), time.toTime_t());
+	emit messageReceived(chat, sender, message.toPlain());
 }
 
 void GaduChatService::handleEventAck(struct gg_event *e)

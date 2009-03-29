@@ -14,7 +14,7 @@
 #include <QListWidget>
 #include <QPushButton>
 
-#include "chat/chat_manager.h"
+#include "chat/chat_manager-old.h"
 #include "gui/widgets/chat_widget.h"
 #include "gui/widgets/configuration/config-group-box.h"
 #include "gui/widgets/configuration/configuration-widget.h"

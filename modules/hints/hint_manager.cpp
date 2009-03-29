@@ -14,7 +14,7 @@
 #include <QtGui/QLabel>
 #include <QtGui/QSpinBox>
 
-#include "chat/chat_manager.h"
+#include "chat/chat_manager-old.h"
 
 #include "gui/widgets/tool-tip-class-manager.h"
 #include "gui/widgets/chat_widget.h"

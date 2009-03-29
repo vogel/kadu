@@ -20,7 +20,7 @@
 
 #include "exports.h"
 
-#include "conference/conference.h"
+#include "chat/chat.h"
 #include "contacts/contact.h"
 #include "contacts/contact-list.h"
 
@@ -90,7 +90,8 @@ public:
 
 	virtual bool validateUserID(QString &uid) = 0;
 
-	virtual Conference *loadConferenceFromStorage(StoragePoint *storage) = 0;
+	static Chat *loadChatFromStorage(StoragePoint *storage);
+	Chat * findChat(ContactList contacts);
 
 	NetworkState state() { return State; }
 	bool isConnected() { return (State == NetworkConnected); }

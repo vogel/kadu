@@ -15,7 +15,7 @@
 #include <QtGui/QSpinBox>
 
 #include "chat_widget.h"
-#include "chat_manager.h"
+#include "chat_manager-old.h"
 #include "config_file.h"
 #include "debug.h"
 #include "osd_hint_manager.h"

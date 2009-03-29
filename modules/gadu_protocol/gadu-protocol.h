@@ -15,7 +15,7 @@
 
 #include <libgadu.h>
 
-#include "conference/gadu-conference.h"
+// #include "conference/gadu-conference.h"
 #include "services/gadu-chat-image-service.h"
 #include "services/gadu-chat-service.h"
 #include "services/gadu-contact-list-service.h"
@@ -121,7 +121,6 @@ public:
 	virtual PersonalInfoService * personalInfoService() { return CurrentPersonalInfoService; }
 	virtual SearchService * searchService() { return CurrentSearchService; }
 
-	virtual Conference * loadConferenceFromStorage(StoragePoint *storage);
 	virtual bool validateUserID(QString &uid);
 	virtual QPixmap statusPixmap(Status status);
 
@@ -133,8 +132,6 @@ public:
 	gg_session * gaduSession() { return GaduSession; }
 	GaduProtocolSocketNotifiers * socketNotifiers() { return SocketNotifiers; }
 	DccManager * dccManager() { return Dcc; }
-
-	GaduConference * conference(ContactList contacts);
 
 signals:
 	/**

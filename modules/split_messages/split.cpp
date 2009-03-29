@@ -14,7 +14,7 @@
 
 #include "gui/widgets/custom_input.h"
 #include "config_file.h"
-#include "chat/chat_manager.h"
+#include "chat/chat_manager-old.h"
 #include "debug.h"
 #include "misc/misc.h"
 #include "../gadu_protocol/gadu.h"

@@ -13,7 +13,7 @@
 #include <QtCore/QList>
 #include <QtCore/QFile>
 
-#include "chat_manager.h"
+#include "chat_manager-old.h"
 #include "config_file.h"
 #include "dcc.h"
 #include "dcc_socket.h"

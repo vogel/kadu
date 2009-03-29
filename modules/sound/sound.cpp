@@ -17,7 +17,7 @@
 #include "gui/widgets/configuration/config-combo-box.h"
 #include "path_list_edit.h"
 #include "gui/widgets/chat_widget.h"
-#include "chat/chat_manager.h"
+#include "chat/chat_manager-old.h"
 #include "config_file.h"
 #include "debug.h"
 #include "sound.h"

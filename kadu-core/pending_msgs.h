@@ -99,7 +99,7 @@ public:
 public slots:
 	/**
 		\fn void openMessages()
-		Calls method ChatManager::openPendingMsgs.
+		Calls method ChatManagerOld::openPendingMsgs.
 	**/
 	void openMessages();
 

@@ -19,7 +19,7 @@
 
 #include "word_fix.h"
 
-#include "chat_manager.h"
+#include "chat_manager-old.h"
 #include "custom_input.h"
 #include "debug.h"
 #include "html_document.h"

@@ -14,7 +14,7 @@
 
 #include "action.h"
 #include "chat_edit_box.h"
-#include "chat_manager.h"
+#include "chat_manager-old.h"
 #include "chat_widget.h"
 #include "config_file.h"
 #include "custom_input.h"

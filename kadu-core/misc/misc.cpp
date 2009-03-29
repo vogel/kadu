@@ -16,7 +16,7 @@
 #include "accounts/account_manager.h"
 #include "contacts/contact-list.h"
 #include "contacts/contact-manager.h"
-#include "chat/chat_manager.h"
+#include "chat/chat_manager-old.h"
 #include "config_file.h"
 #include "debug.h"
 #include "html_document.h"

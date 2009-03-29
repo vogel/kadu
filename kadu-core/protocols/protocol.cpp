@@ -10,7 +10,12 @@
 #include <QtGui/QIcon>
 #include <QtGui/QTextDocument>
 
+#include "accounts/account_manager.h"
+#include "chat/chat-manager.h"
+#include "chat/conference-chat.h"
+#include "chat/simple-chat.h"
 #include "contacts/contact-account-data.h"
+#include "contacts/contact-list-configuration-helper.h"
 #include "contacts/contact-manager.h"
 #include "icons_manager.h"
 #include "protocols/protocol_factory.h"
@@ -97,4 +102,57 @@ void Protocol::networkStateChanged(NetworkState state)
 			emit disconnected(CurrentAccount);
 			break;
 	}
+}
+
+
+Chat * Protocol::findChat(ContactList contacts)
+{
+	QList<Chat *> chats = ChatManager::instance()->chatsForAccount(account());
+	foreach (Chat *c, chats)
+		if (c->currentContacts() == contacts)
+			return c;
+
+	if (contacts.count() == 1)
+	{
+		SimpleChat *simple = new SimpleChat(account(), (*contacts.begin()), QUuid());
+		ChatManager::instance()->addChat(simple);
+		return simple;
+	}
+	else
+	{
+		ConferenceChat *conference = new ConferenceChat(account(), contacts, QUuid());
+		ChatManager::instance()->addChat(conference);
+		return conference;
+	}
+}
+
+Chat * Protocol::loadChatFromStorage(StoragePoint *chatStorage)
+{
+	if (!chatStorage || !chatStorage->storage())
+		return 0;
+
+	XmlConfigFile *storage = chatStorage->storage();
+	QDomElement point = chatStorage->point();
+
+	Account *account = AccountManager::instance()->byUuid(QUuid(storage->getTextNode(point, "Account")));
+
+	QString type = storage->getTextNode(point, "Type");
+	if (type == "Simple")
+	{
+		Contact contact = ContactManager::instance()->byUuid(storage->getTextNode(point, "Contact"));
+		SimpleChat *result = new SimpleChat(account, contact, QUuid(storage->getTextNode(point, "Uuid")));
+		result->setStorage(chatStorage);
+		result->loadConfiguration();
+		return result;
+	}
+	else if (type == "Conference")
+	{
+		ContactList contacts = ContactListConfigurationHelper::loadFromConfiguration(storage, point);
+		ConferenceChat *result = new ConferenceChat(account, contacts, QUuid(storage->getTextNode(point, "Uuid")));
+		result->setStorage(chatStorage);
+		result->loadConfiguration();
+		return result;
+	}
+	else 
+		return 0;
 }

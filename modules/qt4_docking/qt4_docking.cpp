@@ -11,7 +11,7 @@
 
 #include "../docking/docking.h"
 
-#include "chat/chat_manager.h"
+#include "chat/chat_manager-old.h"
 
 #include "gui/widgets/chat_widget.h"
 

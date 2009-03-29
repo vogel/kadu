@@ -20,7 +20,7 @@
 #include <QtCore/QFile>
 
 #include "debug.h"
-#include "chat_manager.h"
+#include "chat_manager-old.h"
 #include "config_file.h"
 #include "message_box.h"
 #include "action.h"
