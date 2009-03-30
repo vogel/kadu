@@ -7,20 +7,19 @@
  *                                                                         *
  ***************************************************************************/
 
+#include "accounts/account-manager.h"
 #include "contacts/contact-account-data.h"
 #include "contacts/contact-manager.h"
-
 #include "protocols/protocol.h"
 #include "protocols/protocol_factory.h"
 #include "protocols/protocols_manager.h"
-
 #include "misc/misc.h"
 #include "xml_config_file.h"
 
 #include "account.h"
 
-Account::Account(const QUuid &uuid)
-	: ProtocolHandler(0)
+Account::Account(const QUuid &uuid) :
+		UuidStorableObject("Account", AccountManager::instance()), ProtocolHandler(0)
 {
 	Uuid = uuid.isNull()
 		? QUuid::createUuid()
@@ -61,25 +60,30 @@ void Account::contactRemoved(Contact contact)
 {
 }
 
-void Account::loadConfiguration(XmlConfigFile *configurationStorage, QDomElement parent)
+void Account::loadConfiguration()
 {
-	Uuid = QUuid(parent.attribute("uuid"));
-	Name = configurationStorage->getTextNode(parent, "Name");
-	setId(configurationStorage->getTextNode(parent, "Id"));
-	Password = pwHash(configurationStorage->getTextNode(parent, "Password"));
+	if (!isValidStorage())
+		return;
+
+	Uuid = QUuid(storage()->point().attribute("uuid"));
+	Name = loadValue<QString>("Name");
+	setId(loadValue<QString>("Id"));
+	Password = pwHash(loadValue<QString>("Password"));
 
 	triggerAllContactsAdded();
 }
 
-void Account::storeConfiguration(XmlConfigFile *configurationStorage, QDomElement parent)
+void Account::storeConfiguration()
 {
-	parent.setAttribute("uuid", Uuid.toString());
+	if (!isValidStorage())
+		return;
 
-	configurationStorage->createTextNode(parent, "Protocol",
-			ProtocolHandler->protocolFactory()->name());
-	configurationStorage->createTextNode( parent, "Name", Name);
-	configurationStorage->createTextNode(parent, "Id", id());
-	configurationStorage->createTextNode(parent, "Password", pwHash(password()));
+	storage()->point().setAttribute("uuid", Uuid.toString());
+
+	storeValue("Protocol", ProtocolHandler->protocolFactory()->name());
+	storeValue("Name", Name);
+	storeValue("Id", id());
+	storeValue("Password", pwHash(password()));
 }
 
 Status Account::currentStatus()

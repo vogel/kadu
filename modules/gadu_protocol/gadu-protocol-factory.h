@@ -20,6 +20,7 @@ class GaduProtocolFactory : public ProtocolFactory
 {
 public:
 	virtual Account * newAccount();
+	virtual Account * loadAccount(StoragePoint *accountStoragePoint);
 	virtual ContactAccountData * newContactAccountData(Contact contact, Account *account, const QString &id);
 	virtual ContactAccountData * loadContactAccountData(Contact contact, Account *account);
 	virtual ContactAccountDataWidget * newContactAccountDataWidget(ContactAccountData *contactAccountData, QWidget *parent = 0);

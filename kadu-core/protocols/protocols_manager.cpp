@@ -42,7 +42,7 @@ void ProtocolsManager::registerProtocolFactory(const QString &name, ProtocolFact
 	if (0 != factory && !registeredFactories.contains(name))
 	{
 		registeredFactories[name] = factory;
-		AccountManager::instance()->loadConfiguration(xml_config_file, name);
+		AccountManager::instance()->loadConfiguration(name);
 	}
 }
 
@@ -50,7 +50,7 @@ void ProtocolsManager::unregisterProtocolFactory(const QString &name)
 {
 	if (registeredFactories.contains(name))
 	{
-		AccountManager::instance()->storeConfiguration(xml_config_file, name);
+		AccountManager::instance()->storeConfiguration(name);
 		delete registeredFactories[name];
 		registeredFactories.remove(name);
 	}

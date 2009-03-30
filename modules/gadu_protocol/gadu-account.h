@@ -30,11 +30,13 @@ class GaduAccount : public Account
 	GaduOpenChatWithRunner *OpenChatRunner;
 
 public:
-	GaduAccount(const QUuid &uuid = QUuid());
+	static GaduAccount * loadFromStorage(StoragePoint *storagePoint);
+
+	explicit GaduAccount(const QUuid &uuid = QUuid());
 	virtual ~GaduAccount();
 
-	virtual void loadConfiguration(XmlConfigFile *configurationStorage, QDomElement parent);
-	virtual void storeConfiguration(XmlConfigFile *configurationStorage, QDomElement parent);
+	virtual void loadConfiguration();
+	virtual void storeConfiguration();
 
 	UinType uin() { return Uin; }
 	bool allowDCC() { return AllowDcc; }

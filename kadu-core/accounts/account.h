@@ -25,7 +25,7 @@ class Protocol;
 class Status;
 class XmlConfigFile;
 
-class KADUAPI Account : public QObject, public ContactsAwareObject
+class KADUAPI Account : public QObject, public UuidStorableObject, public ContactsAwareObject
 {
 	Q_OBJECT
 
@@ -44,10 +44,10 @@ public:
 	Account(const QUuid &uuid = QUuid());
 	virtual ~Account();
 
-	virtual void loadConfiguration(XmlConfigFile *configurationStorage, QDomElement parent);
-	virtual void storeConfiguration(XmlConfigFile *configurationStorage, QDomElement parent);
+	virtual void loadConfiguration();
+	virtual void storeConfiguration();
 
-	QUuid uuid() { return Uuid; }
+	virtual QUuid uuid() { return Uuid; }
 	void setProtocol(Protocol *protocolHandler);
 	Protocol * protocol() { return ProtocolHandler; }
 

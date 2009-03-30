@@ -359,7 +359,7 @@ void Core::storeConfiguration()
 
 	GroupManager::instance()->storeConfiguration();
 	ContactManager::instance()->storeConfiguration(xml_config_file);
-	AccountManager::instance()->storeConfiguration(xml_config_file);
+	AccountManager::instance()->storeConfiguration(QString::null); // store all accounts
 
 	Protocol *gadu = AccountManager::instance()->defaultAccount()->protocol();
 	if (gadu->isConnected())

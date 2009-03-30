@@ -21,7 +21,7 @@ class AccountData;
 class Status;
 class XmlConfigFile;
 
-class KADUAPI AccountManager : public QObject
+class KADUAPI AccountManager : public QObject, public StorableObject
 {
 	Q_OBJECT
 	Q_DISABLE_COPY(AccountManager)
@@ -36,13 +36,14 @@ class KADUAPI AccountManager : public QObject
 private slots:
 	void connectionError(Account *account, const QString &server, const QString &message);
 
+protected:
+	virtual StoragePoint * createStoragePoint();
+
 public:
 	static AccountManager * instance();
 
-	//TODO: 0.6.6
-	void loadConfiguration(XmlConfigFile *configurationStorage, const QString &name = QString::null);
-	//TODO: 0.6.6
-	void storeConfiguration(XmlConfigFile *configurationStorage, const QString &name = QString::null);
+	void loadConfiguration(const QString &protocolName);
+	void storeConfiguration(const QString &protocolName);
 
 	Account * defaultAccount() const;
 

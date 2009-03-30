@@ -38,16 +38,24 @@ AccountManager::~AccountManager()
 {
 }
 
-void AccountManager::loadConfiguration(XmlConfigFile *configurationStorage, const QString &name)
+StoragePoint * AccountManager::createStoragePoint()
 {
-	if (name.isEmpty())
+	return new StoragePoint(xml_config_file, xml_config_file->getNode("Accounts"));
+}
+
+void AccountManager::loadConfiguration(const QString &protocolName)
+{
+	if (protocolName.isEmpty())
 		return;
 
-	QDomElement accountsNode = configurationStorage->getNode("Accounts", XmlConfigFile::ModeFind);
+	if (!isValidStorage())
+		return;
+
+	QDomElement accountsNode = storage()->point();
 	if (accountsNode.isNull())
 		return;
 
-	QDomNodeList accountNodes = configurationStorage->getNodes(accountsNode, "Account");
+	QDomNodeList accountNodes = storage()->storage()->getNodes(accountsNode, "Account");
 	int count = accountNodes.count();
 	for (int i = 0; i < count; i++)
 	{
@@ -56,31 +64,34 @@ void AccountManager::loadConfiguration(XmlConfigFile *configurationStorage, cons
 			continue;
 
 		// TODO hasAccountUUID(uuid) => return
-		QString protocolName = configurationStorage->getTextNode(accountElement, "Protocol");
-		if (protocolName.isEmpty() || protocolName != name)
+		QString accountProtocolName = storage()->storage()->getTextNode(accountElement, "Protocol");
+		if (accountProtocolName.isEmpty() || accountProtocolName != protocolName)
 			continue;
 
 		ProtocolFactory *protocolFactory = ProtocolsManager::instance()->protocolFactory(protocolName);
 		if (!protocolFactory)
 			continue;
 
-		Account *account = protocolFactory->newAccount();
-		account->loadConfiguration(configurationStorage, accountElement);
+		StoragePoint *storagePoint = new StoragePoint(storage()->storage(), accountElement);
+
+		Account *account = protocolFactory->loadAccount(storagePoint);
 		registerAccount(account);
 	}
 }
 
-void AccountManager::storeConfiguration(XmlConfigFile *configurationStorage, const QString &name)
+void AccountManager::storeConfiguration(const QString &protocolName)
 {
-	QDomElement accountsNode = configurationStorage->getNode("Accounts");
+	if (!isValidStorage())
+		return;
+
+	QDomElement accountsNode = storage()->point();
 
 	foreach (Account *account, Accounts)
 	{
-		if (account->protocol()->protocolFactory()->name() == name || name.isNull())
+		if (protocolName.isNull() || account->protocol()->protocolFactory()->name() == protocolName)
 		{
-			QDomElement accountNode = configurationStorage->getUuidNode(accountsNode, "Account", account->uuid(), XmlConfigFile::ModeCreate);
-			account->storeConfiguration(configurationStorage, accountNode);
-			if (!name.isNull())
+			account->storeConfiguration();
+			if (!protocolName.isNull())
 				unregisterAccount(account);
 		}
 	}

@@ -24,6 +24,11 @@ Account * GaduProtocolFactory::newAccount()
 	return account;
 }
 
+Account * GaduProtocolFactory::loadAccount(StoragePoint *accountStoragePoint)
+{
+	return GaduAccount::loadFromStorage(accountStoragePoint);
+}
+
 ContactAccountData * GaduProtocolFactory::newContactAccountData(Contact contact, Account *account, const QString &id)
 {
 	return new GaduContactAccountData(contact, account, id);
