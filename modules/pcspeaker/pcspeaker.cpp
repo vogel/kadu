@@ -32,6 +32,10 @@
 #include <windows.h>
 #endif
 
+#ifdef Q_OS_MACX
+#include <Carbon/Carbon.h>
+#endif
+
 #include <unistd.h>
 
 //czestotliwosci dzwiekow
@@ -53,7 +57,8 @@ int dzwieki[96] = {
 
 PCSpeaker *pcspeaker;
 
-void PCSpeaker::beep(int pitch, int duration) {
+void PCSpeaker::beep(int pitch, int duration) 
+{
 	if (pitch == 0)
 		usleep(duration * 200);
 	else {
@@ -79,38 +84,46 @@ void PCSpeaker::beep(int pitch, int duration) {
 	}
 }
 
-extern "C" int pcspeaker_init() {
+extern "C" int pcspeaker_init()
+{
 	kdebugf();
 
 	pcspeaker = new PCSpeaker();
+#ifndef Q_OS_MACX
 	MainConfigurationWindow::registerUiFile(dataPath("kadu/modules/configuration/pcspeaker.ui"), pcspeaker);
-
+#endif
 	kdebugf2();
 	return 0;
 }
 
 
-extern "C" void pcspeaker_close() {
+extern "C" void pcspeaker_close()
+{
 	kdebugf();
-
+#ifndef Q_OS_MACX
 	MainConfigurationWindow::unregisterUiFile(dataPath("kadu/modules/configuration/pcspeaker.ui"), pcspeaker);
+#endif
 	delete(pcspeaker);
 
 	kdebugf2();
 } 
 
 
-PCSpeaker::PCSpeaker() {
+PCSpeaker::PCSpeaker()
+{
 	notification_manager->registerNotifier(QT_TRANSLATE_NOOP("@default", "PC Speaker"), this);
 	createDefaultConfiguration();
 }
 
 
-PCSpeaker::~PCSpeaker() {
+PCSpeaker::~PCSpeaker()
+{
 	notification_manager->unregisterNotifier("PC Speaker");
 }
 
-void PCSpeaker::mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow) {
+void PCSpeaker::mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow) 
+{
+#ifndef Q_OS_MACX
 	connect(mainConfigurationWindow->widgetById("pcspeaker/test1"), SIGNAL(clicked()),
 		this, SLOT(test1()));
 	connect(mainConfigurationWindow->widgetById("pcspeaker/test2"), SIGNAL(clicked()),
@@ -121,6 +134,7 @@ void PCSpeaker::mainConfigurationWindowCreated(MainConfigurationWindow *mainConf
 		this, SLOT(test4()));
 	connect(mainConfigurationWindow->widgetById("pcspeaker/test5"), SIGNAL(clicked()),
 		this, SLOT(test5()));
+#endif
 }
 
 NotifierConfigurationWidget *PCSpeaker::createConfigurationWidget(QWidget *parent, char *name) {
@@ -130,7 +144,10 @@ NotifierConfigurationWidget *PCSpeaker::createConfigurationWidget(QWidget *paren
 void PCSpeaker::notify(Notification *notification) {
 	kdebugf();
 	notification->acquire();
-	
+
+#ifdef Q_OS_MACX
+	SysBeep(1);
+#else
 	QString linia;
 	if (notification->type().compare("NewChat") == 0) {
 		linia = config_file.readEntry("PC Speaker", "OnChatPlayString");
@@ -152,7 +169,7 @@ void PCSpeaker::notify(Notification *notification) {
 		parseAndPlay(linia);
 	else
 	    kdebugmf(KDEBUG_ERROR, "\n\nMelody String is empty!\n");
-
+#endif
 	notification->release();
 	kdebugf2();
 }
