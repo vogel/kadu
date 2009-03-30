@@ -11,7 +11,7 @@
 #define GADU_PROTOCOL_FACTORY_H
 
 #include "gadu-configuration-dialog.h"
-#include "protocols/protocol_factory.h"
+#include "protocols/protocol-factory.h"
 
 class ContactAccountDataWidget;
 class GaduContactAccountData;

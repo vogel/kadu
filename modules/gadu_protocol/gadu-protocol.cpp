@@ -26,7 +26,7 @@
 #include "contacts/contact-manager.h"
 #include "contacts/ignored-helper.h"
 
-#include "protocols/protocols_manager.h"
+#include "protocols/protocols-manager.h"
 
 #include "config_file.h"
 #include "debug.h"

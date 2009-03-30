@@ -139,7 +139,7 @@ set (kadu_SRCS
 	protocols/connection-error-notification.cpp
 	protocols/protocol.cpp
 	protocols/protocol-menu-manager.cpp
-	protocols/protocols_manager.cpp
+	protocols/protocols-manager.cpp
 	protocols/status.cpp
 
 	protocols/services/chat-service.cpp
@@ -286,7 +286,7 @@ set (kadu_MOC_SRCS
 
 	protocols/connection-error-notification.h
 	protocols/protocol.h
-	protocols/protocols_manager.h
+	protocols/protocols-manager.h
 
 	protocols/services/chat-image-service.h
 	protocols/services/chat-service.h

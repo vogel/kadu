@@ -10,12 +10,12 @@
 #include "accounts/account-manager.h"
 #include "misc/misc.h"
 #include "protocols/connection-error-notification.h"
-#include "protocols/protocol_factory.h"
+#include "protocols/protocol-factory.h"
 
 #include "debug.h"
 #include "xml_config_file.h"
 
-#include "protocols_manager.h"
+#include "protocols-manager.h"
 
 ProtocolsManager * ProtocolsManager::Instance = 0;
 

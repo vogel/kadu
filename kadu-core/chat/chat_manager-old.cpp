@@ -25,8 +25,8 @@
 #include "gui/windows/kadu-window-actions.h"
 #include "gui/windows/open-chat-with/open-chat-with.h"
 
-#include "protocols/protocol_factory.h"
-#include "protocols/protocols_manager.h"
+#include "protocols/protocol-factory.h"
+#include "protocols/protocols-manager.h"
 
 #include "action.h"
 #include "activate.h"

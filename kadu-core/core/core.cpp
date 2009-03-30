@@ -20,7 +20,7 @@
 #include "misc/token-dialog.h"
 #include "notify/notification-manager.h"
 #include "protocols/protocol.h"
-#include "protocols/protocol_factory.h"
+#include "protocols/protocol-factory.h"
 #include "protocols/services/chat-service.h"
 
 #include "../modules/gadu_protocol/gadu-protocol.h"

@@ -31,7 +31,7 @@
 #include "gui/widgets/contact-account-data-widget.h"
 
 #include "protocols/protocol.h"
-#include "protocols/protocol_factory.h"
+#include "protocols/protocol-factory.h"
 
 #include "config_file.h"
 #include "debug.h"

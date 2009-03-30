@@ -14,7 +14,7 @@
 #include "contacts/contact.h"
 #include "contacts/ignored-helper.h"
 
-#include "protocols/protocols_manager.h"
+#include "protocols/protocols-manager.h"
 
 #include "config_file.h"
 #include "misc/misc.h"
