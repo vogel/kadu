@@ -23,8 +23,15 @@
 #include <QtGui/QLineEdit>
 #include <QtGui/QSlider>
 
+#ifdef Q_WS_X11
 #include <X11/Xlib.h>
 #include <X11/keysym.h>
+#endif
+
+#ifdef Q_WS_WIN
+#include <windows.h>
+#endif
+
 #include <unistd.h>
 
 //czestotliwosci dzwiekow
@@ -50,6 +57,10 @@ void PCSpeaker::beep(int pitch, int duration) {
 	if (pitch == 0)
 		usleep(duration * 200);
 	else {
+#ifdef Q_WS_WIN
+		Beep(pitch, duration);
+#endif
+#ifdef Q_WS_X11
 		XKeyboardState s;			//zachowuje stare parametry dzwieku
 		XGetKeyboardControl(xdisplay, &s);
 		XKeyboardControl v;			//dla 0 nie wysyla zadnego dzwieku tylko odczekuje podany czas
@@ -64,7 +75,8 @@ void PCSpeaker::beep(int pitch, int duration) {
 		v.bell_duration = s.bell_duration;
 		v.bell_percent = s.bell_percent;
 		XChangeKeyboardControl(xdisplay, (KBBellPitch | KBBellDuration | KBBellPercent), &v); //ustawia poprzednie parametry dzwieku
-    }
+#endif
+	}
 }
 
 extern "C" int pcspeaker_init() {
@@ -209,53 +221,65 @@ void PCSpeaker::ParseStringToSound(QString linia, int tablica[21], int tablica2[
 	tablica[k]=-1;								//na koncu zawsze musi byc -1
 }
 
-void PCSpeaker::test1() {
+void PCSpeaker::test1()
+{
 	QString linia = dynamic_cast<QLineEdit *>(MainConfigurationWindow::instance()->widgetById("pcspeaker/OnMessagePlayString"))->text();
 	if (linia.length()>0)
 		parseAndPlay(linia);
 }
 
-void PCSpeaker::test2() {
+void PCSpeaker::test2()
+{
 	QString linia = dynamic_cast<QLineEdit *>(MainConfigurationWindow::instance()->widgetById("pcspeaker/OnChatPlayString"))->text();
 	if (linia.length()>0)
 		parseAndPlay(linia);
 }
 
-void PCSpeaker::test3() {
+void PCSpeaker::test3()
+{
 	QString linia = dynamic_cast<QLineEdit *>(MainConfigurationWindow::instance()->widgetById("pcspeaker/OnNotifyPlayString"))->text();
 	if (linia.length()>0)
 		parseAndPlay(linia);
 }
 
-void PCSpeaker::test4() {
+void PCSpeaker::test4()
+{
 	QString linia = dynamic_cast<QLineEdit *>(MainConfigurationWindow::instance()->widgetById("pcspeaker/OnConnectionErrorPlayString"))->text();
 	if (linia.length()>0)
 		parseAndPlay(linia);
 }
 
-void PCSpeaker::test5() {
+void PCSpeaker::test5()
+{
 	QString linia = dynamic_cast<QLineEdit *>(MainConfigurationWindow::instance()->widgetById("pcspeaker/OnOtherMessagePlayString"))->text();
 	if (linia.length()>0)
 		parseAndPlay(linia);
 }
 
-void PCSpeaker::play(int sound[21], int soundlength[20]) {
+void PCSpeaker::play(int sound[21], int soundlength[20])
+{
+#ifdef Q_WS_X11
 	xdisplay = XOpenDisplay(NULL);
+#endif
 	for (int i=0; i<20; ++i) {
 		if (sound[i] == -1) break;	
 			beep(sound[i], soundlength[i]);
 	}
-	XCloseDisplay(pcspeaker->xdisplay);	
+#ifdef Q_WS_X11
+	XCloseDisplay(pcspeaker->xdisplay);
+#endif
 }
 
-void PCSpeaker::parseAndPlay(QString linia) {
+void PCSpeaker::parseAndPlay(QString linia)
+{
 	volume = config_file.readNumEntry("PC Speaker", "SpeakerVolume");	
 	int sound[21], soundLength[20];
 	ParseStringToSound(linia, sound, soundLength);
 	play(sound, soundLength);	
 }
 
-void PCSpeaker::createDefaultConfiguration() {
+void PCSpeaker::createDefaultConfiguration()
+{
 	config_file.addVariable("PC Speaker", "OnChatPlayString", "C4/2");
 	config_file.addVariable("PC Speaker", "OnMessagePlayString", "F2/2");
 	config_file.addVariable("PC Speaker", "OnConnectionErrorPlayString", "D3/4");
