@@ -10,7 +10,7 @@
 #include <QtGui/QApplication>
 #include <QtNetwork/QHostAddress>
 
-#include "accounts/account_manager.h"
+#include "accounts/account-manager.h"
 
 #include "contacts/contact-account-data.h"
 

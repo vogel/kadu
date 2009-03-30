@@ -10,7 +10,7 @@
 #include <QtGui/QIcon>
 #include <QtGui/QTextDocument>
 
-#include "accounts/account_manager.h"
+#include "accounts/account-manager.h"
 #include "chat/chat-manager.h"
 #include "chat/conference-chat.h"
 #include "chat/simple-chat.h"

@@ -8,7 +8,7 @@
  ***************************************************************************/
 
 #include "accounts/account.h"
-#include "accounts/accounts_aware_object.h"
+#include "accounts/accounts-aware-object.h"
 #include "notify/notification-manager.h"
 #include "protocols/connection-error-notification.h"
 #include "protocols/protocol.h"
@@ -18,7 +18,7 @@
 #include "debug.h"
 #include "xml_config_file.h"
 
-#include "account_manager.h"
+#include "account-manager.h"
 
 AccountManager * AccountManager::Instance = 0;
 

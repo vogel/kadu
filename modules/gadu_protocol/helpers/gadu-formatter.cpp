@@ -12,7 +12,7 @@
 #include <QtGui/QApplication>
 
 #include "accounts/account.h"
-#include "accounts/account_manager.h"
+#include "accounts/account-manager.h"
 #include "chat/message/message.h"
 #include "contacts/contact-manager.h"
 

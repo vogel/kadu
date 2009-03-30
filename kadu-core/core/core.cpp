@@ -11,7 +11,7 @@
 #include <QtCore/QLocale>
 #include <QtGui/QApplication>
 
-#include "accounts/account_manager.h"
+#include "accounts/account-manager.h"
 #include "contacts/contact-manager.h"
 #include "contacts/group-manager.h"
 #include "gui/widgets/chat_edit_box.h"

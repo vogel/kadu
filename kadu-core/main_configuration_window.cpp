@@ -16,7 +16,7 @@
 #include "configuration/config-file-data-manager.h"
 
 #include "accounts/account.h"
-#include "accounts/account_manager.h"
+#include "accounts/account-manager.h"
 
 #include "chat/chat_message.h"
 #include "chat/chat_styles_manager.h"

@@ -10,7 +10,7 @@
 #include <QtGui/QContextMenuEvent>
 #include <QtGui/QMenu>
 
-#include "accounts/account_manager.h"
+#include "accounts/account-manager.h"
 
 #include "contacts/contact.h"
 #include "contacts/contact-list.h"

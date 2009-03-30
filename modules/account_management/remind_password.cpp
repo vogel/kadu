@@ -15,7 +15,7 @@
 #include <QtGui/QPushButton>
 
 #include "accounts/account.h"
-#include "accounts/account_manager.h"
+#include "accounts/account-manager.h"
 #include "config_file.h"
 #include "debug.h"
 #include "../modules/gadu_protocol/gadu.h"

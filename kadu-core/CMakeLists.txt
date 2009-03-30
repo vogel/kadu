@@ -1,8 +1,8 @@
 set (kadu_SRCS
 
 	accounts/account.cpp
-	accounts/account_manager.cpp
-	accounts/accounts_aware_object.cpp
+	accounts/account-manager.cpp
+	accounts/accounts-aware-object.cpp
 
 	accounts/model/accounts-model.cpp
 
@@ -188,7 +188,7 @@ endif (UNIX AND NOT APPLE)
 set (kadu_MOC_SRCS
 
 	accounts/account.h
-	accounts/account_manager.h
+	accounts/account-manager.h
 
 	accounts/model/accounts-model.h
 

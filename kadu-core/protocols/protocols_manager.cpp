@@ -7,7 +7,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "accounts/account_manager.h"
+#include "accounts/account-manager.h"
 #include "misc/misc.h"
 #include "protocols/connection-error-notification.h"
 #include "protocols/protocol_factory.h"

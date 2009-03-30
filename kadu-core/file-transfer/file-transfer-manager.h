@@ -13,7 +13,7 @@
 #include <QtCore/QObject>
 #include <QtCore/QUuid>
 
-#include "accounts/accounts_aware_object.h"
+#include "accounts/accounts-aware-object.h"
 #include "configuration/storable-object.h"
 
 #include "exports.h"

@@ -3,7 +3,7 @@
 
 #include <QtGui/QWidget>
 
-#include "accounts/account_manager.h"
+#include "accounts/account-manager.h"
 
 #include "exports.h"
 

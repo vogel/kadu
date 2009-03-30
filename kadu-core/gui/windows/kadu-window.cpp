@@ -15,7 +15,7 @@
 #include <QtGui/QPushButton>
 #include <QtGui/QSplitter>
 
-#include "accounts/account_manager.h"
+#include "accounts/account-manager.h"
 #include "chat/chat_manager-old.h"
 #include "contacts/contact-manager.h"
 #include "contacts/model/contacts-model.h"

@@ -15,7 +15,7 @@
 #include <QtGui/QIcon>
 #include <QtGui/QWidget>
 
-#include "accounts/accounts_aware_object.h"
+#include "accounts/accounts-aware-object.h"
 
 #include "chat/chat.h"
 #include "chat/message/message.h"

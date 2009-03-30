@@ -19,7 +19,7 @@
 #include "../sound/sound.h"
 
 #include "accounts/account.h"
-#include "accounts/account_manager.h"
+#include "accounts/account-manager.h"
 #include "config_file.h"
 #include "debug.h"
 #include "html_document.h"

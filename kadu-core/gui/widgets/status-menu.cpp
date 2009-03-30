@@ -12,7 +12,7 @@
 #include <QtGui/QMenu>
 
 #include "accounts/account.h"
-#include "accounts/account_manager.h"
+#include "accounts/account-manager.h"
 #include "core/core.h"
 #include "misc/choose-description.h"
 #include "protocols/protocol.h"

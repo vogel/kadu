@@ -13,7 +13,7 @@
 #include <QtGui/QDesktopServices>
 
 #include "accounts/account.h"
-#include "accounts/account_manager.h"
+#include "accounts/account-manager.h"
 #include "contacts/contact-list.h"
 #include "contacts/contact-manager.h"
 #include "chat/chat_manager-old.h"

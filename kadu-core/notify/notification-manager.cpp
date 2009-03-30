@@ -10,7 +10,7 @@
 #include <QtGui/QApplication>
 
 #include "accounts/account.h"
-#include "accounts/account_manager.h"
+#include "accounts/account-manager.h"
 #include "chat/chat_manager-old.h"
 #include "contacts/contact-account-data.h"
 #include "gui/widgets/contacts-list-widget-menu-manager.h"

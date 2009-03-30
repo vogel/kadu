@@ -11,7 +11,7 @@
 #include <QtCore/QSysInfo>
 
 #include "accounts/account.h"
-#include "accounts/account_manager.h"
+#include "accounts/account-manager.h"
 #include "core/core.h"
 #include "gui/windows/kadu-window.h"
 #include "config_file.h"

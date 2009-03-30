@@ -10,7 +10,7 @@
 #include <QtCore/QFile>
 
 #include "accounts/account.h"
-#include "accounts/account_manager.h"
+#include "accounts/account-manager.h"
 #include "configuration/storage-point.h"
 #include "file-transfer/file-transfer-manager.h"
 #include "protocols/protocol.h"

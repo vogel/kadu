@@ -12,7 +12,7 @@
 
 #include <QtCore/QObject>
 
-#include "accounts/accounts_aware_object.h"
+#include "accounts/accounts-aware-object.h"
 #include "chat/chat.h"
 #include "contacts/contact.h"
 #include "contacts/contact-list.h"

@@ -10,7 +10,7 @@
 #include <QtCore/QTextCodec>
 
 #include "accounts/account.h"
-#include "accounts/account_manager.h"
+#include "accounts/account-manager.h"
 
 #include "chat/chat_manager-old.h"
 

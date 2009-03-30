@@ -6,7 +6,8 @@
  *   (at your option) any later version.                                   *
  *                                                                         *
  ***************************************************************************/
-#include "accounts/account_manager.h"
+
+#include "accounts/account-manager.h"
 #include "protocols/protocol.h"
 
 #include "chat.h"

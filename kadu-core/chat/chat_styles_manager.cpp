@@ -14,7 +14,7 @@
 #include <QtGui/QHBoxLayout>
 #include <QtGui/QPushButton>
 
-#include "accounts/account_manager.h"
+#include "accounts/account-manager.h"
 
 #include "chat/chat_message.h"
 #include "chat/style-engines/chat_engine_adium.h"

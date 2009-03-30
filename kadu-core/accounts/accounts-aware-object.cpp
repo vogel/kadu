@@ -7,9 +7,9 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "account_manager.h"
+#include "account-manager.h"
 
-#include "accounts_aware_object.h"
+#include "accounts-aware-object.h"
 
 KADU_AWARE_CLASS(AccountsAwareObject)
 

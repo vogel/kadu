@@ -13,7 +13,7 @@
 #include <QtCore/QAbstractListModel>
 #include <QtCore/QModelIndex>
 
-#include "accounts/accounts_aware_object.h"
+#include "accounts/accounts-aware-object.h"
 
 #include "contacts/contact.h"
 #include "contacts/contact-list.h"
