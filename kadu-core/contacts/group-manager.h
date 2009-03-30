@@ -35,7 +35,7 @@ class KADUAPI GroupManager : public QObject, public StorableObject
 	void importConfiguration();
 
 protected:
-	virtual StoragePoint * createStoragePoint() const;
+	virtual StoragePoint * createStoragePoint();
 
 public:
 	static GroupManager * instance();

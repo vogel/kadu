@@ -29,7 +29,7 @@ ContactManager *  ContactManager::instance()
 	return Instance;
 }
 
-StoragePoint * ContactManager::createStoragePoint() const
+StoragePoint * ContactManager::createStoragePoint()
 {
 	return new StoragePoint(xml_config_file, xml_config_file->getNode("ContactsNew"));
 }

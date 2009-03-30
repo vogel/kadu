@@ -41,7 +41,7 @@ class ContactAccountData : public QObject, public StorableObject
 	bool OfflineTo;
 
 protected:
-	virtual StoragePoint * createStoragePoint() const;
+	virtual StoragePoint * createStoragePoint();
 
 public:
 	ContactAccountData(Contact contact, Account *account, const QString &id = QString::null);

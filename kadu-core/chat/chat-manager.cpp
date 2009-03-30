@@ -21,7 +21,7 @@ ChatManager *  ChatManager::instance()
 	return Instance;
 }
 
-StoragePoint * ChatManager::createStoragePoint() const
+StoragePoint * ChatManager::createStoragePoint()
 {
 	return new StoragePoint(xml_config_file, xml_config_file->getNode("Chats"));
 }

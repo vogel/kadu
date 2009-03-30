@@ -24,8 +24,9 @@
 
 #include "contact-data.h"
 
-ContactData::ContactData(QUuid uuid)
-	: Uuid(uuid.isNull() ? QUuid::createUuid() : uuid), Ignored(false), Blocked(false), OfflineTo(false)
+ContactData::ContactData(QUuid uuid) :
+		UuidStorableObject("Contact", ContactManager::instance()),
+		Uuid(uuid.isNull() ? QUuid::createUuid() : uuid), Ignored(false), Blocked(false), OfflineTo(false)
 {
 }
 
@@ -40,16 +41,6 @@ ContactData * ContactData::loadFromStorage(StoragePoint *contactStoragePoint)
 	result->loadConfiguration();
 
 	return result;
-}
-
-StoragePoint * ContactData::createStoragePoint() const
-{
-	StoragePoint *parent = ContactManager::instance()->storage();
-	if (!parent)
-		return 0;
-
-	QDomElement contactNode = parent->storage()->getUuidNode(parent->point(), "Contact", Uuid.toString());
-	return new StoragePoint(parent->storage(), contactNode);
 }
 
 StoragePoint * ContactData::storagePointForAccountData(Account *account)

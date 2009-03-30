@@ -18,13 +18,19 @@
 
 class StorableObject
 {
+	StorableObject *Parent;
+	QString NodeName;
 	StoragePoint *Storage;
 
 protected:
-	virtual StoragePoint * createStoragePoint() const = 0;
+	virtual StoragePoint * createStoragePoint();
 
 public:
-	StorableObject() : Storage(0) {}
+	StorableObject();
+	StorableObject(const QString &nodeName, StorableObject *parent);
+
+	StorableObject * parent() { return Parent; }
+	QString nodeName() { return NodeName; }
 
 	StoragePoint * storage();
 	void removeFromStorage();

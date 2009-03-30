@@ -66,7 +66,7 @@ private:
 	FileTransferError TransferError;
 
 protected:
-	virtual StoragePoint * createStoragePoint() const;
+	virtual StoragePoint * createStoragePoint();
 
 	void changeFileTransferStatus(FileTransferStatus transferStatus);
 	void changeFileTransferError(FileTransferError transferError);

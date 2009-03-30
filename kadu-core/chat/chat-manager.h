@@ -35,7 +35,7 @@ class ChatManager : public QObject, public StorableObject, public AccountsAwareO
 
 	ChatManager() {}
 protected:
-	virtual StoragePoint * createStoragePoint() const;
+	virtual StoragePoint * createStoragePoint();
 
 	virtual void accountRegistered(Account *account);
 	virtual void accountUnregistered(Account *account);

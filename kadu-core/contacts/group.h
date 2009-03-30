@@ -31,7 +31,7 @@ friend class GroupManager;
 	bool ShowName;
 
 protected:
-	virtual StoragePoint * createStoragePoint() const;
+	virtual StoragePoint * createStoragePoint();
 
 public:
 	static Group * loadFromStorage(StoragePoint *groupStoragePoint);

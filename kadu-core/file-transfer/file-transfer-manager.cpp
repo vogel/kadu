@@ -38,7 +38,7 @@ FileTransferManager::~FileTransferManager()
 	triggerAllAccountsUnregistered();
 }
 
-StoragePoint * FileTransferManager::createStoragePoint() const
+StoragePoint * FileTransferManager::createStoragePoint()
 {
 	return new StoragePoint(xml_config_file, xml_config_file->getNode("FileTransfersNew"));
 }

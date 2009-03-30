@@ -39,7 +39,7 @@ class KADUAPI ContactManager : public QObject, public StorableObject
 	void importConfiguration(XmlConfigFile *configurationStorage);
 
 protected:
-	virtual StoragePoint * createStoragePoint() const;
+	virtual StoragePoint * createStoragePoint();
 
 public:
 	static ContactManager * instance();

@@ -17,7 +17,7 @@
 #include <QtCore/QUuid>
 #include <QtXml/QDomElement>
 
-#include "configuration/storable-object.h"
+#include "configuration/uuid-storable-object.h"
 
 #include "exports.h"
 
@@ -31,7 +31,7 @@ class ContactModuleData;
 class Group;
 class XmlConfigFile;
 
-class KADUAPI ContactData : public QSharedData, public StorableObject
+class KADUAPI ContactData : public QSharedData, public UuidStorableObject
 {
 public:
 	enum ContactGender
@@ -65,9 +65,6 @@ private:
 	bool Blocked;
 	bool OfflineTo;
 
-protected:
-	virtual StoragePoint * createStoragePoint() const;
-
 public:
 	static ContactData * loadFromStorage(StoragePoint *contactStoragePoint);
 
@@ -81,7 +78,7 @@ public:
 	StoragePoint * storagePointForAccountData(Account *account);
 	StoragePoint * storagePointForModuleData(const QString &module, bool create = false);
 
-	QUuid uuid() { return Uuid; }
+	virtual QUuid uuid() { return Uuid; }
 	QString id(Account *account);
 
 	Account * prefferedAccount();

@@ -27,7 +27,7 @@ QUuid Chat::uuid() const
 	return QUuid();
 }
 
-StoragePoint * Chat::createStoragePoint() const
+StoragePoint * Chat::createStoragePoint()
 {
 	StoragePoint *parent = ChatManager::instance()->storage();
 	if (!parent)

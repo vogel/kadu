@@ -40,7 +40,7 @@ private slots:
 	void incomingFileTransfer(FileTransfer *fileTransfer);
 
 protected:
-	virtual StoragePoint * createStoragePoint() const;
+	virtual StoragePoint * createStoragePoint();
 
 	virtual void accountRegistered(Account *account);
 	virtual void accountUnregistered(Account *account);

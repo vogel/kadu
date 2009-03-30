@@ -34,7 +34,7 @@ Group * Group::loadFromStorage(StoragePoint *groupStoragePoint)
 	return group;
 }
 
-StoragePoint * Group::createStoragePoint() const
+StoragePoint * Group::createStoragePoint()
 {
 	StoragePoint *parent = GroupManager::instance()->storage();
 	if (!parent)

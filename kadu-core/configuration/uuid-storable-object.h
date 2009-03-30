@@ -7,38 +7,24 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef CHAT_H
-#define CHAT_H
+#ifndef UUID_STORABLE_OBJECT_H
+#define UUID_STORABLE_OBJECT_H
 
-#include <QtCore/QObject>
 #include <QtCore/QUuid>
 
-#include "accounts/account.h"
-#include "configuration/storable-object.h"
-#include "contacts/contact-list.h"
+#include "storable-object.h"
 
-class XmlConfigFile;
-
-class Chat : public StorableObject
+class UuidStorableObject : public StorableObject
 {
-	Account *CurrentAccount;
-	QUuid Uuid;
 
 protected:
 	virtual StoragePoint * createStoragePoint();
 
 public:
-	Chat(Account *parentAccount, QUuid uuid = QUuid());
-	virtual ~Chat();
+	UuidStorableObject(const QString &nodeName, StorableObject *parent);
 
-	QUuid uuid() const;
-	Account *account() { return CurrentAccount; }
-	static Chat * loadFromStorage(StoragePoint *conferenceStoragePoint);
-	virtual ContactList currentContacts() { return ContactList(); }
-
-	virtual void loadConfiguration();
-	virtual void storeConfiguration();
+	virtual QUuid uuid() = 0;
 
 };
 
-#endif // CHAT_H
+#endif // UUID_STORABLE_OBJECT_H

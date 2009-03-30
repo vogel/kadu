@@ -9,6 +9,29 @@
 
 #include "storable-object.h"
 
+StorableObject::StorableObject() :
+		Parent(0), Storage(0)
+{
+}
+
+StorableObject::StorableObject(const QString &nodeName, StorableObject *parent) :
+		Parent(parent), NodeName(nodeName), Storage(0)
+{
+}
+
+StoragePoint * StorableObject::createStoragePoint()
+{
+	if (!Parent)
+		return 0;
+
+	StoragePoint *parentStoragePoint = Parent->storage();
+	if (!parentStoragePoint)
+		return 0;
+
+	QDomElement node = parentStoragePoint->storage()->getNode(parentStoragePoint->point(), NodeName);
+	return new StoragePoint(parentStoragePoint->storage(), node);
+}
+
 StoragePoint * StorableObject::storage()
 {
 	if (!Storage)

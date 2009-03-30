@@ -62,7 +62,7 @@ FileTransfer * FileTransfer::loadFromStorage(StoragePoint *fileTransferStoragePo
 	return ft;
 }
 
-StoragePoint * FileTransfer::createStoragePoint() const
+StoragePoint * FileTransfer::createStoragePoint()
 {
 	StoragePoint *parent = FileTransferManager::instance()->storage();
 	if (!parent)

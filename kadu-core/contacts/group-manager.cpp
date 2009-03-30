@@ -39,7 +39,7 @@ GroupManager::~GroupManager()
 {
 }
 
-StoragePoint * GroupManager::createStoragePoint() const
+StoragePoint * GroupManager::createStoragePoint()
 {
 	QDomElement groupsNode = xml_config_file->getNode("Groups");
 	return new StoragePoint(xml_config_file, groupsNode);

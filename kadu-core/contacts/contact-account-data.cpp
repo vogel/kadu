@@ -22,7 +22,7 @@ ContactAccountData::ContactAccountData(Contact contact, Account *account, const 
 		loadConfiguration();
 }
 
-StoragePoint * ContactAccountData::createStoragePoint() const
+StoragePoint * ContactAccountData::createStoragePoint()
 {
 	return ContactAccount
 		? OwnerContact.storagePointForAccountData(ContactAccount)
