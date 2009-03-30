@@ -18,7 +18,7 @@
 #include "contacts/contact-list-configuration-helper.h"
 #include "contacts/contact-manager.h"
 #include "icons_manager.h"
-#include "protocols/protocol_factory.h"
+#include "protocols/protocol-factory.h"
 #include "protocols/status.h"
 
 #include "protocol.h"

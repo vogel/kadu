@@ -30,8 +30,6 @@ class GaduAccount : public Account
 	GaduOpenChatWithRunner *OpenChatRunner;
 
 public:
-	static GaduAccount * loadFromStorage(StoragePoint *storagePoint);
-
 	explicit GaduAccount(const QUuid &uuid = QUuid());
 	virtual ~GaduAccount();
 

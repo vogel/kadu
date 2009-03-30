@@ -44,8 +44,8 @@ protected:
 public:
 	static ContactManager * instance();
 
-	void loadConfiguration(XmlConfigFile *configurationStorage);
-	void storeConfiguration(XmlConfigFile *configurationStorage);
+	void loadConfiguration();
+	void storeConfiguration();
 
 	ContactList contacts() const { return Contacts; }
 	ContactList contacts(Account *account, bool includeAnonymous = false) const;

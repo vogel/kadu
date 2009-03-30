@@ -343,7 +343,7 @@ void Core::loadConfiguration()
 	pending.loadConfiguration(xml_config_file);
 
 	GroupManager::instance()->loadConfiguration();
-	ContactManager::instance()->loadConfiguration(xml_config_file);
+	ContactManager::instance()->loadConfiguration();
 }
 
 void Core::storeConfiguration()
@@ -358,7 +358,7 @@ void Core::storeConfiguration()
 // 		IgnoredManager::writeToConfiguration();
 
 	GroupManager::instance()->storeConfiguration();
-	ContactManager::instance()->storeConfiguration(xml_config_file);
+	ContactManager::instance()->storeConfiguration();
 	AccountManager::instance()->storeConfiguration(QString::null); // store all accounts
 
 	Protocol *gadu = AccountManager::instance()->defaultAccount()->protocol();

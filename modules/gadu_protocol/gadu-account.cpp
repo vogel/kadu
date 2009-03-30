@@ -15,18 +15,6 @@
 
 #include "gadu-account.h"
 
-GaduAccount * GaduAccount::loadFromStorage(StoragePoint *storagePoint)
-{
-	if (!storagePoint || !storagePoint->storage())
-		return 0;
-
-	GaduAccount *result = new GaduAccount();
-	result->setStorage(storagePoint);
-	result->loadConfiguration();
-
-	return result;
-}
-
 GaduAccount::GaduAccount(const QUuid &uuid) :
 	Account(uuid), AllowDcc(true), DccIP(QHostAddress()), DccExternalIP(QHostAddress()), DccIpDetect(true),
         DccPort(0), DccExternalPort(0), DccLocalPort(0), RemoveCompletedTransfers(0), DccForwarding(0)

@@ -11,8 +11,8 @@
 #include "contacts/contact-account-data.h"
 #include "contacts/contact-manager.h"
 #include "protocols/protocol.h"
-#include "protocols/protocol_factory.h"
-#include "protocols/protocols_manager.h"
+#include "protocols/protocol-factory.h"
+#include "protocols/protocols-manager.h"
 #include "misc/misc.h"
 #include "xml_config_file.h"
 

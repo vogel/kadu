@@ -23,9 +23,9 @@
 #include "contacts/model/contacts-model-proxy.h"
 
 #include "protocols/protocol.h"
-#include "protocols/protocol_factory.h"
+#include "protocols/protocol-factory.h"
 #include "protocols/protocol-menu-manager.h"
-#include "protocols/protocols_manager.h"
+#include "protocols/protocols-manager.h"
 
 #include "action.h"
 #include "icons_manager.h"

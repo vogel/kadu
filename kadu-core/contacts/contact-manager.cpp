@@ -55,15 +55,18 @@ void ContactManager::importConfiguration(XmlConfigFile *configurationStorage)
 	}
 }
 
-void ContactManager::loadConfiguration(XmlConfigFile *configurationStorage)
+void ContactManager::loadConfiguration()
 {
-	QDomElement contactsNewNode = configurationStorage->getNode("ContactsNew", XmlConfigFile::ModeFind);
-	if (contactsNewNode.isNull())
+	if (xml_config_file->getNode("ContactsNew", XmlConfigFile::ModeFind).isNull())
 	{
-		importConfiguration(configurationStorage);
+		importConfiguration(xml_config_file);
 		return;
 	}
 
+	if (!isValidStorage())
+		return;
+
+	QDomElement contactsNewNode = storage()->point();
 	QDomNodeList contactsNodes = contactsNewNode.elementsByTagName("Contact");
 
 	int count = contactsNodes.count();
@@ -74,13 +77,16 @@ void ContactManager::loadConfiguration(XmlConfigFile *configurationStorage)
 		if (contactElement.isNull())
 			continue;
 
-		StoragePoint *contactStoragePoint = new StoragePoint(configurationStorage, contactElement);
+		StoragePoint *contactStoragePoint = new StoragePoint(storage()->storage(), contactElement);
 		addContact(Contact::loadFromStorage(contactStoragePoint));
 	}
 }
 
-void ContactManager::storeConfiguration(XmlConfigFile *configurationStorage)
+void ContactManager::storeConfiguration()
 {
+	if (!isValidStorage())
+		return;
+
 	foreach (Contact contact, Contacts)
 		if (!contact.isNull() && !contact.isAnonymous())
 			contact.storeConfiguration();
