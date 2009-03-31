@@ -21,7 +21,9 @@ class PCSpeaker : public Notifier, public ConfigurationUiHandler
 		void createDefaultConfiguration();
 
 	private:
+#ifdef Q_WS_X11
 		Display *xdisplay;
+#endif
 		int volume;
 		void ParseStringToSound(QString linia, int tablica[21], int tablica2[20]);
 		void beep(int pitch, int duration);
