@@ -8,7 +8,7 @@
  ***************************************************************************/
 
 #include "protocols/protocol.h"
-#include "protocols/protocol_factory.h"
+#include "protocols/protocol-factory.h"
 
 #include "account-notification.h"
 

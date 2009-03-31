@@ -23,8 +23,8 @@
 #include "gui/widgets/configuration/configuration-widget.h"
 
 #include "protocols/protocol.h"
-#include "protocols/protocol_factory.h"
-#include "protocols/protocols_manager.h"
+#include "protocols/protocol-factory.h"
+#include "protocols/protocols-manager.h"
 
 #include "icons_manager.h"
 

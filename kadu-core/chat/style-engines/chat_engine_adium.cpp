@@ -22,7 +22,7 @@
 #include "gui/widgets/chat_widget.h"
 #include "gui/widgets/preview.h"
 
-#include "protocols/protocol_factory.h"
+#include "protocols/protocol-factory.h"
 
 #include "kadu_parser.h"
 #include "misc/misc.h"
