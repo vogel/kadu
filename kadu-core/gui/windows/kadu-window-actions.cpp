@@ -553,7 +553,8 @@ void KaduWindowActions::configurationActionActivated(QAction *sender, bool toggl
 
 void KaduWindowActions::yourAccountsActionActivated(QAction *sender, bool toggled)
 {
-	(new PersonalInfoDialog(AccountManager::instance()->defaultAccount()->protocol(), dynamic_cast<QWidget *>(parent())))->show();
+	if (AccountManager::instance()->defaultAccount() && AccountManager::instance()->defaultAccount()->protocol())
+		(new PersonalInfoDialog(AccountManager::instance()->defaultAccount()->protocol(), dynamic_cast<QWidget *>(parent())))->show();
 }
 
 void KaduWindowActions::hideKaduActionActivated(QAction *sender, bool toggled)

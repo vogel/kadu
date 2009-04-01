@@ -70,7 +70,7 @@ StatusMenu::StatusMenu(QObject *parent)
 
 	ChangePrivateStatus = new QAction(tr("Private"), this);
 	ChangePrivateStatus->setCheckable(true);
-	connect(ChangePrivateStatus, SIGNAL(toggled(bool)), this, SLOT(changePrivateStatus(bool)));
+	connect(ChangePrivateStatus, SIGNAL(toggled(bool)), this, SLOT(changeStatusPrivate(bool)));
 
 	bool privateStatus = config_file.readBoolEntry("General", "PrivateStatus");
 	ChangePrivateStatus->setChecked(privateStatus);
