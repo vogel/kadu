@@ -136,6 +136,7 @@ void OSDHint::createLabels(const QPixmap &pixmap)
 	label->setTextInteractionFlags(Qt::NoTextInteraction);
 	label->setTextFormat(Qt::RichText);
 	label->setAlignment(Qt::AlignVCenter | Qt::AlignLeft);
+	label->setContentsMargins(10, 0, 0, 0);
 	labels->addWidget(label);
 }
 

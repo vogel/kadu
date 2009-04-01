@@ -84,7 +84,10 @@ OSDHintManager::OSDHintManager(QWidget *parent, const char *name)	: Notifier(par
 	connect(hint_timer, SIGNAL(timeout()), this, SLOT(oneSecond()));
 	connect(chat_manager, SIGNAL(chatWidgetActivated(ChatWidget *)), this, SLOT(chatWidgetActivated(ChatWidget *)));
 
-	const QString default_hints_syntax(QT_TRANSLATE_NOOP("OSDHintManager", "[<i>%s</i><br/>][<br/><b>Description:</b><br/>%d<br/><br/>][<i>Mobile:</i> <b>%m</b><br/>]"));
+	const QString default_hints_syntax(QT_TRANSLATE_NOOP("OSDHintManager", 
+		"<b>%a</b><br/>[<i>Gadu:</i> <b>%u</b><br/>][<i>Email:</i> <b>%e</b><br/>]"
+		"[<i>Phone:</i> <b>%m</b><br/>][<br/><b>Description:</b><br/>%d<br/><br/>]"));
+
 	if (config_file.readEntry("OSDHints", "MouseOverUserSyntax") == default_hints_syntax || config_file.readEntry("OSDHints", "MouseOverUserSyntax").isEmpty())
 		config_file.writeEntry("OSDHints", "MouseOverUserSyntax", tr(default_hints_syntax.ascii()));
 
@@ -537,7 +540,7 @@ void OSDHintManager::showToolTip(const QPoint &point, const UserListElement &use
 	QLabel *tipLabel = new QLabel(text, tipFrame);
 	tipLabel->setTextFormat(Qt::RichText);
 	tipLabel->setAlignment(Qt::AlignVCenter | Qt::AlignLeft);
-
+	tipLabel->setContentsMargins(10, 0, 0, 0);
 	lay->addWidget(tipLabel);
 
 	tipFrame->setFixedSize(tipLabel->sizeHint() + QSize(2 * FRAME_WIDTH, 2 * FRAME_WIDTH));

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS><TS version="1.1" language="hi">
+<!DOCTYPE TS><TS version="1.1" language="pl">
 <defaultcodec></defaultcodec>
 <context>
     <name>@default</name>
@@ -181,6 +181,10 @@
     <message>
         <source>[&lt;i&gt;%s&lt;/i&gt;&lt;br/&gt;][&lt;br/&gt;&lt;b&gt;Description:&lt;/b&gt;&lt;br/&gt;%d&lt;br/&gt;&lt;br/&gt;][&lt;i&gt;Mobile:&lt;/i&gt; &lt;b&gt;%m&lt;/b&gt;&lt;br/&gt;]</source>
         <translation>[&lt;i&gt;%s&lt;/i&gt;&lt;br/&gt;][&lt;br/&gt;&lt;b&gt;Opis:&lt;/b&gt;&lt;br/&gt;%d&lt;br/&gt;&lt;br/&gt;][&lt;i&gt;Telefon:&lt;/i&gt; &lt;b&gt;%m&lt;/b&gt;&lt;br/&gt;]</translation>
+    </message>
+    <message>
+        <source>&lt;b&gt;%a&lt;/b&gt;&lt;br/&gt;[&lt;i&gt;Gadu:&lt;/i&gt; &lt;b&gt;%u&lt;/b&gt;&lt;br/&gt;][&lt;i&gt;Email:&lt;/i&gt; &lt;b&gt;%e&lt;/b&gt;&lt;br/&gt;][&lt;i&gt;Phone:&lt;/i&gt; &lt;b&gt;%m&lt;/b&gt;&lt;br/&gt;][&lt;br/&gt;&lt;b&gt;Description:&lt;/b&gt;&lt;br/&gt;%d&lt;br/&gt;&lt;br/&gt;]</source>
+        <translation>&lt;b&gt;%a&lt;/b&gt;&lt;br/&gt;[&lt;i&gt;Gadu:&lt;/i&gt; &lt;b&gt;%u&lt;/b&gt;&lt;br/&gt;][&lt;i&gt;Email:&lt;/i&gt; &lt;b&gt;%e&lt;/b&gt;&lt;br/&gt;][&lt;i&gt;Telefon:&lt;/i&gt; &lt;b&gt;%m&lt;/b&gt;&lt;br/&gt;][&lt;br/&gt;&lt;b&gt;Opis:&lt;/b&gt;&lt;br/&gt;%d&lt;br/&gt;&lt;br/&gt;]</translation>
     </message>
     <message>
         <source>Dont hide</source>
