@@ -239,6 +239,12 @@ int main(int argc, char *argv[])
 			printVersion();
 			return 0;
 		}
+		else if (param == "--help")
+		{
+			printUsage();
+			printKaduOptions();
+			return 0;
+		}
 		else if (param == "--help-qt")
 		{
 			printUsage();
@@ -264,9 +270,7 @@ int main(int argc, char *argv[])
 		}
 		else
 		{
-			printUsage();
-			printKaduOptions();
-			return 1;
+			fprintf(stderr, "Ignoring unknown parameter '%s'\n", qApp->argv()[i]);
 		}
 	}
 
