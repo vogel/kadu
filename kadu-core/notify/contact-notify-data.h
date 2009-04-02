@@ -10,13 +10,13 @@
 #ifndef CONTACT_NOTIFY_DATA_H
 #define CONTACT_NOTIFY_DATA_H
 
-#include "contacts/contact-module-data.h"
+#include "modules/module-data.h"
 
 #define Property(type, name, capitalized_name) \
 	type name() const { return capitalized_name; } \
 	void set##capitalized_name(const type &name) { capitalized_name = name; }
 
-class ContactNotifyData : public ContactModuleData
+class ContactNotifyData : public ModuleData
 {
 	bool Notify;
 

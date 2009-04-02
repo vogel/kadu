@@ -54,3 +54,23 @@ void StorableObject::storeValue(const QString &name, const QVariant value)
 {
 	Storage->storage()->createTextNode(Storage->point(), name, value.toString());
 }
+
+void StorableObject::storeModuleData()
+{
+	foreach (ModuleData *moduleData, ModulesData.values())
+		moduleData->storeConfiguration();
+}
+
+StoragePoint * StorableObject::storagePointForModuleData(const QString &module, bool create)
+{
+	StoragePoint *parent = storage();
+	if (!parent || !parent->storage())
+		return 0;
+
+	QDomElement moduleDataNode = parent->storage()->getNamedNode(parent->point(), "ModuleData",
+			module, create ? XmlConfigFile::ModeGet : XmlConfigFile::ModeFind);
+	return moduleDataNode.isNull()
+		? 0
+		: new StoragePoint(parent->storage(), moduleDataNode);
+}
+

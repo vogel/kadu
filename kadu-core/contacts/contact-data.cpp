@@ -16,7 +16,6 @@
 
 #include "contacts/contact-account-data.h"
 #include "contacts/contact-manager.h"
-#include "contacts/contact-module-data.h"
 #include "contacts/group.h"
 #include "contacts/group-manager.h"
 
@@ -54,19 +53,6 @@ StoragePoint * ContactData::storagePointForAccountData(Account *account)
 	return accountDataNode.isNull()
 		? 0
 		: new StoragePoint(parent->storage(), accountDataNode);
-}
-
-StoragePoint * ContactData::storagePointForModuleData(const QString &module, bool create)
-{
-	StoragePoint *parent = storage();
-	if (!parent || !parent->storage())
-		return 0;
-
-	QDomElement moduleDataNode = parent->storage()->getNamedNode(parent->point(), "ContactModuleData",
-			module, create ? XmlConfigFile::ModeGet : XmlConfigFile::ModeFind);
-	return moduleDataNode.isNull()
-		? 0
-		: new StoragePoint(parent->storage(), moduleDataNode);
 }
 
 #undef Property
@@ -198,9 +184,7 @@ void ContactData::storeConfiguration()
 
 	foreach (ContactAccountData *accountData, AccountsData.values())
 		accountData->storeConfiguration();
-
-	foreach (ContactModuleData *moduleData, ModulesData.values())
-		moduleData->storeConfiguration();
+	storeModuleData();
 }
 
 void ContactData::addAccountData(ContactAccountData *accountData)
@@ -234,11 +218,6 @@ bool ContactData::hasStoredAccountData(Account *account)
 		return false;
 
 	return !sp->storage()->getUuidNode(sp->point(), "ContactAccountData", account->uuid().toString(), XmlConfigFile::ModeFind).isNull();
-}
-
-ContactModuleData * ContactData::moduleData(const QString &key)
-{
-	return 0;
 }
 
 QString ContactData::id(Account *account)

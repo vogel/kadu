@@ -17,7 +17,7 @@
 #include "contact-notify-data.h"
 
 ContactNotifyData::ContactNotifyData(StoragePoint *storage)
-	: ContactModuleData(storage)
+	: ModuleData(storage)
 {
 
 }

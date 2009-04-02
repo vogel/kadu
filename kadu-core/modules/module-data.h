@@ -7,20 +7,32 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "configuration/storage-point.h"
+#ifndef MODULE_DATA
+#define MODULE_DATA
 
-#include "contact-module-data.h"
+#include <QtNetwork/QHostAddress>
+#include <QtXml/QDomElement>
 
-ContactModuleData::ContactModuleData(StoragePoint *storage)
-	: Storage(storage)
+#include "exports.h"
+
+
+class Account;
+class StoragePoint;
+class XmlConfigFile;
+
+class KADUAPI ModuleData
 {
-}
+	StoragePoint *Storage;
 
-ContactModuleData::~ContactModuleData()
-{
-	if (Storage)
-	{
-		delete Storage;
-		Storage = 0;
-	}
-}
+protected:
+	StoragePoint * storage() const { return Storage; }
+
+public:
+	ModuleData(StoragePoint *storage);
+	virtual ~ModuleData();
+
+	virtual void storeConfiguration() const = 0;
+	virtual void loadFromStorage() = 0;
+};
+
+#endif

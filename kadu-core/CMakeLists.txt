@@ -29,7 +29,6 @@ set (kadu_SRCS
 	contacts/contact-list-configuration-helper.cpp
 	contacts/contact-list-mime-data-helper.cpp
 	contacts/contact-manager.cpp
-	contacts/contact-module-data.cpp
 	contacts/contacts-aware-object.cpp
 	contacts/group.cpp
 	contacts/group-manager.cpp
@@ -125,6 +124,8 @@ set (kadu_SRCS
 	misc/path-conversion.cpp
 	misc/token-dialog.cpp
 
+	modules/module-data.cpp
+
 	notify/account-notification.cpp
 	notify/contact-notify-data.cpp
 	notify/new_message_notification.cpp
@@ -207,7 +208,6 @@ set (kadu_MOC_SRCS
 	contacts/contact-data.h
 	contacts/contact-list.h
 	contacts/contact-manager.h
-	contacts/contact-module-data.h
 	contacts/contact-list-configuration-helper.h
 	contacts/group.h
 	contacts/group-manager.h
@@ -274,6 +274,8 @@ set (kadu_MOC_SRCS
 
 	misc/choose-description.h
 	misc/token-dialog.h
+
+	modules/module-data.h
 
 	notify/account-notification.h
 	notify/new_message_notification.h

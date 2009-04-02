@@ -14,6 +14,7 @@
 
 #include "xml_config_file.h"
 
+#include "modules/module-data.h"
 #include "storage-point.h"
 
 class StorableObject
@@ -21,6 +22,7 @@ class StorableObject
 	StorableObject *Parent;
 	QString NodeName;
 	StoragePoint *Storage;
+	QMap<QString, ModuleData *> ModulesData;
 
 protected:
 	virtual StoragePoint * createStoragePoint();
@@ -37,6 +39,7 @@ public:
 
 	void setStorage(StoragePoint *storage) { Storage = storage; }
 	bool isValidStorage() { return storage() && storage()->storage(); }
+	StoragePoint * storagePointForModuleData(const QString &module, bool create = false);
 
 template<class T>
 	T loadValue(const QString &name) const
@@ -48,8 +51,33 @@ template<class T>
 
 		return value.value<T>();
 	}
+	// TODO: 0.6.6 - check create and cache implementation
+template<class T>
+	T * moduleData(bool create = false, bool cache = false)
+	{
+		T *result = 0;
+		if (!cache)
+		{
+			result = new T(storagePointForModuleData(T::key(), create));
+			result->loadFromStorage();
+		}
+		else
+		{
+			if (!ModulesData.contains(T::key()))
+			{
+				result = new T(storagePointForModuleData(T::key(), create));
+				ModulesData[T::key()] = result;
+				result->loadFromStorage();
+			}
+			else
+				result = dynamic_cast<T *>(ModulesData[T::key()]);
+
+		}
+		return result;
+	}
 
 	void storeValue(const QString &name, const QVariant value);
+	void storeModuleData();
 
 };
 

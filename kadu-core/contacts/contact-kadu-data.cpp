@@ -17,7 +17,7 @@
 #include "contact-kadu-data.h"
 
 ContactKaduData::ContactKaduData(StoragePoint *storage)
-	: ContactModuleData(storage)
+	: ModuleData(storage)
 {
 }
 

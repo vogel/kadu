@@ -27,7 +27,6 @@
 
 class Account;
 class ContactAccountData;
-class ContactModuleData;
 class Group;
 class XmlConfigFile;
 
@@ -45,7 +44,6 @@ private:
 	QUuid Uuid;
 	QMap<QString, QString> CustomData;
 	QMap<Account *, ContactAccountData *> AccountsData;
-	QMap<QString, ContactModuleData *> ModulesData;
 
 	QString Display;
 	QString FirstName;
@@ -76,7 +74,6 @@ public:
 	void storeConfiguration();
 
 	StoragePoint * storagePointForAccountData(Account *account);
-	StoragePoint * storagePointForModuleData(const QString &module, bool create = false);
 
 	virtual QUuid uuid() { return Uuid; }
 	QString id(Account *account);
@@ -91,33 +88,6 @@ public:
 	ContactAccountData * accountData(Account *account);
 	QList<ContactAccountData *> accountDatas();
 	bool hasStoredAccountData(Account *account);
-
-	ContactModuleData * moduleData(const QString &key);
-
-	// TODO: 0.6.6 - check create and cache implementation
-template<class T>
-	T * moduleData(bool create = false, bool cache = false)
-	{
-		T *result = 0;
-		if (!cache)
-		{
-			result = new T(storagePointForModuleData(T::key(), create));
-			result->loadFromStorage();
-		}
-		else
-		{
-			if (!ModulesData.contains(T::key()))
-			{
-				result = new T(storagePointForModuleData(T::key(), create));
-				ModulesData[T::key()] = result;
-				result->loadFromStorage();
-			}
-			else
-				result = dynamic_cast<T *>(ModulesData[T::key()]);
-
-		}
-		return result;
-	}
 
 	// properties
 	bool isIgnored();
