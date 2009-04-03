@@ -129,16 +129,88 @@ void enableSignalHandling();
 void disableLock();
 bool isRuning(int);
 
+void printVersion()
+{
+	printf("Kadu %s Copyright (c) 2001-2009 Kadu Team\n"
+		"Compiled with Qt %s\nRunning on Qt %s\n",
+		VERSION, QT_VERSION_STR, qVersion());
+}
+
+void printUsage()
+{
+	printf("Usage: kadu [Qt Options] [General Options] [Options]\n\n"
+		"Kadu Instant Messenger\n");
+}
+
+void printKaduOptions()
+{
+	printf("\nGeneral Options:\n"
+		"  --help                     Print Kadu options\n"
+		"  --help-qt                  Print Qt options\n"
+		"  --help-all                 Print all options\n"
+		"  --version                  Print Kadu and Qt version\n"
+		"\nOptions:\n"
+		"  --debug <mask>             Set debugging mask\n"
+		"  --config-dir <path>        Set configuration directory\n"
+		"                             (overwrites CONFIG_DIR variable)\n"
+		"  gg://<number>              Open chat with GG number\n");
+}
+
+void printQtOptions()
+{
+	printf("\nQt Options:\n"
+#ifdef Q_WS_X11
+		"  -display <displayname>     Use the X-server display 'displayname'\n"
+#elif defined(Q_WS_QWS)
+		"  -display <displayname>     Use the QWS display 'displayname'\n"
+#else
+#endif
+		"  -session <sessionId>       Restore the application for the given 'sessionId'\n"
+		"  -cmap                      Causes the application to install a private color\n"
+		"                             map on an 8-bit display\n"
+		"  -ncols <count>             Limits the number of colors allocated in the color\n"
+		"                             cube on an 8-bit display, if the application is\n"
+		"                             using the QApplication::ManyColor color \n"
+		"                             specification\n"
+		"  -nograb                    Tells Qt to never grab the mouse or the keyboard\n"
+		"  -dograb                    Running under a debugger can cause an implicit\n"
+		"                             -nograb, use -dograb to override\n"
+		"  -sync                      Switches to synchronous mode for debugging\n"
+		"  -fn, -font <fontname>      defines the application font\n"
+		"  -bg, -background <color>   Sets the default background color and an\n"
+		"                             application palette (light and dark shades are\n"
+		"                             calculated)\n"
+		"  -fg, -foreground <color>   Sets the default foreground color\n"
+		"  -btn, -button <color>      Sets the default button color\n"
+		"  -name <name>               Sets the application name\n"
+		"  -title <title>             Sets the application title (caption)\n"
+#ifdef Q_WS_X11
+		"  -visual TrueColor          Forces the application to use a TrueColor visual on\n"
+		"                             an 8-bit display\n"
+		"  -inputstyle <inputstyle>   Sets XIM (X Input Method) input style. Possible\n"
+		"                             values are onthespot, overthespot, offthespot and\n"
+		"                             root\n"
+		"  -im <XIM server>           Set XIM server\n"
+		"  -noxim                     Disable XIM\n"
+#endif
+#ifdef Q_WS_QWS
+		"  -qws                       Forces the application to run as QWS Server\n"
+#endif
+		"  -reverse                   Mirrors the whole layout of widgets\n");
+}
+
 int main(int argc, char *argv[])
 {
 	int ggnumber(0);
 	time_t sec;
 	int msec;
+	int i;
+	char *d;
+	QString param;
 	time_t startTimeT = time(0);
 	beforeExecTime = endingTime = exitingTime = 0;
 	getTime(&sec, &msec);
 	startTime = (sec % 1000) * 1000 + msec;
-
 	// na Windowsie to nie ma znaczenia
 #ifndef Q_WS_WIN
 	char *env_lang = getenv("LANG");
@@ -154,26 +226,67 @@ int main(int argc, char *argv[])
 	}
 
 #endif
+        debug_mask = -2;
 
 	kdebugm(KDEBUG_INFO, "before creation of new KaduApplication\n");
 	new KaduApplication(argc, argv);
 	kdebugm(KDEBUG_INFO, "after creation of new KaduApplication\n");
 
-	debug_mask = -1;
-	qInstallMsgHandler(kaduQtMessageHandler);
-	xml_config_file = new XmlConfigFile();
-	if (argc > 1)
+        for (i = 1; i < qApp->argc(); ++i)
 	{
-		ggnumber = QString(argv[1]).remove("gg:").remove("/").toInt();
-		if (ggnumber < 0)
-			ggnumber = 0;
-	}
+                param = qApp->argv()[i];
+                if (param == "--version")
+                {
+                        printVersion();
+                        return 0;
+                }
+                else if (param == "--help")
+                {
+                        printUsage();
+                        printKaduOptions();
+                        return 0;
+                }
+                else if (param == "--help-qt")
+                {
+                        printUsage();
+                        printQtOptions();
+                        return 0;
+                }
+                else if (param == "--help-all")
+                {
+                        printUsage();
+                        printKaduOptions();
+                        printQtOptions();
+                        return 0;
+                }
+                else if ((param == "--debug") && (argc > i + 1))
+                        debug_mask = atol(argv[++i]);
+                else if ((param == "--config-dir") && (argc > i + 1))
+                        setenv("CONFIG_DIR", argv[++i], 1);
+                else if (param.contains("gg:"))
+                {
+                        ggnumber = QString(argv[1]).remove("gg:").remove("/").toInt();
+                        if (ggnumber < 0)
+                                ggnumber = 0;
+                }
+                else
+                {
+                        fprintf(stderr, "Ignoring unknown parameter '%s'\n", qApp->argv()[i]);
+                }
 
-	config_file_ptr = new ConfigFile(ggPath(QString("kadu.conf")));
-	debug_mask = config_file.readNumEntry("General", "DEBUG_MASK");
-	char *d = getenv("DEBUG_MASK");
-	if (d)
-		debug_mask = atol(d);
+	}
+        qInstallMsgHandler(kaduQtMessageHandler);
+        xml_config_file = new XmlConfigFile();
+
+        config_file_ptr = new ConfigFile(ggPath(QString("kadu.conf")));
+        if (debug_mask == -2)
+        {
+                debug_mask = config_file.readNumEntry("General", "DEBUG_MASK", -1);
+                d = getenv("DEBUG_MASK");
+                if (d)
+                        debug_mask = atol(d);
+        }
+
 
 	bool saveStdErr = config_file.readBoolEntry("General", "SaveStdErr");
 	d = getenv("SAVE_STDERR");
