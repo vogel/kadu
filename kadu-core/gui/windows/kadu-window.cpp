@@ -289,13 +289,11 @@ void KaduWindow::updateInformationPanel()
 
 void KaduWindow::closeEvent(QCloseEvent *e)
 {
+        e->ignore();
 	if (Docked)
-	{
-		e->ignore();
 		hide();
-	}
 	else
-		e->accept();
+                qApp->quit();
 }
 
 void KaduWindow::customEvent(QEvent *e)
