@@ -1486,7 +1486,7 @@ Zbyt wiele prób połączeń z niepoprawnym hasłem</translation>
         <source>&amp;Exit Kadu</source>
         <translation>&amp;Zakończ Kadu</translation>
     </message>
-	<message>
+    <message>
         <source>Show Pending Messages</source>
         <translation>Pokaż otrzymane wiadomości</translation>
     </message>

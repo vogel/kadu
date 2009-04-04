@@ -1465,9 +1465,10 @@ Too many attempts with bad password</source>
         <source>&amp;Exit Kadu</source>
         <translation>&amp;Sortir de  Kadu</translation>
     </message>
+    <message>
 	<source>Show Pending Messages</source>
-		<translation type="unfinished"></translation>
-	</message>
+	<translation type="unfinished"></translation>
+    </message>
     <message>
         <source>Notify about user</source>
         <translation>Renseigne sur le contact</translation>
