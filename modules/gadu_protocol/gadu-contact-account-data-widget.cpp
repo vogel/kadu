@@ -21,8 +21,9 @@
 #include "gadu-contact-account-data-widget.h"
 
 GaduContactAccountDataWidget::GaduContactAccountDataWidget(GaduContactAccountData *contactAccountData, QWidget *parent) :
-		ContactAccountDataWidget(new GaduContactAccountDataManager(contactAccountData, this),
-		contactAccountData, parent), Data(contactAccountData)
+		ContactAccountDataWidget(new GaduContactAccountDataManager(contactAccountData, parent),
+			contactAccountData, parent),
+		Data(contactAccountData)
 {
 	setAttribute(Qt::WA_DeleteOnClose);
 

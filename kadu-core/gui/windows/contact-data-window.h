@@ -74,6 +74,9 @@ class KADUAPI ContactDataWindow : public QWidget
 	void createGui();
 	void createTabs(QLayout *layout);
 	void createContactTab(QTabWidget *tabWidget);
+	void createGroupsTab(QTabWidget *tabWidget);;
+	void createAccountsTabs(QTabWidget *tabWidget);
+	void createAccountTab(Account *account, QTabWidget *tabWidget);
 	void createButtons(QLayout *layout);
 
 	void keyPressEvent(QKeyEvent *);

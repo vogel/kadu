@@ -25,7 +25,7 @@ class GaduContactAccountDataWidget : public ContactAccountDataWidget
 	void createGui();
 
 public:
-	GaduContactAccountDataWidget(GaduContactAccountData *contactAccountData, QWidget *parent = 0);
+	explicit GaduContactAccountDataWidget(GaduContactAccountData *contactAccountData, QWidget *parent = 0);
 	~GaduContactAccountDataWidget();
 
 };

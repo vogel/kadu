@@ -147,6 +147,8 @@ void ContactDataWindow::createTabs(QLayout *layout)
 	QTabWidget *tabWidget = new QTabWidget(this);
 
 	createContactTab(tabWidget);
+	createGroupsTab(tabWidget);
+	createAccountsTabs(tabWidget);
 	layout->addWidget(tabWidget);
 }
 
@@ -159,6 +161,38 @@ void ContactDataWindow::createContactTab(QTabWidget *tabWidget)
 	ConfigurationWidgets.append(contactConfiguration);
 
 	tabWidget->addTab(contactConfiguration, tr("General"));
+}
+
+void ContactDataWindow::createGroupsTab(QTabWidget *tabWidget)
+{
+}
+
+void ContactDataWindow::createAccountsTabs(QTabWidget *tabWidget)
+{
+	foreach (Account *account, CurrentContact.accounts())
+		createAccountTab(account, tabWidget);
+}
+
+void ContactDataWindow::createAccountTab(Account *account, QTabWidget *tabWidget)
+{
+	if (!account || !account->protocol())
+		return;
+
+	ProtocolFactory *protocolFactory = account->protocol()->protocolFactory();
+	ContactAccountData *contactAccountData = CurrentContact.accountData(account);
+
+	if (!contactAccountData || !protocolFactory)
+		return;
+
+	ContactAccountDataWidget *contactAccountDataWidget = protocolFactory->newContactAccountDataWidget(contactAccountData, this);
+	if (!contactAccountDataWidget)
+		return;
+
+	contactAccountDataWidget->setSizePolicy(QSizePolicy(QSizePolicy::Minimum, QSizePolicy::Expanding));
+	contactAccountDataWidget->loadConfiguration();
+
+	ConfigurationWidgets.append(contactAccountDataWidget);
+	tabWidget->addTab(contactAccountDataWidget, account->name());
 }
 
 void ContactDataWindow::createButtons(QLayout *layout)

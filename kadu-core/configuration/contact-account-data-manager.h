@@ -22,7 +22,7 @@ protected:
 	ContactAccountData * data() { return Data; }
 
 public:
-	ContactAccountDataManager(ContactAccountData *data, QObject *parent = 0);
+	explicit ContactAccountDataManager(ContactAccountData *data, QObject *parent = 0);
 
 	virtual void writeEntry(const QString &section, const QString &name, const QVariant &value);
 	virtual QVariant readEntry(const QString &section, const QString &name);
