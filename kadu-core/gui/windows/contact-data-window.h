@@ -7,13 +7,14 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef CONTACT_DATA_WIDGET_H
-#define CONTACT_DATA_WIDGET_H
+#ifndef CONTACT_DATA_WINDOW_H
+#define CONTACT_DATA_WINDOW_H
 
 #include <QtCore/QList>
 #include <QtCore/QMap>
 #include <QtGui/QWidget>
 
+#include "configuration/configuration-window-data-manager.h"
 #include "contacts/contact.h"
 
 #include "exports.h"
@@ -28,7 +29,7 @@ class QScrollArea;
 class QTabWidget;
 class QVBoxLayout;
 
-class CreateNotifier;
+class ConfigurationWidget;
 class Contact;
 class ContactAccountDataWidget;
 
@@ -42,7 +43,9 @@ class KADUAPI ContactDataWindow : public QWidget
 {
 	Q_OBJECT
 
-	Contact User;
+	Contact CurrentContact;
+	QList<ConfigurationWidget *> ConfigurationWidgets;
+
 	Account *UserAccount;
 	QLineEdit *e_firstname;
 	QLineEdit *e_lastname;
@@ -68,9 +71,17 @@ class KADUAPI ContactDataWindow : public QWidget
 
 	QList<ContactAccountDataWidget *> dataWidgets;
 
+	void createGui();
+	void createTabs(QLayout *layout);
+	void createContactTab(QTabWidget *tabWidget);
+	void createButtons(QLayout *layout);
+
 	void keyPressEvent(QKeyEvent *);
 
 private slots:
+	void update();
+	void updateAndClose();
+
 	/**
 		\fn void resultsReady(const QHostInfo &host)
 		Ustawia warto�� pola DNS na znalezion� nazw� domeny.
@@ -90,6 +101,16 @@ private slots:
 	void scrollToBottom();
 		
 protected:
+
+	class Empty : public ConfigurationWindowDataManager
+	{
+
+	protected:
+		virtual QVariant readEntry(const QString &section, const QString &name) { return ""; }
+		virtual void writeEntry(const QString &section, const QString &name, const QVariant &value) {}
+
+	};
+
 	/**
 		\fn void setupTab1()
 		Tworzy pierwsz� zak�adk�.
@@ -110,13 +131,6 @@ protected:
 
 public:
 	/**
-		\var static CreateNotifier createNotifier
-		Statyczny obiekt wysy�aj�cy sygna� CreateNotifier::objectCreated
-		je�li powstanie nowa instancja okienka.
-	**/
-	static CreateNotifier createNotifier;
-
-	/**
 		\fn UserInfo(const QString &altnick, bool addUser = false, QDialog* parent=0, const char *name=0)
 		Konstruktor tworz�cy okno dialogowe z informacjami o danym kontakcie.
 		\param altnick pseudonim kontaktu wy�wietlany na li�cie.
@@ -124,12 +138,12 @@ public:
 		\param parent wska�nik do obiektu stanowi�cego rodzica. Domy�lnie 0.
 		\param name nazwa kontrolki. Domy�lnie 0.
 	**/
-	ContactDataWindow(Contact user, QWidget *parent = 0);
-	~ContactDataWindow();
+	ContactDataWindow(Contact contact, QWidget *parent = 0);
+	virtual ~ContactDataWindow();
 
 	QTabWidget *tabs() { return tw_main; }
 	QList<ContactAccountDataWidget *> widgets() { return dataWidgets; }
-	Contact user() const { return User; }
+	Contact contact() const { return CurrentContact; }
 
 public slots:
 	/**
@@ -144,4 +158,4 @@ signals:
 
 };
 
-#endif
+#endif // CONTACT_DATA_WINDOW_H

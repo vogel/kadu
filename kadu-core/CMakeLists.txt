@@ -106,6 +106,7 @@ set (kadu_SRCS
 
 	gui/windows/chat_window.cpp
 	gui/windows/configuration-window.cpp
+	gui/windows/contact-data-manager.cpp
 	gui/windows/contact-data-window.cpp
 	gui/windows/group-properties-window.cpp
 	gui/windows/kadu-window.cpp
@@ -263,6 +264,7 @@ set (kadu_MOC_SRCS
 
 	gui/windows/chat_window.h
 	gui/windows/configuration-window.h
+	gui/windows/contact-data-manager.h
 	gui/windows/contact-data-window.h
 	gui/windows/group-properties-window.h
 	gui/windows/kadu-window.h

@@ -9,6 +9,7 @@
 
 #include <QtCore/QTimer>
 #include <QtGui/QCheckBox>
+#include <QtGui/QDialogButtonBox>
 #include <QtGui/QIntValidator>
 #include <QtGui/QKeyEvent>
 #include <QtGui/QLabel>
@@ -29,6 +30,7 @@
 #include "contacts/group-manager.h"
 
 #include "gui/widgets/contact-account-data-widget.h"
+#include "gui/windows/contact-data-manager.h"
 
 #include "protocols/protocol.h"
 #include "protocols/protocol-factory.h"
@@ -42,18 +44,21 @@
 
 #include "contact-data-window.h"
 
-ContactDataWindow::ContactDataWindow(Contact user, QWidget *parent)
-	: QWidget(parent, Qt::Dialog), User(user),
+ContactDataWindow::ContactDataWindow(Contact contact, QWidget *parent)
+	: QWidget(parent, Qt::Dialog), CurrentContact(contact),
 	e_firstname(0), e_lastname(0), e_nickname(0), e_display(0), e_mobile(0), e_id(0),
 	e_addr(0), e_ver(0), e_email(0), e_dnsname(0), c_blocking(0), c_offtouser(0),
 	c_notify(0), pb_addapply(0), tw_main(0), groups(), newGroup(0), groupsWidget(0), groupsLayout(0)
 {
 	kdebugf();
 
-	UserAccount = User.prefferedAccount();
-
 	setAttribute(Qt::WA_DeleteOnClose);
 	setWindowModality(Qt::WindowModal);
+
+	createGui();
+
+	UserAccount = CurrentContact.prefferedAccount();
+	return;
 
 	// create main QLabel widgets (icon and app info)
 	QWidget *left = new QWidget;
@@ -88,7 +93,7 @@ ContactDataWindow::ContactDataWindow(Contact user, QWidget *parent)
 	// create buttons and fill icon and app info
 	QWidget *bottom = new QWidget;
 
-	if (User.isAnonymous())
+	if (CurrentContact.isAnonymous())
 	{
 		setWindowTitle(tr("Add user"));
 		l_icon->setPixmap(icons_manager->loadPixmap("AddUserWindowIcon"));
@@ -96,7 +101,7 @@ ContactDataWindow::ContactDataWindow(Contact user, QWidget *parent)
 	}
 	else
 	{
-		setWindowTitle(tr("User info on %1").arg(User.display()));
+		setWindowTitle(tr("User info on %1").arg(CurrentContact.display()));
 		l_icon->setPixmap(icons_manager->loadPixmap("ManageUsersWindowIcon"));
 		pb_addapply = new QPushButton(icons_manager->loadIcon("UpdateUserButton"), tr("Update"));
 	}
@@ -120,6 +125,70 @@ ContactDataWindow::ContactDataWindow(Contact user, QWidget *parent)
 
 	loadWindowGeometry(this, "General", "ManageUsersDialogGeometry", 0, 50, 425, 500);
 	kdebugf2();
+}
+
+ContactDataWindow::~ContactDataWindow()
+{
+	kdebugf();
+ 	saveWindowGeometry(this, "General", "ManageUsersDialogGeometry");
+	kdebugf2();
+}
+
+void ContactDataWindow::createGui()
+{
+	QVBoxLayout *layout = new QVBoxLayout(this);
+
+	createTabs(layout);
+	createButtons(layout);
+}
+
+void ContactDataWindow::createTabs(QLayout *layout)
+{
+	QTabWidget *tabWidget = new QTabWidget(this);
+
+	createContactTab(tabWidget);
+	layout->addWidget(tabWidget);
+}
+
+void ContactDataWindow::createContactTab(QTabWidget *tabWidget)
+{
+	ConfigurationWidget *contactConfiguration = new ConfigurationWidget(new ContactDataManager(CurrentContact, this), tabWidget);
+	contactConfiguration->setSizePolicy(QSizePolicy(QSizePolicy::Minimum, QSizePolicy::Expanding));
+	contactConfiguration->appendUiFile(dataPath("kadu/configuration/contact-data.ui"));
+
+	ConfigurationWidgets.append(contactConfiguration);
+
+	tabWidget->addTab(contactConfiguration, tr("General"));
+}
+
+void ContactDataWindow::createButtons(QLayout *layout)
+{
+	QDialogButtonBox *buttons = new QDialogButtonBox(Qt::Horizontal, this);
+
+	QPushButton *okButton = new QPushButton(icons_manager->loadIcon("OkWindowButton"), tr("Ok"), this);
+	buttons->addButton(okButton, QDialogButtonBox::AcceptRole);
+	QPushButton *applyButton = new QPushButton(icons_manager->loadIcon("ApplyWindowButton"), tr("Apply"), this);
+	buttons->addButton(applyButton, QDialogButtonBox::ApplyRole);
+	QPushButton *cancelButton = new QPushButton(icons_manager->loadIcon("CloseWindowButton"), tr("Cancel"), this);
+	buttons->addButton(cancelButton, QDialogButtonBox::RejectRole);
+
+	connect(okButton, SIGNAL(clicked(bool)), this, SLOT(updateAndClose()));
+	connect(applyButton, SIGNAL(clicked(bool)), this, SLOT(update()));
+	connect(cancelButton, SIGNAL(clicked(bool)), this, SLOT(close()));
+
+	layout->addWidget(buttons);
+}
+
+void ContactDataWindow::update()
+{
+	foreach (ConfigurationWidget *configurationWidget, ConfigurationWidgets)
+		configurationWidget->saveConfiguration();
+}
+
+void ContactDataWindow::updateAndClose()
+{
+	update();
+	close();
 }
 
 void ContactDataWindow::setupTab1()
@@ -216,11 +285,11 @@ void ContactDataWindow::setupTab1()
 	//e_ver->setReadOnly(true);
 	//e_dnsname->setReadOnly(true);
 
-	e_nickname->setText(User.nickName());
-	e_firstname->setText(User.firstName());
-	e_lastname->setText(User.lastName());
-	e_mobile->setText(User.mobile());
-	e_email->setText(User.email());
+	e_nickname->setText(CurrentContact.nickName());
+	e_firstname->setText(CurrentContact.firstName());
+	e_lastname->setText(CurrentContact.lastName());
+	e_mobile->setText(CurrentContact.mobile());
+	e_email->setText(CurrentContact.email());
 
 	//Protocol *userProtocol = UserAccount->protocol();
 
@@ -228,7 +297,7 @@ void ContactDataWindow::setupTab1()
 	connect(e_firstname, SIGNAL(editingFinished()), this, SLOT(updateDisplay()));
 	connect(e_lastname, SIGNAL(editingFinished()), this, SLOT(updateDisplay()));
 
-	e_display->setEditText(User.display());
+	e_display->setEditText(CurrentContact.display());
 	updateDisplay();
 	// TODO move to gadu.ui and add as contact account data widget ...
 	/*if (User.usesProtocol("Gadu"))
@@ -328,7 +397,7 @@ void ContactDataWindow::setupTab2()
 	foreach(Group* group , GroupManager::instance()->groups())
 	{
 		QCheckBox *checkBox = new QCheckBox(group->name());
-		checkBox->setChecked(User.isInGroup(group));
+		checkBox->setChecked(CurrentContact.isInGroup(group));
 
 		groupsLayout->addWidget(checkBox);
 
@@ -381,17 +450,17 @@ void ContactDataWindow::setupTab3()
 {
 	kdebugf();
 
-	foreach (Account * account, User.accounts())
+	foreach (Account *account, CurrentContact.accounts())
 	{
 		if (!account || !account->protocol())
 			continue;
 
 		ProtocolFactory *protocolFactory = account->protocol()->protocolFactory();
 
-		if (!User.hasAccountData(account) || !protocolFactory)
+		if (!CurrentContact.hasAccountData(account) || !protocolFactory)
 			continue;
 
-		ContactAccountData *contactAccountData = User.accountData(account);
+		ContactAccountData *contactAccountData = CurrentContact.accountData(account);
 
 		ContactAccountDataWidget *contactAccountDataWidget = protocolFactory->newContactAccountDataWidget(contactAccountData, tw_main);
 
@@ -406,13 +475,6 @@ void ContactDataWindow::setupTab3()
 		dataWidgets.append(contactAccountDataWidget);
 	}
 
-	kdebugf2();
-}
-
-ContactDataWindow::~ContactDataWindow()
-{
-	kdebugf();
- 	saveWindowGeometry(this, "General", "ManageUsersDialogGeometry");
 	kdebugf2();
 }
 
@@ -439,7 +501,7 @@ void ContactDataWindow::updateUserlist()
 		if (checkbox->isChecked())
 		{
 			Group *group = GroupManager::instance()->byName(checkbox->text(), false);
-			User.addToGroup(group);
+			CurrentContact.addToGroup(group);
 		}
 /*
 	QString id = QString::number(0);

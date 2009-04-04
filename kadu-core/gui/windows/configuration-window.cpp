@@ -60,10 +60,10 @@ ConfigurationWindow::ConfigurationWindow(const QString &name, const QString &cap
 	QPushButton *cancelButton = new QPushButton(icons_manager->loadIcon("CloseWindowButton"), tr("Cancel"), this);
 	buttons_layout->addButton(cancelButton, QDialogButtonBox::RejectRole);
 
-	connect(okButton, SIGNAL(clicked()), this, SLOT(updateAndCloseConfig()));
-	connect(applyButton, SIGNAL(clicked()), this, SLOT(updateConfig()));
-	connect(cancelButton, SIGNAL(clicked()), this, SLOT(reject()));
-	connect(cancelButton, SIGNAL(clicked()), this, SLOT(close()));
+	connect(okButton, SIGNAL(clicked(bool)), this, SLOT(updateAndCloseConfig()));
+	connect(applyButton, SIGNAL(clicked(bool)), this, SLOT(updateConfig()));
+	connect(cancelButton, SIGNAL(clicked(bool)), this, SLOT(reject()));
+	connect(cancelButton, SIGNAL(clicked(bool)), this, SLOT(close()));
 
 	main_layout->addWidget(configurationWidget);
 	main_layout->addWidget(buttons_layout);
