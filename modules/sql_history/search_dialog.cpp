@@ -1,5 +1,3 @@
-
-
 /***************************************************************************
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -33,7 +31,7 @@ HistoryAdvSearchWindow::HistoryAdvSearchWindow(QWidget *window) : QDialog(window
 {
 	setCaption(tr("Search in history"));
 	setIcon(icons_manager->loadIcon("History").pixmap());
-	//nie do koñca to pikne
+	//nie do koï¿½ca to pikne
 	setGeometry(250, 250, 200, 200);
 	QVBoxLayout* mainLayout = new QVBoxLayout();
 	mainLayout->setMargin(5);
@@ -128,7 +126,7 @@ HistoryAdvSearchWindow::HistoryAdvSearchWindow(QWidget *window) : QDialog(window
 	caseSensitive = new QCheckBox(tr("Case sensitive match"));
 	caseSensitive->setToolTip(tr("Provide case sensitive search."));
 	optionsLay->addWidget(caseSensitive);
-///jeszcze obadaæ czy i jak to siê da... ale pewnie bêdzie ciê¿ko
+///jeszcze obadaï¿½ czy i jak to siï¿½ da... ale pewnie bï¿½dzie ciï¿½ï¿½ko
 // 	QCheckBox* searchWholeHistory = new QCheckBox(tr("Search whole history"));
 // 	searchWholeHistory->setToolTip(tr("Search in whole history archive for all contacts and message types."));
 // 	optionsLay->addWidget(searchWholeHistory);
@@ -206,7 +204,7 @@ void HistoryAdvSearchWindow::findButtonClicked()
 void HistoryAdvSearchWindow::cancelButtonClicked()
 {
 	kdebugf();
-	//TODO: a mo¿e nie zamykaæ okna przy starcie wyszukiwania?
+	//TODO: a moï¿½e nie zamykaï¿½ okna przy starcie wyszukiwania?
 	reject();
 	kdebugf2();
 }

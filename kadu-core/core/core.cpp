@@ -361,12 +361,15 @@ void Core::storeConfiguration()
 	ContactManager::instance()->storeConfiguration();
 	AccountManager::instance()->storeConfiguration(QString::null); // store all accounts
 
-	Protocol *gadu = AccountManager::instance()->defaultAccount()->protocol();
-	if (gadu->isConnected())
-		if (config_file.readBoolEntry("General", "DisconnectWithCurrentDescription"))
-			setOffline(gadu->status().description());
-		else
-			setOffline(config_file.readEntry("General", "DisconnectDescription"));
+	if (AccountManager::instance()->defaultAccount())
+	{
+		Protocol *gadu = AccountManager::instance()->defaultAccount()->protocol();
+		if (gadu->isConnected())
+			if (config_file.readBoolEntry("General", "DisconnectWithCurrentDescription"))
+				setOffline(gadu->status().description());
+			else
+				setOffline(config_file.readEntry("General", "DisconnectDescription"));
+	}
 
 	xml_config_file->makeBackup();
 }

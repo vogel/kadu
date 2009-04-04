@@ -166,6 +166,12 @@ UserlistImportExport::UserlistImportExport(QWidget *parent)
 	connect(pb_tofile, SIGNAL(clicked()), this, SLOT(ExportToFile()));
 	connect(pb_delete, SIGNAL(clicked()), this, SLOT(clean()));
 
+	if (!AccountManager::instance()->defaultAccount())
+	{
+		deleteLater();
+		return;
+	}
+
 	Protocol *gadu = AccountManager::instance()->defaultAccount()->protocol();
 	ContactListService *manager = gadu->contactListService();
 	connect(manager, SIGNAL(contactListExported(bool)), this, SLOT(contactListExported(bool)));

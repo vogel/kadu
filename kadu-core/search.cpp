@@ -205,6 +205,11 @@ SearchDialog::SearchDialog(QWidget *parent)
  	setActionState(chatFoundAction, false);
 
 	loadWindowGeometry(this, "General", "SearchDialogGeometry", 0, 50, 800, 350);
+	if (!SearchAccount)
+	{
+		deleteLater();
+		return;
+	}
 
 	SearchAccount = AccountManager::instance()->defaultAccount();
 	SearchProtocol = SearchAccount->protocol();
