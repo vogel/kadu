@@ -1061,6 +1061,14 @@ void UserBox::configurationUpdated()
 
 	KaduListBoxPixmap::setFont(config_file.readFontEntry("Look", "UserboxFont"));
 	KaduListBoxPixmap::setShowDesc(config_file.readBoolEntry("Look", "ShowDesc"));
+	
+	bool showVScrollBar =  config_file.readBoolEntry("Look", "ShowVerticalScrollBar");
+	setVScrollBarMode (Q3ScrollView::Auto);
+	if (!showVScrollBar)
+		{
+		setVScrollBarMode (Q3ScrollView::AlwaysOff);
+		}
+
 	KaduListBoxPixmap::setShowBold(config_file.readBoolEntry("Look", "ShowBold"));
 	KaduListBoxPixmap::setAlignTop(config_file.readBoolEntry("Look", "AlignUserboxIconsTop"));
 	KaduListBoxPixmap::setShowMultilineDesc(config_file.readBoolEntry("Look", "ShowMultilineDesc"));

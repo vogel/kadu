@@ -234,11 +234,13 @@ Text is plain black." />
 					   tool-tip="Displays group tabs on userbox" />
 				<check-box caption="Show available contacts in bold" config-section="Look" config-item="ShowBold"
 					   tool-tip="Displays users that are not offline using a bold font" />
+				<check-box caption="Show vertical scrollbar" config-section="Look" config-item="ShowVerticalScrollBar" 						id="ShowVerticalScrollBar" tool-tip="Displays vertical scrollbar in user list" />
 				<combo-box caption="Align contact icon to" config-section="Look" config-item="AlignUserboxIconsTop"
 					   tool-tip="Align icon next to contact name">
 					<item value="true" caption="Top" />
 					<item value="false" caption="Center" />
 				</combo-box>
+
 				<spin-box caption="Column count" config-section="Look" config-item="UserBoxColumnCount" min-value="1" max-value="10"
 					  tool-tip="Number of columns displays in userbox" />
 				<combo-box caption="Tool tip style" config-section="Look" config-item="UserboxToolTipStyle" id="toolTipClasses"

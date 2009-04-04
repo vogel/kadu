@@ -2467,6 +2467,7 @@ void Kadu::createDefaultConfiguration()
 	config_file.addVariable("Look", "ParagraphSeparator", 4);
 	config_file.addVariable("Look", "ShowBold", true);
 	config_file.addVariable("Look", "ShowDesc", true);
+	config_file.addVariable("Look", "ShowVerticalScrollBar", true);
 	config_file.addVariable("Look", "ShowInfoPanel", true);
 	config_file.addVariable("Look", "ShowMultilineDesc", true);
 	config_file.addVariable("Look", "ShowStatusButton", true);
