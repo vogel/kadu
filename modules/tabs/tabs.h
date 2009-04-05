@@ -10,7 +10,7 @@
 #include <QtCore/QObject>
 #include <QtCore/QTimer>
 
-#include "accounts/accounts_aware_object.h"
+#include "accounts/accounts-aware-object.h"
 
 #include "chat/chat_manager-old.h"
 

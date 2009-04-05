@@ -16,7 +16,7 @@
 #include <QtGui/QMenu>
 
 #include "accounts/account.h"
-#include "accounts/account_manager.h"
+#include "accounts/account-manager.h"
 
 #include "contacts/contact.h"
 #include "contacts/contact-list.h"
@@ -27,8 +27,8 @@
 #include "gui/widgets/configuration/configuration-widget.h"
 
 #include "protocols/protocol.h"
-#include "protocols/protocol_factory.h"
-#include "protocols/protocols_manager.h"
+#include "protocols/protocol-factory.h"
+#include "protocols/protocols-manager.h"
 
 #include "action.h"
 #include "config_file.h"
@@ -42,13 +42,13 @@
 extern "C" KADU_EXPORT int tabs_init(bool firstload)
 {
 	tabs_manager=new TabsManager(firstload);
-	MainConfigurationWindow::registerUiFile(dataPath("kadu/modules/configuration/tabs.ui"), tabs_manager);
+	MainConfigurationWindow::registerUiFile(dataPath("kadu/modules/configuration/tabs.ui"));
 	return 0;
 }
 
 extern "C" KADU_EXPORT void tabs_close()
 {
-	MainConfigurationWindow::unregisterUiFile(dataPath("kadu/modules/configuration/tabs.ui"), tabs_manager);
+	MainConfigurationWindow::unregisterUiFile(dataPath("kadu/modules/configuration/tabs.ui"));
 	delete tabs_manager;
 	tabs_manager=0;
 }
