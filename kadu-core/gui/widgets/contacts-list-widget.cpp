@@ -44,6 +44,7 @@ ContactsListWidget::ContactsListWidget(KaduMainWindow *mainWindow, QWidget *pare
 	setResizeMode(Adjust);
 	setWordWrap(true);
 
+	setAlternatingRowColors(true);
 	setDragEnabled(true);
 	setSelectionMode(QAbstractItemView::ExtendedSelection);
 
