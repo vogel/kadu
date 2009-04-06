@@ -43,6 +43,7 @@ bool GaduChatService::sendMessage(Chat *chat, Message &message)
 
 	plain.replace("\r\n", "\n");
 	plain.replace("\r", "\n");
+	plain.replace(QChar::LineSeparator, "\n");
 
 	kdebugmf(KDEBUG_INFO, "\n%s\n", (const char *)unicode2latin(plain));
 
@@ -153,6 +154,10 @@ void GaduChatService::handleEventMsg(struct gg_event *e)
 
 	Message message;
 	QString content = cp2unicode((const char *)e->event.msg.message);
+
+	content.replace(QLatin1String("\r\n"), QString(QChar::LineSeparator));
+	content.replace(QLatin1String("\n"),   QString(QChar::LineSeparator));
+	content.replace(QLatin1String("\r"),   QString(QChar::LineSeparator));
 
 	QDateTime time = QDateTime::fromTime_t(e->event.msg.time);
 

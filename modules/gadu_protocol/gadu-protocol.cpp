@@ -518,7 +518,7 @@ void GaduProtocol::setupLoginParams()
 	printf("connecting to: %d, %d\n", GaduLoginParams.server_addr, GaduLoginParams.server_port);
 
 	GaduLoginParams.protocol_version = 0x2a; // we are gg 7.7 now
-	GaduLoginParams.client_version = "7, 7, 0, 3351";
+	GaduLoginParams.client_version = (char *)"7, 7, 0, 3351";
 
 	GaduLoginParams.has_audio = gaduAccount->allowDCC();
 	GaduLoginParams.last_sysmsg = config_file.readNumEntry("General", "SystemMsgIndex", 1389);

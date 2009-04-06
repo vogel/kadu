@@ -138,6 +138,12 @@ ChatMessage::ChatMessage(Account *account, const Contact &sender, const ContactL
 	}
 
 	this->unformattedMessage = unformattedMessage;
+
+	this->unformattedMessage.replace("\r\n", "<br/>");
+	this->unformattedMessage.replace("\n",   "<br/>");
+	this->unformattedMessage.replace("\r",   "<br/>");
+	this->unformattedMessage.replace(QChar::LineSeparator, "<br />");
+
 // 	convertCharacters(unformattedMessage, backgroundColor,
 // 		(EmoticonsStyle)config_file.readNumEntry("Chat", "EmoticonsStyle"));
 }
@@ -156,6 +162,7 @@ QString ChatMessage::convertCharacters(QString edit, const QColor &bgcolor, Emot
 	edit.replace("\r\n", "<br/>");
 	edit.replace("\n",   "<br/>");
 	edit.replace("\r",   "<br/>");
+	edit.replace(QChar::LineSeparator, "<br />");
 
 	HtmlDocument doc;
 	doc.parseHtml(edit);
@@ -170,15 +177,6 @@ QString ChatMessage::convertCharacters(QString edit, const QColor &bgcolor, Emot
 
 // 	GaduImagesManager::setBackgroundsForAnimatedImages(doc, bgcolor);
 	edit = doc.generateHtml();
-
-	// workaround for bug in Qt - if there's a space after image, Qt does not show it, so we are replacing it with &nbsp;
-	// regular expression has to contain "title", because this attribute may contain ">" (as in emoticon <rotfl>)
-	const static QRegExp emotRegExp("<img emoticon=\"([01])\" title=\"([^\"]*)\" ([^>]*)> ");
-	const static QString emotAfter ("<img emoticon=\"\\1\" title=\"\\2\" \\3>&nbsp;");
-	edit.replace(emotRegExp, emotAfter);
-	const static QRegExp imageRegExp("<img src=\"([^\"]*)\"([^>]*)> ");
-	const static QString imageAfter( "<img src=\"\\1\"\\2>&nbsp;");
-	edit.replace(imageRegExp, imageAfter);
 
 	return edit;
 }
