@@ -234,10 +234,13 @@ void ContactsListWidgetDelegate::paint(QPainter *painter, const QStyleOptionView
 //		if (User.data("HideDescription").toString() != "true")
 
 	int top = hasDescription
-		? fontMetrics.ascent() + 1
-		: ((itemHeight - fontMetrics.height()) / 2) + fontMetrics.ascent();
+			? fontMetrics.ascent() + 1
+			: ((itemHeight - fontMetrics.height()) / 2) + fontMetrics.ascent();
 
+	QPen pen = painter->pen();
+	painter->setPen(config_file.readColorEntry("Look", "UserboxFgColor"));
 	painter->drawText(textLeft, top, display);
+	painter->setPen(pen);
 
 	if (isBold(index))
 		painter->setFont(Font);
