@@ -84,6 +84,7 @@ StatusMenu::StatusMenu(QObject *parent)
 	ChangeStatusActionGroup->addAction(ChangeStatusToOffline);
 	ChangeStatusActionGroup->addAction(ChangeStatusToOfflineDesc);
 
+	statusChanged(status_changer_manager->status());
 	connect(status_changer_manager, SIGNAL(statusChanged(Status)), this, SLOT(statusChanged(Status)));
 }
 
@@ -200,8 +201,11 @@ void StatusMenu::statusChanged(Status status)
 	foreach (QAction *action, ChangeStatusActionGroup->actions())
 		action->setChecked(index == action->data().toInt());
 
-	Protocol *protocol = AccountManager::instance()->defaultAccount()->protocol();
-	ChangePrivateStatus->setChecked(protocol->privateMode());
+	if (AccountManager::instance()->defaultAccount() && AccountManager::instance()->defaultAccount()->protocol())
+	{
+		Protocol *protocol = AccountManager::instance()->defaultAccount()->protocol();
+		ChangePrivateStatus->setChecked(protocol->privateMode());
+	}
 
 	ChangeStatusToOfflineDesc->setEnabled(index != 6);
 	ChangeStatusToOffline->setEnabled(index != 7);

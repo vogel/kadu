@@ -17,15 +17,15 @@
 StatusButton::StatusButton(QIcon icon, const QString& text, QWidget *parent) :
 		QPushButton(icon, text, parent)
 {
+	statusChanged(status_changer_manager->status());
 	connect(status_changer_manager, SIGNAL(statusChanged(Status)), this, SLOT(statusChanged(Status)));
 }
 
 void StatusButton::statusChanged(Status status)
 {
-	if (!AccountManager::instance()->defaultAccount())
-		return;
+	if (AccountManager::instance()->defaultAccount())
+		setIcon(AccountManager::instance()->defaultAccount()->statusPixmap(status));
 
-	setIcon(AccountManager::instance()->defaultAccount()->statusPixmap(status));
 	setText(Status::name(status));
 }
 
