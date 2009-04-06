@@ -150,6 +150,7 @@ class KADUAPI StatusChangerManager : public QObject
 	Q_OBJECT
 
 	QList<StatusChanger *> statusChangers;
+	Status LastStatus;
 	bool enabled;
 
 public:
@@ -166,6 +167,8 @@ public:
 
 	void registerStatusChanger(StatusChanger *statusChanger);
 	void unregisterStatusChanger(StatusChanger *statusChanger);
+
+	Status status() { return LastStatus; }
 
 public slots:
 	/**

@@ -451,6 +451,8 @@ void Core::accountRegistered(Account *account)
 	ContactAccountData *contactAccountData = protocol->protocolFactory()->
 			newContactAccountData(Myself, account, account->id());
 	Myself.addAccountData(contactAccountData);
+
+	protocol->setStatus(status_changer_manager->status());
 }
 
 void Core::accountUnregistered(Account *account)

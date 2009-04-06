@@ -215,11 +215,11 @@ void StatusChangerManager::statusChanged()
 	if (!enabled)
 		return;
 
-	Status status;
+	LastStatus = Status();
 	for (int i = 0; i < statusChangers.count(); i++)
-		statusChangers.at(i)->changeStatus(status);
+		statusChangers.at(i)->changeStatus(LastStatus);
 
-	emit statusChanged(status);
+	emit statusChanged(LastStatus);
 
 	kdebugf2();
 }
