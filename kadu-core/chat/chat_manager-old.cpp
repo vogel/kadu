@@ -270,11 +270,15 @@ void ChatManagerOld::saveOpenedWindows()
 	QDomElement root_elem = xml_config_file->rootElement();
 	QDomElement chats_elem = xml_config_file->accessElement(root_elem, "ChatWindows");
 	xml_config_file->removeChildren(chats_elem);
-	foreach(ChatWidget *chat, ChatWidgets)
-	{	
+	foreach (ChatWidget *chat, ChatWidgets)
+	{
+		if (!chat->currentProtocol() || !chat->currentProtocol()->protocolFactory())
+			continue;
+
 		QDomElement windowNode = xml_config_file->getNode(chats_elem,
 			"Window", XmlConfigFile::ModeCreate);
 		// TODO 0.6.6 - gadu raus!
+
 		xml_config_file->createTextNode(windowNode, "Protocol", chat->currentProtocol()->protocolFactory()->displayName());
 		xml_config_file->createTextNode(windowNode, "WindowId", "Gadu");
 

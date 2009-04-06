@@ -67,7 +67,7 @@ Core::Core() : Window(0), ShowMainWindowOnStart(true)
 
 Core::~Core()
 {
-	printf("storing configuration\n");
+	ChatManagerOld::closeModule();
 
 	storeConfiguration();
 
@@ -78,7 +78,6 @@ Core::~Core()
 	StatusChangerManager::closeModule();
 	ModulesManager::closeModule();
 	Updates::closeModule();
-	ChatManagerOld::closeModule();
 	SearchDialog::closeModule();
 	EmoticonsManager::closeModule();
 	IconsManager::closeModule();
