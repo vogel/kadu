@@ -515,8 +515,6 @@ void GaduProtocol::setupLoginParams()
 	GaduLoginParams.server_addr = haveServer ? htonl(ActiveServer.first.toIPv4Address()) : 0;
 	GaduLoginParams.server_port = haveServer ? ActiveServer.second : 0;
 
-	printf("connecting to: %d, %d\n", GaduLoginParams.server_addr, GaduLoginParams.server_port);
-
 	GaduLoginParams.protocol_version = 0x2a; // we are gg 7.7 now
 	GaduLoginParams.client_version = (char *)"7, 7, 0, 3351";
 
