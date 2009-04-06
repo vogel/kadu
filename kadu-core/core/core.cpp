@@ -363,7 +363,7 @@ void Core::storeConfiguration()
 	ContactManager::instance()->storeConfiguration();
 	AccountManager::instance()->storeConfiguration(QString::null); // store all accounts
 
-	if (AccountManager::instance()->defaultAccount())
+	if (AccountManager::instance()->defaultAccount() && AccountManager::instance()->defaultAccount()->protocol())
 	{
 		Protocol *gadu = AccountManager::instance()->defaultAccount()->protocol();
 		if (gadu->isConnected())
