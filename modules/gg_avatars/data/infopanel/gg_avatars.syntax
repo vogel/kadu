@@ -1,0 +1,8 @@
+<table>
+<tr>
+<td>#{avatar}</td>
+<td><div align=\"left\"> [<b>%a</b>][ (%u)] [<br>tel.: %m][<br>IP: %i]</div></td>
+</tr>
+</table>
+<hr>
+<b>%s</b>[<br>%d]

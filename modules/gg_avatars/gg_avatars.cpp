@@ -27,7 +27,6 @@ extern "C" KADU_EXPORT int gg_avatars_init()
 	kdebugf();
 
 	gaduAvatars = new GaduAvatars();
-//	MainConfigurationWindow::registerUiFile(dataPath("kadu/modules/configuration/gg_avatars.ui"), GaduAvatars);
 
 	kdebugf2();
 	return 0;
@@ -38,7 +37,6 @@ extern "C" KADU_EXPORT void gg_avatars_close()
 {
 	kdebugf();
 
-//	MainConfigurationWindow::unregisterUiFile(dataPath("kadu/modules/configuration/gg_avatars.ui"), GaduAvatars);
 	delete gaduAvatars;
 	gaduAvatars = NULL;
 
@@ -47,17 +45,25 @@ extern "C" KADU_EXPORT void gg_avatars_close()
 
 QString get_avatar(const UserListElement &ule)
 {
+	return "<img src=\"" + gaduAvatars->getAvatar(ule)+ "\"/>";
+}
+
+QString get_avatar_url(const UserListElement &ule)
+{
 	return gaduAvatars->getAvatar(ule);
 }
+
 
 GaduAvatars::GaduAvatars()
 {
 	KaduParser::registerTag("avatar", &get_avatar);
+	KaduParser::registerTag("avatar_url", &get_avatar_url);
 }
 
 GaduAvatars::~GaduAvatars()
 {
 	KaduParser::unregisterTag("avatar", &get_avatar);
+	KaduParser::registerTag("avatar_url", &get_avatar_url);
 }
 
 QString GaduAvatars::getAvatar(const UserListElement &ule)
@@ -82,10 +88,8 @@ QString GaduAvatars::getAvatar(const UserListElement &ule)
 			
 			if ((begin > 0) && (end > begin))
 				response = response.mid(begin, end - begin);
-			response = "<img src=\"" + response + "\"/>";
 		}
 		avatars.insert(uin, response);
-
 		return response;
 	}
 }

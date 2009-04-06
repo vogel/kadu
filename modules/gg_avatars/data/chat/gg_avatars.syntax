@@ -1,0 +1,13 @@
+<div style="margin: 5px; position: relative;">
+<div style="float: left; width:78px; height: 86px; position: relative;">
+<div style="position: absolute; left: 2px; top: 2px; border: 1px solid #{fontColor};">#{avatar}
+</div>
+</div>
+<div style="margin-left: 78px; min-height: 84px; background: #{backgroundColor}; border: 1px solid #{fontColor};">
+<div style="height: 30px; overflow: hidden; line-height: 28px; padding: 0px 8px 0px 8px; background: #{fontColor}; color: #{backgroundColor}; position:relative;">
+<strong>%a</strong> <i>[%u]</i>
+<div style="float: right; text-align: right; padding: 0px 8px 0px 8px; line-height: 28px;">[S: #{sentDate} / ]#{receivedDate}</div>
+</div>
+<div style="padding: 3px 8px 3px 8px; color: #{fontColor};">#{message}</div>
+</div>
+</div>
