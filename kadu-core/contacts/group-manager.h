@@ -49,7 +49,7 @@ public:
 	void removeGroup(QString groupUuid);
 
 	Group * byUuid(const QString &uuid) const;
-	Group * byName(const QString &name, bool create = false);
+	Group * byName(const QString &name, bool create = true);
 
 	bool acceptableGroupName(const QString &groupName);
 

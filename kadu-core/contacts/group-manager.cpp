@@ -163,6 +163,7 @@ Group * GroupManager::byName(const QString &name, bool create)
 	return newGroup;
 }
 
+// TODO: move some of this to %like-encoding, so we don't block normal names
 bool GroupManager::acceptableGroupName(const QString &groupName)
 {
 	kdebugf();
@@ -191,6 +192,7 @@ bool GroupManager::acceptableGroupName(const QString &groupName)
 		kdebugf2();
 		return false;
 	}
+
 	// TODO All translation
  	if (groupName == tr("All") || byName(groupName, false))
  	{
@@ -198,6 +200,7 @@ bool GroupManager::acceptableGroupName(const QString &groupName)
  		kdebugf2();
  		return false;
  	}
+
 	kdebugf2();
 	return true;
 }

@@ -605,7 +605,7 @@ void KaduWindowActions::addGroupActionActivated(QAction *sender, bool toggled)
 				QString::null, &ok);
 
 	if (ok && !newGroupName.isEmpty() && GroupManager::instance()->acceptableGroupName(newGroupName))
-		GroupManager::instance()->byName(newGroupName, true);
+		GroupManager::instance()->byName(newGroupName);
 }
 
 void KaduWindowActions::openSearchActionActivated(QAction *sender, bool toggled)

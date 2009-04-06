@@ -249,7 +249,7 @@ void ContactDataWindow::newGroupClicked()
 	QTimer::singleShot(0, this, SLOT(scrollToBottom()));
 
 	//create new group
-	GroupManager::instance()->byName(groupName, true);
+	GroupManager::instance()->byName(groupName);
 
 	kdebugf2();
 }*/

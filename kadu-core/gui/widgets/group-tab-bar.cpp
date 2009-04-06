@@ -192,7 +192,7 @@ void GroupTabBar::dropEvent(QDropEvent *event)
 		}
 		while (!ok);
 
-		Group *group = GroupManager::instance()->byName(newGroupName, true);
+		Group *group = GroupManager::instance()->byName(newGroupName);
 
 		foreach (Contact contact, contacts)
 			contact.addToGroup(group);
@@ -254,7 +254,7 @@ void GroupTabBar::createNewGroup()
 				QString::null, &ok);
 
 	if (ok && !newGroupName.isEmpty() && GroupManager::instance()->acceptableGroupName(newGroupName))
-		Group *group = GroupManager::instance()->byName(newGroupName, true);
+		GroupManager::instance()->byName(newGroupName);
 }
 
 void GroupTabBar::groupProperties()

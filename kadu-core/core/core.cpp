@@ -67,6 +67,8 @@ Core::Core() : Window(0), ShowMainWindowOnStart(true)
 
 Core::~Core()
 {
+	printf("storing configuration\n");
+
 	storeConfiguration();
 
 	status_changer_manager->unregisterStatusChanger(StatusChanger);
@@ -303,7 +305,7 @@ void Core::loadDefaultStatus()
 	bool offlineToInvisible = false;
 	Status::StatusType type;
 
-	if (startupStatus == "LastStatus")
+	if (startupStatus.isEmpty() || startupStatus == "LastStatus")
 	{
 		int typeIndex = config_file.readNumEntry("General", "LastStatusType", -1);
 		if (typeIndex == -1)
@@ -570,8 +572,6 @@ void Core::setOffline(const QString &description)
 {
 	StatusChanger->userStatusSet(Status(Status::Offline, description));
 }
-
-#include <QtGui/QApplication>
 
 void Core::quit()
 {
