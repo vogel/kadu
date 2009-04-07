@@ -1,9 +1,0 @@
-[Module]
-Description=Desktop docking module
-Description[pl]=Modu³ dokowania w dowolnym punkcie ekranu
-Author=Dorregaray
-Dependencies=docking
-Provides=docking_method 
-Conflicts=docking_method
-Version=core
-Base=true

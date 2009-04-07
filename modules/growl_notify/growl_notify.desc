@@ -1,9 +1,0 @@
-[Module]
-Description=Notification by Growl
-Description[pl]=Modu³ powiadamiania u¿ytkownika o zdarzeniach przy Growla
-Author=Kadu Team
-Dependencies=notify
-Provides=notify_method
-LoadByDefault=false
-Version=core
-Base=false

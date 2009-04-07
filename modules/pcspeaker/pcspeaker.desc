@@ -1,6 +1,0 @@
-[Module]
-Description=PC Speaker module
-Description[pl]=Powiadamianie o zdarzeniach przy pomocy PC Speakera
-Author=Kadu Team
-Dependencies=notify
-Version=core

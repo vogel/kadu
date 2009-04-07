@@ -1,7 +1,0 @@
-[Module]
-Description=Simple ScreenShots module for Kadu
-Description[pl]=Modu³ prostych zrzutów ekranu dla Kadu
-Author=Googie
-Provides=
-Conflicts=
-Version=0.5.0

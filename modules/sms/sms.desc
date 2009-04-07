@@ -1,8 +1,0 @@
-[Module]
-Description=SMS module
-Description[pl]=Modu³ obs³ugi bramek SMS
-Author=Kadu Team
-Dependencies=history
-LoadByDefault=true
-Version=core
-Base=true

@@ -1,6 +1,0 @@
-[Module]
-Description=Tray icon support module
-Description[pl]=Modu³ obs³ugi ikony w tray'u
-Author=Kadu Team
-Version=core
-Base=true

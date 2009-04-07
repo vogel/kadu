@@ -1,8 +1,0 @@
-[Module]
-Description=XMMS media player support module
-Description[pl]=Modu³ obs³ugi odtwarzacza XMMS
-Author=Googie, Vogel, Dorregaray
-Provides=media_player
-Conflicts=media_player
-Dependencies=mediaplayer
-Version=1.2

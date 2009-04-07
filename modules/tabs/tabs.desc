@@ -1,6 +1,0 @@
-[Module]
-Description=Tabbed chat dialog module
-Description[pl]=Modu� okna rozmowy z kartami
-Author=Michal Podsiadlik, Kadu Team
-LoadByDefault=true
-Version=core

@@ -1,7 +1,0 @@
-[Module]
-Description=Last Seen
-Description[pl]=Ostatnio widziani
-Author=PK Team, Dorregaray
-LoadByDefault=false
-Version=core
-Base=false

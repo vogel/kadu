@@ -1,7 +1,0 @@
-[Module]
-Description=Descriptions from file module
-Description[pl]=Modu³ obs³ugi opisów z pliku
-Author=Googie
-Provides=descriptions
-Conflicts=
-Version=1.13

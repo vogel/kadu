@@ -1,8 +1,0 @@
-[Module]
-Description=Libao sound module
-Description[pl]=Modu³ obs³ugi d¼wiêku poprzez bibliotekê libao
-Author=joi
-Dependencies=sound
-Provides=sound_driver
-Conflicts=sound_driver
-Version=core

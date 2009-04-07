@@ -1,8 +1,0 @@
-[Module]
-Description=Amarok 2.x media player support module
-Description[pl]=Modu³ obs³ugi odtwarzacza Amarok 2.x
-Author=Kadu Team
-Provides=media_player
-Conflicts=media_player
-Dependencies=mediaplayer
-Version=0.1

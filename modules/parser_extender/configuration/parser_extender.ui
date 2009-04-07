@@ -1,9 +1,0 @@
-<configuration-ui>
-	<section name="Kadu">
-		<tab name="Advanced">
-			<group-box name="ParserExtender">
-				<check-box caption="Enable ParserExtender" config-section="PowerKadu" config-item="enable_parser_extender" tool-tip="Additional KaduParser Tags: \n#{time}, #(time-long), #{date}, #{date-long}, #{start}, #{start-long}, \n{uptime}, #{uptime-long}, #{kuptime}, {kuptime-long}."/>
-			</group-box>
-		</tab>
-	</section>
-</configuration-ui>
