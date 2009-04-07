@@ -12,6 +12,7 @@
 #include <QtGui/QApplication>
 
 #include "accounts/account-manager.h"
+#include "configuration/configuration-manager.h"
 #include "contacts/contact-manager.h"
 #include "contacts/group-manager.h"
 #include "gui/widgets/chat_edit_box.h"
@@ -59,8 +60,8 @@ Core::Core() : Window(0), ShowMainWindowOnStart(true)
 
 	Myself.setDisplay(config_file.readEntry("General", "Nick"));
 
-	xml_config_file->makeBackup();
-	loadConfiguration();
+	Configuration = new ConfigurationManager();
+	Configuration->load();
 
 	triggerAllAccountsRegistered();
 }
@@ -68,6 +69,10 @@ Core::Core() : Window(0), ShowMainWindowOnStart(true)
 Core::~Core()
 {
 	ChatManagerOld::closeModule();
+
+	Configuration->store();
+	delete Configuration;
+	Configuration = 0;
 
 	storeConfiguration();
 
@@ -337,14 +342,6 @@ void Core::loadDefaultStatus()
 	setStatus(status);
 
 	kdebugf2();
-}
-
-void Core::loadConfiguration()
-{
-	pending.loadConfiguration(xml_config_file);
-
-	GroupManager::instance()->loadConfiguration();
-	ContactManager::instance()->loadConfiguration();
 }
 
 void Core::storeConfiguration()

@@ -22,6 +22,7 @@
 #include "configuration_aware_object.h"
 #include "exports.h"
 
+class ConfigurationManager;
 class KaduWindow;
 class UserStatusChanger;
 
@@ -31,6 +32,8 @@ class KADUAPI Core : public QObject, private AccountsAwareObject, public Configu
 	Q_DISABLE_COPY(Core)
 
 	static Core *Instance;
+
+	ConfigurationManager *Configuration;
 
 	Contact Myself;
 	KaduWindow *Window;
@@ -48,7 +51,6 @@ class KADUAPI Core : public QObject, private AccountsAwareObject, public Configu
 	void init();
 	void loadDefaultStatus();
 
-	void loadConfiguration();
 	void storeConfiguration();
 
 private slots:
@@ -63,6 +65,8 @@ protected:
 
 public:
 	static Core * instance();
+
+	ConfigurationManager * configuration() { return Configuration; }
 
 	virtual QString readToken(const QPixmap &tokenPixmap);
 

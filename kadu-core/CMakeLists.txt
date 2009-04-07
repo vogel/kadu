@@ -50,6 +50,7 @@ set (kadu_SRCS
 
 	configuration/account-data-manager.cpp
 	configuration/config-file-data-manager.cpp
+	configuration/configuration-manager.cpp
 	configuration/contact-account-data-manager.cpp
 	configuration/storable-object.cpp
 	configuration/uuid-storable-object.cpp
