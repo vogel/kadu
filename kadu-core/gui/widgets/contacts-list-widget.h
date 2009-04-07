@@ -18,6 +18,7 @@
 
 class QContextMenuEvent;
 class QModelIndex;
+class QTemporaryFile;
 
 class AbstractContactFilter;
 class AbstractContactsModel;
@@ -55,6 +56,7 @@ public:
 private:
 	BackgroundMode BackgroundImageMode;
 	QString BackgroundImageFile;
+	QTemporaryFile *BackgroundTemporaryFile;
 
 private slots:
 	void doubleClickedSlot(const QModelIndex &index);
@@ -74,6 +76,8 @@ protected:
 	virtual void mousePressEvent(QMouseEvent *event);
 	virtual void mouseReleaseEvent(QMouseEvent *event);
 	virtual void mouseMoveEvent(QMouseEvent *event);
+
+	virtual void resizeEvent(QResizeEvent *event);
 
 protected slots:
 	virtual void currentChanged(const QModelIndex &current, const QModelIndex &previous);
