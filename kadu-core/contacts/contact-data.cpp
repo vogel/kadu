@@ -149,7 +149,7 @@ void ContactData::loadConfiguration()
 #define Property(name) \
 	configurationStorage->createTextNode(parent, #name, name);
 
-void ContactData::storeConfiguration()
+void ContactData::store()
 {
 	StoragePoint *sp = storage();
 	if (!sp)
@@ -182,8 +182,8 @@ void ContactData::storeConfiguration()
 
 	configurationStorage->createTextNode(parent, "Ignored", QVariant(Ignored).toString());
 
-	foreach (ContactAccountData *accountData, AccountsData.values())
-		accountData->storeConfiguration();
+	foreach (ContactAccountData *cad, AccountsData.values())
+		cad->store();
 	storeModuleData();
 }
 

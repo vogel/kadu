@@ -89,7 +89,7 @@ void FileTransfer::loadConfiguration()
 		changeFileTransferStatus(StatusFinished);
 }
 
-void FileTransfer::storeConfiguration()
+void FileTransfer::store()
 {
 	if (!isValidStorage())
 		return;

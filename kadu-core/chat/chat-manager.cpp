@@ -64,9 +64,16 @@ void ChatManager::loadConfigurationForAccount(Account *account)
 void ChatManager::storeConfigurationForAccount(Account *account)
 {
 	foreach (QList<Chat *> list, Chats.values())
-		foreach (Chat *chat, list) 
+		foreach (Chat *chat, list)
 			if (chat->account() == account)
-				chat->storeConfiguration();
+				chat->store();
+}
+
+void ChatManager::store()
+{
+	foreach (QList<Chat *> list, Chats.values())
+		foreach (Chat *chat, list)
+			chat->store();
 }
 
 void ChatManager::addChat(Chat *chat)

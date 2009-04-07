@@ -37,7 +37,7 @@ public:
 	virtual ContactList currentContacts() { return ContactList(); }
 
 	virtual void loadConfiguration();
-	virtual void storeConfiguration();
+	virtual void store();
 
 };
 

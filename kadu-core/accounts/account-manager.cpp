@@ -90,11 +90,16 @@ void AccountManager::storeConfiguration(const QString &protocolName)
 	{
 		if (protocolName.isNull() || account->protocol()->protocolFactory()->name() == protocolName)
 		{
-			account->storeConfiguration();
+			account->store();
 			if (!protocolName.isNull())
 				unregisterAccount(account);
 		}
 	}
+}
+
+void AccountManager::store()
+{
+	storeConfiguration(QString::null);
 }
 
 Account * AccountManager::defaultAccount() const

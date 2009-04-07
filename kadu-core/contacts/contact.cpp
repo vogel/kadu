@@ -80,9 +80,9 @@ void Contact::loadConfiguration()
 	Data->loadConfiguration();
 }
 
-void Contact::storeConfiguration()
+void Contact::store()
 {
-	Data->storeConfiguration();
+	Data->store();
 }
 
 void Contact::removeFromStorage()

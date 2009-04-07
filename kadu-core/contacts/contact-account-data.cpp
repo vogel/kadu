@@ -38,7 +38,7 @@ void ContactAccountData::loadConfiguration()
 	Id = sp->storage()->getTextNode(sp->point(), "Id");
 }
 
-void ContactAccountData::storeConfiguration()
+void ContactAccountData::store()
 {
 	StoragePoint *sp = storage();
 	if (!sp || !sp->storage())

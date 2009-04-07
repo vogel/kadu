@@ -15,7 +15,7 @@
 
 #include "configuration/storable-object.h"
 
-class Group : public QObject, private StorableObject 
+class Group : public QObject, public StorableObject
 {
 friend class GroupManager;
 
@@ -41,7 +41,7 @@ public:
 
 	void importConfiguration(const QString &name);
 	void loadConfiguration();
-	void storeConfiguration();
+	virtual void store();
 
 	QUuid uuid() const { return Uuid; }
 	QString name() const { return Name; }

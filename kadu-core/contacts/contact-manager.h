@@ -45,7 +45,7 @@ public:
 	static ContactManager * instance();
 
 	void loadConfiguration();
-	void storeConfiguration();
+	virtual void store();
 
 	ContactList contacts() const { return Contacts; }
 	ContactList contacts(Account *account, bool includeAnonymous = false) const;

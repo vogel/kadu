@@ -81,7 +81,7 @@ void Group::loadConfiguration()
 	ShowName = v.toBool();
 }
 
-void Group::storeConfiguration()
+void Group::store()
 {
 	StoragePoint *sp = storage();
 	if (!sp)

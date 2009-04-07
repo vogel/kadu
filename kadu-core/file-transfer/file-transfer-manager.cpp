@@ -98,7 +98,13 @@ void FileTransferManager::storeConfigurationForAccount(Account *account)
 {
 	foreach (FileTransfer *fileTransfer, FileTransfers)
 		if (fileTransfer->account() == account)
-			fileTransfer->storeConfiguration();
+			fileTransfer->store();
+}
+
+void FileTransferManager::store()
+{
+	foreach (FileTransfer *fileTransfer, FileTransfers)
+		fileTransfer->store();
 }
 
 void FileTransferManager::accountUnregistered(Account *account)

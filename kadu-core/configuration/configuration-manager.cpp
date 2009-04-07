@@ -31,5 +31,16 @@ void ConfigurationManager::load()
 
 void ConfigurationManager::store()
 {
+	foreach (StorableObject *object, RegisteredStorableObjects)
+		object->store();
+}
 
+void ConfigurationManager::registerStorableObject(StorableObject *object)
+{
+	RegisteredStorableObjects.append(object);
+}
+
+void ConfigurationManager::unregisterStorableObject(StorableObject *object)
+{
+	RegisteredStorableObjects.removeAll(object);
 }

@@ -63,12 +63,12 @@ void GaduAccount::loadConfiguration()
 	DccIP = host;
 }
 
-void GaduAccount::storeConfiguration()
+void GaduAccount::store()
 {
 	if (!isValidStorage())
 		return;
 
-	Account::storeConfiguration();
+	Account::store();
 
 	storeValue("AllowDcc", AllowDcc);
 	storeValue("DccIP", DccIP.toString());

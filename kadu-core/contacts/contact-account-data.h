@@ -48,7 +48,7 @@ public:
 
 	virtual bool validateId() = 0;
 	virtual void loadConfiguration();
-	virtual void storeConfiguration();
+	virtual void store();
 
 	Account * account() { return ContactAccount; }
 	QString id() { return Id; }

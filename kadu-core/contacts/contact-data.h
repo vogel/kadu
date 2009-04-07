@@ -71,7 +71,7 @@ public:
 
 	void importConfiguration(XmlConfigFile *configurationStorage, QDomElement parent);
 	void loadConfiguration();
-	void storeConfiguration();
+	virtual void store();
 
 	StoragePoint * storagePointForAccountData(Account *account);
 

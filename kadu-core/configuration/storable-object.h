@@ -35,6 +35,8 @@ public:
 	QString nodeName() { return NodeName; }
 
 	StoragePoint * storage();
+
+	virtual void store() = 0;
 	void removeFromStorage();
 
 	void setStorage(StoragePoint *storage) { Storage = storage; }

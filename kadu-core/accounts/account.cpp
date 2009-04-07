@@ -73,7 +73,7 @@ void Account::loadConfiguration()
 	triggerAllContactsAdded();
 }
 
-void Account::storeConfiguration()
+void Account::store()
 {
 	if (!isValidStorage())
 		return;

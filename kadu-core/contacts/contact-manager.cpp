@@ -82,14 +82,14 @@ void ContactManager::loadConfiguration()
 	}
 }
 
-void ContactManager::storeConfiguration()
+void ContactManager::store()
 {
 	if (!isValidStorage())
 		return;
 
 	foreach (Contact contact, Contacts)
 		if (!contact.isNull() && !contact.isAnonymous())
-			contact.storeConfiguration();
+			contact.store();
 }
 
 void ContactManager::addContact(Contact contact)

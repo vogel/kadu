@@ -34,7 +34,7 @@ public:
 	virtual ~GaduAccount();
 
 	virtual void loadConfiguration();
-	virtual void storeConfiguration();
+	virtual void store();
 
 	UinType uin() { return Uin; }
 	bool allowDCC() { return AllowDcc; }

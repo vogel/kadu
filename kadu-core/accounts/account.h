@@ -45,7 +45,7 @@ public:
 	virtual ~Account();
 
 	virtual void loadConfiguration();
-	virtual void storeConfiguration();
+	virtual void store();
 
 	virtual QUuid uuid() { return Uuid; }
 	void setProtocol(Protocol *protocolHandler);

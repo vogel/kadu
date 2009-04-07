@@ -80,7 +80,7 @@ public:
 
 	void importConfiguration(XmlConfigFile *configurationStorage, QDomElement parent);
 	void loadConfiguration();
-	void storeConfiguration();
+	void store();
 
 	StoragePoint * storagePointForAccountData(Account *account) const;
 	StoragePoint * storagePointForModuleData(const QString &module, bool create = false) const;

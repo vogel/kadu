@@ -41,7 +41,7 @@ public:
 	static GroupManager * instance();
 
 	void loadConfiguration();
-	void storeConfiguration();
+	virtual void store();
 
 	QList<Group *> groups() { return Groups; }
 

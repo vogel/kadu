@@ -97,10 +97,10 @@ void GroupManager::loadConfiguration()
 	}
 }
 
-void GroupManager::storeConfiguration()
+void GroupManager::store()
 {
 	foreach (Group *group, Groups)
-		group->storeConfiguration();
+		group->store();
 }
 
 void GroupManager::addGroup(Group *newGroup)

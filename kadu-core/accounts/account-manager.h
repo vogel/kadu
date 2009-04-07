@@ -44,6 +44,7 @@ public:
 
 	void loadConfiguration(const QString &protocolName);
 	void storeConfiguration(const QString &protocolName);
+	virtual void store();
 
 	Account * defaultAccount() const;
 

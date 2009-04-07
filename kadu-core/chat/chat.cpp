@@ -59,7 +59,7 @@ void Chat::loadConfiguration()
 	CurrentAccount = AccountManager::instance()->byUuid(QUuid(loadValue<QString>("Account")));
 }
 
-void Chat::storeConfiguration()
+void Chat::store()
 {
 	if (!isValidStorage())
 		return;

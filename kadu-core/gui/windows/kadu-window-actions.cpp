@@ -891,7 +891,7 @@ void KaduWindowActions::deleteUsersActionActivated(QAction *sender, bool toggled
 	{
 		foreach (Contact contact, contacts)
 			ContactManager::instance()->removeContact(contact);
-		ContactManager::instance()->storeConfiguration();
+		ContactManager::instance()->store();
 	}
 
 	kdebugf2();

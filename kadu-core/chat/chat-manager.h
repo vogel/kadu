@@ -47,6 +47,7 @@ public:
 
 	void loadConfigurationForAccount(Account *account);
 	void storeConfigurationForAccount(Account *account);
+	virtual void store();
 
 	void addChat(Chat *chat);
 	void removeChat(Chat *chat);

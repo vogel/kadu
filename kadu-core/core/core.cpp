@@ -355,9 +355,9 @@ void Core::storeConfiguration()
 	pending.storeConfiguration(xml_config_file);
 // 		IgnoredManager::writeToConfiguration();
 
-	GroupManager::instance()->storeConfiguration();
-	ContactManager::instance()->storeConfiguration();
-	AccountManager::instance()->storeConfiguration(QString::null); // store all accounts
+	GroupManager::instance()->store();
+	ContactManager::instance()->store();
+	AccountManager::instance()->store();
 
 	if (AccountManager::instance()->defaultAccount() && AccountManager::instance()->defaultAccount()->protocol())
 	{

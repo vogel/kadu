@@ -85,7 +85,7 @@ public:
 	virtual ~FileTransfer();
 
 	virtual void loadConfiguration();
-	virtual void storeConfiguration();
+	virtual void store();
 
 	Account * account() { return CurrentAccount; }
 	Contact contact() { return Peer; }
