@@ -1,0 +1,7 @@
+[Module]
+Description=Display Gadu Avatars in Kadu
+Description[pl]=Umozliwia wyswietlanie awatarow GG w Kadu
+Author=Dorregaray
+LoadByDefault=false
+Version=0.1
+Base=false

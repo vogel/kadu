@@ -1,0 +1,16 @@
+<configuration-ui>
+	<section name="Chat">
+		<tab name="Autoresponder">
+			<group-box name="Options">
+				<line-edit caption="Autoanswer text" config-section="Autoresponder" config-item="Autotext" id="autoresponder/AutoText" />
+				<check-box caption="Only for the first time" config-section="Autoresponder" config-item="OnlyFirstTime" />
+				<check-box caption="Respond to conferences" config-section="Autoresponder" config-item="RespondConf" />
+			</group-box>
+			<group-box name="Choose status">
+				<check-box caption="Status invisible" config-section="Autoresponder" config-item="StatusInvisible" />
+				<check-box caption="Status busy" config-section="Autoresponder" config-item="StatusBusy" />
+				<check-box caption="Status available" config-section="Autoresponder" config-item="StatusAvailable" />
+			</group-box>
+		</tab>
+	</section>
+</configuration-ui>

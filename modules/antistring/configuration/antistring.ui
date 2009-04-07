@@ -1,0 +1,19 @@
+<configuration-ui>
+	<section name="Chat">
+		<tab name="Antistring">
+			<group-box name="General">
+				<check-box caption="Enable Antistring" config-section="PowerKadu" config-item="enable_antistring" id="antistring/enable_antistring" />
+				<check-box caption="Block message" config-section="PowerKadu" config-item="message stop" id="antistring/block_message" />
+				<line-edit caption="Admonition" config-section="PowerKadu" config-item="admonish_tresc_config" id="antistring/admonition" />
+			</group-box>
+			
+			<group-box name="Log">
+				<check-box caption="Write log to file" config-section="PowerKadu" config-item="log message" id="antistring/enable_log" />
+				<line-edit caption="Log" config-section="PowerKadu" config-item="log file" id="antistring/log_file" />
+			</group-box>
+
+			<group-box name="Conditions">
+			</group-box>
+		</tab>
+	</section>
+</configuration-ui>

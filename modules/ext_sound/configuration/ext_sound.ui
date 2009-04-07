@@ -1,0 +1,13 @@
+<configuration-ui>
+
+	<section name="Notifications">
+
+		<tab name="Sound">
+			<group-box name="Sound player">
+				<select-file caption="Player" config-section="Sounds" config-item="SoundPlayer" type="all" />
+			</group-box>
+		</tab>
+
+	</section>
+
+</configuration-ui>

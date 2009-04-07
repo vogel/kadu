@@ -1,0 +1,8 @@
+[Module]
+Description=SMS Gateway for Orange, Plus and Era module
+Description[pl]=Modu³ obs³ugi bramek Orange, Plus, Era
+Author=Kadu Team
+Dependencies=sms
+LoadByDefault=true
+Version=core
+Base=true

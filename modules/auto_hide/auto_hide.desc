@@ -1,0 +1,8 @@
+[Module]
+Description=Auto hide Kadu window
+Description[pl]=Automatyczne ukrywanie okna Kadu
+Author=PK Team, Dorregaray
+Dependencies=idle
+LoadByDefault=false
+Version=core
+Base=false

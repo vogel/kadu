@@ -1,0 +1,16 @@
+<configuration-ui>
+	<section name="Status">
+		<tab name="Autostatus">
+			<group-box name="General">
+				<line-edit caption="Autostatus file" config-section="PowerKadu" config-item="status_file_path" id="autostatus/status_file_path" />
+				<spin-box caption="Time" config-section="PowerKadu" config-item="autostatus_time" min-value="1" max-value="3600" suffix=" s" id="autostatus/autostatus_time" />
+				<combo-box caption="Status" config-section="PowerKadu" config-item="autoStatus"
+						  id="autostatus/auto_status">
+					<item value="0" caption="Online" />
+					<item value="1" caption="Busy" />
+					<item value="2" caption="Invisible" />
+				</combo-box>
+			</group-box>
+		</tab>
+	</section>
+</configuration-ui>

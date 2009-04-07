@@ -1,0 +1,10 @@
+[Module]
+Description=MacOS X docking module
+Description[PL]=Modu³ dokowania w MacOS X
+Author=Kadu Team
+Dependencies=docking
+Provides=
+Conflicts=
+LoadByDefault=true
+Version=core
+Base=true

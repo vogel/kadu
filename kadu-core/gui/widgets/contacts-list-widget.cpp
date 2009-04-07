@@ -7,12 +7,9 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <QtCore/QDir>
 #include <QtCore/QModelIndex>
-#include <QtCore/QTemporaryFile>
 #include <QtGui/QApplication>
 #include <QtGui/QContextMenuEvent>
-#include <QtGui/QImage>
 #include <QtGui/QMenu>
 #include <QtGui/QSortFilterProxyModel>
 
@@ -39,9 +36,8 @@
 #include "contacts-list-widget.h"
 #include "tool-tip-class-manager.h"
 
-ContactsListWidget::ContactsListWidget(KaduMainWindow *mainWindow, QWidget *parent) :
-		QListView(parent), MainWindow(mainWindow), ProxyModel(new ContactsModelProxy(this)),
-		Delegate(0), BackgroundTemporaryFile(0)
+ContactsListWidget::ContactsListWidget(KaduMainWindow *mainWindow, QWidget *parent)
+	: QListView(parent), MainWindow(mainWindow), ProxyModel(new ContactsModelProxy(this)), Delegate(0)
 {
 	// all these tree are needed to make this view updating layout properly
 	setLayoutMode(Batched);
@@ -250,13 +246,6 @@ void ContactsListWidget::mouseMoveEvent(QMouseEvent *event)
 	toolTipRestart();
 }
 
-void ContactsListWidget::resizeEvent(QResizeEvent *event)
-{
-	QListView::resizeEvent(event);
-	if (BackgroundImageMode == BackgroundStretched)
-		updateBackground();
-}
-
 void ContactsListWidget::currentChanged(const QModelIndex& current, const QModelIndex& previous)
 {
 	QListView::currentChanged(current, previous);
@@ -288,47 +277,30 @@ void ContactsListWidget::updateBackground()
 
 	if (BackgroundImageMode == BackgroundNone)
 	{
-		setAlternatingRowColors(true);
 		setStyleSheet(style);
 		return;
 	}
 
-	setAlternatingRowColors(false);
+	QImage *backgroundImage = 0;
 
-	style.append("QFrame {");
+	if (BackgroundImageMode == BackgroundStretched)
+	{
+		/*if (!file.isEmpty() && QFile::exists(file))
+			backgroundImage = new QImage(file);
+		QImage stretchedImage = backgroundImage->smoothScale(
+			ContactsWidget->viewport()->width(), ContactsWidget->viewport()->height());
+		QFile file2(":/backgroundImage.png");
+		file2.open(QIODevice::WriteOnly);
+		stretchedImage.save(&file2, "PNG");
+		file = ":/backgroundImage.png";*/
+	}
 
+	style = QString("QFrame { background-image: url(%1);").arg(BackgroundImageFile);
 	if (BackgroundImageMode != BackgroundTiled && BackgroundImageMode != BackgroundTiledAndCentered)
 		style.append(" background-repeat: no-repeat;");
 	if (BackgroundImageMode == BackgroundCentered || BackgroundImageMode == BackgroundTiledAndCentered)
 		style.append("background-position: center;");
-	if (BackgroundImageMode == BackgroundStretched)
-	{
-		// style.append("background-size: 100% 100%;"); will work in 4.6 maybe?
-		QImage image(BackgroundImageFile);
-		if (image.isNull())
-		{
-			setStyleSheet("");
-			return;
-		}
-
-		if (BackgroundTemporaryFile)
-			delete BackgroundTemporaryFile;
-		BackgroundTemporaryFile = new QTemporaryFile(QDir::tempPath() + "/kadu_background_XXXXXX.png", this);
-
-		if (BackgroundTemporaryFile->open())
-		{
-			QImage stretched = image.scaled(viewport()->width(), viewport()->height(), Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
-			if (stretched.save(BackgroundTemporaryFile, "PNG"))
-				style.append(QString("background-image: url(%1);").arg(BackgroundTemporaryFile->fileName()));
-			BackgroundTemporaryFile->close();
-		}
-	}
-	else
-		style.append(QString("background-image: url(%1);").arg(BackgroundImageFile));
 	style.append("background-attachment:fixed;}");
-
-	printf(qPrintable(style));
-
 	setStyleSheet(style);
 }
 

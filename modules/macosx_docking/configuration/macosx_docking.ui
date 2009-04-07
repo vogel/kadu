@@ -1,0 +1,11 @@
+<configuration-ui>
+	<section name="Kadu">
+		<tab name="Tray">
+			<group-box name="MacOSX Dock">
+				<check-box caption="Show Status" config-section="MacOSX Dock" config-item="IconNotification" id="macosx_docking/change_icon" />
+				<check-box caption="Bounce Dock Icon on New Message" config-section="MacOSX Dock" config-item="BounceIcon" id="macosx_docking/bounce_icon" />
+				<check-box caption="Display New Messages Count in Dock Icon" config-section="MacOSX Dock" config-item="ShowMessgeNum" id="macosx_docking/message_num_on_icon" />
+			</group-box>
+		</tab>
+	</section>
+</configuration-ui>

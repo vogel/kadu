@@ -1,0 +1,79 @@
+<configuration-ui>
+
+	<section name="Look">
+		<tab name="Userbox">
+			<group-box name="General">
+				<line-edit caption="Hints over userlist" config-section="OSD Hints" config-item="MouseOverUserSyntax" id="osdhints/overUserSyntax" />
+			</group-box>
+		</tab>
+	</section>
+
+	<section name="Notifications">
+
+		<tab name="OSD Hints">
+			<group-box name="Layout">
+				<combo-box caption="New hints go" config-section="Hints" config-item="NewHintUnder">
+					<item value="0" caption="Auto" />
+					<item value="1" caption="On top" />
+					<item value="2" caption="On bottom" />
+				</combo-box>
+				<check-box caption="Own hints position" config-section="OSDHints" config-item="UseUserPosition" id="osdhints/ownPosition" />
+				<spin-box caption="X" config-section="OSDHints" config-item="HintsPositionX" min-value="-10240" max-value="10240" id="osdhints/ownPositionX" suffix="px" />
+				<spin-box caption="Y" config-section="OSDHints" config-item="HintsPositionY" min-value="-10240" max-value="10240" id="osdhints/ownPositionY" suffix="px" />
+				<combo-box caption="Corner" config-section="OSDHints" config-item="Corner" id="osdhints/ownPositionCorner">
+					<item value="0" caption="Top left" />
+					<item value="1" caption="Top right" />
+					<item value="2" caption="Bottom left" />
+					<item value="3" caption="Bottom right" />
+				</combo-box>
+				<spin-box caption="Minimum width" config-section="OSDHints" config-item="MinimumWidth" min-value="0" max-value="10240" id="osdhints/minimumWidth" suffix="px" />
+				<spin-box caption="Maximum width" config-section="OSDHints" config-item="MaximumWidth" min-value="0" max-value="10240" id="osdhints/maximumWidth" suffix="px" />
+			</group-box>
+			<group-box name="Look">
+				<check-box caption="Set for all" config-section="OSDHints" config-item="SetAll" id="osdhints/setAll" />
+				<label caption="&lt;b&gt;Text&lt;/b&gt; preview" id="osdhints/setAllPreview" />
+				<spin-box caption="Timeout" config-section="OSDHints" config-item="SetAll_timeout" id="osdhints/setAll_timeout" min-value="0" max-value="3600" suffix=" s"/>
+				<color-button caption="Font color" config-section="OSDHints" config-item="SetAll_fgcolor" id="osdhints/setAll_fgcolor" />
+				<color-button caption="Background color" config-section="OSDHints" config-item="SetAll_bgcolor" id="osdhints/setAll_bgcolor" />
+				<select-font caption="Font" config-section="OSDHints" config-item="SetAll_font" id="osdhints/setAll_font" />
+				<combo-box caption="Icon size" config-section="OSDHints" config-item="IconSize"
+						id="osdhints/iconsize">
+					<item value="22" caption="22px" />
+					<item value="32" caption="32px" />
+					<item value="64" caption="64px" />
+				</combo-box>
+				<spin-box caption="Opacity" config-section="OSDHints" config-item="Opacity"
+						min-value="0" max-value="100" step="1" suffix=" %"
+						id="osdhints/opacity" />
+			</group-box>
+			<group-box name="Mouse buttons">
+				<combo-box caption="Left button" config-section="OSDHints" config-item="LeftButton">
+					<item value="0" caption="Nothing" />
+					<item value="1" caption="Open chat" />
+					<item value="2" caption="Delete hint" />
+					<item value="3" caption="Delete all hints" />
+				</combo-box>
+				<combo-box caption="Middle button" config-section="OSDHints" config-item="MiddleButton">
+					<item value="0" caption="Nothing" />
+					<item value="1" caption="Open chat" />
+					<item value="2" caption="Delete hint" />
+					<item value="3" caption="Delete all hints" />
+				</combo-box>
+				<combo-box caption="Right button" config-section="OSDHints" config-item="RightButton">
+					<item value="0" caption="Nothing" />
+					<item value="1" caption="Open chat" />
+					<item value="2" caption="Delete hint" />
+					<item value="3" caption="Delete all hints" />
+				</combo-box>
+				<check-box caption="'Open chat' works on all events" config-section="OSDHints" config-item="OpenChatOnEveryNotification" />
+			</group-box>
+			<group-box name="New chat/message">
+				<check-box caption="Show message content in hint" config-section="OSDHints" config-item="ShowContentMessage" id="osdhints/showContent" />
+				<spin-box caption="Number of quoted characters" config-section="OSDHints" config-item="CiteSign" min-value="1" max-value="2000" id="osdhints/showContentCount" />
+				<check-box caption="Delete pending message when user deletes hint" config-section="OSDHints" config-item="DeletePendingMsgWhenHintDeleted" />
+			</group-box>
+		</tab>
+
+	</section>
+
+</configuration-ui>

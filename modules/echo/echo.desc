@@ -1,0 +1,5 @@
+[Module]
+Description=Echo module
+Description[pl]=Modu³ Echo
+Author=Kadu Team
+Version=core

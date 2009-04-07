@@ -1,0 +1,7 @@
+[Module]
+Description=Automaticaly split too long messages
+Description[pl]=Automatyczne dzielenie zbyt dlugich wiadomosci
+Author=PK Team, Dorregaray
+LoadByDefault=false
+Version=0.3.1
+Base=false
