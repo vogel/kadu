@@ -34,7 +34,8 @@ class KADUAPI ContactManager : public QObject, public StorableObject
 
 	ContactList Contacts;
 
-	ContactManager() {}
+	ContactManager();
+	virtual ~ContactManager();
 
 	void importConfiguration(XmlConfigFile *configurationStorage);
 

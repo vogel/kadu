@@ -54,16 +54,9 @@ Core * Core::instance()
 	return Instance;
 }
 
-Core::Core() : Window(0), ShowMainWindowOnStart(true)
+Core::Core() : Myself(Contact::TypeNull), Window(0), ShowMainWindowOnStart(true)
 {
 	QObject::connect(qApp, SIGNAL(aboutToQuit()), this, SLOT(quit()));
-
-	Myself.setDisplay(config_file.readEntry("General", "Nick"));
-
-	Configuration = new ConfigurationManager();
-	Configuration->load();
-
-	triggerAllAccountsRegistered();
 }
 
 Core::~Core()
@@ -270,6 +263,14 @@ void Core::createAllDefaultToolbars()
 
 void Core::init()
 {
+	Configuration = new ConfigurationManager();
+	Configuration->load();
+
+	Myself = Contact();
+	Myself.setDisplay(config_file.readEntry("General", "Nick"));
+
+	triggerAllAccountsRegistered();
+
 	StatusChangerManager::initModule();
 	connect(status_changer_manager, SIGNAL(statusChanged(Status)), this, SLOT(changeStatus(Status)));
 
@@ -355,9 +356,9 @@ void Core::storeConfiguration()
 	pending.storeConfiguration(xml_config_file);
 // 		IgnoredManager::writeToConfiguration();
 
-	GroupManager::instance()->store();
-	ContactManager::instance()->store();
-	AccountManager::instance()->store();
+// 	GroupManager::instance()->store();
+// 	ContactManager::instance()->store();
+// 	AccountManager::instance()->store();
 
 	if (AccountManager::instance()->defaultAccount() && AccountManager::instance()->defaultAccount()->protocol())
 	{

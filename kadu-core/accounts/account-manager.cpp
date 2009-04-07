@@ -9,6 +9,8 @@
 
 #include "accounts/account.h"
 #include "accounts/accounts-aware-object.h"
+#include "configuration/configuration-manager.h"
+#include "core/core.h"
 #include "notify/notification-manager.h"
 #include "protocols/connection-error-notification.h"
 #include "protocols/protocol.h"
@@ -32,10 +34,12 @@ KADUAPI AccountManager * AccountManager::instance()
 
 AccountManager::AccountManager()
 {
+	Core::instance()->configuration()->registerStorableObject(this);
 }
 
 AccountManager::~AccountManager()
 {
+	Core::instance()->configuration()->unregisterStorableObject(this);
 }
 
 StoragePoint * AccountManager::createStoragePoint()

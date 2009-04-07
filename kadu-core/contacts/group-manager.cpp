@@ -11,7 +11,9 @@
 #include <QtCore/QStringList>
 #include <QtXml/QDomElement>
 
+#include "configuration/configuration-manager.h"
 #include "configuration/storage-point.h"
+#include "core/core.h"
 
 #include "debug.h"
 #include "contact-manager.h"
@@ -33,10 +35,12 @@ GroupManager * GroupManager::instance()
 
 GroupManager::GroupManager()
 {
+	Core::instance()->configuration()->registerStorableObject(this);
 }
 
 GroupManager::~GroupManager()
 {
+	Core::instance()->configuration()->unregisterStorableObject(this);
 }
 
 StoragePoint * GroupManager::createStoragePoint()

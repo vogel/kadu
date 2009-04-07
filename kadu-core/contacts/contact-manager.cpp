@@ -9,7 +9,9 @@
 
 #include "accounts/account.h"
 
+#include "configuration/configuration-manager.h"
 #include "configuration/storage-point.h"
+#include "core/core.h"
 
 #include "contact.h"
 #include "contact-list.h"
@@ -27,6 +29,16 @@ ContactManager *  ContactManager::instance()
 		Instance = new ContactManager();
 
 	return Instance;
+}
+
+ContactManager::ContactManager()
+{
+	Core::instance()->configuration()->registerStorableObject(this);
+}
+
+ContactManager::~ContactManager()
+{
+	Core::instance()->configuration()->unregisterStorableObject(this);
 }
 
 StoragePoint * ContactManager::createStoragePoint()
