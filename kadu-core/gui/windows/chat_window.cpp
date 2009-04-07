@@ -255,6 +255,8 @@ void ChatWindow::alertNewMessage()
 		}
 		else if (showNewMessagesNum) // ... so we check this condition as 'else'
 			showNewMessagesNumInTitle();
+
+		qApp->alert(this); // TODO: make notifier from this
 	}
 	else
 		currentChatWidget->markAllMessagesRead();
