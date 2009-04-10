@@ -1,127 +1,70 @@
 #ifndef HISTORY_H
 #define HISTORY_H
 
-#include <QtCore/QList>
-#include <QtCore/QMap>
+#include <QtCore/QObject>
+#include <QtGui/QLabel>
+#include <QtGui/QKeyEvent>
+#include <QtGui/qcheckbox.h>
+#include <QtCore/qmap.h>
+#include <QtCore/qpair.h>
+#include <QtCore/qstring.h>
+#include <QtCore/qstringlist.h>
+#include <QtCore/qvariant.h>
+#include <QtCore/qdatetime.h>
+#include <QtGui/qdialog.h>
 
-#include <time.h>
+#include "action.h"
+#include "protocols/protocol.h"
+#include "main_configuration_window.h"
+#include "configuration_aware_object.h"
 
-#include "../modules/gadu_protocol/gadu.h"
-#include "../modules/gadu_protocol/uins_list.h"
-
-#include "history_exports.h"
-
-#define HISTORYMANAGER_ENTRY_CHATSEND   0x00000001
-#define HISTORYMANAGER_ENTRY_CHATRCV    0x00000002
-#define HISTORYMANAGER_ENTRY_MSGSEND    0x00000004
-#define HISTORYMANAGER_ENTRY_MSGRCV     0x00000008
-#define HISTORYMANAGER_ENTRY_STATUS     0x00000010
-#define HISTORYMANAGER_ENTRY_SMSSEND    0x00000020
-#define HISTORYMANAGER_ENTRY_ALL        0x0000003f
-#define HISTORYMANAGER_ENTRY_ALL_MSGS   0x0000002f
-
-class QTextStream;
-
-struct HistoryEntry {
-	int type;
-	UinType uin;
-	QString nick;
-	QDateTime date;
-	QDateTime sdate;
-	QString message;
-	unsigned int status;
-	QString ip;
-	QString description;
-	QString mobile;
-	HistoryEntry();
+enum HistoryEntryType
+{
+	EntryTypeMessage = 0x00000001,
+	EntryTypeStatus = 0x00000010,
+	EntryTypeSms = 0x00000020,
+	EntryTypeAll = 0x0000003f
 };
 
-struct HistoryDate {
-	QDateTime date;
-	uint idx;
-	HistoryDate();
-};
 
-/**
-	Menad�er historii
-**/
-class HISTORYAPI HistoryManager : public QObject
+#include "gui/windows/history-dialog.h"
+#include "gui/widgets/contacts-list-widget-menu-manager.h"
+#include "storage/history-storage.h"
+
+class Account;
+class HistoryDlg;
+
+class History : public ConfigurationUiHandler, ConfigurationAwareObject
 {
 	Q_OBJECT
 
-		QString text2csv(const QString &text);
-		int getHistoryEntriesCountPrivate(const QString &filename) const;
-		uint getHistoryDate(QTextStream &stream);
+	static History *Instance;
+	HistoryStorage *CurrentStorage;
+	HistoryDlg *HistoryDialog;
+	ActionDescription *ShowHistoryActionDescription;
 
-		void buildIndexPrivate(const QString &filename);
-		void createMessageDates(const UinsList uins);
-		void updateMessageDates(const UinsList uins);
+	History();
+	~History();
 
-		class BuffMessage
-		{
-			public:
-				UinsList uins;
-				QString message;
-				time_t tm;
-				time_t arriveTime;
-				bool own;
-				int counter;
-				BuffMessage(const UinsList &uins1 = UinsList(),
-							const QString &msg = QString(),
-							time_t t = 0,
-							time_t arriveTime1 = time(NULL),
-							bool own1 = false,
-							int cntr = 1)
-					: uins(uins1), message(msg), tm(t), arriveTime(arriveTime1),
-					own(own1), counter(cntr) {}
-		};
-		QMap<UinType, QList<BuffMessage> > bufferedMessages;
-		QTimer *imagesTimer;
+	void createActionDescriptions();
+	void deleteActionDescriptions();
 
-		QMap<UinsList, QDate> LastDate;
+	virtual void configurationUpdated();
+	void showHistoryActionActivated(QAction *sender, bool toggled);
+	void mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow);
 
-		void checkImageTimeout(UinType uin);
+private slots:
 
-	private slots:
-		void messageReceived(Protocol *protocol, UserListElements senders, const QString& msg, time_t time);
-		void imageReceivedAndSaved(UinType sender, quint32 size, quint32 crc32, const QString &path);
-		void checkImagesTimeouts();
-		void statusChanged(UserListElement elem, QString protocolName,
-					const UserStatus &oldStatus, bool massively, bool last);
+	void accountRegistered(Account *);
+	void accountUnregistered(Account *);
 
-	public:
-		HistoryManager(QObject *parent = 0);
-		int getHistoryEntriesCount(const UinsList &uins);
-		int getHistoryEntriesCount(const QString &mobile = QString::null);
+public:
+	static History * instance();
+	void registerStorage(HistoryStorage *storage);
+	void unregisterStorage(HistoryStorage *storage);
 
-		QList<HistoryEntry> getHistoryEntries(UinsList uins, int from, int count, int mask = HISTORYMANAGER_ENTRY_ALL);
-		QList<HistoryDate> getHistoryDates(const UinsList &uins);
-		QList<UinsList> getUinsLists() const;
-
-		QList<QDate> getMessageDates(const UinsList &uins);
-
-		int getHistoryEntryIndexByDate(const UinsList &uins, const QDateTime &date, bool endate = false);
-		static QString getFileNameByUinsList(UinsList uins);
-		static QStringList mySplit(const QChar &sep, const QString &str);
-
-	public slots:
-		void addMyMessage(const UinsList &senders, const QString &msg);
-
-		/**
-			raczej nie u�ywa�...
-		**/
-		void appendMessage(UinsList receivers, UinType sender, const QString &msg,
-				bool own, time_t t = 0, bool chat = true, time_t arriveTime = time(NULL));
-		void appendSms(const QString &mobile, const QString &msg);
-		void appendStatus(UinType uin, const UserStatus &status);
-		void removeHistory(const UinsList &uins);
-
-		void convHist2ekgForm(UinsList uins);
-		void convSms2ekgForm();
-		void buildIndex(const UinsList &uins);
-		void buildIndex(const QString &mobile = QString::null);
 };
 
-extern HISTORYAPI HistoryManager *history;
+	void disableNonHistoryContacts(KaduAction *action);
 
 #endif

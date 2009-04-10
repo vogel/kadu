@@ -1,7 +1,7 @@
 [Module]
-Description=SQL history storage module
+Description=SQL History module
 Description[pl]=Modu³ przechowuj±cy historiê rozmów w bazach danych: SQLite, MySQL, PostgreSQL. 
 Author=Adrian, Juzef
 Base=false
-LoadByDefault=true
+LoadByDefault=false
 Version=0.1

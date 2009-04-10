@@ -1,12 +1,14 @@
-#ifndef NEW_HISTORY_H
-#define NEW_HISTORY_H
+#ifndef SQL_HISTORY_H
+#define SQL_HISTORY_H
 
 #include <QtCore/QObject>
 #include <QtGui/QLabel>
+#include <QtGui/QLineEdit>
 #include <QtGui/QKeyEvent>
 #include <QtSql/QtSql>
 #include <QtGui/QMenu>
 #include <QtGui/qcheckbox.h>
+#include <QtGui/QSpinBox>
 #include <QtCore/qmap.h>
 #include <QtCore/qpair.h>
 #include <QtCore/qstring.h>
@@ -15,62 +17,31 @@
 #include <QtCore/qdatetime.h>
 #include <QtGui/qdialog.h>
 
-#include "configuration/configuration-window-widgets.h"
-#include "chat_edit_box.h"
-#include "chat_message.h"
-#include "chat_widget.h"
-#include "config_file.h"
-#include "html_document.h"
 #include "protocols/protocol.h"
-#include "toolbar.h"
-#include "usergroup.h"
-#include "main_configuration_window.h"
-#include "configuration_aware_object.h"
+#include "../history/history.h"
 
-enum HistoryEntryType
-{
-	EntryTypeMessage = 0x00000001,
-	EntryTypeStatus = 0x00000010,
-	EntryTypeSms = 0x00000020,
-	EntryTypeAll = 0x0000003f
-};
-
-
-#include "history_dialog.h"
-
-
-
-struct HistorySearchResult;
-struct HistorySearchParameters;
+#include "chat/chat_message.h"
+#include "../history/storage/history-storage.h"
 
 class Account;
-class HistoryDlg;
 
 /**
-	@class SqlHistory
+	@class HistorySqlStorage
 	@author Juzef, Adrian
 	@short Klasa obs³ugi zapisu historii rozmów w bazach danych SQLite, MySQL i PostgreSQL.
 **/
 
-class SqlHistory : public ConfigurationUiHandler, ConfigurationAwareObject
+class HistorySqlStorage : public HistoryStorage, ConfigurationUiHandler, ConfigurationAwareObject
 {
 	Q_OBJECT
 
-	QLabel *dontCiteOldMessagesLbl;
-	QListWidget *allStatusUsers;
-	QListWidget *selectedStatusUsers;
-	QListWidget *allChatsUsers;
-	QListWidget *selectedChatsUsers; 
 	QSpinBox *portSpinBox;	
 	QComboBox *driverComboBox;
-	ActionDescription *showHistoryActionDescription;  /*!< Akcja otwieraj±ca okno historii. */
-	ActionDescription *clearHistoryActionDescription;
 	QLineEdit* hostLineEdit;
 	QLineEdit* userLineEdit; 
 	QLineEdit* nameLineEdit;  
 	QLineEdit* passLineEdit;
 	QLineEdit* prefixLineEdit;
-	HistoryDlg* historyDialog;
 
 	QSqlDatabase debe; /*!< Obiekt reprezentuj±cy bie¿±c± bazê danych. */
 	QString tableNamePrefix;
@@ -79,7 +50,7 @@ class SqlHistory : public ConfigurationUiHandler, ConfigurationAwareObject
 		Funkcja zwraca ID dla nowo tworzonego pola grupy u¿ytkowników
 	**/
 	QString findNewUidGroupId();
-	void updateQuoteTimeLabel(int);
+
 	void createDefaultConfiguration(); 
 	/**
 		\fn void appendHistory(ChatWidget *chat);
@@ -89,12 +60,12 @@ class SqlHistory : public ConfigurationUiHandler, ConfigurationAwareObject
 	void appendHistory(ChatWidget *chat);
 
 	/**
-		\fn void removeHistory(const UserListElements& uids);
+		\fn void removeHistory(const ContactList& uids);
 		Funkcja usuwa ca³± historiê dla podanej listy u¿ytkowników.
 		\param uids lista u¿ytkowników
 	**/
-	//void removeHistory(const UserListElements& uids);
-	QList<UserListElements> getUidGroups(QString queryString);
+	//void removeHistory(const ContactList& uids);
+	QList<ContactList> getUidGroups(QString queryString);
 		
 	void executeQuery(const QString &query);
 	/**
@@ -105,67 +76,48 @@ class SqlHistory : public ConfigurationUiHandler, ConfigurationAwareObject
 	**/
 	QString prepareText(const QString &text);	
 	/**
-		\fn QString addUidGroup(UserListElements users);
+		\fn QString addUidGroup(ContactList users);
 		Funkcja tworzy rekord nowej grupy u¿ytkowników.
 		\param users lista u¿ytkowników
 		\return string z ID pola bazy danych nowo utworzonej grupy u¿ytkowników
 	**/
-	QString addUidGroup(UserListElements users);	
-	ConfigurationWindow *historyAdvanced;
+	QString addUidGroup(ContactList users);	
 
 virtual void configurationUpdated();
 
 private slots:
-	void moveToSelectedStatusList();
-	void moveToAllStatusList();
-	void moveToSelectedChatsList();
-	void moveToAllChatsList();
 	void driverComboBoxValueChanged(int index);
 		
-	void historyActionActivated(QAction* sender, bool toggled);
-	void clearHistoryActionActivated(QAction *sender, bool toggled);
 	void initializeDatabase();
 	void configurationWindowApplied();
-	void viewHistory(QAction *sender, bool toggled);
-	void userboxMenuPopup();
-	void statusChanged(UserListElement elem, QString protocolName,
-		const UserStatus &oldStatus, bool massively, bool last);
-	void chatCreated(ChatWidget *chat);
-	void chatDestroying(ChatWidget *chat);
-	void chatKeyPressed(QKeyEvent *e, ChatWidget *widget, bool &handled);
-	void removingUsers(UserListElements users);
 	void portSpinBoxValueChanged(int value);
-	void showHistoryAdvanced();
-	void historyAdvancedDestroyed();
 
-	// new API
-	void accountRegistered(Account *);
-	void accountUnregistered(Account *);
+	virtual void messageReceived(Chat *chat, Contact contact, const QString &message);
+
 
 public:
-	SqlHistory(bool firstLoad);
-	~SqlHistory();
+	HistorySqlStorage(bool firstLoad);
+	~HistorySqlStorage();
 
-	QList<UserListElements> getAllUidGroups();
-	QList<UserListElements> getChatUidGroups();
-	QList<UserListElements> getStatusUidGroups();
-	QList<UserListElements> getSmsUidGroups();
+	QList<ContactList> getAllUidGroups();
+	QList<ContactList> getChatUidGroups();
+	QList<ContactList> getStatusUidGroups();
+	QList<ContactList> getSmsUidGroups();
 
 	QList<QDate> getAllDates();
-	QList<QDate> historyDates(const UserListElements& uids);
-	QList<QDate> historyStatusDates(const UserListElements& uids);
-	QList<QDate> historySmsDates(const UserListElements& uids);
+	QList<QDate> historyDates(const ContactList& uids);
+	QList<QDate> historyStatusDates(const ContactList& uids);
+	QList<QDate> historySmsDates(const ContactList& uids);
 
-	QList<ChatMessage*> historyMessages(const UserListElements& uids, QDate date = QDate());
-	QList<ChatMessage*> getStatusEntries(const UserListElements& uids, QDate date = QDate());
-	QList<ChatMessage*> getSmsEntries(const UserListElements& uids, QDate date = QDate());
+	QList<ChatMessage*> historyMessages(const ContactList& uids, QDate date = QDate());
+	QList<ChatMessage*> getStatusEntries(const ContactList& uids, QDate date = QDate());
+	QList<ChatMessage*> getSmsEntries(const ContactList& uids, QDate date = QDate());
 
 	virtual void mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow);
-	QString findUidGroup(UserListElements users);
-	int getEntriesCount(const QList<UserListElements> &uids, HistoryEntryType type);
-	void deleteHistory(const UserListElements &users);
+	QString findUidGroup(ContactList users);
+	int getEntriesCount(const QList<ContactList> &uids, HistoryEntryType type);
 	/**
-		\fn void appendMessageEntry(UserListElements list, const QString &msg, bool outgoing, time_t send_time, time_t receive_time);
+		\fn void appendMessageEntry(ContactList list, const QString &msg, bool outgoing, time_t send_time, time_t receive_time);
 		Zapisuje wiadomo¶ci w bazie. Z za³o¿enia interfejs dla modu³ów importu/eksportu historii.
 		\param list lista u¿ytkowników
 		\param msg tre¶æ wiadomo¶ci
@@ -173,9 +125,9 @@ public:
 		\param send_time czas wys³ania wiadomo¶ci
 		\param receive_time czas odebrania 
 	**/
-	void appendMessageEntry(UserListElements list, const QString &msg, bool outgoing, time_t send_time, time_t receive_time);
+	void appendMessageEntry(ContactList list, const QString &msg, bool outgoing, time_t send_time, time_t receive_time);
 	/**
-		\fn void appendSmsEntry(UserListElements list, const QString &msg, bool outgoing, time_t send_time, time_t receive_time);
+		\fn void appendSmsEntry(ContactList list, const QString &msg, bool outgoing, time_t send_time, time_t receive_time);
 		Zapisuje smsy w bazie. Z za³o¿enia interfejs dla modu³ów importu/eksportu historii.
 		\param list lista u¿ytkowników
 		\param msg tre¶æ wiadomo¶ci
@@ -183,9 +135,9 @@ public:
 		\param send_time czas wys³ania wiadomo¶ci
 		\param receive_time czas odebrania 
 	**/
-	void appendSmsEntry(UserListElements list, const QString &msg, bool outgoing, time_t send_time, time_t receive_time);
+	void appendSmsEntry(ContactList list, const QString &msg, bool outgoing, time_t send_time, time_t receive_time);
 	/**
-		\fn void appendStatusEntry(UserListElements list, const QString &status, const QString &desc, time_t time, const QString &adds);
+		\fn void appendStatusEntry(ContactList list, const QString &status, const QString &desc, time_t time, const QString &adds);
 		Zapisuje statusy w bazie. Z za³o¿enia interfejs dla modu³ów importu/eksportu historii.
 		\param list lista u¿ytkowników
 		\param msg tre¶æ wiadomo¶ci
@@ -193,35 +145,29 @@ public:
 		\param send_time czas wys³ania wiadomo¶ci
 		\param receive_time czas odebrania 
 	**/
-	void appendStatusEntry(UserListElements list, const QString &status, const QString &desc, time_t time, const QString &adds);
+	void appendStatusEntry(ContactList list, const QString &status, const QString &desc, time_t time, const QString &adds);
 
 	/**
-		\fn void removeHistory(const UserListElements& uids, const QDate &date = 0);
+		\fn void removeHistory(const ContactList& uids, const QDate &date = 0);
 		Funkcja usuwa ca³± historiê dla podanej listy u¿ytkowników lub tylko dla podanej daty.
 		\param uids lista u¿ytkowników
 	**/
-	void removeHistory(const UserListElements& uids, const QDate &date = QDate(), HistoryEntryType type = EntryTypeMessage);
+	void removeHistory(const ContactList& uids, const QDate &date = QDate(), HistoryEntryType type = EntryTypeMessage);
 		
 	bool beginTransaction();
 	bool commitTransaction();
 	bool rollbackTransaction();
 
-	void addMenuActionDescription(ActionDescription *actionDescription);
-	void insertMenuActionDescription(int pos, ActionDescription *actionDescription);
-	void removeMenuActionDescription(ActionDescription *actionDescription);
-	QAction * addMenuSeparator();
-	void removeMenuSeparator(QAction *separator);
-	virtual HistoryDlg* getHistoryDialog() { return historyDialog;};
 
 public slots:
 	void appendSms(const QString &mobile, const QString &msg);
-	void appendStatus(UserListElement elem, QString protocolName);
-	void chatMsgReceived(Protocol *protocol, UserListElements senders, const QString& msg, time_t time);
-	void messageSentAndConfirmed(UserListElements, const QString&, time_t time = 0);
-	HistorySearchResult searchHistory(UserListElements users, HistorySearchParameters params);
+	void appendStatus(Contact elem, QString protocolName);
+	void chatMsgReceived(Protocol *protocol, ContactList senders, const QString& msg, time_t time);
+	void messageSentAndConfirmed(ContactList, const QString&, time_t time = 0);
+	HistorySearchResult searchHistory(ContactList users, HistorySearchParameters params);
 
 };
 
-extern SqlHistory* sql_history;
+extern HistorySqlStorage *historySqlStorage;
 
 #endif

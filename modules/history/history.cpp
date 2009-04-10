@@ -7,1371 +7,284 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <QtCore/QDataStream>
-#include <QtCore/QTextStream>
-#include <QtCore/QTimer>
-#include <QtGui/QApplication>
-#include <QtGui/QMessageBox>
+#include <QtCore/QList>
+#include <QtGui/QKeyEvent>
+#include <QtGui/QLabel>
+#include <QtGui/QGridLayout>
 
-#include "config_file.h"
+#include "accounts/account.h"
+#include "accounts/account-manager.h"
+#include "contacts/contact-manager.h"
+#include "chat/chat.h"
+#include "contacts/contact.h"
+#include "core/core.h"
+#include "misc/path-conversion.h"
+#include "protocols/services/chat-service.h"
+
 #include "debug.h"
-#include "../modules/gadu_protocol/gadu_images_manager.h"
-#include "html_document.h"
-#include "kadu.h"
-#include "misc/misc.h"
+#include "icons_manager.h"
+#include "message_box.h"
 
 #include "history.h"
 
-enum {
-	HISTORYMANAGER_ORDINARY_LINE,
-	HISTORYMANAGER_HISTORY_OUR,
-	HISTORYMANAGER_HISTORY_FOREIGN,
-	HISTORYMANAGER_SMS_WITH_NICK,
-	HISTORYMANAGER_SMS_WITHOUT_NICK
-};
-
-HistoryManager::HistoryManager(QObject *parent) 
-	: QObject(parent), bufferedMessages(), imagesTimer(new QTimer(this))
-{
-	imagesTimer->start(1000 * 60);//60 sekund
-	connect(imagesTimer, SIGNAL(timeout()), this, SLOT(checkImagesTimeouts()));
-	connect(userlist, SIGNAL(statusChanged(UserListElement, QString, const UserStatus &, bool, bool)),
-		this, SLOT(statusChanged(UserListElement, QString, const UserStatus &, bool, bool)));
-}
-
-QString HistoryManager::text2csv(const QString &text)
-{
-	QString csv = text;
-	csv.replace("\\", "\\\\");
-	csv.replace("\"", "\\\"");
-	csv.replace("\r\n", "\\n");
-	csv.replace("\n", "\\n");
-	csv.replace("\r", "\\n");
-	if (csv != text || text.find(',', 0) != -1)
-		csv = QString("\"%1\"").arg(csv);
-	return csv;
-}
-
-QString HistoryManager::getFileNameByUinsList(UinsList uins)
+extern "C" KADU_EXPORT int history_init(bool firstLoad)
 {
 	kdebugf();
-	QString fname;
-	if (!uins.isEmpty())
-	{
-		uins.sort();
-		unsigned int i = 0, uinsCount = uins.count();
-		foreach(const UinType &uin, uins)
-		{
-			fname.append(QString::number(uin));
-			if (i++ < uinsCount - 1)
-				fname.append("_");
-		}
-	}
-	else
-		fname = "sms";
+	History *h = History::instance();
+	MainConfigurationWindow::registerUiFile(dataPath("kadu/modules/configuration/history.ui"));
 	kdebugf2();
-	return fname;
+	return 0;
 }
 
-void HistoryManager::appendMessage(UinsList uins, UinType uin, const QString &msg, bool own, time_t czas, bool chat, time_t arriveTime)
+extern "C" KADU_EXPORT void history_close()
 {
 	kdebugf();
-	QFile f, fidx;
-	QString fname = ggPath("history/");
-	QString line, nick;
-	QStringList linelist;
-	int offs;
-
-	convHist2ekgForm(uins);
-	fname.append(getFileNameByUinsList(uins));
-	updateMessageDates(uins);
-
-	if (own)
-		if (chat)
-			linelist.append("chatsend");
-		else
-			linelist.append("msgsend");
-	else
-		if (chat)
-			linelist.append("chatrcv");
-		else
-			linelist.append("msgrcv");
-	linelist.append(QString::number(uin));
-	if (userlist->contains("Gadu", QString::number(uin)))
-		nick = userlist->byID("Gadu", QString::number(uin)).altNick();
-	else
-		nick = QString::number(uin);
-	linelist.append(text2csv(nick));
-	linelist.append(QString::number(arriveTime));
-	if (!own)
-		linelist.append(QString::number(czas));
-	linelist.append(text2csv(msg));
-	line = linelist.join(",");
-
-	f.setName(fname);
-	if (!(f.open(QIODevice::WriteOnly | QIODevice::Append)))
-	{
-		kdebugmf(KDEBUG_ERROR, "Error opening history file %s\n", qPrintable(fname));
-		return;
-	}
-
-	buildIndexPrivate(fname);
-	fidx.setName(f.name() + ".idx");
-	if (fidx.open(QIODevice::WriteOnly | QIODevice::Append))
-	{
-		offs = f.at();
-		fidx.writeBlock((const char *)&offs, sizeof(int));
-		fidx.close();
-	}
-
-	QTextStream stream(&f);
-	stream.setCodec(codec_latin2);
-	stream << line << '\n';
-
-	f.close();
+	MainConfigurationWindow::unregisterUiFile(dataPath("kadu/modules/configuration/history.ui"));
 	kdebugf2();
 }
 
-void HistoryManager::appendSms(const QString &mobile, const QString &msg)
+History * History::Instance = 0;
+
+History * History::instance()
 {
-	kdebugmf(KDEBUG_FUNCTION_START, "appending sms to history (%s)\n", qPrintable(mobile));
-	QFile f, fidx;
-	QTextStream stream;
-	QStringList linelist;
-	QString altnick, line, fname;
-	UinType uin = 0;
-	int offs;
+	if (!Instance)
+		Instance = new History();
+	return Instance;
+}
 
-	QString html_msg = msg;
-	HtmlDocument::escapeText(html_msg);
+History::History() : QObject(NULL), HistoryDialog(0), CurrentStorage(0)
+{
+	kdebugf();
+	createActionDescriptions();
+	connect(AccountManager::instance(), SIGNAL(accountRegistered(Account *)),
+		this, SLOT(accountRegistered(Account *)));
+	connect(AccountManager::instance(), SIGNAL(accountUnregistered(Account *)),
+		this, SLOT(accountUnregistered(Account *)));
+	kdebugf2();
+}
 
-	convSms2ekgForm();
+History::~History()
+{
+	kdebugf();
+	deleteActionDescriptions();
+	kdebugf2();
+}
 
-	linelist.append("smssend");
-	linelist.append(mobile);
-	linelist.append(QString::number(time(NULL)));
-	linelist.append(text2csv(html_msg));
+void History::createActionDescriptions()
+{
+	ShowHistoryActionDescription = new ActionDescription(0,
+		ActionDescription::TypeUser, "showHistoryAction",
+		this, SLOT(showHistoryActionActivated(QAction *, bool)),
+		"History", tr("Show history"), false, QString::null,
+		disableNonHistoryContacts
+	);
+	ShowHistoryActionDescription->setShortcut("kadu_showhistory");
+	ContactsListWidgetMenuManager::instance()->insertActionDescription(1, ShowHistoryActionDescription);
+}
 
-	foreach(const UserListElement &i, *userlist)
-		if (i.mobile() == mobile)
-		{
-			altnick = i.altNick();
-			uin = i.ID("Gadu").toUInt();;
-			break;
-		}
-	if (uin)
+void History::deleteActionDescriptions()
+{
+	ContactsListWidgetMenuManager::instance()->removeActionDescription(ShowHistoryActionDescription);
+
+	delete ShowHistoryActionDescription;
+	ShowHistoryActionDescription = 0;
+}
+
+void History::showHistoryActionActivated(QAction *sender, bool toggled)
+{
+	kdebugf();
+	KaduMainWindow *window = dynamic_cast<KaduMainWindow *>(sender->parent());
+	if (window)
 	{
-		UinsList uins(uin);
-		convHist2ekgForm(uins);
-		linelist.append(text2csv(altnick));
-		linelist.append(QString::number(uin));
-	}
-
-	line = linelist.join(",");
-
-	f.setName(ggPath("history/sms"));
-	if (!(f.open(QIODevice::WriteOnly | QIODevice::Append)))
-	{
-		kdebugmf(KDEBUG_ERROR, "Error opening sms history file\n");
-		return;
-	}
-
-	buildIndexPrivate(f.name());
-	fidx.setName(f.name() + ".idx");
-	if (fidx.open(QIODevice::WriteOnly | QIODevice::Append))
-	{
-		offs = f.at();
-		fidx.writeBlock((const char *)&offs, sizeof(int));
-		fidx.close();
-	}
-
-	stream.setDevice(&f);
-	stream.setCodec(codec_latin2);
-	stream << line << '\n';
-	f.close();
-
-	if (uin)
-	{
-		fname = ggPath("history/");
-		fname = fname + QString::number(uin);
-		f.setName(fname);
-		if (!(f.open(QIODevice::WriteOnly | QIODevice::Append)))
-		{
-			kdebugmf(KDEBUG_ERROR, "Error opening sms history\n");
-			return;
-		}
-
-		fidx.setName(f.name() + ".idx");
-		if (fidx.open(QIODevice::WriteOnly | QIODevice::Append))
-		{
-			offs = f.at();
-			fidx.writeBlock((const char *)&offs, sizeof(int));
-			fidx.close();
-		}
-
-		stream.setDevice(&f);
-		stream.setCodec(codec_latin2);
-		stream << line << '\n';
-		f.close();
+		ContactList users = window->contacts();
+		//HistoryDialog = new HistoryDlg(users);
+		HistoryDialog->show(users);
 	}
 	kdebugf2();
 }
 
-void HistoryManager::appendStatus(UinType uin, const UserStatus &status)
+void History::accountRegistered(Account *account)
 {
-	kdebugf();
-
-	QFile f, fidx;
-	QString fname = ggPath("history/");
-	QString line, nick, addr;
-	QStringList linelist;
-	int offs;
-	QHostAddress ip;
-	unsigned short port;
-//	struct in_addr in;
-
-	if (config_file.readBoolEntry("History", "DontSaveStatusChanges"))
-	{
-		kdebugm(KDEBUG_INFO|KDEBUG_FUNCTION_END, "not appending\n");
-		return;
-	}
-
-	UinsList uins(uin);
-	convHist2ekgForm(uins);
-	linelist.append("status");
-	linelist.append(QString::number(uin));
-	if (userlist->contains("Gadu", QString::number(uin), FalseForAnonymous))
-	{
-		UserListElement user = userlist->byID("Gadu", QString::number(uin));
-		nick = user.altNick();
-		ip = user.IP("Gadu");
-		port = user.port("Gadu");
-	}
-	else
-	{
-		nick = QString::number(uin);
-		ip.setAddress((unsigned int)0);
-		port = 0;
-	}
-	linelist.append(text2csv(nick));
-	addr = ip.toString();
-	if (port)
-		addr = addr + QString(":") + QString::number(port);
-	linelist.append(addr);
-	linelist.append(QString::number(time(NULL)));
-	switch (status.status())
-	{
-		case Online:
-			linelist.append("avail");
-			break;
-		case Busy:
-			linelist.append("busy");
-			break;
-		case Invisible:
-			linelist.append("invisible");
-			break;
-		case Offline:
-		default:
-			linelist.append("notavail");
-			break;
-	}
-	if (status.hasDescription())
-	{
-		QString d = status.description();
-		HtmlDocument::escapeText(d);
-		linelist.append(text2csv(d));
-	}
-	line = linelist.join(",");
-
-	fname = fname + QString::number(uin);
-	f.setName(fname);
-	if (!(f.open(QIODevice::WriteOnly | QIODevice::Append)))
-	{
-		kdebugmf(KDEBUG_ERROR, "Error opening history file %s\n", qPrintable(fname));
-		return;
-	}
-
-	buildIndexPrivate(fname);
-	fidx.setName(fname + ".idx");
-	if (fidx.open(QIODevice::WriteOnly | QIODevice::Append))
-	{
-		offs = f.at();
-		fidx.writeBlock((const char *)&offs, sizeof(int));
-		fidx.close();
-	}
-
-	QTextStream stream(&f);
-	stream.setCodec(codec_latin2);
-	stream << line << '\n';
-
-	f.close();
-	kdebugf2();
+	ChatService *service = account->protocol()->chatService();
+	if (service)
+		connect(service, SIGNAL(messageReceived(Chat *, Contact , const QString &)),
+			CurrentStorage, SLOT(messageReceived(Chat *, Contact , const QString &)));
 }
 
-void HistoryManager::removeHistory(const UinsList &uins)
-{
-	kdebugf();
 
-	QString fname;
-	switch (QMessageBox::information(kadu, "Kadu", qApp->translate("@default",QT_TR_NOOP("Clear history?")),
-		qApp->translate("@default",QT_TR_NOOP("Yes")), qApp->translate("@default",QT_TR_NOOP("No")), QString::null, 1, 1))
-	{
-		case 0:
-			fname = ggPath("history/");
-			fname.append(getFileNameByUinsList(uins));
-			kdebugmf(KDEBUG_INFO, "deleting %s\n", qPrintable(fname));
-			QFile::remove(fname);
-			QFile::remove(fname + ".idx");
-			break;
-		case 1:
-			break;
-	}
-	kdebugf2();
+void History::accountUnregistered(Account *account)
+{
+	ChatService *service = account->protocol()->chatService();
+	if (service)
+		disconnect(service, SIGNAL(messageReceived(Chat *, Contact , const QString &)),
+			CurrentStorage, SLOT(messageReceived(Chat *, Contact , const QString &)));
 }
 
-void HistoryManager::convHist2ekgForm(UinsList uins)
+void History::mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow)
 {
-	kdebugf();
+/*
+	ConfigGroupBox *chatsGroupBox = mainConfigurationWindow->configGroupBox("Chat", "History", "Chats");
+	QWidget *selectedChatsUsersWidget = new QWidget(chatsGroupBox->widget());
+	QGridLayout *selectedChatsUsersLayout = new QGridLayout(selectedChatsUsersWidget);
+	selectedChatsUsersLayout->setSpacing(5);
+	selectedChatsUsersLayout->setMargin(5);
 
-	QFile f, fout;
-	QString path = ggPath("history/");
-	QString fname, fnameout, line, nick;
-	QStringList linelist;
-	UinType uin;
+	allChatsUsers = new QListWidget(selectedChatsUsersWidget);
+	QPushButton *moveToSelectedChatsList = new QPushButton(tr("Move to 'Selected list'"), selectedChatsUsersWidget);
 
-	uins.sort();//nie wiem czy to jest konieczne...
-	fname = getFileNameByUinsList(uins);
+	selectedChatsUsersLayout->addWidget(new QLabel(tr("User list"), selectedChatsUsersWidget), 0, 0);
+	selectedChatsUsersLayout->addWidget(allChatsUsers, 1, 0);
+	selectedChatsUsersLayout->addWidget(moveToSelectedChatsList, 2, 0);
 
-	f.setName(path + fname);
-	if (!(f.open(QIODevice::ReadWrite)))
-	{
-		kdebugmf(KDEBUG_ERROR, "Error opening history file %s\n", qPrintable(fname));
-		return;
-	}
+	selectedChatsUsers = new QListWidget(selectedChatsUsersWidget);
+	QPushButton *moveToAllChatsList = new QPushButton(tr("Move to 'User list'"), selectedChatsUsersWidget);
 
-	fnameout = fname + ".new";
-	fout.setName(path + fnameout);
-	if (!(fout.open(QIODevice::WriteOnly | QIODevice::Truncate)))
-	{
-		kdebugmf(KDEBUG_ERROR, "Error opening new history file %s\n", qPrintable(fnameout));
-		f.close();
-		return;
-	}
+	selectedChatsUsersLayout->addWidget(new QLabel(tr("Selected list"), selectedChatsUsersWidget), 0, 1);
+	selectedChatsUsersLayout->addWidget(selectedChatsUsers, 1, 1);
+	selectedChatsUsersLayout->addWidget(moveToAllChatsList, 2, 1);
 
-	QTextStream stream(&f);
-	stream.setCodec(codec_latin2);
-	QTextStream streamout(&fout);
-	streamout.setCodec(codec_latin2);
+	connect(moveToSelectedChatsList, SIGNAL(clicked()), this, SLOT(moveToSelectedChatsList()));
+	connect(moveToAllChatsList, SIGNAL(clicked()), this, SLOT(moveToAllChatsList()));
 
-	bool our, foreign;
-	QString dzien, miesiac, rok, czas, sczas, text, temp, lineout;
-	QDateTime datetime, sdatetime;
-	QRegExp sep("\\s"), sep2("::");
-	our = foreign = false;
-	UinType myUin = config_file.readNumEntry("General","UIN");
-	while ((line = stream.readLine()) != QString::null)
-	{
-//		our = !line.find(QRegExp("^\\S+\\s::\\s\\d{2,2}\\s\\d{2,2}\\s\\d{4,4},\\s\\(\\d{2,2}:\\d{2,2}:\\d{2,2}\\)$"));
-		our = !line.find(QRegExp("^(\\S|\\s)+\\s::\\s\\d{2,2}\\s\\d{2,2}\\s\\d{4,4},\\s\\(\\d{2,2}:\\d{2,2}:\\d{2,2}\\)$"));
-//		foreign = !line.find(QRegExp("^\\S+\\s::\\s\\d{2,2}\\s\\d{2,2}\\s\\d{4,4},\\s\\(\\d{2,2}:\\d{2,2}:\\d{2,2}\\s/\\sS\\s\\d{2,2}:\\d{2,2}:\\d{2,2}\\)$"));
-		foreign = !line.find(QRegExp("^(\\S|\\s)+\\s::\\s\\d{2,2}\\s\\d{2,2}\\s\\d{4,4},\\s\\(\\d{2,2}:\\d{2,2}:\\d{2,2}\\s/\\sS\\s\\d{2,2}:\\d{2,2}:\\d{2,2}\\)$"));
-		if (our || foreign)
-		{
-			if (!linelist.isEmpty())
-			{
-				text.truncate(text.length() - 1);
-				if (text[text.length() - 1] == '\n')
-					text.truncate(text.length() - 1);
-				linelist.append(text2csv(text));
-				lineout = linelist.join(",");
-				streamout << lineout << '\n';
-			}
-			linelist.clear();
-			text.truncate(0);
-			nick = line.section(sep2, 0, 0);
-			nick.truncate(nick.length() - 1);
-			line = line.right(line.length() - nick.length() - 4);
-			dzien = line.section(sep, 0, 0);
-			miesiac = line.section(sep, 1, 1);
-			rok = line.section(sep, 2, 2);
-			rok.truncate(rok.length() - 1);
-			datetime.setDate(QDate(rok.toInt(), miesiac.toInt(), dzien.toInt()));
-			sdatetime = datetime;
-			czas = line.section(sep, 3, 3);
-			czas.remove(0, 1);
-			if (our)
-			{
-				czas.truncate(czas.length() - 1);
-				linelist.append("chatsend");
-			}
-			datetime.setTime(QTime(czas.left(2).toInt(), czas.mid(3, 2).toInt(), czas.right(2).toInt()));
-			if (foreign)
-			{
-				sczas = line.section(sep, 6, 6);
-				sczas.truncate(sczas.length() - 1);
-				sdatetime.setTime(QTime(sczas.left(2).toInt(), sczas.mid(3, 2).toInt(), sczas.right(2).toInt()));
-				linelist.append("chatrcv");
-			}
-			if (our)
-			{
-				if (uins.count() > 1)
-					uin = 0;
-				else if (myUin != uins[0])
-					uin = uins[0];
-				else
-					uin = uins[1];
-			}
-			else if (userlist->containsAltNick(nick))
-				uin = userlist->byAltNick(nick).ID("Gadu").toUInt();
-			else if (uins.count() > 1)
-				uin = 0;
-			else if (myUin != uins[0])
-				uin = uins[0];
+	chatsGroupBox->addWidgets(0, selectedChatsUsersWidget);
+	foreach(const UserListElement &user, *userlist)
+		if (!user.protocolList().isEmpty() && !user.isAnonymous())
+			if (!user.data("history_save_chats").toBool())
+				allChatsUsers->addItem(user.altNick());
 			else
-				uin = uins[1];
-			linelist.append(QString::number(uin));
-			if (our)
-				if (userlist->contains("Gadu", QString::number(uin)))
-					nick = userlist->byID("Gadu", QString::number(uin)).altNick();
-				else
-					nick = QString::number(uin);
-			linelist.append(nick);
-			linelist.append(QString::number(-datetime.secsTo(
-				QDateTime(QDate(1970, 1, 1), QTime(0 ,0)))));
-			if (foreign)
-				linelist.append(QString::number(-sdatetime.secsTo(
-					QDateTime(QDate(1970, 1, 1), QTime(0 ,0)))));
-			our = foreign = false;
-		}
-		else
-		{
-			if (linelist.isEmpty())
-				break;
-			text.append(line);
-			text.append("\n");
-		}
-	}
-	if (!linelist.isEmpty())
-	{
-		text.truncate(text.length() - 1);
-		if (text[text.length() - 1] == '\n')
-			text.truncate(text.length() - 1);
-		linelist.append(text2csv(text));
-		lineout = linelist.join(",");
-		streamout << lineout << '\n';
-		f.close();
-		fout.close();
-		QDir dir(path);
-		dir.rename(fname, fname + QString(".old"));
-		dir.rename(fnameout, fname);
-	}
-	else
-	{
-		f.close();
-		fout.remove();
-	}
-	kdebugf2();
-}
+				selectedChatsUsers->addItem(user.altNick());
 
-void HistoryManager::convSms2ekgForm()
-{
-	kdebugf();
+	allChatsUsers->sortItems();
+	selectedChatsUsers->sortItems();
+	allChatsUsers->setSelectionMode(QAbstractItemView::ExtendedSelection);
+	selectedChatsUsers->setSelectionMode(QAbstractItemView::ExtendedSelection);
 
-	QFile f, fout;
-	QString path = ggPath("history/");
-	QString fname, fnameout, line, nick;
-	QStringList linelist;
-	UinType uin=0;
+	connect(selectedChatsUsers, SIGNAL(doubleClicked(QListWidgetItem *)), this, SLOT(moveToAllChatsList()));
+	connect(allChatsUsers, SIGNAL(doubleClicked(QListWidgetItem *)), this, SLOT(moveToSelectedChatsList()));
 
-	fname = "sms";
-	f.setName(path + fname);
-	if (!(f.open(QIODevice::ReadWrite)))
-	{
-		kdebugmf(KDEBUG_ERROR, "Error opening sms history file %s\n", qPrintable(fname));
-		return;
-	}
-	fnameout = fname + ".new";
-	fout.setName(path + fnameout);
-	if (!(fout.open(QIODevice::WriteOnly | QIODevice::Truncate)))
-	{
-		kdebugmf(KDEBUG_ERROR, "Error opening new sms history file %s\n", qPrintable(fnameout));
-		f.close();
-		return;
-	}
+	ConfigGroupBox *statusGroupBox = mainConfigurationWindow->configGroupBox("Chat", "History", "Status changes");
+	QWidget *selectedStatusUsersWidget = new QWidget(statusGroupBox->widget());
+	QGridLayout *selectedStatusUsersLayout = new QGridLayout(selectedStatusUsersWidget);
+	selectedStatusUsersLayout->setSpacing(5);
+	selectedStatusUsersLayout->setMargin(5);
 
-	QTextStream stream(&f);
-	stream.setCodec(codec_latin2);
-	QTextStream streamout(&fout);
-	streamout.setCodec(codec_latin2);
+	allStatusUsers = new QListWidget(selectedStatusUsersWidget);
+	QPushButton *moveToSelectedStatusList = new QPushButton(tr("Move to 'Selected list'"), selectedStatusUsersWidget);
 
-	bool header;
-	QString mobile, dzien, miesiac, rok, czas, text, temp, lineout;
-	QDateTime datetime;
-	QRegExp sep("\\s");
-	header = false;
-	while ((line = stream.readLine()) != QString::null)
-	{
-		header = !line.find(QRegExp("^\\S+\\s\\(\\d+\\)\\s::\\s\\d{2,2}\\s\\d{2,2}\\s\\d{4,4},\\s\\(\\d{2,2}:\\d{2,2}:\\d{2,2}\\)$"));
-		if (header)
-		{
-			if (!linelist.isEmpty())
-			{
-				text.truncate(text.length() - 1);
-				if (text[text.length() - 1] == '\n')
-					text.truncate(text.length() - 1);
-				linelist.append(text2csv(text));
-				if (uin)
-				{
-					linelist.append(nick);
-					linelist.append(QString::number(uin));
-				}
-				lineout = linelist.join(",");
-				streamout << lineout << '\n';
-			}
-			linelist.clear();
-			text.truncate(0);
-			nick = line.section(sep, 0, 0);
-			uin = 0;
-			mobile = line.section(sep, 1, 1);
-			mobile.remove(0, 1);
-			mobile.truncate(mobile.length() - 1);
-			dzien = line.section(sep, 3, 3);
-			miesiac = line.section(sep, 4, 4);
-			rok = line.section(sep, 5, 5);
-			rok.truncate(rok.length() - 1);
-			datetime.setDate(QDate(rok.toInt(), miesiac.toInt(), dzien.toInt()));
-			czas = line.section(sep, 6, 6);
-			czas.remove(0, 1);
-			czas.truncate(czas.length() - 1);
-			linelist.append("smssend");
-			linelist.append(mobile);
-			datetime.setTime(QTime(czas.left(2).toInt(), czas.mid(3, 2).toInt(), czas.right(2).toInt()));
-			linelist.append(QString::number(-datetime.secsTo(
-				QDateTime(QDate(1970, 1, 1), QTime(0 ,0)))));
-			foreach(const UserListElement &user, *userlist)
-				if (user.mobile() == mobile)
-					uin = user.ID("Gadu").toUInt();
-			header = false;
-		}
-		else
-		{
-			if (linelist.isEmpty())
-				break;
-			text.append(line);
-			text.append("\n");
-		}
-	}
-	if (!linelist.isEmpty())
-	{
-		text.truncate(text.length() - 1);
-		if (text[text.length() - 1] == '\n')
-			text.truncate(text.length() - 1);
-		linelist.append(text2csv(text));
-		if (uin)
-		{
-			linelist.append(nick);
-			linelist.append(QString::number(uin));
-		}
-		lineout = linelist.join(",");
-		streamout << lineout << '\n';
-		f.close();
-		fout.close();
-		QDir dir(path);
-		dir.rename(fname, fname + QString(".old"));
-		dir.rename(fnameout, fname);
-	}
-	else
-	{
-		f.close();
-		fout.remove();
-	}
-	kdebugf2();
-}
+	selectedStatusUsersLayout->addWidget(new QLabel(tr("User list"), selectedStatusUsersWidget), 0, 0);
+	selectedStatusUsersLayout->addWidget(allStatusUsers, 1, 0);
+	selectedStatusUsersLayout->addWidget(moveToSelectedStatusList, 2, 0);
 
-int HistoryManager::getHistoryEntriesCountPrivate(const QString &filename) const
-{
-	kdebugf();
+	selectedStatusUsers = new QListWidget(selectedStatusUsersWidget);
+	QPushButton *moveToAllStatusList = new QPushButton(tr("Move to 'User list'"), selectedStatusUsersWidget);
 
-	int lines;
-	QFile f;
-	QString path = ggPath("history/");
-	QByteArray buffer;
+	selectedStatusUsersLayout->addWidget(new QLabel(tr("Selected list"), selectedStatusUsersWidget), 0, 1);
+	selectedStatusUsersLayout->addWidget(selectedStatusUsers, 1, 1);
+	selectedStatusUsersLayout->addWidget(moveToAllStatusList, 2, 1);
 
-	f.setName(path + filename + ".idx");
-	if (!(f.open(QIODevice::ReadOnly)))
-	{
-		kdebugmf(KDEBUG_ERROR, "Error opening history file %s\n", qPrintable(filename));
-		return 0;
-	}
-	lines = f.size() / sizeof(int);
-//	buffer = f.readAll();
-	f.close();
-//	lines = buffer.contains('\n');
+	connect(moveToSelectedStatusList, SIGNAL(clicked()), this, SLOT(moveToSelectedStatusList()));
+	connect(moveToAllStatusList, SIGNAL(clicked()), this, SLOT(moveToAllStatusList()));
 
-	kdebugmf(KDEBUG_INFO, "%d lines\n", lines);
-	return lines;
-}
-
-int HistoryManager::getHistoryEntriesCount(const UinsList &uins)
-{
-	kdebugf();
-	convHist2ekgForm(uins);
-	buildIndex(uins);
-	int ret = getHistoryEntriesCountPrivate(getFileNameByUinsList(uins));
-	kdebugf2();
-	return ret;
-}
-
-int HistoryManager::getHistoryEntriesCount(const QString &mobile)
-{
-	kdebugf();
-	convSms2ekgForm();
-	buildIndex();
-	int ret;
-	if (mobile == QString::null)
-		ret = getHistoryEntriesCountPrivate("sms");
-	else
-		ret = getHistoryEntriesCountPrivate(mobile);
-	kdebugf2();
-	return ret;
-}
-
-QList<HistoryEntry> HistoryManager::getHistoryEntries(UinsList uins, int from, int count, int mask)
-{
-	kdebugf();
-
-	QList<HistoryEntry> entries;
-	QStringList tokens;
-	QFile f, fidx;
-	QString path = ggPath("history/");
-	QString filename, line;
-	int offs;
-
-	if (!uins.isEmpty())
-		filename = getFileNameByUinsList(uins);
-	else
-		filename = "sms";
-	f.setName(path + filename);
-	if (!(f.open(QIODevice::ReadOnly)))
-	{
-		kdebugmf(KDEBUG_ERROR, "Error opening history file %s\n", qPrintable(filename));
-		return entries;
-	}
-
-	fidx.setName(f.name() + ".idx");
-	if (!fidx.open(QIODevice::ReadOnly))
-		return entries;
-	fidx.at(from * sizeof(int));
-	fidx.readBlock((char *)&offs, (Q_LONG)sizeof(int));
-	fidx.close();
-	if (!f.at(offs))
-		return entries;
-
-	QTextStream stream(&f);
-	stream.setCodec(codec_latin2);
-
-	int linenr = from;
-
-	struct HistoryEntry entry;
-//	int num = 0;
-	while (linenr < from + count && (line = stream.readLine()) != QString::null)
-	{
-		++linenr;
-		tokens = mySplit(',', line);
-		if (tokens.count() < 2)
-			continue;
-		if (tokens[0] == "chatsend")
-			entry.type = HISTORYMANAGER_ENTRY_CHATSEND;
-		else if (tokens[0] == "msgsend")
-			entry.type = HISTORYMANAGER_ENTRY_MSGSEND;
-		else if (tokens[0] == "chatrcv")
-			entry.type = HISTORYMANAGER_ENTRY_CHATRCV;
-		else if (tokens[0] == "msgrcv")
-			entry.type = HISTORYMANAGER_ENTRY_MSGRCV;
-		else if (tokens[0] == "status")
-			entry.type = HISTORYMANAGER_ENTRY_STATUS;
-		else if (tokens[0] == "smssend")
-			entry.type = HISTORYMANAGER_ENTRY_SMSSEND;
-		if (!(entry.type & mask))
-			continue;
-//		if (num++%10==0)
-//			qApp->processEvents();
-		switch (entry.type)
-		{
-			case HISTORYMANAGER_ENTRY_CHATSEND:
-			case HISTORYMANAGER_ENTRY_MSGSEND:
-				if (tokens.count() == 5)
-				{
-					entry.uin = tokens[1].toUInt();
-					entry.nick = tokens[2];
-					entry.date.setTime_t(tokens[3].toUInt());
-					entry.message = tokens[4];
-					entry.ip.truncate(0);
-					entry.mobile.truncate(0);
-					entry.description.truncate(0);
-					entries.append(entry);
-				}
-				break;
-			case HISTORYMANAGER_ENTRY_CHATRCV:
-			case HISTORYMANAGER_ENTRY_MSGRCV:
-				if (tokens.count() == 6)
-				{
-					entry.uin = tokens[1].toUInt();
-					entry.nick = tokens[2];
-					entry.date.setTime_t(tokens[3].toUInt());
-					entry.sdate.setTime_t(tokens[4].toUInt());
-					entry.message = tokens[5];
-					entry.ip.truncate(0);
-					entry.mobile.truncate(0);
-					entry.description.truncate(0);
-					entries.append(entry);
-				}
-				break;
-			case HISTORYMANAGER_ENTRY_STATUS:
-				if (tokens.count() == 6 || tokens.count() == 7)
-				{
-					entry.uin = tokens[1].toUInt();
-					entry.nick = tokens[2];
-					entry.ip = tokens[3];
-					entry.date.setTime_t(tokens[4].toUInt());
-					if (tokens[5] == "avail")
-						entry.status = GG_STATUS_AVAIL;
-					else if (tokens[5] == "notavail")
-						entry.status = GG_STATUS_NOT_AVAIL;
-					else if (tokens[5] == "busy")
-						entry.status = GG_STATUS_BUSY;
-					else if (tokens[5] == "invisible")
-						entry.status = GG_STATUS_INVISIBLE;
-					if (tokens.count() == 7)
-					{
-						switch (entry.status)
-						{
-							case GG_STATUS_AVAIL:
-								entry.status = GG_STATUS_AVAIL_DESCR;
-								break;
-							case GG_STATUS_NOT_AVAIL:
-								entry.status = GG_STATUS_NOT_AVAIL_DESCR;
-								break;
-							case GG_STATUS_BUSY:
-								entry.status = GG_STATUS_BUSY_DESCR;
-								break;
-							case GG_STATUS_INVISIBLE:
-								entry.status = GG_STATUS_INVISIBLE_DESCR;
-								break;
-						}
-						entry.description = tokens[6];
-					}
-					else
-						entry.description.truncate(0);
-					entry.mobile.truncate(0);
-					entry.message.truncate(0);
-					entries.append(entry);
-				}
-				break;
-			case HISTORYMANAGER_ENTRY_SMSSEND:
-				if (tokens.count() == 4 || tokens.count() == 6)
-				{
-					entry.mobile = tokens[1];
-					entry.date.setTime_t(tokens[2].toUInt());
-					entry.message = tokens[3];
-					if (tokens.count() == 4)
-					{
-						entry.nick.truncate(0);
-						entry.uin = 0;
-					}
-					else
-					{
-						entry.nick = tokens[4];
-						entry.uin = tokens[5].toUInt();
-					}
-					entry.ip.truncate(0);
-					entry.description.truncate(0);
-					entries.append(entry);
-				}
-				break;
-		}
-	}
-
-	f.close();
-
-	kdebugf2();
-	return entries;
-}
-
-uint HistoryManager::getHistoryDate(QTextStream &stream)
-{
-	kdebugf();
-	QString line;
-	static QStringList types = QStringList::split(" ", "smssend chatrcv chatsend msgrcv msgsend status");
-	QStringList tokens;
-	int type, pos;
-
-	line = stream.readLine();
-	tokens = mySplit(',', line);
-	type = types.findIndex(tokens[0]);
-	if (!type)
-		pos = 2;
-	else
-		if (type < 5)
-			pos = 3;
-		else
-			pos = 4;
-	kdebugf2();
-	return (tokens[pos].toUInt() / 86400);
-}
-
-QList<HistoryDate> HistoryManager::getHistoryDates(const UinsList &uins)
-{
-	kdebugf();
-
-	QList<HistoryDate> entries;
-	HistoryDate newdate;
-	QFile f, fidx;
-	QString path = ggPath("history/");
-	QString filename, line;
-	uint offs, count, oldidx, actidx, leftidx, rightidx, /*mididx,*/ olddate, actdate, jmp;
-//	uint num = 0;
-
-	if (!uins.isEmpty())
-		count = getHistoryEntriesCount(uins);
-	else
-		count = getHistoryEntriesCount("sms");
-	if (!count)
-		return entries;
-
-	filename = getFileNameByUinsList(uins);
-	f.setName(path + filename);
-	if (!(f.open(QIODevice::ReadOnly)))
-	{
-		kdebugmf(KDEBUG_ERROR, "Error opening history file %s\n", qPrintable(filename));
-		return entries;
-	}
-	QTextStream stream(&f);
-	stream.setCodec(codec_latin2);
-
-	fidx.setName(f.name() + ".idx");
-	if (!fidx.open(QIODevice::ReadOnly))
-		return entries;
-
-	oldidx = actidx = 0;
-	olddate = actdate = getHistoryDate(stream);
-	kdebugmf(KDEBUG_INFO, "actdate = %d\n", actdate);
-	newdate.idx = 0;
-	newdate.date.setTime_t(actdate * 86400);
-	entries.append(newdate);
-
-	while (actidx < count - 1)
-	{
-		jmp = 1;
-		do
-		{
-			oldidx = actidx;
-			actidx += jmp;
-			jmp <<= 1;
-			if (jmp > 128)
-				jmp = 128;
-			if (actidx >= count)
-				actidx = count - 1;
-			if (actidx == oldidx)
-				break;
-			fidx.at(actidx * sizeof(int));
-			fidx.readBlock((char *)&offs, (Q_LONG)sizeof(int));
-			stream.seek(offs);
-			actdate = getHistoryDate(stream);
-//			if (++num%10 == 0)
-//				qApp->processEvents();
-		} while (actdate == olddate);
-
-		if (actidx == oldidx)
-			break;
-		if (actdate > olddate)
-		{
-			leftidx = oldidx;
-			rightidx = actidx;
-			while (rightidx - leftidx > 1)
-			{
-				actidx = (leftidx + rightidx) / 2;
-				fidx.at(actidx * sizeof(int));
-				fidx.readBlock((char *)&offs, (Q_LONG)sizeof(int));
-				stream.seek(offs);
-				actdate = getHistoryDate(stream);
-				if (actdate > olddate)
-					rightidx = actidx;
-				else
-					leftidx = actidx;
-//				if (++num%10 == 0)
-//					qApp->processEvents();
-			}
-			newdate.idx = actidx = rightidx;
-			if (actdate == olddate)
-			{
-				fidx.at(actidx * sizeof(int));
-				fidx.readBlock((char *)&offs, (Q_LONG)sizeof(int));
-				stream.seek(offs);
-				actdate = getHistoryDate(stream);
-			}
-			newdate.date.setTime_t(actdate * 86400);
-			entries.append(newdate);
-			olddate = actdate;
-		}
-	}
-
-	fidx.close();
-	f.close();
-	kdebugmf(KDEBUG_INFO, "entries count = %d\n", entries.count());
-	kdebugf2();
-	return entries;
-}
-
-QList<UinsList> HistoryManager::getUinsLists() const
-{
-	kdebugf();
-	QList<UinsList> entries;
-	QDir dir(ggPath("history/"), "*.idx");
-	QStringList struins;
-	UinsList uins;
-
-	foreach(QString entry, dir.entryList())
-	{
-		struins = QStringList::split("_", entry.remove(QRegExp(".idx$")));
-		uins.clear();
-		if (struins[0] != "sms")
-			foreach(const QString &struin, struins)
-				uins.append(struin.toUInt());
-		entries.append(uins);
-	}
-
-	kdebugf2();
-	return entries;
-}
-
-void HistoryManager::buildIndexPrivate(const QString &filename)
-{
-	kdebugf();
-	QString fnameout = filename + ".idx";
-	char *inbuf;
-	int *outbuf;
-	int inbufoffs, outbufoffs, inoffs;
-	Q_LONG read, written;
-	bool saved = false;
-
-	if (QFile::exists(fnameout))
-		return;
-	QFile fin(filename);
-	QFile fout(fnameout);
-	if (!fin.open(QIODevice::ReadOnly))
-	{
-		kdebugmf(KDEBUG_ERROR, "Error opening history file: %s\n", qPrintable(fin.name()));
-		return;
-	}
-	if (!fout.open(QIODevice::WriteOnly | QIODevice::Truncate))
-	{
-		kdebugmf(KDEBUG_ERROR, "Error creating history index file: %s\n", qPrintable(fout.name()));
-		fin.close();
-		return;
-	}
-	inbuf = new char[65536];
-	outbuf = new int[4096];
-
-	inoffs = outbufoffs = 0;
-	while ((read = fin.readBlock(inbuf, 65536)) > 0)
-	{
-		inbufoffs = 0;
-		while (inbufoffs < read)
-		{
-			if (saved)
-				saved = false;
+	statusGroupBox->addWidgets(0, selectedStatusUsersWidget);
+	foreach(const UserListElement &user, *userlist)
+		if (!user.protocolList().isEmpty() && !user.isAnonymous())
+			if (!user.data("history_save_status").toBool())
+				allStatusUsers->addItem(user.altNick());
 			else
-				outbuf[outbufoffs++] = inoffs + inbufoffs;
-			if (outbufoffs == 4096)
-			{
-				written = fout.writeBlock((char *)outbuf, 4096 * sizeof(int));
-				outbufoffs = 0;
-			}
-			while (inbufoffs < read && inbuf[inbufoffs] != '\n')
-				++inbufoffs;
-			if (inbufoffs < read)
-				++inbufoffs;
-			if (inbufoffs == read)
-			{
-				inoffs += read;
-				saved = true;
-			}
-		}
-	}
-	if (outbufoffs)
-		written = fout.writeBlock((char *)outbuf, outbufoffs * sizeof(int));
+				selectedStatusUsers->addItem(user.altNick());
 
-	delete []inbuf;
-	delete []outbuf;
+	allStatusUsers->sortItems();
+	selectedStatusUsers->sortItems();
+	allStatusUsers->setSelectionMode(QAbstractItemView::ExtendedSelection);
+	selectedStatusUsers->setSelectionMode(QAbstractItemView::ExtendedSelection);
 
-	fin.close();
-	fout.close();
+	connect(selectedStatusUsers, SIGNAL(doubleClicked(QListWidgetItem *)), this, SLOT(moveToAllStatusList()));
+	connect(allStatusUsers, SIGNAL(doubleClicked(QListWidgetItem *)), this, SLOT(moveToSelectedStatusList()));
+	dontCiteOldMessagesLbl = dynamic_cast<QLabel *>(mainConfigurationWindow->widgetById("sql_history/dontCiteOldMessagesLbl"));
+	connect(mainConfigurationWindow->widgetById("sql_history/dontCiteOldMessages"), SIGNAL(valueChanged(int)),
+		this, SLOT(updateQuoteTimeLabel(int)));
+
+	connect(mainConfigurationWindow->widgetById("sql_history/save"), SIGNAL(toggled(bool)),
+		mainConfigurationWindow->widgetById("sql_history/chats"), SLOT(setEnabled(bool)));
+
+	connect(mainConfigurationWindow->widgetById("sql_history/save"), SIGNAL(toggled(bool)),
+		mainConfigurationWindow->widgetById("sql_history/statusChanges"), SLOT(setEnabled(bool)));
+
+	connect(mainConfigurationWindow->widgetById("sql_history/save"), SIGNAL(toggled(bool)),
+		mainConfigurationWindow->widgetById("sql_history/citation"), SLOT(setEnabled(bool)));
+
+	connect(mainConfigurationWindow->widgetById("sql_history/savestatusforall"), SIGNAL(toggled(bool)), selectedStatusUsersWidget, SLOT(setDisabled(bool)));
+
+	connect(mainConfigurationWindow->widgetById("sql_history/savechats"), SIGNAL(toggled(bool)),
+		mainConfigurationWindow->widgetById("sql_history/savechatswithanonymous"), SLOT(setEnabled(bool)));
+	connect(mainConfigurationWindow->widgetById("sql_history/savechats"), SIGNAL(toggled(bool)),
+		mainConfigurationWindow->widgetById("sql_history/saveundeliveredmsgs"), SLOT(setEnabled(bool)));
+	connect(mainConfigurationWindow->widgetById("sql_history/savechats"), SIGNAL(toggled(bool)),
+		selectedChatsUsersWidget, SLOT(setEnabled(bool)));
+	connect(mainConfigurationWindow->widgetById("sql_history/savechats"), SIGNAL(toggled(bool)),
+		mainConfigurationWindow->widgetById("sql_history/savechatsforall"), SLOT(setEnabled(bool)));
+
+	connect(mainConfigurationWindow->widgetById("sql_history/savechatsforall"), SIGNAL(toggled(bool)), selectedChatsUsersWidget, SLOT(setDisabled(bool)));
+	connect(mainConfigurationWindow->widgetById("sql_history/savestatuschanges"), SIGNAL(toggled(bool)),
+		mainConfigurationWindow->widgetById("sql_history/ignoresomestatuschanges"), SLOT(setEnabled(bool)));
+	connect(mainConfigurationWindow->widgetById("sql_history/savestatuschanges"), SIGNAL(toggled(bool)),
+		mainConfigurationWindow->widgetById("sql_history/saveonlystatuswithdescription"), SLOT(setEnabled(bool)));
+	connect(mainConfigurationWindow->widgetById("sql_history/savestatuschanges"), SIGNAL(toggled(bool)),
+		selectedStatusUsersWidget, SLOT(setEnabled(bool)));
+	connect(mainConfigurationWindow->widgetById("sql_history/savestatuschanges"), SIGNAL(toggled(bool)),
+		mainConfigurationWindow->widgetById("sql_history/savestatusforall"), SLOT(setEnabled(bool)));
+	connect(mainConfigurationWindow, SIGNAL(configurationWindowApplied()), this, SLOT(configurationWindowApplied()));
+
+	connect(mainConfigurationWindow->widgetById("sql_history/historyAdvanced"), SIGNAL(clicked()), this, SLOT(showHistoryAdvanced()));
+*/	
+}
+
+void History::configurationUpdated()
+{
+	kdebugf();
+	//?
 	kdebugf2();
 }
 
-void HistoryManager::createMessageDates(const UinsList uins)
+void History::registerStorage(HistoryStorage *storage)
 {
-	int entriesCount = getHistoryEntriesCount(uins);
-	if (entriesCount < 1)
-		return;
+	CurrentStorage = storage;
 
-	QList<HistoryEntry> entries = getHistoryEntries(uins, 0, entriesCount, HISTORYMANAGER_ENTRY_ALL_MSGS);
-
-	QFile messageDatesFile(ggPath("history/") + getFileNameByUinsList(uins) + ".message_dates");
-	messageDatesFile.open(QIODevice::WriteOnly);
-	QDataStream messageDatesStream(&messageDatesFile);
-
-	QDate currentDate;
-	HistoryEntry entry;
-	foreach (entry, entries)
-	{
-		if (entry.date.date() != currentDate && currentDate.isValid())
-		{
-			messageDatesStream << currentDate;
-			currentDate = entry.date.date();
-		}
-		else if (!currentDate.isValid())
-			currentDate = entry.date.date();
-	}
-
-	messageDatesFile.close();
-
-	if (currentDate.isValid())
-		LastDate[uins] = currentDate;
+	foreach (Account *account, AccountManager::instance()->accounts())
+		accountRegistered(account);
 }
 
-void HistoryManager::updateMessageDates(const UinsList uins)
+void History::unregisterStorage(HistoryStorage *storage)
 {
-	QDate date = QDate::currentDate();
-	if (LastDate.contains(uins))
-		if (LastDate[uins] == date)
+	if (CurrentStorage != storage)
+		return;
+
+	foreach (Account *account, AccountManager::instance()->accounts())
+		accountUnregistered(account);
+
+	delete CurrentStorage;
+	CurrentStorage = 0;
+}
+
+void disableNonHistoryContacts(KaduAction *action)
+{
+	kdebugf();
+	action->setEnabled(false);
+	const ContactList contacts = action->contacts();
+
+	if (!contacts.count())
+		return;
+
+	foreach (const Contact &contact, contacts)
+	{
+		if (Core::instance()->myself() == contact)
 			return;
 
-	QFile messageDatesFile(ggPath("history/") + getFileNameByUinsList(uins) + ".message_dates");
-	if (!messageDatesFile.exists())
-	{
-		createMessageDates(uins);
-		return;
+		Account *account = contact.prefferedAccount();
+		if (!account || !account->protocol()->chatService())
+			return;
 	}
 
-	messageDatesFile.open(QIODevice::WriteOnly | QIODevice::Append);
-	QDataStream messageDatesStream(&messageDatesFile);
-	messageDatesStream << date;
-	messageDatesFile.close();
-
-	LastDate[uins] = date;
-}
-
-QList<QDate> HistoryManager::getMessageDates(const UinsList &uins)
-{
-	QFile messageDatesFile(ggPath("history/") + getFileNameByUinsList(uins) + ".message_dates");
-	if (!messageDatesFile.exists())
-		createMessageDates(uins);
-
-	QList<QDate> result;
-	messageDatesFile.open(QIODevice::ReadOnly);
-	QDataStream messageDatesStream(&messageDatesFile);
-
-	while (!messageDatesStream.atEnd())
-	{
-		QDate date;
-		messageDatesStream >> date;
-		result << date;
-	}
-
-	return result;
-}
-
-void HistoryManager::buildIndex(const UinsList &uins)
-{
-	kdebugf();
-	buildIndexPrivate(ggPath("history/") + getFileNameByUinsList(uins));
+	action->setEnabled(true);
 	kdebugf2();
 }
-
-void HistoryManager::buildIndex(const QString &mobile)
-{
-	kdebugf();
-	if (mobile == QString::null)
-		buildIndexPrivate(ggPath("history/") + "sms");
-	else
-		buildIndexPrivate(ggPath("history/") + mobile);
-	kdebugf2();
-}
-
-QStringList HistoryManager::mySplit(const QChar &sep, const QString &str)
-{
-	kdebugf();
-	QStringList strlist;
-	QString token;
-	unsigned int idx = 0, strlength = str.length();
-	bool inString = false;
-
-	int pos1, pos2;
-	while (idx < strlength)
-	{
-		const QChar &letter = str[idx];
-		if (inString)
-		{
-			if (letter == '\\')
-			{
-				switch (str[idx + 1].toAscii())
-				{
-					case 'n':
-						token.append('\n');
-						break;
-					case '\\':
-						token.append('\\');
-						break;
-					case '\"':
-						token.append('"');
-						break;
-					default:
-						token.append('?');
-				}
-				idx += 2;
-			}
-			else if (letter == '"')
-			{
-				strlist.append(token);
-				inString = false;
-				++idx;
-			}
-			else
-			{
-				pos1 = str.find('\\', idx);
-				if (pos1 == -1)
-					pos1 = strlength;
-				pos2 = str.find('"', idx);
-				if (pos2 == -1)
-					pos2 = strlength;
-				if (pos1 < pos2)
-				{
-					token.append(str.mid(idx, pos1 - idx));
-					idx = pos1;
-				}
-				else
-				{
-					token.append(str.mid(idx, pos2 - idx));
-					idx = pos2;
-				}
-			}
-		}
-		else // out of the string
-		{
-			if (letter == sep)
-			{
-				if (!token.isEmpty())
-					token = QString::null;
-				else
-					strlist.append(QString::null);
-			}
-			else if (letter == '"')
-				inString = true;
-			else
-			{
-				pos1 = str.find(sep, idx);
-				if (pos1 == -1)
-					pos1 = strlength;
-				token.append(str.mid(idx, pos1 - idx));
-				strlist.append(token);
-				idx = pos1;
-				continue;
-			}
-			++idx;
-		}
-	}
-
-	kdebugf2();
-	return strlist;
-}
-
-int HistoryManager::getHistoryEntryIndexByDate(const UinsList &uins, const QDateTime &date, bool enddate)
-{
-	kdebugf();
-
-	QList<HistoryEntry> entries;
-	int count = getHistoryEntriesCount(uins);
-	int start, end;
-
-	start = 0;
-	end = count - 1;
-	while (end - start >= 0)
-	{
-		kdebugmf(KDEBUG_INFO, "start = %d, end = %d\n", start, end);
-		entries = getHistoryEntries(uins, start + ((end - start) / 2), 1);
-		if (!entries.isEmpty())
-			if (date < entries[0].date)
-				end -= ((end - start) / 2) + 1;
-			else if (date > entries[0].date)
-				start += ((end - start) / 2) + 1;
-			else
-				return start + ((end - start) / 2);
-	}
-	if (end < 0)
-	{
-		kdebugmf(KDEBUG_FUNCTION_END, "return 0\n");
-		return 0;
-	}
-	if (start >= count)
-	{
-		kdebugmf(KDEBUG_FUNCTION_END, "return count=%d\n", count);
-		return count;
-	}
-	if (enddate)
-	{
-		entries = getHistoryEntries(uins, start, 1);
-		if (!entries.isEmpty() && date < entries[0].date)
-			--start;
-	}
-	kdebugmf(KDEBUG_FUNCTION_END, "return %d\n", start);
-	return start;
-}
-
-void HistoryManager::messageReceived(Protocol * /*protocol*/, UserListElements senders, const QString& msg, time_t t)
-{
-	if (!config_file.readBoolEntry("History", "Logging"))
-		return;
-	kdebugf();
-	int occur = msg.count(QRegExp("<img [^>]* gg_crc[^>]*>"));
-
-	UinType sender0 = senders[0].ID("Gadu").toUInt();
-	kdebugm(KDEBUG_INFO, "sender: %d msg: '%s' occur:%d\n", sender0, qPrintable(msg), occur);
-	UinsList uins;//TODO: throw out UinsList as soon as possible!
-	foreach(const UserListElement &u, senders)
-		if (u.usesProtocol("Gadu"))
-			uins.append(u.ID("Gadu").toUInt());
-
-	if (bufferedMessages.find(sender0) != bufferedMessages.end() || occur > 0)
-	{
-		kdebugm(KDEBUG_INFO, "buffering\n");
-		bufferedMessages[sender0].append(BuffMessage(uins, msg, t, time(NULL), false, occur));
-		checkImageTimeout(sender0);
-	}
-	else
-	{
-		kdebugm(KDEBUG_INFO, "appending to history\n");
-		appendMessage(uins, sender0, msg, false, t, true, time(NULL));
-	}
-	kdebugf2();
-}
-
-void HistoryManager::imageReceivedAndSaved(UinType sender, quint32 size, quint32 crc32, const QString &path)
-{
-	if (!config_file.readBoolEntry("History", "Logging"))
-		return;
-	kdebugf();
-
-	kdebugm(KDEBUG_INFO, "sender: %d, size: %d, crc:%u, path:%s\n", sender, size, crc32, qPrintable(path));
-	QString reg = GaduImagesManager::loadingImageHtml(sender, size, crc32);
-	QString imagehtml = GaduImagesManager::imageHtml(path);
-	QMap<UinType, QList<BuffMessage> >::iterator it = bufferedMessages.find(sender);
-	if (it != bufferedMessages.end())
-	{
-//		kdebugm(KDEBUG_INFO, "sender found\n");
-		QList<BuffMessage> &messages = it.data();
-		QList<BuffMessage>::iterator msg;
-		for (msg = messages.begin(); msg != messages.end(); ++msg)
-		{
-//			kdebugm(KDEBUG_INFO, "counter:%d\n", (*msg).counter);
-			if ((*msg).counter)
-			{
-				int occur = (*msg).message.count(reg);
-//				kdebugm(KDEBUG_INFO, "occur:%d\n", occur);
-				if (occur)
-				{
-					(*msg).message.replace(reg, imagehtml);
-					(*msg).counter -= occur;
-				}
-			}
-		}
-//		kdebugm(KDEBUG_INFO, "> msgs.size():%d\n", messages.size());
-		while (!messages.isEmpty())
-		{
-			BuffMessage &msg = messages.front();
-			if (msg.counter > 0)
-				break;
-			appendMessage(msg.uins, msg.uins[0], msg.message, msg.own, msg.tm, true, msg.arriveTime);
-			messages.pop_front();
-		}
-//		kdebugm(KDEBUG_INFO, ">> msgs.size():%d\n", messages.size());
-		if (messages.isEmpty())
-			bufferedMessages.remove(sender);
-	}
-	kdebugf2();
-}
-
-void HistoryManager::addMyMessage(const UinsList &senders, const QString &msg)
-{
-	if (!config_file.readBoolEntry("History", "Logging"))
-		return;
-	kdebugf();
-	time_t current=time(NULL);
-	if (bufferedMessages.find(senders[0])!=bufferedMessages.end())
-	{
-		bufferedMessages[senders[0]].append(BuffMessage(senders, msg, 0, current, true, 0));
-		checkImageTimeout(senders[0]);
-	}
-	else
-		appendMessage(senders, senders[0], msg, true, 0, true, current);
-
-	updateMessageDates(senders);
-
-	kdebugf2();
-}
-
-void HistoryManager::checkImageTimeout(UinType uin)
-{
-	kdebugf();
-	time_t currentTime = time(NULL);
-	QList<BuffMessage> &msgs = bufferedMessages[uin];
-	while (!msgs.isEmpty())
-	{
-		BuffMessage &msg = msgs.front();
-		kdebugm(KDEBUG_INFO, "arriveTime:%ld current:%ld counter:%d\n", msg.arriveTime, currentTime, msg.counter);
-		if (msg.arriveTime + 60 < currentTime || msg.counter == 0)
-		{
-			kdebugm(KDEBUG_INFO, "moving message to history\n");
-			appendMessage(msg.uins, msg.uins[0], msg.message, msg.own, msg.tm, true, msg.arriveTime);
-			msgs.pop_front();
-		}
-		else
-		{
-			kdebugm(KDEBUG_INFO, "it's too early\n");
-			break;
-		}
-	}
-	if (msgs.isEmpty())
-		bufferedMessages.remove(uin);
-	kdebugf2();
-}
-
-void HistoryManager::checkImagesTimeouts()
-{
-	kdebugf();
-	QList<UinType> uins = bufferedMessages.keys();
-
-	foreach(const UinType &uin, uins)
-		checkImageTimeout(uin);
-	kdebugf2();
-}
-
-void HistoryManager::statusChanged(UserListElement elem, QString protocolName,
-					const UserStatus & /*oldStatus*/, bool /*massively*/, bool /*last*/)
-{
-	if (protocolName == "Gadu") //TODO: make more general
-		appendStatus(elem.ID("Gadu").toUInt(), elem.status("Gadu"));
-}
-
-HistoryEntry::HistoryEntry() :
-	type(0), uin(0), nick(), date(), sdate(),
-	message(), status(0), ip(), description(), mobile()
-{
-}
-
-HistoryDate::HistoryDate() : date(), idx(0)
-{
-}
-
-HistoryManager *history = 0;

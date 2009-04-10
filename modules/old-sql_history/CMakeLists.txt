@@ -1,9 +1,13 @@
 set (SOURCES
 	sql_history.cpp
+	history_dialog.cpp
+	search_dialog.cpp
 )
 
 set (MOC_SOURCES
 	sql_history.h
+	history_dialog.h
+	search_dialog.h
 )
 
 set (TRANSLATION_SOURCES
@@ -12,6 +16,7 @@ set (TRANSLATION_SOURCES
 
 set (CONFIGURATION_FILES
 	configuration/sql_history.ui
+	configuration/history-advanced.ui
 )
 
 kadu_module_desc (sql_history.desc)
