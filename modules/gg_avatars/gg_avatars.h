@@ -4,6 +4,7 @@
 #include <QtCore/QObject>
 #include <QtCore/QEventLoop>
 
+#include "action.h"
 #include "configuration_aware_object.h"
 #include "main_configuration_window.h"
 
@@ -20,11 +21,12 @@ class GaduAvatars : public ConfigurationUiHandler, ConfigurationAwareObject
 		QMap<int, QFile *> files;	/* files per file request */
 		QHttp *linkDownloader;		/* downloader for avatar links */
 		QHttp *fileDownloader;		/* downloader for avatar images */
+		ActionDescription *avatarActionDescription;
 
 	public:
 		GaduAvatars();
 		~GaduAvatars();
-		QString getAvatar(const UserListElement &ule);
+		QString getAvatar(int uin);
 		virtual void mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow);
 
 	protected:
@@ -33,6 +35,7 @@ class GaduAvatars : public ConfigurationUiHandler, ConfigurationAwareObject
 	private slots:
 		void gotResponse(int id, bool error);
 		void fileDownloaded(int id, bool error);
+		void refreshAvatarActionActivated(QAction *sender, bool toggled);
 };
 
 extern GaduAvatars *gaduAvatars;

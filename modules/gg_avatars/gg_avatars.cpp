@@ -9,7 +9,6 @@
 
 #include <QtCore/QUrl>
 #include <QtCore/QFile>
-#include <QtCore/QDebug>
 #include <QtCore/QString>
 #include <QtCore/QBuffer>
 #include <QtCore/QFileInfo>
@@ -17,13 +16,16 @@
 
 #include "gg_avatars.h"
 
+#include "gadu.h"
+#include "kadu.h"
 #include "debug.h"
 #include "modules.h"
+#include "userbox.h"
 #include "kadu_parser.h"
 #include "config_file.h"
 #include "userlistelement.h"
 
-GaduAvatars *gaduAvatars;
+GaduAvatars *gaduAvatars = 0;
 
 extern "C" KADU_EXPORT int gg_avatars_init()
 {
@@ -48,12 +50,15 @@ extern "C" KADU_EXPORT void gg_avatars_close()
 
 QString get_avatar(const UserListElement &ule)
 {
-	return "<img src=\"" + gaduAvatars->getAvatar(ule)+ "\"/>";
+	QString avatar = gaduAvatars->getAvatar(ule.ID("Gadu").toInt());
+	if (!avatar.isEmpty())
+		avatar = "<img src=\"" + avatar + "\"/>";
+	return avatar;
 }
 
 QString get_avatar_url(const UserListElement &ule)
 {
-	return gaduAvatars->getAvatar(ule);
+	return gaduAvatars->getAvatar(ule.ID("Gadu").toInt());
 }
 
 
@@ -67,10 +72,22 @@ GaduAvatars::GaduAvatars()
 
 	KaduParser::registerTag("avatar", &get_avatar);
 	KaduParser::registerTag("avatar_url", &get_avatar_url);
+
+	avatarActionDescription = new ActionDescription(
+		ActionDescription::TypeUser, "refreshAvatarAction",
+		this, SLOT(refreshAvatarActionActivated(QAction *, bool)),
+		"GG Avatars", tr("Refresh Avatar"), false
+	);
+	UserBox::insertActionDescription(0, avatarActionDescription);
+
 }
 
 GaduAvatars::~GaduAvatars()
 {
+	UserBox::removeActionDescription(avatarActionDescription);
+	delete avatarActionDescription;
+	avatarActionDescription = 0;
+
 	KaduParser::unregisterTag("avatar", &get_avatar);
 	KaduParser::registerTag("avatar_url", &get_avatar_url);
 
@@ -81,9 +98,32 @@ GaduAvatars::~GaduAvatars()
 	delete fileDownloader;
 }
 
-QString GaduAvatars::getAvatar(const UserListElement &ule)
+void GaduAvatars::refreshAvatarActionActivated(QAction *sender, bool toggled)
 {
-	int uin = ule.ID("Gadu").toInt();
+	kdebugf();
+	
+	UinsList uins;
+	int uin;
+	QString path = ggPath() + "/avatars/";
+	KaduMainWindow *window = dynamic_cast<KaduMainWindow *>(sender->parent());
+	if (window)
+	{
+		UserListElements users = window->userListElements();
+		if (users.count() > 0)
+			foreach(const UserListElement &user, users)
+			{
+				uin = user.ID("Gadu").toUInt();
+				QFile file(path + QString::number(uin));
+				file.remove();
+				getAvatar(uin);
+			}
+	}
+
+	kdebugf2();
+}
+
+QString GaduAvatars::getAvatar(int uin)
+{
 	QString filename = ggPath() + "/avatars/" + QString::number(uin);
 	if (QFileInfo(filename).size() > 0)
 	{
@@ -92,7 +132,7 @@ QString GaduAvatars::getAvatar(const UserListElement &ule)
 	else
 	{
 		QBuffer *buffer = new QBuffer();
-    		int id = linkDownloader->get("/avatars/" + ule.ID("Gadu") + "/0.xml", buffer);
+    		int id = linkDownloader->get("/avatars/" + QString::number(uin) + "/0.xml", buffer);
 		buffers.insert(id, buffer);
 		uins.insert(id, uin);
 		return "";
@@ -116,6 +156,12 @@ void GaduAvatars::gotResponse(int id, bool error)
 	
 		if ((begin > 0) && (end > begin))
 			response = response.mid(begin, end - begin);
+	}
+
+	/* Do not cache empty avatars */
+	if (response.contains("avatar-empty.gif"))
+	{
+		return;
 	}
 
 	QDir dir;

@@ -4,6 +4,9 @@ set (SOURCES
 set (MOC_SOURCES
 	gg_avatars.h)
 
+set (TRANSLATION_SOURCES
+	translations/gg_avatars_pl.ts)
+
 set (CHAT_FILES
 	data/chat/gg_avatars.syntax
 )
@@ -18,7 +21,6 @@ install (FILES ${CHAT_FILES}
 install (FILES ${INFOPANEL_FILES}
 	DESTINATION share/kadu/syntax/infopanel)
 
-
 if(WIN32)
 	include_directories (${CMAKE_CURRENT_SOURCE_DIR})
 	set (SOURCES ${SOURCES} ../module.rc)
@@ -27,6 +29,11 @@ endif(WIN32)
 kadu_module_desc (gg_avatars.desc)
 #kadu_module_configuration(${CONFIGURATION_FILES})
 qt_wrap_cpp (gg_avatars MOC_FILES ${MOC_SOURCES})
+
+qt4_add_translation (TRANSLATION_FILES ${TRANSLATION_SOURCES})
+
+install (FILES ${TRANSLATION_FILES}
+	DESTINATION "share/kadu/modules/translations")
 
 if (COMMAND cmake_policy)
 	cmake_policy(SET CMP0003 NEW)
