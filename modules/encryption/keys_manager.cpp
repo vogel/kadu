@@ -16,11 +16,11 @@
 
 #include "config_file.h"
 #include "debug.h"
-#include "../modules/gadu_protocol/gadu.h"
+#include "gadu.h"
 #include "userlist.h"
 #include "icons_manager.h"
 #include "encryption.h"
-#include "misc/misc.h"
+#include "misc.h"
 #include "message_box.h"
 
 #include "keys_manager.h"
@@ -122,7 +122,7 @@ KeysManager::KeysManager(QDialog *parent)
 	// refreshing (loading) QTreeWidget
 	refreshKeysList();
 
- 	loadWindowGeometry(this, "General", "KeysManagerDialogGeometry", 0, 0, 680, 460);
+ 	loadWindowGeometry(this, "General", "KeysManagerDialogGeometry", 0, 50, 680, 460);
 	kdebugf2();
 }
 

@@ -10,16 +10,14 @@
 #include <QtGui/QGridLayout>
 #include <QtGui/QLabel>
 
-#include "accounts/account.h"
-#include "accounts/account_manager.h"
 #include "action.h"
 #include "chat_widget.h"
-#include "chat_manager-old.h"
+#include "chat_manager.h"
 #include "chat_edit_box.h"
 #include "config_file.h"
 #include "debug.h"
 #include "keys_manager.h"
-#include "../modules/gadu_protocol/gadu.h"
+#include "gadu.h"
 #include "icons_manager.h"
 #include "kadu.h"
 #include "message_box.h"
@@ -27,11 +25,7 @@
 #include "userbox.h"
 
 #include "encryption.h"
-
-extern "C"
-{
-#include "simlite.h"
-};
+#include "kadu_encryption_factory.h"
 
 // for mkdir
 #include <sys/stat.h>
@@ -48,7 +42,7 @@ extern "C" KADU_EXPORT int encryption_init(bool firstLoad)
 	encryption_manager = new EncryptionManager(firstLoad);
 	MainConfigurationWindow::registerUiFile(dataPath("kadu/modules/configuration/encryption.ui"), encryption_manager);
 
-	return 0;
+	return encryption_manager->encryptionAvailable() ? 0 : 1;
 }
 
 extern "C" KADU_EXPORT void encryption_close()
@@ -106,7 +100,6 @@ EncryptionManager::EncryptionManager(bool firstLoad)
 
 	userlist->addPerContactNonProtocolConfigEntry("encryption_enabled", "EncryptionEnabled");
 
-	Protocol *gadu = AccountManager::instance()->defaultAccount()->protocol();
 	connect(gadu, SIGNAL(rawGaduReceivedMessageFilter(Protocol *, UserListElements, QString&, QByteArray&, bool&)),
 			this, SLOT(decryptMessage(Protocol *, UserListElements, QString&, QByteArray&, bool&)));
 	connect(gadu, SIGNAL(sendMessageFiltering(const UserListElements, QByteArray &, bool &)),
@@ -139,7 +132,13 @@ EncryptionManager::EncryptionManager(bool firstLoad)
 	);
 	kadu->insertMenuActionDescription(12, keysManagerActionDescription);
 
-	sim_key_path = strdup(qPrintable(QDir::toNativeSeparators(ggPath("keys/"))));
+	KaduEncryptionFactory *factory = KaduEncryptionFactory::instance();
+	EncryptionObject = factory->createEncryptionObject(KaduEncryptionFactory::SIMLite,
+	                                                   QDir::toNativeSeparators(ggPath("keys/")));
+	if(EncryptionObject == 0)
+	{
+		MessageBox::msg(factory->errorInfo(), false, "Warning", configurationWindow);
+	}
 
 	// use mkdir from sys/stat.h - there's no easy way to set permissions through Qt
 #ifdef Q_OS_WIN
@@ -155,10 +154,12 @@ EncryptionManager::~EncryptionManager()
 {
 	kdebugf();
 
+	if(EncryptionObject != 0)
+		delete EncryptionObject;
+
 	kadu->removeMenuActionDescription(keysManagerActionDescription);
 	delete keysManagerActionDescription;
 
-	Protocol *gadu = AccountManager::instance()->defaultAccount()->protocol();
 	disconnect(gadu, SIGNAL(rawGaduReceivedMessageFilter(Protocol *, UserListElements, QString&, QByteArray&, bool&)),
 			this, SLOT(decryptMessage(Protocol *, UserListElements, QString&, QByteArray&, bool&)));
 	disconnect(gadu, SIGNAL(sendMessageFiltering(const UserListElements, QByteArray &, bool &)),
@@ -181,18 +182,19 @@ void EncryptionManager::mainConfigurationWindowCreated(MainConfigurationWindow *
 void EncryptionManager::generateMyKeys()
 {
 	kdebugf();
-	int myUin=config_file.readNumEntry("General","UIN");
+	QString myUin=QString::number(config_file.readNumEntry("General","UIN"));
 	QString keyfile_path;
 	keyfile_path.append(ggPath("keys/"));
-	keyfile_path.append(QString::number(myUin));
+	keyfile_path.append(myUin);
 	keyfile_path.append(".pem");
 	QFileInfo keyfile(keyfile_path);
 
 	if (keyfile.permission(QFileInfo::WriteUser) && !MessageBox::ask(tr("Keys exist. Do you want to overwrite them?"), "Warning", configurationWindow))
 		return;
 
-	if (sim_key_generate(myUin) < 0)
+	if (!EncryptionObject->generateKeys(myUin))
 	{
+		MessageBox::msg(EncryptionObject->errorDescription(), false, "Error", configurationWindow);
 		MessageBox::msg(tr("Error generating keys"), false, "Warning", configurationWindow);
 		return;
 	}
@@ -304,15 +306,17 @@ void EncryptionManager::decryptMessage(Protocol *protocol, UserListElements send
 	}
 
 	kdebugm(KDEBUG_INFO, "Decrypting encrypted message...(%d)\n", msg.length());
-	const char* msg_c = msg;
-	// TODO: fix
-	// char* decoded = sim_message_decrypt((const unsigned char*)msg_c, senders[0].ID(protocol->protocolID()).toUInt());
-	char *decoded = 0;
-	kdebugm(KDEBUG_DUMP, "Decrypted message is(len:%u): %s\n", decoded ? strlen(decoded) : 0, decoded);
-	if (decoded != NULL)
+
+	//the encrypted message is Base64 encoded, thus it consists only ASCII characters
+	QByteArray message = msg.toAscii();
+	if (EncryptionObject->decrypt(message))
 	{
-		msg = decoded;
-		free(decoded);
+		//TODO: this should be moved outside this function, as this function may not
+		//know what chararacter encoding is used
+		//QTextStream encodingConverter(&msg);
+		//encodingConverter.setCodec("Windows-1250");
+		//encodingConverter << message;
+		msg = message;
 
 		// FIXME: remove
 		gg_msg_richtext_format format;
@@ -380,18 +384,11 @@ void EncryptionManager::sendMessageFilter(const UserListElements users, QByteArr
 //	kdebugm(KDEBUG_INFO, "length: %d\n", msg.length());
 	if (users.count() == 1 && EncryptionEnabled[chat])
 	{
-		char *msg_c = sim_message_encrypt((const unsigned char *)msg.data(), (*users.constBegin()).ID("Gadu").toUInt());
-		if (!msg_c)
+		if(!EncryptionObject->encrypt(msg, (*users.constBegin()).ID("Gadu")))
 		{
-			kdebugm(KDEBUG_ERROR, "sim_message_encrypt returned NULL! sim_errno=%d sim_strerror=%s\n", sim_errno, sim_strerror(sim_errno));
+			kdebugm(KDEBUG_ERROR, "EncryptionObject->encrypt() failed! error=%d errorDescription=%s\n", EncryptionObject->error(), EncryptionObject->errorDescription());
 			stop = true;
-			MessageBox::msg(tr("Cannot encrypt message. sim_message_encrypt returned: \"%1\" (sim_errno=%2)").arg(sim_strerror(sim_errno)).arg(sim_errno), true, "Warning");
-		}
-		else
-		{
-			msg = QByteArray(msg_c);
-
-			free(msg_c);
+			MessageBox::msg(tr("Cannot encrypt message. sim_message_encrypt returned: \"%1\" (error=%2)").arg(EncryptionObject->errorDescription()).arg(EncryptionObject->error()), true, "Warning");
 		}
 	}
 //	kdebugm(KDEBUG_INFO, "length: %d\n", msg.length());
@@ -424,10 +421,8 @@ void EncryptionManager::sendPublicKeyActionActivated(QAction *sender, bool toggl
 		QTextStream t(&keyfile);
 		mykey = t.read();
 		keyfile.close();
-
-		Protocol *gadu = AccountManager::instance()->defaultAccount()->protocol();
-		foreach (const UserListElement &user, users)
-			gadu->sendMessage(user, mykey);
+		foreach(const UserListElement &user, users)
+			(dynamic_cast<Protocol *>(gadu))->sendMessage(user, mykey);
 
 		MessageBox::msg(tr("Your public key has been sent"), false, "Information", kadu);
 	}

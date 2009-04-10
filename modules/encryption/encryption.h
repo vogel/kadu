@@ -12,6 +12,7 @@ class KaduAction;
 class KeysManager;
 class Protocol;
 class UserGroup;
+class KaduEncryptionInterface;
 
 /**
  * @defgroup encryption Encryption
@@ -37,6 +38,7 @@ class EncryptionManager : public ConfigurationUiHandler
 		void createDefaultConfiguration();
 
 		KeysManager *KeysManagerDialog;
+		KaduEncryptionInterface *EncryptionObject;
 
 	private slots:
 		void decryptMessage(Protocol *protocol, UserListElements senders, QString &msg, QByteArray &formats, bool &ignore);
@@ -58,6 +60,7 @@ class EncryptionManager : public ConfigurationUiHandler
 		virtual ~EncryptionManager();
 
 		virtual void mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow);
+		bool encryptionAvailable() { return EncryptionObject != 0; }
 
 	public slots:
 		void showKeysManagerDialog(QAction *sender, bool toggled);

@@ -1,7 +1,10 @@
 set (SOURCES
 	encryption.cpp
+	kadu_encryption_factory.cpp
+	kadu_encryption_rsa.cpp
+	kadu_encryption_simlite.cpp
 	keys_manager.cpp
-	simlite.c
+	pkcs1_certificate.cpp
 )
 
 set (MOC_SOURCES
@@ -26,8 +29,10 @@ kadu_module (encryption
 	MODULE_CONFIGURATION_FILES ${CONFIGURATION_FILES}
 )
 
-pkg_search_module (OPENSSL REQUIRED openssl)
-include_directories (${OPENSSL_INCLUDE_DIRS})
-link_directories (${OPENSSL_INCLUDE_DIRS})
+pkg_search_module (QCA2 REQUIRED qca2)
+include_directories (${QCA2_INCLUDE_DIRS})
+link_directories (${QCA2_LIBRARY_DIRS})
+add_definitions (${QCA2_CFLAGS_OTHER})
 
-target_link_libraries(encryption ${OPENSSL_LIBRARIES})
+target_link_libraries(encryption ${QCA2_LIBRARIES})
+set_target_properties(encryption PROPERTIES LINK_FLAGS "${QCA2_LDFLAGS_OTHER}")
