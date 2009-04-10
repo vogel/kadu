@@ -138,6 +138,7 @@ void KaduTextBrowser::saveImage()
 
 	QFileDialog fd(this);
 	fd.setMode(QFileDialog::AnyFile);
+	fd.setAcceptMode(QFileDialog::AcceptSave);
 	fd.setDir(config_file.readEntry("Chat", "LastImagePath"));
 	fd.setFilter(QString("%1 (*%2)").arg(qApp->translate("ImageDialog", "Images"), fileExt));
 	fd.setLabelText(QFileDialog::FileName, image.section('/', -1));
