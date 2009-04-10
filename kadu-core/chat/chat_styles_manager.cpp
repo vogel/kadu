@@ -169,9 +169,7 @@ void ChatStylesManager::configurationUpdated()
 		CurrentEngine->loadTheme(newStyleName, newVariantName);
 	}
 	else
-	{//FIXME
 		CurrentEngine->configurationUpdated();
-	}
 
 	foreach (ChatMessagesView *view, chatViews)
 	{
@@ -199,7 +197,7 @@ void ChatStylesManager::loadThemes()
 		if (fi.isReadable() && !availableStyles.contains(file))
 		{
 			foreach (ChatStyleEngine *engine, registeredEngines.values())
-			{//bug! is theme valid shoud return theme name?
+			{
 				if ((themeName = engine->isThemeValid(path + file)) != QString::null)
 				{
 					availableStyles[themeName].engine = engine;
@@ -221,7 +219,7 @@ void ChatStylesManager::loadThemes()
 		if (fi.isReadable() && !availableStyles.contains(file))
 		{
 			foreach (ChatStyleEngine *engine, registeredEngines.values())
-			{//bug!
+			{
 				if ((themeName = engine->isThemeValid(path + file)) != QString::null)
 				{
 					availableStyles[themeName].engine = engine;

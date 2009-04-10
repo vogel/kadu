@@ -1175,6 +1175,10 @@ kurz nachdem Sie sich mit dem Server verbunden haben</translation>
         <source>Notify about all users</source>
         <translation>Benachrichtige über alle Kontakte</translation>
     </message>
+    <message>
+        <source>Window</source>
+        <translation>Fenster</translation>
+    </message>
 </context>
 <context>
     <name>ConnectionErrorNotification</name>
@@ -2768,6 +2772,13 @@ Das Löschen der Kontaktliste vom Server ist misslungen</translation>
     <message>
         <source>&lt;b&gt;%1&lt;/b&gt; changed status to &lt;i&gt;%2&lt;/i&gt;</source>
         <translation>&lt;b&gt;%1&lt;/b&gt; änderte Zustand in &lt;i&gt;%2&lt;/i&gt;</translation>
+    </message>
+</context>
+<context>
+    <name>NotificationWindow</name>
+    <message>
+        <source>OK</source>
+        <translation>OK</translation>
     </message>
 </context>
 </TS>

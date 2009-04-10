@@ -1174,6 +1174,10 @@ Jest to wysoce ryzykowne!</translation>
         <source>New message</source>
         <translation>Nowa wiadomość</translation>
     </message>
+    <message>
+        <source>Window</source>
+        <translation>Okno</translation>
+    </message>
 </context>
 <context>
     <name>About</name>
@@ -2773,6 +2777,13 @@ Jesteś pewny że tego chcesz?</translation>
     <message>
         <source>&lt;b&gt;%1&lt;/b&gt; changed status to &lt;i&gt;%2&lt;/i&gt;</source>
         <translation>&lt;b&gt;%1&lt;/b&gt; zmienił status na &lt;i&gt;%2&lt;/i&gt;</translation>
+    </message>
+</context>
+<context>
+    <name>NotificationWindow</name>
+    <message>
+        <source>OK</source>
+        <translation>OK</translation>
     </message>
 </context>
 </TS>

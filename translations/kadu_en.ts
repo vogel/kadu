@@ -1154,6 +1154,10 @@ It&apos;s a high security risk!</source>
         <source>Notify about all users</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Window</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>About</name>
@@ -2731,6 +2735,13 @@ The delete userlist on server was unsuccessful</source>
     </message>
     <message>
         <source>Status changed</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>NotificationWindow</name>
+    <message>
+        <source>OK</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
