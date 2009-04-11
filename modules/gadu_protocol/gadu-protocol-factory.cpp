@@ -17,6 +17,20 @@
 
 #include "gadu-protocol-factory.h"
 
+GaduProtocolFactory *GaduProtocolFactory::Instance = 0;
+
+GaduProtocolFactory * GaduProtocolFactory::instance()
+{
+	if (!Instance)
+		Instance = new GaduProtocolFactory();
+
+	return Instance;
+}
+
+GaduProtocolFactory::GaduProtocolFactory()
+{
+}
+
 Account * GaduProtocolFactory::newAccount()
 {
 	GaduAccount *account = new GaduAccount();

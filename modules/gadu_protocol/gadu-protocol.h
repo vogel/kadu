@@ -15,7 +15,6 @@
 
 #include <libgadu.h>
 
-// #include "conference/gadu-conference.h"
 #include "services/gadu-chat-image-service.h"
 #include "services/gadu-chat-service.h"
 #include "services/gadu-contact-list-service.h"

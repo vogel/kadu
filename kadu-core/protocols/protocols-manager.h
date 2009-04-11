@@ -11,23 +11,31 @@ class ProtocolFactory;
 
 class KADUAPI ProtocolsManager : public QObject
 {
+	Q_OBJECT
+
 	static ProtocolsManager * Instance;
 
 	ProtocolsManager();
 	~ProtocolsManager();
 
-	QMap<QString, ProtocolFactory *> registeredFactories;
+	QList<ProtocolFactory *> Factories;
 
 public:
 	static ProtocolsManager * instance();
 
-	void registerProtocolFactory(const QString &name, ProtocolFactory *factory);
-	void unregisterProtocolFactory(const QString &name);
-	bool hasProtocolFactory(const QString &name);
+	void registerProtocolFactory(ProtocolFactory *Factory);
+	void unregisterProtocolFactory(ProtocolFactory *Factory);
 
-	const QList<ProtocolFactory *> protocolFactories() { return registeredFactories.values(); }
+	const QList<ProtocolFactory *> protocolFactories() { return Factories; }
+	bool hasProtocolFactory(const QString &name);
 	ProtocolFactory * protocolFactory(const QString &name);
+
+signals:
+	void protocolFactoryAboutToBeRegistered(ProtocolFactory *factory);
+	void protocolFactoryRegistered(ProtocolFactory *factory);
+	void protocolFactoryAboutToBeUnregistered(ProtocolFactory *factory);
+	void protocolFactoryUnregistered(ProtocolFactory *factory);
 
 };
 
-#endif
+#endif // KADU_PROTOCOLS_MANAGER_H

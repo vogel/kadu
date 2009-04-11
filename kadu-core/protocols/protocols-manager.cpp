@@ -37,33 +37,40 @@ ProtocolsManager::~ProtocolsManager()
 	ConnectionErrorNotification::unregisterEvent();
 }
 
-void ProtocolsManager::registerProtocolFactory(const QString &name, ProtocolFactory *factory)
+void ProtocolsManager::registerProtocolFactory(ProtocolFactory *factory)
 {
-	if (0 != factory && !registeredFactories.contains(name))
-	{
-		registeredFactories[name] = factory;
-		AccountManager::instance()->loadConfiguration(name);
-	}
+	if (!factory || Factories.contains(factory))
+		return;
+
+	emit protocolFactoryAboutToBeRegistered(factory);
+	Factories.append(factory);
+	emit protocolFactoryRegistered(factory);
 }
 
-void ProtocolsManager::unregisterProtocolFactory(const QString &name)
+void ProtocolsManager::unregisterProtocolFactory(ProtocolFactory *factory)
 {
-	if (registeredFactories.contains(name))
-	{
-		AccountManager::instance()->storeConfiguration(name);
-		delete registeredFactories[name];
-		registeredFactories.remove(name);
-	}
+	if (!factory || !Factories.contains(factory))
+		return;
+
+	emit protocolFactoryAboutToBeUnregistered(factory);
+	Factories.append(factory);
+	emit protocolFactoryRegistered(factory);
 }
 
-bool ProtocolsManager::hasProtocolFactory(const QString& name)
+bool ProtocolsManager::hasProtocolFactory(const QString &name)
 {
-	return registeredFactories.contains(name);
+	foreach (ProtocolFactory *factory, Factories)
+		if (factory->name() == name)
+			return true;
+
+	return false;
 }
 
 ProtocolFactory * ProtocolsManager::protocolFactory(const QString &name)
 {
-	return registeredFactories.contains(name)
-		? registeredFactories[name]
-		: 0;
+	foreach (ProtocolFactory *factory, Factories)
+		if (factory->name() == name)
+			return factory;
+
+	return 0;
 }

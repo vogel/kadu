@@ -15,6 +15,7 @@
 #include <QtCore/QUuid>
 
 #include "accounts/account.h"
+#include "protocols/protocol-factory.h"
 #include "exports.h"
 
 class AccountData;
@@ -33,7 +34,13 @@ class KADUAPI AccountManager : public QObject, public StorableObject
 
 	QList<Account *> Accounts;
 
+	void load(ProtocolFactory *factory);
+	void store(ProtocolFactory *factory);
+
 private slots:
+	void protocolFactoryRegistered(ProtocolFactory *factory);
+	void protocolFactoryUnregistered(ProtocolFactory *factory);
+
 	void connectionError(Account *account, const QString &server, const QString &message);
 
 protected:
@@ -42,8 +49,7 @@ protected:
 public:
 	static AccountManager * instance();
 
-	void loadConfiguration(const QString &protocolName);
-	void storeConfiguration(const QString &protocolName);
+	virtual void load();
 	virtual void store();
 
 	Account * defaultAccount() const;

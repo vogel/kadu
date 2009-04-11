@@ -18,7 +18,15 @@ class GaduContactAccountData;
 
 class GaduProtocolFactory : public ProtocolFactory
 {
+	Q_DISABLE_COPY(GaduProtocolFactory)
+
+	static GaduProtocolFactory *Instance;
+
+	GaduProtocolFactory();
+
 public:
+	static GaduProtocolFactory * instance();
+
 	virtual Account * newAccount();
 	virtual Account * loadAccount(StoragePoint *accountStoragePoint);
 	virtual ContactAccountData * newContactAccountData(Contact contact, Account *account, const QString &id);

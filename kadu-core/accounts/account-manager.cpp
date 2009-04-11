@@ -35,10 +35,26 @@ KADUAPI AccountManager * AccountManager::instance()
 AccountManager::AccountManager()
 {
 	Core::instance()->configuration()->registerStorableObject(this);
+
+	connect(ProtocolsManager::instance(), SIGNAL(protocolFactoryRegistered(ProtocolFactory *)),
+			this, SLOT(protocolFactoryRegistered(ProtocolFactory *)));
+	connect(ProtocolsManager::instance(), SIGNAL(protocolFactoryUnregistered(ProtocolFactory *)),
+			this, SLOT(protocolFactoryUnregistered(ProtocolFactory *)));
+
+	foreach (ProtocolFactory *factory, ProtocolsManager::instance()->protocolFactories())
+		protocolFactoryRegistered(factory);
 }
 
 AccountManager::~AccountManager()
 {
+	foreach (ProtocolFactory *factory, ProtocolsManager::instance()->protocolFactories())
+		protocolFactoryUnregistered(factory);
+
+	disconnect(ProtocolsManager::instance(), SIGNAL(protocolFactoryRegistered(ProtocolFactory *)),
+			this, SLOT(protocolFactoryRegistered(ProtocolFactory *)));
+	disconnect(ProtocolsManager::instance(), SIGNAL(protocolFactoryUnregistered(ProtocolFactory *)),
+			this, SLOT(protocolFactoryUnregistered(ProtocolFactory *)));
+
 	Core::instance()->configuration()->unregisterStorableObject(this);
 }
 
@@ -47,9 +63,9 @@ StoragePoint * AccountManager::createStoragePoint()
 	return new StoragePoint(xml_config_file, xml_config_file->getNode("Accounts"));
 }
 
-void AccountManager::loadConfiguration(const QString &protocolName)
+void AccountManager::load(ProtocolFactory *factory)
 {
-	if (protocolName.isEmpty())
+	if (!factory || factory->name().isEmpty())
 		return;
 
 	if (!isValidStorage())
@@ -58,6 +74,8 @@ void AccountManager::loadConfiguration(const QString &protocolName)
 	QDomElement accountsNode = storage()->point();
 	if (accountsNode.isNull())
 		return;
+
+	QString protocolName = factory->name();
 
 	QDomNodeList accountNodes = storage()->storage()->getNodes(accountsNode, "Account");
 	int count = accountNodes.count();
@@ -83,7 +101,7 @@ void AccountManager::loadConfiguration(const QString &protocolName)
 	}
 }
 
-void AccountManager::storeConfiguration(const QString &protocolName)
+void AccountManager::store(ProtocolFactory *factory)
 {
 	if (!isValidStorage())
 		return;
@@ -91,19 +109,17 @@ void AccountManager::storeConfiguration(const QString &protocolName)
 	QDomElement accountsNode = storage()->point();
 
 	foreach (Account *account, Accounts)
-	{
-		if (protocolName.isNull() || account->protocol()->protocolFactory()->name() == protocolName)
-		{
+		if (!factory || account->protocol()->protocolFactory() == factory)
 			account->store();
-			if (!protocolName.isNull())
-				unregisterAccount(account);
-		}
-	}
+}
+
+void AccountManager::load()
+{
 }
 
 void AccountManager::store()
 {
-	storeConfiguration(QString::null);
+	store(0);
 }
 
 Account * AccountManager::defaultAccount() const
@@ -167,6 +183,20 @@ Status AccountManager::status() const
 	return account
 		? account->currentStatus()
 		: Status();
+}
+
+void AccountManager::protocolFactoryRegistered(ProtocolFactory *factory)
+{
+	load(factory);
+}
+
+void AccountManager::protocolFactoryUnregistered(ProtocolFactory *factory)
+{
+	store(factory);
+
+	foreach (Account *account, Accounts)
+		if (account->protocol()->protocolFactory() == factory)
+			unregisterAccount(account);
 }
 
 void AccountManager::connectionError(Account *account, const QString &server, const QString &message)
