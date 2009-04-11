@@ -48,11 +48,11 @@ protected:
 public:
 	static ContactManager * instance();
 
-	void loadConfiguration();
+	virtual void load();
 	virtual void store();
 
-	ContactList contacts() const { return Contacts; }
-	ContactList contacts(Account *account, bool includeAnonymous = false) const;
+	ContactList contacts();
+	ContactList contacts(Account *account, bool includeAnonymous = false);
 	void addContact(Contact contact);
 	void removeContact(Contact contact);
 
@@ -62,8 +62,8 @@ public:
 	int contactIndex(Contact contact) { return Contacts.indexOf(contact); }
 
 	Contact byId(Account *account, const QString &id);
-	Contact byUuid(const QString &uuid) const;
-	Contact byDisplay(const QString &display) const;
+	Contact byUuid(const QString &uuid);
+	Contact byDisplay(const QString &display);
 
 signals:
 	void contactAboutToBeAdded(Contact &contact);

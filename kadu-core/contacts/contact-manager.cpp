@@ -71,7 +71,7 @@ void ContactManager::importConfiguration(XmlConfigFile *configurationStorage)
 	}
 }
 
-void ContactManager::loadConfiguration()
+void ContactManager::load()
 {
 	if (xml_config_file->getNode("ContactsNew", XmlConfigFile::ModeFind).isNull())
 	{
@@ -103,6 +103,8 @@ void ContactManager::store()
 	if (!isValidStorage())
 		return;
 
+	ensureLoaded();
+
 	foreach (Contact contact, Contacts)
 		if (!contact.isNull() && !contact.isAnonymous())
 			contact.store();
@@ -112,6 +114,8 @@ void ContactManager::addContact(Contact contact)
 {
 	if (contact.isNull())
 		return;
+
+	ensureLoaded();
 
 	emit contactAboutToBeAdded(contact);
 	Contacts.append(contact);
@@ -123,6 +127,8 @@ void ContactManager::removeContact(Contact contact)
 	kdebugf();
 	if (contact.isNull())
 		return;
+
+	ensureLoaded();
 
 	emit contactAboutToBeRemoved(contact);
 	Contacts.removeAll(contact);
@@ -138,6 +144,8 @@ Contact ContactManager::byIndex(unsigned int index)
 	if (index < 0 || index >= count())
 		return Contact::null;
 
+	ensureLoaded();
+
 	return Contacts.at(index);
 }
 
@@ -145,6 +153,8 @@ Contact ContactManager::byId(Account *account, const QString &id)
 {
 	if (id.isEmpty() || 0 == account)
 		return Contact::null;
+
+	ensureLoaded();
 
 	foreach (Contact contact, Contacts)
 	{
@@ -158,10 +168,12 @@ Contact ContactManager::byId(Account *account, const QString &id)
 	return anonymous;
 }
 
-Contact ContactManager::byUuid(const QString &uuid) const
+Contact ContactManager::byUuid(const QString &uuid)
 {
 	if (uuid.isEmpty())
 		return Contact::null;
+
+	ensureLoaded();
 
 	foreach (Contact contact, Contacts)
 		if (uuid == contact.uuid().toString())
@@ -170,10 +182,12 @@ Contact ContactManager::byUuid(const QString &uuid) const
 	return Contact::null;
 }
 
-Contact ContactManager::byDisplay(const QString &display) const
+Contact ContactManager::byDisplay(const QString &display)
 {
 	if (display.isEmpty())
 		return Contact::null;
+
+	ensureLoaded();
 
 	foreach (Contact contact, Contacts)
 	{
@@ -184,13 +198,21 @@ Contact ContactManager::byDisplay(const QString &display) const
 	return Contact::null;
 }
 
-ContactList ContactManager::contacts(Account *account, bool includeAnonymous) const
+ContactList ContactManager::contacts()
+{
+	ensureLoaded();
+	return Contacts;
+}
+
+ContactList ContactManager::contacts(Account *account, bool includeAnonymous)
 {
 	ContactList result;
 
 	foreach (Contact contact, Contacts)
 		if (contact.accountData(account) && (includeAnonymous || !contact.isAnonymous()))
 			result << contact;
+
+	ensureLoaded();
 
 	return result;
 }

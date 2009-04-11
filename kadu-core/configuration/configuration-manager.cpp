@@ -24,8 +24,6 @@ void ConfigurationManager::load()
 	xml_config_file->makeBackup();
 
 	pending.loadConfiguration(xml_config_file);
-
-	ContactManager::instance()->loadConfiguration();
 }
 
 void ConfigurationManager::store()
