@@ -238,7 +238,11 @@ void ContactsListWidgetDelegate::paint(QPainter *painter, const QStyleOptionView
 			: ((itemHeight - fontMetrics.height()) / 2) + fontMetrics.ascent();
 
 	QPen pen = painter->pen();
-	painter->setPen(config_file.readColorEntry("Look", "UserboxFgColor"));
+	if (option.state & QStyle::State_Selected)
+		painter->setPen(textcolor);
+	else
+		painter->setPen(config_file.readColorEntry("Look", "UserboxFgColor"));
+
 	painter->drawText(textLeft, top, display);
 	painter->setPen(pen);
 

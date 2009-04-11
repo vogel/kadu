@@ -2750,12 +2750,12 @@ Effacement de la liste de contacts du seveur non reussi</translation>
         <source>&lt;b&gt;%1&lt;/b&gt; changed status to &lt;i&gt;%2&lt;/i&gt;</source>
         <translation type="unfinished"></translation>
     </message>
+</context>
 <context>
     <name>NotificationWindow</name>
     <message>
         <source>OK</source>
         <translation type="unfinished"></translation>
     </message>
-</context>
 </context>
 </TS>
