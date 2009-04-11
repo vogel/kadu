@@ -22,6 +22,7 @@ class StorableObject
 	StorableObject *Parent;
 	QString NodeName;
 	StoragePoint *Storage;
+	bool Loaded;
 	QMap<QString, ModuleData *> ModulesData;
 
 protected:
@@ -36,7 +37,10 @@ public:
 
 	StoragePoint * storage();
 
+	virtual void load(); // TODO: 0.6.6 make = 0
 	virtual void store() = 0;
+	bool isLoaded() { return Loaded; }
+	void ensureLoaded();
 	void removeFromStorage();
 
 	void setStorage(StoragePoint *storage) { Storage = storage; }

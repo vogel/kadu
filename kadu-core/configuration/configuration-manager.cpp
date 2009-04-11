@@ -25,7 +25,6 @@ void ConfigurationManager::load()
 
 	pending.loadConfiguration(xml_config_file);
 
-	GroupManager::instance()->loadConfiguration();
 	ContactManager::instance()->loadConfiguration();
 }
 

@@ -44,6 +44,7 @@ GroupTabBar::GroupTabBar(QWidget *parent)
 			config_file.readFontEntry("Look", "UserboxFont").pointSize(), QFont::Bold));
 	setIconSize(QSize(16, 16));
 
+	GroupManager::instance()->ensureLoaded();
 	foreach (const Group *group, GroupManager::instance()->groups())
 		addGroup(group);
 

@@ -10,12 +10,12 @@
 #include "storable-object.h"
 
 StorableObject::StorableObject() :
-		Parent(0), Storage(0)
+		Parent(0), Storage(0), Loaded(false)
 {
 }
 
 StorableObject::StorableObject(const QString &nodeName, StorableObject *parent) :
-		Parent(parent), NodeName(nodeName), Storage(0)
+		Parent(parent), NodeName(nodeName), Storage(0), Loaded(false)
 {
 }
 
@@ -38,6 +38,19 @@ StoragePoint * StorableObject::storage()
 		Storage = createStoragePoint();
 
 	return Storage;
+}
+
+void StorableObject::load()
+{
+}
+
+void StorableObject::ensureLoaded()
+{
+	if (Loaded)
+		return;
+
+	Loaded = true;
+	load();
 }
 
 void StorableObject::removeFromStorage()

@@ -40,15 +40,15 @@ protected:
 public:
 	static GroupManager * instance();
 
-	void loadConfiguration();
+	virtual void load();
 	virtual void store();
 
-	QList<Group *> groups() { return Groups; }
+	QList<Group *> groups();
 
 	void addGroup(Group *newGroup);
 	void removeGroup(QString groupUuid);
 
-	Group * byUuid(const QString &uuid) const;
+	Group * byUuid(const QString &uuid);
 	Group * byName(const QString &name, bool create = true);
 
 	bool acceptableGroupName(const QString &groupName);
@@ -57,7 +57,7 @@ signals:
 	void groupAboutToBeAdded(Group *group);
 	void groupAdded(Group *group);
 	void groupAboutToBeRemoved(Group *group);
-	void groupRemoved(QString &groupUuid);
+	void groupRemoved(Group *group);
 
 };
 

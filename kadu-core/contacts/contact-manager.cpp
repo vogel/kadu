@@ -11,6 +11,7 @@
 
 #include "configuration/configuration-manager.h"
 #include "configuration/storage-point.h"
+#include "contacts/group-manager.h"
 #include "core/core.h"
 
 #include "contact.h"
@@ -34,6 +35,9 @@ ContactManager *  ContactManager::instance()
 ContactManager::ContactManager()
 {
 	Core::instance()->configuration()->registerStorableObject(this);
+
+	connect(GroupManager::instance(), SIGNAL(groupAboutToBeRemoved(Group *)),
+			this, SLOT(groupRemoved(Group *)));
 }
 
 ContactManager::~ContactManager()
@@ -190,8 +194,8 @@ ContactList ContactManager::contacts(Account *account, bool includeAnonymous) co
 
 	return result;
 }
-//TODO 0.6.6: review:
-void ContactManager::contactGroupRemoved(Group *group)
+
+void ContactManager::groupRemoved(Group *group)
 {
 	foreach (Contact contact, Contacts)
 		contact.removeFromGroup(group);

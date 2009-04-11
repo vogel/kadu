@@ -39,6 +39,9 @@ class KADUAPI ContactManager : public QObject, public StorableObject
 
 	void importConfiguration(XmlConfigFile *configurationStorage);
 
+private slots:
+	void groupRemoved(Group *group);
+
 protected:
 	virtual StoragePoint * createStoragePoint();
 
@@ -61,8 +64,6 @@ public:
 	Contact byId(Account *account, const QString &id);
 	Contact byUuid(const QString &uuid) const;
 	Contact byDisplay(const QString &display) const;
-//TODO 0.6.6: review
-	void contactGroupRemoved(Group *group);
 
 signals:
 	void contactAboutToBeAdded(Contact &contact);

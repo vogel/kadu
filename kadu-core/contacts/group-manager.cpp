@@ -78,8 +78,10 @@ void GroupManager::importConfiguration()
 		byName(groupName); // it can do import, too
 }
 
-void GroupManager::loadConfiguration()
+void GroupManager::load()
 {
+	printf("loading groups\n");
+
 	QDomElement groupsNode = xml_config_file->getNode("Groups", XmlConfigFile::ModeFind);
 	if (groupsNode.isNull())
 	{
@@ -92,6 +94,7 @@ void GroupManager::loadConfiguration()
 	int count = groupNodes.count();
 	for (int i = 0; i < count; i++)
 	{
+		printf("loading group\n");
 		QDomElement groupElement = groupNodes.at(i).toElement();
 		if (groupElement.isNull())
 			continue;
@@ -103,12 +106,23 @@ void GroupManager::loadConfiguration()
 
 void GroupManager::store()
 {
+	if (!isLoaded())
+		return;
+
 	foreach (Group *group, Groups)
 		group->store();
 }
 
+QList<Group *> GroupManager::groups()
+{
+	ensureLoaded();
+	return Groups;
+}
+
 void GroupManager::addGroup(Group *newGroup)
 {
+	ensureLoaded();
+
 	emit groupAboutToBeAdded(newGroup);
 	Groups << newGroup;
 	emit groupAdded(newGroup);
@@ -117,25 +131,24 @@ void GroupManager::addGroup(Group *newGroup)
 void GroupManager::removeGroup(QString groupUuid)
 {
 	Group *group = byUuid(groupUuid);
-	if (group)
-	{
-		emit groupAboutToBeRemoved(group);
+	if (!group)
+		return;
 
-		ContactManager::instance()->contactGroupRemoved(group);
+	group->removeFromStorage();
 
-		group->removeFromStorage();
+	emit groupAboutToBeRemoved(group);
+	Groups.removeAll(group);
+	emit groupRemoved(group);
 
-		Groups.removeAll(group);
-		delete group;
-
-		emit groupRemoved(groupUuid);
-	}
+	delete group;
 }
 
-Group * GroupManager::byUuid(const QString &uuid) const
+Group * GroupManager::byUuid(const QString &uuid)
 {
 	if (uuid.isEmpty())
 		return 0;
+
+	ensureLoaded();
 
 	foreach (Group *group, Groups)
 	{
@@ -150,6 +163,8 @@ Group * GroupManager::byName(const QString &name, bool create)
 {
 	if (name.isEmpty())
 		return 0;
+
+	ensureLoaded();
 
 	foreach (Group *group, Groups)
 	{
@@ -196,6 +211,8 @@ bool GroupManager::acceptableGroupName(const QString &groupName)
 		kdebugf2();
 		return false;
 	}
+
+	ensureLoaded();
 
 	// TODO All translation
  	if (groupName == tr("All") || byName(groupName, false))
