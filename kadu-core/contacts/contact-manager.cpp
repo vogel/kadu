@@ -121,8 +121,17 @@ void ContactManager::addContact(Contact contact)
 
 	emit contactAboutToBeAdded(contact);
 	Contacts.append(contact);
-	connect(contact.data(), SIGNAL(updated()), this, SLOT(contactDataUpdated()));
 	emit contactAdded(contact);
+
+	connect(contact.data(), SIGNAL(updated()), this, SLOT(contactDataUpdated()));
+	connect(contact.data(), SIGNAL(accountDataAboutToBeAdded(Account *)),
+			this, SLOT(contactAccountDataAboutToBeAdded(Account *)));
+	connect(contact.data(), SIGNAL(accountDataAdded(Account *)),
+			this, SLOT(contactAccountDataAdded(Account *)));
+	connect(contact.data(), SIGNAL(accountDataAboutToBeRemoved(Account *)),
+			this, SLOT(contactAccountDataAboutToBeRemoved(Account *)));
+	connect(contact.data(), SIGNAL(accountDataRemoved(Account *)),
+			this, SLOT(contactAccountDataRemoved(Account *)));
 }
 
 void ContactManager::removeContact(Contact contact)
@@ -133,8 +142,17 @@ void ContactManager::removeContact(Contact contact)
 
 	ensureLoaded();
 
-	emit contactAboutToBeRemoved(contact);
 	disconnect(contact.data(), SIGNAL(updated()), this, SLOT(contactDataUpdated()));
+	disconnect(contact.data(), SIGNAL(accountDataAboutToBeAdded(Account *)),
+			this, SLOT(contactAccountDataAboutToBeAdded(Account *)));
+	disconnect(contact.data(), SIGNAL(accountDataAdded(Account *)),
+			this, SLOT(contactAccountDataAdded(Account *)));
+	disconnect(contact.data(), SIGNAL(accountDataAboutToBeRemoved(Account *)),
+			this, SLOT(contactAccountDataAboutToBeRemoved(Account *)));
+	disconnect(contact.data(), SIGNAL(accountDataRemoved(Account *)),
+			this, SLOT(contactAccountDataRemoved(Account *)));
+
+	emit contactAboutToBeRemoved(contact);
 	Contacts.removeAll(contact);
 	contact.removeFromStorage();
 	emit contactRemoved(contact);
@@ -231,18 +249,68 @@ ContactList ContactManager::contacts(Account *account, bool includeAnonymous)
 	return result;
 }
 
+const Contact & ContactManager::byContactData(ContactData *data)
+{
+	foreach (const Contact &contact, Contacts)
+		if (data == contact.data())
+			return contact;
+
+	return Contact::null;
+}
+
 void ContactManager::contactDataUpdated()
 {
 	ContactData *cd = dynamic_cast<ContactData *>(sender());
 	if (!cd)
 		return;
 
-	foreach (Contact contact, Contacts)
-		if (cd == contact.data())
-		{
-			emit contactUpdated(contact);
-			return;
-		}
+	Contact contact = byContactData(cd);
+	if (!contact.isNull())
+		emit contactUpdated(contact);
+}
+
+void ContactManager::contactAccountDataAboutToBeAdded(Account *account)
+{
+	ContactData *cd = dynamic_cast<ContactData *>(sender());
+	if (!cd)
+		return;
+
+	Contact contact = byContactData(cd);
+	if (!contact.isNull())
+		emit contactAccountDataAboutToBeAdded(contact, account);
+}
+
+void ContactManager::contactAccountDataAdded(Account *account)
+{
+	ContactData *cd = dynamic_cast<ContactData *>(sender());
+	if (!cd)
+		return;
+
+	Contact contact = byContactData(cd);
+	if (!contact.isNull())
+		emit contactAccountDataAdded(contact, account);
+}
+
+void ContactManager::contactAccountDataAboutToBeRemoved(Account *account)
+{
+	ContactData *cd = dynamic_cast<ContactData *>(sender());
+	if (!cd)
+		return;
+
+	Contact contact = byContactData(cd);
+	if (!contact.isNull())
+		emit contactAccountDataAboutToBeRemoved(contact, account);
+}
+
+void ContactManager::contactAccountDataRemoved(Account *account)
+{
+	ContactData *cd = dynamic_cast<ContactData *>(sender());
+	if (!cd)
+		return;
+
+	Contact contact = byContactData(cd);
+	if (!contact.isNull())
+		emit contactAccountDataRemoved(contact, account);
 }
 
 void ContactManager::groupRemoved(Group *group)

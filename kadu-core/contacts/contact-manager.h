@@ -37,10 +37,16 @@ class KADUAPI ContactManager : public QObject, public StorableObject
 	ContactManager();
 	virtual ~ContactManager();
 
+	const Contact & byContactData(ContactData *data);
 	void importConfiguration(XmlConfigFile *configurationStorage);
 
 private slots:
 	void contactDataUpdated();
+	void contactAccountDataAboutToBeAdded(Account *account);
+	void contactAccountDataAdded(Account *account);
+	void contactAccountDataAboutToBeRemoved(Account *account);
+	void contactAccountDataRemoved(Account *account);
+
 	void groupRemoved(Group *group);
 
 protected:
@@ -76,8 +82,10 @@ signals:
 	void contactRemoved(Contact &contact);
 
 	void contactUpdated(Contact &contact);
-	void contactAccountAdded(Contact &contact, Account *account);
-	void contactAccountRemoved(Contact &contact, Account *account);
+	void contactAccountDataAboutToBeAdded(Contact &contact, Account *account);
+	void contactAccountDataAdded(Contact &contact, Account *account);
+	void contactAccountDataAboutToBeRemoved(Contact &contact, Account *account);
+	void contactAccountDataRemoved(Contact &contact, Account *account);
 
 };
 

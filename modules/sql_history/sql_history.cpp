@@ -11,7 +11,7 @@
 #include <QtCore/QRegExp>
 #include <QtGui/QKeyEvent>
 
-#include <QString>
+#include <QtCore/QString>
 #include <QtGui/QLabel>
 #include <QtGui/QGridLayout>
 #include <QtNetwork/QHostAddress>
@@ -177,7 +177,7 @@ void HistorySqlStorage::messageReceived(Chat *chat, Contact contact, const QStri
 // void HistorySqlStorage::statusChanged(Contact elem, QString protocolName, const UserStatus & oldStatus, bool /*massively*/, bool /*last*/)
 // {
 // 	kdebugf();
-// 	//³ohoho...
+// 	//ï¿½ohoho...
 // 	if (!config_file.readBoolEntry("History", "Enable") || !config_file.readBoolEntry("History", "SaveStatusChanges") || (!elem.data("history_save_status").toBool() && !config_file.readBoolEntry("History", "SaveStatusChangesForAll")) || (config_file.readBoolEntry("History", "IgnoreSomeStatusChanges") && ((elem.status(protocolName).isOnline() && oldStatus.isBusy()) || (elem.status(protocolName).isBusy() && oldStatus.isOnline()))) || (!elem.status(protocolName).hasDescription() && config_file.readBoolEntry("History", "SaveOnlyStatusWithDescription")) || elem.status(protocolName) == oldStatus && elem.status(protocolName).description() != oldStatus.description()) 
 // 	{
 // 		kdebugm(KDEBUG_INFO|KDEBUG_FUNCTION_END, "not appending\n");
@@ -557,7 +557,7 @@ void HistorySqlStorage::removeHistory(const ContactList& uids, const QDate &date
 		query_str = "DELETE FROM kadu_sms WHERE uid_group_id='%1';";
 		query_str = query_str.arg(uid_group_str);
 		executeQuery(query_str);
-		//i posprz±taj po sobie
+		//i posprzï¿½taj po sobie
 		query_str = "DELETE FROM kadu_uid_groups WHERE id='%1';";
 		query_str = query_str.arg(uid_group_str);
 		executeQuery(query_str);
@@ -1077,7 +1077,7 @@ void HistorySqlStorage::createDefaultConfiguration()
 // 	config_file.addVariable("History", "DatabaseFilePath", ggPath("/history/history.db"));
 // 	config_file.addVariable("History", "DatabaseTableNamePrefix", "kadu_");
 
-//TODO: by dodaæ resztê warto¶ci, je¶li jezzcze czego¶ brak
+//TODO: by dodaï¿½ resztï¿½ wartoï¿½ci, jeï¿½li jezzcze czegoï¿½ brak
 
 }
 
@@ -1173,7 +1173,7 @@ HistorySearchResult HistorySqlStorage::searchHistory(ContactList users, HistoryS
 		query_str += "AND ( date(receive_time) < ':todate') ";
 	
 	if(params.currentType == EntryTypeStatus)
-		//mo¿na by szukaæ i po statusie, ale jaki¶ problem z 'OR ... ' w zapytaniu - brak wyników wtedy
+		//moï¿½na by szukaï¿½ i po statusie, ale jakiï¿½ problem z 'OR ... ' w zapytaniu - brak wynikï¿½w wtedy
 		query_str += "AND description LIKE :pattern"; //OR status like :pattern";
 	else
 		query_str += "AND content LIKE :pattern ";

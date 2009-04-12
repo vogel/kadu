@@ -128,6 +128,10 @@ public:
 	Property(QList<Group *>, groups, Groups);
 
 signals:
+	void accountDataAboutToBeAdded(Account *account);
+	void accountDataAdded(Account *account);
+	void accountDataAboutToBeRemoved(Account *account);
+	void accountDataRemoved(Account *account);
 	void updated();
 
 };

@@ -192,13 +192,19 @@ void ContactData::store()
 
 void ContactData::addAccountData(ContactAccountData *accountData)
 {
-	if (accountData)
-		AccountsData.insert(accountData->account(), accountData);
+	if (!accountData)
+		return;
+
+	emit accountDataAboutToBeAdded(accountData->account());
+	AccountsData.insert(accountData->account(), accountData);
+	emit accountDataAdded(accountData->account());
 }
 
 void ContactData::removeAccountData(Account *account)
 {
+	emit accountDataAboutToBeRemoved(account);
 	AccountsData.remove(account);
+	emit accountDataRemoved(account);
 }
 
 ContactAccountData * ContactData::accountData(Account *account)

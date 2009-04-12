@@ -147,12 +147,30 @@ GaduProtocol::GaduProtocol(Account *account, ProtocolFactory *factory) :
 	CurrentPersonalInfoService = new GaduPersonalInfoService(this);
 	CurrentSearchService = new GaduSearchService(this);
 
+	connect(ContactManager::instance(), SIGNAL(contactAdded(Contact &)),
+			this, SLOT(contactAdded(Contact &)));
+	connect(ContactManager::instance(), SIGNAL(contactRemoved(Contact &)),
+			this, SLOT(contactRemoved(Contact &)));
+	connect(ContactManager::instance(), SIGNAL(contactAccountDataAdded(Contact &, Account *)),
+			this, SLOT(contactAccountDataAboutToBeRemoved(Contact & , Account *)));
+	connect(ContactManager::instance(), SIGNAL(contactAccountDataAboutToBeRemoved(Contact &, Account *)),
+			this, SLOT(contactAccountDataAboutToBeRemoved(Contact &, Account *)));
+
 	kdebugf2();
 }
 
 GaduProtocol::~GaduProtocol()
 {
 	kdebugf();
+
+	disconnect(ContactManager::instance(), SIGNAL(contactAdded(Contact &)),
+			this, SLOT(contactAdded(Contact &)));
+	disconnect(ContactManager::instance(), SIGNAL(contactRemoved(Contact &)),
+			this, SLOT(contactRemoved(Contact &)));
+	disconnect(ContactManager::instance(), SIGNAL(contactAccountDataAdded(Contact &, Account *)),
+			this, SLOT(contactAccountDataAboutToBeRemoved(Contact & , Account *)));
+	disconnect(ContactManager::instance(), SIGNAL(contactAccountDataAboutToBeRemoved(Contact &, Account *)),
+			this, SLOT(contactAccountDataAboutToBeRemoved(Contact &, Account *)));
 
 	networkDisconnected(false);
 	delete SocketNotifiers;
@@ -813,3 +831,45 @@ QPixmap GaduProtocol::statusPixmap(Status status)
 	return icons_manager->loadPixmap(pixmapName);
 }
 
+void GaduProtocol::contactAdded(Contact &contact)
+{
+
+	GaduContactAccountData *gcad = gaduContactAccountData(contact);
+	if (!gcad)
+		return;
+
+	gg_add_notify_ex(GaduSession, gcad->uin(), contact.isOfflineTo(account())
+			? GG_USER_OFFLINE
+			: contact.isBlocked(account())
+				? GG_USER_BLOCKED
+				: GG_USER_NORMAL);
+}
+
+void GaduProtocol::contactRemoved(Contact &contact)
+{
+	GaduContactAccountData *gcad = gaduContactAccountData(contact);
+	if (!gcad)
+		return;
+
+//	TODO: 0.6.6 which one is the *right* way?
+// 	gg_remove_notify_ex(GaduSession, gcad->uin(), GG_USER_NORMAL);
+// 	gg_remove_notify_ex(GaduSession, gcad->uin(), GG_USER_BLOCKED);
+// 	gg_remove_notify_ex(GaduSession, gcad->uin(), GG_USER_OFFLINE);
+	gg_remove_notify(GaduSession, gcad->uin());
+}
+
+void GaduProtocol::contactAccountDataAdded(Contact &contact, Account *contactAccount)
+{
+	if (contactAccount != account())
+		return;
+
+	contactAdded(contact);
+}
+
+void GaduProtocol::contactAccountDataAboutToBeRemoved(Contact &contact, Account *contactAccount)
+{
+	if (contactAccount != account())
+		return;
+
+	contactRemoved(contact);
+}

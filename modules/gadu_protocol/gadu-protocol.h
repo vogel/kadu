@@ -100,6 +100,11 @@ private slots:
 	void connectionTimeoutTimerSlot();
 	void everyMinuteActions();
 
+	void contactAdded(Contact &contact);
+	void contactRemoved(Contact &contact);
+	void contactAccountDataAdded(Contact &contact, Account *contactAccount);
+	void contactAccountDataAboutToBeRemoved(Contact &contact, Account *contactAccount);
+
 protected:
 	virtual void changeStatus();
 	virtual void changePrivateMode();
