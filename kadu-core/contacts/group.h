@@ -13,9 +13,9 @@
 #include <QtCore/QObject>
 #include <QtCore/QUuid>
 
-#include "configuration/storable-object.h"
+#include "configuration/uuid-storable-object.h"
 
-class Group : public QObject, public StorableObject
+class Group : public QObject, public UuidStorableObject
 {
 friend class GroupManager;
 
@@ -32,9 +32,6 @@ friend class GroupManager;
 
 	void importConfiguration(const QString &name);
 
-protected:
-	virtual StoragePoint * createStoragePoint();
-
 public:
 	static Group * loadFromStorage(StoragePoint *groupStoragePoint);
 
@@ -44,7 +41,8 @@ public:
 	virtual void load();
 	virtual void store();
 
-	QUuid uuid() const { return Uuid; }
+	virtual QUuid uuid() const { return Uuid; }
+
 	QString name() const { return Name; }
 	QString icon() const { return Icon; }
 	bool showIcon() const { return ShowIcon; }

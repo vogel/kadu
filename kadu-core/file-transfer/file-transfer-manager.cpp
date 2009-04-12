@@ -28,7 +28,8 @@ FileTransferManager * FileTransferManager::instance()
 	return Instance;
 }
 
-FileTransferManager::FileTransferManager()
+FileTransferManager::FileTransferManager() :
+		StorableObject(true)
 {
 	triggerAllAccountsRegistered();
 }
@@ -92,10 +93,6 @@ void FileTransferManager::accountRegistered(Account *account)
 
 	connect(service, SIGNAL(incomingFileTransfer(FileTransfer *)),
 			this, SLOT(incomingFileTransfer(FileTransfer *)));
-}
-
-void FileTransferManager::load()
-{
 }
 
 void FileTransferManager::store(Account *account)

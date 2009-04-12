@@ -23,7 +23,7 @@ protected:
 public:
 	UuidStorableObject(const QString &nodeName, StorableObject *parent);
 
-	virtual QUuid uuid() = 0;
+	virtual QUuid uuid() const = 0;
 
 };
 

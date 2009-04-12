@@ -48,7 +48,6 @@ protected:
 public:
 	static FileTransferManager * instance();
 
-	virtual void load();
 	virtual void store();
 
 	QList<FileTransfer *> fileTransfer() { return FileTransfers; }

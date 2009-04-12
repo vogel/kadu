@@ -54,7 +54,7 @@ void ProtocolsManager::unregisterProtocolFactory(ProtocolFactory *factory)
 
 	emit protocolFactoryAboutToBeUnregistered(factory);
 	Factories.append(factory);
-	emit protocolFactoryRegistered(factory);
+	emit protocolFactoryUnregistered(factory);
 }
 
 bool ProtocolsManager::hasProtocolFactory(const QString &name)

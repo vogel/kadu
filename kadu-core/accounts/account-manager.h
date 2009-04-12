@@ -49,7 +49,6 @@ protected:
 public:
 	static AccountManager * instance();
 
-	virtual void load();
 	virtual void store();
 
 	Account * defaultAccount() const;

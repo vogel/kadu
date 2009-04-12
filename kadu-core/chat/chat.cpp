@@ -13,8 +13,8 @@
 #include "chat.h"
 #include "chat-manager.h"
 
-Chat::Chat(Account *currentAccount, QUuid uuid)
-	: CurrentAccount(currentAccount), Uuid(uuid.isNull() ? QUuid::createUuid() : uuid)
+Chat::Chat(Account *currentAccount, QUuid uuid) :
+		CurrentAccount(currentAccount), Uuid(uuid.isNull() ? QUuid::createUuid() : uuid)
 {
 }
 
@@ -56,6 +56,8 @@ void Chat::load()
 {
 	if (!isValidStorage())
 		return;
+
+	StorableObject::load();
 	CurrentAccount = AccountManager::instance()->byUuid(QUuid(loadValue<QString>("Account")));
 }
 

@@ -32,7 +32,8 @@ KADUAPI AccountManager * AccountManager::instance()
 	return Instance;
 }
 
-AccountManager::AccountManager()
+AccountManager::AccountManager() :
+		StorableObject(true)
 {
 	Core::instance()->configuration()->registerStorableObject(this);
 
@@ -111,10 +112,6 @@ void AccountManager::store(ProtocolFactory *factory)
 	foreach (Account *account, Accounts)
 		if (!factory || account->protocol()->protocolFactory() == factory)
 			account->store();
-}
-
-void AccountManager::load()
-{
 }
 
 void AccountManager::store()

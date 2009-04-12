@@ -47,7 +47,7 @@ public:
 	virtual void load();
 	virtual void store();
 
-	virtual QUuid uuid() { return Uuid; }
+	virtual QUuid uuid() const { return Uuid; }
 	void setProtocol(Protocol *protocolHandler);
 	Protocol * protocol() { return ProtocolHandler; }
 

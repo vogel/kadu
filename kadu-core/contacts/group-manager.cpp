@@ -80,7 +80,7 @@ void GroupManager::importConfiguration()
 
 void GroupManager::load()
 {
-	printf("loading groups\n");
+	StorableObject::load();
 
 	QDomElement groupsNode = xml_config_file->getNode("Groups", XmlConfigFile::ModeFind);
 	if (groupsNode.isNull())
@@ -94,7 +94,6 @@ void GroupManager::load()
 	int count = groupNodes.count();
 	for (int i = 0; i < count; i++)
 	{
-		printf("loading group\n");
 		QDomElement groupElement = groupNodes.at(i).toElement();
 		if (groupElement.isNull())
 			continue;

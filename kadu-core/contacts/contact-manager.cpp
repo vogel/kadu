@@ -73,6 +73,8 @@ void ContactManager::importConfiguration(XmlConfigFile *configurationStorage)
 
 void ContactManager::load()
 {
+	StorableObject::load();
+
 	if (xml_config_file->getNode("ContactsNew", XmlConfigFile::ModeFind).isNull())
 	{
 		importConfiguration(xml_config_file);

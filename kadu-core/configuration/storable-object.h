@@ -29,15 +29,15 @@ protected:
 	virtual StoragePoint * createStoragePoint();
 
 public:
-	StorableObject();
-	StorableObject(const QString &nodeName, StorableObject *parent);
+	StorableObject(bool loaded = false);
+	StorableObject(const QString &nodeName, StorableObject *parent, bool loaded = false);
 
 	StorableObject * parent() { return Parent; }
 	QString nodeName() { return NodeName; }
 
 	StoragePoint * storage();
 
-	virtual void load() = 0;
+	virtual void load();
 	virtual void store() = 0;
 	bool isLoaded() { return Loaded; }
 	void ensureLoaded();
@@ -57,6 +57,21 @@ template<class T>
 
 		return value.value<T>();
 	}
+
+template<class T>
+	T loadValue(const QString &name, T def) const
+	{
+		QVariant value;
+
+		if (Storage->storage()->hasNode(Storage->point(), name))
+		{
+			value = Storage->storage()->getTextNode(Storage->point(), name);
+			return value.value<T>();
+		}
+
+		return def;
+	}
+
 	// TODO: 0.6.6 - check create and cache implementation
 template<class T>
 	T * moduleData(bool create = false, bool cache = false)

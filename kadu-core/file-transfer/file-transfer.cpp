@@ -74,6 +74,8 @@ StoragePoint * FileTransfer::createStoragePoint()
 
 void FileTransfer::load()
 {
+	StorableObject::load();
+
 	if (!isValidStorage())
 		return;
 
@@ -93,6 +95,8 @@ void FileTransfer::store()
 {
 	if (!isValidStorage())
 		return;
+
+	ensureLoaded();
 
 	storeValue("Account", CurrentAccount->uuid().toString());
 	storeValue("Peer", Peer.uuid().toString());

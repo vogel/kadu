@@ -31,24 +31,26 @@ StoragePoint * ContactAccountData::createStoragePoint()
 
 void ContactAccountData::load()
 {
-	StoragePoint *sp = storage();
-	if (!sp || !sp->storage())
+	if (!isValidStorage())
 		return;
 
-	Id = sp->storage()->getTextNode(sp->point(), "Id");
+	StorableObject::load();
+	Id = loadValue<QString>("Id");
 }
 
 void ContactAccountData::store()
 {
-	StoragePoint *sp = storage();
-	if (!sp || !sp->storage())
+	if (!isValidStorage())
 		return;
 
-	sp->storage()->createTextNode(sp->point(), "Id", Id);
+	ensureLoaded();
+	storeValue("Id", Id);
 }
 
 bool ContactAccountData::isValid()
 {
+	ensureLoaded();
+
 	return validateId();
 }
 

@@ -76,7 +76,7 @@ public:
 
 	StoragePoint * storagePointForAccountData(Account *account);
 
-	virtual QUuid uuid() { return Uuid; }
+	virtual QUuid uuid() const { return Uuid; }
 	QString id(Account *account);
 
 	Account * prefferedAccount();

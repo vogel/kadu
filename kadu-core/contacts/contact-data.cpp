@@ -95,6 +95,8 @@ void ContactData::load()
 	if (!sp)
 		return;
 
+	StorableObject::load();
+
 	XmlConfigFile *configurationStorage = sp->storage();
 	QDomElement parent = sp->point();
 
@@ -174,7 +176,7 @@ void ContactData::store()
 	if (Groups.count())
 	{
 		QDomElement groupsNode = configurationStorage->getNode(parent, "ContactGroups", XmlConfigFile::ModeCreate);
-		foreach (const Group *group, Groups)
+		foreach (Group *group, Groups)
 			configurationStorage->appendTextNode(groupsNode, "Group", group->uuid().toString());
 	}
 	else

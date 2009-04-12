@@ -21,6 +21,11 @@ ChatManager *  ChatManager::instance()
 	return Instance;
 }
 
+ChatManager::ChatManager() :
+		StorableObject(true)
+{
+}
+
 StoragePoint * ChatManager::createStoragePoint()
 {
 	return new StoragePoint(xml_config_file, xml_config_file->getNode("Chats"));
@@ -67,10 +72,6 @@ void ChatManager::store(Account *account)
 		foreach (Chat *chat, list)
 			if (chat->account() == account)
 				chat->store();
-}
-
-void ChatManager::load()
-{
 }
 
 void ChatManager::store()

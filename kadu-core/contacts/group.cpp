@@ -16,8 +16,9 @@
 
 #include "group.h"
 
-Group::Group(QUuid uuid)
-	: Uuid(uuid.isNull() ? QUuid::createUuid() : uuid)
+Group::Group(QUuid uuid) :
+		UuidStorableObject("Group", GroupManager::instance()),
+		Uuid(uuid.isNull() ? QUuid::createUuid() : uuid)
 {
 }
 
@@ -34,20 +35,8 @@ Group * Group::loadFromStorage(StoragePoint *groupStoragePoint)
 	return group;
 }
 
-StoragePoint * Group::createStoragePoint()
-{
-	StoragePoint *parent = GroupManager::instance()->storage();
-	if (!parent)
-		return 0;
-
-	QDomElement contactNode = parent->storage()->getUuidNode(parent->point(), "Group", Uuid.toString());
-	return new StoragePoint(parent->storage(), contactNode);
-}
-
 void Group::importConfiguration(const QString &name)
 {
-	if (!storage())
-		createStoragePoint();
 	Name = name;
 	Icon = config_file.readEntry("GroupIcon", name);
 	NotifyAboutStatusChanges = true;
@@ -59,50 +48,38 @@ void Group::importConfiguration(const QString &name)
 
 void Group::load()
 {
-	StoragePoint *sp = storage();
-	if (!sp)
+	StorableObject::load();
+
+	if (!isValidStorage())
 		return;
 
+	StoragePoint *sp = storage();
 	XmlConfigFile *configurationStorage = sp->storage();
 	QDomElement parent = sp->point();
 
 	Uuid = QUuid(parent.attribute("uuid"));
-	Name = configurationStorage->getTextNode(parent, "Name");
-	Icon = configurationStorage->getTextNode(parent, "Icon");
-	QVariant v(configurationStorage->getTextNode(parent, "NotifyAboutStatusChanges", "true"));
-	NotifyAboutStatusChanges = v.toBool();
-	v.setValue(configurationStorage->getTextNode(parent, "ShowInAllGroup", "true"));
-	ShowInAllGroup = v.toBool();
-	v.setValue(configurationStorage->getTextNode(parent, "OfflineTo"));
-	OfflineToGroup = v.toBool();
-	v.setValue(configurationStorage->getTextNode(parent, "ShowIcon"));
-	ShowIcon = v.toBool();
-	v.setValue(configurationStorage->getTextNode(parent, "ShowName", "true")); 
-	ShowName = v.toBool();
+
+	Name = loadValue<QString>("Name");
+	Icon = loadValue<QString>("Icon");
+	NotifyAboutStatusChanges = loadValue<bool>("NotifyAboutStatusChanges", true);
+	ShowInAllGroup = loadValue<bool>("ShowInAllGroup", true);
+	OfflineToGroup = loadValue<bool>("OfflineTo", true);
+	ShowIcon = loadValue<bool>("ShowIcon", true);
+	ShowName = loadValue<bool>("ShowName", true);
 }
 
 void Group::store()
 {
-	StoragePoint *sp = storage();
-	if (!sp)
+	if (!isValidStorage())
 		return;
 
-	XmlConfigFile *configurationStorage = sp->storage();
-	QDomElement parent = sp->point();
-
-	configurationStorage->createTextNode(parent, "Name", Name);
-	configurationStorage->createTextNode(parent, "Icon", Icon);
-
-	QVariant v(NotifyAboutStatusChanges);
-	configurationStorage->createTextNode(parent, "NotifyAboutStatusChanges", v.toString());
-	v.setValue(ShowInAllGroup);
-	configurationStorage->createTextNode(parent, "ShowInAllGroup", v.toString());
-	v.setValue(OfflineToGroup);
-	configurationStorage->createTextNode(parent, "OfflineTo", v.toString());
-	v.setValue(ShowIcon);
-	configurationStorage->createTextNode(parent, "ShowIcon", v.toString());
-	v.setValue(ShowName);
-	configurationStorage->createTextNode(parent, "ShowName", v.toString()); 
+	storeValue("Name", Name);
+	storeValue("Icon", Icon);
+	storeValue("NotifyAboutStatusChanges", NotifyAboutStatusChanges);
+	storeValue("ShowInAllGroup", ShowInAllGroup);
+	storeValue("OfflineTo", OfflineToGroup);
+	storeValue("ShowIcon", ShowIcon);
+	storeValue("ShowName", ShowName);
 }
 
 void Group::setName(const QString &name)
@@ -110,6 +87,7 @@ void Group::setName(const QString &name)
 	Name = name;
 	emit nameChanged(this);
 }
+
 void Group::setAppearance(bool showName, bool showIcon, const QString &icon)
 {
 	Icon = icon;
