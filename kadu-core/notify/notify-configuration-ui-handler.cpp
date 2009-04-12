@@ -24,6 +24,7 @@
 #include "gui/widgets/configuration/config-group-box.h"
 #include "gui/widgets/configuration/notify-group-box.h"
 #include "gui/widgets/configuration/notifier-configuration-widget.h"
+#include "gui/widgets/configuration/notify-tree-widget.h"
 #include "gui/windows/configuration-window.h"
 #include "notify/notifier.h"
 #include "notify/notify-event.h"
@@ -95,19 +96,14 @@ void NotifyConfigurationUiHandler::mainConfigurationWindowCreated(MainConfigurat
 {
 	connect(mainConfigurationWindow, SIGNAL(destroyed(QObject *)), this, SLOT(mainConfigurationWindowDestroyed()));
 
-	notifications = dynamic_cast<ConfigComboBox *>(mainConfigurationWindow->widget()->widgetById("notify/notifications"));
-	connect(notifications, SIGNAL(activated(int)), this, SLOT(eventSwitched(int)));
-
-	QStringList captions;
-	QStringList values;
-
-	foreach (NotifyEvent *notifyEvent, NotificationManager::instance()->notifyEvents())
+	foreach (Notifier *notifier, NotificationManager::instance()->notifiers())
 	{
-		captions.append(qApp->translate("@default", notifyEvent->description()));
-		values.append(notifyEvent->name());
+		foreach (NotifyEvent *notifyEvent, NotificationManager::instance()->notifyEvents())
+		{
+			if (!NotifierGui[notifier].Events.contains(notifyEvent->name()))
+				NotifierGui[notifier].Events[notifyEvent->name()] = config_file.readBoolEntry("Notify", notifyEvent->name() + '_' + notifier->name());
+		}
 	}
-
-	notifications->setItems(values, captions);
 
 	ConfigGroupBox *statusGroupBox = mainConfigurationWindow->widget()->configGroupBox("Notifications", "Options", "Status change");
 
@@ -135,7 +131,6 @@ void NotifyConfigurationUiHandler::mainConfigurationWindowCreated(MainConfigurat
 
 	statusGroupBox->addWidgets(0, notifyUsers);
 
-	// TODO 0.6.6 display -> uuid?
 	foreach(Contact contact, ContactManager::instance()->contacts())
 		if (!contact.isAnonymous())
 		{
@@ -162,16 +157,24 @@ void NotifyConfigurationUiHandler::mainConfigurationWindowCreated(MainConfigurat
 
 	notificationsGroupBox = mainConfigurationWindow->widget()->configGroupBox("Notifications", "General", "Notifications");
 
+	notifyTreeWidget = new NotifyTreeWidget(NotifierGui, notificationsGroupBox->widget());
+	notificationsGroupBox->addWidget(notifyTreeWidget, true);
+	notifyTreeWidget->setCurrentItem(notifyTreeWidget->topLevelItem(0));
+	connect(notifyTreeWidget, SIGNAL(itemSelectionChanged()), this, SLOT(eventSwitched()));
+
 	foreach (Notifier *notifier, NotificationManager::instance()->notifiers())
 		addConfigurationWidget(notifier);
 
-	eventSwitched(0);
+	eventSwitched();
 }
 
 void NotifyConfigurationUiHandler::notifierRegistered(Notifier *notifier)
 {
 	if (notificationsGroupBox)
+	{
 		addConfigurationWidget(notifier);
+		notifyTreeWidget->refresh(NotifierGui);
+	}
 }
 
 void NotifyConfigurationUiHandler::notifierUnregistered(Notifier *notifier)
@@ -181,6 +184,9 @@ void NotifyConfigurationUiHandler::notifierUnregistered(Notifier *notifier)
 
 	if (NotifierGui.contains(notifier))
 		NotifierGui.remove(notifier);
+
+	if (notificationsGroupBox)
+		notifyTreeWidget->refresh(NotifierGui);
 }
 
 void NotifyConfigurationUiHandler::configurationWindowApplied()
@@ -267,11 +273,12 @@ void NotifyConfigurationUiHandler::moveToAllList()
 	allUsers->sortItems();
 }
 
-void NotifyConfigurationUiHandler::eventSwitched(int index)
+void NotifyConfigurationUiHandler::eventSwitched()
 {
 	kdebugf();
 
-	CurrentEvent = notifications->currentItemValue();
+	CurrentEvent = notifyTreeWidget->currentEvent();
+
 	foreach (Notifier *notifier, NotificationManager::instance()->notifiers())
 	{
 		if (!NotifierGui.contains(notifier))
@@ -297,4 +304,5 @@ void NotifyConfigurationUiHandler::notifierToggled(Notifier *notifier, bool togg
 	if (!NotifierGui.contains(notifier))
 		NotifierGui.insert(notifier, NotifierGuiItem());
 	NotifierGui[notifier].Events[CurrentEvent] = toggled;
+	notifyTreeWidget->updateCurrentItem(notifier, toggled);
 }

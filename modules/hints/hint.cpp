@@ -18,14 +18,14 @@
 #include "kadu_parser.h"
 #include "misc/misc.h"
 
-#include "../notify/notification.h"
+#include "notify/notification.h"
 
 /**
  * @ingroup hints
  * @{
  */
 Hint::Hint(QWidget *parent, Notification *notification)
-	: QWidget(parent, "Hint"), vbox(0), callbacksBox(0), icon(0), label(0), bcolor(), notification(notification),
+	: QWidget(parent), vbox(0), callbacksBox(0), icon(0), label(0), bcolor(), notification(notification),
 	  haveCallbacks(notification->getCallbacks().count() != 0)
 {
 	kdebugf();
@@ -40,7 +40,7 @@ Hint::Hint(QWidget *parent, Notification *notification)
 	else
 		startSecs = secs = config_file.readNumEntry("Hints", "Event_" + notification->type() + "_timeout", 10);
 
-	createLabels(notification->icon());
+	createLabels(notification->icon().pixmap(QSize(22, 22)));
 	updateText();
 
 	const QList<Notification::Callback> callbacks = notification->getCallbacks();
@@ -93,8 +93,8 @@ void Hint::configurationUpdated()
 	else
 		configurationDirective = "Event_" + notification->type();
 
-	bcolor = config_file.readColorEntry("Hints", configurationDirective + "_bgcolor", &paletteBackgroundColor());
-	fcolor = config_file.readColorEntry("Hints", configurationDirective + "_fgcolor", &paletteForegroundColor());
+	bcolor = config_file.readColorEntry("Hints", configurationDirective + "_bgcolor"/*, &paletteBackgroundColor()*/);
+	fcolor = config_file.readColorEntry("Hints", configurationDirective + "_fgcolor"/*, &paletteForegroundColor()*/);
 	label->setFont(config_file.readFontEntry("Hints", configurationDirective + "_font"));
 	QString style = narg("QWidget {color:%1; background-color:%2}", fcolor.name(), bcolor.name());
 	setStyleSheet(style);
@@ -108,20 +108,20 @@ void Hint::createLabels(const QPixmap &pixmap)
 	vbox = new QVBoxLayout(this);
 	vbox->setSpacing(2);
 	vbox->setMargin(1);
-	vbox->setResizeMode(QLayout::FreeResize);
+	vbox->setSizeConstraint(QLayout::SetNoConstraint);
 	QWidget *widget = new QWidget(this);
 	labels = new QHBoxLayout(widget);
 	labels->setContentsMargins(5, 5, 5, 5);
 	vbox->addWidget(widget);
 	if (!pixmap.isNull())
 	{
-		icon = new QLabel(this, "Icon");
+		icon = new QLabel(this);
 		icon->setPixmap(pixmap);
 		icon->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
 		labels->addWidget(icon, 0, Qt::AlignTop);
 	}
 
-	label = new QLabel(this, "Label");
+	label = new QLabel(this);
 	label->setTextInteractionFlags(Qt::NoTextInteraction);
 	label->setTextFormat(Qt::RichText);
 	label->setAlignment(Qt::AlignVCenter | Qt::AlignLeft);
@@ -141,7 +141,7 @@ void Hint::updateText()
 		if (notification->contacts().count())
 			contact = notification->contacts()[0];
 
-		kdebug("syntax is: %s, text is: %s\n", syntax.ascii(), notification->text().ascii());
+		kdebug("syntax is: %s, text is: %s\n", syntax.toAscii().data(), notification->text().toAscii().data());
 		text = KaduParser::parse(syntax, contact.prefferedAccount(), contact, notification);
 		/* Dorr: the file:// in img tag doesn't generate the image on hint.
 		 * for compatibility with other syntaxes we're allowing to put the file://

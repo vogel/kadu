@@ -11,6 +11,7 @@
 #define NOTIFIER_H
 
 #include <QtCore/QObject>
+#include <QtGui/QIcon>
 
 #include "exports.h"
 
@@ -44,12 +45,16 @@ public:
 
 private:
 	QString Name;
+	QIcon Icon;
+
 
 public:
-	explicit Notifier(const QString name, QObject *parent = 0);
+	explicit Notifier(const QString name,  QIcon icon, QObject *parent = 0);
 	virtual ~Notifier();
 
 	QString name() { return Name; }
+	QIcon & icon() { return Icon; }
+
 
 	virtual CallbackCapacity callbackCapacity();
 

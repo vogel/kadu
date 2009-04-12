@@ -5,7 +5,7 @@
 #include "gui/widgets/abstract-tool-tip.h"
 #include "hint.h"
 #include "main_configuration_window.h"
-#include "../notify/notify.h"
+#include "notify/notify.h"
 
 class QSpinBox;
 

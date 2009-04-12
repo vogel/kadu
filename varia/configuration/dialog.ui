@@ -371,7 +371,6 @@ Text is plain black." />
 
 		<tab name="General">
 			<group-box name="Notifications">
-				<combo-box caption="Event" config-section="" config-item="" id="notify/notifications" />
 			</group-box>
 		</tab>
 

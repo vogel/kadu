@@ -49,7 +49,6 @@ class KADUAPI MainConfigurationWindow : public ConfigurationWindow
 	static ConfigFileDataManager *InstanceDataManager;
 
 	static const char *SyntaxText;
-	static const char *SyntaxTextNotify;
 
 	static QList<QString> UiFiles;
 	static QList<ConfigurationUiHandler *> ConfigurationUiHandlers;
@@ -109,6 +108,8 @@ public:
 
 	static void registerUiHandler(ConfigurationUiHandler *uiHandler);
 	static void unregisterUiHandler(ConfigurationUiHandler *uiHandler);
+
+	static const char *SyntaxTextNotify;
 
 	MainConfigurationWindow();
 	virtual ~MainConfigurationWindow();

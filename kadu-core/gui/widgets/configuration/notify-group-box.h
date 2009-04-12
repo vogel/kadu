@@ -10,13 +10,17 @@
 #ifndef NOTIFY_GROUP_BOX
 #define NOTIFY_GROUP_BOX
 
-#include <QtGui/QGroupBox>
+#include <QtGui/QWidget>
 
 #include "notify/notifier.h"
 
-class NotifyGroupBox : public QGroupBox
+class QCheckBox;
+
+class NotifyGroupBox : public QWidget
 {
 	Q_OBJECT
+
+	QCheckBox *NotifierCheckBox;
 
 	Notifier *Notificator;
 
@@ -28,6 +32,9 @@ public:
 	virtual ~NotifyGroupBox() {}
 
 	Notifier * notificator() { return Notificator; }
+
+	void setChecked(bool checked);
+	void addWidget(QWidget *widget);
 
 signals:
 	void toggled(Notifier *notificator, bool toggled);

@@ -104,6 +104,7 @@ set (kadu_SRCS
 	gui/widgets/configuration/config-tab.cpp
 	gui/widgets/configuration/notifier-configuration-widget.cpp
 	gui/widgets/configuration/notify-group-box.cpp
+	gui/widgets/configuration/notify-tree-widget.cpp
 
 	gui/windows/chat_window.cpp
 	gui/windows/configuration-window.cpp
@@ -262,6 +263,7 @@ set (kadu_MOC_SRCS
 	gui/widgets/configuration/config-tab.h
 	gui/widgets/configuration/notifier-configuration-widget.h
 	gui/widgets/configuration/notify-group-box.h
+	gui/widgets/configuration/notify-tree-widget.h
 
 	gui/windows/chat_window.h
 	gui/windows/configuration-window.h

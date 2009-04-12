@@ -7,19 +7,25 @@
  *                                                                         *
  ***************************************************************************/
 
+#include <QtCore/QProcess>
 #include <QtGui/QApplication>
 #include <QtGui/QLineEdit>
-#include <QtCore/QMap>
-#include <QtCore/QProcess>
-#include <QToolTip>
 #include <QtGui/QLabel>
-#include <QtGui/QGridLayout>
+#include <QtGui/QHBoxLayout>
 
 #include "config_file.h"
 #include "debug.h"
-#include "kadu.h"
+#include "icons_manager.h"
 #include "kadu_parser.h"
+#include "main_configuration_window.h"
+#include "kadu_parser.h"
+
+#include "gui/widgets/configuration/notify-group-box.h"
+
 #include "misc/misc.h"
+
+#include "notify/notification.h"
+#include "notify/notification-manager.h"
 
 #include "exec_notify.h"
 
@@ -39,17 +45,16 @@ extern "C" KADU_EXPORT void exec_notify_close()
 	kdebugf2();
 }
 
-ExecConfigurationWidget::ExecConfigurationWidget(QWidget *parent, char *name)
-	: NotifierConfigurationWidget(parent, name), currentNotifyEvent("")
+ExecConfigurationWidget::ExecConfigurationWidget(QWidget *parent)
+	: NotifierConfigurationWidget(parent), currentNotifyEvent("")
 {
 	commandLineEdit = new QLineEdit(this);
-	QToolTip::add(commandLineEdit, qApp->translate("@default", Kadu::SyntaxTextNotify));
+	commandLineEdit->setToolTip(qApp->translate("@default", MainConfigurationWindow::SyntaxTextNotify));
 
-	QGridLayout *gridLayout = new QGridLayout(this, 0, 0, 0, 3);
-	gridLayout->addWidget(new QLabel(tr("Command") + ":", this), 0, 0, Qt::AlignRight);
-	gridLayout->addWidget(commandLineEdit, 0, 1);
+	QHBoxLayout *layout = new QHBoxLayout(this);
+	layout->addWidget(commandLineEdit);
 
-	parent->layout()->addWidget(this);
+	dynamic_cast<NotifyGroupBox *>(parent)->addWidget(this);
 }
 
 ExecConfigurationWidget::~ExecConfigurationWidget()
@@ -77,8 +82,9 @@ void ExecConfigurationWidget::switchToEvent(const QString &event)
 		commandLineEdit->setText(config_file.readEntry("Exec Notify", event + "Cmd"));
 }
 
-
-ExecNotify::ExecNotify(QObject *parent, const char *name) : Notifier(parent, name)
+//TODO 0.6.6 icon:
+ExecNotify::ExecNotify(QObject *parent)
+	: Notifier(QT_TRANSLATE_NOOP("@default", "Exec"), icons_manager->loadIcon("MediaPlayer"), parent)
 {
 	kdebugf();
 
@@ -89,8 +95,7 @@ ExecNotify::ExecNotify(QObject *parent, const char *name) : Notifier(parent, nam
 	config_file.addVariable("Exec Notify", "StatusChanged/ToBusyCmd", "Xdialog --msgbox \"#{protocol} %u #{event}\" 10 100");
 	config_file.addVariable("Exec Notify", "StatusChanged/ToInvisibleCmd", "Xdialog --msgbox \"#{protocol} %u #{event}\" 10 100");
 	config_file.addVariable("Exec Notify", "StatusChanged/ToOfflineCmd", "Xdialog --msgbox \"#{protocol} %u #{event}\" 10 100");
-
-	notification_manager->registerNotifier(QT_TRANSLATE_NOOP("@default", "Exec"), this);
+	NotificationManager::instance()->registerNotifier(this);
 
 	kdebugf2();
 }
@@ -99,7 +104,7 @@ ExecNotify::~ExecNotify()
 {
 	kdebugf();
 
-	notification_manager->unregisterNotifier("Exec");
+	NotificationManager::instance()->unregisterNotifier(this);
 
 	kdebugf2();
 }
@@ -145,10 +150,10 @@ QStringList mySplit(const QChar &sep, const QString &str)
 			}
 			else
 			{
-				pos1 = str.find('\\', idx);
+				pos1 = str.indexOf('\\', idx);
 				if (pos1 == -1)
 					pos1 = strlength;
-				pos2 = str.find('"', idx);
+				pos2 = str.indexOf('"', idx);
 				if (pos2 == -1)
 					pos2 = strlength;
 				if (pos1 < pos2)
@@ -176,7 +181,7 @@ QStringList mySplit(const QChar &sep, const QString &str)
 				inString = true;
 			else
 			{
-				pos1 = str.find(sep, idx);
+				pos1 = str.indexOf(sep, idx);
 				if (pos1 == -1)
 					pos1 = strlength;
 				token.append(str.mid(idx, pos1 - idx));
@@ -191,30 +196,30 @@ QStringList mySplit(const QChar &sep, const QString &str)
 	kdebugf2();
 	return strlist;
 }
-
+//TODO 0.6.6:
 void ExecNotify::notify(Notification *notification)
-{
+{/*
 	QString syntax = config_file.readEntry("Exec Notify", notification->type() + "Cmd");
 	if (syntax.isEmpty())
 		return;
 	QStringList s = mySplit(' ', syntax);
 	QStringList result;
-	
-	const UserListElements &senders = notification->userListElements();
-	UserListElement ule;
 
-	if (senders.count())
-		ule = notification->userListElements()[0];
+	ContactList contacts = notification->contacts();
+	Contact contact;
+
+	if (contacts.count())
+		contact = notification->contacts[0];
 
 	QStringList sendersList;
-	foreach(const UserListElement &sender, senders)
+	foreach(Contact contact, contacts)
 		sendersList.append(sender.ID("Gadu"));
 	QString sendersString = sendersList.join(",");
 
 	foreach(QString it, s)
 		result.append(KaduParser::parse(it.replace("%ids", sendersString), ule, notification));
 
-	run(result, QString::null);
+	run(result, QString::null);*/
 }
 
 void ExecNotify::run(const QStringList &args, const QString &in)
@@ -233,9 +238,9 @@ void ExecNotify::run(const QStringList &args, const QString &in)
 	//p->launch(stdin.local8Bit());
 }
 
-NotifierConfigurationWidget *ExecNotify::createConfigurationWidget(QWidget *parent , char *name )
+NotifierConfigurationWidget *ExecNotify::createConfigurationWidget(QWidget *parent)
 {
-	return new ExecConfigurationWidget(parent, name);
+	return new ExecConfigurationWidget(parent);
 }
 
 ExecNotify *exec_notify = NULL;

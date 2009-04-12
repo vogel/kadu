@@ -12,6 +12,7 @@
 
 #include "config_file.h"
 #include "debug.h"
+#include "icons_manager.h"
 
 #include "window-notifier.h"
 
@@ -21,7 +22,7 @@
  */
 
 WindowNotifier::WindowNotifier(QObject *parent) :
-		Notifier("Window", parent)
+		Notifier("Window", icons_manager->loadIcon("Information"), parent)
 {
 	kdebugf();
 

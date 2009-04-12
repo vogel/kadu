@@ -18,11 +18,13 @@ class QListWidget;
 
 class NotifierConfigurationWidget;
 class NotifyGroupBox;
+class NotifyTreeWidget;
 
 class NotifyConfigurationUiHandler : public ConfigurationUiHandler
 {
 	Q_OBJECT
 
+public:
 	struct NotifierGuiItem
 	{
 		NotifierConfigurationWidget *ConfigurationWidget;
@@ -30,12 +32,15 @@ class NotifyConfigurationUiHandler : public ConfigurationUiHandler
 		QMap<QString, bool> Events;
 	};
 
+private:
 	QMap<Notifier *, NotifierGuiItem> NotifierGui;
 
 	QListWidget *allUsers;
 	QListWidget *notifiedUsers;
 	ConfigComboBox *notifications;
 	ConfigGroupBox *notificationsGroupBox;
+
+	NotifyTreeWidget *notifyTreeWidget;
 
 	QString CurrentEvent;
 
@@ -52,7 +57,7 @@ private slots:
 	void moveToNotifyList();
 	void moveToAllList();
 
-	void eventSwitched(int index);
+	void eventSwitched();
 	void notifierToggled(Notifier *notifier, bool toggled);
 
 protected:

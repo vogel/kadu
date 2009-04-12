@@ -8,16 +8,31 @@
  ***************************************************************************/
 
 #include <QtGui/QHBoxLayout>
+#include <QtGui/QCheckBox>
 
 #include "notify-group-box.h"
 
 NotifyGroupBox::NotifyGroupBox(Notifier *notificator, const QString &caption, QWidget *parent) :
-		QGroupBox(caption, parent), Notificator(notificator)
+		QWidget(parent), Notificator(notificator)
 {
-	setCheckable(true);
 	new QHBoxLayout(this);
 
-	connect(this, SIGNAL(toggled(bool)), this, SLOT(toggledSlot(bool)));
+	NotifierCheckBox = new QCheckBox(caption);
+	NotifierCheckBox->setIcon(notificator->icon());
+	layout()->addWidget(NotifierCheckBox);
+	connect(NotifierCheckBox, SIGNAL(toggled(bool)), this, SLOT(toggledSlot(bool)));
+}
+
+void NotifyGroupBox::setChecked(bool checked)
+{
+	NotifierCheckBox->setChecked(checked);
+}
+
+void NotifyGroupBox::addWidget(QWidget *widget)
+{
+	layout()->addWidget(widget);
+	widget->setEnabled(NotifierCheckBox->isChecked());
+	connect(NotifierCheckBox, SIGNAL(toggled(bool)), widget, SLOT(setEnabled(bool)));
 }
 
 void NotifyGroupBox::toggledSlot(bool toggle)

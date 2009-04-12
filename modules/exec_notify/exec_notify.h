@@ -11,10 +11,13 @@
 #define EXEC_NOTIFY_H
 
 #include <QtCore/QObject>
+#include <QtCore/QMap>
 #include <QtCore/QStringList>
 
-#include "../notify/notify.h"
-#include "../notify/notification.h"
+#include "gui/widgets/configuration/notifier-configuration-widget.h"
+
+#include "notify/notifier.h"
+
 
 class QLineEdit;
 
@@ -28,7 +31,7 @@ class ExecConfigurationWidget : public NotifierConfigurationWidget
 	QLineEdit *commandLineEdit;	
 
 public:
-	ExecConfigurationWidget(QWidget *parent = 0, char *name = 0);
+	ExecConfigurationWidget(QWidget *parent = 0);
 	virtual ~ExecConfigurationWidget();
 
 	virtual void loadNotifyConfigurations() {}
@@ -41,10 +44,10 @@ class ExecNotify : public Notifier
 	Q_OBJECT
 
 public:
-	ExecNotify(QObject *parent = 0, const char *name = 0);
+	ExecNotify(QObject *parent = 0);
 	~ExecNotify();
 
-	virtual NotifierConfigurationWidget *createConfigurationWidget(QWidget *parent = 0, char *name = 0);
+	virtual NotifierConfigurationWidget *createConfigurationWidget(QWidget *parent = 0);
 	virtual void notify(Notification *notification);
 
 	void copyConfiguration(const QString &fromEvent, const QString &toEvent) {}
