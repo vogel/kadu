@@ -23,15 +23,18 @@
 
 #define Property(type, name, capitalized_name) \
 	type name() const { return capitalized_name; } \
-	void set##capitalized_name(const type &name) { capitalized_name = name; }
+	void set##capitalized_name(const type &name) { capitalized_name = name; emitUpdated(); }
 
 class Account;
 class ContactAccountData;
 class Group;
 class XmlConfigFile;
 
-class KADUAPI ContactData : public QSharedData, public UuidStorableObject
+class KADUAPI ContactData : public QObject, public QSharedData, public UuidStorableObject
 {
+	Q_OBJECT
+	Q_DISABLE_COPY(ContactData)
+
 public:
 	enum ContactGender
 	{
@@ -44,6 +47,9 @@ private:
 	QUuid Uuid;
 	QMap<QString, QString> CustomData;
 	QMap<Account *, ContactAccountData *> AccountsData;
+
+	int BlockUpdatedSignalCount;
+	bool Updated;
 
 	QString Display;
 	QString FirstName;
@@ -63,6 +69,9 @@ private:
 	bool Blocked;
 	bool OfflineTo;
 
+	void dataUpdated();
+	void emitUpdated();
+
 public:
 	static ContactData * loadFromStorage(StoragePoint *contactStoragePoint);
 
@@ -81,6 +90,9 @@ public:
 
 	Account * prefferedAccount();
 	QList<Account *> accounts();
+
+	void blockUpdatedSignal();
+	void unblockUpdatedSignal();
 
 	QMap<QString, QString> & customData() { return CustomData; }
 
@@ -114,6 +126,9 @@ public:
 	Property(unsigned short, birthYear, BirthYear)
 	Property(ContactGender, gender, Gender)
 	Property(QList<Group *>, groups, Groups);
+
+signals:
+	void updated();
 
 };
 

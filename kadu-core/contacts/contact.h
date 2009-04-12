@@ -92,6 +92,8 @@ public:
 	Account * prefferedAccount() const;
 	QList<Account *> accounts() const;
 
+	ContactData * data() const { return Data.data(); }
+
 	void addAccountData(ContactAccountData *accountData);
 	void removeAccountData(Account *account) const;
 	ContactAccountData * accountData(Account *account) const;

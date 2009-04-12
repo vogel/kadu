@@ -25,7 +25,8 @@
 
 ContactData::ContactData(QUuid uuid) :
 		UuidStorableObject("Contact", ContactManager::instance()),
-		Uuid(uuid.isNull() ? QUuid::createUuid() : uuid), Ignored(false), Blocked(false), OfflineTo(false)
+		Uuid(uuid.isNull() ? QUuid::createUuid() : uuid), Ignored(false), Blocked(false), OfflineTo(false),
+		BlockUpdatedSignalCount(0), Updated(false)
 {
 }
 
@@ -219,7 +220,8 @@ bool ContactData::hasStoredAccountData(Account *account)
 	if (!sp || !sp->storage())
 		return false;
 
-	return !sp->storage()->getUuidNode(sp->point(), "ContactAccountData", account->uuid().toString(), XmlConfigFile::ModeFind).isNull();
+	return !sp->storage()->getUuidNode(sp->point(), "ContactAccountData",
+			account->uuid().toString(), XmlConfigFile::ModeFind).isNull();
 }
 
 QString ContactData::id(Account *account)
@@ -245,6 +247,35 @@ QList<Account *> ContactData::accounts()
 ;
 }
 
+void ContactData::blockUpdatedSignal()
+{
+	if (0 == BlockUpdatedSignalCount)
+		Updated = false;
+	BlockUpdatedSignalCount++;
+}
+
+void ContactData::unblockUpdatedSignal()
+{
+	BlockUpdatedSignalCount--;
+	if (0 == BlockUpdatedSignalCount)
+		emitUpdated();
+}
+
+void ContactData::dataUpdated()
+{
+	Updated = true;
+	emitUpdated();
+}
+
+void ContactData::emitUpdated()
+{
+	if (0 == BlockUpdatedSignalCount && Updated)
+	{
+		emit updated();
+		Updated = false;
+	}
+}
+
 // properties
 
 bool ContactData::isIgnored()
@@ -255,6 +286,7 @@ bool ContactData::isIgnored()
 bool ContactData::setIgnored(bool ignored)
 {
 	Ignored = ignored;
+	dataUpdated();
 	return Ignored; // XXX: nie wiem co to
 }
 
@@ -282,6 +314,8 @@ bool ContactData::setOfflineTo(Account *account, bool offlineTo)
 	else
 		OfflineTo = offlineTo;
 
+	dataUpdated();
+
 	return true; // XXX
 }
 
@@ -301,9 +335,11 @@ bool ContactData::showInAllGroup()
 void ContactData::addToGroup(Group *group)
 {
 	Groups.append(group);
-
+	dataUpdated();
 }
+
 void ContactData::removeFromGroup(Group *group)
 {
 	Groups.removeAll(group);
+	dataUpdated();
 }

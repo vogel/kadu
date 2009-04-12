@@ -40,6 +40,7 @@ class KADUAPI ContactManager : public QObject, public StorableObject
 	void importConfiguration(XmlConfigFile *configurationStorage);
 
 private slots:
+	void contactDataUpdated();
 	void groupRemoved(Group *group);
 
 protected:
@@ -65,11 +66,18 @@ public:
 	Contact byUuid(const QString &uuid);
 	Contact byDisplay(const QString &display);
 
+	void blockUpdatedSignal(Contact &contact);
+	void unblockUpdatedSignal(Contact &contact);
+
 signals:
 	void contactAboutToBeAdded(Contact &contact);
 	void contactAdded(Contact &contact);
 	void contactAboutToBeRemoved(Contact &contact);
 	void contactRemoved(Contact &contact);
+
+	void contactUpdated(Contact &contact);
+	void contactAccountAdded(Contact &contact, Account *account);
+	void contactAccountRemoved(Contact &contact, Account *account);
 
 };
 

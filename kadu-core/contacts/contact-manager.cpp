@@ -121,6 +121,7 @@ void ContactManager::addContact(Contact contact)
 
 	emit contactAboutToBeAdded(contact);
 	Contacts.append(contact);
+	connect(contact.data(), SIGNAL(updated()), this, SLOT(contactDataUpdated()));
 	emit contactAdded(contact);
 }
 
@@ -133,6 +134,7 @@ void ContactManager::removeContact(Contact contact)
 	ensureLoaded();
 
 	emit contactAboutToBeRemoved(contact);
+	disconnect(contact.data(), SIGNAL(updated()), this, SLOT(contactDataUpdated()));
 	Contacts.removeAll(contact);
 	contact.removeFromStorage();
 	emit contactRemoved(contact);
@@ -200,6 +202,16 @@ Contact ContactManager::byDisplay(const QString &display)
 	return Contact::null;
 }
 
+void ContactManager::blockUpdatedSignal(Contact &contact)
+{
+	contact.data()->blockUpdatedSignal();
+}
+
+void ContactManager::unblockUpdatedSignal(Contact &contact)
+{
+	contact.data()->unblockUpdatedSignal();
+}
+
 ContactList ContactManager::contacts()
 {
 	ensureLoaded();
@@ -217,6 +229,20 @@ ContactList ContactManager::contacts(Account *account, bool includeAnonymous)
 	ensureLoaded();
 
 	return result;
+}
+
+void ContactManager::contactDataUpdated()
+{
+	ContactData *cd = dynamic_cast<ContactData *>(sender());
+	if (!cd)
+		return;
+
+	foreach (Contact contact, Contacts)
+		if (cd == contact.data())
+		{
+			emit contactUpdated(contact);
+			return;
+		}
 }
 
 void ContactManager::groupRemoved(Group *group)

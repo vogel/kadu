@@ -6,12 +6,18 @@
  *   (at your option) any later version.                                   *
  *                                                                         *
  ***************************************************************************/
-#include "group-contact-filter.h"
-#include "contacts/contact.h"
 
-GroupContactFilter::GroupContactFilter(QObject *parent)
-	: AbstractContactFilter(parent), CurrentGroup(0), AllGroupShown(true)
+#include "contacts/contact.h"
+#include "contacts/contact-manager.h"
+
+#include "group-contact-filter.h"
+
+GroupContactFilter::GroupContactFilter(QObject *parent) :
+		AbstractContactFilter(parent), CurrentGroup(0), AllGroupShown(true)
 {
+	// TODO: 0.6.6 hack, it should go thought the model itself
+	connect(ContactManager::instance(), SIGNAL(contactUpdated(Contact &)),
+			this, SIGNAL(filterChanged()));
 }
 
 void GroupContactFilter::setGroup(Group *group)
@@ -25,7 +31,9 @@ void GroupContactFilter::setGroup(Group *group)
 
 bool GroupContactFilter::acceptContact(Contact contact)
 {
-	return (0 == CurrentGroup && (AllGroupShown && contact.showInAllGroup() || !AllGroupShown && contact.groups().isEmpty())) || contact.isInGroup(CurrentGroup);
+	return (0 == CurrentGroup) // use AllGroup or UngroupedGroup
+		? (AllGroupShown && contact.showInAllGroup() || !AllGroupShown && contact.groups().isEmpty())
+		: contact.isInGroup(CurrentGroup);
 }
 
 void GroupContactFilter::refresh()
