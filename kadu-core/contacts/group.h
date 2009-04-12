@@ -27,8 +27,10 @@ friend class GroupManager;
 	bool NotifyAboutStatusChanges;
 	bool ShowInAllGroup;
 	bool OfflineToGroup;
-	bool ShowIcon; 
+	bool ShowIcon;
 	bool ShowName;
+
+	void importConfiguration(const QString &name);
 
 protected:
 	virtual StoragePoint * createStoragePoint();
@@ -39,8 +41,7 @@ public:
 	Group(QUuid uuid = QUuid());
 	~Group();
 
-	void importConfiguration(const QString &name);
-	void loadConfiguration();
+	virtual void load();
 	virtual void store();
 
 	QUuid uuid() const { return Uuid; }

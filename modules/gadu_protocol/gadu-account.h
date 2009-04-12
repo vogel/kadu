@@ -33,7 +33,7 @@ public:
 	explicit GaduAccount(const QUuid &uuid = QUuid());
 	virtual ~GaduAccount();
 
-	virtual void loadConfiguration();
+	virtual void load();
 	virtual void store();
 
 	UinType uin() { return Uin; }

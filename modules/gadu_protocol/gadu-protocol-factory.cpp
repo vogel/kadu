@@ -43,7 +43,7 @@ Account * GaduProtocolFactory::loadAccount(StoragePoint *accountStoragePoint)
 	GaduAccount *account = new GaduAccount();
 	account->setStorage(accountStoragePoint);
 	Protocol *protocol = new GaduProtocol(account, this);
-	account->loadConfiguration();
+	account->load();
 
 	return account;
 }

@@ -60,7 +60,7 @@ void Account::contactRemoved(Contact contact)
 {
 }
 
-void Account::loadConfiguration()
+void Account::load()
 {
 	if (!isValidStorage())
 		return;

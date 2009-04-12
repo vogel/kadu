@@ -72,7 +72,7 @@ StoragePoint * FileTransfer::createStoragePoint()
 	return new StoragePoint(parent->storage(), contactNode);
 }
 
-void FileTransfer::loadConfiguration()
+void FileTransfer::load()
 {
 	if (!isValidStorage())
 		return;

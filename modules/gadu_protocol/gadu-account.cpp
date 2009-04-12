@@ -39,12 +39,12 @@ bool GaduAccount::setId(const QString &id)
 	return true;
 }
 
-void GaduAccount::loadConfiguration()
+void GaduAccount::load()
 {
 	if (!isValidStorage())
 		return;
 
-	Account::loadConfiguration();
+	Account::load();
 
 	AllowDcc = loadValue<bool>("AllowDcC");
 	DccIpDetect = loadValue<bool>("DccIpDetect");

@@ -52,7 +52,7 @@ Chat * Chat::loadFromStorage(StoragePoint *chatStoragePoint)
 	return account->protocol()->loadChatFromStorage(chatStoragePoint);
 }
 
-void Chat::loadConfiguration()
+void Chat::load()
 {
 	if (!isValidStorage())
 		return;

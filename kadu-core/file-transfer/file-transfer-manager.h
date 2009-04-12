@@ -33,8 +33,8 @@ class KADUAPI FileTransferManager : public QObject, public AccountsAwareObject, 
 
 	QList<FileTransfer *> FileTransfers;
 
-	void loadConfigurationForAccount(Account *account);
-	void storeConfigurationForAccount(Account *account);
+	void load(Account *account);
+	void store(Account *account);
 
 private slots:
 	void incomingFileTransfer(FileTransfer *fileTransfer);
@@ -48,6 +48,7 @@ protected:
 public:
 	static FileTransferManager * instance();
 
+	virtual void load();
 	virtual void store();
 
 	QList<FileTransfer *> fileTransfer() { return FileTransfers; }

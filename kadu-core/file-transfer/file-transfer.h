@@ -84,7 +84,7 @@ public:
 	FileTransfer(Account *account, Contact peer, FileTransferType transferType);
 	virtual ~FileTransfer();
 
-	virtual void loadConfiguration();
+	virtual void load();
 	virtual void store();
 
 	Account * account() { return CurrentAccount; }

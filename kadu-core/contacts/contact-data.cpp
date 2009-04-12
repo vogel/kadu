@@ -37,7 +37,7 @@ ContactData * ContactData::loadFromStorage(StoragePoint *contactStoragePoint)
 {
 	ContactData *result = new ContactData(QUuid());
 	result->setStorage(contactStoragePoint);
-	result->loadConfiguration();
+	result->load();
 
 	return result;
 }
@@ -89,7 +89,7 @@ void ContactData::importConfiguration(XmlConfigFile *configurationStorage, QDomE
 #define Property(name)\
 	set##name(configurationStorage->getTextNode(parent, #name));
 
-void ContactData::loadConfiguration()
+void ContactData::load()
 {
 	StoragePoint *sp = storage();
 	if (!sp)

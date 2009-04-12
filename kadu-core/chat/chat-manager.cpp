@@ -26,7 +26,7 @@ StoragePoint * ChatManager::createStoragePoint()
 	return new StoragePoint(xml_config_file, xml_config_file->getNode("Chats"));
 }
 
-void ChatManager::loadConfigurationForAccount(Account *account)
+void ChatManager::load(Account *account)
 {
 	if (!isValidStorage())
 		return;
@@ -61,12 +61,16 @@ void ChatManager::loadConfigurationForAccount(Account *account)
 	}
 }
 
-void ChatManager::storeConfigurationForAccount(Account *account)
+void ChatManager::store(Account *account)
 {
 	foreach (QList<Chat *> list, Chats.values())
 		foreach (Chat *chat, list)
 			if (chat->account() == account)
 				chat->store();
+}
+
+void ChatManager::load()
+{
 }
 
 void ChatManager::store()
@@ -106,10 +110,10 @@ QList<Chat *> ChatManager::chatsForAccount(Account *account)
 
 void ChatManager::accountRegistered(Account *account)
 {
-	loadConfigurationForAccount(account);
+	load(account);
 }
 
 void ChatManager::accountUnregistered(Account *account)
 {
-	storeConfigurationForAccount(account);
+	store(account);
 }

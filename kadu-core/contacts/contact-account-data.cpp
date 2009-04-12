@@ -19,7 +19,7 @@ ContactAccountData::ContactAccountData(Contact contact, Account *account, const 
 {
 	// TODO: 0.6.6 by loadFromStorage, please
 	if (id.isNull())
-		loadConfiguration();
+		load();
 }
 
 StoragePoint * ContactAccountData::createStoragePoint()
@@ -29,7 +29,7 @@ StoragePoint * ContactAccountData::createStoragePoint()
 		: 0;
 }
 
-void ContactAccountData::loadConfiguration()
+void ContactAccountData::load()
 {
 	StoragePoint *sp = storage();
 	if (!sp || !sp->storage())

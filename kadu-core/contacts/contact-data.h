@@ -70,7 +70,8 @@ public:
 	~ContactData();
 
 	void importConfiguration(XmlConfigFile *configurationStorage, QDomElement parent);
-	void loadConfiguration();
+
+	virtual void load();
 	virtual void store();
 
 	StoragePoint * storagePointForAccountData(Account *account);

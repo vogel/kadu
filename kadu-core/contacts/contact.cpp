@@ -77,7 +77,7 @@ void Contact::importConfiguration(XmlConfigFile *configurationStorage, QDomEleme
 
 void Contact::loadConfiguration()
 {
-	Data->loadConfiguration();
+	Data->load();
 }
 
 void Contact::store()

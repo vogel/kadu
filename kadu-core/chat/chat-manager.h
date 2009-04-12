@@ -34,6 +34,10 @@ class ChatManager : public QObject, public StorableObject, public AccountsAwareO
 	QMap<Account *, QList<Chat *> > Chats;
 
 	ChatManager() {}
+
+	void load(Account *account);
+	void store(Account *account);
+
 protected:
 	virtual StoragePoint * createStoragePoint();
 
@@ -45,8 +49,7 @@ public:
 
 	unsigned int count() { return Chats.count(); }
 
-	void loadConfigurationForAccount(Account *account);
-	void storeConfigurationForAccount(Account *account);
+	virtual void load();
 	virtual void store();
 
 	void addChat(Chat *chat);

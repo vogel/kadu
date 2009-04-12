@@ -43,7 +43,7 @@ StoragePoint * FileTransferManager::createStoragePoint()
 	return new StoragePoint(xml_config_file, xml_config_file->getNode("FileTransfersNew"));
 }
 
-void FileTransferManager::loadConfigurationForAccount(Account *account)
+void FileTransferManager::load(Account *account)
 {
 	if (!isValidStorage())
 		return;
@@ -80,7 +80,7 @@ void FileTransferManager::loadConfigurationForAccount(Account *account)
 
 void FileTransferManager::accountRegistered(Account *account)
 {
-	loadConfigurationForAccount(account);
+	load(account);
 
 	Protocol *protocol = account->protocol();
 	if (!protocol)
@@ -94,7 +94,11 @@ void FileTransferManager::accountRegistered(Account *account)
 			this, SLOT(incomingFileTransfer(FileTransfer *)));
 }
 
-void FileTransferManager::storeConfigurationForAccount(Account *account)
+void FileTransferManager::load()
+{
+}
+
+void FileTransferManager::store(Account *account)
 {
 	foreach (FileTransfer *fileTransfer, FileTransfers)
 		if (fileTransfer->account() == account)
@@ -109,7 +113,7 @@ void FileTransferManager::store()
 
 void FileTransferManager::accountUnregistered(Account *account)
 {
-	storeConfigurationForAccount(account);
+	store(account);
 
 	Protocol *protocol = account->protocol();
 	if (!protocol)

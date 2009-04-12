@@ -29,7 +29,7 @@ Group * Group::loadFromStorage(StoragePoint *groupStoragePoint)
 {
 	Group *group = new Group();
 	group->setStorage(groupStoragePoint);
-	group->loadConfiguration();
+	group->load();
 
 	return group;
 }
@@ -57,7 +57,7 @@ void Group::importConfiguration(const QString &name)
 	ShowName = true;
 }
 
-void Group::loadConfiguration()
+void Group::load()
 {
 	StoragePoint *sp = storage();
 	if (!sp)

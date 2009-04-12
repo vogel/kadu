@@ -36,7 +36,7 @@ public:
 	static Chat * loadFromStorage(StoragePoint *conferenceStoragePoint);
 	virtual ContactList currentContacts() { return ContactList(); }
 
-	virtual void loadConfiguration();
+	virtual void load();
 	virtual void store();
 
 };

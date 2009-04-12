@@ -47,7 +47,7 @@ public:
 	ContactAccountData(Contact contact, Account *account, const QString &id = QString::null);
 
 	virtual bool validateId() = 0;
-	virtual void loadConfiguration();
+	virtual void load();
 	virtual void store();
 
 	Account * account() { return ContactAccount; }

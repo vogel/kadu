@@ -137,20 +137,20 @@ Chat * Protocol::loadChatFromStorage(StoragePoint *chatStorage)
 	Account *account = AccountManager::instance()->byUuid(QUuid(storage->getTextNode(point, "Account")));
 
 	QString type = storage->getTextNode(point, "Type");
-	if (type == "Simple")
+	if ("Simple" == type)
 	{
 		Contact contact = ContactManager::instance()->byUuid(storage->getTextNode(point, "Contact"));
 		SimpleChat *result = new SimpleChat(account, contact, QUuid(storage->getTextNode(point, "Uuid")));
 		result->setStorage(chatStorage);
-		result->loadConfiguration();
+		result->load();
 		return result;
 	}
-	else if (type == "Conference")
+	else if ("Conference" == type)
 	{
 		ContactList contacts = ContactListConfigurationHelper::loadFromConfiguration(storage, point);
 		ConferenceChat *result = new ConferenceChat(account, contacts, QUuid(storage->getTextNode(point, "Uuid")));
 		result->setStorage(chatStorage);
-		result->loadConfiguration();
+		result->load();
 		return result;
 	}
 	else 

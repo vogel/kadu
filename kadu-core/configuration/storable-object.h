@@ -37,7 +37,7 @@ public:
 
 	StoragePoint * storage();
 
-	virtual void load(); // TODO: 0.6.6 make = 0
+	virtual void load() = 0;
 	virtual void store() = 0;
 	bool isLoaded() { return Loaded; }
 	void ensureLoaded();

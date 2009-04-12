@@ -44,7 +44,7 @@ public:
 	Account(const QUuid &uuid = QUuid());
 	virtual ~Account();
 
-	virtual void loadConfiguration();
+	virtual void load();
 	virtual void store();
 
 	virtual QUuid uuid() { return Uuid; }
