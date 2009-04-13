@@ -87,6 +87,7 @@ private:
 	void networkConnected();
 	void networkDisconnected(bool tryAgain);
 
+	int notifyTypeFromContact(Contact &contact);
 	void sendUserList();
 
 	void socketContactStatusChanged(unsigned int uin, unsigned int status, const QString &description,
@@ -104,6 +105,7 @@ private slots:
 	void contactRemoved(Contact &contact);
 	void contactAccountDataAdded(Contact &contact, Account *contactAccount);
 	void contactAccountDataAboutToBeRemoved(Contact &contact, Account *contactAccount);
+	void contactAccountDataIdChanged(Contact &contact, Account *contactAccount, const QString &oldId);
 
 protected:
 	virtual void changeStatus();

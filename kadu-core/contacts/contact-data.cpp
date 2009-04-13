@@ -349,3 +349,10 @@ void ContactData::removeFromGroup(Group *group)
 	Groups.removeAll(group);
 	dataUpdated();
 }
+
+void ContactData::accountContactDataIdChanged(const QString &id)
+{
+	ContactAccountData *cad = dynamic_cast<ContactAccountData *>(sender());
+	if (cad && cad->account())
+		emit accountDataIdChanged(cad->account(), id);
+}

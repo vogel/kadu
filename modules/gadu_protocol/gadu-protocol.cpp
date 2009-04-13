@@ -598,6 +598,15 @@ void GaduProtocol::networkDisconnected(bool tryAgain)
 		setStatus(Status::Offline);
 }
 
+int GaduProtocol::notifyTypeFromContact(Contact &contact)
+{
+	return contact.isOfflineTo(account())
+		? GG_USER_OFFLINE
+		: contact.isBlocked(account())
+			? GG_USER_BLOCKED
+			: GG_USER_NORMAL;
+}
+
 void GaduProtocol::sendUserList()
 {
 	kdebugf();
@@ -622,11 +631,7 @@ void GaduProtocol::sendUserList()
 	foreach (Contact contact, contacts)
 	{
 		uins[i] = uin(contact);
-		types[i] = contact.isOfflineTo(account())
-			? GG_USER_OFFLINE
-			: contact.isBlocked(account())
-				? GG_USER_BLOCKED
-				: GG_USER_NORMAL;
+		types[i] = notifyTypeFromContact(contact);
 		++i;
 	}
 
@@ -838,11 +843,7 @@ void GaduProtocol::contactAdded(Contact &contact)
 	if (!gcad)
 		return;
 
-	gg_add_notify_ex(GaduSession, gcad->uin(), contact.isOfflineTo(account())
-			? GG_USER_OFFLINE
-			: contact.isBlocked(account())
-				? GG_USER_BLOCKED
-				: GG_USER_NORMAL);
+	gg_add_notify_ex(GaduSession, gcad->uin(), notifyTypeFromContact(contact));
 }
 
 void GaduProtocol::contactRemoved(Contact &contact)
@@ -872,4 +873,19 @@ void GaduProtocol::contactAccountDataAboutToBeRemoved(Contact &contact, Account 
 		return;
 
 	contactRemoved(contact);
+}
+
+void GaduProtocol::contactAccountDataIdChanged(Contact &contact, Account *contactAccount, const QString &oldId)
+{
+	if (contactAccount != account())
+		return;
+
+	bool ok;
+	UinType oldUin = oldId.toInt(&ok);
+	if (ok)
+		gg_remove_notify(GaduSession, oldUin);
+
+	UinType newUin = uin(contact);
+	if (newUin)
+		gg_add_notify_ex(GaduSession, newUin, notifyTypeFromContact(contact));
 }

@@ -141,14 +141,14 @@ void ContactDataWindow::createButtons(QLayout *layout)
 	QPushButton *cancelButton = new QPushButton(icons_manager->loadIcon("CloseWindowButton"), tr("Cancel"), this);
 	buttons->addButton(cancelButton, QDialogButtonBox::RejectRole);
 
-	connect(okButton, SIGNAL(clicked(bool)), this, SLOT(updateAndClose()));
-	connect(applyButton, SIGNAL(clicked(bool)), this, SLOT(update()));
+	connect(okButton, SIGNAL(clicked(bool)), this, SLOT(updateContactAndClose()));
+	connect(applyButton, SIGNAL(clicked(bool)), this, SLOT(updateContact()));
 	connect(cancelButton, SIGNAL(clicked(bool)), this, SLOT(close()));
 
 	layout->addWidget(buttons);
 }
 
-void ContactDataWindow::update()
+void ContactDataWindow::updateContact()
 {
 	ContactManager::instance()->blockUpdatedSignal(CurrentContact);
 
@@ -158,7 +158,7 @@ void ContactDataWindow::update()
 	ContactManager::instance()->unblockUpdatedSignal(CurrentContact);
 }
 
-void ContactDataWindow::updateAndClose()
+void ContactDataWindow::updateContactAndClose()
 {
 	update();
 	close();

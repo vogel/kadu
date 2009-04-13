@@ -46,6 +46,7 @@ private slots:
 	void contactAccountDataAdded(Account *account);
 	void contactAccountDataAboutToBeRemoved(Account *account);
 	void contactAccountDataRemoved(Account *account);
+	void contactAccountDataIdChanged(Account *account, const QString &oldId);
 
 	void groupRemoved(Group *group);
 
@@ -86,6 +87,7 @@ signals:
 	void contactAccountDataAdded(Contact &contact, Account *account);
 	void contactAccountDataAboutToBeRemoved(Contact &contact, Account *account);
 	void contactAccountDataRemoved(Contact &contact, Account *account);
+	void contactAccountIdChanged(Contact &contact, Account *account, const QString &oldId);
 
 };
 

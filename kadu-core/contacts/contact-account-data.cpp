@@ -47,6 +47,17 @@ void ContactAccountData::store()
 	storeValue("Id", Id);
 }
 
+void ContactAccountData::setId(const QString &newId)
+{
+	if (Id == newId)
+		return;
+
+	QString oldId = Id;
+	Id = newId;
+
+	emit idChanged(oldId);
+}
+
 bool ContactAccountData::isValid()
 {
 	ensureLoaded();

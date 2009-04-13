@@ -72,6 +72,9 @@ private:
 	void dataUpdated();
 	void emitUpdated();
 
+private slots:
+	void accountContactDataIdChanged(const QString &id);
+
 public:
 	static ContactData * loadFromStorage(StoragePoint *contactStoragePoint);
 
@@ -132,6 +135,8 @@ signals:
 	void accountDataAdded(Account *account);
 	void accountDataAboutToBeRemoved(Account *account);
 	void accountDataRemoved(Account *account);
+	void accountDataIdChanged(Account *account, const QString &oldId);
+
 	void updated();
 
 };

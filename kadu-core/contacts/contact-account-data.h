@@ -52,6 +52,7 @@ public:
 
 	Account * account() { return ContactAccount; }
 	QString id() { return Id; }
+	void setId(const QString &newId);
 
 	bool isValid();
 
@@ -82,6 +83,9 @@ public:
 
 public slots:
 	void setDNSName(const QString &ident, const QString &dnsName) { DnsName = dnsName; }
+
+signals:
+	void idChanged(const QString &id);
 
 };
 

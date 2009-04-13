@@ -57,8 +57,8 @@ class KADUAPI ContactDataWindow : public QWidget
 	void keyPressEvent(QKeyEvent *);
 
 private slots:
-	void update();
-	void updateAndClose();
+	void updateContact();
+	void updateContactAndClose();
 
 public:
 	ContactDataWindow(Contact contact, QWidget *parent = 0);

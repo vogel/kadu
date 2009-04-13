@@ -132,6 +132,8 @@ void ContactManager::addContact(Contact contact)
 			this, SLOT(contactAccountDataAboutToBeRemoved(Account *)));
 	connect(contact.data(), SIGNAL(accountDataRemoved(Account *)),
 			this, SLOT(contactAccountDataRemoved(Account *)));
+	connect(contact.data(), SIGNAL(accountDataIdChanged(Account *, const QString &)),
+			this, SLOT(contactAccountDataIdChanged(Account *, const QString &)));
 }
 
 void ContactManager::removeContact(Contact contact)
@@ -151,6 +153,8 @@ void ContactManager::removeContact(Contact contact)
 			this, SLOT(contactAccountDataAboutToBeRemoved(Account *)));
 	disconnect(contact.data(), SIGNAL(accountDataRemoved(Account *)),
 			this, SLOT(contactAccountDataRemoved(Account *)));
+	disconnect(contact.data(), SIGNAL(accountDataIdChanged(Account *, const QString &)),
+			this, SLOT(contactAccountDataIdChanged(Account *, const QString &)));
 
 	emit contactAboutToBeRemoved(contact);
 	Contacts.removeAll(contact);
@@ -311,6 +315,17 @@ void ContactManager::contactAccountDataRemoved(Account *account)
 	Contact contact = byContactData(cd);
 	if (!contact.isNull())
 		emit contactAccountDataRemoved(contact, account);
+}
+
+void ContactManager::contactAccountDataIdChanged(Account *account, const QString &oldId)
+{
+	ContactData *cd = dynamic_cast<ContactData *>(sender());
+	if (!cd)
+		return;
+
+	Contact contact = byContactData(cd);
+	if (!contact.isNull())
+		emit contactAccountIdChanged(contact, account, oldId);
 }
 
 void ContactManager::groupRemoved(Group *group)
