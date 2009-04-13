@@ -18,12 +18,15 @@
 #include "icons_manager.h"
 #include "kadu_parser.h"
 #include "main_configuration_window.h"
-#include "kadu_parser.h"
+
+#include "contacts/contact.h"
+#include "contacts/contact-list.h"
 
 #include "gui/widgets/configuration/notify-group-box.h"
 
 #include "misc/misc.h"
 
+#include "notify/account-notification.h"
 #include "notify/notification.h"
 #include "notify/notification-manager.h"
 
@@ -196,30 +199,37 @@ QStringList mySplit(const QChar &sep, const QString &str)
 	kdebugf2();
 	return strlist;
 }
-//TODO 0.6.6:
+
 void ExecNotify::notify(Notification *notification)
-{/*
+{
 	QString syntax = config_file.readEntry("Exec Notify", notification->type() + "Cmd");
 	if (syntax.isEmpty())
 		return;
 	QStringList s = mySplit(' ', syntax);
 	QStringList result;
 
-	ContactList contacts = notification->contacts();
-	Contact contact;
+	AccountNotification *accountNotification = dynamic_cast<AccountNotification *>(notification);
+	if (accountNotification)
+	{
+		ContactList contacts = notification->contacts();
+		Contact contact;
 
-	if (contacts.count())
-		contact = notification->contacts[0];
+		if (contacts.count())
+			contact = contacts[0];
 
-	QStringList sendersList;
-	foreach(Contact contact, contacts)
-		sendersList.append(sender.ID("Gadu"));
-	QString sendersString = sendersList.join(",");
+		QStringList sendersList;
+		foreach(Contact contact, contacts)
+			sendersList.append(contact.id(accountNotification->account()));
+		QString sendersString = sendersList.join(",");
 
-	foreach(QString it, s)
-		result.append(KaduParser::parse(it.replace("%ids", sendersString), ule, notification));
 
-	run(result, QString::null);*/
+		foreach(QString it, s)
+			result.append(KaduParser::parse(it.replace("%ids", sendersString), accountNotification->account(), contact, notification));
+		run(result, QString::null);
+	}
+	else
+		run(s, QString::null);
+
 }
 
 void ExecNotify::run(const QStringList &args, const QString &in)
