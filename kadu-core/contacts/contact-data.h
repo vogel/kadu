@@ -23,7 +23,7 @@
 
 #define Property(type, name, capitalized_name) \
 	type name() const { return capitalized_name; } \
-	void set##capitalized_name(const type &name) { capitalized_name = name; emitUpdated(); }
+	void set##capitalized_name(const type &name) { capitalized_name = name; dataUpdated(); }
 
 class Account;
 class ContactAccountData;

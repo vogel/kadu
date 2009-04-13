@@ -26,6 +26,7 @@
 #include "accounts/account-manager.h"
 
 #include "contacts/contact-account-data.h"
+#include "contacts/contact-manager.h"
 #include "contacts/group.h"
 #include "contacts/group-manager.h"
 
@@ -50,7 +51,7 @@ ContactDataWindow::ContactDataWindow(Contact contact, QWidget *parent) :
 	kdebugf();
 
 	setAttribute(Qt::WA_DeleteOnClose);
-	setWindowModality(Qt::WindowModal);
+	// po co? setWindowModality(Qt::WindowModal);
 
 	createGui();
 
@@ -149,8 +150,12 @@ void ContactDataWindow::createButtons(QLayout *layout)
 
 void ContactDataWindow::update()
 {
+	ContactManager::instance()->blockUpdatedSignal(CurrentContact);
+
 	foreach (ConfigurationWidget *configurationWidget, ConfigurationWidgets)
 		configurationWidget->saveConfiguration();
+
+	ContactManager::instance()->unblockUpdatedSignal(CurrentContact);
 }
 
 void ContactDataWindow::updateAndClose()
