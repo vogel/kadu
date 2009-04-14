@@ -35,7 +35,7 @@ GroupTabBar::GroupTabBar(QWidget *parent)
 	setSizePolicy(QSizePolicy(QSizePolicy::Minimum, QSizePolicy::Expanding));
  	setAcceptDrops(true);
 	setDrawBase(false);
-	setMovable(true);
+//	setMovable(true);
 
 	setShape(QTabBar::RoundedWest);
 	addTab(icons_manager->loadIcon("PersonalInfo"), tr("All"));
