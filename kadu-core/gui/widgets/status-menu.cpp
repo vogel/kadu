@@ -131,6 +131,7 @@ void StatusMenu::changeStatus()
 	{
 		case 0:
 			status.setType(Status::Online);
+			status.setDescription("");
 			Core::instance()->setStatus(status);
 			break;
 		case 1:
@@ -140,6 +141,7 @@ void StatusMenu::changeStatus()
 			break;
 		case 2:
 			status.setType(Status::Busy);
+			status.setDescription("");
 			Core::instance()->setStatus(status);
 			break;
 		case 3:
@@ -149,6 +151,7 @@ void StatusMenu::changeStatus()
 			break;
 		case 4:
 			status.setType(Status::Invisible);
+			status.setDescription("");
 			Core::instance()->setStatus(status);
 			break;
 		case 5:
@@ -158,6 +161,7 @@ void StatusMenu::changeStatus()
 			break;
 		case 6:
 			status.setType(Status::Offline);
+			status.setDescription("");
 			Core::instance()->setStatus(status);
 			break;
 		case 7:
