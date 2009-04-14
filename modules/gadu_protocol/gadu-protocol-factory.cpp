@@ -48,9 +48,9 @@ Account * GaduProtocolFactory::loadAccount(StoragePoint *accountStoragePoint)
 	return account;
 }
 
-ContactAccountData * GaduProtocolFactory::newContactAccountData(Contact contact, Account *account, const QString &id)
+ContactAccountData * GaduProtocolFactory::newContactAccountData(Contact contact, Account *account, const QString &id, bool isAnonymous)
 {
-	return new GaduContactAccountData(contact, account, id);
+	return new GaduContactAccountData(contact, account, id, isAnonymous);
 }
 
 ContactAccountData * GaduProtocolFactory::loadContactAccountData(Contact contact, Account *account)

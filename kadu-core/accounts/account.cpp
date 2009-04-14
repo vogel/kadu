@@ -101,9 +101,8 @@ Contact Account::getContactById(const QString& id)
 Contact Account::createAnonymous(const QString& id)
 {
 	Contact result(Contact::TypeAnonymous);
-
 	ProtocolFactory *protocolFactory = ProtocolHandler->protocolFactory();
-	ContactAccountData *contactAccountData = protocolFactory->newContactAccountData(result, this, id);
+	ContactAccountData *contactAccountData = protocolFactory->newContactAccountData(result, this, id, true);
 	if (!contactAccountData->isValid())
 	{
 		delete contactAccountData;

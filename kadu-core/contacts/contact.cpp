@@ -7,6 +7,7 @@
  *                                                                         *
  ***************************************************************************/
 
+#include "accounts/account.h"
 #include "xml_config_file.h"
 
 #include "contact.h"
@@ -82,7 +83,9 @@ void Contact::loadConfiguration()
 
 void Contact::store()
 {
-	Data->store();
+	//TODO 0.6.6: save anonymousContacts with messages
+	if (!isNull() && !isAnonymous())
+		Data->store();
 }
 
 void Contact::removeFromStorage()
@@ -244,9 +247,11 @@ QString Contact::display() const
 {
 	return isNull()
 		? QString::null
-		: Data->display().isEmpty()
-			? Data->nickName().isEmpty()
-				? Data->firstName()
-				: Data->nickName()
-			: Data->display();
+		: isAnonymous() && prefferedAccount()
+			? (prefferedAccount()->name() + ":" + id(prefferedAccount()))
+			: Data->display().isEmpty()
+				? Data->nickName().isEmpty()
+					? Data->firstName()
+					: Data->nickName()
+				: Data->display();
 }

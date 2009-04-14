@@ -71,7 +71,7 @@ public:
 	static Contact null;
 
 	bool isNull() const { return TypeNull == Type || 0 == Data; }
-	bool isAnonymous() const { return TypeNull == TypeAnonymous; }
+	bool isAnonymous() const { return TypeAnonymous == Type; }
 
 	Contact & operator = (const Contact &copy);
 	bool operator == (const Contact &compare) const;

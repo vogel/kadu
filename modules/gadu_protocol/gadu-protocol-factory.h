@@ -29,7 +29,7 @@ public:
 
 	virtual Account * newAccount();
 	virtual Account * loadAccount(StoragePoint *accountStoragePoint);
-	virtual ContactAccountData * newContactAccountData(Contact contact, Account *account, const QString &id);
+	virtual ContactAccountData * newContactAccountData(Contact contact, Account *account, const QString &id, bool isAnonymous = false);
 	virtual ContactAccountData * loadContactAccountData(Contact contact, Account *account);
 	virtual ContactAccountDataWidget * newContactAccountDataWidget(ContactAccountData *contactAccountData, QWidget *parent = 0);
 	virtual GaduConfigurationDialog * newConfigurationDialog(Account *, QWidget *);
