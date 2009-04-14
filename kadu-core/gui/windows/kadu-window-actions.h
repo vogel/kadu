@@ -25,7 +25,7 @@ class KaduWindowActions : QObject
 
 	friend class KaduWindow;
 	ActionDescription *Configuration;
-	ActionDescription *YourAccounts;
+	ActionDescription *ShowYourAccounts;
 	ActionDescription *HideKadu;
 	ActionDescription *ExitKadu;
 	ActionDescription *AddUser;

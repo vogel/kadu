@@ -29,7 +29,9 @@
 #include "gui/widgets/status-menu.h"
 #include "gui/windows/contact-data-window.h"
 #include "gui/windows/kadu-window.h"
+#include "gui/windows/your-accounts.h"
 #include "misc/misc.h"
+
 #include "about.h"
 #include "action.h"
 #include "config_file.h"
@@ -248,7 +250,7 @@ KaduWindowActions::KaduWindowActions(QObject *parent) : QObject(parent)
 	);
 	Configuration->setShortcut("kadu_configure", Qt::ApplicationShortcut);
 
-	YourAccounts = new ActionDescription(this,
+	ShowYourAccounts = new ActionDescription(this,
 		ActionDescription::TypeMainMenu, "yourAccountsAction",
 		this, SLOT(yourAccountsActionActivated(QAction *, bool)),
 		"PersonalInfo", tr("Your accounts")
@@ -553,8 +555,7 @@ void KaduWindowActions::configurationActionActivated(QAction *sender, bool toggl
 
 void KaduWindowActions::yourAccountsActionActivated(QAction *sender, bool toggled)
 {
-	if (AccountManager::instance()->defaultAccount() && AccountManager::instance()->defaultAccount()->protocol())
-		(new PersonalInfoDialog(AccountManager::instance()->defaultAccount()->protocol(), dynamic_cast<QWidget *>(parent())))->show();
+	(new YourAccounts())->show();
 }
 
 void KaduWindowActions::hideKaduActionActivated(QAction *sender, bool toggled)

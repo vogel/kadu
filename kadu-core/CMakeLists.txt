@@ -117,6 +117,7 @@ set (kadu_SRCS
 	gui/windows/open-chat-with/open-chat-with-contact-list-runner.cpp
 	gui/windows/open-chat-with/open-chat-with-runner-manager.cpp
 	gui/windows/window-notifier-window.cpp
+	gui/windows/your-accounts.cpp
 
 	misc/choose-description.cpp
 	misc/coding-conversion.cpp
@@ -276,6 +277,7 @@ set (kadu_MOC_SRCS
 	gui/windows/open-chat-with/open-chat-with-contact-list-runner.h
 	gui/windows/open-chat-with/open-chat-with-runner-manager.h
 	gui/windows/window-notifier-window.h
+	gui/windows/your-accounts.h
 
 	misc/choose-description.h
 	misc/token-dialog.h

@@ -136,7 +136,7 @@ void KaduWindow::createKaduMenu()
 	connect(RecentChatsMenu, SIGNAL(triggered(QAction *)), this, SLOT(openRecentChats(QAction *)));
 
 	insertMenuActionDescription(Actions->Configuration, MenuKadu);
-	insertMenuActionDescription(Actions->YourAccounts, MenuKadu);
+	insertMenuActionDescription(Actions->ShowYourAccounts, MenuKadu);
 
 	KaduMenu->addSeparator();
 	KaduMenu->addMenu(RecentChatsMenu);
