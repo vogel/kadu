@@ -68,17 +68,15 @@ NotifyTreeWidget::NotifyTreeWidget(QMap<Notifier *, NotifyConfigurationUiHandler
 	QStyleOptionViewItem iconOption;
 	iconOption.initFrom(this);
 	IconWidth = iconOption.fontMetrics.height() - 2 ; //1px margin top & bottom
-	StateColumnDefaultWidth = header()->sectionSize(0);
+	StateColumnDefaultWidth = header()->sectionSizeHint(0);
 
 	setIconSize(QSize(IconWidth, IconWidth));
 
 	int columnWidth = (IconWidth + 4) * NotificationManager::instance()->notifiers().count();
 
-	header()->setResizeMode( 0, QHeaderView::Fixed );
-	if (columnWidth > StateColumnDefaultWidth)
-		header()->resizeSection( 0, columnWidth);
-
-	header()->setResizeMode( 1, QHeaderView::ResizeToContents );
+	header()->setResizeMode(0, QHeaderView::Fixed);
+	header()->resizeSection(0, columnWidth > StateColumnDefaultWidth ? columnWidth : StateColumnDefaultWidth);
+	header()->setResizeMode(1, QHeaderView::ResizeToContents);
 
 	refresh(notifierGui);
 }
@@ -92,7 +90,7 @@ void NotifyTreeWidget::refresh(QMap<Notifier *, NotifyConfigurationUiHandler::No
 
 	int columnWidth = (IconWidth + 4) * NotificationManager::instance()->notifiers().count();
 	if (columnWidth > StateColumnDefaultWidth)
-		header()->resizeSection( 0, columnWidth);
+		header()->resizeSection(0, columnWidth);
 
 	QStringList notifiersNames;
 
