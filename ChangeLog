@@ -2,6 +2,16 @@ Teksty w nawiasach na koñcu wpisu mówi± o tym, kto dokona³ poprawki lub rozbudow
 Postaæ (x/y) oznacza, ¿e x jest pomys³odawc± lub podes³a³ patcha, a zrobi³ to kto¶ oznaczony przez y.
 Je¶li jest w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 
++++ wersja 0.6.5.2 (15.04.2009)
+* rozwi±zany problem z niepoprawnym has³em podczas logowania do sieci (dorr)
+* encryption przepisany tak by korzysta³ z QCA2 (tomek-k)
+* poprawki zwi±zane z kompatybilno¶ci± z Qt 4.5 (dorr)
+* dodane modu³y do autodownloadu: phonon_sound, gg_avatars, nextinfo (dorr)
+* usuniêty potencjalny memory leak (White Eagle)
+* dodana obs³uga parametrów z linii poleceñ: --version, --help, --help-qt, --help-all (dorr)
+* nastêpuj±ce modu³y sta³y siê wieloplatformowe: autoaway, auto_hide, pcspeaker
+* poprawki ró¿nych drobnych b³êdów
+
 +++ wersja 0.6.5.1 (14.01.2009)
 * poprawiony problem z zapisywaniem rozmiaru okien przy korzystaniu z twin view (dorr)
 * poprawki zwi±zane z wyborem zestawów d¼wiêkowych (dorr, White Eagle)
