@@ -56,8 +56,7 @@ ConfigurationWidget::ConfigurationWidget(ConfigurationWindowDataManager *dataMan
 	left_layout->setSpacing(0);
 
 	container = new QWidget;
-	QHBoxLayout *container_layout = new QHBoxLayout(container);
-	Q_UNUSED(container_layout)
+	new QHBoxLayout(container);
 
 	sectionsListWidget = new QListWidget(this);
 	sectionsListWidget->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Expanding);

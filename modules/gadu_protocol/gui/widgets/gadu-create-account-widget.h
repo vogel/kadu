@@ -1,4 +1,4 @@
-/***************************************************************************
+ /***************************************************************************
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -7,37 +7,27 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef YOUR_ACCOUNTS
-#define YOUR_ACCOUNTS
+#ifndef GADU_CREATE_ACCOUNT_WIDGET_H
+#define GADU_CREATE_ACCOUNT_WIDGET_H
 
 #include <QtGui/QWidget>
 
-#include "exports.h"
-
-class QComboBox;
-class QHBoxLayout;
-class QVBoxLayout;
-
-KADUAPI class YourAccounts : public QWidget
+class GaduCreateAccountWidget : public QWidget
 {
 	Q_OBJECT
 
-	QHBoxLayout *ContentLayout;
-	QComboBox *Protocols;
-	QWidget *NewAccountContainer;
-	QVBoxLayout *MainNewAccountLayout;
-	QWidget *CurrentNewAccountWidget;
+	QList<QWidget *> HaveNumberWidgets;
+	QList<QWidget *> DontHaveNumberWidgets;
 
 	void createGui();
-	void createNewAccountWidget();
 
 private slots:
-	void protocolChanged(int protocolIndex);
+	void haveNumberChanged(bool haveNumber);
 
 public:
-	explicit YourAccounts(QWidget *parent = 0);
-	virtual ~YourAccounts();
+	explicit GaduCreateAccountWidget(QWidget *parent = 0);
+	virtual ~GaduCreateAccountWidget();
 
 };
 
-#endif // YOUR_ACCOUNT
+#endif // GADU_CREATE_ACCOUNT_WIDGET_H

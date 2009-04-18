@@ -66,11 +66,19 @@ bool ProtocolsManager::hasProtocolFactory(const QString &name)
 	return false;
 }
 
-ProtocolFactory * ProtocolsManager::protocolFactory(const QString &name)
+ProtocolFactory * ProtocolsManager::byName(const QString &name)
 {
 	foreach (ProtocolFactory *factory, Factories)
 		if (factory->name() == name)
 			return factory;
 
 	return 0;
+}
+
+ProtocolFactory * ProtocolsManager::byIndex(int index)
+{
+	if (index < 0 || index >= Factories.count())
+		return 0;
+
+	return Factories[0];
 }

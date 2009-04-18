@@ -5,6 +5,8 @@ set (SOURCES
 
 	file-transfer/gadu-file-transfer.cpp
 
+	gui/widgets/gadu-create-account-widget.cpp
+
 	helpers/gadu-formatter.cpp
 	helpers/gadu-importer.cpp
 	helpers/gadu-list-helper.cpp
@@ -44,9 +46,11 @@ set (MOC_SOURCES
 	dcc/dcc-manager.h
 	dcc/dcc-socket-notifiers.h
 
-	helpers/gadu-importer.h
-
 	file-transfer/gadu-file-transfer.h
+
+	gui/widgets/gadu-create-account-widget.h
+
+	helpers/gadu-importer.h
 	
 	server/gadu-server-connector.h
 	server/gadu-server-change-password.h

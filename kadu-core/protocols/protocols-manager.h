@@ -28,7 +28,11 @@ public:
 
 	const QList<ProtocolFactory *> protocolFactories() { return Factories; }
 	bool hasProtocolFactory(const QString &name);
-	ProtocolFactory * protocolFactory(const QString &name);
+
+	ProtocolFactory * byName(const QString &name);
+	ProtocolFactory * byIndex(int index);
+
+	int indexOf(ProtocolFactory *protocolFactory) { return Factories.indexOf(protocolFactory); };
 
 signals:
 	void protocolFactoryAboutToBeRegistered(ProtocolFactory *factory);

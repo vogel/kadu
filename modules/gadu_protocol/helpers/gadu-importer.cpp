@@ -42,7 +42,7 @@ void GaduImporter::importAccounts()
 		return;
 
 	GaduAccount *defaultGaduGadu = dynamic_cast<GaduAccount *>(
-		ProtocolsManager::instance()->protocolFactory("gadu")->newAccount());
+		ProtocolsManager::instance()->byName("gadu")->newAccount());
 
 	defaultGaduGadu->setName("Gadu-Gadu");
 	defaultGaduGadu->setId(config_file.readEntry("General", "UIN"));

@@ -125,7 +125,7 @@ void ManageAccounts::addAccount()
 	if (protocolName.isEmpty())
 		return;
 
-	ProtocolFactory *protocolFactory = ProtocolsManager::instance()->protocolFactory(protocolName);
+	ProtocolFactory *protocolFactory = ProtocolsManager::instance()->byName(protocolName);
 	if (0 == protocolFactory)
 		return;
 

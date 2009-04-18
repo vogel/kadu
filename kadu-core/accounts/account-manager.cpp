@@ -91,7 +91,7 @@ void AccountManager::load(ProtocolFactory *factory)
 		if (accountProtocolName.isEmpty() || accountProtocolName != protocolName)
 			continue;
 
-		ProtocolFactory *protocolFactory = ProtocolsManager::instance()->protocolFactory(protocolName);
+		ProtocolFactory *protocolFactory = ProtocolsManager::instance()->byName(protocolName);
 		if (!protocolFactory)
 			continue;
 

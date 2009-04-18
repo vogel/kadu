@@ -24,13 +24,10 @@ class QModelIndex;
 const int KaduRoles = 1000;
 
 const int ContactRoles = KaduRoles + 0;
-const int ContactRole = ContactRoles;
-
-const int DescriptionRoles = KaduRoles + 1;
-const int DescriptionRole = DescriptionRoles;
-
-const int StatusRoles = KaduRoles + 2;
-const int StatusRole = StatusRoles;
+const int ContactRole = KaduRoles + 1;
+const int DescriptionRole = KaduRoles + 2;
+const int StatusRole = KaduRoles + 3;
+const int ProtocolRole = KaduRoles + 4;
 
 class ContactsModelBase : public QAbstractListModel, public AbstractContactsModel, public AccountsAwareObject
 {
