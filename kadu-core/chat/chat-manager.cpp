@@ -7,6 +7,8 @@
  *                                                                         *
  ***************************************************************************/
 
+#include "configuration/configuration-manager.h"
+#include "core/core.h"
 #include "chat.h"
 #include "chat-manager.h"
 #include "simple-chat.h"
@@ -24,6 +26,12 @@ ChatManager *  ChatManager::instance()
 ChatManager::ChatManager() :
 		StorableObject(true)
 {
+	Core::instance()->configuration()->registerStorableObject(this);
+}
+
+ChatManager::~ChatManager()
+{
+	Core::instance()->configuration()->unregisterStorableObject(this);
 }
 
 StoragePoint * ChatManager::createStoragePoint()
@@ -37,12 +45,12 @@ void ChatManager::load(Account *account)
 		return;
 
 	XmlConfigFile *configurationStorage = storage()->storage();
-	QDomElement transfersNewNode = storage()->point();
+	QDomElement chatsNode = storage()->point();
 
-	if (transfersNewNode.isNull())
+	if (chatsNode.isNull())
 		return;
 
-	QDomNodeList chatNodes = transfersNewNode.elementsByTagName("Chat");
+	QDomNodeList chatNodes = chatsNode.elementsByTagName("Chat");
 
 	int count = chatNodes.count();
 
@@ -61,17 +69,13 @@ void ChatManager::load(Account *account)
 
 		if (chat)
 			addChat(chat);
-// 		else TODO: remove?
-// 			transfersNewNode.removeChild(chatElement);
 	}
 }
 
 void ChatManager::store(Account *account)
 {
-	foreach (QList<Chat *> list, Chats.values())
-		foreach (Chat *chat, list)
-			if (chat->account() == account)
-				chat->store();
+	foreach (Chat *chat, Chats[account])
+		chat->store();
 }
 
 void ChatManager::store()
@@ -92,9 +96,10 @@ void ChatManager::addChat(Chat *chat)
 
 void ChatManager::removeChat(Chat *chat)
 {
-	emit chatAboutToBeRemoved(chat);
 	if (!Chats.contains(chat->account()))
 		return;
+
+	emit chatAboutToBeRemoved(chat);
 	Chats[chat->account()].removeOne(chat);
 	chat->removeFromStorage();
 	emit chatRemoved(chat);

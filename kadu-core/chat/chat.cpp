@@ -13,30 +13,6 @@
 #include "chat.h"
 #include "chat-manager.h"
 
-Chat::Chat(Account *currentAccount, QUuid uuid) :
-		CurrentAccount(currentAccount), Uuid(uuid.isNull() ? QUuid::createUuid() : uuid)
-{
-}
-
-Chat::~Chat()
-{
-}
-
-QUuid Chat::uuid() const
-{
-	return QUuid();
-}
-
-StoragePoint * Chat::createStoragePoint()
-{
-	StoragePoint *parent = ChatManager::instance()->storage();
-	if (!parent)
-		return 0;
-
-	QDomElement chatNode = parent->storage()->getUuidNode(parent->point(), "Chat", Uuid.toString());
-	return new StoragePoint(parent->storage(), chatNode);
-}
-
 Chat * Chat::loadFromStorage(StoragePoint *chatStoragePoint)
 {
 	if (!chatStoragePoint || !chatStoragePoint->storage())
@@ -52,6 +28,16 @@ Chat * Chat::loadFromStorage(StoragePoint *chatStoragePoint)
 	return account->protocol()->loadChatFromStorage(chatStoragePoint);
 }
 
+
+Chat::Chat(Account *currentAccount, QUuid uuid) :
+		UuidStorableObject("Chat", ChatManager::instance()), CurrentAccount(currentAccount), Uuid(uuid.isNull() ? QUuid::createUuid() : uuid)
+{
+}
+
+Chat::~Chat()
+{
+}
+
 void Chat::load()
 {
 	if (!isValidStorage())
@@ -65,5 +51,6 @@ void Chat::store()
 {
 	if (!isValidStorage())
 		return;
+
 	storeValue("Account", CurrentAccount->uuid().toString());
 }

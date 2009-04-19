@@ -14,30 +14,27 @@
 #include <QtCore/QUuid>
 
 #include "accounts/account.h"
-#include "configuration/storable-object.h"
+#include "configuration/uuid-storable-object.h"
 #include "contacts/contact-list.h"
 
-class XmlConfigFile;
-
-class Chat : public StorableObject
+class Chat : public UuidStorableObject
 {
 	Account *CurrentAccount;
 	QUuid Uuid;
 
-protected:
-	virtual StoragePoint * createStoragePoint();
-
 public:
-	Chat(Account *parentAccount, QUuid uuid = QUuid());
-	virtual ~Chat();
-
-	QUuid uuid() const;
-	Account *account() { return CurrentAccount; }
 	static Chat * loadFromStorage(StoragePoint *conferenceStoragePoint);
-	virtual ContactList currentContacts() { return ContactList(); }
+
+	explicit Chat(Account *parentAccount, QUuid uuid = QUuid());
+	virtual ~Chat();
 
 	virtual void load();
 	virtual void store();
+
+	virtual QUuid uuid() const { return Uuid; }
+
+	virtual ContactList currentContacts() = 0;
+	Account * account() { return CurrentAccount; }
 
 };
 

@@ -37,6 +37,9 @@ ContactList ContactListConfigurationHelper::loadFromConfiguration(XmlConfigFile 
 
 void ContactListConfigurationHelper::saveToConfiguration(XmlConfigFile *configurationStorage, QDomElement contactListNode, ContactList contactList)
 {
+	while (contactListNode.childNodes().count())
+		contactListNode.removeChild(contactListNode.childNodes().at(0));
+
 	foreach (Contact c, contactList)
-		configurationStorage->createTextNode(contactListNode, "Contact", c.uuid());
+		configurationStorage->appendTextNode(contactListNode, "Contact", c.uuid());
 }

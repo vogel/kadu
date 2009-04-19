@@ -7,6 +7,8 @@
  *                                                                         *
  ***************************************************************************/
 
+#include "contacts/contact-list-configuration-helper.h"
+
 #include "conference-chat.h"
 
 ConferenceChat::ConferenceChat(Account *currentAccount, ContactList contacts, QUuid uuid)
@@ -18,3 +20,24 @@ ConferenceChat::~ConferenceChat()
 {
 }
 
+void ConferenceChat::load()
+{
+	if (!isValidStorage())
+		return;
+
+	XmlConfigFile *st = storage()->storage();
+
+	Chat::load();
+	CurrentContacts = ContactListConfigurationHelper::loadFromConfiguration(st, st->getNode(storage()->point(), "Contacts"));
+}
+
+void ConferenceChat::store()
+{
+	if (!isValidStorage())
+		return;
+
+	XmlConfigFile *st = storage()->storage();
+
+	Chat::store();
+	ContactListConfigurationHelper::saveToConfiguration(st, st->getNode(storage()->point(), "Contacts"), CurrentContacts);
+}

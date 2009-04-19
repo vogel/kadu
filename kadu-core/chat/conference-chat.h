@@ -27,7 +27,12 @@ class ConferenceChat : public Chat
 public:
 	ConferenceChat(Account *parentAccount, ContactList contacts, QUuid uuid = QUuid());
 	virtual ~ConferenceChat();
+
+	virtual void load();
+	virtual void store();
+
 	virtual ContactList currentContacts() { return CurrentContacts; }
+
 };
 
 #endif // CONFERENCE_CHAT_H

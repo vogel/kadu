@@ -8,6 +8,7 @@
  ***************************************************************************/
 
 #include "accounts/account-manager.h"
+#include "contacts/contact-manager.h"
 #include "protocols/protocol.h"
 
 #include "simple-chat.h"
@@ -22,9 +23,25 @@ SimpleChat::~SimpleChat()
 {
 }
 
+void SimpleChat::load()
+{
+	if (!isValidStorage())
+		return;
+
+	Chat::load();
+	CurrentContact = ContactManager::instance()->byUuid(loadValue<QString>("Contact"));
+}
+
+void SimpleChat::store()
+{
+	if (!isValidStorage())
+		return;
+
+	Chat::store();
+	storeValue("Contact", CurrentContact.uuid().toString());
+}
+
 ContactList SimpleChat::currentContacts()
 {
-	ContactList c;
-	c.append(CurrentContact);
-	return c;
+	return CurrentContact;
 }

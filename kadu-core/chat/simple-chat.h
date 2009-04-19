@@ -10,13 +10,7 @@
 #ifndef SIMPLE_CHAT_H
 #define SIMPLE_CHAT_H
 
-#include <QtCore/QObject>
-#include <QtCore/QUuid>
-
-#include "accounts/account.h"
 #include "chat/chat.h"
-#include "configuration/storable-object.h"
-#include "contacts/contact-list.h"
 
 class XmlConfigFile;
 
@@ -27,7 +21,12 @@ class SimpleChat : public Chat
 public:
 	SimpleChat(Account *parentAccount, Contact contact, QUuid uuid = QUuid());
 	virtual ~SimpleChat();
+
+	virtual void load();
+	virtual void store();
+
 	virtual ContactList currentContacts();
+
 };
 
 #endif // SIMPLE_CHAT_H
