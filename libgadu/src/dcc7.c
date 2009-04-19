@@ -1,4 +1,4 @@
-/* $Id: dcc7.c 602 2008-05-26 13:12:11Z darkjames $ */
+/* $Id: dcc7.c 711 2009-04-16 00:52:47Z darkjames $ */
 
 /*
  *  (C) Copyright 2001-2008 Wojtek Kaniewski <wojtekka@irc.pl>
@@ -396,9 +396,7 @@ static struct gg_dcc7 *gg_dcc7_send_file_common(struct gg_session *sess, uin_t r
 	return dcc;
 
 fail:
-	if (dcc)
-		free(dcc);
-
+	free(dcc);
 	return NULL;
 }
 
@@ -472,9 +470,7 @@ fail:
 		errno = errsv;
 	}
 
-	if (dcc)
-		free(dcc);
-
+	free(dcc);
 	return NULL;
 }
 

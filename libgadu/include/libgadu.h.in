@@ -1,4 +1,4 @@
-/* $Id: libgadu.h.in 679 2009-02-14 12:04:35Z darkjames $ */
+/* $Id: libgadu.h.in 701 2009-03-29 23:43:03Z darkjames $ */
 
 /*
  *  (C) Copyright 2001-2009 Wojtek Kaniewski <wojtekka@irc.pl>
@@ -1419,6 +1419,8 @@ struct gg_login70 {
 #define GG_LOGIN_OK 0x0003
 
 #define GG_LOGIN_FAILED 0x0009
+
+#define GG_LOGIN_HASH_TYPE_INVALID 0x0016
 
 #define GG_PUBDIR50_REQUEST 0x0014
 

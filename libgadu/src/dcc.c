@@ -1,4 +1,4 @@
-/* $Id: dcc.c 513 2008-01-15 00:09:06Z wojtekka $ */
+/* $Id: dcc.c 711 2009-04-16 00:52:47Z darkjames $ */
 
 /*
  *  (C) Copyright 2001-2008 Wojtek Kaniewski <wojtekka@irc.pl>
@@ -1327,11 +1327,7 @@ void gg_dcc_free(struct gg_dcc *d)
 	if (d->fd != -1)
 		close(d->fd);
 
-	if (d->chunk_buf) {
-		free(d->chunk_buf);
-		d->chunk_buf = NULL;
-	}
-
+	free(d->chunk_buf);
 	free(d);
 }
 

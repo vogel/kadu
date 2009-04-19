@@ -1,4 +1,4 @@
-/* $Id: http.c 646 2008-12-07 11:13:34Z wojtekka $ */
+/* $Id: http.c 711 2009-04-16 00:52:47Z darkjames $ */
 
 /*
  *  (C) Copyright 2001-2002 Wojtek Kaniewski <wojtekka@irc.pl>
@@ -98,9 +98,8 @@ struct gg_http *gg_http_connect(const char *hostname, int port, int async, const
 				"", header);
 		hostname = gg_proxy_host;
 		h->port = port = gg_proxy_port;
+		free(auth);
 
-		if (auth)
-			free(auth);
 	} else {
 		h->query = gg_saprintf("%s %s HTTP/1.0\r\n%s",
 				method, path, header);

@@ -1,4 +1,4 @@
-/* $Id: events.c 646 2008-12-07 11:13:34Z wojtekka $ */
+/* $Id: events.c 711 2009-04-16 00:52:47Z darkjames $ */
 
 /*
  *  (C) Copyright 2001-2006 Wojtek Kaniewski <wojtekka@irc.pl>
@@ -1311,9 +1311,7 @@ struct gg_event *gg_watch_fd(struct gg_session *sess)
 				"%s"
 				"\r\n", host, appmsg, sess->uin, client, fmt, sess->last_sysmsg, (auth) ? auth : "");
 
-			if (auth)
-				free(auth);
-
+			free(auth);
 			free(client);
 
 			/* zwolnij pamięć po wersji klienta. */
@@ -1563,8 +1561,7 @@ struct gg_event *gg_watch_fd(struct gg_session *sess)
 				 * write() zawiedzie, stało się coś złego. */
 				if (write(sess->fd, buf, strlen(buf)) < (signed)strlen(buf)) {
 					gg_debug_session(sess, GG_DEBUG_MISC, "// gg_watch_fd() can't send proxy request\n");
-					if (auth)
-						free(auth);
+					free(auth);
 					goto fail_connecting;
 				}
 
@@ -1786,7 +1783,6 @@ struct gg_event *gg_watch_fd(struct gg_session *sess)
 			}
 
 			free(h);
-
 			free(sess->password);
 			sess->password = NULL;
 
