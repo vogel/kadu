@@ -502,6 +502,9 @@ void SmsConfigurationUiHandler::onSmsBuildInCheckToggle(bool value)
 
 void SmsConfigurationUiHandler::configurationUpdated()
 {
+	if (!MainConfigurationWindow::instance())
+		return;
+
 	QStringList priority;
 	QListBoxItem *item = gatewayListBox->firstItem();
 
