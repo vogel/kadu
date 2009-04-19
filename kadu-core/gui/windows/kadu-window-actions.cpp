@@ -229,9 +229,9 @@ void disableNoEMail(KaduAction *action)
 		return;
 	}
 
-	const ContactList contacts = action->contacts();
+	const Contact contact = action->contact();
 
-	if (contacts[0].email().isEmpty() || contacts[0].email().indexOf(HtmlDocument::mailRegExp()) < 0)
+	if (contact.email().isEmpty() || contact.email().indexOf(HtmlDocument::mailRegExp()) < 0)
 	{
 		action->setEnabled(false);
 		return;
@@ -669,11 +669,10 @@ void KaduWindowActions::writeEmailActionActivated(QAction *sender, bool toggled)
 	if (!window)
 		return;
 
-	ContactList contacts = window->contacts();
-	if (contacts.count() < 1)
+	Contact contact = window->contact();
+	if (contact.isNull())
 		return;
 
-	Contact contact = contacts[0];
 	if (!contact.email().isEmpty())
 		openMailClient(contact.email());
 
@@ -746,7 +745,7 @@ void KaduWindowActions::copyPersonalInfoActionActivated(QAction *sender, bool to
 	if (!window)
 		return;
 
-	ContactList contacts = window->contacts();
+	ContactSet contacts = window->contacts();
 
 	QStringList infoList;
 	QString copyPersonalDataSyntax = config_file.readEntry("General", "CopyPersonalDataSyntax", tr("Contact: %a[ (%u)]\n[First name: %f\n][Last name: %r\n][Mobile: %m\n]"));
@@ -771,15 +770,10 @@ void KaduWindowActions::lookupInDirectoryActionActivated(QAction *sender, bool t
 	if (!window)
 		return;
 
-	ContactList contacts = window->contacts();
-
-	if (contacts.count() != 1)
-	{
-//		searchInDirectoryActionActivated(0, false); TODO: 0.6.6
+	Contact contact = window->contact();
+	if (contact.isNull())
 		return;
-	}
 
-	Contact contact = contacts[0];
 	GaduContactAccountData *cad = dynamic_cast<GaduContactAccountData *>(AccountManager::instance()->defaultAccount());
 	if (!cad)
 		return;
@@ -811,7 +805,7 @@ void KaduWindowActions::offlineToUserActionActivated(QAction *sender, bool toggl
 	if (!window)
 		return;
 
-	ContactList contacts = window->contacts();
+	ContactSet contacts = window->contacts();
 	bool on = true;
 	foreach (const Contact contact, contacts)
 		if (contact.accountData(account) == 0 || !contact.isOfflineTo(account))
@@ -829,10 +823,8 @@ void KaduWindowActions::offlineToUserActionActivated(QAction *sender, bool toggl
 // 	userlist->writeToConfig();
 
 	foreach (KaduAction *action, OfflineToUser->actions())
-	{
 		if (action->contacts() == contacts)
 			action->setChecked(!on);
-	}
 
 	kdebugf2();
 }
@@ -845,7 +837,7 @@ void KaduWindowActions::hideDescriptionActionActivated(QAction *sender, bool tog
 	if (!window)
 		return;
 
-	ContactList contacts = window->contacts();
+	ContactSet contacts = window->contacts();
 
 	foreach (const Contact &contact, contacts)
 	{
@@ -881,7 +873,7 @@ void KaduWindowActions::deleteUsersActionActivated(QAction *sender, bool toggled
 	if (!window)
 		return;
 
-	ContactList contacts = window->contacts();
+	ContactSet contacts = window->contacts();
 	if (contacts.isEmpty())
 		return;
 

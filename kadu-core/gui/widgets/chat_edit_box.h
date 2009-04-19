@@ -37,7 +37,7 @@ public:
 
 	virtual bool supportsActionType(ActionDescription::ActionType type);
 	virtual ContactsListWidget * contactsListWidget();
-	virtual ContactList contacts();
+	virtual ContactSet contacts();
 	ChatWidget * chatWidget();
 
 };

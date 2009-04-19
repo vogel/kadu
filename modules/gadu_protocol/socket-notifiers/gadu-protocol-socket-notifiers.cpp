@@ -102,7 +102,7 @@ void GaduProtocolSocketNotifiers::handleEventMsg(struct gg_event *e)
 			return; // we don't support dcc connections now
 
 		if (config_file.readBoolEntry("Network", "AllowDCC") &&
-				!IgnoredHelper::isIgnored(sender) &&
+				!IgnoredHelper::isIgnored(ContactSet(sender)) &&
 				!sender.isAnonymous())
 			CurrentProtocol->dccManager()->connectionRequestReceived(sender);
 

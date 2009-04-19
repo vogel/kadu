@@ -13,7 +13,7 @@
 #include <QtCore/QPair>
 #include <QtGui/QIcon>
 
-#include "contacts/contact-list.h"
+#include "contacts/contact-set.h"
 #include "exports.h"
 
 class QTimer;
@@ -77,7 +77,7 @@ public:
 private:
 
 	QString Type;
-	ContactList Contacts;
+	ContactSet Contacts;
 
 	QString Title;
 	QString Text;
@@ -101,7 +101,7 @@ public:
 		@arg icon nazwa ikony zdarzenia
 		@arg userListElements lista kontakt�w powi�zana ze zdarzeniem
 	 **/
-	Notification(const QString &type, const QIcon &icon, const ContactList &contacts);
+	Notification(const QString &type, const QIcon &icon, const ContactSet &contacts);
 	virtual ~Notification();
 
 	/**
@@ -152,7 +152,7 @@ public:
 
 		@return lista kontakt�w powi�zana ze zdarzeniem
 	 **/
-	const ContactList &contacts() const;
+	const ContactSet & contacts() const;
 
 	/**
 		Ustawia tytu� zdarzenia.

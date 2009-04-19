@@ -105,13 +105,13 @@ Contact ContactsListWidget::currentContact() const
 	return contact(currentIndex());
 }
 
-ContactList ContactsListWidget::selectedContacts() const
+ContactSet ContactsListWidget::selectedContacts() const
 {
-	ContactList result;
+	ContactSet result;
 
 	QModelIndexList selectionList = selectedIndexes();
 	foreach (QModelIndex selection, selectionList)
-		result.append(contact(selection));
+		result.insert(contact(selection));
 
 	return result;
 }

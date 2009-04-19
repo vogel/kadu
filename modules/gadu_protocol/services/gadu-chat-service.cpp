@@ -8,6 +8,7 @@
  ***************************************************************************/
 
 #include "contacts/ignored-helper.h"
+#include "core/core.h"
 
 #include "config_file.h"
 #include "debug.h"
@@ -34,7 +35,7 @@ bool GaduChatService::sendMessage(Chat *chat, Message &message)
 
 	message.setId(-1);
 	QString plain = message.toPlain();
-	ContactList contacts = chat->currentContacts();
+	ContactSet contacts = chat->contacts();
 
 	unsigned int uinsCount = 0;
 	unsigned int formatsSize = 0;
@@ -135,15 +136,15 @@ void GaduChatService::handleEventMsg(struct gg_event *e)
 		return;
 	}
 
-	ContactList recipients;
+	ContactSet recipients;
 	for (int i = 0; i < e->event.msg.recipients_count; ++i)
 	{
 		Contact recipient = Protocol->account()->getContactById(QString::number(e->event.msg.recipients[i]));
-		recipients.append(recipient);
+		recipients.insert(recipient);
 	}
 
-	ContactList conference = recipients;
-	conference << sender;
+	ContactSet conference = recipients;
+	conference.insert(sender);
 	if (IgnoredHelper::isIgnored(conference))
 		return;
 
@@ -195,8 +196,11 @@ void GaduChatService::handleEventMsg(struct gg_event *e)
 	kdebugmf(KDEBUG_INFO, "Got message from %d saying \"%s\"\n",
 			Protocol->uin(sender), qPrintable(message.toPlain()));
 
+	ContactSet chatContacts = conference;
+	chatContacts.remove(Core::instance()->myself());
+	Chat *chat = Protocol->findChat(chatContacts);
+
 	bool ignore = false;
-	Chat *chat = Protocol->findChat(recipients); 
 	emit receivedMessageFilter(chat, sender, message.toPlain(), time.toTime_t(), ignore);
 	if (ignore)
 		return;

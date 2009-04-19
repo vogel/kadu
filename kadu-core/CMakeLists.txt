@@ -29,6 +29,7 @@ set (kadu_SRCS
 	contacts/contact-list-configuration-helper.cpp
 	contacts/contact-list-mime-data-helper.cpp
 	contacts/contact-manager.cpp
+	contacts/contact-set.cpp
 	contacts/contacts-aware-object.cpp
 	contacts/group.cpp
 	contacts/group-manager.cpp
@@ -211,8 +212,9 @@ set (kadu_MOC_SRCS
 	contacts/contact-account-data.h
 	contacts/contact-data.h
 	contacts/contact-list.h
-	contacts/contact-manager.h
 	contacts/contact-list-configuration-helper.h
+	contacts/contact-manager.h
+	contacts/contact-set.h
 	contacts/group.h
 	contacts/group-manager.h
 

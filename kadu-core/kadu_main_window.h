@@ -20,6 +20,7 @@
 class QContextMenuEvent;
 
 class Contact;
+class ContactSet;
 class ContactsListWidget;
 
 class KADUAPI KaduMainWindow : public QMainWindow
@@ -53,7 +54,7 @@ public:
 
 	virtual bool supportsActionType(ActionDescription::ActionType type) = 0;
 	virtual ContactsListWidget * contactsListWidget() = 0;
-	virtual ContactList contacts() = 0;
+	virtual ContactSet contacts() = 0;
 	Contact contact();
 
 	void actionAdded(KaduAction *action);

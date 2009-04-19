@@ -40,7 +40,7 @@
 
 #include "chat_widget.h"
 
-ChatWidget::ChatWidget(Account *initialAccount, const ContactList &contacts, QWidget *parent)
+ChatWidget::ChatWidget(Account *initialAccount, const ContactSet &contacts, QWidget *parent)
 	: QWidget(parent), CurrentAccount(initialAccount), Contacts(contacts),
 
 	index(0), actcolor(),
@@ -81,7 +81,7 @@ ChatWidget::ChatWidget(Account *initialAccount, const ContactList &contacts, QWi
 // 		kadu, SLOT(mouseButtonClicked(int, Q3ListBoxItem *)));
 
 		ContactsWidget = new ContactsListWidget(getChatEditBox(), userlistContainer);
-		ContactsWidget->setModel(new ContactListModel(Contacts, this));
+		ContactsWidget->setModel(new ContactListModel(Contacts.toContactList(), this));
 
 		ContactsWidget->setMinimumSize(QSize(30, 30));
 
@@ -298,7 +298,7 @@ void ChatWidget::insertImage()
 		}
 		if (counter == 1 && Contacts.count() == 1)
 		{
-			if (!MessageBox::ask(tr("This file is too big for %1.\nDo you really want to send this image?\n").arg(Contacts[0].display())))
+			if (!MessageBox::ask(tr("This file is too big for %1.\nDo you really want to send this image?\n").arg((*Contacts.begin()).display())))
 			{
 				QTimer::singleShot(0, this, SLOT(insertImage()));
 				kdebugf2();
@@ -365,17 +365,19 @@ void ChatWidget::refreshTitle()
 	}
 	else
 	{
+		Contact contact = *Contacts.begin();
+
 		if (config_file.readEntry("Look", "ChatContents").isEmpty())
 		{
-			if (Contacts[0].isAnonymous())
-				title = KaduParser::parse(tr("Chat with ")+"%a", CurrentAccount, Contacts[0], false);
+			if (contact.isAnonymous())
+				title = KaduParser::parse(tr("Chat with ")+"%a", CurrentAccount, contact, false);
 			else
-				title = KaduParser::parse(tr("Chat with ")+"%a (%s[: %d])", CurrentAccount, Contacts[0], false);
+				title = KaduParser::parse(tr("Chat with ")+"%a (%s[: %d])", CurrentAccount, contact, false);
 		}
 		else
-			title = KaduParser::parse(config_file.readEntry("Look","ChatContents"), CurrentAccount, Contacts[0], false);
+			title = KaduParser::parse(config_file.readEntry("Look","ChatContents"), CurrentAccount, contact, false);
 
-		ContactAccountData *cad = Contacts[0].accountData(CurrentAccount);
+		ContactAccountData *cad = contact.accountData(CurrentAccount);
 
 		if (cad)
 			pix = CurrentAccount->statusPixmap(cad->status());
@@ -450,7 +452,7 @@ void ChatWidget::accountUnregistered(Account *account)
 
 void ChatWidget::onStatusChanged(Account *account, Contact contact, Status oldStatus)
 {
-	if (account != CurrentAccount && Contacts[0] != contact)
+	if (account != CurrentAccount && (*Contacts.begin()) != contact)
 		return;
 
 	refreshTitle();
@@ -499,7 +501,7 @@ void ChatWidget::appendSystemMessage(const QString &rawContent, const QString &b
 }
 
 /* invoked from outside when new message arrives, this is the window to the world */
-void ChatWidget::newMessage(Account* account, Contact sender, ContactList receivers, const QString &message, time_t time)
+void ChatWidget::newMessage(Account* account, Contact sender, ContactSet receivers, const QString &message, time_t time)
 {
 	QDateTime date;
 	date.setTime_t(time);

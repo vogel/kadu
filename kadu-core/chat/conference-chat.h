@@ -22,16 +22,16 @@ class XmlConfigFile;
 
 class ConferenceChat : public Chat
 {
-	ContactList CurrentContacts;
+	ContactSet CurrentContacts;
 
 public:
-	ConferenceChat(Account *parentAccount, ContactList contacts, QUuid uuid = QUuid());
+	ConferenceChat(Account *parentAccount, ContactSet contacts, QUuid uuid = QUuid());
 	virtual ~ConferenceChat();
 
 	virtual void load();
 	virtual void store();
 
-	virtual ContactList currentContacts() { return CurrentContacts; }
+	virtual ContactSet contacts() { return CurrentContacts; }
 
 };
 

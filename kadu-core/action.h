@@ -20,7 +20,7 @@
 
 class ChatWidget;
 class Contact;
-class ContactList;
+class ContactSet;
 class KaduMainWindow;
 class ToolBar;
 class UserListElements;
@@ -50,7 +50,7 @@ public:
 	virtual ~KaduAction();
 
 	Contact contact();
-	ContactList contacts();
+	ContactSet contacts();
 
 public slots:
 	void checkState();

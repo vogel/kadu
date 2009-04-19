@@ -52,7 +52,7 @@ private:
 	friend class ChatManagerOld;
 
 	Account *CurrentAccount;
-	ContactList Contacts;
+	ContactSet Contacts;
 	Chat *CurrentChat;
 
 	QString Caption; /*!< tytu� okna */
@@ -140,7 +140,7 @@ public:
 		\param usrs lista kontakt�w, z kt�rymi prowadzona jest rozmowa
 		\param parent rodzic okna
 	**/
-	ChatWidget(Account *initialAccount, const ContactList &contacts, QWidget *parent = 0);
+	ChatWidget(Account *initialAccount, const ContactSet &contacts, QWidget *parent = 0);
 
 	/**
 		\fn ~Chat()
@@ -149,7 +149,7 @@ public:
 	~ChatWidget();
 
 	Account * account() { return CurrentAccount; }
-	ContactList contacts() { return Contacts; }
+	ContactSet contacts() { return Contacts; }
 
 	/**
 		Dodaje now� wiadomos� systemow� do okna.
@@ -169,7 +169,7 @@ public:
 		\param message message content
 		\param time czas
 		**/
-	void newMessage(Account *account, Contact sender, ContactList receipients, const QString &message, time_t time);
+	void newMessage(Account* account, Contact sender, ContactSet receipients, const QString& message, time_t time);
 
 	/**
 		\fn void repaintMessages()
@@ -367,7 +367,7 @@ signals:
 		\param receivers list of receivers
 		\param message the message
 	**/
-	void messageSentAndConfirmed(ContactList receivers, const QString &message);
+	void messageSentAndConfirmed(ContactSet receivers, const QString &message);
 
 	/**
 		\fn void fileDropped(const UserGroup *users, const QString& fileName)
@@ -376,7 +376,7 @@ signals:
 	\param users lista u�ytkownik�w
 		\param fileName nazwa pliku
 	**/
-	void fileDropped(ContactList contacts, const QString &fileName);
+	void fileDropped(ContactSet contacts, const QString &fileName);
 
 	void messageReceived(ChatWidget *);
 

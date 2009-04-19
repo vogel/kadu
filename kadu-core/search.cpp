@@ -297,9 +297,9 @@ void SearchDialog::addFound()
 
 void SearchDialog::chatFound()
 {
-	ContactList found = selected();
-	if (found.size())
-		chat_manager->openChatWidget(SearchAccount, found);
+// 	ContactList found = selected();
+// 	if (found.size())
+// 		chat_manager->openChatWidget(SearchAccount, found);
 }
 
 ContactList SearchDialog::selected()

@@ -193,7 +193,7 @@ void openGGChat(const QString &gg)
 	}
 
 	Account *account = AccountManager::instance()->defaultAccount();
-	ContactList contacts(ContactManager::instance()->byId(account, gadu));
+	ContactSet contacts(ContactManager::instance()->byId(account, gadu));
 	chat_manager->openPendingMsgs(contacts);
 
 	kdebugf2();

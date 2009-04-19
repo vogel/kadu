@@ -23,27 +23,27 @@
 \brief Parametry przeszukiwania historii
 */
 struct HistorySearchParameters {
-	QDate fromDate; /*!< data graniczna od której ma wyszukiwaæ */
-	QDate toDate; /*!< data graniczna do której ma wyszukiwaæ */
-	QString pattern; /*!< ci±g znaków do wyszukania */
-	HistoryEntryType currentType; /*!< trochê protetyczne okre¶lenie czy szukamy w chatach, statusach czy smsach, zale¿nie w której ga³êzi g³ównej le¿y zaznaczona pozycja w momencie u¿ycia wyszukiwania. */
-	bool isRegExp;  /*!< Czy szukamy za pomoc± wyra¿enia regularnego. */
-	bool isCaseSensv;  /*!< Czy szukanie uwzglêdnia wielko¶æ znaków. */
-	bool wholeWordsSearch;  /*!< Czy szukamy jedynie ca³ych s³ów. */
-	int resultsShowMode;  /*!< Tryb wy¶wietlania wyników: 0 - pojedyncze wiadomo¶ci, 1 - w±tek do koñca, 2 - ca³y w±tek. */
+	QDate fromDate; /*!< data graniczna od ktï¿½rej ma wyszukiwaï¿½ */
+	QDate toDate; /*!< data graniczna do ktï¿½rej ma wyszukiwaï¿½ */
+	QString pattern; /*!< ciï¿½g znakï¿½w do wyszukania */
+	HistoryEntryType currentType; /*!< trochï¿½ protetyczne okreï¿½lenie czy szukamy w chatach, statusach czy smsach, zaleï¿½nie w ktï¿½rej gaï¿½ï¿½zi gï¿½ï¿½wnej leï¿½y zaznaczona pozycja w momencie uï¿½ycia wyszukiwania. */
+	bool isRegExp;  /*!< Czy szukamy za pomocï¿½ wyraï¿½enia regularnego. */
+	bool isCaseSensv;  /*!< Czy szukanie uwzglï¿½dnia wielkoï¿½ï¿½ znakï¿½w. */
+	bool wholeWordsSearch;  /*!< Czy szukamy jedynie caï¿½ych sï¿½ï¿½w. */
+	int resultsShowMode;  /*!< Tryb wyï¿½wietlania wynikï¿½w: 0 - pojedyncze wiadomoï¿½ci, 1 - wï¿½tek do koï¿½ca, 2 - caï¿½y wï¿½tek. */
 };
 
 /*!
 \struct HistorySearchDetailsItem
-\brief Kontener danych potrzebnych do odtworzenia listy dat z zapisanego wyniku wyszukiwania w widoku szczegó³owym.
+\brief Kontener danych potrzebnych do odtworzenia listy dat z zapisanego wyniku wyszukiwania w widoku szczegï¿½ï¿½owym.
 */
 struct HistorySearchDetailsItem
 {
 	HistorySearchDetailsItem(QString altNick,  QString title, QDate date, int length);
-	QString altNick;  /*!< Ksywa kontaktu na potrzeby pozycji na li¶cie widoku dat. */
-	QDate date;  /*!< Data, dla której znaleziono wyst±pienia wzorca w wyszukiwaniu. */
-	QString title;  /*!< Skrót z pierwszej wiadomo¶ci dla danej daty. */
-	int length;  /*!< Ilo¶æ wiadomo¶ci, w tym przypadku z wyst±pieniem wzorca. */
+	QString altNick;  /*!< Ksywa kontaktu na potrzeby pozycji na liï¿½cie widoku dat. */
+	QDate date;  /*!< Data, dla ktï¿½rej znaleziono wystï¿½pienia wzorca w wyszukiwaniu. */
+	QString title;  /*!< Skrï¿½t z pierwszej wiadomoï¿½ci dla danej daty. */
+	int length;  /*!< Iloï¿½ï¿½ wiadomoï¿½ci, w tym przypadku z wystï¿½pieniem wzorca. */
 };
 
 /*!
@@ -53,123 +53,123 @@ struct HistorySearchDetailsItem
 struct HistorySearchResult
 {
 	HistorySearchResult();
-	ContactList users;  /*!< Lista u¿ytkowników, których historiê przeszukano. */
-	HistoryEntryType currentType;  /*!< Trochê protetyczne okre¶lenie czy szukali¶my w chatach, statusach czy smsach */
+	ContactList users;  /*!< Lista uï¿½ytkownikï¿½w, ktï¿½rych historiï¿½ przeszukano. */
+	HistoryEntryType currentType;  /*!< Trochï¿½ protetyczne okreï¿½lenie czy szukaliï¿½my w chatach, statusach czy smsach */
 	//QString itemLabel; 
-	QList<HistorySearchDetailsItem> detailsItems;  /*!< Zachowana lista dat, w których znaleziono wyst±pienia frazy. */
+	QList<HistorySearchDetailsItem> detailsItems;  /*!< Zachowana lista dat, w ktï¿½rych znaleziono wystï¿½pienia frazy. */
 	QString pattern;  /*!< Poszukiwany wzorzec. */
-	int resultsShowMode;  /*!< Tryb wy¶wietlania wyników. */
+	int resultsShowMode;  /*!< Tryb wyï¿½wietlania wynikï¿½w. */
 };
 
 
 /*!
 \class MainListViewText
-\brief Pojedyncza pozycja z g³ównej listy w oknie przegl±dania historii.
+\brief Pojedyncza pozycja z gï¿½ï¿½wnej listy w oknie przeglï¿½dania historii.
 */
 class MainListViewText : public QTreeWidgetItem
 {
 	private:
-		ContactList Uids; /*!< Lista u¿ytkowników reprezentowanych przez dan± pozycjê na li¶cie */
+		ContactList Uids; /*!< Lista uï¿½ytkownikï¿½w reprezentowanych przez danï¿½ pozycjï¿½ na liï¿½cie */
 		/**
-       		Tworzy tekst bêd±cy nazw± danego elementu na li¶cie.
+       		Tworzy tekst bï¿½dï¿½cy nazwï¿½ danego elementu na liï¿½cie.
 		*/
 		void prepareText();
  
 	public:
 		/**
-       		Standardowy konstruktor dla g³ównego elementu listy g³ównej.
-		@param parent nadrzêdny treewidget
-		@param uids lista u¿ytkowników
+       		Standardowy konstruktor dla gï¿½ï¿½wnego elementu listy gï¿½ï¿½wnej.
+		@param parent nadrzï¿½dny treewidget
+		@param uids lista uï¿½ytkownikï¿½w
 		*/
 		MainListViewText(QTreeWidget* parent, const ContactList& uids);
 		/**
-       		Standardowy konstruktor dla podrzêdnego elementu listy g³ównej.
-		@param parent nadrzêdny element
-		@param uids lista u¿ytkowników
+       		Standardowy konstruktor dla podrzï¿½dnego elementu listy gï¿½ï¿½wnej.
+		@param parent nadrzï¿½dny element
+		@param uids lista uï¿½ytkownikï¿½w
 		*/
 		MainListViewText(QTreeWidgetItem* parent, const ContactList& uids);
 		/**
-       		Zwraca listê u¿ytkowników reprezentowan± przez dany element.
-		@return Lista u¿ytkowników przypisana do danego elementu.
+       		Zwraca listï¿½ uï¿½ytkownikï¿½w reprezentowanï¿½ przez dany element.
+		@return Lista uï¿½ytkownikï¿½w przypisana do danego elementu.
 		*/
 		virtual const ContactList& uidsList() const { return Uids; };
 };
  
 /*!
 \class DetailsListViewText
-\brief Lista widoku szczegó³owego wg. dat rozmów w oknie przegl±dania historii
+\brief Lista widoku szczegï¿½ï¿½owego wg. dat rozmï¿½w w oknie przeglï¿½dania historii
 */
 class DetailsListViewItem : public QTreeWidgetItem
 {
 	private:
-		QDate Date; /*!< Data, z której rozmowy reprezentuje dany element. */
-		ContactList Uids;  /*!< Lista u¿ytkowników, do których nale¿y dana data - czasem siê przyda, gdy nie mo¿na zachowaæ zaznaczenia na g³ównej li¶cie. */
+		QDate Date; /*!< Data, z ktï¿½rej rozmowy reprezentuje dany element. */
+		ContactList Uids;  /*!< Lista uï¿½ytkownikï¿½w, do ktï¿½rych naleï¿½y dana data - czasem siï¿½ przyda, gdy nie moï¿½na zachowaï¿½ zaznaczenia na gï¿½ï¿½wnej liï¿½cie. */
 	public:
 		/**
-       		Standardowy konstruktor dla g³ównego elementu listy szczegó³owej.
-		@param parent nadrzêdny treewidget
-		@param title tytu³ (fragment wiadomo¶ci z danej daty)
-		@param date data, dla której rozmowy reprezentuje dany element
-		@param lenght ilo¶æ wiadomo¶ci dla danej daty
-		@param uids lista u¿ytkowników, dla której pobrano datê - jak ju¿ wspomniano, czasem siê przydaje.
+       		Standardowy konstruktor dla gï¿½ï¿½wnego elementu listy szczegï¿½ï¿½owej.
+		@param parent nadrzï¿½dny treewidget
+		@param title tytuï¿½ (fragment wiadomoï¿½ci z danej daty)
+		@param date data, dla ktï¿½rej rozmowy reprezentuje dany element
+		@param lenght iloï¿½ï¿½ wiadomoï¿½ci dla danej daty
+		@param uids lista uï¿½ytkownikï¿½w, dla ktï¿½rej pobrano datï¿½ - jak juï¿½ wspomniano, czasem siï¿½ przydaje.
 		*/
 		DetailsListViewItem(QTreeWidget* parent, QString contact, QString title, QDate date, QString lenght, const ContactList& uids = ContactList());
 		/**
-       		Zwraca datê reprezentowan± przez dany element.
+       		Zwraca datï¿½ reprezentowanï¿½ przez dany element.
 		@return Data przypisana do danego elementu.
 		*/
 		QDate date() const;
 		/**
-       		Zwraca listê u¿ytkowników reprezentowan± przez dany element.
-		@return Lista u¿ytkowników przypisana do danego elementu.
+       		Zwraca listï¿½ uï¿½ytkownikï¿½w reprezentowanï¿½ przez dany element.
+		@return Lista uï¿½ytkownikï¿½w przypisana do danego elementu.
 		*/
 		virtual const ContactList& uidsList() const { return Uids; };
 };
 
 /*!
 \class HistoryMainWidget
-\brief G³ówny widget okna przegl±dania historii
+\brief Gï¿½ï¿½wny widget okna przeglï¿½dania historii
 */
 class HistoryMainWidget : public KaduMainWindow
 {
 	Q_OBJECT
-		ActionDescription *historySearchActionDescription; /*!< Akcja otwieraj±ca okno wyszukiwania. */
-		ActionDescription *historyNextResultsActionDescription; /*!< Akcja przewijaj±ca okno wiadomo¶ci do nastêpnego wyst±pienia wyszukiwanego wyra¿enia. */
-		ActionDescription *historyPrevResultsActionDescription; /*!< Akcja przewijaj±ca okno wiadomo¶ci do poprzedniego wyst±pienia wyszukiwanego wyra¿enia. */
-		QTreeWidget* DetailsListView; /*!< Lista szczegó³owa rozmów wg. dat. */
-		ChatMessagesView* ContentBrowser; /*!< Okno przegl±dania rozmów. */
-		QDockWidget *dock;  /*!< Dokowany widget wyszukiwania w bie¿±cej zawarto¶ci okna wiadomo¶ci. */
-		QLineEdit *quickSearchPhraseEdit;  /*!< LineEdit w widgecie wyszukiwania "na ¿ywcowo". */
+		ActionDescription *historySearchActionDescription; /*!< Akcja otwierajï¿½ca okno wyszukiwania. */
+		ActionDescription *historyNextResultsActionDescription; /*!< Akcja przewijajï¿½ca okno wiadomoï¿½ci do nastï¿½pnego wystï¿½pienia wyszukiwanego wyraï¿½enia. */
+		ActionDescription *historyPrevResultsActionDescription; /*!< Akcja przewijajï¿½ca okno wiadomoï¿½ci do poprzedniego wystï¿½pienia wyszukiwanego wyraï¿½enia. */
+		QTreeWidget* DetailsListView; /*!< Lista szczegï¿½ï¿½owa rozmï¿½w wg. dat. */
+		ChatMessagesView* ContentBrowser; /*!< Okno przeglï¿½dania rozmï¿½w. */
+		QDockWidget *dock;  /*!< Dokowany widget wyszukiwania w bieï¿½ï¿½cej zawartoï¿½ci okna wiadomoï¿½ci. */
+		QLineEdit *quickSearchPhraseEdit;  /*!< LineEdit w widgecie wyszukiwania "na ï¿½ywcowo". */
 	private slots:
 		/**
-       		Slot wyszukuj±cy na bie¿±co tekst podany w widgecie szybkiego wyszukiwania.
+       		Slot wyszukujï¿½cy na bieï¿½ï¿½co tekst podany w widgecie szybkiego wyszukiwania.
 		*/
 		void quickSearchPhraseTyped(const QString &text);
 
 	public:
 		/**
-       		Konstruktor g³ównego elementu okna przegl±dania historii.
-		@param parent widget nadrzêdny
-		@param window wska¼nik okna przegl±dania historii
+       		Konstruktor gï¿½ï¿½wnego elementu okna przeglï¿½dania historii.
+		@param parent widget nadrzï¿½dny
+		@param window wskaï¿½nik okna przeglï¿½dania historii
 		*/
 		HistoryMainWidget(QWidget *parent, QWidget *window);
 		virtual ~HistoryMainWidget();
 		/**
-       		Zwraca wska¼nik do listy widoku szczegó³owego.
-		@return Wska¼nik do listy widoku szczegó³owego.
+       		Zwraca wskaï¿½nik do listy widoku szczegï¿½ï¿½owego.
+		@return Wskaï¿½nik do listy widoku szczegï¿½ï¿½owego.
 		*/
 		virtual QTreeWidget* getDetailsListView() { return DetailsListView; };
 		/**
-       		Zwraca wska¼nik do okna przegl±dania rozmów.
-		@return Wska¼nik do okna przegl±dania rozmów.
+       		Zwraca wskaï¿½nik do okna przeglï¿½dania rozmï¿½w.
+		@return Wskaï¿½nik do okna przeglï¿½dania rozmï¿½w.
 		*/
 		virtual ChatMessagesView* getContentBrowser() { return ContentBrowser; };
 		/**
-       		Sprawdza, czy toolbary obiektu tej klasy wspieraj± dany typ akcji.
+       		Sprawdza, czy toolbary obiektu tej klasy wspierajï¿½ dany typ akcji.
 		@param type typ akcji.
 		*/
 		virtual bool supportsActionType(ActionDescription::ActionType type);
-		virtual ContactList contacts() { return ContactList(); };
+		virtual ContactSet contacts() { return ContactSet(); };
 		virtual ChatWidget * getChatWidget() { return 0; };
 		virtual QDockWidget * getDockWidget() { return dock; };
 		virtual ContactsListWidget* contactsListWidget() { return 0; } 
@@ -179,82 +179,82 @@ class HistoryMainWidget : public KaduMainWindow
 /*!
 \class HistoryDlg
 \author Juzef
-\brief Okno przegl±dania historii.
+\brief Okno przeglï¿½dania historii.
 */
 class HistoryDlg : public QWidget
 {
 	Q_OBJECT		
 		QTreeWidgetItem* statusItem, *chatsItem, *smsItem, *conferItem, *searchItem, *anonChatsItem/*, *anonStatusItem*/;
 	private:
-  		HistoryMainWidget *main; /*!< G³ówny widget okna z toolbarami i innymi bajerami. */
-		QMenu *MainPopupMenu; /*!< Menu kontekstowe g³ównej listy u¿ytkowników. */
+  		HistoryMainWidget *main; /*!< Gï¿½ï¿½wny widget okna z toolbarami i innymi bajerami. */
+		QMenu *MainPopupMenu; /*!< Menu kontekstowe gï¿½ï¿½wnej listy uï¿½ytkownikï¿½w. */
 		QMenu *DetailsPopupMenu; /*!< Menu kontekstowe widoku dat. */
-		QList<HistorySearchResult> previousSearchResults;  /*!< Wyniki poprzednich wyszukiwañ. */
- 		QTreeWidget* MainListView; /*!< G³ówna lista u¿ytkowników. */
+		QList<HistorySearchResult> previousSearchResults;  /*!< Wyniki poprzednich wyszukiwaï¿½. */
+ 		QTreeWidget* MainListView; /*!< Gï¿½ï¿½wna lista uï¿½ytkownikï¿½w. */
 		HistorySearchParameters searchParameters; /*!< Parametry ostatniego wyszukiwania. */
- 		//QList<ContactList> uid_groups; /*!< Lista grup u¿ytkowników, których rozmowy zapisano w historii. */
- 		//QList<ContactList> status_uid_groups; /*!< Lista grup u¿ytkowników, których zmiany statusów zapisano w historii. */
-		bool closeDemand; /*!< Okre¶la, czy by³o ¿±danie zamkniêcia okna w trakcie wyszukiwania. */
-		bool isSearchInProgress; /*!< Okre¶la, czy trwa aktualnie wyszukiwanie. */
-		bool inSearchMode;  /*!< Okre¶la, czy trwa przegl±danie wyników bie¿±cego lub wcze¶niejszego wyszukiwania, czyli czy nale¿y zaznaczaæ wyst±pienia frazy w oknie wiadomo¶ci. */
+ 		//QList<ContactList> uid_groups; /*!< Lista grup uï¿½ytkownikï¿½w, ktï¿½rych rozmowy zapisano w historii. */
+ 		//QList<ContactList> status_uid_groups; /*!< Lista grup uï¿½ytkownikï¿½w, ktï¿½rych zmiany statusï¿½w zapisano w historii. */
+		bool closeDemand; /*!< Okreï¿½la, czy byï¿½o ï¿½ï¿½danie zamkniï¿½cia okna w trakcie wyszukiwania. */
+		bool isSearchInProgress; /*!< Okreï¿½la, czy trwa aktualnie wyszukiwanie. */
+		bool inSearchMode;  /*!< Okreï¿½la, czy trwa przeglï¿½danie wynikï¿½w bieï¿½ï¿½cego lub wczeï¿½niejszego wyszukiwania, czyli czy naleï¿½y zaznaczaï¿½ wystï¿½pienia frazy w oknie wiadomoï¿½ci. */
 		HistorySearchDialog *advSearchWindow; /*!< Okno wyszukiwania. */
-// 		QList<int> anchors; /*!< Namiary na wyst±pienia poszukiwanej frazy w ci±gu rozmów. */
+// 		QList<int> anchors; /*!< Namiary na wystï¿½pienia poszukiwanej frazy w ciï¿½gu rozmï¿½w. */
 // 		QList<int>::Iterator idxIt; 
 		/**
-       		Uruchamia przeszukiwanie historii wedle bie¿±cych kryteriów @see searchParameters.
+       		Uruchamia przeszukiwanie historii wedle bieï¿½ï¿½cych kryteriï¿½w @see searchParameters.
 		*/
 		void searchHistory();
 		/**
-       		Od¶wie¿a zawarto¶æ okna przegl±dania historii.
+       		Odï¿½wieï¿½a zawartoï¿½ï¿½ okna przeglï¿½dania historii.
 		*/
 		void globalRefresh();
 		/**
-       		Od¶wie¿a zawarto¶æ ga³êzi z wynikami wyszukiwañ.
+       		Odï¿½wieï¿½a zawartoï¿½ï¿½ gaï¿½ï¿½zi z wynikami wyszukiwaï¿½.
 		*/
 		void searchBranchRefresh();
-		ContactList selectedUsers; /*!< U¿ytkownicy, dla których wyst±pi³o ¿±danie otwarcia okna historii. */
-		int maxLen;  /*!< Max. d³ugo¶æ zajawki wiadomo¶ci w widoku dat. */
+		ContactList selectedUsers; /*!< Uï¿½ytkownicy, dla ktï¿½rych wystï¿½piï¿½o ï¿½ï¿½danie otwarcia okna historii. */
+		int maxLen;  /*!< Max. dï¿½ugoï¿½ï¿½ zajawki wiadomoï¿½ci w widoku dat. */
 	private slots:
 		/**
-       		Slot od¶wie¿aj±cy zawarto¶æ listy szczegó³owej wg. zmiany zaznaczenia na li¶cie g³ównej.
-		@param item Element listy wybrany przez u¿ytkownika.
+       		Slot odï¿½wieï¿½ajï¿½cy zawartoï¿½ï¿½ listy szczegï¿½ï¿½owej wg. zmiany zaznaczenia na liï¿½cie gï¿½ï¿½wnej.
+		@param item Element listy wybrany przez uï¿½ytkownika.
 		*/
 		void mainItemChanged(QTreeWidgetItem *item, int column);
 		/**
-       		Slot od¶wie¿aj±cy zawarto¶æ okna przegl±dania rozmów wg. zmiany zaznaczenia na li¶cie szczegó³owej.
-		@param item Element listy wybrany przez u¿ytkownika.
+       		Slot odï¿½wieï¿½ajï¿½cy zawartoï¿½ï¿½ okna przeglï¿½dania rozmï¿½w wg. zmiany zaznaczenia na liï¿½cie szczegï¿½ï¿½owej.
+		@param item Element listy wybrany przez uï¿½ytkownika.
 		*/
 		void detailsItemChanged(QTreeWidgetItem *item, int column);
 		/**
-       		Slot otwieraj±cy okno wyszukiwania.
+       		Slot otwierajï¿½cy okno wyszukiwania.
 		*/
 		void searchActionActivated(QAction* sender, bool toggled);
 		/**
-       		Slot przewijaj±cy zawarto¶æ okna przegl±dania rozmów do nastêpnego wyst±pienia znalezionego wyra¿enia.
+       		Slot przewijajï¿½cy zawartoï¿½ï¿½ okna przeglï¿½dania rozmï¿½w do nastï¿½pnego wystï¿½pienia znalezionego wyraï¿½enia.
 		*/
 		void searchNextActActivated(QAction* sender, bool toggled);
 		/**
-       		Slot przewijaj±cy zawarto¶æ okna przegl±dania rozmów do poprzedniego wyst±pienia znalezionego wyra¿enia.
+       		Slot przewijajï¿½cy zawartoï¿½ï¿½ okna przeglï¿½dania rozmï¿½w do poprzedniego wystï¿½pienia znalezionego wyraï¿½enia.
 		*/
 		void searchPrevActActivated(QAction* sender, bool toggled);
 		/**
-       		Slot wy¶wietlaj±cy menu kontekstowe dla g³. listy u¿ytkowników.
+       		Slot wyï¿½wietlajï¿½cy menu kontekstowe dla gï¿½. listy uï¿½ytkownikï¿½w.
 		*/
 		void showMainPopupMenu(const QPoint & pos);
 		/**
-       		Slot wy¶wietlaj±cy menu kontekstowe dla listy widoku dat.
+       		Slot wyï¿½wietlajï¿½cy menu kontekstowe dla listy widoku dat.
 		*/
 		void showDetailsPopupMenu(const QPoint & pos);
 		/**
-       		Slot pozwalaj±cy otworzyæ okno rozmowy z poziomu g³. listy u¿ytkowników.
+       		Slot pozwalajï¿½cy otworzyï¿½ okno rozmowy z poziomu gï¿½. listy uï¿½ytkownikï¿½w.
 		*/
 		void openChat();
 		/**
-       		Otwiera okno wyszukiwania w katalogu dla wybranego kontaktu z poziomu g³. listy u¿ytkowników.
+       		Otwiera okno wyszukiwania w katalogu dla wybranego kontaktu z poziomu gï¿½. listy uï¿½ytkownikï¿½w.
 		*/
 		void lookupUserInfo();
 		/**
-       		Slot pozwalaj±cy usun±æ zapisy w historii danego kontaktu z poziomu g³. listy u¿ytkowników.
+       		Slot pozwalajï¿½cy usunï¿½ï¿½ zapisy w historii danego kontaktu z poziomu gï¿½. listy uï¿½ytkownikï¿½w.
 		*/
 		void removeHistoryEntriesPerUser();
 		/**
@@ -263,11 +263,11 @@ class HistoryDlg : public QWidget
 		void removeHistoryEntriesPerDate();
 	protected:
 		/**
-       		Reimplementacja obs³ugi zdarzenia zamkniêcia okna.
+       		Reimplementacja obsï¿½ugi zdarzenia zamkniï¿½cia okna.
 		*/
 		void closeEvent(QCloseEvent *e);
 		/**
-       		Reimplementacja obs³ugi zdarzenia naci¶niêcia klawisza - potrzebna dla wyszukiwania pod Ctrl+F.
+       		Reimplementacja obsï¿½ugi zdarzenia naciï¿½niï¿½cia klawisza - potrzebna dla wyszukiwania pod Ctrl+F.
 		*/
 		void keyPressEvent(QKeyEvent *e);
 
@@ -275,19 +275,19 @@ class HistoryDlg : public QWidget
 		HistoryDlg();
 		~HistoryDlg();
 		/**
-       		Zwraca strukturê z aktualnymi parametrami wyszukiwania.
+       		Zwraca strukturï¿½ z aktualnymi parametrami wyszukiwania.
 		*/
 		virtual HistorySearchParameters getSearchParameters() const { return searchParameters; };
 		/**
-       		Zapisuje strukturê z aktualnymi parametrami wyszukiwania.
+       		Zapisuje strukturï¿½ z aktualnymi parametrami wyszukiwania.
 		@param params Struktura do zapisania.
 		*/
 		void setSearchParameters(HistorySearchParameters& params);
 		/**
-       		Wy¶wietla okno dialogowe historii.
-		@param users Lista kontaktów z aktywnego userboxa.
+       		Wyï¿½wietla okno dialogowe historii.
+		@param users Lista kontaktï¿½w z aktywnego userboxa.
 		*/
-		void show(ContactList contacts);
+		void show(ContactSet contacts);
 		virtual QMenu * getMainPopupMenu() { return MainPopupMenu;};
 	
 		virtual QList<HistorySearchResult> getPreviousSearchResults() const { return previousSearchResults; };

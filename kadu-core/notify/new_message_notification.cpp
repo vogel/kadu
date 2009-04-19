@@ -44,10 +44,10 @@ void MessageNotification::unregisterEvents()
 	NewMessageNotifyEvent = 0;
 }
 
-MessageNotification::MessageNotification(MessageType messageType, const ContactList &contacts, const QString &message, Account *account)
+MessageNotification::MessageNotification(MessageType messageType, const ContactSet &contacts, const QString &message, Account *account)
 	: AccountNotification(account, messageType == NewChat ? "NewChat" : "NewMessage", icons_manager->loadIcon("Message"), contacts)
 {
-	const Contact &contact = contacts[0];
+	const Contact &contact = *contacts.begin();
 	QString syntax;
 
 	if (messageType == NewChat)

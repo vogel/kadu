@@ -105,11 +105,11 @@ void Protocol::networkStateChanged(NetworkState state)
 }
 
 
-Chat * Protocol::findChat(ContactList contacts)
+Chat * Protocol::findChat(ContactSet contacts)
 {
 	QList<Chat *> chats = ChatManager::instance()->chatsForAccount(account());
 	foreach (Chat *c, chats)
-		if (c->currentContacts() == contacts)
+		if (c->contacts() == contacts)
 			return c;
 
 	if (contacts.count() == 1)
@@ -147,7 +147,11 @@ Chat * Protocol::loadChatFromStorage(StoragePoint *chatStorage)
 	}
 	else if ("Conference" == type)
 	{
-		ContactList contacts = ContactListConfigurationHelper::loadFromConfiguration(storage, point);
+		ContactSet contacts;
+		ContactList tmp = ContactListConfigurationHelper::loadFromConfiguration(storage, point);
+		foreach (Contact contact, tmp)
+			contacts.insert(contact);
+
 		ConferenceChat *result = new ConferenceChat(account, contacts, QUuid(storage->getTextNode(point, "Uuid")));
 		result->setStorage(chatStorage);
 		result->load();

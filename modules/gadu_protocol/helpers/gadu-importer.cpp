@@ -112,7 +112,7 @@ void GaduImporter::importIgnored()
 		if (ignoredGroup.isNull())
 			continue;
 
-		ContactList ignoredList;
+		ContactSet ignoredList;
 		QDomNodeList ignoredContacts = xml_config_file->getNodes(ignoredGroup, "IgnoredContact");
 		for (int j = 0; j < ignoredContacts.count(); j++)
 		{
@@ -120,7 +120,7 @@ void GaduImporter::importIgnored()
 			if (ignoredContact.isNull())
 				continue;
 
-			ignoredList.append(ContactManager::instance()->byId(account, ignoredContact.attribute("uin")));
+			ignoredList.insert(ContactManager::instance()->byId(account, ignoredContact.attribute("uin")));
 		}
 
 		if (0 == ignoredList.count())

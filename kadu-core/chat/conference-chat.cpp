@@ -11,7 +11,7 @@
 
 #include "conference-chat.h"
 
-ConferenceChat::ConferenceChat(Account *currentAccount, ContactList contacts, QUuid uuid)
+ConferenceChat::ConferenceChat(Account *currentAccount, ContactSet contacts, QUuid uuid)
 	: Chat(currentAccount, uuid), CurrentContacts(contacts)
 {
 }
@@ -28,7 +28,11 @@ void ConferenceChat::load()
 	XmlConfigFile *st = storage()->storage();
 
 	Chat::load();
-	CurrentContacts = ContactListConfigurationHelper::loadFromConfiguration(st, st->getNode(storage()->point(), "Contacts"));
+	CurrentContacts.clear();
+	ContactList tmp = ContactListConfigurationHelper::loadFromConfiguration(st, st->getNode(storage()->point(), "Contacts"));
+
+	foreach (Contact contact, tmp)
+		CurrentContacts.insert(contact);
 }
 
 void ConferenceChat::store()
@@ -39,5 +43,7 @@ void ConferenceChat::store()
 	XmlConfigFile *st = storage()->storage();
 
 	Chat::store();
-	ContactListConfigurationHelper::saveToConfiguration(st, st->getNode(storage()->point(), "Contacts"), CurrentContacts);
+	storeValue("Type", "Conference");
+	ContactListConfigurationHelper::saveToConfiguration(st, st->getNode(storage()->point(), "Contacts"),
+			CurrentContacts.toContactList());
 }

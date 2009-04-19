@@ -7,26 +7,26 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef ACCOUNT_NOTIFICATION_H
-#define ACCOUNT_NOTIFICATION_H
+#ifndef CONTACT_SET_H
+#define CONTACT_SET_H
 
-#include "accounts/account.h"
-#include "kadu_parser.h"
-#include "notification.h"
+#include <QtCore/QSet>
 
-class ContactSet;
+#include "contact.h"
 
-class AccountNotification : public Notification
+#include "exports.h"
+
+class ContactList;
+
+class KADUAPI ContactSet : public QSet<Contact>
 {
-	Q_OBJECT
-
-	Account *CurrentAccount;
 
 public:
-	AccountNotification(Account *account, const QString &type, const QIcon &icon, const ContactSet &contacts);
-	virtual ~AccountNotification();
+	ContactSet();
+	explicit ContactSet(Contact contact);
 
-	Account * account() const {return CurrentAccount;}
+	ContactList toContactList() const;
+
 };
 
-#endif // ACCOUNT_NOTIFICATION_H
+#endif // CONTACT_SET_H

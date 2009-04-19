@@ -67,10 +67,10 @@ void StatusChangedNotification::unregisterEvents()
 }
 
 // TODO 0.6.6 what if accountData(account) == null ?
-StatusChangedNotification::StatusChangedNotification(const QString &toStatus, ContactList &contacts, Account *account)
-	: AccountNotification(account, QString("StatusChanged/") + toStatus, account->protocol()->statusPixmap(contacts[0].accountData(account)->status()), contacts)
+StatusChangedNotification::StatusChangedNotification(const QString &toStatus, ContactSet &contacts, Account *account)
+	: AccountNotification(account, QString("StatusChanged/") + toStatus, account->protocol()->statusPixmap(contacts.begin()->accountData(account)->status()), contacts)
 {
-	const Contact &contact = contacts[0];
+	const Contact &contact = *contacts.begin();
 	Status status = contact.accountData(account)->status();
 	QString syntax;
 

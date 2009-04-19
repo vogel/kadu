@@ -104,7 +104,7 @@ void NotificationManager::notifyAboutUserActionActivated(QAction *sender, bool t
 	if (!window)
 		return;
 
-	ContactList contacts = window->contacts();
+	ContactSet contacts = window->contacts();
 
 	bool on = true;
 	foreach (const Contact contact, contacts)
@@ -212,7 +212,7 @@ void NotificationManager::statusChanged(Account *account, Contact contact, Statu
 
 	QString changedTo = "To" + Status::name(data->status(), false);
 
-	ContactList contacts(contact);
+	ContactSet contacts(contact);
 
 	StatusChangedNotification *statusChangedNotification = new StatusChangedNotification(changedTo, contacts, account);
 	notify(statusChangedNotification);
@@ -220,7 +220,7 @@ void NotificationManager::statusChanged(Account *account, Contact contact, Statu
 	kdebugf2();
 }
 
-void NotificationManager::messageReceived(Account *account, ContactList contacts, const QString &msg, time_t t)
+void NotificationManager::messageReceived(Account *account, ContactSet contacts, const QString &msg, time_t t)
 {
 	kdebugf();
 

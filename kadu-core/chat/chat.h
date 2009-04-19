@@ -15,7 +15,7 @@
 
 #include "accounts/account.h"
 #include "configuration/uuid-storable-object.h"
-#include "contacts/contact-list.h"
+#include "contacts/contact-set.h"
 
 class Chat : public UuidStorableObject
 {
@@ -33,7 +33,7 @@ public:
 
 	virtual QUuid uuid() const { return Uuid; }
 
-	virtual ContactList currentContacts() = 0;
+	virtual ContactSet contacts() = 0;
 	Account * account() { return CurrentAccount; }
 
 };

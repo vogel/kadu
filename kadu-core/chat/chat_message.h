@@ -54,7 +54,7 @@ class KADUAPI ChatMessage : public QObject
 
 	Account *SenderAccount;
 	Contact Sender;
-	ContactList Receivers;
+	ContactSet Receivers;
 
 	QDateTime Date;
 	QDateTime SDate;
@@ -85,7 +85,7 @@ public:
 		\param date data otrzymania wiadomo�ci
 		\param sdate data wys�ania wiadomo�ci
 	**/
-	ChatMessage(Account *account, const Contact &sender, const ContactList &receivers, const QString &unformattedMessage, ChatMessageType type,
+	ChatMessage(Account *account, const Contact &sender, const ContactSet &receivers, const QString &unformattedMessage, ChatMessageType type,
 		QDateTime date, QDateTime sdate = QDateTime());
 
 	ChatMessage(const QString &rawContent, ChatMessageType type, QDateTime date,
@@ -95,7 +95,7 @@ public:
 
 	Account * account() { return SenderAccount; }
 	Contact sender() const { return Sender; }
-	ContactList receivers() const { return Receivers; }
+	ContactSet receivers() const { return Receivers; }
 
 	QDateTime date() const { return Date; }
 	QDateTime sdate() const { return SDate; }

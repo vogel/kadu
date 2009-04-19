@@ -13,7 +13,7 @@
 #include "accounts/account-manager.h"
 
 #include "contacts/contact.h"
-#include "contacts/contact-list.h"
+#include "contacts/contact-set.h"
 
 #include "config_file.h"
 #include "debug.h"
@@ -284,8 +284,8 @@ void KaduMainWindow::actionAdded(KaduAction *action)
 
 Contact KaduMainWindow::contact()
 {
-	ContactList contactList = contacts();
+	ContactSet contactList = contacts();
 	return 1 == contactList.count()
-		? contactList[0]
+		? *contactList.begin()
 		: Contact::null;
 }

@@ -2,6 +2,7 @@
 #define KADU_SEARCH_H
 
 #include "contacts/contact-list.h"
+#include "contacts/contact-set.h"
 
 #include "kadu_main_window.h"
 
@@ -129,7 +130,7 @@ public:
 
 	virtual bool supportsActionType(ActionDescription::ActionType type) { return type & ActionDescription::TypeSearch; }
 	virtual ContactsListWidget * contactsListWidget() { return 0; }
-	virtual ContactList contacts() { return ContactList(); }
+	virtual ContactSet contacts() { return ContactSet(); }
 	virtual ChatWidget * chatWidget() { return 0; }
 
 	/**

@@ -53,7 +53,7 @@ public: // TODO: 0.6.6 clean it up
 
 private:
 	ChatList ChatWidgets; /*!< lista okien*/
-	QList<ContactList> ClosedChatUsers; /*!< u�ytkownicy, kt�rych okna zosta�y zamkni�te*/
+	QList<ContactSet> ClosedChatUsers; /*!< u�ytkownicy, kt�rych okna zosta�y zamkni�te*/
 
 	/**
 		\struct ChatInfo
@@ -61,7 +61,7 @@ private:
 	**/
 	struct ChatInfo
 	{
-		ContactList contacts;          /*!< lista u�ytkownik�w identyfikuj�ca okno */
+		ContactSet contacts;          /*!< lista u�ytkownik�w identyfikuj�ca okno */
 		QMap<QString, QVariant> map;     /*!< parametry danego okna */
 		ChatInfo() : contacts(), map() {}
 	};
@@ -135,7 +135,7 @@ public:
 		\fn QValueList<ContactList> closedChatsUsers() const
 		Funkcja zwraca list� u�ytkownik�w, dla kt�rych zamkni�to okna Chat
 	**/
-	const QList<ContactList> closedChatUsers() const;
+	const QList<ContactSet> closedChatUsers() const;
 
 	/**
 		\fn ChatWidget* findChatWidget(const UserGroup *group) const;
@@ -145,7 +145,7 @@ public:
 		\return wska�nik do okna je�li istnieje w przeciwnym
 		 wypadku zwraca NULL
 	**/
-	ChatWidget * findChatWidget(ContactList contacts) const;
+	ChatWidget * findChatWidget(ContactSet contacts) const;
 
 	/**
 		\fn Chat* findChat(ContactList users) const;
@@ -169,16 +169,16 @@ public:
 		istnieje,\n je�li nie to tworzy tak�
 		w�asno�� (ustawia na pust�)
 	**/
-	QVariant & chatWidgetProperty(ContactList contacts, const QString &name);
+	QVariant & chatWidgetProperty(ContactSet contacts, const QString &name);
 
 	void loadOpenedWindows();
 	void saveOpenedWindows();
 
-	ChatWidget * chatWidgetForContactList(ContactList contacts);
+	ChatWidget * chatWidgetForContactList(ContactSet contacts);
 	void activateChatWidget(ChatWidget *chatWidget, bool forceActivate);
 
 public slots:
-	ChatWidget * openChatWidget(Account *initialAccount, ContactList contacts, bool forceActivate = false);
+	ChatWidget * openChatWidget(Account *initialAccount, ContactSet contacts, bool forceActivate = false);
 
 	/**
 		\fn void openPendingMsgs(ContactList users)
@@ -186,7 +186,7 @@ public slots:
 		z u�ytkownikami "users"
 		\param users lista u�ytkownik�w identyfikuj�cych okno
 	**/
-	void openPendingMsgs(ContactList contacts, bool forceActivate = false);
+	void openPendingMsgs(ContactSet contacts, bool forceActivate = false);
 
 	/**
 		\fn void openPendingMsgs()
@@ -201,9 +201,9 @@ public slots:
 		z u�ytkownikami "users"
 		\param users lista u�ytkownik�w identyfikuj�cych okno
 	**/
-	void deletePendingMsgs(ContactList users);
+	void deletePendingMsgs(ContactSet users);
 
-	void sendMessage(Contact user, ContactList selected_users);
+	void sendMessage(Contact user, ContactSet selected_users);
 
 	/**
 		\fn void closeAllWindows()
@@ -251,7 +251,7 @@ public slots:
 		\param name nazwa w�asno�ci
 		\param value warto�� w�asno�ci
 	**/
-	void setChatWidgetProperty(const ContactList contacts, const QString &name, const QVariant &value);
+	void setChatWidgetProperty(ContactSet contacts, const QString& name, const QVariant& value);
 
 signals:
 	/**

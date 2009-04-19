@@ -12,14 +12,14 @@
 
 #include "exports.h"
 
-class ContactList;
+class ContactSet;
 
 class KADUAPI IgnoredHelper
 {
 
 public:
-	static bool isIgnored(ContactList contacts);
-	static void setIgnored(ContactList contacts, bool ignored = true);
+	static bool isIgnored(ContactSet contacts);
+	static void setIgnored(ContactSet contacts, bool ignored = true);
 
 };
 

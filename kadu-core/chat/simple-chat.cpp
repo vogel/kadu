@@ -38,10 +38,11 @@ void SimpleChat::store()
 		return;
 
 	Chat::store();
+	storeValue("Type", "Simple");
 	storeValue("Contact", CurrentContact.uuid().toString());
 }
 
-ContactList SimpleChat::currentContacts()
+ContactSet SimpleChat::contacts()
 {
-	return CurrentContact;
+	return ContactSet(CurrentContact);
 }

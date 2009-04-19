@@ -96,7 +96,7 @@ void History::showHistoryActionActivated(QAction *sender, bool toggled)
 	KaduMainWindow *window = dynamic_cast<KaduMainWindow *>(sender->parent());
 	if (window)
 	{
-		ContactList users = window->contacts();
+		ContactSet users = window->contacts();
 		//HistoryDialog = new HistoryDlg(users);
 		HistoryDialog->show(users);
 	}

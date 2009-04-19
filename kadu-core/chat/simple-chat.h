@@ -25,7 +25,7 @@ public:
 	virtual void load();
 	virtual void store();
 
-	virtual ContactList currentContacts();
+	virtual ContactSet contacts();
 
 };
 

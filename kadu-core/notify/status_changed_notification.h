@@ -29,7 +29,7 @@ public:
 	static void registerEvents();
 	static void unregisterEvents();
 
-	StatusChangedNotification(const QString &toStatus, ContactList &contacts, Account *account);
+	StatusChangedNotification(const QString &toStatus, ContactSet &contacts, Account *account);
 	virtual ~StatusChangedNotification() {};
 
 };

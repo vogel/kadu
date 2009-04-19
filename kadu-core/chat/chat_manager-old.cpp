@@ -57,7 +57,7 @@ void disableEmptyTextBox(KaduAction *action)
 void checkBlocking(KaduAction *action)
 {
 	Account *account = AccountManager::instance()->defaultAccount();
-	ContactList contacts = action->contacts();
+	ContactSet contacts = action->contacts();
 
 	if (contacts.contains(Core::instance()->myself()))
 	{
@@ -77,7 +77,7 @@ void checkBlocking(KaduAction *action)
 
 void checkIgnoreUser(KaduAction *action)
 {
-	ContactList contacts = action->contacts();
+	ContactSet contacts = action->contacts();
 
 	if (contacts.contains(Core::instance()->myself()))
 	{
@@ -240,7 +240,8 @@ void ChatManagerOld::loadOpenedWindows()
 			QString protocolId = protocolNode.text();
 			QDomElement windowIdNode = xml_config_file->getNode(window_elem, "WindowId", XmlConfigFile::ModeFind);
 			QString accountId = windowIdNode.text();
-			ContactList contacts;
+
+			ContactSet contacts;
 			for (QDomNode contact = window_elem.firstChild(); !contact.isNull(); contact = contact.nextSibling())
 			{
 				const QDomElement &contact_elem = contact.toElement();
@@ -249,7 +250,7 @@ void ChatManagerOld::loadOpenedWindows()
 				if (contact_elem.tagName() != "Contact")
 					continue;
 				QString uuid = contact_elem.text();
-				contacts.append(ContactManager::instance()->byUuid(uuid));
+				contacts.insert(ContactManager::instance()->byUuid(uuid));
 			}
 
 			// TODO 0.6.6: fix
@@ -458,18 +459,18 @@ void ChatManagerOld::whoisActionActivated(QAction *sender, bool toggled)
 		return;
 	}
 	Account *defaultAccount = AccountManager::instance()->defaultAccount();
-	ContactList contacts = window->contacts();
+	ContactSet contacts = window->contacts();
 
 	if (contacts.count() == 0)
 		(new SearchDialog(Core::instance()->kaduWindow()))->show();
 	else
 	{
-		if (contacts[0].accountData(AccountManager::instance()->defaultAccount()) != 0)
-		{
+// 		if (contacts[0].accountData(AccountManager::instance()->defaultAccount()) != 0)
+// 		{
 			SearchDialog *sd = new SearchDialog(Core::instance()->kaduWindow()/*, contacts[0].accountData(AccountManager::instance()->defaultAccount())->id().toUInt()*/);
 			sd->show();
 			sd->firstSearch();
-		}
+// 		}
 	}
 
 	kdebugf2();
@@ -543,7 +544,7 @@ void ChatManagerOld::ignoreUserActionActivated(QAction *sender, bool toggled)
 	if (!window)
 		return;
 
-	ContactList contacts = window->contacts();
+	ContactSet contacts = window->contacts();
 	if (contacts.count() > 0)
 	{
 		bool ContainsBad = false;
@@ -594,13 +595,13 @@ void ChatManagerOld::blockUserActionActivated(QAction *sender, bool toggled)
 	if (!window)
 		return;
 
-	ContactList contacts = window->contacts();
+	ContactSet contacts = window->contacts();
 	if (contacts.count() > 0)
 	{
 		bool on = true;
 		bool blocked_anonymous = false; // true, if we blocked at least one anonymous user
 
-		ContactList copy = contacts;
+		ContactSet copy = contacts;
 
 		foreach(Contact user, copy)
 			if (user.accountData(account) == 0 || !user.isBlocked(account))
@@ -655,7 +656,7 @@ void ChatManagerOld::chatActionActivated(QAction *sender, bool toggled)
 	if (!window)
 		return;
 
-	ContactList contacts = window->contacts();
+	ContactSet contacts = window->contacts();
 	if (contacts.count() > 0)
 		openChatWidget(account, contacts, true);
 
@@ -667,7 +668,7 @@ const ChatList& ChatManagerOld::chats() const
 	return ChatWidgets;
 }
 
-const QList<ContactList> ChatManagerOld::closedChatUsers() const
+const QList<ContactSet> ChatManagerOld::closedChatUsers() const
 {
 	return ClosedChatUsers;
 }
@@ -675,6 +676,7 @@ const QList<ContactList> ChatManagerOld::closedChatUsers() const
 int ChatManagerOld::registerChatWidget(ChatWidget *chat)
 {
 	kdebugf();
+
 	ClosedChatUsers.removeOne(chat->contacts());
 	ChatWidgets.append(chat);
 
@@ -728,7 +730,7 @@ void ChatManagerOld::refreshTitlesForUser(Contact contact)
 	kdebugf2();
 }
 
-ChatWidget* ChatManagerOld::findChatWidget(ContactList contacts) const
+ChatWidget * ChatManagerOld::findChatWidget(ContactSet contacts) const
 {
 	foreach(ChatWidget *chat, ChatWidgets)
 		if (chat->contacts() == contacts)
@@ -737,7 +739,7 @@ ChatWidget* ChatManagerOld::findChatWidget(ContactList contacts) const
 	return NULL;
 }
 
-ChatWidget * ChatManagerOld::chatWidgetForContactList(ContactList contacts)
+ChatWidget * ChatManagerOld::chatWidgetForContactList(ContactSet contacts)
 {
 	foreach (ChatWidget *chatWidget, ChatWidgets)
 		if (chatWidget->contacts() == contacts)
@@ -763,7 +765,7 @@ void ChatManagerOld::activateChatWidget(ChatWidget *chatWidget, bool forceActiva
 	emit chatWidgetOpen(chatWidget);
 }
 
-ChatWidget * ChatManagerOld::openChatWidget(Account *initialAccount, ContactList contacts, bool forceActivate)
+ChatWidget * ChatManagerOld::openChatWidget(Account *initialAccount, ContactSet contacts, bool forceActivate)
 {
 	kdebugf();
 
@@ -774,7 +776,7 @@ ChatWidget * ChatManagerOld::openChatWidget(Account *initialAccount, ContactList
 		return chatWidget;
 	}
 
-	Account *account = contacts[0].prefferedAccount();
+	Account *account = (*contacts.begin()).prefferedAccount();
 	if (!account)
 		return 0;
 
@@ -812,7 +814,7 @@ ChatWidget * ChatManagerOld::openChatWidget(Account *initialAccount, ContactList
 	return chatWidget;
 }
 
-void ChatManagerOld::deletePendingMsgs(ContactList contacts)
+void ChatManagerOld::deletePendingMsgs(ContactSet contacts)
 {
 	kdebugf();
 	for (int i = 0; i < pending.count(); ++i)
@@ -835,15 +837,16 @@ ChatMessage *convertPendingToMessage(PendingMsgs::Element elem)
 	QDateTime date;
 	date.setTime_t(elem.time);
 
-	ContactList receivers;
-	receivers << Core::instance()->myself();
-	ChatMessage *message = new ChatMessage(AccountManager::instance()->defaultAccount(), elem.contacts[0], receivers, elem.msg,
+	ContactSet receivers;
+	receivers.insert(Core::instance()->myself());
+	ChatMessage *message = new ChatMessage(AccountManager::instance()->defaultAccount(),
+			*elem.contacts.begin(), receivers, elem.msg,
 			TypeReceived, QDateTime::currentDateTime(), date);
 
 	return message;
 }
 
-void ChatManagerOld::openPendingMsgs(ContactList contacts, bool forceActivate)
+void ChatManagerOld::openPendingMsgs(ContactSet contacts, bool forceActivate)
 {
 	kdebugf();
 
@@ -886,7 +889,7 @@ void ChatManagerOld::openPendingMsgs(bool forceActivate)
 	kdebugf2();
 }
 
-void ChatManagerOld::sendMessage(Contact contact, ContactList selected_contacts)
+void ChatManagerOld::sendMessage(Contact contact, ContactSet selected_contacts)
 {
 	kdebugf();
 	Account *defaultAccount = AccountManager::instance()->defaultAccount();
@@ -902,7 +905,7 @@ void ChatManagerOld::sendMessage(Contact contact, ContactList selected_contacts)
 	kdebugf2();
 }
 
-QVariant& ChatManagerOld::chatWidgetProperty(ContactList contacts, const QString &name)
+QVariant & ChatManagerOld::chatWidgetProperty(ContactSet contacts, const QString &name)
 {
 	kdebugf();
 
@@ -924,7 +927,7 @@ QVariant& ChatManagerOld::chatWidgetProperty(ContactList contacts, const QString
 	return addons[0].map[name];
 }
 
-void ChatManagerOld::setChatWidgetProperty(ContactList contacts, const QString &name, const QVariant &value)
+void ChatManagerOld::setChatWidgetProperty(ContactSet contacts, const QString &name, const QVariant &value)
 {
 	kdebugf();
 
@@ -992,9 +995,9 @@ void ChatManagerOld::configurationUpdated()
 void ChatManagerOld::messageReceived(Chat *chat, Contact sender, const QString &message)
 {
 	kdebugf();
-	ContactList receipients = chat->currentContacts();
+	ContactSet receipients = chat->contacts();
 	Account *account = chat->account();
-	ContactList conference = receipients;
+	ContactSet conference = receipients;
 	conference << sender;
 	time_t time = QDateTime::currentDateTime().toTime_t();
 

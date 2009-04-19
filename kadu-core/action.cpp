@@ -9,7 +9,7 @@
 
 #include "accounts/account-manager.h"
 #include "contacts/contact.h"
-#include "contacts/contact-list.h"
+#include "contacts/contact-set.h"
 #include "hot_key.h"
 #include "icons_manager.h"
 #include "kadu_main_window.h"
@@ -58,20 +58,20 @@ KaduAction::~KaduAction()
 
 Contact KaduAction::contact()
 {
-	ContactList contactList = contacts();
-	if (1 != contactList.count())
+	ContactSet contactSet = contacts();
+	if (1 != contactSet.count())
 		return Contact::null;
 	else
-		return contactList[0];
+		return *contactSet.begin();
 }
 
-ContactList KaduAction::contacts()
+ContactSet KaduAction::contacts()
 {
 	KaduMainWindow *kaduMainWindow = dynamic_cast<KaduMainWindow *>(parent());
 	if (kaduMainWindow)
 		return kaduMainWindow->contacts();
 	else
-		return ContactList();
+		return ContactSet();
 }
 
 void KaduAction::changedSlot()

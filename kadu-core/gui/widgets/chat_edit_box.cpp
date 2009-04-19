@@ -68,13 +68,13 @@ ContactsListWidget * ChatEditBox::contactsListWidget()
 	return 0;
 }
 
-ContactList ChatEditBox::contacts()
+ContactSet ChatEditBox::contacts()
 {
 	ChatWidget *cw = chatWidget();
 	if (cw)
-		return cw->contacts();;
+		return cw->contacts();
 
-	return ContactList();
+	return ContactSet();
 }
 
 ChatWidget * ChatEditBox::chatWidget()

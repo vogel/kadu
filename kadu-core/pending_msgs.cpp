@@ -38,7 +38,7 @@ PendingMsgs::PendingMsgs(QObject *parent)
 void PendingMsgs::deleteMsg(int index)
 {
 	kdebugm(KDEBUG_INFO, "PendingMsgs::(pre)deleteMsg(%d), count=%d\n", index, count());
-	Contact e = msgs[index].contacts[0];
+	Contact e = *msgs[index].contacts.begin();
 	msgs.removeAt(index);
 	storeConfiguration(xml_config_file);
 	kdebugm(KDEBUG_INFO, "PendingMsgs::deleteMsg(%d), count=%d\n", index, count());
@@ -47,32 +47,20 @@ void PendingMsgs::deleteMsg(int index)
 
 bool PendingMsgs::pendingMsgs(Contact contact) const
 {
-//	kdebugf();
-
-//	what is it for?
-//	if (uin == 0)
-//		return pendingMsgs();
-
-	foreach(const Element &msg, msgs)
-		if(msg.contacts[0] == contact)
-		{
-//			kdebugf2();
+	foreach (const Element &msg, msgs)
+		if (*msg.contacts.begin() == contact)
 			return true;
-		}
-//	kdebugf2();
+
 	return false;
 }
 
-unsigned int PendingMsgs::pendingMsgsCount(ContactList contacts) const
+unsigned int PendingMsgs::pendingMsgsCount(ContactSet set) const
 {
-	kdebugf();
-
 	unsigned int count = 0;
-	ContactList c1 = ContactList(contacts);
-	foreach(const Element &msg, msgs)
+
+	foreach (const Element &msg, msgs)
 	{
-		ContactList c2 = ContactList(msg.contacts);
-		if (c1 == c2)
+		if (set == msg.contacts)
 			count++;
 	}
 
@@ -94,10 +82,10 @@ PendingMsgs::Element &PendingMsgs::operator[](int index)
 	return msgs[index];
 }
 
-void PendingMsgs::addMsg(Account *account, Contact sender, ContactList receipients, QString msg, time_t time)
+void PendingMsgs::addMsg(Account *account, Contact sender, ContactSet receipients, QString msg, time_t time)
 {
 	Element e;
-	ContactList conference = receipients;
+	ContactSet conference = receipients;
 	conference << sender;
 
 	e.contacts = conference;
@@ -134,10 +122,14 @@ void PendingMsgs::loadConfiguration(XmlConfigFile *configurationStorage)
 		e.msg = codec_latin2->toUnicode(messageNode.text().toLocal8Bit().data());
 
 		QDomElement contactListNode = configurationStorage->getNode(pendingMsgsNodes.item(i).toElement(), "ContactList", XmlConfigFile::ModeFind);
-		e.contacts = ContactListConfigurationHelper::loadFromConfiguration(configurationStorage, contactListNode);
+		e.contacts.clear();
+		ContactList tmp = ContactListConfigurationHelper::loadFromConfiguration(configurationStorage, contactListNode);
+
+		foreach (Contact contact, tmp)
+			e.contacts.insert(contact);
 
 		msgs.append(e);
-		emit messageFromUserAdded(e.contacts[0]);
+		emit messageFromUserAdded(tmp[0]);
 	}
 
 	configurationStorage->removeChildren(pendingMsgsNode);
@@ -160,7 +152,7 @@ void PendingMsgs::storeConfiguration(XmlConfigFile *configurationStorage)
 		QDomElement contactListNode = configurationStorage->getNode(pendingMessageNode,
 			"ContactList", XmlConfigFile::ModeCreate);
 		
-		ContactListConfigurationHelper::saveToConfiguration(configurationStorage, contactListNode, i.contacts);
+		ContactListConfigurationHelper::saveToConfiguration(configurationStorage, contactListNode, i.contacts.toContactList());
 	}
 }
 

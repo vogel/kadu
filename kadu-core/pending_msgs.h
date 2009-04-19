@@ -15,7 +15,7 @@
 #include <time.h>
 
 #include "contacts/contact.h"
-#include "contacts/contact-list.h"
+#include "contacts/contact-set.h"
 
 #include "exports.h"
 
@@ -45,7 +45,7 @@ public:
 	**/
 	struct Element
 	{
-		ContactList contacts; /*!< Message senders list. */
+		ContactSet contacts; /*!< Message senders list. */
 		QString proto; /*!< Protocol name. */
 		QString msg; /*!< Message content. */
 		time_t time; /*!< Send time. */
@@ -81,7 +81,7 @@ public:
 		\param contacts given contact list.
 		\return pending messages count.
 	**/
-	unsigned int pendingMsgsCount(ContactList contacts) const;
+	unsigned int pendingMsgsCount(ContactSet contacts) const;
 
 	/**
 		\fn int count() const
@@ -118,7 +118,7 @@ public slots:
 		\param msg message content. TODO: const QString &
 		\param time message send time.
 	**/
-	void addMsg(Account *account, Contact sender, ContactList receipients, QString msg, time_t time);
+	void addMsg(Account *account, Contact sender, ContactSet receipients, QString msg, time_t time);
 
 	/**
 		\fn void loadConfiguration(XmlConfigFile *configurationStorage)

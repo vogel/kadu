@@ -102,13 +102,13 @@ void OpenChatWith::openChat(Contact contact)
 	if (!widget)
 		return;
 
-	ContactList contacts = widget->selectedContacts();
+	ContactSet contacts = widget->selectedContacts();
 
 	if (!contacts.isEmpty())
 	{
-		Contact contact = contacts[0];
+		Contact contact = *contacts.begin();
 
-		if (contacts[0] != Core::instance()->myself()) //TODO: elem.hasFeature("SendingMessages")
+		if (contact != Core::instance()->myself()) //TODO: elem.hasFeature("SendingMessages")
 			chat_manager->sendMessage(contact, contacts);
 		else if (contact.mobile().isEmpty() && !contact.email().isEmpty())
 			openMailClient(contact.email());
@@ -119,7 +119,7 @@ void OpenChatWith::openChat(Contact contact)
 void OpenChatWith::inputAccepted()
 {
 	kdebugf();
-	ContactList contacts = ContactsWidget->selectedContacts();
+	ContactSet contacts = ContactsWidget->selectedContacts();
 	if (!contacts.isEmpty())
 	{
 		chat_manager->openPendingMsgs(contacts, true);

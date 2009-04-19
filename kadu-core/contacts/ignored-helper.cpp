@@ -8,14 +8,16 @@
  ***************************************************************************/
 
 #include "contact.h"
-#include "contact-list.h"
+#include "contact-set.h"
 
 #include "ignored-helper.h"
 
-bool IgnoredHelper::isIgnored(ContactList contacts)
+bool IgnoredHelper::isIgnored(ContactSet contacts)
 {
 	if (1 == contacts.count())
-		return contacts[0].isIgnored();
+	{
+		return (*contacts.begin()).isIgnored();
+	}
 	else
 	{
 		// TODO: 0.6.6 implement
@@ -23,10 +25,13 @@ bool IgnoredHelper::isIgnored(ContactList contacts)
 	}
 }
 
-void IgnoredHelper::setIgnored(ContactList contacts, bool ignored)
+void IgnoredHelper::setIgnored(ContactSet contacts, bool ignored)
 {
 	if (1 == contacts.count())
-		contacts[0].setIgnored(ignored);
+	{
+		Contact c = (*contacts.begin());
+		c.setIgnored(ignored);
+	}
 	else
 	{
 		// TODO: 0.6.6 implement

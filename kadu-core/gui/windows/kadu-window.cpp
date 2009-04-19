@@ -190,13 +190,13 @@ void KaduWindow::openChatWindow(Contact contact)
 		return;
 
 	Account *account = AccountManager::instance()->defaultAccount();
-	ContactList contacts = widget->selectedContacts();
+	ContactSet contacts = widget->selectedContacts();
 
 	if (!contacts.isEmpty())
 	{
-		Contact contact = contacts[0];
+		Contact contact = *contacts.begin();
 
-		if (contacts[0] != Core::instance()->myself()) //TODO: elem.hasFeature("SendingMessages")
+		if (contact != Core::instance()->myself()) //TODO: elem.hasFeature("SendingMessages")
 			chat_manager->sendMessage(contact, contacts);
 		else if (contact.mobile().isEmpty() && !contact.email().isEmpty())
 			openMailClient(contact.email());
@@ -221,20 +221,24 @@ void KaduWindow::createRecentChatsMenu()
 
 	unsigned int index = 0; // indeks pozycji w popupie
 
-	foreach (const ContactList contacts, chat_manager->closedChatUsers())
+	foreach (const ContactSet contacts, chat_manager->closedChatUsers())
 	{
-		QString chat_users = contacts[0].display();
-		int contactsCount = contacts.count();
-		int i = 1;
-		while (i < contactsCount && i < 5)
-		{
-			chat_users.append(", " + contacts.at(i).display());
-			++i;
-		}
-		if (i < contactsCount)
-			chat_users.append(" [...]");
+		QStringList displays;
 
-		action = new QAction(icons_manager->loadIcon("OpenChat"), chat_users, this);
+		int i = 0;
+		foreach (Contact contact, contacts)
+		{
+			i++;
+			displays.append(contact.display());
+
+			if (5 == i)
+			{
+				displays.append("[...]");
+				break;
+			}
+		}
+
+		action = new QAction(icons_manager->loadIcon("OpenChat"), displays.join(", "), this);
 		action->setData(index);
 		RecentChatsMenu->addAction(action);
 
@@ -350,7 +354,7 @@ ContactsListWidget * KaduWindow::contactsListWidget()
 	return ContactsWidget;
 }
 
-ContactList KaduWindow::contacts()
+ContactSet KaduWindow::contacts()
 {
 	return ContactsWidget->selectedContacts();
 }

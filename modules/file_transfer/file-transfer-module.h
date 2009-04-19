@@ -18,7 +18,7 @@ class QAction;
 class QStringList;
 
 class ActionDescription;
-class ContactList;
+class ContactSet;
 class FileTransferWindow;
 
 class FileTransferModule : public QObject
@@ -39,7 +39,7 @@ class FileTransferModule : public QObject
 	void deleteActionDecriptions();
 
 	QStringList selectFilesToSend();
-	void selectFilesAndSend(ContactList contacts);
+	void selectFilesAndSend(ContactSet contacts);
 
 private slots:
 	void sendFileActionActivated(QAction *sender, bool toggled);

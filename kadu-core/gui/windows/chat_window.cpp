@@ -87,7 +87,7 @@ ChatWidget * ChatWindow::chatWidget()
 // TODO: zrobi� od pocz�tku, strukturalnie spieprzone
 void ChatWindow::kaduRestoreGeometry()
 {
-	ContactList contacts = currentChatWidget->contacts();
+	ContactSet contacts = currentChatWidget->contacts();
 
 	if (0 == contacts.count())
 		return;
@@ -96,7 +96,7 @@ void ChatWindow::kaduRestoreGeometry()
 
 	if (contacts.count() == 1)
 	{
-		Contact contact = contacts[0];
+		Contact contact = *contacts.begin();
 		ContactKaduData *ckd = contact.moduleData<ContactKaduData>();
 		if (ckd)
 		{
@@ -145,13 +145,13 @@ void ChatWindow::kaduStoreGeometry()
 {
 	currentChatWidget->kaduStoreGeometry();
 
-	ContactList contacts = currentChatWidget->contacts();
+	ContactSet contacts = currentChatWidget->contacts();
 
 	chat_manager->setChatWidgetProperty(currentChatWidget->contacts(), "Geometry", rectToString(geometry()));
 
 	if (contacts.count() == 1)
 	{
-		Contact contact = contacts[0];
+		Contact contact = *contacts.begin();
 		ContactKaduData *ckd = contact.moduleData<ContactKaduData>(true);
 		if (ckd)
 		{

@@ -91,7 +91,7 @@ public:
 	virtual bool validateUserID(QString &uid) = 0;
 
 	static Chat *loadChatFromStorage(StoragePoint *storage);
-	Chat * findChat(ContactList contacts);
+	Chat * findChat(ContactSet contacts);
 
 	NetworkState state() { return State; }
 	bool isConnected() { return (State == NetworkConnected); }

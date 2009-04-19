@@ -23,7 +23,7 @@ class QTemporaryFile;
 class AbstractContactFilter;
 class AbstractContactsModel;
 class Contact;
-class ContactList;
+class ContactSet;
 class ContactsListWidgetDelegate;
 class ContactsModelProxy;
 class KaduMainWindow;
@@ -91,7 +91,7 @@ public:
 	void removeFilter(AbstractContactFilter *filter);
 
 	Contact currentContact() const;
-	ContactList selectedContacts() const;
+	ContactSet selectedContacts() const;
 	void setBackground(const QString &file = QString::null, BackgroundMode mode = BackgroundNone);
 	void updateBackground();
 

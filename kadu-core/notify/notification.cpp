@@ -24,7 +24,7 @@ static QString getNotificationTitle(const QObject * const object)
 		return "";
 }
 
-Notification::Notification(const QString &type, const QIcon &icon, const ContactList &contacts)
+Notification::Notification(const QString &type, const QIcon &icon, const ContactSet &contacts)
 	: Type(type), Contacts(contacts), Title(""), Text(""), Icon(icon), DefaultCallbackTimer(0), ReferencesCount(0), Closing(false)
 {
 	KaduParser::registerObjectTag("event", getNotificationTitle);
@@ -112,7 +112,7 @@ QString Notification::type() const
 	return Type;
 }
 
-const ContactList &Notification::contacts() const
+const ContactSet & Notification::contacts() const
 {
 	return Contacts;
 }
