@@ -7,25 +7,19 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef UUID_STORABLE_OBJECT_H
-#define UUID_STORABLE_OBJECT_H
+#ifndef CONTACT_SET_CONFIGURATION_HELPER_H
+#define CONTACT_SET_CONFIGURATION_HELPER_H
 
-#include <QtCore/QUuid>
+#include "contacts/contact-set.h"
 
-#include "storable-object.h"
-
-class UuidStorableObject : public StorableObject
+class ContactSetConfigurationHelper
 {
-
-protected:
-	virtual StoragePoint * createStoragePoint();
-
 public:
-	UuidStorableObject(StoragePoint *storage);
-	UuidStorableObject(const QString &nodeName, StorableObject *parent);
-
-	virtual QUuid uuid() const = 0;
+	static ContactSet loadFromConfiguration(StorableObject *parent, const QString &nodeName);
+	static ContactSet loadFromConfiguration(XmlConfigFile *configurationStorage, QDomElement contactSetNode);
+	static void saveToConfiguration(StorableObject *parent, const QString &nodeName, ContactSet contactSet);
+	static void saveToConfiguration(XmlConfigFile *configurationStorage, QDomElement contactSetNode, ContactSet contactSet);
 
 };
 
-#endif // UUID_STORABLE_OBJECT_H
+#endif // CONTACT_SET_CONFIGURATION_HELPER_H

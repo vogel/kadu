@@ -9,6 +9,11 @@
 
 #include "uuid-storable-object.h"
 
+UuidStorableObject::UuidStorableObject(StoragePoint *storage) :
+		StorableObject(storage)
+{
+}
+
 UuidStorableObject::UuidStorableObject(const QString &nodeName, StorableObject *parent) :
 		StorableObject(nodeName, parent)
 {

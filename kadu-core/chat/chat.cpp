@@ -28,6 +28,11 @@ Chat * Chat::loadFromStorage(StoragePoint *chatStoragePoint)
 	return account->protocol()->loadChatFromStorage(chatStoragePoint);
 }
 
+Chat::Chat(StoragePoint *storage) :
+		UuidStorableObject(storage)
+{
+
+}
 
 Chat::Chat(Account *currentAccount, QUuid uuid) :
 		UuidStorableObject("Chat", ChatManager::instance()), CurrentAccount(currentAccount), Uuid(uuid.isNull() ? QUuid::createUuid() : uuid)
@@ -43,7 +48,9 @@ void Chat::load()
 	if (!isValidStorage())
 		return;
 
-	StorableObject::load();
+	UuidStorableObject::load();
+
+	Uuid = loadAttribute<QString>("uuid");
 	CurrentAccount = AccountManager::instance()->byUuid(QUuid(loadValue<QString>("Account")));
 }
 

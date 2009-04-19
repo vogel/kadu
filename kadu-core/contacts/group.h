@@ -35,7 +35,8 @@ friend class GroupManager;
 public:
 	static Group * loadFromStorage(StoragePoint *groupStoragePoint);
 
-	Group(QUuid uuid = QUuid());
+	explicit Group(StoragePoint *storagePoint);
+	explicit Group(QUuid uuid = QUuid());
 	~Group();
 
 	virtual void load();

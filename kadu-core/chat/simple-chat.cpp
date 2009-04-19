@@ -14,8 +14,13 @@
 #include "simple-chat.h"
 #include "chat-manager.h"
 
-SimpleChat::SimpleChat(Account *currentAccount, Contact contact, QUuid uuid)
-	: Chat(currentAccount, uuid), CurrentContact(contact)
+SimpleChat::SimpleChat(StoragePoint *storage) :
+		Chat(storage)
+{
+}
+
+SimpleChat::SimpleChat(Account *currentAccount, Contact contact, QUuid uuid) :
+		Chat(currentAccount, uuid), CurrentContact(contact)
 {
 }
 

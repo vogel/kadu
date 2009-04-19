@@ -9,6 +9,11 @@
 
 #include "storable-object.h"
 
+StorableObject::StorableObject(StoragePoint *storage, bool loaded) :
+		Parent(0), Storage(storage), Loaded(loaded)
+{
+}
+
 StorableObject::StorableObject(bool loaded) :
 		Parent(0), Storage(0), Loaded(loaded)
 {
@@ -63,9 +68,12 @@ void StorableObject::removeFromStorage()
 	Storage = 0;
 }
 
-void StorableObject::storeValue(const QString &name, const QVariant value)
+void StorableObject::storeValue(const QString &name, const QVariant value, bool attribute)
 {
-	Storage->storage()->createTextNode(Storage->point(), name, value.toString());
+	if (attribute)
+		Storage->point().setAttribute(name, value.toString());
+	else
+		Storage->storage()->createTextNode(Storage->point(), name, value.toString());
 }
 
 void StorableObject::storeModuleData()

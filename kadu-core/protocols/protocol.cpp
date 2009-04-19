@@ -15,8 +15,8 @@
 #include "chat/conference-chat.h"
 #include "chat/simple-chat.h"
 #include "contacts/contact-account-data.h"
-#include "contacts/contact-list-configuration-helper.h"
 #include "contacts/contact-manager.h"
+#include "contacts/contact-set-configuration-helper.h"
 #include "icons_manager.h"
 #include "protocols/protocol-factory.h"
 #include "protocols/status.h"
@@ -139,21 +139,13 @@ Chat * Protocol::loadChatFromStorage(StoragePoint *chatStorage)
 	QString type = storage->getTextNode(point, "Type");
 	if ("Simple" == type)
 	{
-		Contact contact = ContactManager::instance()->byUuid(storage->getTextNode(point, "Contact"));
-		SimpleChat *result = new SimpleChat(account, contact, QUuid(storage->getTextNode(point, "Uuid")));
-		result->setStorage(chatStorage);
+		SimpleChat *result = new SimpleChat(chatStorage);
 		result->load();
 		return result;
 	}
 	else if ("Conference" == type)
 	{
-		ContactSet contacts;
-		ContactList tmp = ContactListConfigurationHelper::loadFromConfiguration(storage, point);
-		foreach (Contact contact, tmp)
-			contacts.insert(contact);
-
-		ConferenceChat *result = new ConferenceChat(account, contacts, QUuid(storage->getTextNode(point, "Uuid")));
-		result->setStorage(chatStorage);
+		ConferenceChat *result = new ConferenceChat(chatStorage);
 		result->load();
 		return result;
 	}

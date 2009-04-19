@@ -16,6 +16,11 @@
 
 #include "group.h"
 
+Group::Group(StoragePoint *storagePoint) :
+		UuidStorableObject(storagePoint)
+{
+}
+
 Group::Group(QUuid uuid) :
 		UuidStorableObject("Group", GroupManager::instance()),
 		Uuid(uuid.isNull() ? QUuid::createUuid() : uuid)
@@ -28,8 +33,7 @@ Group::~Group()
 
 Group * Group::loadFromStorage(StoragePoint *groupStoragePoint)
 {
-	Group *group = new Group();
-	group->setStorage(groupStoragePoint);
+	Group *group = new Group(groupStoragePoint);
 	group->load();
 
 	return group;
@@ -53,12 +57,7 @@ void Group::load()
 	if (!isValidStorage())
 		return;
 
-	StoragePoint *sp = storage();
-	XmlConfigFile *configurationStorage = sp->storage();
-	QDomElement parent = sp->point();
-
-	Uuid = QUuid(parent.attribute("uuid"));
-
+	Uuid = loadAttribute<QString>("uuid");
 	Name = loadValue<QString>("Name");
 	Icon = loadValue<QString>("Icon");
 	NotifyAboutStatusChanges = loadValue<bool>("NotifyAboutStatusChanges", true);

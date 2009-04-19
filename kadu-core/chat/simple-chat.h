@@ -19,6 +19,7 @@ class SimpleChat : public Chat
 	Contact CurrentContact;
 
 public:
+	SimpleChat(StoragePoint *storage);
 	SimpleChat(Account *parentAccount, Contact contact, QUuid uuid = QUuid());
 	virtual ~SimpleChat();
 

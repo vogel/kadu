@@ -29,7 +29,8 @@ protected:
 	virtual StoragePoint * createStoragePoint();
 
 public:
-	StorableObject(bool loaded = false);
+	explicit StorableObject(bool loaded = false);
+	StorableObject(StoragePoint *storage, bool loaded = false);
 	StorableObject(const QString &nodeName, StorableObject *parent, bool loaded = false);
 
 	StorableObject * parent() { return Parent; }
@@ -49,6 +50,13 @@ public:
 	StoragePoint * storagePointForModuleData(const QString &module, bool create = false);
 
 template<class T>
+	T loadAttribute(const QString &name) const
+	{
+		QVariant value = Storage->point().attribute("name");
+		return value.value<T>();
+	}
+
+template<class T>
 	T loadValue(const QString &name) const
 	{
 		QVariant value;
@@ -60,13 +68,23 @@ template<class T>
 	}
 
 template<class T>
+	T loadAttribute(const QString &name, T def) const
+	{
+		if (Storage->point().hasAttribute(name))
+		{
+			QVariant value = Storage->point().attribute(name);
+			return value.value<T>();
+		}
+
+		return def;
+	}
+
+template<class T>
 	T loadValue(const QString &name, T def) const
 	{
-		QVariant value;
-
 		if (Storage->storage()->hasNode(Storage->point(), name))
 		{
-			value = Storage->storage()->getTextNode(Storage->point(), name);
+			QVariant value = Storage->storage()->getTextNode(Storage->point(), name);
 			return value.value<T>();
 		}
 
@@ -98,7 +116,7 @@ template<class T>
 		return result;
 	}
 
-	void storeValue(const QString &name, const QVariant value);
+	void storeValue(const QString &name, const QVariant value, bool attribute = false);
 	void storeModuleData();
 
 };

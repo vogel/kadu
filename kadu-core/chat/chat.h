@@ -25,6 +25,7 @@ class Chat : public UuidStorableObject
 public:
 	static Chat * loadFromStorage(StoragePoint *conferenceStoragePoint);
 
+	explicit Chat(StoragePoint *storage);
 	explicit Chat(Account *parentAccount, QUuid uuid = QUuid());
 	virtual ~Chat();
 

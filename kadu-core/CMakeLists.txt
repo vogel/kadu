@@ -30,6 +30,7 @@ set (kadu_SRCS
 	contacts/contact-list-mime-data-helper.cpp
 	contacts/contact-manager.cpp
 	contacts/contact-set.cpp
+	contacts/contact-set-configuration-helper.cpp
 	contacts/contacts-aware-object.cpp
 	contacts/group.cpp
 	contacts/group-manager.cpp
