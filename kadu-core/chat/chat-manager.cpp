@@ -18,7 +18,10 @@ ChatManager * ChatManager::Instance = 0;
 ChatManager *  ChatManager::instance()
 {
 	if (0 == Instance)
+	{
 		Instance = new ChatManager();
+		Instance->init();
+	}
 
 	return Instance;
 }
@@ -32,6 +35,13 @@ ChatManager::ChatManager() :
 ChatManager::~ChatManager()
 {
 	Core::instance()->configuration()->unregisterStorableObject(this);
+
+	triggerAllAccountsUnregistered();
+}
+
+void ChatManager::init()
+{
+	triggerAllAccountsRegistered();
 }
 
 StoragePoint * ChatManager::createStoragePoint()

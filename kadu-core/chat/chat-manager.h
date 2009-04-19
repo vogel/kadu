@@ -36,6 +36,8 @@ class ChatManager : public QObject, public StorableObject, public AccountsAwareO
 	ChatManager();
 	virtual ~ChatManager();
 
+	void init();
+
 	void load(Account *account);
 	void store(Account *account);
 
