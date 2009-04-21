@@ -38,9 +38,9 @@ JabberChatService::JabberChatService(JabberProtocol *protocol)
 bool JabberChatService::sendMessage(Chat *chat, Message &message)
 {
 	kdebugf();
-	ContactList users = chat->currentContacts();
-	// TODO send to more users
-	Contact contact = users[0];
+	ContactSet contacts = chat->contacts();
+        // TODO send to more users
+	Contact contact = (*contacts.begin());
 	//QString cleanmsg = toPlainText(mesg);
 	QString plain = message.toPlain();
 	const XMPP::Jid jus = contact.id(Protocol->account());
@@ -85,14 +85,11 @@ void JabberChatService::clientMessageReceived(const XMPP::Message &msg)
 
 	// TODO - zaimplementowac to samo w ContactList
 	Contact contact = Protocol->account()->getContactById(msg.from().bare());
-	ContactList contacts; // add here rest contacts if this is muc
-	//FIXME: dunno why, but commenting it fixed for now (08.04.2009) problem with finding chat for contact (conference window was always being opened for 1 contact)
-	//contacts << contact;
+	ContactSet contacts = ContactSet(contact);
 	time_t msgtime = msg.timeStamp().toTime_t();
 	Message message(msg.body());
 
 	bool ignore = false;
-	// TODO  : contacts?
 	Chat *chat = Protocol->findChat(contacts);
 	emit receivedMessageFilter(chat, contact, message.toPlain(), msgtime, ignore);
 	if (ignore)
