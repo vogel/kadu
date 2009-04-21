@@ -14,6 +14,7 @@
 #include "kadu_parser.h"
 #include "notification.h"
 
+class Chat;
 class ContactSet;
 
 class AccountNotification : public Notification
@@ -23,10 +24,11 @@ class AccountNotification : public Notification
 	Account *CurrentAccount;
 
 public:
-	AccountNotification(Account *account, const QString &type, const QIcon &icon, const ContactSet &contacts);
+	AccountNotification(Account *account, const QString &type, const QIcon &icon, Chat *chat);
 	virtual ~AccountNotification();
 
-	Account * account() const {return CurrentAccount;}
+	Account * account() const { return CurrentAccount; }
+
 };
 
 #endif // ACCOUNT_NOTIFICATION_H

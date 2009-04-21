@@ -1,7 +1,7 @@
 #ifndef KADU_CHAT_WINDOW_H
 #define KADU_CHAT_WINDOW_H
 
-#include "gui/widgets/chat_widget.h"
+#include "gui/widgets/chat-widget.h"
 
 #include "configuration_aware_object.h"
 
@@ -13,14 +13,14 @@ class ChatWindow : public QWidget, public ChatContainer, ConfigurationAwareObjec
 
 private:
 	ChatWidget *currentChatWidget;
-	QTimer *title_timer;  /*!< zmienna przechowuj±ca czas od ostatniego od¶wie¿enia tytu³u okna */
+	QTimer *title_timer;  /*!< zmienna przechowujï¿½ca czas od ostatniego odï¿½wieï¿½enia tytuï¿½u okna */
 
 	void kaduStoreGeometry();
 	void kaduRestoreGeometry();
 
-	bool activateWithNewMessages; /*!< czy aktywujemy okno po przyj¶ciu nowej wiadomo¶ci */
-	bool showNewMessagesNum; /*!< czy pokazujemy liczbê nowych wiadomo¶ci w tytule nieaktywnego okna */
-	bool blinkChatTitle; /*!< czy tytu³ nieaktywnego okna z nieprzeczytanymi wiadomo¶ciami powinien mrugaæ */
+	bool activateWithNewMessages; /*!< czy aktywujemy okno po przyjï¿½ciu nowej wiadomoï¿½ci */
+	bool showNewMessagesNum; /*!< czy pokazujemy liczbï¿½ nowych wiadomoï¿½ci w tytule nieaktywnego okna */
+	bool blinkChatTitle; /*!< czy tytuï¿½ nieaktywnego okna z nieprzeczytanymi wiadomoï¿½ciami powinien mrugaï¿½ */
 
 private slots:
 	void updateTitle();
@@ -28,13 +28,13 @@ private slots:
 protected:
 	/**
 		\fn virtual void closeEvent(QCloseEvent* e)
-		Funkcja obs³uguj±ca zamkniêcie okna
+		Funkcja obsï¿½ugujï¿½ca zamkniï¿½cie okna
 	**/
 	virtual void closeEvent(QCloseEvent *e);
 
 	/**
 		\fn virtual void windowActivationChange(bool oldActive)
-		Funkcja steruj±ca mruganiem napisu okna
+		Funkcja sterujï¿½ca mruganiem napisu okna
 	**/
 	virtual void windowActivationChange(bool oldActive);
 
@@ -56,8 +56,8 @@ public slots:
 
 	/**
 		\fn void alertNewMessage()
-		Slot informuj±cy o nowej wiadomo¶ci
-		mruganie je¶li okno jest nieaktywne
+		Slot informujï¿½cy o nowej wiadomoï¿½ci
+		mruganie jeï¿½li okno jest nieaktywne
 	**/
 	void alertNewMessage();
 

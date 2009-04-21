@@ -19,7 +19,7 @@
 #include "chat/chat_styles_manager.h"
 
 #include "gui/widgets/chat_messages_view.h"
-#include "gui/widgets/chat_widget.h"
+#include "gui/widgets/chat-widget.h"
 #include "gui/widgets/preview.h"
 
 #include "protocols/protocol-factory.h"
@@ -317,10 +317,10 @@ QString AdiumChatStyleEngine::replaceKeywords(ChatMessagesView *view, QString &s
 	if (view && view->chat())
 	{
 		// Replace %chatName% //TODO. Find way to dynamic update this tag (add id ?)
-		int uinsSize = view->chat()->contacts().count();
+		int uinsSize = view->chat()->chat()->contacts().count();
 		int i = 0;
 
-		foreach(const Contact &contact, view->chat()->contacts())
+		foreach(const Contact &contact, view->chat()->chat()->contacts())
 		{
 			name.append(contact.display());
 

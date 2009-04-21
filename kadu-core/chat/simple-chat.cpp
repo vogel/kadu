@@ -47,7 +47,7 @@ void SimpleChat::store()
 	storeValue("Contact", CurrentContact.uuid().toString());
 }
 
-ContactSet SimpleChat::contacts()
+ContactSet SimpleChat::contacts() const
 {
 	return ContactSet(CurrentContact);
 }

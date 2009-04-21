@@ -15,6 +15,7 @@
 #include <time.h>
 
 #include "accounts/accounts-aware-object.h"
+#include "chat/chat.h"
 #include "contacts/contact.h"
 #include "contacts/contact-set.h"
 #include "protocols/status.h"
@@ -52,7 +53,7 @@ class KADUAPI NotificationManager : public QObject, AccountsAwareObject
 	void createDefaultConfiguration();
 
 private slots:
-	void messageReceived(Account* account, ContactSet contacts, const QString& msg, time_t t);
+	void messageReceived(Chat *chat, Contact sender, const QString &message);
 
 	void statusChanged(Account *account, Contact contact, Status oldStatus);
 

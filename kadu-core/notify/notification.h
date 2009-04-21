@@ -18,6 +18,8 @@
 
 class QTimer;
 
+class Chat;
+
 /**
 	@class Notification
 	@author Rafa� 'Vogel' Malinowski
@@ -77,7 +79,7 @@ public:
 private:
 
 	QString Type;
-	ContactSet Contacts;
+	Chat *CurrentChat;
 
 	QString Title;
 	QString Text;
@@ -101,7 +103,7 @@ public:
 		@arg icon nazwa ikony zdarzenia
 		@arg userListElements lista kontakt�w powi�zana ze zdarzeniem
 	 **/
-	Notification(const QString &type, const QIcon &icon, const ContactSet &contacts);
+	Notification(const QString &type, const QIcon &icon, Chat *chat);
 	virtual ~Notification();
 
 	/**
@@ -152,7 +154,7 @@ public:
 
 		@return lista kontakt�w powi�zana ze zdarzeniem
 	 **/
-	const ContactSet & contacts() const;
+	Chat * chat() const;
 
 	/**
 		Ustawia tytu� zdarzenia.

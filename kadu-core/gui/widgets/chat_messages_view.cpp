@@ -20,7 +20,7 @@
 
 #include "protocols/services/chat-image-service.h"
 
-#include "chat_widget.h"
+#include "chat-widget.h"
 #include "config_file.h"
 #include "debug.h"
 

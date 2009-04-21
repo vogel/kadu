@@ -14,7 +14,7 @@
 
 #include "contacts/contact-list.h"
 
-#include "gui/widgets/chat_widget.h"
+#include "gui/widgets/chat-widget.h"
 
 #include "configuration_aware_object.h"
 
@@ -53,7 +53,7 @@ public: // TODO: 0.6.6 clean it up
 
 private:
 	ChatList ChatWidgets; /*!< lista okien*/
-	QList<ContactSet> ClosedChatUsers; /*!< u�ytkownicy, kt�rych okna zosta�y zamkni�te*/
+	QList<Chat *> ClosedChats; /*!< u�ytkownicy, kt�rych okna zosta�y zamkni�te*/
 
 	/**
 		\struct ChatInfo
@@ -135,7 +135,7 @@ public:
 		\fn QValueList<ContactList> closedChatsUsers() const
 		Funkcja zwraca list� u�ytkownik�w, dla kt�rych zamkni�to okna Chat
 	**/
-	const QList<ContactSet> closedChatUsers() const;
+	const QList<Chat *> closedChats() const;
 
 	/**
 		\fn ChatWidget* findChatWidget(const UserGroup *group) const;
@@ -145,7 +145,7 @@ public:
 		\return wska�nik do okna je�li istnieje w przeciwnym
 		 wypadku zwraca NULL
 	**/
-	ChatWidget * findChatWidget(ContactSet contacts) const;
+	ChatWidget * findChatWidget(Chat *chat) const;
 
 	/**
 		\fn Chat* findChat(ContactList users) const;
@@ -174,11 +174,11 @@ public:
 	void loadOpenedWindows();
 	void saveOpenedWindows();
 
-	ChatWidget * chatWidgetForContactList(ContactSet contacts);
+	ChatWidget * chatWidgetForChat(Chat *chat);
 	void activateChatWidget(ChatWidget *chatWidget, bool forceActivate);
 
 public slots:
-	ChatWidget * openChatWidget(Account *initialAccount, ContactSet contacts, bool forceActivate = false);
+	ChatWidget * openChatWidget(Chat *chat, bool forceActivate = false);
 
 	/**
 		\fn void openPendingMsgs(ContactList users)
@@ -186,7 +186,7 @@ public slots:
 		z u�ytkownikami "users"
 		\param users lista u�ytkownik�w identyfikuj�cych okno
 	**/
-	void openPendingMsgs(ContactSet contacts, bool forceActivate = false);
+	void openPendingMsgs(Chat *chat, bool forceActivate = false);
 
 	/**
 		\fn void openPendingMsgs()
@@ -203,7 +203,7 @@ public slots:
 	**/
 	void deletePendingMsgs(ContactSet users);
 
-	void sendMessage(Contact user, ContactSet selected_users);
+	void sendMessage(Chat *chat);
 
 	/**
 		\fn void closeAllWindows()

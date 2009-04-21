@@ -34,7 +34,7 @@ public:
 
 	virtual QUuid uuid() const { return Uuid; }
 
-	virtual ContactSet contacts() = 0;
+	virtual ContactSet contacts() const = 0;
 	Account * account() { return CurrentAccount; }
 
 };

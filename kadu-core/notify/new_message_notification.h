@@ -12,6 +12,7 @@
 
 #include "account-notification.h"
 
+class Chat;
 class ContactSet;
 class NotifyEvent;
 
@@ -31,7 +32,7 @@ public:
 	static void registerEvents();
 	static void unregisterEvents();
 
-	MessageNotification(MessageType messageType, const ContactSet &contacts, const QString &message, Account *account);
+	MessageNotification(MessageType messageType, Chat *chat, const QString &message);
 	virtual ~MessageNotification() {};
 
 };

@@ -22,7 +22,7 @@
 #include <math.h>
 #include <algorithm>
 
-#include "gui/widgets/chat_widget.h"
+#include "gui/widgets/chat-widget.h"
 
 #include "config_file.h"
 #include "debug.h"

@@ -67,7 +67,7 @@ set (kadu_SRCS
 
 	gui/widgets/chat_edit_box.cpp
 	gui/widgets/chat_messages_view.cpp
-	gui/widgets/chat_widget.cpp
+	gui/widgets/chat-widget.cpp
 	gui/widgets/contact-account-data-widget.cpp
 	gui/widgets/contact-info-panel.cpp
 	gui/widgets/contacts-list-widget.cpp
@@ -246,7 +246,7 @@ set (kadu_MOC_SRCS
 
 	gui/widgets/chat_edit_box.h
 	gui/widgets/chat_messages_view.h
-	gui/widgets/chat_widget.h
+	gui/widgets/chat-widget.h
 	gui/widgets/contact-account-data-widget.h
 	gui/widgets/contact-info-panel.h
 	gui/widgets/contacts-list-widget.h

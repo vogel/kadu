@@ -87,27 +87,29 @@ ChatWidget * ChatWindow::chatWidget()
 // TODO: zrobi� od pocz�tku, strukturalnie spieprzone
 void ChatWindow::kaduRestoreGeometry()
 {
-	ContactSet contacts = currentChatWidget->contacts();
+	// TODO: 0.6.6 apply this data to CurrentChat, it has ModuleData structures
 
-	if (0 == contacts.count())
-		return;
-
-	QRect geom = stringToRect(chat_manager->chatWidgetProperty(currentChatWidget->contacts(), "Geometry").toString());
-
-	if (contacts.count() == 1)
-	{
-		Contact contact = *contacts.begin();
-		ContactKaduData *ckd = contact.moduleData<ContactKaduData>();
-		if (ckd)
-		{
-			geom = ckd->chatGeometry();
-			delete ckd;
-		}
-	}
+// 	ContactSet contacts = currentChatWidget->contacts();
+// 
+// 	if (0 == contacts.count())
+// 		return;
+// 
+// 	QRect geom = stringToRect(chat_manager->chatWidgetProperty(currentChatWidget->contacts(), "Geometry").toString());
+// 
+// 	if (contacts.count() == 1)
+// 	{
+// 		Contact contact = *contacts.begin();
+// 		ContactKaduData *ckd = contact.moduleData<ContactKaduData>();
+// 		if (ckd)
+// 		{
+// 			geom = ckd->chatGeometry();
+// 			delete ckd;
+// 		}
+// 	}
 
 // 	if (geom.isEmpty() && contacts.count() == 1)
 // 		geom = stringToRect(ules[0].data("ChatGeometry").toString());
-
+/*
 	if (geom.isEmpty())
 	{
 		QSize size(0, 400);
@@ -138,11 +140,13 @@ void ChatWindow::kaduRestoreGeometry()
 		currentChatWidget->setGeometry(geom);
 
 		currentChatWidget->kaduRestoreGeometry();
-	}
+	}*/
 }
 
 void ChatWindow::kaduStoreGeometry()
 {
+	// TODO: 0.6.6 as above
+/*
 	currentChatWidget->kaduStoreGeometry();
 
 	ContactSet contacts = currentChatWidget->contacts();
@@ -159,8 +163,7 @@ void ChatWindow::kaduStoreGeometry()
 			ckd->storeConfiguration();
 			delete ckd;
 		}
-	}
-
+	}*/
 }
 
 void ChatWindow::closeEvent(QCloseEvent *e)

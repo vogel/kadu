@@ -192,16 +192,16 @@ void KaduWindow::openChatWindow(Contact contact)
 	Account *account = AccountManager::instance()->defaultAccount();
 	ContactSet contacts = widget->selectedContacts();
 
-	if (!contacts.isEmpty())
+	if (!contacts.contains(Core::instance()->myself()) && account)
 	{
-		Contact contact = *contacts.begin();
-
-		if (contact != Core::instance()->myself()) //TODO: elem.hasFeature("SendingMessages")
-			chat_manager->sendMessage(contact, contacts);
-		else if (contact.mobile().isEmpty() && !contact.email().isEmpty())
-			openMailClient(contact.email());
-
+		Chat *chat = account->protocol()->findChat(contacts);
+		chat_manager->sendMessage(chat);
+		return;
 	}
+
+	contact = *contacts.begin();
+	if (contact.mobile().isEmpty() && !contact.email().isEmpty())
+		openMailClient(contact.email());
 }
 
 void KaduWindow::createRecentChatsMenu()
@@ -210,7 +210,7 @@ void KaduWindow::createRecentChatsMenu()
 
 	RecentChatsMenu->clear();
 	QAction *action;
-	if (chat_manager->closedChatUsers().isEmpty())
+	if (chat_manager->closedChats().isEmpty())
 	{
 		action = RecentChatsMenu->addAction(tr("No closed chats found"));
 		action->setEnabled(false);
@@ -221,12 +221,12 @@ void KaduWindow::createRecentChatsMenu()
 
 	unsigned int index = 0; // indeks pozycji w popupie
 
-	foreach (const ContactSet contacts, chat_manager->closedChatUsers())
+	foreach (const Chat *chat, chat_manager->closedChats())
 	{
 		QStringList displays;
 
 		int i = 0;
-		foreach (Contact contact, contacts)
+		foreach (Contact contact, chat->contacts())
 		{
 			i++;
 			displays.append(contact.display());
@@ -251,7 +251,8 @@ void KaduWindow::createRecentChatsMenu()
 void KaduWindow::openRecentChats(QAction *action)
 {
 	kdebugf();
-	chat_manager->openPendingMsgs(chat_manager->closedChatUsers().at(action->data().toInt()), true);
+// TODO: 0.6.6
+// 	chat_manager->openPendingMsgs(chat_manager->chats().at(action->data().toInt()), true);
 	kdebugf2();
 }
 

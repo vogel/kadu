@@ -24,8 +24,8 @@ static QString getNotificationTitle(const QObject * const object)
 		return "";
 }
 
-Notification::Notification(const QString &type, const QIcon &icon, const ContactSet &contacts)
-	: Type(type), Contacts(contacts), Title(""), Text(""), Icon(icon), DefaultCallbackTimer(0), ReferencesCount(0), Closing(false)
+Notification::Notification(const QString& type, const QIcon& icon, Chat *chat)
+	: Type(type), CurrentChat(chat), Title(""), Text(""), Icon(icon), DefaultCallbackTimer(0), ReferencesCount(0), Closing(false)
 {
 	KaduParser::registerObjectTag("event", getNotificationTitle);
 }
@@ -112,9 +112,9 @@ QString Notification::type() const
 	return Type;
 }
 
-const ContactSet & Notification::contacts() const
+Chat * Notification::chat() const
 {
-	return Contacts;
+	return CurrentChat;
 }
 
 void Notification::setTitle(const QString &title)

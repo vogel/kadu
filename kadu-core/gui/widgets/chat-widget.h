@@ -7,8 +7,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef KADU_CHAT_WIDGET_H
-#define KADU_CHAT_WIDGET_H
+#ifndef CHAT_WIDGET_H
+#define CHAT_WIDGET_H
 
 #include <QtCore/QDateTime>
 #include <QtCore/QList>
@@ -51,8 +51,6 @@ class KADUAPI ChatWidget : public QWidget, ConfigurationAwareObject, AccountsAwa
 private:
 	friend class ChatManagerOld;
 
-	Account *CurrentAccount;
-	ContactSet Contacts;
 	Chat *CurrentChat;
 
 	QString Caption; /*!< tytu� okna */
@@ -134,22 +132,10 @@ protected:
 	virtual void accountUnregistered(Account *account);
 
 public:
-	/**
-		Konstruktor okna rozmowy
-		\fn Chat(ContactList contacts, QWidget* parent = 0)
-		\param usrs lista kontakt�w, z kt�rymi prowadzona jest rozmowa
-		\param parent rodzic okna
-	**/
-	ChatWidget(Account *initialAccount, const ContactSet &contacts, QWidget *parent = 0);
+	explicit ChatWidget(Chat *chat, QWidget *parent = 0);
+	virtual ~ChatWidget();
 
-	/**
-		\fn ~Chat()
-		Destruktor okna rozmowy
-	**/
-	~ChatWidget();
-
-	Account * account() { return CurrentAccount; }
-	ContactSet contacts() { return Contacts; }
+	Chat * chat() { return CurrentChat; };
 
 	/**
 		Dodaje now� wiadomos� systemow� do okna.
@@ -367,7 +353,8 @@ signals:
 		\param receivers list of receivers
 		\param message the message
 	**/
-	void messageSentAndConfirmed(ContactSet receivers, const QString &message);
+	void messageSentAndConfirmed(Chat *chat, const QString &message);
+	void messageReceived(Chat *chat);
 
 	/**
 		\fn void fileDropped(const UserGroup *users, const QString& fileName)
@@ -376,9 +363,7 @@ signals:
 	\param users lista u�ytkownik�w
 		\param fileName nazwa pliku
 	**/
-	void fileDropped(ContactSet contacts, const QString &fileName);
-
-	void messageReceived(ChatWidget *);
+	void fileDropped(Chat *contacts, const QString &fileName);
 
 	void captionUpdated();
 	void closed();
@@ -410,4 +395,4 @@ class ChatContainer
 		virtual void closeChatWidget(ChatWidget *chat) = 0;
 };
 
-#endif
+#endif // CHAT_WIDGET_H

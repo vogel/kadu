@@ -9,8 +9,9 @@
 
 #include <QtXml/QDomElement>
 
+#include "chat/chat.h"
 #include "config_file.h"
-#include "chat_widget.h"
+#include "chat-widget.h"
 #include "custom_input.h"
 #include "toolbar.h"
 #include "xml_config_file.h"
@@ -62,7 +63,7 @@ bool ChatEditBox::supportsActionType(ActionDescription::ActionType type)
 ContactsListWidget * ChatEditBox::contactsListWidget()
 {
 	ChatWidget *cw = chatWidget();
-	if (cw && cw->contacts().count() > 1)
+	if (cw && cw->chat()->contacts().count() > 1)
 		return cw->contactsListWidget();
 
 	return 0;
@@ -72,7 +73,7 @@ ContactSet ChatEditBox::contacts()
 {
 	ChatWidget *cw = chatWidget();
 	if (cw)
-		return cw->contacts();
+		return cw->chat()->contacts();
 
 	return ContactSet();
 }

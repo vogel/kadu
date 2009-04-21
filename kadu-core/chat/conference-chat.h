@@ -32,7 +32,7 @@ public:
 	virtual void load();
 	virtual void store();
 
-	virtual ContactSet contacts() { return CurrentContacts; }
+	virtual ContactSet contacts() const { return CurrentContacts; }
 
 };
 

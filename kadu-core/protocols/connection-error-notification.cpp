@@ -62,8 +62,9 @@ bool ConnectionErrorNotification::activeError(Account *account, const QString &e
 	return ActiveErrors.contains(account) && ActiveErrors[account].contains(errorMessage);
 }
 
-ConnectionErrorNotification::ConnectionErrorNotification(Account *account, const QString &errorServer, const QString &errorMessage)
-	: AccountNotification(account, "ConnectionError", icons_manager->loadIcon("CriticalSmall"), ContactSet()), ErrorServer(errorServer), ErrorMessage(errorMessage)
+ConnectionErrorNotification::ConnectionErrorNotification(Account *account, const QString &errorServer, const QString &errorMessage) :
+		AccountNotification(account, "ConnectionError", icons_manager->loadIcon("CriticalSmall"), 0),
+		ErrorServer(errorServer), ErrorMessage(errorMessage)
 {
 	setTitle(tr("Connection error"));
 	setText(tr("<b>Error:</b> (%1) %2").arg(ErrorServer).arg(ErrorMessage));

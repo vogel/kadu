@@ -18,7 +18,7 @@
 #include "contacts/contact-list.h"
 #include "contacts/contact-manager.h"
 #include "contact-notify-data.h"
-#include "gui/widgets/chat_widget.h"
+#include "gui/widgets/chat-widget.h"
 #include "gui/widgets/configuration/configuration-widget.h"
 #include "gui/widgets/configuration/config-combo-box.h"
 #include "gui/widgets/configuration/config-group-box.h"

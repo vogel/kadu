@@ -151,10 +151,15 @@ void NotificationManager::accountRegistered(Account *account)
 	Protocol *protocol = account->protocol();
 	connect(protocol, SIGNAL(connectionError(Account *, const QString &, const QString &)),
 			this, SLOT(connectionError(Account *, const QString &, const QString &)));
-	connect(protocol, SIGNAL(messageReceived(Account *, ContactList, const QString&, time_t)),
-		this, SLOT(messageReceived(Account *, ContactList, const QString&, time_t)));
 	connect(account, SIGNAL(contactStatusChanged(Account *, Contact, Status)),
-		this, SLOT(statusChanged(Account *, Contact, Status)));
+			this, SLOT(statusChanged(Account *, Contact, Status)));
+
+	ChatService *chatService = protocol->chatService();
+	if (chatService)
+	{
+		connect(chatService, SIGNAL(messageReceived(Chat *, Contact, const QString &)),
+				this, SLOT(messageReceived(Chat *, Contact, const QString &)));
+	}
 }
 
 void NotificationManager::accountUnregistered(Account *account)
@@ -162,10 +167,15 @@ void NotificationManager::accountUnregistered(Account *account)
 	Protocol *protocol = account->protocol();
 	disconnect(protocol, SIGNAL(connectionError(Account *, const QString &, const QString &)),
 			this, SLOT(connectionError(Account *, const QString &, const QString &)));
-	disconnect(protocol, SIGNAL(messageReceived(Account *, ContactList, const QString&, time_t)),
-		this, SLOT(messageReceived(Account *, ContactList, const QString&, time_t)));
 	disconnect(account, SIGNAL(contactStatusChanged(Account *, Contact, Status)),
-		this, SLOT(statusChanged(Account *, Contact, Status)));
+			this, SLOT(statusChanged(Account *, Contact, Status)));
+
+	ChatService *chatService = protocol->chatService();
+	if (chatService)
+	{
+		disconnect(chatService, SIGNAL(messageReceived(Chat *, Contact, const QString &)),
+				this, SLOT(messageReceived(Chat *, Contact, const QString &)));
+	}
 }
 
 void NotificationManager::statusChanged(Account *account, Contact contact, Status oldStatus)
@@ -220,16 +230,16 @@ void NotificationManager::statusChanged(Account *account, Contact contact, Statu
 	kdebugf2();
 }
 
-void NotificationManager::messageReceived(Account *account, ContactSet contacts, const QString &msg, time_t t)
+void NotificationManager::messageReceived(Chat *chat, Contact sender, const QString &message)
 {
 	kdebugf();
 
-	ChatWidget *chat = chat_manager->findChatWidget(contacts);
-	if (!chat) // new chat
-		notify(new MessageNotification(MessageNotification::NewChat, contacts, msg, account));
+	ChatWidget *chatWidget = chat_manager->findChatWidget(chat);
+	if (!chatWidget) // new chat
+		notify(new MessageNotification(MessageNotification::NewChat, chat, message));
 	else // new message in chat
-		if (!chat->edit()->hasFocus() || !config_file.readBoolEntry("Notify", "NewMessageOnlyIfInactive"))
-			notify(new MessageNotification(MessageNotification::NewMessage, contacts, msg, account));
+		if (!chatWidget->edit()->hasFocus() || !config_file.readBoolEntry("Notify", "NewMessageOnlyIfInactive"))
+			notify(new MessageNotification(MessageNotification::NewMessage, chat, message));
 
 	kdebugf2();
 }

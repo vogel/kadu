@@ -44,10 +44,11 @@ void MessageNotification::unregisterEvents()
 	NewMessageNotifyEvent = 0;
 }
 
-MessageNotification::MessageNotification(MessageType messageType, const ContactSet &contacts, const QString &message, Account *account)
-	: AccountNotification(account, messageType == NewChat ? "NewChat" : "NewMessage", icons_manager->loadIcon("Message"), contacts)
+MessageNotification::MessageNotification(MessageType messageType, Chat *chat, const QString &message) :
+		AccountNotification(chat ? chat->account() : 0, messageType == NewChat ? "NewChat" : "NewMessage",
+			icons_manager->loadIcon("Message"), chat)
 {
-	const Contact &contact = *contacts.begin();
+// 	const Contact &contact = *contacts.begin(); TODO: 0.6.6 chat->title()
 	QString syntax;
 
 	if (messageType == NewChat)
@@ -61,7 +62,7 @@ MessageNotification::MessageNotification(MessageType messageType, const ContactS
 		syntax = tr("New message from <b>%1</b>");
 	}
 
-	setText(syntax.arg(Qt::escape(contact.display())));
+	setText(syntax.arg(Qt::escape(""/*contact.display()*/)));
 	setDetails(message);
 }
 

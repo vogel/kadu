@@ -26,7 +26,7 @@ public:
 	virtual void load();
 	virtual void store();
 
-	virtual ContactSet contacts();
+	virtual ContactSet contacts() const;
 
 };
 
