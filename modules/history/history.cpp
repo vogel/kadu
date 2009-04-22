@@ -270,7 +270,7 @@ void disableNonHistoryContacts(KaduAction *action)
 {
 	kdebugf();
 	action->setEnabled(false);
-	const ContactList contacts = action->contacts();
+	ContactSet contacts = action->contacts();
 
 	if (!contacts.count())
 		return;

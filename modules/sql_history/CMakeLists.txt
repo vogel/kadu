@@ -1,9 +1,11 @@
 set (SOURCES
-	sql_history.cpp
+	history-sql-storage.cpp
+	sql-history-module.cpp
 )
 
 set (MOC_SOURCES
-	sql_history.h
+	history-sql-storage.h
+	sql-history-module.h
 )
 
 set (TRANSLATION_SOURCES
@@ -37,5 +39,7 @@ else (sql_history STREQUAL STATIC)
 	endif (WIN32)
 endif (sql_history STREQUAL STATIC)
 add_dependencies (sql_history sql_history-translations)
+
+target_link_libraries(sql_history ${QT_QTSQL_LIBRARIES})
 
 install (TARGETS sql_history DESTINATION lib/kadu/modules)

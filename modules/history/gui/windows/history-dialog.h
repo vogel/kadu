@@ -212,7 +212,7 @@ class HistoryDlg : public QWidget
        		Od�wie�a zawarto�� ga��zi z wynikami wyszukiwa�.
 		*/
 		void searchBranchRefresh();
-		ContactList selectedUsers; /*!< U�ytkownicy, dla kt�rych wyst�pi�o ��danie otwarcia okna historii. */
+		ContactSet selectedUsers; /*!< U�ytkownicy, dla kt�rych wyst�pi�o ��danie otwarcia okna historii. */
 		int maxLen;  /*!< Max. d�ugo�� zajawki wiadomo�ci w widoku dat. */
 	private slots:
 		/**

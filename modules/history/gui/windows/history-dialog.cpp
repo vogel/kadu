@@ -782,7 +782,7 @@ void HistoryDlg::searchHistory()
 	kdebugf2();
 }
 
-void HistoryDlg::show(ContactList users)
+void HistoryDlg::show(ContactSet users)
 {
 	selectedUsers = users;
 	//TODO: zamieniæ na tylko zaznaczanie wybranego usera albo co tam...ale globalRefresh() i tak musi byæ gdzie indziej... ino gdzie?
