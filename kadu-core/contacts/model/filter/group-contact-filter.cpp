@@ -18,8 +18,6 @@ GroupContactFilter::GroupContactFilter(QObject *parent) :
 	// TODO: 0.6.6 hack, it should go thought the model itself
 	connect(ContactManager::instance(), SIGNAL(contactUpdated(Contact &)),
 			this, SIGNAL(filterChanged()));
-	connect(ContactManager::instance(), SIGNAL(contactRemoved(Contact &)),
-			this, SIGNAL(filterChanged()));
 }
 
 void GroupContactFilter::setGroup(Group *group)

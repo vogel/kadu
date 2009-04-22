@@ -79,8 +79,11 @@ void ContactsModel::contactAdded(Contact &contact)
 
 void ContactsModel::contactAboutToBeRemoved(Contact &contact)
 {
+    	int index = contactIndex(contact).row();
+	beginRemoveRows(QModelIndex(), index, index);
 }
 
 void ContactsModel::contactRemoved(Contact &contact)
 {
+    	endRemoveRows();
 }
