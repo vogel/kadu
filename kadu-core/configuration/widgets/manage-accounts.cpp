@@ -156,7 +156,7 @@ void ManageAccounts::removeAccount()
 	if (0 == account)
 		return;
 
-	AccountManager::instance()->unregisterAccount(account);
+	AccountManager::instance()->unregisterAccount(account, true);
 	loadAccounts();
 }
 
