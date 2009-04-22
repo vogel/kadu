@@ -189,7 +189,7 @@ void KaduWindow::openChatWindow(Contact contact)
 	if (!widget)
 		return;
 
-	Account *account = AccountManager::instance()->defaultAccount();
+	Account *account = contact.prefferedAccount();
 	ContactSet contacts = widget->selectedContacts();
 
 	if (!contacts.contains(Core::instance()->myself()) && account)
