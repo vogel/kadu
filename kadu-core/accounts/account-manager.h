@@ -63,7 +63,8 @@ public:
 	const QList<Account *> byProtocolName(const QString &name) const;
 
 	void registerAccount(Account *account);
-	void unregisterAccount(Account *account, bool deleteAccount = false);
+	void unregisterAccount(Account *account);
+	void deleteAccount(Account *account);
 
 	Status status() const;
 

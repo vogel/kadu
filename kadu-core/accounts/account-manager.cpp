@@ -163,17 +163,21 @@ void AccountManager::registerAccount(Account *account)
 			this, SLOT(connectionError(Account *, const QString &, const QString &)));
 }
 
-void AccountManager::unregisterAccount(Account *account,  bool deleteAccount)
-{qDebug("removin accounts");
+void AccountManager::unregisterAccount(Account *account)
+{
 	disconnect(account->protocol(), SIGNAL(connectionError(Account *, const QString &, const QString &)),
 			this, SLOT(connectionError(Account *, const QString &, const QString &)));
 
 	AccountsAwareObject::notifyAccountUnregistered(account);
 	emit accountAboutToBeUnregistered(account);
 	Accounts.removeAll(account);
-	if (deleteAccount)
-		account->removeFromStorage();
 	emit accountUnregistered(account);
+}
+
+void AccountManager::deleteAccount(Account *account)
+{
+    unregisterAccount(account);
+    account->removeFromStorage();
 }
 
 Status AccountManager::status() const
