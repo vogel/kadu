@@ -211,7 +211,7 @@ void ExecNotify::notify(Notification *notification)
 	AccountNotification *accountNotification = dynamic_cast<AccountNotification *>(notification);
 	if (accountNotification)
 	{
-		ContactList contacts = notification->contacts();
+		ContactList contacts = notification->chat()->contacts().toContactList();
 		Contact contact;
 
 		if (contacts.count())
