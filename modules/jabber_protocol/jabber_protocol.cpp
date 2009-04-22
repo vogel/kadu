@@ -660,6 +660,7 @@ void JabberProtocol::slotContactUpdated(const XMPP::RosterItem & item)
 
 	/*
 	 * See if the contact is already on our contact list
+	 * if not contact is automatically added as anonymous
 	 */
 	 Contact c = ContactManager::instance()->byId(account(), item.jid().bare());
 	 if(c.display().isNull())
@@ -678,14 +679,9 @@ void JabberProtocol::slotContactUpdated(const XMPP::RosterItem & item)
 	{
 		if (c.isAnonymous())
 		{
-// 			/*
-// 			* No contact with this ID has been found, so Contact Manager created anonymous contact.
-// 			*/
-			ContactManager::instance()->addContact(c);
 			// add this contact to all groups the contact is a member of
 			///foreach (QString group, item.groups())
 				///TODO: doda� go do grupy - na razie nie wiem jak to si� robi
-
 		}
 		else
 		{
