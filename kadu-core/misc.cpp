@@ -13,6 +13,8 @@
 #include <QtCore/QVariant>
 #include <QtGui/QApplication>
 #include <QtGui/QComboBox>
+#include <QtGui/QCompleter>
+#include <QtGui/QDesktopServices>
 #include <QtGui/QDesktopWidget>
 #include <QtGui/QFont>
 #include <QtGui/QFontInfo>
@@ -22,8 +24,6 @@
 #include <QtGui/QLineEdit>
 #include <QtGui/QPainter>
 #include <QtGui/QPushButton>
-#include <QtGui/QDesktopServices>
-#include <QtGui/QDesktopWidget>
 
 #ifdef Q_WS_WIN
 #include <windows.h>
@@ -858,6 +858,11 @@ ChooseDescription::ChooseDescription(QWidget *parent)
 	ss->setMaxLength(gadu->maxDescriptionLength());
 #endif
 	Description->setLineEdit(ss);
+	
+	QCompleter *Completer = new QCompleter(defaultdescriptions, this);
+	Completer->setCaseSensitivity(Qt::CaseSensitive);
+	Completer->setCompletionMode(QCompleter::PopupCompletion);
+	Description->setCompleter(Completer);
 
 	AvailableChars = new QLabel(this);
 

@@ -8,6 +8,7 @@
 #include "exports.h"
 
 class QComboBox;
+class QCompleter;
 class QLabel;
 class QPushButton;
 
@@ -79,6 +80,7 @@ class ChooseDescription : public QDialog
 
 	QPushButton *OkButton;
 	QComboBox *Description;
+	QCompleter *Completer;
 	QLabel *AvailableChars;
 
 	UserStatus Status;
