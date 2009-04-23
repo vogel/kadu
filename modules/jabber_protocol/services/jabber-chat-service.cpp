@@ -64,7 +64,7 @@ bool JabberChatService::sendMessage(Chat *chat, Message &message)
 	//msg.setFrom(jabberID);
 	Protocol->client()->sendMessage(msg);
 
-	emit messageSent(chat, message);
+	emit messageSent(chat, message.toPlain());
 	kdebugf2();
 	return true;
 }
