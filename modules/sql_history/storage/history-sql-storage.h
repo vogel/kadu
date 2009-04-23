@@ -4,9 +4,10 @@
 #include <QtSql/QSqlDatabase>
 #include <QtSql/QSqlError>
 #include <QtSql/QSqlQuery>
+#include <QtSql/QSqlTableModel>
 
-#include "../history/history.h"
-#include "../history/storage/history-storage.h"
+#include "../../history/history.h"
+#include "../../history/storage/history-storage.h"
 
 /**
 	@class HistorySqlStorage
@@ -18,7 +19,8 @@ class HistorySqlStorage : public HistoryStorage
 {
 	Q_OBJECT
 
-	QSqlDatabase debe; /*!< Obiekt reprezentuj±cy bie¿±c± bazê danych. */
+	QSqlDatabase Database; /*!< Obiekt reprezentuj±cy bie¿±c± bazê danych. */
+	QSqlTableModel *MessagesModel;
 	QString tableNamePrefix;
 	/**
 		\fn QString findNewUidGroupId();
@@ -67,6 +69,7 @@ private slots:
 // 	void portSpinBoxValueChanged(int value);
 
 	virtual void messageReceived(Chat *chat, Contact contact, const QString &message);
+	virtual void messageSent(Chat *chat, const QString &message);
 
 
 public:
@@ -98,7 +101,7 @@ public:
 		\param send_time czas wys³ania wiadomo¶ci
 		\param receive_time czas odebrania 
 	**/
-	void appendMessageEntry(ContactList list, const QString &msg, bool outgoing, time_t send_time, time_t receive_time);
+	void appendMessageEntry(Chat *chat, Contact contact, const QString &message);
 	/**
 		\fn void appendSmsEntry(ContactList list, const QString &msg, bool outgoing, time_t send_time, time_t receive_time);
 		Zapisuje smsy w bazie. Z za³o¿enia interfejs dla modu³ów importu/eksportu historii.

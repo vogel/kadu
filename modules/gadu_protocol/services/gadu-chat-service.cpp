@@ -112,6 +112,8 @@ bool GaduChatService::sendMessage(Chat *chat, Message &message)
 	if (formats)
 		delete[] formats;
 
+	emit messageSent(chat, message.toPlain());
+
 	kdebugf2();
 	return true;
 }

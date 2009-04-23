@@ -19,6 +19,8 @@
 #include "main_configuration_window.h"
 #include "configuration_aware_object.h"
 
+#include "storage/history-sql-storage.h"
+
 class SqlHistoryModule : public ConfigurationUiHandler, ConfigurationAwareObject
 {
 	Q_OBJECT
@@ -30,6 +32,8 @@ class SqlHistoryModule : public ConfigurationUiHandler, ConfigurationAwareObject
 	QLineEdit* nameLineEdit;  
 	QLineEdit* passLineEdit;
 	QLineEdit* prefixLineEdit;
+
+	HistorySqlStorage *Storage;
 
 	virtual void configurationUpdated();
 	void createDefaultConfiguration(); 

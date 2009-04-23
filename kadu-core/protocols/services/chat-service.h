@@ -41,6 +41,7 @@ signals:
 	void sendMessageFiltering(Chat *chat, QByteArray &msg, bool &stop);
 	void messageStatusChanged(int messsageId, ChatService::MessageStatus status);
 	void receivedMessageFilter(Chat *chat, Contact sender, const QString &message, time_t time, bool &ignore);
+	void messageSent(Chat *chat, const QString &message);
 	void messageReceived(Chat *chat, Contact sender, const QString &message);
 
 };

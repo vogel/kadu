@@ -63,6 +63,8 @@ bool JabberChatService::sendMessage(Chat *chat, Message &message)
 	msg.setTimeStamp(QDateTime::currentDateTime());
 	//msg.setFrom(jabberID);
 	Protocol->client()->sendMessage(msg);
+
+	emit messageSent(chat, message);
 	kdebugf2();
 	return true;
 }

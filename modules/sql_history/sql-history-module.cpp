@@ -9,6 +9,7 @@
 
 #include "config_file.h"
 #include "debug.h"
+#include "misc/path-conversion.h"
 
 #include "sql-history-module.h"
 
@@ -33,6 +34,8 @@ SqlHistoryModule::SqlHistoryModule(bool firstLoad)
 	if (firstLoad)
 		createDefaultConfiguration();
 	MainConfigurationWindow::registerUiFile(dataPath("kadu/modules/configuration/sql_history.ui"));
+	Storage = new HistorySqlStorage();
+	History::instance()->registerStorage(Storage);
 }
 
 SqlHistoryModule::~SqlHistoryModule()
@@ -123,8 +126,8 @@ void SqlHistoryModule::configurationUpdated()
 
 void SqlHistoryModule::createDefaultConfiguration()
 {
-// 	config_file.addVariable("History", "DatabaseDriver", "QSQLITE");
-// 	config_file.addVariable("History", "DatabaseFilePath", ggPath("/history/history.db"));
+	config_file.addVariable("History", "DatabaseDriver", "QSQLITE");
+	config_file.addVariable("History", "DatabaseFilePath", ggPath("/history/history.db"));
 // 	config_file.addVariable("History", "DatabaseTableNamePrefix", "kadu_");
 
 //TODO: by doda� reszt� warto�ci, je�li jezzcze czego� brak

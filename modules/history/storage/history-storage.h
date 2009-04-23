@@ -12,6 +12,7 @@ class HistoryStorage : public QObject
 
 private slots:
 	virtual void messageReceived(Chat *chat, Contact contact, const QString &message) = 0;
+	virtual void messageSent(Chat *chat, const QString &message) = 0;
 
 // public:
 
