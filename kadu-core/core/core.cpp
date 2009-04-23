@@ -405,10 +405,24 @@ void Core::deleteOldConfigurationFiles()
 	kdebugf2();
 }
 
+//TODO 0.6.6:
 void Core::changeStatus(Status newStatus)
 {
 	kdebugf();
 
+	foreach (Account *account, AccountManager::instance()->accounts())
+	{
+		Protocol *protocol = account->protocol();
+		if (!protocol)
+			return;
+
+		if (protocol->nextStatus() == newStatus)
+			return;
+
+		protocol->setStatus(newStatus);
+	}
+
+	//update icon:
 	Account *account = AccountManager::instance()->defaultAccount();
 	if (!account)
 		return;
@@ -416,12 +430,6 @@ void Core::changeStatus(Status newStatus)
 	Protocol *protocol = account->protocol();
 	if (!protocol)
 		return;
-
-	if (protocol->nextStatus() == newStatus)
-		return;
-
-	NextStatus = newStatus;
-	protocol->setStatus(newStatus);
 
 	setIcon(protocol->statusPixmap(newStatus));
 }

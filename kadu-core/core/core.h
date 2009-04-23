@@ -39,7 +39,7 @@ class KADUAPI Core : public QObject, private AccountsAwareObject, public Configu
 	KaduWindow *Window;
 	bool ShowMainWindowOnStart; // TODO: 0.7.1, it is a hack
 
-	Status NextStatus;
+//	Status NextStatus;
 	UserStatusChanger *StatusChanger;
 
 	Core();

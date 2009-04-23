@@ -95,7 +95,6 @@ JabberProtocol::JabberProtocol(Account *account, ProtocolFactory *factory): Prot
 		"Offline", "Logout" //+JabberData->id()
 	);
 	Core::instance()->kaduWindow()->insertMenuActionDescription(logoutJabberActionDescription, KaduWindow::MenuKadu,1);
-	InitialPresence = XMPP::Status("", "Jabber w Kadu", 5, true);
 
 	initializeJabberClient();
 
@@ -271,7 +270,6 @@ void JabberProtocol::disconnect(const XMPP::Status &s)
 	// make sure that the connection animation gets stopped if we're still
 	// in the process of connecting
 	setPresence (s);
-	InitialPresence = XMPP::Status ("", "", 5, true);
 
 	/* FIXME:
 	 * We should delete the JabberClient instance here,
@@ -484,7 +482,9 @@ void JabberProtocol::rosterRequestFinished(bool success)
 	* contacts from the server! (Iris won't forward presence
 	* information in that case either). */
 	kdebug("Setting initial presence...\n");
-	setPresence(InitialPresence);
+
+	changeStatus(nextStatus());
+
 	kdebugf2();
 }
 
@@ -525,6 +525,17 @@ void JabberProtocol::changeStatus(Status status)
 ///WTF! kutfa, wywo�anie tego z protocol wywala kadu...
 	s.setStatus(status.description());
 	setPresence(s);
+
+	if (status.isOffline())
+	{
+		networkStateChanged(NetworkDisconnected);
+
+		setAllOffline();
+
+		if (!nextStatus().isOffline())
+			setStatus(Status::Offline);
+	}
+
 	statusChanged(status);
 }
 
@@ -835,8 +846,12 @@ void JabberProtocol::changeStatus()
 
 	if (newStatus.isOffline() && status().isOffline())
 	{
-		//if (NetworkConnecting == state())
-		//	networkDisconnected(false);
+		networkStateChanged(NetworkDisconnected);
+
+		setAllOffline();
+
+		if (!nextStatus().isOffline())
+			setStatus(Status::Offline);
 		return;
 	}
 
@@ -848,11 +863,11 @@ void JabberProtocol::changeStatus()
 		login();
 		return;
 	}
-
+	changeStatus(newStatus);
 	//if (newStatus.isOffline())
 	//	networkDisconnected(false);
 
-	statusChanged(newStatus);
+//	statusChanged(newStatus);
 }
 
 void JabberProtocol::changePrivateMode()

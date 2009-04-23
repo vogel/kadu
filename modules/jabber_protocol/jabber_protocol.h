@@ -60,7 +60,7 @@ class JabberProtocol : public Protocol
 		XMPP::Jid jabberID;
 		JabberResourcePool *ResourcePool;
 		/* Initial presence to set after connecting. */
-		XMPP::Status InitialPresence;
+//		XMPP::Status InitialPresence;
 		//JabberConfig *jconf;
 
 		bool rosterRequestDone;
