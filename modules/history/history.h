@@ -48,15 +48,14 @@ class History : public ConfigurationUiHandler, ConfigurationAwareObject
 
 	void createActionDescriptions();
 	void deleteActionDescriptions();
-
 	virtual void configurationUpdated();
-	void showHistoryActionActivated(QAction *sender, bool toggled);
 	void mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow);
 
 private slots:
 
 	void accountRegistered(Account *);
 	void accountUnregistered(Account *);
+	void showHistoryActionActivated(QAction *sender, bool toggled);
 
 public:
 	static History * instance();
