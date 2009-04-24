@@ -21,10 +21,10 @@
 
 #include "accounts/account.h"
 #include "accounts/account-manager.h"
-#include "chat/chat_manager-old.h"
 #include "contacts/contact-manager.h"
 #include "contacts/model/contact-list-model.h"
 #include "core/core.h"
+#include "gui/widgets/chat-widget-manager.h"
 #include "gui/widgets/contacts-list-widget.h"
 #include "gui/windows/contact-data-window.h"
 #include "gui/windows/kadu-window.h"
