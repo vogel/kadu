@@ -34,6 +34,7 @@ class Protocol;
 class KADUAPI ChatWidgetManager : public QObject, ConfigurationAwareObject
 {
 	Q_OBJECT
+	Q_DISABLE_COPY(ChatWidgetManager)
 
 public: // TODO: 0.6.6 clean it up
 	ActionDescription *autoSendActionDescription;
@@ -52,6 +53,8 @@ public: // TODO: 0.6.6 clean it up
 	ActionDescription *colorSelectorActionDescription;
 
 private:
+	static ChatWidgetManager *Instance;
+
 	ChatList ChatWidgets; /*!< lista okien*/
 	QList<Chat *> ClosedChats; /*!< u�ytkownicy, kt�rych okna zosta�y zamkni�te*/
 
@@ -67,6 +70,9 @@ private:
 	};
 	QList<ChatInfo> addons; /*!< lista parametr�w okien */
 	QTimer refreshTitlesTimer;
+
+	ChatWidgetManager();
+	virtual ~ChatWidgetManager();
 
 	void autoSendActionCheck();
 	void insertEmoticonActionEnabled();
@@ -99,19 +105,7 @@ protected:
 	virtual void configurationUpdated();
 
 public:
-	/**
-		\fn ChatManagerOld(QObject* parent = 0)
-		Konstruktor tworz�cy obiekt zarz�dzaj�cy oknami
-		\param parent rodzic okna
-		\param name nazwa obiektu
-	**/
-	ChatWidgetManager(QObject *parent = 0);
-
-	/**
-		\fn ~ChatManagerOld()
-		Destruktor zamyka wszystkie otwarte okna
-	**/
-	~ChatWidgetManager();
+	static ChatWidgetManager * instance();
 
 	/**
 		\fn static void initModule()
@@ -308,7 +302,5 @@ signals:
 	void messageSentAndConfirmed(ContactList receivers, const QString& message);
 
 };
-
-extern KADUAPI ChatWidgetManager* chat_manager;
 
 #endif // CHAT_WIDGET_MANAGER

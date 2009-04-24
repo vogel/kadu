@@ -370,8 +370,8 @@ KaduWindowActions::KaduWindowActions(QObject *parent) : QObject(parent)
 
 	ContactsListWidgetMenuManager::instance()->addSeparator();
 
-	ContactsListWidgetMenuManager::instance()->addManagementActionDescription(chat_manager->ignoreUserActionDescription);
-	ContactsListWidgetMenuManager::instance()->addManagementActionDescription(chat_manager->blockUserActionDescription);
+	ContactsListWidgetMenuManager::instance()->addManagementActionDescription(ChatWidgetManager::instance()->ignoreUserActionDescription);
+	ContactsListWidgetMenuManager::instance()->addManagementActionDescription(ChatWidgetManager::instance()->blockUserActionDescription);
 
 	OfflineToUser = new ActionDescription(this,
 		ActionDescription::TypeUser, "offlineToUserAction",

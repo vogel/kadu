@@ -59,7 +59,6 @@ class KADUAPI ChatWidget : public QWidget, ConfigurationAwareObject, AccountsAwa
 	ContactsListWidget *ContactsWidget;
 	ChatEditBox *InputBox;
 
-	int index;	/*!< nr okna (z chat menad�era) */
 	QColor actcolor; /*!< zmienna przechowuj�ca aktualny kolor */
 	QIcon pix;
 //	Q3MimeSourceFactory *bodyformat; /*!< zmienna ustawiaj�ca format */

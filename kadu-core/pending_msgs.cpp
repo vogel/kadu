@@ -155,7 +155,7 @@ void PendingMsgs::storeConfiguration(XmlConfigFile *configurationStorage)
 
 void PendingMsgs::openMessages()
 {
-	chat_manager->openPendingMsgs();
+	ChatWidgetManager::instance()->openPendingMsgs();
 }
 
 PendingMsgs pending(0);

@@ -110,7 +110,7 @@ void OpenChatWith::openChat(Contact contact)
 		Chat *chat = account->protocol()->findChat(contacts);
 		if (chat)
 		{
-			chat_manager->sendMessage(chat);
+			ChatWidgetManager::instance()->sendMessage(chat);
 			close();
 			return;
 		}

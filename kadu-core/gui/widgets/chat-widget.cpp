@@ -42,20 +42,19 @@
 
 ChatWidget::ChatWidget(Chat *chat, QWidget *parent) :
 		QWidget(parent), CurrentChat(chat),
-		index(0), actcolor(),
+		actcolor(),
 		emoticon_selector(0), color_selector(0), WaitingForACK(false), ContactsWidget(0), horizSplit(0),
 		activationCount(0), NewMessagesCount(0), InputBox(0)
 {
 	kdebugf();
 
 	setAcceptDrops(true);
-	/* register us in the chats registry... */
-	index = chat_manager->registerChatWidget(this);
+	ChatWidgetManager::instance()->registerChatWidget(this);
 
 	triggerAllAccountsRegistered();
 	createGui();
 
-	connect(chat_manager->colorSelectorActionDescription, SIGNAL(actionCreated(KaduAction *)),
+	connect(ChatWidgetManager::instance()->colorSelectorActionDescription, SIGNAL(actionCreated(KaduAction *)),
 			this, SLOT(colorSelectorActionCreated(KaduAction *)));
 
 	configurationUpdated();
@@ -69,7 +68,7 @@ ChatWidget::~ChatWidget()
 
 	triggerAllAccountsUnregistered();
 
-	chat_manager->unregisterChatWidget(this);
+	ChatWidgetManager::instance()->unregisterChatWidget(this);
 
 	disconnectAcknowledgeSlots();
 
@@ -173,19 +172,19 @@ void ChatWidget::specialKeyPressed(int key)
  	{
 		KaduAction *action;
  		case CustomInput::KEY_BOLD:
- 			action = chat_manager->boldActionDescription->action(InputBox);
+ 			action = ChatWidgetManager::instance()->boldActionDescription->action(InputBox);
 			if (action)
 				action->setChecked(!action->isChecked());
  			InputBox->inputBox()->setFontWeight(action->isChecked() ? QFont::Bold : QFont::Normal);
  			break;
  		case CustomInput::KEY_ITALIC:
- 			action = chat_manager->italicActionDescription->action(InputBox);
+ 			action = ChatWidgetManager::instance()->italicActionDescription->action(InputBox);
 			if (action)
 				action->setChecked(!action->isChecked());
  			InputBox->inputBox()->setFontItalic(action->isChecked());
  			break;
  		case CustomInput::KEY_UNDERLINE:
- 			action = chat_manager->underlineActionDescription->action(InputBox);
+ 			action = ChatWidgetManager::instance()->underlineActionDescription->action(InputBox);
 			if (action)
 				action->setChecked(!action->isChecked());
  			InputBox->inputBox()->setFontUnderline(action->isChecked());
@@ -203,15 +202,15 @@ void ChatWidget::curPosChanged()
 
 	KaduAction *action;
 
-	action = chat_manager->boldActionDescription->action(InputBox);
+	action = ChatWidgetManager::instance()->boldActionDescription->action(InputBox);
  	if (action)
 		action->setChecked(InputBox->inputBox()->fontWeight() >= QFont::Bold);
 
-	action = chat_manager->italicActionDescription->action(InputBox);
+	action = ChatWidgetManager::instance()->italicActionDescription->action(InputBox);
  	if (action)
 		action->setChecked(InputBox->inputBox()->fontItalic());
 
-	action = chat_manager->underlineActionDescription->action(InputBox);
+	action = ChatWidgetManager::instance()->underlineActionDescription->action(InputBox);
  	if (action)
 		action->setChecked(InputBox->inputBox()->fontUnderline());
 
@@ -224,7 +223,7 @@ void ChatWidget::setActColor(bool force)
 {
 	kdebugf();
 
-	KaduAction *action = chat_manager->colorSelectorActionDescription->action(InputBox);
+	KaduAction *action = ChatWidgetManager::instance()->colorSelectorActionDescription->action(InputBox);
 
 	if (action && (force || (InputBox->inputBox()->textColor() != actcolor)))
 	{
@@ -527,15 +526,15 @@ void ChatWidget::writeMyMessage()
 	InputBox->inputBox()->clear();
 
 	KaduAction *action;
-	action = chat_manager->boldActionDescription->action(InputBox);
+	action = ChatWidgetManager::instance()->boldActionDescription->action(InputBox);
 	if (action)
 		InputBox->inputBox()->setFontWeight(action->isChecked() ? QFont::Bold : QFont::Normal);
 
-	action = chat_manager->italicActionDescription->action(InputBox);
+	action = ChatWidgetManager::instance()->italicActionDescription->action(InputBox);
 	if (action)
 		InputBox->inputBox()->setFontItalic(action->isChecked());
 
-	action = chat_manager->underlineActionDescription->action(InputBox);
+	action = ChatWidgetManager::instance()->underlineActionDescription->action(InputBox);
 	if (action)
 		InputBox->inputBox()->setFontUnderline(action->isChecked());
 
@@ -622,7 +621,7 @@ void ChatWidget::disconnectAcknowledgeSlots()
 
 void ChatWidget::changeSendToCancelSend()
 {
-	KaduAction *action = chat_manager->sendActionDescription->action(InputBox);
+	KaduAction *action = ChatWidgetManager::instance()->sendActionDescription->action(InputBox);
 
 	if (action)
 	{
@@ -633,7 +632,7 @@ void ChatWidget::changeSendToCancelSend()
 
 void ChatWidget::changeCancelSendToSend()
 {
-	KaduAction *action = chat_manager->sendActionDescription->action(InputBox);
+	KaduAction *action = ChatWidgetManager::instance()->sendActionDescription->action(InputBox);
 
 	if (action)
 	{
@@ -726,7 +725,7 @@ void ChatWidget::colorChanged(const QColor &color)
 	QPixmap p(12, 12);
 	p.fill(color);
 
-	KaduAction *action = chat_manager->colorSelectorActionDescription->action(InputBox);
+	KaduAction *action = ChatWidgetManager::instance()->colorSelectorActionDescription->action(InputBox);
 	if (action)
 		action->setIcon(p);
 

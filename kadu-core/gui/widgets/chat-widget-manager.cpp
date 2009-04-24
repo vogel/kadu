@@ -88,8 +88,17 @@ void checkIgnoreUser(KaduAction *action)
 	action->setChecked(IgnoredHelper::isIgnored(action->contacts()));
 }
 
-ChatWidgetManager::ChatWidgetManager(QObject *parent) :
-		QObject(parent)
+ChatWidgetManager * ChatWidgetManager::Instance = 0;
+
+ChatWidgetManager * ChatWidgetManager::instance()
+{
+	if (0 == Instance)
+		Instance = new ChatWidgetManager();
+
+	return Instance;
+}
+
+ChatWidgetManager::ChatWidgetManager()
 {
 	kdebugf();
 
@@ -209,7 +218,7 @@ void ChatWidgetManager::closeAllWindows()
 	kdebugf();
 
 	if (config_file.readBoolEntry("Chat", "SaveOpenedWindows", true))
-		chat_manager->saveOpenedWindows();
+		saveOpenedWindows();
 
 	while (!ChatWidgets.empty())
 	{
@@ -968,8 +977,6 @@ void ChatWidgetManager::closeModule()
 
 	ChatMessage::unregisterParserTags();
 
-	delete chat_manager;
-	chat_manager = 0;
 	kdebugf2();
 }
 
@@ -979,7 +986,6 @@ void ChatWidgetManager::initModule()
 
 	ChatMessage::registerParserTags();
 	emoticons->setEmoticonsTheme(config_file.readEntry("Chat", "EmoticonsTheme"));
-	chat_manager = new ChatWidgetManager(Core::instance()->kaduWindow());
 
 	kdebugf2();
 }

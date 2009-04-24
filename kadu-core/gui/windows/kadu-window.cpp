@@ -158,7 +158,7 @@ void KaduWindow::createContactsMenu()
 	insertMenuActionDescription(Actions->OpenSearch, MenuContacts);
 
 	ContactsMenu->addSeparator();
-	insertMenuActionDescription(chat_manager->openChatWithActionDescription, MenuContacts);
+	insertMenuActionDescription(ChatWidgetManager::instance()->openChatWithActionDescription, MenuContacts);
 	ContactsMenu->addSeparator();
 
 	insertMenuActionDescription(Actions->ManageIgnored, MenuContacts);
@@ -195,7 +195,7 @@ void KaduWindow::openChatWindow(Contact contact)
 	if (!contacts.contains(Core::instance()->myself()) && account)
 	{
 		Chat *chat = account->protocol()->findChat(contacts);
-		chat_manager->sendMessage(chat);
+		ChatWidgetManager::instance()->sendMessage(chat);
 		return;
 	}
 
@@ -210,7 +210,7 @@ void KaduWindow::createRecentChatsMenu()
 
 	RecentChatsMenu->clear();
 	QAction *action;
-	if (chat_manager->closedChats().isEmpty())
+	if (ChatWidgetManager::instance()->closedChats().isEmpty())
 	{
 		action = RecentChatsMenu->addAction(tr("No closed chats found"));
 		action->setEnabled(false);
@@ -221,7 +221,7 @@ void KaduWindow::createRecentChatsMenu()
 
 	unsigned int index = 0; // indeks pozycji w popupie
 
-	foreach (const Chat *chat, chat_manager->closedChats())
+	foreach (const Chat *chat, ChatWidgetManager::instance()->closedChats())
 	{
 		QStringList displays;
 
@@ -294,11 +294,12 @@ void KaduWindow::updateInformationPanel()
 
 void KaduWindow::closeEvent(QCloseEvent *e)
 {
-        e->ignore();
+	e->ignore();
+
 	if (Docked)
 		hide();
 	else
-                qApp->quit();
+		qApp->quit();
 }
 
 void KaduWindow::customEvent(QEvent *e)

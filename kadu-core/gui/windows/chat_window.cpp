@@ -31,7 +31,8 @@ ChatWindow::ChatWindow(QWidget *parent)
 	kdebugf();
 
 	connect(title_timer, SIGNAL(timeout()), this, SLOT(blinkTitle()));
-	connect(this, SIGNAL(chatWidgetActivated(ChatWidget *)), chat_manager, SIGNAL(chatWidgetActivated(ChatWidget *)));
+	connect(this, SIGNAL(chatWidgetActivated(ChatWidget *)),
+			ChatWidgetManager::instance(), SIGNAL(chatWidgetActivated(ChatWidget *)));
 
 #ifdef Q_OS_MAC
 	setAttribute(Qt::WA_MacBrushedMetal);
