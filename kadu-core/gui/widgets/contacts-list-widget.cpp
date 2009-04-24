@@ -268,6 +268,12 @@ void ContactsListWidget::currentChanged(const QModelIndex& current, const QModel
 		emit currentContactChanged(con);
 }
 
+void ContactsListWidget::selectionChanged( const QItemSelection &selected, const QItemSelection &deselected)
+{
+    	emit contactsSelectionChanged();
+
+}
+
 void ContactsListWidget::doubleClickedSlot(const QModelIndex &index)
 {
 	triggerActivate(index);

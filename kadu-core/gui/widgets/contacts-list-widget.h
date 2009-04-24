@@ -81,6 +81,7 @@ protected:
 
 protected slots:
 	virtual void currentChanged(const QModelIndex &current, const QModelIndex &previous);
+	virtual void selectionChanged( const QItemSelection &selected, const QItemSelection &deselected);
 
 public:
 	ContactsListWidget(KaduMainWindow *mainWindow, QWidget *parent = 0);
@@ -97,6 +98,8 @@ public:
 
 signals:
 	void contactActivated(Contact contact);
+	void contactsSelectionChanged();
+
 	void currentContactChanged(Contact contact);
 
 };

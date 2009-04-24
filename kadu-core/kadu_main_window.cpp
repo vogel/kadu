@@ -15,6 +15,8 @@
 #include "contacts/contact.h"
 #include "contacts/contact-set.h"
 
+#include "gui/widgets/contacts-list-widget.h"
+
 #include "config_file.h"
 #include "debug.h"
 #include "toolbar.h"
@@ -277,9 +279,8 @@ void KaduMainWindow::addRightToolbar()
 
 void KaduMainWindow::actionAdded(KaduAction *action)
 {
-// TODO: 0.6.6
-// 	if (contactsListWidget())
-// 		connect(contactsListWidget(), SIGNAL(userListChanged()), action, SLOT(checkState()));
+	if (contactsListWidget())
+		connect(contactsListWidget(), SIGNAL(contactsSelectionChanged()), action, SLOT(checkState()));
 }
 
 Contact KaduMainWindow::contact()
