@@ -119,6 +119,9 @@ void ContactManager::addContact(Contact contact)
 
 	ensureLoaded();
 
+	if (Contacts.contains(contact))
+		return;
+
 	emit contactAboutToBeAdded(contact);
 	Contacts.append(contact);
 	emit contactAdded(contact);
@@ -143,6 +146,9 @@ void ContactManager::removeContact(Contact contact)
 		return;
 
 	ensureLoaded();
+
+	if (!Contacts.contains(contact))
+		return;
 
 	disconnect(contact.data(), SIGNAL(updated()), this, SLOT(contactDataUpdated()));
 	disconnect(contact.data(), SIGNAL(accountDataAboutToBeAdded(Account *)),
