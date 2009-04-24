@@ -14,6 +14,7 @@
 
 #include "status.h"
 #include "usergroup.h"
+#include <stdint.h>
 
 typedef uint32_t UinType;
 
