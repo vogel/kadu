@@ -34,13 +34,95 @@ HistorySqlStorage::~HistorySqlStorage()
 	kdebugf2();
 }
 
+void HistorySqlStorage::initializeDatabase()
+{
+	kdebugf();
+	tableNamePrefix = config_file.readEntry("History", "DatabaseTableNamePrefix");
+	QString driver = config_file.readEntry("History", "DatabaseDriver");
+	if(!QSqlDatabase::isDriverAvailable(driver))
+	{
+		MessageBox::msg(tr("It seems your Qt library does not provide support for selected database.\n Please select another driver in configuration window or install Qt with %1 plugin.").arg(driver), false, "Warning");
+		return; 
+	}	
+	if(QSqlDatabase::contains("kadu-history"))
+	{
+		if(Database.isOpen())
+			Database.close();
+		QSqlDatabase::removeDatabase("kadu-history");
+	}
+	Database = QSqlDatabase::addDatabase(driver, "kadu-history");
+	if(driver == "QSQLITE")
+		Database.setDatabaseName(config_file.readEntry("History", "DatabaseFilePath"));
+	else if(driver == "QPSQL" || driver == "QMYSQL")
+	{
+		Database.setDatabaseName(config_file.readEntry("History", "DatabaseName"));	
+		Database.setPort(config_file.readUnsignedNumEntry("History", "DatabaseHostPort"));
+		Database.setHostName(config_file.readEntry("History", "DatabaseHost"));
+		Database.setUserName(config_file.readEntry("History", "DatabaseUser"));
+		Database.setPassword(pwHash(config_file.readEntry("History", "DatabasePassword")));
+	}
+
+	if(Database.open())
+		kdebug("Connected to database, driver: %s\n", driver.toLocal8Bit().data());
+	else
+	{
+		MessageBox::msg(Database.lastError().text(), false, "Warning");
+		return;
+	}
+
+
+	if (!Database.tables().contains(tableNamePrefix + "messages"))
+	{
+		QSqlQuery query(Database);
+		QString querystr;
+		if(Database.driverName() == "QSQLITE")
+			querystr = "PRAGMA encoding = \"UTF-8\";";
+		else if(Database.driverName() == "QMYSQL")
+			querystr = "ALTER DATABASE `%1` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;";
+		querystr = querystr.arg(Database.databaseName());
+		executeQuery(querystr);
+		executeQuery(QString("CREATE TABLE %1messages (chat VARCHAR(255), sender VARCHAR(255), send_time TIMESTAMP, receive_time TIMESTAMP, content TEXT, attributes TEXT);").arg(tableNamePrefix));
+		//executeQuery(QString("CREATE TABLE %1uid_groups (id INTEGER, account_id INTEGER, protocol VARCHAR(20), uid VARCHAR(255));").arg(tableNamePrefix));
+		//executeQuery(QString("CREATE TABLE %1status (uid_group_id INTEGER, status VARCHAR(255), time TIMESTAMP, description TEXT, ip_port TEXT);").arg(tableNamePrefix));
+		//executeQuery(QString("CREATE TABLE %1accounts (id INTEGER, protocol VARCHAR(20), uid VARCHAR(255));").arg(tableNamePrefix));
+		//executeQuery(QString("CREATE TABLE %1sms (uid_group_id INTEGER, account_id INTEGER, is_outgoing BOOLEAN, send_time TIMESTAMP, receive_time TIMESTAMP, content TEXT);").arg(tableNamePrefix));
+	}
+
+	MessagesModel = new QSqlTableModel(0, Database);
+	MessagesModel->setTable(tableNamePrefix + "messages");
+	MessagesModel->setEditStrategy(QSqlTableModel::OnManualSubmit);
+
+}
+
 void HistorySqlStorage::messageReceived(Chat *chat, Contact contact, const QString &message)
 {
+// 	if (!config_file.readBoolEntry("History", "Enable") || !config_file.readBoolEntry("History", "SaveChats"))
+// 	{
+// 		kdebugm(KDEBUG_INFO|KDEBUG_FUNCTION_END, "not appending\n");
+// 		return;
+// 	}
+// 	foreach(const Contact &sender, senders)
+// 		if ((config_file.readBoolEntry("History", "DontSaveChatsWithAnonymous") && sender.isAnonymous()) || (!sender.data("history_save_chats").toBool() && !config_file.readBoolEntry("History", "SaveChatsForAll")))
+// 		{
+// 			kdebugm(KDEBUG_INFO|KDEBUG_FUNCTION_END, "not appending\n");
+// 			return;
+// 		}
 	appendMessageEntry(chat, contact, message);
 }
 
 void HistorySqlStorage::messageSent(Chat *chat, const QString &message)
 {
+// 	if (!config_file.readBoolEntry("History", "Enable") || !config_file.readBoolEntry("History", "SaveChats"))
+// 	{
+// 		kdebugm(KDEBUG_INFO|KDEBUG_FUNCTION_END, "not appending\n");
+// 		return;
+// 	}
+// 	foreach(const Contact &receiver, receivers)
+// 		if ((config_file.readBoolEntry("History", "DontSaveChatsWithAnonymous") && receiver.isAnonymous()) || (!receiver.data("history_save_chats").toBool() && !config_file.readBoolEntry("History", "SaveChatsForAll")))
+// 		{
+// 			kdebugm(KDEBUG_INFO|KDEBUG_FUNCTION_END, "not appending\n");
+// 			return;
+// 		} 
 	appendMessageEntry(chat, Core::instance()->myself(), message);
 }
 
@@ -61,7 +143,7 @@ void HistorySqlStorage::messageSent(Chat *chat, const QString &message)
 void HistorySqlStorage::appendStatus(Contact elem, QString protocolName)
 {
 	kdebugf();
-	QHostAddress ip;
+/*	QHostAddress ip;
 	unsigned short port;
 	QString desc, query_str;
 	if(Database.driverName() == "QSQLITE")
@@ -96,213 +178,31 @@ void HistorySqlStorage::appendStatus(Contact elem, QString protocolName)
 // 		HtmlDocument::escapeText(desc);
 // 	}
 
-	query_str = query_str.arg(uid_group_str).arg(QString(/*elem.status(protocolName).toString().toUtf8().data()*/)).arg(QString(desc.toUtf8().data())).arg(QString(addr.toUtf8().data()));
+	query_str = query_str.arg(uid_group_str).arg(QString()).arg(QString(desc.toUtf8().data())).arg(QString(addr.toUtf8().data()));
 	executeQuery(query_str);
-	kdebugf2();
-}
-
-bool HistorySqlStorage::beginTransaction()
-{
-	kdebugf();
-	if (!Database.transaction())
-		return false;
-	return true;
-	kdebugf2();
-}
-
-bool HistorySqlStorage::commitTransaction()
-{
-	kdebugf();
-	if (!Database.commit())
-		return false;
-	return true;
-	kdebugf2();
-}
-
-bool HistorySqlStorage::rollbackTransaction()
-{
-	kdebugf();
-	if (!Database.rollback())
-		return false;
-	return true;
-	kdebugf2();
-}
-
-QString HistorySqlStorage::findUidGroup(ContactList users)
-{
-	kdebugf();
-	QSqlQuery query(Database);
-	QString query_str = "SELECT t0.id FROM";
-	for (unsigned int i = 0; i < (unsigned int)users.count(); i++)
-	{
-		if (i > 0)
-			query_str += ",";
-		query_str += (" kadu_uid_groups t" + QString::number(i));
-	}
-	query_str += " WHERE ";
-	for (unsigned int i = 0; i < (unsigned int)users.count(); i++)
-	{
-		if (i > 0)
-			query_str += " and ";
-		query_str += ("t" + QString::number(i) + ".uid = '" + /*users[i].ID((*users[i].protocolList().begin())) +*/ "' AND t" + QString::number(i) + ".protocol = '" /*+ (*users[i].protocolList().begin())*/ + "'");
-	}
-	for (unsigned int i = 0; i < (unsigned int)users.count() - 1; i++)
-		query_str += (" and t" + QString::number(i) + ".id = t" + QString::number(i + 1) + ".id");
-	kdebug("query: %s\n", query_str.toLocal8Bit().data());
-	if (!query.exec(query_str))
-	{
-		MessageBox::msg(query.lastError().text(), false, "Warning");
-		kdebugf2();
-		return "";
-	}
-	if (!query.next())
-	{
-		kdebugf2();
-		return "";
-	}
-	if (query.value(0).isNull())
-	{
-		kdebugf2();
-		return "";
-	}
-	QString result = query.value(0).toString();
-	kdebugf2();
-	return result;
-}
-
-QString HistorySqlStorage::findNewUidGroupId()
-{
-	kdebugf();
-	QSqlQuery query(Database);
-	QString query_str = "SELECT MAX(id) FROM kadu_uid_groups";
-	if (!query.exec(query_str))
-	{
-		MessageBox::msg(query.lastError().text(), false, "Warning");
-		kdebugf2();
-		return "";
-	}
-	if (!query.next())
-	{
-		kdebugf2();
-		return "";
-	}
-	if (query.value(0).isNull())
-	{
-		kdebugf2();
-		return "0";
-	}
-	QString result = QString::number(query.value(0).toInt() + 1);
-	kdebugf2();
-	return result;
-}
-
-QString HistorySqlStorage::addUidGroup(ContactList users)
-{
-	kdebugf();
-	QString id_str = findNewUidGroupId();
-	if (id_str == "")
-	{
-		kdebugf2();
-		return "";
-	}
-	kdebug("adding uid group %s\n", id_str.toLocal8Bit().data());
-	for (unsigned int i = 0; i < (unsigned int)users.count(); i++)
-	{
-// 		QString query_str = "INSERT INTO kadu_uid_groups (id, protocol, uid) VALUES('%1', '%2', '%3')";
-// 		QString uid_str = users[i].ID((*users[i].protocolList().begin()));
-// 		QString proto_str = (*users[i].protocolList().begin());
-// 		query_str = query_str.arg(id_str).arg(proto_str).arg(uid_str);
-// 		executeQuery(query_str);
-	}
-	kdebugf2();
-	return id_str;
-}
-
-void HistorySqlStorage::chatMsgReceived(Protocol *protocol, ContactList senders,
-	const QString& msg, time_t time)
-{
-	kdebugf();
-// 	if (!config_file.readBoolEntry("History", "Enable") || !config_file.readBoolEntry("History", "SaveChats"))
-// 	{
-// 		kdebugm(KDEBUG_INFO|KDEBUG_FUNCTION_END, "not appending\n");
-// 		return;
-// 	}
-// 	foreach(const Contact &sender, senders)
-// 		if ((config_file.readBoolEntry("History", "DontSaveChatsWithAnonymous") && sender.isAnonymous()) || (!sender.data("history_save_chats").toBool() && !config_file.readBoolEntry("History", "SaveChatsForAll")))
-// 		{
-// 			kdebugm(KDEBUG_INFO|KDEBUG_FUNCTION_END, "not appending\n");
-// 			return;
-// 		} 
-	QString query_str;
-	if(Database.driverName() == "QSQLITE")
-		query_str = "INSERT INTO kadu_messages (uid_group_id, is_outgoing, send_time, receive_time, content) VALUES ('%1', 0, datetime('%2', 'unixepoch', 'localtime'), datetime('now', 'localtime'), '%3');";
-	else if(Database.driverName() == "QMYSQL" || Database.driverName() == "QPSQL")
-		query_str = "INSERT INTO kadu_messages (uid_group_id, is_outgoing, send_time, receive_time, content) VALUES ('%1', '0', FROM_UNIXTIME('%2'), NOW(), '%3');";
-	QString uid_group_str = findUidGroup(senders);
-	if (uid_group_str == "")
-		uid_group_str = addUidGroup(senders);
-	if (uid_group_str == "")
-	{
-		kdebugf2();
-		return;
-	}
-	QString send_time_str = QString::number(time);
-	QString message_str = prepareText(msg);
-	query_str = query_str.arg(uid_group_str).arg(send_time_str).arg(QString(message_str.toUtf8()));
-
-	executeQuery(query_str);
-	kdebugf2();
-}
-
-void HistorySqlStorage::messageSentAndConfirmed(ContactList receivers, const QString& message, time_t time)
-{
-	kdebugf();
-// 	if (!config_file.readBoolEntry("History", "Enable") || !config_file.readBoolEntry("History", "SaveChats"))
-// 	{
-// 		kdebugm(KDEBUG_INFO|KDEBUG_FUNCTION_END, "not appending\n");
-// 		return;
-// 	}
-// 	foreach(const Contact &receiver, receivers)
-// 		if ((config_file.readBoolEntry("History", "DontSaveChatsWithAnonymous") && receiver.isAnonymous()) || (!receiver.data("history_save_chats").toBool() && !config_file.readBoolEntry("History", "SaveChatsForAll")))
-// 		{
-// 			kdebugm(KDEBUG_INFO|KDEBUG_FUNCTION_END, "not appending\n");
-// 			return;
-// 		} 
-	QString query_str;
-	if(Database.driverName() == "QSQLITE")
-		query_str = "INSERT INTO kadu_messages (uid_group_id, is_outgoing, send_time, receive_time, content) VALUES ('%1', '1', datetime('now', 'localtime'), datetime('now', 'localtime'), '%2');";
-	else if(Database.driverName() == "QMYSQL" || Database.driverName() == "QPSQL")
-		query_str = "INSERT INTO kadu_messages (uid_group_id, is_outgoing, send_time, receive_time, content) VALUES ('%1', '1', NOW(), NOW(), '%2');";
-	QString uid_group_str = findUidGroup(receivers);
-	if (uid_group_str == "")
-		uid_group_str = addUidGroup(receivers);
-	if (uid_group_str == "")
-	{
-		kdebugf2();
-		return;
-	}
-	QString message_str = prepareText(message);
-	query_str = query_str.arg(uid_group_str).arg(QString(message_str.toUtf8()));
-	executeQuery(query_str);
+*/
 	kdebugf2();
 }
 
 void HistorySqlStorage::appendMessageEntry(Chat *chat, Contact contact, const QString &message)
 {
-	int row = MessagesModel->rowCount();
-	MessagesModel->insertRow(row);
-	MessagesModel->setData(MessagesModel->index(row, 0), chat->uuid().toString());
-	MessagesModel->setData(MessagesModel->index(row, 1), contact.uuid().toString());
-	MessagesModel->setData(MessagesModel->index(row, 2), QDateTime::currentDateTime().toTime_t());
-	MessagesModel->setData(MessagesModel->index(row, 3), QDateTime::currentDateTime().toTime_t());
-	MessagesModel->setData(MessagesModel->index(row, 4), message);
-	MessagesModel->submitAll();
+	kdebugf();
+	QSqlRecord record = MessagesModel->record();
+	record.setValue("chat", chat->uuid().toString());
+	record.setValue("sender", contact.uuid().toString());
+	record.setValue("send_time", QDateTime::currentDateTime().toTime_t());
+	record.setValue("receive_time", QDateTime::currentDateTime().toTime_t());
+	record.setValue("content", message);
+	MessagesModel->insertRecord(-1, record);
+	if (!MessagesModel->submitAll())
+		MessageBox::msg(Database.lastError().text(), false, "Warning");
+	kdebugf2();
 }
 
 void HistorySqlStorage::appendSmsEntry(ContactList list, const QString &msg, bool outgoing, time_t send_time, time_t receive_time)
 {
 	kdebugf();
-	QString query_str;
+/*	QString query_str;
 	if(Database.driverName() == "QSQLITE")
 		query_str = "INSERT INTO kadu_sms (uid_group_id, is_outgoing, send_time, receive_time, content) VALUES ('%1', '%2', datetime('%3', 'unixepoch', 'localtime'), datetime('%4', 'unixepoch', 'localtime'), '%5');";
 	else if(Database.driverName() == "QMYSQL" || Database.driverName() == "QPSQL")
@@ -322,6 +222,7 @@ void HistorySqlStorage::appendSmsEntry(ContactList list, const QString &msg, boo
 	QString rec_time_str = QString::number(receive_time);
 	query_str = query_str.arg(uid_group_str).arg(outstr).arg(send_time_str).arg(rec_time_str).arg(QString(message_str.toUtf8()));
 	executeQuery(query_str);
+*/
 	kdebugf2();
 }
 
@@ -329,7 +230,7 @@ void HistorySqlStorage::appendSmsEntry(ContactList list, const QString &msg, boo
 void HistorySqlStorage::appendStatusEntry(ContactList list, const QString &status, const QString &desc, time_t time, const QString &ip_port)
 {
 	kdebugf();
-	QString query_str;
+/*	QString query_str;
 	if(Database.driverName() == "QSQLITE")
 		query_str  = "INSERT INTO kadu_status (uid_group_id, status, time, description, ip_port) VALUES ('%1', '%2', datetime('%3', 'unixepoch', 'localtime'), '%4', '%5');";
 	else if(Database.driverName() == "QMYSQL" || Database.driverName() == "QPSQL")
@@ -344,6 +245,7 @@ void HistorySqlStorage::appendStatusEntry(ContactList list, const QString &statu
 	}
 	query_str = query_str.arg(uid_group_str).arg(status).arg(QString::number(time)).arg(QString(desc.toUtf8().data())).arg(ip_port.toUtf8().data());
 	executeQuery(query_str);
+*/
 	kdebugf2();
 
 
@@ -352,7 +254,7 @@ void HistorySqlStorage::appendStatusEntry(ContactList list, const QString &statu
 void HistorySqlStorage::appendSms(const QString &mobile, const QString &msg)
 {
 	kdebugf();
-
+/*
 	QString query_str;
 	if(Database.driverName() == "QSQLITE")
 		query_str = "INSERT INTO kadu_sms (uid_group_id, is_outgoing, send_time, receive_time, content) VALUES ('%1', '1', datetime('now', 'localtime'), datetime('now', 'localtime'), '%2');";
@@ -373,12 +275,14 @@ void HistorySqlStorage::appendSms(const QString &mobile, const QString &msg)
 	query_str = query_str.arg(uid_group_str).arg(QString(message_str.toUtf8()));
 
 	executeQuery(query_str);
+*/
 	kdebugf2();
 }
 
 void HistorySqlStorage::removeHistory(const ContactList& uids, const QDate &date, HistoryEntryType type)
 {
 	kdebugf();
+/*
 	QString uid_group_str = findUidGroup(uids);
 	if(date.isValid())
 	{
@@ -420,102 +324,15 @@ void HistorySqlStorage::removeHistory(const ContactList& uids, const QDate &date
 		query_str = query_str.arg(uid_group_str);
 		executeQuery(query_str);
 	}
-	kdebugf2();
-
-}
-
-void HistorySqlStorage::configurationUpdated()
-{
-	kdebugf();
-	initializeDatabase();
-	kdebugf2();
-}
-
-
-QList<ContactList> HistorySqlStorage::getAllUidGroups()
-{
-	kdebugf();
-	return getUidGroups("SELECT id, protocol, uid FROM kadu_uid_groups;");
-	kdebugf2();
-}
-
-QList<ContactList> HistorySqlStorage::getChatUidGroups()
-{
-	kdebugf();
-	return getUidGroups("SELECT id as aj, protocol, uid FROM kadu_uid_groups WHERE (SELECT content FROM kadu_messages WHERE uid_group_id=aj LIMIT 1) != '';");
-	kdebugf2();
-}
-
-QList<ContactList> HistorySqlStorage::getStatusUidGroups()
-{
-	kdebugf();
-	return getUidGroups("SELECT id as aj, protocol, uid FROM kadu_uid_groups WHERE (SELECT status FROM kadu_status WHERE uid_group_id=aj LIMIT 1) != '';");
-	kdebugf2();
-}
-
-QList<ContactList> HistorySqlStorage::getSmsUidGroups()
-{
-	kdebugf();
-	return getUidGroups("SELECT id as aj, protocol, uid FROM kadu_uid_groups WHERE (SELECT content FROM kadu_sms WHERE uid_group_id=aj LIMIT 1) != '';");
-	kdebugf2();
-}
-
-QList<ContactList> HistorySqlStorage::getUidGroups(QString queryString)
-{
-	kdebugf();
-
-	QList<ContactList> result;
-/*
-	QSqlQuery query(Database);
-	if (!query.exec(queryString))
-	{
-		MessageBox::msg(query.lastError().text(), false, "Warning");
-		kdebugf2();
-		return result;
-	}
-	int prev_id = -1;
-	ContactList user_list_elements;
-	while (query.next())
-	{
-		int id = query.value(0).toInt();
-		QString protocol = query.value(1).toString();
-		QString uid = query.value(2).toString();
-		Contact user_list_element;
-		user_list_element.addProtocol(protocol, uid);
-		if(userlist->contains(protocol, uid))
-		{
-			user_list_element.setAnonymous(false);
-			user_list_element.setAltNick(userlist->byID(protocol,uid).altNick());
-		}
-		else
-		{
-			user_list_element.setAnonymous(true);
-			user_list_element.setAltNick(uid);
-		}
-		if (id != prev_id && prev_id != -1)
-		{
-			result.append(user_list_elements);
-			user_list_elements.clear();
-		}
-		user_list_elements.append(user_list_element);
-		prev_id = id;
-	}
-	if (prev_id != -1)
-	{
-		result.append(user_list_elements);
-		user_list_elements.clear();
-	}
-	kdebug("%i uid groups\n", result.count());
 */
 	kdebugf2();
-	return result;
+
 }
-
-
 
 QList<QDate> HistorySqlStorage::getAllDates()
 {
 	kdebugf();
+/*
 	QList<QDate> result;
 	QSqlQuery query(Database);
 	QString query_str = "SELECT DISTINCT date(send_time) FROM kadu_messages";
@@ -533,13 +350,15 @@ QList<QDate> HistorySqlStorage::getAllDates()
 	}
 	kdebug("%i dates\n", result.count());
 	kdebugf2();
-	return result;
+*/
+//	return result;
 }
 
 
 QList<QDate> HistorySqlStorage::historyDates(const ContactList& uids)
 {
 	kdebugf();
+/*
 	QList<QDate> result;
 	QSqlQuery query(Database);
 	QString query_str = "SELECT DISTINCT date(send_time) FROM kadu_messages WHERE uid_group_id = '%1'";
@@ -569,6 +388,7 @@ QList<QDate> HistorySqlStorage::historyDates(const ContactList& uids)
 
 QList<QDate> HistorySqlStorage::historyStatusDates(const ContactList& uids)
 {
+/*
 	kdebugf();
 	QList<QDate> result;
 	QSqlQuery query(Database);
@@ -595,10 +415,12 @@ QList<QDate> HistorySqlStorage::historyStatusDates(const ContactList& uids)
 	kdebug("%i dates\n", result.count());
 	kdebugf2();
 	return result;
+*/
 }
 
 QList<QDate> HistorySqlStorage::historySmsDates(const ContactList& uids)
 {
+/*
 	kdebugf();
 	QList<QDate> result;
 	QSqlQuery query(Database);
@@ -625,17 +447,17 @@ QList<QDate> HistorySqlStorage::historySmsDates(const ContactList& uids)
 	kdebug("%i dates\n", result.count());
 	kdebugf2();
 	return result;
+*/
 }
 
 QList<ChatMessage*> HistorySqlStorage::historyMessages(const ContactList& uids, QDate date)
 {
+/*
 	kdebugf();
 	QList<ChatMessage*> result;
 	QSqlQuery query(Database);
 	QString query_str;
-	/*if(toDate)
-		query_str = "SELECT uid_group_id, is_outgoing, send_time, receive_time, content FROM kadu_messages WHERE uid_group_id = '%1' AND date(receive_time) <= date('%2');";
-	else */if(date.isNull())
+	if(date.isNull())
 		query_str = "SELECT uid_group_id, is_outgoing, send_time, receive_time, content FROM kadu_messages WHERE uid_group_id = '%1' ORDER BY receive_time ASC;";
 	else
 		query_str = "SELECT uid_group_id, is_outgoing, send_time, receive_time, content FROM kadu_messages WHERE uid_group_id = '%1' AND date(receive_time) = date('%2');";
@@ -679,6 +501,7 @@ QList<ChatMessage*> HistorySqlStorage::historyMessages(const ContactList& uids, 
 	kdebug("%i messages\n", result.count());
 	kdebugf2();
 	return result;
+*/
 }
 
 QList<ChatMessage*> HistorySqlStorage::getStatusEntries(const ContactList& uids, QDate date)
@@ -792,7 +615,7 @@ QList<ChatMessage*> HistorySqlStorage::getSmsEntries(const ContactList& uids, QD
 int HistorySqlStorage::getEntriesCount(const QList<ContactList> &uids, HistoryEntryType type)
 {
 	kdebugf();
-	int result = 0;
+/*	int result = 0;
 	QSqlQuery query(Database);
 	QString query_str;
 
@@ -923,84 +746,16 @@ int HistorySqlStorage::getEntriesCount(const QList<ContactList> &uids, HistoryEn
 		part += sub;
 		result +=part;
 	}	
-}
+}*/
 kdebugf2();
-return result;
+//return result;
 	
-}
-
-void HistorySqlStorage::initializeDatabase()
-{
-	kdebugf();
-	tableNamePrefix = config_file.readEntry("History", "DatabaseTableNamePrefix");
-	QString driver = config_file.readEntry("History", "DatabaseDriver");
-	if(!QSqlDatabase::isDriverAvailable(driver))
-	{
-		MessageBox::msg(tr("It seems your Qt library does not provide support for selected database.\n Please select another driver in configuration window or install Qt with %1 plugin.").arg(driver), false, "Warning");
-		return; 
-	}	
-	if(QSqlDatabase::contains("kadu-history"))
-	{
-		if(Database.isOpen())
-			Database.close();
-		QSqlDatabase::removeDatabase("kadu-history");
-	}
-	Database = QSqlDatabase::addDatabase(driver, "kadu-history");
-	if(driver == "QSQLITE")
-		Database.setDatabaseName(config_file.readEntry("History", "DatabaseFilePath"));
-	else if(driver == "QMYSQL")
-	{
-		Database.setDatabaseName(config_file.readEntry("History", "DatabaseName"));	
-		Database.setPort(config_file.readUnsignedNumEntry("History", "DatabaseHostPort"));
-		Database.setHostName(config_file.readEntry("History", "DatabaseHost"));
-		Database.setUserName(config_file.readEntry("History", "DatabaseUser"));
-		Database.setPassword(pwHash(config_file.readEntry("History", "DatabasePassword")));
-	}
-//	else if(driver == "QPSQL" || driver == "QMYSQL")
-//	{
-// 		Database.setDatabaseName(config_file.readEntry("History", "DatabaseName"));	
-// 		Database.setPort(config_file.readUnsignedNumEntry("History", "DatabaseHostPort"));
-// 		Database.setHostName(config_file.readEntry("History", "DatabaseHost"));
-// 		Database.setUserName(config_file.readEntry("History", "DatabaseUser"));
-// 		Database.setPassword(pwHash(config_file.readEntry("History", "DatabasePassword")));
-//	}
-	
-
-	if(Database.open())
-		kdebug("Connected to database, driver: %s\n", driver.toLocal8Bit().data());
-	else
-	{
-		MessageBox::msg(Database.lastError().text(), false, "Warning");
-		return;
-	}
-
-
-	if (!Database.tables().contains(tableNamePrefix + "messages"))
-	{
-		QSqlQuery query(Database);
-		QString querystr;
-		if(Database.driverName() == "QSQLITE")
-			querystr = "PRAGMA encoding = \"UTF-8\";";
-		else if(Database.driverName() == "QMYSQL")
-			querystr = "ALTER DATABASE `%1` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;";
-		querystr = querystr.arg(Database.databaseName());
-		executeQuery(querystr);
-		executeQuery(QString("CREATE TABLE %1messages (chat VARCHAR(255), sender VARCHAR(255), send_time TIMESTAMP, receive_time TIMESTAMP, content TEXT, attributes TEXT);").arg(tableNamePrefix));
-		//executeQuery(QString("CREATE TABLE %1uid_groups (id INTEGER, account_id INTEGER, protocol VARCHAR(20), uid VARCHAR(255));").arg(tableNamePrefix));
-		//executeQuery(QString("CREATE TABLE %1status (uid_group_id INTEGER, status VARCHAR(255), time TIMESTAMP, description TEXT, ip_port TEXT);").arg(tableNamePrefix));
-		//executeQuery(QString("CREATE TABLE %1accounts (id INTEGER, protocol VARCHAR(20), uid VARCHAR(255));").arg(tableNamePrefix));
-		//executeQuery(QString("CREATE TABLE %1sms (uid_group_id INTEGER, account_id INTEGER, is_outgoing BOOLEAN, send_time TIMESTAMP, receive_time TIMESTAMP, content TEXT);").arg(tableNamePrefix));
-	}
-
-	MessagesModel = new QSqlTableModel(0, Database);
-	MessagesModel->setTable(tableNamePrefix + "messages");
-	MessagesModel->setEditStrategy(QSqlTableModel::OnManualSubmit);
-
 }
 
 HistorySearchResult HistorySqlStorage::searchHistory(ContactList users, HistorySearchParameters params)
 {
 	kdebugf();
+/*
 	int count = 0;
 	QString title, tableName, query_str;
 	HistorySearchResult result;
@@ -1066,8 +821,8 @@ HistorySearchResult HistorySqlStorage::searchHistory(ContactList users, HistoryS
 		//++count;
 	}
 */
-	result.pattern = params.pattern;
-	return result;
+//	result.pattern = params.pattern;
+//	return result;
 	kdebugf2();
 }
 

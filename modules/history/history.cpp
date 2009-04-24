@@ -52,7 +52,7 @@ History * History::instance()
 	return Instance;
 }
 
-History::History() : QObject(NULL), HistoryDialog(0), CurrentStorage(0)
+History::History() : QObject(NULL), HistoryDialog(new HistoryDlg()), CurrentStorage(0)
 {
 	kdebugf();
 	createActionDescriptions();
@@ -95,11 +95,7 @@ void History::showHistoryActionActivated(QAction *sender, bool toggled)
 	kdebugf();
 	KaduMainWindow *window = dynamic_cast<KaduMainWindow *>(sender->parent());
 	if (window)
-	{
-		ContactSet users = window->contacts();
-		//HistoryDialog = new HistoryDlg(users);
-		HistoryDialog->show(users);
-	}
+		HistoryDialog->show(window->contacts());
 	kdebugf2();
 }
 
