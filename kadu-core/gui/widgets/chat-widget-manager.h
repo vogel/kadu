@@ -7,8 +7,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef KADU_CHAT_MANAGER_H
-#define KADU_CHAT_MANAGER_H
+#ifndef CHAT_WIDGET_MANAGER
+#define CHAT_WIDGET_MANAGER
 
 #include <QtCore/QTimer>
 
@@ -31,7 +31,7 @@ class Protocol;
 	\brief Klasa zarz�dzaj�ca oknami ChatWidget
 **/
 
-class KADUAPI ChatManagerOld : public QObject, ConfigurationAwareObject
+class KADUAPI ChatWidgetManager : public QObject, ConfigurationAwareObject
 {
 	Q_OBJECT
 
@@ -105,13 +105,13 @@ public:
 		\param parent rodzic okna
 		\param name nazwa obiektu
 	**/
-	ChatManagerOld(QObject *parent = 0);
+	ChatWidgetManager(QObject *parent = 0);
 
 	/**
 		\fn ~ChatManagerOld()
 		Destruktor zamyka wszystkie otwarte okna
 	**/
-	~ChatManagerOld();
+	~ChatWidgetManager();
 
 	/**
 		\fn static void initModule()
@@ -309,6 +309,6 @@ signals:
 
 };
 
-extern KADUAPI ChatManagerOld* chat_manager;
+extern KADUAPI ChatWidgetManager* chat_manager;
 
-#endif
+#endif // CHAT_WIDGET_MANAGER

@@ -48,15 +48,16 @@ class KADUAPI ChatWidget : public QWidget, ConfigurationAwareObject, AccountsAwa
 {
 	Q_OBJECT
 
-private:
-	friend class ChatManagerOld;
+	friend class ChatWidgetManager;
 
 	Chat *CurrentChat;
 
 	QString Caption; /*!< tytu� okna */
 	QString EscapedCaption;
 
-
+	ChatMessagesView *MessagesView;
+	ContactsListWidget *ContactsWidget;
+	ChatEditBox *InputBox;
 
 	int index;	/*!< nr okna (z chat menad�era) */
 	QColor actcolor; /*!< zmienna przechowuj�ca aktualny kolor */
@@ -66,19 +67,19 @@ private:
 	ColorSelector *color_selector; /*!< okienko do wyboru koloru */
 	bool AutoSend; /*!< okre�la czy Return powoduje wys�anie wiadomo�ci */
 	bool WaitingForACK;
-	ContactsListWidget *ContactsWidget; /*!< lista kontakt�w przydatna gdy jeste�my w konferencji */
+	
 	Message myLastMessage; /*!< zmienna przechowuj�ca nasz� ostatni� wiadomo�� */
 	QSplitter *vertSplit, *horizSplit; /*!< obiekty oddzielaj�ce kontrolki od siebie */
 
 	QDateTime lastMsgTime; /*!< czas ostatniej wiadomo�ci */
 
-	ChatEditBox *Edit; /*!< okno do wpisywania wiadomo�ci */
-	ChatMessagesView *body; /*!< historia rozmowy, prosz� NIE dawa� dost�pu na zewn�trz do tej zmiennej */
-
 	// TODO: remove
 	int activationCount;
 
 	unsigned int NewMessagesCount; /*!< liczba nowych wiadomo�ci w oknie rozmowy */
+
+	void createGui();
+	void createContactsList();
 
 	bool decodeLocalFiles(QDropEvent *event, QStringList &files);
 
@@ -173,25 +174,10 @@ public:
 	const QString & caption() const;
 	const QString & escapedCaption() const;
 
-	/**
-		\fn CustonInput* edit()
-		Zwraca wska�nik do okna wpisywania wiadomo�ci
-	**/
 	CustomInput * edit();
-
-	/**
-		\fn UserBox* userbox()
-		Zwraca wska�nik do userboxa konferencji, je�li on istnieje
-	**/
 	ContactsListWidget * contactsListWidget() { return ContactsWidget; }
+	ChatEditBox * getChatEditBox() { return InputBox; }
 
-	ChatEditBox * getChatEditBox() { return Edit; }
-
-	/**
-		\fn bool autoSend() const
-		Zwraca warto�� okre�laj�c�, czy Return powoduje
-		wys�anie wiadomo�ci.
-	**/
 	bool autoSend() const;
 
 	bool waitingForACK() const;
@@ -212,7 +198,7 @@ public:
 	void kaduStoreGeometry();
 	void kaduRestoreGeometry();
 
-	unsigned int countMessages() { return body->countMessages(); }
+	unsigned int countMessages() { return MessagesView->countMessages(); }
 
 public slots:
 	/**

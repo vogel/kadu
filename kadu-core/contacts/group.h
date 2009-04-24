@@ -17,7 +17,7 @@
 
 class Group : public QObject, public UuidStorableObject
 {
-friend class GroupManager;
+	friend class GroupManager;
 
 	Q_OBJECT
 
@@ -37,7 +37,7 @@ public:
 
 	explicit Group(StoragePoint *storagePoint);
 	explicit Group(QUuid uuid = QUuid());
-	~Group();
+	virtual ~Group();
 
 	virtual void load();
 	virtual void store();

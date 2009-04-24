@@ -14,10 +14,10 @@
 
 #include "accounts/account.h"
 #include "accounts/account-manager.h"
-#include "chat/chat_manager-old.h"
 #include "contacts/model/contact-list-model.h"
 #include "contacts/contact-manager.h"
 #include "core/core.h"
+#include "gui/widgets/chat-widget-manager.h"
 
 #include "debug.h"
 #include "misc/misc.h"

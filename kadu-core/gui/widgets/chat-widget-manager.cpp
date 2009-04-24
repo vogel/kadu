@@ -30,7 +30,7 @@
 
 #include "action.h"
 #include "activate.h"
-#include "chat_message.h"
+#include "chat/chat_message.h"
 #include "config_file.h"
 #include "debug.h"
 #include "icons_manager.h"
@@ -40,7 +40,7 @@
 #include "search.h"
 #include "xml_config_file.h"
 
-#include "chat_manager-old.h"
+#include "chat-widget-manager.h"
 
 void disableEmptyTextBox(KaduAction *action)
 {
@@ -88,7 +88,7 @@ void checkIgnoreUser(KaduAction *action)
 	action->setChecked(IgnoredHelper::isIgnored(action->contacts()));
 }
 
-ChatManagerOld::ChatManagerOld(QObject *parent) :
+ChatWidgetManager::ChatWidgetManager(QObject *parent) :
 		QObject(parent)
 {
 	kdebugf();
@@ -204,7 +204,7 @@ ChatManagerOld::ChatManagerOld(QObject *parent) :
 	kdebugf2();
 }
 
-void ChatManagerOld::closeAllWindows()
+void ChatWidgetManager::closeAllWindows()
 {
 	kdebugf();
 
@@ -222,7 +222,7 @@ void ChatManagerOld::closeAllWindows()
 	kdebugf2();
 }
 
-void ChatManagerOld::loadOpenedWindows()
+void ChatWidgetManager::loadOpenedWindows()
 {
 	kdebugf();
 	QDomElement root_elem = xml_config_file->rootElement();
@@ -269,7 +269,7 @@ void ChatManagerOld::loadOpenedWindows()
 	kdebugf2();
 }
 
-void ChatManagerOld::saveOpenedWindows()
+void ChatWidgetManager::saveOpenedWindows()
 {
 	// TODO: 0.6.6 saveOpenedChats?
 
@@ -296,7 +296,7 @@ void ChatManagerOld::saveOpenedWindows()
 	kdebugf2();*/
 }
 
-ChatManagerOld::~ChatManagerOld()
+ChatWidgetManager::~ChatWidgetManager()
 {
 	kdebugf();
 
@@ -327,12 +327,12 @@ ChatManagerOld::~ChatManagerOld()
 	kdebugf2();
 }
 
-void ChatManagerOld::openChatWith()
+void ChatWidgetManager::openChatWith()
 {
 	(new OpenChatWith(Core::instance()->kaduWindow()))->show();
 }
 
-void ChatManagerOld::autoSendActionActivated(QAction *sender, bool toggled)
+void ChatWidgetManager::autoSendActionActivated(QAction *sender, bool toggled)
 {
 	kdebugf();
 
@@ -351,7 +351,7 @@ void ChatManagerOld::autoSendActionActivated(QAction *sender, bool toggled)
 	kdebugf2();
 }
 
-void ChatManagerOld::clearActionActivated(QAction *sender, bool toggled)
+void ChatWidgetManager::clearActionActivated(QAction *sender, bool toggled)
 {
 	kdebugf();
 
@@ -366,7 +366,7 @@ void ChatManagerOld::clearActionActivated(QAction *sender, bool toggled)
 	kdebugf2();
 }
 
-void ChatManagerOld::insertImageActionActivated(QAction *sender, bool toggled)
+void ChatWidgetManager::insertImageActionActivated(QAction *sender, bool toggled)
 {
 	kdebugf();
 
@@ -381,7 +381,7 @@ void ChatManagerOld::insertImageActionActivated(QAction *sender, bool toggled)
 	kdebugf2();
 }
 
-void ChatManagerOld::boldActionActivated(QAction *sender, bool toggled)
+void ChatWidgetManager::boldActionActivated(QAction *sender, bool toggled)
 {
 	kdebugf();
 
@@ -394,7 +394,7 @@ void ChatManagerOld::boldActionActivated(QAction *sender, bool toggled)
 	kdebugf2();
 }
 
-void ChatManagerOld::italicActionActivated(QAction *sender, bool toggled)
+void ChatWidgetManager::italicActionActivated(QAction *sender, bool toggled)
 {
 	kdebugf();
 
@@ -407,7 +407,7 @@ void ChatManagerOld::italicActionActivated(QAction *sender, bool toggled)
 	kdebugf2();
 }
 
-void ChatManagerOld::underlineActionActivated(QAction *sender, bool toggled)
+void ChatWidgetManager::underlineActionActivated(QAction *sender, bool toggled)
 {
 	kdebugf();
 
@@ -420,7 +420,7 @@ void ChatManagerOld::underlineActionActivated(QAction *sender, bool toggled)
 	kdebugf2();
 }
 
-void ChatManagerOld::sendActionActivated(QAction *sender, bool toggled)
+void ChatWidgetManager::sendActionActivated(QAction *sender, bool toggled)
 {
 	kdebugf();
 
@@ -439,7 +439,7 @@ void ChatManagerOld::sendActionActivated(QAction *sender, bool toggled)
 	kdebugf2();
 }
 
-void ChatManagerOld::sendActionCreated(KaduAction *action)
+void ChatWidgetManager::sendActionCreated(KaduAction *action)
 {
 	ChatEditBox *chatEditBox = dynamic_cast<ChatEditBox *>(action->parent());
 	if (!chatEditBox)
@@ -455,7 +455,7 @@ void ChatManagerOld::sendActionCreated(KaduAction *action)
 		chatWidget->changeSendToCancelSend();
 }
 
-void ChatManagerOld::whoisActionActivated(QAction *sender, bool toggled)
+void ChatWidgetManager::whoisActionActivated(QAction *sender, bool toggled)
 {
 	kdebugf();
 
@@ -483,7 +483,7 @@ void ChatManagerOld::whoisActionActivated(QAction *sender, bool toggled)
 	kdebugf2();
 }
 
-void ChatManagerOld::insertEmoticonActionCreated(KaduAction *action)
+void ChatWidgetManager::insertEmoticonActionCreated(KaduAction *action)
 {
 	if((EmoticonsStyle)config_file.readNumEntry("Chat","EmoticonsStyle") == EMOTS_NONE)
 	{
@@ -492,7 +492,7 @@ void ChatManagerOld::insertEmoticonActionCreated(KaduAction *action)
 	}
 }
 
-void ChatManagerOld::insertEmoticonActionEnabled()
+void ChatWidgetManager::insertEmoticonActionEnabled()
 {
  	foreach (KaduAction *action, insertEmoticonActionDescription->actions())
 	{
@@ -509,7 +509,7 @@ void ChatManagerOld::insertEmoticonActionEnabled()
 	}
 }
 
-void ChatManagerOld::insertEmoticonActionActivated(QAction *sender, bool toggled)
+void ChatWidgetManager::insertEmoticonActionActivated(QAction *sender, bool toggled)
 {
 	ChatEditBox *chatEditBox = dynamic_cast<ChatEditBox *>(sender->parent());
 	if (!chatEditBox)
@@ -526,7 +526,7 @@ void ChatManagerOld::insertEmoticonActionActivated(QAction *sender, bool toggled
 	}
 }
 
-void ChatManagerOld::colorSelectorActionActivated(QAction *sender, bool toggled)
+void ChatWidgetManager::colorSelectorActionActivated(QAction *sender, bool toggled)
 {
 	ChatEditBox *chatEditBox = dynamic_cast<ChatEditBox *>(sender->parent());
 	if (!chatEditBox)
@@ -543,7 +543,7 @@ void ChatManagerOld::colorSelectorActionActivated(QAction *sender, bool toggled)
 	}
 }
 
-void ChatManagerOld::ignoreUserActionActivated(QAction *sender, bool toggled)
+void ChatWidgetManager::ignoreUserActionActivated(QAction *sender, bool toggled)
 {
 	kdebugf();
 	Account *account = AccountManager::instance()->defaultAccount();
@@ -595,7 +595,7 @@ void ChatManagerOld::ignoreUserActionActivated(QAction *sender, bool toggled)
 	kdebugf2();
 }
 
-void ChatManagerOld::blockUserActionActivated(QAction *sender, bool toggled)
+void ChatWidgetManager::blockUserActionActivated(QAction *sender, bool toggled)
 {
 	kdebugf();
 	Account *account = AccountManager::instance()->defaultAccount();
@@ -657,7 +657,7 @@ void ChatManagerOld::blockUserActionActivated(QAction *sender, bool toggled)
 	kdebugf2();
 }
 
-void ChatManagerOld::chatActionActivated(QAction *sender, bool toggled)
+void ChatWidgetManager::chatActionActivated(QAction *sender, bool toggled)
 {
 	kdebugf();
 	Account *account = AccountManager::instance()->defaultAccount();
@@ -676,17 +676,17 @@ void ChatManagerOld::chatActionActivated(QAction *sender, bool toggled)
 	kdebugf2();
 }
 
-const ChatList& ChatManagerOld::chats() const
+const ChatList& ChatWidgetManager::chats() const
 {
 	return ChatWidgets;
 }
 
-const QList<Chat *> ChatManagerOld::closedChats() const
+const QList<Chat *> ChatWidgetManager::closedChats() const
 {
 	return ClosedChats;
 }
 
-int ChatManagerOld::registerChatWidget(ChatWidget *chat)
+int ChatWidgetManager::registerChatWidget(ChatWidget *chat)
 {
 	kdebugf();
 
@@ -696,14 +696,14 @@ int ChatManagerOld::registerChatWidget(ChatWidget *chat)
 	return ChatWidgets.count() - 1;
 }
 
-void ChatManagerOld::unregisterChatWidget(ChatWidget *chat)
+void ChatWidgetManager::unregisterChatWidget(ChatWidget *chat)
 {
 	kdebugf();
 
 	foreach (ChatWidget *curChat, ChatWidgets)
 		if (curChat == chat)
 		{
-			if (chat->body->countMessages())
+			if (chat->countMessages())
 			{
 				ClosedChats.prepend(chat->chat());
 				if (ClosedChats.count() > 10)
@@ -720,12 +720,12 @@ void ChatManagerOld::unregisterChatWidget(ChatWidget *chat)
 	kdebugmf(KDEBUG_FUNCTION_END|KDEBUG_WARNING, "NOT found\n");
 }
 
-void ChatManagerOld::refreshTitlesLater()
+void ChatWidgetManager::refreshTitlesLater()
 {
 	refreshTitlesTimer.start(0);
 }
 
-void ChatManagerOld::refreshTitles()
+void ChatWidgetManager::refreshTitles()
 {
 	kdebugf();
  	foreach(ChatWidget *chat, ChatWidgets)
@@ -734,7 +734,7 @@ void ChatManagerOld::refreshTitles()
 	kdebugf2();
 }
 
-void ChatManagerOld::refreshTitlesForUser(Contact contact)
+void ChatWidgetManager::refreshTitlesForUser(Contact contact)
 {
 	kdebugf();
 // TOOD: 0.6.6 need implementation in Chat signal: titleChanged()
@@ -744,7 +744,7 @@ void ChatManagerOld::refreshTitlesForUser(Contact contact)
 	kdebugf2();
 }
 
-ChatWidget * ChatManagerOld::findChatWidget(Chat *chat) const
+ChatWidget * ChatWidgetManager::findChatWidget(Chat *chat) const
 {
 	foreach(ChatWidget *chatWidget, ChatWidgets)
 		if (chatWidget->chat() == chat)
@@ -753,7 +753,7 @@ ChatWidget * ChatManagerOld::findChatWidget(Chat *chat) const
 	return NULL;
 }
 
-ChatWidget * ChatManagerOld::chatWidgetForChat(Chat *chat)
+ChatWidget * ChatWidgetManager::chatWidgetForChat(Chat *chat)
 {
 	foreach (ChatWidget *chatWidget, ChatWidgets)
 		if (chatWidget->chat() == chat)
@@ -762,7 +762,7 @@ ChatWidget * ChatManagerOld::chatWidgetForChat(Chat *chat)
 	return 0;
 }
 
-void ChatManagerOld::activateChatWidget(ChatWidget *chatWidget, bool forceActivate)
+void ChatWidgetManager::activateChatWidget(ChatWidget *chatWidget, bool forceActivate)
 {
 	QWidget *win = chatWidget->window();
 	kdebugm(KDEBUG_INFO, "parent: %p\n", win);
@@ -779,7 +779,7 @@ void ChatManagerOld::activateChatWidget(ChatWidget *chatWidget, bool forceActiva
 	emit chatWidgetOpen(chatWidget);
 }
 
-ChatWidget * ChatManagerOld::openChatWidget(Chat *chat, bool forceActivate)
+ChatWidget * ChatWidgetManager::openChatWidget(Chat *chat, bool forceActivate)
 {
 	kdebugf();
 
@@ -824,7 +824,7 @@ ChatWidget * ChatManagerOld::openChatWidget(Chat *chat, bool forceActivate)
 	return chatWidget;
 }
 
-void ChatManagerOld::deletePendingMsgs(ContactSet contacts)
+void ChatWidgetManager::deletePendingMsgs(ContactSet contacts)
 {
 	kdebugf();
 	for (int i = 0; i < pending.count(); ++i)
@@ -856,7 +856,7 @@ ChatMessage *convertPendingToMessage(PendingMsgs::Element elem)
 	return message;
 }
 
-void ChatManagerOld::openPendingMsgs(Chat *chat, bool forceActivate)
+void ChatWidgetManager::openPendingMsgs(Chat *chat, bool forceActivate)
 {
 	kdebugf();
 
@@ -888,7 +888,7 @@ void ChatManagerOld::openPendingMsgs(Chat *chat, bool forceActivate)
 	kdebugf2();
 }
 
-void ChatManagerOld::openPendingMsgs(bool forceActivate)
+void ChatWidgetManager::openPendingMsgs(bool forceActivate)
 {
 	kdebugf();
 // TODO: 0.6.6 fix that
@@ -898,7 +898,7 @@ void ChatManagerOld::openPendingMsgs(bool forceActivate)
 	kdebugf2();
 }
 
-void ChatManagerOld::sendMessage(Chat *chat)
+void ChatWidgetManager::sendMessage(Chat *chat)
 {
 	kdebugf();
 // TODO: 0.6.6
@@ -919,7 +919,7 @@ void ChatManagerOld::sendMessage(Chat *chat)
 	kdebugf2();
 }
 
-QVariant & ChatManagerOld::chatWidgetProperty(ContactSet contacts, const QString &name)
+QVariant & ChatWidgetManager::chatWidgetProperty(ContactSet contacts, const QString &name)
 {
 	kdebugf();
 
@@ -941,7 +941,7 @@ QVariant & ChatManagerOld::chatWidgetProperty(ContactSet contacts, const QString
 	return addons[0].map[name];
 }
 
-void ChatManagerOld::setChatWidgetProperty(ContactSet contacts, const QString &name, const QVariant &value)
+void ChatWidgetManager::setChatWidgetProperty(ContactSet contacts, const QString &name, const QVariant &value)
 {
 	kdebugf();
 
@@ -962,7 +962,7 @@ void ChatManagerOld::setChatWidgetProperty(ContactSet contacts, const QString &n
 	kdebugf2();
 }
 
-void ChatManagerOld::closeModule()
+void ChatWidgetManager::closeModule()
 {
 	kdebugf();
 
@@ -973,30 +973,30 @@ void ChatManagerOld::closeModule()
 	kdebugf2();
 }
 
-void ChatManagerOld::initModule()
+void ChatWidgetManager::initModule()
 {
 	kdebugf();
 
 	ChatMessage::registerParserTags();
 	emoticons->setEmoticonsTheme(config_file.readEntry("Chat", "EmoticonsTheme"));
-	chat_manager = new ChatManagerOld(Core::instance()->kaduWindow());
+	chat_manager = new ChatWidgetManager(Core::instance()->kaduWindow());
 
 	kdebugf2();
 }
 
-void ChatManagerOld::autoSendActionCreated(KaduAction *action)
+void ChatWidgetManager::autoSendActionCreated(KaduAction *action)
 {
 	action->setChecked(config_file.readBoolEntry("Chat", "AutoSend"));
 }
 
-void ChatManagerOld::autoSendActionCheck()
+void ChatWidgetManager::autoSendActionCheck()
 {
  	bool check = config_file.readBoolEntry("Chat", "AutoSend");
  	foreach (KaduAction *action, autoSendActionDescription->actions())
  		action->setChecked(check);
 }
 
-void ChatManagerOld::configurationUpdated()
+void ChatWidgetManager::configurationUpdated()
 {
 	kdebugf();
 
@@ -1006,7 +1006,7 @@ void ChatManagerOld::configurationUpdated()
 	kdebugf2();
 }
 
-void ChatManagerOld::messageReceived(Chat *chat, Contact sender, const QString &message)
+void ChatWidgetManager::messageReceived(Chat *chat, Contact sender, const QString &message)
 {
 	kdebugf();
 	ContactSet receipients = chat->contacts();
@@ -1045,4 +1045,4 @@ void ChatManagerOld::messageReceived(Chat *chat, Contact sender, const QString &
 	kdebugf2();
 }
 
-ChatManagerOld* chat_manager = 0;
+ChatWidgetManager* chat_manager = 0;

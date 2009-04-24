@@ -14,7 +14,7 @@
 #include <QtGui/QDesktopWidget>
 #include <QtGui/QVBoxLayout>
 
-#include "chat/chat_manager-old.h"
+#include "gui/widgets/chat-widget-manager.h"
 
 #include "contacts/contact-kadu-data.h"
 

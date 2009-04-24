@@ -16,6 +16,7 @@
 #include "contacts/contact-manager.h"
 #include "contacts/group-manager.h"
 #include "gui/widgets/chat_edit_box.h"
+#include "gui/widgets/chat-widget-manager.h"
 #include "gui/windows/kadu-window.h"
 #include "misc/misc.h"
 #include "misc/token-dialog.h"
@@ -26,7 +27,6 @@
 
 #include "../modules/gadu_protocol/gadu-protocol.h"
 
-#include "chat/chat_manager-old.h"
 #include "config_file.h"
 #include "debug.h"
 #include "emoticons.h"
@@ -61,7 +61,7 @@ Core::Core() : Myself(Contact::TypeNull), Window(0), ShowMainWindowOnStart(true)
 
 Core::~Core()
 {
-	ChatManagerOld::closeModule();
+	ChatWidgetManager::closeModule();
 
 	Configuration->store();
 	delete Configuration;
@@ -280,7 +280,7 @@ void Core::init()
 
 	Updates::initModule();
 	GaduProtocol::initModule();
-	ChatManagerOld::initModule();
+	ChatWidgetManager::initModule();
 	SearchDialog::initModule();
 
 #ifdef Q_OS_MACX

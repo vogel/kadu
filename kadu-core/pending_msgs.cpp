@@ -11,12 +11,9 @@
 
 #include "accounts/account.h"
 #include "accounts/account-manager.h"
-
-#include "chat/chat_manager-old.h"
-
 #include "contacts/contact-manager.h"
-
 #include "contacts/contact-list-configuration-helper.h"
+#include "gui/widgets/chat-widget-manager.h"
 
 #include "debug.h"
 #include "misc/misc.h"

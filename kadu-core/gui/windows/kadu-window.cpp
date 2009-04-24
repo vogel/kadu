@@ -16,11 +16,11 @@
 #include <QtGui/QSplitter>
 
 #include "accounts/account-manager.h"
-#include "chat/chat_manager-old.h"
 #include "contacts/contact-manager.h"
 #include "contacts/model/contacts-model.h"
 #include "contacts/model/filter/group-contact-filter.h"
 #include "core/core.h"
+#include "gui/widgets/chat-widget-manager.h"
 #include "gui/widgets/contact-info-panel.h"
 #include "gui/widgets/contacts-list-widget.h"
 #include "gui/widgets/group-tab-bar.h"

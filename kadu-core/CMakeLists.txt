@@ -7,8 +7,7 @@ set (kadu_SRCS
 	accounts/model/accounts-model.cpp
 
 	chat/chat.cpp
-	chat/chat-manager.cpp	
-	chat/chat_manager-old.cpp
+	chat/chat-manager.cpp
 	chat/conference-chat.cpp
 	chat/simple-chat.cpp
 
@@ -68,6 +67,7 @@ set (kadu_SRCS
 	gui/widgets/chat_edit_box.cpp
 	gui/widgets/chat_messages_view.cpp
 	gui/widgets/chat-widget.cpp
+	gui/widgets/chat-widget-manager.cpp
 	gui/widgets/contact-account-data-widget.cpp
 	gui/widgets/contact-info-panel.cpp
 	gui/widgets/contacts-list-widget.cpp
@@ -202,7 +202,6 @@ set (kadu_MOC_SRCS
 
 	chat/chat.h
 	chat/chat-manager.h
-	chat/chat_manager-old.h
 	chat/conference-chat.h
 	chat/simple-chat.h
 
@@ -247,6 +246,7 @@ set (kadu_MOC_SRCS
 	gui/widgets/chat_edit_box.h
 	gui/widgets/chat_messages_view.h
 	gui/widgets/chat-widget.h
+	gui/widgets/chat-widget-manager.h
 	gui/widgets/contact-account-data-widget.h
 	gui/widgets/contact-info-panel.h
 	gui/widgets/contacts-list-widget.h

@@ -15,7 +15,6 @@
 
 #include "accounts/account.h"
 #include "accounts/account-manager.h"
-#include "chat/chat_manager-old.h"
 #include "contacts/contact-account-data.h"
 #include "contacts/contact-kadu-data.h"
 #include "contacts/contact-manager.h"
@@ -24,6 +23,7 @@
 #include "contacts/model/filter/offline-contact-filter.h"
 #include "contacts/model/filter/online-and-description-contact-filter.h"
 #include "core/core.h"
+#include "gui/widgets/chat-widget-manager.h"
 #include "gui/widgets/contacts-list-widget.h"
 #include "gui/widgets/contacts-list-widget-menu-manager.h"
 #include "gui/widgets/status-menu.h"

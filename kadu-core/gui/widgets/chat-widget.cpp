@@ -16,11 +16,11 @@
 #include "accounts/account-manager.h"
 
 #include "chat/chat-manager.h"
-#include "chat/chat_manager-old.h"
 #include "chat/chat_message.h"
 #include "contacts/contact-account-data.h"
 #include "contacts/model/contact-list-model.h"
 #include "core/core.h"
+#include "gui/widgets/chat-widget-manager.h"
 #include "gui/widgets/contacts-list-widget.h"
 #include "gui/windows/kadu-window.h"
 #include "protocols/protocol.h"
@@ -44,94 +44,21 @@ ChatWidget::ChatWidget(Chat *chat, QWidget *parent) :
 		QWidget(parent), CurrentChat(chat),
 		index(0), actcolor(),
 		emoticon_selector(0), color_selector(0), WaitingForACK(false), ContactsWidget(0), horizSplit(0),
-		activationCount(0), NewMessagesCount(0), Edit(0)
+		activationCount(0), NewMessagesCount(0), InputBox(0)
 {
 	kdebugf();
-	QList<int> sizes;
-
-	QVBoxLayout *layout = new QVBoxLayout(this);
-	layout->setMargin(0);
-	layout->setSpacing(0);
-
-	vertSplit = new QSplitter(Qt::Vertical, this);
-	layout->addWidget(vertSplit);
 
 	setAcceptDrops(true);
 	/* register us in the chats registry... */
 	index = chat_manager->registerChatWidget(this);
 
-	Edit = new ChatEditBox(this);
+	triggerAllAccountsRegistered();
+	createGui();
 
-	if (chat->contacts().count() > 1)
-	{
-		horizSplit = new QSplitter(Qt::Horizontal, this);
-		horizSplit->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Expanding);
-
-		body = new ChatMessagesView(this);
-		horizSplit->addWidget(body);
-
-		QWidget *userlistContainer = new QWidget(horizSplit);
-		QVBoxLayout *uc_layout = new QVBoxLayout(userlistContainer);
-		uc_layout->setContentsMargins(0, 0, 0, 0);
-		uc_layout->setSpacing(0);
-
-// TODO: 0.6.6
-// 		connect(userbox, SIGNAL(mouseButtonClicked(int, Q3ListBoxItem *, const QPoint &)),
-// 		kadu, SLOT(mouseButtonClicked(int, Q3ListBoxItem *)));
-
-		ContactsWidget = new ContactsListWidget(getChatEditBox(), userlistContainer);
-		ContactsWidget->setModel(new ContactListModel(chat->contacts().toContactList(), this));
-
-		ContactsWidget->setMinimumSize(QSize(30, 30));
-
-		connect(ContactsWidget, SIGNAL(contactActivated(Contact)),
-				Core::instance()->kaduWindow(), SLOT(sendMessage(Contact)));
-
-		QPushButton *leaveConference = new QPushButton(tr("Leave conference"), userlistContainer);
-		leaveConference->setMinimumWidth(ContactsWidget->minimumWidth());
-		connect(leaveConference, SIGNAL(clicked()), this, SLOT(leaveConference()));
-
-		uc_layout->addWidget(ContactsWidget);
-		uc_layout->addWidget(leaveConference);
-
-		sizes.append(3);
-		sizes.append(1);
-		horizSplit->setSizes(sizes);
-
-		vertSplit->addWidget(horizSplit);
-	}
-	else
-	{
-		body = new ChatMessagesView(this);
-		vertSplit->addWidget(body);
-	}
-
-	vertSplit->addWidget(Edit);
-
-	connect(Edit->inputBox(), SIGNAL(keyPressed(QKeyEvent *, CustomInput *, bool &)), this, SLOT(keyPressedSlot(QKeyEvent *, CustomInput *, bool &)));
-
-	setFocusProxy(Edit);
-
-	QShortcut *shortcut = new QShortcut(QKeySequence(Qt::Key_Return + Qt::CTRL), this);
-	connect(shortcut, SIGNAL(activated()), this, SLOT(sendMessage()));
-
-	shortcut = new QShortcut(QKeySequence(Qt::Key_PageUp + Qt::SHIFT), this);
-	connect(shortcut, SIGNAL(activated()), body, SLOT(pageUp()));
-
-	shortcut = new QShortcut(QKeySequence(Qt::Key_PageDown + Qt::SHIFT), this);
-	connect(shortcut, SIGNAL(activated()), body, SLOT(pageDown()));
-
-	connect(Edit->inputBox(), SIGNAL(cursorPositionChanged()), this, SLOT(curPosChanged()));
-	connect(Edit->inputBox(), SIGNAL(sendMessage()), this, SLOT(sendMessage()));
-	connect(Edit->inputBox(), SIGNAL(specialKeyPressed(int)), this, SLOT(specialKeyPressed(int)));
-
-	Edit->installEventFilter(this);
+	connect(chat_manager->colorSelectorActionDescription, SIGNAL(actionCreated(KaduAction *)),
+			this, SLOT(colorSelectorActionCreated(KaduAction *)));
 
 	configurationUpdated();
-
-	triggerAllAccountsRegistered();
-
-	connect(chat_manager->colorSelectorActionDescription, SIGNAL(actionCreated(KaduAction *)), this, SLOT(colorSelectorActionCreated(KaduAction *)));
 
 	kdebugf2();
 }
@@ -149,6 +76,75 @@ ChatWidget::~ChatWidget()
 	kdebugmf(KDEBUG_FUNCTION_END, "chat destroyed: index %d\n", index);
 }
 
+void ChatWidget::createGui()
+{
+	QVBoxLayout *mainLayout = new QVBoxLayout(this);
+	mainLayout->setMargin(0);
+	mainLayout->setSpacing(0);
+
+	vertSplit = new QSplitter(Qt::Vertical, this);
+	mainLayout->addWidget(vertSplit);
+
+	horizSplit = new QSplitter(Qt::Horizontal, this);
+	horizSplit->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Expanding);
+
+	MessagesView = new ChatMessagesView(this);
+	QShortcut *shortcut = new QShortcut(QKeySequence(Qt::Key_Return + Qt::CTRL), this);
+	connect(shortcut, SIGNAL(activated()), this, SLOT(sendMessage()));
+
+	shortcut = new QShortcut(QKeySequence(Qt::Key_PageUp + Qt::SHIFT), this);
+	connect(shortcut, SIGNAL(activated()), MessagesView, SLOT(pageUp()));
+
+	shortcut = new QShortcut(QKeySequence(Qt::Key_PageDown + Qt::SHIFT), this);
+	connect(shortcut, SIGNAL(activated()), MessagesView, SLOT(pageDown()));
+	horizSplit->addWidget(MessagesView);
+
+	if (CurrentChat->contacts().count() > 1)
+		createContactsList();
+
+	vertSplit->addWidget(horizSplit);
+
+	InputBox = new ChatEditBox(this);
+	vertSplit->addWidget(InputBox);
+
+	connect(InputBox->inputBox(), SIGNAL(keyPressed(QKeyEvent *, CustomInput *, bool &)),
+			this, SLOT(keyPressedSlot(QKeyEvent *, CustomInput *, bool &)));
+	connect(InputBox->inputBox(), SIGNAL(cursorPositionChanged()), this, SLOT(curPosChanged()));
+	connect(InputBox->inputBox(), SIGNAL(sendMessage()), this, SLOT(sendMessage()));
+	connect(InputBox->inputBox(), SIGNAL(specialKeyPressed(int)), this, SLOT(specialKeyPressed(int)));
+	InputBox->installEventFilter(this);
+
+	setFocusProxy(InputBox);
+}
+
+void ChatWidget::createContactsList()
+{
+	QWidget *contactsListContainer = new QWidget(horizSplit);
+
+	QVBoxLayout *layout = new QVBoxLayout(contactsListContainer);
+	layout->setContentsMargins(0, 0, 0, 0);
+	layout->setSpacing(0);
+
+	ContactsWidget = new ContactsListWidget(getChatEditBox(), this);
+	ContactsWidget->setModel(new ContactListModel(CurrentChat->contacts().toContactList(), this));
+	ContactsWidget->setMinimumSize(QSize(30, 30));
+
+	connect(ContactsWidget, SIGNAL(contactActivated(Contact)),
+			Core::instance()->kaduWindow(), SLOT(sendMessage(Contact)));
+
+	QPushButton *leaveConference = new QPushButton(tr("Leave conference"), contactsListContainer);
+	leaveConference->setMinimumWidth(ContactsWidget->minimumWidth());
+	connect(leaveConference, SIGNAL(clicked()), this, SLOT(leaveConference()));
+
+	layout->addWidget(ContactsWidget);
+	layout->addWidget(leaveConference);
+
+	QList<int> sizes;
+	sizes.append(3);
+	sizes.append(1);
+	horizSplit->setSizes(sizes);
+}
+
 void ChatWidget::configurationUpdated()
 {
 /* TODO: 0.6.6
@@ -159,10 +155,11 @@ void ChatWidget::configurationUpdated()
 		ContactsWidget->Q3ListBox::setFont(config_file.readFontEntry("Look","UserboxFont"));
 	}*/
 
-	Edit->inputBox()->setFont(config_file.readFontEntry("Look","ChatFont"));
- 	Edit->inputBox()->setStyleSheet(QString("QTextEdit {background-color: %1}").arg(config_file.readColorEntry("Look", "ChatTextBgColor").name()));
+	InputBox->inputBox()->setFont(config_file.readFontEntry("Look","ChatFont"));
+ 	InputBox->inputBox()->setStyleSheet(QString("QTextEdit {background-color: %1}").arg(config_file.readColorEntry("Look", "ChatTextBgColor").name()));
+
 	AutoSend = config_file.readBoolEntry("Chat", "AutoSend");
-	Edit->inputBox()->setAutosend(AutoSend);
+	InputBox->inputBox()->setAutosend(AutoSend);
 
 	setActColor(true);
 
@@ -176,25 +173,25 @@ void ChatWidget::specialKeyPressed(int key)
  	{
 		KaduAction *action;
  		case CustomInput::KEY_BOLD:
- 			action = chat_manager->boldActionDescription->action(Edit);
+ 			action = chat_manager->boldActionDescription->action(InputBox);
 			if (action)
 				action->setChecked(!action->isChecked());
- 			Edit->inputBox()->setFontWeight(action->isChecked() ? QFont::Bold : QFont::Normal);
+ 			InputBox->inputBox()->setFontWeight(action->isChecked() ? QFont::Bold : QFont::Normal);
  			break;
  		case CustomInput::KEY_ITALIC:
- 			action = chat_manager->italicActionDescription->action(Edit);
+ 			action = chat_manager->italicActionDescription->action(InputBox);
 			if (action)
 				action->setChecked(!action->isChecked());
- 			Edit->inputBox()->setFontItalic(action->isChecked());
+ 			InputBox->inputBox()->setFontItalic(action->isChecked());
  			break;
  		case CustomInput::KEY_UNDERLINE:
- 			action = chat_manager->underlineActionDescription->action(Edit);
+ 			action = chat_manager->underlineActionDescription->action(InputBox);
 			if (action)
 				action->setChecked(!action->isChecked());
- 			Edit->inputBox()->setFontUnderline(action->isChecked());
+ 			InputBox->inputBox()->setFontUnderline(action->isChecked());
  			break;
 		 case CustomInput::KEY_COPY:
-			body->pageAction(QWebPage::Copy)->trigger();
+			MessagesView->pageAction(QWebPage::Copy)->trigger();
 			break;
  	}
  	kdebugf2();
@@ -206,17 +203,17 @@ void ChatWidget::curPosChanged()
 
 	KaduAction *action;
 
-	action = chat_manager->boldActionDescription->action(Edit);
+	action = chat_manager->boldActionDescription->action(InputBox);
  	if (action)
-		action->setChecked(Edit->inputBox()->fontWeight() >= QFont::Bold);
+		action->setChecked(InputBox->inputBox()->fontWeight() >= QFont::Bold);
 
-	action = chat_manager->italicActionDescription->action(Edit);
+	action = chat_manager->italicActionDescription->action(InputBox);
  	if (action)
-		action->setChecked(Edit->inputBox()->fontItalic());
+		action->setChecked(InputBox->inputBox()->fontItalic());
 
-	action = chat_manager->underlineActionDescription->action(Edit);
+	action = chat_manager->underlineActionDescription->action(InputBox);
  	if (action)
-		action->setChecked(Edit->inputBox()->fontUnderline());
+		action->setChecked(InputBox->inputBox()->fontUnderline());
 
 	setActColor(false);
 
@@ -227,17 +224,17 @@ void ChatWidget::setActColor(bool force)
 {
 	kdebugf();
 
-	KaduAction *action = chat_manager->colorSelectorActionDescription->action(Edit);
+	KaduAction *action = chat_manager->colorSelectorActionDescription->action(InputBox);
 
-	if (action && (force || (Edit->inputBox()->textColor() != actcolor)))
+	if (action && (force || (InputBox->inputBox()->textColor() != actcolor)))
 	{
 		int i;
 		for (i = 0; i < 16; ++i)
-			if (Edit->inputBox()->textColor() == QColor(colors[i]))
+			if (InputBox->inputBox()->textColor() == QColor(colors[i]))
 				break;
 		QPixmap p(12, 12);
 		if (i >= 16)
-			actcolor = Edit->palette().foreground().color();
+			actcolor = InputBox->palette().foreground().color();
 		else
 			actcolor = colors[i];
 		p.fill(actcolor);
@@ -310,7 +307,7 @@ void ChatWidget::insertImage()
 			kdebugf2();
 			return;
 		}
-		Edit->inputBox()->insertPlainText(QString("[IMAGE %1]").arg(selectedFile));
+		InputBox->inputBox()->insertPlainText(QString("[IMAGE %1]").arg(selectedFile));
 	}
 	else
 		delete id;
@@ -321,7 +318,7 @@ void ChatWidget::insertImage()
 void ChatWidget::colorSelectorActionCreated(KaduAction *action)
 {
 	kdebugf();
-	if (action->parent() == Edit)
+	if (action->parent() == InputBox)
 		setActColor(true);
 	kdebugf2();
 }
@@ -409,12 +406,12 @@ bool ChatWidget::keyPressEventHandled(QKeyEvent *e)
 	}
 	else if (HotKey::shortCut(e,"ShortCuts", "kadu_searchuser"))
 	{
-		KaduActions.createAction("whoisAction", Edit)->activate(QAction::Trigger);
+		KaduActions.createAction("whoisAction", InputBox)->activate(QAction::Trigger);
 		return true;
 	}
 	else if (HotKey::shortCut(e,"ShortCuts", "kadu_openchatwith"))
 	{
-		KaduActions.createAction("openChatWithAction", Edit)->activate(QAction::Trigger);
+		KaduActions.createAction("openChatWithAction", InputBox)->activate(QAction::Trigger);
 		return true;
 	}
 	else
@@ -462,7 +459,7 @@ bool ChatWidget::eventFilter(QObject *watched, QEvent *ev)
 {
 //	kdebugmf(KDEBUG_INFO|KDEBUG_FUNCTION_START, "watched: %p, Edit: %p, ev->type():%d, KeyPress:%d\n", watched, Edit, ev->type(), QEvent::KeyPress);
 
- 	if (watched != Edit || ev->type() != QEvent::KeyPress)
+ 	if (watched != InputBox || ev->type() != QEvent::KeyPress)
  		return QWidget::eventFilter(watched, ev);
  	kdebugf();
  	QKeyEvent *e = static_cast<QKeyEvent *>(ev);
@@ -478,7 +475,7 @@ QDateTime ChatWidget::getLastMsgTime()
 
 void ChatWidget::appendMessages(const QList<ChatMessage *> &messages, bool pending)
 {
-	body->appendMessages(messages);
+	MessagesView->appendMessages(messages);
 
 	if (pending)
 		lastMsgTime = QDateTime::currentDateTime();
@@ -486,7 +483,7 @@ void ChatWidget::appendMessages(const QList<ChatMessage *> &messages, bool pendi
 
 void ChatWidget::appendMessage(ChatMessage *message, bool pending)
 {
-	body->appendMessage(message);
+	MessagesView->appendMessage(message);
 
 	if (pending)
 		lastMsgTime = QDateTime::currentDateTime();
@@ -496,7 +493,7 @@ void ChatWidget::appendSystemMessage(const QString &rawContent, const QString &b
 {
 	ChatMessage *message = new ChatMessage(rawContent, TypeSystem, QDateTime::currentDateTime(),
 		backgroundColor, fontColor, fontColor);
-	body->appendMessage(message);
+	MessagesView->appendMessage(message);
 }
 
 /* invoked from outside when new message arrives, this is the window to the world */
@@ -509,7 +506,7 @@ void ChatWidget::newMessage(Account* account, Contact sender, ContactSet receive
 
 	ChatMessage *chatMessage = new ChatMessage(account, sender, receivers, message,
 			TypeReceived, QDateTime::currentDateTime(), date);
-	body->appendMessage(chatMessage);
+	MessagesView->appendMessage(chatMessage);
 
 	lastMsgTime = QDateTime::currentDateTime();
 	NewMessagesCount++;
@@ -523,24 +520,24 @@ void ChatWidget::writeMyMessage()
 
 	ChatMessage *message = new ChatMessage(CurrentChat->account(), Core::instance()->myself(), CurrentChat->contacts(),
 			myLastMessage.toHtml(), TypeSent, QDateTime::currentDateTime());
-	body->appendMessage(message);
+	MessagesView->appendMessage(message);
 
-	if (!Edit->inputBox()->isEnabled())
+	if (!InputBox->inputBox()->isEnabled())
 		cancelMessage();
-	Edit->inputBox()->clear();
+	InputBox->inputBox()->clear();
 
 	KaduAction *action;
-	action = chat_manager->boldActionDescription->action(Edit);
+	action = chat_manager->boldActionDescription->action(InputBox);
 	if (action)
-		Edit->inputBox()->setFontWeight(action->isChecked() ? QFont::Bold : QFont::Normal);
+		InputBox->inputBox()->setFontWeight(action->isChecked() ? QFont::Bold : QFont::Normal);
 
-	action = chat_manager->italicActionDescription->action(Edit);
+	action = chat_manager->italicActionDescription->action(InputBox);
 	if (action)
-		Edit->inputBox()->setFontItalic(action->isChecked());
+		InputBox->inputBox()->setFontItalic(action->isChecked());
 
-	action = chat_manager->underlineActionDescription->action(Edit);
+	action = chat_manager->underlineActionDescription->action(InputBox);
 	if (action)
-		Edit->inputBox()->setFontUnderline(action->isChecked());
+		InputBox->inputBox()->setFontUnderline(action->isChecked());
 
 	kdebugf2();
 }
@@ -550,7 +547,7 @@ void ChatWidget::clearChatWindow()
 	kdebugf();
 	if (!config_file.readBoolEntry("Chat", "ConfirmChatClear") || MessageBox::ask(tr("Chat window will be cleared. Continue?")))
 	{
-		body->clearMessages();
+		MessagesView->clearMessages();
 		activateWindow();
 	}
 	kdebugf2();
@@ -560,8 +557,8 @@ void ChatWidget::setAutoSend(bool auto_send)
 {
 	kdebugf();
 	AutoSend = auto_send;
-	if (Edit && Edit->inputBox())
-		Edit->inputBox()->setAutosend(auto_send);
+	if (InputBox && InputBox->inputBox())
+		InputBox->inputBox()->setAutosend(auto_send);
 	kdebugf2();
 }
 
@@ -571,9 +568,9 @@ void ChatWidget::cancelMessage()
 //	seq = 0;
 	disconnectAcknowledgeSlots();
 
-	Edit->inputBox()->setReadOnly(false);
-	Edit->inputBox()->setEnabled(true);
-	Edit->inputBox()->setFocus();
+	InputBox->inputBox()->setReadOnly(false);
+	InputBox->inputBox()->setEnabled(true);
+	InputBox->inputBox()->setFocus();
 
 	WaitingForACK = false;
 
@@ -625,7 +622,7 @@ void ChatWidget::disconnectAcknowledgeSlots()
 
 void ChatWidget::changeSendToCancelSend()
 {
-	KaduAction *action = chat_manager->sendActionDescription->action(Edit);
+	KaduAction *action = chat_manager->sendActionDescription->action(InputBox);
 
 	if (action)
 	{
@@ -636,7 +633,7 @@ void ChatWidget::changeSendToCancelSend()
 
 void ChatWidget::changeCancelSendToSend()
 {
-	KaduAction *action = chat_manager->sendActionDescription->action(Edit);
+	KaduAction *action = chat_manager->sendActionDescription->action(InputBox);
 
 	if (action)
 	{
@@ -649,7 +646,7 @@ void ChatWidget::changeCancelSendToSend()
 void ChatWidget::sendMessage()
 {
 	kdebugf();
-	if (Edit->inputBox()->toPlainText().isEmpty())
+	if (InputBox->inputBox()->toPlainText().isEmpty())
 	{
 		kdebugf2();
 		return;
@@ -666,14 +663,14 @@ void ChatWidget::sendMessage()
 
 	if (config_file.readBoolEntry("Chat","MessageAcks"))
 	{
-		Edit->inputBox()->setReadOnly(true);
-		Edit->inputBox()->setEnabled(false);
+		InputBox->inputBox()->setReadOnly(true);
+		InputBox->inputBox()->setEnabled(false);
 		WaitingForACK = true;
 
 		changeSendToCancelSend();
 	}
 
-	myLastMessage = Message::parse(Edit->inputBox()->document());
+	myLastMessage = Message::parse(InputBox->inputBox()->document());
 
 	ChatService *chatService = currentProtocol()->chatService();
 
@@ -708,7 +705,7 @@ void ChatWidget::openEmoticonSelector(const QWidget *activating_widget)
 void ChatWidget::changeColor(const QWidget *activating_widget)
 {
 	//sytuacja podobna jak w przypadku emoticon_selectora
-	color_selector = new ColorSelector(Edit->palette().foreground().color(), this);
+	color_selector = new ColorSelector(InputBox->palette().foreground().color(), this);
 	color_selector->alignTo(const_cast<QWidget*>(activating_widget)); //TODO: do something about const_cast
 	color_selector->show();
 	connect(color_selector, SIGNAL(colorSelect(const QColor&)), this, SLOT(colorChanged(const QColor&)));
@@ -729,11 +726,11 @@ void ChatWidget::colorChanged(const QColor &color)
 	QPixmap p(12, 12);
 	p.fill(color);
 
-	KaduAction *action = chat_manager->colorSelectorActionDescription->action(Edit);
+	KaduAction *action = chat_manager->colorSelectorActionDescription->action(InputBox);
 	if (action)
 		action->setIcon(p);
 
-	Edit->inputBox()->setTextColor(color);
+	InputBox->inputBox()->setTextColor(color);
 	actcolor = color;
 }
 
@@ -744,7 +741,7 @@ void ChatWidget::addEmoticon(QString emot)
 	{
 		emot.replace("&lt;", "<");
 		emot.replace("&gt;", ">");
-		Edit->inputBox()->insertHtml(emot);
+		InputBox->inputBox()->insertHtml(emot);
 	}
 	emoticon_selector = NULL;
 }
@@ -759,9 +756,9 @@ const QString& ChatWidget::escapedCaption() const
  	return EscapedCaption;
 }
 
-CustomInput* ChatWidget::edit()
+CustomInput * ChatWidget::edit()
 {
-	return Edit->inputBox();
+	return InputBox->inputBox();
 }
 
 bool ChatWidget::autoSend() const
@@ -776,7 +773,7 @@ bool ChatWidget::waitingForACK() const
 
 bool ChatWidget::decodeLocalFiles(QDropEvent *event, QStringList &files)
 {
-	if (!event->mimeData()->hasUrls() || event->source() == body)
+	if (!event->mimeData()->hasUrls() || event->source() == ContactsWidget)
 		return false;
 
 	QList<QUrl> urls = event->mimeData()->urls();
