@@ -13,11 +13,9 @@
 #include <QtCore/QTimer>
 
 #include "contacts/contact-list.h"
-
 #include "gui/widgets/chat-widget.h"
 
 #include "configuration_aware_object.h"
-
 #include "exports.h"
 
 class ActionDescription;
@@ -55,20 +53,9 @@ public: // TODO: 0.6.6 clean it up
 private:
 	static ChatWidgetManager *Instance;
 
-	ChatList ChatWidgets; /*!< lista okien*/
+	QHash<Chat *, ChatWidget *> Chats;
 	QList<Chat *> ClosedChats; /*!< u�ytkownicy, kt�rych okna zosta�y zamkni�te*/
 
-	/**
-		\struct ChatInfo
-		Struktura przechowuje informacje o danym oknie
-	**/
-	struct ChatInfo
-	{
-		ContactSet contacts;          /*!< lista u�ytkownik�w identyfikuj�ca okno */
-		QMap<QString, QVariant> map;     /*!< parametry danego okna */
-		ChatInfo() : contacts(), map() {}
-	};
-	QList<ChatInfo> addons; /*!< lista parametr�w okien */
 	QTimer refreshTitlesTimer;
 
 	ChatWidgetManager();
@@ -123,7 +110,7 @@ public:
 		\fn const ChatList& chats() const
 		Funkcja zwraca list� otwartych okien Chat
 	**/
-	const ChatList & chats() const;
+	const QHash<Chat *, ChatWidget *> & chats() const;
 
 	/**
 		\fn QValueList<ContactList> closedChatsUsers() const
@@ -139,7 +126,7 @@ public:
 		\return wska�nik do okna je�li istnieje w przeciwnym
 		 wypadku zwraca NULL
 	**/
-	ChatWidget * findChatWidget(Chat *chat) const;
+	ChatWidget * byChat(Chat *chat, bool create = false) const;
 
 	/**
 		\fn Chat* findChat(ContactList users) const;
@@ -151,24 +138,9 @@ public:
 	**/
 	//ChatWidget * findChatWidget(ContactList users) const;
 
-	// co za g�upota
-	// TODO: przenie�� do klasy ChatWidget / ewentualnie do nowo-utworzonej klasy Chat
-	/**
-		\fn QVariant& chatWidgetProperty(const UserGroup *group, const QString &name)
-		Funkcja zwraca warto�� w�asno�ci "name" okna
-		okre�lonego przez group
-		\param group grupa u�ytkownik�w identyfikuj�ca okno
-		\param name nazwa w�asno�ci
-		\return zwraca warto�� w�asno�ci je�li okre�lone okno
-		istnieje,\n je�li nie to tworzy tak�
-		w�asno�� (ustawia na pust�)
-	**/
-	QVariant & chatWidgetProperty(ContactSet contacts, const QString &name);
-
 	void loadOpenedWindows();
 	void saveOpenedWindows();
 
-	ChatWidget * chatWidgetForChat(Chat *chat);
 	void activateChatWidget(ChatWidget *chatWidget, bool forceActivate);
 
 public slots:
@@ -211,7 +183,7 @@ public slots:
 		\param chat wska�nik do okna ktore chcemy doda�
 		\return zwraca numer naszego okna po zarejestrowaniu
 	**/
-	int registerChatWidget(ChatWidget *chat);
+	void registerChatWidget(ChatWidget *chat);
 
 	/**
 		\fn void unregisterChat(Chat* chat)
@@ -236,16 +208,6 @@ public slots:
 		opis/status b�dzie od�wie�any
 	**/
 	void refreshTitlesForUser(Contact user);
-
-	/**
-		\fn void setChatWidgetProperty(const UserGroup *group, const QString &name, const QVariant &value)
-		Funkcja pozwala przypisa� okre�lonemu czatowi
-		(nawet je�eli on jeszcze nie istnieje) pewne w�asno�ci
-		\param group grupa u�ytkownik�w identyfikuj�cych okno
-		\param name nazwa w�asno�ci
-		\param value warto�� w�asno�ci
-	**/
-	void setChatWidgetProperty(ContactSet contacts, const QString& name, const QVariant& value);
 
 signals:
 	/**

@@ -42,8 +42,6 @@ class EmoticonSelector;
 class KaduAction;
 class Protocol;
 
-typedef QList<ChatWidget *> ChatList;
-
 class KADUAPI ChatWidget : public QWidget, ConfigurationAwareObject, AccountsAwareObject
 {
 	Q_OBJECT

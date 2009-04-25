@@ -220,13 +220,14 @@ void ChatWidgetManager::closeAllWindows()
 	if (config_file.readBoolEntry("Chat", "SaveOpenedWindows", true))
 		saveOpenedWindows();
 
-	while (!ChatWidgets.empty())
+	foreach (ChatWidget *chat, Chats)
 	{
-		ChatWidget *chat = ChatWidgets.first();
 		ChatWindow *window = dynamic_cast<ChatWindow *>(chat->parent());
 		if (window)
 			delete window;
 	}
+
+	Chats.clear();
 
 	kdebugf2();
 }
@@ -582,7 +583,7 @@ void ChatWidgetManager::ignoreUserActionActivated(QAction *sender, bool toggled)
 			else
 			{
 				IgnoredHelper::setIgnored(contacts);
-				ChatWidget *chatWidget = findChatWidget(chat);
+				ChatWidget *chatWidget = byChat(chat);
 				if (chatWidget)
 				{
 					ChatContainer *container = dynamic_cast<ChatContainer *>(chatWidget->window());
@@ -645,7 +646,7 @@ void ChatWidgetManager::blockUserActionActivated(QAction *sender, bool toggled)
 			if (blocked_anonymous)
 				MessageBox::msg(tr("Anonymous users will be unblocked after restarting Kadu"), false, "Information", Core::instance()->kaduWindow());
 
-			ChatWidget *chatWidget = findChatWidget(chat);
+			ChatWidget *chatWidget = byChat(chat);
 			if (chatWidget)
 			{
 				ChatContainer *container = dynamic_cast<ChatContainer *>(chatWidget->window());
@@ -685,9 +686,9 @@ void ChatWidgetManager::chatActionActivated(QAction *sender, bool toggled)
 	kdebugf2();
 }
 
-const ChatList& ChatWidgetManager::chats() const
+const QHash<Chat *, ChatWidget *> & ChatWidgetManager::chats() const
 {
-	return ChatWidgets;
+	return Chats;
 }
 
 const QList<Chat *> ChatWidgetManager::closedChats() const
@@ -695,38 +696,30 @@ const QList<Chat *> ChatWidgetManager::closedChats() const
 	return ClosedChats;
 }
 
-int ChatWidgetManager::registerChatWidget(ChatWidget *chat)
+void ChatWidgetManager::registerChatWidget(ChatWidget *chat)
 {
 	kdebugf();
 
 	ClosedChats.removeOne(chat->chat());
-	ChatWidgets.append(chat);
-
-	return ChatWidgets.count() - 1;
+	Chats.insert(chat->chat(), chat);
 }
 
 void ChatWidgetManager::unregisterChatWidget(ChatWidget *chat)
 {
 	kdebugf();
 
-	foreach (ChatWidget *curChat, ChatWidgets)
-		if (curChat == chat)
-		{
-			if (chat->countMessages())
-			{
-				ClosedChats.prepend(chat->chat());
-				if (ClosedChats.count() > 10)
-					ClosedChats.pop_back();
-			}
+	if (!Chats.contains(chat->chat()))
+		return;
 
-			emit chatWidgetDestroying(chat);
-			ChatWidgets.removeAll(curChat);
+	if (chat->countMessages())
+	{
+		ClosedChats.prepend(chat->chat());
+		if (ClosedChats.count() > 10)
+			ClosedChats.pop_back();
+	}
 
-			kdebugf2();
-			return;
-		}
-
-	kdebugmf(KDEBUG_FUNCTION_END|KDEBUG_WARNING, "NOT found\n");
+	emit chatWidgetDestroying(chat);
+	Chats.remove(chat->chat());
 }
 
 void ChatWidgetManager::refreshTitlesLater()
@@ -737,7 +730,7 @@ void ChatWidgetManager::refreshTitlesLater()
 void ChatWidgetManager::refreshTitles()
 {
 	kdebugf();
- 	foreach(ChatWidget *chat, ChatWidgets)
+ 	foreach (ChatWidget *chat, Chats)
 		chat->refreshTitle();
 	emit chatWidgetTitlesUpdated();
 	kdebugf2();
@@ -753,22 +746,11 @@ void ChatWidgetManager::refreshTitlesForUser(Contact contact)
 	kdebugf2();
 }
 
-ChatWidget * ChatWidgetManager::findChatWidget(Chat *chat) const
+ChatWidget * ChatWidgetManager::byChat(Chat *chat, bool create) const
 {
-	foreach(ChatWidget *chatWidget, ChatWidgets)
-		if (chatWidget->chat() == chat)
-			return chatWidget;
-	kdebugmf(KDEBUG_WARNING, "no such chat\n");
-	return NULL;
-}
-
-ChatWidget * ChatWidgetManager::chatWidgetForChat(Chat *chat)
-{
-	foreach (ChatWidget *chatWidget, ChatWidgets)
-		if (chatWidget->chat() == chat)
-			return chatWidget;
-
-	return 0;
+	return Chats.contains(chat)
+		? Chats[chat]
+		: 0;
 }
 
 void ChatWidgetManager::activateChatWidget(ChatWidget *chatWidget, bool forceActivate)
@@ -792,7 +774,7 @@ ChatWidget * ChatWidgetManager::openChatWidget(Chat *chat, bool forceActivate)
 {
 	kdebugf();
 
-	ChatWidget *chatWidget = chatWidgetForChat(chat);
+	ChatWidget *chatWidget = byChat(chat);
 	if (chatWidget)
 	{
 		activateChatWidget(chatWidget, forceActivate);
@@ -928,49 +910,6 @@ void ChatWidgetManager::sendMessage(Chat *chat)
 	kdebugf2();
 }
 
-QVariant & ChatWidgetManager::chatWidgetProperty(ContactSet contacts, const QString &name)
-{
-	kdebugf();
-
-	QList<ChatInfo>::iterator addon;
-	for (addon = addons.begin(); addon != addons.end(); ++addon)
-	{
-		if (contacts == (*addon).contacts)
-		{
-			kdebugf2();
-			return (*addon).map[name];
-		}
-	}
-
-	ChatInfo info;
-	info.contacts = contacts;
-	info.map[name] = QVariant();
-	addons.push_front(info);
-	kdebugmf(KDEBUG_FUNCTION_END, "end: %s NOT found\n", qPrintable(name));
-	return addons[0].map[name];
-}
-
-void ChatWidgetManager::setChatWidgetProperty(ContactSet contacts, const QString &name, const QVariant &value)
-{
-	kdebugf();
-
-	QList<ChatInfo>::iterator addon;
-	for (addon = addons.begin(); addon != addons.end(); ++addon)
-	{
-		if (contacts == (*addon).contacts)
-		{
-			(*addon).map[name] = value;
-			kdebugf2();
-			return;
-		}
-	}
-	ChatInfo info;
-	info.contacts = contacts;
-	info.map[name] = value;
-	addons.push_front(info);
-	kdebugf2();
-}
-
 void ChatWidgetManager::closeModule()
 {
 	kdebugf();
@@ -1019,7 +958,7 @@ void ChatWidgetManager::messageReceived(Chat *chat, Contact sender, const QStrin
 	Account *account = chat->account();
 	time_t time = QDateTime::currentDateTime().toTime_t();
 
-	ChatWidget *chatWidget = findChatWidget(chat);
+	ChatWidget *chatWidget = byChat(chat);
 	if (chatWidget)
 		chatWidget->newMessage(account, sender, receipients, message, time);
 	else
@@ -1041,7 +980,7 @@ void ChatWidgetManager::messageReceived(Chat *chat, Contact sender, const QStrin
 
 			// TODO: it is lame
 			openChatWidget(chat);
-			chatWidget = findChatWidget(chat);
+			chatWidget = byChat(chat);
 			chatWidget->newMessage(account, sender, receipients, message, time);
 		}
 		else
