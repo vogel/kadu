@@ -6,6 +6,8 @@
 #include <qpopupmenu.h>
 #include <qtimer.h>
 
+#include <stdint.h>
+
 #include <vector>
 
 #include "configuration_aware_object.h"

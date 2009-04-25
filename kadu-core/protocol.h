@@ -5,6 +5,8 @@
 #include <qstring.h>
 #include <qdatetime.h>
 
+#include <stdint.h>
+
 #ifdef __sun__
 #include <sys/types.h>
 #endif /* __sun__ */

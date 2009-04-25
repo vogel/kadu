@@ -10,6 +10,13 @@
 #include "protocols_manager.h"
 #include "userlistelement.h"
 
+#if __GNUC__ >= 4
+    #define GADU_LOCAL __attribute__ ((visibility("hidden")))
+#else
+    #define GADU_LOCAL
+#endif /* __GNUC__ >= 4 */
+
+
 class QSocketNotifier;
 struct gg_http;
 struct gg_session;
@@ -92,7 +99,7 @@ class TokenSocketNotifiers : public SocketNotifiers
 		void tokenError();
 };
 
-class GaduSocketNotifiers : public SocketNotifiers
+class GADU_LOCAL GaduSocketNotifiers : public SocketNotifiers
 {
 	Q_OBJECT
 

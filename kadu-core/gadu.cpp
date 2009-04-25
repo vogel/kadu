@@ -1172,7 +1172,7 @@ void GaduProtocol::login()
 //	polaczenia TLS z serwerami GG na razie nie dzialaja
 //	LoginParams.tls = config_file.readBoolEntry("Network", "UseTLS");
 	LoginParams.tls = 0;
-	LoginParams.client_version = "7, 6, 0, 1688"; //tego siê nie zwalnia...
+	LoginParams.client_version = (char *) "7, 6, 0, 1688"; //tego siê nie zwalnia...
 		// = GG_DEFAULT_CLIENT_VERSION;
 	LoginParams.protocol_version = 0x29; // we are gg 7.6 now
 		// = GG_DEFAULT_PROTOCOL_VERSION;
