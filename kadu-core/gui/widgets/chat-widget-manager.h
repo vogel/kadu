@@ -19,6 +19,7 @@
 #include "exports.h"
 
 class ActionDescription;
+class ChatWidgetActions;
 class KaduAction;
 class Protocol;
 
@@ -35,23 +36,11 @@ class KADUAPI ChatWidgetManager : public QObject, ConfigurationAwareObject
 	Q_DISABLE_COPY(ChatWidgetManager)
 
 public: // TODO: 0.6.6 clean it up
-	ActionDescription *autoSendActionDescription;
-	ActionDescription *clearChatActionDescription;
-	ActionDescription *insertImageActionDescription;
-	ActionDescription *boldActionDescription;
-	ActionDescription *italicActionDescription;
-	ActionDescription *underlineActionDescription;
-	ActionDescription *sendActionDescription;
-	ActionDescription *whoisActionDescription;
-	ActionDescription *ignoreUserActionDescription;
-	ActionDescription *blockUserActionDescription;
-	ActionDescription *chatActionDescription;
-	ActionDescription *openChatWithActionDescription;
-	ActionDescription *insertEmoticonActionDescription;
-	ActionDescription *colorSelectorActionDescription;
 
 private:
 	static ChatWidgetManager *Instance;
+
+	ChatWidgetActions *Actions;
 
 	QHash<Chat *, ChatWidget *> Chats;
 	QList<Chat *> ClosedChats; /*!< u�ytkownicy, kt�rych okna zosta�y zamkni�te*/
@@ -66,26 +55,6 @@ private:
 
 private slots:
 	void openChatWith();
-
-	void autoSendActionActivated(QAction *sender, bool toggled);
-	void clearActionActivated(QAction *sender, bool toggled);
-	void boldActionActivated(QAction *sender, bool toggled);
-	void italicActionActivated(QAction *sender, bool toggled);
-	void underlineActionActivated(QAction *sender, bool toggled);
-	void sendActionActivated(QAction *sender, bool toggled);
-	void whoisActionActivated(QAction *sender, bool toggled);
-	void chatActionActivated(QAction *sender, bool toggled);
-	void insertImageActionActivated(QAction *sender, bool toggled);
-	void colorSelectorActionActivated(QAction *sender, bool toogled);
-	void ignoreUserActionActivated(QAction *sender, bool toggled);
-	void blockUserActionActivated(QAction *sender, bool toggled);
-
-	void autoSendActionCreated(KaduAction *action);
-	void sendActionCreated(KaduAction *action);
-
-	void insertEmoticonActionCreated(KaduAction *action);
-	void insertEmoticonActionActivated(QAction *sender, bool toggled);
-
 	void messageReceived(Chat *chat, Contact sender, const QString &message);
 
 protected:
@@ -94,49 +63,12 @@ protected:
 public:
 	static ChatWidgetManager * instance();
 
-	/**
-		\fn static void initModule()
-		Rejestruje opcje modulu Chat w oknie konfiguracji
-	**/
-	static void initModule();
+	ChatWidgetActions * actions() { return Actions; }
 
-	/**
-		\fn static void closeModule()
-		Wyrejestrowuje opcje modu�u z okna konfiguracji
-	**/
-	static void closeModule();
-
-	/**
-		\fn const ChatList& chats() const
-		Funkcja zwraca list� otwartych okien Chat
-	**/
 	const QHash<Chat *, ChatWidget *> & chats() const;
-
-	/**
-		\fn QValueList<ContactList> closedChatsUsers() const
-		Funkcja zwraca list� u�ytkownik�w, dla kt�rych zamkni�to okna Chat
-	**/
 	const QList<Chat *> closedChats() const;
 
-	/**
-		\fn ChatWidget* findChatWidget(const UserGroup *group) const;
-		Funkcja zwraca wska�nik do okna z list�
-		u�ytkownik�w group
-		\param group lista u�ytkownik�w
-		\return wska�nik do okna je�li istnieje w przeciwnym
-		 wypadku zwraca NULL
-	**/
 	ChatWidget * byChat(Chat *chat, bool create = false) const;
-
-	/**
-		\fn Chat* findChat(ContactList users) const;
-		Funkcja zwraca wska�nik do okna z list�
-		u�ytkownik�w group
-		\param users lista u�ytkownik�w
-		\return wska�nik do okna je�li istnieje w przeciwnym
-		 wypadku zwraca NULL
-	**/
-	//ChatWidget * findChatWidget(ContactList users) const;
 
 	void loadOpenedWindows();
 	void saveOpenedWindows();

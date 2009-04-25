@@ -20,6 +20,7 @@
 #include "contacts/model/contacts-model.h"
 #include "contacts/model/filter/group-contact-filter.h"
 #include "core/core.h"
+#include "gui/widgets/chat-widget-actions.h"
 #include "gui/widgets/chat-widget-manager.h"
 #include "gui/widgets/contact-info-panel.h"
 #include "gui/widgets/contacts-list-widget.h"
@@ -158,7 +159,7 @@ void KaduWindow::createContactsMenu()
 	insertMenuActionDescription(Actions->OpenSearch, MenuContacts);
 
 	ContactsMenu->addSeparator();
-	insertMenuActionDescription(ChatWidgetManager::instance()->openChatWithActionDescription, MenuContacts);
+	insertMenuActionDescription(ChatWidgetManager::instance()->actions()->openChatWith(), MenuContacts);
 	ContactsMenu->addSeparator();
 
 	insertMenuActionDescription(Actions->ManageIgnored, MenuContacts);

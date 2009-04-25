@@ -23,6 +23,7 @@
 #include "contacts/model/filter/offline-contact-filter.h"
 #include "contacts/model/filter/online-and-description-contact-filter.h"
 #include "core/core.h"
+#include "gui/widgets/chat-widget-actions.h"
 #include "gui/widgets/chat-widget-manager.h"
 #include "gui/widgets/contacts-list-widget.h"
 #include "gui/widgets/contacts-list-widget-menu-manager.h"
@@ -370,8 +371,8 @@ KaduWindowActions::KaduWindowActions(QObject *parent) : QObject(parent)
 
 	ContactsListWidgetMenuManager::instance()->addSeparator();
 
-	ContactsListWidgetMenuManager::instance()->addManagementActionDescription(ChatWidgetManager::instance()->ignoreUserActionDescription);
-	ContactsListWidgetMenuManager::instance()->addManagementActionDescription(ChatWidgetManager::instance()->blockUserActionDescription);
+	ContactsListWidgetMenuManager::instance()->addManagementActionDescription(ChatWidgetManager::instance()->actions()->ignoreUser());
+	ContactsListWidgetMenuManager::instance()->addManagementActionDescription(ChatWidgetManager::instance()->actions()->blockUser());
 
 	OfflineToUser = new ActionDescription(this,
 		ActionDescription::TypeUser, "offlineToUserAction",

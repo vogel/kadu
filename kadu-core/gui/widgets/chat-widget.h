@@ -80,15 +80,11 @@ class KADUAPI ChatWidget : public QWidget, ConfigurationAwareObject, AccountsAwa
 
 	bool decodeLocalFiles(QDropEvent *event, QStringList &files);
 
-	void changeSendToCancelSend();
-	void changeCancelSendToSend();
-
 private slots:
 	/**
 		\fn void changeColor()
 		Slot zmieniaj�cy kolor czcionki
 	**/
-	void changeColor(const QWidget *activating_widget);
 
 	/**
 		\fn void connectAcknowledgeSlots()
@@ -134,6 +130,10 @@ public:
 	virtual ~ChatWidget();
 
 	Chat * chat() { return CurrentChat; };
+
+	// TODO: make private again or move somewher
+	void changeSendToCancelSend();
+	void changeCancelSendToSend();
 
 	/**
 		Dodaje now� wiadomos� systemow� do okna.
@@ -198,6 +198,9 @@ public:
 	unsigned int countMessages() { return MessagesView->countMessages(); }
 
 public slots:
+	// TODO: make private again
+	void changeColor(const QWidget *activating_widget);
+
 	/**
 		\fn void refreshTitle()
 		Slot ustawiaj�cy tytu� okna zgodnie z konfiguracj�

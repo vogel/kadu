@@ -61,8 +61,6 @@ Core::Core() : Myself(Contact::TypeNull), Window(0), ShowMainWindowOnStart(true)
 
 Core::~Core()
 {
-	ChatWidgetManager::closeModule();
-
 	Configuration->store();
 	delete Configuration;
 	Configuration = 0;
@@ -280,7 +278,6 @@ void Core::init()
 
 	Updates::initModule();
 	GaduProtocol::initModule();
-	ChatWidgetManager::initModule();
 	SearchDialog::initModule();
 
 #ifdef Q_OS_MACX
