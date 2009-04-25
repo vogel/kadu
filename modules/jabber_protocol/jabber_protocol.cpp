@@ -83,19 +83,6 @@ JabberProtocol::JabberProtocol(Account *account, ProtocolFactory *factory): Prot
 {
 	kdebugf();
 
-	loginJabberActionDescription = new ActionDescription(
-		0, ActionDescription::TypeGlobal, "loginJabberAction",
-		this, SLOT(loginAction(QAction *, bool)),
-		"Online", "Login" //+JabberData->id()
-	);
-	Core::instance()->kaduWindow()->insertMenuActionDescription(loginJabberActionDescription, KaduWindow::MenuKadu,1);
-	logoutJabberActionDescription = new ActionDescription(
-		0, ActionDescription::TypeGlobal, "logoutJabberAction",
-		this, SLOT(logoutAction(QAction *, bool)),
-		"Offline", "Logout" //+JabberData->id()
-	);
-	Core::instance()->kaduWindow()->insertMenuActionDescription(logoutJabberActionDescription, KaduWindow::MenuKadu,1);
-
 	initializeJabberClient();
 
 	CurrentChatService = new JabberChatService(this);
@@ -105,34 +92,31 @@ JabberProtocol::JabberProtocol(Account *account, ProtocolFactory *factory): Prot
 
 JabberProtocol::~JabberProtocol()
 {
-	Core::instance()->kaduWindow()->removeMenuActionDescription(loginJabberActionDescription);
-	delete loginJabberActionDescription;
-	Core::instance()->kaduWindow()->removeMenuActionDescription(logoutJabberActionDescription);
-	delete logoutJabberActionDescription;
 }
 
 void JabberProtocol::initializeJabberClient()
 {
 	JabberClient = new XMPP::JabberClient;
-	connect( JabberClient, SIGNAL ( csDisconnected () ), this, SLOT (disconnectedFromServer()) );
-	connect( JabberClient, SIGNAL ( tlsWarning ( QCA::TLS::IdentityResult, QCA::Validity ) ), this, SLOT ( slotHandleTLSWarning ( QCA::TLS::IdentityResult, QCA::Validity ) ) );
-	connect( JabberClient, SIGNAL ( connected () ), this, SLOT ( connectedToServer() ) );
+	connect(JabberClient, SIGNAL(csDisconnected()), this, SLOT(disconnectedFromServer()));
+	connect(JabberClient, SIGNAL(tlsWarning(QCA::TLS::IdentityResult, QCA::Validity)),
+		   this, SLOT(slotHandleTLSWarning(QCA::TLS::IdentityResult, QCA::Validity)));
+	connect(JabberClient, SIGNAL(connected()), this, SLOT(connectedToServer()));
 
-	connect( JabberClient, SIGNAL ( subscription ( const XMPP::Jid &, const QString & ) ),
-		   this, SLOT ( slotSubscription ( const XMPP::Jid &, const QString & ) ) );
-	connect( JabberClient, SIGNAL ( newContact ( const XMPP::RosterItem & ) ),
-		   this, SLOT ( slotContactUpdated ( const XMPP::RosterItem & ) ) );
-	connect( JabberClient, SIGNAL ( contactUpdated ( const XMPP::RosterItem & ) ),
-		   this, SLOT ( slotContactUpdated ( const XMPP::RosterItem & ) ) );
-	connect( JabberClient, SIGNAL ( contactDeleted ( const XMPP::RosterItem & ) ),
-		   this, SLOT ( slotContactDeleted ( const XMPP::RosterItem & ) ) );
-	connect( JabberClient, SIGNAL ( rosterRequestFinished ( bool ) ),
-		   this, SLOT ( rosterRequestFinished ( bool ) ) );
+	connect(JabberClient, SIGNAL(subscription(const XMPP::Jid &, const QString &)),
+		   this, SLOT(slotSubscription(const XMPP::Jid &, const QString &)));
+	connect(JabberClient, SIGNAL(newContact(const XMPP::RosterItem &)),
+		   this, SLOT(slotContactUpdated(const XMPP::RosterItem &)));
+	connect(JabberClient, SIGNAL(contactUpdated(const XMPP::RosterItem &)),
+		   this, SLOT(slotContactUpdated(const XMPP::RosterItem &)));
+	connect(JabberClient, SIGNAL(contactDeleted(const XMPP::RosterItem &)),
+		   this, SLOT(slotContactDeleted(const XMPP::RosterItem &)));
+	connect(JabberClient, SIGNAL(rosterRequestFinished(bool)),
+		   this, SLOT(rosterRequestFinished(bool)));
 
-	connect( JabberClient, SIGNAL ( resourceAvailable ( const XMPP::Jid &, const XMPP::Resource & ) ),
-		   this, SLOT ( clientResourceAvailable ( const XMPP::Jid &, const XMPP::Resource & ) ) );
-	connect( JabberClient, SIGNAL ( resourceUnavailable ( const XMPP::Jid &, const XMPP::Resource & ) ),
-		   this, SLOT ( clientResourceUnavailable ( const XMPP::Jid &, const XMPP::Resource & ) ) );
+	connect(JabberClient, SIGNAL(resourceAvailable(const XMPP::Jid &, const XMPP::Resource &)),
+		   this, SLOT(clientResourceAvailable(const XMPP::Jid &, const XMPP::Resource &)));
+	connect(JabberClient, SIGNAL(resourceUnavailable(const XMPP::Jid &, const XMPP::Resource &)),
+		   this, SLOT(clientResourceUnavailable(const XMPP::Jid &, const XMPP::Resource &)));
 
 		/*//TODO: implement in the future
 		connect( JabberClient, SIGNAL ( incomingFileTransfer () ),
@@ -146,8 +130,8 @@ void JabberProtocol::initializeJabberClient()
 		connect( JabberClient, SIGNAL ( groupChatError ( const XMPP::Jid &, int, const QString & ) ),
 				   this, SLOT ( slotGroupChatError ( const XMPP::Jid &, int, const QString & ) ) );
 		*/
-	connect( JabberClient, SIGNAL ( debugMessage ( const QString & ) ),
-		   this, SLOT ( slotClientDebugMessage ( const QString & ) ) );
+	connect(JabberClient, SIGNAL( debugMessage(const QString &)),
+		   this, SLOT(slotClientDebugMessage(const QString &)));
 }
 
 void JabberProtocol::connectToServer()
@@ -269,7 +253,7 @@ void JabberProtocol::disconnect(const XMPP::Status &s)
 
 	// make sure that the connection animation gets stopped if we're still
 	// in the process of connecting
-	setPresence (s);
+	setPresence(s);
 
 	/* FIXME:
 	 * We should delete the JabberClient instance here,
@@ -285,19 +269,19 @@ void JabberProtocol::disconnect(const XMPP::Status &s)
 }
 
 
-void JabberProtocol::slotClientDebugMessage ( const QString &msg )
+void JabberProtocol::slotClientDebugMessage(const QString &msg)
 {
 	kdebugm(KDEBUG_WARNING, "Jabber Client debug:  %s\n", qPrintable(msg));
 }
 
-bool JabberProtocol::handleTLSWarning (XMPP::JabberClient *jabberClient, QCA::TLS::IdentityResult identityResult, QCA::Validity validityResult)
+bool JabberProtocol::handleTLSWarning(XMPP::JabberClient *jabberClient, QCA::TLS::IdentityResult identityResult, QCA::Validity validityResult)
 {
 	QString validityString, code, idString, idCode;
 
-	QString server    = jabberClient->jid().domain ();
-	QString accountId = jabberClient->jid().bare ();
+	QString server = jabberClient->jid().domain();
+	QString accountId = jabberClient->jid().bare();
 
-	switch ( identityResult )
+	switch (identityResult)
 	{
 		case QCA::TLS::Valid:
 			break;
@@ -315,7 +299,7 @@ bool JabberProtocol::handleTLSWarning (XMPP::JabberClient *jabberClient, QCA::TL
 			break;
 	}
 
-	switch ( validityResult )
+	switch (validityResult)
 	{
 		case QCA::ValidityGood:
 			break;
@@ -376,13 +360,13 @@ bool JabberProtocol::handleTLSWarning (XMPP::JabberClient *jabberClient, QCA::TL
 		else
 		{
 			message = tr(QString("<qt><p>The certificate of server %s could not be validated for "
-					"account %s: %3</p><p>Do you want to continue?</p></qt>").arg(server).arg(accountId).arg( idString));
+					"account %s: %3</p><p>Do you want to continue?</p></qt>").arg(server).arg(accountId).arg(idString));
 		}
 	}
 	else
 	{
 		message = tr(QString("<qt><p>The certificate of server %s could not be validated for "
-			"account %s: %3</p><p>Do you want to continue?</p></qt>").arg(server).arg( accountId).arg( validityString));
+			"account %s: %3</p><p>Do you want to continue?</p></qt>").arg(server).arg( accountId).arg(validityString));
 	}
 
 	QMessageBox* m = new QMessageBox(QMessageBox::Critical,
@@ -395,16 +379,14 @@ bool JabberProtocol::handleTLSWarning (XMPP::JabberClient *jabberClient, QCA::TL
 	return true;
 }
 
-void JabberProtocol::slotHandleTLSWarning (
-		QCA::TLS::IdentityResult identityResult,
-		QCA::Validity validityResult )
+void JabberProtocol::slotHandleTLSWarning(QCA::TLS::IdentityResult identityResult, QCA::Validity validityResult)
 {
 	kdebug("Handling TLS warning...\n");
 
-	if (handleTLSWarning( JabberClient, identityResult, validityResult ))
+	if (handleTLSWarning(JabberClient, identityResult, validityResult))
 	{
 		// resume stream
-		JabberClient->continueAfterTLSWarning ();
+		JabberClient->continueAfterTLSWarning();
 	}
 	else
 	{
@@ -423,18 +405,18 @@ void JabberProtocol::setPresence(const XMPP::Status &status)
 
 	// TODO: Check if Caps is enabled
 	// Send entity capabilities
-	if(JabberClient)
+	if (JabberClient)
 	{
-		newStatus.setCapsNode( JabberClient->capsNode() );
-		newStatus.setCapsVersion( JabberClient->capsVersion() );
-		newStatus.setCapsExt( JabberClient->capsExt() );
+		newStatus.setCapsNode(JabberClient->capsNode());
+		newStatus.setCapsVersion(JabberClient->capsVersion());
+		newStatus.setCapsExt(JabberClient->capsExt());
 	}
 
 	JabberAccount *jabberAccount = dynamic_cast<JabberAccount *>(account());
 	newStatus.setPriority(jabberAccount->priority());
 	//TODO whatever
-	XMPP::Jid jid (jabberID);
-	XMPP::Resource newResource (jabberAccount->resource(), newStatus );
+	XMPP::Jid jid(jabberID);
+	XMPP::Resource newResource(jabberAccount->resource(), newStatus);
 
 	// update our resource in the resource pool
 	resourcePool()->addResource(jid, newResource);
@@ -445,7 +427,7 @@ void JabberProtocol::setPresence(const XMPP::Status &status)
 	/*
 	 * Unless we are in the connecting status, send a presence packet to the server
 	 */
-	if(status.show() != QString("connecting") )
+	if (status.show() != QString("connecting"))
 	{
 		/*
 		 * Make sure we are actually connected before sending out a packet.
@@ -504,7 +486,7 @@ void JabberProtocol::disconnectedFromServer()
 
 void JabberProtocol::login()
 {
-	if(isConnected())
+	if (isConnected())
 		return;
 	connectToServer();
 }
@@ -514,11 +496,11 @@ void JabberProtocol::changeStatus(Status status)
  	// TODO: add rest status options
 	XMPP::Status s = XMPP::Status();
 
-	if(status.isOnline())
+	if (status.isOnline())
 		s.setType(XMPP::Status::Online);
-	else if(status.isInvisible())
+	else if (status.isInvisible())
 		s.setType(XMPP::Status::Invisible);
-	else if(status.isBusy())
+	else if (status.isBusy())
 		s.setType(XMPP::Status::Away);
 	else
 		s.setType(XMPP::Status::Offline);
@@ -545,21 +527,21 @@ void JabberProtocol::clientResourceAvailable(const XMPP::Jid &jid, const XMPP::R
 	kdebug("New resource available for %s\n", jid.full().local8Bit().data());
 	resourcePool()->addResource(jid, resource);
 	//TODO: na razie brak lepszego miejsca na to
-		Status status;
-	if(resource.status().isAvailable())
+	Status status;
+	if (resource.status().isAvailable())
 		status.setType(Status::Online);
-	else if(resource.status().isInvisible())
+	else if (resource.status().isInvisible())
 		status.setType(Status::Invisible);
 	else
 		status.setType(Status::Offline);
 
-	if(resource.status().show() == "away")
+	if (resource.status().show() == "away")
 		status.setType(Status::Busy);
-	else if(resource.status().show() == "xa")
+	else if (resource.status().show() == "xa")
 		status.setType(Status::Busy);
-	else if(resource.status().show() == "dnd")
+	else if (resource.status().show() == "dnd")
 		status.setType(Status::Busy);
-	else if(resource.status().show() == "chat")
+	else if (resource.status().show() == "chat")
 		status.setType(Status::Online);
 
 	QString description = resource.status().status();
@@ -599,13 +581,13 @@ void JabberProtocol::clientResourceUnavailable(const XMPP::Jid &jid, const XMPP:
 	Status status;
 	status.setType(Status::Offline);
 
-	if(resource.status().show() == "away")
+	if (resource.status().show() == "away")
 		status.setType(Status::Busy);
-	else if(resource.status().show() == "xa")
+	else if (resource.status().show() == "xa")
 		status.setType(Status::Busy);
-	else if(resource.status().show() == "dnd")
+	else if (resource.status().show() == "dnd")
 		status.setType(Status::Busy);
-	else if(resource.status().show() == "chat")
+	else if (resource.status().show() == "chat")
 		status.setType(Status::Online);
 
 	QString description = resource.status().status();
@@ -636,7 +618,7 @@ void JabberProtocol::clientResourceUnavailable(const XMPP::Jid &jid, const XMPP:
 	kdebugf2();
 }
 
-void JabberProtocol::slotContactUpdated(const XMPP::RosterItem & item)
+void JabberProtocol::slotContactUpdated(const XMPP::RosterItem &item)
 {
 	kdebugf();
 	/**
@@ -654,7 +636,7 @@ void JabberProtocol::slotContactUpdated(const XMPP::RosterItem & item)
 	 * a roster item here.
 	 */
 
-	kdebug("New roster item: %s (Subscription: %s )\n", item.jid().full().local8Bit().data(), item.subscription().toString ().local8Bit().data());
+	kdebug("New roster item: %s (Subscription: %s )\n", item.jid().full().local8Bit().data(), item.subscription().toString().local8Bit().data());
 
 	/*
 	 * See if the contact need to be added, according to the criterias of
@@ -662,11 +644,11 @@ void JabberProtocol::slotContactUpdated(const XMPP::RosterItem & item)
 	 * http://www.jabber.org/jeps/jep-0162.html#contacts
 	 */
 	bool need_to_add=false;
-	if(item.subscription().type() == XMPP::Subscription::Both || item.subscription().type() == XMPP::Subscription::To)
+	if (item.subscription().type() == XMPP::Subscription::Both || item.subscription().type() == XMPP::Subscription::To)
 		need_to_add = true;
-	else if( !item.ask().isEmpty() )
+	else if (!item.ask().isEmpty())
 		need_to_add = true;
-	else if( !item.name().isEmpty() || !item.groups().isEmpty() )
+	else if (!item.name().isEmpty() || !item.groups().isEmpty())
 		need_to_add = true;
 
 	/*
@@ -674,19 +656,19 @@ void JabberProtocol::slotContactUpdated(const XMPP::RosterItem & item)
 	 * if not contact is automatically added as anonymous
 	 */
 	 Contact c = ContactManager::instance()->byId(account(), item.jid().bare());
-	 if(c.display().isNull())
-		if(!item.name().isNull())
+	 if (c.display().isNull())
+		if (!item.name().isNull())
 			c.setDisplay(item.name());
 		else
 			c.setDisplay(item.jid().bare());
 
-	if(!c.isNull() && item.jid().bare() == jabberID.bare())
+	if (!c.isNull() && item.jid().bare() == jabberID.bare())
 	{
 		// don't let remove the gateway contact, eh!
 		need_to_add = true;
 	}
 
-	if(need_to_add)
+	if (need_to_add)
 	{
 		if (c.isAnonymous())
 		{
@@ -718,7 +700,7 @@ void JabberProtocol::slotContactUpdated(const XMPP::RosterItem & item)
 // 			contact->removeProperty ( protocol()->propAuthorizationStatus );
 // 		}*/
 	}
-	else if(!c.isAnonymous())  //we don't need to add it, and it is in the contact list
+	else if (!c.isAnonymous())  //we don't need to add it, and it is in the contact list
 	{
 // 		Kopete::MetaContact *metaContact=c->metaContact();
 // 		if(metaContact->isTemporary())
@@ -733,13 +715,13 @@ void JabberProtocol::slotContactUpdated(const XMPP::RosterItem & item)
 	kdebugf2();
 }
 
-void JabberProtocol::slotContactDeleted(const XMPP::RosterItem & item)
+void JabberProtocol::slotContactDeleted(const XMPP::RosterItem &item)
 {
 	kdebug("Deleting contact %s", item.jid().full().local8Bit().data());
 	//TODO: usun�� z listy - tego chyba jeszcze nie ma...
 }
 
-void JabberProtocol::slotSubscription(const XMPP::Jid & jid, const QString & type)
+void JabberProtocol::slotSubscription(const XMPP::Jid & jid, const QString &type)
 {
 	if (type == "unsubscribed")
 	{
@@ -814,20 +796,10 @@ void JabberProtocol::rejectSubscription(const XMPP::Jid &jid)
 	changeSubscription(jid, "unsubscribed");
 }
 
-void JabberProtocol::loginAction(QAction *sender, bool toggled)
-{
-	login();
-}
-
-void JabberProtocol::logoutAction(QAction *sender, bool toggled)
-{
-	logout();
-}
-
 bool JabberProtocol::validateUserID(QString& uid)
 {
 	XMPP::Jid j = uid;
-	if(j.isValid())
+	if (j.isValid())
 		return true;
 	else
 		return false;
@@ -863,11 +835,8 @@ void JabberProtocol::changeStatus()
 		login();
 		return;
 	}
-	changeStatus(newStatus);
-	//if (newStatus.isOffline())
-	//	networkDisconnected(false);
 
-//	statusChanged(newStatus);
+	changeStatus(newStatus);
 }
 
 void JabberProtocol::changePrivateMode()

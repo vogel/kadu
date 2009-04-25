@@ -44,8 +44,6 @@ class JabberProtocol : public Protocol
 
 		virtual ChatService * chatService() { return CurrentChatService; }
 		JabberResourcePool *resourcePool();
-		ActionDescription* loginJabberActionDescription;
-		ActionDescription* logoutJabberActionDescription;
 
 	protected:
 		virtual void changeStatus();
@@ -78,22 +76,20 @@ class JabberProtocol : public Protocol
 		void rosterRequestFinished(bool success);
 		void clientResourceAvailable(const XMPP::Jid &j, const XMPP::Resource &r);
 		void clientResourceUnavailable(const XMPP::Jid &j, const XMPP::Resource &r);
-		void slotContactUpdated ( const XMPP::RosterItem & ri);
-		void slotContactDeleted ( const XMPP::RosterItem & ri);
-		void slotSubscription(const XMPP::Jid & jid, const QString & type);
+		void slotContactUpdated(const XMPP::RosterItem &ri);
+		void slotContactDeleted(const XMPP::RosterItem &ri);
+		void slotSubscription(const XMPP::Jid &jid, const QString &type);
 		//void client_rosterItemUpdated(const XMPP::RosterItem &r);
 		void slotHandleTLSWarning(QCA::TLS::IdentityResult identityResult, QCA::Validity validityResult);
-		bool handleTLSWarning(XMPP::JabberClient *jabberClient, QCA::TLS::IdentityResult identityResult, QCA::Validity validityResult );
+		bool handleTLSWarning(XMPP::JabberClient *jabberClient, QCA::TLS::IdentityResult identityResult, QCA::Validity validityResult);
 		//void slotCSError ( int error ); // why this was removed?
-		void slotClientDebugMessage ( const QString &msg );
+		void slotClientDebugMessage (const QString &msg);
 		void changeSubscription(const XMPP::Jid &jid, const QString type);
 		void requestSubscription(const XMPP::Jid &jid);
 		void resendSubscription(const XMPP::Jid &jid);
 		void rejectSubscription(const XMPP::Jid &jid);
 
 	public slots:
-		void loginAction(QAction *sender, bool toggled);
-		void logoutAction(QAction *sender, bool toggled);
 		void setPresence(const XMPP::Status &status);
 		void login();
 		void logout(const XMPP::Status &s = XMPP::Status("", tr("Logged out"), 0, false));
@@ -105,5 +101,4 @@ class JabberProtocol : public Protocol
 		void receivedMessageFilter(Chat *chat, Contact sender, const QString &message, time_t time, bool &ignore);
 };
 
-#endif
-
+#endif //JABBER_PROTOCOL_H

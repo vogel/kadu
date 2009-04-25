@@ -31,8 +31,8 @@ JabberChatService::JabberChatService(JabberProtocol *protocol)
 //     		this, SIGNAL(messageStatusChanged(int , ChatService::MessageStatus)));
 // 	connect(protocol, SIGNAL(receivedMessageFilter(Chat *, Contact, const QString &, time_t , bool &)),
 // 		this, SIGNAL(receivedMessageFilter(Chat *, Contact, const QString &, time_t, bool &)));
-	connect(protocol->client(), SIGNAL (messageReceived ( const XMPP::Message & ) ),
-		this, SLOT (clientMessageReceived(const XMPP::Message & )));
+	connect(protocol->client(), SIGNAL(messageReceived(const XMPP::Message &)),
+		this, SLOT(clientMessageReceived(const XMPP::Message &)));
 }
 
 bool JabberChatService::sendMessage(Chat *chat, Message &message)
