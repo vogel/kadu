@@ -17,6 +17,10 @@
 
 #include "dcc-socket-notifiers.h"
 
+#ifdef Q_OS_WIN
+#define dup(x) x
+#endif
+
 void DccSocketNotifiers::watchFor(struct gg_dcc *socket)
 {
 	kdebugmf(KDEBUG_NETWORK | KDEBUG_INFO, "%p\n", socket);

@@ -41,7 +41,7 @@ public:
 	virtual void load();
 	virtual void store() = 0;
 	bool isLoaded() { return Loaded; }
-	bool setLoaded(bool loaded) { Loaded = loaded; }
+	void setLoaded(bool loaded) { Loaded = loaded; }
 	void ensureLoaded();
 	void removeFromStorage();
 

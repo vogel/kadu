@@ -14,7 +14,6 @@
 
 #include "config_file.h"
 #include "misc/misc.h"
-#include "kadu.h"
 
 #include <windows.h>
 #include <dbghelp.h>
@@ -36,7 +35,7 @@ class KaduMessageWindow : public QWidget
 	virtual bool winEvent (MSG * message, long * result){
 		switch(message->message){
 			case WM_OPEN_CHAT:
-				qApp->postEvent(kadu, new OpenGGChatEvent(message->wParam));
+//				qApp->postEvent(kadu, new OpenGGChatEvent(message->wParam));
 				return false;
 				break;
 		}

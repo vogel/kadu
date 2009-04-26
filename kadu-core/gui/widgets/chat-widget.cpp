@@ -73,7 +73,7 @@ ChatWidget::~ChatWidget()
 
 	disconnectAcknowledgeSlots();
 
-	kdebugmf(KDEBUG_FUNCTION_END, "chat destroyed: index %d\n", index);
+	kdebugmf(KDEBUG_FUNCTION_END, "chat destroyed\n");
 }
 
 void ChatWidget::createGui()

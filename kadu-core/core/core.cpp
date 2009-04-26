@@ -10,6 +10,7 @@
 #include <QtCore/QDir>
 #include <QtCore/QLocale>
 #include <QtGui/QApplication>
+#include <QtCore/QSettings>
 
 #include "accounts/account-manager.h"
 #include "configuration/configuration-manager.h"
