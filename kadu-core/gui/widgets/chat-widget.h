@@ -35,10 +35,8 @@ class Account;
 class ChatEditBox;
 class ChatMessage;
 class ChatWidget;
-class ColorSelector;
 class ContactsListWidget;
 class CustomInput;
-class EmoticonSelector;
 class KaduAction;
 class Protocol;
 
@@ -57,11 +55,8 @@ class KADUAPI ChatWidget : public QWidget, ConfigurationAwareObject, AccountsAwa
 	ContactsListWidget *ContactsWidget;
 	ChatEditBox *InputBox;
 
-	QColor actcolor; /*!< zmienna przechowuj�ca aktualny kolor */
 	QIcon pix;
 //	Q3MimeSourceFactory *bodyformat; /*!< zmienna ustawiaj�ca format */
-	EmoticonSelector *emoticon_selector; /*!< okienko do wyboru emotikonek */
-	ColorSelector *color_selector; /*!< okienko do wyboru koloru */
 	bool AutoSend; /*!< okre�la czy Return powoduje wys�anie wiadomo�ci */
 	bool WaitingForACK;
 	
@@ -97,22 +92,6 @@ private slots:
 		Slot od��czaj�cy potwierdzenie dostarczenia wiadomo�ci
 	**/
 	void disconnectAcknowledgeSlots();
-
-	/**
-		\fn void colorSelectorActionCreated(KaduAction *action)
-		Slot jest wywo�ywany, po dodaniu do paska narz�dzi akcji zmieniaj�cej
-		kolor wiadomo�ci. U�ywa setActColor() wymuszaj�c od�wie�enie koloru na przycisku.
-		Metoda jest wywoływana jedynia dla dodanych akcji po otwarciu chata.
-		Przy tworzeniu chata metoda setActColor() wywoływana jest z poziomu configurationUpdated()
-	**/
-	void colorSelectorActionCreated(KaduAction *action);
-
-	/**
-		\fn void setActColor()
-		\param force wymuszenie zmiany
-		Ustawia poprawny kolor na przycisku akcji obs�uguj�cej kolor wiadomo�ci
-	**/
-	void setActColor(bool force);
 
 	void keyPressedSlot(QKeyEvent *e, CustomInput *sender, bool &handled);
 
@@ -198,21 +177,12 @@ public:
 	unsigned int countMessages() { return MessagesView->countMessages(); }
 
 public slots:
-	// TODO: make private again
-	void changeColor(const QWidget *activating_widget);
 
 	/**
 		\fn void refreshTitle()
 		Slot ustawiaj�cy tytu� okna zgodnie z konfiguracj�
 	**/
 	void refreshTitle();
-
-	/**
-		\fn void addEmoticon(QString)
-		Slot dodaje ikonke do pola wpisywania wiadomo�ci
-		\param emot ikonka np. <lol>
-	**/
-	void addEmoticon(QString);
 
 	void messageStatusChanged(int messageId, ChatService::MessageStatus status);
 
@@ -268,14 +238,6 @@ public slots:
 	void specialKeyPressed(int key);
 
 	/**
-		\fn void colorChanged(const QColor& color)
-		Slot zostaje wywo�wany gdy u�ytkownik zmieni� kolor czcionki
-		kt�r� b�dzie pisa�
-		\param color warto�� zmienionego koloru
-	**/
-	void colorChanged(const QColor& color);
-
-	/**
 		\fn void colorSelectorAboutToClose()
 		Slot zostaje wywo�any przy zamykaniu okna wyboru ikonek
 	**/
@@ -292,12 +254,6 @@ public slots:
 		Ustaw autowysylanie
 	**/
 	void setAutoSend(bool auto_send);
-
-	/**
-		\fn void emoticonSelectorClicked()
-		Slot wy�wietlaj�cy okno z wyborem emotikonek
-	**/
-	void openEmoticonSelector(const QWidget *activating_widget);
 
 	/**
 		\fn void insertImage()

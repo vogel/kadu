@@ -16,7 +16,7 @@
 #include "configuration/configuration-manager.h"
 #include "contacts/contact-manager.h"
 #include "contacts/group-manager.h"
-#include "gui/widgets/chat_edit_box.h"
+#include "gui/widgets/chat-edit-box.h"
 #include "gui/widgets/chat-widget-manager.h"
 #include "gui/windows/kadu-window.h"
 #include "misc/misc.h"

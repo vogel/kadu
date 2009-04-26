@@ -12,7 +12,7 @@
 #include "contacts/contact-account-data.h"
 #include "contacts/ignored-helper.h"
 #include "core/core.h"
-#include "gui/widgets/chat_edit_box.h"
+#include "gui/widgets/chat-edit-box.h"
 #include "gui/widgets/chat-widget.h"
 #include "gui/widgets/chat-widget-manager.h"
 #include "gui/widgets/contacts-list-widget-menu-manager.h"
@@ -494,15 +494,11 @@ void ChatWidgetActions::colorSelectorActionActivated(QAction *sender, bool toggl
 	if (!chatEditBox)
 		return;
 
-	ChatWidget *chatWidget = chatEditBox->chatWidget();
-	if (chatWidget)
-	{
-		QList<QWidget *> widgets = sender->associatedWidgets();
-		if (widgets.size() == 0)
-			return;
+	QList<QWidget *> widgets = sender->associatedWidgets();
+	if (widgets.size() == 0)
+		return;
 
-		chatWidget->changeColor(widgets[widgets.size() - 1]);
-	}
+	chatEditBox->openColorSelector(widgets[widgets.size() - 1]);
 }
 
 void ChatWidgetActions::insertEmoticonActionActivated(QAction *sender, bool toggled)
@@ -511,13 +507,9 @@ void ChatWidgetActions::insertEmoticonActionActivated(QAction *sender, bool togg
 	if (!chatEditBox)
 		return;
 
-	ChatWidget *chatWidget = chatEditBox->chatWidget();
-	if (chatWidget)
-	{
-		QList<QWidget *> widgets = sender->associatedWidgets();
-		if (widgets.size() == 0)
-			return;
+	QList<QWidget *> widgets = sender->associatedWidgets();
+	if (widgets.size() == 0)
+		return;
 
-		chatWidget->openEmoticonSelector(widgets[widgets.size() - 1]);
-	}
+	chatEditBox->openEmoticonSelector(widgets[widgets.size() - 1]);
 }

@@ -16,7 +16,7 @@
 
 #include "core/core.h"
 
-#include "gui/widgets/chat_edit_box.h"
+#include "gui/widgets/chat-edit-box.h"
 #include "gui/widgets/chat-widget-actions.h"
 #include "gui/widgets/contacts-list-widget-menu-manager.h"
 #include "gui/widgets/custom_input.h"
@@ -212,7 +212,7 @@ void ChatWidgetManager::insertEmoticonActionEnabled()
 {
  	foreach (KaduAction *action, Actions->insertEmoticon()->actions())
 	{
-		if((EmoticonsStyle)config_file.readNumEntry("Chat","EmoticonsStyle") == EMOTS_NONE)
+		if ((EmoticonsStyle)config_file.readNumEntry("Chat","EmoticonsStyle") == EMOTS_NONE)
 		{
 			action->setToolTip(tr("Insert emoticon - enable in configuration"));
 			action->setEnabled(false);

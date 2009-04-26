@@ -10,18 +10,22 @@
 #include <QtXml/QDomElement>
 
 #include "chat/chat.h"
+#include "gui/widgets/chat-widget-actions.h"
+#include "gui/widgets/chat-widget-manager.h"
+
+#include "color_selector.h"
 #include "config_file.h"
 #include "chat-widget.h"
 #include "custom_input.h"
+#include "emoticons.h"
 #include "toolbar.h"
 #include "xml_config_file.h"
 
-#include "chat_edit_box.h"
+#include "chat-edit-box.h"
 
 QList<ChatEditBox *> chatEditBoxes;
 
-ChatEditBox::ChatEditBox(QWidget *parent)
-	: KaduMainWindow(parent)
+ChatEditBox::ChatEditBox(QWidget *parent) : KaduMainWindow(parent)
 {
 	chatEditBoxes.append(this);
 
@@ -41,13 +45,37 @@ ChatEditBox::ChatEditBox(QWidget *parent)
 		writeToolBarsToConfig("chat"); // port old config
 	else
 		loadToolBarsFromConfig("chat"); // load new config
+
+	connect(ChatWidgetManager::instance()->actions()->colorSelector(), SIGNAL(actionCreated(KaduAction *)),
+			this, SLOT(colorSelectorActionCreated(KaduAction *)));
+	connect(InputBox, SIGNAL(cursorPositionChanged()), this, SLOT(cursorPositionChanged()));
 }
 
 ChatEditBox::~ChatEditBox()
 {
+	disconnect(ChatWidgetManager::instance()->actions()->colorSelector(), SIGNAL(actionCreated(KaduAction *)),
+			this, SLOT(colorSelectorActionCreated(KaduAction *)));
+	disconnect(InputBox, SIGNAL(cursorPositionChanged()), this, SLOT(cursorPositionChanged()));
+
 	chatEditBoxes.removeAll(this);
 
 	writeToolBarsToConfig("chat");
+}
+
+void ChatEditBox::colorSelectorActionCreated(KaduAction *action)
+{
+	if (action->parent() == this)
+		setColorFromCurrentText(true);
+}
+
+void ChatEditBox::cursorPositionChanged()
+{
+	setColorFromCurrentText(false);
+}
+
+void ChatEditBox::configurationUpdated()
+{
+	setColorFromCurrentText(true);
 }
 
 CustomInput * ChatEditBox::inputBox()
@@ -126,4 +154,71 @@ void ChatEditBox::addAction(const QString &actionName, bool showLabel)
 
 	foreach (ChatEditBox *chatEditBox, chatEditBoxes)
 		chatEditBox->refreshToolBars("chat");
+}
+
+void ChatEditBox::openEmoticonSelector(const QWidget *activatingWidget)
+{
+	//emoticons_selector zawsze b�dzie NULLem gdy wchodzimy do tej funkcji
+	//bo EmoticonSelector ma ustawione flagi Qt::WDestructiveClose i Qt::WType_Popup
+	//akcj� na opuszczenie okna jest ustawienie zmiennej emoticons_selector w Chacie na NULL
+	EmoticonSelector *emoticonSelector = new EmoticonSelector(this, this);
+	emoticonSelector->alignTo(const_cast<QWidget*>(activatingWidget)); //TODO: do something about const_cast
+	emoticonSelector->show();
+}
+
+void ChatEditBox::openColorSelector(const QWidget *activatingWidget)
+{
+	//sytuacja podobna jak w przypadku emoticon_selectora
+	ColorSelector *colorSelector = new ColorSelector(InputBox->palette().foreground().color(), this);
+	colorSelector->alignTo(const_cast<QWidget*>(activatingWidget)); //TODO: do something about const_cast
+	colorSelector->show();
+	connect(colorSelector, SIGNAL(colorSelect(const QColor &)), this, SLOT(changeColor(const QColor &)));
+}
+
+void ChatEditBox::addEmoticon(const QString &emot)
+{
+	if (!emot.isEmpty())
+	{
+		QString escaped = emot;
+		escaped = escaped.replace("&lt;", "<");
+		escaped = escaped.replace("&gt;", ">");
+		InputBox->insertHtml(escaped);
+	}
+}
+
+void ChatEditBox::changeColor(const QColor &newColor)
+{
+	CurrentColor = newColor;
+
+	QPixmap p(12, 12);
+	p.fill(CurrentColor);
+
+	KaduAction *action = ChatWidgetManager::instance()->actions()->colorSelector()->action(this);
+	if (action)
+		action->setIcon(p);
+
+	InputBox->setTextColor(CurrentColor);
+}
+
+void ChatEditBox::setColorFromCurrentText(bool force)
+{
+	KaduAction *action = ChatWidgetManager::instance()->actions()->colorSelector()->action(this);
+
+	if (!action || (!force && (InputBox->textColor() == CurrentColor)))
+		return;
+
+	int i;
+	for (i = 0; i < 16; ++i)
+		if (InputBox->textColor() == QColor(colors[i]))
+			break;
+
+	QPixmap p(12, 12);
+	if (i >= 16)
+		CurrentColor = InputBox->palette().foreground().color();
+	else
+		CurrentColor = colors[i];
+
+	p.fill(CurrentColor);
+
+	action->setIcon(p);
 }

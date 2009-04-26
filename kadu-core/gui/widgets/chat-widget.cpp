@@ -8,6 +8,7 @@
  ***************************************************************************/
 
 #include <QtGui/QKeyEvent>
+#include <QtGui/QPushButton>
 #include <QtGui/QShortcut>
 #include <QtGui/QSplitter>
 #include <QtGui/QVBoxLayout>
@@ -27,7 +28,7 @@
 #include "protocols/protocol.h"
 
 #include "action.h"
-#include "chat_edit_box.h"
+#include "chat-edit-box.h"
 #include "color_selector.h"
 #include "config_file.h"
 #include "custom_input.h"
@@ -43,8 +44,7 @@
 
 ChatWidget::ChatWidget(Chat *chat, QWidget *parent) :
 		QWidget(parent), CurrentChat(chat),
-		actcolor(),
-		emoticon_selector(0), color_selector(0), WaitingForACK(false), ContactsWidget(0), horizSplit(0),
+		WaitingForACK(false), ContactsWidget(0), horizSplit(0),
 		activationCount(0), NewMessagesCount(0), InputBox(0)
 {
 	kdebugf();
@@ -54,10 +54,6 @@ ChatWidget::ChatWidget(Chat *chat, QWidget *parent) :
 
 	triggerAllAccountsRegistered();
 	createGui();
-
-	connect(ChatWidgetManager::instance()->actions()->colorSelector(), SIGNAL(actionCreated(KaduAction *)),
-			this, SLOT(colorSelectorActionCreated(KaduAction *)));
-
 	configurationUpdated();
 
 	kdebugf2();
@@ -161,8 +157,6 @@ void ChatWidget::configurationUpdated()
 	AutoSend = config_file.readBoolEntry("Chat", "AutoSend");
 	InputBox->inputBox()->setAutosend(AutoSend);
 
-	setActColor(true);
-
 	refreshTitle();
 }
 
@@ -214,33 +208,6 @@ void ChatWidget::curPosChanged()
 	action = ChatWidgetManager::instance()->actions()->underline()->action(InputBox);
  	if (action)
 		action->setChecked(InputBox->inputBox()->fontUnderline());
-
-	setActColor(false);
-
-	kdebugf2();
-}
-
-void ChatWidget::setActColor(bool force)
-{
-	kdebugf();
-
-	KaduAction *action = ChatWidgetManager::instance()->actions()->colorSelector()->action(InputBox);
-
-	if (action && (force || (InputBox->inputBox()->textColor() != actcolor)))
-	{
-		int i;
-		for (i = 0; i < 16; ++i)
-			if (InputBox->inputBox()->textColor() == QColor(colors[i]))
-				break;
-		QPixmap p(12, 12);
-		if (i >= 16)
-			actcolor = InputBox->palette().foreground().color();
-		else
-			actcolor = colors[i];
-		p.fill(actcolor);
-
-		action->setIcon(p);
-	}
 
 	kdebugf2();
 }
@@ -312,14 +279,6 @@ void ChatWidget::insertImage()
 	else
 		delete id;
 
-	kdebugf2();
-}
-
-void ChatWidget::colorSelectorActionCreated(KaduAction *action)
-{
-	kdebugf();
-	if (action->parent() == InputBox)
-		setActColor(true);
 	kdebugf2();
 }
 
@@ -692,59 +651,13 @@ void ChatWidget::sendMessage()
 	kdebugf2();
 }
 
-void ChatWidget::openEmoticonSelector(const QWidget *activating_widget)
-{
-	//emoticons_selector zawsze b�dzie NULLem gdy wchodzimy do tej funkcji
-	//bo EmoticonSelector ma ustawione flagi Qt::WDestructiveClose i Qt::WType_Popup
-	//akcj� na opuszczenie okna jest ustawienie zmiennej emoticons_selector w Chacie na NULL
-	emoticon_selector = new EmoticonSelector(this, this);
-	emoticon_selector->alignTo(const_cast<QWidget*>(activating_widget)); //TODO: do something about const_cast
-	emoticon_selector->show();
-}
-
-void ChatWidget::changeColor(const QWidget *activating_widget)
-{
-	//sytuacja podobna jak w przypadku emoticon_selectora
-	color_selector = new ColorSelector(InputBox->palette().foreground().color(), this);
-	color_selector->alignTo(const_cast<QWidget*>(activating_widget)); //TODO: do something about const_cast
-	color_selector->show();
-	connect(color_selector, SIGNAL(colorSelect(const QColor&)), this, SLOT(colorChanged(const QColor&)));
-	connect(color_selector, SIGNAL(aboutToClose()), this, SLOT(colorSelectorAboutToClose()));
-}
-
 void ChatWidget::colorSelectorAboutToClose()
 {
 	kdebugf();
-	color_selector = 0;
 	kdebugf2();
 }
 
-void ChatWidget::colorChanged(const QColor &color)
-{
-	color_selector = 0;
-
-	QPixmap p(12, 12);
-	p.fill(color);
-
-	KaduAction *action = ChatWidgetManager::instance()->actions()->colorSelector()->action(InputBox);
-	if (action)
-		action->setIcon(p);
-
-	InputBox->inputBox()->setTextColor(color);
-	actcolor = color;
-}
-
 /* adds an emoticon code to the edit window */
-void ChatWidget::addEmoticon(QString emot)
-{
-	if (emot.length())
-	{
-		emot.replace("&lt;", "<");
-		emot.replace("&gt;", ">");
-		InputBox->inputBox()->insertHtml(emot);
-	}
-	emoticon_selector = NULL;
-}
 
 const QString& ChatWidget::caption() const
 {

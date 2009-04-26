@@ -64,7 +64,7 @@ set (kadu_SRCS
 	file-transfer/file-transfer.cpp
 	file-transfer/file-transfer-manager.cpp
 
-	gui/widgets/chat_edit_box.cpp
+	gui/widgets/chat-edit-box.cpp
 	gui/widgets/chat_messages_view.cpp
 	gui/widgets/chat-widget.cpp
 	gui/widgets/chat-widget-actions.cpp
@@ -244,7 +244,7 @@ set (kadu_MOC_SRCS
 	file-transfer/file-transfer.h
 	file-transfer/file-transfer-manager.h
 
-	gui/widgets/chat_edit_box.h
+	gui/widgets/chat-edit-box.h
 	gui/widgets/chat_messages_view.h
 	gui/widgets/chat-widget.h
 	gui/widgets/chat-widget-actions.h

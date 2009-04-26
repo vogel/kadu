@@ -22,6 +22,7 @@
 #include <math.h>
 #include <algorithm>
 
+#include "gui/widgets/chat-edit-box.h"
 #include "gui/widgets/chat-widget.h"
 
 #include "config_file.h"
@@ -406,7 +407,7 @@ void EmoticonSelectorButton::leaveEvent(QEvent* e)
 	}
 }
 
-EmoticonSelector::EmoticonSelector(ChatWidget *caller, QWidget *parent)
+EmoticonSelector::EmoticonSelector(ChatEditBox *caller, QWidget *parent)
 	: QWidget (parent, Qt::Popup), callingwidget(caller)
 {
 	setAttribute(Qt::WA_DeleteOnClose);
@@ -429,12 +430,6 @@ EmoticonSelector::EmoticonSelector(ChatWidget *caller, QWidget *parent)
 		grid->addWidget(btn, i / selector_width, i % selector_width);
 		connect(btn, SIGNAL(clicked(const QString&)), this, SLOT(iconClicked(const QString&)));
 	}
-}
-
-void EmoticonSelector::closeEvent(QCloseEvent *e)
-{
-	callingwidget->addEmoticon(QString::null);
-	QWidget::closeEvent(e);
 }
 
 void EmoticonSelector::iconClicked(const QString& emoticon_string)

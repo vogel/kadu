@@ -11,6 +11,7 @@
 #define CHAT_EDIT_BOX_H
 
 #include "action.h"
+#include "configuration_aware_object.h"
 #include "kadu_main_window.h"
 
 #include "configuration_aware_object.h"
@@ -19,11 +20,21 @@
 
 class CustomInput;
 
-class KADUAPI ChatEditBox : public KaduMainWindow
+class KADUAPI ChatEditBox : public KaduMainWindow, ConfigurationAwareObject
 {
 	Q_OBJECT
 
 	CustomInput *InputBox;
+	QColor CurrentColor;
+
+	void setColorFromCurrentText(bool force);
+
+private slots:
+	void colorSelectorActionCreated(KaduAction *action);
+	void cursorPositionChanged();
+
+protected:
+	virtual void configurationUpdated();
 
 public:
 	ChatEditBox(QWidget *parent);
@@ -39,6 +50,13 @@ public:
 	virtual ContactsListWidget * contactsListWidget();
 	virtual ContactSet contacts();
 	ChatWidget * chatWidget();
+
+	void openEmoticonSelector(const QWidget *activatingWidget);
+	void openColorSelector(const QWidget *activatingWidget);
+
+public slots:
+	void addEmoticon(const QString &emoticon);
+	void changeColor(const QColor &newColor);
 
 };
 

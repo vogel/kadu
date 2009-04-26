@@ -10,7 +10,7 @@
 #include "themes.h"
 #include "exports.h"
 
-class ChatWidget;
+class ChatEditBox;
 class EmotsWalker;
 
 enum EmoticonsStyle
@@ -156,16 +156,10 @@ class EmoticonSelector : public QWidget
 {
 	Q_OBJECT
 
-	ChatWidget *callingwidget;
+	ChatEditBox *callingwidget;
 
 private slots:
 	void iconClicked(const QString &emoticon_string);
-
-protected:
-	/**
-		Funkcja obs�uguj�ca zamkni�cie listy.
-	**/
-	void closeEvent(QCloseEvent *e);
 
 public:
 	/**
@@ -174,7 +168,7 @@ public:
 		\param name nazwa obiektu
 		\param caller okno chat do ktorego ma by� wpisana wybrana emotikonka
 	**/
-	EmoticonSelector(ChatWidget *caller, QWidget *parent = 0);
+	explicit EmoticonSelector(ChatEditBox *caller, QWidget *parent = 0);
 
 public slots:
 	/**
