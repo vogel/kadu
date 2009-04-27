@@ -760,6 +760,7 @@ QString versionToName(const unsigned int version)
 		case 0x29: name = "GG 7.6b1688"; break;
 		case 0x2a: name = "GG 7.7b3315"; break;
 		case 0x2d: name = "GG 8.0b5443"; break;
+		case 0x2e: name = "GG 8.0b8283"; break;
 		default: name = "Unknown"; break;
 	}
 	return name;
