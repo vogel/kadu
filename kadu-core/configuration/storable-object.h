@@ -52,7 +52,7 @@ public:
 template<class T>
 	T loadAttribute(const QString &name) const
 	{
-		QVariant value = Storage->point().attribute("name");
+		QVariant value = Storage->point().attribute(name);
 		return value.value<T>();
 	}
 
