@@ -55,6 +55,7 @@ public:
 	void addChat(Chat *chat);
 	void removeChat(Chat *chat);
 	QList<Chat *> chatsForAccount(Account *account);
+	Chat * byUuid(QUuid uuid);
 
 signals:
 	void chatAboutToBeAdded(Chat *chat);

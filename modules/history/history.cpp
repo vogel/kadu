@@ -43,6 +43,29 @@ extern "C" KADU_EXPORT void history_close()
 	kdebugf2();
 }
 
+void disableNonHistoryContacts(KaduAction *action)
+{
+	kdebugf();
+	action->setEnabled(false);
+	ContactSet contacts = action->contacts();
+
+	if (!contacts.count())
+		return;
+
+	foreach (const Contact &contact, contacts)
+	{
+		if (Core::instance()->myself() == contact)
+			return;
+
+		Account *account = contact.prefferedAccount();
+		if (!account || !account->protocol()->chatService())
+			return;
+	}
+
+	action->setEnabled(true);
+	kdebugf2();
+}
+
 History * History::Instance = 0;
 
 History * History::instance()
@@ -270,25 +293,23 @@ void History::unregisterStorage(HistoryStorage *storage)
 	CurrentStorage = 0;
 }
 
-void disableNonHistoryContacts(KaduAction *action)
+QList<Chat *> History::chatsList()
 {
-	kdebugf();
-	action->setEnabled(false);
-	ContactSet contacts = action->contacts();
-
-	if (!contacts.count())
-		return;
-
-	foreach (const Contact &contact, contacts)
-	{
-		if (Core::instance()->myself() == contact)
-			return;
-
-		Account *account = contact.prefferedAccount();
-		if (!account || !account->protocol()->chatService())
-			return;
-	}
-
-	action->setEnabled(true);
-	kdebugf2();
+	return CurrentStorage->chatsList();
 }
+
+QList<QDate> History::datesForChat(Chat *chat)
+{
+	return CurrentStorage->datesForChat(chat);
+}
+
+QList<ChatMessage *> History::getMessages(Chat *chat, QDate date, int limit)
+{
+	return CurrentStorage->getMessages(chat, date, limit);
+}
+
+int History::getMessagesCount(Chat *chat, QDate date)
+{
+	return CurrentStorage->getMessagesCount(chat, date);
+}
+

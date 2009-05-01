@@ -9,13 +9,13 @@
 
 #include "accounts/account.h"
 #include "accounts/account-manager.h"
+#include "chat/chat-manager.h"
 #include "config_file.h"
 #include "core/core.h"
 #include "debug.h"
 #include "message_box.h"
 #include "misc/misc.h"
 #include "misc/path-conversion.h"
-#include "chat/chat_manager-old.h"
 #include "gui/widgets/chat-widget.h"
 
 #include "history-sql-storage.h"
@@ -37,7 +37,7 @@ HistorySqlStorage::~HistorySqlStorage()
 void HistorySqlStorage::initializeDatabase()
 {
 	kdebugf();
-	tableNamePrefix = config_file.readEntry("History", "DatabaseTableNamePrefix");
+	DbPrefix = config_file.readEntry("History", "DatabaseTableNamePrefix");
 	QString driver = config_file.readEntry("History", "DatabaseDriver");
 	if(!QSqlDatabase::isDriverAvailable(driver))
 	{
@@ -71,7 +71,7 @@ void HistorySqlStorage::initializeDatabase()
 	}
 
 
-	if (!Database.tables().contains(tableNamePrefix + "messages"))
+	if (!Database.tables().contains(DbPrefix + "messages"))
 	{
 		QSqlQuery query(Database);
 		QString querystr;
@@ -81,15 +81,15 @@ void HistorySqlStorage::initializeDatabase()
 			querystr = "ALTER DATABASE `%1` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;";
 		querystr = querystr.arg(Database.databaseName());
 		executeQuery(querystr);
-		executeQuery(QString("CREATE TABLE %1messages (chat VARCHAR(255), sender VARCHAR(255), send_time TIMESTAMP, receive_time TIMESTAMP, content TEXT, attributes TEXT);").arg(tableNamePrefix));
-		//executeQuery(QString("CREATE TABLE %1uid_groups (id INTEGER, account_id INTEGER, protocol VARCHAR(20), uid VARCHAR(255));").arg(tableNamePrefix));
-		//executeQuery(QString("CREATE TABLE %1status (uid_group_id INTEGER, status VARCHAR(255), time TIMESTAMP, description TEXT, ip_port TEXT);").arg(tableNamePrefix));
-		//executeQuery(QString("CREATE TABLE %1accounts (id INTEGER, protocol VARCHAR(20), uid VARCHAR(255));").arg(tableNamePrefix));
-		//executeQuery(QString("CREATE TABLE %1sms (uid_group_id INTEGER, account_id INTEGER, is_outgoing BOOLEAN, send_time TIMESTAMP, receive_time TIMESTAMP, content TEXT);").arg(tableNamePrefix));
+		executeQuery(QString("CREATE TABLE %1messages (chat VARCHAR(255), sender VARCHAR(255), send_time TIMESTAMP, receive_time TIMESTAMP, content TEXT, attributes TEXT);").arg(DbPrefix));
+		//executeQuery(QString("CREATE TABLE %1uid_groups (id INTEGER, account_id INTEGER, protocol VARCHAR(20), uid VARCHAR(255));").arg(DbPrefix));
+		//executeQuery(QString("CREATE TABLE %1status (uid_group_id INTEGER, status VARCHAR(255), time TIMESTAMP, description TEXT, ip_port TEXT);").arg(DbPrefix));
+		//executeQuery(QString("CREATE TABLE %1accounts (id INTEGER, protocol VARCHAR(20), uid VARCHAR(255));").arg(DbPrefix));
+		//executeQuery(QString("CREATE TABLE %1sms (uid_group_id INTEGER, account_id INTEGER, is_outgoing BOOLEAN, send_time TIMESTAMP, receive_time TIMESTAMP, content TEXT);").arg(DbPrefix));
 	}
 
 	MessagesModel = new QSqlTableModel(0, Database);
-	MessagesModel->setTable(tableNamePrefix + "messages");
+	MessagesModel->setTable(DbPrefix + "messages");
 	MessagesModel->setEditStrategy(QSqlTableModel::OnManualSubmit);
 
 }
@@ -190,8 +190,8 @@ void HistorySqlStorage::appendMessageEntry(Chat *chat, Contact contact, const QS
 	QSqlRecord record = MessagesModel->record();
 	record.setValue("chat", chat->uuid().toString());
 	record.setValue("sender", contact.uuid().toString());
-	record.setValue("send_time", QDateTime::currentDateTime().toTime_t());
-	record.setValue("receive_time", QDateTime::currentDateTime().toTime_t());
+	record.setValue("send_time", QDateTime::currentDateTime());
+	record.setValue("receive_time", QDateTime::currentDateTime());
 	record.setValue("content", message);
 	MessagesModel->insertRecord(-1, record);
 	if (!MessagesModel->submitAll())
@@ -329,6 +329,108 @@ void HistorySqlStorage::removeHistory(const ContactList& uids, const QDate &date
 
 }
 
+QList<Chat *> HistorySqlStorage::chatsList()
+{
+	kdebugf();
+	QList<Chat *> chats;
+	QSqlQuery query(Database);
+	QString query_str = "SELECT DISTINCT chat FROM %1messages";
+	query.prepare(query_str.arg(DbPrefix));
+
+	executeQuery(query);
+	while (query.next())
+	{
+		Chat *chat = ChatManager::instance()->byUuid(query.value(0).toString()); 
+		if (chat)
+			chats.append(chat); 
+	}
+	kdebugf2();
+	return chats;
+}
+
+QList<QDate> HistorySqlStorage::datesForChat(Chat *chat)
+{
+	kdebugf();
+	QList<QDate> dates;
+	QSqlQuery query(Database);
+	QString query_str = "SELECT DISTINCT date(receive_time) as date FROM %1messages WHERE chat=:chat";
+	query.prepare(query_str.arg(DbPrefix));
+	query.bindValue(":chat", chat->uuid().toString());
+	executeQuery(query);
+
+	while (query.next())
+		dates.append(query.value(0).toDate());
+	kdebugf2();
+	return dates;
+}
+
+QList<ChatMessage *> HistorySqlStorage::getMessages(Chat *chat, QDate date, int limit)
+{
+	kdebugf();
+	QList<ChatMessage *> messages;
+	QString query_str, limit_str, date_query_str = "";
+	QSqlQuery query(Database);
+	if (!date.isNull())
+		date_query_str = " AND date(receive_time) = date(:date) ";
+	if (limit != 0)
+		limit_str = " LIMIT :limit ";
+	query_str = "SELECT content, send_time, receive_time FROM %1messages WHERE chat=:chat" + date_query_str + limit_str + ";";
+
+	query.prepare(query_str.arg(DbPrefix));
+	query.bindValue(":chat", chat->uuid().toString());
+	if (!date.isNull())
+		query.bindValue(":date", date.toString(Qt::ISODate));
+	if (limit != 0)
+		query.bindValue(":limit", limit);
+	executeQuery(query);
+
+	while (query.next())
+	{
+
+		bool outgoing = true;//query.value(1).toBool();   //TODO
+		QDateTime send_time = query.value(1).toDateTime();
+		QDateTime receive_time = query.value(2).toDateTime();
+		QString msg = query.value(0).toString();
+
+		ChatMessage* chat_message;
+
+	//ChatMessage(Account *account, const Contact &sender, const ContactSet &receivers, const QString &unformattedMessage, ChatMessageType type,
+	//	QDateTime date, QDateTime sdate = QDateTime());
+
+		if (outgoing)
+			chat_message = new ChatMessage(chat->account(), Core::instance()->myself(), chat->contacts(), msg, TypeSent, receive_time, send_time);
+		else
+			chat_message = new ChatMessage(chat->account(), (*chat->contacts().begin()), ContactSet(Core::instance()->myself()), msg, TypeReceived, receive_time, send_time);
+
+		messages.append(chat_message);
+	}
+	kdebugf2();
+	return messages;
+}
+
+int HistorySqlStorage::getMessagesCount(Chat *chat, QDate date)
+{
+	kdebugf();
+	int count = 0;
+	QString query_str, date_query_str = "";
+	QSqlQuery query(Database);
+	if(!date.isNull())
+		date_query_str = " AND date(receive_time) = date(:date) ";
+
+	query_str = "SELECT COUNT(chat) FROM %1messages WHERE chat=:chat" + date_query_str + ";";
+
+	query.prepare(query_str.arg(DbPrefix));
+	query.bindValue(":chat", chat->uuid().toString());
+	if (!date.isNull())
+		query.bindValue(":date", date.toString(Qt::ISODate));
+	executeQuery(query);
+
+	query.next();
+	count = query.value(0).toInt();
+	kdebugf2();
+	return count;
+}
+
 QList<QDate> HistorySqlStorage::getAllDates()
 {
 	kdebugf();
@@ -355,100 +457,7 @@ QList<QDate> HistorySqlStorage::getAllDates()
 }
 
 
-QList<QDate> HistorySqlStorage::historyDates(const ContactList& uids)
-{
-	kdebugf();
-/*
-	QList<QDate> result;
-	QSqlQuery query(Database);
-	QString query_str = "SELECT DISTINCT date(send_time) FROM kadu_messages WHERE uid_group_id = '%1'";
-	QString uid_group_str = findUidGroup(uids);
-	if (uid_group_str == "")
-	{
-		kdebugf2();
-		return result;
-	}
-	query_str = query_str.arg(uid_group_str);
-	kdebug("query: %s\n", query_str.toLocal8Bit().data());
-	if (!query.exec(query_str))
-	{
-		MessageBox::msg(query.lastError().text(), false, "Warning");
-		kdebugf2();
-		return result;
-	}
-	while (query.next())
-	{
-		QDate date = query.value(0).toDate();
-		result.append(date);
-	}
-	kdebug("%i dates\n", result.count());
-	kdebugf2();
-	return result;
-}
 
-QList<QDate> HistorySqlStorage::historyStatusDates(const ContactList& uids)
-{
-/*
-	kdebugf();
-	QList<QDate> result;
-	QSqlQuery query(Database);
-	QString query_str = "SELECT DISTINCT date(time) FROM kadu_status WHERE uid_group_id = '%1'";
-	QString uid_group_str = findUidGroup(uids);
-	if (uid_group_str == "")
-	{
-		kdebugf2();
-		return result;
-	}
-	query_str = query_str.arg(uid_group_str);
-	kdebug("query: %s\n", query_str.toLocal8Bit().data());
-	if (!query.exec(query_str))
-	{
-		MessageBox::msg(query.lastError().text(), false, "Warning");
-		kdebugf2();
-		return result;
-	}
-	while (query.next())
-	{
-		QDate date = query.value(0).toDate();
-		result.append(date);
-	}
-	kdebug("%i dates\n", result.count());
-	kdebugf2();
-	return result;
-*/
-}
-
-QList<QDate> HistorySqlStorage::historySmsDates(const ContactList& uids)
-{
-/*
-	kdebugf();
-	QList<QDate> result;
-	QSqlQuery query(Database);
-	QString query_str = "SELECT DISTINCT date(send_time) FROM kadu_sms WHERE uid_group_id = '%1'";
-	QString uid_group_str = findUidGroup(uids);
-	if (uid_group_str == "")
-	{
-		kdebugf2();
-		return result;
-	}
-	query_str = query_str.arg(uid_group_str);
-	kdebug("query: %s\n", query_str.toLocal8Bit().data());
-	if (!query.exec(query_str))
-	{
-		MessageBox::msg(query.lastError().text(), false, "Warning");
-		kdebugf2();
-		return result;
-	}
-	while (query.next())
-	{
-		QDate date = query.value(0).toDate();
-		result.append(date);
-	}
-	kdebug("%i dates\n", result.count());
-	kdebugf2();
-	return result;
-*/
-}
 
 QList<ChatMessage*> HistorySqlStorage::historyMessages(const ContactList& uids, QDate date)
 {
@@ -764,11 +773,11 @@ HistorySearchResult HistorySqlStorage::searchHistory(ContactList users, HistoryS
 	QSqlQuery query(QSqlDatabase::database("kadu-history"));
 	QString usersID = findUidGroup(users);
 	if(params.currentType == EntryTypeStatus)
-		tableName = tableNamePrefix + "status";
+		tableName = DbPrefix + "status";
 	else if(params.currentType == EntryTypeSms)
-		tableName = tableNamePrefix + "sms";
+		tableName = DbPrefix + "sms";
 	else
-		tableName = tableNamePrefix + "messages";
+		tableName = DbPrefix + "messages";
 	if(params.currentType == EntryTypeStatus)
 		query_str = "SELECT time, description FROM " + tableName + " WHERE uid_group_id = :uid ";
 	else
@@ -834,15 +843,10 @@ QString HistorySqlStorage::prepareText(const QString &text)
 	return str;
 }
 
-void HistorySqlStorage::executeQuery(const QString &query)
+void HistorySqlStorage::executeQuery(QSqlQuery query)
 {
 	kdebugf();
-	QSqlQuery sqlQuery(Database);
-	if (!sqlQuery.exec(query))
-	{
-		MessageBox::msg(sqlQuery.lastError().text(), false, "Warning");
-		return;
-	} 
-	kdebug("query: %s\n", query.toLocal8Bit().data());
+	query.exec();
+	kdebug("db query: %s\n", query.executedQuery().toLocal8Bit().data());
 	kdebugf2();
 }

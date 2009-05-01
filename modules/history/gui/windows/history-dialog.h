@@ -11,6 +11,7 @@
 #include <QtGui/QCloseEvent>
 
 #include "action.h"
+#include "chat/chat_message.h"
 #include "kadu_main_window.h"
 #include "gui/widgets/chat_messages_view.h"
 #include "gui/widgets/contacts-list-widget.h"
@@ -63,13 +64,13 @@ struct HistorySearchResult
 
 
 /*!
-\class MainListViewText
+\class MainListItem
 \brief Pojedyncza pozycja z g��wnej listy w oknie przegl�dania historii.
 */
-class MainListViewText : public QTreeWidgetItem
+class MainListItem : public QTreeWidgetItem
 {
 	private:
-		ContactList Uids; /*!< Lista u�ytkownik�w reprezentowanych przez dan� pozycj� na li�cie */
+		Chat *CurrentChat; /*!< Lista u�ytkownik�w reprezentowanych przez dan� pozycj� na li�cie */
 		/**
        		Tworzy tekst b�d�cy nazw� danego elementu na li�cie.
 		*/
@@ -81,29 +82,29 @@ class MainListViewText : public QTreeWidgetItem
 		@param parent nadrz�dny treewidget
 		@param uids lista u�ytkownik�w
 		*/
-		MainListViewText(QTreeWidget* parent, const ContactList& uids);
+		MainListItem(QTreeWidget* parent, Chat *chat);
 		/**
        		Standardowy konstruktor dla podrz�dnego elementu listy g��wnej.
 		@param parent nadrz�dny element
 		@param uids lista u�ytkownik�w
 		*/
-		MainListViewText(QTreeWidgetItem* parent, const ContactList& uids);
+		MainListItem(QTreeWidgetItem* parent, Chat *chat);
 		/**
        		Zwraca list� u�ytkownik�w reprezentowan� przez dany element.
 		@return Lista u�ytkownik�w przypisana do danego elementu.
 		*/
-		virtual const ContactList& uidsList() const { return Uids; };
+		Chat * chat() const { return CurrentChat; };
 };
  
 /*!
 \class DetailsListViewText
 \brief Lista widoku szczeg��owego wg. dat rozm�w w oknie przegl�dania historii
 */
-class DetailsListViewItem : public QTreeWidgetItem
+class DetailsListItem : public QTreeWidgetItem
 {
 	private:
 		QDate Date; /*!< Data, z kt�rej rozmowy reprezentuje dany element. */
-		ContactList Uids;  /*!< Lista u�ytkownik�w, do kt�rych nale�y dana data - czasem si� przyda, gdy nie mo�na zachowa� zaznaczenia na g��wnej li�cie. */
+		Chat *CurrentChat;  /*!< Lista u�ytkownik�w, do kt�rych nale�y dana data - czasem si� przyda, gdy nie mo�na zachowa� zaznaczenia na g��wnej li�cie. */
 	public:
 		/**
        		Standardowy konstruktor dla g��wnego elementu listy szczeg��owej.
@@ -113,17 +114,20 @@ class DetailsListViewItem : public QTreeWidgetItem
 		@param lenght ilo�� wiadomo�ci dla danej daty
 		@param uids lista u�ytkownik�w, dla kt�rej pobrano dat� - jak ju� wspomniano, czasem si� przydaje.
 		*/
-		DetailsListViewItem(QTreeWidget* parent, QString contact, QString title, QDate date, QString lenght, const ContactList& uids = ContactList());
+		DetailsListItem(QTreeWidget* parent, Chat *chat, QDate date);
 		/**
        		Zwraca dat� reprezentowan� przez dany element.
 		@return Data przypisana do danego elementu.
 		*/
-		QDate date() const;
 		/**
        		Zwraca list� u�ytkownik�w reprezentowan� przez dany element.
 		@return Lista u�ytkownik�w przypisana do danego elementu.
 		*/
-		virtual const ContactList& uidsList() const { return Uids; };
+		Chat * chat() const { return CurrentChat; };
+		QDate date() const { return Date; };
+		QString prepareAltnick();
+		QString prepareTitle();
+		QString prepareLength();
 };
 
 /*!
@@ -219,12 +223,12 @@ class HistoryDlg : public QWidget
        		Slot od�wie�aj�cy zawarto�� listy szczeg��owej wg. zmiany zaznaczenia na li�cie g��wnej.
 		@param item Element listy wybrany przez u�ytkownika.
 		*/
-		void mainItemChanged(QTreeWidgetItem *item, int column);
+		void mainListItemClicked(QTreeWidgetItem *item, int column);
 		/**
        		Slot od�wie�aj�cy zawarto�� okna przegl�dania rozm�w wg. zmiany zaznaczenia na li�cie szczeg��owej.
 		@param item Element listy wybrany przez u�ytkownika.
 		*/
-		void detailsItemChanged(QTreeWidgetItem *item, int column);
+		void detailsListItemClicked(QTreeWidgetItem *item, int column);
 		/**
        		Slot otwieraj�cy okno wyszukiwania.
 		*/

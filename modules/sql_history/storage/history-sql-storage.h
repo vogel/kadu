@@ -22,7 +22,7 @@ class HistorySqlStorage : public HistoryStorage
 
 	QSqlDatabase Database; /*!< Obiekt reprezentuj±cy bie¿±c± bazê danych. */
 	QSqlTableModel *MessagesModel;
-	QString tableNamePrefix;
+	QString DbPrefix;
 
 	/**
 		\fn void appendHistory(ChatWidget *chat);
@@ -38,7 +38,7 @@ class HistorySqlStorage : public HistoryStorage
 	**/
 	//void removeHistory(const ContactList& uids);
 		
-	void executeQuery(const QString &query);
+	void executeQuery(QSqlQuery query);
 	/**
 		\fn QString prepareText(const QString &text);
 		Funkcja zabezpiecza w tek¶cie znaki mog±ce potencjalnie rozwaliæ zapytanie do bazy.
@@ -55,6 +55,11 @@ private slots:
 public:
 	HistorySqlStorage();
 	~HistorySqlStorage();
+
+	virtual QList<Chat *> chatsList();
+	virtual QList<QDate> datesForChat(Chat *chat);
+	virtual QList<ChatMessage *> getMessages(Chat *chat, QDate date = QDate(), int limit = 0);
+	virtual int getMessagesCount(Chat *chat, QDate date = QDate());
 
 	QList<QDate> getAllDates();
 	QList<QDate> historyDates(const ContactList& uids);

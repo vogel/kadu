@@ -124,6 +124,15 @@ QList<Chat *> ChatManager::chatsForAccount(Account *account)
 	return Chats[account]; 
 }
 
+Chat * ChatManager::byUuid(QUuid uuid)
+{
+	foreach (QList<Chat *> list, Chats.values())
+		foreach (Chat *chat, list)
+			if (chat->uuid() == uuid)
+				return chat;
+	return 0;
+}
+
 void ChatManager::accountRegistered(Account *account)
 {
 	load(account);

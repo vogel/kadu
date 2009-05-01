@@ -128,7 +128,7 @@ void SqlHistoryModule::createDefaultConfiguration()
 {
 	config_file.addVariable("History", "DatabaseDriver", "QSQLITE");
 	config_file.addVariable("History", "DatabaseFilePath", ggPath("/history/history.db"));
-// 	config_file.addVariable("History", "DatabaseTableNamePrefix", "kadu_");
+	config_file.addVariable("History", "DatabaseTableNamePrefix", "kadu_");
 
 //TODO: by doda� reszt� warto�ci, je�li jezzcze czego� brak
 

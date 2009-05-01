@@ -27,28 +27,30 @@
 #include "debug.h"
 #include "emoticons.h"
 #include "message_box.h"
+#include "misc/misc.h"
 #include "icons_manager.h"
 
 #include "history-dialog.h"
 
-MainListViewText::MainListViewText(QTreeWidget* parent, const ContactList& uids)
-	: QTreeWidgetItem(parent), Uids(uids)
+MainListItem::MainListItem(QTreeWidget* parent, Chat *chat)
+	: QTreeWidgetItem(parent), CurrentChat(chat)
 {
 	prepareText();	
 }
 
-MainListViewText::MainListViewText(QTreeWidgetItem* parent, const ContactList& uids)
-	: QTreeWidgetItem(parent), Uids(uids)
+MainListItem::MainListItem(QTreeWidgetItem* parent, Chat *chat)
+	: QTreeWidgetItem(parent), CurrentChat(chat)
 {
 	prepareText();
 }
 
-void MainListViewText::prepareText()
+void MainListItem::prepareText()
 {
 	QString name;
 	unsigned int i = 0;
-	unsigned int count = Uids.count();
-	foreach(Contact uid, Uids)
+	ContactList contacts = CurrentChat->contacts().toContactList();
+	unsigned int count = contacts.count();
+	foreach(Contact uid, contacts)
 	{
 // 		QString proto = (*uid.protocolList().begin());
 // 		if (userlist->contains(proto, uid.ID(proto)))
@@ -61,19 +63,43 @@ void MainListViewText::prepareText()
 	setText(0, name);
 }
  
-DetailsListViewItem::DetailsListViewItem(QTreeWidget* parent, QString contact, QString title, QDate date, QString length, const ContactList& uids)
-	: QTreeWidgetItem(parent), Date(date), Uids(uids)
+DetailsListItem::DetailsListItem(QTreeWidget* parent, Chat *chat, QDate date)
+	: QTreeWidgetItem(parent), Date(date), CurrentChat(chat)
 {
-	setText(0, contact);
-	setText(1, title);
-	setText(2, date.toString("dd.MM.yyyy"));
-	setText(3, length);
-	setIcon(0, QIcon(icons_manager->loadIcon("WriteEmail")));
+	setText(0, prepareAltnick());
+	setText(1, prepareTitle());
+ 	setText(2, date.toString("dd.MM.yyyy"));
+	setText(3, prepareLength());
+ 	setIcon(0, QIcon(icons_manager->loadIcon("WriteEmail")));
 }
 
-QDate DetailsListViewItem::date() const
+QString DetailsListItem::prepareAltnick()
 {
-	return Date;
+	QString name;
+	unsigned int i = 0;
+	ContactList contacts = CurrentChat->contacts().toContactList();
+	unsigned int count = contacts.count();
+	foreach(Contact uid, contacts)
+	{
+// 		QString proto = (*uid.protocolList().begin());
+// 		if (userlist->contains(proto, uid.ID(proto)))
+// 			name.append(userlist->byID(proto, uid.ID(proto)).altNick());
+// 		else
+			name.append(uid.display());
+// 		if (i++ < count - 1)
+// 			name.append(", ");
+	}
+	return name;
+}
+ 
+QString DetailsListItem::prepareTitle()
+{
+	return History::instance()->getMessages(CurrentChat, Date, 1).first()->unformattedMessage;
+}
+
+QString DetailsListItem::prepareLength()
+{
+	return QString::number(History::instance()->getMessagesCount(CurrentChat, Date));
 }
 
 HistoryMainWidget::HistoryMainWidget(QWidget *parent, QWidget *window)
@@ -211,7 +237,7 @@ HistoryDlg::HistoryDlg() : QWidget(NULL), isSearchInProgress(0), closeDemand(0),
 	splitter->setSizes(sizes);
 	vbox->setLayout(vbox_lay);
 	grid->addWidget(splitter, 0, 1, 0, 4);
-	connect(MainListView, SIGNAL(itemClicked(QTreeWidgetItem*, int)), this, SLOT(mainItemChanged(QTreeWidgetItem*, int)));
+	connect(MainListView, SIGNAL(itemClicked(QTreeWidgetItem*, int)), this, SLOT(mainListItemClicked(QTreeWidgetItem*, int)));
 
 	MainListView->setContextMenuPolicy(Qt::CustomContextMenu);
 	connect(MainListView, SIGNAL(customContextMenuRequested(QPoint)),
@@ -220,8 +246,8 @@ HistoryDlg::HistoryDlg() : QWidget(NULL), isSearchInProgress(0), closeDemand(0),
 	connect(main->getDetailsListView(), SIGNAL(customContextMenuRequested(QPoint)),
 		this, SLOT(showDetailsPopupMenu(QPoint)));
 	
-	connect(main->getDetailsListView(), SIGNAL(itemClicked(QTreeWidgetItem*, int)), this, SLOT(detailsItemChanged(QTreeWidgetItem*, int)));
-///	loadWindowGeometry(this, "History", "HistoryWindowGeometry", 200, 200, 700, 500);
+	connect(main->getDetailsListView(), SIGNAL(itemClicked(QTreeWidgetItem*, int)), this, SLOT(detailsListItemClicked(QTreeWidgetItem*, int)));
+	loadWindowGeometry(this, "History", "HistoryWindowGeometry", 200, 200, 700, 500);
 	maxLen = 36;//~	
 
 	MainPopupMenu = new QMenu;
@@ -244,11 +270,22 @@ HistoryDlg::~HistoryDlg()
 		ActionDescription *a = KaduActions[act];
 		delete a;
 	}
+	saveWindowGeometry(this, "History", "HistoryDialogGeometry");
 }
 
 void HistoryDlg::globalRefresh()
 {
 	kdebugf();
+	MainListView->clear();
+	chatsItem = new QTreeWidgetItem(MainListView, QStringList(tr("Chats")));
+	chatsItem->setExpanded(false);
+	chatsItem->setIcon(0, QIcon(icons_manager->loadIcon("OpenChat")));
+	QList<Chat *> chatsList = History::instance()->chatsList();
+	
+	MainListItem* mainItem;
+	foreach (Chat *chat, chatsList)
+		mainItem = new MainListItem(chatsItem, chat);
+
 	/*int anonymousCount = 0;
 	bool chatsExpanded, statExpanded, smsExpanded, searchExpanded, conferExpanded, anonChatsExpanded = false;
 	if(chatsItem)
@@ -294,12 +331,12 @@ void HistoryDlg::globalRefresh()
 	{
 		if (uid_group.count() == 1) //zwyk³y chat
 		{
-			MainListViewText* mainItem;
+			MainListItem* mainItem;
 			if(!(*uid_group.begin()).isAnonymous())
-				mainItem = new MainListViewText(chatsItem, uid_group);
+				mainItem = new MainListItem(chatsItem, uid_group);
 			else
 			{
-				mainItem = new MainListViewText(anonChatsItem, uid_group);
+				mainItem = new MainListItem(anonChatsItem, uid_group);
 				++anonymousCount;
 			}
 			//je¶li w userboksie zaznaczono kontakty, rozwin±æ ich pozycjê i wy¶wietliæ historiê
@@ -307,13 +344,13 @@ void HistoryDlg::globalRefresh()
 			{
 				MainListView->expandItem(chatsItem);
 				MainListView->setCurrentItem(mainItem);
-				mainItemChanged(mainItem, 0);
+				mainListItemClicked(mainItem, 0);
 			}
 			mainItem->setIcon(0, icons_manager->loadIcon("Online") );
 		}
 		else if (uid_group.count() > 1) //konferencja
 		{
-			MainListViewText *conferenceItem = new MainListViewText(conferItem, uid_group);
+			MainListItem *conferenceItem = new MainListItem(conferItem, uid_group);
 			conferenceItem->setIcon(0, QIcon(icons_manager->loadIcon("Profiles")));
 		}
 	}
@@ -321,14 +358,14 @@ void HistoryDlg::globalRefresh()
 	QList<ContactList> statusUidGroups = sql_history->getStatusUidGroups();
 	foreach(ContactList uid_group, statusUidGroups)
 	{
-		MainListViewText* statItem = new MainListViewText(statusItem, uid_group);
+		MainListItem* statItem = new MainListItem(statusItem, uid_group);
 		statItem->setIcon(0, icons_manager->loadIcon("Online"));
 	}
 
 	QList<ContactList> smsUidGroups = sql_history->getSmsUidGroups();
 	foreach(ContactList uid_group, smsUidGroups)
 	{
-		MainListViewText* sItem = new MainListViewText(smsItem, uid_group);
+		MainListItem* sItem = new MainListItem(smsItem, uid_group);
 		sItem->setIcon(0, icons_manager->loadIcon("Mobile"));
 	}
 	if(!anonymousCount)
@@ -387,7 +424,7 @@ void HistoryDlg::showDetailsPopupMenu(const QPoint &pos)
 void HistoryDlg::openChat()
 {
 	kdebugf();
-	MainListViewText* uids_item = dynamic_cast<MainListViewText*>(MainListView->currentItem());
+	MainListItem* uids_item = dynamic_cast<MainListItem*>(MainListView->currentItem());
 	if (uids_item == NULL)
 		return;
 ///  	chat_manager->openPendingMsgs(uids_item->uidsList());
@@ -397,7 +434,7 @@ void HistoryDlg::openChat()
 void HistoryDlg::lookupUserInfo()
 {
 	kdebugf();
-	MainListViewText* uids_item = dynamic_cast<MainListViewText*>(MainListView->currentItem());
+	MainListItem* uids_item = dynamic_cast<MainListItem*>(MainListView->currentItem());
 	if (uids_item == NULL)
 		return;
 	//dirty chiaxor, ale na razie to tylko dla gg jest mo¿liwe
@@ -414,7 +451,7 @@ void HistoryDlg::lookupUserInfo()
 void HistoryDlg::removeHistoryEntriesPerUser()
 {
 	kdebugf();
-	MainListViewText* uids_item = dynamic_cast<MainListViewText*>(MainListView->currentItem());
+	MainListItem* uids_item = dynamic_cast<MainListItem*>(MainListView->currentItem());
 	if (uids_item == NULL)
 		return;
 	if (MessageBox::ask(tr("You want to remove all history entries of selected users.\nAre you sure?\n"), "Warning"))
@@ -432,10 +469,10 @@ void HistoryDlg::removeHistoryEntriesPerUser()
 void HistoryDlg::removeHistoryEntriesPerDate()
 {
 	kdebugf();
-	MainListViewText* uids_item = dynamic_cast<MainListViewText*>(MainListView->currentItem());
+	MainListItem* uids_item = dynamic_cast<MainListItem*>(MainListView->currentItem());
 	if (uids_item == NULL)
 		return;
-	DetailsListViewItem* dateItem = dynamic_cast<DetailsListViewItem*>(main->getDetailsListView()->currentItem());
+	DetailsListItem* dateItem = dynamic_cast<DetailsListItem*>(main->getDetailsListView()->currentItem());
 	if (dateItem == NULL)
 		return;
 	if (MessageBox::ask(tr("You want to remove history entries of selected users for selected date.\nAre you sure?\n"), "Warning"))
@@ -456,9 +493,23 @@ void HistoryDlg::removeHistoryEntriesPerDate()
 	kdebugf2();
 }
 
-void HistoryDlg::mainItemChanged(QTreeWidgetItem* item, int column)
+void HistoryDlg::mainListItemClicked(QTreeWidgetItem* item, int column)
 {
 	kdebugf();
+	main->getDetailsListView()->clear();
+	MainListItem* mainListItem = dynamic_cast<MainListItem*>(item);
+	if (mainListItem == NULL || item == NULL)
+		return;
+	QList<QDate> chatDates = History::instance()->datesForChat(mainListItem->chat());
+	foreach (QDate date, chatDates)
+		new DetailsListItem(main->getDetailsListView(), mainListItem->chat(), date);
+
+	QTreeWidgetItem* lastItem = main->getDetailsListView()->itemAt(main->getDetailsListView()->topLevelItemCount() - 1, 0);
+	main->getDetailsListView()->setCurrentItem(lastItem);
+	detailsListItemClicked(lastItem, 0);
+	main->getDetailsListView()->resizeColumnToContents(0); 
+	main->getDetailsListView()->resizeColumnToContents(1);
+
 /*
 		//TODO: optymalizacja ¿e hej, muli
 	main->getDetailsListView()->clear();
@@ -475,7 +526,7 @@ void HistoryDlg::mainItemChanged(QTreeWidgetItem* item, int column)
 				///MainListView->setItemSelected((*MainListView->findItems(result.itemLabel, Qt::MatchExactly).begin()), true);
 				foreach(HistorySearchDetailsItem dItem, result.detailsItems)
 				{
-					new DetailsListViewItem(main->getDetailsListView(), dItem.altNick, dItem.title, dItem.date, QString::number(dItem.length), result.users);
+					new DetailsListItem(main->getDetailsListView(), dItem.altNick, dItem.title, dItem.date, QString::number(dItem.length), result.users);
 				}	
 				break;
 			}
@@ -483,7 +534,7 @@ void HistoryDlg::mainItemChanged(QTreeWidgetItem* item, int column)
 	}
 	else
 	{
-		MainListViewText* uids_item = dynamic_cast<MainListViewText*>(item);
+		MainListItem* uids_item = dynamic_cast<MainListItem*>(item);
 	if (uids_item == NULL || item == NULL)
 		return;
 	const ContactList& uids = uids_item->uidsList();
@@ -579,7 +630,7 @@ void HistoryDlg::mainItemChanged(QTreeWidgetItem* item, int column)
 		}
 		
 		
-		new DetailsListViewItem(main->getDetailsListView(), (*uids.begin()).altNick(), title, date, length);
+		new DetailsListItem(main->getDetailsListView(), (*uids.begin()).altNick(), title, date, length);
 	}
 
 	}
@@ -587,21 +638,28 @@ void HistoryDlg::mainItemChanged(QTreeWidgetItem* item, int column)
 	//itemAt -> ?co¶ innego
 	QTreeWidgetItem* lastItem = main->getDetailsListView()->itemAt(main->getDetailsListView()->topLevelItemCount() - 1, 0);
 	main->getDetailsListView()->setCurrentItem(lastItem);
-	detailsItemChanged(lastItem, 0);
+	detailsListItemClicked(lastItem, 0);
 	main->getDetailsListView()->resizeColumnToContents(0); 
 	main->getDetailsListView()->resizeColumnToContents(1); 
 */
 	kdebugf2();
 }
 
-void HistoryDlg::detailsItemChanged(QTreeWidgetItem* item, int column)
+void HistoryDlg::detailsListItemClicked(QTreeWidgetItem* item, int column)
 {
 	kdebugf();
+	DetailsListItem* detailsListItem = dynamic_cast<DetailsListItem*>(item);
+	if (detailsListItem == NULL || item == NULL)
+		return;
+	QList<ChatMessage*> chat_messages = History::instance()->getMessages(detailsListItem->chat(), detailsListItem->date());
+
+	main->getContentBrowser()->clearMessages();
+	main->getContentBrowser()->appendMessages(chat_messages);
 /*
 	//TODO: optymalizacja ¿e hej, przeca to muli, chamszczyzna
 	if (inSearchMode)
 	{
-		DetailsListViewItem* date_item = ((DetailsListViewItem*)item);
+		DetailsListItem* date_item = ((DetailsListItem*)item);
 		QList<ChatMessage*> chat_messages;
 		if(previousSearchResults.last().currentType == EntryTypeStatus)
 			chat_messages = sql_history->getStatusEntries(date_item->uidsList(), date_item->date());
@@ -623,13 +681,13 @@ void HistoryDlg::detailsItemChanged(QTreeWidgetItem* item, int column)
 
 	}
 
-	MainListViewText* uids_item =
-		dynamic_cast<MainListViewText*>(MainListView->selectedItems().first());
+	MainListItem* uids_item =
+		dynamic_cast<MainListItem*>(MainListView->selectedItems().first());
 	if (uids_item == NULL || item == NULL)
 		return;
 	if (uids_item->parent() == chatsItem || uids_item->parent() == conferItem|| uids_item->parent() == anonChatsItem)
 	{
-		DetailsListViewItem* date_item = ((DetailsListViewItem*)item);
+		DetailsListItem* date_item = ((DetailsListItem*)item);
 		QList<ChatMessage*> chat_messages = sql_history->historyMessages(uids_item->uidsList(), date_item->date());
 		if (inSearchMode)
 		{
@@ -655,7 +713,7 @@ void HistoryDlg::detailsItemChanged(QTreeWidgetItem* item, int column)
 	}
 	else if (uids_item->parent() == smsItem)
 	{
-		DetailsListViewItem* date_item = ((DetailsListViewItem*)item);
+		DetailsListItem* date_item = ((DetailsListItem*)item);
 		QList<ChatMessage*> sms_messages = sql_history->getSmsEntries(uids_item->uidsList(), date_item->date());
 		if (inSearchMode)
 		{
@@ -681,7 +739,7 @@ void HistoryDlg::detailsItemChanged(QTreeWidgetItem* item, int column)
 	}
 	else if (uids_item->parent() == statusItem)
 	{
-		DetailsListViewItem* date_item = ((DetailsListViewItem*)item);
+		DetailsListItem* date_item = ((DetailsListItem*)item);
 		QList<ChatMessage*> status_messages = sql_history->getStatusEntries(uids_item->uidsList(), date_item->date());
 		if (inSearchMode)
 		{
@@ -726,16 +784,16 @@ void HistoryDlg::searchActionActivated(QAction* sender, bool toggled)
 void HistoryDlg::searchNextActActivated(QAction* sender, bool toggled)
 {
 	kdebugf();
-	if(!main->getContentBrowser()->findText(searchParameters.pattern))
-		MessageBox::msg(tr("There ar no more matches"), false, "Warning");
+// 	if(!main->getContentBrowser()->findText(searchParameters.pattern))
+// 		MessageBox::msg(tr("There ar no more matches"), false, "Warning");
 	kdebugf2();
 }
 
 void HistoryDlg::searchPrevActActivated(QAction* sender, bool toggled)
 {
 	kdebugf();
-	if(!main->getContentBrowser()->findText(searchParameters.pattern, QWebPage::FindBackward))
-		MessageBox::msg(tr("There ar no more previous matches"), false, "Warning");
+// 	if(!main->getContentBrowser()->findText(searchParameters.pattern, QWebPage::FindBackward))
+// 		MessageBox::msg(tr("There ar no more previous matches"), false, "Warning");
 	kdebugf2();
 }
 
@@ -747,7 +805,7 @@ void HistoryDlg::setSearchParameters(HistorySearchParameters& params)
 void HistoryDlg::searchHistory()
 {
 	kdebugf();
-	MainListViewText* uids_item = dynamic_cast<MainListViewText*>(MainListView->currentItem());
+/*	MainListItem* uids_item = dynamic_cast<MainListItem*>(MainListView->currentItem());
 	if (uids_item == NULL)
 		return;
 	if(MainListView->currentItem()->parent() == statusItem)
@@ -768,7 +826,7 @@ void HistoryDlg::searchHistory()
 	}
 	else
 	foreach(HistorySearchDetailsItem dItem, currentResult.detailsItems)
-		new DetailsListViewItem(main->getDetailsListView(), dItem.altNick, dItem.title, dItem.date, QString::number(dItem.length), uids_item->uidsList());	
+		new DetailsListItem(main->getDetailsListView(), dItem.altNick, dItem.title, dItem.date, QString::number(dItem.length), uids_item->uidsList());	
 	previousSearchResults.append(currentResult);
 	isSearchInProgress = false;
 	inSearchMode = true;
@@ -777,15 +835,19 @@ void HistoryDlg::searchHistory()
 	setEnabled(true);
 
 ///TODO: detailsChanged odpalaæ na pierwszym itemie z detailsTreeWidgeta
-	//detailsItemChanged(main->getDetailsListView()->items().last(), 0);
-	main->getContentBrowser()->findText(searchParameters.pattern);
+	//detailsListItemClicked(main->getDetailsListView()->items().last(), 0);
+	main->getContentBrowser()->findText(searchParameters.pattern);*/
 	kdebugf2();
 }
 
 void HistoryDlg::show(ContactSet users)
 {
+	if(!History::instance()->currentStorage())
+	{
+		MessageBox::msg(tr("There is no history storage module loaded!"), false, "Warning");
+		return;
+	}
 	selectedUsers = users;
-	//TODO: zamieniæ na tylko zaznaczanie wybranego usera albo co tam...ale globalRefresh() i tak musi byæ gdzie indziej... ino gdzie?
 	globalRefresh();
 	QWidget::show();
 }
@@ -801,7 +863,7 @@ void HistoryDlg::keyPressEvent(QKeyEvent *e)
 
 void HistoryDlg::closeEvent(QCloseEvent *e)
 {
-	///saveWindowGeometry(this, "History", "HistoryWindowGeometry");
+	saveWindowGeometry(this, "History", "HistoryWindowGeometry");
 	if (isSearchInProgress)
 	{
 		e->ignore();

@@ -59,8 +59,13 @@ private slots:
 
 public:
 	static History * instance();
+	HistoryStorage * currentStorage() { return CurrentStorage; };
 	void registerStorage(HistoryStorage *storage);
 	void unregisterStorage(HistoryStorage *storage);
+	QList<Chat *> chatsList();
+	QList<QDate> datesForChat(Chat *chat);
+	QList<ChatMessage *> getMessages(Chat *chat, QDate date = QDate(), int limit = 0);
+	int getMessagesCount(Chat *chat, QDate date = QDate());
 
 };
 
