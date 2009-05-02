@@ -18,7 +18,6 @@ set (TRANSLATION_SOURCES
 
 set (CONFIGURATION_FILES
 	configuration/history.ui
-	configuration/history-advanced.ui
 )
 
 kadu_module_desc (history.desc)

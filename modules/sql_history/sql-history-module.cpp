@@ -9,6 +9,7 @@
 
 #include "config_file.h"
 #include "debug.h"
+#include "gui/widgets/configuration/configuration-widget.h"
 #include "misc/path-conversion.h"
 
 #include "sql-history-module.h"
@@ -45,17 +46,16 @@ SqlHistoryModule::~SqlHistoryModule()
 
 void SqlHistoryModule::mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow)
 {
-/*
-	portSpinBox = dynamic_cast<QSpinBox *>(widgetById("sql_history/databasehostport"));
+	portSpinBox = dynamic_cast<QSpinBox *>(mainConfigurationWindow->widget()->widgetById("sql_history/databasehostport"));
 	connect(portSpinBox, SIGNAL(valueChanged(int)), this, SLOT(portSpinBoxValueChanged(int)));
 
-	driverComboBox = dynamic_cast<QComboBox *>(mainConfigurationWindow->widgetById("sql_history/dbdriver"));
+	driverComboBox = dynamic_cast<QComboBox *>(mainConfigurationWindow->widget()->widgetById("sql_history/dbdriver"));
 	connect(driverComboBox, SIGNAL(currentIndexChanged(int)), this, SLOT(driverComboBoxValueChanged(int)));
-	hostLineEdit = dynamic_cast<QLineEdit *>(mainConfigurationWindow->widgetById("sql_history/databasehost"));
-	nameLineEdit = dynamic_cast<QLineEdit *>(mainConfigurationWindow->widgetById("sql_history/databasename"));
-	userLineEdit = dynamic_cast<QLineEdit *>(mainConfigurationWindow->widgetById("sql_history/databaseuser"));
-	passLineEdit = dynamic_cast<QLineEdit *>(mainConfigurationWindow->widgetById("sql_history/databasepass"));
-	prefixLineEdit = dynamic_cast<QLineEdit *>(mainConfigurationWindow->widgetById("sql_history/databaseprefix"));
+	hostLineEdit = dynamic_cast<QLineEdit *>(mainConfigurationWindow->widget()->widgetById("sql_history/databasehost"));
+	nameLineEdit = dynamic_cast<QLineEdit *>(mainConfigurationWindow->widget()->widgetById("sql_history/databasename"));
+	userLineEdit = dynamic_cast<QLineEdit *>(mainConfigurationWindow->widget()->widgetById("sql_history/databaseuser"));
+	passLineEdit = dynamic_cast<QLineEdit *>(mainConfigurationWindow->widget()->widgetById("sql_history/databasepass"));
+	prefixLineEdit = dynamic_cast<QLineEdit *>(mainConfigurationWindow->widget()->widgetById("sql_history/databaseprefix"));
 	if(config_file.readEntry("History", "DatabaseDriver") == "QSQLITE")
 	{
 		portSpinBox->setEnabled(false);
@@ -65,7 +65,6 @@ void SqlHistoryModule::mainConfigurationWindowCreated(MainConfigurationWindow *m
 		passLineEdit->setEnabled(false);
 		prefixLineEdit->setEnabled(false);
 	}
-*/
 }
 
 void SqlHistoryModule::configurationWindowApplied()
@@ -75,7 +74,7 @@ void SqlHistoryModule::configurationWindowApplied()
 
 void SqlHistoryModule::driverComboBoxValueChanged(int index)
 {
-/*
+
 	if(driverComboBox->itemText(index) == "SQLite")
 	{
 		portSpinBox->setEnabled(false);
@@ -105,21 +104,19 @@ void SqlHistoryModule::driverComboBoxValueChanged(int index)
 		passLineEdit->setEnabled(true);
 		prefixLineEdit->setEnabled(true);
 	}
-*/
+
 }
 
 void SqlHistoryModule::portSpinBoxValueChanged(int value)
 {
-/*
 	if (portSpinBox->value() < value)
 		portSpinBox->setValue(value);
-*/
 }
 
 void SqlHistoryModule::configurationUpdated()
 {
 	kdebugf();
-	//initializeDatabase();
+	//Storage->initializeDatabase();
 	kdebugf2();
 }
 
@@ -129,9 +126,6 @@ void SqlHistoryModule::createDefaultConfiguration()
 	config_file.addVariable("History", "DatabaseDriver", "QSQLITE");
 	config_file.addVariable("History", "DatabaseFilePath", ggPath("/history/history.db"));
 	config_file.addVariable("History", "DatabaseTableNamePrefix", "kadu_");
-
-//TODO: by doda� reszt� warto�ci, je�li jezzcze czego� brak
-
 }
 
 SqlHistoryModule *sqlHistoryModule = 0;

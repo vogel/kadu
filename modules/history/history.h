@@ -3,15 +3,16 @@
 
 #include <QtCore/QObject>
 #include <QtGui/QLabel>
+#include <QtGui/QListWidget>
 #include <QtGui/QKeyEvent>
-#include <QtGui/qcheckbox.h>
-#include <QtCore/qmap.h>
-#include <QtCore/qpair.h>
-#include <QtCore/qstring.h>
-#include <QtCore/qstringlist.h>
-#include <QtCore/qvariant.h>
-#include <QtCore/qdatetime.h>
-#include <QtGui/qdialog.h>
+#include <QtGui/QCheckBox>
+#include <QtCore/QMap>
+#include <QtCore/QPair>
+#include <QtCore/QString>
+#include <QtCore/QStringList>
+#include <QtCore/QVariant>
+#include <QtCore/QDateTime>
+#include <QtGui/QDialog>
 
 #include "action.h"
 #include "protocols/protocol.h"
@@ -43,13 +44,21 @@ class History : public ConfigurationUiHandler, ConfigurationAwareObject
 	HistoryDlg *HistoryDialog;
 	ActionDescription *ShowHistoryActionDescription;
 
+	QLabel *dontCiteOldMessagesLabel;
+	QListWidget *allStatusUsers;
+	QListWidget *selectedStatusUsers;
+	QListWidget *allChatsUsers;
+	QListWidget *selectedChatsUsers; 
+
 	History();
 	~History();
 
 	void createActionDescriptions();
 	void deleteActionDescriptions();
 	virtual void configurationUpdated();
+	void configurationWindowApplied();
 	void mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow);
+	void updateQuoteTimeLabel(int value);
 
 private slots:
 

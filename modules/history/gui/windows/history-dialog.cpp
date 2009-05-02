@@ -52,13 +52,9 @@ void MainListItem::prepareText()
 	unsigned int count = contacts.count();
 	foreach(Contact uid, contacts)
 	{
-// 		QString proto = (*uid.protocolList().begin());
-// 		if (userlist->contains(proto, uid.ID(proto)))
-// 			name.append(userlist->byID(proto, uid.ID(proto)).altNick());
-// 		else
-			name.append(uid.display());
-// 		if (i++ < count - 1)
-// 			name.append(", ");
+		name.append(uid.display());
+		if (i++ < count - 1)
+			name.append(", ");
 	}
 	setText(0, name);
 }
@@ -81,20 +77,22 @@ QString DetailsListItem::prepareAltnick()
 	unsigned int count = contacts.count();
 	foreach(Contact uid, contacts)
 	{
-// 		QString proto = (*uid.protocolList().begin());
-// 		if (userlist->contains(proto, uid.ID(proto)))
-// 			name.append(userlist->byID(proto, uid.ID(proto)).altNick());
-// 		else
-			name.append(uid.display());
-// 		if (i++ < count - 1)
-// 			name.append(", ");
+		name.append(uid.display());
+		if (i++ < count - 1)
+			name.append(", ");
 	}
 	return name;
 }
  
 QString DetailsListItem::prepareTitle()
 {
-	return History::instance()->getMessages(CurrentChat, Date, 1).first()->unformattedMessage;
+	QString title = History::instance()->getMessages(CurrentChat, Date, 1).first()->unformattedMessage;
+	HtmlDocument::escapeText(title);
+	int l = title.length();
+	title.truncate(20);
+	if (l > 20)
+		title += " ...";
+	return title;
 }
 
 QString DetailsListItem::prepareLength()
@@ -278,34 +276,7 @@ void HistoryDlg::globalRefresh()
 	kdebugf();
 	MainListView->clear();
 	chatsItem = new QTreeWidgetItem(MainListView, QStringList(tr("Chats")));
-	chatsItem->setExpanded(false);
-	chatsItem->setIcon(0, QIcon(icons_manager->loadIcon("OpenChat")));
-	QList<Chat *> chatsList = History::instance()->chatsList();
-	
-	MainListItem* mainItem;
-	foreach (Chat *chat, chatsList)
-		mainItem = new MainListItem(chatsItem, chat);
-
-	/*int anonymousCount = 0;
-	bool chatsExpanded, statExpanded, smsExpanded, searchExpanded, conferExpanded, anonChatsExpanded = false;
-	if(chatsItem)
-	{
-		if(chatsItem->isExpanded())
-			chatsExpanded = true;
-		if(anonChatsItem->isExpanded())
-			anonChatsExpanded = true;
-		if(statusItem->isExpanded())
-			statExpanded = true;
-		if(smsItem->isExpanded())
-			smsExpanded = true;
-		if(conferItem->isExpanded())
-			conferExpanded = true;
-		if(searchItem->isExpanded())
-			searchExpanded = true;
-	}
-	MainListView->clear();
-	chatsItem = new QTreeWidgetItem(MainListView, QStringList(tr("Chats")));
-	chatsItem->setExpanded(false);
+	chatsItem->setExpanded(true);
 	///QTreeWidgetItem *ft = new QTreeWidgetItem(MainListView, QStringList(tr("File transfers")));
 	conferItem = new QTreeWidgetItem(MainListView, QStringList(tr("Conferences")));
 	smsItem = new QTreeWidgetItem(MainListView, QStringList(tr("SMS")));
@@ -320,72 +291,18 @@ void HistoryDlg::globalRefresh()
 	statusItem->setIcon(0, QIcon(icons_manager->loadIcon("Busy")));
 	searchItem->setIcon(0, QIcon(icons_manager->loadIcon("LookupUserInfo")));
 
-	anonChatsItem = new QTreeWidgetItem(chatsItem, QStringList(tr("Anonymous")));
-	anonChatsItem->setIcon(0, QIcon(icons_manager->loadIcon("PersonalInfo")));
-	//mo¿e byæ status od anonima??
-	//anonStatusItem = new QTreeWidgetItem(statusItem, QStringList(tr("Anonymous")));
-	//anonStatusItem->setIcon(0, QIcon(icons_manager->loadIcon("PersonalInfo")));
-
-	QList<ContactList> chatUidGroups = sql_history->getChatUidGroups();
-	foreach(ContactList uid_group, chatUidGroups)
+	QList<Chat *> chatsList = History::instance()->chatsList();
+	
+	MainListItem* mainItem;
+	foreach (Chat *chat, chatsList)
 	{
-		if (uid_group.count() == 1) //zwyk³y chat
-		{
-			MainListItem* mainItem;
-			if(!(*uid_group.begin()).isAnonymous())
-				mainItem = new MainListItem(chatsItem, uid_group);
-			else
-			{
-				mainItem = new MainListItem(anonChatsItem, uid_group);
-				++anonymousCount;
-			}
-			//je¶li w userboksie zaznaczono kontakty, rozwin±æ ich pozycjê i wy¶wietliæ historiê
-			if(selectedUsers.count() && uid_group.contains((*(*selectedUsers.begin()).protocolList().begin()), (*selectedUsers.begin()).ID((*(*selectedUsers.begin()).protocolList().begin()))))
-			{
-				MainListView->expandItem(chatsItem);
-				MainListView->setCurrentItem(mainItem);
-				mainListItemClicked(mainItem, 0);
-			}
-			mainItem->setIcon(0, icons_manager->loadIcon("Online") );
-		}
-		else if (uid_group.count() > 1) //konferencja
-		{
-			MainListItem *conferenceItem = new MainListItem(conferItem, uid_group);
-			conferenceItem->setIcon(0, QIcon(icons_manager->loadIcon("Profiles")));
-		}
+		if (chat->contacts().count() > 1)
+			mainItem = new MainListItem(conferItem, chat);
+		else
+			mainItem = new MainListItem(chatsItem, chat);
+		mainItem->setIcon(0, icons_manager->loadIcon("Online"));
 	}
 
-	QList<ContactList> statusUidGroups = sql_history->getStatusUidGroups();
-	foreach(ContactList uid_group, statusUidGroups)
-	{
-		MainListItem* statItem = new MainListItem(statusItem, uid_group);
-		statItem->setIcon(0, icons_manager->loadIcon("Online"));
-	}
-
-	QList<ContactList> smsUidGroups = sql_history->getSmsUidGroups();
-	foreach(ContactList uid_group, smsUidGroups)
-	{
-		MainListItem* sItem = new MainListItem(smsItem, uid_group);
-		sItem->setIcon(0, icons_manager->loadIcon("Mobile"));
-	}
-	if(!anonymousCount)
-		anonChatsItem->setHidden(true);
-
-	MainListView->sortItems(0, Qt::AscendingOrder);
-
-	if(chatsExpanded)
-		chatsItem->setExpanded(true);
-	if(anonChatsExpanded)
-		anonChatsItem->setExpanded(true);
-	if(conferExpanded)
-		conferItem->setExpanded(true);
-	if(searchExpanded)
-		searchItem->setExpanded(true);
-	if(smsExpanded)
-		smsItem->setExpanded(true);
-	if(statExpanded)
-		statusItem->setExpanded(true);
-*/
 	kdebugf2();
 }
 
@@ -498,150 +415,19 @@ void HistoryDlg::mainListItemClicked(QTreeWidgetItem* item, int column)
 	kdebugf();
 	main->getDetailsListView()->clear();
 	MainListItem* mainListItem = dynamic_cast<MainListItem*>(item);
+
 	if (mainListItem == NULL || item == NULL)
 		return;
 	QList<QDate> chatDates = History::instance()->datesForChat(mainListItem->chat());
 	foreach (QDate date, chatDates)
 		new DetailsListItem(main->getDetailsListView(), mainListItem->chat(), date);
 
-	QTreeWidgetItem* lastItem = main->getDetailsListView()->itemAt(main->getDetailsListView()->topLevelItemCount() - 1, 0);
+	QTreeWidgetItem* lastItem = main->getDetailsListView()->itemAt(0, main->getDetailsListView()->topLevelItemCount());
 	main->getDetailsListView()->setCurrentItem(lastItem);
 	detailsListItemClicked(lastItem, 0);
 	main->getDetailsListView()->resizeColumnToContents(0); 
 	main->getDetailsListView()->resizeColumnToContents(1);
 
-/*
-		//TODO: optymalizacja ¿e hej, muli
-	main->getDetailsListView()->clear();
-	inSearchMode = false;
-	if (item->parent() == searchItem)
-	{
-		inSearchMode = true;
-		foreach(HistorySearchResult result, previousSearchResults)
-		{
-// 				kdebug("itemLabel: %s, wzorzec: %s a text: %s\n", result.itemLabel.local8Bit().data(), result.pattern.local8Bit().data(), item->text(0).local8Bit().data() );
-			if(result.pattern == item->text(0))
-			{	
-				//TODO: zaznaczanie tego tu u³atwia³oby chyba sprawê
-				///MainListView->setItemSelected((*MainListView->findItems(result.itemLabel, Qt::MatchExactly).begin()), true);
-				foreach(HistorySearchDetailsItem dItem, result.detailsItems)
-				{
-					new DetailsListItem(main->getDetailsListView(), dItem.altNick, dItem.title, dItem.date, QString::number(dItem.length), result.users);
-				}	
-				break;
-			}
-		}
-	}
-	else
-	{
-		MainListItem* uids_item = dynamic_cast<MainListItem*>(item);
-	if (uids_item == NULL || item == NULL)
-		return;
-	const ContactList& uids = uids_item->uidsList();
-	QString uid_str = sql_history->findUidGroup(uids);
-	QString query_str, title, length;
-	QSqlQuery query(QSqlDatabase::database("kadu-history"));
-	QList<QDate> dates;
-	if (uids_item->parent() == smsItem)
-		dates = sql_history->historySmsDates(uids);
-	else if (uids_item->parent() == statusItem)
-		dates = sql_history->historyStatusDates(uids);
-	else
-		dates = sql_history->historyDates(uids);
-
-	foreach(QDate date, dates)
-	{
-		if (uids_item->parent() == chatsItem || uids_item->parent() == anonChatsItem)
-		{
-			query_str = "SELECT COUNT(content) FROM kadu_messages WHERE uid_group_id = '%1' AND date(receive_time) = '%2';";
-			query_str = query_str.arg(uid_str).arg(date.toString(Qt::ISODate));
-			if (!query.exec(query_str))
-			{
-				MessageBox::msg(query.lastError().text(), false, "Warning");
-				kdebugf2();
-				break;
-			}
-			while (query.next())
-				length = query.value(0).asString();
-			query_str = "SELECT content FROM kadu_messages WHERE uid_group_id = '%1' AND date(receive_time) = '%2' LIMIT 1;";
-			query_str = query_str.arg(uid_str).arg(date.toString(Qt::ISODate));
-		}
-		else if (uids_item->parent() == conferItem)
-		{		
-			query_str = "SELECT COUNT(content) FROM kadu_messages WHERE uid_group_id = '%1' AND date(receive_time) = '%2';";
-			query_str = query_str.arg(uid_str).arg(date.toString(Qt::ISODate));
-			if (!query.exec(query_str))
-			{
-				MessageBox::msg(query.lastError().text(), false, "Warning");
-				kdebugf2();
-				break;
-			}
-			while (query.next())
-				length = query.value(0).asString();
-			query_str = "SELECT content FROM kadu_messages WHERE uid_group_id = '%1' AND date(receive_time) = '%2' LIMIT 1;";
-			query_str = query_str.arg(uid_str).arg(date.toString(Qt::ISODate));
-		}
-		else if (uids_item->parent() == smsItem)
-		{
-			query_str = "SELECT COUNT(content) FROM kadu_sms WHERE uid_group_id = '%1' AND date(send_time) = '%2';";
-			query_str = query_str.arg(uid_str).arg(date.toString(Qt::ISODate));
-			if (!query.exec(query_str))
-			{
-				MessageBox::msg(query.lastError().text(), false, "Warning");
-				kdebugf2();
-				break;
-			}
-			while (query.next())
-				length = query.value(0).asString();
-			query_str = "SELECT content FROM kadu_sms WHERE uid_group_id = '%1' AND date(send_time) = '%2' LIMIT 1;";
-			query_str = query_str.arg(uid_str).arg(date.toString(Qt::ISODate));
-		
-		}
-		else if (uids_item->parent() == statusItem)
-		{
-			query_str = "SELECT COUNT(status) FROM kadu_status WHERE uid_group_id = '%1' AND date(time) = '%2';";
-			query_str = query_str.arg(uid_str).arg(date.toString(Qt::ISODate));
-			if (!query.exec(query_str))
-			{
-				MessageBox::msg(query.lastError().text(), false, "Warning");
-				kdebugf2();
-				break;
-			}
-			while (query.next())
-				length = query.value(0).asString();
-			query_str = "SELECT description, status FROM kadu_status WHERE uid_group_id = '%1' AND date(time) = '%2' LIMIT 1;";
-			query_str = query_str.arg(uid_str).arg(date.toString(Qt::ISODate));
-		}
-		
-		if (!query.exec(query_str))
-		{
-			MessageBox::msg(query.lastError().text(), false, "Warning");
-			kdebugf2();
-			break;
-		}
-		while (query.next())
-		{
-			title = QString::fromUtf8(query.value(0).asString());
-			HtmlDocument::escapeText(title);
-			int l = title.length();
-				title.truncate(maxLen);
-			if (l > maxLen)
-				title += " ...";
-		}
-		
-		
-		new DetailsListItem(main->getDetailsListView(), (*uids.begin()).altNick(), title, date, length);
-	}
-
-	}
-
-	//itemAt -> ?co¶ innego
-	QTreeWidgetItem* lastItem = main->getDetailsListView()->itemAt(main->getDetailsListView()->topLevelItemCount() - 1, 0);
-	main->getDetailsListView()->setCurrentItem(lastItem);
-	detailsListItemClicked(lastItem, 0);
-	main->getDetailsListView()->resizeColumnToContents(0); 
-	main->getDetailsListView()->resizeColumnToContents(1); 
-*/
 	kdebugf2();
 }
 
@@ -655,115 +441,6 @@ void HistoryDlg::detailsListItemClicked(QTreeWidgetItem* item, int column)
 
 	main->getContentBrowser()->clearMessages();
 	main->getContentBrowser()->appendMessages(chat_messages);
-/*
-	//TODO: optymalizacja ¿e hej, przeca to muli, chamszczyzna
-	if (inSearchMode)
-	{
-		DetailsListItem* date_item = ((DetailsListItem*)item);
-		QList<ChatMessage*> chat_messages;
-		if(previousSearchResults.last().currentType == EntryTypeStatus)
-			chat_messages = sql_history->getStatusEntries(date_item->uidsList(), date_item->date());
-		else if(previousSearchResults.last().currentType == EntryTypeSms)
-			chat_messages = sql_history->getSmsEntries(date_item->uidsList(), date_item->date());
-		else
-			chat_messages = sql_history->historyMessages(date_item->uidsList(), date_item->date());
-
-
-
-		QString pattern = previousSearchResults.last().pattern;
-			foreach(ChatMessage* message, chat_messages)
-			{	
-				if(message->unformattedMessage.contains(pattern))
-					message->unformattedMessage.replace(pattern, QString("<a style=\"color: #fffc46; font-weight: bold; background: #ff3e2c\">%2</a>").arg(pattern));
-			}
-			main->getContentBrowser()->clearMessages();
-			main->getContentBrowser()->appendMessages(chat_messages);
-
-	}
-
-	MainListItem* uids_item =
-		dynamic_cast<MainListItem*>(MainListView->selectedItems().first());
-	if (uids_item == NULL || item == NULL)
-		return;
-	if (uids_item->parent() == chatsItem || uids_item->parent() == conferItem|| uids_item->parent() == anonChatsItem)
-	{
-		DetailsListItem* date_item = ((DetailsListItem*)item);
-		QList<ChatMessage*> chat_messages = sql_history->historyMessages(uids_item->uidsList(), date_item->date());
-		if (inSearchMode)
-		{
-// // // 			anchors.clear();
-// // // 			int i = 0;
-			QString pattern = previousSearchResults.last().pattern;
-			foreach(ChatMessage* message, chat_messages)
-			{	
-				if(message->unformattedMessage.contains(pattern))
-					message->unformattedMessage.replace(pattern, QString("<a style=\"color: #fffc46; font-weight: bold; background: #ff3e2c\">%2</a>").arg(pattern));
-			}
-			main->getContentBrowser()->clearMessages();
-			//idxIt = anchors.begin();
-			main->getContentBrowser()->appendMessages(chat_messages);
-// 		// 	ContentBrowser->setCursorPosition((*idxIt),0);
-		}
-		else
-		{
-			main->getContentBrowser()->clearMessages();
-			main->getContentBrowser()->appendMessages(chat_messages);
-		// 	ContentBrowser->setCursorPosition(0,0);
-		}
-	}
-	else if (uids_item->parent() == smsItem)
-	{
-		DetailsListItem* date_item = ((DetailsListItem*)item);
-		QList<ChatMessage*> sms_messages = sql_history->getSmsEntries(uids_item->uidsList(), date_item->date());
-		if (inSearchMode)
-		{
-// // // 			anchors.clear();
-// // // 			int i = 0;
-			QString pattern = previousSearchResults.last().pattern;
-			foreach(ChatMessage* message, sms_messages)
-			{	
-				if(message->unformattedMessage.contains(pattern))
-					message->unformattedMessage.replace(pattern, QString("<a style=\"color: #fffc46; font-weight: bold; background: #ff3e2c\">%2</a>").arg(pattern));
-			}
-			main->getContentBrowser()->clearMessages();
-			if(!sms_messages.isEmpty())
-				main->getContentBrowser()->appendMessages(sms_messages);
-		}
-		else
-		{
-			main->getContentBrowser()->clearMessages();
-			if(!sms_messages.isEmpty())
-				main->getContentBrowser()->appendMessages(sms_messages);
-		}
-		
-	}
-	else if (uids_item->parent() == statusItem)
-	{
-		DetailsListItem* date_item = ((DetailsListItem*)item);
-		QList<ChatMessage*> status_messages = sql_history->getStatusEntries(uids_item->uidsList(), date_item->date());
-		if (inSearchMode)
-		{
-// // // 			anchors.clear();
-// // // 			int i = 0;
-			QString pattern = previousSearchResults.last().pattern;
-			foreach(ChatMessage* message, status_messages)
-			{	
-				if(message->unformattedMessage.contains(pattern))
-					message->unformattedMessage.replace(pattern, QString("<a style=\"color: #fffc46; font-weight: bold; background: #ff3e2c\">%2</a>").arg(pattern));
-			}
-			main->getContentBrowser()->clearMessages();
-			if(!status_messages.isEmpty())
-				main->getContentBrowser()->appendMessages(status_messages);
-		}
-		else
-		{
-			main->getContentBrowser()->clearMessages();
-			if(!status_messages.isEmpty())
-				main->getContentBrowser()->appendMessages(status_messages);
-		}
-		
-	}
-*/
 	kdebugf2();
 }
 

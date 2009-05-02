@@ -2,33 +2,28 @@
 	<section name="Chat">
 		<tab name="History">
 			<group-box name="General">
-				<check-box caption="Enable history saving" config-section="History" config-item="EnableSaving" id="sql_history/save" />
-				<check-box caption="Save chats in history" config-section="History" config-item="SaveChats" id="sql_history/savechats" />
-				<group-box name="Status changes history" id="sql_history/statusChanges">
-				<check-box caption="Save status changes" config-section="History" config-item="SaveStatusChanges" id="sql_history/savestatuschanges"/>
+				<check-box caption="Enable history saving" config-section="History" config-item="EnableSaving" id="history/save" />
+				<check-box caption="Save chats in history" config-section="History" config-item="SaveChats" id="history/savechats" />
+				<check-box caption="Save status changes" config-section="History" config-item="SaveStatusChanges" id="history/savestatuschanges"/>
 			</group-box>
-			<group-box name="Citation" id="sql_history/citation">
-				<spin-box caption="Message citation in chat window" config-section="History" config-item="ChatHistoryCitation" min-value="0" max-value="200" step="1" />
-				<slider caption="Don't cite messages older than" config-section="History" config-item="ChatHistoryQuotationTime" min-value="-744" max-value="-1" page-step="24" id="sql_history/dontCiteOldMessages" />
-				<label caption="." id="sql_history/dontCiteOldMessagesLbl" />
+			<group-box name="Citation" id="history/citation">
+				<spin-box caption="Message citation in chat window" config-section="History" config-item="ChatHistoryCitation" min-value="0" max-value="200" />
+				<slider caption="Don't cite messages older than" config-section="History" config-item="ChatHistoryQuotationTime" min-value="-744" max-value="-1" page-step="24" id="history/dontCiteOldMessages" />
 			</group-box>
-			<group-box name="Chats history" id="sql_history/chats">
-				<check-box caption="Save undelivered messages" config-section="History" config-item="SaveUndeliveredMessages" id="sql_history/saveundeliveredmsgs" />
-				<check-box caption="Save chats with anonymous users" config-section="History" config-item="SaveChatsWithAnonymous" id="sql_history/savechatswithanonymous" />
-				<check-box caption="Save for all users" config-section="History" config-item="SaveChatsForAll" id="sql_history/savechatsforall" />
+			<group-box name="Chats history" id="history/chats">
+				<check-box caption="Save chats with anonymous users" config-section="History" config-item="SaveChatsWithAnonymous" id="history/savechatswithanonymous" />
+				<check-box caption="Save for all users" config-section="History" config-item="SaveChatsForAll" id="history/savechatsforall" />
 			</group-box>
-				<check-box caption="Ignore changes from available / busy to busy / available" config-section="History" config-item="IgnoreSomeStatusChanges" id="sql_history/ignoresomestatuschanges" />
-				<check-box caption="Save status only with description" config-section="History" config-item="SaveOnlyStatusWithDescription" id="sql_history/saveonlystatuswithdescription" />
-				<check-box caption="Save for all users" config-section="History" config-item="SaveStatusChangesForAll" id="sql_history/savestatusforall" />
-			</group-box>
-			<group-box name="Advanced">
-				<action-button caption="Advanced..." id="sql_history/historyAdvanced" />
+			<group-box name="Status changes" id="history/statusChanges">
+				<check-box caption="Ignore changes from available / busy to busy / available" config-section="History" config-item="IgnoreSomeStatusChanges" id="history/ignoresomestatuschanges" />
+				<check-box caption="Save status only with description" config-section="History" config-item="SaveOnlyStatusWithDescription" id="history/saveonlystatuswithdescription" />
+				<check-box caption="Save for all users" config-section="History" config-item="SaveStatusChangesForAll" id="history/savestatusforall" />
 			</group-box>
 		</tab>
 	</section>
 	<section name="Shortcuts">
 		<tab name="General">
-			<group-box name="Chat" id="sql_history/shortCuts">
+			<group-box name="Chat" id="history/shortCuts">
 				<hot-key-edit caption="View history" config-section="ShortCuts" config-item="kadu_viewsqlhistory" />
 			</group-box>
 		</tab>

@@ -193,9 +193,13 @@ void HistorySqlStorage::appendMessageEntry(Chat *chat, Contact contact, const QS
 	record.setValue("send_time", QDateTime::currentDateTime());
 	record.setValue("receive_time", QDateTime::currentDateTime());
 	record.setValue("content", message);
+	if (contact == Core::instance()->myself())
+		record.setValue("attributes", "outgoing=1");
+	else
+		record.setValue("attributes", "outgoing=0");
 	MessagesModel->insertRecord(-1, record);
 	if (!MessagesModel->submitAll())
-		MessageBox::msg(Database.lastError().text(), false, "Warning");
+		kdebug(Database.lastError().text().toLocal8Bit().data(), false, "Warning");
 	kdebugf2();
 }
 
@@ -374,7 +378,7 @@ QList<ChatMessage *> HistorySqlStorage::getMessages(Chat *chat, QDate date, int 
 		date_query_str = " AND date(receive_time) = date(:date) ";
 	if (limit != 0)
 		limit_str = " LIMIT :limit ";
-	query_str = "SELECT content, send_time, receive_time FROM %1messages WHERE chat=:chat" + date_query_str + limit_str + ";";
+	query_str = "SELECT content, send_time, receive_time, attributes FROM %1messages WHERE chat=:chat" + date_query_str + limit_str + ";";
 
 	query.prepare(query_str.arg(DbPrefix));
 	query.bindValue(":chat", chat->uuid().toString());
@@ -386,22 +390,16 @@ QList<ChatMessage *> HistorySqlStorage::getMessages(Chat *chat, QDate date, int 
 
 	while (query.next())
 	{
-
-		bool outgoing = true;//query.value(1).toBool();   //TODO
+		QString msg = query.value(0).toString();
 		QDateTime send_time = query.value(1).toDateTime();
 		QDateTime receive_time = query.value(2).toDateTime();
-		QString msg = query.value(0).toString();
+		bool outgoing = QVariant(query.value(3).toString().split('=').last()).toBool();
 
 		ChatMessage* chat_message;
-
-	//ChatMessage(Account *account, const Contact &sender, const ContactSet &receivers, const QString &unformattedMessage, ChatMessageType type,
-	//	QDateTime date, QDateTime sdate = QDateTime());
-
 		if (outgoing)
 			chat_message = new ChatMessage(chat->account(), Core::instance()->myself(), chat->contacts(), msg, TypeSent, receive_time, send_time);
 		else
 			chat_message = new ChatMessage(chat->account(), (*chat->contacts().begin()), ContactSet(Core::instance()->myself()), msg, TypeReceived, receive_time, send_time);
-
 		messages.append(chat_message);
 	}
 	kdebugf2();
