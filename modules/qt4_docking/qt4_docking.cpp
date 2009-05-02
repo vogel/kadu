@@ -7,17 +7,14 @@
  *                                                                         *
  ***************************************************************************/
 
+#include <QtCore/QEvent>
+#include <QtGui/QMouseEvent>
 #include <QtGui/QMovie>
 
 #include "../docking/docking.h"
 
-#include "chat/chat_manager-old.h"
-
-#include "gui/widgets/chat_widget.h"
-
 #include "config_file.h"
 #include "debug.h"
-#include "kadu.h"
 
 #include "qt4_docking.h"
 
@@ -46,7 +43,7 @@ Qt4TrayIcon::Qt4TrayIcon(QWidget *parent) : Movie(0)
 
 	setIcon(QIcon(docking_manager->defaultPixmap()));
 
-	connect(docking_manager, SIGNAL(trayPixmapChanged(const QIcon&, const QString &)), this, SLOT(setTrayPixmap(const QIcon&, const QString &)));
+	connect(docking_manager, SIGNAL(trayPixmapChanged(const QIcon&)), this, SLOT(setTrayPixmap(const QIcon&)));
 	connect(docking_manager, SIGNAL(trayTooltipChanged(const QString&)), this, SLOT(setTrayTooltip(const QString&)));
 	connect(docking_manager, SIGNAL(searchingForTrayPosition(QPoint&)), this, SLOT(findTrayPosition(QPoint&)));
 	connect(docking_manager, SIGNAL(trayMovieChanged(const QString &)), this, SLOT(setTrayMovie(const QString &)));
@@ -54,7 +51,7 @@ Qt4TrayIcon::Qt4TrayIcon(QWidget *parent) : Movie(0)
 	connect(this, SIGNAL(activated(QSystemTrayIcon::ActivationReason)), this, SLOT(trayActivated(QSystemTrayIcon::ActivationReason)));
 
 	show();
-	setContextMenu(dockMenu);
+	setContextMenu(docking_manager->dockMenu());
 	
 	docking_manager->setDocked(true);
 
@@ -73,7 +70,7 @@ Qt4TrayIcon::~Qt4TrayIcon()
 	}
 
 	disconnect(docking_manager, SIGNAL(trayMovieChanged(const QString &)), this, SLOT(setTrayMovie(const QString &)));
-	disconnect(docking_manager, SIGNAL(trayPixmapChanged(const QIcon&, const QString &)), this, SLOT(setTrayPixmap(const QIcon&, const QString &)));
+	disconnect(docking_manager, SIGNAL(trayPixmapChanged(const QIcon&)), this, SLOT(setTrayPixmap(const QIcon&)));
 	disconnect(docking_manager, SIGNAL(trayTooltipChanged(const QString&)), this, SLOT(setTrayTooltip(const QString&)));
 	disconnect(docking_manager, SIGNAL(searchingForTrayPosition(QPoint&)), this, SLOT(findTrayPosition(QPoint&)));
 
@@ -90,7 +87,7 @@ void Qt4TrayIcon::findTrayPosition(QPoint& pos)
 	pos = QPoint(rect.x(), rect.y());
 }
 
-void Qt4TrayIcon::setTrayPixmap(const QIcon& pixmap, const QString &/*iconName*/)
+void Qt4TrayIcon::setTrayPixmap(const QIcon& pixmap)
 {
 	if (Movie)
 	{

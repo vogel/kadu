@@ -18,7 +18,7 @@ class Qt4TrayIcon : public QSystemTrayIcon
 		QMovie *Movie;
 
 	private slots:
-		void setTrayPixmap(const QIcon &pixmap, const QString &iconName);
+		void setTrayPixmap(const QIcon &pixmap);
 		void setTrayMovie(const QString &movie);
 		void setTrayTooltip(const QString &tooltip);
 		void findTrayPosition(QPoint &pos);

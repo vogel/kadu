@@ -261,9 +261,6 @@ void KaduWindow::createStatusPopupMenu()
 {
 	kdebugf();
 
-	QPixmap pix;
-	QIcon icon;
-
 	StatusButtonMenu = new QMenu(this);
 	StatusMenu *statusMenu = new StatusMenu(this);
 	statusMenu->addToMenu(StatusButtonMenu);

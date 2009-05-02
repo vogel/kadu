@@ -540,16 +540,18 @@ KaduWindow * Core::kaduWindow()
 	return Window;
 }
 
-void Core::setIcon(const QPixmap &icon)
+void Core::setIcon(const QPixmap &pixmap)
 {
 	bool blocked = false;
 	emit settingMainIconBlocked(blocked);
 
 	if (!blocked)
 	{
+		QIcon icon(pixmap);
 		if (Window)
 			Window->setWindowIcon(icon);
 		QApplication::setWindowIcon(icon);
+		emit mainIconChanged(icon);
 	}
 }
 

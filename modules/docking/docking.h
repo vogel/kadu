@@ -5,17 +5,20 @@
 #include <QtGui/QIcon>
 
 #include "configuration_aware_object.h"
-#include "main_configuration_window.h"
 
 #include "docking_exports.h"
+
+class QMenu;
 
 /**
  * @defgroup docking Docking
  * @{
  */
-class DOCKINGAPI DockingManager : public ConfigurationUiHandler, ConfigurationAwareObject
+class DOCKINGAPI DockingManager : public QObject, ConfigurationAwareObject
 {
 	Q_OBJECT
+
+	QMenu *DockMenu;
 
 	enum IconType {BlinkingEnvelope = 0, StaticEnvelope = 1, AnimatedEnvelope = 2} newMessageIcon;
 	QTimer *icon_timer;
@@ -28,9 +31,8 @@ protected:
 	virtual void configurationUpdated();
 
 private slots:
-	void statusPixmapChanged(const QIcon &icon, const QString &iconName);
+	void statusPixmapChanged(const QIcon &icon);
 	void changeIcon();
-	void dockletChange(int id);
 	void pendingMessageAdded();
 	void pendingMessageDeleted();
 
@@ -38,10 +40,9 @@ public:
 	DockingManager();
 	virtual ~DockingManager();
 
-	virtual void mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow);
-
 	void trayMousePressEvent(QMouseEvent * e);
 	QIcon defaultPixmap();
+	QMenu * dockMenu() { return DockMenu; }
 
 public slots:
 	/**
@@ -52,7 +53,7 @@ public slots:
 	void setDocked(bool docked);
 
  signals:
-	void trayPixmapChanged(const QIcon& icon, const QString &name);
+	void trayPixmapChanged(const QIcon& icon);
 	void trayMovieChanged(const QString& movie);
 	void trayTooltipChanged(const QString& tooltip);
 	void searchingForTrayPosition(QPoint& pos);

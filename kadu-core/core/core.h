@@ -98,6 +98,9 @@ signals:
 	// TODO: remove
 	void settingMainIconBlocked(bool &blocked);
 
+	void mainIconChanged(const QIcon &);
+
+
 };
 
 #endif // CORE_H

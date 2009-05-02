@@ -136,7 +136,7 @@ void PendingMsgs::storeConfiguration(XmlConfigFile *configurationStorage)
 {
 	QDomElement pendingMsgsNode = configurationStorage->getNode("PendingMessages");
 
-	foreach(const Element &i, msgs)
+	foreach (const Element &i, msgs)
 	{
 		QDomElement pendingMessageNode = configurationStorage->getNode(pendingMsgsNode,
 			"PendingMessage", XmlConfigFile::ModeCreate);

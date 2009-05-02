@@ -7,30 +7,26 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <QtCore/QObject>
 #include <QtCore/QTimer>
 #include <QtGui/QApplication>
-#include <QtGui/QCursor>
 #include <QtGui/QMenu>
 #include <QtGui/QMouseEvent>
 
-#include "accounts/account.h"
-#include "accounts/account_manager.h"
-#include "core/core.h"
-#include "gui/windows/kadu-window.h"
-#include "misc/misc.h"
-#include "protocols/status.h"
-#include "config_file.h"
-#include "docking.h"
-#include "debug.h"
-#include "icons_manager.h"
-#include "kadu.h"
-#include "pending_msgs.h"
-
-
 #include "activate.h"
+#include "accounts/account-manager.h"
+#include "config_file.h"
+#include "core/core.h"
+#include "debug.h"
+#include "gui/windows/kadu-window.h"
+#include "gui/widgets/status-menu.h"
+#include "icons_manager.h"
+#include "main_configuration_window.h"
+#include "misc/misc.h"
+#include "pending_msgs.h"
+#include "protocols/protocol.h"
+#include "status_changer.h"
 
-//#include "../modules/gadu_protocol/gadu.h"
+#include "docking.h"
 
 /**
  * @ingroup docking
@@ -39,7 +35,7 @@
 extern "C" KADU_EXPORT int docking_init(bool firstLoad)
 {
 	docking_manager = new DockingManager();
-	MainConfigurationWindow::registerUiFile(dataPath("kadu/modules/configuration/docking.ui"), docking_manager);
+	MainConfigurationWindow::registerUiFile(dataPath("kadu/modules/configuration/docking.ui"));
 
 	return 0;
 }
@@ -48,13 +44,13 @@ extern "C" KADU_EXPORT void docking_close()
 {
 	kdebugf();
 
-	MainConfigurationWindow::unregisterUiFile(dataPath("kadu/modules/configuration/docking.ui"), docking_manager);
+	MainConfigurationWindow::unregisterUiFile(dataPath("kadu/modules/configuration/docking.ui"));
 	delete docking_manager;
 	docking_manager = 0;
 }
 
 DockingManager::DockingManager()
-	: newMessageIcon(StaticEnvelope), icon_timer(new QTimer(this)), blink(false)
+	: newMessageIcon(StaticEnvelope), icon_timer(new QTimer()), blink(false)
 {
 	kdebugf();
 
@@ -62,23 +58,28 @@ DockingManager::DockingManager()
 
 	connect(icon_timer, SIGNAL(timeout()), this, SLOT(changeIcon()));
 
-	connect(kadu, SIGNAL(statusPixmapChanged(const QIcon &, const QString &)),
-		this, SLOT(statusPixmapChanged(const QIcon &, const QString &)));
+	connect(Core::instance(), SIGNAL(mainIconChanged(const QIcon &)),
+		this, SLOT(statusPixmapChanged(const QIcon &)));
 	connect(&pending, SIGNAL(messageFromUserAdded(Contact)), this, SLOT(pendingMessageAdded()));
 	connect(&pending, SIGNAL(messageFromUserDeleted(Contact)), this, SLOT(pendingMessageDeleted()));
 
-	connect(kadu, SIGNAL(searchingForTrayPosition(QPoint&)), this, SIGNAL(searchingForTrayPosition(QPoint&)));
+//	connect(kadu, SIGNAL(searchingForTrayPosition(QPoint&)), this, SIGNAL(searchingForTrayPosition(QPoint&)));
 
-	connect(dockMenu, SIGNAL(activated(int)), this, SLOT(dockletChange(int)));
+	DockMenu = new QMenu();
+	StatusMenu *statusMenu = new StatusMenu(this);
+	statusMenu->addToMenu(DockMenu);
+#ifdef Q_OS_MAC
+	DockMenu->insertSeparator();
+	DockMenu->addAction(icons_manager->loadIcon("OpenChat"), tr("Show Pending Messages"), chat_manager, SLOT(openPendingMsgs()));
+#endif
+	DockMenu->addSeparator();
+	DockMenu->addAction(icons_manager->loadIcon("Exit"), tr("&Exit Kadu"), Core::instance(), SLOT(quit()));
+
 	connect(this, SIGNAL(mousePressMidButton()), &pending, SLOT(openMessages()));
 
 	configurationUpdated();
 
 	kdebugf2();
-}
-
-void DockingManager::mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow)
-{
 }
 
 void DockingManager::configurationUpdated()
@@ -100,18 +101,19 @@ DockingManager::~DockingManager()
 {
 	kdebugf();
 
-	disconnect(kadu, SIGNAL(statusPixmapChanged(const QIcon &, const QString &)),
-		this, SLOT(statusPixmapChanged(const QIcon &, const QString &)));
+	disconnect(Core::instance(), SIGNAL(mainIconChanged(const QIcon &)),
+		this, SLOT(statusPixmapChanged(const QIcon &)));
 	disconnect(&pending, SIGNAL(messageFromUserAdded(Contact)), this, SLOT(pendingMessageAdded()));
 	disconnect(&pending, SIGNAL(messageFromUserDeleted(Contact)), this, SLOT(pendingMessageDeleted()));
 
-	disconnect(kadu, SIGNAL(searchingForTrayPosition(QPoint&)), this, SIGNAL(searchingForTrayPosition(QPoint&)));
+//	disconnect(kadu, SIGNAL(searchingForTrayPosition(QPoint&)), this, SIGNAL(searchingForTrayPosition(QPoint&)));
 
-	disconnect(dockMenu, SIGNAL(activated(int)), this, SLOT(dockletChange(int)));
 	disconnect(icon_timer, SIGNAL(timeout()), this, SLOT(changeIcon()));
 
+	delete DockMenu;
+
 	delete icon_timer;
-	icon_timer=NULL;
+	icon_timer = NULL;
 	kdebugf2();
 }
 
@@ -126,12 +128,12 @@ void DockingManager::changeIcon()
 				emit trayMovieChanged(icons_manager->iconPath("MessageAnim"));
 				break;
 			case StaticEnvelope:
-				emit trayPixmapChanged(icons_manager->loadIcon("Message"), "Message");
+				emit trayPixmapChanged(icons_manager->loadIcon("Message"));
 				break;
 			case BlinkingEnvelope:
 				if (!blink)
 				{
-					emit trayPixmapChanged(icons_manager->loadIcon("Message"), "Message");
+					emit trayPixmapChanged(icons_manager->loadIcon("Message"));
 					icon_timer->setSingleShot(true);
 					icon_timer->start(500);
 					blink = true;
@@ -140,12 +142,10 @@ void DockingManager::changeIcon()
 				{
 					Account *account = AccountManager::instance()->defaultAccount();
 					if (!account || !account->protocol())
-					{
 						return;
-					}
 
 					const Status &stat = account->protocol()->status();
-					emit trayPixmapChanged(QIcon(account->protocol()->statusPixmap(stat)), Status::name(stat, false));
+					emit trayPixmapChanged(QIcon(account->protocol()->statusPixmap(stat)));
 					icon_timer->setSingleShot(true);
 					icon_timer->start(500);
 					blink = false;
@@ -156,14 +156,6 @@ void DockingManager::changeIcon()
 	else
 		kdebugmf(KDEBUG_INFO, "OFF\n");
 	kdebugf2();
-}
-
-void DockingManager::dockletChange(int id)
-{
-// 	if (id < 9)
-// 		kadu->slotHandleState(id);
-// 	else
-// 		Core::instance()->quit();
 }
 
 void DockingManager::pendingMessageAdded()
@@ -177,11 +169,10 @@ void DockingManager::pendingMessageDeleted()
 	{
 		Account *account = AccountManager::instance()->defaultAccount();
 		if (!account || !account->protocol())
-		{
 			return;
-		}
+
 		const Status &stat = account->protocol()->status();
-		emit trayPixmapChanged(QIcon(account->protocol()->statusPixmap(stat)), Status::name(stat, false));
+		emit trayPixmapChanged(QIcon(account->protocol()->statusPixmap(stat)));
 	}
 }
 
@@ -213,6 +204,8 @@ void DockingManager::trayMousePressEvent(QMouseEvent * e)
 
 	if (e->button() == Qt::LeftButton)
 	{
+		QWidget *kadu = Core::instance()->kaduWindow();
+
 		emit mousePressLeftButton();
 		kdebugm(KDEBUG_INFO, "minimized: %d, visible: %d\n", kadu->isMinimized(), kadu->isVisible());
 
@@ -222,13 +215,13 @@ void DockingManager::trayMousePressEvent(QMouseEvent * e)
 			return;
 		}
 
-		if(kadu->isMinimized())
+		if (kadu->isMinimized())
 		{
 			kadu->showNormal();
 			activateWindow(kadu->winId());
 			return;
 		}
-		else if(kadu->isVisible())
+		else if (kadu->isVisible())
 			kadu->hide();
 		else
 		{
@@ -249,10 +242,10 @@ void DockingManager::trayMousePressEvent(QMouseEvent * e)
 	kdebugf2();
 }
 
-void DockingManager::statusPixmapChanged(const QIcon &icon, const QString &iconName)
+void DockingManager::statusPixmapChanged(const QIcon &icon)
 {
  	kdebugf();
-	emit trayPixmapChanged(icon, iconName);
+	emit trayPixmapChanged(icon);
 	defaultToolTip();
 	changeIcon();
 }
@@ -280,7 +273,7 @@ void DockingManager::setDocked(bool docked)
 	else
 	{
 // 		kdebugm(KDEBUG_INFO, "closing: %d\n", Kadu::closing());
-		kadu->show(); // isClosing? TODO: 0.6.6
+		Core::instance()->kaduWindow()->show(); // isClosing? TODO: 0.6.6
 	}
 	Core::instance()->kaduWindow()->setDocked(docked);
 	kdebugf2();
