@@ -373,7 +373,8 @@ void KaduWindow::configurationUpdated()
 	if (config_file.readBoolEntry("Look", "UseUserboxBackground", true))
 	{
 		QString type = config_file.readEntry("Look", "UserboxBackgroundDisplayStyle");
-		ContactsWidget->setBackground(config_file.readEntry("Look", "UserboxBackground"),
+		ContactsWidget->setBackground(config_file.readColorEntry("Look","UserboxBgColor").name(),
+			config_file.readEntry("Look", "UserboxBackground"),
 			type == "Centered" ? ContactsListWidget::BackgroundCentered
 			: type == "Tiled" ? ContactsListWidget::BackgroundTiled
 			: type == "Stretched" ? ContactsListWidget::BackgroundStretched
@@ -381,7 +382,7 @@ void KaduWindow::configurationUpdated()
 			: ContactsListWidget::BackgroundNone);
 	}
 	else
-		ContactsWidget->setBackground();
+		ContactsWidget->setBackground(config_file.readColorEntry("Look","UserboxBgColor").name());
 
 	ChangeStatusButton->setVisible(config_file.readBoolEntry("Look", "ShowStatusButton"));
 }

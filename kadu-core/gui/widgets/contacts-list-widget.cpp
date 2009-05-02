@@ -279,8 +279,9 @@ void ContactsListWidget::doubleClickedSlot(const QModelIndex &index)
 	triggerActivate(index);
 }
 
-void ContactsListWidget::setBackground(const QString &file, BackgroundMode mode)
+void ContactsListWidget::setBackground(const QString &backgroundColor, const QString &file, BackgroundMode mode)
 {
+	BackgroundColor = backgroundColor;
 	BackgroundImageMode = mode;
 	BackgroundImageFile = file;
 	updateBackground();
@@ -289,19 +290,22 @@ void ContactsListWidget::setBackground(const QString &file, BackgroundMode mode)
 void ContactsListWidget::updateBackground()
 {
 	// TODO 0.6.6 fix image "Stretched" + update on resize event - write image into resource tree
+    	QString style;
 
-	QString style;
+	style.append("QFrame {");
+
+	style.append(QString(" background-color: %1;").arg(BackgroundColor));
 
 	if (BackgroundImageMode == BackgroundNone)
 	{
-		setAlternatingRowColors(true);
+		style.append("}");
+		//TODO 0.6.6: make an option in configuration:
+		setAlternatingRowColors(false);
 		setStyleSheet(style);
 		return;
 	}
 
 	setAlternatingRowColors(false);
-
-	style.append("QFrame {");
 
 	if (BackgroundImageMode != BackgroundTiled && BackgroundImageMode != BackgroundTiledAndCentered)
 		style.append(" background-repeat: no-repeat;");
@@ -332,8 +336,6 @@ void ContactsListWidget::updateBackground()
 	else
 		style.append(QString("background-image: url(%1);").arg(BackgroundImageFile));
 	style.append("background-attachment:fixed;}");
-
-	printf(qPrintable(style));
 
 	setStyleSheet(style);
 }

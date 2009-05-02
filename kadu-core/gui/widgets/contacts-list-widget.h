@@ -54,6 +54,7 @@ public:
 	};
 
 private:
+	QString BackgroundColor;
 	BackgroundMode BackgroundImageMode;
 	QString BackgroundImageFile;
 	QTemporaryFile *BackgroundTemporaryFile;
@@ -93,7 +94,7 @@ public:
 
 	Contact currentContact() const;
 	ContactSet selectedContacts() const;
-	void setBackground(const QString &file = QString::null, BackgroundMode mode = BackgroundNone);
+	void setBackground(const QString &backgroundColor, const QString &file = QString::null, BackgroundMode mode = BackgroundNone);
 	void updateBackground();
 
 signals:
