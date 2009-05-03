@@ -12,12 +12,34 @@
 #include "debug.h"
 #include "misc/misc.h"
 
-#include "icons_manager.h"
+#include "icons-manager.h"
 
-IconsManager::IconsManager(const QString &name, const QString &configname)
-	: Themes(name, configname), pixmaps(), icons()
+IconsManager * IconsManager::Instance = 0;
+
+IconsManager * IconsManager::instance()
+{
+	if (Instance == 0)
+		Instance = new IconsManager();
+	return Instance;
+}
+
+IconsManager::IconsManager()
+	: Themes("icons", "icons.conf"), pixmaps(), icons()
 {
 	kdebugf();
+
+	setPaths(config_file.readEntry("Look", "IconsPaths").split(QRegExp("(;|:)"), QString::SkipEmptyParts));
+	
+	QStringList themeList = themes();
+	QString theme = config_file.readEntry("Look", "IconTheme");
+	if (!themeList.isEmpty() && !themeList.contains(theme))
+	{
+		theme = "default";
+		config_file.writeEntry("Look", "IconTheme", "default");
+	}
+	
+	setTheme(theme);
+
 	kdebugf2();
 }
 
@@ -25,13 +47,13 @@ QString IconsManager::iconPath(const QString &name) const
 {
 	QString fname;
 	QString absoluteName;
-	if(name.contains('/'))
+	if (name.contains('/'))
 		fname = name;
 	else
 		fname = themePath() + getThemeEntry(name);
 
 	absoluteName = dataPath() + fname;
-	if(!QFile::exists(fname) && QFile::exists(absoluteName))
+	if (!QFile::exists(fname) && QFile::exists(absoluteName))
 		fname = absoluteName;
 
 	return fname;
@@ -77,10 +99,10 @@ void IconsManager::configurationUpdated()
 {
 	kdebugf();
 
-	bool themeWasChanged = config_file.readEntry("Look", "IconTheme") != icons_manager->theme();
+	bool themeWasChanged = config_file.readEntry("Look", "IconTheme") != IconsManager::instance()->theme();
 
-	icons_manager->clear();
-	icons_manager->setTheme(config_file.readEntry("Look", "IconTheme"));
+	clear();
+	setTheme(config_file.readEntry("Look", "IconTheme"));
 // 	kadu->changeAppearance(); TODO: 0.6.6
 
 	// TODO: Make it standard
@@ -93,41 +115,8 @@ void IconsManager::configurationUpdated()
 	kdebugf2();
 }
 
-void IconsManager::initModule()
-{
-	kdebugf();
-
-	icons_manager = new IconsManager("icons", "icons.conf");
-
-	icons_manager->setPaths(config_file.readEntry("Look", "IconsPaths").split(QRegExp("(;|:)"), QString::SkipEmptyParts));
-
-	QStringList themes = icons_manager->themes();
-	QString theme = config_file.readEntry("Look", "IconTheme");
-	if (!themes.isEmpty() && !themes.contains(theme))
-	{
-		theme = "default";
-		config_file.writeEntry("Look", "IconTheme", "default");
-	}
-
-	icons_manager->setTheme(theme);
-
-	kdebugf2();
-}
-
-void IconsManager::closeModule()
-{
-	kdebugf();
-
-	delete icons_manager;
-	icons_manager = 0;
-
-	kdebugf2();
-}
-
 QSize IconsManager::getIconsSize()
 {
 	QPixmap p = loadPixmap("Configuration");
 	return p.size();
 }
-
-IconsManager *icons_manager;

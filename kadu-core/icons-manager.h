@@ -21,12 +21,16 @@
 class KADUAPI IconsManager : public Themes, ConfigurationAwareObject
 {
 	Q_OBJECT
+	Q_DISABLE_COPY(IconsManager)
+
+	IconsManager();
+
+	static IconsManager *Instance;
 
 	QMap<QString, QPixmap> pixmaps;
 	QMap<QString, QIcon> icons;
 
 public:
-	IconsManager(const QString &name, const QString &configname);
 
 	/**
 		Zwraca pe�n� �cie�k� do ikony z aktualnego zestawu
@@ -46,10 +50,9 @@ public:
 	const QPixmap & loadPixmap(const QString &name);
 	const QIcon & loadIcon(const QString &name);
 
-	static void initModule();
-	static void closeModule();
-	
 	QSize getIconsSize();
+
+	static IconsManager * instance();	
 
 public: // TODO: fix, see Kadu::Kadu
 	virtual void configurationUpdated();
@@ -62,6 +65,4 @@ signals:
 
 };
 
-extern KADUAPI IconsManager *icons_manager;
-
-#endif
+#endif //KADU_ICONS_MANAGER_H
