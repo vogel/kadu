@@ -16,7 +16,7 @@
 #include <QtGui/QVBoxLayout>
 
 #include "debug.h"
-#include "icons_manager.h"
+#include "icons-manager.h"
 
 #include "message_box.h"
 
@@ -47,7 +47,7 @@ MessageBox::MessageBox(const QString &message, int components, bool modal, const
 	if (!iconName.isEmpty())
 	{
 		icon = new QLabel(this);
-		icon->setPixmap(icons_manager->loadPixmap(iconName));
+		icon->setPixmap(IconsManager::instance()->loadPixmap(iconName));
 		hboxlabels->addWidget(icon, 0, Qt::AlignCenter);
 	}
 

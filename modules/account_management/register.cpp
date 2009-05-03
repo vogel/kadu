@@ -21,7 +21,7 @@
 #include "config_file.h"
 #include "debug.h"
 #include "html_document.h"
-#include "icons_manager.h"
+#include "icons-manager.h"
 #include "message_box.h"
 #include "misc/misc.h"
 #include "register.h"
@@ -93,7 +93,7 @@ Register::Register(QDialog *parent) : QWidget(parent, Qt::Window),
 	QWidget *left = new QWidget();
 
 	QLabel *l_icon = new QLabel;
-	l_icon->setPixmap(icons_manager->loadPixmap("RegisterWindowIcon"));
+	l_icon->setPixmap(IconsManager::instance()->loadPixmap("RegisterWindowIcon"));
 
 	QWidget *blank = new QWidget;
 	blank->setSizePolicy(QSizePolicy(QSizePolicy::Maximum, QSizePolicy::Expanding));
@@ -149,10 +149,10 @@ Register::Register(QDialog *parent) : QWidget(parent, Qt::Window),
 	QWidget *blank2 = new QWidget;
 	blank2->setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Maximum));
 
-	QPushButton *pb_register = new QPushButton(icons_manager->loadIcon("RegisterAccountButton"), tr("Register"), bottom, "register");
+	QPushButton *pb_register = new QPushButton(IconsManager::instance()->loadIcon("RegisterAccountButton"), tr("Register"), bottom, "register");
 	connect(pb_register, SIGNAL(clicked()), this, SLOT(doRegister()));
 
-	QPushButton *pb_close = new QPushButton(icons_manager->loadIcon("CloseWindow"), tr("&Close"), bottom, "close");
+	QPushButton *pb_close = new QPushButton(IconsManager::instance()->loadIcon("CloseWindow"), tr("&Close"), bottom, "close");
 	connect(pb_close, SIGNAL(clicked()), this, SLOT(close()));
 
 	QHBoxLayout *bottom_layout = new QHBoxLayout(bottom);

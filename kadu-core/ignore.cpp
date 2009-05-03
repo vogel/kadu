@@ -17,7 +17,7 @@
 
 #include "config_file.h"
 #include "debug.h"
-#include "icons_manager.h"
+#include "icons-manager.h"
 #include "ignore.h"
 #include "misc/misc.h"
 #include "xml_config_file.h"

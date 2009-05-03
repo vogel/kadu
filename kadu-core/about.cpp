@@ -16,7 +16,7 @@
 #include <QtGui/QTextEdit>
 
 #include "debug.h"
-#include "icons_manager.h"
+#include "icons-manager.h"
 #include "misc/misc.h"
 
 #include "about.h"
@@ -53,7 +53,7 @@ About::About(QWidget *parent)
 	QWidget *left = new QWidget;
 
 	QLabel *l_icon = new QLabel;
-	l_icon->setPixmap(icons_manager->loadPixmap("AboutIcon"));
+	l_icon->setPixmap(IconsManager::instance()->loadPixmap("AboutIcon"));
 
 	QWidget *blank = new QWidget;
 	blank->setSizePolicy(QSizePolicy(QSizePolicy::Maximum, QSizePolicy::Expanding));
@@ -126,7 +126,7 @@ About::About(QWidget *parent)
 	QWidget *blank2 = new QWidget;
 	blank2->setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Maximum));
 
-	QPushButton *pb_close = new QPushButton(icons_manager->loadIcon("CloseWindow"), tr("&Close"));
+	QPushButton *pb_close = new QPushButton(IconsManager::instance()->loadIcon("CloseWindow"), tr("&Close"));
 	connect(pb_close, SIGNAL(clicked()), this, SLOT(close()));
 
 	QHBoxLayout *bottom_layout = new QHBoxLayout(bottom);

@@ -17,7 +17,7 @@
 #include "contacts/contact-account-data.h"
 #include "contacts/contact-manager.h"
 #include "contacts/contact-set-configuration-helper.h"
-#include "icons_manager.h"
+#include "icons-manager.h"
 #include "protocols/protocol-factory.h"
 #include "protocols/status.h"
 
@@ -38,7 +38,7 @@ QIcon Protocol::icon()
 	QString iconName = Factory->iconName();
 	return iconName.isEmpty()
 		? QIcon()
-		: icons_manager->loadIcon(iconName);
+		: IconsManager::instance()->loadIcon(iconName);
 }
 
 void Protocol::setAllOffline()

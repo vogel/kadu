@@ -18,7 +18,7 @@
 
 #include "action.h"
 #include "debug.h"
-#include "icons_manager.h"
+#include "icons-manager.h"
 #include "kadu.h"
 #include "select_file.h"
 #include "sound_slots.h"

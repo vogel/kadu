@@ -15,8 +15,6 @@
 */
 #include <QtGui/QLineEdit>
 
-//#include "icons_manager.h"
-
 #include "configuration/contact-account-data-manager.h"
 #include "contacts/contact-account-data.h"
 #include "misc/misc.h"

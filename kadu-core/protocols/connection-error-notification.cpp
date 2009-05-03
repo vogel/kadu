@@ -10,7 +10,7 @@
 #include "notify/notification-manager.h"
 #include "notify/notify-event.h"
 #include "debug.h"
-#include "icons_manager.h"
+#include "icons-manager.h"
 #include "kadu_parser.h"
 
 #include "connection-error-notification.h"
@@ -63,7 +63,7 @@ bool ConnectionErrorNotification::activeError(Account *account, const QString &e
 }
 
 ConnectionErrorNotification::ConnectionErrorNotification(Account *account, const QString &errorServer, const QString &errorMessage) :
-		AccountNotification(account, "ConnectionError", icons_manager->loadIcon("CriticalSmall"), 0),
+		AccountNotification(account, "ConnectionError", IconsManager::instance()->loadIcon("CriticalSmall"), 0),
 		ErrorServer(errorServer), ErrorMessage(errorMessage)
 {
 	setTitle(tr("Connection error"));

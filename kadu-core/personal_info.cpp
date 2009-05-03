@@ -21,7 +21,7 @@
 #include "../modules/gadu_protocol/gadu-protocol.h"
 #include "../modules/gadu_protocol/gadu-search-record.h"
 #include "../modules/gadu_protocol/gadu-search-result.h"
-#include "icons_manager.h"
+#include "icons-manager.h"
 
 #include "personal_info.h"
 
@@ -48,7 +48,7 @@ PersonalInfoDialog::PersonalInfoDialog(Protocol *protocol, QWidget *parent) :
 	QWidget *left = new QWidget();
 
 	QLabel *l_icon = new QLabel;
-	l_icon->setPixmap(icons_manager->loadPixmap("PersonalInformationWindowIcon"));
+	l_icon->setPixmap(IconsManager::instance()->loadPixmap("PersonalInformationWindowIcon"));
 
 
 	QVBoxLayout *left_layout = new QVBoxLayout;
@@ -168,13 +168,13 @@ PersonalInfoDialog::PersonalInfoDialog(Protocol *protocol, QWidget *parent) :
 	// buttons
 	QWidget *bottom = new QWidget;
 
-	pb_save = new QPushButton(icons_manager->loadIcon("SavePersonalInfoButton"), tr("&Save"), bottom);
+	pb_save = new QPushButton(IconsManager::instance()->loadIcon("SavePersonalInfoButton"), tr("&Save"), bottom);
 	connect(pb_save, SIGNAL(clicked()), this, SLOT(saveButtonClicked()));
 
-	QPushButton *pb_reload = new QPushButton(icons_manager->loadIcon("ReloadPersonalInfoButton"), tr("&Reload"), bottom);
+	QPushButton *pb_reload = new QPushButton(IconsManager::instance()->loadIcon("ReloadPersonalInfoButton"), tr("&Reload"), bottom);
 	connect(pb_reload, SIGNAL(clicked()), this, SLOT(reloadInfo()));
 
-	QPushButton *pb_close = new QPushButton(icons_manager->loadIcon("CloseWindow"), tr("&Close"), bottom);
+	QPushButton *pb_close = new QPushButton(IconsManager::instance()->loadIcon("CloseWindow"), tr("&Close"), bottom);
 	connect(pb_close, SIGNAL(clicked()), this, SLOT(close()));
 
 	QHBoxLayout *bottom_layout = new QHBoxLayout(bottom);

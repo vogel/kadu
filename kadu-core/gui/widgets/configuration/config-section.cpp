@@ -18,7 +18,7 @@
 #include "gui/widgets/configuration/config-widget.h"
 
 #include "config_file.h"
-#include "icons_manager.h"
+#include "icons-manager.h"
 
 ConfigSection::ConfigSection(const QString &name, ConfigurationWidget *configurationWidget, QListWidgetItem *listWidgetItem, QWidget *parentConfigGroupBoxWidget,
 		const QString &pixmap)
@@ -29,7 +29,7 @@ ConfigSection::ConfigSection(const QString &name, ConfigurationWidget *configura
 	mainWidget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 	mainWidget->hide();
 
-	connect(icons_manager, SIGNAL(themeChanged()), this, SLOT(iconThemeChanged()));
+	connect(IconsManager::instance(), SIGNAL(themeChanged()), this, SLOT(iconThemeChanged()));
 }
 
 ConfigSection::~ConfigSection()
@@ -93,7 +93,7 @@ void ConfigSection::iconThemeChanged()
 	bool current = listWidgetItem->isSelected();
 	delete listWidgetItem;
 
-	listWidgetItem = new QListWidgetItem(icons_manager->loadPixmap(pixmap), name, listWidget);
+	listWidgetItem = new QListWidgetItem(IconsManager::instance()->loadPixmap(pixmap), name, listWidget);
 	if (current)
 		listWidget->setCurrentItem(listWidgetItem);
 }

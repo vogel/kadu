@@ -18,7 +18,7 @@
 
 #include "config_file.h"
 #include "debug.h"
-#include "icons_manager.h"
+#include "icons-manager.h"
 #include "message_box.h"
 #include "userlist.h"
 #include "chat_manager-old.h"
@@ -105,9 +105,9 @@ void GrowlNotify::notify(Notification *notification)
 
 	QString title = config_file.readEntry("GrowlNotify", QString("Event_") + notification->type() + "_title");
 	QString syntax = config_file.readEntry("GrowlNotify", QString("Event_") + notification->type() + "_syntax");
-	QPixmap pixmap = icons_manager->loadPixmap("Big" + notification->icon());
+	QPixmap pixmap = IconsManager::instance()->loadPixmap("Big" + notification->icon());
 	if (pixmap.isNull())
-		pixmap = icons_manager->loadPixmap(notification->icon());
+		pixmap = IconsManager::instance()->loadPixmap(notification->icon());
 
 	notification->acquire();
 	senders = UserListElements(notification->userListElements());

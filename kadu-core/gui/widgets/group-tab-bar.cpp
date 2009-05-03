@@ -22,7 +22,7 @@
 
 #include "config_file.h"
 #include "debug.h"
-#include "icons_manager.h"
+#include "icons-manager.h"
 #include "message_box.h"
 
 #include "group-tab-bar.h"
@@ -38,7 +38,7 @@ GroupTabBar::GroupTabBar(QWidget *parent)
 //	setMovable(true);
 
 	setShape(QTabBar::RoundedWest);
-	addTab(icons_manager->loadIcon("PersonalInfo"), tr("All"));
+	addTab(IconsManager::instance()->loadIcon("PersonalInfo"), tr("All"));
 	setTabData(0, "AllTab");
 
 	setFont(QFont(config_file.readFontEntry("Look", "UserboxFont").family(),

@@ -35,7 +35,7 @@
 #include "debug.h"
 #include "emoticons.h"
 #include "hot_key.h"
-#include "icons_manager.h"
+#include "icons-manager.h"
 #include "kadu_parser.h"
 #include "message_box.h"
 #include "misc/misc.h"
@@ -315,7 +315,7 @@ void ChatWidget::refreshTitle()
 					title.append(", ");
 			}
 
- 		pix = icons_manager->loadPixmap("Online");
+ 		pix = IconsManager::instance()->loadPixmap("Online");
 	}
 	else
 	{
@@ -585,7 +585,7 @@ void ChatWidget::changeSendToCancelSend()
 
 	if (action)
 	{
-		action->setIcon(icons_manager->loadIcon("CancelMessage"));
+		action->setIcon(IconsManager::instance()->loadIcon("CancelMessage"));
 		action->setText(tr("&Cancel"));
 	}
 }
@@ -596,7 +596,7 @@ void ChatWidget::changeCancelSendToSend()
 
 	if (action)
 	{
-		action->setIcon(icons_manager->loadIcon("SendMessage"));
+		action->setIcon(IconsManager::instance()->loadIcon("SendMessage"));
 		action->setText(tr("&Send"));
 	}
 }

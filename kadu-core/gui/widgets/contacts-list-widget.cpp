@@ -31,7 +31,7 @@
 #include "protocols/protocols-manager.h"
 
 #include "action.h"
-#include "icons_manager.h"
+#include "icons-manager.h"
 
 #include "contacts-list-widget-delegate.h"
 #include "contacts-list-widget-menu-manager.h"
@@ -181,7 +181,7 @@ void ContactsListWidget::contextMenuEvent(QContextMenuEvent *event)
 
 		QMenu *account_menu = menu->addMenu(account->name());
 		if (!protocolFactory->iconName().isEmpty())
-			account_menu->setIcon(icons_manager->loadIcon(protocolFactory->iconName()));
+			account_menu->setIcon(IconsManager::instance()->loadIcon(protocolFactory->iconName()));
 
 		if (protocolFactory->getProtocolMenuManager()->protocolActions(account, con).size() == 0)
 			continue;

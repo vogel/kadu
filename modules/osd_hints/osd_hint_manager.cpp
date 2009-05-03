@@ -20,7 +20,7 @@
 #include "debug.h"
 #include "osd_hint_manager.h"
 #include "osd_hints_configuration_widget.h"
-#include "icons_manager.h"
+#include "icons-manager.h"
 #include "kadu.h"
 #include "kadu_parser.h"
 #include "misc/misc.h"
@@ -497,9 +497,9 @@ void OSDHintManager::showToolTip(const QPoint &point, const UserListElement &use
 	int iconSize = config_file.readNumEntry("OSDHints", "IconSize", 32);
 	QString pic = dataPath("kadu/modules/data/osd_hints/") + user.status("Gadu").name().lower() + QString::number(iconSize) + ".png";
 
-	QPixmap pixmap = icons_manager->loadPixmap(pic);
+	QPixmap pixmap = IconsManager::instance()->loadPixmap(pic);
     	if (pixmap.isNull())
-		pixmap = icons_manager->loadPixmap(dataPath("kadu/modules/data/osd_hints/osd_icon.png"));
+		pixmap = IconsManager::instance()->loadPixmap(dataPath("kadu/modules/data/osd_hints/osd_icon.png"));
 
 	QLabel *icon = new QLabel(tipFrame, "Icon");
 	icon->setPixmap(pixmap);

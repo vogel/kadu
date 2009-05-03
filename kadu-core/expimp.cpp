@@ -35,7 +35,7 @@
 #include "protocols/services/contact-list-service.h"
 
 #include "debug.h"
-#include "icons_manager.h"
+#include "icons-manager.h"
 #include "ignore.h"
 #include "message_box.h"
 #include "misc/misc.h"
@@ -54,7 +54,7 @@ UserlistImportExport::UserlistImportExport(QWidget *parent)
 	QWidget *left = new QWidget;
 
 	QLabel *l_icon = new QLabel;
-	l_icon->setPixmap(icons_manager->loadPixmap("ImportExportWindowIcon"));
+	l_icon->setPixmap(IconsManager::instance()->loadPixmap("ImportExportWindowIcon"));
 
 	QVBoxLayout *left_layout = new QVBoxLayout;
 	left_layout->addWidget(l_icon);
@@ -94,10 +94,10 @@ UserlistImportExport::UserlistImportExport(QWidget *parent)
 	QHBoxLayout *importbuttons_layout = new QHBoxLayout(importbuttons);
 	importbuttons_layout->setSpacing(5);
 
-	pb_fetch = new QPushButton(icons_manager->loadIcon("FetchUserList"), tr("&Fetch userlist"), this);
-	QPushButton *pb_file = new QPushButton(icons_manager->loadIcon("ImportFromFile"), tr("&Import from file"), this);
-	QPushButton *pb_save = new QPushButton(icons_manager->loadIcon("SaveUserlist"), tr("&Save results"), this);
-	QPushButton *pb_merge = new QPushButton(icons_manager->loadIcon("MergeUserlist"), tr("&Merge results"), this);
+	pb_fetch = new QPushButton(IconsManager::instance()->loadIcon("FetchUserList"), tr("&Fetch userlist"), this);
+	QPushButton *pb_file = new QPushButton(IconsManager::instance()->loadIcon("ImportFromFile"), tr("&Import from file"), this);
+	QPushButton *pb_save = new QPushButton(IconsManager::instance()->loadIcon("SaveUserlist"), tr("&Save results"), this);
+	QPushButton *pb_merge = new QPushButton(IconsManager::instance()->loadIcon("MergeUserlist"), tr("&Merge results"), this);
 	// end buttons
 	
 	importbuttons_layout->addStretch();
@@ -128,9 +128,9 @@ UserlistImportExport::UserlistImportExport(QWidget *parent)
 	QWidget *w_blank3 = new QWidget;
 	w_blank3->setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Maximum));
 
-	pb_send = new QPushButton(icons_manager->loadIcon("SendUserlist"), tr("Se&nd userlist"), this);
-	pb_delete = new QPushButton(icons_manager->loadIcon("DeleteUserlist"), tr("&Delete userlist"), this);
-	pb_tofile = new QPushButton(icons_manager->loadIcon("ExportUserlist"), tr("&Export to file"), this);
+	pb_send = new QPushButton(IconsManager::instance()->loadIcon("SendUserlist"), tr("Se&nd userlist"), this);
+	pb_delete = new QPushButton(IconsManager::instance()->loadIcon("DeleteUserlist"), tr("&Delete userlist"), this);
+	pb_tofile = new QPushButton(IconsManager::instance()->loadIcon("ExportUserlist"), tr("&Export to file"), this);
 	// end export buttons
 
 	exportbuttons_layout->addWidget(w_blank3);
@@ -150,7 +150,7 @@ UserlistImportExport::UserlistImportExport(QWidget *parent)
 	QWidget *w_blank4 = new QWidget;
 	w_blank4->setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Maximum));
 
-	QPushButton *pb_close = new QPushButton(icons_manager->loadIcon("CloseWindow"), tr("&Close"), this);
+	QPushButton *pb_close = new QPushButton(IconsManager::instance()->loadIcon("CloseWindow"), tr("&Close"), this);
 	// end buttons
 	bottom_layout->addWidget(w_blank4);
 	bottom_layout->addWidget(pb_close);

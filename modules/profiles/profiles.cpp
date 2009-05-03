@@ -30,7 +30,7 @@
 #include "kadu.h"
 #include "misc/misc.h"
 #include "config_file.h"
-#include "icons_manager.h"
+#include "icons-manager.h"
 
 QString kaduConfFile = "kadu.conf.xml";
 
@@ -343,13 +343,13 @@ void ProfileManager::createProfileMenu()
 	QStringList names = getProfileNames();
 	for (index = 0; index < names.count(); index++)
 	{
-		ProfileMenu->insertItem(icons_manager->loadIcon("ProfilesUser"),
+		ProfileMenu->insertItem(IconsManager::instance()->loadIcon("ProfilesUser"),
 			names[index], this, SLOT(openProfile(int)), 0, index);
 	}
 	if (index > 0)
 		ProfileMenu->insertSeparator(index++);
 
-	ProfileMenu->insertItem(icons_manager->loadIcon("ProfilesConfigure"),
+	ProfileMenu->insertItem(IconsManager::instance()->loadIcon("ProfilesConfigure"),
 		tr("Profile Manager"), this, SLOT(showConfig()), 0, index);
 
 	kdebugf2();

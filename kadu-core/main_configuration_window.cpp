@@ -44,7 +44,7 @@
 
 #include "config_file.h"
 #include "debug.h"
-#include "icons_manager.h"
+#include "icons-manager.h"
 #include "misc/misc.h"
 
 #include "main_configuration_window.h"
@@ -294,10 +294,10 @@ void MainConfigurationWindow::setQtThemes()
 void MainConfigurationWindow::setIconThemes()
 {
 	ConfigComboBox *iconThemes = dynamic_cast<ConfigComboBox *>(widget()->widgetById("iconThemes"));
-	icons_manager->setPaths((dynamic_cast<PathListEdit *>(widget()->widgetById("iconPaths")))->pathList());
+	IconsManager::instance()->setPaths((dynamic_cast<PathListEdit *>(widget()->widgetById("iconPaths")))->pathList());
 
 	QT_TRANSLATE_NOOP("@default", "default");
-	QStringList themes = icons_manager->themes();
+	QStringList themes = IconsManager::instance()->themes();
 	QStringList captions;
 	themes.sort();
 
@@ -305,7 +305,7 @@ void MainConfigurationWindow::setIconThemes()
 		captions.append(qApp->translate("@default", theme.toAscii().data()));
 
 	iconThemes->setItems(themes, captions);
-	iconThemes->setEditText(icons_manager->theme());
+	iconThemes->setEditText(IconsManager::instance()->theme());
 }
 
 void MainConfigurationWindow::setEmoticonThemes()

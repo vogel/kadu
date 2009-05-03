@@ -23,7 +23,7 @@
 #include "gui/widgets/preview.h"
 
 #include "config_file.h"
-#include "icons_manager.h"
+#include "icons-manager.h"
 #include "message_box.h"
 #include "misc/misc.h"
 
@@ -356,9 +356,9 @@ SyntaxEditorWindow::SyntaxEditorWindow(SyntaxList *syntaxList, const QString &sy
 #ifndef Q_OS_MAC
 	(new QWidget(buttons))->setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Minimum));
 #endif
-	QPushButton *saveSyntax = new QPushButton(icons_manager->loadIcon("OkWindowButton"), tr("Save"), 0);
-	QPushButton *saveAsSyntax = new QPushButton(icons_manager->loadIcon("OkWindowButton"), tr("Save as..."), 0);
-	QPushButton *cancel = new QPushButton(icons_manager->loadIcon("CloseWindowButton"), tr("Cancel"), 0);
+	QPushButton *saveSyntax = new QPushButton(IconsManager::instance()->loadIcon("OkWindowButton"), tr("Save"), 0);
+	QPushButton *saveAsSyntax = new QPushButton(IconsManager::instance()->loadIcon("OkWindowButton"), tr("Save as..."), 0);
+	QPushButton *cancel = new QPushButton(IconsManager::instance()->loadIcon("CloseWindowButton"), tr("Cancel"), 0);
 
 	buttons_layout->addWidget(saveSyntax);
 	buttons_layout->addWidget(saveAsSyntax);

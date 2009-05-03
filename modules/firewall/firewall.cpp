@@ -40,7 +40,7 @@ Nowa funkcjonalnosc - Dorregaray
 #include "accounts/account.h"
 #include "accounts/account_manager.h"
 #include "config_file.h"
-#include "icons_manager.h"
+#include "icons-manager.h"
 #include "misc/misc.h"
 #include "search.h"
 #include "kadu.h"

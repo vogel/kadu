@@ -20,7 +20,7 @@
 #include "gui/windows/kadu-window.h"
 #include "config_file.h"
 #include "debug.h"
-#include "icons_manager.h"
+#include "icons-manager.h"
 #include "kadu_parser.h"
 
 #include "../modules/gadu_protocol/gadu-protocol.h"
@@ -97,16 +97,16 @@ void ChooseDescription::setStatus(const Status &status)
 	switch (CurrentStatus.type())
 	{
 		case Status::Online:
-			OkButton->setIcon(icons_manager->loadIcon("OnlineWithDescription"));
+			OkButton->setIcon(IconsManager::instance()->loadIcon("OnlineWithDescription"));
 			break;
 		case Status::Busy:
-			OkButton->setIcon(icons_manager->loadIcon("BusyWithDescription"));
+			OkButton->setIcon(IconsManager::instance()->loadIcon("BusyWithDescription"));
 			break;
 		case Status::Invisible:
-			OkButton->setIcon(icons_manager->loadIcon("InvisibleWithDescription"));
+			OkButton->setIcon(IconsManager::instance()->loadIcon("InvisibleWithDescription"));
 			break;
 		case Status::Offline:
-			OkButton->setIcon(icons_manager->loadIcon("OfflineWithDescription"));
+			OkButton->setIcon(IconsManager::instance()->loadIcon("OfflineWithDescription"));
 			break;
 		default:
 			break;

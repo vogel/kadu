@@ -26,7 +26,7 @@
 #include "protocols/protocol-factory.h"
 #include "protocols/protocols-manager.h"
 
-#include "icons_manager.h"
+#include "icons-manager.h"
 
 #include "manage-accounts.h"
 
@@ -78,7 +78,7 @@ QMenu * ManageAccounts::createGuiAddAccountMenu()
 
 	foreach (ProtocolFactory *protocolFactory, ProtocolsManager::instance()->protocolFactories())
 	{
-		QIcon icon = icons_manager->loadIcon(protocolFactory->iconName());
+		QIcon icon = IconsManager::instance()->loadIcon(protocolFactory->iconName());
 		QString name = protocolFactory->name();
 		QString displayName = protocolFactory->displayName();
 

@@ -13,7 +13,7 @@
 
 #include "notify/notification.h"
 #include "debug.h"
-#include "icons_manager.h"
+#include "icons-manager.h"
 
 #include "window-notifier-window.h"
 

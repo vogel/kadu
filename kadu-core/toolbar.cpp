@@ -18,7 +18,7 @@
 #include "action.h"
 #include "config_file.h"
 #include "debug.h"
-#include "icons_manager.h"
+#include "icons-manager.h"
 #include "kadu_main_window.h"
 #include "message_box.h"
 #include "misc/misc.h"
@@ -78,7 +78,7 @@ ToolBar::ToolBar(QWidget * parent)
 	kdebugf();
 
 	setAcceptDrops(true);
-	setIconSize(icons_manager->getIconsSize());
+	setIconSize(IconsManager::instance()->getIconsSize());
 
 	if (!watcher)
 		watcher = new DisabledActionsWatcher();
@@ -304,7 +304,7 @@ void ToolBar::configurationUpdated()
 		return setMovable(false);
 
 	setMovable(!toolbarsConfig.attribute("blocked").toInt());
-	setIconSize(icons_manager->getIconsSize());
+	setIconSize(IconsManager::instance()->getIconsSize());
 }
 
 void ToolBar::writeToConfig(QDomElement parent_element)
@@ -513,7 +513,7 @@ QMenu * ToolBar::createContextMenu(QToolButton *button)
 
 			if (!hasAction(actionDescription->name()))
 			{
-				QAction *action = actionsMenu->addAction(icons_manager->loadIcon(actionDescription->iconName()), actionDescription->text());
+				QAction *action = actionsMenu->addAction(IconsManager::instance()->loadIcon(actionDescription->iconName()), actionDescription->text());
 				action->setData(actionDescription->name());
 			}
 		}

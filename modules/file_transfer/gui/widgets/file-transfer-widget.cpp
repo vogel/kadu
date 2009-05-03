@@ -19,7 +19,7 @@
 #include "file-transfer/file-transfer-manager.h"
 
 #include "debug.h"
-#include "icons_manager.h"
+#include "icons-manager.h"
 #include "message_box.h"
 
 #include "file-transfer-widget.h"
@@ -123,12 +123,12 @@ void FileTransferWidget::createGui()
 
 	if (FileTransfer::TypeSend == CurrentTransfer->transferType())
 	{
-		icon->setPixmap(icons_manager->loadPixmap("FileTransferSend"));
+		icon->setPixmap(IconsManager::instance()->loadPixmap("FileTransferSend"));
 		DescriptionLabel->setText(tr("<b>File</b> %1 <b>to</b> %2").arg(fileName).arg(contact.display()));
 	}
 	else
 	{
-		icon->setPixmap(icons_manager->loadPixmap("FileTransferReceive"));
+		icon->setPixmap(IconsManager::instance()->loadPixmap("FileTransferReceive"));
 		DescriptionLabel->setText(tr("<b>File</b> %1 <b>from</b> %2").arg(fileName).arg(contact.display()));
 	}
 }

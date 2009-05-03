@@ -19,7 +19,7 @@
 #include "debug.h"
 #include "gui/windows/kadu-window.h"
 #include "gui/widgets/status-menu.h"
-#include "icons_manager.h"
+#include "icons-manager.h"
 #include "main_configuration_window.h"
 #include "misc/misc.h"
 #include "pending_msgs.h"
@@ -70,10 +70,10 @@ DockingManager::DockingManager()
 	statusMenu->addToMenu(DockMenu);
 #ifdef Q_OS_MAC
 	DockMenu->insertSeparator();
-	DockMenu->addAction(icons_manager->loadIcon("OpenChat"), tr("Show Pending Messages"), chat_manager, SLOT(openPendingMsgs()));
+	DockMenu->addAction(IconsManager::instance()->loadIcon("OpenChat"), tr("Show Pending Messages"), chat_manager, SLOT(openPendingMsgs()));
 #endif
 	DockMenu->addSeparator();
-	DockMenu->addAction(icons_manager->loadIcon("Exit"), tr("&Exit Kadu"), Core::instance(), SLOT(quit()));
+	DockMenu->addAction(IconsManager::instance()->loadIcon("Exit"), tr("&Exit Kadu"), Core::instance(), SLOT(quit()));
 
 	connect(this, SIGNAL(mousePressMidButton()), &pending, SLOT(openMessages()));
 
@@ -125,15 +125,15 @@ void DockingManager::changeIcon()
 		switch (newMessageIcon)
 		{
 			case AnimatedEnvelope:
-				emit trayMovieChanged(icons_manager->iconPath("MessageAnim"));
+				emit trayMovieChanged(IconsManager::instance()->iconPath("MessageAnim"));
 				break;
 			case StaticEnvelope:
-				emit trayPixmapChanged(icons_manager->loadIcon("Message"));
+				emit trayPixmapChanged(IconsManager::instance()->loadIcon("Message"));
 				break;
 			case BlinkingEnvelope:
 				if (!blink)
 				{
-					emit trayPixmapChanged(icons_manager->loadIcon("Message"));
+					emit trayPixmapChanged(IconsManager::instance()->loadIcon("Message"));
 					icon_timer->setSingleShot(true);
 					icon_timer->start(500);
 					blink = true;

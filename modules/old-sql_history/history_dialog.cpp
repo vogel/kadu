@@ -32,7 +32,7 @@
 #include "emoticons.h"
 #include "message_box.h"
 #include "sql_history.h"
-#include "icons_manager.h"
+#include "icons-manager.h"
 #include "kadu.h"
 #include "misc/misc.h"
 #include "search.h"
@@ -76,7 +76,7 @@ DetailsListViewItem::DetailsListViewItem(QTreeWidget* parent, QString contact, Q
 	setText(1, title);
 	setText(2, date.toString("dd.MM.yyyy"));
 	setText(3, length);
-	setIcon(0, QIcon(icons_manager->loadIcon("WriteEmail")));
+	setIcon(0, QIcon(IconsManager::instance()->loadIcon("WriteEmail")));
 }
 
 QDate DetailsListViewItem::date() const
@@ -191,7 +191,7 @@ HistoryDlg::HistoryDlg() : QWidget(NULL), isSearchInProgress(0), closeDemand(0),
 {
 	kdebugf();
 	setCaption(tr("History"));
-	setIcon(icons_manager->loadIcon("History").pixmap());
+	setIcon(IconsManager::instance()->loadIcon("History").pixmap());
 	QGridLayout* grid = new QGridLayout(this, 2, 5, 3, 3);
 	grid->setSpacing(0);
 	QSplitter* splitter = new QSplitter(Qt::Horizontal, this);
@@ -230,12 +230,12 @@ HistoryDlg::HistoryDlg() : QWidget(NULL), isSearchInProgress(0), closeDemand(0),
 	maxLen = 36;//~	
 
 	MainPopupMenu = new QMenu;
-	MainPopupMenu->addAction(icons_manager->loadIcon("OpenChat"), tr("&Open chat"), this, SLOT(openChat()));
-	MainPopupMenu->addAction(icons_manager->loadIcon("LookupUserInfo"), tr("&Search in directory"), this, SLOT(lookupUserInfo()));
-	MainPopupMenu->addAction(icons_manager->loadIcon("ClearHistory"), tr("&Clear history"), this, SLOT(removeHistoryEntriesPerUser()));
+	MainPopupMenu->addAction(IconsManager::instance()->loadIcon("OpenChat"), tr("&Open chat"), this, SLOT(openChat()));
+	MainPopupMenu->addAction(IconsManager::instance()->loadIcon("LookupUserInfo"), tr("&Search in directory"), this, SLOT(lookupUserInfo()));
+	MainPopupMenu->addAction(IconsManager::instance()->loadIcon("ClearHistory"), tr("&Clear history"), this, SLOT(removeHistoryEntriesPerUser()));
 	
 	DetailsPopupMenu = new QMenu;
-	DetailsPopupMenu->addAction(icons_manager->loadIcon("ClearHistory"), tr("&Remove entries"), this, SLOT(removeHistoryEntriesPerDate()));
+	DetailsPopupMenu->addAction(IconsManager::instance()->loadIcon("ClearHistory"), tr("&Remove entries"), this, SLOT(removeHistoryEntriesPerDate()));
 	kdebugf2();
 }
 
@@ -281,18 +281,18 @@ void HistoryDlg::globalRefresh()
 	statusItem->setExpanded(false);
 	searchItem = new QTreeWidgetItem(MainListView, QStringList(tr("Search")));
 
-	chatsItem->setIcon(0, QIcon(icons_manager->loadIcon("OpenChat")));
-	///ft->setIcon(0, QIcon(icons_manager->loadIcon("SendFile")));
-	smsItem->setIcon(0, QIcon(icons_manager->loadIcon("Mobile")));
-	conferItem->setIcon(0, QIcon(icons_manager->loadIcon("ManageModules")));
-	statusItem->setIcon(0, QIcon(icons_manager->loadIcon("Busy")));
-	searchItem->setIcon(0, QIcon(icons_manager->loadIcon("LookupUserInfo")));
+	chatsItem->setIcon(0, QIcon(IconsManager::instance()->loadIcon("OpenChat")));
+	///ft->setIcon(0, QIcon(IconsManager::instance()->loadIcon("SendFile")));
+	smsItem->setIcon(0, QIcon(IconsManager::instance()->loadIcon("Mobile")));
+	conferItem->setIcon(0, QIcon(IconsManager::instance()->loadIcon("ManageModules")));
+	statusItem->setIcon(0, QIcon(IconsManager::instance()->loadIcon("Busy")));
+	searchItem->setIcon(0, QIcon(IconsManager::instance()->loadIcon("LookupUserInfo")));
 
 	anonChatsItem = new QTreeWidgetItem(chatsItem, QStringList(tr("Anonymous")));
-	anonChatsItem->setIcon(0, QIcon(icons_manager->loadIcon("PersonalInfo")));
+	anonChatsItem->setIcon(0, QIcon(IconsManager::instance()->loadIcon("PersonalInfo")));
 	//mo¿e byæ status od anonima??
 	//anonStatusItem = new QTreeWidgetItem(statusItem, QStringList(tr("Anonymous")));
-	//anonStatusItem->setIcon(0, QIcon(icons_manager->loadIcon("PersonalInfo")));
+	//anonStatusItem->setIcon(0, QIcon(IconsManager::instance()->loadIcon("PersonalInfo")));
 
 	QList<UserListElements> chatUidGroups = sql_history->getChatUidGroups();
 	foreach(UserListElements uid_group, chatUidGroups)
@@ -314,12 +314,12 @@ void HistoryDlg::globalRefresh()
 				MainListView->setCurrentItem(mainItem);
 				mainItemChanged(mainItem, 0);
 			}
-			mainItem->setIcon(0, icons_manager->loadIcon("Online") );
+			mainItem->setIcon(0, IconsManager::instance()->loadIcon("Online") );
 		}
 		else if (uid_group.count() > 1) //konferencja
 		{
 			MainListViewText *conferenceItem = new MainListViewText(conferItem, uid_group);
-			conferenceItem->setIcon(0, QIcon(icons_manager->loadIcon("Profiles")));
+			conferenceItem->setIcon(0, QIcon(IconsManager::instance()->loadIcon("Profiles")));
 		}
 	}
 
@@ -327,14 +327,14 @@ void HistoryDlg::globalRefresh()
 	foreach(UserListElements uid_group, statusUidGroups)
 	{
 		MainListViewText* statItem = new MainListViewText(statusItem, uid_group);
-		statItem->setIcon(0, icons_manager->loadIcon("Online"));
+		statItem->setIcon(0, IconsManager::instance()->loadIcon("Online"));
 	}
 
 	QList<UserListElements> smsUidGroups = sql_history->getSmsUidGroups();
 	foreach(UserListElements uid_group, smsUidGroups)
 	{
 		MainListViewText* sItem = new MainListViewText(smsItem, uid_group);
-		sItem->setIcon(0, icons_manager->loadIcon("Mobile"));
+		sItem->setIcon(0, IconsManager::instance()->loadIcon("Mobile"));
 	}
 	if(!anonymousCount)
 		anonChatsItem->setHidden(true);
@@ -364,14 +364,14 @@ void HistoryDlg::searchBranchRefresh()
 	{
 	QTreeWidgetItem* searchSubItem = new QTreeWidgetItem(searchItem);
 	searchSubItem->setText(0, previousSearchResults.last().pattern);
-	searchSubItem->setIcon(0, QIcon(icons_manager->loadIcon("SendMessage")));
+	searchSubItem->setIcon(0, QIcon(IconsManager::instance()->loadIcon("SendMessage")));
 	}	
 // 	searchItem->removeChild();
 // 	foreach(HistorySearchResult result, previousSearchResults)
 // // 	{
 // // 		QTreeWidgetItem* searchSubItem = new QTreeWidgetItem(searchItem);
 // // 		searchSubItem->setText(0, result.pattern);
-// // 		searchSubItem->setIcon(0, QIcon(icons_manager->loadIcon("SendMessage")));		
+// // 		searchSubItem->setIcon(0, QIcon(IconsManager::instance()->loadIcon("SendMessage")));		
 // 	}
 	kdebugf2();
 }

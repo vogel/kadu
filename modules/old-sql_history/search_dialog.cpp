@@ -20,7 +20,7 @@
 #include "emoticons.h"
 #include "message_box.h"
 #include "sql_history.h"
-#include "icons_manager.h"
+#include "icons-manager.h"
 #include "kadu.h"
 #include "misc/misc.h"
 
@@ -30,7 +30,7 @@
 HistoryAdvSearchWindow::HistoryAdvSearchWindow(QWidget *window) : QDialog(window), parentWindow(window)
 {
 	setCaption(tr("Search in history"));
-	setIcon(icons_manager->loadIcon("History").pixmap());
+	setIcon(IconsManager::instance()->loadIcon("History").pixmap());
 	//nie do ko�ca to pikne
 	setGeometry(250, 250, 200, 200);
 	QVBoxLayout* mainLayout = new QVBoxLayout();
@@ -155,13 +155,13 @@ HistoryAdvSearchWindow::HistoryAdvSearchWindow(QWidget *window) : QDialog(window
 	QHBoxLayout* buttonsLay = new QHBoxLayout;
 	buttonsLay->setMargin(1);
 	buttonsLay->setSpacing(3);
-	QPushButton* goButton = new QPushButton(icons_manager->loadIcon("LookupUserInfo"), tr("&Find"), this);
+	QPushButton* goButton = new QPushButton(IconsManager::instance()->loadIcon("LookupUserInfo"), tr("&Find"), this);
 	///main->addWidget(findButton);
 	connect(goButton, SIGNAL(clicked()), this, SLOT(findButtonClicked()));
 	//QLabel* textLabel = new QLabel(tr("Type in here a phrase to find in history."));
 	buttonsLay->addWidget(goButton);
 	//phraseEdit = new QLineEdit;
-	QPushButton* cancelButton = new QPushButton(icons_manager->loadIcon("CancelWindowButton"), tr("&Cancel"), this);
+	QPushButton* cancelButton = new QPushButton(IconsManager::instance()->loadIcon("CancelWindowButton"), tr("&Cancel"), this);
 	connect(cancelButton, SIGNAL(clicked()), this, SLOT(cancelButtonClicked()));
 	buttonsLay->addWidget(cancelButton);
 

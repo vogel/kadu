@@ -24,7 +24,7 @@
 #include "action.h"
 #include "config_file.h"
 #include "debug.h"
-#include "icons_manager.h"
+#include "icons-manager.h"
 #include "message_box.h"
 #include "main_configuration_window.h"
 
@@ -864,5 +864,5 @@ QPixmap JabberProtocol::statusPixmap(Status status)
 			break;
 	}
 
-	return icons_manager->loadPixmap(pixmapName);
+	return IconsManager::instance()->loadPixmap(pixmapName);
 }

@@ -18,7 +18,7 @@
 #include "debug.h"
 #include "gadu.h"
 #include "userlist.h"
-#include "icons_manager.h"
+#include "icons-manager.h"
 #include "encryption.h"
 #include "misc.h"
 #include "message_box.h"
@@ -39,7 +39,7 @@ KeysManager::KeysManager(QDialog *parent)
 	QWidget *left = new QWidget();
 
 	QLabel *l_icon = new QLabel;
-	l_icon->setPixmap(icons_manager->loadPixmap("ManageKeysWindowIcon"));
+	l_icon->setPixmap(IconsManager::instance()->loadPixmap("ManageKeysWindowIcon"));
 
 	QWidget *blank = new QWidget;
 	blank->setSizePolicy(QSizePolicy(QSizePolicy::Maximum, QSizePolicy::Expanding));
@@ -89,11 +89,11 @@ KeysManager::KeysManager(QDialog *parent)
 	QWidget *blank2 = new QWidget;
 	blank2->setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Maximum));
 
-	pb_del = new QPushButton(icons_manager->loadIcon("DeleteKeyButton"), tr("Delete"), bottom);
+	pb_del = new QPushButton(IconsManager::instance()->loadIcon("DeleteKeyButton"), tr("Delete"), bottom);
 	pb_del->setEnabled(false);
-	pb_on = new QPushButton(icons_manager->loadIcon("DecryptedChat"), tr("On"), bottom);
+	pb_on = new QPushButton(IconsManager::instance()->loadIcon("DecryptedChat"), tr("On"), bottom);
 	pb_on->setEnabled(false);
-	QPushButton *pb_close = new QPushButton(icons_manager->loadIcon("CloseWindow"), tr("&Close"), bottom, "close");
+	QPushButton *pb_close = new QPushButton(IconsManager::instance()->loadIcon("CloseWindow"), tr("&Close"), bottom, "close");
 
 	QHBoxLayout *bottom_layout = new QHBoxLayout(bottom);
 	bottom_layout->addWidget(blank2);
@@ -206,12 +206,12 @@ void KeysManager::turnEncryptionBtn(bool on)
 	if (on)
 	{
 		pb_on->setText(tr("Off"));
-		pb_on->setIcon(icons_manager->loadIcon("DecryptedChat_off"));
+		pb_on->setIcon(IconsManager::instance()->loadIcon("DecryptedChat_off"));
 	}
 	else
 	{
 		pb_on->setText(tr("On"));
-		pb_on->setIcon(icons_manager->loadIcon("DecryptedChat"));
+		pb_on->setIcon(IconsManager::instance()->loadIcon("DecryptedChat"));
 	}
 }
 

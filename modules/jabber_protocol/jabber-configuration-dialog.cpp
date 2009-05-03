@@ -17,7 +17,6 @@
 #include "gui/widgets/configuration/configuration-widget.h"
 
 #include "jabber-account.h"
-#include "icons_manager.h"
 #include "misc/misc.h"
 
 #include "jabber-account-data-manager.h"

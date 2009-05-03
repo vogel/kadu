@@ -15,7 +15,7 @@
 #include "config_file.h"
 #include "debug.h"
 #include "osd_hint.h"
-#include "icons_manager.h"
+#include "icons-manager.h"
 #include "kadu_parser.h"
 #include "misc/misc.h"
 
@@ -44,9 +44,9 @@ OSDHint::OSDHint(QWidget *parent, Notification *notification)
 	int iconSize = config_file.readNumEntry("OSDHints", "IconSize", 32);
 	QString icon = dataPath("kadu/modules/data/osd_hints/") + notification->icon().lower() + QString::number(iconSize) + ".png";
 
-	QPixmap pix = icons_manager->loadPixmap(icon);
+	QPixmap pix = IconsManager::instance()->loadPixmap(icon);
     	if (pix.isNull())
-		pix = icons_manager->loadPixmap(dataPath("kadu/modules/data/osd_hints/osd_icon.png"));
+		pix = IconsManager::instance()->loadPixmap(dataPath("kadu/modules/data/osd_hints/osd_icon.png"));
 
 	createLabels(pix);
 	updateText();

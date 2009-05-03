@@ -5,7 +5,7 @@
 #include "misc/misc.h"
 #include "config_file.h"
 #include "modules/notify/notify.h"
-#include "icons_manager.h"
+#include "icons-manager.h"
 
 #include "cenzor.h"
 

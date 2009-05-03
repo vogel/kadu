@@ -166,7 +166,7 @@ set (kadu_SRCS
 	hot_key.cpp
 	html_document.cpp
 	http_client.cpp
-	icons_manager.cpp
+	icons-manager.cpp
 	ignore.cpp
 	kadu_main_window.cpp
 	kadu_parser.cpp
@@ -323,7 +323,7 @@ set (kadu_MOC_SRCS
 	hot_key.h
 	html_document.h
 	http_client.h
-	icons_manager.h
+	icons-manager.h
 	ignore.h
 	kadu_main_window.h
 	kadu_parser.h

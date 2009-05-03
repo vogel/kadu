@@ -34,7 +34,7 @@
 #include "config_file.h"
 #include "debug.h"
 #include "hot_key.h"
-#include "icons_manager.h"
+#include "icons-manager.h"
 
 #include "kadu-window.h"
 
@@ -96,7 +96,7 @@ void KaduWindow::createGui()
 	if (!config_file.readBoolEntry("Look", "ShowInfoPanel"))
 		InfoPanel->QWidget::hide();
 
-	ChangeStatusButton = new StatusButton(icons_manager->loadIcon("Offline"), tr("Offline"), this);
+	ChangeStatusButton = new StatusButton(IconsManager::instance()->loadIcon("Offline"), tr("Offline"), this);
 	MainLayout->addWidget(ChangeStatusButton);
 	ChangeStatusButton->setMenu(StatusButtonMenu);
 
@@ -131,7 +131,7 @@ void KaduWindow::createKaduMenu()
 	KaduMenu->setTitle("Kadu");
 
 	RecentChatsMenu = new QMenu();
-	RecentChatsMenu->setIcon(icons_manager->loadIcon("OpenChat"));
+	RecentChatsMenu->setIcon(IconsManager::instance()->loadIcon("OpenChat"));
 	RecentChatsMenu->setTitle(tr("Recent chats..."));
 	connect(RecentChatsMenu, SIGNAL(aboutToShow()), this, SLOT(createRecentChatsMenu()));
 	connect(RecentChatsMenu, SIGNAL(triggered(QAction *)), this, SLOT(openRecentChats(QAction *)));
@@ -239,7 +239,7 @@ void KaduWindow::createRecentChatsMenu()
 			}
 		}
 
-		action = new QAction(icons_manager->loadIcon("OpenChat"), displays.join(", "), this);
+		action = new QAction(IconsManager::instance()->loadIcon("OpenChat"), displays.join(", "), this);
 		action->setData(index);
 		RecentChatsMenu->addAction(action);
 

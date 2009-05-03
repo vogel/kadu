@@ -10,14 +10,14 @@
 #include <QtGui/QTextBlock>
 #include <QtGui/QTextDocument>
 
-#include "icons_manager.h"
+#include "icons-manager.h"
 
 #include "message-part.h"
 
 QString MessagePart::loadingImageHtml(const QString &imageId)
 {
 	return QString("<img src=\"file:///%1\" id=\"%2\" />")
-			.arg(icons_manager->iconPath("LoadingImage"))
+			.arg(IconsManager::instance()->iconPath("LoadingImage"))
 			.arg(imageId);
 }
 

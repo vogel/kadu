@@ -11,7 +11,7 @@
 
 #include "notify/notification-manager.h"
 #include "notify/notify-event.h"
-#include "icons_manager.h"
+#include "icons-manager.h"
 
 #include "new_message_notification.h"
 
@@ -46,7 +46,7 @@ void MessageNotification::unregisterEvents()
 
 MessageNotification::MessageNotification(MessageType messageType, Chat *chat, const QString &message) :
 		AccountNotification(chat ? chat->account() : 0, messageType == NewChat ? "NewChat" : "NewMessage",
-			icons_manager->loadIcon("Message"), chat)
+			IconsManager::instance()->loadIcon("Message"), chat)
 {
 // 	const Contact &contact = *contacts.begin(); TODO: 0.6.6 chat->title()
 	QString syntax;

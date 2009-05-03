@@ -5,7 +5,7 @@
 
 #include "config_file.h"
 #include "hot_key.h"
-#include "icons_manager.h"
+#include "icons-manager.h"
 #include "misc/misc.h"
 
 #include "tabwidget.h"
@@ -26,13 +26,13 @@ TabWidget::TabWidget()
 			SLOT(mouseDoubleClickEvent(QMouseEvent*)));
 	//przycisk otwarcia nowej karty pokazywany w lewym górnym rogu
 	openChatButton = new QToolButton(this);
-   	openChatButton->setIcon(icons_manager->loadIcon("OpenChat"));
+   	openChatButton->setIcon(IconsManager::instance()->loadIcon("OpenChat"));
 	setCornerWidget(openChatButton, Qt::TopLeftCorner);
 	connect(openChatButton, SIGNAL(clicked()),SLOT(newChat()));
 	openChatButton->setAutoRaise(true);
 	//przycisk zamknięcia aktywnej karty znajdujący się w prawym górnym rogu
 	closeChatButton = new QToolButton(this);
-   	closeChatButton->setIcon(icons_manager->loadIcon("TabsRemove"));
+   	closeChatButton->setIcon(IconsManager::instance()->loadIcon("TabsRemove"));
 	setCornerWidget(closeChatButton, Qt::TopRightCorner);
 	connect(closeChatButton, SIGNAL(clicked()),SLOT(deleteTab()));
 	closeChatButton->setAutoRaise(true);
@@ -265,8 +265,8 @@ void TabWidget::openChatWithWindowClose()
 void TabWidget::configurationUpdated()
 {
 	// odświeżenie ikon
-   	openChatButton->setIcon(icons_manager->loadIcon("OpenChat"));
-   	closeChatButton->setIcon(icons_manager->loadIcon("TabsRemove"));
+   	openChatButton->setIcon(IconsManager::instance()->loadIcon("OpenChat"));
+   	closeChatButton->setIcon(IconsManager::instance()->loadIcon("TabsRemove"));
 
 	// uaktualniamy zmienne konfiguracyjne
 	closeChatButton->setShown(config_file.readBoolEntry("Tabs", "CloseButton"));
@@ -287,7 +287,7 @@ TabBar::TabBar(QWidget *parent, char *name)
    	crossButton->hide();
    	connect(crossButton, SIGNAL(clicked()), this, SLOT(closeTab()) );
    	crossButton->setGeometry(0,0,15,15);
-   	crossButton->setIcon(icons_manager->loadIcon("TabsClose"));
+   	crossButton->setIcon(IconsManager::instance()->loadIcon("TabsClose"));
 	// staje się "podświetlany"
 	crossButton->setAutoRaise(true);
 	// domyśnie żadna karta nie jest "naciśnięta" (nie znajduje się na niej przycisk zamknięcia)
@@ -372,7 +372,7 @@ void TabBar::mouseDoubleClickEvent(QMouseEvent* e)
 void TabBar::setShowCloseButton(bool show)
 {
 	// odświeżenie ikonki
-   	crossButton->setIcon(icons_manager->loadPixmap("TabsClose"));
+   	crossButton->setIcon(IconsManager::instance()->loadPixmap("TabsClose"));
 
 	showCloseButton = show;
 	// w zaleźności czy w konfiguracji włączone jest pokazywanie przycisku zamykania na kartach ukrywamy go lub pokazujemy

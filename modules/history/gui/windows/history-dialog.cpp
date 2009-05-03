@@ -28,7 +28,7 @@
 #include "emoticons.h"
 #include "message_box.h"
 #include "misc/misc.h"
-#include "icons_manager.h"
+#include "icons-manager.h"
 
 #include "history-dialog.h"
 
@@ -66,7 +66,7 @@ DetailsListItem::DetailsListItem(QTreeWidget* parent, Chat *chat, QDate date)
 	setText(1, prepareTitle());
  	setText(2, date.toString("dd.MM.yyyy"));
 	setText(3, prepareLength());
- 	setIcon(0, QIcon(icons_manager->loadIcon("WriteEmail")));
+	setIcon(0, QIcon(IconsManager::instance()->loadIcon("WriteEmail")));
 }
 
 QString DetailsListItem::prepareAltnick()
@@ -210,7 +210,7 @@ HistoryDlg::HistoryDlg() : QWidget(NULL), isSearchInProgress(0), closeDemand(0),
 {
 	kdebugf();
 	setWindowTitle(tr("History"));
-	setWindowIcon(icons_manager->loadIcon("History"));
+	setWindowIcon(IconsManager::instance()->loadIcon("History"));
 	QGridLayout* grid = new QGridLayout(this);
 	grid->setSpacing(0);
 	QSplitter* splitter = new QSplitter(Qt::Horizontal, this);
@@ -249,12 +249,12 @@ HistoryDlg::HistoryDlg() : QWidget(NULL), isSearchInProgress(0), closeDemand(0),
 	maxLen = 36;//~	
 
 	MainPopupMenu = new QMenu;
-	MainPopupMenu->addAction(icons_manager->loadIcon("OpenChat"), tr("&Open chat"), this, SLOT(openChat()));
-	MainPopupMenu->addAction(icons_manager->loadIcon("LookupUserInfo"), tr("&Search in directory"), this, SLOT(lookupUserInfo()));
-	MainPopupMenu->addAction(icons_manager->loadIcon("ClearHistory"), tr("&Clear history"), this, SLOT(removeHistoryEntriesPerUser()));
+	MainPopupMenu->addAction(IconsManager::instance()->loadIcon("OpenChat"), tr("&Open chat"), this, SLOT(openChat()));
+	MainPopupMenu->addAction(IconsManager::instance()->loadIcon("LookupUserInfo"), tr("&Search in directory"), this, SLOT(lookupUserInfo()));
+	MainPopupMenu->addAction(IconsManager::instance()->loadIcon("ClearHistory"), tr("&Clear history"), this, SLOT(removeHistoryEntriesPerUser()));
 	
 	DetailsPopupMenu = new QMenu;
-	DetailsPopupMenu->addAction(icons_manager->loadIcon("ClearHistory"), tr("&Remove entries"), this, SLOT(removeHistoryEntriesPerDate()));
+	DetailsPopupMenu->addAction(IconsManager::instance()->loadIcon("ClearHistory"), tr("&Remove entries"), this, SLOT(removeHistoryEntriesPerDate()));
 	kdebugf2();
 }
 
@@ -284,12 +284,12 @@ void HistoryDlg::globalRefresh()
 	statusItem->setExpanded(false);
 	searchItem = new QTreeWidgetItem(MainListView, QStringList(tr("Search")));
 
-	chatsItem->setIcon(0, QIcon(icons_manager->loadIcon("OpenChat")));
-	///ft->setIcon(0, QIcon(icons_manager->loadIcon("SendFile")));
-	smsItem->setIcon(0, QIcon(icons_manager->loadIcon("Mobile")));
-	conferItem->setIcon(0, QIcon(icons_manager->loadIcon("ManageModules")));
-	statusItem->setIcon(0, QIcon(icons_manager->loadIcon("Busy")));
-	searchItem->setIcon(0, QIcon(icons_manager->loadIcon("LookupUserInfo")));
+	chatsItem->setIcon(0, IconsManager::instance()->loadIcon("OpenChat"));
+	///ft->setIcon(0, icons_manager->loadIcon("SendFile"));
+	smsItem->setIcon(0, IconsManager::instance()->loadIcon("Mobile"));
+	conferItem->setIcon(0, IconsManager::instance()->loadIcon("ManageModules"));
+	statusItem->setIcon(0, IconsManager::instance()->loadIcon("Busy"));
+	searchItem->setIcon(0, IconsManager::instance()->loadIcon("LookupUserInfo"));
 
 	QList<Chat *> chatsList = History::instance()->chatsList();
 	
@@ -300,7 +300,7 @@ void HistoryDlg::globalRefresh()
 			mainItem = new MainListItem(conferItem, chat);
 		else
 			mainItem = new MainListItem(chatsItem, chat);
-		mainItem->setIcon(0, icons_manager->loadIcon("Online"));
+		mainItem->setIcon(0, IconsManager::instance()->loadIcon("Online"));
 	}
 
 	kdebugf2();
@@ -315,14 +315,14 @@ void HistoryDlg::searchBranchRefresh()
 	{
 	QTreeWidgetItem* searchSubItem = new QTreeWidgetItem(searchItem);
 	searchSubItem->setText(0, previousSearchResults.last().pattern);
-	searchSubItem->setIcon(0, QIcon(icons_manager->loadIcon("SendMessage")));
+	searchSubItem->setIcon(0, QIcon(IconsManager::instance()->loadIcon("SendMessage")));
 	}	
 // 	searchItem->removeChild();
 // 	foreach(HistorySearchResult result, previousSearchResults)
 // // 	{
 // // 		QTreeWidgetItem* searchSubItem = new QTreeWidgetItem(searchItem);
 // // 		searchSubItem->setText(0, result.pattern);
-// // 		searchSubItem->setIcon(0, QIcon(icons_manager->loadIcon("SendMessage")));		
+// // 		searchSubItem->setIcon(0, QIcon(IconsManager::instance()->loadIcon("SendMessage")));		
 // 	}
 */
 	kdebugf2();

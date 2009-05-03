@@ -21,7 +21,7 @@
 #include "debug.h"
 #include "gadu.h"
 #include "html_document.h"
-#include "icons_manager.h"
+#include "icons-manager.h"
 #include "kadu.h"
 #include "message_box.h"
 #include "status.h"

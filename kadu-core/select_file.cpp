@@ -12,7 +12,7 @@
 #include <QtGui/QLineEdit>
 #include <QtGui/QPushButton>
 
-#include "icons_manager.h"
+#include "icons-manager.h"
 #include "misc/misc.h"
 
 #include "select_file.h"
@@ -24,7 +24,7 @@ SelectFile::SelectFile(const QString &type, QWidget *parent)
 
 	LineEdit = new QLineEdit(this);
 
-	QPushButton *selectFile = new QPushButton(icons_manager->loadIcon("OpenFile"), "", this);
+	QPushButton *selectFile = new QPushButton(IconsManager::instance()->loadIcon("OpenFile"), "", this);
 	connect(selectFile, SIGNAL(clicked()), this, SLOT(selectFileClicked()));
 
 	layout->addWidget(LineEdit);
@@ -40,7 +40,7 @@ SelectFile::SelectFile(QWidget *parent)
 
 	LineEdit = new QLineEdit(this);
 
-	QPushButton *selectFile = new QPushButton(icons_manager->loadIcon("OpenFile"), "", this);
+	QPushButton *selectFile = new QPushButton(IconsManager::instance()->loadIcon("OpenFile"), "", this);
 	connect(selectFile, SIGNAL(clicked()), this, SLOT(selectFileClicked()));
 
 	layout->addWidget(LineEdit);

@@ -23,7 +23,7 @@
 #include "config_file.h"
 #include "debug.h"
 #include "html_document.h"
-#include "icons_manager.h"
+#include "icons-manager.h"
 #include "kadu.h"
 #include "main_configuration_window.h"
 #include "modules.h"

@@ -21,7 +21,7 @@
 #include "file_transfer.h"
 #include "file_transfer_notifications.h"
 #include "file_transfer_window.h"
-#include "icons_manager.h"
+#include "icons-manager.h"
 #include "kadu.h"
 #include "message_box.h"
 #include "protocols/protocol.h"

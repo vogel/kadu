@@ -15,7 +15,7 @@
 #include <QtGui/QListWidget>
 
 #include "debug.h"
-#include "icons_manager.h"
+#include "icons-manager.h"
 #include "misc/misc.h"
 
 #include "path_list_edit.h"
@@ -72,9 +72,9 @@ PathListEditWindow::PathListEditWindow(const QStringList &pathList, QWidget *par
 	Layout->addWidget(PathListWidget, 0, 0, 4, 1);
 
 
-	QPushButton *add = new QPushButton(icons_manager->loadIcon("AddSelectPathDialogButton"), tr("Add"), this);
-	QPushButton *change = new QPushButton(icons_manager->loadIcon("ChangeSelectPathDialogButton"), tr("Change"), this);
-	QPushButton *remove = new QPushButton(icons_manager->loadIcon("RemoveSelectPathDialogButton"), tr("Remove"), this);
+	QPushButton *add = new QPushButton(IconsManager::instance()->loadIcon("AddSelectPathDialogButton"), tr("Add"), this);
+	QPushButton *change = new QPushButton(IconsManager::instance()->loadIcon("ChangeSelectPathDialogButton"), tr("Change"), this);
+	QPushButton *remove = new QPushButton(IconsManager::instance()->loadIcon("RemoveSelectPathDialogButton"), tr("Remove"), this);
 
 	Layout->addWidget(add, 0, 1);
 	Layout->addWidget(change, 1, 1);
@@ -91,8 +91,8 @@ PathListEditWindow::PathListEditWindow(const QStringList &pathList, QWidget *par
 
 	QWidget *hm = new QWidget;
 	hm->setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Minimum));
-	QPushButton *ok = new QPushButton(icons_manager->loadIcon("OkWindowButton"), tr("OK"), this);
-	QPushButton *cancel = new QPushButton(icons_manager->loadIcon("CancelWindowButton"), tr("&Cancel"), this);
+	QPushButton *ok = new QPushButton(IconsManager::instance()->loadIcon("OkWindowButton"), tr("OK"), this);
+	QPushButton *cancel = new QPushButton(IconsManager::instance()->loadIcon("CancelWindowButton"), tr("&Cancel"), this);
 	bottom_layout->addWidget(hm);
 	bottom_layout->addWidget(ok);
 	bottom_layout->addWidget(cancel);

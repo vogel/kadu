@@ -20,7 +20,7 @@
 #include "config_file.h"
 #include "debug.h"
 #include "../modules/gadu_protocol/gadu.h"
-#include "icons_manager.h"
+#include "icons-manager.h"
 #include "message_box.h"
 #include "misc/misc.h"
 #include "unregister.h"
@@ -41,7 +41,7 @@ Unregister::Unregister(QDialog *parent) : QWidget(parent, Qt::Window),
 	QWidget *left = new QWidget();
 
 	QLabel *l_icon = new QLabel;
-	l_icon->setPixmap(icons_manager->loadPixmap("UnregisterWindowIcon"));
+	l_icon->setPixmap(IconsManager::instance()->loadPixmap("UnregisterWindowIcon"));
 
 	QWidget *blank = new QWidget;
 	blank->setSizePolicy(QSizePolicy(QSizePolicy::Maximum, QSizePolicy::Expanding));
@@ -83,10 +83,10 @@ Unregister::Unregister(QDialog *parent) : QWidget(parent, Qt::Window),
 	QWidget *blank2 = new QWidget;
 	blank2->setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Maximum));
 
-	QPushButton *pb_unregister = new QPushButton(icons_manager->loadIcon("UnregisterAccountButton"), tr("Unregister"), bottom, "unregister");
+	QPushButton *pb_unregister = new QPushButton(IconsManager::instance()->loadIcon("UnregisterAccountButton"), tr("Unregister"), bottom, "unregister");
 	connect(pb_unregister, SIGNAL(clicked()), this, SLOT(doUnregister()));
 
-	QPushButton *pb_close = new QPushButton(icons_manager->loadIcon("CloseWindow"), tr("&Close"), bottom, "close");
+	QPushButton *pb_close = new QPushButton(IconsManager::instance()->loadIcon("CloseWindow"), tr("&Close"), bottom, "close");
 	connect(pb_close, SIGNAL(clicked()), this, SLOT(close()));
 
 	QHBoxLayout *bottom_layout = new QHBoxLayout(bottom);

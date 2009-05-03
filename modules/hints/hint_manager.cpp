@@ -24,7 +24,7 @@
 #include "debug.h"
 #include "hint_manager.h"
 #include "hints_configuration_widget.h"
-#include "icons_manager.h"
+#include "icons-manager.h"
 #include "kadu.h"
 #include "kadu_parser.h"
 #include "misc/misc.h"

@@ -18,7 +18,7 @@
 #include "gui/widgets/configuration/configuration-widget.h"
 
 #include "html_document.h"
-#include "icons_manager.h"
+#include "icons-manager.h"
 #include "message_box.h"
 #include "misc/misc.h"
 

@@ -27,7 +27,7 @@
 #include "kadu.h"
 #include "misc/misc.h"
 #include "search.h"
-#include "icons_manager.h"
+#include "icons-manager.h"
 #include "modules/notify/notify.h"
 
 
@@ -300,9 +300,9 @@ AgentWdg::AgentWdg(QWidget * parent, const char * name, Qt::WindowFlags f) : QWi
 	vBoxLayout1->addWidget(Results);
 
 	hBoxLayout1 = new QHBoxLayout(vBoxLayout1, 4, "hblayout1");
-	openChat = new QPushButton(icons_manager->loadIcon("OpenChat"), tr("Open chat"), this);
-	addContact = new QPushButton(icons_manager->loadIcon("AddUser"), tr("Add contact"), this);
-	removeFromList = new QPushButton(icons_manager->loadIcon("DeleteUserlist"), tr("Remove from list"), this);
+	openChat = new QPushButton(IconsManager::instance()->loadIcon("OpenChat"), tr("Open chat"), this);
+	addContact = new QPushButton(IconsManager::instance()->loadIcon("AddUser"), tr("Add contact"), this);
+	removeFromList = new QPushButton(IconsManager::instance()->loadIcon("DeleteUserlist"), tr("Remove from list"), this);
 
 	hBoxLayout1->addWidget(removeFromList);
 	hBoxLayout1->addWidget(addContact);

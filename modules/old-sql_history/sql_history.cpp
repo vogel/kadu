@@ -21,7 +21,7 @@
 #include "action.h"
 #include "chat_manager-old.h"
 #include "debug.h"
-#include "icons_manager.h"
+#include "icons-manager.h"
 #include "message_box.h"
 #include "misc/misc.h"
 #include "kadu.h"

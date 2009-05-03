@@ -15,7 +15,7 @@
 
 #include "config_file.h"
 #include "debug.h"
-#include "icons_manager.h"
+#include "icons-manager.h"
 #include "kadu_parser.h"
 #include "main_configuration_window.h"
 
@@ -87,7 +87,7 @@ void ExecConfigurationWidget::switchToEvent(const QString &event)
 
 //TODO 0.6.6 icon:
 ExecNotify::ExecNotify(QObject *parent)
-	: Notifier(QT_TRANSLATE_NOOP("@default", "Exec"), icons_manager->loadIcon("MediaPlayer"), parent)
+	: Notifier(QT_TRANSLATE_NOOP("@default", "Exec"), IconsManager::instance()->loadIcon("MediaPlayer"), parent)
 {
 	kdebugf();
 

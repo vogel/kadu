@@ -22,7 +22,7 @@
 #include "debug.h"
 #include "../history/history.h"
 #include "hot_key.h"
-#include "icons_manager.h"
+#include "icons-manager.h"
 #include "kadu.h"
 #include "message_box.h"
 #include "modules.h"
@@ -262,7 +262,7 @@ Sms::Sms(const QString& altnick, QWidget* parent) : QWidget(parent, Qt::Window),
 	grid->addMultiCellWidget(c_saveInHistory, 5, 5, 0, 1);
 
 	b_send = new QPushButton(this);
-	b_send->setIcon(icons_manager->loadIcon("SendSMSButton"));
+	b_send->setIcon(IconsManager::instance()->loadIcon("SendSMSButton"));
 	b_send->setText(tr("&Send"));
 	b_send->setDefault(true);
 	b_send->setMaximumWidth(200);

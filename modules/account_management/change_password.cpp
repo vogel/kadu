@@ -18,7 +18,7 @@
 #include "accounts/account_manager.h"
 #include "change_password.h"
 #include "debug.h"
-#include "icons_manager.h"
+#include "icons-manager.h"
 #include "message_box.h"
 #include "misc/misc.h"
 #include "../modules/gadu_protocol/gadu.h"
@@ -39,7 +39,7 @@ ChangePassword::ChangePassword(QDialog *parent) : QWidget(parent, Qt::Window),
 	QWidget *left = new QWidget();
 
 	QLabel *l_icon = new QLabel;
-	l_icon->setPixmap(icons_manager->loadPixmap("ChangePasswordWindowIcon"));
+	l_icon->setPixmap(IconsManager::instance()->loadPixmap("ChangePasswordWindowIcon"));
 
 	QWidget *blank = new QWidget;
 	blank->setSizePolicy(QSizePolicy(QSizePolicy::Maximum, QSizePolicy::Expanding));
@@ -90,10 +90,10 @@ ChangePassword::ChangePassword(QDialog *parent) : QWidget(parent, Qt::Window),
 	QWidget *blank2 = new QWidget;
 	blank2->setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Maximum));
 
-	QPushButton *pb_ok = new QPushButton(icons_manager->loadIcon("ChangePasswordEmailButton"), tr("OK"), bottom);
+	QPushButton *pb_ok = new QPushButton(IconsManager::instance()->loadIcon("ChangePasswordEmailButton"), tr("OK"), bottom);
 	connect(pb_ok, SIGNAL(clicked()), this, SLOT(start()));
 
-	QPushButton *pb_close = new QPushButton(icons_manager->loadIcon("CloseWindow"), tr("&Close"), bottom);
+	QPushButton *pb_close = new QPushButton(IconsManager::instance()->loadIcon("CloseWindow"), tr("&Close"), bottom);
 	connect(pb_close, SIGNAL(clicked()), this, SLOT(close()));
 
 	QHBoxLayout *bottom_layout = new QHBoxLayout(bottom);

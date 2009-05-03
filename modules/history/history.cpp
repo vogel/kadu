@@ -25,7 +25,6 @@
 #include "protocols/services/chat-service.h"
 
 #include "debug.h"
-#include "icons_manager.h"
 #include "message_box.h"
 
 #include "history.h"

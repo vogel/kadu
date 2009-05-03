@@ -33,7 +33,7 @@
 #include "action.h"
 #include "config_file.h"
 #include "debug.h"
-#include "icons_manager.h"
+#include "icons-manager.h"
 #include "toolbar.h"
 #include "xml_config_file.h"
 
@@ -487,7 +487,7 @@ void TabsManager::onTimer()
 			if (tabdialog->currentWidget() != chat)
 			{
 				if (msg)
-					tabdialog->setTabIcon(i, icons_manager->loadIcon("Message"));
+					tabdialog->setTabIcon(i, IconsManager::instance()->loadIcon("Message"));
 				else
 					tabdialog->setTabIcon(i, chat->icon());
 			}
@@ -554,10 +554,10 @@ void TabsManager::makePopupMenu()
 
 	menu=new QMenu();
 	//menu->setCheckable(true);
-	menu->addAction(icons_manager->loadIcon("TabsDetached"), tr("Detach"), this, SLOT(onMenuActionDetach()));
+	menu->addAction(IconsManager::instance()->loadIcon("TabsDetached"), tr("Detach"), this, SLOT(onMenuActionDetach()));
 	menu->addAction(tr("Detach all"), this, SLOT(onMenuActionDetachAll()));
 	menu->addSeparator();
-	menu->addAction(icons_manager->loadIcon("TabsClose"), tr("Close"), this, SLOT(onMenuActionClose()));
+	menu->addAction(IconsManager::instance()->loadIcon("TabsClose"), tr("Close"), this, SLOT(onMenuActionClose()));
 	menu->addAction(tr("Close all"), this, SLOT(onMenuActionCloseAll()));
 
 	kdebugf2();
@@ -739,8 +739,8 @@ void TabsManager::configurationUpdated()
 
 	//uaktualniamy ikonki w menu kontekstowym pod PPM na karcie
 	// TODO : to remove ?
-	//menu->changeItem(0, icons_manager->loadIcon("TabsDetached"), tr("Detach"));
-	//menu->changeItem(2, icons_manager->loadIcon("TabsClose"), tr("Close"));
+	//menu->changeItem(0, IconsManager::instance()->loadIcon("TabsDetached"), tr("Detach"));
+	//menu->changeItem(2, IconsManager::instance()->loadIcon("TabsClose"), tr("Close"));
 
 	kdebugf2();
 }

@@ -34,7 +34,7 @@
 #include "chat/chat_message.h"
 #include "config_file.h"
 #include "debug.h"
-#include "icons_manager.h"
+#include "icons-manager.h"
 #include "message_box.h"
 #include "misc/misc.h"
 #include "pending_msgs.h"

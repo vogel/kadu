@@ -18,7 +18,7 @@
 #include "config_file.h"
 #include "debug.h"
 #include "html_document.h"
-#include "icons_manager.h"
+#include "icons-manager.h"
 #include "misc/misc.h"
 
 #include "kadu_parser.h"
@@ -462,7 +462,7 @@ QString KaduParser::parse(const QString &s, Account *account, const Contact &con
 					{
 						parseStack.pop_back();
 						pe.type = ParseElem::PE_STRING;
-						pe.str = icons_manager->iconPath(pe.str);
+						pe.str = IconsManager::instance()->iconPath(pe.str);
 						parseStack.push_back(pe);
 						break;
 					}

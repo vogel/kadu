@@ -19,7 +19,7 @@
 #include "../docking/docking.h"
 #include "config_file.h"
 #include "debug.h"
-#include "icons_manager.h"
+#include "icons-manager.h"
 #include "kadu.h"
 #include "misc/misc.h"
 #include "pending_msgs.h"
@@ -93,7 +93,7 @@ void MacOSXDocking::trayPixmapChanged(const QIcon &small_pix, const QString &nam
 	if (!config_file.readBoolEntry("MacOSX Dock", "IconNotification", true))
 		return;
 
-	const QIcon &pix = icons_manager->loadIcon("Big" + name);
+	const QIcon &pix = IconsManager::instance()->loadIcon("Big" + name);
 	if (pix.isNull())
 	{
 		kdebugm(KDEBUG_WARNING, "big icon of %s not available\n", qPrintable(name));

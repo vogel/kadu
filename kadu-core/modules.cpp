@@ -32,7 +32,7 @@
 #include "config_file.h"
 #include "debug.h"
 #include "hot_key.h"
-#include "icons_manager.h"
+#include "icons-manager.h"
 #include "message_box.h"
 #include "misc/misc.h"
 
@@ -121,7 +121,7 @@ ModulesDialog::ModulesDialog(QWidget *parent)
 	centerLayout->setSpacing(10);
 
 	QLabel *l_info = new QLabel(center);
-	l_icon->setPixmap(icons_manager->loadPixmap("ManageModulesWindowIcon"));
+	l_icon->setPixmap(IconsManager::instance()->loadPixmap("ManageModulesWindowIcon"));
 	l_info->setText(tr("This dialog box allows you to manage installed modules. Modules are responsible "
 			"for numerous vital features like playing sounds or message encryption.\n"
 			"You can load (or unload) them by double-clicking on their names."));
@@ -167,7 +167,7 @@ ModulesDialog::ModulesDialog(QWidget *parent)
 	hideBaseModules = new QCheckBox(tr("Hide base modules"), bottom);
 	hideBaseModules->setChecked(config_file.readBoolEntry("General", "HideBaseModules"));
 	connect(hideBaseModules, SIGNAL(clicked()), this, SLOT(refreshList()));
-	QPushButton *pb_close = new QPushButton(icons_manager->loadIcon("CloseWindow"), tr("&Close"), bottom);
+	QPushButton *pb_close = new QPushButton(IconsManager::instance()->loadIcon("CloseWindow"), tr("&Close"), bottom);
 
 	bottomLayout->addWidget(hideBaseModules);
 	bottomLayout->addStretch();

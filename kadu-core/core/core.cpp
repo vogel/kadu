@@ -31,7 +31,7 @@
 #include "config_file.h"
 #include "debug.h"
 #include "emoticons.h"
-#include "icons_manager.h"
+#include "icons-manager.h"
 #include "modules.h"
 #include "pending_msgs.h"
 #include "search.h"
@@ -77,7 +77,6 @@ Core::~Core()
 	Updates::closeModule();
 	SearchDialog::closeModule();
 	EmoticonsManager::closeModule();
-	IconsManager::closeModule();
 
 #ifdef Q_OS_MACX
 	setIcon(QPixmap(dataPath("kadu.png")));
@@ -282,9 +281,9 @@ void Core::init()
 	SearchDialog::initModule();
 
 #ifdef Q_OS_MACX
-	setIcon(icons_manager->loadPixmap("BigOffline"));
+	setIcon(IconsManager::instance()->loadPixmap("BigOffline"));
 #else
-	setIcon(icons_manager->loadPixmap("Offline"));
+	setIcon(IconsManager::instance()->loadPixmap("Offline"));
 #endif
 
 	loadDefaultStatus();

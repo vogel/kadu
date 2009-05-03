@@ -12,7 +12,7 @@
 #include "contacts/model/contacts-model-base.h"
 #include "protocols/protocol-factory.h"
 #include "protocols/protocols-manager.h"
-#include "icons_manager.h"
+#include "icons-manager.h"
 
 #include "protocols-model.h"
 
@@ -41,7 +41,7 @@ QVariant ProtocolsModel::data(const QModelIndex &index, int role) const
 		case Qt::DisplayRole:
 			return pf->displayName();
 		case Qt::DecorationRole:
-			return icons_manager->loadIcon(pf->iconName());
+			return IconsManager::instance()->loadIcon(pf->iconName());
 		case ProtocolRole:
 			return pf->name();
 		default:

@@ -30,7 +30,7 @@
 
 #include "config_file.h"
 #include "debug.h"
-#include "icons_manager.h"
+#include "icons-manager.h"
 #include "message_box.h"
 #include "misc/misc.h"
 
@@ -833,7 +833,7 @@ QPixmap GaduProtocol::statusPixmap(Status status)
 			break;
 	}
 
-	return icons_manager->loadPixmap(pixmapName);
+	return IconsManager::instance()->loadPixmap(pixmapName);
 }
 
 void GaduProtocol::contactAdded(Contact &contact)

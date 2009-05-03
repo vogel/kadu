@@ -18,7 +18,7 @@
 #include "debug.h"
 #include "keys_manager.h"
 #include "gadu.h"
-#include "icons_manager.h"
+#include "icons-manager.h"
 #include "kadu.h"
 #include "message_box.h"
 #include "toolbar.h"

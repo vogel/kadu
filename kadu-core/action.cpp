@@ -11,7 +11,7 @@
 #include "contacts/contact.h"
 #include "contacts/contact-set.h"
 #include "hot_key.h"
-#include "icons_manager.h"
+#include "icons-manager.h"
 #include "kadu_main_window.h"
 
 #include "action.h"
@@ -29,17 +29,17 @@ KaduAction::KaduAction(ActionDescription *description, KaduMainWindow *parent)
 
 	if (!Description->IconName.isEmpty())
 	{
-		connect(icons_manager, SIGNAL(themeChanged()), this, SLOT(updateIcon()));
+		connect(IconsManager::instance(), SIGNAL(themeChanged()), this, SLOT(updateIcon()));
 
 		if (Description->Checkable)
 		{
-			OnIcon = icons_manager->loadIcon(Description->IconName);
-			OffIcon = icons_manager->loadIcon(Description->IconName + "_off");
+			OnIcon = IconsManager::instance()->loadIcon(Description->IconName);
+			OffIcon = IconsManager::instance()->loadIcon(Description->IconName + "_off");
 
 			setIcon(OffIcon);
 		}
 		else
-			setIcon(icons_manager->loadIcon(Description->IconName));
+			setIcon(IconsManager::instance()->loadIcon(Description->IconName));
 	}
 
 	setCheckable(Description->Checkable);
@@ -117,13 +117,13 @@ void KaduAction::updateIcon()
 {
 	if (Description->Checkable)
 	{
-		OnIcon = icons_manager->loadIcon(Description->IconName);
-		OffIcon = icons_manager->loadIcon(Description->IconName + "_off");
+		OnIcon = IconsManager::instance()->loadIcon(Description->IconName);
+		OffIcon = IconsManager::instance()->loadIcon(Description->IconName + "_off");
 
 		toggledSlot(isChecked());
 	}
 	else
-		setIcon(icons_manager->loadIcon(Description->IconName));
+		setIcon(IconsManager::instance()->loadIcon(Description->IconName));
 }
 
 ActionDescription::ActionDescription(QObject *parent, ActionType Type, const QString &Name, QObject *Object, const char *Slot,

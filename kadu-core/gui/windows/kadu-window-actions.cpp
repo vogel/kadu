@@ -531,7 +531,7 @@ void KaduWindowActions::editUserActionCreated(KaduAction *action)
 	Contact contact = window->contact();
 	if (contact.isAnonymous())
 	{
-		action->setIcon(icons_manager->loadIcon("AddUser"));
+		action->setIcon(IconsManager::instance()->loadIcon("AddUser"));
 		action->setText(tr("Add user"));
 	}
 }
