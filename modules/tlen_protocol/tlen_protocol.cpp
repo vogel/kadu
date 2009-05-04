@@ -227,6 +227,9 @@ bool TlenProtocol::sendMessage(Chat *chat, Message &message)
 		return false;
 	kdebugm(KDEBUG_WARNING, "Tlen send %s\n%s", qPrintable(tlenid), qPrintable(plain));
 	TlenClient->writeMsg(plain,tlenid);
+	
+	emit messageSent(chat, plain);
+	
 	kdebugf2();
 	return true;
 }

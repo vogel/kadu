@@ -32,6 +32,8 @@ TlenChatService::TlenChatService(TlenProtocol *protocol)
                this, SIGNAL(receivedMessageFilter(Chat *, Contact, const QString &, time_t, bool &)));
        connect(protocol, SIGNAL(messageReceived(Chat *, Contact, const QString &)),
                this, SIGNAL(messageReceived(Chat *, Contact, const QString &)));
+       connect(protocol, SIGNAL(messageSent(Chat *, const QString &)),
+               this, SIGNAL(messageSent(Chat *, const QString &)));
 }
 
 bool TlenChatService::sendMessage(Chat *chat, Message &message)
