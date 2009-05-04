@@ -1,5 +1,5 @@
-#ifndef JABBER_PROTOCOL_H
-#define JABBER_PROTOCOL_H
+#ifndef TLEN_PROTOCOL_H
+#define TLEN_PROTOCOL_H
 
 #include <QtCore/QObject>
 #include <QtGui/QPixmap>
@@ -41,9 +41,6 @@ class TlenProtocol : public Protocol
 		virtual void changeStatus(Status status);
 
 		virtual ChatService * chatService() { return CurrentChatService; }
-
-		ActionDescription* loginTlenActionDescription;
-		ActionDescription* logoutTlenActionDescription;
 
 	protected:
 		virtual void changeStatus();
@@ -91,8 +88,7 @@ class TlenProtocol : public Protocol
 
 	public slots:
 		bool sendMessage(Chat *chat, Message &message);
-		void loginAction(QAction *sender, bool toggled);
-		void logoutAction(QAction *sender, bool toggled);
+
 	signals:
 		void authorize(QString,bool);
 
@@ -104,4 +100,4 @@ class TlenProtocol : public Protocol
 		void messageSent(Chat *chat, const QString &message);
 };
 
-#endif
+#endif // TLEN_PROTOCOL_H

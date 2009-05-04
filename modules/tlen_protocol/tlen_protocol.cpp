@@ -75,20 +75,6 @@ TlenProtocol::TlenProtocol(Account *account, ProtocolFactory *factory): Protocol
 {
 	kdebugf();
 
-	loginTlenActionDescription = new ActionDescription(0,
-		ActionDescription::TypeGlobal, "loginTlenAction",
-		this, SLOT(loginAction(QAction *, bool)),
-		"Online", "Tlen Login" //+TlenData->id()
-	);
-	Core::instance()->kaduWindow()->insertMenuActionDescription(loginTlenActionDescription, KaduWindow::MenuKadu,1);
-	
-	logoutTlenActionDescription = new ActionDescription(0,
-		ActionDescription::TypeGlobal, "logoutTlenAction",
-		this, SLOT(logoutAction(QAction *, bool)),
-		"Offline", "Tlen Logout" //+TlenData->id()
-	);
-	Core::instance()->kaduWindow()->insertMenuActionDescription(logoutTlenActionDescription, KaduWindow::MenuKadu,1);
-
 	CurrentChatService = new TlenChatService(this);
 
 	kdebugf2();
@@ -97,11 +83,6 @@ TlenProtocol::TlenProtocol(Account *account, ProtocolFactory *factory): Protocol
 TlenProtocol::~TlenProtocol()
 {
 	logout();
-
-	Core::instance()->kaduWindow()->removeMenuActionDescription(loginTlenActionDescription);
-	delete loginTlenActionDescription;
-	Core::instance()->kaduWindow()->removeMenuActionDescription(logoutTlenActionDescription);
-	delete logoutTlenActionDescription;
 }
 
 void TlenProtocol::connectToServer()
@@ -459,16 +440,6 @@ void TlenProtocol::chatNotify(QString from, QString type)
 	}
 }
 
-void TlenProtocol::loginAction(QAction *sender, bool toggled)
-{
-	login();
-}
-
-void TlenProtocol::logoutAction(QAction *sender, bool toggled)
-{
-	logout();
-}
-
 bool TlenProtocol::validateUserID(QString& uid)
 {
 	return true;
@@ -528,11 +499,7 @@ void TlenProtocol::changeStatus()
 		return;
 	}
 
-	changeStatus(newStatus);
-	//if (newStatus.isOffline())
-	//	networkDisconnected(false);
-
-//	statusChanged(newStatus);
+	statusChanged(newStatus);
 }
 
 void TlenProtocol::changePrivateMode()
