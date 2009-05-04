@@ -1,0 +1,5 @@
+[Module]
+Description=Tlen protocol support module for Kadu.
+Description[pl]=Modu³ wspracia protoko³u Tlen dla Kadu.
+Author=Bart³omiej Zimoñ uzi18 // o2 // pl
+Version=0.0.1

@@ -1,0 +1,83 @@
+#pkg_search_module (QCA2 REQUIRED qca2 )
+#pkg_search_module (IDN REQUIRED libidn )
+
+set (SOURCES
+	gui/widgets/tlen-create-account-widget.cpp
+	services/tlen-chat-service.cpp
+	tlen-account-data-manager.cpp
+	tlen_configuration_dialog.cpp
+	tlen-contact-account-data.cpp
+	tlen-contact-account-data-manager.cpp
+	tlen-contact-account-data-widget.cpp
+	tlen_account.cpp
+	tlen_protocol.cpp
+	tlen_protocol_factory.cpp
+	QtTlen/auth.cpp
+#	QtTlen/filetransfer.cpp
+#	QtTlen/roster_item.cpp
+	QtTlen/sha1.cpp
+	QtTlen/tlen.cpp
+)
+
+set (MOC_SOURCES
+	gui/widgets/tlen-create-account-widget.h
+	services/tlen-chat-service.h
+#	tlen-account-data-manager.h
+	tlen_configuration_dialog.h
+#	tlen-contact-account-data.h
+#	tlen-contact-account-data-manager.h
+	tlen-contact-account-data-widget.h
+#	tlen_account.h
+	tlen_protocol.h
+#	tlen_protocol_factory.h
+#	QtTlen/auth.h
+#	QtTlen/filetransfer.h
+#	QtTlen/roster_item.h
+#	QtTlen/sha1.h
+	QtTlen/tlen.h
+)
+
+set (TRANSLATION_SOURCES
+	translations/tlen_protocol_pl.ts
+)
+
+set (CONFIGURATION_FILES
+	configuration/tlen_contact.ui
+	configuration/tlen_protocol.ui)
+
+set (DATA_FILES
+        data/status/away.png
+        data/status/awayi.png
+        data/status/chat.png
+        data/status/chati.png
+        data/status/dnd.png
+        data/status/dndi.png
+        data/status/invisible.png
+        data/status/invisiblei.png
+        data/status/offline.png
+        data/status/offlinei.png
+        data/status/online.png
+        data/status/onlinei.png
+        data/status/unavailable.png
+        data/status/unavailablei.png
+)
+
+#link_directories( ${QCA2_LIBRARY_DIRS} ${IDN_LIBRARY_DIRS} )
+#add_definitions( ${QCA2_CFLAGS_OTHER} ${IDN_CFLAGS_OTHER} )
+
+kadu_module (tlen_protocol
+	MODULE_SOURCES  ${SOURCES}
+	MODULE_MOC_SOURCES  ${MOC_SOURCES}
+#	MODULE_TRANSLATION_SOURCES ${TRANSLATION_SOURCES}
+	MODULE_CONFIGURATION_FILES ${CONFIGURATION_FILES}
+)
+
+#set_target_properties(tlen_protocol PROPERTIES
+#	link_flags "${QCA2_LDFLAGS_OTHER} ${IDN_LDFLAGS_OTHER}" )
+
+include_directories(
+	  ./QtTlen )
+
+#target_link_libraries(tlen_protocol ${QCA2_LIBRARIES} ${IDN_LIBRARIES} )
+install (FILES ${DATA_FILES}
+        DESTINATION share/kadu/modules/data/tlen_protocol)
