@@ -24,10 +24,9 @@
 #include "core/core.h"
 #include "gui/windows/kadu-window.h"
 #include "debug.h"
-#include "chat/chat_manager-old.h"
-#include "icons_manager.h"
+//#include "chat/chat_manager-old.h"
+#include "icons-manager.h"
 #include "main_configuration_window.h"
-//#include "protocols/protocol.h"
 #include "protocols/status.h"
 #include "misc/misc.h"
 #include "message_box.h"
@@ -173,7 +172,7 @@ void TlenProtocol::connectToServer()
 	TlenClient->setUname(tlenAccount->id());
 	TlenClient->setPass (tlenAccount->password());
 
-	TlenClient->setStatus("available");
+	changeStatus(nextStatus());
 
 	networkStateChanged(NetworkConnecting);
 	kdebugf2();
@@ -214,11 +213,11 @@ bool TlenProtocol::sendMessage(Chat *chat, Message &message)
 {
 	kdebugf();
 
-	ContactList users = chat->currentContacts();
+	ContactSet users = chat->contacts();
 	// TODO send to more users
-	//Contact contact = users[0];
+	Contact contact = (*users.begin());
 	QString plain = message.toPlain();
-	QString tlenid = users[0].id(account());
+	QString tlenid = contact.id(account());
 
 	bool stop = false;
 	//plain na QByteArray
@@ -264,7 +263,7 @@ void TlenProtocol::chatMsgReceived(QDomNode n)
 
 	// TODO - zaimplementowac to samo w ContactList
 	Contact contact = account()->getContactById(from);
-	ContactList contacts;
+	ContactSet contacts = ContactSet(contact);
 	// FIXME: dunno why, but commenting it fixed for now (08.04.2009) problem with finding chat for contact (conference window was always being opened for 1 contact)
 	//contacts << contact;
 
@@ -488,6 +487,16 @@ void TlenProtocol::changeStatus(Status status)
 	else
 		TlenClient->setStatusDescr("unavailable", status.description());
 
+	if (status.isOffline())
+	{
+		networkStateChanged(NetworkDisconnected);
+
+		setAllOffline();
+
+		if (!nextStatus().isOffline())
+			setStatus(Status::Offline);
+	}
+
 	Protocol::statusChanged(status);
 }
 
@@ -497,8 +506,13 @@ void TlenProtocol::changeStatus()
 
 	if (newStatus.isOffline() && status().isOffline())
 	{
-		//if (NetworkConnecting == state())
-		//	networkDisconnected(false);
+		networkStateChanged(NetworkDisconnected);
+
+		setAllOffline();
+
+		if (!nextStatus().isOffline())
+			setStatus(Status::Offline);
+
 		return;
 	}
 
@@ -511,10 +525,11 @@ void TlenProtocol::changeStatus()
 		return;
 	}
 
+	changeStatus(newStatus);
 	//if (newStatus.isOffline())
 	//	networkDisconnected(false);
 
-	statusChanged(newStatus);
+//	statusChanged(newStatus);
 }
 
 void TlenProtocol::changePrivateMode()
@@ -546,5 +561,5 @@ QPixmap TlenProtocol::statusPixmap(Status status)
 			? ".png"
 			: "i.png");
 
-	return icons_manager->loadPixmap(pixmapName);
+	return IconsManager::instance()->loadPixmap(pixmapName);
 }

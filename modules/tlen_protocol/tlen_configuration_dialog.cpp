@@ -17,7 +17,6 @@
 #include "gui/widgets/configuration/configuration-widget.h"
 
 #include "tlen_account.h"
-#include "icons_manager.h"
 #include "misc/misc.h"
 
 #include "tlen-account-data-manager.h"
