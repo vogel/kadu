@@ -18,6 +18,7 @@
 
 
 #include <unistd.h>
+#include <stdint.h>
 #include <X11/Xutil.h>
 #include <X11/Xatom.h>
 #include "x11tools.h"
