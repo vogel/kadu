@@ -550,6 +550,7 @@ void JabberProtocol::clientResourceAvailable(const XMPP::Jid &jid, const XMPP::R
 	status.setDescription(description);
 
 	Contact contact = account()->getContactById(jid.bare());
+	/* is this contact realy anonymous? - need deep check
  	if (contact.isAnonymous())
 	{
 		// TODO - ignore! - przynajmniej na razie
@@ -557,6 +558,8 @@ void JabberProtocol::clientResourceAvailable(const XMPP::Jid &jid, const XMPP::R
 		// userlist->addUser(contact);
 		return;
 	}
+	*/
+	
 	if (contact.display().isEmpty())
 		contact.setDisplay(jid.bare());
 

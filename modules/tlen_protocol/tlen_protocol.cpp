@@ -324,6 +324,7 @@ void TlenProtocol::presenceChanged(QString from, QString newstatus, QString desc
 
 	kdebugm(KDEBUG_WARNING, "Tlen status change: %s %s\n%s", qPrintable(from), qPrintable(newstatus), qPrintable(description));
 
+	/* is this contact realy anonymous? - need deep check
 	if (contact.isAnonymous())
 	{
 		// TODO - ignore! - przynajmniej na razie
@@ -331,6 +332,7 @@ void TlenProtocol::presenceChanged(QString from, QString newstatus, QString desc
 		// userlist->addUser(contact);
 		return;
 	}
+	*/
 
 	TlenContactAccountData *data = dynamic_cast<TlenContactAccountData *>(contact.accountData(account()));
 
