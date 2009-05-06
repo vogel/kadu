@@ -21,7 +21,7 @@ QString formatMessage(const QString &text, const QString &backgroundColor)
 	htmlDocument.parseHtml(text);
 	htmlDocument.convertUrlsToHtml();
 	htmlDocument.convertMailToHtml();
-	emoticons->expandEmoticons(htmlDocument, backgroundColor, (EmoticonsStyle)config_file.readNumEntry("Chat", "EmoticonsStyle"));
+	EmoticonsManager::instance()->expandEmoticons(htmlDocument, backgroundColor, (EmoticonsStyle)config_file.readNumEntry("Chat", "EmoticonsStyle"));
 // 	GaduImagesManager::setBackgroundsForAnimatedImages(htmlDocument, backgroundColor);
 
 	return htmlDocument.generateHtml();
@@ -173,7 +173,7 @@ QString ChatMessage::convertCharacters(QString edit, const QColor &bgcolor, Emot
 	doc.convertMailToHtml();
 
 	if (style != EMOTS_NONE)
-		emoticons->expandEmoticons(doc, bgcolor, style);
+		EmoticonsManager::instance()->expandEmoticons(doc, bgcolor, style);
 
 // 	GaduImagesManager::setBackgroundsForAnimatedImages(doc, bgcolor);
 	edit = doc.generateHtml();

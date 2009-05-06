@@ -76,7 +76,6 @@ Core::~Core()
 	ModulesManager::closeModule();
 	Updates::closeModule();
 	SearchDialog::closeModule();
-	EmoticonsManager::closeModule();
 
 #ifdef Q_OS_MACX
 	setIcon(QPixmap(dataPath("kadu.png")));

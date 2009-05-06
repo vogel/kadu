@@ -25,6 +25,16 @@ enum EmoticonsStyle
 **/
 class KADUAPI EmoticonsManager : public Themes, ConfigurationAwareObject
 {
+	Q_DISABLE_COPY(EmoticonsManager)
+
+	/**
+		Konstruktor tworzy obiekt oraz wyszukuje list� zestaw�w w katalogu
+		$DATADIR/kadu/themes/emoticons
+	**/
+	EmoticonsManager();
+
+	static EmoticonsManager *Instance;
+
 	struct EmoticonsListItem
 	{
 		QString alias;
@@ -43,14 +53,8 @@ class KADUAPI EmoticonsManager : public Themes, ConfigurationAwareObject
 	bool loadGGEmoticonTheme();
 
 public:
-	static void initModule();
-	static void closeModule();
+	static EmoticonsManager * instance();
 
-	/**
-		Konstruktor tworzy obiekt oraz wyszukuje list� zestaw�w w katalogu
-		$DATADIR/kadu/themes/emoticons
-	**/
-	EmoticonsManager(const QString &name, const QString &configname);
 	~EmoticonsManager();
 
 	/**
@@ -99,8 +103,6 @@ public:
 	virtual void configurationUpdated();
 
 };
-
-extern KADUAPI EmoticonsManager *emoticons;
 
 /**
 	Klasa s�u��ca do wyboru emotikonki z zestawu

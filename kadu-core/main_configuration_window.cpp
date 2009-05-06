@@ -311,13 +311,13 @@ void MainConfigurationWindow::setIconThemes()
 void MainConfigurationWindow::setEmoticonThemes()
 {
 	ConfigComboBox *emoticonsTheme = dynamic_cast<ConfigComboBox *>(widget()->widgetById("emoticonsTheme"));
-	emoticons->setPaths((dynamic_cast<PathListEdit *>(widget()->widgetById("emoticonsPaths")))->pathList());
+	EmoticonsManager::instance()->setPaths((dynamic_cast<PathListEdit *>(widget()->widgetById("emoticonsPaths")))->pathList());
 
-	QStringList themes = emoticons->themes();
+	QStringList themes = EmoticonsManager::instance()->themes();
 	themes.sort();
 
 	emoticonsTheme->setItems(themes, themes);
-	emoticonsTheme->setEditText(emoticons->theme());
+	emoticonsTheme->setEditText(EmoticonsManager::instance()->theme());
 }
 
 void MainConfigurationWindow::setToolTipClasses()

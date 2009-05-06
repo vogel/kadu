@@ -33,36 +33,28 @@
 
 #define IMG_Y_OFFSET 2
 
+EmoticonsManager * EmoticonsManager::Instance = 0;
+
+EmoticonsManager * EmoticonsManager::instance()
+{
+	if (Instance == 0)
+		Instance = new EmoticonsManager();
+	return Instance;
+}
+
 EmoticonsManager::EmoticonsListItem::EmoticonsListItem()
 {
 }
 
-void EmoticonsManager::initModule()
-{
-	kdebugf();
-
-	emoticons = new EmoticonsManager("emoticons", "emots.txt");
-	emoticons->setPaths(config_file.readEntry("Chat", "EmoticonsPaths").split(QRegExp("(;|:)")));
-	emoticons->setEmoticonsTheme(config_file.readEntry("Chat", "EmoticonsTheme"));
-
-	kdebugf2();
-}
-
-void EmoticonsManager::closeModule()
-{
-	kdebugf();
-
-	delete emoticons;
-	emoticons = 0;
-
-	kdebugf2();
-}
-
-EmoticonsManager::EmoticonsManager(const QString& name, const QString& configname)
-	: Themes(name, configname), Aliases(), Selector(), walker(0)
+EmoticonsManager::EmoticonsManager()
+	: Themes("emoticons", "emots.txt"), Aliases(), Selector(), walker(0)
 
 {
 	kdebugf();
+
+	setPaths(config_file.readEntry("Chat", "EmoticonsPaths").split(QRegExp("(;|:)")));
+	setEmoticonsTheme(config_file.readEntry("Chat", "EmoticonsTheme"));
+
 	kdebugf2();
 }
 
@@ -76,7 +68,7 @@ void EmoticonsManager::configurationUpdated()
 {
 	kdebugf();
 
-	emoticons->setEmoticonsTheme(config_file.readEntry("Chat", "EmoticonsTheme"));
+	setEmoticonsTheme(config_file.readEntry("Chat", "EmoticonsTheme"));
 
 	kdebugf2();
 }
@@ -85,24 +77,24 @@ void EmoticonsManager::setEmoticonsTheme(const QString& theme)
 {
 	kdebugmf(KDEBUG_FUNCTION_START | KDEBUG_INFO, "theme: %s\n", qPrintable(theme));
 
-	QStringList themes = emoticons->themes();
-	if (themes.contains(theme))
+	QStringList themeList = themes();
+	if (themeList.contains(theme))
 	{
 		config_file.writeEntry("Chat", "EmoticonsTheme", theme);
-		emoticons->setTheme(theme);
+		setTheme(theme);
 	}
 	else
 	{
 		config_file.writeEntry("Chat", "EmoticonsTheme", "penguins");
-		emoticons->setTheme("penguins");
+		setTheme("penguins");
 	}
 
 	if (!loadGGEmoticonTheme())
 	{
 		config_file.writeEntry("Chat", "EmoticonsTheme", "penguins");
-		if (!loadGGEmoticonTheme() && (themes.size() > 0))
+		if (!loadGGEmoticonTheme() && (themeList.size() > 0))
 		{
-			config_file.writeEntry("Chat", "EmoticonsTheme", themes[0]);
+			config_file.writeEntry("Chat", "EmoticonsTheme", themeList[0]);
 			loadGGEmoticonTheme();
 		}
 	}
@@ -351,8 +343,6 @@ QString EmoticonsManager::selectorStaticPath(int emot_num) const
 		return QString::null;
 }
 
-EmoticonsManager *emoticons;
-
 EmoticonSelectorButton::EmoticonSelectorButton(const QString& emoticon_string, const QString& anim_path, const QString& static_path, QWidget *parent)
 	: QToolButton(parent), EmoticonString(emoticon_string), AnimPath(anim_path), StaticPath(static_path), Movie(0)
 {
@@ -412,7 +402,7 @@ EmoticonSelector::EmoticonSelector(ChatEditBox *caller, QWidget *parent)
 {
 	setAttribute(Qt::WA_DeleteOnClose);
 
-	int selector_count = emoticons->selectorCount();
+	int selector_count = EmoticonsManager::instance()->selectorCount();
 	int selector_width = (int)sqrt((double)selector_count);
 	int btn_width = 0;
 	QGridLayout *grid = new QGridLayout(this);
@@ -422,9 +412,9 @@ EmoticonSelector::EmoticonSelector(ChatEditBox *caller, QWidget *parent)
 	for(int i = 0; i < selector_count; ++i)
 	{
 		EmoticonSelectorButton* btn = new EmoticonSelectorButton(
-			emoticons->selectorString(i),
-			emoticons->selectorAnimPath(i),
-			emoticons->selectorStaticPath(i),
+			EmoticonsManager::instance()->selectorString(i),
+			EmoticonsManager::instance()->selectorAnimPath(i),
+			EmoticonsManager::instance()->selectorStaticPath(i),
 			this);
 		btn_width = btn->sizeHint().width();
 		grid->addWidget(btn, i / selector_width, i % selector_width);

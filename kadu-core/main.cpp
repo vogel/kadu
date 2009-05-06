@@ -370,8 +370,6 @@ int main(int argc, char *argv[])
 		return 1;
 	}
 
-	EmoticonsManager::initModule();
-
 	Core::instance()->createGui();
 
 	QString path_ = ggPath(QString::null);

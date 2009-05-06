@@ -105,7 +105,7 @@ void ContactInfoPanel::displayContact(Contact contact)
 	doc.convertMailToHtml();
 	if (EMOTS_NONE != (EmoticonsStyle)config_file.readNumEntry("Chat", "EmoticonsStyle") &&
 			config_file.readBoolEntry("General", "ShowEmotPanel"))
-		emoticons->expandEmoticons(doc,
+		EmoticonsManager::instance()->expandEmoticons(doc,
 				config_file.readColorEntry("Look", "InfoPanelBgColor"),
 				(EmoticonsStyle)config_file.readNumEntry("Chat", "EmoticonsStyle"));
 

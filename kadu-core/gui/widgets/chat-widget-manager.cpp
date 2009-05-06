@@ -58,7 +58,7 @@ ChatWidgetManager::ChatWidgetManager()
 	kdebugf();
 
 	ChatMessage::registerParserTags();
-	emoticons->setEmoticonsTheme(config_file.readEntry("Chat", "EmoticonsTheme"));
+	EmoticonsManager::instance()->setEmoticonsTheme(config_file.readEntry("Chat", "EmoticonsTheme"));
 
 	connect(Core::instance(), SIGNAL(messageReceived(Chat *, Contact, const QString &)),
 			this, SLOT(messageReceived(Chat *, Contact, const QString &)));
