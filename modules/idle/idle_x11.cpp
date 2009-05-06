@@ -20,8 +20,6 @@
 
 #include "idle.h"
 
-#include <QtGui/QApplication>
-#include <QtGui/QDesktopWidget>
 #include <QtGui/QX11Info>
 
 #include <X11/Xlib.h>
@@ -46,7 +44,7 @@ Idle::Idle()
 		old_handler = XSetErrorHandler(xerrhandler);
 
 		int event_base, error_base;
-		if(XScreenSaverQueryExtension(QApplication::desktop()->screen()->x11Display(), &event_base, &error_base)) 
+		if(XScreenSaverQueryExtension(QX11Info::display(), &event_base, &error_base))
 		{
 			ss_info = XScreenSaverAllocInfo();
 		}
@@ -77,7 +75,7 @@ int Idle::secondsIdle()
 	if(ss_info == 0)
 		return -1;
 
-	if (!XScreenSaverQueryInfo(QApplication::desktop()->screen()->x11Display(), QX11Info::appRootWindow(), ss_info))
+	if (!XScreenSaverQueryInfo(QX11Info::display(), QX11Info::appRootWindow(), ss_info))
 		return -1;
 
 	return ss_info->idle / 1000;
