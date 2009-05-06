@@ -8,6 +8,7 @@
  ***************************************************************************/
 
 #include "accounts/account.h"
+#include "pending_msgs.h"
 #include "xml_config_file.h"
 
 #include "contact.h"
@@ -84,7 +85,7 @@ void Contact::loadConfiguration()
 void Contact::store()
 {
 	//TODO 0.6.6: save anonymousContacts with messages
-	if (!isNull() && !isAnonymous())
+	if (!isNull() && !(isAnonymous() && !pending.pendingMsgs(*this)))
 		Data->store();
 }
 

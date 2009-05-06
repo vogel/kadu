@@ -15,9 +15,11 @@
 #include <time.h>
 
 #include "contacts/contact.h"
-#include "contacts/contact-set.h"
+//#include "contacts/contact-set.h"
 
 #include "exports.h"
+
+class Chat;
 
 class QString;
 
@@ -45,8 +47,8 @@ public:
 	**/
 	struct Element
 	{
-		ContactSet contacts; /*!< Message senders list. */
-		QString proto; /*!< Protocol name. */
+		Chat *chat;
+		Contact sender; /*!< Message senders list. */
 		QString msg; /*!< Message content. */
 		time_t time; /*!< Send time. */
 		Element();
@@ -76,12 +78,12 @@ public:
 	bool pendingMsgs() const;
 
 	/**
-		\fn unsigned int pendingMsgsCount(ContactList contacts) const
-		Checks, if there are any pending messages for given contact list.
+		\fn unsigned int pendingMsgsCount(Chat *chat) const
+		Checks, if there are any pending messages for given chat.
 		\param contacts given contact list.
 		\return pending messages count.
 	**/
-	unsigned int pendingMsgsCount(ContactSet contacts) const;
+	unsigned int pendingMsgsCount(Chat *chat) const;
 
 	/**
 		\fn int count() const
@@ -118,7 +120,7 @@ public slots:
 		\param msg message content. TODO: const QString &
 		\param time message send time.
 	**/
-	void addMsg(Account *account, Contact sender, ContactSet receipients, QString msg, time_t time);
+	void addMsg(Chat *chat, Contact sender, QString msg, time_t time);
 
 	/**
 		\fn void loadConfiguration(XmlConfigFile *configurationStorage)

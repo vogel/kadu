@@ -11,6 +11,7 @@
 
 #include "accounts/account.h"
 #include "accounts/account-manager.h"
+#include "chat/chat-manager.h"
 #include "contacts/contact-manager.h"
 #include "contacts/contact-list-configuration-helper.h"
 #include "gui/widgets/chat-widget-manager.h"
@@ -23,7 +24,7 @@
 
 #include "pending_msgs.h"
 
-PendingMsgs::Element::Element() : contacts(), proto(), msg(), time(0)
+PendingMsgs::Element::Element() : chat(0), sender(), msg(), time(0)
 {
 }
 
@@ -35,7 +36,7 @@ PendingMsgs::PendingMsgs(QObject *parent)
 void PendingMsgs::deleteMsg(int index)
 {
 	kdebugm(KDEBUG_INFO, "PendingMsgs::(pre)deleteMsg(%d), count=%d\n", index, count());
-	Contact e = *msgs[index].contacts.begin();
+	Contact e = msgs[index].sender;
 	msgs.removeAt(index);
 	storeConfiguration(xml_config_file);
 	kdebugm(KDEBUG_INFO, "PendingMsgs::deleteMsg(%d), count=%d\n", index, count());
@@ -45,19 +46,19 @@ void PendingMsgs::deleteMsg(int index)
 bool PendingMsgs::pendingMsgs(Contact contact) const
 {
 	foreach (const Element &msg, msgs)
-		if (*msg.contacts.begin() == contact)
+		if (msg.sender == contact)
 			return true;
 
 	return false;
 }
 
-unsigned int PendingMsgs::pendingMsgsCount(ContactSet set) const
+unsigned int PendingMsgs::pendingMsgsCount(Chat *chat) const
 {
 	unsigned int count = 0;
 
 	foreach (const Element &msg, msgs)
 	{
-		if (set == msg.contacts)
+		if (chat == msg.chat)
 			count++;
 	}
 
@@ -79,14 +80,11 @@ PendingMsgs::Element &PendingMsgs::operator[](int index)
 	return msgs[index];
 }
 
-void PendingMsgs::addMsg(Account *account, Contact sender, ContactSet receipients, QString msg, time_t time)
+void PendingMsgs::addMsg(Chat *chat, Contact sender, QString msg, time_t time)
 {
 	Element e;
-	ContactSet conference = receipients;
-	conference << sender;
-
-	e.contacts = conference;
-	e.proto = account->protocol()->account()->name();
+	e.sender = sender;
+	e.chat = chat;
 	e.msg = msg;
 	e.time = time;
 	msgs.append(e);
@@ -108,8 +106,8 @@ void PendingMsgs::loadConfiguration(XmlConfigFile *configurationStorage)
 		if (messageElement.isNull())
 			continue;
 		Element e;
-		QDomElement accountNode = configurationStorage->getNode(pendingMsgsNodes.item(i).toElement(), "Account", XmlConfigFile::ModeFind);
-		Account *account = AccountManager::instance()->byUuid(accountNode.text());
+		QDomElement chatNode = configurationStorage->getNode(pendingMsgsNodes.item(i).toElement(), "Chat", XmlConfigFile::ModeFind);
+		Chat *chat = ChatManager::instance()->byUuid(chatNode.text());
 
 		QDomElement timeNode = configurationStorage->getNode(pendingMsgsNodes.item(i).toElement(), "Time", XmlConfigFile::ModeFind);
 		QDateTime d = QDateTime::fromString(timeNode.text());
@@ -118,38 +116,29 @@ void PendingMsgs::loadConfiguration(XmlConfigFile *configurationStorage)
 		QDomElement messageNode = configurationStorage->getNode(pendingMsgsNodes.item(i).toElement(), "Message", XmlConfigFile::ModeFind);
 		e.msg = codec_latin2->toUnicode(messageNode.text().toLocal8Bit().data());
 
-		QDomElement contactListNode = configurationStorage->getNode(pendingMsgsNodes.item(i).toElement(), "ContactList", XmlConfigFile::ModeFind);
-		e.contacts.clear();
-		ContactList tmp = ContactListConfigurationHelper::loadFromConfiguration(configurationStorage, contactListNode);
-
-		foreach (Contact contact, tmp)
-			e.contacts.insert(contact);
+		QDomElement senderNode = configurationStorage->getNode(pendingMsgsNodes.item(i).toElement(), "Sender", XmlConfigFile::ModeFind);
+		Contact sender = ContactManager::instance()->byUuid(senderNode.text());
 
 		msgs.append(e);
-		emit messageFromUserAdded(tmp[0]);
+		emit messageFromUserAdded(sender);
 	}
-
-	configurationStorage->removeChildren(pendingMsgsNode);
 }
 
 void PendingMsgs::storeConfiguration(XmlConfigFile *configurationStorage)
 {
 	QDomElement pendingMsgsNode = configurationStorage->getNode("PendingMessages");
-
+	configurationStorage->removeChildren(pendingMsgsNode);
 	foreach (const Element &i, msgs)
 	{
 		QDomElement pendingMessageNode = configurationStorage->getNode(pendingMsgsNode,
 			"PendingMessage", XmlConfigFile::ModeCreate);
 
-		configurationStorage->createTextNode(pendingMessageNode, "Account", AccountManager::instance()->defaultAccount()->uuid());
+		configurationStorage->createTextNode(pendingMessageNode, "Chat", i.chat->uuid().toString());
 		configurationStorage->createTextNode(pendingMessageNode, "Time", QString::number(i.time));
 
 		configurationStorage->createTextNode(pendingMessageNode, "Message", codec_latin2->fromUnicode(i.msg));
 
-		QDomElement contactListNode = configurationStorage->getNode(pendingMessageNode,
-			"ContactList", XmlConfigFile::ModeCreate);
-		
-		ContactListConfigurationHelper::saveToConfiguration(configurationStorage, contactListNode, i.contacts.toContactList());
+		configurationStorage->createTextNode(pendingMessageNode, "Sender", i.sender.uuid().toString());
 	}
 }
 

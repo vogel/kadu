@@ -99,7 +99,7 @@ public slots:
 		z u�ytkownikami "users"
 		\param users lista u�ytkownik�w identyfikuj�cych okno
 	**/
-	void deletePendingMsgs(ContactSet users);
+	void deletePendingMsgs(Chat *chat);
 
 	void sendMessage(Chat *chat);
 
