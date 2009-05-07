@@ -182,7 +182,7 @@ void ChatEditBox::addEmoticon(const QString &emot)
 		QString escaped = emot;
 		escaped = escaped.replace("&lt;", "<");
 		escaped = escaped.replace("&gt;", ">");
-		InputBox->insertHtml(escaped);
+		InputBox->insertPlainText(escaped);
 	}
 }
 

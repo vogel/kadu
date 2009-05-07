@@ -409,7 +409,7 @@ EmoticonSelector::EmoticonSelector(ChatEditBox *caller, QWidget *parent)
 	grid->setMargin(0);
 	grid->setSpacing(0);
 
-	for(int i = 0; i < selector_count; ++i)
+	for (int i = 0; i < selector_count; ++i)
 	{
 		EmoticonSelectorButton* btn = new EmoticonSelectorButton(
 			EmoticonsManager::instance()->selectorString(i),
