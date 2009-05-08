@@ -16,13 +16,13 @@ class JabberCreateAccountWidget : public QWidget
 {
 	Q_OBJECT
 
-	QList<QWidget *> HaveNumberWidgets;
-	QList<QWidget *> DontHaveNumberWidgets;
+	QList<QWidget *> HaveJidWidgets;
+	QList<QWidget *> DontHaveJidWidgets;
 
 	void createGui();
 
 private slots:
-	void haveNumberChanged(bool haveNumber);
+	void haveJidChanged(bool haveNumber);
 
 public:
 	explicit JabberCreateAccountWidget(QWidget *parent = 0);

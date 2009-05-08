@@ -10,9 +10,9 @@
 #ifndef JABBER_CONTACT_ACCOUNT_DATA
 #define JABBER_CONTACT_ACCOUNT_DATA
 
-#include "contacts/contact-account-data.h"
+#include <xmpp.h>
 
-#include "jabber_protocol.h"
+#include "contacts/contact-account-data.h"
 
 class Account;
 

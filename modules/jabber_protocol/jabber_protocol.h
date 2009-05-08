@@ -15,6 +15,7 @@
 #include "protocols/protocols-manager.h"
 
 #include "services/jabber-chat-service.h"
+#include "services/jabber-file-transfer-service.h"
 
 #include "jabber-client.h"
 #include "jabber-contact-account-data.h"
@@ -27,6 +28,25 @@ class Conference;
 class JabberProtocol : public Protocol
 {
 	Q_OBJECT
+
+		JabberChatService *CurrentChatService;
+		JabberFileTransferService *CurrentFileTransferService;
+
+		XMPP::JabberClient *JabberClient;
+		XMPP::Jid jabberID;
+		JabberResourcePool *ResourcePool;
+		/* Initial presence to set after connecting. */
+//		XMPP::Status InitialPresence;
+		//JabberConfig *jconf;
+
+		bool rosterRequestDone;
+		bool usingSSL;
+		bool confUseSSL;
+		bool doReconnect;
+		bool doAboutRoster;
+		bool whileConnecting;
+
+		void initializeJabberClient();
 
 	public:
 		static int initModule();
@@ -43,30 +63,18 @@ class JabberProtocol : public Protocol
 		virtual void changeStatus(Status status);
 
 		virtual ChatService * chatService() { return CurrentChatService; }
+		virtual ChatImageService * chatImageService() { return 0; }
+		virtual ContactListService * contactListService() { return 0; }
+		virtual FileTransferService * fileTransferService() { return CurrentFileTransferService; }
+		virtual PersonalInfoService * personalInfoService() { return 0; }
+		virtual SearchService * searchService() { return 0; }
 		JabberResourcePool *resourcePool();
+
+		JabberContactAccountData * jabberContactAccountData(Contact contact) const;
 
 	protected:
 		virtual void changeStatus();
 		virtual void changePrivateMode();
-
-	private:
-		JabberChatService *CurrentChatService;
-		void initializeJabberClient();
-
-
-		XMPP::JabberClient *JabberClient;
-		XMPP::Jid jabberID;
-		JabberResourcePool *ResourcePool;
-		/* Initial presence to set after connecting. */
-//		XMPP::Status InitialPresence;
-		//JabberConfig *jconf;
-
-		bool rosterRequestDone;
-		bool usingSSL;
-		bool confUseSSL;
-		bool doReconnect;
-		bool doAboutRoster;
-		bool whileConnecting;
 
 	private slots:
 		void connectToServer();
@@ -78,6 +86,7 @@ class JabberProtocol : public Protocol
 		void clientResourceUnavailable(const XMPP::Jid &j, const XMPP::Resource &r);
 		void slotContactUpdated(const XMPP::RosterItem &ri);
 		void slotContactDeleted(const XMPP::RosterItem &ri);
+		void slotIncomingFileTransfer();
 		void slotSubscription(const XMPP::Jid &jid, const QString &type);
 		//void client_rosterItemUpdated(const XMPP::RosterItem &r);
 		void slotHandleTLSWarning(QCA::TLS::IdentityResult identityResult, QCA::Validity validityResult);

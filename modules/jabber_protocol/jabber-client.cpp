@@ -777,7 +777,23 @@ void JabberClient::connect ( const XMPP::Jid &jid, const QString &password, bool
 	d->jabberClient->setCapsVersion( capsVersion() );
 
 	// Set Disco Identity
-	d->jabberClient->setIdentity( discoIdentity() );
+	//d->jabberClient->setIdentity( discoIdentity() );
+
+
+	DiscoItem::Identity identity;
+	identity.category = "client";
+	identity.type = "pc";
+	identity.name = "Kadu";
+	d->jabberClient->setIdentity(identity);
+
+	QStringList features;
+	features << "http://jabber.org/protocol/commands";
+	features << "http://jabber.org/protocol/rosterx";
+	features << "http://jabber.org/protocol/muc";
+	features << "jabber:x:data";
+	d->jabberClient->setFeatures(Features(features));
+
+
 
 	d->jabberClient->setTimeZone ( timeZoneName (), timeZoneOffset () );
 
@@ -1086,6 +1102,7 @@ void JabberClient::slotCSError ( int error )
 		// display message to user
 		// when removing or disconnecting, connection errors are normal
 		if (/*!m_removing && */protocol->isConnected() || protocol->isConnecting())
+		{
 			getErrorInfo(error, d->jabberClientConnector, d->jabberClientStream, d->jabberTLSHandler, &errorText, &reconn);
 			QMessageBox* m = new QMessageBox(QMessageBox::Critical,
 	                                 (/*printAccountName*/1 ? QString("%1: ").arg(name()) : "") + tr("Server Error"),
@@ -1093,7 +1110,7 @@ void JabberClient::slotCSError ( int error )
 	                                 QMessageBox::Ok, 0, Qt::WDestructiveClose);
 			m->setModal(true);
 			m->show();
-
+		}
 		if (protocol->isConnected() || protocol->isConnecting())
 			protocol->logout(/* errorClass */);
 

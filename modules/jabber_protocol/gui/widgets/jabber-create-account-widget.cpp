@@ -30,75 +30,68 @@ JabberCreateAccountWidget::~JabberCreateAccountWidget()
 
 void JabberCreateAccountWidget::createGui()
 {
-	/*
 	QGridLayout *gridLayout = new QGridLayout(this);
 	gridLayout->setSpacing(5);
 
 	gridLayout->setColumnStretch(1, 100);
 
-	QRadioButton *haveNumber = new QRadioButton(tr("I have a Gadu-Gadu number"), this);
-	connect(haveNumber, SIGNAL(toggled(bool)), this, SLOT(haveNumberChanged(bool)));
-	gridLayout->addWidget(haveNumber, 0, 0, 1, 2);
+	QRadioButton *haveJid = new QRadioButton(tr("I have a XMPP/Jabber account"), this);
+	connect(haveJid, SIGNAL(tojabberled(bool)), this, SLOT(haveJidChanged(bool)));
+	gridLayout->addWidget(haveJid, 0, 0, 1, 2);
 
-	QLabel *ggNumberLabel = new QLabel(tr("Gadu-Gadu number") + ":", this);
-	gridLayout->addWidget(ggNumberLabel, 1, 0, Qt::AlignRight);
-	QLineEdit *ggNumber = new QLineEdit(this);
-	gridLayout->addWidget(ggNumber, 1, 1);
+	QLabel *jabberJidLabel = new QLabel(tr("Jabber ID") + ":", this);
+	gridLayout->addWidget(jabberJidLabel, 1, 0, Qt::AlignRight);
+	QLineEdit *jabberJid = new QLineEdit(this);
+	gridLayout->addWidget(jabberJid, 1, 1);
 
-	QLabel *ggPasswordLabel = new QLabel(tr("Password") + ":", this);
-	gridLayout->addWidget(ggPasswordLabel, 2, 0, Qt::AlignRight);
-	QLineEdit *ggPassword = new QLineEdit(this);
-	ggPassword->setEchoMode(QLineEdit::Password);
-	gridLayout->addWidget(ggPassword, 2, 1);
+	QLabel *jabberPasswordLabel = new QLabel(tr("Password") + ":", this);
+	gridLayout->addWidget(jabberPasswordLabel, 2, 0, Qt::AlignRight);
+	QLineEdit *jabberPassword = new QLineEdit(this);
+	jabberPassword->setEchoMode(QLineEdit::Password);
+	gridLayout->addWidget(jabberPassword, 2, 1);
 
-	QCheckBox *ggImportContacts = new QCheckBox(tr("Import contacts"), this);
-	ggImportContacts->setChecked(true);
-	gridLayout->addWidget(ggImportContacts, 3, 1, 1, 2);
+	QRadioButton *dontHaveJid = new QRadioButton(tr("I don't have a XMPP/Jabber account"), this);
+	gridLayout->addWidget(dontHaveJid, 4, 0, 1, 2);
 
-	QRadioButton *dontHaveNumber = new QRadioButton(tr("I don't have a Gadu-Gadu number"), this);
-	gridLayout->addWidget(dontHaveNumber, 4, 0, 1, 2);
+	QLabel *jabberEMailLabel = new QLabel(tr("Jabber ID") + ":", this);
+	gridLayout->addWidget(jabberEMailLabel, 5, 0, Qt::AlignRight);
+	QLineEdit *jabberEMail = new QLineEdit(this);
+	gridLayout->addWidget(jabberEMail, 5, 1);
 
-	QLabel *ggNewPasswordLabel = new QLabel(tr("New password") + ":", this);
-	gridLayout->addWidget(ggNewPasswordLabel, 5, 0, Qt::AlignRight);
-	QLineEdit *ggNewPassword = new QLineEdit(this);
-	ggNewPassword->setEchoMode(QLineEdit::Password);
-	gridLayout->addWidget(ggNewPassword, 5, 1);
+	QLabel *jabberNewPasswordLabel = new QLabel(tr("New password") + ":", this);
+	gridLayout->addWidget(jabberNewPasswordLabel, 6, 0, Qt::AlignRight);
+	QLineEdit *jabberNewPassword = new QLineEdit(this);
+	jabberNewPassword->setEchoMode(QLineEdit::Password);
+	gridLayout->addWidget(jabberNewPassword, 6, 1);
 
-	QLabel *ggReNewPasswordLabel = new QLabel(tr("Retype password") + ":", this);
-	gridLayout->addWidget(ggReNewPasswordLabel, 6, 0, Qt::AlignRight);
-	QLineEdit *ggReNewPassword = new QLineEdit(this);
-	ggReNewPassword->setEchoMode(QLineEdit::Password);
-	gridLayout->addWidget(ggReNewPassword, 6, 1);
+	QLabel *jabberReNewPasswordLabel = new QLabel(tr("Retype password") + ":", this);
+	gridLayout->addWidget(jabberReNewPasswordLabel, 7, 0, Qt::AlignRight);
+	QLineEdit *jabberReNewPassword = new QLineEdit(this);
+	jabberReNewPassword->setEchoMode(QLineEdit::Password);
+	gridLayout->addWidget(jabberReNewPassword, 7, 1);
 
-	QLabel *ggEMailLabel = new QLabel(tr("Your e-mail address") + ":", this);
-	gridLayout->addWidget(ggEMailLabel, 7, 0, Qt::AlignRight);
-	QLineEdit *ggEMail = new QLineEdit(this);
-	gridLayout->addWidget(ggEMail, 7, 1);
+	QPushButton *jabberRegisterAccount = new QPushButton(tr("Register"), this);
+	gridLayout->addWidget(jabberRegisterAccount, 8, 0, 1, 2);
 
-	QPushButton *ggRegisterAccount = new QPushButton(tr("Register"), this);
-	gridLayout->addWidget(ggRegisterAccount, 8, 0, 1, 2);
+	HaveJidWidgets.append(jabberJidLabel);
+	HaveJidWidgets.append(jabberJid);
+	HaveJidWidgets.append(jabberPasswordLabel);
+	HaveJidWidgets.append(jabberPassword);
+	DontHaveJidWidgets.append(jabberNewPasswordLabel);
+	DontHaveJidWidgets.append(jabberNewPassword);
+	DontHaveJidWidgets.append(jabberReNewPasswordLabel);
+	DontHaveJidWidgets.append(jabberReNewPassword);
+	DontHaveJidWidgets.append(jabberEMailLabel);
+	DontHaveJidWidgets.append(jabberEMail);
+	DontHaveJidWidgets.append(jabberRegisterAccount);
 
-	HaveNumberWidgets.append(ggNumberLabel);
-	HaveNumberWidgets.append(ggNumber);
-	HaveNumberWidgets.append(ggPasswordLabel);
-	HaveNumberWidgets.append(ggPassword);
-	HaveNumberWidgets.append(ggImportContacts);
-	DontHaveNumberWidgets.append(ggNewPasswordLabel);
-	DontHaveNumberWidgets.append(ggNewPassword);
-	DontHaveNumberWidgets.append(ggReNewPasswordLabel);
-	DontHaveNumberWidgets.append(ggReNewPassword);
-	DontHaveNumberWidgets.append(ggEMailLabel);
-	DontHaveNumberWidgets.append(ggEMail);
-	DontHaveNumberWidgets.append(ggRegisterAccount);
-
-	haveNumberChanged(true);
-	*/
+	haveJidChanged(true);
 }
 
-void JabberCreateAccountWidget::haveNumberChanged(bool haveNumber)
+void JabberCreateAccountWidget::haveJidChanged(bool haveJid)
 {
-	foreach (QWidget *widget, HaveNumberWidgets)
-		widget->setVisible(haveNumber);
-	foreach (QWidget *widget, DontHaveNumberWidgets)
-		widget->setVisible(!haveNumber);
+	foreach (QWidget *widget, HaveJidWidgets)
+		widget->setVisible(haveJid);
+	foreach (QWidget *widget, DontHaveJidWidgets)
+		widget->setVisible(!haveJid);
 }

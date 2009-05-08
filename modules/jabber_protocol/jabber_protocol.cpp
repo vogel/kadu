@@ -29,9 +29,11 @@
 #include "main_configuration_window.h"
 
 #include "cert-util.h"
+#include "file-transfer/jabber-file-transfer.h"
 #include "jabber-account.h"
 #include "jabber_protocol.h"
 #include "jabber-protocol-factory.h"
+#include "libiris/iris/jabber/filetransfer.h"
 #include "system-info.h"
 
 extern "C" int jabber_protocol_init()
@@ -86,6 +88,7 @@ JabberProtocol::JabberProtocol(Account *account, ProtocolFactory *factory): Prot
 	initializeJabberClient();
 
 	CurrentChatService = new JabberChatService(this);
+	CurrentFileTransferService = new JabberFileTransferService(this);
 
 	kdebugf2();
 }
@@ -118,9 +121,9 @@ void JabberProtocol::initializeJabberClient()
 	connect(JabberClient, SIGNAL(resourceUnavailable(const XMPP::Jid &, const XMPP::Resource &)),
 		   this, SLOT(clientResourceUnavailable(const XMPP::Jid &, const XMPP::Resource &)));
 
+	connect(JabberClient, SIGNAL(incomingFileTransfer()), this, SLOT(slotIncomingFileTransfer()));
+
 		/*//TODO: implement in the future
-		connect( JabberClient, SIGNAL ( incomingFileTransfer () ),
-				   this, SLOT ( slotIncomingFileTransfer () ) );
 		connect( JabberClient, SIGNAL ( groupChatJoined ( const XMPP::Jid & ) ),
 				   this, SLOT ( slotGroupChatJoined ( const XMPP::Jid & ) ) );
 		connect( JabberClient, SIGNAL ( groupChatLeft ( const XMPP::Jid & ) ),
@@ -155,6 +158,11 @@ void JabberProtocol::connectToServer()
 	JabberClient->setTimeZone(SystemInfo::instance()->timezoneString(), SystemInfo::instance()->timezoneOffset());
 	JabberClient->setClientName("Kadu");
 	JabberClient->setClientVersion(VERSION);
+
+	// Set caps node information
+	JabberClient->setCapsNode("http://psi-im.org/caps");
+	JabberClient->setCapsVersion("0.12");
+
 	// we need to use the old protocol for now
 	//JabberClient->setUseXMPP09 (true);
 
@@ -170,8 +178,7 @@ void JabberProtocol::connectToServer()
 	//JabberClient->setUseXMPP09(false);
  	//JabberClient->setForceTLS(true);
 
-	//do tego jeszcze chyba troche daleko
-	JabberClient->setFileTransfersEnabled(false);
+	JabberClient->setFileTransfersEnabled(true); // i has it
 	rosterRequestDone = false;
 	usingSSL = false;
 	jabberID = jabberAccount->id();
@@ -521,6 +528,14 @@ void JabberProtocol::changeStatus(Status status)
 	statusChanged(status);
 }
 
+void JabberProtocol::slotIncomingFileTransfer()
+{
+	JabberFileTransfer *jft = new JabberFileTransfer(account(),
+			FileTransfer::TypeReceive, client()->fileTransferManager()->takeIncoming());
+
+	CurrentFileTransferService->incomingFile(jft);
+}
+
 void JabberProtocol::clientResourceAvailable(const XMPP::Jid &jid, const XMPP::Resource &resource)
 {
 	kdebugf();
@@ -563,7 +578,7 @@ void JabberProtocol::clientResourceAvailable(const XMPP::Jid &jid, const XMPP::R
 	if (contact.display().isEmpty())
 		contact.setDisplay(jid.bare());
 
-	JabberContactAccountData *data = dynamic_cast<JabberContactAccountData *>(contact.accountData(account()));
+	JabberContactAccountData *data = jabberContactAccountData(contact);
 
 	if (!data)
 		return;
@@ -609,7 +624,7 @@ void JabberProtocol::clientResourceUnavailable(const XMPP::Jid &jid, const XMPP:
 	if (contact.display().isEmpty())
 		contact.setDisplay(jid.bare());
 
-	JabberContactAccountData *data = dynamic_cast<JabberContactAccountData *>(contact.accountData(account()));
+	JabberContactAccountData *data = jabberContactAccountData(contact);
 
 	if (!data)
 		return;
@@ -868,4 +883,9 @@ QPixmap JabberProtocol::statusPixmap(Status status)
 	}
 
 	return IconsManager::instance()->loadPixmap(pixmapName);
+}
+
+JabberContactAccountData * JabberProtocol::jabberContactAccountData(Contact contact) const
+{
+	return dynamic_cast<JabberContactAccountData *>(contact.accountData(account()));
 }
