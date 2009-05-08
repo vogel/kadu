@@ -43,10 +43,19 @@ public:
 		GenderFemale
 	};
 
+	enum ContactType
+	{
+		TypeNull = 0,
+		TypeAnonymous = 1,
+		TypeNormal = 2
+	};
+
 private:
 	QUuid Uuid;
 	QMap<QString, QString> CustomData;
 	QMap<Account *, ContactAccountData *> AccountsData;
+
+	ContactType Type;
 
 	int BlockUpdatedSignalCount;
 	bool Updated;
@@ -78,7 +87,7 @@ private slots:
 public:
 	static ContactData * loadFromStorage(StoragePoint *contactStoragePoint);
 
-	ContactData(QUuid uuid = QUuid());
+	ContactData(ContactType type, QUuid uuid = QUuid());
 	~ContactData();
 
 	void importConfiguration(XmlConfigFile *configurationStorage, QDomElement parent);
@@ -104,6 +113,12 @@ public:
 	ContactAccountData * accountData(Account *account);
 	QList<ContactAccountData *> accountDatas();
 	bool hasStoredAccountData(Account *account);
+
+	//contact type
+	bool isNull() const { return TypeNull == Type; }
+	bool isAnonymous() const { return TypeAnonymous == Type; }
+
+	void setType(ContactType type) { Type = type; }
 
 	// properties
 	bool isIgnored();

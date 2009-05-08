@@ -42,19 +42,9 @@ class XmlConfigFile;
 
 class KADUAPI Contact : public QObject
 {
-public:
-	enum ContactType
-	{
-		TypeNull,
-		TypeAnonymous,
-		TypeNormal
-	};
-
-private:
 	Q_OBJECT
 
 	QExplicitlySharedDataPointer<ContactData> Data;
-	ContactType Type;
 
 	Contact(ContactData *contactData);
 
@@ -64,14 +54,14 @@ public:
 	static Contact loadFromStorage(StoragePoint *contactStoragePoint);
 
 	Contact();
-	Contact(ContactType type);
+	Contact(ContactData::ContactType type);
 	Contact(const Contact &copy);
 	virtual ~Contact();
 
 	static Contact null;
 
-	bool isNull() const { return TypeNull == Type || 0 == Data; }
-	bool isAnonymous() const { return TypeAnonymous == Type; }
+	bool isNull() const { return 0 == Data || Data->isNull(); }
+	bool isAnonymous() const { return 0 != Data && Data->isAnonymous(); }
 
 	Contact & operator = (const Contact &copy);
 	bool operator == (const Contact &compare) const;
@@ -121,7 +111,7 @@ template<class T>
 	void removeFromGroup(Group *group);
 
 	QString display() const;
-	void setType(ContactType type) { Type = type; }
+	void setType(ContactData::ContactType type) { Data->setType(type); }
 
 	PropertyWrite(QString, display, Display, QString::null)
 	Property(QString, firstName, FirstName, QString::null)

@@ -23,9 +23,9 @@
 
 #include "contact-data.h"
 
-ContactData::ContactData(QUuid uuid) :
+ContactData::ContactData(ContactType type, QUuid uuid) :
 		UuidStorableObject("Contact", ContactManager::instance()),
-		Uuid(uuid.isNull() ? QUuid::createUuid() : uuid), Ignored(false), Blocked(false), OfflineTo(false),
+		Uuid(uuid.isNull() ? QUuid::createUuid() : uuid), Type(type), Ignored(false), Blocked(false), OfflineTo(false),
 		BlockUpdatedSignalCount(0), Updated(false)
 {
 }
@@ -36,7 +36,7 @@ ContactData::~ContactData()
 
 ContactData * ContactData::loadFromStorage(StoragePoint *contactStoragePoint)
 {
-	ContactData *result = new ContactData(QUuid());
+	ContactData *result = new ContactData(TypeNormal, QUuid());
 	result->setStorage(contactStoragePoint);
 	result->load();
 
@@ -72,6 +72,8 @@ void ContactData::importConfiguration(XmlConfigFile *configurationStorage, QDomE
 		CustomData.insert(attribute.name(), attribute.value());
 	}
 
+	Type = TypeNormal;
+	
 	QStringList groups = CustomData["groups"].split(',', QString::SkipEmptyParts);
 	foreach (const QString &group, groups)
 		Groups << GroupManager::instance()->byName(group);
@@ -102,6 +104,10 @@ void ContactData::load()
 	QDomElement parent = sp->point();
 
 	Uuid = QUuid(parent.attribute("uuid"));
+	if (parent.hasAttribute("type"))
+		Type = (ContactType)parent.attribute("type").toInt();
+	else
+		Type = TypeNormal;
 
 	QDomElement customDataValues = configurationStorage->getNode(parent, "CustomDataValues", XmlConfigFile::ModeFind);
 	QDomNodeList customDataValuesList = customDataValues.elementsByTagName("CustomDataValue");
@@ -160,6 +166,7 @@ void ContactData::store()
 
 	XmlConfigFile *configurationStorage = sp->storage();
 	QDomElement parent = sp->point();
+	parent.setAttribute("type", (int)Type);
 
 	QDomElement customDataValues = configurationStorage->getNode(parent, "CustomDataValues");
 

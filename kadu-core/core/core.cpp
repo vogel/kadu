@@ -55,7 +55,7 @@ Core * Core::instance()
 	return Instance;
 }
 
-Core::Core() : Myself(Contact::TypeNull), Window(0), ShowMainWindowOnStart(true)
+Core::Core() : Myself(ContactData::TypeNull), Window(0), ShowMainWindowOnStart(true)
 {
 	QObject::connect(qApp, SIGNAL(aboutToQuit()), this, SLOT(quit()));
 }
@@ -284,7 +284,6 @@ void Core::init()
 #else
 	setIcon(IconsManager::instance()->loadPixmap("Offline"));
 #endif
-
 	loadDefaultStatus();
 
 	QTimer::singleShot(15000, this, SLOT(deleteOldConfigFiles()));

@@ -13,7 +13,7 @@
 
 #include "contact.h"
 
-Contact Contact::null(Contact::TypeNull);
+Contact Contact::null(ContactData::TypeNull);
 
 Contact Contact::loadFromStorage(StoragePoint* contactStoragePoint)
 {
@@ -21,22 +21,22 @@ Contact Contact::loadFromStorage(StoragePoint* contactStoragePoint)
 }
 
 Contact::Contact(ContactData *contactData)
-	: Data(contactData), Type(Contact::TypeNormal)
+	: Data(contactData)
 {
 }
 
 Contact::Contact()
-	: Data(new ContactData()), Type(Contact::TypeNormal)
+	: Data(new ContactData(ContactData::TypeNormal))
 {
 }
 
-Contact::Contact(Contact::ContactType type)
-	: Type(type), Data(Contact::TypeNull != type ? new ContactData() : 0)
+Contact::Contact(ContactData::ContactType type)
+	:Data(ContactData::TypeNull != type ? new ContactData(type) : 0)
 {
 }
 
 Contact::Contact(const Contact &copy)
-	: Data(copy.Data), Type(copy.Type)
+	: Data(copy.Data)
 {
 }
 
@@ -47,13 +47,12 @@ Contact::~Contact()
 void Contact::checkNull()
 {
 	if (isNull())
-		Data = new ContactData();
+		Data = new ContactData(ContactData::TypeNull);
 }
 
 Contact & Contact::operator = (const Contact& copy)
 {
 	Data = copy.Data;
-	Type = copy.Type;
 	return *this;
 }
 
@@ -84,9 +83,10 @@ void Contact::loadConfiguration()
 
 void Contact::store()
 {
-	//TODO 0.6.6: save anonymousContacts with messages
-	if (!isNull() && !(isAnonymous() && !pending.pendingMsgs(*this)))
+	if ((!isNull() && !isAnonymous()) || (isAnonymous() && pending.pendingMsgs(*this)))
 		Data->store();
+	else
+		Data->removeFromStorage();
 }
 
 void Contact::removeFromStorage()

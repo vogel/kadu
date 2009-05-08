@@ -17,7 +17,7 @@
 #include "gadu-search-service.h"
 
 GaduSearchService::GaduSearchService(GaduProtocol *protocol) :
-		SearchService(protocol), Protocol(protocol), Query(Contact::TypeAnonymous),
+		SearchService(protocol), Protocol(protocol), Query(ContactData::TypeAnonymous),
 		SearchSeq(0), From(0), Stopped(false)
 {
 }

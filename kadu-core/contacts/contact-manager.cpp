@@ -108,8 +108,7 @@ void ContactManager::store()
 	ensureLoaded();
 
 	foreach (Contact contact, Contacts)
-		if (!contact.isNull() && !contact.isAnonymous())
-			contact.store();
+		contact.store();
 }
 
 void ContactManager::addContact(Contact contact)
@@ -166,7 +165,7 @@ void ContactManager::removeContact(Contact contact)
 	Contacts.removeAll(contact);
 	contact.removeFromStorage();
 	emit contactRemoved(contact);
-	contact.setType(Contact::TypeAnonymous);
+	contact.setType(ContactData::TypeAnonymous);
 
 	kdebugf();
 }
