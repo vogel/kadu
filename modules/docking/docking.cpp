@@ -73,7 +73,7 @@ DockingManager::DockingManager()
 	DockMenu->addAction(IconsManager::instance()->loadIcon("OpenChat"), tr("Show Pending Messages"), chat_manager, SLOT(openPendingMsgs()));
 #endif
 	DockMenu->addSeparator();
-	DockMenu->addAction(IconsManager::instance()->loadIcon("Exit"), tr("&Exit Kadu"), Core::instance(), SLOT(quit()));
+	DockMenu->addAction(IconsManager::instance()->loadIcon("Exit"), tr("&Exit Kadu"), qApp, SLOT(quit()));
 
 	connect(this, SIGNAL(mousePressMidButton()), &pending, SLOT(openMessages()));
 
