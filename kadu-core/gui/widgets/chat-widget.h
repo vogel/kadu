@@ -57,7 +57,6 @@ class KADUAPI ChatWidget : public QWidget, ConfigurationAwareObject, AccountsAwa
 
 	QIcon pix;
 //	Q3MimeSourceFactory *bodyformat; /*!< zmienna ustawiaj�ca format */
-	bool AutoSend; /*!< okre�la czy Return powoduje wys�anie wiadomo�ci */
 	bool WaitingForACK;
 	
 	Message myLastMessage; /*!< zmienna przechowuj�ca nasz� ostatni� wiadomo�� */
@@ -154,8 +153,6 @@ public:
 	ContactsListWidget * contactsListWidget() { return ContactsWidget; }
 	ChatEditBox * getChatEditBox() { return InputBox; }
 
-	bool autoSend() const;
-
 	bool waitingForACK() const;
 
 	virtual void dragEnterEvent(QDragEnterEvent *e);
@@ -248,12 +245,6 @@ public slots:
 		Slot czyszcz�cy okno rozmowy
 	**/
 	void clearChatWindow();
-
-	/**
-		\fn void setAutoSend(bool auto_send)
-		Ustaw autowysylanie
-	**/
-	void setAutoSend(bool auto_send);
 
 	/**
 		\fn void insertImage()

@@ -150,7 +150,7 @@ void CustomInput::contextMenuEvent(QContextMenuEvent *e)
 	menu->exec(e->globalPos());
 }
 
-void CustomInput::setAutosend(bool on)
+void CustomInput::setAutoSend(bool on)
 {
 	autosend_enabled = on;
 }

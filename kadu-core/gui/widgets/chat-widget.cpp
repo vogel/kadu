@@ -154,9 +154,6 @@ void ChatWidget::configurationUpdated()
 	InputBox->inputBox()->setFont(config_file.readFontEntry("Look","ChatFont"));
  	InputBox->inputBox()->setStyleSheet(QString("QTextEdit {background-color: %1}").arg(config_file.readColorEntry("Look", "ChatTextBgColor").name()));
 
-	AutoSend = config_file.readBoolEntry("Chat", "AutoSend");
-	InputBox->inputBox()->setAutosend(AutoSend);
-
 	refreshTitle();
 }
 
@@ -512,15 +509,6 @@ void ChatWidget::clearChatWindow()
 	kdebugf2();
 }
 
-void ChatWidget::setAutoSend(bool auto_send)
-{
-	kdebugf();
-	AutoSend = auto_send;
-	if (InputBox && InputBox->inputBox())
-		InputBox->inputBox()->setAutosend(auto_send);
-	kdebugf2();
-}
-
 void ChatWidget::cancelMessage()
 {
 	kdebugf();
@@ -672,11 +660,6 @@ const QString& ChatWidget::escapedCaption() const
 CustomInput * ChatWidget::edit()
 {
 	return InputBox->inputBox();
-}
-
-bool ChatWidget::autoSend() const
-{
-	return AutoSend;
 }
 
 bool ChatWidget::waitingForACK() const

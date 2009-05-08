@@ -75,7 +75,7 @@ public slots:
 		Ustawia/wy��cza automatyczne wysy�anie wiadomo�ci
 		\param on zmienna ustawiaj�ca autosend
 	**/
-	void setAutosend(bool on);
+	void setAutoSend(bool on);
 
 signals:
 	/**

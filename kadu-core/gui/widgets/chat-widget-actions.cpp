@@ -228,15 +228,9 @@ void ChatWidgetActions::autoSendActionActivated(QAction *sender, bool toggled)
 	if (!chatEditBox)
 		return;
 
-	ChatWidget *chatWidget = chatEditBox->chatWidget();
-	if (chatWidget)
-	{
-		chatWidget->setAutoSend(toggled);
-		config_file.writeEntry("Chat", "AutoSend", toggled);
-		autoSendActionCheck();
-	}
-
-	kdebugf2();
+	config_file.writeEntry("Chat", "AutoSend", toggled);
+ 	chatEditBox->setAutoSend(toggled);
+	autoSendActionCheck();
 }
 
 void ChatWidgetActions::clearActionActivated(QAction *sender, bool toggled)

@@ -37,11 +37,11 @@ protected:
 	virtual void configurationUpdated();
 
 public:
-	ChatEditBox(QWidget *parent);
-	virtual ~ChatEditBox();
-
 	static void createDefaultToolbars(QDomElement parentConfig);
 	static void addAction(const QString &actionName, bool showLabel = false);
+
+	ChatEditBox(QWidget *parent);
+	virtual ~ChatEditBox();
 
 	// TODO: remove?
 	CustomInput * inputBox();
@@ -53,6 +53,8 @@ public:
 
 	void openEmoticonSelector(const QWidget *activatingWidget);
 	void openColorSelector(const QWidget *activatingWidget);
+
+	void setAutoSend(bool autoSend);
 
 public slots:
 	void addEmoticon(const QString &emoticon);

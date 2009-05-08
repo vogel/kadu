@@ -49,6 +49,8 @@ ChatEditBox::ChatEditBox(QWidget *parent) : KaduMainWindow(parent)
 	connect(ChatWidgetManager::instance()->actions()->colorSelector(), SIGNAL(actionCreated(KaduAction *)),
 			this, SLOT(colorSelectorActionCreated(KaduAction *)));
 	connect(InputBox, SIGNAL(cursorPositionChanged()), this, SLOT(cursorPositionChanged()));
+
+	configurationUpdated();
 }
 
 ChatEditBox::~ChatEditBox()
@@ -76,6 +78,13 @@ void ChatEditBox::cursorPositionChanged()
 void ChatEditBox::configurationUpdated()
 {
 	setColorFromCurrentText(true);
+
+	InputBox->setAutoSend(config_file.readBoolEntry("Chat", "AutoSend"));
+}
+
+void ChatEditBox::setAutoSend(bool autoSend)
+{
+	InputBox->setAutoSend(autoSend);
 }
 
 CustomInput * ChatEditBox::inputBox()
