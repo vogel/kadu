@@ -30,6 +30,7 @@ class KADUAPI ChatEditBox : public KaduMainWindow, ConfigurationAwareObject
 	void setColorFromCurrentText(bool force);
 
 private slots:
+	void fontChanged(QFont font);
 	void colorSelectorActionCreated(KaduAction *action);
 	void cursorPositionChanged();
 

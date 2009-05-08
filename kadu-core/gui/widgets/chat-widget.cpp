@@ -162,28 +162,10 @@ void ChatWidget::specialKeyPressed(int key)
  	kdebugf();
  	switch (key)
  	{
-		KaduAction *action;
- 		case CustomInput::KEY_BOLD:
- 			action = ChatWidgetManager::instance()->actions()->bold()->action(InputBox);
-			if (action)
-				action->setChecked(!action->isChecked());
- 			InputBox->inputBox()->setFontWeight(action->isChecked() ? QFont::Bold : QFont::Normal);
- 			break;
- 		case CustomInput::KEY_ITALIC:
- 			action = ChatWidgetManager::instance()->actions()->italic()->action(InputBox);
-			if (action)
-				action->setChecked(!action->isChecked());
- 			InputBox->inputBox()->setFontItalic(action->isChecked());
- 			break;
- 		case CustomInput::KEY_UNDERLINE:
- 			action = ChatWidgetManager::instance()->actions()->underline()->action(InputBox);
-			if (action)
-				action->setChecked(!action->isChecked());
- 			InputBox->inputBox()->setFontUnderline(action->isChecked());
- 			break;
 		 case CustomInput::KEY_COPY:
 			MessagesView->pageAction(QWebPage::Copy)->trigger();
 			break;
+		// TODO: move to good place
  	}
  	kdebugf2();
 }

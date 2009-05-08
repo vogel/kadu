@@ -48,6 +48,7 @@ ChatEditBox::ChatEditBox(QWidget *parent) : KaduMainWindow(parent)
 
 	connect(ChatWidgetManager::instance()->actions()->colorSelector(), SIGNAL(actionCreated(KaduAction *)),
 			this, SLOT(colorSelectorActionCreated(KaduAction *)));
+	connect(InputBox, SIGNAL(fontChanged(QFont)), this, SLOT(fontChanged(QFont)));
 	connect(InputBox, SIGNAL(cursorPositionChanged()), this, SLOT(cursorPositionChanged()));
 
 	configurationUpdated();
@@ -62,6 +63,16 @@ ChatEditBox::~ChatEditBox()
 	chatEditBoxes.removeAll(this);
 
 	writeToolBarsToConfig("chat");
+}
+
+void ChatEditBox::fontChanged(QFont font)
+{
+	if (ChatWidgetManager::instance()->actions()->bold()->action(this))
+		ChatWidgetManager::instance()->actions()->bold()->action(this)->setChecked(font.bold());
+	if (ChatWidgetManager::instance()->actions()->italic()->action(this))
+		ChatWidgetManager::instance()->actions()->italic()->action(this)->setChecked(font.italic());
+	if (ChatWidgetManager::instance()->actions()->underline()->action(this))
+		ChatWidgetManager::instance()->actions()->underline()->action(this)->setChecked(font.underline());
 }
 
 void ChatEditBox::colorSelectorActionCreated(KaduAction *action)

@@ -54,9 +54,6 @@ public:
 	/*! Typ wyliczeniowy mowi�cy o rodzaju pisanych znak�w */
 	enum
 	{
-		KEY_BOLD,/*!< pogrubienie */
-		KEY_ITALIC,/*!< kursywa */
-		KEY_UNDERLINE,/*!< podkre�lenie */
 		KEY_COPY/*!< kopiuj */
 	};
 
@@ -86,14 +83,6 @@ signals:
 	void sendMessage();
 
 	/**
-		\fn void specialKeyPressed(int key)
-		Sygna� zostaje wys�any gdy naci�ni�to specjalny
-		klawisz (skr�t) odpowiadaj�cy np KEY_BOLD
-		\param key warto�� z typu wyliczeniowego KEY_*
-	**/
-	void specialKeyPressed(int key);
-
-	/**
 		\fn void keyPressed(QKeyEvent *e, CustomInput *sender, bool &handled)
 		Dowolny przycisk klawiatury zosta� naci�ni�ty.
 		Przekazany zostaje tak�e obiekt, kt�ry wywo�a� akcj� -
@@ -120,6 +109,8 @@ signals:
 		ze standardow� obs�ug� kontrolek Qt nie powinny by� podj�te.
 	**/
 	void keyReleased(QKeyEvent *e, CustomInput *sender, bool &handled);
+	
+	void fontChanged(QFont font);
 
 };
 

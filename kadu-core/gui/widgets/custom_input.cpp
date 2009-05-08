@@ -54,21 +54,33 @@ void CustomInput::keyPressEvent(QKeyEvent *e)
 	{
  		if (HotKey::shortCut(e, "ShortCuts", "chat_bold"))
  		{
- 			emit specialKeyPressed(CustomInput::KEY_BOLD);
+			if (QFont::Normal == fontWeight())
+				setFontWeight(QFont::Bold);
+			else
+				setFontWeight(QFont::Normal);
+
+			emit fontChanged(currentFont());
+
  			e->accept();
  			kdebugf2();
  			return;
  		}
  		if (HotKey::shortCut(e, "ShortCuts", "chat_italic"))
  		{
- 			emit specialKeyPressed(CustomInput::KEY_ITALIC);
+ 			setFontItalic(!fontItalic());
+
+			emit fontChanged(currentFont());
+
  			e->accept();
  			kdebugf2();
  			return;
  		}
  		if (HotKey::shortCut(e, "ShortCuts", "chat_underline"))
  		{
- 			emit specialKeyPressed(CustomInput::KEY_UNDERLINE);
+			setFontUnderline(!fontUnderline());
+			
+			emit fontChanged(currentFont());
+
  			e->accept();
  			kdebugf2();
  			return;
@@ -82,7 +94,7 @@ void CustomInput::keyPressEvent(QKeyEvent *e)
 		}
 		if (!CopyPossible && e->key() == Qt::Key_C && e->modifiers() & Qt::ControlModifier)
 		{
-			emit specialKeyPressed(CustomInput::KEY_COPY);
+// 			emit specialKeyPressed(CustomInput::KEY_COPY);
  			e->accept();
  			kdebugf2();
  			return;	
