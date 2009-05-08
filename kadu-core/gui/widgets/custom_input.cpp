@@ -24,6 +24,7 @@ CustomInput::CustomInput(QWidget *parent)
 	setAcceptRichText(false);
 
 	connect(this, SIGNAL(copyAvailable(bool)), this, SLOT(setCopyPossible(bool)));
+	connect(this, SIGNAL(cursorPositionChanged()), this, SLOT(cursorPositionChangedSlot()));
 
 	kdebugf2();
 }
@@ -167,6 +168,11 @@ void CustomInput::setAutoSend(bool on)
 	autosend_enabled = on;
 }
 
+void CustomInput::cursorPositionChangedSlot()
+{
+	emit fontChanged(currentFont());
+}
+	
 void CustomInput::setCopyPossible(bool available)
 {
 	CopyPossible = available;

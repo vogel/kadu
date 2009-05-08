@@ -23,6 +23,7 @@ class CustomInput : public QTextEdit
 	bool CopyPossible;
 
 private slots:
+	void cursorPositionChangedSlot();
 	void setCopyPossible(bool available);
 
 protected:
@@ -50,6 +51,7 @@ protected:
 		\param e wska�nik do obiektu obs�uguj�cego klamenu
 	**/
 	virtual void contextMenuEvent(QContextMenuEvent *e);
+	
 public:
 	/*! Typ wyliczeniowy mowi�cy o rodzaju pisanych znak�w */
 	enum

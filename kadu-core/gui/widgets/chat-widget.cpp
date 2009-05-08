@@ -105,7 +105,6 @@ void ChatWidget::createGui()
 
 	connect(InputBox->inputBox(), SIGNAL(keyPressed(QKeyEvent *, CustomInput *, bool &)),
 			this, SLOT(keyPressedSlot(QKeyEvent *, CustomInput *, bool &)));
-	connect(InputBox->inputBox(), SIGNAL(cursorPositionChanged()), this, SLOT(curPosChanged()));
 	connect(InputBox->inputBox(), SIGNAL(sendMessage()), this, SLOT(sendMessage()));
 	connect(InputBox->inputBox(), SIGNAL(specialKeyPressed(int)), this, SLOT(specialKeyPressed(int)));
 	InputBox->installEventFilter(this);
@@ -168,27 +167,6 @@ void ChatWidget::specialKeyPressed(int key)
 		// TODO: move to good place
  	}
  	kdebugf2();
-}
-
-void ChatWidget::curPosChanged()
-{
-	kdebugf();
-
-	KaduAction *action;
-
-	action = ChatWidgetManager::instance()->actions()->bold()->action(InputBox);
- 	if (action)
-		action->setChecked(InputBox->inputBox()->fontWeight() >= QFont::Bold);
-
-	action = ChatWidgetManager::instance()->actions()->italic()->action(InputBox);
- 	if (action)
-		action->setChecked(InputBox->inputBox()->fontItalic());
-
-	action = ChatWidgetManager::instance()->actions()->underline()->action(InputBox);
- 	if (action)
-		action->setChecked(InputBox->inputBox()->fontUnderline());
-
-	kdebugf2();
 }
 
 void ChatWidget::insertImage()

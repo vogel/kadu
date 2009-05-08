@@ -221,12 +221,6 @@ public slots:
 	void writeMyMessage();
 
 	/**
-		\fn void curPosChanged(int para, int pos)
-		Slot wywo�ywany kiedy pozycja kursosa zmieni�a si�
-	**/
-	void curPosChanged();
-
-	/**
 		\fn void specialKeyPressed(int key)
 		Slot zostaje wywo�any gdy naci�ni�to specjalny klawisz (skr�t)
 		odpowiadaj�cy np KEY_BOLD
