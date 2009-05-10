@@ -10,14 +10,18 @@
 #include <QtXml/QDomElement>
 
 #include "chat/chat.h"
+#include "contacts/contact-account-data.h"
 #include "gui/widgets/chat-widget-actions.h"
 #include "gui/widgets/chat-widget-manager.h"
+#include "misc/image-dialog.h"
 
 #include "color_selector.h"
 #include "config_file.h"
 #include "chat-widget.h"
 #include "custom_input.h"
+#include "debug.h"
 #include "emoticons.h"
+#include "message_box.h"
 #include "toolbar.h"
 #include "xml_config_file.h"
 
@@ -25,7 +29,8 @@
 
 QList<ChatEditBox *> chatEditBoxes;
 
-ChatEditBox::ChatEditBox(QWidget *parent) : KaduMainWindow(parent)
+ChatEditBox::ChatEditBox(Chat *chat, QWidget *parent) :
+		KaduMainWindow(parent), CurrentChat(chat)
 {
 	chatEditBoxes.append(this);
 
@@ -193,6 +198,63 @@ void ChatEditBox::openColorSelector(const QWidget *activatingWidget)
 	colorSelector->alignTo(const_cast<QWidget*>(activatingWidget)); //TODO: do something about const_cast
 	colorSelector->show();
 	connect(colorSelector, SIGNAL(colorSelect(const QColor &)), this, SLOT(changeColor(const QColor &)));
+}
+
+void ChatEditBox::openInsertImageDialog()
+{
+	ImageDialog *id = new ImageDialog(this);
+	id->setDirectory(config_file.readEntry("Chat", "LastImagePath"));
+	id->setWindowTitle(tr("Insert image"));
+
+	while (id->exec() == QDialog::Accepted && 0 < id->selectedFiles().count())
+	{
+		config_file.writeEntry("Chat", "LastImagePath", id->directory().absolutePath());
+
+		QString selectedFile = id->selectedFiles()[0];
+		QFileInfo f(selectedFile);
+
+		if (!f.isReadable())
+		{
+			MessageBox::msg(tr("This file is not readable"), true, "Warning", this);
+			continue;
+		}
+
+		if (f.size() >= (1 << 18)) // 256kB
+		{
+			MessageBox::msg(tr("This file is too big (%1 >= %2)").arg(f.size()).arg(1<<18), true, "Warning", this);
+			continue;
+		}
+
+		int counter = 0;
+
+		foreach (Contact contact, CurrentChat->contacts())
+		{
+			// TODO: 0.6.6
+			ContactAccountData *contactAccountData = contact.accountData(CurrentChat->account());
+			if (contactAccountData && contactAccountData->hasFeature(/*EmbedImageInChatMessage*/))
+			{
+// 				unsigned long maxImageSize = contactAccountData->maxEmbededImageSize();
+// 				if (f.size() > maxImageSize)
+					counter++;
+			}
+			else
+				counter++;
+			// unsigned int maximagesize = user.protocolData("Gadu", "MaxImageSize").toUInt();
+		}
+		if (counter == 1 && CurrentChat->contacts().count() == 1)
+		{
+			if (!MessageBox::ask(tr("This file is too big for %1.\nDo you really want to send this image?\n").arg((*CurrentChat->contacts().begin()).display())))
+				continue;
+		}
+		else if (counter > 0 &&
+			!MessageBox::ask(tr("This file is too big for %1 of %2 contacts.\nDo you really want to send this image?\nSome of them probably will not get it.").arg(counter).arg(CurrentChat->contacts().count())))
+			continue;
+
+		InputBox->insertPlainText(QString("[IMAGE %1]").arg(selectedFile));
+		break;
+	}
+
+	id = 0;
 }
 
 void ChatEditBox::addEmoticon(const QString &emot)

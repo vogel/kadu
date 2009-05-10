@@ -240,12 +240,6 @@ public slots:
 	**/
 	void clearChatWindow();
 
-	/**
-		\fn void insertImage()
-		Slot wklejaj�cy obrazek do okna rozmowy (wyb�r obrazka)
-	**/
-	void insertImage();
-
 	void makeActive();
 	void markAllMessagesRead();
 

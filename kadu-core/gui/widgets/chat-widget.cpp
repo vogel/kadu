@@ -100,7 +100,7 @@ void ChatWidget::createGui()
 
 	vertSplit->addWidget(horizSplit);
 
-	InputBox = new ChatEditBox(this);
+	InputBox = new ChatEditBox(CurrentChat, this);
 	vertSplit->addWidget(InputBox);
 
 	connect(InputBox->inputBox(), SIGNAL(keyPressed(QKeyEvent *, CustomInput *, bool &)),
@@ -167,76 +167,6 @@ void ChatWidget::specialKeyPressed(int key)
 		// TODO: move to good place
  	}
  	kdebugf2();
-}
-
-void ChatWidget::insertImage()
-{
-	kdebugf();
-
-	ImageDialog* id = new ImageDialog(this);
-	id->setDirectory(config_file.readEntry("Chat", "LastImagePath"));
-	id->setWindowTitle(tr("Insert image"));
-	if (id->exec() == QDialog::Accepted && 0 < id->selectedFiles().count())
-	{
-		config_file.writeEntry("Chat", "LastImagePath", id->directory().absolutePath());
-		QString selectedFile = id->selectedFiles()[0];
-		QFileInfo f(selectedFile);
-		delete id;
-		id = NULL;
-		if (!f.isReadable())
-		{
-			MessageBox::msg(tr("This file is not readable"), true, "Warning", this);
-			QTimer::singleShot(0, this, SLOT(insertImage()));
-			kdebugf2();
-			return;
-		}
-
-		if (f.size() >= (1 << 18)) // 256kB
-		{
-			MessageBox::msg(tr("This file is too big (%1 >= %2)").arg(f.size()).arg(1<<18), true, "Warning", this);
-			QTimer::singleShot(0, this, SLOT(insertImage()));
-			kdebugf2();
-			return;
-		}
-
-		int counter = 0;
-
-		foreach (Contact contact, CurrentChat->contacts())
-		{
-			// TODO: 0.6.6
-			ContactAccountData *contactAccountData = contact.accountData(CurrentChat->account());
-			if (contactAccountData && contactAccountData->hasFeature(/*EmbedImageInChatMessage*/))
-			{
-// 				unsigned long maxImageSize = contactAccountData->maxEmbededImageSize();
-// 				if (f.size() > maxImageSize)
-					counter++;
-			}
-			else
-				counter++;
-			// unsigned int maximagesize = user.protocolData("Gadu", "MaxImageSize").toUInt();
-		}
-		if (counter == 1 && CurrentChat->contacts().count() == 1)
-		{
-			if (!MessageBox::ask(tr("This file is too big for %1.\nDo you really want to send this image?\n").arg((*CurrentChat->contacts().begin()).display())))
-			{
-				QTimer::singleShot(0, this, SLOT(insertImage()));
-				kdebugf2();
-				return;
-			}
-		}
-		else if (counter > 0 &&
-			!MessageBox::ask(tr("This file is too big for %1 of %2 contacts.\nDo you really want to send this image?\nSome of them probably will not get it.").arg(counter).arg(CurrentChat->contacts().count())))
-		{
-			QTimer::singleShot(0, this, SLOT(insertImage()));
-			kdebugf2();
-			return;
-		}
-		InputBox->inputBox()->insertPlainText(QString("[IMAGE %1]").arg(selectedFile));
-	}
-	else
-		delete id;
-
-	kdebugf2();
 }
 
 void ChatWidget::refreshTitle()

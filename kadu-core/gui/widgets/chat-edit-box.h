@@ -18,12 +18,14 @@
 
 #include "exports.h"
 
+class Chat;
 class CustomInput;
 
 class KADUAPI ChatEditBox : public KaduMainWindow, ConfigurationAwareObject
 {
 	Q_OBJECT
 
+	Chat *CurrentChat;
 	CustomInput *InputBox;
 	QColor CurrentColor;
 
@@ -41,7 +43,7 @@ public:
 	static void createDefaultToolbars(QDomElement parentConfig);
 	static void addAction(const QString &actionName, bool showLabel = false);
 
-	ChatEditBox(QWidget *parent);
+	ChatEditBox(Chat *chat, QWidget *parent = 0);
 	virtual ~ChatEditBox();
 
 	// TODO: remove?
@@ -54,6 +56,7 @@ public:
 
 	void openEmoticonSelector(const QWidget *activatingWidget);
 	void openColorSelector(const QWidget *activatingWidget);
+	void openInsertImageDialog();
 
 	void setAutoSend(bool autoSend);
 

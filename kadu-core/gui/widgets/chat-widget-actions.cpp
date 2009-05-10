@@ -256,11 +256,7 @@ void ChatWidgetActions::insertImageActionActivated(QAction *sender, bool toggled
 	if (!chatEditBox)
 		return;
 
-	ChatWidget *chatWidget = chatEditBox->chatWidget();
-	if (chatWidget)
-		chatWidget->insertImage();
-
-	kdebugf2();
+	chatEditBox->openInsertImageDialog();
 }
 
 void ChatWidgetActions::boldActionActivated(QAction *sender, bool toggled)
