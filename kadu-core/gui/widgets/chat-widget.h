@@ -62,7 +62,7 @@ class KADUAPI ChatWidget : public QWidget, ConfigurationAwareObject, AccountsAwa
 	Message myLastMessage; /*!< zmienna przechowuj�ca nasz� ostatni� wiadomo�� */
 	QSplitter *vertSplit, *horizSplit; /*!< obiekty oddzielaj�ce kontrolki od siebie */
 
-	QDateTime lastMsgTime; /*!< czas ostatniej wiadomo�ci */
+	QDateTime LastMessageTime; /*!< czas ostatniej wiadomo�ci */
 
 	// TODO: remove
 	int activationCount;
@@ -131,7 +131,7 @@ public:
 		\param message message content
 		\param time czas
 		**/
-	void newMessage(Account* account, Contact sender, ContactSet receipients, const QString& message, time_t time);
+	void newMessage(ChatMessage *message);
 
 	/**
 		\fn void repaintMessages()
@@ -165,7 +165,7 @@ public:
 
 	unsigned int newMessagesCount() const;
 
-	QDateTime getLastMsgTime();
+	QDateTime lastMessageTime();
 	QIcon icon();
 
 	void kaduStoreGeometry();

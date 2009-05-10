@@ -300,18 +300,18 @@ void ChatStylesManager::preparaPreview(Preview *preview)
 	example.setEmail("jimbo@mail.server.net");
 	example.setHomePhone("+481234567890");
 
-	ContactSet receivers;
-	receivers.insert(example);
-	ChatMessage *chatMessage = new ChatMessage(account, Core::instance()->myself(), receivers, tr("Your message"), TypeSent,
-		QDateTime::currentDateTime(), QDateTime::currentDateTime());
-	chatMessage->setSeparatorSize(CfgHeaderSeparatorHeight);
-	preview->addObjectToParse(Core::instance()->myself() , chatMessage);
-
-	chatMessage = new ChatMessage(account, example, ContactSet(Core::instance()->myself()),
-			tr("Message from Your friend"), TypeReceived,
-			QDateTime::currentDateTime(), QDateTime::currentDateTime());
-	chatMessage->setSeparatorSize(CfgHeaderSeparatorHeight);
-	preview->addObjectToParse(example, chatMessage);
+	// TODO: make an empty chat here
+// 	receivers.insert(example);
+// 	ChatMessage *chatMessage = new ChatMessage(account, Core::instance()->myself(), receivers, tr("Your message"), TypeSent,
+// 		QDateTime::currentDateTime(), QDateTime::currentDateTime());
+// 	chatMessage->setSeparatorSize(CfgHeaderSeparatorHeight);
+// 	preview->addObjectToParse(Core::instance()->myself() , chatMessage);
+// 
+// 	chatMessage = new ChatMessage(account, example, ContactSet(Core::instance()->myself()),
+// 			tr("Message from Your friend"), TypeReceived,
+// 			QDateTime::currentDateTime(), QDateTime::currentDateTime());
+// 	chatMessage->setSeparatorSize(CfgHeaderSeparatorHeight);
+// 	preview->addObjectToParse(example, chatMessage);
 }
 
 void ChatStylesManager::styleChangedSlot(const QString &styleName)

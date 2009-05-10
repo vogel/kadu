@@ -370,7 +370,7 @@ void ChatWidgetManager::deletePendingMsgs(Chat *chat)
 }
 
 // TODO: make pending messages ChatMessages or something
-ChatMessage *convertPendingToMessage(PendingMsgs::Element elem)
+ChatMessage * convertPendingToMessage(PendingMsgs::Element elem)
 {
 	kdebugf();
 
@@ -379,11 +379,13 @@ ChatMessage *convertPendingToMessage(PendingMsgs::Element elem)
 
 	ContactSet receivers;
 	receivers.insert(Core::instance()->myself());
-	ChatMessage *message = new ChatMessage(elem.chat->account(),
-			elem.sender, receivers, elem.msg,
-			TypeReceived, QDateTime::currentDateTime(), date);
+	// TODO: 0.6.6
+// 	ChatMessage *message = new ChatMessage(elem.chat->account(),
+// 			elem.sender, receivers, elem.msg,
+// 			TypeReceived, QDateTime::currentDateTime(), date);
 
-	return message;
+// 	return message;
+	return 0;
 }
 
 void ChatWidgetManager::openPendingMsgs(Chat *chat, bool forceActivate)
@@ -457,13 +459,16 @@ void ChatWidgetManager::configurationUpdated()
 void ChatWidgetManager::messageReceived(Chat *chat, Contact sender, const QString &message)
 {
 	kdebugf();
-	ContactSet receipients = chat->contacts();
 	Account *account = chat->account();
 	time_t time = QDateTime::currentDateTime().toTime_t();
 
 	ChatWidget *chatWidget = byChat(chat);
 	if (chatWidget)
-		chatWidget->newMessage(account, sender, receipients, message, time);
+	{
+		ChatMessage *chatMessage = new ChatMessage(chat, sender, message,
+				TypeReceived, QDateTime::currentDateTime(), QDateTime::currentDateTime());
+		chatWidget->newMessage(chatMessage);
+	}
 	else
 	{
 		if (config_file.readBoolEntry("General","AutoRaise"))
@@ -484,7 +489,10 @@ void ChatWidgetManager::messageReceived(Chat *chat, Contact sender, const QStrin
 			// TODO: it is lame
 			openChatWidget(chat);
 			chatWidget = byChat(chat);
-			chatWidget->newMessage(account, sender, receipients, message, time);
+
+			ChatMessage *chatMessage = new ChatMessage(chat, sender, message,
+					TypeReceived, QDateTime::currentDateTime(), QDateTime::currentDateTime());
+			chatWidget->newMessage(chatMessage);
 		}
 		else
 			pending.addMsg(chat, sender, message, time);

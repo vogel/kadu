@@ -92,7 +92,7 @@ QString KaduChatStyleEngine::formatMessage(ChatMessage *message, ChatMessage *af
 	bool includeHeader;
 
 	Contact contact = message->sender();
-	Account *account = message->account();
+	Account *account = message->chat()->account();
 
 	if (message->type() == TypeSystem)
 	{
@@ -150,7 +150,7 @@ void KaduChatStyleEngine::repaintMessages(ChatMessagesView *view)
 	{
 		(*message)->setSeparatorSize(0);
 		Contact contact = (*message)->sender();
-		Account *account = (*message)->account();
+		Account *account = (*message)->chat()->account();
 
 		if ((*message)->type() == TypeSystem)
 			text += KaduParser::parse(ChatSyntaxWithoutHeader, account, contact, *message);

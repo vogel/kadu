@@ -237,7 +237,6 @@ void ChatWidget::refreshTitle()
 	kdebugf2();
 }
 
-
 bool ChatWidget::keyPressEventHandled(QKeyEvent *e)
 {
 	if (HotKey::shortCut(e,"ShortCuts", "chat_clear"))
@@ -314,9 +313,9 @@ bool ChatWidget::eventFilter(QObject *watched, QEvent *ev)
  	return QWidget::eventFilter(watched, ev);
 }
 
-QDateTime ChatWidget::getLastMsgTime()
+QDateTime ChatWidget::lastMessageTime()
 {
-	return lastMsgTime;
+	return LastMessageTime;
 }
 
 void ChatWidget::appendMessages(const QList<ChatMessage *> &messages, bool pending)
@@ -324,7 +323,7 @@ void ChatWidget::appendMessages(const QList<ChatMessage *> &messages, bool pendi
 	MessagesView->appendMessages(messages);
 
 	if (pending)
-		lastMsgTime = QDateTime::currentDateTime();
+		LastMessageTime = QDateTime::currentDateTime();
 }
 
 void ChatWidget::appendMessage(ChatMessage *message, bool pending)
@@ -332,7 +331,7 @@ void ChatWidget::appendMessage(ChatMessage *message, bool pending)
 	MessagesView->appendMessage(message);
 
 	if (pending)
-		lastMsgTime = QDateTime::currentDateTime();
+		LastMessageTime = QDateTime::currentDateTime();
 }
 
 void ChatWidget::appendSystemMessage(const QString &rawContent, const QString &backgroundColor, const QString &fontColor)
@@ -343,18 +342,11 @@ void ChatWidget::appendSystemMessage(const QString &rawContent, const QString &b
 }
 
 /* invoked from outside when new message arrives, this is the window to the world */
-void ChatWidget::newMessage(Account* account, Contact sender, ContactSet receivers, const QString &message, time_t time)
+void ChatWidget::newMessage(ChatMessage *chatMessage)
 {
-	QDateTime date;
-	date.setTime_t(time);
-
-	receivers << Core::instance()->myself();
-
-	ChatMessage *chatMessage = new ChatMessage(account, sender, receivers, message,
-			TypeReceived, QDateTime::currentDateTime(), date);
 	MessagesView->appendMessage(chatMessage);
 
-	lastMsgTime = QDateTime::currentDateTime();
+	LastMessageTime = QDateTime::currentDateTime();
 	NewMessagesCount++;
 
  	emit messageReceived(CurrentChat);
@@ -364,7 +356,7 @@ void ChatWidget::writeMyMessage()
 {
 	kdebugf();
 
-	ChatMessage *message = new ChatMessage(CurrentChat->account(), Core::instance()->myself(), CurrentChat->contacts(),
+	ChatMessage *message = new ChatMessage(CurrentChat, Core::instance()->myself(),
 			myLastMessage.toHtml(), TypeSent, QDateTime::currentDateTime());
 	MessagesView->appendMessage(message);
 
