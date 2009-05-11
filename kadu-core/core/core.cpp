@@ -68,12 +68,11 @@ Core::~Core()
 
 	storeConfiguration();
 
-	status_changer_manager->unregisterStatusChanger(StatusChanger);
+	StatusChangerManager::instance()->unregisterStatusChanger(StatusChanger);
 	delete StatusChanger;
 	StatusChanger = 0;
 
-	StatusChangerManager::closeModule();
-	ModulesManager::closeModule();
+	ModulesManager::instance()->unloadAllModules();
 	Updates::closeModule();
 	SearchDialog::closeModule();
 
@@ -263,17 +262,20 @@ void Core::init()
 	Configuration = new ConfigurationManager();
 	Configuration->load();
 
+	// protocol modules should be loaded before gui
+	// it fixes crash on loading pending messages from config, and contacts import from 0.6.5, and maybe other issues
+	ModulesManager::instance()->loadProtocolModules();
+
 	Myself = Contact();
 	Myself.setDisplay(config_file.readEntry("General", "Nick"));
 
-	triggerAllAccountsRegistered();
-
-	StatusChangerManager::initModule();
-	connect(status_changer_manager, SIGNAL(statusChanged(Status)), this, SLOT(changeStatus(Status)));
+	connect(StatusChangerManager::instance(), SIGNAL(statusChanged(Status)), this, SLOT(changeStatus(Status)));
 
 	StatusChanger = new UserStatusChanger();
-	status_changer_manager->registerStatusChanger(StatusChanger);
-	status_changer_manager->enable();
+	StatusChangerManager::instance()->registerStatusChanger(StatusChanger);
+	StatusChangerManager::instance()->enable();
+
+	pending.loadConfiguration(xml_config_file);
 
 	Updates::initModule();
 	GaduProtocol::initModule();
@@ -286,7 +288,7 @@ void Core::init()
 #endif
 	loadDefaultStatus();
 
-	QTimer::singleShot(15000, this, SLOT(deleteOldConfigFiles()));
+	QTimer::singleShot(15000, this, SLOT(deleteOldConfigurationFiles()));
 }
 
 void Core::loadDefaultStatus()
@@ -453,7 +455,7 @@ void Core::accountRegistered(Account *account)
 			newContactAccountData(Myself, account, account->id());
 	Myself.addAccountData(contactAccountData);
 
-	protocol->setStatus(status_changer_manager->status());
+	protocol->setStatus(StatusChangerManager::instance()->status());
 }
 
 void Core::accountUnregistered(Account *account)

@@ -84,13 +84,13 @@ StatusMenu::StatusMenu(QObject *parent)
 	ChangeStatusActionGroup->addAction(ChangeStatusToOffline);
 	ChangeStatusActionGroup->addAction(ChangeStatusToOfflineDesc);
 
-	statusChanged(status_changer_manager->status());
-	connect(status_changer_manager, SIGNAL(statusChanged(Status)), this, SLOT(statusChanged(Status)));
+	statusChanged(StatusChangerManager::instance()->status());
+	connect(StatusChangerManager::instance(), SIGNAL(statusChanged(Status)), this, SLOT(statusChanged(Status)));
 }
 
 StatusMenu::~StatusMenu()
 {
-	disconnect(status_changer_manager, SIGNAL(statusChanged(Status)), this, SLOT(statusChanged(Status)));
+	disconnect(StatusChangerManager::instance(), SIGNAL(statusChanged(Status)), this, SLOT(statusChanged(Status)));
 }
 
 void StatusMenu::addToMenu(QMenu *menu)

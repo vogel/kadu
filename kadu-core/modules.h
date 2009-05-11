@@ -130,6 +130,11 @@ public:
 class KADUAPI ModulesManager : public QObject
 {
 	Q_OBJECT
+	Q_DISABLE_COPY(ModulesManager)
+
+	ModulesManager();
+
+	static ModulesManager *Instance;
 
 	typedef int InitModuleFunc(bool);
 	typedef void CloseModuleFunc(void);
@@ -178,6 +183,11 @@ class KADUAPI ModulesManager : public QObject
 	 **/
 	QStringList everLoaded;
 
+	QStringList protocolModulesList;
+	QStringList installed_list;
+	QStringList loaded_list;
+	QStringList unloaded_list;
+
 	ModulesDialog *Dialog;
 
 	/**
@@ -215,32 +225,28 @@ class KADUAPI ModulesManager : public QObject
 	**/
 	void registerStaticModules();
 
+	QStringList protocolModules() const;
+
 	/**
 		Skupia wszystkie t�umaczenia w jednej hierarchii
 	**/
 	QObject *translators;
 
+	bool load_error;
+
 private slots:
 	void dialogDestroyed();
 
 public:
-	/**
-		\fn static void initModule()
-		Inicjalizuje obs�ug� modu��w. Metoda ta wywo�ywana jest przy starcie Kadu, przez jego rdze�.
-	**/
-	static void initModule();
 
-	/**
-		\fn static void closeModule()
-		Deinicjalizuje obs�ug� modu��w. Metoda ta jest wywo�ywana przy zamykaniu Kadu, przez jego rdze�.
-	**/
-	static void closeModule();
+	void loadProtocolModules();
 
-	/**
-		\fn ModulesManager()
-		Standardowy konstruktor.
-	**/
-	ModulesManager();
+	void loadAllModules();
+
+	void unloadAllModules();
+
+	static ModulesManager * instance();
+
 	~ModulesManager();
 
 	/**
@@ -383,7 +389,5 @@ public slots:
 	void saveLoadedModules();
 
 };
-
-extern KADUAPI ModulesManager *modules_manager;
 
 #endif

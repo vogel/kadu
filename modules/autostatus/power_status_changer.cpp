@@ -17,14 +17,14 @@ PowerStatusChanger::PowerStatusChanger()
 : StatusChanger(300), state(STATUS_NOT_SPECIFIED), index(0)
 {
 	kdebugf();
-	status_changer_manager->registerStatusChanger(this);
+	StatusChangerManager::instance()->registerStatusChanger(this);
 	kdebugf2();
 }
 
 PowerStatusChanger::~PowerStatusChanger()
 {
 	kdebugf();
-	status_changer_manager->unregisterStatusChanger(this);
+	StatusChangerManager::instance()->unregisterStatusChanger(this);
 	kdebugf2();
 }
 

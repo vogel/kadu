@@ -102,8 +102,6 @@ ModulesDialog::ModulesDialog(QWidget *parent)
 	setWindowTitle(tr("Manage Modules"));
 	setAttribute(Qt::WA_DeleteOnClose);
 
-//	layout()->setResizeMode(QLayout::Minimum);
-
 	// create main QLabel widgets (icon and app info)
 	QWidget *left = new QWidget(this);
 	QVBoxLayout *leftLayout = new QVBoxLayout(left);
@@ -239,18 +237,18 @@ void ModulesDialog::moduleAction(QTreeWidgetItem *)
 void ModulesDialog::loadItem(const QString &item)
 {
 	kdebugf();
-	modules_manager->activateModule(item);
+	ModulesManager::instance()->activateModule(item);
 	refreshList();
-	modules_manager->saveLoadedModules();
+	ModulesManager::instance()->saveLoadedModules();
 	kdebugf2();
 }
 
 void ModulesDialog::unloadItem(const QString &item)
 {
 	kdebugf();
-	modules_manager->deactivateModule(item);
+	ModulesManager::instance()->deactivateModule(item);
 	refreshList();
-	modules_manager->saveLoadedModules();
+	ModulesManager::instance()->saveLoadedModules();
 	kdebugf2();
 }
 
@@ -268,14 +266,14 @@ void ModulesDialog::refreshList()
 
 	lv_modules->clear();
 
-	QStringList moduleList = modules_manager->staticModules();
+	QStringList moduleList = ModulesManager::instance()->staticModules();
 	ModuleInfo info;
 	bool hideBase = hideBaseModules->isChecked();
-	foreach(const QString &module, moduleList)
+	foreach (const QString &module, moduleList)
 	{
 		QStringList strings;
 
-		if (modules_manager->moduleInfo(module, info))
+		if (ModulesManager::instance()->moduleInfo(module, info))
 		{
 			if (info.base && hideBase)
 				continue;
@@ -288,12 +286,12 @@ void ModulesDialog::refreshList()
 		new QTreeWidgetItem(lv_modules, strings);
 	}
 
-	moduleList = modules_manager->loadedModules();
-	foreach(const QString &module, moduleList)
+	moduleList = ModulesManager::instance()->loadedModules();
+	foreach (const QString &module, moduleList)
 	{
 		QStringList strings;
 
-		if (modules_manager->moduleInfo(module, info))
+		if (ModulesManager::instance()->moduleInfo(module, info))
 		{
 			if (info.base && hideBase)
 				continue;
@@ -306,12 +304,12 @@ void ModulesDialog::refreshList()
 		new QTreeWidgetItem(lv_modules, strings);
 	}
 
-	moduleList = modules_manager->unloadedModules();
-	foreach(const QString &module, moduleList)
+	moduleList = ModulesManager::instance()->unloadedModules();
+	foreach (const QString &module, moduleList)
 	{
 		QStringList strings;
 
-		if (modules_manager->moduleInfo(module, info))
+		if (ModulesManager::instance()->moduleInfo(module, info))
 		{
 			if (info.base && hideBase)
 				continue;
@@ -339,7 +337,7 @@ void ModulesDialog::getInfo()
 	if (!selected)
 		return;
 
-	if (!modules_manager->moduleInfo(selected->text(0), info))
+	if (!ModulesManager::instance()->moduleInfo(selected->text(0), info))
 	{
 		kdebugf2();
 		return;
@@ -373,51 +371,86 @@ ModulesManager::Module::Module() : lib(0), close(0), translator(0), info(), usag
 {
 }
 
-void ModulesManager::initModule()
-{
-	new ModulesManager();
-}
+ModulesManager * ModulesManager::Instance = 0;
 
-void ModulesManager::closeModule()
+ModulesManager * ModulesManager::instance()
 {
-	delete modules_manager;
+	if (0 == Instance)
+		Instance = new ModulesManager();
+
+	return Instance;
 }
 
 ModulesManager::ModulesManager() : QObject(),
-	StaticModules(), Modules(), Dialog(0), translators(new QObject(this))
+	StaticModules(), Modules(), Dialog(0), translators(new QObject(this)), load_error(false)
 {
 	kdebugf();
-	// it's important to initiate that variable before loading modules
-	// because some of them is using that value - that's why
-	// i moved it here from ModulesManagert::initModule
-	// the same is true for menu - modules should load up at end
-	modules_manager = this;
-
-	ActionDescription *manageModulesActionDescription = new ActionDescription(0,
-		ActionDescription::TypeMainMenu, "manageModulesAction",
-		this, SLOT(showDialog(QAction *, bool)),
-		"ManageModules", tr("&Modules")
-	);
-	manageModulesActionDescription->setShortcut("kadu_modulesmanager", Qt::ApplicationShortcut);
-	Core::instance()->kaduWindow()->insertMenuActionDescription(manageModulesActionDescription, KaduWindow::MenuKadu, 2);
 
 	everLoaded = config_file.readEntry("General", "EverLoaded").split(',', QString::SkipEmptyParts);
 
 	// load modules as config file say
-	QStringList installed_list = installedModules();
+	installed_list = installedModules();
 	QString loaded_str = config_file.readEntry("General", "LoadedModules");
-	QStringList loaded_list = loaded_str.split(',', QString::SkipEmptyParts);
+	loaded_list = loaded_str.split(',', QString::SkipEmptyParts);
 	QString unloaded_str = config_file.readEntry("General", "UnloadedModules");
-	QStringList unloaded_list = unloaded_str.split(',', QString::SkipEmptyParts);
-	bool load_error = false;
+	unloaded_list = unloaded_str.split(',', QString::SkipEmptyParts);
 
 	registerStaticModules();
-	QStringList static_list = staticModules();
-	foreach(const QString &i, static_list)
+
+	foreach(const QString &i, staticModules())
+		if (i.right(9) == "_protocol")
+			    protocolModulesList.append(i);
+	foreach(const QString &i, installed_list)
+		if (i.right(9) == "_protocol")
+			    protocolModulesList.append(i);
+
+	kdebugf2();
+}
+
+ModulesManager::~ModulesManager()
+{
+	kdebugf();
+
+	delete translators;
+	translators = NULL;
+
+	kdebugf2();
+}
+
+void ModulesManager::loadProtocolModules()
+{
+	foreach (const QString &i, protocolModulesList)
+	{
+		if (!moduleIsActive(i))
+		{
+			bool load_module;
+			if (loaded_list.contains(i))
+				load_module = true;
+			else if (unloaded_list.contains(i))
+				load_module = false;
+			else if (staticModules().contains(i))
+				load_module = true;
+			else
+			{
+				ModuleInfo m_info;
+				if (moduleInfo(i, m_info))
+					load_module = m_info.load_by_def;
+				else
+					load_module = false;
+			}
+			if (load_module)
+				activateModule(i);
+		}
+	}
+}
+
+void ModulesManager::loadAllModules()
+{
+	foreach (const QString &i, staticModules())
 		if (!moduleIsActive(i))
 			activateModule(i);
 
-	foreach(const QString &i, installed_list)
+	foreach (const QString &i, installed_list)
 	{
 		if (!moduleIsActive(i))
 		{
@@ -445,52 +478,9 @@ ModulesManager::ModulesManager() : QObject(),
 	if (load_error)
 		saveLoadedModules();
 
-	foreach(const QString &it, Modules.keys())
-		kdebugm(KDEBUG_INFO, "module: %s, usage: %d\n", qPrintable(it), Modules[it].usage_counter);
-
-	kdebugf2();
 }
 
-ModulesManager::~ModulesManager()
-{
-	kdebugf();
-
-	saveLoadedModules();
-
-	foreach(const QString &it, Modules.keys())
-		kdebugm(KDEBUG_INFO, "module: %s, usage: %d\n", qPrintable(it), Modules[it].usage_counter);
-
-	// unloading all not used modules
-	// as long as any module were unloaded
-
-	bool deactivated;
-	do
-	{
-		QStringList active = activeModules();
-		deactivated = false;
-		foreach(const QString &i, active)
-			if (Modules[i].usage_counter == 0)
-				if (deactivateModule(i))
-					deactivated = true;
-	}
-	while (deactivated);
-
-	// we cannot unload more modules in normal way
-	// so we are making it brutal ;)
-	QStringList active = activeModules();
-	foreach(const QString &i, active)
-	{
-		kdebugm(KDEBUG_PANIC, "WARNING! Could not deactivate module %s, killing\n",qPrintable(i));
-		deactivateModule(i, true);
-	}
-
-	delete translators;
-	translators = NULL;
-
-	kdebugf2();
-}
-
-QTranslator* ModulesManager::loadModuleTranslation(const QString& module_name)
+QTranslator* ModulesManager::loadModuleTranslation(const QString &module_name)
 {
 	QTranslator* translator = new QTranslator(translators);
 	if (translator->load(dataPath("kadu/modules/translations/" + module_name + '_' + config_file.readEntry("General", "Language",
@@ -506,10 +496,10 @@ QTranslator* ModulesManager::loadModuleTranslation(const QString& module_name)
 	}
 }
 
-bool ModulesManager::satisfyModuleDependencies(const ModuleInfo& module_info)
+bool ModulesManager::satisfyModuleDependencies(const ModuleInfo &module_info)
 {
 	kdebugf();
-	foreach(const QString &it, module_info.depends)
+	foreach (const QString &it, module_info.depends)
 	{
 		if (!moduleIsActive(it))
 		{
@@ -533,7 +523,7 @@ bool ModulesManager::satisfyModuleDependencies(const ModuleInfo& module_info)
 	return true;
 }
 
-void ModulesManager::incDependenciesUsageCount(const ModuleInfo& module_info)
+void ModulesManager::incDependenciesUsageCount(const ModuleInfo &module_info)
 {
 	kdebugmf(KDEBUG_FUNCTION_START, "%s\n", qPrintable(module_info.description));
 	foreach(const QString &it, module_info.depends)
@@ -548,9 +538,9 @@ void ModulesManager::registerStaticModule(const QString& module_name,
 	InitModuleFunc* init,CloseModuleFunc* close)
 {
 	StaticModule m;
-	m.init=init;
-	m.close=close;
-	StaticModules.insert(module_name,m);
+	m.init = init;
+	m.close = close;
+	StaticModules.insert(module_name, m);
 }
 
 QStringList ModulesManager::staticModules() const
@@ -563,7 +553,7 @@ QStringList ModulesManager::staticModules() const
 
 QStringList ModulesManager::installedModules() const
 {
-	QDir dir(libPath("kadu/modules"),SO_PREFIX"*." SO_EXT);
+	QDir dir(libPath("kadu/modules"), SO_PREFIX"*." SO_EXT);
 	dir.setFilter(QDir::Files);
 	QStringList installed;
 	QStringList entries = dir.entryList();
@@ -576,7 +566,7 @@ QStringList ModulesManager::loadedModules() const
 {
 	QStringList loaded;
 	foreach(const QString &i, Modules.keys())
-		if (Modules[i].lib!=NULL)
+		if (Modules[i].lib != NULL)
 			loaded.append(i);
 	return loaded;
 }
@@ -624,7 +614,7 @@ bool ModulesManager::moduleInfo(const QString& module_name, ModuleInfo& info) co
 {
 	if (Modules.contains(module_name))
 	{
-		info=Modules[module_name].info;
+		info = Modules[module_name].info;
 		return true;
 	}
 
@@ -684,7 +674,7 @@ void ModulesManager::saveLoadedModules()
 bool ModulesManager::conflictsWithLoaded(const QString &module_name, const ModuleInfo& module_info) const
 {
 	kdebugf();
-	foreach(const QString &it, module_info.conflicts)
+	foreach (const QString &it, module_info.conflicts)
 	{
 		if (moduleIsActive(it))
 		{
@@ -692,8 +682,8 @@ bool ModulesManager::conflictsWithLoaded(const QString &module_name, const Modul
 			kdebugf2();
 			return true;
 		}
-		foreach(const QString &key, Modules.keys())
-			foreach(const QString &sit, Modules[key].info.provides)
+		foreach (const QString &key, Modules.keys())
+			foreach (const QString &sit, Modules[key].info.provides)
 				if (it == sit)
 				{
 					MessageBox::msg(narg(tr("Module %1 conflicts with: %2"), module_name, key));
@@ -701,8 +691,8 @@ bool ModulesManager::conflictsWithLoaded(const QString &module_name, const Modul
 					return true;
 				}
 	}
-	foreach(const QString &key, Modules.keys())
-		foreach(const QString &sit, Modules[key].info.conflicts)
+	foreach (const QString &key, Modules.keys())
+		foreach (const QString &sit, Modules[key].info.conflicts)
 			if (sit == module_name)
 			{
 				MessageBox::msg(narg(tr("Module %1 conflicts with: %2"), module_name, key));
@@ -748,10 +738,10 @@ bool ModulesManager::activateModule(const QString& module_name)
 
 	if (moduleIsStatic(module_name))
 	{
-		m.lib=NULL;
-		StaticModule sm=StaticModules[module_name];
-		init=sm.init;
-		m.close=sm.close;
+		m.lib = NULL;
+		StaticModule sm = StaticModules[module_name];
+		init = sm.init;
+		m.close = sm.close;
 	}
 	else
 	{
@@ -767,7 +757,7 @@ bool ModulesManager::activateModule(const QString& module_name)
 		}
 		init = (InitModuleFunc *)m.lib->resolve(qPrintable(module_name+"_init"));
 		m.close = (CloseModuleFunc *)m.lib->resolve(qPrintable(module_name+"_close"));
-		if (init==NULL||m.close==NULL)
+		if (init == NULL || m.close == NULL)
 		{
 			MessageBox::msg(tr("Cannot find required functions in module %1.\nMaybe it's not Kadu-compatible Module.").arg(module_name));
 			delete m.lib;
@@ -800,25 +790,58 @@ bool ModulesManager::activateModule(const QString& module_name)
 
 	incDependenciesUsageCount(m.info);
 
-	m.usage_counter=0;
+	m.usage_counter = 0;
 	Modules.insert(module_name,m);
 	kdebugf2();
 	return true;
 }
 
+void ModulesManager::unloadAllModules()
+{
+	saveLoadedModules();
+
+	foreach (const QString &it, Modules.keys())
+		kdebugm(KDEBUG_INFO, "module: %s, usage: %d\n", qPrintable(it), Modules[it].usage_counter);
+
+	// unloading all not used modules
+	// as long as any module were unloaded
+
+	bool deactivated;
+	do
+	{
+		QStringList active = activeModules();
+		deactivated = false;
+		foreach (const QString &i, active)
+			if (Modules[i].usage_counter == 0)
+				if (deactivateModule(i))
+					deactivated = true;
+	}
+	while (deactivated);
+
+	// we cannot unload more modules in normal way
+	// so we are making it brutal ;)
+	QStringList active = activeModules();
+	foreach (const QString &i, active)
+	{
+		kdebugm(KDEBUG_PANIC, "WARNING! Could not deactivate module %s, killing\n",qPrintable(i));
+		deactivateModule(i, true);
+	}
+
+}
+
 bool ModulesManager::deactivateModule(const QString& module_name, bool force)
 {
-	Module m=Modules[module_name];
+	Module m = Modules[module_name];
 	kdebugmf(KDEBUG_FUNCTION_START, "name:'%s' force:%d usage:%d\n", qPrintable(module_name), force, m.usage_counter);
 
-	if (m.usage_counter>0 && !force)
+	if (m.usage_counter > 0 && !force)
 	{
 		MessageBox::msg(tr("Module %1 cannot be deactivated because it is used now").arg(module_name));
 		kdebugf2();
 		return false;
 	}
 
-	foreach(const QString &i, m.info.depends)
+	foreach (const QString &i, m.info.depends)
 		moduleDecUsageCount(i);
 
 	m.close();
@@ -857,7 +880,7 @@ void ModulesManager::showDialog(QAction *sender, bool toggled)
 void ModulesManager::dialogDestroyed()
 {
 	kdebugf();
-	Dialog=NULL;
+	Dialog = NULL;
 	kdebugf2();
 }
 
@@ -870,5 +893,3 @@ void ModulesManager::moduleDecUsageCount(const QString& module_name)
 {
 	--Modules[module_name].usage_counter;
 }
-
-ModulesManager* modules_manager;

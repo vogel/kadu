@@ -14,7 +14,7 @@
 #include <QtGui/QLineEdit>
 
 #include "accounts/account.h"
-#include "accounts/account_manager.h"
+#include "accounts/account-manager.h"
 
 #include "gui/widgets/configuration/configuration-widget.h"
 
@@ -157,7 +157,7 @@ AutoAway::~AutoAway()
 
 	if (autoAwayStatusChanger)
 	{
-		status_changer_manager->unregisterStatusChanger(autoAwayStatusChanger);
+		StatusChangerManager::instance()->unregisterStatusChanger(autoAwayStatusChanger);
 		delete autoAwayStatusChanger;
 		autoAwayStatusChanger = 0;
 	}
@@ -174,7 +174,7 @@ void AutoAway::on()
 	if (!autoAwayStatusChanger)
 	{
 		autoAwayStatusChanger = new AutoAwayStatusChanger();
-		status_changer_manager->registerStatusChanger(autoAwayStatusChanger);
+		StatusChangerManager::instance()->registerStatusChanger(autoAwayStatusChanger);
 	}
 
 	autoAwayStatusChanger->setChangeDescriptionTo(changeTo, parseDescription(autoStatusText));

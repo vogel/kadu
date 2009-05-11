@@ -397,9 +397,9 @@ QList<ChatMessage *> HistorySqlStorage::getMessages(Chat *chat, QDate date, int 
 
 		ChatMessage* chat_message;
 		if (outgoing)
-			chat_message = new ChatMessage(chat->account(), Core::instance()->myself(), chat->contacts(), msg, TypeSent, receive_time, send_time);
+			chat_message = new ChatMessage(chat, Core::instance()->myself(), msg, TypeSent, receive_time, send_time);
 		else
-			chat_message = new ChatMessage(chat->account(), (*chat->contacts().begin()), ContactSet(Core::instance()->myself()), msg, TypeReceived, receive_time, send_time);
+			chat_message = new ChatMessage(chat, (*chat->contacts().begin()), msg, TypeReceived, receive_time, send_time);
 		messages.append(chat_message);
 	}
 	kdebugf2();

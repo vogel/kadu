@@ -97,14 +97,14 @@ static void kadu_signal_handler(int s)
 			fflush(dbgfile);
 
 			fprintf(dbgfile, "static modules:\n");
-			QStringList modules = modules_manager->staticModules();
+			QStringList modules = ModulesManager::instance()->staticModules();
 
 			foreach(const QString &module, modules)
 				fprintf(dbgfile, "> %s\n", qPrintable(module));
 			fflush(dbgfile);
 
 			fprintf(dbgfile, "loaded modules:\n");
-			modules = modules_manager->loadedModules();
+			modules = ModulesManager::instance()->loadedModules();
 			foreach(const QString &module, modules)
 				fprintf(dbgfile, "> %s\n", qPrintable(module));
 			fflush(dbgfile);

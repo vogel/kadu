@@ -108,6 +108,7 @@ void PendingMsgs::loadConfiguration(XmlConfigFile *configurationStorage)
 		Element e;
 		QDomElement chatNode = configurationStorage->getNode(pendingMsgsNodes.item(i).toElement(), "Chat", XmlConfigFile::ModeFind);
 		Chat *chat = ChatManager::instance()->byUuid(chatNode.text());
+		e.chat = chat;
 
 		QDomElement timeNode = configurationStorage->getNode(pendingMsgsNodes.item(i).toElement(), "Time", XmlConfigFile::ModeFind);
 		QDateTime d = QDateTime::fromString(timeNode.text());

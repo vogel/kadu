@@ -27,16 +27,21 @@ AccountManager * AccountManager::Instance = 0;
 KADUAPI AccountManager * AccountManager::instance()
 {
 	if (0 == Instance)
+	{
 		Instance = new AccountManager();
-
+		Instance->init();
+	}
 	return Instance;
 }
 
 AccountManager::AccountManager() :
 		StorableObject(true)
 {
-	Core::instance()->configuration()->registerStorableObject(this);
+    	Core::instance()->configuration()->registerStorableObject(this);
+}
 
+void AccountManager::init()
+{
 	connect(ProtocolsManager::instance(), SIGNAL(protocolFactoryRegistered(ProtocolFactory *)),
 			this, SLOT(protocolFactoryRegistered(ProtocolFactory *)));
 	connect(ProtocolsManager::instance(), SIGNAL(protocolFactoryUnregistered(ProtocolFactory *)),

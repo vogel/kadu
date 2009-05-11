@@ -147,7 +147,7 @@ MediaPlayer::MediaPlayer(bool firstLoad)
 	winKeyPressed = false;
 
 	mediaPlayerStatusChanger = new MediaPlayerStatusChanger();
-	status_changer_manager->registerStatusChanger(mediaPlayerStatusChanger);
+	StatusChangerManager::instance()->registerStatusChanger(mediaPlayerStatusChanger);
 
 	createDefaultConfiguration();
 
@@ -160,7 +160,7 @@ MediaPlayer::~MediaPlayer()
 {
 	kdebugf();
 
-	status_changer_manager->unregisterStatusChanger(mediaPlayerStatusChanger);
+	StatusChangerManager::instance()->unregisterStatusChanger(mediaPlayerStatusChanger);
 	delete mediaPlayerStatusChanger;
 	mediaPlayerStatusChanger = 0;
 

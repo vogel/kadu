@@ -614,9 +614,9 @@ void Wizard::createSoundPage()
 	QStringList soundModules;
 	ModuleInfo moduleInfo;
 
-	QStringList moduleList = modules_manager->staticModules();
+	QStringList moduleList = ModulesManager::instance()->staticModules();
 	foreach(const QString &moduleName, moduleList)
-		if (modules_manager->moduleInfo(moduleName, moduleInfo))
+		if (ModulesManager::instance()->moduleInfo(moduleName, moduleInfo))
 			if (moduleInfo.provides.contains("sound_driver"))
 			{
 				soundModules.append(moduleName);
@@ -625,9 +625,9 @@ void Wizard::createSoundPage()
 
 	if (soundModules.size() == 0)
 	{
-		moduleList = modules_manager->installedModules();
+		moduleList = ModulesManager::instance()->installedModules();
 		foreach(const QString &moduleName, moduleList)
-			if (modules_manager->moduleInfo(moduleName, moduleInfo) && moduleInfo.provides.contains("sound_driver"))
+			if (ModulesManager::instance()->moduleInfo(moduleName, moduleInfo) && moduleInfo.provides.contains("sound_driver"))
 				soundModules.append(moduleName);
 	}
 
@@ -679,7 +679,7 @@ void Wizard::testSound()
 
 void Wizard::loadSoundOptions()
 {
-	backupSoundModule = modules_manager->moduleProvides("sound_driver");
+	backupSoundModule = ModulesManager::instance()->moduleProvides("sound_driver");
 
 	if (!backupSoundModule.isEmpty())
 		soundModuleCombo->setCurrentText(backupSoundModule);
@@ -690,21 +690,21 @@ void Wizard::loadSoundOptions()
 void Wizard::saveSoundOptions()
 {
 	changeSoundModule(soundModuleCombo->currentText());
-	modules_manager->saveLoadedModules();
+	ModulesManager::instance()->saveLoadedModules();
 }
 
 void Wizard::changeSoundModule(const QString &newModule)
 {
-	QString currentSoundModule = modules_manager->moduleProvides("sound_driver");
+	QString currentSoundModule = ModulesManager::instance()->moduleProvides("sound_driver");
 	if (currentSoundModule != newModule)
 	{
-		if (modules_manager->moduleIsLoaded(currentSoundModule))
-			modules_manager->deactivateModule(currentSoundModule);
+		if (ModulesManager::instance()->moduleIsLoaded(currentSoundModule))
+			ModulesManager::instance()->deactivateModule(currentSoundModule);
 
 		currentSoundModule = newModule;
 
 		if (!currentSoundModule.isEmpty() && (currentSoundModule != "None"))
-			modules_manager->activateModule(currentSoundModule);
+			ModulesManager::instance()->activateModule(currentSoundModule);
 	}
 }
 

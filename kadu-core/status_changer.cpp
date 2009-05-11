@@ -156,15 +156,15 @@ void SplitStatusChanger::timerInvoked()
 	kdebugf2();
 }
 
-void StatusChangerManager::initModule()
-{
-	status_changer_manager = new StatusChangerManager();
-}
 
-void StatusChangerManager::closeModule()
+StatusChangerManager * StatusChangerManager::Instance = 0;
+
+StatusChangerManager * StatusChangerManager::instance()
 {
-	delete status_changer_manager;
-	status_changer_manager = 0;
+	if (0 == Instance)
+		Instance = new StatusChangerManager();
+
+	return Instance;
 }
 
 StatusChangerManager::StatusChangerManager()
@@ -233,4 +233,4 @@ void StatusChangerManager::enable()
 	statusChanged();
 }
 
-StatusChangerManager *status_changer_manager;
+//StatusChangerManager *status_changer_manager;

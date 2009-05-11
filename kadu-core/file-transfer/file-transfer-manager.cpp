@@ -150,7 +150,7 @@ void FileTransferManager::cleanUp()
 
 void FileTransferManager::incomingFileTransfer(FileTransfer *fileTransfer)
 {
-	if (!modules_manager->loadedModules().contains("file_transfer"))
+	if (!ModulesManager::instance()->loadedModules().contains("file_transfer"))
 		fileTransfer->reject();
 
 	emit incomingFileTransferNeedAccept(fileTransfer);

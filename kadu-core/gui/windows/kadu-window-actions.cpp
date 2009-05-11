@@ -43,6 +43,7 @@
 #include "kadu_parser.h"
 #include "main_configuration_window.h"
 #include "message_box.h"
+#include "modules.h"
 #include "personal_info.h"
 #include "search.h"
 #include "status_changer.h"
@@ -255,7 +256,14 @@ KaduWindowActions::KaduWindowActions(QObject *parent) : QObject(parent)
 		ActionDescription::TypeMainMenu, "yourAccountsAction",
 		this, SLOT(yourAccountsActionActivated(QAction *, bool)),
 		"PersonalInfo", tr("Your accounts")
-	);//TODO 0.6.6: implement
+	);
+
+	ManageModules = new ActionDescription(this,
+		ActionDescription::TypeMainMenu, "manageModulesAction",
+		ModulesManager::instance(), SLOT(showDialog(QAction *, bool)),
+		"ManageModules", tr("&Modules")
+	);
+	ManageModules->setShortcut("kadu_modulesmanager", Qt::ApplicationShortcut);
 
 	HideKadu = new ActionDescription(this,
 		ActionDescription::TypeMainMenu, "hideKaduAction",
@@ -450,7 +458,7 @@ KaduWindowActions::KaduWindowActions(QObject *parent) : QObject(parent)
 	);
 	connect(UseProxy, SIGNAL(actionCreated(KaduAction *)), this, SLOT(useProxyActionCreated(KaduAction *)));
 
-	connect(status_changer_manager, SIGNAL(statusChanged(Status)), this, SLOT(statusChanged(Status)));
+	connect(StatusChangerManager::instance(), SIGNAL(statusChanged(Status)), this, SLOT(statusChanged(Status)));
 }
 
 KaduWindowActions::~KaduWindowActions()

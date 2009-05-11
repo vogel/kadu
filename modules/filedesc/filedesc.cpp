@@ -90,7 +90,7 @@ FileDescription::FileDescription()
 	timer->start(500);
 
 	fileDescStatusChanger = new FileDescStatusChanger();
-	status_changer_manager->registerStatusChanger(fileDescStatusChanger);
+	StatusChangerManager::instance()->registerStatusChanger(fileDescStatusChanger);
 }
 
 FileDescription::~FileDescription()
@@ -99,7 +99,7 @@ FileDescription::~FileDescription()
 	disconnect(timer, SIGNAL(timeout()), this, SLOT(checkTitle()));
 	delete timer;
 
-	status_changer_manager->unregisterStatusChanger(fileDescStatusChanger);
+	StatusChangerManager::instance()->unregisterStatusChanger(fileDescStatusChanger);
 	delete fileDescStatusChanger;
 	fileDescStatusChanger = 0;
 }

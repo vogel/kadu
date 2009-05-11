@@ -55,8 +55,8 @@ NotificationManager::NotificationManager()
 	MainConfigurationWindow::registerUiHandler(UiHandler);
 
 	createDefaultConfiguration();
-
-	triggerAllAccountsRegistered();
+	//TODO 0.6.6:
+	//triggerAllAccountsRegistered();
 
 	notifyAboutUserActionDescription = new ActionDescription(0,
 		ActionDescription::TypeUser, "notifyAboutUserAction",

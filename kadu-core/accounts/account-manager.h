@@ -32,6 +32,8 @@ class KADUAPI AccountManager : public QObject, public StorableObject
 	AccountManager();
 	virtual ~AccountManager();
 
+	void init();
+
 	QList<Account *> Accounts;
 
 	void load(ProtocolFactory *factory);

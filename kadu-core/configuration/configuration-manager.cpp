@@ -22,8 +22,6 @@ ConfigurationManager::ConfigurationManager()
 void ConfigurationManager::load()
 {
 	xml_config_file->makeBackup();
-
-	pending.loadConfiguration(xml_config_file);
 }
 
 void ConfigurationManager::store()

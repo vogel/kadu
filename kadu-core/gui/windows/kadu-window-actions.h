@@ -32,6 +32,7 @@ class KaduWindowActions : QObject
 	ActionDescription *AddGroup;
 	ActionDescription *OpenSearch;
 	ActionDescription *ManageIgnored;
+	ActionDescription *ManageModules;
 	ActionDescription *ImportExportContacts;
 	ActionDescription *Help;
 	ActionDescription *Bugs;

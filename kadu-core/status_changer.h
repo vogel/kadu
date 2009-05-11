@@ -148,16 +148,18 @@ public:
 class KADUAPI StatusChangerManager : public QObject
 {
 	Q_OBJECT
+	Q_DISABLE_COPY(StatusChangerManager)
 
+	StatusChangerManager();
+
+	static StatusChangerManager *Instance;
 	QList<StatusChanger *> statusChangers;
 	Status LastStatus;
 	bool enabled;
 
 public:
-	static void initModule();
-	static void closeModule();
+	static StatusChangerManager * instance();
 
-	StatusChangerManager();
 	virtual ~StatusChangerManager();
 
 	/**
@@ -185,7 +187,5 @@ signals:
 	void statusChanged(Status);
 
 };
-
-extern KADUAPI StatusChangerManager *status_changer_manager;
 
 #endif // STATUS_CHANGER

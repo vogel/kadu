@@ -57,12 +57,12 @@ extern "C" KADU_EXPORT void default_sms_close()
 SmsOrangeGateway::SmsOrangeGateway(QObject* parent, const char *name)
 	: SmsGateway(parent), Token()
 {
-	modules_manager->moduleIncUsageCount("default_sms");
+	ModulesManager::instance()->moduleIncUsageCount("default_sms");
 }
 
 SmsOrangeGateway::~SmsOrangeGateway()
 {
-	modules_manager->moduleDecUsageCount("default_sms");
+	ModulesManager::instance()->moduleDecUsageCount("default_sms");
 }
 
 void SmsOrangeGateway::httpRedirected(QString link)
@@ -186,12 +186,12 @@ void SmsOrangeGateway::onCodeEntered(const QString& code)
 SmsPlusGateway::SmsPlusGateway(QObject* parent, const char *name)
 	: SmsGateway(parent)
 {
-	modules_manager->moduleIncUsageCount("default_sms");
+	ModulesManager::instance()->moduleIncUsageCount("default_sms");
 }
 
 SmsPlusGateway::~SmsPlusGateway()
 {
-	modules_manager->moduleDecUsageCount("default_sms");
+	ModulesManager::instance()->moduleDecUsageCount("default_sms");
 }
 
 void SmsPlusGateway::httpRedirected(QString link)
@@ -282,12 +282,12 @@ SmsEraGateway::SmsEraGateway(QObject* parent, const char *name)
 	import_0_5_0_configuration();
 	createDefaultConfiguration();
 
-	modules_manager->moduleIncUsageCount("default_sms");
+	ModulesManager::instance()->moduleIncUsageCount("default_sms");
 }
 
 SmsEraGateway::~SmsEraGateway()
 {
-	modules_manager->moduleDecUsageCount("default_sms");
+	ModulesManager::instance()->moduleDecUsageCount("default_sms");
 }
 
 void SmsEraGateway::send(const QString& number, const QString& message, const QString& /*contact*/, const QString& signature)

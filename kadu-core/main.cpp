@@ -381,7 +381,7 @@ int main(int argc, char *argv[])
 	QDir().mkdir(path_);
 #endif
 
-	ModulesManager::initModule();
+	ModulesManager::instance()->loadAllModules();
 
 	// if someone is running Kadu from root account, let's remind him
 	// that it's a "bad thing"(tm) ;) (usually for win32 users)

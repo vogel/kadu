@@ -17,8 +17,8 @@
 StatusButton::StatusButton(QIcon icon, const QString& text, QWidget *parent) :
 		QPushButton(icon, text, parent)
 {
-	statusChanged(status_changer_manager->status());
-	connect(status_changer_manager, SIGNAL(statusChanged(Status)), this, SLOT(statusChanged(Status)));
+	statusChanged(StatusChangerManager::instance()->status());
+	connect(StatusChangerManager::instance(), SIGNAL(statusChanged(Status)), this, SLOT(statusChanged(Status)));
 }
 
 void StatusButton::statusChanged(Status status)
