@@ -3,7 +3,7 @@
   Copyright: (C) 2007, 2008 - 2009 Tomasz Kazmierczak
 
   Creation date: 2007-10-25
-  Last modification date: 2009-03-08
+  Last modification date: 2009-05-11
 
   This file is part of Kadu encryption module.
   This is a QCA2 implementation of the SIMLite algorithm, used by kadu,
@@ -154,7 +154,7 @@ bool KaduEncryptionSIMLite::publicKeyCertificateFromFile(QString &keyId, SecureA
 		if(file.atEnd())
 		{
 			line = tmp.toByteArray();
-			if(line != "-----END RSA PUBLIC KEY-----\n")
+			if(line != "-----END RSA PUBLIC KEY-----\n" && line != "-----END RSA PUBLIC KEY-----")
 			{
 				file.close();
 				return false;
@@ -215,7 +215,7 @@ bool KaduEncryptionSIMLite::privateKeyCertificateFromFile(SecureArray &out)
 		if(file.atEnd())
 		{
 			line = tmp.toByteArray();
-			if(line != "-----END RSA PRIVATE KEY-----\n")
+			if(line != "-----END RSA PRIVATE KEY-----\n" && line != "-----END RSA PRIVATE KEY-----")
 			{
 				file.close();
 				return false;
