@@ -670,8 +670,6 @@ void ProfileConfigurationWindow::profileSelected(QListWidgetItem *item)
 
 	Profile p = profileManager->getProfile(item->text());
 
-	if (index == 0) return;
-
 	profileName->setText(p.name);
 	profileDir->setText(p.directory);
 	profileUIN->setText(p.uin);
