@@ -380,12 +380,11 @@ ChatMessage * convertPendingToMessage(PendingMsgs::Element elem)
 	ContactSet receivers;
 	receivers.insert(Core::instance()->myself());
 	// TODO: 0.6.6
-// 	ChatMessage *message = new ChatMessage(elem.chat->account(),
-// 			elem.sender, receivers, elem.msg,
-// 			TypeReceived, QDateTime::currentDateTime(), date);
+	ChatMessage *message = new ChatMessage(elem.chat,
+			elem.sender, elem.msg, TypeReceived,
+			QDateTime::currentDateTime(), date);
 
-// 	return message;
-	return 0;
+	return message;
 }
 
 void ChatWidgetManager::openPendingMsgs(Chat *chat, bool forceActivate)
