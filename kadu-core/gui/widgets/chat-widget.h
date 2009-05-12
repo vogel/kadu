@@ -68,6 +68,7 @@ class KADUAPI ChatWidget : public QWidget, ConfigurationAwareObject, AccountsAwa
 	int activationCount;
 
 	unsigned int NewMessagesCount; /*!< liczba nowych wiadomo�ci w oknie rozmowy */
+	bool SelectionFromMessagesView;
 
 	void createGui();
 	void createContactsList();
@@ -75,27 +76,16 @@ class KADUAPI ChatWidget : public QWidget, ConfigurationAwareObject, AccountsAwa
 	bool decodeLocalFiles(QDropEvent *event, QStringList &files);
 
 private slots:
-	/**
-		\fn void changeColor()
-		Slot zmieniaj�cy kolor czcionki
-	**/
-
-	/**
-		\fn void connectAcknowledgeSlots()
-		Slot pod��czaj�cy potwierdzenie dostarczenia wiadomo�ci
-	**/
 	void connectAcknowledgeSlots();
-
-	/**
-		\fn void disconnectAcknowledgeSlots()
-		Slot od��czaj�cy potwierdzenie dostarczenia wiadomo�ci
-	**/
 	void disconnectAcknowledgeSlots();
 
-	void keyPressedSlot(QKeyEvent *e, CustomInput *sender, bool &handled);
+	void editBoxKeyPressed(QKeyEvent *e, CustomInput *sender, bool &handled);
+
+	void messagesViewSelectionChanged();
+	void editBoxSelectionChanged();
 
 protected:
-	virtual void keyPressEvent(QKeyEvent* e);
+	virtual void keyPressEvent(QKeyEvent *e);
 	bool keyPressEventHandled(QKeyEvent *);
 
 	virtual void configurationUpdated();
@@ -219,14 +209,6 @@ public slots:
 		\see sendMessage
 	**/
 	void writeMyMessage();
-
-	/**
-		\fn void specialKeyPressed(int key)
-		Slot zostaje wywo�any gdy naci�ni�to specjalny klawisz (skr�t)
-		odpowiadaj�cy np KEY_BOLD
-		\param key warto�� naci�ni�tego specjalnego klawisza
-	**/
-	void specialKeyPressed(int key);
 
 	/**
 		\fn void colorSelectorAboutToClose()

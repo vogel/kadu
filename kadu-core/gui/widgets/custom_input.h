@@ -27,7 +27,6 @@ private slots:
 	void setCopyPossible(bool available);
 
 protected:
-
 	bool autosend_enabled;/*!< zmienna informuj�ca czy w��czone jest
 				automatyczne wysy�anie */
 

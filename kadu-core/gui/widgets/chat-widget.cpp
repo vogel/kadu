@@ -45,7 +45,7 @@
 ChatWidget::ChatWidget(Chat *chat, QWidget *parent) :
 		QWidget(parent), CurrentChat(chat),
 		WaitingForACK(false), ContactsWidget(0), horizSplit(0),
-		activationCount(0), NewMessagesCount(0), InputBox(0)
+		activationCount(0), NewMessagesCount(0), SelectionFromMessagesView(true), InputBox(0)
 {
 	kdebugf();
 
@@ -85,6 +85,8 @@ void ChatWidget::createGui()
 	horizSplit->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Expanding);
 
 	MessagesView = new ChatMessagesView(this);
+	connect(MessagesView, SIGNAL(selectionChanged()), this, SLOT(messagesViewSelectionChanged()));
+
 	QShortcut *shortcut = new QShortcut(QKeySequence(Qt::Key_Return + Qt::CTRL), this);
 	connect(shortcut, SIGNAL(activated()), this, SLOT(sendMessage()));
 
@@ -103,8 +105,8 @@ void ChatWidget::createGui()
 	InputBox = new ChatEditBox(CurrentChat, this);
 	vertSplit->addWidget(InputBox);
 
-	connect(InputBox->inputBox(), SIGNAL(keyPressed(QKeyEvent *, CustomInput *, bool &)),
-			this, SLOT(keyPressedSlot(QKeyEvent *, CustomInput *, bool &)));
+	connect(InputBox, SIGNAL(keyPressed(QKeyEvent *, CustomInput *, bool &)),
+			this, SLOT(editBoxKeyPressed(QKeyEvent *, CustomInput *, bool &)));
 	connect(InputBox->inputBox(), SIGNAL(sendMessage()), this, SLOT(sendMessage()));
 	connect(InputBox->inputBox(), SIGNAL(specialKeyPressed(int)), this, SLOT(specialKeyPressed(int)));
 	InputBox->installEventFilter(this);
@@ -154,19 +156,6 @@ void ChatWidget::configurationUpdated()
  	InputBox->inputBox()->setStyleSheet(QString("QTextEdit {background-color: %1}").arg(config_file.readColorEntry("Look", "ChatTextBgColor").name()));
 
 	refreshTitle();
-}
-
-void ChatWidget::specialKeyPressed(int key)
-{
- 	kdebugf();
- 	switch (key)
- 	{
-		 case CustomInput::KEY_COPY:
-			MessagesView->pageAction(QWebPage::Copy)->trigger();
-			break;
-		// TODO: move to good place
- 	}
- 	kdebugf2();
 }
 
 void ChatWidget::refreshTitle()
@@ -239,28 +228,42 @@ void ChatWidget::refreshTitle()
 
 bool ChatWidget::keyPressEventHandled(QKeyEvent *e)
 {
+	if (e->modifiers() == Qt::ControlModifier && (e->key() == 'c' || e->key() == 'C'))
+	{
+		if (SelectionFromMessagesView)
+		{
+			MessagesView->page()->action(QWebPage::Copy)->trigger();
+			return true;
+		}
+		else
+			return false;
+	}
+
 	if (HotKey::shortCut(e,"ShortCuts", "chat_clear"))
 	{
 		clearChatWindow();
 		return true;
 	}
-	else if (HotKey::shortCut(e,"ShortCuts", "chat_close"))
+
+	if (HotKey::shortCut(e,"ShortCuts", "chat_close"))
 	{
 		emit closed();
 		return true;
 	}
-	else if (HotKey::shortCut(e,"ShortCuts", "kadu_searchuser"))
+
+	if (HotKey::shortCut(e,"ShortCuts", "kadu_searchuser"))
 	{
 		KaduActions.createAction("whoisAction", InputBox)->activate(QAction::Trigger);
 		return true;
 	}
-	else if (HotKey::shortCut(e,"ShortCuts", "kadu_openchatwith"))
+
+	if (HotKey::shortCut(e,"ShortCuts", "kadu_openchatwith"))
 	{
 		KaduActions.createAction("openChatWithAction", InputBox)->activate(QAction::Trigger);
 		return true;
 	}
-	else
-		return false;
+
+	return false;
 }
 
 QIcon ChatWidget::icon()
@@ -697,7 +700,21 @@ void ChatWidget::leaveConference()
 	emit closed();
 }
 
-void ChatWidget::keyPressedSlot(QKeyEvent *e, CustomInput *sender, bool &handled)
+void ChatWidget::editBoxKeyPressed(QKeyEvent *e, CustomInput *sender, bool &handled)
 {
+	keyPressEvent(e);
+
 	emit keyPressed(e, this, handled);
+}
+
+void ChatWidget::messagesViewSelectionChanged()
+{
+	printf("messages view selection change\n");
+	SelectionFromMessagesView = true;
+}
+
+void ChatWidget::editBoxSelectionChanged()
+{
+	printf("edit box selection\n");
+	SelectionFromMessagesView = false;
 }
