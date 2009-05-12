@@ -56,16 +56,11 @@ ProfileManager::ProfileManager(QObject *parent, const char *name)
 {
 	dialogWindow = new ProfileConfigurationWindow();
 
-	ProfileMenu = new QMenu("ProfileMenu", kadu);
+	ProfileMenu = new QMenu("Profiles...", kadu);
+	ProfileMenu->setIcon(icons_manager->loadIcon("Profiles"));
+	
 	connect(ProfileMenu, SIGNAL(aboutToShow()), this, SLOT(createProfileMenu()));
-	
-	profileMenuActionDescription = new ActionDescription(
-		ActionDescription::TypeMainMenu, "profileManagerAction",
-		this, SLOT(showMenu()),
-		"Profiles", tr("Profiles...")
-	);
-	kadu->insertMenuActionDescription(0, profileMenuActionDescription);
-	
+	kadu->insertMenuSubmenu(0, ProfileMenu);
 	getProfiles();
 	
 	//odpal te ktore maja autostart
@@ -78,9 +73,8 @@ ProfileManager::~ProfileManager()
 	kdebugf();
 	
 	disconnect(ProfileMenu, SIGNAL(aboutToShow()), this, SLOT(createProfileMenu()));
-
-	kadu->removeMenuActionDescription(profileMenuActionDescription);
-	delete profileMenuActionDescription;
+	kadu->removeMenuSubmenu(ProfileMenu);
+	delete ProfileMenu;
 	delete dialogWindow;
 	
 	//czyszcze liste watkow

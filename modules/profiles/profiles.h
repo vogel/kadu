@@ -148,7 +148,6 @@ class ProfileManager : public QObject
 		ProfileConfigurationWindow *dialogWindow;
 		//ThreadList thread_list;
 		QMenu *ProfileMenu;
-		ActionDescription *profileMenuActionDescription;	
 		QList<Profile> list;
 
 		void getProfiles();
