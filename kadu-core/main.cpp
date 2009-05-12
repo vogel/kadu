@@ -375,6 +375,7 @@ int main(int argc, char *argv[])
 
 	new Kadu(0);
 
+	qApp->setApplicationName("Kadu");
 	qApp->setMainWidget(kadu);
 	QPixmap pix;
 #ifdef Q_OS_MACX

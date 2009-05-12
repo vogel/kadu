@@ -238,6 +238,8 @@ public:
 	void addMenuActionDescription(ActionDescription *actionDescription);
 	void insertMenuActionDescription(int pos, ActionDescription *actionDescription);
 	void removeMenuActionDescription(ActionDescription *actionDescription);
+	void insertMenuSubmenu(int pos, QMenu *menu);
+	void removeMenuSubmenu(QMenu *menu);
 	QAction * addMenuSeparator();
 	void removeMenuSeparator(QAction *separator);
 

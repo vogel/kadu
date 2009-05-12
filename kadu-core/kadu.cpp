@@ -1639,6 +1639,15 @@ void Kadu::insertMenuActionDescription(int pos, ActionDescription *actionDescrip
 	mainMenuActions[actionDescription] = action;
 }
 
+void Kadu::insertMenuSubmenu(int pos, QMenu *menu)
+{
+	QList<QAction *> menuActions = MainMenu->actions();
+	if (pos >= menuActions.count() - 1)
+		MainMenu->addMenu(menu);
+	else
+		MainMenu->insertMenu(menuActions[pos], menu);
+}
+
 QAction * Kadu::addMenuSeparator()
 {
 	return MainMenu->addSeparator();
@@ -1663,6 +1672,11 @@ void Kadu::removeMenuActionDescription(ActionDescription *actionDescription)
 	MainMenu->removeAction(action);
 	mainMenuActions.remove(actionDescription);
 
+}
+
+void Kadu::removeMenuSubmenu(QMenu *menu)
+{
+	MainMenu->removeAction(menu->menuAction());
 }
 
 void Kadu::createMenu()
