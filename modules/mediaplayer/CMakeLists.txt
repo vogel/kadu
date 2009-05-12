@@ -1,3 +1,19 @@
+if (APPLE)
+
+set (SOURCES
+	mediaplayer.cpp
+	mp_status_changer.cpp
+)
+
+set (MOC_SOURCES
+	mediaplayer.h
+	mp_status_changer.h
+	player_commands.h
+	player_info.h
+)
+	
+else (APPLE)
+
 set (SOURCES
 	mediaplayer.cpp
 	mp_status_changer.cpp
@@ -13,6 +29,8 @@ set (MOC_SOURCES
 	mpris_controller.h
 	mpris_mediaplayer.h
 )
+
+endif (APPLE)
 
 set (TRANSLATION_SOURCES
 	translations/mediaplayer_pl.ts

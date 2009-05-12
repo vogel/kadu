@@ -637,14 +637,12 @@ void MediaPlayer::checkTitle()
 		putTitleHint(title);
 
 	bool checked;
-	int idx = dockMenu->indexOf(popups[5]);
-	if (idx != -1)
-		checked = dockMenu->isItemChecked(popups[5]);
+	if (mediaplayerStatus != NULL)
+		checked = mediaplayerStatus->isChecked();
+	else if (enableMediaPlayerStatuses->action(kadu))
+		checked = enableMediaPlayerStatuses->action(kadu)->isChecked();
 	else
-		if (enableMediaPlayerStatuses->action(kadu))
-			checked = enableMediaPlayerStatuses->action(kadu)->isChecked();
-		else
-			checked = false;
+		checked = false;
 
 	if (!gadu->currentStatus().isOffline() && checked)
 	{
@@ -672,8 +670,7 @@ void MediaPlayer::configurationUpdated()
 	// Statuses switch
 	bool enabled;
 
-	int idx = dockMenu->indexOf(popups[5]);
-	if (idx == -1)
+	if (mediaplayerStatus == NULL)
 	{
 		if (enableMediaPlayerStatuses->action(kadu))
 			enabled = enableMediaPlayerStatuses->action(kadu)->isChecked();
@@ -681,15 +678,16 @@ void MediaPlayer::configurationUpdated()
 	}
 	else
 	{
-		enabled = dockMenu->isItemChecked(popups[5]);
-		dockMenu->removeItem(popups[5]);
+		enabled = mediaplayerStatus->isChecked();
+		dockMenu->removeAction(mediaplayerStatus);
 	}
 
-	bool menuPos = config_file.readBoolEntry("MediaPlayer", "dockMenu", false);
-	if (menuPos)
+	if (config_file.readBoolEntry("MediaPlayer", "dockMenu", false))
 	{
-		popups[5] = dockMenu->insertItem(tr("Enable MediaPlayer statuses"), this, SLOT(toggleStatuses(int)), 0, -1, 10);
-		dockMenu->setItemChecked(popups[5], enabled);
+		mediaplayerStatus = new QAction(tr("Enable MediaPlayer statuses"), this);
+		mediaplayerStatus->setCheckable(true);
+		connect(mediaplayerStatus, SIGNAL(toggled(bool)), this, SLOT(toggleStatuses(bool)));
+		dockMenu->addAction(mediaplayerStatus);
 	}
 	else
 	{
