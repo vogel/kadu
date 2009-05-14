@@ -116,7 +116,7 @@ void Chat::refreshTitle()
 
  		Icon = IconsManager::instance()->loadPixmap("Online");
 	}
-	else
+	else if (contactsSize > 0)
 	{
 		Contact contact = *contacts().begin();
 
