@@ -10,10 +10,10 @@
 
 #include "exports.h"
 
-#ifndef Q_OS_MAC
-#ifndef GG_CONFIG_HAVE_PTHREAD
-	#error "libgadu must be compiled with pthread support"
-#endif
+#if !defined(Q_OS_MAC) && !defined(Q_OS_WIN)
+# ifndef GG_CONFIG_HAVE_PTHREAD
+#  error "libgadu must be compiled with pthread support"
+# endif
 #endif
 
 typedef uin_t UinType;
