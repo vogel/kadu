@@ -41,6 +41,6 @@ else (agent STREQUAL STATIC)
 	if (APPLE)
 		set_target_properties(agent PROPERTIES LINK_FLAGS "-undefined dynamic_lookup")
 	endif (APPLE)
-	install (TARGETS agent DESTINATION lib/kadu/modules)
+	install (TARGETS agent DESTINATION lib${LIB_SUFFIX}/kadu/modules)
 endif (agent STREQUAL STATIC)
 

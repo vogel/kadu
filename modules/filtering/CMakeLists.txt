@@ -59,7 +59,7 @@ else (filtering STREQUAL STATIC)
 	if (APPLE)
 		set_target_properties(filtering PROPERTIES LINK_FLAGS "-undefined dynamic_lookup")
 	endif (APPLE)
-	install (TARGETS filtering DESTINATION lib/kadu/modules)
+	install (TARGETS filtering DESTINATION lib${LIB_SUFFIX}/kadu/modules)
 endif (filtering STREQUAL STATIC)
 
 install (FILES "data/clear.png" "data/filtering.png" DESTINATION "share/kadu/modules/data/filtering")

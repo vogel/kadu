@@ -44,6 +44,6 @@ else (screenshot STREQUAL STATIC)
 	if (APPLE)
 		set_target_properties(screenshot PROPERTIES LINK_FLAGS "-undefined dynamic_lookup")
 	endif (APPLE)
-	install (TARGETS screenshot DESTINATION lib/kadu/modules)
+	install (TARGETS screenshot DESTINATION lib${LIB_SUFFIX}/kadu/modules)
 endif (screenshot STREQUAL STATIC)
 

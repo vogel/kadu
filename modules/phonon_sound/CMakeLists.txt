@@ -29,6 +29,6 @@ else (phonon_sound STREQUAL STATIC)
 	if (APPLE)
 		set_target_properties(phonon_sound PROPERTIES LINK_FLAGS "-undefined dynamic_lookup")
 	endif (APPLE)
-	install (TARGETS phonon_sound DESTINATION lib/kadu/modules)
+	install (TARGETS phonon_sound DESTINATION lib${LIB_SUFFIX}/kadu/modules)
 endif (phonon_sound STREQUAL STATIC)
 

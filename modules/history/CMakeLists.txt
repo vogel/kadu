@@ -53,6 +53,6 @@ else (history STREQUAL STATIC)
 	if (APPLE)
 		set_target_properties(history PROPERTIES LINK_FLAGS "-undefined dynamic_lookup")
 	endif (APPLE)
-	install (TARGETS history DESTINATION lib/kadu/modules)
+	install (TARGETS history DESTINATION lib${LIB_SUFFIX}/kadu/modules)
 endif (history STREQUAL STATIC)
 

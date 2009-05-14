@@ -38,6 +38,6 @@ else (macosx_docking STREQUAL STATIC)
 	if (APPLE)
 		set_target_properties(macosx_docking PROPERTIES LINK_FLAGS "-undefined dynamic_lookup")
 	endif (APPLE)
-	install (TARGETS macosx_docking DESTINATION lib/kadu/modules)
+	install (TARGETS macosx_docking DESTINATION lib${LIB_SUFFIX}/kadu/modules)
 endif (macosx_docking STREQUAL STATIC)
 

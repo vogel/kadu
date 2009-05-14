@@ -39,7 +39,7 @@ if (dshow_sound STREQUAL STATIC)
 	set_target_properties(dshow_sound PROPERTIES COMPILE_FLAGS "-DKADULIB" )
 else (dshow_sound STREQUAL STATIC)
 	target_link_libraries(dshow_sound kadu_core sound)
-	install (TARGETS dshow_sound DESTINATION lib/kadu/modules)
+	install (TARGETS dshow_sound DESTINATION lib${LIB_SUFFIX}/kadu/modules)
 endif (dshow_sound STREQUAL STATIC)
 #add_dependencies (dshow_sound dshow_sound-translations)
 

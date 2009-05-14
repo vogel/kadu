@@ -50,6 +50,6 @@ else (voice STREQUAL STATIC)
 	else (WIN32)
 		target_link_libraries(voice gsm)
 	endif (WIN32)
-	install (TARGETS voice DESTINATION lib/kadu/modules)
+	install (TARGETS voice DESTINATION lib${LIB_SUFFIX}/kadu/modules)
 endif (voice STREQUAL STATIC)
 

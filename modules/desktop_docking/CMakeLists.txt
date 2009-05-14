@@ -46,6 +46,6 @@ else (desktop_docking STREQUAL STATIC)
 	if (APPLE)
 		set_target_properties(desktop_docking PROPERTIES LINK_FLAGS "-undefined dynamic_lookup")
 	endif (APPLE)
-	install (TARGETS desktop_docking DESTINATION lib/kadu/modules)
+	install (TARGETS desktop_docking DESTINATION lib${LIB_SUFFIX}/kadu/modules)
 endif (desktop_docking STREQUAL STATIC)
 

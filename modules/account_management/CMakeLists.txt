@@ -50,6 +50,6 @@ else (account_management STREQUAL STATIC)
 	if (APPLE)
 		set_target_properties(account_management PROPERTIES LINK_FLAGS "-undefined dynamic_lookup")
 	endif (APPLE)
-	install (TARGETS account_management DESTINATION lib/kadu/modules)
+	install (TARGETS account_management DESTINATION lib${LIB_SUFFIX}/kadu/modules)
 endif (account_management STREQUAL STATIC)
 

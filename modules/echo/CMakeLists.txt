@@ -26,7 +26,7 @@ else (echo STREQUAL STATIC)
 	if (WIN32)
 		target_link_libraries(echo kadu_core)
 	endif (WIN32)
-	install (TARGETS echo DESTINATION lib/kadu/modules)
+	install (TARGETS echo DESTINATION lib${LIB_SUFFIX}/kadu/modules)
 endif (echo STREQUAL STATIC)
 
 

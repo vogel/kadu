@@ -59,6 +59,6 @@ else (dcc STREQUAL STATIC)
 	if (APPLE)
 		set_target_properties(dcc PROPERTIES LINK_FLAGS "-undefined dynamic_lookup")
 	endif (APPLE)
-	install (TARGETS dcc DESTINATION lib/kadu/modules)
+	install (TARGETS dcc DESTINATION lib${LIB_SUFFIX}/kadu/modules)
 endif (dcc STREQUAL STATIC)
 

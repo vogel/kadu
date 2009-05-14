@@ -33,7 +33,7 @@ else (qt4_docking STREQUAL STATIC)
 	if (APPLE)
 		set_target_properties(qt4_docking PROPERTIES LINK_FLAGS "-undefined dynamic_lookup")
 	endif (APPLE)
-	install (TARGETS qt4_docking DESTINATION lib/kadu/modules)
+	install (TARGETS qt4_docking DESTINATION lib${LIB_SUFFIX}/kadu/modules)
 endif (qt4_docking STREQUAL STATIC)
 
 

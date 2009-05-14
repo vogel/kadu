@@ -20,5 +20,5 @@ add_library (audacious_mediaplayer ${audacious_mediaplayer} ${SOURCES} ${MOC_FIL
 if (audacious_mediaplayer STREQUAL STATIC)
 	set_target_properties(audacious_mediaplayer PROPERTIES COMPILE_FLAGS "-DKADULIB" )
 else (audacious_mediaplayer STREQUAL STATIC)
-	install (TARGETS audacious_mediaplayer DESTINATION lib/kadu/modules)
+	install (TARGETS audacious_mediaplayer DESTINATION lib${LIB_SUFFIX}/kadu/modules)
 endif (audacious_mediaplayer STREQUAL STATIC)

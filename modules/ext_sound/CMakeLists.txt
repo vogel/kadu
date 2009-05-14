@@ -49,6 +49,6 @@ else (ext_sound STREQUAL STATIC)
 	if (APPLE)
 		set_target_properties(ext_sound PROPERTIES LINK_FLAGS "-undefined dynamic_lookup")
 	endif (APPLE)
-	install (TARGETS ext_sound DESTINATION lib/kadu/modules)
+	install (TARGETS ext_sound DESTINATION lib${LIB_SUFFIX}/kadu/modules)
 endif (ext_sound STREQUAL STATIC)
 

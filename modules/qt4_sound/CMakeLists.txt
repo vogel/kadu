@@ -26,6 +26,6 @@ else (qt4_sound STREQUAL STATIC)
 	if (APPLE)
 		set_target_properties(qt4_sound PROPERTIES LINK_FLAGS "-undefined dynamic_lookup")
 	endif (APPLE)
-	install (TARGETS qt4_sound DESTINATION lib/kadu/modules)
+	install (TARGETS qt4_sound DESTINATION lib${LIB_SUFFIX}/kadu/modules)
 endif (qt4_sound STREQUAL STATIC)
 

@@ -40,6 +40,6 @@ else (parser_extender STREQUAL STATIC)
 	if (APPLE)
 		set_target_properties(parser_extender PROPERTIES LINK_FLAGS "-undefined dynamic_lookup")
 	endif (APPLE)
-	install (TARGETS parser_extender DESTINATION lib/kadu/modules)
+	install (TARGETS parser_extender DESTINATION lib${LIB_SUFFIX}/kadu/modules)
 endif (parser_extender STREQUAL STATIC)
 

@@ -46,6 +46,6 @@ else (antistring STREQUAL STATIC)
 	if (APPLE)
 		set_target_properties(antistring PROPERTIES LINK_FLAGS "-undefined dynamic_lookup")
 	endif (APPLE)
-	install (TARGETS antistring DESTINATION lib/kadu/modules)
+	install (TARGETS antistring DESTINATION lib${LIB_SUFFIX}/kadu/modules)
 endif (antistring STREQUAL STATIC)
 

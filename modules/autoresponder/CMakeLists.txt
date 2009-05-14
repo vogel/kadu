@@ -46,6 +46,6 @@ else (autoresponder STREQUAL STATIC)
 	if (APPLE)
 		set_target_properties(autoresponder PROPERTIES LINK_FLAGS "-undefined dynamic_lookup")
 	endif (APPLE)
-	install (TARGETS autoresponder DESTINATION lib/kadu/modules)
+	install (TARGETS autoresponder DESTINATION lib${LIB_SUFFIX}/kadu/modules)
 endif (autoresponder STREQUAL STATIC)
 

@@ -53,4 +53,4 @@ else (powerkadu STREQUAL STATIC)
 endif (powerkadu STREQUAL STATIC)
 add_dependencies (powerkadu powerkadu-translations)
 
-install (TARGETS powerkadu DESTINATION lib/kadu/modules)
+install (TARGETS powerkadu DESTINATION lib${LIB_SUFFIX}/kadu/modules)

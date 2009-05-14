@@ -55,6 +55,6 @@ else (spellchecker STREQUAL STATIC)
 	if (APPLE)
 		set_target_properties(spellchecker PROPERTIES LINK_FLAGS "-undefined dynamic_lookup")
 	endif (APPLE)
-	install (TARGETS spellchecker DESTINATION lib/kadu/modules)
+	install (TARGETS spellchecker DESTINATION lib${LIB_SUFFIX}/kadu/modules)
 endif (spellchecker STREQUAL STATIC)
 

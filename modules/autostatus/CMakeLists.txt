@@ -44,6 +44,6 @@ else (autostatus STREQUAL STATIC)
 	if (APPLE)
 		set_target_properties(autostatus PROPERTIES LINK_FLAGS "-undefined dynamic_lookup")
 	endif (APPLE)
-	install (TARGETS autostatus DESTINATION lib/kadu/modules)
+	install (TARGETS autostatus DESTINATION lib${LIB_SUFFIX}/kadu/modules)
 endif (autostatus STREQUAL STATIC)
 

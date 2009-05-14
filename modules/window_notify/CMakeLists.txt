@@ -42,6 +42,6 @@ else (window_notify STREQUAL STATIC)
 	if (APPLE)
 		set_target_properties(pcspeaker PROPERTIES LINK_FLAGS "-undefined dynamic_lookup")
 	endif (APPLE)
-	install (TARGETS window_notify DESTINATION lib/kadu/modules)
+	install (TARGETS window_notify DESTINATION lib${LIB_SUFFIX}/kadu/modules)
 endif (window_notify STREQUAL STATIC)
 

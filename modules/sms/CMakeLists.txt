@@ -47,6 +47,6 @@ else (sms STREQUAL STATIC)
 	if (APPLE)
 		set_target_properties(sms PROPERTIES LINK_FLAGS "-undefined dynamic_lookup")
 	endif (APPLE)
-	install (TARGETS sms DESTINATION lib/kadu/modules)
+	install (TARGETS sms DESTINATION lib${LIB_SUFFIX}/kadu/modules)
 endif (sms STREQUAL STATIC)
 
