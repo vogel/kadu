@@ -48,9 +48,6 @@ class KADUAPI ChatWidget : public QWidget, ConfigurationAwareObject, AccountsAwa
 
 	Chat *CurrentChat;
 
-	QString Caption; /*!< tytu� okna */
-	QString EscapedCaption;
-
 	ChatMessagesView *MessagesView;
 	ContactsListWidget *ContactsWidget;
 	ChatEditBox *InputBox;
@@ -132,13 +129,6 @@ public:
 	**/
 	void repaintMessages();
 
-	/**
-		\fn const QString& title() const
-		Zwraca aktualny tytu� okna
-	**/
-	const QString & caption() const;
-	const QString & escapedCaption() const;
-
 	CustomInput * edit();
 	ContactsListWidget * contactsListWidget() { return ContactsWidget; }
 	ChatEditBox * getChatEditBox() { return InputBox; }
@@ -164,12 +154,6 @@ public:
 	unsigned int countMessages() { return MessagesView->countMessages(); }
 
 public slots:
-
-	/**
-		\fn void refreshTitle()
-		Slot ustawiaj�cy tytu� okna zgodnie z konfiguracj�
-	**/
-	void refreshTitle();
 
 	void messageStatusChanged(int messageId, ChatService::MessageStatus status);
 

@@ -35,6 +35,7 @@ void SimpleChat::load()
 
 	Chat::load();
 	CurrentContact = ContactManager::instance()->byUuid(loadValue<QString>("Contact"));
+	refreshTitle();
 }
 
 void SimpleChat::store()

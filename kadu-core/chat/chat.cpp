@@ -8,6 +8,11 @@
  ***************************************************************************/
 
 #include "accounts/account-manager.h"
+#include "config_file.h"
+#include "contacts/contact-account-data.h"
+#include "debug.h"
+#include "icons-manager.h"
+#include "kadu_parser.h"
 #include "protocols/protocol.h"
 
 #include "chat.h"
@@ -31,16 +36,19 @@ Chat * Chat::loadFromStorage(StoragePoint *chatStoragePoint)
 Chat::Chat(StoragePoint *storage) :
 		UuidStorableObject(storage)
 {
-
 }
 
 Chat::Chat(Account *currentAccount, QUuid uuid) :
 		UuidStorableObject("Chat", ChatManager::instance()), CurrentAccount(currentAccount), Uuid(uuid.isNull() ? QUuid::createUuid() : uuid)
 {
+	connect(CurrentAccount, SIGNAL(contactStatusChanged(Account *, Contact, Status)),
+			this, SLOT(refreshTitle()));
 }
 
 Chat::~Chat()
 {
+	disconnect(CurrentAccount, SIGNAL(contactStatusChanged(Account *, Contact, Status)),
+			this, SLOT(refreshTitle()));
 }
 
 void Chat::load()
@@ -52,6 +60,10 @@ void Chat::load()
 
 	Uuid = loadAttribute<QString>("uuid");
 	CurrentAccount = AccountManager::instance()->byUuid(QUuid(loadValue<QString>("Account")));
+
+	connect(CurrentAccount, SIGNAL(contactStatusChanged(Account *, Contact, Status)),
+			this, SLOT(refreshTitle()));
+	refreshTitle();
 }
 
 void Chat::store()
@@ -61,3 +73,74 @@ void Chat::store()
 
 	storeValue("Account", CurrentAccount->uuid().toString());
 }
+
+void Chat::setTitle(const QString &newTitle)
+{
+	if (Title == newTitle)
+		return;
+	Title = newTitle;
+	emit titleChanged(newTitle);
+}
+
+void Chat::refreshTitle()
+{
+	kdebugf();
+	QString title;
+
+	int contactsSize = contacts().count();
+	kdebugmf(KDEBUG_FUNCTION_START, "contacts().size() = %d\n", contactsSize);
+	if (contactsSize > 1)
+	{
+		if (config_file.readEntry("Look","ConferencePrefix").isEmpty())
+			title = tr("Conference with ");
+		else
+			title = config_file.readEntry("Look","ConferencePrefix");
+		int i = 0;
+
+		if (config_file.readEntry("Look", "ConferenceContents").isEmpty())
+			foreach(const Contact contact, contacts())
+			{
+				title.append(KaduParser::parse("%a", account(), contact, false));
+
+				if (++i < contactsSize)
+					title.append(", ");
+			}
+		else
+			foreach(const Contact contact, contacts())
+			{
+				title.append(KaduParser::parse(config_file.readEntry("Look", "ConferenceContents"), account(), contact, false));
+
+				if (++i < contactsSize)
+					title.append(", ");
+			}
+
+ 		Icon = IconsManager::instance()->loadPixmap("Online");
+	}
+	else
+	{
+		Contact contact = *contacts().begin();
+
+		if (config_file.readEntry("Look", "ChatContents").isEmpty())
+		{
+			if (contact.isAnonymous())
+				title = KaduParser::parse(tr("Chat with ")+"%a", account(), contact, false);
+			else
+				title = KaduParser::parse(tr("Chat with ")+"%a (%s[: %d])", account(), contact, false);
+		}
+		else
+			title = KaduParser::parse(config_file.readEntry("Look","ChatContents"), account(), contact, false);
+
+		ContactAccountData *cad = contact.accountData(account());
+
+		if (cad)
+			Icon = account()->statusPixmap(cad->status());
+	}
+
+	title.replace("<br/>", " ");
+	title.replace("&nbsp;", " ");
+
+	setTitle(title);
+
+	kdebugf2();
+}
+

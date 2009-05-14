@@ -154,76 +154,6 @@ void ChatWidget::configurationUpdated()
 
 	InputBox->inputBox()->setFont(config_file.readFontEntry("Look","ChatFont"));
  	InputBox->inputBox()->setStyleSheet(QString("QTextEdit {background-color: %1}").arg(config_file.readColorEntry("Look", "ChatTextBgColor").name()));
-
-	refreshTitle();
-}
-
-void ChatWidget::refreshTitle()
-{
-	kdebugf();
-	QString title;
-
-	int uinsSize = CurrentChat->contacts().count();
-
-	kdebugmf(KDEBUG_FUNCTION_START, "Uins.size() = %d\n", uinsSize);
-	if (uinsSize > 1)
-	{
-		if (config_file.readEntry("Look","ConferencePrefix").isEmpty())
-			title = tr("Conference with ");
-		else
-			title = config_file.readEntry("Look","ConferencePrefix");
-		int i = 0;
-
-		if (config_file.readEntry("Look", "ConferenceContents").isEmpty())
-			foreach(const Contact contact, CurrentChat->contacts())
-			{
-				title.append(KaduParser::parse("%a", CurrentChat->account(), contact, false));
-
-				if (++i < uinsSize)
-					title.append(", ");
-			}
-		else
-			foreach(const Contact contact, CurrentChat->contacts())
-			{
-				title.append(KaduParser::parse(config_file.readEntry("Look", "ConferenceContents"), CurrentChat->account(), contact, false));
-
-				if (++i < uinsSize)
-					title.append(", ");
-			}
-
- 		pix = IconsManager::instance()->loadPixmap("Online");
-	}
-	else
-	{
-		Contact contact = *CurrentChat->contacts().begin();
-
-		if (config_file.readEntry("Look", "ChatContents").isEmpty())
-		{
-			if (contact.isAnonymous())
-				title = KaduParser::parse(tr("Chat with ")+"%a", CurrentChat->account(), contact, false);
-			else
-				title = KaduParser::parse(tr("Chat with ")+"%a (%s[: %d])", CurrentChat->account(), contact, false);
-		}
-		else
-			title = KaduParser::parse(config_file.readEntry("Look","ChatContents"), CurrentChat->account(), contact, false);
-
-		ContactAccountData *cad = contact.accountData(CurrentChat->account());
-
-		if (cad)
-			pix = CurrentChat->account()->statusPixmap(cad->status());
-	}
-
-	title.replace("<br/>", " ");
-	title.replace("&nbsp;", " ");
-
-	Caption = title;
-
-	// qt treats [*] as 'modified placeholder'
-	// we escape each [*] with double [*][*] so it gets properly handled
-	EscapedCaption = Caption.replace(QLatin1String("[*]"), QLatin1String("[*][*]"));
-
-	emit captionUpdated();
-	kdebugf2();
 }
 
 bool ChatWidget::keyPressEventHandled(QKeyEvent *e)
@@ -298,8 +228,6 @@ void ChatWidget::onStatusChanged(Account *account, Contact contact, Status oldSt
 // TODO: fix
 	if (account != CurrentChat->account() && (*CurrentChat->contacts().begin()) != contact)
 		return;
-
-	refreshTitle();
 }
 
 // TODO: remove
@@ -528,18 +456,6 @@ void ChatWidget::colorSelectorAboutToClose()
 {
 	kdebugf();
 	kdebugf2();
-}
-
-/* adds an emoticon code to the edit window */
-
-const QString& ChatWidget::caption() const
-{
- 	return Caption;
-}
-
-const QString& ChatWidget::escapedCaption() const
-{
- 	return EscapedCaption;
 }
 
 CustomInput * ChatWidget::edit()

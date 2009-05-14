@@ -48,6 +48,7 @@ public:
 	ChatWidget * chatWidget();
 
 	void closeChatWidget(ChatWidget *chatWidget);
+	void setWindowTitle(const QString &title);
 
 public slots:
 	// TODO: rename

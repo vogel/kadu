@@ -32,6 +32,7 @@ void ConferenceChat::load()
 
 	Chat::load();
 	CurrentContacts = ContactSetConfigurationHelper::loadFromConfiguration(this, "Contacts");
+	refreshTitle();
 }
 
 void ConferenceChat::store()

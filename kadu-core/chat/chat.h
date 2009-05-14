@@ -12,15 +12,20 @@
 
 #include <QtCore/QObject>
 #include <QtCore/QUuid>
+#include <QtGui/QPixmap>
 
 #include "accounts/account.h"
 #include "configuration/uuid-storable-object.h"
 #include "contacts/contact-set.h"
 
-class Chat : public UuidStorableObject
+class Chat : public QObject, public UuidStorableObject
 {
+	Q_OBJECT
+
 	Account *CurrentAccount;
 	QUuid Uuid;
+        QString Title;
+	QPixmap Icon;
 
 public:
 	static Chat * loadFromStorage(StoragePoint *conferenceStoragePoint);
@@ -36,7 +41,15 @@ public:
 
 	virtual ContactSet contacts() const = 0;
 	Account * account() { return CurrentAccount; }
+	void setTitle(const QString &newTitle);
+	QString title() { return Title; };
+	QPixmap icon() { return Icon; };
 
+public slots:
+	void refreshTitle();
+
+signals:
+	void titleChanged(const QString &newTitle);
 };
 
 #endif // CHAT_H

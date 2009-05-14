@@ -45,8 +45,6 @@ private:
 	QHash<Chat *, ChatWidget *> Chats;
 	QList<Chat *> ClosedChats; /*!< u�ytkownicy, kt�rych okna zosta�y zamkni�te*/
 
-	QTimer refreshTitlesTimer;
-
 	ChatWidgetManager();
 	virtual ~ChatWidgetManager();
 
@@ -125,21 +123,6 @@ public slots:
 		\param chat okno kt�re b�dzie wyrejestrowane
 	**/
 	void unregisterChatWidget(ChatWidget *chat);
-
-	/**
-		\fn void refreshTitles()
-		Funkcja od�wie�a tytu�y wszystkich okien
-	**/
-	void refreshTitles();
-	void refreshTitlesLater();
-
-	/**
-		\fn void refreshTitlesForUser(Contact user)
-		Funkcja od�wie�a tytu�y okien kt�re zawieraj� uin
-		\param user u�ytkownik, kt�rego
-		opis/status b�dzie od�wie�any
-	**/
-	void refreshTitlesForUser(Contact user);
 
 signals:
 	/**

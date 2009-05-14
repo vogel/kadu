@@ -62,13 +62,6 @@ ChatWidgetManager::ChatWidgetManager()
 
 	connect(Core::instance(), SIGNAL(messageReceived(Chat *, Contact, const QString &)),
 			this, SLOT(messageReceived(Chat *, Contact, const QString &)));
-	connect(Core::instance(), SIGNAL(disconnected()), this, SLOT(refreshTitles()));
-
-	refreshTitlesTimer.setSingleShot(true);
-
-	connect(&refreshTitlesTimer, SIGNAL(timeout()), this, SLOT(refreshTitles()));
-// TODO: 0.6.6
-// 	connect(userlist, SIGNAL(usersStatusChanged(QString)), this, SLOT(refreshTitlesLater()));
 
 	Actions = new ChatWidgetActions(this);
 
@@ -179,10 +172,6 @@ ChatWidgetManager::~ChatWidgetManager()
 	disconnect(Core::instance(), SIGNAL(messageReceived(Chat *, Contact , const QString &)),
 			this, SLOT(messageReceived(Chat *, Contact , const QString &)));
 
-	disconnect(&refreshTitlesTimer, SIGNAL(timeout()), this, SLOT(refreshTitles()));
-// TODO: 0.6.6
-//	disconnect(userlist, SIGNAL(usersStatusChanged(QString)), this, SLOT(refreshTitlesLater()));
-
 	closeAllWindows();
 
 #ifdef DEBUG_ENABLED
@@ -261,30 +250,6 @@ void ChatWidgetManager::unregisterChatWidget(ChatWidget *chat)
 	Chats.remove(chat->chat());
 }
 
-void ChatWidgetManager::refreshTitlesLater()
-{
-	refreshTitlesTimer.start(0);
-}
-
-void ChatWidgetManager::refreshTitles()
-{
-	kdebugf();
- 	foreach (ChatWidget *chat, Chats)
-		chat->refreshTitle();
-	emit chatWidgetTitlesUpdated();
-	kdebugf2();
-}
-
-void ChatWidgetManager::refreshTitlesForUser(Contact contact)
-{
-	kdebugf();
-// TOOD: 0.6.6 need implementation in Chat signal: titleChanged()
-/* 	foreach(ChatWidget *chat, ChatWidgets)
- 		if (chat->contacts().contains(contact))
- 			chat->refreshTitle();*/
-	kdebugf2();
-}
-
 ChatWidget * ChatWidgetManager::byChat(Chat *chat, bool create) const
 {
 	return Chats.contains(chat)
@@ -332,7 +297,6 @@ ChatWidget * ChatWidgetManager::openChatWidget(Chat *chat, bool forceActivate)
 		window->setChatWidget(chatWidget);
 		window->show();
 	}
- 	chatWidget->refreshTitle();
 
 	connect(chatWidget, SIGNAL(messageSentAndConfirmed(ContactList, const QString &)),
 		this, SIGNAL(messageSentAndConfirmed(ContactList, const QString &)));

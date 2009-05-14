@@ -71,7 +71,7 @@ void ChatWindow::setChatWidget(ChatWidget *newChatWidget)
 	layout->setSpacing(0);
 
 	connect(currentChatWidget, SIGNAL(closed()), this, SLOT(close()));
-	connect(currentChatWidget, SIGNAL(captionUpdated()), this, SLOT(updateTitle()));
+	connect(currentChatWidget->chat(), SIGNAL(titleChanged(const QString &)), this, SLOT(updateTitle()));
 	connect(currentChatWidget, SIGNAL(messageReceived(ChatWidget *)), this, SLOT(alertNewMessage()));
 
 	setFocusProxy(currentChatWidget);
@@ -191,8 +191,8 @@ void ChatWindow::closeEvent(QCloseEvent *e)
 
 void ChatWindow::updateTitle()
 {
-	setWindowIcon(currentChatWidget->icon());
-	setWindowTitle(currentChatWidget->escapedCaption());
+	setWindowIcon(currentChatWidget->chat()->icon());
+	setWindowTitle(currentChatWidget->chat()->title());
 
 	if (showNewMessagesNum && currentChatWidget->newMessagesCount()) // if we don't have new messages or don't want them to be shown
 		showNewMessagesNumInTitle();
@@ -202,15 +202,15 @@ void ChatWindow::blinkTitle()
 {
  	if (!isActiveWindow())
   	{
-		if (!windowTitle().contains(currentChatWidget->caption()) || !blinkChatTitle)
+		if (!windowTitle().contains(currentChatWidget->chat()->title()) || !blinkChatTitle)
 		{
   			if (!showNewMessagesNum) // if we don't show number od new messages waiting
-  				setWindowTitle(currentChatWidget->escapedCaption());
+  				setWindowTitle(currentChatWidget->chat()->title());
   			else
 				showNewMessagesNumInTitle();
 		}
 		else
-			setWindowTitle(QString().fill(' ', (currentChatWidget->caption().length() + 5)));
+			setWindowTitle(QString().fill(' ', (currentChatWidget->chat()->title().length() + 5)));
 
 		if (blinkChatTitle) // timer will not be started, if configuration option was changed
 		{
@@ -223,7 +223,7 @@ void ChatWindow::blinkTitle()
 void ChatWindow::showNewMessagesNumInTitle()
 {
 	if (!isActiveWindow())
-		setWindowTitle("[" + QString().setNum(currentChatWidget->newMessagesCount()) + "] " + currentChatWidget->escapedCaption());
+		setWindowTitle("[" + QString().setNum(currentChatWidget->newMessagesCount()) + "] " + currentChatWidget->chat()->title());
 }
 
 void ChatWindow::windowActivationChange(bool b)
@@ -232,7 +232,7 @@ void ChatWindow::windowActivationChange(bool b)
 	if (isActiveWindow())
 	{
 		currentChatWidget->markAllMessagesRead();
-		setWindowTitle(currentChatWidget->escapedCaption());
+		setWindowTitle(currentChatWidget->chat()->title());
 
 		if (title_timer->isActive())
 			title_timer->stop();
@@ -264,6 +264,14 @@ void ChatWindow::alertNewMessage()
 	}
 	else
 		currentChatWidget->markAllMessagesRead();
+}
+
+void ChatWindow::setWindowTitle(const QString &title)
+{
+	// qt treats [*] as 'modified placeholder'
+	// we escape each [*] with double [*][*] so it gets properly handled
+	QString escaped = title;
+	QWidget::setWindowTitle(escaped.replace(QLatin1String("[*]"), QLatin1String("[*][*]")));
 }
 
 void ChatWindow::closeChatWidget(ChatWidget *chatWidget)
