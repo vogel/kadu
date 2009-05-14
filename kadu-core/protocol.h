@@ -4,9 +4,9 @@
 #include <QtCore/QDateTime>
 #include <QtCore/QObject>
 
-#ifdef __sun__
+#if defined(__sun__ ) || defined(__linux__)
 #include <sys/types.h>
-#endif /* __sun__ */
+#endif /* __sun__ || __linux__ */
 
 #ifdef _MSC_VER
 #include "kinttypes.h"
