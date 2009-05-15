@@ -23,6 +23,6 @@ add_library (falf_mediaplayer ${falf_mediaplayer} ${SOURCES} ${MOC_FILES})
 if (falf_mediaplayer STREQUAL STATIC)
 	set_target_properties(falf_mediaplayer PROPERTIES COMPILE_FLAGS "-DKADULIB" )
 else (falf_mediaplayer STREQUAL STATIC)
-	install (TARGETS falf_mediaplayer DESTINATION lib${LIB_SUFFIX}/kadu/modules)
+	install (TARGETS falf_mediaplayer DESTINATION ${MODULEDIR})
 endif (falf_mediaplayer STREQUAL STATIC)
 

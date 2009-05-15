@@ -40,6 +40,6 @@ else (auto_hide STREQUAL STATIC)
 	if (APPLE)
 		set_target_properties(auto_hide PROPERTIES LINK_FLAGS "-undefined dynamic_lookup")
 	endif (APPLE)
-	install (TARGETS auto_hide DESTINATION lib${LIB_SUFFIX}/kadu/modules)
+	install (TARGETS auto_hide DESTINATION ${MODULEDIR})
 endif (auto_hide STREQUAL STATIC)
 

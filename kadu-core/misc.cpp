@@ -384,9 +384,10 @@ QString dataPath(const QString &p, const char *argv0)
 
 		//je�eli �cie�ki nie ko�cz� si� na /share i /bin oraz gdy bez tych ko�c�wek
 		//�cie�ki si� nie pokrywaj�, to znaczy �e kto� ustawi� r�cznie DATADIR lub BINDIR
-		if (!datadir.endsWith("/share") || !bindir.endsWith("/bin") || !libdir.endsWith("/lib") ||
+		if (!datadir.endsWith("/share") || !bindir.endsWith("/bin") || !libdir.endsWith("/lib") || !libdir.endsWith("/lib64") ||
 			datadir.left(datadir.length() - 6) != bindir.left(bindir.length() - 4) ||
-			bindir.left(bindir.length() - 4) != libdir.left(libdir.length() - 4))
+			(bindir.left(bindir.length() - 4) != libdir.left(libdir.length() - 4) && 
+			bindir.left(bindir.length() - 4) != libdir.left(libdir.length() - 6)))
 		{
 			data_path = datadir + '/';
 			lib_path = libdir + '/';

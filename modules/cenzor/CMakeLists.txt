@@ -47,6 +47,6 @@ else (cenzor STREQUAL STATIC)
 	if (APPLE)
 		set_target_properties(cenzor PROPERTIES LINK_FLAGS "-undefined dynamic_lookup")
 	endif (APPLE)
-	install (TARGETS cenzor DESTINATION lib${LIB_SUFFIX}/kadu/modules)
+	install (TARGETS cenzor DESTINATION ${MODULEDIR})
 endif (cenzor STREQUAL STATIC)
 

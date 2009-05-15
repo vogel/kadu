@@ -41,6 +41,6 @@ include_directories (${ALSA_INCLUDE_DIRS})
 if (alsa_sound STREQUAL STATIC)
 	set_target_properties(alsa_sound PROPERTIES COMPILE_FLAGS "-DKADULIB" )
 else (alsa_sound STREQUAL STATIC)
-	install (TARGETS alsa_sound DESTINATION lib${LIB_SUFFIX}/kadu/modules)
+	install (TARGETS alsa_sound DESTINATION ${MODULEDIR})
 endif (alsa_sound STREQUAL STATIC)
 

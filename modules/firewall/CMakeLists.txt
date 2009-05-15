@@ -40,6 +40,6 @@ else (firewall STREQUAL STATIC)
 	if (APPLE)
 		set_target_properties(firewall PROPERTIES LINK_FLAGS "-undefined dynamic_lookup")
 	endif (APPLE)
-	install (TARGETS firewall DESTINATION lib${LIB_SUFFIX}/kadu/modules)
+	install (TARGETS firewall DESTINATION ${MODULEDIR})
 endif (firewall STREQUAL STATIC)
 

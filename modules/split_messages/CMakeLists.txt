@@ -43,4 +43,4 @@ else (split_messages STREQUAL STATIC)
 endif (split_messages STREQUAL STATIC)
 add_dependencies (split_messages split_messages-translations)
 
-install (TARGETS split_messages DESTINATION lib${LIB_SUFFIX}/kadu/modules)
+install (TARGETS split_messages DESTINATION ${MODULEDIR})

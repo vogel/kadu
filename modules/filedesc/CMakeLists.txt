@@ -43,6 +43,6 @@ else (filedesc STREQUAL STATIC)
 	if (APPLE)
 		set_target_properties(filedesc PROPERTIES LINK_FLAGS "-undefined dynamic_lookup")
 	endif (APPLE)
-	install (TARGETS filedesc DESTINATION lib${LIB_SUFFIX}/kadu/modules)
+	install (TARGETS filedesc DESTINATION ${MODULEDIR})
 endif (filedesc STREQUAL STATIC)
 

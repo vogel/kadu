@@ -57,6 +57,6 @@ else (notify STREQUAL STATIC)
 	if (APPLE)
 		set_target_properties(notify PROPERTIES LINK_FLAGS "-undefined dynamic_lookup")
 	endif (APPLE)
-	install (TARGETS notify DESTINATION lib${LIB_SUFFIX}/kadu/modules)
+	install (TARGETS notify DESTINATION ${MODULEDIR})
 endif (notify STREQUAL STATIC)
 

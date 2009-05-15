@@ -42,6 +42,6 @@ else (exec_notify STREQUAL STATIC)
 	if (APPLE)
 		set_target_properties(encryption PROPERTIES LINK_FLAGS "-undefined dynamic_lookup")
 	endif (APPLE)
-	install (TARGETS exec_notify DESTINATION lib${LIB_SUFFIX}/kadu/modules)
+	install (TARGETS exec_notify DESTINATION ${MODULEDIR})
 endif (exec_notify STREQUAL STATIC)
 

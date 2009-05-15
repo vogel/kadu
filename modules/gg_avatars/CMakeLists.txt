@@ -51,6 +51,6 @@ else (gg_avatars STREQUAL STATIC)
 	if (APPLE)
 		set_target_properties(gg_avatars PROPERTIES LINK_FLAGS "-undefined dynamic_lookup")
 	endif (APPLE)
-	install (TARGETS gg_avatars DESTINATION lib${LIB_SUFFIX}/kadu/modules)
+	install (TARGETS gg_avatars DESTINATION ${MODULEDIR})
 endif (gg_avatars STREQUAL STATIC)
 

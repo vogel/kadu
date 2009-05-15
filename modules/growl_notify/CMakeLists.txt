@@ -34,6 +34,6 @@ else (growl_notify STREQUAL STATIC)
 	if (APPLE)
 		set_target_properties(growl_notify PROPERTIES LINK_FLAGS "-undefined dynamic_lookup -framework Growl -framework CoreFoundation")
 	endif (APPLE)
-	install (TARGETS growl_notify DESTINATION lib${LIB_SUFFIX}/kadu/modules)
+	install (TARGETS growl_notify DESTINATION ${MODULEDIR})
 endif (growl_notify STREQUAL STATIC)
 

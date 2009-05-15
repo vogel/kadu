@@ -46,6 +46,6 @@ else (autoaway STREQUAL STATIC)
 	if (APPLE)
 		set_target_properties(autoaway PROPERTIES LINK_FLAGS "-undefined dynamic_lookup")
 	endif (APPLE)
-	install (TARGETS autoaway DESTINATION lib${LIB_SUFFIX}/kadu/modules)
+	install (TARGETS autoaway DESTINATION ${MODULEDIR})
 endif (autoaway STREQUAL STATIC)
 

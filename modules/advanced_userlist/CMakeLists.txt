@@ -47,7 +47,7 @@ else (advanced_userlist STREQUAL STATIC)
 	if (APPLE)
 		set_target_properties(advanced_userlist PROPERTIES LINK_FLAGS "-undefined dynamic_lookup")
 	endif (APPLE)
-	install (TARGETS advanced_userlist DESTINATION lib${LIB_SUFFIX}/kadu/modules)
+	install (TARGETS advanced_userlist DESTINATION ${MODULEDIR})
 endif (advanced_userlist STREQUAL STATIC)
 
 

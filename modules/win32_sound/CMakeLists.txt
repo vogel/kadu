@@ -48,4 +48,4 @@ else (win32_sound STREQUAL STATIC)
 endif (win32_sound STREQUAL STATIC)
 add_dependencies (win32_sound win32_sound-translations)
 
-install (TARGETS win32_sound DESTINATION lib${LIB_SUFFIX}/kadu/modules)
+install (TARGETS win32_sound DESTINATION ${MODULEDIR})

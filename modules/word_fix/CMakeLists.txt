@@ -46,6 +46,6 @@ else (word_fix STREQUAL STATIC)
 	if (APPLE)
 		set_target_properties(word_fix PROPERTIES LINK_FLAGS "-undefined dynamic_lookup")
 	endif (APPLE)
-	install (TARGETS word_fix DESTINATION lib${LIB_SUFFIX}/kadu/modules)
+	install (TARGETS word_fix DESTINATION ${MODULEDIR})
 endif (word_fix STREQUAL STATIC)
 

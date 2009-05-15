@@ -38,6 +38,6 @@ else (last_seen STREQUAL STATIC)
 	if (APPLE)
 		set_target_properties(last_seen PROPERTIES LINK_FLAGS "-undefined dynamic_lookup")
 	endif (APPLE)
-	install (TARGETS last_seen DESTINATION lib${LIB_SUFFIX}/kadu/modules)
+	install (TARGETS last_seen DESTINATION ${MODULEDIR})
 endif (last_seen STREQUAL STATIC)
 

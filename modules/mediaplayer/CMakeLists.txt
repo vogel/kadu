@@ -76,6 +76,6 @@ else (mediaplayer STREQUAL STATIC)
 	if (APPLE)
 		set_target_properties(mediaplayer PROPERTIES LINK_FLAGS "-undefined dynamic_lookup")
 	endif (APPLE)
-	install (TARGETS mediaplayer DESTINATION lib${LIB_SUFFIX}/kadu/modules)
+	install (TARGETS mediaplayer DESTINATION ${MODULEDIR})
 endif (mediaplayer STREQUAL STATIC)
 

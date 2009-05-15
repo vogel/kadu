@@ -36,6 +36,6 @@ add_dependencies (dsp_sound dsp_sound-translations)
 if (dsp_sound STREQUAL STATIC)
 	set_target_properties(dsp_sound PROPERTIES COMPILE_FLAGS "-DKADULIB" )
 else (dsp_sound STREQUAL STATIC)
-	install (TARGETS dsp_sound DESTINATION lib${LIB_SUFFIX}/kadu/modules)
+	install (TARGETS dsp_sound DESTINATION ${MODULEDIR})
 endif (dsp_sound STREQUAL STATIC)
 
