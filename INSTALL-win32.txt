@@ -1,0 +1,24 @@
+Kompilacja i instalacja Kadu pod Windows z wykorzystaniem MinGW
+
+1. Pobierz biblioteki Qt (http://get.qtsoftware.com/qt/source/qt-win-opensource-4.5.1-mingw.exe) 
+   i zainstaluj do katalogu C:\Qt\4.5.1. Podczas instalacji zainstaluj mingw do katalogu C:\MinGW
+2. Pobierz i zainstaluj cmake (http://www.cmake.org/files/v2.6/cmake-2.6.4-win32-x86.exe) 
+   do katalogu C:\Qt\CMake 2.6
+3. Zainstaluj libsndfile (http://www.mega-nerd.com/libsndfile/libsndfile-1.0.20-w32-setup.exe) 
+   do katalogu C:\Qt\libsndfile
+4. Pobierz i rozpakuj libgadu (http://www.kadu.net/~michal/win32/old/libgadu-win32-20080805.zip) 
+   do katalogu C:\Qt\libgadu-win32
+5. Dodaj do zmiennej systemowej PATH (System -> Zaawansowane -> Zmienne srodowiskowe) 
+   sciezki do binarek Qt, cmake i mingw (C:\Qt\4.5.1\bin, C:\Qt\CMake 2.6\bin, C:\MinGW\bin) 
+   (oddzielone srednikiem)
+6. Uruchom ponownie system (zeby uaktualnic zmienna systemowa PATH)
+7. Wejdz do katalogu C:\Qt\libgadu-win32\ i skompiluj libgadu:
+   cmake . -G "MinGW Makefiles"
+   mingw32-make
+8. Jesli libgadu i/lub libsndfile znajduja sie w innym katalogu niz C:\Qt\libgadu-win32 i
+   C:\Qt\libsndfile - przeedytuj plik CMakeLists.txt podajac poprawne sciezki
+8. Wejdz do katalogu kadu i skonfiguruj kadu:
+   cmake . -G "MinGW Makefiles"
+9. Skompiluj kadu:
+   mingw32-make
+
