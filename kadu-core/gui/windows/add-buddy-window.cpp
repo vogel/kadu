@@ -47,6 +47,7 @@ AddBuddyWindow::AddBuddyWindow(Contact contact, QWidget *parent)
 	stepTwoWidget->setVisible(true);
 	addBuddyButton->setVisible(true);
 
+	disconnect(buddyUid, SIGNAL(cursorPositionChanged(int,int)), this, SLOT(clearUid()));
 	buddyUid->setText(contact.id(contactAccount));
 	buddyUid->setReadOnly(true);
 }
