@@ -109,6 +109,7 @@ set (kadu_SRCS
 	gui/widgets/configuration/notify-group-box.cpp
 	gui/widgets/configuration/notify-tree-widget.cpp
 
+	gui/windows/add-buddy-window.cpp
 	gui/windows/chat_window.cpp
 	gui/windows/configuration-window.cpp
 	gui/windows/contact-data-manager.cpp
@@ -271,6 +272,7 @@ set (kadu_MOC_SRCS
 	gui/widgets/configuration/notify-group-box.h
 	gui/widgets/configuration/notify-tree-widget.h
 
+	gui/windows/add-buddy-window.h
 	gui/windows/chat_window.h
 	gui/windows/configuration-window.h
 	gui/windows/contact-data-manager.h

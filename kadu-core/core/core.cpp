@@ -278,7 +278,6 @@ void Core::init()
 	pending.loadConfiguration(xml_config_file);
 
 	Updates::initModule();
-	GaduProtocol::initModule();
 	SearchDialog::initModule();
 
 #ifdef Q_OS_MACX

@@ -14,10 +14,10 @@
 
 #include "contact-account-data.h"
 
-ContactAccountData::ContactAccountData(Contact contact, Account *account, const QString &id, bool isAnonymous)
+ContactAccountData::ContactAccountData(Contact contact, Account *account, const QString &id, bool loadFromConfiguration)
 	: ContactAccount(account), OwnerContact(contact), Id(id), Blocked(false), OfflineTo(false), Port(0)
 {
-	if (isAnonymous)
+	if (!loadFromConfiguration)
 		StorableObject::setLoaded(true);
 	// TODO: 0.6.6 by loadFromStorage, please
 	if (id.isNull())

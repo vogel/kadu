@@ -112,8 +112,6 @@ protected:
 	virtual void changePrivateMode();
 
 public:
-	static void initModule();
-
 	static Status::StatusType statusTypeFromGaduStatus(unsigned int index);
 	static unsigned int gaduStatusFromStatus(const Status &status);
 

@@ -44,7 +44,7 @@ protected:
 	virtual StoragePoint * createStoragePoint();
 
 public:
-	ContactAccountData(Contact contact, Account *account, const QString &id = QString::null, bool isAnonymous = false);
+	ContactAccountData(Contact contact, Account *account, const QString &id = QString::null, bool loadFromConfiguration = true);
 
 	virtual bool validateId() = 0;
 	virtual void load();

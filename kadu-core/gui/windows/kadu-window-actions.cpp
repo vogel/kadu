@@ -28,6 +28,7 @@
 #include "gui/widgets/contacts-list-widget.h"
 #include "gui/widgets/contacts-list-widget-menu-manager.h"
 #include "gui/widgets/status-menu.h"
+#include "gui/windows/add-buddy-window.h"
 #include "gui/windows/contact-data-window.h"
 #include "gui/windows/kadu-window.h"
 #include "gui/windows/your-accounts.h"
@@ -280,7 +281,7 @@ KaduWindowActions::KaduWindowActions(QObject *parent) : QObject(parent)
 	AddUser = new ActionDescription(this,
 		ActionDescription::TypeGlobal, "addUserAction",
 		this, SLOT(addUserActionActivated(QAction *, bool)),
-		"AddUser", tr("Add user")
+		"AddUser", tr("Add Buddy")
 	);
 	AddUser->setShortcut("kadu_adduser", Qt::ApplicationShortcut);
 
@@ -601,8 +602,10 @@ void KaduWindowActions::addUserActionActivated(QAction *sender, bool toggled)
 		return;
 
 	Contact contact = window->contact();
-	if (contact.isAnonymous() || contact.isNull())
-		(new ContactDataWindow(contact, window))->show();
+	if (contact.isAnonymous())
+		(new AddBuddyWindow(contact, window))->show();
+	else
+		(new AddBuddyWindow(window))->show();
 
  	kdebugf2();
 }

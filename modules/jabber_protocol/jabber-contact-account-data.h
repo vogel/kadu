@@ -21,8 +21,8 @@ class JabberContactAccountData : public ContactAccountData
 	unsigned long MaxImageSize;
 
 public:
-	JabberContactAccountData(Contact contact, Account *account, const QString &id = QString::null, bool isAnonymous = false)
-		: ContactAccountData(contact, account, id, isAnonymous)
+	JabberContactAccountData(Contact contact, Account *account, const QString &id = QString::null, bool loadFromConfiguration = true)
+		: ContactAccountData(contact, account, id, loadFromConfiguration)
 	{}
 
 	virtual bool validateId();

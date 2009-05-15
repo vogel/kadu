@@ -44,12 +44,11 @@ YourAccounts::~YourAccounts()
 void YourAccounts::createGui()
 {
 	QVBoxLayout *mainLayout = new QVBoxLayout(this);
-	setLayout(mainLayout);
 
-	ContentLayout = new QHBoxLayout(this);
+	ContentLayout = new QHBoxLayout;
 	mainLayout->addItem(ContentLayout);
 
-	QVBoxLayout *sideLayout = new QVBoxLayout(this);
+	QVBoxLayout *sideLayout = new QVBoxLayout;
 	ContentLayout->addItem(sideLayout);
 	ContentLayout->setStretchFactor(sideLayout, 1);
 
@@ -72,6 +71,7 @@ void YourAccounts::createGui()
 	buttons->addButton(applyButton, QDialogButtonBox::ApplyRole);
 	QPushButton *cancelButton = new QPushButton(IconsManager::instance()->loadIcon("CloseWindowButton"), tr("Cancel"), this);
 	buttons->addButton(cancelButton, QDialogButtonBox::RejectRole);
+	connect(cancelButton, SIGNAL(clicked()), this, SLOT(close()));
 
 	createNewAccountWidget();
 }
@@ -82,9 +82,8 @@ void YourAccounts::createNewAccountWidget()
 	ContentLayout->addWidget(NewAccountContainer, 100);
 
 	MainNewAccountLayout = new QVBoxLayout(NewAccountContainer);
-	NewAccountContainer->setLayout(MainNewAccountLayout);
 
-	QHBoxLayout *selectProtocolLayout = new QHBoxLayout(NewAccountContainer);
+	QHBoxLayout *selectProtocolLayout = new QHBoxLayout;
 	MainNewAccountLayout->addItem(selectProtocolLayout);
 	MainNewAccountLayout->setStretchFactor(selectProtocolLayout, 1);
 

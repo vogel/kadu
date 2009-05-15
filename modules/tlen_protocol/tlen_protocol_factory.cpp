@@ -48,9 +48,9 @@ Account * TlenProtocolFactory::loadAccount(StoragePoint *accountStoragePoint)
        return account;
 }
 
-ContactAccountData * TlenProtocolFactory::newContactAccountData(Contact contact, Account *account, const QString &id, bool isAnonymous)
+ContactAccountData * TlenProtocolFactory::newContactAccountData(Contact contact, Account *account, const QString &id, bool loadFromConfiguration)
 {
-	return new TlenContactAccountData(contact, account, id, isAnonymous);
+	return new TlenContactAccountData(contact, account, id, loadFromConfiguration);
 }
 
 ContactAccountData * TlenProtocolFactory::loadContactAccountData(Contact contact, Account *account)

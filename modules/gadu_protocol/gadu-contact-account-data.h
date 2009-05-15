@@ -22,8 +22,8 @@ class GaduContactAccountData : public ContactAccountData
 	unsigned int GaduProtocolVersion;
 
 public:
-	GaduContactAccountData(Contact contact, Account *account, const QString &id = QString::null, bool isAnonymous = false)
-			: ContactAccountData(contact, account, id, isAnonymous), GaduProtocolVersion(0) {}
+	GaduContactAccountData(Contact contact, Account *account, const QString &id = QString::null, bool loadFromConfiguration = true)
+			: ContactAccountData(contact, account, id, loadFromConfiguration), GaduProtocolVersion(0) {}
 
 	virtual bool validateId();
 

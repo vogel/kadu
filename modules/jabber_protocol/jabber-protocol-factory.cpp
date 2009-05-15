@@ -54,9 +54,9 @@ Account * JabberProtocolFactory::loadAccount(StoragePoint *accountStoragePoint)
 	return account;
 }
 
-ContactAccountData * JabberProtocolFactory::newContactAccountData(Contact contact, Account *account, const QString &id, bool isAnonymous)
+ContactAccountData * JabberProtocolFactory::newContactAccountData(Contact contact, Account *account, const QString &id, bool loadFromConfiguration)
 {
-	return new JabberContactAccountData(contact, account, id, isAnonymous);
+	return new JabberContactAccountData(contact, account, id, loadFromConfiguration);
 }
 
 ContactAccountData * JabberProtocolFactory::loadContactAccountData(Contact contact, Account *account)

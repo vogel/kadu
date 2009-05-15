@@ -816,6 +816,7 @@ void JabberProtocol::rejectSubscription(const XMPP::Jid &jid)
 
 bool JabberProtocol::validateUserID(QString& uid)
 {
+	//TODO: this does not work
 	XMPP::Jid j = uid;
 	if (j.isValid())
 		return true;

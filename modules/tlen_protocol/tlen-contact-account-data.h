@@ -21,8 +21,8 @@ class TlenContactAccountData : public ContactAccountData
 	unsigned long MaxImageSize;
 
 public:
-	TlenContactAccountData(Contact contact, Account *account, const QString &id = QString::null, bool isAnonymous = false)
-		: ContactAccountData(contact, account, id, isAnonymous)
+	TlenContactAccountData(Contact contact, Account *account, const QString &id = QString::null, bool loadFromConfiguration = true)
+		: ContactAccountData(contact, account, id, loadFromConfiguration)
 	{}
 
 	virtual bool validateId();

@@ -8,6 +8,7 @@
  ***************************************************************************/
 
 #include <QtCore/QTimer>
+#include <QtGui/QIntValidator>
 
 #ifdef Q_OS_WIN
 #include <winsock2.h>
@@ -52,6 +53,16 @@ extern "C" int gadu_protocol_init(bool firstLoad)
 	if (ProtocolsManager::instance()->hasProtocolFactory("gadu"))
 		return 0;
 
+	gg_debug_level = debug_mask | ~255;
+
+	gg_proxy_host = 0;
+	gg_proxy_username = 0;
+	gg_proxy_password = 0;
+
+#ifndef DEBUG_ENABLED
+	gg_debug_level = 1;
+#endif
+
 	ProtocolsManager::instance()->registerProtocolFactory(GaduProtocolFactory::instance());
 
 	if (!xml_config_file->hasNode("Accounts"))
@@ -65,26 +76,6 @@ extern "C" int gadu_protocol_init(bool firstLoad)
 extern "C" void gadu_protocol_close()
 {
 	ProtocolsManager::instance()->unregisterProtocolFactory(GaduProtocolFactory::instance());
-}
-
-void GaduProtocol::initModule()
-{
-	kdebugf();
-
-	gg_debug_level = debug_mask | ~255;
-
-	gg_proxy_host = 0;
-	gg_proxy_username = 0;
-	gg_proxy_password = 0;
-
-#ifndef DEBUG_ENABLED
-	gg_debug_level = 1;
-#endif
-
-// TODO: 0.6.6
-//	defaultdescriptions = QStringList::split("<-->", config_file.readEntry("General","DefaultDescription", tr("I am busy.")), true);
-
-	kdebugf2();
 }
 
 #define GG_STATUS_INVISIBLE2 0x0009
@@ -180,16 +171,13 @@ GaduProtocol::~GaduProtocol()
 
 bool GaduProtocol::validateUserID(QString &uid)
 {
-	return true;
-/*
 	QIntValidator v(1, 99999999, this);
 	int pos = 0;
 
-	if ((uid != id) && (v.validate(uid, pos) == QValidator::Acceptable))
+	if (v.validate(uid, pos) == QValidator::Acceptable)
 		return true;
 
 	return false;
-*/
 }
 
 unsigned int GaduProtocol::maxDescriptionLength()
