@@ -17,7 +17,11 @@
 #include "misc.h"
 
 #include <windows.h>
-#include <dbghelp.h>
+#ifndef _MSC_VER 
+# include "dbghelp2.h" /* MinGW's DbgHelp.h lacks some definitions */
+#else
+# include <dbghelp.h>
+#endif /* _MSC_VER */
 #include "kadu-config.h"
 
 typedef BOOL (WINAPI *MiniDumpWriteDump_t)(HANDLE hProcess, DWORD ProcessId, HANDLE hFile, MINIDUMP_TYPE DumpType,

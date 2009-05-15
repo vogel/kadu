@@ -108,6 +108,7 @@ set(QT_USE_QTDBUS 1)
 include(${QT_USE_FILE})
 include_directories (${CMAKE_BINARY_DIR} ${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_CURRENT_SOURCE_DIR}/kadu-core ${QT_INCLUDES})
 
+if (NOT WIN32)
 pkg_search_module (LIBGADU REQUIRED libgadu>=1.8.0)
 
 execute_process (
@@ -118,6 +119,20 @@ execute_process (
 if (NOT APPLE AND ${LIBGADU_PTHEADS} GREATER 0)
 	message (FATAL_ERROR "libgadu must be compiled with pthreads support")
 endif (NOT APPLE AND ${LIBGADU_PTHEADS} GREATER 0)
+
+else (NOT WIN32)
+	set (LIBGADU_INCLUDE_DIRS C:/Qt/libgadu-win32)
+	set (LIBGADU_LIBRARY_DIRS C:/Qt/libgadu-win32)
+	set (LIBGADU_LIBRARIES -lgadu -lws2_32)
+	MESSAGE(STATUS "Assuming C:/Qt/libgadu-win32 as location of libgadu")
+	MESSAGE(STATUS " * correct main CMakeLists.txt if necessary")
+
+	set (SNDFILE_INCLUDE_DIRS C:/Qt/libsndfile/include)
+	set (SNDFILE_LIBRARY_DIRS C:/Qt/libsndfile)
+	set (SNDFILE_LIBRARIES -lsndfile-1)
+	MESSAGE(STATUS "Assuming C:/Qt/libsndfile as location of libsndfile")
+	MESSAGE(STATUS " * correct main CMakeLists.txt if necessary")
+endif (NOT WIN32)
 
 include_directories (${LIBGADU_INCLUDE_DIRS})
 link_directories (${LIBGADU_LIBRARY_DIRS})

@@ -260,8 +260,10 @@ int main(int argc, char *argv[])
 		}
 		else if ((param == "--debug") && (argc > i + 1))
 			debug_mask = atol(argv[++i]);
+#ifndef Q_WS_WIN
 		else if ((param == "--config-dir") && (argc > i + 1))
 			setenv("CONFIG_DIR", argv[++i], 1);
+#endif
 		else if (param.contains("gg:"))
 		{
 			ggnumber = QString(argv[1]).remove("gg:").remove("/").toInt();

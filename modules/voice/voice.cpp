@@ -14,7 +14,7 @@
 #include <QtGui/QMessageBox>
 #include <QtGui/QPushButton>
 
-#ifndef _MSC_VER // TODO: do we realy need this headers od *nix?
+#ifndef Q_OS_WIN // TODO: do we realy need this headers od *nix?
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <netinet/in.h>
