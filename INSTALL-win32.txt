@@ -21,4 +21,6 @@ Kompilacja i instalacja Kadu pod Windows z wykorzystaniem MinGW
    cmake . -G "MinGW Makefiles"
 9. Skompiluj kadu:
    mingw32-make
-
+10. Zainstaluj:
+varia/scripts/create_windows_bundle.bat
+11. Kadu zostanie zainstalowane do katalogu c:\Program Files\Kadu-0.6.5.2
