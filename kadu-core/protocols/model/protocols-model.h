@@ -13,14 +13,17 @@
 #include <QtCore/QAbstractListModel>
 #include <QtCore/QModelIndex>
 
+#include "model/first-empty.h"
+
 class ProtocolFactory;
 
-class ProtocolsModel : public QAbstractListModel
+class ProtocolsModel : public FirstEmpty
 {
 	Q_OBJECT
 
 public:
-	ProtocolsModel(QObject *parent = 0);
+	ProtocolsModel(const QString &emptyString, QObject *parent = 0);
+	explicit ProtocolsModel(QObject *parent = 0);
 	virtual ~ProtocolsModel();
 
 	virtual int rowCount(const QModelIndex &parent = QModelIndex()) const;

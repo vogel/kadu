@@ -17,10 +17,10 @@
 
 #include "accounts/model/accounts-model.h"
 #include "contacts/model/contacts-model-base.h"
+#include "misc/misc.h"
 #include "protocols/model/protocols-model.h"
 #include "protocols/protocol-factory.h"
 #include "protocols/protocols-manager.h"
-#include "misc/misc.h"
 #include "icons-manager.h"
 
 #include "your-accounts.h"
@@ -89,8 +89,10 @@ void YourAccounts::createNewAccountWidget()
 
 	selectProtocolLayout->addWidget(new QLabel(tr("Select network"), NewAccountContainer));
 
+	ProtocolsModel *Model = new ProtocolsModel(tr("Choose a network to add"), Protocols);
+
 	Protocols = new QComboBox(NewAccountContainer);
-	Protocols->setModel(new ProtocolsModel(Protocols));
+	Protocols->setModel(Model);
 	selectProtocolLayout->addWidget(Protocols);
 
 	connect(Protocols, SIGNAL(activated(int)), this, SLOT(protocolChanged(int)));
@@ -99,6 +101,8 @@ void YourAccounts::createNewAccountWidget()
 
 void YourAccounts::protocolChanged(int protocolIndex)
 {
+	printf("protocol changed!\n");
+
 	delete CurrentNewAccountWidget;
 	CurrentNewAccountWidget = 0;
 

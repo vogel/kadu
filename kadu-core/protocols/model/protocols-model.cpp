@@ -16,8 +16,14 @@
 
 #include "protocols-model.h"
 
-ProtocolsModel::ProtocolsModel(QObject *parent)
-	: QAbstractListModel(parent)
+ProtocolsModel::ProtocolsModel(const QString &emptyString, QObject *parent) :
+		FirstEmpty(emptyString, parent)
+{
+}
+
+
+ProtocolsModel::ProtocolsModel(QObject *parent) :
+		FirstEmpty(parent)
 {
 }
 
@@ -27,11 +33,14 @@ ProtocolsModel::~ProtocolsModel()
 
 int ProtocolsModel::rowCount(const QModelIndex &parent) const
 {
-	return ProtocolsManager::instance()->protocolFactories().count();
+	return ProtocolsManager::instance()->protocolFactories().count() + emptyCount();
 }
 
 QVariant ProtocolsModel::data(const QModelIndex &index, int role) const
 {
+	if (index.row() < emptyCount())
+		return FirstEmpty::data(index, role);
+
 	ProtocolFactory *pf = protocolFactory(index);
 	if (0 == pf)
 		return QVariant();
@@ -51,13 +60,7 @@ QVariant ProtocolsModel::data(const QModelIndex &index, int role) const
 
 QVariant ProtocolsModel::headerData(int section, Qt::Orientation orientation, int role) const
 {
-	if (role != Qt::DisplayRole)
-		return QVariant();
-
-	if (orientation == Qt::Horizontal)
-		return QString("Column %1").arg(section);
-	else
-		return QString("Row %1").arg(section);
+	return QVariant();
 }
 
 ProtocolFactory * ProtocolsModel::protocolFactory(const QModelIndex &index) const
@@ -65,10 +68,10 @@ ProtocolFactory * ProtocolsModel::protocolFactory(const QModelIndex &index) cons
 	if (!index.isValid())
 		return 0;
 
-	if (index.row() < 0 || index.row() >= rowCount())
+	if (index.row() > emptyCount() || index.row() >= rowCount())
 		return 0;
 
-	return ProtocolsManager::instance()->byIndex(index.row());
+	return ProtocolsManager::instance()->byIndex(index.row() - emptyCount());
 }
 
 int ProtocolsModel::protocolFactoryIndex(ProtocolFactory *protocolFactory)

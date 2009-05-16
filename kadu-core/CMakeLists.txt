@@ -132,6 +132,8 @@ set (kadu_SRCS
 	misc/path-conversion.cpp
 	misc/token-dialog.cpp
 
+	model/first-empty.cpp
+
 	modules/module-data.cpp
 
 	notify/account-notification.cpp
@@ -288,6 +290,8 @@ set (kadu_MOC_SRCS
 
 	misc/choose-description.h
 	misc/token-dialog.h
+
+	model/first-empty.h
 
 	modules/module-data.h
 
