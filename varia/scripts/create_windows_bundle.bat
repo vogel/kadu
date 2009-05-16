@@ -7,6 +7,7 @@ set LIBSNDFILE_DIR="C:\Qt\libsndfile\"
 
 xcopy kadu-core\kadu*.exe %DESTINATION%\ /R /Y
 xcopy kadu-core\kadu*.dll %DESTINATION%\ /R /Y
+xcopy kadu-core\kadu.ico  %DESTINATION%\ /R /Y
 xcopy AUTHORS   %DESTINATION%\ /R /Y
 xcopy ChangeLog %DESTINATION%\ /R /Y
 xcopy COPYING   %DESTINATION%\ /R /Y
