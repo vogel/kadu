@@ -12,31 +12,31 @@
  * rozteck (at) interia.pl
  *
  */
- 
-#include "pcspeaker.h"
-#include "pcspeaker_configuration_widget.h"
-#include "debug.h"
-#include "config_file.h"
-#include "misc.h"
-#include <modules.h>
+
+#include <unistd.h>
 
 #include <QtGui/QLineEdit>
 #include <QtGui/QSlider>
+
+#ifdef Q_WS_WIN
+#include <windows.h>
+#endif
 
 #ifdef Q_WS_X11
 #include <X11/Xlib.h>
 #include <X11/keysym.h>
 #endif
 
-#ifdef Q_WS_WIN
-#include <windows.h>
-#endif
-
 #ifdef Q_OS_MACX
 #include <Carbon/Carbon.h>
 #endif
 
-#include <unistd.h>
+#include "pcspeaker.h"
+#include "pcspeaker_configuration_widget.h"
+#include "debug.h"
+#include "config_file.h"
+#include "misc.h"
+#include <modules.h>
 
 //czestotliwosci dzwiekow
 //wiersze - dzwieki: C, C#, D, D#, E, F, F#, G, G#, A, A#, B
@@ -60,7 +60,11 @@ PCSpeaker *pcspeaker;
 void PCSpeaker::beep(int pitch, int duration) 
 {
 	if (pitch == 0)
+#ifdef Q_WS_WIN
+    Sleep(duration / 5); /* instead of (duration * 200) / 1000 */
+#else
 		usleep(duration * 200);
+#endif
 	else {
 #ifdef Q_WS_WIN
 		Beep(pitch, duration);

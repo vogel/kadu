@@ -34,7 +34,14 @@
 
 QString kaduConfFile = "kadu.conf.xml";
 
+#ifndef Q_WS_WIN
 extern QMutex GlobalMutex;
+#else
+/* MinGW reports unresolved GlobalMutex. Bypass using GlobalMutex from
+ * config_file.cpp for now (hope there won't be any crashes because that)
+ */
+QMutex GlobalMutex;
+#endif
 
 extern "C" int profiles_init()
 {

@@ -15,12 +15,14 @@ Kompilacja i instalacja Kadu pod Windows z wykorzystaniem MinGW
 7. Wejdz do katalogu C:\Qt\libgadu-win32\ i skompiluj libgadu:
    cmake . -G "MinGW Makefiles"
    mingw32-make
-8. Jesli libgadu i/lub libsndfile znajduja sie w innym katalogu niz C:\Qt\libgadu-win32 i
+8. Pobierz najnowsza wersje Kadu z svna (http://www.kadu.net/svn/kadu/branches/0.6.5) korzystajac 
+   z RapidSVN, Tortoise SVN albo innego narzedzia
+9. Jesli libgadu i/lub libsndfile znajduja sie w innym katalogu niz C:\Qt\libgadu-win32 i
    C:\Qt\libsndfile - przeedytuj plik CMakeLists.txt podajac poprawne sciezki
-8. Wejdz do katalogu kadu i skonfiguruj kadu:
-   cmake . -G "MinGW Makefiles"
-9. Skompiluj kadu:
+10. Wejdz do katalogu kadu i wybierz ktore moduly maja sie kompilowac edytujac plik .config.win32 a nastepnie wykonaj:
+cmake . -G "MinGW Makefiles"
+11. Skompiluj kadu:
    mingw32-make
-10. Zainstaluj:
+12. Zainstaluj:
 varia/scripts/create_windows_bundle.bat
-11. Kadu zostanie zainstalowane do katalogu c:\Program Files\Kadu-0.6.5.2
+13. Kadu zostanie zainstalowane do katalogu c:\Program Files\Kadu-0.6.5.2
