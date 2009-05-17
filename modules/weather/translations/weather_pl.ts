@@ -96,10 +96,6 @@
         <translation>Powiadomienia</translation>
     </message>
     <message>
-        <source>Notifications</source>
-        <translation>Powiadomienia</translation>
-    </message>
-    <message>
         <source>Display</source>
         <translation>Wyświetlanie</translation>
     </message>
