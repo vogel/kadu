@@ -19,6 +19,7 @@ set (SOURCES
 	server/gadu-server-remind-password.cpp
 	server/gadu-server-unregister-account.cpp
 	server/gadu-servers-manager.cpp
+	server/token-fetcher.cpp
 
 	services/gadu-chat-image-service.cpp
 	services/gadu-chat-service.cpp
@@ -57,6 +58,7 @@ set (MOC_SOURCES
 	server/gadu-server-register-account.h
 	server/gadu-server-remind-password.h
 	server/gadu-server-unregister-account.h
+	server/token-fetcher.h
 
 	services/gadu-chat-image-service.h
 	services/gadu-chat-service.h

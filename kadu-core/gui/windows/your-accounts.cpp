@@ -87,13 +87,13 @@ void YourAccounts::createNewAccountWidget()
 	MainNewAccountLayout->addItem(selectProtocolLayout);
 	MainNewAccountLayout->setStretchFactor(selectProtocolLayout, 1);
 
-	selectProtocolLayout->addWidget(new QLabel(tr("Select network"), NewAccountContainer));
-
-	ProtocolsModel *Model = new ProtocolsModel(tr("Choose a network to add"), Protocols);
+	selectProtocolLayout->addWidget(new QLabel(tr("Select network") + ":", NewAccountContainer));
+	selectProtocolLayout->addSpacing(20);
 
 	Protocols = new QComboBox(NewAccountContainer);
+	ProtocolsModel *Model = new ProtocolsModel(tr("Choose a network to add"), Protocols);
 	Protocols->setModel(Model);
-	selectProtocolLayout->addWidget(Protocols);
+	selectProtocolLayout->addWidget(Protocols, 10);
 
 	connect(Protocols, SIGNAL(activated(int)), this, SLOT(protocolChanged(int)));
 	protocolChanged(0);
@@ -101,8 +101,6 @@ void YourAccounts::createNewAccountWidget()
 
 void YourAccounts::protocolChanged(int protocolIndex)
 {
-	printf("protocol changed!\n");
-
 	delete CurrentNewAccountWidget;
 	CurrentNewAccountWidget = 0;
 
@@ -111,9 +109,9 @@ void YourAccounts::protocolChanged(int protocolIndex)
 
 	ProtocolFactory *factory = ProtocolsManager::instance()->byName(Protocols->itemData(protocolIndex, ProtocolRole).toString());
 	if (!factory)
-		return;
-
-	CurrentNewAccountWidget = factory->newCreateAccountWidget(NewAccountContainer);
+		CurrentNewAccountWidget = new QWidget(NewAccountContainer);
+	else
+		CurrentNewAccountWidget = factory->newCreateAccountWidget(NewAccountContainer);
 
 	if (CurrentNewAccountWidget)
 		MainNewAccountLayout->addWidget(CurrentNewAccountWidget, 100, Qt::AlignTop);

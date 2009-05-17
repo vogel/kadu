@@ -12,6 +12,9 @@
 
 #include <QtGui/QWidget>
 
+class QGridLayout;
+class QLabel;
+
 class GaduCreateAccountWidget : public QWidget
 {
 	Q_OBJECT
@@ -19,10 +22,17 @@ class GaduCreateAccountWidget : public QWidget
 	QList<QWidget *> HaveNumberWidgets;
 	QList<QWidget *> DontHaveNumberWidgets;
 
+	QLabel *TokenImage;
+	QString TokenCode;
+	QString TokenValue;
+
 	void createGui();
+	void createIHaveAccountGui(QGridLayout *gridLayout);
+	void createRegisterAccountGui(QGridLayout *gridLayout);
 
 private slots:
 	void haveNumberChanged(bool haveNumber);
+	void tokenFetched(const QString &tokenId, QPixmap tokenImage);
 
 public:
 	explicit GaduCreateAccountWidget(QWidget *parent = 0);
