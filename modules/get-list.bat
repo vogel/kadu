@@ -5,9 +5,14 @@ SETLOCAL ENABLEEXTENSIONS
 SET TYPE=%1
 SET AVAILABLE_MODULES=
 
-FOR /F "eol=# tokens=2,3 delims=_=" %%i IN (..\.config.win32) DO (
+FOR /F "eol=# tokens=2,3,* delims=_=" %%i IN (..\.config.win32) DO (
 	SET LINE=%%i
 	SET SETTING=%%j
+
+	IF NOT "%%k" EQU "" (
+		SET LINE=%%i_%%j
+		SET SETTING=%%k
+	)
 	
 	FOR %%M IN (%*) DO (
 		SET MODULE=%%M

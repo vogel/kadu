@@ -1,0 +1,575 @@
+﻿#
+# KADU CONFIGURATION FILE
+#
+# PL: PLIK KONFIGURACYJNY KADU
+
+#
+# Below are some internal modules, made by Kadu Team or got from others
+# but placed in sources because of important functionality
+#
+# y - yes, compiled into kadu (static)
+# m - module, compiles as .so (shared)
+# n - no, module disabled
+#
+# PL: Poni�ej znajduje si� lista wewn�trznych modu��w Kadu, stworzonych przez Kadu Team
+# PL: lub przez inne osoby, ale umieszczone w �r�d�ach ze wzgl�du na ich u�yteczno��
+#
+# PL: y - wkompiluj modu� na sta�e w Kadu (statycznie)
+# PL: m - kompiluj jako �adowalny modu� (biblioteka dzielona)
+# PL: n - nie kompiluj wcale
+#
+# PL: w polu "needs" znajduje si� lista bibliotek potrzebnych do kompilacji modu�u
+# PL:                (w dystrybucjach pakietowych zwr�� uwag� na to, �e obr�cz
+# PL:                np. pakietu libsndfile do kompilacji b�dziesz potrzebowa�
+# PL:                tak�e pakietu libsndfile-dev lub libsndfile-devel)
+# PL: w polu "depends" znajduje si� lista innych modu��w wymaganych
+# PL:                do dzia�ania tego modu�u
+
+#################### docking #########################################
+# PL: ############## dokowanie #######################################
+
+# Description: Tray icon support (common part of all docking modules)
+# PL: Obs�uga ikony na tacce systemowej (wsp�lna cz��� wszystkich modu��w dokuj�cych)
+# Platform: Linux, Mac OS X, Windows
+module_docking=y
+
+# Description: Qt tray docking techniques module (works everywhere)
+# PL: Standardowy modu� obs�ugi tacki systemowej przy pomocy Qt
+# PL: (dzia�a m.in. w KDE, GNOME, Xfce, ...)
+# Platform: Linux, Mac OS X, Windows
+# Depends: docking
+module_qt4_docking=y
+
+# Description: Always on top window docking module
+# PL: Modu� s�u��cy symulacji dokowania przy pomocy ma�ego okna
+# PL: (bez ramek i z ustawion� flag� "Zawsze na wierzchu")
+# Platform: Linux, Mac OS X, Windows
+# Depends: docking
+module_desktop_docking=n
+
+# Description: MacOS X docking module
+# PL: Modu� s�u��cy symulacji dokowania na MacOS X
+# Platform: Mac OS X
+# Depends: docking
+module_macosx_docking=n
+
+###################### notifications #################################
+# PL: ################ powiadamianie #################################
+
+# Description: General notification module (common part of all notification modules)
+# PL: Podstawowa obs�uga powiadomie� o zdarzeniach (wsp�lna cz��� wszystkich
+# PL:                                               modu��w powiadomie�)
+# Platform: Linux, Mac OS X, Windows
+module_notify=m
+
+# Description: Notification by window module
+# PL: Powiadamianie za pomoc� wyskakuj�cego okienka
+# Platform: Linux, Mac OS X, Windows
+# Depends: notify
+module_window_notify=m
+
+# Description: Notification by hints module
+# PL: Powiadamianie za pomoc� dymk�w
+# Platform: Linux, Mac OS X, Windows
+# Depends: notify
+module_hints=m
+
+# Description: Notification by external commands module
+# PL: Modu� powiadamiania o zdarzeniach za pomoc� zewn�trznych polece�
+# Platform: Linux, Mac OS X, Windows
+# Depends: notify
+module_exec_notify=n
+
+# Description: PC-Speaker support
+# PL: Powiadamianie przy pomocy PC-Speakera
+# Platform: Linux, Mac OS X, Windows
+# Needs: libX11 (on Linux)
+# Depends: notify
+module_pcspeaker=n
+
+# Description: MacOS X Growl Notification
+# PL: Powiadamianie przy pomocy Growla na MacOS X
+# Platform: Mac OS X
+# Depends: notify
+module_growl_notify=n
+
+# Description: Notification by Amarok-like hints module
+# PL: Modu� powiadamiania o zdarzeniach przy pomocy dymk�w a'la OSD z Amaroka
+# Platform: Linux, Mac OS X, Windows
+# Depends: notify
+module_osd_hints=n
+
+# Description: Notification by qt4 docking module
+# PL: Powiadamianie za pomoc� modulu qt4_docking
+# Platform: Linux, Mac OS X, Windows
+# Depends: notify qt4_docking
+module_qt4_docking_notify=n
+
+# Description: Notification by Water Plugin in Compiz
+# PL: Modu� powiadamiania pluginem Water w Compiz
+# Platform: Linux
+# Depends: notify
+module_water_notify=n
+
+# Description: Notifications by LED on Logitech mx610 mouse
+# PL: Powiadomienia diodami na myszy mx610
+# Platform: Linux
+# Depends: notify
+module_mx610_notify=n
+
+##################### sound ##########################################
+# PL: ############### d�wi�k #########################################
+
+# Description: General sound support (common part of all sound modules)
+# PL: Podstawowa obs�uga d�wi�ku (wsp�lna cz��� wszystkich modu��w d�wi�kowych)
+# Platform: Linux, Mac OS X, Windows
+# Needs: libsndfile
+# Depends: notify
+module_sound=m
+
+# Description: ALSA sound support
+# PL: Obs�uga d�wi�ku przez ALS�
+# Platform: Linux
+# Needs: libasound
+# Depends: sound
+module_alsa_sound=n
+
+# Description: QtSound sound support
+# PL: Obs�uga d�wi�ku przez QtSound
+# Platform: Linux (requires NAS), Mac OS X, Windows
+# Needs: QtSound
+# Depends: sound
+module_qt4_sound=m
+
+# Description: Phonon sound support
+# PL: Obs�uga d�wi�ku przez Phonon
+# Platform: Linux, Mac OS X, Windows
+# Needs: (GStreamer on Linux, QuickTime on Mac OS X and DirectShow on Windows)
+# Depends: sound
+module_phonon_sound=n
+
+# Description: ao library sound module (ALSA, OSS, ESD, AIX, IRIX, NAS, Sun, NenBSD, OpenBSD)
+# PL: Obs�uga d�wi�ku przy pomocy biblioteki libao (kt�ra obs�uguje:
+# PL:                                    ALSA, OSS, ESD, AIX, IRIX, NAS, Sun, NenBSD, OpenBSD)
+# Platform: Linux
+# Needs: libao
+# Depends: sound
+module_ao_sound=n
+
+# Description: Direct /dev/dsp sound support (Open Sound System)
+# PL: Obs�uga d�wi�ku przez bezpo�redni dost�p do urz�dzenia /dev/dsp (Open Sound System)
+# Platform: Linux
+# Depends: sound
+module_dsp_sound=n
+
+# Description: External application sound support
+# PL: Obs�uga d�wi�ku poprzez zewn�trzn� aplikacj�
+# Platform: Linux, Mac OS X, Windows
+# Depends: sound
+module_ext_sound=n
+
+# Description: Direct Show sound module (Windows only)
+# PL: Obs�uga dzwi�ku poprzez Direct Show (tylko dla Windows)
+# Platform: Windows
+# Depends: sound
+module_dshow_sound=n
+
+# Description: Windows wave in/out sound module 
+# PL: Obsługa dzwięku dla systemu Windows
+# Platform: Windows
+# Depends: sound
+module_win32_sound=m
+
+###################### p2p ###########################################
+# PL: ################ po��czenia bezpo�rednie #######################
+
+# Description: dcc module with file transfer support
+# PL: Podstawowy modu� obs�ugi po��cze� bezpo�rednich wraz z przesy�aniem plik�w
+# Platform: Linux, Mac OS X, Windows
+module_dcc=m
+
+# Description: Voice chat support
+# PL: Obs�uga rozm�w g�osowych
+# Platform: Linux, Mac OS X, Windows
+# Depends: dcc, sound
+module_voice=m
+
+###################### sms ###########################################
+
+# Description: General SMS support module
+# PL: Podstawowy modu� obs�ugi bramek SMSowych
+# Platform: Linux, Mac OS X, Windows
+# Depends: history
+module_sms=m
+
+# Description: Default Polish gateways for SMS module
+# PL: Obs�uga najwa�niejszych polskich bramek SMSowych (Era, Idea, Plus)
+# Platform: Linux, Mac OS X, Windows
+# Depends: sms
+module_default_sms=m
+
+###################### other #########################################
+# PL: ################ inne ##########################################
+
+# Description: Idle time counter
+# PL: Odmierzacz czasu bezczynnosci
+# Platform: Linux, Mac OS X, Windows
+module_idle=y
+
+# Description: Register / unregister account, remind / change password support
+# PL: Obs�uga rejestracji / wyrejestrowywania konta, przypominania / zmiany has�a
+# Platform: Linux, Mac OS X, Windows
+module_account_management=m
+
+# Description: User list: support for priorities (VIP/NIP) and changing order of sorting functions
+# PL: Obs�uga priorytet�w (VIP/NIP) oraz zmiany kryteri�w sortowania listy kontakt�w
+# Platform: Linux, Mac OS X, Windows
+module_advanced_userlist=m
+
+# Description: Chat history storing, browsing and searching support
+# PL: Obs�uga przechowywania historii rozm�w, przegl�dania i wyszukiwania w niej
+# Platform: Linux, Mac OS X, Windows
+module_history=m
+
+# Description: Encrypted chat support
+# PL: Obs�uga szyfrowania wiadomo�ci
+# Platform: Linux, Mac OS X, Windows
+# Needs: QCA2
+module_encryption=n
+
+# Description: Auto away module
+# PL: Obs�uga automatycznej zmiany statusu po okre�lonym czasie bezczynno�ci
+# Platform: Linux, Mac OS X, Windows
+module_autoaway=m
+
+# Description: Configuration wizard module
+# PL: Modu� konfiguracji Kadu za pomoc� wizarda (kreatora)
+# Platform: Linux, Mac OS X, Windows
+# Depends: account_management sound hints
+module_config_wizard=m
+
+# Description: Autoresponder module
+# PL: Modu� automatycznej odpowiedzi
+# Platform: Linux, Mac OS X, Windows
+module_autoresponder=m
+
+# Description: Profiles support
+# PL: Klikalna obs�uga profili
+# Platform: Linux, Mac OS X, Windows
+module_profiles=n
+
+# Description: Protection against unwanted chats
+# PL: Ochrona przed "klikaczami"
+# Platform: Linux, Mac OS X, Windows
+# Depends: notify
+module_firewall=n
+
+# Description: Antistring
+# PL: Ochrona przed lancuszkami
+# Platform: Linux, Mac OS X, Windows
+# Depends: notify
+module_antistring=n
+
+# Description: Auto hide Kadu window
+# PL: Automatyczne ukrywanie okna Kadu
+# Platform: Linux, Mac OS X, Windows
+# Depends: docking
+module_auto_hide=n
+
+# Description: Cenzor
+# PL: Cenzor
+# Platform: Linux, Mac OS X, Windows
+# Depends: notify
+module_cenzor=n
+
+# Description: Display Gadu Avatars in Kadu
+# PL: Umozliwia wyswietlanie awatarow GG w Kadu
+# Platform: Linux, Mac OS X, Windows
+module_gg_avatars=n
+
+# Description: Extends Kadu Parser
+# PL: Rozszerza mozliwosci Parsera Kadu
+# Platform: Linux, Mac OS X, Windows
+module_parser_extender=n
+
+# Description: Automaticaly split too long messages
+# PL: Automatyczne dzielenie zbyt dlugich wiadomosci
+# Platform: Linux, Mac OS X, Windows
+module_split_messages=n
+
+# Description: Automatic word replacement
+# PL: Automatyczna zamiana slow
+# Platform: Linux, Mac OS X, Windows
+module_word_fix=n
+
+# Description: Autostatus
+# PL: Automatyczne zmiany statusu
+# Platform: Linux, Mac OS X, Windows
+module_autostatus=n
+
+# Description: Last status infos
+# PL: Informacje o ostatnich statusach kontaktów
+# Platform: Linux, Mac OS X, Windows
+module_last_seen=n
+
+# Description:
+# PL: Dodaje mo�liwo�� zaznaczenia fragmentu ekranu i wys�ania obrazka z jego zawarto�ci�
+# Platform: Linux
+module_screenshot=n
+
+# Description: Description from file module
+# PL: Obs�uga status�w pobieranych z pliku
+# Platform: Linux, Mac OS X, Windows
+module_filedesc=n
+
+# Description: User list filtering
+# PL: Filtrowanie listy kontakt�w
+# Platform: Linux, Mac OS X, Windows
+module_filtering=n
+
+# Description: Spellchecking in chat window
+# PL: Sprawdzanie b��d�w pisowni w oknie rozmowy
+# Platform: Linux, Mac OS X, Windows
+# Needs: libaspell
+module_spellchecker=n
+
+# Description: Echo module (only example!)
+# PL: Modu� automatycznej odpowiedzi z przedrostkiem "KADU ECHO: "
+# PL: (to tylko przyk�ad jak si� pisze modu�y do Kadu)
+# Platform: Linux, Mac OS X, Windows
+module_echo=n
+
+############################################# EXTERNAL ###########################################################################
+# PL: ####################################### ZEWN�TRZNE #########################################################################
+
+#
+# Below there are some external modules, made by third parties, but
+# accepted by Kadu Team and quite well supported on our forum. When
+# you choose to install any of these, the sources will be downloaded
+# from their original web pages, so dont blame us when they are
+# (maybe just temporarily) unavailable.
+#
+# y - yes, compiled into kadu (static)
+# m - module, compiles as .so (shared)
+# n - no, module disabled
+#
+
+# PL: Poni�ej znajduje si� lista zewn�trznych modu��w, stworzonych przez niezale�nych programist�w,
+# PL: ale zaakceptowanych przez Kadu Team i wspieranych na naszym forum. Gdy wybierzesz kt�ry�
+# PL: z tych modu��w, jego �r�d�a zostan� pobrane ze strony tw�rcy, wi�c w razie problem�w nie wi�
+# PL: nas z powodu ich (prawdopodobnie czasowej) niedost�pno�ci.
+
+# Description: Puts your current song in description
+# PL: Wstawia tytu� aktualnie s�uchanej piosenki do opisu
+# Platform: Linux, Mac OS X, Windows
+module_mediaplayer=n
+
+# Description: Amarok 1.x support for mediaplayer
+# PL: Wsparcie dla Amarok w mediaplayer
+# Platform: Linux
+module_amarok1_mediaplayer=n
+
+# Description: Amarok 2 support for mediaplayer
+# PL: Wsparcie dla Amarok 2 w mediaplayer
+# Platform: Linux
+module_amarok2_mediaplayer=n
+
+# Description: Audacious support for mediaplayer
+# PL: Wsparcie dla Audacious w mediaplayer
+# Platform: Linux
+module_audacious_mediaplayer=n
+
+# Description: BMPx support for mediaplayer
+# PL: Wsparcie dla BMPx w mediaplayer
+# Platform: Linux
+module_bmpx_mediaplayer=n
+
+# Description: Dragon Player support for mediaplayer
+# PL: Wsparcie dla Dragon Player w mediaplayer
+# Platform: Linux
+module_dragon_mediaplayer=n
+
+# Description: FALF support for mediaplayer
+# PL: Wsparcie dla FALF w mediaplayer
+# Platform: Linux
+module_falf_mediaplayer=n
+
+# Description: iTunes support for mediaplayer
+# PL: Wsparcie dla iTunes w mediaplayer
+# Platform: Mac OS X
+module_itunes_mediaplayer=n
+
+# Description: VLC support for mediaplayer
+# PL: Wsparcie dla VLC w mediaplayer
+# Platform: Linux
+module_vlc_mediaplayer=n
+
+# Description: XMMS support for mediaplayer
+# PL: Wsparcie dla XMMS w mediaplayer
+# Platform: Linux
+module_xmms_mediaplayer=n
+
+# Description: XMMS2 support for mediaplayer
+# PL: Wsparcie dla XMMS2 w mediaplayer
+# Platform: Linux
+module_xmms2_mediaplayer=n
+
+# Description: List of people, that you don't have on list, but they have you   
+# PL: List os�b, jakich nie masz na li�cie, ale kt�re maj� Ciebie
+# Platform: Linux, Mac OS X, Windows
+module_agent=n
+
+# Description: Plus.pl SMS Gateway support
+# PL: Obs�uga bramki SMSowej Plus.pl
+# Platform: Linux
+# Needs: libcurl, libssl
+# Depends: sms
+module_plus_pl_sms=n
+
+# Description: Tabbed chat dialog module
+# PL: Modu� okna rozmowy z zak�adkami
+# Platform: Linux, Mac OS X, Windows
+module_tabs=n
+
+# Description: Notifications by Scroll Lock LED
+# PL: Powiadomiania diod� Scroll Lock
+# Platform: Linux
+# Needs: libX11
+# Depends: notify
+module_led_notify=n
+
+# Description: Mail checking module
+# PL: Modu� do sprawdzana poczty
+# Platform: Linux
+# Depends: notify
+module_mail=n
+
+# Description: TeX formula support
+# PL: Wsparcie dla formu� TeX-owych
+# Platform: Linux
+module_mime_tex=n
+
+# Description: Makes a panel from Kadu main window
+# PL: Zamienia Kadu w panel na skraju ekranu
+# Platform: Linux
+module_panelkadu=n
+
+# Description: Automatic lookup of an interlocutor in public directory
+# PL: Automatyczne wyszukiwanie nieznajomych rozm�wc�w w publicznym katalogu
+# Platform: Linux, Mac OS X, Windows
+module_anonymous_check=n
+
+# Description: PowerKadu
+# PL: PowerKadu
+# Depends: anonymous_check antistring auto_hide autostatus cenzor gg_avatars parser_extender split_messages word_fix
+# Platform: Linux, Mac OS X, Windows
+module_powerkadu=n
+
+# Description: Adds global hotkeys support to Kadu
+# PL: Dodaje do Kadu obs�ug� skr�t�w globalnych
+# Platform: Linux
+module_globalhotkeys=n
+
+# Description: Adds history of sent messages to chat windows
+# PL: Dodaje histori� wys�anych wiadomo�ci do okien rozmowy
+# Platform: Linux, Mac OS X, Windows
+module_senthistory=n
+
+# Desctiption: Weather checking
+# PL: Sprawdzanie pogody
+# Platform: Linux, Mac OS X, Windows
+# Depends: notify
+module_weather=n
+
+# Description: New ext_info module providing extended contact information support
+# PL: Nowy modu� ext_info wprowadzaj�cy obs�ug� dodatkowych informacji o kontaktach
+module_nextinfo=n
+
+############################################# ICONS ###########################################################################
+# PL: ####################################### IKONY ###########################################################################
+
+#
+# Below are some icon themes. When you choose to install any of these,
+# the package will be downloaded from their original web pages, so don't
+# blame us when they are (maybe just temporarily) unavailable.
+#
+# y - yes, install with kadu
+# n - no, icon theme disabled
+# PL: y - Tak, zainstaluj z kadu
+# PL: n - Nie, zestaw wylaczony
+#
+
+# PL: Poni�ej znajduje si� lista zestaw�w ikon. Gdy wybierzesz kt�ry� z nich,
+# PL: odpowiednia paczka zostanie pobrana ze strony tw�rcy, wi�c w razie problem�w
+# PL: nie wi� nas z powodu ich (prawdopodobnie czasowej) niedost�pno�ci.
+
+# Description: Default icon theme shipped with sources
+# PL: Standardowy zestaw ikon dost�pny razem ze �r�d�ami Kadu
+icons_default=y
+
+# Description: Default theme from kadu 0.5.x
+icons_kadu05=n
+
+# Description: Glass 16x16 icons made by Mariusz Waluga
+icons_glass16=y
+
+# Description: Glass 22x22 icons made by Mariusz Waluga
+icons_glass22=y
+
+# Desctiption: Tango 16x16 icons made by BlotoPosniegowe
+icons_tango16=n
+
+# Description: Oxygen 16x16 icons maintained by Piotr Pelzowski
+icons_oxygen16=n
+
+########################################### EMOTICONS #########################################################################
+# PL: ##################################### EMOTIKONY #########################################################################
+
+#
+# Below are some emoticon themes.
+# PL: Poni�ej znajduje si� lista zestaw�w emotikon.
+
+# y - yes, install with kadu
+# n - no, emoticon theme disabled
+# PL: y - Tak, zainstaluj z kadu
+# PL: n - Nie, zestaw wylaczony
+
+# Description: Default emoticon theme shipped with sources
+# PL: Standardowy zestaw emotikon dost�pny razem ze �r�d�ami Kadu
+emoticons_penguins=y
+
+# Description: Old Gadu-Gadu 6.x emoticons
+# PL: Kompatybilne ze star� wersj� Gadu-Gadu 6.x
+emoticons_gg6_compatible=n
+
+# Description: Tango emoticons, some copied from penguins theme
+# PL: Emotki Tango, cz��� wzi�ta z penguins
+emoticons_tango=n
+
+########################################### SOUNDS ############################################################################
+# PL: ##################################### D�WI�KI ###########################################################################
+
+#
+# Below are some sound themes.
+# PL: Poni�ej znajduje si� lista zestaw�w d�wi�k�w.
+
+# y - yes, install with kadu
+# n - no, sound theme disabled
+# PL: y - Tak, zainstaluj z kadu
+# PL: n - Nie, zestaw wylaczony
+
+# Description: Default sound theme shipped with sources
+# PL: Standardowy zestaw d�wi�k�w dost�pny razem ze �r�d�ami Kadu
+sound_default=y
+
+sound_bns=n
+
+sound_drums=n
+
+sound_florkus=n
+
+sound_michalsrodek=n
+
+sound_percussion=n
+
+sound_ultr=n
