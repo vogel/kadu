@@ -1,4 +1,4 @@
-rem @echo off
+@ECHO OFF
 
 set DESTINATION="C:\Program Files\Kadu-0.6.5.2"
 set QT_DIR="C:\Qt\4.5.1\bin\"

@@ -27,6 +27,7 @@
 #include "kadu.h"
 #include "misc.h"
 #include "search.h"
+#include "gadu.h"
 #include "icons_manager.h"
 #include "modules/notify/notify.h"
 

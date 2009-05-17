@@ -90,7 +90,7 @@ public:
 //              Search
 // ------------------------------------
 
-struct SearchResult
+struct KADUAPI SearchResult
 {
 	QString Uin;
 	QString First;
@@ -111,7 +111,7 @@ struct SearchResult
 
 typedef QList<SearchResult> SearchResults;
 
-struct SearchRecord
+struct KADUAPI SearchRecord
 {
 	int Seq;
 	int FromUin;
