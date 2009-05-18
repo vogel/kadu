@@ -14,6 +14,7 @@
 #include <QtGui/QDialog>
 
 class Account;
+class AccountCreateWidget;
 class AccountData;
 class ConfigurationWindow;
 class Contact;
@@ -30,7 +31,7 @@ public:
 	virtual Account * loadAccount(StoragePoint *accountStoragePoint) = 0;
 	virtual ContactAccountData * newContactAccountData(Contact contact, Account *account, const QString &id, bool loadFromConfiguration = true) = 0;
 	virtual ContactAccountData * loadContactAccountData(Contact contact, Account *account) = 0;
-	virtual QWidget * newCreateAccountWidget(QWidget *parent = 0) = 0;
+	virtual AccountCreateWidget * newCreateAccountWidget(QWidget *parent = 0) = 0;
 	virtual ContactAccountDataWidget * newContactAccountDataWidget(ContactAccountData *contactAccountData, QWidget *parent = 0) = 0;
 	virtual ConfigurationWindow * newConfigurationDialog(Account *, QWidget *) = 0;
 	virtual ProtocolMenuManager * getProtocolMenuManager() { return 0; }

@@ -10,29 +10,35 @@
 #ifndef GADU_CREATE_ACCOUNT_WIDGET_H
 #define GADU_CREATE_ACCOUNT_WIDGET_H
 
-#include <QtGui/QWidget>
+#include "gui/widgets/account-create-widget.h"
 
 class QGridLayout;
 class QLabel;
+class QLineEdit;
 
-class GaduCreateAccountWidget : public QWidget
+class GaduCreateAccountWidget : public AccountCreateWidget
 {
 	Q_OBJECT
 
 	QList<QWidget *> HaveNumberWidgets;
 	QList<QWidget *> DontHaveNumberWidgets;
 
+	QLineEdit *AccountName;
+	QLineEdit *AccountId;
+	QLineEdit *AccountPassword;
+
 	QLabel *TokenImage;
 	QString TokenCode;
 	QString TokenValue;
 
 	void createGui();
-	void createIHaveAccountGui(QGridLayout *gridLayout);
-	void createRegisterAccountGui(QGridLayout *gridLayout);
+	void createIHaveAccountGui(QGridLayout *gridLayout, int &row);
+	void createRegisterAccountGui(QGridLayout *gridLayout, int &row);
 
 private slots:
 	void haveNumberChanged(bool haveNumber);
 	void tokenFetched(const QString &tokenId, QPixmap tokenImage);
+	void addThisAccount();
 
 public:
 	explicit GaduCreateAccountWidget(QWidget *parent = 0);

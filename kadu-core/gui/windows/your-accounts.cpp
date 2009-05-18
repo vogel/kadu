@@ -15,6 +15,7 @@
 #include <QtGui/QPushButton>
 #include <QtGui/QVBoxLayout>
 
+#include "accounts/account-manager.h"
 #include "accounts/model/accounts-model.h"
 #include "contacts/model/contacts-model-base.h"
 #include "misc/misc.h"
@@ -108,11 +109,20 @@ void YourAccounts::protocolChanged(int protocolIndex)
 		return;
 
 	ProtocolFactory *factory = ProtocolsManager::instance()->byName(Protocols->itemData(protocolIndex, ProtocolRole).toString());
-	if (!factory)
-		CurrentNewAccountWidget = new QWidget(NewAccountContainer);
-	else
+	if (factory)
+	{
 		CurrentNewAccountWidget = factory->newCreateAccountWidget(NewAccountContainer);
+		connect(CurrentNewAccountWidget, SIGNAL(accountCreated(Account *)), this, SLOT(accountCreated(Account *)));
+	}
+	else
+		CurrentNewAccountWidget = new AccountCreateWidget(NewAccountContainer);
 
 	if (CurrentNewAccountWidget)
 		MainNewAccountLayout->addWidget(CurrentNewAccountWidget, 100, Qt::AlignTop);
+}
+
+
+void YourAccounts::accountCreated(Account *account)
+{
+	AccountManager::instance()->registerAccount(account);
 }

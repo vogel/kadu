@@ -62,7 +62,7 @@ ContactAccountData * GaduProtocolFactory::loadContactAccountData(Contact contact
 		: 0;
 }
 
-QWidget * GaduProtocolFactory::newCreateAccountWidget(QWidget *parent)
+AccountCreateWidget * GaduProtocolFactory::newCreateAccountWidget(QWidget *parent)
 {
 	return new GaduCreateAccountWidget(parent);
 }

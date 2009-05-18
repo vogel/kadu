@@ -7,39 +7,24 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef YOUR_ACCOUNTS
-#define YOUR_ACCOUNTS
+#ifndef ACCOUNT_CREATE_WIDGET_H
+#define ACCOUNT_CREATE_WIDGET_H
 
 #include <QtGui/QWidget>
 
-#include "gui/widgets/account-create-widget.h"
-#include "exports.h"
+#include "accounts/account.h"
 
-class QComboBox;
-class QHBoxLayout;
-class QVBoxLayout;
-
-KADUAPI class YourAccounts : public QWidget
+class AccountCreateWidget : public QWidget
 {
 	Q_OBJECT
 
-	QHBoxLayout *ContentLayout;
-	QComboBox *Protocols;
-	QWidget *NewAccountContainer;
-	QVBoxLayout *MainNewAccountLayout;
-	AccountCreateWidget *CurrentNewAccountWidget;
-
-	void createGui();
-	void createNewAccountWidget();
-
-private slots:
-	void protocolChanged(int protocolIndex);
-	void accountCreated(Account *account);
-
 public:
-	explicit YourAccounts(QWidget *parent = 0);
-	virtual ~YourAccounts();
+	explicit AccountCreateWidget(QWidget *parent = 0) : QWidget(parent) {}
+	virtual ~AccountCreateWidget() {}
+
+signals:
+	void accountCreated(Account *account);
 
 };
 
-#endif // YOUR_ACCOUNT
+#endif // ACCOUNT_CREATE_WIDGET_H
