@@ -91,6 +91,8 @@ void WeatherCfgUiHandler::mainConfigurationWindowCreated( MainConfigurationWindo
 
 void WeatherCfgUiHandler::configurationUpdated()
 {
+	if (!MainConfigurationWindow::instance()->isShown()) return;
+
 	for( int i = 0; i < serverList_->topLevelItemCount(); ++i )
 	{
 		QTreeWidgetItem* item = serverList_->topLevelItem( i );
