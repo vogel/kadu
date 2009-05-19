@@ -31,7 +31,7 @@ public:
 	virtual ContactAccountData * newContactAccountData(Contact contact, Account *account, const QString &id, bool isAnonymous = false);
 	virtual ContactAccountData * loadContactAccountData(Contact contact, Account *account);
 	virtual TlenConfigurationDialog * newConfigurationDialog(Account *, QWidget *);
-	virtual QWidget * newCreateAccountWidget(QWidget *parent);
+	virtual AccountCreateWidget * newCreateAccountWidget(QWidget *parent);
 	virtual ContactAccountDataWidget * newContactAccountDataWidget(ContactAccountData *contactAccountData, QWidget *parent = 0);
 	//virtual ProtocolMenuManager * getProtocolMenuManager() { return 0; }
 

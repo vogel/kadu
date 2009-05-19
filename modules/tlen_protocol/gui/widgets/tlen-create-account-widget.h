@@ -10,9 +10,9 @@
 #ifndef TLEN_CREATE_ACCOUNT_WIDGET_H
 #define TLEN_CREATE_ACCOUNT_WIDGET_H
 
-#include <QtGui/QWidget>
+#include "gui/widgets/account-create-widget.h"
 
-class TlenCreateAccountWidget : public QWidget
+class TlenCreateAccountWidget : public AccountCreateWidget
 {
 	Q_OBJECT
 

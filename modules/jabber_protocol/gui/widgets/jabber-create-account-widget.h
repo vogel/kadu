@@ -10,9 +10,9 @@
 #ifndef JABBER_CREATE_ACCOUNT_WIDGET_H
 #define JABBER_CREATE_ACCOUNT_WIDGET_H
 
-#include <QtGui/QWidget>
+#include "gui/widgets/account-create-widget.h"
 
-class JabberCreateAccountWidget : public QWidget
+class JabberCreateAccountWidget : public  AccountCreateWidget
 {
 	Q_OBJECT
 

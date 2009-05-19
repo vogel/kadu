@@ -66,7 +66,7 @@ ContactAccountData * JabberProtocolFactory::loadContactAccountData(Contact conta
 		: 0;
 }
 
-QWidget * JabberProtocolFactory::newCreateAccountWidget(QWidget *parent)
+AccountCreateWidget * JabberProtocolFactory::newCreateAccountWidget(QWidget *parent)
 {
 	return new JabberCreateAccountWidget(parent);
 }

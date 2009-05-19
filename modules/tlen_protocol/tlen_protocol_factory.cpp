@@ -60,7 +60,7 @@ ContactAccountData * TlenProtocolFactory::loadContactAccountData(Contact contact
 		: 0;
 }
 
-QWidget * TlenProtocolFactory::newCreateAccountWidget(QWidget *parent)
+AccountCreateWidget * TlenProtocolFactory::newCreateAccountWidget(QWidget *parent)
 {
     	return new TlenCreateAccountWidget(parent);
 }

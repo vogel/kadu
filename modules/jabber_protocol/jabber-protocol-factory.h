@@ -28,7 +28,7 @@ public:
 	virtual Account * loadAccount(StoragePoint *accountStoragePoint);
 	virtual ContactAccountData * newContactAccountData(Contact contact, Account *account, const QString &id, bool loadFromConfiguration = true);
 	virtual ContactAccountData * loadContactAccountData(Contact contact, Account *account);
-	virtual QWidget * newCreateAccountWidget(QWidget *parent);
+	virtual AccountCreateWidget * newCreateAccountWidget(QWidget *parent);
 	virtual ContactAccountDataWidget * newContactAccountDataWidget(ContactAccountData *contactAccountData, QWidget *parent = 0);
 	virtual JabberConfigurationDialog * newConfigurationDialog(Account *, QWidget *);
 

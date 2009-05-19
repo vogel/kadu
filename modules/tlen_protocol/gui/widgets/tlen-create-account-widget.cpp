@@ -16,8 +16,8 @@
 
 #include "tlen-create-account-widget.h"
 
-TlenCreateAccountWidget::TlenCreateAccountWidget(QWidget *parent) :
-		QWidget(parent)
+TlenCreateAccountWidget::TlenCreateAccountWidget(QWidget *parent)
+		: AccountCreateWidget(parent)
 {
 	setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
 
