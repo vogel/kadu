@@ -13,7 +13,7 @@
  *
  */
 
-#include <unistd.h>
+#include "pcspeaker.h"
 
 #include <QtGui/QLineEdit>
 #include <QtGui/QSlider>
@@ -31,7 +31,6 @@
 #include <Carbon/Carbon.h>
 #endif
 
-#include "pcspeaker.h"
 #include "pcspeaker_configuration_widget.h"
 #include "debug.h"
 #include "config_file.h"
