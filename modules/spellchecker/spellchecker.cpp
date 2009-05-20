@@ -220,7 +220,7 @@ void SpellChecker::chatCreated(ChatWidget *chat)
 void SpellChecker::configForward()
 {
 	if (availList->selectedItems().count() > 0)
-		configForward2(checkList->selectedItems()[0]);
+		configForward2(availList->selectedItems()[0]);
 }
 
 void SpellChecker::configBackward()
