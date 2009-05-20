@@ -13,7 +13,6 @@
 #include "gui/widgets/account-create-widget.h"
 
 class QGridLayout;
-class QLabel;
 class QLineEdit;
 
 class GaduCreateAccountWidget : public AccountCreateWidget
@@ -27,17 +26,12 @@ class GaduCreateAccountWidget : public AccountCreateWidget
 	QLineEdit *AccountId;
 	QLineEdit *AccountPassword;
 
-	QLabel *TokenImage;
-	QString TokenCode;
-	QString TokenValue;
-
 	void createGui();
 	void createIHaveAccountGui(QGridLayout *gridLayout, int &row);
 	void createRegisterAccountGui(QGridLayout *gridLayout, int &row);
 
 private slots:
 	void haveNumberChanged(bool haveNumber);
-	void tokenFetched(const QString &tokenId, QPixmap tokenImage);
 	void addThisAccount();
 
 public:

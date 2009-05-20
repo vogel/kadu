@@ -6,6 +6,7 @@ set (SOURCES
 	file-transfer/gadu-file-transfer.cpp
 
 	gui/widgets/gadu-create-account-widget.cpp
+	gui/widgets/token-widget.cpp
 
 	helpers/gadu-formatter.cpp
 	helpers/gadu-importer.cpp
@@ -50,6 +51,7 @@ set (MOC_SOURCES
 	file-transfer/gadu-file-transfer.h
 
 	gui/widgets/gadu-create-account-widget.h
+	gui/widgets/token-widget.h
 
 	helpers/gadu-importer.h
 	

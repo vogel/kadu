@@ -15,11 +15,12 @@
 #include <QtGui/QPushButton>
 #include <QtGui/QRadioButton>
 
-#include "server/token-fetcher.h"
 #include "gadu-account.h"
 #include "gadu-protocol-factory.h"
 
 #include "gadu-create-account-widget.h"
+
+#include "token-widget.h"
 
 GaduCreateAccountWidget::GaduCreateAccountWidget(QWidget *parent) :
 		AccountCreateWidget(parent)
@@ -122,14 +123,9 @@ void GaduCreateAccountWidget::createRegisterAccountGui(QGridLayout *gridLayout, 
 
 	QLabel *tokenLabel = new QLabel(tr("Type this code") + ":", this);
 	gridLayout->addWidget(tokenLabel, row, 1, Qt::AlignRight);
-	TokenImage = new QLabel(this);
-	gridLayout->addWidget(TokenImage, row, 2);
-	QLineEdit *tokenCode = new QLineEdit(this);
-	gridLayout->addWidget(tokenCode, row++, 3);
 
-	TokenFetcher *fetcher = new TokenFetcher(true, this);
-	connect(fetcher, SIGNAL(tokenFetched(const QString &, QPixmap)), this, SLOT(tokenFetched(const QString &, QPixmap)));
-	fetcher->fetchToken();
+	TokenWidget *tokenWidget = new TokenWidget(this);
+	gridLayout->addWidget(tokenWidget, row++, 2, 1, 2);
 
 	QPushButton *registerAccount = new QPushButton(tr("Register"), this);
 	gridLayout->addWidget(registerAccount, row++, 1, 1, 3);
@@ -145,8 +141,7 @@ void GaduCreateAccountWidget::createRegisterAccountGui(QGridLayout *gridLayout, 
 	DontHaveNumberWidgets.append(eMail);
 	DontHaveNumberWidgets.append(registerAccount);
 	DontHaveNumberWidgets.append(tokenLabel);
-	DontHaveNumberWidgets.append(TokenImage);
-	DontHaveNumberWidgets.append(tokenCode);
+	DontHaveNumberWidgets.append(tokenWidget);
 	DontHaveNumberWidgets.append(addThisAccount);
 }
 
@@ -157,12 +152,6 @@ void GaduCreateAccountWidget::haveNumberChanged(bool haveNumber)
 	foreach (QWidget *widget, DontHaveNumberWidgets)
 		widget->setVisible(!haveNumber);
 }
-
-void GaduCreateAccountWidget::tokenFetched(const QString &tokenId, QPixmap tokenImage)
-{
-	TokenImage->setPixmap(tokenImage);
-}
-
 
 void GaduCreateAccountWidget::addThisAccount()
 {
