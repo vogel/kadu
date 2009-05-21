@@ -235,7 +235,13 @@ module_history=m
 # PL: Obsï¿½uga szyfrowania wiadomoï¿½ci
 # Platform: Linux, Mac OS X, Windows
 # Needs: QCA2
-module_encryption=n
+module_encryption=m
+
+# Description: Encrypted chat support
+# PL: Obs³uga szyfrowania wiadomo¶ci
+# Platform: Linux, Mac OS X, Windows
+# Needs: openssl
+module_encryption_old=m
 
 # Description: Auto away module
 # PL: Obsï¿½uga automatycznej zmiany statusu po okreï¿½lonym czasie bezczynnoï¿½ci
