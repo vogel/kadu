@@ -36,7 +36,7 @@ public:
 
 	Account * account(const QModelIndex &index) const;
 	int accountIndex(Account *account);
-
+	QModelIndex accountModelIndex(Account *account);
 };
 
 #endif // ACCOUNTS_MODEL

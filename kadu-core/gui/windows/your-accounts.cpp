@@ -56,12 +56,13 @@ void YourAccounts::createGui()
 	QPushButton *newAccount = new QPushButton(tr("New account"), this);
 	sideLayout->addWidget(newAccount);
 
-	QListView *accountsView = new QListView(this);
-	sideLayout->addWidget(accountsView);
-	accountsView->setModel(new AccountsModel(accountsView));
-	accountsView->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Expanding);
-	accountsView->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-	accountsView->setIconSize(QSize(32, 32));
+	AccountsView = new QListView(this);
+	sideLayout->addWidget(AccountsView);
+	MyAccountsModel = new AccountsModel(AccountsView);
+	AccountsView->setModel(MyAccountsModel);
+	AccountsView->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Expanding);
+	AccountsView->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+	AccountsView->setIconSize(QSize(32, 32));
 
 	QDialogButtonBox *buttons = new QDialogButtonBox(Qt::Horizontal, this);
 	mainLayout->addWidget(buttons);
@@ -125,4 +126,6 @@ void YourAccounts::protocolChanged(int protocolIndex)
 void YourAccounts::accountCreated(Account *account)
 {
 	AccountManager::instance()->registerAccount(account);
+	AccountsView->selectionModel()->clearSelection();
+	AccountsView->selectionModel()->select(MyAccountsModel->accountModelIndex(account), QItemSelectionModel::Select);
 }

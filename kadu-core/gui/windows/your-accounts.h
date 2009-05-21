@@ -17,13 +17,18 @@
 
 class QComboBox;
 class QHBoxLayout;
+class QListView;
 class QVBoxLayout;
+
+class AccountsModel;
 
 KADUAPI class YourAccounts : public QWidget
 {
 	Q_OBJECT
 
 	QHBoxLayout *ContentLayout;
+	QListView *AccountsView;
+	AccountsModel *MyAccountsModel;
 	QComboBox *Protocols;
 	QWidget *NewAccountContainer;
 	QVBoxLayout *MainNewAccountLayout;

@@ -88,6 +88,12 @@ int AccountsModel::accountIndex(Account *account)
 	return AccountManager::instance()->indexOf(account);
 }
 
+
+QModelIndex AccountsModel::accountModelIndex(Account *account)
+{
+	return createIndex(accountIndex(account), 0, 0);
+}
+
 void AccountsModel::accountAboutToBeRegistered(Account *account)
 {
 	int count = rowCount();
