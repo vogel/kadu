@@ -550,16 +550,9 @@ void Firewall::_Left(QListWidgetItem *item)
 
 void Firewall::_AllLeft()
 {
-	int i;
-	int count = secureList->count();
-	QListWidgetItem *item;
-	for (i = 0; i < count; ++i)
-	{
-		item = secureList->item(i);
-		allList->addItem(new QListWidgetItem(*item));
-		secureList->removeItemWidget(item);
-		delete(item);
-	}
+	QList<QListWidgetItem *> selectedItems = secureList->selectedItems();
+	foreach (QListWidgetItem *item, selectedItems)
+		_Left(item);
 }
 
 void Firewall::_Right(QListWidgetItem *item)
@@ -575,16 +568,9 @@ void Firewall::_Right(QListWidgetItem *item)
 
 void Firewall::_AllRight()
 {
-	int i;
-	int count = allList->count();
-	QListWidgetItem *item;
-	for (i = 0; i < count; ++i)
-	{
-		item = allList->item(i);
-		secureList->addItem(new QListWidgetItem(*item));
-		allList->removeItemWidget(item);
-		delete(item);
-	}
+    	QList<QListWidgetItem *> selectedItems = allList->selectedItems();
+	foreach (QListWidgetItem *item, selectedItems)
+		_Right(item);
 }
 
 
@@ -621,7 +607,7 @@ Safe sending GUI
 
 	secureGroupBox->addWidgets(0, secure);
 	
-	foreach(const UserListElement &user, *userlist)
+	foreach (const UserListElement &user, *userlist)
 	{
 		if (user.usesProtocol("Gadu") && !user.isAnonymous())
 		{
