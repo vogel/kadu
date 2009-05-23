@@ -43,5 +43,13 @@ xcopy %QT_DIR%QtNetwork4.dll   %DESTINATION%\ /C /Q /H /R /Y
 xcopy %QT_DIR%QtSql4.dll       %DESTINATION%\ /C /Q /H /R /Y
 xcopy %QT_DIR%QtWebKit4.dll    %DESTINATION%\ /C /Q /H /R /Y
 xcopy %QT_DIR%QtXml4.dll       %DESTINATION%\ /C /Q /H /R /Y
+xcopy %QT_DIR%mingwm10.dll     %DESTINATION%\ /C /Q /H /R /Y
+xcopy %QT_DIR%..\plugins\imageformats\qgif4.dll  %DESTINATION%\qt\imageformats\ /C /Q /H /R /Y
+xcopy %QT_DIR%..\plugins\imageformats\qjpeg4.dll %DESTINATION%\qt\imageformats\ /C /Q /H /R /Y
+xcopy %QT_DIR%..\plugins\imageformats\qmng4.dll  %DESTINATION%\qt\imageformats\ /C /Q /H /R /Y
+xcopy %QT_DIR%..\plugins\imageformats\qsvg4.dll  %DESTINATION%\qt\imageformats\ /C /Q /H /R /Y
+xcopy %QT_DIR%..\plugins\imageformats\qtiff4.dll %DESTINATION%\qt\imageformats\ /C /Q /H /R /Y
+xcopy %QT_DIR%..\plugins\imageformats\qico4.dll  %DESTINATION%\qt\imageformats\ /C /Q /H /R /Y
+
 xcopy %LIBGADU_DIR%libgadu.dll %DESTINATION%\ /C /Q /H /R /Y
 xcopy %LIBSNDFILE_DIR%libsndfile-1.dll %DESTINATION%\ /C /Q /H /R /Y
