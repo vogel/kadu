@@ -2,6 +2,18 @@ Teksty w nawiasach na koñcu wpisu mówi± o tym, kto dokona³ poprawki lub rozbudow
 Postaæ (x/y) oznacza, ¿e x jest pomys³odawc± lub podes³a³ patcha, a zrobi³ to kto¶ oznaczony przez y.
 Je¶li jest w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 
++++ wersja 0.6.5.3
+* poprawki w module history (krizz/White Eagle)
+* poprawki w module firewall (White Eagle)
+* poprawki w module spellchecker (White Eagle)
+* wsparcie dla kompilacji Kadu z u¿yciem MinGW pod windows (dorr)
+* poprawki w skryptach buduj±cych kadu pod Mac OS X (dorr)
+* poprawki w modu³ach profiles, mediaplayer, weather (dorr)
+* poprawione wspó³dzia³anie modu³u encryption z kluczami nie zakoñczonymi znakiem nowej linii (tomek-k/dorr)
+* rozpoznawanie wersji 0x2e protoko³u gg (GG 8.0b8283) (darkjames/dorr)
+* usuniête b³êdy kompilacji pod gcc 4.4 (Milos Jakubicek/White Eagle, uzi)
+* poprawiony problem z nieaktualizowaniem opisu po zmianie wielkosci liter (Stiep/White Eagle)
+
 +++ wersja 0.6.5.2 (15.04.2009)
 * rozwi±zany problem z niepoprawnym has³em podczas logowania do sieci (dorr)
 * encryption przepisany tak by korzysta³ z QCA2 (tomek-k)

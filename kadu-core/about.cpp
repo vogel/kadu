@@ -100,7 +100,7 @@ About::About(QWidget *parent)
 	QTextEdit *tb_license = new QTextEdit(tw_about);
 	tb_license->setReadOnly(true);
 	tb_license->setFrameStyle(QFrame::StyledPanel | QFrame::Plain);
-	tb_license->setWordWrapMode(QTextOption::NoWrap);
+	tb_license->setWordWrapMode(QTextOption::WordWrap);
 	tb_license->setText(loadFile("COPYING"));
 
 	// changelog
