@@ -817,7 +817,11 @@ uint HistoryManager::getHistoryDate(QTextStream &stream)
 		else
 			pos = 4;
 	kdebugf2();
-	return (tokens[pos].toUInt() / 86400);
+
+	if (pos < tokens.count())
+		return (tokens[pos].toUInt() / 86400);
+	else
+		return 0;
 }
 
 QList<HistoryDate> HistoryManager::getHistoryDates(const UinsList &uins)
