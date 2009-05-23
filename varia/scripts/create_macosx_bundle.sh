@@ -14,7 +14,7 @@ LIBGADU=/Users/tomek/Desktop/kadu/libgadu/
 OPENSSLPATH=/usr
 # version of openssl, without letters
 # wersja openssla, bez liter
-SSLVER=0.9.8
+SSLVER=0.9.7
 
 INSTALLED_DIR=/usr/local/
 
@@ -220,6 +220,8 @@ install_name_tool -change ${QTDIR}/lib/QtDBus.framework/Versions/4/QtDBus @execu
 install_name_tool -change ${QTDIR}/lib/QtXml.framework/Versions/4/QtXml @executable_path/../Frameworks/QtXml ./QtWebKit
 install_name_tool -change ${QTDIR}/lib/QtCore.framework/Versions/4/QtCore @executable_path/../Frameworks/QtCore ./phonon
 install_name_tool -change ${QTDIR}/lib/QtGui.framework/Versions/4/QtGui @executable_path/../Frameworks/QtGui ./phonon
+install_name_tool -change ${OPENSSLPATH}/lib/libssl.${SSLVER}.dylib @executable_path/../Frameworks/libssl.${SSLVER}.dylib ./libgadu.3.dylib
+install_name_tool -change ${OPENSSLPATH}/lib/libcrypto.${SSLVER}.dylib @executable_path/../Frameworks/libcrypto.${SSLVER}.dylib ./libgadu.3.dylib
 
 cd  ${CNT_DIR}/plugins/imageformats/
 install_name_tool -change ${QTDIR}/lib/QtCore.framework/Versions/4/QtCore @executable_path/../Frameworks/QtCore ./libqjpeg.dylib
@@ -244,12 +246,14 @@ install_name_tool -change ${SNDFILEPATH}/lib/libsndfile.1.dylib @executable_path
 install_name_tool -change ${OPENSSLPATH}/lib/libssl.${SSLVER}.dylib @executable_path/../Frameworks/libssl.${SSLVER}.dylib ./kadu
 install_name_tool -change ${OPENSSLPATH}/lib/libcrypto.${SSLVER}.dylib @executable_path/../Frameworks/libcrypto.${SSLVER}.dylib ./kadu
 
-if [ -f ${DEST}/Kadu.app/kadu/modules/sound.dylib ]; then
-	install_name_tool -change ${SNDFILEPATH}/lib/libsndfile.1.dylib @executable_path/../Frameworks/libsndfile.1.dylib ${DEST}/Kadu.app/kadu/modules/sound.dylib
+if [ -f ${DEST}/Kadu.app/kadu/modules/libsound.so ]; then
+	install_name_tool -change ${SNDFILEPATH}/lib/libsndfile.1.dylib @executable_path/../Frameworks/libsndfile.1.dylib ${DEST}/Kadu.app/kadu/modules/libsound.so 
+	install_name_tool -change ${SNDFILEPATH}//lib/libsndfile.1.dylib @executable_path/../Frameworks/libsndfile.1.dylib ${DEST}/Kadu.app/kadu/modules/libsound.so 
 fi
-if [ -f ${DEST}/Kadu.app/kadu/modules/encryption_old.dylib ]; then
-	install_name_tool -change ${OPENSSLPATH}/lib/libssl.${SSLVER}.dylib @executable_path/../Frameworks/libssl.${SSLVER}.dylib ${DEST}/Kadu.app/kadu/modules/encryption_old.dylib
-	install_name_tool -change ${OPENSSLPATH}/lib/libcrypto.${SSLVER}.dylib @executable_path/../Frameworks/libcrypto.${SSLVER}.dylib ${DEST}/Kadu.app/kadu/modules/encryption_old.dylib
+
+if [ -f ${DEST}//Kadu.app/kadu/modules/libencryption_old.so ]; then
+	install_name_tool -change ${OPENSSLPATH}/lib/libssl.${SSLVER}.dylib @executable_path/../Frameworks/libssl.${SSLVER}.dylib ${DEST}/Kadu.app/kadu/modules/libencryption_old.so
+	install_name_tool -change ${OPENSSLPATH}/lib/libcrypto.${SSLVER}.dylib @executable_path/../Frameworks/libcrypto.${SSLVER}.dylib ${DEST}/Kadu.app/kadu/modules/libencryption_old.so
 fi
 
 echo "everything done"
