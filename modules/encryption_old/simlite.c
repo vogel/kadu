@@ -29,7 +29,7 @@
 #include <openssl/err.h>
 #include <openssl/pem.h>
 #include <openssl/sha.h>
-#ifdef WIN32
+#ifdef _MSC_VER
 #include <openssl/applink.c>
 #endif
 
