@@ -153,9 +153,16 @@ if (WIN32)
 	set_target_properties(kadu_core PROPERTIES DEFINE_SYMBOL KADULIB )
 	target_link_libraries (kadu_core ${STATIC_MODULES} ${QT_LIBRARIES} ${LIBGADU_LIBRARIES})
 
+if (MINGW)
+  exec_program (windres ${CMAKE_CURRENT_SOURCE_DIR}
+		ARGS "kadu_mingw.rc kadu_rc.o"
+		OUTPUT_VARIABLE NULL_VAR)
+  add_executable(kadu WIN32 main.cpp main_win32.cpp kadu_rc.o)
+	add_executable(kadu_c main.cpp main_win32.cpp)
+else (MINGW)
 	add_executable(kadu WIN32 main.cpp main_win32.cpp kadu.rc)
 	add_executable(kadu_c main.cpp main_win32.cpp kadu.rc)
-
+endif (MINGW)
 	set_target_properties(kadu_c PROPERTIES COMPILE_FLAGS "-DKADU_CONSOLE" )
 
 	target_link_libraries (kadu kadu_core ${QT_QTMAIN_LIBRARY})
@@ -165,7 +172,6 @@ else (WIN32)
 	set_target_properties (kadu PROPERTIES ENABLE_EXPORTS ON)
 	target_link_libraries (kadu ${STATIC_MODULES} ${QT_LIBRARIES} ${LIBGADU_LIBRARIES})
 endif (WIN32)
-
 
 install (TARGETS kadu DESTINATION bin)
 
