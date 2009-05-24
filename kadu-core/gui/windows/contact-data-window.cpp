@@ -160,7 +160,7 @@ void ContactDataWindow::updateContact()
 
 void ContactDataWindow::updateContactAndClose()
 {
-	update();
+	updateContact();
 	close();
 }
 
