@@ -79,9 +79,11 @@ void HistorySqlStorage::initializeDatabase()
 			querystr = "PRAGMA encoding = \"UTF-8\";";
 		else if(Database.driverName() == "QMYSQL")
 			querystr = "ALTER DATABASE `%1` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;";
-		querystr = querystr.arg(Database.databaseName());
-		executeQuery(querystr);
-		executeQuery(QString("CREATE TABLE %1messages (chat VARCHAR(255), sender VARCHAR(255), send_time TIMESTAMP, receive_time TIMESTAMP, content TEXT, attributes TEXT);").arg(DbPrefix));
+		query.prepare(querystr.arg(Database.databaseName()));
+		executeQuery(query);
+		querystr = "CREATE TABLE %1messages (chat VARCHAR(255), sender VARCHAR(255), send_time TIMESTAMP, receive_time TIMESTAMP, content TEXT, attributes TEXT);";
+		query.prepare(querystr.arg(DbPrefix));
+		executeQuery(query);
 		//executeQuery(QString("CREATE TABLE %1uid_groups (id INTEGER, account_id INTEGER, protocol VARCHAR(20), uid VARCHAR(255));").arg(DbPrefix));
 		//executeQuery(QString("CREATE TABLE %1status (uid_group_id INTEGER, status VARCHAR(255), time TIMESTAMP, description TEXT, ip_port TEXT);").arg(DbPrefix));
 		//executeQuery(QString("CREATE TABLE %1accounts (id INTEGER, protocol VARCHAR(20), uid VARCHAR(255));").arg(DbPrefix));
