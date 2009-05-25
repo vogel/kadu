@@ -13,11 +13,14 @@
 #include <QtGui/QLabel>
 #include <QtGui/QListView>
 #include <QtGui/QPushButton>
+#include <QtGui/QStackedWidget>
 #include <QtGui/QVBoxLayout>
 
 #include "accounts/account-manager.h"
 #include "accounts/model/accounts-model.h"
 #include "contacts/model/contacts-model-base.h"
+#include "gui/widgets/account-create-widget.h"
+#include "gui/widgets/account-edit-widget.h"
 #include "misc/misc.h"
 #include "protocols/model/protocols-model.h"
 #include "protocols/protocol-factory.h"
@@ -25,9 +28,10 @@
 #include "icons-manager.h"
 
 #include "your-accounts.h"
+#include <protocols/protocol.h>
 
 YourAccounts::YourAccounts(QWidget *parent) :
-		QWidget(parent), CurrentNewAccountWidget(0)
+		QWidget(parent)
 {
 	setAttribute(Qt::WA_DeleteOnClose);
 	setWindowTitle(tr("Your accounts"));
@@ -46,15 +50,16 @@ void YourAccounts::createGui()
 {
 	QVBoxLayout *mainLayout = new QVBoxLayout(this);
 
-	ContentLayout = new QHBoxLayout;
-	mainLayout->addItem(ContentLayout);
+	QHBoxLayout *contentLayout = new QHBoxLayout(this);
+	mainLayout->addItem(contentLayout);
 
 	QVBoxLayout *sideLayout = new QVBoxLayout;
-	ContentLayout->addItem(sideLayout);
-	ContentLayout->setStretchFactor(sideLayout, 1);
+	contentLayout->addItem(sideLayout);
+	contentLayout->setStretchFactor(sideLayout, 1);
 
 	QPushButton *newAccount = new QPushButton(tr("New account"), this);
 	sideLayout->addWidget(newAccount);
+	connect(newAccount, SIGNAL(clicked()), this, SLOT(newAccountClicked()));
 
 	AccountsView = new QListView(this);
 	sideLayout->addWidget(AccountsView);
@@ -63,6 +68,8 @@ void YourAccounts::createGui()
 	AccountsView->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Expanding);
 	AccountsView->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 	AccountsView->setIconSize(QSize(32, 32));
+	connect(AccountsView->selectionModel(), SIGNAL(selectionChanged(const QItemSelection &, const QItemSelection &)),
+			this, SLOT(accountSelectionChanged(const QItemSelection &, const QItemSelection &)));
 
 	QDialogButtonBox *buttons = new QDialogButtonBox(Qt::Horizontal, this);
 	mainLayout->addWidget(buttons);
@@ -75,19 +82,25 @@ void YourAccounts::createGui()
 	buttons->addButton(cancelButton, QDialogButtonBox::RejectRole);
 	connect(cancelButton, SIGNAL(clicked()), this, SLOT(close()));
 
+	CreateEditStack = new QStackedWidget(this);
+	contentLayout->addWidget(CreateEditStack, 100);
+
 	createNewAccountWidget();
+	createEditAccountWidget();
+
+	CreateEditStack->setCurrentWidget(NewAccountContainer);
 }
 
 void YourAccounts::createNewAccountWidget()
 {
 	NewAccountContainer = new QWidget(this);
-	ContentLayout->addWidget(NewAccountContainer, 100);
+	CreateEditStack->addWidget(NewAccountContainer);
 
-	MainNewAccountLayout = new QVBoxLayout(NewAccountContainer);
+	QVBoxLayout *newAccountLayout = new QVBoxLayout(NewAccountContainer);
 
 	QHBoxLayout *selectProtocolLayout = new QHBoxLayout;
-	MainNewAccountLayout->addItem(selectProtocolLayout);
-	MainNewAccountLayout->setStretchFactor(selectProtocolLayout, 1);
+	newAccountLayout->addItem(selectProtocolLayout);
+	newAccountLayout->setStretchFactor(selectProtocolLayout, 1);
 
 	selectProtocolLayout->addWidget(new QLabel(tr("Select network") + ":", NewAccountContainer));
 	selectProtocolLayout->addSpacing(20);
@@ -97,35 +110,87 @@ void YourAccounts::createNewAccountWidget()
 	Protocols->setModel(Model);
 	selectProtocolLayout->addWidget(Protocols, 10);
 
+	CreateStack = new QStackedWidget(this);
+	newAccountLayout->addWidget(CreateStack, 100, Qt::AlignTop);
+
 	connect(Protocols, SIGNAL(activated(int)), this, SLOT(protocolChanged(int)));
 	protocolChanged(0);
 }
 
+void YourAccounts::createEditAccountWidget()
+{
+	EditStack = new QStackedWidget(this);
+	CreateEditStack->addWidget(EditStack);
+}
+
+void YourAccounts::newAccountClicked()
+{
+	AccountsView->selectionModel()->clearSelection();
+	CreateEditStack->setCurrentWidget(NewAccountContainer);
+}
+
 void YourAccounts::protocolChanged(int protocolIndex)
 {
-	delete CurrentNewAccountWidget;
-	CurrentNewAccountWidget = 0;
-
 	if (protocolIndex < 0 || protocolIndex >= Protocols->count())
 		return;
 
 	ProtocolFactory *factory = ProtocolsManager::instance()->byName(Protocols->itemData(protocolIndex, ProtocolRole).toString());
-	if (factory)
+	AccountCreateWidget *createWidget;
+
+	if (!CreateWidgets.contains(factory))
 	{
-		CurrentNewAccountWidget = factory->newCreateAccountWidget(NewAccountContainer);
-		connect(CurrentNewAccountWidget, SIGNAL(accountCreated(Account *)), this, SLOT(accountCreated(Account *)));
+		if (factory)
+			createWidget = factory->newCreateAccountWidget(NewAccountContainer);
+		else
+			createWidget = new AccountCreateWidget(this);
+
+		CreateWidgets[factory] = createWidget;
+		if (createWidget)
+		{
+			connect(createWidget, SIGNAL(accountCreated(Account *)), this, SLOT(accountCreated(Account *)));
+			CreateStack->addWidget(createWidget);
+		}
 	}
 	else
-		CurrentNewAccountWidget = new AccountCreateWidget(NewAccountContainer);
+		createWidget = CreateWidgets[factory];
 
-	if (CurrentNewAccountWidget)
-		MainNewAccountLayout->addWidget(CurrentNewAccountWidget, 100, Qt::AlignTop);
+	if (createWidget)
+		CreateStack->setCurrentWidget(createWidget);
 }
-
 
 void YourAccounts::accountCreated(Account *account)
 {
 	AccountManager::instance()->registerAccount(account);
 	AccountsView->selectionModel()->clearSelection();
 	AccountsView->selectionModel()->select(MyAccountsModel->accountModelIndex(account), QItemSelectionModel::Select);
+}
+
+void YourAccounts::accountSelectionChanged(const QItemSelection &selected, const QItemSelection &deselected)
+{
+	if (1 != selected.indexes().count())
+		return;
+
+	QModelIndex current = selected.indexes().first();
+
+	CreateEditStack->setCurrentWidget(EditStack);
+	const AccountsModel *accountModel = dynamic_cast<const AccountsModel *>(current.model());
+	if (!accountModel)
+		return;
+
+	Account *account = accountModel->account(current);
+	if (!account)
+		return;
+
+	AccountEditWidget *editWidget;
+	if (!EditWidgets.contains(account))
+	{
+		editWidget = account->protocol()->protocolFactory()->newEditAccountWidget(account, this);
+		EditWidgets[account] = editWidget;
+		EditStack->addWidget(editWidget);
+	}
+	else
+		editWidget = EditWidgets[account];
+
+	if (editWidget)
+		EditStack->setCurrentWidget(editWidget);
 }

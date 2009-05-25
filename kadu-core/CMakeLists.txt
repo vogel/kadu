@@ -248,6 +248,7 @@ set (kadu_MOC_SRCS
 	file-transfer/file-transfer-manager.h
 
 	gui/widgets/account-create-widget.h
+	gui/widgets/account-edit-widget.h
 	gui/widgets/chat-edit-box.h
 	gui/widgets/chat_messages_view.h
 	gui/widgets/chat-widget.h

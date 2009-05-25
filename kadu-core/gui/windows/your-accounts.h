@@ -10,36 +10,50 @@
 #ifndef YOUR_ACCOUNTS
 #define YOUR_ACCOUNTS
 
+#include <QtCore/QModelIndex>
+#include <QtGui/QItemSelection>
 #include <QtGui/QWidget>
 
-#include "gui/widgets/account-create-widget.h"
+#include "accounts/account.h"
 #include "exports.h"
 
 class QComboBox;
 class QHBoxLayout;
 class QListView;
+class QStackedWidget;
 class QVBoxLayout;
 
+class AccountCreateWidget;
+class AccountEditWidget;
 class AccountsModel;
+class ProtocolFactory;
 
 KADUAPI class YourAccounts : public QWidget
 {
 	Q_OBJECT
 
-	QHBoxLayout *ContentLayout;
 	QListView *AccountsView;
 	AccountsModel *MyAccountsModel;
+
+	QStackedWidget *CreateEditStack;
+	QStackedWidget *CreateStack;
+	QStackedWidget *EditStack;
+
 	QComboBox *Protocols;
 	QWidget *NewAccountContainer;
-	QVBoxLayout *MainNewAccountLayout;
-	AccountCreateWidget *CurrentNewAccountWidget;
+
+	QMap<ProtocolFactory *, AccountCreateWidget *> CreateWidgets;
+	QMap<Account *, AccountEditWidget *> EditWidgets;
 
 	void createGui();
 	void createNewAccountWidget();
+	void createEditAccountWidget();
 
 private slots:
+	void newAccountClicked();
 	void protocolChanged(int protocolIndex);
 	void accountCreated(Account *account);
+	void accountSelectionChanged(const QItemSelection &selected, const QItemSelection &deselected);
 
 public:
 	explicit YourAccounts(QWidget *parent = 0);
