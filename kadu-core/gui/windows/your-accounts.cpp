@@ -120,6 +120,7 @@ void YourAccounts::createNewAccountWidget()
 void YourAccounts::createEditAccountWidget()
 {
 	EditStack = new QStackedWidget(this);
+	EditStack->setContentsMargins(5, 5, 5, 5);
 	CreateEditStack->addWidget(EditStack);
 }
 

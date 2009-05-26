@@ -12,11 +12,14 @@
 
 #include "gui/widgets/account-edit-widget.h"
 
+class QTabWidget;
+
 class GaduEditAccountWidget : public AccountEditWidget
 {
 	Q_OBJECT
 
 	void createGui();
+	void createGeneralTab(QTabWidget *);
 
 public:
 	explicit GaduEditAccountWidget(Account *account, QWidget *parent = 0);
