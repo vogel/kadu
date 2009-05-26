@@ -41,6 +41,7 @@ set (kadu_SRCS
 	contacts/model/contacts-model-base.cpp
 	contacts/model/contacts-model-proxy.cpp
 	
+	contacts/model/filter/account-contact-filter.cpp
 	contacts/model/filter/anonymous-contact-filter.cpp
 	contacts/model/filter/anonymous-without-messages-contact-filter.cpp
 	contacts/model/filter/group-contact-filter.cpp
@@ -64,6 +65,7 @@ set (kadu_SRCS
 	file-transfer/file-transfer.cpp
 	file-transfer/file-transfer-manager.cpp
 
+	gui/widgets/account-contacts-list-widget.cpp
 	gui/widgets/chat-edit-box.cpp
 	gui/widgets/chat_messages_view.cpp
 	gui/widgets/chat-widget.cpp
@@ -229,6 +231,7 @@ set (kadu_MOC_SRCS
 	contacts/model/contacts-model-proxy.h
 	
 	contacts/model/filter/abstract-contact-filter.h
+	contacts/model/filter/account-contact-filter.h
 	contacts/model/filter/anonymous-contact-filter.h
 	contacts/model/filter/anonymous-without-messages-contact-filter.h
 	contacts/model/filter/group-contact-filter.h
@@ -247,6 +250,7 @@ set (kadu_MOC_SRCS
 	file-transfer/file-transfer.h
 	file-transfer/file-transfer-manager.h
 
+	gui/widgets/account-contacts-list-widget.h
 	gui/widgets/account-create-widget.h
 	gui/widgets/account-edit-widget.h
 	gui/widgets/chat-edit-box.h
