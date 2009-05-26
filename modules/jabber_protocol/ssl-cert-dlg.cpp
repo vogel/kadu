@@ -32,7 +32,7 @@ SSLCertDlg::SSLCertDlg(QWidget *parent)
 {
 	setupUi(this);
 	setModal(true);
-	setWindowTitle("Kadu: " + caption());
+	setWindowTitle("Kadu: "/* + caption()*/);
 
 	connect(pb_close, SIGNAL(clicked()), SLOT(close()));
 	pb_close->setDefault(true);
@@ -223,7 +223,12 @@ void SSLCertDlg::showCert(const QCA::Certificate &certificate, int result, QCA::
 
 void SSLCertDlg::setLabelStatus(QLabel& l, bool ok)
 {
-	l.setPaletteForegroundColor(ok ? QColor("#2A993B") : QColor("#810000"));
+	QPalette palette;
+	if (ok)
+		palette.setColor(l.backgroundRole(), QColor("#2A993B"));
+	else
+		palette.setColor(l.backgroundRole(), QColor("#810000"));
+	l.setPalette(palette);
 }
 
 QString SSLCertDlg::makePropEntry(QCA::CertificateInfoType var, const QString &name, const QCA::CertificateInfo &list)

@@ -50,15 +50,15 @@ CertificateCollection CertUtil::allCertificates()
 				certs.addCertificate(cert);
 			}
 			else {
-				qWarning(QString("certutil.cpp: Invalid PEM certificate: %1").arg(store.filePath(*c)));
+			///	qWarning(QString("certutil.cpp: Invalid PEM certificate: %1").arg(store.filePath(*c)));
 			}
 		}
 
 		// Read in old XML format certificates (DEPRECATED)
-		store.setNameFilter("*.xml");
+		store.setNameFilters(QStringList("*.xml"));
 		cert_files = store.entryList();
 		for(QStringList::ConstIterator it = cert_files.begin(); it != cert_files.end(); ++it) {
-			qWarning(QString("Loading certificate in obsolete XML format: %1").arg(store.filePath(*it)));
+			///qWarning(QString("Loading certificate in obsolete XML format: %1").arg(store.filePath(*it)));
 			QFile f(store.filePath(*it));
 			if(!f.open(QIODevice::ReadOnly))
 				continue;
@@ -82,7 +82,7 @@ CertificateCollection CertUtil::allCertificates()
 						certs.addCertificate(cert);
 					}
 					else {
-						qWarning(QString("certutil.cpp: Invalid XML certificate: %1").arg(store.filePath(*it)));
+					///	qWarning(QString("certutil.cpp: Invalid XML certificate: %1").arg(store.filePath(*it)));
 					}
 				}
 			}

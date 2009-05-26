@@ -89,9 +89,9 @@ void JabberResourcePool::addResource(const XMPP::Jid &jid, const XMPP::Resource 
 	// see if the resource already exists
 	foreach(JabberResource *mResource, pool)
 	{
-		if((mResource->jid().userHost().toLower() == jid.userHost().toLower()) && (mResource->resource().name().toLower() == resource.name().toLower()))
+		if((mResource->jid().bare().toLower() == jid.bare().toLower()) && (mResource->resource().name().toLower() == resource.name().toLower()))
 		{
-			kdebug("Updating existing resource %s for %s\n", resource.name().local8Bit().data(), jid.userHost().local8Bit().data());
+			kdebug("Updating existing resource %s for %s\n", resource.name().toLocal8Bit().data(), jid.bare().toLocal8Bit().data());
 
 			// It exists, update it. Don't do a "lazy" update by deleting
 			// it here and readding it with new parameters later on,
@@ -106,13 +106,13 @@ void JabberResourcePool::addResource(const XMPP::Jid &jid, const XMPP::Resource 
 		}
 	}
 
-	kdebug("Adding new resource %s for %s\n", resource.name().local8Bit().data(), jid.userHost().local8Bit().data());
+	kdebug("Adding new resource %s for %s\n", resource.name().toLocal8Bit().data(), jid.bare().toLocal8Bit().data());
 
 	// Update initial capabilities if available.
 	// Called before creating JabberResource so JabberResource wouldn't ask for disco information. 
 	if( !resource.status().capsNode().isEmpty())
 	{
-		kdebug("Initial update of capabilities for JID: %s\n", jid.full().local8Bit().data());
+		kdebug("Initial update of capabilities for JID: %s\n", jid.full().toLocal8Bit().data());
 ///		protocol->protocol()->capabilitiesManager()->updateCapabilities( protocol, jid, resource.status());
 	}
 	// create new resource instance and add it to the dictionary
@@ -129,11 +129,11 @@ void JabberResourcePool::addResource(const XMPP::Jid &jid, const XMPP::Resource 
 void JabberResourcePool::removeResource(const XMPP::Jid &jid, const XMPP::Resource &resource)
 {
 	kdebugf();
-	kdebug("Removing resource %s for %s\n", resource.name().local8Bit().data(), jid.userHost().local8Bit().data());
+	kdebug("Removing resource %s for %s\n", resource.name().toLocal8Bit().data(), jid.bare().toLocal8Bit().data());
 
 	foreach(JabberResource *mResource, pool)
 	{
-		if((mResource->jid().userHost().toLower() == jid.userHost().toLower()) && (mResource->resource().name().toLower() == resource.name().toLower()))
+		if((mResource->jid().bare().toLower() == jid.bare().toLower()) && (mResource->resource().name().toLower() == resource.name().toLower()))
 		{
 			JabberResource *deletedResource = pool.takeAt( pool.indexOf(mResource));
 			delete deletedResource;
@@ -149,16 +149,16 @@ void JabberResourcePool::removeResource(const XMPP::Jid &jid, const XMPP::Resour
 
 void JabberResourcePool::removeAllResources(const XMPP::Jid &jid)
 {
-	kdebug("Removing all resources for %s\n", jid.userHost().local8Bit().data());
+	kdebug("Removing all resources for %s\n", jid.bare().toLocal8Bit().data());
 
 	foreach(JabberResource *mResource, pool)
 	{
-		if(mResource->jid().userHost().toLower() == jid.userHost().toLower())
+		if(mResource->jid().bare().toLower() == jid.bare().toLower())
 		{
 			// only remove preselected resource in case there is one
 			if(jid.resource().isEmpty() ||(jid.resource().toLower() == mResource->resource().name().toLower()))
 			{
-				kdebug("Removing resource %s / %s\n", jid.userHost().local8Bit().data(), mResource->resource().name().local8Bit().data());
+				kdebug("Removing resource %s / %s\n", jid.bare().toLocal8Bit().data(), mResource->resource().name().toLocal8Bit().data());
 				JabberResource *deletedResource = pool.takeAt(pool.indexOf(mResource));
 				delete deletedResource;
 			}
@@ -204,14 +204,14 @@ void JabberResourcePool::clear()
 
 void JabberResourcePool::lockToResource(const XMPP::Jid &jid, const XMPP::Resource &resource)
 {
-	kdebug("Locking %s to %s\n", jid.full().local8Bit().data(), resource.name().local8Bit().data());
+	kdebug("Locking %s to %s\n", jid.full().toLocal8Bit().data(), resource.name().toLocal8Bit().data());
 	// remove all existing locks first
 	removeLock(jid);
 
 	// find the resource in our dictionary that matches
 	foreach(JabberResource *mResource, pool)
 	{
-		if((mResource->jid().userHost().toLower() == jid.full().toLower()) && (mResource->resource().name().toLower() == resource.name().toLower()))
+		if((mResource->jid().bare().toLower() == jid.full().toLower()) && (mResource->resource().name().toLower() == resource.name().toLower()))
 		{
 			lockList.append(mResource);
 			return;
@@ -223,12 +223,12 @@ void JabberResourcePool::lockToResource(const XMPP::Jid &jid, const XMPP::Resour
 
 void JabberResourcePool::removeLock(const XMPP::Jid &jid)
 {
-	kdebug("Removing resource lock for %s\n", jid.userHost().local8Bit().data());
+	kdebug("Removing resource lock for %s\n", jid.bare().toLocal8Bit().data());
 
 	// find the resource in our dictionary that matches
 	foreach(JabberResource *mResource, pool)
 	{
-		if((mResource->jid().userHost().toLower() == jid.userHost().toLower()))
+		if((mResource->jid().bare().toLower() == jid.bare().toLower()))
 		{
 			lockList.removeAll (mResource);
 		}
@@ -245,7 +245,7 @@ JabberResource *JabberResourcePool::lockedJabberResource( const XMPP::Jid &jid)
 		// we are subscribed to a JID, find the according resource in the pool
 		foreach(JabberResource *mResource, pool)
 		{
-			if(( mResource->jid().userHost().toLower() == jid.userHost().toLower()) &&(mResource->resource().name() == jid.resource()))
+			if(( mResource->jid().bare().toLower() == jid.bare().toLower()) &&(mResource->resource().name() == jid.resource()))
 			{
 				return mResource;
 			}
@@ -259,14 +259,14 @@ JabberResource *JabberResourcePool::lockedJabberResource( const XMPP::Jid &jid)
 	// see if we have a locked resource
 	foreach(JabberResource *mResource, lockList)
 	{
-		if(mResource->jid().userHost().toLower() == jid.userHost().toLower())
+		if(mResource->jid().bare().toLower() == jid.bare().toLower())
 		{
-			kdebug("Current lock for %s is %s\n", jid.userHost().local8Bit().data(), mResource->resource().name().local8Bit().data());
+			kdebug("Current lock for %s is %s\n", jid.bare().toLocal8Bit().data(), mResource->resource().name().toLocal8Bit().data());
 			return mResource;
 		}
 	}
 
-	kdebug("No lock available for %s\n", jid.userHost().local8Bit().data());
+	kdebug("No lock available for %s\n", jid.bare().toLocal8Bit().data());
 
 	// there's no locked resource, return an empty resource
 	return 0L;
@@ -280,7 +280,7 @@ const XMPP::Resource &JabberResourcePool::lockedResource(const XMPP::Jid &jid)
 
 JabberResource *JabberResourcePool::bestJabberResource( const XMPP::Jid &jid, bool honourLock)
 {
-	kdebug("Determining best resource for %s\n", jid.full().local8Bit().data());
+	kdebug("Determining best resource for %s\n", jid.full().toLocal8Bit().data());
 
 	if(honourLock)
 	{
@@ -288,7 +288,7 @@ JabberResource *JabberResourcePool::bestJabberResource( const XMPP::Jid &jid, bo
 		JabberResource *mResource = lockedJabberResource(jid);
 		if(mResource)
 		{
-			kdebug("We have a locked resource %s for %s\n", mResource->resource().name().local8Bit().data(), jid.full().local8Bit().data());
+			kdebug("We have a locked resource %s for %s\n", mResource->resource().name().toLocal8Bit().data(), jid.full().toLocal8Bit().data());
 			return mResource;
 		}
 	}
@@ -299,7 +299,7 @@ JabberResource *JabberResourcePool::bestJabberResource( const XMPP::Jid &jid, bo
 	foreach(currentResource, pool)
 	{
 		// make sure we are only looking up resources for the specified JID
-		if(currentResource->jid().userHost().toLower() != jid.userHost().toLower())
+		if(currentResource->jid().bare().toLower() != jid.bare().toLower())
 		{
 			continue;
 		}
@@ -307,7 +307,7 @@ JabberResource *JabberResourcePool::bestJabberResource( const XMPP::Jid &jid, bo
 		// take first resource if no resource has been chosen yet
 		if(!bestResource)
 		{
-			kdebug("Taking %s as first available resource.\n", currentResource->resource().name().local8Bit().data());
+			kdebug("Taking %s as first available resource.\n", currentResource->resource().name().toLocal8Bit().data());
 
 			bestResource = currentResource;
 			continue;
@@ -315,7 +315,7 @@ JabberResource *JabberResourcePool::bestJabberResource( const XMPP::Jid &jid, bo
 
 		if(currentResource->resource().priority() > bestResource->resource().priority())
 		{
-			kdebug("Using %s due to better priority.\n", currentResource->resource().name().local8Bit().data());
+			kdebug("Using %s due to better priority.\n", currentResource->resource().name().toLocal8Bit().data());
 			// got a better match by priority
 			bestResource = currentResource;
 		}
@@ -325,7 +325,7 @@ JabberResource *JabberResourcePool::bestJabberResource( const XMPP::Jid &jid, bo
 			{
 				if(currentResource->resource().status().timeStamp() > bestResource->resource().status().timeStamp())
 				{
-					kdebug("Using %s due to better timestamp.\n", currentResource->resource().name().local8Bit().data());
+					kdebug("Using %s due to better timestamp.\n", currentResource->resource().name().toLocal8Bit().data());
 
 					// got a better match by timestamp (priorities are equal)
 					bestResource = currentResource;
@@ -348,7 +348,7 @@ void JabberResourcePool::findResources(const XMPP::Jid &jid, JabberResourcePool:
 {
 	foreach(JabberResource *mResource, pool)
 	{
-		if(mResource->jid().userHost().toLower() == jid.userHost().toLower())
+		if(mResource->jid().bare().toLower() == jid.bare().toLower())
 		{
 			// we found a resource for the JID, let's see if the JID already contains a resource
 			if(!jid.resource().isEmpty() &&(jid.resource().toLower() != mResource->resource().name().toLower()))
@@ -365,7 +365,7 @@ void JabberResourcePool::findResources(const XMPP::Jid &jid, XMPP::ResourceList 
 {
 	foreach(JabberResource *mResource, pool)
 	{
-		if(mResource->jid().userHost().toLower() == jid.userHost().toLower())
+		if(mResource->jid().bare().toLower() == jid.bare().toLower())
 		{
 			// we found a resource for the JID, let's see if the JID already contains a resource
 			if(!jid.resource().isEmpty() &&(jid.resource().toLower() != mResource->resource().name().toLower()))

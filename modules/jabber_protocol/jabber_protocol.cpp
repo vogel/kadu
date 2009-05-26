@@ -33,7 +33,7 @@
 #include "jabber-account.h"
 #include "jabber_protocol.h"
 #include "jabber-protocol-factory.h"
-#include "libiris/iris/jabber/filetransfer.h"
+#include "libiris/include/filetransfer.h"
 #include "system-info.h"
 
 extern "C" int jabber_protocol_init()
@@ -361,25 +361,25 @@ bool JabberProtocol::handleTLSWarning(XMPP::JabberClient *jabberClient, QCA::TLS
 	{
 		if (!validityString.isEmpty())
 		{
-			message = tr(QString("<qt><p>The identity and the certificate of server %s could not be "
-					"validated for account %s:</p><p>%3</p><p>%4</p><p>Do you want to continue?</p></qt>").arg(server).arg(accountId).arg(idString).arg(validityString));
+			message = tr("<qt><p>The identity and the certificate of server %s could not be "
+					"validated for account %s:</p><p>%3</p><p>%4</p><p>Do you want to continue?</p></qt>").arg(server).arg(accountId).arg(idString).arg(validityString);
 		}
 		else
 		{
-			message = tr(QString("<qt><p>The certificate of server %s could not be validated for "
-					"account %s: %3</p><p>Do you want to continue?</p></qt>").arg(server).arg(accountId).arg(idString));
+			message = tr("<qt><p>The certificate of server %s could not be validated for "
+					"account %s: %3</p><p>Do you want to continue?</p></qt>").arg(server).arg(accountId).arg(idString);
 		}
 	}
 	else
 	{
-		message = tr(QString("<qt><p>The certificate of server %s could not be validated for "
-			"account %s: %3</p><p>Do you want to continue?</p></qt>").arg(server).arg( accountId).arg(validityString));
+		message = tr("<qt><p>The certificate of server %s could not be validated for "
+			"account %s: %3</p><p>Do you want to continue?</p></qt>").arg(server).arg( accountId).arg(validityString);
 	}
 
 	QMessageBox* m = new QMessageBox(QMessageBox::Critical,
-	(/*printAccountName*/!accountId.isEmpty() ? QString("%s: ").arg(name()) : "") + tr("Server Error"),
+	/*(printAccountName !accountId.isEmpty() ? QString("%s: ").arg(name()) : "") + */tr("Server Error"),
 	tr("There was an error communicating with the server.\nDetails: %s").arg(server + idCode + code),
-	QMessageBox::Ok, 0, Qt::WDestructiveClose);
+	QMessageBox::Ok, 0, Qt::Popup);
 	m->setModal(true);
 	m->show();
 
@@ -405,7 +405,7 @@ void JabberProtocol::slotHandleTLSWarning(QCA::TLS::IdentityResult identityResul
 
 void JabberProtocol::setPresence(const XMPP::Status &status)
 {
-	kdebug("Status: %s, Reason: %s\n", status.show().local8Bit().data(), status.status().local8Bit().data());
+	kdebug("Status: %s, Reason: %s\n", status.show().toLocal8Bit().data(), status.status().toLocal8Bit().data());
 
 	// fetch input status
 	XMPP::Status newStatus = status;
@@ -539,7 +539,7 @@ void JabberProtocol::slotIncomingFileTransfer()
 void JabberProtocol::clientResourceAvailable(const XMPP::Jid &jid, const XMPP::Resource &resource)
 {
 	kdebugf();
-	kdebug("New resource available for %s\n", jid.full().local8Bit().data());
+	kdebug("New resource available for %s\n", jid.full().toLocal8Bit().data());
 	resourcePool()->addResource(jid, resource);
 	//TODO: na razie brak lepszego miejsca na to
 	Status status;
@@ -593,7 +593,7 @@ void JabberProtocol::clientResourceAvailable(const XMPP::Jid &jid, const XMPP::R
 void JabberProtocol::clientResourceUnavailable(const XMPP::Jid &jid, const XMPP::Resource &resource)
 {
 	kdebugf();
-	kdebug("Resource now unavailable for %s\n", jid.full().local8Bit().data());
+	kdebug("Resource now unavailable for %s\n", jid.full().toLocal8Bit().data());
 	resourcePool()->removeResource(jid, resource);
 	//TODO: na razie brak lepszego miejsca na to
 	Status status;
@@ -654,7 +654,7 @@ void JabberProtocol::slotContactUpdated(const XMPP::RosterItem &item)
 	 * a roster item here.
 	 */
 
-	kdebug("New roster item: %s (Subscription: %s )\n", item.jid().full().local8Bit().data(), item.subscription().toString().local8Bit().data());
+	kdebug("New roster item: %s (Subscription: %s )\n", item.jid().full().toLocal8Bit().data(), item.subscription().toString().toLocal8Bit().data());
 
 	/*
 	 * See if the contact need to be added, according to the criterias of
@@ -735,7 +735,7 @@ void JabberProtocol::slotContactUpdated(const XMPP::RosterItem &item)
 
 void JabberProtocol::slotContactDeleted(const XMPP::RosterItem &item)
 {
-	kdebug("Deleting contact %s", item.jid().full().local8Bit().data());
+	kdebug("Deleting contact %s", item.jid().full().toLocal8Bit().data());
 	//TODO: usun�� z listy - tego chyba jeszcze nie ma...
 }
 
@@ -746,7 +746,7 @@ void JabberProtocol::slotSubscription(const XMPP::Jid & jid, const QString &type
 		/*
 		 * Someone else removed our authorization to see them.
 		 */
-		kdebug("%s revoked our presence authorization", jid.full().local8Bit().data());
+		kdebug("%s revoked our presence authorization", jid.full().toLocal8Bit().data());
 
 		XMPP::JT_Roster *task;
 		if (MessageBox::ask(tr("The user %1 removed subscription to you. "

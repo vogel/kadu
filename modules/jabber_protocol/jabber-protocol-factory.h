@@ -29,6 +29,7 @@ public:
 	virtual ContactAccountData * newContactAccountData(Contact contact, Account *account, const QString &id, bool loadFromConfiguration = true);
 	virtual ContactAccountData * loadContactAccountData(Contact contact, Account *account);
 	virtual AccountCreateWidget * newCreateAccountWidget(QWidget *parent);
+	virtual AccountEditWidget* newEditAccountWidget(Account*, QWidget*) { return 0; };
 	virtual ContactAccountDataWidget * newContactAccountDataWidget(ContactAccountData *contactAccountData, QWidget *parent = 0);
 	virtual JabberConfigurationDialog * newConfigurationDialog(Account *, QWidget *);
 

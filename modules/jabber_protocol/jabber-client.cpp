@@ -618,7 +618,7 @@ void JabberClient::connect ( const XMPP::Jid &jid, const QString &password, bool
 	{
 		qDebug ("no TLS");
 		// no SSL support, at the connecting stage this means the problem is client-side
-		QMessageBox* m = new QMessageBox(QMessageBox::Critical, tr("Jabber SSL Error"), tr("SSL support could not be initialized for account %1. This is most likely because the QCA TLS plugin is not installed on your system.").arg(jid.bare()), QMessageBox::Ok, 0, Qt::WDestructiveClose);
+		QMessageBox* m = new QMessageBox(QMessageBox::Critical, tr("Jabber SSL Error"), tr("SSL support could not be initialized for account %1. This is most likely because the QCA TLS plugin is not installed on your system.").arg(jid.bare()), QMessageBox::Ok, 0, Qt::Popup);
 		m->setModal(true);
 		m->show();
 	}
@@ -1072,7 +1072,7 @@ void JabberClient::slotCSWarning ( int warning )
 	}
 
 	if (showNoTlsWarning) {
-		QMessageBox* m = new QMessageBox(QMessageBox::Critical, /*(d->psi->contactList()->enabledAccounts().count() > 1 ? QString("%1: ").arg(name()) : "") + */tr("Server Error"), tr("The server does not support TLS encryption."), QMessageBox::Ok, 0, Qt::WDestructiveClose);
+		QMessageBox* m = new QMessageBox(QMessageBox::Critical, /*(d->psi->contactList()->enabledAccounts().count() > 1 ? QString("%1: ").arg(name()) : "") + */tr("Server Error"), tr("The server does not support TLS encryption."), QMessageBox::Ok, 0, Qt::Popup);
 		m->setModal(true);
 		m->show();
 	}
@@ -1105,9 +1105,9 @@ void JabberClient::slotCSError ( int error )
 		{
 			getErrorInfo(error, d->jabberClientConnector, d->jabberClientStream, d->jabberTLSHandler, &errorText, &reconn);
 			QMessageBox* m = new QMessageBox(QMessageBox::Critical,
-	                                 (/*printAccountName*/1 ? QString("%1: ").arg(name()) : "") + tr("Server Error"),
+	                                /* (printAccountName ? QString("%1: ").arg(name()) : "") + */tr("Server Error"),
 	                                 tr("There was an error communicating with the server.\nDetails: %1").arg(errorText),
-	                                 QMessageBox::Ok, 0, Qt::WDestructiveClose);
+	                                 QMessageBox::Ok, 0, Qt::Popup);
 			m->setModal(true);
 			m->show();
 		}

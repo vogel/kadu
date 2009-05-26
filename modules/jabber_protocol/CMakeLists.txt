@@ -1,9 +1,7 @@
 #find_package(Automoc4 REQUIRED)
 include(FindQt4)
 
-### Qt3Support
 find_package(Qt4 REQUIRED)
-set(QT_USE_QT3SUPPORT 1)
 INCLUDE(${QT_USE_FILE})
 
 # based on qt4_automoc
@@ -47,98 +45,188 @@ ENDMACRO(KADU_JABBER_AUTOMOC)
 pkg_search_module (QCA2 REQUIRED qca2 )
 pkg_search_module (IDN REQUIRED libidn )
 
-set(cutestuff_SRCS
-	libiris/cutestuff/legacy/ndns.cpp
-	libiris/cutestuff/legacy/safedelete.cpp
-	libiris/cutestuff/legacy/servsock.cpp
-	libiris/cutestuff/legacy/srvresolver.cpp
-	libiris/cutestuff/network/bsocket.cpp
-	libiris/cutestuff/network/httpconnect.cpp
-	libiris/cutestuff/network/httppoll.cpp
-	libiris/cutestuff/network/socks.cpp
-	libiris/cutestuff/util/bytestream.cpp
-)
-
-set(iris_SRCS
-	libiris/iris/jabber/filetransfer.cpp
-	libiris/iris/jabber/jinglesessionmanager.cpp
-	libiris/iris/jabber/s5b.cpp
-	libiris/iris/jabber/xmpp_ibb.cpp
-	libiris/iris/jabber/jinglesession.cpp
-	libiris/iris/jabber/jingletasks.cpp
-	libiris/iris/jabber/jinglecontent.cpp
-
-	libiris/iris/xmpp-core/compress.cpp
-	libiris/iris/xmpp-core/compressionhandler.cpp
-	libiris/iris/xmpp-core/connector.cpp
-	libiris/iris/xmpp-core/jid.cpp
-	libiris/iris/xmpp-core/securestream.cpp
-	libiris/iris/xmpp-core/tlshandler.cpp
-	libiris/iris/xmpp-core/protocol.cpp
-	libiris/iris/xmpp-core/stream.cpp
-	libiris/iris/xmpp-core/xmlprotocol.cpp
-	libiris/iris/xmpp-core/parser.cpp
-	libiris/iris/xmpp-core/simplesasl.cpp
-	libiris/iris/xmpp-core/xmpp_stanza.cpp
-
-	libiris/iris/xmpp-im/client.cpp
-	libiris/iris/xmpp-im/types.cpp
-	libiris/iris/xmpp-im/xmpp_tasks.cpp
-	libiris/iris/xmpp-im/xmpp_vcard.cpp
-	libiris/iris/xmpp-im/xmpp_xmlcommon.cpp
-	libiris/iris/xmpp-im/xmpp_xdata.cpp
-	libiris/iris/xmpp-im/xmpp_features.cpp
-	libiris/iris/xmpp-im/xmpp_discoinfotask.cpp
-	libiris/iris/xmpp-im/xmpp_discoitem.cpp
-	libiris/iris/xmpp-im/xmpp_task.cpp
-)
-
 set(SOURCES_IRIS
-	${cutestuff_SRCS}
-	${iris_SRCS}
+	libiris/iris/xmpp/base/randomnumbergenerator.cpp
+	libiris/iris/xmpp/jid/jid.cpp
+	libiris/iris/xmpp/cutestuff/httppoll.cpp
+	libiris/iris/xmpp/cutestuff/socks.cpp
+	libiris/iris/xmpp/cutestuff/bytestream.cpp
+	libiris/iris/xmpp/cutestuff/bsocket.cpp
+	libiris/iris/xmpp/cutestuff/httpconnect.cpp
+	libiris/iris/xmpp/xmpp-im/xmpp_discoitem.cpp
+	libiris/iris/xmpp/xmpp-im/client.cpp
+	libiris/iris/xmpp/xmpp-im/types.cpp
+	libiris/iris/xmpp/xmpp-im/xmpp_vcard.cpp
+	libiris/iris/xmpp/xmpp-im/xmpp_xmlcommon.cpp
+	libiris/iris/xmpp/xmpp-im/xmpp_ibb.cpp
+	libiris/iris/xmpp/xmpp-im/xmpp_xdata.cpp
+	libiris/iris/xmpp/xmpp-im/xmpp_task.cpp
+	libiris/iris/xmpp/xmpp-im/xmpp_features.cpp
+	libiris/iris/xmpp/xmpp-im/xmpp_discoinfotask.cpp
+	libiris/iris/xmpp/xmpp-im/s5b.cpp
+	libiris/iris/xmpp/xmpp-im/xmpp_tasks.cpp
+	libiris/iris/xmpp/xmpp-im/filetransfer.cpp
+	libiris/iris/xmpp/sasl/digestmd5proplist.cpp
+	libiris/iris/xmpp/sasl/digestmd5response.cpp
+	libiris/iris/xmpp/sasl/plainmessage.cpp
+	libiris/iris/xmpp/zlib/zlibcompressor.cpp
+	libiris/iris/xmpp/zlib/zlibdecompressor.cpp
+	libiris/iris/xmpp/base64/base64.cpp
+	libiris/iris/xmpp/xmpp-core/tlshandler.cpp
+	libiris/iris/xmpp/xmpp-core/xmpp_stanza.cpp
+	libiris/iris/xmpp/xmpp-core/stream.cpp
+	libiris/iris/xmpp/xmpp-core/securestream.cpp
+	libiris/iris/xmpp/xmpp-core/simplesasl.cpp
+	libiris/iris/xmpp/xmpp-core/xmlprotocol.cpp
+	libiris/iris/xmpp/xmpp-core/protocol.cpp
+	libiris/iris/xmpp/xmpp-core/compressionhandler.cpp
+	libiris/iris/xmpp/xmpp-core/parser.cpp
+	libiris/iris/xmpp/xmpp-core/connector.cpp
+	libiris/iris/jdns/qjdns.cpp
+	libiris/iris/jdns/qjdns_sock.cpp
+	libiris/iris/irisnet/noncore/ice176.cpp
+	libiris/iris/irisnet/noncore/stunallocate.cpp
+	libiris/iris/irisnet/noncore/legacy/ndns.cpp
+	libiris/iris/irisnet/noncore/legacy/srvresolver.cpp
+	libiris/iris/irisnet/noncore/legacy/safedelete.cpp
+	libiris/iris/irisnet/noncore/legacy/servsock.cpp
+	libiris/iris/irisnet/noncore/icelocaltransport.cpp
+	libiris/iris/irisnet/noncore/stunmessage.cpp
+	libiris/iris/irisnet/noncore/stunbinding.cpp
+	libiris/iris/irisnet/noncore/stuntransaction.cpp
+	libiris/iris/irisnet/noncore/processquit.cpp
+	libiris/iris/irisnet/corelib/netavailability.cpp
+	libiris/iris/irisnet/corelib/netnames_jdns.cpp
+	libiris/iris/irisnet/corelib/netnames.cpp
+	libiris/iris/irisnet/corelib/irisnetplugin.cpp
+	libiris/iris/irisnet/corelib/netinterface.cpp
+	libiris/iris/irisnet/corelib/jdnsshared.cpp
+	libiris/iris/irisnet/corelib/objectsession.cpp
+	libiris/iris/irisnet/corelib/irisnetglobal.cpp
+
+	libiris/iris/jdns/jdns.c
+	libiris/iris/jdns/jdns_util.c
+	libiris/iris/jdns/jdns_sys.c
+	libiris/iris/jdns/jdns_mdnsd.c
+	libiris/iris/jdns/jdns_packet.c
+
+	libiris/iris/xmpp/jingle/jinglecontent.cpp
+	libiris/iris/xmpp/jingle/jinglesession.cpp
+	libiris/iris/xmpp/jingle/jinglesessionmanager.cpp
+	libiris/iris/xmpp/jingle/jingletasks.cpp
 )
+
+if(WIN32)
+  LIST(APPEND SOURCES_IRIS libiris/iris/irisnet/corelib/netinterface_win.cpp)
+else(WIN32)
+  LIST(APPEND SOURCES_IRIS libiris/iris/irisnet/corelib/netinterface_unix.cpp)
+endif(WIN32)
 
 set (MOC_SOURCES_IRIS
-	libiris/cutestuff/legacy/ndns.h
-	libiris/cutestuff/legacy/safedelete.h
-	libiris/cutestuff/legacy/servsock.h
-	libiris/cutestuff/legacy/srvresolver.h
+	libiris/iris/xmpp/base/randrandomnumbergenerator.h
+	libiris/iris/xmpp/base/randomnumbergenerator.h
+	libiris/iris/xmpp/jid/jid.h
+	libiris/iris/xmpp/cutestuff/bytestream.h
+	libiris/iris/xmpp/cutestuff/socks.h
+	libiris/iris/xmpp/cutestuff/httpconnect.h
+	libiris/iris/xmpp/cutestuff/bsocket.h
+	libiris/iris/xmpp/cutestuff/httppoll.h
+	libiris/iris/xmpp/xmpp-im/xmpp_xdata.h
+	libiris/iris/xmpp/xmpp-im/xmpp_rosterx.h
+	libiris/iris/xmpp/xmpp-im/xmpp_tasks.h
+	libiris/iris/xmpp/xmpp-im/xmpp_discoitem.h
+	libiris/iris/xmpp/xmpp-im/xmpp_pubsubretraction.h
+	libiris/iris/xmpp/xmpp-im/xmpp_xmlcommon.h
+	libiris/iris/xmpp/xmpp-im/xmpp_roster.h
+	libiris/iris/xmpp/xmpp-im/xmpp_muc.h
+	libiris/iris/xmpp/xmpp-im/xmpp_htmlelement.h
+	libiris/iris/xmpp/xmpp-im/xmpp_receipts.h
+	libiris/iris/xmpp/xmpp-im/xmpp_message.h
+	libiris/iris/xmpp/xmpp-im/xmpp_discoinfotask.h
+	libiris/iris/xmpp/xmpp-im/xmpp_ibb.h
+	libiris/iris/xmpp/xmpp-im/xmpp_liverosteritem.h
+	libiris/iris/xmpp/xmpp-im/xmpp_httpauthrequest.h
+	libiris/iris/xmpp/xmpp-im/xmpp_pubsubitem.h
+	libiris/iris/xmpp/xmpp-im/xmpp_vcard.h
+	libiris/iris/xmpp/xmpp-im/xmpp_client.h
+	libiris/iris/xmpp/xmpp-im/s5b.h
+	libiris/iris/xmpp/xmpp-im/xmpp_url.h
+	libiris/iris/xmpp/xmpp-im/xmpp_chatstate.h
+	libiris/iris/xmpp/xmpp-im/xmpp_task.h
+	libiris/iris/xmpp/xmpp-im/xmpp_address.h
+	libiris/iris/xmpp/xmpp-im/xmpp_agentitem.h
+	libiris/iris/xmpp/xmpp-im/filetransfer.h
+	libiris/iris/xmpp/xmpp-im/xmpp_status.h
+	libiris/iris/xmpp/xmpp-im/xmpp_resourcelist.h
+	libiris/iris/xmpp/xmpp-im/xmpp_liveroster.h
+	libiris/iris/xmpp/xmpp-im/xmpp_resource.h
+	libiris/iris/xmpp/xmpp-im/xmpp_rosteritem.h
+	libiris/iris/xmpp/xmpp-im/xmpp_features.h
+	libiris/iris/xmpp/xmpp-im/im.h
+	libiris/iris/xmpp/sasl/digestmd5response.h
+	libiris/iris/xmpp/sasl/digestmd5proplist.h
+	libiris/iris/xmpp/sasl/plainmessage.h
+	libiris/iris/xmpp/zlib/common.h
+	libiris/iris/xmpp/zlib/zlibdecompressor.h
+	libiris/iris/xmpp/zlib/zlibcompressor.h
+	libiris/iris/xmpp/base64/base64.h
+	libiris/iris/xmpp/xmpp-core/xmpp_stanza.h
+	libiris/iris/xmpp/xmpp-core/simplesasl.h
+	libiris/iris/xmpp/xmpp-core/securestream.h
+	libiris/iris/xmpp/xmpp-core/protocol.h
+	libiris/iris/xmpp/xmpp-core/compressionhandler.h
+	libiris/iris/xmpp/xmpp-core/xmlprotocol.h
+	libiris/iris/xmpp/xmpp-core/xmpp.h
+	libiris/iris/xmpp/xmpp-core/xmpp_clientstream.h
+	libiris/iris/xmpp/xmpp-core/xmpp_stream.h
+	libiris/iris/xmpp/xmpp-core/td.h
+	libiris/iris/xmpp/xmpp-core/parser.h
 
-	libiris/cutestuff/network/bsocket.h
-	libiris/cutestuff/network/httpconnect.h
-	libiris/cutestuff/network/socks.h
-	libiris/cutestuff/network/httppoll.h
+	libiris/iris/jdns/qjdns.h
 
-	libiris/cutestuff/util/bytestream.h
+	libiris/iris/irisnet/noncore/stuntransaction.h
+	libiris/iris/irisnet/noncore/stunbinding.h
+	libiris/iris/irisnet/noncore/legacy/ndns.h
+	libiris/iris/irisnet/noncore/legacy/safedelete.h
+	libiris/iris/irisnet/noncore/legacy/servsock.h
+	libiris/iris/irisnet/noncore/legacy/srvresolver.h
+	libiris/iris/irisnet/noncore/stunallocate.h
+	libiris/iris/irisnet/noncore/ice176.h
+	libiris/iris/irisnet/noncore/processquit.h
+	libiris/iris/irisnet/noncore/icelocaltransport.h
+	libiris/iris/irisnet/corelib/irisnetglobal.h
+	libiris/iris/irisnet/corelib/objectsession.h
+	libiris/iris/irisnet/corelib/netavailability.h
+	libiris/iris/irisnet/corelib/netnames.h
+	libiris/iris/irisnet/corelib/irisnetplugin.h
+	libiris/iris/irisnet/corelib/netinterface.h
+	libiris/iris/irisnet/corelib/jdnsshared.h
 
-	libiris/iris/include/xmpp.h
-	libiris/iris/include/xmpp_task.h
-	libiris/iris/include/xmpp_client.h
-	libiris/iris/include/xmpp_clientstream.h
-	#libiris/iris/include/xmpp_liverosteritem.h
-	libiris/iris/include/xmpp_stream.h
-
-	libiris/iris/jabber/filetransfer.h
-	libiris/iris/jabber/s5b.h
-	libiris/iris/jabber/xmpp_ibb.h
-
-	libiris/iris/xmpp-core/compress.h
-	libiris/iris/xmpp-core/compressionhandler.h
-	libiris/iris/xmpp-core/securestream.h
-
-	libiris/iris/xmpp-im/xmpp_tasks.h
-	libiris/iris/xmpp-im/xmpp_discoinfotask.h
-	libiris/iris/jabber/jinglesession.h
-	libiris/iris/jabber/jingletasks.h
-	libiris/iris/jabber/jinglecontent.h
-	libiris/iris/jabber/jinglesessionmanager.h
+	libiris/iris/xmpp/jingle/jinglecontent.h
+	libiris/iris/xmpp/jingle/jinglesession.h
+	libiris/iris/xmpp/jingle/jinglesessionmanager.h
+	libiris/iris/xmpp/jingle/jingletasks.h
 )
 
 set (MOC_SOURCES2_IRIS
-	libiris/cutestuff/network/bsocket.cpp
-	libiris/iris/jabber/s5b.cpp
-	libiris/iris/xmpp-core/securestream.cpp
-	libiris/iris/xmpp-im/xmpp_features.cpp
+	libiris/iris/jdns/qjdns.cpp
+	libiris/iris/irisnet/corelib/netavailability.cpp
+	libiris/iris/irisnet/corelib/netinterface_unix.cpp
+	libiris/iris/irisnet/corelib/jdnsshared.cpp
+	libiris/iris/irisnet/corelib/netinterface.cpp
+	libiris/iris/irisnet/corelib/netnames.cpp
+	libiris/iris/irisnet/corelib/netnames_jdns.cpp
+	libiris/iris/irisnet/corelib/objectsession.cpp
+	libiris/iris/irisnet/noncore/ice176.cpp
+	libiris/iris/irisnet/noncore/icelocaltransport.cpp
+	libiris/iris/irisnet/noncore/processquit.cpp
+	libiris/iris/irisnet/noncore/stunallocate.cpp
+	libiris/iris/irisnet/noncore/stunbinding.cpp
+	libiris/iris/irisnet/noncore/stuntransaction.cpp
+	libiris/iris/xmpp/cutestuff/bsocket.cpp
+	libiris/iris/xmpp/xmpp-core/securestream.cpp
+	libiris/iris/xmpp/xmpp-im/s5b.cpp
+	libiris/iris/xmpp/xmpp-im/xmpp_features.cpp
 )
 
 set (SOURCES
@@ -202,7 +290,8 @@ set (TRANSLATION_SOURCES
 
 set (CONFIGURATION_FILES
 	configuration/jabber_contact.ui
-	configuration/jabber_protocol.ui)
+	configuration/jabber_protocol.ui
+)
 
 KADU_JABBER_AUTOMOC ( ${MOC_SOURCES2_IRIS} )
 
@@ -222,15 +311,25 @@ set_target_properties(jabber_protocol PROPERTIES
 include_directories(
 	${QCA2_INCLUDE_DIRS}
 	${IDN_INCLUDE_DIRS}
-	libiris/iris/
-	libiris/iris/include/
-	libiris/iris/jabber/
-	libiris/iris/xmpp-core/
-	libiris/iris/xmpp-im/
-	libiris/cutestuff/util/
-	libiris/cutestuff/legacy/
-	libiris/cutestuff/network/
-	libiris/cutestuff/ )
+	${CMAKE_CURRENT_SOURCE_DIR}/libiris
+	${CMAKE_CURRENT_SOURCE_DIR}/libiris/include
+	${CMAKE_CURRENT_SOURCE_DIR}/libiris/iris
+	${CMAKE_CURRENT_SOURCE_DIR}/libiris/iris/xmpp/base
+	${CMAKE_CURRENT_SOURCE_DIR}/libiris/iris/xmpp/base
+	${CMAKE_CURRENT_SOURCE_DIR}/libiris/iris/xmpp/jid
+	${CMAKE_CURRENT_SOURCE_DIR}/libiris/iris/xmpp/cutestuff
+	${CMAKE_CURRENT_SOURCE_DIR}/libiris/iris/xmpp/xmpp-im
+	${CMAKE_CURRENT_SOURCE_DIR}/libiris/iris/xmpp/sasl
+	${CMAKE_CURRENT_SOURCE_DIR}/libiris/iris/xmpp/zlib
+	${CMAKE_CURRENT_SOURCE_DIR}/libiris/iris/xmpp/base64
+	${CMAKE_CURRENT_SOURCE_DIR}/libiris/iris/xmpp/xmpp-core
+	${CMAKE_CURRENT_SOURCE_DIR}/libiris/iris/xmpp/jingle
+	${CMAKE_CURRENT_SOURCE_DIR}/libiris/iris/jdns
+	${CMAKE_CURRENT_SOURCE_DIR}/libiris/iris/irisnet/noncore
+	${CMAKE_CURRENT_SOURCE_DIR}/libiris/iris/irisnet/noncore/legacy
+	${CMAKE_CURRENT_SOURCE_DIR}/libiris/iris/irisnet/corelib
+	${CMAKE_CURRENT_SOURCE_DIR}/libiris/iris/irisnet/appledns
+)
 
 target_link_libraries(jabber_protocol ${QCA2_LIBRARIES} ${IDN_LIBRARIES} ${QT_LIBRARIES} )
 

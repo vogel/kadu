@@ -14,12 +14,12 @@
 #include "jabber-contact-account-data.h"
 #include "../jabber_protocol.h"
 
-#include "libiris/iris/jabber/filetransfer.h"
+#include "libiris/include/filetransfer.h"
 
 #include "jabber-file-transfer.h"
 
-
-typedef Q_UINT64 LARGE_TYPE;
+//typedef Q_UINT64 LARGE_TYPE;
+typedef long long LARGE_TYPE;
 
 #define CSMAX (sizeof(LARGE_TYPE)*8)
 #define CSMIN 16
@@ -71,7 +71,7 @@ static void active_file_remove(const QString &s)
 {
 	if(!activeFiles)
 		return;
-	activeFiles->remove(s);
+	activeFiles->removeAt(activeFiles->indexOf(s));
 	//printf("removed: [%s]\n", s.latin1());
 }
 
@@ -568,7 +568,7 @@ void JabberFileTransfer::slotIncomingDataReady ( const QByteArray &data )
 	kdebug("Incoming data ...\n");
 	//if(!d->sending) {
 		//printf("%d bytes read\n", a.size());
-		int r = LocalFile.writeBlock(data.data(), data.size());
+		int r = LocalFile.write(data.data(), data.size());
 		if(r < 0) {
 			LocalFile.close();
 			delete JabberTransfer;

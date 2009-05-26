@@ -33,7 +33,7 @@ public:
 	 : protocol(t_protocol), jid(t_jid), resource(t_resource), capsEnabled(false)
 	{
 		// Make sure the resource is always set.
-		jid.setResource(resource.name());
+		jid.withResource(resource.name());
 	}
 
 	JabberProtocol *protocol;
@@ -117,7 +117,8 @@ void JabberResource::slotGetTimedClientVersion ()
 {
 	if (d->protocol->isConnected())
 	{
-		kdebug("Requesting client version for %1\n", d->jid.full().local8Bit().data());
+		QString jid = d->jid.full();
+		kdebug("Requesting client version for %1\n", jid.toLocal8Bit().data());
 		// request client version
 		XMPP::JT_ClientVersion *task = new XMPP::JT_ClientVersion(d->protocol->client()->rootTask());
 		// signal to ourselves when the vCard data arrived
@@ -144,7 +145,8 @@ void JabberResource:: slotGetDiscoCapabilties ()
 {
 	if ( d->protocol->isConnected () )
 	{
-		kdebug("Requesting Client Features for %1\n", d->jid.full().local8Bit().data());
+		QString jid = d->jid.full();
+		kdebug("Requesting Client Features for %1\n", jid.toLocal8Bit().data());
 
 		XMPP:: JT_DiscoInfo *task = new XMPP::JT_DiscoInfo ( d->protocol->client()->rootTask () );
 		// Retrive features when service discovery is done.
