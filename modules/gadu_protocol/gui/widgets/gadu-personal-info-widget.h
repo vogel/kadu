@@ -7,25 +7,43 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GADU_EDIT_ACCOUNT_WIDGET_H
-#define GADU_EDIT_ACCOUNT_WIDGET_H
+#ifndef GADU_PERSONAL_INFO_WIDGET_H
+#define GADU_PERSONAL_INFO_WIDGET_H
 
-#include "gui/widgets/account-edit-widget.h"
+#include <QtGui/QWidget>
 
-class QTabWidget;
+#include "contacts/contact.h"
 
-class GaduEditAccountWidget : public AccountEditWidget
+class QComboBox;
+class QLineEdit;
+
+class Account;
+class PersonalInfoService;
+
+class GaduPersonalInfoWidget : public QWidget
 {
 	Q_OBJECT
 
+	PersonalInfoService *Service;
+
+	QLineEdit *NickName;
+	QLineEdit *FirstName;
+	QLineEdit *LastName;
+	QComboBox *Sex;
+	QLineEdit *FamilyName;
+	QLineEdit *BirthYear;
+	QLineEdit *City;
+	QLineEdit *FamilyCity;
+
 	void createGui();
-	void createGeneralTab(QTabWidget *);
-	void createPersonalDataTab(QTabWidget *);
+
+private slots:
+	void personalInfoAvailable(Contact contact);
 
 public:
-	explicit GaduEditAccountWidget(Account *account, QWidget *parent = 0);
-	virtual ~GaduEditAccountWidget();
+	explicit GaduPersonalInfoWidget(Account *account, QWidget *parent = 0);
+	virtual ~GaduPersonalInfoWidget();
 
 };
 
-#endif // GADU_EDIT_ACCOUNT_WIDGET_H
+#endif // GADU_PERSONAL_INFO_WIDGET_H

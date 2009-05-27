@@ -15,13 +15,13 @@
 #include <QtGui/QPushButton>
 #include <QtGui/QTabWidget>
 
+#include "gui/widgets/gadu-personal-info-widget.h"
+
 #include "gadu-edit-account-widget.h"
 
 GaduEditAccountWidget::GaduEditAccountWidget(Account *account, QWidget *parent) :
 		AccountEditWidget(account, parent)
 {
-	setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
-
 	createGui();
 }
 
@@ -35,10 +35,10 @@ void GaduEditAccountWidget::createGui()
 	QTabWidget *tabWidget = new QTabWidget(this);
 
 	createGeneralTab(tabWidget);
-	tabWidget->addTab(new QWidget(), tr("Personal data"));
-	tabWidget->addTab(new QWidget(), tr("Buddies"));
-	tabWidget->addTab(new QWidget(), tr("Connection"));
-	tabWidget->addTab(new QWidget(), tr("Functions"));
+	createPersonalDataTab(tabWidget);
+// 	tabWidget->addTab(new QWidget(), tr("Buddies"));
+// 	tabWidget->addTab(new QWidget(), tr("Connection"));
+// 	tabWidget->addTab(new QWidget(), tr("Functions"));
 }
 
 
@@ -99,4 +99,10 @@ void GaduEditAccountWidget::createGeneralTab(QTabWidget *tabWidget)
 	layout->addWidget(changePicture, row++, 5);
 
 	tabWidget->addTab(generalTab, tr("General"));
+}
+
+void GaduEditAccountWidget::createPersonalDataTab(QTabWidget *tabWidget)
+{
+	GaduPersonalInfoWidget *gpiw = new GaduPersonalInfoWidget(account(), tabWidget);
+	tabWidget->addTab(gpiw, tr("Personal info"));
 }

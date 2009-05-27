@@ -7,6 +7,7 @@ set (SOURCES
 
 	gui/widgets/gadu-create-account-widget.cpp
 	gui/widgets/gadu-edit-account-widget.cpp
+	gui/widgets/gadu-personal-info-widget.cpp
 	gui/widgets/token-widget.cpp
 
 	helpers/gadu-formatter.cpp
@@ -53,6 +54,7 @@ set (MOC_SOURCES
 
 	gui/widgets/gadu-create-account-widget.h
 	gui/widgets/gadu-edit-account-widget.h
+	gui/widgets/gadu-personal-info-widget.h
 	gui/widgets/token-widget.h
 
 	helpers/gadu-importer.h
