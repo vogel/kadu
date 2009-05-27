@@ -13,15 +13,15 @@
 
 #include "gadu-server-register-account.h"
 
-GaduServerRegisterAccount::GaduServerRegisterAccount(TokenReader *reader, const QString &mail, const QString &password)
-	: GaduServerConnector(reader), H(0), Uin(0), Mail(mail), Password(password)
+GaduServerRegisterAccount::GaduServerRegisterAccount(const QString &mail, const QString &password, const QString &tokenId, const QString &tokenValue)
+	: QObject(), H(0), Uin(0), Result(0), Mail(mail), Password(password), TokenId(tokenId), TokenValue(tokenValue)
 {
 }
 
-void GaduServerRegisterAccount::performAction(const QString &tokenId, const QString &tokenValue)
+void GaduServerRegisterAccount::performAction()
 {
 	H = gg_register3(unicode2cp(Mail).data(), unicode2cp(Password).data(),
-			unicode2cp(tokenId).data(), unicode2cp(tokenValue).data(), 1);
+			unicode2cp(TokenId).data(), unicode2cp(TokenValue).data(), 1);
 	if (H)
 	{
 		GaduPubdirSocketNotifiers *sn = new GaduPubdirSocketNotifiers();
@@ -29,7 +29,7 @@ void GaduServerRegisterAccount::performAction(const QString &tokenId, const QStr
 		sn->watchFor(H);
 	}
 	else
-		finished(false);
+		finished(this);
 }
 
 void GaduServerRegisterAccount::done(bool ok, struct gg_http *h)
@@ -37,7 +37,9 @@ void GaduServerRegisterAccount::done(bool ok, struct gg_http *h)
 	if (ok)
 		Uin = ((struct gg_pubdir *)h->data)->uin;
 
-	finished(ok);
+	Result = ok;
+
+	finished(this);
 
 	if (H)
 	{

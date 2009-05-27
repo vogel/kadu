@@ -37,6 +37,7 @@ TokenWidget::TokenWidget(QWidget *parent) : QWidget(parent)
 	frameLayout->addWidget(refreshButton);
 
 	TokenCode = new QLineEdit(this);
+	connect(TokenCode, SIGNAL(textChanged(QString)), this, SIGNAL(modified()));
 
 	QHBoxLayout *mainLayout = new QHBoxLayout(this);
 	frameLayout->setContentsMargins(0, 0, 0, 0);

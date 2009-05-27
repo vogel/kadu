@@ -78,15 +78,16 @@ void GaduConfigurationDialog::registerNewAccountClicked()
 */
 	setEnabled(false);
 
-	GaduServerRegisterAccount *gsra = new GaduServerRegisterAccount(Core::instance(), mail, password);
-	connect(gsra, SIGNAL(finished(GaduServerConnector *)),
-			this, SLOT(registerNewAccountFinished(GaduServerConnector *)));
+//	GaduServerRegisterAccount *gsra = new GaduServerRegisterAccount(Core::instance(), mail, password);
+//	connect(gsra, SIGNAL(finished(GaduServerConnector *)),
+//			this, SLOT(registerNewAccountFinished(GaduServerConnector *)));
 
-	gsra->perform();
+//	gsra->perform();
 }
 
 void GaduConfigurationDialog::registerNewAccountFinished(GaduServerConnector *gsc)
 {
+/*
 	GaduServerRegisterAccount *gsra = dynamic_cast<GaduServerRegisterAccount *>(gsc);
 	if (!gsra)
 		return;
@@ -107,4 +108,5 @@ void GaduConfigurationDialog::registerNewAccountFinished(GaduServerConnector *gs
 
 	delete gsra;
 	setEnabled(true);
+*/
 }

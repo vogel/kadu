@@ -10,17 +10,20 @@
 #include <QtGui/QCheckBox>
 #include <QtGui/QComboBox>
 #include <QtGui/QGridLayout>
+#include <QtGui/QIntValidator>
 #include <QtGui/QLabel>
 #include <QtGui/QLineEdit>
 #include <QtGui/QPushButton>
 #include <QtGui/QRadioButton>
 
+#include "../../server/gadu-server-register-account.h"
+#include "html_document.h"
 #include "gadu-account.h"
 #include "gadu-protocol-factory.h"
+#include "token-widget.h"
+#include "message_box.h"
 
 #include "gadu-create-account-widget.h"
-
-#include "token-widget.h"
 
 GaduCreateAccountWidget::GaduCreateAccountWidget(QWidget *parent) :
 		AccountCreateWidget(parent)
@@ -65,15 +68,19 @@ void GaduCreateAccountWidget::createIHaveAccountGui(QGridLayout *gridLayout, int
 	QLabel *numberLabel = new QLabel(tr("Gadu-Gadu number") + ":", this);
 	gridLayout->addWidget(numberLabel, row, 1, Qt::AlignRight);
 	AccountId = new QLineEdit(this);
+	AccountId->setValidator(new QIntValidator(1, 99999999, this));
+	connect(AccountId, SIGNAL(textChanged(QString)), this, SLOT(iHaveAccountDataChanged()));
 	gridLayout->addWidget(AccountId, row++, 2, 1, 2);
 
 	QLabel *passwordLabel = new QLabel(tr("Password") + ":", this);
 	gridLayout->addWidget(passwordLabel, row, 1, Qt::AlignRight);
 	AccountPassword = new QLineEdit(this);
+	connect(AccountPassword, SIGNAL(textChanged(QString)), this, SLOT(iHaveAccountDataChanged()));
 	AccountPassword->setEchoMode(QLineEdit::Password);
 	gridLayout->addWidget(AccountPassword, row, 2);
-	QPushButton *remindPassword = new QPushButton(tr("Forgot password"), this);
-	gridLayout->addWidget(remindPassword, row++, 3, Qt::AlignLeft);
+	RemindPassword = new QPushButton(tr("Forgot password"), this);
+	RemindPassword->setEnabled(false);
+	gridLayout->addWidget(RemindPassword, row++, 3, Qt::AlignLeft);
 
 	QCheckBox *rememberPassword = new QCheckBox(tr("Remember password"), this);
 	rememberPassword->setChecked(true);
@@ -84,19 +91,20 @@ void GaduCreateAccountWidget::createIHaveAccountGui(QGridLayout *gridLayout, int
 	QComboBox *description = new QComboBox(this);
 	gridLayout->addWidget(description, row++, 2, 1, 2);
 
-	QPushButton *addThisAccount = new QPushButton(tr("Add this account"), this);
-	connect(addThisAccount, SIGNAL(clicked(bool)), this, SLOT(addThisAccount()));
-	gridLayout->addWidget(addThisAccount, row++, 1, 1, 4);
+	AddThisAccount = new QPushButton(tr("Add this account"), this);
+	AddThisAccount->setEnabled(false);
+	connect(AddThisAccount, SIGNAL(clicked(bool)), this, SLOT(addThisAccount()));
+	gridLayout->addWidget(AddThisAccount, row++, 1, 1, 4);
 
 	HaveNumberWidgets.append(numberLabel);
 	HaveNumberWidgets.append(AccountId);
 	HaveNumberWidgets.append(passwordLabel);
 	HaveNumberWidgets.append(AccountPassword);
-	HaveNumberWidgets.append(remindPassword);
+	HaveNumberWidgets.append(RemindPassword);
 	HaveNumberWidgets.append(rememberPassword);
 	HaveNumberWidgets.append(descriptionLabel);
 	HaveNumberWidgets.append(description);
-	HaveNumberWidgets.append(addThisAccount);
+	HaveNumberWidgets.append(AddThisAccount);
 }
 
 void GaduCreateAccountWidget::createRegisterAccountGui(QGridLayout *gridLayout, int &row)
@@ -106,43 +114,45 @@ void GaduCreateAccountWidget::createRegisterAccountGui(QGridLayout *gridLayout, 
 
 	QLabel *newPasswordLabel = new QLabel(tr("New password") + ":", this);
 	gridLayout->addWidget(newPasswordLabel, row, 1, Qt::AlignRight);
-	QLineEdit *newPassword = new QLineEdit(this);
-	newPassword->setEchoMode(QLineEdit::Password);
-	gridLayout->addWidget(newPassword, row++, 2, 1, 2);
+	NewPassword = new QLineEdit(this);
+	connect(NewPassword, SIGNAL(textChanged(QString)), this, SLOT(registerAccountDataChanged()));
+	NewPassword->setEchoMode(QLineEdit::Password);
+	gridLayout->addWidget(NewPassword, row++, 2, 1, 2);
 
 	QLabel *reNewPasswordLabel = new QLabel(tr("Retype password") + ":", this);
 	gridLayout->addWidget(reNewPasswordLabel, row, 1, Qt::AlignRight);
-	QLineEdit *reNewPassword = new QLineEdit(this);
-	reNewPassword->setEchoMode(QLineEdit::Password);
-	gridLayout->addWidget(reNewPassword, row++, 2, 1, 2);
+	ReNewPassword = new QLineEdit(this);
+	connect(ReNewPassword, SIGNAL(textChanged(QString)), this, SLOT(registerAccountDataChanged()));
+	ReNewPassword->setEchoMode(QLineEdit::Password);
+	gridLayout->addWidget(ReNewPassword, row++, 2, 1, 2);
 
 	QLabel *eMailLabel = new QLabel(tr("Your e-mail address") + ":", this);
 	gridLayout->addWidget(eMailLabel, row, 1, Qt::AlignRight);
-	QLineEdit *eMail = new QLineEdit(this);
-	gridLayout->addWidget(eMail, row++, 2, 1, 2);
+	EMail = new QLineEdit(this);
+	connect(EMail, SIGNAL(textChanged(QString)), this, SLOT(registerAccountDataChanged()));
+	gridLayout->addWidget(EMail, row++, 2, 1, 2);
 
 	QLabel *tokenLabel = new QLabel(tr("Type this code") + ":", this);
 	gridLayout->addWidget(tokenLabel, row, 1, Qt::AlignRight);
 
-	TokenWidget *tokenWidget = new TokenWidget(this);
+	tokenWidget = new TokenWidget(this);
+	connect(tokenWidget, SIGNAL(modified()), this, SLOT(registerAccountDataChanged()));
 	gridLayout->addWidget(tokenWidget, row++, 2, 1, 2);
 
-	QPushButton *registerAccount = new QPushButton(tr("Register"), this);
+	registerAccount = new QPushButton(tr("Register"), this);
+	registerAccount->setEnabled(false);
+	connect(registerAccount, SIGNAL(clicked(bool)), this, SLOT(registerNewAccount()));
 	gridLayout->addWidget(registerAccount, row++, 1, 1, 3);
 
-	QPushButton *addThisAccount = new QPushButton(tr("Add this account"), this);
-	gridLayout->addWidget(addThisAccount, row++, 1, 1, 3);
-
 	DontHaveNumberWidgets.append(newPasswordLabel);
-	DontHaveNumberWidgets.append(newPassword);
+	DontHaveNumberWidgets.append(NewPassword);
 	DontHaveNumberWidgets.append(reNewPasswordLabel);
-	DontHaveNumberWidgets.append(reNewPassword);
+	DontHaveNumberWidgets.append(ReNewPassword);
 	DontHaveNumberWidgets.append(eMailLabel);
-	DontHaveNumberWidgets.append(eMail);
+	DontHaveNumberWidgets.append(EMail);
 	DontHaveNumberWidgets.append(registerAccount);
 	DontHaveNumberWidgets.append(tokenLabel);
 	DontHaveNumberWidgets.append(tokenWidget);
-	DontHaveNumberWidgets.append(addThisAccount);
 }
 
 void GaduCreateAccountWidget::haveNumberChanged(bool haveNumber)
@@ -153,6 +163,12 @@ void GaduCreateAccountWidget::haveNumberChanged(bool haveNumber)
 		widget->setVisible(!haveNumber);
 }
 
+void GaduCreateAccountWidget::iHaveAccountDataChanged()
+{
+	RemindPassword->setEnabled(!AccountId->text().isEmpty());
+	AddThisAccount->setEnabled(!AccountId->text().isEmpty() && !AccountPassword->text().isEmpty());
+}
+
 void GaduCreateAccountWidget::addThisAccount()
 {
 	Account *gaduAccount = GaduProtocolFactory::instance()->newAccount();
@@ -161,4 +177,49 @@ void GaduCreateAccountWidget::addThisAccount()
 	gaduAccount->setPassword(AccountPassword->text());
 
 	emit accountCreated(gaduAccount);
+}
+
+void GaduCreateAccountWidget::registerAccountDataChanged()
+{
+	bool disable = NewPassword->text().isEmpty() || ReNewPassword->text().isEmpty()
+		      || EMail->text().indexOf(HtmlDocument::mailRegExp()) < 0 || tokenWidget->tokenValue().isEmpty();
+
+	registerAccount->setEnabled(!disable);
+}
+
+void GaduCreateAccountWidget::registerNewAccount()
+{
+    	if (NewPassword->text() != ReNewPassword->text())
+	{
+		MessageBox::msg(tr("Error data typed in required fields.\n\n"
+			"Passwords typed in both fields (\"New password\" and \"Retype password\") "
+			"should be the same!"));
+		return;
+	}
+
+	GaduServerRegisterAccount *gsra = new GaduServerRegisterAccount(EMail->text(), NewPassword->text(),
+									tokenWidget->tokenId(), tokenWidget->tokenValue());
+	connect(gsra, SIGNAL(finished(GaduServerRegisterAccount *)),
+			this, SLOT(registerNewAccountFinished(GaduServerRegisterAccount *)));
+
+	gsra->performAction();
+}
+
+void GaduCreateAccountWidget::registerNewAccountFinished(GaduServerRegisterAccount *gsra)
+{
+	if (gsra->result())
+	{
+		MessageBox::msg(tr("Registration was successful. Your new number is %1.\nStore it in a safe place along with the password.\nNow add your friends to the userlist.").arg(gsra->uin()), false, "Information", this);
+
+		Account *gaduAccount = GaduProtocolFactory::instance()->newAccount();
+		gaduAccount->setName(AccountName->text());
+		gaduAccount->setId(QString::number(gsra->uin()));
+		gaduAccount->setPassword(NewPassword->text());
+
+		emit accountCreated(gaduAccount);
+	}
+	else
+		MessageBox::msg(tr("An error has occured while registration. Please try again later."), false, "Warning", this);
+
+	delete gsra;
 }

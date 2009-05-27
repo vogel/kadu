@@ -339,7 +339,7 @@ void TabsManager::onOpenChat(ChatWidget *chat)
 	kdebugf();
 	if (chat && tabdialog->indexOf(chat)!=-1)
 	{
-		tabdialog->setWindowState(tabdialog->windowState() & Qt::WindowMinimized);
+		tabdialog->setWindowState(tabdialog->windowState() & ~Qt::WindowMinimized);
 		tabdialog->setCurrentWidget(chat);
 		tabdialog->raise();
 	}
@@ -431,7 +431,7 @@ void TabsManager::insertTab(ChatWidget* chat)
 
 	if ((config_autoTabChange && !chatsWithNewMessages.contains(chat)) || autoswith)
 		tabdialog->setCurrentWidget(chat);
-	tabdialog->setWindowState(tabdialog->windowState() & Qt::WindowMinimized);
+	tabdialog->setWindowState(tabdialog->windowState() & ~Qt::WindowMinimized);
 	tabdialog->show();
 	tabdialog->raise();
 	tabdialog->activateWindow();

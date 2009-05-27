@@ -39,6 +39,9 @@ public:
 	QString tokenId();
 	QString tokenValue();
 
+signals:
+	void modified();
+
 };
 
 #endif // TOKEN_WIDGET_H

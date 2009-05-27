@@ -14,29 +14,36 @@
 
 #include "protocols/protocol.h"
 
-#include "gadu-server-connector.h"
+#include <QtCore/QObject>
 
-class GaduServerRegisterAccount : public GaduServerConnector
+class GaduServerRegisterAccount : public QObject
 {
 	Q_OBJECT
 
 	struct gg_http *H;
 
+	bool Result;
+
 	UinType Uin;
 	QString Mail;
 	QString Password;
+	QString TokenId;
+	QString TokenValue;
 
 private slots:
 	void done(bool ok, struct gg_http *h);
 
-protected:
-	virtual void performAction(const QString &tokenId, const QString &tokenValue);
-
 public:
-	GaduServerRegisterAccount(TokenReader *reader, const QString &mail, const QString &password);
+	GaduServerRegisterAccount(const QString &mail, const QString &password, const QString &tokenId, const QString &tokenValue);
+
+	void performAction();
 
 	UinType uin() { return Uin; }
 
+	bool result() { return Result; }
+
+signals:
+	void finished(GaduServerRegisterAccount *);
 };
 
 #endif // GADU_SERVER_REGISTER_ACCOUNT_H

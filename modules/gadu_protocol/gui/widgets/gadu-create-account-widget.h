@@ -14,6 +14,10 @@
 
 class QGridLayout;
 class QLineEdit;
+class QPushButton;
+
+class GaduServerRegisterAccount;
+class TokenWidget;
 
 class GaduCreateAccountWidget : public AccountCreateWidget
 {
@@ -26,13 +30,28 @@ class GaduCreateAccountWidget : public AccountCreateWidget
 	QLineEdit *AccountId;
 	QLineEdit *AccountPassword;
 
+	QPushButton *AddThisAccount;
+	QPushButton *RemindPassword;
+
+	QLineEdit *NewPassword;
+	QLineEdit *ReNewPassword;
+	QLineEdit *EMail;
+
+	TokenWidget *tokenWidget;
+
+	QPushButton *registerAccount;
+
 	void createGui();
 	void createIHaveAccountGui(QGridLayout *gridLayout, int &row);
 	void createRegisterAccountGui(QGridLayout *gridLayout, int &row);
 
 private slots:
 	void haveNumberChanged(bool haveNumber);
+	void iHaveAccountDataChanged();
 	void addThisAccount();
+	void registerAccountDataChanged();
+	void registerNewAccount();
+	void registerNewAccountFinished(GaduServerRegisterAccount *gsra);
 
 public:
 	explicit GaduCreateAccountWidget(QWidget *parent = 0);

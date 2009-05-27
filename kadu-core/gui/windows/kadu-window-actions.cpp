@@ -163,7 +163,7 @@ void disableNoGaduDescription(KaduAction *action)
 	kdebugf();
 
 	Contact contact = action->contact();
-	Account *account = AccountManager::instance()->defaultAccount();
+	Account *account = contact.prefferedAccount();
 
 	if (contact.isNull())
 	{
@@ -191,8 +191,8 @@ void disableNoGaduDescriptionUrl(KaduAction *action)
 {
 	kdebugf();
 
-	Account *account = AccountManager::instance()->defaultAccount();
 	Contact contact = action->contact();
+	Account *account = contact.prefferedAccount();
 
 	if (contact.isNull())
 	{
