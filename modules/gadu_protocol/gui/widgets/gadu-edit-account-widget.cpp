@@ -32,7 +32,10 @@ GaduEditAccountWidget::~GaduEditAccountWidget()
 
 void GaduEditAccountWidget::createGui()
 {
+	QGridLayout *mainLayout = new QGridLayout(this);
+
 	QTabWidget *tabWidget = new QTabWidget(this);
+	mainLayout->addWidget(tabWidget);
 
 	createGeneralTab(tabWidget);
 	createPersonalDataTab(tabWidget);
