@@ -325,21 +325,16 @@ void UserlistImportExport::ExportToFile(void)
 	if (!fname.isEmpty())
 	{
 		QFile file(fname);
-		if ((!file.exists()) || (MessageBox::ask(tr("File exists. Are you sure you want to overwrite it?"), QString::null, this)))
+		if (file.open(QIODevice::WriteOnly))
 		{
-			if (file.open(QIODevice::WriteOnly))
-			{
-				QTextStream stream(&file);
-				stream.setCodec(codec_latin2);
-				stream << gadu->userListToString(*userlist);
-				file.close();
-				MessageBox::msg(tr("Your userlist has been successfully exported to file"), false, "Information", this);
-			}
-			else
-				MessageBox::msg(tr("The application encountered an internal error\nThe export userlist to file was unsuccessful"), false, "Critical", this);
+			QTextStream stream(&file);
+			stream.setCodec(codec_latin2);
+			stream << gadu->userListToString(*userlist);
+			file.close();
+			MessageBox::msg(tr("Your userlist has been successfully exported to file"), false, "Information", this);
 		}
 		else
-			QTimer::singleShot(0, this, SLOT(ExportToFile()));
+			MessageBox::msg(tr("The application encountered an internal error\nThe export userlist to file was unsuccessful"), false, "Critical", this);
 	}
 
 	pb_send->setEnabled(true);
