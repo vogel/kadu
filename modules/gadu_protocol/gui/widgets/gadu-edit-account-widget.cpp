@@ -88,6 +88,7 @@ void GaduEditAccountWidget::createGeneralTab(QTabWidget *tabWidget)
 
 	QPushButton *removeAccount = new QPushButton(tr("Remove account"), this);
 	layout->addWidget(removeAccount, row++, 1, 1, 3);
+	layout->setRowStretch(row, 100);
 
 	row = 0;
 	QLabel *photoLabel = new QLabel(tr("Your picture"), this);

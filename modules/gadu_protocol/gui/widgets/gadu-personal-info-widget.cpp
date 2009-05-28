@@ -75,6 +75,7 @@ void GaduPersonalInfoWidget::createGui()
 	layout->addWidget(City, 7, 0);
 	layout->addWidget(familyCityLabel, 6, 1);
 	layout->addWidget(FamilyCity, 7, 1);
+	layout->setRowStretch(8, 100);
 }
 
 void GaduPersonalInfoWidget::personalInfoAvailable(Contact contact)

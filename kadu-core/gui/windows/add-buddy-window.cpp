@@ -22,6 +22,7 @@
 #include "contacts/group.h"
 #include "contacts/group-manager.h"
 #include "icons-manager.h"
+#include "misc/misc.h"
 #include "protocols/protocol.h"
 
 #include "add-buddy-window.h"
@@ -52,10 +53,17 @@ AddBuddyWindow::AddBuddyWindow(Contact contact, QWidget *parent)
 	buddyUid->setReadOnly(true);
 }
 
+AddBuddyWindow::~AddBuddyWindow()
+{
+    	saveWindowGeometry(this, "General", "AddBuddyWindowGeometry");
+}
+
 void AddBuddyWindow::createGui()
 {
 	setWindowTitle(tr("Add buddy"));
 	setAttribute(Qt::WA_DeleteOnClose);
+
+	loadWindowGeometry(this, "General", "AddBuddyWindowGeometry", 0, 50, 425, 430);
 
 	QVBoxLayout *main_layout = new QVBoxLayout(this);
 
@@ -168,13 +176,14 @@ void AddBuddyWindow::createGui()
 	connect(addBuddyButton, SIGNAL(clicked()), this, SLOT(addBuddy()));
 	connect(cancelButton, SIGNAL(clicked()), this, SLOT(close()));
 
-	main_layout->setSizeConstraint(QLayout::SetFixedSize);
+//	main_layout->setSizeConstraint(QLayout::SetFixedSize);
 	main_layout->addWidget(topWidget);
 	main_layout->addWidget(frame);
 	main_layout->addWidget(info);
 	main_layout->addLayout(stepOneLayout);
 	main_layout->addWidget(chooseAccountWidget);
 	main_layout->addWidget(stepTwoWidget);
+	main_layout->addStretch(100);
 	main_layout->addWidget(buttons_layout);
 }
 

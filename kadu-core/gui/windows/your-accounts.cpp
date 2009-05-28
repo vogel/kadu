@@ -50,7 +50,7 @@ void YourAccounts::createGui()
 {
 	QVBoxLayout *mainLayout = new QVBoxLayout(this);
 
-	QHBoxLayout *contentLayout = new QHBoxLayout();
+	QHBoxLayout *contentLayout = new QHBoxLayout;
 	mainLayout->addItem(contentLayout);
 
 	QVBoxLayout *sideLayout = new QVBoxLayout;

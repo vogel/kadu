@@ -53,7 +53,7 @@ private slots:
 public:
 	AddBuddyWindow(QWidget *parent = 0);
 	AddBuddyWindow(Contact contact, QWidget *parent = 0);
-
+	~AddBuddyWindow();
 };
 
 #endif // ADD_BUDDY_WINDOW_H
