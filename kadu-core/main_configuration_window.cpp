@@ -21,6 +21,8 @@
 #include "chat/chat_message.h"
 #include "chat/chat_styles_manager.h"
 
+#include "core/core.h"
+
 #include "contacts/contact.h"
 #include "contacts/contact-data.h"
 #include "contacts/contact-account-data.h"
@@ -36,11 +38,14 @@
 #include "gui/widgets/configuration/configuration-widget.h"
 
 #include "gui/widgets/chat_messages_view.h"
+#include "gui/widgets/contact-info-panel.h"
 #include "gui/widgets/tool-tip-class-manager.h"
+
+#include "gui/windows/kadu-window.h"
 
 #include "protocols/status.h"
 
-#include "../modules/gadu_protocol/gadu-protocol.h"
+//#include "../modules/gadu_protocol/gadu-protocol.h"
 
 #include "config_file.h"
 #include "debug.h"
@@ -143,13 +148,13 @@ MainConfigurationWindow::MainConfigurationWindow()
 	onStartupSetLastDescription = dynamic_cast<QCheckBox *>(widget()->widgetById("onStartupSetLastDescription"));
 	QLineEdit *disconnectDescription = dynamic_cast<QLineEdit *>(widget()->widgetById("disconnectDescription"));
 	QLineEdit *onStartupSetDescription = dynamic_cast<QLineEdit *>(widget()->widgetById("onStartupSetDescription"));
-
+//TODO 0.6.6:
 	Account * account = AccountManager::instance()->defaultAccount();
 	if ( 0 != account && 0 != account->protocol())
 	{
-		GaduProtocol *gadu = dynamic_cast<GaduProtocol *>(account->protocol());
-		disconnectDescription->setMaxLength(gadu->maxDescriptionLength());
-		onStartupSetDescription->setMaxLength(gadu->maxDescriptionLength());
+	//	GaduProtocol *gadu = dynamic_cast<GaduProtocol *>(account->protocol());
+	//	disconnectDescription->setMaxLength(gadu->maxDescriptionLength());
+	//	onStartupSetDescription->setMaxLength(gadu->maxDescriptionLength());
 	}
 
 	connect(widget()->widgetById("disconnectWithCurrentDescription"), SIGNAL(toggled(bool)), disconnectDescription, SLOT(setDisabled(bool)));
@@ -192,7 +197,7 @@ MainConfigurationWindow::MainConfigurationWindow()
 
 	Preview *infoPanelSyntaxPreview = dynamic_cast<Preview *>(widget()->widgetById("infoPanelSyntaxPreview"));
 	infoPanelSyntaxPreview->setResetBackgroundColor(config_file.readEntry("Look", "InfoPanelBgColor"));
-	connect(infoPanelSyntaxPreview, SIGNAL(needFixup(QString &)), this, SLOT(infoPanelFixup(QString &)));
+	connect(infoPanelSyntaxPreview, SIGNAL(needFixup(QString &)), Core::instance()->kaduWindow()->infoPanel(), SLOT(styleFixup(QString &)));
 	connect(widget()->widgetById("infoPanelSyntax"), SIGNAL(syntaxChanged(const QString &)), infoPanelSyntaxPreview, SLOT(syntaxChanged(const QString &)));
 	connect(widget()->widgetById("infoPanelSyntax"), SIGNAL(onSyntaxEditorWindowCreated(SyntaxEditorWindow *)),
 		this, SLOT(onInfoPanelSyntaxEditorWindowCreated(SyntaxEditorWindow *)));
@@ -229,12 +234,6 @@ void MainConfigurationWindow::show()
 	}
 
 	ConfigurationWindow::show();
-}
-
-void MainConfigurationWindow::infoPanelFixup(QString &syntax)
-{
-// TODO: 0.6.6
-// 	syntax = QString("<html><head><style type='text/css'>%1</style></head><body>%2</body>").arg(kadu->panelStyle(), syntax);
 }
 
 void MainConfigurationWindow::onChangeStartupStatus(int index)
@@ -660,7 +659,7 @@ QString MainConfigurationWindow::emailIndexToString(int emailIndex)
 
 void MainConfigurationWindow::onInfoPanelSyntaxEditorWindowCreated(SyntaxEditorWindow *syntaxEditorWindow)
 {
-	connect(syntaxEditorWindow->preview(), SIGNAL(needFixup(QString &)), this, SLOT(infoPanelFixup(QString &)));
+	connect(syntaxEditorWindow->preview(), SIGNAL(needFixup(QString &)), Core::instance()->kaduWindow()->infoPanel(), SLOT(styleFixup(QString &)));
 }
 
 void MainConfigurationWindow::showLookChatAdvanced()

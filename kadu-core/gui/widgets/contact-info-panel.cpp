@@ -113,3 +113,8 @@ void ContactInfoPanel::displayContact(Contact contact)
 
 	kdebugf2();
 }
+
+void ContactInfoPanel::styleFixup(QString &syntax)
+{
+	syntax = Template.arg(syntax);
+}

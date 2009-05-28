@@ -703,7 +703,7 @@ void KaduWindowActions::copyDescriptionActionActivated(QAction *sender, bool tog
 	if (contact.isNull())
 		return;
 
-	Account *account = AccountManager::instance()->defaultAccount();
+	Account *account = contact.prefferedAccount();
 	ContactAccountData *data = contact.accountData(account);
 
 	if (!data)
@@ -731,7 +731,7 @@ void KaduWindowActions::openDescriptionLinkActionActivated(QAction *sender, bool
 	if (contact.isNull())
 		return;
 
-	Account *account = AccountManager::instance()->defaultAccount();
+	Account *account = contact.prefferedAccount();
 	ContactAccountData *data = contact.accountData(account);
 
 	if (!data)

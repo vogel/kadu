@@ -52,7 +52,6 @@ private:
 	KaduWindowActions *Actions;
 
 	ContactInfoPanel *InfoPanel;
-	QString InfoPanelSyntax;
 	QMenuBar *MenuBar;
 	QMenu *KaduMenu;
 	QMenu *ContactsMenu;
@@ -68,8 +67,6 @@ private:
 	QMenu *StatusButtonMenu;
 	StatusButton *ChangeStatusButton;
 	QPoint LastPositionBeforeStatusMenuHide;
-
-	QString InfoPanelStyle;
 
 	void createGui();
 	void createMenu();
@@ -112,6 +109,8 @@ public:
 
 	void setDocked(bool);
 	bool docked() { return Docked; }
+
+	ContactInfoPanel *infoPanel() { return InfoPanel; }
 
 signals:
 	void keyPressed(QKeyEvent *e);

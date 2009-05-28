@@ -334,7 +334,7 @@ SyntaxEditorWindow::SyntaxEditorWindow(SyntaxList *syntaxList, const QString &sy
 
 	editor = new QTextEdit(syntax);
 	editor->setAcceptRichText(true);
-	editor->setText(syntaxList->readSyntax(syntaxName));
+	editor->setPlainText(syntaxList->readSyntax(syntaxName));
 
 	if (!syntaxHint.isEmpty())
 		editor->setToolTip(syntaxHint);

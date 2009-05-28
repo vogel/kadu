@@ -86,7 +86,6 @@ private slots:
 	void lookChatAdvancedDestroyed();
 
 	void onInfoPanelSyntaxEditorWindowCreated(SyntaxEditorWindow *syntaxEditorWindow);
-	void infoPanelFixup(QString &syntax);
 
 	void setIconThemes();
 	void setEmoticonThemes();

@@ -32,7 +32,7 @@ public:
 
 public slots:
 	void displayContact(Contact contact);
-
+	void styleFixup(QString &syntax);
 };
 
 #endif // CONTACT_INFO_PANEL_H
