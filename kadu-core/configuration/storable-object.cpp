@@ -76,6 +76,14 @@ void StorableObject::storeValue(const QString &name, const QVariant value, bool 
 		Storage->storage()->createTextNode(Storage->point(), name, value.toString());
 }
 
+void StorableObject::removeValue(const QString& name, bool attribute)
+{
+	if (attribute)
+		Storage->point().removeAttribute(name);
+	else
+		Storage->storage()->removeNode(Storage->point(), name);
+}
+
 void StorableObject::storeModuleData()
 {
 	foreach (ModuleData *moduleData, ModulesData.values())

@@ -65,10 +65,15 @@ void Account::load()
 	if (!isValidStorage())
 		return;
 
+	ConnectAtStart = loadValue<bool>("ConnectAtStart", true);
+
 	Uuid = QUuid(storage()->point().attribute("uuid"));
 	Name = loadValue<QString>("Name");
 	setId(loadValue<QString>("Id"));
-	Password = pwHash(loadValue<QString>("Password"));
+
+	RememberPassword = loadValue<bool>("RememberPassword", true);
+	if (RememberPassword)
+		Password = pwHash(loadValue<QString>("Password"));
 
 	triggerAllContactsAdded();
 }
@@ -80,10 +85,17 @@ void Account::store()
 
 	storage()->point().setAttribute("uuid", Uuid.toString());
 
+	storeValue("ConnectAtStart", ConnectAtStart);
+
 	storeValue("Protocol", ProtocolHandler->protocolFactory()->name());
 	storeValue("Name", Name);
 	storeValue("Id", id());
-	storeValue("Password", pwHash(password()));
+
+	storeValue("RememberPassword", RememberPassword);
+	if (RememberPassword)
+		storeValue("Password", pwHash(password()));
+	else
+		removeValue("Password");
 }
 
 Status Account::currentStatus()

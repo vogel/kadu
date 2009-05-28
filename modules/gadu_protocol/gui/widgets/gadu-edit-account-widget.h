@@ -12,15 +12,27 @@
 
 #include "gui/widgets/account-edit-widget.h"
 
+class QCheckBox;
+class QLineEdit;
 class QTabWidget;
 
 class GaduEditAccountWidget : public AccountEditWidget
 {
 	Q_OBJECT
 
+	QCheckBox *ConnectAtStart;
+	QLineEdit *AccountId;
+	QLineEdit *AccountPassword;
+	QCheckBox *RememberPassword;
+
 	void createGui();
 	void createGeneralTab(QTabWidget *);
 	void createPersonalDataTab(QTabWidget *);
+
+	void loadAccountData();
+
+private slots:
+	void removeAccount();
 
 public:
 	explicit GaduEditAccountWidget(Account *account, QWidget *parent = 0);

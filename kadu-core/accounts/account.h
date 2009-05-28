@@ -34,7 +34,10 @@ class KADUAPI Account : public QObject, public UuidStorableObject, public Contac
 
 	QString Name;
 	QString Id;
+	bool RememberPassword;
 	QString Password;
+
+	bool ConnectAtStart;
 
 protected:
 	virtual void contactAdded(Contact contact);
@@ -55,9 +58,12 @@ public:
 	void setPassword(const QString &password) { Password = password; }
 	virtual bool setId(const QString &id);
 
+	bool connectAtStart() { return ConnectAtStart; }
+
 	QString name() { return Name; }
-	QString password() { return Password; }
 	QString id() { return Id; }
+	bool rememberPsssword() { return RememberPassword; }
+	QString password() { return Password; }
 
 	Status currentStatus();
 

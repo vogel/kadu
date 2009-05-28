@@ -12,9 +12,12 @@
 #include <QtGui/QGridLayout>
 #include <QtGui/QLabel>
 #include <QtGui/QLineEdit>
+#include <QtGui/QMessageBox>
 #include <QtGui/QPushButton>
 #include <QtGui/QTabWidget>
 
+#include "accounts/account.h"
+#include "accounts/account-manager.h"
 #include "gui/widgets/gadu-personal-info-widget.h"
 
 #include "gadu-edit-account-widget.h"
@@ -23,8 +26,8 @@ GaduEditAccountWidget::GaduEditAccountWidget(Account *account, QWidget *parent) 
 		AccountEditWidget(account, parent)
 {
 	createGui();
+	loadAccountData();
 }
-
 
 GaduEditAccountWidget::~GaduEditAccountWidget()
 {
@@ -56,17 +59,17 @@ void GaduEditAccountWidget::createGeneralTab(QTabWidget *tabWidget)
 	layout->setColumnStretch(5, 2);
 
 	int row = 0;
-	QCheckBox *connectAtStart = new QCheckBox(tr("Connect at start"), this);
-	layout->addWidget(connectAtStart, row++, 0, 1, 3);
+	ConnectAtStart = new QCheckBox(tr("Connect at start"), this);
+	layout->addWidget(ConnectAtStart, row++, 0, 1, 3);
 
 	QLabel *numberLabel = new QLabel(tr("Gadu-Gadu number") + ":", this);
 	layout->addWidget(numberLabel, row, 1, Qt::AlignRight);
-	QLineEdit *AccountId = new QLineEdit(this);
+	AccountId = new QLineEdit(this);
 	layout->addWidget(AccountId, row++, 2, 1, 2);
 
 	QLabel *passwordLabel = new QLabel(tr("Password") + ":", this);
 	layout->addWidget(passwordLabel, row, 1, Qt::AlignRight);
-	QLineEdit *AccountPassword = new QLineEdit(this);
+	AccountPassword = new QLineEdit(this);
 	AccountPassword->setEchoMode(QLineEdit::Password);
 	layout->addWidget(AccountPassword, row, 2);
 	QPushButton *remindPassword = new QPushButton(tr("Forgot password"), this);
@@ -75,9 +78,9 @@ void GaduEditAccountWidget::createGeneralTab(QTabWidget *tabWidget)
 	QPushButton *changePassword = new QPushButton(tr("Change password"), this);
 	layout->addWidget(changePassword, row++, 3, Qt::AlignLeft);
 
-	QCheckBox *rememberPassword = new QCheckBox(tr("Remember password"), this);
-	rememberPassword->setChecked(true);
-	layout->addWidget(rememberPassword, row++, 2, 1, 2);
+	RememberPassword = new QCheckBox(tr("Remember password"), this);
+	RememberPassword->setChecked(true);
+	layout->addWidget(RememberPassword, row++, 2, 1, 2);
 
 	QLabel *descriptionLabel = new QLabel(tr("Account description"), this);
 	layout->addWidget(descriptionLabel, row, 1, Qt::AlignRight);
@@ -87,6 +90,7 @@ void GaduEditAccountWidget::createGeneralTab(QTabWidget *tabWidget)
 	layout->setRowMinimumHeight(row++, 60);
 
 	QPushButton *removeAccount = new QPushButton(tr("Remove account"), this);
+	connect(removeAccount, SIGNAL(clicked(bool)), this, SLOT(removeAccount()));
 	layout->addWidget(removeAccount, row++, 1, 1, 3);
 	layout->setRowStretch(row, 100);
 
@@ -109,4 +113,39 @@ void GaduEditAccountWidget::createPersonalDataTab(QTabWidget *tabWidget)
 {
 	GaduPersonalInfoWidget *gpiw = new GaduPersonalInfoWidget(account(), tabWidget);
 	tabWidget->addTab(gpiw, tr("Personal info"));
+}
+
+void GaduEditAccountWidget::loadAccountData()
+{
+	ConnectAtStart->setChecked(account()->connectAtStart());
+	AccountId->setText(account()->id());
+	AccountPassword->setText(account()->password());
+	RememberPassword->setChecked(account()->rememberPsssword());
+}
+
+void GaduEditAccountWidget::removeAccount()
+{
+	QMessageBox *messageBox = new QMessageBox(this);
+	messageBox->setWindowTitle(tr("Confirm account removal"));
+	messageBox->setText(tr("Are you sure do you want to remove account %1 (%2)")
+			.arg(account()->name())
+			.arg(account()->id()));
+
+	messageBox->addButton(tr("Remove account"), QMessageBox::AcceptRole);
+	messageBox->addButton(tr("Remove account and unregister from server"), QMessageBox::DestructiveRole);
+	messageBox->addButton(QMessageBox::Cancel);
+
+	switch (messageBox->exec())
+	{
+		case QMessageBox::AcceptRole:
+			AccountManager::instance()->unregisterAccount(account());
+			deleteLater();
+			break;
+
+		case QMessageBox::DestructiveRole:
+			// not implemented
+			break;
+	}
+
+	delete messageBox;
 }
