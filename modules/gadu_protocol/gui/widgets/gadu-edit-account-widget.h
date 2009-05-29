@@ -15,6 +15,7 @@
 class QCheckBox;
 class QLineEdit;
 class QTabWidget;
+class QVBoxLayout;
 
 class GaduEditAccountWidget : public AccountEditWidget
 {
@@ -29,6 +30,9 @@ class GaduEditAccountWidget : public AccountEditWidget
 	void createGeneralTab(QTabWidget *);
 	void createPersonalDataTab(QTabWidget *);
 	void createBuddiesTab(QTabWidget *);
+	void createConnectionTab(QTabWidget *);
+	void createGeneralGroupBox(QVBoxLayout *layout);
+	void createProxyGroupBox(QVBoxLayout *layout);
 
 	void loadAccountData();
 

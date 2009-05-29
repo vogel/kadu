@@ -10,6 +10,7 @@
 #include <QtGui/QCheckBox>
 #include <QtGui/QComboBox>
 #include <QtGui/QGridLayout>
+#include <QtGui/QGroupBox>
 #include <QtGui/QLabel>
 #include <QtGui/QLineEdit>
 #include <QtGui/QMessageBox>
@@ -44,7 +45,7 @@ void GaduEditAccountWidget::createGui()
 	createGeneralTab(tabWidget);
 	createPersonalDataTab(tabWidget);
 	createBuddiesTab(tabWidget);
-// 	tabWidget->addTab(new QWidget(), tr("Connection"));
+	createConnectionTab(tabWidget);
 // 	tabWidget->addTab(new QWidget(), tr("Functions"));
 }
 
@@ -122,6 +123,75 @@ void GaduEditAccountWidget::createBuddiesTab(QTabWidget *tabWidget)
 	tabWidget->addTab(widget, tr("Buddies"));
 }
 
+void GaduEditAccountWidget::createConnectionTab(QTabWidget *tabWidget)
+{
+	QWidget *conenctionTab = new QWidget(this);
+	tabWidget->addTab(conenctionTab, tr("Connection"));
+
+	QVBoxLayout *layout = new QVBoxLayout(conenctionTab);
+	createGeneralGroupBox(layout);
+	createProxyGroupBox(layout);
+
+	layout->addStretch(100);
+}
+
+void GaduEditAccountWidget::createGeneralGroupBox(QVBoxLayout *layout)
+{
+	QGroupBox *general = new QGroupBox(tr("General"), this);
+	QGridLayout *generalLayout = new QGridLayout(general);
+	generalLayout->setColumnMinimumWidth(0, 20);
+	generalLayout->setColumnMinimumWidth(3, 20);
+	layout->addWidget(general);
+
+	QCheckBox *useDefaultServers = new QCheckBox(tr("Use default servers"), this);
+	generalLayout->addWidget(useDefaultServers, 0, 0, 1, 6);
+
+	QLabel *ipAddressesLabel = new QLabel(tr("IP addresses"), this);
+	QLineEdit *ipAddresses = new QLineEdit(this);
+	generalLayout->addWidget(ipAddressesLabel, 1, 1);
+	generalLayout->addWidget(ipAddresses, 1, 2);
+
+	QLabel *portLabel = new QLabel(tr("Port"), this);
+	QComboBox *port = new QComboBox(this);
+	generalLayout->addWidget(portLabel, 1, 4);
+	generalLayout->addWidget(port, 1, 5);
+
+}
+
+void GaduEditAccountWidget::createProxyGroupBox(QVBoxLayout *layout)
+{
+	QGroupBox *proxy = new QGroupBox(tr("Proxy"), this);
+	QGridLayout *proxyLayout = new QGridLayout(proxy);
+	proxyLayout->setColumnMinimumWidth(0, 20);
+	layout->addWidget(proxy);
+
+	QCheckBox *useProxy = new QCheckBox(tr("Use the following proxy"), this);
+	proxyLayout->addWidget(useProxy, 0, 0, 1, 6);
+
+	QLabel *hostLabel = new QLabel(tr("Host"), this);
+	QLineEdit *host = new QLineEdit(this);
+	proxyLayout->addWidget(hostLabel, 1, 1);
+	proxyLayout->addWidget(host, 1, 2);
+
+	QLabel *portLabel = new QLabel(tr("Port"), this);
+	QComboBox *port = new QComboBox(this);
+	proxyLayout->addWidget(portLabel, 1, 4);
+	proxyLayout->addWidget(port, 1, 5);
+
+	QCheckBox *proxyAuthentication = new QCheckBox(tr("Proxy requires authentication"), this);
+	proxyLayout->addWidget(proxyAuthentication, 2, 0, 1, 6);
+
+	QLabel *usernameLabel = new QLabel(tr("Username"), this);
+	QLineEdit *username = new QLineEdit(this);
+	proxyLayout->addWidget(usernameLabel, 3, 1);
+	proxyLayout->addWidget(username, 3, 2);
+
+	QLabel *passwordLabel = new QLabel(tr("Password"), this);
+	QLineEdit *password = new QLineEdit(this);
+	proxyLayout->addWidget(passwordLabel, 4, 1);
+	proxyLayout->addWidget(password, 4, 2);
+
+}
 
 void GaduEditAccountWidget::loadAccountData()
 {
