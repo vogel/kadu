@@ -54,11 +54,13 @@ public:
 	void setProtocol(Protocol *protocolHandler);
 	Protocol * protocol() { return ProtocolHandler; }
 
-	void setName(const QString &name) { Name = name; }
-	void setPassword(const QString &password) { Password = password; }
-	virtual bool setId(const QString &id);
-
+	void setConnectAtStart(bool connectAtStart) { ConnectAtStart = connectAtStart; }
 	bool connectAtStart() { return ConnectAtStart; }
+
+	void setName(const QString &name) { Name = name; }
+	virtual bool setId(const QString &id);
+	void setRememberPassword(bool rememberPassword) { RememberPassword = rememberPassword; }
+	void setPassword(const QString &password) { Password = password; }
 
 	QString name() { return Name; }
 	QString id() { return Id; }

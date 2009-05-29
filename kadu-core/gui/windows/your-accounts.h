@@ -55,6 +55,9 @@ private slots:
 	void accountCreated(Account *account);
 	void accountSelectionChanged(const QItemSelection &selected, const QItemSelection &deselected);
 
+	void okClicked();
+	void applyClicked();
+
 public:
 	explicit YourAccounts(QWidget *parent = 0);
 	virtual ~YourAccounts();

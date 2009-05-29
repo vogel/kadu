@@ -39,6 +39,8 @@ public:
 	explicit GaduEditAccountWidget(Account *account, QWidget *parent = 0);
 	virtual ~GaduEditAccountWidget();
 
+	virtual void apply();
+
 };
 
 #endif // GADU_EDIT_ACCOUNT_WIDGET_H

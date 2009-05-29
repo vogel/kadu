@@ -45,6 +45,7 @@ void Account::setProtocol(Protocol *protocolHandler)
 
 bool Account::setId(const QString &id)
 {
+	// TODO: 0.6.6 reconnect
 	Id = id;
 	return true;
 }

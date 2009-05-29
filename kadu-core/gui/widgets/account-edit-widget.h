@@ -28,6 +28,8 @@ public:
 			QWidget(parent), MyAccount(account) {}
 	virtual ~AccountEditWidget() {}
 
+	virtual void apply() = 0;
+
 };
 
 #endif // ACCOUNT_EDIT_WIDGET_H

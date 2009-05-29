@@ -127,8 +127,16 @@ void GaduEditAccountWidget::loadAccountData()
 {
 	ConnectAtStart->setChecked(account()->connectAtStart());
 	AccountId->setText(account()->id());
-	AccountPassword->setText(account()->password());
 	RememberPassword->setChecked(account()->rememberPsssword());
+	AccountPassword->setText(account()->password());
+}
+
+void GaduEditAccountWidget::apply()
+{
+	account()->setConnectAtStart(ConnectAtStart->isChecked());
+	account()->setId(AccountId->text());
+	account()->setRememberPassword(RememberPassword->isChecked());
+	account()->setPassword(AccountPassword->text());
 }
 
 void GaduEditAccountWidget::removeAccount()

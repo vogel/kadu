@@ -75,12 +75,16 @@ void YourAccounts::createGui()
 	mainLayout->addWidget(buttons);
 
 	QPushButton *okButton = new QPushButton(IconsManager::instance()->loadIcon("OkWindowButton"), tr("Ok"), this);
-	buttons->addButton(okButton, QDialogButtonBox::AcceptRole);
 	QPushButton *applyButton = new QPushButton(IconsManager::instance()->loadIcon("ApplyWindowButton"), tr("Apply"), this);
-	buttons->addButton(applyButton, QDialogButtonBox::ApplyRole);
 	QPushButton *cancelButton = new QPushButton(IconsManager::instance()->loadIcon("CloseWindowButton"), tr("Cancel"), this);
+
+	connect(okButton, SIGNAL(clicked(bool)), this, SLOT(okClicked()));
+	connect(applyButton, SIGNAL(clicked(bool)), this, SLOT(applyClicked()));
+	connect(cancelButton, SIGNAL(clicked(bool)), this, SLOT(close()));
+
+	buttons->addButton(okButton, QDialogButtonBox::AcceptRole);
+	buttons->addButton(applyButton, QDialogButtonBox::ApplyRole);
 	buttons->addButton(cancelButton, QDialogButtonBox::RejectRole);
-	connect(cancelButton, SIGNAL(clicked()), this, SLOT(close()));
 
 	CreateEditStack = new QStackedWidget(this);
 	contentLayout->addWidget(CreateEditStack, 100);
@@ -194,4 +198,16 @@ void YourAccounts::accountSelectionChanged(const QItemSelection &selected, const
 
 	if (editWidget)
 		EditStack->setCurrentWidget(editWidget);
+}
+
+void YourAccounts::okClicked()
+{
+	applyClicked();
+	close();
+}
+
+void YourAccounts::applyClicked()
+{
+	foreach (AccountEditWidget *editWidget, EditWidgets)
+		editWidget->apply();
 }
