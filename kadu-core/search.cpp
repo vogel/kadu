@@ -49,6 +49,8 @@ ActionDescription *SearchDialog::clearResultsAction;
 ActionDescription *SearchDialog::addFoundAction;
 ActionDescription *SearchDialog::chatFoundAction;
 
+//TODO 0.6.6:
+
 SearchDialog::SearchDialog(QWidget *parent)
 	: KaduMainWindow(parent),
 	only_active(0), e_uin(0), e_name(0), e_nick(0), e_byrFrom(0), e_byrTo(0), e_surname(0),
@@ -122,7 +124,7 @@ SearchDialog::SearchDialog(QWidget *parent)
 	QHBoxLayout *uinLayout = new QHBoxLayout(qgrp1);
 	l_uin = new QLabel(tr("Uin"),qgrp1);
 	e_uin = new QLineEdit(qgrp1);
-	e_uin->setMaxLength(8);
+	e_uin->setMaxLength(9);
 	e_uin->setValidator(new QIntValidator(1, 99999999, centralWidget));
 	connect(e_uin, SIGNAL(textChanged(const QString &)), this, SLOT(uinTyped()));
 	connect(e_uin, SIGNAL(returnPressed()), this, SLOT(firstSearch()));

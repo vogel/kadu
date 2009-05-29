@@ -68,7 +68,7 @@ void GaduCreateAccountWidget::createIHaveAccountGui(QGridLayout *gridLayout, int
 	QLabel *numberLabel = new QLabel(tr("Gadu-Gadu number") + ":", this);
 	gridLayout->addWidget(numberLabel, row, 1, Qt::AlignRight);
 	AccountId = new QLineEdit(this);
-	AccountId->setValidator(new QIntValidator(1, 99999999, this));
+	AccountId->setValidator(new QIntValidator(1, 999999999, this));
 	connect(AccountId, SIGNAL(textChanged(QString)), this, SLOT(iHaveAccountDataChanged()));
 	gridLayout->addWidget(AccountId, row++, 2, 1, 2);
 

@@ -45,7 +45,7 @@ ContactList GaduOpenChatWithRunner::matchingContacts(const QString &query)
 
 bool GaduOpenChatWithRunner::validateUserID(const QString &uid)
 {
-	QIntValidator v(1, 99999999, 0);
+	QIntValidator v(1, 999999999, 0);
 	int pos = 0;
 	QString text = uid;
 	return v.validate(text, pos) == QValidator::Acceptable;
