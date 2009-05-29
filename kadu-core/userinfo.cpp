@@ -123,8 +123,8 @@ void UserInfo::setupTab1()
 
 	// UIN and disp
 	e_uin = new QLineEdit(generalWidget);
-	e_uin->setMaxLength(8);
-	e_uin->setValidator(new QIntValidator(1, 99999999, this));
+	e_uin->setMaxLength(9);
+	e_uin->setValidator(new QIntValidator(1, 999999999, this));
 
 	e_altnick = new QComboBox(generalWidget);
 	e_altnick->setEditable(true);
