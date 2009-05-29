@@ -54,12 +54,12 @@ xcopy %QT_DIR%QtXml4.dll       %DESTINATION%\ /C /Q /H /R /Y
 xcopy %QT_DIR%mingwm10.dll     %DESTINATION%\ /C /Q /H /R /Y
 
 ECHO Copying Qt plugins
-REM xcopy %QT_DIR%..\plugins\imageformats\qgif4.dll  %DESTINATION%\plugins\imageformats\ /C /Q /H /R /Y
+xcopy %QT_DIR%..\plugins\imageformats\qgif4.dll  %DESTINATION%\plugins\imageformats\ /C /Q /H /R /Y
 xcopy %QT_DIR%..\plugins\imageformats\qjpeg4.dll %DESTINATION%\plugins\imageformats\ /C /Q /H /R /Y
-REM xcopy %QT_DIR%..\plugins\imageformats\qmng4.dll  %DESTINATION%\plugins\imageformats\ /C /Q /H /R /Y
-REM xcopy %QT_DIR%..\plugins\imageformats\qsvg4.dll  %DESTINATION%\plugins\imageformats\ /C /Q /H /R /Y
-REM xcopy %QT_DIR%..\plugins\imageformats\qtiff4.dll %DESTINATION%\plugins\imageformats\ /C /Q /H /R /Y
-REM xcopy %QT_DIR%..\plugins\imageformats\qico4.dll  %DESTINATION%\plugins\imageformats\ /C /Q /H /R /Y
+xcopy %QT_DIR%..\plugins\imageformats\qmng4.dll  %DESTINATION%\plugins\imageformats\ /C /Q /H /R /Y
+xcopy %QT_DIR%..\plugins\imageformats\qsvg4.dll  %DESTINATION%\plugins\imageformats\ /C /Q /H /R /Y
+xcopy %QT_DIR%..\plugins\imageformats\qtiff4.dll %DESTINATION%\plugins\imageformats\ /C /Q /H /R /Y
+xcopy %QT_DIR%..\plugins\imageformats\qico4.dll  %DESTINATION%\plugins\imageformats\ /C /Q /H /R /Y
 
 ECHO Copying libgadu
 xcopy %LIBGADU_DIR%libgadu.dll %DESTINATION%\ /C /Q /H /R /Y
