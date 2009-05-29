@@ -180,11 +180,11 @@ fi
 if [ -f ${QTDIR}/plugins/imageformats/libqjpeg.dylib ]; then
 	echo "log: copying Qt image plugins"
 	cp -f  ${QTDIR}/plugins/imageformats/libqjpeg.dylib ${CNT_DIR}/plugins/imageformats/libqjpeg.dylib
-#	cp -f  ${QTDIR}/plugins/imageformats/libqgif.dylib ${CNT_DIR}/plugins/imageformats/libqgif.dylib
-#	cp -f  ${QTDIR}/plugins/imageformats/ibqmng.dylib ${CNT_DIR}/plugins/imageformats/ibqmng.dylib
-#	cp -f  ${QTDIR}/plugins/imageformats/libqsvg.dylib ${CNT_DIR}/plugins/imageformats/libqsvg.dylib
-#	cp -f  ${QTDIR}/plugins/imageformats/libqtiff.dylib ${CNT_DIR}/plugins/imageformats/libqtiff.dylib
-#	cp -f  ${QTDIR}/plugins/imageformats/libqico.dylib ${CNT_DIR}/plugins/imageformats/libqico.dylib
+	cp -f  ${QTDIR}/plugins/imageformats/libqgif.dylib ${CNT_DIR}/plugins/imageformats/libqgif.dylib
+	cp -f  ${QTDIR}/plugins/imageformats/libqmng.dylib ${CNT_DIR}/plugins/imageformats/libqmng.dylib
+	cp -f  ${QTDIR}/plugins/imageformats/libqsvg.dylib ${CNT_DIR}/plugins/imageformats/libqsvg.dylib
+	cp -f  ${QTDIR}/plugins/imageformats/libqtiff.dylib ${CNT_DIR}/plugins/imageformats/libqtiff.dylib
+	cp -f  ${QTDIR}/plugins/imageformats/libqico.dylib ${CNT_DIR}/plugins/imageformats/libqico.dylib
 fi
 
 if [ -f ${SNDFILEPATH}/lib/libsndfile.1.dylib ]; then
@@ -225,7 +225,20 @@ install_name_tool -change ${OPENSSLPATH}/lib/libcrypto.${SSLVER}.dylib @executab
 
 cd  ${CNT_DIR}/plugins/imageformats/
 install_name_tool -change ${QTDIR}/lib/QtCore.framework/Versions/4/QtCore @executable_path/../Frameworks/QtCore ./libqjpeg.dylib
-install_name_tool -change ${QTDIR}/lib/QtGui.framework/Versions/4/QtGui @executable_path/../Frameworks/QtGui ./libqjpeg.dylib
+install_name_tool -change ${QTDIR}/lib/QtGui.framework/Versions/4/QtGui   @executable_path/../Frameworks/QtGui  ./libqjpeg.dylib
+install_name_tool -change ${QTDIR}/lib/QtCore.framework/Versions/4/QtCore @executable_path/../Frameworks/QtCore ./libqgif.dylib
+install_name_tool -change ${QTDIR}/lib/QtGui.framework/Versions/4/QtGui   @executable_path/../Frameworks/QtGui  ./libqgif.dylib
+install_name_tool -change ${QTDIR}/lib/QtCore.framework/Versions/4/QtCore @executable_path/../Frameworks/QtCore ./libqico.dylib
+install_name_tool -change ${QTDIR}/lib/QtGui.framework/Versions/4/QtGui   @executable_path/../Frameworks/QtGui  ./libqico.dylib
+install_name_tool -change ${QTDIR}/lib/QtCore.framework/Versions/4/QtCore @executable_path/../Frameworks/QtCore ./libqmng.dylib
+install_name_tool -change ${QTDIR}/lib/QtGui.framework/Versions/4/QtGui   @executable_path/../Frameworks/QtGui  ./libqmng.dylib
+install_name_tool -change ${QTDIR}/lib/QtCore.framework/Versions/4/QtCore @executable_path/../Frameworks/QtCore ./libqsvg.dylib
+install_name_tool -change ${QTDIR}/lib/QtGui.framework/Versions/4/QtGui   @executable_path/../Frameworks/QtGui  ./libqsvg.dylib
+install_name_tool -change ${QTDIR}/lib/QtSvg.framework/Versions/4/QtSvg   @executable_path/../Frameworks/QtSvg  ./libqsvg.dylib
+install_name_tool -change ${QTDIR}/lib/QtXml.framework/Versions/4/QtXml   @executable_path/../Frameworks/QtXml  ./libqsvg.dylib
+install_name_tool -change ${QTDIR}/lib/QtCore.framework/Versions/4/QtCore @executable_path/../Frameworks/QtCore ./libqtiff.dylib
+install_name_tool -change ${QTDIR}/lib/QtGui.framework/Versions/4/QtGui   @executable_path/../Frameworks/QtGui  ./libqtiff.dylib
+
 
 cd ${MACOS_DIR}
 echo "log: changing library bindings"
