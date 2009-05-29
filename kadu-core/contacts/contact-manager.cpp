@@ -119,7 +119,11 @@ void ContactManager::addContact(Contact contact)
 	ensureLoaded();
 
 	if (Contacts.contains(contact))
+	{
+		contact.setType(ContactData::TypeNormal);
 		return;
+	}
+
 
 	emit contactAboutToBeAdded(contact);
 	Contacts.append(contact);

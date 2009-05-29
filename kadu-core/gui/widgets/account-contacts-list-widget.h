@@ -14,6 +14,7 @@
 #include <QtGui/QWidget>
 
 #include "accounts/account.h"
+#include "contacts/contact-list.h"
 #include "gui/widgets/contacts-list-widget.h"
 
 class AccountContactsListWidget : public QWidget
@@ -24,10 +25,17 @@ class AccountContactsListWidget : public QWidget
 	ContactsListWidget *ContactsWidget;
 	QPushButton *ExportButton;
 	QPushButton *ImportButton;
+	bool Clear;
 
 public:
 	AccountContactsListWidget(Account *account, QWidget *parent = 0);
 	virtual ~AccountContactsListWidget() {}
+
+private slots:
+	void startImportTransfer();
+	void startExportTransfer();
+	void contactListImported(bool ok, ContactList contacts);
+	void contactListExported(bool ok);
 
 };
 

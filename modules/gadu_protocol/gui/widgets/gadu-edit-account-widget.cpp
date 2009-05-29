@@ -19,6 +19,7 @@
 #include "accounts/account.h"
 #include "accounts/account-manager.h"
 #include "gui/widgets/gadu-personal-info-widget.h"
+#include "gui/widgets/account-contacts-list-widget.h"
 
 #include "gadu-edit-account-widget.h"
 
@@ -42,7 +43,7 @@ void GaduEditAccountWidget::createGui()
 
 	createGeneralTab(tabWidget);
 	createPersonalDataTab(tabWidget);
-// 	tabWidget->addTab(new QWidget(), tr("Buddies"));
+	createBuddiesTab(tabWidget);
 // 	tabWidget->addTab(new QWidget(), tr("Connection"));
 // 	tabWidget->addTab(new QWidget(), tr("Functions"));
 }
@@ -114,6 +115,13 @@ void GaduEditAccountWidget::createPersonalDataTab(QTabWidget *tabWidget)
 	GaduPersonalInfoWidget *gpiw = new GaduPersonalInfoWidget(account(), tabWidget);
 	tabWidget->addTab(gpiw, tr("Personal info"));
 }
+
+void GaduEditAccountWidget::createBuddiesTab(QTabWidget *tabWidget)
+{
+	AccountContactsListWidget *widget = new AccountContactsListWidget(account(), this);
+	tabWidget->addTab(widget, tr("Buddies"));
+}
+
 
 void GaduEditAccountWidget::loadAccountData()
 {
