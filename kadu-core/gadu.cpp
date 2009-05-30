@@ -459,7 +459,7 @@ GaduProtocol::~GaduProtocol()
 
 bool GaduProtocol::validateUserID(QString& uid)
 {
-	QIntValidator v(1, 99999999, this);
+	QIntValidator v(1, 999999999, this);
 	int pos = 0;
 
 	if ((uid != id) && (v.validate(uid, pos) == QValidator::Acceptable))

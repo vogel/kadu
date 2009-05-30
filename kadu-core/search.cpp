@@ -93,8 +93,8 @@ SearchDialog::SearchDialog(QWidget *parent, const char *name, UinType whoisSearc
 	QGroupBox * qgrp1 = new QGroupBox(2, Qt::Horizontal, tr("Uin"), this);
 	l_uin = new QLabel(tr("Uin"),qgrp1);
 	e_uin = new QLineEdit(qgrp1);
-	e_uin->setMaxLength(8);
-	e_uin->setValidator(new QIntValidator(1, 99999999, this));
+	e_uin->setMaxLength(9);
+	e_uin->setValidator(new QIntValidator(1, 999999999, this));
 	connect(e_uin, SIGNAL(textChanged(const QString &)), this, SLOT(uinTyped()));
 
 	progress = new QLabel(this);

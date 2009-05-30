@@ -128,8 +128,8 @@ void UserInfo::setupTab1()
 
 	new QLabel(tr("Uin"), vb_uin);
 	e_uin = new QLineEdit(vb_uin);
-	e_uin->setMaxLength(8);
-	e_uin->setValidator(new QIntValidator(1, 99999999, this));
+	e_uin->setMaxLength(9);
+	e_uin->setValidator(new QIntValidator(1, 999999999, this));
 
 	new QLabel(tr("AltNick"), vb_disp);
 	e_altnick = new QLineEdit(vb_disp);
