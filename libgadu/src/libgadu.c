@@ -1,4 +1,4 @@
-/* $Id: libgadu.c 711 2009-04-16 00:52:47Z darkjames $ */
+/* $Id: libgadu.c 717 2009-05-23 11:21:31Z darkjames $ */
 
 /*
  *  (C) Copyright 2001-2006 Wojtek Kaniewski <wojtekka@irc.pl>
@@ -162,7 +162,7 @@ static char rcsid[]
 #ifdef __GNUC__
 __attribute__ ((unused))
 #endif
-= "$Id: libgadu.c 711 2009-04-16 00:52:47Z darkjames $";
+= "$Id: libgadu.c 717 2009-05-23 11:21:31Z darkjames $";
 #endif
 
 #endif /* DOXYGEN */
@@ -959,7 +959,7 @@ void gg_logoff(struct gg_session *sess)
 
 	gg_debug_session(sess, GG_DEBUG_FUNCTION, "** gg_logoff(%p);\n", sess);
 
-	if (GG_S_NA(sess->status & ~GG_STATUS_FRIENDS_MASK))
+	if (GG_S_NA(sess->status))
 		gg_change_status(sess, GG_STATUS_NOT_AVAIL);
 
 #ifdef GG_CONFIG_HAVE_OPENSSL

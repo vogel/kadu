@@ -1,4 +1,4 @@
-/* $Id: events.c 711 2009-04-16 00:52:47Z darkjames $ */
+/* $Id: events.c 720 2009-05-23 16:29:17Z wojtekka $ */
 
 /*
  *  (C) Copyright 2001-2006 Wojtek Kaniewski <wojtekka@irc.pl>
@@ -982,6 +982,13 @@ static int gg_watch_fd_connected(struct gg_session *sess, struct gg_event *e)
 		{
 			gg_debug_session(sess, GG_DEBUG_MISC, "// gg_watch_fd_connected() received disconnection warning\n");
 			e->type = GG_EVENT_DISCONNECT;
+			break;
+		}
+
+		case GG_DISCONNECT_ACK:
+		{
+			gg_debug_session(sess, GG_DEBUG_MISC, "// gg_watch_fd_connected() received disconnection acknowledge\n");
+			e->type = GG_EVENT_DISCONNECT_ACK;
 			break;
 		}
 

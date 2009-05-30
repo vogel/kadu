@@ -521,6 +521,7 @@ void GaduSocketNotifiers::socketEvent()
 			break;
 
 		case GG_EVENT_DISCONNECT:
+		case GG_EVENT_DISCONNECT_ACK:
 			emit serverDisconnected();
 			break;
 
