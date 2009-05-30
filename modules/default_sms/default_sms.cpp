@@ -338,17 +338,17 @@ void SmsEraGateway::httpRedirected(QString link)
 	if (link.find("localhost") > 0)
 	{
 		// remove unused parts of link
-		link.remove("http://localhost?X-ERA-error=");
-		link.remove(link.find("X-ERA-counter="), 14);
+		link.remove("http://localhost?X-ERA-counter=");
+		link.remove(link.find("X-ERA-error="), 12);
 
 		// split parts of link
 		QStringList counters = QStringList::split("&", link);
-		int error = (*counters.begin()).toInt();
+		int error = counters.back().toInt();
 
 		if (error == 0)
 		{
 			if (config_file.readEntry("SMS", "EraGateway") == "Sponsored")
-				QMessageBox::information(p, "SMS", tr("Number of SMS' left on Sponsored Era Gateway: ") + counters.back(), QMessageBox::Ok);
+				QMessageBox::information(p, "SMS", tr("Number of SMS' left on Sponsored Era Gateway: ") + *counters.begin(), QMessageBox::Ok);
 
 			emit finished(true);
 		}

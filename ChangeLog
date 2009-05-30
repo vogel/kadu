@@ -12,6 +12,7 @@ Je¶li jest w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * poprawiony wysyp w module SMS przy aktualizacji konfiguracji (neeo)
 * drobne poprawki kompilacji (neeo)
 * poprawka walidacji numerów GG - obs³uga GaduAIR (neeo)
+* poprawiona wspó³praca z bramk± Ery (neeo)
 
 +++ wersja 0.6.0.3 (01.01.2009)
 * aktualizacja libgadu - drobne poprawki, dodana obs³uga gg 8.0 (neeo)
