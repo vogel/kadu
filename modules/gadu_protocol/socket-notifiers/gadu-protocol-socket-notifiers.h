@@ -16,11 +16,17 @@
 
 #include "gadu-socket-notifiers.h"
 
-#ifndef _MSC_VER
-#pragma GCC visibility push(hidden)
-#endif
+#if __GNUC__ >= 4
+	#define GADU_LOCAL __attribute__ ((visibility("hidden")))
+#else
+	#define GADU_LOCAL
+#endif /* __GNUC__ >= 4 */
 
-class GaduProtocolSocketNotifiers : public GaduSocketNotifiers
+#ifndef _MSC_VER
+	#pragma GCC visibility push(hidden)
+#endif /* _MSC_VER */
+
+class GADU_LOCAL GaduProtocolSocketNotifiers : public GaduSocketNotifiers
 {
 	Q_OBJECT
 
@@ -58,7 +64,7 @@ public:
 };
 
 #ifndef _MSC_VER
-#pragma GCC visibility pop
-#endif
+	#pragma GCC visibility pop
+#endif /* _MSC_VER */
 
 #endif // GADU_PROTOCOL_SOCKET_NOTIFIERS_H
