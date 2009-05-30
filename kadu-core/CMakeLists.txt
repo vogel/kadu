@@ -208,8 +208,8 @@ set (kadu_MOC_SRCS
 
 	chat/chat.h
 	chat/chat-manager.h
-	chat/conference-chat.h
-	chat/simple-chat.h
+	#chat/conference-chat.h
+	#chat/simple-chat.h
 
 	chat/chat_styles_manager.h
 	chat/style-engines/chat_engine_kadu.h
@@ -217,14 +217,14 @@ set (kadu_MOC_SRCS
 	contacts/contact.h
 	contacts/contact-account-data.h
 	contacts/contact-data.h
-	contacts/contact-list.h
-	contacts/contact-list-configuration-helper.h
+	#contacts/contact-list.h
+	#contacts/contact-list-configuration-helper.h
 	contacts/contact-manager.h
-	contacts/contact-set.h
+	#contacts/contact-set.h
 	contacts/group.h
 	contacts/group-manager.h
 
-	contacts/model/abstract-contacts-model.h
+	#contacts/model/abstract-contacts-model.h
 	contacts/model/contact-list-model.h
 	contacts/model/contacts-model.h
 	contacts/model/contacts-model-base.h
@@ -240,7 +240,7 @@ set (kadu_MOC_SRCS
 	contacts/model/filter/online-and-description-contact-filter.h
 	contacts/model/filter/online-contact-filter.h
 
-	configuration/config-file-data-manager.h
+	#configuration/config-file-data-manager.h
 	configuration/configuration-window-data-manager.h
 
 	configuration/widgets/manage-accounts.h
@@ -269,13 +269,13 @@ set (kadu_MOC_SRCS
 	gui/widgets/status-button.h
 	gui/widgets/status-menu.h
 
-	gui/widgets/configuration/config-action-button.h
+	#gui/widgets/configuration/config-action-button.h
 	gui/widgets/configuration/config-check-box.h
-	gui/widgets/configuration/config-widget-value.h
+	#gui/widgets/configuration/config-widget-value.h
 	gui/widgets/configuration/configuration-widget.h
-	gui/widgets/configuration/kadu-scroll-area.h
+	#gui/widgets/configuration/kadu-scroll-area.h
 	gui/widgets/configuration/config-section.h
-	gui/widgets/configuration/config-tab.h
+	#gui/widgets/configuration/config-tab.h
 	gui/widgets/configuration/notifier-configuration-widget.h
 	gui/widgets/configuration/notify-group-box.h
 	gui/widgets/configuration/notify-tree-widget.h
@@ -289,9 +289,9 @@ set (kadu_MOC_SRCS
 	gui/windows/kadu-window.h
 	gui/windows/kadu-window-actions.h
 	gui/windows/open-chat-with/open-chat-with.h
-	gui/windows/open-chat-with/open-chat-with-contact-list-runner.h
-	gui/windows/open-chat-with/open-chat-with-runner-manager.h
-	gui/windows/window-notifier-window.h
+	#gui/windows/open-chat-with/open-chat-with-contact-list-runner.h
+	#gui/windows/open-chat-with/open-chat-with-runner-manager.h
+	#gui/windows/window-notifier-window.h
 	gui/windows/your-accounts.h
 
 	misc/choose-description.h
@@ -299,7 +299,7 @@ set (kadu_MOC_SRCS
 
 	model/first-empty.h
 
-	modules/module-data.h
+	#modules/module-data.h
 
 	notify/account-notification.h
 	notify/new_message_notification.h
@@ -323,22 +323,22 @@ set (kadu_MOC_SRCS
 
 	about.h
 	action.h
-	activate.h
+	#activate.h
 	color_button.h
 	color_selector.h
-	config_file.h
-	configuration_aware_object.h
-	debug.h
+	#config_file.h
+	#configuration_aware_object.h
+	#debug.h
 	dnshandler.h
 	emoticons.h
 	expimp.h
-	hot_key.h
-	html_document.h
+	#hot_key.h
+	#html_document.h
 	http_client.h
 	icons-manager.h
 	ignore.h
 	kadu_main_window.h
-	kadu_parser.h
+	#kadu_parser.h
 	main_configuration_window.h
 	message_box.h
 	modules.h
@@ -355,12 +355,12 @@ set (kadu_MOC_SRCS
 	updates.h
 )
 
-if (UNIX AND NOT APPLE)
-	set (kadu_MOC_SRCS
-		${kadu_MOC_SRCS}
-		x11tools.h
-	)
-endif (UNIX AND NOT APPLE)
+#if (UNIX AND NOT APPLE)
+#	set (kadu_MOC_SRCS
+#		${kadu_MOC_SRCS}
+#		x11tools.h
+#	)
+#endif (UNIX AND NOT APPLE)
 
 if (UNIX AND NOT APPLE)
 	if (NOT DESKTOP_ENTRY)
