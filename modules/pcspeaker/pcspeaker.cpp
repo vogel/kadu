@@ -35,6 +35,7 @@
 #include "debug.h"
 #include "config_file.h"
 #include "misc.h"
+#include "action.h"
 #include <modules.h>
 
 //czestotliwosci dzwiekow
@@ -116,12 +117,39 @@ PCSpeaker::PCSpeaker()
 {
 	notification_manager->registerNotifier(QT_TRANSLATE_NOOP("@default", "PC Speaker"), this);
 	createDefaultConfiguration();
+
+	mute = config_file.readBoolEntry("PC Speaker", "Mute", false);
+	mute_action = new ActionDescription(
+		ActionDescription::TypeGlobal, "muteSpeakerAction",
+		this, SLOT(muteActionActivated(QAction *, bool)),
+		"Unmute", tr("Mute speaker"), true, tr("Unmute speaker")
+	);
+	connect(mute_action, SIGNAL(actionCreated(KaduAction *)), this, SLOT(setMuteActionState()));
 }
 
 
 PCSpeaker::~PCSpeaker()
 {
 	notification_manager->unregisterNotifier("PC Speaker");
+	delete mute_action;
+	mute_action = 0;
+}
+
+void PCSpeaker::muteActionActivated(QAction  *action, bool is_on)
+{
+	Q_UNUSED(action)
+	kdebugf();
+	mute = is_on;
+ 	foreach (KaduAction *action, mute_action->actions())
+		action->setChecked(mute);
+	config_file.writeEntry("PC Speaker", "Mute", mute);
+	kdebugf2();
+}
+
+void PCSpeaker::setMuteActionState()
+{
+ 	foreach (KaduAction *action, mute_action->actions())
+		action->setChecked(mute);
 }
 
 void PCSpeaker::mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow) 
@@ -146,8 +174,12 @@ NotifierConfigurationWidget *PCSpeaker::createConfigurationWidget(QWidget *paren
 
 void PCSpeaker::notify(Notification *notification) {
 	kdebugf();
-	notification->acquire();
 
+	if (mute) {
+		return;
+	}
+
+	notification->acquire();
 #ifdef Q_OS_MACX
 	SysBeep(1);
 #else

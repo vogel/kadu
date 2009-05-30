@@ -6,6 +6,8 @@
 #include <QtGui/QWidget>
 #include "../notify/notify.h"
 
+class ActionDescription;
+
 class PCSpeaker : public Notifier, public ConfigurationUiHandler
 {	
 	Q_OBJECT
@@ -24,7 +26,9 @@ class PCSpeaker : public Notifier, public ConfigurationUiHandler
 #ifdef Q_WS_X11
 		Display *xdisplay;
 #endif
+		bool mute;
 		int volume;
+		ActionDescription* mute_action;
 		void ParseStringToSound(QString linia, int tablica[21], int tablica2[20]);
 		void beep(int pitch, int duration);
 		void parseAndPlay(QString linia);
@@ -35,6 +39,8 @@ class PCSpeaker : public Notifier, public ConfigurationUiHandler
 		void test3();
 		void test4();
 		void test5();
+		void muteActionActivated(QAction *action, bool is_on);
+		void setMuteActionState();
 };
 
 extern PCSpeaker *pcspeaker;
