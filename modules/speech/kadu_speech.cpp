@@ -85,16 +85,20 @@ void SpeechConfigurationWidget::saveNotifyConfigurations()
 		femaleFormat[currentNotifyEvent] = femaleLineEdit->text();
 	}
 
-	CONST_FOREACH(text, maleFormat)
+	QMapIterator<QString, QString> i(maleFormat);
+	while (i.hasNext())
 	{
-		const QString &eventName = text.key();
-		config_file.writeEntry("Speech", eventName + "_Syntax/Male", *text);
+		i.next();
+		const QString &eventName = i.key();
+		config_file.writeEntry("Speech", eventName + "_Syntax/Male", i.value());
 	}
 
-	CONST_FOREACH(text, femaleFormat)
+	QMapIterator<QString, QString> j(femaleFormat);
+	while (j.hasNext())
 	{
-		const QString &eventName = text.key();
-		config_file.writeEntry("Speech", eventName + "_Syntax/Female", *text);
+		j.next();
+		const QString &eventName = j.key();
+		config_file.writeEntry("Speech", eventName + "_Syntax/Female", j.value());
 	}
 }
 

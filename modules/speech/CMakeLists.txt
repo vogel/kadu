@@ -16,6 +16,11 @@ set (TRANSLATION_SOURCES
 set (CONFIGURATION_FILES
 	configuration/kadu_speech.ui)
 
+if(WIN32)
+	include_directories (${CMAKE_CURRENT_SOURCE_DIR})
+	set (SOURCES ${SOURCES} ../module.rc)
+endif(WIN32)
+
 kadu_module_desc (kadu_speech.desc)
 kadu_module_configuration(${CONFIGURATION_FILES})
 qt_wrap_cpp (kadu_speech MOC_FILES ${MOC_SOURCES})
@@ -31,6 +36,16 @@ endif (COMMAND cmake_policy)
 
 add_library (kadu_speech ${kadu_speech} ${SOURCES} ${MOC_FILES})
 add_custom_target (kadu_speech-translations DEPENDS ${TRANSLATION_FILES})
+if (kadu_speech STREQUAL STATIC)
+	set_target_properties(kadu_speech PROPERTIES COMPILE_FLAGS "-DKADULIB")
+else (kadu_speech STREQUAL STATIC)
+	if (WIN32)
+		target_link_libraries(kadu_speech kadu_core)
+	endif (WIN32)
+	if (APPLE)
+		set_target_properties(kadu_speech PROPERTIES LINK_FLAGS "-undefined dynamic_lookup")
+	endif (APPLE)
+endif (kadu_speech STREQUAL STATIC)
 add_dependencies (kadu_speech kadu_speech-translations)
 
-install (TARGETS kadu_speech DESTINATION lib/kadu/modules)
+install (TARGETS kadu_speech DESTINATION ${MODULEDIR})
