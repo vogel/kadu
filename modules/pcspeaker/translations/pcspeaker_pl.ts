@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.0" language="pl">
+<!DOCTYPE TS><TS version="1.1" language="pl">
+<defaultcodec></defaultcodec>
 <context>
     <name>@default</name>
     <message>
@@ -32,6 +32,7 @@
         <translation type="obsolete">Przy innej wiadomości odegraj</translation>
     </message>
     <message>
+        <location filename="../pcspeaker.cpp" line="118"/>
         <source>PC Speaker</source>
         <translation>PC Speaker</translation>
     </message>
@@ -51,14 +52,14 @@
 <context>
     <name>PCSpeaker</name>
     <message>
+        <location filename="../pcspeaker.cpp" line="125"/>
         <source>Mute speaker</source>
-        <translatorcomment>Wyłącz PC Speakera</translatorcomment>
-        <translation></translation>
+        <translation>Wyłącz PC Speaker&apos;a</translation>
     </message>
     <message>
+        <location filename="../pcspeaker.cpp" line="126"/>
         <source>Unmute speaker</source>
-        <translatorcomment>Włącz PC Speakera</translatorcomment>
-        <translation></translation>
+        <translation>Włącz PC Speaker&apos;a</translation>
     </message>
 </context>
 </TS>
