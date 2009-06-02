@@ -26,6 +26,12 @@
 #include "userlistelement.h"
 
 GaduAvatars *gaduAvatars = 0;
+const QString suffix =
+#ifdef Q_OS_WIN
+  "avatars\\";
+#else 
+  "/avatars/";
+#endif
 
 extern "C" KADU_EXPORT int gg_avatars_init()
 {
@@ -37,7 +43,6 @@ extern "C" KADU_EXPORT int gg_avatars_init()
 	return 0;
 }
 
-
 extern "C" KADU_EXPORT void gg_avatars_close()
 {
 	kdebugf();
@@ -48,19 +53,19 @@ extern "C" KADU_EXPORT void gg_avatars_close()
 	kdebugf2();
 }
 
-QString get_avatar(const UserListElement &ule)
-{
-	QString avatar = gaduAvatars->getAvatar(ule.ID("Gadu").toInt());
-	if (!avatar.isEmpty())
-		avatar = "<img src=\"" + avatar + "\"/>";
-	return avatar;
-}
-
 QString get_avatar_url(const UserListElement &ule)
 {
 	return gaduAvatars->getAvatar(ule.ID("Gadu").toInt());
 }
 
+QString get_avatar(const UserListElement &ule)
+{
+	QString avatar = get_avatar_url(ule);
+	if (!avatar.isEmpty())
+		avatar = "<img src=\"" + avatar + "\"/>";
+
+	return avatar;
+}
 
 GaduAvatars::GaduAvatars()
 {
@@ -104,7 +109,7 @@ void GaduAvatars::refreshAvatarActionActivated(QAction *sender, bool toggled)
 	
 	UinsList uins;
 	int uin;
-	QString path = ggPath() + "/avatars/";
+	QString path = ggPath() + suffix;
 	KaduMainWindow *window = dynamic_cast<KaduMainWindow *>(sender->parent());
 	if (window)
 	{
@@ -124,10 +129,14 @@ void GaduAvatars::refreshAvatarActionActivated(QAction *sender, bool toggled)
 
 QString GaduAvatars::getAvatar(int uin)
 {
-	QString filename = ggPath() + "/avatars/" + QString::number(uin);
+	QString filename = ggPath() + suffix + QString::number(uin);
 	if (QFileInfo(filename).size() > 0)
 	{
+#ifdef Q_OS_WIN
+		return filename;
+#else
 		return "file://" + filename;
+#endif
 	}
 	else
 	{
@@ -165,7 +174,7 @@ void GaduAvatars::gotResponse(int id, bool error)
 	}
 
 	QDir dir;
-	QString path = ggPath() + "/avatars/";
+	QString path = ggPath() + suffix;
 	dir.mkdir(path, true);
 	path += QString::number(uin);
 
