@@ -9,10 +9,12 @@ set (TRANSLATION_SOURCES
 
 set (CHAT_FILES
 	data/chat/gg_avatars.syntax
+	data/chat/gg_avatars_big.syntax
 )
 
 set (INFOPANEL_FILES
 	data/infopanel/gg_avatars.syntax
+	data/infopanel/gg_avatars_big.syntax
 )
 
 install (FILES ${CHAT_FILES}

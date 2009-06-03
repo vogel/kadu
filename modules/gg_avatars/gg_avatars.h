@@ -8,10 +8,15 @@
 #include "configuration_aware_object.h"
 #include "main_configuration_window.h"
 
+enum 
+{
+	MODE_SMALL = 0,
+	MODE_BIG
+};
+
 class QFile;
 class QHttp;
 class QBuffer;
-
 class GaduAvatars : public ConfigurationUiHandler, ConfigurationAwareObject
 {
 	Q_OBJECT
@@ -19,6 +24,7 @@ class GaduAvatars : public ConfigurationUiHandler, ConfigurationAwareObject
 		QMap<int, QBuffer *> buffers;   /* buffers per link request */
 		QMap<int, int> uins;		/* uins per link/file request */
 		QMap<int, QFile *> files;	/* files per file request */
+		QMap<int, int> modes;		/* modes per files (big/small) */
 		QHttp *linkDownloader;		/* downloader for avatar links */
 		QHttp *fileDownloader;		/* downloader for avatar images */
 		ActionDescription *avatarActionDescription;
@@ -26,7 +32,7 @@ class GaduAvatars : public ConfigurationUiHandler, ConfigurationAwareObject
 	public:
 		GaduAvatars();
 		~GaduAvatars();
-		QString getAvatar(int uin);
+		QString getAvatar(int uin, int mode);
 		virtual void mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow);
 
 	protected:

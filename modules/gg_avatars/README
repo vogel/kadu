@@ -1,0 +1,25 @@
+README
+Modul gg_avatars
+================================================================================
+
+Modul dodaje obsluge wyswietlania awatarow GG w Kadu. GG udostepnia duze i male
+awatary. Odpowiednie awatary sa pobierane w momencie pierwszego uzycia i 
+zapisywane do katalogu .kadu/avatars z numerem gg jako nazwa (z przyrostkiem 
+_big dla duzych) . Nie sa one pozniej automatycznie odswierzane - do tego celu
+sluzy pozycja menu kontekstowym kontaktu - Odswierz awatara.
+
+W celu dodania awatara do skladni okna rozmowy czy panelu informacyjnego nalezy
+uzyc jednego z nastepujacych tagow:
+
+#{avatar}         - dodaje kompletny tag <img> dla malego awatara
+#{big_avatar}     - dodaje kompletny tag <img> dla duzego awatara
+#{avatar_url}     - dodaje url'a do pliku z malym awatarem
+#{big_avatar_url} - dodaje url'a do pliku z duzym awatarem
+
+Modul dodaje przykladowe skladnie dla okna rozmowy i panelu informacyjnego:
+gg_avatars       - skladnia z wykorzystaniem malych awatarow
+gg_avatars_big   - skladnia z wykorzystaniem duzych awatarow
+
+
+
+================================================================================

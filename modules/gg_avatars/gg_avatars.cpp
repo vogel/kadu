@@ -28,9 +28,9 @@
 GaduAvatars *gaduAvatars = 0;
 const QString suffix =
 #ifdef Q_OS_WIN
-  "avatars\\";
-#else 
-  "/avatars/";
+	"avatars\\";
+#else
+	"avatars/";
 #endif
 
 extern "C" KADU_EXPORT int gg_avatars_init()
@@ -55,12 +55,26 @@ extern "C" KADU_EXPORT void gg_avatars_close()
 
 QString get_avatar_url(const UserListElement &ule)
 {
-	return gaduAvatars->getAvatar(ule.ID("Gadu").toInt());
+	return gaduAvatars->getAvatar(ule.ID("Gadu").toInt(), MODE_SMALL);
 }
 
 QString get_avatar(const UserListElement &ule)
 {
 	QString avatar = get_avatar_url(ule);
+	if (!avatar.isEmpty())
+		avatar = "<img src=\"" + avatar + "\"/>";
+
+	return avatar;
+}
+
+QString get_big_avatar_url(const UserListElement &ule)
+{
+	return gaduAvatars->getAvatar(ule.ID("Gadu").toInt(), MODE_BIG);
+}
+
+QString get_big_avatar(const UserListElement &ule)
+{
+	QString avatar = get_big_avatar_url(ule);
 	if (!avatar.isEmpty())
 		avatar = "<img src=\"" + avatar + "\"/>";
 
@@ -77,6 +91,8 @@ GaduAvatars::GaduAvatars()
 
 	KaduParser::registerTag("avatar", &get_avatar);
 	KaduParser::registerTag("avatar_url", &get_avatar_url);
+	KaduParser::registerTag("big_avatar", &get_big_avatar);
+	KaduParser::registerTag("big_avatar_url", &get_big_avatar_url);
 
 	avatarActionDescription = new ActionDescription(
 		ActionDescription::TypeUser, "refreshAvatarAction",
@@ -84,7 +100,6 @@ GaduAvatars::GaduAvatars()
 		"GG Avatars", tr("Refresh Avatar"), false
 	);
 	UserBox::insertActionDescription(0, avatarActionDescription);
-
 }
 
 GaduAvatars::~GaduAvatars()
@@ -94,7 +109,9 @@ GaduAvatars::~GaduAvatars()
 	avatarActionDescription = 0;
 
 	KaduParser::unregisterTag("avatar", &get_avatar);
-	KaduParser::registerTag("avatar_url", &get_avatar_url);
+	KaduParser::unregisterTag("avatar_url", &get_avatar_url);
+	KaduParser::unregisterTag("big_avatar", &get_big_avatar);
+	KaduParser::unregisterTag("big_avatar_url", &get_big_avatar_url);
 
 	disconnect(linkDownloader, SIGNAL(requestFinished(int, bool)), this, SLOT(gotResponse(int, bool)));
 	delete linkDownloader;
@@ -120,16 +137,22 @@ void GaduAvatars::refreshAvatarActionActivated(QAction *sender, bool toggled)
 				uin = user.ID("Gadu").toUInt();
 				QFile file(path + QString::number(uin));
 				file.remove();
-				getAvatar(uin);
+				file.setFileName(path + QString::number(uin) + "_big");
+				file.remove();
+				getAvatar(uin, MODE_SMALL);
+				getAvatar(uin, MODE_BIG);
 			}
 	}
 
 	kdebugf2();
 }
 
-QString GaduAvatars::getAvatar(int uin)
+QString GaduAvatars::getAvatar(int uin, int mode)
 {
 	QString filename = ggPath() + suffix + QString::number(uin);
+	if (mode == MODE_BIG)
+		filename += "_big";
+
 	if (QFileInfo(filename).size() > 0)
 	{
 #ifdef Q_OS_WIN
@@ -144,6 +167,7 @@ QString GaduAvatars::getAvatar(int uin)
     		int id = linkDownloader->get("/avatars/" + QString::number(uin) + "/0.xml", buffer);
 		buffers.insert(id, buffer);
 		uins.insert(id, uin);
+		modes.insert(id, mode);
 		return "";
 	}
 }
@@ -151,17 +175,28 @@ QString GaduAvatars::getAvatar(int uin)
 void GaduAvatars::gotResponse(int id, bool error)
 {
 	int uin = uins[id];
+	int mode = modes[id];
 
 	QBuffer *buffer = buffers[id];
 	QString response(buffer->data());
 	uins.remove(id);
 	buffers.remove(id);
+	modes.remove(id);
 	delete buffer;
 	
 	if (!response.isEmpty())
 	{
-		int begin = response.indexOf("<smallAvatar>") + 13;
-		int end = response.indexOf("</smallAvatar>");
+		int begin, end;
+		if (mode == MODE_SMALL)
+		{
+			begin = response.indexOf("<smallAvatar>") + sizeof("<smallAvatar>");
+			end = response.indexOf("</smallAvatar>");
+		}
+		else
+		{
+			begin = response.indexOf("<bigAvatar>") + sizeof("<bigAvatar>");
+			end = response.indexOf("</bigAvatar>");
+		}
 	
 		if ((begin > 0) && (end > begin))
 			response = response.mid(begin, end - begin);
@@ -177,6 +212,8 @@ void GaduAvatars::gotResponse(int id, bool error)
 	QString path = ggPath() + suffix;
 	dir.mkdir(path, true);
 	path += QString::number(uin);
+	if (mode == MODE_BIG)
+		path += "_big";
 
 	if (QFile::exists(path))
 	{
