@@ -3,6 +3,11 @@ Postaæ (x/y) oznacza, ¿e x jest pomys³odawc± lub podes³a³ patcha, a zrobi³ to kt
 Je¶li jest w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 
 +++ wersja 0.6.5.3
+* poprawki w module profiles pod windows (dorr)
+* poprawki w module win32_sound (dorr)
+* poprawki w module gg_avatars dla windows i Mac OS X (dorr)
+* powrót modu³u speech (dorr)
+* wsparcie dla numerów GG z us³ugi Gadu Air (White Eagle)
 * poprawki w module history (krizz/White Eagle)
 * poprawki w module firewall (White Eagle)
 * poprawki w module spellchecker (White Eagle)
