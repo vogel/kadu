@@ -120,8 +120,18 @@ QString ggPath(const QString &subpath)
 		else
 			home = QString::fromLocal8Bit(getenv("HOME"));
 #endif
+
 		KaduParser::globalVariables["HOME"] = home;
-		QString config_dir = QString::fromLocal8Bit(getenv("CONFIG_DIR"));
+
+#ifdef Q_OS_WIN
+    QString config_dir;
+    char buff[1024] = { 0 };
+    if (GetEnvironmentVariable("CONFIG_DIR", buff, sizeof(buff) - 1) > 0)
+      config_dir = buff;
+#else
+    QString config_dir = QString::fromLocal8Bit(getenv("CONFIG_DIR"));
+#endif
+
 #ifdef Q_OS_MACX
 		if (config_dir.isNull())
 			path = QString("%1/Library/Kadu/").arg(home);
@@ -131,7 +141,7 @@ QString ggPath(const QString &subpath)
 		if (config_dir.isNull())
 			path = QString("%1\\Kadu\\").arg(home);
 		else
-			path = QString("%1\\%2\\Kadu\\").arg(home).arg(config_dir);		
+			path = QString("%1\\Kadu\\").arg(config_dir);
 #else
 		if (config_dir.isNull())
 			path = QString("%1/.kadu/").arg(home);

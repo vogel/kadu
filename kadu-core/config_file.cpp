@@ -21,7 +21,7 @@
 
 #include "config_file.h"
 
-QMutex GlobalMutex;
+KADUAPI QMutex GlobalMutex;
 
 XmlConfigFile::XmlConfigFile() : DomDocument()
 {

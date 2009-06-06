@@ -31,17 +31,10 @@
 #include "misc.h"
 #include "config_file.h"
 #include "icons_manager.h"
+#include "message_box.h"
 
-QString kaduConfFile = "kadu.conf.xml";
-
-#ifndef Q_WS_WIN
+static const QString kaduConfFile = "kadu.conf.xml";
 extern QMutex GlobalMutex;
-#else
-/* MinGW reports unresolved GlobalMutex. Bypass using GlobalMutex from
- * config_file.cpp for now (hope there won't be any crashes because that)
- */
-QMutex GlobalMutex;
-#endif
 
 extern "C" int profiles_init()
 {
@@ -96,7 +89,11 @@ ProfileManager::~ProfileManager()
 }
 
 QString ProfileManager::dirString() {
-	return ggPath()+"kadupro/clones/";
+#ifdef Q_OS_WIN
+	return ggPath() + "kadupro\\clones\\";
+#else
+	return ggPath() + "kadupro/clones/";
+#endif
 }
 
 void ProfileManager::showMenu()
@@ -140,7 +137,7 @@ void ProfileManager::firstRun()
 	//jak katalog nie istnieje to stworz nowy
 	if (!directory.exists())
 	{
-		directory.mkdir(ggPath()+"kadupro", true);
+		directory.mkdir(ggPath() + "kadupro", true);
 		directory.mkdir(dirnameString, true);
 	}
 	else
@@ -287,11 +284,12 @@ void ProfileManager::runAutostarted()
 		if (p.autostart == true)
 		{
 			QString profilePath = p.directory;
+#ifndef Q_OS_WIN
 			profilePath = profilePath.right(profilePath.length() - profilePath.find(".kadu"));
+#endif
 			runKadu(profilePath, p.protectPassword);
 		}
 	}
-	
 }
 
 static inline void startThread(QString profilePath)
@@ -362,8 +360,9 @@ void ProfileManager::openProfile(int index)
 
 	Profile p = list.at(index);
 	QString profilePath = p.directory;
+#ifndef Q_OS_WIN
 	profilePath = profilePath.right(profilePath.length() - profilePath.find(".kadu"));
-
+#endif
 	runKadu(profilePath, p.protectPassword);
 
 	kdebugf2();
@@ -493,8 +492,9 @@ void ProfileConfigurationWindow::openBtnPressed()
 	if (profileName->text().compare("") == 0) return;
 	
 	QString profilePath = this->profileDir->text();
+#ifndef Q_OS_WIN
 	profilePath = profilePath.right(profilePath.length()-profilePath.find(".kadu"));
-
+#endif
 	//uruchom kadu w nowym watku
 	if (profileManager->runKadu(profilePath,
 		 	passwordProtectCheck->isChecked() ? protectPassword->text() : "")) 
@@ -619,24 +619,34 @@ void ProfileConfigurationWindow::deleteBtnPressed()
 	{
 		//usun katalog i jego pliki
 		QDir directory(profileDir->text(), QString::null, QDir::Name, QDir::Files);
-		if (directory.exists()) {
-			//to tak na wszelki wypadek by komus nie wyciac systemu		
-			if ((QString::compare(profileDir->text(), "/") == 0) ||
-				(QString::compare(profileDir->text(), "/bin") == 0) ||
-				(QString::compare(profileDir->text(), "/boot") == 0) ||	
-				(QString::compare(profileDir->text(), "/dev") == 0) ||	
-				(QString::compare(profileDir->text(), "/etc") == 0) ||
-				(QString::compare(profileDir->text(), "/lib") == 0) ||
-				(QString::compare(profileDir->text(), "/mnt") == 0) ||	
-				(QString::compare(profileDir->text(), "/opt") == 0) ||
-				(QString::compare(profileDir->text(), "/proc") == 0) ||			
-				(QString::compare(profileDir->text(), "/sbin") == 0) ||
-				(QString::compare(profileDir->text(), "/sys") == 0) ||
-				(QString::compare(profileDir->text(), "/usr") == 0) ||
-				(QString::compare(profileDir->text(), "/var") == 0))
-					return;			
+		if (directory.exists()) 
+		{
+#ifdef Q_OS_WIN
+			if ((QString::compare(profileDir->text(), "C:\\") == 0) ||
+				(QString::compare(profileDir->text(), "C:\\WINDOWS") == 0) ||
+				(QString::compare(profileDir->text(), "C:\\WINDOWS\\system32") == 0))
+					return;
 			
-			system("rm -fr "+profileDir->text());
+			system("rd /S /Q " + profileDir->text());
+#else
+			//to tak na wszelki wypadek by komus nie wyciac systemu
+			if ((QString::compare(profileDir->text(), "/")     == 0) ||
+			    (QString::compare(profileDir->text(), "/bin")  == 0) ||
+			    (QString::compare(profileDir->text(), "/boot") == 0) ||
+			    (QString::compare(profileDir->text(), "/dev")  == 0) ||
+			    (QString::compare(profileDir->text(), "/etc")  == 0) ||
+			    (QString::compare(profileDir->text(), "/lib")  == 0) ||
+			    (QString::compare(profileDir->text(), "/mnt")  == 0) ||
+			    (QString::compare(profileDir->text(), "/opt")  == 0) ||
+			    (QString::compare(profileDir->text(), "/proc") == 0) ||
+			    (QString::compare(profileDir->text(), "/sbin") == 0) ||
+			    (QString::compare(profileDir->text(), "/sys")  == 0) ||
+			    (QString::compare(profileDir->text(), "/usr")  == 0) ||
+			    (QString::compare(profileDir->text(), "/var")  == 0))
+				return;
+
+			system("rm -fr " + profileDir->text());
+#endif
 		}
 	
 		removeProfile(profileName->text());
@@ -757,7 +767,12 @@ void ProfileConfigurationWindow::removeProfile(QString name)
 
 void MyThread::run()
 {
-	system("bash -c \"export CONFIG_DIR="+path+" ; "+command+"\"");	
+#ifdef Q_OS_WIN
+	QString s = command + " --config-dir \"" + path + "\"";
+#else
+	QString s = "bash -c \"export CONFIG_DIR=" + path + " ; " + command + "\"";
+#endif
+	system(qPrintable(s));
 }
 
 
