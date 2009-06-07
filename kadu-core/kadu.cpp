@@ -576,12 +576,8 @@ Kadu::Kadu(QWidget *parent)
 	dockMenu->addAction(icons_manager->loadIcon("Exit"), tr("&Exit Kadu"), this, SLOT(quit()));
 
 	InfoPanel = new KaduTextBrowser(split);
-// TODO: 0.6.5
-// 	InfoPanel->setFrameStyle(QFrame::NoFrame);
-// 	InfoPanel->setMinimumHeight(int(1.5 * QFontMetrics(InfoPanel->QTextEdit::font()).height()));
-//	InfoPanel->resize(InfoPanel->size().width(), int(1.5 * QFontMetrics(InfoPanel->font()).height()));
-// 	InfoPanel->setTextFormat(Qt::RichText);
-// 	InfoPanel->setAlignment(Qt::AlignVCenter/** | Qt::WordBreak | Qt::DontClip*/);
+	InfoPanel->setMinimumHeight(int(1.5 * InfoPanel->fontMetrics().height()));
+	InfoPanel->resize(InfoPanel->width(), InfoPanel->minimumHeight());
 
 	if (!config_file.readBoolEntry("Look", "ShowInfoPanel"))
 		InfoPanel->QWidget::hide();
@@ -1112,7 +1108,6 @@ void Kadu::changeAppearance()
 	{
 		InfoPanel->show();
 
-
 		QFont font = config_file.readFontEntry("Look", "PanelFont");
 
 		QString fontFamily = font.family();
@@ -1454,11 +1449,12 @@ bool Kadu::close(bool quit)
 
 		if (config_file.readBoolEntry("Look", "ShowInfoPanel"))
 		{
-			config_file.writeEntry("General", "UserBoxHeight", Userbox->size().height());
-			config_file.writeEntry("General", "DescriptionHeight", InfoPanel->size().height());
+			config_file.writeEntry("General", "UserBoxHeight", Userbox->height());
+//			if (InfoPanel->height() > 0)
+			config_file.writeEntry("General", "DescriptionHeight", InfoPanel->height());
 		}
 		if (config_file.readBoolEntry("Look", "ShowStatusButton"))
-			config_file.writeEntry("General", "UserBoxHeight", Userbox->size().height());
+			config_file.writeEntry("General", "UserBoxHeight", Userbox->height());
  		saveWindowGeometry(this, "General", "Geometry");
 
 		config_file.writeEntry("General", "DefaultDescription", defaultdescriptions.join("<-->"));
