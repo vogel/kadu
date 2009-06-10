@@ -155,11 +155,7 @@ QString GaduAvatars::getAvatar(int uin, int mode)
 
 	if (QFileInfo(filename).size() > 0)
 	{
-#ifdef Q_OS_WIN
 		return filename;
-#else
-		return "file://" + filename;
-#endif
 	}
 	else
 	{
