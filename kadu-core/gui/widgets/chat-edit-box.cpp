@@ -13,9 +13,9 @@
 #include "contacts/contact-account-data.h"
 #include "gui/widgets/chat-widget-actions.h"
 #include "gui/widgets/chat-widget-manager.h"
+#include "gui/widgets/color-selector.h"
 #include "misc/image-dialog.h"
 
-#include "color_selector.h"
 #include "config_file.h"
 #include "chat-widget.h"
 #include "custom_input.h"

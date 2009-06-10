@@ -71,6 +71,8 @@ set (kadu_SRCS
 	gui/widgets/chat-widget.cpp
 	gui/widgets/chat-widget-actions.cpp
 	gui/widgets/chat-widget-manager.cpp
+	gui/widgets/color-button.cpp
+	gui/widgets/color-selector.cpp
 	gui/widgets/contact-account-data-widget.cpp
 	gui/widgets/contact-info-panel.cpp
 	gui/widgets/contacts-list-widget.cpp
@@ -161,8 +163,6 @@ set (kadu_SRCS
 
 	action.cpp
 	activate.cpp
-	color_button.cpp
-	color_selector.cpp
 	config_file.cpp
 	configuration_aware_object.cpp
 	debug.cpp
@@ -259,6 +259,8 @@ set (kadu_MOC_SRCS
 	gui/widgets/chat-widget.h
 	gui/widgets/chat-widget-actions.h
 	gui/widgets/chat-widget-manager.h
+	gui/widgets/color-button.h
+	gui/widgets/color-selector.h
 	gui/widgets/contact-account-data-widget.h
 	gui/widgets/contact-info-panel.h
 	gui/widgets/contacts-list-widget.h
@@ -326,8 +328,6 @@ set (kadu_MOC_SRCS
 
 	action.h
 	#activate.h
-	color_button.h
-	color_selector.h
 	#config_file.h
 	#configuration_aware_object.h
 	#debug.h

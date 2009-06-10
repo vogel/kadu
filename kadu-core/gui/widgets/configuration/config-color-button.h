@@ -10,9 +10,9 @@
 #ifndef CONFIG_COLOR_BUTTON_H
 #define CONFIG_COLOR_BUTTON_H
 
+#include "gui/widgets/color-button.h"
 #include "gui/widgets/configuration/config-widget-value.h"
 #include "configuration/configuration-window-data-manager.h"
-#include "color_button.h"
 
 class QLabel;
 class ConfigGroupBox;

@@ -9,7 +9,7 @@
 
 #include <QtGui/QColorDialog>
 
-#include "color_button.h"
+#include "color-button.h"
 
 ColorButton::ColorButton(QWidget *parent)
 	: QPushButton(parent)

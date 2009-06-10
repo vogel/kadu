@@ -15,7 +15,7 @@
 #include "debug.h"
 #include "misc/misc.h"
 
-#include "color_selector.h"
+#include "color-selector.h"
 
 const char colors[16][8] = {"#FF0000", "#A00000", "#00FF00", "#00A000", "#0000FF", "#0000A0", "#FFFF00",
 	"#A0A000", "#FF00FF", "#A000A0", "#00FFFF", "#00A0A0", "#FFFFFF", "#A0A0A0", "#808080", "#000000"};
