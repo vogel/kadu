@@ -197,7 +197,7 @@ void GaduEditAccountWidget::loadAccountData()
 {
 	ConnectAtStart->setChecked(account()->connectAtStart());
 	AccountId->setText(account()->id());
-	RememberPassword->setChecked(account()->rememberPsssword());
+	RememberPassword->setChecked(account()->rememberPassword());
 	AccountPassword->setText(account()->password());
 }
 

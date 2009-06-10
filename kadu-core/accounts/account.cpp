@@ -19,7 +19,8 @@
 #include "account.h"
 
 Account::Account(const QUuid &uuid) :
-		UuidStorableObject("Account", AccountManager::instance()), ProtocolHandler(0)
+		UuidStorableObject("Account", AccountManager::instance()), ProtocolHandler(0),
+		RememberPassword(false), HasPassword(false)
 {
 	Uuid = uuid.isNull()
 		? QUuid::createUuid()
@@ -73,6 +74,7 @@ void Account::load()
 	setId(loadValue<QString>("Id"));
 
 	RememberPassword = loadValue<bool>("RememberPassword", true);
+	HasPassword = RememberPassword;
 	if (RememberPassword)
 		Password = pwHash(loadValue<QString>("Password"));
 
@@ -93,7 +95,7 @@ void Account::store()
 	storeValue("Id", id());
 
 	storeValue("RememberPassword", RememberPassword);
-	if (RememberPassword)
+	if (RememberPassword && HasPassword)
 		storeValue("Password", pwHash(password()));
 	else
 		removeValue("Password");

@@ -19,14 +19,12 @@
 #endif
 
 #include "accounts/account.h"
-
 #include "chat/chat.h"
 #include "chat/message/message.h"
-
 #include "chat/chat-manager.h"
 #include "contacts/contact-manager.h"
 #include "contacts/ignored-helper.h"
-
+#include "gui/windows/password-window.h"
 #include "protocols/protocols-manager.h"
 
 #include "config_file.h"
@@ -412,17 +410,35 @@ void GaduProtocol::everyMinuteActions()
 	CurrentChatImageService->resetSendImageRequests();
 }
 
+void GaduProtocol::login(const QString &password, bool permanent)
+{
+	account()->setPassword(password);
+	account()->setRememberPassword(permanent);
+
+	login();
+}
+
 void GaduProtocol::login()
 {
 	kdebugf();
 
+	if (GaduSession)
+		return;
+
 	GaduAccount *gaduAccount = dynamic_cast<GaduAccount *>(account());
 
-	if (0 == gaduAccount->uin() || QString::null == gaduAccount->password())
+	if (0 == gaduAccount->uin())
 	{
-		MessageBox::msg(tr("UIN or password not set!"), false, "Warning");
+		MessageBox::msg(tr("UIN not set!"), false, "Warning");
 		setStatus(Status::Offline);
 		kdebugmf(KDEBUG_FUNCTION_END, "end: uin or password not set\n");
+		return;
+	}
+
+	if (!gaduAccount->hasPassword())
+	{
+		PasswordWindow::getPassword(tr("Please provide password for %1 account").arg(gaduAccount->name()),
+				this, SLOT(login(const QString &, bool)));
 		return;
 	}
 
@@ -508,6 +524,7 @@ void GaduProtocol::setupLoginParams()
 	GaduAccount *gaduAccount = dynamic_cast<GaduAccount *>(account());
 	if (!gaduAccount)
 		return;
+
 	GaduLoginParams.uin = gaduAccount->id().toULong();
 	GaduLoginParams.password = strdup(gaduAccount->password().toAscii().data());
 

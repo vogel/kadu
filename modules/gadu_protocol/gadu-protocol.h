@@ -97,7 +97,9 @@ private:
 	void socketDisconnected();
 
 private slots:
+	void login(const QString &password, bool permanent);
 	void login();
+
 	void connectionTimeoutTimerSlot();
 	void everyMinuteActions();
 

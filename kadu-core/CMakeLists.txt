@@ -122,6 +122,7 @@ set (kadu_SRCS
 	gui/windows/open-chat-with/open-chat-with.cpp
 	gui/windows/open-chat-with/open-chat-with-contact-list-runner.cpp
 	gui/windows/open-chat-with/open-chat-with-runner-manager.cpp
+	gui/windows/password-window.cpp
 	gui/windows/window-notifier-window.cpp
 	gui/windows/your-accounts.cpp
 
@@ -291,6 +292,7 @@ set (kadu_MOC_SRCS
 	gui/windows/open-chat-with/open-chat-with.h
 	#gui/windows/open-chat-with/open-chat-with-contact-list-runner.h
 	#gui/windows/open-chat-with/open-chat-with-runner-manager.h
+	gui/windows/password-window.h
 	#gui/windows/window-notifier-window.h
 	gui/windows/your-accounts.h
 
