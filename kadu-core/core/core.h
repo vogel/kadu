@@ -14,12 +14,12 @@
 
 #include "accounts/accounts-aware-object.h"
 #include "chat/chat.h"
+#include "configuration/configuration-aware-object.h"
 #include "contacts/contact.h"
 #include "contacts/contact-list.h"
 #include "misc/token-reader.h"
 #include "protocols/status.h"
 
-#include "configuration_aware_object.h"
 #include "exports.h"
 
 class ConfigurationManager;

@@ -1,7 +1,7 @@
 #ifndef QT4_DOCKING_NOTIFY_H
 #define QT4_DOCKING_NOTIFY_H
 
-#include "configuration_aware_object.h"
+#include "configuration/configuration-aware-object.h"
 #include "main_configuration_window.h"
 #include "../notify/notify.h"
 #include "../qt4_docking/qt4_docking.h"

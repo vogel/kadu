@@ -12,7 +12,7 @@
 
 #include <QtCore/QObject>
 
-#include "configuration_aware_object.h"
+#include "configuration/configuration-aware-object.h"
 
 class QAction;
 

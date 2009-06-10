@@ -12,8 +12,8 @@
 
 #include <QtGui/QPushButton>
 
+#include "configuration/configuration-aware-object.h"
 #include "protocols/status.h"
-#include "configuration_aware_object.h"
 
 class StatusButton : public QPushButton, private ConfigurationAwareObject
 {

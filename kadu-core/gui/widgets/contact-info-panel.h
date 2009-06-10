@@ -10,8 +10,8 @@
 #ifndef CONTACT_INFO_PANEL_H
 #define CONTACT_INFO_PANEL_H
 
+#include "configuration/configuration-aware-object.h"
 #include "contacts/contact.h"
-#include "configuration_aware_object.h"
 
 #include "kadu_text_browser.h"
 

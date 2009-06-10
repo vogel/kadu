@@ -15,9 +15,9 @@
 #include <QtGui/QDialog>
 
 #include "action.h"
+#include "configuration/configuration-aware-object.h"
 #include "protocols/protocol.h"
 #include "main_configuration_window.h"
-#include "configuration_aware_object.h"
 
 enum HistoryEntryType
 {

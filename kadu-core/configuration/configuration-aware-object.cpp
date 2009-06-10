@@ -9,7 +9,7 @@
 
 #include "misc/misc.h"
 
-#include "configuration_aware_object.h"
+#include "configuration-aware-object.h"
 
 KADU_AWARE_CLASS(ConfigurationAwareObject)
 

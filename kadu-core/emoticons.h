@@ -5,7 +5,7 @@
 #include <QtCore/QPair>
 #include <QtGui/QToolButton>
 
-#include "configuration_aware_object.h"
+#include "configuration/configuration-aware-object.h"
 #include "html_document.h"
 #include "themes.h"
 #include "exports.h"

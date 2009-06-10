@@ -52,6 +52,7 @@ set (kadu_SRCS
 
 	configuration/account-data-manager.cpp
 	configuration/config-file-data-manager.cpp
+	configuration/configuration-aware-object.cpp
 	configuration/configuration-manager.cpp
 	configuration/contact-account-data-manager.cpp
 	configuration/storable-object.cpp
@@ -164,7 +165,6 @@ set (kadu_SRCS
 	action.cpp
 	activate.cpp
 	config_file.cpp
-	configuration_aware_object.cpp
 	debug.cpp
 	dnshandler.cpp
 	emoticons.cpp
@@ -241,7 +241,6 @@ set (kadu_MOC_SRCS
 	contacts/model/filter/online-and-description-contact-filter.h
 	contacts/model/filter/online-contact-filter.h
 
-	#configuration/config-file-data-manager.h
 	configuration/configuration-window-data-manager.h
 
 	configuration/widgets/manage-accounts.h
@@ -329,7 +328,6 @@ set (kadu_MOC_SRCS
 	action.h
 	#activate.h
 	#config_file.h
-	#configuration_aware_object.h
 	#debug.h
 	dnshandler.h
 	emoticons.h

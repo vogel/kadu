@@ -13,7 +13,7 @@
 #include <QtCore/QList>
 #include <QtNetwork/QHostAddress>
 
-#include "configuration_aware_object.h"
+#include "configuration/configuration-aware-object.h"
 
 class GaduServersManager : public ConfigurationAwareObject
 {

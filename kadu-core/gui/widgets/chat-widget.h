@@ -16,17 +16,12 @@
 #include <QtGui/QWidget>
 
 #include "accounts/accounts-aware-object.h"
-
 #include "chat/chat.h"
 #include "chat/message/formatted-message.h"
-
+#include "configuration/configuration-aware-object.h"
 #include "contacts/contact-list.h"
-
 #include "protocols/services/chat-service.h"
-
 #include "chat_messages_view.h"
-#include "configuration_aware_object.h"
-
 #include "exports.h"
 
 class QSplitter;

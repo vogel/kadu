@@ -13,7 +13,7 @@
 #include <QtCore/QMap>
 #include <QtCore/QStringList>
 
-#include "configuration_aware_object.h"
+#include "configuration/configuration-aware-object.h"
 #include "exports.h"
 
 #include "abstract-tool-tip.h"

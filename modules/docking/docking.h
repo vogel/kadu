@@ -4,7 +4,7 @@
 #include <QtGui/QLabel>
 #include <QtGui/QIcon>
 
-#include "configuration_aware_object.h"
+#include "configuration/configuration-aware-object.h"
 
 #include "docking_exports.h"
 

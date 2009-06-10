@@ -12,7 +12,7 @@
 
 #include <QtGui/QTabBar>
 
-#include "configuration_aware_object.h"
+#include "configuration/configuration-aware-object.h"
 #include "contacts/contact-list.h"
 
 class GroupContactFilter;

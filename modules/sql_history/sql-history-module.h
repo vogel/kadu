@@ -15,9 +15,9 @@
 #include <QtGui/QLineEdit>
 #include <QtGui/QSpinBox>
 
+#include "configuration/configuration-aware-object.h"
 #include "misc/path-conversion.h"
 #include "main_configuration_window.h"
-#include "configuration_aware_object.h"
 
 #include "storage/history-sql-storage.h"
 

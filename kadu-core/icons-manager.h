@@ -14,7 +14,8 @@
 #include <QtGui/QIcon>
 #include <QtGui/QPixmap>
 
-#include "configuration_aware_object.h"
+#include "configuration/configuration-aware-object.h"
+
 #include "themes.h"
 #include "exports.h"
 

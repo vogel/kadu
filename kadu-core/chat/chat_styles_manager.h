@@ -4,7 +4,8 @@
 #include <QtCore/QObject>
 #include <QtCore/QMap>
 
-#include "configuration_aware_object.h"
+#include "configuration/configuration-aware-object.h"
+
 #include "main_configuration_window.h"
 
 class QPushButton;
