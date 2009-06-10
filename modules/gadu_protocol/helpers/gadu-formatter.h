@@ -12,21 +12,21 @@
 
 #include "gadu-protocol.h"
 
-class Message;
+class FormattedMessage;
 
 class GaduFormater
 {
-	static void appendToMessage(Account *account, Message &result, GaduProtocol::UinType sender, const QString &content,
+	static void appendToMessage(Account *account, FormattedMessage &result, GaduProtocol::UinType sender, const QString &content,
 			struct gg_msg_richtext_format &format,
 			struct gg_msg_richtext_color &color, struct gg_msg_richtext_image &image, bool receiveImages);
 
 public:
-	static unsigned int computeFormatsSize(const Message &message);
-	static unsigned char * createFormats(Account *account, const Message &message, unsigned int &size);
+	static unsigned int computeFormatsSize(const FormattedMessage &message);
+	static unsigned char * createFormats(Account *account, const FormattedMessage &message, unsigned int &size);
 
 	static QString createImageId(GaduProtocol::UinType sender, unsigned int size, unsigned int crc32);
 
-	static Message createMessage(Account *acccount, GaduProtocol::UinType sender, const QString &content, unsigned char *formats,
+	static FormattedMessage createMessage(Account *acccount, GaduProtocol::UinType sender, const QString &content, unsigned char *formats,
 			unsigned int size, bool receiveImages);
 
 };

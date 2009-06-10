@@ -53,7 +53,7 @@ private:
 
 private slots:
 	void openChatWith();
-	void messageReceived(Chat *chat, Contact sender, const QString &message);
+	void messageReceived(const Message &message);
 
 protected:
 	virtual void configurationUpdated();

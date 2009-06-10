@@ -7,7 +7,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "chat/message/message-part.h"
+#include "chat/message/formatted-message-part.h"
 
 #include "config_file.h"
 #include "kadu_parser.h"
@@ -113,11 +113,10 @@ void ChatMessage::unregisterParserTags()
 	KaduParser::unregisterObjectTag("separator", getSeparator);
 }
 
-ChatMessage::ChatMessage(Chat *chat, Contact sender, const QString &unformattedMessage,
-	ChatMessageType type, QDateTime date, QDateTime sdate) :
-		CurrentChat(chat), Sender(sender), Date(date), SDate(sdate), Type(type)
+ChatMessage::ChatMessage(const Message &msg, ChatMessageType type) :
+		message(msg), Type(type)
 {
-	receivedDate = printDateTime(date);
+	receivedDate = printDateTime(message.receiveDate);
 
 	switch (type)
 	{
@@ -137,7 +136,7 @@ ChatMessage::ChatMessage(Chat *chat, Contact sender, const QString &unformattedM
 			break;
 	}
 
-	this->unformattedMessage = unformattedMessage;
+	this->unformattedMessage = message.messageContent;
 
 	this->unformattedMessage.replace("\r\n", "<br/>");
 	this->unformattedMessage.replace("\n",   "<br/>");
@@ -150,8 +149,9 @@ ChatMessage::ChatMessage(Chat *chat, Contact sender, const QString &unformattedM
 
 ChatMessage::ChatMessage(const QString &rawContent, ChatMessageType type, QDateTime date,
 	QString backgroundColor, QString fontColor, QString nickColor)
-	: Date(date), Type(type), unformattedMessage(rawContent), backgroundColor(backgroundColor), fontColor(fontColor), nickColor(nickColor)
+	: Type(type), unformattedMessage(rawContent), backgroundColor(backgroundColor), fontColor(fontColor), nickColor(nickColor)
 {
+	message.receiveDate = date;
 }
 
 // TODO: remove?
@@ -183,13 +183,13 @@ QString ChatMessage::convertCharacters(QString edit, const QColor &bgcolor, Emot
 
 void ChatMessage::replaceLoadingImages(const QString &imageId, const QString &imagePath)
 {
-	unformattedMessage = MessagePart::replaceLoadingImages(unformattedMessage, imageId, imagePath);
+	unformattedMessage = FormattedMessagePart::replaceLoadingImages(unformattedMessage, imageId, imagePath);
 }
 
 void ChatMessage::setShowServerTime(bool noServerTime, int noServerTimeDiff)
 {
-	if (SDate.isValid() && (!noServerTime || (abs(Date.toTime_t()-SDate.toTime_t())) > noServerTimeDiff))
-		sentDate = printDateTime(SDate);
+	if (message.sendDate.isValid() && (!noServerTime || (abs(message.receiveDate.toTime_t()-message.sendDate.toTime_t())) > noServerTimeDiff))
+		sentDate = printDateTime(message.sendDate);
 	else
 		sentDate = QString::null;
 }

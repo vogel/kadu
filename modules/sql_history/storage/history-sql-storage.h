@@ -48,8 +48,8 @@ class HistorySqlStorage : public HistoryStorage
 	QString prepareText(const QString &text);	
  
 private slots:
-	virtual void messageReceived(Chat *chat, Contact contact, const QString &message);
-	virtual void messageSent(Chat *chat, const QString &message);
+	virtual void messageReceived(const Message &message);
+	virtual void messageSent(const Message &message);
 	void initializeDatabase();
 
 public:
@@ -80,7 +80,7 @@ public:
 		\param send_time czas wys³ania wiadomo¶ci
 		\param receive_time czas odebrania 
 	**/
-	void appendMessageEntry(Chat *chat, Contact contact, const QString &message);
+	void appendMessageEntry(const Message &message);
 	/**
 		\fn void appendSmsEntry(ContactList list, const QString &msg, bool outgoing, time_t send_time, time_t receive_time);
 		Zapisuje smsy w bazie. Z za³o¿enia interfejs dla modu³ów importu/eksportu historii.

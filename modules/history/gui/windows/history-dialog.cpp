@@ -22,6 +22,8 @@
 #include <QtGui/QMenu>
 #include <QtGui/QProgressBar>
 #include <QtGui/QRadioButton>
+#include <QtGui/QTextDocument>
+
 
 #include "action.h"
 #include "debug.h"
@@ -83,11 +85,13 @@ QString DetailsListItem::prepareAltnick()
 	}
 	return name;
 }
- 
+
 QString DetailsListItem::prepareTitle()
 {
 	QString title = History::instance()->getMessages(CurrentChat, Date, 1).first()->unformattedMessage;
-	HtmlDocument::escapeText(title);
+	QTextDocument doc;
+	doc.setHtml(title);
+	title = doc.toPlainText();
 	int l = title.length();
 	title.truncate(20);
 	if (l > 20)

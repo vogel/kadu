@@ -24,6 +24,7 @@
 
 class ConfigurationManager;
 class KaduWindow;
+class Message;
 class UserStatusChanger;
 
 class KADUAPI Core : public QObject, private AccountsAwareObject, public ConfigurationAwareObject, public TokenReader
@@ -93,7 +94,7 @@ signals:
 	void connected();
 	void disconnected();
 
-	void messageReceived(Chat *chat, Contact sender, const QString &message);
+	void messageReceived(const Message &message);
 
 	// TODO: remove
 	void settingMainIconBlocked(bool &blocked);

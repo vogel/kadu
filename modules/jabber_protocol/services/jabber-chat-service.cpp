@@ -10,6 +10,8 @@
 #include "contacts/ignored-helper.h"
 
 #include "chat/chat.h"
+#include "chat/message/message.h"
+#include "core/core.h"
 #include "config_file.h"
 #include "debug.h"
 #include "../jabber_protocol.h"
@@ -35,14 +37,14 @@ JabberChatService::JabberChatService(JabberProtocol *protocol)
 		this, SLOT(clientMessageReceived(const XMPP::Message &)));
 }
 
-bool JabberChatService::sendMessage(Chat *chat, Message &message)
+bool JabberChatService::sendMessage(Chat *chat, FormattedMessage &formattedMessage)
 {
 	kdebugf();
 	ContactSet contacts = chat->contacts();
         // TODO send to more users
 	Contact contact = (*contacts.begin());
 	//QString cleanmsg = toPlainText(mesg);
-	QString plain = message.toPlain();
+	QString plain = formattedMessage.toPlain();
 	const XMPP::Jid jus = contact.id(Protocol->account());
 	XMPP::Message msg = XMPP::Message(jus);
 
@@ -64,7 +66,14 @@ bool JabberChatService::sendMessage(Chat *chat, Message &message)
 	//msg.setFrom(jabberID);
 	Protocol->client()->sendMessage(msg);
 
-	emit messageSent(chat, message.toPlain());
+	Message message;
+	message.chat = chat;
+	message.messageContent = formattedMessage.toPlain();
+	message.sender = Core::instance()->myself();
+	message.sendDate = QDateTime::currentDateTime();
+	message.receiveDate = QDateTime();
+	emit messageSent(message);
+
 	kdebugf2();
 	return true;
 }
@@ -89,15 +98,22 @@ void JabberChatService::clientMessageReceived(const XMPP::Message &msg)
 	Contact contact = Protocol->account()->getContactById(msg.from().bare());
 	ContactSet contacts = ContactSet(contact);
 	time_t msgtime = msg.timeStamp().toTime_t();
-	Message message(msg.body());
+	FormattedMessage formattedMessage(msg.body());
 
 	bool ignore = false;
 	Chat *chat = Protocol->findChat(contacts);
-	emit receivedMessageFilter(chat, contact, message.toPlain(), msgtime, ignore);
+	emit receivedMessageFilter(chat, contact, formattedMessage.toPlain(), msgtime, ignore);
 	if (ignore)
 		return;
 
-	emit messageReceived(chat, contact, message.toHtml());
+	Message message;
+	message.chat = chat;
+	message.messageContent = formattedMessage.toPlain();
+	message.sender = contact;
+	message.sendDate = msg.timeStamp();
+	message.receiveDate = QDateTime::currentDateTime();
+	emit messageReceived(message);
+
 	kdebugf2();
 }
 

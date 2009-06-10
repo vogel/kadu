@@ -11,6 +11,7 @@
 
 #include "accounts/account.h"
 #include "accounts/account-manager.h"
+#include "chat/message/message.h"
 #include "contacts/contact-account-data.h"
 #include "gui/widgets/chat-widget-manager.h"
 #include "gui/widgets/contacts-list-widget-menu-manager.h"
@@ -157,8 +158,8 @@ void NotificationManager::accountRegistered(Account *account)
 	ChatService *chatService = protocol->chatService();
 	if (chatService)
 	{
-		connect(chatService, SIGNAL(messageReceived(Chat *, Contact, const QString &)),
-				this, SLOT(messageReceived(Chat *, Contact, const QString &)));
+		connect(chatService, SIGNAL(messageReceived(const Message &)),
+				this, SLOT(messageReceived(const Message &)));
 	}
 }
 
@@ -173,8 +174,8 @@ void NotificationManager::accountUnregistered(Account *account)
 	ChatService *chatService = protocol->chatService();
 	if (chatService)
 	{
-		disconnect(chatService, SIGNAL(messageReceived(Chat *, Contact, const QString &)),
-				this, SLOT(messageReceived(Chat *, Contact, const QString &)));
+		disconnect(chatService, SIGNAL(messageReceived(const Message &)),
+				this, SLOT(messageReceived(const Message &)));
 	}
 }
 
@@ -230,16 +231,16 @@ void NotificationManager::statusChanged(Account *account, Contact contact, Statu
 	kdebugf2();
 }
 
-void NotificationManager::messageReceived(Chat *chat, Contact sender, const QString &message)
+void NotificationManager::messageReceived(const Message &message)
 {
 	kdebugf();
 
-	ChatWidget *chatWidget = ChatWidgetManager::instance()->byChat(chat);
+	ChatWidget *chatWidget = ChatWidgetManager::instance()->byChat(message.chat);
 	if (!chatWidget) // new chat
-		notify(new MessageNotification(MessageNotification::NewChat, chat, message));
+		notify(new MessageNotification(MessageNotification::NewChat, message.chat, message.messageContent));
 	else // new message in chat
 		if (!chatWidget->edit()->hasFocus() || !config_file.readBoolEntry("Notify", "NewMessageOnlyIfInactive"))
-			notify(new MessageNotification(MessageNotification::NewMessage, chat, message));
+			notify(new MessageNotification(MessageNotification::NewMessage, message.chat, message.messageContent));
 
 	kdebugf2();
 }

@@ -13,6 +13,8 @@
 #include <QtCore/QDateTime>
 #include <QtCore/QString>
 
+#include "chat/message/message.h"
+
 #include "contacts/contact.h"
 #include "contacts/contact-list.h"
 
@@ -52,11 +54,7 @@ class KADUAPI ChatMessage : public QObject
 	**/
 	QString convertCharacters(QString text, const QColor &bgcolor, EmoticonsStyle style);
 
-	Chat *CurrentChat;
-	Contact Sender;
-
-	QDateTime Date;
-	QDateTime SDate;
+	Message message;
 	int SeparatorSize;
 
 	ChatMessageType Type;
@@ -84,19 +82,18 @@ public:
 		\param date data otrzymania wiadomo�ci
 		\param sdate data wys�ania wiadomo�ci
 	**/
-	ChatMessage(Chat *chat, Contact sender, const QString &unformattedMessage, ChatMessageType type,
-		QDateTime date, QDateTime sdate = QDateTime());
+	ChatMessage(const Message &msg, ChatMessageType type);
 
 	ChatMessage(const QString &rawContent, ChatMessageType type, QDateTime date,
 		QString backgroundColor, QString fontColor, QString nickColor);
 
 	void replaceLoadingImages(const QString &imageId, const QString &imagePath);
 
-	Chat * chat() const { return CurrentChat; }
-	Contact sender() const { return Sender; }
+	Chat * chat() const { return message.chat; }
+	Contact sender() const { return message.sender; }
 
-	QDateTime date() const { return Date; }
-	QDateTime sdate() const { return SDate; }
+	QDateTime date() const { return message.receiveDate; }
+	QDateTime sdate() const { return message.sendDate; }
 	ChatMessageType type() const { return Type; }
 
 	void setSeparatorSize(int separatorSize) { SeparatorSize = separatorSize; }

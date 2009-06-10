@@ -287,8 +287,14 @@ void ChatWidget::writeMyMessage()
 {
 	kdebugf();
 
-	ChatMessage *message = new ChatMessage(CurrentChat, Core::instance()->myself(),
-			myLastMessage.toHtml(), TypeSent, QDateTime::currentDateTime());
+	Message msg;
+	msg.chat = CurrentChat;
+	msg.sender = Core::instance()->myself();
+	msg.messageContent = myLastMessage.toHtml();
+	msg.sendDate = QDateTime::currentDateTime();
+	msg.receiveDate = QDateTime();
+
+	ChatMessage *message = new ChatMessage(msg, TypeSent);
 	MessagesView->appendMessage(message);
 
 	if (!InputBox->inputBox()->isEnabled())
@@ -430,7 +436,7 @@ void ChatWidget::sendMessage()
 		changeSendToCancelSend();
 	}
 
-	myLastMessage = Message::parse(InputBox->inputBox()->document());
+	myLastMessage = FormattedMessage::parse(InputBox->inputBox()->document());
 
 	ChatService *chatService = currentProtocol()->chatService();
 

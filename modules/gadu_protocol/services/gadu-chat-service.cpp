@@ -9,7 +9,7 @@
 
 #include "contacts/ignored-helper.h"
 #include "core/core.h"
-
+#include "chat/message/message.h"
 #include "config_file.h"
 #include "debug.h"
 #include "message_box.h"
@@ -29,7 +29,7 @@ GaduChatService::GaduChatService(GaduProtocol *protocol)
 		this, SLOT(ackReceived(int, uin_t, int)));
 }
 
-bool GaduChatService::sendMessage(Chat *chat, Message &message)
+bool GaduChatService::sendMessage(Chat *chat, FormattedMessage &message)
 {
 	kdebugf();
 
@@ -112,7 +112,13 @@ bool GaduChatService::sendMessage(Chat *chat, Message &message)
 	if (formats)
 		delete[] formats;
 
-	emit messageSent(chat, message.toPlain());
+	Message msg;
+	msg.chat = chat;
+	msg.messageContent = message.toPlain();
+	msg.sender = Core::instance()->myself();
+	msg.sendDate = QDateTime::currentDateTime();
+	msg.receiveDate = QDateTime();
+	emit messageSent(msg);
 
 	kdebugf2();
 	return true;
@@ -155,7 +161,7 @@ void GaduChatService::handleEventMsg(struct gg_event *e)
 // 	if (ignore)
 // 		return;
 
-	Message message;
+	FormattedMessage message;
 	QString content = cp2unicode((const char *)e->event.msg.message);
 
 	content.replace(QLatin1String("\r\n"), QString(QChar::LineSeparator));
@@ -207,7 +213,13 @@ void GaduChatService::handleEventMsg(struct gg_event *e)
 	if (ignore)
 		return;
 
-	emit messageReceived(chat, sender, message.toPlain());
+	Message msg;
+	msg.chat = chat;
+	msg.messageContent = message.toPlain();
+	msg.sender = sender;
+	msg.sendDate = time;
+	msg.receiveDate = QDateTime::currentDateTime();
+	emit messageReceived(msg);
 }
 
 void GaduChatService::handleEventAck(struct gg_event *e)

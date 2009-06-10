@@ -7,8 +7,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef MESSAGE_PART_H
-#define MESSAGE_PART_H
+#ifndef FORMATTED_MESSAGE_PART_H
+#define FORMATTED_MESSAGE_PART_H
 
 #include "protocols/protocol.h"
 
@@ -17,7 +17,7 @@
 class QTextDocument;
 
 /**
- * \class MessagePart
+ * \class FormattedMessagePart
  * \brief Part of message that has text and formatting (or an image)
  *
  * This class represents a part of message - text with formatting or an image.
@@ -37,7 +37,7 @@ class QTextDocument;
  * </ul>
  * @TODO: refactor
  */
-class MessagePart
+class FormattedMessagePart
 {
 	QString Content;
 	bool Bold;
@@ -62,14 +62,14 @@ public:
 	 * @arg underline if true, the whole part is presented with underline font
 	 * @arg color color of whole part
 	 */
-	MessagePart(const QString &content, bool bold, bool italic, bool underline, QColor color);
+	FormattedMessagePart(const QString &content, bool bold, bool italic, bool underline, QColor color);
 
 	/**
 	 * Creates image message part (ready or to-be-received).
 	 * @arg imagePath local image path
 	 */
-	MessagePart(const QString &image, bool delayed);
-	virtual ~MessagePart();
+	FormattedMessagePart(const QString &image, bool delayed);
+	virtual ~FormattedMessagePart();
 
 	bool isImage() const { return Image; }
 	bool isEmpty() const { return !Image && Content.isEmpty(); }
@@ -90,4 +90,4 @@ public:
 
 };
 
-#endif // MESSAGE_PART_H
+#endif // FORMATTED_MESSAGE_PART_H

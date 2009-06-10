@@ -15,7 +15,9 @@
 #include "contacts/contact-list.h"
 
 #include "chat/chat.h"
-#include "chat/message/message.h"
+#include "chat/message/formatted-message.h"
+
+class Message;
 
 class ChatService : public QObject
 {
@@ -35,15 +37,14 @@ public:
 
 public slots:
 	virtual bool sendMessage(Chat *chat, const QString &messageContent);
-	virtual bool sendMessage(Chat *chat, Message &message) = 0;
+	virtual bool sendMessage(Chat *chat, FormattedMessage &message) = 0;
 
 signals:
 	void sendMessageFiltering(Chat *chat, QByteArray &msg, bool &stop);
 	void messageStatusChanged(int messsageId, ChatService::MessageStatus status);
 	void receivedMessageFilter(Chat *chat, Contact sender, const QString &message, time_t time, bool &ignore);
-	void messageSent(Chat *chat, const QString &message);
-	void messageReceived(Chat *chat, Contact sender, const QString &message);
-
+	void messageSent(const Message &message);
+	void messageReceived(const Message &message);
 };
 
 #endif // CHAT_SERVICE_H

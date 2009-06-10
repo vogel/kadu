@@ -13,11 +13,11 @@
 #include "html_document.h"
 #include "icons-manager.h"
 
-#include "message.h"
+#include "formatted-message.h"
 
-QRegExp Message::ImageRegExp("\\[IMAGE ([^\\]]+)\\]");
+QRegExp FormattedMessage::ImageRegExp("\\[IMAGE ([^\\]]+)\\]");
 
-void Message::parseImages(Message &message, const QString &messageString, bool b, bool i, bool u, QColor color)
+void FormattedMessage::parseImages(FormattedMessage &message, const QString &messageString, bool b, bool i, bool u, QColor color)
 {
 	QString partContent; 
 
@@ -29,12 +29,12 @@ void Message::parseImages(Message &message, const QString &messageString, bool b
 		{
 			partContent = messageString.mid(lastPos, pos - lastPos);
 			HtmlDocument::unescapeText(partContent);
-			message << MessagePart(partContent, b, i, u, color);
+			message << FormattedMessagePart(partContent, b, i, u, color);
 		}
 
 		QString fileName = ImageRegExp.cap(1);
 		if (!fileName.isEmpty())
-			message << MessagePart(fileName, false);
+			message << FormattedMessagePart(fileName, false);
 
 		pos += ImageRegExp.matchedLength();
 		lastPos = pos;
@@ -44,13 +44,13 @@ void Message::parseImages(Message &message, const QString &messageString, bool b
 	{
 		partContent = messageString.mid(lastPos, messageString.length() - lastPos);
 		HtmlDocument::unescapeText(partContent);
-		message << MessagePart(partContent, b, i, u, color);
+		message << FormattedMessagePart(partContent, b, i, u, color);
 	}
 }
 
-Message Message::parse(const QTextDocument *document)
+FormattedMessage FormattedMessage::parse(const QTextDocument *document)
 {
-	Message result;
+	FormattedMessage result;
 
 	QString text;
 
@@ -90,60 +90,60 @@ Message Message::parse(const QTextDocument *document)
 	return result;
 }
 
-Message::Message()
+FormattedMessage::FormattedMessage()
 	: Id(0)
 {
 }
 
-Message::Message(const QString &messageString)
+FormattedMessage::FormattedMessage(const QString &messageString)
 	: Id(0)
 {
-	Parts.append(MessagePart(messageString, false, false, false, QColor()));
+	Parts.append(FormattedMessagePart(messageString, false, false, false, QColor()));
 }
 
-Message::~Message()
+FormattedMessage::~FormattedMessage()
 {
 }
 
-QList<MessagePart> Message::parts() const
+QList<FormattedMessagePart> FormattedMessage::parts() const
 {
 	return Parts;
 }
 
 
-void Message::append(MessagePart part)
+void FormattedMessage::append(FormattedMessagePart part)
 {
 	Parts.append(part);
 }
 
-Message & Message::operator << (MessagePart part)
+FormattedMessage & FormattedMessage::operator << (FormattedMessagePart part)
 {
 	Parts << part;
 	return *this;
 }
 
-bool Message::isEmpty() const
+bool FormattedMessage::isEmpty() const
 {
-	foreach (MessagePart part, Parts)
+	foreach (FormattedMessagePart part, Parts)
 		if (!part.isEmpty())
 			return false;
 
 	return true;
 }
 
-QString Message::toPlain() const
+QString FormattedMessage::toPlain() const
 {
 	QString result;
-	foreach (MessagePart part, Parts)
+	foreach (FormattedMessagePart part, Parts)
 		result += part.content();
 
 	return result;
 }
 
-QString Message::toHtml() const
+QString FormattedMessage::toHtml() const
 {
 	QString result;
-	foreach (MessagePart part, Parts)
+	foreach (FormattedMessagePart part, Parts)
 		result += part.toHtml();
 
 	return result;

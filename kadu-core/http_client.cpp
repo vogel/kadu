@@ -280,7 +280,7 @@ const QByteArray & HttpClient::data() const
 	return Data;
 }
 
-const QString & HttpClient::cookie(const QString& name) const
+const QString HttpClient::cookie(const QString& name) const
 {
 	return Cookies[name];
 }

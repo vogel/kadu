@@ -14,6 +14,6 @@
 bool ChatService::sendMessage(Chat *chat, const QString &messageContent)
 {
 	QTextDocument document(messageContent);
-	Message message = Message::parse(&document);
+	FormattedMessage message = FormattedMessage::parse(&document);
 	return sendMessage(chat, message);
 }

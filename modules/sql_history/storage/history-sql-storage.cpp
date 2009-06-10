@@ -10,6 +10,7 @@
 #include "accounts/account.h"
 #include "accounts/account-manager.h"
 #include "chat/chat-manager.h"
+#include "chat/message/message.h"
 #include "config_file.h"
 #include "core/core.h"
 #include "debug.h"
@@ -39,21 +40,21 @@ void HistorySqlStorage::initializeDatabase()
 	kdebugf();
 	DbPrefix = config_file.readEntry("History", "DatabaseTableNamePrefix");
 	QString driver = config_file.readEntry("History", "DatabaseDriver");
-	if(!QSqlDatabase::isDriverAvailable(driver))
+	if (!QSqlDatabase::isDriverAvailable(driver))
 	{
 		MessageBox::msg(tr("It seems your Qt library does not provide support for selected database.\n Please select another driver in configuration window or install Qt with %1 plugin.").arg(driver), false, "Warning");
 		return; 
 	}	
-	if(QSqlDatabase::contains("kadu-history"))
+	if (QSqlDatabase::contains("kadu-history"))
 	{
 		if(Database.isOpen())
 			Database.close();
 		QSqlDatabase::removeDatabase("kadu-history");
 	}
 	Database = QSqlDatabase::addDatabase(driver, "kadu-history");
-	if(driver == "QSQLITE")
+	if (driver == "QSQLITE")
 		Database.setDatabaseName(config_file.readEntry("History", "DatabaseFilePath"));
-	else if(driver == "QPSQL" || driver == "QMYSQL")
+	else if (driver == "QPSQL" || driver == "QMYSQL")
 	{
 		Database.setDatabaseName(config_file.readEntry("History", "DatabaseName"));	
 		Database.setPort(config_file.readUnsignedNumEntry("History", "DatabaseHostPort"));
@@ -62,7 +63,7 @@ void HistorySqlStorage::initializeDatabase()
 		Database.setPassword(pwHash(config_file.readEntry("History", "DatabasePassword")));
 	}
 
-	if(Database.open())
+	if (Database.open())
 		kdebug("Connected to database, driver: %s\n", driver.toLocal8Bit().data());
 	else
 	{
@@ -75,15 +76,16 @@ void HistorySqlStorage::initializeDatabase()
 	{
 		QSqlQuery query(Database);
 		QString querystr;
-		if(Database.driverName() == "QSQLITE")
+		if (Database.driverName() == "QSQLITE")
 			querystr = "PRAGMA encoding = \"UTF-8\";";
-		else if(Database.driverName() == "QMYSQL")
+		else if (Database.driverName() == "QMYSQL")
 			querystr = "ALTER DATABASE `%1` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;";
 		query.prepare(querystr.arg(Database.databaseName()));
 		executeQuery(query);
 		querystr = "CREATE TABLE %1messages (chat VARCHAR(255), sender VARCHAR(255), send_time TIMESTAMP, receive_time TIMESTAMP, content TEXT, attributes TEXT);";
 		query.prepare(querystr.arg(DbPrefix));
 		executeQuery(query);
+
 		//executeQuery(QString("CREATE TABLE %1uid_groups (id INTEGER, account_id INTEGER, protocol VARCHAR(20), uid VARCHAR(255));").arg(DbPrefix));
 		//executeQuery(QString("CREATE TABLE %1status (uid_group_id INTEGER, status VARCHAR(255), time TIMESTAMP, description TEXT, ip_port TEXT);").arg(DbPrefix));
 		//executeQuery(QString("CREATE TABLE %1accounts (id INTEGER, protocol VARCHAR(20), uid VARCHAR(255));").arg(DbPrefix));
@@ -96,7 +98,7 @@ void HistorySqlStorage::initializeDatabase()
 
 }
 
-void HistorySqlStorage::messageReceived(Chat *chat, Contact contact, const QString &message)
+void HistorySqlStorage::messageReceived(const Message &message)
 {
 // 	if (!config_file.readBoolEntry("History", "Enable") || !config_file.readBoolEntry("History", "SaveChats"))
 // 	{
@@ -109,10 +111,10 @@ void HistorySqlStorage::messageReceived(Chat *chat, Contact contact, const QStri
 // 			kdebugm(KDEBUG_INFO|KDEBUG_FUNCTION_END, "not appending\n");
 // 			return;
 // 		}
-	appendMessageEntry(chat, contact, message);
+	appendMessageEntry(message);
 }
 
-void HistorySqlStorage::messageSent(Chat *chat, const QString &message)
+void HistorySqlStorage::messageSent(const Message &message)
 {
 // 	if (!config_file.readBoolEntry("History", "Enable") || !config_file.readBoolEntry("History", "SaveChats"))
 // 	{
@@ -125,7 +127,7 @@ void HistorySqlStorage::messageSent(Chat *chat, const QString &message)
 // 			kdebugm(KDEBUG_INFO|KDEBUG_FUNCTION_END, "not appending\n");
 // 			return;
 // 		} 
-	appendMessageEntry(chat, Core::instance()->myself(), message);
+	appendMessageEntry(message);
 }
 
 
@@ -186,16 +188,16 @@ void HistorySqlStorage::appendStatus(Contact elem, QString protocolName)
 	kdebugf2();
 }
 
-void HistorySqlStorage::appendMessageEntry(Chat *chat, Contact contact, const QString &message)
+void HistorySqlStorage::appendMessageEntry(const Message &message)
 {
 	kdebugf();
 	QSqlRecord record = MessagesModel->record();
-	record.setValue("chat", chat->uuid().toString());
-	record.setValue("sender", contact.uuid().toString());
-	record.setValue("send_time", QDateTime::currentDateTime());
-	record.setValue("receive_time", QDateTime::currentDateTime());
-	record.setValue("content", message);
-	if (contact == Core::instance()->myself())
+	record.setValue("chat", message.chat->uuid().toString());
+	record.setValue("sender", message.sender.uuid().toString());
+	record.setValue("send_time", message.sendDate);
+	record.setValue("receive_time", message.receiveDate);
+	record.setValue("content", message.messageContent);
+	if (message.sender == Core::instance()->myself())
 		record.setValue("attributes", "outgoing=1");
 	else
 		record.setValue("attributes", "outgoing=0");
@@ -392,16 +394,20 @@ QList<ChatMessage *> HistorySqlStorage::getMessages(Chat *chat, QDate date, int 
 
 	while (query.next())
 	{
-		QString msg = query.value(0).toString();
-		QDateTime send_time = query.value(1).toDateTime();
-		QDateTime receive_time = query.value(2).toDateTime();
 		bool outgoing = QVariant(query.value(3).toString().split('=').last()).toBool();
+
+		Message msg;
+		msg.chat = chat;
+		msg.messageContent = query.value(0).toString();
+		msg.sendDate = query.value(1).toDateTime();
+		msg.receiveDate =  query.value(2).toDateTime();
+		msg.sender = outgoing ? Core::instance()->myself() : (*chat->contacts().begin());
 
 		ChatMessage* chat_message;
 		if (outgoing)
-			chat_message = new ChatMessage(chat, Core::instance()->myself(), msg, TypeSent, receive_time, send_time);
+			chat_message = new ChatMessage(msg, TypeSent);
 		else
-			chat_message = new ChatMessage(chat, (*chat->contacts().begin()), msg, TypeReceived, receive_time, send_time);
+			chat_message = new ChatMessage(msg, TypeReceived);
 		messages.append(chat_message);
 	}
 	kdebugf2();

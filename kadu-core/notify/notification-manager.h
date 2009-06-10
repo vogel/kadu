@@ -24,6 +24,7 @@ class ActionDescription;
 class KaduAction;
 
 class ConfigurationUiHandler;
+class Message;
 class Notification;
 class Notifier;
 class NotifyConfigurationUiHandler;
@@ -53,7 +54,7 @@ class KADUAPI NotificationManager : public QObject, AccountsAwareObject
 	void createDefaultConfiguration();
 
 private slots:
-	void messageReceived(Chat *chat, Contact sender, const QString &message);
+	void messageReceived(const Message &message);
 
 	void statusChanged(Account *account, Contact contact, Status oldStatus);
 

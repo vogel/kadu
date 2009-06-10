@@ -122,7 +122,7 @@ void AdiumChatStyleEngine::appendMessage(ChatMessagesView *view, ChatMessage *me
 	{
 		case TypeReceived:
 		{
-			if(includeHeader)
+			if (includeHeader)
 				formattedMessageHtml = IncomingHtml;
 			else
 				formattedMessageHtml = NextIncomingHtml;
@@ -130,7 +130,7 @@ void AdiumChatStyleEngine::appendMessage(ChatMessagesView *view, ChatMessage *me
 		}
 		case TypeSent:
 		{
-			if(includeHeader)
+			if (includeHeader)
 				formattedMessageHtml = OutgoingHtml;
 			else
 				formattedMessageHtml = NextOutgoingHtml;
@@ -190,7 +190,7 @@ QString AdiumChatStyleEngine::readThemePart(QString part)
 {
 	QFile fileAccess;
 	QString resultHtml = QString::null;
-	if(QFile::exists(part))
+	if (QFile::exists(part))
 	{
 
 		fileAccess.setFileName(part);
@@ -290,7 +290,7 @@ void AdiumChatStyleEngine::prepareStylePreview(Preview *preview, QString styleNa
 	preview->setHtml(styleBaseHtml);
 
 	preview->page()->mainFrame()->evaluateJavaScript(jsCode);
-	ChatMessage *message = dynamic_cast<ChatMessage *>(preview->getObjectsToParse().at(0));
+/*	ChatMessage *message = dynamic_cast<ChatMessage *>(preview->getObjectsToParse().at(0));
 
 	incomingHtml = replaceKeywords(0, styleHref, incomingHtml, message);
 	incomingHtml.replace("\n", " ");
@@ -304,7 +304,7 @@ void AdiumChatStyleEngine::prepareStylePreview(Preview *preview, QString styleNa
 	outgoingHtml.prepend("<span>");
 	outgoingHtml.append("</span>");
 	preview->page()->mainFrame()->evaluateJavaScript("kadu_appendNextMessage(\'"+ outgoingHtml +"\')");
-
+*/
 }
 
 // Some parts of the code below are borrowed from Kopete project (http://kopete.kde.org/)
@@ -320,7 +320,7 @@ QString AdiumChatStyleEngine::replaceKeywords(ChatMessagesView *view, QString &s
 		int uinsSize = view->chat()->chat()->contacts().count();
 		int i = 0;
 
-		foreach(const Contact &contact, view->chat()->chat()->contacts())
+		foreach (const Contact &contact, view->chat()->chat()->contacts())
 		{
 			name.append(contact.display());
 
@@ -339,7 +339,7 @@ QString AdiumChatStyleEngine::replaceKeywords(ChatMessagesView *view, QString &s
 	// Look for %timeOpened{X}% TODO: get real time
 	QRegExp timeRegExp("%timeOpened\\{([^}]*)\\}%");
 	int pos=0;
-	while((pos=timeRegExp.indexIn(result, pos)) != -1)
+	while ((pos=timeRegExp.indexIn(result, pos)) != -1)
 		result.replace(pos, timeRegExp.cap(0).length(), QDateTime::currentDateTime().toString(timeRegExp.cap(1)));
 	// Get avatars. TODO: We don't support avatars at this time
 	QString photoIncoming;
@@ -376,19 +376,19 @@ QString AdiumChatStyleEngine::replaceKeywords(ChatMessagesView *view, QString &s
 	// Look for %time{X}%
 	QRegExp timeRegExp("%time\\{([^}]*)\\}%");
 	int pos = 0;
-	while((pos = timeRegExp.indexIn(result , pos)) != -1)
+	while ((pos = timeRegExp.indexIn(result , pos)) != -1)
 		result.replace(pos, timeRegExp.cap(0).length(), time.toString(timeRegExp.cap(1)));
 
 	// Look for %textbackgroundcolor{X}%
 	// TODO: highlight background color: use the X value.
 	QRegExp textBackgroundRegExp("%textbackgroundcolor\\{([^}]*)\\}%");
 	int textPos = 0;
-	while((textPos=textBackgroundRegExp.indexIn(result, textPos)) != -1)
+	while ((textPos=textBackgroundRegExp.indexIn(result, textPos)) != -1)
 		result.replace(textPos, textBackgroundRegExp.cap(0).length(), "inherit");
 
 	// Replace userIconPath TODO: add avatars support
 	QString photoPath;
-	if(message->type() == TypeReceived)
+	if (message->type() == TypeReceived)
 	{
    		result.replace(QString("%messageClasses%"), "message incoming");
 		photoPath = QString("file://") + styleHref + QString("Incoming/buddy_icon.png");

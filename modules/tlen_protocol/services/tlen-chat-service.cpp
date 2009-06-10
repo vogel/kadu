@@ -20,7 +20,8 @@
 TlenChatService::TlenChatService(TlenProtocol *protocol)
 	: ChatService(protocol), Protocol(protocol)
 {
-	//TODO move here some functions from tlen_protocol
+	//TODO 0.6.6:
+	//move here some functions from tlen_protocol
 
 	//connect(protocol, SIGNAL(ackReceived(int, uin_t, int)),
 	//	this, SLOT(ackReceived(int, uin_t, int)));
@@ -30,13 +31,13 @@ TlenChatService::TlenChatService(TlenProtocol *protocol)
                this, SIGNAL(messageStatusChanged(int , ChatService::MessageStatus)));
        connect(protocol, SIGNAL(receivedMessageFilter(Chat *, Contact, const QString &, time_t , bool &)),
                this, SIGNAL(receivedMessageFilter(Chat *, Contact, const QString &, time_t, bool &)));
-       connect(protocol, SIGNAL(messageReceived(Chat *, Contact, const QString &)),
-               this, SIGNAL(messageReceived(Chat *, Contact, const QString &)));
-       connect(protocol, SIGNAL(messageSent(Chat *, const QString &)),
-               this, SIGNAL(messageSent(Chat *, const QString &)));
+       connect(protocol, SIGNAL(messageReceived(const Message &)),
+	       this, SIGNAL(messageReceived(const Message &)));
+       connect(protocol, SIGNAL(messageSent(const Message &)),
+	       this, SIGNAL(messageSent(const Message &)));
 }
 
-bool TlenChatService::sendMessage(Chat *chat, Message &message)
+bool TlenChatService::sendMessage(Chat *chat, FormattedMessage &message)
 {
 	kdebugf();
 	return Protocol->sendMessage(chat, message);

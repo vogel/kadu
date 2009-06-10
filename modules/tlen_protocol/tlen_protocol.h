@@ -87,7 +87,7 @@ class TlenProtocol : public Protocol
 		void chatNotify(QString,QString);
 
 	public slots:
-		bool sendMessage(Chat *chat, Message &message);
+		bool sendMessage(Chat *chat, FormattedMessage &message);
 
 	signals:
 		void authorize(QString,bool);
@@ -96,8 +96,8 @@ class TlenProtocol : public Protocol
                 void sendMessageFiltering(Chat *chat, QByteArray &msg, bool &stop);
         	void messageStatusChanged(int messsageId, ChatService::MessageStatus status);
 		void receivedMessageFilter(Chat *chat, Contact sender, const QString &message, time_t time, bool &ignore);
-		void messageReceived(Chat *chat, Contact sender, const QString &message);
-		void messageSent(Chat *chat, const QString &message);
+		void messageReceived(const Message &message);
+		void messageSent(const Message &message);
 };
 
 #endif // TLEN_PROTOCOL_H

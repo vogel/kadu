@@ -19,6 +19,7 @@
 #include "action.h"
 #include "accounts/account.h"
 #include "accounts/account-manager.h"
+#include "chat/message/message.h"
 #include "config_file.h"
 #include "contacts/contact-manager.h"
 #include "core/core.h"
@@ -190,14 +191,14 @@ void TlenProtocol::logout()
 	kdebugf2();
 }
 
-bool TlenProtocol::sendMessage(Chat *chat, Message &message)
+bool TlenProtocol::sendMessage(Chat *chat, FormattedMessage &formattedMessage)
 {
 	kdebugf();
 
 	ContactSet users = chat->contacts();
 	// TODO send to more users
 	Contact contact = (*users.begin());
-	QString plain = message.toPlain();
+	QString plain = formattedMessage.toPlain();
 	QString tlenid = contact.id(account());
 
 	bool stop = false;
@@ -208,8 +209,14 @@ bool TlenProtocol::sendMessage(Chat *chat, Message &message)
 		return false;
 	kdebugm(KDEBUG_WARNING, "Tlen send %s\n%s", qPrintable(tlenid), qPrintable(plain));
 	TlenClient->writeMsg(plain,tlenid);
-	
-	emit messageSent(chat, plain);
+
+	Message message;
+	message.chat = chat;
+	message.messageContent = formattedMessage.toPlain();
+	message.sender = Core::instance()->myself();
+	message.sendDate = QDateTime::currentDateTime();
+	message.receiveDate = QDateTime();
+	emit messageSent(message);
 	
 	kdebugf2();
 	return true;
@@ -219,20 +226,23 @@ void TlenProtocol::chatMsgReceived(QDomNode n)
 {
 	kdebugf();
 	bool ignore = false;
-	QDomElement msg=n.toElement();
-	QString from=msg.attribute("from");
+	QDomElement msg = n.toElement();
+	QString from = msg.attribute("from");
 	QString body;
 	QDateTime timeStamp;
 
-	QDomNodeList nl=msg.childNodes();
-	for(int i=0; i<nl.count();++i) {
+	QDomNodeList nl = msg.childNodes();
+	for (int i = 0; i < nl.count(); ++i)
+	{
 		QDomNode tmp=nl.item(i);
-		if(tmp.nodeName()=="body")
+		if (tmp.nodeName() == "body")
 			body=tmp.firstChild().toText().data();
 
-		if(tmp.nodeName()=="x") {
+		if (tmp.nodeName() == "x")
+		{
 			QDomElement e=tmp.toElement();
-			if(e.hasAttribute("xmlns") && e.attribute("xmlns")=="jabber:x:delay") {
+			if (e.hasAttribute("xmlns") && e.attribute("xmlns") == "jabber:x:delay")
+			{
 				timeStamp = QDateTime::fromString(e.attribute("stamp"), "yyyyMMdd'T'hh:mm:ss");
 				timeStamp.setTimeSpec(Qt::UTC);
 				//timeStamp=dt.toLocalTime().toString("dd.MM.yyyy hh:mm:ss");
@@ -240,8 +250,8 @@ void TlenProtocol::chatMsgReceived(QDomNode n)
 		}
 	}
 
-	if(timeStamp.isNull())
-		timeStamp=QDateTime::currentDateTime();
+	if (timeStamp.isNull())
+		timeStamp = QDateTime::currentDateTime();
 
 	//		w->displayMsg(Tlen->decode(body.toUtf8()),timeStamp);
 
@@ -252,17 +262,24 @@ void TlenProtocol::chatMsgReceived(QDomNode n)
 	//contacts << contact;
 
 	time_t msgtime = timeStamp.toTime_t();
-	Message message(TlenClient->decode(body));
+	FormattedMessage formattedMessage(TlenClient->decode(body));
 
 	kdebugm(KDEBUG_WARNING, "Tlen message to %s\n%s", qPrintable(from), qPrintable(body));
 
 	// TODO  : contacts?
 	Chat *chat = this->findChat(contacts);
-	emit receivedMessageFilter(chat, contact, message.toPlain(), msgtime, ignore);
+	emit receivedMessageFilter(chat, contact, formattedMessage.toPlain(), msgtime, ignore);
 	if (ignore)
 		return;
 
-	emit messageReceived(chat, contact, message.toHtml());
+	Message message;
+	message.chat = chat;
+	message.messageContent = formattedMessage.toPlain();
+	message.sender = contact;
+	message.sendDate = timeStamp;
+	message.receiveDate = QDateTime::currentDateTime();
+	emit messageReceived(message);
+
 	kdebugf2();
 }
 

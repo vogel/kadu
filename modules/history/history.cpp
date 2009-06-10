@@ -129,10 +129,10 @@ void History::accountRegistered(Account *account)
 	ChatService *service = account->protocol()->chatService();
 	if (service)
 	{
-		connect(service, SIGNAL(messageReceived(Chat *, Contact , const QString &)),
-			CurrentStorage, SLOT(messageReceived(Chat *, Contact , const QString &)));
-		connect(service, SIGNAL(messageSent(Chat *, const QString &)),
-			CurrentStorage, SLOT(messageSent(Chat *, const QString &)));
+		connect(service, SIGNAL(messageReceived(const Message &)),
+			CurrentStorage, SLOT(messageReceived(const Message &)));
+		connect(service, SIGNAL(messageSent(const Message &)),
+			CurrentStorage, SLOT(messageSent(const Message &)));
 	}
 }
 
@@ -142,10 +142,10 @@ void History::accountUnregistered(Account *account)
 	ChatService *service = account->protocol()->chatService();
 	if (service)
 	{
-		disconnect(service, SIGNAL(messageReceived(Chat *, Contact , const QString &)),
-			CurrentStorage, SLOT(messageReceived(Chat *, Contact , const QString &)));
-		disconnect(service, SIGNAL(messageSent(Chat *, const QString &)),
-			CurrentStorage, SLOT(messageSent(Chat *, const QString &)));
+		disconnect(service, SIGNAL(messageReceived(const Message &)),
+			CurrentStorage, SLOT(messageReceived(const Message &)));
+		disconnect(service, SIGNAL(messageSent(const Message &)),
+			CurrentStorage, SLOT(messageSent(const Message &)));
 	}
 }
 

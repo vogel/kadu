@@ -32,6 +32,7 @@
 #include "action.h"
 #include "activate.h"
 #include "chat/chat_message.h"
+#include "chat/message/message.h"
 #include "config_file.h"
 #include "debug.h"
 #include "icons-manager.h"
@@ -60,8 +61,8 @@ ChatWidgetManager::ChatWidgetManager()
 	ChatMessage::registerParserTags();
 	EmoticonsManager::instance()->setEmoticonsTheme(config_file.readEntry("Chat", "EmoticonsTheme"));
 
-	connect(Core::instance(), SIGNAL(messageReceived(Chat *, Contact, const QString &)),
-			this, SLOT(messageReceived(Chat *, Contact, const QString &)));
+	connect(Core::instance(), SIGNAL(messageReceived(const Message &)),
+			this, SLOT(messageReceived(const Message &)));
 
 	Actions = new ChatWidgetActions(this);
 
@@ -169,8 +170,8 @@ ChatWidgetManager::~ChatWidgetManager()
 
 	ChatMessage::unregisterParserTags();
 
-	disconnect(Core::instance(), SIGNAL(messageReceived(Chat *, Contact , const QString &)),
-			this, SLOT(messageReceived(Chat *, Contact , const QString &)));
+	disconnect(Core::instance(), SIGNAL(messageReceived(const Message &)),
+			this, SLOT(messageReceived(const Message &)));
 
 	closeAllWindows();
 
@@ -333,30 +334,12 @@ void ChatWidgetManager::deletePendingMsgs(Chat *chat)
 	kdebugf2();
 }
 
-// TODO: make pending messages ChatMessages or something
-ChatMessage * convertPendingToMessage(PendingMsgs::Element elem)
-{
-	kdebugf();
-
-	QDateTime date;
-	date.setTime_t(elem.time);
-
-	ContactSet receivers;
-	receivers.insert(Core::instance()->myself());
-	// TODO: 0.6.6
-	ChatMessage *message = new ChatMessage(elem.chat,
-			elem.sender, elem.msg, TypeReceived,
-			QDateTime::currentDateTime(), date);
-
-	return message;
-}
-
 void ChatWidgetManager::openPendingMsgs(Chat *chat, bool forceActivate)
 {
 	kdebugf();
 
 	QList<ChatMessage *> messages;
-	PendingMsgs::Element elem;
+	Message msg;
 
 	ChatWidget *chatWidget = openChatWidget(chat, forceActivate);
 	if (!chatWidget)
@@ -364,10 +347,10 @@ void ChatWidgetManager::openPendingMsgs(Chat *chat, bool forceActivate)
 
 	for (int i = 0; i < pending.count(); ++i)
 	{
-		elem = pending[i];
-		if (elem.chat != chat)
+		msg = pending[i];
+		if (msg.chat != chat)
 			continue;
-		messages.append(convertPendingToMessage(elem));
+		messages.append(new ChatMessage(msg, TypeReceived));
 		pending.deleteMsg(i--);
 	}
 
@@ -419,17 +402,15 @@ void ChatWidgetManager::configurationUpdated()
 	kdebugf2();
 }
 
-void ChatWidgetManager::messageReceived(Chat *chat, Contact sender, const QString &message)
+void ChatWidgetManager::messageReceived(const Message &message)
 {
 	kdebugf();
-	Account *account = chat->account();
-	time_t time = QDateTime::currentDateTime().toTime_t();
 
+	Chat *chat = message.chat;
 	ChatWidget *chatWidget = byChat(chat);
 	if (chatWidget)
 	{
-		ChatMessage *chatMessage = new ChatMessage(chat, sender, message,
-				TypeReceived, QDateTime::currentDateTime(), QDateTime::currentDateTime());
+		ChatMessage *chatMessage = new ChatMessage(message, TypeReceived);
 		chatWidget->newMessage(chatMessage);
 	}
 	else
@@ -445,7 +426,7 @@ void ChatWidgetManager::messageReceived(Chat *chat, Contact sender, const QStrin
 			// TODO: 0.6.6
 			if (config_file.readBoolEntry("Chat", "OpenChatOnMessageWhenOnline") && false /*!Myself.status("Gadu").isOnline()*/)
 			{
-				pending.addMsg(chat, sender, message, time);
+				pending.addMsg(message);
 				return;
 			}
 
@@ -453,12 +434,11 @@ void ChatWidgetManager::messageReceived(Chat *chat, Contact sender, const QStrin
 			openChatWidget(chat);
 			chatWidget = byChat(chat);
 
-			ChatMessage *chatMessage = new ChatMessage(chat, sender, message,
-					TypeReceived, QDateTime::currentDateTime(), QDateTime::currentDateTime());
+			ChatMessage *chatMessage = new ChatMessage(message, TypeReceived);
 			chatWidget->newMessage(chatMessage);
 		}
 		else
-			pending.addMsg(chat, sender, message, time);
+			pending.addMsg(message);
 	}
 
 	kdebugf2();

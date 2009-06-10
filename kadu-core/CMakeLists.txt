@@ -14,8 +14,8 @@ set (kadu_SRCS
 	chat/chat_message.cpp
 	chat/chat_styles_manager.cpp
 
-	chat/message/message.cpp
-	chat/message/message-part.cpp
+	chat/message/formatted-message.cpp
+	chat/message/formatted-message-part.cpp
 
 	chat/style-engines/chat_engine_adium.cpp
 	chat/style-engines/chat_engine_kadu.cpp

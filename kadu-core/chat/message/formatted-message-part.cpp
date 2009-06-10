@@ -12,42 +12,42 @@
 
 #include "icons-manager.h"
 
-#include "message-part.h"
+#include "formatted-message-part.h"
 
-QString MessagePart::loadingImageHtml(const QString &imageId)
+QString FormattedMessagePart::loadingImageHtml(const QString &imageId)
 {
 	return QString("<img src=\"file:///%1\" id=\"%2\" />")
 			.arg(IconsManager::instance()->iconPath("LoadingImage"))
 			.arg(imageId);
 }
 
-QString MessagePart::replaceLoadingImages(QString message, const QString &imageId, const QString &imagePath)
+QString FormattedMessagePart::replaceLoadingImages(QString message, const QString &imageId, const QString &imagePath)
 {
 	QString img = QString("<img src=\"file:///%1\" />").arg(imagePath);
 	return message.replace(loadingImageHtml(imageId), img);
 }
 
-MessagePart::MessagePart(const QString &content, bool bold, bool italic, bool underline, QColor color)
+FormattedMessagePart::FormattedMessagePart(const QString &content, bool bold, bool italic, bool underline, QColor color)
 	: Image(false), ImageDelayed(false), Content(content), Bold(bold), Italic(italic), Underline(underline), Color(color)
 {
 }
 
-MessagePart::MessagePart(const QString &image, bool imageDelayed) :
+FormattedMessagePart::FormattedMessagePart(const QString &image, bool imageDelayed) :
 		Image(true), ImageDelayed(imageDelayed), Content("\n"),
 		ImagePath(imageDelayed ? QString::null : image),
 		ImageId(imageDelayed ? image : QString::null)
 {
 }
 
-MessagePart::~MessagePart()
+FormattedMessagePart::~FormattedMessagePart()
 {
 }
 
-QString MessagePart::toHtml() const
+QString FormattedMessagePart::toHtml() const
 {
 	if (Image && ImageDelayed)
 	{
-		return MessagePart::loadingImageHtml(ImageId);;
+		return FormattedMessagePart::loadingImageHtml(ImageId);;
 	}
 	else if (Image)
 	{

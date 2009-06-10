@@ -38,7 +38,7 @@ public:
 	int status() const;
 	const QByteArray & data() const;
 
-	const QString & cookie(const QString &name) const;
+	const QString cookie(const QString &name) const;
 	const QMap<QString, QString> & cookies() const;
 	void setCookie(const QString & name, const QString &value);
 

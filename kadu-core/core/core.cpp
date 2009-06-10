@@ -441,8 +441,8 @@ void Core::accountRegistered(Account *account)
 
 	ChatService *chatService = protocol->chatService();
 	if (chatService)
-		connect(chatService, SIGNAL(messageReceived(Chat *, Contact , const QString &)),
-			this, SIGNAL(messageReceived(Chat *, Contact , const QString &)));
+		connect(chatService, SIGNAL(messageReceived(const Message &)),
+			this, SIGNAL(messageReceived(const Message &)));
 
 	connect(protocol, SIGNAL(connecting(Account *)), this, SIGNAL(connecting()));
 	connect(protocol, SIGNAL(connected(Account *)), this, SIGNAL(connected()));
@@ -463,8 +463,8 @@ void Core::accountUnregistered(Account *account)
 
 	ChatService *chatService = protocol->chatService();
 	if (chatService)
-		disconnect(chatService, SIGNAL(messageReceived(Chat *, Contact , const QString &)),
-			this, SIGNAL(messageReceived(Chat *, Contact , const QString &)));
+		disconnect(chatService, SIGNAL(messageReceived(const Message &)),
+			this, SIGNAL(messageReceived(const Message &)));
 
 	disconnect(protocol, SIGNAL(connecting(Account *)), this, SIGNAL(connecting()));
 	disconnect(protocol, SIGNAL(connected(Account *)), this, SIGNAL(connected()));

@@ -1156,7 +1156,6 @@ void JabberClient::slotContactUpdated ( const RosterItem &item )
 
 void JabberClient::slotResourceAvailable ( const Jid &jid, const Resource &resource )
 {
-
 	emit resourceAvailable ( jid, resource );
 
 }

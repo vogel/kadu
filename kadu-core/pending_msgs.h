@@ -14,13 +14,13 @@
 
 #include <time.h>
 
+#include "chat/message/message.h"
 #include "contacts/contact.h"
 //#include "contacts/contact-set.h"
 
 #include "exports.h"
 
 class Chat;
-
 class QString;
 
 /**
@@ -32,28 +32,10 @@ class KADUAPI PendingMsgs : public QObject
 {
 	Q_OBJECT
 
-public:
-	struct Element;
-
-private:
-	typedef QList<Element> PendingMsgsList;
+	typedef QList<Message> PendingMsgsList;
 	PendingMsgsList msgs;
 
 public:
-	/**
-		Structure representing a message awaiting in a queue.
-		\struct Element
-		\brief Message awaiting in a queue.
-	**/
-	struct Element
-	{
-		Chat *chat;
-		Contact sender; /*!< Message senders list. */
-		QString msg; /*!< Message content. */
-		time_t time; /*!< Send time. */
-		Element();
-	};
-
 	/**
 		\fn PendingMsgs(QObject *parent=0, const char *name=0)
 		Standard constructor.
@@ -93,15 +75,15 @@ public:
 	int count() const;
 
 	/**
-		\fn Element &operator[](int index)
+		\fn Message &operator[](int index)
 		\return message from queue with given index.
 	**/
-	Element &operator[](int index);
+	Message &operator[](int index);
 
 public slots:
 	/**
 		\fn void openMessages()
-		Calls method ChatManagerOld::openPendingMsgs.
+		Calls method ChatWidgetManager::openPendingMsgs.
 	**/
 	void openMessages();
 
@@ -120,7 +102,7 @@ public slots:
 		\param msg message content. TODO: const QString &
 		\param time message send time.
 	**/
-	void addMsg(Chat *chat, Contact sender, QString msg, time_t time);
+	void addMsg(const Message &msg);
 
 	/**
 		\fn void loadConfiguration(XmlConfigFile *configurationStorage)

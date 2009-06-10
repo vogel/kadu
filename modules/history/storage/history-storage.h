@@ -8,19 +8,23 @@
 #include "chat/chat_message.h"
 #include "contacts/contact.h"
 
+class Message;
+
 class HistoryStorage : public QObject
 {
 	Q_OBJECT
 
 private slots:
-	virtual void messageReceived(Chat *chat, Contact contact, const QString &message) = 0;
-	virtual void messageSent(Chat *chat, const QString &message) = 0;
+	virtual void messageReceived(const Message &message) = 0;
+	virtual void messageSent(const Message &message) = 0;
 
 public:
 	virtual QList<Chat *> chatsList() = 0;
 	virtual QList<QDate> datesForChat(Chat *chat) = 0;
 	virtual QList<ChatMessage *> getMessages(Chat *chat, QDate date = QDate(), int limit = 0) = 0;
 	virtual int getMessagesCount(Chat *chat, QDate date = QDate()) = 0;
+	//TODO:
+	virtual void appendMessageEntry(const Message &message) = 0;
 
 };
 

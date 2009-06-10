@@ -18,7 +18,7 @@
 #include "accounts/accounts-aware-object.h"
 
 #include "chat/chat.h"
-#include "chat/message/message.h"
+#include "chat/message/formatted-message.h"
 
 #include "contacts/contact-list.h"
 
@@ -56,7 +56,7 @@ class KADUAPI ChatWidget : public QWidget, ConfigurationAwareObject, AccountsAwa
 //	Q3MimeSourceFactory *bodyformat; /*!< zmienna ustawiaj�ca format */
 	bool WaitingForACK;
 	
-	Message myLastMessage; /*!< zmienna przechowuj�ca nasz� ostatni� wiadomo�� */
+	FormattedMessage myLastMessage; /*!< zmienna przechowuj�ca nasz� ostatni� wiadomo�� */
 	QSplitter *vertSplit, *horizSplit; /*!< obiekty oddzielaj�ce kontrolki od siebie */
 
 	QDateTime LastMessageTime; /*!< czas ostatniej wiadomo�ci */

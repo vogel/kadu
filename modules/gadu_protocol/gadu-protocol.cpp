@@ -20,7 +20,7 @@
 
 #include "accounts/account.h"
 #include "chat/chat.h"
-#include "chat/message/message.h"
+#include "chat/message/formatted-message.h"
 #include "chat/chat-manager.h"
 #include "contacts/contact-manager.h"
 #include "contacts/ignored-helper.h"

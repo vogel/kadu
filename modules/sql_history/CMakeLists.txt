@@ -16,7 +16,7 @@ set (CONFIGURATION_FILES
 	configuration/sql_history.ui
 )
 
-kadu_module_desc (sql_history.desc)
+kadu_module_desc(sql_history.desc)
 kadu_module_configuration(${CONFIGURATION_FILES})
 qt_wrap_cpp (sql_history MOC_FILES ${MOC_SOURCES})
 add_definitions (-DQT_QTSQL)
