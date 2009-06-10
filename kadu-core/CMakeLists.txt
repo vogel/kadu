@@ -111,6 +111,7 @@ set (kadu_SRCS
 	gui/widgets/configuration/notify-group-box.cpp
 	gui/widgets/configuration/notify-tree-widget.cpp
 
+	gui/windows/about.cpp
 	gui/windows/add-buddy-window.cpp
 	gui/windows/chat_window.cpp
 	gui/windows/configuration-window.cpp
@@ -158,7 +159,6 @@ set (kadu_SRCS
 	protocols/model/protocols-model.cpp
 	protocols/services/chat-service.cpp
 
-	about.cpp
 	action.cpp
 	activate.cpp
 	color_button.cpp
@@ -281,6 +281,7 @@ set (kadu_MOC_SRCS
 	gui/widgets/configuration/notify-group-box.h
 	gui/widgets/configuration/notify-tree-widget.h
 
+	gui/windows/about.h
 	gui/windows/add-buddy-window.h
 	gui/windows/chat_window.h
 	gui/windows/configuration-window.h
@@ -323,7 +324,6 @@ set (kadu_MOC_SRCS
 	protocols/services/personal-info-service.h
 	protocols/services/search-service.h
 
-	about.h
 	action.h
 	#activate.h
 	color_button.h
