@@ -11,6 +11,7 @@
 #include "accounts/account-manager.h"
 #include "chat/chat-manager.h"
 #include "chat/message/message.h"
+#include "contacts/contact-manager.h"
 #include "config_file.h"
 #include "core/core.h"
 #include "debug.h"
@@ -382,7 +383,7 @@ QList<ChatMessage *> HistorySqlStorage::getMessages(Chat *chat, QDate date, int 
 		date_query_str = " AND date(receive_time) = date(:date) ";
 	if (limit != 0)
 		limit_str = " LIMIT :limit ";
-	query_str = "SELECT content, send_time, receive_time, attributes FROM %1messages WHERE chat=:chat" + date_query_str + limit_str + ";";
+	query_str = "SELECT sender, content, send_time, receive_time, attributes FROM %1messages WHERE chat=:chat" + date_query_str + limit_str + ";";
 
 	query.prepare(query_str.arg(DbPrefix));
 	query.bindValue(":chat", chat->uuid().toString());
@@ -394,14 +395,14 @@ QList<ChatMessage *> HistorySqlStorage::getMessages(Chat *chat, QDate date, int 
 
 	while (query.next())
 	{
-		bool outgoing = QVariant(query.value(3).toString().split('=').last()).toBool();
+		bool outgoing = QVariant(query.value(4).toString().split('=').last()).toBool();
 
 		Message msg;
 		msg.chat = chat;
-		msg.messageContent = query.value(0).toString();
-		msg.sendDate = query.value(1).toDateTime();
-		msg.receiveDate =  query.value(2).toDateTime();
-		msg.sender = outgoing ? Core::instance()->myself() : (*chat->contacts().begin());
+		msg.messageContent = query.value(1).toString();
+		msg.sendDate = query.value(2).toDateTime();
+		msg.receiveDate =  query.value(3).toDateTime();
+		msg.sender = outgoing ? Core::instance()->myself() : ContactManager::instance()->byUuid(query.value(0).toString());
 
 		ChatMessage* chat_message;
 		if (outgoing)
