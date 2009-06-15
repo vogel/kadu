@@ -12,12 +12,12 @@
 #include <QtGui/QGroupBox>
 #include <QtGui/QLayout>
 
+#include "configuration/configuration-file.h"
 #include "gui/widgets/configuration/config-section.h"
 #include "gui/widgets/configuration/config-group-box.h"
 #include "gui/widgets/configuration/config-tab.h"
 #include "gui/widgets/configuration/config-widget.h"
 
-#include "config_file.h"
 #include "icons-manager.h"
 
 ConfigSection::ConfigSection(const QString &name, ConfigurationWidget *configurationWidget, QListWidgetItem *listWidgetItem, QWidget *parentConfigGroupBoxWidget,

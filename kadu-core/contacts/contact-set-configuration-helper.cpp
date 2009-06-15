@@ -9,13 +9,13 @@
 
 #include <QtXml/QDomElement>
 
-#include "xml_config_file.h"
+#include "configuration/xml-configuration-file.h"
 #include "contacts/contact-manager.h"
 #include "contacts/contact.h"
 
 #include "pending_msgs.h"
 
-#include "contacts/contact-set-configuration-helper.h"
+#include "contact-set-configuration-helper.h"
 
 ContactSet ContactSetConfigurationHelper::loadFromConfiguration(StorableObject *parent, const QString &nodeName)
 {

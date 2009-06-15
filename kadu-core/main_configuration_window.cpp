@@ -17,37 +17,28 @@
 
 #include "accounts/account.h"
 #include "accounts/account-manager.h"
-
 #include "chat/chat_message.h"
 #include "chat/chat_styles_manager.h"
-
-#include "core/core.h"
-
+#include "configuration/configuration-file.h"
 #include "contacts/contact.h"
 #include "contacts/contact-data.h"
 #include "contacts/contact-account-data.h"
-
+#include "core/core.h"
 #include "gui/widgets/configuration/config-combo-box.h"
 #include "gui/widgets/configuration/config-line-edit.h"
 #include "gui/widgets/configuration/config-preview.h"
 #include "gui/widgets/configuration/config-syntax-editor.h"
 #include "gui/widgets/configuration/config-path-list-edit.h"
-
 #include "gui/widgets/configuration/config-check-box.h"
-
 #include "gui/widgets/configuration/configuration-widget.h"
-
 #include "gui/widgets/chat_messages_view.h"
 #include "gui/widgets/contact-info-panel.h"
 #include "gui/widgets/tool-tip-class-manager.h"
-
 #include "gui/windows/kadu-window.h"
-
 #include "protocols/status.h"
 
 //#include "../modules/gadu_protocol/gadu-protocol.h"
 
-#include "config_file.h"
 #include "debug.h"
 #include "icons-manager.h"
 #include "misc/misc.h"

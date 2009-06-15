@@ -12,10 +12,8 @@
 #include <QtNetwork/QHostAddress>
 
 #include "accounts/account-manager.h"
-
+#include "configuration/configuration-file.h"
 #include "contacts/contact-account-data.h"
-
-#include "config_file.h"
 #include "debug.h"
 #include "html_document.h"
 #include "icons-manager.h"

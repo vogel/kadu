@@ -12,9 +12,9 @@
 
 #include "accounts/account.h"
 #include "accounts/account-manager.h"
+#include "configuration/configuration-file.h"
 #include "core/core.h"
 #include "gui/windows/kadu-window.h"
-#include "config_file.h"
 #include "debug.h"
 #include "../modules/gadu_protocol/gadu-protocol.h"
 #include "message_box.h"

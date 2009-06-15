@@ -7,10 +7,9 @@
  *                                                                         *
  ***************************************************************************/
 
+#include "configuration/configuration-file.h"
 #include "configuration/storage-point.h"
-
-#include "config_file.h"
-#include "xml_config_file.h"
+#include "configuration/xml-configuration-file.h"
 
 #include "group-manager.h"
 

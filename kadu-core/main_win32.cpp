@@ -12,7 +12,7 @@
 #include <QtGui/QApplication>
 #include <QtGui/QMessageBox>
 
-#include "config_file.h"
+#include "configuration/configuration-file.h"
 #include "misc/misc.h"
 
 #include <windows.h>

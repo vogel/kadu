@@ -11,7 +11,7 @@
 #define CONFIG_PATH_LIST_EDIT_H
 
 #include "gui/widgets/configuration/config-widget-value.h"
-#include "path_list_edit.h"
+#include "gui/widgets/path-list-edit.h"
 
 class QLabel;
 class ConfigGroupBox;

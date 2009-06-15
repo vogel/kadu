@@ -13,6 +13,8 @@
 #include <QtGui/QMessageBox>
 
 #include "accounts/account.h"
+#include "configuration/configuration-file.h"
+#include "configuration/xml-configuration-file.h"
 #include "contacts/contact.h"
 #include "core/core.h"
 #include "file-transfer/file-transfer.h"
@@ -23,7 +25,6 @@
 #include "gui/windows/kadu-window.h"
 
 #include "action.h"
-#include "config_file.h"
 #include "debug.h"
 #include "exports.h"
 #include "message_box.h"

@@ -13,15 +13,13 @@
 
 #include "accounts/account.h"
 #include "accounts/account-manager.h"
-
+#include "configuration/configuration-file.h"
 #include "chat/chat_message.h"
 #include "chat/chat_styles_manager.h"
 #include "chat/style-engines/chat_style_engine.h"
-
 #include "protocols/services/chat-image-service.h"
 
 #include "chat-widget.h"
-#include "config_file.h"
 #include "debug.h"
 
 #include "chat_messages_view.h"

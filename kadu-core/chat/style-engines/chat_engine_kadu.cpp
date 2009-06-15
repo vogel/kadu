@@ -10,14 +10,12 @@
 #include <QtCore/QFileInfo>
 
 #include "accounts/account-manager.h"
-
 #include "chat/chat_message.h"
 #include "chat/chat_styles_manager.h"
-
+#include "configuration/configuration-file.h"
 #include "gui/widgets/chat_messages_view.h"
 #include "gui/widgets/preview.h"
 
-#include "config_file.h"
 #include "kadu_parser.h"
 #include "syntax_editor.h"
 

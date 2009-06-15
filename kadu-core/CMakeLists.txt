@@ -53,10 +53,12 @@ set (kadu_SRCS
 	configuration/account-data-manager.cpp
 	configuration/config-file-data-manager.cpp
 	configuration/configuration-aware-object.cpp
+	configuration/configuration-file.cpp
 	configuration/configuration-manager.cpp
 	configuration/contact-account-data-manager.cpp
 	configuration/storable-object.cpp
 	configuration/uuid-storable-object.cpp
+	configuration/xml-configuration-file.cpp
 
 	configuration/widgets/manage-accounts.cpp
 
@@ -82,7 +84,10 @@ set (kadu_SRCS
 	gui/widgets/custom_input.cpp
 	gui/widgets/group-tab-bar.cpp
 	gui/widgets/kadu_text_browser.cpp
+	gui/widgets/path-list-edit.cpp
 	gui/widgets/preview.cpp
+	gui/widgets/select-file.cpp
+	gui/widgets/select-font.cpp
 	gui/widgets/status-button.cpp
 	gui/widgets/status-menu.cpp
 	gui/widgets/tool-tip-class-manager.cpp
@@ -164,7 +169,6 @@ set (kadu_SRCS
 
 	action.cpp
 	activate.cpp
-	config_file.cpp
 	debug.cpp
 	dnshandler.cpp
 	emoticons.cpp
@@ -179,18 +183,12 @@ set (kadu_SRCS
 	main_configuration_window.cpp
 	message_box.cpp
 	modules.cpp
-	path_list_edit.cpp
 	pending_msgs.cpp
-	personal_info.cpp
-	search.cpp
-	select_file.cpp
-	select_font.cpp
 	status_changer.cpp
 	syntax_editor.cpp
 	themes.cpp
 	toolbar.cpp
 	updates.cpp
-	xml_config_file.cpp
 )
 
 if (UNIX AND NOT APPLE)
@@ -267,7 +265,10 @@ set (kadu_MOC_SRCS
 	gui/widgets/custom_input.h
 	gui/widgets/group-tab-bar.h
 	gui/widgets/kadu_text_browser.h
+	gui/widgets/path-list-edit.h
 	gui/widgets/preview.h
+	gui/widgets/select-file.h
+	gui/widgets/select-font.h
 	gui/widgets/status-button.h
 	gui/widgets/status-menu.h
 
@@ -327,7 +328,6 @@ set (kadu_MOC_SRCS
 
 	action.h
 	#activate.h
-	#config_file.h
 	#debug.h
 	dnshandler.h
 	emoticons.h
@@ -342,12 +342,7 @@ set (kadu_MOC_SRCS
 	main_configuration_window.h
 	message_box.h
 	modules.h
-	path_list_edit.h
 	pending_msgs.h
-	personal_info.h
-	search.h
-	select_file.h
-	select_font.h
 	status_changer.h
 	syntax_editor.h
 	themes.h

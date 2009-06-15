@@ -9,7 +9,8 @@
 
 #include <QtWebKit/QWebFrame>
 
-#include "config_file.h"
+#include "configuration/configuration-file.h"
+
 #include "debug.h"
 #include "emoticons.h"
 #include "html_document.h"

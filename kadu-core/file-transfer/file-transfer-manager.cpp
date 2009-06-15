@@ -8,13 +8,13 @@
  ***************************************************************************/
 
 #include "accounts/account.h"
+#include "configuration/configuration-file.h"
 #include "configuration/storage-point.h"
 #include "file-transfer/file-transfer.h"
 #include "protocols/protocol.h"
 #include "protocols/services/file-transfer-service.h"
 
 #include "modules.h"
-#include "xml_config_file.h"
 
 #include "file-transfer-manager.h"
 

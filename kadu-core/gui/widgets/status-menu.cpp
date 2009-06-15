@@ -13,10 +13,10 @@
 
 #include "accounts/account.h"
 #include "accounts/account-manager.h"
+#include "configuration/configuration-file.h"
 #include "core/core.h"
 #include "misc/choose-description.h"
 #include "protocols/protocol.h"
-#include "config_file.h"
 #include "status_changer.h"
 
 #include "status-menu.h"

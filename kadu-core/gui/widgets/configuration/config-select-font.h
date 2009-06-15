@@ -11,10 +11,11 @@
 #define CONFIG_SELECT_FONT_H
 
 #include "gui/widgets/configuration/config-widget-value.h"
+#include "gui/widgets/select-font.h"
 #include "configuration/configuration-window-data-manager.h"
-#include "select_font.h"
 
 class QLabel;
+
 class ConfigGroupBox;
 
 /**

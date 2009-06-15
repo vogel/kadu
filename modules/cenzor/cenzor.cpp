@@ -1,9 +1,9 @@
 #include "accounts/account.h"
-#include "accounts/account_manager.h"
+#include "accounts/account-manager.h"
+#include "configuration/configuration-file.h"
 #include "protocols/protocol.h"
 #include "debug.h"
 #include "misc/misc.h"
-#include "config_file.h"
 #include "modules/notify/notify.h"
 #include "icons-manager.h"
 

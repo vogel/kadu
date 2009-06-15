@@ -9,7 +9,7 @@
 
 #include <QtGui/QKeyEvent>
 
-#include "config_file.h"
+#include "configuration/configuration-file.h"
 
 #include "hot_key.h"
 

@@ -7,8 +7,8 @@
  *                                                                         *
  ***************************************************************************/
 
+#include "configuration/xml-configuration-file.h"
 #include "misc/misc.h"
-#include "xml_config_file.h"
 
 #include "jabber-account.h"
 #include "jabber_protocol.h"

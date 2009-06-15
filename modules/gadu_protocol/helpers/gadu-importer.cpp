@@ -9,17 +9,13 @@
 
 #include "accounts/account.h"
 #include "accounts/account-manager.h"
-
+#include "configuration/configuration-file.h"
+#include "configuration/xml-configuration-file.h"
 #include "contacts/contact-manager.h"
 #include "contacts/contact.h"
 #include "contacts/ignored-helper.h"
-
 #include "protocols/protocols-manager.h"
-
-#include "config_file.h"
 #include "misc/misc.h"
-#include "xml_config_file.h"
-
 #include "gadu-account.h"
 #include "gadu-contact-account-data.h"
 #include "gadu-protocol-factory.h"

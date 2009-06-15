@@ -12,6 +12,7 @@
 #include "accounts/account.h"
 #include "accounts/account-manager.h"
 #include "chat/message/message.h"
+#include "configuration/configuration-file.h"
 #include "contacts/contact-account-data.h"
 #include "gui/widgets/chat-widget-manager.h"
 #include "gui/widgets/contacts-list-widget-menu-manager.h"
@@ -22,7 +23,6 @@
 #include "notify/window-notifier.h"
 
 #include "action.h"
-#include "config_file.h"
 #include "debug.h"
 #include "kadu_main_window.h"
 #include "main_configuration_window.h"

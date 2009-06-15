@@ -16,9 +16,9 @@
 #include <QtGui/QPushButton>
 
 #include "accounts/account-manager.h"
+#include "configuration/configuration-file.h"
 #include "core/core.h"
 #include "gui/windows/kadu-window.h"
-#include "config_file.h"
 #include "debug.h"
 #include "icons-manager.h"
 #include "kadu_parser.h"

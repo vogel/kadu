@@ -20,9 +20,9 @@
 #include <QtGui/QVBoxLayout>
 #include <QtNetwork/QHostAddress>
 
+#include "configuration/configuration-file.h"
 #include "gui/widgets/preview.h"
 
-#include "config_file.h"
 #include "icons-manager.h"
 #include "message_box.h"
 #include "misc/misc.h"

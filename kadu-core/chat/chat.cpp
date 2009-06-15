@@ -8,7 +8,7 @@
  ***************************************************************************/
 
 #include "accounts/account-manager.h"
-#include "config_file.h"
+#include "configuration/configuration-file.h"
 #include "contacts/contact-account-data.h"
 #include "debug.h"
 #include "icons-manager.h"

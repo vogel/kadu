@@ -33,14 +33,15 @@
 #include "activate.h"
 #include "chat/chat_message.h"
 #include "chat/message/message.h"
-#include "config_file.h"
+#include "configuration/configuration-file.h"
+#include "configuration/xml-configuration-file.h"
+
 #include "debug.h"
 #include "icons-manager.h"
 #include "message_box.h"
 #include "misc/misc.h"
 #include "pending_msgs.h"
 #include "search.h"
-#include "xml_config_file.h"
 
 #include "chat-widget-manager.h"
 

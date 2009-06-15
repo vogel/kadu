@@ -8,12 +8,12 @@
  ***************************************************************************/
 
 #include "accounts/account-manager.h"
+#include "configuration/xml-configuration-file.h"
 #include "misc/misc.h"
 #include "protocols/connection-error-notification.h"
 #include "protocols/protocol-factory.h"
 
 #include "debug.h"
-#include "xml_config_file.h"
 
 #include "protocols-manager.h"
 

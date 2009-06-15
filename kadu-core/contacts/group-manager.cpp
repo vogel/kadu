@@ -13,13 +13,13 @@
 
 #include "configuration/configuration-manager.h"
 #include "configuration/storage-point.h"
+#include "configuration/xml-configuration-file.h"
 #include "core/core.h"
 
 #include "debug.h"
 #include "contact-manager.h"
 #include "group.h"
 #include "message_box.h"
-#include "xml_config_file.h"
 
 #include "group-manager.h"
 

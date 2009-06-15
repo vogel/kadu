@@ -9,6 +9,7 @@
 
 #include "accounts/account.h"
 #include "accounts/account-manager.h"
+#include "configuration/configuration-file.h"
 #include "contacts/contact-account-data.h"
 #include "contacts/ignored-helper.h"
 #include "core/core.h"
@@ -20,12 +21,11 @@
 #include "gui/windows/kadu-window-actions.h"
 
 #include "action.h"
-#include "config_file.h"
 #include "custom_input.h"
 #include "debug.h"
 #include "emoticons.h"
 #include "message_box.h"
-#include "search.h"
+// #include "search.h"
 
 #include "chat-widget-actions.h"
 
@@ -320,7 +320,7 @@ void ChatWidgetActions::sendActionActivated(QAction *sender, bool toggled)
 void ChatWidgetActions::whoisActionActivated(QAction *sender, bool toggled)
 {
 	kdebugf();
-
+/*
 	KaduMainWindow *window = dynamic_cast<KaduMainWindow *>(sender->parent());
 	if (!window)
 	{
@@ -333,14 +333,14 @@ void ChatWidgetActions::whoisActionActivated(QAction *sender, bool toggled)
 	if (contacts.count() == 0)
 		(new SearchDialog(Core::instance()->kaduWindow()))->show();
 	else
-	{
+	{*/
 // 		if (contacts[0].accountData(AccountManager::instance()->defaultAccount()) != 0)
 // 		{
-			SearchDialog *sd = new SearchDialog(Core::instance()->kaduWindow()/*, contacts[0].accountData(AccountManager::instance()->defaultAccount())->id().toUInt()*/);
-			sd->show();
-			sd->firstSearch();
+// 			SearchDialog *sd = new SearchDialog(Core::instance()->kaduWindow()/*, contacts[0].accountData(AccountManager::instance()->defaultAccount())->id().toUInt()*/);
+// 			sd->show();
+// 			sd->firstSearch();
 // 		}
-	}
+// 	}
 
 	kdebugf2();
 }

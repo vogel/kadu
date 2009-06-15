@@ -8,8 +8,8 @@
  ***************************************************************************/
 
 #include "accounts/account.h"
+#include "configuration/xml-configuration-file.h"
 #include "pending_msgs.h"
-#include "xml_config_file.h"
 
 #include "contact.h"
 

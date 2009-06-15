@@ -15,6 +15,7 @@
 
 #include "accounts/account.h"
 #include "accounts/account-manager.h"
+#include "configuration/configuration-file.h"
 #include "contacts/contact-account-data.h"
 #include "contacts/contact-kadu-data.h"
 #include "contacts/contact-manager.h"
@@ -36,7 +37,6 @@
 
 #include "about.h"
 #include "action.h"
-#include "config_file.h"
 #include "debug.h"
 #include "expimp.h"
 #include "html_document.h"
@@ -45,8 +45,6 @@
 #include "main_configuration_window.h"
 #include "message_box.h"
 #include "modules.h"
-#include "personal_info.h"
-#include "search.h"
 #include "status_changer.h"
 
 #include "../modules/gadu_protocol/gadu-contact-account-data.h"
@@ -623,7 +621,7 @@ void KaduWindowActions::addGroupActionActivated(QAction *sender, bool toggled)
 
 void KaduWindowActions::openSearchActionActivated(QAction *sender, bool toggled)
 {
-	(new SearchDialog(dynamic_cast<QWidget *>(sender->parent())))->show();
+// 	(new SearchDialog(dynamic_cast<QWidget *>(sender->parent())))->show();
 }
 
 void KaduWindowActions::manageIgnoredActionActivated(QAction *sender, bool toggled)
@@ -777,7 +775,7 @@ void KaduWindowActions::copyPersonalInfoActionActivated(QAction *sender, bool to
 void KaduWindowActions::lookupInDirectoryActionActivated(QAction *sender, bool toggled)
 {
 	kdebugf();
-
+/*
 	KaduMainWindow *window = dynamic_cast<KaduMainWindow *>(sender->parent());
 	if (!window)
 		return;
@@ -790,9 +788,9 @@ void KaduWindowActions::lookupInDirectoryActionActivated(QAction *sender, bool t
 	if (!cad)
 		return;
 
-	SearchDialog *sd = new SearchDialog(Core::instance()->kaduWindow()/*, cad->uin()*/);
+	SearchDialog *sd = new SearchDialog(Core::instance()->kaduWindow()/*, cad->uin()* /);
 	sd->show();
-	sd->firstSearch();
+	sd->firstSearch();*/
 
 	kdebugf2();
 }

@@ -18,6 +18,7 @@
 
 #include "chat/chat-manager.h"
 #include "chat/chat_message.h"
+#include "configuration/configuration-file.h"
 #include "contacts/contact-account-data.h"
 #include "contacts/model/contact-list-model.h"
 #include "core/core.h"
@@ -30,7 +31,6 @@
 
 #include "action.h"
 #include "chat-edit-box.h"
-#include "config_file.h"
 #include "custom_input.h"
 #include "debug.h"
 #include "emoticons.h"

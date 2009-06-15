@@ -10,20 +10,20 @@
 #include <QtXml/QDomElement>
 
 #include "chat/chat.h"
+#include "configuration/configuration-file.h"
+#include "configuration/xml-configuration-file.h"
 #include "contacts/contact-account-data.h"
 #include "gui/widgets/chat-widget-actions.h"
 #include "gui/widgets/chat-widget-manager.h"
 #include "gui/widgets/color-selector.h"
 #include "misc/image-dialog.h"
 
-#include "config_file.h"
 #include "chat-widget.h"
 #include "custom_input.h"
 #include "debug.h"
 #include "emoticons.h"
 #include "message_box.h"
 #include "toolbar.h"
-#include "xml_config_file.h"
 
 #include "chat-edit-box.h"
 

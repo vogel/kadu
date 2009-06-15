@@ -15,8 +15,9 @@
 #include <QtGui/QPushButton>
 #include <QtGui/QVBoxLayout>
 
+#include "configuration/configuration-file.h"
 #include "contacts/group.h"
-#include "config_file.h"
+
 #include "icons-manager.h"
 #include "misc/misc.h"
 

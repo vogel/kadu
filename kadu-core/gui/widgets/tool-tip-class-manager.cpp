@@ -7,8 +7,8 @@
  *                                                                         *
  ***************************************************************************/
 
+#include "configuration/configuration-file.h"
 #include "contacts/contact.h"
-#include "config_file.h"
 
 #include "tool-tip-class-manager.h"
 

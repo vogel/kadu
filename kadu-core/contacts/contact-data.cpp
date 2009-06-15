@@ -11,15 +11,12 @@
 #include <QtXml/QDomNamedNodeMap>
 
 #include "accounts/account.h"
-
 #include "configuration/storage-point.h"
-
+#include "configuration/xml-configuration-file.h"
 #include "contacts/contact-account-data.h"
 #include "contacts/contact-manager.h"
 #include "contacts/group.h"
 #include "contacts/group-manager.h"
-
-#include "xml_config_file.h"
 
 #include "contact-data.h"
 

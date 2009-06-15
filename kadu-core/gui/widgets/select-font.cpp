@@ -12,7 +12,7 @@
 #include <QtGui/QLineEdit>
 #include <QtGui/QPushButton>
 
-#include "select_font.h"
+#include "select-font.h"
 
 SelectFont::SelectFont(QWidget *parent)
 	: QWidget(parent)

@@ -8,13 +8,13 @@
  ***************************************************************************/
 
 #include "accounts/account-manager.h"
+#include "configuration/xml-configuration-file.h"
 #include "contacts/contact-account-data.h"
 #include "contacts/contact-manager.h"
 #include "protocols/protocol.h"
 #include "protocols/protocol-factory.h"
 #include "protocols/protocols-manager.h"
 #include "misc/misc.h"
-#include "xml_config_file.h"
 
 #include "account.h"
 

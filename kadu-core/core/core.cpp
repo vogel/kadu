@@ -13,6 +13,7 @@
 #include <QtCore/QSettings>
 
 #include "accounts/account-manager.h"
+#include "configuration/configuration-file.h"
 #include "configuration/configuration-manager.h"
 #include "contacts/contact-manager.h"
 #include "contacts/group-manager.h"
@@ -28,13 +29,11 @@
 
 #include "../modules/gadu_protocol/gadu-protocol.h"
 
-#include "config_file.h"
 #include "debug.h"
 #include "emoticons.h"
 #include "icons-manager.h"
 #include "modules.h"
 #include "pending_msgs.h"
-#include "search.h"
 #include "status_changer.h"
 #include "updates.h"
 
@@ -74,7 +73,6 @@ Core::~Core()
 
 	ModulesManager::instance()->unloadAllModules();
 	Updates::closeModule();
-	SearchDialog::closeModule();
 
 #ifdef Q_OS_MACX
 	setIcon(QPixmap(dataPath("kadu.png")));
@@ -252,7 +250,6 @@ void Core::createAllDefaultToolbars()
 
 	KaduWindow::createDefaultToolbars(toolbarsConfig);
 	ChatEditBox::createDefaultToolbars(toolbarsConfig);
-	SearchDialog::createDefaultToolbars(toolbarsConfig);
 
 	xml_config_file->sync();
 }
@@ -278,7 +275,6 @@ void Core::init()
 	pending.loadConfiguration(xml_config_file);
 
 	Updates::initModule();
-	SearchDialog::initModule();
 
 #ifdef Q_OS_MACX
 	setIcon(IconsManager::instance()->loadPixmap("BigOffline"));

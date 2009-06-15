@@ -9,7 +9,7 @@
 
 #include <libgadu.h>
 
-#include "config_file.h"
+#include "configuration/configuration-file.h"
 
 #include "gadu-servers-manager.h"
 

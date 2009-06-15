@@ -15,6 +15,7 @@
 #include <QtGui/QVBoxLayout>
 #include <QtGui/QDialogButtonBox>
 
+#include "configuration/configuration-file.h"
 #include "gui/widgets/configuration/configuration-widget.h"
 #include "gui/widgets/configuration/config-group-box.h"
 #include "gui/widgets/configuration/config-widget.h"
@@ -38,7 +39,6 @@
 #include "gui/widgets/configuration/config-manage-accounts.h"
 #include "gui/windows/configuration-window.h"
 
-#include "config_file.h"
 #include "debug.h"
 
 ConfigurationWidget::ConfigurationWidget(ConfigurationWindowDataManager *dataManager, QWidget *parent)

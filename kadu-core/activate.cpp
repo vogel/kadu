@@ -10,7 +10,8 @@
 	#include <QtGui/QWidget>
 	#include <QtGui/QX11Info>
 	#include <math.h>
-	#include "config_file.h"
+
+	#include "configuration/configuration-file.h"
 	#include "x11tools.h"
 
 	void activateWindow(Qt::HANDLE id)

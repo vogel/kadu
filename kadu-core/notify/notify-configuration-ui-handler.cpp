@@ -14,6 +14,7 @@
 #include <QtGui/QListWidget>
 #include <QtGui/QLabel>
 
+#include "configuration/configuration-file.h"
 #include "contacts/contact-account-data.h"
 #include "contacts/contact-list.h"
 #include "contacts/contact-manager.h"
@@ -31,7 +32,6 @@
 
 #include "notify-configuration-ui-handler.h"
 
-#include "config_file.h"
 #include "debug.h"
 
 NotifyConfigurationUiHandler::NotifyConfigurationUiHandler(QObject *parent) :

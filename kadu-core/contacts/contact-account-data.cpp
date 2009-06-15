@@ -7,8 +7,9 @@
  *                                                                         *
  ***************************************************************************/
 
+#include "configuration/xml-configuration-file.h"
+
 #include "dnshandler.h"
-#include "xml_config_file.h"
 
 #include "configuration/storage-point.h"
 

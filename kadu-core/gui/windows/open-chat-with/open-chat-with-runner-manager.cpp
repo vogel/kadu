@@ -7,9 +7,9 @@
  *                                                                         *
  ***************************************************************************/
 
+#include "configuration/configuration-file.h"
 #include "contacts/contact.h"
 
-#include "config_file.h"
 #include "debug.h"
 
 #include "open-chat-with-runner-manager.h"

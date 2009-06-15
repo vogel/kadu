@@ -12,10 +12,10 @@
 #include "accounts/account.h"
 #include "accounts/account-manager.h"
 #include "configuration/storage-point.h"
+#include "configuration/xml-configuration-file.h"
 #include "file-transfer/file-transfer-manager.h"
 #include "protocols/protocol.h"
 #include "protocols/services/file-transfer-service.h"
-#include "xml_config_file.h"
 
 #include "file-transfer.h"
 #include <contacts/contact-manager.h>

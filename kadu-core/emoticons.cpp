@@ -22,10 +22,10 @@
 #include <math.h>
 #include <algorithm>
 
+#include "configuration/configuration-file.h"
 #include "gui/widgets/chat-edit-box.h"
 #include "gui/widgets/chat-widget.h"
 
-#include "config_file.h"
 #include "debug.h"
 #include "misc/misc.h"
 

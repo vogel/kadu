@@ -11,6 +11,7 @@
 
 #include "configuration/configuration-manager.h"
 #include "configuration/storage-point.h"
+#include "configuration/xml-configuration-file.h"
 #include "contacts/group-manager.h"
 #include "core/core.h"
 
@@ -18,7 +19,6 @@
 #include "contact-list.h"
 #include "debug.h"
 #include "group.h"
-#include "xml_config_file.h"
 
 #include "contact-manager.h"
 

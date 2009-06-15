@@ -14,6 +14,7 @@
 
 #include "accounts/account.h"
 #include "accounts/account-manager.h"
+#include "configuration/xml-configuration-file.h"
 #include "contacts/model/contact-list-model.h"
 #include "contacts/contact-manager.h"
 #include "core/core.h"
@@ -21,7 +22,6 @@
 
 #include "debug.h"
 #include "misc/misc.h"
-#include "xml_config_file.h"
 
 #include "open-chat-with.h"
 #include "open-chat-with-contact-list-runner.h"

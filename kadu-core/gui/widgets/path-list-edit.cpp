@@ -18,7 +18,7 @@
 #include "icons-manager.h"
 #include "misc/misc.h"
 
-#include "path_list_edit.h"
+#include "path-list-edit.h"
 
 PathListEdit::PathListEdit(QWidget *parent)
 	: QPushButton(tr("Select"), parent), Dialog(0)

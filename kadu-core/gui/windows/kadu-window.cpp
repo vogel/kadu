@@ -16,6 +16,7 @@
 #include <QtGui/QSplitter>
 
 #include "accounts/account-manager.h"
+#include "configuration/configuration-file.h"
 #include "contacts/contact-manager.h"
 #include "contacts/model/contacts-model.h"
 #include "contacts/model/filter/group-contact-filter.h"
@@ -31,7 +32,6 @@
 #include "gui/widgets/status-menu.h"
 
 #include "misc/misc.h"
-#include "config_file.h"
 #include "debug.h"
 #include "hot_key.h"
 #include "icons-manager.h"

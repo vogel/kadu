@@ -7,12 +7,11 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "QtCore/QVariant"
+#include <QtCore/QVariant>
 
 #include "configuration/storage-point.h"
-
+#include "configuration/xml-configuration-file.h"
 #include "misc/misc.h"
-#include "xml_config_file.h"
 
 #include "contact-kadu-data.h"
 

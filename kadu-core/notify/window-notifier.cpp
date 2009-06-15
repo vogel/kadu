@@ -10,7 +10,8 @@
 #include "gui/windows/window-notifier-window.h"
 #include "notify/notification-manager.h"
 
-#include "config_file.h"
+#include "configuration/configuration-file.h"
+
 #include "debug.h"
 #include "icons-manager.h"
 

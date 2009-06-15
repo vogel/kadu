@@ -11,12 +11,10 @@
 #include <QtNetwork/QHostAddress>
 
 #include "accounts/account-manager.h"
-
+#include "configuration/configuration-file.h"
 #include "contacts/contact-account-data.h"
-
 #include "protocols/status.h"
 
-#include "config_file.h"
 #include "kadu_parser.h"
 #include "misc/misc.h"
 

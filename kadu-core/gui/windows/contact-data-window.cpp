@@ -24,24 +24,21 @@
 
 #include "accounts/account.h"
 #include "accounts/account-manager.h"
-
+#include "configuration/configuration-file.h"
+#include "configuration/xml-configuration-file.h"
 #include "contacts/contact-account-data.h"
 #include "contacts/contact-manager.h"
 #include "contacts/group.h"
 #include "contacts/group-manager.h"
-
 #include "gui/widgets/contact-account-data-widget.h"
 #include "gui/windows/contact-data-manager.h"
-
 #include "protocols/protocol.h"
 #include "protocols/protocol-factory.h"
 
-#include "config_file.h"
 #include "debug.h"
 #include "icons-manager.h"
 #include "message_box.h"
 #include "misc/misc.h"
-#include "xml_config_file.h"
 
 #include "contact-data-window.h"
 

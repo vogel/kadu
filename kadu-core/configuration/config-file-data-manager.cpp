@@ -7,7 +7,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "config_file.h"
+#include "configuration/configuration-file.h"
 
 #include "config-file-data-manager.h"
 

@@ -9,7 +9,7 @@
 
 #include <QtXml/QDomElement>
 
-#include "xml_config_file.h"
+#include "configuration/xml-configuration-file.h"
 #include "contacts/contact-manager.h"
 #include "contacts/contact.h"
 

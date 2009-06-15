@@ -12,6 +12,7 @@
 #include "accounts/account.h"
 #include "accounts/account-manager.h"
 #include "chat/chat-manager.h"
+#include "configuration/xml-configuration-file.h"
 #include "contacts/contact-manager.h"
 #include "contacts/contact-list-configuration-helper.h"
 #include "gui/widgets/chat-widget-manager.h"
@@ -19,8 +20,6 @@
 #include "debug.h"
 #include "misc/misc.h"
 #include "protocols/protocol.h"
-#include "xml_config_file.h"
-
 
 #include "pending_msgs.h"
 

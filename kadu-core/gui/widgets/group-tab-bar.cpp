@@ -12,6 +12,7 @@
 #include <QtGui/QInputDialog>
 #include <QtGui/QMenu>
 
+#include "configuration/configuration-file.h"
 #include "contacts/contact-list-mime-data-helper.h"
 #include "contacts/group.h"
 #include "contacts/group-manager.h"
@@ -20,7 +21,6 @@
 #include "gui/windows/group-properties-window.h"
 #include "gui/windows/kadu-window.h"
 
-#include "config_file.h"
 #include "debug.h"
 #include "icons-manager.h"
 #include "message_box.h"

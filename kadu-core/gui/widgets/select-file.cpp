@@ -15,7 +15,7 @@
 #include "icons-manager.h"
 #include "misc/misc.h"
 
-#include "select_file.h"
+#include "select-file.h"
 
 SelectFile::SelectFile(const QString &type, QWidget *parent)
 	: QWidget(parent), Type(type)

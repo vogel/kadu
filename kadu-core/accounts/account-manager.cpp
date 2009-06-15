@@ -9,16 +9,16 @@
 
 #include "accounts/account.h"
 #include "accounts/accounts-aware-object.h"
+#include "configuration/configuration-file.h"
 #include "configuration/configuration-manager.h"
+#include "configuration/xml-configuration-file.h"
 #include "core/core.h"
 #include "notify/notification-manager.h"
 #include "protocols/connection-error-notification.h"
 #include "protocols/protocol.h"
 #include "protocols/protocol-factory.h"
 #include "protocols/protocols-manager.h"
-#include "config_file.h"
 #include "debug.h"
-#include "xml_config_file.h"
 
 #include "account-manager.h"
 

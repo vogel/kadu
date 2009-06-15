@@ -9,9 +9,9 @@
 
 #include <QtCore/QFile>
 
-#include "config_file.h"
-#include "debug.h"
+#include "configuration/configuration-file.h"
 #include "misc/misc.h"
+#include "debug.h"
 
 #include "helpers/gadu-formatter.h"
 #include "socket-notifiers/gadu-protocol-socket-notifiers.h"

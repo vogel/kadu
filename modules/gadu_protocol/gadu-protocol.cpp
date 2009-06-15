@@ -22,12 +22,12 @@
 #include "chat/chat.h"
 #include "chat/message/formatted-message.h"
 #include "chat/chat-manager.h"
+#include "configuration/configuration-file.h"
 #include "contacts/contact-manager.h"
 #include "contacts/ignored-helper.h"
 #include "gui/windows/password-window.h"
 #include "protocols/protocols-manager.h"
 
-#include "config_file.h"
 #include "debug.h"
 #include "icons-manager.h"
 #include "message_box.h"

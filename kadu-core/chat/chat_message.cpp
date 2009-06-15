@@ -8,8 +8,8 @@
  ***************************************************************************/
 
 #include "chat/message/formatted-message-part.h"
+#include "configuration/configuration-file.h"
 
-#include "config_file.h"
 #include "kadu_parser.h"
 #include "misc/misc.h"
 

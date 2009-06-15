@@ -15,12 +15,13 @@
 #include <QtGui/QPushButton>
 #include <QtGui/QGroupBox>
 
-#include "config_file.h"
+#include "configuration/configuration-file.h"
+#include "configuration/xml-configuration-file.h"
+
 #include "debug.h"
 #include "icons-manager.h"
 #include "ignore.h"
 #include "misc/misc.h"
-#include "xml_config_file.h"
 
 Ignored::Ignored(QWidget *parent) : QWidget(parent, Qt::Window),
 	lb_list(0), e_uin(0)

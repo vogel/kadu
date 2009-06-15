@@ -26,16 +26,16 @@
 #endif
 
 #include "core/core.h"
+#include "configuration/configuration-file.h"
+#include "configuration/xml-configuration-file.h"
 #include "protocols/protocols-manager.h"
 
-#include "config_file.h"
 #include "debug.h"
 #include "emoticons.h"
 #include "icons-manager.h"
 #include "message_box.h"
 #include "misc/misc.h"
 #include "modules.h"
-#include "xml_config_file.h"
 
 #ifdef Q_OS_MAC
 #include <Carbon/Carbon.h>

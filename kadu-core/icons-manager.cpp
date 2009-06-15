@@ -7,8 +7,9 @@
  *                                                                         *
  ***************************************************************************/
 
+#include "configuration/configuration-file.h"
+
 #include "action.h"
-#include "config_file.h"
 #include "debug.h"
 #include "misc/misc.h"
 

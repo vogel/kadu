@@ -12,7 +12,7 @@
 
 #include <QtCore/QVariant>
 
-#include "xml_config_file.h"
+#include "configuration/xml-configuration-file.h"
 
 #include "modules/module-data.h"
 #include "storage-point.h"

@@ -14,7 +14,7 @@
 
 #include "activate.h"
 #include "accounts/account-manager.h"
-#include "config_file.h"
+#include "configuration/xml-configuration-file.h"
 #include "core/core.h"
 #include "debug.h"
 #include "gui/windows/kadu-window.h"

@@ -15,14 +15,15 @@
 #include <QtGui/QMenu>
 #include <QtGui/QToolButton>
 
+#include "configuration/configuration-file.h"
+#include "configuration/xml-configuration-file.h"
+
 #include "action.h"
-#include "config_file.h"
 #include "debug.h"
 #include "icons-manager.h"
 #include "kadu_main_window.h"
 #include "message_box.h"
 #include "misc/misc.h"
-#include "xml_config_file.h"
 
 #include "toolbar.h"
 

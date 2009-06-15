@@ -9,7 +9,8 @@
 
 #include <QtCore/QRegExp>
 
-#include "config_file.h"
+#include "configuration/configuration-file.h"
+
 #include "debug.h"
 #include "misc/misc.h"
 

@@ -16,11 +16,12 @@
 
 #include <errno.h>
 
-#include "debug.h"
+#include "configuration/xml-configuration-file.h"
 #include "misc/misc.h"
-#include "xml_config_file.h"
 
-#include "config_file.h"
+#include "debug.h"
+
+#include "configuration-file.h"
 
 QMutex GlobalMutex;
 

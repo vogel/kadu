@@ -11,8 +11,8 @@
 #define CONFIG_SELECT_FILE_H
 
 #include "gui/widgets/configuration/config-widget-value.h"
+#include "gui/widgets/select-file.h"
 #include "configuration/configuration-window-data-manager.h"
-#include "select_file.h"
 
 class QLabel;
 class QDomElement;

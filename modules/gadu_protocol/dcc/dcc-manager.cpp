@@ -17,11 +17,11 @@
 #endif
 
 #include "accounts/account.h"
+#include "configuration/configuration-file.h"
 #include "contacts/contact.h"
 #include "contacts/contact-account-data.h"
 #include "contacts/contact-manager.h"
 
-#include "config_file.h"
 #include "debug.h"
 #include "message_box.h"
 #include "misc/misc.h"

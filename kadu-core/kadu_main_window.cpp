@@ -11,16 +11,14 @@
 #include <QtGui/QMenu>
 
 #include "accounts/account-manager.h"
-
+#include "configuration/configuration-file.h"
+#include "configuration/xml-configuration-file.h"
 #include "contacts/contact.h"
 #include "contacts/contact-set.h"
-
 #include "gui/widgets/contacts-list-widget.h"
 
-#include "config_file.h"
 #include "debug.h"
 #include "toolbar.h"
-#include "xml_config_file.h"
 
 #include "kadu_main_window.h"
 

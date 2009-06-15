@@ -17,10 +17,10 @@
 
 #include <errno.h>
 
-#include "debug.h"
 #include "misc/misc.h"
+#include "debug.h"
 
-#include "xml_config_file.h"
+#include "xml-configuration-file.h"
 
 XmlConfigFile::XmlConfigFile() : DomDocument()
 {

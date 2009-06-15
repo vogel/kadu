@@ -15,19 +15,16 @@
 #include <QtGui/QPushButton>
 
 #include "accounts/account-manager.h"
-
 #include "chat/chat_message.h"
 #include "chat/style-engines/chat_engine_adium.h"
 #include "chat/style-engines/chat_engine_kadu.h"
-
+#include "configuration/configuration-file.h"
 #include "core/core.h"
-
 #include "gui/widgets/chat_messages_view.h"
 #include "gui/widgets/preview.h"
 #include "gui/widgets/configuration/configuration-widget.h"
 #include "gui/widgets/configuration/config-group-box.h"
 
-#include "config_file.h"
 #include "message_box.h"
 #include "misc/misc.h"
 

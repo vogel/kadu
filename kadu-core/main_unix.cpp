@@ -16,14 +16,14 @@
 #include <sys/time.h>
 #include <sys/types.h>
 
+#include "configuration/configuration-file.h"
+#include "configuration/xml-configuration-file.h"
 #include "core/core.h"
 #include "gui/windows/kadu-window.h"
 
-#include "config_file.h"
 #include "debug.h"
 #include "misc/misc.h"
 #include "modules.h"
-#include "xml_config_file.h"
 
 int lockFileHandle;
 QFile *lockFile;

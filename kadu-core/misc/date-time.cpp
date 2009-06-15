@@ -17,7 +17,7 @@
 #endif
 #include <time.h>
 
-#include "config_file.h"
+#include "configuration/configuration-file.h"
 
 #include "date-time.h"
 
