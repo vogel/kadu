@@ -9,7 +9,7 @@
 
 #include "contacts/ignored-helper.h"
 
-#include "config_file.h"
+#include "configuration/configuration-file.h"
 #include "debug.h"
 #include "../tlen_protocol.h"
 #include "message_box.h"

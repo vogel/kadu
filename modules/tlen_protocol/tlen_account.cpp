@@ -8,7 +8,7 @@
  ***************************************************************************/
 
 #include "misc/misc.h"
-#include "xml_config_file.h"
+#include "configuration/xml-configuration-file.h"
 
 #include "tlen_protocol.h"
 #include "tlen_account.h"

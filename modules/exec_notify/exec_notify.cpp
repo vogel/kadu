@@ -13,7 +13,7 @@
 #include <QtGui/QLabel>
 #include <QtGui/QHBoxLayout>
 
-#include "config_file.h"
+#include "configuration/configuration-file.h"
 #include "debug.h"
 #include "icons-manager.h"
 #include "kadu_parser.h"

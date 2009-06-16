@@ -12,7 +12,7 @@
 #include "chat/chat.h"
 #include "chat/message/message.h"
 #include "core/core.h"
-#include "config_file.h"
+#include "configuration/configuration-file.h"
 #include "debug.h"
 #include "../jabber_protocol.h"
 #include "message_box.h"

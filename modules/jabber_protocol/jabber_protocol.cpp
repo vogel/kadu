@@ -22,7 +22,7 @@
 #include "protocols/status.h"
 #include "misc/misc.h"
 #include "action.h"
-#include "config_file.h"
+#include "configuration/configuration-file.h"
 #include "debug.h"
 #include "icons-manager.h"
 #include "message_box.h"

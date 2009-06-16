@@ -20,7 +20,7 @@
 #include "accounts/account.h"
 #include "accounts/account-manager.h"
 #include "chat/message/message.h"
-#include "config_file.h"
+#include "configuration/configuration-file.h"
 #include "contacts/contact-manager.h"
 #include "core/core.h"
 #include "gui/windows/kadu-window.h"
@@ -31,7 +31,7 @@
 #include "protocols/status.h"
 #include "misc/misc.h"
 #include "message_box.h"
-#include "xml_config_file.h"
+#include "configuration/xml-configuration-file.h"
 
 #include "tlen.h"
 

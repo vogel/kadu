@@ -13,7 +13,7 @@
 
 #include "../docking/docking.h"
 
-#include "config_file.h"
+#include "configuration/configuration-file.h"
 #include "debug.h"
 
 #include "qt4_docking.h"
