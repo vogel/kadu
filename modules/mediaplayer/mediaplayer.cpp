@@ -240,13 +240,16 @@ void MediaPlayer::chatKeyPressed(QKeyEvent *e, CustomInput *k, bool &handled)
 {
 	kdebugf();
 
-	if (!config_file.readBoolEntry("MediaPlayer", "chatShortcuts", true) || !isActive())
+	if (!config_file.readBoolEntry("MediaPlayer", "chatShortcuts", true))
 		return;
 
 	if (e->key() == Qt::Key_Super_L)
 		winKeyPressed = true; // We want to handle LeftWinKey pressed state
 	else if (!winKeyPressed)
 		return; // If LeftWinKey isn't pressed then break function.
+
+	if (!isActive())
+		return;
 
 	handled = true;
 

@@ -49,6 +49,9 @@ QByteArray AmarokMediaPlayer::executeCommand(QString obj, QString func)
 	params << "amarok" << obj << func;
 	process.start("dcop", params);
 
+	if (!process.waitForStarted(500))
+		return result;
+
 	if (!process.waitForFinished())
 		return result;
                             
