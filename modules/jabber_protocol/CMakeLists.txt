@@ -232,6 +232,8 @@ set (MOC_SOURCES2_IRIS
 set (SOURCES
 	file-transfer/jabber-file-transfer.cpp
 	gui/widgets/jabber-create-account-widget.cpp
+	gui/widgets/jabber-edit-account-widget.cpp
+	gui/widgets/jabber-personal-info-widget.cpp
 	services/jabber-chat-service.cpp
 	services/jabber-file-transfer-service.cpp
 	jabber-client.cpp
@@ -255,6 +257,8 @@ set (SOURCES
 set (MOC_SOURCES
 	file-transfer/jabber-file-transfer.h
 	gui/widgets/jabber-create-account-widget.h
+	gui/widgets/jabber-edit-account-widget.h
+	gui/widgets/jabber-personal-info-widget.h
 	services/jabber-chat-service.h
 	services/jabber-file-transfer-service.h
 	jabber-client.h

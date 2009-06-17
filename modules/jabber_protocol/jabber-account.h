@@ -13,6 +13,7 @@
 #include <QtCore/QString>
 
 #include "accounts/account.h"
+#include "protocols/protocol.h"
 
 class JabberAccount : public Account
 {

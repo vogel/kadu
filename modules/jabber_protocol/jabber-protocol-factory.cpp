@@ -8,6 +8,7 @@
  ***************************************************************************/
 
 #include "gui/widgets/jabber-create-account-widget.h"
+#include "gui/widgets/jabber-edit-account-widget.h"
 
 #include "jabber-account.h"
 #include "jabber-configuration-dialog.h"
@@ -69,6 +70,11 @@ ContactAccountData * JabberProtocolFactory::loadContactAccountData(Contact conta
 AccountCreateWidget * JabberProtocolFactory::newCreateAccountWidget(QWidget *parent)
 {
 	return new JabberCreateAccountWidget(parent);
+}
+
+AccountEditWidget * JabberProtocolFactory::newEditAccountWidget(Account *account, QWidget *parent)
+{
+	return new JabberEditAccountWidget(account, parent);
 }
 
 JabberConfigurationDialog * JabberProtocolFactory::newConfigurationDialog(Account *account, QWidget *parent)
