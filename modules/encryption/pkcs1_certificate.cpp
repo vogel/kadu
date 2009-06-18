@@ -3,7 +3,7 @@
   Copyright: (C) 2009 Tomasz Kazmierczak
 
   Creation date: 2009-02-12
-  Last modification date: 2009-02-25
+  Last modification date: 2009-06-12
 
   This file is part of Kadu encryption module
 
@@ -29,6 +29,8 @@
  */
 
 #include <limits.h>
+#include <stdint.h>
+
 #include "pkcs1_certificate.h"
 
 PKCS1Certificate::~PKCS1Certificate()
@@ -380,10 +382,10 @@ bool PKCS1Certificate::extractPrivateKey(const QCA::SecureArray &certificate, QC
 		Status = BrokenCertificate;
 		return false;
 	}
-	//read the private exponent
+	//read the public exponent
 	QCA::SecureArray eData(length);
 	for(uint64_t i = 0; i < length; i++)
-		eData[i] = readNextOctet();
+		eData[i] = ((uint64_t)readNextOctet()) << ((i-1)*8);
 	e.fromArray(eData);
 
 	octet = readNextOctet();
