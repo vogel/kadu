@@ -12,7 +12,7 @@
 #include "chat/chat-manager.h"
 #include "chat/message/message.h"
 #include "contacts/contact-manager.h"
-#include "config_file.h"
+#include "configuration/configuration-file.h"
 #include "core/core.h"
 #include "debug.h"
 #include "message_box.h"

@@ -7,7 +7,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "config_file.h"
+#include "configuration/configuration-file.h"
 #include "debug.h"
 #include "gui/widgets/configuration/configuration-widget.h"
 #include "misc/path-conversion.h"
