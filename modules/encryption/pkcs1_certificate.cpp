@@ -30,7 +30,6 @@
 
 #include <limits.h>
 #include <stdint.h>
-
 #include "pkcs1_certificate.h"
 
 PKCS1Certificate::~PKCS1Certificate()
@@ -385,7 +384,7 @@ bool PKCS1Certificate::extractPrivateKey(const QCA::SecureArray &certificate, QC
 	//read the public exponent
 	QCA::SecureArray eData(length);
 	for(uint64_t i = 0; i < length; i++)
-		eData[i] = ((uint64_t)readNextOctet()) << ((i-1)*8);
+		eData[i] = readNextOctet();
 	e.fromArray(eData);
 
 	octet = readNextOctet();
@@ -550,7 +549,7 @@ uint64_t PKCS1Certificate::readDefiniteLength()
 		//construct the length value
 		uint64_t length = 0;
 		for(uint8_t i = lengthOctetsCount; i > 0; i--)
-			length |= readNextOctet() << (i-1);
+			length |= ((uint64_t)readNextOctet()) << ((i-1)*8);
 		//the SecureArray stores it's size in an int variable, so we must check
 		//if the read length is not greater than the maximum value that int can
 		//store
