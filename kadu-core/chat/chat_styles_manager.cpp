@@ -24,8 +24,8 @@
 #include "gui/widgets/preview.h"
 #include "gui/widgets/configuration/configuration-widget.h"
 #include "gui/widgets/configuration/config-group-box.h"
+#include "gui/windows/message-box.h"
 
-#include "message_box.h"
 #include "misc/misc.h"
 
 #include "chat_styles_manager.h"

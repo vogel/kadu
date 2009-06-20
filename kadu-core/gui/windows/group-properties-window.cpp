@@ -17,6 +17,7 @@
 
 #include "configuration/configuration-file.h"
 #include "contacts/group.h"
+#include "gui/windows/image-dialog.h"
 
 #include "icons-manager.h"
 #include "misc/misc.h"

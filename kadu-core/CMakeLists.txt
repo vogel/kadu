@@ -83,6 +83,7 @@ set (kadu_SRCS
 	gui/widgets/contacts-list-widget-menu-manager.cpp
 	gui/widgets/custom_input.cpp
 	gui/widgets/group-tab-bar.cpp
+	gui/widgets/image-widget.cpp
 	gui/widgets/kadu_text_browser.cpp
 	gui/widgets/path-list-edit.cpp
 	gui/widgets/preview.cpp
@@ -122,10 +123,12 @@ set (kadu_SRCS
 	gui/windows/about.cpp
 	gui/windows/add-buddy-window.cpp
 	gui/windows/chat_window.cpp
+	gui/windows/choose-description.cpp
 	gui/windows/configuration-window.cpp
 	gui/windows/contact-data-manager.cpp
 	gui/windows/contact-data-window.cpp
 	gui/windows/group-properties-window.cpp
+	gui/windows/image-dialog.cpp
 	gui/windows/kadu-window.cpp
 	gui/windows/kadu-window-actions.cpp
 	gui/windows/message-box.cpp
@@ -136,11 +139,8 @@ set (kadu_SRCS
 	gui/windows/window-notifier-window.cpp
 	gui/windows/your-accounts.cpp
 
-	misc/choose-description.cpp
 	misc/coding-conversion.cpp
 	misc/date-time.cpp
-	misc/image-dialog.cpp
-	misc/image-widget.cpp
 	misc/misc.cpp
 	misc/path-conversion.cpp
 	misc/token-dialog.cpp
@@ -286,6 +286,7 @@ set (kadu_MOC_SRCS
 	gui/windows/about.h
 	gui/windows/add-buddy-window.h
 	gui/windows/chat_window.h
+	gui/windows/choose-description.h
 	gui/windows/configuration-window.h
 	gui/windows/contact-data-manager.h
 	gui/windows/contact-data-window.h
@@ -300,7 +301,6 @@ set (kadu_MOC_SRCS
 	#gui/windows/window-notifier-window.h
 	gui/windows/your-accounts.h
 
-	misc/choose-description.h
 	misc/token-dialog.h
 
 	model/first-empty.h

@@ -7,6 +7,7 @@
  *                                                                         *
  ***************************************************************************/
 
+#include <QtCore/QFile>
 #include <QtGui/QApplication>
 #include <QtGui/QWidget>
 #include <QtGui/QListWidget>

@@ -12,8 +12,9 @@
 #include <QtGui/QLineEdit>
 #include <QtGui/QPushButton>
 
-#include "icons-manager.h"
+#include "gui/windows/image-dialog.h"
 #include "misc/misc.h"
+#include "icons-manager.h"
 
 #include "select-file.h"
 

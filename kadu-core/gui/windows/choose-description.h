@@ -42,6 +42,7 @@ public:
 
 	void setStatus(const Status &status);
 	void setPosition(const QPoint &position);
+	
 };
 
 #endif // CHOOSE_DESCRIPTION_H

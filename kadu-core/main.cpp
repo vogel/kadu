@@ -7,6 +7,7 @@
  *                                                                         *
  ***************************************************************************/
 
+#include <QtCore/QDir>
 #include <QtCore/QLocale>
 #include <QtCore/QTimer>
 #include <QtCore/QTranslator>

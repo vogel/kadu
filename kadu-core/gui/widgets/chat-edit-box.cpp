@@ -17,7 +17,7 @@
 #include "gui/widgets/chat-widget-manager.h"
 #include "gui/widgets/color-selector.h"
 #include "gui/windows/message-box.h"
-#include "misc/image-dialog.h"
+#include "gui/windows/image-dialog.h"
 
 #include "chat-widget.h"
 #include "custom_input.h"

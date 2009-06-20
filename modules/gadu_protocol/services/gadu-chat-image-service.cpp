@@ -7,6 +7,7 @@
  *                                                                         *
  ***************************************************************************/
 
+#include <QtCore/QDir>
 #include <QtCore/QFile>
 
 #include "configuration/configuration-file.h"

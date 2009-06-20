@@ -7,6 +7,7 @@
  *                                                                         *
  ***************************************************************************/
 
+#include <QtCore/QFile>
 #include <QtCore/QTextStream>
 #include <QtGui/QBoxLayout>
 #include <QtGui/QKeyEvent>

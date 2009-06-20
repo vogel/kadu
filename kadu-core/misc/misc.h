@@ -10,11 +10,8 @@
 #ifndef KADU_MISC_H
 #define KADU_MISC_H
 
-#include "choose-description.h"
 #include "coding-conversion.h"
 #include "date-time.h"
-#include "image-dialog.h"
-#include "image-widget.h"
 #include "path-conversion.h"
 #include "token-dialog.h"
 

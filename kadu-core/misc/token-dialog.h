@@ -16,8 +16,6 @@ class QLineEdit;
 
 class TokenDialog : public QDialog
 {
-	Q_OBJECT
-
 	QLineEdit *tokenedit;
 
 public:

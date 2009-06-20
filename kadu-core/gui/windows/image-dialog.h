@@ -16,6 +16,7 @@ class ImageDialog : public QFileDialog
 {
 public:
 	ImageDialog(QWidget *parent);
+
 };
 
 #endif // IMAGE_DIALOG_H

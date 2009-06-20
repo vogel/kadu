@@ -7,6 +7,9 @@
  *                                                                         *
  ***************************************************************************/
 
+#include <QtCore/QDir>
+#include <QtCore/QFile>
+#include <QtCore/QFileInfo>
 #include <QtCore/QTextStream>
 #include <QtGui/QApplication>
 #include <QtGui/QComboBox>
@@ -21,10 +24,10 @@
 #include <QtNetwork/QHostAddress>
 
 #include "configuration/configuration-file.h"
+#include "gui/windows/message-box.h"
 #include "gui/widgets/preview.h"
 
 #include "icons-manager.h"
-#include "message_box.h"
 #include "misc/misc.h"
 
 #include "syntax_editor.h"

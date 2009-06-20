@@ -7,9 +7,10 @@
  *                                                                         *
  ***************************************************************************/
 
+#include <QtCore/QDir>
+#include <QtCore/QLibrary>
 #include <QtCore/QTextCodec>
 #include <QtCore/QTranslator>
-#include <QtCore/QLibrary>
 #include <QtGui/QApplication>
 #include <QtGui/QCheckBox>
 #include <QtGui/QGroupBox>

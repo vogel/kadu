@@ -7,6 +7,7 @@
  *                                                                         *
  ***************************************************************************/
 
+#include <QtCore/QFile>
 #include <QtCore/QVariant>
 #include <QtGui/QApplication>
 #include <QtNetwork/QHostAddress>

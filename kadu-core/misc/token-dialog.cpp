@@ -12,7 +12,7 @@
 #include <QtGui/QLineEdit>
 #include <QtGui/QPushButton>
 
-#include "misc/image-widget.h"
+#include "gui/widgets/image-widget.h"
 #include "debug.h"
 
 #include "token-dialog.h"
