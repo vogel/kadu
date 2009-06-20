@@ -16,10 +16,10 @@
 
 #include "core/core.h"
 #include "gui/widgets/configuration/configuration-widget.h"
+#include "gui/windows/message-box.h"
 
 #include "html_document.h"
 #include "icons-manager.h"
-#include "message_box.h"
 #include "misc/misc.h"
 
 #include "server/gadu-server-register-account.h"

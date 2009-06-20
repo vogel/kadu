@@ -27,6 +27,7 @@
 #include "gui/widgets/color-selector.h"
 #include "gui/widgets/contacts-list-widget.h"
 #include "gui/windows/kadu-window.h"
+#include "gui/windows/message-box.h"
 #include "protocols/protocol.h"
 
 #include "action.h"
@@ -37,7 +38,6 @@
 #include "hot_key.h"
 #include "icons-manager.h"
 #include "kadu_parser.h"
-#include "message_box.h"
 #include "misc/misc.h"
 
 #include "chat-widget.h"

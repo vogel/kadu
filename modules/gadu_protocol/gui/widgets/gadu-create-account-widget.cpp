@@ -16,12 +16,12 @@
 #include <QtGui/QPushButton>
 #include <QtGui/QRadioButton>
 
+#include "gui/windows/message-box.h"
 #include "../../server/gadu-server-register-account.h"
 #include "html_document.h"
 #include "gadu-account.h"
 #include "gadu-protocol-factory.h"
 #include "token-widget.h"
-#include "message_box.h"
 
 #include "gadu-create-account-widget.h"
 

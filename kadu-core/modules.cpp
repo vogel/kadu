@@ -29,11 +29,11 @@
 #include "configuration/configuration-file.h"
 #include "core/core.h"
 #include "gui/windows/kadu-window.h"
+#include "gui/windows/message-box.h"
 
 #include "debug.h"
 #include "hot_key.h"
 #include "icons-manager.h"
-#include "message_box.h"
 #include "misc/misc.h"
 
 #include "modules.h"

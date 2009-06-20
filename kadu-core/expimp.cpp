@@ -25,19 +25,16 @@
 
 #include "accounts/account.h"
 #include "accounts/account-manager.h"
-
 #include "contacts/contact-account-data.h"
 #include "contacts/contact-manager.h"
 #include "contacts/group.h"
-
+#include "gui/windows/message-box.h"
 #include "protocols/protocol.h"
-
 #include "protocols/services/contact-list-service.h"
 
 #include "debug.h"
 #include "icons-manager.h"
 #include "ignore.h"
-#include "message_box.h"
 #include "misc/misc.h"
 
 #include "expimp.h"

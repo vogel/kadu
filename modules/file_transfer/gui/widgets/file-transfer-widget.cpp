@@ -17,10 +17,10 @@
 #include "contacts/contact.h"
 #include "file-transfer/file-transfer.h"
 #include "file-transfer/file-transfer-manager.h"
+#include "gui/windows/message-box.h"
 
 #include "debug.h"
 #include "icons-manager.h"
-#include "message_box.h"
 
 #include "file-transfer-widget.h"
 

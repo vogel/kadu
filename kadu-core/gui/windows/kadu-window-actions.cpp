@@ -32,6 +32,7 @@
 #include "gui/windows/add-buddy-window.h"
 #include "gui/windows/contact-data-window.h"
 #include "gui/windows/kadu-window.h"
+#include "gui/windows/message-box.h"
 #include "gui/windows/your-accounts.h"
 #include "misc/misc.h"
 
@@ -43,7 +44,6 @@
 #include "ignore.h"
 #include "kadu_parser.h"
 #include "main_configuration_window.h"
-#include "message_box.h"
 #include "modules.h"
 #include "status_changer.h"
 

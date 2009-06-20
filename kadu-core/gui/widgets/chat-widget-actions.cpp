@@ -19,13 +19,12 @@
 #include "gui/widgets/contacts-list-widget-menu-manager.h"
 #include "gui/windows/kadu-window.h"
 #include "gui/windows/kadu-window-actions.h"
+#include "gui/windows/message-box.h"
 
 #include "action.h"
 #include "custom_input.h"
 #include "debug.h"
 #include "emoticons.h"
-#include "message_box.h"
-// #include "search.h"
 
 #include "chat-widget-actions.h"
 

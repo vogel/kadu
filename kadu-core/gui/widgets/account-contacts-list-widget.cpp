@@ -15,9 +15,9 @@
 #include "contacts/model/contacts-model.h"
 #include "contacts/model/contacts-model-proxy.h"
 #include "contacts/model/filter/account-contact-filter.h"
+#include "gui/windows/message-box.h"
 
 #include "debug.h"
-#include "message_box.h"
 #include "protocols/protocol.h"
 #include "protocols/services/contact-list-service.h"
 

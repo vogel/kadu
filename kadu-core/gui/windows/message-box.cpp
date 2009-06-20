@@ -18,7 +18,7 @@
 #include "debug.h"
 #include "icons-manager.h"
 
-#include "message_box.h"
+#include "message-box.h"
 
 const int MessageBox::OK       = 1;  // 00001
 const int MessageBox::CANCEL   = 2;  // 00010

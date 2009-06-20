@@ -93,4 +93,4 @@ signals:
 
 };
 
-#endif
+#endif // MESSAGE_BOX_H

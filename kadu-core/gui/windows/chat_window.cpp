@@ -14,12 +14,12 @@
 #include <QtGui/QDesktopWidget>
 #include <QtGui/QVBoxLayout>
 
-#include "gui/widgets/chat-widget-manager.h"
 #include "configuration/configuration-file.h"
 #include "contacts/contact-kadu-data.h"
+#include "gui/widgets/chat-widget-manager.h"
+#include "gui/windows/message-box.h"
 
 #include "debug.h"
-#include "message_box.h"
 #include "misc/misc.h"
 
 #include "chat_window.h"

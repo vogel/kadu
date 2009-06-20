@@ -35,10 +35,10 @@
 #include "chat/message/message.h"
 #include "configuration/configuration-file.h"
 #include "configuration/xml-configuration-file.h"
+#include "gui/windows/message-box.h"
 
 #include "debug.h"
 #include "icons-manager.h"
-#include "message_box.h"
 #include "misc/misc.h"
 #include "pending_msgs.h"
 #include "search.h"

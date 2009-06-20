@@ -16,13 +16,13 @@
 #include "gui/widgets/chat-widget-actions.h"
 #include "gui/widgets/chat-widget-manager.h"
 #include "gui/widgets/color-selector.h"
+#include "gui/windows/message-box.h"
 #include "misc/image-dialog.h"
 
 #include "chat-widget.h"
 #include "custom_input.h"
 #include "debug.h"
 #include "emoticons.h"
-#include "message_box.h"
 #include "toolbar.h"
 
 #include "chat-edit-box.h"

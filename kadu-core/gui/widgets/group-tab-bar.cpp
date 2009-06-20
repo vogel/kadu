@@ -20,10 +20,10 @@
 #include "core/core.h"
 #include "gui/windows/group-properties-window.h"
 #include "gui/windows/kadu-window.h"
+#include "gui/windows/message-box.h"
 
 #include "debug.h"
 #include "icons-manager.h"
-#include "message_box.h"
 
 #include "group-tab-bar.h"
 

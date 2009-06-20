@@ -15,9 +15,9 @@
 #include "configuration/configuration-file.h"
 #include "core/core.h"
 #include "gui/windows/kadu-window.h"
+#include "gui/windows/message-box.h"
 #include "debug.h"
 #include "../modules/gadu_protocol/gadu-protocol.h"
-#include "message_box.h"
 
 #include "updates.h"
 

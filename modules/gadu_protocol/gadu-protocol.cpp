@@ -25,12 +25,12 @@
 #include "configuration/configuration-file.h"
 #include "contacts/contact-manager.h"
 #include "contacts/ignored-helper.h"
+#include "gui/windows/message-box.h"
 #include "gui/windows/password-window.h"
 #include "protocols/protocols-manager.h"
 
 #include "debug.h"
 #include "icons-manager.h"
-#include "message_box.h"
 #include "misc/misc.h"
 
 #include "dcc/dcc-manager.h"

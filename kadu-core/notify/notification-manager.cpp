@@ -17,6 +17,7 @@
 #include "gui/widgets/chat-widget-manager.h"
 #include "gui/widgets/contacts-list-widget-menu-manager.h"
 #include "gui/widgets/custom_input.h"
+#include "gui/windows/message-box.h"
 #include "notify/contact-notify-data.h"
 #include "notify/notifier.h"
 #include "notify/notify-configuration-ui-handler.h"
@@ -26,7 +27,6 @@
 #include "debug.h"
 #include "kadu_main_window.h"
 #include "main_configuration_window.h"
-#include "message_box.h"
 #include "misc/misc.h"
 
 #include "new_message_notification.h"

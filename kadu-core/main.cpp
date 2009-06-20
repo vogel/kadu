@@ -28,12 +28,12 @@
 #include "core/core.h"
 #include "configuration/configuration-file.h"
 #include "configuration/xml-configuration-file.h"
+#include "gui/windows/message-box.h"
 #include "protocols/protocols-manager.h"
 
 #include "debug.h"
 #include "emoticons.h"
 #include "icons-manager.h"
-#include "message_box.h"
 #include "misc/misc.h"
 #include "modules.h"
 

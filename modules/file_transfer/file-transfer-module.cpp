@@ -23,11 +23,11 @@
 #include "protocols/services/file-transfer-service.h"
 #include "gui/widgets/contacts-list-widget-menu-manager.h"
 #include "gui/windows/kadu-window.h"
+#include "gui/windows/message-box.h"
 
 #include "action.h"
 #include "debug.h"
 #include "exports.h"
-#include "message_box.h"
 
 #include "gui/windows/file-transfer-window.h"
 

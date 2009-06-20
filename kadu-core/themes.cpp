@@ -10,7 +10,7 @@
 #include "configuration/configuration-file.h"
 
 #include "debug.h"
-#include "message_box.h"
+#include "gui/windows/message-box.h"
 #include "misc/misc.h"
 
 #include "themes.h"

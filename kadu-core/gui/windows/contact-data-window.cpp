@@ -32,12 +32,12 @@
 #include "contacts/group-manager.h"
 #include "gui/widgets/contact-account-data-widget.h"
 #include "gui/windows/contact-data-manager.h"
+#include "gui/windows/message-box.h"
 #include "protocols/protocol.h"
 #include "protocols/protocol-factory.h"
 
 #include "debug.h"
 #include "icons-manager.h"
-#include "message_box.h"
 #include "misc/misc.h"
 
 #include "contact-data-window.h"

@@ -18,10 +18,10 @@
 #include <QtWebKit/QWebHitTestResult>
 
 #include "configuration/configuration-file.h"
+#include "gui/windows/message-box.h"
 
 #include "debug.h"
 #include "html_document.h"
-#include "message_box.h"
 #include "misc/misc.h"
 
 #include "kadu_text_browser.h"

@@ -15,11 +15,11 @@
 #include "configuration/storage-point.h"
 #include "configuration/xml-configuration-file.h"
 #include "core/core.h"
+#include "gui/windows/message-box.h"
 
 #include "debug.h"
 #include "contact-manager.h"
 #include "group.h"
-#include "message_box.h"
 
 #include "group-manager.h"
 
