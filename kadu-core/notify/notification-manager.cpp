@@ -14,6 +14,7 @@
 #include "chat/message/message.h"
 #include "configuration/configuration-file.h"
 #include "contacts/contact-account-data.h"
+#include "gui/actions/action.h"
 #include "gui/widgets/chat-widget-manager.h"
 #include "gui/widgets/contacts-list-widget-menu-manager.h"
 #include "gui/widgets/custom_input.h"
@@ -23,7 +24,6 @@
 #include "notify/notify-configuration-ui-handler.h"
 #include "notify/window-notifier.h"
 
-#include "action.h"
 #include "debug.h"
 #include "kadu_main_window.h"
 #include "main_configuration_window.h"
@@ -138,7 +138,7 @@ void NotificationManager::notifyAboutUserActionActivated(QAction *sender, bool t
 		}
 	}
 
-	foreach(KaduAction *action, notifyAboutUserActionDescription->actions())
+	foreach(Action *action, notifyAboutUserActionDescription->actions())
 	{
 		if (action->contacts() == contacts)
 			action->setChecked(!on);
@@ -365,7 +365,7 @@ ConfigurationUiHandler * NotificationManager::configurationUiHandler()
 	return UiHandler;
 }
 
-void checkNotify(KaduAction *action)
+void checkNotify(Action *action)
 {
 	kdebugf();
 

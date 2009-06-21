@@ -22,11 +22,11 @@ class QMenuBar;
 class QPushButton;
 class QVBoxLayout;
 
+class Action;
 class ActionDescription;
 class ContactInfoPanel;
 class ContactsListWidget;
 class GroupTabBar;
-class KaduAction;
 class KaduTextBrowser;
 class KaduWindowActions;
 class StatusButton;
@@ -44,7 +44,7 @@ public:
 	};
 
 private:
-	typedef QPair<KaduAction *, MenuType> MenuAction;
+	typedef QPair<Action *, MenuType> MenuAction;
 	QMap<ActionDescription *, MenuAction> MenuActions;
 
 	bool Docked; // TODO: 0.7.1 it is a hack

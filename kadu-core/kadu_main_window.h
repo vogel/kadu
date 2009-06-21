@@ -13,7 +13,7 @@
 #include <QtGui/QMainWindow>
 #include <QtXml/QDomElement>
 
-#include "action.h"
+#include "gui/actions/action-description.h"
 
 #include "exports.h"
 
@@ -57,7 +57,7 @@ public:
 	virtual ContactSet contacts() = 0;
 	Contact contact();
 
-	void actionAdded(KaduAction *action);
+	void actionAdded(Action *action);
 
 public slots:
 	void addTopToolbar();

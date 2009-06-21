@@ -17,20 +17,18 @@
 #include <QtGui/QSortFilterProxyModel>
 
 #include "accounts/account.h"
-
 #include "contacts/contact.h"
 #include "contacts/contact-list.h"
 #include "contacts/contact-list-mime-data-helper.h"
 #include "contacts/contact-manager.h"
-
 #include "contacts/model/contacts-model-proxy.h"
-
+#include "gui/actions/action.h"
+#include "gui/actions/action-description.h"
 #include "protocols/protocol.h"
 #include "protocols/protocol-factory.h"
 #include "protocols/protocol-menu-manager.h"
 #include "protocols/protocols-manager.h"
 
-#include "action.h"
 #include "icons-manager.h"
 
 #include "contacts-list-widget-delegate.h"
@@ -149,7 +147,7 @@ void ContactsListWidget::contextMenuEvent(QContextMenuEvent *event)
 	{
 		if (actionDescription)
 		{
-			KaduAction *action = actionDescription->createAction(MainWindow);
+			Action *action = actionDescription->createAction(MainWindow);
 			menu->addAction(action);
 			action->checkState();
 		}
@@ -162,7 +160,7 @@ void ContactsListWidget::contextMenuEvent(QContextMenuEvent *event)
 	foreach (ActionDescription *actionDescription, ContactsListWidgetMenuManager::instance()->managementActions())
 		if (actionDescription)
 		{
-			KaduAction *action = actionDescription->createAction(MainWindow);
+			Action *action = actionDescription->createAction(MainWindow);
 			management->addAction(action);
 			action->checkState();
 		}
@@ -189,7 +187,7 @@ void ContactsListWidget::contextMenuEvent(QContextMenuEvent *event)
 		foreach (ActionDescription *actionDescription, protocolFactory->getProtocolMenuManager()->protocolActions(account, con))
 			if (actionDescription)
 			{
-				KaduAction *action = actionDescription->createAction(MainWindow);
+				Action *action = actionDescription->createAction(MainWindow);
 				account_menu->addAction(action);
 				action->checkState();
 			}

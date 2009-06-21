@@ -24,6 +24,8 @@
 #include "contacts/model/filter/offline-contact-filter.h"
 #include "contacts/model/filter/online-and-description-contact-filter.h"
 #include "core/core.h"
+#include "gui/actions/action.h"
+#include "gui/actions/actions.h"
 #include "gui/widgets/chat-widget-actions.h"
 #include "gui/widgets/chat-widget-manager.h"
 #include "gui/widgets/contacts-list-widget.h"
@@ -37,7 +39,6 @@
 #include "misc/misc.h"
 
 #include "about.h"
-#include "action.h"
 #include "debug.h"
 #include "expimp.h"
 #include "html_document.h"
@@ -51,7 +52,7 @@
 
 #include "kadu-window-actions.h"
 
-void disableNonIdUles(KaduAction *action)
+void disableNonIdUles(Action *action)
 {
 	kdebugf();
 	foreach (const Contact contact, action->contacts())
@@ -65,7 +66,7 @@ void disableNonIdUles(KaduAction *action)
 	kdebugf2();
 }
 
-void disableContainsSelfUles(KaduAction *action)
+void disableContainsSelfUles(Action *action)
 {
 	if (action->contacts().contains(Core::instance()->myself()))
 	{
@@ -76,7 +77,7 @@ void disableContainsSelfUles(KaduAction *action)
 	action->setEnabled(true);
 }
 
-void checkOfflineTo(KaduAction *action)
+void checkOfflineTo(Action *action)
 {
 	kdebugf();
 	Account *account = AccountManager::instance()->defaultAccount();
@@ -91,7 +92,7 @@ void checkOfflineTo(KaduAction *action)
 	kdebugf2();
 }
 
-void checkHideDescription(KaduAction *action)
+void checkHideDescription(Action *action)
 {
 	Account *account = AccountManager::instance()->defaultAccount();
 
@@ -120,7 +121,7 @@ void checkHideDescription(KaduAction *action)
 	action->setChecked(on);
 }
 
-void disableNotOneUles(KaduAction *action)
+void disableNotOneUles(Action *action)
 {
 	kdebugf();
 
@@ -134,7 +135,7 @@ void disableNotOneUles(KaduAction *action)
 	kdebugf2();
 }
 
-void disableNoGaduUle(KaduAction *action)
+void disableNoGaduUle(Action *action)
 {
 	kdebugf();
 
@@ -156,7 +157,7 @@ void disableNoGaduUle(KaduAction *action)
 	kdebugf2();
 }
 
-void disableNoGaduDescription(KaduAction *action)
+void disableNoGaduDescription(Action *action)
 {
 	kdebugf();
 
@@ -185,7 +186,7 @@ void disableNoGaduDescription(KaduAction *action)
 	kdebugf2();
 }
 
-void disableNoGaduDescriptionUrl(KaduAction *action)
+void disableNoGaduDescriptionUrl(Action *action)
 {
 	kdebugf();
 
@@ -220,7 +221,7 @@ void disableNoGaduDescriptionUrl(KaduAction *action)
 	kdebugf2();
 }
 
-void disableNoEMail(KaduAction *action)
+void disableNoEMail(Action *action)
 {
 	kdebugf();
 
@@ -413,7 +414,7 @@ KaduWindowActions::KaduWindowActions(QObject *parent) : QObject(parent)
 		"ShowHideInactiveUsers", tr("Hide offline users"),
 		true, tr("Show offline users")
 	);
-	connect(InactiveUsers, SIGNAL(actionCreated(KaduAction *)), this, SLOT(inactiveUsersActionCreated(KaduAction *)));
+	connect(InactiveUsers, SIGNAL(actionCreated(Action *)), this, SLOT(inactiveUsersActionCreated(Action *)));
 	InactiveUsers->setShortcut("kadu_showoffline");
 
 	DescriptionUsers = new ActionDescription(this,
@@ -422,7 +423,7 @@ KaduWindowActions::KaduWindowActions(QObject *parent) : QObject(parent)
 		"ShowOnlyDescriptionUsers", tr("Hide users without description"),
 		true, tr("Show users without description")
 	);
-	connect(DescriptionUsers, SIGNAL(actionCreated(KaduAction *)), this, SLOT(descriptionUsersActionCreated(KaduAction *)));
+	connect(DescriptionUsers, SIGNAL(actionCreated(Action *)), this, SLOT(descriptionUsersActionCreated(Action *)));
 	DescriptionUsers->setShortcut("kadu_showonlydesc");
 
 	OnlineAndDescriptionUsers = new ActionDescription(this,
@@ -431,7 +432,7 @@ KaduWindowActions::KaduWindowActions(QObject *parent) : QObject(parent)
 		"ShowOnlineAndDescriptionUsers", tr("Show only online and description users"),
 		true, tr("Show all users")
 	);
-	connect(OnlineAndDescriptionUsers, SIGNAL(actionCreated(KaduAction *)), this, SLOT(onlineAndDescUsersActionCreated(KaduAction *)));
+	connect(OnlineAndDescriptionUsers, SIGNAL(actionCreated(Action *)), this, SLOT(onlineAndDescUsersActionCreated(Action *)));
 
 	EditUser = new ActionDescription(this,
 		ActionDescription::TypeUser, "editUserAction",
@@ -439,7 +440,7 @@ KaduWindowActions::KaduWindowActions(QObject *parent) : QObject(parent)
 		"EditUserInfo", tr("Contact data"), false, QString::null,
 		disableNotOneUles
 	);
-	connect(EditUser, SIGNAL(actionCreated(KaduAction *)), this, SLOT(editUserActionCreated(KaduAction *)));
+	connect(EditUser, SIGNAL(actionCreated(Action *)), this, SLOT(editUserActionCreated(Action *)));
 	EditUser->setShortcut("kadu_persinfo");
 	ContactsListWidgetMenuManager::instance()->addActionDescription(EditUser);
 
@@ -448,14 +449,14 @@ KaduWindowActions::KaduWindowActions(QObject *parent) : QObject(parent)
 		this, SLOT(showStatusActionActivated(QAction *, bool)),
 		"Offline", tr("Change status")
 	);
-	connect(ShowStatus, SIGNAL(actionCreated(KaduAction *)), this, SLOT(showStatusActionCreated(KaduAction *)));
+	connect(ShowStatus, SIGNAL(actionCreated(Action *)), this, SLOT(showStatusActionCreated(Action *)));
 
 	UseProxy = new ActionDescription(this,
 		ActionDescription::TypeGlobal, "useProxyAction",
 		this, SLOT(useProxyActionActivated(QAction *, bool)),
 		"UseProxy", tr("Use proxy"), true, tr("Don't use proxy")
 	);
-	connect(UseProxy, SIGNAL(actionCreated(KaduAction *)), this, SLOT(useProxyActionCreated(KaduAction *)));
+	connect(UseProxy, SIGNAL(actionCreated(Action *)), this, SLOT(useProxyActionCreated(Action *)));
 
 	connect(StatusChangerManager::instance(), SIGNAL(statusChanged(Status)), this, SLOT(statusChanged(Status)));
 }
@@ -471,11 +472,11 @@ void KaduWindowActions::statusChanged(Status status)
 		return;
 
 	QIcon icon = account->statusPixmap(status);
-	foreach (KaduAction *action, ShowStatus->actions())
+	foreach (Action *action, ShowStatus->actions())
 		action->setIcon(icon);
 }
 
-void KaduWindowActions::inactiveUsersActionCreated(KaduAction *action)
+void KaduWindowActions::inactiveUsersActionCreated(Action *action)
 {
 	KaduMainWindow *window = qobject_cast<KaduMainWindow *>(action->parent());
 	if (!window)
@@ -493,7 +494,7 @@ void KaduWindowActions::inactiveUsersActionCreated(KaduAction *action)
 	window->contactsListWidget()->addFilter(ofcf);
 }
 
-void KaduWindowActions::descriptionUsersActionCreated(KaduAction *action)
+void KaduWindowActions::descriptionUsersActionCreated(Action *action)
 {
 	KaduMainWindow *window = qobject_cast<KaduMainWindow *>(action->parent());
 	if (!window)
@@ -511,7 +512,7 @@ void KaduWindowActions::descriptionUsersActionCreated(KaduAction *action)
 	window->contactsListWidget()->addFilter(hdcf);
 }
 
-void KaduWindowActions::onlineAndDescUsersActionCreated(KaduAction *action)
+void KaduWindowActions::onlineAndDescUsersActionCreated(Action *action)
 {
 	KaduMainWindow *window = qobject_cast<KaduMainWindow *>(action->parent());
 	if (!window)
@@ -529,7 +530,7 @@ void KaduWindowActions::onlineAndDescUsersActionCreated(KaduAction *action)
 	window->contactsListWidget()->addFilter(oadcf);
 }
 
-void KaduWindowActions::editUserActionCreated(KaduAction *action)
+void KaduWindowActions::editUserActionCreated(Action *action)
 {
 	KaduMainWindow *window = dynamic_cast<KaduMainWindow *>(action->parent());
 	if (!window)
@@ -543,7 +544,7 @@ void KaduWindowActions::editUserActionCreated(KaduAction *action)
 	}
 }
 
-void KaduWindowActions::showStatusActionCreated(KaduAction *action)
+void KaduWindowActions::showStatusActionCreated(Action *action)
 {
 	Account *account = AccountManager::instance()->defaultAccount();
 
@@ -551,7 +552,7 @@ void KaduWindowActions::showStatusActionCreated(KaduAction *action)
 		action->setIcon(account->protocol()->statusPixmap());
 }
 
-void KaduWindowActions::useProxyActionCreated(KaduAction *action)
+void KaduWindowActions::useProxyActionCreated(Action *action)
 {
 	action->setChecked(config_file.readBoolEntry("Network", "UseProxy", false));
 }
@@ -832,7 +833,7 @@ void KaduWindowActions::offlineToUserActionActivated(QAction *sender, bool toggl
 // TODO: 0.6.6
 // 	userlist->writeToConfig();
 
-	foreach (KaduAction *action, OfflineToUser->actions())
+	foreach (Action *action, OfflineToUser->actions())
 		if (action->contacts() == contacts)
 			action->setChecked(!on);
 
@@ -866,7 +867,7 @@ void KaduWindowActions::hideDescriptionActionActivated(QAction *sender, bool tog
 		}
 	}
 
-	foreach (KaduAction *action, HideDescription->actions())
+	foreach (Action *action, HideDescription->actions())
 	{
 		if (action->contacts() == contacts)
 			action->setChecked(toggled);
@@ -972,7 +973,7 @@ void KaduWindowActions::useProxyActionActivated(QAction *sender, bool toggled)
 {
 	config_file.writeEntry("Network", "UseProxy", toggled);
 
-	foreach (KaduAction *action, UseProxy->actions())
+	foreach (Action *action, UseProxy->actions())
 		action->setChecked(toggled);
 }
 

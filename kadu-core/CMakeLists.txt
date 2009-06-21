@@ -68,6 +68,10 @@ set (kadu_SRCS
 	file-transfer/file-transfer.cpp
 	file-transfer/file-transfer-manager.cpp
 
+	gui/actions/action.cpp
+	gui/actions/actions.cpp
+	gui/actions/action-description.cpp
+
 	gui/widgets/account-contacts-list-widget.cpp
 	gui/widgets/chat-edit-box.cpp
 	gui/widgets/chat_messages_view.cpp
@@ -143,7 +147,6 @@ set (kadu_SRCS
 	misc/date-time.cpp
 	misc/misc.cpp
 	misc/path-conversion.cpp
-	misc/token-dialog.cpp
 
 	model/first-empty.cpp
 
@@ -168,7 +171,6 @@ set (kadu_SRCS
 	protocols/model/protocols-model.cpp
 	protocols/services/chat-service.cpp
 
-	action.cpp
 	activate.cpp
 	debug.cpp
 	dnshandler.cpp
@@ -248,6 +250,10 @@ set (kadu_MOC_SRCS
 	file-transfer/file-transfer.h
 	file-transfer/file-transfer-manager.h
 
+	gui/actions/action.h
+	gui/actions/actions.h
+	gui/actions/action-description.h
+
 	gui/widgets/account-contacts-list-widget.h
 	gui/widgets/account-create-widget.h
 	gui/widgets/account-edit-widget.h
@@ -301,8 +307,6 @@ set (kadu_MOC_SRCS
 	#gui/windows/window-notifier-window.h
 	gui/windows/your-accounts.h
 
-	misc/token-dialog.h
-
 	model/first-empty.h
 
 	#modules/module-data.h
@@ -327,7 +331,6 @@ set (kadu_MOC_SRCS
 	protocols/services/personal-info-service.h
 	protocols/services/search-service.h
 
-	action.h
 	#activate.h
 	#debug.h
 	dnshandler.h

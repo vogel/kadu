@@ -8,7 +8,6 @@
 class ActionDescription;
 class ChatEditBox;
 class ChatWidget;
-class KaduAction;
 class KeysManager;
 class Protocol;
 class UserGroup;

@@ -32,7 +32,6 @@ class ChatMessage;
 class ChatWidget;
 class ContactsListWidget;
 class CustomInput;
-class KaduAction;
 class Protocol;
 
 class KADUAPI ChatWidget : public QWidget, ConfigurationAwareObject, AccountsAwareObject

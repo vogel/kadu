@@ -20,7 +20,6 @@
 
 class ActionDescription;
 class ChatWidgetActions;
-class KaduAction;
 class Protocol;
 
 /**

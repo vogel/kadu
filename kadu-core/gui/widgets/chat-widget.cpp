@@ -16,13 +16,14 @@
 
 #include "accounts/account.h"
 #include "accounts/account-manager.h"
-
 #include "chat/chat-manager.h"
 #include "chat/chat_message.h"
 #include "configuration/configuration-file.h"
 #include "contacts/contact-account-data.h"
 #include "contacts/model/contact-list-model.h"
 #include "core/core.h"
+#include "gui/actions/action.h"
+#include "gui/actions/actions.h"
 #include "gui/widgets/chat-widget-actions.h"
 #include "gui/widgets/chat-widget-manager.h"
 #include "gui/widgets/color-selector.h"
@@ -31,7 +32,6 @@
 #include "gui/windows/message-box.h"
 #include "protocols/protocol.h"
 
-#include "action.h"
 #include "chat-edit-box.h"
 #include "custom_input.h"
 #include "debug.h"
@@ -302,7 +302,7 @@ void ChatWidget::writeMyMessage()
 		cancelMessage();
 	InputBox->inputBox()->clear();
 
-	KaduAction *action;
+	Action *action;
 	action = ChatWidgetManager::instance()->actions()->bold()->action(InputBox);
 	if (action)
 		InputBox->inputBox()->setFontWeight(action->isChecked() ? QFont::Bold : QFont::Normal);
@@ -389,7 +389,7 @@ void ChatWidget::disconnectAcknowledgeSlots()
 
 void ChatWidget::changeSendToCancelSend()
 {
-	KaduAction *action = ChatWidgetManager::instance()->actions()->send()->action(InputBox);
+	Action *action = ChatWidgetManager::instance()->actions()->send()->action(InputBox);
 
 	if (action)
 	{
@@ -400,7 +400,7 @@ void ChatWidget::changeSendToCancelSend()
 
 void ChatWidget::changeCancelSendToSend()
 {
-	KaduAction *action = ChatWidgetManager::instance()->actions()->send()->action(InputBox);
+	Action *action = ChatWidgetManager::instance()->actions()->send()->action(InputBox);
 
 	if (action)
 	{

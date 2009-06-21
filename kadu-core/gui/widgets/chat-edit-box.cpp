@@ -13,6 +13,7 @@
 #include "configuration/configuration-file.h"
 #include "configuration/xml-configuration-file.h"
 #include "contacts/contact-account-data.h"
+#include "gui/actions/action.h"
 #include "gui/widgets/chat-widget-actions.h"
 #include "gui/widgets/chat-widget-manager.h"
 #include "gui/widgets/color-selector.h"
@@ -82,7 +83,7 @@ void ChatEditBox::fontChanged(QFont font)
 		ChatWidgetManager::instance()->actions()->underline()->action(this)->setChecked(font.underline());
 }
 
-void ChatEditBox::colorSelectorActionCreated(KaduAction *action)
+void ChatEditBox::colorSelectorActionCreated(Action *action)
 {
 	if (action->parent() == this)
 		setColorFromCurrentText(true);
@@ -277,7 +278,7 @@ void ChatEditBox::changeColor(const QColor &newColor)
 	QPixmap p(12, 12);
 	p.fill(CurrentColor);
 
-	KaduAction *action = ChatWidgetManager::instance()->actions()->colorSelector()->action(this);
+	Action *action = ChatWidgetManager::instance()->actions()->colorSelector()->action(this);
 	if (action)
 		action->setIcon(p);
 
@@ -286,7 +287,7 @@ void ChatEditBox::changeColor(const QColor &newColor)
 
 void ChatEditBox::setColorFromCurrentText(bool force)
 {
-	KaduAction *action = ChatWidgetManager::instance()->actions()->colorSelector()->action(this);
+	Action *action = ChatWidgetManager::instance()->actions()->colorSelector()->action(this);
 
 	if (!action || (!force && (InputBox->textColor() == CurrentColor)))
 		return;

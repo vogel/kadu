@@ -21,6 +21,7 @@
 #include "contacts/model/contacts-model.h"
 #include "contacts/model/filter/group-contact-filter.h"
 #include "core/core.h"
+#include "gui/actions/action.h"
 #include "gui/widgets/chat-widget-actions.h"
 #include "gui/widgets/chat-widget-manager.h"
 #include "gui/widgets/contact-info-panel.h"
@@ -390,7 +391,7 @@ void KaduWindow::insertMenuActionDescription(ActionDescription *actionDescriptio
 	kdebugf();
 	if (!actionDescription)
 		return;
-	KaduAction *action = actionDescription->createAction(this);
+	Action *action = actionDescription->createAction(this);
 
 	QMenu *menu;
 
@@ -419,7 +420,7 @@ void KaduWindow::removeMenuActionDescription(ActionDescription *actionDescriptio
 {
 	if (!actionDescription)
 		return;
-	KaduAction *action = MenuActions[actionDescription].first;
+	Action *action = MenuActions[actionDescription].first;
 
 	if (!action)
 		return;

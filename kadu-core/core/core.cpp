@@ -21,7 +21,6 @@
 #include "gui/widgets/chat-widget-manager.h"
 #include "gui/windows/kadu-window.h"
 #include "misc/misc.h"
-#include "misc/token-dialog.h"
 #include "notify/notification-manager.h"
 #include "protocols/protocol.h"
 #include "protocols/protocol-factory.h"
@@ -499,14 +498,13 @@ void Core::configurationUpdated()
 
 QString Core::readToken(const QPixmap &tokenPixmap)
 {
-	TokenDialog *td = new TokenDialog(tokenPixmap, 0);
+/*	TokenDialog *td = new TokenDialog(tokenPixmap, 0);
 	QString result;
 
 	if (td->exec() == QDialog::Accepted)
 		result = td->getValue();
-	delete td;
-
-	return result;
+	delete td;*/
+	return "";
 }
 
 Status Core::status()

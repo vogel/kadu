@@ -15,6 +15,7 @@
 #include "configuration/xml-configuration-file.h"
 #include "contacts/contact.h"
 #include "contacts/contact-set.h"
+#include "gui/actions/action.h"
 #include "gui/widgets/contacts-list-widget.h"
 
 #include "debug.h"
@@ -275,7 +276,7 @@ void KaduMainWindow::addRightToolbar()
 	addToolBar(Qt::RightToolBarArea, new ToolBar(this));
 }
 
-void KaduMainWindow::actionAdded(KaduAction *action)
+void KaduMainWindow::actionAdded(Action *action)
 {
 	if (contactsListWidget())
 		connect(contactsListWidget(), SIGNAL(contactsSelectionChanged()), action, SLOT(checkState()));

@@ -20,8 +20,8 @@
 #include "contacts/contact-set.h"
 #include "protocols/status.h"
 
+class Action;
 class ActionDescription;
-class KaduAction;
 
 class ConfigurationUiHandler;
 class Message;
@@ -89,7 +89,7 @@ signals:
 
 };
 
-void checkNotify(KaduAction *);
+void checkNotify(Action *);
 
 /** @} */
 

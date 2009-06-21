@@ -9,34 +9,29 @@
 
 #include "accounts/account.h"
 #include "accounts/account-manager.h"
-
-#include "contacts/contact-account-data.h"
-#include "contacts/contact-manager.h"
-#include "contacts/ignored-helper.h"
-
-#include "core/core.h"
-
-#include "gui/widgets/chat-edit-box.h"
-#include "gui/widgets/chat-widget-actions.h"
-#include "gui/widgets/contacts-list-widget-menu-manager.h"
-#include "gui/widgets/custom_input.h"
-
-#include "gui/windows/chat_window.h"
-#include "gui/windows/kadu-window.h"
-#include "gui/windows/kadu-window-actions.h"
-#include "gui/windows/open-chat-with/open-chat-with.h"
-
-#include "protocols/protocol-factory.h"
-#include "protocols/protocols-manager.h"
-
-#include "action.h"
-#include "activate.h"
 #include "chat/chat_message.h"
 #include "chat/message/message.h"
 #include "configuration/configuration-file.h"
 #include "configuration/xml-configuration-file.h"
+#include "contacts/contact-account-data.h"
+#include "contacts/contact-manager.h"
+#include "contacts/ignored-helper.h"
+#include "core/core.h"
+#include "gui/actions/action.h"
+#include "gui/actions/actions.h"
+#include "gui/widgets/chat-edit-box.h"
+#include "gui/widgets/chat-widget-actions.h"
+#include "gui/widgets/contacts-list-widget-menu-manager.h"
+#include "gui/widgets/custom_input.h"
+#include "gui/windows/chat_window.h"
+#include "gui/windows/kadu-window.h"
+#include "gui/windows/kadu-window-actions.h"
 #include "gui/windows/message-box.h"
+#include "gui/windows/open-chat-with/open-chat-with.h"
+#include "protocols/protocol-factory.h"
+#include "protocols/protocols-manager.h"
 
+#include "activate.h"
 #include "debug.h"
 #include "icons-manager.h"
 #include "misc/misc.h"
@@ -201,7 +196,7 @@ void ChatWidgetManager::openChatWith()
 
 void ChatWidgetManager::insertEmoticonActionEnabled()
 {
- 	foreach (KaduAction *action, Actions->insertEmoticon()->actions())
+ 	foreach (Action *action, Actions->insertEmoticon()->actions())
 	{
 		if ((EmoticonsStyle)config_file.readNumEntry("Chat","EmoticonsStyle") == EMOTS_NONE)
 		{

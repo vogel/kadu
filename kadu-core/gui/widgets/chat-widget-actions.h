@@ -16,8 +16,8 @@
 
 class QAction;
 
+class Action;
 class ActionDescription;
-class KaduAction;
 
 class ChatWidgetActions : public QObject, ConfigurationAwareObject
 {
@@ -41,9 +41,9 @@ class ChatWidgetActions : public QObject, ConfigurationAwareObject
 	void autoSendActionCheck();
 
 private slots:
-	void autoSendActionCreated(KaduAction *action);
-	void sendActionCreated(KaduAction *action);
-	void insertEmoticonActionCreated(KaduAction *action);
+	void autoSendActionCreated(Action *action);
+	void sendActionCreated(Action *action);
+	void insertEmoticonActionCreated(Action *action);
 
 	void autoSendActionActivated(QAction *sender, bool toggled);
 	void clearActionActivated(QAction *sender, bool toggled);

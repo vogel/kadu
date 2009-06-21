@@ -11,7 +11,6 @@
 
 #include "configuration/configuration-file.h"
 
-#include "action.h"
 #include "debug.h"
 #include "misc/misc.h"
 

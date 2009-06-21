@@ -17,9 +17,9 @@
 
 #include "configuration/configuration-file.h"
 #include "configuration/xml-configuration-file.h"
+#include "gui/actions/actions.h"
 #include "gui/windows/message-box.h"
 
-#include "action.h"
 #include "debug.h"
 #include "icons-manager.h"
 #include "kadu_main_window.h"

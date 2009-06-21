@@ -13,6 +13,8 @@
 #include "contacts/contact-account-data.h"
 #include "contacts/ignored-helper.h"
 #include "core/core.h"
+#include "gui/actions/action.h"
+#include "gui/actions/actions.h"
 #include "gui/widgets/chat-edit-box.h"
 #include "gui/widgets/chat-widget.h"
 #include "gui/widgets/chat-widget-manager.h"
@@ -21,14 +23,13 @@
 #include "gui/windows/kadu-window-actions.h"
 #include "gui/windows/message-box.h"
 
-#include "action.h"
 #include "custom_input.h"
 #include "debug.h"
 #include "emoticons.h"
 
 #include "chat-widget-actions.h"
 
-void disableEmptyTextBox(KaduAction *action)
+void disableEmptyTextBox(Action *action)
 {
 	ChatEditBox *chatEditBox = dynamic_cast<ChatEditBox *>(action->parent());
 	if (!chatEditBox)
@@ -40,7 +41,7 @@ void disableEmptyTextBox(KaduAction *action)
 	action->setEnabled(!chatEditBox->inputBox()->toPlainText().isEmpty());
 }
 
-void checkBlocking(KaduAction *action)
+void checkBlocking(Action *action)
 {
 	Account *account = AccountManager::instance()->defaultAccount();
 	ContactSet contacts = action->contacts();
@@ -61,7 +62,7 @@ void checkBlocking(KaduAction *action)
 	action->setChecked(on);
 }
 
-void checkIgnoreUser(KaduAction *action)
+void checkIgnoreUser(Action *action)
 {
 	ContactSet contacts = action->contacts();
 
@@ -182,12 +183,12 @@ void ChatWidgetActions::configurationUpdated()
 	autoSendActionCheck();
 }
 
-void ChatWidgetActions::autoSendActionCreated(KaduAction *action)
+void ChatWidgetActions::autoSendActionCreated(Action *action)
 {
 	action->setChecked(config_file.readBoolEntry("Chat", "AutoSend"));
 }
 
-void ChatWidgetActions::sendActionCreated(KaduAction *action)
+void ChatWidgetActions::sendActionCreated(Action *action)
 {
 	ChatEditBox *chatEditBox = dynamic_cast<ChatEditBox *>(action->parent());
 	if (!chatEditBox)
@@ -203,7 +204,7 @@ void ChatWidgetActions::sendActionCreated(KaduAction *action)
 		chatWidget->changeSendToCancelSend();
 }
 
-void ChatWidgetActions::insertEmoticonActionCreated(KaduAction *action)
+void ChatWidgetActions::insertEmoticonActionCreated(Action *action)
 {
 	if ((EmoticonsStyle)config_file.readNumEntry("Chat","EmoticonsStyle") == EMOTS_NONE)
 	{
@@ -215,7 +216,7 @@ void ChatWidgetActions::insertEmoticonActionCreated(KaduAction *action)
 void ChatWidgetActions::autoSendActionCheck()
 {
  	bool check = config_file.readBoolEntry("Chat", "AutoSend");
- 	foreach (KaduAction *action, AutoSend->actions())
+ 	foreach (Action *action, AutoSend->actions())
  		action->setChecked(check);
 }
 
@@ -385,7 +386,7 @@ void ChatWidgetActions::ignoreUserActionActivated(QAction *sender, bool toggled)
 // TODO: 0.6.6
 // 			kadu->userbox()->refresh();
 
-			foreach (KaduAction *action, IgnoreUser->actions())
+			foreach (Action *action, IgnoreUser->actions())
 			{
 				if (action->contacts() == contacts)
 					action->setChecked(IgnoredHelper::isIgnored(contacts));
@@ -449,7 +450,7 @@ void ChatWidgetActions::blockUserActionActivated(QAction *sender, bool toggled)
 // TODO: 0.6.5
 // 		userlist->writeToConfig();
 
-		foreach (KaduAction *action, BlockUser->actions())
+		foreach (Action *action, BlockUser->actions())
 		{
 			if (action->contacts() == contacts)
 				action->setChecked(!on);

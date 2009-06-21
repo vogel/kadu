@@ -12,12 +12,13 @@
 
 #include "configuration/configuration-aware-object.h"
 
-#include "action.h"
 #include "kadu_main_window.h"
 
 #include "exports.h"
 
+class Action;
 class Chat;
+class ChatWidget;
 class CustomInput;
 
 class KADUAPI ChatEditBox : public KaduMainWindow, ConfigurationAwareObject
@@ -32,7 +33,7 @@ class KADUAPI ChatEditBox : public KaduMainWindow, ConfigurationAwareObject
 
 private slots:
 	void fontChanged(QFont font);
-	void colorSelectorActionCreated(KaduAction *action);
+	void colorSelectorActionCreated(Action *action);
 	void cursorPositionChanged();
 
 protected:

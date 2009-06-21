@@ -21,11 +21,11 @@
 #include "file-transfer/file-transfer-manager.h"
 #include "protocols/protocol.h"
 #include "protocols/services/file-transfer-service.h"
+#include "gui/actions/action.h"
 #include "gui/widgets/contacts-list-widget-menu-manager.h"
 #include "gui/windows/kadu-window.h"
 #include "gui/windows/message-box.h"
 
-#include "action.h"
 #include "debug.h"
 #include "exports.h"
 
@@ -50,7 +50,7 @@ extern "C" KADU_EXPORT void file_transfer_close()
 //	MainConfigurationWindow::unregisterUiFile(dataPath("kadu/modules/configuration/dcc.ui"), dcc_manager);
 }
 
-void disableNonFileTransferContacts(KaduAction *action)
+void disableNonFileTransferContacts(Action *action)
 {
 	kdebugf();
 

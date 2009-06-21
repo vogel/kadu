@@ -16,8 +16,8 @@
 
 class QAction;
 
+class Action;
 class ActionDescription;
-class KaduAction;
 
 class KaduWindowActions : QObject
 {
@@ -59,12 +59,12 @@ class KaduWindowActions : QObject
 private slots:
 	void statusChanged(Status status);
 
-	void inactiveUsersActionCreated(KaduAction *action);
-	void descriptionUsersActionCreated(KaduAction *action);
-	void onlineAndDescUsersActionCreated(KaduAction *action);
-	void editUserActionCreated(KaduAction *action);
-	void showStatusActionCreated(KaduAction *action);
-	void useProxyActionCreated(KaduAction *action);
+	void inactiveUsersActionCreated(Action *action);
+	void descriptionUsersActionCreated(Action *action);
+	void onlineAndDescUsersActionCreated(Action *action);
+	void editUserActionCreated(Action *action);
+	void showStatusActionCreated(Action *action);
+	void useProxyActionCreated(Action *action);
 
 	void configurationActionActivated(QAction *sender, bool toggled);
 	void yourAccountsActionActivated(QAction *sender, bool toggled);
@@ -103,14 +103,14 @@ public:
 
 };
 
-void disableNonIdUles(KaduAction *action);
-void disableContainsSelfUles(KaduAction *action);
-void checkOfflineTo(KaduAction *action);
-void checkHideDescription(KaduAction *action);
-void disableNotOneUles(KaduAction *action);
-void disableNoGaduUle(KaduAction *action);
-void disableNoGaduDescription(KaduAction *action);
-void disableNoGaduDescriptionUrl(KaduAction *action);
-void disableNoEMail(KaduAction *action);
+void disableNonIdUles(Action *action);
+void disableContainsSelfUles(Action *action);
+void checkOfflineTo(Action *action);
+void checkHideDescription(Action *action);
+void disableNotOneUles(Action *action);
+void disableNoGaduUle(Action *action);
+void disableNoGaduDescription(Action *action);
+void disableNoGaduDescriptionUrl(Action *action);
+void disableNoEMail(Action *action);
 
 #endif // KADU_WINDOW_ACTIONS_H

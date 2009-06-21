@@ -13,7 +13,7 @@
 #include "coding-conversion.h"
 #include "date-time.h"
 #include "path-conversion.h"
-#include "token-dialog.h"
+#include <QtGui/QApplication>
 
 extern KADUAPI QTextCodec *codec_cp1250;
 extern KADUAPI QTextCodec *codec_latin2;
