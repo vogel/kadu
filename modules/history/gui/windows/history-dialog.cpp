@@ -28,7 +28,7 @@
 #include "action.h"
 #include "debug.h"
 #include "emoticons.h"
-#include "message_box.h"
+#include "gui/windows/message-box.h"
 #include "misc/misc.h"
 #include "icons-manager.h"
 

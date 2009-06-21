@@ -21,11 +21,11 @@
 #include "core/core.h"
 #include "gui/widgets/configuration/config-group-box.h"
 #include "gui/widgets/configuration/configuration-widget.h"
+#include "gui/windows/message-box.h"
 #include "misc/path-conversion.h"
 #include "protocols/services/chat-service.h"
 
 #include "debug.h"
-#include "message_box.h"
 
 #include "history.h"
 

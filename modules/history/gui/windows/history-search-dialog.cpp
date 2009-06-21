@@ -16,7 +16,7 @@
 
 #include "debug.h"
 #include "emoticons.h"
-#include "message_box.h"
+#include "gui/windows/message-box.h"
 #include "icons-manager.h"
 
 #include "history-search-dialog.h"

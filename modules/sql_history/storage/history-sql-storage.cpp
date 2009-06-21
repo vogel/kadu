@@ -15,7 +15,7 @@
 #include "configuration/configuration-file.h"
 #include "core/core.h"
 #include "debug.h"
-#include "message_box.h"
+#include "gui/windows/message-box.h"
 #include "misc/misc.h"
 #include "misc/path-conversion.h"
 #include "gui/widgets/chat-widget.h"
@@ -205,6 +205,7 @@ void HistorySqlStorage::appendMessageEntry(const Message &message)
 	MessagesModel->insertRecord(-1, record);
 	if (!MessagesModel->submitAll())
 		kdebug(Database.lastError().text().toLocal8Bit().data(), false, "Warning");
+
 	kdebugf2();
 }
 

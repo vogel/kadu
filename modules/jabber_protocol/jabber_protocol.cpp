@@ -18,6 +18,7 @@
 #include "contacts/contact-manager.h"
 #include "gui/widgets/chat-widget-manager.h"
 #include "gui/windows/kadu-window.h"
+#include "gui/windows/message-box.h"
 #include "protocols/protocol-menu-manager.h"
 #include "protocols/status.h"
 #include "misc/misc.h"
@@ -25,7 +26,6 @@
 #include "configuration/configuration-file.h"
 #include "debug.h"
 #include "icons-manager.h"
-#include "message_box.h"
 #include "main_configuration_window.h"
 
 #include "cert-util.h"
