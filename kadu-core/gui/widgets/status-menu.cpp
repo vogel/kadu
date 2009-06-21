@@ -15,7 +15,8 @@
 #include "accounts/account-manager.h"
 #include "configuration/configuration-file.h"
 #include "core/core.h"
-#include "misc/choose-description.h"
+#include "gui/windows/choose-description.h"
+
 #include "protocols/protocol.h"
 #include "status_changer.h"
 
