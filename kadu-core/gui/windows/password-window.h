@@ -10,12 +10,12 @@
 #ifndef PASSWORD_WINDOW_H
 #define PASSWORD_WINDOW_H
 
-#include <QtGui/QWidget>
+#include <QtGui/QDialog>
 
 class QCheckBox;
 class QLineEdit;
 
-class PasswordWindow : public QWidget
+class PasswordWindow : public QDialog
 {
 	Q_OBJECT
 

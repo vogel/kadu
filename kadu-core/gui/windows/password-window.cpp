@@ -23,11 +23,11 @@ void PasswordWindow::getPassword(const QString &message, QObject *receiver, cons
 	PasswordWindow *window = new PasswordWindow(message, 0);
 	connect(window, SIGNAL(passwordEntered(const QString &, bool)), receiver, slot);
 
-	window->show();
+	window->exec();
 }
 
 PasswordWindow::PasswordWindow(const QString &message, QWidget *parent) :
-		QWidget(parent)
+		QDialog(parent)
 {
 	setAttribute(Qt::WA_DeleteOnClose);
 
@@ -36,12 +36,14 @@ PasswordWindow::PasswordWindow(const QString &message, QWidget *parent) :
 	QLabel *messageLabel = new QLabel(message, this);
 	Password = new QLineEdit(this);
 	Password->setEchoMode(QLineEdit::Password);
+	Password->setFocus();
 
 	Store = new QCheckBox(tr("Store this password"), this);
 
 	QDialogButtonBox *buttons = new QDialogButtonBox(Qt::Horizontal, this);
 
 	QPushButton *okButton = new QPushButton(IconsManager::instance()->loadIcon("OkWindowButton"), tr("Ok"), this);
+	okButton->setDefault(true);
 	buttons->addButton(okButton, QDialogButtonBox::AcceptRole);
 	QPushButton *cancelButton = new QPushButton(IconsManager::instance()->loadIcon("CloseWindowButton"), tr("Cancel"), this);
 	buttons->addButton(cancelButton, QDialogButtonBox::RejectRole);
