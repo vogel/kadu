@@ -21,7 +21,7 @@
 class ActionDescription;
 class Contact;
 class ContactSet;
-class KaduMainWindow;
+class MainWindow;
 
 class KADUAPI Action : public QAction
 {
@@ -42,7 +42,7 @@ private slots:
 	void triggeredSlot(bool checked);
 
 public:
-	Action(ActionDescription *description, KaduMainWindow *parent);
+	Action(ActionDescription *description, MainWindow *parent);
 	virtual ~Action();
 
 	Contact contact();

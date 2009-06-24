@@ -321,7 +321,7 @@ void ChatWidgetActions::whoisActionActivated(QAction *sender, bool toggled)
 {
 	kdebugf();
 /*
-	KaduMainWindow *window = dynamic_cast<KaduMainWindow *>(sender->parent());
+	MainWindow *window = dynamic_cast<MainWindow *>(sender->parent());
 	if (!window)
 	{
 		(new SearchDialog(Core::instance()->kaduWindow()))->show();
@@ -349,7 +349,7 @@ void ChatWidgetActions::ignoreUserActionActivated(QAction *sender, bool toggled)
 {
 	kdebugf();
 	Account *account = AccountManager::instance()->defaultAccount();
-	KaduMainWindow *window = dynamic_cast<KaduMainWindow *>(sender->parent());
+	MainWindow *window = dynamic_cast<MainWindow *>(sender->parent());
 	if (!window)
 		return;
 
@@ -401,7 +401,7 @@ void ChatWidgetActions::blockUserActionActivated(QAction *sender, bool toggled)
 {
 	kdebugf();
 	Account *account = AccountManager::instance()->defaultAccount();
-	KaduMainWindow *window = dynamic_cast<KaduMainWindow *>(sender->parent());
+	MainWindow *window = dynamic_cast<MainWindow *>(sender->parent());
 	if (!window)
 		return;
 
@@ -463,7 +463,7 @@ void ChatWidgetActions::openChatActionActivated(QAction *sender, bool toggled)
 {
 	kdebugf();
 	Account *account = AccountManager::instance()->defaultAccount();
-	KaduMainWindow *window = dynamic_cast<KaduMainWindow *>(sender->parent());
+	MainWindow *window = dynamic_cast<MainWindow *>(sender->parent());
 	if (!window)
 		return;
 

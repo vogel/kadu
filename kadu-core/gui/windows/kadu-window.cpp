@@ -40,7 +40,7 @@
 #include "kadu-window.h"
 
 KaduWindow::KaduWindow(QWidget *parent) :
-		KaduMainWindow(parent), Docked(false)
+		MainWindow(parent), Docked(false)
 {
 	setAttribute(Qt::WA_DeleteOnClose, true);
 
@@ -343,7 +343,7 @@ void KaduWindow::keyPressEvent(QKeyEvent *e)
 
 	emit keyPressed(e);
 
-	KaduMainWindow::keyPressEvent(e);
+	MainWindow::keyPressEvent(e);
 }
 
 bool KaduWindow::supportsActionType(ActionDescription::ActionType type)

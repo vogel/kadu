@@ -18,11 +18,11 @@
 #include "configuration/configuration-file.h"
 #include "configuration/xml-configuration-file.h"
 #include "gui/actions/actions.h"
+#include "gui/windows/main-window.h"
 #include "gui/windows/message-box.h"
 
 #include "debug.h"
 #include "icons-manager.h"
-#include "kadu_main_window.h"
 #include "misc/misc.h"
 
 #include "toolbar.h"
@@ -121,7 +121,7 @@ void ToolBar::addAction(const QString &actionName, bool showLabel, QAction *afte
 		foreach(const ToolBarAction &toolBarAction, ToolBarActions)
 			if (toolBarAction.action == after)
 			{
-				newAction.action = KaduActions.createAction(actionName, dynamic_cast<KaduMainWindow *>(parent()));
+				newAction.action = KaduActions.createAction(actionName, dynamic_cast<MainWindow *>(parent()));
 				insertAction(after, newAction.action);
 				newAction.button = dynamic_cast<QToolButton *>(widgetForAction(newAction.action));
 				connect(newAction.button, SIGNAL(pressed()), this, SLOT(buttonPressed()));
@@ -134,7 +134,7 @@ void ToolBar::addAction(const QString &actionName, bool showLabel, QAction *afte
 			index++;
 	}
 
-	newAction.action = KaduActions.createAction(actionName, dynamic_cast<KaduMainWindow *>(parent()));
+	newAction.action = KaduActions.createAction(actionName, dynamic_cast<MainWindow *>(parent()));
 	QToolBar::addAction(newAction.action);
 	newAction.button = dynamic_cast<QToolButton *>(widgetForAction(newAction.action));
 	connect(newAction.button, SIGNAL(pressed()), this, SLOT(buttonPressed()));
@@ -174,7 +174,7 @@ void ToolBar::moveAction(const QString &actionName, bool showLabel, QAction *aft
 		else
 			actionFind = true;
 	}
- 	newAction.action = KaduActions.createAction(actionName, dynamic_cast<KaduMainWindow *>(parent()));
+ 	newAction.action = KaduActions.createAction(actionName, dynamic_cast<MainWindow *>(parent()));
 
 	if (index > ToolBarActions.count() -1)
 		QToolBar::addAction(newAction.action);
@@ -231,7 +231,7 @@ void ToolBar::dragEnterEvent(QDragEnterEvent* event)
 		QString actionName;
 		bool showLabel;
 
-		if (ActionDrag::decode(event, actionName, showLabel) && (((event->source() == this) || (!hasAction(actionName) && dynamic_cast<KaduMainWindow *>(parent())->supportsActionType(KaduActions[actionName]->type())))))
+		if (ActionDrag::decode(event, actionName, showLabel) && (((event->source() == this) || (!hasAction(actionName) && dynamic_cast<MainWindow *>(parent())->supportsActionType(KaduActions[actionName]->type())))))
 		{
 			event->acceptProposedAction();
 			return;
@@ -366,7 +366,7 @@ void ToolBar::actionUnloaded(const QString &actionName)
 void ToolBar::updateButtons()
 {
 	QAction *lastAction = 0;
-	KaduMainWindow *kaduMainWindow = dynamic_cast<KaduMainWindow *>(parent());
+	MainWindow *kaduMainWindow = dynamic_cast<MainWindow *>(parent());
 
 	if (!kaduMainWindow)
 		return;
@@ -398,7 +398,7 @@ void ToolBar::updateButtons()
 
 		if (KaduActions.contains(actionName) && kaduMainWindow->supportsActionType(KaduActions[actionName]->type()))
 		{
-			(*toolBarAction).action = KaduActions.createAction(actionName, dynamic_cast<KaduMainWindow *>(parent()));
+			(*toolBarAction).action = KaduActions.createAction(actionName, dynamic_cast<MainWindow *>(parent()));
 
 			if (toolBarNextAction != ToolBarActions.end() && (*toolBarNextAction).action)
 				insertAction((*toolBarNextAction).action, (*toolBarAction).action);
@@ -500,9 +500,9 @@ QMenu * ToolBar::createContextMenu(QToolButton *button)
 		foreach(ActionDescription *actionDescription, KaduActions.values())
 		{
 			bool supportsAction;
-			KaduMainWindow *kaduMainWindow= 0;
+			MainWindow *kaduMainWindow= 0;
 			if (parent())
-				kaduMainWindow = dynamic_cast<KaduMainWindow *>(parent());
+				kaduMainWindow = dynamic_cast<MainWindow *>(parent());
 
 			if (kaduMainWindow)
 				supportsAction = kaduMainWindow->supportsActionType(actionDescription->type());

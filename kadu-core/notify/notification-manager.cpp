@@ -18,6 +18,8 @@
 #include "gui/widgets/chat-widget-manager.h"
 #include "gui/widgets/contacts-list-widget-menu-manager.h"
 #include "gui/widgets/custom_input.h"
+#include "gui/windows/main-configuration-window.h"
+#include "gui/windows/main-window.h"
 #include "gui/windows/message-box.h"
 #include "notify/contact-notify-data.h"
 #include "notify/notifier.h"
@@ -25,8 +27,6 @@
 #include "notify/window-notifier.h"
 
 #include "debug.h"
-#include "kadu_main_window.h"
-#include "main_configuration_window.h"
 #include "misc/misc.h"
 
 #include "new_message_notification.h"
@@ -101,7 +101,7 @@ void NotificationManager::notifyAboutUserActionActivated(QAction *sender, bool t
 {
 	kdebugf();
 
-	KaduMainWindow *window = dynamic_cast<KaduMainWindow *>(sender->parent());
+	MainWindow *window = dynamic_cast<MainWindow *>(sender->parent());
 	if (!window)
 		return;
 

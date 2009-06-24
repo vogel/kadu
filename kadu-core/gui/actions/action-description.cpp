@@ -9,8 +9,8 @@
 
 #include "gui/actions/action.h"
 #include "gui/actions/actions.h"
+#include "gui/windows/main-window.h"
 #include "hot_key.h"
-#include "kadu_main_window.h"
 
 #include "action-description.h"
 
@@ -46,7 +46,7 @@ void ActionDescription::actionDestroyed(QObject *action)
 	if (!kaduAction)
 		return;
 
-	KaduMainWindow *kaduMainWindow = static_cast<KaduMainWindow *>(action->parent());
+	MainWindow *kaduMainWindow = static_cast<MainWindow *>(action->parent());
 	if (!kaduMainWindow)
 		return;
 
@@ -62,7 +62,7 @@ void ActionDescription::setShortcut(QString configItem, Qt::ShortcutContext cont
 	configurationUpdated();
 }
 
-Action * ActionDescription::createAction(KaduMainWindow *kaduMainWindow)
+Action * ActionDescription::createAction(MainWindow *kaduMainWindow)
 {
 	if (MappedActions.contains(kaduMainWindow))
 		return MappedActions[kaduMainWindow];
@@ -93,7 +93,7 @@ QList<Action *> ActionDescription::actions()
 	return MappedActions.values();
 }
 
-Action * ActionDescription::action(KaduMainWindow *kaduMainWindow)
+Action * ActionDescription::action(MainWindow *kaduMainWindow)
 {
 	if (MappedActions.contains(kaduMainWindow))
 		return MappedActions[kaduMainWindow];

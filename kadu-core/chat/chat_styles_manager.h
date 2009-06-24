@@ -5,8 +5,7 @@
 #include <QtCore/QMap>
 
 #include "configuration/configuration-aware-object.h"
-
-#include "main_configuration_window.h"
+#include "gui/windows/main-configuration-window.h"
 
 class QPushButton;
 class QComboBox;

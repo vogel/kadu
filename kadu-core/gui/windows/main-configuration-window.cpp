@@ -43,7 +43,7 @@
 #include "icons-manager.h"
 #include "misc/misc.h"
 
-#include "main_configuration_window.h"
+#include "main-configuration-window.h"
 
 MainConfigurationWindow *MainConfigurationWindow::Instance = 0;
 ConfigFileDataManager *MainConfigurationWindow::InstanceDataManager = 0;

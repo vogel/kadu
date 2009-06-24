@@ -136,6 +136,8 @@ set (kadu_SRCS
 	gui/windows/image-dialog.cpp
 	gui/windows/kadu-window.cpp
 	gui/windows/kadu-window-actions.cpp
+	gui/windows/main-configuration-window.cpp
+	gui/windows/main-window.cpp
 	gui/windows/message-box.cpp
 	gui/windows/open-chat-with/open-chat-with.cpp
 	gui/windows/open-chat-with/open-chat-with-contact-list-runner.cpp
@@ -182,9 +184,7 @@ set (kadu_SRCS
 	http_client.cpp
 	icons-manager.cpp
 	ignore.cpp
-	kadu_main_window.cpp
 	kadu_parser.cpp
-	main_configuration_window.cpp
 	modules.cpp
 	pending_msgs.cpp
 	status_changer.cpp
@@ -300,6 +300,8 @@ set (kadu_MOC_SRCS
 	gui/windows/group-properties-window.h
 	gui/windows/kadu-window.h
 	gui/windows/kadu-window-actions.h
+	gui/windows/main-configuration-window.h
+	gui/windows/main-window.h
 	gui/windows/message-box.h
 	gui/windows/open-chat-with/open-chat-with.h
 	#gui/windows/open-chat-with/open-chat-with-contact-list-runner.h
@@ -342,9 +344,7 @@ set (kadu_MOC_SRCS
 	http_client.h
 	icons-manager.h
 	ignore.h
-	kadu_main_window.h
 	#kadu_parser.h
-	main_configuration_window.h
 	modules.h
 	pending_msgs.h
 	status_changer.h

@@ -12,7 +12,7 @@
 
 #include "configuration/configuration-aware-object.h"
 
-#include "kadu_main_window.h"
+#include "gui/windows/main-window.h"
 
 #include "exports.h"
 
@@ -21,7 +21,7 @@ class Chat;
 class ChatWidget;
 class CustomInput;
 
-class KADUAPI ChatEditBox : public KaduMainWindow, ConfigurationAwareObject
+class KADUAPI ChatEditBox : public MainWindow, ConfigurationAwareObject
 {
 	Q_OBJECT
 

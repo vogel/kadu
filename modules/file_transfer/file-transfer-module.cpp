@@ -132,7 +132,7 @@ void FileTransferModule::sendFileActionActivated(QAction *sender, bool toggled)
 {
 	kdebugf();
 
-	KaduMainWindow *kaduMainWindow = dynamic_cast<KaduMainWindow *>(sender->parent());
+	MainWindow *kaduMainWindow = dynamic_cast<MainWindow *>(sender->parent());
 	if (!kaduMainWindow)
 		return;
 

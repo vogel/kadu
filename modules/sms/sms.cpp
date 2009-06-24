@@ -614,7 +614,7 @@ void SmsConfigurationUiHandler::sendSmsActionActivated(QAction *sender, bool tog
 {
 	kdebugf();
 
-	KaduMainWindow *window = dynamic_cast<KaduMainWindow *>(sender->parent());
+	MainWindow *window = dynamic_cast<MainWindow *>(sender->parent());
 	if (window)
 	{
 		UserListElements users = window->userListElements();

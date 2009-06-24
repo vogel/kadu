@@ -17,22 +17,22 @@
 #include "contacts/contact-set.h"
 #include "gui/actions/action.h"
 #include "gui/widgets/contacts-list-widget.h"
+#include "gui/widgets/toolbar.h"
 
 #include "debug.h"
-#include "toolbar.h"
 
-#include "kadu_main_window.h"
+#include "main-window.h"
 
-KaduMainWindow::KaduMainWindow(QWidget *parent)
+MainWindow::MainWindow(QWidget *parent)
 	: QMainWindow(parent)
 {
 }
 
-KaduMainWindow::~KaduMainWindow()
+MainWindow::~MainWindow()
 {
 }
 
-void KaduMainWindow::loadToolBarsFromConfig(const QString &prefix)
+void MainWindow::loadToolBarsFromConfig(const QString &prefix)
 {
 	QString realPrefix;
 	if (prefix.isEmpty())
@@ -64,7 +64,7 @@ bool verticalToolbarComparator(ToolBar *t1, ToolBar *t2)
 	return t1->yOffset() < t2->yOffset();
 }
 
-bool KaduMainWindow::loadToolBarsFromConfig(const QString &configName, Qt::ToolBarArea area, bool remove)
+bool MainWindow::loadToolBarsFromConfig(const QString &configName, Qt::ToolBarArea area, bool remove)
 {
 	kdebugf();
 
@@ -127,7 +127,7 @@ bool KaduMainWindow::loadToolBarsFromConfig(const QString &configName, Qt::ToolB
 	return true;
 }
 
-QDomElement KaduMainWindow::getToolbarsConfigElement()
+QDomElement MainWindow::getToolbarsConfigElement()
 {
 	QDomElement toolbarsConfig = xml_config_file->findElement(xml_config_file->rootElement(), "Toolbars");
 	if (toolbarsConfig.isNull())
@@ -136,7 +136,7 @@ QDomElement KaduMainWindow::getToolbarsConfigElement()
 	return toolbarsConfig;
 }
 
-QDomElement KaduMainWindow::getDockAreaConfigElement(QDomElement toolbarsConfig, const QString &name)
+QDomElement MainWindow::getDockAreaConfigElement(QDomElement toolbarsConfig, const QString &name)
 {
 	QDomElement dockAreaConfig = xml_config_file->findElementByProperty(toolbarsConfig, "DockArea", "name", name);
 	if (dockAreaConfig.isNull())
@@ -148,7 +148,7 @@ QDomElement KaduMainWindow::getDockAreaConfigElement(QDomElement toolbarsConfig,
 	return dockAreaConfig;
 }
 
-void KaduMainWindow::addToolButton(QDomElement toolbarConfig, const QString &actionName, bool showLabel)
+void MainWindow::addToolButton(QDomElement toolbarConfig, const QString &actionName, bool showLabel)
 {
 	QDomElement buttonConfig = xml_config_file->findElementByProperty(toolbarConfig, "ToolButton", "action_name", actionName);
 //don't add element if exists
@@ -159,7 +159,7 @@ void KaduMainWindow::addToolButton(QDomElement toolbarConfig, const QString &act
 	buttonConfig.setAttribute("uses_text_label", showLabel);
 }
 
-QDomElement KaduMainWindow::findExistingToolbarOnArea(const QString &areaName)
+QDomElement MainWindow::findExistingToolbarOnArea(const QString &areaName)
 {
 	QDomElement dockAreaConfig = xml_config_file->findElementByProperty(getToolbarsConfigElement(), "DockArea", "name", areaName);
 	QDomElement nullResult;
@@ -174,7 +174,7 @@ QDomElement KaduMainWindow::findExistingToolbarOnArea(const QString &areaName)
 	return toolbarElement;
 }
 
-QDomElement KaduMainWindow::findExistingToolbar(const QString &prefix)
+QDomElement MainWindow::findExistingToolbar(const QString &prefix)
 {
 	QString realPrefix;
 	if (prefix.isEmpty())
@@ -202,7 +202,7 @@ QDomElement KaduMainWindow::findExistingToolbar(const QString &prefix)
 	return xml_config_file->createElement(dockAreaConfig, "ToolBar");
 }
 
-void KaduMainWindow::writeToolBarsToConfig(const QString &prefix)
+void MainWindow::writeToolBarsToConfig(const QString &prefix)
 {
 	QString realPrefix;
 	if (prefix.isEmpty())
@@ -218,7 +218,7 @@ void KaduMainWindow::writeToolBarsToConfig(const QString &prefix)
 	writeToolBarsToConfig(toolbarsConfig, realPrefix + "rightDockArea", Qt::RightToolBarArea);
 }
 
-void KaduMainWindow::writeToolBarsToConfig(QDomElement toolbarsConfig, const QString &configName, Qt::ToolBarArea area)
+void MainWindow::writeToolBarsToConfig(QDomElement toolbarsConfig, const QString &configName, Qt::ToolBarArea area)
 {
 	QDomElement dockAreaConfig = getDockAreaConfigElement(toolbarsConfig, configName);
 	xml_config_file->removeChildren(dockAreaConfig);
@@ -237,7 +237,7 @@ void KaduMainWindow::writeToolBarsToConfig(QDomElement toolbarsConfig, const QSt
 	}
 }
 
-void KaduMainWindow::refreshToolBars(const QString &prefix)
+void MainWindow::refreshToolBars(const QString &prefix)
 {
 	foreach (const QObject *object, children())
 	{
@@ -248,7 +248,7 @@ void KaduMainWindow::refreshToolBars(const QString &prefix)
 	loadToolBarsFromConfig(prefix);
 }
 
-void KaduMainWindow::contextMenuEvent(QContextMenuEvent *event)
+void MainWindow::contextMenuEvent(QContextMenuEvent *event)
 {
 	QMenu *menu = new QMenu(this);
 	menu->addAction(tr("Create new toolbar"), this, SLOT(addTopToolbar()));
@@ -256,33 +256,33 @@ void KaduMainWindow::contextMenuEvent(QContextMenuEvent *event)
 	menu->exec(event->globalPos());
 }
 
-void KaduMainWindow::addTopToolbar()
+void MainWindow::addTopToolbar()
 {
 	addToolBar(Qt::TopToolBarArea, new ToolBar(this));
 }
 
-void KaduMainWindow::addBottomToolbar()
+void MainWindow::addBottomToolbar()
 {
 	addToolBar(Qt::BottomToolBarArea, new ToolBar(this));
 }
 
-void KaduMainWindow::addLeftToolbar()
+void MainWindow::addLeftToolbar()
 {
 	addToolBar(Qt::LeftToolBarArea, new ToolBar(this));
 }
 
-void KaduMainWindow::addRightToolbar()
+void MainWindow::addRightToolbar()
 {
 	addToolBar(Qt::RightToolBarArea, new ToolBar(this));
 }
 
-void KaduMainWindow::actionAdded(Action *action)
+void MainWindow::actionAdded(Action *action)
 {
 	if (contactsListWidget())
 		connect(contactsListWidget(), SIGNAL(contactsSelectionChanged()), action, SLOT(checkState()));
 }
 
-Contact KaduMainWindow::contact()
+Contact MainWindow::contact()
 {
 	ContactSet contactList = contacts();
 	return 1 == contactList.count()

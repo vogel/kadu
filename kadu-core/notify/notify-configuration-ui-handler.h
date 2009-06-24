@@ -10,7 +10,7 @@
 #ifndef NOTIFY_CONFIGURATION_UI_HANDLER
 #define NOTIFY_CONFIGURATION_UI_HANDLER
 
-#include "main_configuration_window.h"
+#include "gui/windows/main-configuration-window.h"
 
 #include "notification-manager.h"
 

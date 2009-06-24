@@ -15,7 +15,7 @@
 
 #include "contacts/contact-list.h"
 
-#include "kadu_main_window.h"
+#include "gui/windows/main-window.h"
 
 class QMenu;
 class QMenuBar;
@@ -31,7 +31,7 @@ class KaduTextBrowser;
 class KaduWindowActions;
 class StatusButton;
 
-class KaduWindow : public KaduMainWindow, private ConfigurationAwareObject
+class KaduWindow : public MainWindow, private ConfigurationAwareObject
 {
 	Q_OBJECT
 

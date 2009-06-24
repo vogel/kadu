@@ -26,13 +26,13 @@ class Contact;
 class ContactSet;
 class ContactsListWidgetDelegate;
 class ContactsModelProxy;
-class KaduMainWindow;
+class MainWindow;
 
 class ContactsListWidget : public QListView
 {
 	Q_OBJECT
 
-	KaduMainWindow *MainWindow;
+	MainWindow *MyMainWindow;
 	ContactsListWidgetDelegate *Delegate;
 	ContactsModelProxy *ProxyModel;
 
@@ -85,7 +85,7 @@ protected slots:
 	virtual void selectionChanged( const QItemSelection &selected, const QItemSelection &deselected);
 
 public:
-	ContactsListWidget(KaduMainWindow *mainWindow, QWidget *parent = 0);
+	ContactsListWidget(MainWindow *mainWindow, QWidget *parent = 0);
 	virtual ~ContactsListWidget();
 
 	virtual void setModel(AbstractContactsModel *model);

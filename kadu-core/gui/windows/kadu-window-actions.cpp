@@ -34,6 +34,7 @@
 #include "gui/windows/add-buddy-window.h"
 #include "gui/windows/contact-data-window.h"
 #include "gui/windows/kadu-window.h"
+#include "gui/windows/main-configuration-window.h"
 #include "gui/windows/message-box.h"
 #include "gui/windows/your-accounts.h"
 #include "misc/misc.h"
@@ -44,7 +45,6 @@
 #include "html_document.h"
 #include "ignore.h"
 #include "kadu_parser.h"
-#include "main_configuration_window.h"
 #include "modules.h"
 #include "status_changer.h"
 
@@ -478,7 +478,7 @@ void KaduWindowActions::statusChanged(Status status)
 
 void KaduWindowActions::inactiveUsersActionCreated(Action *action)
 {
-	KaduMainWindow *window = qobject_cast<KaduMainWindow *>(action->parent());
+	MainWindow *window = qobject_cast<MainWindow *>(action->parent());
 	if (!window)
 		return;
 	if (!window->contactsListWidget())
@@ -496,7 +496,7 @@ void KaduWindowActions::inactiveUsersActionCreated(Action *action)
 
 void KaduWindowActions::descriptionUsersActionCreated(Action *action)
 {
-	KaduMainWindow *window = qobject_cast<KaduMainWindow *>(action->parent());
+	MainWindow *window = qobject_cast<MainWindow *>(action->parent());
 	if (!window)
 		return;
 	if (!window->contactsListWidget())
@@ -514,7 +514,7 @@ void KaduWindowActions::descriptionUsersActionCreated(Action *action)
 
 void KaduWindowActions::onlineAndDescUsersActionCreated(Action *action)
 {
-	KaduMainWindow *window = qobject_cast<KaduMainWindow *>(action->parent());
+	MainWindow *window = qobject_cast<MainWindow *>(action->parent());
 	if (!window)
 		return;
 	if (!window->contactsListWidget())
@@ -532,7 +532,7 @@ void KaduWindowActions::onlineAndDescUsersActionCreated(Action *action)
 
 void KaduWindowActions::editUserActionCreated(Action *action)
 {
-	KaduMainWindow *window = dynamic_cast<KaduMainWindow *>(action->parent());
+	MainWindow *window = dynamic_cast<MainWindow *>(action->parent());
 	if (!window)
 		return;
 
@@ -596,7 +596,7 @@ void KaduWindowActions::addUserActionActivated(QAction *sender, bool toggled)
 {
 	kdebugf();
 
-	KaduMainWindow *window = dynamic_cast<KaduMainWindow *>(sender->parent());
+	MainWindow *window = dynamic_cast<MainWindow *>(sender->parent());
 	if (!window)
 		return;
 
@@ -676,7 +676,7 @@ void KaduWindowActions::writeEmailActionActivated(QAction *sender, bool toggled)
 {
 	kdebugf();
 
-	KaduMainWindow *window = dynamic_cast<KaduMainWindow *>(sender->parent());
+	MainWindow *window = dynamic_cast<MainWindow *>(sender->parent());
 	if (!window)
 		return;
 
@@ -694,7 +694,7 @@ void KaduWindowActions::copyDescriptionActionActivated(QAction *sender, bool tog
 {
 	kdebugf();
 
-	KaduMainWindow *window = dynamic_cast<KaduMainWindow *>(sender->parent());
+	MainWindow *window = dynamic_cast<MainWindow *>(sender->parent());
 	if (!window)
 		return;
 
@@ -722,7 +722,7 @@ void KaduWindowActions::openDescriptionLinkActionActivated(QAction *sender, bool
 {
 	kdebugf();
 
-	KaduMainWindow *window = dynamic_cast<KaduMainWindow *>(sender->parent());
+	MainWindow *window = dynamic_cast<MainWindow *>(sender->parent());
 	if (!window)
 		return;
 
@@ -752,7 +752,7 @@ void KaduWindowActions::copyPersonalInfoActionActivated(QAction *sender, bool to
 {
 	kdebugf();
 
-	KaduMainWindow *window = dynamic_cast<KaduMainWindow *>(sender->parent());
+	MainWindow *window = dynamic_cast<MainWindow *>(sender->parent());
 	if (!window)
 		return;
 
@@ -777,7 +777,7 @@ void KaduWindowActions::lookupInDirectoryActionActivated(QAction *sender, bool t
 {
 	kdebugf();
 /*
-	KaduMainWindow *window = dynamic_cast<KaduMainWindow *>(sender->parent());
+	MainWindow *window = dynamic_cast<MainWindow *>(sender->parent());
 	if (!window)
 		return;
 
@@ -812,7 +812,7 @@ void KaduWindowActions::offlineToUserActionActivated(QAction *sender, bool toggl
 // 		}
 	}
 
-	KaduMainWindow *window = dynamic_cast<KaduMainWindow *>(sender->parent());
+	MainWindow *window = dynamic_cast<MainWindow *>(sender->parent());
 	if (!window)
 		return;
 
@@ -844,7 +844,7 @@ void KaduWindowActions::hideDescriptionActionActivated(QAction *sender, bool tog
 {
 	kdebugf();
 
-	KaduMainWindow *window = dynamic_cast<KaduMainWindow *>(sender->parent());
+	MainWindow *window = dynamic_cast<MainWindow *>(sender->parent());
 	if (!window)
 		return;
 
@@ -880,7 +880,7 @@ void KaduWindowActions::deleteUsersActionActivated(QAction *sender, bool toggled
 {
 	kdebugf();
 
-	KaduMainWindow *window = dynamic_cast<KaduMainWindow *>(sender->parent());
+	MainWindow *window = dynamic_cast<MainWindow *>(sender->parent());
 	if (!window)
 		return;
 
@@ -903,7 +903,7 @@ void KaduWindowActions::deleteUsersActionActivated(QAction *sender, bool toggled
 
 void KaduWindowActions::inactiveUsersActionActivated(QAction *sender, bool toggled)
 {
-	KaduMainWindow *window = dynamic_cast<KaduMainWindow *>(sender->parent());
+	MainWindow *window = dynamic_cast<MainWindow *>(sender->parent());
 	if (!window)
 		return;
 
@@ -917,7 +917,7 @@ void KaduWindowActions::inactiveUsersActionActivated(QAction *sender, bool toggl
 
 void KaduWindowActions::descriptionUsersActionActivated(QAction *sender, bool toggled)
 {
-	KaduMainWindow *window = dynamic_cast<KaduMainWindow *>(sender->parent());
+	MainWindow *window = dynamic_cast<MainWindow *>(sender->parent());
 	if (!window)
 		return;
 
@@ -931,7 +931,7 @@ void KaduWindowActions::descriptionUsersActionActivated(QAction *sender, bool to
 
 void KaduWindowActions::onlineAndDescUsersActionActivated(QAction *sender, bool toggled)
 {
-	KaduMainWindow *window = dynamic_cast<KaduMainWindow *>(sender->parent());
+	MainWindow *window = dynamic_cast<MainWindow *>(sender->parent());
 	if (!window)
 		return;
 
@@ -947,7 +947,7 @@ void KaduWindowActions::editUserActionActivated(QAction *sender, bool toggled)
 {
 	kdebugf();
 
-	KaduMainWindow *window = dynamic_cast<KaduMainWindow *>(sender->parent());
+	MainWindow *window = dynamic_cast<MainWindow *>(sender->parent());
 	if (!window)
 		return;
 

@@ -37,8 +37,8 @@
 #include "contacts-list-widget.h"
 #include "tool-tip-class-manager.h"
 
-ContactsListWidget::ContactsListWidget(KaduMainWindow *mainWindow, QWidget *parent) :
-		QListView(parent), MainWindow(mainWindow), ProxyModel(new ContactsModelProxy(this)),
+ContactsListWidget::ContactsListWidget(MainWindow *mainWindow, QWidget *parent) :
+		QListView(parent), MyMainWindow(mainWindow), ProxyModel(new ContactsModelProxy(this)),
 		Delegate(0), BackgroundTemporaryFile(0)
 {
 	// all these tree are needed to make this view updating layout properly
@@ -134,7 +134,7 @@ void ContactsListWidget::triggerActivate(const QModelIndex& index)
 
 void ContactsListWidget::contextMenuEvent(QContextMenuEvent *event)
 {
-	if (!MainWindow)
+	if (!MyMainWindow)
 		return;
 
 	Contact con = contact(indexAt(event->pos()));
@@ -147,7 +147,7 @@ void ContactsListWidget::contextMenuEvent(QContextMenuEvent *event)
 	{
 		if (actionDescription)
 		{
-			Action *action = actionDescription->createAction(MainWindow);
+			Action *action = actionDescription->createAction(MyMainWindow);
 			menu->addAction(action);
 			action->checkState();
 		}
@@ -160,7 +160,7 @@ void ContactsListWidget::contextMenuEvent(QContextMenuEvent *event)
 	foreach (ActionDescription *actionDescription, ContactsListWidgetMenuManager::instance()->managementActions())
 		if (actionDescription)
 		{
-			Action *action = actionDescription->createAction(MainWindow);
+			Action *action = actionDescription->createAction(MyMainWindow);
 			management->addAction(action);
 			action->checkState();
 		}
@@ -187,7 +187,7 @@ void ContactsListWidget::contextMenuEvent(QContextMenuEvent *event)
 		foreach (ActionDescription *actionDescription, protocolFactory->getProtocolMenuManager()->protocolActions(account, con))
 			if (actionDescription)
 			{
-				Action *action = actionDescription->createAction(MainWindow);
+				Action *action = actionDescription->createAction(MyMainWindow);
 				account_menu->addAction(action);
 				action->checkState();
 			}

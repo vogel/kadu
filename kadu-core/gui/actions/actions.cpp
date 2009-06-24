@@ -9,7 +9,7 @@
 
 #include "gui/actions/action.h"
 #include "gui/actions/action-description.h"
-#include "kadu_main_window.h"
+#include "gui/windows/main-window.h"
 
 #include "actions.h"
 
@@ -30,7 +30,7 @@ void Actions::remove(ActionDescription *action)
 	emit actionUnloaded(action->name());
 }
 
-QAction * Actions::createAction(const QString &name, KaduMainWindow *kaduMainWindow)
+QAction * Actions::createAction(const QString &name, MainWindow *kaduMainWindow)
 {
 	if (!contains(name))
 		return 0;

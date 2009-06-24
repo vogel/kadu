@@ -19,7 +19,7 @@ class QAction;
 
 class Action;
 class ActionDescription;
-class KaduMainWindow;
+class MainWindow;
 
 class KADUAPI Actions : public QObject, public QMap<QString, ActionDescription *>
 {
@@ -33,7 +33,7 @@ public:
 	Actions();
 	virtual ~Actions() {}
 
-	QAction * createAction(const QString &name, KaduMainWindow *kaduMainWindow);
+	QAction * createAction(const QString &name, MainWindow *kaduMainWindow);
 
 signals:
 	void actionCreated(Action *);

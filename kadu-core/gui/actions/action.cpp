@@ -10,13 +10,13 @@
 #include "accounts/account-manager.h"
 #include "contacts/contact.h"
 #include "contacts/contact-set.h"
+#include "gui/windows/main-window.h"
 #include "hot_key.h"
 #include "icons-manager.h"
-#include "kadu_main_window.h"
 
 #include "action.h"
 
-Action::Action(ActionDescription *description, KaduMainWindow *parent) :
+Action::Action(ActionDescription *description, MainWindow *parent) :
 		QAction(parent), Description(description)
 {
 	setText(Description->Text);
@@ -67,7 +67,7 @@ Contact Action::contact()
 
 ContactSet Action::contacts()
 {
-	KaduMainWindow *kaduMainWindow = dynamic_cast<KaduMainWindow *>(parent());
+	MainWindow *kaduMainWindow = dynamic_cast<MainWindow *>(parent());
 	if (kaduMainWindow)
 		return kaduMainWindow->contacts();
 	else

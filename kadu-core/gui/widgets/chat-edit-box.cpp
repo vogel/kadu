@@ -31,7 +31,7 @@
 QList<ChatEditBox *> chatEditBoxes;
 
 ChatEditBox::ChatEditBox(Chat *chat, QWidget *parent) :
-		KaduMainWindow(parent), CurrentChat(chat)
+		MainWindow(parent), CurrentChat(chat)
 {
 	chatEditBoxes.append(this);
 

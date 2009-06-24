@@ -23,7 +23,7 @@ class Contact;
 class ContactSet;
 class ContactsListWidget;
 
-class KADUAPI KaduMainWindow : public QMainWindow
+class KADUAPI MainWindow : public QMainWindow
 {
 	Q_OBJECT
 
@@ -47,8 +47,8 @@ protected:
 	void contextMenuEvent(QContextMenuEvent *event);
 
 public:
-	KaduMainWindow(QWidget *parent);
-	virtual ~KaduMainWindow();
+	MainWindow(QWidget *parent);
+	virtual ~MainWindow();
 
 	virtual QMenu * createPopupMenu() { return 0; }
 
