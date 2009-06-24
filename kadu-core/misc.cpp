@@ -900,6 +900,7 @@ ChooseDescription::ChooseDescription(QWidget *parent)
 
 ChooseDescription::~ChooseDescription()
 {
+    	Dialog = 0;
 }
 
 void ChooseDescription::setStatus(const UserStatus &status)
@@ -973,7 +974,6 @@ void ChooseDescription::okPressed()
 
 void ChooseDescription::cancelPressed()
 {
-	Dialog = 0;
 	close();
 }
 
