@@ -25,7 +25,7 @@
 #include <QtGui/QTextDocument>
 
 
-#include "action.h"
+#include "gui/actions/actions.h"
 #include "debug.h"
 #include "emoticons.h"
 #include "gui/windows/message-box.h"

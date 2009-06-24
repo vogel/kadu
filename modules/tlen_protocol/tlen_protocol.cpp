@@ -16,7 +16,6 @@
 #include <QtGui/QPushButton>
 #include <QtGui/QMessageBox>
 
-#include "action.h"
 #include "accounts/account.h"
 #include "accounts/account-manager.h"
 #include "chat/message/message.h"

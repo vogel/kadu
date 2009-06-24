@@ -45,7 +45,7 @@ extern "C" KADU_EXPORT void history_close()
 	kdebugf2();
 }
 
-void disableNonHistoryContacts(KaduAction *action)
+void disableNonHistoryContacts(Action *action)
 {
 	kdebugf();
 	action->setEnabled(false);

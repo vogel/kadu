@@ -19,10 +19,10 @@
 #include "gui/widgets/chat-widget-manager.h"
 #include "gui/windows/kadu-window.h"
 #include "gui/windows/message-box.h"
+
 #include "protocols/protocol-menu-manager.h"
 #include "protocols/status.h"
 #include "misc/misc.h"
-#include "action.h"
 #include "configuration/configuration-file.h"
 #include "debug.h"
 #include "icons-manager.h"

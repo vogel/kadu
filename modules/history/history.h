@@ -14,7 +14,8 @@
 #include <QtCore/QDateTime>
 #include <QtGui/QDialog>
 
-#include "action.h"
+#include "gui/actions/action.h"
+#include "gui/actions/action-description.h"
 #include "configuration/configuration-aware-object.h"
 #include "protocols/protocol.h"
 #include "main_configuration_window.h"
@@ -78,6 +79,6 @@ public:
 
 };
 
-	void disableNonHistoryContacts(KaduAction *action);
+	void disableNonHistoryContacts(Action *action);
 
 #endif

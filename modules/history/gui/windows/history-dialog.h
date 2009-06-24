@@ -10,7 +10,7 @@
 #include <QtGui/QMainWindow>
 #include <QtGui/QCloseEvent>
 
-#include "action.h"
+#include "gui/actions/action-description.h"
 #include "chat/chat_message.h"
 #include "kadu_main_window.h"
 #include "gui/widgets/chat_messages_view.h"
