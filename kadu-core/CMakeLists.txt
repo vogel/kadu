@@ -68,6 +68,8 @@ set (kadu_SRCS
 	file-transfer/file-transfer.cpp
 	file-transfer/file-transfer-manager.cpp
 
+	gui/hot-key.cpp
+
 	gui/actions/action.cpp
 	gui/actions/actions.cpp
 	gui/actions/action-description.cpp
@@ -179,7 +181,6 @@ set (kadu_SRCS
 	dnshandler.cpp
 	emoticons.cpp
 	expimp.cpp
-	hot_key.cpp
 	html_document.cpp
 	http_client.cpp
 	icons-manager.cpp
@@ -334,17 +335,12 @@ set (kadu_MOC_SRCS
 	protocols/services/personal-info-service.h
 	protocols/services/search-service.h
 
-	#activate.h
-	#debug.h
 	dnshandler.h
 	emoticons.h
 	expimp.h
-	#hot_key.h
-	#html_document.h
 	http_client.h
 	icons-manager.h
 	ignore.h
-	#kadu_parser.h
 	modules.h
 	pending_msgs.h
 	status_changer.h
