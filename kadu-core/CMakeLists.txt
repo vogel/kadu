@@ -95,6 +95,7 @@ set (kadu_SRCS
 	gui/widgets/select-font.cpp
 	gui/widgets/status-button.cpp
 	gui/widgets/status-menu.cpp
+	gui/widgets/toolbar.cpp
 	gui/widgets/tool-tip-class-manager.cpp
 
 	gui/widgets/configuration/config-action-button.cpp
@@ -189,7 +190,6 @@ set (kadu_SRCS
 	status_changer.cpp
 	syntax_editor.cpp
 	themes.cpp
-	toolbar.cpp
 	updates.cpp
 )
 
@@ -277,6 +277,7 @@ set (kadu_MOC_SRCS
 	gui/widgets/select-font.h
 	gui/widgets/status-button.h
 	gui/widgets/status-menu.h
+	gui/widgets/toolbar.h
 
 	#gui/widgets/configuration/config-action-button.h
 	gui/widgets/configuration/config-check-box.h
@@ -349,7 +350,6 @@ set (kadu_MOC_SRCS
 	status_changer.h
 	syntax_editor.h
 	themes.h
-	toolbar.h
 	updates.h
 )
 
