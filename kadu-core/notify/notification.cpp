@@ -9,8 +9,8 @@
 
 #include <QtCore/QTimer>
 
+#include "parser/parser.h"
 #include "debug.h"
-#include "kadu_parser.h"
 #include "notification.h"
 
 static QString getNotificationTitle(const QObject * const object)
@@ -27,12 +27,12 @@ static QString getNotificationTitle(const QObject * const object)
 Notification::Notification(const QString& type, const QIcon& icon, Chat *chat)
 	: Type(type), CurrentChat(chat), Title(""), Text(""), Icon(icon), DefaultCallbackTimer(0), ReferencesCount(0), Closing(false)
 {
-	KaduParser::registerObjectTag("event", getNotificationTitle);
+	Parser::registerObjectTag("event", getNotificationTitle);
 }
 
 Notification::~Notification()
 {
-	KaduParser::unregisterObjectTag("event", getNotificationTitle);
+	Parser::unregisterObjectTag("event", getNotificationTitle);
 
 	if (DefaultCallbackTimer)
 	{

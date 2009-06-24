@@ -10,9 +10,9 @@
 #ifndef CONFIG_HOT_KEY_EDIT_H
 #define CONFIG_HOT_KEY_EDIT_H
 
+#include "gui/hot-key.h"
 #include "gui/widgets/configuration/config-widget-value.h"
 #include "configuration/configuration-window-data-manager.h"
-#include "hot_key.h"
 
 class ConfigGroupBox;
 

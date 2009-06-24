@@ -9,9 +9,9 @@
 
 #include "notify/notification-manager.h"
 #include "notify/notify-event.h"
+#include "parser/parser.h"
 #include "debug.h"
 #include "icons-manager.h"
-#include "kadu_parser.h"
 
 #include "connection-error-notification.h"
 
@@ -43,14 +43,14 @@ void ConnectionErrorNotification::registerEvent()
 
 	ConnectionErrorNotifyEvent = new NotifyEvent("ConnectionError", NotifyEvent::CallbackNotRequired, QT_TRANSLATE_NOOP("@default", "Connection error"));
 	NotificationManager::instance()->registerNotifyEvent(ConnectionErrorNotifyEvent);
-	KaduParser::registerObjectTag("error", getErrorMessage);
-	KaduParser::registerObjectTag("errorServer", getErrorServer);
+	Parser::registerObjectTag("error", getErrorMessage);
+	Parser::registerObjectTag("errorServer", getErrorServer);
 }
 
 void ConnectionErrorNotification::unregisterEvent()
 {
-	KaduParser::registerObjectTag("errorServer", getErrorServer);
-	KaduParser::unregisterObjectTag("error", getErrorMessage);
+	Parser::registerObjectTag("errorServer", getErrorServer);
+	Parser::unregisterObjectTag("error", getErrorMessage);
 
 	NotificationManager::instance()->unregisterNotifyEvent(ConnectionErrorNotifyEvent);
 	delete ConnectionErrorNotifyEvent;

@@ -11,8 +11,8 @@
 #include <QtGui/QKeyEvent>
 #include <QtGui/QMenu>
 
+#include "gui/hot-key.h"
 #include "debug.h"
-#include "hot_key.h"
 
 #include "custom_input.h"
 

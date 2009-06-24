@@ -9,8 +9,8 @@
 
 #include "chat/message/formatted-message-part.h"
 #include "configuration/configuration-file.h"
+#include "parser/parser.h"
 
-#include "kadu_parser.h"
 #include "misc/misc.h"
 
 #include "chat_message.h"
@@ -93,24 +93,24 @@ static QString getSeparator(const QObject * const object)
 
 void ChatMessage::registerParserTags()
 {
-	KaduParser::registerObjectTag("message", getMessage);
-	KaduParser::registerObjectTag("backgroundColor", getBackgroundColor);
-	KaduParser::registerObjectTag("fontColor", getFontColor);
-	KaduParser::registerObjectTag("nickColor", getNickColor);
-	KaduParser::registerObjectTag("sentDate", getSentDate);
-	KaduParser::registerObjectTag("receivedDate", getReceivedDate);
-	KaduParser::registerObjectTag("separator", getSeparator);
+	Parser::registerObjectTag("message", getMessage);
+	Parser::registerObjectTag("backgroundColor", getBackgroundColor);
+	Parser::registerObjectTag("fontColor", getFontColor);
+	Parser::registerObjectTag("nickColor", getNickColor);
+	Parser::registerObjectTag("sentDate", getSentDate);
+	Parser::registerObjectTag("receivedDate", getReceivedDate);
+	Parser::registerObjectTag("separator", getSeparator);
 }
 
 void ChatMessage::unregisterParserTags()
 {
-	KaduParser::unregisterObjectTag("message", getMessage);
-	KaduParser::unregisterObjectTag("backgroundColor", getBackgroundColor);
-	KaduParser::unregisterObjectTag("fontColor", getFontColor);
-	KaduParser::unregisterObjectTag("nickColor", getNickColor);
-	KaduParser::unregisterObjectTag("sentDate", getSentDate);
-	KaduParser::unregisterObjectTag("receivedDate", getReceivedDate);
-	KaduParser::unregisterObjectTag("separator", getSeparator);
+	Parser::unregisterObjectTag("message", getMessage);
+	Parser::unregisterObjectTag("backgroundColor", getBackgroundColor);
+	Parser::unregisterObjectTag("fontColor", getFontColor);
+	Parser::unregisterObjectTag("nickColor", getNickColor);
+	Parser::unregisterObjectTag("sentDate", getSentDate);
+	Parser::unregisterObjectTag("receivedDate", getReceivedDate);
+	Parser::unregisterObjectTag("separator", getSeparator);
 }
 
 ChatMessage::ChatMessage(const Message &msg, ChatMessageType type) :

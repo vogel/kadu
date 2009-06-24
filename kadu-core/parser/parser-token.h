@@ -7,28 +7,29 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef ACCOUNT_NOTIFICATION_H
-#define ACCOUNT_NOTIFICATION_H
+#ifndef PARSER_TOKEN_H
+#define PARSER_TOKEN_H
 
-#include "accounts/account.h"
-#include "parser/parser.h"
-#include "notification.h"
+#include <QtCore/QString>
 
-class Chat;
-class ContactSet;
-
-class AccountNotification : public Notification
+struct ParserToken
 {
-	Q_OBJECT
+	enum ParserTokenType
+	{
+		PT_STRING,
+		PT_CHECK_ALL_NOT_NULL,
+		PT_CHECK_ANY_NULL,
+		PT_CHECK_FILE_EXISTS,
+		PT_CHECK_FILE_NOT_EXISTS,
+		PT_EXECUTE,
+		PT_VARIABLE,
+		PT_ICONPATH,
+		PT_EXTERNAL_VARIABLE,
+		PT_EXECUTE2
+	} type;
 
-	Account *CurrentAccount;
-
-public:
-	AccountNotification(Account *account, const QString &type, const QIcon &icon, Chat *chat);
-	virtual ~AccountNotification();
-
-	Account * account() const { return CurrentAccount; }
-
+	QString content;
+	ParserToken() : type(PT_STRING), content() {}
 };
 
-#endif // ACCOUNT_NOTIFICATION_H
+#endif // PARSER_TOKEN_H

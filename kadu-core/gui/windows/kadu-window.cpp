@@ -21,6 +21,7 @@
 #include "contacts/model/contacts-model.h"
 #include "contacts/model/filter/group-contact-filter.h"
 #include "core/core.h"
+#include "gui/hot-key.h"
 #include "gui/actions/action.h"
 #include "gui/widgets/chat-widget-actions.h"
 #include "gui/widgets/chat-widget-manager.h"
@@ -34,7 +35,6 @@
 
 #include "misc/misc.h"
 #include "debug.h"
-#include "hot_key.h"
 #include "icons-manager.h"
 
 #include "kadu-window.h"

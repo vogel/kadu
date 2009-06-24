@@ -13,9 +13,9 @@
 #include "accounts/account-manager.h"
 #include "configuration/configuration-file.h"
 #include "contacts/contact-account-data.h"
+#include "parser/parser.h"
 #include "protocols/status.h"
 
-#include "kadu_parser.h"
 #include "misc/misc.h"
 
 #include "preview.h"
@@ -64,9 +64,9 @@ void Preview::syntaxChanged(const QString &content)
 
 	if (count)
 		for (int i = 0; i < count; i++)
-			text += KaduParser::parse(syntax, account, contacts[i], objectsToParse.at(i));
+			text += Parser::parse(syntax, account, contacts[i], objectsToParse.at(i));
 	else
-		text = KaduParser::parse(syntax, account, contact);
+		text = Parser::parse(syntax, account, contact);
 
 	emit needFixup(text);
 

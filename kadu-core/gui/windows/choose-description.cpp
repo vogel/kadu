@@ -19,9 +19,9 @@
 #include "configuration/configuration-file.h"
 #include "core/core.h"
 #include "gui/windows/kadu-window.h"
+#include "parser/parser.h"
 #include "debug.h"
 #include "icons-manager.h"
-#include "kadu_parser.h"
 
 #include "../modules/gadu_protocol/gadu-protocol.h"
 
@@ -152,7 +152,7 @@ void ChooseDescription::okPressed()
 // 		defaultdescriptions.pop_back();
 
 	if (config_file.readBoolEntry("General", "ParseStatus", false))
-		description = KaduParser::parse(description, account, Core::instance()->myself(), true);
+		description = Parser::parse(description, account, Core::instance()->myself(), true);
 
 	CurrentStatus.setDescription(description);
 	Core::instance()->setStatus(CurrentStatus);

@@ -15,8 +15,8 @@
 #include "configuration/configuration-file.h"
 #include "gui/widgets/chat_messages_view.h"
 #include "gui/widgets/preview.h"
+#include "parser/parser.h"
 
-#include "kadu_parser.h"
 #include "syntax_editor.h"
 
 #include "chat_engine_kadu.h"
@@ -98,7 +98,7 @@ QString KaduChatStyleEngine::formatMessage(ChatMessage *message, ChatMessage *af
 		format = ChatSyntaxWithoutHeader;
 
 		message->setSeparatorSize(separatorSize);
-		return KaduParser::parse(format, account, contact, message, true);
+		return Parser::parse(format, account, contact, message, true);
 	}
 	else
 	{
@@ -124,7 +124,7 @@ QString KaduChatStyleEngine::formatMessage(ChatMessage *message, ChatMessage *af
 		message->setShowServerTime(ChatStylesManager::instance()->noServerTime(), ChatStylesManager::instance()->noServerTimeDiff());
 		message->setSeparatorSize(separatorSize);
 		
-		return KaduParser::parse(format, account, contact, message, true);
+		return Parser::parse(format, account, contact, message, true);
 	}
 }
 
@@ -151,11 +151,11 @@ void KaduChatStyleEngine::repaintMessages(ChatMessagesView *view)
 		Account *account = (*message)->chat()->account();
 
 		if ((*message)->type() == TypeSystem)
-			text += KaduParser::parse(ChatSyntaxWithoutHeader, account, contact, *message);
+			text += Parser::parse(ChatSyntaxWithoutHeader, account, contact, *message);
 		else
 		{
 			(*message)->setShowServerTime(ChatStylesManager::instance()->noServerTime(), ChatStylesManager::instance()->noServerTimeDiff());
-			text += KaduParser::parse(ChatSyntaxWithHeader, account, contact, *message);
+			text += Parser::parse(ChatSyntaxWithHeader, account, contact, *message);
 		}
 
 		prevMessage = message;
@@ -192,7 +192,7 @@ void KaduChatStyleEngine::prepareStylePreview(Preview *preview, QString styleNam
 	QString text;
 	if (count)
 		for (int i = 0; i < count; i++)
-			text += KaduParser::parse(content, AccountManager::instance()->defaultAccount(),
+			text += Parser::parse(content, AccountManager::instance()->defaultAccount(),
 				preview->getContactList().at(i), preview->getObjectsToParse().at(i));
 	preview->setHtml(QString("<html><head><style type='text/css'>%1</style></head><body>%2</body>").arg(ChatStylesManager::instance()->mainStyle(), text));
 }

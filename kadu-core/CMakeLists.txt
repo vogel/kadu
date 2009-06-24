@@ -168,6 +168,8 @@ set (kadu_SRCS
 	notify/status_changed_notification.cpp
 	notify/window-notifier.cpp
 
+	parser/parser.cpp
+
 	protocols/connection-error-notification.cpp
 	protocols/protocol.cpp
 	protocols/protocol-menu-manager.cpp
@@ -185,7 +187,6 @@ set (kadu_SRCS
 	http_client.cpp
 	icons-manager.cpp
 	ignore.cpp
-	kadu_parser.cpp
 	modules.cpp
 	pending_msgs.cpp
 	status_changer.cpp

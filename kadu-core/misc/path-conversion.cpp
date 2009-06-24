@@ -15,8 +15,8 @@
 #include <QFile>
 #endif
 
+#include "parser/parser.h"
 #include "debug.h"
-#include "kadu_parser.h"
 
 #include "path-conversion.h"
 
@@ -251,7 +251,7 @@ QString ggPath(const QString &subpath)
 		// in such ugly way
 		if(QFile::exists(dataPath("usbinst", ""))){
 			path=dataPath("config/");
-			KaduParser::globalVariables["KADU_CONFIG"] = path;
+			Parser::globalVariables["KADU_CONFIG"] = path;
 			return (path+subpath);
 		}
 
@@ -269,7 +269,7 @@ QString ggPath(const QString &subpath)
 		else
 			home = QString::fromLocal8Bit(getenv("HOME"));
 #endif
-		KaduParser::globalVariables["HOME"] = home;
+		Parser::globalVariables["HOME"] = home;
 		QString config_dir = QString::fromLocal8Bit(getenv("CONFIG_DIR"));
 #ifdef Q_OS_MACX
 		if (config_dir.isNull())
@@ -287,7 +287,7 @@ QString ggPath(const QString &subpath)
 		else
 			path = QString("%1/%2/kadu/").arg(home).arg(config_dir);
 #endif
-		KaduParser::globalVariables["KADU_CONFIG"] = path;
+		Parser::globalVariables["KADU_CONFIG"] = path;
 	}
 
 	return (path + subpath);
@@ -362,8 +362,8 @@ QString dataPath(const QString &p, const char *argv0)
 			}
 		}
 #endif
-		KaduParser::globalVariables["DATA_PATH"] = data_path;
-		KaduParser::globalVariables["LIB_PATH"] = lib_path;
+		Parser::globalVariables["DATA_PATH"] = data_path;
+		Parser::globalVariables["LIB_PATH"] = lib_path;
 	}
 	if (data_path.isEmpty())
 	{

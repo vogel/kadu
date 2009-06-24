@@ -7,10 +7,10 @@
  *                                                                         *
  ***************************************************************************/
 
+#include "gui/hot-key.h"
 #include "gui/actions/action.h"
 #include "gui/actions/actions.h"
 #include "gui/windows/main-window.h"
-#include "hot_key.h"
 
 #include "action-description.h"
 

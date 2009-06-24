@@ -11,20 +11,18 @@
 #include <QtCore/QTextCodec>
 #include <QtCore/QTextStream>
 #include <QtWebKit/QWebFrame>
-//TODO:
+
 #include "accounts/account.h"
 #include "accounts/account-manager.h"
-
 #include "chat/chat_message.h"
 #include "chat/chat_styles_manager.h"
-
 #include "gui/widgets/chat_messages_view.h"
 #include "gui/widgets/chat-widget.h"
 #include "gui/widgets/preview.h"
-
+#include "parser/parser.h"
 #include "protocols/protocol-factory.h"
 
-#include "kadu_parser.h"
+
 #include "misc/misc.h"
 
 #include "chat_engine_adium.h"

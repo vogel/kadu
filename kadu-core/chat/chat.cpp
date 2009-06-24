@@ -10,9 +10,9 @@
 #include "accounts/account-manager.h"
 #include "configuration/configuration-file.h"
 #include "contacts/contact-account-data.h"
+#include "parser/parser.h"
 #include "debug.h"
 #include "icons-manager.h"
-#include "kadu_parser.h"
 #include "protocols/protocol.h"
 
 #include "chat.h"
@@ -100,7 +100,7 @@ void Chat::refreshTitle()
 		if (config_file.readEntry("Look", "ConferenceContents").isEmpty())
 			foreach(const Contact contact, contacts())
 			{
-				title.append(KaduParser::parse("%a", account(), contact, false));
+				title.append(Parser::parse("%a", account(), contact, false));
 
 				if (++i < contactsSize)
 					title.append(", ");
@@ -108,7 +108,7 @@ void Chat::refreshTitle()
 		else
 			foreach(const Contact contact, contacts())
 			{
-				title.append(KaduParser::parse(config_file.readEntry("Look", "ConferenceContents"), account(), contact, false));
+				title.append(Parser::parse(config_file.readEntry("Look", "ConferenceContents"), account(), contact, false));
 
 				if (++i < contactsSize)
 					title.append(", ");
@@ -123,12 +123,12 @@ void Chat::refreshTitle()
 		if (config_file.readEntry("Look", "ChatContents").isEmpty())
 		{
 			if (contact.isAnonymous())
-				title = KaduParser::parse(tr("Chat with ")+"%a", account(), contact, false);
+				title = Parser::parse(tr("Chat with ")+"%a", account(), contact, false);
 			else
-				title = KaduParser::parse(tr("Chat with ")+"%a (%s[: %d])", account(), contact, false);
+				title = Parser::parse(tr("Chat with ")+"%a (%s[: %d])", account(), contact, false);
 		}
 		else
-			title = KaduParser::parse(config_file.readEntry("Look","ChatContents"), account(), contact, false);
+			title = Parser::parse(config_file.readEntry("Look","ChatContents"), account(), contact, false);
 
 		ContactAccountData *cad = contact.accountData(account());
 

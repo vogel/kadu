@@ -10,11 +10,11 @@
 #include <QtWebKit/QWebFrame>
 
 #include "configuration/configuration-file.h"
+#include "parser/parser.h"
 
 #include "debug.h"
 #include "emoticons.h"
 #include "html_document.h"
-#include "kadu_parser.h"
 #include "syntax_editor.h"
 
 #include "contact-info-panel.h"
@@ -101,7 +101,7 @@ void ContactInfoPanel::displayContact(Contact contact)
 	kdebugmf(KDEBUG_INFO, "%s\n", qPrintable(contact.display()));
 
 	HtmlDocument doc;
-	doc.parseHtml(KaduParser::parse(Syntax, contact.prefferedAccount(), contact));
+	doc.parseHtml(Parser::parse(Syntax, contact.prefferedAccount(), contact));
 	doc.convertUrlsToHtml();
 	doc.convertMailToHtml();
 	if (EMOTS_NONE != (EmoticonsStyle)config_file.readNumEntry("Chat", "EmoticonsStyle") &&

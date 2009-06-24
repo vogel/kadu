@@ -11,7 +11,7 @@
 
 #include "configuration/configuration-file.h"
 
-#include "hot_key.h"
+#include "hot-key.h"
 
 QKeySequence HotKey::shortCutFromFile(const QString &groupname, const QString &name)
 {
