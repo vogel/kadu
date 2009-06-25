@@ -107,6 +107,9 @@ public:
 		Funkcja usuwa ca³± historiê dla podanej listy u¿ytkowników lub tylko dla podanej daty.
 		\param uids lista u¿ytkowników
 	**/
+
+	void clearHistoryForChat(Chat *chat);
+
 	void removeHistory(const ContactList& uids, const QDate &date = QDate(), HistoryEntryType type = EntryTypeMessage);
 	
 public slots:

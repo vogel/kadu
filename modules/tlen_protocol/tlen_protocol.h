@@ -10,7 +10,7 @@
 #include "chat/chat.h"
 #include "conference/conference.h"
 #include "configuration/configuration-aware-object.h"
-#include "main_configuration_window.h"
+#include "gui/windows/main-configuration-window.h"
 #include "protocols/protocol.h"
 #include "protocols/protocols-manager.h"
 

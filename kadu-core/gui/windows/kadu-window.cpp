@@ -19,6 +19,7 @@
 #include "configuration/configuration-file.h"
 #include "contacts/contact-manager.h"
 #include "contacts/model/contacts-model.h"
+#include "contacts/model/filter/anonymous-without-messages-contact-filter.h"
 #include "contacts/model/filter/group-contact-filter.h"
 #include "core/core.h"
 #include "gui/hot-key.h"
@@ -82,6 +83,9 @@ void KaduWindow::createGui()
 	ContactsWidget = new ContactsListWidget(this);
 	ContactsWidget->setModel(new ContactsModel(ContactManager::instance(), this));
 	ContactsWidget->addFilter(GroupBar->filter());
+	AnonymousWithoutMessagesContactFilter *anonymousFilter = new AnonymousWithoutMessagesContactFilter(this);
+	anonymousFilter->setEnabled(true);
+	ContactsWidget->addFilter(anonymousFilter);
 
 	connect(ContactsWidget, SIGNAL(contactActivated(Contact)), this, SLOT(openChatWindow(Contact)));
 

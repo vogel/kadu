@@ -16,8 +16,8 @@
 #include <QtGui/QSpinBox>
 
 #include "configuration/configuration-aware-object.h"
+#include "gui/windows/main-configuration-window.h"
 #include "misc/path-conversion.h"
-#include "main_configuration_window.h"
 
 #include "storage/history-sql-storage.h"
 

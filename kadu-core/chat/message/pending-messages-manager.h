@@ -7,8 +7,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef PENDING_MSGS_H
-#define PENDING_MSGS_H
+#ifndef PENDING_MESSAGES_MANAGER_H
+#define PENDING_MESSAGES_MANAGER_H
 
 #include <QtCore/QObject>
 
@@ -16,7 +16,7 @@
 
 #include "chat/message/message.h"
 #include "contacts/contact.h"
-//#include "contacts/contact-set.h"
+#include "contacts/contact-remove-predicate-object.h"
 
 #include "exports.h"
 
@@ -25,24 +25,32 @@ class QString;
 
 /**
 	Represents message queue awaiting to be read. Messages in this class can be also stored between alternate application launches.
-	\class PendingMsgs
+	\class PendingMessagesManager
 	\brief Pending messages queue.
 **/
-class KADUAPI PendingMsgs : public QObject
+class KADUAPI PendingMessagesManager : public QObject, ContactRemovePredicateObject
 {
 	Q_OBJECT
+	Q_DISABLE_COPY(PendingMessagesManager)
 
-	typedef QList<Message> PendingMsgsList;
-	PendingMsgsList msgs;
+	static PendingMessagesManager * Instance;
 
-public:
 	/**
-		\fn PendingMsgs(QObject *parent=0, const char *name=0)
+		\fn PendingMessagesManager(QObject *parent=0, const char *name=0)
 		Standard constructor.
 		\param parent control parent. Default 0.
 		\param name control name. Default 0.
 	**/
-	PendingMsgs(QObject *parent = 0);
+	PendingMessagesManager();
+
+	typedef QList<Message> PendingMsgsList;
+	PendingMsgsList msgs;
+
+    	bool removeContactFromStorage(Contact contact);
+
+public:
+
+	static PendingMessagesManager * instance();
 
 	/**
 		\fn bool pendingMsgs(Contact contact) const
@@ -131,6 +139,4 @@ signals:
 
 };
 
-extern KADUAPI PendingMsgs pending;
-
-#endif
+#endif //PENDING_MESSAGES_MANAGER_H

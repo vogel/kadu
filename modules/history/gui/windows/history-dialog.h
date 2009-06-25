@@ -12,9 +12,10 @@
 
 #include "gui/actions/action-description.h"
 #include "chat/chat_message.h"
-#include "kadu_main_window.h"
 #include "gui/widgets/chat_messages_view.h"
 #include "gui/widgets/contacts-list-widget.h"
+#include "gui/windows/main-window.h"
+#include "gui/windows/main-configuration-window.h"
 
 #include "history-search-dialog.h"
 #include "../../history.h"
@@ -93,7 +94,7 @@ class MainListItem : public QTreeWidgetItem
        		Zwraca list� u�ytkownik�w reprezentowan� przez dany element.
 		@return Lista u�ytkownik�w przypisana do danego elementu.
 		*/
-		Chat * chat() const { return CurrentChat; };
+		Chat * chat() const { return CurrentChat; }
 };
  
 /*!
@@ -134,7 +135,7 @@ class DetailsListItem : public QTreeWidgetItem
 \class HistoryMainWidget
 \brief G��wny widget okna przegl�dania historii
 */
-class HistoryMainWidget : public KaduMainWindow
+class HistoryMainWidget : public MainWindow
 {
 	Q_OBJECT
 		ActionDescription *historySearchActionDescription; /*!< Akcja otwieraj�ca okno wyszukiwania. */

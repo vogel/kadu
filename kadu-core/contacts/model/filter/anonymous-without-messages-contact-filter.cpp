@@ -8,9 +8,8 @@
  ***************************************************************************/
 
 #include "accounts/account.h"
+#include "chat/message/pending-messages-manager.h"
 #include "contacts/contact-account-data.h"
-#include "pending_msgs.h"
-
 #include "anonymous-without-messages-contact-filter.h"
 
 AnonymousWithoutMessagesContactFilter::AnonymousWithoutMessagesContactFilter(QObject *parent)
@@ -50,5 +49,5 @@ bool AnonymousWithoutMessagesContactFilter::acceptContact(Contact contact)
 // 	if (elem.isAnonymous() && withoutMessages(contact))
 // 		addUser(elem);
 
-	return !contact.isAnonymous() || pending.pendingMsgs(contact);
+	return !contact.isAnonymous() || PendingMessagesManager::instance()->pendingMsgs(contact);
 }

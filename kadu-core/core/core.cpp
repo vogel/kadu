@@ -13,6 +13,7 @@
 #include <QtCore/QSettings>
 
 #include "accounts/account-manager.h"
+#include "chat/message/pending-messages-manager.h"
 #include "configuration/configuration-file.h"
 #include "configuration/configuration-manager.h"
 #include "contacts/contact-manager.h"
@@ -32,7 +33,6 @@
 #include "emoticons.h"
 #include "icons-manager.h"
 #include "modules.h"
-#include "pending_msgs.h"
 #include "status_changer.h"
 #include "updates.h"
 
@@ -271,7 +271,7 @@ void Core::init()
 	StatusChangerManager::instance()->registerStatusChanger(StatusChanger);
 	StatusChangerManager::instance()->enable();
 
-	pending.loadConfiguration(xml_config_file);
+	PendingMessagesManager::instance()->loadConfiguration(xml_config_file);
 
 	Updates::initModule();
 
@@ -344,7 +344,7 @@ void Core::storeConfiguration()
 	if (config_file.readBoolEntry("General", "StartupLastDescription"))
 		config_file.writeEntry("General", "LastStatusDescription", StatusChanger->status().description());
 
-	pending.storeConfiguration(xml_config_file);
+	PendingMessagesManager::instance()->storeConfiguration(xml_config_file);
 // 		IgnoredManager::writeToConfiguration();
 
 // 	GroupManager::instance()->store();

@@ -21,24 +21,33 @@
 #include "misc/misc.h"
 #include "protocols/protocol.h"
 
-#include "pending_msgs.h"
+#include "pending-messages-manager.h"
 
-PendingMsgs::PendingMsgs(QObject *parent)
-	: QObject(parent), msgs()
+PendingMessagesManager * PendingMessagesManager::Instance = 0;
+
+PendingMessagesManager *  PendingMessagesManager::instance()
+{
+	if (0 == Instance)
+		Instance = new PendingMessagesManager();
+
+	return Instance;
+}
+
+PendingMessagesManager::PendingMessagesManager() : msgs()
 {
 }
 
-void PendingMsgs::deleteMsg(int index)
+void PendingMessagesManager::deleteMsg(int index)
 {
-	kdebugm(KDEBUG_INFO, "PendingMsgs::(pre)deleteMsg(%d), count=%d\n", index, count());
+	kdebugm(KDEBUG_INFO, "PendingMessagesManager::(pre)deleteMsg(%d), count=%d\n", index, count());
 	Contact e = msgs[index].sender;
 	msgs.removeAt(index);
 	storeConfiguration(xml_config_file);
-	kdebugm(KDEBUG_INFO, "PendingMsgs::deleteMsg(%d), count=%d\n", index, count());
+	kdebugm(KDEBUG_INFO, "PendingMessagesManager::deleteMsg(%d), count=%d\n", index, count());
 	emit messageFromUserDeleted(e);
 }
 
-bool PendingMsgs::pendingMsgs(Contact contact) const
+bool PendingMessagesManager::pendingMsgs(Contact contact) const
 {
 	foreach (const Message &msg, msgs)
 		if (msg.sender == contact)
@@ -47,7 +56,7 @@ bool PendingMsgs::pendingMsgs(Contact contact) const
 	return false;
 }
 
-unsigned int PendingMsgs::pendingMsgsCount(Chat *chat) const
+unsigned int PendingMessagesManager::pendingMsgsCount(Chat *chat) const
 {
 	unsigned int count = 0;
 
@@ -60,22 +69,22 @@ unsigned int PendingMsgs::pendingMsgsCount(Chat *chat) const
 	return count;
 }
 
-bool PendingMsgs::pendingMsgs() const
+bool PendingMessagesManager::pendingMsgs() const
 {
 	return !msgs.isEmpty();
 }
 
-int PendingMsgs::count() const
+int PendingMessagesManager::count() const
 {
 	return msgs.count();
 }
 
-Message &PendingMsgs::operator[](int index)
+Message &PendingMessagesManager::operator[](int index)
 {
 	return msgs[index];
 }
 
-void PendingMsgs::addMsg(const Message &msg)
+void PendingMessagesManager::addMsg(const Message &msg)
 {
 	Message message = msg;
 	msgs.append(message);
@@ -83,7 +92,7 @@ void PendingMsgs::addMsg(const Message &msg)
 	emit messageFromUserAdded(msg.sender);
 }
 
-void PendingMsgs::loadConfiguration(XmlConfigFile *configurationStorage)
+void PendingMessagesManager::loadConfiguration(XmlConfigFile *configurationStorage)
 {
 	QDomElement pendingMsgsNode = configurationStorage->getNode("PendingMessages", XmlConfigFile::ModeFind);
 	if (pendingMsgsNode.isNull())
@@ -119,7 +128,7 @@ void PendingMsgs::loadConfiguration(XmlConfigFile *configurationStorage)
 	}
 }
 
-void PendingMsgs::storeConfiguration(XmlConfigFile *configurationStorage)
+void PendingMessagesManager::storeConfiguration(XmlConfigFile *configurationStorage)
 {
 	QDomElement pendingMsgsNode = configurationStorage->getNode("PendingMessages");
 	configurationStorage->removeChildren(pendingMsgsNode);
@@ -138,12 +147,15 @@ void PendingMsgs::storeConfiguration(XmlConfigFile *configurationStorage)
 	}
 }
 
-void PendingMsgs::openMessages()
+void PendingMessagesManager::openMessages()
 {
 	ChatWidgetManager::instance()->openPendingMsgs();
 }
 
-PendingMsgs pending(0);
+bool PendingMessagesManager::removeContactFromStorage(Contact contact)
+{
+	return !pendingMsgs(contact);
+}
 
 
 // void Kadu::imageReceivedAndSaved(UinType sender, uint32_t size, uint32_t crc32, const QString &/*path*/)

@@ -19,6 +19,7 @@
 #include "gui/widgets/chat-widget-manager.h"
 #include "gui/windows/kadu-window.h"
 #include "gui/windows/message-box.h"
+#include "gui/windows/main-configuration-window.h"
 
 #include "protocols/protocol-menu-manager.h"
 #include "protocols/status.h"
@@ -26,7 +27,6 @@
 #include "configuration/configuration-file.h"
 #include "debug.h"
 #include "icons-manager.h"
-#include "main_configuration_window.h"
 
 #include "cert-util.h"
 #include "file-transfer/jabber-file-transfer.h"
@@ -669,18 +669,7 @@ void JabberProtocol::slotContactUpdated(const XMPP::RosterItem &item)
 	else if (!item.name().isEmpty() || !item.groups().isEmpty())
 		need_to_add = true;
 
-	/*
-	 * See if the contact is already on our contact list
-	 * if not contact is automatically added as anonymous
-	 */
-	 Contact c = ContactManager::instance()->byId(account(), item.jid().bare());
-	 if (c.display().isNull())
-		if (!item.name().isNull())
-			c.setDisplay(item.name());
-		else
-			c.setDisplay(item.jid().bare());
-
-	if (!c.isNull() && item.jid().bare() == jabberID.bare())
+	if (item.jid().bare() == jabberID.bare())
 	{
 		// don't let remove the gateway contact, eh!
 		need_to_add = true;
@@ -688,6 +677,21 @@ void JabberProtocol::slotContactUpdated(const XMPP::RosterItem &item)
 
 	if (need_to_add)
 	{
+		/*
+		 * See if the contact is already on our contact list
+		 * if not add contact to our list
+		 */
+		 Contact c = ContactManager::instance()->byId(account(), item.jid().bare());
+		 if (c.isAnonymous())
+		 {
+			c.setType(ContactData::TypeNormal);
+
+			if (!item.name().isNull())
+				c.setDisplay(account()->name() + ":" + item.name());
+			else
+				c.setDisplay(account()->name() + ":" + item.jid().bare());
+		}
+
 		if (c.isAnonymous())
 		{
 			// add this contact to all groups the contact is a member of
@@ -718,8 +722,8 @@ void JabberProtocol::slotContactUpdated(const XMPP::RosterItem &item)
 // 			contact->removeProperty ( protocol()->propAuthorizationStatus );
 // 		}*/
 	}
-	else if (!c.isAnonymous())  //we don't need to add it, and it is in the contact list
-	{
+//	else if (!c.isAnonymous())  //we don't need to add it, and it is in the contact list
+//	{
 // 		Kopete::MetaContact *metaContact=c->metaContact();
 // 		if(metaContact->isTemporary())
 // 			return;
@@ -728,7 +732,7 @@ void JabberProtocol::slotContactUpdated(const XMPP::RosterItem &item)
 // 		delete c;
 // 		if(metaContact->contacts().isEmpty())
 // 			Kopete::ContactList::self()->removeMetaContact( metaContact );
-	}
+//	}
 
 	kdebugf2();
 }

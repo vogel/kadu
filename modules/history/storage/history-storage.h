@@ -26,6 +26,8 @@ public:
 	//TODO:
 	virtual void appendMessageEntry(const Message &message) = 0;
 
+	virtual void clearHistoryForChat(Chat *chat) = 0;
+
 };
 
 #endif

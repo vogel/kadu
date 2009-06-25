@@ -11,6 +11,7 @@
 #include "accounts/account-manager.h"
 #include "chat/chat_message.h"
 #include "chat/message/message.h"
+#include "chat/message/pending-messages-manager.h"
 #include "configuration/configuration-file.h"
 #include "configuration/xml-configuration-file.h"
 #include "contacts/contact-account-data.h"
@@ -35,7 +36,6 @@
 #include "debug.h"
 #include "icons-manager.h"
 #include "misc/misc.h"
-#include "pending_msgs.h"
 #include "search.h"
 
 #include "chat-widget-manager.h"
@@ -318,10 +318,10 @@ ChatWidget * ChatWidgetManager::openChatWidget(Chat *chat, bool forceActivate)
 void ChatWidgetManager::deletePendingMsgs(Chat *chat)
 {
 	kdebugf();
-	for (int i = 0; i < pending.count(); ++i)
-		if (pending[i].chat == chat)
+	for (int i = 0; i < PendingMessagesManager::instance()->count(); ++i)
+		if ((*PendingMessagesManager::instance())[i].chat == chat)
 		{
-			pending.deleteMsg(i);
+			PendingMessagesManager::instance()->deleteMsg(i);
 			--i;
 		}
 
@@ -341,13 +341,13 @@ void ChatWidgetManager::openPendingMsgs(Chat *chat, bool forceActivate)
 	if (!chatWidget)
 		return;
 
-	for (int i = 0; i < pending.count(); ++i)
+	for (int i = 0; i < PendingMessagesManager::instance()->count(); ++i)
 	{
-		msg = pending[i];
+		msg = (*PendingMessagesManager::instance())[i];
 		if (msg.chat != chat)
 			continue;
 		messages.append(new ChatMessage(msg, TypeReceived));
-		pending.deleteMsg(i--);
+		PendingMessagesManager::instance()->deleteMsg(i--);
 	}
 
 	if (messages.size())
@@ -366,8 +366,8 @@ void ChatWidgetManager::openPendingMsgs(bool forceActivate)
 {
 	kdebugf();
 
-	if (pending.count())
-		openPendingMsgs(pending[0].chat, forceActivate);
+	if (PendingMessagesManager::instance()->count())
+		openPendingMsgs((*PendingMessagesManager::instance())[0].chat, forceActivate);
 
 	kdebugf2();
 }
@@ -376,10 +376,10 @@ void ChatWidgetManager::sendMessage(Chat *chat)
 {
 	kdebugf();
 
-	for (int i = 0; i < pending.count(); ++i)
-		if (pending[i].chat == chat)
+	for (int i = 0; i < PendingMessagesManager::instance()->count(); ++i)
+		if ((*PendingMessagesManager::instance())[i].chat == chat)
 		{
-			openPendingMsgs(pending[i].chat);
+			openPendingMsgs((*PendingMessagesManager::instance())[i].chat);
 			return;
 		}
 
@@ -422,7 +422,7 @@ void ChatWidgetManager::messageReceived(const Message &message)
 			// TODO: 0.6.6
 			if (config_file.readBoolEntry("Chat", "OpenChatOnMessageWhenOnline") && false /*!Myself.status("Gadu").isOnline()*/)
 			{
-				pending.addMsg(message);
+				PendingMessagesManager::instance()->addMsg(message);
 				return;
 			}
 
@@ -434,7 +434,7 @@ void ChatWidgetManager::messageReceived(const Message &message)
 			chatWidget->newMessage(chatMessage);
 		}
 		else
-			pending.addMsg(message);
+			PendingMessagesManager::instance()->addMsg(message);
 	}
 
 	kdebugf2();

@@ -16,13 +16,13 @@
 #include "configuration/configuration-file.h"
 #include "debug.h"
 #include "icons-manager.h"
-#include "kadu_parser.h"
-#include "main_configuration_window.h"
+#include "parser/parser.h"
 
 #include "contacts/contact.h"
 #include "contacts/contact-list.h"
 
 #include "gui/widgets/configuration/notify-group-box.h"
+#include "gui/windows/main-configuration-window.h"
 
 #include "misc/misc.h"
 
@@ -224,7 +224,7 @@ void ExecNotify::notify(Notification *notification)
 
 
 		foreach(QString it, s)
-			result.append(KaduParser::parse(it.replace("%ids", sendersString), accountNotification->account(), contact, notification));
+			result.append(Parser::parse(it.replace("%ids", sendersString), accountNotification->account(), contact, notification));
 		run(result, QString::null);
 	}
 	else

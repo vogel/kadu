@@ -12,6 +12,7 @@
 #include "configuration/configuration-manager.h"
 #include "configuration/storage-point.h"
 #include "configuration/xml-configuration-file.h"
+#include "contacts/contact-remove-predicate-object.h"
 #include "contacts/group-manager.h"
 #include "core/core.h"
 
@@ -166,8 +167,11 @@ void ContactManager::removeContact(Contact contact)
 			this, SLOT(contactAccountDataIdChanged(Account *, const QString &)));
 
 	emit contactAboutToBeRemoved(contact);
-	Contacts.removeAll(contact);
-	contact.removeFromStorage();
+	if (ContactRemovePredicateObject::inquireAll(contact))
+	{
+		Contacts.removeAll(contact);
+		contact.removeFromStorage();
+	}
 	emit contactRemoved(contact);
 	contact.setType(ContactData::TypeAnonymous);
 

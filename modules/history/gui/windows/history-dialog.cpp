@@ -32,6 +32,8 @@
 #include "misc/misc.h"
 #include "icons-manager.h"
 
+#include "../../storage/history-storage.h"
+
 #include "history-dialog.h"
 
 MainListItem::MainListItem(QTreeWidget* parent, Chat *chat)
@@ -105,7 +107,7 @@ QString DetailsListItem::prepareLength()
 }
 
 HistoryMainWidget::HistoryMainWidget(QWidget *parent, QWidget *window)
-	: KaduMainWindow(parent)
+	: MainWindow(parent)
 {
 	kdebugf();
 	QWidget *mvbox = new QWidget;
@@ -377,12 +379,13 @@ void HistoryDlg::removeHistoryEntriesPerUser()
 		return;
 	if (MessageBox::ask(tr("You want to remove all history entries of selected users.\nAre you sure?\n"), "Warning"))
 	{
-// 		const ContactList& uids = uids_item->uidsList();
-// 		sql_history->removeHistory(uids);
-// 		MainListView->removeItemWidget((*MainListView->selectedItems().begin()),0);
-// 		globalRefresh();
-// 		main->getDetailsListView()->clear();
-// 		main->getContentBrowser()->clearMessages();
+		Chat *chat = uids_item->chat();
+		if (chat)
+			History::instance()->currentStorage()->clearHistoryForChat(chat);
+		MainListView->removeItemWidget((*MainListView->selectedItems().begin()),0);
+		globalRefresh();
+		main->getDetailsListView()->clear();
+		main->getContentBrowser()->clearMessages();
 	}
 	kdebugf2();
 }

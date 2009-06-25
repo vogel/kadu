@@ -16,9 +16,10 @@
 
 #include "gui/actions/action.h"
 #include "gui/actions/action-description.h"
+#include "gui/windows/main-configuration-window.h"
 #include "configuration/configuration-aware-object.h"
+#include "contacts/contact-remove-predicate-object.h"
 #include "protocols/protocol.h"
-#include "main_configuration_window.h"
 
 enum HistoryEntryType
 {
@@ -36,7 +37,7 @@ enum HistoryEntryType
 class Account;
 class HistoryDlg;
 
-class History : public ConfigurationUiHandler, ConfigurationAwareObject
+class History : public ConfigurationUiHandler, ConfigurationAwareObject, ContactRemovePredicateObject
 {
 	Q_OBJECT
 
@@ -57,6 +58,7 @@ class History : public ConfigurationUiHandler, ConfigurationAwareObject
 	void createActionDescriptions();
 	void deleteActionDescriptions();
 	virtual void configurationUpdated();
+	virtual bool removeContactFromStorage(Contact contact);
 	void configurationWindowApplied();
 	void mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow);
 	void updateQuoteTimeLabel(int value);
@@ -69,7 +71,7 @@ private slots:
 
 public:
 	static History * instance();
-	HistoryStorage * currentStorage() { return CurrentStorage; };
+	HistoryStorage * currentStorage() { return CurrentStorage; }
 	void registerStorage(HistoryStorage *storage);
 	void unregisterStorage(HistoryStorage *storage);
 	QList<Chat *> chatsList();

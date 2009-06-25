@@ -17,6 +17,7 @@
 #include "accounts/account-manager.h"
 #include "contacts/contact-manager.h"
 #include "chat/chat.h"
+#include "chat/chat-manager.h"
 #include "contacts/contact.h"
 #include "core/core.h"
 #include "gui/widgets/configuration/config-group-box.h"
@@ -118,7 +119,7 @@ void History::deleteActionDescriptions()
 void History::showHistoryActionActivated(QAction *sender, bool toggled)
 {
 	kdebugf();
-	KaduMainWindow *window = dynamic_cast<KaduMainWindow *>(sender->parent());
+	MainWindow *window = dynamic_cast<MainWindow *>(sender->parent());
 	if (window)
 		HistoryDialog->show(window->contacts());
 	kdebugf2();
@@ -296,6 +297,18 @@ void History::configurationUpdated()
 	kdebugf();
 	//?
 	kdebugf2();
+}
+
+bool History::removeContactFromStorage(Contact contact)
+{
+	if (!CurrentStorage)
+		return true;
+//TODO: optimize
+	QList<Chat *> chats = ChatManager::instance()->chatsForAccount(contact.prefferedAccount());
+	foreach (Chat *chat, chats)
+		if (chat->contacts().contains(contact) && !CurrentStorage->datesForChat(chat).isEmpty())
+			return false;
+	return true;
 }
 
 void History::registerStorage(HistoryStorage *storage)

@@ -9,6 +9,7 @@
 
 #include "accounts/account.h"
 #include "configuration/xml-configuration-file.h"
+#include "contacts/contact-remove-predicate-object.h"
 #include "pending_msgs.h"
 
 #include "contact.h"
@@ -83,7 +84,7 @@ void Contact::loadConfiguration()
 
 void Contact::store()
 {
-	if ((!isNull() && !isAnonymous()) || (isAnonymous() && pending.pendingMsgs(*this)))
+	if ((!isNull() && !isAnonymous()) || (isAnonymous() && !ContactRemovePredicateObject::inquireAll(*this)))
 		Data->store();
 	else
 		Data->removeFromStorage();
@@ -107,7 +108,7 @@ StoragePoint * Contact::storagePointForModuleData(const QString& module, bool cr
 QUuid Contact::uuid() const
 {
 	return isNull() ? QUuid() : Data->uuid();
-};
+}
 
 QMap<QString, QString> & Contact::customData()
 {

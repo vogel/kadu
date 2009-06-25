@@ -14,15 +14,15 @@
 
 #include "activate.h"
 #include "accounts/account-manager.h"
+#include "chat/message/pending-messages-manager.h"
 #include "configuration/configuration-file.h"
 #include "core/core.h"
 #include "debug.h"
 #include "gui/windows/kadu-window.h"
 #include "gui/widgets/status-menu.h"
+#include "gui/windows/main-configuration-window.h"
 #include "icons-manager.h"
-#include "main_configuration_window.h"
 #include "misc/misc.h"
-#include "pending_msgs.h"
 #include "protocols/protocol.h"
 #include "status_changer.h"
 
@@ -60,8 +60,8 @@ DockingManager::DockingManager()
 
 	connect(Core::instance(), SIGNAL(mainIconChanged(const QIcon &)),
 		this, SLOT(statusPixmapChanged(const QIcon &)));
-	connect(&pending, SIGNAL(messageFromUserAdded(Contact)), this, SLOT(pendingMessageAdded()));
-	connect(&pending, SIGNAL(messageFromUserDeleted(Contact)), this, SLOT(pendingMessageDeleted()));
+	connect(PendingMessagesManager::instance(), SIGNAL(messageFromUserAdded(Contact)), this, SLOT(pendingMessageAdded()));
+	connect(PendingMessagesManager::instance(), SIGNAL(messageFromUserDeleted(Contact)), this, SLOT(pendingMessageDeleted()));
 
 //	connect(kadu, SIGNAL(searchingForTrayPosition(QPoint&)), this, SIGNAL(searchingForTrayPosition(QPoint&)));
 
@@ -75,7 +75,7 @@ DockingManager::DockingManager()
 	DockMenu->addSeparator();
 	DockMenu->addAction(IconsManager::instance()->loadIcon("Exit"), tr("&Exit Kadu"), qApp, SLOT(quit()));
 
-	connect(this, SIGNAL(mousePressMidButton()), &pending, SLOT(openMessages()));
+	connect(this, SIGNAL(mousePressMidButton()), PendingMessagesManager::instance(), SLOT(openMessages()));
 
 	configurationUpdated();
 
@@ -103,8 +103,8 @@ DockingManager::~DockingManager()
 
 	disconnect(Core::instance(), SIGNAL(mainIconChanged(const QIcon &)),
 		this, SLOT(statusPixmapChanged(const QIcon &)));
-	disconnect(&pending, SIGNAL(messageFromUserAdded(Contact)), this, SLOT(pendingMessageAdded()));
-	disconnect(&pending, SIGNAL(messageFromUserDeleted(Contact)), this, SLOT(pendingMessageDeleted()));
+	disconnect(PendingMessagesManager::instance(), SIGNAL(messageFromUserAdded(Contact)), this, SLOT(pendingMessageAdded()));
+	disconnect(PendingMessagesManager::instance(), SIGNAL(messageFromUserDeleted(Contact)), this, SLOT(pendingMessageDeleted()));
 
 //	disconnect(kadu, SIGNAL(searchingForTrayPosition(QPoint&)), this, SIGNAL(searchingForTrayPosition(QPoint&)));
 
@@ -120,7 +120,7 @@ DockingManager::~DockingManager()
 void DockingManager::changeIcon()
 {
 	kdebugf();
-	if (pending.pendingMsgs() && !icon_timer->isActive())
+	if (PendingMessagesManager::instance()->pendingMsgs() && !icon_timer->isActive())
 	{
 		switch (newMessageIcon)
 		{
@@ -165,7 +165,7 @@ void DockingManager::pendingMessageAdded()
 
 void DockingManager::pendingMessageDeleted()
 {
-	if (!pending.pendingMsgs())
+	if (!PendingMessagesManager::instance()->pendingMsgs())
 	{
 		Account *account = AccountManager::instance()->defaultAccount();
 		if (!account || !account->protocol())
@@ -209,9 +209,9 @@ void DockingManager::trayMousePressEvent(QMouseEvent * e)
 		emit mousePressLeftButton();
 		kdebugm(KDEBUG_INFO, "minimized: %d, visible: %d\n", kadu->isMinimized(), kadu->isVisible());
 
-		if (pending.pendingMsgs() && (e->modifiers() != Qt::ControlModifier))
+		if (PendingMessagesManager::instance()->pendingMsgs() && (e->modifiers() != Qt::ControlModifier))
 		{
-			pending.openMessages();
+			PendingMessagesManager::instance()->openMessages();
 			return;
 		}
 

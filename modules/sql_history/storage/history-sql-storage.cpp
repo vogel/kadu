@@ -78,10 +78,15 @@ void HistorySqlStorage::initializeDatabase()
 		QSqlQuery query(Database);
 		QString querystr;
 		if (Database.driverName() == "QSQLITE")
+		{
 			querystr = "PRAGMA encoding = \"UTF-8\";";
+			query.prepare(querystr);
+		}
 		else if (Database.driverName() == "QMYSQL")
+		{
 			querystr = "ALTER DATABASE `%1` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;";
-		query.prepare(querystr.arg(Database.databaseName()));
+			query.prepare(querystr.arg(Database.databaseName()));
+		}
 		executeQuery(query);
 		querystr = "CREATE TABLE %1messages (chat VARCHAR(255), sender VARCHAR(255), send_time TIMESTAMP, receive_time TIMESTAMP, content TEXT, attributes TEXT);";
 		query.prepare(querystr.arg(DbPrefix));
@@ -188,7 +193,7 @@ void HistorySqlStorage::appendStatus(Contact elem, QString protocolName)
 */
 	kdebugf2();
 }
-
+//TODO: cache and optimize
 void HistorySqlStorage::appendMessageEntry(const Message &message)
 {
 	kdebugf();
@@ -207,6 +212,17 @@ void HistorySqlStorage::appendMessageEntry(const Message &message)
 		kdebug(Database.lastError().text().toLocal8Bit().data(), false, "Warning");
 
 	kdebugf2();
+}
+
+void HistorySqlStorage::clearHistoryForChat(Chat *chat)
+{
+	QSqlQuery query(Database);
+
+	QString query_str = "DELETE FROM %1messages WHERE chat=:chat;";
+	query.prepare(query_str.arg(DbPrefix));
+	query.bindValue(":chat", chat->uuid().toString());
+
+	executeQuery(query);
 }
 
 void HistorySqlStorage::appendSmsEntry(ContactList list, const QString &msg, bool outgoing, time_t send_time, time_t receive_time)

@@ -16,6 +16,7 @@ set (kadu_SRCS
 
 	chat/message/formatted-message.cpp
 	chat/message/formatted-message-part.cpp
+	chat/message/pending-messages-manager.cpp
 
 	chat/style-engines/chat_engine_adium.cpp
 	chat/style-engines/chat_engine_kadu.cpp
@@ -28,6 +29,7 @@ set (kadu_SRCS
 	contacts/contact-list-configuration-helper.cpp
 	contacts/contact-list-mime-data-helper.cpp
 	contacts/contact-manager.cpp
+	contacts/contact-remove-predicate-object.cpp
 	contacts/contact-set.cpp
 	contacts/contact-set-configuration-helper.cpp
 	contacts/contacts-aware-object.cpp
@@ -188,7 +190,6 @@ set (kadu_SRCS
 	icons-manager.cpp
 	ignore.cpp
 	modules.cpp
-	pending_msgs.cpp
 	status_changer.cpp
 	syntax_editor.cpp
 	themes.cpp
@@ -213,6 +214,8 @@ set (kadu_MOC_SRCS
 	chat/chat-manager.h
 	#chat/conference-chat.h
 	#chat/simple-chat.h
+
+	chat/message/pending-messages-manager.h
 
 	chat/chat_styles_manager.h
 	chat/style-engines/chat_engine_kadu.h
@@ -343,7 +346,6 @@ set (kadu_MOC_SRCS
 	icons-manager.h
 	ignore.h
 	modules.h
-	pending_msgs.h
 	status_changer.h
 	syntax_editor.h
 	themes.h

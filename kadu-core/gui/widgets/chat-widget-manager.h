@@ -34,9 +34,6 @@ class KADUAPI ChatWidgetManager : public QObject, ConfigurationAwareObject
 	Q_OBJECT
 	Q_DISABLE_COPY(ChatWidgetManager)
 
-public: // TODO: 0.6.6 clean it up
-
-private:
 	static ChatWidgetManager *Instance;
 
 	ChatWidgetActions *Actions;
