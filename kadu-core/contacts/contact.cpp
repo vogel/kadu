@@ -10,7 +10,6 @@
 #include "accounts/account.h"
 #include "configuration/xml-configuration-file.h"
 #include "contacts/contact-remove-predicate-object.h"
-#include "pending_msgs.h"
 
 #include "contact.h"
 
