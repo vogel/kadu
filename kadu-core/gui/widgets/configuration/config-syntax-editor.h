@@ -11,8 +11,8 @@
 #define CONFIG_SYNTAX_EDITOR_H
 
 #include "gui/widgets/configuration/config-widget-value.h"
+#include "gui/widgets/syntax-editor.h"
 #include "configuration/configuration-window-data-manager.h"
-#include "syntax_editor.h"
 
 class QLabel;
 class QDomElement;
@@ -39,6 +39,7 @@ public:
 	virtual void show();
 	virtual void hide();
 	virtual bool fromDomElement(QDomElement domElement);
+
 };
 
 #endif // CONFIGURATION_WINDOW_WIDGETS_H

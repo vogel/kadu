@@ -15,6 +15,7 @@
 #include "configuration/configuration-file.h"
 #include "gui/widgets/chat_messages_view.h"
 #include "gui/widgets/preview.h"
+#include "gui/windows/syntax-editor-window.h"
 #include "parser/parser.h"
 
 #include "syntax_editor.h"
@@ -213,6 +214,7 @@ void KaduChatStyleEngine::styleEditionRequested(QString styleName)
 		"#{separator} - separator between messages,\n"
 		"<kadu:header>text</kadu:header> - text will not be displayed in 'Remove repeated headers' mode\n"
 	);
+
 	SyntaxEditorWindow *editor = new SyntaxEditorWindow(syntaxList, styleName, "Chat", syntaxHint);
 	connect(editor, SIGNAL(updated(const QString &)), ChatStylesManager::instance(), SLOT(syntaxUpdated(const QString &)));
 	connect(editor, SIGNAL(syntaxAdded(const QString &)), this, SLOT(syntaxAdded(const QString &)));

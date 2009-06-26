@@ -35,6 +35,7 @@
 #include "gui/widgets/contact-info-panel.h"
 #include "gui/widgets/tool-tip-class-manager.h"
 #include "gui/windows/kadu-window.h"
+#include "gui/windows/syntax-editor-window.h"
 #include "protocols/status.h"
 
 //#include "../modules/gadu_protocol/gadu-protocol.h"

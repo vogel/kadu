@@ -7,8 +7,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef SYNTAX_EDITOR_H
-#define SYNTAX_EDITOR_H
+#ifndef SYNTAX_EDITOR2_H
+#define SYNTAX_EDITOR2_H
 
 #include <QtCore/QMap>
 #include <QtGui/QWidget>
@@ -51,78 +51,4 @@ signals:
 
 };
 
-class SyntaxEditor : public QWidget
-{
-	Q_OBJECT
-
-	SyntaxList *syntaxList;
-	QComboBox *syntaxListCombo;
-	QPushButton *deleteButton;
-
-	QString category;
-	QString syntaxHint;
-
-	void updateSyntaxList();
-
-private slots:
-	void editClicked();
-	void deleteClicked();
-
-	void syntaxChangedSlot(const QString &newSyntax);
-	void syntaxListUpdated();
-
-public:
-	SyntaxEditor(QWidget *parent = 0);
-	virtual ~SyntaxEditor();
-
-	QString currentSyntax();
-
-	void setCategory(const QString &category);
-	void setSyntaxHint(const QString &syntaxHint);
-
-public slots:
-	void setCurrentSyntax(const QString &syntax);
-
-signals:
-	void syntaxChanged(const QString &newSyntax);
-	void onSyntaxEditorWindowCreated(SyntaxEditorWindow *syntaxEditorWindow);
-
-};
-
-class SyntaxEditorWindow : public QWidget
-{
-	Q_OBJECT
-
-	SyntaxList *syntaxList;
-
-	QLineEdit *nameEdit;
-	QTextEdit *editor;
-	Preview *previewPanel;
-
-	QString category;
-	QString syntaxName;
-
-private slots:
-	void save();
-	void saveAs();
-
-protected:
-	virtual void keyPressEvent(QKeyEvent *e);
-
-public:
-	SyntaxEditorWindow(SyntaxList *syntaxList, const QString &syntaxName, const QString &category, const QString &syntaxHint, QWidget* parent = 0);
-	~SyntaxEditorWindow();
-
-	Preview * preview() { return previewPanel; }
-
-public slots:
-	void refreshPreview();
-
-signals:
-	void updated(const QString &syntaxName);
-	void syntaxAdded(const QString &syntaxName);
-	void isNameValid(const QString &syntaxName, bool &valid);
-
-};
-
-#endif // SYNTAX_EDITOR
+#endif // SYNTAX_EDITOR2
