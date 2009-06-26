@@ -11,26 +11,10 @@
 #include <QtCore/QFile>
 #include <QtCore/QFileInfo>
 #include <QtCore/QTextStream>
-#include <QtGui/QApplication>
-#include <QtGui/QComboBox>
-#include <QtGui/QGridLayout>
-#include <QtGui/QHBoxLayout>
-#include <QtGui/QInputDialog>
-#include <QtGui/QKeyEvent>
-#include <QtGui/QLineEdit>
-#include <QtGui/QPushButton>
-#include <QtGui/QTextEdit>
-#include <QtGui/QVBoxLayout>
-#include <QtNetwork/QHostAddress>
 
-#include "configuration/configuration-file.h"
-#include "gui/windows/message-box.h"
-#include "gui/widgets/preview.h"
-
-#include "icons-manager.h"
 #include "misc/misc.h"
 
-#include "syntax_editor.h"
+#include "syntax-list.h"
 
 SyntaxList::SyntaxList(const QString &category)
 	: category(category)

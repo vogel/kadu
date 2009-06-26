@@ -7,9 +7,8 @@
  *                                                                         *
  ***************************************************************************/
 
+#include "configuration/storable-object.h"
 #include "configuration/xml-configuration-file.h"
-#include "contacts/contact-manager.h"
-#include "contacts/group-manager.h"
 
 #include "configuration-manager.h"
 

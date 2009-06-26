@@ -7,19 +7,11 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef SYNTAX_EDITOR2_H
-#define SYNTAX_EDITOR2_H
+#ifndef SYNTAX_LIST_H
+#define SYNTAX_LIST_H
 
 #include <QtCore/QMap>
-#include <QtGui/QWidget>
-
-class QComboBox;
-class QLineEdit;
-class QPushButton;
-class QTextEdit;
-
-class Preview;
-class SyntaxEditorWindow;
+#include <QtCore/QObject>
 
 struct SyntaxInfo
 {
@@ -51,4 +43,4 @@ signals:
 
 };
 
-#endif // SYNTAX_EDITOR2
+#endif // SYNTAX_LIST_H

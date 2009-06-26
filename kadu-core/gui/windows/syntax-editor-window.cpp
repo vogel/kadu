@@ -18,9 +18,8 @@
 #include "gui/widgets/preview.h"
 #include "gui/windows/message-box.h"
 #include "misc/misc.h"
+#include "misc/syntax-list.h"
 #include "icons-manager.h"
-
-#include "syntax_editor.h"
 
 #include "syntax-editor-window.h"
 

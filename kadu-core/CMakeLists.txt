@@ -156,6 +156,7 @@ set (kadu_SRCS
 	misc/date-time.cpp
 	misc/misc.cpp
 	misc/path-conversion.cpp
+	misc/syntax-list.cpp
 
 	model/first-empty.cpp
 
@@ -193,7 +194,6 @@ set (kadu_SRCS
 	ignore.cpp
 	modules.cpp
 	status_changer.cpp
-	syntax_editor.cpp
 	themes.cpp
 	updates.cpp
 )
@@ -318,7 +318,7 @@ set (kadu_MOC_SRCS
 
 	model/first-empty.h
 
-	#modules/module-data.h
+	misc/syntax-list.h
 
 	notify/account-notification.h
 	notify/new_message_notification.h
@@ -348,7 +348,6 @@ set (kadu_MOC_SRCS
 	ignore.h
 	modules.h
 	status_changer.h
-	syntax_editor.h
 	themes.h
 	updates.h
 )

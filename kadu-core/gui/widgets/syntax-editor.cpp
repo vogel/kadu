@@ -16,8 +16,7 @@
 #include "gui/windows/message-box.h"
 #include "gui/windows/syntax-editor-window.h"
 #include "misc/misc.h"
-
-#include "syntax_editor.h"
+#include "misc/syntax-list.h"
 
 #include "syntax-editor.h"
 

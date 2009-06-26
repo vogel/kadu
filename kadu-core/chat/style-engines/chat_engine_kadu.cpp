@@ -16,9 +16,8 @@
 #include "gui/widgets/chat_messages_view.h"
 #include "gui/widgets/preview.h"
 #include "gui/windows/syntax-editor-window.h"
+#include "misc/syntax-list.h"
 #include "parser/parser.h"
-
-#include "syntax_editor.h"
 
 #include "chat_engine_kadu.h"
 

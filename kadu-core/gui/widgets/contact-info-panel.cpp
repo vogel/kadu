@@ -10,12 +10,12 @@
 #include <QtWebKit/QWebFrame>
 
 #include "configuration/configuration-file.h"
+#include "misc/syntax-list.h"
 #include "parser/parser.h"
 
 #include "debug.h"
 #include "emoticons.h"
 #include "html_document.h"
-#include "syntax_editor.h"
 
 #include "contact-info-panel.h"
 
