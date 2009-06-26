@@ -13,8 +13,6 @@
 #include "contacts/contact-manager.h"
 #include "contacts/contact.h"
 
-#include "pending_msgs.h"
-
 #include "contact-set-configuration-helper.h"
 
 ContactSet ContactSetConfigurationHelper::loadFromConfiguration(StorableObject *parent, const QString &nodeName)

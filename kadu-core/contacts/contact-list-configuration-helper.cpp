@@ -13,8 +13,6 @@
 #include "contacts/contact-manager.h"
 #include "contacts/contact.h"
 
-#include "pending_msgs.h"
-
 #include "contacts/contact-list-configuration-helper.h"
 
 ContactList ContactListConfigurationHelper::loadFromConfiguration(XmlConfigFile *configurationStorage, QDomElement contactListNode)

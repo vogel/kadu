@@ -10,7 +10,6 @@
 #include "configuration/xml-configuration-file.h"
 #include "contacts/contact-manager.h"
 #include "contacts/group-manager.h"
-#include "pending_msgs.h"
 
 #include "configuration-manager.h"
 
