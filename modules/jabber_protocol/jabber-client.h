@@ -128,11 +128,6 @@ public:
 	bool ignoreTLSWarnings ();
 
 	/**
-	 * Continue after a @ref tlsWarning signal.
-	 */
-	void continueAfterTLSWarning ();
-
-	/**
 	 * Set the port on which the S5B server should listen.
 	 * This is only taken into account if @ref setFileTransfersEnabled
 	 * is set to true.
@@ -435,11 +430,6 @@ signals:
 	 * Client stream was disconnected.
 	 */
 	void csDisconnected ();
-
-	/**
-	 * TLS problem encountered.
-	 */
-	void tlsWarning ( QCA::TLS::IdentityResult, QCA::Validity );
 
 	/**
 	 * A new file transfer needs to be handled.

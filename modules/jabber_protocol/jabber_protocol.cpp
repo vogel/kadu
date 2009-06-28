@@ -101,8 +101,6 @@ void JabberProtocol::initializeJabberClient()
 {
 	JabberClient = new XMPP::JabberClient;
 	connect(JabberClient, SIGNAL(csDisconnected()), this, SLOT(disconnectedFromServer()));
-	connect(JabberClient, SIGNAL(tlsWarning(QCA::TLS::IdentityResult, QCA::Validity)),
-		   this, SLOT(slotHandleTLSWarning(QCA::TLS::IdentityResult, QCA::Validity)));
 	connect(JabberClient, SIGNAL(connected()), this, SLOT(connectedToServer()));
 
 	connect(JabberClient, SIGNAL(subscription(const XMPP::Jid &, const QString &)),
@@ -279,128 +277,6 @@ void JabberProtocol::disconnect(const XMPP::Status &s)
 void JabberProtocol::slotClientDebugMessage(const QString &msg)
 {
 	kdebugm(KDEBUG_WARNING, "Jabber Client debug:  %s\n", qPrintable(msg));
-}
-
-bool JabberProtocol::handleTLSWarning(XMPP::JabberClient *jabberClient, QCA::TLS::IdentityResult identityResult, QCA::Validity validityResult)
-{
-	QString validityString, code, idString, idCode;
-
-	QString server = jabberClient->jid().domain();
-	QString accountId = jabberClient->jid().bare();
-
-	switch (identityResult)
-	{
-		case QCA::TLS::Valid:
-			break;
-		case QCA::TLS::HostMismatch:
-			idString = tr("The host name does not match the one in the certificate.");
-			idCode   = "HostMismatch";
-			break;
-		case QCA::TLS::InvalidCertificate:
-			idString = tr("The certificate is invalid.");
-			idCode   = "InvalidCert";
-			break;
-		case QCA::TLS::NoCertificate:
-			idString = tr("No certificate was presented.");
-			idCode   = "NoCert";
-			break;
-	}
-
-	switch (validityResult)
-	{
-		case QCA::ValidityGood:
-			break;
-		case QCA::ErrorRejected:
-			validityString = tr("The Certificate Authority rejected the certificate.");
-			code = "Rejected";
-			break;
-		case QCA::ErrorUntrusted:
-			validityString = tr("The certificate is not trusted.");
-			code = "Untrusted";
-			break;
-		case QCA::ErrorSignatureFailed:
-			validityString = tr("The signature is invalid.");
-			code = "SignatureFailed";
-			break;
-		case QCA::ErrorInvalidCA:
-			validityString = tr("The Certificate Authority is invalid.");
-			code = "InvalidCA";
-			break;
-		case QCA::ErrorInvalidPurpose:
-			validityString = tr("Invalid certificate purpose.");
-			code = "InvalidPurpose";
-			break;
-		case QCA::ErrorSelfSigned:
-			validityString = tr("The certificate is self-signed.");
-			code = "SelfSigned";
-			break;
-		case QCA::ErrorRevoked:
-			validityString = tr("The certificate has been revoked.");
-			code = "Revoked";
-			break;
-		case QCA::ErrorPathLengthExceeded:
-			validityString = tr("Maximum certificate chain length was exceeded.");
-			code = "PathLengthExceeded";
-			break;
-		case QCA::ErrorExpired:
-			validityString = tr("The certificate has expired.");
-			code = "Expired";
-			break;
-		case QCA::ErrorExpiredCA:
-			validityString = tr("The Certificate Authority has expired.");
-			code = "ExpiredCA";
-			break;
-		case QCA::ErrorValidityUnknown:
-			validityString = tr("Validity is unknown.");
-			code = "ValidityUnknown";
-			break;
-	}
-
-	QString message;
-	if (!idString.isEmpty())
-	{
-		if (!validityString.isEmpty())
-		{
-			message = tr("<qt><p>The identity and the certificate of server %s could not be "
-					"validated for account %s:</p><p>%3</p><p>%4</p><p>Do you want to continue?</p></qt>").arg(server).arg(accountId).arg(idString).arg(validityString);
-		}
-		else
-		{
-			message = tr("<qt><p>The certificate of server %s could not be validated for "
-					"account %s: %3</p><p>Do you want to continue?</p></qt>").arg(server).arg(accountId).arg(idString);
-		}
-	}
-	else
-	{
-		message = tr("<qt><p>The certificate of server %s could not be validated for "
-			"account %s: %3</p><p>Do you want to continue?</p></qt>").arg(server).arg( accountId).arg(validityString);
-	}
-
-	QMessageBox* m = new QMessageBox(QMessageBox::Critical,
-	/*(printAccountName !accountId.isEmpty() ? QString("%s: ").arg(name()) : "") + */tr("Server Error"),
-	tr("There was an error communicating with the server.\nDetails: %1").arg(server + idCode + code + message),
-	QMessageBox::Ok, 0, Qt::Popup);
-	m->setModal(true);
-	m->show();
-
-	return true;
-}
-
-void JabberProtocol::slotHandleTLSWarning(QCA::TLS::IdentityResult identityResult, QCA::Validity validityResult)
-{
-	kdebug("Handling TLS warning...\n");
-
-	if (handleTLSWarning(JabberClient, identityResult, validityResult))
-	{
-		// resume stream
-		JabberClient->continueAfterTLSWarning();
-	}
-	else
-	{
-		// disconnect stream
-		JabberClient->disconnect();
-	}
-
 }
 
 void JabberProtocol::setPresence(const XMPP::Status &status)

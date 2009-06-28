@@ -88,10 +88,6 @@ class JabberProtocol : public Protocol
 		void slotContactDeleted(const XMPP::RosterItem &ri);
 		void slotIncomingFileTransfer();
 		void slotSubscription(const XMPP::Jid &jid, const QString &type);
-		//void client_rosterItemUpdated(const XMPP::RosterItem &r);
-		void slotHandleTLSWarning(QCA::TLS::IdentityResult identityResult, QCA::Validity validityResult);
-		bool handleTLSWarning(XMPP::JabberClient *jabberClient, QCA::TLS::IdentityResult identityResult, QCA::Validity validityResult);
-		//void slotCSError ( int error ); // why this was removed?
 		void slotClientDebugMessage (const QString &msg);
 		void changeSubscription(const XMPP::Jid &jid, const QString type);
 		void requestSubscription(const XMPP::Jid &jid);

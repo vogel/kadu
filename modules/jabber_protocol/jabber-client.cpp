@@ -20,9 +20,11 @@
  *                                                                         *
  ***************************************************************************/
 
+#include "cert-util.h"
 #include "jabber-client.h"
 #include "jabber_protocol.h"
 #include "debug.h"
+#include "ssl-cert-dlg.h"
 
 #include <QtGui/QMessageBox>
 #include <QTimer>
@@ -934,47 +936,51 @@ void JabberClient::slotOutgoingXML ( const QString & _msg )
 	emit outgoingXML ( msg );
 }
 
-void JabberClient::slotTLSHandshaken ()
+void JabberClient::slotTLSHandshaken()
 {
-
 	emit debugMessage ( "TLS handshake done, testing certificate validity..." );
 
-	// FIXME: in the future, this should be handled by KDE, not QCA
-
-	QCA::TLS::IdentityResult identityResult = d->jabberTLS->peerIdentityResult();
-	QCA::Validity            validityResult = d->jabberTLS->peerCertificateValidity();
-
-	if ( identityResult == QCA::TLS::Valid && validityResult == QCA::ValidityGood )
+	QCA::Certificate cert = d->jabberTLS->peerCertificateChain().primary();
+	int r = d->jabberTLS->peerIdentityResult();
+	if (r == QCA::TLS::Valid && !d->jabberTLSHandler->certMatchesHostname()) 
+		r = QCA::TLS::HostMismatch;
+	if (r != QCA::TLS::Valid && !ignoreTLSWarnings()) 
 	{
-		emit debugMessage ( "Identity and certificate valid, continuing." );
+		QCA::Validity validity =  d->jabberTLS->peerCertificateValidity();
+		QString str = CertUtil::resultToString(r,validity);
+		QMessageBox msgBox(QMessageBox::Warning,
+			/*(d->psi->contactList()->enabledAccounts().count() > 1 ? QString("%1: ").arg(name()) : "") +*/ tr("Server Authentication"),
+			tr("The %1 certificate failed the authenticity test.").arg(d->jid.domain()) + '\n' + tr("Reason: %1.").arg(str));
+		QPushButton *detailsButton = msgBox.addButton(tr("&Details..."), QMessageBox::ActionRole);
+		QPushButton *continueButton = msgBox.addButton(tr("Co&ntinue"), QMessageBox::AcceptRole);
+		QPushButton *cancelButton = msgBox.addButton(QMessageBox::Cancel);
+		msgBox.setDefaultButton(detailsButton);
+		msgBox.setResult(QDialog::Accepted);
 
-		// valid certificate, continue
-		d->jabberTLSHandler->continueAfterHandshake ();
+		QObject::connect(this, SIGNAL(disconnected()), &msgBox, SLOT(reject()));
+		QObject::connect(this, SIGNAL(reconnecting()), &msgBox, SLOT(reject()));
+
+		while (msgBox.result() != QDialog::Rejected) {
+			msgBox.exec();
+			if ((QPushButton *)msgBox.clickedButton() == detailsButton) {
+				msgBox.setResult(QDialog::Accepted);
+				SSLCertDlg::showCert(cert, r, validity);
+			}
+			else if ((QPushButton *)msgBox.clickedButton() == continueButton) {
+				d->jabberTLSHandler->continueAfterHandshake();
+				break;
+			}
+			else if ((QPushButton *)msgBox.clickedButton() == cancelButton) {
+				disconnect();
+				break;
+			}
+			else {	// msgBox was hidden because connection was closed
+				break;
+			}
+		}
 	}
 	else
-	{
-		emit debugMessage ( "Certificate is not valid, asking user what to do next." );
-
-		// certificate is not valid, query the user
-		if ( ignoreTLSWarnings () )
-		{
-			emit debugMessage ( "We are supposed to ignore TLS warnings, continuing." );
-			d->jabberTLSHandler->continueAfterHandshake ();
-		}
-
-		emit tlsWarning ( identityResult, validityResult );
-	}
-
-}
-
-void JabberClient::continueAfterTLSWarning ()
-{
-
-	if ( d->jabberTLSHandler )
-	{
-		d->jabberTLSHandler->continueAfterHandshake ();
-	}
-
+		d->jabberTLSHandler->continueAfterHandshake();
 }
 
 void JabberClient::slotCSNeedAuthParams ( bool user, bool pass, bool realm )
@@ -1011,29 +1017,14 @@ void JabberClient::slotCSAuthenticated ()
 		d->jid = d->jabberClientStream->jid().bare();
 	}
 
-	//QString resource = (d->stream->jid().resource().isEmpty() ? ( d->acc.opt_automatic_resource ? localHostName() : d->acc.resource) : d->stream->jid().resource());
+	// get IP address
+	ByteStream *bs = d->jabberClientConnector ? d->jabberClientConnector->stream() : 0;
+	if (!bs)
+		return;
 
-
-	/*
-	 * Determine local IP address.
-	 * FIXME: This is ugly!
-	 */
-// 	if ( localAddress().isEmpty () )
-// 	{
-// 		// code for Iris-type bytestreams
-// 		ByteStream *irisByteStream = d->jabberClientConnector->stream();
-// 		if ( irisByteStream->inherits ( "BSocket" ) || irisByteStream->inherits ( "XMPP::BSocket" ) )
-// 		{
-// 			d->localAddress = ( (BSocket *)irisByteStream )->address().toString ();
-// 		}
-// 
-// 		// code for the KDE-type bytestream
-// 		/*Jabber*/ByteStream *kdeByteStream = dynamic_cast</*Jabber*/ByteStream*>(d->jabberClientConnector->stream());
-// // 		if ( kdeByteStream )
-// // 		{
-// // 			d->localAddress = kdeByteStream->socket()->peerName();
-// // 		}
-// 	}
+	if(bs->inherits("BSocket") || bs->inherits("XMPP::BSocket")) {
+		d->localAddress = ((BSocket *)bs)->address().toString();
+	}
 
 	if ( fileTransfersEnabled () )
 	{

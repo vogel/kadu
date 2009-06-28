@@ -1,4 +1,3 @@
-#include <QtCrypto>
 #include <QStringList>
 #include <QDomDocument>
 #include <QDebug>
