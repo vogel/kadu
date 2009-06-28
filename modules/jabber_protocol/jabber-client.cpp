@@ -1004,26 +1004,36 @@ void JabberClient::slotCSAuthenticated ()
 {
 	emit debugMessage ( "Connected to Jabber server." );
 
+	d->jabberClientConnector->changePollInterval(10); // for http poll, slow down after login
+
+	// Update our jid (if necessary)
+	if (!d->jabberClientStream->jid().isEmpty()) {
+		d->jid = d->jabberClientStream->jid().bare();
+	}
+
+	//QString resource = (d->stream->jid().resource().isEmpty() ? ( d->acc.opt_automatic_resource ? localHostName() : d->acc.resource) : d->stream->jid().resource());
+
+
 	/*
 	 * Determine local IP address.
 	 * FIXME: This is ugly!
 	 */
-	if ( localAddress().isEmpty () )
-	{
-		// code for Iris-type bytestreams
-		ByteStream *irisByteStream = d->jabberClientConnector->stream();
-		if ( irisByteStream->inherits ( "BSocket" ) || irisByteStream->inherits ( "XMPP::BSocket" ) )
-		{
-			d->localAddress = ( (BSocket *)irisByteStream )->address().toString ();
-		}
-
-		// code for the KDE-type bytestream
-		/*Jabber*/ByteStream *kdeByteStream = dynamic_cast</*Jabber*/ByteStream*>(d->jabberClientConnector->stream());
-// 		if ( kdeByteStream )
+// 	if ( localAddress().isEmpty () )
+// 	{
+// 		// code for Iris-type bytestreams
+// 		ByteStream *irisByteStream = d->jabberClientConnector->stream();
+// 		if ( irisByteStream->inherits ( "BSocket" ) || irisByteStream->inherits ( "XMPP::BSocket" ) )
 // 		{
-// 			d->localAddress = kdeByteStream->socket()->peerName();
+// 			d->localAddress = ( (BSocket *)irisByteStream )->address().toString ();
 // 		}
-	}
+// 
+// 		// code for the KDE-type bytestream
+// 		/*Jabber*/ByteStream *kdeByteStream = dynamic_cast</*Jabber*/ByteStream*>(d->jabberClientConnector->stream());
+// // 		if ( kdeByteStream )
+// // 		{
+// // 			d->localAddress = kdeByteStream->socket()->peerName();
+// // 		}
+// 	}
 
 	if ( fileTransfersEnabled () )
 	{
@@ -1035,7 +1045,26 @@ void JabberClient::slotCSAuthenticated ()
 	// start the client operation
 	d->jabberClient->start ( jid().domain (), jid().node (), d->password, jid().resource () );
 
-	emit connected ();
+
+	if (!d->jabberClientStream->old()) {
+		XMPP::JT_Session *j = new XMPP::JT_Session(d->jabberClient->rootTask());
+		QObject::connect(j,SIGNAL(finished()),this, SLOT(sessionStart_finished()));
+		j->go(true);
+	}
+	else {
+		emit connected ();
+	}
+}
+
+void JabberClient::sessionStart_finished()
+{
+	XMPP::JT_Session *j = (XMPP::JT_Session*)sender();
+	if ( j->success() ) {
+		emit connected();
+	}
+	else {
+		slotCSError(-1);
+	}
 }
 
 void JabberClient::slotCSDisconnected ()

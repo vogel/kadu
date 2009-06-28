@@ -12,17 +12,44 @@
 
 #include "gui/widgets/account-create-widget.h"
 
-class JabberCreateAccountWidget : public  AccountCreateWidget
+class QGridLayout;
+class QLineEdit;
+class QPushButton;
+
+class JabberServerRegisterAccount;
+class TokenWidget;
+
+class JabberCreateAccountWidget : public AccountCreateWidget
 {
 	Q_OBJECT
 
 	QList<QWidget *> HaveJidWidgets;
 	QList<QWidget *> DontHaveJidWidgets;
 
+	QLineEdit *AccountName;
+	QLineEdit *AccountId;
+	QLineEdit *AccountPassword;
+
+	QPushButton *AddThisAccount;
+	QPushButton *RemindPassword;
+
+	QLineEdit *NewPassword;
+	QLineEdit *ReNewPassword;
+	QLineEdit *EMail;
+
+	QPushButton *registerAccount;
+
 	void createGui();
+	void createIHaveAccountGui(QGridLayout *gridLayout, int &row);
+	void createRegisterAccountGui(QGridLayout *gridLayout, int &row);
 
 private slots:
 	void haveJidChanged(bool haveNumber);
+	void iHaveAccountDataChanged();
+	void addThisAccount();
+	void registerAccountDataChanged();
+	void registerNewAccount();
+	//void registerNewAccountFinished(JabberServerRegisterAccount *gsra);
 
 public:
 	explicit JabberCreateAccountWidget(QWidget *parent = 0);

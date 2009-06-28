@@ -378,7 +378,7 @@ bool JabberProtocol::handleTLSWarning(XMPP::JabberClient *jabberClient, QCA::TLS
 
 	QMessageBox* m = new QMessageBox(QMessageBox::Critical,
 	/*(printAccountName !accountId.isEmpty() ? QString("%s: ").arg(name()) : "") + */tr("Server Error"),
-	tr("There was an error communicating with the server.\nDetails: %s").arg(server + idCode + code),
+	tr("There was an error communicating with the server.\nDetails: %1").arg(server + idCode + code + message),
 	QMessageBox::Ok, 0, Qt::Popup);
 	m->setModal(true);
 	m->show();
