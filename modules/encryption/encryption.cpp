@@ -137,7 +137,7 @@ EncryptionManager::EncryptionManager(bool firstLoad)
 	                                                   QDir::toNativeSeparators(ggPath("keys/")));
 	if(EncryptionObject == 0)
 	{
-		MessageBox::msg(factory->errorInfo(), false, "Warning", configurationWindow);
+		MessageBox::msg(factory->errorInfo(), false, "Warning", kadu);
 	}
 
 	// use mkdir from sys/stat.h - there's no easy way to set permissions through Qt
