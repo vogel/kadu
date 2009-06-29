@@ -24,7 +24,7 @@ class StatusButton : public QPushButton, private ConfigurationAwareObject
 	StatusContainer *MyStatusContainer;
 
 private slots:
-	void statusChanged(Status oldStatus, Status newStatus);
+	void statusChanged();
 
 protected:
 	virtual void configurationUpdated();

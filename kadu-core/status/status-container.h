@@ -23,7 +23,7 @@ public:
 	virtual QPixmap statusPixmap() = 0;
 
 signals:
-	void statusChanged(Status oldStatus, Status newStatus);
+	void statusChanged();
 
 };
 

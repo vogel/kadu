@@ -18,11 +18,11 @@
 StatusButton::StatusButton(StatusContainer *statusContainer, QWidget *parent) :
 		QPushButton(parent), MyStatusContainer(statusContainer)
 {
-	statusChanged(MyStatusContainer->status(), MyStatusContainer->status());
-	connect(MyStatusContainer, SIGNAL(statusChanged(Status, Status)), this, SLOT(statusChanged(Status, Status)));
+	statusChanged();
+	connect(MyStatusContainer, SIGNAL(statusChanged()), this, SLOT(statusChanged()));
 }
 
-void StatusButton::statusChanged(Status oldStatus, Status newStatus)
+void StatusButton::statusChanged()
 {
 	setIcon(MyStatusContainer->statusPixmap());
 	setText(MyStatusContainer->statusName());

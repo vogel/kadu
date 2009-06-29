@@ -40,6 +40,7 @@ void Account::setProtocol(Protocol *protocolHandler)
 {
 	ProtocolHandler = protocolHandler;
 
+	connect(ProtocolHandler, SIGNAL(statusChanged(Account *, Status)), this, SIGNAL(statusChagned()));
 	connect(ProtocolHandler, SIGNAL(contactStatusChanged(Account *, Contact, Status)),
 			this, SIGNAL(contactStatusChanged(Account *, Contact, Status)));
 }
@@ -124,9 +125,7 @@ Contact Account::createAnonymous(const QString& id)
 void Account::setStatus(Status status)
 {
 	if (0 != ProtocolHandler)
-	{
 		ProtocolHandler->setStatus(status);
-	}
 }
 
 Status Account::status()
