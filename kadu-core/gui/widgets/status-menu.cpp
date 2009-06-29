@@ -86,13 +86,13 @@ StatusMenu::StatusMenu(StatusContainer *statusContainer, QWidget *parent) :
 	ChangeStatusActionGroup->addAction(ChangeStatusToOffline);
 	ChangeStatusActionGroup->addAction(ChangeStatusToOfflineDesc);
 
-	statusChanged(StatusChangerManager::instance()->status());
-	connect(StatusChangerManager::instance(), SIGNAL(statusChanged(Status)), this, SLOT(statusChanged(Status)));
+	statusChanged();
+	connect(MyStatusContainer, SIGNAL(statusChanged()), this, SLOT(statusChanged()));
 }
 
 StatusMenu::~StatusMenu()
 {
-	disconnect(StatusChangerManager::instance(), SIGNAL(statusChanged(Status)), this, SLOT(statusChanged(Status)));
+	disconnect(MyStatusContainer, SIGNAL(statusChanged()), this, SLOT(statusChanged()));
 }
 
 void StatusMenu::addToMenu(QMenu *menu)
@@ -182,11 +182,11 @@ void StatusMenu::changeStatusPrivate(bool toggled)
 	config_file.writeEntry("General", "PrivateStatus", toggled);
 }
 
-void StatusMenu::statusChanged(Status status)
+void StatusMenu::statusChanged()
 {
 	int index;
 
-	switch (status.type())
+	switch (MyStatusContainer->status().type())
 	{
 		case Status::Online:
 			index = 0;
@@ -201,7 +201,7 @@ void StatusMenu::statusChanged(Status status)
 			index = 6;
 	}
 
-	if (!status.description().isEmpty())
+	if (!MyStatusContainer->status().description().isEmpty())
 		index++;
 
 	foreach (QAction *action, ChangeStatusActionGroup->actions())

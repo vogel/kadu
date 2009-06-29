@@ -44,7 +44,7 @@ private slots:
 	void aboutToHide();
 	void changeStatus();
 	void changeStatusPrivate(bool toggled);
-	void statusChanged(Status status);
+	void statusChanged();
 
 public:
 	explicit StatusMenu(StatusContainer *statusContainer, QWidget *parent = 0);
