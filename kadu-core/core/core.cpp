@@ -442,8 +442,9 @@ void Core::accountRegistered(Account *account)
 	connect(protocol, SIGNAL(connecting(Account *)), this, SIGNAL(connecting()));
 	connect(protocol, SIGNAL(connected(Account *)), this, SIGNAL(connected()));
 	connect(protocol, SIGNAL(disconnected(Account *)), this, SIGNAL(disconnected()));
-	connect(protocol, SIGNAL(statusChanged(Account *, Status)),
-			this, SLOT(statusChanged(Account *, Status)));
+// 	TODO: 0.6.6
+// 	connect(protocol, SIGNAL(statusChanged(Account *, Status)),
+// 			this, SLOT(statusChanged(Account *, Status)));
 
 	ContactAccountData *contactAccountData = protocol->protocolFactory()->
 			newContactAccountData(Myself, account, account->id());

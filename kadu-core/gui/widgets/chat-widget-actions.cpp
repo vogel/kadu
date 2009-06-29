@@ -82,7 +82,7 @@ ChatWidgetActions::ChatWidgetActions(QObject *parent) : QObject(parent)
 		this, SLOT(autoSendActionActivated(QAction *, bool)),
 		"AutoSendMessage", tr("%1 sends message").arg(config_file.readEntry("ShortCuts", "chat_newline")), true
 	);
-	connect(AutoSend, SIGNAL(actionCreated(KaduAction *)), this, SLOT(autoSendActionCreated(KaduAction *)));
+	connect(AutoSend, SIGNAL(actionCreated(Action *)), this, SLOT(autoSendActionCreated(Action *)));
 
 	ClearChat = new ActionDescription(0,
 		ActionDescription::TypeChat, "clearChatAction",
@@ -120,7 +120,7 @@ ChatWidgetActions::ChatWidgetActions(QObject *parent) : QObject(parent)
 		"SendMessage", tr("&Send"), false, QString::null,
 		disableEmptyTextBox
 	);
-	connect(Send, SIGNAL(actionCreated(KaduAction *)), this, SLOT(sendActionCreated(KaduAction *)));
+	connect(Send, SIGNAL(actionCreated(Action *)), this, SLOT(sendActionCreated(Action *)));
 
 	Whois = new ActionDescription(0,
 		ActionDescription::TypeChat, "whoisAction",
@@ -152,7 +152,7 @@ ChatWidgetActions::ChatWidgetActions(QObject *parent) : QObject(parent)
 
 	OpenChatWith = new ActionDescription(0,
 		ActionDescription::TypeGlobal, "openChatWithAction",
-		this, SLOT(openChatWith()),
+		this, SLOT(openChatActionActivated(QAction *, bool)),
 		"OpenChat", tr("Open chat with...")
 	);
 	OpenChatWith->setShortcut("kadu_openchatwith", Qt::ApplicationShortcut);
@@ -162,7 +162,7 @@ ChatWidgetActions::ChatWidgetActions(QObject *parent) : QObject(parent)
 		this, SLOT(insertEmoticonActionActivated(QAction *, bool)),
 		"ChooseEmoticon", tr("Insert emoticon")
 	);
-	connect(InsertEmoticon, SIGNAL(actionCreated(KaduAction *)), this, SLOT(insertEmoticonActionCreated(KaduAction *)));
+	connect(InsertEmoticon, SIGNAL(actionCreated(Action *)), this, SLOT(insertEmoticonActionCreated(Action *)));
 
 	ColorSelector = new ActionDescription(0,
 		ActionDescription::TypeChat, "colorAction",

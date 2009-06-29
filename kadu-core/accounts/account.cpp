@@ -138,7 +138,7 @@ Status Account::status()
 
 QString Account::statusName()
 {
-	Status::name(status(), false);
+	return Status::name(status(), false);
 }
 
 QPixmap Account::statusPixmap()

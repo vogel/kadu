@@ -18,7 +18,7 @@
 StatusButton::StatusButton(StatusContainer *statusContainer, QWidget *parent) :
 		QPushButton(parent), MyStatusContainer(statusContainer)
 {
-	// statusChanged(MyStatusContainer->status(), MyStatusContainer->status());
+	statusChanged(MyStatusContainer->status(), MyStatusContainer->status());
 	connect(MyStatusContainer, SIGNAL(statusChanged(Status, Status)), this, SLOT(statusChanged(Status, Status)));
 }
 

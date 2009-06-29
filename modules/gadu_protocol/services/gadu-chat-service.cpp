@@ -25,8 +25,9 @@
 GaduChatService::GaduChatService(GaduProtocol *protocol)
 	: ChatService(protocol), Protocol(protocol)
 {
-	connect(protocol->socketNotifiers(), SIGNAL(ackReceived(int, uin_t, int)), 
-		this, SLOT(ackReceived(int, uin_t, int)));
+	// TODO: 0.6.6
+// 	connect(protocol->socketNotifiers(), SIGNAL(ackReceived(int, uin_t, int)),
+// 		this, SLOT(ackReceived(int, uin_t, int)));
 }
 
 bool GaduChatService::sendMessage(Chat *chat, FormattedMessage &message)

@@ -150,8 +150,9 @@ void NotificationManager::notifyAboutUserActionActivated(QAction *sender, bool t
 void NotificationManager::accountRegistered(Account *account)
 {
 	Protocol *protocol = account->protocol();
-	connect(protocol, SIGNAL(connectionError(Account *, const QString &, const QString &)),
-			this, SLOT(connectionError(Account *, const QString &, const QString &)));
+// 	TODO: 0.6.6
+// 	connect(protocol, SIGNAL(connectionError(Account *, const QString &, const QString &)),
+// 			this, SLOT(connectionError(Account *, const QString &, const QString &)));
 	connect(account, SIGNAL(contactStatusChanged(Account *, Contact, Status)),
 			this, SLOT(statusChanged(Account *, Contact, Status)));
 

@@ -26,7 +26,7 @@ class StatusButtons : public QWidget, private AccountsAwareObject
 
 	QHBoxLayout *Layout;
 
-	QMap<Account *, StatusButton *> Buttons;
+	QMap<StatusContainer *, StatusButton *> Buttons;
 
 	void createGui();
 
