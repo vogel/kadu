@@ -7,8 +7,11 @@
  *                                                                         *
  ***************************************************************************/
 
+#include <QtGui/QMenu>
+
 #include "accounts/account.h"
 #include "accounts/account-manager.h"
+#include "gui/widgets/status-menu.h"
 #include "protocols/protocol.h"
 #include "status/status-container.h"
 #include "status_changer.h"
@@ -18,8 +21,20 @@
 StatusButton::StatusButton(StatusContainer *statusContainer, QWidget *parent) :
 		QPushButton(parent), MyStatusContainer(statusContainer)
 {
+	createGui();
+
 	statusChanged();
 	connect(MyStatusContainer, SIGNAL(statusChanged()), this, SLOT(statusChanged()));
+}
+
+
+void StatusButton::createGui()
+{
+	MyStatusMenu = new StatusMenu(MyStatusContainer, this);
+	QMenu *menu = new QMenu(this);
+	MyStatusMenu->addToMenu(menu);
+
+	setMenu(menu);
 }
 
 void StatusButton::statusChanged()

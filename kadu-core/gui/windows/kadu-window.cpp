@@ -62,7 +62,6 @@ KaduWindow::~KaduWindow()
 void KaduWindow::createGui()
 {
 	createMenu();
-	createStatusPopupMenu();
 
 	MainWidget = new QWidget;
 	MainLayout = new QVBoxLayout(MainWidget);
@@ -103,7 +102,6 @@ void KaduWindow::createGui()
 
 	ChangeStatusButtons = new StatusButtons(this);
 	MainLayout->addWidget(ChangeStatusButtons);
-// 	ChangeStatusButtons->setMenu(StatusButtonMenu); TODO: 0.6.6
 
 	if (!config_file.readBoolEntry("Look", "ShowStatusButton"))
 		ChangeStatusButtons->hide();
@@ -260,17 +258,6 @@ void KaduWindow::openRecentChats(QAction *action)
 	kdebugf();
 // TODO: 0.6.6
 // 	chat_manager->openPendingMsgs(chat_manager->chats().at(action->data().toInt()), true);
-	kdebugf2();
-}
-
-void KaduWindow::createStatusPopupMenu()
-{
-	kdebugf();
-
-	StatusButtonMenu = new QMenu(this);
-	StatusMenu *statusMenu = new StatusMenu(this);
-	statusMenu->addToMenu(StatusButtonMenu);
-
 	kdebugf2();
 }
 

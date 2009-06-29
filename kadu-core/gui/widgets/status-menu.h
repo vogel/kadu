@@ -19,7 +19,7 @@ class QAction;
 class QActionGroup;
 class QMenu;
 
-class Account;
+class StatusContainer;
 
 class StatusMenu : public QObject
 {
@@ -38,6 +38,8 @@ class StatusMenu : public QObject
 
 	QPoint MousePositionBeforeMenuHide;
 
+	StatusContainer *MyStatusContainer;
+
 private slots:
 	void aboutToHide();
 	void changeStatus();
@@ -45,7 +47,7 @@ private slots:
 	void statusChanged(Status status);
 
 public:
-	explicit StatusMenu(QObject *parent = 0);
+	explicit StatusMenu(StatusContainer *statusContainer, QWidget *parent = 0);
 	virtual ~StatusMenu();
 
 	void addToMenu(QMenu *menu);

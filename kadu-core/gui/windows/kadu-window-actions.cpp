@@ -961,12 +961,12 @@ void KaduWindowActions::editUserActionActivated(QAction *sender, bool toggled)
 }
 
 void KaduWindowActions::showStatusActionActivated(QAction *sender, bool toggled)
-{
-	QMenu *menu = new QMenu();
-	StatusMenu *status = new StatusMenu(menu);
-	status->addToMenu(menu);
-	menu->exec(QCursor::pos());
-	delete menu;
+{ // TODO: 0.6.6
+// 	QMenu *menu = new QMenu();
+// 	StatusMenu *status = new StatusMenu(menu);
+// 	status->addToMenu(menu);
+// 	menu->exec(QCursor::pos());
+// 	delete menu;
 }
 
 void KaduWindowActions::useProxyActionActivated(QAction *sender, bool toggled)

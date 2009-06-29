@@ -73,7 +73,6 @@ private:
 	void createKaduMenu();
 	void createContactsMenu();
 	void createHelpMenu();
-	void createStatusPopupMenu();
 
 	void storeConfiguration();
 

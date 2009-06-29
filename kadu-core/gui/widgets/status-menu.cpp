@@ -22,7 +22,8 @@
 
 #include "status-menu.h"
 
-StatusMenu::StatusMenu(QObject *parent)
+StatusMenu::StatusMenu(StatusContainer *statusContainer, QWidget *parent) :
+		QObject(parent), MyStatusContainer(statusContainer)
 {
 	ChangeStatusActionGroup = new QActionGroup(this);
 	ChangeStatusActionGroup->setExclusive(false); // HACK

@@ -16,12 +16,16 @@
 #include "protocols/status.h"
 
 class StatusContainer;
+class StatusMenu;
 
 class StatusButton : public QPushButton, private ConfigurationAwareObject
 {
 	Q_OBJECT
 
 	StatusContainer *MyStatusContainer;
+	StatusMenu *MyStatusMenu;
+
+	void createGui();
 
 private slots:
 	void statusChanged();
