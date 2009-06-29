@@ -189,7 +189,7 @@ Status AccountManager::status() const
 {
 	Account *account = defaultAccount();
 	return account
-		? account->currentStatus()
+		? account->status()
 		: Status();
 }
 

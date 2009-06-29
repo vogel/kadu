@@ -10,13 +10,13 @@
 #ifndef ACCOUNT_H
 #define ACCOUNT_H
 
-#include <QtCore/QObject>
 #include <QtCore/QUuid>
 #include <QtXml/QDomElement>
 
 #include "contacts/contact.h"
 #include "contacts/contacts-aware-object.h"
 #include "protocols/status.h"
+#include "status/status-container.h"
 
 class QPixmap;
 
@@ -25,7 +25,7 @@ class Protocol;
 class Status;
 class XmlConfigFile;
 
-class KADUAPI Account : public QObject, public UuidStorableObject, public ContactsAwareObject
+class KADUAPI Account : public StatusContainer, public UuidStorableObject, public ContactsAwareObject
 {
 	Q_OBJECT
 
@@ -69,10 +69,16 @@ public:
 	bool hasPassword() { return HasPassword; }
 	QString password() { return Password; }
 
-	Status currentStatus();
-
 	Contact getContactById(const QString &id);
 	Contact createAnonymous(const QString &id);
+
+	// StatusContainer implementation
+
+	virtual void setStatus(Status newStatus);
+	virtual Status status();
+
+	virtual QString statusName();
+	virtual QPixmap statusPixmap();
 
 	QPixmap statusPixmap(Status status);
 

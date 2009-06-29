@@ -29,7 +29,7 @@ class ContactsListWidget;
 class GroupTabBar;
 class KaduTextBrowser;
 class KaduWindowActions;
-class StatusButton;
+class StatusButtons;
 
 class KaduWindow : public MainWindow, private ConfigurationAwareObject
 {
@@ -65,7 +65,7 @@ private:
 	QVBoxLayout *MainLayout;
 
 	QMenu *StatusButtonMenu;
-	StatusButton *ChangeStatusButton;
+	StatusButtons *ChangeStatusButtons;
 	QPoint LastPositionBeforeStatusMenuHide;
 
 	void createGui();

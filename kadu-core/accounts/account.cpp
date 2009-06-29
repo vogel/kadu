@@ -101,13 +101,6 @@ void Account::store()
 		removeValue("Password");
 }
 
-Status Account::currentStatus()
-{
-	return 0 != ProtocolHandler
-		? ProtocolHandler->status()
-		: Status();
-}
-
 Contact Account::getContactById(const QString& id)
 {
 	return ContactManager::instance()->byId(this, id);
@@ -126,6 +119,31 @@ Contact Account::createAnonymous(const QString& id)
 
 	result.addAccountData(contactAccountData);
 	return result;
+}
+
+void Account::setStatus(Status status)
+{
+	if (0 != ProtocolHandler)
+	{
+		ProtocolHandler->setStatus(status);
+	}
+}
+
+Status Account::status()
+{
+	return 0 != ProtocolHandler
+		? ProtocolHandler->status()
+		: Status();
+}
+
+QString Account::statusName()
+{
+	Status::name(status(), false);
+}
+
+QPixmap Account::statusPixmap()
+{
+	return statusPixmap(status());
 }
 
 QPixmap Account::statusPixmap(Status status)

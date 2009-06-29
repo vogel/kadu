@@ -7,31 +7,37 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef STATUS_BUTTON_H
-#define STATUS_BUTTON_H
+#ifndef STATUS_BUTTONS_H
+#define STATUS_BUTTONS_H
 
-#include <QtGui/QPushButton>
+#include <QtCore/QMap>
+#include <QtGui/QWidget>
 
-#include "configuration/configuration-aware-object.h"
-#include "protocols/status.h"
+#include "accounts/accounts-aware-object.h"
 
+class QHBoxLayout;
+
+class StatusButton;
 class StatusContainer;
 
-class StatusButton : public QPushButton, private ConfigurationAwareObject
+class StatusButtons : public QWidget, private AccountsAwareObject
 {
 	Q_OBJECT
 
-	StatusContainer *MyStatusContainer;
+	QHBoxLayout *Layout;
 
-private slots:
-	void statusChanged(Status oldStatus, Status newStatus);
+	QMap<Account *, StatusButton *> Buttons;
+
+	void createGui();
 
 protected:
-	virtual void configurationUpdated();
+	virtual void accountRegistered(Account *account);
+	virtual void accountUnregistered(Account *account);
 
 public:
-	explicit StatusButton(StatusContainer *statusContainer, QWidget *parent = 0);
+	explicit StatusButtons(QWidget *parent = 0);
+	virtual ~StatusButtons();
 
 };
 
-#endif // STATUS_BUTTON_H
+#endif // STATUS_BUTTONS_H

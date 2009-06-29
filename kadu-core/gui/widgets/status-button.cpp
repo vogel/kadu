@@ -10,28 +10,25 @@
 #include "accounts/account.h"
 #include "accounts/account-manager.h"
 #include "protocols/protocol.h"
+#include "status/status-container.h"
 #include "status_changer.h"
 
 #include "status-button.h"
 
-StatusButton::StatusButton(QIcon icon, const QString& text, QWidget *parent) :
-		QPushButton(icon, text, parent)
+StatusButton::StatusButton(StatusContainer *statusContainer, QWidget *parent) :
+		QPushButton(parent), MyStatusContainer(statusContainer)
 {
-	statusChanged(StatusChangerManager::instance()->status());
-	connect(StatusChangerManager::instance(), SIGNAL(statusChanged(Status)), this, SLOT(statusChanged(Status)));
+	// statusChanged(MyStatusContainer->status(), MyStatusContainer->status());
+	connect(MyStatusContainer, SIGNAL(statusChanged(Status, Status)), this, SLOT(statusChanged(Status, Status)));
 }
 
-void StatusButton::statusChanged(Status status)
+void StatusButton::statusChanged(Status oldStatus, Status newStatus)
 {
-	if (AccountManager::instance()->defaultAccount())
-		setIcon(AccountManager::instance()->defaultAccount()->statusPixmap(status));
-
-	setText(Status::name(status));
+	setIcon(MyStatusContainer->statusPixmap());
+	setText(MyStatusContainer->statusName());
 }
 
 void StatusButton::configurationUpdated()
 {
-	Account *account = AccountManager::instance()->defaultAccount();
-	if (account)
-		setIcon(account->protocol()->statusPixmap());
+	setIcon(MyStatusContainer->statusPixmap());
 }

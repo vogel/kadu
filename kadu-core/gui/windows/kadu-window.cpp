@@ -31,7 +31,7 @@
 #include "gui/widgets/group-tab-bar.h"
 #include "gui/widgets/kadu_text_browser.h"
 #include "gui/windows/kadu-window-actions.h"
-#include "gui/widgets/status-button.h"
+#include "gui/widgets/status-buttons.h"
 #include "gui/widgets/status-menu.h"
 
 #include "misc/misc.h"
@@ -101,12 +101,12 @@ void KaduWindow::createGui()
 	if (!config_file.readBoolEntry("Look", "ShowInfoPanel"))
 		InfoPanel->QWidget::hide();
 
-	ChangeStatusButton = new StatusButton(IconsManager::instance()->loadIcon("Offline"), tr("Offline"), this);
-	MainLayout->addWidget(ChangeStatusButton);
-	ChangeStatusButton->setMenu(StatusButtonMenu);
+	ChangeStatusButtons = new StatusButtons(this);
+	MainLayout->addWidget(ChangeStatusButtons);
+// 	ChangeStatusButtons->setMenu(StatusButtonMenu); TODO: 0.6.6
 
 	if (!config_file.readBoolEntry("Look", "ShowStatusButton"))
-		ChangeStatusButton->hide();
+		ChangeStatusButtons->hide();
 
 	QList<int> splitSizes;
 
@@ -387,7 +387,7 @@ void KaduWindow::configurationUpdated()
 	else
 		ContactsWidget->setBackground(config_file.readColorEntry("Look","UserboxBgColor").name());
 
-	ChangeStatusButton->setVisible(config_file.readBoolEntry("Look", "ShowStatusButton"));
+	ChangeStatusButtons->setVisible(config_file.readBoolEntry("Look", "ShowStatusButton"));
 }
 
 void KaduWindow::insertMenuActionDescription(ActionDescription *actionDescription, MenuType type, int pos)

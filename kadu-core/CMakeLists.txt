@@ -98,6 +98,7 @@ set (kadu_SRCS
 	gui/widgets/select-file.cpp
 	gui/widgets/select-font.cpp
 	gui/widgets/status-button.cpp
+	gui/widgets/status-buttons.cpp
 	gui/widgets/status-menu.cpp
 	gui/widgets/syntax-editor.cpp
 	gui/widgets/toolbar.cpp
@@ -283,6 +284,7 @@ set (kadu_MOC_SRCS
 	gui/widgets/select-file.h
 	gui/widgets/select-font.h
 	gui/widgets/status-button.h
+	gui/widgets/status-buttons.h
 	gui/widgets/status-menu.h
 	gui/widgets/syntax-editor.h
 	gui/widgets/toolbar.h
@@ -339,6 +341,8 @@ set (kadu_MOC_SRCS
 	protocols/services/file-transfer-service.h
 	protocols/services/personal-info-service.h
 	protocols/services/search-service.h
+
+	status/status-container.h
 
 	dnshandler.h
 	emoticons.h

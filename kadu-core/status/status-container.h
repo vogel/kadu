@@ -7,31 +7,24 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef STATUS_BUTTON_H
-#define STATUS_BUTTON_H
+#ifndef STATUS_CONTAINER_H
+#define STATUS_CONTAINER_H
 
-#include <QtGui/QPushButton>
-
-#include "configuration/configuration-aware-object.h"
 #include "protocols/status.h"
 
-class StatusContainer;
-
-class StatusButton : public QPushButton, private ConfigurationAwareObject
+class StatusContainer : public QObject
 {
 	Q_OBJECT
-
-	StatusContainer *MyStatusContainer;
-
-private slots:
-	void statusChanged(Status oldStatus, Status newStatus);
-
-protected:
-	virtual void configurationUpdated();
-
 public:
-	explicit StatusButton(StatusContainer *statusContainer, QWidget *parent = 0);
+	virtual void setStatus(Status newStatus) = 0;
+	virtual Status status() = 0;
+
+	virtual QString statusName() = 0;
+	virtual QPixmap statusPixmap() = 0;
+
+signals:
+	void statusChanged(Status oldStatus, Status newStatus);
 
 };
 
-#endif // STATUS_BUTTON_H
+#endif // STATUS_CONTAINER_H
