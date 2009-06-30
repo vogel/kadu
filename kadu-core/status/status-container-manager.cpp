@@ -7,6 +7,7 @@
  *                                                                         *
  ***************************************************************************/
 
+#include "accounts/account.h"
 #include "status/status-container-aware-object.h"
 
 #include "status-container-manager.h"
@@ -22,10 +23,23 @@ KADUAPI StatusContainerManager * StatusContainerManager::instance()
 
 StatusContainerManager::StatusContainerManager()
 {
+	triggerAllAccountsRegistered();
 }
 
 StatusContainerManager::~StatusContainerManager()
 {
+	triggerAllAccountsUnregistered();
+}
+
+
+void StatusContainerManager::accountRegistered(Account *account)
+{
+	registerStatusContainer(account);
+}
+
+void StatusContainerManager::accountUnregistered(Account *account)
+{
+	unregisterStatusContainer(account);
 }
 
 void StatusContainerManager::registerStatusContainer(StatusContainer *statusContainer)

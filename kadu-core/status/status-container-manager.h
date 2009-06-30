@@ -12,9 +12,10 @@
 
 #include <QtCore/QObject>
 
+#include "accounts/accounts-aware-object.h"
 #include "status/status-container.h"
 
-class KADUAPI StatusContainerManager : public QObject
+class KADUAPI StatusContainerManager : public QObject, private AccountsAwareObject
 {
 	Q_OBJECT
 	Q_DISABLE_COPY(StatusContainerManager)
@@ -27,6 +28,10 @@ class KADUAPI StatusContainerManager : public QObject
 	void init();
 
 	QList<StatusContainer *> StatusContainers;
+
+protected:
+	virtual void accountRegistered(Account *account);
+	virtual void accountUnregistered(Account *account);
 
 public:
 	static StatusContainerManager * instance();
