@@ -184,6 +184,9 @@ set (kadu_SRCS
 	protocols/model/protocols-model.cpp
 	protocols/services/chat-service.cpp
 
+	status/status-container-aware-object.cpp
+	status/status-container-manager.cpp
+
 	activate.cpp
 	debug.cpp
 	dnshandler.cpp
@@ -343,6 +346,7 @@ set (kadu_MOC_SRCS
 	protocols/services/search-service.h
 
 	status/status-container.h
+	status/status-container-manager.h
 
 	dnshandler.h
 	emoticons.h

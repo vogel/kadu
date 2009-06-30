@@ -115,21 +115,21 @@ void GaduCreateAccountWidget::createRegisterAccountGui(QGridLayout *gridLayout, 
 	QLabel *newPasswordLabel = new QLabel(tr("New password") + ":", this);
 	gridLayout->addWidget(newPasswordLabel, row, 1, Qt::AlignRight);
 	NewPassword = new QLineEdit(this);
-	connect(NewPassword, SIGNAL(textChanged(QString)), this, SLOT(registerAccountDataChanged()));
+	connect(NewPassword, SIGNAL(textChanged(const QString &)), this, SLOT(registerAccountDataChanged()));
 	NewPassword->setEchoMode(QLineEdit::Password);
 	gridLayout->addWidget(NewPassword, row++, 2, 1, 2);
 
 	QLabel *reNewPasswordLabel = new QLabel(tr("Retype password") + ":", this);
 	gridLayout->addWidget(reNewPasswordLabel, row, 1, Qt::AlignRight);
 	ReNewPassword = new QLineEdit(this);
-	connect(ReNewPassword, SIGNAL(textChanged(QString)), this, SLOT(registerAccountDataChanged()));
+	connect(ReNewPassword, SIGNAL(textChanged(const QString &)), this, SLOT(registerAccountDataChanged()));
 	ReNewPassword->setEchoMode(QLineEdit::Password);
 	gridLayout->addWidget(ReNewPassword, row++, 2, 1, 2);
 
 	QLabel *eMailLabel = new QLabel(tr("Your e-mail address") + ":", this);
 	gridLayout->addWidget(eMailLabel, row, 1, Qt::AlignRight);
 	EMail = new QLineEdit(this);
-	connect(EMail, SIGNAL(textChanged(QString)), this, SLOT(registerAccountDataChanged()));
+	connect(EMail, SIGNAL(textChanged(const QString &)), this, SLOT(registerAccountDataChanged()));
 	gridLayout->addWidget(EMail, row++, 2, 1, 2);
 
 	QLabel *tokenLabel = new QLabel(tr("Type this code") + ":", this);
@@ -189,7 +189,7 @@ void GaduCreateAccountWidget::registerAccountDataChanged()
 
 void GaduCreateAccountWidget::registerNewAccount()
 {
-    	if (NewPassword->text() != ReNewPassword->text())
+    if (NewPassword->text() != ReNewPassword->text())
 	{
 		MessageBox::msg(tr("Error data typed in required fields.\n\n"
 			"Passwords typed in both fields (\"New password\" and \"Retype password\") "

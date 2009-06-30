@@ -19,7 +19,7 @@ StatusButtons::StatusButtons(QWidget *parent) :
 {
 	createGui();
 
-	triggerAllAccountsRegistered();
+	triggerAllStatusContainerRegistered()
 }
 
 StatusButtons::~StatusButtons()
@@ -31,21 +31,21 @@ void StatusButtons::createGui()
 	Layout = new QHBoxLayout(this);
 }
 
-void StatusButtons::accountRegistered(Account *account)
+void StatusButtons::statusContainerRegistered(StatusContainer *statusContainer)
 {
-	if (Buttons.contains(account) || !Layout)
+	if (Buttons.contains(statusContainer) || !Layout)
 		return;
 
-	StatusButton *button = new StatusButton(account);
+	StatusButton *button = new StatusButton(statusContainer);
 	Layout->addWidget(button);
-	Buttons[account] = button;
+	Buttons[statusContainer] = button;
 }
 
-void StatusButtons::accountUnregistered(Account *account)
+void StatusButtons::statusContainerUnregistered(StatusContainer *statusContainer)
 {
-	if (Buttons.contains(account))
+	if (Buttons.contains(statusContainer))
 	{
-		delete Buttons[account];
-		Buttons.remove(account);
+		delete Buttons[statusContainer];
+		Buttons.remove(statusContainer);
 	}
 }

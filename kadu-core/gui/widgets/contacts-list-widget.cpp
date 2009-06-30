@@ -288,7 +288,7 @@ void ContactsListWidget::setBackground(const QString &backgroundColor, const QSt
 void ContactsListWidget::updateBackground()
 {
 	// TODO 0.6.6 fix image "Stretched" + update on resize event - write image into resource tree
-    	QString style;
+	QString style;
 
 	style.append("QFrame {");
 

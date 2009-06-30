@@ -13,14 +13,14 @@
 #include <QtCore/QMap>
 #include <QtGui/QWidget>
 
-#include "accounts/accounts-aware-object.h"
+#include "status/status-container-aware-object.h"
 
 class QHBoxLayout;
 
 class StatusButton;
 class StatusContainer;
 
-class StatusButtons : public QWidget, private AccountsAwareObject
+class StatusButtons : public QWidget, private StatusContainerAwareObject
 {
 	Q_OBJECT
 
@@ -31,8 +31,8 @@ class StatusButtons : public QWidget, private AccountsAwareObject
 	void createGui();
 
 protected:
-	virtual void accountRegistered(Account *account);
-	virtual void accountUnregistered(Account *account);
+	virtual void statusContainerRegistered(StatusContainer *statusContainer);
+	virtual void statusContainerUnregistered(StatusContainer *statusContainer);
 
 public:
 	explicit StatusButtons(QWidget *parent = 0);
