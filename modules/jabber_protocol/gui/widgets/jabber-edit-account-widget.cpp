@@ -64,7 +64,7 @@ void JabberEditAccountWidget::createGeneralTab(QTabWidget *tabWidget)
 	ConnectAtStart = new QCheckBox(tr("Connect at start"), this);
 	layout->addWidget(ConnectAtStart, row++, 0, 1, 3);
 
-	QLabel *numberLabel = new QLabel(tr("Jabber-Jabber number") + ":", this);
+	QLabel *numberLabel = new QLabel(tr("Jabber ID") + ":", this);
 	layout->addWidget(numberLabel, row, 1, Qt::AlignRight);
 	AccountId = new QLineEdit(this);
 	layout->addWidget(AccountId, row++, 2, 1, 2);

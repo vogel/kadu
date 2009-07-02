@@ -406,6 +406,8 @@ public:
 	 */
 	void requestRoster ();
 
+	static void getErrorInfo(int err, AdvancedConnector *conn, Stream *stream, QCATLSHandler *tlsHandler, QString *_str, bool *_reconn);
+
 signals:
 	/**
 	 * Connected successfully.
@@ -536,8 +538,6 @@ private:
 	 * Remove an address that the S5B server currently handles.
 	 */
 	void removeS5BServerAddress ( const QString &address );
-
-	void getErrorInfo(int err, AdvancedConnector *conn, Stream *stream, QCATLSHandler *tlsHandler, QString *_str, bool *_reconn);
 
 private slots:
 	/* S5B server object has been destroyed. */

@@ -19,7 +19,7 @@ StatusButtons::StatusButtons(QWidget *parent) :
 {
 	createGui();
 
-	triggerAllStatusContainerRegistered()
+	triggerAllStatusContainerRegistered();
 }
 
 StatusButtons::~StatusButtons()

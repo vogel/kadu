@@ -17,6 +17,7 @@
 #include <QtGui/QRadioButton>
 
 #include "gui/windows/message-box.h"
+#include "server/jabber-server-register-account.h"
 #include "jabber-account.h"
 #include "jabber-protocol-factory.h"
 
@@ -108,38 +109,104 @@ void JabberCreateAccountWidget::createRegisterAccountGui(QGridLayout *gridLayout
 	QRadioButton *dontHaveJid = new QRadioButton(tr("I don't have a Jabber ID"), this);
 	gridLayout->addWidget(dontHaveJid, row++, 0, 1, 4);
 
+	QLabel *serverLabel = new QLabel(tr("Jabber server") + ":", this);
+	gridLayout->addWidget(serverLabel, row, 1, Qt::AlignRight);
+	Server = new QLineEdit(this);
+	connect(Server, SIGNAL(textChanged(QString)), this, SLOT(RegisterAccountDataChanged()));
+	gridLayout->addWidget(Server, row++, 2, 1, 2);
+
+	QLabel *usernameLabel = new QLabel(tr("User name") + ":", this);
+	gridLayout->addWidget(usernameLabel, row, 1, Qt::AlignRight);
+	Username = new QLineEdit(this);
+	connect(Username, SIGNAL(textChanged(QString)), this, SLOT(RegisterAccountDataChanged()));
+	gridLayout->addWidget(Username, row++, 2, 1, 2);
+
 	QLabel *newPasswordLabel = new QLabel(tr("New password") + ":", this);
 	gridLayout->addWidget(newPasswordLabel, row, 1, Qt::AlignRight);
 	NewPassword = new QLineEdit(this);
-	connect(NewPassword, SIGNAL(textChanged(QString)), this, SLOT(registerAccountDataChanged()));
+	connect(NewPassword, SIGNAL(textChanged(QString)), this, SLOT(RegisterAccountDataChanged()));
 	NewPassword->setEchoMode(QLineEdit::Password);
 	gridLayout->addWidget(NewPassword, row++, 2, 1, 2);
 
 	QLabel *reNewPasswordLabel = new QLabel(tr("Retype password") + ":", this);
 	gridLayout->addWidget(reNewPasswordLabel, row, 1, Qt::AlignRight);
 	ReNewPassword = new QLineEdit(this);
-	connect(ReNewPassword, SIGNAL(textChanged(QString)), this, SLOT(registerAccountDataChanged()));
+	connect(ReNewPassword, SIGNAL(textChanged(QString)), this, SLOT(RegisterAccountDataChanged()));
 	ReNewPassword->setEchoMode(QLineEdit::Password);
 	gridLayout->addWidget(ReNewPassword, row++, 2, 1, 2);
 
-	QLabel *eMailLabel = new QLabel(tr("Your e-mail address") + ":", this);
-	gridLayout->addWidget(eMailLabel, row, 1, Qt::AlignRight);
-	EMail = new QLineEdit(this);
-	connect(EMail, SIGNAL(textChanged(QString)), this, SLOT(registerAccountDataChanged()));
-	gridLayout->addWidget(EMail, row++, 2, 1, 2);
+	RegisterAccount = new QPushButton(tr("Register"), this);
+	RegisterAccount->setEnabled(false);
+	connect(RegisterAccount, SIGNAL(clicked(bool)), this, SLOT(registerNewAccount()));
+	gridLayout->addWidget(RegisterAccount, row++, 1, 1, 3);
 
-	registerAccount = new QPushButton(tr("Register"), this);
-	registerAccount->setEnabled(false);
-	connect(registerAccount, SIGNAL(clicked(bool)), this, SLOT(registerNewAccount()));
-	gridLayout->addWidget(registerAccount, row++, 1, 1, 3);
+        ConnectionOptions = new QGroupBox(this);
+	ConnectionOptions->setTitle(tr("Connection settings"));
 
+        QVBoxLayout *vboxLayout2 = new QVBoxLayout(ConnectionOptions);
+        vboxLayout2->setSpacing(6);
+        vboxLayout2->setMargin(9);
+
+        ck_host = new QCheckBox(ConnectionOptions);
+        ck_host->setText(tr("Manually Specify Server Host/Port")+":");
+        vboxLayout2->addWidget(ck_host);
+
+        hboxLayout = new QHBoxLayout();
+        hboxLayout->setSpacing(6);
+        hboxLayout->setMargin(0);
+
+        lb_host = new QLabel(ConnectionOptions);
+        lb_host->setText(tr("Host")+":");
+        hboxLayout->addWidget(lb_host);
+
+        le_host = new QLineEdit(ConnectionOptions);
+        hboxLayout->addWidget(le_host);
+
+        lb_port = new QLabel(ConnectionOptions);
+        lb_port->setText(tr("Port")+":");
+        hboxLayout->addWidget(lb_port);
+
+        le_port = new QLineEdit(ConnectionOptions);
+        le_port->setMinimumSize(QSize(56, 0));
+        le_port->setMaximumSize(QSize(56, 32767));
+        hboxLayout->addWidget(le_port);
+
+        vboxLayout2->addLayout(hboxLayout);
+
+        QHBoxLayout *hboxLayout1 = new QHBoxLayout();
+        hboxLayout1->setSpacing(6);
+        hboxLayout1->setMargin(0);
+        lb_ssl = new QLabel(ConnectionOptions);
+        lb_ssl->setText(tr("Encrypt connection")+":");
+        hboxLayout1->addWidget(lb_ssl);
+
+        cb_ssl = new QComboBox(ConnectionOptions);
+	cb_ssl->addItem(tr("Always"), 0);
+	cb_ssl->addItem(tr("When available"), 1);
+	cb_ssl->addItem(tr("Legacy SSL"), 2);
+	cb_ssl->setCurrentIndex(1);
+        hboxLayout1->addWidget(cb_ssl);
+
+        QSpacerItem *spacerItem = new QSpacerItem(151, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
+        hboxLayout1->addItem(spacerItem);
+        vboxLayout2->addLayout(hboxLayout1);
+
+        ck_legacy_ssl_probe = new QCheckBox(ConnectionOptions);
+        ck_legacy_ssl_probe->setText(tr("Probe legacy SSL port"));
+        vboxLayout2->addWidget(ck_legacy_ssl_probe);
+
+	gridLayout->addWidget(ConnectionOptions, row++, 1, 1, 4);
+
+	DontHaveJidWidgets.append(serverLabel);
+	DontHaveJidWidgets.append(Server);
+	DontHaveJidWidgets.append(usernameLabel);
+	DontHaveJidWidgets.append(Username);
 	DontHaveJidWidgets.append(newPasswordLabel);
 	DontHaveJidWidgets.append(NewPassword);
 	DontHaveJidWidgets.append(reNewPasswordLabel);
 	DontHaveJidWidgets.append(ReNewPassword);
-	DontHaveJidWidgets.append(eMailLabel);
-	DontHaveJidWidgets.append(EMail);
-	DontHaveJidWidgets.append(registerAccount);
+	DontHaveJidWidgets.append(RegisterAccount);
+	DontHaveJidWidgets.append(ConnectionOptions);
 }
 
 void JabberCreateAccountWidget::haveJidChanged(bool haveJid)
@@ -169,7 +236,7 @@ void JabberCreateAccountWidget::addThisAccount()
 void JabberCreateAccountWidget::registerAccountDataChanged()
 {
 	bool disable = NewPassword->text().isEmpty() || ReNewPassword->text().isEmpty();
-	registerAccount->setEnabled(!disable);
+	RegisterAccount->setEnabled(!disable);
 }
 
 void JabberCreateAccountWidget::registerNewAccount()
@@ -182,29 +249,28 @@ void JabberCreateAccountWidget::registerNewAccount()
 		return;
 	}
 
-	//JabberServerRegisterAccount *gsra = new JabberServerRegisterAccount(EMail->text(), NewPassword->text(),
-	//								tokenWidget->tokenId(), tokenWidget->tokenValue());
-	//connect(gsra, SIGNAL(finished(JabberServerRegisterAccount *)),
-	//		this, SLOT(registerNewAccountFinished(JabberServerRegisterAccount *)));
+	JabberServerRegisterAccount *jsra = new JabberServerRegisterAccount(Server->text(), Username->text(), NewPassword->text());
+	connect(jsra, SIGNAL(finished(JabberServerRegisterAccount *)),
+			this, SLOT(registerNewAccountFinished(JabberServerRegisterAccount *)));
 
-	//gsra->performAction();
+	jsra->performAction();
 }
 
-// void JabberCreateAccountWidget::registerNewAccountFinished(JabberServerRegisterAccount *gsra)
-// {
-// 	if (gsra->result())
-// 	{
-// 		MessageBox::msg(tr("Registration was successful. Your new number is %1.\nStore it in a safe place along with the password.\nNow add your friends to the userlist.").arg(gsra->uin()), false, "Information", this);
-// 
-// 		Account *jabberAccount = JabberProtocolFactory::instance()->newAccount();
-// 		jabberAccount->setName(AccountName->text());
-// 		jabberAccount->setId(QString::number(gsra->uin()));
-// 		jabberAccount->setPassword(NewPassword->text());
-// 
-// 		emit accountCreated(jabberAccount);
-// 	}
-// 	else
-// 		MessageBox::msg(tr("An error has occured while registration. Please try again later."), false, "Warning", this);
-// 
-// 	delete gsra;
-// }
+void JabberCreateAccountWidget::registerNewAccountFinished(JabberServerRegisterAccount *jsra)
+{
+	if (jsra->result())
+	{
+		MessageBox::msg(tr("Registration was successful. Your new Jabber ID is %1.\nStore it in a safe place along with the password.\nNow add your friends to the userlist.").arg(jsra->jid()), false, "Information", this);
+
+		Account *jabberAccount = JabberProtocolFactory::instance()->newAccount();
+		jabberAccount->setName(AccountName->text());
+		jabberAccount->setId(jsra->jid());
+		jabberAccount->setPassword(NewPassword->text());
+
+		emit accountCreated(jabberAccount);
+	}
+	else
+		MessageBox::msg(tr("An error has occured while registration. Please try again later."), false, "Warning", this);
+
+	delete jsra;
+}

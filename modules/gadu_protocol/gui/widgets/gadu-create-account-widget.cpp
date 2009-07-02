@@ -187,7 +187,7 @@ void GaduCreateAccountWidget::registerAccountDataChanged()
 	registerAccount->setEnabled(!disable);
 }
 
-void GaduCreateAccountWidget::registerNewAccount()
+void GaduCreateAccountWidget::registerNewAccount(bool)
 {
     if (NewPassword->text() != ReNewPassword->text())
 	{

@@ -10,6 +10,13 @@
 #ifndef JABBER_CREATE_ACCOUNT_WIDGET_H
 #define JABBER_CREATE_ACCOUNT_WIDGET_H
 
+#include <QtGui/QCheckBox>
+#include <QtGui/QComboBox>
+#include <QtGui/QGroupBox>
+#include <QtGui/QLabel>
+#include <QtGui/QVBoxLayout>
+#include <QtGui/QHBoxLayout>
+
 #include "gui/widgets/account-create-widget.h"
 
 class QGridLayout;
@@ -35,9 +42,20 @@ class JabberCreateAccountWidget : public AccountCreateWidget
 
 	QLineEdit *NewPassword;
 	QLineEdit *ReNewPassword;
-	QLineEdit *EMail;
-
-	QPushButton *registerAccount;
+	QLineEdit *Server;
+	QLineEdit *Username;
+	QPushButton *RegisterAccount;
+	QGroupBox *ConnectionOptions;
+	//TODO zmiana nazewnictwa po chamskim przeszczepie
+	QCheckBox *ck_host;
+	QHBoxLayout *hboxLayout;
+	QLabel *lb_host;
+	QLineEdit *le_host;
+	QLabel *lb_port;
+	QLineEdit *le_port;
+	QLabel *lb_ssl;
+	QComboBox *cb_ssl;
+	QCheckBox *ck_legacy_ssl_probe;
 
 	void createGui();
 	void createIHaveAccountGui(QGridLayout *gridLayout, int &row);
@@ -49,7 +67,7 @@ private slots:
 	void addThisAccount();
 	void registerAccountDataChanged();
 	void registerNewAccount();
-	//void registerNewAccountFinished(JabberServerRegisterAccount *gsra);
+	void registerNewAccountFinished(JabberServerRegisterAccount *jsra);
 
 public:
 	explicit JabberCreateAccountWidget(QWidget *parent = 0);

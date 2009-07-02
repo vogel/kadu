@@ -234,6 +234,7 @@ set (SOURCES
 	gui/widgets/jabber-create-account-widget.cpp
 	gui/widgets/jabber-edit-account-widget.cpp
 	gui/widgets/jabber-personal-info-widget.cpp
+	server/jabber-server-register-account.cpp
 	services/jabber-chat-service.cpp
 	services/jabber-file-transfer-service.cpp
 	jabber-client.cpp
@@ -249,6 +250,7 @@ set (SOURCES
 	jabber-resource-pool.cpp
 	jabber-transport.cpp
 	jid-util.cpp
+	miniclient.cpp
 	system-info.cpp
 	cert-util.cpp
 	ssl-cert-dlg.cpp
@@ -259,6 +261,7 @@ set (MOC_SOURCES
 	gui/widgets/jabber-create-account-widget.h
 	gui/widgets/jabber-edit-account-widget.h
 	gui/widgets/jabber-personal-info-widget.h
+	server/jabber-server-register-account.h
 	services/jabber-chat-service.h
 	services/jabber-file-transfer-service.h
 	jabber-client.h
@@ -272,6 +275,7 @@ set (MOC_SOURCES
 	jabber-resource.h
 	jabber-resource-pool.h
 	jabber-transport.h
+	miniclient.h
 	#jid-util.cpp
 	system-info.h
 	#cert-util.h
