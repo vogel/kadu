@@ -66,8 +66,8 @@ DockingManager::DockingManager()
 //	connect(kadu, SIGNAL(searchingForTrayPosition(QPoint&)), this, SIGNAL(searchingForTrayPosition(QPoint&)));
 
 	DockMenu = new QMenu();
-	StatusMenu *statusMenu = new StatusMenu(this);
-	statusMenu->addToMenu(DockMenu);
+//	StatusMenu *statusMenu = new StatusMenu(this);
+//	statusMenu->addToMenu(DockMenu);
 #ifdef Q_OS_MAC
 	DockMenu->insertSeparator();
 	DockMenu->addAction(IconsManager::instance()->loadIcon("OpenChat"), tr("Show Pending Messages"), chat_manager, SLOT(openPendingMsgs()));
