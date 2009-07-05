@@ -50,7 +50,7 @@ private slots:
 	void iHaveAccountDataChanged();
 	void addThisAccount();
 	void registerAccountDataChanged();
-	void registerNewAccount(bool);
+	void registerNewAccount();
 	void registerNewAccountFinished(GaduServerRegisterAccount *gsra);
 
 public:
