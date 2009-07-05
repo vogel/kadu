@@ -34,6 +34,8 @@ class AddBuddyWindow : public QWidget
 	QWidget *stepTwoWidget;
 	QComboBox *chooseNameCombo;
 	QComboBox *addToGroupCombo;
+	QWidget *addToGroupWidget;
+	QLineEdit *newGroupNameEdit;
 	QPushButton *expandMoreOptionsButton;
 	QPushButton *addBuddyButton;
 
@@ -47,6 +49,7 @@ private slots:
 	void buddyIdTextChanged(QString id);
 	void stepOneFinished();
 	void accountSelected(int index);
+	void groupSelected(int index);
 	void showMoreOptionsChanged();
 	void addBuddy();
 

@@ -137,10 +137,22 @@ void AddBuddyWindow::createGui()
 	addToGroupCombo->addItems(items);
 	addToGroupCombo->insertSeparator(items.count());
 	addToGroupCombo->addItem(tr("Create new group..."));
+	connect(addToGroupCombo, SIGNAL(activated(int)), this, SLOT(groupSelected(int)));
 
-	QHBoxLayout *addToGroupLayout = new QHBoxLayout;
+	newGroupNameEdit = new QLineEdit;
+	newGroupNameEdit->setVisible(false);
+
+	QVBoxLayout *groupNameLayout = new QVBoxLayout;
+	groupNameLayout->addWidget(addToGroupCombo);
+	groupNameLayout->addWidget(newGroupNameEdit);
+
+	addToGroupWidget = new QWidget;
+	addToGroupWidget->setContentsMargins(0, 0, 0, 0);
+
+	QHBoxLayout *addToGroupLayout = new QHBoxLayout(addToGroupWidget);
 	addToGroupLayout->addWidget(addToGroupLabel);
-	addToGroupLayout->addWidget(addToGroupCombo);
+	addToGroupLayout->addLayout(groupNameLayout);
+	addToGroupLayout->setAlignment(addToGroupLabel, Qt::AlignTop);
 //
 	QLabel *moreOptionsLabel = new QLabel;
 	moreOptionsLabel->setText(tr("More options:"));
@@ -162,7 +174,7 @@ void AddBuddyWindow::createGui()
 	stepTwoWidget = new QWidget;
 	QVBoxLayout *stepTwoLayout = new QVBoxLayout(stepTwoWidget);
 	stepTwoLayout->addLayout(chooseNameLayout);
-	stepTwoLayout->addLayout(addToGroupLayout);
+	stepTwoLayout->addWidget(addToGroupWidget);
 	stepTwoLayout->addLayout(moreOptionsLayout);
 	stepTwoLayout->addWidget(offlineToCheckBox);
 //
@@ -255,6 +267,11 @@ void AddBuddyWindow::accountSelected(int index)
 	addBuddyButton->setVisible(true);
 }
 
+void AddBuddyWindow::groupSelected(int index)
+{
+	newGroupNameEdit->setVisible(index == addToGroupCombo->count() - 1);
+}
+
 void AddBuddyWindow::showMoreOptionsChanged()
 {
 	showMoreOptions = !showMoreOptions;
@@ -270,10 +287,15 @@ void AddBuddyWindow::addBuddy()
 		contact.setType(ContactData::TypeNormal);
 		contact.setDisplay(chooseNameCombo->currentText().isEmpty() ? buddyUid->text() : chooseNameCombo->currentText());
 		contact.setOfflineTo(contactAccount, !offlineToCheckBox->isChecked());
-		if (addToGroupCombo->currentIndex() != 0 && addToGroupCombo->currentIndex() != addToGroupCombo->count() - 1)
+		if (addToGroupCombo->currentIndex() != 0)
 		{
+			QString groupName;
+			if (newGroupNameEdit->isVisible() && !newGroupNameEdit->text().isEmpty())
+				groupName = newGroupNameEdit->text();
+			else
+				groupName = addToGroupCombo->currentText();
 			QList<Group *> group;
-			group.append(GroupManager::instance()->byName(addToGroupCombo->currentText()));
+			group.append(GroupManager::instance()->byName(groupName));
 			contact.setGroups(group);
 		}
 	}
