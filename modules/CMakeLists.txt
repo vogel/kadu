@@ -1,5 +1,5 @@
 If (WIN32)
-	set (STATIC_MODULES "gadu_protocol")
+	set (STATIC_MODULES "docking;qt4_docking;gadu_protocol")
 	set (DYNAMIC_MODULES "")
 	set (DISABLED_MODULES "docking;qt4_docking;autoresponder;advanced_userlist;default_sms;account_management;dcc;history;autoaway;sms;window_notify;config_wizard;ext_sound;echo;hints;notify;sound;exec_notify;desktop_docking;dshow_sound;voice;encryption;win32_sound")
 else (WIN32)

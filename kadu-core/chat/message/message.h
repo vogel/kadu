@@ -20,15 +20,16 @@ class Chat;
 	\struct Message
 	\brief Message
 **/
-struct Message
+class Message
 {
-	Chat *chat;
-	Contact sender; /*!< Message sender. */
+	public:
+		Chat *chat;
+		Contact sender; /*!< Message sender. */
 
-	QString messageContent; /*!< Message content. */
+		QString messageContent; /*!< Message content. */
 
-	QDateTime receiveDate; /*!< Recieve time. */
-	QDateTime sendDate; /*!< Send time. */
+		QDateTime receiveDate; /*!< Recieve time. */
+		QDateTime sendDate; /*!< Send time. */
 };
 
 #endif // MESSAGE_H

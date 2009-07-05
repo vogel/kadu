@@ -17,9 +17,11 @@
 #include "chat/chat.h"
 #include "chat/message/formatted-message.h"
 
+#include "exports.h"
+
 class Message;
 
-class ChatService : public QObject
+class KADUAPI ChatService : public QObject
 {
 	Q_OBJECT
 
