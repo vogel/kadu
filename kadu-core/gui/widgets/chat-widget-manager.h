@@ -164,7 +164,7 @@ signals:
 	void chatWidgetTitlesUpdated();
 
 	/**
-		\fn void messageSentAndConfirmed(ContactList receivers, const QString& message)
+		\fn void messageSentAndConfirmed(Chat *chat, const QString& message)
 		This signal is emited when message was sent
 		and it was confirmed.
 		When confirmations are turned off signal is
@@ -172,7 +172,7 @@ signals:
 		\param receivers list of receivers
 		\param message the message
 	**/
-	void messageSentAndConfirmed(ContactList receivers, const QString& message);
+	void messageSentAndConfirmed(Chat *chat, const QString& message);
 
 };
 

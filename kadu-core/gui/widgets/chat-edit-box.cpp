@@ -52,8 +52,8 @@ ChatEditBox::ChatEditBox(Chat *chat, QWidget *parent) :
 	else
 		loadToolBarsFromConfig("chat"); // load new config
 
-	connect(ChatWidgetManager::instance()->actions()->colorSelector(), SIGNAL(actionCreated(KaduAction *)),
-			this, SLOT(colorSelectorActionCreated(KaduAction *)));
+	connect(ChatWidgetManager::instance()->actions()->colorSelector(), SIGNAL(actionCreated(Action *)),
+			this, SLOT(colorSelectorActionCreated(Action *)));
 	connect(InputBox, SIGNAL(keyPressed(QKeyEvent *,CustomInput *, bool &)),
 			this, SIGNAL(keyPressed(QKeyEvent *,CustomInput *,bool &)));
 	connect(InputBox, SIGNAL(fontChanged(QFont)), this, SLOT(fontChanged(QFont)));
@@ -64,8 +64,8 @@ ChatEditBox::ChatEditBox(Chat *chat, QWidget *parent) :
 
 ChatEditBox::~ChatEditBox()
 {
-	disconnect(ChatWidgetManager::instance()->actions()->colorSelector(), SIGNAL(actionCreated(KaduAction *)),
-			this, SLOT(colorSelectorActionCreated(KaduAction *)));
+	disconnect(ChatWidgetManager::instance()->actions()->colorSelector(), SIGNAL(actionCreated(Action *)),
+			this, SLOT(colorSelectorActionCreated(Action *)));
 	disconnect(InputBox, SIGNAL(cursorPositionChanged()), this, SLOT(cursorPositionChanged()));
 
 	chatEditBoxes.removeAll(this);

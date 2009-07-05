@@ -295,8 +295,8 @@ ChatWidget * ChatWidgetManager::openChatWidget(Chat *chat, bool forceActivate)
 		window->show();
 	}
 
-	connect(chatWidget, SIGNAL(messageSentAndConfirmed(ContactList, const QString &)),
-		this, SIGNAL(messageSentAndConfirmed(ContactList, const QString &)));
+	connect(chatWidget, SIGNAL(messageSentAndConfirmed(Chat *, const QString &)),
+		this, SIGNAL(messageSentAndConfirmed(Chat *, const QString &)));
 
 //TODO 0.6.6:
 	if (forceActivate)

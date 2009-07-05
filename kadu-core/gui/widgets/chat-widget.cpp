@@ -109,7 +109,6 @@ void ChatWidget::createGui()
 	connect(InputBox, SIGNAL(keyPressed(QKeyEvent *, CustomInput *, bool &)),
 			this, SLOT(editBoxKeyPressed(QKeyEvent *, CustomInput *, bool &)));
 	connect(InputBox->inputBox(), SIGNAL(sendMessage()), this, SLOT(sendMessage()));
-	connect(InputBox->inputBox(), SIGNAL(specialKeyPressed(int)), this, SLOT(specialKeyPressed(int)));
 	InputBox->installEventFilter(this);
 
 	setFocusProxy(InputBox);
