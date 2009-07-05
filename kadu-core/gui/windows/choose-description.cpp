@@ -27,14 +27,16 @@
 
 #include "choose-description.h"
 
-ChooseDescription *ChooseDescription::Dialog = 0;
+QMap<StatusContainer *, ChooseDescription *>ChooseDescription::Dialogs;
 
-void ChooseDescription::show(const Status &status, const QPoint &position)
+void ChooseDescription::show(const Status &status, StatusContainer *statusContainer, const QPoint &position)
 {
+	ChooseDescription *Dialog = Dialogs[statusContainer];
 	if (!Dialog)
 	{
-		Dialog = new ChooseDescription(Core::instance()->kaduWindow());
+		Dialog = new ChooseDescription(statusContainer, Core::instance()->kaduWindow());
 		Dialog->setPosition(position);
+		Dialogs[statusContainer] = Dialog;
 	}
 
 	Dialog->setStatus(status);
@@ -42,8 +44,8 @@ void ChooseDescription::show(const Status &status, const QPoint &position)
 	Dialog->raise();
 }
 
-ChooseDescription::ChooseDescription(QWidget *parent)
-	: QDialog(parent, false)
+ChooseDescription::ChooseDescription(StatusContainer *statusContainer, QWidget *parent)
+	: QDialog(parent, false), MyStatusContainer(statusContainer)
 {
 	kdebugf();
 	setWindowTitle(tr("Select description"));
@@ -141,8 +143,8 @@ void ChooseDescription::setPosition(const QPoint &position)
 void ChooseDescription::okPressed()
 {
 	QString description = Description->currentText();
+	// TODO: 0.6.6
 	Account *account = AccountManager::instance()->defaultAccount();
-// TODO: 0.6.6
 	//je�eli ju� by� taki opis, to go usuwamy
 // 	defaultdescriptions.remove(description);
 	//i dodajemy na pocz�tek
@@ -155,14 +157,14 @@ void ChooseDescription::okPressed()
 		description = Parser::parse(description, account, Core::instance()->myself(), true);
 
 	CurrentStatus.setDescription(description);
-	Core::instance()->setStatus(CurrentStatus);
+	MyStatusContainer->setStatus(CurrentStatus);
 
 	cancelPressed();
 }
 
 void ChooseDescription::cancelPressed()
 {
-	Dialog = 0;
+	Dialogs.remove(MyStatusContainer);
 	close();
 }
 

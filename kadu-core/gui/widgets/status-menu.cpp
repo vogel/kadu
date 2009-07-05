@@ -127,49 +127,49 @@ void StatusMenu::changeStatus()
 	foreach (QAction *a, ChangeStatusActionGroup->actions())
 		a->setChecked(a == action);
 
-	Status status(Core::instance()->status());
+	Status status(MyStatusContainer->status());
 
 	switch (action->data().toInt())
 	{
 		case 0:
 			status.setType(Status::Online);
 			status.setDescription("");
-			Core::instance()->setStatus(status);
+			MyStatusContainer->setStatus(status);
 			break;
 		case 1:
 			status.setType(Status::Online);
 			status.setDescription(status.description());
-			ChooseDescription::show(status, MousePositionBeforeMenuHide);
+			ChooseDescription::show(status, MyStatusContainer, MousePositionBeforeMenuHide);
 			break;
 		case 2:
 			status.setType(Status::Busy);
 			status.setDescription("");
-			Core::instance()->setStatus(status);
+			MyStatusContainer->setStatus(status);
 			break;
 		case 3:
 			status.setType(Status::Busy);
 			status.setDescription(status.description());
-			ChooseDescription::show(status, MousePositionBeforeMenuHide);
+			ChooseDescription::show(status, MyStatusContainer, MousePositionBeforeMenuHide);
 			break;
 		case 4:
 			status.setType(Status::Invisible);
 			status.setDescription("");
-			Core::instance()->setStatus(status);
+			MyStatusContainer->setStatus(status);
 			break;
 		case 5:
 			status.setType(Status::Invisible);
 			status.setDescription(status.description());
-			ChooseDescription::show(status, MousePositionBeforeMenuHide);
+			ChooseDescription::show(status, MyStatusContainer, MousePositionBeforeMenuHide);
 			break;
 		case 6:
 			status.setType(Status::Offline);
 			status.setDescription("");
-			Core::instance()->setStatus(status);
+			MyStatusContainer->setStatus(status);
 			break;
 		case 7:
 			status.setType(Status::Offline);
 			status.setDescription(status.description());
-			ChooseDescription::show(status, MousePositionBeforeMenuHide);
+			ChooseDescription::show(status, MyStatusContainer, MousePositionBeforeMenuHide);
 			break;
 	}
 }

@@ -17,17 +17,20 @@
 class QComboBox;
 class QLabel;
 
+class StatusContainer;
+
 class ChooseDescription : public QDialog
 {
 	Q_OBJECT
 
-	static ChooseDescription *Dialog;
+	static QMap<StatusContainer *, ChooseDescription *>Dialogs;
 
 	QPushButton *OkButton;
 	QComboBox *Description;
 	QLabel *AvailableChars;
 
 	Status CurrentStatus;
+	StatusContainer *MyStatusContainer;
 
 private slots:
 	void okPressed();
@@ -35,14 +38,13 @@ private slots:
 	void updateAvailableChars(const QString &);
 
 public:
-	static void show(const Status &status, const QPoint &position);
+	static void show(const Status &status, StatusContainer *statusContainer, const QPoint &position);
 
-	ChooseDescription(QWidget *parent = 0);
+	ChooseDescription(StatusContainer *statusContainer, QWidget *parent = 0);
 	virtual ~ChooseDescription();
 
 	void setStatus(const Status &status);
 	void setPosition(const QPoint &position);
-	
 };
 
 #endif // CHOOSE_DESCRIPTION_H

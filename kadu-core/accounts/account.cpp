@@ -40,7 +40,7 @@ void Account::setProtocol(Protocol *protocolHandler)
 {
 	ProtocolHandler = protocolHandler;
 
-	connect(ProtocolHandler, SIGNAL(statusChanged(Account *, Status)), this, SIGNAL(statusChagned()));
+	connect(ProtocolHandler, SIGNAL(statusChanged(Account *, Status)), this, SIGNAL(statusChanged()));
 	connect(ProtocolHandler, SIGNAL(contactStatusChanged(Account *, Contact, Status)),
 			this, SIGNAL(contactStatusChanged(Account *, Contact, Status)));
 }
