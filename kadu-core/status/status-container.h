@@ -15,6 +15,7 @@
 class StatusContainer : public QObject
 {
 	Q_OBJECT
+
 public:
 	virtual void setStatus(Status newStatus) = 0;
 	virtual Status status() = 0;
