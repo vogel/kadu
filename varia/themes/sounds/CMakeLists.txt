@@ -7,8 +7,7 @@ exec_program (${CMAKE_CURRENT_SOURCE_DIR}/get-list.sh ${CMAKE_CURRENT_SOURCE_DIR
 	OUTPUT_VARIABLE INSTALL_SOUND_THEMES)
 
 if (INSTALL_SOUND_THEMES)
-	add_custom_target (sound_themes
-		DEPENDS ${INSTALL_SOUND_THEMES})
+	add_custom_target (sound_themes)
 
 	foreach (INSTALL_SOUND_THEME ${INSTALL_SOUND_THEMES})
 		message (STATUS "Sound theme: " ${INSTALL_SOUND_THEME})

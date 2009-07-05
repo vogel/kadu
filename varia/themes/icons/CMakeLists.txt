@@ -7,8 +7,7 @@ exec_program (${CMAKE_CURRENT_SOURCE_DIR}/get-list.sh ${CMAKE_CURRENT_SOURCE_DIR
 	OUTPUT_VARIABLE INSTALL_ICON_THEMES)
 
 if (INSTALL_ICON_THEMES)
-	add_custom_target (icon_themes
-		DEPENDS ${INSTALL_ICON_THEMES})
+	add_custom_target (icon_themes)
 
 	foreach (INSTALL_ICON_THEME ${INSTALL_ICON_THEMES})
 		message (STATUS "Icon theme: " ${INSTALL_ICON_THEME})

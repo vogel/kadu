@@ -7,8 +7,7 @@ exec_program (${CMAKE_CURRENT_SOURCE_DIR}/get-list.sh ${CMAKE_CURRENT_SOURCE_DIR
 	OUTPUT_VARIABLE INSTALL_EMOTICON_THEMES)
 
 if (INSTALL_EMOTICON_THEMES)
-	add_custom_target (emoticons_themes
-		DEPENDS ${INSTALL_EMOTICON_THEMES})
+	add_custom_target (emoticons_themes)
 
 	foreach (INSTALL_EMOTICON_THEME ${INSTALL_EMOTICON_THEMES})
 		message (STATUS "Emoticon theme: " ${INSTALL_EMOTICON_THEME})
