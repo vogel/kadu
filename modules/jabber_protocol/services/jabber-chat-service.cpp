@@ -71,7 +71,7 @@ bool JabberChatService::sendMessage(Chat *chat, FormattedMessage &formattedMessa
 	message.messageContent = formattedMessage.toPlain();
 	message.sender = Core::instance()->myself();
 	message.sendDate = QDateTime::currentDateTime();
-	message.receiveDate = QDateTime();
+	message.receiveDate = QDateTime::currentDateTime();
 	emit messageSent(message);
 
 	kdebugf2();

@@ -118,7 +118,7 @@ bool GaduChatService::sendMessage(Chat *chat, FormattedMessage &message)
 	msg.messageContent = message.toPlain();
 	msg.sender = Core::instance()->myself();
 	msg.sendDate = QDateTime::currentDateTime();
-	msg.receiveDate = QDateTime();
+	msg.receiveDate = QDateTime::currentDateTime();
 	emit messageSent(msg);
 
 	kdebugf2();

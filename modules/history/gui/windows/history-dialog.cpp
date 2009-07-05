@@ -119,7 +119,7 @@ HistoryMainWidget::HistoryMainWidget(QWidget *parent, QWidget *window)
 	DetailsListView->setHeaderLabels(detailsLabels);
 	DetailsListView->setRootIsDecorated(TRUE);
 	ContentBrowser = new ChatMessagesView(right);
-//	ContentBrowser->setPrune(0);
+	ContentBrowser->setPruneEnabled(false);
 ///	ContentBrowser->setMargin(config_file.readNumEntry("General", "ParagraphSeparator"));
 
 	dock = new QDockWidget(tr("Quick search"), this);
@@ -374,12 +374,14 @@ void HistoryDlg::lookupUserInfo()
 void HistoryDlg::removeHistoryEntriesPerUser()
 {
 	kdebugf();
-	MainListItem* uids_item = dynamic_cast<MainListItem*>(MainListView->currentItem());
-	if (uids_item == NULL)
+
+	MainListItem* chatItem = dynamic_cast<MainListItem *>(MainListView->currentItem());
+	if (!chatItem)
 		return;
+
 	if (MessageBox::ask(tr("You want to remove all history entries of selected users.\nAre you sure?\n"), "Warning"))
 	{
-		Chat *chat = uids_item->chat();
+		Chat *chat = chatItem->chat();
 		if (chat)
 			History::instance()->currentStorage()->clearHistoryForChat(chat);
 		MainListView->removeItemWidget((*MainListView->selectedItems().begin()),0);
@@ -387,6 +389,7 @@ void HistoryDlg::removeHistoryEntriesPerUser()
 		main->getDetailsListView()->clear();
 		main->getContentBrowser()->clearMessages();
 	}
+
 	kdebugf2();
 }
 
@@ -526,7 +529,7 @@ void HistoryDlg::searchHistory()
 
 void HistoryDlg::show(ContactSet users)
 {
-	if(!History::instance()->currentStorage())
+	if (!History::instance()->currentStorage())
 	{
 		MessageBox::msg(tr("There is no history storage module loaded!"), false, "Warning");
 		return;
@@ -538,8 +541,8 @@ void HistoryDlg::show(ContactSet users)
 
 void HistoryDlg::keyPressEvent(QKeyEvent *e)
 {
-	if(e->matches(QKeySequence::Find))
-		if(main->getDockWidget()->isHidden())
+	if (e->matches(QKeySequence::Find))
+		if (main->getDockWidget()->isHidden())
 			main->getDockWidget()->show();
 		else
 			main->getDockWidget()->hide();	

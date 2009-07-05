@@ -22,6 +22,8 @@ class KADUAPI ChatMessagesView : public KaduTextBrowser
 {
 	Q_OBJECT
 
+	bool PruneEnabled;
+
 	int lastScrollValue;
 	bool lastLine;
 
@@ -85,6 +87,7 @@ public:
 	**/
 	void updateBackgroundsAndColors();
 
+	void setPruneEnabled(bool enable) { PruneEnabled = enable; }
 
 	const QList<ChatMessage *> messages() { return Messages; }
 

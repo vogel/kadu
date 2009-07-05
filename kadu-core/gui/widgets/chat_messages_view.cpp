@@ -25,7 +25,7 @@
 #include "chat_messages_view.h"
 
 ChatMessagesView::ChatMessagesView(QWidget *parent) : KaduTextBrowser(parent),
-	lastScrollValue(0), lastLine(false), Chat(0), PrevMessage(0)
+	lastScrollValue(0), lastLine(false), Chat(0), PrevMessage(0), PruneEnabled(true)
 {
 	setMinimumSize(QSize(100,100));
 
@@ -146,7 +146,7 @@ void ChatMessagesView::pruneMessages()
 {
 	kdebugf();
 
-	if (ChatStylesManager::instance()->prune() == 0)
+	if (!PruneEnabled || ChatStylesManager::instance()->prune() == 0)
 		return;
 
 	if (Messages.count() < ChatStylesManager::instance()->prune())
