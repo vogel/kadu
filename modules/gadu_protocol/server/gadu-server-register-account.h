@@ -10,11 +10,11 @@
 #ifndef GADU_SERVER_REGISTER_ACCOUNT_H
 #define GADU_SERVER_REGISTER_ACCOUNT_H
 
+#include <QtCore/QObject>
+
 #include <libgadu.h>
 
 #include "protocols/protocol.h"
-
-#include <QtCore/QObject>
 
 class GaduServerRegisterAccount : public QObject
 {

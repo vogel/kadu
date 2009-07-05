@@ -21,15 +21,30 @@ GaduServerRegisterAccount::GaduServerRegisterAccount(const QString &mail, const 
 void GaduServerRegisterAccount::performAction()
 {
 	H = gg_register3(unicode2cp(Mail).data(), unicode2cp(Password).data(),
-			unicode2cp(TokenId).data(), unicode2cp(TokenValue).data(), 1);
+			unicode2cp(TokenId).data(), unicode2cp(TokenValue).data(), 0);
 	if (H)
+	{
+		struct gg_pubdir *result = (struct gg_pubdir *)H->data;
+		Result = result->success;
+
+		if (result->success)
+		{
+			Uin = result->uin;
+			emit finished(this);
+		}
+		else
+			emit finished(false);
+	}
+
+	/* TODO: fix for 0.6.6, it should be async
+	if (H && H->fd > 0)
 	{
 		GaduPubdirSocketNotifiers *sn = new GaduPubdirSocketNotifiers();
 		connect(sn, SIGNAL(done(bool, struct gg_http *)), this, SLOT(done(bool, struct gg_http *)));
 		sn->watchFor(H);
 	}
 	else
-		finished(this);
+		emit finished(this);*/
 }
 
 void GaduServerRegisterAccount::done(bool ok, struct gg_http *h)
@@ -39,7 +54,7 @@ void GaduServerRegisterAccount::done(bool ok, struct gg_http *h)
 
 	Result = ok;
 
-	finished(this);
+	emit finished(this);
 
 	if (H)
 	{
