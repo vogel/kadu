@@ -159,7 +159,7 @@ endmacro (kadu_module)
 
 # libraries
 
-set (QT_MIN_VERSION "4.4.0")
+set (QT_MIN_VERSION "4.5.0")
 find_package (Qt4 REQUIRED)
 set(QT_USE_QTXML 1)
 set(QT_USE_QTNETWORK 1)
