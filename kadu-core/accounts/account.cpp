@@ -122,6 +122,11 @@ Contact Account::createAnonymous(const QString& id)
 	return result;
 }
 
+QString Account::statusContainerName()
+{
+	return name() + " (" + protocol()->protocolFactory()->name() + ")";
+}
+
 void Account::setStatus(Status status)
 {
 	if (0 != ProtocolHandler)

@@ -74,6 +74,8 @@ public:
 
 	// StatusContainer implementation
 
+	virtual QString statusContainerName();
+
 	virtual void setStatus(Status newStatus);
 	virtual Status status();
 
