@@ -15,7 +15,7 @@
 
 #include "contacts/contact.h"
 #include "contacts/contacts-aware-object.h"
-#include "protocols/status.h"
+#include "status/status.h"
 #include "status/status-container.h"
 
 class QPixmap;

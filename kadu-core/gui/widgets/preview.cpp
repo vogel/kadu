@@ -14,7 +14,7 @@
 #include "configuration/configuration-file.h"
 #include "contacts/contact-account-data.h"
 #include "parser/parser.h"
-#include "protocols/status.h"
+#include "status/status.h"
 
 #include "misc/misc.h"
 

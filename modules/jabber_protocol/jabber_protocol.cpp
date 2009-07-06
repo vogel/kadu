@@ -22,7 +22,7 @@
 #include "gui/windows/main-configuration-window.h"
 
 #include "protocols/protocol-menu-manager.h"
-#include "protocols/status.h"
+#include "status/status.h"
 #include "misc/misc.h"
 #include "configuration/configuration-file.h"
 #include "debug.h"

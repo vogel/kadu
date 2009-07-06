@@ -13,7 +13,7 @@
 #include <QtGui/QPushButton>
 
 #include "configuration/configuration-aware-object.h"
-#include "protocols/status.h"
+#include "status/status.h"
 
 class StatusContainer;
 class StatusMenu;

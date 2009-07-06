@@ -14,7 +14,7 @@
 #include <QtXml/QDomElement>
 
 #include "configuration/storable-object.h"
-#include "protocols/status.h"
+#include "status/status.h"
 
 #include "contact.h"
 

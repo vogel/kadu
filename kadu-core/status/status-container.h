@@ -10,7 +10,7 @@
 #ifndef STATUS_CONTAINER_H
 #define STATUS_CONTAINER_H
 
-#include "protocols/status.h"
+#include "status/status.h"
 
 class StatusContainer : public QObject
 {

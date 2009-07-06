@@ -12,7 +12,7 @@
 
 #include <QtGui/QDialog>
 
-#include "protocols/status.h"
+#include "status/status.h"
 
 class QComboBox;
 class QLabel;

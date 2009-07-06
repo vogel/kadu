@@ -12,7 +12,7 @@
 
 #include <QtCore/QObject>
 
-#include "protocols/status.h"
+#include "status/status.h"
 
 class QAction;
 

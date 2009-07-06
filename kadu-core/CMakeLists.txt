@@ -180,10 +180,10 @@ set (kadu_SRCS
 	protocols/protocol.cpp
 	protocols/protocol-menu-manager.cpp
 	protocols/protocols-manager.cpp
-	protocols/status.cpp
 	protocols/model/protocols-model.cpp
 	protocols/services/chat-service.cpp
 
+	status/status.cpp
 	status/status-container-aware-object.cpp
 	status/status-container-manager.cpp
 

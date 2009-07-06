@@ -18,7 +18,7 @@
 #include "contacts/contact.h"
 #include "contacts/contact-list.h"
 #include "misc/token-reader.h"
-#include "protocols/status.h"
+#include "status/status.h"
 
 #include "exports.h"
 

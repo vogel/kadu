@@ -18,7 +18,7 @@
 #include "contacts/contact.h"
 #include "contacts/contact-list.h"
 
-#include "protocols/status.h"
+#include "status/status.h"
 
 #include "contacts-model-base.h"
 

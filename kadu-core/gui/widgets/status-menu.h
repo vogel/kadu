@@ -13,7 +13,7 @@
 #include <QtCore/QObject>
 #include <QtCore/QPoint>
 
-#include "protocols/status.h"
+#include "status/status.h"
 
 class QAction;
 class QActionGroup;

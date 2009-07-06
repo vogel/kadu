@@ -10,7 +10,7 @@
 #ifndef GADU_SEARCH_RESULT_H
 #define GADU_SEARCH_RESULT_H
 
-#include "protocols/status.h"
+#include "status/status.h"
 
 struct SearchResult
 {

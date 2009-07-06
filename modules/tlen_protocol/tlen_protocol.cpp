@@ -28,7 +28,7 @@
 #include "debug.h"
 //#include "chat/chat_manager-old.h"
 #include "icons-manager.h"
-#include "protocols/status.h"
+#include "status/status.h"
 #include "misc/misc.h"
 #include "configuration/xml-configuration-file.h"
 

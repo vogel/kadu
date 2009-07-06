@@ -1,7 +1,7 @@
 #ifndef HISTORY_IMPORTER_H
 #define HISTORY_IMPORTER_H
 
-#include "protocols/status.h"
+#include "status/status.h"
 
 #define HISTORYMANAGER_ENTRY_CHATSEND   0x00000001
 #define HISTORYMANAGER_ENTRY_CHATRCV    0x00000002

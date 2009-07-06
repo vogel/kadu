@@ -18,7 +18,7 @@
 #include "chat/chat.h"
 #include "contacts/contact.h"
 #include "contacts/contact-set.h"
-#include "protocols/status.h"
+#include "status/status.h"
 
 class Action;
 class ActionDescription;

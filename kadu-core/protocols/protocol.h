@@ -23,8 +23,7 @@
 #include "chat/chat.h"
 #include "contacts/contact.h"
 #include "contacts/contact-list.h"
-
-#include "status.h"
+#include "status/status.h"
 
 typedef quint32 UinType;
 

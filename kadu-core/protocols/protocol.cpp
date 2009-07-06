@@ -19,7 +19,7 @@
 #include "contacts/contact-set-configuration-helper.h"
 #include "icons-manager.h"
 #include "protocols/protocol-factory.h"
-#include "protocols/status.h"
+#include "status/status.h"
 
 #include "protocol.h"
 
