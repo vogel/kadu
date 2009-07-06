@@ -186,6 +186,10 @@ set (kadu_SRCS
 	status/status.cpp
 	status/status-container-aware-object.cpp
 	status/status-container-manager.cpp
+	status/status-group.cpp
+	status/status-group-manager.cpp
+	status/status-type.cpp
+	status/status-type-manager.cpp
 
 	activate.cpp
 	debug.cpp
