@@ -14,6 +14,9 @@
 #include "chat/message/message.h"
 #include "configuration/configuration-file.h"
 #include "contacts/contact-account-data.h"
+#include "contacts/contact-manager.h"
+#include "contacts/group.h"
+#include "contacts/group-manager.h"
 #include "gui/actions/action.h"
 #include "gui/widgets/chat-widget-manager.h"
 #include "gui/widgets/contacts-list-widget-menu-manager.h"
@@ -39,6 +42,7 @@ NotificationManager * NotificationManager::instance()
 	if (!Instance)
 	{
 		Instance = new NotificationManager();
+		Instance->init();
 
 		MessageNotification::registerEvents();
 		StatusChangedNotification::registerEvents();
@@ -49,9 +53,12 @@ NotificationManager * NotificationManager::instance()
 
 NotificationManager::NotificationManager()
 {
-	kdebugf();
+}
 
-	Instance = this; // TODO: 0.6.6, hack
+void NotificationManager::init()
+{
+    	kdebugf();
+
 	UiHandler = new NotifyConfigurationUiHandler(this);
 	MainConfigurationWindow::registerUiHandler(UiHandler);
 
@@ -68,8 +75,10 @@ NotificationManager::NotificationManager()
 
 	ContactsListWidgetMenuManager::instance()->addManagementActionDescription(notifyAboutUserActionDescription);
 
-	new WindowNotifier(this);
+	foreach (Group *group, GroupManager::instance()->groups())
+		groupAdded(group);
 
+	new WindowNotifier(this);
 	kdebugf2();
 }
 
@@ -104,6 +113,12 @@ void NotificationManager::notifyAboutUserActionActivated(QAction *sender, bool t
 	MainWindow *window = dynamic_cast<MainWindow *>(sender->parent());
 	if (!window)
 		return;
+
+	if (NotifyAboutAll)
+	{
+		NotifyAboutAll = false;
+		config_file.writeEntry("Notify", "NotifyAboutAll", false);
+	}
 
 	ContactSet contacts = window->contacts();
 
@@ -201,7 +216,7 @@ void NotificationManager::statusChanged(Account *account, Contact contact, Statu
 	if (cnd)
 		delete cnd;
 
-	if (!notify_contact && !config_file.readBoolEntry("Notify", "NotifyAboutAll"))
+	if (!notify_contact && !NotifyAboutAll)
 	{
 		kdebugmf(KDEBUG_FUNCTION_END, "end: not notifying user AND not notifying all users\n");
 		return;
@@ -353,6 +368,41 @@ void NotificationManager::notify(Notification *notification)
 	kdebugf2();
 }
 
+void NotificationManager::groupAdded(Group *group)
+{
+	connect(group, SIGNAL(notifyAboutStatusesChanged(Group *)), this, SLOT(groupNotifyChanged(Group *)));
+}
+
+void NotificationManager::groupNotifyChanged(Group *group)
+{
+	bool notify = group->notifyAboutStatusChanges();
+
+	if (NotifyAboutAll)
+	{
+		NotifyAboutAll = false;
+		config_file.writeEntry("Notify", "NotifyAboutAll", false);
+	}
+
+	foreach (const Contact contact, ContactManager::instance()->contacts())
+	{
+		if (contact.isNull() || contact.isAnonymous() || contact.groups().contains(group))
+			continue;
+
+		ContactNotifyData *cnd = contact.moduleData<ContactNotifyData>();
+		if (!cnd)
+			continue;
+
+		cnd->setNotify(notify);
+		cnd->storeConfiguration();
+		delete cnd;
+	}
+}
+
+void NotificationManager::configurationUpdated()
+{
+	NotifyAboutAll = config_file.readBoolEntry("Notify", "NotifyAboutAll");
+}
+
 void NotificationManager::createDefaultConfiguration()
 {
 	config_file.addVariable("Notify", "IgnoreOnlineToOnline", false);
@@ -369,12 +419,6 @@ ConfigurationUiHandler * NotificationManager::configurationUiHandler()
 void checkNotify(Action *action)
 {
 	kdebugf();
-
-	if (config_file.readBoolEntry("Notify", "NotifyAboutAll"))
-	{
-		action->setEnabled(false);
-		return;
-	}
 
 	foreach(Contact contact, action->contacts())
 		if (!contact.hasAccountData(contact.prefferedAccount()))

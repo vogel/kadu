@@ -66,6 +66,7 @@ signals:
 	void appearanceChanged(const Group *group);
 	void nameChanged(const Group *group);
 	void showInAllChanged();
+	void notifyAboutStatusesChanged(Group *group);
 };
 
 #endif // GROUP_H

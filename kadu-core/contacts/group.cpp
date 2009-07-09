@@ -101,6 +101,7 @@ void Group::setAppearance(bool showName, bool showIcon, const QString &icon)
 void Group::setNotifyAboutStatuses(bool notify)
 {
 	NotifyAboutStatusChanges = notify;
+	emit notifyAboutStatusesChanged(this);
 }
 
 void Group::setOfflineTo(bool offline)

@@ -31,7 +31,7 @@ void ContactNotifyData::loadFromStorage()
 	XmlConfigFile *configurationStorage = sp->storage();
 	QDomElement parent = sp->point();
 
-	Notify = QVariant(configurationStorage->getTextNode(parent, "Notify")).toBool();
+	Notify = QVariant(configurationStorage->getTextNode(parent, "Notify", "true")).toBool();
 }
 
 void ContactNotifyData::storeConfiguration() const

@@ -16,6 +16,7 @@
 
 #include "accounts/accounts-aware-object.h"
 #include "chat/chat.h"
+#include "configuration/configuration-aware-object.h"
 #include "contacts/contact.h"
 #include "contacts/contact-set.h"
 #include "status/status.h"
@@ -24,6 +25,7 @@ class Action;
 class ActionDescription;
 
 class ConfigurationUiHandler;
+class Group;
 class Message;
 class Notification;
 class Notifier;
@@ -35,12 +37,16 @@ class NotifyEvent;
  * @{
  */
 
-class KADUAPI NotificationManager : public QObject, AccountsAwareObject
+class KADUAPI NotificationManager : public QObject, AccountsAwareObject, ConfigurationAwareObject
 {
 	Q_OBJECT
 	Q_DISABLE_COPY(NotificationManager)
 
 	static NotificationManager *Instance;
+
+	void init();
+
+	bool NotifyAboutAll;
 
 	ActionDescription *notifyAboutUserActionDescription;
 	NotifyConfigurationUiHandler *UiHandler;
@@ -60,9 +66,14 @@ private slots:
 
 	void notifyAboutUserActionActivated(QAction *sender, bool toggled);
 
+	void groupAdded(Group *group);
+	void groupNotifyChanged(Group *group);
+
 protected:
 	virtual void accountRegistered(Account *account);
 	virtual void accountUnregistered(Account *account);
+
+	virtual void configurationUpdated();
 
 public:
 	static NotificationManager * instance();
