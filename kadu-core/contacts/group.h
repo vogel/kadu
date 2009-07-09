@@ -29,6 +29,7 @@ class Group : public QObject, public UuidStorableObject
 	bool OfflineToGroup;
 	bool ShowIcon;
 	bool ShowName;
+	int TabPosition;
 
 	void importConfiguration(const QString &name);
 
@@ -46,6 +47,7 @@ public:
 
 	QString name() const { return Name; }
 	QString icon() const { return Icon; }
+	int tabPosition() const { return TabPosition; }
 	bool showIcon() const { return ShowIcon; }
 	bool showName() const { return ShowName; }
 	bool offlineToGroup() const { return OfflineToGroup; }
@@ -54,6 +56,7 @@ public:
 	
 
 	void setName(const QString &name);
+	void setTabPosition(int tabPosition) { TabPosition = tabPosition; }
 	void setAppearance(bool showName, bool showIcon, const QString &icon);
 	void setNotifyAboutStatuses(bool notify);
 	void setOfflineTo(bool offline);
@@ -63,7 +66,6 @@ signals:
 	void appearanceChanged(const Group *group);
 	void nameChanged(const Group *group);
 	void showInAllChanged();
-
 };
 
 #endif // GROUP_H

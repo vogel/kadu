@@ -29,6 +29,8 @@ class GroupTabBar : public QTabBar, ConfigurationAwareObject
 
 	bool showAllGroup;
 
+	int AutoGroupTabPosition;
+
 private slots:
 	void currentChangedSlot(int index);
 	void groupAdded(Group *group);
@@ -45,6 +47,8 @@ private slots:
 
  	void addToGroup();
  	void moveToGroup();
+
+	void saveGroupTabsPosition();
 
 protected:
 	void contextMenuEvent(QContextMenuEvent *event);

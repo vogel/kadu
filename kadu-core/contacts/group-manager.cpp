@@ -108,6 +108,8 @@ void GroupManager::store()
 	if (!isLoaded())
 		return;
 
+	emit saveGroupData();
+
 	foreach (Group *group, Groups)
 		group->store();
 }

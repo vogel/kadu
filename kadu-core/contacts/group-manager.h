@@ -59,6 +59,8 @@ signals:
 	void groupAboutToBeRemoved(Group *group);
 	void groupRemoved(Group *group);
 
+	void saveGroupData();
+
 };
 
 #endif // GROUP_MANAGER_H

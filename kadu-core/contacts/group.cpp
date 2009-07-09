@@ -47,6 +47,7 @@ void Group::importConfiguration(const QString &name)
 	OfflineToGroup = false;
 	ShowIcon = !Icon.isEmpty(); 
 	ShowName = true;
+	TabPosition = -1;
 }
 
 void Group::load()
@@ -64,6 +65,7 @@ void Group::load()
 	OfflineToGroup = loadValue<bool>("OfflineTo", true);
 	ShowIcon = loadValue<bool>("ShowIcon", true);
 	ShowName = loadValue<bool>("ShowName", true);
+	TabPosition = loadValue<int>("TabPosition", -1);
 }
 
 void Group::store()
@@ -78,6 +80,7 @@ void Group::store()
 	storeValue("OfflineTo", OfflineToGroup);
 	storeValue("ShowIcon", ShowIcon);
 	storeValue("ShowName", ShowName);
+	storeValue("TabPosition", TabPosition);
 }
 
 void Group::setName(const QString &name)
@@ -99,13 +102,14 @@ void Group::setNotifyAboutStatuses(bool notify)
 {
 	NotifyAboutStatusChanges = notify;
 }
+
 void Group::setOfflineTo(bool offline)
 {
 	OfflineToGroup = offline;
 }
+
 void Group::setShowInAllGroup(bool show)
 {
 	ShowInAllGroup = show;
 	emit showInAllChanged();
-
 }
