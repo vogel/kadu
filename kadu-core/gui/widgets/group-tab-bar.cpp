@@ -69,7 +69,7 @@ GroupTabBar::GroupTabBar(QWidget *parent)
 	else
 	{
 		AutoGroupTabPosition = config_file.readNumEntry("Look", "UngroupedGroupTabPosition", 100);
-		insertTab(AutoGroupTabPosition, IconsManager::instance()->loadIcon("PersonalInfo"), tr("Ungrouped"));
+		insertTab(AutoGroupTabPosition, tr("Ungrouped"));
 	}
 	setTabData(AutoGroupTabPosition, "AutoTab");
 
@@ -353,12 +353,14 @@ void GroupTabBar::configurationUpdated()
 		config_file.writeEntry("Look", "UngroupedGroupTabPosition", autoGroupOldPosition);
 		AutoGroupTabPosition = 	config_file.readNumEntry("Look", "AllGroupTabPosition", -1);
 		setTabText(autoGroupOldPosition, tr("All"));
+		setTabIcon(autoGroupOldPosition, IconsManager::instance()->loadIcon("PersonalInfo"));
 	}
 	else
 	{
 		config_file.writeEntry("Look", "AllGroupTabPosition", autoGroupOldPosition);
 		AutoGroupTabPosition = 	config_file.readNumEntry("Look", "UngroupedGroupTabPosition", -1);
 		setTabText(autoGroupOldPosition, tr("Ungrouped"));
+		setTabIcon(autoGroupOldPosition, QIcon(""));
 	}
 
 	moveTab(autoGroupOldPosition, AutoGroupTabPosition);
