@@ -258,15 +258,6 @@ void ChatWidgetManager::activateChatWidget(ChatWidget *chatWidget, bool forceAct
 {
 	QWidget *win = chatWidget->window();
 	kdebugm(KDEBUG_INFO, "parent: %p\n", win);
-
-//TODO 0.6.6:
-	if (forceActivate)
-	{
-		activateWindow(win->winId()); /* Dorr: this sometimes doesn't work */
-		win->setWindowState(Qt::WindowActive);
-	}
-
-	win->raise();
 	chatWidget->makeActive();
 	emit chatWidgetOpen(chatWidget);
 }
@@ -298,11 +289,9 @@ ChatWidget * ChatWidgetManager::openChatWidget(Chat *chat, bool forceActivate)
 	connect(chatWidget, SIGNAL(messageSentAndConfirmed(Chat *, const QString &)),
 		this, SIGNAL(messageSentAndConfirmed(Chat *, const QString &)));
 
-//TODO 0.6.6:
-	if (forceActivate)
+	if (forceActivate) //TODO 0.6.6:
 	{
-		QWidget *win = chatWidget->window();
-		activateWindow(win->winId());
+		chatWidget->makeActive();
 	}
 
 	emit chatWidgetCreated(chatWidget);

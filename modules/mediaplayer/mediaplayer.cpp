@@ -580,7 +580,7 @@ ChatWidget *MediaPlayer::getCurrentChat()
 	uint i;
 	for ( i = 0; i < cs.count(); i++ )
 	{
-		//if (cs[i]->isActiveWindow())
+		//if (_isActiveWindow(cs[i]))
 		if (cs[i]->edit() == QApplication::focusWidget() ||
 			cs[i]->hasFocus())
 			break;

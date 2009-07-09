@@ -344,7 +344,7 @@ void TabsManager::onOpenChat(ChatWidget *chat)
 		tabdialog->raise();
 	}
 	else if ((config_autoTabChange && !(chatsWithNewMessages.contains(chat))) ||
-		((!tabdialog->isActiveWindow()) && !(chatsWithNewMessages.contains(chat))) ||
+		((!_isActiveWindow(tabdialog)) && !(chatsWithNewMessages.contains(chat))) ||
 		((chatsWithNewMessages.contains(chat)) && !(config_file.readBoolEntry("Chat","OpenChatOnMessage"))))
 			autoswith=true;
 	kdebugf2();
@@ -353,14 +353,14 @@ void TabsManager::onOpenChat(ChatWidget *chat)
 void TabsManager::onMessageReceived(ChatWidget *chat)
 {
 	kdebugf();
-	if (!(chatsWithNewMessages.contains(chat)) && ((tabdialog->currentWidget() != chat) || !tabdialog->isActiveWindow()))
+	if (!(chatsWithNewMessages.contains(chat)) && ((tabdialog->currentWidget() != chat) || !_isActiveWindow(tabdialog)))
 	{
 		chatsWithNewMessages.append(chat);
 		if (!timer.isActive())
 			timer.start(500);
 	}
 	// jeśli chat jest aktywny zerujemy licznik nowych wiadomości
-	if (tabdialog->isActiveWindow() && tabdialog->currentWidget() == chat)
+	if (_isActiveWindow(tabdialog) && tabdialog->currentWidget() == chat)
 		chat->markAllMessagesRead();
 	kdebugf2();
 }
@@ -387,8 +387,7 @@ void TabsManager::onNewTab(QAction *sender, bool toggled)
 			tabdialog->setWindowState(tabdialog->windowState() & ~Qt::WindowMinimized);
 			tabdialog->setCurrentWidget(chat);
 		}
-		chat->raise();
-		chat->activateWindow();
+		_activateWindow(chat);
 	}
 	else
 	{
@@ -432,9 +431,7 @@ void TabsManager::insertTab(ChatWidget* chat)
 	if ((config_autoTabChange && !chatsWithNewMessages.contains(chat)) || autoswith)
 		tabdialog->setCurrentWidget(chat);
 	tabdialog->setWindowState(tabdialog->windowState() & ~Qt::WindowMinimized);
-	tabdialog->show();
-	tabdialog->raise();
-	tabdialog->activateWindow();
+	_activateWindow(tabdialog);
 
 	autoswith=false;
 	target_tabs=-1;
@@ -464,7 +461,7 @@ void TabsManager::onTimer()
 		if (chatsWithNewMessages.contains(chat))
 		{
 			// okno nieaktywne to trzeba coś zrobić
-			if (!tabdialog->isActiveWindow())
+			if (_isActiveWindow(tabdialog))
 			{
 				// jeśli chat jest na aktywneh karcie - zachowuje się jak normalne okno
 				if (tabdialog->currentWidget() == chat)
@@ -491,11 +488,11 @@ void TabsManager::onTimer()
 				else
 					tabdialog->setTabIcon(i, chat->icon());
 			}
-			else if (tabdialog->currentWidget()==chat && tabdialog->isActiveWindow())
+			else if (tabdialog->currentWidget()==chat && _isActiveWindow(tabdialog))
 				// wywal go z listy uin-ów z nowymi wiadomościami
 				chatsWithNewMessages.removeOne(chat);
 
-			if (tabdialog->isActiveWindow())
+			if (_isActiveWindow(tabdialog))
 			{
 				if (tabdialog->currentWidget()==chat)
 				{
@@ -513,7 +510,7 @@ void TabsManager::onTimer()
 	if (chatsWithNewMessages.size()==0)
 		timer.stop();
 
-	wasactive = tabdialog->isActiveWindow();
+	wasactive = _isActiveWindow(tabdialog);
 	msg = !msg;
 	kdebugf2();
 }

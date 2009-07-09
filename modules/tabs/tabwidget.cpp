@@ -208,7 +208,7 @@ void TabWidget::windowActivationChange(bool oldActive)
 {
 	kdebugf();
 	ChatWidget *chat = dynamic_cast<ChatWidget*>(currentWidget());
-	if (isActiveWindow() && !oldActive && chat)
+	if (_isActiveWindow(this) && !oldActive && chat)
 	{
 		chat->markAllMessagesRead();
 		emit chatWidgetActivated(chat);

@@ -34,6 +34,7 @@
 #include "parser/parser.h"
 #include "protocols/protocol.h"
 
+#include "activate.h"
 #include "chat-edit-box.h"
 #include "custom_input.h"
 #include "debug.h"
@@ -534,17 +535,11 @@ Protocol *ChatWidget::currentProtocol()
 	return CurrentChat->account()->protocol();
 }
 
-// TODO: do dupy, zmieni� przed 0.6
 void ChatWidget::makeActive()
 {
 	kdebugf();
 	QWidget *win = this->window();
-	win->activateWindow();
-	// workaround for kwin which sometimes don't make window active when it's requested right after "unminimization"
-	if (!win->isActiveWindow() && activationCount++ < 20)
-		QTimer::singleShot(100, this, SLOT(makeActive()));
-	else
-		activationCount = 0;
+	_activateWindow(win);
 	kdebugf2();
 }
 

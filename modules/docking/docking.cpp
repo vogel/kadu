@@ -218,7 +218,7 @@ void DockingManager::trayMousePressEvent(QMouseEvent * e)
 		if (kadu->isMinimized())
 		{
 			kadu->showNormal();
-			activateWindow(kadu->winId());
+			_activateWindow(kadu);
 			return;
 		}
 		else if (kadu->isVisible())
@@ -226,9 +226,7 @@ void DockingManager::trayMousePressEvent(QMouseEvent * e)
 		else
 		{
 			kadu->show();
-			kadu->raise();
-
-			activateWindow(kadu->winId());
+			_activateWindow(kadu);
 		}
 		return;
 	}

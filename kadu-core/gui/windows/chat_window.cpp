@@ -19,6 +19,7 @@
 #include "gui/widgets/chat-widget-manager.h"
 #include "gui/windows/message-box.h"
 
+#include "activate.h"
 #include "debug.h"
 #include "misc/misc.h"
 
@@ -199,7 +200,7 @@ void ChatWindow::updateTitle()
 
 void ChatWindow::blinkTitle()
 {
- 	if (!isActiveWindow())
+ 	if (!_isActiveWindow(this))
   	{
 		if (!windowTitle().contains(currentChatWidget->chat()->title()) || !blinkChatTitle)
 		{
@@ -221,14 +222,14 @@ void ChatWindow::blinkTitle()
 
 void ChatWindow::showNewMessagesNumInTitle()
 {
-	if (!isActiveWindow())
+	if (!_isActiveWindow(this))
 		setWindowTitle("[" + QString().setNum(currentChatWidget->newMessagesCount()) + "] " + currentChatWidget->chat()->title());
 }
 
 void ChatWindow::windowActivationChange(bool b)
 {
 	kdebugf();
-	if (isActiveWindow())
+	if (_isActiveWindow(this))
 	{
 		currentChatWidget->markAllMessagesRead();
 		setWindowTitle(currentChatWidget->chat()->title());
@@ -244,12 +245,11 @@ void ChatWindow::windowActivationChange(bool b)
 
 void ChatWindow::alertNewMessage()
 {
-	if (!isActiveWindow())
+	if (!_isActiveWindow(this))
 	{
 		if (activateWithNewMessages && qApp->activeWindow() && !isMinimized())
 		{
-			currentChatWidget->activateWindow();
-			raise();
+			_activateWindow(this);
 		}
 		else if (blinkChatTitle)
 		{

@@ -547,7 +547,7 @@ void Core::setIcon(const QPixmap &pixmap)
 		emit mainIconChanged(icon);
 	}
 }
-
+//TODO 0.6.6:
 void Core::setStatus(const Status &status)
 {
 	StatusChanger->userStatusSet(status);

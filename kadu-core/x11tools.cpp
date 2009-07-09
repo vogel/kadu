@@ -1,5 +1,5 @@
 /****************************************************************************
-*   Copyright (C) 2008  Piotr Dabrowski                                     *
+*   Copyright (C) 2008-2009  Piotr Dabrowski                                *
 *                                                                           *
 *   This program is free software: you can redistribute it and/or modify    *
 *   it under the terms of the GNU General Public License as published by    *
@@ -18,26 +18,14 @@
 
 
 #include <unistd.h>
-#include <stdint.h>
 #include <X11/Xutil.h>
 #include <X11/Xatom.h>
 #include "x11tools.h"
 
 
-typedef struct
-{
-	uint32_t flags;
-	uint32_t functions;
-	uint32_t decorations;
-	 int32_t input_mode;
-	uint32_t status;
-} MotifWMHints;
 
 
-#define MWM_HINTS_DECORATIONS (1L << 1)
-
-
-bool X11_getCardinal32Property( Display *display, Window window, char *propertyName, long *value )
+bool X11_getCardinalProperty( Display *display, Window window, const char *propertyName, long *value, int offset )
 {
 	Atom nameAtom, typeAtom, actual_type_return;
 	int actual_format_return, result;
@@ -50,133 +38,460 @@ bool X11_getCardinal32Property( Display *display, Window window, char *propertyN
 		return false;
 	}
 	result = XGetWindowProperty(
-			display, window, nameAtom, 0, 1, False, typeAtom,
+			display, window, nameAtom, offset, 1, False, typeAtom,
 			&actual_type_return, &actual_format_return, &nitems_return, &bytes_after_return, (unsigned char **)&result_array
 		);
-	if( result != Success )
+	if( result == Success )
 	{
-		return false;
+		if( actual_type_return == typeAtom && nitems_return > 0 )
+		{
+			*value = ((long*)result_array)[0];
+			XFree( result_array );
+			return true;
+		}
+		XFree( result_array );
 	}
-	if( actual_type_return == None || actual_format_return == 0 )
+	return false;
+}
+
+
+
+
+std::pair<int,int> X11_getResolution( Display *display )
+{
+	// we can use _NET_WORKAREA as well
+	return std::make_pair( DisplayWidth( display, 0 ), DisplayHeight( display, 0 ) );
+}
+
+
+std::pair<int,int> X11_getDesktopSize( Display *display )
+{
+	long width;
+	if( ! X11_getCardinalProperty( display, DefaultRootWindow( display ), "_NET_DESKTOP_GEOMETRY", &width, 0 ) )
 	{
-		return false;
+		return std::make_pair( 0, 0 );
 	}
-	if( actual_type_return != typeAtom )
+	long height;
+	if( ! X11_getCardinalProperty( display, DefaultRootWindow( display ), "_NET_DESKTOP_GEOMETRY", &height, 1 ) )
 	{
-		return false;
+		return std::make_pair( 0, 0 );
 	}
-	*value = result_array[0];
-	XFree( result_array );
+	return std::make_pair( width, height );
+}
+
+
+
+
+std::pair<int,int> X11_getMousePos( Display *display )
+{
+	int x = 0;
+	int y = 0;
+	Window root;
+	Window child;
+	int winx, winy;
+	unsigned int mask;
+	XQueryPointer( display, DefaultRootWindow( display ), &root, &child, &x, &y, &winx, &winy, &mask );
+	return std::make_pair( x, y );
+}
+
+
+
+
+bool X11_isFreeDesktopCompatible( Display *display )
+{
+	if( X11_getDesktopsCount( display, true ) != 1 )
+	{
+		// _NET multiple desktops, FreeDesktop compatible
+		return true;
+	}
+	std::pair<int,int> resolution  = X11_getResolution(  display );
+	std::pair<int,int> desktopsize = X11_getDesktopSize( display );
+	if( resolution == desktopsize )
+	{
+		// one desktop only, so we don't have to care
+		return true;
+	}
+	if( ( desktopsize.first % resolution.first != 0 ) || ( desktopsize.second % resolution.second != 0 ) )
+	{
+		// virtual resolution
+		return true;
+	}
+	// not FreeDesktop compatible :(
+	return false;
+}
+
+
+
+
+long X11_getDesktopsCount( Display *display, bool forceFreeDesktop )
+{
+	if( ( ! forceFreeDesktop ) && ( ! X11_isFreeDesktopCompatible( display ) ) )
+	{
+		std::pair<int,int> resolution  = X11_getResolution(  display );
+		std::pair<int,int> desktopsize = X11_getDesktopSize( display );
+		return ( desktopsize.second / resolution.second ) * ( desktopsize.first / resolution.first ) ;
+	}
+	else
+	{
+		long value;
+		if( ! X11_getCardinalProperty( display, DefaultRootWindow( display ), "_NET_NUMBER_OF_DESKTOPS", &value ) )
+		{
+			return 0;
+		}
+		return value;
+	}
+}
+
+
+long X11_getCurrentDesktop( Display *display, bool forceFreeDesktop )
+{
+	if( ( ! forceFreeDesktop ) && ( ! X11_isFreeDesktopCompatible( display ) ) )
+	{
+		long dx, dy;
+		X11_getCardinalProperty( display, DefaultRootWindow( display ), "_NET_DESKTOP_VIEWPORT", &dx, 0 );
+		X11_getCardinalProperty( display, DefaultRootWindow( display ), "_NET_DESKTOP_VIEWPORT", &dy, 1 );
+		std::pair<int,int> desktopsize = X11_getDesktopSize( display );
+		std::pair<int,int> resolution = X11_getResolution( display );
+		long desktop = ( dy / resolution.second ) * ( desktopsize.first / resolution.first ) + ( dx / resolution.first );
+		return desktop;
+	}
+	else
+	{
+		long desktop;
+		if( ! X11_getCardinalProperty( display, DefaultRootWindow( display ), "_NET_CURRENT_DESKTOP", &desktop ) )
+		{
+			return X11_BADDESKTOP;
+		}
+		return desktop;
+	}
+}
+
+
+void X11_setCurrentDesktop( Display *display, long desktop, bool forceFreeDesktop )
+{
+	if( desktop != X11_getCurrentDesktop( display ) )
+	{
+		// generate MouseLeave event
+		int rootx, rooty, windowx, windowy;
+		Window window = X11_getWindowUnderCursor( display, &rootx, &rooty, &windowx, &windowy );
+		if( window != None )
+		{
+			XEvent xev;
+			xev.type                  = LeaveNotify;
+			xev.xcrossing.type        = LeaveNotify;
+			xev.xcrossing.serial      = 0;
+			xev.xcrossing.send_event  = False;
+			xev.xcrossing.display     = display;
+			xev.xcrossing.window      = window;
+			xev.xcrossing.root        = DefaultRootWindow( display );
+			xev.xcrossing.subwindow   = None;
+			xev.xcrossing.time        = CurrentTime;
+			xev.xcrossing.x           = windowx;
+			xev.xcrossing.y           = windowy;
+			xev.xcrossing.x_root      = rootx;
+			xev.xcrossing.y_root      = rooty;
+			xev.xcrossing.mode        = NotifyNormal;
+			xev.xcrossing.detail      = NotifyNonlinear;
+			xev.xcrossing.same_screen = True;
+			xev.xcrossing.focus       = True;
+			xev.xcrossing.state       = 0;
+			XSendEvent( display, window, True, LeaveWindowMask, &xev );
+			XFlush( display );
+		}
+		// change desktop
+		if( ( ! forceFreeDesktop ) && ( ! X11_isFreeDesktopCompatible( display ) ) )
+		{
+			std::pair<int,int> desktopsize = X11_getDesktopSize( display );
+			std::pair<int,int> resolution = X11_getResolution( display );
+			long dx = ( desktop % ( desktopsize.first / resolution.first ) ) * resolution.first;
+			long dy = ( desktop / ( desktopsize.first / resolution.first ) ) * resolution.second;
+			XEvent xev;
+			xev.type                 = ClientMessage;
+			xev.xclient.type         = ClientMessage;
+			xev.xclient.serial       = 0;
+			xev.xclient.send_event   = True;
+			xev.xclient.display      = display;
+			xev.xclient.window       = DefaultRootWindow( display );
+			xev.xclient.message_type = XInternAtom( display, "_NET_DESKTOP_VIEWPORT", False );
+			xev.xclient.format       = 32;
+			xev.xclient.data.l[0]    = dx;
+			xev.xclient.data.l[1]    = dy;
+			xev.xclient.data.l[2]    = 0;
+			xev.xclient.data.l[3]    = 0;
+			xev.xclient.data.l[4]    = 0;
+			XSendEvent( display, DefaultRootWindow( display ), False, SubstructureRedirectMask | SubstructureNotifyMask, &xev );
+			XFlush( display );
+		}
+		else
+		{
+			XEvent xev;
+			xev.type                 = ClientMessage;
+			xev.xclient.type         = ClientMessage;
+			xev.xclient.serial       = 0;
+			xev.xclient.send_event   = True;
+			xev.xclient.display      = display;
+			xev.xclient.window       = DefaultRootWindow( display );
+			xev.xclient.message_type = XInternAtom( display, "_NET_CURRENT_DESKTOP", False );
+			xev.xclient.format       = 32;
+			xev.xclient.data.l[0]    = desktop;
+			xev.xclient.data.l[1]    = CurrentTime;
+			xev.xclient.data.l[2]    = 0;
+			xev.xclient.data.l[3]    = 0;
+			xev.xclient.data.l[4]    = 0;
+			XSendEvent( display, DefaultRootWindow( display ), False, SubstructureRedirectMask | SubstructureNotifyMask, &xev );
+			XFlush( display );
+		}
+	}
+}
+
+
+long X11_getDesktopOfWindow( Display *display, Window window, bool forceFreeDesktop, bool windowareadecides )
+{
+	if( ( ! forceFreeDesktop ) && ( ! X11_isFreeDesktopCompatible( display ) ) )
+	{
+		long currentdesktop = X11_getCurrentDesktop( display );
+		std::pair<int,int> pos = X11_getWindowPos( display, window );
+		std::pair<int,int> desktopsize = X11_getDesktopSize( display );
+		std::pair<int,int> resolution = X11_getResolution( display );
+		if( windowareadecides )
+		{
+			std::pair<int,int> size = X11_getWindowSize( display, window );
+			pos.first  += size.first  / 2;
+			pos.second += size.second / 2;
+			pos.second %= desktopsize.second;
+		}
+		long desktopofwindow = currentdesktop + ( pos.second / resolution.second ) * ( desktopsize.first / resolution.first ) + ( pos.first / resolution.first );
+		if( pos.first < 0 )
+		{
+			desktopofwindow -= 1;
+		}
+		if( pos.second < 0 )
+		{
+			desktopofwindow -= ( desktopsize.first / resolution.first );
+		}
+		desktopofwindow %= X11_getDesktopsCount( display );
+		return desktopofwindow;
+	}
+	else
+	{
+		long desktopofwindow;
+		if( ! X11_getCardinalProperty( display, window, "_NET_WM_DESKTOP", &desktopofwindow ) )
+		{
+			return X11_BADDESKTOP;
+		}
+		return desktopofwindow;
+	}
+}
+
+
+void X11_moveWindowToDesktop( Display *display, Window window, long desktop, bool forceFreeDesktop, bool position, int x, int y )
+{
+	if( ( ! forceFreeDesktop ) && ( ! X11_isFreeDesktopCompatible( display ) ) )
+	{
+		std::pair<int,int> pos = X11_getWindowPos( display, window );
+		std::pair<int,int> desktopsize = X11_getDesktopSize( display );
+		std::pair<int,int> resolution = X11_getResolution( display );
+		long desktopofwindow = X11_getDesktopOfWindow( display, window );
+		long ddx = ( desktop % ( desktopsize.first / resolution.first ) ) - ( desktopofwindow % ( desktopsize.first / resolution.first ) );
+		long ddy = ( desktop / ( desktopsize.first / resolution.first ) ) - ( desktopofwindow / ( desktopsize.first / resolution.first ) );
+		int newx, newy;
+		if( position )
+		{
+			int oldx = pos.first % resolution.first;
+			if( oldx < 0 )
+			{
+				oldx += resolution.first;
+			}
+			int oldy = pos.second % resolution.second;
+			if( oldy < 0 )
+			{
+				oldy += resolution.second;
+			}
+			newx = ( pos.first  - oldx + x ) + ddx * resolution.first;
+			newy = ( pos.second - oldy + y ) + ddy * resolution.second;
+		}
+		else
+		{
+			newx = pos.first  + ddx * resolution.first;
+			newy = pos.second + ddy * resolution.second;
+		}
+		X11_moveWindow( display, window, newx, newy );
+	}
+	else
+	{
+		XEvent xev;
+		xev.type                 = ClientMessage;
+		xev.xclient.type         = ClientMessage;
+		xev.xclient.display      = display;
+		xev.xclient.window       = window;
+		xev.xclient.message_type = XInternAtom( display, "_NET_WM_DESKTOP", False);
+		xev.xclient.format       = 32;
+		xev.xclient.data.l[0]    = desktop;
+		xev.xclient.data.l[1]    = 2;  /* indicate we are messaging from a pager */
+		XSendEvent( display, DefaultRootWindow( display ), False, SubstructureNotifyMask | SubstructureRedirectMask, &xev );
+		XFlush( display );
+		if( position )
+		{
+			X11_moveWindow( display, window, x, y );
+		}
+	}
+}
+
+
+bool X11_isWindowVisibleOnDesktop( Display *display, Window window, long desktop, bool forceFreeDesktop )
+{
+	if( ( ! forceFreeDesktop ) && ( ! X11_isFreeDesktopCompatible( display ) ) )
+	{
+		long desktopofwindow = X11_getDesktopOfWindow( display, window, forceFreeDesktop );
+		return ( desktopofwindow == desktop );
+	}
+	else
+	{
+		long desktopofwindow = X11_getDesktopOfWindow( display, window, forceFreeDesktop );
+		if( desktopofwindow == X11_ALLDESKTOPS )
+			return true;
+		return ( desktopofwindow == desktop );
+	}
+}
+
+
+bool X11_isWholeWindowOnOneDesktop( Display *display, Window window )
+{
+	std::pair<int,int> pos = X11_getWindowPos( display, window );
+	std::pair<int,int> size = X11_getWindowSize( display, window );
+	std::pair<int,int> resolution = X11_getResolution( display );
+	if( ( pos.first < 0 ) && ( pos.first + size.first > 0 ) )
+		return false;
+	if( ( pos.first > 0 ) && ( pos.first + size.first < 0 ) )
+		return false;
+	if( ( pos.second < 0 ) && ( pos.second + size.second > 0 ) )
+		return false;
+	if( ( pos.second > 0 ) && ( pos.second + size.second < 0 ) )
+		return false;
+	if( ( pos.first / resolution.first ) != ( ( pos.first + size.first ) / resolution.first ) )
+		return false;
+	if( ( pos.second / resolution.second ) != ( ( pos.second + size.second ) / resolution.second ) )
+		return false;
 	return true;
 }
 
 
-long X11_getDesktopsCount( Display *display )
+
+
+std::pair<int,int> X11_getWindowPos( Display *display, Window window )
 {
-	Window root = DefaultRootWindow( display );
-	long desktop;
-	if( ! X11_getCardinal32Property( display, root, (char *)"_NET_NUMBER_OF_DESKTOPS", &desktop ) )
+	Window parent = window;
+	Window root;
+	Window *children;
+	unsigned int nchildren;
+	while( parent != DefaultRootWindow( display ) )
 	{
-		return -1;
+		window = parent;
+		if( XQueryTree( display, window, &root, &parent, &children, &nchildren ) == 0 )
+		{
+			return std::make_pair( 0, 0 );
+		}
+		XFree( children );
 	}
-	return desktop;
-}
-
-
-long X11_getCurrentDesktop( Display *display )
-{
-	Window root = DefaultRootWindow( display );
-	long desktop;
-	if( ! X11_getCardinal32Property( display, root, (char *)"_NET_CURRENT_DESKTOP", &desktop ) )
+	if( window == DefaultRootWindow( display ) )
 	{
-		return -1;
+		return std::make_pair( 0, 0 );
 	}
-	return desktop;
-}
-
-
-void X11_setCurrentDesktop( Display *display, long desktop )
-{
-	// generate MouseLeave event
-	int rootx, rooty, windowx, windowy;
-	Window window = X11_getWindowUnderCursor( display, &rootx, &rooty, &windowx, &windowy );
-	if( window != None )
+	int x, y;
+	unsigned int width, height, border, depth;
+	if( XGetGeometry( display, window, &root, &x, &y, &width, &height, &border, &depth ) == 0 )
 	{
-		XEvent xev;
-		xev.type                  = LeaveNotify;
-		xev.xcrossing.type        = LeaveNotify;
-		xev.xcrossing.serial      = 0;
-		xev.xcrossing.send_event  = False;
-		xev.xcrossing.display     = display;
-		xev.xcrossing.window      = window;
-		xev.xcrossing.root        = DefaultRootWindow( display );
-		xev.xcrossing.subwindow   = None;
-		xev.xcrossing.time        = CurrentTime;
-		xev.xcrossing.x           = windowx;
-		xev.xcrossing.y           = windowy;
-		xev.xcrossing.x_root      = rootx;
-		xev.xcrossing.y_root      = rooty;
-		xev.xcrossing.mode        = NotifyNormal;
-		xev.xcrossing.detail      = NotifyNonlinear;
-		xev.xcrossing.same_screen = True;
-		xev.xcrossing.focus       = True;
-		xev.xcrossing.state       = 0;
-		XSendEvent( display, window, True, LeaveWindowMask, &xev );
+		return std::make_pair( 0, 0 );
 	}
-	// change desktop
-	XEvent xev;
-	xev.type                 = ClientMessage;
-	xev.xclient.type         = ClientMessage;
-	xev.xclient.serial       = 0;
-	xev.xclient.send_event   = True;
-	xev.xclient.display      = display;
-	xev.xclient.window       = DefaultRootWindow( display );
-	xev.xclient.message_type = XInternAtom( display, "_NET_CURRENT_DESKTOP", False );
-	xev.xclient.format       = 32;
-	xev.xclient.data.l[0]    = desktop;
-	xev.xclient.data.l[1]    = CurrentTime;
-	xev.xclient.data.l[2]    = 0;
-	xev.xclient.data.l[3]    = 0;
-	xev.xclient.data.l[4]    = 0;
-	XSendEvent( display, DefaultRootWindow( display ), False, SubstructureRedirectMask | SubstructureNotifyMask, &xev );
+	return std::make_pair( x, y );
 }
 
 
-long X11_getDesktopOfWindow( Display *display, Window window )
+std::pair<int,int> X11_getWindowSize( Display *display, Window window )
 {
-	long desktop;
-	if( ! X11_getCardinal32Property( display, window, (char *)"_NET_WM_DESKTOP", &desktop ) )
+	Window parent = window;
+	Window root;
+	Window *children;
+	unsigned int nchildren;
+	while( parent != DefaultRootWindow( display ) )
 	{
-		return -1;
+		window = parent;
+		if( XQueryTree( display, window, &root, &parent, &children, &nchildren ) == 0 )
+		{
+			return std::make_pair( 0, 0 );
+		}
+		XFree( children );
 	}
-	return desktop;
+	if( window == DefaultRootWindow( display ) )
+	{
+		return std::make_pair( 0, 0 );
+	}
+	int x, y;
+	unsigned int width, height, border, depth;
+	if( XGetGeometry( display, window, &root, &x, &y, &width, &height, &border, &depth ) == 0 )
+	{
+		return std::make_pair( 0, 0 );
+	}
+	return std::make_pair( width + 2*border, height + 2*border );
 }
 
 
-void X11_moveWindowToDesktop( Display *display, Window window, long desktop )
+std::pair<int,int> X11_getWindowFramelessSize( Display *display, Window window )
 {
-	XWindowAttributes wattr;
-	XGetWindowAttributes( display, window, &wattr );
-	XEvent xev;
-	xev.type                 = ClientMessage;
-	xev.xclient.type         = ClientMessage;
-	xev.xclient.display      = display;
-	xev.xclient.window       = window;
-	xev.xclient.message_type = XInternAtom( display, "_NET_WM_DESKTOP", False);
-	xev.xclient.format       = 32;
-	xev.xclient.data.l[0]    = desktop;
-	xev.xclient.data.l[1]    = 2;  /* indicate we are messaging from a pager */
-	XSendEvent( display, DefaultRootWindow( display ), False, SubstructureNotifyMask | SubstructureRedirectMask, &xev );
+	Window root;
+	int x, y;
+	unsigned int width, height, border, depth;
+	if( XGetGeometry( display, window, &root, &x, &y, &width, &height, &border, &depth ) == 0 )
+	{
+		return std::make_pair( 0, 0 );
+	}
+	return std::make_pair( width + 2*border, height + 2*border );
 }
 
 
-bool X11_isWindowVisibleOnDesktop( Display *display, Window window, long desktop )
+void X11_moveWindow( Display *display, Window window, int x, int y )
 {
-	long desktopofwindow = X11_getDesktopOfWindow( display, window );
-	if( desktopofwindow == X11_ALLDESKTOPS )
-		return true;
-	return ( desktopofwindow == desktop );
+	XMoveWindow( display, window, x, y );
+	XFlush( display );
 }
+
+
+void X11_centerWindow( Display *display, Window window, long desktop, bool forceFreeDesktop )
+{
+	if( desktop == X11_BADDESKTOP )
+	{
+		desktop = X11_getCurrentDesktop( display );
+	}
+	if( X11_isFreeDesktopCompatible( display ) )
+	{
+		if( X11_getDesktopOfWindow( display, window, true ) != desktop )
+		{
+			X11_moveWindowToDesktop( display, window, desktop, true );
+		}
+		std::pair<int,int> resolution = X11_getResolution( display );
+		std::pair<int,int> size = X11_getWindowSize( display, window );
+		int cx = ( resolution.first  - size.first  ) / 2;
+		int cy = ( resolution.second - size.second ) / 2;
+		X11_moveWindow( display, window, cx, cy );
+	}
+	else
+	{
+		std::pair<int,int> resolution = X11_getResolution( display );
+		std::pair<int,int> size = X11_getWindowSize( display, window );
+		int cx = ( resolution.first  - size.first  ) / 2;
+		int cy = ( resolution.second - size.second ) / 2;
+		X11_moveWindowToDesktop( display, window, desktop, false, true, cx, cy );
+	}
+}
+
+
+void X11_resizeWindow( Display *display, Window window, int width, int height )
+{
+	XResizeWindow( display, window, width, height );
+	XFlush( display );
+}
+
+
 
 
 Window X11_getActiveWindow( Display *display )
@@ -188,7 +503,7 @@ Window X11_getActiveWindow( Display *display )
 }
 
 
-void X11_setActiveWindow( Display *display, Window window )
+void X11_setActiveWindow( Display *display, Window window, bool forceFreeDesktop )
 {
 	int time = 0;
 	while( time < X11_SETACTIVEWINDOW_TIMEOUT )
@@ -203,6 +518,8 @@ void X11_setActiveWindow( Display *display, Window window )
 	XSetInputFocus( display, window, RevertToNone, CurrentTime );
 	XRaiseWindow( display, window );
 }
+
+
 
 
 Window X11_getWindowUnderCursor( Display *display, int *rootx, int *rooty, int *windowx, int *windowy )
@@ -244,6 +561,8 @@ Window X11_getInnerMostWindowUnderCursor( Display *display, int *rootx, int *roo
 }
 
 
+
+
 std::string X11_getWindowClass( Display *display, Window window )
 {
 	XClassHint classhint;
@@ -274,6 +593,8 @@ std::string X11_getWindowRole( Display *display, Window window )
 }
 
 
+
+
 void X11_windowSendXEvent( Display *display, Window window, const char *type, const char *message, bool set )
 {
 	Atom atomtype    = XInternAtom( display, type   , False );
@@ -292,6 +613,7 @@ void X11_windowSendXEvent( Display *display, Window window, const char *type, co
 	xev.xclient.data.l[3]    = 0;
 	xev.xclient.data.l[4]    = 0;
 	XSendEvent( display, DefaultRootWindow( display ), False, SubstructureRedirectMask | SubstructureNotifyMask, &xev );
+	XFlush( display );
 }
 
 

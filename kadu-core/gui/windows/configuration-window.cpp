@@ -41,6 +41,8 @@
 #include "gui/windows/configuration-window.h"
 #include "gui/windows/kadu-window.h"
 
+#include "activate.h"
+
 ConfigurationWindow::ConfigurationWindow(const QString &name, const QString &caption, ConfigurationWindowDataManager *dataManager)
 	: QDialog(Core::instance()->kaduWindow(), Qt::Window), Name(name)
 {
@@ -83,8 +85,7 @@ void ConfigurationWindow::show()
 	}
 	else
 	{
-		activateWindow();
-		raise();
+		_activateWindow(this);
 	}
 }
 
