@@ -63,7 +63,7 @@ GroupTabBar::GroupTabBar(QWidget *parent)
 	showAllGroup = config_file.readBoolEntry("Look", "ShowGroupAll", true);
 	if (showAllGroup)
 	{
-		AutoGroupTabPosition = config_file.readNumEntry("Look", "AllGroupTabPosition", -1);
+		AutoGroupTabPosition = config_file.readNumEntry("Look", "AllGroupTabPosition", 0);
 		insertTab(AutoGroupTabPosition, IconsManager::instance()->loadIcon("PersonalInfo"), tr("All"));
 	}
 	else
