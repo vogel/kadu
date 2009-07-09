@@ -73,7 +73,7 @@
 		return window->isActiveWindow();
 	}
 
-	void _activateWindow( QWidget *window );
+	void _activateWindow( QWidget *window )
 	{
 		SetForegroundWindow((HWND)(window->winId()));
 	}

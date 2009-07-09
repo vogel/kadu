@@ -211,7 +211,6 @@ set (MOC_SOURCES_IRIS
 set (MOC_SOURCES2_IRIS
 	libiris/iris/jdns/qjdns.cpp
 	libiris/iris/irisnet/corelib/netavailability.cpp
-	libiris/iris/irisnet/corelib/netinterface_unix.cpp
 	libiris/iris/irisnet/corelib/jdnsshared.cpp
 	libiris/iris/irisnet/corelib/netinterface.cpp
 	libiris/iris/irisnet/corelib/netnames.cpp
@@ -228,6 +227,13 @@ set (MOC_SOURCES2_IRIS
 	libiris/iris/xmpp/xmpp-im/s5b.cpp
 	libiris/iris/xmpp/xmpp-im/xmpp_features.cpp
 )
+
+if(WIN32)
+  LIST(APPEND MOC_SOURCES2_IRIS libiris/iris/irisnet/corelib/netinterface_win.cpp)
+else(WIN32)
+  LIST(APPEND MOC_SOURCES2_IRIS libiris/iris/irisnet/corelib/netinterface_unix.cpp)
+endif(WIN32)
+
 
 set (SOURCES
 	file-transfer/jabber-file-transfer.cpp

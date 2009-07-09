@@ -21,10 +21,12 @@
 
 #include "chat.h"
 
+#include "exports.h"
+
 class Account;
 class XmlConfigFile;
 
-class ChatManager : public QObject, public StorableObject, public AccountsAwareObject
+class KADUAPI ChatManager : public QObject, public StorableObject, public AccountsAwareObject
 {
 	Q_OBJECT
 	Q_DISABLE_COPY(ChatManager)
