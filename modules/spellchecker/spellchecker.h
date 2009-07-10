@@ -4,8 +4,8 @@
 #include <QStringList>
 #include <QMap>
 
-#include "configuration_aware_object.h"
-#include "main_configuration_window.h"
+#include "configuration/configuration-aware-object.h"
+#include "gui/windows/main-configuration-window.h"
 
 class AspellSpeller;
 class AspellConfig;

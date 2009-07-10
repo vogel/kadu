@@ -90,6 +90,7 @@ ChooseDescription::ChooseDescription(StatusContainer *statusContainer, QWidget *
 
 ChooseDescription::~ChooseDescription()
 {
+    	Dialogs.remove(MyStatusContainer);
 }
 
 void ChooseDescription::setStatus(const Status &status)
@@ -164,7 +165,6 @@ void ChooseDescription::okPressed()
 
 void ChooseDescription::cancelPressed()
 {
-	Dialogs.remove(MyStatusContainer);
 	close();
 }
 

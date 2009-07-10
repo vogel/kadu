@@ -143,7 +143,7 @@ public:
 	Property(QString, email, Email)
 	Property(unsigned short, birthYear, BirthYear)
 	Property(ContactGender, gender, Gender)
-	Property(QList<Group *>, groups, Groups);
+	Property(QList<Group *>, groups, Groups)
 
 signals:
 	void accountDataAboutToBeAdded(Account *account);

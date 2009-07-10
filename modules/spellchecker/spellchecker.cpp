@@ -14,19 +14,17 @@
 #include <QListWidget>
 #include <QPushButton>
 
-#include "chat/chat_manager-old.h"
-#include "gui/widgets/chat_widget.h"
+#include "gui/widgets/chat-widget-manager.h"
+#include "gui/widgets/chat-widget.h"
 #include "gui/widgets/configuration/config-group-box.h"
 #include "gui/widgets/configuration/configuration-widget.h"
-#include "config_file.h"
+#include "configuration/configuration-file.h"
 #include "gui/widgets/custom_input.h"
-#include "message_box.h"
+#include "gui/windows/message-box.h"
 #include "misc/misc.h"
 
 #include "highlighter.h"
 #include "spellchecker.h"
-
-#define MODULE_SPELLCHECKER_VERSION 0.3
 
 SpellChecker* spellcheck;
 
@@ -42,7 +40,8 @@ extern "C" int spellchecker_init(bool firstLoad)
 	}
 	else
 	{
-		MainConfigurationWindow::registerUiFile(dataPath("kadu/modules/configuration/spellchecker.ui"), spellcheck);
+		MainConfigurationWindow::registerUiFile(dataPath("kadu/modules/configuration/spellchecker.ui"));
+		MainConfigurationWindow::registerUiHandler(spellcheck);
 		return 0;
 	}
 }
@@ -51,14 +50,15 @@ extern "C" void spellchecker_close()
 {
 	if (spellcheck)
 	{
-		MainConfigurationWindow::unregisterUiFile(dataPath("kadu/modules/configuration/spellchecker.ui"), spellcheck);
+		MainConfigurationWindow::unregisterUiFile(dataPath("kadu/modules/configuration/spellchecker.ui"));
+		MainConfigurationWindow::unregisterUiHandler(spellcheck);
 		delete spellcheck;
 	}
 }
 
 SpellChecker::SpellChecker()
 {
-	connect(chat_manager, SIGNAL(chatWidgetCreated(ChatWidget *)), this, SLOT(chatCreated(ChatWidget *)));
+	connect(ChatWidgetManager::instance(), SIGNAL(chatWidgetCreated(ChatWidget *)), this, SLOT(chatCreated(ChatWidget *)));
 
 	// prepare configuration of spellchecker
 	spellConfig = new_aspell_config();
@@ -71,7 +71,7 @@ SpellChecker::SpellChecker()
 
 SpellChecker::~SpellChecker()
 {
-	disconnect(chat_manager, SIGNAL(chatWidgetCreated(ChatWidget *)), this, SLOT(chatCreated(ChatWidget *)));
+	disconnect(ChatWidgetManager::instance(), SIGNAL(chatWidgetCreated(ChatWidget *)), this, SLOT(chatCreated(ChatWidget *)));
 
 	delete_aspell_config(spellConfig);
 
@@ -114,7 +114,7 @@ bool SpellChecker::addCheckedLang(QString &name)
 	if (checkers.find(name) != checkers.end())
 		return true;
 
-	aspell_config_replace(spellConfig, "lang", name.ascii());
+	aspell_config_replace(spellConfig, "lang", name.toAscii());
 
 	// create spell checker using prepared configuration
 	AspellCanHaveError* possibleErr = new_aspell_speller(spellConfig);
@@ -128,20 +128,20 @@ bool SpellChecker::addCheckedLang(QString &name)
 
 	if (checkers.size() == 1)
 	{
-		foreach(ChatWidget *chat, chat_manager->chats())
+		foreach(ChatWidget *chat, ChatWidgetManager::instance()->chats())
 			chatCreated(chat);
 	}
 
 	return true;
 }
 
-void SpellChecker::removeCheckedLang(QString& name)
+void SpellChecker::removeCheckedLang(QString &name)
 {
 	Checkers::Iterator checker = checkers.find(name);
 	if (checker != checkers.end())
 	{
-		delete_aspell_speller(checker.data());
-		checkers.erase(name);
+		delete_aspell_speller(checker.value());
+		checkers.remove(name);
 	}
 }
 
@@ -154,7 +154,7 @@ bool SpellChecker::buildCheckers()
 
 	// load languages to check from configuration
 	QString checkedStr = config_file.readEntry("ASpell", "Checked", "pl");
-	QStringList checkedList = QStringList::split(',', checkedStr);
+	QStringList checkedList = checkedStr.split(',', QString::SkipEmptyParts);
 
 	if (config_file.readBoolEntry("ASpell", "Accents", false))
 		aspell_config_replace(spellConfig, "ignore-accents", "true");
@@ -196,7 +196,7 @@ void SpellChecker::buildMarkTag()
 	if (config_file.readBoolEntry("ASpell", "Underline", false))
 	{
 		format.setFontUnderline(true);
-		format.setUnderlineColor(QBrush(colorMark));
+		format.setUnderlineColor(colorMark);
 		format.setUnderlineStyle(QTextCharFormat::SpellCheckUnderline);
 	}
 	format.setForeground(QBrush(colorMark));
@@ -216,7 +216,7 @@ void SpellChecker::chatCreated(ChatWidget *chat)
 void SpellChecker::configForward()
 {
 	if (availList->selectedItems().count() > 0)
-		configForward2(checkList->selectedItems()[0]);
+		configForward2(availList->selectedItems()[0]);
 }
 
 void SpellChecker::configBackward()
@@ -311,7 +311,7 @@ bool SpellChecker::checkWord(QString word)
 	{
 		for (Checkers::Iterator it = checkers.begin(); it != checkers.end(); it++)
 		{
-			if (aspell_speller_check(it.data(), word.toUtf8(), -1))
+			if (aspell_speller_check(it.value(), word.toUtf8(), -1))
 			{
 				isWordValid = true;
 				break;

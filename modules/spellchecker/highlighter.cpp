@@ -27,7 +27,7 @@ Highlighter::Highlighter(QTextDocument* document) : QSyntaxHighlighter(document)
 
 Highlighter::~Highlighter()
 {
-	highlighters.remove(this);
+	highlighters.removeAll(this);
 }
 
 void Highlighter::highlightBlock(const QString& text)
