@@ -113,7 +113,7 @@ void GaduEditAccountWidget::createGeneralTab(QTabWidget *tabWidget)
 
 void GaduEditAccountWidget::createPersonalDataTab(QTabWidget *tabWidget)
 {
-	GaduPersonalInfoWidget *gpiw = new GaduPersonalInfoWidget(account(), tabWidget);
+	gpiw = new GaduPersonalInfoWidget(account(), tabWidget);
 	tabWidget->addTab(gpiw, tr("Personal info"));
 }
 
@@ -207,6 +207,8 @@ void GaduEditAccountWidget::apply()
 	account()->setId(AccountId->text());
 	account()->setRememberPassword(RememberPassword->isChecked());
 	account()->setPassword(AccountPassword->text());
+
+	gpiw->applyData();
 }
 
 void GaduEditAccountWidget::removeAccount()

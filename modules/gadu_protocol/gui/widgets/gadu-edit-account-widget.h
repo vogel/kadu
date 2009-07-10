@@ -17,6 +17,8 @@ class QLineEdit;
 class QTabWidget;
 class QVBoxLayout;
 
+class GaduPersonalInfoWidget;
+
 class GaduEditAccountWidget : public AccountEditWidget
 {
 	Q_OBJECT
@@ -25,6 +27,8 @@ class GaduEditAccountWidget : public AccountEditWidget
 	QLineEdit *AccountId;
 	QLineEdit *AccountPassword;
 	QCheckBox *RememberPassword;
+
+	GaduPersonalInfoWidget *gpiw;
 
 	void createGui();
 	void createGeneralTab(QTabWidget *);

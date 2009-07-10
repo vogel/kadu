@@ -41,4 +41,3 @@ public:
 
 #endif // GADU_PERSONAL_INFO_SERVICE_H
 
-// kate: indent-mode cstyle; replace-tabs off; tab-width 4; 

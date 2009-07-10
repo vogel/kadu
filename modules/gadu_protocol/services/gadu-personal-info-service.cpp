@@ -96,5 +96,3 @@ void GaduPersonalInfoService::updatePersonalInfo(Contact contact)
 	UpdateSeq = gg_pubdir50(Protocol->gaduSession(), req);
 	gg_pubdir50_free(req);
 }
-
-// kate: indent-mode cstyle; replace-tabs off; tab-width 4;  replace-tabs off;  replace-tabs off;

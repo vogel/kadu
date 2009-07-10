@@ -12,6 +12,7 @@
 #include <QtGui/QLabel>
 #include <QtGui/QLineEdit>
 
+#include "debug.h"
 #include "gadu-account.h"
 
 #include "gadu-personal-info-widget.h"
@@ -54,8 +55,12 @@ void GaduPersonalInfoWidget::createGui()
 	FirstName = new QLineEdit(this);
 	LastName = new QLineEdit(this);
 	Sex = new QComboBox(this);
+	Sex->addItem(tr("Unknown Gender"));
+	Sex->addItem(tr("Male"));
+	Sex->addItem(tr("Female"));
 	FamilyName = new QLineEdit(this);
 	BirthYear = new QLineEdit(this);
+	BirthYear->setInputMask("d000");
 	City = new QLineEdit(this);
 	FamilyCity = new QLineEdit(this);
 
@@ -66,20 +71,23 @@ void GaduPersonalInfoWidget::createGui()
 	layout->addWidget(lastNameLabel, 0, 2);
 	layout->addWidget(LastName, 1, 2);
 	layout->addWidget(sexLabel, 2, 0);
-	layout->addWidget(Sex, 3, 1);
+	layout->addWidget(Sex, 3, 0);
 	layout->addWidget(familyNameLabel, 2, 1);
-	layout->addWidget(FamilyName, 3, 2);
+	layout->addWidget(FamilyName, 3, 1);
 	layout->addWidget(birthYearLabel, 4, 0);
 	layout->addWidget(BirthYear, 5, 0);
 	layout->addWidget(cityLabel, 6, 0);
 	layout->addWidget(City, 7, 0);
 	layout->addWidget(familyCityLabel, 6, 1);
 	layout->addWidget(FamilyCity, 7, 1);
+	
 	layout->setRowStretch(8, 100);
+	
 }
 
 void GaduPersonalInfoWidget::personalInfoAvailable(Contact contact)
 {
+	kdebugmf (KDEBUG_INFO,"personal info available");
 	NickName->setText(contact.nickName());
 	FirstName->setText(contact.firstName());
 	LastName->setText(contact.lastName());
@@ -88,4 +96,20 @@ void GaduPersonalInfoWidget::personalInfoAvailable(Contact contact)
 	BirthYear->setText(QString::number(contact.birthYear()));
 	City->setText(contact.city());
 	FamilyCity->setText(contact.familyCity());
+}
+
+void GaduPersonalInfoWidget::applyData()
+{
+	Contact contact;
+
+	contact.setNickName((*NickName).text());
+	contact.setFirstName((*FirstName).text());
+	contact.setLastName((*LastName).text());
+	contact.setFamilyName((*FamilyName).text());
+	contact.setBirthYear((*BirthYear).text().toUShort());
+	contact.setCity((*City).text());
+	contact.setFamilyCity((*FamilyCity).text());
+	contact.setGender((ContactData::ContactGender)Sex->currentIndex());
+
+	Service->updatePersonalInfo(contact);
 }
