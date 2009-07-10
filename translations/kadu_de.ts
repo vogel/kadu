@@ -938,6 +938,10 @@ It&apos;s a high security risk!</source>
         <translation>Speichere geöffnete Fenster beim Beenden</translation>
     </message>
     <message>
+        <source>Remember recent chats for</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Closing</source>
         <translation>Schliessen</translation>
     </message>
@@ -1693,10 +1697,6 @@ Zu viel Versuche mit falschem Passwort</translation>
     <message>
         <source>Recent chats...</source>
         <translation>Letzte Unterhaltungen...</translation>
-    </message>
-    <message>
-        <source>No closed chats found</source>
-        <translation>Keine geschlossenen Chats gefunden</translation>
     </message>
     <message>
         <source>Contact data</source>

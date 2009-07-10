@@ -136,7 +136,7 @@ void KaduWindow::createKaduMenu()
 	RecentChatsMenu = new QMenu();
 	RecentChatsMenu->setIcon(IconsManager::instance()->loadIcon("OpenChat"));
 	RecentChatsMenu->setTitle(tr("Recent chats..."));
-	connect(RecentChatsMenu, SIGNAL(aboutToShow()), this, SLOT(createRecentChatsMenu()));
+	connect(KaduMenu, SIGNAL(aboutToShow()), this, SLOT(createRecentChatsMenu()));
 	connect(RecentChatsMenu, SIGNAL(triggered(QAction *)), this, SLOT(openRecentChats(QAction *)));
 
 	insertMenuActionDescription(Actions->Configuration, MenuKadu);
@@ -144,7 +144,7 @@ void KaduWindow::createKaduMenu()
 	insertMenuActionDescription(Actions->ManageModules, MenuKadu);
 
 	KaduMenu->addSeparator();
-	KaduMenu->addMenu(RecentChatsMenu);
+	RecentChatsMenuAction = KaduMenu->addMenu(RecentChatsMenu);
 	KaduMenu->addSeparator();
 
 	insertMenuActionDescription(Actions->HideKadu, MenuKadu);
@@ -217,12 +217,11 @@ void KaduWindow::createRecentChatsMenu()
 	QAction *action;
 	if (ChatWidgetManager::instance()->closedChats().isEmpty())
 	{
-		action = RecentChatsMenu->addAction(tr("No closed chats found"));
-		action->setEnabled(false);
-
+		RecentChatsMenuAction->setEnabled(false);
 		kdebugf2();
 		return;
 	}
+	RecentChatsMenuAction->setEnabled(true);
 
 	unsigned int index = 0; // indeks pozycji w popupie
 

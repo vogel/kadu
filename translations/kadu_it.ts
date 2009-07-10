@@ -936,6 +936,10 @@ E un rischio per la sicurezza!</translation>
         <translation>Memorizza le finestre chat aperte quando chiudi</translation>
     </message>
     <message>
+        <source>Remember recent chats for</source>
+        <translation></translation>
+    </message>
+    <message>
         <source>Closing</source>
         <translation>Chiudi</translation>
     </message>
@@ -1674,10 +1678,6 @@ Di più conessioni con il password incorretto</translation>
     <message>
         <source>Recent chats...</source>
         <translation>Ultimi chat...</translation>
-    </message>
-    <message>
-        <source>No closed chats found</source>
-        <translation>Non trovato i chiusi chat</translation>
     </message>
     <message>
         <source>Contact data</source>

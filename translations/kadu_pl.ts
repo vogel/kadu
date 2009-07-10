@@ -934,6 +934,10 @@ Jest to wysoce ryzykowne!</translation>
         <translation>Zapamiętuje, które okna były otwarte przy wychodzeniu z programu</translation>
     </message>
     <message>
+        <source>Remember recent chats for</source>
+        <translation>Pamiętaj ostatnie rozmowy przez</translation>
+    </message>
+    <message>
         <source>Closing</source>
         <translation>Zamykanie</translation>
     </message>
@@ -1689,10 +1693,6 @@ Czy na pewno tego chcesz?</translation>
     <message>
         <source>Recent chats...</source>
         <translation>Ostatnie rozmowy...</translation>
-    </message>
-    <message>
-        <source>No closed chats found</source>
-        <translation>Brak zamkniętych rozmów</translation>
     </message>
     <message>
         <source>Contact data</source>

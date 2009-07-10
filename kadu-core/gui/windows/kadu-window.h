@@ -57,6 +57,7 @@ private:
 	QMenu *ContactsMenu;
 	QMenu *HelpMenu;
 	QMenu *RecentChatsMenu;
+	QAction *RecentChatsMenuAction;
 	GroupTabBar *GroupBar;
 
 	ContactsListWidget *ContactsWidget;

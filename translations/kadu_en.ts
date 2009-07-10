@@ -935,6 +935,10 @@ It&apos;s a high security risk!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <source>Remember recent chats for</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Closing</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1650,10 +1654,6 @@ Too many attempts with bad password</source>
     </message>
     <message>
         <source>Recent chats...</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>No closed chats found</source>
         <translation type="unfinished"></translation>
     </message>
     <message>

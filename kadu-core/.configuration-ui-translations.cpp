@@ -813,9 +813,11 @@
 		
 				
 			QT_TRANSLATE_NOOP("@default", "Save opened windows on exit");
+
 		
 			QT_TRANSLATE_NOOP("@default", "Save opened chat windows when exiting");
 		
+			QT_TRANSLATE_NOOP("@default", "Remember recent chats for");
 			
 
 			

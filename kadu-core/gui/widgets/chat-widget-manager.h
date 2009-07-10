@@ -40,6 +40,7 @@ class KADUAPI ChatWidgetManager : public QObject, ConfigurationAwareObject
 
 	QHash<Chat *, ChatWidget *> Chats;
 	QList<Chat *> ClosedChats; /*!< u�ytkownicy, kt�rych okna zosta�y zamkni�te*/
+	QList<QDateTime> ClosedChatsDates;
 
 	ChatWidgetManager();
 	virtual ~ChatWidgetManager();
@@ -50,6 +51,7 @@ class KADUAPI ChatWidgetManager : public QObject, ConfigurationAwareObject
 private slots:
 	void openChatWith();
 	void messageReceived(const Message &message);
+	void clearClosedChats();
 
 protected:
 	virtual void configurationUpdated();

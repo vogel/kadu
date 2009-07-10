@@ -62,6 +62,10 @@ ChatWidgetManager::ChatWidgetManager()
 
 	Actions = new ChatWidgetActions(this);
 
+	QTimer *ClosedChatsTimer = new QTimer(this);
+	connect(ClosedChatsTimer, SIGNAL(timeout()), this, SLOT(clearClosedChats()));
+	ClosedChatsTimer->start(30*1000);
+
 	configurationUpdated();
 
 	kdebugf2();
@@ -224,8 +228,9 @@ const QList<Chat *> ChatWidgetManager::closedChats() const
 void ChatWidgetManager::registerChatWidget(ChatWidget *chat)
 {
 	kdebugf();
-
-	ClosedChats.removeOne(chat->chat());
+	int index = ClosedChats.indexOf(chat->chat());
+	ClosedChats.removeAt(index);
+	ClosedChatsDates.removeAt(index);
 	Chats.insert(chat->chat(), chat);
 }
 
@@ -239,8 +244,7 @@ void ChatWidgetManager::unregisterChatWidget(ChatWidget *chat)
 	if (chat->countMessages())
 	{
 		ClosedChats.prepend(chat->chat());
-		if (ClosedChats.count() > 10)
-			ClosedChats.pop_back();
+		ClosedChatsDates.prepend(QDateTime::currentDateTime());
 	}
 
 	emit chatWidgetDestroying(chat);
@@ -429,4 +433,20 @@ void ChatWidgetManager::messageReceived(const Message &message)
 	kdebugf2();
 }
 
-ChatWidgetManager* chat_manager = 0;
+void ChatWidgetManager::clearClosedChats()
+{
+	QDateTime now = QDateTime::currentDateTime();
+	int i = 0;
+	while (i < ClosedChatsDates.size())
+	{
+		if (ClosedChatsDates.at(i).addSecs(config_file.readNumEntry("Chat", "RecentChatsTimeout")*60) < now)
+		{
+			ClosedChats.removeAt(i);
+			ClosedChatsDates.removeAt(i);
+		}
+		else
+		{
+			i++;
+		}
+	}
+}

@@ -55,7 +55,8 @@ Core * Core::instance()
 
 Core::Core() : Myself(ContactData::TypeNull), Window(0), ShowMainWindowOnStart(true)
 {
-	QObject::connect(qApp, SIGNAL(aboutToQuit()), this, SLOT(quit()));
+	connect(qApp, SIGNAL(aboutToQuit()), this, SLOT(quit()));
+	createDefaultConfiguration();
 }
 
 Core::~Core()
@@ -120,6 +121,7 @@ void Core::createDefaultConfiguration()
 	config_file.addVariable("Chat", "OpenChatOnMessageWhenOnline", false);
 	config_file.addVariable("Chat", "SaveOpenedWindows", true);
 	config_file.addVariable("Chat", "ReceiveMessages", true);
+	config_file.addVariable("Chat", "RecentChatsTimeout", 180);
 	config_file.addVariable("Chat", "ReceiveImagesDuringInvisibility", true);
 	config_file.addVariable("Chat", "RememberPosition", true);
 	config_file.addVariable("Chat", "ShowEditWindowLabel", true);
