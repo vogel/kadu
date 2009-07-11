@@ -57,56 +57,55 @@ void JabberEditAccountWidget::createGeneralTab(QTabWidget *tabWidget)
 	QGridLayout *layout = new QGridLayout(generalTab);
 	layout->setColumnMinimumWidth(0, 20);
 	layout->setColumnMinimumWidth(4, 20);
+	layout->setColumnMinimumWidth(5, 100);
+	layout->setColumnMinimumWidth(6, 20);
 	layout->setColumnStretch(3, 10);
-	layout->setColumnStretch(5, 2);
+	layout->setColumnStretch(6, 2);
 
 	int row = 0;
 	ConnectAtStart = new QCheckBox(tr("Connect at start"), this);
 	layout->addWidget(ConnectAtStart, row++, 0, 1, 3);
 
-	QLabel *numberLabel = new QLabel(tr("Jabber ID") + ":", this);
-	layout->addWidget(numberLabel, row, 1, Qt::AlignRight);
+	QLabel *numberLabel = new QLabel(tr("Gadu-Gadu number") + ":", this);
+	layout->addWidget(numberLabel, row++, 1);
 	AccountId = new QLineEdit(this);
-	layout->addWidget(AccountId, row++, 2, 1, 2);
+	layout->addWidget(AccountId, row++, 1, 1, 2);
 
 	QLabel *passwordLabel = new QLabel(tr("Password") + ":", this);
-	layout->addWidget(passwordLabel, row, 1, Qt::AlignRight);
+	layout->addWidget(passwordLabel, row++, 1);
 	AccountPassword = new QLineEdit(this);
 	AccountPassword->setEchoMode(QLineEdit::Password);
-	layout->addWidget(AccountPassword, row, 2);
-	QPushButton *remindPassword = new QPushButton(tr("Forgot password"), this);
-	layout->addWidget(remindPassword, row++, 3, Qt::AlignLeft);
-
-	QPushButton *changePassword = new QPushButton(tr("Change password"), this);
-	layout->addWidget(changePassword, row++, 3, Qt::AlignLeft);
+	layout->addWidget(AccountPassword, row++, 1, 1, 2);
 
 	RememberPassword = new QCheckBox(tr("Remember password"), this);
 	RememberPassword->setChecked(true);
-	layout->addWidget(RememberPassword, row++, 2, 1, 2);
+	layout->addWidget(RememberPassword, row++, 1, 1, 2);
 
-	QLabel *descriptionLabel = new QLabel(tr("Account description"), this);
-	layout->addWidget(descriptionLabel, row, 1, Qt::AlignRight);
+	QLabel *descriptionLabel = new QLabel(tr("Account description") + ":", this);
+	layout->addWidget(descriptionLabel, row++, 1, Qt::AlignRight);
 	QComboBox *description = new QComboBox(this);
-	layout->addWidget(description, row++, 2, 1, 2);
+	layout->addWidget(description, row++, 1, 1, 2);
+	newAccountDescription = new QLineEdit(this);
+	newAccountDescription->hide();
+	layout->addWidget(description, row++, 1, 1, 2);
 
-	layout->setRowMinimumHeight(row++, 60);
+	layout->setRowMinimumHeight(row++, 30);
+
+	QPushButton *changePassword = new QPushButton(tr("Change password"), this);
+	layout->addWidget(changePassword, row++, 1, Qt::AlignLeft);
 
 	QPushButton *removeAccount = new QPushButton(tr("Remove account"), this);
 	connect(removeAccount, SIGNAL(clicked(bool)), this, SLOT(removeAccount()));
-	layout->addWidget(removeAccount, row++, 1, 1, 3);
+	layout->addWidget(removeAccount, row++, 1);
 	layout->setRowStretch(row, 100);
 
 	row = 0;
-	QLabel *photoLabel = new QLabel(tr("Your picture"), this);
+	QLabel *photoLabel = new QLabel(tr("Your photo") + ":", this);
 	layout->addWidget(photoLabel, row++, 5);
 
-	QFrame *frame = new QFrame(this);
-	frame->setFrameShape(QFrame::Box);
-	layout->addWidget(frame, row, 5, 1, 4);
-	row += 4;
-
-	QPushButton *changePicture = new QPushButton(tr("Change picture"), this);
-	layout->addWidget(changePicture, row++, 5);
+	QPushButton *photoButton = new QPushButton;
+	photoButton->setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::MinimumExpanding);
+	layout->addWidget(photoButton, row, 5, 4, 1);
 
 	tabWidget->addTab(generalTab, tr("General"));
 }

@@ -255,8 +255,7 @@ void KaduWindow::createRecentChatsMenu()
 void KaduWindow::openRecentChats(QAction *action)
 {
 	kdebugf();
-// TODO: 0.6.6
-// 	chat_manager->openPendingMsgs(chat_manager->chats().at(action->data().toInt()), true);
+	ChatWidgetManager::instance()->openPendingMsgs(ChatWidgetManager::instance()->closedChats().at(action->data().toInt()), true);
 	kdebugf2();
 }
 

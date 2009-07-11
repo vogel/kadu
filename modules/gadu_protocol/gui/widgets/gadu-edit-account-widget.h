@@ -27,6 +27,7 @@ class GaduEditAccountWidget : public AccountEditWidget
 	QLineEdit *AccountId;
 	QLineEdit *AccountPassword;
 	QCheckBox *RememberPassword;
+	QLineEdit *newAccountDescription;
 
 	GaduPersonalInfoWidget *gpiw;
 

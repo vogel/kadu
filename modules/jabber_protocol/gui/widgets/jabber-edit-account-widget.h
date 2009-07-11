@@ -25,6 +25,7 @@ class JabberEditAccountWidget : public AccountEditWidget
 	QLineEdit *AccountId;
 	QLineEdit *AccountPassword;
 	QCheckBox *RememberPassword;
+	QLineEdit *newAccountDescription;
 
 	void createGui();
 	void createGeneralTab(QTabWidget *);
