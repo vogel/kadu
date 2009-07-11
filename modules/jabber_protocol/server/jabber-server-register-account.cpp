@@ -10,14 +10,14 @@
 #include "gui/windows/message-box.h"
 #include "jabber-server-register-account.h"
 
-JabberServerRegisterAccount::JabberServerRegisterAccount(const QString &server, const QString &username, const QString &password)
+JabberServerRegisterAccount::JabberServerRegisterAccount(const QString &server, const QString &username, const QString &password, bool legacySSLProbe, bool legacySSL, bool forceSSL, const QString &host, int port)
 	: QObject(), Result(0), Server(server), Username(username), Password(password), Jid(QString::null)
 {
 	Client = new MiniClient;
 	connect(Client, SIGNAL(handshaken()), SLOT(clientHandshaken()));
 	connect(Client, SIGNAL(error()), SLOT(clientError()));
 	//TODO opcje połączenia
-	Client->connectToServer(XMPP::Jid(Server), false, true, true, QString(), -1);
+	Client->connectToServer(XMPP::Jid(Server), legacySSLProbe, legacySSL, forceSSL, host, port);
 }
 
 void JabberServerRegisterAccount::clientHandshaken()

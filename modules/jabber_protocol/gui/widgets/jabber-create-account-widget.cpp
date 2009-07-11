@@ -106,6 +106,11 @@ void JabberCreateAccountWidget::createIHaveAccountGui(QGridLayout *gridLayout, i
 
 void JabberCreateAccountWidget::createRegisterAccountGui(QGridLayout *gridLayout, int &row)
 {
+	// Initialize settings
+	ssl_ = 0;
+	legacy_ssl_probe_ = true;
+	port_ = 5222;
+
 	QRadioButton *dontHaveJid = new QRadioButton(tr("I don't have a Jabber ID"), this);
 	gridLayout->addWidget(dontHaveJid, row++, 0, 1, 4);
 
@@ -142,60 +147,76 @@ void JabberCreateAccountWidget::createRegisterAccountGui(QGridLayout *gridLayout
 
         ConnectionOptions = new QGroupBox(this);
 	ConnectionOptions->setTitle(tr("Connection settings"));
+	ConnectionOptions->setVisible(false);
 
         QVBoxLayout *vboxLayout2 = new QVBoxLayout(ConnectionOptions);
         vboxLayout2->setSpacing(6);
         vboxLayout2->setMargin(9);
 
-        ck_host = new QCheckBox(ConnectionOptions);
-        ck_host->setText(tr("Manually Specify Server Host/Port")+":");
-        vboxLayout2->addWidget(ck_host);
+        CustomHostPort = new QCheckBox(ConnectionOptions);
+        CustomHostPort->setText(tr("Manually Specify Server Host/Port")+":");
+        vboxLayout2->addWidget(CustomHostPort);
 
-        hboxLayout = new QHBoxLayout();
-        hboxLayout->setSpacing(6);
-        hboxLayout->setMargin(0);
+        HostPortLayout = new QHBoxLayout();
+        HostPortLayout->setSpacing(6);
+        HostPortLayout->setMargin(0);
 
-        lb_host = new QLabel(ConnectionOptions);
-        lb_host->setText(tr("Host")+":");
-        hboxLayout->addWidget(lb_host);
+        CustomHostLabel = new QLabel(ConnectionOptions);
+        CustomHostLabel->setText(tr("Host")+":");
+        HostPortLayout->addWidget(CustomHostLabel);
 
-        le_host = new QLineEdit(ConnectionOptions);
-        hboxLayout->addWidget(le_host);
+        CustomHost = new QLineEdit(ConnectionOptions);
+        HostPortLayout->addWidget(CustomHost);
 
-        lb_port = new QLabel(ConnectionOptions);
-        lb_port->setText(tr("Port")+":");
-        hboxLayout->addWidget(lb_port);
+        CustomPortLabel = new QLabel(ConnectionOptions);
+        CustomPortLabel->setText(tr("Port")+":");
+        HostPortLayout->addWidget(CustomPortLabel);
 
-        le_port = new QLineEdit(ConnectionOptions);
-        le_port->setMinimumSize(QSize(56, 0));
-        le_port->setMaximumSize(QSize(56, 32767));
-        hboxLayout->addWidget(le_port);
+        CustomPort = new QLineEdit(ConnectionOptions);
+        CustomPort->setMinimumSize(QSize(56, 0));
+        CustomPort->setMaximumSize(QSize(56, 32767));
+	CustomPort->setText(QString::number(port_));
+        HostPortLayout->addWidget(CustomPort);
 
-        vboxLayout2->addLayout(hboxLayout);
+	// Manual Host/Port
+	CustomHost->setEnabled(false);
+	CustomHostLabel->setEnabled(false);
+	CustomPort->setEnabled(false);
+	CustomPortLabel->setEnabled(false);
+	connect(CustomHostPort, SIGNAL(toggled(bool)), SLOT(hostToggled(bool)));
 
-        QHBoxLayout *hboxLayout1 = new QHBoxLayout();
-        hboxLayout1->setSpacing(6);
-        hboxLayout1->setMargin(0);
-        lb_ssl = new QLabel(ConnectionOptions);
-        lb_ssl->setText(tr("Encrypt connection")+":");
-        hboxLayout1->addWidget(lb_ssl);
+        vboxLayout2->addLayout(HostPortLayout);
 
-        cb_ssl = new QComboBox(ConnectionOptions);
-	cb_ssl->addItem(tr("Always"), 0);
-	cb_ssl->addItem(tr("When available"), 1);
-	cb_ssl->addItem(tr("Legacy SSL"), 2);
-	cb_ssl->setCurrentIndex(1);
-        hboxLayout1->addWidget(cb_ssl);
+        QHBoxLayout *EncryptionLayout = new QHBoxLayout();
+        EncryptionLayout->setSpacing(6);
+        EncryptionLayout->setMargin(0);
+        EncryptionModeLabel = new QLabel(ConnectionOptions);
+        EncryptionModeLabel->setText(tr("Encrypt connection")+":");
+        EncryptionLayout->addWidget(EncryptionModeLabel);
+
+        EncryptionMode = new QComboBox(ConnectionOptions);
+	EncryptionMode->addItem(tr("Always"), 0);
+	EncryptionMode->addItem(tr("When available"), 1);
+	EncryptionMode->addItem(tr("Legacy SSL"), 2);
+	EncryptionMode->setCurrentIndex(1);
+	connect(EncryptionMode, SIGNAL(activated(int)), SLOT(sslActivated(int)));
+        EncryptionLayout->addWidget(EncryptionMode);
 
         QSpacerItem *spacerItem = new QSpacerItem(151, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
-        hboxLayout1->addItem(spacerItem);
-        vboxLayout2->addLayout(hboxLayout1);
+        EncryptionLayout->addItem(spacerItem);
+        vboxLayout2->addLayout(EncryptionLayout);
 
-        ck_legacy_ssl_probe = new QCheckBox(ConnectionOptions);
-        ck_legacy_ssl_probe->setText(tr("Probe legacy SSL port"));
-        vboxLayout2->addWidget(ck_legacy_ssl_probe);
+        LegacySSLProbe = new QCheckBox(ConnectionOptions);
+        LegacySSLProbe->setText(tr("Probe legacy SSL port"));
+	LegacySSLProbe->setChecked(legacy_ssl_probe_);
+        vboxLayout2->addWidget(LegacySSLProbe);
 
 	gridLayout->addWidget(ConnectionOptions, row++, 1, 1, 4);
+
+	ShowHideConnectionOptions = new QPushButton(tr("Connection options"), this);
+	ShowHideConnectionOptions->setCheckable(true);
+	connect(ShowHideConnectionOptions, SIGNAL(toggled(bool)), this, SLOT(toggleConnectionOptions(bool)));
+	gridLayout->addWidget(ShowHideConnectionOptions, row++, 1, 1, 3);
 
 	DontHaveJidWidgets.append(serverLabel);
 	DontHaveJidWidgets.append(Server);
@@ -206,7 +227,43 @@ void JabberCreateAccountWidget::createRegisterAccountGui(QGridLayout *gridLayout
 	DontHaveJidWidgets.append(reNewPasswordLabel);
 	DontHaveJidWidgets.append(ReNewPassword);
 	DontHaveJidWidgets.append(RegisterAccount);
-	DontHaveJidWidgets.append(ConnectionOptions);
+	DontHaveJidWidgets.append(ShowHideConnectionOptions);
+}
+
+bool JabberCreateAccountWidget::checkSSL()
+{
+	if(!QCA::isSupported("tls")) {
+		MessageBox::msg(tr("Cannot enable SSL/TLS.  Plugin not found."));
+		return false;
+	}
+	return true;
+}
+
+void JabberCreateAccountWidget::hostToggled(bool on)
+{
+	CustomHost->setEnabled(on);
+	CustomPort->setEnabled(on);
+	CustomHostLabel->setEnabled(on);
+	CustomPortLabel->setEnabled(on);
+	if (!on && EncryptionMode->currentIndex() == EncryptionMode->findData(2)) {
+		EncryptionMode->setCurrentIndex(1);
+	}
+}
+
+void JabberCreateAccountWidget::sslActivated(int i)
+{
+	if ((EncryptionMode->itemData(i) == 0 || EncryptionMode->itemData(i) == 2) && !checkSSL()) {
+		EncryptionMode->setCurrentIndex(EncryptionMode->findData(1));
+	}
+	else if (EncryptionMode->itemData(i) == 2 && !CustomHostPort->isChecked()) {
+		MessageBox::msg(tr("Legacy SSL is only available in combination with manual host/port."));
+		EncryptionMode->setCurrentIndex(EncryptionMode->findData(1));
+	}
+}
+
+void JabberCreateAccountWidget::toggleConnectionOptions(bool checked)
+{
+	ConnectionOptions->setVisible(checked);
 }
 
 void JabberCreateAccountWidget::haveJidChanged(bool haveJid)
@@ -249,7 +306,13 @@ void JabberCreateAccountWidget::registerNewAccount()
 		return;
 	}
 
-	JabberServerRegisterAccount *jsra = new JabberServerRegisterAccount(Server->text(), Username->text(), NewPassword->text());
+	ssl_ = EncryptionMode->itemData(EncryptionMode->currentIndex()).toInt();
+	legacy_ssl_probe_ = LegacySSLProbe->isChecked();
+	opt_host_ = CustomHostPort->isChecked();
+	host_ = CustomHost->text();
+	port_ = CustomPort->text().toInt();
+
+	JabberServerRegisterAccount *jsra = new JabberServerRegisterAccount(Server->text(), Username->text(), NewPassword->text(), legacy_ssl_probe_, ssl_ == 2, ssl_ == 0, opt_host_ ? host_ : QString(), port_);
 	connect(jsra, SIGNAL(finished(JabberServerRegisterAccount *)),
 			this, SLOT(registerNewAccountFinished(JabberServerRegisterAccount *)));
 

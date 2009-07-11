@@ -47,7 +47,7 @@ class JabberServerRegisterAccount : public QObject
 	XMPP::XData convertToXData(const XMPP::Form& form);
 
 public:
-	JabberServerRegisterAccount(const QString &server, const QString &username, const QString &password);
+	JabberServerRegisterAccount(const QString &server, const QString &username, const QString &password, bool legacySSLProbe, bool legacySSL, bool forceSSL, const QString &host, int port);
 
 	void performAction();
 

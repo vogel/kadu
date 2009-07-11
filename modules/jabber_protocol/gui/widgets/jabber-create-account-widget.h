@@ -45,21 +45,27 @@ class JabberCreateAccountWidget : public AccountCreateWidget
 	QLineEdit *Server;
 	QLineEdit *Username;
 	QPushButton *RegisterAccount;
+	QPushButton *ShowHideConnectionOptions;
 	QGroupBox *ConnectionOptions;
-	//TODO zmiana nazewnictwa po chamskim przeszczepie
-	QCheckBox *ck_host;
-	QHBoxLayout *hboxLayout;
-	QLabel *lb_host;
-	QLineEdit *le_host;
-	QLabel *lb_port;
-	QLineEdit *le_port;
-	QLabel *lb_ssl;
-	QComboBox *cb_ssl;
-	QCheckBox *ck_legacy_ssl_probe;
+	QCheckBox *CustomHostPort;
+	QHBoxLayout *HostPortLayout;
+	QLabel *CustomHostLabel;
+	QLineEdit *CustomHost;
+	QLabel *CustomPortLabel;
+	QLineEdit *CustomPort;
+	QLabel *EncryptionModeLabel;
+	QComboBox *EncryptionMode;
+	QCheckBox *LegacySSLProbe;
+
+	int ssl_;
+	bool opt_host_, legacy_ssl_probe_;
+	QString host_;
+	int port_;
 
 	void createGui();
 	void createIHaveAccountGui(QGridLayout *gridLayout, int &row);
 	void createRegisterAccountGui(QGridLayout *gridLayout, int &row);
+	bool checkSSL();
 
 private slots:
 	void haveJidChanged(bool haveNumber);
@@ -68,7 +74,9 @@ private slots:
 	void registerAccountDataChanged();
 	void registerNewAccount();
 	void registerNewAccountFinished(JabberServerRegisterAccount *jsra);
-
+	void toggleConnectionOptions(bool checked);
+	void hostToggled(bool on);
+	void sslActivated(int i);
 public:
 	explicit JabberCreateAccountWidget(QWidget *parent = 0);
 	virtual ~JabberCreateAccountWidget();
