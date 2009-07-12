@@ -90,8 +90,8 @@ QVariant ContactsModelBase::data(const QModelIndex &index, int role) const
 			if (0 == cad)
 				return QVariant();
 			// TODO generic icon
-			return account && account->protocol()
-				? account->protocol()->statusPixmap(cad->status())
+			return account
+				? account->statusPixmap(cad->status())
 				: QVariant();
 		case ContactRole:
 			return QVariant::fromValue(con);

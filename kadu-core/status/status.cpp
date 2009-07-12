@@ -31,24 +31,24 @@ void Status::setType(const QString& type)
 
 	StatusType *statusType = StatusTypeManager::instance()->statusType(Type);
 	if (!statusType)
+	{
+		Type = "Offline";
 		return;
+	}
 
 	StatusGroup *statusGroup = statusType->statusGroup();
-	if (!statusGroup)
-		return;
-
-	Group = statusGroup->name();
+	if (statusGroup)
+		Group = statusGroup->name();
 }
 
 QString Status::name(const Status &status, bool fullName)
 {
-	QString add((fullName && !status.Description.isEmpty()) ? "WithDescription" : "");
-	return status.Type + add;
+	return status.Type + ((fullName && !status.Description.isEmpty()) ? "WithDescription" : "");
 }
 
 bool Status::isDisconnected() const
 {
-	return "Offline" == Type;
+	return "Offline" == Group;
 }
 
 bool Status::operator < (const Status &compare) const

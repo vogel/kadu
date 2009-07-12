@@ -65,10 +65,10 @@ bool ContactsModelProxy::lessThan(const QModelIndex &left, const QModelIndex &ri
 		? rightContactAccountData->status()
 		: Status();
 
-	if (leftStatus < rightStatus)
+	if (leftStatus.isDisconnected() && !rightStatus.isDisconnected())
 		return false;
 
-	if (rightStatus < leftStatus)
+	if (!leftStatus.isDisconnected() && rightStatus.isDisconnected())
 		return true;
 
 	int displayCompare = compareNames(leftContact.display(), rightContact.display());
