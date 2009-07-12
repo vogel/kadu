@@ -114,7 +114,7 @@ protected:
 	virtual void changePrivateMode();
 
 public:
-	static Status::StatusType statusTypeFromGaduStatus(unsigned int index);
+	static QString statusTypeFromGaduStatus(unsigned int index);
 	static unsigned int gaduStatusFromStatus(const Status &status);
 
 	GaduProtocol(Account *account, ProtocolFactory *factory);

@@ -8,11 +8,10 @@
  ***************************************************************************/
 
 #include "accounts/account-manager.h"
-
 #include "contacts/contact.h"
 #include "contacts/contact-account-data.h"
-
 #include "status/status.h"
+#include "status/status-type.h"
 
 #include "contacts-model.h"
 
@@ -66,12 +65,12 @@ bool ContactsModelProxy::lessThan(const QModelIndex &left, const QModelIndex &ri
 		? rightContactAccountData->status()
 		: Status();
 
-	int statusCompare = leftStatus.compareTo(rightStatus);
-	if (statusCompare < 0)
-		return true;
-	if (statusCompare > 0)
+	if (leftStatus < rightStatus)
 		return false;
-	
+
+	if (rightStatus < leftStatus)
+		return true;
+
 	int displayCompare = compareNames(leftContact.display(), rightContact.display());
 	return displayCompare < 0;
 }

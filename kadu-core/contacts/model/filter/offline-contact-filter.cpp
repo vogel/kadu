@@ -37,5 +37,5 @@ bool OfflineContactFilter::acceptContact(Contact contact)
 		return false;
 
 	Status status = contact.accountData(prefferedAccount)->status();
-	return !status.isInvisible() && !status.isOffline();
+	return !status.isDisconnected();
 }

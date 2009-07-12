@@ -15,7 +15,7 @@
 #include "contacts/contact-account-data.h"
 #include "parser/parser.h"
 #include "status/status.h"
-
+#include "status/status-type-manager.h"
 #include "misc/misc.h"
 
 #include "preview.h"
@@ -27,7 +27,7 @@ Preview::Preview(QWidget *parent)
 	setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored);
 
 	account = AccountManager::instance()->defaultAccount();
-	Status status(Status::Busy, qApp->translate("@default", "Description"));
+	Status status("Away", qApp->translate("@default", "Description"));
 
 	//contact.addAccountData(ContactAccountData(account, "999999"));
 	//ContactAccountData *contact_data = contact.accountData(account);

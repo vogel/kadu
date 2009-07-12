@@ -23,7 +23,7 @@ KADUAPI StatusGroupManager * StatusGroupManager::instance()
 StatusGroupManager::StatusGroupManager()
 {
 	registerStatusGroup("Online", 0);
-	registerStatusGroup("Busy", 25);
+	registerStatusGroup("Away", 25);
 	registerStatusGroup("Invisible", 50);
 	registerStatusGroup("Offline", StatusGroup::StatusGroupSortIndexAfterSetDescription);
 }

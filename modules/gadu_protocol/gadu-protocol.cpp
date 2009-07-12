@@ -28,6 +28,7 @@
 #include "gui/windows/message-box.h"
 #include "gui/windows/password-window.h"
 #include "protocols/protocols-manager.h"
+#include "status/status.h"
 
 #include "debug.h"
 #include "icons-manager.h"
@@ -77,48 +78,47 @@ extern "C" void gadu_protocol_close()
 }
 
 #define GG_STATUS_INVISIBLE2 0x0009
-Status::StatusType GaduProtocol::statusTypeFromGaduStatus(unsigned int index)
+QString GaduProtocol::statusTypeFromGaduStatus(unsigned int index)
 {
 	switch (index)
 	{
 		case GG_STATUS_AVAIL_DESCR:
 		case GG_STATUS_AVAIL:
-			return Status::Online;
+			return "Online";
 
 		case GG_STATUS_BUSY_DESCR:
 		case GG_STATUS_BUSY:
-			return Status::Busy;
+			return "Away";
 
 		case GG_STATUS_INVISIBLE_DESCR:
 		case GG_STATUS_INVISIBLE:
 		case GG_STATUS_INVISIBLE2:
-			return Status::Invisible;
+			return "Invisible";
 
 		case GG_STATUS_BLOCKED:
 		case GG_STATUS_NOT_AVAIL_DESCR:
 		case GG_STATUS_NOT_AVAIL:
-		default:
-			return Status::Offline;
-	}
 
-	return Status::Offline;
+		default:
+			return "Offline";
+	}
 }
 
 unsigned int GaduProtocol::gaduStatusFromStatus(const Status &status)
 {
 	bool hasDescription = !status.description().isEmpty();
-	switch (status.type())
-	{
-		case Status::Online:
-			return hasDescription ? GG_STATUS_AVAIL_DESCR : GG_STATUS_AVAIL;
-		case Status::Busy:
-			return hasDescription ? GG_STATUS_BUSY_DESCR : GG_STATUS_BUSY;
-		case Status::Invisible:
-			return hasDescription ? GG_STATUS_INVISIBLE_DESCR : GG_STATUS_INVISIBLE;
-			break;
-		default:
-			return hasDescription ? GG_STATUS_NOT_AVAIL_DESCR : GG_STATUS_NOT_AVAIL;
-	}
+	const QString &type = status.type();
+
+	if ("Online" == type)
+		return hasDescription ? GG_STATUS_AVAIL_DESCR : GG_STATUS_AVAIL;
+
+	if ("Away" == type)
+		return hasDescription ? GG_STATUS_BUSY_DESCR : GG_STATUS_BUSY;
+
+	if ("Invisible" == type)
+		return hasDescription ? GG_STATUS_INVISIBLE_DESCR : GG_STATUS_INVISIBLE;
+
+	return hasDescription ? GG_STATUS_NOT_AVAIL_DESCR : GG_STATUS_NOT_AVAIL;
 }
 
 GaduProtocol::GaduProtocol(Account *account, ProtocolFactory *factory) :
@@ -192,7 +192,7 @@ void GaduProtocol::changeStatus()
 {
 	Status newStatus = nextStatus();
 
-	if (newStatus.isOffline() && status().isOffline())
+	if (newStatus.isDisconnected() && status().isDisconnected())
 	{
 		if (NetworkConnecting == state())
 			networkDisconnected(false);
@@ -202,14 +202,14 @@ void GaduProtocol::changeStatus()
 	if (NetworkConnecting == state())
 		return;
 
-	if (status().isOffline())
+	if (status().isDisconnected())
 	{
 		login();
 		return;
 	}
 
 // TODO: 0.6.6
-	int friends = (!newStatus.isOffline() && privateMode() ? GG_STATUS_FRIENDS_MASK : 0);
+	int friends = (!newStatus.isDisconnected() && privateMode() ? GG_STATUS_FRIENDS_MASK : 0);
 	int type = gaduStatusFromStatus(newStatus);
 	bool hasDescription = !newStatus.description().isEmpty();
 
@@ -218,7 +218,7 @@ void GaduProtocol::changeStatus()
 	else
 		gg_change_status(GaduSession, type | friends);
 
-	if (newStatus.isOffline())
+	if (newStatus.isDisconnected())
 		networkDisconnected(false);
 
 	statusChanged(newStatus);
@@ -297,6 +297,8 @@ void GaduProtocol::userDataChanged(UserListElement elem, QString name, QVariant 
 	Contact contact = elem.toContact(account());
 	if (!contact.accountData(account()))
 		return;
+#include <status/status-group.h>
+#include <status/status-group.h>
 
 	if (status().isOffline())
 		return;
@@ -430,7 +432,7 @@ void GaduProtocol::login()
 	if (0 == gaduAccount->uin())
 	{
 		MessageBox::msg(tr("UIN not set!"), false, "Warning");
-		setStatus(Status::Offline);
+		setStatus(Status());
 		kdebugmf(KDEBUG_FUNCTION_END, "end: uin or password not set\n");
 		return;
 	}
@@ -597,10 +599,10 @@ void GaduProtocol::networkDisconnected(bool tryAgain)
 
 	setAllOffline();
 
-	if (tryAgain && !nextStatus().isOffline()) // user still wants to login
+	if (tryAgain && !nextStatus().isDisconnected()) // user still wants to login
 		QTimer::singleShot(1000, this, SLOT(login())); // try again after one second
-	else if (!nextStatus().isOffline())
-		setStatus(Status::Offline);
+	else if (!nextStatus().isDisconnected())
+		setStatus(Status());
 }
 
 int GaduProtocol::notifyTypeFromContact(Contact &contact)
@@ -787,7 +789,7 @@ void GaduProtocol::socketConnSuccess()
 	networkConnected();
 
 	// workaround about servers errors
-	if (status().isInvisible())
+	if ("Invisible" == status().type())
 		setStatus(status());
 
 	kdebugf2();
@@ -822,21 +824,12 @@ QPixmap GaduProtocol::statusPixmap(Status status)
 			: "WithDescription";
 	QString pixmapName;
 
-	switch (status.type())
-	{
-		case Status::Online:
-			pixmapName = QString("Online").append(description);
-			break;
-		case Status::Busy:
-			pixmapName = QString("Busy").append(description);
-			break;
-		case Status::Invisible:
-			pixmapName = QString("Invisible").append(description);
-			break;
-		default:
-			pixmapName = QString("Offline").append(description);
-			break;
-	}
+	QString groupName = status.group();
+
+	if ("Away" == groupName)
+		pixmapName = QString("Busy").append(description);
+	else
+		pixmapName = QString(groupName).append(description);
 
 	return IconsManager::instance()->loadPixmap(pixmapName);
 }

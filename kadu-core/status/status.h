@@ -18,37 +18,26 @@
 class KADUAPI Status
 {
 public:
-	enum StatusType
-	{
-		Online,
-		Busy,
-		Invisible,
-		Offline
-	};
 	static QString name(const Status &status, bool fullName = true);
 
 private:
-	StatusType Type;
+	QString Type;
+	QString Group;
 	QString Description;
 
-	static StatusType comparableType(StatusType type);
-
 public:
-	Status(StatusType type = Offline, QString description = QString::null);
+	Status(const QString &type = QString::null, const QString &description = QString::null);
 	Status(const Status &copyme);
 
-	StatusType type() const { return Type; }
-	void setType(StatusType type) { Type = type; }
+	QString type() const { return Type; }
+	void setType(const QString &type);
+
+	QString group() const { return Group; }
 
 	QString description() const { return Description; }
 	void setDescription(const QString &description) { Description = description; }
 
-	bool isOnline() const { return Online == Type; }
-	bool isBusy() const { return Busy == Type; }
-	bool isInvisible() const { return Invisible == Type; }
-	bool isOffline() const { return Offline == Type; }
-
-	int compareTo(const Status& compare) const;
+	bool isDisconnected() const;
 
 	bool operator < (const Status &compare) const;
 	bool operator == (const Status &compare) const;

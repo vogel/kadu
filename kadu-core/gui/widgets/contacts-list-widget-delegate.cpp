@@ -275,7 +275,7 @@ bool ContactsListWidgetDelegate::isBold(const QModelIndex &index) const
 		return false;
 
 	Status status = statVariant.value<Status>();
-	return status.isOnline() || status.isBusy();
+	return !status.isDisconnected();
 }
 
 void ContactsListWidgetDelegate::configurationUpdated()

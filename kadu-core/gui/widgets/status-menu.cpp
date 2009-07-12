@@ -18,6 +18,7 @@
 #include "gui/windows/choose-description.h"
 #include "protocols/protocol.h"
 #include "status/status-type.h"
+#include "status/status-type-manager.h"
 
 #include "status_changer.h"
 
@@ -27,7 +28,7 @@ StatusMenu::StatusMenu(StatusContainer *statusContainer, QWidget *parent) :
 		QObject(parent), MyStatusContainer(statusContainer)
 {
 	ChangeStatusActionGroup = new QActionGroup(this);
-	ChangeStatusActionGroup->setExclusive(false); // HACK
+	ChangeStatusActionGroup->setExclusive(true); // HACK
 
 	// TODO: 0.6.6
 
@@ -40,6 +41,8 @@ StatusMenu::StatusMenu(StatusContainer *statusContainer, QWidget *parent) :
 
 		ChangeStatusActionGroup->addAction(statusAction);
 		ChangeStatusActions.append(statusAction);
+
+		connect(statusAction, SIGNAL(toggled(bool)), this, SLOT(changeStatus()));
 	}
 /*
 	ChangeStatusToOnline = new QAction(/*icons_manager->loadIcon(s.pixmapName(Online, false, false)), * /tr("Online"), this);
@@ -152,11 +155,14 @@ void StatusMenu::changeStatus()
 	if (!action)
 		return;
 
-	foreach (QAction *a, ChangeStatusActionGroup->actions())
-		a->setChecked(a == action);
+	StatusType *statusType = action->data().value<StatusType *>();
+	if (!statusType)
+		return;
 
 	Status status(MyStatusContainer->status());
-
+	status.setType(statusType->name());
+	MyStatusContainer->setStatus(status);
+/*
 	switch (action->data().toInt())
 	{
 		case 0:
@@ -199,7 +205,7 @@ void StatusMenu::changeStatus()
 			status.setDescription(status.description());
 			ChooseDescription::show(status, MyStatusContainer, MousePositionBeforeMenuHide);
 			break;
-	}
+	}*/
 }
 
 void StatusMenu::changeStatusPrivate(bool toggled)
@@ -212,28 +218,9 @@ void StatusMenu::changeStatusPrivate(bool toggled)
 
 void StatusMenu::statusChanged()
 {
-	int index;
-
-	switch (MyStatusContainer->status().type())
-	{
-		case Status::Online:
-			index = 0;
-			break;
-		case Status::Busy:
-			index = 2;
-			break;
-		case Status::Invisible:
-			index = 4;
-			break;
-		default:
-			index = 6;
-	}
-
-	if (!MyStatusContainer->status().description().isEmpty())
-		index++;
-
-	foreach (QAction *action, ChangeStatusActionGroup->actions())
-		action->setChecked(index == action->data().toInt());
+	StatusType *statusType = StatusTypeManager::instance()->statusType(MyStatusContainer->status().type());
+	if (0 == statusType)
+		return;
 
 	if (AccountManager::instance()->defaultAccount() && AccountManager::instance()->defaultAccount()->protocol())
 	{

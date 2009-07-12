@@ -24,9 +24,9 @@ KADUAPI StatusTypeManager * StatusTypeManager::instance()
 StatusTypeManager::StatusTypeManager()
 {
 	StatusGroup *online = StatusGroupManager::instance()->statusGroup("Online");
-	StatusGroup *busy = StatusGroupManager::instance()->statusGroup("Online");
-	StatusGroup *invisible = StatusGroupManager::instance()->statusGroup("Online");
-	StatusGroup *offline = StatusGroupManager::instance()->statusGroup("Online");
+	StatusGroup *busy = StatusGroupManager::instance()->statusGroup("Away");
+	StatusGroup *invisible = StatusGroupManager::instance()->statusGroup("Invisible");
+	StatusGroup *offline = StatusGroupManager::instance()->statusGroup("Offline");
 
 	// TODO: 0.6.6 add translation of second strings
 	registerStatusType("FreeForChat", "Free for chat", online, 0);

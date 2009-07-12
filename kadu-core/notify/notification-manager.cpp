@@ -233,9 +233,9 @@ void NotificationManager::statusChanged(Account *account, Contact contact, Statu
 		return;
 
 	if (config_file.readBoolEntry("Notify", "IgnoreOnlineToOnline") &&
-		(data->status().isOnline() || data->status().isBusy()) &&
-			(oldStatus.isOnline() || oldStatus.isBusy()))
-				return;
+			!data->status().isDisconnected() &&
+			!oldStatus.isDisconnected())
+		return;
 
 	QString changedTo = "To" + Status::name(data->status(), false);
 

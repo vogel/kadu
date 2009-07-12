@@ -16,10 +16,13 @@
 #include "configuration/configuration-file.h"
 #include "contacts/contact-account-data.h"
 #include "parser/parser-token.h"
+#include "misc/misc.h"
+#include "status/status-type.h"
+#include "status/status-type-manager.h"
+
 #include "debug.h"
 #include "html_document.h"
 #include "icons-manager.h"
-#include "misc/misc.h"
 
 #include "parser.h"
 
@@ -185,13 +188,12 @@ QString Parser::parse(const QString &s, Account *account, const Contact &contact
 				case 's':
 					++i;
 					if (data)
-						pe.content = qApp->translate("UserStatus", Status::name(data->status().type()).toAscii().data());
-					break;
-				case 't':
-					++i;
-					if (data)
-						pe.content = QString::number(data->status().type()); // TODO: 0.6.6
-					break;
+					{
+						StatusType *type = StatusTypeManager::instance()->statusType(data->status().type());
+						if (type)
+							pe.content = type->displayName();
+					}
+					break; // TODO: 't' removed
 				case 'q':
 					++i;
 					if (data)
@@ -238,7 +240,7 @@ QString Parser::parse(const QString &s, Account *account, const Contact &contact
 				case 'h':
 					++i;
 					if (data)
-						if (data && !data->status().isOffline())
+						if (data && !data->status().isDisconnected())
 							pe.content = data->protocolVersion();
 					break;
 				case 'n':

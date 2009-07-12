@@ -96,24 +96,24 @@ ChooseDescription::~ChooseDescription()
 void ChooseDescription::setStatus(const Status &status)
 {
 	CurrentStatus = status;
-
-	switch (CurrentStatus.type())
-	{
-		case Status::Online:
-			OkButton->setIcon(IconsManager::instance()->loadIcon("OnlineWithDescription"));
-			break;
-		case Status::Busy:
-			OkButton->setIcon(IconsManager::instance()->loadIcon("BusyWithDescription"));
-			break;
-		case Status::Invisible:
-			OkButton->setIcon(IconsManager::instance()->loadIcon("InvisibleWithDescription"));
-			break;
-		case Status::Offline:
-			OkButton->setIcon(IconsManager::instance()->loadIcon("OfflineWithDescription"));
-			break;
-		default:
-			break;
-	}
+// TODO: 0.6.6
+// 	switch (CurrentStatus.type())
+// 	{
+// 		case Status::Online:
+// 			OkButton->setIcon(IconsManager::instance()->loadIcon("OnlineWithDescription"));
+// 			break;
+// 		case Status::Busy:
+// 			OkButton->setIcon(IconsManager::instance()->loadIcon("BusyWithDescription"));
+// 			break;
+// 		case Status::Invisible:
+// 			OkButton->setIcon(IconsManager::instance()->loadIcon("InvisibleWithDescription"));
+// 			break;
+// 		case Status::Offline:
+// 			OkButton->setIcon(IconsManager::instance()->loadIcon("OfflineWithDescription"));
+// 			break;
+// 		default:
+// 			break;
+// 	}
 }
 
 void ChooseDescription::setPosition(const QPoint &position)

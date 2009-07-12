@@ -37,7 +37,7 @@ bool OnlineContactFilter::acceptContact(Contact contact)
 		return false;
 
 	Status status = contact.accountData(prefferedAccount)->status();
-	return status.isOnline() || status.isBusy();
+	return !status.isDisconnected();
 }
 
 

@@ -7,56 +7,68 @@
  *                                                                         *
  ***************************************************************************/
 
+#include "status/status-group.h"
+#include "status/status-type.h"
+#include "status/status-type-manager.h"
+
 #include "status.h"
 
-Status::Status(Status::StatusType type, QString description)
-	: Type(type), Description(description)
+Status::Status(const QString &type, const QString &description)
+	: Description(description)
 {
+	setType(type);
 }
 
 Status::Status(const Status& copyme)
-	: Type(copyme.Type), Description(copyme.Description)
+	: Type(copyme.Type), Group(copyme.Group), Description(copyme.Description)
 {
+}
+
+void Status::setType(const QString& type)
+{
+	Group = "Offline";
+	Type = type;
+
+	StatusType *statusType = StatusTypeManager::instance()->statusType(Type);
+	if (!statusType)
+		return;
+
+	StatusGroup *statusGroup = statusType->statusGroup();
+	if (!statusGroup)
+		return;
+
+	Group = statusGroup->name();
 }
 
 QString Status::name(const Status &status, bool fullName)
 {
 	QString add((fullName && !status.Description.isEmpty()) ? "WithDescription" : "");
-
-	switch (status.Type)
-	{
-		case Online:
-			return QString("Online").append(add);
-		case Busy:
-			return QString("Busy").append(add);
-		case Invisible:
-			return QString("Invisible").append(add);
-		default:
-			return QString("Offline").append(add);
-	}
+	return status.Type + add;
 }
 
-Status::StatusType Status::comparableType(Status::StatusType type)
+bool Status::isDisconnected() const
 {
-	if (Busy == type)
-		return Online;
-
-	return type;
-}
-
-int Status::compareTo(const Status &compare) const
-{
-	return comparableType(Type) - comparableType(compare.Type);
+	return "Offline" == Type;
 }
 
 bool Status::operator < (const Status &compare) const
 {
-	return compareTo(compare) < 0;
+	StatusType *left = StatusTypeManager::instance()->statusType(Type);
+	StatusType *right = StatusTypeManager::instance()->statusType(compare.Type);
+
+	if (!left)
+		return true;
+
+	if (!right)
+		return false;
+
+	return *left < *right;
 }
 
 bool Status::operator == (const Status &compare) const
 {
-	return Type == compare.Type && Description == compare.Description;
+	return Type == compare.Type
+	       && Description == compare.Description;
 }
 
 bool Status::operator != (const Status& compare) const

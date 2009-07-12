@@ -43,7 +43,7 @@ QIcon Protocol::icon()
 
 void Protocol::setAllOffline()
 {
-	Status status(Status::Offline);
+	Status status;
 	Status oldStatus;
 	ContactAccountData *data;
 

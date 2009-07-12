@@ -13,6 +13,9 @@
 #include "chat/message/message.h"
 #include "gui/windows/message-box.h"
 #include "misc/misc.h"
+#include "status/status-group.h"
+#include "status/status-type.h"
+
 #include "debug.h"
 
 #include "helpers/gadu-formatter.h"
@@ -187,10 +190,9 @@ void GaduChatService::handleEventMsg(struct gg_event *e)
 		bool receiveImages =
 			!sender.isAnonymous() &&
 			(
-				Protocol->status().isOnline() ||
-				Protocol->status().isBusy() ||
+				"Offline" != Protocol->status().group() &&
 				(
-					Protocol->status().isInvisible() &&
+					("Invisible" != Protocol->status().group()) ||
 					config_file.readBoolEntry("Chat", "ReceiveImagesDuringInvisibility")
 				)
 			);

@@ -26,6 +26,8 @@
 #include "protocols/protocol.h"
 #include "protocols/protocol-factory.h"
 #include "protocols/services/chat-service.h"
+#include "status/status-type.h"
+#include "status/status-type-manager.h"
 
 #include "../modules/gadu_protocol/gadu-protocol.h"
 
@@ -301,33 +303,36 @@ void Core::loadDefaultStatus()
 		description = config_file.readEntry("General", "StartupDescription");
 
 	bool offlineToInvisible = false;
-	Status::StatusType type;
+	QString name;
 
 	if (startupStatus.isEmpty() || startupStatus == "LastStatus")
 	{
-		int typeIndex = config_file.readNumEntry("General", "LastStatusType", -1);
-		if (typeIndex == -1)
+		name = config_file.readEntry("General", "LastStatusName");
+		if ("" == name)
 		{
-			typeIndex = config_file.readNumEntry("General", "LastStatusIndex", 6) / 2;
-			config_file.removeVariable("General", "LastStatusIndex");
+			int typeIndex = config_file.readNumEntry("General", "LastStatusType", -1);
+			switch (typeIndex)
+			{
+				case 0: name = "Online"; break;
+				case 1: name = "Away"; break;
+				case 2: name = "Invisible"; break;
+				default: name = "Offline"; break;
+			}
+
+			config_file.removeVariable("General", "LastStatusType");
 		}
 
-		type = (Status::StatusType)typeIndex;
 		offlineToInvisible = config_file.readBoolEntry("General", "StartupStatusInvisibleWhenLastWasOffline");
 	}
-	else if (startupStatus == "Online")
-		type = Status::Online;
 	else if (startupStatus == "Busy")
-		type = Status::Busy;
-	else if (startupStatus == "Invisible")
-		type = Status::Invisible;
-	else if (startupStatus == "Offline")
-		type = Status::Offline;
+		name = "Away";
+	else
+		name = startupStatus;
 
-	if ((Status::Offline == type) && offlineToInvisible)
-		type = Status::Invisible;
+	if ("Offline" == name && offlineToInvisible)
+		name = "Invisible";
 
-	status.setType(type);
+	status.setType(name);
 	status.setDescription(description);
 
 	Account *account = AccountManager::instance()->defaultAccount();
@@ -341,7 +346,7 @@ void Core::loadDefaultStatus()
 void Core::storeConfiguration()
 {
 	if (config_file.readEntry("General", "StartupStatus") == "LastStatus")
-		config_file.writeEntry("General", "LastStatusType", (int)StatusChanger->status().type());
+		config_file.writeEntry("General", "LastStatusName", StatusChanger->status().type());
 
 	if (config_file.readBoolEntry("General", "StartupLastDescription"))
 		config_file.writeEntry("General", "LastStatusDescription", StatusChanger->status().description());
@@ -557,22 +562,22 @@ void Core::setStatus(const Status &status)
 
 void Core::setOnline(const QString &description)
 {
-	StatusChanger->userStatusSet(Status(Status::Online, description));
+	StatusChanger->userStatusSet(Status("Online", description));
 }
 
 void Core::setBusy(const QString &description)
 {
-	StatusChanger->userStatusSet(Status(Status::Busy, description));
+	StatusChanger->userStatusSet(Status("Away", description));
 }
 
 void Core::setInvisible(const QString &description)
 {
-	StatusChanger->userStatusSet(Status(Status::Invisible, description));
+	StatusChanger->userStatusSet(Status("Invisible", description));
 }
 
 void Core::setOffline(const QString &description)
 {
-	StatusChanger->userStatusSet(Status(Status::Offline, description));
+	StatusChanger->userStatusSet(Status("Offline", description));
 }
 
 void Core::quit()
