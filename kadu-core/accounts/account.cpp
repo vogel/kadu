@@ -154,3 +154,8 @@ QPixmap Account::statusPixmap(Status status)
 {
 	return ProtocolHandler->statusPixmap(status);
 }
+
+QList<StatusType *> Account::supportedStatusTypes()
+{
+	return ProtocolHandler->protocolFactory()->supportedStatusTypes();
+}

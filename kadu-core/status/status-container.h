@@ -12,6 +12,8 @@
 
 #include "status/status.h"
 
+class StatusType;
+
 class StatusContainer : public QObject
 {
 	Q_OBJECT
@@ -24,6 +26,8 @@ public:
 
 	virtual QString statusName() = 0;
 	virtual QPixmap statusPixmap() = 0;
+
+	virtual QList<StatusType *> supportedStatusTypes() = 0;
 
 signals:
 	void statusChanged();
