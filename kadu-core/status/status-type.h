@@ -11,6 +11,7 @@
 #define STATUS_TYPE
 
 #include <QtCore/QString>
+#include <QtCore/QVariant>
 
 class StatusGroup;
 
@@ -38,5 +39,7 @@ public:
 	bool operator != (const StatusType &compare) const;
 
 };
+
+Q_DECLARE_METATYPE(StatusType *)
 
 #endif // STATUS_TYPE

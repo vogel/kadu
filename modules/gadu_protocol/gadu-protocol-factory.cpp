@@ -38,6 +38,8 @@ GaduProtocolFactory::GaduProtocolFactory()
 	SupportedStatusTypes.append(statusTypeManager->statusType("Away"));
 	SupportedStatusTypes.append(statusTypeManager->statusType("Invisible"));
 	SupportedStatusTypes.append(statusTypeManager->statusType("Offline"));
+
+	qSort(SupportedStatusTypes);
 }
 
 Account * GaduProtocolFactory::newAccount()

@@ -26,15 +26,8 @@ class StatusMenu : public QObject
 	Q_OBJECT
 
 	QActionGroup *ChangeStatusActionGroup;
-	QAction *ChangeStatusToOnline;
-	QAction *ChangeStatusToOnlineDesc;
-	QAction *ChangeStatusToBusy;
-	QAction *ChangeStatusToBusyDesc;
-	QAction *ChangeStatusToInvisible;
-	QAction *ChangeStatusToInvisibleDesc;
-	QAction *ChangeStatusToOffline;
-	QAction *ChangeStatusToOfflineDesc;
-	QAction *ChangePrivateStatus;
+	QList<QAction *> ChangeStatusActions;
+	QAction * ChangePrivateStatus;
 
 	QPoint MousePositionBeforeMenuHide;
 
