@@ -103,6 +103,7 @@ public:
 	bool privateMode() { return PrivateMode; }
 
 	virtual QPixmap statusPixmap(Status status) = 0;
+	virtual QPixmap statusPixmap(const QString &statusType) = 0;
 	QPixmap statusPixmap() { return statusPixmap(CurrentStatus); }
 
 	QIcon icon();

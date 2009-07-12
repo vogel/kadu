@@ -36,7 +36,8 @@ StatusMenu::StatusMenu(StatusContainer *statusContainer, QWidget *parent) :
 	QList<StatusType *> statusTypes = statusContainer->supportedStatusTypes();
 	foreach (StatusType *statusType, statusTypes)
 	{
-		QAction *statusAction = new QAction(statusType->displayName(), this);
+		QAction *statusAction = new QAction(statusContainer->statusPixmap(statusType->name()),
+				statusType->displayName(), this);
 		statusAction->setCheckable(true);
 		statusAction->setData(QVariant::fromValue(statusType));
 

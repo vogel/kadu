@@ -834,9 +834,14 @@ QPixmap GaduProtocol::statusPixmap(Status status)
 	return IconsManager::instance()->loadPixmap(pixmapName);
 }
 
+QPixmap GaduProtocol::statusPixmap(const QString &statusType)
+{
+	return IconsManager::instance()->loadPixmap(
+			"Away" == statusType ? "Busy" : statusType);
+}
+
 void GaduProtocol::contactAdded(Contact &contact)
 {
-
 	GaduContactAccountData *gcad = gaduContactAccountData(contact);
 	if (!gcad)
 		return;

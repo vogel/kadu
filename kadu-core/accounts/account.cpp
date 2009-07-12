@@ -150,6 +150,11 @@ QPixmap Account::statusPixmap()
 	return statusPixmap(status());
 }
 
+QPixmap Account::statusPixmap(const QString &statusType)
+{
+	return ProtocolHandler->statusPixmap(statusType);
+}
+
 QPixmap Account::statusPixmap(Status status)
 {
 	return ProtocolHandler->statusPixmap(status);

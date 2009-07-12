@@ -129,6 +129,7 @@ public:
 
 	virtual bool validateUserID(QString &uid);
 	virtual QPixmap statusPixmap(Status status);
+	virtual QPixmap statusPixmap(const QString &statusType);
 
 	UinType uin(Contact contact) const;
 	GaduContactAccountData * gaduContactAccountData(Contact contact) const;

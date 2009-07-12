@@ -81,6 +81,7 @@ public:
 
 	virtual QString statusName();
 	virtual QPixmap statusPixmap();
+	virtual QPixmap statusPixmap(const QString &statusType);
 
 	virtual QList<StatusType *> supportedStatusTypes();
 
