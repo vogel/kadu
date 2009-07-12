@@ -174,17 +174,17 @@ void ContactsListWidget::contextMenuEvent(QContextMenuEvent *event)
 
 		ProtocolFactory *protocolFactory = account->protocol()->protocolFactory();
 
-		if (!protocolFactory || !protocolFactory->getProtocolMenuManager())
+		if (!protocolFactory || !protocolFactory->protocolMenuManager())
 			continue;
 
 		QMenu *account_menu = menu->addMenu(account->name());
 		if (!protocolFactory->iconName().isEmpty())
 			account_menu->setIcon(IconsManager::instance()->loadIcon(protocolFactory->iconName()));
 
-		if (protocolFactory->getProtocolMenuManager()->protocolActions(account, con).size() == 0)
+		if (protocolFactory->protocolMenuManager()->protocolActions(account, con).size() == 0)
 			continue;
 
-		foreach (ActionDescription *actionDescription, protocolFactory->getProtocolMenuManager()->protocolActions(account, con))
+		foreach (ActionDescription *actionDescription, protocolFactory->protocolMenuManager()->protocolActions(account, con))
 			if (actionDescription)
 			{
 				Action *action = actionDescription->createAction(MyMainWindow);

@@ -23,6 +23,7 @@ class ContactAccountData;
 class ContactAccountDataWidget;
 class Protocol;
 class ProtocolMenuManager;
+class StatusType;
 class StoragePoint;
 
 class ProtocolFactory : public QObject
@@ -36,7 +37,7 @@ public:
 	virtual AccountEditWidget * newEditAccountWidget(Account *, QWidget *parent = 0) = 0;
 	virtual ContactAccountDataWidget * newContactAccountDataWidget(ContactAccountData *contactAccountData, QWidget *parent = 0) = 0;
 	virtual ConfigurationWindow * newConfigurationDialog(Account *, QWidget *) = 0;
-	virtual ProtocolMenuManager * getProtocolMenuManager() { return 0; }
+	virtual ProtocolMenuManager * protocolMenuManager() { return 0; }
 
 	virtual QString name() = 0;
 	virtual QString displayName() = 0;
