@@ -38,6 +38,7 @@ private slots:
 	void updateAvailableChars(const QString &);
 
 public:
+	// TODO: 0.6.6 rename that
 	static void show(const Status &status, StatusContainer *statusContainer, const QPoint &position);
 
 	ChooseDescription(StatusContainer *statusContainer, QWidget *parent = 0);

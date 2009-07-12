@@ -59,6 +59,7 @@ set (kadu_SRCS
 	configuration/configuration-manager.cpp
 	configuration/contact-account-data-manager.cpp
 	configuration/storable-object.cpp
+	configuration/storable-string-list.cpp
 	configuration/uuid-storable-object.cpp
 	configuration/xml-configuration-file.cpp
 
@@ -183,6 +184,7 @@ set (kadu_SRCS
 	protocols/model/protocols-model.cpp
 	protocols/services/chat-service.cpp
 
+	status/description-manager.cpp
 	status/status.cpp
 	status/status-container-aware-object.cpp
 	status/status-container-manager.cpp
@@ -349,6 +351,7 @@ set (kadu_MOC_SRCS
 	protocols/services/personal-info-service.h
 	protocols/services/search-service.h
 
+	status/description-manager.h
 	status/status-container.h
 	status/status-container-manager.h
 

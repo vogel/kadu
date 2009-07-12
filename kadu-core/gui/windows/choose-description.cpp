@@ -20,6 +20,8 @@
 #include "core/core.h"
 #include "gui/windows/kadu-window.h"
 #include "parser/parser.h"
+#include "status/description-manager.h"
+
 #include "debug.h"
 #include "icons-manager.h"
 
@@ -50,6 +52,8 @@ ChooseDescription::ChooseDescription(StatusContainer *statusContainer, QWidget *
 	kdebugf();
 	setWindowTitle(tr("Select description"));
 	setAttribute(Qt::WA_DeleteOnClose);
+
+	DescriptionManager::instance()->content();
 
 // TODO: 0.6.6
 // 	while (defaultdescriptions.count() > config_file.readNumEntry("General", "NumberOfDescriptions"))

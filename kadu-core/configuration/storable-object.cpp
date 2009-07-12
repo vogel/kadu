@@ -27,7 +27,7 @@ StorableObject::StorableObject(const QString &nodeName, StorableObject *parent, 
 StoragePoint * StorableObject::createStoragePoint()
 {
 	if (!Parent)
-		return 0;
+		return new StoragePoint(xml_config_file, xml_config_file->getNode(NodeName));
 
 	StoragePoint *parentStoragePoint = Parent->storage();
 	if (!parentStoragePoint)

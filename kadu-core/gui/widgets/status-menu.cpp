@@ -51,6 +51,9 @@ StatusMenu::StatusMenu(StatusContainer *statusContainer, QWidget *parent) :
 
 	connect(ChangeStatusActionGroup, SIGNAL(triggered(QAction *)), this, SLOT(changeStatus(QAction *)));
 
+	ChangeDescription = new QAction(tr("Change status message..."), this);
+	connect(ChangeDescription, SIGNAL(triggered(bool)), this, SLOT(changeDescription()));
+
 	ChangePrivateStatus = new QAction(tr("Private"), this);
 	ChangePrivateStatus->setCheckable(true);
 	connect(ChangePrivateStatus, SIGNAL(toggled(bool)), this, SLOT(changeStatusPrivate(bool)));
@@ -77,12 +80,21 @@ void StatusMenu::addToMenu(QMenu *menu)
 		return;
 
 	StatusGroup *currentGroup = statusType->statusGroup();
+	bool setDescriptionAdded = false;
+	bool ignoreSeparator = false;
 
 	foreach (QAction *action, ChangeStatusActionGroup->actions())
 	{
 		StatusType *statusType = action->data().value<StatusType *>();
 		if (0 == statusType)
 			return;
+
+		if (!setDescriptionAdded && statusType->statusGroup() &&
+				statusType->statusGroup()->sortIndex() >= StatusGroup::StatusGroupSortIndexAfterSetDescription)
+		{
+			menu->addSeparator();
+			menu->addAction(ChangeDescription);
+		}
 
 		if (statusType->statusGroup() != currentGroup)
 		{
@@ -115,50 +127,11 @@ void StatusMenu::changeStatus(QAction *action)
 	Status status(MyStatusContainer->status());
 	status.setType(statusType->name());
 	MyStatusContainer->setStatus(status);
-/*
-	switch (action->data().toInt())
-	{
-		case 0:
-			status.setType(Status::Online);
-			status.setDescription("");
-			MyStatusContainer->setStatus(status);
-			break;
-		case 1:
-			status.setType(Status::Online);
-			status.setDescription(status.description());
-			ChooseDescription::show(status, MyStatusContainer, MousePositionBeforeMenuHide);
-			break;
-		case 2:
-			status.setType(Status::Busy);
-			status.setDescription("");
-			MyStatusContainer->setStatus(status);
-			break;
-		case 3:
-			status.setType(Status::Busy);
-			status.setDescription(status.description());
-			ChooseDescription::show(status, MyStatusContainer, MousePositionBeforeMenuHide);
-			break;
-		case 4:
-			status.setType(Status::Invisible);
-			status.setDescription("");
-			MyStatusContainer->setStatus(status);
-			break;
-		case 5:
-			status.setType(Status::Invisible);
-			status.setDescription(status.description());
-			ChooseDescription::show(status, MyStatusContainer, MousePositionBeforeMenuHide);
-			break;
-		case 6:
-			status.setType(Status::Offline);
-			status.setDescription("");
-			MyStatusContainer->setStatus(status);
-			break;
-		case 7:
-			status.setType(Status::Offline);
-			status.setDescription(status.description());
-			ChooseDescription::show(status, MyStatusContainer, MousePositionBeforeMenuHide);
-			break;
-	}*/
+}
+
+void StatusMenu::changeDescription()
+{
+	ChooseDescription::show(MyStatusContainer->status(), MyStatusContainer, MousePositionBeforeMenuHide);
 }
 
 void StatusMenu::changeStatusPrivate(bool toggled)
