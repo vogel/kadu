@@ -7,7 +7,14 @@
  *                                                                         *
  ***************************************************************************/
 
+#include "status/status-group.h"
+
 #include "status-type.h"
+
+bool StatusType::lessThan(const StatusType *left, const StatusType *right)
+{
+	return *left < *right;
+}
 
 StatusType::StatusType(const QString &name, const QString &displayName, StatusGroup *statusGroup, int sortIndex) :
 		Name(name), DisplayName(displayName), MyStatusGroup(statusGroup), SortIndex(sortIndex)
@@ -16,7 +23,7 @@ StatusType::StatusType(const QString &name, const QString &displayName, StatusGr
 
 bool StatusType::operator < (const StatusType &compare) const
 {
-	if (MyStatusGroup < compare.MyStatusGroup)
+	if (*MyStatusGroup < *compare.MyStatusGroup)
 		return true;
 	if (MyStatusGroup == compare.MyStatusGroup)
 		return SortIndex < compare.SortIndex;

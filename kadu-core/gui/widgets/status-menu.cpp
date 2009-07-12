@@ -17,6 +17,7 @@
 #include "core/core.h"
 #include "gui/windows/choose-description.h"
 #include "protocols/protocol.h"
+#include "status/status-group.h"
 #include "status/status-type.h"
 #include "status/status-type-manager.h"
 

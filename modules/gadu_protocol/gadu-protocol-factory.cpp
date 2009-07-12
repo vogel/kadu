@@ -11,6 +11,7 @@
 
 #include "gui/widgets/gadu-create-account-widget.h"
 #include "gui/widgets/gadu-edit-account-widget.h"
+#include "status/status-type.h"
 #include "status/status-type-manager.h"
 
 #include "gadu-account.h"
@@ -39,7 +40,7 @@ GaduProtocolFactory::GaduProtocolFactory()
 	SupportedStatusTypes.append(statusTypeManager->statusType("Invisible"));
 	SupportedStatusTypes.append(statusTypeManager->statusType("Offline"));
 
-	qSort(SupportedStatusTypes);
+	qSort(SupportedStatusTypes.begin(), SupportedStatusTypes.end(), StatusType::lessThan);
 }
 
 Account * GaduProtocolFactory::newAccount()

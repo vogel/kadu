@@ -25,6 +25,8 @@ class StatusType
 	int SortIndex;
 
 public:
+	static bool lessThan(const StatusType *left, const StatusType *right);
+
 	StatusType(const QString &name, const QString &displayName, StatusGroup *statusType, int sortIndex);
 
 	QString name() { return Name; }
