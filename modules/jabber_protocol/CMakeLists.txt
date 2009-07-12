@@ -123,64 +123,64 @@ else(WIN32)
 endif(WIN32)
 
 set (MOC_SOURCES_IRIS
-	libiris/iris/xmpp/base/randrandomnumbergenerator.h
-	libiris/iris/xmpp/base/randomnumbergenerator.h
-	libiris/iris/xmpp/jid/jid.h
+	#libiris/iris/xmpp/base/randrandomnumbergenerator.h
+	#libiris/iris/xmpp/base/randomnumbergenerator.h
+	#libiris/iris/xmpp/jid/jid.h
 	libiris/iris/xmpp/cutestuff/bytestream.h
 	libiris/iris/xmpp/cutestuff/socks.h
 	libiris/iris/xmpp/cutestuff/httpconnect.h
 	libiris/iris/xmpp/cutestuff/bsocket.h
 	libiris/iris/xmpp/cutestuff/httppoll.h
-	libiris/iris/xmpp/xmpp-im/xmpp_xdata.h
-	libiris/iris/xmpp/xmpp-im/xmpp_rosterx.h
+	#libiris/iris/xmpp/xmpp-im/xmpp_xdata.h
+	#libiris/iris/xmpp/xmpp-im/xmpp_rosterx.h
 	libiris/iris/xmpp/xmpp-im/xmpp_tasks.h
-	libiris/iris/xmpp/xmpp-im/xmpp_discoitem.h
-	libiris/iris/xmpp/xmpp-im/xmpp_pubsubretraction.h
-	libiris/iris/xmpp/xmpp-im/xmpp_xmlcommon.h
-	libiris/iris/xmpp/xmpp-im/xmpp_roster.h
-	libiris/iris/xmpp/xmpp-im/xmpp_muc.h
-	libiris/iris/xmpp/xmpp-im/xmpp_htmlelement.h
-	libiris/iris/xmpp/xmpp-im/xmpp_receipts.h
-	libiris/iris/xmpp/xmpp-im/xmpp_message.h
+	#libiris/iris/xmpp/xmpp-im/xmpp_discoitem.h
+	#libiris/iris/xmpp/xmpp-im/xmpp_pubsubretraction.h
+	#libiris/iris/xmpp/xmpp-im/xmpp_xmlcommon.h
+	#libiris/iris/xmpp/xmpp-im/xmpp_roster.h
+	#libiris/iris/xmpp/xmpp-im/xmpp_muc.h
+	#libiris/iris/xmpp/xmpp-im/xmpp_htmlelement.h
+	#libiris/iris/xmpp/xmpp-im/xmpp_receipts.h
+	#libiris/iris/xmpp/xmpp-im/xmpp_message.h
 	libiris/iris/xmpp/xmpp-im/xmpp_discoinfotask.h
 	libiris/iris/xmpp/xmpp-im/xmpp_ibb.h
-	libiris/iris/xmpp/xmpp-im/xmpp_liverosteritem.h
-	libiris/iris/xmpp/xmpp-im/xmpp_httpauthrequest.h
-	libiris/iris/xmpp/xmpp-im/xmpp_pubsubitem.h
-	libiris/iris/xmpp/xmpp-im/xmpp_vcard.h
+	#libiris/iris/xmpp/xmpp-im/xmpp_liverosteritem.h
+	#libiris/iris/xmpp/xmpp-im/xmpp_httpauthrequest.h
+	#libiris/iris/xmpp/xmpp-im/xmpp_pubsubitem.h
+	#libiris/iris/xmpp/xmpp-im/xmpp_vcard.h
 	libiris/iris/xmpp/xmpp-im/xmpp_client.h
 	libiris/iris/xmpp/xmpp-im/s5b.h
-	libiris/iris/xmpp/xmpp-im/xmpp_url.h
-	libiris/iris/xmpp/xmpp-im/xmpp_chatstate.h
+	#libiris/iris/xmpp/xmpp-im/xmpp_url.h
+	#libiris/iris/xmpp/xmpp-im/xmpp_chatstate.h
 	libiris/iris/xmpp/xmpp-im/xmpp_task.h
-	libiris/iris/xmpp/xmpp-im/xmpp_address.h
-	libiris/iris/xmpp/xmpp-im/xmpp_agentitem.h
+	#libiris/iris/xmpp/xmpp-im/xmpp_address.h
+	#libiris/iris/xmpp/xmpp-im/xmpp_agentitem.h
 	libiris/iris/xmpp/xmpp-im/filetransfer.h
-	libiris/iris/xmpp/xmpp-im/xmpp_status.h
-	libiris/iris/xmpp/xmpp-im/xmpp_resourcelist.h
-	libiris/iris/xmpp/xmpp-im/xmpp_liveroster.h
-	libiris/iris/xmpp/xmpp-im/xmpp_resource.h
-	libiris/iris/xmpp/xmpp-im/xmpp_rosteritem.h
-	libiris/iris/xmpp/xmpp-im/xmpp_features.h
-	libiris/iris/xmpp/xmpp-im/im.h
-	libiris/iris/xmpp/sasl/digestmd5response.h
-	libiris/iris/xmpp/sasl/digestmd5proplist.h
-	libiris/iris/xmpp/sasl/plainmessage.h
-	libiris/iris/xmpp/zlib/common.h
+	#libiris/iris/xmpp/xmpp-im/xmpp_status.h
+	#libiris/iris/xmpp/xmpp-im/xmpp_resourcelist.h
+	#libiris/iris/xmpp/xmpp-im/xmpp_liveroster.h
+	#libiris/iris/xmpp/xmpp-im/xmpp_resource.h
+	#libiris/iris/xmpp/xmpp-im/xmpp_rosteritem.h
+	#libiris/iris/xmpp/xmpp-im/xmpp_features.h
+	#libiris/iris/xmpp/xmpp-im/im.h
+	#libiris/iris/xmpp/sasl/digestmd5response.h
+	#libiris/iris/xmpp/sasl/digestmd5proplist.h
+	#libiris/iris/xmpp/sasl/plainmessage.h
+	#libiris/iris/xmpp/zlib/common.h
 	libiris/iris/xmpp/zlib/zlibdecompressor.h
 	libiris/iris/xmpp/zlib/zlibcompressor.h
-	libiris/iris/xmpp/base64/base64.h
-	libiris/iris/xmpp/xmpp-core/xmpp_stanza.h
-	libiris/iris/xmpp/xmpp-core/simplesasl.h
+	#libiris/iris/xmpp/base64/base64.h
+	#libiris/iris/xmpp/xmpp-core/xmpp_stanza.h
+	#libiris/iris/xmpp/xmpp-core/simplesasl.h
 	libiris/iris/xmpp/xmpp-core/securestream.h
-	libiris/iris/xmpp/xmpp-core/protocol.h
+	#libiris/iris/xmpp/xmpp-core/protocol.h
 	libiris/iris/xmpp/xmpp-core/compressionhandler.h
-	libiris/iris/xmpp/xmpp-core/xmlprotocol.h
+	#libiris/iris/xmpp/xmpp-core/xmlprotocol.h
 	libiris/iris/xmpp/xmpp-core/xmpp.h
 	libiris/iris/xmpp/xmpp-core/xmpp_clientstream.h
 	libiris/iris/xmpp/xmpp-core/xmpp_stream.h
-	libiris/iris/xmpp/xmpp-core/td.h
-	libiris/iris/xmpp/xmpp-core/parser.h
+	#libiris/iris/xmpp/xmpp-core/td.h
+	#libiris/iris/xmpp/xmpp-core/parser.h
 
 	libiris/iris/jdns/qjdns.h
 
@@ -194,7 +194,7 @@ set (MOC_SOURCES_IRIS
 	libiris/iris/irisnet/noncore/ice176.h
 	libiris/iris/irisnet/noncore/processquit.h
 	libiris/iris/irisnet/noncore/icelocaltransport.h
-	libiris/iris/irisnet/corelib/irisnetglobal.h
+	#libiris/iris/irisnet/corelib/irisnetglobal.h
 	libiris/iris/irisnet/corelib/objectsession.h
 	libiris/iris/irisnet/corelib/netavailability.h
 	libiris/iris/irisnet/corelib/netnames.h
