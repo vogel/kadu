@@ -124,7 +124,7 @@ void StatusMenu::addToMenu(QMenu *menu)
 
 	foreach (QAction *action, ChangeStatusActions)
 	{
-		StatusType *statusType = ChangeStatusActions[0]->data().value<StatusType *>();
+		StatusType *statusType = action->data().value<StatusType *>();
 		if (0 == statusType)
 			return;
 
