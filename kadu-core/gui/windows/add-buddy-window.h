@@ -19,6 +19,7 @@ class QPushButton;
 
 class Account;
 class Contact;
+class Group;
 
 class AddBuddyWindow : public QWidget
 {
@@ -56,6 +57,7 @@ private slots:
 public:
 	AddBuddyWindow(QWidget *parent = 0);
 	AddBuddyWindow(Contact contact, QWidget *parent = 0);
+	AddBuddyWindow(Group *group, QWidget *parent = 0);
 	~AddBuddyWindow();
 };
 

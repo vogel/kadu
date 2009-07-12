@@ -18,6 +18,7 @@
 #include "contacts/group-manager.h"
 #include "contacts/model/filter/group-contact-filter.h"
 #include "core/core.h"
+#include "gui/windows/add-buddy-window.h"
 #include "gui/windows/group-properties-window.h"
 #include "gui/windows/kadu-window.h"
 #include "gui/windows/message-box.h"
@@ -249,7 +250,10 @@ void GroupTabBar::dropEvent(QDropEvent *event)
 
 void GroupTabBar::addBuddy()
 {
+	if (!currentGroup)
+		return;
 
+	(new AddBuddyWindow(currentGroup, Core::instance()->kaduWindow()))->show();
 }
 
 

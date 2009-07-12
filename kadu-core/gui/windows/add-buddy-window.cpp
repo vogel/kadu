@@ -53,6 +53,20 @@ AddBuddyWindow::AddBuddyWindow(Contact contact, QWidget *parent)
 	buddyUid->setReadOnly(true);
 }
 
+AddBuddyWindow::AddBuddyWindow(Group *group, QWidget *parent)
+	: QWidget(parent, Qt::Window), showMoreOptions(false), contactAccount(0)
+{
+	createGui();
+
+	addToGroupCombo->setCurrentIndex(addToGroupCombo->findText(group->name()));
+
+	continueButton->setEnabled(false);
+	chooseAccountWidget->setVisible(false);
+	stepTwoWidget->setVisible(false);
+	addBuddyButton->setVisible(false);
+}
+
+
 AddBuddyWindow::~AddBuddyWindow()
 {
     	saveWindowGeometry(this, "General", "AddBuddyWindowGeometry");
