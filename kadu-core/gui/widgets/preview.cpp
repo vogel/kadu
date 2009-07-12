@@ -16,6 +16,7 @@
 #include "parser/parser.h"
 #include "status/status.h"
 #include "status/status-type-manager.h"
+
 #include "misc/misc.h"
 
 #include "preview.h"
