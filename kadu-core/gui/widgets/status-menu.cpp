@@ -33,6 +33,8 @@ StatusMenu::StatusMenu(StatusContainer *statusContainer, QWidget *parent) :
 
 	// TODO: 0.6.6
 
+	const QString &statusTypeName = statusContainer->status().type();
+
 	QList<StatusType *> statusTypes = statusContainer->supportedStatusTypes();
 	foreach (StatusType *statusType, statusTypes)
 	{
@@ -42,50 +44,12 @@ StatusMenu::StatusMenu(StatusContainer *statusContainer, QWidget *parent) :
 		statusAction->setData(QVariant::fromValue(statusType));
 
 		ChangeStatusActionGroup->addAction(statusAction);
-		ChangeStatusActions.append(statusAction);
 
-		connect(statusAction, SIGNAL(toggled(bool)), this, SLOT(changeStatus()));
+		if (statusTypeName == statusType->name())
+			statusAction->setChecked(true);
 	}
-/*
-	ChangeStatusToOnline = new QAction(/*icons_manager->loadIcon(s.pixmapName(Online, false, false)), * /tr("Online"), this);
-	ChangeStatusToOnline->setCheckable(true);
-	ChangeStatusToOnline->setData(0);
-	connect(ChangeStatusToOnline, SIGNAL(triggered(bool)), this, SLOT(changeStatus()));
 
-	ChangeStatusToOnlineDesc = new QAction(/*icons_manager->loadIcon(s.pixmapName(Online, true, false)), * /tr("Online (d.)"), this);
-	ChangeStatusToOnlineDesc->setCheckable(true);
-	ChangeStatusToOnlineDesc->setData(1);
-	connect(ChangeStatusToOnlineDesc, SIGNAL(triggered(bool)), this, SLOT(changeStatus()));
-
-	ChangeStatusToBusy = new QAction(/*icons_manager->loadIcon(s.pixmapName(Busy, false, false)), * /tr("Busy"), this);
-	ChangeStatusToBusy->setCheckable(true);
-	ChangeStatusToBusy->setData(2);
-	connect(ChangeStatusToBusy, SIGNAL(triggered(bool)), this, SLOT(changeStatus()));
-
-	ChangeStatusToBusyDesc = new QAction(/*icons_manager->loadIcon(s.pixmapName(Busy, true, false)), * /tr("Busy (d.)"), this);
-	ChangeStatusToBusyDesc->setCheckable(true);
-	ChangeStatusToBusyDesc->setData(3);
-	connect(ChangeStatusToBusyDesc, SIGNAL(triggered(bool)), this, SLOT(changeStatus()));
-
-	ChangeStatusToInvisible = new QAction(/*icons_manager->loadIcon(s.pixmapName(Invisible, false, false)), * /tr("Invisible"), this);
-	ChangeStatusToInvisible->setCheckable(true);
-	ChangeStatusToInvisible->setData(4);
-	connect(ChangeStatusToInvisible, SIGNAL(triggered(bool)), this, SLOT(changeStatus()));
-
-	ChangeStatusToInvisibleDesc = new QAction(/*icons_manager->loadIcon(s.pixmapName(Invisible, true, false)), * /tr("Invisible (d.)"), this);
-	ChangeStatusToInvisibleDesc->setCheckable(true);
-	ChangeStatusToInvisibleDesc->setData(5);
-	connect(ChangeStatusToInvisibleDesc, SIGNAL(triggered(bool)), this, SLOT(changeStatus()));
-
-	ChangeStatusToOffline = new QAction(/*icons_manager->loadIcon(s.pixmapName(Offline, false, false)), * /tr("Offline"), this);
-	ChangeStatusToOffline->setCheckable(true);
-	ChangeStatusToOffline->setData(6);
-	connect(ChangeStatusToOffline, SIGNAL(triggered(bool)), this, SLOT(changeStatus()));
-
-	ChangeStatusToOfflineDesc = new QAction(/*icons_manager->loadIcon(s.pixmapName(Offline, true, false)), * /tr("Offline (d.)"), this);
-	ChangeStatusToOfflineDesc->setCheckable(true);
-	ChangeStatusToOfflineDesc->setData(7);
-	connect(ChangeStatusToOfflineDesc, SIGNAL(triggered(bool)), this, SLOT(changeStatus()));*/
+	connect(ChangeStatusActionGroup, SIGNAL(triggered(QAction *)), this, SLOT(changeStatus(QAction *)));
 
 	ChangePrivateStatus = new QAction(tr("Private"), this);
 	ChangePrivateStatus->setCheckable(true);
@@ -93,15 +57,6 @@ StatusMenu::StatusMenu(StatusContainer *statusContainer, QWidget *parent) :
 
 	bool privateStatus = config_file.readBoolEntry("General", "PrivateStatus");
 	ChangePrivateStatus->setChecked(privateStatus);
-/*
-	ChangeStatusActionGroup->addAction(ChangeStatusToOnline);
-	ChangeStatusActionGroup->addAction(ChangeStatusToOnlineDesc);
-	ChangeStatusActionGroup->addAction(ChangeStatusToBusy);
-	ChangeStatusActionGroup->addAction(ChangeStatusToBusyDesc);
-	ChangeStatusActionGroup->addAction(ChangeStatusToInvisible);
-	ChangeStatusActionGroup->addAction(ChangeStatusToInvisibleDesc);
-	ChangeStatusActionGroup->addAction(ChangeStatusToOffline);
-	ChangeStatusActionGroup->addAction(ChangeStatusToOfflineDesc);*/
 
 	statusChanged();
 	connect(MyStatusContainer, SIGNAL(statusChanged()), this, SLOT(statusChanged()));
@@ -114,16 +69,16 @@ StatusMenu::~StatusMenu()
 
 void StatusMenu::addToMenu(QMenu *menu)
 {
-	if (0 == ChangeStatusActions.count())
+	if (0 == ChangeStatusActionGroup->actions().count())
 		return;
 
-	StatusType *statusType = ChangeStatusActions[0]->data().value<StatusType *>();
+	StatusType *statusType = ChangeStatusActionGroup->actions()[0]->data().value<StatusType *>();
 	if (0 == statusType)
 		return;
 
 	StatusGroup *currentGroup = statusType->statusGroup();
 
-	foreach (QAction *action, ChangeStatusActions)
+	foreach (QAction *action, ChangeStatusActionGroup->actions())
 	{
 		StatusType *statusType = action->data().value<StatusType *>();
 		if (0 == statusType)
@@ -151,12 +106,8 @@ void StatusMenu::aboutToHide()
 		MousePositionBeforeMenuHide = menu->pos();
 }
 
-void StatusMenu::changeStatus()
+void StatusMenu::changeStatus(QAction *action)
 {
-	QAction *action = dynamic_cast<QAction *>(sender());
-	if (!action)
-		return;
-
 	StatusType *statusType = action->data().value<StatusType *>();
 	if (!statusType)
 		return;
@@ -220,9 +171,16 @@ void StatusMenu::changeStatusPrivate(bool toggled)
 
 void StatusMenu::statusChanged()
 {
-	StatusType *statusType = StatusTypeManager::instance()->statusType(MyStatusContainer->status().type());
-	if (0 == statusType)
-		return;
+	const QString &statusTypeName = MyStatusContainer->status().type();
+
+	foreach (QAction *action, ChangeStatusActionGroup->actions())
+	{
+		StatusType *statusType = action->data().value<StatusType *>();
+		if (!statusType)
+			continue;
+
+		action->setChecked(statusTypeName == statusType->name());
+	}
 
 	if (AccountManager::instance()->defaultAccount() && AccountManager::instance()->defaultAccount()->protocol())
 	{

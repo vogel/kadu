@@ -26,7 +26,6 @@ class StatusMenu : public QObject
 	Q_OBJECT
 
 	QActionGroup *ChangeStatusActionGroup;
-	QList<QAction *> ChangeStatusActions;
 	QAction * ChangePrivateStatus;
 
 	QPoint MousePositionBeforeMenuHide;
@@ -35,7 +34,7 @@ class StatusMenu : public QObject
 
 private slots:
 	void aboutToHide();
-	void changeStatus();
+	void changeStatus(QAction *action);
 	void changeStatusPrivate(bool toggled);
 	void statusChanged();
 
