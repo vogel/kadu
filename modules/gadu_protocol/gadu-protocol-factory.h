@@ -21,6 +21,7 @@ class GaduProtocolFactory : public ProtocolFactory
 	Q_DISABLE_COPY(GaduProtocolFactory)
 
 	static GaduProtocolFactory *Instance;
+	QList<StatusType *> SupportedStatusTypes;
 
 	GaduProtocolFactory();
 
@@ -35,6 +36,7 @@ public:
 	virtual AccountEditWidget * newEditAccountWidget(Account *, QWidget *parent);
 	virtual ContactAccountDataWidget * newContactAccountDataWidget(ContactAccountData *contactAccountData, QWidget *parent = 0);
 	virtual GaduConfigurationDialog * newConfigurationDialog(Account *, QWidget *);
+	virtual QList<StatusType *> supportedStatusTypes();
 
 	virtual QString name() { return "gadu"; }
 	virtual QString displayName() { return tr("Gadu-Gadu"); }

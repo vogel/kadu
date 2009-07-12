@@ -11,6 +11,7 @@
 
 #include "gui/widgets/gadu-create-account-widget.h"
 #include "gui/widgets/gadu-edit-account-widget.h"
+#include "status/status-type-manager.h"
 
 #include "gadu-account.h"
 #include "gadu-contact-account-data-widget.h"
@@ -32,6 +33,11 @@ GaduProtocolFactory * GaduProtocolFactory::instance()
 
 GaduProtocolFactory::GaduProtocolFactory()
 {
+	StatusTypeManager *statusTypeManager = StatusTypeManager::instance();
+	SupportedStatusTypes.append(statusTypeManager->statusType("Online"));
+	SupportedStatusTypes.append(statusTypeManager->statusType("Away"));
+	SupportedStatusTypes.append(statusTypeManager->statusType("Invisible"));
+	SupportedStatusTypes.append(statusTypeManager->statusType("Offline"));
 }
 
 Account * GaduProtocolFactory::newAccount()
@@ -81,6 +87,11 @@ GaduConfigurationDialog * GaduProtocolFactory::newConfigurationDialog(Account *a
 	return 0 != gaduAccount
 		? new GaduConfigurationDialog(gaduAccount, parent)
 		: 0;
+}
+
+QList<StatusType *> GaduProtocolFactory::supportedStatusTypes()
+{
+	return SupportedStatusTypes;
 }
 
 ContactAccountDataWidget * GaduProtocolFactory::newContactAccountDataWidget(ContactAccountData *contactAccountData, QWidget *parent)
