@@ -32,8 +32,8 @@ StatusTypeManager::StatusTypeManager()
 	registerStatusType("FreeForChat", "Free for chat", online, 0);
 	registerStatusType("Online", "Online", online, 20);
 	registerStatusType("Away", "Away", busy, 0);
-	registerStatusType("Not available", "Not available", busy, 20);
-	registerStatusType("Do not disturb", "Do not disturb", busy, 40);
+	registerStatusType("NotAvailable", "Not available", busy, 20);
+	registerStatusType("DoNotDisturb", "Do not disturb", busy, 40);
 	registerStatusType("Invisible", "Invisible", invisible, 0);
 	registerStatusType("Offline", "Offline", offline, 0);
 }
