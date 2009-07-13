@@ -27,6 +27,7 @@ class StatusMenu : public QObject
 
 	QActionGroup * ChangeStatusActionGroup;
 	QAction * ChangeDescription;
+
 	QAction * ChangePrivateStatus;
 
 	QPoint MousePositionBeforeMenuHide;
