@@ -538,7 +538,7 @@ QPixmap TlenProtocol::statusPixmap(Status status)
 {
 	QString pixmapName(dataPath("kadu/modules/data/tlen_protocol/"));
 
-	QString groupName = status.group();
+	QString groupName = status.type();
 	
 	if ("Online" == groupName)
 		pixmapName.append("online");
