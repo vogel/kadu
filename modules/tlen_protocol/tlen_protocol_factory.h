@@ -20,6 +20,7 @@ class TlenProtocolFactory : public ProtocolFactory
 	Q_DISABLE_COPY(TlenProtocolFactory)
 
 	static TlenProtocolFactory *Instance;
+	QList<StatusType *> SupportedStatusTypes;
 
 	TlenProtocolFactory();
 
@@ -35,6 +36,7 @@ public:
 	virtual AccountEditWidget* newEditAccountWidget(Account*, QWidget*) { return 0; };
 	virtual ContactAccountDataWidget * newContactAccountDataWidget(ContactAccountData *contactAccountData, QWidget *parent = 0);
 	//virtual ProtocolMenuManager * getProtocolMenuManager() { return 0; }
+	virtual QList<StatusType *> supportedStatusTypes();
 
 	virtual QString name() { return "tlen"; }
 	virtual QString displayName() { return "Tlen"; }

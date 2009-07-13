@@ -164,7 +164,8 @@ void TlenProtocol::login()
 	kdebugf();
 
 	connectToServer();
-	setStatus(Status::Online);
+	// TODO set here something from kadu, last status?
+	setStatus(Status("Online", ""));
 	networkStateChanged(NetworkConnected);
 	kdebugf2();
 }
@@ -317,21 +318,21 @@ void TlenProtocol::presenceChanged(QString from, QString newstatus, QString desc
 
 	Status status;
 	if(newstatus == "away")
-		status.setType(Status::Busy);
+		status.setType("Away");
 	else if(newstatus == "xa")
-		status.setType(Status::Busy);
+		status.setType("NotAvailable");
 	else if(newstatus == "dnd")
-		status.setType(Status::Busy);
+		status.setType("DoNotDisturb");
 	else if(newstatus == "available")
-		status.setType(Status::Online);
+		status.setType("Online");
 	else if(newstatus == "chat")
-		status.setType(Status::Online);
+		status.setType("FreeForChat");
 	else if(newstatus == "invisible")
-		status.setType(Status::Invisible);
+		status.setType("Invisible");
 	else if(newstatus == "unavailable")
-		status.setType(Status::Offline);
+		status.setType("Offline");
 	else
-		status.setType(Status::Offline);
+		status.setType("Offline");
 
 	if (!description.isEmpty())
 		status.setDescription(description);
@@ -470,24 +471,31 @@ void TlenProtocol::changeStatus(Status status)
 	if (TlenClient == 0)
 		return;
 
-	// TODO: add rest status options
-	if(status.isOnline())
+	const QString &type = status.type();
+
+	if("Online" == type)
 		TlenClient->setStatusDescr("available", status.description());
-	else if(status.isInvisible())
-		TlenClient->setStatusDescr("invisible", status.description());
-	else if(status.isBusy())
+	else if("FreeForChat" == type)
+		TlenClient->setStatusDescr("chat", status.description());
+	else if("DoNotDisturb" == type)
+		TlenClient->setStatusDescr("dnd", status.description());
+	else if("Away" == type)
 		TlenClient->setStatusDescr("away", status.description());
+	else if("NotAvailable" == type)
+		TlenClient->setStatusDescr("xa", status.description());
+	else if("Invisible" == type)
+		TlenClient->setStatusDescr("invisible", status.description());
 	else
 		TlenClient->setStatusDescr("unavailable", status.description());
 
-	if (status.isOffline())
+	if ("Offline" == type)
 	{
 		networkStateChanged(NetworkDisconnected);
 
 		setAllOffline();
 
-		if (!nextStatus().isOffline())
-			setStatus(Status::Offline);
+		if (!nextStatus().isDisconnected())
+			setStatus(Status());
 	}
 
 	Protocol::statusChanged(status);
@@ -497,14 +505,14 @@ void TlenProtocol::changeStatus()
 {
 	Status newStatus = nextStatus();
 
-	if (newStatus.isOffline() && status().isOffline())
+	if (newStatus.isDisconnected() && status().isDisconnected())
 	{
 		networkStateChanged(NetworkDisconnected);
 
 		setAllOffline();
 
-		if (!nextStatus().isOffline())
-			setStatus(Status::Offline);
+		if (!nextStatus().isDisconnected())
+			setStatus(Status());
 
 		return;
 	}
@@ -512,7 +520,7 @@ void TlenProtocol::changeStatus()
 	if (NetworkConnecting == state())
 		return;
 
-	if (status().isOffline())
+	if (status().isDisconnected())
 	{
 		login();
 		return;
@@ -530,25 +538,60 @@ QPixmap TlenProtocol::statusPixmap(Status status)
 {
 	QString pixmapName(dataPath("kadu/modules/data/tlen_protocol/"));
 
-	switch (status.type())
-	{
-		case Status::Online:
-			pixmapName.append("online");
-			break;
-		case Status::Busy:
-			pixmapName.append("away");
-			break;
-		case Status::Invisible:
-			pixmapName.append("invisible");
-			break;
-		default:
-			pixmapName.append("offline");
-			break;
-	}
+	QString groupName = status.group();
+	
+	if ("Online" == groupName)
+		pixmapName.append("online");
+
+	else if ("FreeForChat" == groupName)
+		pixmapName.append("chat");
+
+	else if ("DoNotDisturb" == groupName)
+		pixmapName.append("dnd");
+
+	else if ("Away" == groupName)
+		pixmapName.append("away");
+
+	else if ("NotAvailable" == groupName)
+		pixmapName.append("unavailable");
+
+	else if ("Invisible" == groupName)
+		pixmapName.append("invisible");
+
+	else	pixmapName.append("offline");
 
 	pixmapName.append(status.description().isNull()
 			? ".png"
 			: "i.png");
+
+	return IconsManager::instance()->loadPixmap(pixmapName);
+}
+
+QPixmap TlenProtocol::statusPixmap(const QString &statusType)
+{
+	QString pixmapName(dataPath("kadu/modules/data/tlen_protocol/"));
+
+	if ("Online" == statusType)
+		pixmapName.append("online");
+
+	else if ("FreeForChat" == statusType)
+		pixmapName.append("chat");
+
+	else if ("DoNotDisturb" == statusType)
+		pixmapName.append("dnd");
+
+	else if ("Away" == statusType)
+		pixmapName.append("away");
+
+	else if ("NotAvailable" == statusType)
+		pixmapName.append("unavailable");
+
+	else if ("Invisible" == statusType)
+		pixmapName.append("invisible");
+
+	else	pixmapName.append("offline");
+
+	pixmapName.append(".png");
 
 	return IconsManager::instance()->loadPixmap(pixmapName);
 }
