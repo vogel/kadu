@@ -60,6 +60,7 @@ class JabberProtocol : public Protocol
 		virtual Conference * loadConferenceFromStorage(StoragePoint *storage) { return 0; }
 
 		virtual QPixmap statusPixmap(Status status);
+		virtual QPixmap statusPixmap(const QString &statusType);
 		virtual void changeStatus(Status status);
 
 		virtual ChatService * chatService() { return CurrentChatService; }

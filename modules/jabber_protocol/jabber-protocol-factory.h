@@ -18,6 +18,7 @@ class JabberProtocolFactory : public ProtocolFactory
 	Q_DISABLE_COPY(JabberProtocolFactory)
 
 	static JabberProtocolFactory *Instance;
+	QList<StatusType *> SupportedStatusTypes;
 
 	JabberProtocolFactory();
 
@@ -32,6 +33,7 @@ public:
 	virtual AccountEditWidget* newEditAccountWidget(Account*, QWidget*);
 	virtual ContactAccountDataWidget * newContactAccountDataWidget(ContactAccountData *contactAccountData, QWidget *parent = 0);
 	virtual JabberConfigurationDialog * newConfigurationDialog(Account *, QWidget *);
+	virtual QList<StatusType *> supportedStatusTypes();
 
 	virtual QString name() { return "jabber"; }
 	virtual QString displayName() { return "Jabber"; }

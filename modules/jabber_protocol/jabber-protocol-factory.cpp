@@ -16,6 +16,8 @@
 #include "jabber_protocol.h"
 #include "jabber-contact-account-data.h"
 #include "misc/misc.h"
+#include "status/status-type.h"
+#include "status/status-type-manager.h"
 
 #include "jabber-protocol-factory.h"
 
@@ -31,6 +33,16 @@ JabberProtocolFactory * JabberProtocolFactory::instance()
 
 JabberProtocolFactory::JabberProtocolFactory()
 {
+	StatusTypeManager *statusTypeManager = StatusTypeManager::instance();
+	SupportedStatusTypes.append(statusTypeManager->statusType("Online"));
+	SupportedStatusTypes.append(statusTypeManager->statusType("FreeForChat"));
+	SupportedStatusTypes.append(statusTypeManager->statusType("DoNotDisturb"));
+	SupportedStatusTypes.append(statusTypeManager->statusType("Away"));
+	SupportedStatusTypes.append(statusTypeManager->statusType("NotAvailable"));
+	SupportedStatusTypes.append(statusTypeManager->statusType("Invisible"));
+	SupportedStatusTypes.append(statusTypeManager->statusType("Offline"));
+
+	qSort(SupportedStatusTypes.begin(), SupportedStatusTypes.end(), StatusType::lessThan);
 }
 
 Account * JabberProtocolFactory::newAccount()
@@ -84,6 +96,11 @@ JabberConfigurationDialog * JabberProtocolFactory::newConfigurationDialog(Accoun
 	return 0 != jabberAccount
 		? new JabberConfigurationDialog(jabberAccount, parent)
 		: 0;
+}
+
+QList<StatusType *> JabberProtocolFactory::supportedStatusTypes()
+{
+	return SupportedStatusTypes;
 }
 
 ContactAccountDataWidget * JabberProtocolFactory::newContactAccountDataWidget(ContactAccountData *contactAccountData, QWidget *parent)

@@ -142,7 +142,7 @@ void JabberProtocol::connectToServer()
 	JabberAccount *jabberAccount = dynamic_cast<JabberAccount *>(account());
 	if (jabberAccount->id().isNull() || jabberAccount->password().isNull())
 	{
-		setStatus(Status::Offline);
+		setStatus(Status());
 
 		MessageBox::msg(tr("Jabber ID or password not set!"), false, "Warning");
 		kdebugmf(KDEBUG_FUNCTION_END, "end: Jabber ID or password not set\n");
@@ -235,8 +235,8 @@ void JabberProtocol::logout(const XMPP::Status &s)
 {
 	kdebugf();
 
-	if (!status().isOffline())
-		setStatus(Status::Offline);
+	if (!status().isDisconnected())
+		setStatus(Status());
 
 	setAllOffline();
 	disconnect();
@@ -357,8 +357,8 @@ void JabberProtocol::disconnectedFromServer()
 {
 	kdebugf();
 
-	if (!status().isOffline())
-		setStatus(Status::Offline);
+	if (!status().isDisconnected())
+		setStatus(Status());
 
 	//if (!Kadu::closing())
 		setAllOffline();
@@ -376,29 +376,35 @@ void JabberProtocol::login()
 
 void JabberProtocol::changeStatus(Status status)
 {
- 	// TODO: add rest status options
 	XMPP::Status s = XMPP::Status();
+	const QString &type = status.type();
 
-	if (status.isOnline())
+	if ("Online" == type)
 		s.setType(XMPP::Status::Online);
-	else if (status.isInvisible())
-		s.setType(XMPP::Status::Invisible);
-	else if (status.isBusy())
+	else if ("FreeForChat" == type)
+		s.setType(XMPP::Status::FFC);
+	else if ("DoNotDisturb" == type)
+		s.setType(XMPP::Status::DND);
+	else if ("NotAvailable" == type)
+		s.setType(XMPP::Status::XA);
+	else if ("Away" == type)
 		s.setType(XMPP::Status::Away);
+	else if ("Invisible" == type)
+		s.setType(XMPP::Status::Invisible);
 	else
 		s.setType(XMPP::Status::Offline);
 ///WTF! kutfa, wywo�anie tego z protocol wywala kadu...
 	s.setStatus(status.description());
 	setPresence(s);
 
-	if (status.isOffline())
+	if (status.isDisconnected())
 	{
 		networkStateChanged(NetworkDisconnected);
 
 		setAllOffline();
 
-		if (!nextStatus().isOffline())
-			setStatus(Status::Offline);
+		if (!nextStatus().isDisconnected())
+			setStatus(Status());
 	}
 
 	statusChanged(status);
@@ -420,20 +426,20 @@ void JabberProtocol::clientResourceAvailable(const XMPP::Jid &jid, const XMPP::R
 	//TODO: na razie brak lepszego miejsca na to
 	Status status;
 	if (resource.status().isAvailable())
-		status.setType(Status::Online);
+		status.setType("Online");
 	else if (resource.status().isInvisible())
-		status.setType(Status::Invisible);
+		status.setType("Invisible");
 	else
-		status.setType(Status::Offline);
+		status.setType("Offline");
 
 	if (resource.status().show() == "away")
-		status.setType(Status::Busy);
+		status.setType("Away");
 	else if (resource.status().show() == "xa")
-		status.setType(Status::Busy);
+		status.setType("NotAvailable");
 	else if (resource.status().show() == "dnd")
-		status.setType(Status::Busy);
+		status.setType("DoNotDisturb");
 	else if (resource.status().show() == "chat")
-		status.setType(Status::Online);
+		status.setType("FreeForChat");
 
 	QString description = resource.status().status();
 	description.replace("\r\n", "\n");
@@ -473,16 +479,21 @@ void JabberProtocol::clientResourceUnavailable(const XMPP::Jid &jid, const XMPP:
 	resourcePool()->removeResource(jid, resource);
 	//TODO: na razie brak lepszego miejsca na to
 	Status status;
-	status.setType(Status::Offline);
+	if (resource.status().isAvailable())
+		status.setType("Online");
+	else if (resource.status().isInvisible())
+		status.setType("Invisible");
+	else
+		status.setType("Offline");
 
 	if (resource.status().show() == "away")
-		status.setType(Status::Busy);
+		status.setType("Away");
 	else if (resource.status().show() == "xa")
-		status.setType(Status::Busy);
+		status.setType("NotAvailable");
 	else if (resource.status().show() == "dnd")
-		status.setType(Status::Busy);
+		status.setType("DoNotDisturb");
 	else if (resource.status().show() == "chat")
-		status.setType(Status::Online);
+		status.setType("FreeForChat");
 
 	QString description = resource.status().status();
 	description.replace("\r\n", "\n");
@@ -715,21 +726,21 @@ void JabberProtocol::changeStatus()
 {
 	Status newStatus = nextStatus();
 
-	if (newStatus.isOffline() && status().isOffline())
+	if (newStatus.isDisconnected() && status().isDisconnected())
 	{
 		networkStateChanged(NetworkDisconnected);
 
 		setAllOffline();
 
-		if (!nextStatus().isOffline())
-			setStatus(Status::Offline);
+		if (!nextStatus().isDisconnected())
+			setStatus(Status());
 		return;
 	}
 
 	if (NetworkConnecting == state())
 		return;
 
-	if (status().isOffline())
+	if (status().isDisconnected())
 	{
 		login();
 		return;
@@ -747,21 +758,58 @@ QPixmap JabberProtocol::statusPixmap(Status status)
 {
 	QString pixmapName(dataPath("kadu/modules/data/jabber_protocol/"));
 
-	switch (status.type())
-	{
-		case Status::Online:
-			pixmapName.append("online.png");
-			break;
-		case Status::Busy:
-			pixmapName.append("away.png");
-			break;
-		case Status::Invisible:
-			pixmapName.append("invisible.png");
-			break;
-		default:
-			pixmapName.append("offline.png");
-			break;
-	}
+	QString groupName = status.type();
+
+	if ("Online" == groupName)
+		pixmapName.append("online");
+
+	else if ("FreeForChat" == groupName)
+		pixmapName.append("ffc");
+
+	else if ("DoNotDisturb" == groupName)
+		pixmapName.append("dnd");
+
+	else if ("Away" == groupName)
+		pixmapName.append("away");
+
+	else if ("NotAvailable" == groupName)
+		pixmapName.append("xa");
+
+	else if ("Invisible" == groupName)
+		pixmapName.append("invisible");
+
+	else	pixmapName.append("offline");
+
+	pixmapName.append(".png");
+
+	return IconsManager::instance()->loadPixmap(pixmapName);
+}
+
+QPixmap JabberProtocol::statusPixmap(const QString &statusType)
+{
+	QString pixmapName(dataPath("kadu/modules/data/jabber_protocol/"));
+
+	if ("Online" == statusType)
+		pixmapName.append("online");
+
+	else if ("FreeForChat" == statusType)
+		pixmapName.append("ffc");
+
+	else if ("DoNotDisturb" == statusType)
+		pixmapName.append("dnd");
+
+	else if ("Away" == statusType)
+		pixmapName.append("away");
+
+	else if ("NotAvailable" == statusType)
+		pixmapName.append("xa");
+
+	else if ("Invisible" == statusType)
+		pixmapName.append("invisible");
+
+	else	pixmapName.append("offline");
+
+	pixmapName.append(".png");
 
 	return IconsManager::instance()->loadPixmap(pixmapName);
 }
