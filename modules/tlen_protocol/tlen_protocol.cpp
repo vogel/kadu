@@ -486,10 +486,10 @@ void TlenProtocol::changeStatus(Status status)
 	else if("Invisible" == type)
 		TlenClient->setStatusDescr("invisible", status.description());
 	else
+	{
+		// Offline
 		TlenClient->setStatusDescr("unavailable", status.description());
 
-	if ("Offline" == type)
-	{
 		networkStateChanged(NetworkDisconnected);
 
 		setAllOffline();
