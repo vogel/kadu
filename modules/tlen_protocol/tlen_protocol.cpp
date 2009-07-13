@@ -526,7 +526,7 @@ void TlenProtocol::changeStatus()
 		return;
 	}
 
-	statusChanged(newStatus);
+	changeStatus(newStatus);
 }
 
 void TlenProtocol::changePrivateMode()
