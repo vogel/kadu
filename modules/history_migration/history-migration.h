@@ -20,7 +20,7 @@ struct HistoryEntry
 	QDateTime date;
 	QDateTime sdate;
 	QString message;
-	Status::StatusType status;
+	QString status;
 	QString ip;
 	QString description;
 	QString mobile;

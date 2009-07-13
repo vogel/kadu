@@ -309,13 +309,13 @@ QList<HistoryEntry> HistoryImporter::getHistoryEntries(QStringList uins, int fro
 					entry.ip = tokens[3];
 					entry.date.setTime_t(tokens[4].toUInt());
 					if (tokens[5] == "avail")
-						entry.status = Status::Online;
+						entry.status = "Online";
 					else if (tokens[5] == "notavail")
-						entry.status = Status::Offline;
+						entry.status = "Offline";
 					else if (tokens[5] == "busy")
-						entry.status = Status::Busy;
+						entry.status = "Busy";
 					else if (tokens[5] == "invisible")
-						entry.status = Status::Invisible;
+						entry.status = "Invisible";
 					if (tokens.count() == 7)
 						entry.description = tokens[6];
 					else
