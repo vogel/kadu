@@ -125,7 +125,7 @@ template<class T>
 	Property(QString, email, Email, QString::null)
 	Property(unsigned short, birthYear, BirthYear, 0)
 	Property(ContactData::ContactGender, gender, Gender, ContactData::GenderUnknown)
-	Property(QList<Group *>, groups, Groups, QList<Group *>());
+	Property(QList<Group *>, groups, Groups, QList<Group *>())
 
 };
 
@@ -133,6 +133,8 @@ Q_DECLARE_METATYPE(Contact)
 
 uint qHash(const Contact &contact);
 
+#undef PropertyRead
+#undef PropertyWrite
 #undef Property
 
 #endif // CONTACT_H

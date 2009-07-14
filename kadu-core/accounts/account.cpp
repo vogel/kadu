@@ -20,7 +20,8 @@
 
 Account::Account(const QUuid &uuid) :
 		UuidStorableObject("Account", AccountManager::instance()), ProtocolHandler(0),
-		RememberPassword(false), HasPassword(false)
+		RememberPassword(false), HasPassword(false), UseProxy(false), ProxyHost(QHostAddress()),
+		ProxyPort(0), ProxyUser(QString()), ProxyPassword(QString())
 {
 	Uuid = uuid.isNull()
 		? QUuid::createUuid()
@@ -79,6 +80,17 @@ void Account::load()
 	if (RememberPassword)
 		Password = pwHash(loadValue<QString>("Password"));
 
+	UseProxy = loadValue<bool>("UseProxy");
+	ProxyPort = loadValue<int>("ProxyPort");
+	ProxyReqAuthentication = loadValue<bool>("ProxyRequiresAuthentication");
+	ProxyUser = loadValue<QString>("ProxyUser");
+	ProxyPassword = loadValue<QString>("ProxyPassword");
+
+	QHostAddress host;
+	if (!host.setAddress(loadValue<QString>("ProxyHost")))
+		host.setAddress("0.0.0.0");
+	ProxyHost = host;
+
 	triggerAllContactsAdded();
 }
 
@@ -100,6 +112,13 @@ void Account::store()
 		storeValue("Password", pwHash(password()));
 	else
 		removeValue("Password");
+
+	storeValue("UseProxy", UseProxy);
+	storeValue("ProxyPort", ProxyPort);
+	storeValue("ProxyRequiresAuthentication", ProxyReqAuthentication);
+	storeValue("ProxyUser", ProxyUser);
+	storeValue("ProxyPassword", ProxyPassword);
+	storeValue("ProxyHost", ProxyHost.toString());
 }
 
 Contact Account::getContactById(const QString& id)
@@ -120,6 +139,20 @@ Contact Account::createAnonymous(const QString& id)
 
 	result.addAccountData(contactAccountData);
 	return result;
+}
+
+void Account::importProxySettings()
+{
+	Account *defaultAccount = AccountManager::instance()->defaultAccount();
+	if (defaultAccount && defaultAccount->proxyHost().toString() != "0.0.0.0")
+	{
+		UseProxy = defaultAccount->useProxy();
+		ProxyPort = defaultAccount->proxyPort();
+		ProxyUser = defaultAccount->proxyUser();
+		ProxyReqAuthentication = defaultAccount->proxyReqAuthentication();
+		ProxyPassword = defaultAccount->proxyPassword();
+		ProxyHost = defaultAccount->proxyHost();
+	}
 }
 
 QString Account::statusContainerName()

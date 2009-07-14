@@ -19,8 +19,10 @@
 
 #include "accounts/account.h"
 #include "accounts/account-manager.h"
-#include "gui/widgets/gadu-personal-info-widget.h"
 #include "gui/widgets/account-contacts-list-widget.h"
+#include "gui/widgets/proxy-group-box.h"
+
+#include "gadu-personal-info-widget.h"
 
 #include "gadu-edit-account-widget.h"
 
@@ -29,6 +31,7 @@ GaduEditAccountWidget::GaduEditAccountWidget(Account *account, QWidget *parent) 
 {
 	createGui();
 	loadAccountData();
+	loadConnectionData();
 }
 
 GaduEditAccountWidget::~GaduEditAccountWidget()
@@ -132,7 +135,9 @@ void GaduEditAccountWidget::createConnectionTab(QTabWidget *tabWidget)
 
 	QVBoxLayout *layout = new QVBoxLayout(conenctionTab);
 	createGeneralGroupBox(layout);
-	createProxyGroupBox(layout);
+
+	proxy = new ProxyGroupBox(account(), tr("Proxy"), this);
+	layout->addWidget(proxy);
 
 	layout->addStretch(100);
 }
@@ -145,54 +150,28 @@ void GaduEditAccountWidget::createGeneralGroupBox(QVBoxLayout *layout)
 	generalLayout->setColumnMinimumWidth(3, 20);
 	layout->addWidget(general);
 
-	QCheckBox *useDefaultServers = new QCheckBox(tr("Use default servers"), this);
+	useDefaultServers = new QCheckBox(tr("Use default servers"), this);
 	generalLayout->addWidget(useDefaultServers, 0, 0, 1, 6);
 
 	QLabel *ipAddressesLabel = new QLabel(tr("IP addresses"), this);
-	QLineEdit *ipAddresses = new QLineEdit(this);
+	ipAddresses = new QLineEdit(this);
+	ipAddresses->setToolTip("You can specify which GG servers to use. Separate every server using semicolon\n"
+				"(for example: 91.197.13.26;91.197.13.24;91.197.13.29;91.197.13.6)");
 	generalLayout->addWidget(ipAddressesLabel, 1, 1);
 	generalLayout->addWidget(ipAddresses, 1, 2);
 
 	QLabel *portLabel = new QLabel(tr("Port"), this);
-	QComboBox *port = new QComboBox(this);
+	port = new QComboBox(this);
+	port->addItem("Automatic");
+	port->addItem("8074");
+	port->addItem("443");
 	generalLayout->addWidget(portLabel, 1, 4);
 	generalLayout->addWidget(port, 1, 5);
 
-}
-
-void GaduEditAccountWidget::createProxyGroupBox(QVBoxLayout *layout)
-{
-	QGroupBox *proxy = new QGroupBox(tr("Proxy"), this);
-	QGridLayout *proxyLayout = new QGridLayout(proxy);
-	proxyLayout->setColumnMinimumWidth(0, 20);
-	layout->addWidget(proxy);
-
-	QCheckBox *useProxy = new QCheckBox(tr("Use the following proxy"), this);
-	proxyLayout->addWidget(useProxy, 0, 0, 1, 6);
-
-	QLabel *hostLabel = new QLabel(tr("Host"), this);
-	QLineEdit *host = new QLineEdit(this);
-	proxyLayout->addWidget(hostLabel, 1, 1);
-	proxyLayout->addWidget(host, 1, 2);
-
-	QLabel *portLabel = new QLabel(tr("Port"), this);
-	QComboBox *port = new QComboBox(this);
-	proxyLayout->addWidget(portLabel, 1, 4);
-	proxyLayout->addWidget(port, 1, 5);
-
-	QCheckBox *proxyAuthentication = new QCheckBox(tr("Proxy requires authentication"), this);
-	proxyLayout->addWidget(proxyAuthentication, 2, 0, 1, 6);
-
-	QLabel *usernameLabel = new QLabel(tr("Username"), this);
-	QLineEdit *username = new QLineEdit(this);
-	proxyLayout->addWidget(usernameLabel, 3, 1);
-	proxyLayout->addWidget(username, 3, 2);
-
-	QLabel *passwordLabel = new QLabel(tr("Password"), this);
-	QLineEdit *password = new QLineEdit(this);
-	proxyLayout->addWidget(passwordLabel, 4, 1);
-	proxyLayout->addWidget(password, 4, 2);
-
+	connect(useDefaultServers, SIGNAL(toggled(bool)), ipAddressesLabel, SLOT(setEnabled(bool)));
+	connect(useDefaultServers, SIGNAL(toggled(bool)), ipAddresses, SLOT(setEnabled(bool)));
+	connect(useDefaultServers, SIGNAL(toggled(bool)), portLabel, SLOT(setEnabled(bool)));
+	connect(useDefaultServers, SIGNAL(toggled(bool)), port, SLOT(setEnabled(bool)));
 }
 
 void GaduEditAccountWidget::loadAccountData()
@@ -203,12 +182,19 @@ void GaduEditAccountWidget::loadAccountData()
 	AccountPassword->setText(account()->password());
 }
 
+void GaduEditAccountWidget::loadConnectionData()
+{
+	proxy->loadProxyData();
+}
+
 void GaduEditAccountWidget::apply()
 {
 	account()->setConnectAtStart(ConnectAtStart->isChecked());
 	account()->setId(AccountId->text());
 	account()->setRememberPassword(RememberPassword->isChecked());
 	account()->setPassword(AccountPassword->text());
+
+	proxy->applyProxyData();
 
 	gpiw->applyData();
 }

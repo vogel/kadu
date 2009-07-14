@@ -176,15 +176,6 @@ MainConfigurationWindow::MainConfigurationWindow()
 	mailCommandLineEdit = dynamic_cast<ConfigLineEdit *>(widget()->widgetById("mailPath"));
 	connect(mailComboBox, SIGNAL(activated(int)), this, SLOT(onChangeMail(int)));
 
-	QWidget *useProxy = widget()->widgetById("useProxy");
-	QLineEdit *proxyPassword = (dynamic_cast<QLineEdit *>(widget()->widgetById("proxyPassword")));
-	proxyPassword->setEchoMode(QLineEdit::Password);
-
-	connect(useProxy, SIGNAL(toggled(bool)), widget()->widgetById("proxyHost"), SLOT(setEnabled(bool)));
-	connect(useProxy, SIGNAL(toggled(bool)), widget()->widgetById("proxyPort"), SLOT(setEnabled(bool)));
-	connect(useProxy, SIGNAL(toggled(bool)), widget()->widgetById("proxyUser"), SLOT(setEnabled(bool)));
-	connect(useProxy, SIGNAL(toggled(bool)), proxyPassword, SLOT(setEnabled(bool)));
-
 	connect(widget()->widgetById("lookChatAdvanced"), SIGNAL(clicked()), this, SLOT(showLookChatAdvanced()));
 
 	Preview *infoPanelSyntaxPreview = dynamic_cast<Preview *>(widget()->widgetById("infoPanelSyntaxPreview"));

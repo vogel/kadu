@@ -40,6 +40,13 @@ class KADUAPI Account : public StatusContainer, public UuidStorableObject, publi
 
 	bool ConnectAtStart;
 
+	bool UseProxy;
+	QHostAddress ProxyHost;
+	short int ProxyPort;
+	bool ProxyReqAuthentication;
+	QString ProxyUser;
+	QString ProxyPassword;
+
 protected:
 	virtual void contactAdded(Contact contact);
 	virtual void contactRemoved(Contact contact);
@@ -68,6 +75,22 @@ public:
 	bool rememberPassword() { return RememberPassword; }
 	bool hasPassword() { return HasPassword; }
 	QString password() { return Password; }
+
+	bool useProxy() { return UseProxy; }
+	QHostAddress proxyHost() { return ProxyHost; }
+	short int proxyPort() { return ProxyPort; }
+	bool proxyReqAuthentication() { return ProxyReqAuthentication; }
+	QString proxyUser() { return ProxyUser; }
+	QString proxyPassword() { return ProxyPassword; }
+
+	void setUseProxy(bool useProxy) { UseProxy = useProxy; }
+	void setProxyHost(QHostAddress proxyHost) { ProxyHost = proxyHost; }
+	void setProxyPort(short int proxyPort) { ProxyPort = proxyPort; }
+	void setProxyReqAuthentication(bool proxyReqAuth) { ProxyReqAuthentication = proxyReqAuth; }
+	void setProxyUser(QString proxyUser) { ProxyUser = proxyUser; }
+	void setProxyPassword(QString proxyPassword) { ProxyPassword = proxyPassword; }
+
+	void importProxySettings();
 
 	Contact getContactById(const QString &id);
 	Contact createAnonymous(const QString &id);

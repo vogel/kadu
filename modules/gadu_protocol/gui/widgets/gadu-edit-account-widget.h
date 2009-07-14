@@ -13,11 +13,13 @@
 #include "gui/widgets/account-edit-widget.h"
 
 class QCheckBox;
+class QComboBox;
 class QLineEdit;
 class QTabWidget;
 class QVBoxLayout;
 
 class GaduPersonalInfoWidget;
+class ProxyGroupBox;
 
 class GaduEditAccountWidget : public AccountEditWidget
 {
@@ -30,6 +32,11 @@ class GaduEditAccountWidget : public AccountEditWidget
 	QLineEdit *newAccountDescription;
 
 	GaduPersonalInfoWidget *gpiw;
+	ProxyGroupBox *proxy;
+
+	QCheckBox *useDefaultServers;
+	QLineEdit *ipAddresses;
+	QComboBox *port;
 
 	void createGui();
 	void createGeneralTab(QTabWidget *);
@@ -37,9 +44,9 @@ class GaduEditAccountWidget : public AccountEditWidget
 	void createBuddiesTab(QTabWidget *);
 	void createConnectionTab(QTabWidget *);
 	void createGeneralGroupBox(QVBoxLayout *layout);
-	void createProxyGroupBox(QVBoxLayout *layout);
 
 	void loadAccountData();
+	void loadConnectionData();
 
 private slots:
 	void removeAccount();

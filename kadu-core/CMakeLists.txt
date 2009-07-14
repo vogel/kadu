@@ -95,6 +95,7 @@ set (kadu_SRCS
 	gui/widgets/image-widget.cpp
 	gui/widgets/kadu_text_browser.cpp
 	gui/widgets/path-list-edit.cpp
+	gui/widgets/proxy-group-box.cpp
 	gui/widgets/preview.cpp
 	gui/widgets/select-file.cpp
 	gui/widgets/select-font.cpp
@@ -290,6 +291,7 @@ set (kadu_MOC_SRCS
 	gui/widgets/kadu_text_browser.h
 	gui/widgets/path-list-edit.h
 	gui/widgets/preview.h
+	gui/widgets/proxy-group-box.h
 	gui/widgets/select-file.h
 	gui/widgets/select-font.h
 	gui/widgets/status-button.h

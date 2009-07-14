@@ -61,6 +61,15 @@ void GaduImporter::importAccounts()
 	defaultGaduGadu->setDccForwarding(config_file.readBoolEntry("Network", "DccForwarding"));
 	defaultGaduGadu->setRemoveCompletedTransfers(config_file.readBoolEntry("Network", "RemoveCompletedTransfers"));
 
+	defaultGaduGadu->setUseProxy(config_file.readBoolEntry("Network", "UseProxy"));
+	if (!host.setAddress(config_file.readEntry("Network", "ProxyHost")))
+		host.setAddress("0.0.0.0");
+	defaultGaduGadu->setProxyHost(host);
+	defaultGaduGadu->setProxyPassword(config_file.readEntry("Network", "ProxyPassword"));
+	defaultGaduGadu->setProxyPort(config_file.readNumEntry("Network", "ProxyPort"));
+	defaultGaduGadu->setProxyUser(config_file.readEntry("Network", "ProxyUser"));
+	defaultGaduGadu->setProxyReqAuthentication(!defaultGaduGadu->proxyUser().isEmpty());
+
 	AccountManager::instance()->registerAccount(defaultGaduGadu);
 }
 

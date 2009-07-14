@@ -18,6 +18,7 @@
 class GaduAccount : public Account
 {
 	UinType Uin;
+
 	bool AllowDcc;
 	QHostAddress DccIP;
 	bool DccIpDetect;
@@ -27,6 +28,7 @@ class GaduAccount : public Account
 	short int DccLocalPort;
 	bool RemoveCompletedTransfers;
 	bool DccForwarding;
+
 	GaduOpenChatWithRunner *OpenChatRunner;
 
 public:

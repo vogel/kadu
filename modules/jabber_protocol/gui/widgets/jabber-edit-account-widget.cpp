@@ -19,8 +19,10 @@
 
 #include "accounts/account.h"
 #include "accounts/account-manager.h"
-#include "gui/widgets/jabber-personal-info-widget.h"
 #include "gui/widgets/account-contacts-list-widget.h"
+#include "gui/widgets/proxy-group-box.h"
+
+#include "jabber-personal-info-widget.h"
 
 #include "jabber-edit-account-widget.h"
 
@@ -29,6 +31,7 @@ JabberEditAccountWidget::JabberEditAccountWidget(Account *account, QWidget *pare
 {
 	createGui();
 	loadAccountData();
+	loadConnectionData();
 }
 
 JabberEditAccountWidget::~JabberEditAccountWidget()
@@ -56,11 +59,11 @@ void JabberEditAccountWidget::createGeneralTab(QTabWidget *tabWidget)
 
 	QGridLayout *layout = new QGridLayout(generalTab);
 	layout->setColumnMinimumWidth(0, 20);
-	layout->setColumnMinimumWidth(4, 20);
-	layout->setColumnMinimumWidth(5, 100);
-	layout->setColumnMinimumWidth(6, 20);
+	layout->setColumnMinimumWidth(3, 20);
+	layout->setColumnMinimumWidth(4, 100);
+	layout->setColumnMinimumWidth(5, 20);
 	layout->setColumnStretch(3, 10);
-	layout->setColumnStretch(6, 2);
+	layout->setColumnStretch(5, 2);
 
 	int row = 0;
 	ConnectAtStart = new QCheckBox(tr("Connect at start"), this);
@@ -87,7 +90,7 @@ void JabberEditAccountWidget::createGeneralTab(QTabWidget *tabWidget)
 	layout->addWidget(description, row++, 1, 1, 2);
 	newAccountDescription = new QLineEdit(this);
 	newAccountDescription->hide();
-	layout->addWidget(description, row++, 1, 1, 2);
+	layout->addWidget(description, row++, 1, 1, 3);
 
 	layout->setRowMinimumHeight(row++, 30);
 
@@ -101,11 +104,11 @@ void JabberEditAccountWidget::createGeneralTab(QTabWidget *tabWidget)
 
 	row = 0;
 	QLabel *photoLabel = new QLabel(tr("Your photo") + ":", this);
-	layout->addWidget(photoLabel, row++, 5);
+	layout->addWidget(photoLabel, row++, 4);
 
 	QPushButton *photoButton = new QPushButton;
 	photoButton->setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::MinimumExpanding);
-	layout->addWidget(photoButton, row, 5, 4, 1);
+	layout->addWidget(photoButton, row, 4, 4, 1);
 
 	tabWidget->addTab(generalTab, tr("General"));
 }
@@ -129,7 +132,9 @@ void JabberEditAccountWidget::createConnectionTab(QTabWidget *tabWidget)
 
 	QVBoxLayout *layout = new QVBoxLayout(conenctionTab);
 	createGeneralGroupBox(layout);
-	createProxyGroupBox(layout);
+
+	proxy = new ProxyGroupBox(account(), tr("Proxy"), this);
+	layout->addWidget(proxy);
 
 	layout->addStretch(100);
 }
@@ -157,47 +162,17 @@ void JabberEditAccountWidget::createGeneralGroupBox(QVBoxLayout *layout)
 
 }
 
-void JabberEditAccountWidget::createProxyGroupBox(QVBoxLayout *layout)
-{
-	QGroupBox *proxy = new QGroupBox(tr("Proxy"), this);
-	QGridLayout *proxyLayout = new QGridLayout(proxy);
-	proxyLayout->setColumnMinimumWidth(0, 20);
-	layout->addWidget(proxy);
-
-	QCheckBox *useProxy = new QCheckBox(tr("Use the following proxy"), this);
-	proxyLayout->addWidget(useProxy, 0, 0, 1, 6);
-
-	QLabel *hostLabel = new QLabel(tr("Host"), this);
-	QLineEdit *host = new QLineEdit(this);
-	proxyLayout->addWidget(hostLabel, 1, 1);
-	proxyLayout->addWidget(host, 1, 2);
-
-	QLabel *portLabel = new QLabel(tr("Port"), this);
-	QComboBox *port = new QComboBox(this);
-	proxyLayout->addWidget(portLabel, 1, 4);
-	proxyLayout->addWidget(port, 1, 5);
-
-	QCheckBox *proxyAuthentication = new QCheckBox(tr("Proxy requires authentication"), this);
-	proxyLayout->addWidget(proxyAuthentication, 2, 0, 1, 6);
-
-	QLabel *usernameLabel = new QLabel(tr("Username"), this);
-	QLineEdit *username = new QLineEdit(this);
-	proxyLayout->addWidget(usernameLabel, 3, 1);
-	proxyLayout->addWidget(username, 3, 2);
-
-	QLabel *passwordLabel = new QLabel(tr("Password"), this);
-	QLineEdit *password = new QLineEdit(this);
-	proxyLayout->addWidget(passwordLabel, 4, 1);
-	proxyLayout->addWidget(password, 4, 2);
-
-}
-
 void JabberEditAccountWidget::loadAccountData()
 {
 	ConnectAtStart->setChecked(account()->connectAtStart());
 	AccountId->setText(account()->id());
 	RememberPassword->setChecked(account()->rememberPassword());
 	AccountPassword->setText(account()->password());
+}
+
+void JabberEditAccountWidget::loadConnectionData()
+{
+	proxy->loadProxyData();
 }
 
 void JabberEditAccountWidget::apply()

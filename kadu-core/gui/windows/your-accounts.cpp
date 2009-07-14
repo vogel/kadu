@@ -165,6 +165,7 @@ void YourAccounts::protocolChanged(int protocolIndex)
 
 void YourAccounts::accountCreated(Account *account)
 {
+	account->importProxySettings();
 	AccountManager::instance()->registerAccount(account);
 	AccountsView->selectionModel()->clearSelection();
 	AccountsView->selectionModel()->select(MyAccountsModel->accountModelIndex(account), QItemSelectionModel::Select);

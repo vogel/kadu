@@ -17,6 +17,8 @@ class QLineEdit;
 class QTabWidget;
 class QVBoxLayout;
 
+class ProxyGroupBox;
+
 class JabberEditAccountWidget : public AccountEditWidget
 {
 	Q_OBJECT
@@ -27,15 +29,17 @@ class JabberEditAccountWidget : public AccountEditWidget
 	QCheckBox *RememberPassword;
 	QLineEdit *newAccountDescription;
 
+	ProxyGroupBox *proxy;
+
 	void createGui();
 	void createGeneralTab(QTabWidget *);
 	void createPersonalDataTab(QTabWidget *);
 	void createBuddiesTab(QTabWidget *);
 	void createConnectionTab(QTabWidget *);
 	void createGeneralGroupBox(QVBoxLayout *layout);
-	void createProxyGroupBox(QVBoxLayout *layout);
 
 	void loadAccountData();
+	void loadConnectionData();
 
 private slots:
 	void removeAccount();

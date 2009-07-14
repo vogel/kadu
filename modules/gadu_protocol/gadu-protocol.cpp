@@ -479,20 +479,22 @@ void GaduProtocol::setupProxy()
 		gg_proxy_username = gg_proxy_password = 0;
 	}
 
-	gg_proxy_enabled = config_file.readBoolEntry("Network", "UseProxy");
+	GaduAccount *gaduAccount = dynamic_cast<GaduAccount *>(account());
+
+	gg_proxy_enabled = gaduAccount->useProxy();
 
 	if (gg_proxy_enabled)
 	{
-		gg_proxy_host = strdup((char *)unicode2latin(config_file.readEntry("Network", "ProxyHost")).data());
-		gg_proxy_port = config_file.readNumEntry("Network", "ProxyPort");
+		gg_proxy_host = strdup((char *)unicode2latin(gaduAccount->proxyHost().toString()).data());
+		gg_proxy_port = gaduAccount->proxyPort();
 
 		kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "gg_proxy_host = %s\n", gg_proxy_host);
 		kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "gg_proxy_port = %d\n", gg_proxy_port);
 
-		if (!config_file.readEntry("Network", "ProxyUser").isEmpty())
+		if (gaduAccount->proxyReqAuthentication() && !gaduAccount->proxyUser().isEmpty())
 		{
-			gg_proxy_username = strdup((char *)unicode2latin(config_file.readEntry("Network", "ProxyUser")).data());
-			gg_proxy_password = strdup((char *)unicode2latin(config_file.readEntry("Network", "ProxyPassword")).data());
+			gg_proxy_username = strdup((char *)unicode2latin(gaduAccount->proxyUser()).data());
+			gg_proxy_password = strdup((char *)unicode2latin(gaduAccount->proxyPassword()).data());
 		}
 	}
 
