@@ -45,7 +45,7 @@ class JabberCreateAccountWidget : public AccountCreateWidget
 	QLineEdit *Server;
 	QLineEdit *Username;
 	QPushButton *RegisterAccount;
-	QPushButton *ShowHideConnectionOptions;
+	QPushButton *ExpandConnectionOptionsButton;
 	QGroupBox *ConnectionOptions;
 	QCheckBox *CustomHostPort;
 	QHBoxLayout *HostPortLayout;
@@ -62,6 +62,7 @@ class JabberCreateAccountWidget : public AccountCreateWidget
 	QString host_;
 	int port_;
 
+	bool ShowConnectionOptions;
 	void createGui();
 	void createIHaveAccountGui(QGridLayout *gridLayout, int &row);
 	void createRegisterAccountGui(QGridLayout *gridLayout, int &row);
@@ -74,7 +75,7 @@ private slots:
 	void registerAccountDataChanged();
 	void registerNewAccount();
 	void registerNewAccountFinished(JabberServerRegisterAccount *jsra);
-	void toggleConnectionOptions(bool checked);
+	void connectionOptionsChanged();
 	void hostToggled(bool on);
 	void sslActivated(int i);
 public:

@@ -24,7 +24,7 @@
 #include "jabber-create-account-widget.h"
 
 JabberCreateAccountWidget::JabberCreateAccountWidget(QWidget *parent) :
-		AccountCreateWidget(parent)
+		AccountCreateWidget(parent), ShowConnectionOptions(false)
 {
 	setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
 
@@ -145,6 +145,23 @@ void JabberCreateAccountWidget::createRegisterAccountGui(QGridLayout *gridLayout
 	connect(RegisterAccount, SIGNAL(clicked(bool)), this, SLOT(registerNewAccount()));
 	gridLayout->addWidget(RegisterAccount, row++, 1, 1, 3);
 
+	QLabel *moreOptionsLabel = new QLabel;
+	moreOptionsLabel->setText(tr("More options:"));
+
+	ExpandConnectionOptionsButton = new QPushButton(">");
+	ExpandConnectionOptionsButton->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
+	connect(ExpandConnectionOptionsButton, SIGNAL(clicked()), this, SLOT(connectionOptionsChanged()));
+
+	QWidget *moreOptions = new QWidget;
+	QHBoxLayout *moreOptionsLayout = new QHBoxLayout;
+	moreOptionsLayout->addWidget(moreOptionsLabel);
+	moreOptionsLayout->addWidget(ExpandConnectionOptionsButton);
+	moreOptionsLayout->setAlignment(ExpandConnectionOptionsButton, Qt::AlignLeft);
+	moreOptionsLayout->insertStretch(-1);
+	moreOptions->setLayout(moreOptionsLayout);
+
+	gridLayout->addWidget(moreOptions, row++, 1, 1, 3);
+
         ConnectionOptions = new QGroupBox(this);
 	ConnectionOptions->setTitle(tr("Connection settings"));
 	ConnectionOptions->setVisible(false);
@@ -213,11 +230,6 @@ void JabberCreateAccountWidget::createRegisterAccountGui(QGridLayout *gridLayout
 
 	gridLayout->addWidget(ConnectionOptions, row++, 1, 1, 4);
 
-	ShowHideConnectionOptions = new QPushButton(tr("Connection options"), this);
-	ShowHideConnectionOptions->setCheckable(true);
-	connect(ShowHideConnectionOptions, SIGNAL(toggled(bool)), this, SLOT(toggleConnectionOptions(bool)));
-	gridLayout->addWidget(ShowHideConnectionOptions, row++, 1, 1, 3);
-
 	DontHaveJidWidgets.append(serverLabel);
 	DontHaveJidWidgets.append(Server);
 	DontHaveJidWidgets.append(usernameLabel);
@@ -227,7 +239,7 @@ void JabberCreateAccountWidget::createRegisterAccountGui(QGridLayout *gridLayout
 	DontHaveJidWidgets.append(reNewPasswordLabel);
 	DontHaveJidWidgets.append(ReNewPassword);
 	DontHaveJidWidgets.append(RegisterAccount);
-	DontHaveJidWidgets.append(ShowHideConnectionOptions);
+	DontHaveJidWidgets.append(moreOptions);
 }
 
 bool JabberCreateAccountWidget::checkSSL()
@@ -261,9 +273,11 @@ void JabberCreateAccountWidget::sslActivated(int i)
 	}
 }
 
-void JabberCreateAccountWidget::toggleConnectionOptions(bool checked)
+void JabberCreateAccountWidget::connectionOptionsChanged()
 {
-	ConnectionOptions->setVisible(checked);
+	ShowConnectionOptions = !ShowConnectionOptions;
+	ExpandConnectionOptionsButton->setText(ShowConnectionOptions ? "v" : ">");
+	ConnectionOptions->setVisible(ShowConnectionOptions);
 }
 
 void JabberCreateAccountWidget::haveJidChanged(bool haveJid)
