@@ -38,6 +38,7 @@ private slots:
 	void aboutToHide();
 	void changeStatus(QAction *action);
 	void changeDescription();
+
 	void changeStatusPrivate(bool toggled);
 	void statusChanged();
 
