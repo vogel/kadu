@@ -117,26 +117,26 @@ void JabberCreateAccountWidget::createRegisterAccountGui(QGridLayout *gridLayout
 	QLabel *serverLabel = new QLabel(tr("Jabber server") + ":", this);
 	gridLayout->addWidget(serverLabel, row, 1, Qt::AlignRight);
 	Server = new QLineEdit(this);
-	connect(Server, SIGNAL(textChanged(QString)), this, SLOT(RegisterAccountDataChanged()));
+	connect(Server, SIGNAL(textChanged(QString)), this, SLOT(registerAccountDataChanged()));
 	gridLayout->addWidget(Server, row++, 2, 1, 2);
 
 	QLabel *usernameLabel = new QLabel(tr("User name") + ":", this);
 	gridLayout->addWidget(usernameLabel, row, 1, Qt::AlignRight);
 	Username = new QLineEdit(this);
-	connect(Username, SIGNAL(textChanged(QString)), this, SLOT(RegisterAccountDataChanged()));
+	connect(Username, SIGNAL(textChanged(QString)), this, SLOT(registerAccountDataChanged()));
 	gridLayout->addWidget(Username, row++, 2, 1, 2);
 
 	QLabel *newPasswordLabel = new QLabel(tr("New password") + ":", this);
 	gridLayout->addWidget(newPasswordLabel, row, 1, Qt::AlignRight);
 	NewPassword = new QLineEdit(this);
-	connect(NewPassword, SIGNAL(textChanged(QString)), this, SLOT(RegisterAccountDataChanged()));
+	connect(NewPassword, SIGNAL(textChanged(QString)), this, SLOT(registerAccountDataChanged()));
 	NewPassword->setEchoMode(QLineEdit::Password);
 	gridLayout->addWidget(NewPassword, row++, 2, 1, 2);
 
 	QLabel *reNewPasswordLabel = new QLabel(tr("Retype password") + ":", this);
 	gridLayout->addWidget(reNewPasswordLabel, row, 1, Qt::AlignRight);
 	ReNewPassword = new QLineEdit(this);
-	connect(ReNewPassword, SIGNAL(textChanged(QString)), this, SLOT(RegisterAccountDataChanged()));
+	connect(ReNewPassword, SIGNAL(textChanged(QString)), this, SLOT(registerAccountDataChanged()));
 	ReNewPassword->setEchoMode(QLineEdit::Password);
 	gridLayout->addWidget(ReNewPassword, row++, 2, 1, 2);
 
@@ -306,7 +306,7 @@ void JabberCreateAccountWidget::addThisAccount()
 
 void JabberCreateAccountWidget::registerAccountDataChanged()
 {
-	bool disable = NewPassword->text().isEmpty() || ReNewPassword->text().isEmpty();
+	bool disable = Server->text().isEmpty() || Username->text().isEmpty() || NewPassword->text().isEmpty() || ReNewPassword->text().isEmpty();
 	RegisterAccount->setEnabled(!disable);
 }
 
