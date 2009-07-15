@@ -25,9 +25,13 @@ class StatusMenu : public QObject
 {
 	Q_OBJECT
 
+<<<<<<< HEAD:kadu-core/gui/widgets/status-menu.h
 	QActionGroup * ChangeStatusActionGroup;
 	QAction * ChangeDescription;
 
+=======
+	QActionGroup *ChangeStatusActionGroup;
+>>>>>>> status menu updates properly now:kadu-core/gui/widgets/status-menu.h
 	QAction * ChangePrivateStatus;
 
 	QPoint MousePositionBeforeMenuHide;
