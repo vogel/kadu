@@ -21,6 +21,7 @@
 #include "gui/windows/kadu-window.h"
 #include "parser/parser.h"
 #include "status/description-manager.h"
+#include "status/description-model.h"
 
 #include "debug.h"
 #include "icons-manager.h"
@@ -29,58 +30,61 @@
 
 #include "choose-description.h"
 
-QMap<StatusContainer *, ChooseDescription *>ChooseDescription::Dialogs;
+QMap<StatusContainer *, ChooseDescription *> ChooseDescription::Dialogs;
 
-void ChooseDescription::show(const Status &status, StatusContainer *statusContainer, const QPoint &position)
+void ChooseDescription::showDialog(StatusContainer *statusContainer, const QPoint &position)
 {
-	ChooseDescription *Dialog = Dialogs[statusContainer];
-	if (!Dialog)
+	ChooseDescription *dialog = Dialogs[statusContainer];
+	if (!dialog)
 	{
-		Dialog = new ChooseDescription(statusContainer, Core::instance()->kaduWindow());
-		Dialog->setPosition(position);
-		Dialogs[statusContainer] = Dialog;
+		dialog = new ChooseDescription(statusContainer, Core::instance()->kaduWindow());
+		dialog->setPosition(position);
+		Dialogs[statusContainer] = dialog;
 	}
 
-	Dialog->setStatus(status);
-	((QDialog *)Dialog)->show();
-	Dialog->raise();
+	dialog->show();
+	dialog->raise();
 }
 
 ChooseDescription::ChooseDescription(StatusContainer *statusContainer, QWidget *parent)
 	: QDialog(parent, false), MyStatusContainer(statusContainer)
 {
 	kdebugf();
+
 	setWindowTitle(tr("Select description"));
 	setAttribute(Qt::WA_DeleteOnClose);
 
-	DescriptionManager::instance()->content();
+	connect(statusContainer, SIGNAL(statusChanged()), this, SLOT(statusChanged()));
 
-// TODO: 0.6.6
-// 	while (defaultdescriptions.count() > config_file.readNumEntry("General", "NumberOfDescriptions"))
-// 		defaultdescriptions.pop_back();
+	QString currentDescription = MyStatusContainer->status().description();
 
-  	Description = new QComboBox(this);
-	Description->setMaxVisibleItems(30);
-// 	Description->insertStringList(defaultdescriptions);
+	Description = new QComboBox(this);
+	Description->setMaxVisibleItems(10);
+	Description->setModel(DescriptionManager::instance()->model());
+	Description->setEditable(true);
+	Description->setLineEdit(new QLineEdit(this));
+	Description->setInsertPolicy(QComboBox::NoInsert);
+	Description->setDuplicatesEnabled(false);
 
-	QLineEdit *ss = new QLineEdit(this);
-#if 1
-	GaduProtocol *gadu = dynamic_cast<GaduProtocol *>(AccountManager::instance()->defaultAccount()->protocol());
-	ss->setMaxLength(gadu->maxDescriptionLength());
-#endif
-	Description->setLineEdit(ss);
+	Description->setEditText(currentDescription);
 
 	AvailableChars = new QLabel(this);
 
-	updateAvailableChars(Description->currentText());
+#if 1
+	GaduProtocol *gadu = dynamic_cast<GaduProtocol *>(AccountManager::instance()->defaultAccount()->protocol());
+// 	Description->lineEdit()->setMaxLength(gadu->maxDescriptionLength());
+#endif
 
-	connect(Description, SIGNAL(textChanged(const QString &)), this, SLOT(updateAvailableChars(const QString &)));
+	connect(Description, SIGNAL(editTextChanged(const QString &)), this, SLOT(currentDescriptionChanged(const QString &)));
+	currentDescriptionChanged(Description->currentText());
 
 	OkButton = new QPushButton(tr("&OK"), this);
-	QPushButton *cancelButton = new QPushButton(tr("&Cancel"), this);
+	OkButton->setIcon(statusContainer->statusPixmap());
+	OkButton->setDefault(true);
+	connect(OkButton, SIGNAL(clicked(bool)), this, SLOT(accept()));
 
-	connect(OkButton, SIGNAL(clicked()), this, SLOT(okPressed()));
-	connect(cancelButton, SIGNAL(clicked()), this, SLOT(cancelPressed()));
+	QPushButton *cancelButton = new QPushButton(tr("&Cancel"), this);
+	connect(cancelButton, SIGNAL(clicked(bool)), this, SLOT(reject()));
 
 	QGridLayout *grid = new QGridLayout(this);
 
@@ -89,35 +93,14 @@ ChooseDescription::ChooseDescription(StatusContainer *statusContainer, QWidget *
 	grid->addWidget(OkButton, 1, 1, Qt::AlignRight);
 	grid->addWidget(cancelButton, 1, 2, Qt::AlignRight);
 
+	connect(this, SIGNAL(accepted()), this, SLOT(setDescription()));
+
 	kdebugf2();
 }
 
 ChooseDescription::~ChooseDescription()
 {
-    	Dialogs.remove(MyStatusContainer);
-}
-
-void ChooseDescription::setStatus(const Status &status)
-{
-	CurrentStatus = status;
-// TODO: 0.6.6
-// 	switch (CurrentStatus.type())
-// 	{
-// 		case Status::Online:
-// 			OkButton->setIcon(IconsManager::instance()->loadIcon("OnlineWithDescription"));
-// 			break;
-// 		case Status::Busy:
-// 			OkButton->setIcon(IconsManager::instance()->loadIcon("BusyWithDescription"));
-// 			break;
-// 		case Status::Invisible:
-// 			OkButton->setIcon(IconsManager::instance()->loadIcon("InvisibleWithDescription"));
-// 			break;
-// 		case Status::Offline:
-// 			OkButton->setIcon(IconsManager::instance()->loadIcon("OfflineWithDescription"));
-// 			break;
-// 		default:
-// 			break;
-// 	}
+	Dialogs.remove(MyStatusContainer);
 }
 
 void ChooseDescription::setPosition(const QPoint &position)
@@ -145,34 +128,22 @@ void ChooseDescription::setPosition(const QPoint &position)
 	resize(width, height);
 }
 
-void ChooseDescription::okPressed()
+void ChooseDescription::setDescription()
 {
 	QString description = Description->currentText();
-	// TODO: 0.6.6
-	Account *account = AccountManager::instance()->defaultAccount();
-	//je�eli ju� by� taki opis, to go usuwamy
-// 	defaultdescriptions.remove(description);
-	//i dodajemy na pocz�tek
-// 	defaultdescriptions.prepend(description);
+	DescriptionManager::instance()->addDescription(description);
 
-// 	while (defaultdescriptions.count() > config_file.readNumEntry("General", "NumberOfDescriptions"))
-// 		defaultdescriptions.pop_back();
+	Account *account = AccountManager::instance()->defaultAccount();
 
 	if (config_file.readBoolEntry("General", "ParseStatus", false))
 		description = Parser::parse(description, account, Core::instance()->myself(), true);
 
-	CurrentStatus.setDescription(description);
-	MyStatusContainer->setStatus(CurrentStatus);
-
-	cancelPressed();
+	Status status = MyStatusContainer->status();
+	status.setDescription(description);
+	MyStatusContainer->setStatus(status);
 }
 
-void ChooseDescription::cancelPressed()
-{
-	close();
-}
-
-void ChooseDescription::updateAvailableChars(const QString &text)
+void ChooseDescription::currentDescriptionChanged(const QString &text)
 {
 	int length = text.length();
 
@@ -185,4 +156,9 @@ void ChooseDescription::updateAvailableChars(const QString &text)
 	GaduProtocol *gadu = dynamic_cast<GaduProtocol *>(AccountManager::instance()->defaultAccount()->protocol());
 	AvailableChars->setText(' ' + QString::number(gadu->maxDescriptionLength() - length));
 #endif
+}
+
+void ChooseDescription::statusChanged()
+{
+	OkButton->setIcon(MyStatusContainer->statusPixmap());
 }

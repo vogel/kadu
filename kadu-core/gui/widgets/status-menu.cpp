@@ -131,7 +131,7 @@ void StatusMenu::changeStatus(QAction *action)
 
 void StatusMenu::changeDescription()
 {
-	ChooseDescription::show(MyStatusContainer->status(), MyStatusContainer, MousePositionBeforeMenuHide);
+	ChooseDescription::showDialog(MyStatusContainer, MousePositionBeforeMenuHide);
 }
 
 void StatusMenu::changeStatusPrivate(bool toggled)

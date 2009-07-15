@@ -23,29 +23,27 @@ class ChooseDescription : public QDialog
 {
 	Q_OBJECT
 
-	static QMap<StatusContainer *, ChooseDescription *>Dialogs;
+	static QMap<StatusContainer *, ChooseDescription *> Dialogs;
 
-	QPushButton *OkButton;
 	QComboBox *Description;
 	QLabel *AvailableChars;
+	QPushButton *OkButton;
 
-	Status CurrentStatus;
 	StatusContainer *MyStatusContainer;
 
 private slots:
-	void okPressed();
-	void cancelPressed();
-	void updateAvailableChars(const QString &);
+	void statusChanged();
+	void setDescription();
+	void currentDescriptionChanged(const QString &);
 
 public:
-	// TODO: 0.6.6 rename that
-	static void show(const Status &status, StatusContainer *statusContainer, const QPoint &position);
+	static void showDialog(StatusContainer *statusContainer, const QPoint &position);
 
 	ChooseDescription(StatusContainer *statusContainer, QWidget *parent = 0);
 	virtual ~ChooseDescription();
 
-	void setStatus(const Status &status);
 	void setPosition(const QPoint &position);
+
 };
 
 #endif // CHOOSE_DESCRIPTION_H

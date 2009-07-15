@@ -10,6 +10,7 @@
 #include "configuration/configuration-file.h"
 #include "configuration/configuration-manager.h"
 #include "core/core.h"
+#include "status/description-model.h"
 
 #include "description-manager.h"
 
@@ -35,27 +36,41 @@ DescriptionManager::~DescriptionManager()
 {
 }
 
+DescriptionModel * DescriptionManager::model()
+{
+	ensureLoaded();
+
+	return new DescriptionModel(this);
+}
+
 void DescriptionManager::import()
 {
-	content().clear();
-	content().append(config_file.readEntry("General", "DefaultDescription").split("<-->"));
+	clear();
+	append(config_file.readEntry("General", "DefaultDescription").split("<-->"));
+	removeDuplicates();
 
 	store();
 }
 
-void DescriptionManager::addDescription(const QString& description)
+void DescriptionManager::addDescription(const QString &description)
 {
-	if (content().contains(description))
+	if (description.isEmpty())
+		return;
+
+	if (contains(description))
 		removeDescription(description);
 
 	emit descriptionAboutToBeAdded(description);
-	content().append(description);
+	prepend(description);
 	emit descriptionAdded(description);
 }
 
 void DescriptionManager::removeDescription(const QString& description)
 {
+	if (!contains(description))
+		return;
+
 	emit descriptionAboutToBeRemoved(description);
-	content().removeAll(description);
+	removeAll(description);
 	emit descriptionRemoved(description);
 }

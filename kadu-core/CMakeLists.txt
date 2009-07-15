@@ -186,6 +186,7 @@ set (kadu_SRCS
 	protocols/services/chat-service.cpp
 
 	status/description-manager.cpp
+	status/description-model.cpp
 	status/status.cpp
 	status/status-container-aware-object.cpp
 	status/status-container-manager.cpp
@@ -354,6 +355,7 @@ set (kadu_MOC_SRCS
 	protocols/services/search-service.h
 
 	status/description-manager.h
+	status/description-model.h
 	status/status-container.h
 	status/status-container-manager.h
 

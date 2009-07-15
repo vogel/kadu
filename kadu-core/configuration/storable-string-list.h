@@ -14,10 +14,9 @@
 
 #include "configuration/storable-object.h"
 
-class StorableStringList : public StorableObject
+class StorableStringList : protected QStringList, public StorableObject
 {
 	QString ContentNodeName;
-	QStringList Content;
 
 public:
 	StorableStringList(const QString &nodeName, const QString conrentNodeName, StorableObject *parent);
@@ -25,7 +24,7 @@ public:
 	virtual void load();
 	virtual void store();
 
-	QStringList & content();
+	const QStringList content() const;
 
 };
 

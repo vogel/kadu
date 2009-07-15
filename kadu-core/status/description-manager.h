@@ -12,6 +12,8 @@
 
 #include "configuration/storable-string-list.h"
 
+class DescriptionModel;
+
 class KADUAPI DescriptionManager : public QObject, public StorableStringList
 {
 	Q_OBJECT
@@ -26,6 +28,8 @@ class KADUAPI DescriptionManager : public QObject, public StorableStringList
 
 public:
 	static DescriptionManager * instance();
+
+	DescriptionModel * model();
 
 	void addDescription(const QString &description);
 	void removeDescription(const QString &description);

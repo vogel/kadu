@@ -19,7 +19,9 @@ void StorableStringList::load()
 	if (!isValidStorage())
 		return;
 
-	Content.clear();
+	StorableObject::load();
+
+	clear();
 
 	XmlConfigFile *storageFile = storage()->storage();
 	QDomElement point = storage()->point();
@@ -34,7 +36,7 @@ void StorableStringList::load()
 			return;
 
 		QDomElement element = node.toElement();
-		Content.append(element.text());
+		append(element.text());
 	}
 }
 
@@ -48,13 +50,11 @@ void StorableStringList::store()
 
 	storageFile->removeChildren(point);
 
-	foreach (const QString &value, Content)
+	foreach (const QString &value, content())
 		storageFile->appendTextNode(point, ContentNodeName, value);
 }
 
-QStringList & StorableStringList::content()
+const QStringList StorableStringList::content() const
 {
-	ensureLoaded();
-
-	return Content;
+	return *this;
 }
