@@ -16,7 +16,6 @@ JabberServerRegisterAccount::JabberServerRegisterAccount(const QString &server, 
 	Client = new MiniClient;
 	connect(Client, SIGNAL(handshaken()), SLOT(clientHandshaken()));
 	connect(Client, SIGNAL(error()), SLOT(clientError()));
-	//TODO opcje połączenia
 	Client->connectToServer(XMPP::Jid(Server), legacySSLProbe, legacySSL, forceSSL, host, port);
 }
 

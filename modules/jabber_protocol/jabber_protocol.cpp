@@ -165,7 +165,9 @@ void JabberProtocol::connectToServer()
 	//JabberClient->setUseXMPP09 (true);
 
 	// set SSL flag (this should be converted to forceTLS when using the new protocol)
-	JabberClient->setUseSSL(false);
+	//JabberClient->setUseSSL(false);
+	//TODO: szyfrowanie z konfiguracji konta, jak tylko GUI pozwoli 
+ 	JabberClient->setForceTLS(false);
 
 	// override server and port (this should be dropped when using the new protocol and no direct SSL)
 	JabberClient->setOverrideHost(false);
