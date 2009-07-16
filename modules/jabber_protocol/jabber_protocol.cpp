@@ -99,7 +99,7 @@ JabberProtocol::~JabberProtocol()
 
 void JabberProtocol::initializeJabberClient()
 {
-	JabberClient = new XMPP::JabberClient;
+	JabberClient = new XMPP::JabberClient(this);
 	connect(JabberClient, SIGNAL(csDisconnected()), this, SLOT(disconnectedFromServer()));
 	connect(JabberClient, SIGNAL(connected()), this, SLOT(connectedToServer()));
 
@@ -148,7 +148,6 @@ void JabberProtocol::connectToServer()
 		kdebugmf(KDEBUG_FUNCTION_END, "end: Jabber ID or password not set\n");
 		return;
 	}
-
 	
 	JabberClient->disconnect();
 
@@ -162,7 +161,7 @@ void JabberProtocol::connectToServer()
 	JabberClient->setCapsVersion("0.12");
 
 	// we need to use the old protocol for now
-	//JabberClient->setUseXMPP09 (true);
+	//JabberClient->setUseXMPP09(true);
 
 	// set SSL flag (this should be converted to forceTLS when using the new protocol)
 	//JabberClient->setUseSSL(false);

@@ -60,11 +60,11 @@ namespace XMPP { class AdvancedConnector; }
  * @author Till Gerken
  */
 
-namespace XMPP {
+namespace XMPP
+{
 class JabberClient : public QObject
 {
-
-Q_OBJECT
+	Q_OBJECT
 
 	// connection details
 	XMPP::Jid Jid;
@@ -129,6 +129,26 @@ Q_OBJECT
 	QString CapsNode, CapsVersion;
 	DiscoItem::Identity DiscoIdentity;
 
+	JabberProtocol *Protocol;
+
+	/**
+	 * Delete all member classes and reset the class to a predefined state.
+	 */
+	void cleanUp();
+
+	/**
+	 * Return current instance of the S5B server.
+	 */
+	XMPP::S5BServer *s5bServer();
+	/**
+	 * Add an address that the S5B server should handle.
+	 */
+	void addS5BServerAddress(const QString &address);
+	/**
+	 * Remove an address that the S5B server currently handles.
+	 */
+	void removeS5BServerAddress(const QString &address);
+
 public:
 	/**
 	 * Error codes indicating problems during operation.
@@ -145,7 +165,7 @@ public:
 		MaxUsersReachedForThisMuc = 503	/** You can't join this Multi-User Chat because it is full */
 	};
 
-	JabberClient();
+	JabberClient(JabberProtocol *protocol);
 	~JabberClient();
 
 	/**
@@ -175,7 +195,7 @@ public:
 	/**
 	 * Returns the JID associated with this instance.
 	 */
-	XMPP::Jid jid() const { return Jid; };
+	XMPP::Jid jid() const { return Jid; }
 
 	/**
 	 * Set flag to ignore TLS warnings. If TLS
@@ -184,11 +204,11 @@ public:
 	 * call @ref continueAfterTLSWarning or
 	 * @ref disconnect. Default is false.
 	 */
-	void setIgnoreTLSWarnings(bool flag) { IgnoreTLSWarnings = flag; };
+	void setIgnoreTLSWarnings(bool flag) { IgnoreTLSWarnings = flag; }
 	/**
 	 * Return if TLS warnings are being ignored.
 	 */
-	bool ignoreTLSWarnings() { return IgnoreTLSWarnings; };
+	bool ignoreTLSWarnings() { return IgnoreTLSWarnings; }
 
 	/**
 	 * Set the port on which the S5B server should listen.
@@ -200,18 +220,18 @@ public:
 	/**
 	 * Returns the port the S5B server listens on.
 	 */
-	int s5bServerPort() const { return S5bServerPort; };
+	int s5bServerPort() const { return S5bServerPort; }
 
 	/**
 	 * Force the use of TLS. If TLS connections are forced,
 	 * unencrypted connections will not be established.
 	 * Default is false.
 	 */
-	void setForceTLS(bool flag) { ForceTLS = flag; };
+	void setForceTLS(bool flag) { ForceTLS = flag; }
 	/**
 	 * Returns if TLS connections are forced.
 	 */
-	bool forceTLS() const { return ForceTLS; };
+	bool forceTLS() const { return ForceTLS; }
 
 	/**
 	 * Force direct SSL connection, also for the
@@ -220,11 +240,11 @@ public:
 	 * a non-standard port, in which case @ref setOverrideHost
 	 * will be useful. Default is false.
 	 */
-	void setUseSSL(bool flag) { UseSSL = flag; };
+	void setUseSSL(bool flag) { UseSSL = flag; }
 	/**
 	 * Returns if an SSL connection attempt should be made.
 	 */
-	bool useSSL() const { return UseSSL; };
+	bool useSSL() const { return UseSSL; }
 
 	/**
 	 * Use only the old protocol (pre-XMPP 1.0). This should only
@@ -233,11 +253,11 @@ public:
 	 * a connection attempt is not possible, Iris will automatically
 	 * fall back to the old protocol.
 	 */
-	void setUseXMPP09(bool flag) { UseXMPP09 = flag; };
+	void setUseXMPP09(bool flag) { UseXMPP09 = flag; }
 	/**
 	 * Returns if the old protocol should be used.
 	 */
-	bool useXMPP09() const { return UseXMPP09; };
+	bool useXMPP09() const { return UseXMPP09; }
 
 	/**
 	 * Probe port 5223 if an SSL connection is possible. If
@@ -245,11 +265,11 @@ public:
 	 * will be attempted at port 5222. This is only meaningful
 	 * if @ref useXMPP09 is true. Default is false.
 	 */
-	void setProbeSSL(bool flag) { ProbeSSL = flag; };
+	void setProbeSSL(bool flag) { ProbeSSL = flag; }
 	/**
 	 * Returns if SSL support will be probed.
 	 */
-	bool probeSSL() const { return ProbeSSL; };
+	bool probeSSL() const { return ProbeSSL; }
 
 	/**
 	 * Override the name and port of the server to connect to.
@@ -260,18 +280,18 @@ public:
 	/**
 	 * Returns if the server name and port are overridden.
 	 */
-	bool overrideHost() const { return OverrideHost; };
+	bool overrideHost() const { return OverrideHost; }
 
 	/**
 	 * Allow the transmission of a plain text password. If digested
 	 * passwords are supported by the server, they will still be preferred.
 	 * Defaults to true.
 	 */
-	void setAllowPlainTextPassword(XMPP::ClientStream::AllowPlainType flag) { AllowPlainTextPassword = flag; };
+	void setAllowPlainTextPassword(XMPP::ClientStream::AllowPlainType flag) { AllowPlainTextPassword = flag; }
 	/**
 	 * Returns if plain text passwords are allowed.
 	 */
-	XMPP::ClientStream::AllowPlainType allowPlainTextPassword() const { return AllowPlainTextPassword; };
+	XMPP::ClientStream::AllowPlainType allowPlainTextPassword() const { return AllowPlainTextPassword; }
 
 	/**
 	 * Enable file transfers. Default is false.
@@ -283,67 +303,67 @@ public:
 	/**
 	 * Returns the address of the local interface.
 	 */
-	QString localAddress() const { return LocalAddress; };
+	QString localAddress() const { return LocalAddress; }
 
 	/**
 	 * Returns if file transfers are enabled.
 	 */
-	bool fileTransfersEnabled () const { return FileTransfersEnabled; };
+	bool fileTransfersEnabled () const { return FileTransfersEnabled; }
 
 	/**
 	 * Set client name.
 	 */
-	void setClientName(const QString &clientName) { ClientName = clientName; };
+	void setClientName(const QString &clientName) { ClientName = clientName; }
 	/**
 	 * Return client name.
 	 */
-	QString clientName() const { return ClientName; };
+	QString clientName() const { return ClientName; }
 
 	/**
 	 * Set client version.
 	 */
-	void setClientVersion(const QString &clientVersion) { ClientVersion = clientVersion; };
+	void setClientVersion(const QString &clientVersion) { ClientVersion = clientVersion; }
 	/**
 	 * Return client version.
 	 */
-	QString clientVersion() const { return ClientVersion; };
+	QString clientVersion() const { return ClientVersion; }
 
 	/**
 	 * Set operating system name.
 	 */
-	void setOSName(const QString &osName) { OsName = osName; };
+	void setOSName(const QString &osName) { OsName = osName; }
 	/**
 	 * Return operating system name.
 	 */
-	QString osName() const { return OsName; };
+	QString osName() const { return OsName; }
 
 	/**
 	 * Set the caps(JEP-0115: Entity capabilities) node name.
 	 * @param node Node name.
 	 */
-	void setCapsNode(const QString &capsNode) { CapsNode = capsNode; };
+	void setCapsNode(const QString &capsNode) { CapsNode = capsNode; }
 	/**
 	 * Return the caps node name for this client.
 	 * @return the caps node name.
 	 */
-	QString capsNode() const { return CapsNode;};
+	QString capsNode() const { return CapsNode;}
 
 	/**
 	 * Set the caps(JEP-0115: Entity capabilities) node version.
 	 * @param capsVersion the node version.
 	 */
-	void setCapsVersion(const QString &capsVersion) { CapsVersion = capsVersion; };
+	void setCapsVersion(const QString &capsVersion) { CapsVersion = capsVersion; }
 	/**
 	 * Return the caps version for this client.
 	 * @return the caps version.
 	 */
-	QString capsVersion() const { return CapsVersion; };
+	QString capsVersion() const { return CapsVersion; }
 
 	/**
 	 * Return the caps extension list for this client.
 	 * @return A string containing all extensions separated by space.
 	 */
-	QString capsExt() const { return jabberClient ? jabberClient->capsExt() : QString(); };
+	QString capsExt() const { return jabberClient ? jabberClient->capsExt() : QString(); }
 
 	/**
 	 * Set the disco Identity information for this client.
@@ -357,12 +377,12 @@ public:
 	 *
 	 * @param identity DiscoItem::Identity for the client.
 	 */
-	void setDiscoIdentity(DiscoItem::Identity identity) { DiscoIdentity = identity; };
+	void setDiscoIdentity(DiscoItem::Identity identity) { DiscoIdentity = identity; }
 	/**
 	 * Get the disco Identity information for this client.
 	 * @return the DiscoItem::Identity for this client.
 	 */
-	DiscoItem::Identity discoIdentity() const { return DiscoIdentity; };
+	DiscoItem::Identity discoIdentity() const { return DiscoIdentity; }
 
 	/**
 	 * Set timezone information. Default is UTC.
@@ -371,11 +391,11 @@ public:
 	/**
 	 * Return timezone name.
 	 */
-	QString timeZoneName() const { return TimeZoneName; };
+	QString timeZoneName() const { return TimeZoneName; }
 	/**
 	 * Return timezone offset.
 	 */
-	int timeZoneOffset() const { return TimeZoneOffset; };
+	int timeZoneOffset() const { return TimeZoneOffset; }
 
 	/**
 	 * This method can be used to implement a penalty
@@ -390,31 +410,31 @@ public:
 	/**
 	 * Return the XMPP client instance.
 	 */
-	XMPP::Client *client() const { return jabberClient; };
+	XMPP::Client *client() const { return jabberClient; }
 
 	/**
 	 * Return client stream instance.
 	 */
-	XMPP::ClientStream *clientStream() const { return JabberClientStream; };
+	XMPP::ClientStream *clientStream() const { return JabberClientStream; }
 
 	/**
 	 * Return client connector instance.
 	 */
-	XMPP::AdvancedConnector *clientConnector() const { return JabberClientConnector; };
+	XMPP::AdvancedConnector *clientConnector() const { return JabberClientConnector; }
 
 	/**
 	 * Get the root task for this connection.
 	 * You need this instance for every task
 	 * you want to start.
 	 */
-	XMPP::Task *rootTask() const { return client() ? client()->rootTask() : 0; };
+	XMPP::Task *rootTask() const { return client() ? client()->rootTask() : 0; }
 
 	/**
 	 * Returns the file transfer manager
 	 * instance that deals with current file
 	 * transfers.
 	 */
-	XMPP::FileTransferManager *fileTransferManager() const { return client() ? client()->fileTransferManager() : 0; };
+	XMPP::FileTransferManager *fileTransferManager() const { return client() ? client()->fileTransferManager() : 0; }
 
 	/**
 	 * Returns the privacy lists manager
@@ -484,7 +504,7 @@ signals:
 	 * established, before sending the login
 	 * packet.
 	 */
-	void csAuthenticated ();
+	void csAuthenticated();
 
 	/**
 	 * Client stream error.
@@ -494,7 +514,7 @@ signals:
 	/**
 	 * Client stream was disconnected.
 	 */
-	void csDisconnected ();
+	void csDisconnected();
 
 	/**
 	 * A new file transfer needs to be handled.
@@ -502,7 +522,7 @@ signals:
 	 * querying the file transfer manager from
 	 * @ref client.
 	 */
-	void incomingFileTransfer ();
+	void incomingFileTransfer();
 
 	/**
 	 * Fatal error has been encountered,
@@ -577,65 +597,44 @@ signals:
 	 */
 	void debugMessage(const QString &message);
 	void incomingXML(const QString &msg);
-	void outgoingXML (const QString &msg);
-
-private:
-	JabberProtocol *protocol;
-
-	/**
-	 * Delete all member classes and reset the class to a predefined state.
-	 */
-	void cleanUp ();
-
-	/**
-	 * Return current instance of the S5B server.
-	 */
-	XMPP::S5BServer *s5bServer();
-	/**
-	 * Add an address that the S5B server should handle.
-	 */
-	void addS5BServerAddress(const QString &address);
-	/**
-	 * Remove an address that the S5B server currently handles.
-	 */
-	void removeS5BServerAddress(const QString &address);
+	void outgoingXML(const QString &msg);
 
 private slots:
 	/* S5B server object has been destroyed. */
-	void slotS5BServerGone ();
+	void slotS5BServerGone();
 
 	/* update the penalty timer */
-	void slotUpdatePenaltyTime ();
+	void slotUpdatePenaltyTime();
 
 	/* Login if the connection was OK. */
-	void slotCSNeedAuthParams (bool user, bool pass, bool realm);
+	void slotCSNeedAuthParams(bool user, bool pass, bool realm);
 
 	/* Called from Psi: tells us when we're logged in OK. */
-	void slotCSAuthenticated ();
+	void slotCSAuthenticated();
 
 	/* Called from Psi: tells us when we've been disconnected from the server. */
-	void slotCSDisconnected ();
+	void slotCSDisconnected();
 
 	/* Called from Psi: alerts us to a protocol warning. */
-	void slotCSWarning (int);
+	void slotCSWarning(int);
 
 	/* Called from Psi: alerts us to a protocol error. */
-	void slotCSError (int);
+	void slotCSError(int);
 
 	/* Called from Psi: report certificate status */
-	void slotTLSHandshaken ();
+	void slotTLSHandshaken();
 
 	/* Called from Psi: roster request finished */
 	void slotRosterRequestFinished(bool success, int statusCode, const QString &statusString);
 
 	/* Called from Psi: incoming file transfer */
-	void slotIncomingFileTransfer ();
+	void slotIncomingFileTransfer();
 
 	/* A new item appeared in our roster */
-	void slotNewContact (const RosterItem &);
+	void slotNewContact(const RosterItem &);
 
 	/* An item has been deleted from our roster. */
-	void slotContactDeleted (const RosterItem &);
+	void slotContactDeleted(const RosterItem &);
 
 	/* Update a contact's details. */
 	void slotContactUpdated(const RosterItem &);
@@ -644,27 +643,28 @@ private slots:
 	void slotResourceAvailable(const XMPP::Jid &, const XMPP::Resource &);
 
 	/* Someone on our contact list had a resource go offline. */
-	void slotResourceUnavailable (const XMPP::Jid &, const XMPP::Resource &);
+	void slotResourceUnavailable(const XMPP::Jid &, const XMPP::Resource &);
 
 	/* Incoming message. */
-	void slotReceivedMessage (const Message &);
+	void slotReceivedMessage(const Message &);
 
 	/* Called from Psi: debug messages from the backend. */
-	void slotPsiDebug (const QString & msg);
-	void slotIncomingXML (const QString &msg);
-	void slotOutgoingXML (const QString &msg);
+	void slotPsiDebug(const QString &msg);
+	void slotIncomingXML(const QString &msg);
+	void slotOutgoingXML(const QString &msg);
 
 	/* Slots for handling groupchats. */
-	void slotGroupChatJoined(const XMPP::Jid & jid);
-	void slotGroupChatLeft(const XMPP::Jid & jid);
-	void slotGroupChatPresence(const XMPP::Jid & jid, const Status & status);
-	void slotGroupChatError(const XMPP::Jid & jid, int error, const QString & reason);
+	void slotGroupChatJoined(const XMPP::Jid &jid);
+	void slotGroupChatLeft(const XMPP::Jid &jid);
+	void slotGroupChatPresence(const XMPP::Jid &jid, const Status &status);
+	void slotGroupChatError(const XMPP::Jid &jid, int error, const QString &reason);
 
 	/* Incoming subscription request. */
-	void slotSubscription(const XMPP::Jid & jid, const QString & type);
+	void slotSubscription(const XMPP::Jid &jid, const QString &type);
 
 	void sessionStart_finished();
 
 };
 }
+
 #endif

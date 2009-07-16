@@ -37,15 +37,16 @@
 #include <xmpp_tasks.h>
 
 #define JABBER_PENALTY_TIME	2
-namespace XMPP {
+namespace XMPP
+{
 
 XMPP::S5BServer *JabberClient::S5bServer = 0L;
 QStringList JabberClient::S5bAddressList;
 int JabberClient::S5bServerPort = 8010;
 
-JabberClient::JabberClient()
+JabberClient::JabberClient(JabberProtocol *protocol)
  : jabberClient(0L), JabberClientStream(0L), JabberClientConnector(0L), JabberTLS(0L),
-		       JabberTLSHandler(0L)/*, privacyManager(0L)*/
+		       JabberTLSHandler(0L)/*, privacyManager(0L)*/, Protocol(protocol)
 {
 	cleanUp();
 
@@ -56,10 +57,8 @@ JabberClient::JabberClient()
 
 JabberClient::~JabberClient()
 {
-	if(jabberClient)
-	{
+	if (jabberClient)
 		jabberClient->close();
-	}
 
 	delete jabberClient;
 	delete JabberClientStream;
@@ -71,10 +70,8 @@ JabberClient::~JabberClient()
 
 void JabberClient::cleanUp()
 {
-	if(jabberClient)
-	{
+	if (jabberClient)
 		jabberClient->close();
-	}
 
 	delete jabberClient;
 	delete JabberClientStream;
@@ -118,31 +115,27 @@ void JabberClient::cleanUp()
 
 void JabberClient::slotUpdatePenaltyTime()
 {
-
-	if(CurrentPenaltyTime >= JABBER_PENALTY_TIME)
+	if (CurrentPenaltyTime >= JABBER_PENALTY_TIME)
 		CurrentPenaltyTime -= JABBER_PENALTY_TIME;
 	else
 		CurrentPenaltyTime = 0;
 
 	QTimer::singleShot(JABBER_PENALTY_TIME * 1000, this, SLOT(slotUpdatePenaltyTime()));
-
 }
 
 bool JabberClient::setS5BServerPort(int port)
 {
 	S5bServerPort = port;
 
-	if(fileTransfersEnabled())
-	{
+	if (fileTransfersEnabled())
 		return s5bServer()->start(port);
-	}
 
 	return true;
 }
 
 XMPP::S5BServer *JabberClient::s5bServer()
 {
-	if(!S5bServer)
+	if (!S5bServer)
 	{
 		S5bServer = new XMPP::S5BServer();
 		QObject::connect(S5bServer, SIGNAL(destroyed()), this, SLOT(slotS5BServerGone()));
@@ -154,10 +147,8 @@ XMPP::S5BServer *JabberClient::s5bServer()
 		 * use setS5BServerPort() to ensure the correct
 		 * port, we can return an error code there.
 		 */
-		if(fileTransfersEnabled())
-		{
+		if (fileTransfersEnabled())
 			s5bServer()->start(S5bServerPort);
-		}
 	}
 
 	return S5bServer;
@@ -167,7 +158,7 @@ void JabberClient::slotS5BServerGone()
 {
 	S5bServer = 0L;
 
-	if(jabberClient)
+	if (jabberClient)
 		jabberClient->s5bManager()->setServer( 0L);
 }
 
@@ -178,9 +169,9 @@ void JabberClient::addS5BServerAddress(const QString &address)
 	S5bAddressList.append(address);
 
 	// now filter the list without dupes
-	foreach( QStringList::const_reference str, S5bAddressList)
+	foreach (QStringList::const_reference str, S5bAddressList)
 	{
-		if(!newList.contains(str))
+		if (!newList.contains(str))
 			newList.append(str);
 	}
 
@@ -193,10 +184,10 @@ void JabberClient::removeS5BServerAddress(const QString &address)
 
 	int idx = S5bAddressList.indexOf( address);
 
-	if(idx != -1)
+	if (idx != -1)
 		S5bAddressList.removeAt(idx);
 
-	if(S5bAddressList.isEmpty())
+	if (S5bAddressList.isEmpty())
 	{
 		delete S5bServer;
 		S5bServer = 0L;
@@ -204,9 +195,9 @@ void JabberClient::removeS5BServerAddress(const QString &address)
 	else
 	{
 		// now filter the list without dupes
-		foreach( QStringList::const_reference str, S5bAddressList)
+		foreach (QStringList::const_reference str, S5bAddressList)
 		{
-			if(!newList.contains(str))
+			if (!newList.contains(str))
 				newList.append(str);
 		}
 
@@ -216,27 +207,21 @@ void JabberClient::removeS5BServerAddress(const QString &address)
 
 void JabberClient::setOverrideHost(bool flag, const QString &server, int port)
 {
-
 	OverrideHost = flag;
 	Server = server;
 	Port = port;
-
 }
 
 void JabberClient::setFileTransfersEnabled(bool flag, const QString &localAddress)
 {
-
 	FileTransfersEnabled = flag;
 	LocalAddress = localAddress;
-
 }
 
 void JabberClient::setTimeZone(const QString &timeZoneName, int timeZoneOffset)
 {
-
 	TimeZoneName = timeZoneName;
 	TimeZoneOffset = timeZoneOffset;
-
 }
 
 int JabberClient::getPenaltyTime()
@@ -258,21 +243,19 @@ void JabberClient::connect(const XMPP::Jid &jid, const QString &password, bool a
 	/*
 	 * Close any existing connection.
 	 */
-	if(jabberClient)
-	{
+	if( jabberClient)
 		jabberClient->close();
-	}
 	Jid = jid;
 	Password = password;
 
 	/*
 	 * Return an error if we should force TLS but it's not available.
 	 */
-	if(( forceTLS() || useSSL() || probeSSL()) && !QCA::isSupported("tls"))
+	if ((forceTLS() || useSSL() || probeSSL()) && !QCA::isSupported("tls"))
 	{
 		qDebug("no TLS");
 		// no SSL support, at the connecting stage this means the problem is client-side
-		QMessageBox* m = new QMessageBox(QMessageBox::Critical, tr("Jabber SSL Error"), tr("SSL support could not be initialized for account %1. This is most likely because the QCA TLS plugin is not installed on your system.").arg(jid.bare()), QMessageBox::Ok, 0, Qt::Popup);
+		QMessageBox *m = new QMessageBox(QMessageBox::Critical, tr("Jabber SSL Error"), tr("SSL support could not be initialized for account %1. This is most likely because the QCA TLS plugin is not installed on your system.").arg(jid.bare()), QMessageBox::Ok, 0, Qt::Popup);
 		m->setModal(true);
 		m->show();
 	}
@@ -286,12 +269,10 @@ void JabberClient::connect(const XMPP::Jid &jid, const QString &password, bool a
 
 	JabberClientConnector->setOptSSL(useSSL());
 
-	if ( useXMPP09 () )
+	if (useXMPP09())
 	{
-		if ( overrideHost () )
-		{
+		if (overrideHost())
 			JabberClientConnector->setOptHostPort(Server, Port);
-		}
 
 		JabberClientConnector->setOptProbe(probeSSL());
 
@@ -307,37 +288,37 @@ void JabberClient::connect(const XMPP::Jid &jid, const QString &password, bool a
 		JabberTLSHandler = new QCATLSHandler(JabberTLS);
 		JabberTLSHandler->setXMPPCertCheck(true);
 
-		QObject::connect ( JabberTLSHandler, SIGNAL ( tlsHandshaken() ), SLOT ( slotTLSHandshaken () ) );
+		QObject::connect(JabberTLSHandler, SIGNAL(tlsHandshaken()), SLOT(slotTLSHandshaken()));
 	}
 
 	/*
 	 * Instantiate client stream which handles the network communication by referring
 	 * to a connector (proxying etc.) and a TLS handler (security layer)
 	 */
-	JabberClientStream = new XMPP::ClientStream ( JabberClientConnector, JabberTLSHandler );
+	JabberClientStream = new XMPP::ClientStream(JabberClientConnector, JabberTLSHandler);
 
 	{
 		using namespace XMPP;
-		QObject::connect ( JabberClientStream, SIGNAL ( needAuthParams(bool, bool, bool) ),
-				   this, SLOT ( slotCSNeedAuthParams (bool, bool, bool) ) );
-		QObject::connect ( JabberClientStream, SIGNAL ( authenticated () ),
-				   this, SLOT ( slotCSAuthenticated () ) );
-		QObject::connect ( JabberClientStream, SIGNAL ( connectionClosed () ),
-				   this, SLOT ( slotCSDisconnected () ) );
-		QObject::connect ( JabberClientStream, SIGNAL ( delayedCloseFinished () ),
-				   this, SLOT ( slotCSDisconnected () ) );
-		QObject::connect ( JabberClientStream, SIGNAL ( warning (int) ),
-				   this, SLOT ( slotCSWarning (int) ) );
-		QObject::connect ( JabberClientStream, SIGNAL ( error (int) ),
-				   this, SLOT ( slotCSError (int) ) );
+		QObject::connect(JabberClientStream, SIGNAL(needAuthParams(bool, bool, bool)),
+				   this, SLOT(slotCSNeedAuthParams(bool, bool, bool)));
+		QObject::connect(JabberClientStream, SIGNAL(authenticated()),
+				   this, SLOT(slotCSAuthenticated()));
+		QObject::connect(JabberClientStream, SIGNAL(connectionClosed()),
+				   this, SLOT(slotCSDisconnected()));
+		QObject::connect(JabberClientStream, SIGNAL(delayedCloseFinished()),
+				   this, SLOT(slotCSDisconnected()));
+		QObject::connect(JabberClientStream, SIGNAL(warning(int)),
+				   this, SLOT(slotCSWarning(int)));
+		QObject::connect(JabberClientStream, SIGNAL(error(int)),
+				   this, SLOT(slotCSError(int)));
 	}
 
-	JabberClientStream->setOldOnly ( useXMPP09 () );
+	JabberClientStream->setOldOnly(useXMPP09());
 
 	/*
 	 * Initiate anti-idle timer (will be triggered every 55 seconds).
 	 */
-	JabberClientStream->setNoopTime ( 55000 );
+	JabberClientStream->setNoopTime(55000);
 
 	/*
 	 * Allow plaintext password authentication or not?
@@ -347,7 +328,7 @@ void JabberClient::connect(const XMPP::Jid &jid, const QString &password, bool a
 	/*
 	 * Setup client layer.
 	 */
-	jabberClient = new XMPP::Client ( this );
+	jabberClient = new XMPP::Client(this);
 
 	/*
 	 * Setup privacy manager
@@ -358,14 +339,13 @@ void JabberClient::connect(const XMPP::Jid &jid, const QString &password, bool a
 	 * Enable file transfer (IP and server will be set after connection
 	 * has been established.
 	 */
-	if ( fileTransfersEnabled () )
+	if (fileTransfersEnabled())
 	{
-		jabberClient->setFileTransferEnabled ( true );
-
+		jabberClient->setFileTransferEnabled(true);
 		{
 			using namespace XMPP;
-			QObject::connect ( jabberClient->fileTransferManager(), SIGNAL ( incomingReady() ),
-					   this, SLOT ( slotIncomingFileTransfer () ) );
+			QObject::connect(jabberClient->fileTransferManager(), SIGNAL(incomingReady()),
+					   this, SLOT(slotIncomingFileTransfer()));
 		}
 	}
 
@@ -427,8 +407,8 @@ void JabberClient::connect(const XMPP::Jid &jid, const QString &password, bool a
 	jabberClient->setOSName(osName());
 
 	// Set caps information
-	jabberClient->setCapsNode( capsNode());
-	jabberClient->setCapsVersion( capsVersion());
+	jabberClient->setCapsNode(capsNode());
+	jabberClient->setCapsVersion(capsVersion());
 
 	// Set Disco Identity
 	//jabberClient->setIdentity( discoIdentity());
@@ -441,121 +421,93 @@ void JabberClient::connect(const XMPP::Jid &jid, const QString &password, bool a
 	jabberClient->setIdentity(identity);
 
 	QStringList features;
-	features << "http://jabber.org/protocol/commands";
+//	features << "http://jabber.org/protocol/commands";
 	features << "http://jabber.org/protocol/rosterx";
-	features << "http://jabber.org/protocol/muc";
+//	features << "http://jabber.org/protocol/muc";
 	features << "jabber:x:data";
 	jabberClient->setFeatures(Features(features));
-
-
 
 	jabberClient->setTimeZone(timeZoneName(), timeZoneOffset());
 
 	jabberClient->connectToServer(JabberClientStream, jid, auth);
-
-
 }
 
 void JabberClient::disconnect()
 {
-
-	if(jabberClient)
-	{
+	if (jabberClient)
 		jabberClient->close();
-	}
 	else
-	{
 		cleanUp();
-	}
-
 }
 
 void JabberClient::disconnect( XMPP::Status &reason)
 {
-    if(jabberClient)
-    {
-        if(JabberClientStream->isActive())
-        {
-            XMPP::JT_Presence *pres = new JT_Presence(rootTask());
-            reason.setIsAvailable( false);
-            pres->pres( reason);
-            pres->go();
+	if (jabberClient)
+	{
+		if (JabberClientStream->isActive())
+		{
+			XMPP::JT_Presence *pres = new JT_Presence(rootTask());
+			reason.setIsAvailable( false);
+			pres->pres( reason);
+			pres->go();
 
-            JabberClientStream->close();
-            jabberClient->close();
-        }
-    }
-    else
-    {
-        cleanUp();
-    }
+			JabberClientStream->close();
+			jabberClient->close();
+		}
+	}
+	else
+		cleanUp();
 }
 
 bool JabberClient::isConnected() const
 {
-
-	if(jabberClient)
-	{
+	if (jabberClient)
 		return jabberClient->isActive();
-	}
 
 	return false;
-
 }
 
 void JabberClient::joinGroupChat(const QString &host, const QString &room, const QString &nick)
 {
-
 	client()->groupChatJoin(host, room, nick);
-
 }
 
 void JabberClient::joinGroupChat(const QString &host, const QString &room, const QString &nick, const QString &password)
 {
 	client()->groupChatJoin(host, room, nick, password);
-
 }
 
 void JabberClient::leaveGroupChat(const QString &host, const QString &room)
 {
-
 	client()->groupChatLeave(host, room);
-
 }
 
-void JabberClient::setGroupChatStatus( const QString & host, const QString & room, const XMPP::Status & status)
+void JabberClient::setGroupChatStatus( const QString &host, const QString &room, const XMPP::Status &status)
 {
 	client()->groupChatSetStatus( host, room, status);
 }
 
-void JabberClient::changeGroupChatNick( const QString & host, const QString & room, const QString & nick, const XMPP::Status & status)
+void JabberClient::changeGroupChatNick( const QString &host, const QString &room, const QString &nick, const XMPP::Status &status)
 {
 	client()->groupChatChangeNick( host, room, nick, status);
 }
 
-
 void JabberClient::sendMessage(const XMPP::Message &message)
 {
-
 	client()->sendMessage(message);
-
 }
 
 void JabberClient::send(const QString &packet)
 {
-
 	client()->send(packet);
-
 }
 
 void JabberClient::requestRoster()
 {
-
 	client()->rosterRequest();
-
 }
 
-void JabberClient::slotPsiDebug(const QString & _msg)
+void JabberClient::slotPsiDebug(const QString &_msg)
 {
 	QString msg = _msg;
 
@@ -566,7 +518,7 @@ void JabberClient::slotPsiDebug(const QString & _msg)
 
 }
 
-void JabberClient::slotIncomingXML(const QString & _msg)
+void JabberClient::slotIncomingXML(const QString &_msg)
 {
 	QString msg = _msg;
 
@@ -577,7 +529,7 @@ void JabberClient::slotIncomingXML(const QString & _msg)
 	emit incomingXML(msg);
 }
 
-void JabberClient::slotOutgoingXML(const QString & _msg)
+void JabberClient::slotOutgoingXML(const QString &_msg)
 {
 	QString msg = _msg;
 
@@ -594,9 +546,9 @@ void JabberClient::slotTLSHandshaken()
 
 	QCA::Certificate cert = JabberTLS->peerCertificateChain().primary();
 	int r = JabberTLS->peerIdentityResult();
-	if(r == QCA::TLS::Valid && !JabberTLSHandler->certMatchesHostname()) 
+	if (r == QCA::TLS::Valid && !JabberTLSHandler->certMatchesHostname())
 		r = QCA::TLS::HostMismatch;
-	if(r != QCA::TLS::Valid && !ignoreTLSWarnings()) 
+	if (r != QCA::TLS::Valid && !ignoreTLSWarnings())
 	{
 		QCA::Validity validity =  JabberTLS->peerCertificateValidity();
 		QString str = CertUtil::resultToString(r,validity);
@@ -612,23 +564,26 @@ void JabberClient::slotTLSHandshaken()
 		QObject::connect(this, SIGNAL(disconnected()), &msgBox, SLOT(reject()));
 		QObject::connect(this, SIGNAL(reconnecting()), &msgBox, SLOT(reject()));
 
-		while(msgBox.result() != QDialog::Rejected) {
+		while (msgBox.result() != QDialog::Rejected)
+		{
 			msgBox.exec();
-			if((QPushButton *)msgBox.clickedButton() == detailsButton) {
+			if ((QPushButton *)msgBox.clickedButton() == detailsButton)
+			{
 				msgBox.setResult(QDialog::Accepted);
 				SSLCertDlg::showCert(cert, r, validity);
 			}
-			else if((QPushButton *)msgBox.clickedButton() == continueButton) {
+			else if ((QPushButton *)msgBox.clickedButton() == continueButton)
+			{
 				JabberTLSHandler->continueAfterHandshake();
 				break;
 			}
-			else if((QPushButton *)msgBox.clickedButton() == cancelButton) {
+			else if ((QPushButton *)msgBox.clickedButton() == cancelButton)
+			{
 				disconnect();
 				break;
 			}
-			else {	// msgBox was hidden because connection was closed
+			else	// msgBox was hidden because connection was closed
 				break;
-			}
 		}
 	}
 	else
@@ -639,20 +594,14 @@ void JabberClient::slotCSNeedAuthParams(bool user, bool pass, bool realm)
 {
 	emit debugMessage("Sending auth credentials...");
 
-	if(user)
-	{
+	if (user)
 		JabberClientStream->setUsername(jid().node());
-	}
 
-	if(pass)
-	{
+	if (pass)
 		JabberClientStream->setPassword(Password);
-	}
 
-	if(realm)
-	{
+	if (realm)
 		JabberClientStream->setRealm(jid().domain());
-	}
 
 	JabberClientStream->continueAfterParams();
 
@@ -665,20 +614,18 @@ void JabberClient::slotCSAuthenticated()
 	JabberClientConnector->changePollInterval(10); // for http poll, slow down after login
 
 	// Update our jid(if necessary)
-	if(!JabberClientStream->jid().isEmpty()) {
+	if (!JabberClientStream->jid().isEmpty())
 		Jid = JabberClientStream->jid().bare();
-	}
 
 	// get IP address
 	ByteStream *bs = JabberClientConnector ? JabberClientConnector->stream() : 0;
-	if(!bs)
+	if (!bs)
 		return;
 
-	if(bs->inherits("BSocket") || bs->inherits("XMPP::BSocket")) {
+	if (bs->inherits("BSocket") || bs->inherits("XMPP::BSocket"))
 		LocalAddress =((BSocket *)bs)->address().toString();
-	}
 
-	if(fileTransfersEnabled())
+	if (fileTransfersEnabled())
 	{
 		// setup file transfer
 		addS5BServerAddress(localAddress());
@@ -689,30 +636,27 @@ void JabberClient::slotCSAuthenticated()
 	jabberClient->start(jid().domain(), jid().node(), Password, jid().resource());
 
 
-	if(!JabberClientStream->old()) {
+	if (!JabberClientStream->old())
+	{
 		XMPP::JT_Session *j = new XMPP::JT_Session(jabberClient->rootTask());
 		QObject::connect(j,SIGNAL(finished()),this, SLOT(sessionStart_finished()));
 		j->go(true);
 	}
-	else {
+	else
 		emit connected();
-	}
 }
 
 void JabberClient::sessionStart_finished()
 {
 	XMPP::JT_Session *j =(XMPP::JT_Session*)sender();
-	if(j->success()) {
+	if (j->success())
 		emit connected();
-	}
-	else {
+	else
 		slotCSError(-1);
-	}
 }
 
 void JabberClient::slotCSDisconnected()
 {
-
 	/* FIXME:
 	 * We should delete the XMPP::Client instance here,
 	 * but timers etc prevent us from doing so.(Psi does
@@ -725,7 +669,6 @@ void JabberClient::slotCSDisconnected()
 	removeS5BServerAddress(localAddress());
 
 	emit csDisconnected();
-
 }
 
 void JabberClient::slotCSWarning(int warning)
@@ -735,7 +678,8 @@ void JabberClient::slotCSWarning(int warning)
 	bool showNoTlsWarning = warning == ClientStream::WarnNoTLS && false/*acc.ssl == UserAccount::SSL_Yes*/;
 	bool doCleanupStream = !JabberClientStream || showNoTlsWarning;
 
-	if(doCleanupStream) {
+	if (doCleanupStream)
+	{
 		disconnect();
 		//v_isActive = false;
 		//loginStatus = Status(Status::Offline);
@@ -743,12 +687,14 @@ void JabberClient::slotCSWarning(int warning)
 		//disconnected();
 	}
 
-	if(showNoTlsWarning) {
-		QMessageBox* m = new QMessageBox(QMessageBox::Critical, /*(psi->contactList()->enabledAccounts().count() > 1 ? QString("%1: ").arg(name()) : "") + */tr("Server Error"), tr("The server does not support TLS encryption."), QMessageBox::Ok, 0, Qt::Popup);
+	if (showNoTlsWarning)
+	{
+		QMessageBox *m = new QMessageBox(QMessageBox::Critical, /*(psi->contactList()->enabledAccounts().count() > 1 ? QString("%1: ").arg(name()) : "") + */tr("Server Error"), tr("The server does not support TLS encryption."), QMessageBox::Ok, 0, Qt::Popup);
 		m->setModal(true);
 		m->show();
 	}
-	else if(!doCleanupStream) {
+	else if (!doCleanupStream)
+	{
 		Q_ASSERT(JabberClientStream);
 		JabberClientStream->continueAfterWarning();
 	}
@@ -760,11 +706,11 @@ void JabberClient::slotCSError(int error)
 	QString errorText;
 	bool reconn;
 
-	if((error == XMPP::ClientStream::ErrAuth)
-		&&(clientStream()->errorCondition() == XMPP::ClientStream::NotAuthorized))
+	if ((error == XMPP::ClientStream::ErrAuth)
+		&& (clientStream()->errorCondition() == XMPP::ClientStream::NotAuthorized))
 	{
 		kdebug("Incorrect password, retrying.\n");
-		protocol->logout(/*Kopete::Account::BadPassword*/);
+		Protocol->logout(/*Kopete::Account::BadPassword*/);
 	}
 	else
 	{
@@ -773,112 +719,87 @@ void JabberClient::slotCSError(int error)
 		kdebug("Disconnecting.\n");
 		// display message to user
 		// when removing or disconnecting, connection errors are normal
-		if(/*!m_removing && */protocol->isConnected() || protocol->isConnecting())
+		if (/*!m_removing && */Protocol->isConnected() || Protocol->isConnecting())
 		{
 			getErrorInfo(error, JabberClientConnector, JabberClientStream, JabberTLSHandler, &errorText, &reconn);
-			QMessageBox* m = new QMessageBox(QMessageBox::Critical,
+			QMessageBox *m = new QMessageBox(QMessageBox::Critical,
 	                                /*(printAccountName ? QString("%1: ").arg(name()) : "") + */tr("Server Error"),
 	                                 tr("There was an error communicating with the server.\nDetails: %1").arg(errorText),
 	                                 QMessageBox::Ok, 0, Qt::Popup);
 			m->setModal(true);
 			m->show();
 		}
-		if(protocol->isConnected() || protocol->isConnecting())
-			protocol->logout(/* errorClass */);
+		if (Protocol->isConnected() || Protocol->isConnecting())
+			Protocol->logout(/* errorClass */);
 
-		protocol->resourcePool()->clear();
+		Protocol->resourcePool()->clear();
 	}
 	
 }
 
 void JabberClient::slotRosterRequestFinished(bool success, int /*statusCode*/, const QString &/*statusString*/)
 {
-
 	emit rosterRequestFinished(success);
-
 }
 
 void JabberClient::slotIncomingFileTransfer()
 {
-
 	emit incomingFileTransfer();
-
 }
 
 void JabberClient::slotNewContact(const XMPP::RosterItem &item)
 {
-
 	emit newContact(item);
-
 }
 
 void JabberClient::slotContactDeleted(const RosterItem &item)
 {
-
 	emit contactDeleted(item);
-
 }
 
 void JabberClient::slotContactUpdated(const RosterItem &item)
 {
-
 	emit contactUpdated(item);
-
 }
 
 void JabberClient::slotResourceAvailable(const XMPP::Jid &jid, const Resource &resource)
 {
 	emit resourceAvailable(jid, resource);
-
 }
 
 void JabberClient::slotResourceUnavailable(const XMPP::Jid &jid, const Resource &resource)
 {
-
 	emit resourceUnavailable(jid, resource);
-
 }
 
 void JabberClient::slotReceivedMessage(const Message &message)
 {
-
 	emit messageReceived(message);
-
 }
 
 void JabberClient::slotGroupChatJoined(const XMPP::Jid &jid)
 {
-
 	emit groupChatJoined(jid);
-
 }
 
 void JabberClient::slotGroupChatLeft(const XMPP::Jid &jid)
 {
-
 	emit groupChatLeft(jid);
-
 }
 
 void JabberClient::slotGroupChatPresence(const XMPP::Jid &jid, const Status &status)
 {
-
 	emit groupChatPresence(jid, status);
-
 }
 
 void JabberClient::slotGroupChatError(const XMPP::Jid &jid, int error, const QString &reason)
 {
-
 	emit groupChatError(jid, error, reason);
-
 }
 
 void JabberClient::slotSubscription(const XMPP::Jid &jid, const QString &type)
 {
-
 	emit subscription(jid, type);
-
 }
 
 void JabberClient::getErrorInfo(int err, AdvancedConnector *conn, Stream *stream, QCATLSHandler *tlsHandler, QString *_str, bool *_reconn)
@@ -886,137 +807,157 @@ void JabberClient::getErrorInfo(int err, AdvancedConnector *conn, Stream *stream
 	QString str;
 	bool reconn = false;
 
-	if(err == -1) {
+	if (err == -1)
+	{
 		str = tr("Disconnected");
 		reconn = true;
 	}
-	else if(err == XMPP::ClientStream::ErrParse) {
+	else if (err == XMPP::ClientStream::ErrParse)
+	{
 		str = tr("XML Parsing Error");
 		reconn = true;
 	}
-	else if(err == XMPP::ClientStream::ErrProtocol) {
+	else if (err == XMPP::ClientStream::ErrProtocol)
+	{
 		str = tr("XMPP Protocol Error");
 		reconn = true;
 	}
-	else if(err == XMPP::ClientStream::ErrStream) {
+	else if (err == XMPP::ClientStream::ErrStream)
+	{
 		int x;
 		QString s, detail;
 		reconn = true;
-		if(stream) { // Stream can apparently be gone if you disconnect in time
+		if (stream)  // Stream can apparently be gone if you disconnect in time
+		{
 			x = stream->errorCondition();
 			detail = stream->errorText();
-		} else {
+		}
+		else
+		{
 			x = XMPP::Stream::GenericStreamError;
 			reconn = false;
 		}
 
-		if(x == XMPP::Stream::GenericStreamError)
+		if (x == XMPP::Stream::GenericStreamError)
 			s = tr("Generic stream error");
-		else if(x == XMPP::ClientStream::Conflict) {
+		else if (x == XMPP::ClientStream::Conflict)
+		{
 			s = tr("Conflict(remote login replacing this one)");
 			reconn = false;
 		}
-		else if(x == XMPP::ClientStream::ConnectionTimeout)
+		else if (x == XMPP::ClientStream::ConnectionTimeout)
 			s = tr("Timed out from inactivity");
-		else if(x == XMPP::ClientStream::InternalServerError)
+		else if (x == XMPP::ClientStream::InternalServerError)
 			s = tr("Internal server error");
-		else if(x == XMPP::ClientStream::InvalidXml)
+		else if (x == XMPP::ClientStream::InvalidXml)
 			s = tr("Invalid XML");
-		else if(x == XMPP::ClientStream::PolicyViolation) {
+		else if (x == XMPP::ClientStream::PolicyViolation)
+		{
 			s = tr("Policy violation");
 			reconn = false;
 		}
-		else if(x == XMPP::ClientStream::ResourceConstraint) {
+		else if (x == XMPP::ClientStream::ResourceConstraint)
+		{
 			s = tr("Server out of resources");
 			reconn = false;
 		}
-		else if(x == XMPP::ClientStream::SystemShutdown) {
+		else if (x == XMPP::ClientStream::SystemShutdown)
+		{
 			s = tr("Server is shutting down");
 		}
 		str = tr("XMPP Stream Error: %1").arg(s) + "\n" + detail;
 	}
-	else if(err == XMPP::ClientStream::ErrConnection) {
+	else if (err == XMPP::ClientStream::ErrConnection)
+	{
 		int x = conn->errorCode();
 		QString s;
 		reconn = true;
-		if(x == XMPP::AdvancedConnector::ErrConnectionRefused)
+		if (x == XMPP::AdvancedConnector::ErrConnectionRefused)
 			s = tr("Unable to connect to server");
-		else if(x == XMPP::AdvancedConnector::ErrHostNotFound)
+		else if (x == XMPP::AdvancedConnector::ErrHostNotFound)
 			s = tr("Host not found");
-		else if(x == XMPP::AdvancedConnector::ErrProxyConnect)
+		else if (x == XMPP::AdvancedConnector::ErrProxyConnect)
 			s = tr("Error connecting to proxy");
-		else if(x == XMPP::AdvancedConnector::ErrProxyNeg)
+		else if (x == XMPP::AdvancedConnector::ErrProxyNeg)
 			s = tr("Error during proxy negotiation");
-		else if(x == XMPP::AdvancedConnector::ErrProxyAuth) {
+		else if (x == XMPP::AdvancedConnector::ErrProxyAuth)
+		{
 			s = tr("Proxy authentication failed");
 			reconn = false;
 		}
-		else if(x == XMPP::AdvancedConnector::ErrStream)
+		else if (x == XMPP::AdvancedConnector::ErrStream)
 			s = tr("Socket/stream error");
 		str = tr("Connection Error: %1").arg(s);
 	}
-	else if(err == XMPP::ClientStream::ErrNeg) {
+	else if (err == XMPP::ClientStream::ErrNeg)
+	{
 		QString s, detail;
 		int x = stream->errorCondition();
 		detail = stream->errorText();
-		if(x == XMPP::ClientStream::HostGone)
+		if (x  == XMPP::ClientStream::HostGone)
 			s = tr("Host no longer hosted");
-		else if(x == XMPP::ClientStream::HostUnknown)
+		else if (x == XMPP::ClientStream::HostUnknown)
 			s = tr("Host unknown");
-		else if(x == XMPP::ClientStream::RemoteConnectionFailed) {
+		else if (x == XMPP::ClientStream::RemoteConnectionFailed)
+		{
 			s = tr("A required remote connection failed");
 			reconn = true;
 		}
-		else if(x == XMPP::ClientStream::SeeOtherHost)
+		else if (x == XMPP::ClientStream::SeeOtherHost)
 			s = tr("See other host: %1").arg(stream->errorText());
-		else if(x == XMPP::ClientStream::UnsupportedVersion)
+		else if (x == XMPP::ClientStream::UnsupportedVersion)
 			s = tr("Server does not support proper XMPP version");
 		str = tr("Stream Negotiation Error: %1").arg(s) + "\n" + detail;
 	}
-	else if(err == XMPP::ClientStream::ErrTLS) {
+	else if (err == XMPP::ClientStream::ErrTLS)
+	{
 		int x = stream->errorCondition();
 		QString s;
-		if(x == XMPP::ClientStream::TLSStart)
+		if (x == XMPP::ClientStream::TLSStart)
 			s = tr("Server rejected STARTTLS");
-		else if(x == XMPP::ClientStream::TLSFail) {
+		else if (x == XMPP::ClientStream::TLSFail)
+		{
 			int t = tlsHandler->tlsError();
-			if(t == QCA::TLS::ErrorHandshake)
+			if (t == QCA::TLS::ErrorHandshake)
 				s = tr("TLS handshake error");
 			else
 				s = tr("Broken security layer (TLS)");
 		}
 		str = s;
 	}
-	else if(err == XMPP::ClientStream::ErrAuth) {
+	else if (err == XMPP::ClientStream::ErrAuth)
+	{
 		int x = stream->errorCondition();
 		QString s;
-		if(x == XMPP::ClientStream::GenericAuthError) {
+		if (x == XMPP::ClientStream::GenericAuthError)
 			s = tr("Unable to login");
-		} else if(x == XMPP::ClientStream::NoMech) {
+		else if (x == XMPP::ClientStream::NoMech)
+		{
 			s = tr("No appropriate mechanism available for given security settings(e.g. SASL library too weak, or plaintext authentication not enabled)");
 			s += "\n" + stream->errorText();
-		} else if(x == XMPP::ClientStream::BadProto) {
-			s = tr("Bad server response");
-		} else if(x == XMPP::ClientStream::BadServ) {
-			s = tr("Server failed mutual authentication");
-		} else if(x == XMPP::ClientStream::EncryptionRequired) {
-			s = tr("Encryption required for chosen SASL mechanism");
-		} else if(x == XMPP::ClientStream::InvalidAuthzid) {
-			s = tr("Invalid account information");
-		} else if(x == XMPP::ClientStream::InvalidMech) {
-			s = tr("Invalid SASL mechanism");
-		} else if(x == XMPP::ClientStream::InvalidRealm) {
-			s = tr("Invalid realm");
-		} else if(x == XMPP::ClientStream::MechTooWeak) {
-			s = tr("SASL mechanism too weak for this account");
-		} else if(x == XMPP::ClientStream::NotAuthorized) {
-			s = tr("Not authorized");
-		} else if(x == XMPP::ClientStream::TemporaryAuthFailure) {
-			s = tr("Temporary auth failure");
 		}
+		else if (x == XMPP::ClientStream::BadProto)
+			s = tr("Bad server response");
+		else if (x == XMPP::ClientStream::BadServ)
+			s = tr("Server failed mutual authentication");
+		else if (x == XMPP::ClientStream::EncryptionRequired)
+			s = tr("Encryption required for chosen SASL mechanism");
+		else if (x == XMPP::ClientStream::InvalidAuthzid)
+			s = tr("Invalid account information");
+		else if (x == XMPP::ClientStream::InvalidMech)
+			s = tr("Invalid SASL mechanism");
+		else if (x == XMPP::ClientStream::InvalidRealm)
+			s = tr("Invalid realm");
+		else if (x == XMPP::ClientStream::MechTooWeak)
+			s = tr("SASL mechanism too weak for this account");
+		else if (x == XMPP::ClientStream::NotAuthorized)
+			s = tr("Not authorized");
+		else if (x == XMPP::ClientStream::TemporaryAuthFailure)
+			s = tr("Temporary auth failure");
+
 		str = tr("Authentication error: %1").arg(s);
 	}
-	else if(err == XMPP::ClientStream::ErrSecurityLayer)
+	else if (err == XMPP::ClientStream::ErrSecurityLayer)
 		str = tr("Broken security layer (SASL)");
 	else
 		str = tr("None");
