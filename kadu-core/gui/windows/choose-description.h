@@ -34,6 +34,7 @@ class ChooseDescription : public QDialog
 private slots:
 	void statusChanged();
 	void setDescription();
+	void activated(int);
 	void currentDescriptionChanged(const QString &);
 
 public:

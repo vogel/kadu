@@ -40,7 +40,7 @@ void StatusButton::createGui()
 void StatusButton::statusChanged()
 {
 	setIcon(MyStatusContainer->statusPixmap());
-	setText(MyStatusContainer->statusName() + " " + MyStatusContainer->statusContainerName());
+	setText(MyStatusContainer->statusContainerName());
 }
 
 void StatusButton::configurationUpdated()

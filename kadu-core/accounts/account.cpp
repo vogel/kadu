@@ -157,7 +157,7 @@ void Account::importProxySettings()
 
 QString Account::statusContainerName()
 {
-	return name() + " (" + protocol()->protocolFactory()->name() + ")";
+	return name();
 }
 
 void Account::setStatus(Status status)

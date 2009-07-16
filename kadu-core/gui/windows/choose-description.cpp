@@ -76,6 +76,7 @@ ChooseDescription::ChooseDescription(StatusContainer *statusContainer, QWidget *
 #endif
 
 	connect(Description, SIGNAL(editTextChanged(const QString &)), this, SLOT(currentDescriptionChanged(const QString &)));
+	connect(Description, SIGNAL(activated(int)), this, SLOT(activated(int)));
 	currentDescriptionChanged(Description->currentText());
 
 	OkButton = new QPushButton(tr("&OK"), this);
@@ -141,6 +142,13 @@ void ChooseDescription::setDescription()
 	Status status = MyStatusContainer->status();
 	status.setDescription(description);
 	MyStatusContainer->setStatus(status);
+}
+
+void ChooseDescription::activated(int index)
+{
+	// TODO: fix this workaround
+	QString text = Description->model()->data(Description->model()->index(index, 0), Qt::DisplayRole).toString();
+	Description->setEditText(text);
 }
 
 void ChooseDescription::currentDescriptionChanged(const QString &text)
