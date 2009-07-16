@@ -67,7 +67,7 @@ class JabberClient : public QObject
 	Q_OBJECT
 
 	// connection details
-	XMPP::Jid Jid;
+	XMPP::Jid MyJid;
 	QString Password;
 
 	// XMPP backend
@@ -195,7 +195,7 @@ public:
 	/**
 	 * Returns the JID associated with this instance.
 	 */
-	XMPP::Jid jid() const { return Jid; }
+	XMPP::Jid jid() const { return MyJid; }
 
 	/**
 	 * Set flag to ignore TLS warnings. If TLS
@@ -495,7 +495,7 @@ signals:
 	/**
 	 * Connected successfully.
 	 */
-	void connected ();
+	void connected();
 
 	/**
 	 * Client stream authenticated. This
@@ -640,10 +640,10 @@ private slots:
 	void slotContactUpdated(const RosterItem &);
 
 	/* Someone on our contact list had(another) resource come online. */
-	void slotResourceAvailable(const XMPP::Jid &, const XMPP::Resource &);
+	void slotResourceAvailable(const Jid &, const Resource &);
 
 	/* Someone on our contact list had a resource go offline. */
-	void slotResourceUnavailable(const XMPP::Jid &, const XMPP::Resource &);
+	void slotResourceUnavailable(const Jid &, const Resource &);
 
 	/* Incoming message. */
 	void slotReceivedMessage(const Message &);
@@ -654,13 +654,13 @@ private slots:
 	void slotOutgoingXML(const QString &msg);
 
 	/* Slots for handling groupchats. */
-	void slotGroupChatJoined(const XMPP::Jid &jid);
-	void slotGroupChatLeft(const XMPP::Jid &jid);
-	void slotGroupChatPresence(const XMPP::Jid &jid, const Status &status);
-	void slotGroupChatError(const XMPP::Jid &jid, int error, const QString &reason);
+	void slotGroupChatJoined(const Jid &jid);
+	void slotGroupChatLeft(const Jid &jid);
+	void slotGroupChatPresence(const Jid &jid, const Status &status);
+	void slotGroupChatError(const Jid &jid, int error, const QString &reason);
 
 	/* Incoming subscription request. */
-	void slotSubscription(const XMPP::Jid &jid, const QString &type);
+	void slotSubscription(const Jid &jid, const QString &type);
 
 	void sessionStart_finished();
 

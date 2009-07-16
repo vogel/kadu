@@ -89,7 +89,7 @@ void JabberClient::cleanUp()
 
 	CurrentPenaltyTime = 0;
 
-	Jid = XMPP::Jid();
+	MyJid = XMPP::Jid();
 	Password.clear();
 
 	setForceTLS(false);
@@ -243,9 +243,10 @@ void JabberClient::connect(const XMPP::Jid &jid, const QString &password, bool a
 	/*
 	 * Close any existing connection.
 	 */
-	if( jabberClient)
+	if (jabberClient)
 		jabberClient->close();
-	Jid = jid;
+
+	MyJid = jid;
 	Password = password;
 
 	/*
@@ -370,8 +371,8 @@ void JabberClient::connect(const XMPP::Jid &jid, const QString &password, bool a
 	 */
 	{
 		using namespace XMPP;
-		QObject::connect(jabberClient, SIGNAL(subscription(const XMPP::Jid &, const QString &, const QString &)),
-				   this, SLOT(slotSubscription(const XMPP::Jid &, const QString &)));
+		QObject::connect(jabberClient, SIGNAL(subscription(const Jid &, const QString &, const QString &)),
+				   this, SLOT(slotSubscription(const Jid &, const QString &)));
 		QObject::connect(jabberClient, SIGNAL(rosterRequestFinished(bool, int, const QString &)),
 				   this, SLOT(slotRosterRequestFinished(bool, int, const QString &)));
 		QObject::connect(jabberClient, SIGNAL(rosterItemAdded(const RosterItem &)),
@@ -380,20 +381,20 @@ void JabberClient::connect(const XMPP::Jid &jid, const QString &password, bool a
 				   this, SLOT(slotContactUpdated(const RosterItem &)));
 		QObject::connect(jabberClient, SIGNAL(rosterItemRemoved(const RosterItem &)),
 				   this, SLOT(slotContactDeleted(const RosterItem &)));
-		QObject::connect(jabberClient, SIGNAL(resourceAvailable(const XMPP::Jid &, const Resource &)),
-				   this, SLOT(slotResourceAvailable(const XMPP::Jid &, const Resource &)));
-		QObject::connect(jabberClient, SIGNAL(resourceUnavailable(const XMPP::Jid &, const Resource &)),
-				   this, SLOT(slotResourceUnavailable(const XMPP::Jid &, const Resource &)));
+		QObject::connect(jabberClient, SIGNAL(resourceAvailable(const Jid &, const Resource &)),
+				   this, SLOT(slotResourceAvailable(const Jid &, const Resource &)));
+		QObject::connect(jabberClient, SIGNAL(resourceUnavailable(const Jid &, const Resource &)),
+				   this, SLOT(slotResourceUnavailable(const Jid &, const Resource &)));
 		QObject::connect(jabberClient, SIGNAL(messageReceived(const Message &)),
 				   this, SLOT(slotReceivedMessage(const Message &)));
-		QObject::connect(jabberClient, SIGNAL(groupChatJoined(const XMPP::Jid &)),
-				   this, SLOT(slotGroupChatJoined(const XMPP::Jid &)));
-		QObject::connect(jabberClient, SIGNAL(groupChatLeft(const XMPP::Jid &)),
-				   this, SLOT(slotGroupChatLeft(const XMPP::Jid &)));
-		QObject::connect(jabberClient, SIGNAL(groupChatPresence(const XMPP::Jid &, const Status &)),
-				   this, SLOT(slotGroupChatPresence(const XMPP::Jid &, const Status &)));
-		QObject::connect(jabberClient, SIGNAL(groupChatError(const XMPP::Jid &, int, const QString &)),
-				   this, SLOT(slotGroupChatError(const XMPP::Jid &, int, const QString &)));
+		QObject::connect(jabberClient, SIGNAL(groupChatJoined(const Jid &)),
+				   this, SLOT(slotGroupChatJoined(const Jid &)));
+		QObject::connect(jabberClient, SIGNAL(groupChatLeft(const Jid &)),
+				   this, SLOT(slotGroupChatLeft(const Jid &)));
+		QObject::connect(jabberClient, SIGNAL(groupChatPresence(const Jid &, const Status &)),
+				   this, SLOT(slotGroupChatPresence(const Jid &, const Status &)));
+		QObject::connect(jabberClient, SIGNAL(groupChatError(const Jid &, int, const QString &)),
+				   this, SLOT(slotGroupChatError(const Jid &, int, const QString &)));
 		//QObject::connect(jabberClient, SIGNAL(debugText(const QString &)),
 		//		   this, SLOT(slotPsiDebug(const QString &)));
 		QObject::connect(jabberClient, SIGNAL(xmlIncoming(const QString&)),
@@ -554,7 +555,7 @@ void JabberClient::slotTLSHandshaken()
 		QString str = CertUtil::resultToString(r,validity);
 		QMessageBox msgBox(QMessageBox::Warning,
 			/*(psi->contactList()->enabledAccounts().count() > 1 ? QString("%1: ").arg(name()) : "") +*/ tr("Server Authentication"),
-			tr("The %1 certificate failed the authenticity test.").arg(Jid.domain()) + '\n' + tr("Reason: %1.").arg(str));
+			tr("The %1 certificate failed the authenticity test.").arg(MyJid.domain()) + '\n' + tr("Reason: %1.").arg(str));
 		QPushButton *detailsButton = msgBox.addButton(tr("&Details..."), QMessageBox::ActionRole);
 		QPushButton *continueButton = msgBox.addButton(tr("Co&ntinue"), QMessageBox::AcceptRole);
 		QPushButton *cancelButton = msgBox.addButton(QMessageBox::Cancel);
@@ -615,7 +616,7 @@ void JabberClient::slotCSAuthenticated()
 
 	// Update our jid(if necessary)
 	if (!JabberClientStream->jid().isEmpty())
-		Jid = JabberClientStream->jid().bare();
+		MyJid = JabberClientStream->jid().bare();
 
 	// get IP address
 	ByteStream *bs = JabberClientConnector ? JabberClientConnector->stream() : 0;
