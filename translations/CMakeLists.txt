@@ -17,4 +17,4 @@ add_custom_target (translations DEPENDS ${TRANSLATION_FILES})
 add_dependencies (kadu translations)
 
 install (FILES ${TRANSLATION_FILES}
-	DESTINATION "share/kadu/translations")
+	DESTINATION ${KADU_DATA_DIR}/translations)

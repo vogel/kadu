@@ -319,8 +319,8 @@ kadu_module (jabber_protocol
 	MODULE_CONFIGURATION_FILES ${CONFIGURATION_FILES}
 )
 
-set_target_properties(jabber_protocol PROPERTIES
-	link_flags "${QCA2_LDFLAGS_OTHER} ${IDN_LDFLAGS_OTHER}" )
+#set_target_properties(jabber_protocol PROPERTIES
+#	link_flags "${QCA2_LDFLAGS_OTHER} ${IDN_LDFLAGS_OTHER}" )
 
 include_directories(
 	${QCA2_INCLUDE_DIRS}
@@ -348,4 +348,4 @@ include_directories(
 target_link_libraries(jabber_protocol ${QCA2_LIBRARIES} ${IDN_LIBRARIES} ${QT_LIBRARIES} )
 
 install (FILES ${DATA_FILES}
-        DESTINATION share/kadu/modules/data/jabber_protocol)
+        DESTINATION ${KADU_MODULES_DIR}/data/jabber_protocol)

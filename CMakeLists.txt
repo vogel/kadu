@@ -65,19 +65,31 @@ endif (NOT BINDIR)
 
 # macros
 
+if(WIN32)
+	set(KADU_DATA_DIR ".")	
+	set(KADU_MODULES_LIBDIR "modules")	
+	set(KADU_BIN_DIR ".")
+else(WIN32)
+	set(KADU_DATA_DIR "share/kadu")
+	set(KADU_MODULES_LIBDIR lib${LIB_SUFFIX}/kadu/modules)
+	set(KADU_BIN_DIR "bin")
+endif(WIN32)
+
+set(KADU_MODULES_DIR ${KADU_DATA_DIR}/modules)
+
 macro (kadu_configuration)
 	install (FILES ${ARGN}
-		DESTINATION "share/kadu/configuration")
+		DESTINATION ${KADU_DATA_DIR}/configuration)
 endmacro (kadu_configuration)
 
 macro (kadu_module_configuration)
 	install (FILES ${ARGN}
-		DESTINATION "share/kadu/modules/configuration")
+		DESTINATION ${KADU_MODULES_DIR}/configuration)
 endmacro (kadu_module_configuration)
 
 macro (kadu_module_desc MODULE_DESC)
 	install (FILES ${ARGN}
-		DESTINATION "share/kadu/modules")
+		DESTINATION ${KADU_MODULES_DIR})
 endmacro (kadu_module_desc)
 
 macro (kadu_module)
@@ -112,10 +124,12 @@ macro (kadu_module)
 	if (WIN32)
 		include_directories (${CMAKE_CURRENT_SOURCE_DIR})
 		set (MODULE_SOURCES ${MODULE_SOURCES} ../module.rc)
+		# naglowki do SDK
+		install (DIRECTORY "." DESTINATION ${KADU_DATA_DIR}/kadu-sdk/include/modules/${MODULE_NAME} FILES_MATCHING PATTERN "*.h" PATTERN ".svn" EXCLUDE)
 	endif (WIN32)
 
 	install (FILES ${MODULE_NAME}.desc
-		DESTINATION "share/kadu/modules")
+		DESTINATION ${KADU_MODULES_DIR})
 
 	if (MODULE_MOC_SOURCES)
 		qt_wrap_cpp (${MODULE_NAME} MODULE_MOC_FILES ${MODULE_MOC_SOURCES})
@@ -128,7 +142,7 @@ macro (kadu_module)
 	kadu_module_configuration(${MODULE_CONFIGURATION_FILES})
 
 	install (FILES ${MODULE_TRANSLATION_FILES}
-		DESTINATION "share/kadu/modules/translations")
+		DESTINATION ${KADU_MODULES_DIR}/translations)
 
 	if (COMMAND cmake_policy)
 		cmake_policy (SET CMP0003 NEW)
@@ -148,11 +162,12 @@ macro (kadu_module)
 	else (${${MODULE_NAME}} STREQUAL STATIC)
 		if (WIN32)
 			target_link_libraries (${MODULE_NAME} kadu_core ${MODULE_DEPENDENCIES} ${QT_LIBRARIES})
+			install (TARGETS ${MODULE_NAME} ARCHIVE DESTINATION ${KADU_DATA_DIR}/kadu-sdk/lib)
 		endif (WIN32)
 		if (APPLE)
 			set_target_properties (${MODULE_NAME} PROPERTIES LINK_FLAGS "-undefined dynamic_lookup")
 		endif (APPLE)
-		install (TARGETS ${MODULE_NAME} DESTINATION lib${LIB_SUFFIX}/kadu/modules)
+		install (TARGETS ${MODULE_NAME} RUNTIME DESTINATION ${KADU_MODULES_LIBDIR} LIBRARY DESTINATION ${KADU_MODULES_LIBDIR})
 	endif (${${MODULE_NAME}} STREQUAL STATIC)
 
 endmacro (kadu_module)
@@ -183,11 +198,7 @@ add_custom_target(uninstall "${CMAKE_COMMAND}" -P "${CMAKE_CURRENT_BINARY_DIR}/c
 
 add_subdirectory (modules)
 add_subdirectory (kadu-core)
-
-if (NOT WIN32)
-	add_subdirectory (varia)
-endif (NOT WIN32)
-
+add_subdirectory (varia)
 add_subdirectory (translations)
 add_subdirectory (kthxbye)
 
@@ -197,4 +208,4 @@ message (STATUS " * install prefix: ${CMAKE_INSTALL_PREFIX}")
 message (STATUS " * build type: ${CMAKE_BUILD_TYPE}")
 
 # install data files
-install (FILES AUTHORS HISTORY README THANKS ChangeLog COPYING DESTINATION "share/kadu")
+install (FILES AUTHORS HISTORY README THANKS ChangeLog COPYING DESTINATION ${KADU_DATA_DIR})

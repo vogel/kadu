@@ -8,9 +8,11 @@
 #include "chat/chat_message.h"
 #include "contacts/contact.h"
 
+#include "history_exports.h"
+
 class Message;
 
-class HistoryStorage : public QObject
+class HISTORYAPI HistoryStorage : public QObject
 {
 	Q_OBJECT
 

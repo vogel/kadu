@@ -8,4 +8,4 @@ set (SYNTAX_FILES
 )
 
 install (FILES ${SYNTAX_FILES}
-	DESTINATION "share/kadu/syntax/chat")
+	DESTINATION ${KADU_DATA_DIR}/syntax/chat)

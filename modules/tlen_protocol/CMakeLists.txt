@@ -80,4 +80,4 @@ include_directories(
 
 #target_link_libraries(tlen_protocol ${QCA2_LIBRARIES} ${IDN_LIBRARIES} )
 install (FILES ${DATA_FILES}
-        DESTINATION share/kadu/modules/data/tlen_protocol)
+        DESTINATION ${KADU_MODULES_DIR}/data/tlen_protocol)
