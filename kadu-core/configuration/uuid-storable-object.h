@@ -14,7 +14,9 @@
 
 #include "storable-object.h"
 
-class UuidStorableObject : public StorableObject
+#include "exports.h"
+
+class KADUAPI UuidStorableObject : public StorableObject
 {
 
 protected:

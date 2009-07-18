@@ -17,7 +17,9 @@
 #include "modules/module-data.h"
 #include "storage-point.h"
 
-class StorableObject
+#include "exports.h"
+
+class KADUAPI StorableObject
 {
 	StorableObject *Parent;
 	QString NodeName;

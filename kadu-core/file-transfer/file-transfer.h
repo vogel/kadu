@@ -15,12 +15,14 @@
 #include "configuration/storable-object.h"
 #include "contacts/contact.h"
 
+#include "exports.h"
+
 class QFile;
 
 class Account;
 class Contact;
 
-class FileTransfer : public QObject, public StorableObject
+class KADUAPI FileTransfer : public QObject, public StorableObject
 {
 	Q_OBJECT
 

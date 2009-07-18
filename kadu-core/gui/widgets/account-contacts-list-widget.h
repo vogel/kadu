@@ -17,7 +17,9 @@
 #include "contacts/contact-list.h"
 #include "gui/widgets/contacts-list-widget.h"
 
-class AccountContactsListWidget : public QWidget
+#include "exports.h"
+
+class KADUAPI AccountContactsListWidget : public QWidget
 {
 	Q_OBJECT
 	

@@ -12,13 +12,15 @@
 
 #include <QtGui/QGroupBox>
 
+#include "exports.h"
+
 class Account;
 
 class QCheckBox;
 class QLabel;
 class QLineEdit;
 
-class ProxyGroupBox : public QGroupBox
+class KADUAPI ProxyGroupBox : public QGroupBox
 {
 	Account *MyAccount;
 

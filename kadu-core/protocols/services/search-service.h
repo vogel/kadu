@@ -14,7 +14,9 @@
 
 #include "contacts/contact-list.h"
 
-class SearchService : public QObject
+#include "exports.h"
+
+class KADUAPI SearchService : public QObject
 {
 	Q_OBJECT
 

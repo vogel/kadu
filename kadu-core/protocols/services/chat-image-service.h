@@ -12,7 +12,9 @@
 
 #include <QtCore/QObject>
 
-class ChatImageService : public QObject
+#include "exports.h"
+
+class KADUAPI ChatImageService : public QObject
 {
 	Q_OBJECT
 

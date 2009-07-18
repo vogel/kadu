@@ -15,10 +15,12 @@
 
 #include "gui/widgets/configuration/configuration-widget.h"
 
+#include "exports.h"
+
 class ContactAccountData;
 class ContactAccountDataManager;
 
-class ContactAccountDataWidget : public ConfigurationWidget
+class KADUAPI ContactAccountDataWidget : public ConfigurationWidget
 {
 	Q_OBJECT
 

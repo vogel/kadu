@@ -18,10 +18,12 @@
 
 #include "contact.h"
 
+#include "exports.h"
+
 class Account;
 class XmlConfigFile;
 
-class ContactAccountData : public QObject, public StorableObject
+class KADUAPI ContactAccountData : public QObject, public StorableObject
 {
 	Q_OBJECT
 

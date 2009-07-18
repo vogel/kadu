@@ -14,7 +14,9 @@
 
 #include "accounts/account.h"
 
-class AccountCreateWidget : public QWidget
+#include "exports.h"
+
+class KADUAPI AccountCreateWidget : public QWidget
 {
 	Q_OBJECT
 

@@ -12,9 +12,11 @@
 
 #include <QtGui/QWidget>
 
+#include "exports.h"
+
 class Account;
 
-class AccountEditWidget : public QWidget
+class KADUAPI AccountEditWidget : public QWidget
 {
 	Q_OBJECT
 

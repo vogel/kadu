@@ -13,9 +13,11 @@
 #include <QtCore/QString>
 #include <QtCore/QVariant>
 
+#include "exports.h"
+
 class StatusGroup;
 
-class StatusType
+class KADUAPI StatusType
 {
 	QString Name;
 	QString DisplayName;

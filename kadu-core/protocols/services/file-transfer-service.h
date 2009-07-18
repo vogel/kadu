@@ -14,10 +14,12 @@
 
 #include "contacts/contact.h"
 
+#include "exports.h"
+
 class FileTransfer;
 class StoragePoint;
 
-class FileTransferService : public QObject
+class KADUAPI FileTransferService : public QObject
 {
 	Q_OBJECT
 
