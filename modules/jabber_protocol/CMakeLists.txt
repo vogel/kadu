@@ -310,11 +310,12 @@ set (CONFIGURATION_FILES
 KADU_JABBER_AUTOMOC ( ${MOC_SOURCES2_IRIS} )
 
 link_directories( ${QCA2_LIBRARY_DIRS} ${IDN_LIBRARY_DIRS} )
-add_definitions( ${QCA2_CFLAGS_OTHER} ${IDN_CFLAGS_OTHER} )
+add_definitions( ${QCA2_CFLAGS_OTHER} ${IDN_CFLAGS_OTHER} -DIRISNET_STATIC )
 
 kadu_module (jabber_protocol
 	MODULE_SOURCES ${SOURCES_IRIS}  ${SOURCES}
 	MODULE_MOC_SOURCES  ${MOC_SOURCES_IRIS} ${MOC_SOURCES}
+	MODULE_DEPENDENCIES ${QCA2_LIBRARIES} ${IDN_LIBRARIES}
 #	MODULE_TRANSLATION_SOURCES ${TRANSLATION_SOURCES}
 	MODULE_CONFIGURATION_FILES ${CONFIGURATION_FILES}
 )
@@ -344,8 +345,6 @@ include_directories(
 	${CMAKE_CURRENT_SOURCE_DIR}/libiris/iris/irisnet/corelib
 	${CMAKE_CURRENT_SOURCE_DIR}/libiris/iris/irisnet/appledns
 )
-
-target_link_libraries(jabber_protocol ${QCA2_LIBRARIES} ${IDN_LIBRARIES} ${QT_LIBRARIES} )
 
 install (FILES ${DATA_FILES}
         DESTINATION share/kadu/modules/data/jabber_protocol)
