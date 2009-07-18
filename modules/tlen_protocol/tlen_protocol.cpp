@@ -39,12 +39,14 @@
 #include "tlen_protocol_factory.h"
 #include "tlen_protocol.h"
 
-extern "C" int tlen_protocol_init()
+#include "exports.h"
+
+extern "C" KADU_EXPORT int tlen_protocol_init()
 {
 	return TlenProtocol::initModule();
 }
 
-extern "C" void tlen_protocol_close()
+extern "C" KADU_EXPORT void tlen_protocol_close()
 {
 	TlenProtocol::closeModule();
 }
