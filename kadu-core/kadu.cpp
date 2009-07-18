@@ -1435,6 +1435,7 @@ void Kadu::disconnected()
 
 bool Kadu::close(bool quit)
 {
+	int wasHidden = 0;
 	if (!quit && Docked && !dontHideOnClose)
 	{
 		kdebugmf(KDEBUG_INFO, "hiding\n");
@@ -1444,6 +1445,10 @@ bool Kadu::close(bool quit)
 	else
 	{
 		Closing = true;
+
+		/* Dorr: on Gnome kadu doesn't save position properly when hidden */
+		if ((wasHidden = isHidden())) 
+			show(); 
 
 		writeToolBarsToConfig("");
 
@@ -1456,6 +1461,8 @@ bool Kadu::close(bool quit)
 		if (config_file.readBoolEntry("Look", "ShowStatusButton"))
 			config_file.writeEntry("General", "UserBoxHeight", Userbox->height());
  		saveWindowGeometry(this, "General", "Geometry");
+
+		if (wasHidden) hide(); /* Dorr: now we can hide it again */
 
 		config_file.writeEntry("General", "DefaultDescription", defaultdescriptions.join("<-->"));
 
