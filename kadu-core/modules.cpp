@@ -136,8 +136,7 @@ ModulesDialog::ModulesDialog(QWidget *parent)
 	lv_modules->setAllColumnsShowFocus(true);
 	lv_modules->setIndentation(false);
 	lv_modules->setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding));
-
-	
+	lv_modules->setAlternatingRowColors(true);
 	// end our QListView
 
 	//our QVGroupBox
@@ -281,7 +280,8 @@ void ModulesDialog::refreshList()
 		else
 			strings << module << QString::null << tr("Static") << tr("Loaded");
 	
-		new QTreeWidgetItem(lv_modules, strings);
+		QTreeWidgetItem* item = new QTreeWidgetItem(lv_modules, strings);
+		item->setBackground(3, QBrush(Qt::gray));
 	}
 
 	moduleList = modules_manager->loadedModules();
@@ -299,7 +299,8 @@ void ModulesDialog::refreshList()
 		else
 			strings << module << QString::null << tr("Dynamic") << tr("Loaded");
 	
-		new QTreeWidgetItem(lv_modules, strings);
+		QTreeWidgetItem* item = new QTreeWidgetItem(lv_modules, strings);
+		item->setBackground(3, QBrush(Qt::darkGreen));
 	}
 
 	moduleList = modules_manager->unloadedModules();
@@ -317,7 +318,8 @@ void ModulesDialog::refreshList()
 		else
 			strings << module << QString::null << tr("Dynamic") << tr("Not loaded");
 	
-		new QTreeWidgetItem(lv_modules, strings);
+		QTreeWidgetItem* item = new QTreeWidgetItem(lv_modules, strings);
+		item->setBackground(3, QBrush(Qt::darkRed));
 	}
 	lv_modules->resizeColumnToContents(0);
 // 	lv_modules->setSelected(lv_modules->findItem(s_selected, 0), true);
