@@ -27,6 +27,8 @@
 
 #include <QHostAddress>
 
+#include <time.h>
+
 #include "tlen.h"
 #include "auth.h"
 //#include "settings.h"

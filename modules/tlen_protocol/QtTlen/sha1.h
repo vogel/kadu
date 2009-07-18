@@ -69,12 +69,15 @@
 #ifndef _SHA1_H_
 #define _SHA1_H_
 
-#include <stdint.h>
 #include <QtGlobal>
 
+#ifndef _MSC_VER
+#include <stdint.h>
+#else
 typedef quint32 uint32_t;
 typedef quint8 uint8_t;
-//typedef __int32 int_least16_t;
+typedef __int32 int_least16_t;
+#endif
 
 #ifndef _SHA_enum_
 #define _SHA_enum_

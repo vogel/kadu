@@ -20,6 +20,10 @@
 
 #include "auth.h"
 
+#ifdef _MSC_VER
+#define snprintf _snprintf
+#endif
+
 //-----------------------------------------------------
 // Kod zaczerpniety z libtlen
 //-----------------------------------------------------
