@@ -166,7 +166,8 @@ void JabberProtocol::connectToServer()
 	// set SSL flag (this should be converted to forceTLS when using the new protocol)
 	//JabberClient->setUseSSL(false);
 	//TODO: szyfrowanie z konfiguracji konta, jak tylko GUI pozwoli 
- 	JabberClient->setForceTLS(false);
+ 	//tmp hax0r for GTalk
+	JabberClient->setForceTLS(true);
 
 	// override server and port (this should be dropped when using the new protocol and no direct SSL)
 	JabberClient->setOverrideHost(false);
