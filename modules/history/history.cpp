@@ -819,6 +819,10 @@ uint HistoryManager::getHistoryDate(QTextStream &stream)
 
 	line = stream.readLine();
 	tokens = mySplit(',', line);
+
+	if (tokens.count() < 1) /* Mantis 0001131 fix */
+		return 0;
+
 	type = types.findIndex(tokens[0]);
 	if (!type)
 		pos = 2;
