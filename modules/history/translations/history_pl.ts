@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS><TS version="1.1" language="pl">
-<defaultcodec></defaultcodec>
+<!DOCTYPE TS>
+<TS version="2.0" language="pl">
 <context>
     <name>@default</name>
     <message>
@@ -125,6 +125,22 @@
         <source>No</source>
         <translation>Nie</translation>
     </message>
+    <message>
+        <source>Error opening history file </source>
+        <translation>Nie można otworzyć pliku historii </translation>
+    </message>
+    <message>
+        <source>Error opening sms history file </source>
+        <translation>Nie można otworzyć pliku historii smsów </translation>
+    </message>
+    <message>
+        <source>Error opening new history file </source>
+        <translation>Nie można otworzyć nowegu pliku historii </translation>
+    </message>
+    <message>
+        <source>Error opening new sms history file </source>
+        <translation>Nie można otworzyć nowego pliku historii smsów </translation>
+    </message>
 </context>
 <context>
     <name>HistoryModule</name>
@@ -171,11 +187,11 @@
     </message>
     <message>
         <source>hour</source>
-        <translation>godz.</translation>
+        <translation>godzina</translation>
     </message>
     <message>
         <source>minute</source>
-        <translation>min.</translation>
+        <translation>minuta</translation>
     </message>
     <message>
         <source>Find Criteria</source>

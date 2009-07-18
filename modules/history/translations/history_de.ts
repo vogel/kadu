@@ -123,6 +123,22 @@
         <source>No</source>
         <translation>Nein</translation>
     </message>
+    <message>
+        <source>Error opening history file </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Error opening sms history file </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Error opening new history file </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Error opening new sms history file </source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>HistoryModule</name>

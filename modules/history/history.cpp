@@ -19,6 +19,7 @@
 #include "html_document.h"
 #include "kadu.h"
 #include "misc.h"
+#include "message_box.h"
 
 #include "history.h"
 
@@ -112,6 +113,7 @@ void HistoryManager::appendMessage(UinsList uins, UinType uin, const QString &ms
 	if (!(f.open(QIODevice::WriteOnly | QIODevice::Append)))
 	{
 		kdebugmf(KDEBUG_ERROR, "Error opening history file %s\n", qPrintable(fname));
+		MessageBox::msg(tr("Error opening history file ") + fname);
 		return;
 	}
 
@@ -173,6 +175,7 @@ void HistoryManager::appendSms(const QString &mobile, const QString &msg)
 	if (!(f.open(QIODevice::WriteOnly | QIODevice::Append)))
 	{
 		kdebugmf(KDEBUG_ERROR, "Error opening sms history file\n");
+		MessageBox::msg(tr("Error opening sms history file ") + f.name());
 		return;
 	}
 
@@ -198,6 +201,7 @@ void HistoryManager::appendSms(const QString &mobile, const QString &msg)
 		if (!(f.open(QIODevice::WriteOnly | QIODevice::Append)))
 		{
 			kdebugmf(KDEBUG_ERROR, "Error opening sms history\n");
+			MessageBox::msg(tr("Error opening sms history file ") + f.name());
 			return;
 		}
 
@@ -288,6 +292,7 @@ void HistoryManager::appendStatus(UinType uin, const UserStatus &status)
 	if (!(f.open(QIODevice::WriteOnly | QIODevice::Append)))
 	{
 		kdebugmf(KDEBUG_ERROR, "Error opening history file %s\n", qPrintable(fname));
+		MessageBox::msg(tr("Error opening history file ") + fname);
 		return;
 	}
 
@@ -346,6 +351,7 @@ void HistoryManager::convHist2ekgForm(UinsList uins)
 	if (!(f.open(QIODevice::ReadWrite)))
 	{
 		kdebugmf(KDEBUG_ERROR, "Error opening history file %s\n", qPrintable(fname));
+		MessageBox::msg(tr("Error opening history file ") + fname);
 		return;
 	}
 
@@ -354,6 +360,7 @@ void HistoryManager::convHist2ekgForm(UinsList uins)
 	if (!(fout.open(QIODevice::WriteOnly | QIODevice::Truncate)))
 	{
 		kdebugmf(KDEBUG_ERROR, "Error opening new history file %s\n", qPrintable(fnameout));
+		MessageBox::msg(tr("Error opening new history file ") + fnameout);
 		f.close();
 		return;
 	}
@@ -488,6 +495,7 @@ void HistoryManager::convSms2ekgForm()
 	if (!(f.open(QIODevice::ReadWrite)))
 	{
 		kdebugmf(KDEBUG_ERROR, "Error opening sms history file %s\n", qPrintable(fname));
+		MessageBox::msg(tr("Error opening sms history file ") + fname);
 		return;
 	}
 	fnameout = fname + ".new";
@@ -495,6 +503,7 @@ void HistoryManager::convSms2ekgForm()
 	if (!(fout.open(QIODevice::WriteOnly | QIODevice::Truncate)))
 	{
 		kdebugmf(KDEBUG_ERROR, "Error opening new sms history file %s\n", qPrintable(fnameout));
+		MessageBox::msg(tr("Error opening new sms history file ") + fnameout);
 		f.close();
 		return;
 	}
@@ -601,6 +610,7 @@ int HistoryManager::getHistoryEntriesCountPrivate(const QString &filename) const
 	if (!(f.open(QIODevice::ReadOnly)))
 	{
 		kdebugmf(KDEBUG_ERROR, "Error opening history file %s\n", qPrintable(filename));
+		MessageBox::msg(tr("Error opening history file ") + filename);
 		return 0;
 	}
 	lines = f.size() / sizeof(int);
@@ -655,6 +665,7 @@ QList<HistoryEntry> HistoryManager::getHistoryEntries(UinsList uins, int from, i
 	if (!(f.open(QIODevice::ReadOnly)))
 	{
 		kdebugmf(KDEBUG_ERROR, "Error opening history file %s\n", qPrintable(filename));
+		MessageBox::msg(tr("Error opening history file ") + filename);
 		return entries;
 	}
 
@@ -848,6 +859,7 @@ QList<HistoryDate> HistoryManager::getHistoryDates(const UinsList &uins)
 	if (!(f.open(QIODevice::ReadOnly)))
 	{
 		kdebugmf(KDEBUG_ERROR, "Error opening history file %s\n", qPrintable(filename));
+		MessageBox::msg(tr("Error opening history file ") + filename);
 		return entries;
 	}
 	QTextStream stream(&f);
@@ -966,6 +978,7 @@ void HistoryManager::buildIndexPrivate(const QString &filename)
 	if (!fin.open(QIODevice::ReadOnly))
 	{
 		kdebugmf(KDEBUG_ERROR, "Error opening history file: %s\n", qPrintable(fin.name()));
+		MessageBox::msg(tr("Error opening history file ") + fin.name());
 		return;
 	}
 	if (!fout.open(QIODevice::WriteOnly | QIODevice::Truncate))
