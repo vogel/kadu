@@ -36,12 +36,14 @@
 #include "libiris/include/filetransfer.h"
 #include "system-info.h"
 
-extern "C" int jabber_protocol_init()
+#include "exports.h"
+
+extern "C" KADU_EXPORT int jabber_protocol_init()
 {
 	return JabberProtocol::initModule();
 }
 
-extern "C" void jabber_protocol_close()
+extern "C" KADU_EXPORT void jabber_protocol_close()
 {
 	JabberProtocol::closeModule();
 }
