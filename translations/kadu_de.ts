@@ -1584,8 +1584,8 @@ Zu viel Versuche mit falschem Passwort</translation>
         <translation>Zeige Kontate ohne Beschreibung</translation>
     </message>
     <message>
-        <source>Show only online and description users</source>
-        <translation>Zeige nur Kontakte, die online sind und Beschreibung haben</translation>
+        <source>Show only online or description buddies</source>
+        <translation>Zeige nur Kontakte, die online sind oder Beschreibung haben</translation>
     </message>
     <message>
         <source>Show all users</source>

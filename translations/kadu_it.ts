@@ -1578,8 +1578,8 @@ Di più conessioni con il password incorretto</translation>
         <translation>Visualizza contatti senza descrizione</translation>
     </message>
     <message>
-        <source>Show only online and description users</source>
-        <translation>Visualizza solo contatti attivi con la descrizione</translation>
+        <source>Show only online or description buddies</source>
+        <translation>Visualizza solo contatti attivi o con la descrizione</translation>
     </message>
     <message>
         <source>Show all users</source>

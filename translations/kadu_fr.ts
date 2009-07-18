@@ -1568,7 +1568,7 @@ Too many attempts with bad password</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Show only online and description users</source>
+        <source>Show only online or description buddies</source>
         <translation type="unfinished"></translation>
     </message>
     <message>

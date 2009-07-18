@@ -516,7 +516,7 @@ Kadu::Kadu(QWidget *parent)
 	onlineAndDescriptionUsersAction = new ActionDescription(
 		ActionDescription::TypeUserList, "onlineAndDescriptionUsersAction",
 		this, SLOT(onlineAndDescUsersActionActivated(QAction *, bool)),
-		"ShowOnlineAndDescriptionUsers", tr("Show only online and description users"),
+		"ShowOnlineAndDescriptionUsers", tr("Show only online or description buddies"),
 		true, tr("Show all users")
 	);
 	connect(onlineAndDescriptionUsersAction, SIGNAL(actionCreated(KaduAction *)), this, SLOT(onlineAndDescUsersActionCreated(KaduAction *)));

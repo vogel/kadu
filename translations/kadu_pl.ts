@@ -1594,8 +1594,8 @@ Czy na pewno tego chcesz?</translation>
         <translation>Pokaż kontakty bez opisu</translation>
     </message>
     <message>
-        <source>Show only online and description users</source>
-        <translation>Pokaż tylko kontakty dostępne i z opisem</translation>
+        <source>Show only online or description buddies</source>
+        <translation>Pokaż tylko kontakty dostępne lub z opisem</translation>
     </message>
     <message>
         <source>Show all users</source>
