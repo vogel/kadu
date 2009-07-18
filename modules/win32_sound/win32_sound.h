@@ -14,6 +14,10 @@ class WIN32PlayerSlots : public ConfigurationUiHandler
 	Q_OBJECT
 
 	void createDefaultConfiguration();
+	QStringList inNames;
+	QStringList inValues;
+	QStringList outNames;
+	QStringList outValues;
 
 public slots:
 	void openDevice(SoundDeviceType type, int sample_rate, int channels, SoundDevice* device);

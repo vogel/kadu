@@ -67,6 +67,48 @@ WIN32PlayerSlots::WIN32PlayerSlots(QObject *parent, const char *name) : QObject(
 		this, SLOT(recordSample(SoundDevice, int16_t*, int, bool*)),
 		Qt::DirectConnection);
 
+  inNames.clear();
+  inValues.clear();
+	inNames.append(tr("Default"));
+	inValues.append("-1");
+	int inputDevices = waveInGetNumDevs();
+	for(int i = 0; i < inputDevices; i++) {
+		QT_WA( {
+			WAVEINCAPSW caps;
+			if(waveInGetDevCapsW(i, &caps, sizeof(WAVEINCAPSW)) == MMSYSERR_NOERROR){
+				inNames.append(QString::fromUtf16(caps.szPname));
+				inValues.append(QString::number(i));
+			}
+		} , {
+			WAVEINCAPSA caps;
+			if(waveInGetDevCapsA(i, &caps, sizeof(WAVEINCAPSW)) == MMSYSERR_NOERROR){
+				inNames.append(QString::fromLocal8Bit(caps.szPname));
+				inValues.append(QString::number(i));
+			}
+		} );
+	}
+
+  outNames.clear();
+  outValues.clear();
+	outNames.append(tr("Default"));
+	outValues.append("-1");
+	int outputDevices = waveOutGetNumDevs();
+	for(int i  = 0;i < outputDevices; i++) {
+		QT_WA( {
+			WAVEOUTCAPSW caps;
+			if(waveOutGetDevCapsW(i, &caps, sizeof(WAVEOUTCAPSW)) == MMSYSERR_NOERROR){
+				outNames.append(QString::fromUtf16(caps.szPname));
+				outValues.append(QString::number(i));
+			}
+		} , {
+			WAVEOUTCAPSA caps;
+			if(waveOutGetDevCapsA(i, &caps, sizeof(WAVEOUTCAPSA)) == MMSYSERR_NOERROR){
+				outNames.append(QString::fromLocal8Bit(caps.szPname));
+				outValues.append(QString::number(i));
+			}
+		} );
+	}
+	
 	kdebugf2();
 }
 
@@ -217,49 +259,8 @@ void WIN32PlayerSlots::mainConfigurationWindowCreated(MainConfigurationWindow *m
 {
 	ConfigComboBox *in=dynamic_cast<ConfigComboBox*>(mainConfigurationWindow->widgetById("win32sound/in"));
 	ConfigComboBox *out=dynamic_cast<ConfigComboBox*>(mainConfigurationWindow->widgetById("win32sound/out"));
-	QStringList names;
-	QStringList values;
-	names.append(tr("Default"));
-	values.append("-1");
-	int inputDevices=waveInGetNumDevs();
-	for(int i=0;i<inputDevices;i++){
-		QT_WA( {
-			WAVEINCAPSW caps;
-			if(waveInGetDevCapsW(i, &caps, sizeof(WAVEINCAPSW))==MMSYSERR_NOERROR){
-				names.append(QString::fromUtf16(caps.szPname));
-				values.append(QString::number(i));
-			}
-		} , {
-			WAVEINCAPSA caps;
-			if(waveInGetDevCapsA(i, &caps, sizeof(WAVEINCAPSW))==MMSYSERR_NOERROR){
-				names.append(QString::fromLocal8Bit(caps.szPname));
-				values.append(QString::number(i));
-			}
-		} );
-	}
-	in->setItems(values, names);
-
-	values.clear();
-	names.clear();
-	names.append(tr("Default"));
-	values.append("-1");
-	int outputDevices=waveOutGetNumDevs();
-	for(int i=0;i<outputDevices;i++){
-		QT_WA( {
-			WAVEOUTCAPSW caps;
-			if(waveOutGetDevCapsW(i, &caps, sizeof(WAVEOUTCAPSW))==MMSYSERR_NOERROR){
-				names.append(QString::fromUtf16(caps.szPname));
-				values.append(QString::number(i));
-			}
-		} , {
-			WAVEOUTCAPSA caps;
-			if(waveOutGetDevCapsA(i, &caps, sizeof(WAVEOUTCAPSA))==MMSYSERR_NOERROR){
-				names.append(QString::fromLocal8Bit(caps.szPname));
-				values.append(QString::number(i));
-			}
-		} );
-	}
-	out->setItems(values, names);
+	in->setItems(inValues, inNames);
+	out->setItems(outValues, outNames);
 }
 
 
