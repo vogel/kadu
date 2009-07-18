@@ -253,13 +253,15 @@ FormattedMessage GaduFormater::createMessage(Account *account, UinType sender, c
 				}
 		}
 
-		if (!first)
+		if (!first && textPosition > prevTextPosition)
 			appendToMessage(account, result, sender, content.mid(prevTextPosition, textPosition - prevTextPosition),
 					prevFormat, prevColor, image, receiveImages && images <= MAX_NUMBER_OF_IMAGES);
 		else
 			first = false;
 
-		prevTextPosition = textPosition;
+		if (textPosition > prevTextPosition)
+			prevTextPosition = textPosition;
+
 		prevFormat = format;
 		prevColor = color;
 	}

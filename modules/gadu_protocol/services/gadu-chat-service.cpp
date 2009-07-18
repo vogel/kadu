@@ -218,7 +218,7 @@ void GaduChatService::handleEventMsg(struct gg_event *e)
 
 	Message msg;
 	msg.chat = chat;
-	msg.messageContent = message.toPlain();
+	msg.messageContent = message.toHtml();
 	msg.sender = sender;
 	msg.sendDate = time;
 	msg.receiveDate = QDateTime::currentDateTime();

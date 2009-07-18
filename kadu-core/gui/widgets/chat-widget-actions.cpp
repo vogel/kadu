@@ -145,7 +145,7 @@ ChatWidgetActions::ChatWidgetActions(QObject *parent) : QObject(parent)
 
 	OpenChat = new ActionDescription(0,
 		ActionDescription::TypeUser, "chatAction",
-		this, SLOT(chatActionActivated(QAction *, bool)),
+		this, SLOT(openChatActionActivated(QAction *, bool)),
 		"OpenChat", tr("&Chat"), false, QString::null,
 		disableContainsSelfUles
 	);
