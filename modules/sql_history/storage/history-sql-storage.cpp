@@ -458,9 +458,9 @@ int HistorySqlStorage::getMessagesCount(Chat *chat, QDate date)
 QList<QDate> HistorySqlStorage::getAllDates()
 {
 	kdebugf();
-/*
+
 	QList<QDate> result;
-	QSqlQuery query(Database);
+/*	QSqlQuery query(Database);
 	QString query_str = "SELECT DISTINCT date(send_time) FROM kadu_messages";
 	kdebug("query: %s\n", query_str.toLocal8Bit().data());
 	if (!query.exec(query_str))
@@ -474,10 +474,9 @@ QList<QDate> HistorySqlStorage::getAllDates()
 		QDate date = query.value(0).toDate();
 		result.append(date);
 	}
-	kdebug("%i dates\n", result.count());
+	kdebug("%i dates\n", result.count());*/
 	kdebugf2();
-*/
-//	return result;
+	return result;
 }
 
 
@@ -485,10 +484,10 @@ QList<QDate> HistorySqlStorage::getAllDates()
 
 QList<ChatMessage*> HistorySqlStorage::historyMessages(const ContactList& uids, QDate date)
 {
-/*
+
 	kdebugf();
 	QList<ChatMessage*> result;
-	QSqlQuery query(Database);
+/*	QSqlQuery query(Database);
 	QString query_str;
 	if(date.isNull())
 		query_str = "SELECT uid_group_id, is_outgoing, send_time, receive_time, content FROM kadu_messages WHERE uid_group_id = '%1' ORDER BY receive_time ASC;";
@@ -531,10 +530,9 @@ QList<ChatMessage*> HistorySqlStorage::historyMessages(const ContactList& uids, 
 		result.append(chat_message);
 	}
 	
-	kdebug("%i messages\n", result.count());
+	kdebug("%i messages\n", result.count());*/
 	kdebugf2();
 	return result;
-*/
 }
 
 QList<ChatMessage*> HistorySqlStorage::getStatusEntries(const ContactList& uids, QDate date)
@@ -648,8 +646,8 @@ QList<ChatMessage*> HistorySqlStorage::getSmsEntries(const ContactList& uids, QD
 int HistorySqlStorage::getEntriesCount(const QList<ContactList> &uids, HistoryEntryType type)
 {
 	kdebugf();
-/*	int result = 0;
-	QSqlQuery query(Database);
+	int result = 0;
+/*	QSqlQuery query(Database);
 	QString query_str;
 
 	foreach(const ContactList uid, uids)
@@ -781,18 +779,18 @@ int HistorySqlStorage::getEntriesCount(const QList<ContactList> &uids, HistoryEn
 	}	
 }*/
 kdebugf2();
-//return result;
+return result;
 	
 }
 
 HistorySearchResult HistorySqlStorage::searchHistory(ContactList users, HistorySearchParameters params)
 {
 	kdebugf();
-/*
+
 	int count = 0;
 	QString title, tableName, query_str;
 	HistorySearchResult result;
-	result.users = users;
+/*	result.users = users;
 	result.currentType = params.currentType;
 	QSqlQuery query(QSqlDatabase::database("kadu-history"));
 	QString usersID = findUidGroup(users);
@@ -855,7 +853,7 @@ HistorySearchResult HistorySqlStorage::searchHistory(ContactList users, HistoryS
 	}
 */
 //	result.pattern = params.pattern;
-//	return result;
+	return result;
 	kdebugf2();
 }
 

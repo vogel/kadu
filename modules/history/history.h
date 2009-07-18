@@ -34,10 +34,12 @@ enum HistoryEntryType
 #include "gui/widgets/contacts-list-widget-menu-manager.h"
 #include "storage/history-storage.h"
 
+#include "history_exports.h"
+
 class Account;
 class HistoryDlg;
 
-class History : public ConfigurationUiHandler, ConfigurationAwareObject, ContactRemovePredicateObject
+class HISTORYAPI History : public ConfigurationUiHandler, ConfigurationAwareObject, ContactRemovePredicateObject
 {
 	Q_OBJECT
 

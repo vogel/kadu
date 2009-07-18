@@ -19,6 +19,7 @@
 
 #include "history-search-dialog.h"
 #include "../../history.h"
+#include "history_exports.h"
 
 /*!
 \struct HistorySearchParameters
@@ -39,28 +40,30 @@ struct HistorySearchParameters {
 \struct HistorySearchDetailsItem
 \brief Kontener danych potrzebnych do odtworzenia listy dat z zapisanego wyniku wyszukiwania w widoku szczeg��owym.
 */
-struct HistorySearchDetailsItem
+class HISTORYAPI HistorySearchDetailsItem
 {
-	HistorySearchDetailsItem(QString altNick,  QString title, QDate date, int length);
-	QString altNick;  /*!< Ksywa kontaktu na potrzeby pozycji na li�cie widoku dat. */
-	QDate date;  /*!< Data, dla kt�rej znaleziono wyst�pienia wzorca w wyszukiwaniu. */
-	QString title;  /*!< Skr�t z pierwszej wiadomo�ci dla danej daty. */
-	int length;  /*!< Ilo�� wiadomo�ci, w tym przypadku z wyst�pieniem wzorca. */
+	public:
+		HistorySearchDetailsItem(QString altNick,  QString title, QDate date, int length);
+		QString altNick;  /*!< Ksywa kontaktu na potrzeby pozycji na li�cie widoku dat. */
+		QDate date;  /*!< Data, dla kt�rej znaleziono wyst�pienia wzorca w wyszukiwaniu. */
+		QString title;  /*!< Skr�t z pierwszej wiadomo�ci dla danej daty. */
+		int length;  /*!< Ilo�� wiadomo�ci, w tym przypadku z wyst�pieniem wzorca. */
 };
 
 /*!
 \struct HistorySearchResult
 \brief Reprezentuje wyniki pojedynczego wyszukiwania.
 */
-struct HistorySearchResult
+class HISTORYAPI HistorySearchResult
 {
-	HistorySearchResult();
-	ContactList users;  /*!< Lista u�ytkownik�w, kt�rych histori� przeszukano. */
-	HistoryEntryType currentType;  /*!< Troch� protetyczne okre�lenie czy szukali�my w chatach, statusach czy smsach */
-	//QString itemLabel; 
-	QList<HistorySearchDetailsItem> detailsItems;  /*!< Zachowana lista dat, w kt�rych znaleziono wyst�pienia frazy. */
-	QString pattern;  /*!< Poszukiwany wzorzec. */
-	int resultsShowMode;  /*!< Tryb wy�wietlania wynik�w. */
+	public:
+		HistorySearchResult();
+		ContactList users;  /*!< Lista u�ytkownik�w, kt�rych histori� przeszukano. */
+		HistoryEntryType currentType;  /*!< Troch� protetyczne okre�lenie czy szukali�my w chatach, statusach czy smsach */
+		//QString itemLabel; 
+		QList<HistorySearchDetailsItem> detailsItems;  /*!< Zachowana lista dat, w kt�rych znaleziono wyst�pienia frazy. */
+		QString pattern;  /*!< Poszukiwany wzorzec. */
+		int resultsShowMode;  /*!< Tryb wy�wietlania wynik�w. */
 };
 
 
