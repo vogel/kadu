@@ -2368,6 +2368,12 @@ unsigned int GaduFormater::computeFormatsSize(const Message &message)
 			size += sizeof(struct gg_msg_richtext_format);
 			first = false;
 		}
+		else if (first) 
+		{
+			/* Dorr: handle the case when first contains only empty line */
+			first = false;
+			continue;
+		}
 
 		if (part.isImage())
 		{
@@ -2382,7 +2388,6 @@ unsigned int GaduFormater::computeFormatsSize(const Message &message)
 			first = false;
 		}
 	}
-
 	return first ? 0 : size;
 }
 
@@ -2406,7 +2411,7 @@ unsigned char * GaduFormater::createFormats(const Message &message, unsigned int
 	header.length = gg_fix16(size - sizeof(struct gg_msg_richtext));
 	memcpy(result, &header, sizeof(header));
 
-	foreach (MessagePart part, message.parts())
+	foreach (const MessagePart part, message.parts())
 	{
 		if (first && !part.bold() && !part.italic() && !part.underline() && !part.color().isValid())
 		{
