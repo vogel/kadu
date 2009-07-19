@@ -8,6 +8,7 @@
  ***************************************************************************/
 
 #include "gui/widgets/tlen-create-account-widget.h"
+#include "gui/widgets/tlen-edit-account-widget.h"
 
 #include "tlen_account.h"
 #include "tlen_configuration_dialog.h"
@@ -75,6 +76,11 @@ ContactAccountData * TlenProtocolFactory::loadContactAccountData(Contact contact
 AccountCreateWidget * TlenProtocolFactory::newCreateAccountWidget(QWidget *parent)
 {
     	return new TlenCreateAccountWidget(parent);
+}
+
+AccountEditWidget * TlenProtocolFactory::newEditAccountWidget(Account *account, QWidget *parent)
+{
+	return new TlenEditAccountWidget(account, parent);
 }
 
 TlenConfigurationDialog * TlenProtocolFactory::newConfigurationDialog(Account *account, QWidget *parent)

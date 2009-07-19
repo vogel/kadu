@@ -33,7 +33,7 @@ public:
 	virtual ContactAccountData * loadContactAccountData(Contact contact, Account *account);
 	virtual TlenConfigurationDialog * newConfigurationDialog(Account *, QWidget *);
 	virtual AccountCreateWidget * newCreateAccountWidget(QWidget *parent);
-	virtual AccountEditWidget* newEditAccountWidget(Account*, QWidget*) { return 0; };
+	virtual AccountEditWidget* newEditAccountWidget(Account*, QWidget*);
 	virtual ContactAccountDataWidget * newContactAccountDataWidget(ContactAccountData *contactAccountData, QWidget *parent = 0);
 	//virtual ProtocolMenuManager * getProtocolMenuManager() { return 0; }
 	virtual QList<StatusType *> supportedStatusTypes();

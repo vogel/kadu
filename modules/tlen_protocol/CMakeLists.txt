@@ -3,6 +3,7 @@
 
 set (SOURCES
 	gui/widgets/tlen-create-account-widget.cpp
+	gui/widgets/tlen-edit-account-widget.cpp
 	services/tlen-chat-service.cpp
 	tlen-account-data-manager.cpp
 	tlen_configuration_dialog.cpp
@@ -21,6 +22,7 @@ set (SOURCES
 
 set (MOC_SOURCES
 	gui/widgets/tlen-create-account-widget.h
+	gui/widgets/tlen-edit-account-widget.h
 	services/tlen-chat-service.h
 #	tlen-account-data-manager.h
 	tlen_configuration_dialog.h
