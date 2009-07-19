@@ -341,14 +341,16 @@ void SmsEraGateway::httpRedirected(QString link)
 	if (link.find("OK") > 0)
 	{
 		if (config_file.readEntry("SMS", "EraGateway") == "Sponsored")
-			QMessageBox::information(p, "SMS", tr("Number of SMS' left on Sponsored Era Gateway: ") + link.remove("http://OK?X-ERA-error=0&X-ERA-counter="), QMessageBox::Ok);
+		{
+			link.remove("http://OK?X-ERA-counter=");
+			link.remove("&X-ERA-error=0");
+			QMessageBox::information(p, "SMS", tr("Number of SMS' left on Sponsored Era Gateway: ") + link, QMessageBox::Ok);
+		}
 		emit finished(true);
 	}
 	else if (link.find("ERROR") > 0)
 	{
-		link.remove("http://ERROR?X-ERA-error=");
-		link.remove(link.find("&X-ERA-counter="), 17);
-		QMessageBox::critical(p, "SMS", tr("Error: ") + SmsEraGateway::errorNumber(link.toInt()));
+		QMessageBox::critical(p, "SMS", tr("Error: ") + SmsEraGateway::errorNumber(link.right(1).toInt()));
 		emit finished(false);
 	}
 	else if (link.find("error/pl/") > 0)
