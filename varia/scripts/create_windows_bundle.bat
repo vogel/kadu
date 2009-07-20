@@ -21,14 +21,17 @@ xcopy HISTORY   %DESTINATION%\ /R /Y
 xcopy README    %DESTINATION%\ /R /Y
 xcopy THANKS    %DESTINATION%\ /R /Y
 
-xcopy varia\configuration\*.ui %DESTINATION%\configuration\ /C /Q /H /R /Y 
-xcopy varia\syntax\chat\*.syntax %DESTINATION%\syntax\chat\ /C /Q /H /R /Y 
+xcopy varia\configuration\*.ui        %DESTINATION%\configuration\ /C /Q /H /R /Y 
+xcopy varia\syntax\chat\*.syntax      %DESTINATION%\syntax\chat\ /C /Q /H /R /Y 
 xcopy varia\syntax\infopanel\*.syntax %DESTINATION%\syntax\infopanel\ /C /Q /H /R /Y 
-xcopy translations\*.qm %DESTINATION%\translations\ /C /Q /H /R /Y
+xcopy translations\*.qm               %DESTINATION%\translations\ /C /Q /H /R /Y
 
 xcopy varia\themes\emoticons\penguins\* %DESTINATION%\themes\emoticons\penguins\ /C /Q /H /R /Y
-xcopy varia\themes\icons\default\* %DESTINATION%\themes\icons\default\ /E /C /Q /H /R /Y
-xcopy varia\themes\sounds\default\* %DESTINATION%\themes\sounds\default\ /C /Q /H /R /Y
+xcopy varia\themes\icons\default\*      %DESTINATION%\themes\icons\default\ /E /C /Q /H /R /Y
+xcopy varia\themes\sounds\default\*     %DESTINATION%\themes\sounds\default\ /C /Q /H /R /Y
+
+xcopy modules\gg_avatars\data\chat\*      %DESTINATION%\syntax\chat\ /C /Q /H /R /Y 
+xcopy modules\gg_avatars\data\infopanel\* %DESTINATION%\syntax\infopanel\ /C /Q /H /R /Y 
 
 ECHO Copying modules
 cd modules
@@ -60,6 +63,9 @@ xcopy %QT_DIR%..\plugins\imageformats\qmng4.dll  %DESTINATION%\plugins\imageform
 xcopy %QT_DIR%..\plugins\imageformats\qsvg4.dll  %DESTINATION%\plugins\imageformats\ /C /Q /H /R /Y
 xcopy %QT_DIR%..\plugins\imageformats\qtiff4.dll %DESTINATION%\plugins\imageformats\ /C /Q /H /R /Y
 xcopy %QT_DIR%..\plugins\imageformats\qico4.dll  %DESTINATION%\plugins\imageformats\ /C /Q /H /R /Y
+
+ECHO [Paths] > %DESTINATION%\qt.conf
+ECHO Plugins = plugins >> %DESTINATION%\qt.conf
 
 ECHO Copying libgadu
 xcopy %LIBGADU_DIR%libgadu.dll %DESTINATION%\ /C /Q /H /R /Y
