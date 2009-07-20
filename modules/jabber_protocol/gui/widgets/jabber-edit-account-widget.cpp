@@ -7,6 +7,7 @@
  *                                                                         *
  ***************************************************************************/
 
+#include <QtCrypto>
 #include <QtGui/QCheckBox>
 #include <QtGui/QComboBox>
 #include <QtGui/QGridLayout>
@@ -21,7 +22,9 @@
 #include "accounts/account-manager.h"
 #include "gui/widgets/account-contacts-list-widget.h"
 #include "gui/widgets/proxy-group-box.h"
+#include "gui/windows/message-box.h"
 
+#include "jabber-account.h"
 #include "jabber-personal-info-widget.h"
 
 #include "jabber-edit-account-widget.h"
@@ -141,25 +144,121 @@ void JabberEditAccountWidget::createConnectionTab(QTabWidget *tabWidget)
 
 void JabberEditAccountWidget::createGeneralGroupBox(QVBoxLayout *layout)
 {
-	QGroupBox *general = new QGroupBox(tr("General"), this);
-	QGridLayout *generalLayout = new QGridLayout(general);
-	generalLayout->setColumnMinimumWidth(0, 20);
-	generalLayout->setColumnMinimumWidth(3, 20);
+	QGroupBox *general = new QGroupBox(this);
+	general->setTitle(tr("General"));
 	layout->addWidget(general);
 
-	QCheckBox *useDefaultServers = new QCheckBox(tr("Use default servers"), this);
-	generalLayout->addWidget(useDefaultServers, 0, 0, 1, 6);
+        QVBoxLayout *vboxLayout2 = new QVBoxLayout(general);
+        vboxLayout2->setSpacing(6);
+        vboxLayout2->setMargin(9);
 
-	QLabel *ipAddressesLabel = new QLabel(tr("IP addresses"), this);
-	QLineEdit *ipAddresses = new QLineEdit(this);
-	generalLayout->addWidget(ipAddressesLabel, 1, 1);
-	generalLayout->addWidget(ipAddresses, 1, 2);
+        CustomHostPort = new QCheckBox(general);
+        CustomHostPort->setText(tr("Manually Specify Server Host/Port")+":");
+        vboxLayout2->addWidget(CustomHostPort);
 
-	QLabel *portLabel = new QLabel(tr("Port"), this);
-	QComboBox *port = new QComboBox(this);
-	generalLayout->addWidget(portLabel, 1, 4);
-	generalLayout->addWidget(port, 1, 5);
+        HostPortLayout = new QHBoxLayout();
+        HostPortLayout->setSpacing(6);
+        HostPortLayout->setMargin(0);
 
+        CustomHostLabel = new QLabel(general);
+        CustomHostLabel->setText(tr("Host")+":");
+        HostPortLayout->addWidget(CustomHostLabel);
+
+        CustomHost = new QLineEdit(general);
+        HostPortLayout->addWidget(CustomHost);
+
+        CustomPortLabel = new QLabel(general);
+        CustomPortLabel->setText(tr("Port")+":");
+        HostPortLayout->addWidget(CustomPortLabel);
+
+        CustomPort = new QLineEdit(general);
+        CustomPort->setMinimumSize(QSize(56, 0));
+        CustomPort->setMaximumSize(QSize(56, 32767));
+        HostPortLayout->addWidget(CustomPort);
+
+	// Manual Host/Port
+	CustomHost->setEnabled(false);
+	CustomHostLabel->setEnabled(false);
+	CustomPort->setEnabled(false);
+	CustomPortLabel->setEnabled(false);
+	connect(CustomHostPort, SIGNAL(toggled(bool)), SLOT(hostToggled(bool)));
+
+        vboxLayout2->addLayout(HostPortLayout);
+
+        QHBoxLayout *EncryptionLayout = new QHBoxLayout();
+        EncryptionLayout->setSpacing(6);
+        EncryptionLayout->setMargin(0);
+        EncryptionModeLabel = new QLabel(general);
+        EncryptionModeLabel->setText(tr("Encrypt connection")+":");
+        EncryptionLayout->addWidget(EncryptionModeLabel);
+
+        EncryptionMode = new QComboBox(general);
+	EncryptionMode->addItem(tr("Never"), JabberAccount::Encryption_No);
+	EncryptionMode->addItem(tr("Always"), JabberAccount::Encryption_Yes);
+	EncryptionMode->addItem(tr("When available"), JabberAccount::Encryption_Auto);
+	EncryptionMode->addItem(tr("Legacy SSL"), JabberAccount::Encryption_Legacy);
+	connect(EncryptionMode, SIGNAL(activated(int)), SLOT(sslActivated(int)));
+        EncryptionLayout->addWidget(EncryptionMode);
+
+        QSpacerItem *spacerItem = new QSpacerItem(151, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
+        EncryptionLayout->addItem(spacerItem);
+        vboxLayout2->addLayout(EncryptionLayout);
+
+        IgnoreTLSWarnings = new QCheckBox(general);
+        IgnoreTLSWarnings->setText(tr("Ignore TLS warnings"));
+        vboxLayout2->addWidget(IgnoreTLSWarnings);
+
+        LegacySSLProbe = new QCheckBox(general);
+        LegacySSLProbe->setText(tr("Probe legacy SSL port"));
+        vboxLayout2->addWidget(LegacySSLProbe);
+
+        QHBoxLayout *plainAuthLayout = new QHBoxLayout();
+        plainAuthLayout->setSpacing(6);
+        plainAuthLayout->setMargin(0);
+        QLabel *plainAuthLabel = new QLabel(general);
+        plainAuthLabel->setText(tr("Allow plaintext authentication")+":");
+        plainAuthLayout->addWidget(plainAuthLabel);
+
+	//TODO: powinno być XMPP::ClientStream::AllowPlainType - potrzebna koncepcja jak to zapisywać w konfiguracji
+        PlainTextAuth = new QComboBox(general);
+	PlainTextAuth->addItem(tr("Never"), JabberAccount::Encryption_No);
+	PlainTextAuth->addItem(tr("Always"), JabberAccount::Encryption_Yes);
+	PlainTextAuth->addItem(tr("When available"), JabberAccount::Encryption_Auto);
+	PlainTextAuth->addItem(tr("Legacy SSL"), JabberAccount::Encryption_Legacy);
+        plainAuthLayout->addWidget(PlainTextAuth);
+        vboxLayout2->addLayout(plainAuthLayout);
+
+}
+
+void JabberEditAccountWidget::hostToggled(bool on)
+{
+	CustomHost->setEnabled(on);
+	CustomPort->setEnabled(on);
+	CustomHostLabel->setEnabled(on);
+	CustomPortLabel->setEnabled(on);
+	if (!on && EncryptionMode->currentIndex() == EncryptionMode->findData(2)) {
+		EncryptionMode->setCurrentIndex(1);
+	}
+}
+
+bool JabberEditAccountWidget::checkSSL()
+{
+	if(!QCA::isSupported("tls")) {
+		MessageBox::msg(tr("Cannot enable SSL/TLS.  Plugin not found."));
+		return false;
+	}
+	return true;
+}
+
+void JabberEditAccountWidget::sslActivated(int i)
+{
+	if ((EncryptionMode->itemData(i) == 0 || EncryptionMode->itemData(i) == 2) && !checkSSL()) {
+		EncryptionMode->setCurrentIndex(EncryptionMode->findData(1));
+	}
+	else if (EncryptionMode->itemData(i) == 2 && !CustomHostPort->isChecked()) {
+		MessageBox::msg(tr("Legacy SSL is only available in combination with manual host/port."));
+		EncryptionMode->setCurrentIndex(EncryptionMode->findData(1));
+	}
 }
 
 void JabberEditAccountWidget::loadAccountData()
@@ -172,15 +271,33 @@ void JabberEditAccountWidget::loadAccountData()
 
 void JabberEditAccountWidget::loadConnectionData()
 {
+	JabberAccount *jabberAccount = dynamic_cast<JabberAccount *>(account());
+	if (!jabberAccount)
+		return;
+	CustomHostPort->setChecked(jabberAccount->useCustomHostPort());
+	CustomHost->setText(jabberAccount->customHost());
+	CustomPort->setText(jabberAccount->customPort() ? QString::number(jabberAccount->customPort()) : QString::number(5222));
+	EncryptionMode->setCurrentIndex(EncryptionMode->findData(jabberAccount->encryptionMode()));
+	LegacySSLProbe->setChecked(jabberAccount->legacySSLProbe());
+	IgnoreTLSWarnings->setChecked(jabberAccount->ignoreTLSWarnings());
 	proxy->loadProxyData();
 }
 
 void JabberEditAccountWidget::apply()
 {
-	account()->setConnectAtStart(ConnectAtStart->isChecked());
-	account()->setId(AccountId->text());
-	account()->setRememberPassword(RememberPassword->isChecked());
-	account()->setPassword(AccountPassword->text());
+	JabberAccount *jabberAccount = dynamic_cast<JabberAccount *>(account());
+	if (!jabberAccount)
+		return;
+	jabberAccount->setConnectAtStart(ConnectAtStart->isChecked());
+	jabberAccount->setId(AccountId->text());
+	jabberAccount->setRememberPassword(RememberPassword->isChecked());
+	jabberAccount->setPassword(AccountPassword->text());
+	jabberAccount->setUseCustomHostPort(CustomHostPort->isChecked());
+	jabberAccount->setCustomHost(CustomHost->text());
+	jabberAccount->setCustomPort(CustomPort->text().toInt());
+	jabberAccount->setEncryptionMode((JabberAccount::EncryptionFlag)EncryptionMode->itemData(EncryptionMode->currentIndex()).toInt());
+	jabberAccount->setLegacySSLProbe(LegacySSLProbe->isChecked());
+	jabberAccount->setIgnoreTLSWarnings(IgnoreTLSWarnings->isChecked());
 }
 
 void JabberEditAccountWidget::removeAccount()

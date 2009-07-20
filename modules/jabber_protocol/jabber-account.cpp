@@ -27,7 +27,7 @@ JabberAccount * JabberAccount::loadFromStorage(StoragePoint *storagePoint)
 }
 
 JabberAccount::JabberAccount(const QUuid &uuid)
-	: Account(uuid)
+	: Account(uuid), EncryptionMode(JabberAccount::Encryption_Auto), IgnoreTLSWarnings(false)
 {
 }
 
@@ -64,6 +64,11 @@ void JabberAccount::load()
 	setPriority(priorityString.toInt(&ok));
 	if (priorityString.isEmpty() || !ok )
 		setPriority(5);
+
+	setCustomHost(loadValue<QString>("CustomHost"));
+	setCustomPort(loadValue<int>("CustomPort"));
+	setEncryptionMode((EncryptionFlag)loadValue<int>("EncryptionMode"));
+	setIgnoreTLSWarnings(loadValue<bool>("IgnoreTLSWarnings"));
 }
 
 void JabberAccount::store()
@@ -75,4 +80,8 @@ void JabberAccount::store()
 
 	storeValue("Resource", resource());
 	storeValue("Priority", priority());
+	storeValue("CustomHost", customHost());
+	storeValue("CustomPort", customPort());
+	storeValue("EncryptionMode", encryptionMode());
+	storeValue("IgnoreTLSWarnings", ignoreTLSWarnings());
 }

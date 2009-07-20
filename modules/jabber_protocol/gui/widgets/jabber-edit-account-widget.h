@@ -10,6 +10,10 @@
 #ifndef JABBER_EDIT_ACCOUNT_WIDGET_H
 #define JABBER_EDIT_ACCOUNT_WIDGET_H
 
+#include <QtGui/QComboBox>
+#include <QtGui/QHBoxLayout>
+#include <QtGui/QLabel>
+
 #include "gui/widgets/account-edit-widget.h"
 
 class QCheckBox;
@@ -28,6 +32,18 @@ class JabberEditAccountWidget : public AccountEditWidget
 	QLineEdit *AccountPassword;
 	QCheckBox *RememberPassword;
 	QLineEdit *newAccountDescription;
+	
+	QCheckBox *CustomHostPort;
+	QHBoxLayout *HostPortLayout;
+	QLabel *CustomHostLabel;
+	QLineEdit *CustomHost;
+	QLabel *CustomPortLabel;
+	QLineEdit *CustomPort;
+	QLabel *EncryptionModeLabel;
+	QComboBox *EncryptionMode;
+	QCheckBox *LegacySSLProbe;
+	QCheckBox *IgnoreTLSWarnings;
+	QComboBox *PlainTextAuth;
 
 	ProxyGroupBox *proxy;
 
@@ -40,9 +56,12 @@ class JabberEditAccountWidget : public AccountEditWidget
 
 	void loadAccountData();
 	void loadConnectionData();
+	bool checkSSL();
 
 private slots:
 	void removeAccount();
+	void sslActivated(int i);
+	void hostToggled(bool on);
 
 public:
 	explicit JabberEditAccountWidget(Account *account, QWidget *parent = 0);

@@ -162,27 +162,20 @@ void JabberProtocol::connectToServer()
 	JabberClient->setCapsNode("http://psi-im.org/caps");
 	JabberClient->setCapsVersion("0.12");
 
-	// we need to use the old protocol for now
-	//JabberClient->setUseXMPP09(true);
-
-	// set SSL flag (this should be converted to forceTLS when using the new protocol)
-	//JabberClient->setUseSSL(false);
-	//TODO: szyfrowanie z konfiguracji konta, jak tylko GUI pozwoli 
- 	//tmp hax0r for GTalk
-	JabberClient->setForceTLS(true);
+	JabberClient->setForceTLS(jabberAccount->encryptionMode() != JabberAccount::Encryption_No);
+	JabberClient->setIgnoreTLSWarnings(jabberAccount->ignoreTLSWarnings());
 
 	// override server and port (this should be dropped when using the new protocol and no direct SSL)
 	JabberClient->setOverrideHost(false);
+	JabberClient->setUseSSL(jabberAccount->encryptionMode() == JabberAccount::Encryption_Legacy);
+	JabberClient->setOverrideHost(jabberAccount->useCustomHostPort(), jabberAccount->customHost(), jabberAccount->customPort());
 
 	// allow plaintext password authentication or not?
 	///gtalk
 	///JabberClient->setAllowPlainTextPassword(XMPP::ClientStream::AllowPlainOverTLS);
-	//JabberClient->setUseXMPP09(false);
- 	//JabberClient->setForceTLS(true);
 
-	JabberClient->setFileTransfersEnabled(true); // i has it
+	JabberClient->setFileTransfersEnabled(true); // i haz it
 	rosterRequestDone = false;
-	usingSSL = false;
 	jabberID = jabberAccount->id();
 
 /*
@@ -213,8 +206,6 @@ void JabberProtocol::connectToServer()
 */
 	whileConnecting = true;
 	networkStateChanged(NetworkConnecting);
-	//ma�e pro
-	//Jid j = d->jid.withResource((d->acc.opt_automatic_resource ? localHostName() : d->acc.resource ));
 	jabberID = jabberID.withResource(jabberAccount->resource());
 	networkStateChanged(NetworkConnecting);
 	JabberClient->connect(jabberID, jabberAccount->password(), true);

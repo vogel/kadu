@@ -17,9 +17,26 @@
 
 class JabberAccount : public Account
 {
+
+public:
+	enum EncryptionFlag 
+	{
+		Encryption_No = 0, 
+		Encryption_Yes = 1, 
+		Encryption_Auto = 2, 
+		Encryption_Legacy = 3 
+	};
+ 
+private: 
 	QString Jid;
 	QString Resource;
 	int Priority;
+	bool UseCustomHostPort;
+	QString CustomHost;
+	int CustomPort;
+	EncryptionFlag EncryptionMode;
+	bool IgnoreTLSWarnings;
+	bool LegacySSLProbe;
 
 public:
 	static JabberAccount * loadFromStorage(StoragePoint *storagePoint);
@@ -34,6 +51,19 @@ public:
 
 	int priority() { return Priority; }
 	void setPriority(const int &priority) { Priority = priority; }
+
+	bool useCustomHostPort() { return UseCustomHostPort; };
+	void setUseCustomHostPort(bool use) { UseCustomHostPort = use; };
+	QString customHost() { return CustomHost; };
+	void setCustomHost(QString host) { CustomHost = host; };
+	int customPort() { return CustomPort; };
+	void setCustomPort(int port) { CustomPort = port; };
+	EncryptionFlag encryptionMode() { return EncryptionMode; };
+	void setEncryptionMode(EncryptionFlag flag) { EncryptionMode = flag; };
+	bool ignoreTLSWarnings() { return IgnoreTLSWarnings; };
+	void setIgnoreTLSWarnings(bool ignore) { IgnoreTLSWarnings = ignore; };
+	bool legacySSLProbe() { return LegacySSLProbe; };
+	void setLegacySSLProbe(bool probe) { LegacySSLProbe = probe; };
 
 	virtual bool setId(const QString &id);
 
