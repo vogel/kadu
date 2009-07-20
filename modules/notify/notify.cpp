@@ -82,11 +82,36 @@ Notify::Notify(QObject *parent, const char *name)
 	connect(userlist, SIGNAL(statusChanged(UserListElement, QString, const UserStatus &, bool, bool)),
 		this, SLOT(statusChanged(UserListElement, QString, const UserStatus &, bool, bool)));
 
+	silent_mode = config_file.readBoolEntry("Notify", "SilentMode", false);
+	silent_action = new ActionDescription(
+		ActionDescription::TypeGlobal, "silentModeAction",
+		this, SLOT(silentActionActivated(QAction *, bool)),
+		"SilentMode", tr("Enable Silent Mode"), true, tr("Disable Silent Mode")
+	);
+	connect(silent_action, SIGNAL(actionCreated(KaduAction *)), this, SLOT(setSilentActionState()));
+
 	MessageNotification::registerEvents(this);
 	ConnectionErrorNotification::registerEvent(this);
 	StatusChangedNotification::registerEvents(this);
 
 	kdebugf2();
+}
+
+void Notify::silentActionActivated(QAction  *action, bool is_on)
+{
+	Q_UNUSED(action)
+	kdebugf();
+	silent_mode = is_on;
+ 	foreach (KaduAction *action, silent_action->actions())
+		action->setChecked(silent_mode);
+	config_file.writeEntry("Notify", "SilentMode", silent_mode);
+	kdebugf2();
+}
+
+void Notify::setSilentActionState()
+{
+ 	foreach (KaduAction *action, silent_action->actions())
+		action->setChecked(silent_mode);
 }
 
 Notify::~Notify()
@@ -103,6 +128,9 @@ Notify::~Notify()
 	// TODO:
 	disconnect(userlist, SIGNAL(statusChanged(UserListElement, QString, const UserStatus &, bool, bool)),
 		this, SLOT(statusChanged(UserListElement, QString, const UserStatus &, bool, bool)));
+
+	delete silent_action;
+	silent_action = 0;
 
 	if (!Notifiers.isEmpty())
 	{
@@ -314,6 +342,9 @@ void Notify::statusChanged(UserListElement elem, QString protocolName,
 					const UserStatus &oldStatus, bool massively, bool /*last*/)
 {
 	kdebugf();
+	
+	if (silent_mode)
+		return;
 
 	if (massively && config_file.readBoolEntry("Notify", "NotifyIgnoreOnConnection"))
 	{
@@ -360,6 +391,9 @@ void Notify::messageReceived(Protocol *protocol, UserListElements senders, const
 {
 	kdebugf();
 
+	if (silent_mode)
+		return;
+
 	ChatWidget *chat = chat_manager->findChatWidget(senders);
 	if (!chat) // new chat
 		notify(new MessageNotification(MessageNotification::NewChat, senders, msg, protocol->protocolID()));
@@ -373,6 +407,9 @@ void Notify::messageReceived(Protocol *protocol, UserListElements senders, const
 void Notify::connectionError(Protocol *protocol, const QString &server, const QString &message)
 {
 	kdebugf();
+
+	if (silent_mode)
+		return;
 
 	if (!ConnectionErrorNotification::activeError(message))
 	{

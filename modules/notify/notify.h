@@ -171,6 +171,9 @@ class NOTIFYAPI Notify : public ConfigurationUiHandler
 
 	QString CurrentEvent;
 
+	int silent_mode;
+	ActionDescription* silent_action;
+
 	void import_connection_from_0_5_0(const QString &notifierName, const QString &oldConnectionName, const QString &newConnectionName);
 	void createDefaultConfiguration();
 
@@ -192,6 +195,9 @@ private slots:
 	void notifierToggled(const QString &notifier, bool toggled);
 
 	void mainConfigurationWindowDestroyed();
+
+	void silentActionActivated(QAction  *action, bool is_on);
+	void setSilentActionState();
 
 public:
 	Notify(QObject *parent=0, const char *name=0);

@@ -120,6 +120,14 @@ kurz nachdem Sie sich mit dem Server verbunden haben</translation>
         <source>Notify list</source>
         <translation>Benachrichtigungsliste</translation>
     </message>
+    <message>
+        <source>Enable Silent Mode</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Disable Silent Mode</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>StatusChangedNotification</name>

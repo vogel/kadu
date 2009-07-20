@@ -97,6 +97,14 @@ durante primo colegamento Kadu con serwer</translation>
         <source>New message from &lt;b&gt;%1&lt;/b&gt;</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Enable Silent Mode</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Disable Silent Mode</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>Notify</name>

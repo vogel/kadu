@@ -1,4 +1,6 @@
-<!DOCTYPE TS><TS>
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
+<TS version="2.0" language="pl_PL">
 <context>
     <name>@default</name>
     <message>
@@ -118,6 +120,14 @@
     <message>
         <source>Notify list</source>
         <translation>Lista powiadomień</translation>
+    </message>
+    <message>
+        <source>Enable Silent Mode</source>
+        <translation>Włącz tryb cichy</translation>
+    </message>
+    <message>
+        <source>Disable Silent Mode</source>
+        <translation>Wyłącz tryb cichy</translation>
     </message>
 </context>
 <context>
