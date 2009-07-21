@@ -738,6 +738,62 @@ void JabberClient::slotCSError(int error)
 	
 }
 
+void JabberClient::addContact(const XMPP::Jid &j, const QString &name, const QStringList &groups, bool authReq)
+{
+	JT_Roster *r = new JT_Roster(jabberClient->rootTask());
+	r->set(j, name, groups);
+	r->go(true);
+
+	if(authReq)
+		requestSubscription(j);
+}
+
+void JabberClient::removeContact(const XMPP::Jid &j)
+{
+	JT_Roster *r = new JT_Roster(jabberClient->rootTask());
+	r->remove(j);
+	r->go(true);
+
+	//TODO in the future...
+	// if it looks like a transport, unregister (but not if it is the server!!)
+	/*if(u->isTransport() && !Jid(d->client->host()).compare(u->jid())) {
+		JT_UnRegister *ju = new JT_UnRegister(d->client->rootTask());
+		ju->unreg(j);
+		ju->go(true);
+	}
+	*/
+}
+
+void JabberClient::updateContact(const XMPP::Jid &j, const QString &name, const QStringList &groups)
+{
+	JT_Roster *r = new JT_Roster(jabberClient->rootTask());
+	r->set(j, name, groups);
+	r->go(true);
+}
+
+void JabberClient::requestSubscription(const XMPP::Jid &jid)
+{
+	changeSubscription(jid, "subscribe");
+}
+
+void JabberClient::resendSubscription(const XMPP::Jid &jid)
+{
+	changeSubscription(jid, "subscribed");
+}
+
+void JabberClient::rejectSubscription(const XMPP::Jid &jid)
+{
+	changeSubscription(jid, "unsubscribed");
+}
+
+
+void JabberClient::changeSubscription(const XMPP::Jid &jid, const QString type)
+{
+	XMPP::JT_Presence *task = new XMPP::JT_Presence(jabberClient->rootTask());
+	task->sub(jid, type);
+	task->go(true);
+}
+
 void JabberClient::slotRosterRequestFinished(bool success, int /*statusCode*/, const QString &/*statusString*/)
 {
 	emit rosterRequestFinished(success);

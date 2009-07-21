@@ -90,10 +90,13 @@ class JabberProtocol : public Protocol
 		void slotIncomingFileTransfer();
 		void slotSubscription(const XMPP::Jid &jid, const QString &type);
 		void slotClientDebugMessage (const QString &msg);
-		void changeSubscription(const XMPP::Jid &jid, const QString type);
-		void requestSubscription(const XMPP::Jid &jid);
-		void resendSubscription(const XMPP::Jid &jid);
-		void rejectSubscription(const XMPP::Jid &jid);
+
+		void contactAdded(Contact &contact);
+		void contactRemoved(Contact &contact);
+		void contactUpdated(Contact &contact);
+		void contactAccountDataAdded(Contact &contact, Account *contactAccount);
+		void contactAccountDataAboutToBeRemoved(Contact &contact, Account *contactAccount);
+		void contactAccountIdChanged(Contact &contact, Account *account, const QString &oldId);
 
 	public slots:
 		void setPresence(const XMPP::Status &status);

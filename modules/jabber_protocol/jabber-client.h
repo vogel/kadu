@@ -491,6 +491,14 @@ public:
 
 	static void getErrorInfo(int err, AdvancedConnector *conn, Stream *stream, QCATLSHandler *tlsHandler, QString *_str, bool *_reconn);
 
+	void addContact(const XMPP::Jid &j, const QString &name, const QStringList &groups, bool authReq);
+	void updateContact(const XMPP::Jid &j, const QString &name, const QStringList &groups);
+	void removeContact(const XMPP::Jid &j);
+	void changeSubscription(const XMPP::Jid &jid, const QString type);
+	void requestSubscription(const XMPP::Jid &jid);
+	void resendSubscription(const XMPP::Jid &jid);
+	void rejectSubscription(const XMPP::Jid &jid);
+
 signals:
 	/**
 	 * Connected successfully.
@@ -598,6 +606,8 @@ signals:
 	void debugMessage(const QString &message);
 	void incomingXML(const QString &msg);
 	void outgoingXML(const QString &msg);
+
+	
 
 private slots:
 	/* S5B server object has been destroyed. */

@@ -16,6 +16,7 @@
 #include "accounts/account-manager.h"
 #include "core/core.h"
 #include "contacts/contact-manager.h"
+#include "contacts/group.h"
 #include "gui/widgets/chat-widget-manager.h"
 #include "gui/windows/kadu-window.h"
 #include "gui/windows/message-box.h"
@@ -92,11 +93,32 @@ JabberProtocol::JabberProtocol(Account *account, ProtocolFactory *factory): Prot
 	CurrentChatService = new JabberChatService(this);
 	CurrentFileTransferService = new JabberFileTransferService(this);
 
+	connect(ContactManager::instance(), SIGNAL(contactAdded(Contact &)),
+			this, SLOT(contactAdded(Contact &)));
+	connect(ContactManager::instance(), SIGNAL(contactRemoved(Contact &)),
+			this, SLOT(contactRemoved(Contact &)));
+	connect(ContactManager::instance(), SIGNAL(contactAccountDataAdded(Contact &, Account *)),
+			this, SLOT(contactAccountDataAboutToBeRemoved(Contact & , Account *)));
+	connect(ContactManager::instance(), SIGNAL(contactAccountDataAboutToBeRemoved(Contact &, Account *)),
+			this, SLOT(contactAccountDataAboutToBeRemoved(Contact &, Account *)));
+	connect(ContactManager::instance(), SIGNAL(contactUpdated(Contact &)),
+			this, SLOT(contactUpdated(Contact &)));
+	connect(ContactManager::instance(), SIGNAL(contactAccountIdChanged(Contact &, Account *, const QString &)),
+			this, SLOT(contactAccountIdChanged(Contact &, Account *, const QString &)));
+
 	kdebugf2();
 }
 
 JabberProtocol::~JabberProtocol()
 {
+	QObject::disconnect(ContactManager::instance(), SIGNAL(contactAdded(Contact &)),
+			this, SLOT(contactAdded(Contact &)));
+	QObject::disconnect(ContactManager::instance(), SIGNAL(contactRemoved(Contact &)),
+			this, SLOT(contactRemoved(Contact &)));
+	QObject::disconnect(ContactManager::instance(), SIGNAL(contactAccountDataAdded(Contact &, Account *)),
+			this, SLOT(contactAccountDataAboutToBeRemoved(Contact & , Account *)));
+	QObject::disconnect(ContactManager::instance(), SIGNAL(contactAccountDataAboutToBeRemoved(Contact &, Account *)),
+			this, SLOT(contactAccountDataAboutToBeRemoved(Contact &, Account *)));
 }
 
 void JabberProtocol::initializeJabberClient()
@@ -518,6 +540,62 @@ void JabberProtocol::clientResourceUnavailable(const XMPP::Jid &jid, const XMPP:
 	kdebugf2();
 }
 
+void JabberProtocol::contactAdded(Contact &contact)
+{
+	JabberContactAccountData *jcad = jabberContactAccountData(contact);
+	if (!jcad)
+		return;
+	QStringList groupsList;
+	foreach (Group *group, contact.groups())
+		groupsList.append(group->name());
+	//TODO opcja żądania autoryzacji, na razie na sztywno true
+	JabberClient->addContact(jcad->id(), contact.display(), groupsList, true);
+}
+
+void JabberProtocol::contactRemoved(Contact &contact)
+{
+	JabberContactAccountData *jcad = jabberContactAccountData(contact);
+	if (!jcad || !isConnected())
+		return;
+	JabberClient->removeContact(jcad->id());
+	if (contact.accountDatas().count() == 1)
+	{
+		contact.setType(ContactData::TypeAnonymous);
+	}
+}
+
+void JabberProtocol::contactUpdated(Contact &contact)
+{
+	JabberContactAccountData *jcad = jabberContactAccountData(contact);
+	if (!jcad)
+		return;
+	QStringList groupsList;
+	foreach (Group *group, contact.groups())
+		groupsList.append(group->name());
+	JabberClient->updateContact(jcad->id(), contact.display(), groupsList);
+
+}
+
+void JabberProtocol::contactAccountDataAdded(Contact &contact, Account *contactAccount)
+{
+	if (contactAccount != account())
+		return;
+	contactAdded(contact);
+}
+
+void JabberProtocol::contactAccountDataAboutToBeRemoved(Contact &contact, Account *contactAccount)
+{
+	if (contactAccount != account())
+		return;
+	contactRemoved(contact);
+}
+
+
+void JabberProtocol::contactAccountIdChanged(Contact &contact, Account *account, const QString &oldId)
+{
+	contactUpdated(contact);
+}
+
 void JabberProtocol::slotContactUpdated(const XMPP::RosterItem &item)
 {
 	kdebugf();
@@ -676,28 +754,6 @@ void JabberProtocol::slotSubscription(const XMPP::Jid & jid, const QString &type
 		MessageBox::msg(QString("Contact %1 has removed authorization for you.").arg(jid.bare()), false, "Warning");
 		//TODO: usuwa� kontakt z listy... ta, chyba tak
 
-}
-
-void JabberProtocol::changeSubscription(const XMPP::Jid &jid, const QString type)
-{
-	XMPP::JT_Presence *task = new XMPP::JT_Presence(JabberClient->rootTask());
-	task->sub(jid, type);
-	task->go(true);
-}
-
-void JabberProtocol::requestSubscription(const XMPP::Jid &jid)
-{
-	changeSubscription(jid, "subscribe");
-}
-
-void JabberProtocol::resendSubscription(const XMPP::Jid &jid)
-{
-	changeSubscription(jid, "subscribed");
-}
-
-void JabberProtocol::rejectSubscription(const XMPP::Jid &jid)
-{
-	changeSubscription(jid, "unsubscribed");
 }
 
 bool JabberProtocol::validateUserID(QString& uid)
