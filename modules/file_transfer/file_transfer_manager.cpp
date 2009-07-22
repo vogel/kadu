@@ -46,8 +46,9 @@ FileTransferManager::FileTransferManager(QObject *parent, const char *name) : QO
 
 	dcc_manager->addHandler(this);
 
-	notification_manager->registerEvent("FileTransfer/IncomingFile",  QT_TRANSLATE_NOOP("@default", "An user wants to send you a file"), CallbackRequired);
-	notification_manager->registerEvent("FileTransfer/Finished", QT_TRANSLATE_NOOP("@default", "File transfer was finished"), CallbackNotRequired);
+	notification_manager->registerEvent("FileTransfer",  QT_TRANSLATE_NOOP("@default", "File transfers"), CallbackRequired);
+	notification_manager->registerEvent("FileTransfer/IncomingFile",  QT_TRANSLATE_NOOP("@default", "File Transfer Request"), CallbackRequired);
+	notification_manager->registerEvent("FileTransfer/Finished", QT_TRANSLATE_NOOP("@default", "File Transfer Complete"), CallbackNotRequired);
 
 	readFromConfig();
 
@@ -60,6 +61,7 @@ FileTransferManager::~FileTransferManager()
 
 	writeToConfig();
 
+	notification_manager->unregisterEvent("FileTransfer");
  	notification_manager->unregisterEvent("FileTransfer/IncomingFile");
 	notification_manager->unregisterEvent("FileTransfer/Finished");
 
@@ -261,7 +263,10 @@ void FileTransferManager::fileTransferFinishedSlot(FileTransfer *fileTransfer)
 	if (config_file.readBoolEntry("Network", "RemoveCompletedTransfers"))
 		fileTransfer->deleteLater();
 
-	Notification *fileTransferFinishedNotification = new Notification("FileTransfer/Finished", "SendFile", UserListElements());
+	if (config_file.readBoolEntry("Notify", "FileTransfer/Finished_UseCustomSettings"), true)
+		Notification *fileTransferFinishedNotification = new Notification("FileTransfer/Finished", "SendFile", UserListElements());
+	else
+		Notification *fileTransferFinishedNotification = new Notification("FileTransfer", "SendFile", UserListElements());
 	fileTransferFinishedNotification->setTitle(tr("File transfer finished"));
 	fileTransferFinishedNotification->setText(tr("File has been transferred sucessfully."));
 
@@ -278,6 +283,7 @@ void FileTransferManager::needFileAccept(DccSocket *socket)
 {
 	kdebugf();
 
+	QString notificationType;
 	QString fileName;
 	QString question;
 
@@ -287,9 +293,14 @@ void FileTransferManager::needFileAccept(DccSocket *socket)
 
 	NewFileTransferNotification *newFileTransferNotification;
 
+	if (config_file.readBoolEntry("Notify", "FileTransfer/IncomingFile_UseCustomSettings"), true)
+		notificationType = "FileTransfer/IncomingFile";
+	else
+		notificationType = "FileTransfer";
+
 	if (ft)
 	{
-		newFileTransferNotification = new NewFileTransferNotification(ft, socket,
+		newFileTransferNotification = new NewFileTransferNotification(notificationType, ft, socket,
 			userlist->byID("Gadu", QString::number(socket->peerUin())), FileTransfer::StartRestore);
 
 		question = narg(tr("User %1 wants to send you a file %2\nof size %3kB.\n"
@@ -302,7 +313,7 @@ void FileTransferManager::needFileAccept(DccSocket *socket)
 	}
 	else
 	{
-		newFileTransferNotification = new NewFileTransferNotification(ft, socket,
+		newFileTransferNotification = new NewFileTransferNotification(notificationType, ft, socket,
 			userlist->byID("Gadu", QString::number(socket->peerUin())), FileTransfer::StartNew);
 
 		question = narg(tr("User %1 wants to send you a file %2\nof size %3kB. Accept transfer?"),

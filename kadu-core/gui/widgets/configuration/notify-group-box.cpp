@@ -20,7 +20,7 @@ NotifyGroupBox::NotifyGroupBox(Notifier *notificator, const QString &caption, QW
 	NotifierCheckBox = new QCheckBox(caption);
 	NotifierCheckBox->setIcon(notificator->icon());
 	layout()->addWidget(NotifierCheckBox);
-	connect(NotifierCheckBox, SIGNAL(toggled(bool)), this, SLOT(toggledSlot(bool)));
+	connect(NotifierCheckBox, SIGNAL(clicked(bool)), this, SLOT(toggledSlot(bool)));
 }
 
 void NotifyGroupBox::setChecked(bool checked)

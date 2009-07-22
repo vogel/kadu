@@ -17,9 +17,9 @@
 
 #include "file_transfer_notifications.h"
 
-NewFileTransferNotification::NewFileTransferNotification(FileTransfer *ft, DccSocket *socket, const UserListElements &userListElements,
+NewFileTransferNotification::NewFileTransferNotification(QString &type, FileTransfer *ft, DccSocket *socket, const UserListElements &userListElements,
 	FileTransfer::StartType startType)
-	: Notification("FileTransfer/IncomingFile", "SendFile", userListElements), ft(ft), socket(socket), fileName("")
+	: Notification(type, "SendFile", userListElements), ft(ft), socket(socket), fileName("")
 {
 	if (startType == FileTransfer::StartRestore)
 	{

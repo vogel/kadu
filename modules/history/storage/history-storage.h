@@ -8,7 +8,7 @@
 #include "chat/chat_message.h"
 #include "contacts/contact.h"
 
-#include "history_exports.h"
+#include "../history_exports.h"
 
 class Message;
 

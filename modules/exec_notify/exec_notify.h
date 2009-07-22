@@ -28,7 +28,7 @@ class ExecConfigurationWidget : public NotifierConfigurationWidget
 	QString currentNotifyEvent;
 	QMap<QString, QString> Commands;
 
-	QLineEdit *commandLineEdit;	
+	QLineEdit *commandLineEdit;
 
 public:
 	ExecConfigurationWidget(QWidget *parent = 0);
@@ -42,6 +42,9 @@ public:
 class ExecNotify : public Notifier
 {
 	Q_OBJECT
+
+	void import_0_6_5_configuration();
+	void createDefaultConfiguration();
 
 public:
 	ExecNotify(QObject *parent = 0);

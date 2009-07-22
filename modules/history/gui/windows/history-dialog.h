@@ -19,7 +19,7 @@
 
 #include "history-search-dialog.h"
 #include "../../history.h"
-#include "history_exports.h"
+#include "../../history_exports.h"
 
 /*!
 \struct HistorySearchParameters

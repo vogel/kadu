@@ -8,6 +8,7 @@
  ***************************************************************************/
 
 #include <QtGui/QApplication>
+#include <QtGui/QCheckBox>
 #include <QtGui/QGridLayout>
 #include <QtGui/QPushButton>
 #include <QtGui/QHBoxLayout>
@@ -41,6 +42,11 @@ NotifyConfigurationUiHandler::NotifyConfigurationUiHandler(QObject *parent) :
 			this, SLOT(notifierRegistered(Notifier *)));
 	connect(NotificationManager::instance(), SIGNAL(notiferUnregistered(Notifier *)),
 			this, SLOT(notifierUnregistered(Notifier *)));
+
+	connect(NotificationManager::instance(), SIGNAL(notifyEventRegistered(NotifyEvent *)),
+			this, SLOT(notifyEventRegistered(NotifyEvent *)));
+	connect(NotificationManager::instance(), SIGNAL(notifyEventUnregistered(NotifyEvent *)),
+			this, SLOT(notifyEventUnregistered(NotifyEvent *)));
 }
 
 NotifyConfigurationUiHandler::~NotifyConfigurationUiHandler()
@@ -51,11 +57,11 @@ NotifyConfigurationUiHandler::~NotifyConfigurationUiHandler()
 void NotifyConfigurationUiHandler::addConfigurationWidget(Notifier *notifier)
 {
 	NotifyGroupBox *configurationGroupBox = new NotifyGroupBox(notifier,
-			qApp->translate("@default", notifier->name().toAscii().data()), notificationsGroupBox->widget());
+			qApp->translate("@default", notifier->description().toAscii().data()), notificationsGroupBox->widget());
 	connect(configurationGroupBox, SIGNAL(toggled(Notifier *, bool)), this, SLOT(notifierToggled(Notifier *, bool)));
-
+	connect(useCustomSettingsCheckBox, SIGNAL(toggled(bool)), configurationGroupBox, SLOT(setVisible(bool)));
 	if (!NotifierGui.contains(notifier))
-		NotifierGui.insert(notifier, NotifierGuiItem());
+		NotifierGui.insert(notifier, NotifierConfigurationGuiItem());
 
 	NotifierGui[notifier].ConfigurationGroupBox = configurationGroupBox;
 
@@ -65,14 +71,9 @@ void NotifyConfigurationUiHandler::addConfigurationWidget(Notifier *notifier)
 		NotifierGui[notifier].ConfigurationWidget = notifyConfigurationWidget;
 		notifyConfigurationWidget->loadNotifyConfigurations();
 	}
-//	else
-//	{
-//		configurationGroupBox->setFlat(true);
-//		configurationGroupBox->setLineWidth(0);
-//	}
 
 	notificationsGroupBox->addWidget(configurationGroupBox, true);
-	configurationGroupBox->show();
+	configurationGroupBox->setVisible(false);
 }
 
 void NotifyConfigurationUiHandler::removeConfigurationWidget(Notifier *notifier)
@@ -103,6 +104,20 @@ void NotifyConfigurationUiHandler::mainConfigurationWindowCreated(MainConfigurat
 			if (!NotifierGui[notifier].Events.contains(notifyEvent->name()))
 				NotifierGui[notifier].Events[notifyEvent->name()] = config_file.readBoolEntry("Notify", notifyEvent->name() + '_' + notifier->name());
 		}
+	}
+
+	QString eventName;
+	foreach (NotifyEvent *notifyEvent, NotificationManager::instance()->notifyEvents())
+	{
+		eventName = notifyEvent->name();
+		if (NotifyEvents.contains(eventName))
+			continue;
+
+		NotifyEventConfigurationItem item;
+		item.event = notifyEvent;
+		item.useCustomSettings = config_file.readBoolEntry("Notify", eventName + "_UseCustomSettings", true);
+
+		NotifyEvents[eventName] = item;
 	}
 
 	ConfigGroupBox *statusGroupBox = mainConfigurationWindow->widget()->configGroupBox("Notifications", "Options", "Status change");
@@ -157,10 +172,14 @@ void NotifyConfigurationUiHandler::mainConfigurationWindowCreated(MainConfigurat
 
 	notificationsGroupBox = mainConfigurationWindow->widget()->configGroupBox("Notifications", "General", "Notifications");
 
-	notifyTreeWidget = new NotifyTreeWidget(NotifierGui, notificationsGroupBox->widget());
+	notifyTreeWidget = new NotifyTreeWidget(this, notificationsGroupBox->widget());
 	notificationsGroupBox->addWidget(notifyTreeWidget, true);
 	notifyTreeWidget->setCurrentItem(notifyTreeWidget->topLevelItem(0));
 	connect(notifyTreeWidget, SIGNAL(itemSelectionChanged()), this, SLOT(eventSwitched()));
+
+	useCustomSettingsCheckBox = new QCheckBox(tr("Use custom settings"));
+	connect(useCustomSettingsCheckBox, SIGNAL(clicked(bool)), this, SLOT(customSettingsCheckBoxToggled(bool)));
+	notificationsGroupBox->addWidget(useCustomSettingsCheckBox, true);
 
 	foreach (Notifier *notifier, NotificationManager::instance()->notifiers())
 		addConfigurationWidget(notifier);
@@ -173,7 +192,7 @@ void NotifyConfigurationUiHandler::notifierRegistered(Notifier *notifier)
 	if (notificationsGroupBox)
 	{
 		addConfigurationWidget(notifier);
-		notifyTreeWidget->refresh(NotifierGui);
+		notifyTreeWidget->refresh();
 	}
 }
 
@@ -186,7 +205,34 @@ void NotifyConfigurationUiHandler::notifierUnregistered(Notifier *notifier)
 		NotifierGui.remove(notifier);
 
 	if (notificationsGroupBox)
-		notifyTreeWidget->refresh(NotifierGui);
+		notifyTreeWidget->refresh();
+}
+
+void NotifyConfigurationUiHandler::notifyEventRegistered(NotifyEvent *notifyEvent)
+{
+    	if (notificationsGroupBox)
+	{
+		QString eventName = notifyEvent->name();
+		NotifyEventConfigurationItem item;
+		item.event = notifyEvent;
+		if (!notifyEvent->category().isEmpty())
+			item.useCustomSettings = config_file.readBoolEntry("Notify", eventName + "_UseCustomSettings", true);
+		else
+			item.useCustomSettings = true;
+
+		NotifyEvents[eventName] = item;
+
+		notifyTreeWidget->refresh();
+	}
+}
+
+void NotifyConfigurationUiHandler::notifyEventUnregistered(NotifyEvent *notifyEvent)
+{
+	if (NotifyEvents.contains(notifyEvent->name()))
+		NotifyEvents.remove(notifyEvent->name());
+
+	if (notificationsGroupBox)
+		notifyTreeWidget->refresh();
 }
 
 void NotifyConfigurationUiHandler::configurationWindowApplied()
@@ -223,12 +269,21 @@ void NotifyConfigurationUiHandler::configurationWindowApplied()
 		delete cnd;
 	}
 
+	foreach (NotifyEvent *notifyEvent, NotificationManager::instance()->notifyEvents())
+	{
+		if (notifyEvent->category().isEmpty() || !NotifyEvents.contains(notifyEvent->name()))
+			continue;
+
+		config_file.writeEntry("Notify", notifyEvent->name() + "_UseCustomSettings", NotifyEvents[notifyEvent->name()].useCustomSettings);
+
+	}
+
 	foreach (Notifier *notifier, NotificationManager::instance()->notifiers())
 	{
 		if (!NotifierGui.contains(notifier))
 			continue;
 
-		NotifierGuiItem &gui = NotifierGui[notifier];
+		NotifierConfigurationGuiItem &gui = NotifierGui[notifier];
 		if (gui.ConfigurationWidget)
 			gui.ConfigurationWidget->saveNotifyConfigurations();
 
@@ -279,12 +334,15 @@ void NotifyConfigurationUiHandler::eventSwitched()
 
 	CurrentEvent = notifyTreeWidget->currentEvent();
 
+	useCustomSettingsCheckBox->setVisible(!NotifyEvents[CurrentEvent].event->category().isEmpty());
+	useCustomSettingsCheckBox->setChecked(NotifyEvents[CurrentEvent].useCustomSettings);
+
 	foreach (Notifier *notifier, NotificationManager::instance()->notifiers())
 	{
 		if (!NotifierGui.contains(notifier))
-			NotifierGui.insert(notifier, NotifierGuiItem());
+			NotifierGui.insert(notifier, NotifierConfigurationGuiItem());
 
-		NotifierGuiItem &gui = NotifierGui[notifier];
+		NotifierConfigurationGuiItem &gui = NotifierGui[notifier];
 
 		if (!gui.Events.contains(CurrentEvent))
 			gui.Events[CurrentEvent] = config_file.readBoolEntry("Notify", CurrentEvent + '_' + notifier->name());
@@ -302,7 +360,15 @@ void NotifyConfigurationUiHandler::notifierToggled(Notifier *notifier, bool togg
 	kdebugf();
 
 	if (!NotifierGui.contains(notifier))
-		NotifierGui.insert(notifier, NotifierGuiItem());
+		NotifierGui.insert(notifier, NotifierConfigurationGuiItem());
 	NotifierGui[notifier].Events[CurrentEvent] = toggled;
-	notifyTreeWidget->updateCurrentItem(notifier, toggled);
+
+	notifyTreeWidget->notifierChecked(notifier, toggled);
+}
+
+void NotifyConfigurationUiHandler::customSettingsCheckBoxToggled(bool toggled)
+{
+	NotifyEvents[CurrentEvent].useCustomSettings = toggled;
+
+	notifyTreeWidget->useCustomSettingsChecked(toggled);
 }

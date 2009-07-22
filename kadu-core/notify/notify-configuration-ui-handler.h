@@ -14,32 +14,38 @@
 
 #include "notification-manager.h"
 
+class QCheckBox;
 class QListWidget;
 
 class NotifierConfigurationWidget;
 class NotifyGroupBox;
 class NotifyTreeWidget;
 
+struct NotifierConfigurationGuiItem
+{
+	NotifierConfigurationWidget *ConfigurationWidget;
+	NotifyGroupBox *ConfigurationGroupBox;
+	QMap<QString, bool> Events;
+};
+
+struct NotifyEventConfigurationItem
+{
+	NotifyEvent *event;
+	bool useCustomSettings;
+};
+
 class NotifyConfigurationUiHandler : public ConfigurationUiHandler
 {
 	Q_OBJECT
 
-public:
-	struct NotifierGuiItem
-	{
-		NotifierConfigurationWidget *ConfigurationWidget;
-		NotifyGroupBox *ConfigurationGroupBox;
-		QMap<QString, bool> Events;
-	};
-
-private:
-	QMap<Notifier *, NotifierGuiItem> NotifierGui;
+	QMap<Notifier *, NotifierConfigurationGuiItem> NotifierGui;
+	QMap<QString, NotifyEventConfigurationItem> NotifyEvents;
 
 	QListWidget *allUsers;
 	QListWidget *notifiedUsers;
-	ConfigComboBox *notifications;
 	ConfigGroupBox *notificationsGroupBox;
 
+	QCheckBox *useCustomSettingsCheckBox;
 	NotifyTreeWidget *notifyTreeWidget;
 
 	QString CurrentEvent;
@@ -51,6 +57,9 @@ private slots:
 	void notifierRegistered(Notifier *notifier);
 	void notifierUnregistered(Notifier *notifier);
 
+	void notifyEventRegistered(NotifyEvent *notifyEvent);
+	void notifyEventUnregistered(NotifyEvent *notifyEvent);
+
 	void configurationWindowApplied();
 	void mainConfigurationWindowDestroyed();
 
@@ -60,6 +69,8 @@ private slots:
 	void eventSwitched();
 	void notifierToggled(Notifier *notifier, bool toggled);
 
+	void customSettingsCheckBoxToggled(bool toggled);
+
 protected:
 	virtual void mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow);
 
@@ -67,6 +78,8 @@ public:
 	explicit NotifyConfigurationUiHandler(QObject *parent = 0);
 	virtual ~NotifyConfigurationUiHandler();
 
+	const QMap<Notifier *, NotifierConfigurationGuiItem> & notifierGui() { return NotifierGui; }
+	const QMap<QString, NotifyEventConfigurationItem> & notifyEvents() { return NotifyEvents; }
 };
 
 #endif // NOTIFY_CONFIGURATION_UI_HANDLER

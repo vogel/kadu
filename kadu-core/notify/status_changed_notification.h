@@ -19,9 +19,12 @@ class StatusChangedNotification : public AccountNotification
 {
 	Q_OBJECT
 
+    	static NotifyEvent *StatusChangedNotifyEvent;
+	static NotifyEvent *StatusChangedToFreeForChatNotifyEvent;
 	static NotifyEvent *StatusChangedToOnlineNotifyEvent;
-	static NotifyEvent *StatusChangedToBusyNotifyEvent;
-	static NotifyEvent *StatusChangedToInvisibleNotifyEvent;
+	static NotifyEvent *StatusChangedToAwayNotifyEvent;
+	static NotifyEvent *StatusChangedToNotAvailableNotifyEvent;
+	static NotifyEvent *StatusChangedToDoNotDisturbNotifyEvent;
 	static NotifyEvent *StatusChangedToOfflineNotifyEvent;
 
 public:

@@ -22,11 +22,13 @@
  * @{
  */
 
-WindowNotifier::WindowNotifier(QObject *parent) :
-		Notifier("Window", IconsManager::instance()->loadIcon("Information"), parent)
+WindowNotifier::WindowNotifier(QObject *parent)
+	: Notifier("Window", tr("Show a window with notification"),
+	 IconsManager::instance()->loadIcon("Information"), parent)
 {
 	kdebugf();
 
+	import_0_6_5_configuration();
 	createDefaultConfiguration();
 	NotificationManager::instance()->registerNotifier(this);
 
@@ -49,6 +51,11 @@ void WindowNotifier::notify(Notification *notification)
 	window->raise();
 
 	kdebugf2();
+}
+
+void WindowNotifier::import_0_6_5_configuration()
+{
+    	config_file.addVariable("Notify", "StatusChanged/ToAway_Window", config_file.readEntry("Notify", "StatusChanged/ToBusy_Window"));
 }
 
 void WindowNotifier::createDefaultConfiguration()

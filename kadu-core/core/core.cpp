@@ -565,7 +565,7 @@ void Core::setOnline(const QString &description)
 	StatusChanger->userStatusSet(Status("Online", description));
 }
 
-void Core::setBusy(const QString &description)
+void Core::setAway(const QString &description)
 {
 	StatusChanger->userStatusSet(Status("Away", description));
 }

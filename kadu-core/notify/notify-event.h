@@ -26,6 +26,8 @@ public:
 
 private:
 	QString Name;
+	QString Category;
+
 	CallbackRequirement IsCallbackRequired;
 	const char *Description;
 
@@ -34,6 +36,7 @@ public:
 	bool operator == (const NotifyEvent &compare);
 
 	QString name() { return Name; }
+	QString category() { return Category; }
 	CallbackRequirement isCallbackRequired() { return IsCallbackRequired; }
 	const char * description() { return Description; }
 

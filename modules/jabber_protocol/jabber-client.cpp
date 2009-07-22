@@ -282,7 +282,7 @@ void JabberClient::connect(const XMPP::Jid &jid, const QString &password, bool a
 	/*
 	 * Setup authentication layer
 	 */
-	if ((forceTLS() || useSSL()) && QCA::isSupported ("tls") )
+	if ((forceTLS() || useSSL()) && QCA::isSupported("tls"))
 	{
 		JabberTLS = new QCA::TLS;
 		JabberTLS->setTrustedCertificates(QCA::systemStore());

@@ -18,9 +18,12 @@
 
 #include "status_changed_notification.h"
 
+NotifyEvent *StatusChangedNotification::StatusChangedNotifyEvent = 0;
+NotifyEvent *StatusChangedNotification::StatusChangedToFreeForChatNotifyEvent = 0;
 NotifyEvent *StatusChangedNotification::StatusChangedToOnlineNotifyEvent = 0;
-NotifyEvent *StatusChangedNotification::StatusChangedToBusyNotifyEvent = 0;
-NotifyEvent *StatusChangedNotification::StatusChangedToInvisibleNotifyEvent = 0;
+NotifyEvent *StatusChangedNotification::StatusChangedToAwayNotifyEvent = 0;
+NotifyEvent *StatusChangedNotification::StatusChangedToNotAvailableNotifyEvent = 0;
+NotifyEvent *StatusChangedNotification::StatusChangedToDoNotDisturbNotifyEvent = 0;
 NotifyEvent *StatusChangedNotification::StatusChangedToOfflineNotifyEvent = 0;
 
 void StatusChangedNotification::registerEvents()
@@ -28,18 +31,27 @@ void StatusChangedNotification::registerEvents()
 	if (StatusChangedToOnlineNotifyEvent)
 		return;
 
+	StatusChangedNotifyEvent = new NotifyEvent("StatusChanged", NotifyEvent::CallbackNotRequired,
+			QT_TRANSLATE_NOOP("@default", "User changed status"));
+	StatusChangedToFreeForChatNotifyEvent = new NotifyEvent("StatusChanged/ToFreeForChat", NotifyEvent::CallbackNotRequired,
+			QT_TRANSLATE_NOOP("@default", "to free for chat"));
 	StatusChangedToOnlineNotifyEvent = new NotifyEvent("StatusChanged/ToOnline", NotifyEvent::CallbackNotRequired,
-			QT_TRANSLATE_NOOP("@default", "User changed status to online"));
-	StatusChangedToBusyNotifyEvent = new NotifyEvent("StatusChanged/ToBusy", NotifyEvent::CallbackNotRequired,
-			QT_TRANSLATE_NOOP("@default", "User changed status to busy"));
-	StatusChangedToInvisibleNotifyEvent = new NotifyEvent("StatusChanged/ToInvisible", NotifyEvent::CallbackNotRequired,
-			QT_TRANSLATE_NOOP("@default", "User changed status to invisible"));
+			QT_TRANSLATE_NOOP("@default", "to online"));
+	StatusChangedToAwayNotifyEvent = new NotifyEvent("StatusChanged/ToAway", NotifyEvent::CallbackNotRequired,
+			QT_TRANSLATE_NOOP("@default", "to away"));
+	StatusChangedToNotAvailableNotifyEvent = new NotifyEvent("StatusChanged/ToNotAvailable", NotifyEvent::CallbackNotRequired,
+			QT_TRANSLATE_NOOP("@default", "to not available"));
+	StatusChangedToDoNotDisturbNotifyEvent = new NotifyEvent("StatusChanged/ToDoNotDisturb", NotifyEvent::CallbackNotRequired,
+			QT_TRANSLATE_NOOP("@default", "to do not disturb"));
 	StatusChangedToOfflineNotifyEvent = new NotifyEvent("StatusChanged/ToOffline", NotifyEvent::CallbackNotRequired,
-			QT_TRANSLATE_NOOP("@default", "User changed status to offline"));
+			QT_TRANSLATE_NOOP("@default", "to offline"));
 
+	NotificationManager::instance()->registerNotifyEvent(StatusChangedNotifyEvent);
+	NotificationManager::instance()->registerNotifyEvent(StatusChangedToFreeForChatNotifyEvent);
 	NotificationManager::instance()->registerNotifyEvent(StatusChangedToOnlineNotifyEvent);
-	NotificationManager::instance()->registerNotifyEvent(StatusChangedToBusyNotifyEvent);
-	NotificationManager::instance()->registerNotifyEvent(StatusChangedToInvisibleNotifyEvent);
+	NotificationManager::instance()->registerNotifyEvent(StatusChangedToAwayNotifyEvent);
+	NotificationManager::instance()->registerNotifyEvent(StatusChangedToNotAvailableNotifyEvent);
+	NotificationManager::instance()->registerNotifyEvent(StatusChangedToDoNotDisturbNotifyEvent);
 	NotificationManager::instance()->registerNotifyEvent(StatusChangedToOfflineNotifyEvent);
 }
 
@@ -48,19 +60,31 @@ void StatusChangedNotification::unregisterEvents()
 	if (!StatusChangedToOnlineNotifyEvent)
 		return;
 
+	NotificationManager::instance()->unregisterNotifyEvent(StatusChangedNotifyEvent);
+	NotificationManager::instance()->unregisterNotifyEvent(StatusChangedToFreeForChatNotifyEvent);
 	NotificationManager::instance()->unregisterNotifyEvent(StatusChangedToOnlineNotifyEvent);
-	NotificationManager::instance()->unregisterNotifyEvent(StatusChangedToBusyNotifyEvent);
-	NotificationManager::instance()->unregisterNotifyEvent(StatusChangedToInvisibleNotifyEvent);
+	NotificationManager::instance()->unregisterNotifyEvent(StatusChangedToAwayNotifyEvent);
+	NotificationManager::instance()->unregisterNotifyEvent(StatusChangedToNotAvailableNotifyEvent);
+	NotificationManager::instance()->unregisterNotifyEvent(StatusChangedToDoNotDisturbNotifyEvent);
 	NotificationManager::instance()->unregisterNotifyEvent(StatusChangedToOfflineNotifyEvent);
+
+	delete StatusChangedNotifyEvent;
+	StatusChangedNotifyEvent = 0;
+
+	delete StatusChangedToFreeForChatNotifyEvent;
+	StatusChangedToFreeForChatNotifyEvent = 0;
 
 	delete StatusChangedToOnlineNotifyEvent;
 	StatusChangedToOnlineNotifyEvent = 0;
 
-	delete StatusChangedToBusyNotifyEvent;
-	StatusChangedToBusyNotifyEvent = 0;
+	delete StatusChangedToAwayNotifyEvent;
+	StatusChangedToAwayNotifyEvent = 0;
 
-	delete StatusChangedToInvisibleNotifyEvent;
-	StatusChangedToInvisibleNotifyEvent = 0;
+	delete StatusChangedToNotAvailableNotifyEvent;
+	StatusChangedToNotAvailableNotifyEvent = 0;
+
+	delete StatusChangedToDoNotDisturbNotifyEvent;
+	StatusChangedToDoNotDisturbNotifyEvent = 0;
 
 	delete StatusChangedToOfflineNotifyEvent;
 	StatusChangedToOfflineNotifyEvent = 0;
@@ -68,7 +92,7 @@ void StatusChangedNotification::unregisterEvents()
 
 // TODO 0.6.6 what if accountData(account) == null ?
 StatusChangedNotification::StatusChangedNotification(const QString &toStatus, ContactSet &contacts, Account *account) :
-		AccountNotification(account, QString("StatusChanged/") + toStatus,
+		AccountNotification(account, QString("StatusChanged") + toStatus,
 			account->protocol()->statusPixmap(contacts.begin()->accountData(account)->status()),
 			0) // TODO: 0.6.6
 {

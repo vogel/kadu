@@ -292,7 +292,6 @@ set (kadu_MOC_SRCS
 	gui/widgets/kadu_text_browser.h
 	gui/widgets/path-list-edit.h
 	gui/widgets/preview.h
-	gui/widgets/proxy-group-box.h
 	gui/widgets/select-file.h
 	gui/widgets/select-font.h
 	gui/widgets/status-button.h
@@ -310,7 +309,6 @@ set (kadu_MOC_SRCS
 	#gui/widgets/configuration/config-tab.h
 	gui/widgets/configuration/notifier-configuration-widget.h
 	gui/widgets/configuration/notify-group-box.h
-	gui/widgets/configuration/notify-tree-widget.h
 
 	gui/windows/about.h
 	gui/windows/add-buddy-window.h

@@ -21,6 +21,7 @@ class WindowNotifier : public Notifier
 {
 	Q_OBJECT
 
+	void import_0_6_5_configuration();
 	void createDefaultConfiguration();
 
 public:
@@ -30,7 +31,7 @@ public:
 	virtual void notify(Notification *notification);
 
 	virtual CallbackCapacity callbackCapacity() { return CallbackSupported; }
-	virtual NotifierConfigurationWidget *createConfigurationWidget(QWidget *parent = 0) { return 0; };
+	virtual NotifierConfigurationWidget *createConfigurationWidget(QWidget *parent = 0) { return 0; }
 
 };
 

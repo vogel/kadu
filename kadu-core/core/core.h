@@ -83,7 +83,7 @@ public:
 public slots:
 	void setStatus(const Status &status);
 	void setOnline(const QString &description = QString::null);
-	void setBusy(const QString &description = QString::null);
+	void setAway(const QString &description = QString::null);
 	void setInvisible(const QString &description = QString::null);
 	void setOffline(const QString &description = QString::null);
 

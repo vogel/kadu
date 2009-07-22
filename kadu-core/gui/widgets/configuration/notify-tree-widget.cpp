@@ -25,13 +25,15 @@
 
 #include "notify-tree-widget.h"
 
+#define OFFSET 30
+
 NotifyTreeWidgetDelegate::NotifyTreeWidgetDelegate(QObject *parent) : QStyledItemDelegate(parent)
 {
 }
 
 void NotifyTreeWidgetDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const
 {
-	if (index.column() != 0)
+	if (index.column() != 1)
 		return QStyledItemDelegate::paint(painter, option, index);
 
 	QStringList notifiers = index.data(Qt::UserRole).toStringList();
@@ -54,59 +56,70 @@ void NotifyTreeWidgetDelegate::paint(QPainter *painter, const QStyleOptionViewIt
 
 }
 
-NotifyTreeWidget::NotifyTreeWidget(QMap<Notifier *, NotifyConfigurationUiHandler::NotifierGuiItem> notifierGui, QWidget *parent)
+NotifyTreeWidget::NotifyTreeWidget(NotifyConfigurationUiHandler *uiHandler, QWidget *parent)
+	: QTreeWidget(parent), UiHandler(uiHandler)
 {
 	QStringList headerLabels;
-	headerLabels << tr("State") << tr("Event");
+	headerLabels << tr("Event") << tr("Notification");
 	setHeaderLabels(headerLabels);
 
 	setItemDelegate(new NotifyTreeWidgetDelegate(this));
-	setRootIsDecorated(false);
 	setAlternatingRowColors(true);
+	setItemsExpandable(true);
+	setExpandsOnDoubleClick(true);
 
 	//Extract icon size as the font height (as h=w on icons)
 	QStyleOptionViewItem iconOption;
 	iconOption.initFrom(this);
 	IconWidth = iconOption.fontMetrics.height() - 2 ; //1px margin top & bottom
-	StateColumnDefaultWidth = header()->sectionSizeHint(0);
+	StateColumnDefaultWidth = header()->sectionSizeHint(1);
 
 	setIconSize(QSize(IconWidth, IconWidth));
 
-	int columnWidth = (IconWidth + 4) * NotificationManager::instance()->notifiers().count();
-
 	header()->setResizeMode(0, QHeaderView::Fixed);
-	header()->resizeSection(0, columnWidth > StateColumnDefaultWidth ? columnWidth : StateColumnDefaultWidth);
-	header()->setResizeMode(1, QHeaderView::ResizeToContents);
+	header()->setResizeMode(1, QHeaderView::Fixed);
 
-	refresh(notifierGui);
+	refresh();
 }
 
-void NotifyTreeWidget::refresh(QMap<Notifier *, NotifyConfigurationUiHandler::NotifierGuiItem> notifierGui)
+void NotifyTreeWidget::refresh()
 {
 	QString currentName = QString::null;
 	if (currentItem())
-		currentName = currentItem()->text(1);
+		currentName = currentItem()->text(0);
 	clear();
+	TreeItems.clear();
 
-	int columnWidth = (IconWidth + 4) * NotificationManager::instance()->notifiers().count();
-	if (columnWidth > StateColumnDefaultWidth)
-		header()->resizeSection(0, columnWidth);
+	ColumnWidth = (IconWidth + 4) * NotificationManager::instance()->notifiers().count();
+	header()->resizeSection(0, eventColumnWidth());
+
+	const QMap<Notifier *, NotifierConfigurationGuiItem> &notifierGuiItems = UiHandler->notifierGui();
+	const QMap<QString, NotifyEventConfigurationItem> &notifyEventItem = UiHandler->notifyEvents();
 
 	QStringList notifiersNames;
-
+	QString eventName;
 	foreach (NotifyEvent *notifyEvent, NotificationManager::instance()->notifyEvents())
 	{
+		eventName = notifyEvent->name();
 		foreach (Notifier *notifier, NotificationManager::instance()->notifiers())
-			if (notifierGui[notifier].Events[notifyEvent->name()])
+			if (notifierGuiItems[notifier].Events[eventName])
 				notifiersNames << notifier->name();
 
-		new NotifyTreeWidgetItem(this, notifyEvent->name(), qApp->translate("@default", notifyEvent->description()), notifiersNames);
+		if (notifyEvent->category().isEmpty())
+			TreeItems[eventName] = new NotifyTreeWidgetItem(this, eventName,
+						notifyEvent->description(), notifiersNames);
+		else
+		{
+			TreeItems[eventName] = new NotifyTreeWidgetItem(TreeItems[notifyEvent->category()], eventName,
+						notifyEvent->description(), notifiersNames);
+			TreeItems[eventName]->useCustomSettingsChecked(notifyEventItem[eventName].useCustomSettings);
+		}
 		notifiersNames.clear();
 	}
 
 	if (!currentName.isNull())
 	{
-		QList<QTreeWidgetItem *> items = findItems(currentName, Qt::MatchExactly, 1);
+		QList<QTreeWidgetItem *> items = findItems(currentName, Qt::MatchExactly, 0);
 		if (items.count())
 			setCurrentItem(items[0]);
 	}
@@ -114,31 +127,82 @@ void NotifyTreeWidget::refresh(QMap<Notifier *, NotifyConfigurationUiHandler::No
 
 QString NotifyTreeWidget::currentEvent()
 {
-	return currentItem()->data(1, Qt::UserRole).toString();
+	return currentItem()->data(0, Qt::UserRole).toString();
 }
 
-void NotifyTreeWidget::updateCurrentItem(Notifier *notifier, bool checked)
+void NotifyTreeWidget::notifierChecked(Notifier *notifier, bool checked)
 {
 	NotifyTreeWidgetItem *item = dynamic_cast<NotifyTreeWidgetItem *>(currentItem());
 	if (item)
-		item->update(notifier, checked);
+		item->notifierChecked(notifier, checked);
 }
 
-
-NotifyTreeWidgetItem::NotifyTreeWidgetItem(QTreeWidget *parent, const QString &eventName, const QString &name, QStringList &notifiers)
-	: QTreeWidgetItem(parent), ActiveNotifiers(notifiers)
+void NotifyTreeWidget::useCustomSettingsChecked(bool checked)
 {
-    	setData(0, Qt::UserRole, QVariant(ActiveNotifiers));
-	setData(1, Qt::UserRole, QVariant(eventName));
-	setText(1, name);
+    	NotifyTreeWidgetItem *item = dynamic_cast<NotifyTreeWidgetItem *>(currentItem());
+	if (item)
+		item->useCustomSettingsChecked(checked);
 }
 
-void NotifyTreeWidgetItem::update(Notifier *notifier, bool checked)
+int NotifyTreeWidget::eventColumnWidth()
+{
+	return ColumnWidth > StateColumnDefaultWidth ? width() - OFFSET - ColumnWidth : width() - OFFSET - StateColumnDefaultWidth;
+}
+
+void NotifyTreeWidget::resizeEvent(QResizeEvent *event)
+{
+	header()->resizeSection(0, eventColumnWidth());
+}
+
+NotifyTreeWidgetItem::NotifyTreeWidgetItem(QTreeWidget *parent, const QString &eventName, const char *name, QStringList &notifiers)
+	: QTreeWidgetItem(parent), ActiveNotifiers(notifiers), useCustomSettings(true)
+{
+	setChildIndicatorPolicy(QTreeWidgetItem::DontShowIndicatorWhenChildless);
+
+    	setData(1, Qt::UserRole, QVariant(ActiveNotifiers));
+	setData(0, Qt::UserRole, QVariant(eventName));
+	setText(0, qApp->translate("@default", name));
+}
+
+NotifyTreeWidgetItem::NotifyTreeWidgetItem(NotifyTreeWidgetItem *parent, const QString &eventName, const char *name, QStringList &notifiers)
+	: QTreeWidgetItem(parent), ActiveNotifiers(notifiers), useCustomSettings(true)
+{
+    	setChildIndicatorPolicy(QTreeWidgetItem::DontShowIndicatorWhenChildless);
+
+    	setData(1, Qt::UserRole, QVariant(ActiveNotifiers));
+	setData(0, Qt::UserRole, QVariant(eventName));
+	setText(0, qApp->translate("@default", name));
+}
+
+void NotifyTreeWidgetItem::notifierChecked(Notifier *notifier, bool checked)
 {
 	if (checked)
 		ActiveNotifiers << notifier->name();
 	else
 		ActiveNotifiers.removeAll(notifier->name());
 
-	setData(0, Qt::UserRole, QVariant(ActiveNotifiers));
+	setData(1, Qt::UserRole, QVariant(ActiveNotifiers));
+
+	for (int i = 0; i < childCount(); ++i)
+		dynamic_cast<NotifyTreeWidgetItem *>(child(i))->parentNotifierChecked();
 }
+
+void NotifyTreeWidgetItem::useCustomSettingsChecked(bool checked)
+{
+	if (!parent() || useCustomSettings == checked)
+		return;
+
+	useCustomSettings = checked;
+	if (useCustomSettings)
+		setData(1, Qt::UserRole, QVariant(ActiveNotifiers));
+	else
+		setData(1, Qt::UserRole, QVariant(dynamic_cast<NotifyTreeWidgetItem *>(parent())->activeNotifiers()));
+    }
+
+ void NotifyTreeWidgetItem::parentNotifierChecked()
+ {
+	if (useCustomSettings)
+		return;
+
+	setData(1, Qt::UserRole, QVariant(dynamic_cast<NotifyTreeWidgetItem *>(parent())->activeNotifiers()));
+ }

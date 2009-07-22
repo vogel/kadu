@@ -153,7 +153,7 @@ void NotificationManager::notifyAboutUserActionActivated(QAction *sender, bool t
 		}
 	}
 
-	foreach(Action *action, notifyAboutUserActionDescription->actions())
+	foreach (Action *action, notifyAboutUserActionDescription->actions())
 	{
 		if (action->contacts() == contacts)
 			action->setChecked(!on);
@@ -237,11 +237,16 @@ void NotificationManager::statusChanged(Account *account, Contact contact, Statu
 			!oldStatus.isDisconnected())
 		return;
 
-	QString changedTo = "To" + Status::name(data->status(), false);
+	QString changedTo = "/To" + Status::name(data->status(), false);
 
 	ContactSet contacts(contact);
 
-	StatusChangedNotification *statusChangedNotification = new StatusChangedNotification(changedTo, contacts, account);
+	StatusChangedNotification *statusChangedNotification;
+	if (config_file.readBoolEntry("Notify", "StatusChanged" + changedTo + "_UseCustomSettings", true))
+		statusChangedNotification = new StatusChangedNotification(changedTo, contacts, account);
+	else
+		statusChangedNotification = new StatusChangedNotification("", contacts, account);
+
 	notify(statusChangedNotification);
 
 	kdebugf2();

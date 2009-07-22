@@ -45,14 +45,16 @@ public:
 
 private:
 	QString Name;
+	QString Description;
 	QIcon Icon;
 
 
 public:
-	explicit Notifier(const QString name,  QIcon icon, QObject *parent = 0);
+	explicit Notifier(const QString name, QString description, QIcon icon, QObject *parent = 0);
 	virtual ~Notifier();
 
 	QString name() { return Name; }
+	QString description() { return Description; }
 	QIcon & icon() { return Icon; }
 
 

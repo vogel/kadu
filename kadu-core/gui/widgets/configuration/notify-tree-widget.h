@@ -32,32 +32,47 @@ public:
 	virtual void paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const;
 };
 
-class NotifyTreeWidget : public QTreeWidget
-{
-	Q_OBJECT
-
-	int StateColumnDefaultWidth;
-	int IconWidth;
-
-public:
-	NotifyTreeWidget(QMap<Notifier *, NotifyConfigurationUiHandler::NotifierGuiItem> notifierGui, QWidget *parent);
-
-	void refresh(QMap<Notifier *, NotifyConfigurationUiHandler::NotifierGuiItem> notifierGui);
-
-	QString currentEvent();
-
-public slots:
-	void updateCurrentItem(Notifier *notifier, bool checked);
-};
 
 class NotifyTreeWidgetItem : public QTreeWidgetItem
 {
 	QStringList ActiveNotifiers;
+	bool useCustomSettings;
 
 public:
-	NotifyTreeWidgetItem(QTreeWidget *parent , const QString &eventName, const QString &name, QStringList &notifiers);
+	NotifyTreeWidgetItem(QTreeWidget *parent , const QString &eventName, const char *name, QStringList &notifiers);
+	NotifyTreeWidgetItem(NotifyTreeWidgetItem *parent , const QString &eventName, const char *name, QStringList &notifiers);
 
-	void update(Notifier *notifier, bool checked);
+	void notifierChecked(Notifier *notifier, bool checked);
+	void parentNotifierChecked();
+	void useCustomSettingsChecked(bool checked);
+
+	QStringList activeNotifiers() { return ActiveNotifiers; }
+};
+
+class NotifyTreeWidget : public QTreeWidget
+{
+	NotifyConfigurationUiHandler *UiHandler;
+
+	int StateColumnDefaultWidth;
+	int IconWidth;
+	int ColumnWidth;
+
+	inline int eventColumnWidth();
+
+	QMap<QString, NotifyTreeWidgetItem *> TreeItems;
+
+protected:
+	virtual void resizeEvent(QResizeEvent *event);
+
+public:
+	NotifyTreeWidget(NotifyConfigurationUiHandler *uiHandler, QWidget *parent);
+
+	void refresh();
+
+	QString currentEvent();
+
+	void notifierChecked(Notifier *notifier, bool checked);
+	void useCustomSettingsChecked(bool checked);
 };
 
 #endif //NOTIFY_TREE_WIDGET_H

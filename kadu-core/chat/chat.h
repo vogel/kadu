@@ -42,8 +42,8 @@ public:
 	virtual ContactSet contacts() const = 0;
 	Account * account() { return CurrentAccount; }
 	void setTitle(const QString &newTitle);
-	QString title() { return Title; };
-	QPixmap icon() { return Icon; };
+	QString title() { return Title; }
+	QPixmap icon() { return Icon; }
 
 public slots:
 	void refreshTitle();

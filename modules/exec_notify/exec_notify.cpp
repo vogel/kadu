@@ -87,17 +87,13 @@ void ExecConfigurationWidget::switchToEvent(const QString &event)
 
 //TODO 0.6.6 icon:
 ExecNotify::ExecNotify(QObject *parent)
-	: Notifier(QT_TRANSLATE_NOOP("@default", "Exec"), IconsManager::instance()->loadIcon("MediaPlayer"), parent)
+	: Notifier(QT_TRANSLATE_NOOP("@default", "Exec"), QT_TRANSLATE_NOOP("@default", "Run command"),
+		   IconsManager::instance()->loadIcon("MediaPlayer"), parent)
 {
 	kdebugf();
 
-	config_file.addVariable("Exec Notify", "NewChatCmd", "Xdialog --msgbox \"#{protocol} %u %ids #{event}\" 10 100");
-	config_file.addVariable("Exec Notify", "NewMessageCmd", "Xdialog --msgbox \"#{protocol} %u %ids #{event}\" 10 100");
-	config_file.addVariable("Exec Notify", "ConnectionErrorCmd", "Xdialog --msgbox \"#{protocol} #{event}\" 10 100");
-	config_file.addVariable("Exec Notify", "StatusChanged/ToOnlineCmd", "Xdialog --msgbox \"%protocol %u #{event}\" 10 100");
-	config_file.addVariable("Exec Notify", "StatusChanged/ToBusyCmd", "Xdialog --msgbox \"#{protocol} %u #{event}\" 10 100");
-	config_file.addVariable("Exec Notify", "StatusChanged/ToInvisibleCmd", "Xdialog --msgbox \"#{protocol} %u #{event}\" 10 100");
-	config_file.addVariable("Exec Notify", "StatusChanged/ToOfflineCmd", "Xdialog --msgbox \"#{protocol} %u #{event}\" 10 100");
+	import_0_6_5_configuration();
+	createDefaultConfiguration();
 	NotificationManager::instance()->registerNotifier(this);
 
 	kdebugf2();
@@ -110,6 +106,25 @@ ExecNotify::~ExecNotify()
 	NotificationManager::instance()->unregisterNotifier(this);
 
 	kdebugf2();
+}
+
+void ExecNotify::import_0_6_5_configuration()
+{
+    	config_file.addVariable("Exec Notify", "StatusChanged/ToAwayCmd", config_file.readEntry("Exec Notify", "StatusChanged/ToBusyCmd"));
+}
+
+void ExecNotify::createDefaultConfiguration()
+{
+	config_file.addVariable("Exec Notify", "NewChatCmd", "Xdialog --msgbox \"#{protocol} %u %ids #{event}\" 10 100");
+	config_file.addVariable("Exec Notify", "NewMessageCmd", "Xdialog --msgbox \"#{protocol} %u %ids #{event}\" 10 100");
+	config_file.addVariable("Exec Notify", "ConnectionErrorCmd", "Xdialog --msgbox \"#{protocol} #{event}\" 10 100");
+	config_file.addVariable("Exec Notify", "StatusChanged", "Xdialog --msgbox \"#{protocol} %u #{event}\" 10 100");
+	config_file.addVariable("Exec Notify", "StatusChanged/ToFreeForChatCmd", "Xdialog --msgbox \"%protocol %u #{event}\" 10 100");
+	config_file.addVariable("Exec Notify", "StatusChanged/ToOnlineCmd", "Xdialog --msgbox \"%protocol %u #{event}\" 10 100");
+	config_file.addVariable("Exec Notify", "StatusChanged/ToAwayCmd", "Xdialog --msgbox \"#{protocol} %u #{event}\" 10 100");
+	config_file.addVariable("Exec Notify", "StatusChanged/ToNotAvailableCmd", "Xdialog --msgbox \"#{protocol} %u #{event}\" 10 100");
+	config_file.addVariable("Exec Notify", "StatusChanged/ToDoNotDisturbCmd", "Xdialog --msgbox \"#{protocol} %u #{event}\" 10 100");
+	config_file.addVariable("Exec Notify", "StatusChanged/ToOfflineCmd", "Xdialog --msgbox \"#{protocol} %u #{event}\" 10 100");
 }
 
 // TODO: merge with HistoryManager version

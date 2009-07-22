@@ -42,7 +42,7 @@ public slots:
 
 public:
 
-	NewFileTransferNotification(FileTransfer *ft, DccSocket *socket, const UserListElements &userListElements, FileTransfer::StartType startType);
+	NewFileTransferNotification(QString &type, FileTransfer *ft, DccSocket *socket, const UserListElements &userListElements, FileTransfer::StartType startType);
 
 };
 
