@@ -27,6 +27,12 @@ endif (Subversion_FOUND)
 file (READ ${CMAKE_CURRENT_SOURCE_DIR}/VERSION KADU_VERSION)
 string (REPLACE "\n" "" KADU_VERSION ${KADU_VERSION})
 
+if (WIN32)
+	set (CPACK_GENERATOR "ZIP")
+	set (CPACK_PACKAGE_VERSION ${KADU_VERSION})	
+	include (CPack)
+endif (WIN32)
+
 if (NOT WIN32)
 	# TODO: Add libexecinfo support
 	check_include_files ("execinfo.h" HAVE_EXECINFO)
