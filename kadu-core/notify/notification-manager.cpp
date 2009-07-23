@@ -271,7 +271,7 @@ void NotificationManager::registerNotifyEvent(NotifyEvent *notifyEvent)
 	kdebugf();
 
 	NotifyEvents.append(notifyEvent);
-	emit notifyEventRegisterd(notifyEvent);
+	emit notifyEventRegistered(notifyEvent);
 
 	kdebugf2();
 }

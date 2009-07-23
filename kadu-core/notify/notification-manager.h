@@ -95,7 +95,7 @@ signals:
 	void notiferRegistered(Notifier *notifier);
 	void notiferUnregistered(Notifier *notifier);
 
-	void notifyEventRegisterd(NotifyEvent *notifyEvent);
+	void notifyEventRegistered(NotifyEvent *notifyEvent);
 	void notifyEventUnregistered(NotifyEvent *notifyEvent);
 
 };
