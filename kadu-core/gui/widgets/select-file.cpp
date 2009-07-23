@@ -24,6 +24,7 @@ SelectFile::SelectFile(const QString &type, QWidget *parent)
 	QHBoxLayout *layout = new QHBoxLayout;
 
 	LineEdit = new QLineEdit(this);
+	connect(LineEdit, SIGNAL(editingFinished()), this, SLOT(fileEdited()));
 
 	QPushButton *selectFile = new QPushButton(IconsManager::instance()->loadIcon("OpenFile"), "", this);
 	connect(selectFile, SIGNAL(clicked()), this, SLOT(selectFileClicked()));
@@ -40,6 +41,7 @@ SelectFile::SelectFile(QWidget *parent)
 	QHBoxLayout *layout = new QHBoxLayout;
 
 	LineEdit = new QLineEdit(this);
+	connect(LineEdit, SIGNAL(editingFinished()), this, SLOT(fileEdited()));
 
 	QPushButton *selectFile = new QPushButton(IconsManager::instance()->loadIcon("OpenFile"), "", this);
 	connect(selectFile, SIGNAL(clicked()), this, SLOT(selectFileClicked()));
@@ -58,19 +60,28 @@ void SelectFile::selectFileClicked()
 		imageDialog.setDirectory(LineEdit->text());
 		imageDialog.setWindowTitle(tr("Insert image"));
 		if (imageDialog.exec() == QDialog::Accepted && 1 == imageDialog.selectedFiles().count())
+		{
 			LineEdit->setText(imageDialog.selectedFiles()[0]);
+			emit fileChanged();
+		}
 	}
 	else if (Type == "all")
 	{
 		QString s(QFileDialog::getOpenFileName(this, tr("Select File"), LineEdit->text(), "All Files (*)"));
 		if (!s.isEmpty())
+		{
 			LineEdit->setText(s);
+			emit fileChanged();
+		}
 	}
 	else if (Type == "audio")
 	{
 		QString s(QFileDialog::getOpenFileName(this, tr("Select audio File"), LineEdit->text(), "Audio Files (*.wav *.au *.raw)"));
 		if (!s.isEmpty())
+		{
 			LineEdit->setText(s);
+			emit fileChanged();
+		}
 	}
 }
 
@@ -82,4 +93,10 @@ QString SelectFile::file() const
 void SelectFile::setFile(const QString &file)
 {
 	LineEdit->setText(file);
+}
+
+void SelectFile::fileEdited()
+{
+	if (LineEdit->isModified())
+		emit fileChanged();
 }

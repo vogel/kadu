@@ -4,7 +4,10 @@
 #include <QtCore/QMap>
 #include <QtCore/QStringList>
 
-#include "message_box.h"
+#include "gui/windows/message-box.h"
+
+#include "gui/widgets/configuration/notifier-configuration-widget.h"
+
 #include "sound.h"
 
 class SelectFile;
@@ -28,15 +31,18 @@ private slots:
 	void test();
 
 public:
-	SoundConfigurationWidget(QWidget *parent = 0, char *name = 0);
+	SoundConfigurationWidget(QWidget *parent = 0);
 	virtual ~SoundConfigurationWidget();
 
-	virtual void loadNotifyConfigurations() {};
+	virtual void loadNotifyConfigurations() {}
 	virtual void saveNotifyConfigurations();
 	virtual void switchToEvent(const QString &event);
 
 public slots:
 	void themeChanged(int index);
+
+signals:
+	void soundFileEdited();
 
 };
 

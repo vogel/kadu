@@ -7,16 +7,13 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <stdlib.h>
-#include <QtGui/QFileDialog>
 #include <QtGui/QSound>
 #include <QtGui/QApplication>
 
 #include "../sound/sound.h"
 
-#include "config_file.h"
 #include "debug.h"
-#include "message_box.h"
+#include "gui/windows/message-box.h"
 
 #include "qt4_sound.h"
 

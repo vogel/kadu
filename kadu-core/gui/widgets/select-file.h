@@ -25,6 +25,7 @@ class KADUAPI SelectFile : public QWidget
 
 private slots:
 	void selectFileClicked();
+	void fileEdited();
 
 public:
 	SelectFile(const QString &type, QWidget *parent = 0);
@@ -35,6 +36,8 @@ public:
 	QString file() const;
 	void setFile(const QString &file);
 
+signals:
+	void fileChanged();
 };
 
 #endif // SELECT_FILE_H

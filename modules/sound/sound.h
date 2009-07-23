@@ -10,18 +10,15 @@
 #include <QtCore/QMutex>
 #include <QtCore/QSemaphore>
 
-#include "../notify/notify.h"
-
-#include "config_file.h"
-#include "main_configuration_window.h"
+#include "gui/windows/main-configuration-window.h"
 #include "misc/misc.h"
-#include "message_box.h"
+#include "notify/notifier.h"
 #include "modules.h"
 #include "themes.h"
 
 #include "sound_exports.h"
 
-
+class Notification;
 class PathListEdit;
 
 /**
@@ -37,7 +34,7 @@ typedef void* SoundDevice;
 
 /**
 **/
-typedef enum SoundDeviceType {RECORD_ONLY, PLAY_ONLY, PLAY_AND_RECORD};
+enum SoundDeviceType {RECORD_ONLY, PLAY_ONLY, PLAY_AND_RECORD};
 
 /**
 	To jest klasa u�ywana wewn�trznie przez klas� SoundManager
@@ -138,7 +135,7 @@ class SoundConfigurationWidget;
 class SOUNDAPI SoundManager : public Notifier, public ConfigurationUiHandler
 {
     Q_OBJECT
-	private:
+
 		Themes *themes;
 		ConfigComboBox *themesComboBox;
 		PathListEdit *themesPaths;
@@ -161,14 +158,17 @@ class SOUNDAPI SoundManager : public Notifier, public ConfigurationUiHandler
 		void copyConfiguration(const QString &fromEvent, const QString &toEvent) {}
 
 		void applyTheme(const QString &themeName);
+
+		void import_0_6_5_configuration();
 		void createDefaultConfiguration();
 
 	private slots:
 		void setSoundThemes();
 		void configurationWindowApplied();
+		void soundFileEdited();
 
 	public slots:
-		void play(const QString &path, bool force=false);
+		void play(const QString &path, bool force = false);
 		void play(const QString &path, bool volCntrl, double vol);
 		void setMute(const bool& enable);
 		void stop();
@@ -179,7 +179,7 @@ class SOUNDAPI SoundManager : public Notifier, public ConfigurationUiHandler
 		~SoundManager();
 
 		virtual void mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow);
-		virtual NotifierConfigurationWidget *createConfigurationWidget(QWidget *parent = 0, char *name = 0);
+		virtual NotifierConfigurationWidget *createConfigurationWidget(QWidget *parent = 0);
 
 		virtual void notify(Notification *notification);
 

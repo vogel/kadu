@@ -16,34 +16,38 @@
 #include <QtGui/QMenuBar>
 #include <QtGui/QVBoxLayout>
 
-#include "action.h"
+#include "configuration/configuration-file.h"
+#include "gui/actions/action.h"
+#include "gui/actions/action-description.h"
+#include "gui/widgets/configuration/notify-group-box.h"
+#include "gui/widgets/select-file.h"
+#include "gui/windows/kadu-window.h"
+
 #include "debug.h"
 #include "icons-manager.h"
-#include "kadu.h"
-#include "select_file.h"
+
 #include "sound_slots.h"
-#include "toolbar.h"
 
 /**
  * @ingroup sound
  * @{
  */
 
-SoundConfigurationWidget::SoundConfigurationWidget(QWidget *parent, char *name)
-	: NotifierConfigurationWidget(parent, name), currentNotifyEvent("")
+SoundConfigurationWidget::SoundConfigurationWidget(QWidget *parent)
+	: NotifierConfigurationWidget(parent), currentNotifyEvent("")
 {
-	warning = new QLabel("<b>" + tr("Choose 'Custom' theme in 'Sound' page to change sound file") + "</b>", this);
-	soundFileSelectFile = new SelectFile("audio", this);
-	QPushButton *testButton = new QPushButton(tr("Test"), this);
+    	QPushButton *testButton = new QPushButton(IconsManager::instance()->loadIcon("MediaPlayerButton"),"", this);
 	connect(testButton, SIGNAL(clicked()), this, SLOT(test()));
 
-	QGridLayout *gridLayout = new QGridLayout(this);
- 	gridLayout->addMultiCellWidget(warning, 0, 0, 0, 3);
-	gridLayout->addWidget(new QLabel(tr("Sound file") + ":", this), 1, 0, Qt::AlignRight);
-	gridLayout->addWidget(soundFileSelectFile, 1, 1);
-	gridLayout->addWidget(testButton, 1, 2);
+	soundFileSelectFile = new SelectFile("audio", this);
+	connect(soundFileSelectFile, SIGNAL(fileChanged()), this, SIGNAL(soundFileEdited()));
 
-	parent->layout()->addWidget(this);
+	QHBoxLayout *layout = new QHBoxLayout(this);
+	layout->insertSpacing(0, 20);
+	layout->addWidget(testButton);
+	layout->addWidget(soundFileSelectFile);
+
+	dynamic_cast<NotifyGroupBox *>(parent)->addWidget(this);
 }
 
 SoundConfigurationWidget::~SoundConfigurationWidget()
@@ -60,7 +64,7 @@ void SoundConfigurationWidget::saveNotifyConfigurations()
 	if (currentNotifyEvent != "")
 		soundFiles[currentNotifyEvent] = soundFileSelectFile->file();
 
-	foreach(const QString &key, soundFiles.keys())
+	foreach (const QString &key, soundFiles.keys())
 		config_file.writeEntry("Sounds", key + "_sound", soundFiles[key]);
 }
 
@@ -78,8 +82,8 @@ void SoundConfigurationWidget::switchToEvent(const QString &event)
 
 void SoundConfigurationWidget::themeChanged(int index)
 {
-	warning->setShown(index != 0);
-	soundFileSelectFile->setEnabled(index == 0);
+	if (index == 0)
+		return;
 
 	//refresh soundFiles
 	foreach (const QString &key, soundFiles.keys())
@@ -100,15 +104,15 @@ SoundSlots::SoundSlots(bool firstLoad, QObject *parent)
 
 	sound_manager->setMute(!config_file.readBoolEntry("Sounds", "PlaySound"));
 
-	mute_action = new ActionDescription(
+	mute_action = new ActionDescription(this,
 		ActionDescription::TypeGlobal, "muteSoundsAction",
 		this, SLOT(muteActionActivated(QAction *, bool)),
 		"Unmute", tr("Mute sounds"), true, tr("Unmute sounds")
 	);
-	connect(mute_action, SIGNAL(actionCreated(KaduAction *)), this, SLOT(setMuteActionState()));
+	connect(mute_action, SIGNAL(actionCreated(Action *)), this, SLOT(setMuteActionState()));
 
 	if (firstLoad)
-		Kadu::addAction("muteSoundsAction");
+		KaduWindow::addAction("muteSoundsAction");
 
 	setMuteActionState();
 
@@ -133,7 +137,7 @@ void SoundSlots::muteActionActivated(QAction  *action, bool is_on)
 	Q_UNUSED(action)
 	kdebugf();
 	sound_manager->setMute(is_on);
- 	foreach (KaduAction *action, mute_action->actions())
+	foreach (Action *action, mute_action->actions())
 		action->setChecked(is_on);
 	config_file.writeEntry("Sounds", "PlaySound", !is_on);
 	kdebugf2();
@@ -141,7 +145,7 @@ void SoundSlots::muteActionActivated(QAction  *action, bool is_on)
 
 void SoundSlots::setMuteActionState()
 {
- 	foreach (KaduAction *action, mute_action->actions())
+	foreach (Action *action, mute_action->actions())
 		action->setChecked(sound_manager->isMuted());
 }
 
