@@ -69,7 +69,7 @@ void ExecConfigurationWidget::saveNotifyConfigurations()
 	if (currentNotifyEvent != "")
 		Commands[currentNotifyEvent] = commandLineEdit->text();
 
-	foreach(const QString &eventName, Commands.keys())
+	foreach (const QString &eventName, Commands.keys())
 		config_file.writeEntry("Exec Notify", eventName + "Cmd", Commands[eventName]);
 }
 
@@ -87,8 +87,7 @@ void ExecConfigurationWidget::switchToEvent(const QString &event)
 
 //TODO 0.6.6 icon:
 ExecNotify::ExecNotify(QObject *parent)
-	: Notifier(QT_TRANSLATE_NOOP("@default", "Exec"), QT_TRANSLATE_NOOP("@default", "Run command"),
-		   IconsManager::instance()->loadIcon("MediaPlayer"), parent)
+	: Notifier("Exec", "Run command", IconsManager::instance()->loadIcon("MediaPlayer"), parent)
 {
 	kdebugf();
 

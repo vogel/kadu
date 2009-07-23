@@ -1,30 +1,31 @@
 #ifndef QT4_DOCKING_NOTIFY_H
 #define QT4_DOCKING_NOTIFY_H
 
-#include "configuration/configuration-aware-object.h"
-#include "main_configuration_window.h"
-#include "../notify/notify.h"
+#include "gui/windows/main-configuration-window.h"
+#include "notify/notifier.h"
 #include "../qt4_docking/qt4_docking.h"
 
 #include "qt4_docking_notify_configuration_widget.h"
 
+class Chat;
 
 /**
  * @defgroup qt4_notify Qt4 Notify
  * @{
  */
-class Qt4Notify : public Notifier, public ConfigurationUiHandler, ConfigurationAwareObject
+class Qt4Notify : public Notifier
 {
 	Q_OBJECT
 
+	void import_0_6_5_configuration();
 	void createDefaultConfiguration();
 	QString toPlainText(const QString &text);
 	QString parseText(const QString &text, Notification *notification, const QString &def);
-	ContactList contacts;
+	Chat *chat;
 	Qt4NotifyConfigurationWidget *configurationWidget;
 
 public:
-	Qt4Notify(QObject *parent = 0, const char *name = 0);
+	Qt4Notify();
 	~Qt4Notify();
 
 	virtual void notify(Notification *notification);
@@ -33,9 +34,7 @@ public:
 
 	void copyConfiguration(const QString &fromEvent, const QString &toEvent) {}
 
-	virtual NotifierConfigurationWidget *createConfigurationWidget(QWidget *parent = 0, char *name = 0);
-	virtual void mainConfigurationWindowCreated(MainConfigurationWindow*);
-	virtual void configurationUpdated();
+	virtual NotifierConfigurationWidget *createConfigurationWidget(QWidget *parent = 0);
 
 public slots:
 	void messageClicked();

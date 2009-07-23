@@ -14,16 +14,17 @@
 #include <QtGui/QGridLayout>
 #include <QtGui/QApplication>
 
-#include "config_file.h"
+#include "configuration/configuration-file.h"
+#include "gui/widgets/configuration/notify-group-box.h"
+#include "gui/windows/main-configuration-window.h"
 #include "debug.h"
-#include "kadu.h"
 
 #include "qt4_docking_notify_configuration_widget.h"
 
-Qt4NotifyConfigurationWidget::Qt4NotifyConfigurationWidget(QWidget *parent, char *name)
-	: NotifierConfigurationWidget(parent, name), currentNotifyEvent("")
+Qt4NotifyConfigurationWidget::Qt4NotifyConfigurationWidget(QWidget *parent)
+	: NotifierConfigurationWidget(parent), currentNotifyEvent("")
 {
-	QString tooltip = qApp->translate("@default", Kadu::SyntaxTextNotify) +
+	QString tooltip = qApp->translate("@default", MainConfigurationWindow::SyntaxTextNotify) +
 		tr("\n%&t - title (eg. New message) %&m - notification text (eg. Message from Jim), %&d - details (eg. message quotation),\n%&i - notification icon");
 
 	timeout = new QSpinBox(this);
@@ -47,7 +48,7 @@ Qt4NotifyConfigurationWidget::Qt4NotifyConfigurationWidget(QWidget *parent, char
 	connect(title, SIGNAL(textChanged(const QString &)), this, SLOT(titleChanged(const QString &)));
 	connect(icon, SIGNAL(currentIndexChanged(int)), this, SLOT(iconChanged(int)));
 
-	QGridLayout *gridLayout = new QGridLayout(this, 0, 0, 0, 5);
+	QGridLayout *gridLayout = new QGridLayout(this);
 	gridLayout->addWidget(new QLabel(tr("Timeout") + ":", this), 1, 0, Qt::AlignRight);
 	gridLayout->addWidget(timeout, 1, 1);
 	gridLayout->addWidget(new QLabel(tr("Notification Icon") + ":", this), 2, 0, Qt::AlignRight);
@@ -57,7 +58,8 @@ Qt4NotifyConfigurationWidget::Qt4NotifyConfigurationWidget(QWidget *parent, char
 	gridLayout->addWidget(new QLabel(tr("Syntax") + ":", this), 4, 0, Qt::AlignRight);
 	gridLayout->addWidget(syntax, 4, 1);
 
-	parent->layout()->addWidget(this);
+	dynamic_cast<NotifyGroupBox *>(parent)->addWidget(this);
+
 }
 
 void Qt4NotifyConfigurationWidget::saveNotifyConfigurations()
@@ -67,7 +69,7 @@ void Qt4NotifyConfigurationWidget::saveNotifyConfigurations()
 	if (currentNotifyEvent != "")
 		properties[currentNotifyEvent] = currentProperties;
 
-	foreach(const Qt4NotifyProperties &property, properties)
+	foreach (const Qt4NotifyProperties &property, properties)
 	{
 		const QString &eventName = property.eventName;
 

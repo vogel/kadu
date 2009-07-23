@@ -10,7 +10,9 @@
 #ifndef QT4_DOCKING_NOTIFY_CONFIGURATION_WIDGET_H
 #define QT4_DOCKING_NOTIFY_CONFIGURATION_WIDGET_H
 
-#include "../notify/notify.h"
+#include <QtCore/QMap>
+
+#include "gui/widgets/configuration/notifier-configuration-widget.h"
 
 class QLabel;
 class QLineEdit;
@@ -47,7 +49,7 @@ private slots:
 	void iconChanged(int index);
 
 public:
-	Qt4NotifyConfigurationWidget(QWidget *parent = 0, char *name = 0);
+	Qt4NotifyConfigurationWidget(QWidget *parent = 0);
 
 	virtual void loadNotifyConfigurations() {}
 	virtual void saveNotifyConfigurations();
