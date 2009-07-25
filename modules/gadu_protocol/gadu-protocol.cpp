@@ -178,7 +178,7 @@ bool GaduProtocol::validateUserID(QString &uid)
 	return false;
 }
 
-unsigned int GaduProtocol::maxDescriptionLength()
+int GaduProtocol::maxDescriptionLength()
 {
 #ifdef GG_STATUS_DESCR_MAXSIZE_PRE_8_0
 	if (GaduLoginParams.protocol_version <= 0x2a)

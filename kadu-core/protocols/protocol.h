@@ -98,6 +98,7 @@ public:
 	void setStatus(Status status);
 	const Status & status() const { return CurrentStatus; }
 	const Status & nextStatus() const { return NextStatus; }
+	virtual int maxDescriptionLength() { return -1; }
 
 	void setPrivateMode(bool privateMode);
 	bool privateMode() { return PrivateMode; }

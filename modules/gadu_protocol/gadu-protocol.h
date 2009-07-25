@@ -134,7 +134,7 @@ public:
 	UinType uin(Contact contact) const;
 	GaduContactAccountData * gaduContactAccountData(Contact contact) const;
 
-	unsigned int maxDescriptionLength();
+	virtual int maxDescriptionLength();
 
 	gg_session * gaduSession() { return GaduSession; }
 	GaduProtocolSocketNotifiers * socketNotifiers() { return SocketNotifiers; }

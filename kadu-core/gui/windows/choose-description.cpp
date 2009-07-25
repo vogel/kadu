@@ -26,8 +26,6 @@
 #include "debug.h"
 #include "icons-manager.h"
 
-#include "../modules/gadu_protocol/gadu-protocol.h"
-
 #include "choose-description.h"
 
 QMap<StatusContainer *, ChooseDescription *> ChooseDescription::Dialogs;
@@ -68,16 +66,9 @@ ChooseDescription::ChooseDescription(StatusContainer *statusContainer, QWidget *
 
 	Description->setEditText(currentDescription);
 
-	AvailableChars = new QLabel(this);
+	MaxDescriptionLength = statusContainer->maxDescriptionLength();
 
-#if 1
-	GaduProtocol *gadu = dynamic_cast<GaduProtocol *>(AccountManager::instance()->defaultAccount()->protocol());
-// 	Description->lineEdit()->setMaxLength(gadu->maxDescriptionLength());
-#endif
-
-	connect(Description, SIGNAL(editTextChanged(const QString &)), this, SLOT(currentDescriptionChanged(const QString &)));
 	connect(Description, SIGNAL(activated(int)), this, SLOT(activated(int)));
-	currentDescriptionChanged(Description->currentText());
 
 	OkButton = new QPushButton(tr("&OK"), this);
 	OkButton->setIcon(statusContainer->statusPixmap());
@@ -90,7 +81,14 @@ ChooseDescription::ChooseDescription(StatusContainer *statusContainer, QWidget *
 	QGridLayout *grid = new QGridLayout(this);
 
 	grid->addWidget(Description, 0, 0, 1, -1);
-	grid->addWidget(AvailableChars, 1, 0);
+	if (MaxDescriptionLength > 0)
+	{
+		AvailableChars = new QLabel(this);	
+		Description->lineEdit()->setMaxLength(MaxDescriptionLength);
+		currentDescriptionChanged(Description->currentText());
+		connect(Description, SIGNAL(textChanged(const QString &)), this, SLOT(currentDescriptionChanged(const QString &)));
+		grid->addWidget(AvailableChars, 1, 0);
+	}
 	grid->addWidget(OkButton, 1, 1, Qt::AlignRight);
 	grid->addWidget(cancelButton, 1, 2, Qt::AlignRight);
 
@@ -154,16 +152,7 @@ void ChooseDescription::activated(int index)
 void ChooseDescription::currentDescriptionChanged(const QString &text)
 {
 	int length = text.length();
-
-#if 0
-	int count = (length - 10) / (gadu->maxDescriptionLength() - 10);
-	int rest = (count + 1) * (gadu->maxDescriptionLength() - 10) - length + 10;
-
-	AvailableChars->setText(' ' + QString::number(rest) + " (" + QString::number(count) + ")");
-#else
-	GaduProtocol *gadu = dynamic_cast<GaduProtocol *>(AccountManager::instance()->defaultAccount()->protocol());
-	AvailableChars->setText(' ' + QString::number(gadu->maxDescriptionLength() - length));
-#endif
+	AvailableChars->setText(' ' + QString::number(MaxDescriptionLength - length));
 }
 
 void ChooseDescription::statusChanged()

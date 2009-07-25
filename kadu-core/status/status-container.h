@@ -30,6 +30,8 @@ public:
 
 	virtual QList<StatusType *> supportedStatusTypes() = 0;
 
+	virtual int maxDescriptionLength() = 0;
+
 signals:
 	void statusChanged();
 

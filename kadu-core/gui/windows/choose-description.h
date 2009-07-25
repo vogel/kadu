@@ -30,6 +30,8 @@ class ChooseDescription : public QDialog
 	QPushButton *OkButton;
 
 	StatusContainer *MyStatusContainer;
+	
+	int MaxDescriptionLength;
 
 private slots:
 	void statusChanged();

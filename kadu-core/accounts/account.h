@@ -101,6 +101,7 @@ public:
 
 	virtual void setStatus(Status newStatus);
 	virtual Status status();
+	virtual int maxDescriptionLength();
 
 	virtual QString statusName();
 	virtual QPixmap statusPixmap();

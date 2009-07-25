@@ -197,3 +197,9 @@ QList<StatusType *> Account::supportedStatusTypes()
 {
 	return ProtocolHandler->protocolFactory()->supportedStatusTypes();
 }
+
+int Account::maxDescriptionLength() 
+{
+	if (ProtocolHandler)
+		return ProtocolHandler->maxDescriptionLength();
+}
