@@ -12,7 +12,7 @@
 
 #include "../sound/sound.h"
 
-#include "config_file.h"
+#include "configuration/configuration-file.h"
 #include "debug.h"
 
 #include "player_external.h"
@@ -26,7 +26,7 @@ extern "C" KADU_EXPORT int ext_sound_init(bool firstLoad)
 	kdebugf();
 
 	external_player = new ExternalPlayer();
-	MainConfigurationWindow::registerUiFile(dataPath("kadu/modules/configuration/ext_sound.ui"), 0);
+	MainConfigurationWindow::registerUiFile(dataPath("kadu/modules/configuration/ext_sound.ui"));
 
 	kdebugf2();
 	return 0;
@@ -35,7 +35,7 @@ extern "C" KADU_EXPORT void ext_sound_close()
 {
 	kdebugf();
 
-	MainConfigurationWindow::unregisterUiFile(dataPath("kadu/modules/configuration/ext_sound.ui"), 0);
+	MainConfigurationWindow::unregisterUiFile(dataPath("kadu/modules/configuration/ext_sound.ui"));
 	delete external_player;
 	external_player = 0;
 
@@ -83,8 +83,8 @@ void ExternalPlayer::play(const QString &s, bool volCntrl, double vol, QString p
 	if (volCntrl)
 		t.append(" -v "+QString::number(vol, 'g', 2));
 	t.append(" "+s+" >/dev/null &");
-	kdebugm(KDEBUG_INFO, "%s\n", t.ascii());
-	system(t.ascii());
+	kdebugm(KDEBUG_INFO, "%s\n", t.toAscii().data());
+	system(t.toAscii());
 	kdebugf2();
 }
 

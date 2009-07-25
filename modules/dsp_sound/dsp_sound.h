@@ -26,7 +26,7 @@ public slots:
 	void setFlushingEnabled(SoundDevice device, bool enabled);
 
 public:
-	OSSPlayerSlots(QObject *parent=0, const char *name=0);
+	OSSPlayerSlots(QObject *parent = 0);
 	~OSSPlayerSlots();
 
 };

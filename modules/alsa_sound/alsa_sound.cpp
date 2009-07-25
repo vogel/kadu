@@ -10,7 +10,7 @@
 #include <sys/time.h>
 
 #include "alsa_sound.h"
-#include "config_file.h"
+#include "configuration/configuration-file.h"
 #include "debug.h"
 #include "../sound/sound.h"
 
@@ -33,8 +33,8 @@ extern "C" int alsa_sound_init(bool firstLoad)
 {
 	kdebugf();
 
-	alsa_player_slots = new ALSAPlayerSlots(NULL, "alsa_player_slots");
-	MainConfigurationWindow::registerUiFile(dataPath("kadu/modules/configuration/alsa_sound.ui"), 0);
+	alsa_player_slots = new ALSAPlayerSlots;
+	MainConfigurationWindow::registerUiFile(dataPath("kadu/modules/configuration/alsa_sound.ui"));
 
 	kdebugf2();
 	return 0;
@@ -44,7 +44,7 @@ extern "C" void alsa_sound_close()
 {
 	kdebugf();
 
-	MainConfigurationWindow::unregisterUiFile(dataPath("kadu/modules/configuration/alsa_sound.ui"), 0);
+	MainConfigurationWindow::unregisterUiFile(dataPath("kadu/modules/configuration/alsa_sound.ui"));
 	delete alsa_player_slots;
 	alsa_player_slots = 0;
 
@@ -233,7 +233,7 @@ snd_pcm_t *ALSAPlayerSlots::alsa_open (const char *device, int channels, int sam
 	return alsa_dev;
 }
 
-ALSAPlayerSlots::ALSAPlayerSlots(QObject *parent, const char *name) : QObject(parent, name)
+ALSAPlayerSlots::ALSAPlayerSlots(QObject *parent) : QObject(parent)
 {
 	kdebugf();
 

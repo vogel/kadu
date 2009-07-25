@@ -1,6 +1,8 @@
 #ifndef KADU_SOUNDFILE_H
 #define KADU_SOUNDFILE_H
 
+#include <QtGlobal>
+
 /** @ingroup sound
  * @{
  */

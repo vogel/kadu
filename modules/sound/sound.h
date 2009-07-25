@@ -2,6 +2,7 @@
 #define KADU_SOUND_H
 
 #include <QtCore/QObject>
+#include <QtCore/QEvent>
 #include <QtCore/QString>
 #include <QtCore/QDateTime>
 #include <QtCore/QStringList>
@@ -35,6 +36,18 @@ typedef void* SoundDevice;
 /**
 **/
 enum SoundDeviceType {RECORD_ONLY, PLAY_ONLY, PLAY_AND_RECORD};
+
+class SoundEvent : public QEvent
+{
+	SoundDevice Data;
+	static int EventNumber;
+
+public:
+	SoundEvent(SoundDevice data) : QEvent((QEvent::Type)EventNumber) { Data = data; }
+	SoundDevice data() { return Data; }
+
+	static int eventNumber() { return EventNumber; }
+};
 
 /**
 	To jest klasa u�ywana wewn�trznie przez klas� SoundManager

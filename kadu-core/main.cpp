@@ -371,6 +371,8 @@ int main(int argc, char *argv[])
 		return 1;
 	}
 
+	qApp->setApplicationName("Kadu");
+
 	Core::instance()->createGui();
 
 	QString path_ = ggPath(QString::null);

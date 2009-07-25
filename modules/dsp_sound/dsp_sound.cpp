@@ -17,9 +17,10 @@
 #include <sys/ioctl.h>
 
 #include "../sound/sound_file.h"
+#include "configuration/configuration-file.h"
 #include "debug.h"
+
 #include "dsp_sound.h"
-// #include "config_dialog.h"
 
 /**
  * @ingroup dsp_sound
@@ -29,8 +30,8 @@ extern "C" int dsp_sound_init(bool firstLoad)
 {
 	kdebugf();
 
-	oss_player_slots = new OSSPlayerSlots(NULL, "oss_player_slots");
-	MainConfigurationWindow::registerUiFile(dataPath("kadu/modules/configuration/dsp_sound.ui"), 0);
+	oss_player_slots = new OSSPlayerSlots;
+	MainConfigurationWindow::registerUiFile(dataPath("kadu/modules/configuration/dsp_sound.ui"));
 
 	kdebugf2();
 	return 0;
@@ -40,7 +41,7 @@ extern "C" void dsp_sound_close()
 {
 	kdebugf();
 
-	MainConfigurationWindow::unregisterUiFile(dataPath("kadu/modules/configuration/dsp_sound.ui"), 0);
+	MainConfigurationWindow::unregisterUiFile(dataPath("kadu/modules/configuration/dsp_sound.ui"));
 	delete oss_player_slots;
 	oss_player_slots = 0;
 
@@ -77,7 +78,7 @@ int OSSPlayerSlots::write_all(int fd, const char *data, int length, int chunksiz
 	return res;
 }
 
-OSSPlayerSlots::OSSPlayerSlots(QObject *parent, const char *name) : QObject(parent, name)
+OSSPlayerSlots::OSSPlayerSlots(QObject *parent) : QObject(parent)
 {
 	kdebugf();
 

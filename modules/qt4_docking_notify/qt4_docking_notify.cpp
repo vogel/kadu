@@ -122,11 +122,7 @@ void Qt4Notify::notify(Notification *notification)
 		QString title = config_file.readEntry("Qt4DockingNotify", QString("Event_") + notification->type() + "_title");
 		QString syntax = config_file.readEntry("Qt4DockingNotify", QString("Event_") + notification->type() + "_syntax");
 
-		AccountNotification *accountNotification = dynamic_cast<AccountNotification *>(notification);
-		if (accountNotification)
-			chat = notification->chat();
-		else
-			chat = 0;
+		chat = notification->chat();
 
 		qt4_tray_icon->showMessage(parseText(title, notification, notification->text()),
 			parseText(syntax, notification, notification->details()),

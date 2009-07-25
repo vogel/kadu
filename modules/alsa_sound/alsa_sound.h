@@ -18,7 +18,7 @@ class ALSAPlayerSlots : public QObject
 	void createDefaultConfiguration();
 
 public:
-	ALSAPlayerSlots(QObject *parent = 0, const char *name = 0);
+	ALSAPlayerSlots(QObject *parent = 0);
 	~ALSAPlayerSlots();
 	bool isOk();
 
