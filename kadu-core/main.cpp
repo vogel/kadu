@@ -278,7 +278,9 @@ int main(int argc, char *argv[])
                 }
 
 	}
+#ifndef Q_OS_WIN // Qt version is better on win32
         qInstallMsgHandler(kaduQtMessageHandler);
+#endif
         xml_config_file = new XmlConfigFile();
 
         config_file_ptr = new ConfigFile(ggPath(QString("kadu.conf")));

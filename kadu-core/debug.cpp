@@ -19,6 +19,11 @@ int debug_mask;
 #include <stdarg.h>
 #include <stdio.h>
 
+#ifdef Q_OS_WIN
+#define WIN32_LEAN_AND_MEAN
+#include <windows.h>
+#endif
+
 /*
 	Poniewa� debug() mo�e by� u�ywany w r��nych w�tkach,
 	wi�c zastosowa�em semafor, aby unikn�� wy�wietlenia
@@ -62,6 +67,18 @@ void _kdebug_with_mask(int mask, const char* file, const int line, const char* f
 		if (mask & (KDEBUG_PANIC|KDEBUG_ERROR|KDEBUG_WARNING))
 			fprintf(stderr, "\033[0m");
 		fflush(stderr);
+#ifdef Q_OS_WIN
+		// ok, now send it to debugger without times
+		char msg[1024];
+		if(IsDebuggerPresent()){
+			_snprintf(msg, 1024, "KK <%s:%i> ", file, line);
+			OutputDebugString(msg);
+			va_start(args, format);
+			vsnprintf(msg, 1021, format, args);
+			va_end(args);
+			OutputDebugString(msg);
+		}
+#endif
 		debug_mutex.unlock();
 	}
 }
