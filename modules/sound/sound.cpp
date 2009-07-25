@@ -32,12 +32,14 @@
 
 #include "sound.h"
 
+#include "sound_exports.h"
+
 
 /**
  * @ingroup sound
  * @{
  */
-SoundManager* sound_manager = NULL;
+SOUNDAPI SoundManager* sound_manager = NULL;
 SoundSlots* sound_slots;
 
 int SoundEvent::EventNumber = QEvent::registerEventType();
@@ -103,7 +105,7 @@ bool SamplePlayThread::event(QEvent* event)
 	return true;
 }
 
-void SamplePlayThread::playSample(const int16_t* data, int length)
+void SamplePlayThread::playSample(const qint16* data, int length)
 {
 	kdebugf();
 
@@ -166,7 +168,7 @@ bool SampleRecordThread::event(QEvent* event)
 	return true;
 }
 
-void SampleRecordThread::recordSample(int16_t* data, int length)
+void SampleRecordThread::recordSample(qint16* data, int length)
 {
 	kdebugf();
 	SampleSemaphore.acquire();
@@ -482,7 +484,7 @@ void SoundManager::setFlushingEnabled(SoundDevice device, bool enabled)
 	kdebugf2();
 }
 
-bool SoundManager::playSample(SoundDevice device, const int16_t* data, int length)
+bool SoundManager::playSample(SoundDevice device, const qint16* data, int length)
 {
 	kdebugf();
 	bool result;
@@ -497,7 +499,7 @@ bool SoundManager::playSample(SoundDevice device, const int16_t* data, int lengt
 	return result;
 }
 
-bool SoundManager::recordSample(SoundDevice device, int16_t* data, int length)
+bool SoundManager::recordSample(SoundDevice device, qint16* data, int length)
 {
 	kdebugf();
 	bool result;

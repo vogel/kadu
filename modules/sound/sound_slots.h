@@ -57,15 +57,15 @@ class SoundSlots : public QObject, public ConfigurationAwareObject
 
 	MessageBox* SamplePlayingTestMsgBox;
 	SoundDevice SamplePlayingTestDevice;
-	int16_t*    SamplePlayingTestSample;
+	qint16*    SamplePlayingTestSample;
 
 	MessageBox* SampleRecordingTestMsgBox;
 	SoundDevice SampleRecordingTestDevice;
-	int16_t*    SampleRecordingTestSample;
+	qint16*    SampleRecordingTestSample;
 
 	MessageBox* FullDuplexTestMsgBox;
 	SoundDevice FullDuplexTestDevice;
-	int16_t*    FullDuplexTestSample;
+	qint16*    FullDuplexTestSample;
 
 private slots:
 	void muteActionActivated(QAction *action, bool is_on);

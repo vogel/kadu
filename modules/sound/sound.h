@@ -59,7 +59,7 @@ class SamplePlayThread : public QThread
 
 	private:
 		SoundDevice Device;
-		const int16_t* Sample;
+		const qint16* Sample;
 		int SampleLen;
 		bool Stopped;
 		QSemaphore PlayingSemaphore;
@@ -71,7 +71,7 @@ class SamplePlayThread : public QThread
 
 	public:
 		SamplePlayThread(SoundDevice device);
-		void playSample(const int16_t* data, int length);
+		void playSample(const qint16* data, int length);
 		void stop();
 
 	signals:
@@ -88,7 +88,7 @@ class SampleRecordThread : public QThread
 
 	private:
 		SoundDevice Device;
-		int16_t* Sample;
+		qint16* Sample;
 		int SampleLen;
 		bool Stopped;
 		QSemaphore RecordingSemaphore;
@@ -100,7 +100,7 @@ class SampleRecordThread : public QThread
 
 	public:
 		SampleRecordThread(SoundDevice device);
-		void recordSample(int16_t* data, int length);
+		void recordSample(qint16* data, int length);
 		void stop();
 
 	signals:
@@ -277,7 +277,7 @@ class SOUNDAPI SoundManager : public Notifier, public ConfigurationUiHandler
 			@param length d�ugo�� danych sampla (w bajtach)
 			@return true je�li odtwarzanie zako�czy�o si� powodzeniem.
 		**/
-		bool playSample(SoundDevice device, const int16_t* data, int length);
+		bool playSample(SoundDevice device, const qint16* data, int length);
 		/**
 			Nagrywa pr�bk� d�wi�kow�. Standardowo jest to
 			operacja blokuj�ca. Mo�e by� wywo�ana z innego
@@ -296,7 +296,7 @@ class SOUNDAPI SoundManager : public Notifier, public ConfigurationUiHandler
 			@param length d�ugo�� sampla do nagrania (wielko�� bufora w bajtach)
 			@return true je�li nagrywanie zako�czy�o si� powodzeniem.
 		**/
-		bool recordSample(SoundDevice device, int16_t* data, int length);
+		bool recordSample(SoundDevice device, qint16* data, int length);
 
 	signals:
 		void playSound(const QString &sound, bool volCntrl, double vol);
@@ -351,7 +351,7 @@ class SOUNDAPI SoundManager : public Notifier, public ConfigurationUiHandler
 			@param length d�ugo�� danych sampla (w bajtach)
 			@param result zwr�cony rezultat operacji - true je�li odtwarzanie zako�czy�o si� powodzeniem.
 		**/
-		void playSampleImpl(SoundDevice device, const int16_t* data, int length, bool *result);
+		void playSampleImpl(SoundDevice device, const qint16* data, int length, bool *result);
 		/**
 			Pod ten sygna� powinien podpi�� si� modu�
 			d�wi�kowy je�li obs�uguje funkcj� odtwarzania
@@ -367,7 +367,7 @@ class SOUNDAPI SoundManager : public Notifier, public ConfigurationUiHandler
 			@param length d�ugo�� sampla do nagrania (wielko�� bufora w bajtach)
 			@param result zwr�cony rezultat operacji - true je�li nagrywanie zako�czy�o si� powodzeniem.
 		**/
-		void recordSampleImpl(SoundDevice device, int16_t* data, int length, bool *result);
+		void recordSampleImpl(SoundDevice device, qint16* data, int length, bool *result);
 		/**
 		**/
 		void setFlushingEnabledImpl(SoundDevice device, bool enabled);
