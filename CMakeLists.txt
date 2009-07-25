@@ -131,7 +131,7 @@ macro (kadu_module)
 		include_directories (${CMAKE_CURRENT_SOURCE_DIR})
 		set (MODULE_SOURCES ${MODULE_SOURCES} ../module.rc)
 		# naglowki do SDK
-		install (DIRECTORY "." DESTINATION ${KADU_DATA_DIR}/kadu-sdk/include/modules/${MODULE_NAME} FILES_MATCHING PATTERN "*.h" PATTERN ".svn" EXCLUDE)
+		install (DIRECTORY "." DESTINATION ${KADU_DATA_DIR}/kadu-sdk/include/kadu-modules/${MODULE_NAME} FILES_MATCHING PATTERN "*.h" PATTERN ".svn" EXCLUDE)
 	endif (WIN32)
 
 	install (FILES ${MODULE_NAME}.desc

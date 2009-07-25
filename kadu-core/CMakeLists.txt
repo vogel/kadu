@@ -416,7 +416,7 @@ if (WIN32)
 
 	install (TARGETS kadu_core RUNTIME DESTINATION ${KADU_BIN_DIR} ARCHIVE DESTINATION ${KADU_DATA_DIR}/kadu-sdk/lib LIBRARY DESTINATION ${KADU_DATA_DIR}/kadu-sdk/lib)
 	install (TARGETS kadu_c DESTINATION ${KADU_BIN_DIR})
-	install (DIRECTORY "." DESTINATION ${KADU_DATA_DIR}/kadu-sdk/include FILES_MATCHING PATTERN "*.h" PATTERN ".svn" EXCLUDE )
+	install (DIRECTORY "." DESTINATION ${KADU_DATA_DIR}/kadu-sdk/include/kadu-core FILES_MATCHING PATTERN "*.h" PATTERN ".svn" EXCLUDE )
 else (WIN32)	
 	add_executable (kadu main.cpp main_unix.cpp ${kadu_SRCS} ${MOC_FILES})
 	set_target_properties(kadu PROPERTIES ENABLE_EXPORTS ON)

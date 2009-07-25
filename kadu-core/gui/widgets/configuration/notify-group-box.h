@@ -16,7 +16,7 @@
 
 class QCheckBox;
 
-class NotifyGroupBox : public QWidget
+class KADUAPI NotifyGroupBox : public QWidget
 {
 	Q_OBJECT
 

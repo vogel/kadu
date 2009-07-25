@@ -31,7 +31,7 @@ class KaduTextBrowser;
 class KaduWindowActions;
 class StatusButtons;
 
-class KaduWindow : public MainWindow, private ConfigurationAwareObject
+class KADUAPI KaduWindow : public MainWindow, private ConfigurationAwareObject
 {
 	Q_OBJECT
 
