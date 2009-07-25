@@ -10,9 +10,10 @@
 
 #include <windows.h>
 
-typedef short int16_t;
-
-#include "configuration/configuration-window-widgets.h"
+#include "configuration/configuration-file.h"
+#include "gui/windows/configuration-window.h"
+#include "gui/widgets/configuration/configuration-widget.h"
+#include "gui/widgets/configuration/config-combo-box.h"
 #include "../sound/sound_file.h"
 #include "debug.h"
 #include "win32_sound.h"
@@ -25,8 +26,9 @@ extern "C" KADU_EXPORT int win32_sound_init(bool firstLoad)
 {
 	kdebugf();
 
-	win32_player_slots = new WIN32PlayerSlots(NULL, "win32_player_slots");
-	MainConfigurationWindow::registerUiFile(dataPath("kadu/modules/configuration/win32_sound.ui"), win32_player_slots);
+	win32_player_slots = new WIN32PlayerSlots();
+	MainConfigurationWindow::registerUiFile(dataPath("kadu/modules/configuration/win32_sound.ui"));
+	MainConfigurationWindow::registerUiHandler(win32_player_slots);
 
 	kdebugf2();
 	return 0;
@@ -36,7 +38,8 @@ extern "C" KADU_EXPORT void win32_sound_close()
 {
 	kdebugf();
 
-	MainConfigurationWindow::unregisterUiFile(dataPath("kadu/modules/configuration/win32_sound.ui"), 0);
+	MainConfigurationWindow::unregisterUiHandler(win32_player_slots);
+	MainConfigurationWindow::unregisterUiFile(dataPath("kadu/modules/configuration/win32_sound.ui"));
 	delete win32_player_slots;
 	win32_player_slots = 0;
 
@@ -50,7 +53,7 @@ struct WIN32SoundDevice
 };
 
 
-WIN32PlayerSlots::WIN32PlayerSlots(QObject *parent, const char *name) : QObject(parent, name)
+WIN32PlayerSlots::WIN32PlayerSlots()
 {
 	kdebugf();
 
@@ -60,11 +63,11 @@ WIN32PlayerSlots::WIN32PlayerSlots(QObject *parent, const char *name) : QObject(
 		this, SLOT(openDevice(SoundDeviceType, int, int, SoundDevice*)), Qt::DirectConnection);
 	connect(sound_manager, SIGNAL(closeDeviceImpl(SoundDevice)),
 		this, SLOT(closeDevice(SoundDevice)));
-	connect(sound_manager, SIGNAL(playSampleImpl(SoundDevice, const int16_t*, int, bool*)),
-		this, SLOT(playSample(SoundDevice, const int16_t*, int, bool*)),
+	connect(sound_manager, SIGNAL(playSampleImpl(SoundDevice, const qint16*, int, bool*)),
+		this, SLOT(playSample(SoundDevice, const qint16*, int, bool*)),
 		Qt::DirectConnection);
-	connect(sound_manager, SIGNAL(recordSampleImpl(SoundDevice, int16_t*, int, bool*)),
-		this, SLOT(recordSample(SoundDevice, int16_t*, int, bool*)),
+	connect(sound_manager, SIGNAL(recordSampleImpl(SoundDevice, qint16*, int, bool*)),
+		this, SLOT(recordSample(SoundDevice, qint16*, int, bool*)),
 		Qt::DirectConnection);
 
   inNames.clear();
@@ -120,10 +123,10 @@ WIN32PlayerSlots::~WIN32PlayerSlots()
 		this, SLOT(openDevice(SoundDeviceType, int, int, SoundDevice*)));
 	disconnect(sound_manager, SIGNAL(closeDeviceImpl(SoundDevice)),
 		this, SLOT(closeDevice(SoundDevice)));
-	disconnect(sound_manager, SIGNAL(playSampleImpl(SoundDevice, const int16_t*, int, bool*)),
-		this, SLOT(playSample(SoundDevice, const int16_t*, int, bool*)));
-	disconnect(sound_manager, SIGNAL(recordSampleImpl(SoundDevice, int16_t*, int, bool*)),
-		this, SLOT(recordSample(SoundDevice, int16_t*, int, bool*)));
+	disconnect(sound_manager, SIGNAL(playSampleImpl(SoundDevice, const qint16*, int, bool*)),
+		this, SLOT(playSample(SoundDevice, const qint16*, int, bool*)));
+	disconnect(sound_manager, SIGNAL(recordSampleImpl(SoundDevice, qint16*, int, bool*)),
+		this, SLOT(recordSample(SoundDevice, qint16*, int, bool*)));
 
 	kdebugf2();
 }
@@ -190,7 +193,7 @@ void WIN32PlayerSlots::closeDevice(SoundDevice device)
 	kdebugf2();
 }
 
-void WIN32PlayerSlots::playSample(SoundDevice device, const int16_t* data, int length, bool* result)
+void WIN32PlayerSlots::playSample(SoundDevice device, const qint16* data, int length, bool* result)
 {
 	kdebugf();
 	WAVEHDR hdr;
@@ -220,7 +223,7 @@ void WIN32PlayerSlots::playSample(SoundDevice device, const int16_t* data, int l
 	kdebugf2();
 }
 
-void WIN32PlayerSlots::recordSample(SoundDevice device, int16_t* data, int length, bool* result)
+void WIN32PlayerSlots::recordSample(SoundDevice device, qint16* data, int length, bool* result)
 {
 	kdebugf();
 	WAVEHDR hdr;
@@ -257,8 +260,8 @@ void WIN32PlayerSlots::createDefaultConfiguration()
 
 void WIN32PlayerSlots::mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow)
 {
-	ConfigComboBox *in=dynamic_cast<ConfigComboBox*>(mainConfigurationWindow->widgetById("win32sound/in"));
-	ConfigComboBox *out=dynamic_cast<ConfigComboBox*>(mainConfigurationWindow->widgetById("win32sound/out"));
+	ConfigComboBox *in=dynamic_cast<ConfigComboBox*>(mainConfigurationWindow->widget()->widgetById("win32sound/in"));
+	ConfigComboBox *out=dynamic_cast<ConfigComboBox*>(mainConfigurationWindow->widget()->widgetById("win32sound/out"));
 	in->setItems(inValues, inNames);
 	out->setItems(outValues, outNames);
 }
