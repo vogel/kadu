@@ -259,6 +259,7 @@ void JabberClient::connect(const XMPP::Jid &jid, const QString &password, bool a
 		QMessageBox *m = new QMessageBox(QMessageBox::Critical, tr("Jabber SSL Error"), tr("SSL support could not be initialized for account %1. This is most likely because the QCA TLS plugin is not installed on your system.").arg(jid.bare()), QMessageBox::Ok, 0, Qt::Popup);
 		m->setModal(true);
 		m->show();
+		return;
 	}
 
 	/*
