@@ -19,6 +19,7 @@
 
 #include "misc/misc.h"
 #include "debug.h"
+#include "kadu-config.h"
 
 #include "xml-configuration-file.h"
 

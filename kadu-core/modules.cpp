@@ -34,6 +34,7 @@
 #include "gui/windows/message-box.h"
 
 #include "debug.h"
+#include "kadu-config.h"
 #include "icons-manager.h"
 #include "misc/misc.h"
 

@@ -33,6 +33,7 @@
 #include "protocols/protocols-manager.h"
 
 #include "debug.h"
+#include "kadu-config.h"
 #include "emoticons.h"
 #include "icons-manager.h"
 #include "misc/misc.h"

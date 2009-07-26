@@ -1,7 +1,6 @@
 #ifndef DEBUG_H
 #define DEBUG_H
 
-#include "kadu-config.h"
 #include "exports.h"
 
 /* pierwsze 8 bitow zarezerwowane jest dla libgadu */

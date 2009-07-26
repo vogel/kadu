@@ -27,6 +27,7 @@
 #include "misc/misc.h"
 #include "configuration/configuration-file.h"
 #include "debug.h"
+#include "kadu-config.h"
 #include "icons-manager.h"
 
 #include "cert-util.h"

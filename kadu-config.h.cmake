@@ -1,6 +1,3 @@
-#cmakedefine DEBUG 1
-#cmakedefine DEBUG_ENABLED 1
-
 #define DATADIR "${DATADIR}"
 #define LIBDIR "${LIBDIR}"
 #define BINDIR "${BINDIR}"
@@ -8,6 +5,7 @@
 #define VERSION "${KADU_VERSION}"
 #define DETAILED_VERSION "${DETAILED_VERSION}"
 #define BUILD_DESCRIPTION "${BUILD_DESCRIPTION}"
+#define NUMERIC_VERSION ${NUMERIC_VERSION}
 
 #cmakedefine SIG_HANDLING_ENABLED
 #cmakedefine HAVE_EXECINFO

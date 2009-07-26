@@ -23,6 +23,7 @@
 #include "gui/windows/kadu-window.h"
 
 #include "debug.h"
+#include "kadu-config.h"
 #include "misc/misc.h"
 #include "modules.h"
 
