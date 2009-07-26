@@ -1,5 +1,3 @@
-#include "kadu-config.h"
-#include <modver.h>
 #include <winver.h>
 
 VS_VERSION_INFO	VERSIONINFO
@@ -25,6 +23,7 @@ BEGIN
 		VALUE "Comments", BUILD_DESCRIPTION
 		END
 	END
+#ifdef DESCRIPTION_PL
 	BLOCK "StringFileInfo"
 	BEGIN 
 		BLOCK "041504B0"
@@ -36,9 +35,12 @@ BEGIN
 		VALUE "Comments", BUILD_DESCRIPTION
 		END
 	END
+#endif
 	BLOCK "VarFileInfo"
 	BEGIN
 		VALUE "Translation", 0x0409, 0x04E4
+#ifdef DESCRIPTION_PL
 		VALUE "Translation", 0x0415, 0x04B0
+#endif
 	END
 END

@@ -128,8 +128,16 @@ macro (kadu_module)
 	endforeach (ARG ${ARGV})
 
 	if (WIN32)
-		include_directories (${CMAKE_CURRENT_SOURCE_DIR})
-		set (MODULE_SOURCES ${MODULE_SOURCES} ../module.rc)
+		include_directories (${CMAKE_SOURCE_DIR}/modules)
+		# wygeneruj plik z wersja modulu
+		if (${${MODULE_NAME}} STREQUAL SHARED)
+			set (MODULE_SOURCES ${MODULE_SOURCES} ${MODULE_NAME}.rc)		
+			add_custom_command(OUTPUT ${MODULE_NAME}.rc
+				COMMAND ${CMAKE_SOURCE_DIR}/modules/modver.bat ARGS ${CMAKE_CURRENT_SOURCE_DIR}/${MODULE_NAME}.desc ${MODULE_NAME}.rc
+				WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
+				DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/${MODULE_NAME}.desc
+				COMMENT "Building RC source ${MODULE_NAME}.rc")
+		endif(${${MODULE_NAME}} STREQUAL SHARED)
 		# naglowki do SDK
 		install (DIRECTORY "." DESTINATION ${KADU_DATA_DIR}/kadu-sdk/include/kadu-modules/${MODULE_NAME} FILES_MATCHING PATTERN "*.h" PATTERN ".svn" EXCLUDE)
 	endif (WIN32)
