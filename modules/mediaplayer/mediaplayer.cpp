@@ -67,7 +67,7 @@ MediaPlayer *mediaplayer;
 const char *mediaPlayerOsdHint = "MediaPlayerOsd";
 
 // Kadu initializing functions
-extern "C" int mediaplayer_init(bool firstLoad)
+extern "C" KADU_EXPORT int mediaplayer_init(bool firstLoad)
 {
 	mediaplayer = new MediaPlayer(firstLoad);
 	notification_manager->registerEvent(mediaPlayerOsdHint, QT_TRANSLATE_NOOP("@default", "Pseudo-OSD for MediaPlayer"), CallbackNotRequired);
@@ -77,7 +77,7 @@ extern "C" int mediaplayer_init(bool firstLoad)
 	return 0;
 }
 
-extern "C" void mediaplayer_close()
+extern "C" KADU_EXPORT void mediaplayer_close()
 {
 	MainConfigurationWindow::unregisterUiFile(dataPath("kadu/modules/configuration/mediaplayer.ui"), mediaplayer);
 

@@ -1,5 +1,3 @@
-if (APPLE)
-
 set (SOURCES
 	mediaplayer.cpp
 	mp_status_changer.cpp
@@ -12,25 +10,19 @@ set (MOC_SOURCES
 	player_info.h
 )
 	
-else (APPLE)
+if (UNIX AND NOT APPLE)
 
-set (SOURCES
-	mediaplayer.cpp
-	mp_status_changer.cpp
+set (SOURCES ${SOURCES}
 	mpris_controller.cpp
 	mpris_mediaplayer.cpp
 )
 
-set (MOC_SOURCES
-	mediaplayer.h
-	mp_status_changer.h
-	player_commands.h
-	player_info.h
+set (MOC_SOURCES ${MOC_SOURCES}
 	mpris_controller.h
 	mpris_mediaplayer.h
 )
+endif (UNIX AND NOT APPLE)
 
-endif (APPLE)
 
 set (TRANSLATION_SOURCES
 	translations/mediaplayer_pl.ts
@@ -66,12 +58,13 @@ endif (COMMAND cmake_policy)
 
 add_library (mediaplayer ${mediaplayer} ${SOURCES} ${MOC_FILES})
 add_custom_target (mediaplayer-translations DEPENDS ${TRANSLATION_FILES})
+set_target_properties(mediaplayer PROPERTIES COMPILE_FLAGS "-DMEDIAPLAYER_BUILD" )
 add_dependencies (mediaplayer mediaplayer-translations)
 if (mediaplayer STREQUAL STATIC)
 	set_target_properties(mediaplayer PROPERTIES COMPILE_FLAGS "-DKADULIB" )
 else (mediaplayer STREQUAL STATIC)
 	if (WIN32)
-		target_link_libraries(mediaplayer kadu_core)
+		target_link_libraries(mediaplayer kadu_core notify)
 	endif (WIN32)
 	if (APPLE)
 		set_target_properties(mediaplayer PROPERTIES LINK_FLAGS "-undefined dynamic_lookup")

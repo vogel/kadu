@@ -6,6 +6,8 @@
 #include "misc.h"
 #include "main_configuration_window.h"
 
+#include "mediaplayer_exports.h"
+
 class QTimer;
 
 class ChatWidget;
@@ -18,7 +20,7 @@ class UserGroup;
 
 class MediaPlayerStatusChanger;
 
-class MediaPlayer : public ConfigurationUiHandler, ConfigurationAwareObject
+class MEDIAPLAYERAPI MediaPlayer : public ConfigurationUiHandler, ConfigurationAwareObject
 {
 	Q_OBJECT
 
@@ -170,6 +172,6 @@ public slots:
 
 };
 
-extern MediaPlayer *mediaplayer;
+extern MEDIAPLAYERAPI MediaPlayer *mediaplayer;
 
 #endif
