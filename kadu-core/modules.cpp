@@ -280,8 +280,7 @@ void ModulesDialog::refreshList()
 		else
 			strings << module << QString::null << tr("Static") << tr("Loaded");
 	
-		QTreeWidgetItem* item = new QTreeWidgetItem(lv_modules, strings);
-		item->setBackground(3, QBrush(Qt::gray));
+		new QTreeWidgetItem(lv_modules, strings);
 	}
 
 	moduleList = modules_manager->loadedModules();
@@ -299,8 +298,7 @@ void ModulesDialog::refreshList()
 		else
 			strings << module << QString::null << tr("Dynamic") << tr("Loaded");
 	
-		QTreeWidgetItem* item = new QTreeWidgetItem(lv_modules, strings);
-		item->setBackground(3, QBrush(Qt::darkGreen));
+		new QTreeWidgetItem(lv_modules, strings);
 	}
 
 	moduleList = modules_manager->unloadedModules();
@@ -318,8 +316,7 @@ void ModulesDialog::refreshList()
 		else
 			strings << module << QString::null << tr("Dynamic") << tr("Not loaded");
 	
-		QTreeWidgetItem* item = new QTreeWidgetItem(lv_modules, strings);
-		item->setBackground(3, QBrush(Qt::darkRed));
+		new QTreeWidgetItem(lv_modules, strings);
 	}
 	lv_modules->resizeColumnToContents(0);
 // 	lv_modules->setSelected(lv_modules->findItem(s_selected, 0), true);
