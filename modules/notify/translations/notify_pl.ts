@@ -76,6 +76,14 @@
         <source>New message</source>
         <translation>Nowa wiadomość</translation>
     </message>
+    <message>
+        <source>Silent Mode</source>
+        <translation>Tryb cichy</translation>
+    </message>
+    <message>
+        <source>Enable Silent Mode when Away</source>
+        <translation>Włącz tryb cichy gdy jestem Zajęty</translation>
+    </message>
 </context>
 <context>
     <name>ConnectionErrorNotification</name>

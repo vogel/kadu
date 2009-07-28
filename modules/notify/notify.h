@@ -179,6 +179,7 @@ class NOTIFYAPI Notify : public ConfigurationUiHandler
 
 	void addConfigurationWidget(NotifierData &notifier, const QString &name);
 	void removeConfigurationWidget(NotifierData &notifier);
+	void checkSilentMode();
 
 private slots:
 

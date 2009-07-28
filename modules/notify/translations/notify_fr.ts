@@ -74,6 +74,14 @@
         <source>New message</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Silent Mode</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Enable Silent Mode when Away</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>ConnectionErrorNotification</name>

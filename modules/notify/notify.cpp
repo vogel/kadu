@@ -114,6 +114,23 @@ void Notify::setSilentActionState()
 		action->setChecked(silent_mode);
 }
 
+void Notify::checkSilentMode()
+{
+	static int silent_mode_enabled = 0;
+	if (config_file.readBoolEntry("Notify", "AwaySilentMode") && gadu->currentStatus().isBusy())
+	{
+		silent_mode_enabled = 1;
+		silent_mode = 1;
+		setSilentActionState();
+	}
+	else if (silent_mode_enabled)
+	{
+		silent_mode_enabled = 0;
+		silent_mode = 0;
+		setSilentActionState();
+	}
+}
+
 Notify::~Notify()
 {
 	kdebugf();
@@ -342,7 +359,8 @@ void Notify::statusChanged(UserListElement elem, QString protocolName,
 					const UserStatus &oldStatus, bool massively, bool /*last*/)
 {
 	kdebugf();
-	
+
+	checkSilentMode();
 	if (silent_mode)
 		return;
 
@@ -391,6 +409,7 @@ void Notify::messageReceived(Protocol *protocol, UserListElements senders, const
 {
 	kdebugf();
 
+	checkSilentMode();
 	if (silent_mode)
 		return;
 
@@ -408,6 +427,7 @@ void Notify::connectionError(Protocol *protocol, const QString &server, const QS
 {
 	kdebugf();
 
+	checkSilentMode();
 	if (silent_mode)
 		return;
 
