@@ -38,6 +38,12 @@
 #define MODULE_MEDIAPLAYER_VERSION 1.2
 #define CHECK_STATUS_INTERVAL 10*1000 /* 10s */
 
+#ifdef Q_OS_WIN
+#define SHORTCUT_KEY Qt::Key_Meta
+#else
+#define SHORTCUT_KEY Qt::Key_Super_L
+#endif
+
 const char *MediaPlayerSyntaxText = QT_TRANSLATE_NOOP
 (
 	"@default",
@@ -243,7 +249,7 @@ void MediaPlayer::chatKeyPressed(QKeyEvent *e, CustomInput *k, bool &handled)
 	if (!config_file.readBoolEntry("MediaPlayer", "chatShortcuts", true))
 		return;
 
-	if (e->key() == Qt::Key_Super_L)
+	if (e->key() == SHORTCUT_KEY)
 		winKeyPressed = true; // We want to handle LeftWinKey pressed state
 	else if (!winKeyPressed)
 		return; // If LeftWinKey isn't pressed then break function.
@@ -290,7 +296,7 @@ void MediaPlayer::chatKeyPressed(QKeyEvent *e, CustomInput *k, bool &handled)
 
 void MediaPlayer::chatKeyReleased(QKeyEvent *e, CustomInput *k, bool &handled)
 {
-	if (e->key() == Qt::Key_Super_L)
+	if (e->key() == SHORTCUT_KEY)
 		winKeyPressed = false; // We want to handle LeftWinKey pressed state
 }
 
