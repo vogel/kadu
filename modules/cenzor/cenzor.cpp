@@ -18,7 +18,9 @@
 
 Cenzor *cenzor;
 
-extern "C" int cenzor_init()
+#include "exports.h"
+
+extern "C" KADU_EXPORT int cenzor_init()
 {
 	cenzor = new Cenzor();
 	MainConfigurationWindow::registerUiFile(dataPath("kadu/modules/configuration/cenzor.ui"), cenzor);
@@ -27,7 +29,7 @@ extern "C" int cenzor_init()
 	return 0;
 }
 
-extern "C" void cenzor_close()
+extern "C" KADU_EXPORT void cenzor_close()
 {
 	notification_manager->unregisterEvent("Cenzor");
 	MainConfigurationWindow::unregisterUiFile(dataPath("kadu/modules/configuration/cenzor.ui"), cenzor);

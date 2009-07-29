@@ -31,14 +31,16 @@
 #include "icons_manager.h"
 #include "modules/notify/notify.h"
 
+#include "exports.h"
 
-extern "C" int agent_init()
+
+extern "C" KADU_EXPORT int agent_init()
 {
 	agent = new Agent();
 	return 0;
 }
 
-extern "C" void agent_close()
+extern "C" KADU_EXPORT void agent_close()
 {
 	delete agent;
 	agent = NULL;

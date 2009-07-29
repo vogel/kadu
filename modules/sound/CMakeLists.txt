@@ -38,9 +38,7 @@ if (COMMAND cmake_policy)
 	cmake_policy(SET CMP0003 NEW)
 endif (COMMAND cmake_policy)
 
-if (NOT WIN32)
-	pkg_search_module (SNDFILE REQUIRED sndfile>=1.0)
-endif (NOT WIN32)
+pkg_search_module (SNDFILE REQUIRED sndfile>=1.0)
 
 include_directories (${SNDFILE_INCLUDE_DIRS})
 link_directories (${SNDFILE_LIBRARY_DIRS})

@@ -33,16 +33,18 @@
 #include "icons_manager.h"
 #include "message_box.h"
 
-static const QString kaduConfFile = "kadu.conf.xml";
-extern QMutex GlobalMutex;
+#include "exports.h"
 
-extern "C" int profiles_init()
+static const QString kaduConfFile = "kadu.conf.xml";
+extern KADUAPI QMutex GlobalMutex; // ugly..
+
+extern "C" KADU_EXPORT int profiles_init()
 {
 	profileManager = new ProfileManager();
 	return 0;
 }
 
-extern "C" void profiles_close()
+extern "C" KADU_EXPORT void profiles_close()
 {
 	delete profileManager;
 	profileManager = 0;

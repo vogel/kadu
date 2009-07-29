@@ -20,9 +20,11 @@
 #include "debug.h"
 #include "gadu.h"
 
+#include "exports.h"
+
 Split *split;
 
-extern "C" int split_messages_init()
+extern "C" KADU_EXPORT int split_messages_init()
 {
 	kdebugf();
 
@@ -34,7 +36,7 @@ extern "C" int split_messages_init()
 }
 
 
-extern "C" void split_messages_close()
+extern "C" KADU_EXPORT void split_messages_close()
 {
 	kdebugf();
 

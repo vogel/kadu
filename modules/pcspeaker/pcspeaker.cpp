@@ -38,6 +38,8 @@
 #include "action.h"
 #include <modules.h>
 
+#include "exports.h"
+
 //czestotliwosci dzwiekow
 //wiersze - dzwieki: C, C#, D, D#, E, F, F#, G, G#, A, A#, B
 //kolumny to oktawy - od 0 do 7
@@ -88,7 +90,7 @@ void PCSpeaker::beep(int pitch, int duration)
 	}
 }
 
-extern "C" int pcspeaker_init()
+extern "C" KADU_EXPORT int pcspeaker_init()
 {
 	kdebugf();
 
@@ -101,7 +103,7 @@ extern "C" int pcspeaker_init()
 }
 
 
-extern "C" void pcspeaker_close()
+extern "C" KADU_EXPORT void pcspeaker_close()
 {
 	kdebugf();
 #ifndef Q_OS_MACX

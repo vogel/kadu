@@ -16,9 +16,11 @@
 #include "powerkadu.h"
 #include "about_dialog.h"
 
+#include "exports.h"
+
 PowerKadu* powerKadu;
 
-extern "C" int powerkadu_init()
+extern "C" KADU_EXPORT int powerkadu_init()
 {
 	kdebugf();
 	powerKadu = new PowerKadu();
@@ -26,7 +28,7 @@ extern "C" int powerkadu_init()
 	return 0;
 }
 
-extern "C" void powerkadu_close()
+extern "C" KADU_EXPORT void powerkadu_close()
 {
 	kdebugf();
 	delete powerKadu;
