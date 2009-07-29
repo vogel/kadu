@@ -242,7 +242,7 @@ QList<HistoryEntry> HistoryImporter::getHistoryEntries(QStringList uins, int fro
 		return entries;
 
 	QTextStream stream(&f);
-	stream.setCodec(codec_latin2);
+	stream.setCodec("CP1250");
 
 	int linenr = from;
 
