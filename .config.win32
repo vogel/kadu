@@ -410,6 +410,11 @@ module_itunes_mediaplayer=n
 # Platform: Linux
 module_vlc_mediaplayer=n
 
+# Description: Winamp support for mediaplayer
+# PL: Wsparcie dla Winamp'a w mediaplayer
+# Platform: Windows
+module_winamp_mediaplayer=n
+
 # Description: XMMS support for mediaplayer
 # PL: Wsparcie dla XMMS w mediaplayer
 # Platform: Linux
