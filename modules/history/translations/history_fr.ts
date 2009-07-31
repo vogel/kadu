@@ -108,12 +108,16 @@
         <source>Unknown</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Clear history</source>
+        <translation type="unfinished">Efface historique</translation>
+    </message>
 </context>
 <context>
     <name>HistoryManager</name>
     <message>
         <source>Clear history?</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Efface historique?</translation>
     </message>
     <message>
         <source>Yes</source>

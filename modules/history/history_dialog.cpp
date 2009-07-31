@@ -14,6 +14,7 @@
 #include <QtGui/QPushButton>
 #include <QtGui/QSplitter>
 #include <QtGui/QVBoxLayout>
+#include <QtGui/QMenu>
 
 #include "chat_message.h"
 #include "chat_messages_view.h"
@@ -23,6 +24,7 @@
 #include "gadu_images_manager.h"
 #include "kadu.h"
 #include "misc.h"
+#include "icons_manager.h"
 
 #include "history_dialog.h"
 
@@ -92,10 +94,18 @@ HistoryDialog::HistoryDialog(UinsList uins)
 	uinsTreeWidget = new QTreeWidget(splitter);
 	QFontMetrics fm(uinsTreeWidget->font());
 	uinsTreeWidget->setMinimumWidth(fm.width("W") * 20);
+	uinsTreeWidget->setContextMenuPolicy(Qt::CustomContextMenu);
+	connect(uinsTreeWidget, SIGNAL(customContextMenuRequested(const QPoint &)), this, SLOT(showPopupMenu(const QPoint &)));
 
 	QStringList uinsLabels;
 	uinsLabels << tr("Uins");
 	uinsTreeWidget->setHeaderLabels(uinsLabels);
+
+	QAction *clearAction = new QAction(icons_manager->loadIcon("ClearHistory"), tr("Clear history"), this);
+	connect(clearAction, SIGNAL(triggered(bool)), this, SLOT(clearHistory(bool)));
+
+	popupMenu = new QMenu(uinsTreeWidget);
+	popupMenu->addAction(clearAction);	
 
 	QWidget *rightWidget = new QWidget(splitter);
 	QVBoxLayout* rightLatout = new QVBoxLayout(rightWidget);
@@ -172,6 +182,20 @@ HistoryDialog::HistoryDialog(UinsList uins)
 	}
 
 	kdebugf2();
+}
+
+void HistoryDialog::clearHistory(bool)
+{
+	QTreeWidgetItem *item = uinsTreeWidget->currentItem();
+	UinsList uins = dynamic_cast<UinsListViewText *>(item)->getUinsList();
+	history->removeHistory(uins);
+}
+
+void HistoryDialog::showPopupMenu(const QPoint &pos)
+{
+	QTreeWidgetItem *item = uinsTreeWidget->itemAt(pos);
+	if (item)
+		popupMenu->exec(uinsTreeWidget->mapToGlobal(pos));
 }
 
 void HistoryDialog::showStatusChangesSlot(bool showStatusChanges)

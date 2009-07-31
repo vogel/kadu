@@ -318,8 +318,7 @@ void HistoryManager::removeHistory(const UinsList &uins)
 	kdebugf();
 
 	QString fname;
-	switch (QMessageBox::information(kadu, "Kadu", qApp->translate("@default",QT_TR_NOOP("Clear history?")),
-		qApp->translate("@default",QT_TR_NOOP("Yes")), qApp->translate("@default",QT_TR_NOOP("No")), QString::null, 1, 1))
+	switch (QMessageBox::information(kadu, "Kadu", tr("Clear history?"), tr("Yes"), tr("No"), QString::null, 1, 1))
 	{
 		case 0:
 			fname = ggPath("history/");

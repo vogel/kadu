@@ -110,6 +110,10 @@
         <source>Unknown</source>
         <translation>Nieznany</translation>
     </message>
+    <message>
+        <source>Clear history</source>
+        <translation>Wyczyść historię</translation>
+    </message>
 </context>
 <context>
     <name>HistoryManager</name>

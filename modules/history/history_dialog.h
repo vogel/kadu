@@ -9,6 +9,7 @@
 #include "history_search_dialog.h"
 
 class QTreeWidget;
+class QMenu;
 
 class ChatMessage;
 class ChatMessagesView;
@@ -67,6 +68,7 @@ protected:
 	bool closeDemand;
 	bool finding;
 	QList<HistoryDate> dateEntries;
+	QMenu *popupMenu;
 
 	virtual void keyPressEvent(QKeyEvent *e);
 
@@ -79,6 +81,8 @@ public slots:
 	void searchButtonClicked();
 	void searchNextButtonClicked();
 	void searchPrevButtonClicked();
+	void showPopupMenu(const QPoint &pos);
+	void clearHistory(bool);
 
 signals:
 	void showStatusChanges(bool);

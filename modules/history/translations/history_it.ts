@@ -108,6 +108,10 @@
         <source>Unknown</source>
         <translation>Sconosciuto</translation>
     </message>
+    <message>
+        <source>Clear history</source>
+        <translation>Cancella Cronologia</translation>
+    </message>
 </context>
 <context>
     <name>HistoryManager</name>
