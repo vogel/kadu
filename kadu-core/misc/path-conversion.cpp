@@ -17,6 +17,7 @@
 
 #include "parser/parser.h"
 #include "debug.h"
+#include "kadu-config.h"
 
 #include "path-conversion.h"
 
