@@ -18,13 +18,14 @@
 
 ConfigComboBox::ConfigComboBox(const QString &section, const QString &item, const QString &widgetCaption, const QString &toolTip,
 		const QStringList &itemValues, const QStringList &itemCaptions, ConfigGroupBox *parentConfigGroupBox, ConfigurationWindowDataManager *dataManager)
-	: QComboBox(parentConfigGroupBox->widget()), ConfigWidgetValue(section, item, widgetCaption, toolTip, parentConfigGroupBox, dataManager), label(0)
+	: QComboBox(parentConfigGroupBox->widget()), ConfigWidgetValue(section, item, widgetCaption, toolTip, parentConfigGroupBox, dataManager), label(0),
+	    saveIndexNotCaption(0)
 {
 	createWidgets();
 }
 
 ConfigComboBox::ConfigComboBox(ConfigGroupBox *parentConfigGroupBox, ConfigurationWindowDataManager *dataManager)
-	: QComboBox(parentConfigGroupBox->widget()), ConfigWidgetValue(parentConfigGroupBox, dataManager), label(0)
+	: QComboBox(parentConfigGroupBox->widget()), ConfigWidgetValue(parentConfigGroupBox, dataManager), label(0), saveIndexNotCaption(0)
 {
 }
 
@@ -75,7 +76,10 @@ void ConfigComboBox::loadConfiguration()
 	if (section.isEmpty())
 		return;
 
-	setCurrentIndex(itemValues.indexOf(dataManager->readEntry(section, item).toString()));
+	if (saveIndexNotCaption)
+		setCurrentIndex(dataManager->readEntry(section, item).toInt());
+	else
+		setCurrentIndex(itemValues.indexOf(dataManager->readEntry(section, item).toString()));
 
 	emit activated(currentIndex());
 }
@@ -90,7 +94,10 @@ void ConfigComboBox::saveConfiguration()
 	if ((index < 0) || (index >= itemValues.size()))
 		return;
 
-	dataManager->writeEntry(section, item, QVariant(itemValues[currentIndex()]));
+	if (saveIndexNotCaption)
+		dataManager->writeEntry(section, item, currentIndex());
+	else
+		dataManager->writeEntry(section, item, QVariant(itemValues[currentIndex()]));
 }
 
 void ConfigComboBox::show()
@@ -107,6 +114,8 @@ void ConfigComboBox::hide()
 
 bool ConfigComboBox::fromDomElement(QDomElement domElement)
 {
+	saveIndexNotCaption = QVariant(domElement.attribute("save-index", "false")).toBool();
+
 	QDomNodeList children = domElement.childNodes();
 	int length = children.length();
 	for (int i = 0; i < length; i++)

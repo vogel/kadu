@@ -31,6 +31,8 @@ class KADUAPI ConfigComboBox : public QComboBox, public ConfigWidgetValue
 {
 	QLabel *label;
 
+	bool saveIndexNotCaption;
+
 	QStringList itemValues;
 	QStringList itemCaptions;
 

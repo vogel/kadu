@@ -12,6 +12,10 @@ set (TRANSLATION_SOURCES
 	translations/qt4_docking_notify_pl.ts
 )
 
+set (CONFIGURATION_FILES
+	configuration/qt4-docking-notify.ui
+)
+
 kadu_module (qt4_docking_notify
 	MODULE_SOURCES ${SOURCES}
 	MODULE_MOC_SOURCES ${MOC_SOURCES}

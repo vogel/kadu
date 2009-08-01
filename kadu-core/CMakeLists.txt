@@ -58,6 +58,7 @@ set (kadu_SRCS
 	configuration/configuration-file.cpp
 	configuration/configuration-manager.cpp
 	configuration/contact-account-data-manager.cpp
+	configuration/notifier-configuration-data-manager.cpp
 	configuration/storable-object.cpp
 	configuration/storable-string-list.cpp
 	configuration/uuid-storable-object.cpp
@@ -261,6 +262,7 @@ set (kadu_MOC_SRCS
 	contacts/model/filter/online-contact-filter.h
 
 	configuration/configuration-window-data-manager.h
+	configuration/notifier-configuration-data-manager.h
 
 	configuration/widgets/manage-accounts.h
 

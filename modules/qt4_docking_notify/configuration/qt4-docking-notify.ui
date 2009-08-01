@@ -1,0 +1,17 @@
+<configuration-ui>
+	<section name="Notify">
+		<tab name="Notification">
+			<group-box name="Tray Icon Baloon">
+				<spin-box caption="Timeout" config-section="Qt4DockingNotify" config-item="_timeout" min-value="1" max-value="100" suffix=" s." />
+				<combo-box caption="Notification Icon" config-section="Qt4DockingNotify" config-item="_icon" save-index="true">
+					<item value="0" caption="No Icon" />
+					<item value="1" caption="Information" />
+					<item value="2" caption="Warning" />
+					<item value="3" caption="Critical" />
+				</combo-box>
+				<line-edit caption="Title" config-section="Qt4DockingNotify" config-item="_title" id="Title" />
+				<line-edit caption="Syntax" config-section="Qt4DockingNotify" config-item="_syntax" id="Syntax"/>
+			</group-box>
+		</tab>
+	</section>
+</configuration-ui> 
