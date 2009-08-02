@@ -102,6 +102,18 @@ bool UserGroup::contains(const QString &protocolName, const QString &id, Behavio
 	return false;
 }
 
+UserListElement *UserGroup::find(const QString &protocolName, const QString &id) const
+{
+//	kdebugf();
+	foreach (const UserListElement &user, *this)
+		if (user.usesProtocol(protocolName))
+			if (user.ID(protocolName) == id)
+			{
+				return (UserListElement *)&user;
+			}
+	return NULL;
+}
+
 bool UserGroup::contains(const UserListElement &elem, BehaviourForAnonymous beh) const
 {
 //	kdebugf();

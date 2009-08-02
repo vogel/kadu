@@ -135,7 +135,6 @@ public:
 		Z�o�ono�� O(count()), ale w przysz�o�ci b�dzie optymalizowana.
 	**/
 	UserListElement byID(const QString &protocolName, const QString &id);
-
 	/**
 		\fn UserListElement byAltNick(const QString &altnick)
 		\param altnick wy�wietlany pseudonim wg. kt�rego nast�puje wyszukiwanie.
@@ -159,6 +158,15 @@ public:
 		Z�o�ono�� O(count()), ale w przysz�o�ci b�dzie optymalizowana.
 	**/
 	bool contains(const QString &protocolName, const QString &id, BehaviourForAnonymous beh = TrueForAnonymous) const;
+
+	/**
+		\fn bool find(const QString &protocolName, const QString &id) const
+		\param protocolName identyfikator protoko�u
+		\param id identyfikator kontaktu
+		Zwraca adres kontaktu o danym identyfikatorze we wskazanym protokole.
+		W przypadku nie znalezienia kontaktu zwraca NULL.
+	**/
+	UserListElement *find(const QString &protocolName, const QString &id) const;
 
 	/**
 		\fn bool contains(UserListElement elem, BehaviourForAnonymous beh = TrueForAnonymous) const

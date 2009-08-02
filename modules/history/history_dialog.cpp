@@ -41,10 +41,12 @@ UinsListViewText::UinsListViewText(QTreeWidget *parent, const UinsList &uins)
 		uint i = 0, uinsCount = uins.count();
 		foreach(const UinType &uin, uins)
 		{
-			if (userlist->contains("Gadu", QString::number(uin)))
-				name.append(userlist->byID("Gadu", QString::number(uin)).altNick());
+			UserListElement * user = userlist->find("Gadu",  QString::number(uin));
+			if (user)
+				name.append(user->altNick());
 			else
 				name.append(QString::number(uin));
+
 			if (i++ < uinsCount - 1)
 				name.append(",");
 		}
