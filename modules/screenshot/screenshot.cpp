@@ -22,7 +22,15 @@
 #include <QtGui/QLabel>
 #include <QtGui/QMenu>
 #include <QtGui/QPainter>
+#ifdef Q_WS_X11
 #include <QtGui/QX11Info>
+#elif defined (Q_WS_WIN)
+#include <QLibrary>
+#define WIN32_LEAN_AND_MEAN
+#include <windows.h>
+#undef MessageBox
+typedef BOOL (WINAPI *PrintWindow_t)(HWND hwnd, HDC  hdcBlt, UINT nFlags);
+#endif
 
 #include "action.h"
 #include "chat_edit_box.h"
@@ -37,9 +45,11 @@
 
 #include "screenshot.h"
 
+#include "exports.h"
+
 ScreenShot* screenShot;
 
-extern "C" int screenshot_init(bool firstLoad)
+extern "C" KADU_EXPORT int screenshot_init(bool firstLoad)
 {
 	kdebugf();
 
@@ -50,7 +60,7 @@ extern "C" int screenshot_init(bool firstLoad)
 	return 0;
 }
 
-extern "C" void screenshot_close()
+extern "C" KADU_EXPORT void screenshot_close()
 {
 	kdebugf();
 
@@ -542,7 +552,7 @@ void ScreenShot::createDefaultConfiguration()
 // Code below is copied (and changed a little) from KSnapShot,
 // copyrighted by Bernd Brandstetter <bbrand@freenet.de>.
 // It's licenced with GPL.
-
+#ifdef Q_WS_X11
 static bool operator < ( const QRect& r1, const QRect& r2 )
 {
     return r1.width() * r1.height() < r2.width() * r2.height();
@@ -717,3 +727,72 @@ Window ScreenShot::findRealWindow( Window w, int depth )
 
 // End of code copied from KSnapShot
 //////////////////////////////////////////////////////////////////
+#elif defined Q_WS_WIN
+
+QPixmap ScreenShot::grabCurrent()
+{
+	kdebugf();
+	POINT p;
+	HWND winId = 0;
+	if(GetCursorPos(&p))
+		winId = WindowFromPoint(p);
+
+	// find top level window
+	while(winId){
+		LONG style = GetWindowLong(winId, GWL_STYLE);
+
+		if(!(style & WS_CHILD))
+			break;
+
+		winId=GetParent(winId);
+	}
+
+
+	if(winId){
+		RECT rect;
+		GetWindowRect(winId, &rect);
+		int width = rect.right - rect.left;
+		int height = rect.bottom - rect.top;
+		PrintWindow_t PrintWindow_f=(PrintWindow_t)QLibrary::resolve("user32", "PrintWindow");
+		if(!PrintWindow_f){
+			kdebugmf(KDEBUG_WARNING, "Old windows detected, using hack..\n");
+			// ugly hack..
+			HWND hwndFg=GetForegroundWindow();
+			SetForegroundWindow(winId);
+
+			// repaint window
+			SendMessage(winId, WM_PAINT, 0, 0);
+
+			QPixmap desktop = QPixmap::grabWindow(QApplication::desktop()->winId());
+
+			SetForegroundWindow(hwndFg);
+
+			// and copy windows content
+			return desktop.copy(rect.left, rect.top, width, height);
+		}
+		else
+		{
+			HDC hDC = GetWindowDC(winId);
+			HDC hdcMem = CreateCompatibleDC(hDC);
+
+			HBITMAP hBitmap = CreateCompatibleBitmap(hDC, width, height);
+			SelectObject(hdcMem, hBitmap);
+			PrintWindow_f(winId, hdcMem, NULL);
+
+			DeleteDC(hdcMem);
+			ReleaseDC(winId, hDC);
+
+			QPixmap ret=QPixmap::fromWinHBITMAP(hBitmap);
+
+			DeleteObject(hBitmap);
+			return ret;
+		}
+	}
+	else
+		return QPixmap();
+	
+}
+
+#endif
+
+
