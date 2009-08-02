@@ -1,5 +1,12 @@
-#ifndef FALF_H
-#define FALF_H
+/*
+ * Copyright (C) 2009 Michal Podsiadlik <michal@kadu.net>
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the Clarified Artistic License (see LICENSE.txt
+ * for details).
+ */
+#ifndef _WINAMP_H
+#define _WINAMP_H
 
 #include <QtCore/QObject>
 
