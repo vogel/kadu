@@ -10,12 +10,15 @@
  * @{
  */
 class ChatWidget;
+class QPoint;
 
 class Qt4TrayIcon : public QSystemTrayIcon
 {
 	Q_OBJECT
 
 		QMovie *Movie;
+		QPoint lastPosition;
+	
 
 	private slots:
 		void setTrayPixmap(const QIcon &pixmap, const QString &iconName);
@@ -25,7 +28,6 @@ class Qt4TrayIcon : public QSystemTrayIcon
 		void trayActivated(QSystemTrayIcon::ActivationReason reason);
 
 		void movieUpdate();
-
 	public:
 		Qt4TrayIcon(QWidget *parent = 0);
 		~Qt4TrayIcon();
