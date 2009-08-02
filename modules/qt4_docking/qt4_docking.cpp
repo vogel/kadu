@@ -84,7 +84,13 @@ Qt4TrayIcon::~Qt4TrayIcon()
 void Qt4TrayIcon::findTrayPosition(QPoint& pos)
 {
 	QRect rect = geometry();
-	pos = QPoint(rect.x(), rect.y());
+	if(rect.isValid()){
+		pos = QPoint(rect.x(), rect.y());
+		lastPosition = pos;
+	}
+	else
+		pos = lastPosition;
+		
 }
 
 void Qt4TrayIcon::setTrayPixmap(const QIcon& pixmap)
