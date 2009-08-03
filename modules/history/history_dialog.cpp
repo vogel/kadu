@@ -39,12 +39,22 @@ UinsListViewText::UinsListViewText(QTreeWidget *parent, const UinsList &uins)
 	else
 	{
 		uint i = 0, uinsCount = uins.count();
+		bool found;
+		QList<UserListElement> users = userlist->toList();
 		foreach(const UinType &uin, uins)
 		{
-			UserListElement * user = userlist->find("Gadu",  QString::number(uin));
-			if (user)
-				name.append(user->altNick());
-			else
+			found = false;
+			/* Dorr: it's faster than using find() function */
+			foreach (const UserListElement &user, users)
+			{
+				if (user.usesProtocol("Gadu") && user.ID("Gadu") == QString::number(uin))
+				{
+					name.append(user.altNick());
+					found = true;
+					break;
+				}
+			}
+			if (!found)
 				name.append(QString::number(uin));
 
 			if (i++ < uinsCount - 1)
