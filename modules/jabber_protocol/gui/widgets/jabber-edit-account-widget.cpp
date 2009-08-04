@@ -12,6 +12,7 @@
 #include <QtGui/QComboBox>
 #include <QtGui/QGridLayout>
 #include <QtGui/QGroupBox>
+#include <QtGui/QIntValidator>
 #include <QtGui/QLabel>
 #include <QtGui/QLineEdit>
 #include <QtGui/QMessageBox>
@@ -52,7 +53,7 @@ void JabberEditAccountWidget::createGui()
 	createPersonalDataTab(tabWidget);
 	createBuddiesTab(tabWidget);
 	createConnectionTab(tabWidget);
-// 	tabWidget->addTab(new QWidget(), tr("Functions"));
+	createOptionsTab(tabWidget);
 }
 
 
@@ -174,6 +175,7 @@ void JabberEditAccountWidget::createGeneralGroupBox(QVBoxLayout *layout)
         CustomPort = new QLineEdit(general);
         CustomPort->setMinimumSize(QSize(56, 0));
         CustomPort->setMaximumSize(QSize(56, 32767));
+	CustomPort->setValidator(new QIntValidator(0, 9999999, CustomPort));
         HostPortLayout->addWidget(CustomPort);
 
 	// Manual Host/Port
@@ -230,6 +232,51 @@ void JabberEditAccountWidget::createGeneralGroupBox(QVBoxLayout *layout)
 
 }
 
+void JabberEditAccountWidget::createOptionsTab(QTabWidget *tabWidget)
+{
+	QWidget *optionsTab = new QWidget(this);
+	tabWidget->addTab(optionsTab, tr("Options"));
+
+	QVBoxLayout *layout = new QVBoxLayout(optionsTab);
+        layout->setSpacing(6);
+        layout->setMargin(9);
+
+        AutoResource = new QCheckBox;
+        AutoResource->setText(tr("Use hostname as a resource"));
+        layout->addWidget(AutoResource);
+
+        ResourceLayout = new QHBoxLayout();
+        ResourceLayout->setSpacing(6);
+        ResourceLayout->setMargin(0);
+
+        ResourceLabel = new QLabel;
+        ResourceLabel->setText(tr("Resource")+":");
+        ResourceLayout->addWidget(ResourceLabel);
+
+        ResourceName = new QLineEdit;
+        ResourceLayout->addWidget(ResourceName);
+
+        PriorityLabel = new QLabel;
+        PriorityLabel->setText(tr("Priority")+":");
+        ResourceLayout->addWidget(PriorityLabel);
+
+        Priority = new QLineEdit;
+//         Priority->setMinimumSize(QSize(56, 0));
+//         Priority->setMaximumSize(QSize(56, 32767));
+	Priority->setValidator(new QIntValidator(Priority));
+        ResourceLayout->addWidget(Priority);
+
+/*	ResourceName->setEnabled(false);
+	ResourceLabel->setEnabled(false);
+	Priority->setEnabled(false);
+	PriorityLabel->setEnabled(false);
+*/
+	connect(AutoResource, SIGNAL(toggled(bool)), SLOT(autoResourceToggled(bool)));
+
+        layout->addLayout(ResourceLayout);
+
+}
+
 void JabberEditAccountWidget::hostToggled(bool on)
 {
 	CustomHost->setEnabled(on);
@@ -241,10 +288,16 @@ void JabberEditAccountWidget::hostToggled(bool on)
 	}
 }
 
+void JabberEditAccountWidget::autoResourceToggled(bool on)
+{
+	ResourceName->setEnabled(!on);
+	ResourceLabel->setEnabled(!on);
+}
+
 bool JabberEditAccountWidget::checkSSL()
 {
 	if(!QCA::isSupported("tls")) {
-		MessageBox::msg(tr("Cannot enable SSL/TLS.  Plugin not found."));
+		MessageBox::msg(tr("Cannot enable SSL/TLS. Plugin not found."));
 		return false;
 	}
 	return true;
@@ -281,6 +334,10 @@ void JabberEditAccountWidget::loadConnectionData()
 	LegacySSLProbe->setChecked(jabberAccount->legacySSLProbe());
 	IgnoreTLSWarnings->setChecked(jabberAccount->ignoreTLSWarnings());
 	proxy->loadProxyData();
+
+	AutoResource->setChecked(jabberAccount->autoResource());
+	ResourceName->setText(jabberAccount->resource());
+	Priority->setText(QString::number(jabberAccount->priority()));
 }
 
 void JabberEditAccountWidget::apply()
@@ -298,6 +355,10 @@ void JabberEditAccountWidget::apply()
 	jabberAccount->setEncryptionMode((JabberAccount::EncryptionFlag)EncryptionMode->itemData(EncryptionMode->currentIndex()).toInt());
 	jabberAccount->setLegacySSLProbe(LegacySSLProbe->isChecked());
 	jabberAccount->setIgnoreTLSWarnings(IgnoreTLSWarnings->isChecked());
+
+	jabberAccount->setAutoResource(AutoResource->isChecked());
+	jabberAccount->setResource(ResourceName->text());
+	jabberAccount->setPriority(Priority->text().toInt());
 }
 
 void JabberEditAccountWidget::removeAccount()

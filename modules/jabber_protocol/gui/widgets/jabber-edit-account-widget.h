@@ -47,11 +47,19 @@ class JabberEditAccountWidget : public AccountEditWidget
 
 	ProxyGroupBox *proxy;
 
+	QCheckBox *AutoResource;
+	QHBoxLayout *ResourceLayout;
+	QLabel *ResourceLabel;
+	QLineEdit *ResourceName;
+	QLabel *PriorityLabel;
+	QLineEdit *Priority;
+
 	void createGui();
 	void createGeneralTab(QTabWidget *);
 	void createPersonalDataTab(QTabWidget *);
 	void createBuddiesTab(QTabWidget *);
 	void createConnectionTab(QTabWidget *);
+	void createOptionsTab(QTabWidget *);
 	void createGeneralGroupBox(QVBoxLayout *layout);
 
 	void loadAccountData();
@@ -62,6 +70,7 @@ private slots:
 	void removeAccount();
 	void sslActivated(int i);
 	void hostToggled(bool on);
+	void autoResourceToggled(bool on);
 
 public:
 	explicit JabberEditAccountWidget(Account *account, QWidget *parent = 0);

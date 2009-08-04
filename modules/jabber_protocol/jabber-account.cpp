@@ -13,6 +13,7 @@
 #include "jabber-account.h"
 #include "jabber_protocol.h"
 #include "jid-util.h"
+#include "system-info.h"
 
 JabberAccount * JabberAccount::loadFromStorage(StoragePoint *storagePoint)
 {
@@ -52,19 +53,19 @@ void JabberAccount::load()
 {
 	if (!isValidStorage())
 		return;
-
 	Account::load();
 
 	QString resourceString = loadValue<QString>("Resource");
-	// todo : change to <int> ?
 	QString priorityString = loadValue<QString>("Priority");
-
-	setResource(resourceString.isEmpty() ? "Kadu" : resourceString);
-	bool ok;
-	setPriority(priorityString.toInt(&ok));
-	if (priorityString.isEmpty() || !ok )
-		setPriority(5);
-
+	setAutoResource(loadValue<bool>("AutoResource"));
+	if (resourceString.isEmpty() && !AutoResource)
+		resourceString = "Kadu";
+	setResource(AutoResource ? SystemInfo::instance()->localHostName() : resourceString);
+	bool ok = false;
+	int priority = priorityString.toInt(&ok);
+	if (!ok)
+		priority = 5;
+	setPriority(priority);
 	setCustomHost(loadValue<QString>("CustomHost"));
 	setCustomPort(loadValue<int>("CustomPort"));
 	setEncryptionMode((EncryptionFlag)loadValue<int>("EncryptionMode"));
@@ -78,6 +79,7 @@ void JabberAccount::store()
 
 	Account::store();
 
+	storeValue("AutoResource", autoResource());
 	storeValue("Resource", resource());
 	storeValue("Priority", priority());
 	storeValue("CustomHost", customHost());

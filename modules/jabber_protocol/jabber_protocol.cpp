@@ -169,7 +169,7 @@ void JabberProtocol::connectToServer()
 	{
 		setStatus(Status());
 
-		MessageBox::msg(tr("Jabber ID or password not set!"), false, "Warning");
+		MessageBox::msg(jabberAccount->name() + ": " + tr("Jabber ID or password not set!"), false, "Warning");
 		kdebugmf(KDEBUG_FUNCTION_END, "end: Jabber ID or password not set\n");
 		return;
 	}
@@ -189,7 +189,6 @@ void JabberProtocol::connectToServer()
 	JabberClient->setIgnoreTLSWarnings(jabberAccount->ignoreTLSWarnings());
 
 	// override server and port (this should be dropped when using the new protocol and no direct SSL)
-	JabberClient->setOverrideHost(false);
 	JabberClient->setUseSSL(jabberAccount->encryptionMode() == JabberAccount::Encryption_Legacy);
 	JabberClient->setOverrideHost(jabberAccount->useCustomHostPort(), jabberAccount->customHost(), jabberAccount->customPort());
 

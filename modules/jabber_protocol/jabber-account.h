@@ -30,6 +30,7 @@ public:
 private: 
 	QString Jid;
 	QString Resource;
+	bool AutoResource;
 	int Priority;
 	bool UseCustomHostPort;
 	QString CustomHost;
@@ -48,6 +49,9 @@ public:
 
 	QString resource() { return Resource; }
 	void setResource(const QString &resource) { Resource = resource; }
+
+	bool autoResource() { return AutoResource; }
+	void setAutoResource(bool autoResource) { AutoResource = autoResource; }
 
 	int priority() { return Priority; }
 	void setPriority(const int &priority) { Priority = priority; }
