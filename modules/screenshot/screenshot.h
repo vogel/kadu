@@ -78,7 +78,7 @@ class ScreenShot : public QWidget
 	// Methods from KSnapShot
 	QPixmap grabCurrent();
 
-#ifdef Q_WS_x11
+#ifdef Q_WS_X11
 	Window findRealWindow(Window w, int depth = 0);
 	void getWindowsRecursive(std::vector<QRect> &windows, Window w, int rx = 0, int ry = 0, int depth = 0);
 	QPixmap grabWindow(Window child, int x, int y, uint w, uint h, uint border);
