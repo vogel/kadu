@@ -320,7 +320,7 @@ module_last_seen=n
 
 # Description:
 # PL: Dodaje mo�liwo�� zaznaczenia fragmentu ekranu i wys�ania obrazka z jego zawarto�ci�
-# Platform: Linux
+# Platform: Linux, Windows
 module_screenshot=n
 
 # Description: Description from file module
