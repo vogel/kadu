@@ -80,7 +80,7 @@ static CFStringRef qString2CFString(const QString& s)
  * \param context the context which will be passed back to the slot
  *	May be NULL.
  */
-void getContext( CFPropertyListRef context, GrowlNotifierSignaler** signaler, const QObject** receiver, const char** clicked_slot, const char** timeout_slot, void** qcontext/*, pid_t* pid*/)
+void getContext(CFPropertyListRef context, GrowlNotifierSignaler** signaler, const QObject** receiver, const char** clicked_slot, const char** timeout_slot, void** qcontext/*, pid_t* pid*/)
 {
 	CFDataRef data;
 
@@ -264,11 +264,7 @@ GrowlNotifier::~GrowlNotifier()
 	delete signaler_;
 
 	// Release delegate
-	delegate_.release(&delegate_);
-
-	// Release registration dictionary
-	CFRelease(delegate_.registrationDictionary);
-	CFRelease(&delegate_);
+	Growl_RemoveDelegate(&delegate_);
 }
 
 /**

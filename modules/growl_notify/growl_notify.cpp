@@ -73,6 +73,7 @@ GrowlNotify::~GrowlNotify()
 {
 	kdebugf();
 	notification_manager->unregisterNotifier("Growl");
+	delete growlNotifier;
 	kdebugf2();
 }
 

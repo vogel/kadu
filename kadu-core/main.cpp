@@ -39,6 +39,7 @@
 
 #ifdef Q_OS_MAC
 #include <Carbon/Carbon.h>
+#include "chat_manager.h"
 
 static OSStatus appleEventProcessor(const AppleEvent *ae,
 				AppleEvent *event, long handlerRefCon);
@@ -84,7 +85,11 @@ static OSStatus appleEventProcessor(const AppleEvent *ae,
 	{
 		if (aeID == kAEReopenApplication)
 		{
-			kadu->show();
+			chat_manager->openPendingMsgs();
+			if (!kadu->isShown())
+				kadu->show();
+			else
+				kadu->hide();
 		}
 		return noErr;
 	}
