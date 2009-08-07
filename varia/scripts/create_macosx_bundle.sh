@@ -41,7 +41,7 @@ if [ ! -f ${INSTALLED_DIR}/bin/kadu ]; then
 	exit
 fi
 
-if [ ! -f ${QTDIR}/include/Qt/qwidget.h ]; then
+if [ ! -f ${QTDIR}/bin/qmake ]; then
 	echo "wrong QTDIR"
 	echo "QTDIR zle ustawione"
 	exit
