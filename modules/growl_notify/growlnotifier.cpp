@@ -262,13 +262,6 @@ GrowlNotifier::GrowlNotifier(
 GrowlNotifier::~GrowlNotifier()
 {
 	delete signaler_;
-
-	// Release delegate
-	delegate_.release(&delegate_);
-
-	// Release registration dictionary
-	CFRelease(delegate_.registrationDictionary);
-	CFRelease(&delegate_);
 }
 
 /**
