@@ -12,6 +12,8 @@ set (MOC_SOURCES
 	
 if (UNIX AND NOT APPLE)
 
+set(QT_USE_QTDBUS 1)
+
 set (SOURCES ${SOURCES}
 	mpris_controller.cpp
 	mpris_mediaplayer.cpp
