@@ -69,9 +69,10 @@ public:
 		const char* clicked_slot = 0, const char* timeout_slot = 0,
 		void* context = 0);
 
+	void cleanupAfterGrowl();
+
 private:
 	struct Growl_Delegate delegate_;
-	
 	GrowlNotifierSignaler* signaler_;
 };
 
