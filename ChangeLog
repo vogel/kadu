@@ -3,6 +3,7 @@ Postaæ (x/y) oznacza, ¿e x jest pomys³odawc± lub podes³a³ patcha, a zrobi³ to kt
 Je¶li jest w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 
 +++ wersja 0.6.5.3
+* poprawka w module mediaplayer (dorr)
 * optymalizacja otwierania historii (dorr)
 * modu³ screenshot dzia³a tak¿e pod windows (michal)
 * dodany modu³ winamp_mediaplayer, modu³ mediaplayer dzia³a tak¿e pod windows (michal)
@@ -13,7 +14,7 @@ Je¶li jest w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * poprawiony problem z wy¶wietlaniem tej samej wiadomo¶ci dwa razy (White Eagle)
 * dodany modu³ kde_notify do autodownloadu (dorr)
 * poprawiona wywrotka programu podczas otwierania okna zmiany opisu (White Eagle)
-* poprawki w module amarok1_mediaplayer
+* poprawki w module amarok1_mediaplayer (dorr)
 * poprawki w module encryption (tomek-k/uzi)
 * poprawki w module profiles pod windows (dorr)
 * poprawki w module win32_sound (dorr)
