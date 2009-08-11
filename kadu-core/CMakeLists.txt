@@ -64,8 +64,6 @@ set (kadu_SRCS
 	configuration/uuid-storable-object.cpp
 	configuration/xml-configuration-file.cpp
 
-	configuration/widgets/manage-accounts.cpp
-
 	core/core.cpp
 	core/core-actions.cpp
 
@@ -116,7 +114,6 @@ set (kadu_SRCS
 	gui/widgets/configuration/config-label.cpp
 	gui/widgets/configuration/config-line-edit.cpp
 	gui/widgets/configuration/config-list-widget.cpp
-	gui/widgets/configuration/config-manage-accounts.cpp
 	gui/widgets/configuration/config-path-list-edit.cpp
 	gui/widgets/configuration/config-preview.cpp
 	gui/widgets/configuration/config-select-file.cpp
@@ -263,8 +260,6 @@ set (kadu_MOC_SRCS
 
 	configuration/configuration-window-data-manager.h
 	configuration/notifier-configuration-data-manager.h
-
-	configuration/widgets/manage-accounts.h
 
 	core/core.h
 

@@ -37,7 +37,6 @@
 #include "gui/widgets/configuration/config-slider.h"
 #include "gui/widgets/configuration/config-label.h"
 #include "gui/widgets/configuration/config-list-widget.h"
-#include "gui/widgets/configuration/config-manage-accounts.h"
 #include "gui/windows/configuration-window.h"
 
 #include "debug.h"
@@ -308,8 +307,6 @@ ConfigWidget * ConfigurationWidget::appendUiElementFromDom(QDomNode uiElementNod
 		widget = new ConfigLabel(configGroupBox, dataManager);
 	else if (tagName == "list-box")
 		widget = new ConfigListWidget(configGroupBox, dataManager);
-	else if (tagName == "manage-accounts")
-		widget = new ConfigManageAccounts(configGroupBox, dataManager);
 	else
 	{
 		kdebugf2();
