@@ -113,6 +113,7 @@ void MPRISController::statusChanged(PlayerStatus status)
 
 void MPRISController::trackChanged(QVariantMap map)
 {
+	active_ = true;
 	QString title = map.value("title").toString();
 	if (title != currentTrack_.title)
 	{
