@@ -256,12 +256,12 @@ void NotificationManager::messageReceived(const Message &message)
 {
 	kdebugf();
 
-	ChatWidget *chatWidget = ChatWidgetManager::instance()->byChat(message.chat);
+	ChatWidget *chatWidget = ChatWidgetManager::instance()->byChat(message.chat());
 	if (!chatWidget) // new chat
-		notify(new MessageNotification(MessageNotification::NewChat, message.chat, message.messageContent));
+		notify(new MessageNotification(MessageNotification::NewChat, message.chat(), message.content()));
 	else // new message in chat
 		if (!chatWidget->edit()->hasFocus() || !config_file.readBoolEntry("Notify", "NewMessageOnlyIfInactive"))
-			notify(new MessageNotification(MessageNotification::NewMessage, message.chat, message.messageContent));
+			notify(new MessageNotification(MessageNotification::NewMessage, message.chat(), message.content()));
 
 	kdebugf2();
 }

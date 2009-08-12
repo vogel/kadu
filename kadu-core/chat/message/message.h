@@ -15,21 +15,33 @@
 #include "contacts/contact.h"
 
 class Chat;
-/**
-	Structure representing a message.
-	\struct Message
-	\brief Message
-**/
+
 class Message
 {
-	public:
-		Chat *chat;
-		Contact sender; /*!< Message sender. */
+	Chat *MyChat;
+	Contact Sender;
+	QString Content;
+	QDateTime ReceiveDate;
+	QDateTime SendDate;
 
-		QString messageContent; /*!< Message content. */
+public:
+	Message(Chat *chat = 0, Contact sender = Contact::null);
 
-		QDateTime receiveDate; /*!< Recieve time. */
-		QDateTime sendDate; /*!< Send time. */
+	Chat * chat() const { return MyChat; }
+	Message & setChat(Chat *chat);
+
+	Contact sender() const { return Sender; }
+	Message & setSender(Contact sender);
+
+	QString content() const { return Content; }
+	Message & setContent(const QString &content);
+
+	QDateTime receiveDate() const { return ReceiveDate; }
+	Message & setReceiveDate(QDateTime receiveDate);
+
+	QDateTime sendDate() const { return SendDate; }
+	Message & setSendDate(QDateTime sendDate);
+
 };
 
 #endif // MESSAGE_H

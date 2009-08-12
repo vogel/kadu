@@ -116,12 +116,11 @@ bool GaduChatService::sendMessage(Chat *chat, FormattedMessage &message)
 	if (formats)
 		delete[] formats;
 
-	Message msg;
-	msg.chat = chat;
-	msg.messageContent = message.toPlain();
-	msg.sender = Core::instance()->myself();
-	msg.sendDate = QDateTime::currentDateTime();
-	msg.receiveDate = QDateTime::currentDateTime();
+	Message msg(chat, Core::instance()->myself());
+	msg
+		.setContent(message.toPlain())
+		.setSendDate(QDateTime::currentDateTime())
+		.setReceiveDate(QDateTime::currentDateTime());
 	emit messageSent(msg);
 
 	kdebugf2();
@@ -216,12 +215,11 @@ void GaduChatService::handleEventMsg(struct gg_event *e)
 	if (ignore)
 		return;
 
-	Message msg;
-	msg.chat = chat;
-	msg.messageContent = message.toHtml();
-	msg.sender = sender;
-	msg.sendDate = time;
-	msg.receiveDate = QDateTime::currentDateTime();
+	Message msg(chat, sender);
+	msg
+		.setContent(message.toHtml())
+		.setSendDate(time)
+		.setReceiveDate(QDateTime::currentDateTime());
 	emit messageReceived(msg);
 }
 

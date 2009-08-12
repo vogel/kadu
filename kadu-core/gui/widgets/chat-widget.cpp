@@ -288,12 +288,10 @@ void ChatWidget::writeMyMessage()
 {
 	kdebugf();
 
-	Message msg;
-	msg.chat = CurrentChat;
-	msg.sender = Core::instance()->myself();
-	msg.messageContent = myLastMessage.toHtml();
-	msg.sendDate = QDateTime::currentDateTime();
-	msg.receiveDate = QDateTime();
+	Message msg(CurrentChat, Core::instance()->myself());
+	msg
+		.setContent(myLastMessage.toHtml())
+		.setSendDate(QDateTime::currentDateTime());
 
 	ChatMessage *message = new ChatMessage(msg, TypeSent);
 	MessagesView->appendMessage(message);

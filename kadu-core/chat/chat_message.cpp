@@ -116,7 +116,7 @@ void ChatMessage::unregisterParserTags()
 ChatMessage::ChatMessage(const Message &msg, ChatMessageType type) :
 		message(msg), Type(type)
 {
-	receivedDate = printDateTime(message.receiveDate);
+	receivedDate = printDateTime(message.receiveDate());
 
 	switch (type)
 	{
@@ -136,7 +136,7 @@ ChatMessage::ChatMessage(const Message &msg, ChatMessageType type) :
 			break;
 	}
 
-	this->unformattedMessage = message.messageContent;
+	this->unformattedMessage = message.content();
 
 	this->unformattedMessage.replace("\r\n", "<br/>");
 	this->unformattedMessage.replace("\n",   "<br/>");
@@ -151,7 +151,7 @@ ChatMessage::ChatMessage(const QString &rawContent, ChatMessageType type, QDateT
 	QString backgroundColor, QString fontColor, QString nickColor)
 	: Type(type), unformattedMessage(rawContent), backgroundColor(backgroundColor), fontColor(fontColor), nickColor(nickColor)
 {
-	message.receiveDate = date;
+	message.setReceiveDate(date);
 }
 
 // TODO: remove?
@@ -188,8 +188,8 @@ void ChatMessage::replaceLoadingImages(const QString &imageId, const QString &im
 
 void ChatMessage::setShowServerTime(bool noServerTime, int noServerTimeDiff)
 {
-	if (message.sendDate.isValid() && (!noServerTime || (abs(message.receiveDate.toTime_t()-message.sendDate.toTime_t())) > noServerTimeDiff))
-		sentDate = printDateTime(message.sendDate);
+	if (message.sendDate().isValid() && (!noServerTime || (abs(message.receiveDate().toTime_t() - message.sendDate().toTime_t())) > noServerTimeDiff))
+		sentDate = printDateTime(message.sendDate());
 	else
 		sentDate = QString::null;
 }

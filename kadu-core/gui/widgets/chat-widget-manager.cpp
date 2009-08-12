@@ -312,7 +312,7 @@ void ChatWidgetManager::deletePendingMsgs(Chat *chat)
 {
 	kdebugf();
 	for (int i = 0; i < PendingMessagesManager::instance()->count(); ++i)
-		if ((*PendingMessagesManager::instance())[i].chat == chat)
+		if ((*PendingMessagesManager::instance())[i].chat() == chat)
 		{
 			PendingMessagesManager::instance()->deleteMsg(i);
 			--i;
@@ -337,7 +337,7 @@ void ChatWidgetManager::openPendingMsgs(Chat *chat, bool forceActivate)
 	for (int i = 0; i < PendingMessagesManager::instance()->count(); ++i)
 	{
 		msg = (*PendingMessagesManager::instance())[i];
-		if (msg.chat != chat)
+		if (msg.chat() != chat)
 			continue;
 		messages.append(new ChatMessage(msg, TypeReceived));
 		PendingMessagesManager::instance()->deleteMsg(i--);
@@ -360,7 +360,7 @@ void ChatWidgetManager::openPendingMsgs(bool forceActivate)
 	kdebugf();
 
 	if (PendingMessagesManager::instance()->count())
-		openPendingMsgs((*PendingMessagesManager::instance())[0].chat, forceActivate);
+		openPendingMsgs((*PendingMessagesManager::instance())[0].chat(), forceActivate);
 
 	kdebugf2();
 }
@@ -370,9 +370,9 @@ void ChatWidgetManager::sendMessage(Chat *chat)
 	kdebugf();
 
 	for (int i = 0; i < PendingMessagesManager::instance()->count(); ++i)
-		if ((*PendingMessagesManager::instance())[i].chat == chat)
+		if ((*PendingMessagesManager::instance())[i].chat() == chat)
 		{
-			openPendingMsgs((*PendingMessagesManager::instance())[i].chat);
+			openPendingMsgs((*PendingMessagesManager::instance())[i].chat());
 			return;
 		}
 
@@ -395,7 +395,7 @@ void ChatWidgetManager::messageReceived(const Message &message)
 {
 	kdebugf();
 
-	Chat *chat = message.chat;
+	Chat *chat = message.chat();
 	ChatWidget *chatWidget = byChat(chat);
 	if (chatWidget)
 	{

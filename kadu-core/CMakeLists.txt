@@ -16,6 +16,7 @@ set (kadu_SRCS
 
 	chat/message/formatted-message.cpp
 	chat/message/formatted-message-part.cpp
+	chat/message/message.cpp
 	chat/message/pending-messages-manager.cpp
 
 	chat/style-engines/chat_engine_adium.cpp

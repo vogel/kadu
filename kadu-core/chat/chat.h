@@ -24,7 +24,7 @@ class Chat : public QObject, public UuidStorableObject
 
 	Account *CurrentAccount;
 	QUuid Uuid;
-        QString Title;
+	QString Title;
 	QPixmap Icon;
 
 public:
@@ -50,6 +50,7 @@ public slots:
 
 signals:
 	void titleChanged(const QString &newTitle);
+
 };
 
 #endif // CHAT_H

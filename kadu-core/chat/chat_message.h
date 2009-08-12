@@ -89,11 +89,11 @@ public:
 
 	void replaceLoadingImages(const QString &imageId, const QString &imagePath);
 
-	Chat * chat() const { return message.chat; }
-	Contact sender() const { return message.sender; }
+	Chat * chat() const { return message.chat(); }
+	Contact sender() const { return message.sender(); }
 
-	QDateTime date() const { return message.receiveDate; }
-	QDateTime sdate() const { return message.sendDate; }
+	QDateTime date() const { return message.receiveDate(); }
+	QDateTime sdate() const { return message.sendDate(); }
 	ChatMessageType type() const { return Type; }
 
 	void setSeparatorSize(int separatorSize) { SeparatorSize = separatorSize; }
