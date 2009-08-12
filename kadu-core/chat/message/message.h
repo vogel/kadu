@@ -11,21 +11,39 @@
 #define MESSAGE_H
 
 #include <QtCore/QDateTime>
+#include <QtCore/QObject>
 
 #include "contacts/contact.h"
 
 class Chat;
 
-class Message
+class Message : public QObject
 {
+	Q_OBJECT
+
+public:
+	enum Status
+	{
+		Unknown,
+		Received,
+		Sent,
+		SentWaitingForAck,
+		SentAckReceived
+	};
+
+private:
 	Chat *MyChat;
 	Contact Sender;
 	QString Content;
 	QDateTime ReceiveDate;
 	QDateTime SendDate;
+	Status MyStatus;
 
 public:
 	Message(Chat *chat = 0, Contact sender = Contact::null);
+	Message(const Message &copyMe);
+
+	void operator = (const Message &copyMe);
 
 	Chat * chat() const { return MyChat; }
 	Message & setChat(Chat *chat);
@@ -41,6 +59,12 @@ public:
 
 	QDateTime sendDate() const { return SendDate; }
 	Message & setSendDate(QDateTime sendDate);
+
+	Status status() const { return MyStatus; }
+	Message & setStatus(Status status);
+
+signals:
+	void statusChanged(Status);
 
 };
 

@@ -102,6 +102,7 @@ public:
 	void setShowServerTime(bool noServerTime, int noServerTimeDiff);
 
 	void setColorsAndBackground(QString &backgroundColor, QString &nickColor, QString &fontColor);
+
 };
 
 QString formatMessage(const QString &text, const QString &backgroundColor);

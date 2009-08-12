@@ -10,8 +10,23 @@
 #include "message.h"
 
 Message::Message(Chat *chat, Contact sender) :
-		MyChat(chat), Sender(sender)
+		QObject(), MyChat(chat), Sender(sender), MyStatus(Unknown)
 {
+}
+
+Message::Message(const Message &copyMe)
+{
+	*this = copyMe;
+}
+
+void Message::operator = (const Message &copyMe)
+{
+	MyChat = copyMe.MyChat;
+	Sender = copyMe.Sender;
+	Content = copyMe.Content;
+	ReceiveDate = copyMe.ReceiveDate;
+	SendDate = copyMe.SendDate;
+	MyStatus = copyMe.MyStatus;
 }
 
 Message & Message::setChat(Chat *chat)
@@ -40,5 +55,16 @@ Message & Message::setReceiveDate(QDateTime receiveDate)
 Message & Message::setSendDate(QDateTime sendDate)
 {
 	SendDate = sendDate;
+	return *this;
+}
+
+Message & Message::setStatus(Status status)
+{
+	if (status != MyStatus)
+	{
+		MyStatus = status;
+		emit statusChanged(MyStatus);
+	}
+
 	return *this;
 }

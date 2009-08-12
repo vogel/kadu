@@ -228,6 +228,7 @@ set (kadu_MOC_SRCS
 	#chat/conference-chat.h
 	#chat/simple-chat.h
 
+	chat/message/message.h
 	chat/message/pending-messages-manager.h
 
 	chat/chat_styles_manager.h
