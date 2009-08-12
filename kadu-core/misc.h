@@ -11,6 +11,11 @@ class QComboBox;
 class QCompleter;
 class QLabel;
 class QPushButton;
+class QDateTime;
+class QRect;
+class QPoint;
+class QWidget;
+class QLineEdit;
 
 /*
 	Zmienia �cie�k� relatywn� do katalogu z ustawieniami gg
