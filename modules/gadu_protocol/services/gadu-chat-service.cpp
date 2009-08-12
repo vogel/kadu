@@ -118,6 +118,7 @@ bool GaduChatService::sendMessage(Chat *chat, FormattedMessage &message)
 
 	Message msg(chat, Core::instance()->myself());
 	msg
+		.setStatus(Message::SentWaitingForAck)
 		.setContent(message.toPlain())
 		.setSendDate(QDateTime::currentDateTime())
 		.setReceiveDate(QDateTime::currentDateTime());
@@ -262,6 +263,7 @@ void GaduChatService::handleEventMsg(struct gg_event *e)
 
 	Message msg(chat, sender);
 	msg
+		.setStatus(Message::Received)
 		.setContent(message.toHtml())
 		.setSendDate(time)
 		.setReceiveDate(QDateTime::currentDateTime());
