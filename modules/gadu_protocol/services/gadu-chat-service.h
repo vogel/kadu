@@ -26,6 +26,15 @@ class GaduChatService : public ChatService
 
 	friend class GaduProtocolSocketNotifiers;
 
+	bool isSystemMessage(struct gg_event *e);
+	Contact getSender(struct gg_event *e);
+	bool ignoreSender(gg_event *e, Contact sender);
+	ContactSet getRecipients(struct gg_event *e);
+	QString getContent(struct gg_event *e);
+	bool ignoreRichText(struct gg_event *e, Contact sender);
+	bool ignoreImages(struct gg_event *e, Contact sender);
+	FormattedMessage createFormattedMessage(struct gg_event *e, Contact sender);
+
 	void handleEventMsg(struct gg_event *e);
 	void handleEventAck(struct gg_event *e);
 

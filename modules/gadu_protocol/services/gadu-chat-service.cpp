@@ -127,26 +127,37 @@ bool GaduChatService::sendMessage(Chat *chat, FormattedMessage &message)
 	return true;
 }
 
-void GaduChatService::handleEventMsg(struct gg_event *e)
+bool GaduChatService::isSystemMessage(gg_event *e)
 {
-	kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "recipients_count: %d\n", e->event.msg.recipients_count);
-
-	if (0 == e->event.msg.sender) // system message, ignore
-	{
+	if (0 == e->event.msg.sender)
 		kdebugmf(KDEBUG_INFO, "Ignored system message.\n");
-		return;
-	}
 
-	Contact sender(Protocol->account()->getContactById(QString::number(e->event.msg.sender)));
+	return 0 == e->event.msg.sender;
+}
 
-	if (sender.isAnonymous() &&
+Contact GaduChatService::getSender(gg_event *e)
+{
+	return Protocol->account()->getContactById(QString::number(e->event.msg.sender));
+}
+
+bool GaduChatService::ignoreSender(gg_event *e, Contact sender)
+{
+	bool ignore =
+			sender.isAnonymous() &&
 			config_file.readBoolEntry("Chat", "IgnoreAnonymousUsers") &&
-			((e->event.msg.recipients_count == 0) || config_file.readBoolEntry("Chat", "IgnoreAnonymousUsersInConferences")))
-	{
-		kdebugmf(KDEBUG_INFO, "Ignored anonymous. %d is ignored\n", Protocol->uin(sender));
-		return;
-	}
+			(
+				(e->event.msg.recipients_count == 0) ||
+				config_file.readBoolEntry("Chat", "IgnoreAnonymousUsersInConferences")
+			);
 
+	if (ignore)
+		kdebugmf(KDEBUG_INFO, "Ignored anonymous. %d is ignored\n", Protocol->uin(sender));
+
+	return ignore;
+}
+
+ContactSet GaduChatService::getRecipients(gg_event *e)
+{
 	ContactSet recipients;
 	for (int i = 0; i < e->event.msg.recipients_count; ++i)
 	{
@@ -154,8 +165,75 @@ void GaduChatService::handleEventMsg(struct gg_event *e)
 		recipients.insert(recipient);
 	}
 
+	return recipients;
+}
+
+QString GaduChatService::getContent(gg_event *e)
+{
+	QString content = cp2unicode((const char *)e->event.msg.message);
+
+	content.replace(QLatin1String("\r\n"), QString(QChar::LineSeparator));
+	content.replace(QLatin1String("\n"),   QString(QChar::LineSeparator));
+	content.replace(QLatin1String("\r"),   QString(QChar::LineSeparator));
+
+	return content;
+}
+
+bool GaduChatService::ignoreRichText(gg_event *e, Contact sender)
+{
+	bool ignore = sender.isAnonymous() &&
+		config_file.readBoolEntry("Chat","IgnoreAnonymousRichtext");
+
+	if (ignore)
+		kdebugm(KDEBUG_INFO, "Richtext ignored from anonymous user\n");
+
+	return ignore;
+}
+
+bool GaduChatService::ignoreImages(gg_event *e, Contact sender)
+{
+	return sender.isAnonymous() ||
+		(
+			"Offline" == Protocol->status().group() ||
+			(
+				("Invisible" == Protocol->status().group()) &&
+				!config_file.readBoolEntry("Chat", "ReceiveImagesDuringInvisibility")
+			)
+		);
+}
+
+FormattedMessage GaduChatService::createFormattedMessage(gg_event *e, Contact sender)
+{
+	FormattedMessage message;
+	QString content = getContent(e);
+
+// 	bool grab = false;
+// 	emit chatMsgReceived0(this, senders, mesg, time, grab);
+// 	if (grab)
+// 		return;
+
+	if (ignoreRichText(e, sender))
+		message = GaduFormater::createMessage(Protocol->account(), Protocol->uin(sender), content, 0, 0, false);
+	else
+		message = GaduFormater::createMessage(Protocol->account(), Protocol->uin(sender), content,
+				(unsigned char *)e->event.msg.formats, e->event.msg.formats_length, !ignoreImages(e, sender));
+}
+
+void GaduChatService::handleEventMsg(struct gg_event *e)
+{
+	kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "recipients_count: %d\n", e->event.msg.recipients_count);
+
+	if (isSystemMessage(e))
+		return;
+
+	Contact sender = getSender(e);
+	if (ignoreSender(e, sender))
+		return;
+
+	ContactSet recipients = getRecipients(e);
+
 	ContactSet conference = recipients;
-	conference.insert(sender);
+	conference += sender;
 	if (IgnoredHelper::isIgnored(conference))
 		return;
 
@@ -164,42 +242,7 @@ void GaduChatService::handleEventMsg(struct gg_event *e)
 // 	if (ignore)
 // 		return;
 
-	FormattedMessage message;
-	QString content = cp2unicode((const char *)e->event.msg.message);
-
-	content.replace(QLatin1String("\r\n"), QString(QChar::LineSeparator));
-	content.replace(QLatin1String("\n"),   QString(QChar::LineSeparator));
-	content.replace(QLatin1String("\r"),   QString(QChar::LineSeparator));
-
-	QDateTime time = QDateTime::fromTime_t(e->event.msg.time);
-
-// 	bool grab = false;
-// 	emit chatMsgReceived0(this, senders, mesg, time, grab);
-// 	if (grab)
-// 		return;
-
-	if (sender.isAnonymous() &&
-		config_file.readBoolEntry("Chat","IgnoreAnonymousRichtext"))
-	{
-		kdebugm(KDEBUG_INFO, "Richtext ignored from anonymous user\n");
-		message = GaduFormater::createMessage(Protocol->account(), Protocol->uin(sender), content, 0, 0, false);
-	}
-	else
-	{
-		bool receiveImages =
-			!sender.isAnonymous() &&
-			(
-				"Offline" != Protocol->status().group() &&
-				(
-					("Invisible" != Protocol->status().group()) ||
-					config_file.readBoolEntry("Chat", "ReceiveImagesDuringInvisibility")
-				)
-			);
-
-		message = GaduFormater::createMessage(Protocol->account(), Protocol->uin(sender), content,
-				(unsigned char *)e->event.msg.formats, e->event.msg.formats_length, receiveImages);
-	}
-
+	FormattedMessage message = createFormattedMessage(e, sender);
 	if (message.isEmpty())
 		return;
 
@@ -209,6 +252,8 @@ void GaduChatService::handleEventMsg(struct gg_event *e)
 	ContactSet chatContacts = conference;
 	chatContacts.remove(Core::instance()->myself());
 	Chat *chat = Protocol->findChat(chatContacts);
+
+	QDateTime time = QDateTime::fromTime_t(e->event.msg.time);
 
 	bool ignore = false;
 	emit receivedMessageFilter(chat, sender, message.toPlain(), time.toTime_t(), ignore);
