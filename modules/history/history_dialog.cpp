@@ -269,7 +269,7 @@ void HistoryDialog::dateChanged(QTreeWidgetItem *item)
 	}
 
 	if (item)
-		count = ((DateListViewText *)item)->getDate().idx - start;
+		count = ((DateListViewText *)item)->getDate().idx - start + 1; /* Dorr: because idx is index not count */
 	else
 		count = history->getHistoryEntriesCount(uins) - start;
 	showHistoryEntries(start, count);
