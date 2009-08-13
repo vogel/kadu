@@ -198,12 +198,12 @@ void HistorySqlStorage::appendMessageEntry(const Message &message)
 {
 	kdebugf();
 	QSqlRecord record = MessagesModel->record();
-	record.setValue("chat", message.chat->uuid().toString());
-	record.setValue("sender", message.sender.uuid().toString());
-	record.setValue("send_time", message.sendDate);
-	record.setValue("receive_time", message.receiveDate);
-	record.setValue("content", message.messageContent);
-	if (message.sender == Core::instance()->myself())
+	record.setValue("chat", message.chat()->uuid().toString());
+	record.setValue("sender", message.sender().uuid().toString());
+	record.setValue("send_time", message.sendDate());
+	record.setValue("receive_time", message.receiveDate());
+	record.setValue("content", message.content());
+	if (message.sender() == Core::instance()->myself())
 		record.setValue("attributes", "outgoing=1");
 	else
 		record.setValue("attributes", "outgoing=0");
@@ -414,12 +414,11 @@ QList<ChatMessage *> HistorySqlStorage::getMessages(Chat *chat, QDate date, int 
 	{
 		bool outgoing = QVariant(query.value(4).toString().split('=').last()).toBool();
 
-		Message msg;
-		msg.chat = chat;
-		msg.messageContent = query.value(1).toString();
-		msg.sendDate = query.value(2).toDateTime();
-		msg.receiveDate =  query.value(3).toDateTime();
-		msg.sender = outgoing ? Core::instance()->myself() : ContactManager::instance()->byUuid(query.value(0).toString());
+		Message msg(chat, outgoing ? Core::instance()->myself() : ContactManager::instance()->byUuid(query.value(0).toString()));
+		msg
+		    .setContent(query.value(1).toString())
+		    .setSendDate(query.value(2).toDateTime())
+		    .setReceiveDate(query.value(3).toDateTime());
 
 		ChatMessage* chat_message;
 		if (outgoing)

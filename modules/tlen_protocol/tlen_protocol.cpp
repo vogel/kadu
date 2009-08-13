@@ -212,12 +212,12 @@ bool TlenProtocol::sendMessage(Chat *chat, FormattedMessage &formattedMessage)
 	kdebugm(KDEBUG_WARNING, "Tlen send %s\n%s", qPrintable(tlenid), qPrintable(plain));
 	TlenClient->writeMsg(plain,tlenid);
 
-	Message message;
-	message.chat = chat;
-	message.messageContent = formattedMessage.toPlain();
-	message.sender = Core::instance()->myself();
-	message.sendDate = QDateTime::currentDateTime();
-	message.receiveDate = QDateTime::currentDateTime();
+	Message message(chat, Core::instance()->myself());
+	message
+		.setContent(formattedMessage.toPlain())
+		.setSendDate(QDateTime::currentDateTime())
+		.setReceiveDate(QDateTime::currentDateTime());
+
 	emit messageSent(message);
 	
 	kdebugf2();
@@ -274,12 +274,12 @@ void TlenProtocol::chatMsgReceived(QDomNode n)
 	if (ignore)
 		return;
 
-	Message message;
-	message.chat = chat;
-	message.messageContent = formattedMessage.toPlain();
-	message.sender = contact;
-	message.sendDate = timeStamp;
-	message.receiveDate = QDateTime::currentDateTime();
+	Message message(chat, contact);
+	message
+		.setContent(formattedMessage.toPlain())
+		.setSendDate(timeStamp)
+		.setReceiveDate(QDateTime::currentDateTime());	
+	
 	emit messageReceived(message);
 
 	kdebugf2();

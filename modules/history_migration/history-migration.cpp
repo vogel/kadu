@@ -112,11 +112,13 @@ HistoryImporter::HistoryImporter()
 			QDateTime recieveTime = historyEntry.date;
 			QString messageString = historyEntry.message;
 
-			msg.chat = chat;
-			msg.sendDate = historyEntry.sdate;
-			msg.receiveDate = historyEntry.date;
-			msg.messageContent = historyEntry.message;
-			msg.sender = outgoing ? Core::instance()->myself() : gaduAccount->getContactById(id);
+			msg
+			    .setChat(chat)
+			    .setSender(outgoing ? Core::instance()->myself() : gaduAccount->getContactById(id))
+			    .setContent(historyEntry.message)
+			    .setSendDate(historyEntry.sdate)
+			    .setReceiveDate(historyEntry.date);
+
 		    //TODO 0.6.6: it's damn slow!
 			History::instance()->currentStorage()->appendMessageEntry(msg);
 		}
