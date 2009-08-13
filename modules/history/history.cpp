@@ -1042,19 +1042,18 @@ void HistoryManager::createMessageDates(const UinsList uins)
 	messageDatesFile.open(QIODevice::WriteOnly);
 	QDataStream messageDatesStream(&messageDatesFile);
 
-	QDate currentDate;
+	QDate currentDate = QDate::currentDate();
 	HistoryEntry entry;
 	foreach (entry, entries)
 	{
-		if (entry.date.date() != currentDate && currentDate.isValid())
+		if (entry.date.date() != currentDate && entry.date.date().isValid())
 		{
-			messageDatesStream << currentDate;
+			messageDatesStream << entry.date.date();
 			currentDate = entry.date.date();
 		}
-		else if (!currentDate.isValid())
-			currentDate = entry.date.date();
 	}
 
+	messageDatesFile.flush();
 	messageDatesFile.close();
 
 	if (currentDate.isValid())
@@ -1086,7 +1085,7 @@ void HistoryManager::updateMessageDates(const UinsList uins)
 QList<QDate> HistoryManager::getMessageDates(const UinsList &uins)
 {
 	QFile messageDatesFile(ggPath("history/") + getFileNameByUinsList(uins) + ".message_dates");
-	if (!messageDatesFile.exists())
+	if (!messageDatesFile.exists() || (messageDatesFile.size() == 0))
 		createMessageDates(uins);
 
 	QList<QDate> result;
