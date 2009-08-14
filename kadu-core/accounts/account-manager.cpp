@@ -181,8 +181,11 @@ void AccountManager::unregisterAccount(Account *account)
 
 void AccountManager::deleteAccount(Account *account)
 {
-    unregisterAccount(account);
-    account->removeFromStorage();
+	emit accountAboutToBeRemoved(account);
+	unregisterAccount(account);
+	account->removeFromStorage();
+	emit accountRemoved(account);
+
 }
 
 Status AccountManager::status() const

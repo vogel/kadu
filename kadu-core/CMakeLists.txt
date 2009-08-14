@@ -154,6 +154,9 @@ set (kadu_SRCS
 	gui/windows/window-notifier-window.cpp
 	gui/windows/your-accounts.cpp
 
+	identities/identity.cpp
+	identities/identity-manager.cpp
+
 	misc/coding-conversion.cpp
 	misc/date-time.cpp
 	misc/misc.cpp
@@ -326,6 +329,9 @@ set (kadu_MOC_SRCS
 	gui/windows/password-window.h
 	gui/windows/syntax-editor-window.h
 	gui/windows/your-accounts.h
+
+	identities/identity.h
+	identities/identity-manager.h
 
 	model/first-empty.h
 

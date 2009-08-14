@@ -75,6 +75,8 @@ signals:
 	void accountRegistered(Account *);
 	void accountAboutToBeUnregistered(Account *);
 	void accountUnregistered(Account *);
+	void accountAboutToBeRemoved(Account *);
+	void accountRemoved(Account *);
 
 };
 
