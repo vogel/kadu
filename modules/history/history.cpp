@@ -13,6 +13,10 @@
 #include <QtGui/QApplication>
 #include <QtGui/QMessageBox>
 
+#ifndef Q_OS_WIN
+#include <ctime> /* for tzset() */
+#endif /* Q_OS_WIN */
+
 #include "config_file.h"
 #include "debug.h"
 #include "gadu_images_manager.h"
@@ -833,7 +837,15 @@ uint HistoryManager::getHistoryDate(QTextStream &stream)
 	kdebugf2();
 
 	if (pos < tokens.count())
-		return (tokens[pos].toUInt() / 86400);
+	{
+#ifdef Q_OS_WIN
+		return (tokens[pos].toInt() / 86400);
+#else
+		tzset();
+		static int offs = (daylight > 0 ? 3600 : 0) - timezone;
+		return ((tokens[pos].toInt() + offs) / 86400);
+#endif
+	}
 	else
 		return 0;
 }
