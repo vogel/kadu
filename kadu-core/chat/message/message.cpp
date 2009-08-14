@@ -7,64 +7,121 @@
  *                                                                         *
  ***************************************************************************/
 
+#include "chat/message/message-data.h"
+
 #include "message.h"
 
 Message::Message(Chat *chat, Contact sender) :
-		QObject(), MyChat(chat), Sender(sender), MyStatus(Unknown)
+		Data(new MessageData(chat, sender))
+{
+	if (Data.data())
+		connect(Data.data(), SIGNAL(statusChanged(Message::Status)),
+				this, SIGNAL(statusChanged(Message::Status)));
+}
+
+Message::Message(const Message& copy) :
+		Data(copy.Data)
+{
+	if (Data.data())
+		connect(Data.data(), SIGNAL(statusChanged(Message::Status)),
+				this, SIGNAL(statusChanged(Message::Status)));
+}
+
+Message::~Message()
 {
 }
 
-Message::Message(const Message &copyMe)
+void Message::operator = (const Message &copy)
 {
-	*this = copyMe;
+	if (Data.data())
+		disconnect(Data.data(), SIGNAL(statusChanged(Message::Status)),
+				this, SIGNAL(statusChanged(Message::Status)));
+	Data = copy.Data;
+	if (Data.data())
+		connect(Data.data(), SIGNAL(statusChanged(Message::Status)),
+				this, SIGNAL(statusChanged(Message::Status)));
 }
 
-void Message::operator = (const Message &copyMe)
+Chat * Message::chat() const
 {
-	MyChat = copyMe.MyChat;
-	Sender = copyMe.Sender;
-	Content = copyMe.Content;
-	ReceiveDate = copyMe.ReceiveDate;
-	SendDate = copyMe.SendDate;
-	MyStatus = copyMe.MyStatus;
+	return Data.data()
+			? Data->chat()
+			: 0;
 }
 
 Message & Message::setChat(Chat *chat)
 {
-	MyChat = chat;
+	if (Data.data())
+		Data->setChat(chat);
+	return *this;
+}
+
+Contact Message::sender() const
+{
+	return Data.data()
+			? Data->sender()
+			: Contact::null;
 }
 
 Message & Message::setSender(Contact sender)
 {
-	Sender = sender;
+	if (Data.data())
+		Data->setSender(sender);
 	return *this;
+}
+
+QString Message::content() const
+{
+	return Data.data()
+			? Data->content()
+			: QString::null;
 }
 
 Message & Message::setContent(const QString &content)
 {
-	Content = content;
+	if (Data.data())
+		Data->setContent(content);
 	return *this;
+}
+
+QDateTime Message::receiveDate() const
+{
+	return Data.data()
+			? Data->receiveDate()
+			: QDateTime();
 }
 
 Message & Message::setReceiveDate(QDateTime receiveDate)
 {
-	ReceiveDate = receiveDate;
+	if (Data.data())
+		Data->setReceiveDate(receiveDate);
 	return *this;
+}
+
+QDateTime Message::sendDate() const
+{
+	return Data.data()
+			? Data->sendDate()
+			: QDateTime();
 }
 
 Message & Message::setSendDate(QDateTime sendDate)
 {
-	SendDate = sendDate;
+	if (Data.data())
+		Data->setSendDate(sendDate);
 	return *this;
 }
 
-Message & Message::setStatus(Status status)
+Message::Status Message::status() const
 {
-	if (status != MyStatus)
-	{
-		MyStatus = status;
-		emit statusChanged(MyStatus);
-	}
+	return Data.data()
+			? Data->status()
+			: Unknown;
+}
 
+Message & Message::setStatus(Message::Status status)
+{
+	if (Data.data())
+		Data->setStatus(status);
 	return *this;
 }

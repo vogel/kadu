@@ -16,10 +16,13 @@
 #include "contacts/contact.h"
 
 class Chat;
+class MessageData;
 
 class Message : public QObject
 {
 	Q_OBJECT
+
+	QExplicitlySharedDataPointer<MessageData> Data;
 
 public:
 	enum Status
@@ -31,40 +34,33 @@ public:
 		SentAckReceived
 	};
 
-private:
-	Chat *MyChat;
-	Contact Sender;
-	QString Content;
-	QDateTime ReceiveDate;
-	QDateTime SendDate;
-	Status MyStatus;
-
 public:
 	Message(Chat *chat = 0, Contact sender = Contact::null);
-	Message(const Message &copyMe);
+	Message(const Message &copy);
+	~Message();
 
-	void operator = (const Message &copyMe);
+	void operator = (const Message &copy);
 
-	Chat * chat() const { return MyChat; }
+	Chat * chat() const;
 	Message & setChat(Chat *chat);
 
-	Contact sender() const { return Sender; }
+	Contact sender() const;
 	Message & setSender(Contact sender);
 
-	QString content() const { return Content; }
+	QString content() const;
 	Message & setContent(const QString &content);
 
-	QDateTime receiveDate() const { return ReceiveDate; }
+	QDateTime receiveDate() const;
 	Message & setReceiveDate(QDateTime receiveDate);
 
-	QDateTime sendDate() const { return SendDate; }
+	QDateTime sendDate() const;
 	Message & setSendDate(QDateTime sendDate);
 
-	Status status() const { return MyStatus; }
-	Message & setStatus(Status status);
+	Message::Status status() const;
+	Message & setStatus(Message::Status status);
 
 signals:
-	void statusChanged(Status);
+	void statusChanged(Message::Status);
 
 };
 
