@@ -46,7 +46,7 @@
 
 ChatWidget::ChatWidget(Chat *chat, QWidget *parent) :
 		QWidget(parent), CurrentChat(chat),
-		WaitingForACK(false), ContactsWidget(0), horizSplit(0),
+		ContactsWidget(0), horizSplit(0),
 		activationCount(0), NewMessagesCount(0), SelectionFromMessagesView(true), InputBox(0)
 {
 	kdebugf();
@@ -284,20 +284,8 @@ void ChatWidget::newMessage(ChatMessage *chatMessage)
  	emit messageReceived(CurrentChat);
 }
 
-void ChatWidget::writeMyMessage()
+void ChatWidget::resetEditBox()
 {
-	kdebugf();
-
-	Message msg(CurrentChat, Core::instance()->myself());
-	msg
-		.setContent(myLastMessage.toHtml())
-		.setSendDate(QDateTime::currentDateTime());
-
-	ChatMessage *message = new ChatMessage(msg, TypeSent);
-	MessagesView->appendMessage(message);
-
-	if (!InputBox->inputBox()->isEnabled())
-		cancelMessage();
 	InputBox->inputBox()->clear();
 
 	Action *action;
@@ -312,8 +300,6 @@ void ChatWidget::writeMyMessage()
 	action = ChatWidgetManager::instance()->actions()->underline()->action(InputBox);
 	if (action)
 		InputBox->inputBox()->setFontUnderline(action->isChecked());
-
-	kdebugf2();
 }
 
 void ChatWidget::clearChatWindow()
@@ -327,22 +313,7 @@ void ChatWidget::clearChatWindow()
 	kdebugf2();
 }
 
-void ChatWidget::cancelMessage()
-{
-	kdebugf();
-//	seq = 0;
-	disconnectAcknowledgeSlots();
-
-	InputBox->inputBox()->setReadOnly(false);
-	InputBox->inputBox()->setEnabled(true);
-	InputBox->inputBox()->setFocus();
-
-	WaitingForACK = false;
-
-	changeCancelSendToSend();
-	kdebugf2();
-}
-
+/*
 void ChatWidget::messageStatusChanged(int messageId, ChatService::MessageStatus status)
 {
 	if (messageId != myLastMessage.id())
@@ -367,7 +338,7 @@ void ChatWidget::messageStatusChanged(int messageId, ChatService::MessageStatus 
 	}
 
 	cancelMessage();
-}
+}*/
 
 void ChatWidget::connectAcknowledgeSlots()
 {
@@ -383,28 +354,6 @@ void ChatWidget::disconnectAcknowledgeSlots()
 	if (chatService)
 		disconnect(chatService, SIGNAL(messageStatusChanged(int, ChatService::MessageStatus)),
 				this, SLOT(messageStatusChanged(int, ChatService::MessageStatus)));
-}
-
-void ChatWidget::changeSendToCancelSend()
-{
-	Action *action = ChatWidgetManager::instance()->actions()->send()->action(InputBox);
-
-	if (action)
-	{
-		action->setIcon(IconsManager::instance()->loadIcon("CancelMessage"));
-		action->setText(tr("&Cancel"));
-	}
-}
-
-void ChatWidget::changeCancelSendToSend()
-{
-	Action *action = ChatWidgetManager::instance()->actions()->send()->action(InputBox);
-
-	if (action)
-	{
-		action->setIcon(IconsManager::instance()->loadIcon("SendMessage"));
-		action->setText(tr("&Send"));
-	}
 }
 
 /* sends the message typed */
@@ -425,7 +374,7 @@ void ChatWidget::sendMessage()
 		kdebugmf(KDEBUG_FUNCTION_END, "not connected!\n");
 		return;
 	}
-
+/*
 	if (config_file.readBoolEntry("Chat","MessageAcks"))
 	{
 		InputBox->inputBox()->setReadOnly(true);
@@ -433,25 +382,20 @@ void ChatWidget::sendMessage()
 		WaitingForACK = true;
 
 		changeSendToCancelSend();
-	}
+	}*/
 
-	myLastMessage = FormattedMessage::parse(InputBox->inputBox()->document());
-
+	FormattedMessage message = FormattedMessage::parse(InputBox->inputBox()->document());
 	ChatService *chatService = currentProtocol()->chatService();
-
-	if (!chatService || !chatService->sendMessage(CurrentChat, myLastMessage))
-	{
-		cancelMessage();
+	if (!chatService || !chatService->sendMessage(CurrentChat, message))
 		return;
-	}
-
+/*
 	if (config_file.readBoolEntry("Chat", "MessageAcks"))
 		connectAcknowledgeSlots();
 	else
-	{
-		writeMyMessage();
-		emit messageSentAndConfirmed(CurrentChat, myLastMessage.toHtml());
-	}
+	{*/
+	resetEditBox();
+	emit messageSentAndConfirmed(CurrentChat, message.toHtml());
+// 	}
 
 	emit messageSent(this);
 	kdebugf2();
@@ -466,11 +410,6 @@ void ChatWidget::colorSelectorAboutToClose()
 CustomInput * ChatWidget::edit()
 {
 	return InputBox->inputBox();
-}
-
-bool ChatWidget::waitingForACK() const
-{
-	return WaitingForACK;
 }
 
 bool ChatWidget::decodeLocalFiles(QDropEvent *event, QStringList &files)

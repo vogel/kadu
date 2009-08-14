@@ -47,10 +47,6 @@ class KADUAPI ChatWidget : public QWidget, ConfigurationAwareObject, AccountsAwa
 	ChatEditBox *InputBox;
 
 	QIcon pix;
-//	Q3MimeSourceFactory *bodyformat; /*!< zmienna ustawiaj�ca format */
-	bool WaitingForACK;
-	
-	FormattedMessage myLastMessage; /*!< zmienna przechowuj�ca nasz� ostatni� wiadomo�� */
 	QSplitter *vertSplit, *horizSplit; /*!< obiekty oddzielaj�ce kontrolki od siebie */
 
 	QDateTime LastMessageTime; /*!< czas ostatniej wiadomo�ci */
@@ -63,6 +59,8 @@ class KADUAPI ChatWidget : public QWidget, ConfigurationAwareObject, AccountsAwa
 
 	void createGui();
 	void createContactsList();
+
+	void resetEditBox();
 
 	bool decodeLocalFiles(QDropEvent *event, QStringList &files);
 
@@ -89,10 +87,6 @@ public:
 	virtual ~ChatWidget();
 
 	Chat * chat() { return CurrentChat; };
-
-	// TODO: make private again or move somewher
-	void changeSendToCancelSend();
-	void changeCancelSendToSend();
 
 	/**
 		Dodaje now� wiadomos� systemow� do okna.
@@ -127,8 +121,6 @@ public:
 	ContactsListWidget * contactsListWidget() { return ContactsWidget; }
 	ChatEditBox * getChatEditBox() { return InputBox; }
 
-	bool waitingForACK() const;
-
 	virtual void dragEnterEvent(QDragEnterEvent *e);
 	virtual void dropEvent(QDropEvent *e);
 	virtual void dragMoveEvent(QDragMoveEvent *e);
@@ -148,8 +140,7 @@ public:
 	unsigned int countMessages() { return MessagesView->countMessages(); }
 
 public slots:
-
-	void messageStatusChanged(int messageId, ChatService::MessageStatus status);
+// 	void messageStatusChanged(int messageId, ChatService::MessageStatus status);
 
 	void onStatusChanged(Account *account, Contact contact, Status oldStatus);
 
@@ -173,20 +164,6 @@ public slots:
 		do wysy�ania wiadomo�ci
 	**/
 	void sendMessage();
-
-	/**
-		\fn void cancelMessage()
-		Slot wywo�ywany po naci�nieciu przycisku anulowania
-		wysy�aniu wiadomo�ci
-	**/
-	void cancelMessage();
-
-	/**
-		\fn void writeMyMessage()
-		Slot wpisuj�cy wiadomo�� do okna
-		\see sendMessage
-	**/
-	void writeMyMessage();
 
 	/**
 		\fn void colorSelectorAboutToClose()

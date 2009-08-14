@@ -205,7 +205,6 @@ bool GaduChatService::ignoreImages(gg_event *e, Contact sender)
 
 FormattedMessage GaduChatService::createFormattedMessage(gg_event *e, Contact sender)
 {
-	FormattedMessage message;
 	QString content = getContent(e);
 
 // 	bool grab = false;
@@ -214,9 +213,9 @@ FormattedMessage GaduChatService::createFormattedMessage(gg_event *e, Contact se
 // 		return;
 
 	if (ignoreRichText(e, sender))
-		message = GaduFormater::createMessage(Protocol->account(), Protocol->uin(sender), content, 0, 0, false);
+		return GaduFormater::createMessage(Protocol->account(), Protocol->uin(sender), content, 0, 0, false);
 	else
-		message = GaduFormater::createMessage(Protocol->account(), Protocol->uin(sender), content,
+		return GaduFormater::createMessage(Protocol->account(), Protocol->uin(sender), content,
 				(unsigned char *)e->event.msg.formats, e->event.msg.formats_length, !ignoreImages(e, sender));
 }
 

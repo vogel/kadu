@@ -199,9 +199,6 @@ void ChatWidgetActions::sendActionCreated(Action *action)
 	ChatWidget *chatWidget = chatEditBox->chatWidget();
 	if (!chatWidget)
 		return;
-
-	if (chatWidget->waitingForACK())
-		chatWidget->changeSendToCancelSend();
 }
 
 void ChatWidgetActions::insertEmoticonActionCreated(Action *action)
@@ -307,12 +304,8 @@ void ChatWidgetActions::sendActionActivated(QAction *sender, bool toggled)
 		return;
 
 	ChatWidget *chatWidget = chatEditBox->chatWidget();
-	// TODO: split in two ?
 	if (chatWidget)
-		if (chatWidget->waitingForACK())
-			chatWidget->cancelMessage();
-		else
-			chatWidget->sendMessage();
+		chatWidget->sendMessage();
 
 	kdebugf2();
 }

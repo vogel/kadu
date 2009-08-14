@@ -59,6 +59,8 @@ ChatWidgetManager::ChatWidgetManager()
 
 	connect(Core::instance(), SIGNAL(messageReceived(const Message &)),
 			this, SLOT(messageReceived(const Message &)));
+	connect(Core::instance(), SIGNAL(messageSent(const Message &)),
+			this, SLOT(messageSent(const Message &)));
 
 	Actions = new ChatWidgetActions(this);
 
@@ -431,6 +433,24 @@ void ChatWidgetManager::messageReceived(const Message &message)
 	}
 
 	kdebugf2();
+}
+
+void ChatWidgetManager::messageSent(const Message &message)
+{
+	Chat *chat = message.chat();
+	ChatWidget *chatWidget = byChat(chat);
+	ChatMessage *chatMessage = new ChatMessage(message, TypeSent);
+
+	if (!chatWidget)
+	{
+		openChatWidget(chat);
+		chatWidget = byChat(chat);
+	}
+
+	if (!chatWidget)
+		return;
+
+	chatWidget->appendMessage(chatMessage);
 }
 
 void ChatWidgetManager::clearClosedChats()

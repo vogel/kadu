@@ -50,8 +50,10 @@ class KADUAPI ChatWidgetManager : public QObject, ConfigurationAwareObject
 
 private slots:
 	void openChatWith();
-	void messageReceived(const Message &message);
 	void clearClosedChats();
+
+	void messageReceived(const Message &message);
+	void messageSent(const Message &message);
 
 protected:
 	virtual void configurationUpdated();

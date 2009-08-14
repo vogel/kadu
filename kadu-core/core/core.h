@@ -95,6 +95,7 @@ signals:
 	void disconnected();
 
 	void messageReceived(const Message &message);
+	void messageSent(const Message &message);
 
 	// TODO: remove
 	void settingMainIconBlocked(bool &blocked);
