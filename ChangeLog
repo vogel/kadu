@@ -3,6 +3,7 @@ Postaæ (x/y) oznacza, ¿e x jest pomys³odawc± lub podes³a³ patcha, a zrobi³ to kt
 Je¶li jest w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 
 +++ wersja 0.6.5.3
+* poprawki w module history (beevvy/dorr, dorr)
 * poprawka w module mediaplayer (dorr)
 * optymalizacja otwierania historii (dorr)
 * modu³ screenshot dzia³a tak¿e pod windows (michal)
