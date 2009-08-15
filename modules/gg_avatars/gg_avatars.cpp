@@ -152,15 +152,19 @@ QString GaduAvatars::getAvatar(int uin, int mode)
 	QString filename = ggPath() + suffix + QString::number(uin);
 	if (mode == MODE_BIG)
 		filename += "_big";
-
 	if (QFileInfo(filename).size() > 0)
 	{
+#ifdef Q_OS_WIN
+		/* escape the spaces in filename */
+		return filename.replace(" ", "\\ ");
+#else
 		return filename;
+#endif
 	}
 	else
 	{
 		QBuffer *buffer = new QBuffer();
-    		int id = linkDownloader->get("/avatars/" + QString::number(uin) + "/0.xml", buffer);
+		int id = linkDownloader->get("/avatars/" + QString::number(uin) + "/0.xml", buffer);
 		buffers.insert(id, buffer);
 		uins.insert(id, uin);
 		modes.insert(id, mode);
@@ -237,9 +241,8 @@ void GaduAvatars::fileDownloaded(int id, bool error)
 	}
 	
 	file->close();
-	if (error) {
-		printf("Error\n");
-		fflush(stdout);
+	if (error)
+	{
 		file->remove();
 	}
 	files.remove(id);

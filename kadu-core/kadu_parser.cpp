@@ -413,6 +413,13 @@ QString KaduParser::parse(const QString &s, const UserListElement &ule, const QO
 						bool check_file_exists = pe2.type == ParseElem::PE_CHECK_FILE_EXISTS;
 
 						int spacePos = pe.str.find(' ', 0);
+#ifdef Q_OS_WIN
+						/* Dorr: on windows paths can contain spaces so we have escaped them */
+						while ((spacePos > 0) && (spacePos < pe.str.length()) && (pe.str[spacePos-1] == '\\'))
+						{
+							spacePos = pe.str.find(' ', spacePos + 1);
+						}
+#endif
 						parseStack.pop_back();
 						QString file;
 //						kdebugm(KDEBUG_INFO, "spacePos: %d\n", spacePos);
@@ -420,10 +427,19 @@ QString KaduParser::parse(const QString &s, const UserListElement &ule, const QO
 							file = pe.str;
 						else
 							file = pe.str.left(spacePos);
+
+#ifdef Q_OS_WIN
+						/* Dorr: unescape the filename before checking */
+						file = file.replace("\\ ", " ");
+#endif
 //						kdebugm(KDEBUG_INFO, "file: %s\n", qPrintable(file));
 						if (QFile::exists(file) == check_file_exists)
 						{
 							pe.str = pe.str.mid(spacePos + 1);
+#ifdef Q_OS_WIN
+							/* Dorr: unescape the result */
+							pe.str = pe.str.replace("\\ ", " "); 
+#endif
 							pe.type = ParseElem::PE_STRING;
 							parseStack.push_back(pe);
 						}
