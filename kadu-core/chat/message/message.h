@@ -33,7 +33,6 @@ public:
 		SentWaitingForAck,
 		SentAckReceived
 	};
-
 public:
 	Message(Chat *chat = 0, Contact sender = Contact::null);
 	Message(const Message &copy);
