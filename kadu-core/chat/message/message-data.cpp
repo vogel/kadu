@@ -22,6 +22,7 @@ MessageData::~MessageData()
 MessageData & MessageData::setChat(Chat *chat)
 {
 	MyChat = chat;
+	return *this;
 }
 
 MessageData & MessageData::setSender(Contact sender)
