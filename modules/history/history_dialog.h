@@ -63,7 +63,7 @@ protected:
 	QTreeWidget *uinsTreeWidget;
 	ChatMessagesView* body;
 	UinsList uins;
-	int start;
+	quint64 start;
 	HistoryFindRec findRec;
 	bool closeDemand;
 	bool finding;

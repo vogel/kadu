@@ -37,7 +37,7 @@ struct HistoryEntry {
 
 struct HistoryDate {
 	QDateTime date;
-	uint idx;
+	quint64 idx;
 	HistoryDate();
 };
 

@@ -253,7 +253,7 @@ void HistoryDialog::uinsChanged(QTreeWidgetItem *item)
 void HistoryDialog::dateChanged(QTreeWidgetItem *item)
 {
 	kdebugf();
-	int count;
+	quint64 count, idx;
 	if (!item)
 	{
 		body->clearMessages();
@@ -272,16 +272,17 @@ void HistoryDialog::dateChanged(QTreeWidgetItem *item)
 	{
 		uinsChanged(item->parent());
 		start = ((DateListViewText *)item)->getDate().idx;
-		if(item->parent()->indexOfChild(item) != item->parent()->childCount() - 1)
-			item = uinsTreeWidget->itemBelow(item);
+		int index = item->parent()->indexOfChild(item);
+		if (index != item->parent()->childCount() - 1)
+			item = item->parent()->child(index + 1);
 		else
 			item = 0; 
 	}
-
 	if (item)
 		count = ((DateListViewText *)item)->getDate().idx - start;
 	else
 		count = history->getHistoryEntriesCount(uins) - start;
+
 	showHistoryEntries(start, count);
 
 	kdebugf2();
