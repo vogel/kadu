@@ -216,7 +216,7 @@ void HistoryDialog::rebuildIndex(bool)
 void HistoryDialog::showPopupMenu(const QPoint &pos)
 {
 	QTreeWidgetItem *item = uinsTreeWidget->itemAt(pos);
-	if (item)
+	if (item->parent() == NULL) /* only for top level items */
 		popupMenu->exec(uinsTreeWidget->mapToGlobal(pos));
 }
 
