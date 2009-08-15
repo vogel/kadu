@@ -32,6 +32,8 @@ public:
 
 	virtual int maxDescriptionLength() = 0;
 
+	virtual QString statusNamePrefix() { return QString(""); }
+
 signals:
 	void statusChanged();
 

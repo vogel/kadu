@@ -15,7 +15,7 @@
 #include "accounts/accounts-aware-object.h"
 #include "status/status-container.h"
 
-class KADUAPI StatusContainerManager : public QObject, private AccountsAwareObject
+class KADUAPI StatusContainerManager : public StatusContainer, private AccountsAwareObject
 {
 	Q_OBJECT
 	Q_DISABLE_COPY(StatusContainerManager)
@@ -41,6 +41,22 @@ public:
 
 	void registerStatusContainer(StatusContainer *statusContainer);
 	void unregisterStatusContainer(StatusContainer *statusContainer);
+
+	//StatusContainer Implementation
+	virtual QString statusContainerName();
+
+	virtual void setStatus(Status newStatus);
+	virtual Status status();
+
+	virtual QString statusName();
+	virtual QPixmap statusPixmap();
+	virtual QPixmap statusPixmap(const QString &statusType);
+
+	virtual QList<StatusType *> supportedStatusTypes();
+
+	virtual int maxDescriptionLength();
+
+	virtual QString statusNamePrefix() { return QString(tr("All") + " "); }
 
 signals:
 	void statusContainerAboutToBeRegistered(StatusContainer *);

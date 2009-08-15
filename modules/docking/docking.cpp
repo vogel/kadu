@@ -297,7 +297,9 @@ void DockingManager::updateContextMenu()
 		}
 		if (statusContainersCount > 1)
 			containersSeparator = DockMenu->addSeparator();
-		//TODO 0.6.6: add "all" menu
+
+		statusMenu = new StatusMenu(StatusContainerManager::instance(), DockMenu);
+		statusMenu->addToMenu(DockMenu);
 	}
 
 	DockMenu->addAction(CloseKaduAction);

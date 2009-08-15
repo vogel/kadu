@@ -38,6 +38,8 @@ public:
 
 	StatusType * statusType(const QString &name);
 
+	QList<StatusType *> statusTypes() { return StatusTypes; }
+
 };
 
 #endif // STATUS_TYPE_MANAGER
