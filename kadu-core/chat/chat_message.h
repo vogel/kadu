@@ -44,6 +44,8 @@ enum ChatMessageType
 **/
 class KADUAPI ChatMessage : public QObject
 {
+	Q_OBJECT
+
 	/**
 		\fn QString convertCharacters(QString text, const QColor &bgcolor, EmoticonsStyle style)
 		Funkcja zamienia specjalne tagi na emotikonki,
@@ -54,7 +56,7 @@ class KADUAPI ChatMessage : public QObject
 	**/
 	QString convertCharacters(QString text, const QColor &bgcolor, EmoticonsStyle style);
 
-	Message message;
+	Message MyMessage;
 	int SeparatorSize;
 
 	ChatMessageType Type;
@@ -87,13 +89,15 @@ public:
 	ChatMessage(const QString &rawContent, ChatMessageType type, QDateTime date,
 		QString backgroundColor, QString fontColor, QString nickColor);
 
+	Message message() { return MyMessage; }
+
 	void replaceLoadingImages(const QString &imageId, const QString &imagePath);
 
-	Chat * chat() const { return message.chat(); }
-	Contact sender() const { return message.sender(); }
+	Chat * chat() const { return MyMessage.chat(); }
+	Contact sender() const { return MyMessage.sender(); }
 
-	QDateTime date() const { return message.receiveDate(); }
-	QDateTime sdate() const { return message.sendDate(); }
+	QDateTime date() const { return MyMessage.receiveDate(); }
+	QDateTime sdate() const { return MyMessage.sendDate(); }
 	ChatMessageType type() const { return Type; }
 
 	void setSeparatorSize(int separatorSize) { SeparatorSize = separatorSize; }
@@ -102,6 +106,9 @@ public:
 	void setShowServerTime(bool noServerTime, int noServerTimeDiff);
 
 	void setColorsAndBackground(QString &backgroundColor, QString &nickColor, QString &fontColor);
+
+signals:
+	void statusChanged(Message::Status);
 
 };
 

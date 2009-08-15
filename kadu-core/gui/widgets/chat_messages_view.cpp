@@ -25,7 +25,7 @@
 #include "chat_messages_view.h"
 
 ChatMessagesView::ChatMessagesView(QWidget *parent) : KaduTextBrowser(parent),
-	lastScrollValue(0), lastLine(false), Chat(0), PrevMessage(0), PruneEnabled(true)
+	LastScrollValue(0), LastLine(false), Chat(0), PrevMessage(0), PruneEnabled(true)
 {
 	setMinimumSize(QSize(100,100));
 
@@ -120,10 +120,17 @@ void ChatMessagesView::updateBackgroundsAndColors()
 	}
 }
 
+void ChatMessagesView::repaintMessages()
+{
+	ChatStylesManager::instance()->currentEngine()->refreshView(this);
+}
+
 void ChatMessagesView::appendMessage(ChatMessage *message)
 {
 	kdebugf();
 
+	connect(message, SIGNAL(statusChanged(Message::Status)),
+			 this, SLOT(repaintMessages()));
 	Messages.append(message);
 
 	pruneMessages();
@@ -134,6 +141,10 @@ void ChatMessagesView::appendMessage(ChatMessage *message)
 void ChatMessagesView::appendMessages(QList<ChatMessage *> messages)
 {
 	kdebugf2();
+
+	foreach (ChatMessage *message, messages)
+		connect(message, SIGNAL(statusChanged(Message::Status)),
+				this, SLOT(repaintMessages()));
 
 	Messages += messages;
 
@@ -158,12 +169,19 @@ void ChatMessagesView::pruneMessages()
 	{
 		delete *it;
 		ChatStylesManager::instance()->currentEngine()->pruneMessage(this);
+		disconnect(*it, SIGNAL(statusChanged(Message::Status)),
+				 this, SLOT(repaintMessages()));
 	}
+
 	Messages.erase(start, stop);
 }
 
 void ChatMessagesView::clearMessages()
 {
+	foreach (ChatMessage *message, Messages)
+		disconnect(message, SIGNAL(statusChanged(Message::Status)),
+				 this, SLOT(repaintMessages()));
+
 	qDeleteAll(Messages);
 	Messages.clear();
 	PrevMessage = 0;
@@ -177,8 +195,8 @@ unsigned int ChatMessagesView::countMessages()
 
 void ChatMessagesView::resizeEvent(QResizeEvent *e)
 {
- 	lastScrollValue = page()->currentFrame()->scrollBarValue(Qt::Vertical);
- 	lastLine = (lastScrollValue == page()->currentFrame()->scrollBarMaximum(Qt::Vertical));
+ 	LastScrollValue = page()->currentFrame()->scrollBarValue(Qt::Vertical);
+ 	LastLine = (LastScrollValue == page()->currentFrame()->scrollBarMaximum(Qt::Vertical));
 
  	KaduTextBrowser::resizeEvent(e);
 
@@ -187,15 +205,15 @@ void ChatMessagesView::resizeEvent(QResizeEvent *e)
 
 void ChatMessagesView::rememberScrollBarPosition()
 {
-	lastScrollValue = page()->currentFrame()->scrollBarValue(Qt::Vertical);
-	lastLine = (lastScrollValue == page()->currentFrame()->scrollBarMaximum(Qt::Vertical));
+	LastScrollValue = page()->currentFrame()->scrollBarValue(Qt::Vertical);
+	LastLine = (LastScrollValue == page()->currentFrame()->scrollBarMaximum(Qt::Vertical));
 }
 
 void ChatMessagesView::scrollToLine()
 {
- 	if (lastLine)
+ 	if (LastLine)
  		page()->currentFrame()->setScrollBarValue(Qt::Vertical, page()->currentFrame()->scrollBarMaximum(Qt::Vertical));
  	else
- 		page()->currentFrame()->setScrollBarValue(Qt::Vertical, lastScrollValue);
+ 		page()->currentFrame()->setScrollBarValue(Qt::Vertical, LastScrollValue);
 }
 

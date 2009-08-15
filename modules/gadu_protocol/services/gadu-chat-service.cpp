@@ -10,7 +10,6 @@
 #include "configuration/configuration-file.h"
 #include "contacts/ignored-helper.h"
 #include "core/core.h"
-#include "chat/message/message.h"
 #include "gui/windows/message-box.h"
 #include "misc/misc.h"
 #include "status/status-group.h"
@@ -79,6 +78,7 @@ bool GaduChatService::sendMessage(Chat *chat, FormattedMessage &message)
 		if (contact.accountData(Protocol->account()))
 			++uinsCount;
 
+	int messageId = -1;
 	if (uinsCount > 1)
 	{
 		UinType* uins = new UinType[uinsCount];
@@ -88,11 +88,11 @@ bool GaduChatService::sendMessage(Chat *chat, FormattedMessage &message)
 			if (contact.accountData(Protocol->account()))
 				uins[i++] = Protocol->uin(contact);
 		if (formatsSize)
-			LastMessageId = gg_send_message_confer_richtext(
+			messageId = gg_send_message_confer_richtext(
 					Protocol->gaduSession(), GG_CLASS_CHAT, uinsCount, uins, (unsigned char *)data.data(),
 					formats, formatsSize);
 		else
-			LastMessageId = gg_send_message_confer(
+			messageId = gg_send_message_confer(
 					Protocol->gaduSession(), GG_CLASS_CHAT, uinsCount, uins, (unsigned char *)data.data());
 		delete[] uins;
 	}
@@ -101,27 +101,31 @@ bool GaduChatService::sendMessage(Chat *chat, FormattedMessage &message)
 			if (contact.accountData(Protocol->account()))
 			{
 				if (formatsSize)
-					LastMessageId = gg_send_message_richtext(
+					messageId = gg_send_message_richtext(
 							Protocol->gaduSession(), GG_CLASS_CHAT, Protocol->uin(contact), (unsigned char *)data.data(),
 							formats, formatsSize);
 				else
-					LastMessageId = gg_send_message(
+					messageId = gg_send_message(
 							Protocol->gaduSession(), GG_CLASS_CHAT, Protocol->uin(contact), (unsigned char *)data.data());
 
 				break;
 			}
 
-	message.setId(LastMessageId);
+	if (-1 == messageId)
+		return false;
+
+	message.setId(messageId);
 
 	if (formats)
 		delete[] formats;
 
 	Message msg(chat, Core::instance()->myself());
 	msg
-		.setStatus(Message::SentWaitingForAck)
+		.setStatus(Message::Sent)
 		.setContent(message.toPlain())
 		.setSendDate(QDateTime::currentDateTime())
 		.setReceiveDate(QDateTime::currentDateTime());
+	UndeliveredMessages.insert(messageId, msg);
 	emit messageSent(msg);
 
 	kdebugf2();
@@ -274,36 +278,73 @@ void GaduChatService::handleEventAck(struct gg_event *e)
 	kdebugf();
 
 	int messageId = e->event.ack.seq;
-	int uin = e->event.ack.recipient;
-	if (messageId != LastMessageId)
+	if (!UndeliveredMessages.contains(messageId))
 		return;
 
+	int uin = e->event.ack.recipient;
+
+	Message::Status status = Message::Unknown;
 	switch (e->event.ack.status)
 	{
 		case GG_ACK_DELIVERED:
 			kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "message delivered (uin: %d, seq: %d)\n", uin, messageId);
 			emit messageStatusChanged(messageId, StatusAcceptedDelivered);
+			status = Message::Delivered;
 			break;
 		case GG_ACK_QUEUED:
 			kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "message queued (uin: %d, seq: %d)\n", uin, messageId);
 			emit messageStatusChanged(messageId, StatusAcceptedQueued);
+			status = Message::Delivered;
 			break;
 		case GG_ACK_BLOCKED:
 			kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "message blocked (uin: %d, seq: %d)\n", uin, messageId);
 			emit messageStatusChanged(messageId, StatusRejectedBlocked);
+			status = Message::WontDeliver;
 			break;
 		case GG_ACK_MBOXFULL:
 			kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "message box full (uin: %d, seq: %d)\n", uin, messageId);
 			emit messageStatusChanged(messageId, StatusRejectedBoxFull);
+			status = Message::WontDeliver;
 			break;
 		case GG_ACK_NOT_DELIVERED:
 			kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "message not delivered (uin: %d, seq: %d)\n", uin, messageId);
 			emit messageStatusChanged(messageId, StatusRejectedUnknown);
+			status = Message::WontDeliver;
 			break;
 		default:
 			kdebugm(KDEBUG_NETWORK|KDEBUG_WARNING, "unknown acknowledge! (uin: %d, seq: %d, status:%d)\n", uin, messageId, e->event.ack.status);
 			break;
 	}
 
+	UndeliveredMessages[messageId].setStatus(status);
+	UndeliveredMessages.remove(messageId);
+
+	removeTimeoutUndeliveredMessages();
+
 	kdebugf2();
+}
+
+void GaduChatService::removeTimeoutUndeliveredMessages()
+{
+// TODO: move to const or something
+	#define MAX_DELIVERY_TIME 60
+
+	QDateTime now = QDateTime();
+	QList<int> toRemove;
+
+	QMap<int, Message>::const_iterator message = UndeliveredMessages.constBegin();
+	QMap<int, Message>::const_iterator end = UndeliveredMessages.constEnd();
+	for (; message != end; message++)
+	{
+		if (message.value().sendDate().addSecs(MAX_DELIVERY_TIME) < now)
+		{
+			toRemove.append(message.key());
+			UndeliveredMessages[message.key()].setStatus(Message::WontDeliver);
+		}
+
+		message++;
+	}
+
+	foreach (int messageId, toRemove)
+		UndeliveredMessages.remove(messageId);
 }

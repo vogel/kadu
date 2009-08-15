@@ -236,6 +236,7 @@ set (kadu_MOC_SRCS
 	chat/message/message-data.h
 	chat/message/pending-messages-manager.h
 
+	chat/chat_message.h
 	chat/chat_styles_manager.h
 	chat/style-engines/chat_engine_kadu.h
 

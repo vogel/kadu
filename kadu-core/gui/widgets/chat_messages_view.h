@@ -22,26 +22,22 @@ class KADUAPI ChatMessagesView : public KaduTextBrowser
 {
 	Q_OBJECT
 
-	bool PruneEnabled;
-
-	int lastScrollValue;
-	bool lastLine;
-
-	QList<ChatMessage *> Messages; /*!< Lista wiadomo�ci wy�wietlanych w danym obiekcie. */
- 
-	/**
-		\fn void pruneMessages()
-		Funkcja ograniczaj�ca ilo�� wy�wietlanych wiadomo�ci do maksymalnej ustawionej w konfiguracji.
-		@see Prune
-	**/
-	void pruneMessages();
-
 	ChatWidget *Chat;
 	ChatMessage *PrevMessage;
+	QList<ChatMessage *> Messages;
+
+	bool PruneEnabled;
+
+	int LastScrollValue;
+	bool LastLine;
+
+	void pruneMessages();
+
 protected:
 	virtual void resizeEvent(QResizeEvent *e);
 
 private slots:
+	void repaintMessages();
 
 	void scrollToLine();
 	/**

@@ -31,7 +31,7 @@ class MessageData : public QObject, public QSharedData
 
 public:
 	MessageData(Chat *chat = 0, Contact sender = Contact::null);
-	MessageData(const Message &copyMe);
+	virtual ~MessageData();
 
 	Chat * chat() const { return MyChat; }
 	MessageData & setChat(Chat *chat);

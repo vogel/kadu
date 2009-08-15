@@ -114,9 +114,9 @@ void ChatMessage::unregisterParserTags()
 }
 
 ChatMessage::ChatMessage(const Message &msg, ChatMessageType type) :
-		message(msg), Type(type)
+		MyMessage(msg), Type(type)
 {
-	receivedDate = printDateTime(message.receiveDate());
+	receivedDate = printDateTime(MyMessage.receiveDate());
 
 	switch (type)
 	{
@@ -136,12 +136,15 @@ ChatMessage::ChatMessage(const Message &msg, ChatMessageType type) :
 			break;
 	}
 
-	this->unformattedMessage = message.content();
+	this->unformattedMessage = MyMessage.content();
 
 	this->unformattedMessage.replace("\r\n", "<br/>");
 	this->unformattedMessage.replace("\n",   "<br/>");
 	this->unformattedMessage.replace("\r",   "<br/>");
 	this->unformattedMessage.replace(QChar::LineSeparator, "<br />");
+
+	connect(&MyMessage, SIGNAL(statusChanged(Message::Status)),
+			this, SIGNAL(statusChanged(Message::Status)));
 
 // 	convertCharacters(unformattedMessage, backgroundColor,
 // 		(EmoticonsStyle)config_file.readNumEntry("Chat", "EmoticonsStyle"));
@@ -151,7 +154,9 @@ ChatMessage::ChatMessage(const QString &rawContent, ChatMessageType type, QDateT
 	QString backgroundColor, QString fontColor, QString nickColor)
 	: Type(type), unformattedMessage(rawContent), backgroundColor(backgroundColor), fontColor(fontColor), nickColor(nickColor)
 {
-	message.setReceiveDate(date);
+	MyMessage.setReceiveDate(date);
+	connect(&MyMessage, SIGNAL(statusChanged(Message::Status)),
+			this, SIGNAL(statusChanged(Message::Status)));
 }
 
 // TODO: remove?
@@ -188,8 +193,8 @@ void ChatMessage::replaceLoadingImages(const QString &imageId, const QString &im
 
 void ChatMessage::setShowServerTime(bool noServerTime, int noServerTimeDiff)
 {
-	if (message.sendDate().isValid() && (!noServerTime || (abs(message.receiveDate().toTime_t() - message.sendDate().toTime_t())) > noServerTimeDiff))
-		sentDate = printDateTime(message.sendDate());
+	if (MyMessage.sendDate().isValid() && (!noServerTime || (abs(MyMessage.receiveDate().toTime_t() - MyMessage.sendDate().toTime_t())) > noServerTimeDiff))
+		sentDate = printDateTime(MyMessage.sendDate());
 	else
 		sentDate = QString::null;
 }

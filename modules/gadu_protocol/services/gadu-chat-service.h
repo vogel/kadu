@@ -13,6 +13,7 @@
 #include <libgadu.h>
 
 #include "chat/chat.h"
+#include "chat/message/message.h"
 #include "protocols/services/chat-service.h"
 
 class GaduProtocol;
@@ -21,8 +22,9 @@ class GaduChatService : public ChatService
 {
 	Q_OBJECT
 
+	QMap<int, Message> UndeliveredMessages;
+
 	GaduProtocol *Protocol;
-	int LastMessageId;
 
 	friend class GaduProtocolSocketNotifiers;
 
@@ -34,6 +36,8 @@ class GaduChatService : public ChatService
 	bool ignoreRichText(struct gg_event *e, Contact sender);
 	bool ignoreImages(struct gg_event *e, Contact sender);
 	FormattedMessage createFormattedMessage(struct gg_event *e, Contact sender);
+
+	void removeTimeoutUndeliveredMessages();
 
 	void handleEventMsg(struct gg_event *e);
 	void handleEventAck(struct gg_event *e);

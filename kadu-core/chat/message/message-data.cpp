@@ -14,6 +14,11 @@ MessageData::MessageData(Chat *chat, Contact sender) :
 {
 }
 
+MessageData::~MessageData()
+{
+	printf("message data removed\n");
+}
+
 MessageData & MessageData::setChat(Chat *chat)
 {
 	MyChat = chat;

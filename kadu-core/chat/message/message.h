@@ -30,8 +30,8 @@ public:
 		Unknown,
 		Received,
 		Sent,
-		SentWaitingForAck,
-		SentAckReceived
+		Delivered,
+		WontDeliver
 	};
 public:
 	Message(Chat *chat = 0, Contact sender = Contact::null);

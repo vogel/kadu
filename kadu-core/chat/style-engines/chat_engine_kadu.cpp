@@ -161,7 +161,7 @@ void KaduChatStyleEngine::repaintMessages(ChatMessagesView *view)
 		prevMessage = message;
 		while (++message != end)
 		{
-			text += formatMessage(*message, *prevMessage);
+			text += QString("[%1]" ).arg((*message)->message().status()) + formatMessage(*message, *prevMessage);
 			prevMessage = message;
 		}
 	}
