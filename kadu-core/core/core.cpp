@@ -480,8 +480,8 @@ void Core::accountUnregistered(Account *account)
 	disconnect(protocol, SIGNAL(connecting(Account *)), this, SIGNAL(connecting()));
 	disconnect(protocol, SIGNAL(connected(Account *)), this, SIGNAL(connected()));
 	disconnect(protocol, SIGNAL(disconnected(Account *)), this, SIGNAL(disconnected()));
-	disconnect(protocol, SIGNAL(statusChanged(Account *, Status)),
-			this, SLOT(statusChanged(Account *, Status)));
+//	disconnect(protocol, SIGNAL(statusChanged(Account *, Status)),
+//			this, SLOT(statusChanged(Account *, Status)));
 
 	Myself.removeAccountData(account);
 }

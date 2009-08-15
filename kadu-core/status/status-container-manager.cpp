@@ -52,8 +52,8 @@ void StatusContainerManager::registerStatusContainer(StatusContainer *statusCont
 
 void StatusContainerManager::unregisterStatusContainer(StatusContainer *statusContainer)
 {
-	StatusContainerAwareObject::notifyStatusContainerUnregistered(statusContainer);
 	emit statusContainerAboutToBeUnregistered(statusContainer);
 	StatusContainers.removeAll(statusContainer);
 	emit statusContainerUnregistered(statusContainer);
+	StatusContainerAwareObject::notifyStatusContainerUnregistered(statusContainer);
 }

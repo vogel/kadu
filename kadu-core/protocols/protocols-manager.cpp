@@ -53,7 +53,7 @@ void ProtocolsManager::unregisterProtocolFactory(ProtocolFactory *factory)
 		return;
 
 	emit protocolFactoryAboutToBeUnregistered(factory);
-	Factories.append(factory);
+	Factories.removeAll(factory);
 	emit protocolFactoryUnregistered(factory);
 }
 

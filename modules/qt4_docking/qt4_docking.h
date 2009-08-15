@@ -6,10 +6,10 @@
 #include <QtGui/QSystemTrayIcon>
 
 /**
- * @defgroup qt4_docking QT4 docking
+ * @defgroup qt4_docking Qt4 docking
  * @{
  */
-class ChatWidget;
+
 class QPoint;
 
 class Qt4TrayIcon : public QSystemTrayIcon

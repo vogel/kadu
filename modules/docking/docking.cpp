@@ -24,6 +24,7 @@
 #include "icons-manager.h"
 #include "misc/misc.h"
 #include "protocols/protocol.h"
+#include "status/status-container-manager.h"
 #include "status_changer.h"
 
 #include "docking.h"
@@ -65,36 +66,22 @@ DockingManager::DockingManager()
 
 //	connect(kadu, SIGNAL(searchingForTrayPosition(QPoint&)), this, SIGNAL(searchingForTrayPosition(QPoint&)));
 
-	DockMenu = new QMenu();
-//	StatusMenu *statusMenu = new StatusMenu(this);
-//	statusMenu->addToMenu(DockMenu);
+	DockMenu = new QMenu;
+
 #ifdef Q_OS_MAC
-	DockMenu->insertSeparator();
-	DockMenu->addAction(IconsManager::instance()->loadIcon("OpenChat"), tr("Show Pending Messages"), chat_manager, SLOT(openPendingMsgs()));
+	OpenChatAction = new QAction(IconsManager::instance()->loadIcon("OpenChat"), tr("Show Pending Messages"));
+	connect(OpenChatAction, SIGNAL(triggered()), chat_manager, SLOT(openPendingMsgs()));
 #endif
-	DockMenu->addSeparator();
-	DockMenu->addAction(IconsManager::instance()->loadIcon("Exit"), tr("&Exit Kadu"), qApp, SLOT(quit()));
+	CloseKaduAction = new QAction(IconsManager::instance()->loadIcon("Exit"), tr("&Exit Kadu"), this);
+	connect(CloseKaduAction, SIGNAL(triggered()), qApp, SLOT(quit()));
 
 	connect(this, SIGNAL(mousePressMidButton()), PendingMessagesManager::instance(), SLOT(openMessages()));
 
 	configurationUpdated();
 
+	updateContextMenu();
+
 	kdebugf2();
-}
-
-void DockingManager::configurationUpdated()
-{
-	if (config_file.readBoolEntry("General", "ShowTooltipInTray"))
-		defaultToolTip();
-	else
-		emit trayTooltipChanged(QString::null);
-
-	IconType it = (IconType)config_file.readNumEntry("Look", "NewMessageIcon");
-	if (newMessageIcon != it)
-	{
-		newMessageIcon = it;
-		changeIcon();
-	}
 }
 
 DockingManager::~DockingManager()
@@ -277,6 +264,99 @@ void DockingManager::setDocked(bool docked)
 	kdebugf2();
 }
 
+void DockingManager::updateContextMenu()
+{
+	DockMenu->clear();
+	qDeleteAll(StatusContainerMenus.values());
+	StatusContainerMenus.clear();
+
+    #ifdef Q_OS_MAC
+	DockMenu->addAction(OpenChatAction);
+	DockMenu->insertSeparator();
+    #endif
+
+	int statusContainersCount = StatusContainerManager::instance()->statusContainers().count();
+	StatusMenu *statusMenu;
+
+	if (statusContainersCount == 1)
+	{
+		statusMenu = new StatusMenu(StatusContainerManager::instance()->statusContainers()[0], DockMenu);
+		statusMenu->addToMenu(DockMenu);
+	}
+	else
+	{
+		foreach (StatusContainer *container, StatusContainerManager::instance()->statusContainers())
+		{
+			statusMenu = new StatusMenu(container, DockMenu);
+			QMenu *menu = new QMenu(container->statusContainerName());
+			menu->setIcon(container->statusPixmap());
+			statusMenu->addToMenu(menu);
+			StatusContainerMenus[container] = DockMenu->addMenu(menu);
+			connect(container, SIGNAL(statusChanged()), this, SLOT(containerStatusChanged()));
+
+		}
+		if (statusContainersCount > 1)
+			containersSeparator = DockMenu->addSeparator();
+		//TODO 0.6.6: add "all" menu
+	}
+
+	DockMenu->addAction(CloseKaduAction);
+}
+
+void DockingManager::containerStatusChanged()
+{
+	StatusContainer *container;
+	if (sender() && (container = dynamic_cast<StatusContainer *>(sender())) && StatusContainerMenus[container])
+		StatusContainerMenus[container]->setIcon(container->statusPixmap());
+}
+
+void DockingManager::statusContainerRegistered(StatusContainer *statusContainer)
+{
+	if (StatusContainerManager::instance()->statusContainers().count() < 3)
+		updateContextMenu();
+	else
+	{
+		StatusMenu *statusMenu = new StatusMenu(statusContainer, DockMenu);
+		QMenu *menu = new QMenu(statusContainer->statusContainerName());
+		menu->setIcon(statusContainer->statusPixmap());
+		statusMenu->addToMenu(menu);
+		StatusContainerMenus[statusContainer] = DockMenu->insertMenu(containersSeparator, menu);
+		connect(statusContainer, SIGNAL(statusChanged()), this, SLOT(containerStatusChanged()));
+	}
+}
+
+void DockingManager::statusContainerUnregistered(StatusContainer *statusContainer)
+{
+	if (StatusContainerManager::instance()->statusContainers().count() < 2)
+		updateContextMenu();
+	else
+	{
+		QAction *menuAction = StatusContainerMenus[statusContainer];
+		if (!menuAction)
+			    return;
+
+		menuAction->menu()->clear();
+		StatusContainerMenus.remove(statusContainer);
+		DockMenu->removeAction(menuAction);
+		delete menuAction;
+	}
+}
+
+void DockingManager::configurationUpdated()
+{
+	if (config_file.readBoolEntry("General", "ShowTooltipInTray"))
+		defaultToolTip();
+	else
+		emit trayTooltipChanged(QString::null);
+
+	IconType it = (IconType)config_file.readNumEntry("Look", "NewMessageIcon");
+	if (newMessageIcon != it)
+	{
+		newMessageIcon = it;
+		changeIcon();
+	}
+}
+
 void DockingManager::createDefaultConfiguration()
 {
 	config_file.addVariable("General", "RunDocked", false);
@@ -284,7 +364,7 @@ void DockingManager::createDefaultConfiguration()
 	config_file.addVariable("Look", "NewMessageIcon", 0);
 }
 
-DockingManager* docking_manager = NULL;
+DockingManager *docking_manager = NULL;
 
 /** @} */
 
