@@ -27,29 +27,57 @@
 
 bool X11_getCardinalProperty( Display *display, Window window, const char *propertyName, long *value, int offset )
 {
-	Atom nameAtom, typeAtom, actual_type_return;
+	Atom nameAtom, actual_type_return;
 	int actual_format_return, result;
 	unsigned long nitems_return, bytes_after_return;
-	long *result_array = NULL;
+	unsigned char *value_return = NULL;
 	nameAtom = XInternAtom( display, propertyName, False );
-	typeAtom = XInternAtom( display, "CARDINAL"  , False );
-	if( nameAtom == None || typeAtom == None )
+	if( nameAtom == None )
 	{
 		return false;
 	}
 	result = XGetWindowProperty(
-			display, window, nameAtom, offset, 1, False, typeAtom,
-			&actual_type_return, &actual_format_return, &nitems_return, &bytes_after_return, (unsigned char **)&result_array
+			display, window, nameAtom, offset, 1, False, XA_CARDINAL,
+			&actual_type_return, &actual_format_return, &nitems_return, &bytes_after_return, &value_return
 		);
 	if( result == Success )
 	{
-		if( actual_type_return == typeAtom && nitems_return > 0 )
+		if( actual_type_return == XA_CARDINAL && nitems_return > 0 )
 		{
-			*value = ((long*)result_array)[0];
-			XFree( result_array );
+			*value = ((long*)value_return)[0];
+			XFree( value_return );
 			return true;
 		}
-		XFree( result_array );
+		XFree( value_return );
+	}
+	return false;
+}
+
+
+bool X11_getAtomProperty( Display *display, Window window, const char *propertyName, Atom *value )
+{
+	Atom nameAtom, actual_type_return;
+	int actual_format_return, result;
+	unsigned long nitems_return, bytes_after_return;
+	unsigned char *value_return = NULL;
+	nameAtom = XInternAtom( display, propertyName, False );
+	if( nameAtom == None )
+	{
+		return false;
+	}
+	result = XGetWindowProperty(
+			display, window, nameAtom, 0, 1, False, XA_ATOM,
+			&actual_type_return, &actual_format_return, &nitems_return, &bytes_after_return, &value_return
+		);
+	if( result == Success )
+	{
+		if( actual_type_return == XA_ATOM && nitems_return > 0 )
+		{
+			*value = ((Atom*)value_return)[0];
+			XFree( value_return );
+			return true;
+		}
+		XFree( value_return );
 	}
 	return false;
 }
@@ -348,7 +376,7 @@ bool X11_isWindowVisibleOnDesktop( Display *display, Window window, long desktop
 	else
 	{
 		long desktopofwindow = X11_getDesktopOfWindow( display, window, forceFreeDesktop );
-		if( desktopofwindow == X11_ALLDESKTOPS )
+		if( desktopofwindow == (long)X11_ALLDESKTOPS )
 			return true;
 		return ( desktopofwindow == desktop );
 	}
@@ -372,6 +400,106 @@ bool X11_isWholeWindowOnOneDesktop( Display *display, Window window )
 		return false;
 	if( ( pos.second / resolution.second ) != ( ( pos.second + size.second ) / resolution.second ) )
 		return false;
+	return true;
+}
+
+
+bool X11_isWindowFullyVisible( Display *display, Window window )
+{
+	Window parent = window;
+	Window root;
+	Window *children = NULL;
+	unsigned int nchildren;
+	while( parent != DefaultRootWindow( display ) )
+	{
+		window = parent;
+		XQueryTree( display, window, &root, &parent, &children, &nchildren );
+		XFree( children );
+	}
+	int x, y;
+	unsigned int width, height, border, depth;
+	XGetGeometry( display, window, &root, &x, &y, &width, &height, &border, &depth );
+	int x1 = x;
+	int y1 = y;
+	int x2 = x + width;
+	int y2 = y + height;
+	XQueryTree( display, DefaultRootWindow( display ), &root, &parent, &children, &nchildren );
+	if( children != NULL )
+	{
+		unsigned int k = 0;
+		while( k < nchildren )
+		{
+			if( children[k] == window )
+			{
+				break;
+			}
+			k++;
+		}
+		Atom typedock = XInternAtom( display, "_NET_WM_WINDOW_TYPE_DOCK", False );
+		Atom typemenu = XInternAtom( display, "_NET_WM_WINDOW_TYPE_MENU", False );
+		while( k < nchildren )
+		{
+			if( children[k] == window )
+			{
+				k++;
+				continue;
+			}
+			XWindowAttributes attr;
+			XGetWindowAttributes( display, children[k], &attr );
+			if( attr.map_state != IsViewable )
+			{
+				k++;
+				continue;
+			}
+			std::pair<int,int> pos2 = X11_getWindowPos( display, children[k] );
+			std::pair<int,int> size2 = X11_getWindowSize( display, children[k] );
+			int X1 = pos2.first;
+			int Y1 = pos2.second;
+			int X2 = pos2.first + size2.first;
+			int Y2 = pos2.second + size2.second;
+			if( ( ( x1 <= X1 && X1 <= x2 ) || ( x1 <= X2 && X2 <= x2 ) || ( x1 >= X1 && x2 <= X2 ) )
+			&&  ( ( y1 <= Y1 && Y1 <= y2 ) || ( y1 <= Y2 && Y2 <= y2 ) || ( y1 >= Y1 && y2 <= Y2 ) )
+			)
+			{
+				Atom type;
+				bool hastype = false;
+				if( X11_getAtomProperty( display, children[k], "_NET_WM_WINDOW_TYPE", &type ) )
+				{
+					hastype = true;
+				}
+				if( ! hastype )
+				{
+					Window window2 = children[k];
+					Window *children2 = NULL;
+					unsigned int nchildren2;
+					while( ( ! hastype ) )
+					{
+						XQueryTree( display, window2, &root, &parent, &children2, &nchildren2 );
+						if( children2 != NULL )
+						{
+							window2 = children2[0];
+							if( X11_getAtomProperty( display, window2, "_NET_WM_WINDOW_TYPE", &type ) )
+							{
+								hastype = true;
+							}
+							XFree( children2 );
+						}
+						else
+						{
+							break;
+						}
+					}
+				}
+				if( ( hastype ) && ( type != typedock ) && ( type != typemenu ) )
+				{
+					XFree( children );
+					return false;
+				}
+			}
+			k++;
+		}
+		XFree( children );
+	}
 	return true;
 }
 
@@ -458,11 +586,19 @@ void X11_moveWindow( Display *display, Window window, int x, int y )
 
 void X11_centerWindow( Display *display, Window window, long desktop, bool forceFreeDesktop )
 {
-	if( desktop == X11_BADDESKTOP )
+	if( desktop == (long)X11_BADDESKTOP )
 	{
 		desktop = X11_getCurrentDesktop( display );
 	}
-	if( X11_isFreeDesktopCompatible( display ) )
+	if( ( ! forceFreeDesktop ) && ( ! X11_isFreeDesktopCompatible( display ) ) )
+	{
+		std::pair<int,int> resolution = X11_getResolution( display );
+		std::pair<int,int> size = X11_getWindowSize( display, window );
+		int cx = ( resolution.first  - size.first  ) / 2;
+		int cy = ( resolution.second - size.second ) / 2;
+		X11_moveWindowToDesktop( display, window, desktop, false, true, cx, cy );
+	}
+	else
 	{
 		if( X11_getDesktopOfWindow( display, window, true ) != desktop )
 		{
@@ -473,14 +609,6 @@ void X11_centerWindow( Display *display, Window window, long desktop, bool force
 		int cx = ( resolution.first  - size.first  ) / 2;
 		int cy = ( resolution.second - size.second ) / 2;
 		X11_moveWindow( display, window, cx, cy );
-	}
-	else
-	{
-		std::pair<int,int> resolution = X11_getResolution( display );
-		std::pair<int,int> size = X11_getWindowSize( display, window );
-		int cx = ( resolution.first  - size.first  ) / 2;
-		int cy = ( resolution.second - size.second ) / 2;
-		X11_moveWindowToDesktop( display, window, desktop, false, true, cx, cy );
 	}
 }
 
@@ -505,6 +633,7 @@ Window X11_getActiveWindow( Display *display )
 
 void X11_setActiveWindow( Display *display, Window window, bool forceFreeDesktop )
 {
+	forceFreeDesktop = false; // no "unused parameter" compiler warning
 	int time = 0;
 	while( time < X11_SETACTIVEWINDOW_TIMEOUT )
 	{
@@ -515,8 +644,8 @@ void X11_setActiveWindow( Display *display, Window window, bool forceFreeDesktop
 	}
 	if( ! X11_isWindowVisibleOnDesktop( display, window, X11_getCurrentDesktop( display ) ) )
 		return;
-	XSetInputFocus( display, window, RevertToNone, CurrentTime );
 	XRaiseWindow( display, window );
+	XSetInputFocus( display, window, RevertToNone, CurrentTime );
 }
 
 

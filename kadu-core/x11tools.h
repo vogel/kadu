@@ -17,7 +17,7 @@
 ****************************************************************************/
 
 
-// VERSION: 1.00.00
+// VERSION: 1.01.00
 
 
 /*
@@ -59,6 +59,7 @@ typedef struct
 
 
 bool X11_getCardinalProperty( Display *display, Window window, const char *propertyName, long *value, int offset = 0 );
+bool X11_getAtomProperty( Display *display, Window window, const char *propertyName, Atom *value );
 
 std::pair<int,int> X11_getResolution( Display *display );
 std::pair<int,int> X11_getDesktopSize( Display *display );
@@ -74,6 +75,7 @@ long X11_getDesktopOfWindow( Display *display, Window window, bool forceFreeDesk
 void X11_moveWindowToDesktop( Display *display, Window window, long desktop, bool forceFreeDesktop = false, bool position = false, int x = 0, int y = 0 );
 bool X11_isWindowVisibleOnDesktop( Display *display, Window window, long desktop, bool forceFreeDesktop = false );
 bool X11_isWholeWindowOnOneDesktop( Display *display, Window window );
+bool X11_isWindowFullyVisible( Display *display, Window window );
 
 std::pair<int,int> X11_getWindowPos( Display *display, Window window );
 std::pair<int,int> X11_getWindowSize( Display *display, Window window );
