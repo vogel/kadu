@@ -110,7 +110,11 @@
     </message>
     <message>
         <source>Clear history</source>
-        <translation type="unfinished">Efface historique</translation>
+        <translation>Efface historique</translation>
+    </message>
+    <message>
+        <source>Rebuild index</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

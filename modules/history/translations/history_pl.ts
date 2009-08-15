@@ -114,6 +114,10 @@
         <source>Clear history</source>
         <translation>Wyczyść historię</translation>
     </message>
+    <message>
+        <source>Rebuild index</source>
+        <translation>Przebuduj indeks</translation>
+    </message>
 </context>
 <context>
     <name>HistoryManager</name>

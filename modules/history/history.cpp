@@ -986,10 +986,11 @@ void HistoryManager::buildIndexPrivate(const QString &filename)
 	Q_LONG read, written;
 	bool saved = false;
 
-	if (QFile::exists(fnameout))
-		return;
-	QFile fin(filename);
 	QFile fout(fnameout);
+	if (fout.exists() && fout.size() > 0)
+		return;
+
+	QFile fin(filename);
 	if (!fin.open(QIODevice::ReadOnly))
 	{
 		kdebugmf(KDEBUG_ERROR, "Error opening history file: %s\n", qPrintable(fin.name()));

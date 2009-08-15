@@ -112,6 +112,10 @@
         <source>Clear history</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Rebuild index</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>HistoryManager</name>

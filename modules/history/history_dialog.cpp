@@ -115,9 +115,12 @@ HistoryDialog::HistoryDialog(UinsList uins)
 
 	QAction *clearAction = new QAction(icons_manager->loadIcon("ClearHistory"), tr("Clear history"), this);
 	connect(clearAction, SIGNAL(triggered(bool)), this, SLOT(clearHistory(bool)));
+	QAction *rebuildAction = new QAction(icons_manager->loadIcon("History"), tr("Rebuild index"), this);
+	connect(rebuildAction, SIGNAL(triggered(bool)), this, SLOT(rebuildIndex(bool)));
 
 	popupMenu = new QMenu(uinsTreeWidget);
-	popupMenu->addAction(clearAction);	
+	popupMenu->addAction(clearAction);
+	popupMenu->addAction(rebuildAction);
 
 	QWidget *rightWidget = new QWidget(splitter);
 	QVBoxLayout* rightLatout = new QVBoxLayout(rightWidget);
@@ -201,6 +204,13 @@ void HistoryDialog::clearHistory(bool)
 	QTreeWidgetItem *item = uinsTreeWidget->currentItem();
 	UinsList uins = dynamic_cast<UinsListViewText *>(item)->getUinsList();
 	history->removeHistory(uins);
+}
+
+void HistoryDialog::rebuildIndex(bool)
+{
+	QTreeWidgetItem *item = uinsTreeWidget->currentItem();
+	UinsList uins = dynamic_cast<UinsListViewText *>(item)->getUinsList();
+	history->buildIndex(uins);
 }
 
 void HistoryDialog::showPopupMenu(const QPoint &pos)

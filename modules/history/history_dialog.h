@@ -83,6 +83,7 @@ public slots:
 	void searchPrevButtonClicked();
 	void showPopupMenu(const QPoint &pos);
 	void clearHistory(bool);
+	void rebuildIndex(bool);
 
 signals:
 	void showStatusChanges(bool);
