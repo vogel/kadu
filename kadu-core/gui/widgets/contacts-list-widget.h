@@ -10,7 +10,7 @@
 #ifndef CONTACTS_LIST_WIDGET_H
 #define CONTACTS_LIST_WIDGET_H
 
-#include <QtGui/QListView>
+#include <QtGui/QTreeView>
 #include <QtCore/QDateTime>
 #include <QtCore/QTimer>
 
@@ -28,7 +28,9 @@ class ContactsListWidgetDelegate;
 class ContactsModelProxy;
 class MainWindow;
 
-class ContactsListWidget : public QListView
+class ContactsListWidget : public QTreeView
+
+
 {
 	Q_OBJECT
 

@@ -38,12 +38,12 @@
 #include "tool-tip-class-manager.h"
 
 ContactsListWidget::ContactsListWidget(MainWindow *mainWindow, QWidget *parent) :
-		QListView(parent), MyMainWindow(mainWindow), ProxyModel(new ContactsModelProxy(this)),
+		QTreeView(parent), MyMainWindow(mainWindow), ProxyModel(new ContactsModelProxy(this)),
 		Delegate(0), BackgroundTemporaryFile(0)
 {
 	// all these tree are needed to make this view updating layout properly
-	setLayoutMode(Batched);
-	setResizeMode(Adjust);
+// 	setLayoutMode(Batched);
+// 	setResizeMode(Adjust);
 	setWordWrap(true);
 
 	setAlternatingRowColors(true);
@@ -54,7 +54,7 @@ ContactsListWidget::ContactsListWidget(MainWindow *mainWindow, QWidget *parent) 
 	setItemDelegate(Delegate);
 
 	Delegate->setModel(ProxyModel);
-	QAbstractItemView::setModel(ProxyModel);
+	QTreeView::setModel(ProxyModel);
 
 	connect(&ToolTipTimeoutTimer, SIGNAL(timeout()), this, SLOT(toolTipTimeout()));
 	connect(this, SIGNAL(doubleClicked(const QModelIndex &)), this, SLOT(doubleClickedSlot(const QModelIndex &)));
@@ -238,26 +238,26 @@ void ContactsListWidget::mousePressEvent(QMouseEvent *event)
 
 void ContactsListWidget::mouseReleaseEvent(QMouseEvent *event)
 {
-	QListView::mouseReleaseEvent(event);
+	QTreeView::mouseReleaseEvent(event);
 	toolTipRestart();
 }
 
 void ContactsListWidget::mouseMoveEvent(QMouseEvent *event)
 {
-	QListView::mouseMoveEvent(event);
+	QTreeView::mouseMoveEvent(event);
 	toolTipRestart();
 }
 
 void ContactsListWidget::resizeEvent(QResizeEvent *event)
 {
-	QListView::resizeEvent(event);
+	QTreeView::resizeEvent(event);
 	if (BackgroundImageMode == BackgroundStretched)
 		updateBackground();
 }
 
 void ContactsListWidget::currentChanged(const QModelIndex& current, const QModelIndex& previous)
 {
-	QListView::currentChanged(current, previous);
+	QTreeView::currentChanged(current, previous);
 
 	if (!current.isValid())
 		return;
@@ -268,8 +268,7 @@ void ContactsListWidget::currentChanged(const QModelIndex& current, const QModel
 
 void ContactsListWidget::selectionChanged( const QItemSelection &selected, const QItemSelection &deselected)
 {
-    	emit contactsSelectionChanged();
-
+	emit contactsSelectionChanged();
 }
 
 void ContactsListWidget::doubleClickedSlot(const QModelIndex &index)
