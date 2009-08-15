@@ -10,7 +10,7 @@
 #include <QtGui/QSystemTrayIcon>
 #include <QtGui/QTextDocument>
 
-#include "notify/account-notification.h"
+#include "notify/chat-notification.h"
 #include "notify/notification-manager.h"
 #include "notify/notification.h"
 
@@ -93,11 +93,15 @@ QString Qt4Notify::parseText(const QString &text, Notification *notification, co
 {
 	QString ret;
 
+	ChatNotification *chatNotification = dynamic_cast<ChatNotification *>(notification);
+	chat = chatNotification ? chatNotification->chat() : 0;
+
 	if (!text.isEmpty())
 	{
-		AccountNotification *accountNotification = dynamic_cast<AccountNotification *>(notification);
-		if (accountNotification && accountNotification->chat() && accountNotification->chat()->contacts().count())
-			ret = Parser::parse(text, accountNotification->account(), *accountNotification->chat()->contacts().begin(), notification);
+		if (chatNotification)
+			ret = Parser::parse(text, chatNotification->account(), *chatNotification->chat()->contacts().begin(), notification);
+		else
+			ret = Parser::parse(text, notification);
 
 		ret = ret.replace("%&m", notification->text());
 		ret = ret.replace("%&t", notification->title());
@@ -106,6 +110,7 @@ QString Qt4Notify::parseText(const QString &text, Notification *notification, co
 	else
 		ret = def;
 
+
 	return toPlainText(ret);
 }
 
@@ -113,7 +118,7 @@ void Qt4Notify::notify(Notification *notification)
 {
 	kdebugf();
 
-	if (qt4_tray_icon != 0)
+	if (qt4_tray_icon)
 	{
 		notification->acquire();
 
@@ -121,8 +126,6 @@ void Qt4Notify::notify(Notification *notification)
 		unsigned int icon = config_file.readNumEntry("Qt4DockingNotify", QString("Event_") + notification->type() + "_icon");
 		QString title = config_file.readEntry("Qt4DockingNotify", QString("Event_") + notification->type() + "_title");
 		QString syntax = config_file.readEntry("Qt4DockingNotify", QString("Event_") + notification->type() + "_syntax");
-
-		chat = notification->chat();
 
 		qt4_tray_icon->showMessage(parseText(title, notification, notification->text()),
 			parseText(syntax, notification, notification->details()),

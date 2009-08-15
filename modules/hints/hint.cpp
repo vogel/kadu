@@ -11,14 +11,16 @@
 #include <QtGui/QMouseEvent>
 #include <QtGui/QPushButton>
 
-#include "config_file.h"
-#include "debug.h"
-#include "hint.h"
-#include "icons-manager.h"
-#include "kadu_parser.h"
+#include "chat/chat.h"
+#include "configuration/configuration-file.h"
 #include "misc/misc.h"
-
+#include "notify/chat-notification.h"
 #include "notify/notification.h"
+#include "parser/parser.h"
+#include "debug.h"
+#include "icons-manager.h"
+
+#include "hint.h"
 
 /**
  * @ingroup hints
@@ -31,6 +33,9 @@ Hint::Hint(QWidget *parent, Notification *notification)
 	kdebugf();
 
 	notification->acquire();
+
+	ChatNotification *chatNotification = dynamic_cast<ChatNotification *>(notification);
+	CurrentChat = chatNotification ? chatNotification->chat() : 0;
 
 	if (notification->details() != "")
 		details.append(notification->details());
@@ -51,7 +56,7 @@ Hint::Hint(QWidget *parent, Notification *notification)
 		callbacksBox->addStretch(10);
 		vbox->addWidget(callbacksWidget);
 
-		foreach(const Notification::Callback &i, callbacks)
+		foreach (const Notification::Callback &i, callbacks)
 		{
 			QPushButton *button = new QPushButton(i.first, this);
 			connect(button, SIGNAL(clicked()), notification, i.second);
@@ -137,12 +142,12 @@ void Hint::updateText()
 		text = notification->text();
 	else
 	{
-		Contact contact;
-		if (notification->contacts().count())
-			contact = notification->contacts()[0];
-
 		kdebug("syntax is: %s, text is: %s\n", syntax.toAscii().data(), notification->text().toAscii().data());
-		text = KaduParser::parse(syntax, contact.prefferedAccount(), contact, notification);
+
+		if (CurrentChat)
+			text = Parser::parse(syntax, CurrentChat->account(), *CurrentChat->contacts().begin(), notification);
+		else
+			text = Parser::parse(syntax, notification);
 		/* Dorr: the file:// in img tag doesn't generate the image on hint.
 		 * for compatibility with other syntaxes we're allowing to put the file://
 		 * so we have to remove it here */
@@ -197,7 +202,7 @@ void Hint::nextSecond(void)
 	{
 		if (secs == 0)
 			kdebugm(KDEBUG_ERROR, "ERROR: secs == 0 !\n");
-		else if (secs>2000000000)
+		else if (secs > 2000000000)
 			kdebugm(KDEBUG_WARNING, "WARNING: secs > 2 000 000 000 !\n");
 
 		if (secs >= 0)
@@ -218,16 +223,6 @@ void Hint::addDetail(const QString &detail)
 
 	resetTimeout();
 	updateText();
-}
-
-bool Hint::hasContacts() const
-{
-	return notification->contacts().count() != 0;
-}
-
-const ContactList & Hint::getContacts() const
-{
-	return notification->contacts();
 }
 
 void Hint::mouseReleaseEvent(QMouseEvent *event)

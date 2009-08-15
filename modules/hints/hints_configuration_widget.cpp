@@ -13,17 +13,18 @@
 #include <QtGui/QLineEdit>
 #include <QtGui/QSpinBox>
 
-#include "color_button.h"
-#include "config_file.h"
+//#include "color_button.h"
+#include "configuration/configuration-file.h"
+#include "gui/widgets/configuration/notify-group-box.h"
 #include "debug.h"
-#include "kadu.h"
-#include "select_font.h"
+//#include "kadu.h"
+//#include "select_font.h"
 
 #include "hints_configuration_widget.h"
 
-HintsConfigurationWidget::HintsConfigurationWidget(QWidget *parent, char *name)
-	: NotifierConfigurationWidget(parent, name), currentNotifyEvent("")
-{
+HintsConfigurationWidget::HintsConfigurationWidget(QWidget *parent)
+	: NotifierConfigurationWidget(parent), currentNotifyEvent("")
+{/*
 	warning = new QLabel("<b>" + tr("Uncheck 'Set to all' in 'Hints' page to edit these values") + "</b>", this);
 	preview = new QLabel(tr("<b>Preview</b> text"), this);
 	font = new SelectFont(this);
@@ -54,18 +55,18 @@ HintsConfigurationWidget::HintsConfigurationWidget(QWidget *parent, char *name)
 	gridLayout->addWidget(timeout, 5, 1);
 	gridLayout->addWidget(new QLabel(tr("Syntax") + ":", this), 6, 0, Qt::AlignRight);
 	gridLayout->addWidget(syntax, 6, 1);
-
-	parent->layout()->addWidget(this);
+*/
+	dynamic_cast<NotifyGroupBox *>(parent)->addWidget(this);
 }
 
 void HintsConfigurationWidget::saveNotifyConfigurations()
 {
 	kdebugf();
-
+/*
 	if (currentNotifyEvent != "")
 		hintProperties[currentNotifyEvent] = currentProperties;
 
-	foreach(const HintProperties &hintProperty, hintProperties)
+	foreach (const HintProperties &hintProperty, hintProperties)
 	{
 		const QString &eventName = hintProperty.eventName;
 
@@ -74,13 +75,13 @@ void HintsConfigurationWidget::saveNotifyConfigurations()
 		config_file.writeEntry("Hints", QString("Event_") + eventName + "_bgcolor", hintProperty.backgroundColor);
 		config_file.writeEntry("Hints", QString("Event_") + eventName + "_timeout", (int)hintProperty.timeout);
 		config_file.writeEntry("Hints", QString("Event_") + eventName + "_syntax", hintProperty.syntax);
-	}
+	}*/
 }
 
 void HintsConfigurationWidget::switchToEvent(const QString &event)
 {
 	kdebugf();
-
+/*
 	if (currentNotifyEvent != "")
 		hintProperties[currentNotifyEvent] = currentProperties;
 
@@ -114,42 +115,43 @@ void HintsConfigurationWidget::switchToEvent(const QString &event)
 	preview->setFont(currentProperties.font);
 	preview->setPaletteForegroundColor(currentProperties.foregroundColor);
 	preview->setPaletteBackgroundColor(currentProperties.backgroundColor);
+	*/
 }
 
 void HintsConfigurationWidget::fontChanged(QFont font)
 {
-	currentProperties.font = font;
-	preview->setFont(font);
+//	currentProperties.font = font;
+//	preview->setFont(font);
 }
 
 void HintsConfigurationWidget::foregroundColorChanged(const QColor &color)
 {
-	currentProperties.foregroundColor = color;
-	preview->setPaletteForegroundColor(color);
+//	currentProperties.foregroundColor = color;
+//	preview->setPaletteForegroundColor(color);
 }
 
 void HintsConfigurationWidget::backgroundColorChanged(const QColor &color)
 {
-	currentProperties.backgroundColor = color;
-	preview->setPaletteBackgroundColor(color);
+//	currentProperties.backgroundColor = color;
+//	preview->setPaletteBackgroundColor(color);
 }
 
 void HintsConfigurationWidget::timeoutChanged(int timeout)
 {
-	currentProperties.timeout = timeout;
+//	currentProperties.timeout = timeout;
 }
 
 void HintsConfigurationWidget::syntaxChanged(const QString &syntax)
 {
-	currentProperties.syntax = syntax;
+//	currentProperties.syntax = syntax;
 }
 
 void HintsConfigurationWidget::setAllEnabled(bool enabled)
-{
+{/*
 	warning->setShown(enabled);
 	font->setDisabled(enabled);
 	foregroundColor->setDisabled(enabled);
 	backgroundColor->setDisabled(enabled);
 	timeout->setDisabled(enabled);
-	preview->setDisabled(enabled);
+	preview->setDisabled(enabled);*/
 }

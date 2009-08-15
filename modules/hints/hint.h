@@ -4,13 +4,12 @@
 #include <QtGui/QWidget>
 #include <QtGui/QVBoxLayout>
 
-#include "configuration_aware_object.h"
+#include "configuration/configuration-aware-object.h"
 
 class QLabel;
 class QVBoxLayout;
 
-class Contact;
-class ContactList;
+class Chat;
 class Notification;
 
 class Hint : public QWidget, ConfigurationAwareObject
@@ -39,6 +38,8 @@ class Hint : public QWidget, ConfigurationAwareObject
 
 	void resetTimeout();
 
+	Chat *CurrentChat;
+
 private slots:
 	void notificationClosed();
 
@@ -59,8 +60,7 @@ public:
 
 	void addDetail(const QString &detail);
 
-	bool hasContacts() const;
-	const ContactList & getContacts() const;
+	Chat * chat() { return CurrentChat; }
 
 	Notification * getNotification() { return notification; }
 

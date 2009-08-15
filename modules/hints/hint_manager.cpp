@@ -14,22 +14,21 @@
 #include <QtGui/QLabel>
 #include <QtGui/QSpinBox>
 
-#include "chat/chat_manager-old.h"
-
+#include "configuration/configuration-file.h"
+#include "gui/widgets/chat-widget-manager.h"
 #include "gui/widgets/tool-tip-class-manager.h"
-#include "gui/widgets/chat_widget.h"
+#include "gui/widgets/chat-widget.h"
 #include "gui/widgets/configuration/configuration-widget.h"
+#include "misc/misc.h"
+#include "notify/chat-notification.h"
+#include "notify/notification-manager.h"
+#include "parser/parser.h"
 
-#include "config_file.h"
 #include "debug.h"
 #include "hint_manager.h"
 #include "hints_configuration_widget.h"
 #include "icons-manager.h"
-#include "kadu.h"
-#include "kadu_parser.h"
-#include "misc/misc.h"
-#include "userlist.h"
-#include "../notify/notify.h"
+//#include "kadu.h"
 
 /**
  * @ingroup hints
@@ -37,33 +36,36 @@
  */
 #define FRAME_WIDTH 1
 
-HintManager::HintManager(QWidget *parent, const char *name)	: Notifier(parent, name), AbstractToolTip(),
-	hint_timer(new QTimer(this, "hint_timer")),
+HintManager::HintManager(QWidget *parent)
+	: Notifier("Hint", "Hints", IconsManager::instance()->loadIcon("OpenChat"), parent), AbstractToolTip(),
+	hint_timer(new QTimer(this)),
 	hints(), tipFrame(0)
 {
 	kdebugf();
 #ifdef Q_OS_MAC
-	frame = new QFrame(parent, name, Qt::FramelessWindowHint | Qt::SplashScreen | Qt::X11BypassWindowManagerHint | Qt::WindowStaysOnTopHint |Qt::MSWindowsOwnDC);
+	frame = new QFrame(parent, Qt::FramelessWindowHint | Qt::SplashScreen | Qt::X11BypassWindowManagerHint | Qt::WindowStaysOnTopHint |Qt::MSWindowsOwnDC);
 #else
-	frame = new QFrame(parent, name, Qt::FramelessWindowHint | Qt::Tool | Qt::X11BypassWindowManagerHint | Qt::WindowStaysOnTopHint |Qt::MSWindowsOwnDC);
+	frame = new QFrame(parent, Qt::FramelessWindowHint | Qt::Tool | Qt::X11BypassWindowManagerHint | Qt::WindowStaysOnTopHint |Qt::MSWindowsOwnDC);
 #endif
 	frame->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
 	frame->setFrameStyle(QFrame::Box | QFrame::Plain);
 	frame->setLineWidth(FRAME_WIDTH);
 
-	layout = new QVBoxLayout(frame, FRAME_WIDTH, 0, "grid");
-	layout->setResizeMode(QLayout::Fixed);
+	layout = new QVBoxLayout(frame);
+	layout->setSpacing(0);
+	layout->setMargin(FRAME_WIDTH);
+	layout->setSizeConstraint(QLayout::SetFixedSize);
 
 	connect(hint_timer, SIGNAL(timeout()), this, SLOT(oneSecond()));
-	connect(chat_manager, SIGNAL(chatWidgetActivated(ChatWidget *)), this, SLOT(chatWidgetActivated(ChatWidget *)));
+	connect(ChatWidgetManager::instance(), SIGNAL(chatWidgetActivated(ChatWidget *)), this, SLOT(chatWidgetActivated(ChatWidget *)));
 
 	const QString default_hints_syntax(QT_TRANSLATE_NOOP("HintManager", "[<i>%s</i><br/>][<br/><b>Description:</b><br/>%d<br/><br/>][<i>Mobile:</i> <b>%m</b><br/>]"));
 	if (config_file.readEntry("Hints", "MouseOverUserSyntax") == default_hints_syntax || config_file.readEntry("Hints", "MouseOverUserSyntax").isEmpty())
-		config_file.writeEntry("Hints", "MouseOverUserSyntax", tr(default_hints_syntax.ascii()));
+		config_file.writeEntry("Hints", "MouseOverUserSyntax", tr(default_hints_syntax.toAscii()));
 
-	connect(this, SIGNAL(searchingForTrayPosition(QPoint &)), kadu, SIGNAL(searchingForTrayPosition(QPoint &)));
+//	connect(this, SIGNAL(searchingForTrayPosition(QPoint &)), kadu, SIGNAL(searchingForTrayPosition(QPoint &)));
 
-	notification_manager->registerNotifier(QT_TRANSLATE_NOOP("@default", "Hints"), this);
+	NotificationManager::instance()->registerNotifier(this);
 	ToolTipClassManager::instance()->registerToolTipClass(QT_TRANSLATE_NOOP("@default", "Hints"), this);
 
 	createDefaultConfiguration();
@@ -76,14 +78,14 @@ HintManager::~HintManager()
 	kdebugf();
 
 	ToolTipClassManager::instance()->unregisterToolTipClass("Hints");
-	notification_manager->unregisterNotifier("Hints");
+	NotificationManager::instance()->unregisterNotifier(this);
 
-	disconnect(this, SIGNAL(searchingForTrayPosition(QPoint &)), kadu, SIGNAL(searchingForTrayPosition(QPoint &)));
+//	disconnect(this, SIGNAL(searchingForTrayPosition(QPoint &)), kadu, SIGNAL(searchingForTrayPosition(QPoint &)));
 
 	delete tipFrame;
 	tipFrame = 0;
 
-	disconnect(chat_manager, SIGNAL(chatWidgetActivated(ChatWidget *)), this, SLOT(chatWidgetActivated(ChatWidget *)));
+	disconnect(ChatWidgetManager::instance(), SIGNAL(chatWidgetActivated(ChatWidget *)), this, SLOT(chatWidgetActivated(ChatWidget *)));
 	disconnect(hint_timer, SIGNAL(timeout()), this, SLOT(oneSecond()));
 	delete hint_timer;
 	hint_timer = 0;
@@ -123,7 +125,7 @@ void HintManager::mainConfigurationWindowCreated(MainConfigurationWindow *mainCo
 	connect(maximumWidth, SIGNAL(valueChanged(int)), this, SLOT(maximumWidthChanged(int)));
 
 	overUserSyntax = mainConfigurationWindow->widget()->widgetById("hints/overUserSyntax");
-	overUserSyntax->setToolTip(qApp->translate("@default", Kadu::SyntaxText));
+	overUserSyntax->setToolTip(qApp->translate("@default", MainConfigurationWindow::SyntaxText));
 
 	connect(mainConfigurationWindow->widget()->widgetById("toolTipClasses"), SIGNAL(currentIndexChanged(const QString &)),
 		this, SLOT(toolTipClassesHighlighted(const QString &)));
@@ -134,9 +136,9 @@ void HintManager::toolTipClassesHighlighted(const QString &value)
 	overUserSyntax->setEnabled(value == qApp->translate("@default", "Hints"));
 }
 
-NotifierConfigurationWidget *HintManager::createConfigurationWidget(QWidget *parent, char *name)
+NotifierConfigurationWidget *HintManager::createConfigurationWidget(QWidget *parent)
 {
-	configurationWidget = new HintsConfigurationWidget(parent, name);
+	configurationWidget = new HintsConfigurationWidget(parent);
 	return configurationWidget;
 }
 
@@ -281,9 +283,9 @@ void HintManager::oneSecond(void)
 
 void HintManager::processButtonPress(const QString &buttonName, Hint *hint)
 {
-	kdebugmf(KDEBUG_FUNCTION_START, "%s\n", buttonName.ascii());
+	kdebugmf(KDEBUG_FUNCTION_START, "%s\n", buttonName.toAscii().data());
 
-	switch(config_file.readNumEntry("Hints", buttonName))
+	switch (config_file.readNumEntry("Hints", buttonName))
 	{
 		case 1:
 			openChat(hint);
@@ -291,8 +293,8 @@ void HintManager::processButtonPress(const QString &buttonName, Hint *hint)
 			break;
 
 		case 2:
-			if (hint->hasContacts() && config_file.readBoolEntry("Hints", "DeletePendingMsgWhenHintDeleted"))
-				chat_manager->deletePendingMsgs(hint->getContacts());
+			if (hint->chat() && config_file.readBoolEntry("Hints", "DeletePendingMsgWhenHintDeleted"))
+				ChatWidgetManager::instance()->deletePendingMsgs(hint->chat());
 
 			hint->discardNotification();
 			deleteHintAndUpdate(hint);
@@ -326,25 +328,24 @@ void HintManager::openChat(Hint *hint)
 {
 	kdebugf();
 
-	if (!hint->hasContacts())
+	if (!hint->chat())
 		return;
 
 	if (!config_file.readBoolEntry("Hints", "OpenChatOnEveryNotification"))
 		if ((hint->getNotification()->type() != "NewChat") && (hint->getNotification()->type() != "NewMessage"))
 			return;
 
-	const ContactList & contacts = hint->getContacts();
-	if (!contacts.isEmpty())
-		chat_manager->openPendingMsgs(contacts, true);
+	ChatWidgetManager::instance()->openPendingMsgs(hint->chat(), true);
+
 	deleteHintAndUpdate(hint);
 
 	kdebugf2();
 }
 
-void HintManager::chatWidgetActivated(ChatWidget *chat)
+void HintManager::chatWidgetActivated(ChatWidget *chatWidget)
 {
-	QPair<ContactList *, QString> newChat = qMakePair(& chat->contacts(), QString("NewChat"));
-	QPair<ContactList *, QString> newMessage = qMakePair(& chat->contacts(), QString("NewMessage"));
+	QPair<Chat *, QString> newChat = qMakePair(chatWidget->chat(), QString("NewChat"));
+	QPair<Chat *, QString> newMessage = qMakePair(chatWidget->chat(), QString("NewMessage"));
 
 	if (linkedHints.count(newChat))
 	{
@@ -358,9 +359,9 @@ void HintManager::chatWidgetActivated(ChatWidget *chat)
 		linkedHints.remove(newMessage);
 	}
 
-	foreach(Hint *h, hints)
+	foreach (Hint *h, hints)
 	{
-		if (h->getContacts() == (chat->contacts()) && !h->requireManualClosing())
+		if (h->chat() == (chatWidget->chat()) && !h->requireManualClosing())
 			deleteHint(h);
 	}
 
@@ -372,9 +373,9 @@ void HintManager::deleteAllHints()
 	kdebugf();
 	hint_timer->stop();
 
-	foreach(Hint *h, hints)
+	foreach (Hint *h, hints)
 	{
-		if(!h->requireManualClosing())
+		if (!h->requireManualClosing())
 			deleteHint(h);
 	}
 
@@ -417,9 +418,9 @@ void HintManager::setLayoutDirection()
 {
 	kdebugf();
 	QPoint trayPosition;
-	QSize desktopSize=QApplication::desktop()->screenGeometry(frame).size();
+	QSize desktopSize = QApplication::desktop()->screenGeometry(frame).size();
 	emit searchingForTrayPosition(trayPosition);
-	switch(config_file.readNumEntry("Hints", "NewHintUnder"))
+	switch (config_file.readNumEntry("Hints", "NewHintUnder"))
 	{
 		case 0:
 			if (trayPosition.isNull() || config_file.readBoolEntry("Hints","UseUserPosition"))
@@ -451,7 +452,7 @@ void HintManager::showToolTip(const QPoint &point, Contact contact)
 {
 	kdebugf();
 
-	QString text = KaduParser::parse(config_file.readEntry("Hints", "MouseOverUserSyntax"), (Contact (contact)).prefferedAccount(), contact);
+	QString text = Parser::parse(config_file.readEntry("Hints", "MouseOverUserSyntax"), contact.prefferedAccount(), contact);
 
 	/* Dorr: the file:// in img tag doesn't generate the image on hint.
 	 * for compatibility with other syntaxes we're allowing to put the file://
@@ -459,14 +460,14 @@ void HintManager::showToolTip(const QPoint &point, Contact contact)
 	text = text.replace("file://", "");
 
 	while (text.endsWith("<br/>"))
-		text.setLength(text.length() - 5 /* 5 == QString("<br/>").length()*/);
+		text.resize(text.length() - 5 /* 5 == QString("<br/>").length()*/);
 	while (text.startsWith("<br/>"))
 		text = text.right(text.length() - 5 /* 5 == QString("<br/>").length()*/);
 
 	if (tipFrame)
 		delete tipFrame;
 
-	tipFrame = new QFrame(0, "tip_frame", Qt::FramelessWindowHint | Qt::Tool | Qt::WindowStaysOnTopHint | Qt::X11BypassWindowManagerHint | Qt::MSWindowsOwnDC);
+	tipFrame = new QFrame(0, Qt::FramelessWindowHint | Qt::Tool | Qt::WindowStaysOnTopHint | Qt::X11BypassWindowManagerHint | Qt::MSWindowsOwnDC);
 	tipFrame->setFrameStyle(QFrame::Box | QFrame::Plain);
 	tipFrame->setLineWidth(FRAME_WIDTH);
 
@@ -514,7 +515,8 @@ void HintManager::notify(Notification *notification)
 {
 	kdebugf();
 
-	if (notification->details() == "")
+	ChatNotification *chatNotification = dynamic_cast<ChatNotification *>(notification);
+	if (chatNotification)
 	{
 		addHint(notification);
 
@@ -522,16 +524,15 @@ void HintManager::notify(Notification *notification)
 		return;
 	}
 
-	ContactList contacts = notification->contacts();
-	if (linkedHints.count(qMakePair(&contacts, notification->type())))
+	if (linkedHints.count(qMakePair(chatNotification->chat(), notification->type())))
 	{
-		Hint *linkedHint = linkedHints[qMakePair(&contacts, notification->type())];
+		Hint *linkedHint = linkedHints[qMakePair(chatNotification->chat(), notification->type())];
 		linkedHint->addDetail(notification->details());
 	}
 	else
 	{
 		Hint *linkedHint = addHint(notification);
-		linkedHints[qMakePair(&contacts, notification->type())] = linkedHint;
+		linkedHints[qMakePair(chatNotification->chat(), notification->type())] = linkedHint;
 	}
 
 	kdebugf2();
@@ -539,9 +540,12 @@ void HintManager::notify(Notification *notification)
 
 void HintManager::notificationClosed(Notification *notification)
 {
-	ContactList contacts = notification->contacts();
-	if (linkedHints.count(qMakePair(&contacts, notification->type())))
-		linkedHints.remove(qMakePair(&contacts, notification->type()));
+	ChatNotification *chatNotification = dynamic_cast<ChatNotification *>(notification);
+	if (!chatNotification)
+		return;
+
+	if (linkedHints.count(qMakePair(chatNotification->chat(), notification->type())))
+		linkedHints.remove(qMakePair(chatNotification->chat(), notification->type()));
 }
 
 void HintManager::copyConfiguration(const QString &fromEvent, const QString &toEvent)
@@ -574,9 +578,9 @@ void HintManager::createDefaultConfiguration()
 	config_file.addVariable("Hints", "Corner", 0);
 	config_file.addVariable("Hints", "DeletePendingMsgWhenHintDeleted", true);
 	// TODO: remove after removing import from 0.5
-	config_file.addVariable("Hints", "Event_NewChat_bgcolor", w.paletteBackgroundColor());
-	config_file.addVariable("Hints", "Event_NewChat_fgcolor", w.paletteForegroundColor());
-	config_file.addVariable("Hints", "Event_NewChat_font", *defaultFont);
+	config_file.addVariable("Hints", "Event_NewChat_bgcolor", w.palette().background().color());
+	config_file.addVariable("Hints", "Event_NewChat_fgcolor", w.palette().foreground().color());
+	config_file.addVariable("Hints", "Event_NewChat_font", qApp->font());
 	config_file.addVariable("Hints", "Event_NewChat_timeout", 10);
 	// end of TODO
 	config_file.addVariable("Hints", "HintsPositionX", 0);
@@ -589,16 +593,16 @@ void HintManager::createDefaultConfiguration()
 	config_file.addVariable("Hints", "MouseOverUserSyntax", "");
 	config_file.addVariable("Hints", "NewHintUnder", 0);
 	config_file.addVariable("Hints", "SetAll", false); // TODO: fix
-	config_file.addVariable("Hints", "SetAll_bgcolor", w.paletteBackgroundColor());
-	config_file.addVariable("Hints", "SetAll_fgcolor", w.paletteForegroundColor());
-	config_file.addVariable("Hints", "SetAll_font", *defaultFont);
+	config_file.addVariable("Hints", "SetAll_bgcolor", w.palette().background().color());
+	config_file.addVariable("Hints", "SetAll_fgcolor", w.palette().foreground().color());
+	config_file.addVariable("Hints", "SetAll_font", qApp->font());
 	config_file.addVariable("Hints", "SetAll_timeout", 10);
 	config_file.addVariable("Hints", "ShowContentMessage", true);
 	config_file.addVariable("Hints", "UseUserPosition", false);
 	config_file.addVariable("Hints", "OpenChatOnEveryNotification", false);
 }
 
-HintManager *hint_manager=NULL;
+HintManager *hint_manager = NULL;
 
 /** @} */
 

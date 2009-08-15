@@ -18,8 +18,6 @@
 
 class QTimer;
 
-class Chat;
-
 /**
 	@class Notification
 	@author Rafa� 'Vogel' Malinowski
@@ -29,14 +27,13 @@ class Chat;
 	przed u�yciem w klasie Notify a takze wyrejestrowane w przypadku wy�adowania modu�u,
 	kt�ry wywo�ywa� dane zdarzenie.
 
-	Do ka�dego zdarzenia mo�e by� przypisana ikona, lista kontakt�w oraz lista akcji, kt�re u�ytkownik
+	Do ka�dego zdarzenia mo�e by� przypisana ikona oraz lista akcji, kt�re u�ytkownik
 	mo�e podj�� w odpowiedzi na zdarzenie. Przyk�adowo, zdarzenie polegaj�ce na odebraniu wiadomo�ci od
 	anonimowego kontaktu, z kt�rym nie prowadzimy aktualnie rozmowy mo�e mie� posta�:
 
 	<ul>
 		<li>nazwa: newChatWithAnonymous</li>
 		<li>ikona: chat</li>
-		<li>lista kontakt�w: kontakt, kt�ry rozpocz�� rozmow�</li>
 		<li>akcja: odbierz komunikat</li>
 		<li>akcja: ignoruj komunikat</li>
 	</ul>
@@ -79,7 +76,6 @@ public:
 private:
 
 	QString Type;
-	Chat *CurrentChat;
 
 	QString Title;
 	QString Text;
@@ -101,9 +97,8 @@ public:
 
 		@arg type typ zdarzenia
 		@arg icon nazwa ikony zdarzenia
-		@arg userListElements lista kontakt�w powi�zana ze zdarzeniem
 	 **/
-	Notification(const QString &type, const QIcon &icon, Chat *chat);
+	Notification(const QString &type, const QIcon &icon);
 	virtual ~Notification();
 
 	/**
@@ -149,13 +144,6 @@ public:
 		@return typ zdarzenia
 	 **/
 	QString type() const;
-	/**
-		Lista kontakt�w powi�zana ze zdarzeniem/
-
-		@return lista kontakt�w powi�zana ze zdarzeniem
-	 **/
-	Chat * chat() const;
-
 	/**
 		Ustawia tytu� zdarzenia.
 	 **/

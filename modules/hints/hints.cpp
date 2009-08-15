@@ -7,8 +7,9 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "hint_manager.h"
+#include "misc/path-conversion.h"
 #include "debug.h"
+#include "hint_manager.h"
 
 /**
  * @ingroup hints
@@ -19,7 +20,8 @@ extern "C" KADU_EXPORT int hints_init(bool firstLoad)
 	kdebugf();
 
 	hint_manager = new HintManager();
-	MainConfigurationWindow::registerUiFile(dataPath("kadu/modules/configuration/hints.ui"), hint_manager);
+	MainConfigurationWindow::registerUiFile(dataPath("kadu/modules/configuration/hints.ui"));
+	MainConfigurationWindow::registerUiHandler(hint_manager);
 
 	kdebugf2();
 	return 0;
@@ -29,7 +31,9 @@ extern "C" KADU_EXPORT void hints_close()
 {
 	kdebugf();
 
-	MainConfigurationWindow::unregisterUiFile(dataPath("kadu/modules/configuration/hints.ui"), hint_manager);
+//	MainConfigurationWindow::unregisterUiFile(dataPath("kadu/modules/configuration/hints.ui"));
+	MainConfigurationWindow::unregisterUiHandler(hint_manager);
+
 	delete hint_manager;
 	hint_manager = 0;
 

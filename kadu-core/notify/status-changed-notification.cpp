@@ -11,12 +11,13 @@
 #include <QtGui/QTextDocument>
 
 #include "accounts/account.h"
+#include "chat/chat-manager.h"
 #include "contacts/contact-account-data.h"
 #include "misc/misc.h"
 #include "notify/notify-event.h"
 #include "protocols/protocol.h"
 
-#include "status_changed_notification.h"
+#include "status-changed-notification.h"
 
 NotifyEvent *StatusChangedNotification::StatusChangedNotifyEvent = 0;
 NotifyEvent *StatusChangedNotification::StatusChangedToFreeForChatNotifyEvent = 0;
@@ -90,11 +91,9 @@ void StatusChangedNotification::unregisterEvents()
 	StatusChangedToOfflineNotifyEvent = 0;
 }
 
-// TODO 0.6.6 what if accountData(account) == null ?
 StatusChangedNotification::StatusChangedNotification(const QString &toStatus, ContactSet &contacts, Account *account) :
-		AccountNotification(account, QString("StatusChanged") + toStatus,
-			account->protocol()->statusPixmap(contacts.begin()->accountData(account)->status()),
-			0) // TODO: 0.6.6
+		ChatNotification(account->protocol()->findChat(contacts), QString("StatusChanged") + toStatus,
+			account->protocol()->statusPixmap(contacts.begin()->accountData(account)->status()))
 {
 	const Contact &contact = *contacts.begin();
 	Status status = contact.accountData(account)->status();

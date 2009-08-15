@@ -13,10 +13,9 @@
 #include <QtGui/QLabel>
 #include <QtGui/QHBoxLayout>
 
+#include "chat/chat.h"
+
 #include "configuration/configuration-file.h"
-#include "debug.h"
-#include "icons-manager.h"
-#include "parser/parser.h"
 
 #include "contacts/contact.h"
 #include "contacts/contact-list.h"
@@ -27,8 +26,13 @@
 #include "misc/misc.h"
 
 #include "notify/account-notification.h"
+#include "notify/chat-notification.h"
 #include "notify/notification.h"
 #include "notify/notification-manager.h"
+
+#include "icons-manager.h"
+#include "parser/parser.h"
+#include "debug.h"
 
 #include "exec_notify.h"
 
@@ -222,27 +226,26 @@ void ExecNotify::notify(Notification *notification)
 	QStringList s = mySplit(' ', syntax);
 	QStringList result;
 
-	AccountNotification *accountNotification = dynamic_cast<AccountNotification *>(notification);
-	if (accountNotification)
+	ChatNotification *chatNotification = dynamic_cast<ChatNotification *>(notification);
+	if (chatNotification)
 	{
-		ContactList contacts = notification->chat()->contacts().toContactList();
-		Contact contact;
-
-		if (contacts.count())
-			contact = contacts[0];
+		ContactList contacts = chatNotification->chat()->contacts().toContactList();
+		Contact contact = contact = contacts[0];
 
 		QStringList sendersList;
-		foreach(Contact contact, contacts)
-			sendersList.append(contact.id(accountNotification->account()));
+		foreach (Contact contact, contacts)
+			sendersList.append(contact.id(chatNotification->account()));
 		QString sendersString = sendersList.join(",");
 
-
-		foreach(QString it, s)
-			result.append(Parser::parse(it.replace("%ids", sendersString), accountNotification->account(), contact, notification));
-		run(result, QString::null);
+		foreach (QString it, s)
+			result.append(Parser::parse(it.replace("%ids", sendersString), chatNotification->account(), contact, notification));
 	}
 	else
-		run(s, QString::null);
+		foreach (QString it, s)
+			result.append(Parser::parse(it, notification));
+
+	run(result, QString::null);
+
 
 }
 

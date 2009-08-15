@@ -122,6 +122,11 @@ QString Parser::executeCmd(const QString &cmd)
 	return s;
 }
 
+QString Parser::parse(const QString &s, const QObject * const object, bool escape)
+{
+    	return parse(s, 0, Contact(), object, escape);
+}
+
 QString Parser::parse(const QString &s, Account *account, const Contact &contact, bool escape)
 {
 	return parse(s, account, contact, 0, escape);

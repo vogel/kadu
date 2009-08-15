@@ -20,7 +20,7 @@ ConfigLabel::ConfigLabel(const QString &widgetCaption, const QString &toolTip, C
 	createWidgets();
 }
 
-ConfigLabel::ConfigLabel(ConfigGroupBox *p0arentConfigGroupBox, ConfigurationWindowDataManager *dataManager)
+ConfigLabel::ConfigLabel(ConfigGroupBox *parentConfigGroupBox, ConfigurationWindowDataManager *dataManager)
 	: QLabel(parentConfigGroupBox->widget()), ConfigWidget(parentConfigGroupBox, dataManager)
 {
 }
@@ -29,7 +29,7 @@ void ConfigLabel::createWidgets()
 {
 	kdebugf();
 
-	setText(qApp->translate("@default", widgetCaption.toAscii().data()));
+	setText((qApp->translate("@default", widgetCaption.toAscii().data())));
 	parentConfigGroupBox->addWidget(this);
 
 	if (!ConfigWidget::toolTip.isEmpty())

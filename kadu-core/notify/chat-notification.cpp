@@ -7,27 +7,11 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef ACCOUNT_NOTIFICATION_H
-#define ACCOUNT_NOTIFICATION_H
+#include "chat/chat.h"
 
-#include "accounts/account.h"
-#include "parser/parser.h"
-#include "notification.h"
+#include "chat-notification.h"
 
-class ContactSet;
-
-class AccountNotification : public Notification
+ChatNotification::ChatNotification(Chat *chat, const QString &type, const QIcon &icon) :
+	AccountNotification(chat->account(), type, icon), CurrentChat(chat)
 {
-	Q_OBJECT
-
-	Account *CurrentAccount;
-
-public:
-	AccountNotification(Account *account, const QString &type, const QIcon &icon);
-	virtual ~AccountNotification();
-
-	Account * account() const { return CurrentAccount; }
-
-};
-
-#endif // ACCOUNT_NOTIFICATION_H
+}

@@ -24,8 +24,8 @@ static QString getNotificationTitle(const QObject * const object)
 		return "";
 }
 
-Notification::Notification(const QString& type, const QIcon& icon, Chat *chat)
-	: Type(type), CurrentChat(chat), Title(""), Text(""), Icon(icon), DefaultCallbackTimer(0), ReferencesCount(0), Closing(false)
+Notification::Notification(const QString& type, const QIcon& icon)
+	: Type(type), Title(""), Text(""), Icon(icon), DefaultCallbackTimer(0), ReferencesCount(0), Closing(false)
 {
 	Parser::registerObjectTag("event", getNotificationTitle);
 }
@@ -110,11 +110,6 @@ void Notification::clearDefaultCallback()
 QString Notification::type() const
 {
 	return Type;
-}
-
-Chat * Notification::chat() const
-{
-	return CurrentChat;
 }
 
 void Notification::setTitle(const QString &title)

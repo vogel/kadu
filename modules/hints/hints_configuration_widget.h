@@ -10,7 +10,7 @@
 #ifndef HINTS_CONFIGURATION_WIDGET_H
 #define HINTS_CONFIGURATION_WIDGET_H
 
-#include "../notify/notify.h"
+#include "gui/widgets/configuration/notifier-configuration-widget.h"
 
 class QLineEdit;
 class QSpinBox;
@@ -33,17 +33,17 @@ class HintsConfigurationWidget : public NotifierConfigurationWidget
 {
 	Q_OBJECT
 
-	QMap<QString, HintProperties> hintProperties;
-	HintProperties currentProperties;
+//	QMap<QString, HintProperties> hintProperties;
+//	HintProperties currentProperties;
 	QString currentNotifyEvent;
 
-	QLabel *warning;
-	QLabel *preview;
-	SelectFont *font;
-	ColorButton *foregroundColor;
-	ColorButton *backgroundColor;
-	QSpinBox *timeout;
-	QLineEdit *syntax;
+//	QLabel *warning;
+//	QLabel *preview;
+//	SelectFont *font;
+//	ColorButton *foregroundColor;
+//	ColorButton *backgroundColor;
+//	QSpinBox *timeout;
+//	QLineEdit *syntax;
 
 private slots:
 	void fontChanged(QFont font);
@@ -53,7 +53,7 @@ private slots:
 	void syntaxChanged(const QString &syntax);
 
 public:
-	HintsConfigurationWidget(QWidget *parent = 0, char *name = 0);
+	HintsConfigurationWidget(QWidget *parent = 0);
 
 	virtual void loadNotifyConfigurations() {}
 	virtual void saveNotifyConfigurations();

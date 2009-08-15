@@ -7,34 +7,22 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef NEW_MESSAGE_NOTIFICATION_H
-#define NEW_MESSAGE_NOTIFICATION_H
+#ifndef CHAT_NOTIFICATION_H
+#define CHAT_NOTIFICATION_H
 
 #include "account-notification.h"
 
 class Chat;
-class ContactSet;
-class NotifyEvent;
 
-class MessageNotification : public AccountNotification
+class ChatNotification : public AccountNotification
 {
-	Q_OBJECT
 
-	static NotifyEvent *NewChatNotifyEvent;
-	static NotifyEvent *NewMessageNotifyEvent;
-
+	Chat *CurrentChat;
 public:
-	enum MessageType {
-		NewChat,
-		NewMessage
-	};
+	ChatNotification(Chat *chat, const QString &type, const QIcon &icon);
+	virtual ~ChatNotification() {}
 
-	static void registerEvents();
-	static void unregisterEvents();
-
-	MessageNotification(MessageType messageType, Chat *chat, const QString &message);
-	virtual ~MessageNotification() {};
-
+	Chat *chat() { return CurrentChat; }
 };
 
-#endif // NEW_MESSAGE_NOTIFICATION_H
+#endif // CHAT_NOTIFICATION_H

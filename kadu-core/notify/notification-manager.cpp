@@ -32,8 +32,8 @@
 #include "debug.h"
 #include "misc/misc.h"
 
-#include "new_message_notification.h"
-#include "status_changed_notification.h"
+#include "new-message-notification.h"
+#include "status-changed-notification.h"
 
 NotificationManager *NotificationManager::Instance = 0;
 
@@ -258,10 +258,10 @@ void NotificationManager::messageReceived(const Message &message)
 
 	ChatWidget *chatWidget = ChatWidgetManager::instance()->byChat(message.chat());
 	if (!chatWidget) // new chat
-		notify(new MessageNotification(MessageNotification::NewChat, message.chat(), message.content()));
+		notify(new MessageNotification(MessageNotification::NewChat, message));
 	else // new message in chat
 		if (!chatWidget->edit()->hasFocus() || !config_file.readBoolEntry("Notify", "NewMessageOnlyIfInactive"))
-			notify(new MessageNotification(MessageNotification::NewMessage, message.chat(), message.content()));
+			notify(new MessageNotification(MessageNotification::NewMessage, message));
 
 	kdebugf2();
 }

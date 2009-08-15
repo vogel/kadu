@@ -1,15 +1,17 @@
 #ifndef HINT_MANAGER_H
 #define HINT_MANAGER_H
 
-#include "configuration_aware_object.h"
+#include "configuration/configuration-aware-object.h"
 #include "gui/widgets/abstract-tool-tip.h"
+#include "gui/windows/main-configuration-window.h"
+#include "notify/notifier.h"
 #include "hint.h"
-#include "main_configuration_window.h"
-#include "notify/notify.h"
 
+class QFrame;
 class QSpinBox;
 
 class ChatWidget;
+class ContactList;
 class HintsConfigurationWidget;
 
 class HintManager : public Notifier, public ConfigurationUiHandler, public AbstractToolTip, public ConfigurationAwareObject
@@ -28,7 +30,7 @@ private:
 	QWidget *overUserSyntax;
 	HintsConfigurationWidget *configurationWidget;
 
-	QMap<QPair<ContactList *, QString>, Hint *> linkedHints;
+	QMap<QPair<Chat *, QString>, Hint *> linkedHints;
 
 	/**
 		ustala r�g, od kt�rego b�dzie liczona pozycja grupy dymk�w
@@ -114,7 +116,7 @@ signals:
 	void searchingForTrayPosition(QPoint& pos);
 
 public:
-	HintManager(QWidget *parent=0, const char *name=0);
+	HintManager(QWidget *parent = 0);
 	~HintManager();
 
 	virtual CallbackCapacity callbackCapacity() { return CallbackSupported; }
@@ -126,7 +128,7 @@ public:
 	virtual void copyConfiguration(const QString &fromEvent, const QString &toEvent);
 
 	virtual void mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow);
-	virtual NotifierConfigurationWidget *createConfigurationWidget(QWidget *parent = 0, char *name = 0);
+	virtual NotifierConfigurationWidget *createConfigurationWidget(QWidget *parent = 0);
 
 };
 

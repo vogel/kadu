@@ -9,11 +9,12 @@
 
 #include <QtGui/QTextDocument>
 
+#include "chat/message/message.h"
 #include "notify/notification-manager.h"
 #include "notify/notify-event.h"
 #include "icons-manager.h"
 
-#include "new_message_notification.h"
+#include "new-message-notification.h"
 
 NotifyEvent *MessageNotification::NewChatNotifyEvent = 0;
 NotifyEvent *MessageNotification::NewMessageNotifyEvent = 0;
@@ -44,11 +45,10 @@ void MessageNotification::unregisterEvents()
 	NewMessageNotifyEvent = 0;
 }
 
-MessageNotification::MessageNotification(MessageType messageType, Chat *chat, const QString &message) :
-		AccountNotification(chat ? chat->account() : 0, messageType == NewChat ? "NewChat" : "NewMessage",
-			IconsManager::instance()->loadIcon("Message"), chat)
+MessageNotification::MessageNotification(MessageType messageType, const Message &message) :
+		ChatNotification(message.chat(), messageType == NewChat ? "NewChat" : "NewMessage",
+			IconsManager::instance()->loadIcon("Message"))
 {
-// 	const Contact &contact = *contacts.begin(); TODO: 0.6.6 chat->title()
 	QString syntax;
 
 	if (messageType == NewChat)
@@ -62,7 +62,7 @@ MessageNotification::MessageNotification(MessageType messageType, Chat *chat, co
 		syntax = tr("New message from <b>%1</b>");
 	}
 
-	setText(syntax.arg(Qt::escape(""/*contact.display()*/)));
-	setDetails(message);
+	setText(syntax.arg(Qt::escape(message.sender().display())));
+	setDetails(message.content());
 }
 

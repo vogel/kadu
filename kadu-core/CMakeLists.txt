@@ -169,14 +169,15 @@ set (kadu_SRCS
 	modules/module-data.cpp
 
 	notify/account-notification.cpp
+	notify/chat-notification.cpp
 	notify/contact-notify-data.cpp
-	notify/new_message_notification.cpp
+	notify/new-message-notification.cpp
 	notify/notification.cpp
 	notify/notification-manager.cpp
 	notify/notifier.cpp
 	notify/notify-configuration-ui-handler.cpp
 	notify/notify-event.cpp
-	notify/status_changed_notification.cpp
+	notify/status-changed-notification.cpp
 	notify/window-notifier.cpp
 
 	parser/parser.cpp
@@ -341,12 +342,12 @@ set (kadu_MOC_SRCS
 	misc/syntax-list.h
 
 	notify/account-notification.h
-	notify/new_message_notification.h
+	notify/new-message-notification.h
 	notify/notification.h
 	notify/notification-manager.h
 	notify/notifier.h
 	notify/notify-configuration-ui-handler.h
-	notify/status_changed_notification.h
+	notify/status-changed-notification.h
 	notify/window-notifier.h
 
 	protocols/connection-error-notification.h
@@ -376,13 +377,6 @@ set (kadu_MOC_SRCS
 	themes.h
 	updates.h
 )
-
-#if (UNIX AND NOT APPLE)
-#	set (kadu_MOC_SRCS
-#		${kadu_MOC_SRCS}
-#		x11tools.h
-#	)
-#endif (UNIX AND NOT APPLE)
 
 if (UNIX AND NOT APPLE)
 	if (NOT DESKTOP_ENTRY)

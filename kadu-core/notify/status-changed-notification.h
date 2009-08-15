@@ -11,11 +11,11 @@
 #define STATUS_CHANGED_NOTIFICATION_H
 
 #include "notify/notification-manager.h"
-#include "account-notification.h"
+#include "chat-notification.h"
 
 class NotifyEvent;
 
-class StatusChangedNotification : public AccountNotification
+class StatusChangedNotification : public ChatNotification
 {
 	Q_OBJECT
 
