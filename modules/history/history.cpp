@@ -36,12 +36,18 @@ enum {
 };
 
 HistoryManager::HistoryManager(QObject *parent) 
-	: QObject(parent), bufferedMessages(), imagesTimer(new QTimer(this))
+	: QObject(parent), bufferedMessages(), imagesTimer(new QTimer(this)), timezone_offset(0)
 {
 	imagesTimer->start(1000 * 60);//60 sekund
 	connect(imagesTimer, SIGNAL(timeout()), this, SLOT(checkImagesTimeouts()));
 	connect(userlist, SIGNAL(statusChanged(UserListElement, QString, const UserStatus &, bool, bool)),
 		this, SLOT(statusChanged(UserListElement, QString, const UserStatus &, bool, bool)));
+
+	/* Dorr: fixes issue with not displaying some old history entries */
+#ifndef Q_OS_WIN
+	tzset();
+	timezone_offset = (daylight > 0 ? 3600 : 0) - timezone;
+#endif
 }
 
 QString HistoryManager::text2csv(const QString &text)
@@ -838,13 +844,7 @@ uint HistoryManager::getHistoryDate(QTextStream &stream)
 
 	if (pos < tokens.count())
 	{
-#ifdef Q_OS_WIN
-		return (tokens[pos].toInt() / 86400);
-#else
-		tzset();
-		static int offs = (daylight > 0 ? 3600 : 0) - timezone;
-		return ((tokens[pos].toInt() + offs) / 86400);
-#endif
+		return ((tokens[pos].toInt() + timezone_offset) / 86400);
 	}
 	else
 		return 0;
