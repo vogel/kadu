@@ -15,10 +15,12 @@
 
 #include "contacts/contact.h"
 
+#include "exports.h"
+
 class Chat;
 class MessageData;
 
-class Message : public QObject
+class KADUAPI Message : public QObject
 {
 	Q_OBJECT
 
