@@ -127,6 +127,7 @@ HistoryDialog::HistoryDialog(UinsList uins)
 	body = new ChatMessagesView(rightWidget);
 	body->setPrune(0);
 	body->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+	connect(body, SIGNAL(loadFinished(bool)), this, SLOT(pageLoaded(bool)));
 
 	QCheckBox *showStatusChanges = new QCheckBox(tr("Show status changes"), rightWidget);
 	ShowStatus = config_file.readBoolEntry("History", "ShowStatusChanges");
@@ -323,10 +324,6 @@ ChatMessage * HistoryDialog::createChatMessage(const HistoryEntry &entry)
 	else
 		messageText = entry.message;
 
-	if (finding)
-		/* Dorr: this is nasty but works quite well ;) */
-		messageText = messageText.replace(QRegExp(findRec.data), "<a style='background: #000000; color: #ffffff;'>" + findRec.data + "</a>");
-
 	bool isMyMessage = entry.type & (HISTORYMANAGER_ENTRY_CHATSEND | HISTORYMANAGER_ENTRY_MSGSEND | HISTORYMANAGER_ENTRY_SMSSEND);
 
 	UserListElement sender = userlist->byID("Gadu", QString::number(entry.uin));
@@ -344,7 +341,7 @@ void HistoryDialog::showHistoryEntries(int from, int count)
 	QList<HistoryEntry> entries = history->getHistoryEntries(uins, from, count);
 	QList<ChatMessage *> chatMessages;
 
-	body->clearMessages();
+	body->removeMessages();
 
 	QList<HistoryEntry>::const_iterator entry = entries.constBegin();
 	QList<HistoryEntry>::const_iterator lastEntry = entries.constEnd();
@@ -353,10 +350,20 @@ void HistoryDialog::showHistoryEntries(int from, int count)
 			chatMessages.append(createChatMessage(*entry));
 
 	body->appendMessages(chatMessages);
+}
 
-	/* Dorr: highlight and navigate the word found. why this once works once not? */
-	if  (finding)
-		body->findText(findRec.data, QWebPage::FindBackward);
+void HistoryDialog::pageLoaded(bool b)
+{
+	/* Dorr: highlight and navigate to the word found */
+	static QWebPage::FindFlags flag = 0;
+	if (showResults)
+	{
+		if (findRec.reverse) 
+			flag = QWebPage::FindBackward;
+
+		body->findText(findRec.data, flag);
+		showResults = false;
+	}
 }
 
 void HistoryDialog::searchButtonClicked()
@@ -446,12 +453,42 @@ void HistoryDialog::setDateListViewText(const QDateTime &datetime)
 void HistoryDialog::searchHistory()
 {
 	kdebugf();
-	int start, end, count, total, len;
+	int start, end, count, total, len, force = 0;
 	unsigned int i;
 	QDateTime fromdate, todate;
 	QList<HistoryEntry> entries;
 	unsigned int entriesCount;
 	QRegExp rxp;
+
+
+	/* Dorr: if we're in the middle of searching */
+	if (findRec.actualrecord > 0)
+	{
+		QWebPage::FindFlags flag = 0;
+		if (findRec.reverse)
+			flag = QWebPage::FindBackward;
+	
+		/* try to find the text on the current page */
+		if (body->findText(findRec.data, flag))
+			return;
+		/* if not found force searching on the next date */
+		else
+		{
+			QTreeWidgetItem *actlvi = uinsTreeWidget->currentItem();
+			if (actlvi->parent() != NULL)
+			{
+				int index = actlvi->parent()->indexOfChild(actlvi);
+				if (findRec.reverse)
+					--index;
+				else
+					++index;
+
+				if ((index > 0) && (index < actlvi->parent()->childCount()))
+					actlvi = actlvi->parent()->child(index);
+				force = history->getHistoryEntryIndexByDate(uins, dynamic_cast<DateListViewText *>(actlvi)->getDate().date);
+			}
+		}
+	}
 
 	count = history->getHistoryEntriesCount(uins);
 	if (findRec.fromdate.isNull())
@@ -478,6 +515,8 @@ void HistoryDialog::searchHistory()
 		todate.toString("dd.MM.yyyy hh:mm:ss").latin1());
 	if (findRec.actualrecord == -1)
 		findRec.actualrecord = findRec.reverse ? end : start;
+	if (force)
+		findRec.actualrecord = force;
 	if ((findRec.actualrecord >= end && !findRec.reverse)
 		|| (findRec.actualrecord <= start && findRec.reverse))
 		return;
@@ -568,6 +607,7 @@ void HistoryDialog::searchHistory()
 		findRec.actualrecord = 0;
 	setEnabled(true);
 	finding = false;
+	showResults = true;
 	kdebugf2();
 }
 

@@ -129,6 +129,12 @@ public:
 	**/
 	void setPrune(unsigned int prune);
 
+	/**
+		\fn void removeMessages()
+		Usuwa wiadomosci ale nie odswieza okna.
+	**/
+	void removeMessages();
+
 public slots:
 	/**
 		\fn void clearMessages()

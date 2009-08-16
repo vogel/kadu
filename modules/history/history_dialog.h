@@ -67,6 +67,7 @@ protected:
 	HistoryFindRec findRec;
 	bool closeDemand;
 	bool finding;
+	bool showResults;
 	QList<HistoryDate> dateEntries;
 	QMenu *popupMenu;
 
@@ -84,6 +85,7 @@ public slots:
 	void showPopupMenu(const QPoint &pos);
 	void clearHistory(bool);
 	void rebuildIndex(bool);
+	void pageLoaded(bool);
 
 signals:
 	void showStatusChanges(bool);

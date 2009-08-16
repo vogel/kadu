@@ -222,10 +222,15 @@ void ChatMessagesView::setPrune(unsigned int prune)
 	Prune = prune;
 }
 
-void ChatMessagesView::clearMessages()
+void ChatMessagesView::removeMessages()
 {
 	qDeleteAll(Messages);
 	Messages.clear();
+}
+
+void ChatMessagesView::clearMessages()
+{
+	removeMessages();
 
 	setHtml("<body bgcolor=\"" + config_file.readColorEntry("Look", "ChatBgColor").name() + "\"></body>");
 }
