@@ -145,7 +145,7 @@ HistorySearchDialog::HistorySearchDialog(QWidget *parent, UinsList uins)
 	statusRadioButton  = new QRadioButton(tr("&Status"), criteriaGroupBox);
 
 	if (config_file.readBoolEntry("History", "ShowStatusChanges"))
-		statusRadioButton ->setEnabled(false);
+		statusRadioButton->setEnabled(true);
 
 	criteriaButtonGroup->addButton(phraseRadioButton , 1);
 	criteriaButtonGroup->addButton(statusRadioButton , 2);

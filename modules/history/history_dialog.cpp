@@ -361,8 +361,8 @@ void HistoryDialog::pageLoaded(bool b)
 		if (findRec.reverse) 
 			flag = QWebPage::FindBackward;
 
-		body->findText(findRec.data, flag);
-		showResults = false;
+		if (body->findText(findRec.data, flag))
+			showResults = false;
 	}
 }
 
@@ -460,7 +460,6 @@ void HistoryDialog::searchHistory()
 	unsigned int entriesCount;
 	QRegExp rxp;
 
-
 	/* Dorr: if we're in the middle of searching */
 	if (findRec.actualrecord > 0)
 	{
@@ -470,24 +469,35 @@ void HistoryDialog::searchHistory()
 	
 		/* try to find the text on the current page */
 		if (body->findText(findRec.data, flag))
+		{
 			return;
+		}
 		/* if not found force searching on the next date */
 		else
 		{
 			QTreeWidgetItem *actlvi = uinsTreeWidget->currentItem();
-			if (actlvi->parent() != NULL)
+			if (actlvi && actlvi->parent())
 			{
 				int index = actlvi->parent()->indexOfChild(actlvi);
 				if (findRec.reverse)
 					--index;
 				else
 					++index;
-
 				if ((index > 0) && (index < actlvi->parent()->childCount()))
+				{
 					actlvi = actlvi->parent()->child(index);
-				force = history->getHistoryEntryIndexByDate(uins, dynamic_cast<DateListViewText *>(actlvi)->getDate().date);
+					force = history->getHistoryEntryIndexByDate(uins, dynamic_cast<DateListViewText *>(actlvi)->getDate().date);
+				}
 			}
 		}
+	}
+	else
+	{
+		/* open the first date */
+		QTreeWidgetItem *actlvi = uinsTreeWidget->currentItem();
+		if (actlvi && !actlvi->parent())
+			if (actlvi->childCount() > 0)
+				uinsTreeWidget->setCurrentItem(actlvi->child(0));
 	}
 
 	count = history->getHistoryEntriesCount(uins);
@@ -513,10 +523,10 @@ void HistoryDialog::searchHistory()
 	kdebugmf(KDEBUG_INFO, "start = %s, end = %s\n",
 		fromdate.toString("dd.MM.yyyy hh:mm:ss").latin1(),
 		todate.toString("dd.MM.yyyy hh:mm:ss").latin1());
-	if (findRec.actualrecord == -1)
-		findRec.actualrecord = findRec.reverse ? end : start;
 	if (force)
 		findRec.actualrecord = force;
+	else if (findRec.actualrecord == -1)
+		findRec.actualrecord = findRec.reverse ? end : start;
 	if ((findRec.actualrecord >= end && !findRec.reverse)
 		|| (findRec.actualrecord <= start && findRec.reverse))
 		return;
