@@ -95,51 +95,82 @@ QVariant ContactsModelBase::headerData(int section, Qt::Orientation orientation,
 		return QString("Row %1").arg(section);
 }
 
-QVariant ContactsModelBase::data(const QModelIndex &index, int role) const
+ContactAccountData * ContactsModelBase::contactDefaultAccountData(const QModelIndex &index) const
 {
 	Contact con = contact(index);
 	if (con.isNull())
-		return QVariant();
+		return 0;
 
 	Account *account = con.prefferedAccount();
 	if (!account)
 		account = AccountManager::instance()->defaultAccount();
+	
+	return con.accountData(account);
+}
 
-	ContactAccountData *cad = con.accountData(account);
+ContactAccountData * ContactsModelBase::contactAccountData(const QModelIndex &index, int accountIndex) const
+{
+	Contact con = contact(index);
+	if (con.isNull())
+		return 0;
+
+	QList<ContactAccountData *> accountDatas = con.accountDatas();
+	if (accountDatas.size() <= accountIndex)
+		return 0;
+
+	return accountDatas[accountIndex];
+}
+
+QVariant ContactsModelBase::data(ContactAccountData *cad, int role, bool useDisplay) const
+{
 	if (!cad)
 		return QVariant();
 
 	switch (role)
 	{
 		case Qt::DisplayRole:
-			return con.display();
+			return useDisplay
+				? cad->contact().display()
+				: QString("%1: %2").arg(cad->account()->name()).arg(cad->id());
 		case Qt::DecorationRole:
 			if (0 == cad)
 				return QVariant();
 			// TODO generic icon
-			return account
-				? account->statusPixmap(cad->status())
+			return cad->account()
+				? cad->account()->statusPixmap(cad->status())
 				: QVariant();
 		case ContactRole:
-			return QVariant::fromValue(con);
+			return QVariant::fromValue(cad->contact());
 		case DescriptionRole:
 			//TODO 0.6.6:
 			//	ContactKaduData *ckd = contact.moduleData<ContactKaduData>(true);
 			//	if (!ckd)
-			//		return QString::null;	
+			//		return QString::null;
 			//	if (ckd->hideDescription())
 			//	{
-			//		delete ckd;
-			//		return QString::null;	
-			//	}
-			//	delete ckd;
-			//
-			return cad->status().description();
+				//		delete ckd;
+				//		return QString::null;
+				//	}
+				//	delete ckd;
+				//
+				return cad->status().description();
 		case StatusRole:
 			return QVariant::fromValue(cad->status());
 		default:
 			return QVariant();
-	}
+}
+}
+
+QVariant ContactsModelBase::data(const QModelIndex &index, int role) const
+{
+	if (!index.isValid())
+		return QVariant();
+
+	QModelIndex parentIndex = parent(index);
+	if (!parentIndex.isValid())
+		return data(contactDefaultAccountData(index), role, true);
+	else
+		return data(contactAccountData(parentIndex, index.row()), role, false);
 }
 
 // D&D

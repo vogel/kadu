@@ -33,6 +33,10 @@ class ContactsModelBase : public QAbstractItemModel, public AbstractContactsMode
 {
 	Q_OBJECT
 
+	ContactAccountData * contactDefaultAccountData(const QModelIndex &index) const;
+	ContactAccountData * contactAccountData(const QModelIndex &index, int accountIndex) const;
+	QVariant data(ContactAccountData *cad, int role, bool useDisplay = true) const;
+
 private slots:
 	void contactStatusChanged(Account *account, Contact contact, Status oldStatus);
 

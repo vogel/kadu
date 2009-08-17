@@ -18,7 +18,7 @@ class AbstractContactsModel
 {
 
 public:
-	virtual Contact contact(const QModelIndex &index) const = 0;
+	virtual Contact contact(const QModelIndex &index) const;
 	virtual const QModelIndex contactIndex(Contact contact) const = 0;
 
 };

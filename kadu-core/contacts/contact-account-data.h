@@ -53,6 +53,8 @@ public:
 	virtual void store();
 
 	Account * account() { return ContactAccount; }
+	Contact contact() { return OwnerContact; }
+
 	QString id() { return Id; }
 	void setId(const QString &newId);
 
