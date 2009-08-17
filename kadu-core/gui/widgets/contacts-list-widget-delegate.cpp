@@ -8,7 +8,6 @@
  ***************************************************************************/
 
 #include <QtCore/QAbstractItemModel>
-#include <QtGui/QAbstractItemView>
 #include <QtGui/QApplication>
 #include <QtGui/QFont>
 #include <QtGui/QFontMetrics>
@@ -21,6 +20,7 @@
 #include <QtGui/QTextFrame>
 #include <QtGui/QTextFrameFormat>
 #include <QtGui/QTextOption>
+#include <QtGui/QTreeView>
 
 #include "accounts/account.h"
 #include "accounts/account-manager.h"
@@ -105,10 +105,13 @@ QSize ContactsListWidgetDelegate::sizeHint(const QStyleOptionViewItem &option, c
 	opt.locale = v3 ? v3->locale : QLocale();
 	opt.widget = v3 ? v3->widget : 0;
 
-	const QAbstractItemView *widget = dynamic_cast<const QAbstractItemView *>(opt.widget);
+	const QTreeView *widget = dynamic_cast<const QTreeView *>(opt.widget);
 	if (!widget)
 		return size;
 	int width = widget->viewport()->width();
+	int indentation = index.parent().isValid()
+		? widget->indentation()
+		: 0;
 
 	QStyle *style = widget ? widget->style() : QApplication::style();
 	const int textMargin = style->pixelMetric(QStyle::PM_FocusFrameHMargin, 0, widget) + 1;
@@ -126,7 +129,8 @@ QSize ContactsListWidgetDelegate::sizeHint(const QStyleOptionViewItem &option, c
 
 	if (!description.isEmpty())
 	{
-		QTextDocument *dd = descriptionDocument(description, opt.rect.width() - textLeft - textMargin, DescriptionColor);
+		int neededSpace = indentation + textLeft + textMargin;
+		QTextDocument *dd = descriptionDocument(description, widget->columnWidth(0) - neededSpace, DescriptionColor);
 		descriptionHeight = (int)dd->size().height();
 		delete dd;
 	}

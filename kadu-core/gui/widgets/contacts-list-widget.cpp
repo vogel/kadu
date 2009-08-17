@@ -41,19 +41,16 @@ ContactsListWidget::ContactsListWidget(MainWindow *mainWindow, QWidget *parent) 
 		QTreeView(parent), MyMainWindow(mainWindow), ProxyModel(new ContactsModelProxy(this)),
 		Delegate(0), BackgroundTemporaryFile(0)
 {
-	// all these tree are needed to make this view updating layout properly
-// 	setLayoutMode(Batched);
-// 	setResizeMode(Adjust);
-	setWordWrap(true);
-	setRootIsDecorated(true);
+	setAlternatingRowColors(true);
 	setAnimated(true);
-	setExpandsOnDoubleClick(true);
+	setDragEnabled(true);
+	setExpandsOnDoubleClick(false);
 	setHeaderHidden(true);
 	setItemsExpandable(true);
-
-	setAlternatingRowColors(true);
-	setDragEnabled(true);
+	setRootIsDecorated(false);
 	setSelectionMode(QAbstractItemView::ExtendedSelection);
+	setUniformRowHeights(false);
+	setWordWrap(true);
 
 	Delegate = new ContactsListWidgetDelegate(this);
 	setItemDelegate(Delegate);
@@ -212,7 +209,7 @@ void ContactsListWidget::keyPressEvent(QKeyEvent *event)
 			triggerActivate(currentIndex());
 			break;
 		default:
-			QAbstractItemView::keyPressEvent(event);
+			QTreeView::keyPressEvent(event);
 	}
 
 	toolTipHide(false);
@@ -220,7 +217,7 @@ void ContactsListWidget::keyPressEvent(QKeyEvent *event)
 
 void ContactsListWidget::wheelEvent(QWheelEvent *event)
 {
-	QAbstractScrollArea::wheelEvent(event);
+	QTreeView::wheelEvent(event);
 
 	// if event source (e->globalPos()) is inside this widget (QRect(...))
 	if (QRect(QPoint(0, 0), size()).contains(event->pos()))
@@ -231,13 +228,13 @@ void ContactsListWidget::wheelEvent(QWheelEvent *event)
 
 void ContactsListWidget::leaveEvent(QEvent *event)
 {
-	QWidget::leaveEvent(event);
+	QTreeView::leaveEvent(event);
 	toolTipHide();
 }
 
 void ContactsListWidget::mousePressEvent(QMouseEvent *event)
 {
-	QAbstractItemView::mousePressEvent(event);
+	QTreeView::mousePressEvent(event);
 	toolTipHide();
 }
 
@@ -256,6 +253,7 @@ void ContactsListWidget::mouseMoveEvent(QMouseEvent *event)
 void ContactsListWidget::resizeEvent(QResizeEvent *event)
 {
 	QTreeView::resizeEvent(event);
+	doItemsLayout();
 	if (BackgroundImageMode == BackgroundStretched)
 		updateBackground();
 }
