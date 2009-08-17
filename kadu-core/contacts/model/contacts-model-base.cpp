@@ -20,7 +20,7 @@
 #include "contacts-model-base.h"
 
 ContactsModelBase::ContactsModelBase(QObject *parent)
-	: QAbstractListModel(parent)
+	: QAbstractItemModel(parent)
 {
 }
 
@@ -49,12 +49,39 @@ void ContactsModelBase::contactStatusChanged(Account *account, Contact contact, 
 		emit dataChanged(index, index);
 }
 
+QModelIndex ContactsModelBase::index(int row, int column, const QModelIndex &parent) const
+{
+	return createIndex(row, column, parent.isValid() ? parent.row() : -1);
+}
+
+int ContactsModelBase::columnCount(const QModelIndex &parent) const
+{
+	return 1;
+}
+
+int ContactsModelBase::rowCount(const QModelIndex &parentIndex) const
+{
+	if (!parentIndex.isValid() || parent(parentIndex).isValid())
+		return 0;
+
+	Contact con = contact(parentIndex);
+	return con.accountDatas().size();
+}
+
 QFlags<Qt::ItemFlag> ContactsModelBase::flags(const QModelIndex& index) const
 {
 	if (index.isValid())
 		return QAbstractItemModel::flags(index) | Qt::ItemIsDragEnabled;
 	else
 		return QAbstractItemModel::flags(index);
+}
+
+QModelIndex ContactsModelBase::parent(const QModelIndex &child) const
+{
+	if (-1 == child.internalId())
+		return QModelIndex();
+	else
+		return index(child.internalId(), 0, QModelIndex());
 }
 
 QVariant ContactsModelBase::headerData(int section, Qt::Orientation orientation, int role) const

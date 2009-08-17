@@ -26,8 +26,10 @@ ContactListModel::ContactListModel(ContactList list, QObject *parent)
 
 int ContactListModel::rowCount(const QModelIndex &parent) const
 {
+	printf("rowCount\n");
+
 	return parent.isValid()
-		? 0
+		? ContactsModelBase::rowCount(parent)
 		: List.count();
 }
 

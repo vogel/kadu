@@ -51,7 +51,7 @@ ContactsModel::~ContactsModel()
 int ContactsModel::rowCount(const QModelIndex &parent) const
 {
 	if (parent.isValid())
-		return 0;
+		return ContactsModelBase::rowCount(parent);
 
 	return Manager->count();
 }

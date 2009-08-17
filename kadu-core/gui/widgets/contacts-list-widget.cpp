@@ -45,8 +45,11 @@ ContactsListWidget::ContactsListWidget(MainWindow *mainWindow, QWidget *parent) 
 // 	setLayoutMode(Batched);
 // 	setResizeMode(Adjust);
 	setWordWrap(true);
-	setRootIsDecorated(false);
+	setRootIsDecorated(true);
+	setAnimated(true);
+	setExpandsOnDoubleClick(true);
 	setHeaderHidden(true);
+	setItemsExpandable(true);
 
 	setAlternatingRowColors(true);
 	setDragEnabled(true);
