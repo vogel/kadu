@@ -537,6 +537,7 @@ void HistoryDialog::searchHistory()
 	kdebugmf(KDEBUG_INFO, "findRec.type = %d\n", findRec.type);
 	rxp.setPattern(findRec.data);
 	setEnabled(false);
+	showResults = true;
 	finding = true;
 	if (findRec.reverse)
 		do
@@ -617,7 +618,6 @@ void HistoryDialog::searchHistory()
 		findRec.actualrecord = 0;
 	setEnabled(true);
 	finding = false;
-	showResults = true;
 	kdebugf2();
 }
 
