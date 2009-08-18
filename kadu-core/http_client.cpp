@@ -16,8 +16,8 @@
 #include "http_client.h"
 
 HttpClient::HttpClient() :
-		Socket(), Host(), Referer(), Path(), Data(), PostData(), StatusCode(0),
-		HeaderParsed(false), ContentLength(0), ContentLengthNotFound(false), Cookies()
+		Socket(), Host(), Referer(""), Path(), Data(), PostData(), StatusCode(0),
+		HeaderParsed(false), ContentLength(0), ContentLengthNotFound(false), Cookies(), Unicode(false)
 {
 	kdebugf();
 	connect(&Socket, SIGNAL(connected()), this, SLOT(onConnected()));
@@ -62,14 +62,26 @@ void HttpClient::onConnected()
 	}
 	if (!PostData.isEmpty())
 	{
-		query += "Content-Type: application/x-www-form-urlencoded\r\n";
+		if (Unicode)
+		{
+			query += "Content-Type: text/plain; charset=utf-8\r\n";
+			query += "Accept-Encoding: gzip, deflate\r\n";
+		}
+		else
+		{
+			query += "Content-Type: application/x-www-form-urlencoded\r\n";
+		}
 		query += "Content-Length: " + QString::number(PostData.size()) + "\r\n";
-	}
+	}	
 	query += "\r\n";
 	if (!PostData.isEmpty())
 		query += QString(PostData);
+	query += "\r\n";
 	kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "HttpClient: Sending query:\n%s\n", qPrintable(query));
-	Socket.writeBlock(qPrintable(query), query.length());
+	if (Unicode)
+		Socket.write(query);
+	else
+		Socket.writeBlock(qPrintable(query), query.length());
 	kdebugf2();
 }
 
@@ -209,6 +221,16 @@ void HttpClient::setHost(const QString &host)
 	Cookies.clear();
 }
 
+void  HttpClient::setReferer(const QString &referer)
+{
+	Referer = referer;
+}
+
+void HttpClient::useUnicode(bool on)
+{
+	Unicode = on;
+}
+
 void HttpClient::get(const QString &path)
 {
 	Referer = Path;
@@ -227,11 +249,12 @@ void HttpClient::get(const QString &path)
 
 void HttpClient::post(const QString &path, const QByteArray& data)
 {
-	Referer = Path;
 	Path = path;
 	Data.resize(0);
 	PostData.duplicate(data);
 	HeaderParsed = false;
+	if (Referer.isEmpty())
+		Referer = Path;
 
 	if(config_file.readBoolEntry("Network", "UseProxy", false))
 		Socket.connectToHost(
@@ -244,7 +267,10 @@ void HttpClient::post(const QString &path, const QByteArray& data)
 void HttpClient::post(const QString &path,const QString& data)
 {
 	QByteArray PostData;
-	PostData.duplicate(qPrintable(data), data.length());
+	if (Unicode)
+		PostData.duplicate(data, data.length());
+	else
+		PostData.duplicate(qPrintable(data), data.length());
 	post(path, PostData);
 }
 

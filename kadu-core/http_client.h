@@ -20,6 +20,7 @@ class KADUAPI HttpClient : public QObject
 
 	int StatusCode;
 	bool HeaderParsed;
+	bool Unicode;
 
 	unsigned int ContentLength;
 	bool ContentLengthNotFound;
@@ -43,9 +44,11 @@ public:
 
 public slots:
 	void setHost(const QString &host);
+	void setReferer(const QString &referer);
 	void get(const QString &path);
 	void post(const QString &path, const QByteArray &data);
 	void post(const QString &path, const QString &data);
+	void useUnicode(bool on);
 
 signals:
 	void finished();

@@ -80,6 +80,7 @@ void SmsOrangeGateway::send(const QString& number,const QString& message, const 
 	State = SMS_LOADING_PAGE;
 	Http.setHost("sms.orange.pl");
 	Http.get("/Default.aspx?id=A2B6173D-CF1A-4c38-B7A7-E3144D43D70C");
+	Http.useUnicode(false);
 
 	kdebugf2();
 }
@@ -202,12 +203,65 @@ void SmsPlusGateway::httpRedirected(QString link)
 void SmsPlusGateway::send(const QString& number, const QString& message, const QString& /*contact*/, const QString& signature)
 {
 	kdebugf();
-	Number=number;
-	Message=message;
-	State=SMS_LOADING_RESULTS;
-	Http.setHost("212.2.96.57");
-	QString post_data="tprefix="+Number.left(3)+"&numer="+Number.right(6)+"&odkogo="+signature+"&tekst="+Message;
-	Http.post("sms/sendsms.php",post_data);
+	Number = number;
+	Message = message;
+	State = SMS_LOADING_RESULTS;
+	Http.setHost("www1.plus.pl");
+	Http.setReferer("http://www1.plus.pl/bsm/service/SendSmsService");
+	Http.useUnicode(true);
+
+	QString separator;
+	separator += (const char)0xef;
+	separator += (const char)0xbf;
+	separator += (const char)0xbf;
+	QString postData =
+		"3" + separator + "0" + separator + "9" + separator +
+		"http://www1.plus.pl/bsm/" + separator +
+		"BB205D38BD6DC27BAB2E91C384A21325" + separator +
+		"pl.plus.map.bsm.gwt.client.service.SendSmsService" + separator + "send" + separator +
+		"pl.plus.map.bsm.gwt.client.dto.SmsMessageTO" + separator +
+		"pl.plus.map.bsm.gwt.client.dto.SmsMessageTO/2299909364" + separator +
+		Message + separator +
+		Number + separator +
+		Signature + separator + 
+		// 1...2...3...4...1...5...6...0...0...0...7...0...0...1...1...0...0...0...0...0...0...0...0...0...0...0...8...0...0...0...9...0...0...0...
+		"1" + separator +
+		"2" + separator +
+		"3" + separator +
+		"4" + separator +
+		"1" + separator +
+		"5" + separator +
+		"6" + separator +
+		"0" + separator +
+		"0" + separator +
+		"0" + separator +
+		"7" + separator +
+		"0" + separator +
+		"0" + separator +
+		"1" + separator +
+		"1" + separator +
+		"0" + separator +
+		"0" + separator +
+		"0" + separator +
+		"0" + separator +
+		"0" + separator +
+		"0" + separator +
+		"0" + separator +
+		"0" + separator +
+		"0" + separator +
+		"0" + separator +
+		"0" + separator +
+		"8" + separator +
+		"0" + separator +
+		"0" + separator +
+		"0" + separator +
+		"9" + separator +
+		"0" + separator +
+		"0" + separator +
+		"0" + separator + (char)0x0d + (char)0x0a +
+		(char)0x0d + (char)0x0a;
+
+	Http.post("bsm/service/SendSmsService", postData);
 	kdebugf2();
 }
 
@@ -252,8 +306,10 @@ void SmsPlusGateway::httpFinished()
 	else if (State==SMS_LOADING_RESULTS)
 	{
 		QString Page=Http.data();
-		kdebugm(KDEBUG_INFO, "SMS Provider Results Page:\n%s\n", qPrintable(Page));
-		if (Page.find("Z powodu przekroczenia limit�w bramki")>=0)
+		kdebugm(KDEBUG_INFO,"SMS Provider Results Page:\n%s\n", qPrintable(Page));
+		if (Page.find("OK"))
+			emit finished(true);
+		else if (Page.find("Z powodu przekroczenia limit�w bramki")>=0)
 		{
 			kdebugm(KDEBUG_INFO, "Limit exceeded\n");
 			QMessageBox::critical(p,"SMS",tr("Limits have been exceeded, try again later."));
@@ -296,6 +352,7 @@ void SmsEraGateway::send(const QString& number, const QString& message, const QS
 	Number=number;
 	Message=message;
 	Http.setHost("www.eraomnix.pl");
+	Http.useUnicode(false);
 
 	QString path;
 	QString gateway = config_file.readEntry("SMS", "EraGateway");
