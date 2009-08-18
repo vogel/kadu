@@ -305,10 +305,15 @@ void SmsPlusGateway::httpFinished()
 	}
 	else if (State==SMS_LOADING_RESULTS)
 	{
-		QString Page=Http.data();
+		QString Page = Http.data();
 		kdebugm(KDEBUG_INFO,"SMS Provider Results Page:\n%s\n", qPrintable(Page));
-		if (Page.find("OK["))
+		if (Page.indexOf("//OK[") >= 0)
 			emit finished(true);
+		else if (Page.indexOf("The call failed on the server") >= 0)
+		{
+			QMessageBox::critical(p, "SMS", tr("Error: ") + tr("System failure"));
+			emit finished(false);
+		}
 		else if (Page.find("Z powodu przekroczenia limit�w bramki")>=0)
 		{
 			kdebugm(KDEBUG_INFO, "Limit exceeded\n");
