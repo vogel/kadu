@@ -29,14 +29,6 @@
 				<spin-box caption="Minimum width" config-section="Hints" config-item="MinimumWidth" min-value="0" max-value="10240" id="hints/minimumWidth" suffix="px" />
 				<spin-box caption="Maximum width" config-section="Hints" config-item="MaximumWidth" min-value="0" max-value="10240" id="hints/maximumWidth" suffix="px" />
 			</group-box>
-			<group-box name="Look">
-				<check-box caption="Set for all" config-section="Hints" config-item="SetAll" id="hints/setAll" />
-				<label caption="&lt;b&gt;Text&lt;/b&gt; preview" id="hints/setAllPreview" />
-				<spin-box caption="Timeout" config-section="Hints" config-item="SetAll_timeout" id="hints/setAll_timeout" min-value="0" max-value="3600" suffix=" s"/>
-				<color-button caption="Font color" config-section="Hints" config-item="SetAll_fgcolor" id="hints/setAll_fgcolor" />
-				<color-button caption="Background color" config-section="Hints" config-item="SetAll_bgcolor" id="hints/setAll_bgcolor" />
-				<select-font caption="Font" config-section="Hints" config-item="SetAll_font" id="hints/setAll_font" />
-			</group-box>
 			<group-box name="Mouse buttons">
 				<combo-box caption="Left button" config-section="Hints" config-item="LeftButton">
 					<item value="0" caption="Nothing" />

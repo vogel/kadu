@@ -34,7 +34,6 @@ Qt4NotifyConfigurationWidget::Qt4NotifyConfigurationWidget(QWidget *parent)
 	layout->addWidget(configureButton);
 
 	dynamic_cast<NotifyGroupBox *>(parent)->addWidget(this);
-
 }
 
 void Qt4NotifyConfigurationWidget::saveNotifyConfigurations()
@@ -52,6 +51,9 @@ void Qt4NotifyConfigurationWidget::showConfigurationWindow()
 {
 	NotifierConfigurationDataManager *dataManager = NotifierConfigurationDataManager::dataManagerForEvent(currentNotifyEvent);
 	ConfigurationWindow *configWindow = new ConfigurationWindow("qt4-docking-notifier-" + currentNotifyEvent, tr("Tray icon baloon's look configuration"), dataManager);
+
+	dataManager->configurationWindowCreated(configWindow);
+
 	configWindow->widget()->appendUiFile(dataPath("kadu/modules/configuration/qt4-docking-notify.ui"));
 
 	QString tooltip = qApp->translate("@default", MainConfigurationWindow::SyntaxTextNotify) +

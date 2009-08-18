@@ -40,10 +40,7 @@ Hint::Hint(QWidget *parent, Notification *notification)
 	if (notification->details() != "")
 		details.append(notification->details());
 
-	if (config_file.readBoolEntry("Hints", "SetAll", false))
-		startSecs = secs = config_file.readNumEntry("Hints", "SetAll_timeout", 10);
-	else
-		startSecs = secs = config_file.readNumEntry("Hints", "Event_" + notification->type() + "_timeout", 10);
+	startSecs = secs = config_file.readNumEntry("Hints", "Event_" + notification->type() + "_timeout", 10);
 
 	createLabels(notification->icon().pixmap(QSize(22, 22)));
 	updateText();
@@ -93,14 +90,9 @@ void Hint::configurationUpdated()
 {
 	QString configurationDirective;
 
-	if (config_file.readBoolEntry("Hints", "SetAll", false))
-		configurationDirective = "SetAll";
-	else
-		configurationDirective = "Event_" + notification->type();
-
-	bcolor = config_file.readColorEntry("Hints", configurationDirective + "_bgcolor"/*, &paletteBackgroundColor()*/);
-	fcolor = config_file.readColorEntry("Hints", configurationDirective + "_fgcolor"/*, &paletteForegroundColor()*/);
-	label->setFont(config_file.readFontEntry("Hints", configurationDirective + "_font"));
+	bcolor = config_file.readColorEntry("Hints", "Event_" + notification->type() + "_bgcolor"/*, &paletteBackgroundColor()*/);
+	fcolor = config_file.readColorEntry("Hints", "Event_" + notification->type() + "_fgcolor"/*, &paletteForegroundColor()*/);
+	label->setFont(config_file.readFontEntry("Hints", "Event_" + notification->type() + "_font"));
 	QString style = narg("QWidget {color:%1; background-color:%2}", fcolor.name(), bcolor.name());
 	setStyleSheet(style);
 

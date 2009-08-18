@@ -72,7 +72,7 @@ DockingManager::DockingManager()
 	connect(PendingMessagesManager::instance(), SIGNAL(messageFromUserAdded(Contact)), this, SLOT(pendingMessageAdded()));
 	connect(PendingMessagesManager::instance(), SIGNAL(messageFromUserDeleted(Contact)), this, SLOT(pendingMessageDeleted()));
 
-//	connect(kadu, SIGNAL(searchingForTrayPosition(QPoint&)), this, SIGNAL(searchingForTrayPosition(QPoint&)));
+	connect(Core::instance(), SIGNAL(searchingForTrayPosition(QPoint&)), this, SIGNAL(searchingForTrayPosition(QPoint&)));
 
 	DockMenu = new QMenu;
 

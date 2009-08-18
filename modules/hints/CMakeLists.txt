@@ -2,6 +2,7 @@ set (SOURCES
 	hint.cpp
 	hint_manager.cpp
 	hints_configuration_widget.cpp
+	hints-configuration-window.cpp
 	hints.cpp
 )
 
@@ -9,6 +10,7 @@ set (MOC_SOURCES
 	hint.h
 	hint_manager.h
 	hints_configuration_widget.h
+	hints-configuration-window.h
 )
 
 set (TRANSLATION_SOURCES
@@ -19,7 +21,9 @@ set (TRANSLATION_SOURCES
 )
 
 set (CONFIGURATION_FILES
-	configuration/hints.ui)
+	configuration/hints.ui
+	configuration/hints-notifier.ui
+)
 
 kadu_module (hints
 	MODULE_SOURCES ${SOURCES}

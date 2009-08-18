@@ -24,11 +24,12 @@ class NotifierConfigurationDataManager : public ConfigurationWindowDataManager
 	static QMap<QString, NotifierConfigurationDataManager*> DataManagers;
 	static void dataManagerDestroyed(const QString &eventName);
 
+	explicit NotifierConfigurationDataManager(const QString &eventName, QObject *parent = 0);
+
 private slots:
 	void configurationWindowDestroyed();
 
 public:
-	explicit NotifierConfigurationDataManager(const QString &eventName, QObject *parent = 0);
 
 	virtual void writeEntry(const QString &section, const QString &name, const QVariant &value);
 	virtual QVariant readEntry(const QString &section, const QString &name);

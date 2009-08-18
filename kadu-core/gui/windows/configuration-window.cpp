@@ -101,6 +101,7 @@ void ConfigurationWindow::updateConfig()
 	emit configurationWindowApplied();
 	configurationWidget->saveConfiguration();
 
+	emit configurationSaved();
 	ConfigurationAwareObject::notifyAll();
 }
 

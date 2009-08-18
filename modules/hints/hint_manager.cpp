@@ -15,6 +15,7 @@
 #include <QtGui/QSpinBox>
 
 #include "configuration/configuration-file.h"
+#include "core/core.h"
 #include "gui/widgets/chat-widget-manager.h"
 #include "gui/widgets/tool-tip-class-manager.h"
 #include "gui/widgets/chat-widget.h"
@@ -25,10 +26,11 @@
 #include "parser/parser.h"
 
 #include "debug.h"
-#include "hint_manager.h"
-#include "hints_configuration_widget.h"
 #include "icons-manager.h"
-//#include "kadu.h"
+#include "hints_configuration_widget.h"
+
+#include "hint_manager.h"
+
 
 /**
  * @ingroup hints
@@ -63,7 +65,7 @@ HintManager::HintManager(QWidget *parent)
 	if (config_file.readEntry("Hints", "MouseOverUserSyntax") == default_hints_syntax || config_file.readEntry("Hints", "MouseOverUserSyntax").isEmpty())
 		config_file.writeEntry("Hints", "MouseOverUserSyntax", tr(default_hints_syntax.toAscii()));
 
-//	connect(this, SIGNAL(searchingForTrayPosition(QPoint &)), kadu, SIGNAL(searchingForTrayPosition(QPoint &)));
+	connect(this, SIGNAL(searchingForTrayPosition(QPoint &)), Core::instance(), SIGNAL(searchingForTrayPosition(QPoint &)));
 
 	NotificationManager::instance()->registerNotifier(this);
 	ToolTipClassManager::instance()->registerToolTipClass(QT_TRANSLATE_NOOP("@default", "Hints"), this);
@@ -80,7 +82,7 @@ HintManager::~HintManager()
 	ToolTipClassManager::instance()->unregisterToolTipClass("Hints");
 	NotificationManager::instance()->unregisterNotifier(this);
 
-//	disconnect(this, SIGNAL(searchingForTrayPosition(QPoint &)), kadu, SIGNAL(searchingForTrayPosition(QPoint &)));
+	disconnect(this, SIGNAL(searchingForTrayPosition(QPoint &)), Core::instance(), SIGNAL(searchingForTrayPosition(QPoint &)));
 
 	delete tipFrame;
 	tipFrame = 0;
@@ -107,17 +109,6 @@ void HintManager::mainConfigurationWindowCreated(MainConfigurationWindow *mainCo
 	connect(ownPosition, SIGNAL(toggled(bool)), mainConfigurationWindow->widget()->widgetById("hints/ownPositionX"), SLOT(setEnabled(bool)));
 	connect(ownPosition, SIGNAL(toggled(bool)), mainConfigurationWindow->widget()->widgetById("hints/ownPositionY"), SLOT(setEnabled(bool)));
 	connect(ownPosition, SIGNAL(toggled(bool)), mainConfigurationWindow->widget()->widgetById("hints/ownPositionCorner"), SLOT(setEnabled(bool)));
-
-	QCheckBox *setAll = dynamic_cast<QCheckBox *>(mainConfigurationWindow->widget()->widgetById("hints/setAll"));
-	connect(setAll, SIGNAL(toggled(bool)), mainConfigurationWindow->widget()->widgetById("hints/setAllPreview"), SLOT(setEnabled(bool)));
-	connect(setAll, SIGNAL(toggled(bool)), mainConfigurationWindow->widget()->widgetById("hints/setAll_timeout"), SLOT(setEnabled(bool)));
-	connect(setAll, SIGNAL(toggled(bool)), mainConfigurationWindow->widget()->widgetById("hints/setAll_fgcolor"), SLOT(setEnabled(bool)));
-	connect(setAll, SIGNAL(toggled(bool)), mainConfigurationWindow->widget()->widgetById("hints/setAll_bgcolor"), SLOT(setEnabled(bool)));
-	connect(setAll, SIGNAL(toggled(bool)), mainConfigurationWindow->widget()->widgetById("hints/setAll_font"), SLOT(setEnabled(bool)));
-	connect(setAll, SIGNAL(toggled(bool)), configurationWidget, SLOT(setAllEnabled(bool)));
-	configurationWidget->setAllEnabled(setAll->isChecked());
-
-	(dynamic_cast<QSpinBox *>(mainConfigurationWindow->widget()->widgetById("hints/setAll_timeout")))->setSpecialValueText(tr("Dont hide"));
 
 	minimumWidth = dynamic_cast<QSpinBox *>(mainConfigurationWindow->widget()->widgetById("hints/minimumWidth"));
 	maximumWidth = dynamic_cast<QSpinBox *>(mainConfigurationWindow->widget()->widgetById("hints/maximumWidth"));
@@ -567,22 +558,26 @@ void HintManager::createDefaultConfiguration()
 	config_file.addVariable("Notify", "ConnectionError_Hints", true);
 	config_file.addVariable("Notify", "NewChat_Hints", true);
 	config_file.addVariable("Notify", "NewMessage_Hints", true);
+	config_file.addVariable("Notify", "StatusChanged", true);
+	config_file.addVariable("Notify", "StatusChanged/ToFreeForChat_Hints", true);
 	config_file.addVariable("Notify", "StatusChanged/ToOnline_Hints", true);
-	config_file.addVariable("Notify", "StatusChanged/ToBusy_Hints", true);
-	config_file.addVariable("Notify", "StatusChanged/ToInvisible_Hints", true);
+	config_file.addVariable("Notify", "StatusChanged/ToAway_Hints", true);
+	config_file.addVariable("Notify", "StatusChanged/ToNotAvailable_Hints", true);
+	config_file.addVariable("Notify", "StatusChanged/ToDoNotDisturb_Hints", true);
 	config_file.addVariable("Notify", "StatusChanged/ToOffline_Hints", true);
+	config_file.addVariable("Notify", "FileTransfer", true);
 	config_file.addVariable("Notify", "FileTransfer/IncomingFile_Hints", true);
 	config_file.addVariable("Notify", "FileTransfer/Finished_Hints", true);
 
 	config_file.addVariable("Hints", "CiteSign", 50);
 	config_file.addVariable("Hints", "Corner", 0);
 	config_file.addVariable("Hints", "DeletePendingMsgWhenHintDeleted", true);
-	// TODO: remove after removing import from 0.5
+
 	config_file.addVariable("Hints", "Event_NewChat_bgcolor", w.palette().background().color());
 	config_file.addVariable("Hints", "Event_NewChat_fgcolor", w.palette().foreground().color());
 	config_file.addVariable("Hints", "Event_NewChat_font", qApp->font());
 	config_file.addVariable("Hints", "Event_NewChat_timeout", 10);
-	// end of TODO
+
 	config_file.addVariable("Hints", "HintsPositionX", 0);
 	config_file.addVariable("Hints", "HintsPositionY", 0);
 	config_file.addVariable("Hints", "LeftButton", 1);
@@ -592,11 +587,6 @@ void HintManager::createDefaultConfiguration()
 	config_file.addVariable("Hints", "MinimumWidth", 100);
 	config_file.addVariable("Hints", "MouseOverUserSyntax", "");
 	config_file.addVariable("Hints", "NewHintUnder", 0);
-	config_file.addVariable("Hints", "SetAll", false); // TODO: fix
-	config_file.addVariable("Hints", "SetAll_bgcolor", w.palette().background().color());
-	config_file.addVariable("Hints", "SetAll_fgcolor", w.palette().foreground().color());
-	config_file.addVariable("Hints", "SetAll_font", qApp->font());
-	config_file.addVariable("Hints", "SetAll_timeout", 10);
 	config_file.addVariable("Hints", "ShowContentMessage", true);
 	config_file.addVariable("Hints", "UseUserPosition", false);
 	config_file.addVariable("Hints", "OpenChatOnEveryNotification", false);

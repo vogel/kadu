@@ -116,6 +116,8 @@ signals:
 	 **/
 	void configurationWindowApplied();
 
+	void configurationSaved();
+
 };
 
 #endif

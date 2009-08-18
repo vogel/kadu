@@ -100,6 +100,9 @@ signals:
 	// TODO: remove
 	void settingMainIconBlocked(bool &blocked);
 
+	//TODO:
+	void searchingForTrayPosition(QPoint &);
+
 	void mainIconChanged(const QIcon &);
 
 
