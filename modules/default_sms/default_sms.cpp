@@ -307,7 +307,7 @@ void SmsPlusGateway::httpFinished()
 	{
 		QString Page=Http.data();
 		kdebugm(KDEBUG_INFO,"SMS Provider Results Page:\n%s\n", qPrintable(Page));
-		if (Page.find("OK"))
+		if (Page.find("OK["))
 			emit finished(true);
 		else if (Page.find("Z powodu przekroczenia limit�w bramki")>=0)
 		{
