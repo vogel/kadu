@@ -223,7 +223,7 @@ void SmsPlusGateway::send(const QString& number, const QString& message, const Q
 		"pl.plus.map.bsm.gwt.client.dto.SmsMessageTO/2299909364" + separator +
 		Message + separator +
 		Number + separator +
-		Signature + separator + 
+		signature + separator +
 		// 1...2...3...4...1...5...6...0...0...0...7...0...0...1...1...0...0...0...0...0...0...0...0...0...0...0...8...0...0...0...9...0...0...0...
 		"1" + separator +
 		"2" + separator +
