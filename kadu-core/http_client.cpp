@@ -79,11 +79,13 @@ void HttpClient::onConnected()
 	query += "\r\n";
 	kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "HttpClient: Sending query:\n%s\n", qPrintable(query));
 	if (Unicode)
+	{
 #if QT_VERSION >= 0x040500
 		Socket.write(query);
 #else
-		Socket.write(query.toUtf8()); /* Dorr: why this isn't working? */
+		Socket.writeBlock(query.toUtf8(), query.length());
 #endif
+    }
 	else
 		Socket.writeBlock(qPrintable(query), query.length());
 	kdebugf2();
