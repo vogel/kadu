@@ -167,10 +167,10 @@ void ChatMessagesView::pruneMessages()
 	QList<ChatMessage *>::iterator stop = Messages.end() - ChatStylesManager::instance()->prune();
 	for (QList<ChatMessage *>::iterator it = start; it != stop; ++it)
 	{
-		delete *it;
-		ChatStylesManager::instance()->currentEngine()->pruneMessage(this);
 		disconnect(*it, SIGNAL(statusChanged(Message::Status)),
 				 this, SLOT(repaintMessages()));
+		delete *it;
+		ChatStylesManager::instance()->currentEngine()->pruneMessage(this);
 	}
 
 	Messages.erase(start, stop);
