@@ -14,6 +14,7 @@
 #include <QtCore/QDateTime>
 #include <QtCore/QTimer>
 
+#include "chat/chat.h"
 #include "contacts/contact.h"
 
 class QContextMenuEvent;
@@ -29,8 +30,6 @@ class ContactsModelProxy;
 class MainWindow;
 
 class ContactsListWidget : public QTreeView
-
-
 {
 	Q_OBJECT
 
@@ -100,7 +99,7 @@ public:
 	void updateBackground();
 
 signals:
-	void contactActivated(Contact contact);
+	void chatActivated(Chat *chat);
 	void contactsSelectionChanged();
 
 	void currentContactChanged(Contact contact);

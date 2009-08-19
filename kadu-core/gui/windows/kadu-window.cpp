@@ -86,7 +86,7 @@ void KaduWindow::createGui()
 	anonymousFilter->setEnabled(true);
 	ContactsWidget->addFilter(anonymousFilter);
 
-	connect(ContactsWidget, SIGNAL(contactActivated(Contact)), this, SLOT(openChatWindow(Contact)));
+	connect(ContactsWidget, SIGNAL(chatActivated(Chat *)), this, SLOT(openChatWindow(Chat *)));
 
 	hboxLayout->addWidget(GroupBar);
 	hboxLayout->setStretchFactor(GroupBar, 1);
@@ -188,25 +188,18 @@ void KaduWindow::createHelpMenu()
 	menuBar()->addMenu(HelpMenu);
 }
 
-void KaduWindow::openChatWindow(Contact contact)
+void KaduWindow::openChatWindow(Chat *chat)
 {
-	ContactsListWidget *widget = dynamic_cast<ContactsListWidget *>(sender());
-	if (!widget)
-		return;
-
-	Account *account = contact.prefferedAccount();
-	ContactSet contacts = widget->selectedContacts();
-
-	if (!contacts.contains(Core::instance()->myself()) && account)
+	if (!chat->contacts().contains(Core::instance()->myself()))
 	{
-		Chat *chat = account->protocol()->findChat(contacts);
 		ChatWidgetManager::instance()->sendMessage(chat);
 		return;
 	}
 
-	contact = *contacts.begin();
-	if (contact.mobile().isEmpty() && !contact.email().isEmpty())
-		openMailClient(contact.email());
+// TODO: 0.6.6
+// 	contact = *contacts.begin();
+// 	if (contact.mobile().isEmpty() && !contact.email().isEmpty())
+// 		openMailClient(contact.email());
 }
 
 void KaduWindow::createRecentChatsMenu()

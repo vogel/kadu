@@ -116,4 +116,6 @@ signals:
 
 };
 
+Q_DECLARE_METATYPE(Account *)
+
 #endif // ACCOUNT_H

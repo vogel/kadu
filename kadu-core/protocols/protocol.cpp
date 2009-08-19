@@ -114,13 +114,13 @@ Chat * Protocol::findChat(ContactSet contacts)
 
 	if (contacts.count() == 1)
 	{
-		SimpleChat *simple = new SimpleChat(account(), (*contacts.begin()), QUuid());
+		SimpleChat *simple = new SimpleChat(account(), (*contacts.begin()));
 		ChatManager::instance()->addChat(simple);
 		return simple;
 	}
 	else
 	{
-		ConferenceChat *conference = new ConferenceChat(account(), contacts, QUuid());
+		ConferenceChat *conference = new ConferenceChat(account(), contacts);
 		ChatManager::instance()->addChat(conference);
 		return conference;
 	}

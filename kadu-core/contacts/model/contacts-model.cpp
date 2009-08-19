@@ -58,7 +58,8 @@ int ContactsModel::rowCount(const QModelIndex &parent) const
 
 Contact ContactsModel::contact(const QModelIndex &index) const
 {
-	return Manager->byIndex(index.row());
+	QModelIndex parent = index.parent();
+	return Manager->byIndex(parent.isValid() ? parent.row() : index.row());
 }
 
 const QModelIndex ContactsModel::contactIndex(Contact contact) const

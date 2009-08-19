@@ -21,6 +21,7 @@
 #include "contacts/contact-list.h"
 #include "contacts/contact-list-mime-data-helper.h"
 #include "contacts/contact-manager.h"
+#include "contacts/model/contacts-model-base.h"
 #include "contacts/model/contacts-model-proxy.h"
 #include "gui/actions/action.h"
 #include "gui/actions/action-description.h"
@@ -129,9 +130,15 @@ void ContactsListWidget::triggerActivate(const QModelIndex& index)
 {
 	if (!index.isValid())
 		return;
+
+	Account *account = index.data(AccountRole).value<Account *>();
 	Contact con = contact(index);
-	if (!con.isNull())
-		emit contactActivated(con);
+	if (con.isNull())
+		return;
+
+	Chat *chat = account->protocol()->findChat(ContactSet(con));
+	if (chat)
+		emit chatActivated(chat);
 }
 
 void ContactsListWidget::contextMenuEvent(QContextMenuEvent *event)

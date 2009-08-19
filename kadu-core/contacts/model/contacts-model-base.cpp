@@ -156,6 +156,8 @@ QVariant ContactsModelBase::data(ContactAccountData *cad, int role, bool useDisp
 				return cad->status().description();
 		case StatusRole:
 			return QVariant::fromValue(cad->status());
+		case AccountRole:
+			return QVariant::fromValue(cad->account());
 		default:
 			return QVariant();
 }

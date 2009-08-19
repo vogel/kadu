@@ -13,6 +13,7 @@
 #include <QtCore/QMap>
 #include <QtCore/QPair>
 
+#include "chat/chat.h"
 #include "contacts/contact-list.h"
 
 #include "gui/windows/main-window.h"
@@ -81,7 +82,7 @@ private:
 	void updateInformationPanel(Contact contact);
 
 private slots:
-	void openChatWindow(Contact contact);
+	void openChatWindow(Chat *chat);
 
 	void createRecentChatsMenu();
 	void openRecentChats(QAction *action);
