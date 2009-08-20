@@ -11,8 +11,8 @@ set (kadu_SRCS
 	chat/conference-chat.cpp
 	chat/simple-chat.cpp
 
-	chat/chat_message.cpp
-	chat/chat_styles_manager.cpp
+	chat/chat-message.cpp
+	chat/chat-styles-manager.cpp
 
 	chat/message/formatted-message.cpp
 	chat/message/formatted-message-part.cpp
@@ -20,8 +20,8 @@ set (kadu_SRCS
 	chat/message/message-data.cpp
 	chat/message/pending-messages-manager.cpp
 
-	chat/style-engines/chat_engine_adium.cpp
-	chat/style-engines/chat_engine_kadu.cpp
+	chat/style-engines/chat-engine-adium.cpp
+	chat/style-engines/chat-engine-kadu.cpp
 
 	contacts/contact.cpp
 	contacts/contact-account-data.cpp
@@ -80,7 +80,7 @@ set (kadu_SRCS
 
 	gui/widgets/account-contacts-list-widget.cpp
 	gui/widgets/chat-edit-box.cpp
-	gui/widgets/chat_messages_view.cpp
+	gui/widgets/chat-messages-view.cpp
 	gui/widgets/chat-widget.cpp
 	gui/widgets/chat-widget-actions.cpp
 	gui/widgets/chat-widget-manager.cpp
@@ -91,10 +91,10 @@ set (kadu_SRCS
 	gui/widgets/contacts-list-widget.cpp
 	gui/widgets/contacts-list-widget-delegate.cpp
 	gui/widgets/contacts-list-widget-menu-manager.cpp
-	gui/widgets/custom_input.cpp
+	gui/widgets/custom-input.cpp
 	gui/widgets/group-tab-bar.cpp
 	gui/widgets/image-widget.cpp
-	gui/widgets/kadu_text_browser.cpp
+	gui/widgets/kadu-text-browser.cpp
 	gui/widgets/path-list-edit.cpp
 	gui/widgets/proxy-group-box.cpp
 	gui/widgets/preview.cpp
@@ -135,7 +135,7 @@ set (kadu_SRCS
 
 	gui/windows/about.cpp
 	gui/windows/add-buddy-window.cpp
-	gui/windows/chat_window.cpp
+	gui/windows/chat-window.cpp
 	gui/windows/choose-description.cpp
 	gui/windows/configuration-window.cpp
 	gui/windows/contact-data-manager.cpp
@@ -237,9 +237,9 @@ set (kadu_MOC_SRCS
 	chat/message/message-data.h
 	chat/message/pending-messages-manager.h
 
-	chat/chat_message.h
-	chat/chat_styles_manager.h
-	chat/style-engines/chat_engine_kadu.h
+	chat/chat-message.h
+	chat/chat-styles-manager.h
+	chat/style-engines/chat-engine-kadu.h
 
 	contacts/contact.h
 	contacts/contact-account-data.h
@@ -283,7 +283,7 @@ set (kadu_MOC_SRCS
 	gui/widgets/account-create-widget.h
 	gui/widgets/account-edit-widget.h
 	gui/widgets/chat-edit-box.h
-	gui/widgets/chat_messages_view.h
+	gui/widgets/chat-messages-view.h
 	gui/widgets/chat-widget.h
 	gui/widgets/chat-widget-actions.h
 	gui/widgets/chat-widget-manager.h
@@ -293,9 +293,9 @@ set (kadu_MOC_SRCS
 	gui/widgets/contact-info-panel.h
 	gui/widgets/contacts-list-widget.h
 	gui/widgets/contacts-list-widget-delegate.h
-	gui/widgets/custom_input.h
+	gui/widgets/custom-input.h
 	gui/widgets/group-tab-bar.h
-	gui/widgets/kadu_text_browser.h
+	gui/widgets/kadu-text-browser.h
 	gui/widgets/path-list-edit.h
 	gui/widgets/preview.h
 	gui/widgets/select-file.h
@@ -318,7 +318,7 @@ set (kadu_MOC_SRCS
 
 	gui/windows/about.h
 	gui/windows/add-buddy-window.h
-	gui/windows/chat_window.h
+	gui/windows/chat-window.h
 	gui/windows/choose-description.h
 	gui/windows/configuration-window.h
 	gui/windows/contact-data-manager.h
@@ -446,7 +446,7 @@ if (UNIX AND NOT APPLE)
 	#install (FILES hi256-app-kadu.png DESTINATION "share/icons/hicolor/256x256/apps" RENAME kadu.png)
 endif(UNIX AND NOT APPLE)
 
-install (FILES "chat/style-engines/adium_style_scripts.js" DESTINATION ${KADU_DATA_DIR}/scripts)
+install (FILES "chat/style-engines/adium-style-scripts.js" DESTINATION ${KADU_DATA_DIR}/scripts)
 
 if (APPLE)
 	pkg_search_module (SNDFILE REQUIRED sndfile>=1.0)

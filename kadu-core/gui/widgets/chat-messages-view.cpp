@@ -14,23 +14,20 @@
 #include "accounts/account.h"
 #include "accounts/account-manager.h"
 #include "configuration/configuration-file.h"
-#include "chat/chat_message.h"
-#include "chat/chat_styles_manager.h"
-#include "chat/style-engines/chat_style_engine.h"
+#include "chat/chat.h"
+#include "chat/chat-message.h"
+#include "chat/chat-styles-manager.h"
+#include "chat/style-engines/chat-style-engine.h"
 #include "protocols/services/chat-image-service.h"
 
-#include "chat-widget.h"
 #include "debug.h"
 
-#include "chat_messages_view.h"
+#include "chat-messages-view.h"
 
-ChatMessagesView::ChatMessagesView(QWidget *parent) : KaduTextBrowser(parent),
-	LastScrollValue(0), LastLine(false), Chat(0), PrevMessage(0), PruneEnabled(true)
+ChatMessagesView::ChatMessagesView(Chat *chat, QWidget *parent) : KaduTextBrowser(parent),
+	LastScrollValue(0), LastLine(false), CurrentChat(chat), PrevMessage(0), PruneEnabled(true)
 {
 	setMinimumSize(QSize(100,100));
-
-	if (parent)
-		Chat = dynamic_cast<ChatWidget *>(parent);
 
  	ChatStylesManager::instance()->chatViewCreated(this);
 
@@ -38,12 +35,13 @@ ChatMessagesView::ChatMessagesView(QWidget *parent) : KaduTextBrowser(parent),
 	// maybe Qt bug?
   	setStyleSheet("QWidget { }");
 
-	Protocol *protocol = AccountManager::instance()->defaultAccount()->protocol();
-	ChatImageService *chatImageService = protocol->chatImageService();
-	if (chatImageService)
+	if (chat && chat->account())
+	{
+		ChatImageService *chatImageService = chat->account()->protocol()->chatImageService();
+		if (chatImageService)
 			connect(chatImageService, SIGNAL(imageReceived(const QString &, const QString &)),
 				this, SLOT(imageReceived(const QString &, const QString &)));
-
+	}
 
 	connect(this, SIGNAL(loadFinished(bool)), this, SLOT(scrollToLine()));
 
@@ -58,18 +56,33 @@ ChatMessagesView::~ChatMessagesView()
 	Messages.clear();
  	ChatStylesManager::instance()->chatViewDestroyed(this);
 
-	Account *account = AccountManager::instance()->defaultAccount();
-	if (!account)
-		return;
-
-	Protocol *protocol = account->protocol();
-	if (!protocol)
-		return;
-
-	ChatImageService *chatImageService = protocol->chatImageService();
-	if (chatImageService)
+	if (CurrentChat && CurrentChat->account())
+	{
+		ChatImageService *chatImageService = CurrentChat->account()->protocol()->chatImageService();
+		if (chatImageService)
 			disconnect(chatImageService, SIGNAL(imageReceived(const QString &, const QString &)),
 				this, SLOT(imageReceived(const QString &, const QString &)));
+	}
+}
+
+void ChatMessagesView::setChat(Chat *chat)
+{
+	ChatImageService *chatImageService;
+    	if (CurrentChat && CurrentChat->account())
+	{
+		chatImageService = CurrentChat->account()->protocol()->chatImageService();
+		if (chatImageService)
+			connect(chatImageService, SIGNAL(imageReceived(const QString &, const QString &)),
+				this, SLOT(imageReceived(const QString &, const QString &)));
+	}
+
+    	if (chat && chat->account())
+	{
+		ChatImageService *chatImageService = chat->account()->protocol()->chatImageService();
+		if (chatImageService)
+			connect(chatImageService, SIGNAL(imageReceived(const QString &, const QString &)),
+				this, SLOT(imageReceived(const QString &, const QString &)));
+	}
 }
 
 void ChatMessagesView::pageUp()
@@ -86,6 +99,7 @@ void ChatMessagesView::pageDown()
 
 void ChatMessagesView::imageReceived(const QString &messageId, const QString &messagePath)
 {
+	rememberScrollBarPosition();
 	foreach (ChatMessage *message, Messages)
 		message->replaceLoadingImages(messageId, messagePath);
 
@@ -122,6 +136,7 @@ void ChatMessagesView::updateBackgroundsAndColors()
 
 void ChatMessagesView::repaintMessages()
 {
+	rememberScrollBarPosition();
 	ChatStylesManager::instance()->currentEngine()->refreshView(this);
 }
 
@@ -131,6 +146,9 @@ void ChatMessagesView::appendMessage(ChatMessage *message)
 
 	connect(message, SIGNAL(statusChanged(Message::Status)),
 			 this, SLOT(repaintMessages()));
+
+	rememberScrollBarPosition();
+
 	Messages.append(message);
 
 	pruneMessages();
@@ -145,6 +163,7 @@ void ChatMessagesView::appendMessages(QList<ChatMessage *> messages)
 	foreach (ChatMessage *message, messages)
 		connect(message, SIGNAL(statusChanged(Message::Status)),
 				this, SLOT(repaintMessages()));
+	rememberScrollBarPosition();
 
 	Messages += messages;
 

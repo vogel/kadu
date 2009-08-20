@@ -13,7 +13,7 @@
 #include "contacts/contact.h"
 #include "contacts/contact-list.h"
 
-#include "kadu_text_browser.h"
+#include "kadu-text-browser.h"
 
 class Preview : public KaduTextBrowser
 {

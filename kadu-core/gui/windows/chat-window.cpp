@@ -23,7 +23,7 @@
 #include "debug.h"
 #include "misc/misc.h"
 
-#include "chat_window.h"
+#include "chat-window.h"
 
 ChatWindow::ChatWindow(QWidget *parent)
 	: QWidget(parent), currentChatWidget(0), title_timer(new QTimer(this))

@@ -5,10 +5,11 @@
 
 #include "protocols/protocol.h"
 
-#include "kadu_text_browser.h"
+#include "kadu-text-browser.h"
 
 #include "exports.h"
 
+class Chat;
 class ChatMessage;
 class ChatWidget;
 class QResizeEvent;
@@ -22,7 +23,7 @@ class KADUAPI ChatMessagesView : public KaduTextBrowser
 {
 	Q_OBJECT
 
-	ChatWidget *Chat;
+	Chat *CurrentChat;
 	ChatMessage *PrevMessage;
 	QList<ChatMessage *> Messages;
 
@@ -54,7 +55,7 @@ private slots:
 	void imageReceived(const QString &imageId, const QString &imagePath);
 
 public:
-	ChatMessagesView(QWidget *parent = 0);
+	ChatMessagesView(Chat *chat = 0, QWidget *parent = 0);
 	virtual ~ChatMessagesView();
 
 	/**
@@ -89,7 +90,8 @@ public:
 
 	void rememberScrollBarPosition();
 
-	ChatWidget *chat() const { return Chat; }
+	Chat *chat() const { return CurrentChat; }
+	void setChat(Chat *chat);
 
 	ChatMessage *&prevMessage() { return PrevMessage; }
 

@@ -23,7 +23,7 @@
 #include "gui/windows/kadu-window-actions.h"
 #include "gui/windows/message-box.h"
 
-#include "custom_input.h"
+#include "custom-input.h"
 #include "debug.h"
 #include "emoticons.h"
 
@@ -455,7 +455,6 @@ void ChatWidgetActions::blockUserActionActivated(QAction *sender, bool toggled)
 void ChatWidgetActions::openChatActionActivated(QAction *sender, bool toggled)
 {
 	kdebugf();
-	Account *account = AccountManager::instance()->defaultAccount();
 	MainWindow *window = dynamic_cast<MainWindow *>(sender->parent());
 	if (!window)
 		return;
@@ -463,7 +462,7 @@ void ChatWidgetActions::openChatActionActivated(QAction *sender, bool toggled)
 	ContactSet contacts = window->contacts();
 	if (contacts.count() > 0)
 	{
-		Chat *chat = account->protocol()->findChat(contacts);
+		Chat *chat = (*contacts.begin()).prefferedAccount()->protocol()->findChat(contacts);
 		if (chat)
 			ChatWidgetManager::instance()->openChatWidget(chat, true);
 	}

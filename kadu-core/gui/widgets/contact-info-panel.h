@@ -13,7 +13,7 @@
 #include "configuration/configuration-aware-object.h"
 #include "contacts/contact.h"
 
-#include "kadu_text_browser.h"
+#include "kadu-text-browser.h"
 
 class ContactInfoPanel : public KaduTextBrowser, private ConfigurationAwareObject
 {

@@ -10,16 +10,16 @@
 #include <QtCore/QFileInfo>
 
 #include "accounts/account-manager.h"
-#include "chat/chat_message.h"
-#include "chat/chat_styles_manager.h"
+#include "chat/chat-message.h"
+#include "chat/chat-styles-manager.h"
 #include "configuration/configuration-file.h"
-#include "gui/widgets/chat_messages_view.h"
+#include "gui/widgets/chat-messages-view.h"
 #include "gui/widgets/preview.h"
 #include "gui/windows/syntax-editor-window.h"
 #include "misc/syntax-list.h"
 #include "parser/parser.h"
 
-#include "chat_engine_kadu.h"
+#include "chat-engine-kadu.h"
 
 KaduChatStyleEngine::KaduChatStyleEngine()
 {
@@ -166,8 +166,6 @@ void KaduChatStyleEngine::repaintMessages(ChatMessagesView *view)
 		}
 	}
 
-	view->rememberScrollBarPosition();
-
 	text += "</body></html>";
 
 	view->setHtml(text);
@@ -191,9 +189,15 @@ void KaduChatStyleEngine::prepareStylePreview(Preview *preview, QString styleNam
 	int count = preview->getObjectsToParse().count();
 	QString text;
 	if (count)
+	{
+		ChatMessage *message;
 		for (int i = 0; i < count; i++)
-			text += Parser::parse(content, AccountManager::instance()->defaultAccount(),
-				preview->getContactList().at(i), preview->getObjectsToParse().at(i));
+		{
+			message = dynamic_cast<ChatMessage *>(preview->getObjectsToParse().at(i));
+			text += Parser::parse(content, message->chat()->account(),
+				message->sender(), message);
+		}
+	}
 	preview->setHtml(QString("<html><head><style type='text/css'>%1</style></head><body>%2</body>").arg(ChatStylesManager::instance()->mainStyle(), text));
 }
 
@@ -218,7 +222,7 @@ void KaduChatStyleEngine::styleEditionRequested(QString styleName)
 	connect(editor, SIGNAL(updated(const QString &)), ChatStylesManager::instance(), SLOT(syntaxUpdated(const QString &)));
 	connect(editor, SIGNAL(syntaxAdded(const QString &)), this, SLOT(syntaxAdded(const QString &)));
 	connect(editor, SIGNAL(isNameValid(const QString &, bool &)), this, SLOT(validateStyleName(const QString &, bool &)));
-	ChatStylesManager::instance()->preparaPreview(editor->preview());
+	ChatStylesManager::instance()->preparePreview(editor->preview());
 	connect(editor->preview(), SIGNAL(needSyntaxFixup(QString &)), this, SLOT(chatSyntaxFixup(QString &)));
 	connect(editor->preview(), SIGNAL(needFixup(QString &)), this, SLOT(chatFixup(QString &)));
 	editor->refreshPreview();

@@ -21,7 +21,7 @@
 #include "configuration/configuration-aware-object.h"
 #include "contacts/contact-list.h"
 #include "protocols/services/chat-service.h"
-#include "chat_messages_view.h"
+#include "chat-messages-view.h"
 #include "exports.h"
 
 class QSplitter;

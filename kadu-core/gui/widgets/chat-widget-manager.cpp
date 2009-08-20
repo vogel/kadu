@@ -9,7 +9,7 @@
 
 #include "accounts/account.h"
 #include "accounts/account-manager.h"
-#include "chat/chat_message.h"
+#include "chat/chat-message.h"
 #include "chat/message/message.h"
 #include "chat/message/pending-messages-manager.h"
 #include "configuration/configuration-file.h"
@@ -23,8 +23,8 @@
 #include "gui/widgets/chat-edit-box.h"
 #include "gui/widgets/chat-widget-actions.h"
 #include "gui/widgets/contacts-list-widget-menu-manager.h"
-#include "gui/widgets/custom_input.h"
-#include "gui/windows/chat_window.h"
+#include "gui/widgets/custom-input.h"
+#include "gui/windows/chat-window.h"
 #include "gui/windows/kadu-window.h"
 #include "gui/windows/kadu-window-actions.h"
 #include "gui/windows/message-box.h"
@@ -176,21 +176,6 @@ ChatWidgetManager::~ChatWidgetManager()
 			this, SLOT(messageReceived(const Message &)));
 
 	closeAllWindows();
-
-#ifdef DEBUG_ENABLED
-	// for valgrind
-	QStringList chatActions;
-	chatActions << "autoSendAction" << "clearChatAction"
-				<< "insertEmoticonAction" << "whoisAction" << "insertImageAction"
-				<< "ignoreUserAction" << "blockUserAction" << "boldAction"
-				<< "italicAction" << "underlineAction" << "colorAction"
-				<< "sendAction" << "chatAction" << "openChatWithAction";
-	foreach(const QString &act, chatActions)
-	{
-		ActionDescription *a = KaduActions[act];
-		delete a;
-	}
-#endif
 
 	kdebugf2();
 }

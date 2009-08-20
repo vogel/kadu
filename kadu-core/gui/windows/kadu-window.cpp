@@ -29,7 +29,7 @@
 #include "gui/widgets/contact-info-panel.h"
 #include "gui/widgets/contacts-list-widget.h"
 #include "gui/widgets/group-tab-bar.h"
-#include "gui/widgets/kadu_text_browser.h"
+#include "gui/widgets/kadu-text-browser.h"
 #include "gui/windows/kadu-window-actions.h"
 #include "gui/widgets/status-buttons.h"
 #include "gui/widgets/status-menu.h"

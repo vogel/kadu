@@ -118,7 +118,7 @@ HistoryMainWidget::HistoryMainWidget(QWidget *parent, QWidget *window)
 	detailsLabels << tr("Contact") << tr("Title") << tr("Date") << tr("Length");
 	DetailsListView->setHeaderLabels(detailsLabels);
 	DetailsListView->setRootIsDecorated(TRUE);
-	ContentBrowser = new ChatMessagesView(right);
+	ContentBrowser = new ChatMessagesView(0, right);
 	ContentBrowser->setPruneEnabled(false);
 ///	ContentBrowser->setMargin(config_file.readNumEntry("General", "ParagraphSeparator"));
 
@@ -448,7 +448,7 @@ void HistoryDlg::detailsListItemClicked(QTreeWidgetItem* item, int column)
 	if (detailsListItem == NULL || item == NULL)
 		return;
 	QList<ChatMessage*> chat_messages = History::instance()->getMessages(detailsListItem->chat(), detailsListItem->date());
-
+	main->getContentBrowser()->setChat(detailsListItem->chat());
 	main->getContentBrowser()->clearMessages();
 	main->getContentBrowser()->appendMessages(chat_messages);
 	kdebugf2();

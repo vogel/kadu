@@ -19,7 +19,7 @@
 #include "gui/widgets/configuration/config-group-box.h"
 #include "gui/widgets/configuration/configuration-widget.h"
 #include "configuration/configuration-file.h"
-#include "gui/widgets/custom_input.h"
+#include "gui/widgets/custom-input.h"
 #include "gui/windows/message-box.h"
 #include "misc/misc.h"
 

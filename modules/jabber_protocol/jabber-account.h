@@ -40,8 +40,6 @@ private:
 	bool LegacySSLProbe;
 
 public:
-	static JabberAccount * loadFromStorage(StoragePoint *storagePoint);
-
 	explicit JabberAccount(const QUuid &uuid = QUuid());
 
 	// TODO - jid is always null - why?
@@ -56,18 +54,18 @@ public:
 	int priority() { return Priority; }
 	void setPriority(const int &priority) { Priority = priority; }
 
-	bool useCustomHostPort() { return UseCustomHostPort; };
-	void setUseCustomHostPort(bool use) { UseCustomHostPort = use; };
-	QString customHost() { return CustomHost; };
-	void setCustomHost(QString host) { CustomHost = host; };
-	int customPort() { return CustomPort; };
-	void setCustomPort(int port) { CustomPort = port; };
-	EncryptionFlag encryptionMode() { return EncryptionMode; };
-	void setEncryptionMode(EncryptionFlag flag) { EncryptionMode = flag; };
-	bool ignoreTLSWarnings() { return IgnoreTLSWarnings; };
-	void setIgnoreTLSWarnings(bool ignore) { IgnoreTLSWarnings = ignore; };
-	bool legacySSLProbe() { return LegacySSLProbe; };
-	void setLegacySSLProbe(bool probe) { LegacySSLProbe = probe; };
+	bool useCustomHostPort() { return UseCustomHostPort; }
+	void setUseCustomHostPort(bool use) { UseCustomHostPort = use; }
+	QString customHost() { return CustomHost; }
+	void setCustomHost(QString host) { CustomHost = host; }
+	int customPort() { return CustomPort; }
+	void setCustomPort(int port) { CustomPort = port; }
+	EncryptionFlag encryptionMode() { return EncryptionMode; }
+	void setEncryptionMode(EncryptionFlag flag) { EncryptionMode = flag; }
+	bool ignoreTLSWarnings() { return IgnoreTLSWarnings; }
+	void setIgnoreTLSWarnings(bool ignore) { IgnoreTLSWarnings = ignore; }
+	bool legacySSLProbe() { return LegacySSLProbe; }
+	void setLegacySSLProbe(bool probe) { LegacySSLProbe = probe; }
 
 	virtual bool setId(const QString &id);
 

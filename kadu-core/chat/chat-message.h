@@ -46,16 +46,6 @@ class KADUAPI ChatMessage : public QObject
 {
 	Q_OBJECT
 
-	/**
-		\fn QString convertCharacters(QString text, const QColor &bgcolor, EmoticonsStyle style)
-		Funkcja zamienia specjalne tagi na emotikonki,
-		html na czysty tekst itp.
-		\param text tekst do konwersji
-		\param bgcolor kolor t�a
-		\param style styl emotikonek
-	**/
-	QString convertCharacters(QString text, const QColor &bgcolor, EmoticonsStyle style);
-
 	Message MyMessage;
 	int SeparatorSize;
 

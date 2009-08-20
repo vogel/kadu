@@ -3,7 +3,7 @@
 
 #include <QtCore/QObject>
 
-#include "chat_style_engine.h"
+#include "chat-style-engine.h"
 
 class ChatMessage;
 class ChatMessagesView;

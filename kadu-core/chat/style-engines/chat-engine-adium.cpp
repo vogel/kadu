@@ -14,9 +14,9 @@
 
 #include "accounts/account.h"
 #include "accounts/account-manager.h"
-#include "chat/chat_message.h"
-#include "chat/chat_styles_manager.h"
-#include "gui/widgets/chat_messages_view.h"
+#include "chat/chat-message.h"
+#include "chat/chat-styles-manager.h"
+#include "gui/widgets/chat-messages-view.h"
 #include "gui/widgets/chat-widget.h"
 #include "gui/widgets/preview.h"
 #include "parser/parser.h"
@@ -25,7 +25,7 @@
 
 #include "misc/misc.h"
 
-#include "chat_engine_adium.h"
+#include "chat-engine-adium.h"
 
 const char *AdiumChatStyleEngine::xhtmlBase =
 	"<?xml version=\"1.0\" encoding=\"utf-8\"?>\n"
@@ -141,12 +141,10 @@ void AdiumChatStyleEngine::appendMessage(ChatMessagesView *view, ChatMessage *me
 		}
 	}
 	
-	formattedMessageHtml = replaceKeywords(view, BaseHref, formattedMessageHtml, message);
+	formattedMessageHtml = replaceKeywords(view->chat(), BaseHref, formattedMessageHtml, message);
 	formattedMessageHtml.replace("\n", " ");
 	formattedMessageHtml.prepend("<span>");
 	formattedMessageHtml.append("</span>");
-
-	view->rememberScrollBarPosition();
 
 	if (includeHeader)
 		view->page()->mainFrame()->evaluateJavaScript("kadu_appendNextMessage(\'"+ formattedMessageHtml +"\')");
@@ -159,15 +157,13 @@ void AdiumChatStyleEngine::appendMessage(ChatMessagesView *view, ChatMessage *me
 void AdiumChatStyleEngine::refreshView(ChatMessagesView *view)
 {
 	QString styleBaseHtml = QString(xhtmlBase).arg(BaseHref)
-		.arg(replaceKeywords(view, BaseHref, HeaderHtml))
-		.arg(replaceKeywords(view, BaseHref, FooterHtml))
+		.arg(replaceKeywords(view->chat(), BaseHref, HeaderHtml))
+		.arg(replaceKeywords(view->chat(), BaseHref, FooterHtml))
 		.arg("Variants/" + StyleVariantName)
 		.arg(ChatStylesManager::instance()->mainStyle());
 	view->setHtml(styleBaseHtml);
 
 	view->page()->mainFrame()->evaluateJavaScript(jsCode);
-
-	view->rememberScrollBarPosition();
 
 	foreach (ChatMessage *message, view->messages())
 		appendMessage(view, message);
@@ -178,7 +174,7 @@ void AdiumChatStyleEngine::refreshView(ChatMessagesView *view)
 AdiumChatStyleEngine::AdiumChatStyleEngine()
 {
 	// Load required javascript funtions
-	QFile file(dataPath("kadu") + "/scripts/adium_style_scripts.js");
+	QFile file(dataPath("kadu") + "/scripts/adium-style-scripts.js");
 	if (file.open(QIODevice::ReadOnly | QIODevice::Text))
 		jsCode = file.readAll();
 
@@ -279,46 +275,49 @@ void AdiumChatStyleEngine::prepareStylePreview(Preview *preview, QString styleNa
 
 	QString headerHtml = readThemePart(styleHref + "Header.html");
 	QString footerHtml = readThemePart(styleHref + "Footer.html");
+	if (preview->getObjectsToParse().count() != 2)
+		return;
+
+	ChatMessage *message = dynamic_cast<ChatMessage *>(preview->getObjectsToParse().at(0));
 
 	QString styleBaseHtml = QString(xhtmlBase).arg(styleHref)
-		.arg(replaceKeywords(0, styleHref, headerHtml))
-		.arg(replaceKeywords(0, styleHref, footerHtml))
+		.arg(replaceKeywords(message->chat(), styleHref, headerHtml))
+		.arg(replaceKeywords(message->chat(), styleHref, footerHtml))
 		.arg("Variants/" + variantName)
 		.arg(ChatStylesManager::instance()->mainStyle());
 	preview->setHtml(styleBaseHtml);
 
 	preview->page()->mainFrame()->evaluateJavaScript(jsCode);
-/*	ChatMessage *message = dynamic_cast<ChatMessage *>(preview->getObjectsToParse().at(0));
 
-	incomingHtml = replaceKeywords(0, styleHref, incomingHtml, message);
+	incomingHtml = replaceKeywords(message->chat(), styleHref, incomingHtml, message);
 	incomingHtml.replace("\n", " ");
 	incomingHtml.prepend("<span>");
 	incomingHtml.append("</span>");
 	preview->page()->mainFrame()->evaluateJavaScript("kadu_appendNextMessage(\'"+ incomingHtml +"\')");
 
 	message = dynamic_cast<ChatMessage *>(preview->getObjectsToParse().at(1));
-	outgoingHtml = replaceKeywords(0, styleHref, outgoingHtml, message);
+	outgoingHtml = replaceKeywords(message->chat(), styleHref, outgoingHtml, message);
 	outgoingHtml.replace("\n", " ");
 	outgoingHtml.prepend("<span>");
 	outgoingHtml.append("</span>");
 	preview->page()->mainFrame()->evaluateJavaScript("kadu_appendNextMessage(\'"+ outgoingHtml +"\')");
-*/
+
 }
 
 // Some parts of the code below are borrowed from Kopete project (http://kopete.kde.org/)
-QString AdiumChatStyleEngine::replaceKeywords(ChatMessagesView *view, QString &styleHref, QString &style)
+QString AdiumChatStyleEngine::replaceKeywords(Chat *chat, QString &styleHref, QString &style)
 {
 	QString result = style;
 	QString name;
 
 //TODO: get Chat name (contacts' nicks?)
-	if (view && view->chat())
+	if (chat)
 	{
 		// Replace %chatName% //TODO. Find way to dynamic update this tag (add id ?)
-		int uinsSize = view->chat()->chat()->contacts().count();
+		int uinsSize = chat->contacts().count();
 		int i = 0;
 
-		foreach (const Contact &contact, view->chat()->chat()->contacts())
+		foreach (const Contact &contact, chat->contacts())
 		{
 			name.append(contact.display());
 
@@ -327,8 +326,8 @@ QString AdiumChatStyleEngine::replaceKeywords(ChatMessagesView *view, QString &s
 		}
 	}
 	result.replace(QString("%chatName%"), name);
-	// Replace %sourceName%. TODO: Do sth with it!
-	result.replace(QString("%sourceName%"), AccountManager::instance()->defaultAccount()->name());
+	// Replace %sourceName%
+	result.replace(QString("%sourceName%"), chat->account()->name());
 	// Replace %destinationName%
 	result.replace(QString("%destinationName%"), name);
 	// For %timeOpened%, display the date and time. TODO: get real time 
@@ -351,7 +350,7 @@ QString AdiumChatStyleEngine::replaceKeywords(ChatMessagesView *view, QString &s
 
 	return result;
 }
-QString AdiumChatStyleEngine::replaceKeywords(ChatMessagesView *view, QString &styleHref, QString &source, ChatMessage *message)
+QString AdiumChatStyleEngine::replaceKeywords(Chat *chat, QString &styleHref, QString &source, ChatMessage *message)
 {
 	QString result = source;
 	QString nick, contactId, service, protocolIcon, nickLink;
@@ -359,14 +358,11 @@ QString AdiumChatStyleEngine::replaceKeywords(ChatMessagesView *view, QString &s
 	// Replace sender (contact nick)
 	result.replace(QString("%sender%"), message->sender().display());
 	// Replace %screenName% (contact ID)
-	result.replace(QString("%senderScreenName%"), message->sender().id(message->sender().prefferedAccount()));
-	// Replace service name (protocol name) TODO:
-	if (view)
-		result.replace(QString("%service%"), view->chat()->currentProtocol()->protocolFactory()->displayName());
-	else
-		result.replace(QString("%service%"), AccountManager::instance()->defaultAccount()->protocol()->protocolFactory()->displayName());
-	// Replace protocolIcon (sender statusIcon)
-	result.replace(QString("%senderStatusIcon%"), "");
+	result.replace(QString("%senderScreenName%"), message->sender().id(chat->account()));
+	// Replace service name (protocol name)
+	result.replace(QString("%service%"), chat->account()->protocol()->protocolFactory()->displayName());
+	// Replace protocolIcon (sender statusIcon). TODO:
+	result.replace(QString("%senderStatusIcon%"), chat->account()->protocol()->protocolFactory()->iconName());
 
 	// Replace time
 	QDateTime time = message->sdate().isNull() ? message->date(): message->sdate();

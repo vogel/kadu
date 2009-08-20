@@ -13,7 +13,7 @@
 
 #include "misc/misc.h"
 
-#include "chat_message.h"
+#include "chat-message.h"
 
 QString formatMessage(const QString &text, const QString &backgroundColor)
 {
@@ -157,33 +157,6 @@ ChatMessage::ChatMessage(const QString &rawContent, ChatMessageType type, QDateT
 	MyMessage.setReceiveDate(date);
 	connect(&MyMessage, SIGNAL(statusChanged(Message::Status)),
 			this, SIGNAL(statusChanged(Message::Status)));
-}
-
-// TODO: remove?
-/* convert special characters into emoticons, HTML into plain text and so forth */
-QString ChatMessage::convertCharacters(QString edit, const QColor &bgcolor, EmoticonsStyle style)
-{
-	// zmieniamy windowsowe \r\n na unixowe \n
-	edit.replace("\r\n", "<br/>");
-	edit.replace("\n",   "<br/>");
-	edit.replace("\r",   "<br/>");
-	edit.replace(QChar::LineSeparator, "<br />");
-
-	HtmlDocument doc;
-	doc.parseHtml(edit);
-
-	// detekcja adresow url i email
-	doc.convertGGToHtml();
-	doc.convertUrlsToHtml();
-	doc.convertMailToHtml();
-
-	if (style != EMOTS_NONE)
-		EmoticonsManager::instance()->expandEmoticons(doc, bgcolor, style);
-
-// 	GaduImagesManager::setBackgroundsForAnimatedImages(doc, bgcolor);
-	edit = doc.generateHtml();
-
-	return edit;
 }
 
 void ChatMessage::replaceLoadingImages(const QString &imageId, const QString &imagePath)

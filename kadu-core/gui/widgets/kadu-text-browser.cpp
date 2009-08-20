@@ -24,7 +24,7 @@
 #include "html_document.h"
 #include "misc/misc.h"
 
-#include "kadu_text_browser.h"
+#include "kadu-text-browser.h"
 
 KaduTextBrowser::KaduTextBrowser(QWidget *parent)
 	: QWebView(parent), refreshTimer()

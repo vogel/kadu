@@ -17,8 +17,8 @@
 
 #include "accounts/account.h"
 #include "accounts/account-manager.h"
-#include "chat/chat_message.h"
-#include "chat/chat_styles_manager.h"
+#include "chat/chat-message.h"
+#include "chat/chat-styles-manager.h"
 #include "configuration/configuration-file.h"
 #include "contacts/contact.h"
 #include "contacts/contact-data.h"
@@ -31,14 +31,11 @@
 #include "gui/widgets/configuration/config-path-list-edit.h"
 #include "gui/widgets/configuration/config-check-box.h"
 #include "gui/widgets/configuration/configuration-widget.h"
-#include "gui/widgets/chat_messages_view.h"
 #include "gui/widgets/contact-info-panel.h"
 #include "gui/widgets/tool-tip-class-manager.h"
 #include "gui/windows/kadu-window.h"
 #include "gui/windows/syntax-editor-window.h"
 #include "status/status.h"
-
-//#include "../modules/gadu_protocol/gadu-protocol.h"
 
 #include "debug.h"
 #include "icons-manager.h"
@@ -140,13 +137,12 @@ MainConfigurationWindow::MainConfigurationWindow()
 	onStartupSetLastDescription = dynamic_cast<QCheckBox *>(widget()->widgetById("onStartupSetLastDescription"));
 	QLineEdit *disconnectDescription = dynamic_cast<QLineEdit *>(widget()->widgetById("disconnectDescription"));
 	QLineEdit *onStartupSetDescription = dynamic_cast<QLineEdit *>(widget()->widgetById("onStartupSetDescription"));
-//TODO 0.6.6:
+
 	Account * account = AccountManager::instance()->defaultAccount();
 	if ( 0 != account && 0 != account->protocol())
 	{
-	//	GaduProtocol *gadu = dynamic_cast<GaduProtocol *>(account->protocol());
-	//	disconnectDescription->setMaxLength(gadu->maxDescriptionLength());
-	//	onStartupSetDescription->setMaxLength(gadu->maxDescriptionLength());
+		disconnectDescription->setMaxLength(account->maxDescriptionLength());
+		onStartupSetDescription->setMaxLength(account->maxDescriptionLength());
 	}
 
 	connect(widget()->widgetById("disconnectWithCurrentDescription"), SIGNAL(toggled(bool)), disconnectDescription, SLOT(setDisabled(bool)));

@@ -15,20 +15,21 @@
 #include <QtGui/QPushButton>
 
 #include "accounts/account-manager.h"
-#include "chat/chat_message.h"
-#include "chat/style-engines/chat_engine_adium.h"
-#include "chat/style-engines/chat_engine_kadu.h"
+#include "chat/chat-message.h"
+#include "chat/simple-chat.h"
+#include "chat/style-engines/chat-engine-adium.h"
+#include "chat/style-engines/chat-engine-kadu.h"
 #include "configuration/configuration-file.h"
 #include "core/core.h"
-#include "gui/widgets/chat_messages_view.h"
+#include "gui/widgets/chat-messages-view.h"
 #include "gui/widgets/preview.h"
 #include "gui/widgets/configuration/configuration-widget.h"
 #include "gui/widgets/configuration/config-group-box.h"
 #include "gui/windows/message-box.h"
-
 #include "misc/misc.h"
+#include "protocols/protocols-manager.h"
 
-#include "chat_styles_manager.h"
+#include "chat-styles-manager.h"
 
 ChatStylesManager * ChatStylesManager::Instance = 0;
 
@@ -269,7 +270,7 @@ void ChatStylesManager::mainConfigurationWindowCreated(MainConfigurationWindow *
 //preview
 	preview = new Preview();
 
-	preparaPreview(preview);
+	preparePreview(preview);
 
 	CurrentEngine->prepareStylePreview(preview, CurrentEngine->currentStyleName(), CurrentEngine->currentStyleVariant());
 //
@@ -284,10 +285,8 @@ void ChatStylesManager::configurationApplied()
 	config_file.writeEntry("Look", "ChatStyleVariant", variantListCombo->currentText());
 }
 
-void ChatStylesManager::preparaPreview(Preview *preview)
+void ChatStylesManager::preparePreview(Preview *preview)
 {
-	Account * account = AccountManager::instance()->defaultAccount();
-
 	Contact example;
 	example.setFirstName(qApp->translate("@default", "Mark"));
 	example.setLastName(qApp->translate("@default", "Smith"));
@@ -297,18 +296,35 @@ void ChatStylesManager::preparaPreview(Preview *preview)
 	example.setEmail("jimbo@mail.server.net");
 	example.setHomePhone("+481234567890");
 
-	// TODO: make an empty chat here
-// 	receivers.insert(example);
-// 	ChatMessage *chatMessage = new ChatMessage(account, Core::instance()->myself(), receivers, tr("Your message"), TypeSent,
-// 		QDateTime::currentDateTime(), QDateTime::currentDateTime());
-// 	chatMessage->setSeparatorSize(CfgHeaderSeparatorHeight);
-// 	preview->addObjectToParse(Core::instance()->myself() , chatMessage);
-// 
-// 	chatMessage = new ChatMessage(account, example, ContactSet(Core::instance()->myself()),
-// 			tr("Message from Your friend"), TypeReceived,
-// 			QDateTime::currentDateTime(), QDateTime::currentDateTime());
-// 	chatMessage->setSeparatorSize(CfgHeaderSeparatorHeight);
-// 	preview->addObjectToParse(example, chatMessage);
+	Account *account;
+	if (AccountManager::instance()->defaultAccount())
+		account = AccountManager::instance()->defaultAccount();
+	else if (ProtocolsManager::instance()->protocolFactories().count())
+		account = ProtocolsManager::instance()->protocolFactories()[0]->newAccount();
+	else
+		return;
+
+	SimpleChat *chat = new SimpleChat(account, example);
+	connect(preview, SIGNAL(destroyed()), chat, SLOT(deleteLater()));
+
+	Message messageSent(chat, Core::instance()->myself());
+	messageSent
+		.setContent(tr("Your message"))
+		.setReceiveDate(QDateTime::currentDateTime())
+		.setSendDate(QDateTime::currentDateTime());
+
+	ChatMessage *chatMessage = new ChatMessage(messageSent, TypeSent);
+	chatMessage->setSeparatorSize(CfgHeaderSeparatorHeight);
+	preview->addObjectToParse(Core::instance()->myself() , chatMessage);
+
+	Message messageReceived(chat, example);
+	messageReceived
+		.setContent(tr("Message from Your friend"))
+		.setReceiveDate(QDateTime::currentDateTime())
+		.setSendDate(QDateTime::currentDateTime());
+	chatMessage = new ChatMessage(messageReceived, TypeReceived);
+	chatMessage->setSeparatorSize(CfgHeaderSeparatorHeight);
+	preview->addObjectToParse(example, chatMessage);
 }
 
 void ChatStylesManager::styleChangedSlot(const QString &styleName)

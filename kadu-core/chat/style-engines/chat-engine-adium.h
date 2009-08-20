@@ -1,8 +1,9 @@
 #ifndef CHAT_ENGINE_ADIUM_H
 #define CHAT_ENGINE_ADIUM_H
 
-#include "chat_style_engine.h"
+#include "chat-style-engine.h"
 
+class Chat;
 class ChatMessage;
 class ChatMessagesView;
 class Preview;
@@ -25,8 +26,8 @@ class AdiumChatStyleEngine : public ChatStyleEngine
 
 	QString readThemePart(QString part);
 
-	QString replaceKeywords(ChatMessagesView *view, QString &styleHref, QString &style);
-	QString replaceKeywords(ChatMessagesView *view, QString &styleHref, QString &source, ChatMessage *message);
+	QString replaceKeywords(Chat *chat, QString &styleHref, QString &style);
+	QString replaceKeywords(Chat *chat, QString &styleHref, QString &source, ChatMessage *message);
 
 	bool clearDirectory(const QString &directory);
 
@@ -48,11 +49,11 @@ public:
 
 	virtual void prepareStylePreview(Preview *preview, QString styleName, QString variantName);
 
-	virtual void configurationUpdated() {};
+	virtual void configurationUpdated() {}
 
 	virtual void loadTheme(const QString &styleName, const QString &variantName);
 
-	virtual void styleEditionRequested(QString ) {}; //do nothing. Adium styles don't support editing
+	virtual void styleEditionRequested(QString ) {} //do nothing. Adium styles don't support editing
 
 	virtual bool removeStyle(const QString &styleName);
 };

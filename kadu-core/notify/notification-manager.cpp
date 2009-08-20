@@ -20,7 +20,7 @@
 #include "gui/actions/action.h"
 #include "gui/widgets/chat-widget-manager.h"
 #include "gui/widgets/contacts-list-widget-menu-manager.h"
-#include "gui/widgets/custom_input.h"
+#include "gui/widgets/custom-input.h"
 #include "gui/windows/main-configuration-window.h"
 #include "gui/windows/main-window.h"
 #include "gui/windows/message-box.h"

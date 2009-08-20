@@ -17,7 +17,7 @@
 #include "accounts/account.h"
 #include "accounts/account-manager.h"
 #include "chat/chat-manager.h"
-#include "chat/chat_message.h"
+#include "chat/chat-message.h"
 #include "configuration/configuration-file.h"
 #include "contacts/contact-account-data.h"
 #include "contacts/model/contact-list-model.h"
@@ -36,7 +36,7 @@
 
 #include "activate.h"
 #include "chat-edit-box.h"
-#include "custom_input.h"
+#include "custom-input.h"
 #include "debug.h"
 #include "emoticons.h"
 #include "icons-manager.h"
@@ -86,7 +86,7 @@ void ChatWidget::createGui()
 	horizSplit = new QSplitter(Qt::Horizontal, this);
 	horizSplit->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Expanding);
 
-	MessagesView = new ChatMessagesView(this);
+	MessagesView = new ChatMessagesView(CurrentChat);
 	connect(MessagesView, SIGNAL(selectionChanged()), this, SLOT(messagesViewSelectionChanged()));
 
 	QShortcut *shortcut = new QShortcut(QKeySequence(Qt::Key_Return + Qt::CTRL), this);

@@ -13,7 +13,9 @@ class ChatStyleEngine
 protected:
 	QString EngineName;
 	QString CurrentStyleName;
+
 public:
+	virtual ~ChatStyleEngine() {}
 	virtual QString engineName() { return EngineName; }
 	virtual QString currentStyleName() { return CurrentStyleName; }
 	virtual QString currentStyleVariant() { return QString::null; }

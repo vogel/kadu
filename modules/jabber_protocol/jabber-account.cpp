@@ -15,18 +15,6 @@
 #include "jid-util.h"
 #include "system-info.h"
 
-JabberAccount * JabberAccount::loadFromStorage(StoragePoint *storagePoint)
-{
-	if (!storagePoint || !storagePoint->storage())
-		return 0;
-
-	JabberAccount *result = new JabberAccount();
-	result->setStorage(storagePoint);
-	result->load();
-
-	return result;
-}
-
 JabberAccount::JabberAccount(const QUuid &uuid)
 	: Account(uuid), EncryptionMode(JabberAccount::Encryption_Auto), IgnoreTLSWarnings(false)
 {

@@ -21,7 +21,7 @@
 #include "gui/windows/image-dialog.h"
 
 #include "chat-widget.h"
-#include "custom_input.h"
+#include "custom-input.h"
 #include "debug.h"
 #include "emoticons.h"
 #include "toolbar.h"

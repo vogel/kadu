@@ -14,7 +14,7 @@
 #include "gui/hot-key.h"
 #include "debug.h"
 
-#include "custom_input.h"
+#include "custom-input.h"
 
 CustomInput::CustomInput(QWidget *parent)
 	: QTextEdit(parent), autosend_enabled(true), CopyPossible(false)
