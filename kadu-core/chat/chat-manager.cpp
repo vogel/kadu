@@ -121,7 +121,18 @@ QList<Chat *> ChatManager::chatsForAccount(Account *account)
 {
 	if (!Chats.contains(account))
 		return QList<Chat *>();
-	return Chats[account]; 
+	return Chats[account];
+}
+
+Chat * ChatManager::findChat(Account *account, ContactList contacts)
+{
+	foreach(Chat *chat, chatsForAccount(account))
+	{
+		if (chat->contacts().toContactList() == contacts)
+			return chat;
+	}
+
+	return 0;
 }
 
 Chat * ChatManager::byUuid(QUuid uuid)

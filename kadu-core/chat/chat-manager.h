@@ -24,6 +24,7 @@
 #include "exports.h"
 
 class Account;
+class ContactList;
 class XmlConfigFile;
 
 class KADUAPI ChatManager : public QObject, public StorableObject, public AccountsAwareObject
@@ -57,6 +58,7 @@ public:
 	void addChat(Chat *chat);
 	void removeChat(Chat *chat);
 	QList<Chat *> chatsForAccount(Account *account);
+	Chat * findChat(Account *account, ContactList contacts);
 	Chat * byUuid(QUuid uuid);
 
 signals:
