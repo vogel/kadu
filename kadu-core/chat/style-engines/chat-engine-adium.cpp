@@ -21,8 +21,6 @@
 #include "gui/widgets/preview.h"
 #include "parser/parser.h"
 #include "protocols/protocol-factory.h"
-
-
 #include "misc/misc.h"
 
 #include "chat-engine-adium.h"
@@ -268,7 +266,7 @@ void AdiumChatStyleEngine::prepareStylePreview(Preview *preview, QString styleNa
 
 	QString incomingHtml = readThemePart(styleHref + "Incoming/Content.html");
 	QString outgoingHtml;
-	if (dir.exists("Outgoing/Content.html"))
+	if (QFile::exists(styleHref + "Outgoing/Content.html"))
 		outgoingHtml = readThemePart(styleHref + "Outgoing/Content.html");
 	else
 		outgoingHtml = incomingHtml;
