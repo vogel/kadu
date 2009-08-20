@@ -209,18 +209,18 @@ void AdiumChatStyleEngine::loadTheme(const QString &styleName, const QString &va
 
 	IncomingHtml = readThemePart(BaseHref + "Incoming/Content.html");
 
-	if (dir.exists("Incoming/NextContent.html"))
+	if (QFile::exists(BaseHref + "Incoming/NextContent.html"))
 		NextIncomingHtml = readThemePart(BaseHref + "Incoming/NextContent.html");
 	else
 		NextIncomingHtml = IncomingHtml;
 
-	if (dir.exists("Outgoing/Content.html"))
+	if (QFile::exists(BaseHref + "Outgoing/Content.html"))
 		OutgoingHtml = readThemePart(BaseHref + "Outgoing/Content.html");
 	else
 		OutgoingHtml = IncomingHtml;
 
-	if (dir.exists("Outgoing/NextContent.html"))
-		NextOutgoingHtml = readThemePart(BaseHref + "Outgoing/Content.html");
+	if (QFile::exists(BaseHref + "Outgoing/NextContent.html"))
+		NextOutgoingHtml = readThemePart(BaseHref + "Outgoing/NextContent.html");
 	else
 		NextOutgoingHtml = OutgoingHtml;
 
