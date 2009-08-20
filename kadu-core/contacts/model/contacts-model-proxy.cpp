@@ -77,6 +77,9 @@ bool ContactsModelProxy::lessThan(const QModelIndex &left, const QModelIndex &ri
 
 bool ContactsModelProxy::filterAcceptsRow(int sourceRow, const QModelIndex &sourceParent) const
 {
+	if (sourceParent.isValid())
+	    return true;
+
 	Contact contact = SourceContactModel->contact(sourceModel()->index(sourceRow, 0));
 	foreach (AbstractContactFilter *filter, Filters)
 		if (!filter->acceptContact(contact))
