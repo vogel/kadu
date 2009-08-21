@@ -34,6 +34,11 @@ public:
 
 	virtual QString statusNamePrefix() { return QString(""); }
 
+	virtual void setDefaultStatus(const QString &startupStatus, bool offlineToInvisible,
+				      const QString &startupDescription, bool StartupLastDescription) = 0;
+	virtual void disconnectAndStoreLastStatus(bool disconnectWithCurrentDescription,
+						  const QString &disconnectDescription) = 0;
+
 signals:
 	void statusChanged();
 

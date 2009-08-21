@@ -111,6 +111,11 @@ public:
 
 	QPixmap statusPixmap(Status status);
 
+	virtual void setDefaultStatus(const QString &startupStatus, bool offlineToInvisible,
+				      const QString &startupDescription, bool StartupLastDescription);
+	virtual void disconnectAndStoreLastStatus(bool disconnectWithCurrentDescription,
+						  const QString &disconnectDescription);
+
 signals:
 	void contactStatusChanged(Account *account, Contact contact, Status oldStatus);
 

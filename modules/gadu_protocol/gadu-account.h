@@ -60,6 +60,8 @@ public:
 	void setRemoveCompletedTransfers(bool remove) { RemoveCompletedTransfers = remove; }
 	void setDccForwarding(bool forwarding) { DccForwarding = forwarding; }
 
+	void import_0_6_5_LastStatus();
+
 };
 
 #endif // GADU_ACCOUNT

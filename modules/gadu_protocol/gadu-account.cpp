@@ -7,6 +7,7 @@
  *                                                                         *
  ***************************************************************************/
 
+#include "configuration/configuration-file.h"
 #include "configuration/xml-configuration-file.h"
 #include "gui/windows/open-chat-with/open-chat-with-runner.h"
 #include "gui/windows/open-chat-with/open-chat-with-runner-manager.h"
@@ -78,6 +79,25 @@ void GaduAccount::store()
 	storeValue("DccLocalPort", DccLocalPort);
 	storeValue("RemoveCompletedTransfers", RemoveCompletedTransfers);
 	storeValue("DccForwarding", DccForwarding);
+}
+
+void GaduAccount::import_0_6_5_LastStatus()
+{
+    	if (!isValidStorage())
+		return;
+
+    	QString name;
+	int typeIndex = config_file.readNumEntry("General", "LastStatusType", -1);
+	switch (typeIndex)
+	{
+		case 0: name = "Online"; break;
+		case 1: name = "Away"; break;
+		case 2: name = "Invisible"; break;
+		default: name = "Offline"; break;
+	}
+
+	storeValue("LastStatusName", name);
+	storeValue("LastStatusDescription", config_file.readEntry("General", "LastStatusDescription"));
 }
 
 /*

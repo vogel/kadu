@@ -72,6 +72,11 @@ public:
 
 	virtual int maxDescriptionLength();
 
+	virtual void setDefaultStatus(const QString &startupStatus, bool offlineToInvisible,
+				      const QString &startupDescription, bool StartupLastDescription);
+	virtual void disconnectAndStoreLastStatus(bool disconnectWithCurrentDescription,
+						  const QString &disconnectDescription);
+
 public slots:
 	void removeAccount(Account *account);
 

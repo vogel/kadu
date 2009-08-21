@@ -26,6 +26,7 @@
 #include "protocols/protocol.h"
 #include "protocols/protocol-factory.h"
 #include "protocols/services/chat-service.h"
+#include "status/status-container-manager.h"
 #include "status/status-type.h"
 #include "status/status-type-manager.h"
 
@@ -263,14 +264,15 @@ void Core::init()
 	Configuration->load();
 
 	// protocol modules should be loaded before gui
-	// it fixes crash on loading pending messages from config, and contacts import from 0.6.5, and maybe other issues
+	// it fixes crash on loading pending messages from config, contacts import from 0.6.5, and maybe other issues
 	ModulesManager::instance()->loadProtocolModules();
 
 	Myself = Contact();
 	Myself.setDisplay(config_file.readEntry("General", "Nick"));
 
-	connect(StatusChangerManager::instance(), SIGNAL(statusChanged(Status)), this, SLOT(changeStatus(Status)));
+	connect(StatusContainerManager::instance(), SIGNAL(statusChanged()), this, SLOT(statusChanged()));
 
+	// TODO 0.6.6:
 	StatusChanger = new UserStatusChanger();
 	StatusChangerManager::instance()->registerStatusChanger(StatusChanger);
 	StatusChangerManager::instance()->enable();
@@ -284,89 +286,12 @@ void Core::init()
 #else
 	setIcon(IconsManager::instance()->loadPixmap("Offline"));
 #endif
-	loadDefaultStatus();
-
 	QTimer::singleShot(15000, this, SLOT(deleteOldConfigurationFiles()));
-}
-
-void Core::loadDefaultStatus()
-{
-	kdebugf();
-
-	QString description;
-	QString startupStatus = config_file.readEntry("General", "StartupStatus");
-	Status status;
-
-	if (config_file.readBoolEntry("General", "StartupLastDescription"))
-		description = config_file.readEntry("General", "LastStatusDescription");
-	else
-		description = config_file.readEntry("General", "StartupDescription");
-
-	bool offlineToInvisible = false;
-	QString name;
-
-	if (startupStatus.isEmpty() || startupStatus == "LastStatus")
-	{
-		name = config_file.readEntry("General", "LastStatusName");
-		if ("" == name)
-		{
-			int typeIndex = config_file.readNumEntry("General", "LastStatusType", -1);
-			switch (typeIndex)
-			{
-				case 0: name = "Online"; break;
-				case 1: name = "Away"; break;
-				case 2: name = "Invisible"; break;
-				default: name = "Offline"; break;
-			}
-
-			config_file.removeVariable("General", "LastStatusType");
-		}
-
-		offlineToInvisible = config_file.readBoolEntry("General", "StartupStatusInvisibleWhenLastWasOffline");
-	}
-	else if (startupStatus == "Busy")
-		name = "Away";
-	else
-		name = startupStatus;
-
-	if ("Offline" == name && offlineToInvisible)
-		name = "Invisible";
-
-	status.setType(name);
-	status.setDescription(description);
-
-	Account *account = AccountManager::instance()->defaultAccount();
-	if (account)
-		account->protocol()->setPrivateMode(config_file.readBoolEntry("General", "PrivateStatus"));
-	setStatus(status);
-
-	kdebugf2();
 }
 
 void Core::storeConfiguration()
 {
-	if (config_file.readEntry("General", "StartupStatus") == "LastStatus")
-		config_file.writeEntry("General", "LastStatusName", StatusChanger->status().type());
-
-	if (config_file.readBoolEntry("General", "StartupLastDescription"))
-		config_file.writeEntry("General", "LastStatusDescription", StatusChanger->status().description());
-
 	PendingMessagesManager::instance()->storeConfiguration(xml_config_file);
-// 		IgnoredManager::writeToConfiguration();
-
-// 	GroupManager::instance()->store();
-// 	ContactManager::instance()->store();
-// 	AccountManager::instance()->store();
-
-	if (AccountManager::instance()->defaultAccount() && AccountManager::instance()->defaultAccount()->protocol())
-	{
-		Protocol *gadu = AccountManager::instance()->defaultAccount()->protocol();
-		if (gadu->isConnected())
-			if (config_file.readBoolEntry("General", "DisconnectWithCurrentDescription"))
-				setOffline(gadu->status().description());
-			else
-				setOffline(config_file.readEntry("General", "DisconnectDescription"));
-	}
 
 	xml_config_file->makeBackup();
 }
@@ -403,33 +328,11 @@ void Core::deleteOldConfigurationFiles()
 	kdebugf2();
 }
 
-//TODO 0.6.6:
-void Core::changeStatus(Status newStatus)
+void Core::statusChanged()
 {
 	kdebugf();
 
-	foreach (Account *account, AccountManager::instance()->accounts())
-	{
-		Protocol *protocol = account->protocol();
-		if (!protocol)
-			return;
-
-		if (protocol->nextStatus() == newStatus)
-			return;
-
-		protocol->setStatus(newStatus);
-	}
-
-	//update icon:
-	Account *account = AccountManager::instance()->defaultAccount();
-	if (!account)
-		return;
-
-	Protocol *protocol = account->protocol();
-	if (!protocol)
-		return;
-
-	setIcon(protocol->statusPixmap(newStatus));
+	setIcon(StatusContainerManager::instance()->statusPixmap());
 }
 
 void Core::kaduWindowDestroyed()
@@ -453,15 +356,10 @@ void Core::accountRegistered(Account *account)
 	connect(protocol, SIGNAL(connecting(Account *)), this, SIGNAL(connecting()));
 	connect(protocol, SIGNAL(connected(Account *)), this, SIGNAL(connected()));
 	connect(protocol, SIGNAL(disconnected(Account *)), this, SIGNAL(disconnected()));
-// 	TODO: 0.6.6
-// 	connect(protocol, SIGNAL(statusChanged(Account *, Status)),
-// 			this, SLOT(statusChanged(Account *, Status)));
 
 	ContactAccountData *contactAccountData = protocol->protocolFactory()->
 			newContactAccountData(Myself, account, account->id());
 	Myself.addAccountData(contactAccountData);
-
-	protocol->setStatus(StatusChangerManager::instance()->status());
 }
 
 void Core::accountUnregistered(Account *account)
@@ -480,8 +378,6 @@ void Core::accountUnregistered(Account *account)
 	disconnect(protocol, SIGNAL(connecting(Account *)), this, SIGNAL(connecting()));
 	disconnect(protocol, SIGNAL(connected(Account *)), this, SIGNAL(connected()));
 	disconnect(protocol, SIGNAL(disconnected(Account *)), this, SIGNAL(disconnected()));
-//	disconnect(protocol, SIGNAL(statusChanged(Account *, Status)),
-//			this, SLOT(statusChanged(Account *, Status)));
 
 	Myself.removeAccountData(account);
 }

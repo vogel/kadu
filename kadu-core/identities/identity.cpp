@@ -162,3 +162,53 @@ int Identity::maxDescriptionLength()
 		? Accounts[0]->maxDescriptionLength()
 		: -1;
 }
+
+void Identity::setDefaultStatus(const QString &startupStatus, bool offlineToInvisible,
+				      const QString &startupDescription, bool StartupLastDescription)
+{
+	QString description;
+    	if (StartupLastDescription)
+		description = loadValue<QString>("LastStatusDescription");
+	else
+		description = startupDescription;
+
+	QString name;
+	if (startupStatus == "LastStatus")
+	{
+		name = loadValue<QString>("LastStatusName");
+		if ("Offline" == name && offlineToInvisible)
+			name = "Invisible";
+	}
+	else
+		name = startupStatus;
+
+	if ("Offline" == name && offlineToInvisible)
+		name = "Invisible";
+
+	Status status;
+	status.setType(name);
+	status.setDescription(description);
+
+	setStatus(status);
+}
+void Identity::disconnectAndStoreLastStatus(bool disconnectWithCurrentDescription,
+						  const QString &disconnectDescription)
+{
+	storeValue("LastStatusDescription", status().description());
+
+	storeValue("LastStatusName", statusName());
+
+	if (status().type() == "Offline")
+		return;
+
+	Status disconnectStatus;
+	disconnectStatus.setType("Offline");
+	QString description;
+	if (disconnectWithCurrentDescription)
+		description = status().description();
+	else
+		description = disconnectDescription;
+
+	disconnectStatus.setDescription(description);
+	setStatus(disconnectStatus);
+}

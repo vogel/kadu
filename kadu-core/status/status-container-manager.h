@@ -13,9 +13,10 @@
 #include <QtCore/QObject>
 
 #include "accounts/accounts-aware-object.h"
+#include "configuration/configuration-aware-object.h"
 #include "status/status-container.h"
 
-class KADUAPI StatusContainerManager : public StatusContainer, private AccountsAwareObject
+class KADUAPI StatusContainerManager : public StatusContainer, public ConfigurationAwareObject, private AccountsAwareObject
 {
 	Q_OBJECT
 	Q_DISABLE_COPY(StatusContainerManager)
@@ -29,9 +30,19 @@ class KADUAPI StatusContainerManager : public StatusContainer, private AccountsA
 
 	QList<StatusContainer *> StatusContainers;
 
+	QString StartupStatus;
+	QString StartupDescription;
+	bool StartupLastDescription;
+	bool OfflineToInvisible;
+	bool PrivateStatus;
+
+	bool DisconnectWithCurrentDescription;
+	QString DisconnectDescription;
+
 protected:
 	virtual void accountRegistered(Account *account);
 	virtual void accountUnregistered(Account *account);
+	virtual void configurationUpdated();
 
 public:
 	static StatusContainerManager * instance();
@@ -57,6 +68,11 @@ public:
 	virtual int maxDescriptionLength();
 
 	virtual QString statusNamePrefix() { return QString(tr("All") + " "); }
+
+	virtual void setDefaultStatus(const QString &startupStatus, bool offlineToInvisible,
+				      const QString &startupDescription, bool StartupLastDescription) {}
+	virtual void disconnectAndStoreLastStatus(bool disconnectWithCurrentDescription,
+						  const QString &disconnectDescription) {}
 
 signals:
 	void statusContainerAboutToBeRegistered(StatusContainer *);

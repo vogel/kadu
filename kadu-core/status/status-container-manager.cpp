@@ -9,6 +9,7 @@
 
 #include "accounts/account.h"
 #include "accounts/account-manager.h"
+#include "configuration/configuration-file.h"
 #include "status/status-container-aware-object.h"
 #include "status/status-type-manager.h"
 #include "icons-manager.h"
@@ -26,6 +27,7 @@ KADUAPI StatusContainerManager * StatusContainerManager::instance()
 
 StatusContainerManager::StatusContainerManager()
 {
+	configurationUpdated();
 	triggerAllAccountsRegistered();
 }
 
@@ -33,7 +35,6 @@ StatusContainerManager::~StatusContainerManager()
 {
 	triggerAllAccountsUnregistered();
 }
-
 
 void StatusContainerManager::accountRegistered(Account *account)
 {
@@ -45,6 +46,29 @@ void StatusContainerManager::accountUnregistered(Account *account)
 	unregisterStatusContainer(account);
 }
 
+void StatusContainerManager::configurationUpdated()
+{
+	QString description;
+	StartupStatus = config_file.readEntry("General", "StartupStatus");
+
+	StartupLastDescription = config_file.readBoolEntry("General", "StartupLastDescription");
+
+	StartupDescription = config_file.readEntry("General", "StartupDescription");
+
+	OfflineToInvisible = config_file.readBoolEntry("General", "StartupStatusInvisibleWhenLastWasOffline");
+	QString name;
+
+	if (StartupStatus.isEmpty())
+		StartupStatus = "LastStatus";
+	else if (StartupStatus == "Busy")
+		StartupStatus =  "Away";
+
+	PrivateStatus = config_file.readBoolEntry("General", "PrivateStatus");
+
+	DisconnectWithCurrentDescription = config_file.readBoolEntry("General", "DisconnectWithCurrentDescription");
+	DisconnectDescription = config_file.readEntry("General", "DisconnectDescription");
+}
+
 void StatusContainerManager::registerStatusContainer(StatusContainer *statusContainer)
 {
 	if (statusContainer == AccountManager::instance()->defaultAccount())
@@ -54,6 +78,9 @@ void StatusContainerManager::registerStatusContainer(StatusContainer *statusCont
 	StatusContainers << statusContainer;
 	emit statusContainerRegistered(statusContainer);
 	StatusContainerAwareObject::notifyStatusContainerRegistered(statusContainer);
+
+	statusContainer->setDefaultStatus(StartupStatus, OfflineToInvisible, StartupDescription, StartupLastDescription);
+
 }
 
 void StatusContainerManager::unregisterStatusContainer(StatusContainer *statusContainer)
@@ -65,6 +92,8 @@ void StatusContainerManager::unregisterStatusContainer(StatusContainer *statusCo
 	StatusContainers.removeAll(statusContainer);
 	emit statusContainerUnregistered(statusContainer);
 	StatusContainerAwareObject::notifyStatusContainerUnregistered(statusContainer);
+
+	statusContainer->disconnectAndStoreLastStatus(DisconnectWithCurrentDescription, DisconnectDescription);
 }
 
 QString StatusContainerManager::statusContainerName()

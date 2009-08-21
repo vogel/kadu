@@ -70,6 +70,8 @@ void GaduImporter::importAccounts()
 	defaultGaduGadu->setProxyUser(config_file.readEntry("Network", "ProxyUser"));
 	defaultGaduGadu->setProxyReqAuthentication(!defaultGaduGadu->proxyUser().isEmpty());
 
+	defaultGaduGadu->import_0_6_5_LastStatus();
+
 	AccountManager::instance()->registerAccount(defaultGaduGadu);
 }
 
