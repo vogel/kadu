@@ -176,7 +176,9 @@ void Identity::setDefaultStatus(const QString &startupStatus, bool offlineToInvi
 	if (startupStatus == "LastStatus")
 	{
 		name = loadValue<QString>("LastStatusName");
-		if ("Offline" == name && offlineToInvisible)
+		if (name.isEmpty())
+			name = "Online";
+		else if ("Offline" == name && offlineToInvisible)
 			name = "Invisible";
 	}
 	else
