@@ -11,7 +11,6 @@
 #include "gui/widgets/jabber-edit-account-widget.h"
 
 #include "jabber-account.h"
-#include "jabber-configuration-dialog.h"
 #include "jabber-contact-account-data-widget.h"
 #include "jabber_protocol.h"
 #include "jabber-contact-account-data.h"
@@ -87,15 +86,6 @@ AccountCreateWidget * JabberProtocolFactory::newCreateAccountWidget(QWidget *par
 AccountEditWidget * JabberProtocolFactory::newEditAccountWidget(Account *account, QWidget *parent)
 {
 	return new JabberEditAccountWidget(account, parent);
-}
-
-JabberConfigurationDialog * JabberProtocolFactory::newConfigurationDialog(Account *account, QWidget *parent)
-{
-	JabberAccount *jabberAccount = dynamic_cast<JabberAccount *>(account);
-
-	return 0 != jabberAccount
-		? new JabberConfigurationDialog(jabberAccount, parent)
-		: 0;
 }
 
 QList<StatusType *> JabberProtocolFactory::supportedStatusTypes()

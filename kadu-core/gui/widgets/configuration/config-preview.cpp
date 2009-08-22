@@ -46,9 +46,8 @@ void ConfigPreview::show()
 	Preview::show();
 }
 
-// TODO: czy Preview dzieczyczy z QToolTip?
 void ConfigPreview::hide()
 {
 	label->hide();
-	Preview::QWidget::hide();
+	QWidget::hide();
 }

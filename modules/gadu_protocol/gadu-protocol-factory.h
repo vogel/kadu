@@ -10,7 +10,6 @@
 #ifndef GADU_PROTOCOL_FACTORY_H
 #define GADU_PROTOCOL_FACTORY_H
 
-#include "gadu-configuration-dialog.h"
 #include "protocols/protocol-factory.h"
 
 class ContactAccountDataWidget;
@@ -35,7 +34,6 @@ public:
 	virtual AccountCreateWidget * newCreateAccountWidget(QWidget *parent);
 	virtual AccountEditWidget * newEditAccountWidget(Account *, QWidget *parent);
 	virtual ContactAccountDataWidget * newContactAccountDataWidget(ContactAccountData *contactAccountData, QWidget *parent = 0);
-	virtual GaduConfigurationDialog * newConfigurationDialog(Account *, QWidget *);
 	virtual QList<StatusType *> supportedStatusTypes();
 
 	virtual QString name() { return "gadu"; }

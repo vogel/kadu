@@ -16,7 +16,6 @@
 
 #include "gadu-account.h"
 #include "gadu-contact-account-data-widget.h"
-#include "gadu-configuration-dialog.h"
 #include "gadu-contact-account-data.h"
 #include "gadu-protocol.h"
 
@@ -81,15 +80,6 @@ AccountCreateWidget * GaduProtocolFactory::newCreateAccountWidget(QWidget *paren
 AccountEditWidget * GaduProtocolFactory::newEditAccountWidget(Account *account, QWidget *parent)
 {
 	return new GaduEditAccountWidget(account, parent);
-}
-
-GaduConfigurationDialog * GaduProtocolFactory::newConfigurationDialog(Account *account, QWidget *parent)
-{
-	GaduAccount *gaduAccount = dynamic_cast<GaduAccount *>(account);
-
-	return 0 != gaduAccount
-		? new GaduConfigurationDialog(gaduAccount, parent)
-		: 0;
 }
 
 QList<StatusType *> GaduProtocolFactory::supportedStatusTypes()

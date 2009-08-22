@@ -6,7 +6,6 @@ set (SOURCES
 	gui/widgets/tlen-edit-account-widget.cpp
 	services/tlen-chat-service.cpp
 	tlen-account-data-manager.cpp
-	tlen_configuration_dialog.cpp
 	tlen-contact-account-data.cpp
 	tlen-contact-account-data-manager.cpp
 	tlen-contact-account-data-widget.cpp
@@ -25,7 +24,6 @@ set (MOC_SOURCES
 	gui/widgets/tlen-edit-account-widget.h
 	services/tlen-chat-service.h
 #	tlen-account-data-manager.h
-	tlen_configuration_dialog.h
 #	tlen-contact-account-data.h
 #	tlen-contact-account-data-manager.h
 	tlen-contact-account-data-widget.h
@@ -45,7 +43,7 @@ set (TRANSLATION_SOURCES
 
 set (CONFIGURATION_FILES
 	configuration/tlen_contact.ui
-	configuration/tlen_protocol.ui)
+)
 
 set (DATA_FILES
         data/status/away.png
@@ -78,7 +76,8 @@ kadu_module (tlen_protocol
 #	link_flags "${QCA2_LDFLAGS_OTHER} ${IDN_LDFLAGS_OTHER}" )
 
 include_directories(
-	  ./QtTlen )
+	  ./QtTlen
+)
 
 #target_link_libraries(tlen_protocol ${QCA2_LIBRARIES} ${IDN_LIBRARIES} )
 install (FILES ${DATA_FILES}

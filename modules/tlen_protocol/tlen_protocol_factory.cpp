@@ -11,7 +11,6 @@
 #include "gui/widgets/tlen-edit-account-widget.h"
 
 #include "tlen_account.h"
-#include "tlen_configuration_dialog.h"
 #include "tlen_protocol.h"
 #include "tlen-contact-account-data.h"
 #include "tlen-contact-account-data-widget.h"
@@ -81,15 +80,6 @@ AccountCreateWidget * TlenProtocolFactory::newCreateAccountWidget(QWidget *paren
 AccountEditWidget * TlenProtocolFactory::newEditAccountWidget(Account *account, QWidget *parent)
 {
 	return new TlenEditAccountWidget(account, parent);
-}
-
-TlenConfigurationDialog * TlenProtocolFactory::newConfigurationDialog(Account *account, QWidget *parent)
-{
-	TlenAccount *tlenAccount = dynamic_cast<TlenAccount *>(account);
-
-	return 0 != tlenAccount
-		? new TlenConfigurationDialog(tlenAccount, parent)
-		: 0;
 }
 
 QList<StatusType *> TlenProtocolFactory::supportedStatusTypes()

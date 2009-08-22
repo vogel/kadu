@@ -13,8 +13,6 @@
 #include "protocols/protocol-factory.h"
 #include "misc/misc.h"
 
-#include "tlen_configuration_dialog.h"
-
 class TlenProtocolFactory : public ProtocolFactory
 {
 	Q_DISABLE_COPY(TlenProtocolFactory)
@@ -31,7 +29,6 @@ public:
 	virtual Account * loadAccount(StoragePoint *accountStoragePoint);
 	virtual ContactAccountData * newContactAccountData(Contact contact, Account *account, const QString &id, bool isAnonymous = false);
 	virtual ContactAccountData * loadContactAccountData(Contact contact, Account *account);
-	virtual TlenConfigurationDialog * newConfigurationDialog(Account *, QWidget *);
 	virtual AccountCreateWidget * newCreateAccountWidget(QWidget *parent);
 	virtual AccountEditWidget* newEditAccountWidget(Account*, QWidget*);
 	virtual ContactAccountDataWidget * newContactAccountDataWidget(ContactAccountData *contactAccountData, QWidget *parent = 0);

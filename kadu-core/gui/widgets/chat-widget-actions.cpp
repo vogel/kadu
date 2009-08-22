@@ -440,7 +440,7 @@ void ChatWidgetActions::blockUserActionActivated(QAction *sender, bool toggled)
 			}
 		}
 
-// TODO: 0.6.5
+// TODO: 0.6.6
 // 		userlist->writeToConfig();
 
 		foreach (Action *action, BlockUser->actions())

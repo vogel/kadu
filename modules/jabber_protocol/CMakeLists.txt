@@ -245,7 +245,6 @@ set (SOURCES
 	services/jabber-file-transfer-service.cpp
 	jabber-client.cpp
 	jabber-account-data-manager.cpp
-	jabber-configuration-dialog.cpp
 	jabber-contact-account-data.cpp
 	jabber-contact-account-data-manager.cpp
 	jabber-contact-account-data-widget.cpp
@@ -271,7 +270,6 @@ set (MOC_SOURCES
 	services/jabber-chat-service.h
 	services/jabber-file-transfer-service.h
 	jabber-client.h
-	jabber-configuration-dialog.h
 	#jabber-contact-account-data.h
 	#jabber-contact-account-data-manager.h
 	jabber-contact-account-data-widget.h
@@ -304,7 +302,6 @@ set (TRANSLATION_SOURCES
 
 set (CONFIGURATION_FILES
 	configuration/jabber_contact.ui
-	configuration/jabber_protocol.ui
 )
 
 KADU_JABBER_AUTOMOC ( ${MOC_SOURCES2_IRIS} )
