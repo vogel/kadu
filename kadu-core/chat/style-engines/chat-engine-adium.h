@@ -4,8 +4,6 @@
 #include "chat-style-engine.h"
 
 class Chat;
-class ChatMessage;
-class ChatMessagesView;
 class Preview;
 
 class AdiumChatStyleEngine : public ChatStyleEngine
@@ -41,11 +39,11 @@ public:
 
 	virtual QStringList styleVariants(QString styleName);
 
-	virtual void clearMessages(ChatMessagesView *view);
-	virtual void appendMessages(ChatMessagesView *view, QList<ChatMessage *> messages);
-	virtual void appendMessage(ChatMessagesView *view, ChatMessage *message);
-	virtual void pruneMessage(ChatMessagesView *view);
-	virtual void refreshView(ChatMessagesView *view);
+	virtual void clearMessages(HtmlMessagesRenderer *renderer);
+	virtual void appendMessages(HtmlMessagesRenderer *renderer, QList<ChatMessage *> messages);
+	virtual void appendMessage(HtmlMessagesRenderer *renderer, ChatMessage *message);
+	virtual void pruneMessage(HtmlMessagesRenderer *renderer);
+	virtual void refreshView(HtmlMessagesRenderer *renderer);
 
 	virtual void prepareStylePreview(Preview *preview, QString styleName, QString variantName);
 

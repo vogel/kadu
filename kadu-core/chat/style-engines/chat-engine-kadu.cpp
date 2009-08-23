@@ -8,10 +8,12 @@
  ***************************************************************************/
 
 #include <QtCore/QFileInfo>
+#include <QtWebKit/QWebFrame>
 
 #include "accounts/account-manager.h"
 #include "chat/chat-message.h"
 #include "chat/chat-styles-manager.h"
+#include "chat/html-messages-renderer.h"
 #include "configuration/configuration-file.h"
 #include "gui/widgets/chat-messages-view.h"
 #include "gui/widgets/preview.h"
@@ -36,23 +38,24 @@ KaduChatStyleEngine::~KaduChatStyleEngine()
 	}
 }
 
-void KaduChatStyleEngine::clearMessages(ChatMessagesView *view)
+void KaduChatStyleEngine::clearMessages(HtmlMessagesRenderer *renderer)
 {
-	view->setHtml("<body bgcolor=\"" + config_file.readColorEntry("Look", "ChatBgColor").name() + "\"></body>");
+	renderer->webPage()->mainFrame()->setHtml("<body bgcolor=\"" + config_file.readColorEntry("Look", "ChatBgColor").name() + "\"></body>");
 }
 
-void KaduChatStyleEngine::appendMessages(ChatMessagesView *view, QList<ChatMessage *> messages)
+void KaduChatStyleEngine::appendMessages(HtmlMessagesRenderer *renderer, QList<ChatMessage *> messages)
 {
-	repaintMessages(view);
-}
-void KaduChatStyleEngine::appendMessage(ChatMessagesView *view, ChatMessage *message)
-{
-	repaintMessages(view);
+	repaintMessages(renderer);
 }
 
-void KaduChatStyleEngine::refreshView(ChatMessagesView *view)
+void KaduChatStyleEngine::appendMessage(HtmlMessagesRenderer *renderer, ChatMessage *message)
 {
-	repaintMessages(view);
+	repaintMessages(renderer);
+}
+
+void KaduChatStyleEngine::refreshView(HtmlMessagesRenderer *renderer)
+{
+	repaintMessages(renderer);
 }
 
 QString KaduChatStyleEngine::isThemeValid(QString stylePath)
@@ -128,9 +131,8 @@ QString KaduChatStyleEngine::formatMessage(ChatMessage *message, ChatMessage *af
 	}
 }
 
-void KaduChatStyleEngine::repaintMessages(ChatMessagesView *view)
+void KaduChatStyleEngine::repaintMessages(HtmlMessagesRenderer *renderer)
 {
-
 	QString text = QString(
 		"<html>"
 		"	<head>"
@@ -140,9 +142,9 @@ void KaduChatStyleEngine::repaintMessages(ChatMessagesView *view)
 		"	</head>"
 		"	<body>";
 
-	QList<ChatMessage *>::const_iterator message = view->messages().constBegin();
+	QList<ChatMessage *>::const_iterator message = renderer->messages().constBegin();
 	QList<ChatMessage *>::const_iterator prevMessage;
-	QList<ChatMessage *>::const_iterator end = view->messages().constEnd();
+	QList<ChatMessage *>::const_iterator end = renderer->messages().constEnd();
 
 	if (message != end)
 	{
@@ -168,7 +170,7 @@ void KaduChatStyleEngine::repaintMessages(ChatMessagesView *view)
 
 	text += "</body></html>";
 
-	view->setHtml(text);
+	renderer->webPage()->mainFrame()->setHtml(text);
 }
 
 void KaduChatStyleEngine::configurationUpdated()

@@ -17,6 +17,7 @@
 #include "chat/chat.h"
 #include "chat/chat-message.h"
 #include "chat/chat-styles-manager.h"
+#include "chat/html-messages-renderer.h"
 #include "chat/style-engines/chat-style-engine.h"
 #include "protocols/services/chat-image-service.h"
 
@@ -27,27 +28,20 @@
 ChatMessagesView::ChatMessagesView(Chat *chat, QWidget *parent) : KaduTextBrowser(parent),
 	LastScrollValue(0), LastLine(false), CurrentChat(chat), PrevMessage(0), PruneEnabled(true)
 {
-	setMinimumSize(QSize(100,100));
-
- 	ChatStylesManager::instance()->chatViewCreated(this);
+	Renderer = new HtmlMessagesRenderer(CurrentChat, this);
 
 	// TODO: for me with empty styleSheet if has artifacts on scrollbars...
 	// maybe Qt bug?
-  	setStyleSheet("QWidget { }");
-
-	if (chat && chat->account())
-	{
-		ChatImageService *chatImageService = chat->account()->protocol()->chatImageService();
-		if (chatImageService)
-			connect(chatImageService, SIGNAL(imageReceived(const QString &, const QString &)),
-				this, SLOT(imageReceived(const QString &, const QString &)));
-	}
-
-	connect(this, SIGNAL(loadFinished(bool)), this, SLOT(scrollToLine()));
-
+	setStyleSheet("QWidget { }");
+	setFocusPolicy(Qt::NoFocus);
+	setMinimumSize(QSize(100,100));
+	setPage(Renderer->webPage());
 	settings()->setAttribute(QWebSettings::JavascriptEnabled, true);
 
-	setFocusPolicy(Qt::NoFocus);
+	connectChat();
+	connect(this, SIGNAL(loadFinished(bool)), this, SLOT(scrollToLine()));
+
+	ChatStylesManager::instance()->chatViewCreated(this);
 }
 
 ChatMessagesView::~ChatMessagesView()
@@ -56,33 +50,38 @@ ChatMessagesView::~ChatMessagesView()
 	Messages.clear();
  	ChatStylesManager::instance()->chatViewDestroyed(this);
 
-	if (CurrentChat && CurrentChat->account())
-	{
-		ChatImageService *chatImageService = CurrentChat->account()->protocol()->chatImageService();
-		if (chatImageService)
-			disconnect(chatImageService, SIGNAL(imageReceived(const QString &, const QString &)),
+	disconnectChat();
+}
+
+void ChatMessagesView::connectChat()
+{
+	if (!CurrentChat || !CurrentChat->account())
+		return;
+
+	ChatImageService *chatImageService = CurrentChat->account()->protocol()->chatImageService();
+	if (chatImageService)
+		connect(chatImageService, SIGNAL(imageReceived(const QString &, const QString &)),
 				this, SLOT(imageReceived(const QString &, const QString &)));
-	}
+}
+
+void ChatMessagesView::disconnectChat()
+{
+	if (!CurrentChat || !CurrentChat->account())
+		return;
+	
+	ChatImageService *chatImageService = CurrentChat->account()->protocol()->chatImageService();
+	if (chatImageService)
+		disconnect(chatImageService, SIGNAL(imageReceived(const QString &, const QString &)),
+				this, SLOT(imageReceived(const QString &, const QString &)));
 }
 
 void ChatMessagesView::setChat(Chat *chat)
 {
-	ChatImageService *chatImageService;
-    	if (CurrentChat && CurrentChat->account())
-	{
-		chatImageService = CurrentChat->account()->protocol()->chatImageService();
-		if (chatImageService)
-			connect(chatImageService, SIGNAL(imageReceived(const QString &, const QString &)),
-				this, SLOT(imageReceived(const QString &, const QString &)));
-	}
+	disconnectChat();
+	CurrentChat = chat;
+	connectChat();
 
-    	if (chat && chat->account())
-	{
-		ChatImageService *chatImageService = chat->account()->protocol()->chatImageService();
-		if (chatImageService)
-			connect(chatImageService, SIGNAL(imageReceived(const QString &, const QString &)),
-				this, SLOT(imageReceived(const QString &, const QString &)));
-	}
+	Renderer->setChat(CurrentChat);
 }
 
 void ChatMessagesView::pageUp()
@@ -103,7 +102,7 @@ void ChatMessagesView::imageReceived(const QString &messageId, const QString &me
 	foreach (ChatMessage *message, Messages)
 		message->replaceLoadingImages(messageId, messagePath);
 
- 	ChatStylesManager::instance()->currentEngine()->refreshView(this);
+ 	ChatStylesManager::instance()->currentEngine()->refreshView(Renderer);
 }
 
 void ChatMessagesView::updateBackgroundsAndColors()
@@ -137,7 +136,7 @@ void ChatMessagesView::updateBackgroundsAndColors()
 void ChatMessagesView::repaintMessages()
 {
 	rememberScrollBarPosition();
-	ChatStylesManager::instance()->currentEngine()->refreshView(this);
+	ChatStylesManager::instance()->currentEngine()->refreshView(Renderer);
 }
 
 void ChatMessagesView::appendMessage(ChatMessage *message)
@@ -153,7 +152,8 @@ void ChatMessagesView::appendMessage(ChatMessage *message)
 
 	pruneMessages();
 
-	ChatStylesManager::instance()->currentEngine()->appendMessage(this, message);
+	Renderer->appendMessage(message);
+	ChatStylesManager::instance()->currentEngine()->appendMessage(Renderer, message);
 }
 
 void ChatMessagesView::appendMessages(QList<ChatMessage *> messages)
@@ -169,7 +169,8 @@ void ChatMessagesView::appendMessages(QList<ChatMessage *> messages)
 
 	pruneMessages();
 
-	ChatStylesManager::instance()->currentEngine()->appendMessages(this, messages);
+	Renderer->appendMessages(messages);
+	ChatStylesManager::instance()->currentEngine()->appendMessages(Renderer, messages);
 }
 
 void ChatMessagesView::pruneMessages()
@@ -189,7 +190,7 @@ void ChatMessagesView::pruneMessages()
 		disconnect(*it, SIGNAL(statusChanged(Message::Status)),
 				 this, SLOT(repaintMessages()));
 		delete *it;
-		ChatStylesManager::instance()->currentEngine()->pruneMessage(this);
+		ChatStylesManager::instance()->currentEngine()->pruneMessage(Renderer);
 	}
 
 	Messages.erase(start, stop);
@@ -204,7 +205,7 @@ void ChatMessagesView::clearMessages()
 	qDeleteAll(Messages);
 	Messages.clear();
 	PrevMessage = 0;
- 	ChatStylesManager::instance()->currentEngine()->clearMessages(this);
+	ChatStylesManager::instance()->currentEngine()->clearMessages(Renderer);
 }
 
 unsigned int ChatMessagesView::countMessages()

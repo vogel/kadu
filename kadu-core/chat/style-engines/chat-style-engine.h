@@ -5,7 +5,7 @@
 #include <QtCore/QStringList>
 
 class ChatMessage;
-class ChatMessagesView;
+class HtmlMessagesRenderer;
 class Preview;
 
 class ChatStyleEngine
@@ -25,11 +25,11 @@ public:
 	virtual bool supportEditing() = 0;
 	virtual QString isThemeValid(QString) = 0; //return QString::null, if theme is not valid
 	
-	virtual void clearMessages(ChatMessagesView *) = 0;
-	virtual void appendMessages(ChatMessagesView *, QList<ChatMessage *>) = 0;
-	virtual void appendMessage(ChatMessagesView *, ChatMessage *) = 0;
-	virtual void pruneMessage(ChatMessagesView *) = 0;
-	virtual void refreshView(ChatMessagesView *) = 0;
+	virtual void clearMessages(HtmlMessagesRenderer *) = 0;
+	virtual void appendMessages(HtmlMessagesRenderer *, QList<ChatMessage *>) = 0;
+	virtual void appendMessage(HtmlMessagesRenderer *, ChatMessage *) = 0;
+	virtual void pruneMessage(HtmlMessagesRenderer *) = 0;
+	virtual void refreshView(HtmlMessagesRenderer *) = 0;
 
 	virtual void prepareStylePreview(Preview *, QString, QString) = 0;
 
@@ -40,6 +40,7 @@ public:
 	virtual void styleEditionRequested(QString) = 0;
 
 	virtual bool removeStyle(const QString &) = 0;
+
 };
 
 #endif // CHAT_STYLE_ENGINE_H

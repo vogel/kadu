@@ -5,8 +5,6 @@
 
 #include "chat-style-engine.h"
 
-class ChatMessage;
-class ChatMessagesView;
 class Preview;
 class SyntaxList;
 
@@ -20,7 +18,8 @@ class KaduChatStyleEngine : public QObject, public ChatStyleEngine
 	QString ChatSyntaxWithoutHeader; /*!< Chat syntax without header */
 
 	QString formatMessage(ChatMessage *message, ChatMessage *after);
-	void repaintMessages(ChatMessagesView *view);
+	void repaintMessages(HtmlMessagesRenderer *page);
+
 private slots:
 	void chatSyntaxFixup(QString &syntax);
 	void chatFixup(QString &syntax);
@@ -34,11 +33,11 @@ public:
 	virtual bool supportEditing() { return true; }
 	virtual QString isThemeValid(QString styleName);
 	
-	virtual void clearMessages(ChatMessagesView *view);
-	virtual void appendMessages(ChatMessagesView *view, QList<ChatMessage *> messages);
-	virtual void appendMessage(ChatMessagesView *view, ChatMessage *message);
-	virtual void pruneMessage(ChatMessagesView *view) {};
-	virtual void refreshView(ChatMessagesView *view);
+	virtual void clearMessages(HtmlMessagesRenderer *page);
+	virtual void appendMessages(HtmlMessagesRenderer *page, QList<ChatMessage *> messages);
+	virtual void appendMessage(HtmlMessagesRenderer *page, ChatMessage *message);
+	virtual void pruneMessage(HtmlMessagesRenderer *page) {};
+	virtual void refreshView(HtmlMessagesRenderer *page);
 
 	virtual void prepareStylePreview(Preview *preview, QString styleName, QString variantName);
 

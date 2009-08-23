@@ -80,7 +80,7 @@ void ChatStylesManager::chatViewCreated(ChatMessagesView *view)
 	if (0 != view)
 	{
 		chatViews.append(view);
-		CurrentEngine->refreshView(view);
+		CurrentEngine->refreshView(view->renderer());
 	}
 }
 
@@ -172,7 +172,7 @@ void ChatStylesManager::configurationUpdated()
 	foreach (ChatMessagesView *view, chatViews)
 	{
 		view->updateBackgroundsAndColors();
-		CurrentEngine->refreshView(view);
+		CurrentEngine->refreshView(view->renderer());
 	}
 }
 

@@ -1,3 +1,12 @@
+/***************************************************************************
+*                                                                         *
+*   This program is free software; you can redistribute it and/or modify  *
+*   it under the terms of the GNU General Public License as published by  *
+*   the Free Software Foundation; either version 2 of the License, or     *
+*   (at your option) any later version.                                   *
+*                                                                         *
+***************************************************************************/
+
 #ifndef CHAT_MESSAGES_VIEW
 #define CHAT_MESSAGES_VIEW
 
@@ -14,16 +23,15 @@ class ChatMessage;
 class ChatWidget;
 class QResizeEvent;
 
-/**
-	Klasa uniwersalnego obiektu wy�wietlaj�cego list� wiadomo�ci(okno chat, historia...).
-	\class ChatMessagesView
-	\brief Okno przegl�dania listy wiadomo�ci.
-**/
+class HtmlMessagesRenderer;
+
 class KADUAPI ChatMessagesView : public KaduTextBrowser
 {
 	Q_OBJECT
 
 	Chat *CurrentChat;
+	HtmlMessagesRenderer *Renderer;
+
 	ChatMessage *PrevMessage;
 	QList<ChatMessage *> Messages;
 
@@ -33,6 +41,9 @@ class KADUAPI ChatMessagesView : public KaduTextBrowser
 	bool LastLine;
 
 	void pruneMessages();
+
+	void connectChat();
+	void disconnectChat();
 
 protected:
 	virtual void resizeEvent(QResizeEvent *e);
@@ -57,6 +68,8 @@ private slots:
 public:
 	ChatMessagesView(Chat *chat = 0, QWidget *parent = 0);
 	virtual ~ChatMessagesView();
+
+	HtmlMessagesRenderer * renderer() { return Renderer; }
 
 	/**
 		\fn void appendMessage(ChatMessage *message)

@@ -16,6 +16,7 @@
 #include "accounts/account-manager.h"
 #include "chat/chat-message.h"
 #include "chat/chat-styles-manager.h"
+#include "chat/html-messages-renderer.h"
 #include "gui/widgets/chat-messages-view.h"
 #include "gui/widgets/chat-widget.h"
 #include "gui/widgets/preview.h"
@@ -51,15 +52,15 @@ const char *AdiumChatStyleEngine::xhtmlBase =
 		"</body>"
 		"</html>\n";
 
-void AdiumChatStyleEngine::pruneMessage(ChatMessagesView *view)
+void AdiumChatStyleEngine::pruneMessage(HtmlMessagesRenderer *renderer)
 {
 	if (!ChatStylesManager::instance()->cfgNoHeaderRepeat())
-		view->page()->mainFrame()->evaluateJavaScript("kadu_removeFirstMessage()");	
+		renderer->webPage()->mainFrame()->evaluateJavaScript("kadu_removeFirstMessage()");
 }
 
-void AdiumChatStyleEngine::clearMessages(ChatMessagesView *view)
+void AdiumChatStyleEngine::clearMessages(HtmlMessagesRenderer *renderer)
 {
-	view->page()->mainFrame()->evaluateJavaScript("kadu_clearMessages()");
+	renderer->webPage()->mainFrame()->evaluateJavaScript("kadu_clearMessages()");
 }
 
 QString AdiumChatStyleEngine::isThemeValid(QString stylePath)
@@ -96,23 +97,27 @@ QStringList AdiumChatStyleEngine::styleVariants(QString styleName)
 	return dir.entryList(); 
 }
 
-void AdiumChatStyleEngine::appendMessages(ChatMessagesView *view, QList<ChatMessage *> messages)
+void AdiumChatStyleEngine::appendMessages(HtmlMessagesRenderer *renderer, QList<ChatMessage *> messages)
 {
 	foreach (ChatMessage *message, messages)
-		appendMessage(view, message);
+		appendMessage(renderer, message);
 }
 
-void AdiumChatStyleEngine::appendMessage(ChatMessagesView *view, ChatMessage *message)
+void AdiumChatStyleEngine::appendMessage(HtmlMessagesRenderer *renderer, ChatMessage *message)
 {
 	QString formattedMessageHtml;
 	bool includeHeader = true;
 
-	if (ChatStylesManager::instance()->cfgNoHeaderRepeat() && view->prevMessage())
+	ChatMessage *lastMessage = ChatStylesManager::instance()->cfgNoHeaderRepeat()
+			? renderer->lastMessage()
+			: 0;
+
+			if (lastMessage)
 	{
 		includeHeader =
-			(view->prevMessage()->type() != TypeSystem) &&
-			((message->date().toTime_t() - view->prevMessage()->date().toTime_t() > (ChatStylesManager::instance()->cfgNoHeaderInterval() * 60)) ||
-			 (message->sender() != view->prevMessage()->sender()));
+			(lastMessage->type() != TypeSystem) &&
+			((message->date().toTime_t() - lastMessage->date().toTime_t() > (ChatStylesManager::instance()->cfgNoHeaderInterval() * 60)) ||
+			(message->sender() != lastMessage->sender()));
 	}
 	switch (message->type())
 	{
@@ -139,34 +144,31 @@ void AdiumChatStyleEngine::appendMessage(ChatMessagesView *view, ChatMessage *me
 		}
 	}
 	
-	formattedMessageHtml = replaceKeywords(view->chat(), BaseHref, formattedMessageHtml, message);
+	formattedMessageHtml = replaceKeywords(renderer->chat(), BaseHref, formattedMessageHtml, message);
 	formattedMessageHtml.replace("\n", " ");
 	formattedMessageHtml.prepend("<span>");
 	formattedMessageHtml.append("</span>");
 
 	if (includeHeader)
-		view->page()->mainFrame()->evaluateJavaScript("kadu_appendNextMessage(\'"+ formattedMessageHtml +"\')");
+		renderer->webPage()->mainFrame()->evaluateJavaScript("kadu_appendNextMessage(\'"+ formattedMessageHtml +"\')");
 	else
-		view->page()->mainFrame()->evaluateJavaScript("kadu_appendConsecutiveMessage(\'"+ formattedMessageHtml +"\')");
+		renderer->webPage()->mainFrame()->evaluateJavaScript("kadu_appendConsecutiveMessage(\'"+ formattedMessageHtml +"\')");
 
-	view->prevMessage() = message;
+	renderer->setLastMessage(message);
 }
 
-void AdiumChatStyleEngine::refreshView(ChatMessagesView *view)
+void AdiumChatStyleEngine::refreshView(HtmlMessagesRenderer *renderer)
 {
 	QString styleBaseHtml = QString(xhtmlBase).arg(BaseHref)
-		.arg(replaceKeywords(view->chat(), BaseHref, HeaderHtml))
-		.arg(replaceKeywords(view->chat(), BaseHref, FooterHtml))
-		.arg("Variants/" + StyleVariantName)
-		.arg(ChatStylesManager::instance()->mainStyle());
-	view->setHtml(styleBaseHtml);
+			.arg(replaceKeywords(renderer->chat(), BaseHref, HeaderHtml))
+			.arg(replaceKeywords(renderer->chat(), BaseHref, FooterHtml))
+			.arg("Variants/" + StyleVariantName)
+			.arg(ChatStylesManager::instance()->mainStyle());
+	renderer->webPage()->mainFrame()->setHtml(styleBaseHtml);
+	renderer->webPage()->mainFrame()->evaluateJavaScript(jsCode);
 
-	view->page()->mainFrame()->evaluateJavaScript(jsCode);
-
-	foreach (ChatMessage *message, view->messages())
-		appendMessage(view, message);
-
-
+	foreach (ChatMessage *message, renderer->messages())
+		appendMessage(renderer, message);
 }
 
 AdiumChatStyleEngine::AdiumChatStyleEngine()
