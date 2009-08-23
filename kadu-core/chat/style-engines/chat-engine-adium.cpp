@@ -112,7 +112,7 @@ void AdiumChatStyleEngine::appendMessage(HtmlMessagesRenderer *renderer, ChatMes
 			? renderer->lastMessage()
 			: 0;
 
-			if (lastMessage)
+	if (lastMessage)
 	{
 		includeHeader =
 			(lastMessage->type() != TypeSystem) &&

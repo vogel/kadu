@@ -59,8 +59,8 @@ ConfigurationWidget::ConfigurationWidget(ConfigurationWindowDataManager *dataMan
 	new QHBoxLayout(container);
 
 	sectionsListWidget = new QListWidget(this);
-	sectionsListWidget->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Expanding);
- 	sectionsListWidget->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+	sectionsListWidget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+	sectionsListWidget->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 	sectionsListWidget->setIconSize(QSize(32, 32));
 	connect(sectionsListWidget, SIGNAL(currentTextChanged(const QString &)), this, SLOT(changeSection(const QString &)));
 	left_layout->addWidget(sectionsListWidget);

@@ -18,58 +18,63 @@
 #include "gui/widgets/configuration/config-group-box.h"
 #include "gui/widgets/configuration/kadu-scroll-area.h"
 
-ConfigTab::ConfigTab(const QString &name, ConfigSection *configSection, QTabWidget *tabWidget)
-	: name(name), configSection(configSection)
+ConfigTab::ConfigTab(const QString &name, ConfigSection *configSection, QWidget *mainWidget) :
+		MyName(name), MyConfigSection(configSection)
 {
-	scrollArea = new KaduScrollArea(tabWidget);
-	scrollArea->setFrameStyle(QFrame::NoFrame);
-	scrollArea->setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
-	scrollArea->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-	scrollArea->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Preferred);
+	MyScrollArea = new KaduScrollArea(mainWidget);
+	MyScrollArea->setFrameStyle(QFrame::NoFrame);
+	MyScrollArea->setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
+	MyScrollArea->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+	MyScrollArea->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 
-	mainWidget = new QWidget(tabWidget);
-	mainLayout = new QVBoxLayout(mainWidget);
-	mainLayout->addStretch(1);
+	MyMainWidget = new QWidget(mainWidget);
+	MyMainWidget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+	MyMainLayout = new QVBoxLayout(MyMainWidget);
+	MyMainLayout->addStretch(1);
 
-	tabWidget->addTab(scrollArea, name);
-	scrollArea->setWidget(mainWidget);
-	scrollArea->setWidgetResizable(true);
+	MyScrollArea->setWidget(MyMainWidget);
+	MyScrollArea->setWidgetResizable(true);
 }
 
 ConfigTab::~ConfigTab()
 {
-	delete scrollArea;
+	delete MyScrollArea;
 }
 
 void ConfigTab::removedConfigGroupBox(const QString &groupBoxName)
 {
-	configGroupBoxes.remove(groupBoxName);
+	MyConfigGroupBoxes.remove(groupBoxName);
 
-	if (!configGroupBoxes.count())
+	if (!MyConfigGroupBoxes.count())
 	{
-		configSection->removedConfigTab(name);
+		MyConfigSection->removedConfigTab(MyName);
 		delete this;
 	}
 }
 
 ConfigGroupBox *ConfigTab::configGroupBox(const QString &name, bool create)
 {
-	if (configGroupBoxes.contains(name))
-		return configGroupBoxes[name];
+	if (MyConfigGroupBoxes.contains(name))
+		return MyConfigGroupBoxes[name];
 
 	if (!create)
 		return 0;
 
-	QGroupBox *groupBox = new QGroupBox(name, mainWidget);
+	QGroupBox *groupBox = new QGroupBox(name, MyMainWidget);
 	QHBoxLayout *groupBoxLayout = new QHBoxLayout(groupBox);
 	groupBoxLayout->setSizeConstraint(QLayout::SetMinimumSize);
 
-	mainLayout->insertWidget(configGroupBoxes.count(), groupBox);
+	MyMainLayout->insertWidget(MyConfigGroupBoxes.count(), groupBox);
 
 	ConfigGroupBox *newConfigGroupBox = new ConfigGroupBox(name, this, groupBox);
-	configGroupBoxes[name] = newConfigGroupBox;
+	MyConfigGroupBoxes[name] = newConfigGroupBox;
 
 	groupBox->show();
 
 	return newConfigGroupBox;
+}
+
+QWidget * ConfigTab::scrollWidget()
+{
+	return MyScrollArea;
 }

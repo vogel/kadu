@@ -37,10 +37,14 @@ class ConfigSection : public QObject
 	QListWidgetItem *listWidgetItem;
 	QMap<QString, ConfigTab *> configTabs;
 
-	QTabWidget *mainWidget;
+	QWidget *parentConfigGroupBoxWidget;
+	QWidget *mainWidget;
+	QTabWidget *tabWidget;
 
 	ConfigTab *configTab(const QString &name, bool create = true);
 	bool activated;
+
+	void switchTabView(bool tabView);
 
 private slots:
 	void iconThemeChanged();

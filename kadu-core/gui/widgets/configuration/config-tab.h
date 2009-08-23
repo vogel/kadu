@@ -12,35 +12,39 @@
 
 #include <QtCore/QMap>
 
-class QTabWidget;
+class QGroupBox;
 class QScrollArea;
+class QTabWidget;
+class QWidget;
 class QVBoxLayout;
+
 class ConfigGroupBox;
 class ConfigSection;
 class KaduScrollArea;
-class QGroupBox;
 
 class ConfigTab
 {
-	QString name;
-	ConfigSection *configSection;
+	QString MyName;
+	ConfigSection *MyConfigSection;
 
-	QMap<QString, ConfigGroupBox *> configGroupBoxes;
+	QMap<QString, ConfigGroupBox *> MyConfigGroupBoxes;
 
-	QScrollArea *scrollArea;
-	QVBoxLayout *mainLayout;
-	QWidget *mainWidget;
+	QScrollArea *MyScrollArea;
+	QVBoxLayout *MyMainLayout;
+	QWidget *MyMainWidget;
 
 public:
-	ConfigTab(const QString &name, ConfigSection *configSection, QTabWidget *tabWidget);
+	ConfigTab(const QString &name, ConfigSection *configSection, QWidget *mainWidget);
 	~ConfigTab();
 
 	ConfigGroupBox * configGroupBox(const QString &name, bool create = true);
 
 	void removedConfigGroupBox(const QString &groupBoxName);
 
-	QWidget *widget() { return mainWidget; }
-	QWidget *tabWidget() { return mainWidget; }
+	QString name() { return MyName; }
+	QWidget * widget() { return MyMainWidget; }
+	QWidget * tabWidget() { return MyMainWidget; }
+	QWidget * scrollWidget();
 
 };
 
