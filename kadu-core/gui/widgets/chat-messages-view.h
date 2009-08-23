@@ -32,15 +32,8 @@ class KADUAPI ChatMessagesView : public KaduTextBrowser
 	Chat *CurrentChat;
 	HtmlMessagesRenderer *Renderer;
 
-	ChatMessage *PrevMessage;
-	QList<ChatMessage *> Messages;
-
-	bool PruneEnabled;
-
 	int LastScrollValue;
 	bool LastLine;
-
-	void pruneMessages();
 
 	void connectChat();
 	void disconnectChat();
@@ -50,18 +43,10 @@ protected:
 
 private slots:
 	void repaintMessages();
-
+	
+	void pageUp();
+	void pageDown();
 	void scrollToLine();
-	/**
-		\fn void pageUp()
-		Slot przewijaj�cy okno wiadomo�ci o sta�� warto�� w g�r�.
-	**/
- 	void pageUp();
-	/**
-		\fn void pageDown()
-		Slot przewijaj�cy okno wiadomo�ci o sta�� warto�� w d��.
-	**/
- 	void pageDown();
 
 	void imageReceived(const QString &imageId, const QString &imagePath);
 
@@ -71,48 +56,21 @@ public:
 
 	HtmlMessagesRenderer * renderer() { return Renderer; }
 
-	/**
-		\fn void appendMessage(ChatMessage *message)
-		Dodaje pojedyncz� wiadomo�� do danego okna.
-		@param message Wiadomo�� do dodania.
-	**/
  	void appendMessage(ChatMessage *message);
-	/**
-		\fn void appendMessages(QList<ChatMessage *> messages)
-		Dodaje list� wiadomo�ci do danego okna.
-		@param messages Lista wiadomo�ci do dodania.
-	**/
  	void appendMessages(QList<ChatMessage *> messages);
 
-	/**
-		\fn unsigned int countMessages()
-		Zwraca ilo�� wiadomo�ci w danym oknie.
-		@see Messages
-	**/
  	unsigned int countMessages();
 
-	/**
-		\fn void updateBackgrounds()
-		Funkcja od�wie�aj�ca kolory t�a wiadomo�ci.
-	**/
 	void updateBackgroundsAndColors();
 
-	void setPruneEnabled(bool enable) { PruneEnabled = enable; }
-
-	const QList<ChatMessage *> messages() { return Messages; }
+	void setPruneEnabled(bool enable);
 
 	void rememberScrollBarPosition();
 
 	Chat *chat() const { return CurrentChat; }
 	void setChat(Chat *chat);
 
-	ChatMessage *&prevMessage() { return PrevMessage; }
-
 public slots:
-	/**
-		\fn void clearMessages()
-		Slot usuwaj�cy wszystkie wiadomo�ci z okna.
-	**/
 	void clearMessages();
 
 };

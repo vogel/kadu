@@ -26,7 +26,7 @@
 #include "chat-messages-view.h"
 
 ChatMessagesView::ChatMessagesView(Chat *chat, QWidget *parent) : KaduTextBrowser(parent),
-	LastScrollValue(0), LastLine(false), CurrentChat(chat), PrevMessage(0), PruneEnabled(true)
+	LastScrollValue(0), LastLine(false), CurrentChat(chat)
 {
 	Renderer = new HtmlMessagesRenderer(CurrentChat, this);
 
@@ -46,8 +46,6 @@ ChatMessagesView::ChatMessagesView(Chat *chat, QWidget *parent) : KaduTextBrowse
 
 ChatMessagesView::~ChatMessagesView()
 {
-	qDeleteAll(Messages);
-	Messages.clear();
  	ChatStylesManager::instance()->chatViewDestroyed(this);
 
 	disconnectChat();
@@ -84,6 +82,11 @@ void ChatMessagesView::setChat(Chat *chat)
 	Renderer->setChat(CurrentChat);
 }
 
+void ChatMessagesView::setPruneEnabled(bool enable)
+{
+	Renderer->setPruneEnabled(enable);
+}
+
 void ChatMessagesView::pageUp()
 {
 	QKeyEvent event(QEvent::KeyPress, 0x01000016, Qt::NoModifier);
@@ -99,44 +102,18 @@ void ChatMessagesView::pageDown()
 void ChatMessagesView::imageReceived(const QString &messageId, const QString &messagePath)
 {
 	rememberScrollBarPosition();
-	foreach (ChatMessage *message, Messages)
-		message->replaceLoadingImages(messageId, messagePath);
-
- 	ChatStylesManager::instance()->currentEngine()->refreshView(Renderer);
+	Renderer->replaceLoadingImages(messageId, messagePath);
 }
 
 void ChatMessagesView::updateBackgroundsAndColors()
 {
-	QString myBackgroundColor = config_file.readEntry("Look", "ChatMyBgColor");
-	QString myFontColor = config_file.readEntry("Look", "ChatMyFontColor");
-	QString myNickColor = config_file.readEntry("Look", "ChatMyNickColor");
-	QString usrBackgroundColor = config_file.readEntry("Look", "ChatUsrBgColor");
-	QString usrFontColor = config_file.readEntry("Look", "ChatUsrFontColor");
-	QString usrNickColor = config_file.readEntry("Look", "ChatUsrNickColor");
-
-	foreach(ChatMessage *message, Messages)
-	{
-		switch (message->type())
-		{
-			case TypeSent:
-				message->setColorsAndBackground(myBackgroundColor, myNickColor, myFontColor);
-				break;
-
-			case TypeReceived:
-				message->setColorsAndBackground(usrBackgroundColor, usrNickColor, usrFontColor);
-				break;
-
-			case TypeSystem:
-				break;
-		}
-
-	}
+	Renderer->updateBackgroundsAndColors();
 }
 
 void ChatMessagesView::repaintMessages()
 {
 	rememberScrollBarPosition();
-	ChatStylesManager::instance()->currentEngine()->refreshView(Renderer);
+	Renderer->refresh();
 }
 
 void ChatMessagesView::appendMessage(ChatMessage *message)
@@ -148,12 +125,7 @@ void ChatMessagesView::appendMessage(ChatMessage *message)
 
 	rememberScrollBarPosition();
 
-	Messages.append(message);
-
-	pruneMessages();
-
 	Renderer->appendMessage(message);
-	ChatStylesManager::instance()->currentEngine()->appendMessage(Renderer, message);
 }
 
 void ChatMessagesView::appendMessages(QList<ChatMessage *> messages)
@@ -165,52 +137,17 @@ void ChatMessagesView::appendMessages(QList<ChatMessage *> messages)
 				this, SLOT(repaintMessages()));
 	rememberScrollBarPosition();
 
-	Messages += messages;
-
-	pruneMessages();
-
 	Renderer->appendMessages(messages);
-	ChatStylesManager::instance()->currentEngine()->appendMessages(Renderer, messages);
-}
-
-void ChatMessagesView::pruneMessages()
-{
-	kdebugf();
-
-	if (!PruneEnabled || ChatStylesManager::instance()->prune() == 0)
-		return;
-
-	if (Messages.count() < ChatStylesManager::instance()->prune())
-		return;
-
-	QList<ChatMessage *>::iterator start = Messages.begin();
-	QList<ChatMessage *>::iterator stop = Messages.end() - ChatStylesManager::instance()->prune();
-	for (QList<ChatMessage *>::iterator it = start; it != stop; ++it)
-	{
-		disconnect(*it, SIGNAL(statusChanged(Message::Status)),
-				 this, SLOT(repaintMessages()));
-		delete *it;
-		ChatStylesManager::instance()->currentEngine()->pruneMessage(Renderer);
-	}
-
-	Messages.erase(start, stop);
 }
 
 void ChatMessagesView::clearMessages()
 {
-	foreach (ChatMessage *message, Messages)
-		disconnect(message, SIGNAL(statusChanged(Message::Status)),
-				 this, SLOT(repaintMessages()));
-
-	qDeleteAll(Messages);
-	Messages.clear();
-	PrevMessage = 0;
-	ChatStylesManager::instance()->currentEngine()->clearMessages(Renderer);
+	Renderer->clearMessages();
 }
 
 unsigned int ChatMessagesView::countMessages()
 {
-	return Messages.count();
+	return Renderer->messages().count();
 }
 
 void ChatMessagesView::resizeEvent(QResizeEvent *e)
@@ -236,4 +173,3 @@ void ChatMessagesView::scrollToLine()
  	else
  		page()->currentFrame()->setScrollBarValue(Qt::Vertical, LastScrollValue);
 }
-

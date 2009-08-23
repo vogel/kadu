@@ -26,6 +26,10 @@ class HtmlMessagesRenderer : public QObject
 	ChatMessage *LastMessage;
 	QWebPage *MyWebPage;
 
+	bool PruneEnabled;
+
+	void pruneMessages();
+
 public:
 	HtmlMessagesRenderer(Chat *chat, QObject *parent = 0);
 	virtual ~HtmlMessagesRenderer();
@@ -34,14 +38,23 @@ public:
 	void setChat(Chat *chat);
 
 	QWebPage * webPage() { return MyWebPage; }
+
+	bool pruneEnabled() { return PruneEnabled; }
+	void setPruneEnabled(bool pruneEnabled);
+
 	QString content();
 
 	QList<ChatMessage *> messages() { return MyChatMessages; }
 	void appendMessage(ChatMessage *message);
 	void appendMessages(QList<ChatMessage *> messages);
+	void clearMessages();
 
 	ChatMessage * lastMessage() { return LastMessage; }
 	void setLastMessage(ChatMessage *message);
+
+	void refresh();
+	void replaceLoadingImages(const QString &imageId, const QString &imagePath);
+	void updateBackgroundsAndColors();
 
 };
 
