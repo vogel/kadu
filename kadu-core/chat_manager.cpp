@@ -235,7 +235,7 @@ void ChatManager::loadOpenedWindows()
 			}
 			Protocol *protocol = protocols_manager->byID(protocolId, accountId);
 			if (protocol)
-				openChatWidget(protocol, users);
+				openChatWidget(protocol, users, true);
 			else
 				kdebugm(KDEBUG_WARNING, "protocol %s/%s not found!\n",
 					       qPrintable(protocolId), qPrintable(accountId));
