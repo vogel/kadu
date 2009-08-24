@@ -28,6 +28,7 @@
 #include "contacts/contact-account-data.h"
 #include "contacts/contact-kadu-data.h"
 #include "contacts/model/contacts-model.h"
+#include "icons-manager.h"
 
 #include "contacts-list-widget-delegate.h"
 
@@ -36,6 +37,8 @@ ContactsListWidgetDelegate::ContactsListWidgetDelegate(QObject *parent)
 {
 	triggerAllAccountsRegistered();
 	configurationUpdated();
+
+	DefaultAvatarPixmap = IconsManager::instance()->loadPixmap("ContactsTab");
 }
 
 ContactsListWidgetDelegate::~ContactsListWidgetDelegate()
@@ -105,10 +108,12 @@ QSize ContactsListWidgetDelegate::sizeHint(const QStyleOptionViewItem &option, c
 	opt.locale = v3 ? v3->locale : QLocale();
 	opt.widget = v3 ? v3->widget : 0;
 
+	int avatarSize = DefaultAvatarPixmap.width() + 4;
+
 	const QTreeView *widget = dynamic_cast<const QTreeView *>(opt.widget);
 	if (!widget)
 		return size;
-	int width = widget->viewport()->width();
+	int width = widget->viewport()->width() - avatarSize;
 	int indentation = index.parent().isValid()
 		? widget->indentation()
 		: 0;
@@ -129,15 +134,14 @@ QSize ContactsListWidgetDelegate::sizeHint(const QStyleOptionViewItem &option, c
 
 	if (!description.isEmpty())
 	{
-		int neededSpace = indentation + textLeft + textMargin;
+		int neededSpace = indentation + textLeft + textMargin + avatarSize;
 		QTextDocument *dd = descriptionDocument(description, widget->columnWidth(0) - neededSpace, DescriptionColor);
 		descriptionHeight = (int)dd->size().height();
 		delete dd;
 	}
 
 	int pixmapHeight = pixmap.height();
-
-	int height = qMax(pixmapHeight, displayHeight + descriptionHeight);
+	int height = qMax(qMax(pixmapHeight, displayHeight + descriptionHeight), avatarSize);
 
 	return QSize(width, height);
 }
@@ -154,6 +158,8 @@ void ContactsListWidgetDelegate::paint(QPainter *painter, const QStyleOptionView
 	opt.locale = v3 ? v3->locale : QLocale();
 	opt.widget = v3 ? v3->widget : 0;
 	opt.showDecorationSelected = true;
+
+	int avatarSize = DefaultAvatarPixmap.width() + 4;
 
 	const QAbstractItemView *widget = dynamic_cast<const QAbstractItemView *>(opt.widget);
 	if (!widget)
@@ -194,7 +200,7 @@ void ContactsListWidgetDelegate::paint(QPainter *painter, const QStyleOptionView
 
 	if (hasDescription)
 	{
-		dd = descriptionDocument(description, rect.width() - textLeft - textMargin,
+		dd = descriptionDocument(description, rect.width() - textLeft - textMargin - avatarSize,
 			option.state & QStyle::State_Selected
 			? textcolor
 			: DescriptionColor);
@@ -251,6 +257,17 @@ void ContactsListWidgetDelegate::paint(QPainter *painter, const QStyleOptionView
 	if (isBold(index))
 		painter->setFont(Font);
 
+	QPixmap displayAvatar = avatar(index);
+	if (displayAvatar.isNull())
+		displayAvatar = DefaultAvatarPixmap;
+	if (!displayAvatar.isNull() && !DefaultAvatarPixmap.isNull() &&
+			displayAvatar.size() != DefaultAvatarPixmap.size())
+		displayAvatar = displayAvatar.scaled(DefaultAvatarPixmap.size());
+
+	int width = widget->viewport()->width() - opt.rect.left() - avatarSize;
+	if (!displayAvatar.isNull())
+		painter->drawPixmap(width - 2, 2, displayAvatar);
+
 	if (!hasDescription)
 	{
 		painter->restore();
@@ -280,6 +297,15 @@ bool ContactsListWidgetDelegate::isBold(const QModelIndex &index) const
 
 	Status status = statVariant.value<Status>();
 	return !status.isDisconnected();
+}
+
+QPixmap ContactsListWidgetDelegate::avatar(const QModelIndex &index) const
+{
+	QVariant avatar = index.data(AvatarRole);
+	if (!avatar.canConvert<QPixmap>())
+		return QPixmap();
+
+	return avatar.value<QPixmap>();
 }
 
 void ContactsListWidgetDelegate::configurationUpdated()

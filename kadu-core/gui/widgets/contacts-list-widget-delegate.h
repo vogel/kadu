@@ -37,8 +37,11 @@ class ContactsListWidgetDelegate : public QItemDelegate, public ConfigurationAwa
 	bool ShowMultiLineDescription;
 	QColor DescriptionColor;
 
+	QPixmap DefaultAvatarPixmap;
+
 	QTextDocument * descriptionDocument(const QString &text, int width, QColor color) const;
 	bool isBold(const QModelIndex &index) const;
+	QPixmap avatar(const QModelIndex &index) const;
 
 private slots:
 	void contactStatusChanged(Account *account, Contact contact, Status oldStatus);

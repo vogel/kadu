@@ -198,4 +198,3 @@ QMimeData * ContactsModelBase::mimeData(const QModelIndexList & indexes) const
 
 	return ContactListMimeDataHelper::toMimeData(list);
 }
-
