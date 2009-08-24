@@ -14,6 +14,7 @@
 #include <QtXml/QDomElement>
 
 #include "configuration/storable-object.h"
+#include "contacts/avatar.h"
 #include "status/status.h"
 
 #include "contact.h"
@@ -28,6 +29,7 @@ class KADUAPI ContactAccountData : public QObject, public StorableObject
 	Q_OBJECT
 
 	Account *ContactAccount;
+	Avatar ContactAvatar;
 	Contact OwnerContact;
 	QString Id;
 
@@ -54,6 +56,7 @@ public:
 
 	Account * account() { return ContactAccount; }
 	Contact contact() { return OwnerContact; }
+	Avatar & avatar() { return ContactAvatar; }
 
 	QString id() { return Id; }
 	void setId(const QString &newId);

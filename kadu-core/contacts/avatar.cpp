@@ -23,6 +23,9 @@ Avatar::~Avatar()
 
 void Avatar::load()
 {
+	if (!isValidStorage())
+		return;
+
 	StorableObject::load();
 
 	LastUpdated = loadValue<QDateTime>("LastUpdated");
@@ -31,6 +34,11 @@ void Avatar::load()
 
 void Avatar::store()
 {
+	if (!isValidStorage())
+		return;
+
+	ensureLoaded();
+
 	storeValue("LastUpdated", LastUpdated);
 	storeValue("FileName", FileName);
 }
