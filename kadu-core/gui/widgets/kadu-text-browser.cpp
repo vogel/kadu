@@ -34,15 +34,21 @@ KaduTextBrowser::KaduTextBrowser(QWidget *parent)
 	setAttribute(Qt::WA_NoBackground);
 	setAcceptDrops(false);
 
- 	page()->setLinkDelegationPolicy(QWebPage::DelegateAllLinks);
-
-	connect(page(), SIGNAL(linkClicked(const QUrl &)), this, SLOT(hyperlinkClicked(const QUrl &)));
-	connect(page(), SIGNAL(linkHovered(const QString&,  const QString&, const QString&)), this, SLOT(linkHighlighted(const QString &)));
+	setPage(page());
 
 	connect(pageAction(QWebPage::DownloadImageToDisk), SIGNAL(triggered()), this, SLOT(saveImage()));
 	connect(&refreshTimer, SIGNAL(timeout()), this, SLOT(reload()));
 
 	kdebugf2();
+}
+
+void KaduTextBrowser::setPage(QWebPage * page)
+{
+	QWebView::setPage(page);
+	page->setLinkDelegationPolicy(QWebPage::DelegateAllLinks);
+
+	connect(page, SIGNAL(linkClicked(const QUrl &)), this, SLOT(hyperlinkClicked(const QUrl &)));
+	connect(page, SIGNAL(linkHovered(const QString&,  const QString&, const QString&)), this, SLOT(linkHighlighted(const QString &)));
 }
 
 void KaduTextBrowser::refreshLater()

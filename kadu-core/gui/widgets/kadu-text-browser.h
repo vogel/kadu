@@ -47,6 +47,8 @@ public:
 	KaduTextBrowser(QWidget *parent = 0);
 	void setSource(const QString &name);
 	void setMargin(int width);
+	void setPage(QWebPage * page);
+
 
 signals:
 	/**
