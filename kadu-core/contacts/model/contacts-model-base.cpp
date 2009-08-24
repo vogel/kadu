@@ -9,12 +9,12 @@
 
 #include "accounts/account.h"
 #include "accounts/account-manager.h"
-
+#include "contacts/avatar.h"
+#include "contacts/avatar-manager.h"
 #include "contacts/contact.h"
 #include "contacts/contact-account-data.h"
 #include "contacts/contact-list-mime-data-helper.h"
 #include "contacts/contact-manager.h"
-
 #include "protocols/protocol.h"
 
 #include "contacts-model-base.h"
@@ -158,6 +158,11 @@ QVariant ContactsModelBase::data(ContactAccountData *cad, int role, bool useDisp
 			return QVariant::fromValue(cad->status());
 		case AccountRole:
 			return QVariant::fromValue(cad->account());
+		case AvatarRole:
+			// TODO: 0.6.6 move it
+			if (cad->avatar().pixmap().isNull())
+				AvatarManager::instance()->updateAvatar(cad);
+			return QVariant::fromValue(cad->avatar().pixmap());
 		default:
 			return QVariant();
 }

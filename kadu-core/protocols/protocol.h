@@ -30,6 +30,7 @@ typedef quint32 UinType;
 class QPixmap;
 
 class AccountData;
+class AvatarService;
 class ChatImageService;
 class ChatService;
 class ContactListService;
@@ -80,6 +81,7 @@ public:
 	ProtocolFactory * protocolFactory() const { return Factory; }
 	Account * account() const { return CurrentAccount; }
 
+	virtual AvatarService * avatarService() { return 0; }
 	virtual ChatImageService * chatImageService() { return 0; }
 	virtual ChatService * chatService() { return 0; }
 	virtual ContactListService * contactListService() { return 0; }

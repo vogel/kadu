@@ -24,6 +24,7 @@ set (kadu_SRCS
 	chat/style-engines/chat-engine-kadu.cpp
 
 	contacts/avatar.cpp
+	contacts/avatar-manager.cpp
 	contacts/contact.cpp
 	contacts/contact-account-data.cpp
 	contacts/contact-data.cpp
@@ -244,6 +245,7 @@ set (kadu_MOC_SRCS
 	chat/chat-styles-manager.h
 	chat/style-engines/chat-engine-kadu.h
 
+	contacts/avatar-manager.h
 	contacts/contact.h
 	contacts/contact-account-data.h
 	contacts/contact-data.h
