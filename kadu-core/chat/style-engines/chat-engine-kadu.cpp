@@ -133,6 +133,9 @@ QString KaduChatStyleEngine::formatMessage(ChatMessage *message, ChatMessage *af
 
 void KaduChatStyleEngine::repaintMessages(HtmlMessagesRenderer *renderer)
 {
+    	if (!renderer->chat())
+		return;
+
 	QString text = QString(
 		"<html>"
 		"	<head>"
