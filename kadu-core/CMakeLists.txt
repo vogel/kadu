@@ -23,6 +23,7 @@ set (kadu_SRCS
 	chat/style-engines/chat-engine-adium.cpp
 	chat/style-engines/chat-engine-kadu.cpp
 
+	contacts/avatar.cpp
 	contacts/contact.cpp
 	contacts/contact-account-data.cpp
 	contacts/contact-data.cpp
@@ -356,6 +357,7 @@ set (kadu_MOC_SRCS
 	protocols/protocol.h
 	protocols/protocols-manager.h
 	protocols/model/protocols-model.h
+	protocols/services/avatar-service.h
 	protocols/services/chat-image-service.h
 	protocols/services/chat-service.h
 	protocols/services/contact-list-service.h

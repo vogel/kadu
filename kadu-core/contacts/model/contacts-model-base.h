@@ -63,7 +63,7 @@ public:
 
 	// D&D
 	virtual QStringList mimeTypes() const;
-	virtual QMimeData* mimeData(const QModelIndexList & indexes) const;
+	virtual QMimeData * mimeData(const QModelIndexList & indexes) const;
 
 };
 
