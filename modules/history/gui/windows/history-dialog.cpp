@@ -26,6 +26,7 @@
 
 
 #include "gui/actions/actions.h"
+#include "gui/widgets/chat-widget-manager.h"
 #include "debug.h"
 #include "emoticons.h"
 #include "gui/windows/message-box.h"
@@ -347,10 +348,10 @@ void HistoryDlg::showDetailsPopupMenu(const QPoint &pos)
 void HistoryDlg::openChat()
 {
 	kdebugf();
-	MainListItem* uids_item = dynamic_cast<MainListItem*>(MainListView->currentItem());
-	if (uids_item == NULL)
-		return;
-///  	chat_manager->openPendingMsgs(uids_item->uidsList());
+	MainListItem* chatItem = dynamic_cast<MainListItem *>(MainListView->currentItem());
+	if (chatItem)
+		ChatWidgetManager::instance()->openChatWidget(chatItem->chat(), true);
+
 	kdebugf2();
 }
 
