@@ -62,8 +62,13 @@ QString get_avatar(const UserListElement &ule)
 {
 	QString avatar = get_avatar_url(ule);
 	if (!avatar.isEmpty())
+	{
+#ifdef Q_OS_WIN
+		/* un-escape the spaces in filename */
+		avatar = avatar.replace("\\ ", " ");
+#endif
 		avatar = "<img src=\"" + avatar + "\"/>";
-
+	}
 	return avatar;
 }
 
@@ -76,7 +81,13 @@ QString get_big_avatar(const UserListElement &ule)
 {
 	QString avatar = get_big_avatar_url(ule);
 	if (!avatar.isEmpty())
+	{
+#ifdef Q_OS_WIN
+		/* un-escape the spaces in filename */
+		avatar = avatar.replace("\\ ", " ");
+#endif
 		avatar = "<img src=\"" + avatar + "\"/>";
+	}
 
 	return avatar;
 }
@@ -155,7 +166,7 @@ QString GaduAvatars::getAvatar(int uin, int mode)
 	if (QFileInfo(filename).size() > 0)
 	{
 #ifdef Q_OS_WIN
-		/* escape the spaces in filename */
+		/* escape the spaces in filename  - for kadu parser */
 		return filename.replace(" ", "\\ ");
 #else
 		return filename;

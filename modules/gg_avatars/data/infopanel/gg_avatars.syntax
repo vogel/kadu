@@ -1,6 +1,6 @@
 <table>
 <tr>
-<td><img src="file://{#{avatar_url} #{avatar_url}}{~#{avatar_url} @{ManageUsersWindowIcon}}"/></td>
+<td><img src="{#{avatar_url} #{avatar_url}}{~#{avatar_url} @{ManageUsersWindowIcon}}"/></td>
 <td><div align=\"left\"> [<b>%a</b>][ (%u)] [<br>tel.: %m][<br>IP: %i]</div></td>
 </tr>
 </table>
