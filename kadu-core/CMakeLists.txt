@@ -189,6 +189,7 @@ set (kadu_SRCS
 	protocols/model/protocols-model.cpp
 	protocols/services/chat-service.cpp
 
+	status/base-status-container.cpp
 	status/description-manager.cpp
 	status/description-model.cpp
 	status/status.cpp

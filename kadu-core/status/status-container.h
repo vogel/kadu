@@ -39,6 +39,8 @@ public:
 	virtual void disconnectAndStoreLastStatus(bool disconnectWithCurrentDescription,
 						  const QString &disconnectDescription) = 0;
 
+	virtual void setPrivateStatus(bool isPrivate) = 0;
+
 signals:
 	void statusChanged();
 

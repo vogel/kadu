@@ -20,7 +20,7 @@
 #include "account.h"
 
 Account::Account(const QUuid &uuid) :
-		UuidStorableObject("Account", AccountManager::instance()), ProtocolHandler(0),
+		BaseStatusContainer("Account", AccountManager::instance()), ProtocolHandler(0),
 		RememberPassword(false), HasPassword(false), UseProxy(false), ProxyHost(QHostAddress()),
 		ProxyPort(0), ProxyUser(QString()), ProxyPassword(QString())
 {
@@ -205,57 +205,8 @@ int Account::maxDescriptionLength()
 		return ProtocolHandler->maxDescriptionLength();
 }
 
-void Account::setDefaultStatus(const QString &startupStatus, bool offlineToInvisible,
-				      const QString &startupDescription, bool StartupLastDescription)
+void Account::setPrivateStatus(bool isPrivate)
 {
-	QString description;
-    	if (StartupLastDescription)
-		description = loadValue<QString>("LastStatusDescription");
-	else
-		description = startupDescription;
-
-
-	QString name;
-	if (startupStatus == "LastStatus")
-	{
-		name = loadValue<QString>("LastStatusName");
-		if (name.isEmpty())
-			name = "Online";
-		else if ("Offline" == name && offlineToInvisible)
-			name = "Invisible";
-	}
-	else
-		name = startupStatus;
-
-
-	if ("Offline" == name && offlineToInvisible)
-		name = "Invisible";
-
-	Status status;
-	status.setType(name);
-	status.setDescription(description);
-
-	protocol()->setPrivateMode(config_file.readBoolEntry("General", "PrivateStatus"));
-
-	setStatus(status);
-}
-void Account::disconnectAndStoreLastStatus(bool disconnectWithCurrentDescription,
-						  const QString &disconnectDescription)
-{
-	storeValue("LastStatusDescription", status().description());
-
-	storeValue("LastStatusName", statusName());
-
-	if (!protocol()->isConnected())
-		return;
-	Status disconnectStatus;
-	disconnectStatus.setType("Offline");
-	QString description;
-	if (disconnectWithCurrentDescription)
-		description = status().description();
-	else
-		description = disconnectDescription;
-
-	disconnectStatus.setDescription(description);
-	setStatus(disconnectStatus);
+	if (ProtocolHandler)
+		return ProtocolHandler->setPrivateMode(isPrivate);
 }

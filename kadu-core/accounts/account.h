@@ -15,8 +15,8 @@
 
 #include "contacts/contact.h"
 #include "contacts/contacts-aware-object.h"
+#include "status/base-status-container.h"
 #include "status/status.h"
-#include "status/status-container.h"
 
 class QPixmap;
 
@@ -25,7 +25,7 @@ class Protocol;
 class Status;
 class XmlConfigFile;
 
-class KADUAPI Account : public StatusContainer, public UuidStorableObject, public ContactsAwareObject
+class KADUAPI Account : public BaseStatusContainer, public ContactsAwareObject
 {
 	Q_OBJECT
 
@@ -111,10 +111,8 @@ public:
 
 	QPixmap statusPixmap(Status status);
 
-	virtual void setDefaultStatus(const QString &startupStatus, bool offlineToInvisible,
-				      const QString &startupDescription, bool StartupLastDescription);
-	virtual void disconnectAndStoreLastStatus(bool disconnectWithCurrentDescription,
-						  const QString &disconnectDescription);
+	virtual void setPrivateStatus(bool isPrivate);
+
 
 signals:
 	void contactStatusChanged(Account *account, Contact contact, Status oldStatus);

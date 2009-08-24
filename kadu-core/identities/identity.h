@@ -14,8 +14,7 @@
 #include <QtCore/QStringList>
 
 #include "accounts/accounts-aware-object.h"
-#include "configuration/uuid-storable-object.h"
-#include "status/status-container.h"
+#include "status/base-status-container.h"
 
 #include "exports.h"
 
@@ -24,7 +23,7 @@ class QPixmap;
 class Account;
 class Status;
 
-class KADUAPI Identity : public StatusContainer, public UuidStorableObject, public AccountsAwareObject
+class KADUAPI Identity : public BaseStatusContainer, public AccountsAwareObject
 {
 	Q_OBJECT
 
@@ -72,10 +71,8 @@ public:
 
 	virtual int maxDescriptionLength();
 
-	virtual void setDefaultStatus(const QString &startupStatus, bool offlineToInvisible,
-				      const QString &startupDescription, bool StartupLastDescription);
-	virtual void disconnectAndStoreLastStatus(bool disconnectWithCurrentDescription,
-						  const QString &disconnectDescription);
+	virtual void setPrivateStatus(bool isPrivate);
+
 
 public slots:
 	void removeAccount(Account *account);

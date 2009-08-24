@@ -74,6 +74,9 @@ public:
 	virtual void disconnectAndStoreLastStatus(bool disconnectWithCurrentDescription,
 						  const QString &disconnectDescription) {}
 
+	virtual void setPrivateStatus(bool isPrivate);
+
+
 signals:
 	void statusContainerAboutToBeRegistered(StatusContainer *);
 	void statusContainerRegistered(StatusContainer *);

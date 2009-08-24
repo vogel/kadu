@@ -148,3 +148,9 @@ int StatusContainerManager::maxDescriptionLength()
 		? AccountManager::instance()->defaultAccount()->maxDescriptionLength()
 		: -1;
 }
+
+void StatusContainerManager::setPrivateStatus(bool isPrivate)
+{
+	foreach (StatusContainer *container, StatusContainers)
+		container->setPrivateStatus(isPrivate);
+}
