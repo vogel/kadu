@@ -23,12 +23,12 @@ private slots:
 public:
 	virtual QList<Chat *> chatsList() = 0;
 	virtual QList<QDate> datesForChat(Chat *chat) = 0;
-	virtual QList<ChatMessage *> getMessages(Chat *chat, QDate date = QDate(), int limit = 0) = 0;
-	virtual int getMessagesCount(Chat *chat, QDate date = QDate()) = 0;
-	//TODO:
-	virtual void appendMessageEntry(const Message &message) = 0;
+	virtual QList<ChatMessage *> messages(Chat *chat, QDate date = QDate(), int limit = 0) = 0;
+	virtual int messagesCount(Chat *chat, QDate date = QDate()) = 0;
 
-	virtual void clearHistoryForChat(Chat *chat) = 0;
+	virtual void appendMessage(const Message &message) = 0;
+
+	virtual void clearChatHistory(Chat *chat) = 0;
 
 };
 

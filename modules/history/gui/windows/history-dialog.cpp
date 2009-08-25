@@ -208,7 +208,7 @@ void HistoryMainWidget::quickSearchPhraseTyped(const QString &text)
 	if(!text.isEmpty())
 		if(!ContentBrowser->findText(text))
 			if(!ContentBrowser->findText(text, QWebPage::FindBackward))
-				//zmieniaæ kolor t³a edita? jak?
+				//zmieniaï¿½ kolor tï¿½a edita? jak?
 				MessageBox::msg(tr("Nic ciekawego"), false, "Warning");
 	kdebugf2();
 }
@@ -317,7 +317,7 @@ void HistoryDlg::searchBranchRefresh()
 {
 	kdebugf();
 /*
-	//dodaje now± szukan± frazê
+	//dodaje nowï¿½ szukanï¿½ frazï¿½
 	if(!previousSearchResults.isEmpty())
 	{
 	QTreeWidgetItem* searchSubItem = new QTreeWidgetItem(searchItem);
@@ -361,7 +361,7 @@ void HistoryDlg::lookupUserInfo()
 	MainListItem* uids_item = dynamic_cast<MainListItem*>(MainListView->currentItem());
 	if (uids_item == NULL)
 		return;
-	//dirty chiaxor, ale na razie to tylko dla gg jest mo¿liwe
+	//dirty chiaxor, ale na razie to tylko dla gg jest moï¿½liwe
 // 	Contact user = (*uids_item->uidsList().begin());
 //   	if (!user.usesProtocol("Gadu"))
 // 		return;
@@ -384,7 +384,7 @@ void HistoryDlg::removeHistoryEntriesPerUser()
 	{
 		Chat *chat = chatItem->chat();
 		if (chat)
-			History::instance()->currentStorage()->clearHistoryForChat(chat);
+			History::instance()->currentStorage()->clearChatHistory(chat);
 		MainListView->removeItemWidget((*MainListView->selectedItems().begin()),0);
 		globalRefresh();
 		main->getDetailsListView()->clear();
@@ -522,7 +522,7 @@ void HistoryDlg::searchHistory()
 	searchBranchRefresh();
 	setEnabled(true);
 
-///TODO: detailsChanged odpalaæ na pierwszym itemie z detailsTreeWidgeta
+///TODO: detailsChanged odpalaï¿½ na pierwszym itemie z detailsTreeWidgeta
 	//detailsListItemClicked(main->getDetailsListView()->items().last(), 0);
 	main->getContentBrowser()->findText(searchParameters.pattern);*/
 	kdebugf2();

@@ -13,7 +13,6 @@ set (TRANSLATION_SOURCES
 )
 
 set (CONFIGURATION_FILES
-	configuration/sql_history.ui
 )
 
 kadu_module (sql_history

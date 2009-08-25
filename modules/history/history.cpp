@@ -343,11 +343,10 @@ QList<QDate> History::datesForChat(Chat *chat)
 
 QList<ChatMessage *> History::getMessages(Chat *chat, QDate date, int limit)
 {
-	return CurrentStorage->getMessages(chat, date, limit);
+	return CurrentStorage->messages(chat, date, limit);
 }
 
 int History::getMessagesCount(Chat *chat, QDate date)
 {
-	return CurrentStorage->getMessagesCount(chat, date);
+	return CurrentStorage->messagesCount(chat, date);
 }
-

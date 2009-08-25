@@ -35,13 +35,12 @@ class HistoryImporter
 	QList<HistoryEntry> getHistoryEntries(QStringList uins, int from, int count, int mask);
 	QStringList mySplit(const QChar &sep, const QString &str);
 
-
-
 public:
 	HistoryImporter();
 	~HistoryImporter();
+
 };
 
-extern HistoryImporter* historyImporter;
+extern HistoryImporter * historyImporter;
 
-#endif //HISTORY_IMPORTER_H
+#endif // HISTORY_IMPORTER_H

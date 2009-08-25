@@ -25,10 +25,12 @@
 extern "C" KADU_EXPORT int history_migration_init(bool firstLoad)
 {
 	kdebugf();
+
 	if (firstLoad && QFile::exists(ggPath("history")))
-		historyImporter = new HistoryImporter;
+		historyImporter = new HistoryImporter();
 	else
 		historyImporter = 0;
+
 	kdebugf2();
 	return 0;
 }
@@ -57,7 +59,7 @@ HistoryImporter::HistoryImporter()
 	if (!gaduAccount || !History::instance()->currentStorage())
 		return;
 
-	QList<QStringList>  uinsLists = getUinsLists();
+	QList<QStringList> uinsLists = getUinsLists();
 	QList<int> entriesCounts;
 	int totalHistoryEntriesCount = 0;
 
@@ -120,7 +122,7 @@ HistoryImporter::HistoryImporter()
 			    .setReceiveDate(historyEntry.date);
 
 		    //TODO 0.6.6: it's damn slow!
-			History::instance()->currentStorage()->appendMessageEntry(msg);
+			History::instance()->currentStorage()->appendMessage(msg);
 		}
 
 		historyEntriesProcessed += historyEntriesCount;
