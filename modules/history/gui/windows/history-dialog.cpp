@@ -91,7 +91,14 @@ QString DetailsListItem::prepareAltnick()
 
 QString DetailsListItem::prepareTitle()
 {
-	QString title = History::instance()->getMessages(CurrentChat, Date, 1).first()->unformattedMessage;
+	QList<Message> messages = History::instance()->getMessages(CurrentChat, Date, 1);
+	if (messages.size() == 0)
+		return "";
+
+	Message firstMessage = messages.first();
+	ChatMessage first(firstMessage, TypeReceived);
+	QString title = first.unformattedMessage;
+
 	QTextDocument doc;
 	doc.setHtml(title);
 	title = doc.toPlainText();
@@ -448,7 +455,8 @@ void HistoryDlg::detailsListItemClicked(QTreeWidgetItem* item, int column)
 	DetailsListItem* detailsListItem = dynamic_cast<DetailsListItem*>(item);
 	if (detailsListItem == NULL || item == NULL)
 		return;
-	QList<ChatMessage*> chat_messages = History::instance()->getMessages(detailsListItem->chat(), detailsListItem->date());
+
+	QList<Message> chat_messages = History::instance()->getMessages(detailsListItem->chat(), detailsListItem->date());
 	main->getContentBrowser()->setChat(detailsListItem->chat());
 	main->getContentBrowser()->clearMessages();
 	main->getContentBrowser()->appendMessages(chat_messages);

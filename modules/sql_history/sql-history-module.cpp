@@ -12,6 +12,8 @@
 #include "gui/widgets/configuration/configuration-widget.h"
 #include "misc/path-conversion.h"
 
+#include "modules/history/history.h"
+
 #include "sql-history-module.h"
 
 extern "C" KADU_EXPORT int sql_history_init(bool firstLoad)

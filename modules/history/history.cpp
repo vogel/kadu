@@ -306,7 +306,7 @@ bool History::removeContactFromStorage(Contact contact)
 //TODO: optimize
 	QList<Chat *> chats = ChatManager::instance()->chatsForAccount(contact.prefferedAccount());
 	foreach (Chat *chat, chats)
-		if (chat->contacts().contains(contact) && !CurrentStorage->datesForChat(chat).isEmpty())
+		if (chat->contacts().contains(contact) && !CurrentStorage->chatDates(chat).isEmpty())
 			return false;
 	return true;
 }
@@ -333,15 +333,15 @@ void History::unregisterStorage(HistoryStorage *storage)
 
 QList<Chat *> History::chatsList()
 {
-	return CurrentStorage->chatsList();
+	return CurrentStorage->chats();
 }
 
 QList<QDate> History::datesForChat(Chat *chat)
 {
-	return CurrentStorage->datesForChat(chat);
+	return CurrentStorage->chatDates(chat);
 }
 
-QList<ChatMessage *> History::getMessages(Chat *chat, QDate date, int limit)
+QList<Message> History::getMessages(Chat *chat, QDate date, int limit)
 {
 	return CurrentStorage->messages(chat, date, limit);
 }

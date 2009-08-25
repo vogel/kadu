@@ -56,8 +56,11 @@ public:
 
 	HtmlMessagesRenderer * renderer() { return Renderer; }
 
- 	void appendMessage(ChatMessage *message);
- 	void appendMessages(QList<ChatMessage *> messages);
+	void appendMessage(Message message);
+	void appendMessage(ChatMessage *message);
+
+	void appendMessages(QList<Message> messages);
+	void appendMessages(QList<ChatMessage *> messages);
 
  	unsigned int countMessages();
 

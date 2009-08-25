@@ -116,6 +116,15 @@ void ChatMessagesView::repaintMessages()
 	Renderer->refresh();
 }
 
+void ChatMessagesView::appendMessage(Message message)
+{
+	ChatMessageType type = message.status() == Message::Received
+			? TypeReceived
+			: TypeSent;
+	ChatMessage *chatMessage = new ChatMessage(message, type);
+	appendMessage(chatMessage);
+}
+
 void ChatMessagesView::appendMessage(ChatMessage *message)
 {
 	kdebugf();
@@ -126,6 +135,14 @@ void ChatMessagesView::appendMessage(ChatMessage *message)
 	rememberScrollBarPosition();
 
 	Renderer->appendMessage(message);
+}
+
+void ChatMessagesView::appendMessages(QList<Message> messages)
+{
+	kdebugf2();
+	
+	foreach (Message message, messages)
+		appendMessage(message);
 }
 
 void ChatMessagesView::appendMessages(QList<ChatMessage *> messages)

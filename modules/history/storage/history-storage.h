@@ -1,3 +1,12 @@
+/***************************************************************************
+*                                                                         *
+*   This program is free software; you can redistribute it and/or modify  *
+*   it under the terms of the GNU General Public License as published by  *
+*   the Free Software Foundation; either version 2 of the License, or     *
+*   (at your option) any later version.                                   *
+*                                                                         *
+***************************************************************************/
+
 #ifndef HISTORY_STORAGE_H
 #define HISTORY_STORAGE_H
 
@@ -21,9 +30,9 @@ private slots:
 	virtual void messageSent(const Message &message) = 0;
 
 public:
-	virtual QList<Chat *> chatsList() = 0;
-	virtual QList<QDate> datesForChat(Chat *chat) = 0;
-	virtual QList<ChatMessage *> messages(Chat *chat, QDate date = QDate(), int limit = 0) = 0;
+	virtual QList<Chat *> chats() = 0;
+	virtual QList<QDate> chatDates(Chat *chat) = 0;
+	virtual QList<Message> messages(Chat *chat, QDate date = QDate(), int limit = 0) = 0;
 	virtual int messagesCount(Chat *chat, QDate date = QDate()) = 0;
 
 	virtual void appendMessage(const Message &message) = 0;
@@ -32,4 +41,4 @@ public:
 
 };
 
-#endif
+#endif // HISTORY_STORAGE_H
