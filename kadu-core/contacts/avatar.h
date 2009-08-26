@@ -41,7 +41,6 @@ public:
 
 	QPixmap pixmap();
 	void setPixmap(const QPixmap &pixmap);
-
 };
 
 #endif // AVATAR_H

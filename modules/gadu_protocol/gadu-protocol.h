@@ -122,6 +122,7 @@ public:
 	GaduProtocol(Account *account, ProtocolFactory *factory);
 	virtual ~GaduProtocol();
 
+	virtual AvatarService *avatarService() { return CurrentAvatarService; }
 	virtual ChatImageService * chatImageService() { return CurrentChatImageService; }
 	virtual ChatService * chatService() { return CurrentChatService; }
 	virtual ContactListService * contactListService() { return CurrentContactListService; }

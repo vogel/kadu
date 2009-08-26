@@ -39,6 +39,8 @@ void ContactAccountData::load()
 
 	StorableObject::load();
 	Id = loadValue<QString>("Id");
+
+	ContactAvatar.load();
 }
 
 void ContactAccountData::store()

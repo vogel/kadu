@@ -30,6 +30,8 @@ void Avatar::load()
 
 	LastUpdated = loadValue<QDateTime>("LastUpdated");
 	FileName = loadValue<QString>("FileName");
+
+	Pixmap.load(FileName);
 }
 
 void Avatar::store()

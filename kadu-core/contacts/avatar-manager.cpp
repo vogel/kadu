@@ -25,7 +25,6 @@ AvatarManager * AvatarManager::instance()
 	return Instance;
 }
 
-
 AvatarManager::AvatarManager()
 {
 	triggerAllAccountsRegistered();
@@ -105,7 +104,7 @@ void AvatarManager::avatarFetched(ContactAccountData *contactAccountData, QPixma
 	Avatar &avatar = contactAccountData->avatar();
 	avatar.setLastUpdated(QDateTime());
 	avatar.setPixmap(pixmap);
-	avatar.setFileName(dataPath("avatars/") + avatarFileName(avatar));
+	avatar.setFileName(ggPath("avatars/") + avatarFileName(avatar));
 
 	emit avatarUpdated(contactAccountData);
 }

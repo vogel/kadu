@@ -17,6 +17,8 @@
 #include "chat/chat-message.h"
 #include "chat/chat-styles-manager.h"
 #include "chat/html-messages-renderer.h"
+#include "contacts/avatar.h"
+#include "contacts/contact-account-data.h"
 #include "gui/widgets/chat-messages-view.h"
 #include "gui/widgets/chat-widget.h"
 #include "gui/widgets/preview.h"
@@ -341,11 +343,21 @@ QString AdiumChatStyleEngine::replaceKeywords(Chat *chat, QString &styleHref, QS
 	int pos=0;
 	while ((pos=timeRegExp.indexIn(result, pos)) != -1)
 		result.replace(pos, timeRegExp.cap(0).length(), QDateTime::currentDateTime().toString(timeRegExp.cap(1)));
-	// Get avatars. TODO: We don't support avatars at this time
+
 	QString photoIncoming;
 	QString photoOutgoing;
 
-	photoIncoming = QString("file://") + styleHref + QString("Incoming/buddy_icon.png");
+	if (chat->contacts().count() > 1)
+		photoIncoming = QString("file://") + styleHref + QString("Incoming/buddy_icon.png");
+	else
+	{
+		ContactAccountData *cad = (*chat->contacts().begin()).accountData(chat->account());
+		if (cad && !cad->avatar().pixmap().isNull())
+			photoIncoming = QString("file://") + cad->avatar().fileName();
+		else
+			photoIncoming = QString("file://") + styleHref + QString("Incoming/buddy_icon.png");
+	}
+
 	photoOutgoing = QString("file://") + styleHref + QString("Outgoing/buddy_icon.png");
 
 	result.replace(QString("%incomingIconPath%"), photoIncoming);
@@ -386,12 +398,17 @@ QString AdiumChatStyleEngine::replaceKeywords(Chat *chat, QString &styleHref, QS
 	while ((textPos=textBackgroundRegExp.indexIn(result, textPos)) != -1)
 		result.replace(textPos, textBackgroundRegExp.cap(0).length(), "inherit");
 
-	// Replace userIconPath TODO: add avatars support
+	// Replace userIconPath
 	QString photoPath;
 	if (message->type() == TypeReceived)
 	{
    		result.replace(QString("%messageClasses%"), "message incoming");
-		photoPath = QString("file://") + styleHref + QString("Incoming/buddy_icon.png");
+
+		ContactAccountData *cad = message->sender().accountData(chat->account());
+		if (cad && !cad->avatar().pixmap().isNull())
+			photoPath = QString("file://") + cad->avatar().fileName();
+		else
+			photoPath = QString("file://") + styleHref + QString("Incoming/buddy_icon.png");
 	}
 	else
 	{
