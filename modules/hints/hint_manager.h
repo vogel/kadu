@@ -51,7 +51,7 @@ private:
 	void showNewMessage(const QString &configurationDirective, const QString &title, const QString &contentTitle, ContactList contacts, const QString &msg);
 
 	// TODO: usun�� w 0.6
-	void realCopyConfiguration(const QString &fromHint, const QString &toHint);
+	void realCopyConfiguration(const QString &fromCategory, const QString &fromHint, const QString &toHint);
 	void createDefaultConfiguration();
 
 	void import_0_6_5_configuration();

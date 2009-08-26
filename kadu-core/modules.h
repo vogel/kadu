@@ -76,6 +76,7 @@ struct KADUAPI ModuleInfo
 	QStringList depends; /*!< Jakie inne modu�y s� wymagane przez ten modu�. */
 	QStringList conflicts; /*!< Z jakimi modu�ami ten modu� konfliktuje. */
 	QStringList provides; /*!< Jak� cech� dostarcza ten modu�. */
+	QStringList replaces;
 	QString description; /*!< Opis modu�u. */
 	QString author; /*!< Autor modu�u. */
 	QString version; /*!< Wersja modu�u. */
@@ -231,8 +232,6 @@ class KADUAPI ModulesManager : public QObject
 		Skupia wszystkie t�umaczenia w jednej hierarchii
 	**/
 	QObject *translators;
-
-	bool load_error;
 
 private slots:
 	void dialogDestroyed();

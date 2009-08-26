@@ -384,7 +384,7 @@ ModulesManager * ModulesManager::instance()
 }
 
 ModulesManager::ModulesManager() : QObject(),
-	StaticModules(), Modules(), Dialog(0), translators(new QObject(this)), load_error(false)
+	StaticModules(), Modules(), Dialog(0), translators(new QObject(this))
 {
 	kdebugf();
 
@@ -448,6 +448,8 @@ void ModulesManager::loadProtocolModules()
 
 void ModulesManager::loadAllModules()
 {
+	bool saveList = false;
+
 	foreach (const QString &i, staticModules())
 		if (!moduleIsActive(i))
 			activateModule(i);
@@ -471,13 +473,27 @@ void ModulesManager::loadAllModules()
 			}
 			if (load_module)
 				if (!activateModule(i))
-					load_error = true;
+					saveList = true;
+		}
+	}
+
+	foreach (const QString &i, loaded_list)
+	{
+		if (!moduleIsActive(i))
+		{
+			foreach (const QString &module, installed_list)
+			{
+				ModuleInfo m_info;
+				if (moduleInfo(module, m_info) && m_info.replaces.contains(i))
+					if (activateModule(i))
+						saveList = true;
+			}
 		}
 	}
 
 	// if not all modules were loaded properly
 	// save the list of modules
-	if (load_error)
+	if (saveList)
 		saveLoadedModules();
 
 }
@@ -639,6 +655,7 @@ bool ModulesManager::moduleInfo(const QString& module_name, ModuleInfo& info) co
 	info.depends = desc_file.readEntry("Module", "Dependencies").split(' ', QString::SkipEmptyParts);
 	info.conflicts = desc_file.readEntry("Module", "Conflicts").split(' ', QString::SkipEmptyParts);
 	info.provides = desc_file.readEntry("Module", "Provides").split(' ', QString::SkipEmptyParts);
+	info.replaces = desc_file.readEntry("Module", "Replaces").split(' ', QString::SkipEmptyParts);
 
 	info.load_by_def = desc_file.readBoolEntry("Module", "LoadByDefault");
 	info.base = desc_file.readBoolEntry("Module", "Base");

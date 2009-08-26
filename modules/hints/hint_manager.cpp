@@ -676,12 +676,12 @@ void HintManager::copyConfiguration(const QString &fromEvent, const QString &toE
 {
 }
 
-void HintManager::realCopyConfiguration(const QString &fromHint, const QString &toHint)
+void HintManager::realCopyConfiguration(const QString &fromCategory, const QString &fromHint, const QString &toHint)
 {
-	config_file.writeEntry("Hints", toHint + "_font", config_file.readFontEntry("Hints", fromHint + "_font"));
-	config_file.writeEntry("Hints", toHint + "_fgcolor", config_file.readColorEntry("Hints", fromHint + "_fgcolor"));
-	config_file.writeEntry("Hints", toHint + "_bgcolor", config_file.readColorEntry("Hints", fromHint + "_bgcolor"));
-	config_file.writeEntry("Hints", toHint + "_timeout", (int) config_file.readUnsignedNumEntry("Hints",  fromHint + "_timeout"));
+	config_file.writeEntry("Hints", toHint + "_font", config_file.readFontEntry(fromCategory, fromHint + "_font", &qApp->font()));
+	config_file.writeEntry("Hints", toHint + "_fgcolor", config_file.readColorEntry(fromCategory, fromHint + "_fgcolor", &qApp->palette().foreground().color()));
+	config_file.writeEntry("Hints", toHint + "_bgcolor", config_file.readColorEntry(fromCategory, fromHint + "_bgcolor", &qApp->palette().background().color()));
+	config_file.writeEntry("Hints", toHint + "_timeout", (int) config_file.readUnsignedNumEntry(fromCategory,  fromHint + "_timeout", 10));
 }
 
 void HintManager::import_0_6_5_configuration()
@@ -701,6 +701,48 @@ void HintManager::import_0_6_5_configuration()
 
 	if (config_file.readEntry("Look", "UserboxToolTipStyle") == "OSDHints")
 		config_file.writeEntry("Hints", "MouseOverUserSyntax", config_file.readEntry("OSDHints", "MouseOverUserSyntax"));
+
+	QStringList events;
+	events << "ConnectionError" << "NewChat" << "NewMessage" << "StatusChanged"
+		<<"StatusChanged/ToFreeForChat" << "StatusChanged/ToOnline" << "StatusChanged/ToNotAvailable"
+		<< "StatusChanged/ToDoNotDisturb" << "StatusChanged/ToOffline"
+		<< "FileTransfer" << "FileTransfer/IncomingFile" << "FileTransfer/Finished";
+
+	bool osdHintsSetAll = config_file.readBoolEntry("OSDHints", "SetAll", false);
+	bool hintsSetAll = config_file.readBoolEntry("Hints", "SetAll", false);
+
+	foreach (const QString &event, events)
+	{
+		if (config_file.readBoolEntry("Notify", event + "_OSDHints", false))
+		{
+			if (osdHintsSetAll)
+				realCopyConfiguration("OSDHints", "SetAll", event);
+			else
+				realCopyConfiguration("OSDHints", event, event);
+
+			config_file.writeEntry("Notify", event + "_Hints", true);
+		}
+		else if (hintsSetAll)
+				realCopyConfiguration("Hints", "SetAll", event);
+
+	}
+
+	if (config_file.readBoolEntry("Notify", "StatusChanged/ToBusy_OSDHints", false))
+	{
+		if (osdHintsSetAll)
+			realCopyConfiguration("OSDHints", "SetAll", "ToAway");
+		else
+			realCopyConfiguration("OSDHints", "StatusChanged/ToBusy", "StatusChanged/ToAway");
+
+		config_file.writeEntry("Notify", "StatusChanged/ToAway_Hints", true);
+	}
+	else
+	{
+		if (osdHintsSetAll)
+			realCopyConfiguration("Hints", "SetAll", "ToAway");
+		else
+			realCopyConfiguration("Hints", "StatusChanged/ToBusy", "StatusChanged/ToAway");
+	}
 }
 
 void HintManager::createDefaultConfiguration()
@@ -710,14 +752,14 @@ void HintManager::createDefaultConfiguration()
 	config_file.addVariable("Notify", "ConnectionError_Hints", true);
 	config_file.addVariable("Notify", "NewChat_Hints", true);
 	config_file.addVariable("Notify", "NewMessage_Hints", true);
-	config_file.addVariable("Notify", "StatusChanged", true);
+	config_file.addVariable("Notify", "StatusChanged_Hints", true);
 	config_file.addVariable("Notify", "StatusChanged/ToFreeForChat_Hints", true);
 	config_file.addVariable("Notify", "StatusChanged/ToOnline_Hints", true);
 	config_file.addVariable("Notify", "StatusChanged/ToAway_Hints", true);
 	config_file.addVariable("Notify", "StatusChanged/ToNotAvailable_Hints", true);
 	config_file.addVariable("Notify", "StatusChanged/ToDoNotDisturb_Hints", true);
 	config_file.addVariable("Notify", "StatusChanged/ToOffline_Hints", true);
-	config_file.addVariable("Notify", "FileTransfer", true);
+	config_file.addVariable("Notify", "FileTransfer_Hints", true);
 	config_file.addVariable("Notify", "FileTransfer/IncomingFile_Hints", true);
 	config_file.addVariable("Notify", "FileTransfer/Finished_Hints", true);
 
@@ -725,10 +767,19 @@ void HintManager::createDefaultConfiguration()
 	config_file.addVariable("Hints", "Corner", 0);
 	config_file.addVariable("Hints", "DeletePendingMsgWhenHintDeleted", true);
 
-	config_file.addVariable("Hints", "Event_NewChat_bgcolor", w.palette().background().color());
-	config_file.addVariable("Hints", "Event_NewChat_fgcolor", w.palette().foreground().color());
-	config_file.addVariable("Hints", "Event_NewChat_font", qApp->font());
-	config_file.addVariable("Hints", "Event_NewChat_timeout", 10);
+	//TODO:
+	QStringList events;
+	events << "ConnectionError" << "NewChat" << "NewMessage" << "StatusChanged"
+		<<"StatusChanged/ToFreeForChat" << "StatusChanged/ToOnline"  << "StatusChanged/ToAway"
+		<< "StatusChanged/ToNotAvailable"<< "StatusChanged/ToDoNotDisturb" << "StatusChanged/ToOffline"
+		<< "FileTransfer" << "FileTransfer/IncomingFile" << "FileTransfer/Finished";
+	foreach (const QString &event, events)
+	{
+		config_file.addVariable("Hints", "Event_" + event + "_bgcolor", qApp->palette().background().color());
+		config_file.addVariable("Hints", "Event_" + event + "_fgcolor",qApp->palette().foreground().color());
+		config_file.addVariable("Hints", "Event_" + event + "_font", qApp->font());
+		config_file.addVariable("Hints", "Event_" + event + "_timeout", 10);
+	}
 
 	config_file.addVariable("Hints", "HintsPositionX", 0);
 	config_file.addVariable("Hints", "HintsPositionY", 0);
@@ -750,9 +801,9 @@ void HintManager::createDefaultConfiguration()
 	config_file.addVariable("Hints", "HintOverUser_transparency", 0);
 	config_file.addVariable("Hints", "HintOverUser_iconSize", 32);
 	config_file.addVariable("Hints", "HintOverUser_borderWidth", FRAME_WIDTH);
-	config_file.addVariable("Hints", "HintOverUser_bdcolor", w.palette().background().color());
-	config_file.addVariable("Hints", "HintOverUser_bgcolor", w.palette().background().color());
-	config_file.addVariable("Hints", "HintOverUser_fgcolor", w.palette().foreground().color());
+	config_file.addVariable("Hints", "HintOverUser_bdcolor", &qApp->palette().background().color());
+	config_file.addVariable("Hints", "HintOverUser_bgcolor", &qApp->palette().background().color());
+	config_file.addVariable("Hints", "HintOverUser_fgcolor", &qApp->palette().foreground().color());
 	config_file.addVariable("Hints", "HintOverUser_font", qApp->font());
 }
 

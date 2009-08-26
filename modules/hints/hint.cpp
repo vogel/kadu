@@ -88,9 +88,9 @@ Hint::~Hint()
 
 void Hint::configurationUpdated()
 {
-	bcolor = config_file.readColorEntry("Hints", "Event_" + notification->type() + "_bgcolor"/*, &paletteBackgroundColor()*/);
-	fcolor = config_file.readColorEntry("Hints", "Event_" + notification->type() + "_fgcolor"/*, &paletteForegroundColor()*/);
-	label->setFont(config_file.readFontEntry("Hints", "Event_" + notification->type() + "_font"));
+	bcolor = config_file.readColorEntry("Hints", "Event_" + notification->type() + "_bgcolor", &qApp->palette().background().color());
+	fcolor = config_file.readColorEntry("Hints", "Event_" + notification->type() + "_fgcolor", &qApp->palette().foreground().color());
+	label->setFont(config_file.readFontEntry("Hints", "Event_" + notification->type() + "_font", &qApp->font()));
 	QString style = narg("QWidget {color:%1; background-color:%2; border-width:0px; border-color:%2}", fcolor.name(), bcolor.name());
 
 	setStyleSheet(style);

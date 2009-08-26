@@ -3,6 +3,7 @@ Description=Notification by hints module
 Description[pl]=Modu³ powiadamiania u¿ytkownika o zdarzeniach przy pomocy dymków
 Author=Kadu Team
 Provides=notify_method
+Replaces=osd_hints
 LoadByDefault=true
 Version=core
 Base=true
