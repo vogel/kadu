@@ -48,7 +48,6 @@ class HISTORYAPI HistoryManager : public QObject
 {
 	Q_OBJECT
 
-		int timezone_offset;
 		QString text2csv(const QString &text);
 		int getHistoryEntriesCountPrivate(const QString &filename) const;
 		uint getHistoryDate(QTextStream &stream);
