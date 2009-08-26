@@ -129,6 +129,9 @@ GaduProtocol::GaduProtocol(Account *account, ProtocolFactory *factory) :
 
 	SocketNotifiers = new GaduProtocolSocketNotifiers(account, this);
 
+	CurrentAvatarService = new GaduAvatarService(this);
+	connect(this, SIGNAL(connected(Account *)),
+			this, SLOT(fetchAvatars(Account *)));
 	CurrentChatImageService = new GaduChatImageService(this);
 	CurrentChatService = new GaduChatService(this);
 	CurrentContactListService = new GaduContactListService(this);
@@ -146,6 +149,15 @@ GaduProtocol::GaduProtocol(Account *account, ProtocolFactory *factory) :
 			this, SLOT(contactAccountDataAboutToBeRemoved(Contact &, Account *)));
 
 	kdebugf2();
+}
+
+void GaduProtocol::fetchAvatars(Account *account)
+{
+	foreach (Contact contact, ContactManager::instance()->contacts(account))
+	{
+		if (contact.hasAccountData(account))
+			CurrentAvatarService->fetchAvatar(contact.accountData(account));
+	}
 }
 
 GaduProtocol::~GaduProtocol()

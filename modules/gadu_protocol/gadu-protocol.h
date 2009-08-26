@@ -15,6 +15,7 @@
 
 #include <libgadu.h>
 
+#include "services/gadu-avatar-service.h"
 #include "services/gadu-chat-image-service.h"
 #include "services/gadu-chat-service.h"
 #include "services/gadu-contact-list-service.h"
@@ -59,6 +60,7 @@ public:
 	typedef unsigned int UinType;
 
 private:
+	GaduAvatarService *CurrentAvatarService;
 	GaduChatImageService *CurrentChatImageService;
 	GaduChatService *CurrentChatService;
 	GaduContactListService *CurrentContactListService;
@@ -99,7 +101,7 @@ private:
 private slots:
 	void login(const QString &password, bool permanent);
 	void login();
-
+	void fetchAvatars(Account *account);
 	void connectionTimeoutTimerSlot();
 	void everyMinuteActions();
 

@@ -16,6 +16,7 @@ set (SOURCES
 
 	open-chat-with/gadu-open-chat-with-runner.cpp
 
+	server/gadu-avatar-fetcher.cpp
 	server/gadu-server-connector.cpp
 	server/gadu-server-change-password.cpp
 	server/gadu-server-register-account.cpp
@@ -24,6 +25,7 @@ set (SOURCES
 	server/gadu-servers-manager.cpp
 	server/token-fetcher.cpp
 
+	services/gadu-avatar-service.cpp
 	services/gadu-chat-image-service.cpp
 	services/gadu-chat-service.cpp
 	services/gadu-contact-list-service.cpp
@@ -58,6 +60,7 @@ set (MOC_SOURCES
 
 	helpers/gadu-importer.h
 	
+	server/gadu-avatar-fetcher.h
 	server/gadu-server-connector.h
 	server/gadu-server-change-password.h
 	server/gadu-server-register-account.h
@@ -65,6 +68,7 @@ set (MOC_SOURCES
 	server/gadu-server-unregister-account.h
 	server/token-fetcher.h
 
+	services/gadu-avatar-service.h
 	services/gadu-chat-image-service.h
 	services/gadu-chat-service.h
 	services/gadu-contact-list-service.h
