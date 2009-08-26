@@ -90,6 +90,7 @@ private slots:
 
 public:
 	static MainConfigurationWindow * instance();
+	static ConfigFileDataManager * instanceDataManager();
 
 	/**
 		Rejestracja nowego pliku *.ui (dokonywana przez modu�u).

@@ -27,23 +27,7 @@ Preview::Preview(QWidget *parent)
 	setFixedHeight(170);
 	setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored);
 
-	account = AccountManager::instance()->defaultAccount();
-	Status status("Away", qApp->translate("@default", "Description"));
-
-	//contact.addAccountData(ContactAccountData(account, "999999"));
-	//ContactAccountData *contact_data = contact.accountData(account);
-	//contact_data->setStatus(status);
-	//contact_data->setAddressAndPort(QHostAddress(2130706433), 80);
-	//contact_data->setDNSName("Gadu", "host.server.net");
-
-	contact.setFirstName(qApp->translate("@default", "Mark"));
-	contact.setLastName(qApp->translate("@default", "Smith"));
-	contact.setNickName(qApp->translate("@default", "Jimbo"));
-	contact.setDisplay(qApp->translate("@default", "Jimbo"));
-	contact.setMobile("+48123456789");
-	contact.setEmail("jimbo@mail.server.net");
-	contact.setHomePhone("+481234567890");
-
+	contact = Contact::dummy();
 }
 
 Preview::~Preview()
@@ -65,9 +49,9 @@ void Preview::syntaxChanged(const QString &content)
 
 	if (count)
 		for (int i = 0; i < count; i++)
-			text += Parser::parse(syntax, account, contacts[i], objectsToParse.at(i));
+			text += Parser::parse(syntax, contacts[i].prefferedAccount(), contacts[i], objectsToParse.at(i));
 	else
-		text = Parser::parse(syntax, account, contact);
+		text = Parser::parse(syntax, contact.prefferedAccount(), contact);
 
 	emit needFixup(text);
 

@@ -287,24 +287,11 @@ void ChatStylesManager::configurationApplied()
 
 void ChatStylesManager::preparePreview(Preview *preview)
 {
-	Contact example;
-	example.setFirstName(qApp->translate("@default", "Mark"));
-	example.setLastName(qApp->translate("@default", "Smith"));
-	example.setNickName(qApp->translate("@default", "Jimbo"));
-	example.setDisplay(qApp->translate("@default", "Jimbo"));
-	example.setMobile("+48123456789");
-	example.setEmail("jimbo@mail.server.net");
-	example.setHomePhone("+481234567890");
-
-	Account *account;
-	if (AccountManager::instance()->defaultAccount())
-		account = AccountManager::instance()->defaultAccount();
-	else if (ProtocolsManager::instance()->protocolFactories().count())
-		account = ProtocolsManager::instance()->protocolFactories()[0]->newAccount();
-	else
+	Contact example = Contact::dummy();
+	if (example.isNull())
 		return;
 
-	SimpleChat *chat = new SimpleChat(account, example);
+	SimpleChat *chat = new SimpleChat(example.prefferedAccount(), example);
 	connect(preview, SIGNAL(destroyed()), chat, SLOT(deleteLater()));
 
 	Message messageSent(chat, Core::instance()->myself());

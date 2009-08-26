@@ -52,6 +52,7 @@ ContactsListWidget::ContactsListWidget(MainWindow *mainWindow, QWidget *parent) 
 	setSelectionMode(QAbstractItemView::ExtendedSelection);
 	setUniformRowHeights(false);
 	setWordWrap(true);
+	setMouseTracking(true);
 
 	Delegate = new ContactsListWidgetDelegate(this);
 	setItemDelegate(Delegate);
@@ -236,7 +237,7 @@ void ContactsListWidget::wheelEvent(QWheelEvent *event)
 void ContactsListWidget::leaveEvent(QEvent *event)
 {
 	QTreeView::leaveEvent(event);
-	toolTipHide();
+	toolTipHide(false);
 }
 
 void ContactsListWidget::mousePressEvent(QMouseEvent *event)
@@ -353,7 +354,7 @@ void ContactsListWidget::toolTipTimeout()
 {
 	if (!ToolTipContact.isNull())
 	{
-		ToolTipClassManager::instance()->showToolTip(QCursor().pos(), ToolTipContact);
+		ToolTipClassManager::instance()->showToolTip(QCursor::pos(), ToolTipContact);
 		ToolTipTimeoutTimer.stop();
 	}
 }
@@ -362,7 +363,7 @@ void ContactsListWidget::toolTipTimeout()
 
 void ContactsListWidget::toolTipRestart()
 {
-	Contact con = contact(currentIndex());
+	Contact con = contact(indexAt(mapFromGlobal(QCursor::pos())));
 
 	if (!con.isNull())
 	{

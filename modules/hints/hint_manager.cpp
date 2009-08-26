@@ -12,22 +12,27 @@
 #include <QtGui/QComboBox>
 #include <QtGui/QDesktopWidget>
 #include <QtGui/QLabel>
+#include <QtGui/QPushButton>
 #include <QtGui/QSpinBox>
 
+#include "contacts/contact-account-data.h"
 #include "configuration/configuration-file.h"
 #include "core/core.h"
 #include "gui/widgets/chat-widget-manager.h"
 #include "gui/widgets/tool-tip-class-manager.h"
 #include "gui/widgets/chat-widget.h"
 #include "gui/widgets/configuration/configuration-widget.h"
+#include "gui/widgets/configuration/config-group-box.h"
 #include "misc/misc.h"
 #include "notify/chat-notification.h"
 #include "notify/notification-manager.h"
 #include "parser/parser.h"
 
+#include "activate.h"
 #include "debug.h"
 #include "icons-manager.h"
 #include "hints_configuration_widget.h"
+#include "hint-over-user-configuration-window.h"
 
 #include "hint_manager.h"
 
@@ -37,26 +42,38 @@
  * @{
  */
 #define FRAME_WIDTH 1
+#define BORDER_RADIUS 0
 
 HintManager::HintManager(QWidget *parent)
 	: Notifier("Hint", "Hints", IconsManager::instance()->loadIcon("OpenChat"), parent), AbstractToolTip(),
 	hint_timer(new QTimer(this)),
-	hints(), tipFrame(0)
+	hints(), tipFrame(0), overUserConfigurationWindow(0)
 {
 	kdebugf();
+
+	import_0_6_5_configuration();
+	createDefaultConfiguration();
+
 #ifdef Q_OS_MAC
 	frame = new QFrame(parent, Qt::FramelessWindowHint | Qt::SplashScreen | Qt::X11BypassWindowManagerHint | Qt::WindowStaysOnTopHint |Qt::MSWindowsOwnDC);
 #else
 	frame = new QFrame(parent, Qt::FramelessWindowHint | Qt::Tool | Qt::X11BypassWindowManagerHint | Qt::WindowStaysOnTopHint |Qt::MSWindowsOwnDC);
 #endif
 	frame->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
-	frame->setFrameStyle(QFrame::Box | QFrame::Plain);
-	frame->setLineWidth(FRAME_WIDTH);
+
+	QString style = QString("QFrame {border-width: %1px; border-style: solid; border-color: %2; border-radius: %3px;}")
+			.arg(config_file.readNumEntry("Hints", "AllEvents_borderWidth", FRAME_WIDTH))
+			.arg(config_file.readColorEntry("Hints", "AllEvents_bdcolor").name())
+			.arg(BORDER_RADIUS);
+	frame->setStyleSheet(style);
 
 	layout = new QVBoxLayout(frame);
 	layout->setSpacing(0);
 	layout->setMargin(FRAME_WIDTH);
 	layout->setSizeConstraint(QLayout::SetFixedSize);
+
+	opacity = config_file.readNumEntry("Hints", "AllEvents_transparency", 0);
+	opacity = 1 - opacity/100;
 
 	connect(hint_timer, SIGNAL(timeout()), this, SLOT(oneSecond()));
 	connect(ChatWidgetManager::instance(), SIGNAL(chatWidgetActivated(ChatWidget *)), this, SLOT(chatWidgetActivated(ChatWidget *)));
@@ -69,8 +86,6 @@ HintManager::HintManager(QWidget *parent)
 
 	NotificationManager::instance()->registerNotifier(this);
 	ToolTipClassManager::instance()->registerToolTipClass(QT_TRANSLATE_NOOP("@default", "Hints"), this);
-
-	createDefaultConfiguration();
 
 	kdebugf2();
 }
@@ -102,6 +117,8 @@ HintManager::~HintManager()
 
 void HintManager::mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow)
 {
+    	connect(mainConfigurationWindow, SIGNAL(destroyed(QObject *)), this, SLOT(mainConfigurationWindowDestroyed()));
+
 	connect(mainConfigurationWindow->widget()->widgetById("hints/showContent"), SIGNAL(toggled(bool)),
 		mainConfigurationWindow->widget()->widgetById("hints/showContentCount"), SLOT(setEnabled(bool)));
 
@@ -115,22 +132,88 @@ void HintManager::mainConfigurationWindowCreated(MainConfigurationWindow *mainCo
 	connect(minimumWidth, SIGNAL(valueChanged(int)), this, SLOT(minimumWidthChanged(int)));
 	connect(maximumWidth, SIGNAL(valueChanged(int)), this, SLOT(maximumWidthChanged(int)));
 
-	overUserSyntax = mainConfigurationWindow->widget()->widgetById("hints/overUserSyntax");
-	overUserSyntax->setToolTip(qApp->translate("@default", MainConfigurationWindow::SyntaxText));
-
 	connect(mainConfigurationWindow->widget()->widgetById("toolTipClasses"), SIGNAL(currentIndexChanged(const QString &)),
 		this, SLOT(toolTipClassesHighlighted(const QString &)));
+
+	ConfigGroupBox *toolTipBox = mainConfigurationWindow->widget()->configGroupBox("Look", "Userbox", "General");
+
+	QWidget *configureHint = new QWidget(toolTipBox->widget());
+	overUserConfigurationPreview = new QFrame(configureHint);
+	QHBoxLayout *lay = new QHBoxLayout(overUserConfigurationPreview);
+	lay->setMargin(10);
+	lay->setSizeConstraint(QLayout::SetFixedSize);
+
+	overUserConfigurationIconLabel = new QLabel(overUserConfigurationPreview);
+	overUserConfigurationIconLabel->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
+
+	overUserConfigurationTipLabel = new QLabel(overUserConfigurationPreview);
+	overUserConfigurationTipLabel->setTextFormat(Qt::RichText);
+	overUserConfigurationTipLabel->setAlignment(Qt::AlignVCenter | Qt::AlignLeft);
+	overUserConfigurationTipLabel->setContentsMargins(10, 0, 0, 0);
+
+	lay->addWidget(overUserConfigurationIconLabel, Qt::AlignTop);
+	lay->addWidget(overUserConfigurationTipLabel);
+
+    	configureOverUserHint = new QPushButton(tr("Configure"));
+	connect(configureOverUserHint, SIGNAL(clicked()), this, SLOT(showOverUserConfigurationWindow()));
+
+	Contact example = Contact::dummy();
+
+	if (!example.isNull())
+		prepareOverUserHint(overUserConfigurationPreview, overUserConfigurationIconLabel,
+				    overUserConfigurationTipLabel, example);
+
+	lay = new QHBoxLayout(configureHint);
+	lay->addWidget(overUserConfigurationPreview);
+	lay->addWidget(configureOverUserHint);
+
+	toolTipBox->addWidgets(new QLabel("Hint over userlist: "), configureHint);
 }
 
 void HintManager::toolTipClassesHighlighted(const QString &value)
 {
-	overUserSyntax->setEnabled(value == qApp->translate("@default", "Hints"));
+	configureOverUserHint->setEnabled(value == qApp->translate("@default", "Hints"));
+	overUserConfigurationPreview->setEnabled(value == qApp->translate("@default", "Hints"));
 }
 
 NotifierConfigurationWidget *HintManager::createConfigurationWidget(QWidget *parent)
 {
 	configurationWidget = new HintsConfigurationWidget(parent);
 	return configurationWidget;
+}
+
+void HintManager::showOverUserConfigurationWindow()
+{
+	if (overUserConfigurationWindow)
+		_activateWindow(overUserConfigurationWindow);
+	else
+	{
+		overUserConfigurationWindow = new HintOverUserConfigurationWindow(Contact::dummy());
+		connect(overUserConfigurationWindow, SIGNAL(configurationSaved()), this, SLOT(updateOverUserPreview()));
+		connect(overUserConfigurationWindow, SIGNAL(destroyed()), this, SLOT(hintOverUserConfigurationWindowDestroyed()));
+		overUserConfigurationWindow->show();
+	}
+}
+
+void HintManager::updateOverUserPreview()
+{
+	if (!overUserConfigurationPreview)
+		return;
+
+	Contact example = Contact::dummy();
+
+	if (!example.isNull())
+		prepareOverUserHint(overUserConfigurationPreview, overUserConfigurationIconLabel, overUserConfigurationTipLabel, example);
+}
+
+void HintManager::mainConfigurationWindowDestroyed()
+{
+	overUserConfigurationPreview = 0;
+}
+
+void HintManager::hintOverUserConfigurationWindowDestroyed()
+{
+	overUserConfigurationWindow = 0;
 }
 
 void HintManager::minimumWidthChanged(int value)
@@ -152,6 +235,15 @@ void HintManager::hintUpdated()
 
 void HintManager::configurationUpdated()
 {
+    	QString style = QString("QFrame {border-width: %1px; border-style: solid; border-color: %2; border-radius: %3px;}")
+			.arg(config_file.readNumEntry("Hints", "AllEvents_borderWidth", FRAME_WIDTH))
+			.arg(config_file.readColorEntry("Hints", "AllEvents_bdcolor").name())
+			.arg(BORDER_RADIUS);
+	frame->setStyleSheet(style);
+
+    	opacity = config_file.readNumEntry("Hints", "AllEvents_transparency", 0);
+	opacity = 1 - opacity/100;
+
 	setHint();
 }
 
@@ -230,6 +322,8 @@ void HintManager::setHint()
 
 	frame->setGeometry(newPosition.x(), newPosition.y(), preferredSize.width(), preferredSize.height());
 
+	frame->setWindowOpacity(opacity);
+
 	kdebugf2();
 }
 
@@ -240,6 +334,12 @@ void HintManager::deleteHint(Hint *hint)
 	hints.removeAll(hint);
 	layout->removeWidget(static_cast<QWidget *>(hint));
 	hint->deleteLater();
+
+	if (hints.isEmpty())
+	{
+		hint_timer->stop();
+		frame->hide();
+	}
 
 	kdebugf2();
 }
@@ -439,10 +539,8 @@ void HintManager::setLayoutDirection()
 	kdebugf2();
 }
 
-void HintManager::showToolTip(const QPoint &point, Contact contact)
-{
-	kdebugf();
-
+void HintManager::prepareOverUserHint(QFrame *tipFrame, QLabel *iconLabel, QLabel *tipLabel, Contact contact)
+{\
 	QString text = Parser::parse(config_file.readEntry("Hints", "MouseOverUserSyntax"), contact.prefferedAccount(), contact);
 
 	/* Dorr: the file:// in img tag doesn't generate the image on hint.
@@ -455,23 +553,58 @@ void HintManager::showToolTip(const QPoint &point, Contact contact)
 	while (text.startsWith("<br/>"))
 		text = text.right(text.length() - 5 /* 5 == QString("<br/>").length()*/);
 
+//TODO 0.6.6: icon:
+	iconLabel->setPixmap(contact.prefferedAccount()->statusPixmap(contact.accountData(contact.prefferedAccount())->status()));
+	tipLabel->setFont(config_file.readFontEntry("Hints", "HintOverUser_font"));
+	tipLabel->setText(text);
+
+	tipFrame->setObjectName("tip_frame");
+	QString style = QString("QFrame#tip_frame {border-width: %1px; border-style: solid; border-color: %2;"
+				"border-radius: %3px; background-color: %4} QFrame { color: %5}")
+			.arg(config_file.readNumEntry("Hints", "HintOverUser_borderWidth", FRAME_WIDTH))
+			.arg(config_file.readColorEntry("Hints", "HintOverUser_bdcolor").name())
+			.arg(BORDER_RADIUS)
+			.arg(config_file.readColorEntry("Hints", "HintOverUser_bgcolor").name())
+			.arg(config_file.readColorEntry("Hints", "HintOverUser_fgcolor").name());
+
+	tipFrame->setStyleSheet(style);
+
+	tipFrame->setFixedSize(tipLabel->sizeHint() + QSize(2 * FRAME_WIDTH, 2 * FRAME_WIDTH));
+}
+
+void HintManager::showToolTip(const QPoint &point, Contact contact)
+{
+	kdebugf();
+
 	if (tipFrame)
 		delete tipFrame;
 
-	tipFrame = new QFrame(0, Qt::FramelessWindowHint | Qt::Tool | Qt::WindowStaysOnTopHint | Qt::X11BypassWindowManagerHint | Qt::MSWindowsOwnDC);
-	tipFrame->setFrameStyle(QFrame::Box | QFrame::Plain);
-	tipFrame->setLineWidth(FRAME_WIDTH);
+    #ifdef Q_OS_MAC
+	tipFrame = new QFrame(0, Qt::FramelessWindowHint | Qt::SplashScreen | Qt::X11BypassWindowManagerHint | Qt::WindowStaysOnTopHint |Qt::MSWindowsOwnDC);
+    #else
+	tipFrame = new QFrame(0, Qt::FramelessWindowHint | Qt::Tool | Qt::X11BypassWindowManagerHint | Qt::WindowStaysOnTopHint |Qt::MSWindowsOwnDC);
+    #endif
 
-	QVBoxLayout *lay = new QVBoxLayout(tipFrame);
-	lay->setMargin(FRAME_WIDTH);
+	QHBoxLayout *lay = new QHBoxLayout(tipFrame);
+	lay->setMargin(10);
+	lay->setSizeConstraint(QLayout::SetFixedSize);
 
-	QLabel *tipLabel = new QLabel(text, tipFrame);
+	QLabel *icon = new QLabel(tipFrame);
+	icon->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
+
+	QLabel *tipLabel = new QLabel(tipFrame);
 	tipLabel->setTextFormat(Qt::RichText);
 	tipLabel->setAlignment(Qt::AlignVCenter | Qt::AlignLeft);
+	tipLabel->setContentsMargins(10, 0, 0, 0);
 
+	lay->addWidget(icon, Qt::AlignTop);
 	lay->addWidget(tipLabel);
 
-	tipFrame->setFixedSize(tipLabel->sizeHint() + QSize(2 * FRAME_WIDTH, 2 * FRAME_WIDTH));
+	prepareOverUserHint(tipFrame, icon, tipLabel, contact);
+
+    	double opacity = config_file.readNumEntry("Hints", "HintOverUser_transparency", 0);
+	opacity = 1 - opacity/100;
+	tipFrame->setWindowOpacity(opacity);
 
 	QPoint pos(point + QPoint(5, 5));
 
@@ -551,6 +684,25 @@ void HintManager::realCopyConfiguration(const QString &fromHint, const QString &
 	config_file.writeEntry("Hints", toHint + "_timeout", (int) config_file.readUnsignedNumEntry("Hints",  fromHint + "_timeout"));
 }
 
+void HintManager::import_0_6_5_configuration()
+{
+	config_file.addVariable("Hints", "AllEvents_transparency", 1 - config_file.readNumEntry("OSDHints", "Opacity", 100)/100);
+	config_file.addVariable("Hints", "AllEvents_iconSize", config_file.readNumEntry("OSDHints", "IconSize", 32));
+	config_file.addVariable("Hints", "AllEvents_borderWidth",config_file.readNumEntry("OSDHints", "SetAll_borderWidth", FRAME_WIDTH));
+	config_file.addVariable("Hints", "AllEvents_bdcolor", config_file.readColorEntry("OSDHints", "SetAll_bdcolor").name());
+
+	config_file.addVariable("Hints", "HintOverUser_transparency", 1 - config_file.readNumEntry("OSDHints", "Opacity", 100)/100);
+	config_file.addVariable("Hints", "HintOverUser_iconSize", config_file.readNumEntry("OSDHints", "IconSize", 32));
+	config_file.addVariable("Hints", "HintOverUser_borderWidth",config_file.readNumEntry("OSDHints", "SetAll_borderWidth", FRAME_WIDTH));
+	config_file.addVariable("Hints", "HintOverUser_bdcolor", config_file.readColorEntry("OSDHints", "SetAll_bdcolor").name());
+	config_file.addVariable("Hints", "HintOverUser_bgcolor", config_file.readColorEntry("OSDHints", "SetAll_bgcolor").name());
+	config_file.addVariable("Hints", "HintOverUser_fgcolor", config_file.readColorEntry("OSDHints", "SetAll_fgcolor").name());
+	config_file.addVariable("Hints", "HintOverUser_font", config_file.readFontEntry("OSDHints", "SetAll_font"));
+
+	if (config_file.readEntry("Look", "UserboxToolTipStyle") == "OSDHints")
+		config_file.writeEntry("Hints", "MouseOverUserSyntax", config_file.readEntry("OSDHints", "MouseOverUserSyntax"));
+}
+
 void HintManager::createDefaultConfiguration()
 {
 	QWidget w;
@@ -590,6 +742,18 @@ void HintManager::createDefaultConfiguration()
 	config_file.addVariable("Hints", "ShowContentMessage", true);
 	config_file.addVariable("Hints", "UseUserPosition", false);
 	config_file.addVariable("Hints", "OpenChatOnEveryNotification", false);
+
+	config_file.addVariable("Hints", "AllEvents_transparency", 0);
+	config_file.addVariable("Hints", "AllEvents_iconSize", 32);
+	config_file.addVariable("Hints", "AllEvents_borderWidth", FRAME_WIDTH);
+
+	config_file.addVariable("Hints", "HintOverUser_transparency", 0);
+	config_file.addVariable("Hints", "HintOverUser_iconSize", 32);
+	config_file.addVariable("Hints", "HintOverUser_borderWidth", FRAME_WIDTH);
+	config_file.addVariable("Hints", "HintOverUser_bdcolor", w.palette().background().color());
+	config_file.addVariable("Hints", "HintOverUser_bgcolor", w.palette().background().color());
+	config_file.addVariable("Hints", "HintOverUser_fgcolor", w.palette().foreground().color());
+	config_file.addVariable("Hints", "HintOverUser_font", qApp->font());
 }
 
 HintManager *hint_manager = NULL;

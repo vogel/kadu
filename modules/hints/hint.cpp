@@ -42,7 +42,7 @@ Hint::Hint(QWidget *parent, Notification *notification)
 
 	startSecs = secs = config_file.readNumEntry("Hints", "Event_" + notification->type() + "_timeout", 10);
 
-	createLabels(notification->icon().pixmap(QSize(22, 22)));
+	createLabels(notification->icon().pixmap(config_file.readNumEntry("Hints", "AllEvents_iconSize", 32)));
 	updateText();
 
 	const QList<Notification::Callback> callbacks = notification->getCallbacks();
@@ -88,12 +88,11 @@ Hint::~Hint()
 
 void Hint::configurationUpdated()
 {
-	QString configurationDirective;
-
 	bcolor = config_file.readColorEntry("Hints", "Event_" + notification->type() + "_bgcolor"/*, &paletteBackgroundColor()*/);
 	fcolor = config_file.readColorEntry("Hints", "Event_" + notification->type() + "_fgcolor"/*, &paletteForegroundColor()*/);
 	label->setFont(config_file.readFontEntry("Hints", "Event_" + notification->type() + "_font"));
-	QString style = narg("QWidget {color:%1; background-color:%2}", fcolor.name(), bcolor.name());
+	QString style = narg("QWidget {color:%1; background-color:%2; border-width:0px; border-color:%2}", fcolor.name(), bcolor.name());
+
 	setStyleSheet(style);
 
 	setMinimumWidth(config_file.readNumEntry("Hints", "MinimumWidth", 100));
@@ -108,7 +107,8 @@ void Hint::createLabels(const QPixmap &pixmap)
 	vbox->setSizeConstraint(QLayout::SetNoConstraint);
 	QWidget *widget = new QWidget(this);
 	labels = new QHBoxLayout(widget);
-	labels->setContentsMargins(5, 5, 5, 5);
+	labels->setSpacing(0);
+	labels->setMargin(10);
 	vbox->addWidget(widget);
 	if (!pixmap.isNull())
 	{
@@ -122,6 +122,7 @@ void Hint::createLabels(const QPixmap &pixmap)
 	label->setTextInteractionFlags(Qt::NoTextInteraction);
 	label->setTextFormat(Qt::RichText);
 	label->setAlignment(Qt::AlignVCenter | Qt::AlignLeft);
+	label->setContentsMargins(10, 0, 0, 0);
 	labels->addWidget(label);
 }
 
@@ -240,13 +241,13 @@ void Hint::mouseReleaseEvent(QMouseEvent *event)
 
 void Hint::enterEvent(QEvent *)
 {
-	QString style = narg("QWidget {color:%1; background-color:%2}", fcolor.name(), bcolor.lighter().name());
+	QString style = narg("QWidget {color:%1; background-color:%2; border-width:0px; border-color:%2}", fcolor.name(), bcolor.lighter().name());
 	setStyleSheet(style);
 }
 
 void Hint::leaveEvent(QEvent *)
 {
-	QString style = narg("QWidget {color:%1; background-color:%2}", fcolor.name(), bcolor.name());
+	QString style = narg("QWidget {color:%1; background-color:%2; border-width:0px; border-color:%2}", fcolor.name(), bcolor.name());
 	setStyleSheet(style);
 }
 

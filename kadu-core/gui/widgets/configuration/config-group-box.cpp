@@ -59,3 +59,20 @@ void ConfigGroupBox::addWidgets(QWidget *widget1, QWidget *widget2)
 	if (widget2)
 		gridLayout->addWidget(widget2, numRows, 1);
 }
+
+void ConfigGroupBox::insertWidget(int pos, QWidget *widget, bool fullSpace)
+{
+    	if (fullSpace)
+		gridLayout->addWidget(widget, pos, 0, 1, 2);
+	else
+		gridLayout->addWidget(widget, pos, 1);
+}
+
+void ConfigGroupBox::insertWidgets(int pos, QWidget *widget1, QWidget *widget2)
+{
+    	if (widget1)
+		gridLayout->addWidget(widget1, pos, 0, Qt::AlignRight);
+
+	if (widget2)
+		gridLayout->addWidget(widget2, pos, 1);
+}

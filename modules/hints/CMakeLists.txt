@@ -1,6 +1,7 @@
 set (SOURCES
 	hint.cpp
 	hint_manager.cpp
+	hint-over-user-configuration-window.cpp
 	hints_configuration_widget.cpp
 	hints-configuration-window.cpp
 	hints.cpp
@@ -9,6 +10,7 @@ set (SOURCES
 set (MOC_SOURCES
 	hint.h
 	hint_manager.h
+	hint-over-user-configuration-window.h
 	hints_configuration_widget.h
 	hints-configuration-window.h
 )
@@ -21,6 +23,7 @@ set (TRANSLATION_SOURCES
 )
 
 set (CONFIGURATION_FILES
+	configuration/hint-over-user.ui
 	configuration/hints.ui
 	configuration/hints-notifier.ui
 )

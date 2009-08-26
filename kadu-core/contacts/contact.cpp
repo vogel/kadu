@@ -8,8 +8,11 @@
  ***************************************************************************/
 
 #include "accounts/account.h"
+#include "accounts/account-manager.h"
 #include "configuration/xml-configuration-file.h"
+#include "contacts/contact-account-data.h"
 #include "contacts/contact-remove-predicate-object.h"
+#include "protocols/protocols-manager.h"
 
 #include "contact.h"
 
@@ -255,4 +258,34 @@ QString Contact::display() const
 					? Data->firstName()
 					: Data->nickName()
 				: Data->display();
+}
+
+Contact Contact::dummy()
+{
+    	Contact example;
+	example.setFirstName("Mark");
+	example.setLastName("Smith");
+	example.setNickName("Jimbo");
+	example.setDisplay("Jimbo");
+	example.setMobile("+48123456789");
+	example.setEmail("jimbo@mail.server.net");
+	example.setHomePhone("+481234567890");
+	Account *account = 0;
+	if (AccountManager::instance()->defaultAccount())
+		account = AccountManager::instance()->defaultAccount();
+	else if (ProtocolsManager::instance()->protocolFactories().count())
+		account = ProtocolsManager::instance()->protocolFactories()[0]->newAccount();
+
+	if (account)
+	{
+		ContactAccountData *contact_data = new ContactAccountData(example, account, "999999", false);
+		contact_data->setStatus(Status("Away", tr("Example description")));
+		contact_data->setIp(QHostAddress(2130706433));
+		contact_data->setPort(80);
+
+		example.addAccountData(contact_data);
+
+		return example;
+	}
+	return null;
 }

@@ -68,6 +68,10 @@ public:
 	 **/
 	void addWidgets(QWidget *widget1, QWidget *widget2);
 
+	void insertWidget(int pos, QWidget *widget, bool fullSpace = false);
+
+	void insertWidgets(int pos, QWidget *widget1, QWidget *widget2);
+
 	/**
 		Zwraca true, gdy GroupBox nie posiada w sobie żadnych widgetów.
 		@return true, gdy GroupBox nie posiada w sobie żadnych widgetów

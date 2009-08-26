@@ -7,12 +7,14 @@
 #include "notify/notifier.h"
 #include "hint.h"
 
+class QHBoxLayout;
 class QFrame;
 class QSpinBox;
 
 class ChatWidget;
 class ContactList;
 class HintsConfigurationWidget;
+class HintOverUserConfigurationWindow;
 
 class HintManager : public Notifier, public ConfigurationUiHandler, public AbstractToolTip, public ConfigurationAwareObject
 {
@@ -25,10 +27,17 @@ private:
 	QList<Hint *> hints;
 	QFrame *tipFrame;
 
+	double opacity;
+
 	QSpinBox *minimumWidth;
 	QSpinBox *maximumWidth;
-	QWidget *overUserSyntax;
+	QPushButton *configureOverUserHint;
 	HintsConfigurationWidget *configurationWidget;
+	HintOverUserConfigurationWindow *overUserConfigurationWindow;
+
+	QFrame *overUserConfigurationPreview;
+	QLabel *overUserConfigurationIconLabel;
+	QLabel *overUserConfigurationTipLabel;
 
 	QMap<QPair<Chat *, QString>, Hint *> linkedHints;
 
@@ -44,6 +53,8 @@ private:
 	// TODO: usun�� w 0.6
 	void realCopyConfiguration(const QString &fromHint, const QString &toHint);
 	void createDefaultConfiguration();
+
+	void import_0_6_5_configuration();
 
 private slots:
 	/**
@@ -106,6 +117,11 @@ private slots:
 
 	void hintUpdated();
 
+	void mainConfigurationWindowDestroyed();
+	void hintOverUserConfigurationWindowDestroyed();
+	void showOverUserConfigurationWindow();
+	void updateOverUserPreview();
+
 protected:
 	virtual void configurationUpdated();
 
@@ -129,6 +145,8 @@ public:
 
 	virtual void mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow);
 	virtual NotifierConfigurationWidget *createConfigurationWidget(QWidget *parent = 0);
+
+	void prepareOverUserHint(QFrame *tipFrame, QLabel *iconLabel, QLabel *tipLabel, Contact contact);
 
 };
 

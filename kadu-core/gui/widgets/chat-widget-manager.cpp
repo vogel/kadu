@@ -129,7 +129,7 @@ void ChatWidgetManager::loadOpenedWindows()
 			{
 				Chat *chat = defaultAccount->protocol()->findChat(contacts);
 				if (chat)
-					openChatWidget(chat);
+					openChatWidget(chat, true);
 			}
 			else
 				kdebugm(KDEBUG_WARNING, "protocol %s/%s not found!\n",

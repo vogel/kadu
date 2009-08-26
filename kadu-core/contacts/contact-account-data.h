@@ -50,7 +50,7 @@ protected:
 public:
 	ContactAccountData(Contact contact, Account *account, const QString &id = QString::null, bool loadFromConfiguration = true);
 
-	virtual bool validateId() = 0;
+	virtual bool validateId() {};
 	virtual void load();
 	virtual void store();
 

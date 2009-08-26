@@ -60,6 +60,8 @@ public:
 
 	static Contact null;
 
+	static Contact dummy();
+
 	bool isNull() const { return 0 == Data || Data->isNull(); }
 	bool isAnonymous() const { return 0 != Data && Data->isAnonymous(); }
 

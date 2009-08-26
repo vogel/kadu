@@ -76,6 +76,11 @@ MainConfigurationWindow * MainConfigurationWindow::instance()
 	return Instance;
 }
 
+ConfigFileDataManager * MainConfigurationWindow::instanceDataManager()
+{
+    	return InstanceDataManager;
+}
+
 void MainConfigurationWindow::registerUiFile(const QString &uiFile)
 {
 	UiFiles.append(uiFile);
