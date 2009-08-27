@@ -12,6 +12,7 @@
 #include "modules.h"
 #include "debug.h"
 #include "icons_manager.h"
+#include "config_file.h"
 
 #include "powerkadu.h"
 #include "about_dialog.h"
@@ -23,7 +24,10 @@ PowerKadu* powerKadu;
 extern "C" KADU_EXPORT int powerkadu_init()
 {
 	kdebugf();
+
 	powerKadu = new PowerKadu();
+	MainConfigurationWindow::registerUiFile(dataPath("kadu/modules/configuration/powerkadu.ui"), powerKadu);
+
 	kdebugf2();
 	return 0;
 }
@@ -31,8 +35,11 @@ extern "C" KADU_EXPORT int powerkadu_init()
 extern "C" KADU_EXPORT void powerkadu_close()
 {
 	kdebugf();
+
+	MainConfigurationWindow::unregisterUiFile(dataPath("kadu/modules/configuration/powerkadu.ui"), powerKadu);
 	delete powerKadu;
 	powerKadu = 0;
+
 	kdebugf2();
 }
 
@@ -67,6 +74,10 @@ PowerKadu::~PowerKadu()
 		aboutDialog = 0;
 	}
 
+	if (!Kadu::closing() && config_file.readBoolEntry("PowerKadu", "unload_modules", true)) {
+		unloadModules();
+	}
+
 	kdebugf2();
 }
 
@@ -81,4 +92,28 @@ void PowerKadu::onAboutPowerKadu()
 		aboutDialog->show();
 
 	kdebugf2();
+}
+
+void PowerKadu::unloadModules()
+{
+	kdebugf();
+	ModuleInfo info;
+	QString module;
+	if (modules_manager->moduleInfo("powerkadu", info))
+	{
+		foreach (module, info.depends)
+		{
+			if (modules_manager->moduleIsActive(module))
+				modules_manager->deactivateModule(module, false);
+		}
+	}
+	kdebugf2();
+}
+
+void PowerKadu::mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow)
+{
+}
+
+void PowerKadu::configurationUpdated()
+{
 }

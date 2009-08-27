@@ -1,0 +1,9 @@
+<configuration-ui>
+	<section name="Kadu">
+		<tab name="Advanced">
+			<group-box name="PowerKadu">
+				<check-box caption="Unload submodules when unloading powerkadu module" config-section="PowerKadu" config-item="unload_modules"/>
+			</group-box>
+		</tab>
+	</section>
+</configuration-ui>

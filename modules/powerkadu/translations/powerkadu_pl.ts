@@ -45,4 +45,11 @@
         <translation>&amp;O PowerKadu...</translation>
     </message>
 </context>
+<context>
+    <name>@default</name>
+    <message>
+        <source>Unload submodules when unloading powerkadu module</source>
+        <translation>Wyładuj podmoduły podczas wyładowywania modułu powerkadu</translation>
+    </message>
+</context>
 </TS>

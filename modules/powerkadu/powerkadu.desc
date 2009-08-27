@@ -5,4 +5,4 @@ Author=PK Team, Dorregaray
 Dependencies=anonymous_check antistring auto_hide autostatus cenzor gg_avatars parser_extender split_messages word_fix
 Provides=
 Conflicts=
-Version=2.1.3
+Version=2.2

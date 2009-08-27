@@ -3,8 +3,11 @@ lub rozbudowy. Postaæ (x/y) oznacza, ¿e x jest pomysodawc± lub
 autorem patcha, a commitn±³ to kto¶ oznaczony przez y. Je¶li jest
 w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 
++++ wersja 2.2 (Kadu 0.6.5.3)
+* Drobne poprawki w modu³ach (Dorregaray)
+
 +++ wersja 2.1 (Kadu 0.6.5)
-* Przepisanie do Qt4 i nowego API Kadu 0.6.5
+* Przepisanie do Qt4 i nowego API Kadu 0.6.5 (Dorregaray)
 
 +++ wersja 2.0.3 (Kadu 0.6.1)
 * Dodany modul last_seen (Dorregaray)

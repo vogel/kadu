@@ -11,6 +11,9 @@ set (MOC_SOURCES
 set (TRANSLATION_SOURCES
 	translations/powerkadu_pl.ts)
 
+set (CONFIGURATION_FILES
+	configuration/powerkadu.ui)
+
 set (DATA_FILES
 	data/AUTHORS
 	data/AUTHORS.pl
@@ -25,6 +28,7 @@ if(WIN32)
 endif(WIN32)
 
 kadu_module_desc (powerkadu.desc)
+kadu_module_configuration(${CONFIGURATION_FILES})
 qt_wrap_cpp (powerkadu MOC_FILES ${MOC_SOURCES})
 
 qt4_add_translation (TRANSLATION_FILES ${TRANSLATION_SOURCES})
