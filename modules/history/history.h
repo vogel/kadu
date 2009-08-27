@@ -56,6 +56,7 @@ class HISTORYAPI History : public ConfigurationUiHandler, ConfigurationAwareObje
 	HistoryStorage *CurrentStorage;
 	HistoryDlg *HistoryDialog;
 	ActionDescription *ShowHistoryActionDescription;
+	ActionDescription *ChatsHistoryActionDescription;
 
 	QLabel *dontCiteOldMessagesLabel;
 	QListWidget *allStatusUsers;

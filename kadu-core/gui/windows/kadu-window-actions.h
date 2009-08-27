@@ -26,7 +26,6 @@ class KaduWindowActions : QObject
 	friend class KaduWindow;
 	ActionDescription *Configuration;
 	ActionDescription *ShowYourAccounts;
-	ActionDescription *HideKadu;
 	ActionDescription *ExitKadu;
 	ActionDescription *AddUser;
 	ActionDescription *AddGroup;
@@ -68,7 +67,6 @@ private slots:
 
 	void configurationActionActivated(QAction *sender, bool toggled);
 	void yourAccountsActionActivated(QAction *sender, bool toggled);
-	void hideKaduActionActivated(QAction *sender, bool toggled);
 	void exitKaduActionActivated(QAction *sender, bool toggled);
 	void addUserActionActivated(QAction *sender, bool toggled);
 	void addGroupActionActivated(QAction *sender, bool toggled);

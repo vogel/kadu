@@ -111,16 +111,16 @@ void FileTransferModule::createActionDecriptions()
 	FileTransferWindowActionDescription = new ActionDescription(0,
 		ActionDescription::TypeMainMenu, "sendFileWindowAction",
 		this, SLOT(toggleFileTransferWindow(QAction *, bool)),
-		"SendFileWindow", tr("File transfers")
+		"SendFileWindow", tr("File transfers...")
 	);
 
-	Core::instance()->kaduWindow()->insertMenuActionDescription(FileTransferWindowActionDescription, KaduWindow::MenuKadu, 6); // TODO 0.6.6: update
+	Core::instance()->kaduWindow()->insertMenuActionDescription(FileTransferWindowActionDescription, KaduWindow::MenuKadu, 5);
 }
 
 void FileTransferModule::deleteActionDecriptions()
 {
 	ContactsListWidgetMenuManager::instance()->removeActionDescription(SendFileActionDescription);
-// 	kadu->removeMenuActionDescription(FileTransferWindowActionDescription);
+	Core::instance()->kaduWindow()->removeMenuActionDescription(FileTransferWindowActionDescription);
 
 	delete SendFileActionDescription;
 	SendFileActionDescription = 0;

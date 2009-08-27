@@ -147,7 +147,6 @@ void KaduWindow::createKaduMenu()
 	RecentChatsMenuAction = KaduMenu->addMenu(RecentChatsMenu);
 	KaduMenu->addSeparator();
 
-	insertMenuActionDescription(Actions->HideKadu, MenuKadu);
 	insertMenuActionDescription(Actions->ExitKadu, MenuKadu);
 
 	menuBar()->addMenu(KaduMenu);
@@ -156,18 +155,18 @@ void KaduWindow::createKaduMenu()
 void KaduWindow::createContactsMenu()
 {
 	ContactsMenu = new QMenu();
-	ContactsMenu->setTitle(tr("Contacts"));
+	ContactsMenu->setTitle(tr("Buddies"));
 
 	insertMenuActionDescription(Actions->AddUser, MenuContacts);
 	insertMenuActionDescription(Actions->AddGroup, MenuContacts);
 	insertMenuActionDescription(Actions->OpenSearch, MenuContacts);
 
 	ContactsMenu->addSeparator();
-	insertMenuActionDescription(ChatWidgetManager::instance()->actions()->openChatWith(), MenuContacts);
+//	insertMenuActionDescription(ChatWidgetManager::instance()->actions()->openChatWith(), MenuContacts);
 	ContactsMenu->addSeparator();
 
 	insertMenuActionDescription(Actions->ManageIgnored, MenuContacts);
-	insertMenuActionDescription(Actions->ImportExportContacts, MenuContacts);
+//	insertMenuActionDescription(Actions->ImportExportContacts, MenuContacts);
 
 	menuBar()->addMenu(ContactsMenu);
 }

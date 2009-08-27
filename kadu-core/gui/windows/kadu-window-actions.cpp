@@ -248,28 +248,22 @@ KaduWindowActions::KaduWindowActions(QObject *parent) : QObject(parent)
 	Configuration = new ActionDescription(this,
 		ActionDescription::TypeGlobal, "configurationAction",
 		this, SLOT(configurationActionActivated(QAction *, bool)),
-		"Configuration", tr("Configuration")
+		"Configuration", tr("Configure Kadu...")
 	);
 	Configuration->setShortcut("kadu_configure", Qt::ApplicationShortcut);
 
 	ShowYourAccounts = new ActionDescription(this,
 		ActionDescription::TypeMainMenu, "yourAccountsAction",
 		this, SLOT(yourAccountsActionActivated(QAction *, bool)),
-		"PersonalInfo", tr("Your accounts")
+		"PersonalInfo", tr("Your accounts...")
 	);
 
 	ManageModules = new ActionDescription(this,
 		ActionDescription::TypeMainMenu, "manageModulesAction",
 		ModulesManager::instance(), SLOT(showDialog(QAction *, bool)),
-		"ManageModules", tr("&Modules")
+		"ManageModules", tr("Plugins...")
 	);
 	ManageModules->setShortcut("kadu_modulesmanager", Qt::ApplicationShortcut);
-
-	HideKadu = new ActionDescription(this,
-		ActionDescription::TypeMainMenu, "hideKaduAction",
-		this, SLOT(hideKaduActionActivated(QAction *, bool)),
-		"HideKadu", tr("&Hide")
-	);
 
 	ExitKadu = new ActionDescription(this,
 		ActionDescription::TypeMainMenu, "exitKaduAction",
@@ -280,26 +274,26 @@ KaduWindowActions::KaduWindowActions(QObject *parent) : QObject(parent)
 	AddUser = new ActionDescription(this,
 		ActionDescription::TypeGlobal, "addUserAction",
 		this, SLOT(addUserActionActivated(QAction *, bool)),
-		"AddUser", tr("Add Buddy")
+		"AddUser", tr("Add Buddy...")
 	);
 	AddUser->setShortcut("kadu_adduser", Qt::ApplicationShortcut);
 
 	AddGroup = new ActionDescription(this,
 		ActionDescription::TypeMainMenu, "addGroupAction",
 		this, SLOT(addGroupActionActivated(QAction *, bool)),
-		"", tr("Add Group")
+		"", tr("Add Group...")
 	);
 
 	OpenSearch = new ActionDescription(this,
 		ActionDescription::TypeGlobal, "openSearchAction",
 		this, SLOT(openSearchActionActivated(QAction *, bool)),
-		"LookupUserInfo", tr("Search user in directory")
+		"LookupUserInfo", tr("Search for Buddies...")
 	);
 
 	ManageIgnored = new ActionDescription(this,
 		ActionDescription::TypeMainMenu, "manageIgnoredAction",
 		this, SLOT(manageIgnoredActionActivated(QAction *, bool)),
-		"Ignore", tr("&Ignored users")
+		"Ignore", tr("Ignored Buddies...")
 	);
 
 	ImportExportContacts = new ActionDescription(this,
@@ -565,16 +559,6 @@ void KaduWindowActions::configurationActionActivated(QAction *sender, bool toggl
 void KaduWindowActions::yourAccountsActionActivated(QAction *sender, bool toggled)
 {
 	(new YourAccounts())->show();
-}
-
-void KaduWindowActions::hideKaduActionActivated(QAction *sender, bool toggled)
-{
-	// TODO: 0.6.6
-	//if (Docked)
-		//if (dontHideOnClose)
-			dynamic_cast<QWidget *>(parent())->showMinimized();
-		//else
-			//dynamic_cast<QWidget *>(parent())->close();
 }
 
 void KaduWindowActions::exitKaduActionActivated(QAction *sender, bool toggled)

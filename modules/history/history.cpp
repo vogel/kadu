@@ -22,6 +22,7 @@
 #include "core/core.h"
 #include "gui/widgets/configuration/config-group-box.h"
 #include "gui/widgets/configuration/configuration-widget.h"
+#include "gui/windows/kadu-window.h"
 #include "gui/windows/message-box.h"
 #include "misc/path-conversion.h"
 #include "protocols/services/chat-service.h"
@@ -106,6 +107,14 @@ void History::createActionDescriptions()
 	);
 	ShowHistoryActionDescription->setShortcut("kadu_showhistory");
 	ContactsListWidgetMenuManager::instance()->insertActionDescription(1, ShowHistoryActionDescription);
+
+	ChatsHistoryActionDescription = new ActionDescription(0,
+		ActionDescription::TypeMainMenu, "chatsHistoryAction",
+		this, SLOT(showHistoryActionActivated(QAction *, bool)),
+		"History", tr("Chats History...")
+	);
+	Core::instance()->kaduWindow()->insertMenuActionDescription(ChatsHistoryActionDescription, KaduWindow::MenuKadu, 5);
+
 }
 
 void History::deleteActionDescriptions()
@@ -114,6 +123,11 @@ void History::deleteActionDescriptions()
 
 	delete ShowHistoryActionDescription;
 	ShowHistoryActionDescription = 0;
+
+	Core::instance()->kaduWindow()->removeMenuActionDescription(ChatsHistoryActionDescription);
+	delete ChatsHistoryActionDescription;
+	ChatsHistoryActionDescription = 0;
+
 }
 
 void History::showHistoryActionActivated(QAction *sender, bool toggled)
