@@ -18,7 +18,8 @@ void GaduAvatarService::fetchAvatar(ContactAccountData *contactAccountData)
 	if (contactAccountData->id().isEmpty())
 		return;
 
-	GaduAvatarFetcher *avatarFetcher = new GaduAvatarFetcher(this);
-	connect(avatarFetcher, SIGNAL(avatarFetched(ContactAccountData *, QPixmap)), this, SIGNAL(avatarFetched(ContactAccountData *, QPixmap)));
-	avatarFetcher->fetchAvatar(contactAccountData);
+	GaduAvatarFetcher *avatarFetcher = new GaduAvatarFetcher(contactAccountData, this);
+	connect(avatarFetcher, SIGNAL(avatarFetched(ContactAccountData *, QPixmap)),
+			this, SIGNAL(avatarFetched(ContactAccountData *, QPixmap)));
+	avatarFetcher->fetchAvatar();
 }

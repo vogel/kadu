@@ -6,7 +6,11 @@
 *   (at your option) any later version.                                   *
 *                                                                         *
 ***************************************************************************/
-#include <QtCore/QDebug>
+
+#include <QtCore/QDir>
+#include <QtCore/QFile>
+#include <QtCore/QUrl>
+#include <QtNetwork/QHttp>
 #include <QtXml/QDomDocument>
 
 #include "accounts/account.h"
@@ -15,58 +19,139 @@
 
 #include "gadu-avatar-fetcher.h"
 
-void GaduAvatarFetcher::fetchAvatar(ContactAccountData *contactAccountData)
+GaduAvatarFetcher::GaduAvatarFetcher(ContactAccountData *contactAccountData, QObject *parent) :
+		QObject(parent), MyContactAccountData(contactAccountData)
 {
-	cad = contactAccountData;
-	h = new QHttp("api.gadu-gadu.pl");
-	connect(h, SIGNAL(requestFinished(int, bool)), this, SLOT(requestFinished(int, bool)));
-	h->get("/avatars/" + contactAccountData->id() + "/0.xml", &buff);
+}
+
+
+void GaduAvatarFetcher::fetchAvatar()
+{
+	MyHttp = new QHttp("api.gadu-gadu.pl", 80, this);
+	connect(MyHttp, SIGNAL(requestFinished(int, bool)),
+			this, SLOT(requestFinished(int, bool)));
+	MyHttp->get("/avatars/" + MyContactAccountData->id() + "/0.xml", &MyBuffer);
 }
 
 void GaduAvatarFetcher::requestFinished(int id, bool error)
 {
-	QString response(buff.data());
+	QString response(MyBuffer.data());
 
 	if (response.isEmpty())
-		return;
-
-	QDomDocument document;
-	document.setContent(buff.data());
-
-	QString user = document.elementsByTagName("user").at(0).toElement().attribute("uin");
-
-	QDomNode avatar = document.elementsByTagName("avatar").at(0);
-
-	QDateTime timestamp = QDateTime::fromString(avatar.firstChildElement("timestamp").text());
-
-	QString response2 = avatar.firstChildElement("smallAvatar").text();
-
-	/* Do not cache empty avatars */
-	if (response2.contains("avatar-empty.gif"))
 	{
+		deleteLater();
 		return;
 	}
 
-	if (cad->avatar().lastUpdated() == timestamp)
+	QDomDocument document;
+	document.setContent(MyBuffer.data());
+
+	QDomElement resultElement = document.firstChildElement("result");
+	if (resultElement.isNull())
+	{
+		deleteLater();
 		return;
-	cad->avatar().setLastUpdated(timestamp);
+	}
 
-	QUrl url = QUrl::fromEncoded(QByteArray().append(response2));
+	QDomElement usersElement = resultElement.firstChildElement("users");
+	if (usersElement.isNull())
+	{
+		deleteLater();
+		return;
+	}
 
-	QHttp *http = new QHttp();
-	http->setHost(url.host(), url.port(80));
-	file = new QFile(ggPath("avatars/") + QString("%1-%2").arg(cad->contact().uuid().toString(), cad->account()->uuid().toString()));
-	file->open(QIODevice::WriteOnly);
-	connect(http, SIGNAL(requestFinished(int, bool)), this, SLOT(avatarDownloaded(int, bool)));
-	http->get(url.path(), file);
+	QDomElement userElement = usersElement.firstChildElement("user");
+	if (userElement.isNull())
+	{
+		deleteLater();
+		return;
+	}
+
+	QString uin = userElement.attribute("uin");
+	if (uin.isEmpty())
+	{
+		deleteLater();
+		return;
+	}
+
+	QDomElement avatarsElement = userElement.firstChildElement("avatars");
+	if (avatarsElement.isNull())
+	{
+		deleteLater();
+		return;
+	}
+
+	QDomElement avatarElement = avatarsElement.firstChildElement("avatar");
+	if (avatarElement.isNull())
+	{
+		deleteLater();
+		return;
+	}
+
+	QDateTime timestamp;
+	QDomElement timestampElement = avatarElement.firstChildElement("timestamp");
+	if (!timestampElement.isNull())
+	{
+		timestamp = QDateTime::fromString(timestampElement.text());
+		if (MyContactAccountData->avatar().lastUpdated() == timestamp)
+		{
+// 			deleteLater(); TODO: check if file is present
+// 			return;
+		}
+	}
+
+	QDomElement avatarFileElement = avatarElement.firstChildElement("bigAvatar");
+	if (avatarFileElement.isNull())
+		avatarFileElement = avatarElement.firstChildElement("smallAvatar");
+	if (avatarFileElement.isNull())
+	{
+		deleteLater();
+		return;
+	}
+
+	QString avatarUrl = avatarFileElement.text();
+
+	// Do not cache empty avatars
+	if (avatarUrl.contains("avatar-empty.gif") || avatarUrl.contains("a1.gif"))
+	{
+		deleteLater();
+		return;
+	}
+
+	MyContactAccountData->avatar().setLastUpdated(timestamp);
+
+	QUrl url = avatarUrl;
+
+	QHttp *imageFetchHttp = new QHttp(url.host(), 80, this);
+
+	QString fileName = QString("%1-%2")
+			.arg(MyContactAccountData->contact().uuid().toString())
+			.arg(MyContactAccountData->account()->uuid().toString());
+
+	QDir avatarsDir(ggPath("avatars"));
+	if (!avatarsDir.exists())
+		avatarsDir.mkpath(ggPath("avatars"));
+
+	MyAvatarFile = new QFile(ggPath("avatars/") + fileName);
+	MyAvatarFile->open(QIODevice::ReadWrite);
+	connect(imageFetchHttp, SIGNAL(requestFinished(int, bool)),
+			this, SLOT(avatarDownloaded(int, bool)));
+			imageFetchHttp->get(url.path(), MyAvatarFile);
 }
 
 void GaduAvatarFetcher::avatarDownloaded(int id, bool error)
 {
-	file->close(); 
 	QImage image;
-	image.load(ggPath("avatars/") + QString("%1-%2").arg(cad->contact().uuid().toString(), cad->account()->uuid().toString()));
+	image.load(MyAvatarFile->fileName());
+	MyAvatarFile->close();
+
+	delete MyAvatarFile;
+	MyAvatarFile = 0;
+	
 	QPixmap pixmap = QPixmap::fromImage(image);
-	cad->avatar().setPixmap(pixmap);
-	emit avatarFetched(cad, pixmap);
+	MyContactAccountData->avatar().setPixmap(pixmap);
+
+	emit avatarFetched(MyContactAccountData, pixmap);
+
+	deleteLater();
 }

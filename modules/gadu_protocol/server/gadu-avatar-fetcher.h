@@ -11,31 +11,33 @@
 #define GADU_AVATAR_FETCHER_H
 
 #include <QtCore/QBuffer>
-#include <QtCore/QFile>
-#include <QtGui/QImage>
-#include <QtNetwork/QHttp>
-#include <QtCore/QUrl>
+#include <QtGui/QPixmap>
 
 #include "contacts/contact-account-data.h"
+
+class QFile;
+class QHttp;
 
 class GaduAvatarFetcher : public QObject
 {
 	Q_OBJECT
 
-	ContactAccountData *cad;
-	QBuffer buff;
-	QFile *file;
-	QHttp *h;
-
-
-public:
-	GaduAvatarFetcher(QObject *parent = 0) : QObject(parent) {}
-	void fetchAvatar(ContactAccountData *contactAccountData);
+	ContactAccountData *MyContactAccountData;
+	QBuffer MyBuffer;
+	QFile *MyAvatarFile;
+	QHttp *MyHttp;
+	
 private slots:
 	void requestFinished(int id, bool error);
 	void avatarDownloaded(int id, bool error);
+
+public:
+	GaduAvatarFetcher(ContactAccountData *contactAccountData, QObject *parent = 0);
+	void fetchAvatar();
+
 signals:
 	void avatarFetched(ContactAccountData *contactAccountData, QPixmap avatar);
+
 };
 
 #endif // GADU_AVATAR_FETCHER_H

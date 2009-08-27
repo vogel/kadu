@@ -10,12 +10,6 @@
 #ifndef GADU_AVATAR_SERVICE_H
 #define GADU_AVATAR_SERVICE_H
 
-#include <QtCore/QBuffer>
-#include <QtCore/QFile>
-#include <QtCore/QUrl>
-#include <QtGui/QImage>
-#include <QtNetwork/QHttp>
-
 #include "contacts/contact-account-data.h"
 #include "protocols/services/avatar-service.h"
 
@@ -27,6 +21,7 @@ public:
 	GaduAvatarService(QObject *parent = 0) : AvatarService(parent) {}
 
 	void fetchAvatar(ContactAccountData *contactAccountData);
+
 };
 
 #endif // GADU_AVATAR_SERVICE_H

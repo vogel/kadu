@@ -154,10 +154,8 @@ GaduProtocol::GaduProtocol(Account *account, ProtocolFactory *factory) :
 void GaduProtocol::fetchAvatars(Account *account)
 {
 	foreach (Contact contact, ContactManager::instance()->contacts(account))
-	{
 		if (contact.hasAccountData(account))
 			CurrentAvatarService->fetchAvatar(contact.accountData(account));
-	}
 }
 
 GaduProtocol::~GaduProtocol()
