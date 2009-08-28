@@ -92,7 +92,8 @@ void AvatarManager::accountUnregistered(Account *account)
 void AvatarManager::updateAvatar(ContactAccountData *contactAccountData)
 {
 	QDateTime lastUpdated = contactAccountData->avatar().lastUpdated();
-	if (lastUpdated.isValid() && lastUpdated.secsTo(QDateTime()) < 60*60)
+	QDateTime nextUpdate = contactAccountData->avatar().nextUpdate();
+	if (lastUpdated.isValid() && lastUpdated.secsTo(QDateTime()) < 60*60 || QFile::exists(contactAccountData->avatar().fileName()) && nextUpdate > QDateTime::currentDateTime())
 		return;
 
 	AvatarService *service = avatarService(contactAccountData);
@@ -105,7 +106,7 @@ void AvatarManager::updateAvatar(ContactAccountData *contactAccountData)
 void AvatarManager::avatarFetched(ContactAccountData *contactAccountData, QPixmap pixmap)
 {
 	Avatar &avatar = contactAccountData->avatar();
-	avatar.setLastUpdated(QDateTime());
+	avatar.setLastUpdated(QDateTime::currentDateTime());
 	avatar.setPixmap(pixmap);
 	QString avatarPath = ggPath("avatars/") + avatarFileName(avatar);
 	avatar.setFileName(avatarPath);
