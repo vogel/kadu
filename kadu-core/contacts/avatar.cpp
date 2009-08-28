@@ -29,6 +29,7 @@ void Avatar::load()
 	StorableObject::load();
 
 	LastUpdated = loadValue<QDateTime>("LastUpdated");
+	NextUpdate = loadValue<QDateTime>("NextUpdate");
 	FileName = loadValue<QString>("FileName");
 
 	Pixmap.load(FileName);
@@ -42,6 +43,7 @@ void Avatar::store()
 	ensureLoaded();
 
 	storeValue("LastUpdated", LastUpdated);
+	storeValue("NextUpdate", NextUpdate);
 	storeValue("FileName", FileName);
 }
 
@@ -60,6 +62,18 @@ void Avatar::setLastUpdated(const QDateTime &lastUpdated)
 {
 	ensureLoaded();
 	LastUpdated = lastUpdated;
+}
+
+QDateTime Avatar::nextUpdate()
+{
+	ensureLoaded();
+	return NextUpdate;
+}
+
+void Avatar::setNextUpdate(const QDateTime &nextUpdate)
+{
+	ensureLoaded();
+	NextUpdate = nextUpdate;
 }
 
 QString Avatar::fileName()

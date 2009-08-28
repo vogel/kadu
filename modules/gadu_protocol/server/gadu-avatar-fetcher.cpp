@@ -100,6 +100,13 @@ void GaduAvatarFetcher::requestFinished(int id, bool error)
 		}
 	}
 
+	QDomElement packageDelayElement = avatarElement.firstChildElement("packageDelay");
+	if (!packageDelayElement.isNull())
+	{
+		int delay = packageDelayElement.text().toInt();
+		MyContactAccountData->avatar().setNextUpdate(QDateTime::fromTime_t(QDateTime::currentDateTime().toTime_t() + delay));
+	}
+
 	QDomElement avatarFileElement = avatarElement.firstChildElement("bigAvatar");
 	if (avatarFileElement.isNull())
 		avatarFileElement = avatarElement.firstChildElement("smallAvatar");
@@ -124,32 +131,16 @@ void GaduAvatarFetcher::requestFinished(int id, bool error)
 
 	QHttp *imageFetchHttp = new QHttp(url.host(), 80, this);
 
-	QString fileName = QString("%1-%2")
-			.arg(MyContactAccountData->contact().uuid().toString())
-			.arg(MyContactAccountData->account()->uuid().toString());
-
-	QDir avatarsDir(ggPath("avatars"));
-	if (!avatarsDir.exists())
-		avatarsDir.mkpath(ggPath("avatars"));
-
-	MyAvatarFile = new QFile(ggPath("avatars/") + fileName);
-	MyAvatarFile->open(QIODevice::ReadWrite);
 	connect(imageFetchHttp, SIGNAL(requestFinished(int, bool)),
 			this, SLOT(avatarDownloaded(int, bool)));
-			imageFetchHttp->get(url.path(), MyAvatarFile);
+			imageFetchHttp->get(url.path(), &AvatarBuffer);
 }
 
 void GaduAvatarFetcher::avatarDownloaded(int id, bool error)
 {
 	QImage image;
-	image.load(MyAvatarFile->fileName());
-	MyAvatarFile->close();
-
-	delete MyAvatarFile;
-	MyAvatarFile = 0;
-	
+	image.loadFromData(AvatarBuffer.buffer());
 	QPixmap pixmap = QPixmap::fromImage(image);
-	MyContactAccountData->avatar().setPixmap(pixmap);
 
 	emit avatarFetched(MyContactAccountData, pixmap);
 

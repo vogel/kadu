@@ -7,6 +7,9 @@
 *                                                                         *
 ***************************************************************************/
 
+#include <QtCore/QDir>
+#include <QtCore/QFile>
+
 #include "accounts/account.h"
 #include "contacts/contact-account-data.h"
 #include "misc/misc.h"
@@ -104,7 +107,14 @@ void AvatarManager::avatarFetched(ContactAccountData *contactAccountData, QPixma
 	Avatar &avatar = contactAccountData->avatar();
 	avatar.setLastUpdated(QDateTime());
 	avatar.setPixmap(pixmap);
-	avatar.setFileName(ggPath("avatars/") + avatarFileName(avatar));
+	QString avatarPath = ggPath("avatars/") + avatarFileName(avatar);
+	avatar.setFileName(avatarPath);
+
+	QDir avatarsDir(ggPath("avatars"));
+	if (!avatarsDir.exists())
+		avatarsDir.mkpath(ggPath("avatars"));
+
+	pixmap.toImage().save(avatarPath);
 
 	emit avatarUpdated(contactAccountData);
 }

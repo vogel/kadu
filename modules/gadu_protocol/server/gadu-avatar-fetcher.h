@@ -15,7 +15,6 @@
 
 #include "contacts/contact-account-data.h"
 
-class QFile;
 class QHttp;
 
 class GaduAvatarFetcher : public QObject
@@ -23,8 +22,7 @@ class GaduAvatarFetcher : public QObject
 	Q_OBJECT
 
 	ContactAccountData *MyContactAccountData;
-	QBuffer MyBuffer;
-	QFile *MyAvatarFile;
+	QBuffer MyBuffer, AvatarBuffer;
 	QHttp *MyHttp;
 	
 private slots:

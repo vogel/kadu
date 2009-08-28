@@ -21,6 +21,7 @@ class Avatar : public StorableObject
 {
 	ContactAccountData *MyContactAccountData;
 	QDateTime LastUpdated;
+	QDateTime NextUpdate;
 	QString FileName;
 	QPixmap Pixmap;
 
@@ -35,6 +36,9 @@ public:
 
 	QDateTime lastUpdated();
 	void setLastUpdated(const QDateTime &lastUpdated);
+
+	QDateTime nextUpdate();
+	void setNextUpdate(const QDateTime &nextUpdate);
 
 	QString fileName();
 	void setFileName(const QString &fileName);
