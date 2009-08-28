@@ -117,7 +117,7 @@ void AccountContactsListWidget::contactListImported(bool ok, ContactList contact
 	{
 		Contact c = ContactManager::instance()->byId(CurrentAccount, contact.accountData(CurrentAccount)->id());
 		foreach (Contact b, beforeImportList)
-			if (c.accountData(CurrentAccount)->id() == b.accountData(CurrentAccount)->id())
+			if (b.accountData(CurrentAccount) && b.accountData(CurrentAccount)->id() == c.accountData(CurrentAccount)->id())
 				beforeImportList.removeOne(b);
 		c.setFirstName(contact.firstName());
 		c.setLastName(contact.lastName());
