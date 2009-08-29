@@ -39,10 +39,11 @@ QString GaduListHelper::contactListToString(Account *account, ContactList contac
 
 		ContactAccountData *cad = contact.accountData(account);
 
-		contactsStringList << QString("%1;%2;%3;%4;%5;%6;%7;%8;%9;%10;%11;%12")
+		contactsStringList << QString("%1;%2;%3;%4;%5;%6;%7;%8;%9;%10;%11;%12;%13")
 			.arg(contact.firstName())
 			.arg(contact.lastName())
 			.arg(contact.nickName())
+			.arg(contact.display())
 			.arg(contact.mobile())
 			.arg(contactGroups.join(";"))
 			.arg(cad
