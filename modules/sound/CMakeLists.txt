@@ -38,8 +38,14 @@ if (COMMAND cmake_policy)
 	cmake_policy(SET CMP0003 NEW)
 endif (COMMAND cmake_policy)
 
-pkg_search_module (SNDFILE REQUIRED sndfile>=1.0)
-
+if (MINGW)
+	set (SNDFILE_INCLUDE_DIRS ${MINGW_LIBSNDFILE_DIR}/include)
+	set (SNDFILE_LIBRARY_DIRS ${MINGW_LIBSNDFILE_DIR})
+	set (SNDFILE_LIBRARIES -lsndfile-1)
+else (MINGW)
+  pkg_search_module (SNDFILE REQUIRED sndfile>=1.0)
+endif (MINGW)
+	
 include_directories (${SNDFILE_INCLUDE_DIRS})
 link_directories (${SNDFILE_LIBRARY_DIRS})
 
