@@ -54,7 +54,7 @@ class HISTORYAPI HistoryManager : public QObject
 
 		void buildIndexPrivate(const QString &filename);
 		void createMessageDates(const UinsList uins);
-		void updateMessageDates(const UinsList uins);
+		void updateMessageDates(const UinsList uins, time_t receiveTime);
 
 		class BuffMessage
 		{
@@ -110,7 +110,7 @@ class HISTORYAPI HistoryManager : public QObject
 			raczej nie u�ywa�...
 		**/
 		void appendMessage(UinsList receivers, UinType sender, const QString &msg,
-				bool own, time_t t = 0, bool chat = true, time_t arriveTime = time(NULL));
+				bool own, time_t serverTime = 0, bool chat = true, time_t arriveTime = time(NULL));
 		void appendSms(const QString &mobile, const QString &msg);
 		void appendStatus(UinType uin, const UserStatus &status);
 		void removeHistory(const UinsList &uins);

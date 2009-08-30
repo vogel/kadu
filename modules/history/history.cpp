@@ -74,7 +74,7 @@ QString HistoryManager::getFileNameByUinsList(UinsList uins)
 	return fname;
 }
 
-void HistoryManager::appendMessage(UinsList uins, UinType uin, const QString &msg, bool own, time_t czas, bool chat, time_t arriveTime)
+void HistoryManager::appendMessage(UinsList uins, UinType uin, const QString &msg, bool own, time_t serverTime, bool chat, time_t arriveTime)
 {
 	kdebugf();
 	QFile f, fidx;
@@ -85,7 +85,7 @@ void HistoryManager::appendMessage(UinsList uins, UinType uin, const QString &ms
 
 	convHist2ekgForm(uins);
 	fname.append(getFileNameByUinsList(uins));
-	updateMessageDates(uins);
+	updateMessageDates(uins, arriveTime);
 
 	if (own)
 		if (chat)
@@ -105,7 +105,7 @@ void HistoryManager::appendMessage(UinsList uins, UinType uin, const QString &ms
 	linelist.append(text2csv(nick));
 	linelist.append(QString::number(arriveTime));
 	if (!own)
-		linelist.append(QString::number(czas));
+		linelist.append(QString::number(serverTime));
 	linelist.append(text2csv(msg));
 	line = linelist.join(",");
 
@@ -143,6 +143,7 @@ void HistoryManager::appendSms(const QString &mobile, const QString &msg)
 	QString altnick, line, fname;
 	UinType uin = 0;
 	int offs;
+	time_t currentTime = time(NULL);
 
 	QString html_msg = msg;
 	HtmlDocument::escapeText(html_msg);
@@ -151,7 +152,7 @@ void HistoryManager::appendSms(const QString &mobile, const QString &msg)
 
 	linelist.append("smssend");
 	linelist.append(mobile);
-	linelist.append(QString::number(time(NULL)));
+	linelist.append(QString::number(currentTime));
 	linelist.append(text2csv(html_msg));
 
 	foreach(const UserListElement &i, *userlist)
@@ -165,6 +166,7 @@ void HistoryManager::appendSms(const QString &mobile, const QString &msg)
 	{
 		UinsList uins(uin);
 		convHist2ekgForm(uins);
+		updateMessageDates(uins, currentTime);
 		linelist.append(text2csv(altnick));
 		linelist.append(QString::number(uin));
 	}
@@ -1063,13 +1065,15 @@ void HistoryManager::createMessageDates(const UinsList uins)
 		LastDate[uins] = currentDate;
 }
 
-void HistoryManager::updateMessageDates(const UinsList uins)
+void HistoryManager::updateMessageDates(const UinsList uins, time_t receiveTime)
 {
-	QDate date = QDate::currentDate();
+	QDateTime date;
+	date.setTime_t(receiveTime);
 	if (LastDate.contains(uins))
-		if (LastDate[uins] == date)
+		if (LastDate[uins] == date.date())
 			return;
 
+	kdebugmf(KDEBUG_INFO, "Appending date '%s' to message dates\n", qPrintable(date.date().toString("yyyy.MM.dd")));
 	QFile messageDatesFile(ggPath("history/") + getFileNameByUinsList(uins) + ".message_dates");
 	if (!messageDatesFile.exists())
 	{
@@ -1077,12 +1081,17 @@ void HistoryManager::updateMessageDates(const UinsList uins)
 		return;
 	}
 
-	messageDatesFile.open(QIODevice::WriteOnly | QIODevice::Append);
+	if (!messageDatesFile.open(QIODevice::WriteOnly | QIODevice::Append))
+	{
+		kdebugmf(KDEBUG_ERROR, "Error opening history file %s\n", qPrintable(messageDatesFile.fileName()));
+	  	MessageBox::msg(tr("Error opening history file ") + messageDatesFile.fileName());
+	}
+	
 	QDataStream messageDatesStream(&messageDatesFile);
-	messageDatesStream << date;
+	messageDatesStream << date.date();
 	messageDatesFile.close();
 
-	LastDate[uins] = date;
+	LastDate[uins] = date.date();
 }
 
 QList<QDate> HistoryManager::getMessageDates(const UinsList &uins)
@@ -1329,8 +1338,8 @@ void HistoryManager::addMyMessage(const UinsList &senders, const QString &msg)
 	if (!config_file.readBoolEntry("History", "Logging"))
 		return;
 	kdebugf();
-	time_t current=time(NULL);
-	if (bufferedMessages.find(senders[0])!=bufferedMessages.end())
+	time_t current = time(NULL);
+	if (bufferedMessages.find(senders[0]) != bufferedMessages.end())
 	{
 		bufferedMessages[senders[0]].append(BuffMessage(senders, msg, 0, current, true, 0));
 		checkImageTimeout(senders[0]);
@@ -1338,7 +1347,7 @@ void HistoryManager::addMyMessage(const UinsList &senders, const QString &msg)
 	else
 		appendMessage(senders, senders[0], msg, true, 0, true, current);
 
-	updateMessageDates(senders);
+	//updateMessageDates(senders, current);
 
 	kdebugf2();
 }
