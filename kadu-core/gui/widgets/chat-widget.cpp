@@ -563,12 +563,10 @@ void ChatWidget::editBoxKeyPressed(QKeyEvent *e, CustomInput *sender, bool &hand
 
 void ChatWidget::messagesViewSelectionChanged()
 {
-	printf("messages view selection change\n");
 	SelectionFromMessagesView = true;
 }
 
 void ChatWidget::editBoxSelectionChanged()
 {
-	printf("edit box selection\n");
 	SelectionFromMessagesView = false;
 }
