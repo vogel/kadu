@@ -42,9 +42,15 @@ for /D %%F in (*) do (
 	IF EXIST %%F\*.dll (
 		xcopy %%F\*.dll  %DESTINATION%\modules\ /C /H /R /Y  >> install.log
 		xcopy %%F\*.desc %DESTINATION%\modules\ /C /H /R /Y  >> install.log
-		xcopy %%F\configuration\*.ui %DESTINATION%\modules\configuration\ /C /H /R /Y  >> install.log
-		xcopy %%F\*.qm   %DESTINATION%\modules\translations\ /C /H /R /Y  >> install.log
-		xcopy %%F\data\* %DESTINATION%\modules\data\%%F\ /C /H /R /Y /E  >> install.log
+		IF EXIST %%F\configuration\*.ui (
+		  xcopy %%F\configuration\*.ui %DESTINATION%\modules\configuration\ /C /H /R /Y  >> install.log
+		)
+		IF EXIST %%F\*.qm (
+		  xcopy %%F\*.qm   %DESTINATION%\modules\translations\ /C /H /R /Y  >> install.log
+		)
+		IF EXIST %%F\data\* (
+		  xcopy %%F\data\* %DESTINATION%\modules\data\%%F\ /C /H /R /Y /E  >> install.log
+		)
 	)
 )
 cd ..
