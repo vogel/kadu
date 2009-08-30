@@ -74,8 +74,11 @@ DateListViewText::DateListViewText(QTreeWidgetItem *parent, UinsList uins, const
 	: QTreeWidgetItem(parent, 0), date(date)
 {
 	setText(0, date.date.toString("yyyy.MM.dd"));
-
 	containsMessages = messageDates.contains(date.date.date());
+	if (!containsMessages)
+	{
+		kdebugmf(KDEBUG_INFO, "Date '%s' not found in messageDates. Probably contains only status changes\n", qPrintable(date.date.toString("yyyy.MM.dd")));
+	}
 }
 
 void DateListViewText::showStatusChanges(bool showStatus)
@@ -212,6 +215,9 @@ void HistoryDialog::rebuildIndex(bool)
 	QTreeWidgetItem *item = uinsTreeWidget->currentItem();
 	UinsList uins = dynamic_cast<UinsListViewText *>(item)->getUinsList();
 	history->buildIndex(uins);
+	// remove message dates too
+	QFile messageDatesFile(ggPath("history/") + history->getFileNameByUinsList(uins) + ".message_dates");
+	messageDatesFile.remove();
 }
 
 void HistoryDialog::showPopupMenu(const QPoint &pos)
