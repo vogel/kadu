@@ -129,8 +129,8 @@ void ChatMessagesView::appendMessage(ChatMessage *message)
 {
 	kdebugf();
 
-	connect(message, SIGNAL(statusChanged(Message::Status)),
-			 this, SLOT(repaintMessages()));
+//	connect(message, SIGNAL(statusChanged(Message::Status)),
+//			 this, SLOT(repaintMessages()));
 
 	rememberScrollBarPosition();
 
@@ -149,9 +149,9 @@ void ChatMessagesView::appendMessages(QList<ChatMessage *> messages)
 {
 	kdebugf2();
 
-	foreach (ChatMessage *message, messages)
-		connect(message, SIGNAL(statusChanged(Message::Status)),
-				this, SLOT(repaintMessages()));
+//	foreach (ChatMessage *message, messages)
+//		connect(message, SIGNAL(statusChanged(Message::Status)),
+//				this, SLOT(repaintMessages()));
 	rememberScrollBarPosition();
 
 	Renderer->appendMessages(messages);
