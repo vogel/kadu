@@ -93,6 +93,7 @@ JabberProtocol::JabberProtocol(Account *account, ProtocolFactory *factory): Prot
 
 	CurrentChatService = new JabberChatService(this);
 	CurrentFileTransferService = new JabberFileTransferService(this);
+	CurrentAvatarService = new JabberAvatarService(this);
 
 	connect(ContactManager::instance(), SIGNAL(contactAdded(Contact &)),
 			this, SLOT(contactAdded(Contact &)));

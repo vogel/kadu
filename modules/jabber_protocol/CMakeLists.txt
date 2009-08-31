@@ -240,7 +240,9 @@ set (SOURCES
 	gui/widgets/jabber-create-account-widget.cpp
 	gui/widgets/jabber-edit-account-widget.cpp
 	gui/widgets/jabber-personal-info-widget.cpp
+	server/jabber-avatar-fetcher.cpp
 	server/jabber-server-register-account.cpp
+	services/jabber-avatar-service.cpp
 	services/jabber-chat-service.cpp
 	services/jabber-file-transfer-service.cpp
 	jabber-client.cpp
@@ -259,6 +261,7 @@ set (SOURCES
 	system-info.cpp
 	cert-util.cpp
 	ssl-cert-dlg.cpp
+	vcard-factory.cpp
 )
 
 set (MOC_SOURCES
@@ -266,7 +269,9 @@ set (MOC_SOURCES
 	gui/widgets/jabber-create-account-widget.h
 	gui/widgets/jabber-edit-account-widget.h
 	gui/widgets/jabber-personal-info-widget.h
+	server/jabber-avatar-fetcher.h
 	server/jabber-server-register-account.h
+	services/jabber-avatar-service.h
 	services/jabber-chat-service.h
 	services/jabber-file-transfer-service.h
 	jabber-client.h
@@ -284,6 +289,7 @@ set (MOC_SOURCES
 	system-info.h
 	#cert-util.h
 	ssl-cert-dlg.h
+	vcard-factory.h
 )
 
 set (DATA_FILES

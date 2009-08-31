@@ -14,6 +14,7 @@
 #include "protocols/protocol.h"
 #include "protocols/protocols-manager.h"
 
+#include "services/jabber-avatar-service.h"
 #include "services/jabber-chat-service.h"
 #include "services/jabber-file-transfer-service.h"
 
@@ -31,6 +32,7 @@ class JabberProtocol : public Protocol
 
 		JabberChatService *CurrentChatService;
 		JabberFileTransferService *CurrentFileTransferService;
+		JabberAvatarService *CurrentAvatarService;
 
 		XMPP::JabberClient *JabberClient;
 		XMPP::Jid jabberID;
@@ -63,6 +65,7 @@ class JabberProtocol : public Protocol
 		virtual QPixmap statusPixmap(const QString &statusType);
 		virtual void changeStatus(Status status);
 
+		virtual AvatarService *avatarService() { return CurrentAvatarService; }
 		virtual ChatService * chatService() { return CurrentChatService; }
 		virtual ChatImageService * chatImageService() { return 0; }
 		virtual ContactListService * contactListService() { return 0; }
