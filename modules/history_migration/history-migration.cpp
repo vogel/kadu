@@ -12,13 +12,16 @@
 
 #include "accounts/account-manager.h"
 #include "chat/message/message.h"
+#include "gui/widgets/configuration/configuration-widget.h"
+#include "configuration/configuration-file.h"
 #include "core/core.h"
+#include "gui/windows/kadu-window.h"
 #include "gui/windows/message-box.h"
 #include "misc/misc.h"
-
+#include "modules/history/history.h"
 #include "debug.h"
 
-#include "../history/history.h"
+#include "history-import-thread.h"
 
 #include "history-migration.h"
 
@@ -26,31 +29,65 @@ extern "C" KADU_EXPORT int history_migration_init(bool firstLoad)
 {
 	kdebugf();
 
-	if (firstLoad && QFile::exists(ggPath("history")))
-		historyImporter = new HistoryImporter();
-	else
-		historyImporter = 0;
+	HistoryImporter *hi = HistoryImporter::instance();
+	MainConfigurationWindow::registerUiFile(dataPath("kadu/modules/configuration/history-migration.ui"));
 
-	kdebugf2();
+	bool imported = config_file.readBoolEntry("History", "Imported_from_0.6.5", false);
+
+	if (!imported && firstLoad && QFile::exists(ggPath("history")))
+		hi->run();
+
 	return 0;
 }
 
 extern "C" KADU_EXPORT void history_migration_close()
 {
 	kdebugf();
-	if (historyImporter)
-		delete historyImporter;
-	kdebugf2();
+
+	MainConfigurationWindow::unregisterUiFile(dataPath("kadu/modules/configuration/history-migration.ui"));
 }
 
-HistoryImporter::HistoryImporter()
+HistoryImporter * HistoryImporter::Instance = 0;
+
+HistoryImporter * HistoryImporter::instance()
+{
+	if (!Instance)
+		Instance = new HistoryImporter();
+
+	return Instance;
+}
+
+HistoryImporter::HistoryImporter() :
+		ConfigurationWindow(0), Thread(0)
 {
 	kdebugf();
+
+	MainConfigurationWindow::registerUiHandler(this);
+}
+
+HistoryImporter::~HistoryImporter()
+{
+	MainConfigurationWindow::unregisterUiHandler(this);
+
+	Instance = 0;
+
+	kdebugf();
+}
+
+void HistoryImporter::run()
+{
+	kdebugf();
+
+	if (Thread)
+		return;
+
+	if (config_file.readBoolEntry("History", "Imported_from_0.6.5", false))
+		return;
 
 	Account *gaduAccount = 0;
 	foreach (Account *account, AccountManager::instance()->accounts())
 		if (account->protocol() && account->protocol()->protocolFactory()
-		    && account->protocol()->protocolFactory()->name() == "gadu")
+			&& account->protocol()->protocolFactory()->name() == "gadu")
 		{
 			gaduAccount = account;
 			break;
@@ -60,83 +97,58 @@ HistoryImporter::HistoryImporter()
 		return;
 
 	QList<QStringList> uinsLists = getUinsLists();
-	QList<int> entriesCounts;
-	int totalHistoryEntriesCount = 0;
+	int totalEntries = 0;
 
 	foreach (QStringList uinsList, uinsLists)
-	{
-		int historyEntriesCount = getHistoryEntriesCount(uinsList);
-		entriesCounts.append(historyEntriesCount);
-		totalHistoryEntriesCount += historyEntriesCount;
-	}
+		totalEntries += getHistoryEntriesCount(uinsList);
 
-	if (totalHistoryEntriesCount == 0)
+	if (0 == totalEntries)
 		return;
 
-	if (!MessageBox::ask(qApp->translate("HistoryMigration", "%1 history entries found. Do you want to import them?").arg(totalHistoryEntriesCount)))
+	if (!MessageBox::ask(qApp->translate("HistoryMigration", "%1 history entries found. Do you want to import them?").arg(totalEntries)))
 		return;
+	
+	if (ConfigurationWindow)
+		ConfigurationWindow->widget()->widgetById("history-migration/import")->setVisible(false);
 
-	int historyEntriesProcessed = 0;
+	ProgressDialog = new QProgressDialog(qApp->translate("HistoryMigration", "Migrating old history: %1 of %2").arg(0).arg(totalEntries),
+	qApp->translate("HistoryMigration", "Cancel"), 0, totalEntries, Core::instance()->kaduWindow());
+	ProgressDialog->setWindowModality(Qt::NonModal);
+	ProgressDialog->setAutoClose(false);
+	connect(ProgressDialog, SIGNAL(canceled()), this, SLOT(canceled()));
 
-	QProgressDialog progress(qApp->translate("HistoryMigration", "Migrating old history"),
-				 qApp->translate("HistoryMigration", "Cancel"), 0, totalHistoryEntriesCount);
-//	progress.setWindowModality(Qt::WindowModal);
+	Thread = new HistoryImportThread(gaduAccount, uinsLists, totalEntries);
+	connect(Thread, SIGNAL(finished()), this, SLOT(threadFinished()));
 
-	Chat *chat;
-	Message msg;
-	int index = 0;
-	foreach (QStringList uinsList, uinsLists)
-	{
-		int historyEntriesCount = entriesCounts.at(index++);
-
-		if (!historyEntriesCount)
-			continue;
-
-		ContactSet contacts;
-		foreach (const QString &uin, uinsList)
-		{
-			Contact contact = gaduAccount->getContactById(uin);
-			contacts.insert(contact);
-		}
-
-		chat = gaduAccount->protocol()->findChat(contacts);
-
-		QList<HistoryEntry> historyEntries =
-			getHistoryEntries(uinsList, 0, historyEntriesCount,
-				HISTORYMANAGER_ENTRY_CHATSEND | HISTORYMANAGER_ENTRY_CHATRCV);
-		int count = 0;
-		foreach (const HistoryEntry &historyEntry, historyEntries)
-		{
-			QString id = QString::number(historyEntry.uin);
-
-			bool outgoing = historyEntry.type == HISTORYMANAGER_ENTRY_CHATSEND;
-			QDateTime sendTime = historyEntry.sdate;
-			QDateTime recieveTime = historyEntry.date;
-			QString messageString = historyEntry.message;
-
-			msg
-			    .setChat(chat)
-			    .setSender(outgoing ? Core::instance()->myself() : gaduAccount->getContactById(id))
-			    .setContent(historyEntry.message)
-			    .setSendDate(historyEntry.sdate)
-			    .setReceiveDate(historyEntry.date);
-
-		    //TODO 0.6.6: it's damn slow!
-			History::instance()->currentStorage()->appendMessage(msg);
-		}
-
-		historyEntriesProcessed += historyEntriesCount;
-		progress.setValue(historyEntriesProcessed);
-		if (progress.wasCanceled())
-			break;
-	}
-
-	kdebugf2();
+	QTimer *updateProgressBar = new QTimer(this);
+	updateProgressBar->setSingleShot(false);
+	updateProgressBar->setInterval(200);
+	connect(updateProgressBar, SIGNAL(timeout()), this, SLOT(updateProgressWindow()));
+	
+	Thread->start();
+	ProgressDialog->show();
+	updateProgressBar->start();
 }
 
-HistoryImporter::~HistoryImporter()
+void HistoryImporter::updateProgressWindow()
 {
-	kdebugf();
+	if (ProgressDialog)
+	{
+		ProgressDialog->setValue(Thread->importedEntries());
+		ProgressDialog->setLabelText(qApp->translate("HistoryMigration", "Migrating old history: %1 of %2")
+				.arg(Thread->importedEntries())
+				.arg(ProgressDialog->maximum()));
+	}
+}
+
+void HistoryImporter::threadFinished()
+{
+	config_file.writeEntry("History", "Imported_from_0.6.5", true);
+
+	delete ProgressDialog;
+	ProgressDialog = 0;
+
+	deleteLater();
 }
 
 QList<QStringList> HistoryImporter::getUinsLists() const
@@ -159,28 +171,6 @@ QList<QStringList> HistoryImporter::getUinsLists() const
 
 	kdebugf2();
 	return entries;
-}
-
-QString HistoryImporter::getFileNameByUinsList(QStringList uins)
-{
-	kdebugf();
-
-	QString fname;
-	if (!uins.isEmpty())
-	{
-		uins.sort();
-		unsigned int i = 0, uinsCount = uins.count();
-		foreach (const QString &uin, uins)
-		{
-			fname.append(uin);
-			if (i++ < uinsCount - 1)
-				fname.append("_");
-		}
-	}
-	else
-		fname = "sms";
-	kdebugf2();
-	return fname;
 }
 
 int HistoryImporter::getHistoryEntriesCountPrivate(const QString &filename) const
@@ -209,241 +199,31 @@ int HistoryImporter::getHistoryEntriesCountPrivate(const QString &filename) cons
 int HistoryImporter::getHistoryEntriesCount(const QStringList &uins)
 {
 	kdebugf();
-	int ret = getHistoryEntriesCountPrivate(getFileNameByUinsList(uins));
+	int ret = getHistoryEntriesCountPrivate(HistoryImportThread::getFileNameByUinsList(uins));
 	kdebugf2();
 	return ret;
 }
 
-QList<HistoryEntry> HistoryImporter::getHistoryEntries(QStringList uins, int from, int count, int mask)
+void HistoryImporter::mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow)
 {
-	kdebugf();
+	ConfigurationWindow = mainConfigurationWindow;
+	connect(ConfigurationWindow, SIGNAL(destroyed()), this, SLOT(configurationWindowDestroyed()));
 
-	QList<HistoryEntry> entries;
-	QStringList tokens;
-	QFile f, fidx;
-	QString path = ggPath("history/");
-	QString filename, line;
-	int offs;
+	QWidget *importButton = mainConfigurationWindow->widget()->widgetById("history-migration/import");
+	importButton->setVisible(!config_file.readBoolEntry("History", "Imported_from_0.6.5", false));
 
-	if (!uins.isEmpty())
-		filename = getFileNameByUinsList(uins);
-	else
-		filename = "sms";
-	f.setFileName(path + filename);
-	if (!f.open(QIODevice::ReadOnly))
-	{
-		kdebugmf(KDEBUG_ERROR, "Error opening history file %s\n", qPrintable(filename));
-		return entries;
-	}
-
-	fidx.setFileName(f.fileName() + ".idx");
-	if (!fidx.open(QIODevice::ReadOnly))
-		return entries;
-	fidx.seek(from * sizeof(int));
-	fidx.read((char *)&offs, sizeof(int));
-	fidx.close();
-	if (!f.seek(offs))
-		return entries;
-
-	QTextStream stream(&f);
-	stream.setCodec("CP1250");
-
-	int linenr = from;
-
-	struct HistoryEntry entry;
-//	int num = 0;
-	while (linenr < from + count && (line = stream.readLine()) != QString::null)
-	{
-		++linenr;
-		tokens = mySplit(',', line);
-		if (tokens.count() < 2)
-			continue;
-		if (tokens[0] == "chatsend")
-			entry.type = HISTORYMANAGER_ENTRY_CHATSEND;
-		else if (tokens[0] == "msgsend")
-			entry.type = HISTORYMANAGER_ENTRY_MSGSEND;
-		else if (tokens[0] == "chatrcv")
-			entry.type = HISTORYMANAGER_ENTRY_CHATRCV;
-		else if (tokens[0] == "msgrcv")
-			entry.type = HISTORYMANAGER_ENTRY_MSGRCV;
-		else if (tokens[0] == "status")
-			entry.type = HISTORYMANAGER_ENTRY_STATUS;
-		else if (tokens[0] == "smssend")
-			entry.type = HISTORYMANAGER_ENTRY_SMSSEND;
-		if (!(entry.type & mask))
-			continue;
-//		if (num++%10==0)
-//			qApp->processEvents();
-		switch (entry.type)
-		{
-			case HISTORYMANAGER_ENTRY_CHATSEND:
-			case HISTORYMANAGER_ENTRY_MSGSEND:
-				if (tokens.count() == 5)
-				{
-					entry.uin = tokens[1].toUInt();
-					entry.nick = tokens[2];
-					entry.date.setTime_t(tokens[3].toUInt());
-					entry.message = tokens[4];
-					entry.ip.truncate(0);
-					entry.mobile.truncate(0);
-					entry.description.truncate(0);
-					entries.append(entry);
-				}
-				break;
-			case HISTORYMANAGER_ENTRY_CHATRCV:
-			case HISTORYMANAGER_ENTRY_MSGRCV:
-				if (tokens.count() == 6)
-				{
-					entry.uin = tokens[1].toUInt();
-					entry.nick = tokens[2];
-					entry.date.setTime_t(tokens[3].toUInt());
-					entry.sdate.setTime_t(tokens[4].toUInt());
-					entry.message = tokens[5];
-					entry.ip.truncate(0);
-					entry.mobile.truncate(0);
-					entry.description.truncate(0);
-					entries.append(entry);
-				}
-				break;
-			case HISTORYMANAGER_ENTRY_STATUS:
-				if (tokens.count() == 6 || tokens.count() == 7)
-				{
-					entry.uin = tokens[1].toUInt();
-					entry.nick = tokens[2];
-					entry.ip = tokens[3];
-					entry.date.setTime_t(tokens[4].toUInt());
-					if (tokens[5] == "avail")
-						entry.status = "Online";
-					else if (tokens[5] == "notavail")
-						entry.status = "Offline";
-					else if (tokens[5] == "busy")
-						entry.status = "Busy";
-					else if (tokens[5] == "invisible")
-						entry.status = "Invisible";
-					if (tokens.count() == 7)
-						entry.description = tokens[6];
-					else
-						entry.description.truncate(0);
-					entry.mobile.truncate(0);
-					entry.message.truncate(0);
-					entries.append(entry);
-				}
-				break;
-			case HISTORYMANAGER_ENTRY_SMSSEND:
-				if (tokens.count() == 4 || tokens.count() == 6)
-				{
-					entry.mobile = tokens[1];
-					entry.date.setTime_t(tokens[2].toUInt());
-					entry.message = tokens[3];
-					if (tokens.count() == 4)
-					{
-						entry.nick.truncate(0);
-						entry.uin = 0;
-					}
-					else
-					{
-						entry.nick = tokens[4];
-						entry.uin = tokens[5].toUInt();
-					}
-					entry.ip.truncate(0);
-					entry.description.truncate(0);
-					entries.append(entry);
-				}
-				break;
-		}
-	}
-
-	f.close();
-
-	kdebugf2();
-	return entries;
+	connect(importButton, SIGNAL(clicked()), this, SLOT(run()));
 }
 
-QStringList HistoryImporter::mySplit(const QChar &sep, const QString &str)
+void HistoryImporter::configurationWindowDestroyed()
 {
-	kdebugf();
-	QStringList strlist;
-	QString token;
-	unsigned int idx = 0, strlength = str.length();
-	bool inString = false;
-
-	int pos1, pos2;
-	while (idx < strlength)
-	{
-		const QChar &letter = str[idx];
-		if (inString)
-		{
-			if (letter == '\\')
-			{
-				switch (str[idx + 1].toAscii())
-				{
-					case 'n':
-						token.append('\n');
-						break;
-					case '\\':
-						token.append('\\');
-						break;
-					case '\"':
-						token.append('"');
-						break;
-					default:
-						token.append('?');
-				}
-				idx += 2;
-			}
-			else if (letter == '"')
-			{
-				strlist.append(token);
-				inString = false;
-				++idx;
-			}
-			else
-			{
-				pos1 = str.indexOf('\\', idx);
-				if (pos1 == -1)
-					pos1 = strlength;
-				pos2 = str.indexOf('"', idx);
-				if (pos2 == -1)
-					pos2 = strlength;
-				if (pos1 < pos2)
-				{
-					token.append(str.mid(idx, pos1 - idx));
-					idx = pos1;
-				}
-				else
-				{
-					token.append(str.mid(idx, pos2 - idx));
-					idx = pos2;
-				}
-			}
-		}
-		else // out of the string
-		{
-			if (letter == sep)
-			{
-				if (!token.isEmpty())
-					token = QString::null;
-				else
-					strlist.append(QString::null);
-			}
-			else if (letter == '"')
-				inString = true;
-			else
-			{
-				pos1 = str.indexOf(sep, idx);
-				if (pos1 == -1)
-					pos1 = strlength;
-				token.append(str.mid(idx, pos1 - idx));
-				strlist.append(token);
-				idx = pos1;
-				continue;
-			}
-			++idx;
-		}
-	}
-
-	kdebugf2();
-	return strlist;
+	ConfigurationWindow = 0;
 }
 
-HistoryImporter *historyImporter;
+void HistoryImporter::canceled()
+{
+	if (Thread)
+		Thread->cancel();
+
+	deleteLater();
+}

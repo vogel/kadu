@@ -23,13 +23,6 @@
 #include <QtCore/QDateTime>
 #include <QtGui/QDialog>
 
-#include "gui/actions/action.h"
-#include "gui/actions/action-description.h"
-#include "gui/windows/main-configuration-window.h"
-#include "configuration/configuration-aware-object.h"
-#include "contacts/contact-remove-predicate-object.h"
-#include "protocols/protocol.h"
-
 enum HistoryEntryType
 {
 	EntryTypeMessage = 0x00000001,
@@ -38,9 +31,14 @@ enum HistoryEntryType
 	EntryTypeAll = 0x0000003f
 };
 
-
-#include "gui/windows/history-dialog.h"
+#include "configuration/configuration-aware-object.h"
+#include "contacts/contact-remove-predicate-object.h"
+#include "gui/actions/action.h"
+#include "gui/actions/action-description.h"
 #include "gui/widgets/contacts-list-widget-menu-manager.h"
+#include "gui/windows/history-dialog.h"
+#include "gui/windows/main-configuration-window.h"
+#include "protocols/protocol.h"
 #include "storage/history-storage.h"
 
 #include "history_exports.h"

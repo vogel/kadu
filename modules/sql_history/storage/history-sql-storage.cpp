@@ -30,8 +30,12 @@ HistorySqlStorage::HistorySqlStorage() :
 {
 	kdebugf();
 
+	DatabaseMutex.lock();
+
 	initDatabase();
 	initQueries();
+
+	DatabaseMutex.unlock();
 }
 
 HistorySqlStorage::~HistorySqlStorage()
@@ -151,6 +155,8 @@ void HistorySqlStorage::appendMessage(const Message &message)
 {
 	kdebugf();
 
+	DatabaseMutex.lock();
+
 	QSqlRecord record = MessagesModel->record();
 
 	record.setValue("chat", message.chat()->uuid().toString());
@@ -166,18 +172,26 @@ void HistorySqlStorage::appendMessage(const Message &message)
 
 	MessagesModel->insertRecord(-1, record);
 
+	DatabaseMutex.unlock();
+
 	kdebugf2();
 }
 
 void HistorySqlStorage::clearChatHistory(Chat *chat)
 {
+	DatabaseMutex.lock();
+
 	ClearChatHistoryQuery.bindValue(":chat", chat->uuid().toString());
 	executeQuery(ClearChatHistoryQuery);
+
+	DatabaseMutex.unlock();
 }
 
 QList<Chat *> HistorySqlStorage::chats()
 {
 	kdebugf();
+
+	DatabaseMutex.lock();
 
 	QList<Chat *> chats;
 
@@ -189,12 +203,16 @@ QList<Chat *> HistorySqlStorage::chats()
 			chats.append(chat);
 	}
 
+	DatabaseMutex.unlock();
+
 	return chats;
 }
 
 QList<QDate> HistorySqlStorage::chatDates(Chat *chat)
 {
 	kdebugf();
+
+	DatabaseMutex.lock();
 
 	QList<QDate> dates;
 
@@ -208,12 +226,16 @@ QList<QDate> HistorySqlStorage::chatDates(Chat *chat)
 			dates.append(date);
 	}
 
+	DatabaseMutex.unlock();
+
 	return dates;
 }
 
 QList<Message> HistorySqlStorage::messages(Chat *chat, QDate date, int limit)
 {
 	kdebugf();
+
+	DatabaseMutex.lock();
 
 	QList<Message> messages;
 	QSqlQuery query = date.isNull()
@@ -245,12 +267,16 @@ QList<Message> HistorySqlStorage::messages(Chat *chat, QDate date, int limit)
 		messages.append(message);
 	}
 
+	DatabaseMutex.unlock();
+
 	return messages;
 }
 
 int HistorySqlStorage::messagesCount(Chat *chat, QDate date)
 {
 	kdebugf();
+
+	DatabaseMutex.lock();
 
 	QSqlQuery query = date.isNull()
 			? CountChatMessagesQuery
@@ -262,6 +288,8 @@ int HistorySqlStorage::messagesCount(Chat *chat, QDate date)
 
 	executeQuery(query);
 	query.next();
+
+	DatabaseMutex.unlock();
 
 	return query.value(0).toInt();
 }

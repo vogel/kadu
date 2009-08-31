@@ -166,7 +166,6 @@ void History::accountUnregistered(Account *account)
 
 void History::mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow)
 {
-
 	ConfigGroupBox *chatsGroupBox = mainConfigurationWindow->widget()->configGroupBox("Chat", "History", "Chats history");
 	QWidget *selectedChatsUsersWidget = new QWidget(chatsGroupBox->widget());
 	QGridLayout *selectedChatsUsersLayout = new QGridLayout(selectedChatsUsersWidget);

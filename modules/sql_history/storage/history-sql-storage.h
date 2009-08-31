@@ -10,6 +10,7 @@
 #ifndef HISTORY_SQL_STORAGE_H
 #define HISTORY_SQL_STORAGE_H
 
+#include <QtCore/QMutex>
 #include <QtSql/QSqlDatabase>
 #include <QtSql/QSqlQuery>
 #include <QtSql/QSqlTableModel>
@@ -37,7 +38,9 @@ class HistorySqlStorage : public HistoryStorage
 	QSqlQuery ListChatMessagesLimitQuery;
 	QSqlQuery CountChatMessagesQuery;
 	QSqlQuery CountChatMessagesByDateQuery;
-	
+
+	QMutex DatabaseMutex;
+
 	void initDatabase();
 	void initQueries();
 	void initTables();
