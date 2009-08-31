@@ -32,7 +32,7 @@ JabberAvatarFetcher::JabberAvatarFetcher(ContactAccountData *contactAccountData,
 void JabberAvatarFetcher::fetchAvatar()
 {
 	JabberProtocol *jabberProtocol = dynamic_cast<JabberProtocol *>(MyContactAccountData->account()->protocol());
-	if (!jabberProtocol)
+	if (!jabberProtocol || !jabberProtocol->isConnected())
 		return;
 	VCardFactory::instance()->getVCard(MyContactAccountData->id(), jabberProtocol->client()->rootTask(), this, SLOT(receivedVCard()));
 }
