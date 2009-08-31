@@ -30,6 +30,8 @@
 #include <windows.h>
 #undef MessageBox
 typedef BOOL (WINAPI *PrintWindow_t)(HWND hwnd, HDC  hdcBlt, UINT nFlags);
+#elif defined Q_WS_MAC
+#include <Carbon/Carbon.h>
 #endif
 
 #include "action.h"
@@ -791,6 +793,28 @@ QPixmap ScreenShot::grabCurrent()
 	else
 		return QPixmap();
 	
+}
+
+#elif defined Q_WS_MAC
+
+QPixmap ScreenShot::grabCurrent()
+{
+	WindowRef window;
+	Point mousePos;
+	Rect rect;
+	int err;
+
+	//FIXME: why it only works with kadu windows?
+	GetGlobalMouse(&mousePos);
+	err = MacFindWindow(mousePos, &window);
+	err = GetWindowBounds(window, kWindowContentRgn, &rect);
+	if (err == noErr)
+	{
+		QPixmap desktop = QPixmap::grabWindow(QApplication::desktop()->winId());
+		return desktop.copy(rect.left, rect.top, rect.right - rect.left, rect.bottom - rect.top);
+	}
+	else
+		return QPixmap();
 }
 
 #endif
