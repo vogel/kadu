@@ -201,6 +201,15 @@ void YourAccounts::accountSelectionChanged(const QItemSelection &selected, const
 		EditStack->setCurrentWidget(editWidget);
 }
 
+void YourAccounts::accountUnregistered(Account *account)
+{
+	if (EditWidgets.contains(account))
+	{
+		EditStack->removeWidget(EditWidgets[account]);
+		EditWidgets.remove(account);
+	}
+}
+
 void YourAccounts::okClicked()
 {
 	applyClicked();

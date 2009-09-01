@@ -15,6 +15,7 @@
 #include <QtGui/QWidget>
 
 #include "accounts/account.h"
+#include "accounts/accounts-aware-object.h"
 #include "exports.h"
 
 class QComboBox;
@@ -28,7 +29,7 @@ class AccountEditWidget;
 class AccountsModel;
 class ProtocolFactory;
 
-KADUAPI class YourAccounts : public QWidget
+KADUAPI class YourAccounts : public QWidget, AccountsAwareObject
 {
 	Q_OBJECT
 
@@ -57,6 +58,10 @@ private slots:
 
 	void okClicked();
 	void applyClicked();
+
+protected:
+	virtual void accountRegistered(Account *account) { }
+	virtual void accountUnregistered(Account *account);
 
 public:
 	explicit YourAccounts(QWidget *parent = 0);
