@@ -24,6 +24,9 @@ BaseStatusContainer::BaseStatusContainer(const QString &nodeName, StorableObject
 void BaseStatusContainer::setDefaultStatus(const QString &startupStatus, bool offlineToInvisible,
 				      const QString &startupDescription, bool StartupLastDescription)
 {
+	if (!isValidStorage())
+		return;
+
 	QString description;
     	if (StartupLastDescription)
 		description = loadValue<QString>("LastStatusDescription");
@@ -56,6 +59,9 @@ void BaseStatusContainer::setDefaultStatus(const QString &startupStatus, bool of
 void BaseStatusContainer::disconnectAndStoreLastStatus(bool disconnectWithCurrentDescription,
 						  const QString &disconnectDescription)
 {
+	if (!isValidStorage())
+		return;
+
 	storeValue("LastStatusDescription", status().description());
 
 	storeValue("LastStatusName", statusName());
