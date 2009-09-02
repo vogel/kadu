@@ -58,7 +58,6 @@ public:
 	void addChat(Chat *chat);
 	void removeChat(Chat *chat);
 	QList<Chat *> chatsForAccount(Account *account);
-	Chat * findChat(Account *account, ContactList contacts);
 	Chat * byUuid(QUuid uuid);
 
 signals:
