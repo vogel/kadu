@@ -31,17 +31,6 @@ enum ChatMessageType
 	TypeSent
 };
 
-/**
-
-	Klasa przechowuj�ca informacje o wiadomo�ci, kt�ra ma si� pojawi�
-	w oknie Chat.
-
-	TODO: optimize and cache
-	TODO: make API pretty
-
-	\class ChatMessage
-	\brief Klasa przechowuj�ca informacje o wiadomo�ci.
-**/
 class KADUAPI ChatMessage : public QObject
 {
 	Q_OBJECT
@@ -62,18 +51,6 @@ public:
 	static void registerParserTags();
 	static void unregisterParserTags();
 
-	/**
-		\fn ChatMessage(const UserListElement &ule, const UserListElements &receivers, const QString &unformattedMessage, ChatMessageType type,
-		QDateTime date, QDateTime sdate = QDateTime())
-		Konstruktor ustawiaj�cy nick, niesformatowan� wiadomo��,
-		czy wiadomo�� pochodzi od nas, dat� wiadomo�ci,
-		dat� nadania wiadomo�ci przez serwer
-		\param nick nazwa u�ytkownika
-		\param unformattedMessage niesformatowana wiadomo��
-		\param myMessage zmienna mowi�ca czy wiadomo�� pochodzi od nas
-		\param date data otrzymania wiadomo�ci
-		\param sdate data wys�ania wiadomo�ci
-	**/
 	ChatMessage(const Message &msg, ChatMessageType type);
 
 	ChatMessage(const QString &rawContent, ChatMessageType type, QDateTime date,
@@ -104,4 +81,4 @@ signals:
 
 QString formatMessage(const QString &text, const QString &backgroundColor);
 
-#endif
+#endif // KADU_CHAT_MESSAGE_H
