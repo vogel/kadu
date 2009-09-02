@@ -116,10 +116,13 @@ void AdiumChatStyleEngine::appendMessage(HtmlMessagesRenderer *renderer, ChatMes
 
 	if (lastMessage)
 	{
+		Message msg = message->message();
+		Message last = lastMessage->message();
+
 		includeHeader =
 			(lastMessage->type() != TypeSystem) &&
-			((message->date().toTime_t() - lastMessage->date().toTime_t() > (ChatStylesManager::instance()->cfgNoHeaderInterval() * 60)) ||
-			(message->sender() != lastMessage->sender()));
+			((msg.receiveDate().toTime_t() - last.receiveDate().toTime_t() > (ChatStylesManager::instance()->cfgNoHeaderInterval() * 60)) ||
+			(msg.sender() != last.sender()));
 	}
 	switch (message->type())
 	{
@@ -281,24 +284,27 @@ void AdiumChatStyleEngine::prepareStylePreview(Preview *preview, QString styleNa
 		return;
 
 	ChatMessage *message = dynamic_cast<ChatMessage *>(preview->getObjectsToParse().at(0));
+	if (!message)
+		return;
+	Message msg = message->message();
 
 	QString styleBaseHtml = QString(xhtmlBase).arg(styleHref)
-		.arg(replaceKeywords(message->chat(), styleHref, headerHtml))
-		.arg(replaceKeywords(message->chat(), styleHref, footerHtml))
+		.arg(replaceKeywords(msg.chat(), styleHref, headerHtml))
+		.arg(replaceKeywords(msg.chat(), styleHref, footerHtml))
 		.arg("Variants/" + variantName)
 		.arg(ChatStylesManager::instance()->mainStyle());
 	preview->setHtml(styleBaseHtml);
 
 	preview->page()->mainFrame()->evaluateJavaScript(jsCode);
 
-	incomingHtml = replaceKeywords(message->chat(), styleHref, incomingHtml, message);
+	incomingHtml = replaceKeywords(msg.chat(), styleHref, incomingHtml, message);
 	incomingHtml.replace("\n", " ");
 	incomingHtml.prepend("<span>");
 	incomingHtml.append("</span>");
 	preview->page()->mainFrame()->evaluateJavaScript("kadu_appendNextMessage(\'"+ incomingHtml +"\')");
 
 	message = dynamic_cast<ChatMessage *>(preview->getObjectsToParse().at(1));
-	outgoingHtml = replaceKeywords(message->chat(), styleHref, outgoingHtml, message);
+	outgoingHtml = replaceKeywords(msg.chat(), styleHref, outgoingHtml, message);
 	outgoingHtml.replace("\n", " ");
 	outgoingHtml.prepend("<span>");
 	outgoingHtml.append("</span>");
@@ -367,23 +373,25 @@ QString AdiumChatStyleEngine::replaceKeywords(Chat *chat, QString &styleHref, QS
 }
 QString AdiumChatStyleEngine::replaceKeywords(Chat *chat, QString &styleHref, QString &source, ChatMessage *message)
 {
-    	if (!chat)
+	if (!chat)
 		return QString("");
 
 	QString result = source;
 	QString nick, contactId, service, protocolIcon, nickLink;
 
+	Message msg = message->message();
+
 	// Replace sender (contact nick)
-	result.replace(QString("%sender%"), message->sender().display());
+	result.replace(QString("%sender%"), msg.sender().display());
 	// Replace %screenName% (contact ID)
-	result.replace(QString("%senderScreenName%"), message->sender().id(chat->account()));
+	result.replace(QString("%senderScreenName%"), msg.sender().id(chat->account()));
 	// Replace service name (protocol name)
 	result.replace(QString("%service%"), chat->account()->protocol()->protocolFactory()->displayName());
 	// Replace protocolIcon (sender statusIcon). TODO:
 	result.replace(QString("%senderStatusIcon%"), chat->account()->protocol()->protocolFactory()->iconName());
 
 	// Replace time
-	QDateTime time = message->sdate().isNull() ? message->date(): message->sdate();
+	QDateTime time = msg.sendDate().isNull() ? msg.receiveDate(): msg.sendDate();
 	result.replace(QString("%time%"), printDateTime(time));
 	// Look for %time{X}%
 	QRegExp timeRegExp("%time\\{([^}]*)\\}%");
@@ -402,9 +410,9 @@ QString AdiumChatStyleEngine::replaceKeywords(Chat *chat, QString &styleHref, QS
 	QString photoPath;
 	if (message->type() == TypeReceived)
 	{
-   		result.replace(QString("%messageClasses%"), "message incoming");
+		result.replace(QString("%messageClasses%"), "message incoming");
 
-		ContactAccountData *cad = message->sender().accountData(chat->account());
+		ContactAccountData *cad = msg.sender().accountData(chat->account());
 		if (cad && !cad->avatar().pixmap().isNull())
 			photoPath = QString("file://") + cad->avatar().fileName();
 		else

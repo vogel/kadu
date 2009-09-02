@@ -92,8 +92,11 @@ QString KaduChatStyleEngine::formatMessage(ChatMessage *message, ChatMessage *af
 	QString format;
 	bool includeHeader;
 
-	Contact contact = message->sender();
-	Account *account = message->chat()->account();
+	Message msg = message->message();
+	Message aft = after->message();
+
+	Contact contact = msg.sender();
+	Account *account = msg.chat()->account();
 
 	if (message->type() == TypeSystem)
 	{
@@ -110,8 +113,8 @@ QString KaduChatStyleEngine::formatMessage(ChatMessage *message, ChatMessage *af
 		if (after && !includeHeader)
 			includeHeader =
 				(after->type() != TypeSystem) &&
-				((message->date().toTime_t() - after->date().toTime_t() > (ChatStylesManager::instance()->cfgNoHeaderInterval() * 60)) ||
-				 (message->sender() != after->sender()));
+				((msg.receiveDate().toTime_t() - aft.receiveDate().toTime_t() > (ChatStylesManager::instance()->cfgNoHeaderInterval() * 60)) ||
+				 (msg.sender() != aft.sender()));
 
 		if (includeHeader)
 		{
@@ -151,9 +154,11 @@ void KaduChatStyleEngine::repaintMessages(HtmlMessagesRenderer *renderer)
 
 	if (message != end)
 	{
+		Message msg = (*message)->message();
 		(*message)->setSeparatorSize(0);
-		Contact contact = (*message)->sender();
-		Account *account = (*message)->chat()->account();
+
+		Contact contact = msg.sender();
+		Account *account = msg.chat()->account();
 
 		if ((*message)->type() == TypeSystem)
 			text += Parser::parse(ChatSyntaxWithoutHeader, account, contact, *message);
@@ -199,8 +204,8 @@ void KaduChatStyleEngine::prepareStylePreview(Preview *preview, QString styleNam
 		for (int i = 0; i < count; i++)
 		{
 			message = dynamic_cast<ChatMessage *>(preview->getObjectsToParse().at(i));
-			text += Parser::parse(content, message->chat()->account(),
-				message->sender(), message);
+			text += Parser::parse(content, message->message().chat()->account(),
+					message->message().sender(), message);
 		}
 	}
 	preview->setHtml(QString("<html><head><style type='text/css'>%1</style></head><body>%2</body>").arg(ChatStylesManager::instance()->mainStyle(), text));

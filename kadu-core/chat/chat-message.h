@@ -60,11 +60,6 @@ public:
 
 	void replaceLoadingImages(const QString &imageId, const QString &imagePath);
 
-	Chat * chat() const { return MyMessage.chat(); }
-	Contact sender() const { return MyMessage.sender(); }
-
-	QDateTime date() const { return MyMessage.receiveDate(); }
-	QDateTime sdate() const { return MyMessage.sendDate(); }
 	ChatMessageType type() const { return Type; }
 
 	void setSeparatorSize(int separatorSize) { SeparatorSize = separatorSize; }
