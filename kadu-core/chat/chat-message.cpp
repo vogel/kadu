@@ -147,15 +147,6 @@ ChatMessage::ChatMessage(const Message &msg) :
 // 		(EmoticonsStyle)config_file.readNumEntry("Chat", "EmoticonsStyle"));
 }
 
-ChatMessage::ChatMessage(const QString &rawContent, QDateTime date,
-	QString backgroundColor, QString fontColor, QString nickColor)
-	: unformattedMessage(rawContent), backgroundColor(backgroundColor), fontColor(fontColor), nickColor(nickColor)
-{
-	MyMessage.setReceiveDate(date);
-	connect(&MyMessage, SIGNAL(statusChanged(Message::Status)),
-			this, SIGNAL(statusChanged(Message::Status)));
-}
-
 void ChatMessage::replaceLoadingImages(const QString &imageId, const QString &imagePath)
 {
 	unformattedMessage = FormattedMessagePart::replaceLoadingImages(unformattedMessage, imageId, imagePath);

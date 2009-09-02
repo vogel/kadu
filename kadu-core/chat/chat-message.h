@@ -44,9 +44,6 @@ public:
 
 	ChatMessage(const Message &msg);
 
-	ChatMessage(const QString &rawContent, QDateTime date,
-		QString backgroundColor, QString fontColor, QString nickColor);
-
 	Message message() { return MyMessage; }
 
 	void replaceLoadingImages(const QString &imageId, const QString &imagePath);
