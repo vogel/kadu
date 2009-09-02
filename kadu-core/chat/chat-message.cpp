@@ -66,8 +66,8 @@ static QString getNickColor(const QObject * const object)
 static QString getSentDate(const QObject * const object)
 {
 	const ChatMessage * const chatMessage = dynamic_cast<const ChatMessage * const>(object);
-	if (chatMessage)
-		return chatMessage->sentDate;
+	if (chatMessage && chatMessage->showServerTime())
+		return printDateTime(chatMessage->message().sendDate());
 	else
 		return "";
 }
@@ -76,7 +76,7 @@ static QString getReceivedDate(const QObject * const object)
 {
 	const ChatMessage * const chatMessage = dynamic_cast<const ChatMessage * const>(object);
 	if (chatMessage)
-		return chatMessage->receivedDate;
+		return printDateTime(chatMessage->message().receiveDate());
 	else
 		return "";
 }
@@ -114,10 +114,8 @@ void ChatMessage::unregisterParserTags()
 }
 
 ChatMessage::ChatMessage(const Message &msg) :
-		MyMessage(msg)
+		MyMessage(msg), ShowServerTime(true)
 {
-	receivedDate = printDateTime(MyMessage.receiveDate());
-
 	switch (msg.type())
 	{
 		case Message::TypeSent:
@@ -154,10 +152,8 @@ void ChatMessage::replaceLoadingImages(const QString &imageId, const QString &im
 
 void ChatMessage::setShowServerTime(bool noServerTime, int noServerTimeDiff)
 {
-	if (MyMessage.sendDate().isValid() && (!noServerTime || (abs(MyMessage.receiveDate().toTime_t() - MyMessage.sendDate().toTime_t())) > noServerTimeDiff))
-		sentDate = printDateTime(MyMessage.sendDate());
-	else
-		sentDate = QString::null;
+	ShowServerTime = (MyMessage.sendDate().isValid()
+			&& (!noServerTime || (abs(MyMessage.receiveDate().toTime_t() - MyMessage.sendDate().toTime_t())) > noServerTimeDiff));
 }
 
 void ChatMessage::setColorsAndBackground(const QString &backgroundColor, const QString &nickColor, const QString &fontColor)

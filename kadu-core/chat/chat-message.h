@@ -30,21 +30,20 @@ class KADUAPI ChatMessage : public QObject
 
 	Message MyMessage;
 	int SeparatorSize;
+	bool ShowServerTime;
 
 public:
 	QString unformattedMessage;
 	QString backgroundColor;
 	QString fontColor;
 	QString nickColor;
-	QString sentDate;
-	QString receivedDate;
 
 	static void registerParserTags();
 	static void unregisterParserTags();
 
 	ChatMessage(const Message &msg);
 
-	Message message() { return MyMessage; }
+	Message message() const { return MyMessage; }
 
 	void replaceLoadingImages(const QString &imageId, const QString &imagePath);
 
@@ -52,6 +51,7 @@ public:
 	int separatorSize() const { return SeparatorSize; }
 
 	void setShowServerTime(bool noServerTime, int noServerTimeDiff);
+	bool showServerTime() const { return ShowServerTime; }
 
 	void setColorsAndBackground(const QString &backgroundColor, const QString &nickColor, const QString &fontColor);
 
