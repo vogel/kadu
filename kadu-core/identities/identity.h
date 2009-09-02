@@ -47,10 +47,10 @@ public:
 
 	void setName(const QString &name) { Name = name; }
 
-	QString name() { return Name; }
+	QString name() const { return Name; }
 
-	QList<Account *> accounts() { return Accounts; }
-	bool hasAccount(Account *account) { return Accounts.contains(account); }
+	QList<Account *> accounts() const { return Accounts; }
+	bool hasAccount(Account *account) const { return Accounts.contains(account); }
 
 	void accountRegistered(Account *account);
 	void accountUnregistered(Account *account);

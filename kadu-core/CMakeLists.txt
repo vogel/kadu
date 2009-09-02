@@ -86,6 +86,7 @@ set (kadu_SRCS
 	gui/widgets/chat-widget.cpp
 	gui/widgets/chat-widget-actions.cpp
 	gui/widgets/chat-widget-manager.cpp
+	gui/widgets/choose-identity-widget.cpp
 	gui/widgets/color-button.cpp
 	gui/widgets/color-selector.cpp
 	gui/widgets/contact-account-data-widget.cpp
@@ -292,6 +293,7 @@ set (kadu_MOC_SRCS
 	gui/widgets/chat-widget.h
 	gui/widgets/chat-widget-actions.h
 	gui/widgets/chat-widget-manager.h
+	gui/widgets/choose-identity-widget.h
 	gui/widgets/color-button.h
 	gui/widgets/color-selector.h
 	gui/widgets/contact-account-data-widget.h
