@@ -70,10 +70,10 @@ public:
 	bool legacySSLProbe() { return LegacySSLProbe; }
 	void setLegacySSLProbe(bool probe) { LegacySSLProbe = probe; }
 
-	QByteArray &tlsOverrideCert() { return TlsOverrideCert; };
+	QByteArray &tlsOverrideCert() { return TlsOverrideCert; }
 	void setTlsOverrideCert(QByteArray tlsOverrideCert) { TlsOverrideCert = tlsOverrideCert; }
 
-	QString &tlsOverrideDomain() { return TlsOverrideDomain; };
+	QString &tlsOverrideDomain() { return TlsOverrideDomain; }
 	void setTlsOverrideDomain(QString tlsOverrideDomain) { TlsOverrideDomain = tlsOverrideDomain; }
 
 	virtual bool setId(const QString &id);
