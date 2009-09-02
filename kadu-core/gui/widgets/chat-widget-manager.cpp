@@ -326,7 +326,7 @@ void ChatWidgetManager::openPendingMsgs(Chat *chat, bool forceActivate)
 		msg = (*PendingMessagesManager::instance())[i];
 		if (msg.chat() != chat)
 			continue;
-		messages.append(new ChatMessage(msg, TypeReceived));
+		messages.append(new ChatMessage(msg));
 		PendingMessagesManager::instance()->deleteMsg(i--);
 	}
 
@@ -386,7 +386,7 @@ void ChatWidgetManager::messageReceived(const Message &message)
 	ChatWidget *chatWidget = byChat(chat);
 	if (chatWidget)
 	{
-		ChatMessage *chatMessage = new ChatMessage(message, TypeReceived);
+		ChatMessage *chatMessage = new ChatMessage(message);
 		chatWidget->newMessage(chatMessage);
 	}
 	else
@@ -410,7 +410,7 @@ void ChatWidgetManager::messageReceived(const Message &message)
 			openChatWidget(chat);
 			chatWidget = byChat(chat);
 
-			ChatMessage *chatMessage = new ChatMessage(message, TypeReceived);
+			ChatMessage *chatMessage = new ChatMessage(message);
 			chatWidget->newMessage(chatMessage);
 		}
 		else
@@ -424,7 +424,7 @@ void ChatWidgetManager::messageSent(const Message &message)
 {
 	Chat *chat = message.chat();
 	ChatWidget *chatWidget = byChat(chat);
-	ChatMessage *chatMessage = new ChatMessage(message, TypeSent);
+	ChatMessage *chatMessage = new ChatMessage(message);
 
 	if (!chatWidget)
 	{

@@ -28,9 +28,10 @@ class MessageData : public QObject, public QSharedData
 	QDateTime ReceiveDate;
 	QDateTime SendDate;
 	Message::Status MyStatus;
+	Message::Type MyType;
 
 public:
-	MessageData(Chat *chat = 0, Contact sender = Contact::null);
+	MessageData(Chat *chat = 0, Message::Type type = Message::TypeUnknown, Contact sender = Contact::null);
 	virtual ~MessageData();
 
 	Chat * chat() const { return MyChat; }
@@ -50,6 +51,9 @@ public:
 
 	Message::Status status() const { return MyStatus; }
 	MessageData & setStatus(Message::Status status);
+
+	Message::Type type() const { return MyType; }
+	MessageData & setType(Message::Type type);
 
 signals:
 	void statusChanged(Message::Status);

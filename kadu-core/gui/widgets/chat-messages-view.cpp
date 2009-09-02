@@ -118,10 +118,7 @@ void ChatMessagesView::repaintMessages()
 
 void ChatMessagesView::appendMessage(Message message)
 {
-	ChatMessageType type = message.status() == Message::Received
-			? TypeReceived
-			: TypeSent;
-	ChatMessage *chatMessage = new ChatMessage(message, type);
+	ChatMessage *chatMessage = new ChatMessage(message);
 	appendMessage(chatMessage);
 }
 

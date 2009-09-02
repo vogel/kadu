@@ -294,22 +294,22 @@ void ChatStylesManager::preparePreview(Preview *preview)
 	SimpleChat *chat = new SimpleChat(example.prefferedAccount(), example);
 	connect(preview, SIGNAL(destroyed()), chat, SLOT(deleteLater()));
 
-	Message messageSent(chat, Core::instance()->myself());
+	Message messageSent(chat, Message::TypeSent, Core::instance()->myself());
 	messageSent
 		.setContent(tr("Your message"))
 		.setReceiveDate(QDateTime::currentDateTime())
 		.setSendDate(QDateTime::currentDateTime());
 
-	ChatMessage *chatMessage = new ChatMessage(messageSent, TypeSent);
+	ChatMessage *chatMessage = new ChatMessage(messageSent);
 	chatMessage->setSeparatorSize(CfgHeaderSeparatorHeight);
 	preview->addObjectToParse(Core::instance()->myself() , chatMessage);
 
-	Message messageReceived(chat, example);
+	Message messageReceived(chat, Message::TypeReceived, example);
 	messageReceived
 		.setContent(tr("Message from Your friend"))
 		.setReceiveDate(QDateTime::currentDateTime())
 		.setSendDate(QDateTime::currentDateTime());
-	chatMessage = new ChatMessage(messageReceived, TypeReceived);
+	chatMessage = new ChatMessage(messageReceived);
 	chatMessage->setSeparatorSize(CfgHeaderSeparatorHeight);
 	preview->addObjectToParse(example, chatMessage);
 }

@@ -120,17 +120,14 @@ void HtmlMessagesRenderer::updateBackgroundsAndColors()
 	
 	foreach (ChatMessage *message, MyChatMessages)
 	{
-		switch (message->type())
+		switch (message->message().type())
 		{
-			case TypeSent:
+			case Message::TypeSent:
 				message->setColorsAndBackground(myBackgroundColor, myNickColor, myFontColor);
 				break;
-				
-			case TypeReceived:
+
+			case Message::TypeReceived:
 				message->setColorsAndBackground(usrBackgroundColor, usrNickColor, usrFontColor);
-				break;
-				
-			case TypeSystem:
 				break;
 		}
 		

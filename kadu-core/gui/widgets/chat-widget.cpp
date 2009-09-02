@@ -268,9 +268,14 @@ void ChatWidget::appendMessage(ChatMessage *message, bool pending)
 
 void ChatWidget::appendSystemMessage(const QString &rawContent, const QString &backgroundColor, const QString &fontColor)
 {
-	ChatMessage *message = new ChatMessage(rawContent, TypeSystem, QDateTime::currentDateTime(),
-		backgroundColor, fontColor, fontColor);
-	MessagesView->appendMessage(message);
+	Message message(CurrentChat, Message::TypeSystem);
+	message
+		.setContent(rawContent)
+		.setSendDate(QDateTime::currentDateTime());
+	ChatMessage *chatMessage = new ChatMessage(message);
+	chatMessage->setColorsAndBackground(backgroundColor, fontColor, fontColor);
+
+	MessagesView->appendMessage(chatMessage);
 }
 
 /* invoked from outside when new message arrives, this is the window to the world */

@@ -29,16 +29,24 @@ class KADUAPI Message : public QObject
 public:
 	enum Status
 	{
-		Unknown,
-		Received,
-		Sent,
-		Delivered,
-		WontDeliver
+		StatusUnknown,
+		StatusReceived,
+		StatusSent,
+		StatusDelivered,
+		StatusWontDeliver
 	};
+	enum Type
+	{
+		TypeUnknown,
+		TypeReceived,
+		TypeSent,
+		TypeSystem
+	};
+
 public:
-	Message(Chat *chat = 0, Contact sender = Contact::null);
+	Message(Chat *chat = 0, Type type = TypeUnknown, Contact sender = Contact::null);
 	Message(const Message &copy);
-	~Message();
+	virtual ~Message();
 
 	void operator = (const Message &copy);
 
@@ -59,6 +67,9 @@ public:
 
 	Message::Status status() const;
 	Message & setStatus(Message::Status status);
+
+	Message::Type type() const;
+	Message & setType(Message::Type type);
 
 signals:
 	void statusChanged(Message::Status);

@@ -119,9 +119,9 @@ bool GaduChatService::sendMessage(Chat *chat, FormattedMessage &message)
 	if (formats)
 		delete[] formats;
 
-	Message msg(chat, Core::instance()->myself());
+	Message msg(chat, Message::TypeSent, Core::instance()->myself());
 	msg
-		.setStatus(Message::Sent)
+		.setStatus(Message::StatusSent)
 		.setContent(message.toPlain())
 		.setSendDate(QDateTime::currentDateTime())
 		.setReceiveDate(QDateTime::currentDateTime());
@@ -264,9 +264,9 @@ void GaduChatService::handleEventMsg(struct gg_event *e)
 	if (ignore)
 		return;
 
-	Message msg(chat, sender);
+	Message msg(chat, Message::TypeReceived, sender);
 	msg
-		.setStatus(Message::Received)
+		.setStatus(Message::StatusReceived)
 		.setContent(message.toHtml())
 		.setSendDate(time)
 		.setReceiveDate(QDateTime::currentDateTime());
@@ -283,33 +283,33 @@ void GaduChatService::handleEventAck(struct gg_event *e)
 
 	int uin = e->event.ack.recipient;
 
-	Message::Status status = Message::Unknown;
+	Message::Status status = Message::StatusUnknown;
 	switch (e->event.ack.status)
 	{
 		case GG_ACK_DELIVERED:
 			kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "message delivered (uin: %d, seq: %d)\n", uin, messageId);
 			emit messageStatusChanged(messageId, StatusAcceptedDelivered);
-			status = Message::Delivered;
+			status = Message::StatusDelivered;
 			break;
 		case GG_ACK_QUEUED:
 			kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "message queued (uin: %d, seq: %d)\n", uin, messageId);
 			emit messageStatusChanged(messageId, StatusAcceptedQueued);
-			status = Message::Delivered;
+			status = Message::StatusDelivered;
 			break;
 		case GG_ACK_BLOCKED:
 			kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "message blocked (uin: %d, seq: %d)\n", uin, messageId);
 			emit messageStatusChanged(messageId, StatusRejectedBlocked);
-			status = Message::WontDeliver;
+			status = Message::StatusWontDeliver;
 			break;
 		case GG_ACK_MBOXFULL:
 			kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "message box full (uin: %d, seq: %d)\n", uin, messageId);
 			emit messageStatusChanged(messageId, StatusRejectedBoxFull);
-			status = Message::WontDeliver;
+			status = Message::StatusWontDeliver;
 			break;
 		case GG_ACK_NOT_DELIVERED:
 			kdebugm(KDEBUG_NETWORK|KDEBUG_INFO, "message not delivered (uin: %d, seq: %d)\n", uin, messageId);
 			emit messageStatusChanged(messageId, StatusRejectedUnknown);
-			status = Message::WontDeliver;
+			status = Message::StatusWontDeliver;
 			break;
 		default:
 			kdebugm(KDEBUG_NETWORK|KDEBUG_WARNING, "unknown acknowledge! (uin: %d, seq: %d, status:%d)\n", uin, messageId, e->event.ack.status);
@@ -339,7 +339,7 @@ void GaduChatService::removeTimeoutUndeliveredMessages()
 		if (message.value().sendDate().addSecs(MAX_DELIVERY_TIME) < now)
 		{
 			toRemove.append(message.key());
-			UndeliveredMessages[message.key()].setStatus(Message::WontDeliver);
+			UndeliveredMessages[message.key()].setStatus(Message::StatusWontDeliver);
 		}
 
 		message++;

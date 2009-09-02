@@ -256,13 +256,15 @@ QList<Message> HistorySqlStorage::messages(Chat *chat, QDate date, int limit)
 	while (query.next())
 	{
 		bool outgoing = QVariant(query.value(4).toString().split('=').last()).toBool();
+		Message::Type type = outgoing ? Message::TypeSent : Message::TypeReceived;
+		Contact sender = outgoing ? Core::instance()->myself() : ContactManager::instance()->byUuid(query.value(0).toString());
 
-		Message message(chat, outgoing ? Core::instance()->myself() : ContactManager::instance()->byUuid(query.value(0).toString()));
+		Message message(chat, type, sender);
 		message
 			.setContent(query.value(1).toString())
 			.setSendDate(query.value(2).toDateTime())
 			.setReceiveDate(query.value(3).toDateTime())
-			.setStatus(outgoing ? Message::Delivered : Message::Received);
+			.setStatus(outgoing ? Message::StatusDelivered : Message::StatusReceived);
 
 		messages.append(message);
 	}

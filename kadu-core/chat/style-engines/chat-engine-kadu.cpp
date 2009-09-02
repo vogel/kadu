@@ -98,7 +98,7 @@ QString KaduChatStyleEngine::formatMessage(ChatMessage *message, ChatMessage *af
 	Contact contact = msg.sender();
 	Account *account = msg.chat()->account();
 
-	if (message->type() == TypeSystem)
+	if (msg.type() == Message::TypeSystem)
 	{
 		separatorSize = ChatStylesManager::instance()->paragraphSeparator();
 		format = ChatSyntaxWithoutHeader;
@@ -111,10 +111,13 @@ QString KaduChatStyleEngine::formatMessage(ChatMessage *message, ChatMessage *af
 		includeHeader = (!ChatStylesManager::instance()->cfgNoHeaderRepeat() || !after);
 
 		if (after && !includeHeader)
+		{
+			Message aft = after->message();
 			includeHeader =
-				(after->type() != TypeSystem) &&
+				(aft.type() != Message::TypeSystem) &&
 				((msg.receiveDate().toTime_t() - aft.receiveDate().toTime_t() > (ChatStylesManager::instance()->cfgNoHeaderInterval() * 60)) ||
 				 (msg.sender() != aft.sender()));
+		}
 
 		if (includeHeader)
 		{
@@ -160,7 +163,7 @@ void KaduChatStyleEngine::repaintMessages(HtmlMessagesRenderer *renderer)
 		Contact contact = msg.sender();
 		Account *account = msg.chat()->account();
 
-		if ((*message)->type() == TypeSystem)
+		if (msg.type() == Message::TypeSystem)
 			text += Parser::parse(ChatSyntaxWithoutHeader, account, contact, *message);
 		else
 		{

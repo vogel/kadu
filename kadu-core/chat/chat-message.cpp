@@ -113,26 +113,23 @@ void ChatMessage::unregisterParserTags()
 	Parser::unregisterObjectTag("separator", getSeparator);
 }
 
-ChatMessage::ChatMessage(const Message &msg, ChatMessageType type) :
-		MyMessage(msg), Type(type)
+ChatMessage::ChatMessage(const Message &msg) :
+		MyMessage(msg)
 {
 	receivedDate = printDateTime(MyMessage.receiveDate());
 
-	switch (type)
+	switch (msg.type())
 	{
-		case TypeSent:
+		case Message::TypeSent:
 			backgroundColor = config_file.readEntry("Look", "ChatMyBgColor");
 			fontColor = config_file.readEntry("Look", "ChatMyFontColor");
 			nickColor = config_file.readEntry("Look", "ChatMyNickColor");
 			break;
 
-		case TypeReceived:
+		case Message::TypeReceived:
 			backgroundColor = config_file.readEntry("Look", "ChatUsrBgColor");
 			fontColor = config_file.readEntry("Look", "ChatUsrFontColor");
 			nickColor = config_file.readEntry("Look", "ChatUsrNickColor");
-			break;
-
-		case TypeSystem:
 			break;
 	}
 
@@ -150,9 +147,9 @@ ChatMessage::ChatMessage(const Message &msg, ChatMessageType type) :
 // 		(EmoticonsStyle)config_file.readNumEntry("Chat", "EmoticonsStyle"));
 }
 
-ChatMessage::ChatMessage(const QString &rawContent, ChatMessageType type, QDateTime date,
+ChatMessage::ChatMessage(const QString &rawContent, QDateTime date,
 	QString backgroundColor, QString fontColor, QString nickColor)
-	: Type(type), unformattedMessage(rawContent), backgroundColor(backgroundColor), fontColor(fontColor), nickColor(nickColor)
+	: unformattedMessage(rawContent), backgroundColor(backgroundColor), fontColor(fontColor), nickColor(nickColor)
 {
 	MyMessage.setReceiveDate(date);
 	connect(&MyMessage, SIGNAL(statusChanged(Message::Status)),
@@ -172,9 +169,9 @@ void ChatMessage::setShowServerTime(bool noServerTime, int noServerTimeDiff)
 		sentDate = QString::null;
 }
 
-void ChatMessage::setColorsAndBackground(QString &backgroundColor, QString &nickColor, QString &fontColor)
+void ChatMessage::setColorsAndBackground(const QString &backgroundColor, const QString &nickColor, const QString &fontColor)
 {
-		if (Type == TypeSystem)
+		if (message().type() == Message::TypeSystem)
 			return;
 
 		this->backgroundColor = backgroundColor;

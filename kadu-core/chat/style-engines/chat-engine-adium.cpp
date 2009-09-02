@@ -113,20 +113,21 @@ void AdiumChatStyleEngine::appendMessage(HtmlMessagesRenderer *renderer, ChatMes
 	ChatMessage *lastMessage = ChatStylesManager::instance()->cfgNoHeaderRepeat()
 			? renderer->lastMessage()
 			: 0;
+			
+	Message msg = message->message();
 
 	if (lastMessage)
 	{
-		Message msg = message->message();
 		Message last = lastMessage->message();
 
 		includeHeader =
-			(lastMessage->type() != TypeSystem) &&
+			(last.type() != Message::TypeSystem) &&
 			((msg.receiveDate().toTime_t() - last.receiveDate().toTime_t() > (ChatStylesManager::instance()->cfgNoHeaderInterval() * 60)) ||
 			(msg.sender() != last.sender()));
 	}
-	switch (message->type())
+	switch (msg.type())
 	{
-		case TypeReceived:
+		case Message::TypeReceived:
 		{
 			if (includeHeader)
 				formattedMessageHtml = IncomingHtml;
@@ -134,7 +135,7 @@ void AdiumChatStyleEngine::appendMessage(HtmlMessagesRenderer *renderer, ChatMes
 				formattedMessageHtml = NextIncomingHtml;
 			break;
 		}
-		case TypeSent:
+		case Message::TypeSent:
 		{
 			if (includeHeader)
 				formattedMessageHtml = OutgoingHtml;
@@ -142,7 +143,7 @@ void AdiumChatStyleEngine::appendMessage(HtmlMessagesRenderer *renderer, ChatMes
 				formattedMessageHtml = NextOutgoingHtml;
 			break;
 		}//TODO 0.6.6:
-		case TypeSystem:
+		case Message::TypeSystem:
 		{
 			formattedMessageHtml = StatusHtml;
 			break;
@@ -408,7 +409,7 @@ QString AdiumChatStyleEngine::replaceKeywords(Chat *chat, QString &styleHref, QS
 
 	// Replace userIconPath
 	QString photoPath;
-	if (message->type() == TypeReceived)
+	if (msg.type() == Message::TypeReceived)
 	{
 		result.replace(QString("%messageClasses%"), "message incoming");
 

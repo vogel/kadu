@@ -24,21 +24,12 @@
 
 #include "exports.h"
 
-enum ChatMessageType
-{
-	TypeSystem,
-	TypeReceived,
-	TypeSent
-};
-
 class KADUAPI ChatMessage : public QObject
 {
 	Q_OBJECT
 
 	Message MyMessage;
 	int SeparatorSize;
-
-	ChatMessageType Type;
 
 public:
 	QString unformattedMessage;
@@ -51,23 +42,21 @@ public:
 	static void registerParserTags();
 	static void unregisterParserTags();
 
-	ChatMessage(const Message &msg, ChatMessageType type);
+	ChatMessage(const Message &msg);
 
-	ChatMessage(const QString &rawContent, ChatMessageType type, QDateTime date,
+	ChatMessage(const QString &rawContent, QDateTime date,
 		QString backgroundColor, QString fontColor, QString nickColor);
 
 	Message message() { return MyMessage; }
 
 	void replaceLoadingImages(const QString &imageId, const QString &imagePath);
 
-	ChatMessageType type() const { return Type; }
-
 	void setSeparatorSize(int separatorSize) { SeparatorSize = separatorSize; }
 	int separatorSize() const { return SeparatorSize; }
 
 	void setShowServerTime(bool noServerTime, int noServerTimeDiff);
 
-	void setColorsAndBackground(QString &backgroundColor, QString &nickColor, QString &fontColor);
+	void setColorsAndBackground(const QString &backgroundColor, const QString &nickColor, const QString &fontColor);
 
 signals:
 	void statusChanged(Message::Status);

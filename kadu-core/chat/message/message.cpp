@@ -11,8 +11,8 @@
 
 #include "message.h"
 
-Message::Message(Chat *chat, Contact sender) :
-		Data(new MessageData(chat, sender))
+Message::Message(Chat *chat, Type type, Contact sender) :
+		Data(new MessageData(chat, type, sender))
 {
 	if (Data.data())
 		connect(Data.data(), SIGNAL(statusChanged(Message::Status)),
@@ -116,12 +116,26 @@ Message::Status Message::status() const
 {
 	return Data.data()
 			? Data->status()
-			: Unknown;
+			: StatusUnknown;
 }
 
 Message & Message::setStatus(Message::Status status)
 {
 	if (Data.data())
 		Data->setStatus(status);
+	return *this;
+}
+
+Message::Type Message::type() const
+{
+	return Data.data()
+			? Data->type()
+			: TypeUnknown;
+}
+
+Message & Message::setType(Message::Type type)
+{
+	if (Data.data())
+		Data->setType(type);
 	return *this;
 }
