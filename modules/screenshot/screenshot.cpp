@@ -807,7 +807,7 @@ QPixmap ScreenShot::grabCurrent()
 	//FIXME: why it only works with kadu windows?
 	GetGlobalMouse(&mousePos);
 	err = MacFindWindow(mousePos, &window);
-	err = GetWindowBounds(window, kWindowContentRgn, &rect);
+	err = GetWindowBounds(window, kWindowStructureRgn, &rect);
 	if (err == noErr)
 	{
 		QPixmap desktop = QPixmap::grabWindow(QApplication::desktop()->winId());
