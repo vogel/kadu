@@ -43,6 +43,18 @@ class QString;
 class MiniClient : public QObject
 {
 	Q_OBJECT
+
+	XMPP::AdvancedConnector *conn;
+	XMPP::ClientStream *stream;
+	QCA::TLS *tls;
+	XMPP::QCATLSHandler *tlsHandler;
+	XMPP::Client *_client;
+	XMPP::Jid j;
+	QString pass;
+	bool auth, force_ssl, error_disconnect;
+	QString TlsOverrideDomain;
+	QByteArray TlsOverrideCert;
+
 public:
 	MiniClient(QObject *parent=0);
 	~MiniClient();
@@ -52,7 +64,12 @@ public:
 	void close();
 	XMPP::Client *client();
 	void setErrorOnDisconnect(bool);
-//static void getErrorInfo(int err, XMPP::AdvancedConnector *conn, Stream *stream, XMPP::QCATLSHandler *tlsHandler, QString *_str, bool *_reconn);
+
+	QByteArray tlsOverrideCert() { return TlsOverrideCert; };
+	void setTlsOverrideCert(QByteArray tlsOverrideCert) { TlsOverrideCert = tlsOverrideCert; }
+
+	QString tlsOverrideDomain() { return TlsOverrideDomain; };
+	void setTlsOverrideDomain(QString tlsOverrideDomain) { TlsOverrideDomain = tlsOverrideDomain; }
 
 signals:
 	void handshaken();
@@ -71,16 +88,6 @@ private slots:
 	void cs_error(int);
 	void sessionStart_finished();
 	void slotDebug(const QString &text);
-
-private:
-	XMPP::AdvancedConnector *conn;
-	XMPP::ClientStream *stream;
-	QCA::TLS *tls;
-	XMPP::QCATLSHandler *tlsHandler;
-	XMPP::Client *_client;
-	XMPP::Jid j;
-	QString pass;
-	bool auth, force_ssl, error_disconnect;
 };
 
 

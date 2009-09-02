@@ -36,7 +36,6 @@ private:
 	QString CustomHost;
 	int CustomPort;
 	EncryptionFlag EncryptionMode;
-	bool IgnoreTLSWarnings;
 	bool LegacySSLProbe;
 
 public:
@@ -44,6 +43,8 @@ public:
 
 	// TODO - jid is always null - why?
 	// QString jid() { return Jid; }
+	QByteArray TlsOverrideCert;
+	QString TlsOverrideDomain;
 
 	QString resource() { return Resource; }
 	void setResource(const QString &resource) { Resource = resource; }
@@ -56,16 +57,24 @@ public:
 
 	bool useCustomHostPort() { return UseCustomHostPort; }
 	void setUseCustomHostPort(bool use) { UseCustomHostPort = use; }
+
 	QString customHost() { return CustomHost; }
 	void setCustomHost(QString host) { CustomHost = host; }
+
 	int customPort() { return CustomPort; }
 	void setCustomPort(int port) { CustomPort = port; }
+
 	EncryptionFlag encryptionMode() { return EncryptionMode; }
 	void setEncryptionMode(EncryptionFlag flag) { EncryptionMode = flag; }
-	bool ignoreTLSWarnings() { return IgnoreTLSWarnings; }
-	void setIgnoreTLSWarnings(bool ignore) { IgnoreTLSWarnings = ignore; }
+
 	bool legacySSLProbe() { return LegacySSLProbe; }
 	void setLegacySSLProbe(bool probe) { LegacySSLProbe = probe; }
+
+	QByteArray &tlsOverrideCert() { return TlsOverrideCert; };
+	void setTlsOverrideCert(QByteArray tlsOverrideCert) { TlsOverrideCert = tlsOverrideCert; }
+
+	QString &tlsOverrideDomain() { return TlsOverrideDomain; };
+	void setTlsOverrideDomain(QString tlsOverrideDomain) { TlsOverrideDomain = tlsOverrideDomain; }
 
 	virtual bool setId(const QString &id);
 

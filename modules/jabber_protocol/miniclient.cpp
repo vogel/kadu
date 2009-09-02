@@ -21,14 +21,13 @@
 #include <QtCrypto>
 #include <QMessageBox>
 
+#include "debug.h"
+#include "misc/path-conversion.h"
+
+#include "certificates/certificate-helpers.h"
+#include "certificates/certificate-error-dialog.h"
 #include "jabber-client.h"
 #include "miniclient.h"
-//#include "proxy.h"
-
-#include "cert-util.h"
-#include "debug.h"
-//#include "psiaccount.h"
-#include "ssl-cert-dlg.h"
 #include "xmpp_tasks.h"
 
 using namespace XMPP;
@@ -110,7 +109,7 @@ void MiniClient::connectToServer(const Jid &jid, bool legacy_ssl_probe, bool leg
 
 	conn = new AdvancedConnector;
 	tls = new QCA::TLS;
-	tls->setTrustedCertificates(CertUtil::allCertificates());
+	tls->setTrustedCertificates(CertificateHelpers::allCertificates(CertificateHelpers::getCertificateStoreDirs()));
 	tlsHandler = new QCATLSHandler(tls);
 	tlsHandler->setXMPPCertCheck(true);
 	connect(tlsHandler, SIGNAL(tlsHandshaken()), SLOT(tls_handshaken()));
@@ -162,35 +161,14 @@ void MiniClient::setErrorOnDisconnect(bool b)
 
 void MiniClient::tls_handshaken()
 {
-	QCA::Certificate cert = tls->peerCertificateChain().primary();
-	int r = tls->peerIdentityResult();
-	if (r == QCA::TLS::Valid && !tlsHandler->certMatchesHostname()) r = QCA::TLS::HostMismatch;
-	if(r != QCA::TLS::Valid) {
-		QCA::Validity validity =  tls->peerCertificateValidity();
-		QString str = CertUtil::resultToString(r,validity);
-		while(1) {
-			int n = QMessageBox::warning(0,
-				tr("Server Authentication"),
-				tr("The %1 certificate failed the authenticity test.").arg(j.domain()) + '\n' + tr("Reason: %1.").arg(str),
-				tr("&Details..."),
-				tr("Co&ntinue"),
-				tr("&Cancel"), 0, 2);
-			if(n == 0) {
-				SSLCertDlg::showCert(cert, r, validity);
-			}
-			else if(n == 1) {
-				tlsHandler->continueAfterHandshake();
-				break;
-			}
-			else if(n == 2) {
-				close();
-				error();
-				break;
-			}
-		}
-	}
-	else
+	if (CertificateHelpers::checkCertificate(tls, tlsHandler, TlsOverrideDomain, TlsOverrideCert,
+										 tr("Server Authentication"),
+										 j.domain(), this)) {
 		tlsHandler->continueAfterHandshake();
+	} else {
+		close();
+		error();
+	}
 }
 
 void MiniClient::cs_connected()

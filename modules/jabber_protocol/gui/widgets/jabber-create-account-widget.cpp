@@ -339,10 +339,15 @@ void JabberCreateAccountWidget::registerNewAccountFinished(JabberServerRegisterA
 	{
 		MessageBox::msg(tr("Registration was successful. Your new Jabber ID is %1.\nStore it in a safe place along with the password.\nNow add your friends to the userlist.").arg(jsra->jid()), false, "Information", this);
 
-		Account *jabberAccount = JabberProtocolFactory::instance()->newAccount();
+		JabberAccount *jabberAccount = dynamic_cast<JabberAccount *>(JabberProtocolFactory::instance()->newAccount());
+		if (!jabberAccount)
+			return;
 		jabberAccount->setName(AccountName->text());
 		jabberAccount->setId(jsra->jid());
 		jabberAccount->setPassword(NewPassword->text());
+		jabberAccount->setTlsOverrideDomain(jsra->client()->tlsOverrideDomain());
+		jabberAccount->setTlsOverrideCert(jsra->client()->tlsOverrideCert());
+
 
 		emit accountCreated(jabberAccount);
 	}

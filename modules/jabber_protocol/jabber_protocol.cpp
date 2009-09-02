@@ -30,7 +30,6 @@
 #include "kadu-config.h"
 #include "icons-manager.h"
 
-#include "cert-util.h"
 #include "file-transfer/jabber-file-transfer.h"
 #include "jabber-account.h"
 #include "jabber_protocol.h"
@@ -187,7 +186,6 @@ void JabberProtocol::connectToServer()
 	JabberClient->setCapsVersion("0.12");
 
 	JabberClient->setForceTLS(jabberAccount->encryptionMode() != JabberAccount::Encryption_No);
-	JabberClient->setIgnoreTLSWarnings(jabberAccount->ignoreTLSWarnings());
 
 	// override server and port (this should be dropped when using the new protocol and no direct SSL)
 	JabberClient->setUseSSL(jabberAccount->encryptionMode() == JabberAccount::Encryption_Legacy);

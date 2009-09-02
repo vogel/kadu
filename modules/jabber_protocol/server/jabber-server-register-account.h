@@ -54,6 +54,7 @@ public:
 	QString jid() { return Jid; }
 
 	bool result() { return Result; }
+	MiniClient * client() { return Client; };
 
 private slots:
 

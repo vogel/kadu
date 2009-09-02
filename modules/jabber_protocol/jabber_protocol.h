@@ -100,6 +100,7 @@ class JabberProtocol : public Protocol
 		void contactAccountDataAdded(Contact &contact, Account *contactAccount);
 		void contactAccountDataAboutToBeRemoved(Contact &contact, Account *contactAccount);
 		void contactAccountIdChanged(Contact &contact, Account *account, const QString &oldId);
+		void fetchAvatars(Account *account);
 
 	public slots:
 		void setPresence(const XMPP::Status &status);
