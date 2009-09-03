@@ -430,8 +430,8 @@ QString AdiumChatStyleEngine::replaceKeywords(Chat *chat, QString &styleHref, QS
 	result.replace(QString("%messageDirection%"), "ltr");
 
 	// Replace contact's color
-	const QString colorName = message->nickColor;
-	QString lightColorName;	
+	const QString colorName = message->nickColor();
+	QString lightColorName;
 	QRegExp senderColorRegExp("%senderColor(?:\\{([^}]*)\\})?%");
 	textPos = 0;
 	while((textPos = senderColorRegExp.indexIn(result, textPos)) != -1)
@@ -448,7 +448,7 @@ QString AdiumChatStyleEngine::replaceKeywords(Chat *chat, QString &styleHref, QS
 	}
 
 	// Replace message TODO: do sth with formatMessage
-	QString messageText = QString("<span>") + formatMessage(message->unformattedMessage, message->backgroundColor) + QString("</span>");
+	QString messageText = QString("<span>") + formatMessage(message->unformattedMessage, message->backgroundColor()) + QString("</span>");
 	result.replace(QString("%message%"), messageText);
 
 	return result;

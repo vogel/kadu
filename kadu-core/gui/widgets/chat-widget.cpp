@@ -273,7 +273,9 @@ void ChatWidget::appendSystemMessage(const QString &rawContent, const QString &b
 		.setContent(rawContent)
 		.setSendDate(QDateTime::currentDateTime());
 	MessageRenderInfo *messageRenderInfo = new MessageRenderInfo(message);
-	messageRenderInfo->setColorsAndBackground(backgroundColor, fontColor, fontColor);
+	messageRenderInfo->setBackgroundColor(backgroundColor)
+		.setFontColor(fontColor)
+		.setNickColor(fontColor);
 
 	MessagesView->appendMessage(messageRenderInfo);
 }

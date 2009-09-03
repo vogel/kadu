@@ -31,7 +31,7 @@ static QString getMessage(const QObject * const object)
 {
 	const MessageRenderInfo * const messageRenderInfo = dynamic_cast<const MessageRenderInfo * const>(object);
 	if (messageRenderInfo)
-		return formatMessage(messageRenderInfo->unformattedMessage, messageRenderInfo->backgroundColor);
+		return formatMessage(messageRenderInfo->unformattedMessage, messageRenderInfo->backgroundColor());
 	else
 		return "";
 }
@@ -40,7 +40,7 @@ static QString getBackgroundColor(const QObject * const object)
 {
 	const MessageRenderInfo * const messageRenderInfo = dynamic_cast<const MessageRenderInfo * const>(object);
 	if (messageRenderInfo)
-		return messageRenderInfo->backgroundColor;
+		return messageRenderInfo->backgroundColor();
 	else
 		return "";
 }
@@ -49,7 +49,7 @@ static QString getFontColor(const QObject * const object)
 {
 	const MessageRenderInfo * const messageRenderInfo = dynamic_cast<const MessageRenderInfo * const>(object);
 	if (messageRenderInfo)
-		return messageRenderInfo->fontColor;
+		return messageRenderInfo->fontColor();
 	else
 		return "";
 }
@@ -58,7 +58,7 @@ static QString getNickColor(const QObject * const object)
 {
 	const MessageRenderInfo * const messageRenderInfo = dynamic_cast<const MessageRenderInfo * const>(object);
 	if (messageRenderInfo)
-		return messageRenderInfo->nickColor;
+		return messageRenderInfo->nickColor();
 	else
 		return "";
 }
@@ -119,15 +119,15 @@ MessageRenderInfo::MessageRenderInfo(const Message &msg) :
 	switch (msg.type())
 	{
 		case Message::TypeSent:
-			backgroundColor = config_file.readEntry("Look", "ChatMyBgColor");
-			fontColor = config_file.readEntry("Look", "ChatMyFontColor");
-			nickColor = config_file.readEntry("Look", "ChatMyNickColor");
+			BackgroundColor = config_file.readEntry("Look", "ChatMyBgColor");
+			FontColor = config_file.readEntry("Look", "ChatMyFontColor");
+			NickColor = config_file.readEntry("Look", "ChatMyNickColor");
 			break;
 
 		case Message::TypeReceived:
-			backgroundColor = config_file.readEntry("Look", "ChatUsrBgColor");
-			fontColor = config_file.readEntry("Look", "ChatUsrFontColor");
-			nickColor = config_file.readEntry("Look", "ChatUsrNickColor");
+			BackgroundColor = config_file.readEntry("Look", "ChatUsrBgColor");
+			FontColor = config_file.readEntry("Look", "ChatUsrFontColor");
+			NickColor = config_file.readEntry("Look", "ChatUsrNickColor");
 			break;
 	}
 
@@ -150,18 +150,33 @@ void MessageRenderInfo::replaceLoadingImages(const QString &imageId, const QStri
 	unformattedMessage = FormattedMessagePart::replaceLoadingImages(unformattedMessage, imageId, imagePath);
 }
 
-void MessageRenderInfo::setShowServerTime(bool noServerTime, int noServerTimeDiff)
+MessageRenderInfo & MessageRenderInfo::setShowServerTime(bool noServerTime, int noServerTimeDiff)
 {
 	ShowServerTime = (MyMessage.sendDate().isValid()
 			&& (!noServerTime || (abs(MyMessage.receiveDate().toTime_t() - MyMessage.sendDate().toTime_t())) > noServerTimeDiff));
+	return *this;
 }
 
-void MessageRenderInfo::setColorsAndBackground(const QString &backgroundColor, const QString &nickColor, const QString &fontColor)
+MessageRenderInfo & MessageRenderInfo::setSeparatorSize(int separatorSize)
 {
-		if (message().type() == Message::TypeSystem)
-			return;
+	SeparatorSize = separatorSize;
+	return *this;
+}
 
-		this->backgroundColor = backgroundColor;
-		this->nickColor = nickColor;
-		this->fontColor = fontColor;
+MessageRenderInfo & MessageRenderInfo::setBackgroundColor(const QString &backgroundColor)
+{
+	BackgroundColor = backgroundColor;
+	return *this;
+}
+
+MessageRenderInfo & MessageRenderInfo::setFontColor(const QString &fontColor)
+{
+	FontColor = fontColor;
+	return *this;
+}
+
+MessageRenderInfo & MessageRenderInfo::setNickColor(const QString &nickColor)
+{
+	NickColor = nickColor;
+	return *this;
 }

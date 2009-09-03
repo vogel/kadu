@@ -123,11 +123,15 @@ void HtmlMessagesRenderer::updateBackgroundsAndColors()
 		switch (message->message().type())
 		{
 			case Message::TypeSent:
-				message->setColorsAndBackground(myBackgroundColor, myNickColor, myFontColor);
+				message->setBackgroundColor(myBackgroundColor)
+					.setNickColor(myNickColor)
+					.setFontColor(myFontColor);
 				break;
 
 			case Message::TypeReceived:
-				message->setColorsAndBackground(usrBackgroundColor, usrNickColor, usrFontColor);
+				message->setBackgroundColor(usrBackgroundColor)
+					.setNickColor(usrNickColor)
+					.setFontColor(usrFontColor);
 				break;
 		}
 		
