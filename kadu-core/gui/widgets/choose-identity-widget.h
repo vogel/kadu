@@ -30,6 +30,8 @@ public:
 
 	QString identityName();
 
+signals:
+	void identityChanged();
 };
 
 #endif // CHOOSE_IDENTITY_WIDGET_H

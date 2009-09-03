@@ -86,6 +86,7 @@ void GaduCreateAccountWidget::createIHaveAccountGui(QGridLayout *gridLayout, int
 	QLabel *descriptionLabel = new QLabel(tr("Account description"), this);
 	gridLayout->addWidget(descriptionLabel, row, 1, Qt::AlignRight);
 	haveNumberIdentity = new ChooseIdentityWidget(this);
+	connect(haveNumberIdentity, SIGNAL(identityChanged()), this, SLOT(iHaveAccountDataChanged()));
 	gridLayout->addWidget(haveNumberIdentity, row++, 2, 1, 2);
 
 	QCheckBox *rememberPassword = new QCheckBox(tr("Remember password"), this);
@@ -136,6 +137,7 @@ void GaduCreateAccountWidget::createRegisterAccountGui(QGridLayout *gridLayout, 
 	QLabel *descriptionLabel = new QLabel(tr("Account description"), this);
 	gridLayout->addWidget(descriptionLabel, row, 1, Qt::AlignRight);
 	dontHaveNumberIdentity = new ChooseIdentityWidget(this);
+	connect(dontHaveNumberIdentity, SIGNAL(identityChanged()), this, SLOT(registerAccountDataChanged()));
 	gridLayout->addWidget(dontHaveNumberIdentity, row++, 2, 1, 2);
 
 	QLabel *tokenLabel = new QLabel(tr("Type this code") + ":", this);
@@ -174,7 +176,8 @@ void GaduCreateAccountWidget::haveNumberChanged(bool haveNumber)
 void GaduCreateAccountWidget::iHaveAccountDataChanged()
 {
 	RemindPassword->setEnabled(!AccountId->text().isEmpty());
-	AddThisAccount->setEnabled(!AccountId->text().isEmpty() && !AccountPassword->text().isEmpty());
+	AddThisAccount->setEnabled(!AccountId->text().isEmpty() && !AccountPassword->text().isEmpty()
+				   && !haveNumberIdentity->identityName().isEmpty());
 }
 
 void GaduCreateAccountWidget::addThisAccount()
@@ -190,7 +193,8 @@ void GaduCreateAccountWidget::addThisAccount()
 void GaduCreateAccountWidget::registerAccountDataChanged()
 {
 	bool disable = NewPassword->text().isEmpty() || ReNewPassword->text().isEmpty()
-		      || EMail->text().indexOf(HtmlDocument::mailRegExp()) < 0 || tokenWidget->tokenValue().isEmpty();
+		      || EMail->text().indexOf(HtmlDocument::mailRegExp()) < 0 || tokenWidget->tokenValue().isEmpty()
+		      || dontHaveNumberIdentity->identityName().isEmpty();
 
 	registerAccount->setEnabled(!disable);
 }

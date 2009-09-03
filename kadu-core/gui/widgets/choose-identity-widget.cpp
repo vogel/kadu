@@ -30,7 +30,15 @@ ChooseIdentityWidget::ChooseIdentityWidget(QWidget *parent) : QWidget(parent)
 	connect(description, SIGNAL(activated(int)), this, SLOT(identitySelected(int)));
 
 	newDescriptionEdit = new QLineEdit;
-	newDescriptionEdit->setVisible(false);
+	connect(newDescriptionEdit, SIGNAL(textChanged(QString)), this, SIGNAL(identityChanged()));
+
+	if (description->count() == 2)
+	{
+		description->setCurrentIndex(1);
+		newDescriptionEdit->setVisible(true);
+	}
+	else
+		newDescriptionEdit->setVisible(false);
 
 	QVBoxLayout *layout = new QVBoxLayout(this);
 	
@@ -41,6 +49,8 @@ ChooseIdentityWidget::ChooseIdentityWidget(QWidget *parent) : QWidget(parent)
 void ChooseIdentityWidget::identitySelected(int index)
 {
 	newDescriptionEdit->setVisible(index == description->count() - 1);
+
+	emit identityChanged();
 }
 
 QString ChooseIdentityWidget::identityName()
