@@ -45,11 +45,12 @@ public:
 	MessageRenderInfo(const Message &msg);
 	virtual ~MessageRenderInfo();
 
+	void replaceLoadingImages(const QString &imageId, const QString &imagePath);
+
 	const Message & message() const { return MyMessage; }
 	Message & message() { return MyMessage; }
-	QString htmlMessageContent() const { return HtmlMessageContent; }
 
-	void replaceLoadingImages(const QString &imageId, const QString &imagePath);
+	QString htmlMessageContent() const { return HtmlMessageContent; }
 
 	MessageRenderInfo & setSeparatorSize(int separatorSize);
 	int separatorSize() const { return SeparatorSize; }
