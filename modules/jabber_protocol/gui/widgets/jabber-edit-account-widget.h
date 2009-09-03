@@ -42,7 +42,6 @@ class JabberEditAccountWidget : public AccountEditWidget
 	QLabel *EncryptionModeLabel;
 	QComboBox *EncryptionMode;
 	QCheckBox *LegacySSLProbe;
-	QCheckBox *IgnoreTLSWarnings;
 	QComboBox *PlainTextAuth;
 
 	ProxyGroupBox *proxy;

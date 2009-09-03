@@ -206,10 +206,6 @@ void JabberEditAccountWidget::createGeneralGroupBox(QVBoxLayout *layout)
         EncryptionLayout->addItem(spacerItem);
         vboxLayout2->addLayout(EncryptionLayout);
 
-        IgnoreTLSWarnings = new QCheckBox(general);
-        IgnoreTLSWarnings->setText(tr("Ignore TLS warnings"));
-        vboxLayout2->addWidget(IgnoreTLSWarnings);
-
         LegacySSLProbe = new QCheckBox(general);
         LegacySSLProbe->setText(tr("Probe legacy SSL port"));
         vboxLayout2->addWidget(LegacySSLProbe);
@@ -332,7 +328,6 @@ void JabberEditAccountWidget::loadConnectionData()
 	CustomPort->setText(jabberAccount->customPort() ? QString::number(jabberAccount->customPort()) : QString::number(5222));
 	EncryptionMode->setCurrentIndex(EncryptionMode->findData(jabberAccount->encryptionMode()));
 	LegacySSLProbe->setChecked(jabberAccount->legacySSLProbe());
-	IgnoreTLSWarnings->setChecked(jabberAccount->ignoreTLSWarnings());
 	proxy->loadProxyData();
 
 	AutoResource->setChecked(jabberAccount->autoResource());
@@ -354,8 +349,6 @@ void JabberEditAccountWidget::apply()
 	jabberAccount->setCustomPort(CustomPort->text().toInt());
 	jabberAccount->setEncryptionMode((JabberAccount::EncryptionFlag)EncryptionMode->itemData(EncryptionMode->currentIndex()).toInt());
 	jabberAccount->setLegacySSLProbe(LegacySSLProbe->isChecked());
-	jabberAccount->setIgnoreTLSWarnings(IgnoreTLSWarnings->isChecked());
-
 	jabberAccount->setAutoResource(AutoResource->isChecked());
 	jabberAccount->setResource(ResourceName->text());
 	jabberAccount->setPriority(Priority->text().toInt());

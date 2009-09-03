@@ -20,21 +20,23 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "cert-util.h"
-#include "jabber-client.h"
-#include "jabber_protocol.h"
-#include "debug.h"
-#include "ssl-cert-dlg.h"
-
 #include <QtGui/QMessageBox>
 #include <QTimer>
 #include <QRegExp>
 #include <QtCrypto>
-
 #include <bsocket.h>
 #include <filetransfer.h>
 #include <jinglesessionmanager.h>
 #include <xmpp_tasks.h>
+
+#include "debug.h"
+
+#include "certificates/certificate-helpers.h"
+#include "jabber-account.h"
+#include "jabber-client.h"
+#include "jabber_protocol.h"
+
+
 
 #define JABBER_PENALTY_TIME	2
 namespace XMPP
@@ -286,7 +288,7 @@ void JabberClient::connect(const XMPP::Jid &jid, const QString &password, bool a
 	if ((forceTLS() || useSSL()) && QCA::isSupported("tls"))
 	{
 		JabberTLS = new QCA::TLS;
-		JabberTLS->setTrustedCertificates(QCA::systemStore());
+		JabberTLS->setTrustedCertificates(CertificateHelpers::allCertificates(CertificateHelpers::getCertificateStoreDirs()));
 		JabberTLSHandler = new QCATLSHandler(JabberTLS);
 		JabberTLSHandler->setXMPPCertCheck(true);
 
@@ -546,50 +548,16 @@ void JabberClient::slotTLSHandshaken()
 {
 	emit debugMessage("TLS handshake done, testing certificate validity...");
 
-	QCA::Certificate cert = JabberTLS->peerCertificateChain().primary();
-	int r = JabberTLS->peerIdentityResult();
-	if (r == QCA::TLS::Valid && !JabberTLSHandler->certMatchesHostname())
-		r = QCA::TLS::HostMismatch;
-	if (r != QCA::TLS::Valid && !ignoreTLSWarnings())
+	JabberAccount *jabberAccount = dynamic_cast<JabberAccount *>(Protocol->account());
+	if (!jabberAccount)
+		return;
+	if (CertificateHelpers::checkCertificate(JabberTLS, JabberTLSHandler, jabberAccount->TlsOverrideDomain, jabberAccount->TlsOverrideCert,
+		QString("%1: ").arg(jabberAccount->name()) + tr("Server Authentication"), XMPP::Jid(jabberAccount->id()).domain(), jabberAccount)) 
 	{
-		QCA::Validity validity =  JabberTLS->peerCertificateValidity();
-		QString str = CertUtil::resultToString(r,validity);
-		QMessageBox msgBox(QMessageBox::Warning,
-			/*(psi->contactList()->enabledAccounts().count() > 1 ? QString("%1: ").arg(name()) : "") +*/ tr("Server Authentication"),
-			tr("The %1 certificate failed the authenticity test.").arg(MyJid.domain()) + '\n' + tr("Reason: %1.").arg(str));
-		QPushButton *detailsButton = msgBox.addButton(tr("&Details..."), QMessageBox::ActionRole);
-		QPushButton *continueButton = msgBox.addButton(tr("Co&ntinue"), QMessageBox::AcceptRole);
-		QPushButton *cancelButton = msgBox.addButton(QMessageBox::Cancel);
-		msgBox.setDefaultButton(detailsButton);
-		msgBox.setResult(QDialog::Accepted);
-
-		QObject::connect(this, SIGNAL(disconnected()), &msgBox, SLOT(reject()));
-		QObject::connect(this, SIGNAL(reconnecting()), &msgBox, SLOT(reject()));
-
-		while (msgBox.result() != QDialog::Rejected)
-		{
-			msgBox.exec();
-			if ((QPushButton *)msgBox.clickedButton() == detailsButton)
-			{
-				msgBox.setResult(QDialog::Accepted);
-				SSLCertDlg::showCert(cert, r, validity);
-			}
-			else if ((QPushButton *)msgBox.clickedButton() == continueButton)
-			{
-				JabberTLSHandler->continueAfterHandshake();
-				break;
-			}
-			else if ((QPushButton *)msgBox.clickedButton() == cancelButton)
-			{
-				disconnect();
-				break;
-			}
-			else	// msgBox was hidden because connection was closed
-				break;
-		}
-	}
-	else
 		JabberTLSHandler->continueAfterHandshake();
+	} else {
+		disconnect();
+	}
 }
 
 void JabberClient::slotCSNeedAuthParams(bool user, bool pass, bool realm)

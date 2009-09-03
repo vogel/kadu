@@ -1,41 +1,43 @@
+/*
+ * Copyright (C) 2008  Remko Troncon
+ * Licensed under the GNU GPL license.
+ * See COPYING for details.
+ */
+
+#include <QtDebug>
+#include <QtCrypto>
 #include <QStringList>
 #include <QDomDocument>
 #include <QDebug>
 #include <QDir>
 #include <QFile>
+#include <QMessageBox>
 
-#include "cert-util.h"
+#include "misc/path-conversion.h"
 
-#include "misc/misc.h"
+#include "certificates/certificate-helpers.h"
+#include "certificates/certificate-error-dialog.h"
+#include "jabber-account.h"
+#include "jabber_protocol.h"
+#include "miniclient.h"
+#include "xmpp.h"
 
 using namespace QCA;
 
 /**
- * \class CertUtil
+ * \class CertificateHelpers
  * \brief A class providing utility functions for Certificates.
  */
-
-/**
- * \brief Returns the list of directories with certificates.
- */
-static QStringList certificateStores()
-{
-	QStringList l;
-	//l += ApplicationInfo::resourcesDir() + "/certs";
-	l += ggPath("/certs");
-	return l;
-}
 
 /**
  * \brief Returns the collection of all available certificates.
  * This collection includes the system-wide certificates, as well as any
  * custom certificate in the Psi-specific cert dirs.
  */
-CertificateCollection CertUtil::allCertificates()
+CertificateCollection CertificateHelpers::allCertificates(const QStringList& storeDirs)
 {
 	CertificateCollection certs(systemStore());
-	QStringList stores = certificateStores();
-	for (QStringList::ConstIterator s = stores.begin(); s != stores.end(); ++s) {
+	for (QStringList::ConstIterator s = storeDirs.begin(); s != storeDirs.end(); ++s) {
 		QDir store(*s);
 
 		// Read in PEM certificates
@@ -49,7 +51,7 @@ CertificateCollection CertUtil::allCertificates()
 				certs.addCertificate(cert);
 			}
 			else {
-			///	qWarning(QString("certutil.cpp: Invalid PEM certificate: %1").arg(store.filePath(*c)));
+				qWarning() << QString("certutil.cpp: Invalid PEM certificate: %1").arg(store.filePath(*c));
 			}
 		}
 
@@ -57,7 +59,7 @@ CertificateCollection CertUtil::allCertificates()
 		store.setNameFilters(QStringList("*.xml"));
 		cert_files = store.entryList();
 		for(QStringList::ConstIterator it = cert_files.begin(); it != cert_files.end(); ++it) {
-			///qWarning(QString("Loading certificate in obsolete XML format: %1").arg(store.filePath(*it)));
+			qWarning() << "Loading certificate in obsolete XML format: " << store.filePath(*it);
 			QFile f(store.filePath(*it));
 			if(!f.open(QIODevice::ReadOnly))
 				continue;
@@ -81,7 +83,7 @@ CertificateCollection CertUtil::allCertificates()
 						certs.addCertificate(cert);
 					}
 					else {
-					///	qWarning(QString("certutil.cpp: Invalid XML certificate: %1").arg(store.filePath(*it)));
+						qWarning() << "certificate-helpers.cpp: Invalid XML certificate: %1" << store.filePath(*it);
 					}
 				}
 			}
@@ -90,7 +92,7 @@ CertificateCollection CertUtil::allCertificates()
 	return certs;
 }
 
-QString CertUtil::validityToString(QCA::Validity v)
+QString CertificateHelpers::validityToString(QCA::Validity v)
 {
 	QString s;
 	switch(v)
@@ -136,7 +138,7 @@ QString CertUtil::validityToString(QCA::Validity v)
 	return s;
 }
 
-QString CertUtil::resultToString(int result, QCA::Validity validity)
+QString CertificateHelpers::resultToString(int result, QCA::Validity validity)
 {
 	QString s;
 	switch(result) {
@@ -158,4 +160,63 @@ QString CertUtil::resultToString(int result, QCA::Validity validity)
 			break;
 	}
 	return s;
+}
+
+bool CertificateHelpers::checkCertificate(QCA::TLS* tls, XMPP::QCATLSHandler *tlsHandler, QString &tlsOverrideDomain, QByteArray &tlsOverrideCert, const QString &title, const QString &host, QObject *parent) {
+	QCA::Certificate cert = tls->peerCertificateChain().primary();
+	int result = tls->peerIdentityResult();
+	QString hostnameOverrideable;
+
+	if (result == QCA::TLS::Valid && !tlsHandler->certMatchesHostname()) {
+		QList<QString> lst = cert.subjectInfo().values(QCA::CommonName);
+		if (lst.size() == 1) {
+			hostnameOverrideable = lst[0];
+		}
+		if (lst.size() != 1 || lst[0].isEmpty() || lst[0] != tlsOverrideDomain) {
+			result = QCA::TLS::HostMismatch;
+		}
+	}
+
+	// if this cert equals the user trusted certificate, just trust the user's choice.
+	if (result != QCA::TLS::Valid && !tlsOverrideCert.isEmpty()) {
+		if (cert.toDER() == tlsOverrideCert) {
+			result = QCA::TLS::Valid;
+		}
+	}
+
+	if (result != QCA::TLS::Valid) {
+		CertificateErrorDialog errorDialog(
+				title, host, cert,
+				result, tls->peerCertificateValidity(),
+				hostnameOverrideable, parent, tlsOverrideDomain, tlsOverrideCert);
+
+		QObject::connect(parent, SIGNAL(disconnected()), errorDialog.getMessageBox(), SLOT(reject()), Qt::AutoConnection);
+		if (errorDialog.exec() == QDialog::Accepted) {
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
+	else {
+		return true;
+	}
+}
+
+QStringList CertificateHelpers::getCertificateStoreDirs()
+{
+	QStringList l;
+	l += ggPath("certs");
+	return l;
+}
+
+QString CertificateHelpers::getCertificateStoreSaveDir()
+{
+	QDir certsave(ggPath("certs"));
+	if(!certsave.exists()) {
+		QDir home(ggPath());
+		home.mkdir("certs");
+	}
+
+	return certsave.path();
 }

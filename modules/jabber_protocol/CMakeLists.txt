@@ -236,6 +236,9 @@ endif(WIN32)
 
 
 set (SOURCES
+	certificates/certificate-display-dialog.cpp
+	certificates/certificate-error-dialog.cpp
+	certificates/certificate-helpers.cpp
 	file-transfer/jabber-file-transfer.cpp
 	gui/widgets/jabber-create-account-widget.cpp
 	gui/widgets/jabber-edit-account-widget.cpp
@@ -259,12 +262,13 @@ set (SOURCES
 	jid-util.cpp
 	miniclient.cpp
 	system-info.cpp
-	cert-util.cpp
-	ssl-cert-dlg.cpp
 	vcard-factory.cpp
 )
 
 set (MOC_SOURCES
+	certificates/certificate-display-dialog.h
+	#certificates/certificate-error-dialog.h
+	#certificates/certificate-helpers.h
 	file-transfer/jabber-file-transfer.h
 	gui/widgets/jabber-create-account-widget.h
 	gui/widgets/jabber-edit-account-widget.h
@@ -287,8 +291,6 @@ set (MOC_SOURCES
 	miniclient.h
 	#jid-util.cpp
 	system-info.h
-	#cert-util.h
-	ssl-cert-dlg.h
 	vcard-factory.h
 )
 

@@ -6,17 +6,17 @@
  *   (at your option) any later version.                                   *
  *                                                                         *
  ***************************************************************************/
+#include "base64.h"
 
 #include "configuration/xml-configuration-file.h"
 #include "misc/misc.h"
 
 #include "jabber-account.h"
 #include "jabber_protocol.h"
-#include "jid-util.h"
 #include "system-info.h"
 
 JabberAccount::JabberAccount(const QUuid &uuid)
-	: Account(uuid), EncryptionMode(JabberAccount::Encryption_Auto), IgnoreTLSWarnings(false)
+	: Account(uuid), EncryptionMode(JabberAccount::Encryption_Auto)
 {
 }
 
@@ -57,7 +57,8 @@ void JabberAccount::load()
 	setCustomHost(loadValue<QString>("CustomHost"));
 	setCustomPort(loadValue<int>("CustomPort"));
 	setEncryptionMode((EncryptionFlag)loadValue<int>("EncryptionMode"));
-	setIgnoreTLSWarnings(loadValue<bool>("IgnoreTLSWarnings"));
+	setTlsOverrideCert(XMPP::Base64::decode(loadValue<QByteArray>("TlsOverrideCert")));
+	setTlsOverrideDomain(loadValue<QString>("TlsOverrideDomain"));
 }
 
 void JabberAccount::store()
@@ -73,5 +74,6 @@ void JabberAccount::store()
 	storeValue("CustomHost", customHost());
 	storeValue("CustomPort", customPort());
 	storeValue("EncryptionMode", encryptionMode());
-	storeValue("IgnoreTLSWarnings", ignoreTLSWarnings());
+	storeValue("TlsOverrideCert", XMPP::Base64::encode(tlsOverrideCert()));
+	storeValue("TlsOverrideDomain", tlsOverrideDomain());
 }
