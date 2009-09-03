@@ -22,6 +22,7 @@
 #include "accounts/account.h"
 #include "accounts/account-manager.h"
 #include "gui/widgets/account-contacts-list-widget.h"
+#include "gui/widgets/choose-identity-widget.h"
 #include "gui/widgets/proxy-group-box.h"
 #include "gui/windows/message-box.h"
 
@@ -90,11 +91,8 @@ void JabberEditAccountWidget::createGeneralTab(QTabWidget *tabWidget)
 
 	QLabel *descriptionLabel = new QLabel(tr("Account description") + ":", this);
 	layout->addWidget(descriptionLabel, row++, 1, Qt::AlignRight);
-	QComboBox *description = new QComboBox(this);
-	layout->addWidget(description, row++, 1, 1, 2);
-	newAccountDescription = new QLineEdit(this);
-	newAccountDescription->hide();
-	layout->addWidget(description, row++, 1, 1, 3);
+	ChooseIdentity = new ChooseIdentityWidget(this);
+	layout->addWidget(ChooseIdentity, row++, 1, 1, 2);
 
 	layout->setRowMinimumHeight(row++, 30);
 

@@ -16,6 +16,7 @@
 #include <QtGui/QPushButton>
 #include <QtGui/QRadioButton>
 
+#include "gui/widgets/choose-identity-widget.h"
 #include "gui/windows/message-box.h"
 #include "server/jabber-server-register-account.h"
 #include "jabber-account.h"
@@ -79,14 +80,14 @@ void JabberCreateAccountWidget::createIHaveAccountGui(QGridLayout *gridLayout, i
 	RemindPassword->setEnabled(false);
 	gridLayout->addWidget(RemindPassword, row++, 3, Qt::AlignLeft);
 
+	QLabel *descriptionLabel = new QLabel(tr("Account description"), this);
+	gridLayout->addWidget(descriptionLabel, row, 1, Qt::AlignRight);
+	haveJidIdentity = new ChooseIdentityWidget(this);
+	gridLayout->addWidget(haveJidIdentity, row++, 2, 1, 2);
+
 	QCheckBox *rememberPassword = new QCheckBox(tr("Remember password"), this);
 	rememberPassword->setChecked(true);
 	gridLayout->addWidget(rememberPassword, row++, 2, 1, 2);
-
-	QLabel *descriptionLabel = new QLabel(tr("Account description"), this);
-	gridLayout->addWidget(descriptionLabel, row, 1, Qt::AlignRight);
-	QComboBox *description = new QComboBox(this);
-	gridLayout->addWidget(description, row++, 2, 1, 2);
 
 	AddThisAccount = new QPushButton(tr("Add this account"), this);
 	AddThisAccount->setEnabled(false);
@@ -100,7 +101,7 @@ void JabberCreateAccountWidget::createIHaveAccountGui(QGridLayout *gridLayout, i
 	HaveJidWidgets.append(RemindPassword);
 	HaveJidWidgets.append(rememberPassword);
 	HaveJidWidgets.append(descriptionLabel);
-	HaveJidWidgets.append(description);
+	HaveJidWidgets.append(haveJidIdentity);
 	HaveJidWidgets.append(AddThisAccount);
 }
 
@@ -139,6 +140,11 @@ void JabberCreateAccountWidget::createRegisterAccountGui(QGridLayout *gridLayout
 	connect(ReNewPassword, SIGNAL(textChanged(QString)), this, SLOT(registerAccountDataChanged()));
 	ReNewPassword->setEchoMode(QLineEdit::Password);
 	gridLayout->addWidget(ReNewPassword, row++, 2, 1, 2);
+
+	QLabel *descriptionLabel = new QLabel(tr("Account description"), this);
+	gridLayout->addWidget(descriptionLabel, row, 1, Qt::AlignRight);
+	dontHaveJidIdentity = new ChooseIdentityWidget(this);
+	gridLayout->addWidget(dontHaveJidIdentity, row++, 2, 1, 2);
 
 	RegisterAccount = new QPushButton(tr("Register"), this);
 	RegisterAccount->setEnabled(false);
@@ -238,6 +244,8 @@ void JabberCreateAccountWidget::createRegisterAccountGui(QGridLayout *gridLayout
 	DontHaveJidWidgets.append(NewPassword);
 	DontHaveJidWidgets.append(reNewPasswordLabel);
 	DontHaveJidWidgets.append(ReNewPassword);
+	DontHaveJidWidgets.append(descriptionLabel);
+	DontHaveJidWidgets.append(dontHaveJidIdentity);
 	DontHaveJidWidgets.append(RegisterAccount);
 	DontHaveJidWidgets.append(moreOptions);
 }

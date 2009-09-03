@@ -21,6 +21,7 @@ class QLineEdit;
 class QTabWidget;
 class QVBoxLayout;
 
+class ChooseIdentityWidget;
 class ProxyGroupBox;
 
 class JabberEditAccountWidget : public AccountEditWidget
@@ -31,7 +32,6 @@ class JabberEditAccountWidget : public AccountEditWidget
 	QLineEdit *AccountId;
 	QLineEdit *AccountPassword;
 	QCheckBox *RememberPassword;
-	QLineEdit *newAccountDescription;
 	
 	QCheckBox *CustomHostPort;
 	QHBoxLayout *HostPortLayout;
@@ -44,6 +44,7 @@ class JabberEditAccountWidget : public AccountEditWidget
 	QCheckBox *LegacySSLProbe;
 	QComboBox *PlainTextAuth;
 
+	ChooseIdentityWidget *ChooseIdentity;
 	ProxyGroupBox *proxy;
 
 	QCheckBox *AutoResource;

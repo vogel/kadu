@@ -17,6 +17,7 @@ class QLineEdit;
 class QTabWidget;
 class QVBoxLayout;
 
+class ChooseIdentityWidget;
 class ProxyGroupBox;
 
 class TlenEditAccountWidget : public AccountEditWidget
@@ -27,8 +28,8 @@ class TlenEditAccountWidget : public AccountEditWidget
 	QLineEdit *AccountId;
 	QLineEdit *AccountPassword;
 	QCheckBox *RememberPassword;
-	QLineEdit *newAccountDescription;
 
+	ChooseIdentityWidget *ChooseIdentity;
 	ProxyGroupBox *proxy;
 
 	void createGui();

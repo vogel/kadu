@@ -18,6 +18,7 @@ class QLineEdit;
 class QTabWidget;
 class QVBoxLayout;
 
+class ChooseIdentityWidget;
 class GaduPersonalInfoWidget;
 class ProxyGroupBox;
 
@@ -29,7 +30,8 @@ class GaduEditAccountWidget : public AccountEditWidget
 	QLineEdit *AccountId;
 	QLineEdit *AccountPassword;
 	QCheckBox *RememberPassword;
-	QLineEdit *newAccountDescription;
+
+	ChooseIdentityWidget *ChooseIdentity;
 
 	GaduPersonalInfoWidget *gpiw;
 	ProxyGroupBox *proxy;

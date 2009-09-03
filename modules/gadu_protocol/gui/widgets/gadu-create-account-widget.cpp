@@ -16,6 +16,7 @@
 #include <QtGui/QPushButton>
 #include <QtGui/QRadioButton>
 
+#include "gui/widgets/choose-identity-widget.h"
 #include "gui/windows/message-box.h"
 #include "../../server/gadu-server-register-account.h"
 #include "html_document.h"
@@ -82,14 +83,14 @@ void GaduCreateAccountWidget::createIHaveAccountGui(QGridLayout *gridLayout, int
 	RemindPassword->setEnabled(false);
 	gridLayout->addWidget(RemindPassword, row++, 3, Qt::AlignLeft);
 
+	QLabel *descriptionLabel = new QLabel(tr("Account description"), this);
+	gridLayout->addWidget(descriptionLabel, row, 1, Qt::AlignRight);
+	haveNumberIdentity = new ChooseIdentityWidget(this);
+	gridLayout->addWidget(haveNumberIdentity, row++, 2, 1, 2);
+
 	QCheckBox *rememberPassword = new QCheckBox(tr("Remember password"), this);
 	rememberPassword->setChecked(true);
 	gridLayout->addWidget(rememberPassword, row++, 2, 1, 2);
-
-	QLabel *descriptionLabel = new QLabel(tr("Account description"), this);
-	gridLayout->addWidget(descriptionLabel, row, 1, Qt::AlignRight);
-	QComboBox *description = new QComboBox(this);
-	gridLayout->addWidget(description, row++, 2, 1, 2);
 
 	AddThisAccount = new QPushButton(tr("Add this account"), this);
 	AddThisAccount->setEnabled(false);
@@ -103,7 +104,7 @@ void GaduCreateAccountWidget::createIHaveAccountGui(QGridLayout *gridLayout, int
 	HaveNumberWidgets.append(RemindPassword);
 	HaveNumberWidgets.append(rememberPassword);
 	HaveNumberWidgets.append(descriptionLabel);
-	HaveNumberWidgets.append(description);
+	HaveNumberWidgets.append(haveNumberIdentity);
 	HaveNumberWidgets.append(AddThisAccount);
 }
 
@@ -132,6 +133,11 @@ void GaduCreateAccountWidget::createRegisterAccountGui(QGridLayout *gridLayout, 
 	connect(EMail, SIGNAL(textChanged(const QString &)), this, SLOT(registerAccountDataChanged()));
 	gridLayout->addWidget(EMail, row++, 2, 1, 2);
 
+	QLabel *descriptionLabel = new QLabel(tr("Account description"), this);
+	gridLayout->addWidget(descriptionLabel, row, 1, Qt::AlignRight);
+	dontHaveNumberIdentity = new ChooseIdentityWidget(this);
+	gridLayout->addWidget(dontHaveNumberIdentity, row++, 2, 1, 2);
+
 	QLabel *tokenLabel = new QLabel(tr("Type this code") + ":", this);
 	gridLayout->addWidget(tokenLabel, row, 1, Qt::AlignRight);
 
@@ -150,6 +156,8 @@ void GaduCreateAccountWidget::createRegisterAccountGui(QGridLayout *gridLayout, 
 	DontHaveNumberWidgets.append(ReNewPassword);
 	DontHaveNumberWidgets.append(eMailLabel);
 	DontHaveNumberWidgets.append(EMail);
+	DontHaveNumberWidgets.append(descriptionLabel);
+	DontHaveNumberWidgets.append(dontHaveNumberIdentity);
 	DontHaveNumberWidgets.append(registerAccount);
 	DontHaveNumberWidgets.append(tokenLabel);
 	DontHaveNumberWidgets.append(tokenWidget);
