@@ -29,6 +29,7 @@ class KADUAPI MessageRenderInfo : public QObject
 	Q_OBJECT
 
 	Message MyMessage;
+	QString HtmlMessageContent;
 
 	QString BackgroundColor;
 	QString FontColor;
@@ -38,14 +39,14 @@ class KADUAPI MessageRenderInfo : public QObject
 	bool ShowServerTime;
 
 public:
-	QString unformattedMessage;
-
 	static void registerParserTags();
 	static void unregisterParserTags();
 
 	MessageRenderInfo(const Message &msg);
+	virtual ~MessageRenderInfo();
 
 	Message message() const { return MyMessage; }
+	QString htmlMessageContent() const { return HtmlMessageContent; }
 
 	void replaceLoadingImages(const QString &imageId, const QString &imagePath);
 

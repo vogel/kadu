@@ -31,7 +31,7 @@ static QString getMessage(const QObject * const object)
 {
 	const MessageRenderInfo * const messageRenderInfo = dynamic_cast<const MessageRenderInfo * const>(object);
 	if (messageRenderInfo)
-		return formatMessage(messageRenderInfo->unformattedMessage, messageRenderInfo->backgroundColor());
+		return formatMessage(messageRenderInfo->htmlMessageContent(), messageRenderInfo->backgroundColor());
 	else
 		return "";
 }
@@ -131,12 +131,12 @@ MessageRenderInfo::MessageRenderInfo(const Message &msg) :
 			break;
 	}
 
-	this->unformattedMessage = MyMessage.content();
+	HtmlMessageContent = MyMessage.content();
 
-	this->unformattedMessage.replace("\r\n", "<br/>");
-	this->unformattedMessage.replace("\n",   "<br/>");
-	this->unformattedMessage.replace("\r",   "<br/>");
-	this->unformattedMessage.replace(QChar::LineSeparator, "<br />");
+	HtmlMessageContent.replace("\r\n", "<br/>");
+	HtmlMessageContent.replace("\n",   "<br/>");
+	HtmlMessageContent.replace("\r",   "<br/>");
+	HtmlMessageContent.replace(QChar::LineSeparator, "<br />");
 
 	connect(&MyMessage, SIGNAL(statusChanged(Message::Status)),
 			this, SIGNAL(statusChanged(Message::Status)));
@@ -145,9 +145,13 @@ MessageRenderInfo::MessageRenderInfo(const Message &msg) :
 // 		(EmoticonsStyle)config_file.readNumEntry("Chat", "EmoticonsStyle"));
 }
 
+MessageRenderInfo::~MessageRenderInfo()
+{
+}
+
 void MessageRenderInfo::replaceLoadingImages(const QString &imageId, const QString &imagePath)
 {
-	unformattedMessage = FormattedMessagePart::replaceLoadingImages(unformattedMessage, imageId, imagePath);
+	HtmlMessageContent = FormattedMessagePart::replaceLoadingImages(HtmlMessageContent, imageId, imagePath);
 }
 
 MessageRenderInfo & MessageRenderInfo::setShowServerTime(bool noServerTime, int noServerTimeDiff)

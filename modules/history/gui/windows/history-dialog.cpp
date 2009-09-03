@@ -96,16 +96,13 @@ QString DetailsListItem::prepareTitle()
 		return "";
 
 	Message firstMessage = messages.first();
-	MessageRenderInfo first(firstMessage);
-	QString title = first.unformattedMessage;
+	QString title = firstMessage.content();
 
-	QTextDocument doc;
-	doc.setHtml(title);
-	title = doc.toPlainText();
 	int l = title.length();
 	title.truncate(20);
 	if (l > 20)
 		title += " ...";
+
 	return title;
 }
 

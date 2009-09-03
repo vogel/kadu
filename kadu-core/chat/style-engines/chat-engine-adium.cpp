@@ -448,7 +448,7 @@ QString AdiumChatStyleEngine::replaceKeywords(Chat *chat, QString &styleHref, QS
 	}
 
 	// Replace message TODO: do sth with formatMessage
-	QString messageText = QString("<span>") + formatMessage(message->unformattedMessage, message->backgroundColor()) + QString("</span>");
+	QString messageText = QString("<span>") + formatMessage(message->htmlMessageContent(), message->backgroundColor()) + QString("</span>");
 	result.replace(QString("%message%"), messageText);
 
 	return result;
