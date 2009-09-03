@@ -12,6 +12,7 @@
 
 #include "gui/widgets/account-create-widget.h"
 
+class QCheckBox;
 class QGridLayout;
 class QLineEdit;
 class QPushButton;
@@ -30,7 +31,8 @@ class GaduCreateAccountWidget : public AccountCreateWidget
 	QLineEdit *AccountName;
 	QLineEdit *AccountId;
 	QLineEdit *AccountPassword;
-	ChooseIdentityWidget *haveNumberIdentity;
+	ChooseIdentityWidget *HaveNumberIdentity;
+	QCheckBox *HaveNumberRememberPassword;
 
 	QPushButton *AddThisAccount;
 	QPushButton *RemindPassword;
@@ -38,7 +40,8 @@ class GaduCreateAccountWidget : public AccountCreateWidget
 	QLineEdit *NewPassword;
 	QLineEdit *ReNewPassword;
 	QLineEdit *EMail;
-	ChooseIdentityWidget *dontHaveNumberIdentity;
+	ChooseIdentityWidget *DontHaveNumberIdentity;
+	QCheckBox *DontHaveNumberRememberPassword;
 
 	TokenWidget *tokenWidget;
 

@@ -85,13 +85,13 @@ void GaduCreateAccountWidget::createIHaveAccountGui(QGridLayout *gridLayout, int
 
 	QLabel *descriptionLabel = new QLabel(tr("Account description"), this);
 	gridLayout->addWidget(descriptionLabel, row, 1, Qt::AlignRight);
-	haveNumberIdentity = new ChooseIdentityWidget(this);
-	connect(haveNumberIdentity, SIGNAL(identityChanged()), this, SLOT(iHaveAccountDataChanged()));
-	gridLayout->addWidget(haveNumberIdentity, row++, 2, 1, 2);
+	HaveNumberIdentity = new ChooseIdentityWidget(this);
+	connect(HaveNumberIdentity, SIGNAL(identityChanged()), this, SLOT(iHaveAccountDataChanged()));
+	gridLayout->addWidget(HaveNumberIdentity, row++, 2, 1, 2);
 
-	QCheckBox *rememberPassword = new QCheckBox(tr("Remember password"), this);
-	rememberPassword->setChecked(true);
-	gridLayout->addWidget(rememberPassword, row++, 2, 1, 2);
+	HaveNumberRememberPassword = new QCheckBox(tr("Remember password"), this);
+	HaveNumberRememberPassword->setChecked(true);
+	gridLayout->addWidget(HaveNumberRememberPassword, row++, 2, 1, 2);
 
 	AddThisAccount = new QPushButton(tr("Add this account"), this);
 	AddThisAccount->setEnabled(false);
@@ -103,9 +103,9 @@ void GaduCreateAccountWidget::createIHaveAccountGui(QGridLayout *gridLayout, int
 	HaveNumberWidgets.append(passwordLabel);
 	HaveNumberWidgets.append(AccountPassword);
 	HaveNumberWidgets.append(RemindPassword);
-	HaveNumberWidgets.append(rememberPassword);
 	HaveNumberWidgets.append(descriptionLabel);
-	HaveNumberWidgets.append(haveNumberIdentity);
+	HaveNumberWidgets.append(HaveNumberIdentity);
+	HaveNumberWidgets.append(HaveNumberRememberPassword);
 	HaveNumberWidgets.append(AddThisAccount);
 }
 
@@ -136,9 +136,9 @@ void GaduCreateAccountWidget::createRegisterAccountGui(QGridLayout *gridLayout, 
 
 	QLabel *descriptionLabel = new QLabel(tr("Account description"), this);
 	gridLayout->addWidget(descriptionLabel, row, 1, Qt::AlignRight);
-	dontHaveNumberIdentity = new ChooseIdentityWidget(this);
-	connect(dontHaveNumberIdentity, SIGNAL(identityChanged()), this, SLOT(registerAccountDataChanged()));
-	gridLayout->addWidget(dontHaveNumberIdentity, row++, 2, 1, 2);
+	DontHaveNumberIdentity = new ChooseIdentityWidget(this);
+	connect(DontHaveNumberIdentity, SIGNAL(identityChanged()), this, SLOT(registerAccountDataChanged()));
+	gridLayout->addWidget(DontHaveNumberIdentity, row++, 2, 1, 2);
 
 	QLabel *tokenLabel = new QLabel(tr("Type this code") + ":", this);
 	gridLayout->addWidget(tokenLabel, row, 1, Qt::AlignRight);
@@ -146,6 +146,10 @@ void GaduCreateAccountWidget::createRegisterAccountGui(QGridLayout *gridLayout, 
 	tokenWidget = new TokenWidget(this);
 	connect(tokenWidget, SIGNAL(modified()), this, SLOT(registerAccountDataChanged()));
 	gridLayout->addWidget(tokenWidget, row++, 2, 1, 2);
+
+	DontHaveNumberRememberPassword = new QCheckBox(tr("Remember password"), this);
+	DontHaveNumberRememberPassword->setChecked(true);
+	gridLayout->addWidget(DontHaveNumberRememberPassword, row++, 2, 1, 2);
 
 	registerAccount = new QPushButton(tr("Register"), this);
 	registerAccount->setEnabled(false);
@@ -159,10 +163,11 @@ void GaduCreateAccountWidget::createRegisterAccountGui(QGridLayout *gridLayout, 
 	DontHaveNumberWidgets.append(eMailLabel);
 	DontHaveNumberWidgets.append(EMail);
 	DontHaveNumberWidgets.append(descriptionLabel);
-	DontHaveNumberWidgets.append(dontHaveNumberIdentity);
-	DontHaveNumberWidgets.append(registerAccount);
+	DontHaveNumberWidgets.append(DontHaveNumberIdentity);
 	DontHaveNumberWidgets.append(tokenLabel);
 	DontHaveNumberWidgets.append(tokenWidget);
+	DontHaveNumberWidgets.append(DontHaveNumberRememberPassword);
+	DontHaveNumberWidgets.append(registerAccount);
 }
 
 void GaduCreateAccountWidget::haveNumberChanged(bool haveNumber)
@@ -177,7 +182,7 @@ void GaduCreateAccountWidget::iHaveAccountDataChanged()
 {
 	RemindPassword->setEnabled(!AccountId->text().isEmpty());
 	AddThisAccount->setEnabled(!AccountId->text().isEmpty() && !AccountPassword->text().isEmpty()
-				   && !haveNumberIdentity->identityName().isEmpty());
+				   && !HaveNumberIdentity->identityName().isEmpty());
 }
 
 void GaduCreateAccountWidget::addThisAccount()
@@ -186,6 +191,7 @@ void GaduCreateAccountWidget::addThisAccount()
 	gaduAccount->setName(AccountName->text());
 	gaduAccount->setId(AccountId->text());
 	gaduAccount->setPassword(AccountPassword->text());
+	gaduAccount->setRememberPassword(HaveNumberRememberPassword->isChecked());
 
 	emit accountCreated(gaduAccount);
 }
@@ -194,7 +200,7 @@ void GaduCreateAccountWidget::registerAccountDataChanged()
 {
 	bool disable = NewPassword->text().isEmpty() || ReNewPassword->text().isEmpty()
 		      || EMail->text().indexOf(HtmlDocument::mailRegExp()) < 0 || tokenWidget->tokenValue().isEmpty()
-		      || dontHaveNumberIdentity->identityName().isEmpty();
+		      || DontHaveNumberIdentity->identityName().isEmpty();
 
 	registerAccount->setEnabled(!disable);
 }
@@ -227,6 +233,7 @@ void GaduCreateAccountWidget::registerNewAccountFinished(GaduServerRegisterAccou
 		gaduAccount->setName(AccountName->text());
 		gaduAccount->setId(QString::number(gsra->uin()));
 		gaduAccount->setPassword(NewPassword->text());
+		gaduAccount->setRememberPassword(DontHaveNumberRememberPassword->isChecked());
 
 		emit accountCreated(gaduAccount);
 	}

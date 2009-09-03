@@ -37,7 +37,8 @@ class JabberCreateAccountWidget : public AccountCreateWidget
 	QLineEdit *AccountName;
 	QLineEdit *AccountId;
 	QLineEdit *AccountPassword;
-	ChooseIdentityWidget *haveJidIdentity;
+	ChooseIdentityWidget *HaveJidIdentity;
+	QCheckBox *HaveJidRememberPassword;
 
 	QPushButton *AddThisAccount;
 	QPushButton *RemindPassword;
@@ -46,7 +47,8 @@ class JabberCreateAccountWidget : public AccountCreateWidget
 	QLineEdit *ReNewPassword;
 	QLineEdit *Server;
 	QLineEdit *Username;
-	ChooseIdentityWidget *dontHaveJidIdentity;
+	ChooseIdentityWidget *DontHaveJidIdentity;
+	QCheckBox *DontHaveJidRememberPassword;
 	QPushButton *RegisterAccount;
 	QPushButton *ExpandConnectionOptionsButton;
 	QGroupBox *ConnectionOptions;

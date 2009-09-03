@@ -82,13 +82,13 @@ void JabberCreateAccountWidget::createIHaveAccountGui(QGridLayout *gridLayout, i
 
 	QLabel *descriptionLabel = new QLabel(tr("Account description"), this);
 	gridLayout->addWidget(descriptionLabel, row, 1, Qt::AlignRight);
-	haveJidIdentity = new ChooseIdentityWidget(this);
-	connect(haveJidIdentity, SIGNAL(identityChanged()), this, SLOT(iHaveAccountDataChanged()));
-	gridLayout->addWidget(haveJidIdentity, row++, 2, 1, 2);
+	HaveJidIdentity = new ChooseIdentityWidget(this);
+	connect(HaveJidIdentity, SIGNAL(identityChanged()), this, SLOT(iHaveAccountDataChanged()));
+	gridLayout->addWidget(HaveJidIdentity, row++, 2, 1, 2);
 
-	QCheckBox *rememberPassword = new QCheckBox(tr("Remember password"), this);
-	rememberPassword->setChecked(true);
-	gridLayout->addWidget(rememberPassword, row++, 2, 1, 2);
+	HaveJidRememberPassword = new QCheckBox(tr("Remember password"), this);
+	HaveJidRememberPassword->setChecked(true);
+	gridLayout->addWidget(HaveJidRememberPassword, row++, 2, 1, 2);
 
 	AddThisAccount = new QPushButton(tr("Add this account"), this);
 	AddThisAccount->setEnabled(false);
@@ -100,9 +100,9 @@ void JabberCreateAccountWidget::createIHaveAccountGui(QGridLayout *gridLayout, i
 	HaveJidWidgets.append(passwordLabel);
 	HaveJidWidgets.append(AccountPassword);
 	HaveJidWidgets.append(RemindPassword);
-	HaveJidWidgets.append(rememberPassword);
+	HaveJidWidgets.append(HaveJidRememberPassword);
 	HaveJidWidgets.append(descriptionLabel);
-	HaveJidWidgets.append(haveJidIdentity);
+	HaveJidWidgets.append(HaveJidIdentity);
 	HaveJidWidgets.append(AddThisAccount);
 }
 
@@ -144,9 +144,13 @@ void JabberCreateAccountWidget::createRegisterAccountGui(QGridLayout *gridLayout
 
 	QLabel *descriptionLabel = new QLabel(tr("Account description"), this);
 	gridLayout->addWidget(descriptionLabel, row, 1, Qt::AlignRight);
-	dontHaveJidIdentity = new ChooseIdentityWidget(this);
-	connect(dontHaveJidIdentity, SIGNAL(identityChanged()), this, SLOT(registerAccountDataChanged()));
-	gridLayout->addWidget(dontHaveJidIdentity, row++, 2, 1, 2);
+	DontHaveJidIdentity = new ChooseIdentityWidget(this);
+	connect(DontHaveJidIdentity, SIGNAL(identityChanged()), this, SLOT(registerAccountDataChanged()));
+	gridLayout->addWidget(DontHaveJidIdentity, row++, 2, 1, 2);
+
+	DontHaveJidRememberPassword = new QCheckBox(tr("Remember password"), this);
+	DontHaveJidRememberPassword->setChecked(true);
+	gridLayout->addWidget(DontHaveJidRememberPassword, row++, 2, 1, 2);
 
 	RegisterAccount = new QPushButton(tr("Register"), this);
 	RegisterAccount->setEnabled(false);
@@ -247,7 +251,8 @@ void JabberCreateAccountWidget::createRegisterAccountGui(QGridLayout *gridLayout
 	DontHaveJidWidgets.append(reNewPasswordLabel);
 	DontHaveJidWidgets.append(ReNewPassword);
 	DontHaveJidWidgets.append(descriptionLabel);
-	DontHaveJidWidgets.append(dontHaveJidIdentity);
+	DontHaveJidWidgets.append(DontHaveJidIdentity);
+	DontHaveJidWidgets.append(DontHaveJidRememberPassword);
 	DontHaveJidWidgets.append(RegisterAccount);
 	DontHaveJidWidgets.append(moreOptions);
 }
@@ -302,8 +307,7 @@ void JabberCreateAccountWidget::iHaveAccountDataChanged()
 {
 	RemindPassword->setEnabled(!AccountId->text().isEmpty());
 	AddThisAccount->setEnabled(!AccountId->text().isEmpty() && !AccountPassword->text().isEmpty()
-				   && !haveJidIdentity->identityName().isEmpty()
-				   && !dontHaveJidIdentity->identityName().isEmpty());
+				   && !HaveJidIdentity->identityName().isEmpty());
 }
 
 void JabberCreateAccountWidget::addThisAccount()
@@ -312,13 +316,16 @@ void JabberCreateAccountWidget::addThisAccount()
 	jabberAccount->setName(AccountName->text());
 	jabberAccount->setId(AccountId->text());
 	jabberAccount->setPassword(AccountPassword->text());
+	jabberAccount->setRememberPassword(HaveJidRememberPassword->isChecked());
 
 	emit accountCreated(jabberAccount);
 }
 
 void JabberCreateAccountWidget::registerAccountDataChanged()
 {
-	bool disable = Server->text().isEmpty() || Username->text().isEmpty() || NewPassword->text().isEmpty() || ReNewPassword->text().isEmpty();
+	bool disable = Server->text().isEmpty() || Username->text().isEmpty() || NewPassword->text().isEmpty()
+		       || ReNewPassword->text().isEmpty() || DontHaveJidIdentity->identityName().isEmpty();
+
 	RegisterAccount->setEnabled(!disable);
 }
 
@@ -359,7 +366,7 @@ void JabberCreateAccountWidget::registerNewAccountFinished(JabberServerRegisterA
 		jabberAccount->setPassword(NewPassword->text());
 		jabberAccount->setTlsOverrideDomain(jsra->client()->tlsOverrideDomain());
 		jabberAccount->setTlsOverrideCert(jsra->client()->tlsOverrideCert());
-
+		jabberAccount->setRememberPassword(DontHaveJidRememberPassword->isChecked());
 
 		emit accountCreated(jabberAccount);
 	}
