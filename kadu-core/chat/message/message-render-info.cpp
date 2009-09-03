@@ -13,7 +13,7 @@
 
 #include "misc/misc.h"
 
-#include "chat-message.h"
+#include "message-render-info.h"
 
 QString formatMessage(const QString &text, const QString &backgroundColor)
 {
@@ -29,61 +29,61 @@ QString formatMessage(const QString &text, const QString &backgroundColor)
 
 static QString getMessage(const QObject * const object)
 {
-	const ChatMessage * const chatMessage = dynamic_cast<const ChatMessage * const>(object);
-	if (chatMessage)
-		return formatMessage(chatMessage->unformattedMessage, chatMessage->backgroundColor);
+	const MessageRenderInfo * const messageRenderInfo = dynamic_cast<const MessageRenderInfo * const>(object);
+	if (messageRenderInfo)
+		return formatMessage(messageRenderInfo->unformattedMessage, messageRenderInfo->backgroundColor);
 	else
 		return "";
 }
 
 static QString getBackgroundColor(const QObject * const object)
 {
-	const ChatMessage * const chatMessage = dynamic_cast<const ChatMessage * const>(object);
-	if (chatMessage)
-		return chatMessage->backgroundColor;
+	const MessageRenderInfo * const messageRenderInfo = dynamic_cast<const MessageRenderInfo * const>(object);
+	if (messageRenderInfo)
+		return messageRenderInfo->backgroundColor;
 	else
 		return "";
 }
 
 static QString getFontColor(const QObject * const object)
 {
-	const ChatMessage * const chatMessage = dynamic_cast<const ChatMessage * const>(object);
-	if (chatMessage)
-		return chatMessage->fontColor;
+	const MessageRenderInfo * const messageRenderInfo = dynamic_cast<const MessageRenderInfo * const>(object);
+	if (messageRenderInfo)
+		return messageRenderInfo->fontColor;
 	else
 		return "";
 }
 
 static QString getNickColor(const QObject * const object)
 {
-	const ChatMessage * const chatMessage = dynamic_cast<const ChatMessage * const>(object);
-	if (chatMessage)
-		return chatMessage->nickColor;
+	const MessageRenderInfo * const messageRenderInfo = dynamic_cast<const MessageRenderInfo * const>(object);
+	if (messageRenderInfo)
+		return messageRenderInfo->nickColor;
 	else
 		return "";
 }
 
 static QString getSentDate(const QObject * const object)
 {
-	const ChatMessage * const chatMessage = dynamic_cast<const ChatMessage * const>(object);
-	if (chatMessage && chatMessage->showServerTime())
-		return printDateTime(chatMessage->message().sendDate());
+	const MessageRenderInfo * const messageRenderInfo = dynamic_cast<const MessageRenderInfo * const>(object);
+	if (messageRenderInfo && messageRenderInfo->showServerTime())
+		return printDateTime(messageRenderInfo->message().sendDate());
 	else
 		return "";
 }
 
 static QString getReceivedDate(const QObject * const object)
 {
-	const ChatMessage * const chatMessage = dynamic_cast<const ChatMessage * const>(object);
-	if (chatMessage)
-		return printDateTime(chatMessage->message().receiveDate());
+	const MessageRenderInfo * const messageRenderInfo = dynamic_cast<const MessageRenderInfo * const>(object);
+	if (messageRenderInfo)
+		return printDateTime(messageRenderInfo->message().receiveDate());
 	else
 		return "";
 }
 
 static QString getSeparator(const QObject * const object)
 {
-	int separatorSize = dynamic_cast<const ChatMessage * const>(object)->separatorSize();
+	int separatorSize = dynamic_cast<const MessageRenderInfo * const>(object)->separatorSize();
 
 	if (separatorSize)
 		return "<div style=\"margin: 0; margin-top:" + QString::number(separatorSize) + "px\"></div>";
@@ -91,7 +91,7 @@ static QString getSeparator(const QObject * const object)
 		return "";
 }
 
-void ChatMessage::registerParserTags()
+void MessageRenderInfo::registerParserTags()
 {
 	Parser::registerObjectTag("message", getMessage);
 	Parser::registerObjectTag("backgroundColor", getBackgroundColor);
@@ -102,7 +102,7 @@ void ChatMessage::registerParserTags()
 	Parser::registerObjectTag("separator", getSeparator);
 }
 
-void ChatMessage::unregisterParserTags()
+void MessageRenderInfo::unregisterParserTags()
 {
 	Parser::unregisterObjectTag("message", getMessage);
 	Parser::unregisterObjectTag("backgroundColor", getBackgroundColor);
@@ -113,7 +113,7 @@ void ChatMessage::unregisterParserTags()
 	Parser::unregisterObjectTag("separator", getSeparator);
 }
 
-ChatMessage::ChatMessage(const Message &msg) :
+MessageRenderInfo::MessageRenderInfo(const Message &msg) :
 		MyMessage(msg), ShowServerTime(true)
 {
 	switch (msg.type())
@@ -145,18 +145,18 @@ ChatMessage::ChatMessage(const Message &msg) :
 // 		(EmoticonsStyle)config_file.readNumEntry("Chat", "EmoticonsStyle"));
 }
 
-void ChatMessage::replaceLoadingImages(const QString &imageId, const QString &imagePath)
+void MessageRenderInfo::replaceLoadingImages(const QString &imageId, const QString &imagePath)
 {
 	unformattedMessage = FormattedMessagePart::replaceLoadingImages(unformattedMessage, imageId, imagePath);
 }
 
-void ChatMessage::setShowServerTime(bool noServerTime, int noServerTimeDiff)
+void MessageRenderInfo::setShowServerTime(bool noServerTime, int noServerTimeDiff)
 {
 	ShowServerTime = (MyMessage.sendDate().isValid()
 			&& (!noServerTime || (abs(MyMessage.receiveDate().toTime_t() - MyMessage.sendDate().toTime_t())) > noServerTimeDiff));
 }
 
-void ChatMessage::setColorsAndBackground(const QString &backgroundColor, const QString &nickColor, const QString &fontColor)
+void MessageRenderInfo::setColorsAndBackground(const QString &backgroundColor, const QString &nickColor, const QString &fontColor)
 {
 		if (message().type() == Message::TypeSystem)
 			return;

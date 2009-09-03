@@ -7,8 +7,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef KADU_CHAT_MESSAGE_H
-#define KADU_CHAT_MESSAGE_H
+#ifndef MESSAGE_RENDER_INFO
+#define MESSAGE_RENDER_INFO
 
 #include <QtCore/QDateTime>
 #include <QtCore/QString>
@@ -24,7 +24,7 @@
 
 #include "exports.h"
 
-class KADUAPI ChatMessage : public QObject
+class KADUAPI MessageRenderInfo : public QObject
 {
 	Q_OBJECT
 
@@ -41,7 +41,7 @@ public:
 	static void registerParserTags();
 	static void unregisterParserTags();
 
-	ChatMessage(const Message &msg);
+	MessageRenderInfo(const Message &msg);
 
 	Message message() const { return MyMessage; }
 
@@ -62,4 +62,4 @@ signals:
 
 QString formatMessage(const QString &text, const QString &backgroundColor);
 
-#endif // KADU_CHAT_MESSAGE_H
+#endif // MESSAGE_RENDER_INFO

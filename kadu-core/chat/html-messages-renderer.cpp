@@ -10,9 +10,9 @@
 #include <QtWebKit/QWebFrame>
 #include <QtWebKit/QWebPage>
 
-#include "chat/chat-message.h"
 #include "chat/chat-styles-manager.h"
 #include "chat/style-engines/chat-style-engine.h"
+#include "chat/message/message-render-info.h"
 #include "configuration/configuration-file.h"
 
 #include "html-messages-renderer.h"
@@ -55,9 +55,9 @@ void HtmlMessagesRenderer::pruneMessages()
 	if (MyChatMessages.count() <= ChatStylesManager::instance()->prune())
 		return;
 	
-	QList<ChatMessage *>::iterator start = MyChatMessages.begin();
-	QList<ChatMessage *>::iterator stop = MyChatMessages.end() - ChatStylesManager::instance()->prune();
-	for (QList<ChatMessage *>::iterator it = start; it != stop; ++it)
+	QList<MessageRenderInfo *>::iterator start = MyChatMessages.begin();
+	QList<MessageRenderInfo *>::iterator stop = MyChatMessages.end() - ChatStylesManager::instance()->prune();
+	for (QList<MessageRenderInfo *>::iterator it = start; it != stop; ++it)
 	{
 		delete *it;
 		ChatStylesManager::instance()->currentEngine()->pruneMessage(this);
@@ -66,7 +66,7 @@ void HtmlMessagesRenderer::pruneMessages()
 	MyChatMessages.erase(start, stop);
 }
 
-void HtmlMessagesRenderer::appendMessage(ChatMessage *message)
+void HtmlMessagesRenderer::appendMessage(MessageRenderInfo *message)
 {
 	MyChatMessages.append(message);
 	pruneMessages();
@@ -74,7 +74,7 @@ void HtmlMessagesRenderer::appendMessage(ChatMessage *message)
 	ChatStylesManager::instance()->currentEngine()->appendMessage(this, message);
 }
 
-void HtmlMessagesRenderer::appendMessages(QList<ChatMessage *> messages)
+void HtmlMessagesRenderer::appendMessages(QList<MessageRenderInfo *> messages)
 {
 	MyChatMessages.append(messages);
 	pruneMessages();
@@ -91,7 +91,7 @@ void HtmlMessagesRenderer::clearMessages()
 	ChatStylesManager::instance()->currentEngine()->clearMessages(this);
 }
 
-void HtmlMessagesRenderer::setLastMessage(ChatMessage *message)
+void HtmlMessagesRenderer::setLastMessage(MessageRenderInfo *message)
 {
 	LastMessage = message;
 }
@@ -103,7 +103,7 @@ void HtmlMessagesRenderer::refresh()
 
 void HtmlMessagesRenderer::replaceLoadingImages(const QString &imageId, const QString &imagePath)
 {
-	foreach (ChatMessage *message, MyChatMessages)
+	foreach (MessageRenderInfo *message, MyChatMessages)
 		message->replaceLoadingImages(imageId, imagePath);
 
 	refresh();
@@ -118,7 +118,7 @@ void HtmlMessagesRenderer::updateBackgroundsAndColors()
 	QString usrFontColor = config_file.readEntry("Look", "ChatUsrFontColor");
 	QString usrNickColor = config_file.readEntry("Look", "ChatUsrNickColor");
 	
-	foreach (ChatMessage *message, MyChatMessages)
+	foreach (MessageRenderInfo *message, MyChatMessages)
 	{
 		switch (message->message().type())
 		{

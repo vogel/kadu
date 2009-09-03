@@ -96,7 +96,7 @@ QString DetailsListItem::prepareTitle()
 		return "";
 
 	Message firstMessage = messages.first();
-	ChatMessage first(firstMessage);
+	MessageRenderInfo first(firstMessage);
 	QString title = first.unformattedMessage;
 
 	QTextDocument doc;

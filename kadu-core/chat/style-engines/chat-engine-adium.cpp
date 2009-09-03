@@ -14,9 +14,9 @@
 
 #include "accounts/account.h"
 #include "accounts/account-manager.h"
-#include "chat/chat-message.h"
 #include "chat/chat-styles-manager.h"
 #include "chat/html-messages-renderer.h"
+#include "chat/message/message-render-info.h"
 #include "contacts/avatar.h"
 #include "contacts/contact-account-data.h"
 #include "gui/widgets/chat-messages-view.h"
@@ -99,18 +99,18 @@ QStringList AdiumChatStyleEngine::styleVariants(QString styleName)
 	return dir.entryList(); 
 }
 
-void AdiumChatStyleEngine::appendMessages(HtmlMessagesRenderer *renderer, QList<ChatMessage *> messages)
+void AdiumChatStyleEngine::appendMessages(HtmlMessagesRenderer *renderer, QList<MessageRenderInfo *> messages)
 {
-	foreach (ChatMessage *message, messages)
+	foreach (MessageRenderInfo *message, messages)
 		appendMessage(renderer, message);
 }
 
-void AdiumChatStyleEngine::appendMessage(HtmlMessagesRenderer *renderer, ChatMessage *message)
+void AdiumChatStyleEngine::appendMessage(HtmlMessagesRenderer *renderer, MessageRenderInfo *message)
 {
 	QString formattedMessageHtml;
 	bool includeHeader = true;
 
-	ChatMessage *lastMessage = ChatStylesManager::instance()->cfgNoHeaderRepeat()
+	MessageRenderInfo *lastMessage = ChatStylesManager::instance()->cfgNoHeaderRepeat()
 			? renderer->lastMessage()
 			: 0;
 			
@@ -173,7 +173,7 @@ void AdiumChatStyleEngine::refreshView(HtmlMessagesRenderer *renderer)
 	renderer->webPage()->mainFrame()->setHtml(styleBaseHtml);
 	renderer->webPage()->mainFrame()->evaluateJavaScript(jsCode);
 
-	foreach (ChatMessage *message, renderer->messages())
+	foreach (MessageRenderInfo *message, renderer->messages())
 		appendMessage(renderer, message);
 }
 
@@ -284,7 +284,7 @@ void AdiumChatStyleEngine::prepareStylePreview(Preview *preview, QString styleNa
 	if (preview->getObjectsToParse().count() != 2)
 		return;
 
-	ChatMessage *message = dynamic_cast<ChatMessage *>(preview->getObjectsToParse().at(0));
+	MessageRenderInfo *message = dynamic_cast<MessageRenderInfo *>(preview->getObjectsToParse().at(0));
 	if (!message)
 		return;
 	Message msg = message->message();
@@ -304,7 +304,7 @@ void AdiumChatStyleEngine::prepareStylePreview(Preview *preview, QString styleNa
 	incomingHtml.append("</span>");
 	preview->page()->mainFrame()->evaluateJavaScript("kadu_appendNextMessage(\'"+ incomingHtml +"\')");
 
-	message = dynamic_cast<ChatMessage *>(preview->getObjectsToParse().at(1));
+	message = dynamic_cast<MessageRenderInfo *>(preview->getObjectsToParse().at(1));
 	outgoingHtml = replaceKeywords(msg.chat(), styleHref, outgoingHtml, message);
 	outgoingHtml.replace("\n", " ");
 	outgoingHtml.prepend("<span>");
@@ -372,7 +372,7 @@ QString AdiumChatStyleEngine::replaceKeywords(Chat *chat, QString &styleHref, QS
 
 	return result;
 }
-QString AdiumChatStyleEngine::replaceKeywords(Chat *chat, QString &styleHref, QString &source, ChatMessage *message)
+QString AdiumChatStyleEngine::replaceKeywords(Chat *chat, QString &styleHref, QString &source, MessageRenderInfo *message)
 {
 	if (!chat)
 		return QString("");

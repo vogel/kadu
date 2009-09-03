@@ -8,7 +8,6 @@ set (kadu_SRCS
 
 	chat/chat.cpp
 	chat/chat-manager.cpp
-	chat/chat-message.cpp
 	chat/conference-chat.cpp
 	chat/html-messages-renderer.cpp
 	chat/simple-chat.cpp
@@ -18,6 +17,7 @@ set (kadu_SRCS
 	chat/message/formatted-message-part.cpp
 	chat/message/message.cpp
 	chat/message/message-data.cpp
+	chat/message/message-render-info.cpp
 	chat/message/pending-messages-manager.cpp
 
 	chat/style-engines/chat-engine-adium.cpp
@@ -233,16 +233,16 @@ set (kadu_MOC_SRCS
 
 	chat/chat.h
 	chat/chat-manager.h
+	chat/chat-styles-manager.h
 	chat/html-messages-renderer.h
 	#chat/conference-chat.h
 	#chat/simple-chat.h
 
 	chat/message/message.h
 	chat/message/message-data.h
+	chat/message/message-render-info.h
 	chat/message/pending-messages-manager.h
 
-	chat/chat-message.h
-	chat/chat-styles-manager.h
 	chat/style-engines/chat-engine-kadu.h
 
 	contacts/avatar-manager.h

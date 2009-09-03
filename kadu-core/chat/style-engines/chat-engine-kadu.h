@@ -17,7 +17,7 @@ class KaduChatStyleEngine : public QObject, public ChatStyleEngine
 	QString ChatSyntaxWithHeader; /*!< Chat syntax with header */
 	QString ChatSyntaxWithoutHeader; /*!< Chat syntax without header */
 
-	QString formatMessage(ChatMessage *message, ChatMessage *after);
+	QString formatMessage(MessageRenderInfo *message, MessageRenderInfo *after);
 	void repaintMessages(HtmlMessagesRenderer *page);
 
 private slots:
@@ -34,8 +34,8 @@ public:
 	virtual QString isThemeValid(QString styleName);
 	
 	virtual void clearMessages(HtmlMessagesRenderer *page);
-	virtual void appendMessages(HtmlMessagesRenderer *page, QList<ChatMessage *> messages);
-	virtual void appendMessage(HtmlMessagesRenderer *page, ChatMessage *message);
+	virtual void appendMessages(HtmlMessagesRenderer *page, QList<MessageRenderInfo *> messages);
+	virtual void appendMessage(HtmlMessagesRenderer *page, MessageRenderInfo *message);
 	virtual void pruneMessage(HtmlMessagesRenderer *page) {};
 	virtual void refreshView(HtmlMessagesRenderer *page);
 

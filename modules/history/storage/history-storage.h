@@ -14,7 +14,6 @@
 #include <QtCore/QObject>
 
 #include "chat/chat.h"
-#include "chat/chat-message.h"
 #include "contacts/contact.h"
 
 #include "../history_exports.h"

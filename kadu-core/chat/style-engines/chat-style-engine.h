@@ -4,8 +4,8 @@
 #include <QtCore/QString>
 #include <QtCore/QStringList>
 
-class ChatMessage;
 class HtmlMessagesRenderer;
+class MessageRenderInfo;
 class Preview;
 
 class ChatStyleEngine
@@ -26,8 +26,8 @@ public:
 	virtual QString isThemeValid(QString) = 0; //return QString::null, if theme is not valid
 	
 	virtual void clearMessages(HtmlMessagesRenderer *) = 0;
-	virtual void appendMessages(HtmlMessagesRenderer *, QList<ChatMessage *>) = 0;
-	virtual void appendMessage(HtmlMessagesRenderer *, ChatMessage *) = 0;
+	virtual void appendMessages(HtmlMessagesRenderer *, QList<MessageRenderInfo *>) = 0;
+	virtual void appendMessage(HtmlMessagesRenderer *, MessageRenderInfo *) = 0;
 	virtual void pruneMessage(HtmlMessagesRenderer *) = 0;
 	virtual void refreshView(HtmlMessagesRenderer *) = 0;
 

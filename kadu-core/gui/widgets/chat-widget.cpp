@@ -17,7 +17,7 @@
 #include "accounts/account.h"
 #include "accounts/account-manager.h"
 #include "chat/chat-manager.h"
-#include "chat/chat-message.h"
+#include "chat/message/message-render-info.h"
 #include "configuration/configuration-file.h"
 #include "contacts/contact-account-data.h"
 #include "contacts/model/contact-list-model.h"
@@ -250,7 +250,7 @@ QDateTime ChatWidget::lastMessageTime()
 	return LastMessageTime;
 }
 
-void ChatWidget::appendMessages(const QList<ChatMessage *> &messages, bool pending)
+void ChatWidget::appendMessages(const QList<MessageRenderInfo *> &messages, bool pending)
 {
 	MessagesView->appendMessages(messages);
 
@@ -258,7 +258,7 @@ void ChatWidget::appendMessages(const QList<ChatMessage *> &messages, bool pendi
 		LastMessageTime = QDateTime::currentDateTime();
 }
 
-void ChatWidget::appendMessage(ChatMessage *message, bool pending)
+void ChatWidget::appendMessage(MessageRenderInfo *message, bool pending)
 {
 	MessagesView->appendMessage(message);
 
@@ -272,16 +272,16 @@ void ChatWidget::appendSystemMessage(const QString &rawContent, const QString &b
 	message
 		.setContent(rawContent)
 		.setSendDate(QDateTime::currentDateTime());
-	ChatMessage *chatMessage = new ChatMessage(message);
-	chatMessage->setColorsAndBackground(backgroundColor, fontColor, fontColor);
+	MessageRenderInfo *messageRenderInfo = new MessageRenderInfo(message);
+	messageRenderInfo->setColorsAndBackground(backgroundColor, fontColor, fontColor);
 
-	MessagesView->appendMessage(chatMessage);
+	MessagesView->appendMessage(messageRenderInfo);
 }
 
 /* invoked from outside when new message arrives, this is the window to the world */
-void ChatWidget::newMessage(ChatMessage *chatMessage)
+void ChatWidget::newMessage(MessageRenderInfo *messageRenderInfo)
 {
-	MessagesView->appendMessage(chatMessage);
+	MessagesView->appendMessage(messageRenderInfo);
 
 	LastMessageTime = QDateTime::currentDateTime();
 	NewMessagesCount++;

@@ -15,7 +15,7 @@
 #include "accounts/account-manager.h"
 #include "configuration/configuration-file.h"
 #include "chat/chat.h"
-#include "chat/chat-message.h"
+#include "chat/message/message-render-info.h"
 #include "chat/chat-styles-manager.h"
 #include "chat/html-messages-renderer.h"
 #include "chat/style-engines/chat-style-engine.h"
@@ -118,11 +118,11 @@ void ChatMessagesView::repaintMessages()
 
 void ChatMessagesView::appendMessage(Message message)
 {
-	ChatMessage *chatMessage = new ChatMessage(message);
-	appendMessage(chatMessage);
+	MessageRenderInfo *messageRenderInfo = new MessageRenderInfo(message);
+	appendMessage(messageRenderInfo);
 }
 
-void ChatMessagesView::appendMessage(ChatMessage *message)
+void ChatMessagesView::appendMessage(MessageRenderInfo *message)
 {
 	kdebugf();
 
@@ -142,11 +142,11 @@ void ChatMessagesView::appendMessages(QList<Message> messages)
 		appendMessage(message);
 }
 
-void ChatMessagesView::appendMessages(QList<ChatMessage *> messages)
+void ChatMessagesView::appendMessages(QList<MessageRenderInfo *> messages)
 {
 	kdebugf2();
 
-//	foreach (ChatMessage *message, messages)
+	//	foreach (MessageRenderInfo *message, messages)
 //		connect(message, SIGNAL(statusChanged(Message::Status)),
 //				this, SLOT(repaintMessages()));
 	rememberScrollBarPosition();

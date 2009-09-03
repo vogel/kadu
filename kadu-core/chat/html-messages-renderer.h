@@ -15,15 +15,15 @@
 class QWebPage;
 
 class Chat;
-class ChatMessage;
+class MessageRenderInfo;
 
 class HtmlMessagesRenderer : public QObject
 {
 	Q_OBJECT
 
 	Chat *MyChat;
-	QList<ChatMessage *> MyChatMessages;
-	ChatMessage *LastMessage;
+	QList<MessageRenderInfo *> MyChatMessages;
+	MessageRenderInfo *LastMessage;
 	QWebPage *MyWebPage;
 
 	bool PruneEnabled;
@@ -44,13 +44,13 @@ public:
 
 	QString content();
 
-	QList<ChatMessage *> messages() { return MyChatMessages; }
-	void appendMessage(ChatMessage *message);
-	void appendMessages(QList<ChatMessage *> messages);
+	QList<MessageRenderInfo *> messages() { return MyChatMessages; }
+	void appendMessage(MessageRenderInfo *message);
+	void appendMessages(QList<MessageRenderInfo *> messages);
 	void clearMessages();
 
-	ChatMessage * lastMessage() { return LastMessage; }
-	void setLastMessage(ChatMessage *message);
+	MessageRenderInfo * lastMessage() { return LastMessage; }
+	void setLastMessage(MessageRenderInfo *message);
 
 	void refresh();
 	void replaceLoadingImages(const QString &imageId, const QString &imagePath);

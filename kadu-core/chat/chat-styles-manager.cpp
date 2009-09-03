@@ -15,10 +15,10 @@
 #include <QtGui/QPushButton>
 
 #include "accounts/account-manager.h"
-#include "chat/chat-message.h"
 #include "chat/simple-chat.h"
 #include "chat/style-engines/chat-engine-adium.h"
 #include "chat/style-engines/chat-engine-kadu.h"
+#include "chat/message/message-render-info.h"
 #include "configuration/configuration-file.h"
 #include "core/core.h"
 #include "gui/widgets/chat-messages-view.h"
@@ -300,18 +300,18 @@ void ChatStylesManager::preparePreview(Preview *preview)
 		.setReceiveDate(QDateTime::currentDateTime())
 		.setSendDate(QDateTime::currentDateTime());
 
-	ChatMessage *chatMessage = new ChatMessage(messageSent);
-	chatMessage->setSeparatorSize(CfgHeaderSeparatorHeight);
-	preview->addObjectToParse(Core::instance()->myself() , chatMessage);
+	MessageRenderInfo *messageRenderInfo = new MessageRenderInfo(messageSent);
+	messageRenderInfo->setSeparatorSize(CfgHeaderSeparatorHeight);
+	preview->addObjectToParse(Core::instance()->myself() , messageRenderInfo);
 
 	Message messageReceived(chat, Message::TypeReceived, example);
 	messageReceived
 		.setContent(tr("Message from Your friend"))
 		.setReceiveDate(QDateTime::currentDateTime())
 		.setSendDate(QDateTime::currentDateTime());
-	chatMessage = new ChatMessage(messageReceived);
-	chatMessage->setSeparatorSize(CfgHeaderSeparatorHeight);
-	preview->addObjectToParse(example, chatMessage);
+		messageRenderInfo = new MessageRenderInfo(messageReceived);
+	messageRenderInfo->setSeparatorSize(CfgHeaderSeparatorHeight);
+	preview->addObjectToParse(example, messageRenderInfo);
 }
 
 void ChatStylesManager::styleChangedSlot(const QString &styleName)

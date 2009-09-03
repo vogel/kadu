@@ -10,8 +10,8 @@
 
 class QTreeWidget;
 
-class ChatMessage;
 class ChatMessagesView;
+class MessageRenderInfo;
 
 class UinsListViewText : public QTreeWidgetItem
 {

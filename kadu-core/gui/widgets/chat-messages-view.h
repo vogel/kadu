@@ -19,8 +19,8 @@
 #include "exports.h"
 
 class Chat;
-class ChatMessage;
 class ChatWidget;
+class MessageRenderInfo;
 class QResizeEvent;
 
 class HtmlMessagesRenderer;
@@ -57,10 +57,10 @@ public:
 	HtmlMessagesRenderer * renderer() { return Renderer; }
 
 	void appendMessage(Message message);
-	void appendMessage(ChatMessage *message);
+	void appendMessage(MessageRenderInfo *message);
 
 	void appendMessages(QList<Message> messages);
-	void appendMessages(QList<ChatMessage *> messages);
+	void appendMessages(QList<MessageRenderInfo *> messages);
 
  	unsigned int countMessages();
 

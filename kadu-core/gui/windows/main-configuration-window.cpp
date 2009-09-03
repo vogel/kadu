@@ -17,8 +17,8 @@
 
 #include "accounts/account.h"
 #include "accounts/account-manager.h"
-#include "chat/chat-message.h"
 #include "chat/chat-styles-manager.h"
+#include "chat/message/message-render-info.h"
 #include "configuration/configuration-file.h"
 #include "contacts/contact.h"
 #include "contacts/contact-data.h"

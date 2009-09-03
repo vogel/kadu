@@ -11,9 +11,9 @@
 #include <QtWebKit/QWebFrame>
 
 #include "accounts/account-manager.h"
-#include "chat/chat-message.h"
 #include "chat/chat-styles-manager.h"
 #include "chat/html-messages-renderer.h"
+#include "chat/message/message-render-info.h"
 #include "configuration/configuration-file.h"
 #include "gui/widgets/chat-messages-view.h"
 #include "gui/widgets/preview.h"
@@ -43,12 +43,12 @@ void KaduChatStyleEngine::clearMessages(HtmlMessagesRenderer *renderer)
 	renderer->webPage()->mainFrame()->setHtml("<body bgcolor=\"" + config_file.readColorEntry("Look", "ChatBgColor").name() + "\"></body>");
 }
 
-void KaduChatStyleEngine::appendMessages(HtmlMessagesRenderer *renderer, QList<ChatMessage *> messages)
+void KaduChatStyleEngine::appendMessages(HtmlMessagesRenderer *renderer, QList<MessageRenderInfo *> messages)
 {
 	repaintMessages(renderer);
 }
 
-void KaduChatStyleEngine::appendMessage(HtmlMessagesRenderer *renderer, ChatMessage *message)
+void KaduChatStyleEngine::appendMessage(HtmlMessagesRenderer *renderer, MessageRenderInfo *message)
 {
 	repaintMessages(renderer);
 }
@@ -86,7 +86,7 @@ void KaduChatStyleEngine::loadTheme(const QString &styleName, const QString &var
 	CurrentStyleName = styleName;
 }
 
-QString KaduChatStyleEngine::formatMessage(ChatMessage *message, ChatMessage *after)
+QString KaduChatStyleEngine::formatMessage(MessageRenderInfo *message, MessageRenderInfo *after)
 {
 	int separatorSize;
 	QString format;
@@ -151,9 +151,9 @@ void KaduChatStyleEngine::repaintMessages(HtmlMessagesRenderer *renderer)
 		"	</head>"
 		"	<body>";
 
-	QList<ChatMessage *>::const_iterator message = renderer->messages().constBegin();
-	QList<ChatMessage *>::const_iterator prevMessage;
-	QList<ChatMessage *>::const_iterator end = renderer->messages().constEnd();
+	QList<MessageRenderInfo *>::const_iterator message = renderer->messages().constBegin();
+	QList<MessageRenderInfo *>::const_iterator prevMessage;
+	QList<MessageRenderInfo *>::const_iterator end = renderer->messages().constEnd();
 
 	if (message != end)
 	{
@@ -203,10 +203,10 @@ void KaduChatStyleEngine::prepareStylePreview(Preview *preview, QString styleNam
 	QString text;
 	if (count)
 	{
-		ChatMessage *message;
+		MessageRenderInfo *message;
 		for (int i = 0; i < count; i++)
 		{
-			message = dynamic_cast<ChatMessage *>(preview->getObjectsToParse().at(i));
+			message = dynamic_cast<MessageRenderInfo *>(preview->getObjectsToParse().at(i));
 			text += Parser::parse(content, message->message().chat()->account(),
 					message->message().sender(), message);
 		}

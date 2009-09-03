@@ -25,7 +25,7 @@ class AdiumChatStyleEngine : public ChatStyleEngine
 	QString readThemePart(QString part);
 
 	QString replaceKeywords(Chat *chat, QString &styleHref, QString &style);
-	QString replaceKeywords(Chat *chat, QString &styleHref, QString &source, ChatMessage *message);
+	QString replaceKeywords(Chat *chat, QString &styleHref, QString &source, MessageRenderInfo *message);
 
 	bool clearDirectory(const QString &directory);
 
@@ -40,8 +40,8 @@ public:
 	virtual QStringList styleVariants(QString styleName);
 
 	virtual void clearMessages(HtmlMessagesRenderer *renderer);
-	virtual void appendMessages(HtmlMessagesRenderer *renderer, QList<ChatMessage *> messages);
-	virtual void appendMessage(HtmlMessagesRenderer *renderer, ChatMessage *message);
+	virtual void appendMessages(HtmlMessagesRenderer *renderer, QList<MessageRenderInfo *> messages);
+	virtual void appendMessage(HtmlMessagesRenderer *renderer, MessageRenderInfo *message);
 	virtual void pruneMessage(HtmlMessagesRenderer *renderer);
 	virtual void refreshView(HtmlMessagesRenderer *renderer);
 

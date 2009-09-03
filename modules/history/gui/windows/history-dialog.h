@@ -11,7 +11,7 @@
 #include <QtGui/QCloseEvent>
 
 #include "gui/actions/action-description.h"
-#include "chat/chat-message.h"
+#include "chat/message/message-render-info.h"
 #include "gui/widgets/chat-messages-view.h"
 #include "gui/widgets/contacts-list-widget.h"
 #include "gui/windows/main-window.h"

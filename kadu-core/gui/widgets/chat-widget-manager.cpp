@@ -9,8 +9,8 @@
 
 #include "accounts/account.h"
 #include "accounts/account-manager.h"
-#include "chat/chat-message.h"
 #include "chat/message/message.h"
+#include "chat/message/message-render-info.h"
 #include "chat/message/pending-messages-manager.h"
 #include "configuration/configuration-file.h"
 #include "configuration/xml-configuration-file.h"
@@ -54,7 +54,7 @@ ChatWidgetManager::ChatWidgetManager()
 {
 	kdebugf();
 
-	ChatMessage::registerParserTags();
+	MessageRenderInfo::registerParserTags();
 	EmoticonsManager::instance()->setEmoticonsTheme(config_file.readEntry("Chat", "EmoticonsTheme"));
 
 	connect(Core::instance(), SIGNAL(messageReceived(const Message &)),
@@ -170,7 +170,7 @@ ChatWidgetManager::~ChatWidgetManager()
 {
 	kdebugf();
 
-	ChatMessage::unregisterParserTags();
+	MessageRenderInfo::unregisterParserTags();
 
 	disconnect(Core::instance(), SIGNAL(messageReceived(const Message &)),
 			this, SLOT(messageReceived(const Message &)));
@@ -314,7 +314,7 @@ void ChatWidgetManager::openPendingMsgs(Chat *chat, bool forceActivate)
 {
 	kdebugf();
 
-	QList<ChatMessage *> messages;
+	QList<MessageRenderInfo *> messages;
 	Message msg;
 
 	ChatWidget *chatWidget = openChatWidget(chat, forceActivate);
@@ -326,7 +326,7 @@ void ChatWidgetManager::openPendingMsgs(Chat *chat, bool forceActivate)
 		msg = (*PendingMessagesManager::instance())[i];
 		if (msg.chat() != chat)
 			continue;
-		messages.append(new ChatMessage(msg));
+		messages.append(new MessageRenderInfo(msg));
 		PendingMessagesManager::instance()->deleteMsg(i--);
 	}
 
@@ -386,8 +386,8 @@ void ChatWidgetManager::messageReceived(const Message &message)
 	ChatWidget *chatWidget = byChat(chat);
 	if (chatWidget)
 	{
-		ChatMessage *chatMessage = new ChatMessage(message);
-		chatWidget->newMessage(chatMessage);
+		MessageRenderInfo *messageRenderInfo = new MessageRenderInfo(message);
+		chatWidget->newMessage(messageRenderInfo);
 	}
 	else
 	{
@@ -410,8 +410,8 @@ void ChatWidgetManager::messageReceived(const Message &message)
 			openChatWidget(chat);
 			chatWidget = byChat(chat);
 
-			ChatMessage *chatMessage = new ChatMessage(message);
-			chatWidget->newMessage(chatMessage);
+			MessageRenderInfo *messageRenderInfo = new MessageRenderInfo(message);
+			chatWidget->newMessage(messageRenderInfo);
 		}
 		else
 			PendingMessagesManager::instance()->addMsg(message);
@@ -424,7 +424,7 @@ void ChatWidgetManager::messageSent(const Message &message)
 {
 	Chat *chat = message.chat();
 	ChatWidget *chatWidget = byChat(chat);
-	ChatMessage *chatMessage = new ChatMessage(message);
+	MessageRenderInfo *messageRenderInfo = new MessageRenderInfo(message);
 
 	if (!chatWidget)
 	{
@@ -435,7 +435,7 @@ void ChatWidgetManager::messageSent(const Message &message)
 	if (!chatWidget)
 		return;
 
-	chatWidget->appendMessage(chatMessage);
+	chatWidget->appendMessage(messageRenderInfo);
 }
 
 void ChatWidgetManager::clearClosedChats()

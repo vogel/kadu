@@ -28,10 +28,10 @@ class QSplitter;
 
 class Account;
 class ChatEditBox;
-class ChatMessage;
 class ChatWidget;
 class ContactsListWidget;
 class CustomInput;
+class MessageRenderInfo;
 class Protocol;
 
 class KADUAPI ChatWidget : public QWidget, ConfigurationAwareObject, AccountsAwareObject
@@ -106,7 +106,7 @@ public:
 		\param message message content
 		\param time czas
 		**/
-	void newMessage(ChatMessage *message);
+	void newMessage(MessageRenderInfo *message);
 
 	/**
 		\fn void repaintMessages()
@@ -145,18 +145,18 @@ public slots:
 	void onStatusChanged(Account *account, Contact contact, Status oldStatus);
 
 	/**
-		\fn void appendMessages(const QValueList<ChatMessage *> &)
+		\fn void appendMessages(const QValueList<MessageRenderInfo *> &)
 		Slot dodaj wiadomo�ci do okna
 		\param messages lista wiadomo�ci
 	**/
-	void appendMessages(const QList<ChatMessage *> &, bool pending = false);
+	void appendMessages(const QList<MessageRenderInfo *> &, bool pending = false);
 
 	/**
-		\fn void appendMessage(ChatMessage *)
+	\fn void appendMessage(MessageRenderInfo *)
 		Slot dodaj wiadomo�� do okna
 		\param messages lista wiadomo�ci
 	**/
-	void appendMessage(ChatMessage *, bool pending = false);
+	void appendMessage(MessageRenderInfo *, bool pending = false);
 
 	/**
 		\fn void sendMessage()
