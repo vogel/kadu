@@ -302,7 +302,7 @@ void ChatStylesManager::preparePreview(Preview *preview)
 
 	MessageRenderInfo *messageRenderInfo = new MessageRenderInfo(messageSent);
 	messageRenderInfo->setSeparatorSize(CfgHeaderSeparatorHeight);
-	preview->addObjectToParse(Core::instance()->myself() , messageRenderInfo);
+	preview->addObjectToParse(Core::instance()->myself(), messageRenderInfo);
 
 	Message messageReceived(chat, Message::TypeReceived, example);
 	messageReceived

@@ -45,7 +45,8 @@ public:
 	MessageRenderInfo(const Message &msg);
 	virtual ~MessageRenderInfo();
 
-	Message message() const { return MyMessage; }
+	const Message & message() const { return MyMessage; }
+	Message & message() { return MyMessage; }
 	QString htmlMessageContent() const { return HtmlMessageContent; }
 
 	void replaceLoadingImages(const QString &imageId, const QString &imagePath);
@@ -64,9 +65,6 @@ public:
 
 	MessageRenderInfo & setNickColor(const QString &nickColor);
 	QString nickColor() const { return NickColor; }
-
-signals:
-	void statusChanged(Message::Status);
 
 };
 

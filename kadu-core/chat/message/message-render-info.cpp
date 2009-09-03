@@ -138,9 +138,6 @@ MessageRenderInfo::MessageRenderInfo(const Message &msg) :
 	HtmlMessageContent.replace("\r",   "<br/>");
 	HtmlMessageContent.replace(QChar::LineSeparator, "<br />");
 
-	connect(&MyMessage, SIGNAL(statusChanged(Message::Status)),
-			this, SIGNAL(statusChanged(Message::Status)));
-
 // 	convertCharacters(unformattedMessage, backgroundColor,
 // 		(EmoticonsStyle)config_file.readNumEntry("Chat", "EmoticonsStyle"));
 }
