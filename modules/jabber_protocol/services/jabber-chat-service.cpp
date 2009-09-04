@@ -66,7 +66,7 @@ bool JabberChatService::sendMessage(Chat *chat, FormattedMessage &formattedMessa
 	//msg.setFrom(jabberID);
 	Protocol->client()->sendMessage(msg);
 
-	Message message(chat, Core::instance()->myself());
+	Message message(chat, Message::TypeSent, Core::instance()->myself());
 	message
 		.setContent(formattedMessage.toPlain())
 		.setSendDate(QDateTime::currentDateTime())
@@ -106,7 +106,7 @@ void JabberChatService::clientMessageReceived(const XMPP::Message &msg)
 	if (ignore)
 		return;
 
-	Message message(chat, contact);
+	Message message(chat, Message::TypeReceived, contact);
 	message
 		.setContent(formattedMessage.toPlain())
 		.setSendDate(msg.timeStamp())
