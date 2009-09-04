@@ -123,16 +123,19 @@ void HistorySqlStorage::initQueries()
 	ListChatDatesQuery.prepare("SELECT DISTINCT date(receive_time) as date FROM kadu_messages WHERE chat=:chat");
 	
 	ListChatMessagesQuery = QSqlQuery(Database);
-	ListChatMessagesQuery.prepare("SELECT sender, content, send_time, receive_time, attributes FROM kadu_messages WHERE chat=:chat");
+	ListChatMessagesQuery.prepare("SELECT sender, content, send_time, receive_time, attributes FROM kadu_messages WHERE chat=:chat ORDER BY receive_time");
 
 	ListChatMessagesByDateQuery = QSqlQuery(Database);
-	ListChatMessagesByDateQuery.prepare("SELECT sender, content, send_time, receive_time, attributes FROM kadu_messages WHERE chat=:chat AND date(receive_time) = date(:date)");
+	ListChatMessagesByDateQuery.prepare("SELECT sender, content, send_time, receive_time, attributes FROM kadu_messages WHERE chat=:chat AND date(receive_time) = date(:date) ORDER BY receive_time");
 
 	ListChatMessagesByDateLimitQuery = QSqlQuery(Database);
-	ListChatMessagesByDateLimitQuery.prepare("SELECT sender, content, send_time, receive_time, attributes FROM kadu_messages WHERE chat=:chat AND date(receive_time) = date(:date) LIMIT :limit");
+	ListChatMessagesByDateLimitQuery.prepare("SELECT sender, content, send_time, receive_time, attributes FROM kadu_messages WHERE chat=:chat AND date(receive_time) = date(:date) ORDER BY receive_time LIMIT :limit");
 
 	ListChatMessagesLimitQuery = QSqlQuery(Database);
-	ListChatMessagesLimitQuery.prepare("SELECT sender, content, send_time, receive_time, attributes FROM kadu_messages WHERE chat=:chat LIMIT :limit");
+	ListChatMessagesLimitQuery.prepare("SELECT sender, content, send_time, receive_time, attributes FROM kadu_messages WHERE chat=:chat ORDER BY receive_time LIMIT :limit");
+	
+	ListChatMessagesSinceQuery = QSqlQuery(Database);
+	ListChatMessagesSinceQuery.prepare("SELECT sender, content, send_time, receive_time, attributes FROM kadu_messages WHERE chat=:chat AND date(receive_time) >= date(:date) ORDER BY receive_time");
 
 	CountChatMessagesQuery = QSqlQuery(Database);
 	CountChatMessagesQuery.prepare("SELECT COUNT(chat) FROM kadu_messages WHERE chat=:chat");
@@ -252,25 +255,30 @@ QList<Message> HistorySqlStorage::messages(Chat *chat, QDate date, int limit)
 	if (limit != 0)
 		query.bindValue(":limit", limit);
 	executeQuery(query);
-
-	while (query.next())
-	{
-		bool outgoing = QVariant(query.value(4).toString().split('=').last()).toBool();
-		Message::Type type = outgoing ? Message::TypeSent : Message::TypeReceived;
-		Contact sender = outgoing ? Core::instance()->myself() : ContactManager::instance()->byUuid(query.value(0).toString());
-
-		Message message(chat, type, sender);
-		message
-			.setContent(query.value(1).toString())
-			.setSendDate(query.value(2).toDateTime())
-			.setReceiveDate(query.value(3).toDateTime())
-			.setStatus(outgoing ? Message::StatusDelivered : Message::StatusReceived);
-
-		messages.append(message);
-	}
+	messages = messagesFromQuery(chat, query);
 
 	DatabaseMutex.unlock();
 
+	return messages;
+}
+
+QList<Message> HistorySqlStorage::messagesSince(Chat *chat, QDate date)
+{
+	kdebugf();
+	
+	DatabaseMutex.lock();
+	
+	QList<Message> messages;
+	if (date.isNull())
+		return messages;
+	
+	ListChatMessagesSinceQuery.bindValue(":chat", chat->uuid().toString());
+	ListChatMessagesSinceQuery.bindValue(":date", date.toString(Qt::ISODate));
+	executeQuery(ListChatMessagesSinceQuery);
+	messages = messagesFromQuery(chat, ListChatMessagesSinceQuery);
+	
+	DatabaseMutex.unlock();
+	
 	return messages;
 }
 
@@ -302,4 +310,28 @@ void HistorySqlStorage::executeQuery(QSqlQuery query)
 
 	query.exec();
 	kdebug("db query: %s\n", query.executedQuery().toLocal8Bit().data());
+}
+
+
+QList<Message> HistorySqlStorage::messagesFromQuery(Chat *chat, QSqlQuery query)
+{
+	QList<Message> messages;
+
+	while (query.next())
+	{
+		bool outgoing = QVariant(query.value(4).toString().split('=').last()).toBool();
+		Message::Type type = outgoing ? Message::TypeSent : Message::TypeReceived;
+		Contact sender = outgoing ? Core::instance()->myself() : ContactManager::instance()->byUuid(query.value(0).toString());
+		
+		Message message(chat, type, sender);
+		message
+			.setContent(query.value(1).toString())
+			.setSendDate(query.value(2).toDateTime())
+			.setReceiveDate(query.value(3).toDateTime())
+			.setStatus(outgoing ? Message::StatusDelivered : Message::StatusReceived);
+		
+		messages.append(message);
+	}
+
+	return messages;
 }

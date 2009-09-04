@@ -32,6 +32,7 @@ public:
 	virtual QList<Chat *> chats() = 0;
 	virtual QList<QDate> chatDates(Chat *chat) = 0;
 	virtual QList<Message> messages(Chat *chat, QDate date = QDate(), int limit = 0) = 0;
+	virtual QList<Message> messagesSince(Chat *chat, QDate date) = 0;
 	virtual int messagesCount(Chat *chat, QDate date = QDate()) = 0;
 
 	virtual void appendMessage(const Message &message) = 0;

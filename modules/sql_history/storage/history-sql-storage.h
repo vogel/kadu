@@ -36,6 +36,7 @@ class HistorySqlStorage : public HistoryStorage
 	QSqlQuery ListChatMessagesByDateQuery;
 	QSqlQuery ListChatMessagesByDateLimitQuery;
 	QSqlQuery ListChatMessagesLimitQuery;
+	QSqlQuery ListChatMessagesSinceQuery;
 	QSqlQuery CountChatMessagesQuery;
 	QSqlQuery CountChatMessagesByDateQuery;
 
@@ -47,6 +48,7 @@ class HistorySqlStorage : public HistoryStorage
 	void initKaduMessagesTable();
 
 	void executeQuery(QSqlQuery query);
+	QList<Message> messagesFromQuery(Chat *chat, QSqlQuery query);
 
 private slots:
 	virtual void messageReceived(const Message &message);
@@ -59,6 +61,7 @@ public:
 	virtual QList<Chat *> chats();
 	virtual QList<QDate> chatDates(Chat *chat);
 	virtual QList<Message> messages(Chat *chat, QDate date = QDate(), int limit = 0);
+	virtual QList<Message> messagesSince(Chat *chat, QDate date);
 
 	virtual int messagesCount(Chat *chat, QDate date = QDate());
 
