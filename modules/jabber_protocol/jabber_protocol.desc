@@ -1,6 +1,6 @@
 [Module]
 Description=XMPP/Jabber protocol support.
 Description[pl]=Obs³uga protoko³u XMPP/Jabber.
-Author=Juzef, Uzi18
-Version=0.1svn
+Author=Kadu Team
+Version=core
 LoadByDefault=false
