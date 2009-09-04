@@ -187,6 +187,9 @@ void History::showMoreMessagesActionActivated(QAction *sender, bool toggled)
 
 void History::showMoreMessages(QAction *action)
 {
+	if (!CurrentStorage)
+		return;
+
 	ChatWidget *chatWidget = dynamic_cast<ChatWidget *>(sender()->parent());
 	if (!chatWidget)
 		return;
@@ -197,7 +200,19 @@ void History::showMoreMessages(QAction *action)
 	if (!ok)
 		return;
 
-	chatWidget->chatMessagesView()->setForcePruneDisabled(0 != days);
+	ChatMessagesView *chatMessagesView = chatWidget->chatMessagesView();
+	if (!chatMessagesView)
+		return;
+
+	chatMessagesView->setForcePruneDisabled(0 != days);
+	if (0 != days)
+	{
+		QDate since = QDate::currentDate().addDays(-days);
+		QList<Message> messages = CurrentStorage->messagesSince(chatWidget->chat(), since);
+
+		chatMessagesView->clearMessages();
+		chatMessagesView->appendMessages(messages);
+	}
 }
 
 void History::accountRegistered(Account *account)
