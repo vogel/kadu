@@ -53,8 +53,10 @@ class HISTORYAPI History : public ConfigurationUiHandler, ConfigurationAwareObje
 	static History *Instance;
 	HistoryStorage *CurrentStorage;
 	HistoryDlg *HistoryDialog;
+
 	ActionDescription *ShowHistoryActionDescription;
 	ActionDescription *ChatsHistoryActionDescription;
+	ActionDescription *ShowMoreMessagesInChatWidgetActionDescription;
 
 	QLabel *dontCiteOldMessagesLabel;
 	QListWidget *allStatusUsers;
@@ -74,10 +76,11 @@ class HISTORYAPI History : public ConfigurationUiHandler, ConfigurationAwareObje
 	void updateQuoteTimeLabel(int value);
 
 private slots:
-
 	void accountRegistered(Account *);
 	void accountUnregistered(Account *);
+
 	void showHistoryActionActivated(QAction *sender, bool toggled);
+	void showMoreMessagesActionActivated(QAction *sender, bool toggled);
 
 public:
 	static History * instance();

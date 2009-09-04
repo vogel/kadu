@@ -11,6 +11,7 @@
 #include <QtGui/QKeyEvent>
 #include <QtGui/QLabel>
 #include <QtGui/QGridLayout>
+#include <QtGui/QMenu>
 #include <QtGui/QPushButton>
 
 #include "accounts/account.h"
@@ -18,10 +19,12 @@
 #include "contacts/contact-manager.h"
 #include "chat/chat.h"
 #include "chat/chat-manager.h"
+#include "configuration/configuration-file.h"
 #include "contacts/contact.h"
 #include "core/core.h"
 #include "gui/widgets/configuration/config-group-box.h"
 #include "gui/widgets/configuration/configuration-widget.h"
+#include "gui/widgets/chat-edit-box.h"
 #include "gui/windows/kadu-window.h"
 #include "gui/windows/message-box.h"
 #include "misc/path-conversion.h"
@@ -115,6 +118,11 @@ void History::createActionDescriptions()
 	);
 	Core::instance()->kaduWindow()->insertMenuActionDescription(ChatsHistoryActionDescription, KaduWindow::MenuKadu, 5);
 
+	ShowMoreMessagesInChatWidgetActionDescription = new ActionDescription(0,
+		ActionDescription::TypeChat, "chatShowMoreMessagesAction",
+		this, SLOT(showMoreMessagesActionActivated(QAction *, bool)),
+		"History", tr("Show more messages...")
+	);
 }
 
 void History::deleteActionDescriptions()
@@ -128,6 +136,9 @@ void History::deleteActionDescriptions()
 	delete ChatsHistoryActionDescription;
 	ChatsHistoryActionDescription = 0;
 
+	delete ShowMoreMessagesInChatWidgetActionDescription;
+	ShowMoreMessagesInChatWidgetActionDescription = 0;
+
 }
 
 void History::showHistoryActionActivated(QAction *sender, bool toggled)
@@ -137,6 +148,37 @@ void History::showHistoryActionActivated(QAction *sender, bool toggled)
 	if (window)
 		HistoryDialog->show(window->contacts());
 	kdebugf2();
+}
+
+void History::showMoreMessagesActionActivated(QAction *sender, bool toggled)
+{
+	ChatEditBox *chatEditBox = dynamic_cast<ChatEditBox *>(sender->parent());
+	if (!chatEditBox)
+		return;
+	
+	ChatWidget *chatWidget = chatEditBox->chatWidget();
+	if (chatWidget)
+	{
+		QList<QWidget *> widgets = sender->associatedWidgets();
+		if (widgets.size() == 0)
+			return;
+
+		QWidget *widget = widgets[widgets.size() - 1];
+		
+		QMenu *menu = new QMenu();
+
+		if (config_file.readBoolEntry("Chat", "ChatPrune", false))
+		{
+			menu->addAction(tr("Show last %1 messages").arg(config_file.readNumEntry("Chat", "ChatPruneLen", 20)));
+			menu->addSeparator();
+		}
+
+		menu->addAction(tr("Show messages since yesterday"));
+		menu->addAction(tr("Show messages from last 7 days"));
+		menu->addAction(tr("Show messages from last 30 days"));
+
+		menu->popup(widget->mapToGlobal(QPoint(0, widget->height())));
+	}
 }
 
 void History::accountRegistered(Account *account)
