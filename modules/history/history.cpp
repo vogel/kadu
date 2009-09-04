@@ -25,6 +25,7 @@
 #include "gui/widgets/configuration/config-group-box.h"
 #include "gui/widgets/configuration/configuration-widget.h"
 #include "gui/widgets/chat-edit-box.h"
+#include "gui/widgets/chat-widget.h"
 #include "gui/windows/kadu-window.h"
 #include "gui/windows/message-box.h"
 #include "misc/path-conversion.h"
@@ -165,20 +166,38 @@ void History::showMoreMessagesActionActivated(QAction *sender, bool toggled)
 
 		QWidget *widget = widgets[widgets.size() - 1];
 		
-		QMenu *menu = new QMenu();
+		QMenu *menu = new QMenu(chatWidget);
 
 		if (config_file.readBoolEntry("Chat", "ChatPrune", false))
 		{
-			menu->addAction(tr("Show last %1 messages").arg(config_file.readNumEntry("Chat", "ChatPruneLen", 20)));
+			int prune = config_file.readNumEntry("Chat", "ChatPruneLen", 20);
+			menu->addAction(tr("Show last %1 messages").arg(prune))->setData(0);
 			menu->addSeparator();
 		}
 
-		menu->addAction(tr("Show messages since yesterday"));
-		menu->addAction(tr("Show messages from last 7 days"));
-		menu->addAction(tr("Show messages from last 30 days"));
+		menu->addAction(tr("Show messages since yesterday"))->setData(1);
+		menu->addAction(tr("Show messages from last 7 days"))->setData(7);
+		menu->addAction(tr("Show messages from last 30 days"))->setData(30);
+
+		connect(menu, SIGNAL(triggered(QAction *)), this, SLOT(showMoreMessages(QAction *)));
 
 		menu->popup(widget->mapToGlobal(QPoint(0, widget->height())));
 	}
+}
+
+void History::showMoreMessages(QAction *action)
+{
+	ChatWidget *chatWidget = dynamic_cast<ChatWidget *>(sender()->parent());
+	if (!chatWidget)
+		return;
+
+	bool ok;
+	int days = action->data().toInt(&ok);
+
+	if (!ok)
+		return;
+
+	chatWidget->chatMessagesView()->setForcePruneDisabled(0 != days);
 }
 
 void History::accountRegistered(Account *account)

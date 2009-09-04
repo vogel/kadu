@@ -88,6 +88,11 @@ void ChatMessagesView::setPruneEnabled(bool enable)
 	Renderer->setPruneEnabled(enable);
 }
 
+void ChatMessagesView::setForcePruneDisabled(bool disable)
+{
+	Renderer->setForcePruneDisabled(disable);
+}
+
 void ChatMessagesView::pageUp()
 {
 	QKeyEvent event(QEvent::KeyPress, 0x01000016, Qt::NoModifier);

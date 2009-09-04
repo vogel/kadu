@@ -40,6 +40,13 @@ void HtmlMessagesRenderer::setChat(Chat *chat)
 void HtmlMessagesRenderer::setPruneEnabled(bool pruneEnabled)
 {
 	PruneEnabled = pruneEnabled;
+	pruneMessages();
+}
+
+void HtmlMessagesRenderer::setForcePruneDisabled(bool forcePruneDisabled)
+{
+	ForcePruneDisabled = forcePruneDisabled;
+	pruneMessages();
 }
 
 QString HtmlMessagesRenderer::content()
@@ -49,6 +56,9 @@ QString HtmlMessagesRenderer::content()
 
 void HtmlMessagesRenderer::pruneMessages()
 {
+	if (ForcePruneDisabled)
+		return;
+
 	if (!PruneEnabled || ChatStylesManager::instance()->prune() == 0)
 		return;
 	

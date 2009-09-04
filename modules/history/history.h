@@ -81,6 +81,7 @@ private slots:
 
 	void showHistoryActionActivated(QAction *sender, bool toggled);
 	void showMoreMessagesActionActivated(QAction *sender, bool toggled);
+	void showMoreMessages(QAction *action);
 
 public:
 	static History * instance();

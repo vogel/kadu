@@ -27,6 +27,7 @@ class HtmlMessagesRenderer : public QObject
 	QWebPage *MyWebPage;
 
 	bool PruneEnabled;
+	bool ForcePruneDisabled;
 
 	void pruneMessages();
 
@@ -39,8 +40,11 @@ public:
 
 	QWebPage * webPage() { return MyWebPage; }
 
-	bool pruneEnabled() { return PruneEnabled; }
+	bool pruneEnabled() { return !ForcePruneDisabled && PruneEnabled; }
 	void setPruneEnabled(bool pruneEnabled);
+
+	bool forcePruneDisabled() { return ForcePruneDisabled; }
+	void setForcePruneDisabled(bool forcePruneDisabled);
 
 	QString content();
 

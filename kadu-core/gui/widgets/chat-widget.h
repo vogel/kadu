@@ -120,6 +120,7 @@ public:
 	CustomInput * edit();
 	ContactsListWidget * contactsListWidget() { return ContactsWidget; }
 	ChatEditBox * getChatEditBox() { return InputBox; }
+	ChatMessagesView * chatMessagesView() { return MessagesView; }
 
 	virtual void dragEnterEvent(QDragEnterEvent *e);
 	virtual void dropEvent(QDropEvent *e);
