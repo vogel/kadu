@@ -48,7 +48,7 @@ HistorySearchDialog::HistorySearchDialog(QWidget *window) : QDialog(window), par
 	phraseEdit->setToolTip(tr("Please type search pattern or select a previous one from the list."));
 	phraseEdit->setEditable(true);
 	//phraseEdit->addItem("");
-	foreach(HistorySearchResult prev, dynamic_cast<HistoryDlg*>(window)->getPreviousSearchResults())
+	foreach(HistorySearchResult prev, dynamic_cast<HistoryWindow*>(window)->getPreviousSearchResults())
 		phraseEdit->addItem(prev.pattern);
 	labelAndPhraseLay->addWidget(phraseEdit);
 	regExp = new QCheckBox(tr("Regular expression"));
@@ -190,7 +190,7 @@ void HistorySearchDialog::findButtonClicked()
 		else if(wholeThread->isChecked())
 			prm.resultsShowMode = 2;
 
-		dynamic_cast<HistoryDlg*>(parentWindow)->setSearchParameters(prm);
+		dynamic_cast<HistoryWindow*>(parentWindow)->setSearchParameters(prm);
 
 		accept();
 	}

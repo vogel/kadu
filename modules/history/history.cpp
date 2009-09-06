@@ -83,7 +83,7 @@ History * History::instance()
 	return Instance;
 }
 
-History::History() : QObject(NULL), HistoryDialog(new HistoryDlg()), CurrentStorage(0)
+History::History() : QObject(NULL), HistoryDialog(new HistoryWindow()), CurrentStorage(0)
 {
 	kdebugf();
 	createActionDescriptions();
