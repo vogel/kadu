@@ -34,6 +34,9 @@ public:
 	void addChatType(ChatType chatType);
 	void removeChatType(ChatType chatType);
 
+	const QList<ChatType> & chatTypes() const { return ChatTypes; }
+	QList<ChatType> chatTypes() { return ChatTypes; }
+
 signals:
 	void chatTypeAboutToBeAdded(ChatType chatType);
 	void chatTypeAdded(ChatType chatType);

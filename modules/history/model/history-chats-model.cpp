@@ -7,6 +7,8 @@
 *                                                                         *
 ***************************************************************************/
 
+#include "chat/type/chat-type-manager.h"
+
 #include "history-chats-model.h"
 
 HistoryChatsModel::HistoryChatsModel(QObject *parent) :
@@ -28,7 +30,7 @@ int HistoryChatsModel::rowCount(const QModelIndex &parent) const
 	if (parent.isValid())
 		return 0;
 	else
-		return 5;
+		return ChatTypeManager::instance()->chatTypes().count();
 }
 
 QModelIndex HistoryChatsModel::index(int row, int column, const QModelIndex &parent) const
@@ -43,8 +45,21 @@ QModelIndex HistoryChatsModel::parent(const QModelIndex &child) const
 
 QVariant HistoryChatsModel::data(const QModelIndex &index, int role) const
 {
-	if (role != Qt::DisplayRole)
+	if (index.parent().isValid())
 		return QVariant();
 
-	return "Hello world";
+	if (index.row() < 0 || index.row() >= ChatTypeManager::instance()->chatTypes().count())
+		return QVariant();
+
+	ChatType chatType = ChatTypeManager::instance()->chatTypes().at(index.row());
+	switch (role)
+	{
+		case Qt::DisplayRole:
+			return chatType.displayName();
+
+		case Qt::DecorationRole:
+			return chatType.icon();
+	}
+
+	return QVariant();
 }
