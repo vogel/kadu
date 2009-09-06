@@ -7,37 +7,30 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <QtGui/QLayout>
-#include <QtGui/QTreeWidget>
-#include <QtGui/QPushButton>
-#include <QtGui/qsplitter.h>
-#include <QtGui/qstatusbar.h>
-#include <QtGui/QCloseEvent>
 #include <QtGui/QDockWidget>
-#include <QtGui/QKeyEvent>
-#include <QtGui/QKeySequence>
-#include <QtGui/QGridLayout>
+#include <QtGui/QHBoxLayout>
 #include <QtGui/QLineEdit>
-#include <QtCore/QList>
 #include <QtGui/QMenu>
-#include <QtGui/QProgressBar>
-#include <QtGui/QRadioButton>
-#include <QtGui/QTextDocument>
-
+#include <QtGui/QPushButton>
+#include <QtGui/QSplitter>
+#include <QtGui/QStatusBar>
+#include <QtGui/QVBoxLayout>
 
 #include "gui/actions/actions.h"
 #include "gui/widgets/chat-widget-manager.h"
-#include "debug.h"
-#include "emoticons.h"
 #include "gui/windows/message-box.h"
 #include "misc/misc.h"
+#include "debug.h"
+#include "emoticons.h"
 #include "icons-manager.h"
 
-#include "../../storage/history-storage.h"
+#include "model/history-chats-model.h"
+#include "storage/history-storage.h"
 
 #include "history-window.h"
+#include <QItemDelegate>
 
-MainListItem::MainListItem(QTreeWidget* parent, Chat *chat)
+MainListItem::MainListItem(QTreeWidget *parent, Chat *chat)
 	: QTreeWidgetItem(parent), CurrentChat(chat)
 {
 	prepareText();	
@@ -217,7 +210,7 @@ void HistoryMainWidget::quickSearchPhraseTyped(const QString &text)
 	kdebugf2();
 }
 
-HistoryWindow::HistoryWindow() : QWidget(NULL), isSearchInProgress(0), closeDemand(0), inSearchMode(0), chatsItem(0)
+HistoryWindow::HistoryWindow() : QWidget(NULL), isSearchInProgress(0), closeDemand(0), inSearchMode(0)
 {
 	kdebugf();
 	setWindowTitle(tr("History"));
@@ -226,11 +219,10 @@ HistoryWindow::HistoryWindow() : QWidget(NULL), isSearchInProgress(0), closeDema
 	grid->setSpacing(0);
 	QSplitter* splitter = new QSplitter(Qt::Horizontal, this);
 	QSplitter* left_splitter = new QSplitter(Qt::Vertical, splitter);
-	MainListView = new QTreeWidget(left_splitter);
-	QStringList mainLabels;
-	mainLabels << "";
-	MainListView->setHeaderLabels(mainLabels);
-	MainListView->setRootIsDecorated(TRUE);
+
+	MainListView = new QTreeView(left_splitter);
+	MainListView->setModel(new HistoryChatsModel(this));
+	MainListView->setRootIsDecorated(false);
 
 	QWidget *vbox = new QWidget(splitter);
 	QVBoxLayout *vbox_lay = new QVBoxLayout();
@@ -285,6 +277,7 @@ HistoryWindow::~HistoryWindow()
 void HistoryWindow::globalRefresh()
 {
 	kdebugf();
+/*
 	MainListView->clear();
 	chatsItem = new QTreeWidgetItem(MainListView, QStringList(tr("Chats")));
 	chatsItem->setExpanded(true);
@@ -293,15 +286,15 @@ void HistoryWindow::globalRefresh()
 	smsItem = new QTreeWidgetItem(MainListView, QStringList(tr("SMS")));
 	statusItem = new QTreeWidgetItem(MainListView, QStringList(tr("Status")));
 	statusItem->setExpanded(false);
-	searchItem = new QTreeWidgetItem(MainListView, QStringList(tr("Search")));
+	searchItem = new QTreeWidgetItem(MainListView, QStringList(tr("Search")));*/
 
-	chatsItem->setIcon(0, IconsManager::instance()->loadIcon("OpenChat"));
-	///ft->setIcon(0, icons_manager->loadIcon("SendFile"));
-	smsItem->setIcon(0, IconsManager::instance()->loadIcon("Mobile"));
-	conferItem->setIcon(0, IconsManager::instance()->loadIcon("ManageModules"));
-	statusItem->setIcon(0, IconsManager::instance()->loadIcon("Busy"));
-	searchItem->setIcon(0, IconsManager::instance()->loadIcon("LookupUserInfo"));
-
+// 	chatsItem->setIcon(0, IconsManager::instance()->loadIcon("OpenChat"));
+// 	///ft->setIcon(0, icons_manager->loadIcon("SendFile"));
+// 	smsItem->setIcon(0, IconsManager::instance()->loadIcon("Mobile"));
+// 	conferItem->setIcon(0, IconsManager::instance()->loadIcon("ManageModules"));
+// 	statusItem->setIcon(0, IconsManager::instance()->loadIcon("Busy"));
+// 	searchItem->setIcon(0, IconsManager::instance()->loadIcon("LookupUserInfo"));
+/*
 	QList<Chat *> chatsList = History::instance()->chatsList();
 	
 	MainListItem* mainItem;
@@ -312,7 +305,7 @@ void HistoryWindow::globalRefresh()
 		else
 			mainItem = new MainListItem(chatsItem, chat);
 		mainItem->setIcon(0, IconsManager::instance()->loadIcon("Online"));
-	}
+	}*/
 
 	kdebugf2();
 }
@@ -352,9 +345,9 @@ void HistoryWindow::showDetailsPopupMenu(const QPoint &pos)
 void HistoryWindow::openChat()
 {
 	kdebugf();
-	MainListItem* chatItem = dynamic_cast<MainListItem *>(MainListView->currentItem());
-	if (chatItem)
-		ChatWidgetManager::instance()->openChatWidget(chatItem->chat(), true);
+// 	MainListItem* chatItem = dynamic_cast<MainListItem *>(MainListView->currentItem());
+// 	if (chatItem)
+// 		ChatWidgetManager::instance()->openChatWidget(chatItem->chat(), true);
 
 	kdebugf2();
 }
@@ -362,9 +355,9 @@ void HistoryWindow::openChat()
 void HistoryWindow::lookupUserInfo()
 {
 	kdebugf();
-	MainListItem* uids_item = dynamic_cast<MainListItem*>(MainListView->currentItem());
-	if (uids_item == NULL)
-		return;
+// 	MainListItem* uids_item = dynamic_cast<MainListItem*>(MainListView->currentItem());
+// 	if (uids_item == NULL)
+// 		return;
 	//dirty chiaxor, ale na razie to tylko dla gg jest mo�liwe
 // 	Contact user = (*uids_item->uidsList().begin());
 //   	if (!user.usesProtocol("Gadu"))
@@ -380,20 +373,20 @@ void HistoryWindow::removeHistoryEntriesPerUser()
 {
 	kdebugf();
 
-	MainListItem* chatItem = dynamic_cast<MainListItem *>(MainListView->currentItem());
-	if (!chatItem)
-		return;
-
-	if (MessageBox::ask(tr("You want to remove all history entries of selected users.\nAre you sure?\n"), "Warning"))
-	{
-		Chat *chat = chatItem->chat();
-		if (chat)
-			History::instance()->currentStorage()->clearChatHistory(chat);
-		MainListView->removeItemWidget((*MainListView->selectedItems().begin()),0);
-		globalRefresh();
-		main->getDetailsListView()->clear();
-		main->getContentBrowser()->clearMessages();
-	}
+// 	MainListItem* chatItem = dynamic_cast<MainListItem *>(MainListView->currentItem());
+// 	if (!chatItem)
+// 		return;
+// 
+// 	if (MessageBox::ask(tr("You want to remove all history entries of selected users.\nAre you sure?\n"), "Warning"))
+// 	{
+// 		Chat *chat = chatItem->chat();
+// 		if (chat)
+// 			History::instance()->currentStorage()->clearChatHistory(chat);
+// 		MainListView->removeItemWidget((*MainListView->selectedItems().begin()),0);
+// 		globalRefresh();
+// 		main->getDetailsListView()->clear();
+// 		main->getContentBrowser()->clearMessages();
+// 	}
 
 	kdebugf2();
 }
@@ -401,14 +394,14 @@ void HistoryWindow::removeHistoryEntriesPerUser()
 void HistoryWindow::removeHistoryEntriesPerDate()
 {
 	kdebugf();
-	MainListItem* uids_item = dynamic_cast<MainListItem*>(MainListView->currentItem());
-	if (uids_item == NULL)
-		return;
-	DetailsListItem* dateItem = dynamic_cast<DetailsListItem*>(main->getDetailsListView()->currentItem());
-	if (dateItem == NULL)
-		return;
-	if (MessageBox::ask(tr("You want to remove history entries of selected users for selected date.\nAre you sure?\n"), "Warning"))
-	{
+// 	MainListItem* uids_item = dynamic_cast<MainListItem*>(MainListView->currentItem());
+// 	if (uids_item == NULL)
+// 		return;
+// 	DetailsListItem* dateItem = dynamic_cast<DetailsListItem*>(main->getDetailsListView()->currentItem());
+// 	if (dateItem == NULL)
+// 		return;
+// 	if (MessageBox::ask(tr("You want to remove history entries of selected users for selected date.\nAre you sure?\n"), "Warning"))
+// 	{
 // 		HistoryEntryType typeToRemove;
 // 		if(MainListView->currentItem()->parent() == statusItem)
 // 			typeToRemove = EntryTypeStatus;
@@ -421,7 +414,7 @@ void HistoryWindow::removeHistoryEntriesPerDate()
 // 		globalRefresh();
 // 		main->getDetailsListView()->clear();
 // 		main->getContentBrowser()->clearMessages();
-	}
+// 	}
 	kdebugf2();
 }
 
