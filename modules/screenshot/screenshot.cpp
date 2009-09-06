@@ -122,7 +122,9 @@ ScreenShot::ScreenShot(bool firstLoad)
 	menu = new QMenu();
 	menu->addAction(tr("Simple shot"), this, SLOT(takeShot()));
 	menu->addAction(tr("With chat window hidden"), this, SLOT(takeShotWithChatWindowHidden()));
+#ifndef Q_WS_MAC
 	menu->addAction(tr("Window shot"), this, SLOT(takeWindowShot()));
+#endif
 
 	UiHandler = new ScreenShotConfigurationUiHandler();
 
@@ -804,8 +806,11 @@ QPixmap ScreenShot::grabCurrent()
 	Rect rect;
 	int err;
 
-	//FIXME: why it only works with kadu windows?
 	GetGlobalMouse(&mousePos);
+
+	/* This code works only with our application windows. 
+	 * In order to capture other application's windows the private CoreGraphics API must be used.
+	 */
 	err = MacFindWindow(mousePos, &window);
 	err = GetWindowBounds(window, kWindowStructureRgn, &rect);
 	if (err == noErr)
