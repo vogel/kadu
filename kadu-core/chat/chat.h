@@ -18,6 +18,8 @@
 #include "configuration/uuid-storable-object.h"
 #include "contacts/contact-set.h"
 
+class ChatType;
+
 class Chat : public QObject, public UuidStorableObject
 {
 	Q_OBJECT
@@ -38,6 +40,8 @@ public:
 	virtual void store();
 
 	virtual QUuid uuid() const { return Uuid; }
+
+	virtual ChatType type() const = 0;
 
 	virtual ContactSet contacts() const = 0;
 	Account * account() { return CurrentAccount; }

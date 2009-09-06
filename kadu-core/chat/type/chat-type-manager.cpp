@@ -39,6 +39,7 @@ void ChatTypeManager::addChatType(ChatType chatType)
 
 	emit chatTypeAboutToBeAdded(chatType);
 	ChatTypes.append(chatType);
+	ChatTypesMap.insert(chatType.name(), chatType);
 	emit chatTypeAdded(chatType);
 }
 
@@ -49,5 +50,12 @@ void ChatTypeManager::removeChatType(ChatType chatType)
 	
 	emit chatTypeAboutToBeRemoved(chatType);
 	ChatTypes.removeAll(chatType);
+	ChatTypesMap.remove(chatType.name());
 	emit chatTypeRemoved(chatType);
+}
+
+
+ChatType ChatTypeManager::chatType(const QString &name)
+{
+	return ChatTypesMap.value(name);
 }

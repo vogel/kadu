@@ -9,6 +9,10 @@
 
 #include "chat-type.h"
 
+ChatType::ChatType()
+{
+}
+
 ChatType::ChatType(int sortIndex, const QString &name, const QString &displayName, const QIcon &icon) :
 		SortIndex(sortIndex), Name(name), DisplayName(displayName), Icon(icon)
 {

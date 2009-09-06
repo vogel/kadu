@@ -8,6 +8,7 @@
  ***************************************************************************/
 
 #include "accounts/account-manager.h"
+#include "chat/type/chat-type-manager.h"
 #include "contacts/contact-manager.h"
 #include "protocols/protocol.h"
 
@@ -46,6 +47,11 @@ void SimpleChat::store()
 	Chat::store();
 	storeValue("Type", "Simple");
 	storeValue("Contact", CurrentContact.uuid().toString());
+}
+
+ChatType SimpleChat::type() const
+{
+	return ChatTypeManager::instance()->chatType("Chat");
 }
 
 ContactSet SimpleChat::contacts() const
