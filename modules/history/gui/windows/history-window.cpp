@@ -35,7 +35,7 @@
 
 #include "../../storage/history-storage.h"
 
-#include "history-dialog.h"
+#include "history-window.h"
 
 MainListItem::MainListItem(QTreeWidget* parent, Chat *chat)
 	: QTreeWidgetItem(parent), CurrentChat(chat)
@@ -217,7 +217,7 @@ void HistoryMainWidget::quickSearchPhraseTyped(const QString &text)
 	kdebugf2();
 }
 
-HistoryDlg::HistoryDlg() : QWidget(NULL), isSearchInProgress(0), closeDemand(0), inSearchMode(0), chatsItem(0)
+HistoryWindow::HistoryWindow() : QWidget(NULL), isSearchInProgress(0), closeDemand(0), inSearchMode(0), chatsItem(0)
 {
 	kdebugf();
 	setWindowTitle(tr("History"));
@@ -269,7 +269,7 @@ HistoryDlg::HistoryDlg() : QWidget(NULL), isSearchInProgress(0), closeDemand(0),
 	kdebugf2();
 }
 
-HistoryDlg::~HistoryDlg()
+HistoryWindow::~HistoryWindow()
 {
 	// for valgrind
 	QStringList searchActions;
@@ -282,7 +282,7 @@ HistoryDlg::~HistoryDlg()
 	saveWindowGeometry(this, "History", "HistoryDialogGeometry");
 }
 
-void HistoryDlg::globalRefresh()
+void HistoryWindow::globalRefresh()
 {
 	kdebugf();
 	MainListView->clear();
@@ -317,7 +317,7 @@ void HistoryDlg::globalRefresh()
 	kdebugf2();
 }
 
-void HistoryDlg::searchBranchRefresh()
+void HistoryWindow::searchBranchRefresh()
 {
 	kdebugf();
 /*
@@ -339,17 +339,17 @@ void HistoryDlg::searchBranchRefresh()
 	kdebugf2();
 }
 
-void HistoryDlg::showMainPopupMenu(const QPoint &pos)
+void HistoryWindow::showMainPopupMenu(const QPoint &pos)
 {
 	MainPopupMenu->popup(MainListView->mapToGlobal(pos));
 }
 
-void HistoryDlg::showDetailsPopupMenu(const QPoint &pos)
+void HistoryWindow::showDetailsPopupMenu(const QPoint &pos)
 {
 	DetailsPopupMenu->popup(main->getDetailsListView()->mapToGlobal(pos));
 }
 
-void HistoryDlg::openChat()
+void HistoryWindow::openChat()
 {
 	kdebugf();
 	MainListItem* chatItem = dynamic_cast<MainListItem *>(MainListView->currentItem());
@@ -359,7 +359,7 @@ void HistoryDlg::openChat()
 	kdebugf2();
 }
 
-void HistoryDlg::lookupUserInfo()
+void HistoryWindow::lookupUserInfo()
 {
 	kdebugf();
 	MainListItem* uids_item = dynamic_cast<MainListItem*>(MainListView->currentItem());
@@ -376,7 +376,7 @@ void HistoryDlg::lookupUserInfo()
 	kdebugf2();
 }
 
-void HistoryDlg::removeHistoryEntriesPerUser()
+void HistoryWindow::removeHistoryEntriesPerUser()
 {
 	kdebugf();
 
@@ -398,7 +398,7 @@ void HistoryDlg::removeHistoryEntriesPerUser()
 	kdebugf2();
 }
 
-void HistoryDlg::removeHistoryEntriesPerDate()
+void HistoryWindow::removeHistoryEntriesPerDate()
 {
 	kdebugf();
 	MainListItem* uids_item = dynamic_cast<MainListItem*>(MainListView->currentItem());
@@ -425,7 +425,7 @@ void HistoryDlg::removeHistoryEntriesPerDate()
 	kdebugf2();
 }
 
-void HistoryDlg::mainListItemClicked(QTreeWidgetItem* item, int column)
+void HistoryWindow::mainListItemClicked(QTreeWidgetItem* item, int column)
 {
 	kdebugf();
 	main->getDetailsListView()->clear();
@@ -446,7 +446,7 @@ void HistoryDlg::mainListItemClicked(QTreeWidgetItem* item, int column)
 	kdebugf2();
 }
 
-void HistoryDlg::detailsListItemClicked(QTreeWidgetItem* item, int column)
+void HistoryWindow::detailsListItemClicked(QTreeWidgetItem* item, int column)
 {
 	kdebugf();
 	DetailsListItem* detailsListItem = dynamic_cast<DetailsListItem*>(item);
@@ -460,7 +460,7 @@ void HistoryDlg::detailsListItemClicked(QTreeWidgetItem* item, int column)
 	kdebugf2();
 }
 
-void HistoryDlg::searchActionActivated(QAction* sender, bool toggled)
+void HistoryWindow::searchActionActivated(QAction* sender, bool toggled)
 {
 	kdebugf();	
 	advSearchWindow = new HistorySearchDialog(this);	
@@ -474,7 +474,7 @@ void HistoryDlg::searchActionActivated(QAction* sender, bool toggled)
 	kdebugf2();
 }
 
-void HistoryDlg::searchNextActActivated(QAction* sender, bool toggled)
+void HistoryWindow::searchNextActActivated(QAction* sender, bool toggled)
 {
 	kdebugf();
 // 	if(!main->getContentBrowser()->findText(searchParameters.pattern))
@@ -482,7 +482,7 @@ void HistoryDlg::searchNextActActivated(QAction* sender, bool toggled)
 	kdebugf2();
 }
 
-void HistoryDlg::searchPrevActActivated(QAction* sender, bool toggled)
+void HistoryWindow::searchPrevActActivated(QAction* sender, bool toggled)
 {
 	kdebugf();
 // 	if(!main->getContentBrowser()->findText(searchParameters.pattern, QWebPage::FindBackward))
@@ -490,12 +490,12 @@ void HistoryDlg::searchPrevActActivated(QAction* sender, bool toggled)
 	kdebugf2();
 }
 
-void HistoryDlg::setSearchParameters(HistorySearchParameters& params)
+void HistoryWindow::setSearchParameters(HistorySearchParameters& params)
 {
 	searchParameters = params;
 }
 
-void HistoryDlg::searchHistory()
+void HistoryWindow::searchHistory()
 {
 	kdebugf();
 /*	MainListItem* uids_item = dynamic_cast<MainListItem*>(MainListView->currentItem());
@@ -533,7 +533,7 @@ void HistoryDlg::searchHistory()
 	kdebugf2();
 }
 
-void HistoryDlg::show(ContactSet users)
+void HistoryWindow::show(ContactSet users)
 {
 	if (!History::instance()->currentStorage())
 	{
@@ -545,7 +545,7 @@ void HistoryDlg::show(ContactSet users)
 	QWidget::show();
 }
 
-void HistoryDlg::keyPressEvent(QKeyEvent *e)
+void HistoryWindow::keyPressEvent(QKeyEvent *e)
 {
 	if (e->matches(QKeySequence::Find))
 		if (main->getDockWidget()->isHidden())
@@ -554,7 +554,7 @@ void HistoryDlg::keyPressEvent(QKeyEvent *e)
 			main->getDockWidget()->hide();	
 }
 
-void HistoryDlg::closeEvent(QCloseEvent *e)
+void HistoryWindow::closeEvent(QCloseEvent *e)
 {
 	saveWindowGeometry(this, "History", "HistoryWindowGeometry");
 	if (isSearchInProgress)
@@ -575,4 +575,4 @@ HistorySearchResult::HistorySearchResult() : detailsItems(QList<HistorySearchDet
 }
 
 
-HistoryDlg* historyDialog = NULL;
+HistoryWindow* historyDialog = NULL;

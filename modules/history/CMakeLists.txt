@@ -1,15 +1,15 @@
 set (SOURCES
-	history.cpp
-	gui/windows/history-dialog.cpp
 	gui/windows/history-search-dialog.cpp
+	gui/windows/history-window.cpp
 	storage/history-storage.cpp
+	history.cpp
 )
 
 set (MOC_SOURCES
-	history.h
-	gui/windows/history-dialog.h
 	gui/windows/history-search-dialog.h
+	gui/windows/history-window.h
 	storage/history-storage.h
+	history.h
 )
 
 set (TRANSLATION_SOURCES

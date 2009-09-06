@@ -36,7 +36,7 @@ enum HistoryEntryType
 #include "gui/actions/action.h"
 #include "gui/actions/action-description.h"
 #include "gui/widgets/contacts-list-widget-menu-manager.h"
-#include "gui/windows/history-dialog.h"
+#include "gui/windows/history-window.h"
 #include "gui/windows/main-configuration-window.h"
 #include "protocols/protocol.h"
 #include "storage/history-storage.h"
@@ -44,7 +44,7 @@ enum HistoryEntryType
 #include "history_exports.h"
 
 class Account;
-class HistoryDlg;
+class HistoryWindow;
 
 class HISTORYAPI History : public ConfigurationUiHandler, ConfigurationAwareObject, ContactRemovePredicateObject
 {
@@ -52,7 +52,7 @@ class HISTORYAPI History : public ConfigurationUiHandler, ConfigurationAwareObje
 
 	static History *Instance;
 	HistoryStorage *CurrentStorage;
-	HistoryDlg *HistoryDialog;
+	HistoryWindow *HistoryDialog;
 
 	ActionDescription *ShowHistoryActionDescription;
 	ActionDescription *ChatsHistoryActionDescription;
