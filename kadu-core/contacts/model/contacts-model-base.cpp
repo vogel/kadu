@@ -19,8 +19,8 @@
 
 #include "contacts-model-base.h"
 
-ContactsModelBase::ContactsModelBase(QObject *parent)
-	: QAbstractItemModel(parent)
+ContactsModelBase::ContactsModelBase(QObject *parent) :
+		QAbstractItemModel(parent)
 {
 }
 
