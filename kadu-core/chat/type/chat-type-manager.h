@@ -11,6 +11,7 @@
 #define CHAT_TYPE_MANAGER
 
 #include <QtCore/QList>
+#include <QtCore/QMap>
 #include <QtCore/QObject>
 
 #include "chat/type/chat-type.h"
@@ -24,6 +25,7 @@ class KADUAPI ChatTypeManager : public QObject
 	static ChatTypeManager * Instance;
 
 	QList<ChatType> ChatTypes;
+	QMap<QString, ChatType> ChatTypesMap;
 
 	ChatTypeManager();
 	virtual ~ChatTypeManager();
@@ -36,6 +38,7 @@ public:
 
 	const QList<ChatType> & chatTypes() const { return ChatTypes; }
 	QList<ChatType> chatTypes() { return ChatTypes; }
+	ChatType chatType(const QString &name);
 
 signals:
 	void chatTypeAboutToBeAdded(ChatType chatType);

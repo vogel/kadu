@@ -26,6 +26,8 @@ public:
 	virtual void load();
 	virtual void store();
 
+	virtual ChatType type() const;
+
 	virtual ContactSet contacts() const;
 
 };

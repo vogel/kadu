@@ -7,6 +7,7 @@
  *                                                                         *
  ***************************************************************************/
 
+#include "chat/type/chat-type-manager.h"
 #include "contacts/contact-set-configuration-helper.h"
 
 #include "conference-chat.h"
@@ -40,8 +41,12 @@ void ConferenceChat::store()
 	if (!isValidStorage())
 		return;
 
-
 	Chat::store();
 	storeValue("Type", "Conference");
 	ContactSetConfigurationHelper::saveToConfiguration(this, "Contacts", CurrentContacts);
+}
+
+ChatType ConferenceChat::type() const
+{
+	return ChatTypeManager::instance()->chatType("Conference");
 }

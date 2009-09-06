@@ -21,6 +21,7 @@ class ChatType
 	QIcon Icon;
 
 public:
+	ChatType();
 	ChatType(int sortIndex, const QString &name, const QString &displayName, const QIcon &icon);
 	ChatType(const ChatType &copy);
 
