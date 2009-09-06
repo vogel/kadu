@@ -23,6 +23,9 @@ set (kadu_SRCS
 	chat/style-engines/chat-engine-adium.cpp
 	chat/style-engines/chat-engine-kadu.cpp
 
+	chat/type/chat-type.cpp
+	chat/type/chat-type-manager.cpp
+
 	contacts/avatar.cpp
 	contacts/avatar-manager.cpp
 	contacts/contact.cpp
@@ -245,6 +248,8 @@ set (kadu_MOC_SRCS
 	chat/message/pending-messages-manager.h
 
 	chat/style-engines/chat-engine-kadu.h
+
+	chat/type/chat-type-manager.h
 
 	contacts/avatar-manager.h
 	contacts/contact.h
