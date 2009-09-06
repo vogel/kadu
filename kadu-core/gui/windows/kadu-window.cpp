@@ -44,7 +44,7 @@ KaduWindow::KaduWindow(QWidget *parent) :
 		MainWindow(parent), Docked(false)
 {
 	setAttribute(Qt::WA_DeleteOnClose, true);
-
+	setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
 	Actions = new KaduWindowActions(this);
 
 	createGui();
@@ -424,12 +424,9 @@ void KaduWindow::createDefaultToolbars(QDomElement parentConfig)
 	QDomElement dockAreaConfig = getDockAreaConfigElement(parentConfig, "topDockArea");
 	QDomElement toolbarConfig = xml_config_file->createElement(dockAreaConfig, "ToolBar");
 
-	addToolButton(toolbarConfig, "inactiveUsersAction");
-	addToolButton(toolbarConfig, "descriptionUsersAction");
-	addToolButton(toolbarConfig, "configurationAction");
-	addToolButton(toolbarConfig, "editUserAction");
-	addToolButton(toolbarConfig, "openSearchAction");
 	addToolButton(toolbarConfig, "addUserAction");
+	addToolButton(toolbarConfig, "addGroupAction");
+	addToolButton(toolbarConfig, "muteSoundsAction");
 }
 
 void KaduWindow::addAction(const QString &actionName, bool showLabel)
