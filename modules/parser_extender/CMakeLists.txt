@@ -1,9 +1,6 @@
 set (SOURCES
 	parser_extender.cpp)
 
-set (MOC_SOURCES
-	parser_extender.h)
-
 set (TRANSLATION_SOURCES
 	translations/parser_extender_pl.ts)
 

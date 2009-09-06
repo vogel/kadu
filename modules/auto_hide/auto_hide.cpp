@@ -18,10 +18,11 @@
 
 #include "core/core.h"
 #include "gui/windows/kadu-window.h"
-#include "config_file.h"
-#include "kadu.h"
+#include "configuration/configuration-file.h"
+#include "gui/widgets/configuration/configuration-widget.h"
 #include "debug.h"
 #include "../idle/idle.h"
+#include "misc/path-conversion.h"
 
 AutoHide *autoHide;
 
@@ -30,7 +31,8 @@ extern "C" int auto_hide_init()
 	kdebugf();
 
 	autoHide = new AutoHide();
-	MainConfigurationWindow::registerUiFile(dataPath("kadu/modules/configuration/auto_hide.ui"), autoHide);
+	MainConfigurationWindow::registerUiFile(dataPath("kadu/modules/configuration/auto_hide.ui"));
+	MainConfigurationWindow::registerUiHandler(autoHide);
 
 	kdebugf2();
 	return 0;
@@ -41,16 +43,18 @@ extern "C" void auto_hide_close()
 {
 	kdebugf();
 
-	MainConfigurationWindow::unregisterUiFile(dataPath("kadu/modules/configuration/auto_hide.ui"), autoHide);
+	MainConfigurationWindow::unregisterUiFile(dataPath("kadu/modules/configuration/auto_hide.ui"));
+	MainConfigurationWindow::unregisterUiHandler(autoHide);
+
 	delete autoHide;
-	autoHide = NULL;
+	autoHide = 0;
 
 	kdebugf2();
 }
 
 
-AutoHide::AutoHide(QObject *parent, const char *name)
-: QObject(parent, name), idleTime(0)
+AutoHide::AutoHide(QObject *parent)
+: QObject(parent), idleTime(0)
 {
 	kdebugf();
 	
@@ -90,7 +94,7 @@ void AutoHide::configurationUpdated()
 
 void AutoHide::mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow)
 {
-	connect(mainConfigurationWindow->widgetById("auto_hide/use_auto_hide"), SIGNAL(toggled(bool)), mainConfigurationWindow->widgetById("auto_hide/idle_time"), SLOT(setEnabled(bool)));
+	connect(mainConfigurationWindow->widget()->widgetById("auto_hide/use_auto_hide"), SIGNAL(toggled(bool)), mainConfigurationWindow->widget()->widgetById("auto_hide/idle_time"), SLOT(setEnabled(bool)));
 
-	(dynamic_cast<QSpinBox *>(mainConfigurationWindow->widgetById("auto_hide/idle_time")))->setSpecialValueText(tr("Dont hide"));
+	(dynamic_cast<QSpinBox *>(mainConfigurationWindow->widget()->widgetById("auto_hide/idle_time")))->setSpecialValueText(tr("Dont hide"));
 }

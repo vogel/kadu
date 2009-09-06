@@ -2,17 +2,13 @@
 #define PARSER_EXTENDER_H
 
 #include <QtCore/QObject>
-#include "configuration_aware_object.h"
-#include "main_configuration_window.h"
+#include "configuration/configuration-aware-object.h"
 
-class ParserExtender : public ConfigurationUiHandler, ConfigurationAwareObject
+class ParserExtender : public ConfigurationAwareObject
 {
-    Q_OBJECT
 	public:
 		ParserExtender();
 		~ParserExtender();
-
-		virtual void mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow);
 
 	private:
 		void init();
