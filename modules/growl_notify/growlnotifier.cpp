@@ -160,9 +160,9 @@ void notification_clicked(CFPropertyListRef context)
 
 	getContext(context, &signaler, &receiver, &slot, 0, &qcontext/*, &pid*/);
 	
-	QObject::connect(signaler,SIGNAL(notificationClicked(void*)),receiver,slot);
+	QObject::connect(signaler, SIGNAL(notificationClicked(void*)), receiver, slot);
 	signaler->emitNotificationClicked(qcontext);
-	QObject::disconnect(signaler,SIGNAL(notificationClicked(void*)),receiver,slot);
+	QObject::disconnect(signaler, SIGNAL(notificationClicked(void*)), receiver, slot);
 }
 
 
@@ -179,10 +179,11 @@ void notification_timeout(CFPropertyListRef context)
 	void* qcontext;
 
 	getContext(context, &signaler, &receiver, 0, &slot, &qcontext /*, &pid*/);
-	
-	QObject::connect(signaler,SIGNAL(notificationTimedOut(void*)),receiver,slot);
+	if (slot != NULL)
+		QObject::connect(signaler, SIGNAL(notificationTimedOut(void*)), receiver, slot);
 	signaler->emitNotificationTimeout(qcontext);
-	QObject::disconnect(signaler,SIGNAL(notificationTimedOut(void*)),receiver,slot);
+	if (slot != NULL)
+		QObject::disconnect(signaler, SIGNAL(notificationTimedOut(void*)), receiver, slot);
 }
 
 
