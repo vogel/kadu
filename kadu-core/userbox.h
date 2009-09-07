@@ -20,7 +20,6 @@
 #include "userlist.h"
 
 #include "exports.h"
-#include <stdint.h>
 
 class QFontMetrics;
 

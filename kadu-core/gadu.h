@@ -495,12 +495,12 @@ private slots:
 
 		@see imageReceivedAndSaved
 	**/
-	void imageReceived(UinType sender, uint32_t size, uint32_t crc32, const QString &filename, const char *data);
+	void imageReceived(UinType sender, quint32  size, quint32  crc32, const QString &filename, const char *data);
 
 	/**
 		Slot wywo�ywany po otrzymaniu pro�by o obrazek od serwera. Wysy�a obrazek.
 	**/
-	void imageRequestReceivedSlot(UinType, uint32_t, uint32_t);
+	void imageRequestReceivedSlot(UinType, quint32 , quint32 );
 
 	/**
 		Slot wywo�ywany po otrzymaniu wiadomo�ci od serwera.
@@ -721,9 +721,9 @@ public slots:
 		@param user u�ytkownik, od kt�rego chcemy obrazek
 		@param size rozmiar obrazka w bajtach
 		@param crc32 crc32 pliku
-		@todo powinno by� sendImageRequest(uniqId uint32_t) - info o obrazku zapisywa� gdzie� w �rodku
+		@todo powinno by� sendImageRequest(uniqId quint32 ) - info o obrazku zapisywa� gdzie� w �rodku
 	**/
-	bool sendImageRequest(UserListElement user, int size, uint32_t crc32);
+	bool sendImageRequest(UserListElement user, int size, quint32  crc32);
 
 	/**
 		Wywy�a obrazek o podanych parametrach.
@@ -734,7 +734,7 @@ public slots:
 		@param data zawarto�� pliku
 		@todo usun�� parametry size i data - mo�emy to chyba sami wyznaczy�
 	**/
-	bool sendImage(UserListElement user, const QString &file_name, uint32_t size, const char *data);
+	bool sendImage(UserListElement user, const QString &file_name, quint32  size, const char *data);
 
 	/**
 		Rejetrujemy nowe konto. Odpowied� przychodzi poprzez sygna� registered. Mo�e
@@ -898,7 +898,7 @@ signals:
 		@param size rozmiar pliku
 		@param crc32 jego suma kontrolna obliczana przy pomocy crc32
 	**/
-	void imageRequestReceived(UinType sender, uint32_t size, uint32_t crc32);
+	void imageRequestReceived(UinType sender, quint32  size, quint32  crc32);
 
 	/**
 		Otrzymano dane obrazka i zapisano go do pliku.
@@ -907,7 +907,7 @@ signals:
 		@param crc32 jego suma kontrolna obliczana przy pomocy crc32
 		@param path �cie�ka do zapisanego pliku
 	**/
-	void imageReceivedAndSaved(UinType sender, uint32_t size, uint32_t crc32, const QString &path);
+	void imageReceivedAndSaved(UinType sender, quint32  size, quint32  crc32, const QString &path);
 
 	/**
 		dostali�my od serwera informacj� o zmianie statusu dla kontaktu,

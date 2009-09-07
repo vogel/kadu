@@ -84,7 +84,7 @@ public:
 	ChatMessage(const QString &rawContent, ChatMessageType type, QDateTime date,
 		QString backgroundColor, QString fontColor, QString nickColor);
 
-	void replaceLoadingImages(UinType sender, uint32_t size, uint32_t crc32);
+	void replaceLoadingImages(UinType sender, quint32 size, quint32 crc32);
 
 	UserListElement sender() const { return Ule; }
 	QDateTime date() const { return Date; }

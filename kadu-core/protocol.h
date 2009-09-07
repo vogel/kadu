@@ -8,15 +8,10 @@
 #include <sys/types.h>
 #endif /* __sun__ || __linux__ */
 
-#ifdef _MSC_VER
-#include "kinttypes.h"
-#endif
-
 #include "status.h"
 #include "usergroup.h"
-#include <stdint.h>
 
-typedef uint32_t UinType;
+typedef quint32 UinType;
 
 class Message;
 

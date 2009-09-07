@@ -287,7 +287,7 @@ void DccManager::dcc7New(struct gg_dcc7 *dcc)
 	kdebugf2();
 }
 
-void DccManager::getFileTransferSocket(uint32_t ip, uint16_t port, UinType myUin, UinType peerUin, DccHandler *handler, bool request)
+void DccManager::getFileTransferSocket(quint32 ip, quint16 port, UinType myUin, UinType peerUin, DccHandler *handler, bool request)
 {
 	kdebugf();
 
@@ -310,7 +310,7 @@ void DccManager::getFileTransferSocket(uint32_t ip, uint16_t port, UinType myUin
 	kdebugf2();
 }
 
-void DccManager::getVoiceSocket(uint32_t ip, uint16_t port, UinType myUin, UinType peerUin, DccHandler *handler, bool request)
+void DccManager::getVoiceSocket(quint32 ip, quint16 port, UinType myUin, UinType peerUin, DccHandler *handler, bool request)
 {
 	kdebugf();
 

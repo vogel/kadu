@@ -431,12 +431,12 @@ GaduProtocol::GaduProtocol(const QString &id, QObject *parent)
 		this, SIGNAL(dccConnectionReceived(const UserListElement&)));
 	connect(SocketNotifiers, SIGNAL(serverDisconnected()), this, SLOT(socketDisconnectedSlot()));
 	connect(SocketNotifiers, SIGNAL(error(GaduError)), this, SLOT(errorSlot(GaduError)));
-	connect(SocketNotifiers, SIGNAL(imageReceived(UinType, uint32_t, uint32_t, const QString &, const char *)),
-		this, SLOT(imageReceived(UinType, uint32_t, uint32_t, const QString &, const char *)));
-	connect(SocketNotifiers, SIGNAL(imageRequestReceived(UinType, uint32_t, uint32_t)),
-		this, SLOT(imageRequestReceivedSlot(UinType, uint32_t, uint32_t)));
-	connect(SocketNotifiers, SIGNAL(imageRequestReceived(UinType, uint32_t, uint32_t)),
-		this, SIGNAL(imageRequestReceived(UinType, uint32_t, uint32_t)));
+	connect(SocketNotifiers, SIGNAL(imageReceived(UinType, quint32 , quint32 , const QString &, const char *)),
+		this, SLOT(imageReceived(UinType, quint32 , quint32 , const QString &, const char *)));
+	connect(SocketNotifiers, SIGNAL(imageRequestReceived(UinType, quint32 , quint32 )),
+		this, SLOT(imageRequestReceivedSlot(UinType, quint32 , quint32 )));
+	connect(SocketNotifiers, SIGNAL(imageRequestReceived(UinType, quint32 , quint32 )),
+		this, SIGNAL(imageRequestReceived(UinType, quint32 , quint32 )));
 	connect(SocketNotifiers, SIGNAL(messageReceived(int, UserListElements, QString &, time_t, QByteArray &)),
 		this, SLOT(messageReceivedSlot(int, UserListElements, QString &, time_t, QByteArray &)));
 	connect(SocketNotifiers, SIGNAL(pubdirReplyReceived(gg_pubdir50_t)), this, SLOT(newResults(gg_pubdir50_t)));
@@ -1024,7 +1024,7 @@ void GaduProtocol::errorSlot(GaduError err)
 	kdebugf2();
 }
 
-void GaduProtocol::imageReceived(UinType sender, uint32_t size, uint32_t crc32, const QString &filename, const char *data)
+void GaduProtocol::imageReceived(UinType sender, quint32  size, quint32  crc32, const QString &filename, const char *data)
 {
 	kdebugm(KDEBUG_INFO, qPrintable(QString("Received image. sender: %1, size: %2, crc32: %3,filename: %4\n")
 		.arg(sender).arg(size).arg(crc32).arg(filename)));
@@ -1033,7 +1033,7 @@ void GaduProtocol::imageReceived(UinType sender, uint32_t size, uint32_t crc32, 
 	emit imageReceivedAndSaved(sender, size, crc32, full_path);
 }
 
-void GaduProtocol::imageRequestReceivedSlot(UinType sender, uint32_t size, uint32_t crc32)
+void GaduProtocol::imageRequestReceivedSlot(UinType sender, quint32  size, quint32  crc32)
 {
 	kdebugm(KDEBUG_INFO, qPrintable(QString("Received image request. sender: %1, size: %2, crc32: %3\n")
 		.arg(sender).arg(size).arg(crc32)));
@@ -1511,7 +1511,7 @@ void GaduProtocol::sendUserList()
 	kdebugf2();
 }
 
-bool GaduProtocol::sendImageRequest(UserListElement user, int size, uint32_t crc32)
+bool GaduProtocol::sendImageRequest(UserListElement user, int size, quint32  crc32)
 {
 	kdebugf();
 	int res = 1;
@@ -1525,7 +1525,7 @@ bool GaduProtocol::sendImageRequest(UserListElement user, int size, uint32_t crc
 	return (res == 0);
 }
 
-bool GaduProtocol::sendImage(UserListElement user, const QString &file_name, uint32_t size, const char *data)
+bool GaduProtocol::sendImage(UserListElement user, const QString &file_name, quint32  size, const char *data)
 {
 	kdebugf();
 	int res = 1;
@@ -2210,11 +2210,11 @@ void GaduProtocol::userStatusChanged(const struct gg_event *e)
 	kdebugf();
 
 	GaduStatus oldStatus, status;
-	uint32_t uin;
-	uint32_t remote_ip;
-	uint16_t remote_port;
-	uint8_t version;
-	uint8_t image_size;
+	quint32  uin;
+	quint32  remote_ip;
+	quint16 remote_port;
+	quint8 version;
+	quint8 image_size;
 
 	if (e->type == GG_EVENT_STATUS60)
 	{
@@ -2523,8 +2523,8 @@ unsigned char * GaduFormater::createFormats(const Message &message, unsigned int
 
 		if (part.isImage())
 		{
-			uint32_t size;
-			uint32_t crc32;
+			quint32  size;
+			quint32  crc32;
 			gadu_images_manager.addImageToSend(part.imagePath(), size, crc32);
 
 			image.unknown1 = 0x0109;
@@ -2557,8 +2557,8 @@ void GaduFormater::appendToMessage(Message &result, UinType sender, const QStrin
 
 	if (format.font & GG_FONT_IMAGE)
 	{
-		uint32_t size = gg_fix32(image.size);
-		uint32_t crc32 = gg_fix32(image.crc32);
+		quint32  size = gg_fix32(image.size);
+		quint32  crc32 = gg_fix32(image.crc32);
 
 		if (size == 20 && (crc32 == 4567 || crc32 == 99)) // fake spy images
 			return;

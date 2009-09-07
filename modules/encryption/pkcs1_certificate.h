@@ -105,9 +105,9 @@ class PKCS1Certificate
 		                       QCA::BigInteger &e, QCA::BigInteger &p,
 		                       QCA::BigInteger &q, QCA::BigInteger &d);
 
-		uint8_t readNextOctet();
-		uint64_t readDefiniteLength();
-		bool writeDefiniteLength(uint64_t length);
+		quint8 readNextOctet();
+		quint64 readDefiniteLength();
+		bool writeDefiniteLength(quint64 length);
 		void reset();
 };
 

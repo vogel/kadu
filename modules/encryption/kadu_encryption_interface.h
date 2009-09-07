@@ -26,7 +26,6 @@
 #define KADU_ENCRYPTION_INTERFACE_H
 
 #include <QString>
-#include <stdint.h>
 
 typedef enum {
 	KEE_NO_ERROR,            //No error

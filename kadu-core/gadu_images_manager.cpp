@@ -54,13 +54,13 @@ QString GaduImagesManager::imageHtml(const QString &file_name)
 		return QString("<img src=\"file:///%1\"/>").arg(file_name);
 }
 
-QString GaduImagesManager::loadingImageHtml(UinType uin, uint32_t size, uint32_t crc32)
+QString GaduImagesManager::loadingImageHtml(UinType uin, quint32 size, quint32 crc32)
 {
 	return narg(QString("<img src=\"file:///%1\" gg_sender=\"%2\" gg_size=\"%3\" gg_crc=\"%4\"/>"),
 		icons_manager->iconPath("LoadingImage"), QString::number(uin), QString::number(size), QString::number(crc32));
 }
 
-void GaduImagesManager::addImageToSend(const QString &file_name, uint32_t &size, uint32_t &crc32)
+void GaduImagesManager::addImageToSend(const QString &file_name, quint32 &size, quint32 &crc32)
 {
 	kdebugf();
 	ImageToSend img;
@@ -101,7 +101,7 @@ void GaduImagesManager::addImageToSend(const QString &file_name, uint32_t &size,
 	kdebugf2();
 }
 
-void GaduImagesManager::sendImage(UinType uin, uint32_t size, uint32_t crc32)
+void GaduImagesManager::sendImage(UinType uin, quint32 size, quint32 crc32)
 {
 	kdebugf();
 	kdebugm(KDEBUG_INFO, "Searching images to send: size=%u, crc32=%u, uin=%d\n", size, crc32, uin);
@@ -147,7 +147,7 @@ void GaduImagesManager::sendImage(UinType uin, uint32_t size, uint32_t crc32)
 		kdebugm(KDEBUG_WARNING, "Image data not found\n");
 }
 
-QString GaduImagesManager::saveImage(UinType sender, uint32_t size, uint32_t crc32, const QString& filename, const char *data)
+QString GaduImagesManager::saveImage(UinType sender, quint32 size, quint32 crc32, const QString& filename, const char *data)
 {
 	kdebugf();
 	QString path = ggPath("images");
@@ -168,7 +168,7 @@ QString GaduImagesManager::saveImage(UinType sender, uint32_t size, uint32_t crc
 	return img.file_name;
 }
 
-QString GaduImagesManager::getImageToSendFileName(uint32_t size, uint32_t crc32)
+QString GaduImagesManager::getImageToSendFileName(quint32 size, quint32 crc32)
 {
 	kdebugf();
 	kdebugm(KDEBUG_INFO, "Searching images to send: size=%u, crc32=%u\n",size,crc32);
@@ -184,7 +184,7 @@ QString GaduImagesManager::getImageToSendFileName(uint32_t size, uint32_t crc32)
 	return QString::null;
 }
 
-QString GaduImagesManager::getSavedImageFileName(uint32_t size, uint32_t crc32)
+QString GaduImagesManager::getSavedImageFileName(quint32 size, quint32 crc32)
 {
 	kdebugf();
 	kdebugm(KDEBUG_INFO, "Searching saved images: size=%u, crc32=%u\n",size,crc32);
@@ -200,7 +200,7 @@ QString GaduImagesManager::getSavedImageFileName(uint32_t size, uint32_t crc32)
 	return QString::null;
 }
 
-QString GaduImagesManager::replaceLoadingImages(const QString &text, UinType sender, uint32_t size, uint32_t crc32)
+QString GaduImagesManager::replaceLoadingImages(const QString &text, UinType sender, quint32 size, quint32 crc32)
 {
 	kdebugf();
 	QString loading_string = GaduImagesManager::loadingImageHtml(sender,size,crc32);

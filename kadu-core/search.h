@@ -66,7 +66,7 @@ class KADUAPI SearchDialog : public KaduMainWindow
 	QRadioButton *r_uin;
 	QRadioButton *r_pers;
 	UinType _whoisSearchUin;
-	uint32_t seq;
+	quint32 seq;
 	UserGroup *selectedUsers;
 
 	SearchRecord *searchRecord;

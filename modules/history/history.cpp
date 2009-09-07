@@ -1288,7 +1288,7 @@ void HistoryManager::messageReceived(Protocol * /*protocol*/, UserListElements s
 	kdebugf2();
 }
 
-void HistoryManager::imageReceivedAndSaved(UinType sender, uint32_t size, uint32_t crc32, const QString &path)
+void HistoryManager::imageReceivedAndSaved(UinType sender, quint32 size, quint32 crc32, const QString &path)
 {
 	if (!config_file.readBoolEntry("History", "Logging"))
 		return;

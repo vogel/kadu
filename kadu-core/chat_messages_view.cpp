@@ -27,8 +27,8 @@ ChatMessagesView::ChatMessagesView(QWidget *parent) : KaduTextBrowser(parent),
 {
 	setMinimumSize(QSize(100,100));
 
-	connect(gadu, SIGNAL(imageReceivedAndSaved(UinType, uint32_t, uint32_t, const QString &)),
-		this, SLOT(imageReceivedAndSaved(UinType, uint32_t, uint32_t, const QString &)));
+	connect(gadu, SIGNAL(imageReceivedAndSaved(UinType, quint32 , quint32 , const QString &)),
+		this, SLOT(imageReceivedAndSaved(UinType, quint32 , quint32 , const QString &)));
 
 	connect(this, SIGNAL(loadFinished(bool)), this, SLOT(scrollToLine()));
 
@@ -55,7 +55,7 @@ void ChatMessagesView::pageDown()
 	keyPressEvent(&event);
 }
 
-void ChatMessagesView::imageReceivedAndSaved(UinType sender, uint32_t size, uint32_t crc32,const QString & /*path*/)
+void ChatMessagesView::imageReceivedAndSaved(UinType sender, quint32  size, quint32  crc32,const QString & /*path*/)
 {
 	foreach(ChatMessage *message, Messages)
 		message->replaceLoadingImages(sender, size, crc32);

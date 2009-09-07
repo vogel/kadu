@@ -32,9 +32,9 @@
 #define SIM_MAGIC_V1_2 0x23
 typedef struct {
 	unsigned char init[8];
-	uint8_t magicFirstPart;
-	uint8_t magicSecondPart;
-	uint8_t flags;
+	quint8  magicFirstPart;
+	quint8 magicSecondPart;
+	quint8 flags;
 } sim_message_header;
 
 /**

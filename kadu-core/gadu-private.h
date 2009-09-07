@@ -140,8 +140,8 @@ signals:
 	void serverDisconnected();
 
 	void error(GaduError);
-	void imageReceived(UinType, uint32_t, uint32_t, const QString &filename, const char *data);
-	void imageRequestReceived(UinType, uint32_t, uint32_t);
+	void imageReceived(UinType, quint32, quint32, const QString &filename, const char *data);
+	void imageRequestReceived(UinType, quint32, quint32);
 	void messageReceived(int, UserListElements, QString &, time_t, QByteArray &);
 	void pubdirReplyReceived(gg_pubdir50_t);
 	void systemMessageReceived(QString &, QDateTime &, int, void *);

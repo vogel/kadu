@@ -54,7 +54,7 @@ bool KaduEncryptionRSA::generateKeys(QString keyId)
 	}
 	QString pubKeyPath;
 	QTextStream(&pubKeyPath) << KeysPath << "rsa_" << keyId << ".pem";
-	if(not pubkey.toPEMFile(pubKeyPath))
+	if(!pubkey.toPEMFile(pubKeyPath))
 	{
 		Error = KEE_WRITE_PUBKEY;
 		return false;

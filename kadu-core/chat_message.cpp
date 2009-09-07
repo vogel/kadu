@@ -182,7 +182,7 @@ QString ChatMessage::convertCharacters(QString edit, const QColor &bgcolor, Emot
 	return edit;
 }
 
-void ChatMessage::replaceLoadingImages(UinType sender, uint32_t size, uint32_t crc32)
+void ChatMessage::replaceLoadingImages(UinType sender, quint32 size, quint32 crc32)
 {
 	unformattedMessage = gadu_images_manager.replaceLoadingImages(unformattedMessage, sender, size, crc32);
 }

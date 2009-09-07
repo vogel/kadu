@@ -601,8 +601,8 @@ Kadu::Kadu(QWidget *parent)
 	connect(gadu, SIGNAL(connecting()), this, SLOT(connecting()));
 	connect(gadu, SIGNAL(connected()), this, SLOT(connected()));
 	connect(gadu, SIGNAL(disconnected()), this, SLOT(disconnected()));
-	connect(gadu, SIGNAL(imageReceivedAndSaved(UinType, uint32_t, uint32_t, const QString &)),
-		this, SLOT(imageReceivedAndSaved(UinType, uint32_t, uint32_t, const QString &)));
+	connect(gadu, SIGNAL(imageReceivedAndSaved(UinType, quint32, quint32, const QString &)),
+		this, SLOT(imageReceivedAndSaved(UinType, quint32, quint32, const QString &)));
 	connect(gadu, SIGNAL(needTokenValue(QPixmap, QString &)),
 		this, SLOT(readTokenValue(QPixmap, QString &)));
 	connect(gadu, SIGNAL(systemMessageReceived(const QString &)), this, SLOT(systemMessageReceived(const QString &)));
@@ -1419,7 +1419,7 @@ void Kadu::connected()
 	kdebugf2();
 }
 
-void Kadu::imageReceivedAndSaved(UinType sender, uint32_t size, uint32_t crc32, const QString &/*path*/)
+void Kadu::imageReceivedAndSaved(UinType sender, quint32 size, quint32 crc32, const QString &/*path*/)
 {
 	for (int i = 0, count = pending.count(); i < count; i++)
 	{
@@ -1511,8 +1511,8 @@ bool Kadu::close(bool quit)
 		disconnect(gadu, SIGNAL(connecting()), this, SLOT(connecting()));
 		disconnect(gadu, SIGNAL(connected()), this, SLOT(connected()));
 		disconnect(gadu, SIGNAL(disconnected()), this, SLOT(disconnected()));
-		disconnect(gadu, SIGNAL(imageReceivedAndSaved(UinType, uint32_t, uint32_t, const QString &)),
-				this, SLOT(imageReceivedAndSaved(UinType, uint32_t, uint32_t, const QString &)));
+		disconnect(gadu, SIGNAL(imageReceivedAndSaved(UinType, quint32, quint32, const QString &)),
+				this, SLOT(imageReceivedAndSaved(UinType, quint32, quint32, const QString &)));
 		disconnect(gadu, SIGNAL(needTokenValue(QPixmap, QString &)),
 				this, SLOT(readTokenValue(QPixmap, QString &)));
 		disconnect(gadu, SIGNAL(systemMessageReceived(const QString &)), this, SLOT(systemMessageReceived(const QString &)));

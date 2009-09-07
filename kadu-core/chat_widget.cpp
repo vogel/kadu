@@ -130,8 +130,8 @@ ChatWidget::~ChatWidget()
 	chat_manager->unregisterChatWidget(this);
 
 	disconnectAcknowledgeSlots();
-	disconnect(gadu, SIGNAL(imageReceivedAndSaved(UinType,uint32_t,uint32_t,const QString&)),
-		body, SLOT(imageReceivedAndSaved(UinType,uint32_t,uint32_t,const QString&)));
+	disconnect(gadu, SIGNAL(imageReceivedAndSaved(UinType,quint32 ,quint32 ,const QString&)),
+		body, SLOT(imageReceivedAndSaved(UinType,quint32 ,quint32 ,const QString&)));
 
 	if (userbox)
 		delete userbox;

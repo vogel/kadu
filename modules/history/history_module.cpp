@@ -99,8 +99,8 @@ HistoryModule::HistoryModule(bool firstLoad)
 
 	connect(gadu, SIGNAL(messageReceived(Protocol *, UserListElements, const QString&, time_t)),
 		history, SLOT(messageReceived(Protocol *, UserListElements, const QString&, time_t)));
-	connect(gadu, SIGNAL(imageReceivedAndSaved(UinType, uint32_t, uint32_t, const QString &)),
-		history, SLOT(imageReceivedAndSaved(UinType, uint32_t, uint32_t, const QString &)));
+	connect(gadu, SIGNAL(imageReceivedAndSaved(UinType, quint32, quint32, const QString &)),
+		history, SLOT(imageReceivedAndSaved(UinType, quint32, quint32, const QString &)));
 	connect(kadu, SIGNAL(removingUsers(UserListElements)), this, SLOT(removingUsers(UserListElements)));
 
 	if (firstLoad)
@@ -148,8 +148,8 @@ HistoryModule::~HistoryModule()
 
 	disconnect(gadu, SIGNAL(messageReceived(Protocol *, UserListElements, const QString&, time_t)),
 		history, SLOT(messageReceived(Protocol *, UserListElements, const QString&, time_t)));
-	disconnect(gadu, SIGNAL(imageReceivedAndSaved(UinType, uint32_t, uint32_t, const QString &)),
-		history, SLOT(imageReceivedAndSaved(UinType, uint32_t, uint32_t, const QString &)));
+	disconnect(gadu, SIGNAL(imageReceivedAndSaved(UinType, quint32, quint32, const QString &)),
+		history, SLOT(imageReceivedAndSaved(UinType, quint32, quint32, const QString &)));
 	disconnect(kadu, SIGNAL(removingUsers(UserListElements)),
 		this, SLOT(removingUsers(UserListElements)));
 

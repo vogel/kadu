@@ -29,7 +29,6 @@
  */
 
 #include <limits.h>
-#include <stdint.h>
 #include "pkcs1_certificate.h"
 
 PKCS1Certificate::~PKCS1Certificate()
@@ -100,7 +99,7 @@ bool PKCS1Certificate::extractPublicKey(const QCA::SecureArray &certificate,
 		return false;
 	}
 
-	uint8_t octet = readNextOctet();
+	quint8 octet = readNextOctet();
 	//we expect the SEQUENCE tag at the begining
 	if(octet != Sequence)
 	{
@@ -109,11 +108,11 @@ bool PKCS1Certificate::extractPublicKey(const QCA::SecureArray &certificate,
 	}
 
 	//read the length of the rest of the certificate
-	uint64_t length = readDefiniteLength();
+	quint64 length = readDefiniteLength();
 	if(Status != OK)
 		return false;
 	//check if the certificate has the needed length
-	if(length + CertificateReadOffset > (uint64_t)Certificate->size())
+	if(length + CertificateReadOffset > (quint64)Certificate->size())
 	{
 		Status = BrokenCertificate;
 		return false;
@@ -131,14 +130,14 @@ bool PKCS1Certificate::extractPublicKey(const QCA::SecureArray &certificate,
 	if(Status != OK)
 		return false;
 	//check if the certificate has the needed length
-	if(length + CertificateReadOffset > (uint64_t)Certificate->size())
+	if(length + CertificateReadOffset > (quint64)Certificate->size())
 	{
 		Status = BrokenCertificate;
 		return false;
 	}
 	//read the modulus
 	QCA::SecureArray modulusData(length);
-	for(uint64_t i = 0; i < length; i++)
+	for(quint64 i = 0; i < length; i++)
 		modulusData[i] = readNextOctet();
 	modulus.fromArray(modulusData);
 
@@ -154,14 +153,14 @@ bool PKCS1Certificate::extractPublicKey(const QCA::SecureArray &certificate,
 	if(Status != OK)
 		return false;
 	//check if the certificate has the needed length
-	if(length + CertificateReadOffset > (uint64_t)Certificate->size())
+	if(length + CertificateReadOffset > (quint64)Certificate->size())
 	{
 		Status = BrokenCertificate;
 		return false;
 	}
 	//read the exponent
 	QCA::SecureArray exponentData(length);
-	for(uint64_t i = 0; i < length; i++)
+	for(quint64 i = 0; i < length; i++)
 		exponentData[i] = readNextOctet();
 	exponent.fromArray(exponentData);
 
@@ -293,7 +292,7 @@ bool PKCS1Certificate::extractPrivateKey(const QCA::SecureArray &certificate, QC
 		return false;
 	}
 
-	uint8_t octet = readNextOctet();
+	quint8 octet = readNextOctet();
 	//we expect the SEQUENCE tag at the begining
 	if(octet != Sequence)
 	{
@@ -302,11 +301,11 @@ bool PKCS1Certificate::extractPrivateKey(const QCA::SecureArray &certificate, QC
 	}
 
 	//read the length of the rest of the certificate
-	uint64_t length = readDefiniteLength();
+	quint64 length = readDefiniteLength();
 	if(Status != OK)
 		return false;
 	//check if the certificate has the needed length
-	if(length + CertificateReadOffset > (uint64_t)Certificate->size())
+	if(length + CertificateReadOffset > (quint64)Certificate->size())
 	{
 		Status = BrokenCertificate;
 		return false;
@@ -324,14 +323,14 @@ bool PKCS1Certificate::extractPrivateKey(const QCA::SecureArray &certificate, QC
 	if(Status != OK)
 		return false;
 	//check if the certificate has the needed length
-	if(length + CertificateReadOffset > (uint64_t)Certificate->size())
+	if(length + CertificateReadOffset > (quint64)Certificate->size())
 	{
 		Status = BrokenCertificate;
 		return false;
 	}
 	//read the version
 	QCA::SecureArray versionData(length);
-	for(uint64_t i = 0; i < length; i++)
+	for(quint64 i = 0; i < length; i++)
 		versionData[i] = readNextOctet();
 	QCA::BigInteger version(versionData);
 	//only version 0 supported
@@ -353,14 +352,14 @@ bool PKCS1Certificate::extractPrivateKey(const QCA::SecureArray &certificate, QC
 	if(Status != OK)
 		return false;
 	//check if the certificate has the needed length
-	if(length + CertificateReadOffset > (uint64_t)Certificate->size())
+	if(length + CertificateReadOffset > (quint64)Certificate->size())
 	{
 		Status = BrokenCertificate;
 		return false;
 	}
 	//read the modulus
 	QCA::SecureArray modulusData(length);
-	for(uint64_t i = 0; i < length; i++)
+	for(quint64 i = 0; i < length; i++)
 		modulusData[i] = readNextOctet();
 	modulus.fromArray(modulusData);
 
@@ -376,14 +375,14 @@ bool PKCS1Certificate::extractPrivateKey(const QCA::SecureArray &certificate, QC
 	if(Status != OK)
 		return false;
 	//check if the certificate has the needed length
-	if(length + CertificateReadOffset > (uint64_t)Certificate->size())
+	if(length + CertificateReadOffset > (quint64)Certificate->size())
 	{
 		Status = BrokenCertificate;
 		return false;
 	}
 	//read the public exponent
 	QCA::SecureArray eData(length);
-	for(uint64_t i = 0; i < length; i++)
+	for(quint64 i = 0; i < length; i++)
 		eData[i] = readNextOctet();
 	e.fromArray(eData);
 
@@ -399,14 +398,14 @@ bool PKCS1Certificate::extractPrivateKey(const QCA::SecureArray &certificate, QC
 	if(Status != OK)
 		return false;
 	//check if the certificate has the needed length
-	if(length + CertificateReadOffset > (uint64_t)Certificate->size())
+	if(length + CertificateReadOffset > (quint64)Certificate->size())
 	{
 		Status = BrokenCertificate;
 		return false;
 	}
 	//read the private exponent
 	QCA::SecureArray dData(length);
-	for(uint64_t i = 0; i < length; i++)
+	for(quint64 i = 0; i < length; i++)
 		dData[i] = readNextOctet();
 	d.fromArray(dData);
 
@@ -422,14 +421,14 @@ bool PKCS1Certificate::extractPrivateKey(const QCA::SecureArray &certificate, QC
 	if(Status != OK)
 		return false;
 	//check if the certificate has the needed length
-	if(length + CertificateReadOffset > (uint64_t)Certificate->size())
+	if(length + CertificateReadOffset > (quint64)Certificate->size())
 	{
 		Status = BrokenCertificate;
 		return false;
 	}
 	//read the p
 	QCA::SecureArray pData(length);
-	for(uint64_t i = 0; i < length; i++)
+	for(quint64 i = 0; i < length; i++)
 		pData[i] = readNextOctet();
 	p.fromArray(pData);
 
@@ -445,14 +444,14 @@ bool PKCS1Certificate::extractPrivateKey(const QCA::SecureArray &certificate, QC
 	if(Status != OK)
 		return false;
 	//check if the certificate has the needed length
-	if(length + CertificateReadOffset > (uint64_t)Certificate->size())
+	if(length + CertificateReadOffset > (quint64)Certificate->size())
 	{
 		Status = BrokenCertificate;
 		return false;
 	}
 	//read the q
 	QCA::SecureArray qData(length);
-	for(uint64_t i = 0; i < length; i++)
+	for(quint64 i = 0; i < length; i++)
 		qData[i] = readNextOctet();
 	q.fromArray(qData);
 
@@ -507,19 +506,19 @@ QCA::RSAPrivateKey PKCS1Certificate::privateKeyFromDER(const QCA::SecureArray &c
 	}
 }
 
-uint8_t PKCS1Certificate::readNextOctet()
+quint8 PKCS1Certificate::readNextOctet()
 {
 	if(CertificateReadOffset >= Certificate->size())
 		Status = BrokenCertificate;
 
-	uint8_t next = Certificate->at(CertificateReadOffset);
+	quint8 next = Certificate->at(CertificateReadOffset);
 	CertificateReadOffset++;
 	return next;
 }
 
-uint64_t PKCS1Certificate::readDefiniteLength()
+quint64 PKCS1Certificate::readDefiniteLength()
 {
-	uint8_t octet = readNextOctet();
+	quint8 octet = readNextOctet();
 	//if the first length octet is 255 (all bits are set to 1), then the size is not
 	//supported by this implementation
 	if(octet == 255) {
@@ -531,7 +530,7 @@ uint64_t PKCS1Certificate::readDefiniteLength()
 	//where bits 7 to 1 denote the number of subsequent length field octets
 	if(octet & 128)
 	{
-		uint8_t lengthOctetsCount = octet & 127;
+		quint8 lengthOctetsCount = octet & 127;
 
 		//check if the length octets count doesn't exceed 8 (the size of a 64 bit integer)
 		if(lengthOctetsCount > 8)
@@ -547,9 +546,9 @@ uint64_t PKCS1Certificate::readDefiniteLength()
 		}
 
 		//construct the length value
-		uint64_t length = 0;
-		for(uint8_t i = lengthOctetsCount; i > 0; i--)
-			length |= ((uint64_t)readNextOctet()) << ((i-1)*8);
+		quint64 length = 0;
+		for(quint8 i = lengthOctetsCount; i > 0; i--)
+			length |= ((quint64)readNextOctet()) << ((i-1)*8);
 		//the SecureArray stores it's size in an int variable, so we must check
 		//if the read length is not greater than the maximum value that int can
 		//store
@@ -564,22 +563,22 @@ uint64_t PKCS1Certificate::readDefiniteLength()
 	else return octet;
 }
 
-bool PKCS1Certificate::writeDefiniteLength(uint64_t length)
+bool PKCS1Certificate::writeDefiniteLength(quint64 length)
 {
 	if(length <= 127)
-		Certificate->append(QCA::SecureArray(1, (uint8_t)length));
+		Certificate->append(QCA::SecureArray(1, (quint8)length));
 	else
 	{
 		//write the length octets into a temporary array
 		QCA::SecureArray array;
-		uint8_t lengthOctetsCount = 0;
+		quint8 lengthOctetsCount = 0;
 		//check all the bytes, starting from the most significant byte,
 		//but left-side trim all bytes that are equal to zero
 		bool begunWriting = false;
-		for(uint8_t i = sizeof(length); i > 0; i--) {
+		for(quint8 i = sizeof(length); i > 0; i--) {
 			//extract the value of the (i-1)th byte
-			uint8_t shiftSize = (i*8)-8;
-			uint8_t octet = (uint8_t)((length & ((uint64_t)0xFF << shiftSize)) >> shiftSize);
+			quint8 shiftSize = (i*8)-8;
+			quint8 octet = (quint8)((length & ((quint64)0xFF << shiftSize)) >> shiftSize);
 			if(octet > 0)
 				begunWriting = true;
 			if(!begunWriting)
@@ -594,7 +593,7 @@ bool PKCS1Certificate::writeDefiniteLength(uint64_t length)
 			return false;
 		}
 		//128 (bit number 8 set) means that this is the long form of the length field
-		uint8_t octet = 128 | lengthOctetsCount;
+		quint8 octet = 128 | lengthOctetsCount;
 		Certificate->append(QCA::SecureArray(1, octet));
 		Certificate->append(array);
 	}

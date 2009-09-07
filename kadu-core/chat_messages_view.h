@@ -84,7 +84,7 @@ private slots:
  	void pageDown();
 
 	/**
-		\fn void imageReceivedAndSaved(UinType sender,uint32_t size,uint32_t crc32,const QString& path)
+		\fn void imageReceivedAndSaved(UinType sender,quint32 size,quint32 crc32,const QString& path)
 		TODO: zmieni� nag��wek
 		TODO; przesun�� do klasy ChatMessage
 		Slot obs�uguj�cy odebranie i zapis obrazka
@@ -93,7 +93,7 @@ private slots:
 		\param crc32 suma kontrolna obrazka
 		\param path �cie�ka do obrazka
 	**/
-	void imageReceivedAndSaved(UinType sender, uint32_t size, uint32_t crc32, const QString& path);
+	void imageReceivedAndSaved(UinType sender, quint32 size, quint32 crc32, const QString& path);
 
 public:
 	ChatMessagesView(QWidget *parent = 0);
