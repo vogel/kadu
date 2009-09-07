@@ -15,13 +15,15 @@
 
 #include "status/status.h"
 
+#include "exports.h"
+
 class QAction;
 class QActionGroup;
 class QMenu;
 
 class StatusContainer;
 
-class StatusMenu : public QObject
+class KADUAPI StatusMenu : public QObject
 {
 	Q_OBJECT
 

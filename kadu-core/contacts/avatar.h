@@ -15,9 +15,11 @@
 
 #include "configuration/storable-object.h"
 
+#include "exports.h"
+
 class ContactAccountData;
 
-class Avatar : public StorableObject
+class KADUAPI Avatar : public StorableObject
 {
 	ContactAccountData *MyContactAccountData;
 	QDateTime LastUpdated;

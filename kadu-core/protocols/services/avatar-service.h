@@ -13,9 +13,11 @@
 #include <QtCore/QObject>
 #include <QtGui/QPixmap>
 
+#include "exports.h"
+
 class ContactAccountData;
 
-class AvatarService : public QObject
+class KADUAPI AvatarService : public QObject
 {
 	Q_OBJECT
 
