@@ -193,6 +193,8 @@ class HistoryMainWidget : public MainWindow
 
 };
 
+class HistoryChatsModel;
+
 /*!
 \class HistoryDlg
 \author Juzef
@@ -202,12 +204,14 @@ class HistoryWindow : public QWidget
 {
 	Q_OBJECT
 
-	private:
-  		HistoryMainWidget *main; /*!< G��wny widget okna z toolbarami i innymi bajerami. */
+	QTreeView *ChatsTree;
+	HistoryChatsModel *ChatsModel;
+
+		HistoryMainWidget *main; /*!< G��wny widget okna z toolbarami i innymi bajerami. */
 		QMenu *MainPopupMenu; /*!< Menu kontekstowe g��wnej listy u�ytkownik�w. */
 		QMenu *DetailsPopupMenu; /*!< Menu kontekstowe widoku dat. */
 		QList<HistorySearchResult> previousSearchResults;  /*!< Wyniki poprzednich wyszukiwa�. */
- 		QTreeView* MainListView; /*!< G��wna lista u�ytkownik�w. */
+
 		HistorySearchParameters searchParameters; /*!< Parametry ostatniego wyszukiwania. */
  		//QList<ContactList> uid_groups; /*!< Lista grup u�ytkownik�w, kt�rych rozmowy zapisano w historii. */
  		//QList<ContactList> status_uid_groups; /*!< Lista grup u�ytkownik�w, kt�rych zmiany status�w zapisano w historii. */

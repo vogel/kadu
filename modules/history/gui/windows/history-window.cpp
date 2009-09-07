@@ -115,7 +115,7 @@ HistoryMainWidget::HistoryMainWidget(QWidget *parent, QWidget *window)
 	QStringList detailsLabels;
 	detailsLabels << tr("Contact") << tr("Title") << tr("Date") << tr("Length");
 	DetailsListView->setHeaderLabels(detailsLabels);
-	DetailsListView->setRootIsDecorated(TRUE);
+	DetailsListView->setRootIsDecorated(true);
 	ContentBrowser = new ChatMessagesView(0, right);
 	ContentBrowser->setPruneEnabled(false);
 ///	ContentBrowser->setMargin(config_file.readNumEntry("General", "ParagraphSeparator"));
@@ -220,9 +220,10 @@ HistoryWindow::HistoryWindow() : QWidget(NULL), isSearchInProgress(0), closeDema
 	QSplitter* splitter = new QSplitter(Qt::Horizontal, this);
 	QSplitter* left_splitter = new QSplitter(Qt::Vertical, splitter);
 
-	MainListView = new QTreeView(left_splitter);
-	MainListView->setModel(new HistoryChatsModel(this));
-	MainListView->setRootIsDecorated(false);
+	ChatsTree = new QTreeView(left_splitter);
+	ChatsModel = new HistoryChatsModel(this);
+	ChatsTree->setModel(ChatsModel);
+	ChatsTree->setRootIsDecorated(true);
 
 	QWidget *vbox = new QWidget(splitter);
 	QVBoxLayout *vbox_lay = new QVBoxLayout();
@@ -238,10 +239,10 @@ HistoryWindow::HistoryWindow() : QWidget(NULL), isSearchInProgress(0), closeDema
 	splitter->setSizes(sizes);
 	vbox->setLayout(vbox_lay);
 	grid->addWidget(splitter, 0, 1, 0, 4);
-	connect(MainListView, SIGNAL(itemClicked(QTreeWidgetItem*, int)), this, SLOT(mainListItemClicked(QTreeWidgetItem*, int)));
+	connect(ChatsTree, SIGNAL(itemClicked(QTreeWidgetItem*, int)), this, SLOT(mainListItemClicked(QTreeWidgetItem*, int)));
 
-	MainListView->setContextMenuPolicy(Qt::CustomContextMenu);
-	connect(MainListView, SIGNAL(customContextMenuRequested(QPoint)),
+	ChatsTree->setContextMenuPolicy(Qt::CustomContextMenu);
+	connect(ChatsTree, SIGNAL(customContextMenuRequested(QPoint)),
 		this, SLOT(showMainPopupMenu(QPoint)));
 	main->getDetailsListView()->setContextMenuPolicy(Qt::CustomContextMenu);
 	connect(main->getDetailsListView(), SIGNAL(customContextMenuRequested(QPoint)),
@@ -258,6 +259,7 @@ HistoryWindow::HistoryWindow() : QWidget(NULL), isSearchInProgress(0), closeDema
 	
 	DetailsPopupMenu = new QMenu;
 	DetailsPopupMenu->addAction(IconsManager::instance()->loadIcon("ClearHistory"), tr("&Remove entries"), this, SLOT(removeHistoryEntriesPerDate()));
+
 	kdebugf2();
 }
 
@@ -294,18 +296,21 @@ void HistoryWindow::globalRefresh()
 // 	conferItem->setIcon(0, IconsManager::instance()->loadIcon("ManageModules"));
 // 	statusItem->setIcon(0, IconsManager::instance()->loadIcon("Busy"));
 // 	searchItem->setIcon(0, IconsManager::instance()->loadIcon("LookupUserInfo"));
-/*
+
+	ChatsModel->clear();
+
 	QList<Chat *> chatsList = History::instance()->chatsList();
 	
-	MainListItem* mainItem;
+// 	MainListItem* mainItem;
 	foreach (Chat *chat, chatsList)
-	{
-		if (chat->contacts().count() > 1)
-			mainItem = new MainListItem(conferItem, chat);
-		else
-			mainItem = new MainListItem(chatsItem, chat);
-		mainItem->setIcon(0, IconsManager::instance()->loadIcon("Online"));
-	}*/
+		ChatsModel->addChat(chat);
+// 	{
+// 		if (chat->contacts().count() > 1)
+// 			mainItem = new MainListItem(conferItem, chat);
+// 		else
+// 			mainItem = new MainListItem(chatsItem, chat);
+// 		mainItem->setIcon(0, IconsManager::instance()->loadIcon("Online"));
+// 	}
 
 	kdebugf2();
 }
@@ -334,7 +339,7 @@ void HistoryWindow::searchBranchRefresh()
 
 void HistoryWindow::showMainPopupMenu(const QPoint &pos)
 {
-	MainPopupMenu->popup(MainListView->mapToGlobal(pos));
+	MainPopupMenu->popup(ChatsTree->mapToGlobal(pos));
 }
 
 void HistoryWindow::showDetailsPopupMenu(const QPoint &pos)

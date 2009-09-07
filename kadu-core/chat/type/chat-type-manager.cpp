@@ -54,7 +54,6 @@ void ChatTypeManager::removeChatType(ChatType chatType)
 	emit chatTypeRemoved(chatType);
 }
 
-
 ChatType ChatTypeManager::chatType(const QString &name)
 {
 	return ChatTypesMap.value(name);

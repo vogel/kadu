@@ -11,10 +11,19 @@
 #define HISTORY_CHATS_MODEL_H
 
 #include <QtCore/QAbstractItemModel>
+#include <QtCore/QMap>
+
+class Chat;
+class ChatType;
 
 class HistoryChatsModel : public QAbstractItemModel
 {
 	Q_OBJECT
+
+	QMap<ChatType, QList<Chat *> > Chats;
+
+	QVariant chatTypeData(const QModelIndex &index, int role = Qt::DisplayRole) const;
+	QVariant chatData(const QModelIndex &index, int role = Qt::DisplayRole) const;
 
 public:
 	HistoryChatsModel(QObject *parent = 0);
@@ -27,6 +36,9 @@ public:
 	virtual QModelIndex parent(const QModelIndex &child) const;
 
 	virtual QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const;
+
+	void clear();
+	void addChat(Chat *chat);
 
 };
 

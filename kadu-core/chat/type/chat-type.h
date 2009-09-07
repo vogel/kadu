@@ -30,8 +30,8 @@ public:
 	QString displayName() const { return DisplayName; }
 	QIcon icon() const { return Icon; }
 
-	bool operator == (const ChatType &compare);
-	bool operator < (const ChatType &compare);
+	bool operator == (const ChatType &compare) const;
+	bool operator < (const ChatType &compare) const;
 
 };
 
