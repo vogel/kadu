@@ -26,12 +26,12 @@ ChatType::ChatType(const ChatType &copy)
 	Icon = copy.Icon;
 }
 
-bool ChatType::operator == (const ChatType &compare)
+bool ChatType::operator == (const ChatType &compare) const
 {
 	return Name == compare.Name;
 }
 
-bool ChatType::operator < (const ChatType &compare)
+bool ChatType::operator < (const ChatType &compare) const
 {
 	return SortIndex < compare.SortIndex;
 }
