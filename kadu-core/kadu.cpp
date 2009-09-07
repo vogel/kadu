@@ -2408,7 +2408,7 @@ void Kadu::setTalkWithMe(const QString &description)
 	UserStatus status;
 
 	status.setStatus(gadu->currentStatus());
-	status.setOnline(description);
+	status.setTalkWithMe(description);
 
 	userStatusChanger->userStatusSet(status);
 }
@@ -2418,7 +2418,7 @@ void Kadu::setDoNotDisturb(const QString &description)
 	UserStatus status;
 
 	status.setStatus(gadu->currentStatus());
-	status.setBusy(description);
+	status.setDoNotDisturb(description);
 
 	userStatusChanger->userStatusSet(status);
 }
