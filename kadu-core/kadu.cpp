@@ -622,6 +622,10 @@ Kadu::Kadu(QWidget *parent)
 		this, SLOT(wentInvisible(const QString &)));
 	connect(&(gadu->currentStatus()), SIGNAL(goOffline(const QString &)),
 		this, SLOT(wentOffline(const QString &)));
+	connect(&(gadu->currentStatus()), SIGNAL(goTalkWithMe(const QString &)),
+		this, SLOT(wentTalkWithMe(const QString &)));
+	connect(&(gadu->currentStatus()), SIGNAL(goDoNotDisturb(const QString &)),
+		this, SLOT(wentDoNotDisturb(const QString &)));
 
 	MainLayout->setResizeMode(QLayout::Minimum);
 	setCentralWidget(MainWidget);
@@ -1316,6 +1320,22 @@ void Kadu::slotHandleState(int command)
 			status.setOffline(status.description());
 			ChooseDescription::show(status, lastPositionBeforeStatusMenuHide);
 			break;
+		case 8:
+			status.setTalkWithMe();
+			setStatus(status);
+			break;
+		case 9:
+			status.setTalkWithMe(status.description());
+			ChooseDescription::show(status, lastPositionBeforeStatusMenuHide);
+			break;
+		case 10:
+			status.setDoNotDisturb();
+			setStatus(status);
+			break;
+		case 11:
+			status.setDoNotDisturb(status.description());
+			ChooseDescription::show(status, lastPositionBeforeStatusMenuHide);
+			break;
 	}
 
 	kdebugf2();
@@ -1512,6 +1532,10 @@ bool Kadu::close(bool quit)
 				this, SLOT(wentInvisible(const QString &)));
 		disconnect(&(gadu->currentStatus()), SIGNAL(goOffline(const QString &)),
 				this, SLOT(wentOffline(const QString &)));
+		disconnect(&(gadu->currentStatus()), SIGNAL(goTalkWithMe(const QString &)),
+				this, SLOT(wentTalkWithMe(const QString &)));
+		disconnect(&(gadu->currentStatus()), SIGNAL(goDoNotDisturb(const QString &)),
+				this, SLOT(wentDoNotDisturb(const QString &)));
 
 		disconnect(Userbox, SIGNAL(doubleClicked(UserListElement)), this, SLOT(sendMessage(UserListElement)));
 		disconnect(Userbox, SIGNAL(returnPressed(UserListElement)), this, SLOT(sendMessage(UserListElement)));
@@ -1822,6 +1846,26 @@ void Kadu::createStatusPopupMenu()
 	changeStatusToOfflineDesc->setData(7);
 	connect(changeStatusToOfflineDesc, SIGNAL(triggered()), this, SLOT(changeStatusSlot()));
 
+	changeStatusToTalkWithMe = new QAction(icons_manager->loadIcon(s.pixmapName(Online, false, false)), tr("TalkWithMe"), this);
+	changeStatusToTalkWithMe->setCheckable(true);
+	changeStatusToTalkWithMe->setData(8);
+	connect(changeStatusToTalkWithMe, SIGNAL(triggered()), this, SLOT(changeStatusSlot()));
+
+	changeStatusToTalkWithMeDesc = new QAction(icons_manager->loadIcon(s.pixmapName(Online, true, false)), tr("TalkWithMe (d.)"), this);
+	changeStatusToTalkWithMeDesc->setCheckable(true);
+	changeStatusToTalkWithMeDesc->setData(9);
+	connect(changeStatusToTalkWithMeDesc, SIGNAL(triggered()), this, SLOT(changeStatusSlot()));
+
+	changeStatusToDoNotDisturb = new QAction(icons_manager->loadIcon(s.pixmapName(Busy, false, false)), tr("DoNotDisturb"), this);
+	changeStatusToDoNotDisturb->setCheckable(true);
+	changeStatusToDoNotDisturb->setData(10);
+	connect(changeStatusToDoNotDisturb, SIGNAL(triggered()), this, SLOT(changeStatusSlot()));
+
+	changeStatusToDoNotDisturbDesc = new QAction(icons_manager->loadIcon(s.pixmapName(Busy, true, false)), tr("DoNotDisturb (d.)"), this);
+	changeStatusToDoNotDisturbDesc->setCheckable(true);
+	changeStatusToDoNotDisturbDesc->setData(11);
+	connect(changeStatusToDoNotDisturbDesc, SIGNAL(triggered()), this, SLOT(changeStatusSlot()));
+
 	changePrivateStatus = new QAction(tr("Private"), this);
 	changePrivateStatus->setCheckable(true);
 	connect(changePrivateStatus, SIGNAL(toggled(bool)), this, SLOT(changePrivateStatusSlot(bool)));
@@ -1831,8 +1875,12 @@ void Kadu::createStatusPopupMenu()
 
 	changeStatusActionGroup->addAction(changeStatusToOnline);
 	changeStatusActionGroup->addAction(changeStatusToOnlineDesc);
+	changeStatusActionGroup->addAction(changeStatusToTalkWithMe);
+	changeStatusActionGroup->addAction(changeStatusToTalkWithMeDesc);
 	changeStatusActionGroup->addAction(changeStatusToBusy);
 	changeStatusActionGroup->addAction(changeStatusToBusyDesc);
+	changeStatusActionGroup->addAction(changeStatusToDoNotDisturb);
+	changeStatusActionGroup->addAction(changeStatusToDoNotDisturbDesc);
 	changeStatusActionGroup->addAction(changeStatusToInvisible);
 	changeStatusActionGroup->addAction(changeStatusToInvisibleDesc);
 	changeStatusActionGroup->addAction(changeStatusToOffline);
@@ -1840,8 +1888,12 @@ void Kadu::createStatusPopupMenu()
 
 	statusMenu->addAction(changeStatusToOnline);
 	statusMenu->addAction(changeStatusToOnlineDesc);
+	statusMenu->addAction(changeStatusToTalkWithMe);
+	statusMenu->addAction(changeStatusToTalkWithMeDesc);
 	statusMenu->addAction(changeStatusToBusy);
 	statusMenu->addAction(changeStatusToBusyDesc);
+	statusMenu->addAction(changeStatusToDoNotDisturb);
+	statusMenu->addAction(changeStatusToDoNotDisturbDesc);
 	statusMenu->addAction(changeStatusToInvisible);
 	statusMenu->addAction(changeStatusToInvisibleDesc);
 	statusMenu->addAction(changeStatusToOffline);
@@ -1851,8 +1903,12 @@ void Kadu::createStatusPopupMenu()
 
 	dockMenu->addAction(changeStatusToOnline);
 	dockMenu->addAction(changeStatusToOnlineDesc);
+	dockMenu->addAction(changeStatusToTalkWithMe);
+	dockMenu->addAction(changeStatusToTalkWithMeDesc);
 	dockMenu->addAction(changeStatusToBusy);
 	dockMenu->addAction(changeStatusToBusyDesc);
+	dockMenu->addAction(changeStatusToDoNotDisturb);
+	dockMenu->addAction(changeStatusToDoNotDisturbDesc);
 	dockMenu->addAction(changeStatusToInvisible);
 	dockMenu->addAction(changeStatusToInvisibleDesc);
 	dockMenu->addAction(changeStatusToOffline);
@@ -2095,6 +2151,10 @@ void Kadu::setDefaultStatus()
 		statusIndex = 5;
 	else if (startupStatus == "Offline")
 		statusIndex = 6;
+	else if (startupStatus == "TalkWithMe")
+		statusIndex = 8;
+	else if (startupStatus == "DoNotDisturb")
+		statusIndex = 10;
 
 	if ((statusIndex == 6 || statusIndex == 7) && offlineToInvisible)
 		status.setInvisible(description);
@@ -2155,6 +2215,20 @@ void Kadu::wentOffline(const QString &desc)
 	kdebugf();
 	DoBlink = false;
 	showStatusOnMenu(desc.isEmpty() ? 6 : 7);
+}
+
+void Kadu::wentTalkWithMe(const QString &desc)
+{
+	kdebugf();
+	DoBlink = false;
+	showStatusOnMenu(desc.isEmpty() ? 8 : 9);
+}
+
+void Kadu::wentDoNotDisturb(const QString &desc)
+{
+	kdebugf();
+	DoBlink = false;
+	showStatusOnMenu(desc.isEmpty() ? 10 : 11);
 }
 
 void Kadu::showStatusOnMenu(int statusNr)
@@ -2325,6 +2399,26 @@ void Kadu::setOffline(const QString &description)
 
 	status.setStatus(gadu->currentStatus());
 	status.setOffline(description);
+
+	userStatusChanger->userStatusSet(status);
+}
+
+void Kadu::setTalkWithMe(const QString &description)
+{
+	UserStatus status;
+
+	status.setStatus(gadu->currentStatus());
+	status.setOnline(description);
+
+	userStatusChanger->userStatusSet(status);
+}
+
+void Kadu::setDoNotDisturb(const QString &description)
+{
+	UserStatus status;
+
+	status.setStatus(gadu->currentStatus());
+	status.setBusy(description);
 
 	userStatusChanger->userStatusSet(status);
 }

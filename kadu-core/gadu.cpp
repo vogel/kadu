@@ -30,6 +30,7 @@
 #include "misc.h"
 
 #include "gadu.h"
+#include "gadu_resolver.h"
 
 #include <time.h>
 
@@ -402,6 +403,8 @@ void GaduProtocol::initModule()
 		if (ip2.setAddress(server))
 			ConfigServers.append(ip2);
 
+	gg_global_set_custom_resolver(gadu_resolver_start, gadu_resolver_cleanup);
+
 	kdebugf2();
 }
 
@@ -508,11 +511,6 @@ void GaduProtocol::currentStatusChanged(const UserStatus &/*status*/, const User
 
 unsigned int GaduProtocol::maxDescriptionLength()
 {
-#ifdef GG_STATUS_DESCR_MAXSIZE_PRE_8_0
-	if (LoginParams.protocol_version <= 0x2a)
-		return GG_STATUS_DESCR_MAXSIZE_PRE_8_0;
-#endif
-
 	return GG_STATUS_DESCR_MAXSIZE;
 }
 
@@ -619,6 +617,59 @@ void GaduProtocol::iWantGoOffline(const QString &desc)
 
 	kdebugf2();
 }
+
+void GaduProtocol::iWantTalkWithMe(const QString &desc)
+{
+	kdebugf();
+
+	//patrz iWantGoOnline()
+	if (whileConnecting)
+		return;
+
+	if (CurrentStatus->isOffline())
+	{
+		login();
+		return;
+	}
+
+	int friends = (NextStatus->isFriendsOnly() ? GG_STATUS_FRIENDS_MASK : 0);
+
+	if (!desc.isEmpty())
+		gg_change_status_descr(Sess, GG_STATUS_FFC_DESCR | friends, unicode2cp(desc));
+	else
+		gg_change_status(Sess, GG_STATUS_FFC | friends);
+
+	CurrentStatus->setStatus(*NextStatus);
+
+	kdebugf2();
+}
+
+void GaduProtocol::iWantGoDoNotDisturb(const QString &desc)
+{
+	kdebugf();
+
+	//patrz iWantGoOnline()
+	if (whileConnecting)
+		return;
+
+	if (CurrentStatus->isOffline())
+	{
+		login();
+		return;
+	}
+
+	int friends = (NextStatus->isFriendsOnly() ? GG_STATUS_FRIENDS_MASK : 0);
+
+	if (!desc.isEmpty())
+		gg_change_status_descr(Sess, GG_STATUS_DND_DESCR | friends, unicode2cp(desc));
+	else
+		gg_change_status(Sess, GG_STATUS_DND | friends);
+
+	CurrentStatus->setStatus(*NextStatus);
+
+	kdebugf2();
+}
+
 
 void GaduProtocol::protocolUserDataChanged(QString protocolName, UserListElement elem, QString name, QVariant oldValue, QVariant currentValue, bool massively, bool /*last*/)
 {
@@ -2092,9 +2143,13 @@ void GaduProtocol::userListReceived(const struct gg_event *e)
 			case GG_STATUS_NOT_AVAIL:		PRINT_STAT("User %d went offline\n");					break;
 			case GG_STATUS_BLOCKED:			PRINT_STAT("User %d has blocked us\n");					break;
 			case GG_STATUS_BUSY_DESCR:		PRINT_STAT("User %d went busy with description\n");		break;
-			case GG_STATUS_NOT_AVAIL_DESCR:	PRINT_STAT("User %d went offline with description\n");	break;
+			case GG_STATUS_NOT_AVAIL_DESCR:		PRINT_STAT("User %d went offline with description\n");	break;
 			case GG_STATUS_AVAIL_DESCR:		PRINT_STAT("User %d went online with description\n");	break;
-			case GG_STATUS_INVISIBLE_DESCR:	PRINT_STAT("User %d went invisible with description\n");break;
+			case GG_STATUS_INVISIBLE_DESCR:		PRINT_STAT("User %d went invisible with description\n");break;
+			case GG_STATUS_FFC:			PRINT_STAT("User %d went talk with me\n");break;
+			case GG_STATUS_FFC_DESCR:		PRINT_STAT("User %d went talk with me with description\n");break;
+			case GG_STATUS_DND:			PRINT_STAT("User %d went do not disturb\n");break;
+			case GG_STATUS_DND_DESCR:		PRINT_STAT("User %d went do not disturb with description\n");break;
 			default:
 				kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "Unknown status for user %d: %d\n", e->event.notify60[nr].uin, e->event.notify60[nr].status);
 				break;
@@ -2266,6 +2321,10 @@ QString GaduStatus::pixmapName(eUserStatus stat, bool hasDescription, bool mobil
 			return QString("Invisible").append(add);
 		case Blocking:
 			return QString("Blocking");
+		case DND:
+			return QString("Busy").append(add);   //TODO: need icon
+		case FFC:
+			return QString("Online").append(add); //TODO: need icon
 		default:
 			return QString("Offline").append(add);
 	}
@@ -2296,6 +2355,14 @@ int GaduStatus::toStatusNumber(eUserStatus status, bool has_desc)
 
 		case Blocking:
 			sn = GG_STATUS_BLOCKED;
+			break;
+
+		case FFC:
+			sn = has_desc ? GG_STATUS_FFC_DESCR : GG_STATUS_FFC;
+			break;
+
+		case DND:
+			sn = has_desc ? GG_STATUS_DND_DESCR : GG_STATUS_DND;
 			break;
 
 		case Offline:
@@ -2334,6 +2401,18 @@ void GaduStatus::fromStatusNumber(int statusNumber, const QString &description)
 
 		case GG_STATUS_BLOCKED:
 			Stat = Blocking;
+			break;
+
+		case GG_STATUS_FFC_DESCR:
+			Description = description;
+		case GG_STATUS_FFC:
+			Stat = FFC;
+			break;
+
+		case GG_STATUS_DND:
+			Description = description;
+		case GG_STATUS_DND_DESCR:
+			Stat = DND;
 			break;
 
 		case GG_STATUS_NOT_AVAIL_DESCR:

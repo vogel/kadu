@@ -18,6 +18,8 @@ enum eUserStatus
 	Busy, /*!< Zaraz wracam */
 	Invisible, /*!< Ukryty */
 	Offline, /*!< Niedost�pny */
+	FFC, /*!< Porozmawiaj ze mna */
+	DND, /*!< Nie przeszkadzac */
 	Blocking /*!< Blokuj�cy */
 };
 
@@ -136,6 +138,20 @@ public:
 		\return TRUE je�li status oznacza "niedost�pny", FALSE w przeciwnym wypadku.
 	**/
 	static bool isOffline(int index);
+
+	/**
+		\fn bool isTalkWithMe() const
+		Sprawdza czy kontakt jest "porozmawiaj ze mna".
+		\return TRUE je�li jest "porozmawiaj ze mna", FALSE w przeciwnym wypadku.
+	**/
+	bool isTalkWithMe() const;
+
+	/**
+		\fn bool isDnoNotDisturb() const
+		Sprawdza czy kontakt jest "nie przeszkadzac".
+		\return TRUE je�li jest "nie przeszkadzac", FALSE w przeciwnym wypadku.
+	**/
+	bool isDoNotDisturb() const;
 
 	/**
 		\fn bool hasDescription() const
@@ -332,6 +348,20 @@ public slots:
 	void setOffline(const QString &desc = QString::null);
 
 	/**
+		\fn void setTalkWithMe(const QString& desc = "")
+		Ustawia status na "porozmawiaj ze mna" z ewentualnym opisem.
+		\param desc opcjonalny opis. Domy�lnie brak.
+	**/
+	void setTalkWithMe(const QString &desc = QString::null);
+
+	/**
+		\fn void setDoNotDisturb(const QString& desc = "")
+		Ustawia status na "nie przeszkadzac" z ewentualnym opisem.
+		\param desc opcjonalny opis. Domy�lnie brak.
+	**/
+	void setDoNotDisturb(const QString &desc = QString::null);
+
+	/**
 		\fn void setBlocking()
 		Ustawia tryb blokuj�cy statusu.
 	**/
@@ -408,6 +438,20 @@ signals:
 		\param desc Opcjonalny opis. Mo�e mie� warto�� "" je�li status jest bezopisowy.
 	**/
 	void goOffline(const QString &desc);
+
+	/**
+		\fn void goTalkWithMe(const QString& desc)
+		Sygna� emitowany, gdy status jest zmieniany na "porozmawiaj ze mna".
+		\param desc Opcjonalny opis. Mo�e mie� warto�� "" je�li status jest bezopisowy.
+	**/
+	void goTalkWithMe(const QString &desc);
+
+	/**
+		\fn void goDoNotDisturb(const QString& desc)
+		Sygna� emitowany, gdy status jest zmieniany na "nie przeszkadzac".
+		\param desc Opcjonalny opis. Mo�e mie� warto�� "" je�li status jest bezopisowy.
+	**/
+	void goDoNotDisturb(const QString &desc);
 
 	/**
 		\fn void goBlocking()

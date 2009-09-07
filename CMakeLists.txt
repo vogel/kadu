@@ -133,16 +133,7 @@ if (MINGW)
   set (SNDFILE_LIBRARY_DIRS ${MINGW_LIBSNDFILE_DIR})
 else (MINGW)
 
-pkg_search_module (LIBGADU REQUIRED libgadu>=1.8.0)
-
-execute_process (
-	COMMAND grep "#define GG_CONFIG_HAVE_PTHREAD" ${LIBGADU_INCLUDEDIR}/libgadu.h
-	RESULT_VARIABLE LIBGADU_PTHEADS
-)
-
-if (NOT APPLE AND ${LIBGADU_PTHEADS} GREATER 0)
-	message (FATAL_ERROR "libgadu must be compiled with pthreads support")
-endif (NOT APPLE AND ${LIBGADU_PTHEADS} GREATER 0)
+pkg_search_module (LIBGADU REQUIRED libgadu>=1.9.0)
 
 endif (MINGW)
 

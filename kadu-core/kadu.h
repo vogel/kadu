@@ -51,8 +51,12 @@ class KADUAPI Kadu : public KaduMainWindow, ConfigurationAwareObject
 	QActionGroup *changeStatusActionGroup;
 	QAction *changeStatusToOnline;
 	QAction *changeStatusToOnlineDesc;
+	QAction *changeStatusToTalkWithMe;
+	QAction *changeStatusToTalkWithMeDesc;
 	QAction *changeStatusToBusy;
 	QAction *changeStatusToBusyDesc;
+	QAction *changeStatusToDoNotDisturb;
+	QAction *changeStatusToDoNotDisturbDesc;
 	QAction *changeStatusToInvisible;
 	QAction *changeStatusToInvisibleDesc;
 	QAction *changeStatusToOffline;
@@ -136,7 +140,9 @@ private slots:
 	void changePrivateStatusSlot(bool toggled);
 
 	void wentOnline(const QString &);
+	void wentTalkWithMe(const QString &);
 	void wentBusy(const QString &);
+	void wentDoNotDisturb(const QString &);
 	void wentInvisible(const QString &);
 	void wentOffline(const QString &);
 	void connected();
@@ -255,7 +261,9 @@ public slots:
 
 	void setStatus(const UserStatus &status);
 	void setOnline(const QString &description = QString::null);
+	void setTalkWithMe(const QString &description = QString::null);
 	void setBusy(const QString &description = QString::null);
+	void setDoNotDisturb(const QString &description = QString::null);
 	void setInvisible(const QString &description = QString::null);
 	void setOffline(const QString &description = QString::null);
 

@@ -108,6 +108,17 @@ bool UserStatus::isOffline() const
 	return Stat == Offline;
 }
 
+bool UserStatus::isTalkWithMe() const
+{
+	return Stat == FFC;
+}
+
+bool UserStatus::isDoNotDisturb() const
+{
+	return Stat == DND;
+}
+
+
 bool UserStatus::isBlocking() const
 {
 	return Stat == Blocking;
@@ -203,6 +214,36 @@ void UserStatus::setOffline(const QString &desc)
 	delete old;
 }
 
+void UserStatus::setTalkWithMe(const QString &desc)
+{
+	if (Stat == FFC && Description == desc && !Changed)
+		return;
+	UserStatus *old = copy();
+
+	Stat = FFC;
+	Description = desc;
+	Changed = false;
+
+	emit goTalkWithMe(Description);
+	emit changed(*this, *old);
+	delete old;
+}
+
+void UserStatus::setDoNotDisturb(const QString &desc)
+{
+	if (Stat == DND && Description == desc && !Changed)
+		return;
+	UserStatus *old = copy();
+
+	Stat = DND;
+	Description = desc;
+	Changed = false;
+
+	emit goDoNotDisturb(Description);
+	emit changed(*this, *old);
+	delete old;
+}
+
 void UserStatus::setBlocking()
 {
 	if (Stat == Blocking)
@@ -244,6 +285,14 @@ void UserStatus::setDescription(const QString &desc)
 			emit goBlocking();
 			break;
 
+		case FFC:
+			emit goTalkWithMe(Description);
+			break;
+
+		case DND:
+			emit goDoNotDisturb(Description);
+			break;
+
 		case Offline:
 		default:
 			emit goOffline(Description);
@@ -267,6 +316,8 @@ void UserStatus::setFriendsOnly(bool f)
 		case Busy: setBusy(Description); break;
 		case Invisible: setInvisible(Description); break;
 		case Blocking: setBlocking(); break;
+		case FFC: setTalkWithMe(Description); break;
+		case DND: setDoNotDisturb(Description); break;
 		case Offline:
 		default:
 			break;
@@ -284,6 +335,8 @@ void UserStatus::setStatus(const UserStatus &stat)
 		case Busy: setBusy(stat.Description); break;
 		case Invisible: setInvisible(stat.Description); break;
 		case Blocking: setBlocking(); break;
+		case FFC: setTalkWithMe(stat.Description); break;
+		case DND: setDoNotDisturb(stat.Description); break;
 		case Offline:
 		default:
 			setOffline(stat.Description);
@@ -307,6 +360,8 @@ void UserStatus::setStatus(eUserStatus stat, const QString &desc)
 		case Busy: setBusy(desc); break;
 		case Invisible: setInvisible(desc); break;
 		case Blocking: setBlocking(); break;
+		case FFC: setTalkWithMe(desc); break;
+		case DND: setDoNotDisturb(desc); break;
 		case Offline:
 		default:
 			setOffline(desc); break;
@@ -329,6 +384,10 @@ eUserStatus UserStatus::fromString(const QString &stat)
 		return Invisible;
 	if (stat.contains("Blocking"))
 		return Blocking;
+	if (stat.contains("TalkWithMe"))
+		return FFC;
+	if (stat.contains("DoNotDisturb"))
+		return DND;
 	return Offline;
 }
 
@@ -341,6 +400,8 @@ QString UserStatus::toString(eUserStatus stat, bool desc)
 		case Busy: res.append("Busy"); break;
 		case Invisible: res.append("Invisible"); break;
 		case Blocking: res.append("Blocking"); break;
+		case FFC: res.append("TalkWithMe"); break;
+		case DND: res.append("DoNotDisturb"); break;
 		case Offline:
 		default:
 			res.append("Offline");
@@ -377,7 +438,11 @@ QString UserStatus::name(int nr)
 		QT_TR_NOOP("Invisible (d.)"),
 		QT_TR_NOOP("Offline"),
 		QT_TR_NOOP("Offline (d.)"),
-		QT_TR_NOOP("Blocking")
+		QT_TR_NOOP("Blocking"),
+		QT_TR_NOOP("TalkWithMe"),
+		QT_TR_NOOP("TalkWithMe (d.)"),
+		QT_TR_NOOP("DoNotDisturb"),
+		QT_TR_NOOP("DoNotDisturb (d.)"),
 	};
 
 	return names[nr];

@@ -594,6 +594,9 @@ private slots:
 	**/
 	void iWantGoOffline(const QString &);
 
+	void iWantTalkWithMe(const QString &);
+	void iWantGoDoNotDisturb(const QString &);
+
 	/**
 		Przysz�a informacja o dostarczeniu (lub nie) wiadomo�ci.
 		Na podstawie statusu emituje odpowiednie sygna�y message*

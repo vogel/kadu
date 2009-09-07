@@ -20,6 +20,7 @@ set (kadu_SRCS
 	emoticons.cpp
 	expimp.cpp
 	gadu.cpp
+	gadu_resolver.cpp
 	gadu_images_manager.cpp
 	gadu-private.cpp
 	groups_manager.cpp
@@ -82,6 +83,7 @@ set (kadu_MOC_SRCS
 	emoticons.h
 	expimp.h
 	gadu.h
+	gadu_resolver.h
 	gadu_images_manager.h
 	gadu-private.h
 	groups_manager.h
