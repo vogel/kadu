@@ -44,7 +44,7 @@ KaduWindow::KaduWindow(QWidget *parent) :
 		MainWindow(parent), Docked(false)
 {
 	setAttribute(Qt::WA_DeleteOnClose, true);
-	setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
+
 	Actions = new KaduWindowActions(this);
 
 	createGui();
