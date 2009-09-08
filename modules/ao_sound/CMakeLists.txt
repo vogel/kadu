@@ -20,5 +20,4 @@ pkg_search_module (AO REQUIRED ao)
 include_directories (${AO_INCLUDE_DIRS})
 link_directories (${AO_LIBRARY_DIRS})
 
-add_library (ao_sound ${ao_sound} ${SOURCES} ${MOC_FILES})
 target_link_libraries (ao_sound ${AO_LIBRARIES})

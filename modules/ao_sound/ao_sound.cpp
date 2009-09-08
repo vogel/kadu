@@ -20,20 +20,20 @@
   pier... arts wyk³ada ca³e kadu na ao_default_driver_id, 
   wiêc napisa³em w³asn± wersjê tej funkcji pomijaj±c± artsa
 */
-int my_ao_default_driver_id(bool forceCheck=false)
+int my_ao_default_driver_id(bool forceCheck = false)
 {
 	kdebugf();
-	static int lastSelected=-1;
-	if (!forceCheck && lastSelected!=-1)
+	static int lastSelected = -1;
+	if (!forceCheck && lastSelected != -1)
 	{
 		kdebugf2();
 		return lastSelected;
 	}
 
 	int driver_count, selected, nulldriver;
-	nulldriver=ao_driver_id("null");
-	selected=nulldriver;
-	if (selected==-1)
+	nulldriver = ao_driver_id("null");
+	selected = nulldriver;
+	if (selected == -1)
 		return -1;
 	ao_sample_format format;
 	format.bits = 16;
@@ -41,20 +41,20 @@ int my_ao_default_driver_id(bool forceCheck=false)
 	format.rate = 44100;
 	format.byte_format = AO_FMT_LITTLE;
 
-	ao_info **infos=ao_driver_info_list(&driver_count);
-	for (int i=0; i<driver_count; i++)
-		if (infos[i]->priority>=infos[selected]->priority && infos[i]->type==AO_TYPE_LIVE && strcmp("arts", infos[i]->short_name)!=0)
+	ao_info **infos = ao_driver_info_list(&driver_count);
+	for (int i = 0; i < driver_count; i++)
+		if (infos[i]->priority >= infos[selected]->priority && infos[i]->type == AO_TYPE_LIVE && strcmp("arts", infos[i]->short_name) != 0)
 		{
-			ao_device *dev=ao_open_live(ao_driver_id(infos[i]->short_name), &format, NULL);
-			if (dev!=NULL)
-				selected=i;
+			ao_device *dev = ao_open_live(ao_driver_id(infos[i]->short_name), &format, NULL);
+			if (dev != NULL)
+				selected = i;
 			ao_close(dev);
 		}
 	kdebugm(KDEBUG_INFO, "selected driver:%d\n", selected);
 	kdebugm(KDEBUG_INFO, "'%s' '%s' '%s' %d\n", infos[selected]->name, infos[selected]->short_name, infos[selected]->comment, infos[selected]->priority);
-	if (nulldriver==selected)
-		selected=-1;
-	lastSelected=selected;
+	if (nulldriver == selected)
+		selected = -1;
+	lastSelected = selected;
 	kdebugf2();
 	return selected;
 }
@@ -63,7 +63,7 @@ extern "C" int ao_sound_init()
 {
 	kdebugf();
 
-	ao_player_slots = new AOPlayerSlots(NULL, "ao_player_slots");
+	ao_player_slots = new AOPlayerSlots;
 	if (!ao_player_slots->isOk())
 	{
 		delete ao_player_slots;
@@ -108,11 +108,11 @@ bool AOPlayThread::play(const char *path, bool &checkAgain, bool volumeControl, 
 		sound->setVolume(volume);
 
 //	int driver_id=ao_default_driver_id();
-	int driver_id=my_ao_default_driver_id(checkAgain);
-	checkAgain=false;
-	if (driver_id==-1)
+	int driver_id = my_ao_default_driver_id(checkAgain);
+	checkAgain = false;
+	if (driver_id == -1)
 	{
-		checkAgain=true;
+		checkAgain = true;
 		kdebugmf(KDEBUG_WARNING, "cannot get default driver id!\n");
 		delete sound;
 		kdebugf2();
@@ -126,19 +126,19 @@ bool AOPlayThread::play(const char *path, bool &checkAgain, bool volumeControl, 
 	format.byte_format = AO_FMT_LITTLE;
 
 	ao_device *device=ao_open_live(driver_id, &format, NULL);
-	if (device==NULL)
+	if (device == NULL)
 	{
-		checkAgain=true;
+		checkAgain = true;
 		kdebugmf(KDEBUG_WARNING, "cannot open device!\n");
 		delete sound;
 		kdebugf2();
 		return false;
 	}
 	
-	int ret=ao_play(device, (char *)sound->data, sound->length*sizeof(short));
-	if (ret==0)
+	int ret = ao_play(device, (char *)sound->data, sound->length*sizeof(short));
+	if (ret == 0)
 	{
-		checkAgain=true;
+		checkAgain = true;
 		kdebugmf(KDEBUG_WARNING, "ao_play()==0\n");
 		ao_close(device);
 		delete sound;
@@ -152,7 +152,7 @@ bool AOPlayThread::play(const char *path, bool &checkAgain, bool volumeControl, 
 	return true;
 }
 
-AOPlayerSlots::AOPlayerSlots(QObject *parent, const char *name) : QObject(parent, name)
+AOPlayerSlots::AOPlayerSlots(QObject *parent) : QObject(parent)
 {
 	kdebugf();
 	ao_initialize();
@@ -178,12 +178,12 @@ AOPlayerSlots::~AOPlayerSlots()
 	if (thread)
 	{
 		thread->mutex.lock();
-		thread->end=true;
+		thread->end = true;
 		thread->mutex.unlock();
 		thread->semaphore->release();
 		thread->wait();
 		delete thread;
-		thread=NULL;
+		thread = NULL;
 	}
 
 	ao_shutdown();
@@ -233,7 +233,7 @@ void AOPlayThread::run()
 		if (!list.isEmpty())
 		{
 			SndParams2 p = list.takeFirst();
-			play(p.filename.local8Bit().data(), checkAgain, p.volumeControl, p.volume);
+			play(p.filename.toLocal8Bit().data(), checkAgain, p.volumeControl, p.volume);
 		}
 		mutex.unlock();
 		kdebugm(KDEBUG_INFO, "unlocked\n");

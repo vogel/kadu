@@ -15,8 +15,10 @@
 
 #include "debug.h"
 #include "modules.h"
-#include "kadu_parser.h"
-#include "config_file.h"
+#include "parser/parser.h"
+#include "configuration/configuration-file.h"
+#include "gui/windows/main-configuration-window.h"
+#include "misc/path-conversion.h"
 
 QDateTime started;
 ParserExtender *parserExtender;
@@ -26,7 +28,7 @@ extern "C" int parser_extender_init()
 	kdebugf();
 
 	parserExtender = new ParserExtender();
-	MainConfigurationWindow::registerUiFile(dataPath("kadu/modules/configuration/parser_extender.ui"), parserExtender);
+	MainConfigurationWindow::registerUiFile(dataPath("kadu/modules/configuration/parser_extender.ui"));
 
 	kdebugf2();
 	return 0;
@@ -37,9 +39,9 @@ extern "C" void parser_extender_close()
 {
 	kdebugf();
 
-	MainConfigurationWindow::unregisterUiFile(dataPath("kadu/modules/configuration/parser_extender.ui"), parserExtender);
+	MainConfigurationWindow::unregisterUiFile(dataPath("kadu/modules/configuration/parser_extender.ui"));
 	delete parserExtender;
-	parserExtender = NULL;
+	parserExtender = 0;
 
 	kdebugf2();
 }
@@ -123,68 +125,69 @@ QString getUptime(int mode)
 }
 
 /* Returns current time (without secs) */
-QString parseTime(const UserListElement &ule)
+QString parseTime(const Contact &contact)
 {
     return QDateTime::currentDateTime().toString("h:mm");
 }
 
 /* Returns current time (with secs) */
-QString parseLongTime(const UserListElement &ule)
+QString parseLongTime(const Contact &contact)
 {
     return QDateTime::currentDateTime().toString("hh:mm:ss");
 }
 
 /* Returns current date (without year) */
-QString parseDate(const UserListElement &ule)
+QString parseDate(const Contact &contact)
 {
 	return QDateTime::currentDateTime().toString("dd-MM");
 }
 
 /* Returns current date (with year) */
-QString parseLongDate(const UserListElement &ule)
+QString parseLongDate(const Contact &contact)
 {
 	return QDateTime::currentDateTime().toString("dd-MM-yyyy");
 }
 
 /* Returns time of module start (without seconds) */
-QString parseStartTime(const UserListElement &ule)
+QString parseStartTime(const Contact &contact)
 {
 	return started.toString("hh:mm");
 }
 
 /* Returns time of module start (with seconds) */
-QString parseLongStartTime(const UserListElement &ule)
+QString parseLongStartTime(const Contact &contact)
 {
 	return  started.toString("dd-MM-yy hh:mm:ss");
 }
 
 /* Returns uptime (seconds) */
-QString parseUptime(const UserListElement &ule)
+QString parseUptime(const Contact &contact)
 {
 	return getUptime(0);
 }
 
 /* Returns uptime (formatted) */
-QString parseLongUptime(const UserListElement &ule)
+QString parseLongUptime(const Contact &contact)
 {
 	return getUptime(1);
 }
 
 /* Returns Kadu uptime */
-QString parseKaduUptime(const UserListElement &ule) 
+QString parseKaduUptime(const Contact &contact)
 {
 	return getKaduUptime(0);
 }
 
 /* Returns Kadu uptime (formatted) */
-QString parseLongKaduUptime(const UserListElement &ule)
+QString parseLongKaduUptime(const Contact &contact)
 {
 	return getKaduUptime(1);
 }
 
 ParserExtender::ParserExtender()
 {
-	if (config_file.readEntry("PowerKadu", "enable_parser_extender") == "true") {
+	if (config_file.readEntry("PowerKadu", "enable_parser_extender") == "true")
+	{
 		init();
 		isStarted = true;
 	}
@@ -204,45 +207,43 @@ void ParserExtender::init()
 	started = QDateTime::currentDateTime();
 
 	/* register tags */	
-	KaduParser::registerTag("time", &parseTime);
-	KaduParser::registerTag("time-long", &parseLongTime);
-	KaduParser::registerTag("date", &parseDate);
-	KaduParser::registerTag("date-long", &parseLongDate);
-	KaduParser::registerTag("start", &parseStartTime);
-	KaduParser::registerTag("start-long", &parseLongStartTime);
-	KaduParser::registerTag("uptime", &parseUptime);
-	KaduParser::registerTag("uptime-long", &parseLongUptime);
-	KaduParser::registerTag("kuptime", &parseKaduUptime);
-	KaduParser::registerTag("kuptime-long", &parseLongKaduUptime);
+	Parser::registerTag("time", &parseTime);
+	Parser::registerTag("time-long", &parseLongTime);
+	Parser::registerTag("date", &parseDate);
+	Parser::registerTag("date-long", &parseLongDate);
+	Parser::registerTag("start", &parseStartTime);
+	Parser::registerTag("start-long", &parseLongStartTime);
+	Parser::registerTag("uptime", &parseUptime);
+	Parser::registerTag("uptime-long", &parseLongUptime);
+	Parser::registerTag("kuptime", &parseKaduUptime);
+	Parser::registerTag("kuptime-long", &parseLongKaduUptime);
 }
 
 void ParserExtender::close()
 {
 	/* unregister tags */
-	KaduParser::unregisterTag("time", &parseTime);
-	KaduParser::unregisterTag("time-long", &parseLongTime);
-	KaduParser::unregisterTag("date", &parseDate);
-	KaduParser::unregisterTag("date-long", &parseLongDate);
-	KaduParser::unregisterTag("start", &parseStartTime);
-	KaduParser::unregisterTag("start-long", &parseLongStartTime);
-	KaduParser::unregisterTag("uptime", &parseUptime);
-	KaduParser::unregisterTag("uptime-long", &parseLongUptime);
-	KaduParser::unregisterTag("kuptime", &parseKaduUptime);
-	KaduParser::unregisterTag("kuptime-long", &parseLongKaduUptime);
+	Parser::unregisterTag("time", &parseTime);
+	Parser::unregisterTag("time-long", &parseLongTime);
+	Parser::unregisterTag("date", &parseDate);
+	Parser::unregisterTag("date-long", &parseLongDate);
+	Parser::unregisterTag("start", &parseStartTime);
+	Parser::unregisterTag("start-long", &parseLongStartTime);
+	Parser::unregisterTag("uptime", &parseUptime);
+	Parser::unregisterTag("uptime-long", &parseLongUptime);
+	Parser::unregisterTag("kuptime", &parseKaduUptime);
+	Parser::unregisterTag("kuptime-long", &parseLongKaduUptime);
 }
 
 void ParserExtender::configurationUpdated()
 {
-	if ((config_file.readEntry("PowerKadu", "enable_parser_extender") == "false") && isStarted) {
+	if ((config_file.readEntry("PowerKadu", "enable_parser_extender") == "false") && isStarted)
+	{
 		close();
 		isStarted = false;
 	}
-	else if ((config_file.readEntry("PowerKadu", "enable_parser_extender") == "true") && !isStarted) {
+	else if ((config_file.readEntry("PowerKadu", "enable_parser_extender") == "true") && !isStarted)
+	{
 		init();
 		isStarted = true;
 	}
-}
-
-void ParserExtender::mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow)
-{
 }

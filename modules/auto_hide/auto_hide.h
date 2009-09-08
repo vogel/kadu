@@ -2,8 +2,8 @@
 #define AUTO_HIDE_H
 
 #include <QtCore/QTimer>
-#include "configuration_aware_object.h"
-#include "main_configuration_window.h"
+#include "configuration/configuration-aware-object.h"
+#include "gui/windows/main-configuration-window.h"
 
 /*!
  * This class provides autohiding Kadu's main window after preset time.
@@ -18,7 +18,7 @@ class AutoHide : public ConfigurationUiHandler, ConfigurationAwareObject
 		 * \param *parent parent object
 		 * \param *name object's name
 		 */
-		AutoHide(QObject *parent = 0, const char *name = 0);
+		AutoHide(QObject *parent = 0);
 
 		//! Default destructor
 		~AutoHide();

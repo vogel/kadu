@@ -481,15 +481,27 @@ void ToolBar::loadFromConfig(QDomElement toolbar_element)
 QMenu * ToolBar::createContextMenu(QToolButton *button)
 {
 	QMenu *menu = new QMenu(this);
+	connect(menu, SIGNAL(aboutToShow()), this, SLOT(slotContextAboutToShow()));
 
 	if (isMovable())
 	{
 		currentButton = button;
 		if (button)
 		{
-			QAction *showLabel = menu->addAction(tr("Show text label"), this, SLOT(showTextLabel()));
-			showLabel->setCheckable(true);
-			showLabel->setChecked(button->toolButtonStyle() != Qt::ToolButtonIconOnly);
+			QMenu *textPositionMenu = new QMenu(tr("Text position"), this);
+			IconsOnly = textPositionMenu->addAction(tr( "Icon only"), this, SLOT(slotContextIcons()));
+			IconsOnly->setChecked(true);
+			TextOnly = textPositionMenu->addAction(tr("Text only"), this, SLOT(slotContextText()));
+			Text = textPositionMenu->addAction(tr("Text alongside icon"), this, SLOT(slotContextTextRight()));
+			TextUnder = textPositionMenu->addAction(tr("Text under icon"), this, SLOT(slotContextTextUnder()));
+
+			QActionGroup* textGroup = new QActionGroup(textPositionMenu);
+			foreach (QAction* action, textPositionMenu->actions())
+			{
+				action->setActionGroup(textGroup);
+				action->setCheckable(true);
+			}
+			menu->addMenu(textPositionMenu);
 
 			menu->addAction(tr("Delete button"), this, SLOT(deleteButton()));
 
@@ -605,7 +617,7 @@ void ToolBar::deleteButton()
 	if (!currentButton)
 		return;
 
-	foreach(const ToolBarAction &toolBarAction, ToolBarActions)
+	foreach (const ToolBarAction &toolBarAction, ToolBarActions)
 		if (toolBarAction.button == currentButton)
 		{
 			// TODO: again, lame solution
@@ -619,7 +631,7 @@ void ToolBar::deleteButton()
 
 void ToolBar::deleteAction(const QString &actionName)
 {
-	foreach(const ToolBarAction &toolBarAction, ToolBarActions)
+	foreach (const ToolBarAction &toolBarAction, ToolBarActions)
 		if (toolBarAction.actionName == actionName)
 		{
 			removeAction(toolBarAction.action);
@@ -627,6 +639,64 @@ void ToolBar::deleteAction(const QString &actionName)
 			return;
 		}
 
+}
+
+void ToolBar::slotContextIcons()
+{
+    	if (!currentButton)
+		return;
+
+	currentButton->setToolButtonStyle(Qt::ToolButtonIconOnly);
+}
+
+void ToolBar::slotContextText()
+{
+	if (!currentButton)
+		return;
+
+	currentButton->setToolButtonStyle(Qt::ToolButtonTextOnly);
+}
+ 
+void ToolBar::slotContextTextUnder()
+{
+	if (!currentButton)
+		return;
+
+	currentButton->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
+}
+ 
+void ToolBar::slotContextTextRight()
+{
+	if (!currentButton)
+		return;
+
+	currentButton->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
+}
+
+void ToolBar::slotContextAboutToShow()
+{
+	if (!currentButton)
+		return;
+	// Check the actions that should be checked
+	switch (currentButton->toolButtonStyle())
+	{
+		case Qt::ToolButtonIconOnly:
+		default:
+		    IconsOnly->setChecked(true);
+		    break;
+
+		case Qt::ToolButtonTextBesideIcon:
+		    Text->setChecked(true);
+		    break;
+
+		case Qt::ToolButtonTextOnly:
+		    TextOnly->setChecked(true);
+		    break;
+
+		case Qt::ToolButtonTextUnderIcon:
+		    TextUnder->setChecked(true);
+		    break;
+	}
 }
 
 ActionDrag::ActionDrag(const QString &actionName, bool showLabel, QWidget* dragSource)

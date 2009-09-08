@@ -37,6 +37,7 @@ class KADUAPI ToolBar : public QToolBar, public ConfigurationAwareObject
 
 	// TODO: ugly hack
 	QToolButton *currentButton;
+	QAction *IconsOnly, *TextOnly, *Text, *TextUnder;
 
 	struct ToolBarAction {
 		QString actionName;
@@ -85,6 +86,13 @@ private slots:
 	void buttonPressed();
 
 	QMenu * createContextMenu(QToolButton *button);
+
+	void slotContextIcons();
+	void slotContextText();
+	void slotContextTextUnder(); 
+	void slotContextTextRight();
+
+	void slotContextAboutToShow();
 
 protected:
 	/**

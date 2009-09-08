@@ -279,9 +279,10 @@ KaduWindowActions::KaduWindowActions(QObject *parent) : QObject(parent)
 	AddUser->setShortcut("kadu_adduser", Qt::ApplicationShortcut);
 
 	AddGroup = new ActionDescription(this,
-		ActionDescription::TypeMainMenu, "addGroupAction",
+		ActionDescription::TypeGlobal, "addGroupAction",
 		this, SLOT(addGroupActionActivated(QAction *, bool)),
-		"", tr("Add Group...")
+		//TODO 0.6.6 proper icon
+		"AddUser", tr("Add Group...")
 	);
 
 	OpenSearch = new ActionDescription(this,

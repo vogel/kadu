@@ -34,7 +34,7 @@ class AOPlayThread : public QThread
 		~AOPlayThread();
 		void run();
 	private:
-		static bool play(const char *path, bool &checkAgain, bool volCntrl=false, float vol=1);
+		static bool play(const char *path, bool &checkAgain, bool volCntrl = false, float vol = 1);
 };
 
 class AOPlayerSlots : public QObject
@@ -43,7 +43,7 @@ class AOPlayerSlots : public QObject
 	private:
 		AOPlayThread *thread;
 	public:
-		AOPlayerSlots(QObject *parent=0, const char *name=0);
+		AOPlayerSlots(QObject *parent = 0);
 		~AOPlayerSlots();
 		bool isOk();
 	private slots:
