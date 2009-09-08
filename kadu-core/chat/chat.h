@@ -57,4 +57,6 @@ signals:
 
 };
 
+Q_DECLARE_METATYPE(Chat *)
+
 #endif // CHAT_H

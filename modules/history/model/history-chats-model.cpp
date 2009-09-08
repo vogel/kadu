@@ -9,6 +9,7 @@
 
 #include "chat/chat.h"
 #include "chat/type/chat-type-manager.h"
+#include "contacts/model/contacts-model-base.h"
 
 #include "history-chats-model.h"
 
@@ -97,6 +98,9 @@ QVariant HistoryChatsModel::chatData(const QModelIndex &index, int role) const
 	{
 		case Qt::DisplayRole:
 			return chat->name();
+
+		case ChatRole:
+			return QVariant::fromValue<Chat *>(chat);
 	}
 
 	return QVariant();
