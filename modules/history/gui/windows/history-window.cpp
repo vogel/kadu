@@ -16,6 +16,7 @@
 #include <QtGui/QStatusBar>
 #include <QtGui/QVBoxLayout>
 
+#include "contacts/model/contacts-model-base.h"
 #include "gui/actions/actions.h"
 #include "gui/widgets/chat-widget-manager.h"
 #include "gui/windows/message-box.h"
@@ -224,6 +225,8 @@ HistoryWindow::HistoryWindow() : QWidget(NULL), isSearchInProgress(0), closeDema
 	ChatsModel = new HistoryChatsModel(this);
 	ChatsTree->setModel(ChatsModel);
 	ChatsTree->setRootIsDecorated(true);
+	connect(ChatsTree, SIGNAL(activated(const QModelIndex &)), this, SLOT(chatActivated(const QModelIndex &)));
+
 
 	QWidget *vbox = new QWidget(splitter);
 	QVBoxLayout *vbox_lay = new QVBoxLayout();
@@ -239,7 +242,6 @@ HistoryWindow::HistoryWindow() : QWidget(NULL), isSearchInProgress(0), closeDema
 	splitter->setSizes(sizes);
 	vbox->setLayout(vbox_lay);
 	grid->addWidget(splitter, 0, 1, 0, 4);
-	connect(ChatsTree, SIGNAL(itemClicked(QTreeWidgetItem*, int)), this, SLOT(mainListItemClicked(QTreeWidgetItem*, int)));
 
 	ChatsTree->setContextMenuPolicy(Qt::CustomContextMenu);
 	connect(ChatsTree, SIGNAL(customContextMenuRequested(QPoint)),
@@ -423,17 +425,18 @@ void HistoryWindow::removeHistoryEntriesPerDate()
 	kdebugf2();
 }
 
-void HistoryWindow::mainListItemClicked(QTreeWidgetItem* item, int column)
+void HistoryWindow::chatActivated(const QModelIndex &index)
 {
 	kdebugf();
 	main->getDetailsListView()->clear();
-	MainListItem* mainListItem = dynamic_cast<MainListItem*>(item);
 
-	if (mainListItem == NULL || item == NULL)
+	Chat *chat = index.data(ChatRole).value<Chat *>();
+	if (0 == chat)
 		return;
-	QList<QDate> chatDates = History::instance()->datesForChat(mainListItem->chat());
+
+	QList<QDate> chatDates = History::instance()->datesForChat(chat);
 	foreach (QDate date, chatDates)
-		new DetailsListItem(main->getDetailsListView(), mainListItem->chat(), date);
+		new DetailsListItem(main->getDetailsListView(), chat, date);
 
 	QTreeWidgetItem* lastItem = main->getDetailsListView()->itemAt(0, main->getDetailsListView()->topLevelItemCount());
 	main->getDetailsListView()->setCurrentItem(lastItem);
