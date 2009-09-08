@@ -488,9 +488,20 @@ QMenu * ToolBar::createContextMenu(QToolButton *button)
 		currentButton = button;
 		if (button)
 		{
-			QAction *showLabel = menu->addAction(tr("Show text label"), this, SLOT(showTextLabel()));
-			showLabel->setCheckable(true);
-			showLabel->setChecked(button->toolButtonStyle() != Qt::ToolButtonIconOnly);
+			QMenu *textPositionMenu = new QMenu(tr("Text position"), this);
+			IconsOnly = textPositionMenu->addAction(tr( "Icon only"), this, SLOT(slotContextIcons()));
+			IconsOnly->setChecked(true);
+			TextOnly = textPositionMenu->addAction(tr("Text only"), this, SLOT(slotContextText()));
+			Text = textPositionMenu->addAction(tr("Text alongside icon"), this, SLOT(slotContextTextRight()));
+			TextUnder = textPositionMenu->addAction(tr("Text under icon"), this, SLOT(slotContextTextUnder()));
+
+			QActionGroup* textGroup = new QActionGroup(textPositionMenu);
+			foreach (QAction* action, textPositionMenu->actions())
+			{
+				action->setActionGroup(textGroup);
+				action->setCheckable(true);
+			}
+			menu->addMenu(textPositionMenu);
 
 			menu->addAction(tr("Delete button"), this, SLOT(deleteButton()));
 
@@ -524,21 +535,6 @@ QMenu * ToolBar::createContextMenu(QToolButton *button)
 			actionsMenu->addAction(tr("No items to add found"))->setEnabled(false);
 		else
 			connect(actionsMenu, SIGNAL(triggered(QAction *)), this, SLOT(addButtonClicked(QAction *)));
-
-		QMenu *textPositionMenu = new QMenu(tr("Text position"), this);
-		IconsOnly = textPositionMenu->addAction(tr( "Icons only"), this, SLOT(slotContextIcons()));
-		IconsOnly->setChecked(true);
-		TextOnly = textPositionMenu->addAction(tr("Text only"), this, SLOT(slotContextText()));
-		Text = textPositionMenu->addAction(tr("Text alongside icons"), this, SLOT(slotContextTextRight()));
-		TextUnder = textPositionMenu->addAction(tr("Text under icons"), this, SLOT(slotContextTextUnder()));
-
-		QActionGroup* textGroup = new QActionGroup(textPositionMenu);
-		foreach (QAction* action, textPositionMenu->actions()) 
-		{
-			action->setActionGroup(textGroup);
-			action->setCheckable(true);
-		}
-		menu->addMenu(textPositionMenu);
 
 		menu->addAction(tr("Delete toolbar"), this, SLOT(deleteToolbar()));
 		menu->addMenu(actionsMenu);
@@ -621,7 +617,7 @@ void ToolBar::deleteButton()
 	if (!currentButton)
 		return;
 
-	foreach(const ToolBarAction &toolBarAction, ToolBarActions)
+	foreach (const ToolBarAction &toolBarAction, ToolBarActions)
 		if (toolBarAction.button == currentButton)
 		{
 			// TODO: again, lame solution
@@ -635,7 +631,7 @@ void ToolBar::deleteButton()
 
 void ToolBar::deleteAction(const QString &actionName)
 {
-	foreach(const ToolBarAction &toolBarAction, ToolBarActions)
+	foreach (const ToolBarAction &toolBarAction, ToolBarActions)
 		if (toolBarAction.actionName == actionName)
 		{
 			removeAction(toolBarAction.action);
@@ -647,45 +643,59 @@ void ToolBar::deleteAction(const QString &actionName)
 
 void ToolBar::slotContextIcons()
 {
-	setToolButtonStyle(Qt::ToolButtonIconOnly);
+    	if (!currentButton)
+		return;
+
+	currentButton->setToolButtonStyle(Qt::ToolButtonIconOnly);
 }
 
 void ToolBar::slotContextText()
 {
-	setToolButtonStyle(Qt::ToolButtonTextOnly);
+	if (!currentButton)
+		return;
+
+	currentButton->setToolButtonStyle(Qt::ToolButtonTextOnly);
 }
  
 void ToolBar::slotContextTextUnder()
 {
-	setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
+	if (!currentButton)
+		return;
+
+	currentButton->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
 }
  
 void ToolBar::slotContextTextRight()
 {
-	setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
+	if (!currentButton)
+		return;
+
+	currentButton->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
 }
 
 void ToolBar::slotContextAboutToShow()
 {
+	if (!currentButton)
+		return;
 	// Check the actions that should be checked
-	switch (toolButtonStyle()) 
+	switch (currentButton->toolButtonStyle())
 	{
 		case Qt::ToolButtonIconOnly:
 		default:
-		IconsOnly->setChecked(true);
-		break;
+		    IconsOnly->setChecked(true);
+		    break;
 
 		case Qt::ToolButtonTextBesideIcon:
-		Text->setChecked(true);
-		break;
+		    Text->setChecked(true);
+		    break;
 
 		case Qt::ToolButtonTextOnly:
-		TextOnly->setChecked(true);
-		break;
+		    TextOnly->setChecked(true);
+		    break;
 
 		case Qt::ToolButtonTextUnderIcon:
-		TextUnder->setChecked(true);
-		break;
+		    TextUnder->setChecked(true);
+		    break;
 	}
 }
 
