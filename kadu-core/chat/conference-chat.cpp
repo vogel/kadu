@@ -48,5 +48,15 @@ void ConferenceChat::store()
 
 ChatType ConferenceChat::type() const
 {
-	return ChatTypeManager::instance()->chatType("Conference");
+	return ChatTypeManager::instance()->chatType("ConferenceChat");
+}
+
+QString ConferenceChat::name() const
+{
+	QStringList displays;
+	foreach (Contact contact, CurrentContacts)
+		displays.append(contact.display());
+
+	displays.sort();
+	return displays.join(", ");
 }

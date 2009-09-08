@@ -51,10 +51,15 @@ void SimpleChat::store()
 
 ChatType SimpleChat::type() const
 {
-	return ChatTypeManager::instance()->chatType("Chat");
+	return ChatTypeManager::instance()->chatType("SimpleChat");
 }
 
 ContactSet SimpleChat::contacts() const
 {
 	return ContactSet(CurrentContact);
+}
+
+QString SimpleChat::name() const
+{
+	return CurrentContact.display();
 }
