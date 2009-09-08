@@ -82,10 +82,21 @@ QVariant HistoryChatsModel::chatTypeData(const QModelIndex &index, int role) con
 
 QVariant HistoryChatsModel::chatData(const QModelIndex &index, int role) const
 {
+	const QList<ChatType> &chatTypes = ChatTypeManager::instance()->chatTypes();
+	if (index.internalId() < 0 || index.internalId() >= chatTypes.size())
+		return QVariant();
+
+	const ChatType &chatType = chatTypes.at(index.internalId());
+	const QList<Chat *> chats = Chats.value(chatType);
+	if (index.row() < 0 || index.row() >= chats.size())
+		return QVariant();
+
+	Chat *chat = chats.at(index.row());
+
 	switch (role)
 	{
 		case Qt::DisplayRole:
-			return "this is chat";
+			return chat->name();
 	}
 
 	return QVariant();
