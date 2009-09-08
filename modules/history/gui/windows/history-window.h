@@ -75,40 +75,6 @@ class HISTORYAPI HistorySearchResult
 		int resultsShowMode;  /*!< Tryb wy�wietlania wynik�w. */
 };
 
-
-/*!
-\class MainListItem
-\brief Pojedyncza pozycja z g��wnej listy w oknie przegl�dania historii.
-*/
-class MainListItem : public QTreeWidgetItem
-{
-	private:
-		Chat *CurrentChat; /*!< Lista u�ytkownik�w reprezentowanych przez dan� pozycj� na li�cie */
-		/**
-       		Tworzy tekst b�d�cy nazw� danego elementu na li�cie.
-		*/
-		void prepareText();
- 
-	public:
-		/**
-       		Standardowy konstruktor dla g��wnego elementu listy g��wnej.
-		@param parent nadrz�dny treewidget
-		@param uids lista u�ytkownik�w
-		*/
-		MainListItem(QTreeWidget* parent, Chat *chat);
-		/**
-       		Standardowy konstruktor dla podrz�dnego elementu listy g��wnej.
-		@param parent nadrz�dny element
-		@param uids lista u�ytkownik�w
-		*/
-		MainListItem(QTreeWidgetItem* parent, Chat *chat);
-		/**
-       		Zwraca list� u�ytkownik�w reprezentowan� przez dany element.
-		@return Lista u�ytkownik�w przypisana do danego elementu.
-		*/
-		Chat * chat() const { return CurrentChat; }
-};
- 
 /*!
 \class DetailsListViewText
 \brief Lista widoku szczeg��owego wg. dat rozm�w w oknie przegl�dania historii

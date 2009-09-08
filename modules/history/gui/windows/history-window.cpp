@@ -31,33 +31,6 @@
 #include "history-window.h"
 #include <QItemDelegate>
 
-MainListItem::MainListItem(QTreeWidget *parent, Chat *chat)
-	: QTreeWidgetItem(parent), CurrentChat(chat)
-{
-	prepareText();	
-}
-
-MainListItem::MainListItem(QTreeWidgetItem* parent, Chat *chat)
-	: QTreeWidgetItem(parent), CurrentChat(chat)
-{
-	prepareText();
-}
-
-void MainListItem::prepareText()
-{
-	QString name;
-	unsigned int i = 0;
-	ContactList contacts = CurrentChat->contacts().toContactList();
-	unsigned int count = contacts.count();
-	foreach(Contact uid, contacts)
-	{
-		name.append(uid.display());
-		if (i++ < count - 1)
-			name.append(", ");
-	}
-	setText(0, name);
-}
- 
 DetailsListItem::DetailsListItem(QTreeWidget* parent, Chat *chat, QDate date)
 	: QTreeWidgetItem(parent), Date(date), CurrentChat(chat)
 {
