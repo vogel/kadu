@@ -175,6 +175,8 @@ void Speech::import_0_5_0_Configuration()
 		config_file.writeEntry("Speech", "StatusChanged/ToBusy_Syntax/Female", entry);
 		config_file.writeEntry("Speech", "StatusChanged/ToInvisible_Syntax/Female", entry);
 		config_file.writeEntry("Speech", "StatusChanged/ToOffline_Syntax/Female", entry);
+		config_file.writeEntry("Speech", "StatusChanged/ToTalkWithMe_Syntax/Female", entry);
+		config_file.writeEntry("Speech", "StatusChanged/ToDoNotDisturb_Syntax/Female", entry);
 	}
 	config_file.removeVariable("Speech", "NotifyFormatFemale");
 
@@ -185,6 +187,8 @@ void Speech::import_0_5_0_Configuration()
 		config_file.writeEntry("Speech", "StatusChanged/ToBusy_Syntax/Male", entry);
 		config_file.writeEntry("Speech", "StatusChanged/ToInvisible_Syntax/Male", entry);
 		config_file.writeEntry("Speech", "StatusChanged/ToOffline_Syntax/Male", entry);
+		config_file.writeEntry("Speech", "StatusChanged/ToTalkWithMe_Syntax/Male", entry);
+		config_file.writeEntry("Speech", "StatusChanged/ToDoNotDisturb_Syntax/Male", entry);
 	}
 	config_file.removeVariable("Speech", "NotifyFormatMale");
 

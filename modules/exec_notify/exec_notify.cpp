@@ -90,6 +90,8 @@ ExecNotify::ExecNotify(QObject *parent, const char *name) : Notifier(parent, nam
 	config_file.addVariable("Exec Notify", "StatusChanged/ToBusyCmd", "Xdialog --msgbox \"#{protocol} %u #{event}\" 10 100");
 	config_file.addVariable("Exec Notify", "StatusChanged/ToInvisibleCmd", "Xdialog --msgbox \"#{protocol} %u #{event}\" 10 100");
 	config_file.addVariable("Exec Notify", "StatusChanged/ToOfflineCmd", "Xdialog --msgbox \"#{protocol} %u #{event}\" 10 100");
+	config_file.addVariable("Exec Notify", "StatusChanged/ToTalkWithMe", "Xdialog --msgbox \"#{protocol} %u #{event}\" 10 100");
+	config_file.addVariable("Exec Notify", "StatusChanged/ToDoNotDisturb", "Xdialog --msgbox \"#{protocol} %u #{event}\" 10 100");
 
 	notification_manager->registerNotifier(QT_TRANSLATE_NOOP("@default", "Exec"), this);
 

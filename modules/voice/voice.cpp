@@ -78,7 +78,7 @@ void disableNonVoiceUles(KaduAction *action)
 
 	unsigned int myUin = config_file.readUnsignedNumEntry("General", "UIN");
 	UserListElement user = ules[0];
-	if (user.usesProtocol("Gadu") && user.ID("Gadu").toUInt() != myUin && (user.status("Gadu").isOnline() || user.status("Gadu").isBusy()))
+	if (user.usesProtocol("Gadu") && user.ID("Gadu").toUInt() != myUin && (user.status("Gadu").isOnline() || user.status("Gadu").isBusy() || user.status("Gadu").isTalkWithMe() || user.status("Gadu").isDoNotDisturb()))
 	{
 		action->setEnabled(true);
 		return;

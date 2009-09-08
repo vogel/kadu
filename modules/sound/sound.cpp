@@ -333,6 +333,8 @@ void SoundManager::createDefaultConfiguration()
 	config_file.addVariable("Notify", "NewMessage_Sound", true);
 	config_file.addVariable("Notify", "StatusChanged/ToOnline_Sound", true);
 	config_file.addVariable("Notify", "StatusChanged/ToBusy_Sound", true);
+	config_file.addVariable("Notify", "StatusChanged/ToTalkWithMe_Sound", true);
+	config_file.addVariable("Notify", "StatusChanged/ToDoNotDisturb_Sound", true);
 	config_file.addVariable("Notify", "FileTransfer/IncomingFile_Sound", true);
 
 	config_file.addVariable("Sounds", "PlaySound", true);

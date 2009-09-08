@@ -29,7 +29,9 @@ public:
 		NoChangeStatus,
 		ChangeStatusToBusy,
 		ChangeStatusToInvisible,
-		ChangeStatusToOffline
+		ChangeStatusToOffline,
+		ChangeStatusToTalkWithMe,
+		ChangeStatusToDoNotDisturb
 	};
 
 	enum ChangeDescriptionTo {
@@ -67,10 +69,12 @@ class AutoAway : public ConfigurationUiHandler, ConfigurationAwareObject
 	unsigned int autoAwayTime;
 	unsigned int autoDisconnectTime;
 	unsigned int autoInvisibleTime;
+	unsigned int autoDNDTime;
 
 	bool autoAwayEnabled;
 	bool autoInvisibleEnabled;
 	bool autoDisconnectEnabled;
+	bool autoDNDEnabled;
 	bool parseAutoStatus;
 
 	bool updateDescripion;
@@ -82,6 +86,7 @@ class AutoAway : public ConfigurationUiHandler, ConfigurationAwareObject
 	QSpinBox *autoAwaySpinBox;
 	QSpinBox *autoInvisibleSpinBox;
 	QSpinBox *autoOfflineSpinBox;
+	QSpinBox *autoDNDSpinBox;
 	QSpinBox *autoRefreshSpinBox;
 
 	QLineEdit *descriptionTextLineEdit;
@@ -102,6 +107,7 @@ private slots:
 	void autoAwaySpinBoxValueChanged(int value);
 	void autoInvisibleSpinBoxValueChanged(int value);
 	void autoOfflineSpinBoxValueChanged(int value);
+	void autoDNDSpinBoxValueChanged(int value);
 
 	void descriptionChangeChanged(int index);
 

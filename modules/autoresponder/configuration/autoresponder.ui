@@ -10,6 +10,8 @@
 				<check-box caption="Status invisible" config-section="Autoresponder" config-item="StatusInvisible" />
 				<check-box caption="Status busy" config-section="Autoresponder" config-item="StatusBusy" />
 				<check-box caption="Status available" config-section="Autoresponder" config-item="StatusAvailable" />
+				<check-box caption="Status talk with me" config-section="Autoresponder" config-item="StatusTalkWithMe" />
+				<check-box caption="Status do not disturb" config-section="Autoresponder" config-item="StatusDoNotDisturb" />
 			</group-box>
 		</tab>
 	</section>

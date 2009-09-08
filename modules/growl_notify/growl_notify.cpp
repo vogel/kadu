@@ -153,16 +153,22 @@ void GrowlNotify::createDefaultConfiguration()
 	config_file.addVariable("GrowlNotify", "Event_StatusChanged/ToBusy_syntax", "%&d");
 	config_file.addVariable("GrowlNotify", "Event_StatusChanged/ToBusy_title", "%&m");
 
-    config_file.addVariable("GrowlNotify", "Event_StatusChanged/ToOffline_syntax", "%&d");
-    config_file.addVariable("GrowlNotify", "Event_StatusChanged/ToOffline_title", "%&m");
+	config_file.addVariable("GrowlNotify", "Event_StatusChanged/ToOffline_syntax", "%&d");
+	config_file.addVariable("GrowlNotify", "Event_StatusChanged/ToOffline_title", "%&m");
 
-    config_file.addVariable("GrowlNotify", "Event_StatusChanged/ToInvisible_syntax", "%&d");
-    config_file.addVariable("GrowlNotify", "Event_StatusChanged/ToInvisible_title", "%&m");
-	
+	config_file.addVariable("GrowlNotify", "Event_StatusChanged/ToInvisible_syntax", "%&d");
+	config_file.addVariable("GrowlNotify", "Event_StatusChanged/ToInvisible_title", "%&m");
+
+	config_file.addVariable("GrowlNotify", "Event_StatusChanged/ToTalkWithMe_syntax", "%&d");
+	config_file.addVariable("GrowlNotify", "Event_StatusChanged/ToTalkWithMe_title", "%&m");
+
+	config_file.addVariable("GrowlNotify", "Event_StatusChanged/ToDoNotDisturb_syntax", "%&d");
+	config_file.addVariable("GrowlNotify", "Event_StatusChanged/ToDoNotDisturb_title", "%&m");
+
 	config_file.addVariable("GrowlNotify", "Event_FileTransfer/Finished_syntax", "%&m");
-    config_file.addVariable("GrowlNotify", "Event_FileTransfer/Finished_title", "%&t");
-	
-    config_file.addVariable("GrowlNotify", "Event_FileTransfer/IncomingFile_syntax", "%&m");
+	config_file.addVariable("GrowlNotify", "Event_FileTransfer/Finished_title", "%&t");
+
+	config_file.addVariable("GrowlNotify", "Event_FileTransfer/IncomingFile_syntax", "%&m");
 	config_file.addVariable("GrowlNotify", "Event_FileTransfer/IncomingFile_title", "%&t");
 }
 

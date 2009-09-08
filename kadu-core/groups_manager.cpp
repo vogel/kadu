@@ -629,7 +629,7 @@ void OnlineAndDescriptionUsers::userChangedSlot(UserListElement elem, bool /*mas
 		foreach(const QString &proto, protos)
 		{
 			UserStatus status = elem.status(proto);
-			if (status.isOnline() || status.isBusy() || status.hasDescription())
+			if (status.isOnline() || status.isBusy() || status.isTalkWithMe() || status.isDoNotDisturb() || status.hasDescription())
 			{
 				isWanted = true;
 				break;

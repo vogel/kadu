@@ -85,7 +85,8 @@ void AutoResponder::messageReceived(Protocol *protocol, UserListElements senders
 		return;
 	}
 
-	if ((statusAvailable && protocol->currentStatus().isOnline()) || (statusBusy && protocol->currentStatus().isBusy()) || (statusInvisible && protocol->currentStatus().isInvisible()))
+	if ((statusAvailable && protocol->currentStatus().isOnline()) || (statusBusy && protocol->currentStatus().isBusy()) || (statusInvisible && protocol->currentStatus().isInvisible()) 
+		|| (statusTalkWithMe && protocol->currentStatus().isTalkWithMe())  || (statusDoNotDisturb && protocol->currentStatus().isDoNotDisturb()))
 	{
 		protocol->sendMessage(senders, tr("KADU AUTORESPONDER:") + "\n" + KaduParser::parse(autotext, senders[0]));
 		repliedUsers.append(senders); // dolaczamy uzytkownikow, ktorym odpowiedziano
@@ -116,6 +117,8 @@ void AutoResponder::configurationUpdated()
 	statusAvailable = config_file.readBoolEntry("Autoresponder", "StatusAvailable");
 	statusBusy = config_file.readBoolEntry("Autoresponder", "StatusBusy");
 	statusInvisible = config_file.readBoolEntry("Autoresponder", "StatusInvisible");
+	statusTalkWithMe = config_file.readBoolEntry("Autoresponder", "StatusTalkWithMe");
+	statusDoNotDisturb = config_file.readBoolEntry("Autoresponder", "StatusDoNotDisturb");
 
 	kdebugf2();
 }
@@ -135,11 +138,13 @@ void AutoResponder::import_0_5_0_Configuration()
 void AutoResponder::createDefaultConfiguration()
 {
 	config_file.addVariable("Autoresponder", "Autotext", tr("I am busy."));
-	config_file.addVariable("Autoresponder", "OnlyFirstTime", true);
-	config_file.addVariable("Autoresponder", "RespondConf", true);
-	config_file.addVariable("Autoresponder", "StatusAvailable", false);
-	config_file.addVariable("Autoresponder", "StatusBusy", true);
-	config_file.addVariable("Autoresponder", "StatusInvisible", false);
+	config_file.addVariable("Autoresponder", "OnlyFirstTime",      true);
+	config_file.addVariable("Autoresponder", "RespondConf",        true);
+	config_file.addVariable("Autoresponder", "StatusAvailable",    false);
+	config_file.addVariable("Autoresponder", "StatusBusy",         true);
+	config_file.addVariable("Autoresponder", "StatusInvisible",    false);
+	config_file.addVariable("Autoresponder", "StatusTalkWithMe",   false);
+	config_file.addVariable("Autoresponder", "StatusDoNotDisturb", true);
 }
 
 AutoResponder* autoresponder;

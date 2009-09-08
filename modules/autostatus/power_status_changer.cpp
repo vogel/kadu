@@ -49,6 +49,14 @@ void PowerStatusChanger::changeStatus(UserStatus &status)
 			status.setOffline(description);
 			break;
 
+		case STATUS_FFC:
+			status.setTalkWithMe(description);
+			break;
+
+		case STATUS_DND:
+			status.setDoNotDisturb(description);
+			break;
+
 		case STATUS_BY_INDEX:
 			status.setIndex(index, description);
 
@@ -78,6 +86,20 @@ void PowerStatusChanger::setInvisible(QString desc)
 {
 	kdebugf();
 	setStatus(STATUS_INVISIBLE, desc);
+	kdebugf2();
+}
+
+void PowerStatusChanger::setTalkWithMe(QString desc)
+{
+	kdebugf();
+	setStatus(STATUS_FFC, desc);
+	kdebugf2();
+}
+
+void PowerStatusChanger::setDoNotDisturb(QString desc)
+{
+	kdebugf();
+	setStatus(STATUS_DND, desc);
 	kdebugf2();
 }
 

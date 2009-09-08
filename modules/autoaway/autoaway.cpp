@@ -108,6 +108,24 @@ void AutoAwayStatusChanger::changeStatus(UserStatus &status)
 		status.setBusy(description);
 		return;
 	}
+
+	if (status.isTalkWithMe())
+		return;
+
+	if (changeStatusTo == ChangeStatusToTalkWithMe)
+	{
+		status.setTalkWithMe(description);
+		return;
+	}
+
+	if (status.isDoNotDisturb())
+		return;
+
+	if (changeStatusTo == ChangeStatusToDoNotDisturb)
+	{
+		status.setDoNotDisturb(description);
+		return;
+	}
 }
 
 void AutoAwayStatusChanger::setChangeStatusTo(ChangeStatusTo newChangeStatusTo)
@@ -232,6 +250,8 @@ void AutoAway::checkIdleTime()
 		autoAwayStatusChanger->setChangeStatusTo(AutoAwayStatusChanger::ChangeStatusToInvisible);
 	else if (idleTime >= autoAwayTime && autoAwayEnabled)
 		autoAwayStatusChanger->setChangeStatusTo(AutoAwayStatusChanger::ChangeStatusToBusy);
+	else if (idleTime >= autoDNDTime && autoDNDEnabled)
+		autoAwayStatusChanger->setChangeStatusTo(AutoAwayStatusChanger::ChangeStatusToDoNotDisturb);
 	else
 	{
 		autoAwayStatusChanger->setChangeStatusTo(AutoAwayStatusChanger::NoChangeStatus);
@@ -252,6 +272,7 @@ void AutoAway::mainConfigurationWindowCreated(MainConfigurationWindow *mainConfi
 	autoAwaySpinBox = dynamic_cast<QSpinBox *>(mainConfigurationWindow->widgetById("autoaway/autoAway"));
 	autoInvisibleSpinBox = dynamic_cast<QSpinBox *>(mainConfigurationWindow->widgetById("autoaway/autoInvisible"));
 	autoOfflineSpinBox = dynamic_cast<QSpinBox *>(mainConfigurationWindow->widgetById("autoaway/autoOffline"));
+	autoDNDSpinBox = dynamic_cast<QSpinBox *>(mainConfigurationWindow->widgetById("autoaway/autoDND"));
 	autoRefreshSpinBox = dynamic_cast<QSpinBox *>(mainConfigurationWindow->widgetById("autoaway/autoRefresh"));
 
 	descriptionTextLineEdit = dynamic_cast<QLineEdit *>(mainConfigurationWindow->widgetById("autoaway/descriptionText"));
@@ -261,10 +282,12 @@ void AutoAway::mainConfigurationWindowCreated(MainConfigurationWindow *mainConfi
 	connect(mainConfigurationWindow->widgetById("autoaway/enableAutoAway"), SIGNAL(toggled(bool)), autoAwaySpinBox, SLOT(setEnabled(bool)));
 	connect(mainConfigurationWindow->widgetById("autoaway/enableAutoInvisible"), SIGNAL(toggled(bool)), autoInvisibleSpinBox, SLOT(setEnabled(bool)));
 	connect(mainConfigurationWindow->widgetById("autoaway/enableAutoOffline"), SIGNAL(toggled(bool)), autoOfflineSpinBox, SLOT(setEnabled(bool)));
+	connect(mainConfigurationWindow->widgetById("autoaway/enableAutoDND"), SIGNAL(toggled(bool)), autoDNDSpinBox, SLOT(setEnabled(bool)));
 
 	connect(autoAwaySpinBox, SIGNAL(valueChanged(int)), this, SLOT(autoAwaySpinBoxValueChanged(int)));
 	connect(autoInvisibleSpinBox, SIGNAL(valueChanged(int)), this, SLOT(autoInvisibleSpinBoxValueChanged(int)));
 	connect(autoOfflineSpinBox, SIGNAL(valueChanged(int)), this, SLOT(autoOfflineSpinBoxValueChanged(int)));
+	connect(autoDNDSpinBox, SIGNAL(valueChanged(int)), this, SLOT(autoDNDSpinBoxValueChanged(int)));
 
 	connect(mainConfigurationWindow->widgetById("autoaway/descriptionChange"), SIGNAL(activated(int)), this, SLOT(descriptionChangeChanged(int)));
 
@@ -278,10 +301,12 @@ void AutoAway::configurationUpdated()
 	autoAwayTime = config_file.readUnsignedNumEntry("General","AutoAwayTime");
 	autoDisconnectTime = config_file.readUnsignedNumEntry("General","AutoDisconnectTime");
 	autoInvisibleTime = config_file.readUnsignedNumEntry("General","AutoInvisibleTime");
+	autoDNDTime = config_file.readUnsignedNumEntry("General","AutoDNDTime");
 
 	autoAwayEnabled = config_file.readBoolEntry("General","AutoAway");
 	autoInvisibleEnabled = config_file.readBoolEntry("General","AutoInvisible");
 	autoDisconnectEnabled = config_file.readBoolEntry("General","AutoDisconnect");
+	autoDNDEnabled = config_file.readBoolEntry("General","AutoDND");
 	parseAutoStatus = config_file.readBoolEntry("General", "AutoParseStatus");
 
 	refreshStatusTime = config_file.readUnsignedNumEntry("General","AutoRefreshStatusTime");
@@ -291,7 +316,7 @@ void AutoAway::configurationUpdated()
 
 	changeTo = (AutoAwayStatusChanger::ChangeDescriptionTo)config_file.readNumEntry("General", "AutoChangeDescription");
 
-	if ((autoAwayEnabled || autoInvisibleEnabled || autoDisconnectEnabled) && !gadu->currentStatus().isOffline())
+	if ((autoAwayEnabled || autoInvisibleEnabled || autoDisconnectEnabled || autoDNDEnabled) && !gadu->currentStatus().isOffline())
 		on();
 	else
 		off();
@@ -315,6 +340,12 @@ void AutoAway::autoOfflineSpinBoxValueChanged(int value)
 {
 	if (autoInvisibleSpinBox->value() > value)
 		autoInvisibleSpinBox->setValue(value);
+}
+
+void AutoAway::autoDNDSpinBoxValueChanged(int value)
+{
+	if (autoDNDSpinBox->value() > value)
+		autoDNDSpinBox->setValue(value);
 }
 
 void AutoAway::descriptionChangeChanged(int index)
@@ -342,6 +373,8 @@ void AutoAway::createDefaultConfiguration()
 	config_file.addVariable("General", "AutoDisconnectTime", 3600);
 	config_file.addVariable("General", "AutoInvisible", false);
 	config_file.addVariable("General", "AutoInvisibleTime", 1800);
+	config_file.addVariable("General", "AutoDND", false);
+	config_file.addVariable("General", "AutoDNDTime", 2400);
 	config_file.addVariable("General", "AutoParseStatus", false);
 	config_file.addVariable("General", "AutoRefreshStatusTime", 0);
 	config_file.addVariable("General", "AutoStatusText", "");

@@ -921,6 +921,12 @@ void ChooseDescription::setStatus(const UserStatus &status)
 		case Offline:
 			OkButton->setIcon(icons_manager->loadIcon("OfflineWithDescription"));
 			break;
+		case FFC:
+			OkButton->setIcon(icons_manager->loadIcon("OnlineWithDescription"));
+			break;
+		case DND:
+			OkButton->setIcon(icons_manager->loadIcon("BusyWithDescription"));
+			break;
 		default:
 			break;
 	}

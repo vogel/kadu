@@ -177,25 +177,35 @@ void Qt4Notify::createDefaultConfiguration()
 	config_file.addVariable("Qt4DockingNotify", "Event_StatusChanged/ToBusy_timeout", 10);
 	config_file.addVariable("Qt4DockingNotify", "Event_StatusChanged/ToBusy_syntax", "%&d");
 	config_file.addVariable("Qt4DockingNotify", "Event_StatusChanged/ToBusy_title", "%&m");
-    config_file.addVariable("Qt4DockingNotify", "Event_StatusChanged/ToBusy_icon", 0);
+	config_file.addVariable("Qt4DockingNotify", "Event_StatusChanged/ToBusy_icon", 0);
 
-    config_file.addVariable("Qt4DockingNotify", "Event_StatusChanged/ToOffline_timeout", 10);
-    config_file.addVariable("Qt4DockingNotify", "Event_StatusChanged/ToOffline_syntax", "%&d");
-    config_file.addVariable("Qt4DockingNotify", "Event_StatusChanged/ToOffline_title", "%&m");
-    config_file.addVariable("Qt4DockingNotify", "Event_StatusChanged/ToOffline_icon", 0);
+	config_file.addVariable("Qt4DockingNotify", "Event_StatusChanged/ToOffline_timeout", 10);
+	config_file.addVariable("Qt4DockingNotify", "Event_StatusChanged/ToOffline_syntax", "%&d");
+	config_file.addVariable("Qt4DockingNotify", "Event_StatusChanged/ToOffline_title", "%&m");
+	config_file.addVariable("Qt4DockingNotify", "Event_StatusChanged/ToOffline_icon", 0);
 
-    config_file.addVariable("Qt4DockingNotify", "Event_StatusChanged/ToInvisible_timeout", 10);
-    config_file.addVariable("Qt4DockingNotify", "Event_StatusChanged/ToInvisible_syntax", "%&d");
-    config_file.addVariable("Qt4DockingNotify", "Event_StatusChanged/ToInvisible_title", "%&m");
-    config_file.addVariable("Qt4DockingNotify", "Event_StatusChanged/ToInvisible_icon", 0);
+	config_file.addVariable("Qt4DockingNotify", "Event_StatusChanged/ToInvisible_timeout", 10);
+	config_file.addVariable("Qt4DockingNotify", "Event_StatusChanged/ToInvisible_syntax", "%&d");
+	config_file.addVariable("Qt4DockingNotify", "Event_StatusChanged/ToInvisible_title", "%&m");
+	config_file.addVariable("Qt4DockingNotify", "Event_StatusChanged/ToInvisible_icon", 0);
+
+	config_file.addVariable("Qt4DockingNotify", "Event_StatusChanged/ToTalkWithMe_timeout", 10);
+	config_file.addVariable("Qt4DockingNotify", "Event_StatusChanged/ToTalkWithMe_syntax", "%&d");
+	config_file.addVariable("Qt4DockingNotify", "Event_StatusChanged/ToTalkWithMe_title", "%&m");
+	config_file.addVariable("Qt4DockingNotify", "Event_StatusChanged/ToTalkWithMe_icon", 0);
+
+	config_file.addVariable("Qt4DockingNotify", "Event_StatusChanged/ToDoNotDisturb_timeout", 10);
+	config_file.addVariable("Qt4DockingNotify", "Event_StatusChanged/TooDoNotDisturb_syntax", "%&d");
+	config_file.addVariable("Qt4DockingNotify", "Event_StatusChanged/TooDoNotDisturb_title", "%&m");
+	config_file.addVariable("Qt4DockingNotify", "Event_StatusChanged/TooDoNotDisturb_icon", 0);
 	
 	config_file.addVariable("Qt4DockingNotify", "Event_FileTransfer/Finished_timeout", 10);
 	config_file.addVariable("Qt4DockingNotify", "Event_FileTransfer/Finished_syntax", "%&m");
-    config_file.addVariable("Qt4DockingNotify", "Event_FileTransfer/Finished_title", "%&t");
+	config_file.addVariable("Qt4DockingNotify", "Event_FileTransfer/Finished_title", "%&t");
 	config_file.addVariable("Qt4DockingNotify", "Event_FileTransfer/Finished_icon", 2);
 	
 	config_file.addVariable("Qt4DockingNotify", "Event_FileTransfer/IncomingFile_timeout", 10);
-    config_file.addVariable("Qt4DockingNotify", "Event_FileTransfer/IncomingFile_syntax", "%&m");
+	config_file.addVariable("Qt4DockingNotify", "Event_FileTransfer/IncomingFile_syntax", "%&m");
 	config_file.addVariable("Qt4DockingNotify", "Event_FileTransfer/IncomingFile_title", "%&t");
 	config_file.addVariable("Qt4DockingNotify", "Event_FileTransfer/IncomingFile_icon", 2);
 }

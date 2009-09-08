@@ -98,6 +98,12 @@ void Autostatus::changeStatus()
 		case 2:
 			powerStatusChanger->setInvisible(*it);
 			break;
+		case 3:
+			powerStatusChanger->setTalkWithMe(*it);
+			break;
+		case 4:
+			powerStatusChanger->setDoNotDisturb(*it);
+			break;
 	}
 	it++;
 	kdebugf2();

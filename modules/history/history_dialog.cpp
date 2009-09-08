@@ -265,7 +265,7 @@ void HistoryDialog::dateChanged(QTreeWidgetItem *item)
 	{
 		body->clearMessages();
 		return;
-	}	
+	}
 	if (dynamic_cast<UinsListViewText *>(item))
 	{
 		uinsChanged(item);
@@ -283,7 +283,7 @@ void HistoryDialog::dateChanged(QTreeWidgetItem *item)
 		if (index != item->parent()->childCount() - 1)
 			item = item->parent()->child(index + 1);
 		else
-			item = 0; 
+			item = 0;
 	}
 	if (item)
 		count = ((DateListViewText *)item)->getDate().idx - start;
@@ -319,6 +319,14 @@ ChatMessage * HistoryDialog::createChatMessage(const HistoryEntry &entry)
 			case GG_STATUS_NOT_AVAIL:
 			case GG_STATUS_NOT_AVAIL_DESCR:
 				messageText = tr("Offline");
+				break;
+			case GG_STATUS_FFC:
+			case GG_STATUS_FFC_DESCR:
+				messageText = tr("TalkToMe");
+				break;
+			case GG_STATUS_DND:
+			case GG_STATUS_DND_DESCR:
+				messageText = tr("DoNotDisturb");
 				break;
 			default:
 				messageText = tr("Unknown");
@@ -364,7 +372,7 @@ void HistoryDialog::pageLoaded(bool b)
 	static QWebPage::FindFlags flag = 0;
 	if (showResults)
 	{
-		if (findRec.reverse) 
+		if (findRec.reverse)
 			flag = QWebPage::FindBackward;
 
 		if (body->findText(findRec.data, flag))
@@ -407,7 +415,7 @@ void HistoryDialog::searchPrevButtonClicked()
 
 const QString &HistoryDialog::gaduStatus2symbol(unsigned int status)
 {
-	static const QString sym[] = {QString("avail"), QString("busy"), QString("invisible"), QString("notavail")};
+	static const QString sym[] = {QString("avail"), QString("busy"), QString("invisible"), QString("notavail"), QString("ffc"), QString("dnd")};
 	switch (status)
 	{
 		case GG_STATUS_AVAIL:
@@ -419,6 +427,12 @@ const QString &HistoryDialog::gaduStatus2symbol(unsigned int status)
 		case GG_STATUS_INVISIBLE:
 		case GG_STATUS_INVISIBLE_DESCR:
 			return sym[2];
+		case GG_STATUS_FFC:
+		case GG_STATUS_FFC_DESCR:
+			return sym[4];
+		case GG_STATUS_DND:
+		case GG_STATUS_DND_DESCR:
+			return sym[5];
 		default:
 			return sym[3];
 	}
@@ -472,7 +486,7 @@ void HistoryDialog::searchHistory()
 		QWebPage::FindFlags flag = 0;
 		if (findRec.reverse)
 			flag = QWebPage::FindBackward;
-	
+
 		/* try to find the text on the current page */
 		if (body->findText(findRec.data, flag))
 		{

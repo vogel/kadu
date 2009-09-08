@@ -613,6 +613,8 @@ void HintManager::createDefaultConfiguration()
 	config_file.addVariable("Notify", "StatusChanged/ToBusy_Hints", true);
 	config_file.addVariable("Notify", "StatusChanged/ToInvisible_Hints", true);
 	config_file.addVariable("Notify", "StatusChanged/ToOffline_Hints", true);
+	config_file.addVariable("Notify", "StatusChanged/ToTalkWithMe_Hints", true);
+	config_file.addVariable("Notify", "StatusChanged/ToDoNotDisturb_Hints", true);
 	config_file.addVariable("Notify", "FileTransfer/IncomingFile_Hints", true);
 	config_file.addVariable("Notify", "FileTransfer/Finished_Hints", true);
 

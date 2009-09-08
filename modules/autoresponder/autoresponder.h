@@ -32,6 +32,8 @@ class AutoResponder : public ConfigurationUiHandler, ConfigurationAwareObject
 		bool statusAvailable; /*!< czy odpowiadamy, gdy jeste¶my dostêpni */
 		bool statusBusy; /*!< czy odpowiadamy, gdy jeste¶my zajêci */
 		bool statusInvisible; /*!< czy odpowiadamy, gdy jeste¶my niewidoczni */
+		bool statusTalkWithMe; /*!< czy odpowiadamy, gdy jeste¶my 'porozmawiaj ze mna' */
+		bool statusDoNotDisturb; /*!< czy odpowiadamy, gdy jeste¶my 'nie przeszkadzac' */
 
 		/**
 			\fn void import_0_5_0_Configuration()

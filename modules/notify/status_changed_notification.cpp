@@ -16,10 +16,12 @@
 
 void StatusChangedNotification::registerEvents(Notify *manager)
 {
-	manager->registerEvent("StatusChanged/ToOnline", QT_TRANSLATE_NOOP("@default", "User changed status to online"), CallbackNotRequired);
-	manager->registerEvent("StatusChanged/ToBusy", QT_TRANSLATE_NOOP("@default", "User changed status to busy"), CallbackNotRequired);
-	manager->registerEvent("StatusChanged/ToInvisible", QT_TRANSLATE_NOOP("@default", "User changed status to invisible"), CallbackNotRequired);
-	manager->registerEvent("StatusChanged/ToOffline", QT_TRANSLATE_NOOP("@default", "User changed status to offline"), CallbackNotRequired);
+	manager->registerEvent("StatusChanged/ToOnline",       QT_TRANSLATE_NOOP("@default", "User changed status to online"),         CallbackNotRequired);
+	manager->registerEvent("StatusChanged/ToBusy",         QT_TRANSLATE_NOOP("@default", "User changed status to busy"),           CallbackNotRequired);
+	manager->registerEvent("StatusChanged/ToInvisible",    QT_TRANSLATE_NOOP("@default", "User changed status to invisible"),      CallbackNotRequired);
+	manager->registerEvent("StatusChanged/ToOffline",      QT_TRANSLATE_NOOP("@default", "User changed status to offline"),        CallbackNotRequired);
+	manager->registerEvent("StatusChanged/ToTalkWithMe",   QT_TRANSLATE_NOOP("@default", "User changed status to talk with me"),   CallbackNotRequired);
+	manager->registerEvent("StatusChanged/ToDoNotDisturb", QT_TRANSLATE_NOOP("@default", "User changed status to do not disturb"), CallbackNotRequired);
 }
 
 void StatusChangedNotification::unregisterEvents(Notify *manager)
@@ -28,6 +30,8 @@ void StatusChangedNotification::unregisterEvents(Notify *manager)
 	manager->unregisterEvent("StatusChanged/ToBusy");
 	manager->unregisterEvent("StatusChanged/ToInvisible");
 	manager->unregisterEvent("StatusChanged/ToOffline");
+	manager->unregisterEvent("StatusChanged/ToTalkWithMe");
+	manager->unregisterEvent("StatusChanged/ToDoNotDisturb");
 }
 
 StatusChangedNotification::StatusChangedNotification(const QString &toStatus, const UserListElements &userListElements, const QString &protocolName)

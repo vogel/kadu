@@ -18,9 +18,9 @@ enum eUserStatus
 	Busy, /*!< Zaraz wracam */
 	Invisible, /*!< Ukryty */
 	Offline, /*!< Niedost�pny */
+	Blocking, /*!< Blokuj�cy */
 	FFC, /*!< Porozmawiaj ze mna */
-	DND, /*!< Nie przeszkadzac */
-	Blocking /*!< Blokuj�cy */
+	DND /*!< Nie przeszkadzac */
 };
 
 /**

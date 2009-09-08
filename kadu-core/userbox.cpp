@@ -186,7 +186,7 @@ void KaduListBoxPixmap::setDescriptionColor(const QColor &col)
 
 bool KaduListBoxPixmap::isBold() const
 {
-	return ShowBold && User.usesProtocol("Gadu") && (User.status("Gadu").isOnline() || User.status("Gadu").isBusy());
+	return ShowBold && User.usesProtocol("Gadu") && (User.status("Gadu").isOnline() || User.status("Gadu").isBusy() || User.status("Gadu").isTalkWithMe() || User.status("Gadu").isDoNotDisturb());
 }
 
 void KaduListBoxPixmap::paint(QPainter *painter)
@@ -1609,7 +1609,7 @@ inline int compareStatus(const UserListElement &u1, const UserListElement &u2)
 {
 	//WARNING: we are utilizing the fact, that enums in eUserStats are in "correct" order
 	// we see Busy and Online as equal here
-	int r[] = {Online, Online, Invisible, Offline, Blocking};
+	int r[] = {Online, Online, Invisible, Offline, Blocking, FFC, DND};
 	bool u1Gadu = u1.usesProtocol("Gadu");
 	bool u2Gadu = u2.usesProtocol("Gadu");
 	if (u1Gadu && u2Gadu)

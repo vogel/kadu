@@ -23,6 +23,8 @@ class PowerStatusChanger : public StatusChanger
 			STATUS_BUSY,
 			STATUS_INVISIBLE,
 			STATUS_OFFLINE,
+			STATUS_FFC,
+			STATUS_DND,
 			STATUS_BY_INDEX
 		};
 
@@ -80,6 +82,22 @@ class PowerStatusChanger : public StatusChanger
 		 * \param desc The description for the status.
 		 */
 		void setOffline(QString desc);
+
+		/*!
+		 * \fn void setTalkWithMe(QString desc)
+		 * This function should be called by any PowerKadu component
+		 * to change the status to talk with me.
+		 * \param desc The description for the status.
+		 */
+		void setTalkWithMe(QString desc);
+
+		/*!
+		 * \fn void setDoNotDisturb(QString desc)
+		 * This function should be called by any PowerKadu component
+		 * to change the status to DND.
+		 * \param desc The description for the status.
+		 */
+		void setDoNotDisturb(QString desc);
 
 		/*!
 		 * \fn void setStatus(StatusState passedState, QString passedDesc)

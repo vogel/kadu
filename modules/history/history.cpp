@@ -754,6 +754,10 @@ QList<HistoryEntry> HistoryManager::getHistoryEntries(UinsList uins, int from, i
 						entry.status = GG_STATUS_BUSY;
 					else if (tokens[5] == "invisible")
 						entry.status = GG_STATUS_INVISIBLE;
+					else if (tokens[5] == "ffc")
+						entry.status = GG_STATUS_FFC;
+					else if (tokens[5] == "dnd")
+						entry.status = GG_STATUS_DND;
 					if (tokens.count() == 7)
 					{
 						switch (entry.status)
@@ -769,6 +773,12 @@ QList<HistoryEntry> HistoryManager::getHistoryEntries(UinsList uins, int from, i
 								break;
 							case GG_STATUS_INVISIBLE:
 								entry.status = GG_STATUS_INVISIBLE_DESCR;
+								break;
+							case GG_STATUS_FFC:
+								entry.status = GG_STATUS_FFC_DESCR;
+								break;
+							case GG_STATUS_DND:
+								entry.status = GG_STATUS_DND_DESCR;
 								break;
 						}
 						entry.description = tokens[6];
