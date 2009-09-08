@@ -381,8 +381,7 @@ void Notify::statusChanged(UserListElement elem, QString protocolName,
 		return;
 
 	if (config_file.readBoolEntry("Notify", "IgnoreOnlineToOnline"))
-		if (elem.status("Gadu").isOnline() || elem.status("Gadu").isBusy() || elem.status("Gadu").isTalkWithMe() || elem.status("Gadu").isDoNotDisturb())
-			if (oldStatus.isOnline() || oldStatus.isBusy() || oldStatus.isTalkWithMe() || oldStatus.isDoNotDisturb())
+		if (elem.status("Gadu").isAvailable() && oldStatus.isAvailable())
 				return;
 
 	QString changedTo = "";

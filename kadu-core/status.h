@@ -154,6 +154,12 @@ public:
 	bool isDoNotDisturb() const;
 
 	/**
+		\fn bool isAvailable() const
+		\return TRUE je�li status jest Online, Busy, TalkWithMe lub DoNotDisturb
+	**/
+	bool isAvailable() const;
+
+	/**
 		\fn bool hasDescription() const
 		Sprawdza czy status jest z opisem.
 		\return TRUE gdy status jest z opisem, FALSE w przeciwnym wypadku.

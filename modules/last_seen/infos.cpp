@@ -116,7 +116,7 @@ void Infos::onUserStatusChangedSlot(QString protocolName, UserListElement elem, 
 {
 	kdebugf();
 	if (protocolName.compare("Gadu") == 0)
-		if(elem.status(protocolName).isOnline() || elem.status(protocolName).isBusy() || elem.status(protocolName).isTalkWithMe() || elem.status(protocolName).isDoNotDisturb())
+		if(elem.status(protocolName).isAvailable())
 			lastSeen[elem.ID(protocolName)] = QDateTime::currentDateTime().toString("dd-MM-yyyy hh:mm");
 	kdebugf2();
 }
@@ -125,10 +125,7 @@ void Infos::updateTimes()
 {
 	kdebugf();
 	for(LastSeen::Iterator it = lastSeen.begin(); it != lastSeen.end(); ++it)
-		if (userlist->byID("Gadu", it.key()).status("Gadu").isOnline()     || 
-		    userlist->byID("Gadu", it.key()).status("Gadu").isBusy()       ||
-		    userlist->byID("Gadu", it.key()).status("Gadu").isTalkWithMe() || 
-		    userlist->byID("Gadu", it.key()).status("Gadu").isDoNotDisturb())
+		if (userlist->byID("Gadu", it.key()).status("Gadu").isAvailable())
 		{
 			kdebugm(KDEBUG_INFO, "Updating %s's time\n", it.key().latin1());
 			kdebugm(KDEBUG_INFO, "Previous one: %s\n", it.data().latin1());

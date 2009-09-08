@@ -186,7 +186,7 @@ void KaduListBoxPixmap::setDescriptionColor(const QColor &col)
 
 bool KaduListBoxPixmap::isBold() const
 {
-	return ShowBold && User.usesProtocol("Gadu") && (User.status("Gadu").isOnline() || User.status("Gadu").isBusy() || User.status("Gadu").isTalkWithMe() || User.status("Gadu").isDoNotDisturb());
+	return (ShowBold && User.usesProtocol("Gadu") && User.status("Gadu").isAvailable());
 }
 
 void KaduListBoxPixmap::paint(QPainter *painter)

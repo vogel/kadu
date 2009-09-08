@@ -118,6 +118,10 @@ bool UserStatus::isDoNotDisturb() const
 	return Stat == DND;
 }
 
+bool UserStatus::isAvailable() const
+{
+	return (Stat == Online || Stat == Busy || Stat == FFC || Stat == DND);
+}
 
 bool UserStatus::isBlocking() const
 {
