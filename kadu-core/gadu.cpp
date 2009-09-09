@@ -1267,6 +1267,7 @@ void GaduProtocol::login()
 	LoginParams.tls = 0;
 	LoginParams.client_version = GG_DEFAULT_CLIENT_VERSION;
 	LoginParams.protocol_version = GG_DEFAULT_PROTOCOL_VERSION;
+	LoginParams.protocol_features = 0x00000037; /* Enable new statuses */
 
 	if (LoginParams.tls)
 	{
