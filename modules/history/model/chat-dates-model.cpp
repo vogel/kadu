@@ -19,10 +19,13 @@
 ChatDatesModel::ChatDatesModel(Chat *chat, QList<QDate> dates, QObject *parent) :
 		QAbstractListModel(parent), MyChat(chat), Dates(dates)
 {
+	Cache = new QMap<QDate, ItemCachedData>();
 }
 
 ChatDatesModel::~ChatDatesModel()
 {
+	delete Cache;
+	Cache = 0;
 }
 
 int ChatDatesModel::columnCount(const QModelIndex &parent) const
@@ -83,14 +86,13 @@ int ChatDatesModel::fetchSize(QDate date) const
 
 ChatDatesModel::ItemCachedData ChatDatesModel::fetchCachedData(QDate date) const
 {
-	if (Cache.contains(date))
-		return Cache.value(date);
+	if (Cache->contains(date))
+		return Cache->value(date);
 
 	ItemCachedData cache;
 	cache.title = fetchTitle(date);
 	cache.size = fetchSize(date);
-// TODO: cant do that, need another place
-// 	Cache.insert(date, cache);
+	Cache->insert(date, cache);
 
 	return cache;
 }
@@ -138,7 +140,7 @@ void ChatDatesModel::setChat(Chat *chat)
 
 void ChatDatesModel::setDates(QList<QDate> dates)
 {
-	Cache.clear();
+	Cache->clear();
 
 	beginRemoveRows(QModelIndex(), 0, Dates.size());
 	Dates.clear();
