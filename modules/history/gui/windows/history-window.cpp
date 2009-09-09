@@ -32,8 +32,8 @@
 #include "history-window.h"
 #include <QItemDelegate>
 
-HistoryMainWidget::HistoryMainWidget(QWidget *parent, QWidget *window)
-	: MainWindow(parent)
+HistoryMainWidget::HistoryMainWidget(QWidget *parent, QWidget *window) :
+		MainWindow(parent)
 {
 	kdebugf();
 	QWidget *mvbox = new QWidget;
@@ -129,14 +129,15 @@ bool HistoryMainWidget::supportsActionType(ActionDescription::ActionType type)
 void HistoryMainWidget::quickSearchPhraseTyped(const QString &text)
 {
 	kdebugf();
-	if(!text.isEmpty())
-		if(!ContentBrowser->findText(text))
-			if(!ContentBrowser->findText(text, QWebPage::FindBackward))
+	if (!text.isEmpty())
+		if (!ContentBrowser->findText(text))
+			if (!ContentBrowser->findText(text, QWebPage::FindBackward))
 				MessageBox::msg(tr("Nic ciekawego"), false, "Warning");
 	kdebugf2();
 }
 
-HistoryWindow::HistoryWindow() : QWidget(NULL), isSearchInProgress(0), closeDemand(0), inSearchMode(0)
+HistoryWindow::HistoryWindow() :
+		QWidget(0), isSearchInProgress(0), closeDemand(0), inSearchMode(0)
 {
 	kdebugf();
 	setWindowTitle(tr("History"));
@@ -170,10 +171,10 @@ HistoryWindow::HistoryWindow() : QWidget(NULL), isSearchInProgress(0), closeDema
 
 	ChatsTree->setContextMenuPolicy(Qt::CustomContextMenu);
 	connect(ChatsTree, SIGNAL(customContextMenuRequested(QPoint)),
-		this, SLOT(showMainPopupMenu(QPoint)));
+			this, SLOT(showMainPopupMenu(QPoint)));
 	main->getDetailsListView()->setContextMenuPolicy(Qt::CustomContextMenu);
 	connect(main->getDetailsListView(), SIGNAL(customContextMenuRequested(QPoint)),
-		this, SLOT(showDetailsPopupMenu(QPoint)));
+			this, SLOT(showDetailsPopupMenu(QPoint)));
 	
 	connect(main->getDetailsListView(), SIGNAL(activated(const QModelIndex &)),
 			this, SLOT(dateActivated(const QModelIndex &)));
@@ -476,6 +477,7 @@ void HistoryWindow::show(ContactSet users)
 		MessageBox::msg(tr("There is no history storage module loaded!"), false, "Warning");
 		return;
 	}
+
 	selectedUsers = users;
 	globalRefresh();
 	QWidget::show();
@@ -487,7 +489,7 @@ void HistoryWindow::keyPressEvent(QKeyEvent *e)
 		if (main->getDockWidget()->isHidden())
 			main->getDockWidget()->show();
 		else
-			main->getDockWidget()->hide();	
+			main->getDockWidget()->hide();
 }
 
 void HistoryWindow::closeEvent(QCloseEvent *e)
@@ -511,4 +513,4 @@ HistorySearchResult::HistorySearchResult() : detailsItems(QList<HistorySearchDet
 }
 
 
-HistoryWindow* historyDialog = NULL;
+HistoryWindow *historyDialog = 0;
