@@ -203,12 +203,8 @@ class HistoryWindow : public QWidget
 		int maxLen;  /*!< Max. d�ugo�� zajawki wiadomo�ci w widoku dat. */
 private slots:
 	void chatActivated(const QModelIndex &index);
-		
-		/**
-       		Slot od�wie�aj�cy zawarto�� okna przegl�dania rozm�w wg. zmiany zaznaczenia na li�cie szczeg��owej.
-		@param item Element listy wybrany przez u�ytkownika.
-		*/
-		void detailsListItemClicked(QTreeWidgetItem *item, int column);
+	void dateActivated(const QModelIndex &index);
+
 		/**
        		Slot otwieraj�cy okno wyszukiwania.
 		*/

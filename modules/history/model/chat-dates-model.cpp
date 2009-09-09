@@ -8,12 +8,13 @@
 ***************************************************************************/
 
 #include "chat/chat.h"
+#include "chat/message/formatted-message.h"
 #include "chat/message/message.h"
+#include "contacts/model/contacts-model-base.h"
 
 #include "history.h"
 
 #include "chat-dates-model.h"
-#include <chat/message/formatted-message.h>
 
 ChatDatesModel::ChatDatesModel(Chat *chat, QList<QDate> dates, QObject *parent) :
 		QAbstractListModel(parent), MyChat(chat), Dates(dates)
@@ -96,7 +97,7 @@ ChatDatesModel::ItemCachedData ChatDatesModel::fetchCachedData(QDate date) const
 
 QVariant ChatDatesModel::data(const QModelIndex &index, int role) const
 {
-	if (!MyChat || role != Qt::DisplayRole)
+	if (!MyChat)
 		return QVariant();
 
 	int col = index.column();
@@ -107,17 +108,31 @@ QVariant ChatDatesModel::data(const QModelIndex &index, int role) const
 
 	ItemCachedData cachedData = fetchCachedData(Dates.at(row));
 
-	switch (col)
+	switch (role)
 	{
-		case 0: return MyChat->name();
-		case 1: return cachedData.title;
-		case 2: return Dates.at(row).toString("dd.MM.yyyy");
-		case 3: return cachedData.size;
+		case Qt::DisplayRole:
+		{
+			switch (col)
+			{
+				case 0: return MyChat->name();
+				case 1: return cachedData.title;
+				case 2: return Dates.at(row).toString("dd.MM.yyyy");
+				case 3: return cachedData.size;
+			}
+
+			return QVariant();
+		}
+
+		case ChatRole: return QVariant::fromValue<Chat *>(MyChat);
+		case DateRole: return Dates.at(row);
 	}
+
+	return QVariant();
 }
 
 void ChatDatesModel::setChat(Chat *chat)
 {
+	printf("chat set\n");
 	MyChat = chat;
 }
 

@@ -223,7 +223,8 @@ HistoryWindow::HistoryWindow() : QWidget(NULL), isSearchInProgress(0), closeDema
 	connect(main->getDetailsListView(), SIGNAL(customContextMenuRequested(QPoint)),
 		this, SLOT(showDetailsPopupMenu(QPoint)));
 	
-	connect(main->getDetailsListView(), SIGNAL(itemClicked(QTreeWidgetItem*, int)), this, SLOT(detailsListItemClicked(QTreeWidgetItem*, int)));
+	connect(main->getDetailsListView(), SIGNAL(activated(const QModelIndex &)),
+			this, SLOT(dateActivated(const QModelIndex &)));
 	loadWindowGeometry(this, "History", "HistoryWindowGeometry", 200, 200, 700, 500);
 	maxLen = 36;//~	
 
@@ -403,7 +404,7 @@ void HistoryWindow::chatActivated(const QModelIndex &index)
 	kdebugf();
 
 	Chat *chat = index.data(ChatRole).value<Chat *>();
-	if (0 == chat)
+	if (!chat)
 		return;
 	
 	ChatDatesModel *model = dynamic_cast<ChatDatesModel *>(main->getDetailsListView()->model());
@@ -423,17 +424,23 @@ void HistoryWindow::chatActivated(const QModelIndex &index)
 	kdebugf2();
 }
 
-void HistoryWindow::detailsListItemClicked(QTreeWidgetItem* item, int column)
+void HistoryWindow::dateActivated(const QModelIndex &index)
 {
 	kdebugf();
-	DetailsListItem* detailsListItem = dynamic_cast<DetailsListItem*>(item);
-	if (detailsListItem == NULL || item == NULL)
+
+	Chat *chat = index.data(ChatRole).value<Chat *>();
+	if (!chat)
 		return;
 
-	QList<Message> chat_messages = History::instance()->getMessages(detailsListItem->chat(), detailsListItem->date());
-	main->getContentBrowser()->setChat(detailsListItem->chat());
+	QDate date = index.data(DateRole).value<QDate>();
+	if (!date.isValid())
+		return;
+
+	QList<Message> chat_messages = History::instance()->getMessages(chat, date);
+	main->getContentBrowser()->setChat(chat);
 	main->getContentBrowser()->clearMessages();
 	main->getContentBrowser()->appendMessages(chat_messages);
+
 	kdebugf2();
 }
 
