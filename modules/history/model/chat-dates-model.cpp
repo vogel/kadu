@@ -134,7 +134,6 @@ QVariant ChatDatesModel::data(const QModelIndex &index, int role) const
 
 void ChatDatesModel::setChat(Chat *chat)
 {
-	printf("chat set\n");
 	MyChat = chat;
 }
 

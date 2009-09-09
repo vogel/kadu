@@ -38,8 +38,7 @@ public:
 	ChatDatesModel(Chat *chat, QList<QDate> dates, QObject *parent = 0);
 	virtual ~ChatDatesModel();
 
-	
-    virtual int columnCount(const QModelIndex &parent) const;
+	virtual int columnCount(const QModelIndex &parent) const;
 	virtual int rowCount(const QModelIndex &parent = QModelIndex()) const;
 
 	virtual QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const;
