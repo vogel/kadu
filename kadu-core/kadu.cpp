@@ -1875,44 +1875,44 @@ void Kadu::createStatusPopupMenu()
 
 	changeStatusActionGroup->addAction(changeStatusToOnline);
 	changeStatusActionGroup->addAction(changeStatusToOnlineDesc);
-	changeStatusActionGroup->addAction(changeStatusToTalkWithMe);
-	changeStatusActionGroup->addAction(changeStatusToTalkWithMeDesc);
 	changeStatusActionGroup->addAction(changeStatusToBusy);
 	changeStatusActionGroup->addAction(changeStatusToBusyDesc);
-	changeStatusActionGroup->addAction(changeStatusToDoNotDisturb);
-	changeStatusActionGroup->addAction(changeStatusToDoNotDisturbDesc);
 	changeStatusActionGroup->addAction(changeStatusToInvisible);
 	changeStatusActionGroup->addAction(changeStatusToInvisibleDesc);
 	changeStatusActionGroup->addAction(changeStatusToOffline);
 	changeStatusActionGroup->addAction(changeStatusToOfflineDesc);
+	changeStatusActionGroup->addAction(changeStatusToTalkWithMe);
+	changeStatusActionGroup->addAction(changeStatusToTalkWithMeDesc);
+	changeStatusActionGroup->addAction(changeStatusToDoNotDisturb);
+	changeStatusActionGroup->addAction(changeStatusToDoNotDisturbDesc);
 
 	statusMenu->addAction(changeStatusToOnline);
 	statusMenu->addAction(changeStatusToOnlineDesc);
-	statusMenu->addAction(changeStatusToTalkWithMe);
-	statusMenu->addAction(changeStatusToTalkWithMeDesc);
 	statusMenu->addAction(changeStatusToBusy);
 	statusMenu->addAction(changeStatusToBusyDesc);
-	statusMenu->addAction(changeStatusToDoNotDisturb);
-	statusMenu->addAction(changeStatusToDoNotDisturbDesc);
 	statusMenu->addAction(changeStatusToInvisible);
 	statusMenu->addAction(changeStatusToInvisibleDesc);
 	statusMenu->addAction(changeStatusToOffline);
 	statusMenu->addAction(changeStatusToOfflineDesc);
+	statusMenu->addAction(changeStatusToTalkWithMe);
+	statusMenu->addAction(changeStatusToTalkWithMeDesc);
+	statusMenu->addAction(changeStatusToDoNotDisturb);
+	statusMenu->addAction(changeStatusToDoNotDisturbDesc);
 	statusMenu->addSeparator();
 	statusMenu->addAction(changePrivateStatus);
 
 	dockMenu->addAction(changeStatusToOnline);
 	dockMenu->addAction(changeStatusToOnlineDesc);
-	dockMenu->addAction(changeStatusToTalkWithMe);
-	dockMenu->addAction(changeStatusToTalkWithMeDesc);
 	dockMenu->addAction(changeStatusToBusy);
 	dockMenu->addAction(changeStatusToBusyDesc);
-	dockMenu->addAction(changeStatusToDoNotDisturb);
-	dockMenu->addAction(changeStatusToDoNotDisturbDesc);
 	dockMenu->addAction(changeStatusToInvisible);
 	dockMenu->addAction(changeStatusToInvisibleDesc);
 	dockMenu->addAction(changeStatusToOffline);
 	dockMenu->addAction(changeStatusToOfflineDesc);
+	dockMenu->addAction(changeStatusToTalkWithMe);
+	dockMenu->addAction(changeStatusToTalkWithMeDesc);
+	dockMenu->addAction(changeStatusToDoNotDisturb);
+	dockMenu->addAction(changeStatusToDoNotDisturbDesc);
 	dockMenu->addSeparator();
 	dockMenu->addAction(changePrivateStatus);
 
