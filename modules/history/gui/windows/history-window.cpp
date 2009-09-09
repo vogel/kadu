@@ -132,7 +132,6 @@ void HistoryMainWidget::quickSearchPhraseTyped(const QString &text)
 	if(!text.isEmpty())
 		if(!ContentBrowser->findText(text))
 			if(!ContentBrowser->findText(text, QWebPage::FindBackward))
-				//zmienia� kolor t�a edita? jak?
 				MessageBox::msg(tr("Nic ciekawego"), false, "Warning");
 	kdebugf2();
 }
