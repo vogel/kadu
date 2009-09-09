@@ -25,6 +25,7 @@
 #include "emoticons.h"
 #include "icons-manager.h"
 
+#include "model/chat-dates-model.h"
 #include "model/history-chats-model.h"
 #include "storage/history-storage.h"
 
@@ -85,11 +86,10 @@ HistoryMainWidget::HistoryMainWidget(QWidget *parent, QWidget *window)
 	QWidget *mvbox = new QWidget;
 	QSplitter* right = new QSplitter(Qt::Vertical);
 	QVBoxLayout *mvbox_lay = new QVBoxLayout;
-	DetailsListView = new QTreeWidget(right);
-	QStringList detailsLabels;
-	detailsLabels << tr("Contact") << tr("Title") << tr("Date") << tr("Length");
-	DetailsListView->setHeaderLabels(detailsLabels);
-	DetailsListView->setRootIsDecorated(true);
+
+	DetailsListView = new QTreeView(right);
+	DetailsListView->setModel(new ChatDatesModel(0, QList<QDate>(), this));
+
 	ContentBrowser = new ChatMessagesView(0, right);
 	ContentBrowser->setPruneEnabled(false);
 ///	ContentBrowser->setMargin(config_file.readNumEntry("General", "ParagraphSeparator"));
@@ -401,21 +401,24 @@ void HistoryWindow::removeHistoryEntriesPerDate()
 void HistoryWindow::chatActivated(const QModelIndex &index)
 {
 	kdebugf();
-	main->getDetailsListView()->clear();
 
 	Chat *chat = index.data(ChatRole).value<Chat *>();
 	if (0 == chat)
 		return;
+	
+	ChatDatesModel *model = dynamic_cast<ChatDatesModel *>(main->getDetailsListView()->model());
+	if (!model)
+		return;
 
 	QList<QDate> chatDates = History::instance()->datesForChat(chat);
-	foreach (QDate date, chatDates)
-		new DetailsListItem(main->getDetailsListView(), chat, date);
+	model->setChat(chat);
+	model->setDates(chatDates);
 
-	QTreeWidgetItem* lastItem = main->getDetailsListView()->itemAt(0, main->getDetailsListView()->topLevelItemCount());
-	main->getDetailsListView()->setCurrentItem(lastItem);
-	detailsListItemClicked(lastItem, 0);
-	main->getDetailsListView()->resizeColumnToContents(0); 
-	main->getDetailsListView()->resizeColumnToContents(1);
+// 	QTreeWidgetItem* lastItem = main->getDetailsListView()->itemAt(0, main->getDetailsListView()->topLevelItemCount());
+// 	main->getDetailsListView()->setCurrentItem(lastItem);
+// 	detailsListItemClicked(lastItem, 0);
+// 	main->getDetailsListView()->resizeColumnToContents(0); 
+// 	main->getDetailsListView()->resizeColumnToContents(1);
 
 	kdebugf2();
 }
