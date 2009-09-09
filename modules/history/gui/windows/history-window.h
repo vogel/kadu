@@ -30,7 +30,8 @@
 #include "../../history.h"
 #include "../../history_exports.h"
 
-struct HistorySearchParameters {
+struct HistorySearchParameters
+{
 	QDate fromDate;
 	QDate toDate;
 	QString pattern;
@@ -43,51 +44,57 @@ struct HistorySearchParameters {
 
 class HISTORYAPI HistorySearchDetailsItem
 {
-	public:
-		HistorySearchDetailsItem(QString altNick,  QString title, QDate date, int length);
-		QString altNick;
-		QDate date;
-		QString title;
-		int length;
+public:
+	HistorySearchDetailsItem(QString altNick,  QString title, QDate date, int length);
+
+	QString altNick;
+	QDate date;
+	QString title;
+	int length;
+
 };
 
 class HISTORYAPI HistorySearchResult
 {
-	public:
-		HistorySearchResult();
-		ContactList users;
-		HistoryEntryType currentType;
-		QList<HistorySearchDetailsItem> detailsItems;
-		QString pattern;
-		int resultsShowMode;
+public:
+	HistorySearchResult();
+
+	ContactList users;
+	HistoryEntryType currentType;
+	QList<HistorySearchDetailsItem> detailsItems;
+	QString pattern;
+	int resultsShowMode;
+
 };
 
 class HistoryMainWidget : public MainWindow
 {
 	Q_OBJECT
-		ActionDescription *historySearchActionDescription;
-		ActionDescription *historyNextResultsActionDescription;
-		ActionDescription *historyPrevResultsActionDescription;
-		QTreeView *DetailsListView;
-		ChatMessagesView* ContentBrowser;
-		QDockWidget *dock;
-		QLineEdit *quickSearchPhraseEdit;
-	private slots:
-		void quickSearchPhraseTyped(const QString &text);
 
-	public:
-		HistoryMainWidget(QWidget *parent, QWidget *window);
-		virtual ~HistoryMainWidget();
+	ActionDescription *historySearchActionDescription;
+	ActionDescription *historyNextResultsActionDescription;
+	ActionDescription *historyPrevResultsActionDescription;
+	QTreeView *DetailsListView;
+	ChatMessagesView* ContentBrowser;
+	QDockWidget *dock;
+	QLineEdit *quickSearchPhraseEdit;
 
-		virtual QTreeView * getDetailsListView() { return DetailsListView; };
+private slots:
+	void quickSearchPhraseTyped(const QString &text);
 
-		virtual ChatMessagesView* getContentBrowser() { return ContentBrowser; };
+public:
+	HistoryMainWidget(QWidget *parent, QWidget *window);
+	virtual ~HistoryMainWidget();
 
-		virtual bool supportsActionType(ActionDescription::ActionType type);
-		virtual ContactSet contacts() { return ContactSet(); };
-		virtual ChatWidget * getChatWidget() { return 0; };
-		virtual QDockWidget * getDockWidget() { return dock; };
-		virtual ContactsListWidget* contactsListWidget() { return 0; } 
+	virtual QTreeView * getDetailsListView() { return DetailsListView; };
+
+	virtual ChatMessagesView* getContentBrowser() { return ContentBrowser; };
+
+	virtual bool supportsActionType(ActionDescription::ActionType type);
+	virtual ContactSet contacts() { return ContactSet(); };
+	virtual ChatWidget * getChatWidget() { return 0; };
+	virtual QDockWidget * getDockWidget() { return dock; };
+	virtual ContactsListWidget* contactsListWidget() { return 0; }
 
 };
 
@@ -104,49 +111,52 @@ class HistoryWindow : public QWidget
 	QTreeView *ChatsTree;
 	HistoryChatsModel *ChatsModel;
 
-		HistoryMainWidget *main;
-		QMenu *MainPopupMenu;
-		QMenu *DetailsPopupMenu;
-		QList<HistorySearchResult> previousSearchResults;
+	HistoryMainWidget *main;
+	QMenu *MainPopupMenu;
+	QMenu *DetailsPopupMenu;
+	QList<HistorySearchResult> previousSearchResults;
 
-		HistorySearchParameters searchParameters;
-		bool closeDemand;
-		bool isSearchInProgress;
-		bool inSearchMode;
-		HistorySearchDialog *advSearchWindow;
+	HistorySearchParameters searchParameters;
+	bool closeDemand;
+	bool isSearchInProgress;
+	bool inSearchMode;
+	HistorySearchDialog *advSearchWindow;
 
-		void searchHistory();
-		void globalRefresh();
-		void searchBranchRefresh();
-		ContactSet selectedUsers;
-		int maxLen;
+	void searchHistory();
+	void globalRefresh();
+	void searchBranchRefresh();
+	ContactSet selectedUsers;
+	int maxLen;
+
 private slots:
 	void chatActivated(const QModelIndex &index);
 	void dateActivated(const QModelIndex &index);
 
-		void searchActionActivated(QAction* sender, bool toggled);
-		void searchNextActActivated(QAction* sender, bool toggled);
-		void searchPrevActActivated(QAction* sender, bool toggled);
-		void showMainPopupMenu(const QPoint & pos);
-		void showDetailsPopupMenu(const QPoint & pos);
-		void openChat();
-		void lookupUserInfo();
-		void removeHistoryEntriesPerUser();
-		void removeHistoryEntriesPerDate();
-	protected:
-		void closeEvent(QCloseEvent *e);
-		void keyPressEvent(QKeyEvent *e);
+	void searchActionActivated(QAction* sender, bool toggled);
+	void searchNextActActivated(QAction* sender, bool toggled);
+	void searchPrevActActivated(QAction* sender, bool toggled);
+	void showMainPopupMenu(const QPoint & pos);
+	void showDetailsPopupMenu(const QPoint & pos);
+	void openChat();
+	void lookupUserInfo();
+	void removeHistoryEntriesPerUser();
+	void removeHistoryEntriesPerDate();
 
-	public:
-		HistoryWindow();
-		~HistoryWindow();
+protected:
+	void closeEvent(QCloseEvent *e);
+	void keyPressEvent(QKeyEvent *e);
 
-		virtual HistorySearchParameters getSearchParameters() const { return searchParameters; };
-		void setSearchParameters(HistorySearchParameters& params);
-		void show(ContactSet contacts);
-		virtual QMenu * getMainPopupMenu() { return MainPopupMenu;};
-	
-		virtual QList<HistorySearchResult> getPreviousSearchResults() const { return previousSearchResults; };
+public:
+	HistoryWindow();
+	~HistoryWindow();
+
+	virtual HistorySearchParameters getSearchParameters() const { return searchParameters; };
+	void setSearchParameters(HistorySearchParameters& params);
+	void show(ContactSet contacts);
+	virtual QMenu * getMainPopupMenu() { return MainPopupMenu;};
+
+	virtual QList<HistorySearchResult> getPreviousSearchResults() const { return previousSearchResults; };
+
 };
 
 #endif // HISTORY_WINDOW_H
