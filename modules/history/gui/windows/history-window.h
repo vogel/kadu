@@ -76,40 +76,6 @@ class HISTORYAPI HistorySearchResult
 };
 
 /*!
-\class DetailsListViewText
-\brief Lista widoku szczeg��owego wg. dat rozm�w w oknie przegl�dania historii
-*/
-class DetailsListItem : public QTreeWidgetItem
-{
-	private:
-		QDate Date; /*!< Data, z kt�rej rozmowy reprezentuje dany element. */
-		Chat *CurrentChat;  /*!< Lista u�ytkownik�w, do kt�rych nale�y dana data - czasem si� przyda, gdy nie mo�na zachowa� zaznaczenia na g��wnej li�cie. */
-	public:
-		/**
-       		Standardowy konstruktor dla g��wnego elementu listy szczeg��owej.
-		@param parent nadrz�dny treewidget
-		@param title tytu� (fragment wiadomo�ci z danej daty)
-		@param date data, dla kt�rej rozmowy reprezentuje dany element
-		@param lenght ilo�� wiadomo�ci dla danej daty
-		@param uids lista u�ytkownik�w, dla kt�rej pobrano dat� - jak ju� wspomniano, czasem si� przydaje.
-		*/
-		DetailsListItem(QTreeWidget* parent, Chat *chat, QDate date);
-		/**
-       		Zwraca dat� reprezentowan� przez dany element.
-		@return Data przypisana do danego elementu.
-		*/
-		/**
-       		Zwraca list� u�ytkownik�w reprezentowan� przez dany element.
-		@return Lista u�ytkownik�w przypisana do danego elementu.
-		*/
-		Chat * chat() const { return CurrentChat; };
-		QDate date() const { return Date; };
-		QString prepareAltnick();
-		QString prepareTitle();
-		QString prepareLength();
-};
-
-/*!
 \class HistoryMainWidget
 \brief G��wny widget okna przegl�dania historii
 */
