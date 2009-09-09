@@ -31,6 +31,7 @@ const int ProtocolRole = KaduRoles + 4;
 const int AccountRole = KaduRoles + 5;
 const int AvatarRole = KaduRoles + 6;
 const int ChatRole = KaduRoles + 7;
+const int DateRole = KaduRoles + 8;
 
 class ContactsModelBase : public QAbstractItemModel, public AbstractContactsModel, public AccountsAwareObject
 {
