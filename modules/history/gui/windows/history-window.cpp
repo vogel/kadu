@@ -32,53 +32,6 @@
 #include "history-window.h"
 #include <QItemDelegate>
 
-DetailsListItem::DetailsListItem(QTreeWidget* parent, Chat *chat, QDate date)
-	: QTreeWidgetItem(parent), Date(date), CurrentChat(chat)
-{
-	setText(0, prepareAltnick());
-	setText(1, prepareTitle());
- 	setText(2, date.toString("dd.MM.yyyy"));
-	setText(3, prepareLength());
-	setIcon(0, QIcon(IconsManager::instance()->loadIcon("WriteEmail")));
-}
-
-QString DetailsListItem::prepareAltnick()
-{
-	QString name;
-	unsigned int i = 0;
-	ContactList contacts = CurrentChat->contacts().toContactList();
-	unsigned int count = contacts.count();
-	foreach(Contact uid, contacts)
-	{
-		name.append(uid.display());
-		if (i++ < count - 1)
-			name.append(", ");
-	}
-	return name;
-}
-
-QString DetailsListItem::prepareTitle()
-{
-	QList<Message> messages = History::instance()->getMessages(CurrentChat, Date, 1);
-	if (messages.size() == 0)
-		return "";
-
-	Message firstMessage = messages.first();
-	QString title = firstMessage.content();
-
-	int l = title.length();
-	title.truncate(20);
-	if (l > 20)
-		title += " ...";
-
-	return title;
-}
-
-QString DetailsListItem::prepareLength()
-{
-	return QString::number(History::instance()->getMessagesCount(CurrentChat, Date));
-}
-
 HistoryMainWidget::HistoryMainWidget(QWidget *parent, QWidget *window)
 	: MainWindow(parent)
 {
