@@ -476,6 +476,22 @@ E un rischio per la sicurezza!</translation>
         <translation type="unfinished">Fuori linea(desc)</translation>
     </message>
     <message>
+        <source>Talk With Me</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Talk With Me (d.)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Do Not Disturb</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Do Not Disturb (d.)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>On startup, set last description</source>
         <translation>Quando avviare, ispristina l&apos;ultimo status</translation>
     </message>
@@ -1637,12 +1653,44 @@ Di più conessioni con il password incorretto</translation>
         <source>Offline (d.)</source>
         <translation type="unfinished">Fuori linea(desc)</translation>
     </message>
+    <message>
+        <source>Talk With Me</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Talk With Me (d.)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Do Not Disturb</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Do Not Disturb (d.)</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>KaduMainWindow</name>
     <message>
         <source>Create new toolbar</source>
         <translation type="unfinished">Crea nuovo toolbar</translation>
+    </message>
+    <message>
+        <source>Talk With Me</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Talk With Me (d.)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Do Not Disturb</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Do Not Disturb (d.)</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -2433,6 +2481,22 @@ Possibile incompatibilità con Kadu.</translation>
         <source>Offline (d.)</source>
         <translation>Fuori linea(desc)</translation>
     </message>
+    <message>
+        <source>Talk With Me</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Talk With Me (d.)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Do Not Disturb</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Do Not Disturb (d.)</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>UserStatus</name>
@@ -2468,6 +2532,23 @@ Possibile incompatibilità con Kadu.</translation>
         <source>Offline (d.)</source>
         <translation>Fuori linea(desc)</translation>
     </message>
+    <message>
+        <source>Talk With Me</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Talk With Me (d.)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Do Not Disturb</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Do Not Disturb (d.)</source>
+        <translation type="unfinished"></translation>
+    </message>
+
     <message>
         <source>Blocking</source>
         <translation>Bloccato</translation>

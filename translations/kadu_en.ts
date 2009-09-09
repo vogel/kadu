@@ -475,6 +475,22 @@ It&apos;s a high security risk!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <source>Talk With Me</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Talk With Me (d.)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Do Not Disturb</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Do Not Disturb (d.)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>On startup, set last description</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1646,6 +1662,22 @@ Too many attempts with bad password</source>
         <source>Move to group %1</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Talk With Me</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Talk With Me (d.)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Do Not Disturb</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Do Not Disturb (d.)</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>KaduTextBrowser</name>
@@ -2414,6 +2446,22 @@ Maybe it&apos;s not Kadu-compatible Module.</source>
         <source>Offline (d.)</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Talk With Me</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Talk With Me (d.)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Do Not Disturb</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Do Not Disturb (d.)</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>UserStatus</name>
@@ -2451,6 +2499,22 @@ Maybe it&apos;s not Kadu-compatible Module.</source>
     </message>
     <message>
         <source>Blocking</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Talk With Me</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Talk With Me (d.)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Do Not Disturb</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Do Not Disturb (d.)</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

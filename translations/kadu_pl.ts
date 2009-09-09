@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS><TS version="1.1" language="pl">
-<defaultcodec></defaultcodec>
+<!DOCTYPE TS>
+<TS version="2.0" language="pl">
 <context>
     <name>@default</name>
     <message>
@@ -476,6 +476,22 @@ Jest to wysoce ryzykowne!</translation>
     <message>
         <source>Offline</source>
         <translation>Niedostępny</translation>
+    </message>
+    <message>
+        <source>Talk With Me</source>
+        <translation>Porozmawiaj ze mną</translation>
+    </message>
+    <message>
+        <source>Talk With Me (d.)</source>
+        <translation>Porozmawiaj ze mną z opisem</translation>
+    </message>
+    <message>
+        <source>Do Not Disturb</source>
+        <translation>Nie przeszkadzać</translation>
+    </message>
+    <message>
+        <source>Do Not Disturb (d.)</source>
+        <translation>Nie przeszkadzać z opisem</translation>
     </message>
     <message>
         <source>On startup, set last description</source>
@@ -1653,6 +1669,22 @@ Czy na pewno tego chcesz?</translation>
         <source>Offline (d.)</source>
         <translation>Niedostępny z opisem</translation>
     </message>
+    <message>
+        <source>Talk With Me</source>
+        <translation>Porozmawiaj ze mną</translation>
+    </message>
+    <message>
+        <source>Talk With Me (d.)</source>
+        <translation>Porozmawiaj ze mną z opisem</translation>
+    </message>
+    <message>
+        <source>Do Not Disturb</source>
+        <translation>Nie przeszkadzać</translation>
+    </message>
+    <message>
+        <source>Do Not Disturb (d.)</source>
+        <translation>Nie przeszkadzać z opisem</translation>
+    </message>
 </context>
 <context>
     <name>KaduMainWindow</name>
@@ -2450,6 +2482,22 @@ Być może nie jest to moduł kompatybilny z Kadu.</translation>
         <source>Offline (d.)</source>
         <translation>Niedostępny z opisem</translation>
     </message>
+    <message>
+        <source>Talk With Me</source>
+        <translation>Porozmawiaj ze mną</translation>
+    </message>
+    <message>
+        <source>Talk With Me (d.)</source>
+        <translation>Porozmawiaj ze mną z opisem</translation>
+    </message>
+    <message>
+        <source>Do Not Disturb</source>
+        <translation>Nie przeszkadzać</translation>
+    </message>
+    <message>
+        <source>Do Not Disturb (d.)</source>
+        <translation>Nie przeszkadzać z opisem</translation>
+    </message>
 </context>
 <context>
     <name>UserStatus</name>
@@ -2484,6 +2532,22 @@ Być może nie jest to moduł kompatybilny z Kadu.</translation>
     <message>
         <source>Offline (d.)</source>
         <translation>Niedostępny z opisem</translation>
+    </message>
+    <message>
+        <source>Talk With Me</source>
+        <translation>Porozmawiaj ze mną</translation>
+    </message>
+    <message>
+        <source>Talk With Me (d.)</source>
+        <translation>Porozmawiaj ze mną z opisem</translation>
+    </message>
+    <message>
+        <source>Do Not Disturb</source>
+        <translation>Nie przeszkadzać</translation>
+    </message>
+    <message>
+        <source>Do Not Disturb (d.)</source>
+        <translation>Nie przeszkadzać z opisem</translation>
     </message>
     <message>
         <source>Blocking</source>

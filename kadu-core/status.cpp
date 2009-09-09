@@ -388,9 +388,9 @@ eUserStatus UserStatus::fromString(const QString &stat)
 		return Invisible;
 	if (stat.contains("Blocking"))
 		return Blocking;
-	if (stat.contains("TalkWithMe"))
+	if (stat.contains("Talk With Me"))
 		return FFC;
-	if (stat.contains("DoNotDisturb"))
+	if (stat.contains("Do Not Disturb"))
 		return DND;
 	return Offline;
 }
@@ -404,8 +404,8 @@ QString UserStatus::toString(eUserStatus stat, bool desc)
 		case Busy: res.append("Busy"); break;
 		case Invisible: res.append("Invisible"); break;
 		case Blocking: res.append("Blocking"); break;
-		case FFC: res.append("TalkWithMe"); break;
-		case DND: res.append("DoNotDisturb"); break;
+		case FFC: res.append("Talk With Me"); break;
+		case DND: res.append("Do Not Disturb"); break;
 		case Offline:
 		default:
 			res.append("Offline");
@@ -443,10 +443,10 @@ QString UserStatus::name(int nr)
 		QT_TR_NOOP("Offline"),
 		QT_TR_NOOP("Offline (d.)"),
 		QT_TR_NOOP("Blocking"),
-		QT_TR_NOOP("TalkWithMe"),
-		QT_TR_NOOP("TalkWithMe (d.)"),
-		QT_TR_NOOP("DoNotDisturb"),
-		QT_TR_NOOP("DoNotDisturb (d.)"),
+		QT_TR_NOOP("Talk With Me"),
+		QT_TR_NOOP("Talk With Me (d.)"),
+		QT_TR_NOOP("Do Not Disturb"),
+		QT_TR_NOOP("Do Not Disturb (d.)"),
 	};
 
 	return names[nr];

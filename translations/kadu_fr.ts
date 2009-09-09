@@ -477,6 +477,22 @@ Attention danger!
         <translation>Hors ligne ( avec description.)</translation>
     </message>
     <message>
+        <source>Talk With Me</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Talk With Me (d.)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Do Not Disturb</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Do Not Disturb (d.)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>On startup, set last description</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1653,6 +1669,22 @@ Too many attempts with bad password</source>
         <source>Move to group %1</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Talk With Me</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Talk With Me (d.)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Do Not Disturb</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Do Not Disturb (d.)</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>KaduTextBrowser</name>
@@ -2461,6 +2493,22 @@ Peut être module incompatible avec Kadu.</translation>
     <message>
         <source>Blocking</source>
         <translation>Blockage</translation>
+    </message>
+    <message>
+        <source>Talk With Me</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Talk With Me (d.)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Do Not Disturb</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Do Not Disturb (d.)</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

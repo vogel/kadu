@@ -476,6 +476,22 @@ It&apos;s a high security risk!</source>
         <translation>Offline (Beschr.)</translation>
     </message>
     <message>
+        <source>Talk With Me</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Talk With Me (d.)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Do Not Disturb</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Do Not Disturb (d.)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>On startup, set last description</source>
         <translation>Beim Starten Beschreibung setzten wie vor dem Ausloggen</translation>
     </message>
@@ -1649,6 +1665,22 @@ Zu viel Versuche mit falschem Passwort</translation>
         <source>Offline (d.)</source>
         <translation>Offline (Beschr.)</translation>
     </message>
+    <message>
+        <source>Talk With Me</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Talk With Me (d.)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Do Not Disturb</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Do Not Disturb (d.)</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>KaduMainWindow</name>
@@ -2447,6 +2479,22 @@ Vielleicht ist es kein Kadu-Modul.</translation>
         <source>Offline (d.)</source>
         <translation>Offline (Beschr.)</translation>
     </message>
+    <message>
+        <source>Talk With Me</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Talk With Me (d.)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Do Not Disturb</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Do Not Disturb (d.)</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>UserStatus</name>
@@ -2482,6 +2530,23 @@ Vielleicht ist es kein Kadu-Modul.</translation>
         <source>Offline (d.)</source>
         <translation>Offline (Beschr.)</translation>
     </message>
+    <message>
+        <source>Talk With Me</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Talk With Me (d.)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Do Not Disturb</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Do Not Disturb (d.)</source>
+        <translation type="unfinished"></translation>
+    </message>
+
     <message>
         <source>Blocking</source>
         <translation>Blockt</translation>
