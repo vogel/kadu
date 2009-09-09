@@ -119,7 +119,7 @@ class HistoryMainWidget : public MainWindow
 		ActionDescription *historySearchActionDescription; /*!< Akcja otwieraj�ca okno wyszukiwania. */
 		ActionDescription *historyNextResultsActionDescription; /*!< Akcja przewijaj�ca okno wiadomo�ci do nast�pnego wyst�pienia wyszukiwanego wyra�enia. */
 		ActionDescription *historyPrevResultsActionDescription; /*!< Akcja przewijaj�ca okno wiadomo�ci do poprzedniego wyst�pienia wyszukiwanego wyra�enia. */
-		QTreeWidget* DetailsListView; /*!< Lista szczeg��owa rozm�w wg. dat. */
+		QTreeView *DetailsListView; /*!< Lista szczeg��owa rozm�w wg. dat. */
 		ChatMessagesView* ContentBrowser; /*!< Okno przegl�dania rozm�w. */
 		QDockWidget *dock;  /*!< Dokowany widget wyszukiwania w bie��cej zawarto�ci okna wiadomo�ci. */
 		QLineEdit *quickSearchPhraseEdit;  /*!< LineEdit w widgecie wyszukiwania "na �ywcowo". */
@@ -141,7 +141,7 @@ class HistoryMainWidget : public MainWindow
        		Zwraca wska�nik do listy widoku szczeg��owego.
 		@return Wska�nik do listy widoku szczeg��owego.
 		*/
-		virtual QTreeWidget* getDetailsListView() { return DetailsListView; };
+		virtual QTreeView * getDetailsListView() { return DetailsListView; };
 		/**
        		Zwraca wska�nik do okna przegl�dania rozm�w.
 		@return Wska�nik do okna przegl�dania rozm�w.
