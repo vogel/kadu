@@ -36,56 +36,13 @@ HistoryWindow::HistoryWindow(QWidget *parent) :
 		MainWindow(parent), isSearchInProgress(0), closeDemand(0), inSearchMode(0)
 {
 	kdebugf();
+
 	setWindowTitle(tr("History"));
 	setWindowIcon(IconsManager::instance()->loadIcon("History"));
 
-	QWidget *main = new QWidget(this);
-// 	QGridLayout* grid = new QGridLayout(main);
-// 	grid->setSpacing(0);
-	QSplitter* splitter = new QSplitter(Qt::Horizontal, main);
-	QSplitter* left_splitter = new QSplitter(Qt::Vertical, splitter);
+	createGui();
+	connectGui();
 
-	ChatsTree = new QTreeView(left_splitter);
-	ChatsModel = new HistoryChatsModel(this);
-	ChatsTree->setModel(ChatsModel);
-	ChatsTree->setRootIsDecorated(true);
-	connect(ChatsTree, SIGNAL(activated(const QModelIndex &)), this, SLOT(chatActivated(const QModelIndex &)));
-
-	QWidget *vbox = new QWidget(splitter);
-	QVBoxLayout *vbox_lay = new QVBoxLayout();
-
-	
-	QWidget *mvbox = new QWidget(splitter);
-	QSplitter* right = new QSplitter(Qt::Vertical);
-	QVBoxLayout *mvbox_lay = new QVBoxLayout;
-
-	DetailsListView = new QTreeView(right);
-	DetailsListView->setModel(new ChatDatesModel(0, QList<QDate>(), this));
-
-	ContentBrowser = new ChatMessagesView(0, right);
-	ContentBrowser->setPruneEnabled(false);
-	///	ContentBrowser->setMargin(config_file.readNumEntry("General", "ParagraphSeparator"));
-
-	DockWidget = new QDockWidget(tr("Quick search"), this);
-	QWidget *dockWidget = new QWidget;
-	QHBoxLayout* dockLayout = new QHBoxLayout;
-	dockLayout->setMargin(3);
-	dockLayout->setSpacing(3);
-
-	quickSearchPhraseEdit = new QLineEdit(DockWidget);
-	connect(quickSearchPhraseEdit, SIGNAL(textChanged(const QString &)), this, SLOT(quickSearchPhraseTyped(const QString &)));
-	dockLayout->addWidget(quickSearchPhraseEdit);
-
-	QPushButton *nextButton = new QPushButton(tr("Next"));
-	dockLayout->addWidget(nextButton);
-
-	QPushButton *prevButton = new QPushButton(tr("Previous"));
-	dockLayout->addWidget(prevButton);
-
-	dockWidget->setLayout(dockLayout);
-	DockWidget->setWidget(dockWidget);
-	addDockWidget(Qt::BottomDockWidgetArea, DockWidget);
-	DockWidget->hide();
 	/*
 	historySearchActionDescription = new ActionDescription(
 	ActionDescription::TypeHistory, "historySearchAction",
@@ -121,30 +78,6 @@ HistoryWindow::HistoryWindow(QWidget *parent) :
 	// 	loadToolBarsFromConfig("sqlHistoryLeftDockArea", Qt::LeftToolBarArea);
 	// 	loadToolBarsFromConfig("sqlHistoryRightDockArea", Qt::RightToolBarArea);
 
-	mvbox_lay->addWidget(right);
-	mvbox_lay->setMargin(0);
-	mvbox_lay->setSpacing(0);
-	mvbox->setLayout(mvbox_lay);
-
-	setCentralWidget(main);
-	//loadToolBarsFromConfig("history");
-	statusBar()->showMessage(tr("Ready"));
-
-	QList<int> sizes;
-	sizes.append(100);
-	sizes.append(300);
-	splitter->setSizes(sizes);
-// 	grid->addWidget(splitter, 0, 1, 0, 4);
-
-	ChatsTree->setContextMenuPolicy(Qt::CustomContextMenu);
-	connect(ChatsTree, SIGNAL(customContextMenuRequested(QPoint)),
-			this, SLOT(showMainPopupMenu(QPoint)));
-	DetailsListView->setContextMenuPolicy(Qt::CustomContextMenu);
-	connect(DetailsListView, SIGNAL(customContextMenuRequested(QPoint)),
-			this, SLOT(showDetailsPopupMenu(QPoint)));
-	
-	connect(DetailsListView, SIGNAL(activated(const QModelIndex &)),
-			this, SLOT(dateActivated(const QModelIndex &)));
 	loadWindowGeometry(this, "History", "HistoryWindowGeometry", 200, 200, 700, 500);
 	maxLen = 36;
 
@@ -175,6 +108,56 @@ HistoryWindow::~HistoryWindow()
 	kdebugf();
 	//writeToolBarsToConfig("history");
 	kdebugf2();
+}
+
+void HistoryWindow::createGui()
+{
+	QWidget *mainWidget = new QWidget(this);
+	mainWidget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+
+	QVBoxLayout *layout = new QVBoxLayout(mainWidget);
+	layout->setMargin(5);
+	layout->setSpacing(5);
+
+	QSplitter *splitter = new QSplitter(Qt::Horizontal, mainWidget);
+	layout->addWidget(splitter);
+
+	ChatsTree = new QTreeView(splitter);
+	ChatsModel = new HistoryChatsModel(this);
+	ChatsTree->setModel(ChatsModel);
+	ChatsTree->setRootIsDecorated(true);
+
+	QSplitter *rightSplitter = new QSplitter(Qt::Vertical, splitter);
+
+	DetailsListView = new QTreeView(rightSplitter);
+	DetailsListView->setModel(new ChatDatesModel(0, QList<QDate>(), this));
+
+	ContentBrowser = new ChatMessagesView(0, rightSplitter);
+	ContentBrowser->setPruneEnabled(false);
+	///	ContentBrowser->setMargin(config_file.readNumEntry("General", "ParagraphSeparator"));
+
+	QList<int> sizes;
+	sizes.append(100);
+	sizes.append(300);
+	splitter->setSizes(sizes);
+
+	setCentralWidget(mainWidget);
+}
+
+void HistoryWindow::connectGui()
+{
+	connect(ChatsTree, SIGNAL(activated(const QModelIndex &)),
+			this, SLOT(chatActivated(const QModelIndex &)));
+	connect(DetailsListView, SIGNAL(activated(const QModelIndex &)),
+			this, SLOT(dateActivated(const QModelIndex &)));
+
+	ChatsTree->setContextMenuPolicy(Qt::CustomContextMenu);
+	connect(ChatsTree, SIGNAL(customContextMenuRequested(QPoint)),
+			this, SLOT(showMainPopupMenu(QPoint)));
+
+	DetailsListView->setContextMenuPolicy(Qt::CustomContextMenu);
+	connect(DetailsListView, SIGNAL(customContextMenuRequested(QPoint)),
+			this, SLOT(showDetailsPopupMenu(QPoint)));
 }
 
 void HistoryWindow::globalRefresh()

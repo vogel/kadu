@@ -100,6 +100,9 @@ class HistoryWindow : public MainWindow
 	bool inSearchMode;
 	HistorySearchDialog *advSearchWindow;
 
+	void createGui();
+	void connectGui();
+
 	void searchHistory();
 	void globalRefresh();
 	void searchBranchRefresh();
