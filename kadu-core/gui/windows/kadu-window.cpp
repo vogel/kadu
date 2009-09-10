@@ -63,7 +63,7 @@ void KaduWindow::createGui()
 {
 	createMenu();
 
-	MainWidget = new QWidget;
+	MainWidget = new QWidget();
 	MainLayout = new QVBoxLayout(MainWidget);
 	MainLayout->setMargin(0);
 	MainLayout->setSpacing(0);
