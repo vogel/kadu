@@ -103,8 +103,9 @@ class HistoryWindow : public MainWindow
 	void createGui();
 	void connectGui();
 
+	void updateData();
+
 	void searchHistory();
-	void globalRefresh();
 	void searchBranchRefresh();
 	ContactSet selectedUsers;
 	int maxLen;

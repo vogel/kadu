@@ -160,43 +160,14 @@ void HistoryWindow::connectGui()
 			this, SLOT(showDetailsPopupMenu(QPoint)));
 }
 
-void HistoryWindow::globalRefresh()
+void HistoryWindow::updateData()
 {
 	kdebugf();
-/*
-	MainListView->clear();
-	chatsItem = new QTreeWidgetItem(MainListView, QStringList(tr("Chats")));
-	chatsItem->setExpanded(true);
-	///QTreeWidgetItem *ft = new QTreeWidgetItem(MainListView, QStringList(tr("File transfers")));
-	conferItem = new QTreeWidgetItem(MainListView, QStringList(tr("Conferences")));
-	smsItem = new QTreeWidgetItem(MainListView, QStringList(tr("SMS")));
-	statusItem = new QTreeWidgetItem(MainListView, QStringList(tr("Status")));
-	statusItem->setExpanded(false);
-	searchItem = new QTreeWidgetItem(MainListView, QStringList(tr("Search")));*/
-
-// 	chatsItem->setIcon(0, IconsManager::instance()->loadIcon("OpenChat"));
-// 	///ft->setIcon(0, icons_manager->loadIcon("SendFile"));
-// 	smsItem->setIcon(0, IconsManager::instance()->loadIcon("Mobile"));
-// 	conferItem->setIcon(0, IconsManager::instance()->loadIcon("ManageModules"));
-// 	statusItem->setIcon(0, IconsManager::instance()->loadIcon("Busy"));
-// 	searchItem->setIcon(0, IconsManager::instance()->loadIcon("LookupUserInfo"));
 
 	ChatsModel->clear();
 
-	QList<Chat *> chatsList = History::instance()->chatsList();
-	
-// 	MainListItem* mainItem;
-	foreach (Chat *chat, chatsList)
+	foreach (Chat *chat, History::instance()->chatsList())
 		ChatsModel->addChat(chat);
-// 	{
-// 		if (chat->contacts().count() > 1)
-// 			mainItem = new MainListItem(conferItem, chat);
-// 		else
-// 			mainItem = new MainListItem(chatsItem, chat);
-// 		mainItem->setIcon(0, IconsManager::instance()->loadIcon("Online"));
-// 	}
-
-	kdebugf2();
 }
 
 void HistoryWindow::searchBranchRefresh()
@@ -434,7 +405,8 @@ void HistoryWindow::show(ContactSet users)
 	}
 
 	selectedUsers = users;
-	globalRefresh();
+	updateData();
+
 	QWidget::show();
 }
 
