@@ -37,6 +37,7 @@ class HistorySqlStorage : public HistoryStorage
 	QSqlQuery ListChatMessagesByDateLimitQuery;
 	QSqlQuery ListChatMessagesLimitQuery;
 	QSqlQuery ListChatMessagesSinceQuery;
+	QSqlQuery ListChatMessagesBackToQuery;
 	QSqlQuery CountChatMessagesQuery;
 	QSqlQuery CountChatMessagesByDateQuery;
 
@@ -62,6 +63,7 @@ public:
 	virtual QList<QDate> chatDates(Chat *chat);
 	virtual QList<Message> messages(Chat *chat, QDate date = QDate(), int limit = 0);
 	virtual QList<Message> messagesSince(Chat *chat, QDate date);
+	virtual QList<Message> messagesBackTo(Chat *chat, QDateTime datetime, int limit);
 
 	virtual int messagesCount(Chat *chat, QDate date = QDate());
 

@@ -137,6 +137,9 @@ void HistorySqlStorage::initQueries()
 	ListChatMessagesSinceQuery = QSqlQuery(Database);
 	ListChatMessagesSinceQuery.prepare("SELECT sender, content, send_time, receive_time, attributes FROM kadu_messages WHERE chat=:chat AND date(receive_time) >= date(:date) ORDER BY receive_time");
 
+	ListChatMessagesBackToQuery = QSqlQuery(Database);
+	ListChatMessagesBackToQuery.prepare("SELECT sender, content, send_time, receive_time, attributes FROM kadu_messages WHERE chat=:chat AND datetime(receive_time) >= datetime(:date) ORDER BY receive_time DESC LIMIT :limit");
+
 	CountChatMessagesQuery = QSqlQuery(Database);
 	CountChatMessagesQuery.prepare("SELECT COUNT(chat) FROM kadu_messages WHERE chat=:chat");
 
@@ -279,6 +282,28 @@ QList<Message> HistorySqlStorage::messagesSince(Chat *chat, QDate date)
 	
 	DatabaseMutex.unlock();
 	
+	return messages;
+}
+
+QList<Message> HistorySqlStorage::messagesBackTo(Chat *chat, QDateTime datetime, int limit)
+{
+	DatabaseMutex.lock();
+
+	QList<Message> result;
+	QSqlQuery query = ListChatMessagesBackToQuery;
+
+	query.bindValue(":chat", chat->uuid().toString());
+	query.bindValue(":date", datetime.toString(Qt::ISODate));
+	query.bindValue(":limit", limit);
+	executeQuery(query);
+	result = messagesFromQuery(chat, query);
+
+	DatabaseMutex.unlock();
+
+	QList<Message> messages;
+	for (int i = result.size() - 1; i >= 0; --i)
+		messages.append(result.at(i));
+
 	return messages;
 }
 
