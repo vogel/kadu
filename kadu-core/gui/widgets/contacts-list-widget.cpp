@@ -43,7 +43,7 @@ ContactsListWidget::ContactsListWidget(MainWindow *mainWindow, QWidget *parent) 
 		Delegate(0), BackgroundTemporaryFile(0)
 {
 	setAlternatingRowColors(true);
-	setAnimated(true);
+	setAnimated(BackgroundImageMode == BackgroundNone);
 	setDragEnabled(true);
 	setExpandsOnDoubleClick(false);
 	setHeaderHidden(true);
@@ -290,6 +290,7 @@ void ContactsListWidget::doubleClickedSlot(const QModelIndex &index)
 void ContactsListWidget::setBackground(const QString &backgroundColor, const QString &file, BackgroundMode mode)
 {
 	BackgroundColor = backgroundColor;
+	setAnimated(mode == BackgroundNone);
 	BackgroundImageMode = mode;
 	BackgroundImageFile = file;
 	updateBackground();
