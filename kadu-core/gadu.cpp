@@ -2322,9 +2322,9 @@ QString GaduStatus::pixmapName(eUserStatus stat, bool hasDescription, bool mobil
 		case Blocking:
 			return QString("Blocking");
 		case DND:
-			return QString("Busy").append(add);   //TODO: need icon
+			return QString("DND").append(add);   //TODO: need icon
 		case FFC:
-			return QString("Online").append(add); //TODO: need icon
+			return QString("FFC").append(add); //TODO: need icon
 		default:
 			return QString("Offline").append(add);
 	}

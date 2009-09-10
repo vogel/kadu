@@ -386,12 +386,12 @@ eUserStatus UserStatus::fromString(const QString &stat)
 		return Busy;
 	if (stat.contains("Invisible"))
 		return Invisible;
-	if (stat.contains("Blocking"))
-		return Blocking;
 	if (stat.contains("Talk With Me"))
 		return FFC;
 	if (stat.contains("Do Not Disturb"))
 		return DND;
+	if (stat.contains("Blocking"))
+		return Blocking;
 	return Offline;
 }
 
@@ -442,11 +442,11 @@ QString UserStatus::name(int nr)
 		QT_TR_NOOP("Invisible (d.)"),
 		QT_TR_NOOP("Offline"),
 		QT_TR_NOOP("Offline (d.)"),
-		QT_TR_NOOP("Blocking"),
 		QT_TR_NOOP("Talk With Me"),
 		QT_TR_NOOP("Talk With Me (d.)"),
 		QT_TR_NOOP("Do Not Disturb"),
 		QT_TR_NOOP("Do Not Disturb (d.)"),
+		QT_TR_NOOP("Blocking"),
 	};
 
 	return names[nr];
