@@ -423,12 +423,12 @@ QString UserStatus::toString() const
 
 int UserStatus::count()
 {
-	return 9;
+	return 13;
 }
 
 int UserStatus::initCount()
 {
-	return 7;
+	return 11;
 }
 
 QString UserStatus::name(int nr)

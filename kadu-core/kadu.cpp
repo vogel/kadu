@@ -1284,7 +1284,6 @@ void Kadu::slotHandleState(int command)
 	kdebugf();
 
 	UserStatus status;
-
 	status.setStatus(userStatusChanger->status());
 	switch (command)
 	{
@@ -2144,19 +2143,19 @@ void Kadu::setDefaultStatus()
 		offlineToInvisible = config_file.readBoolEntry("General", "StartupStatusInvisibleWhenLastWasOffline");
 	}
 	else if (startupStatus == "Online")
-		statusIndex = 1;
+		statusIndex = UserStatus::index(Online, false);
 	else if (startupStatus == "Busy")
-		statusIndex = 3;
+		statusIndex = UserStatus::index(Busy, false);
 	else if (startupStatus == "Invisible")
-		statusIndex = 5;
+		statusIndex = UserStatus::index(Invisible, false);
 	else if (startupStatus == "Offline")
-		statusIndex = 6;
+		statusIndex = UserStatus::index(Offline, false);
 	else if (startupStatus == "Talk With Me")
-		statusIndex = 8;
+		statusIndex = UserStatus::index(FFC, false);
 	else if (startupStatus == "Do Not Disturb")
-		statusIndex = 10;
+		statusIndex = UserStatus::index(DND, false);
 
-	if ((statusIndex == 6 || statusIndex == 7) && offlineToInvisible)
+	if (UserStatus::isOffline(statusIndex) && offlineToInvisible)
 		status.setInvisible(description);
 	else
 		status.setIndex(statusIndex, description);
@@ -2193,42 +2192,43 @@ void Kadu::wentOnline(const QString &desc)
 {
 	kdebugf();
 	DoBlink = false;
-	showStatusOnMenu(desc.isEmpty() ? 0 : 1);
+	showStatusOnMenu(UserStatus::index(Online, !desc.isEmpty()));
+
 }
 
 void Kadu::wentBusy(const QString &desc)
 {
 	kdebugf();
 	DoBlink = false;
-	showStatusOnMenu(desc.isEmpty() ? 2 : 3);
+	showStatusOnMenu(UserStatus::index(Busy, !desc.isEmpty()));
 }
 
 void Kadu::wentInvisible(const QString &desc)
 {
 	kdebugf();
 	DoBlink = false;
-	showStatusOnMenu(desc.isEmpty() ? 4 : 5);
+	showStatusOnMenu(UserStatus::index(Invisible, !desc.isEmpty()));
 }
 
 void Kadu::wentOffline(const QString &desc)
 {
 	kdebugf();
 	DoBlink = false;
-	showStatusOnMenu(desc.isEmpty() ? 6 : 7);
+	showStatusOnMenu(UserStatus::index(Offline, !desc.isEmpty()));
 }
 
 void Kadu::wentTalkWithMe(const QString &desc)
 {
 	kdebugf();
 	DoBlink = false;
-	showStatusOnMenu(desc.isEmpty() ? 8 : 9);
+	showStatusOnMenu(UserStatus::index(FFC, !desc.isEmpty()));
 }
 
 void Kadu::wentDoNotDisturb(const QString &desc)
 {
 	kdebugf();
 	DoBlink = false;
-	showStatusOnMenu(desc.isEmpty() ? 10 : 11);
+	showStatusOnMenu(UserStatus::index(DND, !desc.isEmpty()));
 }
 
 void Kadu::showStatusOnMenu(int statusNr)
@@ -2236,7 +2236,7 @@ void Kadu::showStatusOnMenu(int statusNr)
 	kdebugf();
 
 	QList<QAction*> statusActions = changeStatusActionGroup->actions();
-	for (int i = 0; i < 8; ++i)
+	for (int i = 0; i < UserStatus::count()-1; ++i)
 		statusActions[i]->setChecked(i == statusNr);
 
 	changePrivateStatus->setChecked(gadu->currentStatus().isFriendsOnly());
@@ -2252,7 +2252,7 @@ void Kadu::showStatusOnMenu(int statusNr)
 	statusButton->setIcon(icon);
 	setMainWindowIcon(pix);
 
-	foreach(KaduAction *action, showStatusActionDescription->actions())
+	foreach (KaduAction *action, showStatusActionDescription->actions())
 		action->setIcon(icon);
 
 	emit statusPixmapChanged(icon, iconName);
