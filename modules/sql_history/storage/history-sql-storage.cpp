@@ -72,6 +72,7 @@ void HistorySqlStorage::initDatabase()
 	}
 
 	initTables();
+	initIndexes();
 }
 
 void HistorySqlStorage::initTables()
@@ -87,6 +88,7 @@ void HistorySqlStorage::initTables()
 void HistorySqlStorage::initKaduMessagesTable()
 {
 	QSqlQuery query(Database);
+
 	query.prepare("PRAGMA encoding = \"UTF-8\";");
 	executeQuery(query);
 
@@ -103,11 +105,19 @@ void HistorySqlStorage::initKaduMessagesTable()
 			"attributes TEXT);"
 	);
 	executeQuery(query);
+}
+
+void HistorySqlStorage::initIndexes()
+{
+	QSqlQuery query(Database);
 
 	query.prepare("CREATE INDEX IF NOT EXISTS kadu_messages_chat ON kadu_messages (chat)");
 	executeQuery(query);
-	
+
 	query.prepare("CREATE INDEX IF NOT EXISTS kadu_messages_chat_receive_time ON kadu_messages (chat, receive_time)");
+	executeQuery(query);
+
+	query.prepare("CREATE INDEX IF NOT EXISTS kadu_messages_chat_receive_time_date ON kadu_messages (chat, date(receive_time))");
 	executeQuery(query);
 }
 

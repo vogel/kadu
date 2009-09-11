@@ -46,6 +46,7 @@ class HistorySqlStorage : public HistoryStorage
 	void initDatabase();
 	void initQueries();
 	void initTables();
+	void initIndexes();
 	void initKaduMessagesTable();
 
 	void executeQuery(QSqlQuery query);
