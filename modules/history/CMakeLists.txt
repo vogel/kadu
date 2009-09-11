@@ -3,6 +3,7 @@ set (SOURCES
 	gui/windows/history-window.cpp
 	model/chat-dates-model.cpp
 	model/history-chats-model.cpp
+	model/history-chats-model-proxy.cpp
 	storage/history-storage.cpp
 	history.cpp
 )
@@ -12,6 +13,7 @@ set (MOC_SOURCES
 	gui/windows/history-window.h
 	model/chat-dates-model.h
 	model/history-chats-model.h
+	model/history-chats-model-proxy.h
 	storage/history-storage.h
 	history.h
 )
