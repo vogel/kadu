@@ -47,6 +47,7 @@ signals:
 	void receivedMessageFilter(Chat *chat, Contact sender, const QString &message, time_t time, bool &ignore);
 	void messageSent(const Message &message);
 	void messageReceived(const Message &message);
+
 };
 
 #endif // CHAT_SERVICE_H

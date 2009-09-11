@@ -147,7 +147,7 @@ void History::showHistoryActionActivated(QAction *sender, bool toggled)
 	kdebugf();
 	MainWindow *window = dynamic_cast<MainWindow *>(sender->parent());
 	if (window)
-		HistoryDialog->show(window->contacts());
+		HistoryDialog->show(window->chat());
 	kdebugf2();
 }
 

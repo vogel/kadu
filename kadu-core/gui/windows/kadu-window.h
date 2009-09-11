@@ -95,6 +95,7 @@ protected:
 	virtual bool supportsActionType(ActionDescription::ActionType type);
 	virtual ContactsListWidget * contactsListWidget();
 	virtual ContactSet contacts();
+	virtual Chat * chat();
 
 	virtual void configurationUpdated();
 

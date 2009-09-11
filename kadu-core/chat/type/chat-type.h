@@ -11,6 +11,7 @@
 #define CHAT_TYPE_H
 
 #include <QtCore/QString>
+#include <QtCore/QVariant>
 #include <QtGui/QIcon>
 
 class ChatType
@@ -34,5 +35,7 @@ public:
 	bool operator < (const ChatType &compare) const;
 
 };
+
+Q_DECLARE_METATYPE(ChatType)
 
 #endif // CHAT_TYPE_H

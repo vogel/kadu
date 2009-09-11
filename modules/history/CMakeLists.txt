@@ -1,5 +1,5 @@
 set (SOURCES
-	gui/windows/history-search-dialog.cpp
+# 	gui/windows/history-search-dialog.cpp
 	gui/windows/history-window.cpp
 	model/chat-dates-model.cpp
 	model/history-chats-model.cpp
@@ -8,7 +8,7 @@ set (SOURCES
 )
 
 set (MOC_SOURCES
-	gui/windows/history-search-dialog.h
+# 	gui/windows/history-search-dialog.h
 	gui/windows/history-window.h
 	model/chat-dates-model.h
 	model/history-chats-model.h
