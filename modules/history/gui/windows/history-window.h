@@ -74,7 +74,7 @@ public:
 
 	virtual QTreeView * getDetailsListView() { return DetailsListView; };
 
-	virtual ChatMessagesView* getContentBrowser() { return ContentBrowser; };
+	virtual ChatMessagesView * getContentBrowser() { return ContentBrowser; };
 
 	virtual bool supportsActionType(ActionDescription::ActionType type);
 	virtual ContactSet contacts() { return ContactSet(); };

@@ -28,6 +28,7 @@
 
 #include "model/chat-dates-model.h"
 #include "model/history-chats-model.h"
+#include "model/history-chats-model-proxy.h"
 #include "storage/history-storage.h"
 
 #include "history-window.h"
@@ -89,7 +90,13 @@ void HistoryWindow::createGui()
 
 	ChatsTree = new QTreeView(splitter);
 	ChatsModel = new HistoryChatsModel(this);
-	ChatsTree->setModel(ChatsModel);
+
+	HistoryChatsModelProxy *proxy = new HistoryChatsModelProxy(this);
+	proxy->setSourceModel(ChatsModel);
+
+	ChatsTree->setModel(proxy);
+	proxy->sort(1);
+	proxy->sort(0);; // do the sorting
 	ChatsTree->setRootIsDecorated(true);
 
 	QSplitter *rightSplitter = new QSplitter(Qt::Vertical, splitter);
