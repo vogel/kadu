@@ -16,6 +16,7 @@
 #include <QtGui/QSplitter>
 
 #include "accounts/account-manager.h"
+#include "chat/chat-manager.h"
 #include "configuration/configuration-file.h"
 #include "contacts/contact-manager.h"
 #include "contacts/model/contacts-model.h"
@@ -340,6 +341,15 @@ ContactsListWidget * KaduWindow::contactsListWidget()
 ContactSet KaduWindow::contacts()
 {
 	return ContactsWidget->selectedContacts();
+}
+
+Chat * KaduWindow::chat()
+{
+	Account *account = AccountManager::instance()->defaultAccount();
+	if (!account)
+		return 0;
+
+	return account->protocol()->findChat(contacts());
 }
 
 void KaduWindow::configurationUpdated()

@@ -73,9 +73,12 @@ QVariant HistoryChatsModel::chatTypeData(const QModelIndex &index, int role) con
 	{
 		case Qt::DisplayRole:
 			return chatType.displayName();
-			
+
 		case Qt::DecorationRole:
 			return chatType.icon();
+
+		case ChatTypeRole:
+			return QVariant::fromValue<ChatType>(chatType);
 	}
 	
 	return QVariant();

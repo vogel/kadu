@@ -95,6 +95,7 @@ public:
 
 	Contact currentContact() const;
 	ContactSet selectedContacts() const;
+
 	void setBackground(const QString &backgroundColor, const QString &file = QString::null, BackgroundMode mode = BackgroundNone);
 	void updateBackground();
 
