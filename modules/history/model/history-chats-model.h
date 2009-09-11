@@ -41,6 +41,7 @@ public:
 	void addChat(Chat *chat);
 
 	QModelIndex chatTypeIndex(ChatType type) const;
+	QModelIndex chatIndex(Chat *chat) const;
 
 };
 
