@@ -138,6 +138,13 @@ void HistoryWindow::updateData()
 void HistoryWindow::selectChat(Chat *chat)
 {
 	ChatType type = chat->type();
+	QModelIndex chatTypeIndex = ChatsModel->chatTypeIndex(type);
+
+	if (!chatTypeIndex.isValid())
+		return;
+
+	ChatsTree->collapseAll();
+	ChatsTree->expand(chatTypeIndex);
 }
 
 void HistoryWindow::showMainPopupMenu(const QPoint &pos)

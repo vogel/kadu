@@ -40,6 +40,8 @@ public:
 	void clear();
 	void addChat(Chat *chat);
 
+	QModelIndex chatTypeIndex(ChatType type) const;
+
 };
 
 #endif // HISTORY_CHATS_MODEL_H
