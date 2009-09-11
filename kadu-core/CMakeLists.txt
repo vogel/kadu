@@ -6,7 +6,9 @@ set (kadu_SRCS
 
 	accounts/model/accounts-model.cpp
 
+	chat/aggregate-chat.cpp
 	chat/chat.cpp
+	chat/chat-aggregator-builder.cpp
 	chat/chat-manager.cpp
 	chat/conference-chat.cpp
 	chat/html-messages-renderer.cpp
@@ -235,7 +237,9 @@ set (kadu_MOC_SRCS
 
 	accounts/model/accounts-model.h
 
+	chat/aggregate-chat.h
 	chat/chat.h
+	chat/chat-aggregator-builder.h
 	chat/chat-manager.h
 	chat/chat-styles-manager.h
 	chat/html-messages-renderer.h
