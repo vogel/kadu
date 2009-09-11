@@ -422,20 +422,28 @@ void History::unregisterStorage(HistoryStorage *storage)
 
 QList<Chat *> History::chatsList()
 {
+	kdebugf();
+
 	return CurrentStorage->chats();
 }
 
 QList<QDate> History::datesForChat(Chat *chat)
 {
+	kdebugf();
+
 	return CurrentStorage->chatDates(chat);
 }
 
 QList<Message> History::getMessages(Chat *chat, QDate date, int limit)
 {
+	kdebugf();
+
 	return CurrentStorage->messages(chat, date, limit);
 }
 
 int History::getMessagesCount(Chat *chat, QDate date)
 {
+	kdebugf();
+
 	return CurrentStorage->messagesCount(chat, date);
 }

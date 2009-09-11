@@ -102,6 +102,8 @@ void HistoryWindow::createGui()
 	QSplitter *rightSplitter = new QSplitter(Qt::Vertical, splitter);
 
 	DetailsListView = new QTreeView(rightSplitter);
+	DetailsListView->setUniformRowHeights(true);
+	DetailsListView->setRootIsDecorated(false);
 	DetailsListView->setModel(new ChatDatesModel(0, QList<QDate>(), this));
 
 	ContentBrowser = new ChatMessagesView(0, rightSplitter);
