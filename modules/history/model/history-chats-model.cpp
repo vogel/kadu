@@ -146,5 +146,21 @@ void HistoryChatsModel::addChat(Chat *chat)
 QModelIndex HistoryChatsModel::chatTypeIndex(ChatType type) const
 {
 	int row = ChatTypeManager::instance()->chatTypes().indexOf(type);
+	if (row < 0)
+		return QModelIndex();
+
 	return index(row, 0, QModelIndex());
+}
+
+QModelIndex HistoryChatsModel::chatIndex(Chat *chat) const
+{
+	if (!Chats.contains(chat->type()))
+		return QModelIndex();
+
+	QModelIndex typeIndex = chatTypeIndex(chat->type());
+	if (!typeIndex.isValid())
+		return QModelIndex();
+
+	int row = Chats.value(chat->type()).indexOf(chat);
+	return index(row, 0, typeIndex);
 }
