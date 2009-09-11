@@ -124,11 +124,6 @@ void History::createActionDescriptions()
 		this, SLOT(showMoreMessagesActionActivated(QAction *, bool)),
 		"History", tr("Show more messages...")
 	);
-	ShowLatestMessagesInChatWidgetActionDescription = new ActionDescription(0,
-		ActionDescription::TypeChat, "chatShowLatestMessagesAction",
-		this, SLOT(showLatestMessagesActionActivated(QAction *, bool)),
-		"History", tr("Show latest messages...")
-	);
 }
 
 void History::deleteActionDescriptions()
@@ -210,35 +205,18 @@ void History::showMoreMessages(QAction *action)
 		return;
 
 	chatMessagesView->setForcePruneDisabled(0 != days);
+	QList<Message> messages;
+
 	if (0 != days)
 	{
 		QDate since = QDate::currentDate().addDays(-days);
-		QList<Message> messages = CurrentStorage->messagesSince(chatWidget->chat(), since);
-
-		chatMessagesView->clearMessages();
-		chatMessagesView->appendMessages(messages);
+		messages = CurrentStorage->messagesSince(chatWidget->chat(), since);
 	}
-}
-
-void History::showLatestMessagesActionActivated(QAction *sender, bool toggled)
-{
-	if (!CurrentStorage)
-		return;
-
-	ChatEditBox *chatEditBox = dynamic_cast<ChatEditBox *>(sender->parent());
-	if (!chatEditBox)
-		return;
-	
-	ChatWidget *chatWidget = chatEditBox->chatWidget();
-	if (!chatWidget)
-		return;
-
-	ChatMessagesView *chatMessagesView = chatWidget->chatMessagesView();
-	if (!chatMessagesView)
-		return;
-
-	QDateTime backTo = QDateTime::currentDateTime().addDays(config_file.readNumEntry("Chat", "ChatHistoryQuotationTime", -744)/24);
-	QList<Message> messages = CurrentStorage->messagesBackTo(chatWidget->chat(), backTo, config_file.readNumEntry("Chat", "ChatPruneLen", 20));
+	else
+	{
+		QDateTime backTo = QDateTime::currentDateTime().addDays(config_file.readNumEntry("Chat", "ChatHistoryQuotationTime", -744)/24);
+		messages = CurrentStorage->messagesBackTo(chatWidget->chat(), backTo, config_file.readNumEntry("Chat", "ChatPruneLen", 20));
+	}
 
 	chatMessagesView->clearMessages();
 	chatMessagesView->appendMessages(messages);
