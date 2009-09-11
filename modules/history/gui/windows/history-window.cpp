@@ -155,16 +155,6 @@ void HistoryWindow::selectChat(Chat *chat)
 	chatActivated(chatIndex);
 }
 
-void HistoryWindow::showMainPopupMenu(const QPoint &pos)
-{
-	MainPopupMenu->popup(ChatsTree->mapToGlobal(pos));
-}
-
-void HistoryWindow::showDetailsPopupMenu(const QPoint &pos)
-{
-	DetailsPopupMenu->popup(DetailsListView->mapToGlobal(pos));
-}
-
 void HistoryWindow::chatActivated(const QModelIndex &index)
 {
 	kdebugf();
@@ -180,6 +170,12 @@ void HistoryWindow::chatActivated(const QModelIndex &index)
 	QList<QDate> chatDates = History::instance()->datesForChat(chat);
 	model->setChat(chat);
 	model->setDates(chatDates);
+
+	int lastRow = model->rowCount(QModelIndex()) - 1;
+	QModelIndex last = model->index(lastRow, 0, QModelIndex());
+	DetailsListView->selectionModel()->setCurrentIndex(last, QItemSelectionModel::ClearAndSelect);
+
+	dateActivated(last);
 
 	kdebugf2();
 }
@@ -202,6 +198,16 @@ void HistoryWindow::dateActivated(const QModelIndex &index)
 	ContentBrowser->appendMessages(messages);
 
 	kdebugf2();
+}
+
+void HistoryWindow::showMainPopupMenu(const QPoint &pos)
+{
+	MainPopupMenu->popup(ChatsTree->mapToGlobal(pos));
+}
+
+void HistoryWindow::showDetailsPopupMenu(const QPoint &pos)
+{
+	DetailsPopupMenu->popup(DetailsListView->mapToGlobal(pos));
 }
 
 void HistoryWindow::show(Chat *chat)
