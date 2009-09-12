@@ -10,9 +10,9 @@ set (SOURCES
 	tlen-contact-account-data.cpp
 	tlen-contact-account-data-manager.cpp
 	tlen-contact-account-data-widget.cpp
-	tlen_account.cpp
-	tlen_protocol.cpp
-	tlen_protocol_factory.cpp
+	tlen-account.cpp
+	tlen-protocol.cpp
+	tlen-protocol-factory.cpp
 	QtTlen/auth.cpp
 #	QtTlen/filetransfer.cpp
 #	QtTlen/roster_item.cpp
@@ -29,9 +29,9 @@ set (MOC_SOURCES
 #	tlen-contact-account-data.h
 #	tlen-contact-account-data-manager.h
 	tlen-contact-account-data-widget.h
-#	tlen_account.h
-	tlen_protocol.h
-#	tlen_protocol_factory.h
+#	tlen-account.h
+	tlen-protocol.h
+#	tlen-protocol-factory.h
 #	QtTlen/auth.h
 #	QtTlen/filetransfer.h
 #	QtTlen/roster_item.h
@@ -44,7 +44,7 @@ set (TRANSLATION_SOURCES
 )
 
 set (CONFIGURATION_FILES
-	configuration/tlen_contact.ui
+	configuration/tlen-contact.ui
 )
 
 set (DATA_FILES

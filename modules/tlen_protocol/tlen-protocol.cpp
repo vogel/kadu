@@ -35,9 +35,9 @@
 #include "tlen.h"
 
 #include "tlen-contact-account-data.h"
-#include "tlen_account.h"
-#include "tlen_protocol_factory.h"
-#include "tlen_protocol.h"
+#include "tlen-account.h"
+#include "tlen-protocol-factory.h"
+#include "tlen-protocol.h"
 
 #include "exports.h"
 

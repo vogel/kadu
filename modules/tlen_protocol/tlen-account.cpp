@@ -11,8 +11,8 @@
 #include "configuration/xml-configuration-file.h"
 #include "gui/windows/open-chat-with/open-chat-with-runner-manager.h"
 
-#include "tlen_protocol.h"
-#include "tlen_account.h"
+#include "tlen-protocol.h"
+#include "tlen-account.h"
 
 TlenAccount::TlenAccount(const QUuid &uuid)
 	: Account(uuid)
