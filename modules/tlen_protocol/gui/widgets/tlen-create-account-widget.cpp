@@ -16,7 +16,7 @@
 
 #include "gui/widgets/choose-identity-widget.h"
 #include "tlen_account.h"
-#include "tlen_protocol_factory.h"
+#include "tlen-protocol-factory.h"
 
 #include "tlen-create-account-widget.h"
 

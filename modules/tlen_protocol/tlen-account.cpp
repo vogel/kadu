@@ -10,8 +10,8 @@
 #include "misc/misc.h"
 #include "configuration/xml-configuration-file.h"
 
-#include "tlen_protocol.h"
-#include "tlen_account.h"
+#include "tlen-protocol.h"
+#include "tlen-account.h"
 
 TlenAccount::TlenAccount(const QUuid &uuid)
 	: Account(uuid)

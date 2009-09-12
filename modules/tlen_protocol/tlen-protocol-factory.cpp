@@ -10,14 +10,14 @@
 #include "gui/widgets/tlen-create-account-widget.h"
 #include "gui/widgets/tlen-edit-account-widget.h"
 
-#include "tlen_account.h"
-#include "tlen_protocol.h"
+#include "tlen-account.h"
+#include "tlen-protocol.h"
 #include "tlen-contact-account-data.h"
 #include "tlen-contact-account-data-widget.h"
 #include "status/status-type.h"
 #include "status/status-type-manager.h"
 
-#include "tlen_protocol_factory.h"
+#include "tlen-protocol-factory.h"
 
 TlenProtocolFactory *TlenProtocolFactory::Instance = 0;
 
