@@ -12,17 +12,34 @@
 
 #include "gui/widgets/account-create-widget.h"
 
+class QCheckBox;
+class QGridLayout;
+class QLineEdit;
+class QPushButton;
+
+class ChooseIdentityWidget;
+
 class TlenCreateAccountWidget : public AccountCreateWidget
 {
 	Q_OBJECT
 
-	QList<QWidget *> HaveNumberWidgets;
-	QList<QWidget *> DontHaveNumberWidgets;
+	QList<QWidget *> Widgets;
+
+	QLineEdit *AccountName;
+	QLineEdit *AccountId;
+	QLineEdit *AccountPassword;
+	ChooseIdentityWidget *Identity;
+	QCheckBox *RememberPassword;
+
+	QPushButton *AddThisAccount;
+	//QPushButton *RemindPassword;
 
 	void createGui();
+	void createAccountGui(QGridLayout *gridLayout, int &row);
 
 private slots:
-	void haveNumberChanged(bool haveNumber);
+	void iHaveAccountDataChanged();
+	void addThisAccount();
 
 public:
 	explicit TlenCreateAccountWidget(QWidget *parent = 0);
