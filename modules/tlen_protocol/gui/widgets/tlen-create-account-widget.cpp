@@ -14,6 +14,10 @@
 #include <QtGui/QPushButton>
 #include <QtGui/QRadioButton>
 
+#include "gui/widgets/choose-identity-widget.h"
+#include "tlen_account.h"
+#include "tlen_protocol_factory.h"
+
 #include "tlen-create-account-widget.h"
 
 TlenCreateAccountWidget::TlenCreateAccountWidget(QWidget *parent)
@@ -30,75 +34,82 @@ TlenCreateAccountWidget::~TlenCreateAccountWidget()
 
 void TlenCreateAccountWidget::createGui()
 {
-	/*
 	QGridLayout *gridLayout = new QGridLayout(this);
 	gridLayout->setSpacing(5);
 
-	gridLayout->setColumnStretch(1, 100);
+	gridLayout->setColumnMinimumWidth(0, 20);
+	gridLayout->setColumnStretch(3, 10);
 
-	QRadioButton *haveNumber = new QRadioButton(tr("I have a Gadu-Gadu number"), this);
-	connect(haveNumber, SIGNAL(toggled(bool)), this, SLOT(haveNumberChanged(bool)));
-	gridLayout->addWidget(haveNumber, 0, 0, 1, 2);
+	int row = 0;
 
-	QLabel *ggNumberLabel = new QLabel(tr("Gadu-Gadu number") + ":", this);
-	gridLayout->addWidget(ggNumberLabel, 1, 0, Qt::AlignRight);
-	QLineEdit *ggNumber = new QLineEdit(this);
-	gridLayout->addWidget(ggNumber, 1, 1);
+	QLabel *nameLabel = new QLabel(tr("Account name") + ":", this);
+	gridLayout->addWidget(nameLabel, row, 1, Qt::AlignRight);
+	AccountName = new QLineEdit(this);
+	gridLayout->addWidget(AccountName, row++, 2, 1, 2);
 
-	QLabel *ggPasswordLabel = new QLabel(tr("Password") + ":", this);
-	gridLayout->addWidget(ggPasswordLabel, 2, 0, Qt::AlignRight);
-	QLineEdit *ggPassword = new QLineEdit(this);
-	ggPassword->setEchoMode(QLineEdit::Password);
-	gridLayout->addWidget(ggPassword, 2, 1);
-
-	QCheckBox *ggImportContacts = new QCheckBox(tr("Import contacts"), this);
-	ggImportContacts->setChecked(true);
-	gridLayout->addWidget(ggImportContacts, 3, 1, 1, 2);
-
-	QRadioButton *dontHaveNumber = new QRadioButton(tr("I don't have a Gadu-Gadu number"), this);
-	gridLayout->addWidget(dontHaveNumber, 4, 0, 1, 2);
-
-	QLabel *ggNewPasswordLabel = new QLabel(tr("New password") + ":", this);
-	gridLayout->addWidget(ggNewPasswordLabel, 5, 0, Qt::AlignRight);
-	QLineEdit *ggNewPassword = new QLineEdit(this);
-	ggNewPassword->setEchoMode(QLineEdit::Password);
-	gridLayout->addWidget(ggNewPassword, 5, 1);
-
-	QLabel *ggReNewPasswordLabel = new QLabel(tr("Retype password") + ":", this);
-	gridLayout->addWidget(ggReNewPasswordLabel, 6, 0, Qt::AlignRight);
-	QLineEdit *ggReNewPassword = new QLineEdit(this);
-	ggReNewPassword->setEchoMode(QLineEdit::Password);
-	gridLayout->addWidget(ggReNewPassword, 6, 1);
-
-	QLabel *ggEMailLabel = new QLabel(tr("Your e-mail address") + ":", this);
-	gridLayout->addWidget(ggEMailLabel, 7, 0, Qt::AlignRight);
-	QLineEdit *ggEMail = new QLineEdit(this);
-	gridLayout->addWidget(ggEMail, 7, 1);
-
-	QPushButton *ggRegisterAccount = new QPushButton(tr("Register"), this);
-	gridLayout->addWidget(ggRegisterAccount, 8, 0, 1, 2);
-
-	HaveNumberWidgets.append(ggNumberLabel);
-	HaveNumberWidgets.append(ggNumber);
-	HaveNumberWidgets.append(ggPasswordLabel);
-	HaveNumberWidgets.append(ggPassword);
-	HaveNumberWidgets.append(ggImportContacts);
-	DontHaveNumberWidgets.append(ggNewPasswordLabel);
-	DontHaveNumberWidgets.append(ggNewPassword);
-	DontHaveNumberWidgets.append(ggReNewPasswordLabel);
-	DontHaveNumberWidgets.append(ggReNewPassword);
-	DontHaveNumberWidgets.append(ggEMailLabel);
-	DontHaveNumberWidgets.append(ggEMail);
-	DontHaveNumberWidgets.append(ggRegisterAccount);
-
-	haveNumberChanged(true);
-	*/
+	createAccountGui(gridLayout, row);
+	// TODO: register support
 }
 
-void TlenCreateAccountWidget::haveNumberChanged(bool haveNumber)
+void TlenCreateAccountWidget::createAccountGui(QGridLayout *gridLayout, int &row)
 {
-	foreach (QWidget *widget, HaveNumberWidgets)
-		widget->setVisible(haveNumber);
-	foreach (QWidget *widget, DontHaveNumberWidgets)
-		widget->setVisible(!haveNumber);
+	QLabel *numberLabel = new QLabel(tr("Tlen.pl login") + ":", this);
+	gridLayout->addWidget(numberLabel, row, 1, Qt::AlignRight);
+	AccountId = new QLineEdit(this);
+	connect(AccountId, SIGNAL(textChanged(QString)), this, SLOT(iHaveAccountDataChanged()));
+	gridLayout->addWidget(AccountId, row++, 2, 1, 2);
+
+	QLabel *passwordLabel = new QLabel(tr("Password") + ":", this);
+	gridLayout->addWidget(passwordLabel, row, 1, Qt::AlignRight);
+	AccountPassword = new QLineEdit(this);
+	connect(AccountPassword, SIGNAL(textChanged(QString)), this, SLOT(iHaveAccountDataChanged()));
+	AccountPassword->setEchoMode(QLineEdit::Password);
+	gridLayout->addWidget(AccountPassword, row, 2, 1, 2); // remove 1,2 if remind pass
+	//RemindPassword = new QPushButton(tr("Forgot password"), this);
+	//RemindPassword->setEnabled(false);
+	//gridLayout->addWidget(RemindPassword, row++, 3, Qt::AlignLeft);
+	row++;
+
+	QLabel *descriptionLabel = new QLabel(tr("Account description"), this);
+	gridLayout->addWidget(descriptionLabel, row, 1, Qt::AlignRight);
+	Identity = new ChooseIdentityWidget(this);
+	connect(Identity, SIGNAL(identityChanged()), this, SLOT(iHaveAccountDataChanged()));
+	gridLayout->addWidget(Identity, row++, 2, 1, 2);
+
+	RememberPassword = new QCheckBox(tr("Remember password"), this);
+	RememberPassword->setChecked(true);
+	gridLayout->addWidget(RememberPassword, row++, 2, 1, 2);
+
+	AddThisAccount = new QPushButton(tr("Add this account"), this);
+	AddThisAccount->setEnabled(false);
+	connect(AddThisAccount, SIGNAL(clicked(bool)), this, SLOT(addThisAccount()));
+	gridLayout->addWidget(AddThisAccount, row++, 1, 1, 4);
+
+	Widgets.append(numberLabel);
+	Widgets.append(AccountId);
+	Widgets.append(passwordLabel);
+	Widgets.append(AccountPassword);
+	//Widgets.append(RemindPassword);
+	Widgets.append(descriptionLabel);
+	Widgets.append(Identity);
+	Widgets.append(RememberPassword);
+	Widgets.append(AddThisAccount);
+}
+
+void TlenCreateAccountWidget::iHaveAccountDataChanged()
+{
+	//RemindPassword->setEnabled(!AccountId->text().isEmpty());
+	AddThisAccount->setEnabled(!AccountId->text().isEmpty() && !AccountPassword->text().isEmpty()
+				   && !Identity->identityName().isEmpty());
+}
+
+void TlenCreateAccountWidget::addThisAccount()
+{
+	Account *tlenAccount = TlenProtocolFactory::instance()->newAccount();
+	tlenAccount->setName(AccountName->text());
+	tlenAccount->setId(AccountId->text());
+	tlenAccount->setPassword(AccountPassword->text());
+	tlenAccount->setRememberPassword(RememberPassword->isChecked());
+
+	emit accountCreated(tlenAccount);
 }
