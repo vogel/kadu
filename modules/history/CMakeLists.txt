@@ -4,6 +4,7 @@ set (SOURCES
 	model/chat-dates-model.cpp
 	model/history-chats-model.cpp
 	model/history-chats-model-proxy.cpp
+	search/history-search-parameters.cpp
 	storage/history-storage.cpp
 	history.cpp
 )

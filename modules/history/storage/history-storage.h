@@ -18,6 +18,7 @@
 
 #include "../history_exports.h"
 
+class HistorySearchParameters;
 class Message;
 
 class HISTORYAPI HistoryStorage : public QObject
@@ -29,7 +30,8 @@ private slots:
 	virtual void messageSent(const Message &message) = 0;
 
 public:
-	virtual QList<Chat *> chats() = 0;
+	virtual QList<Chat *> chats(HistorySearchParameters search) = 0;
+
 	virtual QList<QDate> chatDates(Chat *chat) = 0;
 	virtual QList<Message> messages(Chat *chat, QDate date = QDate(), int limit = 0) = 0;
 	virtual QList<Message> messagesSince(Chat *chat, QDate date) = 0;

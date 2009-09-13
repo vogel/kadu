@@ -92,7 +92,17 @@ void HistoryWindow::createGui()
 	createChatTree(splitter);
 	QSplitter *rightSplitter = new QSplitter(Qt::Vertical, splitter);
 
-	DetailsListView = new QTreeView(rightSplitter);
+	QWidget *rightWidget = new QWidget(rightSplitter);
+	QVBoxLayout *rightLayout = new QVBoxLayout(rightWidget);
+
+	QLineEdit *searchLineEdit = new QLineEdit(rightWidget);
+	rightLayout->addWidget(searchLineEdit);
+	connect(searchLineEdit, SIGNAL(textChanged(const QString &)),
+			this, SLOT(searchTextChanged(const QString &)));
+
+	DetailsListView = new QTreeView(rightWidget);
+	rightLayout->addWidget(DetailsListView);
+
 	DetailsListView->setRootIsDecorated(false);
 	DetailsListView->setUniformRowHeights(true);
 	DetailsListView->setModel(new ChatDatesModel(0, QList<QDate>(), this));
@@ -157,7 +167,7 @@ void HistoryWindow::updateData()
 
 	ChatsModel->clear();
 
-	foreach (Chat *chat, History::instance()->chatsList())
+	foreach (Chat *chat, History::instance()->chatsList(Search))
 		ChatsModel->addChat(chat);
 }
 
@@ -229,6 +239,12 @@ void HistoryWindow::dateActivated(const QModelIndex &index)
 void HistoryWindow::filterLineChanged(const QString &filterText)
 {
 	NameFilter->setName(filterText);
+}
+
+void HistoryWindow::searchTextChanged(const QString &searchText)
+{
+	Search.setQuery(searchText);
+	updateData();
 }
 
 void HistoryWindow::showMainPopupMenu(const QPoint &pos)
