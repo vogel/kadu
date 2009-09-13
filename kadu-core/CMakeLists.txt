@@ -103,6 +103,7 @@ set (kadu_SRCS
 	gui/widgets/contacts-list-widget-delegate.cpp
 	gui/widgets/contacts-list-widget-menu-manager.cpp
 	gui/widgets/custom-input.cpp
+	gui/widgets/delayed-line-edit.cpp
 	gui/widgets/group-tab-bar.cpp
 	gui/widgets/image-widget.cpp
 	gui/widgets/kadu-text-browser.cpp
@@ -317,6 +318,7 @@ set (kadu_MOC_SRCS
 	gui/widgets/contacts-list-widget.h
 	gui/widgets/contacts-list-widget-delegate.h
 	gui/widgets/custom-input.h
+	gui/widgets/delayed-line-edit.h
 	gui/widgets/group-tab-bar.h
 	gui/widgets/kadu-text-browser.h
 	gui/widgets/path-list-edit.h
