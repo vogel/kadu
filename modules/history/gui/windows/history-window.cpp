@@ -110,7 +110,15 @@ void HistoryWindow::createGui()
 
 void HistoryWindow::createChatTree(QWidget *parent)
 {
+	QWidget *chatsWidget = new QWidget(parent);
+	QVBoxLayout *layout = new QVBoxLayout(chatsWidget);
+
+	QLineEdit *filterLineEdit = new QLineEdit(chatsWidget);
+	layout->addWidget(filterLineEdit);
+
 	ChatsTree = new QTreeView(parent);
+	layout->addWidget(ChatsTree);
+
 	ChatsModel = new HistoryChatsModel(this);
 	
 	ChatsModelProxy = new HistoryChatsModelProxy(this);
