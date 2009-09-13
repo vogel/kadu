@@ -21,6 +21,7 @@
 #include "contacts/model/contacts-model-base.h"
 #include "gui/actions/actions.h"
 #include "gui/widgets/chat-widget-manager.h"
+#include "gui/widgets/delayed-line-edit.h"
 #include "gui/windows/message-box.h"
 #include "misc/misc.h"
 #include "debug.h"
@@ -95,9 +96,9 @@ void HistoryWindow::createGui()
 	QWidget *rightWidget = new QWidget(rightSplitter);
 	QVBoxLayout *rightLayout = new QVBoxLayout(rightWidget);
 
-	QLineEdit *searchLineEdit = new QLineEdit(rightWidget);
+	DelayedLineEdit *searchLineEdit = new DelayedLineEdit(rightWidget);
 	rightLayout->addWidget(searchLineEdit);
-	connect(searchLineEdit, SIGNAL(textChanged(const QString &)),
+	connect(searchLineEdit, SIGNAL(delayedTextChanged(const QString &)),
 			this, SLOT(searchTextChanged(const QString &)));
 
 	DetailsListView = new QTreeView(rightWidget);
