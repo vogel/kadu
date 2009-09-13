@@ -15,6 +15,8 @@ set (kadu_SRCS
 	chat/simple-chat.cpp
 	chat/chat-styles-manager.cpp
 
+	chat/filter/chat-name-filter.cpp
+
 	chat/message/formatted-message.cpp
 	chat/message/formatted-message-part.cpp
 	chat/message/message.cpp
@@ -49,6 +51,7 @@ set (kadu_SRCS
 	contacts/filter/account-contact-filter.cpp
 	contacts/filter/anonymous-contact-filter.cpp
 	contacts/filter/anonymous-without-messages-contact-filter.cpp
+	contacts/filter/contact-name-filter.cpp
 	contacts/filter/group-contact-filter.cpp
 	contacts/filter/has-description-contact-filter.cpp
 	contacts/filter/offline-contact-filter.cpp
@@ -247,6 +250,7 @@ set (kadu_MOC_SRCS
 	#chat/simple-chat.h
 
 	chat/filter/chat-filter.h
+	chat/filter/chat-name-filter.h
 
 	chat/message/message.h
 	chat/message/message-data.h
@@ -272,6 +276,7 @@ set (kadu_MOC_SRCS
 	contacts/filter/account-contact-filter.h
 	contacts/filter/anonymous-contact-filter.h
 	contacts/filter/anonymous-without-messages-contact-filter.h
+	contacts/filter/contact-name-filter.h
 	contacts/filter/group-contact-filter.h
 	contacts/filter/has-description-contact-filter.h
 	contacts/filter/offline-contact-filter.h
