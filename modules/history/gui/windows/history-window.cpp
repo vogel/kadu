@@ -102,8 +102,8 @@ void HistoryWindow::createGui()
 	QSplitter *rightSplitter = new QSplitter(Qt::Vertical, splitter);
 
 	DetailsListView = new QTreeView(rightSplitter);
-	DetailsListView->setUniformRowHeights(true);
 	DetailsListView->setRootIsDecorated(false);
+	DetailsListView->setUniformRowHeights(true);
 	DetailsListView->setModel(new ChatDatesModel(0, QList<QDate>(), this));
 
 	ContentBrowser = new ChatMessagesView(0, rightSplitter);
@@ -182,7 +182,7 @@ void HistoryWindow::chatActivated(const QModelIndex &index)
 
 	int lastRow = model->rowCount(QModelIndex()) - 1;
 	QModelIndex last = model->index(lastRow, 0, QModelIndex());
-	DetailsListView->selectionModel()->setCurrentIndex(last, QItemSelectionModel::ClearAndSelect);
+	DetailsListView->selectionModel()->setCurrentIndex(last, QItemSelectionModel::ClearAndSelect | QItemSelectionModel::Rows);
 
 	dateActivated(last);
 
