@@ -7,6 +7,8 @@
 *                                                                         *
 ***************************************************************************/
 
+#include <QtGui/QTextDocument>
+
 #include "chat/chat.h"
 #include "chat/message/formatted-message.h"
 #include "chat/message/message.h"
@@ -67,8 +69,12 @@ QString ChatDatesModel::fetchTitle(QDate date) const
 		return "";
 
 	Message firstMessage = messages.first();
-	FormattedMessage formatted = FormattedMessage(firstMessage.content());
+	printf("firstMessage: %s\n", qPrintable(firstMessage.content()));
+	QTextDocument document;
+	document.setHtml(firstMessage.content());
+	FormattedMessage formatted = FormattedMessage::parse(&document);
 	QString title = formatted.toPlain();
+	printf("plain: %s\n", qPrintable(title));
 
 	if (title.length() > 20)
 	{
