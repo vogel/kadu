@@ -46,20 +46,20 @@ set (kadu_SRCS
 	contacts/group-manager.cpp
 	contacts/ignored-helper.cpp
 
+	contacts/filter/account-contact-filter.cpp
+	contacts/filter/anonymous-contact-filter.cpp
+	contacts/filter/anonymous-without-messages-contact-filter.cpp
+	contacts/filter/group-contact-filter.cpp
+	contacts/filter/has-description-contact-filter.cpp
+	contacts/filter/offline-contact-filter.cpp
+	contacts/filter/online-and-description-contact-filter.cpp
+	contacts/filter/online-contact-filter.cpp
+
 	contacts/model/abstract-contacts-model.cpp
 	contacts/model/contact-list-model.cpp
 	contacts/model/contacts-model.cpp
 	contacts/model/contacts-model-base.cpp
 	contacts/model/contacts-model-proxy.cpp
-	
-	contacts/model/filter/account-contact-filter.cpp
-	contacts/model/filter/anonymous-contact-filter.cpp
-	contacts/model/filter/anonymous-without-messages-contact-filter.cpp
-	contacts/model/filter/group-contact-filter.cpp
-	contacts/model/filter/has-description-contact-filter.cpp
-	contacts/model/filter/offline-contact-filter.cpp
-	contacts/model/filter/online-and-description-contact-filter.cpp
-	contacts/model/filter/online-contact-filter.cpp
 
 	configuration/account-data-manager.cpp
 	configuration/config-file-data-manager.cpp
@@ -266,21 +266,21 @@ set (kadu_MOC_SRCS
 	contacts/group.h
 	contacts/group-manager.h
 
+	contacts/filter/abstract-contact-filter.h
+	contacts/filter/account-contact-filter.h
+	contacts/filter/anonymous-contact-filter.h
+	contacts/filter/anonymous-without-messages-contact-filter.h
+	contacts/filter/group-contact-filter.h
+	contacts/filter/has-description-contact-filter.h
+	contacts/filter/offline-contact-filter.h
+	contacts/filter/online-and-description-contact-filter.h
+	contacts/filter/online-contact-filter.h
+
 	#contacts/model/abstract-contacts-model.h
 	contacts/model/contact-list-model.h
 	contacts/model/contacts-model.h
 	contacts/model/contacts-model-base.h
 	contacts/model/contacts-model-proxy.h
-	
-	contacts/model/filter/abstract-contact-filter.h
-	contacts/model/filter/account-contact-filter.h
-	contacts/model/filter/anonymous-contact-filter.h
-	contacts/model/filter/anonymous-without-messages-contact-filter.h
-	contacts/model/filter/group-contact-filter.h
-	contacts/model/filter/has-description-contact-filter.h
-	contacts/model/filter/offline-contact-filter.h
-	contacts/model/filter/online-and-description-contact-filter.h
-	contacts/model/filter/online-contact-filter.h
 
 	configuration/configuration-window-data-manager.h
 	configuration/notifier-configuration-data-manager.h

@@ -17,6 +17,7 @@ class KADUAPI OpenChatWithRunner
 
 public:
 	virtual ContactList matchingContacts(const QString &query) = 0;
+
 };
 
 #endif // OPEN_CHAT_WITH_RUNNER_H
