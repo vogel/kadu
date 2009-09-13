@@ -143,6 +143,12 @@ void HistoryChatsModel::addChat(Chat *chat)
 	endInsertRows();
 }
 
+void HistoryChatsModel::addChats(QList<Chat *> chats)
+{
+	foreach (Chat *chat, chats)
+		addChat(chat);
+}
+
 QModelIndex HistoryChatsModel::chatTypeIndex(ChatType type) const
 {
 	int row = ChatTypeManager::instance()->chatTypes().indexOf(type);

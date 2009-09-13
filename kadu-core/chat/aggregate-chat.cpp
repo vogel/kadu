@@ -12,7 +12,7 @@
 #include "chat/aggregate-chat.h"
 
 AggregateChat::AggregateChat(Chat *chat) : 
-		Chat((StoragePoint *)0)
+		Chat((StoragePoint *)0), Chats(QList<Chat *>())
 {
 	Chats.append(chat);
 }

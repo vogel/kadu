@@ -16,6 +16,8 @@
 #include <QtGui/QStatusBar>
 #include <QtGui/QVBoxLayout>
 
+#include "chat/aggregate-chat.h"
+#include "chat/chat-aggregator-builder.h"
 #include "chat/type/chat-type.h"
 #include "contacts/model/contacts-model-base.h"
 #include "gui/actions/actions.h"
@@ -139,9 +141,32 @@ void HistoryWindow::updateData()
 	kdebugf();
 
 	ChatsModel->clear();
+	QList<Chat *> usedChats;
+	QList<Chat *> chatsList = History::instance()->chatsList();
+	QList<Chat *> result;
 
-	foreach (Chat *chat, History::instance()->chatsList())
-		ChatsModel->addChat(chat);
+	foreach (Chat *chat, chatsList)
+	{
+		if (usedChats.contains(chat))
+			continue;
+
+		AggregateChat *aggregate = dynamic_cast<AggregateChat *>(ChatAggregatorBuilder::buildAggregateChat(chat->contacts()));
+		if (!aggregate)
+			continue;
+		if (aggregate->chats().size() > 1)
+		{
+			result.append(aggregate);
+			foreach (Chat *usedChat, aggregate->chats())
+				usedChats.append(usedChat);
+		}
+		else
+		{
+			result.append(chat);
+			usedChats.append(chat);
+		}
+	}
+
+	ChatsModel->addChats(result);
 }
 
 void HistoryWindow::selectChat(Chat *chat)
