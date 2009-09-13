@@ -18,7 +18,7 @@ DelayedLineEdit::DelayedLineEdit(QWidget *parent) :
 	connect(&Timer, SIGNAL(timeout()), this, SLOT(timeout()));
 
 	connect(this, SIGNAL(textChanged(const QString &)),
-			this, SIGNAL(delayedTextChanged(const QString &)));
+			this, SLOT(textChangedSlot(const QString &)));
 }
 
 DelayedLineEdit::~DelayedLineEdit()
