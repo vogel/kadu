@@ -16,6 +16,7 @@
 #include <QtGui/QStatusBar>
 #include <QtGui/QVBoxLayout>
 
+#include "chat/filter/chat-name-filter.h"
 #include "chat/type/chat-type.h"
 #include "contacts/model/contacts-model-base.h"
 #include "gui/actions/actions.h"
@@ -114,16 +115,20 @@ void HistoryWindow::createChatTree(QWidget *parent)
 	QVBoxLayout *layout = new QVBoxLayout(chatsWidget);
 
 	QLineEdit *filterLineEdit = new QLineEdit(chatsWidget);
+	connect(filterLineEdit, SIGNAL(textChanged(const QString &)), this, SLOT(filterLineChanged(const QString &)));
 	layout->addWidget(filterLineEdit);
 
 	ChatsTree = new QTreeView(parent);
 	layout->addWidget(ChatsTree);
 
 	ChatsModel = new HistoryChatsModel(this);
-	
+
 	ChatsModelProxy = new HistoryChatsModelProxy(this);
 	ChatsModelProxy->setSourceModel(ChatsModel);
-	
+
+	NameFilter = new ChatNameFilter(this);
+	ChatsModelProxy->addFilter(NameFilter);
+
 	ChatsTree->setModel(ChatsModelProxy);
 	ChatsModelProxy->sort(1);
 	ChatsModelProxy->sort(0); // do the sorting
@@ -219,6 +224,11 @@ void HistoryWindow::dateActivated(const QModelIndex &index)
 	ContentBrowser->appendMessages(messages);
 
 	kdebugf2();
+}
+
+void HistoryWindow::filterLineChanged(const QString &filterText)
+{
+	NameFilter->setName(filterText);
 }
 
 void HistoryWindow::showMainPopupMenu(const QPoint &pos)

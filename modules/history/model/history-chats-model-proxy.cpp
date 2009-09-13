@@ -78,6 +78,8 @@ void HistoryChatsModelProxy::addFilter(ChatFilter *filter)
 
 	Filters.append(filter);
 	connect(filter, SIGNAL(filterChanged()), this, SLOT(invalidate()));
+
+	invalidateFilter();
 }
 
 void HistoryChatsModelProxy::removeFilter(ChatFilter *filter)
@@ -87,6 +89,8 @@ void HistoryChatsModelProxy::removeFilter(ChatFilter *filter)
 	
 	Filters.removeAll(filter);
 	disconnect(filter, SIGNAL(filterChanged()), this, SLOT(invalidate()));
+
+	invalidateFilter();
 }
 
 QModelIndex HistoryChatsModelProxy::chatTypeIndex(ChatType type) const

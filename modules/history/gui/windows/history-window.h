@@ -30,6 +30,7 @@
 #include "../../history.h"
 #include "../../history_exports.h"
 
+class ChatNameFilter;
 class HistoryChatsModel;
 class HistoryChatsModelProxy;
 
@@ -45,6 +46,7 @@ class HistoryWindow : public MainWindow
 	QTreeView *DetailsListView;
 	HistoryChatsModel *ChatsModel;
 	HistoryChatsModelProxy *ChatsModelProxy;
+	ChatNameFilter *NameFilter;
 
 	QMenu *MainPopupMenu;
 	QMenu *DetailsPopupMenu;
@@ -67,6 +69,8 @@ class HistoryWindow : public MainWindow
 private slots:
 	void chatActivated(const QModelIndex &index);
 	void dateActivated(const QModelIndex &index);
+
+	void filterLineChanged(const QString &filterText);
 
 	void showMainPopupMenu(const QPoint &pos);
 	void showDetailsPopupMenu(const QPoint &pos);

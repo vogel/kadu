@@ -50,6 +50,7 @@ void ChatNameFilter::setName(const QString& name)
 	if (name != Name)
 	{
 		Name = name;
+		Filter->setName(Name);
 		emit filterChanged();
 	}
 }
