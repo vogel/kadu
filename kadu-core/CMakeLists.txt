@@ -246,6 +246,8 @@ set (kadu_MOC_SRCS
 	#chat/conference-chat.h
 	#chat/simple-chat.h
 
+	chat/filter/chat-filter.h
+
 	chat/message/message.h
 	chat/message/message-data.h
 	chat/message/message-render-info.h

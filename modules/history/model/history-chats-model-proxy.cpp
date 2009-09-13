@@ -7,6 +7,7 @@
  *                                                                         *
  ***************************************************************************/
 
+#include "chat/filter/chat-filter.h"
 #include "chat/type/chat-type.h"
 #include "chat/chat.h"
 #include "contacts/model/contacts-model-base.h"
@@ -32,6 +33,23 @@ int HistoryChatsModelProxy::compareNames(QString n1, QString n2) const
 			: n1.localeAwareCompare(n2);
 }
 
+bool HistoryChatsModelProxy::filterAcceptsRow(int sourceRow, const QModelIndex &sourceParent) const
+{
+	if (0 == Filters.size())
+		return true;
+
+	QModelIndex sourceChild = sourceParent.child(sourceRow, 0);
+	Chat *chat = sourceChild.data(ChatRole).value<Chat *>();
+	if (!chat)
+		return true;
+
+	foreach (ChatFilter *filter, Filters)
+		if (!filter->acceptChat(chat))
+			return false;
+
+	return true;
+}
+
 bool HistoryChatsModelProxy::lessThan(const QModelIndex &left, const QModelIndex &right) const
 {
 	// chats?
@@ -51,6 +69,24 @@ void HistoryChatsModelProxy::setSourceModel(QAbstractItemModel *sourceModel)
 {
 	QSortFilterProxyModel::setSourceModel(sourceModel);
 	Model = dynamic_cast<HistoryChatsModel *>(sourceModel);
+}
+
+void HistoryChatsModelProxy::addFilter(ChatFilter *filter)
+{
+	if (!filter)
+		return;
+
+	Filters.append(filter);
+	connect(filter, SIGNAL(filterChanged()), this, SLOT(invalidate()));
+}
+
+void HistoryChatsModelProxy::removeFilter(ChatFilter *filter)
+{
+	if (!filter)
+		return;
+	
+	Filters.removeAll(filter);
+	disconnect(filter, SIGNAL(filterChanged()), this, SLOT(invalidate()));
 }
 
 QModelIndex HistoryChatsModelProxy::chatTypeIndex(ChatType type) const
