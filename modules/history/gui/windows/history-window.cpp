@@ -91,12 +91,12 @@ void HistoryWindow::createGui()
 	ChatsTree = new QTreeView(splitter);
 	ChatsModel = new HistoryChatsModel(this);
 
-	HistoryChatsModelProxy *proxy = new HistoryChatsModelProxy(this);
-	proxy->setSourceModel(ChatsModel);
+	ChatsModelProxy = new HistoryChatsModelProxy(this);
+	ChatsModelProxy->setSourceModel(ChatsModel);
 
-	ChatsTree->setModel(proxy);
-	proxy->sort(1);
-	proxy->sort(0);; // do the sorting
+	ChatsTree->setModel(ChatsModelProxy);
+	ChatsModelProxy->sort(1);
+	ChatsModelProxy->sort(0);; // do the sorting
 	ChatsTree->setRootIsDecorated(true);
 
 	QSplitter *rightSplitter = new QSplitter(Qt::Vertical, splitter);
@@ -147,7 +147,7 @@ void HistoryWindow::updateData()
 void HistoryWindow::selectChat(Chat *chat)
 {
 	ChatType type = chat->type();
-	QModelIndex chatTypeIndex = ChatsModel->chatTypeIndex(type);
+	QModelIndex chatTypeIndex = ChatsModelProxy->chatTypeIndex(type);
 
 	if (!chatTypeIndex.isValid())
 	{
@@ -158,7 +158,7 @@ void HistoryWindow::selectChat(Chat *chat)
 	ChatsTree->collapseAll();
 	ChatsTree->expand(chatTypeIndex);
 
-	QModelIndex chatIndex = ChatsModel->chatIndex(chat);
+	QModelIndex chatIndex = ChatsModelProxy->chatIndex(chat);
 	ChatsTree->selectionModel()->select(chatIndex, QItemSelectionModel::ClearAndSelect);
 
 	chatActivated(chatIndex);

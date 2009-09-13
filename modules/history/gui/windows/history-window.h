@@ -31,6 +31,7 @@
 #include "../../history_exports.h"
 
 class HistoryChatsModel;
+class HistoryChatsModelProxy;
 
 /*!
 \class HistoryDlg
@@ -43,6 +44,7 @@ class HistoryWindow : public MainWindow
 	QTreeView *ChatsTree;
 	QTreeView *DetailsListView;
 	HistoryChatsModel *ChatsModel;
+	HistoryChatsModelProxy *ChatsModelProxy;
 
 	QMenu *MainPopupMenu;
 	QMenu *DetailsPopupMenu;

@@ -10,6 +10,7 @@
 #include "chat/type/chat-type.h"
 #include "chat/chat.h"
 #include "contacts/model/contacts-model-base.h"
+#include "modules/history/model/history-chats-model.h"
 
 #include "history-chats-model-proxy.h"
 
@@ -44,4 +45,28 @@ bool HistoryChatsModelProxy::lessThan(const QModelIndex &left, const QModelIndex
 	ChatType rightType = right.data(ChatTypeRole).value<ChatType>();
 
 	return compareNames(leftType.displayName(), rightType.displayName()) < 0;
+}
+
+void HistoryChatsModelProxy::setSourceModel(QAbstractItemModel *sourceModel)
+{
+	QSortFilterProxyModel::setSourceModel(sourceModel);
+	Model = dynamic_cast<HistoryChatsModel *>(sourceModel);
+}
+
+QModelIndex HistoryChatsModelProxy::chatTypeIndex(ChatType type) const
+{
+	if (!Model)
+		return QModelIndex();
+
+	QModelIndex index = Model->chatTypeIndex(type);
+	return mapFromSource(index);
+}
+
+QModelIndex HistoryChatsModelProxy::chatIndex(Chat *chat) const
+{
+	if (!Model)
+		return QModelIndex();
+	
+	QModelIndex index = Model->chatIndex(chat);
+	return mapFromSource(index);
 }

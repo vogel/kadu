@@ -12,9 +12,15 @@
 
 #include <QtGui/QSortFilterProxyModel>
 
+class Chat;
+class ChatType;
+class HistoryChatsModel;
+
 class HistoryChatsModelProxy : public QSortFilterProxyModel
 {
 	Q_OBJECT
+
+	HistoryChatsModel *Model;
 
 	bool BrokenStringCompare;
 	int compareNames(QString n1, QString n2) const;
@@ -24,6 +30,11 @@ protected:
 
 public:
 	HistoryChatsModelProxy(QObject *parent = 0);
+
+	virtual void setSourceModel(QAbstractItemModel *sourceModel);
+
+	QModelIndex chatTypeIndex(ChatType type) const;
+	QModelIndex chatIndex(Chat *chat) const;
 
 };
 
