@@ -58,6 +58,7 @@ class HistoryWindow : public MainWindow
 	ActionDescription *historyPrevResultsActionDescription;
 
 	void createGui();
+	void createChatTree(QWidget *parent);
 	void connectGui();
 
 	void updateData();

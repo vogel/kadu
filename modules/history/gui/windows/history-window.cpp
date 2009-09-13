@@ -88,17 +88,7 @@ void HistoryWindow::createGui()
 	QSplitter *splitter = new QSplitter(Qt::Horizontal, mainWidget);
 	layout->addWidget(splitter);
 
-	ChatsTree = new QTreeView(splitter);
-	ChatsModel = new HistoryChatsModel(this);
-
-	ChatsModelProxy = new HistoryChatsModelProxy(this);
-	ChatsModelProxy->setSourceModel(ChatsModel);
-
-	ChatsTree->setModel(ChatsModelProxy);
-	ChatsModelProxy->sort(1);
-	ChatsModelProxy->sort(0);; // do the sorting
-	ChatsTree->setRootIsDecorated(true);
-
+	createChatTree(splitter);
 	QSplitter *rightSplitter = new QSplitter(Qt::Vertical, splitter);
 
 	DetailsListView = new QTreeView(rightSplitter);
@@ -116,6 +106,20 @@ void HistoryWindow::createGui()
 	splitter->setSizes(sizes);
 
 	setCentralWidget(mainWidget);
+}
+
+void HistoryWindow::createChatTree(QWidget *parent)
+{
+	ChatsTree = new QTreeView(parent);
+	ChatsModel = new HistoryChatsModel(this);
+	
+	ChatsModelProxy = new HistoryChatsModelProxy(this);
+	ChatsModelProxy->setSourceModel(ChatsModel);
+	
+	ChatsTree->setModel(ChatsModelProxy);
+	ChatsModelProxy->sort(1);
+	ChatsModelProxy->sort(0); // do the sorting
+	ChatsTree->setRootIsDecorated(true);
 }
 
 void HistoryWindow::connectGui()
