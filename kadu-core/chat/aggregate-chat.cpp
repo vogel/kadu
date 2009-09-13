@@ -48,4 +48,3 @@ void AggregateChat::removeChat(Chat *chat)
 	if (c->uuid() == chat->uuid())
 		Chats.removeAll(c);
 }
-

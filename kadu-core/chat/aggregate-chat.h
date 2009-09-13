@@ -10,6 +10,8 @@
 #ifndef AGGREGATE_CHAT_H
 #define AGGREGATE_CHAT_H
 
+#include "chat/type/chat-type.h"
+
 #include "chat/chat.h"
 
 class XmlConfigFile;
@@ -27,7 +29,9 @@ public:
 	virtual void store();
 
 	virtual ContactSet contacts() const { return Chats.at(0)->contacts(); }
+	virtual ChatType type() const { return Chats.at(0)->type(); }
 	virtual QUuid uuid() const { return Chats.at(0)->uuid(); }
+	virtual QString name() const { return Chats.at(0)->name(); }
 
 	Account * account() { return Chats.at(0)->account(); }
 	QString title() { return Chats.at(0)->title(); }
@@ -38,6 +42,7 @@ public:
 
 	void addChat(Chat *chat);
 	void removeChat(Chat *chat);
+
 };
 
 #endif // AGGREGATE_CHAT_H
