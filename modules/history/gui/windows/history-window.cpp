@@ -16,12 +16,14 @@
 #include <QtGui/QStatusBar>
 #include <QtGui/QVBoxLayout>
 
+#include "chat/type/chat-type.h"
+#include "chat/filter/chat-name-filter.h"
 #include "chat/aggregate-chat.h"
 #include "chat/chat-aggregator-builder.h"
-#include "chat/type/chat-type.h"
 #include "contacts/model/contacts-model-base.h"
 #include "gui/actions/actions.h"
 #include "gui/widgets/chat-widget-manager.h"
+#include "gui/widgets/delayed-line-edit.h"
 #include "gui/windows/message-box.h"
 #include "misc/misc.h"
 #include "debug.h"
@@ -90,22 +92,22 @@ void HistoryWindow::createGui()
 	QSplitter *splitter = new QSplitter(Qt::Horizontal, mainWidget);
 	layout->addWidget(splitter);
 
-	ChatsTree = new QTreeView(splitter);
-	ChatsModel = new HistoryChatsModel(this);
-
-	HistoryChatsModelProxy *proxy = new HistoryChatsModelProxy(this);
-	proxy->setSourceModel(ChatsModel);
-
-	ChatsTree->setModel(proxy);
-	proxy->sort(1);
-	proxy->sort(0);; // do the sorting
-	ChatsTree->setRootIsDecorated(true);
-
+	createChatTree(splitter);
 	QSplitter *rightSplitter = new QSplitter(Qt::Vertical, splitter);
 
-	DetailsListView = new QTreeView(rightSplitter);
-	DetailsListView->setUniformRowHeights(true);
+	QWidget *rightWidget = new QWidget(rightSplitter);
+	QVBoxLayout *rightLayout = new QVBoxLayout(rightWidget);
+
+	DelayedLineEdit *searchLineEdit = new DelayedLineEdit(rightWidget);
+	rightLayout->addWidget(searchLineEdit);
+	connect(searchLineEdit, SIGNAL(delayedTextChanged(const QString &)),
+			this, SLOT(searchTextChanged(const QString &)));
+
+	DetailsListView = new QTreeView(rightWidget);
+	rightLayout->addWidget(DetailsListView);
+
 	DetailsListView->setRootIsDecorated(false);
+	DetailsListView->setUniformRowHeights(true);
 	DetailsListView->setModel(new ChatDatesModel(0, QList<QDate>(), this));
 
 	ContentBrowser = new ChatMessagesView(0, rightSplitter);
@@ -118,6 +120,32 @@ void HistoryWindow::createGui()
 	splitter->setSizes(sizes);
 
 	setCentralWidget(mainWidget);
+}
+
+void HistoryWindow::createChatTree(QWidget *parent)
+{
+	QWidget *chatsWidget = new QWidget(parent);
+	QVBoxLayout *layout = new QVBoxLayout(chatsWidget);
+
+	QLineEdit *filterLineEdit = new QLineEdit(chatsWidget);
+	connect(filterLineEdit, SIGNAL(textChanged(const QString &)), this, SLOT(filterLineChanged(const QString &)));
+	layout->addWidget(filterLineEdit);
+
+	ChatsTree = new QTreeView(parent);
+	layout->addWidget(ChatsTree);
+
+	ChatsModel = new HistoryChatsModel(this);
+
+	ChatsModelProxy = new HistoryChatsModelProxy(this);
+	ChatsModelProxy->setSourceModel(ChatsModel);
+
+	NameFilter = new ChatNameFilter(this);
+	ChatsModelProxy->addFilter(NameFilter);
+
+	ChatsTree->setModel(ChatsModelProxy);
+	ChatsModelProxy->sort(1);
+	ChatsModelProxy->sort(0); // do the sorting
+	ChatsTree->setRootIsDecorated(true);
 }
 
 void HistoryWindow::connectGui()
@@ -142,7 +170,7 @@ void HistoryWindow::updateData()
 
 	ChatsModel->clear();
 	QList<Chat *> usedChats;
-	QList<Chat *> chatsList = History::instance()->chatsList();
+	QList<Chat *> chatsList = History::instance()->chatsList(Search);
 	QList<Chat *> result;
 
 	foreach (Chat *chat, chatsList)
@@ -172,7 +200,7 @@ void HistoryWindow::updateData()
 void HistoryWindow::selectChat(Chat *chat)
 {
 	ChatType type = chat->type();
-	QModelIndex chatTypeIndex = ChatsModel->chatTypeIndex(type);
+	QModelIndex chatTypeIndex = ChatsModelProxy->chatTypeIndex(type);
 
 	if (!chatTypeIndex.isValid())
 	{
@@ -183,7 +211,7 @@ void HistoryWindow::selectChat(Chat *chat)
 	ChatsTree->collapseAll();
 	ChatsTree->expand(chatTypeIndex);
 
-	QModelIndex chatIndex = ChatsModel->chatIndex(chat);
+	QModelIndex chatIndex = ChatsModelProxy->chatIndex(chat);
 	ChatsTree->selectionModel()->select(chatIndex, QItemSelectionModel::ClearAndSelect);
 
 	chatActivated(chatIndex);
@@ -207,7 +235,7 @@ void HistoryWindow::chatActivated(const QModelIndex &index)
 
 	int lastRow = model->rowCount(QModelIndex()) - 1;
 	QModelIndex last = model->index(lastRow, 0, QModelIndex());
-	DetailsListView->selectionModel()->setCurrentIndex(last, QItemSelectionModel::ClearAndSelect);
+	DetailsListView->selectionModel()->setCurrentIndex(last, QItemSelectionModel::ClearAndSelect | QItemSelectionModel::Rows);
 
 	dateActivated(last);
 
@@ -232,6 +260,17 @@ void HistoryWindow::dateActivated(const QModelIndex &index)
 	ContentBrowser->appendMessages(messages);
 
 	kdebugf2();
+}
+
+void HistoryWindow::filterLineChanged(const QString &filterText)
+{
+	NameFilter->setName(filterText);
+}
+
+void HistoryWindow::searchTextChanged(const QString &searchText)
+{
+	Search.setQuery(searchText);
+	updateData();
 }
 
 void HistoryWindow::showMainPopupMenu(const QPoint &pos)

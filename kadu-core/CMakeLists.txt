@@ -15,6 +15,8 @@ set (kadu_SRCS
 	chat/simple-chat.cpp
 	chat/chat-styles-manager.cpp
 
+	chat/filter/chat-name-filter.cpp
+
 	chat/message/formatted-message.cpp
 	chat/message/formatted-message-part.cpp
 	chat/message/message.cpp
@@ -46,20 +48,21 @@ set (kadu_SRCS
 	contacts/group-manager.cpp
 	contacts/ignored-helper.cpp
 
+	contacts/filter/account-contact-filter.cpp
+	contacts/filter/anonymous-contact-filter.cpp
+	contacts/filter/anonymous-without-messages-contact-filter.cpp
+	contacts/filter/contact-name-filter.cpp
+	contacts/filter/group-contact-filter.cpp
+	contacts/filter/has-description-contact-filter.cpp
+	contacts/filter/offline-contact-filter.cpp
+	contacts/filter/online-and-description-contact-filter.cpp
+	contacts/filter/online-contact-filter.cpp
+
 	contacts/model/abstract-contacts-model.cpp
 	contacts/model/contact-list-model.cpp
 	contacts/model/contacts-model.cpp
 	contacts/model/contacts-model-base.cpp
 	contacts/model/contacts-model-proxy.cpp
-	
-	contacts/model/filter/account-contact-filter.cpp
-	contacts/model/filter/anonymous-contact-filter.cpp
-	contacts/model/filter/anonymous-without-messages-contact-filter.cpp
-	contacts/model/filter/group-contact-filter.cpp
-	contacts/model/filter/has-description-contact-filter.cpp
-	contacts/model/filter/offline-contact-filter.cpp
-	contacts/model/filter/online-and-description-contact-filter.cpp
-	contacts/model/filter/online-contact-filter.cpp
 
 	configuration/account-data-manager.cpp
 	configuration/config-file-data-manager.cpp
@@ -100,6 +103,7 @@ set (kadu_SRCS
 	gui/widgets/contacts-list-widget-delegate.cpp
 	gui/widgets/contacts-list-widget-menu-manager.cpp
 	gui/widgets/custom-input.cpp
+	gui/widgets/delayed-line-edit.cpp
 	gui/widgets/group-tab-bar.cpp
 	gui/widgets/image-widget.cpp
 	gui/widgets/kadu-text-browser.cpp
@@ -246,6 +250,9 @@ set (kadu_MOC_SRCS
 	#chat/conference-chat.h
 	#chat/simple-chat.h
 
+	chat/filter/chat-filter.h
+	chat/filter/chat-name-filter.h
+
 	chat/message/message.h
 	chat/message/message-data.h
 	chat/message/message-render-info.h
@@ -266,21 +273,22 @@ set (kadu_MOC_SRCS
 	contacts/group.h
 	contacts/group-manager.h
 
+	contacts/filter/abstract-contact-filter.h
+	contacts/filter/account-contact-filter.h
+	contacts/filter/anonymous-contact-filter.h
+	contacts/filter/anonymous-without-messages-contact-filter.h
+	contacts/filter/contact-name-filter.h
+	contacts/filter/group-contact-filter.h
+	contacts/filter/has-description-contact-filter.h
+	contacts/filter/offline-contact-filter.h
+	contacts/filter/online-and-description-contact-filter.h
+	contacts/filter/online-contact-filter.h
+
 	#contacts/model/abstract-contacts-model.h
 	contacts/model/contact-list-model.h
 	contacts/model/contacts-model.h
 	contacts/model/contacts-model-base.h
 	contacts/model/contacts-model-proxy.h
-	
-	contacts/model/filter/abstract-contact-filter.h
-	contacts/model/filter/account-contact-filter.h
-	contacts/model/filter/anonymous-contact-filter.h
-	contacts/model/filter/anonymous-without-messages-contact-filter.h
-	contacts/model/filter/group-contact-filter.h
-	contacts/model/filter/has-description-contact-filter.h
-	contacts/model/filter/offline-contact-filter.h
-	contacts/model/filter/online-and-description-contact-filter.h
-	contacts/model/filter/online-contact-filter.h
 
 	configuration/configuration-window-data-manager.h
 	configuration/notifier-configuration-data-manager.h
@@ -310,6 +318,7 @@ set (kadu_MOC_SRCS
 	gui/widgets/contacts-list-widget.h
 	gui/widgets/contacts-list-widget-delegate.h
 	gui/widgets/custom-input.h
+	gui/widgets/delayed-line-edit.h
 	gui/widgets/group-tab-bar.h
 	gui/widgets/kadu-text-browser.h
 	gui/widgets/path-list-edit.h

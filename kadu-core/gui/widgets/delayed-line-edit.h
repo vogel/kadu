@@ -7,17 +7,31 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef OPEN_CHAT_WITH_RUNNER_H
-#define OPEN_CHAT_WITH_RUNNER_H
+#ifndef DELAYED_LINE_EDIT_H
+#define DELAYED_LINE_EDIT_H
 
-#include "contacts/contact-list.h"
+#include <QtCore/QTimer>
+#include <QtGui/QLineEdit>
 
-class KADUAPI OpenChatWithRunner
+class DelayedLineEdit : public QLineEdit
 {
+	Q_OBJECT
+
+	QTimer Timer;
+
+private slots:
+	void timeout();
+	void textChangedSlot(const QString &text);
 
 public:
-	virtual ContactList matchingContacts(const QString &query) = 0;
+	DelayedLineEdit(QWidget *parent = 0);
+	virtual ~DelayedLineEdit();
+
+	void setDelay(unsigned int delay);
+
+signals:
+	void delayedTextChanged(const QString &text);
 
 };
 
-#endif // OPEN_CHAT_WITH_RUNNER_H
+#endif // DELAYED_LINE_EDIT_H

@@ -23,6 +23,8 @@
 #include "misc/path-conversion.h"
 #include "gui/widgets/chat-widget.h"
 
+#include "modules/history/search/history-search-parameters.h"
+
 #include "history-sql-storage.h"
 
 HistorySqlStorage::HistorySqlStorage() :
@@ -203,18 +205,29 @@ void HistorySqlStorage::clearChatHistory(Chat *chat)
 	DatabaseMutex.unlock();
 }
 
-QList<Chat *> HistorySqlStorage::chats()
+QList<Chat *> HistorySqlStorage::chats(HistorySearchParameters search)
 {
 	kdebugf();
 
 	DatabaseMutex.lock();
 
+	QSqlQuery query(Database);
+	QString queryString = "SELECT DISTINCT chat FROM kadu_messages WHERE 1";
+
+	if (!search.query().isEmpty())
+		queryString += " AND content LIKE :content";
+
+	query.prepare(queryString);
+
+	if (!search.query().isEmpty())
+		query.bindValue(":content", QLatin1String("%") + search.query() + "%");
+
 	QList<Chat *> chats;
 
-	executeQuery(ListChatsQuery);
-	while (ListChatsQuery.next())
+	executeQuery(query);
+	while (query.next())
 	{
-		Chat *chat = ChatManager::instance()->byUuid(ListChatsQuery.value(0).toString());
+		Chat *chat = ChatManager::instance()->byUuid(query.value(0).toString());
 		if (chat)
 			chats.append(chat);
 	}
@@ -223,6 +236,7 @@ QList<Chat *> HistorySqlStorage::chats()
 
 	return chats;
 }
+
 
 QList<QDate> HistorySqlStorage::chatDates(Chat *chat)
 {
@@ -344,7 +358,7 @@ void HistorySqlStorage::executeQuery(QSqlQuery query)
 	kdebugf();
 
 	query.exec();
-	kdebug("db query: %s\n", query.executedQuery().toLocal8Bit().data());
+	kdebug("db query: %s\n", qPrintable(query.executedQuery()));
 }
 
 

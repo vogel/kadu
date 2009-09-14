@@ -427,11 +427,11 @@ void History::unregisterStorage(HistoryStorage *storage)
 	CurrentStorage = 0;
 }
 
-QList<Chat *> History::chatsList()
+QList<Chat *> History::chatsList(HistorySearchParameters search)
 {
 	kdebugf();
 
-	return CurrentStorage->chats();
+	return CurrentStorage->chats(search);
 }
 
 QList<QDate> History::datesForChat(Chat *chat)

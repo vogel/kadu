@@ -26,11 +26,14 @@
 #include "gui/windows/main-window.h"
 #include "gui/windows/main-configuration-window.h"
 
-#include "history-search-dialog.h"
-#include "../../history.h"
-#include "../../history_exports.h"
+#include "modules/history/gui/windows/history-search-dialog.h"
+#include "modules/history/search/history-search-parameters.h"
+#include "modules/history/history.h"
+#include "modules/history/history_exports.h"
 
+class ChatNameFilter;
 class HistoryChatsModel;
+class HistoryChatsModelProxy;
 
 /*!
 \class HistoryDlg
@@ -43,6 +46,8 @@ class HistoryWindow : public MainWindow
 	QTreeView *ChatsTree;
 	QTreeView *DetailsListView;
 	HistoryChatsModel *ChatsModel;
+	HistoryChatsModelProxy *ChatsModelProxy;
+	ChatNameFilter *NameFilter;
 
 	QMenu *MainPopupMenu;
 	QMenu *DetailsPopupMenu;
@@ -55,7 +60,10 @@ class HistoryWindow : public MainWindow
 	ActionDescription *historyNextResultsActionDescription;
 	ActionDescription *historyPrevResultsActionDescription;
 
+	HistorySearchParameters Search;
+
 	void createGui();
+	void createChatTree(QWidget *parent);
 	void connectGui();
 
 	void updateData();
@@ -64,6 +72,9 @@ class HistoryWindow : public MainWindow
 private slots:
 	void chatActivated(const QModelIndex &index);
 	void dateActivated(const QModelIndex &index);
+
+	void filterLineChanged(const QString &filterText);
+	void searchTextChanged(const QString &searchText);
 
 	void showMainPopupMenu(const QPoint &pos);
 	void showDetailsPopupMenu(const QPoint &pos);

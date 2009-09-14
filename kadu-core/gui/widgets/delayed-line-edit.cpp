@@ -7,44 +7,38 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "contacts/contact-set-configuration-helper.h"
+#include "delayed-line-edit.h"
 
-#include "chat/aggregate-chat.h"
 
-AggregateChat::AggregateChat(Chat *chat) : 
-		Chat((StoragePoint *)0), Chats(QList<Chat *>())
+DelayedLineEdit::DelayedLineEdit(QWidget *parent) :
+		QLineEdit(parent)
 {
-	Chats.append(chat);
+	Timer.setSingleShot(true);
+	Timer.setInterval(1000);
+	connect(&Timer, SIGNAL(timeout()), this, SLOT(timeout()));
+
+	connect(this, SIGNAL(textChanged(const QString &)),
+			this, SLOT(textChangedSlot(const QString &)));
 }
 
-AggregateChat::AggregateChat(QList<Chat *> chats) :
-		Chat((StoragePoint *)0), Chats(chats)
-{
-}
-
-AggregateChat::~AggregateChat()
-{
-}
-
-void AggregateChat::load()
+DelayedLineEdit::~DelayedLineEdit()
 {
 }
 
-void AggregateChat::store()
+void DelayedLineEdit::setDelay(unsigned int delay)
 {
+	Timer.setInterval(delay);
 }
 
-void AggregateChat::addChat(Chat *chat)
+void DelayedLineEdit::textChangedSlot(const QString &text)
 {
-	Chats.append(chat);
+	if (Timer.isActive())
+		Timer.stop();
+
+	Timer.start();
 }
 
-void AggregateChat::removeChat(Chat *chat)
+void DelayedLineEdit::timeout()
 {
-	if (Chats.size() == 1)
-		return;
-
-	foreach (Chat *c, Chats)
-	if (c->uuid() == chat->uuid())
-		Chats.removeAll(c);
+	emit delayedTextChanged(text());
 }

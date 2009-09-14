@@ -1,4 +1,4 @@
-/***************************************************************************
+ /***************************************************************************
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -7,17 +7,25 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef OPEN_CHAT_WITH_RUNNER_H
-#define OPEN_CHAT_WITH_RUNNER_H
+#ifndef CHAT_NAME_FILTER_H
+#define CHAT_NAME_FILTER_H
 
-#include "contacts/contact-list.h"
+#include "chat/filter/chat-filter.h"
 
-class KADUAPI OpenChatWithRunner
+class ContactNameFilter;
+
+class ChatNameFilter : public ChatFilter
 {
+	QString Name;
+	ContactNameFilter *Filter;
 
 public:
-	virtual ContactList matchingContacts(const QString &query) = 0;
+	ChatNameFilter(QObject *parent = 0);
+
+	virtual bool acceptChat(Chat *chat);
+
+	void setName(const QString &name);
 
 };
 
-#endif // OPEN_CHAT_WITH_RUNNER_H
+#endif // CHAT_NAME_FILTER_H

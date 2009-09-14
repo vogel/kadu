@@ -119,7 +119,7 @@ QVariant HistoryChatsModel::data(const QModelIndex &index, int role) const
 
 void HistoryChatsModel::clear()
 {
-	beginRemoveRows(QModelIndex(), 0, rowCount(QModelIndex()));
+	beginRemoveRows(QModelIndex(), 0, rowCount(QModelIndex()) - 1);
 
 	Chats = QMap<ChatType, QList<Chat *> >();
 

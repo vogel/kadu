@@ -7,17 +7,25 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef OPEN_CHAT_WITH_RUNNER_H
-#define OPEN_CHAT_WITH_RUNNER_H
+#ifndef ABSTRACT_CHAT_FILTER
+#define ABSTRACT_CHAT_FILTER
 
-#include "contacts/contact-list.h"
+#include <QtCore/QObject>
 
-class KADUAPI OpenChatWithRunner
+class Chat;
+
+class ChatFilter : public QObject
 {
+	Q_OBJECT
 
 public:
-	virtual ContactList matchingContacts(const QString &query) = 0;
+	ChatFilter(QObject *parent = 0) : QObject(parent) {}
+
+	virtual bool acceptChat(Chat *chat) = 0;
+
+signals:
+	void filterChanged();
 
 };
 
-#endif // OPEN_CHAT_WITH_RUNNER_H
+#endif // ABSTRACT_CHAT_FILTER
