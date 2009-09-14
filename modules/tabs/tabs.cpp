@@ -18,11 +18,14 @@
 #include "accounts/account.h"
 #include "accounts/account-manager.h"
 
+#include "activate.h"
+
 #include "contacts/contact.h"
 #include "contacts/contact-list.h"
 #include "contacts/contact-manager.h"
 
-#include "gui/widgets/chat_edit_box.h"
+#include "gui/widgets/chat-edit-box.h"
+#include "gui/widgets/chat-widget-manager.h"
 #include "gui/widgets/contacts-list-widget-menu-manager.h"
 #include "gui/widgets/configuration/configuration-widget.h"
 
@@ -30,12 +33,12 @@
 #include "protocols/protocol-factory.h"
 #include "protocols/protocols-manager.h"
 
-#include "action.h"
-#include "config_file.h"
+#include "gui/actions/action.h"
+#include "configuration/configuration-file.h"
 #include "debug.h"
 #include "icons-manager.h"
-#include "toolbar.h"
-#include "xml_config_file.h"
+#include "gui/widgets/toolbar.h"
+#include "configuration/xml-configuration-file.h"
 
 #include "tabs.h"
 
@@ -204,7 +207,7 @@ TabsManager::~TabsManager()
 		for(int i = tabdialog->count() - 1; i >= 0; i--)
 			detachChat(dynamic_cast<ChatWidget *>(tabdialog->widget(i)));
 	//}
-	//else 
+	//else
 	//if (config_file.readBoolEntry("Chat", "SaveOpenedWindows", true))
 	//	saveTabs();
 

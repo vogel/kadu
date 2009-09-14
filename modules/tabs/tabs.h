@@ -12,10 +12,10 @@
 
 #include "accounts/accounts-aware-object.h"
 
-#include "chat/chat_manager-old.h"
+#include "chat/chat-manager.h"
 
-#include "configuration_aware_object.h"
-#include "main_configuration_window.h"
+#include "configuration/configuration-aware-object.h"
+#include "gui/windows/main-configuration-window.h"
 #include "misc/misc.h"
 
 #include "tabwidget.h"
@@ -107,7 +107,7 @@ class TabsManager : public ConfigurationUiHandler, ConfigurationAwareObject, Acc
 		* Slot zostaje wywołany w momencie dodania przycisku do toolbara.
 		* @param users lista użytkowników rozmowy
 		*/
-		void attachToTabsActionCreated(KaduAction *action);
+		// TODO void attachToTabsActionCreated(KaduAction *action);
 
 		/**
 		* Slot zostaje wywołany w momencie zamykania chata skrótem klawiszowym
@@ -124,8 +124,8 @@ class TabsManager : public ConfigurationUiHandler, ConfigurationAwareObject, Acc
 		virtual void accountUnregistered(Account *account);
 
 	private:
-		ActionDescription* openInNewTabActionDescription;
-		ActionDescription* attachToTabsActionDescription;
+		//ActionDescription* openInNewTabActionDescription;
+		//ActionDescription* attachToTabsActionDescription;
 		TabWidget* tabdialog;
 		QTimer timer;
 		QList<ChatWidget *> chatsWithNewMessages, newchats, detachedchats;

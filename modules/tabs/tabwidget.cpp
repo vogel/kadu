@@ -3,8 +3,10 @@
 #include "gui/widgets/contacts-list-widget.h"
 #include "gui/windows/open-chat-with/open-chat-with.h"
 
-#include "config_file.h"
-#include "hot_key.h"
+#include "activate.h"
+
+#include "configuration/configuration-file.h"
+#include "gui/hot-key.h"
 #include "icons-manager.h"
 #include "misc/misc.h"
 
