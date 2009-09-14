@@ -13,7 +13,7 @@
 #include <QtGui/QSortFilterProxyModel>
 
 #include "abstract-contacts-model.h"
-#include "filter/abstract-contact-filter.h"
+#include "contacts/filter/abstract-contact-filter.h"
 
 class ContactsModelProxy : public QSortFilterProxyModel, public AbstractContactsModel
 {

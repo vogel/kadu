@@ -16,7 +16,7 @@
 #include "contacts/contact-list-mime-data-helper.h"
 #include "contacts/group.h"
 #include "contacts/group-manager.h"
-#include "contacts/model/filter/group-contact-filter.h"
+#include "contacts/filter/group-contact-filter.h"
 #include "core/core.h"
 #include "gui/windows/add-buddy-window.h"
 #include "gui/windows/group-properties-window.h"
