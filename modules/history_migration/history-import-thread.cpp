@@ -30,7 +30,7 @@
 struct HistoryEntry
 {
 	int type;
-	qint32 uin;
+	quint32 uin;
 	QString nick;
 	QDateTime date;
 	QDateTime sdate;
