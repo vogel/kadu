@@ -204,7 +204,7 @@ void HistoryWindow::chatActivated(const QModelIndex &index)
 	if (!model)
 		return;
 
-	QList<QDate> chatDates = History::instance()->datesForChat(chat);
+	QList<QDate> chatDates = History::instance()->datesForChat(chat, Search);
 	model->setChat(chat);
 	model->setDates(chatDates);
 
