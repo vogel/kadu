@@ -159,9 +159,9 @@ class TabsManager : public ConfigurationUiHandler, ConfigurationAwareObject, Acc
 		*/
 		void repaintTabs();
 
-		QString formatTabName(ChatWidget * chat);
+		QString formatTabName(ChatWidget * chatWidget);
 
-		void refreshTab(int tabIndex, ChatWidget * chat);
+		void refreshTab(int tabIndex, ChatWidget * chatWidget);
 
 		/**
 		* Zmienne konfiguracyjne.

@@ -8,7 +8,7 @@
 #include <QtGui/QToolButton>
 
 #include "gui/widgets/chat-widget.h"
-#include "gui/widgets/custom_input.h"
+#include "gui/widgets/custom-input.h"
 
 #include "debug.h"
 
