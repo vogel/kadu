@@ -216,11 +216,19 @@ QList<Chat *> HistorySqlStorage::chats(HistorySearchParameters search)
 
 	if (!search.query().isEmpty())
 		queryString += " AND content LIKE :content";
+	if (search.fromDate().isValid())
+		queryString += " AND date(receive_time) >= date(:fromDate)";
+	if (search.toDate().isValid())
+		queryString += " AND date(receive_time) <= date(:toDate)";
 
 	query.prepare(queryString);
 
 	if (!search.query().isEmpty())
 		query.bindValue(":content", QLatin1String("%") + search.query() + "%");
+	if (search.fromDate().isValid())
+		query.bindValue(":fromDate", search.fromDate());
+	if (search.toDate().isValid())
+		query.bindValue(":toDate", search.toDate());
 
 	QList<Chat *> chats;
 
@@ -249,12 +257,20 @@ QList<QDate> HistorySqlStorage::chatDates(Chat *chat, HistorySearchParameters se
 
 	if (!search.query().isEmpty())
 		queryString += " AND content LIKE :content";
+	if (search.fromDate().isValid())
+		queryString += " AND date(receive_time) >= date(:fromDate)";
+	if (search.toDate().isValid())
+		queryString += " AND date(receive_time) <= date(:toDate)";
 
 	query.prepare(queryString);
 
 	query.bindValue(":chat", chat->uuid().toString());
 	if (!search.query().isEmpty())
 		query.bindValue(":content", QLatin1String("%") + search.query() + "%");
+	if (search.fromDate().isValid())
+		query.bindValue(":fromDate", search.fromDate());
+	if (search.toDate().isValid())
+		query.bindValue(":toDate", search.toDate());
 	
 	QList<QDate> dates;
 
