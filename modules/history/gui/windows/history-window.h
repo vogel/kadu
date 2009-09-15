@@ -26,7 +26,6 @@
 #include "gui/windows/main-window.h"
 #include "gui/windows/main-configuration-window.h"
 
-#include "modules/history/gui/windows/history-search-dialog.h"
 #include "modules/history/search/history-search-parameters.h"
 #include "modules/history/history.h"
 #include "modules/history/history_exports.h"
