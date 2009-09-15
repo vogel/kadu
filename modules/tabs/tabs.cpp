@@ -183,6 +183,7 @@ TabsManager::TabsManager(bool firstload) : QObject()
 			onNewChat(chList[i],handled);
 		}
 	}*/
+
 	kdebugf2();
 }
 
@@ -272,8 +273,10 @@ void TabsManager::onDestroyingChat(ChatWidget* chat)
 		// zapami�tuje wewn�trzne rozmiary chata
 		chat->kaduStoreGeometry();
 	}
+
 	if (tabdialog->count() == 0)
 		tabdialog->hide();
+
 	newchats.removeOne(chat);
 	detachedchats.removeOne(chat);
 	chatsWithNewMessages.removeOne(chat);
@@ -450,6 +453,9 @@ void TabsManager::insertTab(ChatWidget* chat)
 	connect(chat, SIGNAL(messageReceived(ChatWidget *)), this, SLOT(onMessageReceived(ChatWidget *)));
 	connect(chat, SIGNAL(closed()), this, SLOT(closeChat()));
 
+	if (tabdialog->count() > 0)
+		tabdialog->show();
+
 	kdebugf2();
 }
 
@@ -616,6 +622,9 @@ bool TabsManager::detachChat(ChatWidget* chat)
 		return false;
 	Chat *oldchat = chat->chat();
 	delete chat;
+
+	if (tabdialog->count() == 0)
+		tabdialog->hide();
 
 	no_tabs = true;
 	ChatWidgetManager::instance()->openPendingMsgs(oldchat, true);
@@ -796,6 +805,7 @@ void TabsManager::repaintTabs()
 {
 	if(!tabdialog->count())
 		return;
+
 	ChatWidget *chat;
 
 	for(int i = tabdialog->count()-1; i>=0; i--)
@@ -858,6 +868,9 @@ void TabsManager::closeChat()
 	QObject *chat = sender();
         if(chat)
 		chat->deleteLater();
+
+	if (tabdialog->count() == 0)
+		tabdialog->hide();
 }
 
 TabsManager* tabs_manager;
