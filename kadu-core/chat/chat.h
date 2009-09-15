@@ -49,7 +49,7 @@ public slots:
 	void refreshTitle();
 
 signals:
-	void titleChanged(const QString &newTitle);
+	void titleChanged(Chat * chat, const QString &newTitle);
 
 };
 
