@@ -7,7 +7,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <QtGui/QDockWidget>
+#include <QtGui/QDateEdit>
 #include <QtGui/QHBoxLayout>
 #include <QtGui/QLineEdit>
 #include <QtGui/QMenu>
@@ -96,10 +96,10 @@ void HistoryWindow::createGui()
 	QWidget *rightWidget = new QWidget(rightSplitter);
 	QVBoxLayout *rightLayout = new QVBoxLayout(rightWidget);
 
-	DelayedLineEdit *searchLineEdit = new DelayedLineEdit(rightWidget);
-	rightLayout->addWidget(searchLineEdit);
-	connect(searchLineEdit, SIGNAL(delayedTextChanged(const QString &)),
-			this, SLOT(searchTextChanged(const QString &)));
+	QWidget *filterWidget = new QWidget(rightWidget);
+	rightLayout->addWidget(filterWidget);
+
+	createFilterBar(filterWidget);
 
 	DetailsListView = new QTreeView(rightWidget);
 	rightLayout->addWidget(DetailsListView);
@@ -144,6 +144,29 @@ void HistoryWindow::createChatTree(QWidget *parent)
 	ChatsModelProxy->sort(1);
 	ChatsModelProxy->sort(0); // do the sorting
 	ChatsTree->setRootIsDecorated(true);
+}
+
+void HistoryWindow::createFilterBar(QWidget *parent)
+{
+	QHBoxLayout *layout = new QHBoxLayout(parent);
+
+	DelayedLineEdit *searchLineEdit = new DelayedLineEdit(parent);
+	layout->addWidget(searchLineEdit);
+
+	QDateEdit *fromDate = new QDateEdit(parent);
+	fromDate->setCalendarPopup(true);
+	layout->addWidget(fromDate);
+
+	QDateEdit *toDate = new QDateEdit(parent);
+	toDate->setCalendarPopup(true);
+	layout->addWidget(toDate);
+
+	connect(searchLineEdit, SIGNAL(delayedTextChanged(const QString &)),
+			this, SLOT(searchTextChanged(const QString &)));
+	connect(fromDate, SIGNAL(dateChanged(const QDate &)),
+			this, SLOT(fromDateChanged(const QDate &)));
+	connect(toDate, SIGNAL(dateChanged(const QDate &)),
+			this, SLOT(toDateChanged(const QDate &)));
 }
 
 void HistoryWindow::connectGui()
@@ -245,6 +268,18 @@ void HistoryWindow::filterLineChanged(const QString &filterText)
 void HistoryWindow::searchTextChanged(const QString &searchText)
 {
 	Search.setQuery(searchText);
+	updateData();
+}
+
+void HistoryWindow::fromDateChanged(const QDate &date)
+{
+	Search.setFromDate(date);
+	updateData();
+}
+
+void HistoryWindow::toDateChanged(const QDate &date)
+{
+	Search.setToDate(date);
 	updateData();
 }
 

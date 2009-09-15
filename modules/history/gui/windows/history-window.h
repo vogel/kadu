@@ -64,6 +64,7 @@ class HistoryWindow : public MainWindow
 
 	void createGui();
 	void createChatTree(QWidget *parent);
+	void createFilterBar(QWidget *parent);
 	void connectGui();
 
 	void updateData();
@@ -75,6 +76,8 @@ private slots:
 
 	void filterLineChanged(const QString &filterText);
 	void searchTextChanged(const QString &searchText);
+	void fromDateChanged(const QDate &date);
+	void toDateChanged(const QDate &date);
 
 	void showMainPopupMenu(const QPoint &pos);
 	void showDetailsPopupMenu(const QPoint &pos);
