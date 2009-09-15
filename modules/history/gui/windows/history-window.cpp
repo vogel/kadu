@@ -24,6 +24,7 @@
 #include "gui/widgets/delayed-line-edit.h"
 #include "gui/windows/message-box.h"
 #include "misc/misc.h"
+#include "activate.h"
 #include "debug.h"
 #include "emoticons.h"
 #include "icons-manager.h"
@@ -323,6 +324,7 @@ void HistoryWindow::show(Chat *chat)
 	selectChat(chat);
 
 	QWidget::show();
+	_activateWindow(this);
 }
 
 bool HistoryWindow::supportsActionType(ActionDescription::ActionType type)
