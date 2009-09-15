@@ -285,12 +285,30 @@ void HistoryWindow::toDateChanged(const QDate &date)
 
 void HistoryWindow::showMainPopupMenu(const QPoint &pos)
 {
-	MainPopupMenu->popup(ChatsTree->mapToGlobal(pos));
+	bool isValid = true;
+	Chat *chat = ChatsTree->indexAt(pos).data(ChatRole).value<Chat *>();
+	if (!chat)
+		isValid = false;
+
+	foreach (QAction *action, MainPopupMenu->actions())
+		action->setEnabled(isValid);
+
+	MainPopupMenu->exec(QCursor::pos());
 }
 
 void HistoryWindow::showDetailsPopupMenu(const QPoint &pos)
 {
-	DetailsPopupMenu->popup(DetailsListView->mapToGlobal(pos));
+	bool isValid = true;
+	Chat *chat = DetailsListView->indexAt(pos).data(ChatRole).value<Chat *>();
+	QDate date = DetailsListView->indexAt(pos).data(DateRole).value<QDate>();
+
+	if (!chat || !date.isValid())
+		isValid = false;
+
+	foreach (QAction *action, DetailsPopupMenu->actions())
+		action->setEnabled(isValid);
+
+	DetailsPopupMenu->exec(QCursor::pos());
 }
 
 void HistoryWindow::show(Chat *chat)
