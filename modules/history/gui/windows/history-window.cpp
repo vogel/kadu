@@ -17,6 +17,7 @@
 #include <QtGui/QVBoxLayout>
 
 #include "chat/filter/chat-name-filter.h"
+#include "chat/message/message.h"
 #include "chat/type/chat-type.h"
 #include "contacts/model/contacts-model-base.h"
 #include "gui/actions/actions.h"
@@ -26,7 +27,6 @@
 #include "misc/misc.h"
 #include "activate.h"
 #include "debug.h"
-#include "emoticons.h"
 #include "icons-manager.h"
 
 #include "model/chat-dates-model.h"
@@ -63,18 +63,10 @@ HistoryWindow::HistoryWindow(QWidget *parent) :
 
 HistoryWindow::~HistoryWindow()
 {
-	// for valgrind
-	QStringList searchActions;
-	searchActions << "historySearchAction" << "historyNextResultsAction" << "historyPrevResultsAction" << "historyAdvSearchAction";
-	foreach(QString act, searchActions)
-	{
-		ActionDescription *a = KaduActions[act];
-		delete a;
-	}
-	saveWindowGeometry(this, "History", "HistoryDialogGeometry");
+    	kdebugf();
 
+	saveWindowGeometry(this, "History", "HistoryDialogGeometry");
 	
-	kdebugf();
 	//writeToolBarsToConfig("history");
 	kdebugf2();
 }
@@ -106,12 +98,11 @@ void HistoryWindow::createGui()
 	rightLayout->addWidget(DetailsListView);
 
 	DetailsListView->setRootIsDecorated(false);
-	DetailsListView->setUniformRowHeights(true);
 	DetailsListView->setModel(new ChatDatesModel(0, QList<QDate>(), this));
+	DetailsListView->setUniformRowHeights(true);
 
 	ContentBrowser = new ChatMessagesView(0, rightSplitter);
 	ContentBrowser->setPruneEnabled(false);
-	///	ContentBrowser->setMargin(config_file.readNumEntry("General", "ParagraphSeparator"));
 
 	QList<int> sizes;
 	sizes.append(100);
@@ -253,7 +244,7 @@ void HistoryWindow::dateActivated(const QModelIndex &index)
 	if (!date.isValid())
 		return;
 
-	QList<Message> messages = History::instance()->getMessages(chat, date);
+	QList<Message> messages = History::instance()->messages(chat, date);
 	ContentBrowser->setChat(chat);
 	ContentBrowser->clearMessages();
 	ContentBrowser->appendMessages(messages);
@@ -325,6 +316,18 @@ void HistoryWindow::show(Chat *chat)
 
 	QWidget::show();
 	_activateWindow(this);
+}
+
+void HistoryWindow::openChat()
+{
+	kdebugf();
+	Chat *chat = ChatsTree->currentIndex().data(ChatRole).value<Chat *>();
+	if (!chat)
+		return;
+
+	ChatWidgetManager::instance()->openChatWidget(chat, true);
+
+	kdebugf2();
 }
 
 bool HistoryWindow::supportsActionType(ActionDescription::ActionType type)

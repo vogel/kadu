@@ -19,6 +19,7 @@
 #include "contacts/contact-manager.h"
 #include "chat/chat.h"
 #include "chat/chat-manager.h"
+#include "chat/message/message.h"
 #include "configuration/configuration-file.h"
 #include "contacts/contact.h"
 #include "core/core.h"
@@ -441,14 +442,14 @@ QList<QDate> History::datesForChat(Chat *chat, HistorySearchParameters search)
 	return CurrentStorage->chatDates(chat, search);
 }
 
-QList<Message> History::getMessages(Chat *chat, QDate date, int limit)
+QList<Message> History::messages(Chat *chat, QDate date, int limit)
 {
 	kdebugf();
 
 	return CurrentStorage->messages(chat, date, limit);
 }
 
-int History::getMessagesCount(Chat *chat, QDate date)
+int History::messagesCount(Chat *chat, QDate date)
 {
 	kdebugf();
 
