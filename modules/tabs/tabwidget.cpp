@@ -256,6 +256,17 @@ void TabWidget::deleteTab()
 	delete current;
 }
 
+void TabWidget::tabInserted(int index)
+{
+	show();
+}
+
+void TabWidget::tabRemoved(int index)
+{
+	if (count() == 0)
+		hide();
+}
+
 void TabWidget::openChatWithWindowClose()
 {
 	// ponownie zapisujemy poprawną pozycję okna openTabWith
@@ -386,17 +397,6 @@ void TabBar::tabLayoutChange()
 {
 	QTabBar::tabLayoutChange();
 	replaceCross();
-}
-
-void TabBar::tabInserted(int index)
-{
-	parentWidget()->show();
-}
-
-void TabBar::tabRemoved(int index)
-{
-	if (count() == 0)
-		parentWidget()->hide();
 }
 
 void TabBar::replaceCross()

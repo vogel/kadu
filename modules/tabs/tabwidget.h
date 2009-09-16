@@ -66,9 +66,6 @@ class TabBar: public QTabBar
 
 		virtual void tabLayoutChange();
 
-		virtual void tabInserted (int index);
-		virtual void tabRemoved (int index);
-
 	signals:
 		void contextMenu(int id, const QPoint& pos);
 		void deleteTab(int);
@@ -222,6 +219,10 @@ class TabWidget: public QTabWidget, public ChatContainer
 		virtual void dropEvent(QDropEvent* event);
 
 		virtual void windowActivationChange(bool oldActive);
+
+		virtual void tabInserted (int index);
+		virtual void tabRemoved (int index);
+
 
 	public slots:
 		/**
