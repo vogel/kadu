@@ -68,7 +68,7 @@ class TabsManager : public ConfigurationUiHandler, ConfigurationAwareObject, Acc
 		* @param contact kontakt, dla którego zmienił się status
 		* @param oldStatus poprzedni status
 		*/
-		void onStatusChanged(Account *account, Contact contact, Status oldStatus);
+		void onTitleChanged(Chat * chatChanged, const QString &newTitle);
 		/**
 		* Slot zostaje wywołany w momencie zmiany danych kontaktu.
 		* @param elem kontakt, którego dane się zmieniły

@@ -92,7 +92,7 @@ TabsManager::TabsManager(bool firstload) : QObject()
 	connect(ChatWidgetManager::instance(), SIGNAL(chatWidgetOpen(ChatWidget *)),
 			this, SLOT(onOpenChat(ChatWidget *)));
 
-	triggerAllAccountsRegistered();
+	//triggerAllAccountsRegistered();
 
 	//	connect(protocol, SIGNAL(userDataChanged(UserListElement, QString, QVariant, QVariant, bool, bool)),
 	//			this, SLOT(userDataChanged(UserListElement, QString, QVariant, QVariant, bool, bool)));
@@ -274,6 +274,7 @@ void TabsManager::onDestroyingChat(ChatWidget* chat)
 		chat->kaduStoreGeometry();
 	}
 
+	// TODO: move tabdialog->count() > 0 show/hide to tabdialog ad metod on tab insert/remove
 	if (tabdialog->count() == 0)
 		tabdialog->hide();
 
@@ -283,19 +284,15 @@ void TabsManager::onDestroyingChat(ChatWidget* chat)
 	disconnect(chat->edit(), SIGNAL(keyPressed(QKeyEvent*, CustomInput*, bool&)), tabdialog, SLOT(chatKeyPressed(QKeyEvent*, CustomInput*, bool&)));
 	disconnect(chat, SIGNAL(messageReceived(ChatWidget *)), this, SLOT(onMessageReceived(ChatWidget *)));
 	disconnect(chat, SIGNAL(closed()), this, SLOT(closeChat()));
+	disconnect(chat->chat(), SIGNAL(titleChanged(Chat *, const QString &)), this, SLOT( onTitleChanged(Chat *, const QString &)));
 	kdebugf2();
 }
 
-void TabsManager::onStatusChanged(Account *account, Contact contact, Status oldStatus)
+void TabsManager::onTitleChanged(Chat * chatChanged, const QString &newTitle)
 {
 	kdebugf();
-	//ChatWidget* chat=ChatManager::instance()->findChatWidget(ContactList(contact));
-	ChatWidget* chat;
-// 	foreach(Chat *ch, ChatManager::instance()->chatsForAccount(account))
-// 	{
-// 		if ( ch != 0 && ch->contacts().toContactList() == ContactList(contact))
-// 			chat = ChatWidgetManager::instance()->byChat(ch);
-// 	}
+
+	ChatWidget* chat = ChatWidgetManager::instance()->byChat(chatChanged);
 
 	int chatIndex = tabdialog->indexOf(chat);
 
@@ -339,6 +336,7 @@ void TabsManager::onTabChange(int index)
 	refreshTab(index, chat);
 
 	tabdialog->setWindowTitle(chat->chat()->title());
+	// TODO: window icon does not change
 	tabdialog->setWindowIcon(chat->icon());
 
 	emit chatWidgetActivated(chat);
@@ -452,6 +450,7 @@ void TabsManager::insertTab(ChatWidget* chat)
 	// Podłączamy sie do nowej wiadomości w chacie, tylko jeśli dodany on został do kart
 	connect(chat, SIGNAL(messageReceived(ChatWidget *)), this, SLOT(onMessageReceived(ChatWidget *)));
 	connect(chat, SIGNAL(closed()), this, SLOT(closeChat()));
+	connect(chat->chat(), SIGNAL(titleChanged(Chat *, const QString &)), this, SLOT( onTitleChanged(Chat *, const QString &)));
 
 	if (tabdialog->count() > 0)
 		tabdialog->show();
@@ -764,14 +763,14 @@ void TabsManager::configurationUpdated()
 
 void TabsManager::accountRegistered(Account *account)
 {
-	connect(account, SIGNAL(contactStatusChanged(Account *, Contact, Status)),
-			this, SLOT(onStatusChanged(Account *, Contact, Status)));
+	//connect(account, SIGNAL(contactStatusChanged(Account *, Contact, Status)),
+	//		this, SLOT(onStatusChanged(Account *, Contact, Status)));
 }
 
 void TabsManager::accountUnregistered(Account *account)
 {
-	disconnect(account, SIGNAL(contactStatusChanged(Account *, Contact, Status)),
-			this, SLOT(onStatusChanged(Account *, Contact, Status)));
+	//disconnect(account, SIGNAL(contactStatusChanged(Account *, Contact, Status)),
+	//		this, SLOT(onStatusChanged(Account *, Contact, Status)));
 }
 
 void TabsManager::openTabWith(QStringList altnicks, int index)
