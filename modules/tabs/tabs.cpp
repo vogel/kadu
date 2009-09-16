@@ -430,11 +430,11 @@ void TabsManager::insertTab(ChatWidget* chat)
 
 	detachedchats.removeOne(chat);
 
-	/*foreach(KaduAction *action, attachToTabsActionDescription->actions())
+	foreach(Action *action, attachToTabsActionDescription->actions())
 	{
 		if (action->contacts() == contacts)
 			action->setChecked(true);
-	}*/
+	}
 
 	// Ustawiam tytul karty w zaleznosci od tego czy mamy do czynienia z rozmowa czy z konferencja
 	tabdialog->insertTab(target_tabs, chat, chat->icon(), formatTabName(chat));
