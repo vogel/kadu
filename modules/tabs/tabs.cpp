@@ -92,8 +92,6 @@ TabsManager::TabsManager(bool firstload) : QObject()
 	connect(ChatWidgetManager::instance(), SIGNAL(chatWidgetOpen(ChatWidget *)),
 			this, SLOT(onOpenChat(ChatWidget *)));
 
-	//triggerAllAccountsRegistered();
-
 	//	connect(protocol, SIGNAL(userDataChanged(UserListElement, QString, QVariant, QVariant, bool, bool)),
 	//			this, SLOT(userDataChanged(UserListElement, QString, QVariant, QVariant, bool, bool)));
 
@@ -170,19 +168,7 @@ TabsManager::TabsManager(bool firstload) : QObject()
 	if (config_file.readBoolEntry("Chat", "SaveOpenedWindows", true))
 		loadTabs();
 
-	// sprawdzanie czy przed załadowaniem modułu zostały utworzone jakieś chaty i dodanie ich do listy
-	/*if (config_defaultTabs)
-	{
-		ChatList chList = chat_manager->chats();
-		for (uint i = 0; i < chList.count(); i++)
-		{
-			//UserListElements uins (UserListElements::fromContactList(chList[i]->contacts(), AccountManager::instance()->defaultAccount()));
-			if ((chList[i]->contacts().count() > 1 && !config_conferencesInTabs) || tabdialog->indexOf(chList[i])!=-1 || detachedchats.indexOf(chList[i])!=-1)
-				continue;
-			bool handled;
-			onNewChat(chList[i],handled);
-		}
-	}*/
+	triggerAllAccountsRegistered();
 
 	kdebugf2();
 }
@@ -765,6 +751,29 @@ void TabsManager::accountRegistered(Account *account)
 {
 	//connect(account, SIGNAL(contactStatusChanged(Account *, Contact, Status)),
 	//		this, SLOT(onStatusChanged(Account *, Contact, Status)));
+
+	// sprawdzanie dla konta zostaly utworzone jakies chaty i dodanie ich do listy zaleznie od ustawien
+	if (config_defaultTabs)
+	{
+		ChatWidget* chatWidget;
+		foreach(Chat * chat, ChatManager::instance()->chatsForAccount(account))
+		{
+			if (!chat)
+				continue;
+
+			// jesli nie otwarty to sprawdz nastepny.
+			chatWidget = ChatWidgetManager::instance()->byChat(chat);
+			if (!chatWidget)
+				continue;
+
+			// nie dodawac jesli to konferencja i nie chcemy konferencji albo mamy juz taki chat albo zostal on odlaczony
+			if ((chat->contacts().count() > 1 && !config_conferencesInTabs) || tabdialog->indexOf(chatWidget)!=-1 || detachedchats.indexOf(chatWidget)!=-1)
+				continue;
+
+			bool handled;
+			onNewChat(chatWidget, handled);
+		}
+	}
 }
 
 void TabsManager::accountUnregistered(Account *account)
