@@ -20,9 +20,13 @@
 
 #include "activate.h"
 
+#include "gui/actions/action-description.h"
+
 #include "contacts/contact.h"
 #include "contacts/contact-list.h"
 #include "contacts/contact-manager.h"
+
+#include "core/core.h"
 
 #include "gui/widgets/chat-edit-box.h"
 #include "gui/widgets/chat-widget-manager.h"
@@ -55,15 +59,19 @@ extern "C" KADU_EXPORT void tabs_close()
 	delete tabs_manager;
 	tabs_manager=0;
 }
-/*
-void disableNewTab(KaduAction *action)
+
+void disableNewTab(Action *action)
 {
+	action->setEnabled(false);
 	ContactSet contacts = action->contacts();
+
+	if (!contacts.count())
+		return;
 
 	bool config_defaultTabs = config_file.readBoolEntry("Chat", "DefaultTabs");
 	action->setEnabled(true);
 
-	if (contacts.count() != 1 && !config_defaultTabs && !config_file.readBoolEntry("Chat", "DefaultTabs"))
+	if (contacts.count() != 1 && !config_defaultTabs)
 		action->setEnabled(false);
 
 	if (config_defaultTabs)
@@ -71,15 +79,22 @@ void disableNewTab(KaduAction *action)
 	else
 		action->setText(qApp->translate("TabsManager", "Open in new tab"));
 
-	// TODO 0.6.6 dla siebie samego deaktywujemy opcję w menu
-	//Account *account = AccountManager::instance()->defaultAccount();
-	//UserListElements users = UserListElements::fromContactList(contacts, account);
-	//QString myGGUIN = QString::number(config_file.readNumEntry("General", "UIN"));
-	//foreach(UserListElement user, contacts)
-		//if (!user.usesProtocol("Gadu") || user.ID("Gadu") == myGGUIN)
-			//action->setEnabled(false);
+	// TODO 0.6.6 dla siebie samego deaktywujemy opcje w menu, a konfernecje?
+	foreach (const Contact &contact, contacts)
+	{
+		if (Core::instance()->myself() == contact)
+			return;
+
+		Account *account = contact.prefferedAccount();
+		if (!account || !account->protocol()->chatService())
+			return;
+	}
+
+	action->setEnabled(true);
+
+	kdebugf2();
 }
-*/
+
 TabsManager::TabsManager(bool firstload) : QObject()
 {
 	kdebugf();
@@ -120,19 +135,19 @@ TabsManager::TabsManager(bool firstload) : QObject()
 	config_file.addVariable("Tabs", "OldStyleClosing", "false");
 	config_file.addVariable("Tabs", "CloseButtonOnTab", "false");
 
-// 	openInNewTabActionDescription = new ActionDescription(
-// 		0, ActionDescription::TypeUser, "openInNewTabAction",
-// 		this, SLOT(onNewTab(QAction *, bool)),
-// 		"OpenChat", tr("Open in new tab"), false, QString::null, disableNewTab
-// 	);
-// 	ContactsListWidgetMenuManager::instance()->insertActionDescription(1, openInNewTabActionDescription);
-//
-// 	attachToTabsActionDescription = new ActionDescription(
-// 		0, ActionDescription::TypeChat, "attachToTabsAction",
-// 		this, SLOT(onTabAttach(QAction *, bool)),
-// 		"TabsDetached", tr("Attach chat to tabs"), true, tr("Detach chat from tabs")
-// 	);
-// 	connect(attachToTabsActionDescription, SIGNAL(actionCreated(KaduAction *)), this, SLOT(attachToTabsActionCreated(KaduAction *)));
+	openInNewTabActionDescription = new ActionDescription(
+		0, ActionDescription::TypeUser, "openInNewTabAction",
+		this, SLOT(onNewTab(QAction *, bool)),
+		"OpenChat", tr("Open in new tab"), false, QString::null, disableNewTab
+	);
+	ContactsListWidgetMenuManager::instance()->insertActionDescription(1, openInNewTabActionDescription);
+
+	attachToTabsActionDescription = new ActionDescription(
+		0, ActionDescription::TypeChat, "attachToTabsAction",
+		this, SLOT(onTabAttach(QAction *, bool)),
+		"TabsDetached", tr("Attach chat to tabs"), true, tr("Detach chat from tabs")
+	);
+	connect(attachToTabsActionDescription, SIGNAL(actionCreated(Action *)), this, SLOT(attachToTabsActionCreated(Action *)));
 
 	if(firstload)
 		ChatEditBox::addAction("attachToTabsAction");
@@ -177,12 +192,12 @@ TabsManager::~TabsManager()
 {
 	kdebugf();
 
-// 	ContactsListWidgetMenuManager::instance()->removeActionDescription(openInNewTabActionDescription);
-// 	delete openInNewTabActionDescription;
-// 	openInNewTabActionDescription = 0;
-//
-// 	delete attachToTabsActionDescription;
-// 	attachToTabsActionDescription = 0;
+	ContactsListWidgetMenuManager::instance()->removeActionDescription(openInNewTabActionDescription);
+	delete openInNewTabActionDescription;
+	openInNewTabActionDescription = 0;
+
+	delete attachToTabsActionDescription;
+	attachToTabsActionDescription = 0;
 
 	disconnect(ChatWidgetManager::instance(), 0, this, 0);
 
@@ -366,15 +381,15 @@ void TabsManager::onMessageReceived(ChatWidget *chat)
 void TabsManager::onNewTab(QAction *sender, bool toggled)
 {
 	kdebugf();
-/*
-	KaduMainWindow *window = dynamic_cast<KaduMainWindow *>(sender->parent());
+
+	MainWindow *window = dynamic_cast<MainWindow *>(sender->parent());
 	if (!window)
 		return;
 
-	ContactList contacts = window->contacts();
+	ContactSet contacts = window->contacts();
 	if (contacts.count() == 0)
 		return;
-
+/*
 	ChatWidget* chat=ChatManager::instance()->findChatWidget(contacts);
 
 	// istnieje = przywracamy na pierwszy plan
@@ -583,9 +598,9 @@ void TabsManager::onMenuActionCloseAll()
 	for(int i=tabdialog->count()-1; i>=0; i--)
 		delete tabdialog->widget(i);
 }
-/*
-void TabsManager::attachToTabsActionCreated(KaduAction *action)
-{
+
+void TabsManager::attachToTabsActionCreated(Action *action)
+{/*
 	ChatEditBox *chatEditBox = dynamic_cast<ChatEditBox *>(action->parent());
 	if (!chatEditBox)
 		return;
@@ -599,8 +614,7 @@ void TabsManager::attachToTabsActionCreated(KaduAction *action)
 		action->setEnabled(false);
 
 	action->setChecked(tabdialog->indexOf(chatWidget) != -1);
-}
-*/
+*/}
 
 bool TabsManager::detachChat(ChatWidget* chat)
 {

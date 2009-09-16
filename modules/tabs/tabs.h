@@ -22,6 +22,7 @@
 
 class QMenu;
 class Action;
+class ActionDescription;
 
 class TabsManager : public ConfigurationUiHandler, ConfigurationAwareObject, AccountsAwareObject
 {
@@ -107,7 +108,7 @@ class TabsManager : public ConfigurationUiHandler, ConfigurationAwareObject, Acc
 		* Slot zostaje wywołany w momencie dodania przycisku do toolbara.
 		* @param users lista użytkowników rozmowy
 		*/
-		// TODO void attachToTabsActionCreated(KaduAction *action);
+		void attachToTabsActionCreated(Action *action);
 
 		/**
 		* Slot zostaje wywołany w momencie zamykania chata skrótem klawiszowym
@@ -124,8 +125,8 @@ class TabsManager : public ConfigurationUiHandler, ConfigurationAwareObject, Acc
 		virtual void accountUnregistered(Account *account);
 
 	private:
-		//ActionDescription* openInNewTabActionDescription;
-		//ActionDescription* attachToTabsActionDescription;
+		ActionDescription* openInNewTabActionDescription;
+		ActionDescription* attachToTabsActionDescription;
 		TabWidget* tabdialog;
 		QTimer timer;
 		QList<ChatWidget *> chatsWithNewMessages, newchats, detachedchats;
