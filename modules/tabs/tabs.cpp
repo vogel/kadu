@@ -383,30 +383,44 @@ void TabsManager::onNewTab(QAction *sender, bool toggled)
 		return;
 
 	ContactSet contacts = window->contacts();
-	if (contacts.count() == 0)
+	int contactsCount = contacts.count();
+
+	if (contactsCount == 0)
 		return;
-/*
-	ChatWidget* chat=ChatManager::instance()->findChatWidget(contacts);
+
+	// sprawdzic czy to ma sens?
+	Account *account = contacts.prefferedAccount();
+	if (!account || !account->protocol() || !account->protocol()->chatService())
+		return;
+
+	Chat* chat = account->protocol()->findChat(contacts);
 
 	// istnieje = przywracamy na pierwszy plan
 	if (chat)
 	{
-		if(tabdialog->indexOf(chat) != -1)
+		ChatWidgetManager::instance()->openPendingMsgs(chat, true);
+		ChatWidget* chatWidget = ChatWidgetManager::instance()->byChat(chat);
+		if (!chatWidget)
+			return;
+
+		if(tabdialog->indexOf(chatWidget) != -1)
 		{
 			tabdialog->setWindowState(tabdialog->windowState() & ~Qt::WindowMinimized);
-			tabdialog->setCurrentWidget(chat);
+			tabdialog->setCurrentWidget(chatWidget);
 		}
-		_activateWindow(chat);
+		_activateWindow(chatWidget);
 	}
-	else
+
+	// TODO : is it possible?
+/*	else
 	{
 		if (config_defaultTabs)
 			no_tabs = true;
-		// w miejsce ręcznego dodawaia chata do kart automatyczne ;)
-		else if (contacts.count() == 1 || config_conferencesInTabs)
+		// w miejsce recznego dodawania chata do kart automatyczne ;)
+		else if (contactsCount == 1 || config_conferencesInTabs)
 			force_tabs = true;
-
-		ChatManager::instance()->openPendingMsgs(contacts, true);
+		// but here chat = 0
+		ChatWidgetManager::instance()->openPendingMsgs(chat, true);
 	}
 */
 	kdebugf2();
