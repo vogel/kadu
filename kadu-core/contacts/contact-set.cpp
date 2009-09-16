@@ -28,32 +28,28 @@ ContactList ContactSet::toContactList() const
 
 Account * ContactSet::prefferedAccount()
 {
-	QList<Account *> accounts;
+	QList<Account *> accounts,contactAccounts;
 	// TODO 0.6.6 - Rework it if more than 1 account on the same proto.
 
 	ContactList contacts = toList();
+
 	foreach(Contact contact, contacts)
 	{
-		Account *acc = contact.prefferedAccount();
+		contactAccounts = contact.accounts();
 		// one contact have no account = no common account
-		if (!acc)
+		if (contactAccounts.count() == 0)
 			return 0;
 
-		accounts.append(acc);
+		accounts.append(contactAccounts);
 	}
-
-	Account * accountMaxCount;
-	int maxCount, tmp;
 
 	foreach(Account *account, AccountManager::instance()->accounts())
 	{
-		tmp = accounts.count(account);
-		if (maxCount < tmp)
+		if (accounts.count(account) == count())
 		{
-			maxCount = tmp;
-			accountMaxCount = account;
+			return account;
 		}
 	}
-	// TODO 0.6.6 - is it ok?
-	return maxCount == contacts.count() ? accountMaxCount : 0 ;
+
+	return 0;
 }
