@@ -388,6 +388,17 @@ void TabBar::tabLayoutChange()
 	replaceCross();
 }
 
+void TabBar::tabInserted(int index)
+{
+	parentWidget()->show();
+}
+
+void TabBar::tabRemoved(int index)
+{
+	if (count() == 0)
+		parentWidget()->hide();
+}
+
 void TabBar::replaceCross()
 {
 	// jeśli przycisk zamknięciakarty jest widoczny na karcie i w miejscu kursora znajuje się karta

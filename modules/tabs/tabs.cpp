@@ -277,10 +277,6 @@ void TabsManager::onDestroyingChat(ChatWidget* chat)
 		chat->kaduStoreGeometry();
 	}
 
-	// TODO: move tabdialog->count() > 0 show/hide to tabdialog ad metod on tab insert/remove
-	if (tabdialog->count() == 0)
-		tabdialog->hide();
-
 	newchats.removeOne(chat);
 	detachedchats.removeOne(chat);
 	chatsWithNewMessages.removeOne(chat);
@@ -443,6 +439,7 @@ void TabsManager::insertTab(ChatWidget* chat)
 
 	if ((config_autoTabChange && !chatsWithNewMessages.contains(chat)) || autoswith)
 		tabdialog->setCurrentWidget(chat);
+
 	tabdialog->setWindowState(tabdialog->windowState() & ~Qt::WindowMinimized);
 	_activateWindow(tabdialog);
 
@@ -454,9 +451,6 @@ void TabsManager::insertTab(ChatWidget* chat)
 	connect(chat, SIGNAL(messageReceived(ChatWidget *)), this, SLOT(onMessageReceived(ChatWidget *)));
 	connect(chat, SIGNAL(closed()), this, SLOT(closeChat()));
 	connect(chat->chat(), SIGNAL(titleChanged(Chat *, const QString &)), this, SLOT( onTitleChanged(Chat *, const QString &)));
-
-	if (tabdialog->count() > 0)
-		tabdialog->show();
 
 	kdebugf2();
 }
@@ -623,9 +617,6 @@ bool TabsManager::detachChat(ChatWidget* chat)
 		return false;
 	Chat *oldchat = chat->chat();
 	delete chat;
-
-	if (tabdialog->count() == 0)
-		tabdialog->hide();
 
 	no_tabs = true;
 	ChatWidgetManager::instance()->openPendingMsgs(oldchat, true);
@@ -892,9 +883,6 @@ void TabsManager::closeChat()
 	QObject *chat = sender();
         if(chat)
 		chat->deleteLater();
-
-	if (tabdialog->count() == 0)
-		tabdialog->hide();
 }
 
 TabsManager* tabs_manager;
