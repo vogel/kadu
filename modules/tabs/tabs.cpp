@@ -6,6 +6,10 @@
  *   (at your option) any later version.                                   *
  *                                                                         *
  ***************************************************************************/
+// TODO 0.6.6 : use native DragNDrop
+// TODO 0.6.6 : use native close widget on tabs
+// TODO 0.6.6 : load,save options
+// TODO 0.6.6 : load,save chats
 
 /*
  * autor
