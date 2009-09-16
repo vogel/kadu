@@ -114,13 +114,13 @@ TabsManager::TabsManager(bool firstload) : QObject()
 			this, SLOT(onTimer()));
 
 	// przeniesienie starej konfiguracji skrotow z Chat do ShortCuts
-	// TODO: pozbyć się tego w kadu 0.7
+	// TODO: pozbyc sie tego w kadu 0.7
 	config_file.addVariable("ShortCuts", "MoveTabLeft", config_file.readEntry("Chat", "MoveTabLeft"));
 	config_file.addVariable("ShortCuts", "MoveTabRight", config_file.readEntry("Chat", "MoveTabRight"));
 	config_file.addVariable("ShortCuts", "SwitchTabLeft", config_file.readEntry("Chat", "SwitchTabLeft"));
 	config_file.addVariable("ShortCuts", "SwitchTabRight", config_file.readEntry("Chat", "SwitchTabRight"));
 
-	// ustawienie domyślnych wartości opcji konfiguracyjnych
+	// ustawienie domyslnych wartości opcji konfiguracyjnych
 	config_file.addVariable("ShortCuts", "MoveTabLeft", "Ctrl+Shift+Left");
 	config_file.addVariable("ShortCuts", "MoveTabRight", "Ctrl+Shift+Right");
 	config_file.addVariable("ShortCuts", "SwitchTabLeft", "Shift+Left");
@@ -164,7 +164,7 @@ TabsManager::TabsManager(bool firstload) : QObject()
 
 	loadWindowGeometry(tabdialog, "Chat", "TabWindowsGeometry", 30, 30, 400, 400);
 
-	// sygnał wysyłany po aktywacji chata. Jest odbierany przez m.in hint-managera (po aktywacji chata znikają dymki))
+	// sygnal wysylany po aktywacji chata. Jest odbierany przez m.in hint-managera (po aktywacji chata znikaja dymki))
 	connect(this, SIGNAL(chatWidgetActivated(ChatWidget *)), ChatWidgetManager::instance(), SIGNAL(chatWidgetActivated(ChatWidget *)));
 	connect(tabdialog, SIGNAL(chatWidgetActivated(ChatWidget *)), ChatWidgetManager::instance(), SIGNAL(chatWidgetActivated(ChatWidget *)));
 
@@ -230,7 +230,7 @@ void TabsManager::onNewChat(ChatWidget* chat, bool &handled)
 		detachedchats.append(chat);
 		return;
 	}
-	// jeśli chat ma zostać bezwzględnie dodany do kart np w wyniku wyboru w menu
+	// jesli chat ma zostac bezwzglednie dodany do kart np w wyniku wyboru w menu
 	if (force_tabs)
 	{
 		force_tabs = false;
@@ -273,7 +273,7 @@ void TabsManager::onDestroyingChat(ChatWidget* chat)
 	{
 		//tabdialog->removePage(chat);
 		tabdialog->removeTab(tabdialog->indexOf(chat));
-		// zapami�tuje wewn�trzne rozmiary chata
+		// zapamietuje wewnetrzne rozmiary chata
 		chat->kaduStoreGeometry();
 	}
 
@@ -314,7 +314,7 @@ void TabsManager::onTitleChanged(Chat * chatChanged, const QString &newTitle)
 //	kdebugf();
 //	if (name != "AltNick")
 //		return;
-	// jeśli zmienił się nick osoby z którą mamy rozmowę w kartach to uaktualniamy tytuł karty
+	// jesli zmienil sie nick osoby z ktora mamy rozmowe w kartach to uaktualniamy tytul karty
 	//TODO
 	//onStatusChanged(ule);
 
@@ -328,7 +328,7 @@ void TabsManager::onTabChange(int index)
 
 	ChatWidget* chat = dynamic_cast<ChatWidget *>(tabdialog->widget(index));
 
-	// czy jest na liście uin-ów z nowymi wiadomościami
+	// czy jest na liscie chatow z nowymi wiadomosciami
 	if (chatsWithNewMessages.contains(chat))
 		chatsWithNewMessages.removeOne(chat);
 
@@ -368,7 +368,7 @@ void TabsManager::onMessageReceived(ChatWidget *chat)
 		if (!timer.isActive())
 			timer.start(500);
 	}
-	// jeśli chat jest aktywny zerujemy licznik nowych wiadomości
+	// jezelo chat jest aktywny zerujemy licznik nowych wiadomosci
 	if (_isActiveWindow(tabdialog) && tabdialog->currentWidget() == chat)
 		chat->markAllMessagesRead();
 	kdebugf2();
@@ -469,7 +469,7 @@ void TabsManager::insertTab(ChatWidget* chat)
 	kdebugf2();
 }
 
-// uff, troche dziwne to ale działa tak jak trzeba
+// uff, troche dziwne to ale dziala tak jak trzeba
 // TODO: review this!!!
 void TabsManager::onTimer()
 {
@@ -477,18 +477,18 @@ void TabsManager::onTimer()
 	ChatWidget* chat;
 	static bool msg, wasactive=1;
 
-	// sprawdzaj wszystkie okna które są w tabach
+	// sprawdzaj wszystkie okna ktore sa w tabach
 	for(int i = tabdialog->count()-1; i>=0; i--)
 	{
 		chat = dynamic_cast<ChatWidget *>(tabdialog->widget(i));
 
-		// czy trzeba coś robić ?
+		// czy trzeba cos robia ?
 		if (chatsWithNewMessages.contains(chat))
 		{
-			// okno nieaktywne to trzeba coś zrobić
+			// okno nieaktywne to trzeba cos zrobic
 			if (_isActiveWindow(tabdialog))
 			{
-				// jeśli chat jest na aktywneh karcie - zachowuje się jak normalne okno
+				// jesli chat jest na aktywnej karcie - zachowuje sie jak normalne okno
 				if (tabdialog->currentWidget() == chat)
 				{	if(msg && config_blinkChatTitle)
 						tabdialog->setWindowTitle(QString().fill(' ', (chat->chat()->title().length() + 5)));
@@ -498,7 +498,7 @@ void TabsManager::onTimer()
 						else
 							tabdialog->setWindowTitle(chat->chat()->title());
 				}
-				// jeśli nie w zależności od konfiguracji występuje "miganie" lub nie
+				// jesli nie w zaleznosci od konfiguracji wystepuje "miganie" lub nie
 				else if (config_blinkChatTitle && !msg)
 					tabdialog->setWindowTitle(tr("NEW MESSAGE(S)"));
 				else
@@ -514,7 +514,7 @@ void TabsManager::onTimer()
 					tabdialog->setTabIcon(i, chat->icon());
 			}
 			else if (tabdialog->currentWidget()==chat && _isActiveWindow(tabdialog))
-				// wywal go z listy uin-ów z nowymi wiadomościami
+				// wywal go z listy chatow z nowymi wiadomosciami
 				chatsWithNewMessages.removeOne(chat);
 
 			if (_isActiveWindow(tabdialog))
@@ -523,7 +523,7 @@ void TabsManager::onTimer()
 				{
 					// zeruje licznik nowch wiadomosci w chat
 					chat->markAllMessagesRead();
-					// a tutaj przywróć tytuł
+					// a tutaj przywroc tytul�
 					tabdialog->setWindowTitle(chat->chat()->title());
 				}
 				else if (chatsWithNewMessages.count() == 1 && !wasactive && config_autoTabChange)
@@ -564,7 +564,7 @@ void TabsManager::onTabAttach(QAction *sender, bool toggled)
 void TabsManager::onContextMenu(QWidget* w, const QPoint& pos)
 {
 	kdebugf();
-	///to już powinno działać
+	///to juz powinno dzialac
 	selectedchat = dynamic_cast<ChatWidget *>(w);
 	menu->popup(pos);
 	kdebugf2();
@@ -740,8 +740,8 @@ void TabsManager::configurationUpdated()
 
 	tabdialog->setTabPosition(config_tabsBelowChats ? QTabWidget::South : QTabWidget::North);
 
-	// Sprawdzam czy są jakieś konferencje a jeśli są to ustawiam w nich poprawnie przyciski w zaleznosci
-	// czy opcja "Konferencje w kartach" jest włączona/wyłączona
+	// Sprawdzam czy sa jakies konferencje a jesli sa to ustawiam w nich poprawnie przyciski w zaleznosci
+	// czy opcja "Konferencje w kartach" jest wlaczona/wylaczona
 	/*
 	ChatList chList = ChatManager::instance()->chats();
 	for (int i = chList.count()-1; i>=0; i--)
@@ -756,7 +756,7 @@ void TabsManager::configurationUpdated()
 	}
 	*/
 	tabdialog->configurationUpdated();
-	// w zaleśnośći od opcji w konfiguracji rezerwujemy miejsce na przycisk zamknięcia chata na karcie lub je usuwamy
+	// w zaleznosci od opcji w konfiguracji rezerwujemy miejsce na przycisk zamkniecia chata na karcie lub je usuwamy
 	config_closeButtonOnTab = config_file.readBoolEntry("Tabs", "CloseButtonOnTab");
 	repaintTabs();
 
@@ -812,11 +812,11 @@ void TabsManager::openTabWith(QStringList altnicks, int index)
 	ChatWidget* chat=ChatWidgetManager::instance()->findChatWidget(contacts);
 	if (chat)
 		if(tabdialog->indexOf(chat)!=-1)
-		// Jeśli chat istnieje i jest dodany do kart, to czynimy go aktywnym
+		// Jesli chat istnieje i jest dodany do kart, to czynimy go aktywnym
 			onOpenChat(chat);
 		else
 		{
-		// Jeśli chat istnieje i nie jest w kartach to dodajemy go do kart na pozycji index
+		// Jesli chat istnieje i nie jest w kartach to dodajemy go do kart na pozycji index
 			target_tabs=index;
 			insertTab(chat);
 		}
@@ -861,8 +861,8 @@ QString TabsManager::formatTabName(ChatWidget * chatWidget)
 		//TabName = chat->contacts()[0].display();
 		TabName = chatWidget->chat()->contacts().toContactList()[0].display();
 
-	// jeśli przycisk zamknięcia na kartach ma być pokazany
-	// do tytułów wszystkich kart dodajemy 3 tabulatory jako miejsce dla przycisku zamknięcia
+	// jesli przycisk zamkniecia na kartach ma byl pokazany
+	// do tytulow wszystkich kart dodajemy 3 tabulatory jako miejsce dla przycisku zamkniecia
 	if (config_closeButtonOnTab)
 		TabName.append("\t\t\t");
 
