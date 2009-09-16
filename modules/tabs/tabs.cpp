@@ -188,15 +188,17 @@ TabsManager::~TabsManager()
 
 	saveWindowGeometry(tabdialog, "Chat", "TabWindowsGeometry");
 
+	if (config_file.readBoolEntry("Chat", "SaveOpenedWindows", true))
+		saveTabs();
+
 	// jesli kadu nie konczy dzialania to znaczy ze modul zostal tylko wyladowany wiec odlaczamy rozmowy z kart
 	//if (!Kadu::closing())
 	//{
+		triggerAllAccountsUnregistered();
 		for(int i = tabdialog->count() - 1; i >= 0; i--)
 			detachChat(dynamic_cast<ChatWidget *>(tabdialog->widget(i)));
 	//}
-	//else
-	//if (config_file.readBoolEntry("Chat", "SaveOpenedWindows", true))
-	//	saveTabs();
+	//else // saveTabs()
 
 	delete tabdialog;
 	tabdialog = 0;
