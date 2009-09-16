@@ -15,7 +15,7 @@
 #include <QtGui/QRadioButton>
 
 #include "gui/widgets/choose-identity-widget.h"
-#include "tlen_account.h"
+#include "tlen-account.h"
 #include "tlen-protocol-factory.h"
 
 #include "tlen-create-account-widget.h"
