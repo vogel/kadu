@@ -608,7 +608,7 @@ void TabsManager::onMenuActionCloseAll()
 }
 
 void TabsManager::attachToTabsActionCreated(Action *action)
-{/*
+{
 	ChatEditBox *chatEditBox = dynamic_cast<ChatEditBox *>(action->parent());
 	if (!chatEditBox)
 		return;
@@ -616,13 +616,14 @@ void TabsManager::attachToTabsActionCreated(Action *action)
 	ChatWidget *chatWidget = chatEditBox->chatWidget();
 	if (!chatWidget)
 		return;
-	ContactList contacts = action->contacts();
+
+	ContactSet contacts = action->contacts();
 
 	if (contacts.count() != 1 && !config_conferencesInTabs && tabdialog->indexOf(chatWidget) == -1)
 		action->setEnabled(false);
 
 	action->setChecked(tabdialog->indexOf(chatWidget) != -1);
-*/}
+}
 
 bool TabsManager::detachChat(ChatWidget* chat)
 {
