@@ -40,7 +40,9 @@ ContactList TlenOpenChatWithRunner::matchingContacts(const QString &query)
 
 bool TlenOpenChatWithRunner::validateUserID(const QString &uid)
 {
-	// 3-25 chars, small letters, numbers and "-", "." , "_"
+	// TODO validate ID
+	// login : 3-25 ascii chars (1st letter), small letters, numbers and "-", "." , "_"
+	// pass : 5-15 ascii chars, no pl chars
 	//QString text = uid;
 	return true;
 }

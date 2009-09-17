@@ -19,8 +19,10 @@
 class TlenAccount : public Account
 {
 	TlenOpenChatWithRunner *OpenChatRunner;
+
 public:
-	TlenAccount(const QUuid &uuid = QUuid());
+	explicit TlenAccount(const QUuid &uuid = QUuid());
+	virtual ~TlenAccount();
 
 	virtual bool setId(const QString &id);
 
