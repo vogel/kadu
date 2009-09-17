@@ -7,26 +7,24 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef TLEN_ACCOUNT
-#define TLEN_ACCOUNT
-
-#include <QtCore/QString>
-
-#include "open-chat-with/tlen-open-chat-with-runner.h"
+#ifndef TLEN_OPEN_CHAT_WITH_RUNNER_H
+#define TLEN_OPEN_CHAT_WITH_RUNNER_H
 
 #include "accounts/account.h"
 
-class TlenAccount : public Account
+#include "gui/windows/open-chat-with/open-chat-with-runner.h"
+
+class TlenOpenChatWithRunner : public OpenChatWithRunner
 {
-	TlenOpenChatWithRunner *OpenChatRunner;
+	Account *ParentAccount;
+
+	bool validateUserID(const QString &uid);
+
 public:
-	TlenAccount(const QUuid &uuid = QUuid());
-
-	virtual bool setId(const QString &id);
-
-	virtual void load();
-	virtual void store();
+	TlenOpenChatWithRunner(Account *account);
+	virtual ContactList matchingContacts(const QString &query);
+	void setAccount(Account *account) { ParentAccount = account; }
 
 };
 
-#endif // TLEN_ACCOUNT
+#endif // TLEN_OPEN_CHAT_WITH_RUNNER_H
