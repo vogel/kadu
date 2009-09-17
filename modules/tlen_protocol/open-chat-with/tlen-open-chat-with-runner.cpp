@@ -43,6 +43,13 @@ bool TlenOpenChatWithRunner::validateUserID(const QString &uid)
 	// TODO validate ID
 	// login : 3-25 ascii chars (1st letter), small letters, numbers and "-", "." , "_"
 	// pass : 5-15 ascii chars, no pl chars
-	//QString text = uid;
+	QString text = uid;
+
+	if (3 > text.count() || 25 < text.count())
+		return false;
+
+	if (text != text.toLower())
+		return false;
+
 	return true;
 }
