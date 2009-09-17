@@ -243,6 +243,7 @@ set (SOURCES
 	gui/widgets/jabber-create-account-widget.cpp
 	gui/widgets/jabber-edit-account-widget.cpp
 	gui/widgets/jabber-personal-info-widget.cpp
+	open-chat-with/jabber-open-chat-with-runner.cpp
 	server/jabber-avatar-fetcher.cpp
 	server/jabber-server-register-account.cpp
 	services/jabber-avatar-service.cpp
@@ -273,6 +274,7 @@ set (MOC_SOURCES
 	gui/widgets/jabber-create-account-widget.h
 	gui/widgets/jabber-edit-account-widget.h
 	gui/widgets/jabber-personal-info-widget.h
+	#open-chat-with/jabber-open-chat-with-runner.h
 	server/jabber-avatar-fetcher.h
 	server/jabber-server-register-account.h
 	services/jabber-avatar-service.h

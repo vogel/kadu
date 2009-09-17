@@ -20,6 +20,10 @@ JabberAccount::JabberAccount(const QUuid &uuid)
 {
 }
 
+JabberAccount::~JabberAccount()
+{
+}
+
 bool JabberAccount::setId(const QString &id)
 {
 	if (!Account::setId(id))

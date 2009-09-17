@@ -13,21 +13,23 @@
 #include <QtCore/QString>
 
 #include "accounts/account.h"
+#include "open-chat-with/jabber-open-chat-with-runner.h"
 #include "protocols/protocol.h"
 
 class JabberAccount : public Account
 {
+	JabberOpenChatWithRunner *OpenChatRunner;
 
 public:
-	enum EncryptionFlag 
+	enum EncryptionFlag
 	{
-		Encryption_No = 0, 
-		Encryption_Yes = 1, 
-		Encryption_Auto = 2, 
-		Encryption_Legacy = 3 
+		Encryption_No = 0,
+		Encryption_Yes = 1,
+		Encryption_Auto = 2,
+		Encryption_Legacy = 3
 	};
- 
-private: 
+
+private:
 	QString Jid;
 	QString Resource;
 	bool AutoResource;
@@ -40,6 +42,7 @@ private:
 
 public:
 	explicit JabberAccount(const QUuid &uuid = QUuid());
+	virtual ~JabberAccount();
 
 	// TODO - jid is always null - why?
 	// QString jid() { return Jid; }
