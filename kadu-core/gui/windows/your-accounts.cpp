@@ -221,3 +221,14 @@ void YourAccounts::applyClicked()
 	foreach (AccountEditWidget *editWidget, EditWidgets)
 		editWidget->apply();
 }
+
+void YourAccounts::keyPressEvent(QKeyEvent *e)
+{
+	if (e->key() == Qt::Key_Escape)
+	{
+		e->accept();
+		close();
+	}
+	else
+		QDialog::keyPressEvent(e);
+}

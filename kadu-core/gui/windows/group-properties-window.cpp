@@ -146,3 +146,13 @@ void GroupPropertiesWindow::okClicked()
 	close();
 }
 
+void GroupPropertiesWindow::keyPressEvent(QKeyEvent *e)
+{
+	if (e->key() == Qt::Key_Escape)
+	{
+		e->accept();
+		close();
+	}
+	else
+		QDialog::keyPressEvent(e);
+}
