@@ -152,6 +152,7 @@ void tlen::event(QDomNode n) {
 	else if(nodeName=="iq") {
 		if(element.hasAttribute( "type" ) && element.attribute("type") == "result") {
 			if(element.hasAttribute("id") && element.attribute("id")==sid) {
+				tcfgRequest();
 				rosterRequest();
 			}
 
@@ -370,6 +371,17 @@ void tlen::rosterRequest() {
 	QDomElement query = doc.createElement( "query" );
 	query.setAttribute( "xmlns", "jabber:iq:roster" );
 	iq.appendChild( query );
+	write(doc);
+}
+// "<iq to='tcfg' type='get' id='TcfgGetAfterLoggedIn'></iq>"
+void tlen::tcfgRequest() {
+	kdebugf();
+	QDomDocument doc;
+	QDomElement iq = doc.createElement( "iq" );
+	iq.setAttribute( "to", "tcfg" );
+	iq.setAttribute( "type", "get" );
+	iq.setAttribute( "id", "TcfgGetAfterLoggedIn" );
+	doc.appendChild( iq );
 	write(doc);
 }
 

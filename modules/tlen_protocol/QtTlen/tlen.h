@@ -78,6 +78,7 @@ public slots:
 	void sendAlarm(QString to);
 	void chatNotify(QString to, bool t);
 	void rosterRequest();
+	void tcfgRequest();
 	void setStatus();
 	void setStatus(QString s);
 	void setStatusDescr(QString,QString);
