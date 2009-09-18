@@ -16,7 +16,7 @@
 #include "im.h"
 #include "xmpp_tasks.h"
 
-#include "miniclient.h"
+#include "client/mini-client.h"
 
 class JabberServerRegisterAccount : public QObject
 {

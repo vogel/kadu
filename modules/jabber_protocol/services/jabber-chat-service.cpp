@@ -14,7 +14,7 @@
 #include "core/core.h"
 #include "configuration/configuration-file.h"
 #include "debug.h"
-#include "../jabber_protocol.h"
+#include "../jabber-protocol.h"
 #include "gui/windows/message-box.h"
 #include "misc/misc.h"
 

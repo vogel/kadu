@@ -6,7 +6,9 @@
  *   (at your option) any later version.                                   *
  *                                                                         *
  ***************************************************************************/
+
 #include "debug.h"
+
 #include "gui/windows/message-box.h"
 #include "jabber-server-register-account.h"
 

@@ -17,9 +17,9 @@
 #include "contacts/avatar-manager.h"
 #include "misc/path-conversion.h"
 
-#include "jabber_protocol.h"
-#include "jabber-client.h"
-#include "vcard-factory.h"
+#include "client/jabber-client.h"
+#include "jabber-protocol.h"
+#include "utils/vcard-factory.h"
 
 #include "jabber-avatar-fetcher.h"
 

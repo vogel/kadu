@@ -21,7 +21,7 @@
 
 #include "jabber-resource-pool.h"
 #include "jabber-resource.h"
-#include "jabber_protocol.h"
+#include "jabber-protocol.h"
 #include <QtCore/QList>
 // #include "jabbercapabilitiesmanager.h"
 

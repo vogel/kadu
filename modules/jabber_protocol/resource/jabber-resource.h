@@ -29,7 +29,7 @@
 #include <im.h>
 #include <xmpp_tasks.h>
 
-#include "jabber_protocol.h"
+#include "jabber-protocol.h"
 
 namespace XMPP
 {

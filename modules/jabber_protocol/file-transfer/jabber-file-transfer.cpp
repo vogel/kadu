@@ -12,7 +12,7 @@
 #include "contacts/contact-manager.h"
 #include "debug.h"
 #include "jabber-contact-account-data.h"
-#include "../jabber_protocol.h"
+#include "../jabber-protocol.h"
 
 #include "libiris/include/filetransfer.h"
 

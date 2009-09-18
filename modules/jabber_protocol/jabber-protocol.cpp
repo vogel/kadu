@@ -6,10 +6,12 @@
  *   (at your option) any later version.                                   *
  *                                                                         *
  ***************************************************************************/
+
 #include <QtGui/QCheckBox>
 #include <QtGui/QMessageBox>
 #include <QtCrypto>
 
+#include "libiris/include/filetransfer.h"
 #include <xmpp.h>
 #include <xmpp_tasks.h>
 
@@ -22,22 +24,20 @@
 #include "gui/windows/message-box.h"
 #include "gui/windows/main-configuration-window.h"
 
-#include "protocols/protocol-menu-manager.h"
-#include "status/status.h"
-#include "misc/misc.h"
 #include "configuration/configuration-file.h"
 #include "debug.h"
-#include "kadu-config.h"
+#include "exports.h"
 #include "icons-manager.h"
+#include "kadu-config.h"
+#include "misc/misc.h"
+#include "protocols/protocol-menu-manager.h"
+#include "status/status.h"
 
 #include "file-transfer/jabber-file-transfer.h"
 #include "jabber-account.h"
-#include "jabber_protocol.h"
+#include "jabber-protocol.h"
 #include "jabber-protocol-factory.h"
-#include "libiris/include/filetransfer.h"
-#include "system-info.h"
-
-#include "exports.h"
+#include "utils/system-info.h"
 
 extern "C" KADU_EXPORT int jabber_protocol_init()
 {
