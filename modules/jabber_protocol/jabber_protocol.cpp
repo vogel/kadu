@@ -646,9 +646,9 @@ void JabberProtocol::slotContactUpdated(const XMPP::RosterItem &item)
 			c.setType(ContactData::TypeNormal);
 
 			if (!item.name().isNull())
-				c.setDisplay(account()->name() + ":" + item.name());
+				c.setDisplay(item.name());
 			else
-				c.setDisplay(account()->name() + ":" + item.jid().bare());
+				c.setDisplay(item.jid().bare());
 		}
 
 		if (c.isAnonymous())
