@@ -36,7 +36,6 @@ bool GaduChatService::sendMessage(Chat *chat, FormattedMessage &message)
 {
 	kdebugf();
 
-	message.setId(-1);
 	QString plain = message.toPlain();
 	ContactSet contacts = chat->contacts();
 
@@ -114,8 +113,6 @@ bool GaduChatService::sendMessage(Chat *chat, FormattedMessage &message)
 	if (-1 == messageId)
 		return false;
 
-	message.setId(messageId);
-
 	if (formats)
 		delete[] formats;
 
@@ -124,7 +121,9 @@ bool GaduChatService::sendMessage(Chat *chat, FormattedMessage &message)
 		.setStatus(Message::StatusSent)
 		.setContent(message.toPlain())
 		.setSendDate(QDateTime::currentDateTime())
-		.setReceiveDate(QDateTime::currentDateTime());
+		.setReceiveDate(QDateTime::currentDateTime())
+		.setId(messageId);
+
 	UndeliveredMessages.insert(messageId, msg);
 	emit messageSent(msg);
 

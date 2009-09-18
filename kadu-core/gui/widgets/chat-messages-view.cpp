@@ -15,7 +15,6 @@
 #include "accounts/account-manager.h"
 #include "configuration/configuration-file.h"
 #include "chat/chat.h"
-#include "chat/message/message.h"
 #include "chat/message/message-render-info.h"
 #include "chat/chat-styles-manager.h"
 #include "chat/html-messages-renderer.h"
@@ -132,8 +131,8 @@ void ChatMessagesView::appendMessage(MessageRenderInfo *message)
 {
 	kdebugf();
 
-	connect(&message->message(), SIGNAL(statusChanged(Message::Status)),
-			 this, SLOT(repaintMessages()));
+	connect(&message->message(), SIGNAL(statusChanged(Message, Message::Status)),
+				this, SLOT(messageStatusChanged(Message, Message::Status)));
 
 	rememberScrollBarPosition();
 
@@ -152,9 +151,9 @@ void ChatMessagesView::appendMessages(QList<MessageRenderInfo *> messages)
 {
 	kdebugf2();
 
-	//	foreach (MessageRenderInfo *message, messages)
-//		connect(message, SIGNAL(statusChanged(Message::Status)),
-//				this, SLOT(repaintMessages()));
+	foreach (MessageRenderInfo *message, messages)
+		connect(message, SIGNAL(statusChanged(Message, Message::Status)),
+				this, SLOT(messageStatusChanged(Message, Message::Status)));
 	rememberScrollBarPosition();
 
 	Renderer->appendMessages(messages);
@@ -168,6 +167,12 @@ void ChatMessagesView::clearMessages()
 unsigned int ChatMessagesView::countMessages()
 {
 	return Renderer->messages().count();
+}
+
+void ChatMessagesView::messageStatusChanged(Message message, Message::Status status)
+{
+	rememberScrollBarPosition();
+	Renderer->messageStatusChanged(message, status);
 }
 
 void ChatMessagesView::resizeEvent(QResizeEvent *e)

@@ -18,7 +18,7 @@
 #include "html-messages-renderer.h"
 
 HtmlMessagesRenderer::HtmlMessagesRenderer(Chat *chat, QObject *parent) :
-		QObject(parent), MyChat(chat), LastMessage(0), PruneEnabled(true)
+		QObject(parent), MyChat(chat), LastMessage(0), PruneEnabled(true), ForcePruneDisabled(false)
 {
 	MyWebPage = new QWebPage(this);
 	MyWebPage->settings()->setAttribute(QWebSettings::JavascriptEnabled, true);
@@ -146,4 +146,9 @@ void HtmlMessagesRenderer::updateBackgroundsAndColors()
 		}
 		
 	}
+}
+
+void HtmlMessagesRenderer::messageStatusChanged(Message message, Message::Status status)
+{
+    	ChatStylesManager::instance()->currentEngine()->messageStatusChanged(this, message, status);
 }

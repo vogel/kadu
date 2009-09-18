@@ -33,11 +33,12 @@ public:
 	virtual bool supportEditing() { return true; }
 	virtual QString isThemeValid(QString styleName);
 	
-	virtual void clearMessages(HtmlMessagesRenderer *page);
-	virtual void appendMessages(HtmlMessagesRenderer *page, QList<MessageRenderInfo *> messages);
-	virtual void appendMessage(HtmlMessagesRenderer *page, MessageRenderInfo *message);
-	virtual void pruneMessage(HtmlMessagesRenderer *page) {};
-	virtual void refreshView(HtmlMessagesRenderer *page);
+	virtual void clearMessages(HtmlMessagesRenderer *renderer);
+	virtual void appendMessages(HtmlMessagesRenderer *renderer, QList<MessageRenderInfo *> messages);
+	virtual void appendMessage(HtmlMessagesRenderer *renderer, MessageRenderInfo *message);
+	virtual void pruneMessage(HtmlMessagesRenderer *renderer) {}
+	virtual void refreshView(HtmlMessagesRenderer *renderer);
+	virtual void messageStatusChanged(HtmlMessagesRenderer *renderer, Message message, Message::Status status);
 
 	virtual void prepareStylePreview(Preview *preview, QString styleName, QString variantName);
 
