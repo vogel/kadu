@@ -10,6 +10,7 @@
 #include <QtGui/QCheckBox>
 #include <QtGui/QComboBox>
 #include <QtGui/QDialogButtonBox>
+#include <QtGui/QKeyEvent>
 #include <QtGui/QLabel>
 #include <QtGui/QLineEdit>
 #include <QtGui/QPushButton>
@@ -324,5 +325,5 @@ void AddBuddyWindow::keyPressEvent(QKeyEvent *e)
 		close();
 	}
 	else
-		QDialog::keyPressEvent(e);
+		QWidget::keyPressEvent(e);
 }

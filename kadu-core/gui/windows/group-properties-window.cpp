@@ -11,6 +11,7 @@
 #include <QtGui/QDialogButtonBox>
 #include <QtGui/QGroupBox>
 #include <QtGui/QHBoxLayout>
+#include <QtGui/QKeyEvent>
 #include <QtGui/QLabel>
 #include <QtGui/QPushButton>
 #include <QtGui/QVBoxLayout>
@@ -154,5 +155,5 @@ void GroupPropertiesWindow::keyPressEvent(QKeyEvent *e)
 		close();
 	}
 	else
-		QDialog::keyPressEvent(e);
+		QWidget::keyPressEvent(e);
 }

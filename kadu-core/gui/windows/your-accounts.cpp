@@ -10,6 +10,7 @@
 #include <QtGui/QComboBox>
 #include <QtGui/QDialogButtonBox>
 #include <QtGui/QHBoxLayout>
+#include <QtGui/QKeyEvent>
 #include <QtGui/QLabel>
 #include <QtGui/QListView>
 #include <QtGui/QPushButton>
@@ -230,5 +231,5 @@ void YourAccounts::keyPressEvent(QKeyEvent *e)
 		close();
 	}
 	else
-		QDialog::keyPressEvent(e);
+		QWidget::keyPressEvent(e);
 }
