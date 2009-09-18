@@ -10,9 +10,11 @@
 #include "accounts/account.h"
 #include "accounts/account-manager.h"
 #include "configuration/xml-configuration-file.h"
+#include "contacts/avatar.h"
 #include "contacts/contact-account-data.h"
 #include "contacts/contact-remove-predicate-object.h"
 #include "protocols/protocols-manager.h"
+#include "icons-manager.h"
 
 #include "contact.h"
 
@@ -278,12 +280,16 @@ Contact Contact::dummy()
 
 	if (account)
 	{
-		ContactAccountData *contact_data = new ContactAccountData(example, account, "999999", false);
-		contact_data->setStatus(Status("Away", tr("Example description")));
-		contact_data->setIp(QHostAddress(2130706433));
-		contact_data->setPort(80);
+		ContactAccountData *contactData = new ContactAccountData(example, account, "999999", false);
+		contactData->setStatus(Status("Away", tr("Example description")));
+		contactData->setIp(QHostAddress(2130706433));
+		contactData->setPort(80);
+		Avatar &avatar = contactData->avatar();
+		avatar.setLastUpdated(QDateTime::currentDateTime());
+		avatar.setPixmap(IconsManager::instance()->loadPixmap("ContactsTab"));
+		avatar.setFileName(IconsManager::instance()->iconPath("ContactsTab"));
 
-		example.addAccountData(contact_data);
+		example.addAccountData(contactData);
 
 		return example;
 	}

@@ -16,7 +16,8 @@
 #include "contact-account-data.h"
 
 ContactAccountData::ContactAccountData(Contact contact, Account *account, const QString &id, bool loadFromConfiguration)
-	: ContactAccount(account), OwnerContact(contact), ContactAvatar(this), Id(id), Blocked(false), OfflineTo(false), Port(0)
+	: ContactAccount(account), OwnerContact(contact), ContactAvatar(this, loadFromConfiguration), Id(id),
+	  Blocked(false), OfflineTo(false), Port(0)
 {
 	if (!loadFromConfiguration)
 		StorableObject::setLoaded(true);

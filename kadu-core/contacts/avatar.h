@@ -26,7 +26,7 @@ class Avatar : public StorableObject
 	QPixmap Pixmap;
 
 public:
-	Avatar(ContactAccountData *contactAccountData);
+	Avatar(ContactAccountData *contactAccountData, bool loadFromConfiguration = true);
 	virtual ~Avatar();
 
 	virtual void load();

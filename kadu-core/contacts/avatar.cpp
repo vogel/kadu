@@ -11,10 +11,12 @@
 
 #include "avatar.h"
 
-Avatar::Avatar(ContactAccountData *contactAccountData) :
+Avatar::Avatar(ContactAccountData *contactAccountData, bool loadFromConfiguration) :
 		StorableObject("Avatar", contactAccountData),
 		MyContactAccountData(contactAccountData)
 {
+    	if (!loadFromConfiguration)
+		StorableObject::setLoaded(true);
 }
 
 Avatar::~Avatar()
