@@ -72,6 +72,9 @@ private slots:
 
 	void openChat();
 
+protected:
+	virtual void keyPressEvent(QKeyEvent *e);
+
 public:
 	HistoryWindow(QWidget *parent = 0);
 	virtual ~HistoryWindow();

@@ -49,14 +49,14 @@ HistoryWindow::HistoryWindow(QWidget *parent) :
 	connectGui();
 
 	loadWindowGeometry(this, "History", "HistoryWindowGeometry", 200, 200, 700, 500);
-
+//TODO 0.6.6:
 	MainPopupMenu = new QMenu(this);
 	MainPopupMenu->addAction(IconsManager::instance()->loadIcon("OpenChat"), tr("&Open chat"), this, SLOT(openChat()));
-	MainPopupMenu->addAction(IconsManager::instance()->loadIcon("LookupUserInfo"), tr("&Search in directory"), this, SLOT(lookupUserInfo()));
-	MainPopupMenu->addAction(IconsManager::instance()->loadIcon("ClearHistory"), tr("&Clear history"), this, SLOT(removeHistoryEntriesPerUser()));
+//	MainPopupMenu->addAction(IconsManager::instance()->loadIcon("LookupUserInfo"), tr("&Search in directory"), this, SLOT(lookupUserInfo()));
+//	MainPopupMenu->addAction(IconsManager::instance()->loadIcon("ClearHistory"), tr("&Clear history"), this, SLOT(removeHistoryEntriesPerUser()));
 	
 	DetailsPopupMenu = new QMenu(this);
-	DetailsPopupMenu->addAction(IconsManager::instance()->loadIcon("ClearHistory"), tr("&Remove entries"), this, SLOT(removeHistoryEntriesPerDate()));
+//	DetailsPopupMenu->addAction(IconsManager::instance()->loadIcon("ClearHistory"), tr("&Remove entries"), this, SLOT(removeHistoryEntriesPerDate()));
 
 	kdebugf2();
 }
@@ -333,6 +333,17 @@ void HistoryWindow::openChat()
 bool HistoryWindow::supportsActionType(ActionDescription::ActionType type)
 {
 	return (type == ActionDescription::TypeGlobal || type == ActionDescription::TypeChat || type == ActionDescription::TypeHistory);
+}
+
+void HistoryWindow::keyPressEvent(QKeyEvent *e)
+{
+	if (e->key() == Qt::Key_Escape)
+	{
+		e->accept();
+		hide();
+	}
+	else
+		QWidget::keyPressEvent(e);
 }
 
 HistoryWindow *historyDialog = 0;
