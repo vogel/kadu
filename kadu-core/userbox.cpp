@@ -1607,9 +1607,9 @@ inline int compareAltNickCaseInsensitive(const UserListElement &u1, const UserLi
 
 inline int compareStatus(const UserListElement &u1, const UserListElement &u2)
 {
-	//WARNING: we are utilizing the fact, that enums in eUserStats are in "correct" order
-	// we see Busy and Online as equal here
-	int r[] = {Online, Online, Invisible, Offline, FFC, DND, Blocking};
+	// The order in status enum: Online, Busy, Invisible, Offline, FFC, DND, Blocking
+	// We're displaying in the following order: FFC, Online, Busy, DND, Invisible
+	int r[] = {1, 1, 3, 4, 0, 2, 5};
 	bool u1Gadu = u1.usesProtocol("Gadu");
 	bool u2Gadu = u2.usesProtocol("Gadu");
 	if (u1Gadu && u2Gadu)
