@@ -1641,6 +1641,7 @@ void Kadu::createRecentChatsMenu()
 
 	kdebugf2();
 }
+
 void Kadu::addMenuActionDescription(ActionDescription *actionDescription)
 {
 	if (!actionDescription)
@@ -1845,22 +1846,22 @@ void Kadu::createStatusPopupMenu()
 	changeStatusToOfflineDesc->setData(7);
 	connect(changeStatusToOfflineDesc, SIGNAL(triggered()), this, SLOT(changeStatusSlot()));
 
-	changeStatusToTalkWithMe = new QAction(icons_manager->loadIcon(s.pixmapName(Online, false, false)), tr("Talk With Me"), this);
+	changeStatusToTalkWithMe = new QAction(icons_manager->loadIcon(s.pixmapName(FFC, false, false)), tr("Talk With Me"), this);
 	changeStatusToTalkWithMe->setCheckable(true);
 	changeStatusToTalkWithMe->setData(8);
 	connect(changeStatusToTalkWithMe, SIGNAL(triggered()), this, SLOT(changeStatusSlot()));
 
-	changeStatusToTalkWithMeDesc = new QAction(icons_manager->loadIcon(s.pixmapName(Online, true, false)), tr("Talk With Me (d.)"), this);
+	changeStatusToTalkWithMeDesc = new QAction(icons_manager->loadIcon(s.pixmapName(FFC, true, false)), tr("Talk With Me (d.)"), this);
 	changeStatusToTalkWithMeDesc->setCheckable(true);
 	changeStatusToTalkWithMeDesc->setData(9);
 	connect(changeStatusToTalkWithMeDesc, SIGNAL(triggered()), this, SLOT(changeStatusSlot()));
 
-	changeStatusToDoNotDisturb = new QAction(icons_manager->loadIcon(s.pixmapName(Busy, false, false)), tr("Do Not Disturb"), this);
+	changeStatusToDoNotDisturb = new QAction(icons_manager->loadIcon(s.pixmapName(DND, false, false)), tr("Do Not Disturb"), this);
 	changeStatusToDoNotDisturb->setCheckable(true);
 	changeStatusToDoNotDisturb->setData(10);
 	connect(changeStatusToDoNotDisturb, SIGNAL(triggered()), this, SLOT(changeStatusSlot()));
 
-	changeStatusToDoNotDisturbDesc = new QAction(icons_manager->loadIcon(s.pixmapName(Busy, true, false)), tr("Do Not Disturb (d.)"), this);
+	changeStatusToDoNotDisturbDesc = new QAction(icons_manager->loadIcon(s.pixmapName(DND, true, false)), tr("Do Not Disturb (d.)"), this);
 	changeStatusToDoNotDisturbDesc->setCheckable(true);
 	changeStatusToDoNotDisturbDesc->setData(11);
 	connect(changeStatusToDoNotDisturbDesc, SIGNAL(triggered()), this, SLOT(changeStatusSlot()));
