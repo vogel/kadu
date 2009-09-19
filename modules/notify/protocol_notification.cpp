@@ -21,12 +21,14 @@ static QString getProtocolName(const QObject * const object)
 ProtocolNotification::ProtocolNotification(const QString &type, const QString &icon, const UserListElements &userListElements, const QString &protocolName)
 	: Notification(type, icon, userListElements), ProtocolName(protocolName)
 {
-	KaduParser::registerObjectTag("protocol", getProtocolName);
+	if (!KaduParser::hasRegisteredObjectTag("protocol"))
+		KaduParser::registerObjectTag("protocol", getProtocolName);
 }
 
 ProtocolNotification::~ProtocolNotification()
 {
-	KaduParser::unregisterObjectTag("protocol", getProtocolName);
+	if (KaduParser::hasRegisteredObjectTag("protocol"))
+		KaduParser::unregisterObjectTag("protocol", getProtocolName);
 }
 
 void ProtocolNotification::setProtocolName(const QString &name)

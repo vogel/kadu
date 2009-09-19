@@ -87,6 +87,11 @@ bool KaduParser::unregisterObjectTag(const QString &name, ObjectTagCallback)
 	}
 }
 
+bool KaduParser::hasRegisteredObjectTag(const QString &name)
+{
+	return registeredObjectTags.contains(name);
+}
+
 QString KaduParser::executeCmd(const QString &cmd)
 {
 	kdebugf();

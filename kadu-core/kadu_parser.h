@@ -45,7 +45,7 @@ public:
 
 	static bool registerObjectTag(const QString &name, ObjectTagCallback);
 	static bool unregisterObjectTag(const QString &name, ObjectTagCallback);
-
+	static bool hasRegisteredObjectTag(const QString &name);
 };
 
 #endif
