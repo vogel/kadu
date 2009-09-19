@@ -12,8 +12,6 @@ set (MOC_SOURCES
 	
 if (UNIX AND NOT APPLE)
 
-set(QT_USE_QTDBUS 1)
-
 set (SOURCES ${SOURCES}
 	mpris_controller.cpp
 	mpris_mediaplayer.cpp
@@ -23,6 +21,7 @@ set (MOC_SOURCES ${MOC_SOURCES}
 	mpris_controller.h
 	mpris_mediaplayer.h
 )
+
 endif (UNIX AND NOT APPLE)
 
 
@@ -62,6 +61,9 @@ add_library (mediaplayer ${mediaplayer} ${SOURCES} ${MOC_FILES})
 add_custom_target (mediaplayer-translations DEPENDS ${TRANSLATION_FILES})
 set_target_properties(mediaplayer PROPERTIES COMPILE_FLAGS "-DMEDIAPLAYER_BUILD" )
 add_dependencies (mediaplayer mediaplayer-translations)
+if (UNIX AND NOT APPLE)
+	target_link_libraries (mediaplayer ${QT_QTDBUS_LIBRARY})
+endif (UNIX AND NOT APPLE)
 if (mediaplayer STREQUAL STATIC)
 	set_target_properties(mediaplayer PROPERTIES COMPILE_FLAGS "-DKADULIB" )
 else (mediaplayer STREQUAL STATIC)
