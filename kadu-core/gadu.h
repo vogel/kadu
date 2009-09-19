@@ -16,6 +16,8 @@
 # endif
 #endif
 
+#define GG8_DESCRIPTION_MASK 0x00ff
+
 typedef uin_t UinType;
 
 class QTimer;

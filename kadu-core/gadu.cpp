@@ -1269,7 +1269,7 @@ void GaduProtocol::login()
 	LoginParams.tls = 0;
 	LoginParams.client_version = GG_DEFAULT_CLIENT_VERSION;
 	LoginParams.protocol_version = GG_DEFAULT_PROTOCOL_VERSION;
-	LoginParams.protocol_features = 0x00000037; /* Enable new statuses */
+	LoginParams.protocol_features = GG_FEATURE_ALL;
 
 	if (LoginParams.tls)
 	{
@@ -2380,7 +2380,7 @@ void GaduStatus::fromStatusNumber(int statusNumber, const QString &description)
 {
 	Description.truncate(0);
 
-	switch (statusNumber)
+	switch (statusNumber & GG8_DESCRIPTION_MASK)
 	{
 		case GG_STATUS_AVAIL_DESCR:
 			Description = description;
@@ -2411,9 +2411,9 @@ void GaduStatus::fromStatusNumber(int statusNumber, const QString &description)
 			Stat = FFC;
 			break;
 
-		case GG_STATUS_DND:
-			Description = description;
 		case GG_STATUS_DND_DESCR:
+			Description = description;
+		case GG_STATUS_DND:
 			Stat = DND;
 			break;
 
