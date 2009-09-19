@@ -55,7 +55,10 @@ extern "C" KADU_EXPORT void gg_avatars_close()
 
 QString get_avatar_url(const UserListElement &ule)
 {
-	return gaduAvatars->getAvatar(ule.ID("Gadu").toInt(), MODE_SMALL);
+	if (ule.usesProtocol("Gadu"))
+		return gaduAvatars->getAvatar(ule.ID("Gadu").toInt(), MODE_SMALL);
+	else
+		return QString();
 }
 
 QString get_avatar(const UserListElement &ule)
@@ -74,7 +77,10 @@ QString get_avatar(const UserListElement &ule)
 
 QString get_big_avatar_url(const UserListElement &ule)
 {
-	return gaduAvatars->getAvatar(ule.ID("Gadu").toInt(), MODE_BIG);
+	if (ule.usesProtocol("Gadu"))
+		return gaduAvatars->getAvatar(ule.ID("Gadu").toInt(), MODE_BIG);
+	else
+		return QString();
 }
 
 QString get_big_avatar(const UserListElement &ule)
