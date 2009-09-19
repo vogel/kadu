@@ -594,7 +594,7 @@ private slots:
 	**/
 	void iWantGoOffline(const QString &);
 
-	void iWantTalkWithMe(const QString &);
+	void iWantGoTalkWithMe(const QString &);
 	void iWantGoDoNotDisturb(const QString &);
 
 	/**

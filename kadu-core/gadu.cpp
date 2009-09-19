@@ -424,6 +424,8 @@ GaduProtocol::GaduProtocol(const QString &id, QObject *parent)
 	connect(NextStatus, SIGNAL(goBusy(const QString &)), this, SLOT(iWantGoBusy(const QString &)));
 	connect(NextStatus, SIGNAL(goInvisible(const QString &)), this, SLOT(iWantGoInvisible(const QString &)));
 	connect(NextStatus, SIGNAL(goOffline(const QString &)), this, SLOT(iWantGoOffline(const QString &)));
+	connect(NextStatus, SIGNAL(goTalkWithMe(const QString &)), this, SLOT(iWantGoTalkWithMe(const QString &)));
+	connect(NextStatus, SIGNAL(goDoNotDisturb(const QString &)), this, SLOT(iWantGoDoNotDisturb(const QString &)));
 
 	connect(SocketNotifiers, SIGNAL(ackReceived(int, uin_t, int)), this, SLOT(ackReceived(int, uin_t, int)));
 	connect(SocketNotifiers, SIGNAL(connected()), this, SLOT(connectedSlot()));
@@ -618,7 +620,7 @@ void GaduProtocol::iWantGoOffline(const QString &desc)
 	kdebugf2();
 }
 
-void GaduProtocol::iWantTalkWithMe(const QString &desc)
+void GaduProtocol::iWantGoTalkWithMe(const QString &desc)
 {
 	kdebugf();
 
