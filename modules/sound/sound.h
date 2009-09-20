@@ -1,5 +1,14 @@
-#ifndef KADU_SOUND_H
-#define KADU_SOUND_H
+/***************************************************************************
+ *                                                                         *
+ *   This program is free software; you can redistribute it and/or modify  *
+ *   it under the terms of the GNU General Public License as published by  *
+ *   the Free Software Foundation; either version 2 of the License, or     *
+ *   (at your option) any later version.                                   *
+ *                                                                         *
+ ***************************************************************************/
+
+#ifndef SOUND_H
+#define SOUND_H
 
 #include <QtCore/QObject>
 #include <QtCore/QEvent>
@@ -21,6 +30,10 @@
 
 class Notification;
 class PathListEdit;
+class SamplePlayThread;
+class SampleRecordThread;
+class SoundConfigurationWidget;
+class SoundPlayThread;
 
 /**
  * @defgroup sound Sound
@@ -28,103 +41,12 @@ class PathListEdit;
  * @{
  */
 
-typedef void* SoundDevice;
+typedef void *SoundDevice;
 
 /**
 **/
 enum SoundDeviceType {RECORD_ONLY, PLAY_ONLY, PLAY_AND_RECORD};
 
-class SoundEvent : public QEvent
-{
-	SoundDevice Data;
-	static int EventNumber;
-
-public:
-	SoundEvent(SoundDevice data) : QEvent((QEvent::Type)EventNumber) { Data = data; }
-	SoundDevice data() { return Data; }
-
-	static int eventNumber() { return EventNumber; }
-};
-
-class SamplePlayThread : public QThread
-{
-	Q_OBJECT
-
-	private:
-		SoundDevice Device;
-		const qint16* Sample;
-		int SampleLen;
-		bool Stopped;
-		QSemaphore PlayingSemaphore;
-		QSemaphore SampleSemaphore;
-
-	protected:
-		virtual void run();
-		virtual bool event(QEvent* event);
-
-	public:
-		SamplePlayThread(SoundDevice device);
-		void playSample(const qint16* data, int length);
-		void stop();
-
-	signals:
-		void samplePlayed(SoundDevice device);
-};
-
-class SampleRecordThread : public QThread
-{
-	Q_OBJECT
-
-	private:
-		SoundDevice Device;
-		qint16* Sample;
-		int SampleLen;
-		bool Stopped;
-		QSemaphore RecordingSemaphore;
-		QSemaphore SampleSemaphore;
-
-	protected:
-		virtual void run();
-		virtual bool event(QEvent* event);
-
-	public:
-		SampleRecordThread(SoundDevice device);
-		void recordSample(qint16* data, int length);
-		void stop();
-
-	signals:
-		void sampleRecorded(SoundDevice device);
-};
-
-class SndParams
-{
-	public:
-		SndParams(QString fm = QString::null, bool volCntrl = false, float vol = 1);
-		SndParams(const SndParams &p);
-
-		QString filename;
-		bool volumeControl;
-		float volume;
-};
-
-class SoundPlayThread : public QThread
-{
-	public:
-		SoundPlayThread();
-		~SoundPlayThread();
-		void run();
-		void tryPlay(const char *path, bool volCntrl=false, float volume=1.0);
-		void endThread();
-
-	private:
-		static bool play(const char *path, bool volCntrl=false, float volume=1.0);
-		QMutex mutex;
-		QSemaphore *semaphore;
-		bool end;
-		QList<SndParams> list;
-};
-
-class SoundConfigurationWidget;
 
 class SOUNDAPI SoundManager : public Notifier, public ConfigurationUiHandler
 {
@@ -139,8 +61,8 @@ class SOUNDAPI SoundManager : public Notifier, public ConfigurationUiHandler
 		friend class SampleRecordThread;
 		QTime lastsoundtime;
 		bool mute;
-		QMap<SoundDevice, SamplePlayThread*> PlayingThreads;
-		QMap<SoundDevice, SampleRecordThread*> RecordingThreads;
+		QMap<SoundDevice, SamplePlayThread *> PlayingThreads;
+		QMap<SoundDevice, SampleRecordThread *> RecordingThreads;
 		SoundPlayThread *play_thread;
 
 		int simple_player_count;
