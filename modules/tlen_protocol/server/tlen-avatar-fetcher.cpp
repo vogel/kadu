@@ -74,7 +74,10 @@ void TlenAvatarFetcher::avatarDownloaded(int id, bool error)
 	qDebug() << "Tlen 200 OK?" << MyContactAccountData->id();
 	// 200 OK
 	if ((MyHttp->lastResponse()).statusCode() != 200)
+	{
+		deleteLater();
 		return;
+	}
 
 	qDebug() << "Tlen Have Avatar" << MyContactAccountData->id();
 	QImage image;

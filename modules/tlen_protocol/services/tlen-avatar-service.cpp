@@ -22,6 +22,8 @@ void TlenAvatarService::fetchAvatar(ContactAccountData *contactAccountData)
 	if (inProgress.contains(contactAccountData))
 		return;
 
+	inProgress.append(contactAccountData);
+
 	TlenAvatarFetcher *avatarFetcher = new TlenAvatarFetcher(contactAccountData, this);
 	connect(avatarFetcher, SIGNAL(avatarFetched(ContactAccountData *, QPixmap)),
 			this, SIGNAL(avatarReady(ContactAccountData *, QPixmap)));
