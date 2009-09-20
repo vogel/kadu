@@ -78,6 +78,7 @@ TlenProtocol::TlenProtocol(Account *account, ProtocolFactory *factory): Protocol
 	kdebugf();
 
 	CurrentChatService = new TlenChatService(this);
+	CurrentAvatarService = new TlenAvatarService(this);
 
 	kdebugf2();
 }
@@ -85,6 +86,22 @@ TlenProtocol::TlenProtocol(Account *account, ProtocolFactory *factory): Protocol
 TlenProtocol::~TlenProtocol()
 {
 	logout();
+}
+
+void TlenProtocol::fetchAvatars(QString jid, QString type, QString md5)
+{
+	kdebugf();
+
+	Contact contact = account()->getContactById(jid);
+
+ 	if (contact.isAnonymous())
+	{
+		ContactManager::instance()->addContact(contact);
+	}
+
+	CurrentAvatarService->fetchAvatar(contact.accountData(account()));
+
+	kdebugf2();
 }
 
 void TlenProtocol::connectToServer()
@@ -133,9 +150,13 @@ void TlenProtocol::connectToServer()
 		// odebranie wiadomosci
 		connect( TlenClient, SIGNAL ( eventReceived(QDomNode) ),
 				this, SLOT (eventReceived(QDomNode)) );
-		//
+		// notyfikacja o pisaniu/alarmie
 		connect( TlenClient, SIGNAL ( chatNotify(QString,QString) ),
 				this, SLOT (chatNotify(QString,QString)) );
+		// Pobranie avatara
+		connect( TlenClient, SIGNAL (avatarReceived(QString,QString,QString) ),
+				this, SLOT (fetchAvatars(QString,QString,QString)) );
+
 	}
 
 	TlenAccount *tlenAccount = dynamic_cast<TlenAccount *>(account());
@@ -176,19 +197,19 @@ void TlenProtocol::logout()
 {
 	kdebugf();
 
-	if (TlenClient != 0 )
-	{
-		if (TlenClient->isConnected())
-		{
-			TlenClient->setStatus("unavailable");
-			TlenClient->closeConn();
-			TlenClient->disconnect();
-			setAllOffline();
-		}
+	if (!TlenClient)
+		return;
 
-		delete TlenClient;
-		TlenClient = 0;
+	if (TlenClient->isConnected())
+	{
+		//TlenClient->setStatus("unavailable");
+		TlenClient->closeConn();
+		TlenClient->disconnect();
+		setAllOffline();
 	}
+
+	delete TlenClient;
+	TlenClient = 0;
 
 	kdebugf2();
 }
@@ -219,7 +240,7 @@ bool TlenProtocol::sendMessage(Chat *chat, FormattedMessage &formattedMessage)
 		.setReceiveDate(QDateTime::currentDateTime());
 
 	emit messageSent(message);
-	
+
 	kdebugf2();
 	return true;
 }
@@ -278,8 +299,8 @@ void TlenProtocol::chatMsgReceived(QDomNode n)
 	message
 		.setContent(formattedMessage.toPlain())
 		.setSendDate(timeStamp)
-		.setReceiveDate(QDateTime::currentDateTime());	
-	
+		.setReceiveDate(QDateTime::currentDateTime());
+
 	emit messageReceived(message);
 
 	kdebugf2();
@@ -469,11 +490,11 @@ bool TlenProtocol::validateUserID(QString& uid)
 
 void TlenProtocol::changeStatus(Status status)
 {
-	// TODO: do sf if not connected
-	if (TlenClient == 0)
-		return;
-
 	const QString &type = status.type();
+
+	// TODO: do sf if not connected
+	if (TlenClient == 0 && !nextStatus().isDisconnected())
+		login();
 
 	if("Online" == type)
 		TlenClient->setStatusDescr("available", status.description());
@@ -509,6 +530,7 @@ void TlenProtocol::changeStatus()
 
 	if (newStatus.isDisconnected() && status().isDisconnected())
 	{
+		logout();
 		networkStateChanged(NetworkDisconnected);
 
 		setAllOffline();
@@ -541,7 +563,7 @@ QPixmap TlenProtocol::statusPixmap(Status status)
 	QString pixmapName(dataPath("kadu/modules/data/tlen_protocol/"));
 
 	QString groupName = status.type();
-	
+
 	if ("Online" == groupName)
 		pixmapName.append("online");
 

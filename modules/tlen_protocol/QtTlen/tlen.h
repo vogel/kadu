@@ -71,6 +71,28 @@ public:
 
 	//QMap<QString, fileTransferDialog*> fTransferMap;
 
+	QString token;
+	// create class or something for this config
+	QString mmBase() { return MiniMailBase; }
+
+	QString MiniMailBase;
+	QString MiniMailMsg;
+	QString MiniMailMsgMethod;
+	QString MiniMailIndex;
+	QString MiniMailIndexMethod;
+	QString MiniMailLogin;
+	QString MiniMailLoginMethod;
+	QString MiniMailLogout;
+	QString MiniMailLogoutMethod;
+	QString MiniMailCompose;
+	QString MiniMailComposeMethod;
+	QString MiniMailAvatarGet;
+	QString MiniMailAvatarGetMethod;
+	QString MiniMailAvatarUpload;
+	QString MiniMailAvatarUploadMethod;
+	QString MiniMailAvatarRemove;
+	QString MiniMailAvatarRemoveMethod;
+
 public slots:
 	void openConn();
 	void closeConn();
@@ -103,6 +125,7 @@ signals:
 	void presenceChanged(QString from, QString status, QString description);
 	void authorizationAsk(QString);
 	void removeItem(QString);
+	void avatarReceived(QString jid, QString type, QString md5);
 
 	void sortRoster();
 
