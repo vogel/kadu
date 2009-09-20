@@ -16,7 +16,7 @@ Message::Message(Chat *chat, Type type, Contact sender) :
 {
 	if (Data.data())
 		connect(Data.data(), SIGNAL(statusChanged(Message::Status)),
-				this, SIGNAL(statusChanged(Message::Status)));
+				this, SLOT(statusChanged(Message::Status)));
 }
 
 Message::Message(const Message& copy) :
@@ -24,7 +24,7 @@ Message::Message(const Message& copy) :
 {
 	if (Data.data())
 		connect(Data.data(), SIGNAL(statusChanged(Message::Status)),
-				this, SIGNAL(statusChanged(Message::Status)));
+				this, SLOT(statusChanged(Message::Status)));
 }
 
 Message::~Message()
@@ -35,11 +35,16 @@ void Message::operator = (const Message &copy)
 {
 	if (Data.data())
 		disconnect(Data.data(), SIGNAL(statusChanged(Message::Status)),
-				this, SIGNAL(statusChanged(Message::Status)));
+				this, SLOT(statusChanged(Message::Status)));
 	Data = copy.Data;
 	if (Data.data())
 		connect(Data.data(), SIGNAL(statusChanged(Message::Status)),
-				this, SIGNAL(statusChanged(Message::Status)));
+				this, SLOT(statusChanged(Message::Status)));
+}
+
+void Message::statusChanged(Message::Status status)
+{
+	emit statusChanged(*this, status);
 }
 
 Chat * Message::chat() const
@@ -137,5 +142,19 @@ Message & Message::setType(Message::Type type)
 {
 	if (Data.data())
 		Data->setType(type);
+	return *this;
+}
+
+int Message::id() const
+{
+	return Data.data()
+			? Data->id()
+			: 0;
+}
+
+Message & Message::setId(int id)
+{
+    	if (Data.data())
+		Data->setId(id);
 	return *this;
 }

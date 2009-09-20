@@ -11,6 +11,7 @@
 #include <QtGui/QDialogButtonBox>
 #include <QtGui/QGroupBox>
 #include <QtGui/QHBoxLayout>
+#include <QtGui/QKeyEvent>
 #include <QtGui/QLabel>
 #include <QtGui/QPushButton>
 #include <QtGui/QVBoxLayout>
@@ -146,3 +147,13 @@ void GroupPropertiesWindow::okClicked()
 	close();
 }
 
+void GroupPropertiesWindow::keyPressEvent(QKeyEvent *e)
+{
+	if (e->key() == Qt::Key_Escape)
+	{
+		e->accept();
+		close();
+	}
+	else
+		QWidget::keyPressEvent(e);
+}

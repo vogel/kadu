@@ -39,7 +39,6 @@ class KADUAPI FormattedMessage
 	static void parseImages(FormattedMessage &message, const QString &messageString, bool b, bool i, bool u, QColor color);
 
 	QList<FormattedMessagePart> Parts;
-	int Id;
 
 public:
 	/**
@@ -83,9 +82,6 @@ public:
 	 * @arg part New part to append.
 	 */
 	FormattedMessage & operator << (FormattedMessagePart part);
-
-	void setId(int id) { Id = id; }
-	int id() { return Id; }
 
 	/**
 	 * Returns true if message does not have any parts or if all parts are empty.

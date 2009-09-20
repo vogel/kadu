@@ -43,6 +43,9 @@ public:
 		TypeSystem
 	};
 
+private slots:
+	void statusChanged(Message::Status);
+
 public:
 	Message(Chat *chat = 0, Type type = TypeUnknown, Contact sender = Contact::null);
 	Message(const Message &copy);
@@ -71,8 +74,11 @@ public:
 	Message::Type type() const;
 	Message & setType(Message::Type type);
 
+	int id() const;
+	Message & setId(int id);
+
 signals:
-	void statusChanged(Message::Status);
+	void statusChanged(Message, Message::Status);
 
 };
 

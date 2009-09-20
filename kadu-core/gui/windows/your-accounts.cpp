@@ -10,6 +10,7 @@
 #include <QtGui/QComboBox>
 #include <QtGui/QDialogButtonBox>
 #include <QtGui/QHBoxLayout>
+#include <QtGui/QKeyEvent>
 #include <QtGui/QLabel>
 #include <QtGui/QListView>
 #include <QtGui/QPushButton>
@@ -220,4 +221,15 @@ void YourAccounts::applyClicked()
 {
 	foreach (AccountEditWidget *editWidget, EditWidgets)
 		editWidget->apply();
+}
+
+void YourAccounts::keyPressEvent(QKeyEvent *e)
+{
+	if (e->key() == Qt::Key_Escape)
+	{
+		e->accept();
+		close();
+	}
+	else
+		QWidget::keyPressEvent(e);
 }

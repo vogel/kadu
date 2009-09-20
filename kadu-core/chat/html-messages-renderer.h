@@ -12,6 +12,8 @@
 
 #include <QtCore/QObject>
 
+#include "chat/message/message.h"
+
 class QWebPage;
 
 class Chat;
@@ -59,6 +61,7 @@ public:
 	void refresh();
 	void replaceLoadingImages(const QString &imageId, const QString &imagePath);
 	void updateBackgroundsAndColors();
+	void messageStatusChanged(Message message, Message::Status status);
 
 };
 

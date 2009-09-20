@@ -58,6 +58,11 @@ void KaduChatStyleEngine::refreshView(HtmlMessagesRenderer *renderer)
 	repaintMessages(renderer);
 }
 
+void KaduChatStyleEngine::messageStatusChanged(HtmlMessagesRenderer *renderer, Message message, Message::Status status)
+{
+	repaintMessages(renderer);
+}
+
 QString KaduChatStyleEngine::isThemeValid(QString stylePath)
 {
 	QFileInfo fi;

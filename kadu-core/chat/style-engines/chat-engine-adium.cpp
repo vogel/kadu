@@ -345,7 +345,7 @@ QString AdiumChatStyleEngine::replaceKeywords(Chat *chat, QString &styleHref, QS
 	// For %timeOpened%, display the date and time. TODO: get real time 
 	result.replace(QString("%timeOpened%"), printDateTime(QDateTime::currentDateTime()));
 
-	// Look for %timeOpened{X}% TODO: get real time
+	//TODO 0.6.6: get real time!!!
 	QRegExp timeRegExp("%timeOpened\\{([^}]*)\\}%");
 	int pos=0;
 	while ((pos=timeRegExp.indexIn(result, pos)) != -1)

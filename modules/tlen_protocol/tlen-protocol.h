@@ -14,6 +14,7 @@
 #include "protocols/protocol.h"
 #include "protocols/protocols-manager.h"
 
+#include "services/tlen-avatar-service.h"
 #include "services/tlen-chat-service.h"
 
 #include "tlen-account.h"
@@ -35,12 +36,15 @@ class TlenProtocol : public Protocol
 
 		bool validateUserID(QString& uid);
 
+		tlen * client() { return TlenClient; }
+
 		virtual Conference * loadConferenceFromStorage(StoragePoint *storage) { return 0; }
 
 		virtual QPixmap statusPixmap(Status status);
 		virtual QPixmap statusPixmap(const QString &statusType);
 		virtual void changeStatus(Status status);
 
+		virtual AvatarService *avatarService() { return CurrentAvatarService; }
 		virtual ChatService * chatService() { return CurrentChatService; }
 
 	protected:
@@ -59,6 +63,7 @@ class TlenProtocol : public Protocol
 		QMap<QString, QString> TypingUsers;
 		QString localHostName();
 
+		TlenAvatarService *CurrentAvatarService;
 		TlenChatService *CurrentChatService;
 		friend class TlenChatService;
 
@@ -86,6 +91,8 @@ class TlenProtocol : public Protocol
 		void eventReceived(QDomNode);
 
 		void chatNotify(QString,QString);
+
+		void fetchAvatars(QString jid, QString type, QString md5);
 
 	public slots:
 		bool sendMessage(Chat *chat, FormattedMessage &message);

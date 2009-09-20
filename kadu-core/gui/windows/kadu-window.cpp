@@ -132,7 +132,7 @@ void KaduWindow::createMenu()
 void KaduWindow::createKaduMenu()
 {
 	KaduMenu = new QMenu();
-	KaduMenu->setTitle("Kadu");
+	KaduMenu->setTitle("&Kadu");
 
 	RecentChatsMenu = new QMenu();
 	RecentChatsMenu->setIcon(IconsManager::instance()->loadIcon("OpenChat"));
@@ -156,7 +156,7 @@ void KaduWindow::createKaduMenu()
 void KaduWindow::createContactsMenu()
 {
 	ContactsMenu = new QMenu();
-	ContactsMenu->setTitle(tr("Buddies"));
+	ContactsMenu->setTitle(tr("&Buddies"));
 
 	insertMenuActionDescription(Actions->AddUser, MenuContacts);
 	insertMenuActionDescription(Actions->AddGroup, MenuContacts);
@@ -175,7 +175,7 @@ void KaduWindow::createContactsMenu()
 void KaduWindow::createHelpMenu()
 {
 	HelpMenu = new QMenu();
-	HelpMenu->setTitle(tr("Help"));
+	HelpMenu->setTitle(tr("&Help"));
 
 	insertMenuActionDescription(Actions->Help, MenuHelp);
 	HelpMenu->addSeparator();

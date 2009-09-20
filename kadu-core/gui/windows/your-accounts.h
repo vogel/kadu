@@ -60,6 +60,7 @@ private slots:
 	void applyClicked();
 
 protected:
+	virtual void keyPressEvent(QKeyEvent *e);
 	virtual void accountRegistered(Account *account) { }
 	virtual void accountUnregistered(Account *account);
 
