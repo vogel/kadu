@@ -1,12 +1,12 @@
 set (SOURCES
 	sound.cpp
-	sound_file.cpp
-	sound_slots.cpp
+	sound-file.cpp
+	sound-slots.cpp
 )
 
 set (MOC_SOURCES
 	sound.h
-	sound_slots.h
+	sound-slots.h
 )
 
 set (TRANSLATION_SOURCES

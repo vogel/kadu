@@ -26,7 +26,7 @@
 #include "debug.h"
 #include "icons-manager.h"
 
-#include "sound_slots.h"
+#include "sound-slots.h"
 
 /**
  * @ingroup sound

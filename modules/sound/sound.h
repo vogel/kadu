@@ -17,7 +17,7 @@
 #include "modules.h"
 #include "themes.h"
 
-#include "sound_exports.h"
+#include "sound-exports.h"
 
 class Notification;
 class PathListEdit;

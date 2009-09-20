@@ -27,12 +27,12 @@
 
 #include "debug.h"
 
-#include "sound_file.h"
-#include "sound_slots.h"
+#include "sound-file.h"
+#include "sound-slots.h"
 
 #include "sound.h"
 
-#include "sound_exports.h"
+#include "sound-exports.h"
 
 
 /**
