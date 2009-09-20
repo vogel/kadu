@@ -43,7 +43,7 @@ AvatarService * AvatarManager::avatarService(Account *account)
 	Protocol *protocol = account->protocol();
 	if (!protocol)
 		return 0;
-	
+
 	return protocol->avatarService();
 }
 
@@ -108,14 +108,14 @@ void AvatarManager::avatarFetched(ContactAccountData *contactAccountData, QPixma
 	Avatar &avatar = contactAccountData->avatar();
 	avatar.setLastUpdated(QDateTime::currentDateTime());
 	avatar.setPixmap(pixmap);
-	QString avatarPath = ggPath("avatars/") + avatarFileName(avatar);
-	avatar.setFileName(avatarPath);
+	QString avatarFile = avatarFileName(avatar);
+	avatar.setFileName(avatarFile);
 
 	QDir avatarsDir(ggPath("avatars"));
 	if (!avatarsDir.exists())
 		avatarsDir.mkpath(ggPath("avatars"));
 
-	pixmap.toImage().save(avatarPath);
+	pixmap.toImage().save(avatarsDir.filePath(avatarFile), "PNG");
 
 	emit avatarUpdated(contactAccountData);
 }

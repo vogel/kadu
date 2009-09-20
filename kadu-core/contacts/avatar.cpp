@@ -8,6 +8,7 @@
 ***************************************************************************/
 
 #include "contacts/contact-account-data.h"
+#include "misc/path-conversion.h"
 
 #include "avatar.h"
 
@@ -34,7 +35,12 @@ void Avatar::load()
 	NextUpdate = loadValue<QDateTime>("NextUpdate");
 	FileName = loadValue<QString>("FileName");
 
-	Pixmap.load(FileName);
+	QString avatarsPath = ggPath("avatars/");
+
+	// TODO 0.6.6 - just remove this line
+	FileName.remove(avatarsPath);
+
+	Pixmap.load(avatarsPath+FileName);
 }
 
 void Avatar::store()
