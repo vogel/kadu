@@ -7,7 +7,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "jid-util.h"
+#include "utils/jid-util.h"
 #include "jabber-contact-account-data.h"
 
 bool JabberContactAccountData::validateId()

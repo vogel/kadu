@@ -14,9 +14,10 @@
 #include <QtGui/QPushButton>
 #include <QtGui/QVBoxLayout>
 
+#include "misc/misc.h"
+
 #include "jabber-contact-account-data.h"
 #include "jabber-contact-account-data-manager.h"
-#include "misc/misc.h"
 
 #include "jabber-contact-account-data-widget.h"
 

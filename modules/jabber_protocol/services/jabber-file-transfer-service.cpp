@@ -11,7 +11,7 @@
 
 #include "file-transfer/jabber-file-transfer.h"
 #include "jabber-contact-account-data.h"
-#include "jabber_protocol.h"
+#include "jabber-protocol.h"
 
 #include "jabber-file-transfer-service.h"
 

@@ -14,13 +14,12 @@
 #include "protocols/protocol.h"
 #include "protocols/protocols-manager.h"
 
+#include "client/jabber-client.h"
+#include "jabber-contact-account-data.h"
+#include "resource/jabber-resource-pool.h"
 #include "services/jabber-avatar-service.h"
 #include "services/jabber-chat-service.h"
 #include "services/jabber-file-transfer-service.h"
-
-#include "jabber-client.h"
-#include "jabber-contact-account-data.h"
-#include "jabber-resource-pool.h"
 
 class ActionDescription;
 class JabberResourcePool;

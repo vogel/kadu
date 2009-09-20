@@ -1,3 +1,12 @@
+ /***************************************************************************
+ *                                                                         *
+ *   This program is free software; you can redistribute it and/or modify  *
+ *   it under the terms of the GNU General Public License as published by  *
+ *   the Free Software Foundation; either version 2 of the License, or     *
+ *   (at your option) any later version.                                   *
+ *                                                                         *
+ ***************************************************************************/
+
 /*
  * Copyright (C) 2008  Remko Troncon
  * Licensed under the GNU GPL license.
@@ -13,14 +22,15 @@
 #include <QFile>
 #include <QMessageBox>
 
+#include "xmpp.h"
+
 #include "misc/path-conversion.h"
 
 #include "certificates/certificate-helpers.h"
 #include "certificates/certificate-error-dialog.h"
+#include "client/mini-client.h"
 #include "jabber-account.h"
-#include "jabber_protocol.h"
-#include "miniclient.h"
-#include "xmpp.h"
+#include "jabber-protocol.h"
 
 using namespace QCA;
 
