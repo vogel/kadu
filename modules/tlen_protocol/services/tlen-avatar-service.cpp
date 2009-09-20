@@ -19,9 +19,18 @@ void TlenAvatarService::fetchAvatar(ContactAccountData *contactAccountData)
 	if (contactAccountData->id().isEmpty())
 		return;
 
+	if (inProgress.contains(contactAccountData))
+		return;
+
 	TlenAvatarFetcher *avatarFetcher = new TlenAvatarFetcher(contactAccountData, this);
 	connect(avatarFetcher, SIGNAL(avatarFetched(ContactAccountData *, QPixmap)),
-			this, SIGNAL(avatarFetched(ContactAccountData *, QPixmap)));
+			this, SIGNAL(avatarReady(ContactAccountData *, QPixmap)));
 
 	avatarFetcher->fetchAvatar();
+}
+
+void TlenAvatarService::avatarReady(ContactAccountData *contactAccountData, QPixmap avatar)
+{
+	inProgress.removeAll(contactAccountData);
+	emit avatarFetched(contactAccountData, avatar);
 }
