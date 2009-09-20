@@ -7,12 +7,8 @@
 *                                                                         *
 ***************************************************************************/
 
-#include <QtCore/QDir>
-#include <QtCore/QFile>
-#include <QtCore/QUrl>
 #include <QtNetwork/QHttp>
-#include <QtXml/QDomDocument>
-#include <QDebug>
+#include <QtCore/QUrl>
 
 #include "accounts/account.h"
 #include "contacts/avatar-manager.h"
@@ -57,33 +53,20 @@ void TlenAvatarFetcher::fetchAvatar()
 	connect(MyHttp, SIGNAL(requestFinished(int, bool)),
 			this, SLOT(avatarDownloaded(int, bool)));
 	MyHttp->get(request, &MyAvatarBuffer);
-	qDebug() << "TlenAvatarFetcher request send" << MyContactAccountData->id() << request;
 }
 
 void TlenAvatarFetcher::avatarDownloaded(int id, bool error)
 {
-	QString response(MyAvatarBuffer.data());
-
-	qDebug() << "Tlen Not empty ?" << MyContactAccountData->id();
-	if (response.isEmpty())
-	{
-		deleteLater();
-		return;
-	}
-
-	qDebug() << "Tlen 200 OK?" << MyContactAccountData->id();
-	// 200 OK
-	if ((MyHttp->lastResponse()).statusCode() != 200)
-	{
-		deleteLater();
-		return;
-	}
-
-	qDebug() << "Tlen Have Avatar" << MyContactAccountData->id();
 	QImage image;
-	image.loadFromData(MyAvatarBuffer.buffer());
-	//MyContactAccountData->avatar().setNextUpdate(QDateTime::fromTime_t(QDateTime::currentDateTime().toTime_t() + 7200));
-	QPixmap pixmap = QPixmap::fromImage(image);
+	QPixmap pixmap;
+
+	// 200 OK and buffer not empty
+	if (!MyAvatarBuffer.data().isEmpty() && (MyHttp->lastResponse()).statusCode() == 200)
+	{
+		image.loadFromData(MyAvatarBuffer.buffer());
+		//MyContactAccountData->avatar().setNextUpdate(QDateTime::fromTime_t(QDateTime::currentDateTime().toTime_t() + 7200));
+		pixmap = QPixmap::fromImage(image);
+	}
 
 	emit avatarFetched(MyContactAccountData, pixmap);
 

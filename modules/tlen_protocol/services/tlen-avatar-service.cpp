@@ -8,7 +8,6 @@
 ***************************************************************************/
 
 #include <QtCore/QDebug>
-#include <QtXml/QDomDocument>
 
 #include "tlen-avatar-service.h"
 #include "misc/path-conversion.h"
@@ -29,10 +28,16 @@ void TlenAvatarService::fetchAvatar(ContactAccountData *contactAccountData)
 			this, SIGNAL(avatarReady(ContactAccountData *, QPixmap)));
 
 	avatarFetcher->fetchAvatar();
+	qDebug() << "Tlen Get Avatar" << contactAccountData->id();
 }
 
 void TlenAvatarService::avatarReady(ContactAccountData *contactAccountData, QPixmap avatar)
 {
 	inProgress.removeAll(contactAccountData);
+
+	if (avatar.isNull())
+		return;
+
 	emit avatarFetched(contactAccountData, avatar);
+	qDebug() << "Tlen Have Avatar" << contactAccountData->id();
 }
