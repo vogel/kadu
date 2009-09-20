@@ -13,8 +13,6 @@
 #include <QtNetwork/QHttp>
 #include <QtXml/QDomDocument>
 #include <QDebug>
-#include <QFile>
-
 
 #include "accounts/account.h"
 #include "contacts/avatar-manager.h"
@@ -59,7 +57,7 @@ void TlenAvatarFetcher::fetchAvatar()
 	connect(MyHttp, SIGNAL(requestFinished(int, bool)),
 			this, SLOT(avatarDownloaded(int, bool)));
 	MyHttp->get(request, &MyAvatarBuffer);
-	qDebug() << "TlenAvatarFetcher request send";
+	qDebug() << "TlenAvatarFetcher request send" << MyContactAccountData->id() << request;
 }
 
 void TlenAvatarFetcher::avatarDownloaded(int id, bool error)
