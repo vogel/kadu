@@ -14,6 +14,7 @@ set (MOC_SOURCES
 	sample-record-thread.h
 	sound.h
 	sound-play-thread.h
+	sound-player.h
 	sound-slots.h
 )
 
