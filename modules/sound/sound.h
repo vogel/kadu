@@ -125,7 +125,6 @@ public:
 signals:
 	void samplePlayed(SoundDevice device);
 	void sampleRecorded(SoundDevice device);
-	void setFlushingEnabledImpl(SoundDevice device, bool enabled);
 
 };
 

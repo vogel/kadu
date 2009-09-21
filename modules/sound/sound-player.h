@@ -25,15 +25,15 @@ public:
 	virtual bool isSimplePlayer() = 0;
 
 public slots:
-	void playSound(const QString &sound, bool volumeControl, double vol);
+	virtual void playSound(const QString &sound, bool volumeControl, double vol) = 0;
 
-	SoundDevice openDevice(SoundDeviceType type, int sampleRate, int channels);
-	void closeDevice(SoundDevice device);
+	virtual SoundDevice openDevice(SoundDeviceType type, int sampleRate, int channels) = 0;
+	virtual void closeDevice(SoundDevice device) = 0;
 
-	bool playSample(SoundDevice device, const qint16 *data, int length);
-	bool recordSample(SoundDevice device, qint16 *data, int length);
+	virtual bool playSample(SoundDevice device, const qint16 *data, int length) = 0;
+	virtual bool recordSample(SoundDevice device, qint16 *data, int length) = 0;
 
-	void setFlushingEnabled(SoundDevice device, bool enabled);
+	virtual void setFlushingEnabled(SoundDevice device, bool enabled) = 0;
 
 };
 
