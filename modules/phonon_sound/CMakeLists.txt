@@ -1,9 +1,9 @@
 set (SOURCES
-	phonon_sound.cpp
+	phonon-sound.cpp
 )
 
 set (MOC_SOURCES
-	phonon_sound.h
+	phonon-sound.h
 )
 
 kadu_module (phonon_sound
