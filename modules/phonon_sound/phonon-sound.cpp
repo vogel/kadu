@@ -11,7 +11,7 @@
 
 #include "debug.h"
 
-#include "phonon_sound.h"
+#include "phonon-sound.h"
 
 /**
  * @ingroup phonon_sound
