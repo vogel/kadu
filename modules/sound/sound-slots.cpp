@@ -26,7 +26,7 @@
 #include "debug.h"
 #include "icons-manager.h"
 
-#include "sound_slots.h"
+#include "sound-slots.h"
 
 /**
  * @ingroup sound
@@ -235,7 +235,7 @@ void SoundSlots::testSampleRecording()
 	kdebugf();
 	if (SampleRecordingTestMsgBox != NULL)
 		return;
-	SampleRecordingTestDevice = sound_manager->openDevice(RECORD_ONLY, 8000);
+	SampleRecordingTestDevice = sound_manager->openDevice(SoundDeviceRecordOnly, 8000);
 	if (SampleRecordingTestDevice == NULL)
 	{
 		MessageBox::msg(tr("Opening sound device failed."), false, "Warning");
@@ -264,7 +264,7 @@ void SoundSlots::sampleRecordingTestSampleRecorded(SoundDevice device)
 		disconnect(sound_manager, SIGNAL(sampleRecorded(SoundDevice)), this, SLOT(sampleRecordingTestSampleRecorded(SoundDevice)));
 
 		sound_manager->closeDevice(device);
-		SampleRecordingTestDevice = device = sound_manager->openDevice(PLAY_ONLY, 8000);
+		SampleRecordingTestDevice = device = sound_manager->openDevice(SoundDevicePlayOnly, 8000);
 		if (device == NULL)
 		{
 			delete[] SampleRecordingTestSample;
@@ -305,7 +305,7 @@ void SoundSlots::testFullDuplex()
 	kdebugf();
 	if (FullDuplexTestMsgBox != NULL)
 		return;
-	FullDuplexTestDevice = sound_manager->openDevice(PLAY_AND_RECORD, 8000);
+	FullDuplexTestDevice = sound_manager->openDevice(SoundDevicePlayAndRecord, 8000);
 	if (FullDuplexTestDevice == NULL)
 	{
 		MessageBox::msg(tr("Opening sound device failed."), false, "Warning");

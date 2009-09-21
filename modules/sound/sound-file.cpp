@@ -12,7 +12,7 @@
 #include <sndfile.h>
 #include <string.h>
 
-#include "sound_file.h"
+#include "sound-file.h"
 #include "debug.h"
 
 /**

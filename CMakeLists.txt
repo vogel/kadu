@@ -119,6 +119,7 @@ macro (kadu_module)
 	set (MODULE_CONFIGURATION_FILES "")
 	set (MODULE_BUILDDEF "")
 	set (MODULE_DEPENDENCIES "")
+	set (MODULE_LIBRARIES "")
 
 	include_directories (".")
 
@@ -127,7 +128,7 @@ macro (kadu_module)
 		if ("${VARIABLE_NAME}" STREQUAL "MODULE_NAME")
 			set (MODULE_NAME ${ARG})
 			set (VARIABLE_NAME "")
-		elseif (ARG MATCHES "(MODULE_SOURCES|MODULE_MOC_SOURCES|MODULE_TRANSLATION_SOURCES|MODULE_CONFIGURATION_FILES|MODULE_BUILDDEF|MODULE_DEPENDENCIES)")
+		elseif (ARG MATCHES "(MODULE_SOURCES|MODULE_MOC_SOURCES|MODULE_TRANSLATION_SOURCES|MODULE_CONFIGURATION_FILES|MODULE_BUILDDEF|MODULE_DEPENDENCIES|MODULE_LIBRARIES)")
 			set (VARIABLE_NAME ${ARG})
 		elseif (VARIABLE_NAME STREQUAL "")
 			message (FATAL_ERROR "Invalid invocation of kadu_module macro")
@@ -181,6 +182,10 @@ macro (kadu_module)
 		set_target_properties(${MODULE_NAME} PROPERTIES COMPILE_DEFINITIONS ${MODULE_BUILDDEF} )
 	endif (NOT ${MODULE_BUILDDEF} STREQUAL "")
 
+	if (NOT "${MODULE_LIBRARIES}" STREQUAL "")
+		target_link_libraries (${MODULE_NAME} ${MODULE_LIBRARIES})
+	endif (NOT "${MODULE_LIBRARIES}" STREQUAL "")
+
 	if (${${MODULE_NAME}} STREQUAL STATIC)
 		set_target_properties(${MODULE_NAME} PROPERTIES COMPILE_FLAGS "-DKADULIB" )
 	else (${${MODULE_NAME}} STREQUAL STATIC)
@@ -218,7 +223,6 @@ configure_file (${CMAKE_CURRENT_SOURCE_DIR}/cmake_uninstall.cmake.in ${CMAKE_CUR
   IMMEDIATE @ONLY)
 
 add_custom_target(uninstall "${CMAKE_COMMAND}" -P "${CMAKE_CURRENT_BINARY_DIR}/cmake_uninstall.cmake")
-
 
 add_subdirectory (modules)
 add_subdirectory (kadu-core)
