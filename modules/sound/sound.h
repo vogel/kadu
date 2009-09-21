@@ -45,86 +45,89 @@ typedef void *SoundDevice;
 
 /**
 **/
-enum SoundDeviceType {RECORD_ONLY, PLAY_ONLY, PLAY_AND_RECORD};
+enum SoundDeviceType
+{
+	SoundDeviceRecordOnly,
+	SoundDevicePlayOnly,
+	SoundDevicePlayAndRecord
+};
 
 
 class SOUNDAPI SoundManager : public Notifier, public ConfigurationUiHandler
 {
     Q_OBJECT
+	
+	friend class SamplePlayThread;
+	friend class SampleRecordThread;
 
-		Themes *themes;
-		ConfigComboBox *themesComboBox;
-		PathListEdit *themesPaths;
-		SoundConfigurationWidget *configurationWidget;
+	Themes *MyThemes;
+	ConfigComboBox *ThemesComboBox;
+	PathListEdit *ThemesPaths;
+	SoundConfigurationWidget *ConfigurationWidget;
 
-		friend class SamplePlayThread;
-		friend class SampleRecordThread;
-		QTime lastsoundtime;
-		bool mute;
-		QMap<SoundDevice, SamplePlayThread *> PlayingThreads;
-		QMap<SoundDevice, SampleRecordThread *> RecordingThreads;
-		SoundPlayThread *play_thread;
+	QTime LastSoundTime;
+	bool Mute;
 
-		int simple_player_count;
-		virtual void connectNotify(const char *signal);
-		virtual void disconnectNotify(const char *signal);
+	QMap<SoundDevice, SamplePlayThread *> PlayingThreads;
+	QMap<SoundDevice, SampleRecordThread *> RecordingThreads;
+	SoundPlayThread *PlayThread;
 
-		void playSound(const QString &soundName);
+	int SimplePlayerCount;
 
-		void copyConfiguration(const QString &fromEvent, const QString &toEvent) {}
+	void connectNotify(const char *signal);
+	void disconnectNotify(const char *signal);
 
-		void applyTheme(const QString &themeName);
+	void applyTheme(const QString &themeName);
+	void playSound(const QString &soundName);
 
-		void import_0_6_5_configuration();
-		void createDefaultConfiguration();
+	void import_0_6_5_configuration();
+	void createDefaultConfiguration();
 
-	private slots:
-		void setSoundThemes();
-		void configurationWindowApplied();
-		void soundFileEdited();
+private slots:
+	void setSoundThemes();
+	void configurationWindowApplied();
+	void soundFileEdited();
 
-	public slots:
-		void play(const QString &path, bool force = false);
-		void play(const QString &path, bool volCntrl, double vol);
-		void setMute(const bool& enable);
-		void stop();
+public slots:
+	void play(const QString &path, bool force = false);
+	void play(const QString &path, bool volumeControl, double volume);
+	void setMute(const bool& enable);
+	void stop();
 
-	public:
+public:
+	SoundManager(bool firstLoad, const QString &name, const QString &configname);
+	virtual ~SoundManager();
 
-		SoundManager(bool firstLoad, const QString& name, const QString& configname);
-		~SoundManager();
+	virtual void mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow);
+	virtual NotifierConfigurationWidget * createConfigurationWidget(QWidget *parent = 0);
 
-		virtual void mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow);
-		virtual NotifierConfigurationWidget *createConfigurationWidget(QWidget *parent = 0);
+	virtual void notify(Notification *notification);
 
-		virtual void notify(Notification *notification);
+	Themes * theme();
 
-		Themes *theme();
+	bool isMuted() const;
+	int timeAfterLastSound() const;
 
-		bool isMuted() const;
-		int timeAfterLastSound() const;
+	SoundDevice openDevice(SoundDeviceType type, int sampleRate, int channels = 1);
+	void closeDevice(SoundDevice device);
+	void enableThreading(SoundDevice device);
+	void setFlushingEnabled(SoundDevice device, bool enabled);
+	bool playSample(SoundDevice device, const qint16 *data, int length);
+	bool recordSample(SoundDevice device, qint16 *data, int length);
 
-		SoundDevice openDevice(SoundDeviceType type, int sample_rate, int channels = 1);
-		void closeDevice(SoundDevice device);
-		void enableThreading(SoundDevice device);
-		void setFlushingEnabled(SoundDevice device, bool enabled);
-		bool playSample(SoundDevice device, const qint16* data, int length);
-		bool recordSample(SoundDevice device, qint16* data, int length);
+signals:
+	void playSound(const QString &sound, bool volumeControl, double vol);
+	void samplePlayed(SoundDevice device);
+	void sampleRecorded(SoundDevice device);
+	void openDeviceImpl(SoundDeviceType type, int sampleRate, int channels, SoundDevice *device);
+	void closeDeviceImpl(SoundDevice device);
+	void playSampleImpl(SoundDevice device, const qint16 *data, int length, bool *result);
+	void recordSampleImpl(SoundDevice device, qint16 *data, int length, bool *result);
+	void setFlushingEnabledImpl(SoundDevice device, bool enabled);
 
-	signals:
-		void playSound(const QString &sound, bool volCntrl, double vol);
-		void samplePlayed(SoundDevice device);
-		void sampleRecorded(SoundDevice device);
-		void openDeviceImpl(SoundDeviceType type, int sample_rate, int channels, SoundDevice* device);
-		void closeDeviceImpl(SoundDevice device);
-		void playSampleImpl(SoundDevice device, const qint16* data, int length, bool *result);
-		void recordSampleImpl(SoundDevice device, qint16* data, int length, bool *result);
-		/**
-		**/
-		void setFlushingEnabledImpl(SoundDevice device, bool enabled);
 };
 
-extern SOUNDAPI SoundManager* sound_manager;
+extern SOUNDAPI SoundManager *sound_manager;
 /** @} */
 
 #endif

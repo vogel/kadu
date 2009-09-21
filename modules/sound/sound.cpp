@@ -40,8 +40,8 @@
  * @ingroup sound
  * @{
  */
-SOUNDAPI SoundManager* sound_manager = NULL;
-SoundSlots* sound_slots;
+SOUNDAPI SoundManager *sound_manager = NULL;
+SoundSlots *sound_slots;
 
 extern "C" KADU_EXPORT int sound_init(bool firstLoad)
 {
@@ -69,27 +69,27 @@ extern "C" KADU_EXPORT void sound_close()
 	kdebugf2();
 }
 
-SoundManager::SoundManager(bool firstLoad, const QString& name, const QString& configname)
-	: Notifier("Sound", "Play a sound", IconsManager::instance()->loadIcon("Unmute_off")),
-	themes(new Themes(name, configname)),
-	lastsoundtime(), mute(false), PlayingThreads(), RecordingThreads(),
-	play_thread(new SoundPlayThread()), simple_player_count(0)
+SoundManager::SoundManager(bool firstLoad, const QString& name, const QString& configname) :
+		Notifier("Sound", "Play a sound", IconsManager::instance()->loadIcon("Unmute_off")),
+		MyThemes(new Themes(name, configname)),
+		LastSoundTime(), Mute(false), PlayingThreads(), RecordingThreads(),
+		PlayThread(new SoundPlayThread()), SimplePlayerCount(0)
 {
 	kdebugf();
 
 	import_0_6_5_configuration();
 	createDefaultConfiguration();
 
-	lastsoundtime.start();
+	LastSoundTime.start();
 
-	play_thread->start();
+	PlayThread->start();
 
 	sound_manager = this;
 	sound_slots = new SoundSlots(firstLoad, this);
 
-	themes->setPaths(config_file.readEntry("Sounds", "SoundPaths").split(QRegExp("(;|:)"), QString::SkipEmptyParts));
+	MyThemes->setPaths(config_file.readEntry("Sounds", "SoundPaths").split(QRegExp("(;|:)"), QString::SkipEmptyParts));
 
-	QStringList soundThemes = themes->themes();
+	QStringList soundThemes = MyThemes->themes();
 	QString soundTheme = config_file.readEntry("Sounds", "SoundTheme");
 	if (!soundThemes.isEmpty() && (soundTheme != "Custom") && !soundThemes.contains(soundTheme))
 	{
@@ -108,19 +108,19 @@ SoundManager::SoundManager(bool firstLoad, const QString& name, const QString& c
 SoundManager::~SoundManager()
 {
 	kdebugf();
-	play_thread->endThread();
+	PlayThread->endThread();
 	NotificationManager::instance()->unregisterNotifier(this);
 
-	play_thread->wait(2000);
-	if (play_thread->isRunning())
+	PlayThread->wait(2000);
+	if (PlayThread->isRunning())
 	{
 		kdebugm(KDEBUG_WARNING, "terminating play_thread!\n");
-		play_thread->terminate();
+		PlayThread->terminate();
 	}
-	delete play_thread;
+	delete PlayThread;
 	delete sound_slots;
-	sound_slots = NULL;
-	delete themes;
+	sound_slots = 0;
+	delete MyThemes;
 
 	kdebugf2();
 }
@@ -143,30 +143,30 @@ void SoundManager::mainConfigurationWindowCreated(MainConfigurationWindow *mainC
 	connect(mainConfigurationWindow->widget()->widgetById("sound/testRecord"), SIGNAL(clicked()), sound_slots, SLOT(testSampleRecording()));
 	connect(mainConfigurationWindow->widget()->widgetById("sound/testDuplex"), SIGNAL(clicked()), sound_slots, SLOT(testFullDuplex()));
 
-	themesComboBox = dynamic_cast<ConfigComboBox *>(mainConfigurationWindow->widget()->widgetById("sound/themes"));
-	connect(themesComboBox, SIGNAL(activated(int)), configurationWidget, SLOT(themeChanged(int)));
-	connect(themesComboBox, SIGNAL(activated(const QString &)), sound_slots, SLOT(themeChanged(const QString &)));
-	configurationWidget->themeChanged(themesComboBox->currentIndex());
+	ThemesComboBox = dynamic_cast<ConfigComboBox *>(mainConfigurationWindow->widget()->widgetById("sound/themes"));
+	connect(ThemesComboBox, SIGNAL(activated(int)), ConfigurationWidget, SLOT(themeChanged(int)));
+	connect(ThemesComboBox, SIGNAL(activated(const QString &)), sound_slots, SLOT(themeChanged(const QString &)));
+	ConfigurationWidget->themeChanged(ThemesComboBox->currentIndex());
 
-	themesPaths = dynamic_cast<PathListEdit *>(mainConfigurationWindow->widget()->widgetById("soundPaths"));
-	connect(themesPaths, SIGNAL(changed()), sound_manager, SLOT(setSoundThemes()));
+	ThemesPaths = dynamic_cast<PathListEdit *>(mainConfigurationWindow->widget()->widgetById("soundPaths"));
+	connect(ThemesPaths, SIGNAL(changed()), sound_manager, SLOT(setSoundThemes()));
 
-	connect(configurationWidget, SIGNAL(soundFileEdited()), this, SLOT(soundFileEdited()));
+	connect(ConfigurationWidget, SIGNAL(soundFileEdited()), this, SLOT(soundFileEdited()));
 
 	setSoundThemes();
 }
 
-NotifierConfigurationWidget *SoundManager::createConfigurationWidget(QWidget *parent)
+NotifierConfigurationWidget * SoundManager::createConfigurationWidget(QWidget *parent)
 {
-	configurationWidget = new SoundConfigurationWidget(parent);
-	return configurationWidget;
+	ConfigurationWidget = new SoundConfigurationWidget(parent);
+	return ConfigurationWidget;
 }
 
 void SoundManager::setSoundThemes()
 {
-	themes->setPaths(themesPaths->pathList());
+	MyThemes->setPaths(ThemesPaths->pathList());
 
-	QStringList soundThemeNames = themes->themes();
+	QStringList soundThemeNames = MyThemes->themes();
 	soundThemeNames.sort();
 
 	QStringList soundThemeValues = soundThemeNames;
@@ -174,30 +174,30 @@ void SoundManager::setSoundThemes()
 	soundThemeNames.prepend(tr("Custom"));
 	soundThemeValues.prepend("Custom");
 
-	themesComboBox->setItems(soundThemeValues, soundThemeNames);
-	themesComboBox->setCurrentIndex(themesComboBox->findText(themes->theme()));
+	ThemesComboBox->setItems(soundThemeValues, soundThemeNames);
+	ThemesComboBox->setCurrentIndex(ThemesComboBox->findText(MyThemes->theme()));
 }
 
 void SoundManager::soundFileEdited()
 {
-	if (themesComboBox->currentIndex() != 0)
-		themesComboBox->setCurrentIndex(0);
+	if (ThemesComboBox->currentIndex() != 0)
+		ThemesComboBox->setCurrentIndex(0);
 }
 
 void SoundManager::configurationWindowApplied()
 {
 	kdebugf();
 
-	if (themesComboBox->currentIndex() != 0)
-		applyTheme(themesComboBox->currentText());
+	if (ThemesComboBox->currentIndex() != 0)
+		applyTheme(ThemesComboBox->currentText());
 
-	configurationWidget->themeChanged(themesComboBox->currentIndex());
+	ConfigurationWidget->themeChanged(ThemesComboBox->currentIndex());
 }
 
 void SoundManager::import_0_6_5_configuration()
 {
-    	config_file.addVariable("Notify", "StatusChanged/ToAway_Sound",
-				config_file.readEntry("Notify", "StatusChanged/ToAway_Sound"));
+	config_file.addVariable("Notify", "StatusChanged/ToAway_Sound",
+			config_file.readEntry("Notify", "StatusChanged/ToAway_Sound"));
 }
 
 void SoundManager::createDefaultConfiguration()
@@ -218,29 +218,30 @@ void SoundManager::createDefaultConfiguration()
 
 void SoundManager::applyTheme(const QString &themeName)
 {
-	themes->setTheme(themeName);
-	QMap<QString, QString> entries = themes->getEntries();
+	MyThemes->setTheme(themeName);
+	QMap<QString, QString> entries = MyThemes->getEntries();
 	QMap<QString, QString>::const_iterator i = entries.constBegin();
 
-	while (i != entries.constEnd()) {
-		config_file.writeEntry("Sounds", i.key() + "_sound", themes->themePath() + i.value());
+	while (i != entries.constEnd())
+	{
+		config_file.writeEntry("Sounds", i.key() + "_sound", MyThemes->themePath() + i.value());
 		++i;
 	}
 }
 
 Themes *SoundManager::theme()
 {
-	return themes;
+	return MyThemes;
 }
 
 bool SoundManager::isMuted() const
 {
-	return mute;
+	return Mute;
 }
 
-void SoundManager::setMute(const bool& enable)
+void SoundManager::setMute(const bool &enable)
 {
-	mute = enable;
+	Mute = enable;
 }
 
 void SoundManager::playSound(const QString &soundName)
@@ -262,7 +263,7 @@ void SoundManager::playSound(const QString &soundName)
 	if (QFile::exists(sound))
 	{
 		play(sound, config_file.readBoolEntry("Sounds","VolumeControl"), 1.0 * config_file.readDoubleNumEntry("Sounds", "SoundVolume") / 100);
-		lastsoundtime.restart();
+		LastSoundTime.restart();
 	}
 	else
 		fprintf(stderr, "file (%s) not found\n", qPrintable(sound));
@@ -297,7 +298,7 @@ void SoundManager::play(const QString &path, bool force)
 
 int SoundManager::timeAfterLastSound() const
 {
-	return lastsoundtime.elapsed();
+	return LastSoundTime.elapsed();
 }
 
 SoundDevice SoundManager::openDevice(SoundDeviceType type, int sample_rate, int channels)
@@ -394,24 +395,24 @@ bool SoundManager::recordSample(SoundDevice device, qint16* data, int length)
 void SoundManager::connectNotify(const char *signal)
 {
 //	kdebugm(KDEBUG_INFO, ">>> %s %s\n", signal, SIGNAL(playSound(QString&,bool,double)) );
-	if (strcmp(signal,SIGNAL(playSound(QString,bool,double)))==0)
-		++simple_player_count;
+	if (strcmp(signal, SIGNAL(playSound(QString, bool, double))) == 0)
+		++SimplePlayerCount;
 }
 
 void SoundManager::disconnectNotify(const char *signal)
 {
 //	kdebugm(KDEBUG_INFO, ">>> %s %s\n", signal, SIGNAL(playSound(QString&,bool,double)) );
-	if (strcmp(signal,SIGNAL(playSound(QString,bool,double)))==0)
-		--simple_player_count;
+	if (strcmp(signal, SIGNAL(playSound(QString, bool, double))) == 0)
+		--SimplePlayerCount;
 }
 
 void SoundManager::play(const QString &path, bool volCntrl, double vol)
 {
 	kdebugf();
-	if (simple_player_count>0)
+	if (SimplePlayerCount > 0)
 		emit playSound(path, volCntrl, vol);
 	else
-		play_thread->tryPlay(qPrintable(path), volCntrl, vol);
+		PlayThread->tryPlay(qPrintable(path), volCntrl, vol);
 	kdebugf2();
 }
 
@@ -422,13 +423,13 @@ void SoundManager::stop()
 // 		emit playStop();
 // 	else
 	{
-		play_thread->terminate();
-		play_thread->wait();
+		PlayThread->terminate();
+		PlayThread->wait();
 
 		// TODO: fix it, let play_thread exists only if needed
-		delete play_thread;
-		play_thread = new SoundPlayThread();
-		play_thread->start();
+		delete PlayThread;
+		PlayThread = new SoundPlayThread();
+		PlayThread->start();
 	}
 	kdebugf2();
 }
