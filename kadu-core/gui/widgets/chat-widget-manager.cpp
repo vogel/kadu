@@ -9,10 +9,12 @@
 
 #include "accounts/account.h"
 #include "accounts/account-manager.h"
+#include "chat/chat-manager.h"
 #include "chat/message/message.h"
 #include "chat/message/message-render-info.h"
 #include "chat/message/pending-messages-manager.h"
 #include "configuration/configuration-file.h"
+#include "configuration/configuration-manager.h"
 #include "configuration/xml-configuration-file.h"
 #include "contacts/contact-account-data.h"
 #include "contacts/contact-manager.h"
@@ -45,12 +47,18 @@ ChatWidgetManager * ChatWidgetManager::Instance = 0;
 ChatWidgetManager * ChatWidgetManager::instance()
 {
 	if (0 == Instance)
+	{
 		Instance = new ChatWidgetManager();
+		// TODO 0.6.6 Remove
+		// Load configuration in constructor creates loop because Instance == 0
+		Instance->ensureLoaded();
+	}
 
 	return Instance;
 }
 
 ChatWidgetManager::ChatWidgetManager()
+	: StorableStringList("ChatWindows", "Chat", 0)
 {
 	kdebugf();
 
@@ -68,6 +76,12 @@ ChatWidgetManager::ChatWidgetManager()
 	connect(ClosedChatsTimer, SIGNAL(timeout()), this, SLOT(clearClosedChats()));
 	ClosedChatsTimer->start(30*1000);
 
+	Core::instance()->configuration()->registerStorableObject(this);
+
+	// TODO 0.6.6 : Implement import old Config
+	//if (xml_config_file->getNode("ChatWindows", XmlConfigFile::ModeFind).isNull())
+	//	import();
+
 	configurationUpdated();
 
 	kdebugf2();
@@ -78,7 +92,7 @@ void ChatWidgetManager::closeAllWindows()
 	kdebugf();
 
 	if (config_file.readBoolEntry("Chat", "SaveOpenedWindows", true))
-		saveOpenedWindows();
+		store();
 
 	foreach (ChatWidget *chat, Chats)
 	{
@@ -92,78 +106,45 @@ void ChatWidgetManager::closeAllWindows()
 	kdebugf2();
 }
 
-void ChatWidgetManager::loadOpenedWindows()
+void ChatWidgetManager::load()
 {
-	kdebugf();
-	QDomElement root_elem = xml_config_file->rootElement();
-	QDomElement chats_elem = xml_config_file->findElement(root_elem, "ChatWindows");
-	if (!chats_elem.isNull())
+	if (!isValidStorage())
+		return;
+
+	StorableStringList::load();
+
+	for (int i = 0; i < count(); i++)
 	{
-		for (QDomNode win = chats_elem.firstChild(); !win.isNull(); win = win.nextSibling())
-		{
-			const QDomElement &window_elem = win.toElement();
-			if (window_elem.isNull())
-				continue;
-			if (window_elem.tagName() != "Window")
-				continue;
-			QDomElement protocolNode = xml_config_file->getNode(window_elem, "Protocol", XmlConfigFile::ModeFind);
-			QString protocolId = protocolNode.text();
-			QDomElement windowIdNode = xml_config_file->getNode(window_elem, "WindowId", XmlConfigFile::ModeFind);
-			QString accountId = windowIdNode.text();
+		QUuid chatId = QUuid(at(i));
 
-			ContactSet contacts;
-			for (QDomNode contact = window_elem.firstChild(); !contact.isNull(); contact = contact.nextSibling())
-			{
-				const QDomElement &contact_elem = contact.toElement();
-				if (contact_elem.isNull())
-					continue;
-				if (contact_elem.tagName() != "Contact")
-					continue;
-				QString uuid = contact_elem.text();
-				contacts.insert(ContactManager::instance()->byUuid(uuid));
-			}
-
-			// TODO 0.6.6: fix
-			Account *defaultAccount = AccountManager::instance()->defaultAccount();
-			if (defaultAccount)
-			{
-				Chat *chat = defaultAccount->protocol()->findChat(contacts);
-				if (chat)
-					openChatWidget(chat, true);
-			}
-			else
-				kdebugm(KDEBUG_WARNING, "protocol %s/%s not found!\n",
-					       qPrintable(protocolId), qPrintable(accountId));
-		}
-	}
-	kdebugf2();
-}
-
-void ChatWidgetManager::saveOpenedWindows()
-{
-	// TODO: 0.6.6 saveOpenedChats?
-
-/*
-	kdebugf();
-	QDomElement root_elem = xml_config_file->rootElement();
-	QDomElement chats_elem = xml_config_file->accessElement(root_elem, "ChatWindows");
-	xml_config_file->removeChildren(chats_elem);
-	foreach (ChatWidget *chat, ChatWidgets)
-	{
-		if (!chat->currentProtocol() || !chat->currentProtocol()->protocolFactory())
+		if (chatId.isNull())
 			continue;
 
-		QDomElement windowNode = xml_config_file->getNode(chats_elem,
-			"Window", XmlConfigFile::ModeCreate);
-		// TODO 0.6.6 - gadu raus!
-
-		xml_config_file->createTextNode(windowNode, "Protocol", chat->currentProtocol()->protocolFactory()->displayName());
-		xml_config_file->createTextNode(windowNode, "WindowId", "Gadu");
-
-		foreach(Contact contact, chat->contacts())
-			xml_config_file->createTextNode(windowNode, "Contact", contact.uuid());
+		Chat *chat = ChatManager::instance()->byUuid(chatId);
+		if (!chat)
+			continue;
+		// TODO 0.6.6 before it was openChatWidget(chat, true)
+		openPendingMsgs(chat, true);
 	}
-	kdebugf2();*/
+}
+
+void ChatWidgetManager::store()
+{
+	if (!isValidStorage())
+		return;
+
+	clear();
+
+	foreach (Chat *chat, Chats.keys())
+	{
+		if (!chat || !chat->account() || !chat->account()->protocol()
+			|| !chat->account()->protocol()->protocolFactory())
+				continue;
+
+		append(chat->uuid().toString());
+	}
+
+	StorableStringList::store();
 }
 
 ChatWidgetManager::~ChatWidgetManager()
