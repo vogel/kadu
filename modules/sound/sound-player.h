@@ -22,10 +22,12 @@ public:
 	SoundPlayer(QObject *parent) : QObject(parent) {}
 	virtual ~SoundPlayer() {}
 
+	virtual bool isSimplePlayer() = 0;
+
 public slots:
 	void playSound(const QString &sound, bool volumeControl, double vol);
 
-	SoundDevice openDevice(SoundDeviceType type, int sampleRate, int channels, SoundDevice device);
+	SoundDevice openDevice(SoundDeviceType type, int sampleRate, int channels);
 	void closeDevice(SoundDevice device);
 
 	bool playSample(SoundDevice device, const qint16 *data, int length);

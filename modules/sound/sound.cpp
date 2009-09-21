@@ -31,6 +31,7 @@
 #include "sound-exports.h"
 #include "sound-file.h"
 #include "sound-play-thread.h"
+#include "sound-player.h"
 #include "sound-slots.h"
 
 #include "sound.h"
@@ -71,7 +72,7 @@ extern "C" KADU_EXPORT void sound_close()
 
 SoundManager::SoundManager(bool firstLoad, const QString& name, const QString& configname) :
 		Notifier("Sound", "Play a sound", IconsManager::instance()->loadIcon("Unmute_off")),
-		MyThemes(new Themes(name, configname)),
+		Player(0), MyThemes(new Themes(name, configname)),
 		LastSoundTime(), Mute(false), PlayingThreads(), RecordingThreads(),
 		PlayThread(new SoundPlayThread()), SimplePlayerCount(0)
 {
@@ -278,6 +279,11 @@ void SoundManager::notify(Notification *notification)
 	kdebugf2();
 }
 
+void SoundManager::setPlayer(SoundPlayer *player)
+{
+	Player = player;
+}
+
 void SoundManager::play(const QString &path, bool force)
 {
 	kdebugf();
@@ -301,13 +307,16 @@ int SoundManager::timeAfterLastSound() const
 	return LastSoundTime.elapsed();
 }
 
-SoundDevice SoundManager::openDevice(SoundDeviceType type, int sample_rate, int channels)
+SoundDevice SoundManager::openDevice(SoundDeviceType type, int sampleRate, int channels)
 {
 	kdebugf();
-	SoundDevice device=NULL;
-	emit openDeviceImpl(type, sample_rate, channels, &device);
+
+	if (!Player)
+		return 0;
+
 	kdebugf2();
-	return device;
+
+	return Player->openDevice(type, sampleRate, channels);
 }
 
 void SoundManager::closeDevice(SoundDevice device)
@@ -329,7 +338,11 @@ void SoundManager::closeDevice(SoundDevice device)
 		RecordingThreads.remove(device);
 		recording_thread->deleteLater();
 	}
-	emit closeDeviceImpl(device);
+
+	if (!Player)
+		return;
+
+	Player->closeDevice(device);
 
 	kdebugf2();
 }
@@ -357,38 +370,70 @@ void SoundManager::enableThreading(SoundDevice device)
 void SoundManager::setFlushingEnabled(SoundDevice device, bool enabled)
 {
 	kdebugf();
-	emit setFlushingEnabledImpl(device, enabled);
+
+	if (Player)
+		Player->setFlushingEnabled(device, enabled);
+
 	kdebugf2();
 }
 
-bool SoundManager::playSample(SoundDevice device, const qint16* data, int length)
+bool SoundManager::playSample(SoundDevice device, const qint16 *data, int length)
 {
 	kdebugf();
+
 	bool result;
 	if (PlayingThreads.contains(device))
 	{
 		PlayingThreads[device]->playSample(data, length);
 		result = true;
 	}
+	else if (Player)
+		result = Player->playSample(device, data, length);
 	else
-		emit playSampleImpl(device, data, length, &result);
+		result = false;
+
 	kdebugf2();
+
 	return result;
 }
 
-bool SoundManager::recordSample(SoundDevice device, qint16* data, int length)
+bool SoundManager::playSampleTMP(SoundDevice device, const qint16 *data, int length)
 {
 	kdebugf();
+
+	if (Player)
+		return Player->playSample(device, data, length);
+	else
+		return false;
+}
+
+bool SoundManager::recordSample(SoundDevice device, qint16 *data, int length)
+{
+	kdebugf();
+
 	bool result;
 	if (RecordingThreads.contains(device))
 	{
 		RecordingThreads[device]->recordSample(data, length);
 		result = true;
 	}
+	else if (Player)
+		result = Player->recordSample(device, data, length);
 	else
-		emit recordSampleImpl(device, data, length, &result);
+		result = false;
+
 	kdebugf2();
 	return result;
+}
+
+bool SoundManager::recordSampleTMP(SoundDevice device, qint16 *data, int length)
+{
+	kdebugf();
+
+	if (Player)
+		return Player->recordSample(device, data, length);
+	else
+		return false;
 }
 
 // stupid Qt, yes this code work
@@ -406,13 +451,18 @@ void SoundManager::disconnectNotify(const char *signal)
 		--SimplePlayerCount;
 }
 
-void SoundManager::play(const QString &path, bool volCntrl, double vol)
+void SoundManager::play(const QString &path, bool volumeControl, double volume)
 {
 	kdebugf();
-	if (SimplePlayerCount > 0)
-		emit playSound(path, volCntrl, vol);
+
+	if (!Player)
+		return;
+
+	if (Player->isSimplePlayer())
+		Player->playSound(path, volumeControl, volume);
 	else
-		PlayThread->tryPlay(qPrintable(path), volCntrl, vol);
+		PlayThread->tryPlay(qPrintable(path), volumeControl, volume);
+
 	kdebugf2();
 }
 

@@ -33,6 +33,7 @@ class PathListEdit;
 class SamplePlayThread;
 class SampleRecordThread;
 class SoundConfigurationWidget;
+class SoundPlayer;
 class SoundPlayThread;
 
 /**
@@ -59,6 +60,8 @@ class SOUNDAPI SoundManager : public Notifier, public ConfigurationUiHandler
 	
 	friend class SamplePlayThread;
 	friend class SampleRecordThread;
+
+	SoundPlayer *Player;
 
 	Themes *MyThemes;
 	ConfigComboBox *ThemesComboBox;
@@ -103,6 +106,8 @@ public:
 
 	virtual void notify(Notification *notification);
 
+	void setPlayer(SoundPlayer *player);
+
 	Themes * theme();
 
 	bool isMuted() const;
@@ -113,16 +118,13 @@ public:
 	void enableThreading(SoundDevice device);
 	void setFlushingEnabled(SoundDevice device, bool enabled);
 	bool playSample(SoundDevice device, const qint16 *data, int length);
+	bool playSampleTMP(SoundDevice device, const qint16 *data, int length);
 	bool recordSample(SoundDevice device, qint16 *data, int length);
+	bool recordSampleTMP(SoundDevice device, qint16 *data, int length);
 
 signals:
-	void playSound(const QString &sound, bool volumeControl, double vol);
 	void samplePlayed(SoundDevice device);
 	void sampleRecorded(SoundDevice device);
-	void openDeviceImpl(SoundDeviceType type, int sampleRate, int channels, SoundDevice *device);
-	void closeDeviceImpl(SoundDevice device);
-	void playSampleImpl(SoundDevice device, const qint16 *data, int length, bool *result);
-	void recordSampleImpl(SoundDevice device, qint16 *data, int length, bool *result);
 	void setFlushingEnabledImpl(SoundDevice device, bool enabled);
 
 };
