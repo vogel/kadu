@@ -19,7 +19,7 @@ class StorableStringList : protected QStringList, public StorableObject
 	QString ContentNodeName;
 
 public:
-	StorableStringList(const QString &nodeName, const QString conrentNodeName, StorableObject *parent);
+	StorableStringList(const QString &nodeName, const QString contentNodeName, StorableObject *parent);
 
 	virtual void load();
 	virtual void store();

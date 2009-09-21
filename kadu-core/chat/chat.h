@@ -43,7 +43,7 @@ public:
 	virtual ChatType type() const = 0;
 	virtual ContactSet contacts() const = 0;
 	virtual QString name() const = 0;
-	
+
 	Account * account() { return CurrentAccount; }
 	void setTitle(const QString &newTitle);
 	QString title() { return Title; }
