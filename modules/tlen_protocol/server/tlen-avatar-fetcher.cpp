@@ -63,12 +63,10 @@ void TlenAvatarFetcher::avatarDownloaded(int id, bool error)
 	// 200 OK and buffer not empty
 	if (!MyAvatarBuffer.data().isEmpty() && (MyHttp->lastResponse()).statusCode() == 200)
 	{
-		image.loadFromData(MyAvatarBuffer.buffer());
 		//MyContactAccountData->avatar().setNextUpdate(QDateTime::fromTime_t(QDateTime::currentDateTime().toTime_t() + 7200));
-		pixmap = QPixmap::fromImage(image);
+		emit avatarFetched(MyContactAccountData, MyAvatarBuffer.buffer());
 	}
 
-	emit avatarFetched(MyContactAccountData, pixmap);
 
 	deleteLater();
 }

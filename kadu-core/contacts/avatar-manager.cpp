@@ -75,8 +75,8 @@ void AvatarManager::accountRegistered(Account *account)
 	if (!service)
 		return;
 
-	connect(service, SIGNAL(avatarFetched(ContactAccountData *, QPixmap)),
-			this, SLOT(avatarFetched(ContactAccountData *, QPixmap)));
+	connect(service, SIGNAL(avatarFetched(ContactAccountData *, const QByteArray &)),
+			this, SLOT(avatarFetched(ContactAccountData *, const QByteArray &)));
 }
 
 void AvatarManager::accountUnregistered(Account *account)
@@ -85,15 +85,15 @@ void AvatarManager::accountUnregistered(Account *account)
 	if (!service)
 		return;
 
-	disconnect(service, SIGNAL(avatarFetched(ContactAccountData *, QPixmap)),
-			   this, SLOT(avatarFetched(ContactAccountData *, QPixmap)));
+	disconnect(service, SIGNAL(avatarFetched(ContactAccountData *, const QByteArray &)),
+			   this, SLOT(avatarFetched(ContactAccountData *, const QByteArray &)));
 }
 
 void AvatarManager::updateAvatar(ContactAccountData *contactAccountData)
 {
 	QDateTime lastUpdated = contactAccountData->avatar().lastUpdated();
 	QDateTime nextUpdate = contactAccountData->avatar().nextUpdate();
-	if (lastUpdated.isValid() && lastUpdated.secsTo(QDateTime()) < 60*60 || QFile::exists(contactAccountData->avatar().fileName()) && nextUpdate > QDateTime::currentDateTime())
+	if (lastUpdated.isValid() && lastUpdated.secsTo(QDateTime::currentDateTime()) < 60*60 || QFile::exists(contactAccountData->avatar().filePath()) && nextUpdate > QDateTime::currentDateTime())
 		return;
 
 	AvatarService *service = avatarService(contactAccountData);
@@ -103,11 +103,15 @@ void AvatarManager::updateAvatar(ContactAccountData *contactAccountData)
 	service->fetchAvatar(contactAccountData);
 }
 
-void AvatarManager::avatarFetched(ContactAccountData *contactAccountData, QPixmap pixmap)
+void AvatarManager::avatarFetched(ContactAccountData *contactAccountData, const QByteArray &data)
 {
 	Avatar &avatar = contactAccountData->avatar();
 	avatar.setLastUpdated(QDateTime::currentDateTime());
+
+	QPixmap pixmap;
+	pixmap.loadFromData(data);
 	avatar.setPixmap(pixmap);
+
 	QString avatarFile = avatarFileName(avatar);
 	avatar.setFileName(avatarFile);
 
@@ -115,7 +119,12 @@ void AvatarManager::avatarFetched(ContactAccountData *contactAccountData, QPixma
 	if (!avatarsDir.exists())
 		avatarsDir.mkpath(ggPath("avatars"));
 
-	pixmap.toImage().save(avatarsDir.filePath(avatarFile), "PNG");
+	QFile file(avatarsDir.canonicalPath() + "/" + avatarFile);
+	if (!file.open(QIODevice::WriteOnly))
+		return;
+
+	file.write(data);
+	file.close();
 
 	emit avatarUpdated(contactAccountData);
 }

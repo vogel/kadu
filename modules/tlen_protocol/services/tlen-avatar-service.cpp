@@ -24,14 +24,14 @@ void TlenAvatarService::fetchAvatar(ContactAccountData *contactAccountData)
 	inProgress.append(contactAccountData);
 
 	TlenAvatarFetcher *avatarFetcher = new TlenAvatarFetcher(contactAccountData, this);
-	connect(avatarFetcher, SIGNAL(avatarFetched(ContactAccountData *, QPixmap)),
-			this, SIGNAL(avatarReady(ContactAccountData *, QPixmap)));
+	connect(avatarFetcher, SIGNAL(avatarFetched(ContactAccountData *, const QByteArray &)),
+			this, SIGNAL(avatarReady(ContactAccountData *, const QByteArray &)));
 
 	avatarFetcher->fetchAvatar();
 	qDebug() << "Tlen Get Avatar" << contactAccountData->id();
 }
 
-void TlenAvatarService::avatarReady(ContactAccountData *contactAccountData, QPixmap avatar)
+void TlenAvatarService::avatarReady(ContactAccountData *contactAccountData, const QByteArray &avatar)
 {
 	inProgress.removeAll(contactAccountData);
 

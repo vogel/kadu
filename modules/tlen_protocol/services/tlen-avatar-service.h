@@ -27,7 +27,7 @@ public:
 	void fetchAvatar(ContactAccountData *contactAccountData);
 
 private slots:
-	void avatarReady(ContactAccountData *contactAccountData, QPixmap avatar);
+	void avatarReady(ContactAccountData *contactAccountData, const QByteArray &avatar);
 
 };
 

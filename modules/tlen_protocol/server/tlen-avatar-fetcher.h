@@ -33,7 +33,7 @@ public:
 	void fetchAvatar();
 
 signals:
-	void avatarFetched(ContactAccountData *contactAccountData, QPixmap avatar);
+	void avatarFetched(ContactAccountData *contactAccountData, const QByteArray &avatar);
 
 };
 

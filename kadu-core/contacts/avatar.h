@@ -24,6 +24,7 @@ class Avatar : public StorableObject
 	QDateTime NextUpdate;
 	QString FileName;
 	QPixmap Pixmap;
+	QString FilePath;
 
 public:
 	Avatar(ContactAccountData *contactAccountData, bool loadFromConfiguration = true);
@@ -42,6 +43,8 @@ public:
 
 	QString fileName();
 	void setFileName(const QString &fileName);
+
+	QString filePath();
 
 	QPixmap pixmap();
 	void setPixmap(const QPixmap &pixmap);

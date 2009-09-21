@@ -25,7 +25,7 @@ public:
 	virtual void fetchAvatar(ContactAccountData *contactAccountData) = 0;
 
 signals:
-	void avatarFetched(ContactAccountData *contactAccountData, QPixmap avatar);
+	void avatarFetched(ContactAccountData *contactAccountData, const QByteArray &avatar);
 
 };
 

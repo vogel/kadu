@@ -39,8 +39,9 @@ void Avatar::load()
 
 	// TODO 0.6.6 - just remove this line
 	FileName.remove(avatarsPath);
+	FilePath = avatarsPath + FileName;
 
-	Pixmap.load(avatarsPath+FileName);
+	Pixmap.load(avatarsPath + FileName);
 }
 
 void Avatar::store()
@@ -94,6 +95,15 @@ void Avatar::setFileName(const QString &fileName)
 {
 	ensureLoaded();
 	FileName = fileName;
+
+	QString avatarsPath = ggPath("avatars/");
+	FilePath = avatarsPath + FileName;
+}
+
+QString Avatar::filePath()
+{
+    	ensureLoaded();
+	return FilePath;
 }
 
 QPixmap Avatar::pixmap()

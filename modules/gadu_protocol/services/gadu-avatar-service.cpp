@@ -20,7 +20,7 @@ void GaduAvatarService::fetchAvatar(ContactAccountData *contactAccountData)
 		return;
 
 	GaduAvatarFetcher *avatarFetcher = new GaduAvatarFetcher(contactAccountData, this);
-	connect(avatarFetcher, SIGNAL(avatarFetched(ContactAccountData *, QPixmap)),
-			this, SIGNAL(avatarFetched(ContactAccountData *, QPixmap)));
+	connect(avatarFetcher, SIGNAL(avatarFetched(ContactAccountData *, const QByteArray &)),
+			this, SIGNAL(avatarFetched(ContactAccountData *, const QByteArray &)));
 	avatarFetcher->fetchAvatar();
 }

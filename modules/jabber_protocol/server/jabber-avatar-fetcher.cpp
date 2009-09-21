@@ -42,11 +42,8 @@ void JabberAvatarFetcher::receivedVCard()
 	const VCard* vcard = VCardFactory::instance()->vcard(MyContactAccountData->id());
 	if (vcard && !vcard->photo().isEmpty()) 
 	{
-		QImage image;
-		image.loadFromData(vcard->photo());
-		QPixmap pixmap = QPixmap::fromImage(image);
 		MyContactAccountData->avatar().setNextUpdate(QDateTime::fromTime_t(QDateTime::currentDateTime().toTime_t() + 7200));
-		emit avatarFetched(MyContactAccountData, pixmap);
+		emit avatarFetched(MyContactAccountData, vcard->photo());
 	}
 	deleteLater();
 }
