@@ -19,7 +19,7 @@ class SoundPlayer : public QObject
 	Q_OBJECT
 
 public:
-	SoundPlayer(QObject *parent) : QObject(parent) {}
+	SoundPlayer(QObject *parent = 0) : QObject(parent) {}
 	virtual ~SoundPlayer() {}
 
 	virtual bool isSimplePlayer() = 0;

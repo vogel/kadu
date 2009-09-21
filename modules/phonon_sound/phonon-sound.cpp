@@ -26,6 +26,7 @@ extern "C" KADU_EXPORT int phonon_sound_init(bool firstLoad)
 	kdebugf2();
 	return 0;
 }
+
 extern "C" KADU_EXPORT void phonon_sound_close()
 {
 	kdebugf();
@@ -36,7 +37,8 @@ extern "C" KADU_EXPORT void phonon_sound_close()
 	kdebugf2();
 }
 
-PhononPlayer::PhononPlayer()
+PhononPlayer::PhononPlayer(QObject *parent) :
+		SoundPlayer(parent)
 {
 	kdebugf();
 
@@ -44,33 +46,21 @@ PhononPlayer::PhononPlayer()
 	output = new Phonon::AudioOutput(Phonon::NotificationCategory, this);
 	Phonon::createPath(music, output);
 
-	connect(sound_manager, SIGNAL(playSound(const QString &, bool, double)),
-			this, SLOT(playSound(const QString &, bool, double)));
-
 	kdebugf2();
 }
 
 PhononPlayer::~PhononPlayer()
 {
-	kdebugf();
-
-	delete music;
-	delete output;
-
-	disconnect(sound_manager, SIGNAL(playSound(const QString &, bool, double)),
-			this, SLOT(playSound(const QString &, bool, double)));
-
-	kdebugf2();
 }
 
-void PhononPlayer::playSound(const QString &s, bool volCntrl, double vol)
+void PhononPlayer::playSound(const QString &path, bool volumeControl, double volumes)
 {
 	kdebugf();
 
-	if (volCntrl)
-		output->setVolume(vol);
+	if (volumeControl)
+		output->setVolume(volumes);
 
-	music->setCurrentSource(Phonon::MediaSource(s));
+	music->setCurrentSource(Phonon::MediaSource(path));
 	music->play();
 
 	kdebugf2();
@@ -79,4 +69,3 @@ void PhononPlayer::playSound(const QString &s, bool volCntrl, double vol)
 PhononPlayer *phonon_player;
 
 /** @} */
-
