@@ -1,8 +1,11 @@
 set (SOURCES
-	ao_sound.cpp)
+	ao-play-thread.cpp
+	ao-sound.cpp
+)
 
 set (MOC_SOURCES
-	ao_sound.h)
+	ao-sound.h
+)
 
 if(WIN32)
 	include_directories (${CMAKE_CURRENT_SOURCE_DIR})
