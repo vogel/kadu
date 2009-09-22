@@ -53,19 +53,36 @@ void _kdebug_with_mask(int mask, const char* file, const int line, const char* f
 		else
 			fprintf(stderr, "KK <%s:%i>\t", file, line);
 
+#ifdef Q_OS_WIN
+		HANDLE hConsole=GetStdHandle(STD_ERROR_HANDLE);
+		// read old attributes
+		CONSOLE_SCREEN_BUFFER_INFO ci;
+		GetConsoleScreenBufferInfo(hConsole, &ci);
+		if (mask & KDEBUG_WARNING)
+			SetConsoleTextAttribute(hConsole, FOREGROUND_BLUE);//niebieski
+		else if (mask & KDEBUG_ERROR)
+			SetConsoleTextAttribute(hConsole, FOREGROUND_RED);//���ty
+		else if (mask & KDEBUG_PANIC)
+			SetConsoleTextAttribute(hConsole, FOREGROUND_RED | FOREGROUND_INTENSITY);//jasny czerwony
+#else
 		if (mask & KDEBUG_WARNING)
 			fprintf(stderr, "\033[34m");//niebieski
 		else if (mask & KDEBUG_ERROR)
 			fprintf(stderr, "\033[33;1m");//���ty
 		else if (mask & KDEBUG_PANIC)
 			fprintf(stderr, "\033[31;1m");//jasny czerwony
+#endif
 
 		va_list args;
 		va_start(args, format);
 		vfprintf(stderr, format, args);
 		va_end(args);
 		if (mask & (KDEBUG_PANIC|KDEBUG_ERROR|KDEBUG_WARNING))
+#ifdef Q_OS_WIN
+			SetConsoleTextAttribute(hConsole, ci.wAttributes);
+#else
 			fprintf(stderr, "\033[0m");
+#endif
 		fflush(stderr);
 #ifdef Q_OS_WIN
 		// ok, now send it to debugger without times

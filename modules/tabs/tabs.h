@@ -12,16 +12,17 @@
 
 #include "accounts/accounts-aware-object.h"
 
-#include "chat/chat_manager-old.h"
+#include "chat/chat-manager.h"
 
-#include "configuration_aware_object.h"
-#include "main_configuration_window.h"
+#include "configuration/configuration-aware-object.h"
+#include "gui/windows/main-configuration-window.h"
 #include "misc/misc.h"
 
 #include "tabwidget.h"
 
 class QMenu;
 class Action;
+class ActionDescription;
 
 class TabsManager : public ConfigurationUiHandler, ConfigurationAwareObject, AccountsAwareObject
 {
@@ -68,7 +69,7 @@ class TabsManager : public ConfigurationUiHandler, ConfigurationAwareObject, Acc
 		* @param contact kontakt, dla którego zmienił się status
 		* @param oldStatus poprzedni status
 		*/
-		void onStatusChanged(Account *account, Contact contact, Status oldStatus);
+		void onTitleChanged(Chat * chatChanged, const QString &newTitle);
 		/**
 		* Slot zostaje wywołany w momencie zmiany danych kontaktu.
 		* @param elem kontakt, którego dane się zmieniły
@@ -107,7 +108,7 @@ class TabsManager : public ConfigurationUiHandler, ConfigurationAwareObject, Acc
 		* Slot zostaje wywołany w momencie dodania przycisku do toolbara.
 		* @param users lista użytkowników rozmowy
 		*/
-		void attachToTabsActionCreated(KaduAction *action);
+		void attachToTabsActionCreated(Action *action);
 
 		/**
 		* Slot zostaje wywołany w momencie zamykania chata skrótem klawiszowym
@@ -159,9 +160,9 @@ class TabsManager : public ConfigurationUiHandler, ConfigurationAwareObject, Acc
 		*/
 		void repaintTabs();
 
-		QString formatTabName(ChatWidget * chat);
+		QString formatTabName(ChatWidget * chatWidget);
 
-		void refreshTab(int tabIndex, ChatWidget * chat);
+		void refreshTab(int tabIndex, ChatWidget * chatWidget);
 
 		/**
 		* Zmienne konfiguracyjne.
