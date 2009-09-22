@@ -74,7 +74,7 @@ bool SoundPlayThread::play(const char *path, bool volumeControl, float volume)
 	
 	if (!sound->isOk())
 	{
-		fprintf(stderr, "broken sound file?\n");
+		kdebugm(KDEBUG_INFO, "broken sound file?\n");
 		delete sound;
 		return false;
 	}
