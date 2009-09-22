@@ -7,25 +7,30 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef STORABLE_STRING_LIST_H
-#define STORABLE_STRING_LIST_H
+#ifndef KADU_AO_PLAY_THREAD_H
+#define KADU_AO_PLAY_THREAD_H
 
-#include <QtCore/QStringList>
+#include <QtCore/QThread>
+#include <QtCore/QMutex>
+#include <QtCore/QSemaphore>
+#include <QtCore/QList>
 
-#include "configuration/storable-object.h"
+class SoundParams;
 
-class StorableStringList : protected QStringList, public StorableObject
+class AOPlayThread : public QThread
 {
-	QString ContentNodeName;
+	static bool play(const char *path, bool &checkAgain, bool volCntrl = false, float vol = 1);
 
 public:
-	StorableStringList(const QString &nodeName, const QString contentNodeName, StorableObject *parent);
-
-	virtual void load();
-	virtual void store();
-
-	const QStringList content() const;
+	QMutex mutex;
+	QSemaphore *semaphore; //sluzy do powiadamiania o dzwieku w kolejce
+	bool end;
+	QList<SoundParams> list;
+		
+	AOPlayThread();
+	~AOPlayThread();
+	void run();
 
 };
 
-#endif // STORABLE_STRING_LIST_H
+#endif //AO_PLAY_THREAD

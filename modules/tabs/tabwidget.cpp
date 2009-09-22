@@ -3,8 +3,10 @@
 #include "gui/widgets/contacts-list-widget.h"
 #include "gui/windows/open-chat-with/open-chat-with.h"
 
-#include "config_file.h"
-#include "hot_key.h"
+#include "activate.h"
+
+#include "configuration/configuration-file.h"
+#include "gui/hot-key.h"
 #include "icons-manager.h"
 #include "misc/misc.h"
 
@@ -252,6 +254,17 @@ void TabWidget::deleteTab()
 	// zamykamy bieżącą kartę
 	QWidget* current = currentWidget();
 	delete current;
+}
+
+void TabWidget::tabInserted(int index)
+{
+	show();
+}
+
+void TabWidget::tabRemoved(int index)
+{
+	if (count() == 0)
+		hide();
 }
 
 void TabWidget::openChatWithWindowClose()

@@ -17,6 +17,7 @@
 #include "exports.h"
 
 class ContactList;
+class Account;
 
 class KADUAPI ContactSet : public QSet<Contact>
 {
@@ -26,6 +27,7 @@ public:
 	explicit ContactSet(Contact contact);
 
 	ContactList toContactList() const;
+	Account * prefferedAccount();
 
 };
 

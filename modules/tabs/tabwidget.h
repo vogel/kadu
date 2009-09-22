@@ -7,8 +7,8 @@
 #include <QtGui/QTabWidget>
 #include <QtGui/QToolButton>
 
-#include "gui/widgets/chat_widget.h"
-#include "gui/widgets/custom_input.h"
+#include "gui/widgets/chat-widget.h"
+#include "gui/widgets/custom-input.h"
 
 #include "debug.h"
 
@@ -219,6 +219,10 @@ class TabWidget: public QTabWidget, public ChatContainer
 		virtual void dropEvent(QDropEvent* event);
 
 		virtual void windowActivationChange(bool oldActive);
+
+		virtual void tabInserted (int index);
+		virtual void tabRemoved (int index);
+
 
 	public slots:
 		/**

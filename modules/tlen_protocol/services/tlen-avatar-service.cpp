@@ -18,10 +18,10 @@ void TlenAvatarService::fetchAvatar(ContactAccountData *contactAccountData)
 	if (contactAccountData->id().isEmpty())
 		return;
 
-	if (inProgress.contains(contactAccountData))
+	if (InProgress.contains(contactAccountData))
 		return;
 
-	inProgress.append(contactAccountData);
+	InProgress.append(contactAccountData);
 
 	TlenAvatarFetcher *avatarFetcher = new TlenAvatarFetcher(contactAccountData, this);
 	connect(avatarFetcher, SIGNAL(avatarFetched(ContactAccountData *, const QByteArray &)),
@@ -33,7 +33,7 @@ void TlenAvatarService::fetchAvatar(ContactAccountData *contactAccountData)
 
 void TlenAvatarService::avatarReady(ContactAccountData *contactAccountData, const QByteArray &avatar)
 {
-	inProgress.removeAll(contactAccountData);
+	InProgress.removeAll(contactAccountData);
 
 	if (avatar.isNull())
 		return;

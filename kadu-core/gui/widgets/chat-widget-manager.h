@@ -13,6 +13,7 @@
 #include <QtCore/QTimer>
 
 #include "configuration/configuration-aware-object.h"
+#include "configuration/storable-string-list.h"
 #include "contacts/contact-list.h"
 #include "gui/widgets/chat-widget.h"
 
@@ -29,7 +30,7 @@ class Protocol;
 	\brief Klasa zarz�dzaj�ca oknami ChatWidget
 **/
 
-class KADUAPI ChatWidgetManager : public QObject, ConfigurationAwareObject
+class KADUAPI ChatWidgetManager : public QObject, ConfigurationAwareObject, StorableStringList
 {
 	Q_OBJECT
 	Q_DISABLE_COPY(ChatWidgetManager)
@@ -68,8 +69,8 @@ public:
 
 	ChatWidget * byChat(Chat *chat, bool create = false) const;
 
-	void loadOpenedWindows();
-	void saveOpenedWindows();
+	virtual void load();
+	virtual void store();
 
 	void activateChatWidget(ChatWidget *chatWidget, bool forceActivate);
 
@@ -128,7 +129,7 @@ signals:
 	/**
 		\fn void handleNewChatWidget(ChatWidget *chat, bool &handled)
 	 	Sygna� ten jest wysy�any po utworzeniu nowego okna chat.
-		Je�li zmienna handled zostanie ustawiona na true, to 
+		Je�li zmienna handled zostanie ustawiona na true, to
 		niezostanie utworzony nowy obiekt ChatWindiw
 		\param chat nowe okno chat
 	**/

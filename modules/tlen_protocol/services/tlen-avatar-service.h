@@ -19,7 +19,7 @@ class TlenAvatarService : public AvatarService
 {
 	Q_OBJECT
 
-	QList<ContactAccountData *> inProgress;
+	QList<ContactAccountData *> InProgress;
 
 public:
 	TlenAvatarService(QObject *parent = 0) : AvatarService(parent) {}

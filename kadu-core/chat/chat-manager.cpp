@@ -60,7 +60,9 @@ void ChatManager::load(Account *account)
 	if (chatsNode.isNull())
 		return;
 
-	QDomNodeList chatNodes = chatsNode.elementsByTagName("Chat");
+	// TODO 0.6.6: by tag does not work, this works only if childNodes are "Chat"
+	QDomNodeList chatNodes = chatsNode.childNodes();
+	//QDomNodeList chatNodes = chatsNode.elementsByTagName("Chat");
 
 	int count = chatNodes.count();
 
