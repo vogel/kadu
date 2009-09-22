@@ -14,7 +14,7 @@
 #include "ao_sound.h"
 #include "debug.h"
 #include "../sound/sound.h"
-#include "../sound/sound_file.h"
+#include "../sound/sound-file.h"
 
 /*
   pier... arts wyk³ada ca³e kadu na ao_default_driver_id, 
