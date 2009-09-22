@@ -434,14 +434,14 @@ void KaduWindow::createDefaultToolbars(QDomElement parentConfig)
 	QDomElement dockAreaConfig = getDockAreaConfigElement(parentConfig, "topDockArea");
 	QDomElement toolbarConfig = xml_config_file->createElement(dockAreaConfig, "ToolBar");
 
-	addToolButton(toolbarConfig, "addUserAction");
-	addToolButton(toolbarConfig, "addGroupAction");
-	addToolButton(toolbarConfig, "muteSoundsAction");
+	addToolButton(toolbarConfig, "addUserAction", Qt::ToolButtonTextUnderIcon);
+	addToolButton(toolbarConfig, "addGroupAction", Qt::ToolButtonTextUnderIcon);
+	addToolButton(toolbarConfig, "muteSoundsAction", Qt::ToolButtonTextUnderIcon);
 }
 
-void KaduWindow::addAction(const QString &actionName, bool showLabel)
+void KaduWindow::addAction(const QString &actionName, Qt::ToolButtonStyle style)
 {
-	addToolButton(findExistingToolbar(""), actionName, showLabel);
+	addToolButton(findExistingToolbar(""), actionName, style);
 	Core::instance()->kaduWindow()->refreshToolBars("");
 }
 

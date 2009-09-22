@@ -173,12 +173,12 @@ void ChatEditBox::createDefaultToolbars(QDomElement toolbarsConfig)
 	toolbarConfig.setAttribute("x_offset", 200);
 	toolbarConfig.setAttribute("align", "right");
 
-	addToolButton(toolbarConfig, "sendAction", true);
+	addToolButton(toolbarConfig, "sendAction", Qt::ToolButtonTextBesideIcon);
 }
 
-void ChatEditBox::addAction(const QString &actionName, bool showLabel)
+void ChatEditBox::addAction(const QString &actionName, Qt::ToolButtonStyle style)
 {
-	addToolButton(findExistingToolbar("chat"), actionName, showLabel);
+	addToolButton(findExistingToolbar("chat"), actionName, style);
 
 	foreach (ChatEditBox *chatEditBox, chatEditBoxes)
 		chatEditBox->refreshToolBars("chat");

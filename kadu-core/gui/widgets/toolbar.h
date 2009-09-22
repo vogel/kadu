@@ -43,7 +43,7 @@ class KADUAPI ToolBar : public QToolBar, public ConfigurationAwareObject
 		QString actionName;
 		QAction *action;
 		QToolButton *button;
-		bool showLabel;
+		Qt::ToolButtonStyle style;
 
 		bool operator == (struct ToolBarAction action) {
 			return actionName == action.actionName;
@@ -58,7 +58,7 @@ class KADUAPI ToolBar : public QToolBar, public ConfigurationAwareObject
 
 	QPoint MouseStart;
 
-	void addAction(const QString &actionName, bool showLabel, QAction *after = 0);
+	void addAction(const QString &actionName, Qt::ToolButtonStyle style, QAction *after = 0);
 
 	static QMap<QString, QList<ToolBarAction> > DefaultActions;
 
@@ -68,7 +68,6 @@ private slots:
 		Slot dodaj?cy wybrany przycisk
 	**/
 	void addButtonClicked(QAction *action);
-	void showTextLabel();
 	void deleteButton();
 
 	/**
@@ -133,7 +132,7 @@ public:
 	~ToolBar();
 
  	void deleteAction(const QString &actionName);
- 	void moveAction(const QString &actionName, bool showLabel, QAction *after);
+	void moveAction(const QString &actionName, Qt::ToolButtonStyle style, QAction *after);
 
 	/**
 		\fn void loadFromConfig(QDomElement parent_element)
@@ -168,8 +167,8 @@ class KADUAPI ActionDrag : public QDrag
 {
 
 public:
-	ActionDrag(const QString &actionName, bool showLabel, QWidget* dragSource = 0);
-	static bool decode(QDropEvent *event, QString &actionName, bool &showLabel);
+	ActionDrag(const QString &actionName, Qt::ToolButtonStyle style, QWidget* dragSource = 0);
+	static bool decode(QDropEvent *event, QString &actionName, Qt::ToolButtonStyle &style);
 };
 
 #endif

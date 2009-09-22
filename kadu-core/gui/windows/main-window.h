@@ -39,7 +39,7 @@ protected:
 
 	static QDomElement getToolbarsConfigElement();
 	static QDomElement getDockAreaConfigElement(QDomElement toolbarsConfig, const QString &name);
-	static void addToolButton(QDomElement toolbarConfig, const QString &actionName, bool showLabel = false);
+	static void addToolButton(QDomElement toolbarConfig, const QString &actionName, Qt::ToolButtonStyle style = Qt::ToolButtonIconOnly);
 	static QDomElement findExistingToolbarOnArea(const QString &areaName);
 	static QDomElement findExistingToolbar(const QString &prefix);
 
