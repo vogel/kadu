@@ -57,8 +57,8 @@ ChatWidgetManager * ChatWidgetManager::instance()
 	return Instance;
 }
 
-ChatWidgetManager::ChatWidgetManager()
-	: StorableStringList("ChatWindows", "Chat", 0)
+ChatWidgetManager::ChatWidgetManager() :
+	StorableStringList("ChatWindows", "Chat", 0)
 {
 	kdebugf();
 
@@ -113,9 +113,9 @@ void ChatWidgetManager::load()
 
 	StorableStringList::load();
 
-	for (int i = 0; i < count(); i++)
+	foreach (const QString &uuid, content())
 	{
-		QUuid chatId = QUuid(at(i));
+		QUuid chatId(uuid);
 
 		if (chatId.isNull())
 			continue;
