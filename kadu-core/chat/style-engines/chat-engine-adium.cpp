@@ -152,6 +152,7 @@ void AdiumChatStyleEngine::appendMessage(HtmlMessagesRenderer *renderer, Message
 	
 	formattedMessageHtml = replaceKeywords(renderer->chat(), BaseHref, formattedMessageHtml, message);
 	formattedMessageHtml.replace("\n", " ");
+	formattedMessageHtml.replace("'", "\\'");
 	formattedMessageHtml.prepend("<span>");
 	formattedMessageHtml.append("</span>");
 
