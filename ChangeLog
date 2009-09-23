@@ -34,6 +34,8 @@ Jeśli jest w postaci (z) to zarówno pomysł jak i wykonanie należy do z.
 * new StatusContainer API (vogel)
 * suport for avatars and gadu avatars (vogel, Juzef)
 * sound API fixed (vogel)
+* new module providing basic Jabber/XMPP protocol support (Juzef, uzi)
+* improvements in Jabber/XMPP: support for avatars, detailed connection options, account registration, receiving file transfers, other minor fixes and cleanups (Juzef) 
 
 +++ wersja 0.6.5.1 (14.01.2009)
 * poprawiony problem z zapisywaniem rozmiaru okien przy korzystaniu z twin view (dorr)
