@@ -12,6 +12,7 @@
 
 #include "accounts/account.h"
 #include "accounts/account-manager.h"
+#include "chat/aggregate-chat.h"
 #include "chat/chat-manager.h"
 #include "chat/message/message.h"
 #include "contacts/contact-manager.h"
@@ -126,37 +127,37 @@ void HistorySqlStorage::initIndexes()
 void HistorySqlStorage::initQueries()
 {
 	ClearChatHistoryQuery = QSqlQuery(Database);
-	ClearChatHistoryQuery.prepare("DELETE FROM kadu_messages WHERE chat=:chat;");
+	ClearChatHistoryQuery.prepare("DELETE FROM kadu_messages WHERE %1");
 
 	ListChatsQuery = QSqlQuery(Database);
 	ListChatsQuery.prepare("SELECT DISTINCT chat FROM kadu_messages");
 
 	ListChatDatesQuery = QSqlQuery(Database);
-	ListChatDatesQuery.prepare("SELECT DISTINCT date(receive_time) as date FROM kadu_messages WHERE chat=:chat");
+	ListChatDatesQuery.prepare("SELECT DISTINCT date(receive_time) as date FROM kadu_messages WHERE %1");
 	
 	ListChatMessagesQuery = QSqlQuery(Database);
-	ListChatMessagesQuery.prepare("SELECT sender, content, send_time, receive_time, attributes FROM kadu_messages WHERE chat=:chat ORDER BY receive_time");
+	ListChatMessagesQuery.prepare("SELECT sender, content, send_time, receive_time, attributes FROM kadu_messages WHERE %1 ORDER BY receive_time");
 
 	ListChatMessagesByDateQuery = QSqlQuery(Database);
-	ListChatMessagesByDateQuery.prepare("SELECT sender, content, send_time, receive_time, attributes FROM kadu_messages WHERE chat=:chat AND date(receive_time) = date(:date) ORDER BY receive_time");
+	ListChatMessagesByDateQuery.prepare("SELECT sender, content, send_time, receive_time, attributes FROM kadu_messages WHERE %1 AND date(receive_time) = date(:date) ORDER BY receive_time");
 
 	ListChatMessagesByDateLimitQuery = QSqlQuery(Database);
-	ListChatMessagesByDateLimitQuery.prepare("SELECT sender, content, send_time, receive_time, attributes FROM kadu_messages WHERE chat=:chat AND date(receive_time) = date(:date) ORDER BY receive_time LIMIT :limit");
+	ListChatMessagesByDateLimitQuery.prepare("SELECT sender, content, send_time, receive_time, attributes FROM kadu_messages WHERE %1 AND date(receive_time) = date(:date) ORDER BY receive_time LIMIT :limit");
 
 	ListChatMessagesLimitQuery = QSqlQuery(Database);
-	ListChatMessagesLimitQuery.prepare("SELECT sender, content, send_time, receive_time, attributes FROM kadu_messages WHERE chat=:chat ORDER BY receive_time LIMIT :limit");
+	ListChatMessagesLimitQuery.prepare("SELECT sender, content, send_time, receive_time, attributes FROM kadu_messages WHERE %1 ORDER BY receive_time LIMIT :limit");
 	
 	ListChatMessagesSinceQuery = QSqlQuery(Database);
-	ListChatMessagesSinceQuery.prepare("SELECT sender, content, send_time, receive_time, attributes FROM kadu_messages WHERE chat=:chat AND date(receive_time) >= date(:date) ORDER BY receive_time");
+	ListChatMessagesSinceQuery.prepare("SELECT sender, content, send_time, receive_time, attributes FROM kadu_messages WHERE %1 AND date(receive_time) >= date(:date) ORDER BY receive_time");
 
 	ListChatMessagesBackToQuery = QSqlQuery(Database);
-	ListChatMessagesBackToQuery.prepare("SELECT sender, content, send_time, receive_time, attributes FROM kadu_messages WHERE chat=:chat AND datetime(receive_time) >= datetime(:date) ORDER BY receive_time DESC LIMIT :limit");
+	ListChatMessagesBackToQuery.prepare("SELECT sender, content, send_time, receive_time, attributes FROM kadu_messages WHERE %1 AND datetime(receive_time) >= datetime(:date) ORDER BY receive_time DESC LIMIT :limit");
 
 	CountChatMessagesQuery = QSqlQuery(Database);
-	CountChatMessagesQuery.prepare("SELECT COUNT(chat) FROM kadu_messages WHERE chat=:chat");
+	CountChatMessagesQuery.prepare("SELECT COUNT(chat) FROM kadu_messages WHERE %1");
 
 	CountChatMessagesByDateQuery = QSqlQuery(Database);
-	CountChatMessagesByDateQuery.prepare("SELECT COUNT(chat) FROM kadu_messages WHERE chat=:chat AND date(receive_time) = date(:date)");
+	CountChatMessagesByDateQuery.prepare("SELECT COUNT(chat) FROM kadu_messages WHERE %1 AND date(receive_time) = date(:date)");
 }
 
 void HistorySqlStorage::messageReceived(const Message &message)
@@ -198,8 +199,7 @@ void HistorySqlStorage::appendMessage(const Message &message)
 void HistorySqlStorage::clearChatHistory(Chat *chat)
 {
 	DatabaseMutex.lock();
-
-	ClearChatHistoryQuery.bindValue(":chat", chat->uuid().toString());
+	bindChat(chat, ClearChatHistoryQuery);
 	executeQuery(ClearChatHistoryQuery);
 
 	DatabaseMutex.unlock();
@@ -253,7 +253,20 @@ QList<QDate> HistorySqlStorage::chatDates(Chat *chat, HistorySearchParameters se
 	DatabaseMutex.lock();
 
 	QSqlQuery query(Database);
-	QString queryString = "SELECT DISTINCT date(receive_time) as date FROM kadu_messages WHERE chat=:chat";
+	QString queryString = "SELECT DISTINCT date(receive_time) as date FROM kadu_messages WHERE";
+
+	AggregateChat *aggregate = qobject_cast<AggregateChat *>(chat);
+
+	if (aggregate)
+	{
+		QList<Chat *> subchats = aggregate->chats();
+		QStringList list;
+		for (int i = 0; i < subchats.size(); i++)
+			list.append(":chat" + QString::number(i));
+		queryString += " chat IN (" + list.join(",") + ")";
+	}
+	else
+		queryString += " chat=:chat";
 
 	if (!search.query().isEmpty())
 		queryString += " AND content LIKE :content";
@@ -264,7 +277,15 @@ QList<QDate> HistorySqlStorage::chatDates(Chat *chat, HistorySearchParameters se
 
 	query.prepare(queryString);
 
-	query.bindValue(":chat", chat->uuid().toString());
+	if (aggregate)
+	{
+		QList<Chat *> subchats = aggregate->chats();
+		for (int i = 0; i < subchats.size(); i++)
+			query.bindValue(":chat" + QString::number(i), aggregate->chats().at(i)->uuid().toString());
+	}
+	else
+		  query.bindValue(":chat", chat->uuid().toString());
+
 	if (!search.query().isEmpty())
 		query.bindValue(":content", QLatin1String("%") + search.query() + "%");
 	if (search.fromDate().isValid())
@@ -273,7 +294,6 @@ QList<QDate> HistorySqlStorage::chatDates(Chat *chat, HistorySearchParameters se
 		query.bindValue(":toDate", search.toDate());
 	
 	QList<QDate> dates;
-
 	executeQuery(query);
 	while (query.next())
 	{
@@ -302,7 +322,8 @@ QList<Message> HistorySqlStorage::messages(Chat *chat, QDate date, int limit)
 					? ListChatMessagesByDateQuery
 					: ListChatMessagesByDateLimitQuery;
 
-	query.bindValue(":chat", chat->uuid().toString());
+	bindChat(chat, query);
+
 	if (!date.isNull())
 		query.bindValue(":date", date.toString(Qt::ISODate));
 	if (limit != 0)
@@ -325,7 +346,7 @@ QList<Message> HistorySqlStorage::messagesSince(Chat *chat, QDate date)
 	if (date.isNull())
 		return messages;
 	
-	ListChatMessagesSinceQuery.bindValue(":chat", chat->uuid().toString());
+	bindChat(chat, ListChatMessagesSinceQuery);
 	ListChatMessagesSinceQuery.bindValue(":date", date.toString(Qt::ISODate));
 	executeQuery(ListChatMessagesSinceQuery);
 	messages = messagesFromQuery(chat, ListChatMessagesSinceQuery);
@@ -342,7 +363,7 @@ QList<Message> HistorySqlStorage::messagesBackTo(Chat *chat, QDateTime datetime,
 	QList<Message> result;
 	QSqlQuery query = ListChatMessagesBackToQuery;
 
-	query.bindValue(":chat", chat->uuid().toString());
+	bindChat(chat, query);
 	query.bindValue(":date", datetime.toString(Qt::ISODate));
 	query.bindValue(":limit", limit);
 	executeQuery(query);
@@ -367,7 +388,11 @@ int HistorySqlStorage::messagesCount(Chat *chat, QDate date)
 			? CountChatMessagesQuery
 			: CountChatMessagesByDateQuery;
 
-	query.bindValue(":chat", chat->uuid().toString());
+	AggregateChat *aggregate = qobject_cast<AggregateChat *>(chat);
+	QString queryString;
+
+	bindChat(chat, query);
+
 	if (!date.isNull())
 		query.bindValue(":date", date.toString(Qt::ISODate));
 
@@ -409,4 +434,30 @@ QList<Message> HistorySqlStorage::messagesFromQuery(Chat *chat, QSqlQuery query)
 	}
 
 	return messages;
+}
+
+void HistorySqlStorage::bindChat(Chat *chat, QSqlQuery &query)
+{
+	AggregateChat *aggregate = qobject_cast<AggregateChat *>(chat);
+	QString queryString;
+
+	if (aggregate)
+	{
+		QList<Chat *> subchats = aggregate->chats();
+		QStringList list;
+
+		for (int i = 0; i < subchats.size(); i++)
+			list.append(":chat" + QString::number(i));
+
+		queryString = "chat IN (" + list.join(",") + ")";
+		query.prepare(query.lastQuery().arg(queryString));
+
+		for (int i = 0; i < subchats.size(); i++)
+			query.bindValue(":chat" + QString::number(i), aggregate->chats().at(i)->uuid().toString());
+	}
+	else
+	{
+		query.prepare(query.lastQuery().arg("chat=:chat"));
+		query.bindValue(":chat", chat->uuid().toString());
+	}
 }

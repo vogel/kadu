@@ -271,7 +271,13 @@ void HistoryWindow::dateActivated(const QModelIndex &index)
 		return;
 
 	QList<Message> messages = History::instance()->messages(chat, date);
-	ContentBrowser->setChat(chat);
+
+	AggregateChat *aggregate = qobject_cast<AggregateChat *>(chat);
+	if (aggregate)
+		ContentBrowser->setChat(aggregate->chats().at(0));
+	else
+		ContentBrowser->setChat(chat);
+
 	ContentBrowser->clearMessages();
 	ContentBrowser->appendMessages(messages);
 
