@@ -7,6 +7,7 @@
  *                                                                         *
  ***************************************************************************/
 
+#include <QtCore/QDir>
 #include <QtSql/QSqlError>
 #include <QtSql/QSqlRecord>
 
@@ -64,9 +65,9 @@ void HistorySqlStorage::initDatabase()
 		QSqlDatabase::removeDatabase("kadu-history");
 	}
 
-	QDir avatarsDir(ggPath("history"));
-	if (!avatarsDir.exists())
-		avatarsDir.mkpath(ggPath("history"));
+	QDir historyDir(ggPath("history"));
+	if (!historyDir.exists())
+		historyDir.mkpath(ggPath("history"));
 
 	Database = QSqlDatabase::addDatabase("QSQLITE", "kadu-history");
 	Database.setDatabaseName(ggPath("history/history.db"));
