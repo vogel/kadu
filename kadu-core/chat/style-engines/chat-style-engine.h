@@ -4,6 +4,8 @@
 #include <QtCore/QString>
 #include <QtCore/QStringList>
 
+#include <chat/message/message.h>
+
 class HtmlMessagesRenderer;
 class MessageRenderInfo;
 class Preview;
@@ -30,6 +32,7 @@ public:
 	virtual void appendMessage(HtmlMessagesRenderer *, MessageRenderInfo *) = 0;
 	virtual void pruneMessage(HtmlMessagesRenderer *) = 0;
 	virtual void refreshView(HtmlMessagesRenderer *) = 0;
+	virtual void messageStatusChanged(HtmlMessagesRenderer *, Message, Message::Status) = 0;
 
 	virtual void prepareStylePreview(Preview *, QString, QString) = 0;
 
@@ -40,7 +43,6 @@ public:
 	virtual void styleEditionRequested(QString) = 0;
 
 	virtual bool removeStyle(const QString &) = 0;
-
 };
 
 #endif // CHAT_STYLE_ENGINE_H

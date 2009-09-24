@@ -20,8 +20,8 @@
 #include "configuration/configuration-file.h"
 #include "contacts/contact-manager.h"
 #include "contacts/model/contacts-model.h"
-#include "contacts/model/filter/anonymous-without-messages-contact-filter.h"
-#include "contacts/model/filter/group-contact-filter.h"
+#include "contacts/filter/anonymous-without-messages-contact-filter.h"
+#include "contacts/filter/group-contact-filter.h"
 #include "core/core.h"
 #include "gui/hot-key.h"
 #include "gui/actions/action.h"
@@ -132,7 +132,7 @@ void KaduWindow::createMenu()
 void KaduWindow::createKaduMenu()
 {
 	KaduMenu = new QMenu();
-	KaduMenu->setTitle("Kadu");
+	KaduMenu->setTitle("&Kadu");
 
 	RecentChatsMenu = new QMenu();
 	RecentChatsMenu->setIcon(IconsManager::instance()->loadIcon("OpenChat"));
@@ -156,7 +156,7 @@ void KaduWindow::createKaduMenu()
 void KaduWindow::createContactsMenu()
 {
 	ContactsMenu = new QMenu();
-	ContactsMenu->setTitle(tr("Buddies"));
+	ContactsMenu->setTitle(tr("&Buddies"));
 
 	insertMenuActionDescription(Actions->AddUser, MenuContacts);
 	insertMenuActionDescription(Actions->AddGroup, MenuContacts);
@@ -175,7 +175,7 @@ void KaduWindow::createContactsMenu()
 void KaduWindow::createHelpMenu()
 {
 	HelpMenu = new QMenu();
-	HelpMenu->setTitle(tr("Help"));
+	HelpMenu->setTitle(tr("&Help"));
 
 	insertMenuActionDescription(Actions->Help, MenuHelp);
 	HelpMenu->addSeparator();
@@ -434,14 +434,14 @@ void KaduWindow::createDefaultToolbars(QDomElement parentConfig)
 	QDomElement dockAreaConfig = getDockAreaConfigElement(parentConfig, "topDockArea");
 	QDomElement toolbarConfig = xml_config_file->createElement(dockAreaConfig, "ToolBar");
 
-	addToolButton(toolbarConfig, "addUserAction");
-	addToolButton(toolbarConfig, "addGroupAction");
-	addToolButton(toolbarConfig, "muteSoundsAction");
+	addToolButton(toolbarConfig, "addUserAction", Qt::ToolButtonTextUnderIcon);
+	addToolButton(toolbarConfig, "addGroupAction", Qt::ToolButtonTextUnderIcon);
+	addToolButton(toolbarConfig, "muteSoundsAction", Qt::ToolButtonTextUnderIcon);
 }
 
-void KaduWindow::addAction(const QString &actionName, bool showLabel)
+void KaduWindow::addAction(const QString &actionName, Qt::ToolButtonStyle style)
 {
-	addToolButton(findExistingToolbar(""), actionName, showLabel);
+	addToolButton(findExistingToolbar(""), actionName, style);
 	Core::instance()->kaduWindow()->refreshToolBars("");
 }
 

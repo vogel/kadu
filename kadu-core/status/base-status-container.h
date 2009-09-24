@@ -13,7 +13,9 @@
 #include "configuration/uuid-storable-object.h"
 #include "status/status-container.h"
 
-class BaseStatusContainer : public StatusContainer, public UuidStorableObject
+#include "exports.h"
+
+class KADUAPI BaseStatusContainer : public StatusContainer, public UuidStorableObject
 {
 public:
 	BaseStatusContainer(StoragePoint *storage);

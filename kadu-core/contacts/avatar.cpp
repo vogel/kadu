@@ -8,13 +8,16 @@
 ***************************************************************************/
 
 #include "contacts/contact-account-data.h"
+#include "misc/path-conversion.h"
 
 #include "avatar.h"
 
-Avatar::Avatar(ContactAccountData *contactAccountData) :
+Avatar::Avatar(ContactAccountData *contactAccountData, bool loadFromConfiguration) :
 		StorableObject("Avatar", contactAccountData),
 		MyContactAccountData(contactAccountData)
 {
+    	if (!loadFromConfiguration)
+		StorableObject::setLoaded(true);
 }
 
 Avatar::~Avatar()
@@ -32,7 +35,13 @@ void Avatar::load()
 	NextUpdate = loadValue<QDateTime>("NextUpdate");
 	FileName = loadValue<QString>("FileName");
 
-	Pixmap.load(FileName);
+	QString avatarsPath = ggPath("avatars/");
+
+	// TODO 0.6.6 - just remove this line
+	FileName.remove(avatarsPath);
+	FilePath = avatarsPath + FileName;
+
+	Pixmap.load(avatarsPath + FileName);
 }
 
 void Avatar::store()
@@ -86,6 +95,15 @@ void Avatar::setFileName(const QString &fileName)
 {
 	ensureLoaded();
 	FileName = fileName;
+
+	QString avatarsPath = ggPath("avatars/");
+	FilePath = avatarsPath + FileName;
+}
+
+QString Avatar::filePath()
+{
+    	ensureLoaded();
+	return FilePath;
 }
 
 QPixmap Avatar::pixmap()

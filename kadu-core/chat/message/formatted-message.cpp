@@ -91,12 +91,10 @@ FormattedMessage FormattedMessage::parse(const QTextDocument *document)
 }
 
 FormattedMessage::FormattedMessage()
-	: Id(0)
 {
 }
 
 FormattedMessage::FormattedMessage(const QString &messageString)
-	: Id(0)
 {
 	Parts.append(FormattedMessagePart(messageString, false, false, false, QColor()));
 }

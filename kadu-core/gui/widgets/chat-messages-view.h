@@ -12,6 +12,7 @@
 
 #include <QtCore/QList>
 
+#include "chat/message/message.h"
 #include "protocols/protocol.h"
 
 #include "kadu-text-browser.h"
@@ -49,6 +50,8 @@ private slots:
 	void scrollToLine();
 
 	void imageReceived(const QString &imageId, const QString &imagePath);
+
+	void messageStatusChanged(Message message, Message::Status);
 
 public:
 	ChatMessagesView(Chat *chat = 0, QWidget *parent = 0);

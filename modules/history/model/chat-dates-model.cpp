@@ -64,7 +64,7 @@ QVariant ChatDatesModel::headerData(int section, Qt::Orientation orientation, in
 
 QString ChatDatesModel::fetchTitle(QDate date) const
 {
-	QList<Message> messages = History::instance()->getMessages(MyChat, date, 1);
+	QList<Message> messages = History::instance()->messages(MyChat, date, 1);
 	if (messages.size() == 0)
 		return "";
 
@@ -85,7 +85,7 @@ QString ChatDatesModel::fetchTitle(QDate date) const
 
 int ChatDatesModel::fetchSize(QDate date) const
 {
-	return History::instance()->getMessagesCount(MyChat, date);
+	return History::instance()->messagesCount(MyChat, date);
 }
 
 ChatDatesModel::ItemCachedData ChatDatesModel::fetchCachedData(QDate date) const
@@ -149,7 +149,7 @@ void ChatDatesModel::setDates(QList<QDate> dates)
 	Dates.clear();
 	endRemoveRows();
 
-	beginInsertRows(QModelIndex(), 0, dates.size());
+	beginInsertRows(QModelIndex(), 0, dates.size() - 1);
 	Dates = dates;
 	endInsertRows();
 }

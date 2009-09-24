@@ -35,7 +35,7 @@ class AvatarManager : public QObject, public AccountsAwareObject
 	QString avatarFileName(Avatar avatar);
 
 private slots:
-	void avatarFetched(ContactAccountData *contactAccountData, QPixmap pixmap);
+	void avatarFetched(ContactAccountData *contactAccountData, const QByteArray &data);
 
 protected:
 	virtual void accountRegistered(Account *account);

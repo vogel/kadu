@@ -4,14 +4,17 @@
 set (SOURCES
 	gui/widgets/tlen-create-account-widget.cpp
 	gui/widgets/tlen-edit-account-widget.cpp
+	open-chat-with/tlen-open-chat-with-runner.cpp
+	server/tlen-avatar-fetcher.cpp
+	services/tlen-avatar-service.cpp
 	services/tlen-chat-service.cpp
 	tlen-account-data-manager.cpp
 	tlen-contact-account-data.cpp
 	tlen-contact-account-data-manager.cpp
 	tlen-contact-account-data-widget.cpp
-	tlen_account.cpp
-	tlen_protocol.cpp
-	tlen_protocol_factory.cpp
+	tlen-account.cpp
+	tlen-protocol.cpp
+	tlen-protocol-factory.cpp
 	QtTlen/auth.cpp
 #	QtTlen/filetransfer.cpp
 #	QtTlen/roster_item.cpp
@@ -22,14 +25,17 @@ set (SOURCES
 set (MOC_SOURCES
 	gui/widgets/tlen-create-account-widget.h
 	gui/widgets/tlen-edit-account-widget.h
+#	open-chat-with/tlen-open-chat-with-runner.h
+	server/tlen-avatar-fetcher.h
+	services/tlen-avatar-service.h
 	services/tlen-chat-service.h
 #	tlen-account-data-manager.h
 #	tlen-contact-account-data.h
 #	tlen-contact-account-data-manager.h
 	tlen-contact-account-data-widget.h
-#	tlen_account.h
-	tlen_protocol.h
-#	tlen_protocol_factory.h
+#	tlen-account.h
+	tlen-protocol.h
+#	tlen-protocol-factory.h
 #	QtTlen/auth.h
 #	QtTlen/filetransfer.h
 #	QtTlen/roster_item.h
@@ -42,7 +48,7 @@ set (TRANSLATION_SOURCES
 )
 
 set (CONFIGURATION_FILES
-	configuration/tlen_contact.ui
+	configuration/tlen-contact.ui
 )
 
 set (DATA_FILES

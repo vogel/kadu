@@ -7,17 +7,16 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "gui/widgets/jabber-create-account-widget.h"
-#include "gui/widgets/jabber-edit-account-widget.h"
-
-#include "jabber-account.h"
-#include "jabber-contact-account-data-widget.h"
-#include "jabber_protocol.h"
-#include "jabber-contact-account-data.h"
 #include "misc/misc.h"
 #include "status/status-type.h"
 #include "status/status-type-manager.h"
 
+#include "gui/widgets/jabber-contact-account-data-widget.h"
+#include "gui/widgets/jabber-create-account-widget.h"
+#include "gui/widgets/jabber-edit-account-widget.h"
+#include "jabber-account.h"
+#include "jabber-contact-account-data.h"
+#include "jabber-protocol.h"
 #include "jabber-protocol-factory.h"
 
 JabberProtocolFactory * JabberProtocolFactory::Instance = 0;

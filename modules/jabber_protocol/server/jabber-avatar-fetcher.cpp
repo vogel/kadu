@@ -17,9 +17,9 @@
 #include "contacts/avatar-manager.h"
 #include "misc/path-conversion.h"
 
-#include "jabber_protocol.h"
-#include "jabber-client.h"
-#include "vcard-factory.h"
+#include "client/jabber-client.h"
+#include "jabber-protocol.h"
+#include "utils/vcard-factory.h"
 
 #include "jabber-avatar-fetcher.h"
 
@@ -42,11 +42,8 @@ void JabberAvatarFetcher::receivedVCard()
 	const VCard* vcard = VCardFactory::instance()->vcard(MyContactAccountData->id());
 	if (vcard && !vcard->photo().isEmpty()) 
 	{
-		QImage image;
-		image.loadFromData(vcard->photo());
-		QPixmap pixmap = QPixmap::fromImage(image);
 		MyContactAccountData->avatar().setNextUpdate(QDateTime::fromTime_t(QDateTime::currentDateTime().toTime_t() + 7200));
-		emit avatarFetched(MyContactAccountData, pixmap);
+		emit avatarFetched(MyContactAccountData, vcard->photo());
 	}
 	deleteLater();
 }

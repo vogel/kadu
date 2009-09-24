@@ -40,6 +40,9 @@ private slots:
 	void okClicked();	
 	void selectIcon();
 
+protected:
+	virtual void keyPressEvent(QKeyEvent *e);
+
 public:
 	GroupPropertiesWindow(Group *editedGroup, QWidget *parent = 0);
 

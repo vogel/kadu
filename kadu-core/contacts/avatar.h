@@ -15,18 +15,21 @@
 
 #include "configuration/storable-object.h"
 
+#include "exports.h"
+
 class ContactAccountData;
 
-class Avatar : public StorableObject
+class KADUAPI Avatar : public StorableObject
 {
 	ContactAccountData *MyContactAccountData;
 	QDateTime LastUpdated;
 	QDateTime NextUpdate;
 	QString FileName;
 	QPixmap Pixmap;
+	QString FilePath;
 
 public:
-	Avatar(ContactAccountData *contactAccountData);
+	Avatar(ContactAccountData *contactAccountData, bool loadFromConfiguration = true);
 	virtual ~Avatar();
 
 	virtual void load();
@@ -42,6 +45,8 @@ public:
 
 	QString fileName();
 	void setFileName(const QString &fileName);
+
+	QString filePath();
 
 	QPixmap pixmap();
 	void setPixmap(const QPixmap &pixmap);

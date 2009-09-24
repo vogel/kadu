@@ -7,11 +7,11 @@
 *                                                                         *
 ***************************************************************************/
 
+#include "client/jabber-client.h"
 #include "jabber-avatar-service.h"
-#include "jabber-client.h"
-#include "jabber_protocol.h"
+#include "jabber-protocol.h"
 #include "server/jabber-avatar-fetcher.h"
-#include "vcard-factory.h"
+#include "utils/vcard-factory.h"
 
 void JabberAvatarService::fetchAvatar(ContactAccountData *contactAccountData)
 {
@@ -21,8 +21,8 @@ void JabberAvatarService::fetchAvatar(ContactAccountData *contactAccountData)
 
 
 	JabberAvatarFetcher *avatarFetcher = new JabberAvatarFetcher(contactAccountData, this);
-	connect(avatarFetcher, SIGNAL(avatarFetched(ContactAccountData *, QPixmap)),
-			this, SIGNAL(avatarFetched(ContactAccountData *, QPixmap)));
+	connect(avatarFetcher, SIGNAL(avatarFetched(ContactAccountData *, const QByteArray &)),
+			this, SIGNAL(avatarFetched(ContactAccountData *, const QByteArray &)));
 	avatarFetcher->fetchAvatar();
 }
 

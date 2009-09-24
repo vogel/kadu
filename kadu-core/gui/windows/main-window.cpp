@@ -148,7 +148,7 @@ QDomElement MainWindow::getDockAreaConfigElement(QDomElement toolbarsConfig, con
 	return dockAreaConfig;
 }
 
-void MainWindow::addToolButton(QDomElement toolbarConfig, const QString &actionName, bool showLabel)
+void MainWindow::addToolButton(QDomElement toolbarConfig, const QString &actionName, Qt::ToolButtonStyle style)
 {
 	QDomElement buttonConfig = xml_config_file->findElementByProperty(toolbarConfig, "ToolButton", "action_name", actionName);
 //don't add element if exists
@@ -156,7 +156,7 @@ void MainWindow::addToolButton(QDomElement toolbarConfig, const QString &actionN
 		return;
 	buttonConfig = xml_config_file->createElement(toolbarConfig, "ToolButton");
 	buttonConfig.setAttribute("action_name", actionName);
-	buttonConfig.setAttribute("uses_text_label", showLabel);
+	buttonConfig.setAttribute("toolbutton_style", style);
 }
 
 QDomElement MainWindow::findExistingToolbarOnArea(const QString &areaName)

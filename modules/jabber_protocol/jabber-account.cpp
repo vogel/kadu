@@ -10,14 +10,24 @@
 
 #include "configuration/xml-configuration-file.h"
 #include "misc/misc.h"
+#include "gui/windows/open-chat-with/open-chat-with-runner-manager.h"
 
 #include "jabber-account.h"
-#include "jabber_protocol.h"
-#include "system-info.h"
+#include "jabber-protocol.h"
+#include "utils/system-info.h"
 
 JabberAccount::JabberAccount(const QUuid &uuid)
 	: Account(uuid), EncryptionMode(JabberAccount::Encryption_Auto)
 {
+	OpenChatRunner = new JabberOpenChatWithRunner(this);
+	OpenChatWithRunnerManager::instance()->registerRunner(OpenChatRunner);
+}
+
+JabberAccount::~JabberAccount()
+{
+	OpenChatWithRunnerManager::instance()->unregisterRunner(OpenChatRunner);
+	delete OpenChatRunner;
+	OpenChatRunner = 0;
 }
 
 bool JabberAccount::setId(const QString &id)

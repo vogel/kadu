@@ -138,11 +138,7 @@ void GaduAvatarFetcher::requestFinished(int id, bool error)
 
 void GaduAvatarFetcher::avatarDownloaded(int id, bool error)
 {
-	QImage image;
-	image.loadFromData(AvatarBuffer.buffer());
-	QPixmap pixmap = QPixmap::fromImage(image);
-
-	emit avatarFetched(MyContactAccountData, pixmap);
+	emit avatarFetched(MyContactAccountData, AvatarBuffer.buffer());
 
 	deleteLater();
 }

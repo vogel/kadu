@@ -26,6 +26,7 @@
 #include <QDebug>
 
 #include <QHostAddress>
+#include <QNetworkAccessManager>
 
 #include <time.h>
 
@@ -77,6 +78,10 @@ void tlen::closeConn() {
 	kdebugf();
 	socket->close();
 	state=tlen::Disconnected;
+	// clear tcfg
+	MiniMailBase = "";
+	// clear token
+	token = "";
 }
 
 bool tlen::isConnected() {
@@ -152,12 +157,69 @@ void tlen::event(QDomNode n) {
 	else if(nodeName=="iq") {
 		if(element.hasAttribute( "type" ) && element.attribute("type") == "result") {
 			if(element.hasAttribute("id") && element.attribute("id")==sid) {
+				tcfgRequest();
 				rosterRequest();
 			}
 
 			if(element.hasAttribute("id") && element.attribute("id")=="GetRoster") {
 				emit clearRosterView();
 				sort=FALSE;
+			}
+			if(element.hasAttribute("from") && element.attribute("from") == "tcfg") {
+				// parse tlen config
+				kdebugf();
+				QDomElement query = element.elementsByTagName("query").item(0).toElement();
+				QDomElement minimail = query.elementsByTagName("mini-mail").item(0).toElement();
+				QDomNodeList minimailChailds = minimail.childNodes();
+				for (int i=0;i<minimailChailds.count();++i)
+				{
+					QDomElement mm = minimailChailds.item(i).toElement();
+					QString mmName = minimailChailds.item(i).nodeName();
+					if (mmName == "base")
+					{
+						MiniMailBase = mm.text();
+					}
+					else if (mmName == "msg")
+					{
+						MiniMailMsg = mm.text();
+						MiniMailMsgMethod = mm.attribute("method");
+					}
+					else if (mmName == "index")
+					{
+						MiniMailIndex = mm.text();
+						MiniMailIndexMethod = mm.attribute("method");
+					}
+					else if (mmName == "login")
+					{
+						MiniMailLogin = mm.text();
+						MiniMailLoginMethod = mm.attribute("method");
+					}
+					else if (mmName == "logout")
+					{
+						MiniMailLogout = mm.text();
+						MiniMailLogoutMethod = mm.attribute("method");
+					}
+					else if (mmName == "compose")
+					{
+						MiniMailCompose = mm.text();
+						MiniMailComposeMethod = mm.attribute("method");
+					}
+					else if (mmName == "avatar-get")
+					{
+						MiniMailAvatarGet = mm.text();
+						MiniMailAvatarGetMethod = mm.attribute("method");
+					}
+					else if (mmName == "avatar-upload")
+					{
+						MiniMailAvatarUpload = mm.text();
+						MiniMailAvatarUploadMethod = mm.attribute("method");
+					}
+					else if (mmName == "avatar-remove")
+					{
+						MiniMailAvatarRemove = mm.text();
+						MiniMailAvatarRemoveMethod = mm.attribute("method");
+					}
+				}
 			}
 
 			if(n.hasChildNodes()) {
@@ -247,6 +309,16 @@ void tlen::event(QDomNode n) {
 					status=l.item(i).firstChild().toText().data();
 				if(l.item(i).nodeName()=="status")
 					descr=l.item(i).firstChild().toText().data();
+				if(l.item(i).nodeName()=="avatar")
+				{
+					// TODO store jid,type,md5 on list/qmultimap, check md5 - avatar changed
+					QDomElement avatar = l.item(i).toElement().elementsByTagName("a").item(0).toElement();
+					if (avatar.hasAttribute("type") && avatar.hasAttribute("md5"))
+					{
+						emit avatarReceived(from, avatar.attribute("type"), avatar.attribute("md5"));
+						qDebug() << "Avatar " << from << "type:" <<avatar.attribute("type") << "md5:" << avatar.attribute("md5");
+					}
+				}
 			}
 
 			descr=decode(descr.toUtf8());
@@ -267,6 +339,14 @@ void tlen::event(QDomNode n) {
 	}
 	else if(nodeName=="n") {
 		//<n f='Rainer+Wiesenfarth+%3CRainer.Wiesenfarth@inpho.de%3E' s='Re%3A+qt+and+mysql,+odbc'/> - new mail
+	}
+	else if(nodeName=="avatar") {
+		// search for token
+		QDomElement e=n.toElement();
+		QDomNodeList l=n.childNodes();
+		for(int i=0; i<l.count(); ++i)
+			if(l.item(i).nodeName()=="token")
+				token=l.item(i).firstChild().toText().data();
 	}
 	else if(nodeName=="f") {
 		QDomElement e=n.toElement();
@@ -344,7 +424,7 @@ bool tlen::tlenLogin() {
 
 	QDomElement resource = doc.createElement( "resource" );
 	query.appendChild( resource );
-	text = doc.createTextNode( "t" );
+	text = doc.createTextNode( "w" ); // t
 	resource.appendChild( text );
 	return write(doc);
 }
@@ -370,6 +450,17 @@ void tlen::rosterRequest() {
 	QDomElement query = doc.createElement( "query" );
 	query.setAttribute( "xmlns", "jabber:iq:roster" );
 	iq.appendChild( query );
+	write(doc);
+}
+// "<iq to='tcfg' type='get' id='TcfgGetAfterLoggedIn'></iq>"
+void tlen::tcfgRequest() {
+	kdebugf();
+	QDomDocument doc;
+	QDomElement iq = doc.createElement( "iq" );
+	iq.setAttribute( "to", "tcfg" );
+	iq.setAttribute( "type", "get" );
+	iq.setAttribute( "id", "TcfgGetAfterLoggedIn" );
+	doc.appendChild( iq );
 	write(doc);
 }
 
@@ -657,3 +748,4 @@ void tlen::receiveFile(QString rndid, QString sender, bool receive) {
 	doc.appendChild(f);
 	write(doc);
 }
+

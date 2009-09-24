@@ -1,12 +1,21 @@
 set (SOURCES
+	sample-play-thread.cpp
+	sample-record-thread.cpp
 	sound.cpp
-	sound_file.cpp
-	sound_slots.cpp
+	sound-event.cpp
+	sound-file.cpp
+	sound-params.cpp
+	sound-play-thread.cpp
+	sound-slots.cpp
 )
 
 set (MOC_SOURCES
+	sample-play-thread.h
+	sample-record-thread.h
 	sound.h
-	sound_slots.h
+	sound-play-thread.h
+	sound-player.h
+	sound-slots.h
 )
 
 set (TRANSLATION_SOURCES
@@ -28,6 +37,7 @@ kadu_module (sound
 )
 
 pkg_search_module (SNDFILE REQUIRED sndfile>=1.0)
+
 include_directories (${SNDFILE_INCLUDE_DIRS})
 link_directories (${SNDFILE_LIBRARY_DIRS})
 

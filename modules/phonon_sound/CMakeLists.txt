@@ -1,14 +1,17 @@
 set (SOURCES
-	phonon_sound.cpp
+	phonon-sound.cpp
 )
 
 set (MOC_SOURCES
-	phonon_sound.h
+	phonon-sound.h
 )
+
+set (QT_USE_PHONON 1)
 
 kadu_module (phonon_sound
 	MODULE_SOURCES ${SOURCES}
 	MODULE_MOC_SOURCES ${MOC_SOURCES}
 	MODULE_TRANSLATION_SOURCES ${TRANSLATION_SOURCES}
 	MODULE_CONFIGURATION_FILES ${CONFIGURATION_FILES}
+	MODULE_LIBRARIES ${QT_PHONON_LIBRARY}
 )

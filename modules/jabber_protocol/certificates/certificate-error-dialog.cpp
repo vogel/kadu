@@ -1,3 +1,12 @@
+ /***************************************************************************
+ *                                                                         *
+ *   This program is free software; you can redistribute it and/or modify  *
+ *   it under the terms of the GNU General Public License as published by  *
+ *   the Free Software Foundation; either version 2 of the License, or     *
+ *   (at your option) any later version.                                   *
+ *                                                                         *
+ ***************************************************************************/
+
 /*
  * Copyright (C) 2008 Remko Troncon
  * See COPYING file for the detailed license.
@@ -12,7 +21,7 @@
 #include "certificates/certificate-error-dialog.h"
 #include "certificates/certificate-display-dialog.h"
 #include "jabber-account.h"
-#include "miniclient.h"
+#include "client/mini-client.h"
 
 CertificateErrorDialog::CertificateErrorDialog(const QString& title, const QString& host, const QCA::Certificate& cert, 
 	int result, QCA::Validity validity, const QString &domainOverride, QObject *parent, QString &tlsOverrideDomain, QByteArray &tlsOverrideCert) 

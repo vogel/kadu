@@ -12,9 +12,11 @@
 
 #include "configuration/configuration-window-data-manager.h"
 
+#include "exports.h"
+
 class ConfigurationWindow;
 
-class NotifierConfigurationDataManager : public ConfigurationWindowDataManager
+class KADUAPI NotifierConfigurationDataManager : public ConfigurationWindowDataManager
 {
 	Q_OBJECT
 

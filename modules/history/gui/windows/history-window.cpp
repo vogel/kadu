@@ -7,7 +7,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <QtGui/QDockWidget>
+#include <QtGui/QDateEdit>
 #include <QtGui/QHBoxLayout>
 #include <QtGui/QLineEdit>
 #include <QtGui/QMenu>
@@ -15,6 +15,8 @@
 #include <QtGui/QSplitter>
 #include <QtGui/QStatusBar>
 #include <QtGui/QVBoxLayout>
+
+#include "chat/message/message.h"
 
 #include "chat/type/chat-type.h"
 #include "chat/filter/chat-name-filter.h"
@@ -26,8 +28,8 @@
 #include "gui/widgets/delayed-line-edit.h"
 #include "gui/windows/message-box.h"
 #include "misc/misc.h"
+#include "activate.h"
 #include "debug.h"
-#include "emoticons.h"
 #include "icons-manager.h"
 
 #include "model/chat-dates-model.h"
@@ -50,32 +52,24 @@ HistoryWindow::HistoryWindow(QWidget *parent) :
 	connectGui();
 
 	loadWindowGeometry(this, "History", "HistoryWindowGeometry", 200, 200, 700, 500);
-
+//TODO 0.6.6:
 	MainPopupMenu = new QMenu(this);
 	MainPopupMenu->addAction(IconsManager::instance()->loadIcon("OpenChat"), tr("&Open chat"), this, SLOT(openChat()));
-	MainPopupMenu->addAction(IconsManager::instance()->loadIcon("LookupUserInfo"), tr("&Search in directory"), this, SLOT(lookupUserInfo()));
-	MainPopupMenu->addAction(IconsManager::instance()->loadIcon("ClearHistory"), tr("&Clear history"), this, SLOT(removeHistoryEntriesPerUser()));
+//	MainPopupMenu->addAction(IconsManager::instance()->loadIcon("LookupUserInfo"), tr("&Search in directory"), this, SLOT(lookupUserInfo()));
+//	MainPopupMenu->addAction(IconsManager::instance()->loadIcon("ClearHistory"), tr("&Clear history"), this, SLOT(removeHistoryEntriesPerUser()));
 	
 	DetailsPopupMenu = new QMenu(this);
-	DetailsPopupMenu->addAction(IconsManager::instance()->loadIcon("ClearHistory"), tr("&Remove entries"), this, SLOT(removeHistoryEntriesPerDate()));
+//	DetailsPopupMenu->addAction(IconsManager::instance()->loadIcon("ClearHistory"), tr("&Remove entries"), this, SLOT(removeHistoryEntriesPerDate()));
 
 	kdebugf2();
 }
 
 HistoryWindow::~HistoryWindow()
 {
-	// for valgrind
-	QStringList searchActions;
-	searchActions << "historySearchAction" << "historyNextResultsAction" << "historyPrevResultsAction" << "historyAdvSearchAction";
-	foreach(QString act, searchActions)
-	{
-		ActionDescription *a = KaduActions[act];
-		delete a;
-	}
-	saveWindowGeometry(this, "History", "HistoryDialogGeometry");
+    	kdebugf();
 
+	saveWindowGeometry(this, "History", "HistoryDialogGeometry");
 	
-	kdebugf();
 	//writeToolBarsToConfig("history");
 	kdebugf2();
 }
@@ -98,21 +92,20 @@ void HistoryWindow::createGui()
 	QWidget *rightWidget = new QWidget(rightSplitter);
 	QVBoxLayout *rightLayout = new QVBoxLayout(rightWidget);
 
-	DelayedLineEdit *searchLineEdit = new DelayedLineEdit(rightWidget);
-	rightLayout->addWidget(searchLineEdit);
-	connect(searchLineEdit, SIGNAL(delayedTextChanged(const QString &)),
-			this, SLOT(searchTextChanged(const QString &)));
+	QWidget *filterWidget = new QWidget(rightWidget);
+	rightLayout->addWidget(filterWidget);
+
+	createFilterBar(filterWidget);
 
 	DetailsListView = new QTreeView(rightWidget);
 	rightLayout->addWidget(DetailsListView);
 
 	DetailsListView->setRootIsDecorated(false);
-	DetailsListView->setUniformRowHeights(true);
 	DetailsListView->setModel(new ChatDatesModel(0, QList<QDate>(), this));
+	DetailsListView->setUniformRowHeights(true);
 
 	ContentBrowser = new ChatMessagesView(0, rightSplitter);
 	ContentBrowser->setPruneEnabled(false);
-	///	ContentBrowser->setMargin(config_file.readNumEntry("General", "ParagraphSeparator"));
 
 	QList<int> sizes;
 	sizes.append(100);
@@ -146,6 +139,29 @@ void HistoryWindow::createChatTree(QWidget *parent)
 	ChatsModelProxy->sort(1);
 	ChatsModelProxy->sort(0); // do the sorting
 	ChatsTree->setRootIsDecorated(true);
+}
+
+void HistoryWindow::createFilterBar(QWidget *parent)
+{
+	QHBoxLayout *layout = new QHBoxLayout(parent);
+
+	DelayedLineEdit *searchLineEdit = new DelayedLineEdit(parent);
+	layout->addWidget(searchLineEdit);
+
+	QDateEdit *fromDate = new QDateEdit(parent);
+	fromDate->setCalendarPopup(true);
+	layout->addWidget(fromDate);
+
+	QDateEdit *toDate = new QDateEdit(parent);
+	toDate->setCalendarPopup(true);
+	layout->addWidget(toDate);
+
+	connect(searchLineEdit, SIGNAL(delayedTextChanged(const QString &)),
+			this, SLOT(searchTextChanged(const QString &)));
+	connect(fromDate, SIGNAL(dateChanged(const QDate &)),
+			this, SLOT(fromDateChanged(const QDate &)));
+	connect(toDate, SIGNAL(dateChanged(const QDate &)),
+			this, SLOT(toDateChanged(const QDate &)));
 }
 
 void HistoryWindow::connectGui()
@@ -229,7 +245,7 @@ void HistoryWindow::chatActivated(const QModelIndex &index)
 	if (!model)
 		return;
 
-	QList<QDate> chatDates = History::instance()->datesForChat(chat);
+	QList<QDate> chatDates = History::instance()->datesForChat(chat, Search);
 	model->setChat(chat);
 	model->setDates(chatDates);
 
@@ -254,7 +270,7 @@ void HistoryWindow::dateActivated(const QModelIndex &index)
 	if (!date.isValid())
 		return;
 
-	QList<Message> messages = History::instance()->getMessages(chat, date);
+	QList<Message> messages = History::instance()->messages(chat, date);
 	ContentBrowser->setChat(chat);
 	ContentBrowser->clearMessages();
 	ContentBrowser->appendMessages(messages);
@@ -273,14 +289,44 @@ void HistoryWindow::searchTextChanged(const QString &searchText)
 	updateData();
 }
 
+void HistoryWindow::fromDateChanged(const QDate &date)
+{
+	Search.setFromDate(date);
+	updateData();
+}
+
+void HistoryWindow::toDateChanged(const QDate &date)
+{
+	Search.setToDate(date);
+	updateData();
+}
+
 void HistoryWindow::showMainPopupMenu(const QPoint &pos)
 {
-	MainPopupMenu->popup(ChatsTree->mapToGlobal(pos));
+	bool isValid = true;
+	Chat *chat = ChatsTree->indexAt(pos).data(ChatRole).value<Chat *>();
+	if (!chat)
+		isValid = false;
+
+	foreach (QAction *action, MainPopupMenu->actions())
+		action->setEnabled(isValid);
+
+	MainPopupMenu->exec(QCursor::pos());
 }
 
 void HistoryWindow::showDetailsPopupMenu(const QPoint &pos)
 {
-	DetailsPopupMenu->popup(DetailsListView->mapToGlobal(pos));
+	bool isValid = true;
+	Chat *chat = DetailsListView->indexAt(pos).data(ChatRole).value<Chat *>();
+	QDate date = DetailsListView->indexAt(pos).data(DateRole).value<QDate>();
+
+	if (!chat || !date.isValid())
+		isValid = false;
+
+	foreach (QAction *action, DetailsPopupMenu->actions())
+		action->setEnabled(isValid);
+
+	DetailsPopupMenu->exec(QCursor::pos());
 }
 
 void HistoryWindow::show(Chat *chat)
@@ -295,11 +341,35 @@ void HistoryWindow::show(Chat *chat)
 	selectChat(chat);
 
 	QWidget::show();
+	_activateWindow(this);
+}
+
+void HistoryWindow::openChat()
+{
+	kdebugf();
+	Chat *chat = ChatsTree->currentIndex().data(ChatRole).value<Chat *>();
+	if (!chat)
+		return;
+
+	ChatWidgetManager::instance()->openChatWidget(chat, true);
+
+	kdebugf2();
 }
 
 bool HistoryWindow::supportsActionType(ActionDescription::ActionType type)
 {
 	return (type == ActionDescription::TypeGlobal || type == ActionDescription::TypeChat || type == ActionDescription::TypeHistory);
+}
+
+void HistoryWindow::keyPressEvent(QKeyEvent *e)
+{
+	if (e->key() == Qt::Key_Escape)
+	{
+		e->accept();
+		hide();
+	}
+	else
+		QWidget::keyPressEvent(e);
 }
 
 HistoryWindow *historyDialog = 0;

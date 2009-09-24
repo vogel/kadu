@@ -13,9 +13,11 @@
 #include <QtCore/QObject>
 #include <QtGui/QPixmap>
 
+#include "exports.h"
+
 class ContactAccountData;
 
-class AvatarService : public QObject
+class KADUAPI AvatarService : public QObject
 {
 	Q_OBJECT
 
@@ -25,7 +27,7 @@ public:
 	virtual void fetchAvatar(ContactAccountData *contactAccountData) = 0;
 
 signals:
-	void avatarFetched(ContactAccountData *contactAccountData, QPixmap avatar);
+	void avatarFetched(ContactAccountData *contactAccountData, const QByteArray &avatar);
 
 };
 

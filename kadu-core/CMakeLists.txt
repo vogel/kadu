@@ -251,7 +251,7 @@ set (kadu_MOC_SRCS
 	#chat/simple-chat.h
 
 	chat/filter/chat-filter.h
-	chat/filter/chat-name-filter.h
+	#chat/filter/chat-name-filter.h
 
 	chat/message/message.h
 	chat/message/message-data.h
@@ -277,7 +277,7 @@ set (kadu_MOC_SRCS
 	contacts/filter/account-contact-filter.h
 	contacts/filter/anonymous-contact-filter.h
 	contacts/filter/anonymous-without-messages-contact-filter.h
-	contacts/filter/contact-name-filter.h
+	#contacts/filter/contact-name-filter.h
 	contacts/filter/group-contact-filter.h
 	contacts/filter/has-description-contact-filter.h
 	contacts/filter/offline-contact-filter.h

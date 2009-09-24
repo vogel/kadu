@@ -54,6 +54,9 @@ private slots:
 	void showMoreOptionsChanged();
 	void addBuddy();
 
+protected:
+	virtual void keyPressEvent(QKeyEvent *e);
+
 public:
 	AddBuddyWindow(QWidget *parent = 0);
 	AddBuddyWindow(Contact contact, QWidget *parent = 0);

@@ -10,18 +10,27 @@
 #ifndef HISTORY_SEARCH_PARAMETERS_H
 #define HISTORY_SEARCH_PARAMETERS_H
 
+#include <QtCore/QDate>
 #include <QtCore/QString>
 
 class HistorySearchParameters
 {
 	QString Query;
+	QDate FromDate;
+	QDate ToDate;
+
+public:
+	HistorySearchParameters();
+
+	HistorySearchParameters & setQuery(const QString &query);
+	QString query() { return Query; }
+
+	HistorySearchParameters & setFromDate(const QDate &date);
+	QDate fromDate() { return FromDate; }
 	
-	public:
-		HistorySearchParameters();
-		
-		HistorySearchParameters & setQuery(const QString &query);
-		QString query() { return Query; }
-		
+	HistorySearchParameters & setToDate(const QDate &date);
+	QDate toDate() { return ToDate; }
+
 };
 
 #endif // HISTORY_SEARCH_PARAMETERS_H

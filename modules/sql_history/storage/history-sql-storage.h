@@ -61,7 +61,7 @@ public:
 	~HistorySqlStorage();
 
 	virtual QList<Chat *> chats(HistorySearchParameters search);
-	virtual QList<QDate> chatDates(Chat *chat);
+	virtual QList<QDate> chatDates(Chat *chat, HistorySearchParameters search);
 	virtual QList<Message> messages(Chat *chat, QDate date = QDate(), int limit = 0);
 	virtual QList<Message> messagesSince(Chat *chat, QDate date);
 	virtual QList<Message> messagesBackTo(Chat *chat, QDateTime datetime, int limit);

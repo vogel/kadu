@@ -19,6 +19,7 @@
 #include "contacts/contact-manager.h"
 #include "chat/chat.h"
 #include "chat/chat-manager.h"
+#include "chat/message/message.h"
 #include "configuration/configuration-file.h"
 #include "contacts/contact.h"
 #include "core/core.h"
@@ -402,7 +403,7 @@ bool History::removeContactFromStorage(Contact contact)
 //TODO: optimize
 	QList<Chat *> chats = ChatManager::instance()->chatsForAccount(contact.prefferedAccount());
 	foreach (Chat *chat, chats)
-		if (chat->contacts().contains(contact) && !CurrentStorage->chatDates(chat).isEmpty())
+		if (chat->contacts().contains(contact) && !CurrentStorage->chatDates(chat, HistorySearchParameters()).isEmpty())
 			return false;
 	return true;
 }
@@ -434,21 +435,21 @@ QList<Chat *> History::chatsList(HistorySearchParameters search)
 	return CurrentStorage->chats(search);
 }
 
-QList<QDate> History::datesForChat(Chat *chat)
+QList<QDate> History::datesForChat(Chat *chat, HistorySearchParameters search)
 {
 	kdebugf();
 
-	return CurrentStorage->chatDates(chat);
+	return CurrentStorage->chatDates(chat, search);
 }
 
-QList<Message> History::getMessages(Chat *chat, QDate date, int limit)
+QList<Message> History::messages(Chat *chat, QDate date, int limit)
 {
 	kdebugf();
 
 	return CurrentStorage->messages(chat, date, limit);
 }
 
-int History::getMessagesCount(Chat *chat, QDate date)
+int History::messagesCount(Chat *chat, QDate date)
 {
 	kdebugf();
 

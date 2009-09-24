@@ -297,7 +297,7 @@ void ALSAPlayerSlots::openDevice(SoundDeviceType type, int sample_rate, int chan
 	if (!dev)
 		return;
 
-	if (type == PLAY_ONLY || type == PLAY_AND_RECORD)
+	if (type == SoundDevicePlayOnly || type == SoundDevicePlayAndRecord)
 	{
 		dev->player = alsa_open (qPrintable(config_file.readEntry("Sounds", "ALSAOutputDevice")), channels, sample_rate, true);
 		if (!dev->player)
@@ -308,7 +308,7 @@ void ALSAPlayerSlots::openDevice(SoundDeviceType type, int sample_rate, int chan
 			return;
 		}
 	}
-	if (type == RECORD_ONLY || type == PLAY_AND_RECORD)
+	if (type == SoundDeviceRecordOnly || type == SoundDevicePlayAndRecord)
 	{
 		dev->recorder = alsa_open (qPrintable(config_file.readEntry("Sounds", "ALSAOutputDevice")), channels, sample_rate, false);
 		if (!dev->recorder)

@@ -6,10 +6,10 @@
 *   (at your option) any later version.                                   *
 *                                                                         *
 ***************************************************************************/
-
 #include <QtCore/QFile>
 
 #include "chat/chat.h"
+#include "chat/message/message.h"
 #include "contacts/contact-set.h"
 #include "core/core.h"
 #include "misc/misc.h"
@@ -31,7 +31,7 @@
 struct HistoryEntry
 {
 	int type;
-	uint32_t uin;
+	quint32 uin;
 	QString nick;
 	QDateTime date;
 	QDateTime sdate;
@@ -77,7 +77,7 @@ void HistoryImportThread::cancel()
 void HistoryImportThread::importEntry(Chat *chat, const HistoryEntry &entry)
 {
 	QString id = QString::number(entry.uin);
-	
+
 	bool outgoing = entry.type == HISTORYMANAGER_ENTRY_CHATSEND;
 	QDateTime sendTime = entry.sdate;
 	QDateTime recieveTime = entry.date;
@@ -90,7 +90,7 @@ void HistoryImportThread::importEntry(Chat *chat, const HistoryEntry &entry)
 		.setContent(entry.message)
 		.setSendDate(entry.sdate)
 		.setReceiveDate(entry.date);
-	
+
 	//TODO 0.6.6: it's damn slow!
 	History::instance()->currentStorage()->appendMessage(msg);
 	ImportedEntries++;
@@ -104,21 +104,21 @@ Chat * HistoryImportThread::chatFromUinsList(QStringList uinsList)
 		Contact contact = GaduAccount->getContactById(uin);
 		contacts.insert(contact);
 	}
-	
+
 	return GaduAccount->protocol()->findChat(contacts);
 }
 
 QList<HistoryEntry> HistoryImportThread::historyEntries(QStringList uins, int mask)
 {
 	kdebugf();
-	
+
 	QList<HistoryEntry> entries;
 	QStringList tokens;
 	QFile f, fidx;
 	QString path = ggPath("history/");
 	QString filename, line;
 	int offs;
-	
+
 	if (!uins.isEmpty())
 		filename = getFileNameByUinsList(uins);
 	else
@@ -129,7 +129,7 @@ QList<HistoryEntry> HistoryImportThread::historyEntries(QStringList uins, int ma
 		kdebugmf(KDEBUG_ERROR, "Error opening history file %s\n", qPrintable(filename));
 		return entries;
 	}
-	
+
 	fidx.setFileName(f.fileName() + ".idx");
 	if (!fidx.open(QIODevice::ReadOnly))
 		return entries;
@@ -138,12 +138,12 @@ QList<HistoryEntry> HistoryImportThread::historyEntries(QStringList uins, int ma
 	fidx.close();
 	if (!f.seek(offs))
 		return entries;
-	
+
 	QTextStream stream(&f);
 	stream.setCodec("CP1250");
-	
+
 	int linenr = 0;
-	
+
 	struct HistoryEntry entry;
 	//	int num = 0;
 	while ((line = stream.readLine()) != QString::null)
@@ -246,9 +246,9 @@ QList<HistoryEntry> HistoryImportThread::historyEntries(QStringList uins, int ma
 				break;
 		}
 	}
-	
+
 	f.close();
-	
+
 	kdebugf2();
 	return entries;
 }
@@ -260,7 +260,7 @@ QStringList HistoryImportThread::mySplit(const QChar &sep, const QString &str)
 	QString token;
 	unsigned int idx = 0, strlength = str.length();
 	bool inString = false;
-	
+
 	int pos1, pos2;
 	while (idx < strlength)
 	{
@@ -335,7 +335,7 @@ QStringList HistoryImportThread::mySplit(const QChar &sep, const QString &str)
 			++idx;
 		}
 	}
-	
+
 	kdebugf2();
 	return strlist;
 }
@@ -343,7 +343,7 @@ QStringList HistoryImportThread::mySplit(const QChar &sep, const QString &str)
 QString HistoryImportThread::getFileNameByUinsList(QStringList uins)
 {
 	kdebugf();
-	
+
 	if (uins.isEmpty())
 		return "sms";
 

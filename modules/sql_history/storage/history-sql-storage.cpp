@@ -216,11 +216,19 @@ QList<Chat *> HistorySqlStorage::chats(HistorySearchParameters search)
 
 	if (!search.query().isEmpty())
 		queryString += " AND content LIKE :content";
+	if (search.fromDate().isValid())
+		queryString += " AND date(receive_time) >= date(:fromDate)";
+	if (search.toDate().isValid())
+		queryString += " AND date(receive_time) <= date(:toDate)";
 
 	query.prepare(queryString);
 
 	if (!search.query().isEmpty())
 		query.bindValue(":content", QLatin1String("%") + search.query() + "%");
+	if (search.fromDate().isValid())
+		query.bindValue(":fromDate", search.fromDate());
+	if (search.toDate().isValid())
+		query.bindValue(":toDate", search.toDate());
 
 	QList<Chat *> chats;
 
@@ -238,20 +246,38 @@ QList<Chat *> HistorySqlStorage::chats(HistorySearchParameters search)
 }
 
 
-QList<QDate> HistorySqlStorage::chatDates(Chat *chat)
+QList<QDate> HistorySqlStorage::chatDates(Chat *chat, HistorySearchParameters search)
 {
 	kdebugf();
 
 	DatabaseMutex.lock();
 
+	QSqlQuery query(Database);
+	QString queryString = "SELECT DISTINCT date(receive_time) as date FROM kadu_messages WHERE chat=:chat";
+
+	if (!search.query().isEmpty())
+		queryString += " AND content LIKE :content";
+	if (search.fromDate().isValid())
+		queryString += " AND date(receive_time) >= date(:fromDate)";
+	if (search.toDate().isValid())
+		queryString += " AND date(receive_time) <= date(:toDate)";
+
+	query.prepare(queryString);
+
+	query.bindValue(":chat", chat->uuid().toString());
+	if (!search.query().isEmpty())
+		query.bindValue(":content", QLatin1String("%") + search.query() + "%");
+	if (search.fromDate().isValid())
+		query.bindValue(":fromDate", search.fromDate());
+	if (search.toDate().isValid())
+		query.bindValue(":toDate", search.toDate());
+	
 	QList<QDate> dates;
 
-	ListChatDatesQuery.bindValue(":chat", chat->uuid().toString());
-	executeQuery(ListChatDatesQuery);
-
-	while (ListChatDatesQuery.next())
+	executeQuery(query);
+	while (query.next())
 	{
-		QDate date = ListChatDatesQuery.value(0).toDate();
+		QDate date = query.value(0).toDate();
 		if (date.isValid())
 			dates.append(date);
 	}

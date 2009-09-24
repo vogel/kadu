@@ -239,59 +239,53 @@ set (SOURCES
 	certificates/certificate-display-dialog.cpp
 	certificates/certificate-error-dialog.cpp
 	certificates/certificate-helpers.cpp
+	client/jabber-client.cpp
+	client/mini-client.cpp
 	file-transfer/jabber-file-transfer.cpp
+	gui/widgets/jabber-contact-account-data-widget.cpp
 	gui/widgets/jabber-create-account-widget.cpp
 	gui/widgets/jabber-edit-account-widget.cpp
 	gui/widgets/jabber-personal-info-widget.cpp
+	open-chat-with/jabber-open-chat-with-runner.cpp
+	jabber-account-data-manager.cpp
+	jabber-contact-account-data.cpp
+	jabber-contact-account-data-manager.cpp
+	jabber-account.cpp
+	jabber-protocol.cpp
+	jabber-protocol-factory.cpp
+	resource/jabber-resource.cpp
+	resource/jabber-resource-pool.cpp
 	server/jabber-avatar-fetcher.cpp
 	server/jabber-server-register-account.cpp
 	services/jabber-avatar-service.cpp
 	services/jabber-chat-service.cpp
 	services/jabber-file-transfer-service.cpp
-	jabber-client.cpp
-	jabber-account-data-manager.cpp
-	jabber-contact-account-data.cpp
-	jabber-contact-account-data-manager.cpp
-	jabber-contact-account-data-widget.cpp
-	jabber-account.cpp
-	jabber_protocol.cpp
-	jabber-protocol-factory.cpp
-	jabber-resource.cpp
-	jabber-resource-pool.cpp
-	jabber-transport.cpp
-	jid-util.cpp
-	miniclient.cpp
-	system-info.cpp
-	vcard-factory.cpp
+	transport/jabber-transport.cpp
+	utils/jid-util.cpp
+	utils/system-info.cpp
+	utils/vcard-factory.cpp
 )
 
 set (MOC_SOURCES
 	certificates/certificate-display-dialog.h
-	#certificates/certificate-error-dialog.h
-	#certificates/certificate-helpers.h
+	client/jabber-client.h
+	client/mini-client.h
 	file-transfer/jabber-file-transfer.h
+	gui/widgets/jabber-contact-account-data-widget.h
 	gui/widgets/jabber-create-account-widget.h
 	gui/widgets/jabber-edit-account-widget.h
 	gui/widgets/jabber-personal-info-widget.h
+	jabber-protocol.h
+	resource/jabber-resource.h
+	resource/jabber-resource-pool.h
 	server/jabber-avatar-fetcher.h
 	server/jabber-server-register-account.h
 	services/jabber-avatar-service.h
 	services/jabber-chat-service.h
 	services/jabber-file-transfer-service.h
-	jabber-client.h
-	#jabber-contact-account-data.h
-	#jabber-contact-account-data-manager.h
-	jabber-contact-account-data-widget.h
-	#jabber-account.h
-	jabber_protocol.h
-	#jabber-protocol-factory.h
-	jabber-resource.h
-	jabber-resource-pool.h
-	jabber-transport.h
-	miniclient.h
-	#jid-util.cpp
-	system-info.h
-	vcard-factory.h
+	transport/jabber-transport.h
+	utils/system-info.h
+	utils/vcard-factory.h
 )
 
 set (DATA_FILES

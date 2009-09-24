@@ -103,7 +103,7 @@ ToolBar::~ToolBar()
 	kdebugf2();
 }
 
-void ToolBar::addAction(const QString &actionName, bool showLabel, QAction *after)
+void ToolBar::addAction(const QString &actionName, Qt::ToolButtonStyle style, QAction *after)
 {
 	if (hasAction(actionName))
 		return;
@@ -112,7 +112,7 @@ void ToolBar::addAction(const QString &actionName, bool showLabel, QAction *afte
 	newAction.actionName = actionName;
 	newAction.action = 0;
 	newAction.button = 0;
-	newAction.showLabel = showLabel;
+	newAction.style = style;
 
 	if (after)
 	{
@@ -126,8 +126,7 @@ void ToolBar::addAction(const QString &actionName, bool showLabel, QAction *afte
 				newAction.button = dynamic_cast<QToolButton *>(widgetForAction(newAction.action));
 				connect(newAction.button, SIGNAL(pressed()), this, SLOT(buttonPressed()));
 				newAction.button->installEventFilter(watcher);
-				if (newAction.showLabel)
-					newAction.button->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
+				newAction.button->setToolButtonStyle(newAction.style);
 				ToolBarActions.insert(index, newAction);
 				return;
 			}
@@ -139,13 +138,12 @@ void ToolBar::addAction(const QString &actionName, bool showLabel, QAction *afte
 	newAction.button = dynamic_cast<QToolButton *>(widgetForAction(newAction.action));
 	connect(newAction.button, SIGNAL(pressed()), this, SLOT(buttonPressed()));
 	newAction.button->installEventFilter(watcher);
-	if (newAction.showLabel)
-		newAction.button->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
+	newAction.button->setToolButtonStyle(newAction.style);
 
 	ToolBarActions.append(newAction);
 }
 
-void ToolBar::moveAction(const QString &actionName, bool showLabel, QAction *after)
+void ToolBar::moveAction(const QString &actionName, Qt::ToolButtonStyle style, QAction *after)
 {
  	bool actionFind = false;
 	int index = 0;
@@ -154,7 +152,7 @@ void ToolBar::moveAction(const QString &actionName, bool showLabel, QAction *aft
 	newAction.actionName = actionName;
 	newAction.action = 0;
 	newAction.button = 0;
-	newAction.showLabel = showLabel;
+	newAction.style = style;
 
  	foreach(const ToolBarAction &toolBarAction, ToolBarActions)
 	{
@@ -184,14 +182,13 @@ void ToolBar::moveAction(const QString &actionName, bool showLabel, QAction *aft
 	newAction.button = dynamic_cast<QToolButton *>(widgetForAction(newAction.action));
 	connect(newAction.button, SIGNAL(pressed()), this, SLOT(buttonPressed()));
 	newAction.button->installEventFilter(watcher);
-	if (newAction.showLabel)
-		newAction.button->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
+	newAction.button->setToolButtonStyle(newAction.style);
 	ToolBarActions.insert(index, newAction);
 }
 
 void ToolBar::addButtonClicked(QAction *action)
 {
-	addAction(action->data().toString(), false);
+	addAction(action->data().toString(), Qt::ToolButtonIconOnly);
 }
 
 void ToolBar::buttonPressed()
@@ -210,7 +207,7 @@ void ToolBar::mouseMoveEvent(QMouseEvent* e)
 		{
 			if (toolBarAction.action == action)
 			{
-				QDrag* drag = new ActionDrag(toolBarAction.actionName, toolBarAction.showLabel, this);
+				QDrag* drag = new ActionDrag(toolBarAction.actionName, toolBarAction.style, this);
 
 				drag->exec(Qt::CopyAction);
 
@@ -229,9 +226,10 @@ void ToolBar::dragEnterEvent(QDragEnterEvent* event)
 	if (source)
 	{
 		QString actionName;
-		bool showLabel;
+		Qt::ToolButtonStyle style;
 
-		if (ActionDrag::decode(event, actionName, showLabel) && (((event->source() == this) || (!hasAction(actionName) && dynamic_cast<MainWindow *>(parent())->supportsActionType(KaduActions[actionName]->type())))))
+		if (ActionDrag::decode(event, actionName, style) && (((event->source() == this)
+		    || (!hasAction(actionName) && dynamic_cast<MainWindow *>(parent())->supportsActionType(KaduActions[actionName]->type())))))
 		{
 			event->acceptProposedAction();
 			return;
@@ -254,8 +252,8 @@ void ToolBar::dropEvent(QDropEvent* event)
 	}
 
 	QString actionName;
-	bool showLabel;
-	if (!ActionDrag::decode(event, actionName, showLabel))
+	Qt::ToolButtonStyle style;
+	if (!ActionDrag::decode(event, actionName, style))
 	{
 		event->ignore();
 		return;
@@ -267,10 +265,10 @@ void ToolBar::dropEvent(QDropEvent* event)
 	if (source_toolbar != this)
 	{
 		source_toolbar->deleteAction(actionName);
-		addAction(actionName, showLabel, after);
+		addAction(actionName, style, after);
 	}
 	else
-		moveAction(actionName, showLabel, after);
+		moveAction(actionName, style, after);
 
 	event->acceptProposedAction();
 
@@ -320,7 +318,7 @@ void ToolBar::writeToConfig(QDomElement parent_element)
 	{
 		QDomElement button_elem = xml_config_file->createElement(toolbar_elem, "ToolButton");
 		button_elem.setAttribute("action_name", toolBarAction.actionName);
-		button_elem.setAttribute("uses_text_label", toolBarAction.showLabel);
+		button_elem.setAttribute("toolbutton_style", toolBarAction.style);
 	}
 
 	kdebugf2();
@@ -408,8 +406,7 @@ void ToolBar::updateButtons()
 			(*toolBarAction).button = dynamic_cast<QToolButton *>(widgetForAction((*toolBarAction).action));
 			connect((*toolBarAction).button, SIGNAL(pressed()), this, SLOT(buttonPressed()));
 			(*toolBarAction).button->installEventFilter(watcher);
-			if ((*toolBarAction).showLabel)
-				(*toolBarAction).button->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
+			(*toolBarAction).button->setToolButtonStyle((*toolBarAction).style);
 
 			lastAction = (*toolBarAction).action;
 		}
@@ -448,6 +445,7 @@ void ToolBar::loadFromConfig(QDomElement toolbar_element)
 
 	ToolBarActions.clear();
 
+	QVariant toolButtonStyle;
 	for (QDomNode n = toolbar_element.firstChild(); !n.isNull(); n = n.nextSibling())
 	{
 		const QDomElement &button_elem = n.toElement();
@@ -462,11 +460,16 @@ void ToolBar::loadFromConfig(QDomElement toolbar_element)
 
 		if (hasAction(action.actionName))
 			continue;
-
-		if (button_elem.attribute("uses_text_label").isNull())
-			action.showLabel = false;
+	//remove after 0.7.0
+		if (button_elem.attribute("toolbutton_style").isNull())
+			action.style = button_elem.attribute("uses_text_label") == "1"
+					? Qt::ToolButtonTextBesideIcon : Qt::ToolButtonIconOnly;
 		else
-			action.showLabel = button_elem.attribute("uses_text_label") == "1";
+		{
+			toolButtonStyle = button_elem.attribute("toolbutton_style");
+			action.style = Qt::ToolButtonStyle(toolButtonStyle.value<int>());
+		}
+
 		action.action = 0;
 		action.button = 0;
 
@@ -587,31 +590,6 @@ void ToolBar::setBlockToolbars(bool checked)
 	ConfigurationAwareObject::notifyAll();
 }
 
-void ToolBar::showTextLabel()
-{
-	if (!currentButton)
-		return;
-
-	QList<ToolBarAction>::iterator toolBarAction;
- 	for (toolBarAction = ToolBarActions.begin(); toolBarAction != ToolBarActions.end(); ++toolBarAction)
-	{
-		if ((*toolBarAction).button == currentButton)
-		{
-			if (currentButton->toolButtonStyle() == Qt::ToolButtonIconOnly)
-			{
-				(*toolBarAction).showLabel = true;
-				currentButton->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
-			}
-			else
-			{
-				(*toolBarAction).showLabel = false;
-				currentButton->setToolButtonStyle(Qt::ToolButtonIconOnly);
-			}
-			return;
-		}
-	}
-}
-
 void ToolBar::deleteButton()
 {
 	if (!currentButton)
@@ -646,7 +624,16 @@ void ToolBar::slotContextIcons()
     	if (!currentButton)
 		return;
 
-	currentButton->setToolButtonStyle(Qt::ToolButtonIconOnly);
+	QList<ToolBarAction>::iterator toolBarAction;
+	for (toolBarAction = ToolBarActions.begin(); toolBarAction != ToolBarActions.end(); ++toolBarAction)
+	{
+		if ((*toolBarAction).button == currentButton)
+		{
+			(*toolBarAction).style = Qt::ToolButtonIconOnly;
+			(*toolBarAction).button->setToolButtonStyle(Qt::ToolButtonIconOnly);
+			return;
+		}
+	}
 }
 
 void ToolBar::slotContextText()
@@ -654,7 +641,16 @@ void ToolBar::slotContextText()
 	if (!currentButton)
 		return;
 
-	currentButton->setToolButtonStyle(Qt::ToolButtonTextOnly);
+	QList<ToolBarAction>::iterator toolBarAction;
+	for (toolBarAction = ToolBarActions.begin(); toolBarAction != ToolBarActions.end(); ++toolBarAction)
+	{
+		if ((*toolBarAction).button == currentButton)
+		{
+			(*toolBarAction).style = Qt::ToolButtonTextOnly;
+			(*toolBarAction).button->setToolButtonStyle(Qt::ToolButtonTextOnly);
+			return;
+		}
+	}
 }
  
 void ToolBar::slotContextTextUnder()
@@ -662,7 +658,16 @@ void ToolBar::slotContextTextUnder()
 	if (!currentButton)
 		return;
 
-	currentButton->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
+	QList<ToolBarAction>::iterator toolBarAction;
+	for (toolBarAction = ToolBarActions.begin(); toolBarAction != ToolBarActions.end(); ++toolBarAction)
+	{
+		if ((*toolBarAction).button == currentButton)
+		{
+			(*toolBarAction).style = Qt::ToolButtonTextUnderIcon;
+			(*toolBarAction).button->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
+			return;
+		}
+	}
 }
  
 void ToolBar::slotContextTextRight()
@@ -670,7 +675,16 @@ void ToolBar::slotContextTextRight()
 	if (!currentButton)
 		return;
 
-	currentButton->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
+	QList<ToolBarAction>::iterator toolBarAction;
+	for (toolBarAction = ToolBarActions.begin(); toolBarAction != ToolBarActions.end(); ++toolBarAction)
+	{
+		if ((*toolBarAction).button == currentButton)
+		{
+			(*toolBarAction).style = Qt::ToolButtonTextBesideIcon;
+			(*toolBarAction).button->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
+			return;
+		}
+	}
 }
 
 void ToolBar::slotContextAboutToShow()
@@ -699,7 +713,7 @@ void ToolBar::slotContextAboutToShow()
 	}
 }
 
-ActionDrag::ActionDrag(const QString &actionName, bool showLabel, QWidget* dragSource)
+ActionDrag::ActionDrag(const QString &actionName, Qt::ToolButtonStyle style, QWidget* dragSource)
 	: QDrag(dragSource)
 {
 	kdebugf();
@@ -707,7 +721,7 @@ ActionDrag::ActionDrag(const QString &actionName, bool showLabel, QWidget* dragS
 	QByteArray data;
 	QMimeData *mimeData = new QMimeData;
 
-	QString string = actionName + "\n" + QString::number(showLabel ? 1 : 0);
+	QString string = actionName + "\n" + QString::number(Qt::ToolButtonStyle(style));
 
 	data = string.toUtf8();
 
@@ -718,7 +732,7 @@ ActionDrag::ActionDrag(const QString &actionName, bool showLabel, QWidget* dragS
 	kdebugf2();
 }
 
-bool ActionDrag::decode(QDropEvent *event, QString &actionName, bool &showLabel)
+bool ActionDrag::decode(QDropEvent *event, QString &actionName, Qt::ToolButtonStyle &style)
 {
 	const QMimeData *mimeData = event->mimeData();
 
@@ -738,7 +752,7 @@ bool ActionDrag::decode(QDropEvent *event, QString &actionName, bool &showLabel)
 
 	int tmp;
 	stream >> tmp;
-	showLabel = tmp;
+	style = Qt::ToolButtonStyle(tmp);
 
 	return true;
 }

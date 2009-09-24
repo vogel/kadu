@@ -79,7 +79,7 @@ void Chat::setTitle(const QString &newTitle)
 	if (Title == newTitle)
 		return;
 	Title = newTitle;
-	emit titleChanged(newTitle);
+	emit titleChanged(this, newTitle);
 }
 
 void Chat::refreshTitle()

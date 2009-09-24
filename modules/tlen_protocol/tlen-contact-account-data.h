@@ -12,7 +12,7 @@
 
 #include "contacts/contact-account-data.h"
 
-#include "tlen_protocol.h"
+#include "tlen-protocol.h"
 
 class Account;
 

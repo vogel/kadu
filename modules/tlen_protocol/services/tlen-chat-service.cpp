@@ -11,7 +11,7 @@
 
 #include "configuration/configuration-file.h"
 #include "debug.h"
-#include "../tlen_protocol.h"
+#include "../tlen-protocol.h"
 #include "gui/windows/message-box.h"
 #include "misc/misc.h"
 
