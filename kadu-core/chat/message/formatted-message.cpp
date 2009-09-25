@@ -28,7 +28,6 @@ void FormattedMessage::parseImages(FormattedMessage &message, const QString &mes
 		if (lastPos != pos)
 		{
 			partContent = messageString.mid(lastPos, pos - lastPos);
-			HtmlDocument::unescapeText(partContent);
 			message << FormattedMessagePart(partContent, b, i, u, color);
 		}
 
@@ -43,7 +42,6 @@ void FormattedMessage::parseImages(FormattedMessage &message, const QString &mes
 	if (lastPos != messageString.length())
 	{
 		partContent = messageString.mid(lastPos, messageString.length() - lastPos);
-		HtmlDocument::unescapeText(partContent);
 		message << FormattedMessagePart(partContent, b, i, u, color);
 	}
 }

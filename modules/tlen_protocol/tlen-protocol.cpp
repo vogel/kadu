@@ -26,11 +26,11 @@
 #include "gui/windows/main-configuration-window.h"
 #include "gui/windows/message-box.h"
 #include "debug.h"
-//#include "chat/chat_manager-old.h"
 #include "icons-manager.h"
 #include "status/status.h"
 #include "misc/misc.h"
 #include "configuration/xml-configuration-file.h"
+#include "html_document.h"
 
 #include "tlen.h"
 
@@ -231,11 +231,13 @@ bool TlenProtocol::sendMessage(Chat *chat, FormattedMessage &formattedMessage)
 	if (stop)
 		return false;
 	kdebugm(KDEBUG_WARNING, "Tlen send %s\n%s", qPrintable(tlenid), qPrintable(plain));
-	TlenClient->writeMsg(plain,tlenid);
+	TlenClient->writeMsg(plain, tlenid);
+
+	HtmlDocument::escapeText(plain);
 
 	Message message(chat, Message::TypeSent, Core::instance()->myself());
 	message
-		.setContent(formattedMessage.toPlain())
+		.setContent(plain)
 		.setSendDate(QDateTime::currentDateTime())
 		.setReceiveDate(QDateTime::currentDateTime());
 
@@ -287,6 +289,8 @@ void TlenProtocol::chatMsgReceived(QDomNode n)
 	time_t msgtime = timeStamp.toTime_t();
 	FormattedMessage formattedMessage(TlenClient->decode(body));
 
+	QString plain = formattedMessage.toPlain();
+
 	kdebugm(KDEBUG_WARNING, "Tlen message to %s\n%s", qPrintable(from), qPrintable(body));
 
 	// TODO  : contacts?
@@ -295,9 +299,11 @@ void TlenProtocol::chatMsgReceived(QDomNode n)
 	if (ignore)
 		return;
 
+	HtmlDocument::escapeText(plain);
+
 	Message message(chat, Message::TypeReceived, contact);
 	message
-		.setContent(formattedMessage.toPlain())
+		.setContent(plain)
 		.setSendDate(timeStamp)
 		.setReceiveDate(QDateTime::currentDateTime());
 

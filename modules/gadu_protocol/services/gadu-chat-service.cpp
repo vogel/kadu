@@ -119,7 +119,7 @@ bool GaduChatService::sendMessage(Chat *chat, FormattedMessage &message)
 	Message msg(chat, Message::TypeSent, Core::instance()->myself());
 	msg
 		.setStatus(Message::StatusSent)
-		.setContent(message.toPlain())
+		.setContent(message.toHtml())
 		.setSendDate(QDateTime::currentDateTime())
 		.setReceiveDate(QDateTime::currentDateTime())
 		.setId(messageId);

@@ -7,16 +7,18 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "contacts/ignored-helper.h"
-
 #include "chat/chat.h"
 #include "chat/message/message.h"
 #include "core/core.h"
 #include "configuration/configuration-file.h"
-#include "debug.h"
-#include "../jabber-protocol.h"
+#include "contacts/ignored-helper.h"
 #include "gui/windows/message-box.h"
 #include "misc/misc.h"
+
+#include "html_document.h"
+#include "debug.h"
+
+#include "../jabber-protocol.h"
 
 #include "jabber-chat-service.h"
 
@@ -66,9 +68,11 @@ bool JabberChatService::sendMessage(Chat *chat, FormattedMessage &formattedMessa
 	//msg.setFrom(jabberID);
 	Protocol->client()->sendMessage(msg);
 
+	HtmlDocument::escapeText(plain);
+
 	Message message(chat, Message::TypeSent, Core::instance()->myself());
 	message
-		.setContent(formattedMessage.toPlain())
+		.setContent(plain)
 		.setSendDate(QDateTime::currentDateTime())
 		.setReceiveDate(QDateTime::currentDateTime());
 
@@ -100,15 +104,19 @@ void JabberChatService::clientMessageReceived(const XMPP::Message &msg)
 	time_t msgtime = msg.timeStamp().toTime_t();
 	FormattedMessage formattedMessage(msg.body());
 
+	QString plain = formattedMessage.toPlain();
+
 	bool ignore = false;
 	Chat *chat = Protocol->findChat(contacts);
-	emit receivedMessageFilter(chat, contact, formattedMessage.toPlain(), msgtime, ignore);
+	emit receivedMessageFilter(chat, contact, plain, msgtime, ignore);
 	if (ignore)
 		return;
 
+	HtmlDocument::escapeText(plain);
+
 	Message message(chat, Message::TypeReceived, contact);
 	message
-		.setContent(formattedMessage.toPlain())
+		.setContent(plain)
 		.setSendDate(msg.timeStamp())
 		.setReceiveDate(QDateTime::currentDateTime());
 
