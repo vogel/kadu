@@ -15,6 +15,8 @@
 #include "chat/chat-manager.h"
 
 #include "configuration/configuration-aware-object.h"
+#include "configuration/storable-object.h"
+
 #include "gui/windows/main-configuration-window.h"
 #include "misc/misc.h"
 
@@ -24,7 +26,7 @@ class QMenu;
 class Action;
 class ActionDescription;
 
-class TabsManager : public ConfigurationUiHandler, ConfigurationAwareObject, AccountsAwareObject
+class TabsManager : public ConfigurationUiHandler, ConfigurationAwareObject, AccountsAwareObject, StorableObject
 {
 	Q_OBJECT
 
@@ -43,6 +45,16 @@ class TabsManager : public ConfigurationUiHandler, ConfigurationAwareObject, Acc
 		* @return prawda jeśli rozmowa była w kartach
 		*/
 		bool detachChat(ChatWidget* chat);
+
+		/**
+		* Metoda odczytujaca konfiguracje.
+		*/
+		virtual void load();
+
+		/**
+		* Metoda zapisujaca konfiguracje.
+		*/
+		virtual void store();
 
 	public slots:
 		/**

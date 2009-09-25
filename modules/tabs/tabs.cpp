@@ -6,16 +6,19 @@
  *   (at your option) any later version.                                   *
  *                                                                         *
  ***************************************************************************/
+
 // TODO 0.6.6 : use native DragNDrop
 // TODO 0.6.6 : use native close widget on tabs
 // TODO 0.6.6 : load,save options
-// TODO 0.6.6 : load,save chats
+// TODO 0.6.6 : load,save chats - remove old metods
+// TODO 0.6.6 : import 0.6.5 chats
 
 /*
  * autor
  * Michal Podsiadlik
  * michal at gov.one.pl
  */
+
 #include <QtGui/QApplication>
 #include <QtGui/QMenu>
 
@@ -24,7 +27,9 @@
 
 #include "activate.h"
 
-#include "gui/actions/action-description.h"
+#include "configuration/configuration-file.h"
+#include "configuration/configuration-manager.h"
+#include "configuration/xml-configuration-file.h"
 
 #include "contacts/contact.h"
 #include "contacts/contact-list.h"
@@ -32,21 +37,21 @@
 
 #include "core/core.h"
 
+#include "gui/actions/action.h"
+#include "gui/actions/action-description.h"
+
 #include "gui/widgets/chat-edit-box.h"
 #include "gui/widgets/chat-widget-manager.h"
 #include "gui/widgets/contacts-list-widget-menu-manager.h"
 #include "gui/widgets/configuration/configuration-widget.h"
+#include "gui/widgets/toolbar.h"
 
 #include "protocols/protocol.h"
 #include "protocols/protocol-factory.h"
 #include "protocols/protocols-manager.h"
 
-#include "gui/actions/action.h"
-#include "configuration/configuration-file.h"
 #include "debug.h"
 #include "icons-manager.h"
-#include "gui/widgets/toolbar.h"
-#include "configuration/xml-configuration-file.h"
 
 #include "tabs.h"
 
@@ -99,7 +104,8 @@ void disableNewTab(Action *action)
 	kdebugf2();
 }
 
-TabsManager::TabsManager(bool firstload) : QObject()
+TabsManager::TabsManager(bool firstload) :
+	QObject(), StorableObject("ModuleTabs", 0)
 {
 	kdebugf();
 
@@ -116,6 +122,8 @@ TabsManager::TabsManager(bool firstload) : QObject()
 
 	connect(&timer, SIGNAL(timeout()),
 			this, SLOT(onTimer()));
+
+	Core::instance()->configuration()->registerStorableObject(this);
 
 	// przeniesienie starej konfiguracji skrotow z Chat do ShortCuts
 	// TODO: pozbyc sie tego w kadu 0.7
@@ -185,7 +193,7 @@ TabsManager::TabsManager(bool firstload) : QObject()
 
 	// przywracamy karty z poprzedniej sesji
 	if (config_file.readBoolEntry("Chat", "SaveOpenedWindows", true))
-		loadTabs();
+		ensureLoaded(); //loadTabs();
 
 	triggerAllAccountsRegistered();
 
@@ -208,7 +216,7 @@ TabsManager::~TabsManager()
 	saveWindowGeometry(tabdialog, "Chat", "TabWindowsGeometry");
 
 	if (config_file.readBoolEntry("Chat", "SaveOpenedWindows", true))
-		saveTabs();
+		store(); //saveTabs();
 
 	// jesli kadu nie konczy dzialania to znaczy ze modul zostal tylko wyladowany wiec odlaczamy rozmowy z kart
 	//if (!Kadu::closing())
@@ -641,6 +649,80 @@ bool TabsManager::detachChat(ChatWidget* chat)
 	ChatWidgetManager::instance()->openPendingMsgs(oldchat, true);
 	return true;
 	kdebugf2();
+}
+
+void TabsManager::load()
+{
+	if (!isValidStorage())
+		return;
+
+	StorableObject::load();
+
+	XmlConfigFile *storageFile = storage()->storage();
+	QDomElement point = storage()->point();
+
+	QDomNodeList nodes = storageFile->getNodes(point, "Tab");
+	int count = nodes.count();
+
+	for (int i = 0; i < count; i++)
+	{
+		QDomNode node = nodes.at(i);
+		if (!node.isElement())
+			return;
+
+		QDomElement element = node.toElement();
+
+		QUuid chatId(element.attribute("chat"));
+
+		if (chatId.isNull())
+			continue;
+
+		Chat *chat = ChatManager::instance()->byUuid(chatId);
+		if (!chat)
+			continue;
+
+		ChatWidget *chatWidget = ChatWidgetManager::instance()->byChat(chat);
+		if (!chatWidget)
+			continue;
+
+		if (element.attribute("type")=="tab")
+			insertTab(chatWidget);
+		else if (element.attribute("type")=="detachedChat")
+			detachedchats.append(chatWidget);
+	}
+}
+
+void TabsManager::store()
+{
+  	if (!isValidStorage())
+		return;
+
+	XmlConfigFile *storageFile = storage()->storage();
+	QDomElement point = storage()->point();
+
+	storageFile->removeChildren(point);
+
+	foreach (ChatWidget * chatWidget, ChatWidgetManager::instance()->chats().values())
+	{
+		if (!chatWidget)
+			continue;
+
+		Chat * chat = chatWidget->chat();
+
+		if (!chat)
+			continue;
+
+		if ((tabdialog->indexOf(chatWidget)==-1) && (detachedchats.indexOf(chatWidget)==-1))
+			continue;
+
+		QDomElement window_elem = storageFile->createElement(point, "Tab");
+
+		window_elem.setAttribute("chat", chat->uuid() );
+		if (tabdialog->indexOf(chatWidget)!=-1)
+			window_elem.setAttribute("type", "tab");
+		else if (detachedchats.indexOf(chatWidget)!=-1)
+			window_elem.setAttribute("type", "detachedChat");
+	}
 }
 
 void TabsManager::loadTabs()
