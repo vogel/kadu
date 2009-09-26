@@ -691,12 +691,10 @@ void JabberClient::slotCSError(int error)
 		if (/*!m_removing && */Protocol->isConnected() || Protocol->isConnecting())
 		{
 			getErrorInfo(error, JabberClientConnector, JabberClientStream, JabberTLSHandler, &errorText, &reconn);
-			QMessageBox *m = new QMessageBox(QMessageBox::Critical,
-	                                /*(printAccountName ? QString("%1: ").arg(name()) : "") + */tr("Server Error"),
-	                                 tr("There was an error communicating with the server.\nDetails: %1").arg(errorText),
-	                                 QMessageBox::Ok, 0, Qt::Popup);
-			m->setModal(true);
-			m->show();
+			if (reconn)
+				Protocol->connectToServer();
+			else
+				MessageBox::msg(Protocol->account()->name() + ": " +  tr("There was an error communicating with the server.\nDetails: %1").arg(errorText), false, "Warning");
 		}
 		if (Protocol->isConnected() || Protocol->isConnecting())
 			Protocol->logout(/* errorClass */);
