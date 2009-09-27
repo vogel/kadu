@@ -534,7 +534,7 @@ void GaduProtocol::iWantGoOnline(const QString &desc)
 	int friends = (NextStatus->isFriendsOnly() ? GG_STATUS_FRIENDS_MASK : 0);
 
 	if (!desc.isEmpty())
-		gg_change_status_descr(Sess, GG_STATUS_AVAIL_DESCR | friends, unicode2cp(desc));
+		gg_change_status_descr(Sess, GG_STATUS_AVAIL_DESCR | friends, desc.toUtf8());
 	else
 		gg_change_status(Sess, GG_STATUS_AVAIL | friends);
 
@@ -560,7 +560,7 @@ void GaduProtocol::iWantGoBusy(const QString &desc)
 	int friends = (NextStatus->isFriendsOnly() ? GG_STATUS_FRIENDS_MASK : 0);
 
 	if (!desc.isEmpty())
-		gg_change_status_descr(Sess, GG_STATUS_BUSY_DESCR | friends, unicode2cp(desc));
+		gg_change_status_descr(Sess, GG_STATUS_BUSY_DESCR | friends, desc.toUtf8());
 	else
 		gg_change_status(Sess, GG_STATUS_BUSY | friends);
 
@@ -586,7 +586,7 @@ void GaduProtocol::iWantGoInvisible(const QString &desc)
 	int friends = (NextStatus->isFriendsOnly() ? GG_STATUS_FRIENDS_MASK : 0);
 
 	if (!desc.isEmpty())
-		gg_change_status_descr(Sess, GG_STATUS_INVISIBLE_DESCR | friends, unicode2cp(desc));
+		gg_change_status_descr(Sess, GG_STATUS_INVISIBLE_DESCR | friends, desc.toUtf8());
 	else
 		gg_change_status(Sess, GG_STATUS_INVISIBLE | friends);
 
@@ -610,7 +610,7 @@ void GaduProtocol::iWantGoOffline(const QString &desc)
 	}
 
 	if (!desc.isEmpty())
-		gg_change_status_descr(Sess, GG_STATUS_NOT_AVAIL_DESCR, unicode2cp(desc));
+		gg_change_status_descr(Sess, GG_STATUS_NOT_AVAIL_DESCR, desc.toUtf8());
 	else
 		gg_change_status(Sess, GG_STATUS_NOT_AVAIL);
 
@@ -637,7 +637,7 @@ void GaduProtocol::iWantGoTalkWithMe(const QString &desc)
 	int friends = (NextStatus->isFriendsOnly() ? GG_STATUS_FRIENDS_MASK : 0);
 
 	if (!desc.isEmpty())
-		gg_change_status_descr(Sess, GG_STATUS_FFC_DESCR | friends, unicode2cp(desc));
+		gg_change_status_descr(Sess, GG_STATUS_FFC_DESCR | friends, desc.toUtf8());
 	else
 		gg_change_status(Sess, GG_STATUS_FFC | friends);
 
@@ -663,7 +663,7 @@ void GaduProtocol::iWantGoDoNotDisturb(const QString &desc)
 	int friends = (NextStatus->isFriendsOnly() ? GG_STATUS_FRIENDS_MASK : 0);
 
 	if (!desc.isEmpty())
-		gg_change_status_descr(Sess, GG_STATUS_DND_DESCR | friends, unicode2cp(desc));
+		gg_change_status_descr(Sess, GG_STATUS_DND_DESCR | friends, desc.toUtf8());
 	else
 		gg_change_status(Sess, GG_STATUS_DND | friends);
 
@@ -1073,7 +1073,7 @@ void GaduProtocol::messageReceivedSlot(int msgclass, UserListElements senders, Q
 	const char* msg_c = msg;
 
 	Message message;
-	QString content = cp2unicode(msg_c);
+	QString content = QString::fromUtf8(msg_c);
 
 	QDateTime datetime;
 	datetime.setTime_t(time);
@@ -1121,7 +1121,7 @@ void GaduProtocol::messageReceivedSlot(int msgclass, UserListElements senders, Q
 				)
 			);
 
-		message = GaduFormater::createMessage(senders[0].ID("Gadu").toUInt(), content, (unsigned char *)formats.data(), formats.size(), receiveImages);
+		message = GaduFormater::createMessage(senders[0].ID("Gadu").toUInt(), content, (unsigned char *)formats.constData(), formats.size(), receiveImages);
 	}
 
 	if (message.isEmpty())
@@ -1189,7 +1189,7 @@ void GaduProtocol::login()
 	if (NextStatus->isFriendsOnly())
 		LoginParams.status |= GG_STATUS_FRIENDS_MASK;
 	if (NextStatus->hasDescription())
-		LoginParams.status_descr = strdup((const char *)unicode2cp(NextStatus->description()).data());
+		LoginParams.status_descr = strdup((const char *)NextStatus->description().toUtf8().constData());
 
 	LoginParams.uin = (UinType) ID().toUInt();
 	LoginParams.has_audio = config_file.readBoolEntry("Network", "AllowDCC");
@@ -1267,9 +1267,10 @@ void GaduProtocol::login()
 //	polaczenia TLS z serwerami GG na razie nie dzialaja
 //	LoginParams.tls = config_file.readBoolEntry("Network", "UseTLS");
 	LoginParams.tls = 0;
-	LoginParams.client_version = GG_DEFAULT_CLIENT_VERSION;
+	LoginParams.client_version = (char *)GG_DEFAULT_CLIENT_VERSION;
 	LoginParams.protocol_version = GG_DEFAULT_PROTOCOL_VERSION;
 	LoginParams.protocol_features = GG_FEATURE_ALL;
+	LoginParams.encoding = GG_ENCODING_UTF8;
 
 	if (LoginParams.tls)
 	{
@@ -1326,7 +1327,7 @@ void GaduProtocol::setupProxy()
 
 	if (gg_proxy_enabled)
 	{
-		gg_proxy_host = strdup((char *)unicode2latin(config_file.readEntry("Network", "ProxyHost")).data());
+		gg_proxy_host = strdup((char *)unicode2latin(config_file.readEntry("Network", "ProxyHost")).constData());
 		gg_proxy_port = config_file.readNumEntry("Network", "ProxyPort");
 
 		kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "gg_proxy_host = %s\n", gg_proxy_host);
@@ -1334,8 +1335,8 @@ void GaduProtocol::setupProxy()
 
 		if (!config_file.readEntry("Network", "ProxyUser").isEmpty())
 		{
-			gg_proxy_username = strdup((char *)unicode2latin(config_file.readEntry("Network", "ProxyUser")).data());
-			gg_proxy_password = strdup((char *)unicode2latin(config_file.readEntry("Network", "ProxyPassword")).data());
+			gg_proxy_username = strdup((char *)unicode2latin(config_file.readEntry("Network", "ProxyUser")).constData());
+			gg_proxy_password = strdup((char *)unicode2latin(config_file.readEntry("Network", "ProxyPassword")).constData());
 		}
 	}
 
@@ -1360,7 +1361,11 @@ bool GaduProtocol::sendMessage(UserListElements users, Message &message)
 
 	kdebugmf(KDEBUG_INFO, "\n%s\n", (const char *)unicode2latin(plain));
 
+#if 0 //libgadu 1.9.0-rc1 does not handle sending utf-8 messages yet
+	QByteArray data = plain.toUtf8();
+#else
 	QByteArray data = unicode2cp(plain);
+#endif
 
 	emit sendMessageFiltering(users, data, stop);
 
@@ -1395,10 +1400,10 @@ bool GaduProtocol::sendMessage(UserListElements users, Message &message)
 			if (user.usesProtocol("Gadu"))
 				uins[i++] = user.ID("Gadu").toUInt();
 		if (formatsSize)
-			seqNumber = gg_send_message_confer_richtext(Sess, GG_CLASS_CHAT, uinsCount, uins, (unsigned char *)data.data(),
+			seqNumber = gg_send_message_confer_richtext(Sess, GG_CLASS_CHAT, uinsCount, uins, (unsigned char *)data.constData(),
 				formats, formatsSize);
 		else
-			seqNumber = gg_send_message_confer(Sess, GG_CLASS_CHAT, uinsCount, uins,(unsigned char *)data.data());
+			seqNumber = gg_send_message_confer(Sess, GG_CLASS_CHAT, uinsCount, uins,(unsigned char *)data.constData());
 		delete[] uins;
 	}
 	else
@@ -1406,10 +1411,10 @@ bool GaduProtocol::sendMessage(UserListElements users, Message &message)
 			if (user.usesProtocol("Gadu"))
 			{
 				if (formatsSize)
-					seqNumber = gg_send_message_richtext(Sess, GG_CLASS_CHAT, user.ID("Gadu").toUInt(), (unsigned char *)data.data(),
+					seqNumber = gg_send_message_richtext(Sess, GG_CLASS_CHAT, user.ID("Gadu").toUInt(), (unsigned char *)data.constData(),
 						formats, formatsSize);
 				else
-					seqNumber = gg_send_message(Sess, GG_CLASS_CHAT, user.ID("Gadu").toUInt(),(unsigned char *)data.data());
+					seqNumber = gg_send_message(Sess, GG_CLASS_CHAT, user.ID("Gadu").toUInt(),(unsigned char *)data.constData());
 
 				break;
 			}
@@ -1556,19 +1561,19 @@ void GaduProtocol::searchNextInPubdir(SearchRecord& searchRecord)
 	req = gg_pubdir50_new(GG_PUBDIR50_SEARCH);
 
 	if (!searchRecord.Uin.isEmpty())
-		gg_pubdir50_add(req, GG_PUBDIR50_UIN, (const char *)unicode2cp(searchRecord.Uin).data());
+		gg_pubdir50_add(req, GG_PUBDIR50_UIN, (const char *)unicode2cp(searchRecord.Uin).constData());
 	if (!searchRecord.FirstName.isEmpty())
-		gg_pubdir50_add(req, GG_PUBDIR50_FIRSTNAME, (const char *)unicode2cp(searchRecord.FirstName).data());
+		gg_pubdir50_add(req, GG_PUBDIR50_FIRSTNAME, (const char *)unicode2cp(searchRecord.FirstName).constData());
 	if (!searchRecord.LastName.isEmpty())
-		gg_pubdir50_add(req, GG_PUBDIR50_LASTNAME, (const char *)unicode2cp(searchRecord.LastName).data());
+		gg_pubdir50_add(req, GG_PUBDIR50_LASTNAME, (const char *)unicode2cp(searchRecord.LastName).constData());
 	if (!searchRecord.NickName.isEmpty())
-		gg_pubdir50_add(req, GG_PUBDIR50_NICKNAME, (const char *)unicode2cp(searchRecord.NickName).data());
+		gg_pubdir50_add(req, GG_PUBDIR50_NICKNAME, (const char *)unicode2cp(searchRecord.NickName).constData());
 	if (!searchRecord.City.isEmpty())
-		gg_pubdir50_add(req, GG_PUBDIR50_CITY, (const char *)unicode2cp(searchRecord.City).data());
+		gg_pubdir50_add(req, GG_PUBDIR50_CITY, (const char *)unicode2cp(searchRecord.City).constData());
 	if (!searchRecord.BirthYearFrom.isEmpty())
 	{
 		QString bufYear = searchRecord.BirthYearFrom + ' ' + searchRecord.BirthYearTo;
-		gg_pubdir50_add(req, GG_PUBDIR50_BIRTHYEAR, (const char *)unicode2cp(bufYear).data());
+		gg_pubdir50_add(req, GG_PUBDIR50_BIRTHYEAR, (const char *)unicode2cp(bufYear).constData());
 	}
 
 	switch (searchRecord.Gender)
@@ -1653,21 +1658,21 @@ void GaduProtocol::setPersonalInfo(SearchRecord &searchRecord, SearchResult &new
 	req = gg_pubdir50_new(GG_PUBDIR50_WRITE);
 
 	if (!newData.First.isEmpty())
-		gg_pubdir50_add(req, GG_PUBDIR50_FIRSTNAME, (const char *)(unicode2cp(newData.First).data()));
+		gg_pubdir50_add(req, GG_PUBDIR50_FIRSTNAME, (const char *)(unicode2cp(newData.First).constData()));
 	if (!newData.Last.isEmpty())
-		gg_pubdir50_add(req, GG_PUBDIR50_LASTNAME, (const char *)(unicode2cp(newData.Last).data()));
+		gg_pubdir50_add(req, GG_PUBDIR50_LASTNAME, (const char *)(unicode2cp(newData.Last).constData()));
 	if (!newData.Nick.isEmpty())
-		gg_pubdir50_add(req, GG_PUBDIR50_NICKNAME, (const char *)(unicode2cp(newData.Nick).data()));
+		gg_pubdir50_add(req, GG_PUBDIR50_NICKNAME, (const char *)(unicode2cp(newData.Nick).constData()));
 	if (!newData.City.isEmpty())
-		gg_pubdir50_add(req, GG_PUBDIR50_CITY, (const char *)(unicode2cp(newData.City).data()));
+		gg_pubdir50_add(req, GG_PUBDIR50_CITY, (const char *)(unicode2cp(newData.City).constData()));
 	if (!newData.Born.isEmpty())
-		gg_pubdir50_add(req, GG_PUBDIR50_BIRTHYEAR, (const char *)(unicode2cp(newData.Born).data()));
+		gg_pubdir50_add(req, GG_PUBDIR50_BIRTHYEAR, (const char *)(unicode2cp(newData.Born).constData()));
 	if (newData.Gender)
 		gg_pubdir50_add(req, GG_PUBDIR50_GENDER, QString::number(newData.Gender).latin1());
 	if (!newData.FamilyName.isEmpty())
-		gg_pubdir50_add(req, GG_PUBDIR50_FAMILYNAME, (const char *)(unicode2cp(newData.FamilyName).data()));
+		gg_pubdir50_add(req, GG_PUBDIR50_FAMILYNAME, (const char *)(unicode2cp(newData.FamilyName).constData()));
 	if (!newData.FamilyCity.isEmpty())
-		gg_pubdir50_add(req, GG_PUBDIR50_FAMILYCITY, (const char *)(unicode2cp(newData.FamilyCity).data()));
+		gg_pubdir50_add(req, GG_PUBDIR50_FAMILYCITY, (const char *)(unicode2cp(newData.FamilyCity).constData()));
 
 	searchRecord.Seq = gg_pubdir50(Sess, req);
 	gg_pubdir50_free(req);
@@ -1739,8 +1744,8 @@ void GaduProtocol::changePassword(UinType uin, const QString &mail, const QStrin
 void GaduProtocol::doRegisterAccount()
 {
 	kdebugf();
-	struct gg_http *h = gg_register3(unicode2cp(DataEmail).data(), unicode2cp(DataPassword).data(),
-		unicode2cp(TokenId).data(), unicode2cp(TokenValue).data(), 1);
+	struct gg_http *h = gg_register3(unicode2cp(DataEmail).constData(), unicode2cp(DataPassword).constData(),
+		unicode2cp(TokenId).constData(), unicode2cp(TokenValue).constData(), 1);
 	if (h)
 	{
 		PubdirSocketNotifiers *sn = new PubdirSocketNotifiers(h, this);
@@ -1762,8 +1767,8 @@ void GaduProtocol::registerDone(bool ok, struct gg_http *h)
 void GaduProtocol::doUnregisterAccount()
 {
 	kdebugf();
-	struct gg_http* h = gg_unregister3(DataUin, unicode2cp(DataPassword).data(), unicode2cp(TokenId).data(),
-		unicode2cp(TokenValue).data(), 1);
+	struct gg_http* h = gg_unregister3(DataUin, unicode2cp(DataPassword).constData(), unicode2cp(TokenId).constData(),
+		unicode2cp(TokenValue).constData(), 1);
 	if (h)
 	{
 		PubdirSocketNotifiers *sn = new PubdirSocketNotifiers(h, this);
@@ -1787,8 +1792,8 @@ void GaduProtocol::doRemindPassword()
 {
 	kdebugf();
 
-	struct gg_http *h = gg_remind_passwd3(DataUin, unicode2cp(DataEmail).data(), unicode2cp(TokenId).data(),
-		unicode2cp(TokenValue).data(), 1);
+	struct gg_http *h = gg_remind_passwd3(DataUin, unicode2cp(DataEmail).constData(), unicode2cp(TokenId).constData(),
+		unicode2cp(TokenValue).constData(), 1);
 	if (h)
 	{
 		PubdirSocketNotifiers *sn = new PubdirSocketNotifiers(h, this);
@@ -1811,9 +1816,9 @@ void GaduProtocol::doChangePassword()
 {
 	kdebugf();
 
-	struct gg_http *h = gg_change_passwd4(DataUin, unicode2cp(DataEmail).data(),
-		unicode2cp(DataPassword).data(), unicode2cp(DataNewPassword).data(),
-		unicode2cp(TokenId).data(), unicode2cp(TokenValue).data(), 1);
+	struct gg_http *h = gg_change_passwd4(DataUin, unicode2cp(DataEmail).constData(),
+		unicode2cp(DataPassword).constData(), unicode2cp(DataNewPassword).constData(),
+		unicode2cp(TokenId).constData(), unicode2cp(TokenValue).constData(), 1);
 	if (h)
 	{
 		PubdirSocketNotifiers *sn = new PubdirSocketNotifiers(h, this);
@@ -2126,7 +2131,7 @@ void GaduProtocol::userListReceived(const struct gg_event *e)
 		if (e->event.notify60[nr].descr)
 		{
 			status.fromStatusNumber(e->event.notify60[nr].status,
-				cp2unicode(e->event.notify60[nr].descr));
+				QString::fromUtf8(e->event.notify60[nr].descr));
 			QString desc = status.description();
 			desc.replace("\r\n", "\n");
 			desc.replace("\r", "\n");
@@ -2199,7 +2204,7 @@ void GaduProtocol::userListReplyReceived(char type, char *reply)
 			return;
 		}
 
-		kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "\n%s\n", unicode2latin(ImportReply).data());
+		kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "\n%s\n", unicode2latin(ImportReply).constData());
 
 		emit userListImported(true, stringToUserList(ImportReply));
 	}
@@ -2222,7 +2227,7 @@ void GaduProtocol::userStatusChanged(const struct gg_event *e)
 	{
 		uin = e->event.status60.uin;
 		status.fromStatusNumber(e->event.status60.status,
-			cp2unicode(e->event.status60.descr));
+			QString::fromUtf8(e->event.status60.descr));
 		remote_ip = e->event.status60.remote_ip;
 		remote_port = e->event.status60.remote_port;
 		version = e->event.status60.version;
@@ -2232,7 +2237,7 @@ void GaduProtocol::userStatusChanged(const struct gg_event *e)
 	{
 		uin = e->event.status.uin;
 		status.fromStatusNumber(e->event.status.status,
-			cp2unicode(e->event.status.descr));
+			QString::fromUtf8(e->event.status.descr));
 		remote_ip = 0;
 		remote_port = 0;
 		version = 0;
