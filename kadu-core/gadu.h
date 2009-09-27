@@ -10,12 +10,6 @@
 
 #include "exports.h"
 
-#if !defined(Q_OS_MAC) && !defined(Q_OS_WIN)
-# ifndef GG_CONFIG_HAVE_PTHREAD
-#  error "libgadu must be compiled with pthread support"
-# endif
-#endif
-
 #define GG8_DESCRIPTION_MASK 0x00ff
 
 typedef uin_t UinType;
