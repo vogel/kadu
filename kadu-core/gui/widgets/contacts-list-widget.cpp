@@ -151,21 +151,41 @@ void ContactsListWidget::contextMenuEvent(QContextMenuEvent *event)
 	if (con.isNull())
 		return;
 
+	bool first = true;
 	QMenu *menu = new QMenu(this);
 
+	QMenu *actions = new QMenu(tr("Actions"));
 	foreach (ActionDescription *actionDescription, ContactsListWidgetMenuManager::instance()->contactsListActions())
+		if (actionDescription)
+		{
+			Action *action = actionDescription->createAction(MyMainWindow);
+			actions->addAction(action);
+			action->checkState();
+		}
+		else
+			actions->addSeparator();
+
+	foreach (ActionDescription *actionDescription, ContactsListWidgetMenuManager::instance()->contactsContexMenu())
 	{
 		if (actionDescription)
 		{
+
 			Action *action = actionDescription->createAction(MyMainWindow);
 			menu->addAction(action);
 			action->checkState();
 		}
 		else
+		{
 			menu->addSeparator();
+			if (first)
+			{
+				menu->addMenu(actions);
+				first = false;
+			}
+		}
 	}
 
-	QMenu *management = menu->addMenu(tr("User management"));
+	QMenu *management = menu->addMenu(tr("Buddy Options"));
 
 	foreach (ActionDescription *actionDescription, ContactsListWidgetMenuManager::instance()->managementActions())
 		if (actionDescription)

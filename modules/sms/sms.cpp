@@ -27,6 +27,7 @@
 #include "message_box.h"
 #include "modules.h"
 #include "userbox.h"
+#include "gui/widgets/contacts-list-widget-menu-manager.h"
 
 #include "sms.h"
 
@@ -470,6 +471,7 @@ SmsConfigurationUiHandler::SmsConfigurationUiHandler()
 	sendSmsActionDescription->setShortcut("kadu_sendsms");
 	UserBox::insertActionDescription(2, sendSmsActionDescription);
 	kadu->insertMenuActionDescription(sendSmsActionDescription, Kadu::MenuContacts, 5); //TODO 0.6.5: update
+	ContactsListWidgetMenuManager::instance()->addActionDescription(sendSmsActionDescription);
 	kdebugf2();
 }
 

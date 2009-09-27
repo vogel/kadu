@@ -107,11 +107,11 @@ void History::createActionDescriptions()
 	ShowHistoryActionDescription = new ActionDescription(0,
 		ActionDescription::TypeUser, "showHistoryAction",
 		this, SLOT(showHistoryActionActivated(QAction *, bool)),
-		"History", tr("Show history"), false, QString::null,
+		"History", tr("Show chat history"), false, QString::null,
 		disableNonHistoryContacts
 	);
 	ShowHistoryActionDescription->setShortcut("kadu_showhistory");
-	ContactsListWidgetMenuManager::instance()->insertActionDescription(1, ShowHistoryActionDescription);
+	ContactsListWidgetMenuManager::instance()->insertActionDescription(3, ShowHistoryActionDescription);
 
 	ChatsHistoryActionDescription = new ActionDescription(0,
 		ActionDescription::TypeMainMenu, "chatsHistoryAction",

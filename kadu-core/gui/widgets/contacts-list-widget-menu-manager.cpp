@@ -25,20 +25,45 @@ ContactsListWidgetMenuManager::ContactsListWidgetMenuManager()
 
 void ContactsListWidgetMenuManager::addActionDescription(ActionDescription *actionDescription)
 {
-	ContactsListActions.append(actionDescription);
+	ContactsContexMenu.append(actionDescription);
 }
 
 void ContactsListWidgetMenuManager::insertActionDescription(int pos, ActionDescription *actionDescription)
 {
-	ContactsListActions.insert(pos, actionDescription);
+	ContactsContexMenu.insert(pos, actionDescription);
 }
 
 void ContactsListWidgetMenuManager::removeActionDescription(ActionDescription *actionDescription)
 {
-	ContactsListActions.removeAll(actionDescription);
+	ContactsContexMenu.removeAll(actionDescription);
 }
 
 void ContactsListWidgetMenuManager::addSeparator()
+{
+	ContactsContexMenu.append(0);
+}
+
+void ContactsListWidgetMenuManager::insertSeparator(int pos)
+{
+	ContactsContexMenu.insert(pos, 0);
+}
+
+void ContactsListWidgetMenuManager::addListActionDescription(ActionDescription *actionDescription)
+{
+	ContactsListActions.append(actionDescription);
+}
+
+void ContactsListWidgetMenuManager::insertListActionDescription(int pos, ActionDescription *actionDescription)
+{
+	ContactsListActions.insert(pos, actionDescription);
+}
+
+void ContactsListWidgetMenuManager::removeListActionDescription(ActionDescription *actionDescription)
+{
+	ContactsListActions.removeAll(actionDescription);
+}
+
+void ContactsListWidgetMenuManager::addListSeparator()
 {
 	ContactsListActions.append(0);
 }

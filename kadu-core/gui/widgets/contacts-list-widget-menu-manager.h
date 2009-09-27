@@ -22,6 +22,7 @@ class KADUAPI ContactsListWidgetMenuManager
 
 	static ContactsListWidgetMenuManager *Instance;
 
+	QList<ActionDescription *> ContactsContexMenu;
 	QList<ActionDescription *> ContactsListActions;
 	QList<ActionDescription *> ManagementActions;
 
@@ -31,6 +32,7 @@ public:
 
 	static ContactsListWidgetMenuManager * instance();
 
+	QList<ActionDescription *> contactsContexMenu() { return ContactsContexMenu; }
 	QList<ActionDescription *> contactsListActions() { return ContactsListActions; }
 	QList<ActionDescription *> managementActions() { return ManagementActions; }
 
@@ -38,6 +40,11 @@ public:
 	void insertActionDescription(int pos, ActionDescription *actionDescription);
 	void removeActionDescription(ActionDescription *actionDescription);
 	void addSeparator();
+	void insertSeparator(int pos);
+	void addListActionDescription(ActionDescription *actionDescription);
+	void insertListActionDescription(int pos, ActionDescription *actionDescription);
+	void removeListActionDescription(ActionDescription *actionDescription);
+	void addListSeparator();
 	void addManagementActionDescription(ActionDescription *actionDescription);
 	void insertManagementActionDescription(int pos, ActionDescription *actionDescription);
 	void removeManagementActionDescription(ActionDescription *actionDescription);

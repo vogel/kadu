@@ -171,7 +171,6 @@ ChatWidgetActions::ChatWidgetActions(QObject *parent) : QObject(parent)
 	);
 
 	ContactsListWidgetMenuManager::instance()->addActionDescription(OpenChat);
-	ContactsListWidgetMenuManager::instance()->addSeparator();
 }
 
 ChatWidgetActions::~ChatWidgetActions()
