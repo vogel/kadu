@@ -28,6 +28,7 @@
 #include <jinglesessionmanager.h>
 #include <xmpp_tasks.h>
 
+#include "gui/windows/message-box.h"
 #include "debug.h"
 
 #include "certificates/certificate-helpers.h"

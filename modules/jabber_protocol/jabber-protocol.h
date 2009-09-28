@@ -80,7 +80,6 @@ class JabberProtocol : public Protocol
 		virtual void changePrivateMode();
 
 	private slots:
-		void connectToServer();
 		void connectedToServer();
 		void disconnectedFromServer();
 		void disconnect(const XMPP::Status &s = XMPP::Status ("", "", 0, false));
@@ -101,6 +100,7 @@ class JabberProtocol : public Protocol
 		void contactAccountIdChanged(Contact &contact, Account *account, const QString &oldId);
 
 	public slots:
+		void connectToServer();
 		void setPresence(const XMPP::Status &status);
 		void login();
 		void logout(const XMPP::Status &s = XMPP::Status("", tr("Logged out"), 0, false));
