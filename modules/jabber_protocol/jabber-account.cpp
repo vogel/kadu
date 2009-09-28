@@ -14,7 +14,7 @@
 
 #include "jabber-account.h"
 #include "jabber-protocol.h"
-#include "utils/system-info.h"
+#include "os/generic/system-info.h"
 
 JabberAccount::JabberAccount(const QUuid &uuid)
 	: Account(uuid), EncryptionMode(JabberAccount::Encryption_Auto)

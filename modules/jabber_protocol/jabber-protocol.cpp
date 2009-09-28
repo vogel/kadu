@@ -37,7 +37,7 @@
 #include "jabber-account.h"
 #include "jabber-protocol.h"
 #include "jabber-protocol-factory.h"
-#include "utils/system-info.h"
+#include "os/generic/system-info.h"
 
 extern "C" KADU_EXPORT int jabber_protocol_init()
 {
@@ -176,8 +176,8 @@ void JabberProtocol::connectToServer()
 	
 	JabberClient->disconnect();
 
-	JabberClient->setOSName(SystemInfo::instance()->os());
-	JabberClient->setTimeZone(SystemInfo::instance()->timezoneString(), SystemInfo::instance()->timezoneOffset());
+	JabberClient->setOSName(SystemInfo::instance()->osFullName());
+	JabberClient->setTimeZone(SystemInfo::instance()->timezone(), SystemInfo::instance()->timezoneOffset());
 	JabberClient->setClientName("Kadu");
 	JabberClient->setClientVersion(VERSION);
 
