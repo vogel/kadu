@@ -36,18 +36,19 @@ SqlHistoryModule::SqlHistoryModule(bool firstLoad)
 {
 	if (firstLoad)
 		createDefaultConfiguration();
-	MainConfigurationWindow::registerUiFile(dataPath("kadu/modules/configuration/sql_history.ui"));
+//	MainConfigurationWindow::registerUiFile(dataPath("kadu/modules/configuration/sql_history.ui"));
 	Storage = new HistorySqlStorage();
 	History::instance()->registerStorage(Storage);
 }
 
 SqlHistoryModule::~SqlHistoryModule()
 {
-	MainConfigurationWindow::unregisterUiFile(dataPath("kadu/modules/configuration/sql_history.ui"));
+//	MainConfigurationWindow::unregisterUiFile(dataPath("kadu/modules/configuration/sql_history.ui"));
 }
 
 void SqlHistoryModule::mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow)
 {
+/*
 	portSpinBox = dynamic_cast<QSpinBox *>(mainConfigurationWindow->widget()->widgetById("sql_history/databasehostport"));
 	connect(portSpinBox, SIGNAL(valueChanged(int)), this, SLOT(portSpinBoxValueChanged(int)));
 
@@ -67,6 +68,7 @@ void SqlHistoryModule::mainConfigurationWindowCreated(MainConfigurationWindow *m
 		passLineEdit->setEnabled(false);
 		prefixLineEdit->setEnabled(false);
 	}
+*/
 }
 
 void SqlHistoryModule::configurationWindowApplied()

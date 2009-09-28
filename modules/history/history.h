@@ -44,6 +44,7 @@ enum HistoryEntryType
 #include "history_exports.h"
 
 class Account;
+class ChatWidget;
 class HistoryWindow;
 
 class HISTORYAPI History : public ConfigurationUiHandler, ConfigurationAwareObject, ContactRemovePredicateObject
@@ -72,9 +73,7 @@ class HISTORYAPI History : public ConfigurationUiHandler, ConfigurationAwareObje
 	void deleteActionDescriptions();
 	virtual void configurationUpdated();
 	virtual bool removeContactFromStorage(Contact contact);
-	void configurationWindowApplied();
 	void mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow);
-	void updateQuoteTimeLabel(int value);
 
 private slots:
 	void accountRegistered(Account *);
@@ -84,6 +83,11 @@ private slots:
 	void showMoreMessagesActionActivated(QAction *sender, bool toggled);
 	void showMoreMessages(QAction *action);
 	void clearHistoryActionActivated(QAction *sender, bool toggled);
+
+	void chatCreated(ChatWidget *chatWidget);
+
+	void updateQuoteTimeLabel(int value);
+	void configurationWindowApplied();
 
 public:
 	static History * instance();
