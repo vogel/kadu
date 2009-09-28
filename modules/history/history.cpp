@@ -125,6 +125,15 @@ void History::createActionDescriptions()
 		this, SLOT(showMoreMessagesActionActivated(QAction *, bool)),
 		"History", tr("Show more messages...")
 	);
+
+	ClearHistoryActionDescription = new ActionDescription(0,
+		ActionDescription::TypeUser, "clearHistoryAction",
+		this, SLOT(clearHistoryActionActivated(QAction *, bool)),
+		"ClearHistory", tr("Clear history"), false, "",
+		disableNonHistoryContacts
+	);
+	ContactsListWidgetMenuManager::instance()->addManagementActionDescription(ClearHistoryActionDescription);
+
 }
 
 void History::deleteActionDescriptions()
@@ -221,6 +230,16 @@ void History::showMoreMessages(QAction *action)
 
 	chatMessagesView->clearMessages();
 	chatMessagesView->appendMessages(messages);
+}
+
+void History::clearHistoryActionActivated(QAction *sender, bool toggled)
+{
+    	if (!CurrentStorage)
+		return;
+
+	MainWindow *window = dynamic_cast<MainWindow *>(sender->parent());
+	if (window && window->chat())
+		CurrentStorage->clearChatHistory(window->chat());
 }
 
 void History::accountRegistered(Account *account)

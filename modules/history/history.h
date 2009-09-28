@@ -57,6 +57,7 @@ class HISTORYAPI History : public ConfigurationUiHandler, ConfigurationAwareObje
 	ActionDescription *ShowHistoryActionDescription;
 	ActionDescription *ChatsHistoryActionDescription;
 	ActionDescription *ShowMoreMessagesInChatWidgetActionDescription;
+	ActionDescription *ClearHistoryActionDescription;
 
 	QLabel *dontCiteOldMessagesLabel;
 	QListWidget *allStatusUsers;
@@ -82,6 +83,7 @@ private slots:
 	void showHistoryActionActivated(QAction *sender, bool toggled);
 	void showMoreMessagesActionActivated(QAction *sender, bool toggled);
 	void showMoreMessages(QAction *action);
+	void clearHistoryActionActivated(QAction *sender, bool toggled);
 
 public:
 	static History * instance();
