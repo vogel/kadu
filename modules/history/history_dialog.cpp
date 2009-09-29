@@ -25,6 +25,7 @@
 #include "kadu.h"
 #include "misc.h"
 #include "icons_manager.h"
+#include "message_box.h"
 
 #include "history_dialog.h"
 
@@ -470,107 +471,175 @@ void HistoryDialog::setDateListViewText(const QDateTime &datetime)
 	kdebugf2();
 }
 
+/**
+ * @brief Search on currently being displayed history page
+ * @retval true if found, false otherwise
+ */
+bool HistoryDialog::searchCurrentPage()
+{
+	QWebPage::FindFlags flag = 0;
+	if (findRec.reverse)
+		flag = QWebPage::FindBackward;
+
+	return body->findText(findRec.data, flag);
+}
+
+/**
+ * @brief Open first history page of selected uin
+ * @retval true if page is opened, false otherwise
+ */
+bool HistoryDialog::openFirstPage()
+{
+	/* open the first date */
+	QTreeWidgetItem *actlvi = uinsTreeWidget->currentItem();
+	if (actlvi && !actlvi->parent() && (actlvi->childCount() > 0))
+	{
+		uinsTreeWidget->setCurrentItem(actlvi->child(0));
+		return true;
+	}
+	return false;
+}
+
+/**
+ * @brief Opens next history page (date) of selected uin
+ * @retval index of first message on that page (date) or -1 if not found
+ */
+int HistoryDialog::openNextPage()
+{
+	QTreeWidgetItem *actlvi = uinsTreeWidget->currentItem();
+	if (actlvi && actlvi->parent())
+	{
+		int index = actlvi->parent()->indexOfChild(actlvi);
+		if (findRec.reverse)
+			--index;
+		else
+			++index;
+
+		if ((index > 0) && (index < actlvi->parent()->childCount()))
+		{
+			actlvi = actlvi->parent()->child(index);
+			return history->getHistoryEntryIndexByDate(uins,
+				dynamic_cast<DateListViewText *>(actlvi)->getDate().date);
+		}
+	}
+	return -1;
+}
+
+/**
+ * @brief Search the history
+ * Try to find the match on the current date, when not found start searching in
+ * history messages starting from the next date. If there's no match found the
+ * message box is displayed to user.
+ */
 void HistoryDialog::searchHistory()
 {
+	int index = 0;
+
+	/* Dorr: if we're in the middle of searching */
+	if (findRec.actualrecord > 0)
+	{
+		/* if not found start searching on the next date */
+		if (!searchCurrentPage())
+			index = openNextPage();
+	}
+	else
+		openFirstPage();
+
+	if (index < 0 || !searchInHistory(index))
+	{
+		MessageBox::msg(tr("No more matches found"));
+	}
+}
+
+/**
+ * @brief Search in history messages
+ * @param[in] index  the message index to start searching for
+ * @retval true is matching entry is found, false otherwise
+ */
+bool HistoryDialog::searchInHistory(int index)
+{
 	kdebugf();
-	int start, end, count, total, len, force = 0;
+	int start, end, count, total, len;
 	unsigned int i;
 	QDateTime fromdate, todate;
 	QList<HistoryEntry> entries;
 	unsigned int entriesCount;
 	QRegExp rxp;
-
-	/* Dorr: if we're in the middle of searching */
-	if (findRec.actualrecord > 0)
-	{
-		QWebPage::FindFlags flag = 0;
-		if (findRec.reverse)
-			flag = QWebPage::FindBackward;
-
-		/* try to find the text on the current page */
-		if (body->findText(findRec.data, flag))
-		{
-			return;
-		}
-		/* if not found force searching on the next date */
-		else
-		{
-			QTreeWidgetItem *actlvi = uinsTreeWidget->currentItem();
-			if (actlvi && actlvi->parent())
-			{
-				int index = actlvi->parent()->indexOfChild(actlvi);
-				if (findRec.reverse)
-					--index;
-				else
-					++index;
-				if ((index > 0) && (index < actlvi->parent()->childCount()))
-				{
-					actlvi = actlvi->parent()->child(index);
-					force = history->getHistoryEntryIndexByDate(uins, dynamic_cast<DateListViewText *>(actlvi)->getDate().date);
-				}
-			}
-		}
-	}
-	else
-	{
-		/* open the first date */
-		QTreeWidgetItem *actlvi = uinsTreeWidget->currentItem();
-		if (actlvi && !actlvi->parent())
-			if (actlvi->childCount() > 0)
-				uinsTreeWidget->setCurrentItem(actlvi->child(0));
-	}
+	bool found = false;
 
 	count = history->getHistoryEntriesCount(uins);
+
 	if (findRec.fromdate.isNull())
 		start = 0;
 	else
 		start = history->getHistoryEntryIndexByDate(uins, findRec.fromdate);
+
 	if (findRec.todate.isNull())
 		end = count - 1;
 	else
 		end = history->getHistoryEntryIndexByDate(uins, findRec.todate, true);
+
 	kdebugmf(KDEBUG_INFO, "start = %d, end = %d\n", start, end);
+
 	if (start > end || (start == end && (start == -1 || start == count)))
-		return;
+	{
+		kdebugmf(KDEBUG_INFO, "Wrong start/end conditions\n");
+		return false;
+	}
+
 	if (start == -1)
 		start = 0;
+
 	if (end == count)
 		--end;
+
 	entries = history->getHistoryEntries(uins, start, 1);
 	fromdate = entries[0].date;
 	entries = history->getHistoryEntries(uins, end, 1);
 	todate = entries[0].date;
+
 	kdebugmf(KDEBUG_INFO, "start = %s, end = %s\n",
 		fromdate.toString("dd.MM.yyyy hh:mm:ss").latin1(),
 		todate.toString("dd.MM.yyyy hh:mm:ss").latin1());
-	if (force)
-		findRec.actualrecord = force;
+
+	if (index)
+		findRec.actualrecord = index;
 	else if (findRec.actualrecord == -1)
 		findRec.actualrecord = findRec.reverse ? end : start;
+
 	if ((findRec.actualrecord >= end && !findRec.reverse)
 		|| (findRec.actualrecord <= start && findRec.reverse))
-		return;
+	{
+		kdebugmf(KDEBUG_INFO, "There's no more history entries to search\n");
+		return false;
+	}
+
 	if (findRec.reverse)
 		total = findRec.actualrecord - start + 1;
 	else
 		total = end - findRec.actualrecord + 1;
+
 	kdebugmf(KDEBUG_INFO, "findRec.type = %d\n", findRec.type);
+
 	rxp.setPattern(findRec.data);
 	setEnabled(false);
 	showResults = true;
 	finding = true;
+
 	if (findRec.reverse)
+	{
 		do
 		{
 			len = total > 1000 ? 1000 : total;
 			entries = history->getHistoryEntries(uins, findRec.actualrecord - len + 1, len);
-
 			entriesCount = entries.count();
+
 			//ehh, szkoda, �e w Qt nie ma reverse iterator�w...
 			QList<HistoryEntry>::const_iterator entry = entries.end() - 1;
 			QList<HistoryEntry>::const_iterator firstEntry = entries.begin();
 			bool end;
 			i = 0;
+
 			do
 			{
 				if ((findRec.type == 1 &&
@@ -585,27 +654,39 @@ void HistoryDialog::searchHistory()
 					//	findRec.actualrecord - i + 99 < count ? 100
 					//	: count - findRec.actualrecord + i);
 					HistoryDialog::start = findRec.actualrecord - i;
+					kdebugmf(KDEBUG_INFO, "found entry at index = %d\n",
+						HistoryDialog::start);
+					found = true;
 					break;
 				}
+
 				end = entry == firstEntry;
 				if (!end)
 					--entry;
 				++i;
-			} while (!end);
+			}
+			while (!end);
+
 			findRec.actualrecord -= i + (i < entriesCount);
 			total -= i + (i < entriesCount);
+
 			kdebugmf(KDEBUG_INFO, "actualrecord = %d, i = %d, total = %d\n",
 				findRec.actualrecord, i, total);
+
 			qApp->processEvents();
-		} while (total > 0 && i == entriesCount && !closeDemand);
+		}
+		while (total > 0 && i == entriesCount && !closeDemand);
+	}
 	else
+	{
 		do
 		{
 			len = total > 1000 ? 1000 : total;
 			entries = history->getHistoryEntries(uins, findRec.actualrecord, len);
 			entriesCount = entries.count();
 			i = 0;
-			foreach(const HistoryEntry &entry, entries)
+
+			foreach (const HistoryEntry &entry, entries)
 			{
 				if ((findRec.type == 1 && (entry.type & HISTORYMANAGER_ENTRY_ALL_MSGS)
 					&& entry.message.contains(rxp)) ||
@@ -618,27 +699,40 @@ void HistoryDialog::searchHistory()
 					//	findRec.actualrecord + 99 < count ? 100
 					//	: count - findRec.actualrecord - i);
 					HistoryDialog::start = findRec.actualrecord + i;
+					kdebugmf(KDEBUG_INFO, "found entry at index = %d\n",
+						HistoryDialog::start);
+					found = true;
 					break;
 				}
 				++i;
 			}
+
 			findRec.actualrecord += i + (i < entriesCount);
 			total -= i + (i < entriesCount);
+
 			kdebugmf(KDEBUG_INFO, "actualrecord = %d, i = %d, total = %d\n",
 				findRec.actualrecord, i, total);
+
 			qApp->processEvents();
-		} while (total > 0 && i == entriesCount && !closeDemand);
+		}
+		while (total > 0 && i == entriesCount && !closeDemand);
+	}
+
 	if (closeDemand)
 	{
 		close();
 		kdebugf2();
-		return;
+		return found;
 	}
+
 	if (findRec.actualrecord < 0)
 		findRec.actualrecord = 0;
+
 	setEnabled(true);
 	finding = false;
+
 	kdebugf2();
+	return found;
 }
 
 void HistoryDialog::keyPressEvent(QKeyEvent *e)
