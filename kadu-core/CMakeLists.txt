@@ -24,6 +24,7 @@ set (kadu_SRCS
 	chat/message/message-render-info.cpp
 	chat/message/pending-messages-manager.cpp
 
+	chat/style-engines/adium-time-formatter.cpp
 	chat/style-engines/chat-engine-adium.cpp
 	chat/style-engines/chat-engine-kadu.cpp
 
@@ -260,6 +261,7 @@ set (kadu_MOC_SRCS
 	chat/message/message-render-info.h
 	chat/message/pending-messages-manager.h
 
+	chat/style-engines/adium-time-formatter.h
 	chat/style-engines/chat-engine-kadu.h
 
 	chat/type/chat-type-manager.h

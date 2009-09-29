@@ -25,6 +25,7 @@
 #include "parser/parser.h"
 #include "protocols/protocol-factory.h"
 #include "misc/misc.h"
+#include "adium-time-formatter.h"
 
 #include "chat-engine-adium.h"
 
@@ -53,6 +54,21 @@ const char *AdiumChatStyleEngine::xhtmlBase =
 		"%3\n"
 		"</body>"
 		"</html>\n";
+
+AdiumChatStyleEngine::AdiumChatStyleEngine()
+{
+	timeFormatter = new AdiumTimeFormatter;
+	// Load required javascript funtions
+	QFile file(dataPath("kadu") + "/scripts/adium-style-scripts.js");
+	if (file.open(QIODevice::ReadOnly | QIODevice::Text))
+		jsCode = file.readAll();
+
+}
+
+AdiumChatStyleEngine::~AdiumChatStyleEngine()
+{
+	delete timeFormatter;
+}
 
 void AdiumChatStyleEngine::pruneMessage(HtmlMessagesRenderer *renderer)
 {
@@ -176,15 +192,6 @@ void AdiumChatStyleEngine::refreshView(HtmlMessagesRenderer *renderer)
 
 	foreach (MessageRenderInfo *message, renderer->messages())
 		appendMessage(renderer, message);
-}
-
-AdiumChatStyleEngine::AdiumChatStyleEngine()
-{
-	// Load required javascript funtions
-	QFile file(dataPath("kadu") + "/scripts/adium-style-scripts.js");
-	if (file.open(QIODevice::ReadOnly | QIODevice::Text))
-		jsCode = file.readAll();
-
 }
 
 QString AdiumChatStyleEngine::readThemePart(QString part)
@@ -350,7 +357,7 @@ QString AdiumChatStyleEngine::replaceKeywords(Chat *chat, QString &styleHref, QS
 	QRegExp timeRegExp("%timeOpened\\{([^}]*)\\}%");
 	int pos=0;
 	while ((pos=timeRegExp.indexIn(result, pos)) != -1)
-		result.replace(pos, timeRegExp.cap(0).length(), QDateTime::currentDateTime().toString(timeRegExp.cap(1)));
+		result.replace(pos, timeRegExp.cap(0).length(), timeFormatter->convertTimeDate(timeRegExp.cap(1), QDateTime::currentDateTime()));
 
 	QString photoIncoming;
 	QString photoOutgoing;
@@ -399,7 +406,7 @@ QString AdiumChatStyleEngine::replaceKeywords(Chat *chat, QString &styleHref, QS
 	QRegExp timeRegExp("%time\\{([^}]*)\\}%");
 	int pos = 0;
 	while ((pos = timeRegExp.indexIn(result , pos)) != -1)
-		result.replace(pos, timeRegExp.cap(0).length(), time.toString(timeRegExp.cap(1)));
+		result.replace(pos, timeRegExp.cap(0).length(), timeFormatter->convertTimeDate(timeRegExp.cap(1), time));
 
 	// Look for %textbackgroundcolor{X}%
 	// TODO: highlight background color: use the X value.

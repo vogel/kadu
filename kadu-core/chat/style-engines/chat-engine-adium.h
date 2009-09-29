@@ -3,11 +3,14 @@
 
 #include "chat-style-engine.h"
 
+class AdiumTimeFormatter;
 class Chat;
 class Preview;
 
 class AdiumChatStyleEngine : public ChatStyleEngine
 {
+	AdiumTimeFormatter *timeFormatter;
+
 	QString jsCode;
 
 	static const char *xhtmlBase;
@@ -31,6 +34,7 @@ class AdiumChatStyleEngine : public ChatStyleEngine
 
 public:
 	AdiumChatStyleEngine();
+	~AdiumChatStyleEngine();
 
 	virtual bool supportVariants() { return true; }
 	virtual bool supportEditing() { return false; }
