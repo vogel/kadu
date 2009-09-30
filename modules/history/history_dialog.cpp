@@ -380,7 +380,7 @@ void HistoryDialog::pageLoaded(bool b)
 		if (findRec.reverse)
 			flag = QWebPage::FindBackward;
 
-		if (body->findText(findRec.data, flag))
+		if (body->findText(searchString(), flag))
 			showResults = false;
 	}
 }
@@ -443,6 +443,33 @@ const QString &HistoryDialog::gaduStatus2symbol(unsigned int status)
 	}
 }
 
+/**
+ * @brief If the user searches the status we need to convert the status from
+ * string representation used in history to the form presented to user.
+ * In other case the search data is being returned.
+ */
+QString HistoryDialog::searchString()
+{
+	/* this is not status - leave as it was */
+	if (findRec.type == 1)
+		return findRec.data;
+
+	if (findRec.data == "avail")
+		return tr("Online");
+	else if (findRec.data == "busy")
+		return tr("Busy");
+	else if (findRec.data == "invisible")
+		return tr("Invisible");
+	else if (findRec.data == "notavail")
+		return tr("Offline");
+	else if (findRec.data == "ffc")
+		return tr("Talk With Me");
+	else if (findRec.data == "dnd")
+		return tr("Do Not Disturb");
+	else
+		return findRec.data;
+}
+
 void HistoryDialog::setDateListViewText(const QDateTime &datetime)
 {
 	kdebugf();
@@ -485,7 +512,7 @@ bool HistoryDialog::searchCurrentPage()
 	if (findRec.reverse)
 		flag = QWebPage::FindBackward;
 
-	return body->findText(findRec.data, flag);
+	return body->findText(searchString(), flag);
 }
 
 /**

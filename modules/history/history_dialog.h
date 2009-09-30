@@ -62,6 +62,7 @@ protected:
 	int openNextPage();
 	bool searchInHistory(int index);
 	static const QString &gaduStatus2symbol(unsigned int status);
+	QString searchString();
 	void closeEvent(QCloseEvent *e);
 
 	QTreeWidget *uinsTreeWidget;

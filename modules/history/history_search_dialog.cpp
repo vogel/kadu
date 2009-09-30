@@ -382,6 +382,7 @@ HistoryFindRec HistorySearchDialog::getDialogValues() const
 {
 	kdebugf();
 	HistoryFindRec findrec;
+	findrec.actualrecord = 0;
 
 	if (fromCheckBox->isChecked())
 	{
