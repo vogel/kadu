@@ -208,7 +208,11 @@ void HistoryDialog::clearHistory(bool)
 {
 	QTreeWidgetItem *item = uinsTreeWidget->currentItem();
 	UinsList uins = dynamic_cast<UinsListViewText *>(item)->getUinsList();
-	history->removeHistory(uins);
+	if (history->removeHistory(uins))
+	{
+		uinsTreeWidget->takeTopLevelItem(uinsTreeWidget->currentIndex().row());
+		delete item;
+	}
 }
 
 void HistoryDialog::rebuildIndex(bool)
@@ -535,15 +539,14 @@ void HistoryDialog::searchHistory()
 {
 	int index = 0;
 
-	/* Dorr: if we're in the middle of searching */
-	if (findRec.actualrecord > 0)
+	if (findRec.actualrecord <= 0)
 	{
-		/* if not found start searching on the next date */
-		if (!searchCurrentPage())
-			index = openNextPage();
-	}
-	else
 		openFirstPage();
+	}
+
+	/* if not found start searching on the next date */
+	if (!searchCurrentPage())
+		index = openNextPage();
 
 	if (index < 0 || !searchInHistory(index))
 	{

@@ -315,10 +315,10 @@ void HistoryManager::appendStatus(UinType uin, const UserStatus &status)
 	kdebugf2();
 }
 
-void HistoryManager::removeHistory(const UinsList &uins)
+bool HistoryManager::removeHistory(const UinsList &uins)
 {
 	kdebugf();
-
+	bool ret = false;
 	QString fname;
 	switch (QMessageBox::information(kadu, "Kadu", tr("Clear history?"), tr("Yes"), tr("No"), QString::null, 1, 1))
 	{
@@ -328,11 +328,13 @@ void HistoryManager::removeHistory(const UinsList &uins)
 			kdebugmf(KDEBUG_INFO, "deleting %s\n", qPrintable(fname));
 			QFile::remove(fname);
 			QFile::remove(fname + ".idx");
+			ret = true;
 			break;
 		case 1:
 			break;
 	}
 	kdebugf2();
+	return ret;
 }
 
 void HistoryManager::convHist2ekgForm(UinsList uins)

@@ -113,7 +113,7 @@ class HISTORYAPI HistoryManager : public QObject
 				bool own, time_t serverTime = 0, bool chat = true, time_t arriveTime = time(NULL));
 		void appendSms(const QString &mobile, const QString &msg);
 		void appendStatus(UinType uin, const UserStatus &status);
-		void removeHistory(const UinsList &uins);
+		bool removeHistory(const UinsList &uins);
 
 		void convHist2ekgForm(UinsList uins);
 		void convSms2ekgForm();
