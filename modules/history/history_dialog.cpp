@@ -546,7 +546,7 @@ int HistoryDialog::openNextPage()
 		else
 			++index;
 
-		if ((index > 0) && (index < actlvi->parent()->childCount()))
+		if ((index >= 0) && (index < actlvi->parent()->childCount()))
 		{
 			actlvi = actlvi->parent()->child(index);
 			return history->getHistoryEntryIndexByDate(uins,
