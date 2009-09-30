@@ -126,6 +126,10 @@
         <source>Talk With Me</source>
         <translation>Porozmawiaj ze mną</translation>
     </message>
+    <message>
+        <source>No more matches found</source>
+        <translation>Nie znaleziono więcej dopasowań</translation>
+    </message>
 </context>
 <context>
     <name>HistoryManager</name>

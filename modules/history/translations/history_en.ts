@@ -124,6 +124,10 @@
         <source>Talk With Me</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>No more matches found</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>HistoryManager</name>
