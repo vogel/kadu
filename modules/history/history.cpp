@@ -276,6 +276,12 @@ void HistoryManager::appendStatus(UinType uin, const UserStatus &status)
 		case Invisible:
 			linelist.append("invisible");
 			break;
+		case FFC:
+			linelist.append("ffc");
+			break;
+		case DND:
+			linelist.append("dnd");
+			break;
 		case Offline:
 		default:
 			linelist.append("notavail");

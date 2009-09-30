@@ -164,7 +164,7 @@ HistorySearchDialog::HistorySearchDialog(QWidget *parent, UinsList uins)
 	QHBoxLayout *statusLayout = new QHBoxLayout(statusGroupBox);
 	statusComboBox = new QComboBox(statusGroupBox);
 
-	for (i = 0; i < 4; ++i)
+	for (i = 0; i < 6; ++i)
 		statusComboBox->insertItem(i, qApp->translate("@default", UserStatus::name(i * 2).ascii()));
 	statusLayout->addWidget(statusComboBox);
 
@@ -366,6 +366,10 @@ void HistorySearchDialog::setDialogValues(HistoryFindRec &findrec)
 				status = 2;
 			else if (findrec.data == "notavail")
 				status = 3;
+			else if (findrec.data == "ffc")
+				status = 4;
+			else if (findrec.data == "dnd")
+				status = 5;
 			statusComboBox->setCurrentIndex(status);
 			break;
 		}
@@ -412,6 +416,12 @@ HistoryFindRec HistorySearchDialog::getDialogValues() const
 					break;
 				case 3:
 					findrec.data = "notavail";
+					break;
+				case 4:
+					findrec.data = "ffc";
+					break;
+				case 5:
+					findrec.data = "dnd";
 					break;
 			}
 			break;
