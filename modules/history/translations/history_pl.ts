@@ -118,6 +118,14 @@
         <source>Rebuild index</source>
         <translation>Przebuduj indeks</translation>
     </message>
+    <message>
+        <source>Do Not Disturb</source>
+        <translation>Nie przeszkadzać</translation>
+    </message>
+    <message>
+        <source>Talk With Me</source>
+        <translation>Porozmawiaj ze mną</translation>
+    </message>
 </context>
 <context>
     <name>HistoryManager</name>

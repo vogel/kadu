@@ -116,6 +116,14 @@
         <source>Rebuild index</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Do Not Disturb</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Talk With Me</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>HistoryManager</name>

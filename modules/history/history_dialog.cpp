@@ -327,11 +327,11 @@ ChatMessage * HistoryDialog::createChatMessage(const HistoryEntry &entry)
 				break;
 			case GG_STATUS_FFC:
 			case GG_STATUS_FFC_DESCR:
-				messageText = tr("TalkToMe");
+				messageText = tr("Talk With Me");
 				break;
 			case GG_STATUS_DND:
 			case GG_STATUS_DND_DESCR:
-				messageText = tr("DoNotDisturb");
+				messageText = tr("Do Not Disturb");
 				break;
 			default:
 				messageText = tr("Unknown");
