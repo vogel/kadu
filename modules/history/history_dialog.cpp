@@ -523,7 +523,7 @@ bool HistoryDialog::openFirstPage()
 {
 	/* open the first date */
 	QTreeWidgetItem *actlvi = uinsTreeWidget->currentItem();
-	if (actlvi && !actlvi->parent() && (actlvi->childCount() > 0))
+	if (actlvi && (actlvi->parent() != NULL) && (actlvi->childCount() > 0) && (uinsTreeWidget->currentItem() != actlvi->child(0)))
 	{
 		uinsTreeWidget->setCurrentItem(actlvi->child(0));
 		return true;
@@ -568,6 +568,7 @@ void HistoryDialog::searchHistory()
 
 	if (findRec.actualrecord <= 0)
 	{
+		showResults = true;
 		openFirstPage();
 	}
 
