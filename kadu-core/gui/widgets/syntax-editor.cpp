@@ -49,7 +49,7 @@ SyntaxEditor::~SyntaxEditor()
 
 void SyntaxEditor::setCurrentSyntax(const QString &syntax)
 {
-	syntaxListCombo->setEditText(syntax);
+	syntaxListCombo->setCurrentIndex(syntaxListCombo->findText(syntax));
 	syntaxChangedSlot(syntax);
 }
 
