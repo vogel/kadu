@@ -60,6 +60,7 @@ Core::Core() : Myself(ContactData::TypeNull), Window(0), ShowMainWindowOnStart(t
 {
 	connect(qApp, SIGNAL(aboutToQuit()), this, SLOT(quit()));
 	createDefaultConfiguration();
+	configurationUpdated();
 }
 
 Core::~Core()
@@ -386,12 +387,6 @@ void Core::configurationUpdated()
 {
 	QApplication::setStyle(config_file.readEntry("Look", "QtStyle"));
 
-	Account *account = AccountManager::instance()->defaultAccount();
-	if (account)
-	{
-		setIcon(account->protocol()->statusPixmap());
-		account->protocol()->setPrivateMode(config_file.readBoolEntry("General", "PrivateStatus"));
-	}
 #ifdef Q_OS_WIN
 	QSettings settings("HKEY_CURRENT_USER\\Software\\Microsoft\\Windows\\CurrentVersion\\Run",
 		       QSettings::NativeFormat);
