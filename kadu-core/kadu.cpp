@@ -575,9 +575,7 @@ Kadu::Kadu(QWidget *parent)
 #endif
 
 	InfoPanel = new KaduTextBrowser(split);
-	InfoPanel->setMinimumHeight(int(1.5 * InfoPanel->fontMetrics().height()));
-	InfoPanel->resize(InfoPanel->width(), InfoPanel->minimumHeight());
-
+	InfoPanel->resize(InfoPanel->width(), config_file.readNumEntry("General", "DescriptionHeight"));
 	if (!config_file.readBoolEntry("Look", "ShowInfoPanel"))
 		InfoPanel->QWidget::hide();
 	connect(&updateInformationPanelTimer, SIGNAL(timeout()), this, SLOT(updateInformationPanel()));
@@ -1473,7 +1471,6 @@ bool Kadu::close(bool quit)
 		if (config_file.readBoolEntry("Look", "ShowInfoPanel"))
 		{
 			config_file.writeEntry("General", "UserBoxHeight", Userbox->height());
-//			if (InfoPanel->height() > 0)
 			config_file.writeEntry("General", "DescriptionHeight", InfoPanel->height());
 		}
 		if (config_file.readBoolEntry("Look", "ShowStatusButton"))
