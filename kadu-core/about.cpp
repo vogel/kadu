@@ -49,37 +49,39 @@ About::About(QWidget *parent)
 	setAttribute(Qt::WA_DeleteOnClose);
 	// end set window properties and flags
 
-	// create main QLabel widgets (icon and app info)
-	QWidget *left = new QWidget;
-
 	QLabel *l_icon = new QLabel;
 	l_icon->setPixmap(icons_manager->loadPixmap("AboutIcon"));
 
-	QWidget *blank = new QWidget;
-	blank->setSizePolicy(QSizePolicy(QSizePolicy::Maximum, QSizePolicy::Expanding));
-
-	QVBoxLayout *left_layout = new QVBoxLayout(left);
-	left_layout->addWidget(l_icon);
-	left_layout->addWidget(blank);
-
 	QWidget *center = new QWidget;
-
 	QWidget *texts = new QWidget;
 
 	QLabel *l_info = new QLabel;
-	l_info->setText(QString("<span style=\"font-size: 12pt\">Kadu %1 %2<br />(c) 2001-2009 Kadu Team</span><br><span style=\"font-size: 10pt\">Qt: %3</span>").arg(VERSION)
-			.arg(strlen(DETAILED_VERSION) > 0 ? ("(" + QString(DETAILED_VERSION) + ")") : QString::null).arg(qVersion()));
+	l_info->setBackgroundRole(texts->backgroundRole());
+	
+	l_info->setText(tr("<font size=\"5\">Kadu</font><br /><b>Version %1 %2</b><br />"
+			"Using Qt %3 (Qt%4)</html>").arg(QString(VERSION))
+			.arg(DETAILED_VERSION > 0 ? "(" + QString(DETAILED_VERSION) + ")" : QString::null).arg(qVersion()).arg(QT_VERSION_STR));
+
 	l_info->setWordWrap(true);
 	l_info->setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Minimum));
 
 	QHBoxLayout *texts_layout = new QHBoxLayout(texts);
+	texts_layout->addWidget(l_icon);
 	texts_layout->addWidget(l_info);
-	texts_layout->addWidget(new KaduLink());
+	//texts_layout->addWidget(new KaduLink());
 	// end create main QLabel widgets (icon and app info)
 
 	// our TabWidget
 	QTabWidget *tw_about = new QTabWidget(this);
+	tw_about->setUsesScrollButtons(false);
 	// end our TabWidget
+
+	QWidget *wb_about = new QWidget(tw_about);
+	QVBoxLayout *about_layout = new QVBoxLayout(wb_about);
+	about_layout->addWidget(new QLabel(tr("Instant Messenger")));
+	about_layout->addWidget(new QLabel(tr("Support:<br>http://www.kadu.net/forum/")));
+	about_layout->addWidget(new QLabel(tr("(C) %1-%2 Kadu Team").arg("2001").arg("2009")));
+	about_layout->addWidget(new KaduLink());
 
 	// create our info widgets
 	// authors
@@ -88,6 +90,7 @@ About::About(QWidget *parent)
 	tb_authors->setFrameStyle(QFrame::StyledPanel | QFrame::Plain);
 	tb_authors->setWordWrapMode(QTextOption::NoWrap);
 	tb_authors->setText(loadFile("AUTHORS"));
+	tb_authors->viewport()->setAutoFillBackground(false);
 
 	// people to thank
 	QTextEdit *tb_thanks = new QTextEdit(tw_about);
@@ -95,6 +98,7 @@ About::About(QWidget *parent)
 	tb_thanks->setFrameStyle(QFrame::StyledPanel | QFrame::Plain);
 	tb_thanks->setWordWrapMode(QTextOption::NoWrap);
 	tb_thanks->setText(loadFile("THANKS"));
+	tb_thanks->viewport()->setAutoFillBackground(false);
 
 	// license
 	QTextEdit *tb_license = new QTextEdit(tw_about);
@@ -102,6 +106,7 @@ About::About(QWidget *parent)
 	tb_license->setFrameStyle(QFrame::StyledPanel | QFrame::Plain);
 	tb_license->setWordWrapMode(QTextOption::WordWrap);
 	tb_license->setText(loadFile("COPYING"));
+	tb_license->viewport()->setAutoFillBackground(false);
 
 	// changelog
 	QTextEdit *tb_changelog = new QTextEdit(tw_about);
@@ -109,8 +114,10 @@ About::About(QWidget *parent)
 	tb_changelog->setFrameStyle(QFrame::StyledPanel | QFrame::Plain);
 	tb_changelog->setWordWrapMode(QTextOption::NoWrap);
 	tb_changelog->setText(loadFile("ChangeLog"));
+	tb_changelog->viewport()->setAutoFillBackground(false);
 
 	// add tabs
+	tw_about->addTab(wb_about, tr("&About"));
 	tw_about->addTab(tb_authors, tr("A&uthors"));
 	tw_about->addTab(tb_thanks, tr("&Thanks"));
 	tw_about->addTab(tb_license, tr("&License"));
@@ -137,10 +144,10 @@ About::About(QWidget *parent)
 	center_layout->addWidget(bottom);
 
 	QHBoxLayout *layout = new QHBoxLayout(this);
-	layout->addWidget(left);
+	//slayout->addWidget(left);
 	layout->addWidget(center);
 
-	loadWindowGeometry(this, "General", "AboutGeometry", 0, 50, 640, 420);
+	loadWindowGeometry(this, "General", "AboutGeometry", 0, 50, 480, 380);
 
 	kdebugf2();
 }
