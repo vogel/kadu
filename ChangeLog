@@ -2,6 +2,12 @@ Teksty w nawiasach na koñcu wpisu mówi± o tym, kto dokona³ poprawki lub rozbudow
 Postaæ (x/y) oznacza, ¿e x jest pomys³odawc± lub podes³a³ patcha, a zrobi³ to kto¶ oznaczony przez y.
 Je¶li jest w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 
++++ wersja 0.6.5.4
+* wsparcie dla protoko³u gg8 (libgadu 1.9.0) (dorr)
+* dalsze poprawki w wyszukiwaniu w historii (dorr)
+* poprawiona kompilacja modu³ów zale¿nych od QtDBus (reavertm/dorr)
+* od¶wie¿one okno o programie
+
 +++ wersja 0.6.5.3
 * poprawki w module history (beevvy/dorr, dorr)
 * poprawka w module mediaplayer (dorr)
