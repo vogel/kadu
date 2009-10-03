@@ -1229,6 +1229,18 @@ Jest to wysoce ryzykowne!</translation>
         <source>&amp;License</source>
         <translation>L&amp;icencja</translation>
     </message>
+    <message>
+        <source>Version %1 %2</source>
+        <translation>Wersja %1 %2</translation>
+    </message>
+    <message>
+        <source>Instant Messenger</source>
+        <translation>Komunikator internetowy</translation>
+    </message>
+    <message>
+        <source>Support:&lt;br&gt;%1</source>
+        <translation>Wsparcie:&lt;br&gt;%1</translation>
+    </message>
 </context>
 <context>
     <name>ChatManager</name>
