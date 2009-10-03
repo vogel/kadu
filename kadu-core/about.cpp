@@ -18,6 +18,7 @@
 #include "debug.h"
 #include "icons_manager.h"
 #include "misc.h"
+#include "html_document.h"
 
 #include "about.h"
 
@@ -68,7 +69,6 @@ About::About(QWidget *parent)
 	QHBoxLayout *texts_layout = new QHBoxLayout(texts);
 	texts_layout->addWidget(l_icon);
 	texts_layout->addWidget(l_info);
-	//texts_layout->addWidget(new KaduLink());
 	// end create main QLabel widgets (icon and app info)
 
 	// our TabWidget
@@ -89,32 +89,42 @@ About::About(QWidget *parent)
 	tb_authors->setReadOnly(true);
 	tb_authors->setFrameStyle(QFrame::StyledPanel | QFrame::Plain);
 	tb_authors->setWordWrapMode(QTextOption::NoWrap);
-	tb_authors->setText(loadFile("AUTHORS"));
 	tb_authors->viewport()->setAutoFillBackground(false);
+	HtmlDocument doc;
+	QString authors = loadFile("AUTHORS");
+	// convert the email addresses
+	authors = authors.replace(" (at) ", "@");
+	authors = authors.replace(" (dot) ", ".");
+	authors = authors.replace(QRegExp("[<>]"), "");
+	authors = authors.replace("\n   ", "</b><br/>&nbsp;&nbsp;&nbsp;");
+	authors = authors.replace("\n", "</b><br/><b>");
+	doc.parseHtml(authors);
+	doc.convertMailToHtml();
+	tb_authors->setHtml(doc.generateHtml());
 
 	// people to thank
 	QTextEdit *tb_thanks = new QTextEdit(tw_about);
 	tb_thanks->setReadOnly(true);
 	tb_thanks->setFrameStyle(QFrame::StyledPanel | QFrame::Plain);
 	tb_thanks->setWordWrapMode(QTextOption::NoWrap);
-	tb_thanks->setText(loadFile("THANKS"));
 	tb_thanks->viewport()->setAutoFillBackground(false);
+	tb_thanks->setText(loadFile("THANKS"));
 
 	// license
 	QTextEdit *tb_license = new QTextEdit(tw_about);
 	tb_license->setReadOnly(true);
 	tb_license->setFrameStyle(QFrame::StyledPanel | QFrame::Plain);
 	tb_license->setWordWrapMode(QTextOption::WordWrap);
-	tb_license->setText(loadFile("COPYING"));
 	tb_license->viewport()->setAutoFillBackground(false);
+	tb_license->setText(loadFile("COPYING"));
 
 	// changelog
 	QTextEdit *tb_changelog = new QTextEdit(tw_about);
 	tb_changelog->setReadOnly(true);
 	tb_changelog->setFrameStyle(QFrame::StyledPanel | QFrame::Plain);
 	tb_changelog->setWordWrapMode(QTextOption::NoWrap);
-	tb_changelog->setText(loadFile("ChangeLog"));
 	tb_changelog->viewport()->setAutoFillBackground(false);
+	tb_changelog->setText(loadFile("ChangeLog"));
 
 	// add tabs
 	tw_about->addTab(wb_about, tr("&About"));
