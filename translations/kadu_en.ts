@@ -1112,6 +1112,18 @@ It&apos;s a high security risk!</source>
         <source>&amp;License</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Version %1 %2</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Instant Messenger</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Support:&lt;br&gt;%1</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>ChatManager</name>

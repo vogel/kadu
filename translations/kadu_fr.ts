@@ -1114,6 +1114,18 @@ Attention danger!
         <source>&amp;License</source>
         <translation>L&amp;icence</translation>
     </message>
+    <message>
+        <source>Version %1 %2</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Instant Messenger</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Support:&lt;br&gt;%1</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>ChatManager</name>
@@ -1211,7 +1223,7 @@ Souhaitez vous vraiment expédier cette image?</translation>
         <source>This file is too big for %1 of %2 contacts.
 Do you really want to send this image?
 Some of them probably will not get it.</source>
-        <translation type="unfinished">Ce fichier est trop volumineux pour  %1 z %2 contacts.
+        <translation type="unfinished">Ce fichier est trop volumineux pour  %1 z %2 contacts.
 Souhaitez vous vraiment expédier cette image?
 Probablement il ne sera pas delivré.</translation>
     </message>
