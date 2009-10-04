@@ -30,7 +30,10 @@
 #include "contacts/contact-manager.h"
 #include "contacts/group.h"
 #include "contacts/group-manager.h"
-#include "gui/widgets/contact-account-data-widget.h"
+#include "gui/widgets/contact-general-configuration-widget.h"
+#include "gui/widgets/contact-groups-configuration-widget.h"
+#include "gui/widgets/contact-options-configuration-widget.h"
+#include "gui/widgets/contact-personal-info-configuration-widget.h"
 #include "gui/windows/contact-data-manager.h"
 #include "gui/windows/message-box.h"
 #include "protocols/protocol.h"
@@ -78,17 +81,17 @@ void ContactDataWindow::createTabs(QLayout *layout)
 {
 	QTabWidget *tabWidget = new QTabWidget(this);
 
-	createContactTab(tabWidget);
+	createGeneralTab(tabWidget);
 	createGroupsTab(tabWidget);
-	createAccountsTabs(tabWidget);
+	createPersonalInfoTab(tabWidget);
+	createOptionsTab(tabWidget);
 	layout->addWidget(tabWidget);
 }
 
-void ContactDataWindow::createContactTab(QTabWidget *tabWidget)
+void ContactDataWindow::createGeneralTab(QTabWidget *tabWidget)
 {
-	ConfigurationWidget *contactConfiguration = new ConfigurationWidget(new ContactDataManager(CurrentContact, this), tabWidget);
+	ConfigurationWidget *contactConfiguration = new ContactGeneralConfigurationWidget(new ContactDataManager(CurrentContact, this));
 	contactConfiguration->setSizePolicy(QSizePolicy(QSizePolicy::Minimum, QSizePolicy::Expanding));
-	contactConfiguration->appendUiFile(dataPath("kadu/configuration/contact-data.ui"));
 
 	ConfigurationWidgets.append(contactConfiguration);
 
@@ -97,12 +100,39 @@ void ContactDataWindow::createContactTab(QTabWidget *tabWidget)
 
 void ContactDataWindow::createGroupsTab(QTabWidget *tabWidget)
 {
+	ConfigurationWidget *contactConfiguration = new ContactGroupsConfigurationWidget(new ContactDataManager(CurrentContact, this), tabWidget);
+	contactConfiguration->setSizePolicy(QSizePolicy(QSizePolicy::Minimum, QSizePolicy::Expanding));
+
+	ConfigurationWidgets.append(contactConfiguration);
+
+	tabWidget->addTab(contactConfiguration, tr("Groups"));
 }
 
-void ContactDataWindow::createAccountsTabs(QTabWidget *tabWidget)
+void ContactDataWindow::createPersonalInfoTab(QTabWidget *tabWidget)
 {
-	foreach (Account *account, CurrentContact.accounts())
-		createAccountTab(account, tabWidget);
+	ConfigurationWidget *contactConfiguration = new ContactPersonalInfoConfigurationWidget(new ContactDataManager(CurrentContact, this), tabWidget);
+	contactConfiguration->setSizePolicy(QSizePolicy(QSizePolicy::Minimum, QSizePolicy::Expanding));
+
+	ConfigurationWidgets.append(contactConfiguration);
+
+	tabWidget->addTab(contactConfiguration, tr("Personal Information"));
+}
+
+void ContactDataWindow::createOptionsTab(QTabWidget *tabWidget)
+{
+	ConfigurationWidget *contactConfiguration = new ContactOptionsConfigurationWidget(new ContactDataManager(CurrentContact, this), tabWidget);
+	contactConfiguration->setSizePolicy(QSizePolicy(QSizePolicy::Minimum, QSizePolicy::Expanding));
+
+	ConfigurationWidgets.append(contactConfiguration);
+
+	tabWidget->addTab(contactConfiguration, tr("Options"));
+}
+
+/*
+void ContactDataWindow::createOptionsTab(QTabWidget *tabWidget)
+{
+// 	foreach (Account *account, CurrentContact.accounts())
+// 		createAccountTab(account, tabWidget);
 }
 
 void ContactDataWindow::createAccountTab(Account *account, QTabWidget *tabWidget)
@@ -126,6 +156,7 @@ void ContactDataWindow::createAccountTab(Account *account, QTabWidget *tabWidget
 	ConfigurationWidgets.append(contactAccountDataWidget);
 	tabWidget->addTab(contactAccountDataWidget, account->name());
 }
+*/
 
 void ContactDataWindow::createButtons(QLayout *layout)
 {

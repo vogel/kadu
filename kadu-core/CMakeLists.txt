@@ -99,6 +99,10 @@ set (kadu_SRCS
 	gui/widgets/color-button.cpp
 	gui/widgets/color-selector.cpp
 	gui/widgets/contact-account-data-widget.cpp
+	gui/widgets/contact-general-configuration-widget.cpp
+	gui/widgets/contact-groups-configuration-widget.cpp
+	gui/widgets/contact-personal-info-configuration-widget.cpp
+	gui/widgets/contact-options-configuration-widget.cpp
 	gui/widgets/contact-info-panel.cpp
 	gui/widgets/contacts-list-widget.cpp
 	gui/widgets/contacts-list-widget-delegate.cpp
@@ -318,6 +322,10 @@ set (kadu_MOC_SRCS
 	gui/widgets/color-button.h
 	gui/widgets/color-selector.h
 	gui/widgets/contact-account-data-widget.h
+	gui/widgets/contact-general-configuration-widget.h
+	gui/widgets/contact-groups-configuration-widget.h
+	gui/widgets/contact-personal-info-configuration-widget.h
+	gui/widgets/contact-options-configuration-widget.h
 	gui/widgets/contact-info-panel.h
 	gui/widgets/contacts-list-widget.h
 	gui/widgets/contacts-list-widget-delegate.h

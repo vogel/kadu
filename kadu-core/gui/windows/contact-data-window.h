@@ -33,12 +33,7 @@ class ConfigurationWidget;
 class Contact;
 class ContactAccountDataWidget;
 
-/**
-	Klasa ta reprezentuje okno, z kt�rym mamy do czynienia podczas dodawania nowego kontaktu,
-	lub podczas edycji danych istniej�cego ju� kontaktu.
-	\class ContactDataWindow
-	\brief Okno dialogowe pokazuj�ce informacje o wybranym kontakcie
-**/
+
 class KADUAPI ContactDataWindow : public QWidget
 {
 	Q_OBJECT
@@ -48,10 +43,10 @@ class KADUAPI ContactDataWindow : public QWidget
 
 	void createGui();
 	void createTabs(QLayout *layout);
-	void createContactTab(QTabWidget *tabWidget);
+	void createGeneralTab(QTabWidget *tabWidget);
 	void createGroupsTab(QTabWidget *tabWidget);;
-	void createAccountsTabs(QTabWidget *tabWidget);
-	void createAccountTab(Account *account, QTabWidget *tabWidget);
+	void createPersonalInfoTab(QTabWidget *tabWidget);
+	void createOptionsTab(QTabWidget *tabWidget);
 	void createButtons(QLayout *layout);
 
 	void keyPressEvent(QKeyEvent *);
