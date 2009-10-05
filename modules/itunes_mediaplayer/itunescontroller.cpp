@@ -76,9 +76,9 @@ static QString CFStringToQString(CFStringRef s)
 			qWarning("itunesplayer.cpp: CFString conversion failed.");
 		}
 		delete buffer;
-	} 
-    return result;
-}                         
+	}
+	return result;
+}
 
 
 ITunesController::ITunesController()

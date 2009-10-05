@@ -7,7 +7,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <QtCore/QString>
+#include <QtCore/QProcess>
 
 #include "debug.h"
 #include "../mediaplayer/mediaplayer.h"
@@ -54,9 +54,7 @@ QString ITunesMediaPlayer::getPlayerName()
 QString ITunesMediaPlayer::getPlayerVersion()
 {
 	kdebugf();
-
-	//TODO: obtain the iTunes version
-	return "0.0";
+	return executeCommand("tell application \"iTunes\" to version");
 }
 
 QStringList ITunesMediaPlayer::getPlayListTitles()
@@ -80,16 +78,13 @@ QStringList ITunesMediaPlayer::getPlayListFiles()
 uint ITunesMediaPlayer::getPlayListLength()
 {
 	kdebugf();
-	uint num = 0;
-
-	//TODO: obtain the playlist
-	return num;
+	QByteArray reply = executeCommand("tell application \"iTunes\" to get duration of current playlist");
+	return reply.toInt();
 }
 
 QString ITunesMediaPlayer::getTitle(int position)
 {
 	kdebugf();
-	
 	Tune t = controller->currentTune();
 	return t.name();
 }
@@ -97,7 +92,6 @@ QString ITunesMediaPlayer::getTitle(int position)
 QString ITunesMediaPlayer::getAlbum(int position)
 {
 	kdebugf();
-
 	Tune t = controller->currentTune();
 	return t.album();
 }
@@ -105,7 +99,6 @@ QString ITunesMediaPlayer::getAlbum(int position)
 QString ITunesMediaPlayer::getArtist(int position)
 {
 	kdebugf();
-
 	Tune t = controller->currentTune();
 	return t.artist();
 }
@@ -113,7 +106,6 @@ QString ITunesMediaPlayer::getArtist(int position)
 QString ITunesMediaPlayer::getFile(int position)
 {
 	kdebugf();
-
 	Tune t = controller->currentTune();
 	return t.location();
 }
@@ -121,7 +113,6 @@ QString ITunesMediaPlayer::getFile(int position)
 int ITunesMediaPlayer::getLength(int position)
 {
 	kdebugf();
-	
 	Tune t = controller->currentTune();
 	return t.time();
 }
@@ -129,7 +120,6 @@ int ITunesMediaPlayer::getLength(int position)
 int ITunesMediaPlayer::getCurrentPos()
 {
 	kdebugf();
-
 	Tune t = controller->currentTune();	
 	return (QDateTime::currentDateTime().toTime_t() -  t.started()) * 1000;
 }
@@ -139,63 +129,67 @@ int ITunesMediaPlayer::getCurrentPos()
 void ITunesMediaPlayer::nextTrack()
 {
 	kdebugf();
-
-	//TODO: implement
+	executeCommand("tell application \"iTunes\" to next track");
 }
 
 void ITunesMediaPlayer::prevTrack()
 {
 	kdebugf();
-
-	//TODO: implement
+	executeCommand("tell application \"iTunes\" to previous track");
 }
 
 void ITunesMediaPlayer::play()
 {
 	kdebugf();
-
-	//TODO: implement
+	executeCommand("tell application \"iTunes\" to play");
 }
 
 void ITunesMediaPlayer::stop()
 {
 	kdebugf();
-
-	//TODO: implement
+	executeCommand("tell application \"iTunes\" to stop");
 }
 
 void ITunesMediaPlayer::pause()
 {
 	kdebugf();
-
-	//TODO: implement
+	executeCommand("tell application \"iTunes\" to pause");
 }
 
 void ITunesMediaPlayer::setVolume(int vol)
 {
 	kdebugf();
+	executeCommand(QString("tell application \"iTunes\" to set sound volume to %1").arg(vol));
+}
 
-	//TODO: implement
+int ITunesMediaPlayer::getVolume()
+{
+	kdebugf();
+	QByteArray reply = executeCommand("tell application \"iTunes\" to get sound volume");
+	return reply.toInt();
 }
 
 void ITunesMediaPlayer::incrVolume()
 {
 	kdebugf();
-
-	//TODO: implement
+	int vol = getVolume();
+	if (vol < 98)
+		vol += 2;
+	setVolume(vol);
 }
 
 void ITunesMediaPlayer::decrVolume()
 {
 	kdebugf();
-
-	//TODO: implement
+	int vol = getVolume();
+	if (vol > 2)
+		vol -= 2;
+	setVolume(vol);
 }
 
 bool ITunesMediaPlayer::isPlaying()
 {
 	kdebugf();
-
 	Tune t = controller->currentTune();
 	return (t.state() == Tune::playing);
 }
@@ -203,7 +197,29 @@ bool ITunesMediaPlayer::isPlaying()
 bool ITunesMediaPlayer::isActive()
 {
 	kdebugf();
-	
 	Tune t = controller->currentTune();
 	return (t.state() != Tune::unknown);
+}
+
+QByteArray ITunesMediaPlayer::executeCommand(const QString &command)
+{
+	QByteArray result;
+	QStringList params;
+	QProcess process;
+
+	params << "-e" << "'" + command + "'";
+	process.start("osascript", params);
+
+	if (!process.waitForStarted(500))
+		return result;
+
+	if (!process.waitForFinished())
+		return result;
+
+	result = process.readAll();
+
+	kdebugmf(KDEBUG_INFO,"command: osascript -e %s - result: [%s]\n", 
+		qPrintable(command), qPrintable(QString(result)));
+
+	return result;
 }

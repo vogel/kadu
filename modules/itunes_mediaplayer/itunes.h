@@ -2,6 +2,9 @@
 #define ITUNES_H
 
 #include <QtCore/QObject>
+#include <QtCore/QString>
+#include <QtCore/QStringList>
+#include <QtCore/QByteArray>
 
 #include "../mediaplayer/player_info.h"
 #include "../mediaplayer/player_commands.h"
@@ -12,6 +15,8 @@ class ITunesMediaPlayer : public PlayerInfo, public PlayerCommands
 {
 
 	ITunesController *controller;
+	int getVolume();
+	QByteArray executeCommand(const QString &command);
 
 public:
 	ITunesMediaPlayer();
