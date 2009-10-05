@@ -54,7 +54,7 @@ QByteArray AmarokMediaPlayer::executeCommand(QString obj, QString func)
 
 	if (!process.waitForFinished())
 		return result;
-                            
+
 	result = process.readAll();
 
 	kdebugmf(KDEBUG_INFO, "command: dcop amarok %s %s - result: [%s]\n", 

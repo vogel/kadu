@@ -15,7 +15,7 @@ endif (COMMAND cmake_policy)
 
 add_library (audacious_mediaplayer ${audacious_mediaplayer} ${SOURCES} ${MOC_FILES})
 
-#target_link_libraries (audacious_mediaplayer -lQtDbus)
+target_link_libraries (audacious_mediaplayer ${QT_QTDBUS_LIBRARY})
 
 if (audacious_mediaplayer STREQUAL STATIC)
 	set_target_properties(audacious_mediaplayer PROPERTIES COMPILE_FLAGS "-DKADULIB" )

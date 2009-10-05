@@ -15,7 +15,7 @@ endif (COMMAND cmake_policy)
 
 add_library (amarok2_mediaplayer ${amarok2_mediaplayer} ${SOURCES} ${MOC_FILES})
 
-#target_link_libraries (amarok2_mediaplayer -lQtDbus)
+target_link_libraries (amarok2_mediaplayer ${QT_QTDBUS_LIBRARY})
 
 if (amarok2_mediaplayer STREQUAL STATIC)
 	set_target_properties(amarok2_mediaplayer PROPERTIES COMPILE_FLAGS "-DKADULIB" )

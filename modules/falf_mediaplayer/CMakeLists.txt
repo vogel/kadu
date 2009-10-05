@@ -17,6 +17,7 @@ endif (COMMAND cmake_policy)
 
 add_library (falf_mediaplayer ${falf_mediaplayer} ${SOURCES} ${MOC_FILES})
 
+target_link_libraries (falf_mediaplayer ${QT_QTDBUS_LIBRARY})
 #target_link_libraries (falf_mediaplayer ${FALF_LIBRARIES})
 #include_directories (${FALF_INCLUDE_DIRS})
 

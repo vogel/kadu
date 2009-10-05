@@ -15,6 +15,8 @@ endif (COMMAND cmake_policy)
 
 add_library (bmpx_mediaplayer ${bmpx_mediaplayer} ${SOURCES} ${MOC_FILES})
 
+target_link_libraries (bmpx_mediaplayer ${QT_QTDBUS_LIBRARY})
+
 if (bmpx_mediaplayer STREQUAL STATIC)
 	set_target_properties(bmpx_mediaplayer PROPERTIES COMPILE_FLAGS "-DKADULIB" )
 else (bmpx_mediaplayer STREQUAL STATIC)
