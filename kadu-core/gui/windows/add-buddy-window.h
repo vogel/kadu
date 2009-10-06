@@ -12,9 +12,17 @@
 
 #include <QtGui/QWidget>
 
+class QComboBox;
+class QLineEdit;
+
 class AddBuddyWindow : public QWidget
 {
 	Q_OBJECT
+
+	QLineEdit *UserNameEdit;
+	QComboBox *AccountCombo;
+	QComboBox *GroupCombo;
+	QLineEdit *DisplayNameEdit;
 
 	void createGui();
 

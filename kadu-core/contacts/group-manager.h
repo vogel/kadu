@@ -49,7 +49,11 @@ public:
 	void removeGroup(QString groupUuid);
 
 	Group * byUuid(const QString &uuid);
+	Group * byIndex(unsigned int index) const;
 	Group * byName(const QString &name, bool create = true);
+	
+	unsigned int indexOf(Group *group) const { return Groups.indexOf(group); }
+	unsigned int count() const { return Groups.count(); }
 
 	bool acceptableGroupName(const QString &groupName);
 

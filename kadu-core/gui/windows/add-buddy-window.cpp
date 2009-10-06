@@ -7,24 +7,14 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <QtGui/QCheckBox>
 #include <QtGui/QComboBox>
-#include <QtGui/QDialogButtonBox>
-#include <QtGui/QKeyEvent>
+#include <QtGui/QGridLayout>
 #include <QtGui/QLabel>
 #include <QtGui/QLineEdit>
-#include <QtGui/QPushButton>
-#include <QtGui/QWhatsThis>
-#include <QtGui/QVBoxLayout>
 
-#include "accounts/account.h"
-#include "accounts/account-manager.h"
-#include "contacts/contact.h"
-#include "contacts/group.h"
-#include "contacts/group-manager.h"
-#include "icons-manager.h"
+#include "accounts/model/accounts-model.h"
+#include "contacts/model/groups-model.h"
 #include "misc/misc.h"
-#include "protocols/protocol.h"
 
 #include "add-buddy-window.h"
 
@@ -42,4 +32,23 @@ AddBuddyWindow::~AddBuddyWindow()
 void AddBuddyWindow::createGui()
 {
 	loadWindowGeometry(this, "General", "AddBuddyWindowGeometry", 0, 50, 425, 430);
+
+	QGridLayout *layout = new QGridLayout(this);
+
+	layout->addWidget(new QLabel(tr("Username:"), this), 0, 0, Qt::AlignRight);
+
+	UserNameEdit = new QLineEdit(this);
+	layout->addWidget(UserNameEdit, 0, 1);
+	layout->addWidget(new QLabel(tr("in"), this), 0, 2);
+
+	AccountCombo = new QComboBox(this);
+	AccountCombo->setModel(new AccountsModel(AccountCombo));
+	layout->addWidget(AccountCombo, 0, 3);
+
+	layout->addWidget(new QLabel(tr("Add in group:"), this), 1, 0, Qt::AlignRight);
+	GroupCombo = new QComboBox(this);
+	GroupCombo->setModel(new GroupsModel(GroupCombo));
+	layout->addWidget(GroupCombo, 1, 1);
+
+	layout->addWidget(new QLabel(tr("Visible name:"), this), 2, 0, Qt::AlignRight);
 }

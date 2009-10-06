@@ -64,6 +64,7 @@ set (kadu_SRCS
 	contacts/model/contacts-model.cpp
 	contacts/model/contacts-model-base.cpp
 	contacts/model/contacts-model-proxy.cpp
+	contacts/model/groups-model.cpp
 
 	configuration/account-data-manager.cpp
 	configuration/config-file-data-manager.cpp
@@ -293,6 +294,7 @@ set (kadu_MOC_SRCS
 	contacts/model/contacts-model.h
 	contacts/model/contacts-model-base.h
 	contacts/model/contacts-model-proxy.h
+	contacts/model/groups-model.h
 
 	configuration/configuration-window-data-manager.h
 	configuration/notifier-configuration-data-manager.h

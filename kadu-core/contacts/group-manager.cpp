@@ -160,6 +160,14 @@ Group * GroupManager::byUuid(const QString &uuid)
 	return 0;
 }
 
+Group * GroupManager::byIndex(unsigned int index) const
+{
+	if (index < 0 || index >= count())
+		return 0;
+	
+	return Groups.at(index);
+}
+
 Group * GroupManager::byName(const QString &name, bool create)
 {
 	if (name.isEmpty())
