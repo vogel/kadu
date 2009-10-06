@@ -94,8 +94,8 @@ private slots:
 public slots:
 	void play(const QString &path, bool force = false);
 	void play(const QString &path, bool volumeControl, double volume);
-	bool playSampleTMP(SoundDevice device, const qint16 *data, int length);
-	bool recordSampleTMP(SoundDevice device, qint16 *data, int length);
+	bool playSampleSlot(SoundDevice device, const qint16 *data, int length);
+	bool recordSampleSlot(SoundDevice device, qint16 *data, int length);
 	void setMute(const bool& enable);
 	void stop();
 

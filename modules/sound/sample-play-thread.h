@@ -38,7 +38,7 @@ public:
 
 signals:
 	void samplePlayed(SoundDevice device);
-	void playSampleTMP(SoundDevice device, const qint16 *data, int length);
+	void playSample(SoundDevice device, const qint16 *data, int length);
 };
 
 #endif // SAMPLE_PLAY_THREAD_H

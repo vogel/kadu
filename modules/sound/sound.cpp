@@ -354,7 +354,7 @@ void SoundManager::enableThreading(SoundDevice device)
 	{
 		SamplePlayThread* playing_thread = new SamplePlayThread(device);
 		connect(playing_thread, SIGNAL(samplePlayed(SoundDevice)), this, SIGNAL(samplePlayed(SoundDevice)));
-		connect(playing_thread, SIGNAL(playSampleTMP(SoundDevice, const qint16, int)), this, SIGNAL(playSampleTMP(SoundDevice, const qint16, int)));
+		connect(playing_thread, SIGNAL(playSample(SoundDevice, const qint16, int)), this, SLOT(playSampleSlot(SoundDevice, const qint16, int)));
 		playing_thread->start();
 		PlayingThreads.insert(device, playing_thread);
 	}
@@ -362,7 +362,7 @@ void SoundManager::enableThreading(SoundDevice device)
 	{
 		SampleRecordThread* recording_thread = new SampleRecordThread(device);
 		connect(recording_thread, SIGNAL(sampleRecorded(SoundDevice)), this, SIGNAL(sampleRecorded(SoundDevice)));
-		connect(recording_thread, SIGNAL(recordSampleTMP(SoundDevice, qint16, int)), this, SIGNAL(recordSampleTMP(SoundDevice, qint16, int)));
+		connect(recording_thread, SIGNAL(recordSample(SoundDevice, qint16, int)), this, SLOT(recordSampleSlot(SoundDevice, qint16, int)));
 		recording_thread->start();
 		RecordingThreads.insert(device, recording_thread);
 	}
@@ -399,7 +399,7 @@ bool SoundManager::playSample(SoundDevice device, const qint16 *data, int length
 	return result;
 }
 
-bool SoundManager::playSampleTMP(SoundDevice device, const qint16 *data, int length)
+bool SoundManager::playSampleSlot(SoundDevice device, const qint16 *data, int length)
 {
 	kdebugf();
 
@@ -428,7 +428,7 @@ bool SoundManager::recordSample(SoundDevice device, qint16 *data, int length)
 	return result;
 }
 
-bool SoundManager::recordSampleTMP(SoundDevice device, qint16 *data, int length)
+bool SoundManager::recordSampleSlot(SoundDevice device, qint16 *data, int length)
 {
 	kdebugf();
 

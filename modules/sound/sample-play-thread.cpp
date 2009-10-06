@@ -40,7 +40,7 @@ void SamplePlayThread::run()
 			break;
 		}
 
-		emit playSampleTMP(Device, Sample, SampleLen);
+		emit playSample(Device, Sample, SampleLen);
 		QCoreApplication::postEvent(this, new SoundEvent(Device));
 		SampleSemaphore.release();
 	}

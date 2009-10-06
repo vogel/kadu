@@ -38,7 +38,7 @@ public:
 
 signals:
 	void sampleRecorded(SoundDevice device);
-	void recordSampleTMP(SoundDevice device, qint16 *data, int length);
+	void recordSample(SoundDevice device, qint16 *data, int length);
 
 };
 
