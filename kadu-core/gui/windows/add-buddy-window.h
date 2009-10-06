@@ -12,56 +12,16 @@
 
 #include <QtGui/QWidget>
 
-class QCheckBox;
-class QComboBox;
-class QLineEdit;
-class QPushButton;
-
-class Account;
-class Contact;
-class Group;
-
 class AddBuddyWindow : public QWidget
 {
 	Q_OBJECT
 
-	Account *contactAccount;
-
-	QLineEdit *buddyUid;
-	QPushButton *continueButton;
-	QWidget *chooseAccountWidget;
-	QComboBox *chooseAccountCombo;
-	QCheckBox *offlineToCheckBox;
-	QWidget *stepTwoWidget;
-	QComboBox *chooseNameCombo;
-	QComboBox *addToGroupCombo;
-	QWidget *addToGroupWidget;
-	QLineEdit *newGroupNameEdit;
-	QPushButton *expandMoreOptionsButton;
-	QPushButton *addBuddyButton;
-
-	bool showMoreOptions;
-
 	void createGui();
-
-private slots:
-	void helpLinkClicked();
-	void clearUid();
-	void buddyIdTextChanged(QString id);
-	void stepOneFinished();
-	void accountSelected(int index);
-	void groupSelected(int index);
-	void showMoreOptionsChanged();
-	void addBuddy();
-
-protected:
-	virtual void keyPressEvent(QKeyEvent *e);
 
 public:
 	AddBuddyWindow(QWidget *parent = 0);
-	AddBuddyWindow(Contact contact, QWidget *parent = 0);
-	AddBuddyWindow(Group *group, QWidget *parent = 0);
-	~AddBuddyWindow();
+	virtual ~AddBuddyWindow();
+
 };
 
 #endif // ADD_BUDDY_WINDOW_H

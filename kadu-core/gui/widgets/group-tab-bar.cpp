@@ -253,7 +253,8 @@ void GroupTabBar::addBuddy()
 	if (!currentGroup)
 		return;
 
-	(new AddBuddyWindow(currentGroup, Core::instance()->kaduWindow()))->show();
+// TODO: NOW
+//	(new AddBuddyWindow(currentGroup, Core::instance()->kaduWindow()))->show();
 }
 
 
