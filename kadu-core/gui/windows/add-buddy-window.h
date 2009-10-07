@@ -10,12 +10,13 @@
 #ifndef ADD_BUDDY_WINDOW_H
 #define ADD_BUDDY_WINDOW_H
 
-#include <QtGui/QWidget>
+#include <QtGui/QDialog>
 
+class QCheckBox;
 class QComboBox;
 class QLineEdit;
 
-class AddBuddyWindow : public QWidget
+class AddBuddyWindow : public QDialog
 {
 	Q_OBJECT
 
@@ -23,6 +24,7 @@ class AddBuddyWindow : public QWidget
 	QComboBox *AccountCombo;
 	QComboBox *GroupCombo;
 	QLineEdit *DisplayNameEdit;
+	QCheckBox *AllowToSeeMeCheck;
 
 	void createGui();
 
