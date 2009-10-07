@@ -12,6 +12,7 @@
 
 #include <QtGui/QDialog>
 #include <QtGui/QLineEdit>
+#include <QtGui/QScrollArea>
 
 #include "gui/widgets/configuration/configuration-widget.h"
 
@@ -20,7 +21,7 @@
 class ContactAccountData;
 class ContactAccountDataManager;
 
-class KADUAPI ContactGroupsConfigurationWidget : public ConfigurationWidget
+class KADUAPI ContactGroupsConfigurationWidget : public QScrollArea
 {
 	Q_OBJECT
 
@@ -28,7 +29,7 @@ class KADUAPI ContactGroupsConfigurationWidget : public ConfigurationWidget
 	void createGui();
 
 public:
-	ContactGroupsConfigurationWidget(ConfigurationWindowDataManager *dataManager, QWidget *parent = 0);
+	ContactGroupsConfigurationWidget(QWidget *parent = 0);
 	~ContactGroupsConfigurationWidget();
 
 };

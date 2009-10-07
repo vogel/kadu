@@ -47,8 +47,6 @@ void ContactGeneralConfigurationWidget::createGui()
 	layout->setColumnStretch(6, 2);
 
 	int row = 0;
-// 	ConnectAtStart = new QCheckBox(tr("Connect at start"), this);
-// 	layout->addWidget(ConnectAtStart, row++, 0, 1, 3);
 
 	QLabel *tabLabel = new QLabel(tr("General Properties"), this);
 	layout->addWidget(tabLabel, 0, 1, 1, 4);
@@ -58,38 +56,6 @@ void ContactGeneralConfigurationWidget::createGui()
 	QLineEdit *AccountId = new QLineEdit(this);
 	layout->addWidget(AccountId, 1, 2, 1, 1);
 
-// 	QLabel *passwordLabel = new QLabel(tr("Password") + ":", this);
-// 	layout->addWidget(passwordLabel, row++, 1);
-// 	AccountPassword = new QLineEdit(this);
-// 	AccountPassword->setEchoMode(QLineEdit::Password);
-// 	layout->addWidget(AccountPassword, row++, 1, 1, 2);
-// 
-// 	RememberPassword = new QCheckBox(tr("Remember password"), this);
-// 	RememberPassword->setChecked(true);
-// 	layout->addWidget(RememberPassword, row++, 1, 1, 2);
-// 
-// 	QLabel *descriptionLabel = new QLabel(tr("Account description") + ":", this);
-// 	layout->addWidget(descriptionLabel, row++, 1, Qt::AlignRight);
-// 	ChooseIdentity = new ChooseIdentityWidget(this);
-// 	layout->addWidget(ChooseIdentity, row++, 1, 1, 2);
-// 
-// 	layout->setRowMinimumHeight(row++, 30);
-// 
-// 	QPushButton *remindPassword = new QPushButton(tr("Forgot password"), this);
-// 	layout->addWidget(remindPassword, row, 1, Qt::AlignLeft);
-// 
-// 	QPushButton *changePassword = new QPushButton(tr("Change password"), this);
-// 	layout->addWidget(changePassword, row++, 2, Qt::AlignLeft);
-// 
-// 	QPushButton *removeAccount = new QPushButton(tr("Remove account"), this);
-// 	connect(removeAccount, SIGNAL(clicked(bool)), this, SLOT(removeAccount()));
-// 	layout->addWidget(removeAccount, row++, 1, 1, 3);
-// 	layout->setRowStretch(row, 100);
-
-// 	row = 0;
-// 	QLabel *photoLabel = new QLabel(tr("Your photo") + ":", this);
-// 	layout->addWidget(photoLabel, 1, 5, 1, 1);
-
 	QPushButton *photoButton = new QPushButton;
 	photoButton->setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::MinimumExpanding);
 	layout->addWidget(photoButton, 1, 5, 1, 1);
@@ -97,116 +63,70 @@ void ContactGeneralConfigurationWidget::createGui()
 	QPushButton *changePhotoButton = new QPushButton(tr("Change Icon..."));
 	layout->addWidget(changePhotoButton, 2, 5, 1, 1);
 
-
-//  QVBoxLayout *mainLayout = new QVBoxLayout(this);
-// 
-// QLabel *mainLabel = new QLabel(tr("General Properties"), this);
-// mainLayout->addWidget(mainLabel);
-// 
-// 
-QGroupBox *accountsBox = new QGroupBox(tr("Merged Contact Accounts"));
-QGridLayout *accountsLayout = new QGridLayout(accountsBox);
+	QGroupBox *accountsBox = new QGroupBox(tr("Merged Contact Accounts"));
+	QGridLayout *accountsLayout = new QGridLayout(accountsBox);
 	accountsLayout->setColumnStretch(0, 5);
 	accountsLayout->setColumnStretch(1, 5);
 	accountsLayout->setColumnStretch(3, 5);
 	accountsLayout->setColumnStretch(4, 5);
-row = 0;
+	row = 0;
 
-QLabel *defaultContactLabel = new QLabel(tr("Default Contact") + ":");
-QComboBox *defaultContact = new QComboBox(this);
-QLabel *defaultContactNoticeLabel = new QLabel(tr("Chat messages will be sent to this username when you select the name from the buddy list"));
-accountsLayout->addWidget(defaultContactLabel, row, 0, 1, 1);
-accountsLayout->addWidget(defaultContact, row++, 1, 1, 3);
-accountsLayout->addWidget(defaultContactNoticeLabel, row++, 1, 1, 5);
-
-
-QLabel *inLabel = new QLabel(tr("in"));
-QLineEdit *contactLineEdit = new QLineEdit(this);
-QComboBox *accountsCombo = new QComboBox(this);
-
-accountsLayout->addWidget(contactLineEdit, row, 0, 1, 2);
-accountsLayout->addWidget(inLabel, row, 2, 1, 1);
-accountsLayout->addWidget(accountsCombo, row++, 3, 1, 2);
-
-QPushButton *addContactButton = new QPushButton(tr("Add Contact..."), this);
-QPushButton *setOrderButton = new QPushButton(tr("Set Order..."), this);
-
-accountsLayout->addWidget(addContactButton, row, 0, 1, 1);
-accountsLayout->addWidget(setOrderButton, row, 1, 1, 1);
+	QLabel *defaultContactLabel = new QLabel(tr("Default Contact") + ":");
+	QComboBox *defaultContact = new QComboBox(this);
+	QLabel *defaultContactNoticeLabel = new QLabel(tr("Chat messages will be sent to this username when you select the name from the buddy list"));
+	accountsLayout->addWidget(defaultContactLabel, row, 0, 1, 1);
+	accountsLayout->addWidget(defaultContact, row++, 1, 1, 3);
+	accountsLayout->addWidget(defaultContactNoticeLabel, row++, 1, 1, 5);
 
 
-layout->addWidget(accountsBox, 3, 1, 2, 6);
+	QLabel *inLabel = new QLabel(tr("in"));
+	QLineEdit *contactLineEdit = new QLineEdit(this);
+	QComboBox *accountsCombo = new QComboBox(this);
+
+	accountsLayout->addWidget(contactLineEdit, row, 0, 1, 2);
+	accountsLayout->addWidget(inLabel, row, 2, 1, 1);
+	accountsLayout->addWidget(accountsCombo, row++, 3, 1, 2);
+
+	QPushButton *addContactButton = new QPushButton(tr("Add Contact..."), this);
+	QPushButton *setOrderButton = new QPushButton(tr("Set Order..."), this);
+
+	accountsLayout->addWidget(addContactButton, row, 0, 1, 1);
+	accountsLayout->addWidget(setOrderButton, row, 1, 1, 1);
 
 
-QGroupBox *communicationBox = new QGroupBox(tr("Communication Information"));
-      QGridLayout *communicationLayout = new QGridLayout(communicationBox);
+	layout->addWidget(accountsBox, 3, 1, 2, 6);
+
+
+	QGroupBox *communicationBox = new QGroupBox(tr("Communication Information"));
+	QGridLayout *communicationLayout = new QGridLayout(communicationBox);
 	//communicationLayout->setColumnMinimumWidth(1, 100);
 	accountsLayout->setColumnStretch(0, 2);
 	accountsLayout->setColumnStretch(1, 5);
-row = 0;
-QHBoxLayout *phoneLayout = new QHBoxLayout;
-QLabel *phoneLabel = new QLabel(tr("Phone") + ":");
-QLineEdit *phone = new QLineEdit(this);
+	row = 0;
+	QHBoxLayout *phoneLayout = new QHBoxLayout;
+	QLabel *phoneLabel = new QLabel(tr("Phone") + ":");
+	QLineEdit *phone = new QLineEdit(this);
 	communicationLayout->addWidget(phoneLabel, row, 0, 1, 1);
 	communicationLayout->addWidget(phone, row++, 1, 1, 1);
 
-QHBoxLayout *mobileLayout = new QHBoxLayout;
-QLabel *mobileLabel = new QLabel(tr("Mobile") + ":");
-QLineEdit *mobile = new QLineEdit(this);
+	QHBoxLayout *mobileLayout = new QHBoxLayout;
+	QLabel *mobileLabel = new QLabel(tr("Mobile") + ":");
+	QLineEdit *mobile = new QLineEdit(this);
 
 	communicationLayout->addWidget(mobileLabel, row, 0, 1, 1);
 	communicationLayout->addWidget(mobile, row++, 1, 1, 1);
 
-QHBoxLayout *emailLayout = new QHBoxLayout;
-QLabel *emailLabel = new QLabel(tr("E-Mail") + ":");
-QLineEdit *email = new QLineEdit(this);
+	QHBoxLayout *emailLayout = new QHBoxLayout;
+	QLabel *emailLabel = new QLabel(tr("E-Mail") + ":");
+	QLineEdit *email = new QLineEdit(this);
 	communicationLayout->addWidget(emailLabel, row, 0, 1, 1);
 	communicationLayout->addWidget(email, row++, 1, 1, 1);
 
-QHBoxLayout *websiteLayout = new QHBoxLayout;
-QLabel *websiteLabel = new QLabel(tr("Website") + ":");
-QLineEdit *website = new QLineEdit(this);
+	QHBoxLayout *websiteLayout = new QHBoxLayout;
+	QLabel *websiteLabel = new QLabel(tr("Website") + ":");
+	QLineEdit *website = new QLineEdit(this);
 	communicationLayout->addWidget(websiteLabel, row, 0, 1, 1);
 	communicationLayout->addWidget(website, row++, 1, 1, 1);
 
-//      radio1->setChecked(true);
-// 
-
-//       vbox1->addLayout(phoneLayout);
-//       vbox1->addLayout(mobileLayout);
-//       vbox1->addLayout(emailLayout);
-//       vbox1->addLayout(websiteLayout);
-//       vbox1->addStretch(1);
-
-
-     // communicationBox->setLayout(communicationLayout);
-
 	layout->addWidget(communicationBox, 5, 1, 2, 6);
-
-// 
-// mainLayout->addWidget(groupBox);
-
-
-//gridLayout->addWidget(groupBox, row++, 1, 1, 4);
-
-//
-// 
-// 	QWidget *accountsWidget = new QWidget;
-// 	QGroupBox *groupBox = new QGroupBox(tr("Merged Contact Accounts"), accountsWidget);
-// QVBoxLayout *vbox = new QVBoxLayout;
-//      vbox->addWidget(new QPushButton("raz"));
-//      vbox->addStretch(1);
-//      groupBox->setLayout(vbox);
-// 
-// mainLayout->addWidget(accountsWidget);
-// 
-// 	QGroupBox *groupBox2 = new QGroupBox(tr("Communication Information"), this);
-// QVBoxLayout *vbox2 = new QVBoxLayout;
-//      vbox2->addWidget(new QPushButton("dwa"));
-//      vbox2->addStretch(1);
-//      groupBox2->setLayout(vbox2);
-// mainLayout->addWidget(groupBox2);
-
-//setLayout(mainLayout);
-
 }
