@@ -20,15 +20,14 @@
 class ContactAccountData;
 class ContactAccountDataManager;
 
-class KADUAPI ContactGeneralConfigurationWidget : public ConfigurationWidget
+class KADUAPI ContactGeneralConfigurationWidget : public QWidget
 {
 	Q_OBJECT
 
-	ContactAccountData *Data;
 	void createGui();
 
 public:
-	ContactGeneralConfigurationWidget(ConfigurationWindowDataManager *dataManager, QWidget *parent = 0);
+	ContactGeneralConfigurationWidget(QWidget *parent = 0);
 	~ContactGeneralConfigurationWidget();
 
 };

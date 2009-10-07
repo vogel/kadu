@@ -53,3 +53,78 @@ void ContactGroupsConfigurationWidget::createGui()
 	statusLineEdit->setReadOnly(true);
 	statusLineEdit->setBackgroundRole(QPalette::Button);
 }
+
+/*
+void ContactDataWindow::setupTab2()
+{
+	kdebugf();
+
+	// TODO: 0.6.6 move to ContactGroupsConfigurationWidget
+
+	scrollArea = new QScrollArea(tw_main);
+	scrollArea->setFrameStyle(QFrame::NoFrame);
+	scrollArea->setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
+	scrollArea->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+
+	QWidget *groupsTab = new QWidget(tw_main);
+	QVBoxLayout *groupsTabLayout = new QVBoxLayout(groupsTab);
+
+	tw_main->addTab(scrollArea, tr("Groups"));
+
+	scrollArea->setWidget(groupsTab);
+	scrollArea->setWidgetResizable(true);
+
+	groupsWidget = new QWidget(groupsTab);
+	groupsLayout = new QVBoxLayout(groupsWidget);
+	groupsLayout->setSpacing(3);
+
+	foreach(Group* group , GroupManager::instance()->groups())
+	{
+		QCheckBox *checkBox = new QCheckBox(group->name());
+		checkBox->setChecked(CurrentContact.isInGroup(group));
+
+		groupsLayout->addWidget(checkBox);
+
+		groups.append(checkBox);
+	}
+
+	newGroup = new QLineEdit(groupsTab);
+	QPushButton *addNewGroup = new QPushButton(tr("Add new group"), groupsTab);
+
+	groupsTabLayout->addWidget(groupsWidget);
+	groupsTabLayout->addWidget(newGroup);
+	groupsTabLayout->addWidget(addNewGroup);
+
+	connect(addNewGroup, SIGNAL(clicked()), this, SLOT(newGroupClicked()));
+	connect(newGroup, SIGNAL(returnPressed()), this, SLOT(newGroupClicked()));
+
+	kdebugf2();
+}
+
+void ContactDataWindow::newGroupClicked()
+{
+	kdebugf();
+	QString groupName = newGroup->text();
+	if (!GroupManager::instance()->acceptableGroupName(groupName))
+	{
+		kdebugf2();
+		return;
+	}
+
+	QCheckBox *checkBox = new QCheckBox(groupName);
+
+	checkBox->setChecked(true);
+
+	groupsLayout->addWidget(checkBox);
+
+	checkBox->show();
+
+	groups.append(checkBox);
+
+	QTimer::singleShot(0, this, SLOT(scrollToBottom()));
+
+	//create new group
+	GroupManager::instance()->byName(groupName);
+
+	kdebugf2();
+}*/

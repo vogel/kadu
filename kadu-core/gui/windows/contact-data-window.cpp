@@ -51,13 +51,10 @@ ContactDataWindow::ContactDataWindow(Contact contact, QWidget *parent) :
 	kdebugf();
 
 	setAttribute(Qt::WA_DeleteOnClose);
-	// po co? setWindowModality(Qt::WindowModal);
 
 	createGui();
 
-	setWindowTitle(CurrentContact.isAnonymous()
-			? tr("Add user")
-			: tr("User info on %1").arg(CurrentContact.display()));
+	setWindowTitle(tr("Merged Contact Properties - %1").arg(CurrentContact.display()));
 
 	loadWindowGeometry(this, "General", "ManageUsersDialogGeometry", 0, 50, 425, 500);
 }
@@ -90,12 +87,9 @@ void ContactDataWindow::createTabs(QLayout *layout)
 
 void ContactDataWindow::createGeneralTab(QTabWidget *tabWidget)
 {
-	ConfigurationWidget *contactConfiguration = new ContactGeneralConfigurationWidget(new ContactDataManager(CurrentContact, this));
-	contactConfiguration->setSizePolicy(QSizePolicy(QSizePolicy::Minimum, QSizePolicy::Expanding));
-
-	ConfigurationWidgets.append(contactConfiguration);
-
-	tabWidget->addTab(contactConfiguration, tr("General"));
+	ContactGeneralConfigurationWidget *contactTab = new ContactGeneralConfigurationWidget(this);
+	contactTab->setSizePolicy(QSizePolicy(QSizePolicy::Minimum, QSizePolicy::Expanding));
+	tabWidget->addTab(contactTab, tr("General"));
 }
 
 void ContactDataWindow::createGroupsTab(QTabWidget *tabWidget)
@@ -162,15 +156,12 @@ void ContactDataWindow::createButtons(QLayout *layout)
 {
 	QDialogButtonBox *buttons = new QDialogButtonBox(Qt::Horizontal, this);
 
-	QPushButton *okButton = new QPushButton(IconsManager::instance()->loadIcon("OkWindowButton"), tr("Ok"), this);
-	buttons->addButton(okButton, QDialogButtonBox::AcceptRole);
-	QPushButton *applyButton = new QPushButton(IconsManager::instance()->loadIcon("ApplyWindowButton"), tr("Apply"), this);
-	buttons->addButton(applyButton, QDialogButtonBox::ApplyRole);
 	QPushButton *cancelButton = new QPushButton(IconsManager::instance()->loadIcon("CloseWindowButton"), tr("Cancel"), this);
 	buttons->addButton(cancelButton, QDialogButtonBox::RejectRole);
+	QPushButton *saveButton = new QPushButton(IconsManager::instance()->loadIcon("OkWindowButton"), tr("Save"), this);
+	buttons->addButton(saveButton, QDialogButtonBox::AcceptRole);
 
-	connect(okButton, SIGNAL(clicked(bool)), this, SLOT(updateContactAndClose()));
-	connect(applyButton, SIGNAL(clicked(bool)), this, SLOT(updateContact()));
+	connect(saveButton, SIGNAL(clicked(bool)), this, SLOT(updateContactAndClose()));
 	connect(cancelButton, SIGNAL(clicked(bool)), this, SLOT(close()));
 
 	layout->addWidget(buttons);
@@ -212,80 +203,7 @@ void ContactDataWindow::updateDisplay()
 // 	e_display->clear();
 // 	e_display->addItems(list);
 }
-/*
-void ContactDataWindow::setupTab2()
-{
-	kdebugf();
 
-	// TODO: 0.6.6 move to ContactGroupsConfigurationWidget
-
-	scrollArea = new QScrollArea(tw_main);
-	scrollArea->setFrameStyle(QFrame::NoFrame);
-	scrollArea->setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
-	scrollArea->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-
-	QWidget *groupsTab = new QWidget(tw_main);
-	QVBoxLayout *groupsTabLayout = new QVBoxLayout(groupsTab);
-
-	tw_main->addTab(scrollArea, tr("Groups"));
-
-	scrollArea->setWidget(groupsTab);
-	scrollArea->setWidgetResizable(true);
-
-	groupsWidget = new QWidget(groupsTab);
-	groupsLayout = new QVBoxLayout(groupsWidget);
-	groupsLayout->setSpacing(3);
-
-	foreach(Group* group , GroupManager::instance()->groups())
-	{
-		QCheckBox *checkBox = new QCheckBox(group->name());
-		checkBox->setChecked(CurrentContact.isInGroup(group));
-
-		groupsLayout->addWidget(checkBox);
-
-		groups.append(checkBox);
-	}
-
-	newGroup = new QLineEdit(groupsTab);
-	QPushButton *addNewGroup = new QPushButton(tr("Add new group"), groupsTab);
-
-	groupsTabLayout->addWidget(groupsWidget);
-	groupsTabLayout->addWidget(newGroup);
-	groupsTabLayout->addWidget(addNewGroup);
-
-	connect(addNewGroup, SIGNAL(clicked()), this, SLOT(newGroupClicked()));
-	connect(newGroup, SIGNAL(returnPressed()), this, SLOT(newGroupClicked()));
-
-	kdebugf2();
-}
-
-void ContactDataWindow::newGroupClicked()
-{
-	kdebugf();
-	QString groupName = newGroup->text();
-	if (!GroupManager::instance()->acceptableGroupName(groupName))
-	{
-		kdebugf2();
-		return;
-	}
-
-	QCheckBox *checkBox = new QCheckBox(groupName);
-
-	checkBox->setChecked(true);
-
-	groupsLayout->addWidget(checkBox);
-
-	checkBox->show();
-
-	groups.append(checkBox);
-
-	QTimer::singleShot(0, this, SLOT(scrollToBottom()));
-
-	//create new group
-	GroupManager::instance()->byName(groupName);
-
-	kdebugf2();
-}*/
 
 void ContactDataWindow::keyPressEvent(QKeyEvent *ke_event)
 {
