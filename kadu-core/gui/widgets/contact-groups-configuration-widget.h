@@ -25,7 +25,6 @@ class KADUAPI ContactGroupsConfigurationWidget : public QScrollArea
 {
 	Q_OBJECT
 
-	ContactAccountData *Data;
 	void createGui();
 
 public:

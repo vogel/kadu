@@ -129,4 +129,5 @@ void ContactGeneralConfigurationWidget::createGui()
 	communicationLayout->addWidget(website, row++, 1, 1, 1);
 
 	layout->addWidget(communicationBox, 5, 1, 2, 6);
+	layout->setRowStretch(7, 100);
 }

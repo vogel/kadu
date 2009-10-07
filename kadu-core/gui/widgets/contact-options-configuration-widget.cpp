@@ -6,13 +6,15 @@
  *   (at your option) any later version.                                   *
  *                                                                         *
  ***************************************************************************/
-/*
+
 #include <QtGui/QDialogButtonBox>
 #include <QtGui/QHBoxLayout>
 #include <QtGui/QLabel>
 #include <QtGui/QPushButton>
 #include <QtGui/QVBoxLayout>
-*/
+
+#include <QtGui/QCheckBox>
+
 #include <QtGui/QLineEdit>
 
 #include "configuration/contact-account-data-manager.h"
@@ -21,8 +23,8 @@
 
 #include "contact-options-configuration-widget.h"
 
-ContactOptionsConfigurationWidget::ContactOptionsConfigurationWidget(ConfigurationWindowDataManager *dataManager, QWidget *parent)
-	: ConfigurationWidget(dataManager, parent)
+ContactOptionsConfigurationWidget::ContactOptionsConfigurationWidget(QWidget *parent)
+	: QWidget(parent)
 {
 	setAttribute(Qt::WA_DeleteOnClose);
 
@@ -35,21 +37,22 @@ ContactOptionsConfigurationWidget::~ContactOptionsConfigurationWidget()
 
 void ContactOptionsConfigurationWidget::createGui()
 {
-	appendUiFile(dataPath("kadu/configuration/contact-account-data.ui"));
+	QGridLayout *layout = new QGridLayout(this);
+	layout->setColumnStretch(3, 10);
 
-	QLineEdit *addrLineEdit = dynamic_cast<QLineEdit *>(widgetById("Addr"));
-	addrLineEdit->setReadOnly(true);
-	addrLineEdit->setBackgroundRole(QPalette::Button);
+	int row = 0;
 
-	QLineEdit *versionLineEdit = dynamic_cast<QLineEdit *>(widgetById("Version"));
-	versionLineEdit->setReadOnly(true);
-	versionLineEdit->setBackgroundRole(QPalette::Button);
+	QLabel *tabLabel = new QLabel(tr("Options"), this);
+	layout->addWidget(tabLabel, row++, 0, 1, 4);       
 
-	QLineEdit *dnsLineEdit = dynamic_cast<QLineEdit *>(widgetById("DnsName"));
-	dnsLineEdit->setReadOnly(true);
-	dnsLineEdit->setBackgroundRole(QPalette::Button);
+	QCheckBox *blockCheckBox = new QCheckBox(tr("Block contact"), this);
+	layout->addWidget(blockCheckBox, row++, 1, 1, 2);      
 
-	QLineEdit *statusLineEdit = dynamic_cast<QLineEdit *>(widgetById("Status"));
-	statusLineEdit->setReadOnly(true);
-	statusLineEdit->setBackgroundRole(QPalette::Button);
+	QCheckBox *offlineToCheckBox = new QCheckBox(tr("Always appear as offline to contact"), this);
+	layout->addWidget(offlineToCheckBox, row++, 1, 1, 2);        
+
+	QCheckBox *notifyCheckBox = new QCheckBox(tr("Notify when contact's status changes"), this);
+	layout->addWidget(notifyCheckBox, row++, 1, 1, 2);   
+
+	layout->setRowStretch(row, 100);                            
 }
