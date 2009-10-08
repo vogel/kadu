@@ -69,6 +69,7 @@ void AddBuddyWindow::createGui()
 
 	layout->setRowMinimumHeight(4, 20);
 	layout->setRowMinimumHeight(6, 20);
+	layout->setRowStretch(6, 100);
 
 	QDialogButtonBox *buttons = new QDialogButtonBox(this);
 	layout->addWidget(buttons, 7, 0, 1, 4);
