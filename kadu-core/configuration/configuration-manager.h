@@ -23,6 +23,7 @@ public:
 
 	void load();
 	void store();
+	void flush();
 
 	void registerStorableObject(StorableObject *object);
 	void unregisterStorableObject(StorableObject *object);

@@ -16,6 +16,7 @@
 #include <QtGui/QWidget>
 #include <QtXml/QDomElement>
 
+#include "configuration/configuration-manager.h"
 #include "core/core.h"
 #include "gui/widgets/configuration/config-group-box.h"
 #include "gui/widgets/configuration/config-widget.h"
@@ -103,6 +104,8 @@ void ConfigurationWindow::updateConfig()
 
 	emit configurationSaved();
 	ConfigurationAwareObject::notifyAll();
+
+	Core::instance()->configuration()->flush();
 }
 
 void ConfigurationWindow::keyPressEvent(QKeyEvent *e)

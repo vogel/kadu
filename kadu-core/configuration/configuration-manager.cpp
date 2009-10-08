@@ -28,6 +28,12 @@ void ConfigurationManager::store()
 		object->store();
 }
 
+void ConfigurationManager::flush()
+{
+	store();
+	xml_config_file->sync();
+}
+
 void ConfigurationManager::registerStorableObject(StorableObject *object)
 {
 	RegisteredStorableObjects.append(object);
