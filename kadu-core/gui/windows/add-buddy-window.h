@@ -16,17 +16,23 @@ class QCheckBox;
 class QComboBox;
 class QLineEdit;
 
+class AccountsModel;
+
 class AddBuddyWindow : public QDialog
 {
 	Q_OBJECT
 
 	QLineEdit *UserNameEdit;
 	QComboBox *AccountCombo;
+	AccountsModel *AccountComboModel;
 	QComboBox *GroupCombo;
 	QLineEdit *DisplayNameEdit;
 	QCheckBox *AllowToSeeMeCheck;
 
 	void createGui();
+
+private slots:
+	void addContact();
 
 public:
 	AddBuddyWindow(QWidget *parent = 0);

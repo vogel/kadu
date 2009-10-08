@@ -15,7 +15,10 @@
 #include <QtGui/QLineEdit>
 #include <QtGui/QPushButton>
 
+#include "accounts/account.h"
 #include "accounts/model/accounts-model.h"
+#include "contacts/contact.h"
+#include "contacts/contact-manager.h"
 #include "contacts/model/groups-model.h"
 #include "misc/misc.h"
 
@@ -44,7 +47,8 @@ void AddBuddyWindow::createGui()
 	layout->addWidget(new QLabel(tr("in"), this), 0, 2);
 
 	AccountCombo = new QComboBox(this);
-	AccountCombo->setModel(new AccountsModel(AccountCombo));
+	AccountComboModel = new AccountsModel(AccountCombo);
+	AccountCombo->setModel(AccountComboModel);
 	AccountCombo->setModelColumn(1); // use long account name
 	layout->addWidget(AccountCombo, 0, 3);
 
@@ -76,6 +80,8 @@ void AddBuddyWindow::createGui()
 	layout->addWidget(buttons, 7, 0, 1, 4);
 
 	QPushButton *addContact = new QPushButton(tr("Add contact"), this);
+	connect(addContact, SIGNAL(clicked(bool)), this, SLOT(addContact()));
+
 	QPushButton *cancel = new QPushButton(tr("Cancel"), this);
 
 	buttons->addButton(addContact, QDialogButtonBox::AcceptRole);
@@ -85,4 +91,14 @@ void AddBuddyWindow::createGui()
 // 	setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Fixed);
 // 	setMaximumHeight(layout->minimumSize().height());
 // 	layout->setSizeConstraint(QLayout::SetMinAndMaxSize);
+}
+
+void AddBuddyWindow::addContact()
+{
+	Account *account = AccountComboModel->account(AccountComboModel->index(AccountCombo->currentIndex()));
+	Contact newContact = ContactManager::instance()->byId(account, UserNameEdit->text());
+	newContact.setType(ContactData::TypeNormal);
+	newContact.setDisplay(DisplayNameEdit->text());
+
+	close();
 }
