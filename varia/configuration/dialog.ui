@@ -129,8 +129,8 @@ Text is plain black." />
 					<item value="Busy" caption="Busy" />
 					<item value="Invisible" caption="Invisible" />
 					<item value="Offline" caption="Offline" />
-					<item value="TalkWithMe" caption="TalkWithMe" />
-					<item value="DoNotDisturb" caption="DoNotDisturb" />
+					<item value="Talk With Me" caption="Talk With Me" />
+					<item value="Do Not Disturb" caption="Do Not Disturb" />
 				</combo-box>
 				<check-box caption="Set invisible if last status was 'Offline'" config-section="General" config-item="StartupStatusInvisibleWhenLastWasOffline"
 					   id="startupStatusInvisibleWhenLastWasOffline" />
