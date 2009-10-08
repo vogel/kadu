@@ -43,6 +43,14 @@
         <source>Status available</source>
         <translation>Dostępny</translation>
     </message>
+    <message>
+        <source>Status Talk With Me</source>
+        <translation>Porozmawiaj ze mną</translation>
+    </message>
+    <message>
+        <source>Status Do Not Disturb</source>
+        <translation>Nie przeszkadzać</translation>
+    </message>
 </context>
 <context>
     <name>AutoResponder</name>

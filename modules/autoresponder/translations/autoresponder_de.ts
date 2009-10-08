@@ -41,6 +41,14 @@
         <source>Status available</source>
         <translation>Zustand &quot;Erreichbar&quot;</translation>
     </message>
+    <message>
+        <source>Status Talk With Me</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Status Do Not Disturb</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>AutoResponder</name>
