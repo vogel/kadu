@@ -87,7 +87,7 @@ void ContactDataWindow::createTabs(QLayout *layout)
 
 void ContactDataWindow::createGeneralTab(QTabWidget *tabWidget)
 {
-	ContactGeneralConfigurationWidget *contactTab = new ContactGeneralConfigurationWidget(this);
+	ContactGeneralConfigurationWidget *contactTab = new ContactGeneralConfigurationWidget(CurrentContact, this);
 	contactTab->setSizePolicy(QSizePolicy(QSizePolicy::Minimum, QSizePolicy::Expanding));
 	tabWidget->addTab(contactTab, tr("General"));
 }
