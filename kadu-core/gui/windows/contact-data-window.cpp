@@ -101,12 +101,9 @@ void ContactDataWindow::createGroupsTab(QTabWidget *tabWidget)
 
 void ContactDataWindow::createPersonalInfoTab(QTabWidget *tabWidget)
 {
-	ConfigurationWidget *contactConfiguration = new ContactPersonalInfoConfigurationWidget(new ContactDataManager(CurrentContact, this), tabWidget);
-	contactConfiguration->setSizePolicy(QSizePolicy(QSizePolicy::Minimum, QSizePolicy::Expanding));
-
-	ConfigurationWidgets.append(contactConfiguration);
-
-	tabWidget->addTab(contactConfiguration, tr("Personal Information"));
+	ContactPersonalInfoConfigurationWidget *personalInfoTab = new ContactPersonalInfoConfigurationWidget(this);
+	personalInfoTab->setSizePolicy(QSizePolicy(QSizePolicy::Minimum, QSizePolicy::Expanding));
+	tabWidget->addTab(personalInfoTab, tr("Personal Information"));
 }
 
 void ContactDataWindow::createOptionsTab(QTabWidget *tabWidget)
