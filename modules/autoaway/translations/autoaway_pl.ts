@@ -69,6 +69,14 @@
         <source>Parse AutoStatus</source>
         <translation>Parsuj AutoStatus</translation>
     </message>
+    <message>
+        <source>Enable Do Not Disturb</source>
+        <translation>Włącz auto-nie przeszkadzać</translation>
+    </message>
+    <message>
+        <source>Set status to Do Not Disturb</source>
+        <translation>Ustaw status na &apos;Nie przeszkadzać&apos; po</translation>
+    </message>
 </context>
 <context>
     <name>AutoAway</name>

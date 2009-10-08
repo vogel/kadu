@@ -69,6 +69,14 @@
         <source>Parse AutoStatus</source>
         <translation>Auto-Zustand parsen</translation>
     </message>
+    <message>
+        <source>Enable Do Not Disturb</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Set status to Do Not Disturb</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>AutoAway</name>

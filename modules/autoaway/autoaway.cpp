@@ -91,6 +91,15 @@ void AutoAwayStatusChanger::changeStatus(UserStatus &status)
 		return;
 	}
 
+	if (status.isDoNotDisturb())
+		return;
+
+	if (changeStatusTo == ChangeStatusToDoNotDisturb)
+	{
+		status.setDoNotDisturb(description);
+		return;
+	}
+
 	if (status.isInvisible())
 		return;
 
@@ -106,24 +115,6 @@ void AutoAwayStatusChanger::changeStatus(UserStatus &status)
 	if (changeStatusTo == ChangeStatusToBusy)
 	{
 		status.setBusy(description);
-		return;
-	}
-
-	if (status.isTalkWithMe())
-		return;
-
-	if (changeStatusTo == ChangeStatusToTalkWithMe)
-	{
-		status.setTalkWithMe(description);
-		return;
-	}
-
-	if (status.isDoNotDisturb())
-		return;
-
-	if (changeStatusTo == ChangeStatusToDoNotDisturb)
-	{
-		status.setDoNotDisturb(description);
 		return;
 	}
 }
@@ -248,10 +239,10 @@ void AutoAway::checkIdleTime()
 		autoAwayStatusChanger->setChangeStatusTo(AutoAwayStatusChanger::ChangeStatusToOffline);
 	else if (idleTime >= autoInvisibleTime && autoInvisibleEnabled)
 		autoAwayStatusChanger->setChangeStatusTo(AutoAwayStatusChanger::ChangeStatusToInvisible);
-	else if (idleTime >= autoAwayTime && autoAwayEnabled)
-		autoAwayStatusChanger->setChangeStatusTo(AutoAwayStatusChanger::ChangeStatusToBusy);
 	else if (idleTime >= autoDNDTime && autoDNDEnabled)
 		autoAwayStatusChanger->setChangeStatusTo(AutoAwayStatusChanger::ChangeStatusToDoNotDisturb);
+	else if (idleTime >= autoAwayTime && autoAwayEnabled)
+		autoAwayStatusChanger->setChangeStatusTo(AutoAwayStatusChanger::ChangeStatusToBusy);
 	else
 	{
 		autoAwayStatusChanger->setChangeStatusTo(AutoAwayStatusChanger::NoChangeStatus);
