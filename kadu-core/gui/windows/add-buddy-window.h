@@ -12,6 +12,8 @@
 
 #include <QtGui/QDialog>
 
+#include "contacts/contact.h"
+
 class QCheckBox;
 class QComboBox;
 class QLineEdit;
@@ -29,6 +31,8 @@ class AddBuddyWindow : public QDialog
 	QLineEdit *DisplayNameEdit;
 	QCheckBox *AllowToSeeMeCheck;
 
+	Contact MyContact;
+
 	void createGui();
 
 private slots:
@@ -37,6 +41,8 @@ private slots:
 public:
 	AddBuddyWindow(QWidget *parent = 0);
 	virtual ~AddBuddyWindow();
+
+	void setContact(Contact contact);
 
 };
 

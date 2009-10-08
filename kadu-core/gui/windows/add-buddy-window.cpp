@@ -25,8 +25,10 @@
 #include "add-buddy-window.h"
 
 AddBuddyWindow::AddBuddyWindow(QWidget *parent) :
-		QDialog(parent, Qt::Window)
+		QDialog(parent, Qt::Window), MyContact(ContactData::TypeNull)
 {
+	setAttribute(Qt::WA_DeleteOnClose);
+
 	createGui();
 }
 
@@ -93,12 +95,28 @@ void AddBuddyWindow::createGui()
 // 	layout->setSizeConstraint(QLayout::SetMinAndMaxSize);
 }
 
+void AddBuddyWindow::setContact(Contact contact)
+{
+	MyContact = contact;
+
+	Account *account = contact.prefferedAccount();
+	if (account)
+	{
+		AccountCombo->setCurrentIndex(AccountComboModel->accountIndex(account));
+		UserNameEdit->setText(contact.id(account));
+	}
+
+	DisplayNameEdit->setText(contact.display());
+}
+
 void AddBuddyWindow::addContact()
 {
 	Account *account = AccountComboModel->account(AccountComboModel->index(AccountCombo->currentIndex()));
-	Contact newContact = ContactManager::instance()->byId(account, UserNameEdit->text());
-	newContact.setType(ContactData::TypeNormal);
-	newContact.setDisplay(DisplayNameEdit->text());
+	if (MyContact.isNull())
+		MyContact = ContactManager::instance()->byId(account, UserNameEdit->text());
+
+	MyContact.setType(ContactData::TypeNormal);
+	MyContact.setDisplay(DisplayNameEdit->text());
 
 	close();
 }

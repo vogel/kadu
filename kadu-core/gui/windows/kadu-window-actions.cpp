@@ -586,12 +586,14 @@ void KaduWindowActions::addUserActionActivated(QAction *sender, bool toggled)
 	MainWindow *window = dynamic_cast<MainWindow *>(sender->parent());
 	if (!window)
 		return;
-// TODO: NOW
-// 	Contact contact = window->contact();
-// 	if (contact.isAnonymous())
-// 		(new AddBuddyWindow(contact, window))->show();
-// 	else
-		(new AddBuddyWindow(window))->show();
+
+	Contact contact = window->contact();
+	AddBuddyWindow *addBuddyWindow = new AddBuddyWindow(window);
+
+	if (contact.isAnonymous())
+		addBuddyWindow->setContact(contact);
+
+	addBuddyWindow->show();
 
  	kdebugf2();
 }
@@ -942,7 +944,14 @@ void KaduWindowActions::editUserActionActivated(QAction *sender, bool toggled)
 	if (contact.isNull())
 		return;
 
-	(new ContactDataWindow(contact, window))->show();
+	if (contact.isAnonymous())
+	{
+		AddBuddyWindow *addBuddyWindow = new AddBuddyWindow(window);
+		addBuddyWindow->setContact(contact);
+		addBuddyWindow->show();
+	}
+	else
+		(new ContactDataWindow(contact, window))->show();
 
 	kdebugf2();
 }
