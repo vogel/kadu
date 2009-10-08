@@ -39,6 +39,11 @@ AccountsModel::~AccountsModel()
 			this, SLOT(accountUnregistered(Account *)));
 }
 
+int AccountsModel::columnCount(const QModelIndex &parent) const
+{
+	return 2;
+}
+
 int AccountsModel::rowCount(const QModelIndex &parent) const
 {
 	return AccountManager::instance()->count();
@@ -52,8 +57,12 @@ QVariant AccountsModel::data(const QModelIndex &index, int role) const
 
 	switch (role)
 	{
+		// TODO: 0.6.6 make it pretty
 		case Qt::DisplayRole:
-			return acc->name();
+			if (index.column() == 0) // long or shor name?
+				return acc->name();
+			else
+				return QString("%1 (%2)").arg(acc->name(), acc->id());
 		case Qt::DecorationRole:
 			return acc->protocol()->icon();
 		default:
@@ -87,7 +96,6 @@ int AccountsModel::accountIndex(Account *account)
 {
 	return AccountManager::instance()->indexOf(account);
 }
-
 
 QModelIndex AccountsModel::accountModelIndex(Account *account)
 {

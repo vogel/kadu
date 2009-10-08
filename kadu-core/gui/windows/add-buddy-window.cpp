@@ -45,6 +45,7 @@ void AddBuddyWindow::createGui()
 
 	AccountCombo = new QComboBox(this);
 	AccountCombo->setModel(new AccountsModel(AccountCombo));
+	AccountCombo->setModelColumn(1); // use long account name
 	layout->addWidget(AccountCombo, 0, 3);
 
 	layout->addWidget(new QLabel(tr("Add in group:"), this), 1, 0, Qt::AlignRight);
