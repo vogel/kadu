@@ -16,11 +16,14 @@
 #include <QtGui/QPushButton>
 
 #include "accounts/account.h"
+#include "accounts/account-manager.h"
 #include "accounts/model/accounts-model.h"
 #include "contacts/contact.h"
 #include "contacts/contact-manager.h"
 #include "contacts/model/groups-model.h"
 #include "misc/misc.h"
+#include "protocols/protocol.h"
+#include "protocols/protocol-factory.h"
 
 #include "add-buddy-window.h"
 
@@ -30,6 +33,7 @@ AddBuddyWindow::AddBuddyWindow(QWidget *parent) :
 	setAttribute(Qt::WA_DeleteOnClose);
 
 	createGui();
+	setUpValidator();
 }
 
 AddBuddyWindow::~AddBuddyWindow()
@@ -45,6 +49,8 @@ void AddBuddyWindow::createGui()
 
 	layout->addWidget(new QLabel(tr("Username:"), this), 0, 0, Qt::AlignRight);
 	UserNameEdit = new QLineEdit(this);
+	UserNameValidator = new QRegExpValidator(UserNameEdit);
+	UserNameEdit->setValidator(UserNameValidator);
 	layout->addWidget(UserNameEdit, 0, 1);
 	layout->addWidget(new QLabel(tr("in"), this), 0, 2);
 
@@ -93,6 +99,21 @@ void AddBuddyWindow::createGui()
 // 	setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Fixed);
 // 	setMaximumHeight(layout->minimumSize().height());
 // 	layout->setSizeConstraint(QLayout::SetMinAndMaxSize);
+}
+
+void AddBuddyWindow::setUpValidator()
+{
+	QStringList regularExpressions;
+
+	foreach (Account *account, AccountManager::instance()->accounts())
+	{
+		QString regularExpression = account->protocol()->protocolFactory()->idRegularExpression();
+		if (!regularExpression.isEmpty())
+			regularExpressions.append(regularExpression);
+	}
+
+	regularExpressions.removeDuplicates();
+	UserNameValidator->setRegExp(QRegExp(QString("(%1)").arg(regularExpressions.join("|"))));
 }
 
 void AddBuddyWindow::setContact(Contact contact)

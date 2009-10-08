@@ -17,6 +17,7 @@
 class QCheckBox;
 class QComboBox;
 class QLineEdit;
+class QRegExpValidator;
 
 class AccountsModel;
 
@@ -25,6 +26,7 @@ class AddBuddyWindow : public QDialog
 	Q_OBJECT
 
 	QLineEdit *UserNameEdit;
+	QRegExpValidator *UserNameValidator;
 	QComboBox *AccountCombo;
 	AccountsModel *AccountComboModel;
 	QComboBox *GroupCombo;
@@ -34,6 +36,7 @@ class AddBuddyWindow : public QDialog
 	Contact MyContact;
 
 	void createGui();
+	void setUpValidator();
 
 private slots:
 	void addContact();

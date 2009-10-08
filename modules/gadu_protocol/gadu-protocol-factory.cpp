@@ -87,6 +87,11 @@ QList<StatusType *> GaduProtocolFactory::supportedStatusTypes()
 	return SupportedStatusTypes;
 }
 
+QString GaduProtocolFactory::idRegularExpression()
+{
+	return "[0-9]{1,12}";
+}
+
 ContactAccountDataWidget * GaduProtocolFactory::newContactAccountDataWidget(ContactAccountData *contactAccountData, QWidget *parent)
 {
 	GaduContactAccountData *gaduContactAccountData = dynamic_cast<GaduContactAccountData *>(contactAccountData);

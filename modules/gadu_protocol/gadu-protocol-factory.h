@@ -35,6 +35,7 @@ public:
 	virtual AccountEditWidget * newEditAccountWidget(Account *, QWidget *parent);
 	virtual ContactAccountDataWidget * newContactAccountDataWidget(ContactAccountData *contactAccountData, QWidget *parent = 0);
 	virtual QList<StatusType *> supportedStatusTypes();
+	virtual QString idRegularExpression();
 
 	virtual QString name() { return "gadu"; }
 	virtual QString displayName() { return tr("Gadu-Gadu"); }
