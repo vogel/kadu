@@ -18,8 +18,12 @@
 
 #include <QtGui/QLineEdit>
 
+#include "accounts/account.h"
+#include "accounts/account-manager.h"
 #include "configuration/contact-account-data-manager.h"
 #include "contacts/contact-account-data.h"
+#include "protocols/protocol.h"
+#include "protocols/protocol-factory.h"
 #include "misc/misc.h"
 
 #include "contact-general-configuration-widget.h"
@@ -66,9 +70,10 @@ void ContactGeneralConfigurationWidget::createGui()
 	QVBoxLayout *photoLayout = new QVBoxLayout(photoWidget);
 	photoLayout->setSpacing(2);
 
-	QPushButton *photoButton = new QPushButton;
-	photoButton->setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::MinimumExpanding);
-	photoLayout->addWidget(photoButton);
+	QLabel *photoLabel = new QLabel(this);
+	QPixmap photoPixmap = QPixmap(CurrentContact.accountDatas().at(0)->avatar().pixmap());
+	photoLabel->setPixmap(photoPixmap);
+	photoLayout->addWidget(photoLabel);
 
 	QPushButton *changePhotoButton = new QPushButton(tr("Change Icon..."));
 	photoLayout->addWidget(changePhotoButton);
@@ -85,20 +90,38 @@ void ContactGeneralConfigurationWidget::createGui()
 	row = 0;
 
 	QLabel *defaultContactLabel = new QLabel(tr("Default Contact") + ":");
+
 	QComboBox *defaultContact = new QComboBox(this);
 	QLabel *defaultContactNoticeLabel = new QLabel(tr("Chat messages will be sent to this username when you select the name from the buddy list"));
 	accountsLayout->addWidget(defaultContactLabel, row, 0, 1, 1);
 	accountsLayout->addWidget(defaultContact, row++, 1, 1, 4);
 	accountsLayout->addWidget(defaultContactNoticeLabel, row++, 1, 1, 5);
 
-	QLabel *inLabel = new QLabel(tr("in"));
-	QLineEdit *contactLineEdit = new QLineEdit(this);
-	QComboBox *accountsCombo = new QComboBox(this);
+	foreach (ContactAccountData *data, CurrentContact.accountDatas())
+	{
+		QLineEdit *contactLineEdit = new QLineEdit(this);
+		QLabel *inLabel = new QLabel(tr("in"));
+		QComboBox *accountsCombo = new QComboBox(this);
+		foreach (Account *account, AccountManager::instance()->accounts())
+		{
+			accountsCombo->addItem(
+			    account->protocol()->icon(), 
+			    account->protocol()->protocolFactory()->displayName() + " (" + account->id() + ")",
+			    account->uuid().toString()
+			);
+		}
+		accountsCombo->setCurrentIndex(accountsCombo->findData(data->account()->uuid().toString()));
 
-	accountsLayout->addWidget(contactLineEdit, row, 0, 1, 3);
-	accountsLayout->addWidget(inLabel, row, 3, 1, 1);
-	accountsLayout->addWidget(accountsCombo, row++, 4, 1, 3);
+		accountsLayout->addWidget(contactLineEdit, row, 0, 1, 3);
+		accountsLayout->addWidget(inLabel, row, 3, 1, 1);
+		accountsLayout->addWidget(accountsCombo, row++, 4, 1, 3);
 
+
+		defaultContact->addItem(data->id());
+		contactLineEdit->setText(data->id());
+		//accountsCombo->
+		
+	}
 	QPushButton *addContactButton = new QPushButton(tr("Add Contact..."), this);
 	QPushButton *setOrderButton = new QPushButton(tr("Set Order..."), this);
 
@@ -118,12 +141,14 @@ void ContactGeneralConfigurationWidget::createGui()
 	QHBoxLayout *phoneLayout = new QHBoxLayout;
 	QLabel *phoneLabel = new QLabel(tr("Phone") + ":");
 	QLineEdit *phone = new QLineEdit(this);
+	phone->setText(CurrentContact.homePhone());
 	communicationLayout->addWidget(phoneLabel, row, 0, 1, 1);
 	communicationLayout->addWidget(phone, row++, 1, 1, 1);
 
 	QHBoxLayout *mobileLayout = new QHBoxLayout;
 	QLabel *mobileLabel = new QLabel(tr("Mobile") + ":");
 	QLineEdit *mobile = new QLineEdit(this);
+	mobile->setText(CurrentContact.mobile());
 
 	communicationLayout->addWidget(mobileLabel, row, 0, 1, 1);
 	communicationLayout->addWidget(mobile, row++, 1, 1, 1);
@@ -131,6 +156,7 @@ void ContactGeneralConfigurationWidget::createGui()
 	QHBoxLayout *emailLayout = new QHBoxLayout;
 	QLabel *emailLabel = new QLabel(tr("E-Mail") + ":");
 	QLineEdit *email = new QLineEdit(this);
+	email->setText(CurrentContact.email());
 	communicationLayout->addWidget(emailLabel, row, 0, 1, 1);
 	communicationLayout->addWidget(email, row++, 1, 1, 1);
 
