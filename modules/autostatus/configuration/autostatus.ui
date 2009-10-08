@@ -7,7 +7,9 @@
 				<combo-box caption="Status" config-section="PowerKadu" config-item="autoStatus"
 						  id="autostatus/auto_status">
 					<item value="0" caption="Online" />
+					<item value="3" caption="Talk With Me" />
 					<item value="1" caption="Busy" />
+					<item value="4" caption="Do Not Disturb" />
 					<item value="2" caption="Invisible" />
 				</combo-box>
 			</group-box>

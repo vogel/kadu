@@ -119,9 +119,8 @@ void Autostatus::onAutostatus(QAction *sender, bool toggled)
 		if (QFile::exists(config_file.readEntry("PowerKadu", "status_file_path")))
 		{
 			QFile file(config_file.readEntry("PowerKadu", "status_file_path"));
-		
 			QString desc;
-			
+
 			if (file.open(IO_ReadOnly))
 			{
 				QTextStream stream(&file);
@@ -129,7 +128,6 @@ void Autostatus::onAutostatus(QAction *sender, bool toggled)
 				while (!stream.atEnd())
 				{
 					desc = stream.readLine();
-			
 					if((desc != "") && (strlen(desc.latin1()) <= 70))
 						statusList += desc;
 				}
