@@ -13,6 +13,7 @@
 #include <QtGui/QDialog>
 #include <QtGui/QLineEdit>
 
+#include "contacts/contact.h"
 #include "gui/widgets/configuration/configuration-widget.h"
 
 #include "exports.h"
@@ -24,10 +25,11 @@ class KADUAPI ContactOptionsConfigurationWidget : public QWidget
 {
 	Q_OBJECT
 
+	Contact CurrentContact;
 	void createGui();
 
 public:
-	ContactOptionsConfigurationWidget(QWidget *parent = 0);
+	ContactOptionsConfigurationWidget(Contact &contact, QWidget *parent = 0);
 	~ContactOptionsConfigurationWidget();
 
 };
