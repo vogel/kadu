@@ -94,7 +94,7 @@ void ContactDataWindow::createGeneralTab(QTabWidget *tabWidget)
 
 void ContactDataWindow::createGroupsTab(QTabWidget *tabWidget)
 {
-	ContactGroupsConfigurationWidget *groupsTab = new ContactGroupsConfigurationWidget(this);
+	ContactGroupsConfigurationWidget *groupsTab = new ContactGroupsConfigurationWidget(CurrentContact, this);
 	groupsTab->setSizePolicy(QSizePolicy(QSizePolicy::Minimum, QSizePolicy::Expanding));
 	tabWidget->addTab(groupsTab, tr("Groups"));
 }
@@ -173,28 +173,6 @@ void ContactDataWindow::updateContactAndClose()
 	updateContact();
 	close();
 }
-
-void ContactDataWindow::updateDisplay()
-{
-// 	QStringList list;
-// 	if (!e_display->currentText().isEmpty())
-// 		list << e_display->currentText();
-// 	if (!e_nickname->text().isEmpty() && !list.contains(e_nickname->text()))
-// 		list << e_nickname->text();
-// 	if (!e_firstname->text().isEmpty())
-// 	{
-// 		if (!list.contains(e_firstname->text()))
-// 			list << e_firstname->text();
-// 		if (!e_lastname->text().isEmpty())
-// 		{
-// 			list << e_firstname->text() + " " + e_lastname->text();
-// 			list << e_lastname->text() + " " + e_firstname->text();
-// 		}
-// 	}
-// 	e_display->clear();
-// 	e_display->addItems(list);
-}
-
 
 void ContactDataWindow::keyPressEvent(QKeyEvent *ke_event)
 {

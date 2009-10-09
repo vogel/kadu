@@ -14,6 +14,7 @@
 #include <QtGui/QLineEdit>
 #include <QtGui/QScrollArea>
 
+#include "contacts/contact.h"
 #include "gui/widgets/configuration/configuration-widget.h"
 
 #include "exports.h"
@@ -24,11 +25,12 @@ class ContactAccountDataManager;
 class KADUAPI ContactGroupsConfigurationWidget : public QScrollArea
 {
 	Q_OBJECT
-
+  
+	Contact CurrentContact;
 	void createGui();
 
 public:
-	ContactGroupsConfigurationWidget(QWidget *parent = 0);
+	ContactGroupsConfigurationWidget(Contact &contact, QWidget *parent = 0);
 	~ContactGroupsConfigurationWidget();
 
 };

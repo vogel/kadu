@@ -26,8 +26,8 @@
 
 #include "contact-groups-configuration-widget.h"
 
-ContactGroupsConfigurationWidget::ContactGroupsConfigurationWidget(QWidget *parent)
-	: QScrollArea(parent)
+ContactGroupsConfigurationWidget::ContactGroupsConfigurationWidget(Contact &contact, QWidget *parent)
+	: QScrollArea(parent), CurrentContact(contact)
 {
 	setAttribute(Qt::WA_DeleteOnClose);
 
@@ -40,155 +40,42 @@ ContactGroupsConfigurationWidget::~ContactGroupsConfigurationWidget()
 
 void ContactGroupsConfigurationWidget::createGui()
 {
-// QVBoxLayout *mainLayout = new QVBoxLayout(this);
-	/*QScrollArea *scrollArea = new QScrollArea(this);
-	scrollArea->*/setFrameStyle(QFrame::NoFrame);
-	/*scrollArea->*/setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
-	/*scrollArea->*/setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-	//scrollArea->setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Maximum);
+	setFrameStyle(QFrame::NoFrame);
+	setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
+	setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 
 	QWidget *groupsTab = new QWidget(this);
 
 	QGridLayout *layout = new QGridLayout(groupsTab);
-	layout->setColumnMinimumWidth(0, 20);
-	layout->setColumnMinimumWidth(4, 20);
-	layout->setColumnMinimumWidth(5, 100);
-	layout->setColumnMinimumWidth(6, 20);
+	layout->setColumnMinimumWidth(0, 10);
+	layout->setColumnMinimumWidth(1, 10);
+	layout->setColumnMinimumWidth(5, 20);
 	layout->setColumnStretch(3, 10);
 	layout->setColumnStretch(6, 2);
 
 	int row = 0;
 
-	/*scrollArea->*/setWidget(groupsTab);
-	/*scrollArea->*/setWidgetResizable(true);
+	setWidget(groupsTab);
+	setWidgetResizable(true);
 
 	QLabel *tabLabel = new QLabel(tr("Groups"), this);
-	layout->addWidget(tabLabel, 0, 0, 1, 3);
+	QFont tabLabelFont = tabLabel->font();
+	tabLabelFont.setPointSize(tabLabelFont.pointSize() + 3);
+	tabLabelFont.setWeight(QFont::Bold);
+	tabLabel->setFont(tabLabelFont);
+	layout->addWidget(tabLabel, row++, 1, 1, 4);
 
-	QLabel *tabSubLabel = new QLabel(tr("Add %s to the groups below by checking the box next to the appropriate groups.").arg("Marian"), this);
-	layout->addWidget(tabSubLabel, 1, 1, 1, 4);
+	QLabel *tabSubLabel = new QLabel(tr("Add %1 to the groups below by checking the box next to the appropriate groups.").arg("Marian"), this);
+	layout->setRowStretch(row, 1);
+	layout->addWidget(tabSubLabel, row++, 2, 1, 4);
 
-	for (int c = 0; c < 3; c++)
+	layout->setRowStretch(row++, 3);
+
+	foreach (Group *group, GroupManager::instance()->groups())
 	{
-		QGroupBox *accountGroupsBox = new QGroupBox(tr("Gadu-Gadu"));
-		QGridLayout *accountGroupsLayout = new QGridLayout(accountGroupsBox);
-		//communicationLayout->setColumnMinimumWidth(1, 100);
-		//accountGroupsLayout->setColumnStretch(0, 2);
-		accountGroupsLayout->setColumnStretch(1, 5);
-
-		row = 0;
-
-		for (int a = 0; a <= 10; a++)
-		{
-			QCheckBox *groupCheckBox = new QCheckBox(tr("Group name"), this);
-			//QLabel *groupLabel = new QLabel(tr("Group name"));
-			accountGroupsLayout->addWidget(groupCheckBox, row++, 0, 1, 2);
-			//accountGroupsLayout->addWidget(groupLabel, row++, 1, 1, 3);
-		}
-
-		layout->addWidget(accountGroupsBox, c+2, 1, 1, 6);
+		QCheckBox *groupCheckBox = new QCheckBox(group->name(), this);
+		layout->addWidget(groupCheckBox, row++, 2, 1, 2);
 	}
 
-// 	QWidget *blank = new QWidget(this);
-// 	blank->setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Maximum);
-// 	layout->addWidget(blank, 2, 1, 1, 4);
-
-// 	QVBoxLayout *groupsLayout = new QVBoxLayout(this);
-// 	groupsLayout->setSpacing(3);
-// 
-// 	//foreach(Group* group , GroupManager::instance()->groups())
-// 	for (int i = 1; i < 10; i++)
-// 	{
-// 		QCheckBox *checkBox = new QCheckBox("Group name "+i /**group->name()*/);
-// 		///checkBox->setChecked(CurrentContact.isInGroup(group));
-// 
-// 		groupsLayout->addWidget(checkBox);
-// 
-// 		///groups.append(checkBox);
-// 	}
-// 
-// 	QLineEdit *newGroup = new QLineEdit(this);
-// 	QPushButton *addNewGroup = new QPushButton(tr("Add new group"), this);
-// 
-// 	//groupsLayout->addWidget(groupsWidget);
-// 	groupsLayout->addWidget(newGroup);
-// 	groupsLayout->addWidget(addNewGroup);
-// 
-// 	connect(addNewGroup, SIGNAL(clicked()), this, SLOT(newGroupClicked()));
-// 	connect(newGroup, SIGNAL(returnPressed()), this, SLOT(newGroupClicked()));
+	layout->setRowStretch(row, 100);
 }
-
-/*
-void ContactDataWindow::setupTab2()
-{
-	kdebugf();
-
-	// TODO: 0.6.6 move to ContactGroupsConfigurationWidget
-
-	scrollArea = new QScrollArea(tw_main);
-	scrollArea->setFrameStyle(QFrame::NoFrame);
-	scrollArea->setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
-	scrollArea->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-
-	QWidget *groupsTab = new QWidget(tw_main);
-	QVBoxLayout *groupsTabLayout = new QVBoxLayout(groupsTab);
-
-	tw_main->addTab(scrollArea, tr("Groups"));
-
-	scrollArea->setWidget(groupsTab);
-	scrollArea->setWidgetResizable(true);
-
-	groupsWidget = new QWidget(groupsTab);
-// 	groupsLayout = new QVBoxLayout(groupsWidget);
-// 	groupsLayout->setSpacing(3);
-// 
-// 	foreach(Group* group , GroupManager::instance()->groups())
-// 	{
-// 		QCheckBox *checkBox = new QCheckBox(group->name());
-// 		checkBox->setChecked(CurrentContact.isInGroup(group));
-// 
-// 		groupsLayout->addWidget(checkBox);
-// 
-// 		groups.append(checkBox);
-// 	}
-// 
-// 	newGroup = new QLineEdit(groupsTab);
-// 	QPushButton *addNewGroup = new QPushButton(tr("Add new group"), groupsTab);
-// 
-// 	groupsTabLayout->addWidget(groupsWidget);
-// 	groupsTabLayout->addWidget(newGroup);
-// 	groupsTabLayout->addWidget(addNewGroup);
-// 
-// 	connect(addNewGroup, SIGNAL(clicked()), this, SLOT(newGroupClicked()));
-// 	connect(newGroup, SIGNAL(returnPressed()), this, SLOT(newGroupClicked()));
-
-	kdebugf2();
-}
-
-void ContactDataWindow::newGroupClicked()
-{
-	kdebugf();
-	QString groupName = newGroup->text();
-	if (!GroupManager::instance()->acceptableGroupName(groupName))
-	{
-		kdebugf2();
-		return;
-	}
-
-	QCheckBox *checkBox = new QCheckBox(groupName);
-
-	checkBox->setChecked(true);
-
-	groupsLayout->addWidget(checkBox);
-
-	checkBox->show();
-
-	groups.append(checkBox);
-
-	QTimer::singleShot(0, this, SLOT(scrollToBottom()));
-
-	//create new group
-	GroupManager::instance()->byName(groupName);
-
-	kdebugf2();
-}*/

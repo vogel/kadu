@@ -59,9 +59,6 @@ public:
 	ContactDataWindow(Contact contact, QWidget *parent = 0);
 	virtual ~ContactDataWindow();
 
-public slots:
-	void updateDisplay();
-
 };
 
 #endif // CONTACT_DATA_WINDOW_H
