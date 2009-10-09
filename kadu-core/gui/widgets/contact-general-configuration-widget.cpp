@@ -118,10 +118,9 @@ void ContactGeneralConfigurationWidget::createGui()
 
 
 		defaultContact->addItem(data->id());
-		contactLineEdit->setText(data->id());
-		//accountsCombo->
-		
+		contactLineEdit->setText(data->id());		
 	}
+
 	QPushButton *addContactButton = new QPushButton(tr("Add Contact..."), this);
 	QPushButton *setOrderButton = new QPushButton(tr("Set Order..."), this);
 
