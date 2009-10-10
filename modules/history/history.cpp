@@ -465,6 +465,9 @@ void History::registerStorage(HistoryStorage *storage)
 {
 	CurrentStorage = storage;
 
+	foreach (ChatWidget *chat, ChatWidgetManager::instance()->chats())
+		chatCreated(chat);
+
 	foreach (Account *account, AccountManager::instance()->accounts())
 		accountRegistered(account);
 }
