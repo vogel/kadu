@@ -264,7 +264,8 @@ void ContactsListWidgetDelegate::paint(QPainter *painter, const QStyleOptionView
 			displayAvatar.size() != DefaultAvatarPixmap.size())
 		displayAvatar = displayAvatar.scaled(DefaultAvatarPixmap.size(), Qt::KeepAspectRatio);
 
-	int width = widget->viewport()->width() - opt.rect.left() - avatarSize;
+	int avatarWidth = displayAvatar.width();
+	int width = widget->viewport()->width() - opt.rect.left() - (avatarWidth + (avatarSize - avatarWidth)/2);
 	if (!displayAvatar.isNull())
 		painter->drawPixmap(width - 2, 2, displayAvatar);
 
