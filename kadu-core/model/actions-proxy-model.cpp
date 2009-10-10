@@ -7,6 +7,8 @@
  *                                                                         *
  ***************************************************************************/
 
+#include <QtGui/QFont>
+
 #include "actions-proxy-model.h"
 
 ActionsProxyModel::ActionsProxyModel(ModelActionList beforeActions, ModelActionList afterActions, QObject *parent) :
@@ -49,21 +51,25 @@ Qt::ItemFlags ActionsProxyModel::flags(const QModelIndex &index) const
 
 QVariant ActionsProxyModel::data(const QModelIndex &proxyIndex, int role) const
 {
+	ModelAction action;
+
 	if (proxyIndex.row() < BeforeActions.count())
-	{
-		if (Qt::DisplayRole != role)
-			return QVariant();
-		return BeforeActions[proxyIndex.row()].first;
-	}
+		action = BeforeActions[proxyIndex.row()];
+	else if (proxyIndex.row() >= BeforeActions.count() + sourceModel()->rowCount(QModelIndex()))
+		action = AfterActions[proxyIndex.row() - BeforeActions.count()];
+	else
+		return sourceModel()->data(mapToSource(proxyIndex), role);
 
-	if (proxyIndex.row() >= BeforeActions.count() + sourceModel()->rowCount(QModelIndex()))
+	switch (role)
 	{
-		if (Qt::DisplayRole != role)
-			return QVariant();
-		return AfterActions[proxyIndex.row() - BeforeActions.count() - sourceModel()->rowCount(QModelIndex())].first;
-	}
+		case Qt::DisplayRole:
+			return action.first;
 
-	return sourceModel()->data(mapToSource(proxyIndex), role);
+		case Qt::FontRole:
+			QFont font;
+			font.setItalic(true);
+			return font;
+	}
 }
 
 QModelIndex ActionsProxyModel::mapFromSource(const QModelIndex &sourceIndex) const
