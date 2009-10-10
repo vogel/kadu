@@ -30,10 +30,6 @@
 #include "contacts/contact-manager.h"
 #include "contacts/group.h"
 #include "contacts/group-manager.h"
-#include "gui/widgets/contact-general-configuration-widget.h"
-#include "gui/widgets/contact-groups-configuration-widget.h"
-#include "gui/widgets/contact-options-configuration-widget.h"
-#include "gui/widgets/contact-personal-info-configuration-widget.h"
 #include "gui/windows/contact-data-manager.h"
 #include "gui/windows/message-box.h"
 #include "protocols/protocol.h"
@@ -87,9 +83,9 @@ void ContactDataWindow::createTabs(QLayout *layout)
 
 void ContactDataWindow::createGeneralTab(QTabWidget *tabWidget)
 {
-	ContactGeneralConfigurationWidget *contactTab = new ContactGeneralConfigurationWidget(CurrentContact, this);
-	contactTab->setSizePolicy(QSizePolicy(QSizePolicy::Minimum, QSizePolicy::Expanding));
-	tabWidget->addTab(contactTab, tr("General"));
+	ContactTab = new ContactGeneralConfigurationWidget(CurrentContact, this);
+	ContactTab->setSizePolicy(QSizePolicy(QSizePolicy::Minimum, QSizePolicy::Expanding));
+	tabWidget->addTab(ContactTab, tr("General"));
 }
 
 void ContactDataWindow::createGroupsTab(QTabWidget *tabWidget)
@@ -113,36 +109,6 @@ void ContactDataWindow::createOptionsTab(QTabWidget *tabWidget)
 	tabWidget->addTab(optionsTab, tr("Options"));
 }
 
-/*
-void ContactDataWindow::createOptionsTab(QTabWidget *tabWidget)
-{
-// 	foreach (Account *account, CurrentContact.accounts())
-// 		createAccountTab(account, tabWidget);
-}
-
-void ContactDataWindow::createAccountTab(Account *account, QTabWidget *tabWidget)
-{
-	if (!account || !account->protocol())
-		return;
-
-	ProtocolFactory *protocolFactory = account->protocol()->protocolFactory();
-	ContactAccountData *contactAccountData = CurrentContact.accountData(account);
-
-	if (!contactAccountData || !protocolFactory)
-		return;
-
-	ContactAccountDataWidget *contactAccountDataWidget = protocolFactory->newContactAccountDataWidget(contactAccountData, this);
-	if (!contactAccountDataWidget)
-		return;
-
-	contactAccountDataWidget->setSizePolicy(QSizePolicy(QSizePolicy::Minimum, QSizePolicy::Expanding));
-	contactAccountDataWidget->loadConfiguration();
-
-	ConfigurationWidgets.append(contactAccountDataWidget);
-	tabWidget->addTab(contactAccountDataWidget, account->name());
-}
-*/
-
 void ContactDataWindow::createButtons(QLayout *layout)
 {
 	QDialogButtonBox *buttons = new QDialogButtonBox(Qt::Horizontal, this);
@@ -162,8 +128,7 @@ void ContactDataWindow::updateContact()
 {
 	ContactManager::instance()->blockUpdatedSignal(CurrentContact);
 
-	foreach (ConfigurationWidget *configurationWidget, ConfigurationWidgets)
-		configurationWidget->saveConfiguration();
+	ContactTab->saveConfiguration();
 
 	ContactManager::instance()->unblockUpdatedSignal(CurrentContact);
 }

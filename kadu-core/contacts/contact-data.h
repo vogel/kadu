@@ -70,6 +70,7 @@ private:
 	QString HomePhone;
 	QString Mobile;
 	QString Email;
+	QString Website;
 	unsigned short BirthYear;
 	ContactGender Gender;
 	QList<Group *> Groups;
@@ -141,6 +142,7 @@ public:
 	Property(QString, homePhone, HomePhone)
 	Property(QString, mobile, Mobile)
 	Property(QString, email, Email)
+	Property(QString, website, Website)
 	Property(unsigned short, birthYear, BirthYear)
 	Property(ContactGender, gender, Gender)
 	Property(QList<Group *>, groups, Groups)

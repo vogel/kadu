@@ -12,7 +12,6 @@
 #include <QtGui/QLabel>
 #include <QtGui/QPushButton>
 #include <QtGui/QVBoxLayout>
-#include <QtGui/QComboBox>
 #include <QtGui/QGroupBox>
 #include <QtGui/QRadioButton>
 
@@ -62,9 +61,9 @@ void ContactGeneralConfigurationWidget::createGui()
 
 	QLabel *numberLabel = new QLabel(tr("Visible Name") + ":", this);
 	layout->addWidget(numberLabel, 2, 2, 1, 1);
-	QLineEdit *AccountId = new QLineEdit(this);
-	AccountId->setText(CurrentContact.display());
-	layout->addWidget(AccountId, 2, 3, 1, 1);
+	DisplayEdit = new QLineEdit(this);
+	DisplayEdit->setText(CurrentContact.display());
+	layout->addWidget(DisplayEdit, 2, 3, 1, 1);
 
 	QWidget *photoWidget = new QWidget;
 	QVBoxLayout *photoLayout = new QVBoxLayout(photoWidget);
@@ -81,51 +80,41 @@ void ContactGeneralConfigurationWidget::createGui()
 	layout->addWidget(photoWidget, 1, 6, 3, 1);
 
 	QGroupBox *accountsBox = new QGroupBox(tr("Merged Contact Accounts"));
-	QGridLayout *accountsLayout = new QGridLayout(accountsBox);
-	accountsLayout->setColumnMinimumWidth(2, 20);
-	accountsLayout->setColumnStretch(0, 1);
-	accountsLayout->setColumnStretch(1, 1);
-	accountsLayout->setColumnStretch(5, 2);
-	accountsLayout->setColumnStretch(6, 2);
+	AccountsLayout = new QGridLayout(accountsBox);
+	AccountsLayout->setColumnMinimumWidth(2, 20);
+	AccountsLayout->setColumnStretch(0, 1);
+	AccountsLayout->setColumnStretch(1, 1);
+	AccountsLayout->setColumnStretch(5, 2);
+	AccountsLayout->setColumnStretch(6, 2);
 	row = 0;
 
 	QLabel *defaultContactLabel = new QLabel(tr("Default Contact") + ":");
 
 	QComboBox *defaultContact = new QComboBox(this);
 	QLabel *defaultContactNoticeLabel = new QLabel(tr("Chat messages will be sent to this username when you select the name from the buddy list"));
-	accountsLayout->addWidget(defaultContactLabel, row, 0, 1, 1);
-	accountsLayout->addWidget(defaultContact, row++, 1, 1, 4);
-	accountsLayout->addWidget(defaultContactNoticeLabel, row++, 1, 1, 5);
+	AccountsLayout->addWidget(defaultContactLabel, row, 0, 1, 1);
+	AccountsLayout->addWidget(defaultContact, row++, 1, 1, 4);
+	AccountsLayout->addWidget(defaultContactNoticeLabel, row++, 1, 1, 5);
 
+	QWidget *contactsWidget = new QWidget(this);
+	ContactsLayout = new QGridLayout(contactsWidget);
+	AccountsLayout->setColumnStretch(0, 2);
+	AccountsLayout->setColumnStretch(2, 2);
+	
 	foreach (ContactAccountData *data, CurrentContact.accountDatas())
 	{
-		QLineEdit *contactLineEdit = new QLineEdit(this);
-		QLabel *inLabel = new QLabel(tr("in"));
-		QComboBox *accountsCombo = new QComboBox(this);
-		foreach (Account *account, AccountManager::instance()->accounts())
-		{
-			accountsCombo->addItem(
-			    account->protocol()->icon(), 
-			    account->protocol()->protocolFactory()->displayName() + " (" + account->id() + ")",
-			    account->uuid().toString()
-			);
-		}
-		accountsCombo->setCurrentIndex(accountsCombo->findData(data->account()->uuid().toString()));
-
-		accountsLayout->addWidget(contactLineEdit, row, 0, 1, 3);
-		accountsLayout->addWidget(inLabel, row, 3, 1, 1);
-		accountsLayout->addWidget(accountsCombo, row++, 4, 1, 3);
-
-
 		defaultContact->addItem(data->id());
-		contactLineEdit->setText(data->id());		
+		addAccountDataRow(data);
 	}
 
+	AccountsLayout->addWidget(contactsWidget, row++, 0, 1, 5);
+
 	QPushButton *addContactButton = new QPushButton(tr("Add Contact..."), this);
+	connect(addContactButton, SIGNAL(clicked()), this, SLOT(addAccountDataRow()));
 	QPushButton *setOrderButton = new QPushButton(tr("Set Order..."), this);
 
-	accountsLayout->addWidget(addContactButton, row, 0, 1, 1);
-	accountsLayout->addWidget(setOrderButton, row, 1, 1, 1);
+	AccountsLayout->addWidget(addContactButton, row, 0, 1, 1);
+	AccountsLayout->addWidget(setOrderButton, row, 1, 1, 1);
 
 	layout->addWidget(accountsBox, 4, 2, 2, 6);
 
@@ -139,32 +128,91 @@ void ContactGeneralConfigurationWidget::createGui()
 
 	QHBoxLayout *phoneLayout = new QHBoxLayout;
 	QLabel *phoneLabel = new QLabel(tr("Phone") + ":");
-	QLineEdit *phone = new QLineEdit(this);
-	phone->setText(CurrentContact.homePhone());
+	PhoneEdit = new QLineEdit(this);
+	PhoneEdit->setText(CurrentContact.homePhone());
 	communicationLayout->addWidget(phoneLabel, row, 0, 1, 1);
-	communicationLayout->addWidget(phone, row++, 1, 1, 1);
+	communicationLayout->addWidget(PhoneEdit, row++, 1, 1, 1);
 
 	QHBoxLayout *mobileLayout = new QHBoxLayout;
 	QLabel *mobileLabel = new QLabel(tr("Mobile") + ":");
-	QLineEdit *mobile = new QLineEdit(this);
-	mobile->setText(CurrentContact.mobile());
-
+	MobileEdit = new QLineEdit(this);
+	MobileEdit->setText(CurrentContact.mobile());
 	communicationLayout->addWidget(mobileLabel, row, 0, 1, 1);
-	communicationLayout->addWidget(mobile, row++, 1, 1, 1);
+	communicationLayout->addWidget(MobileEdit, row++, 1, 1, 1);
 
 	QHBoxLayout *emailLayout = new QHBoxLayout;
 	QLabel *emailLabel = new QLabel(tr("E-Mail") + ":");
-	QLineEdit *email = new QLineEdit(this);
-	email->setText(CurrentContact.email());
+	EmailEdit = new QLineEdit(this);
+	EmailEdit->setText(CurrentContact.email());
 	communicationLayout->addWidget(emailLabel, row, 0, 1, 1);
-	communicationLayout->addWidget(email, row++, 1, 1, 1);
+	communicationLayout->addWidget(EmailEdit, row++, 1, 1, 1);
 
 	QHBoxLayout *websiteLayout = new QHBoxLayout;
 	QLabel *websiteLabel = new QLabel(tr("Website") + ":");
-	QLineEdit *website = new QLineEdit(this);
+	WebsiteEdit = new QLineEdit(this);
+	WebsiteEdit->setText(CurrentContact.website());
 	communicationLayout->addWidget(websiteLabel, row, 0, 1, 1);
-	communicationLayout->addWidget(website, row++, 1, 1, 1);
+	communicationLayout->addWidget(WebsiteEdit, row++, 1, 1, 1);
 
 	layout->addWidget(communicationBox, 6, 2, 2, 6);
 	layout->setRowStretch(8, 100);
+}
+
+void ContactGeneralConfigurationWidget::addAccountDataRow(ContactAccountData *data)
+{
+	int row = ContactsLayout->rowCount();
+	QLineEdit *contactLineEdit = new QLineEdit(this);
+	QLabel *inLabel = new QLabel(tr("in"));
+	QComboBox *accountsCombo = new QComboBox(this);
+
+	ContactsIds.append(contactLineEdit);
+	ContactsAccounts.append(accountsCombo);
+
+	if (!data)
+		accountsCombo->addItem("-" + tr("Select a Network") + "-");
+	foreach (Account *account, AccountManager::instance()->accounts())
+	{
+		accountsCombo->addItem(
+		    account->protocol()->icon(), 
+		    account->protocol()->protocolFactory()->displayName() + " (" + account->id() + ")",
+		    account->uuid().toString()
+		);
+	}
+	if (data)
+		accountsCombo->setCurrentIndex(accountsCombo->findData(data->account()->uuid().toString()));
+
+	ContactsLayout->addWidget(contactLineEdit, row, 0, 1, 1);
+	ContactsLayout->addWidget(inLabel, row, 1, 1, 1);
+	ContactsLayout->addWidget(accountsCombo, row++, 2, 1, 1);
+
+	if (data)
+		contactLineEdit->setText(data->id());
+}
+
+void ContactGeneralConfigurationWidget::saveConfiguration()
+{
+	CurrentContact.setDisplay(DisplayEdit->text());
+	CurrentContact.setHomePhone(PhoneEdit->text());
+	CurrentContact.setMobile(MobileEdit->text());
+	CurrentContact.setEmail(EmailEdit->text());
+	CurrentContact.setWebsite(WebsiteEdit->text());
+
+	for (int i = 0; i < ContactsAccounts.count(); i++)
+	{
+		if (ContactsAccounts.at(i)->itemData(ContactsAccounts.at(i)->currentIndex()).toString().isEmpty())
+			break;
+		Account *account = AccountManager::instance()->byUuid(QUuid(ContactsAccounts.at(i)->itemData(ContactsAccounts.at(i)->currentIndex()).toString()));
+		if (CurrentContact.hasStoredAccountData(account))
+		{
+			if (!ContactsIds.at(i)->text().isEmpty()/* && account->protocol()->validateId(ContactsIds.at(i)->text())*/)
+				CurrentContact.accountData(account)->setId(ContactsIds.at(i)->text());
+			else
+				CurrentContact.removeAccountData(account);
+		}
+		else
+		{
+			ContactAccountData *data = new ContactAccountData(CurrentContact, account, ContactsIds.at(i)->text(), false);
+			CurrentContact.addAccountData(data);
+		}
+	}
 }

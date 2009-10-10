@@ -14,8 +14,11 @@
 #include <QtCore/QMap>
 #include <QtGui/QWidget>
 
-#include "configuration/configuration-window-data-manager.h"
 #include "contacts/contact.h"
+#include "gui/widgets/contact-general-configuration-widget.h"
+#include "gui/widgets/contact-groups-configuration-widget.h"
+#include "gui/widgets/contact-options-configuration-widget.h"
+#include "gui/widgets/contact-personal-info-configuration-widget.h"
 
 #include "exports.h"
 
@@ -29,9 +32,7 @@ class QScrollArea;
 class QTabWidget;
 class QVBoxLayout;
 
-class ConfigurationWidget;
 class Contact;
-class ContactAccountDataWidget;
 
 
 class KADUAPI ContactDataWindow : public QWidget
@@ -39,7 +40,7 @@ class KADUAPI ContactDataWindow : public QWidget
 	Q_OBJECT
 
 	Contact CurrentContact;
-	QList<ConfigurationWidget *> ConfigurationWidgets;
+	ContactGeneralConfigurationWidget *ContactTab;
 
 	void createGui();
 	void createTabs(QLayout *layout);

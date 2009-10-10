@@ -10,11 +10,11 @@
 #ifndef CONTACT_GENERAL_CONFIGURATION_WIDGET
 #define CONTACT_GENERAL_CONFIGURATION_WIDGET
 
-#include <QtGui/QDialog>
+#include <QtGui/QComboBox>
+#include <QtGui/QGridLayout>
 #include <QtGui/QLineEdit>
 
 #include "contacts/contact.h"
-#include "gui/widgets/configuration/configuration-widget.h"
 
 #include "exports.h"
 
@@ -25,12 +25,28 @@ class KADUAPI ContactGeneralConfigurationWidget : public QWidget
 {
 	Q_OBJECT
 
+	QLineEdit *DisplayEdit;
+	QLineEdit *PhoneEdit;
+	QLineEdit *MobileEdit;
+	QLineEdit *EmailEdit;
+	QLineEdit *WebsiteEdit;
+
+	QList<QLineEdit *> ContactsIds;
+	QList<QComboBox *> ContactsAccounts;
+
+	QGridLayout *AccountsLayout;
+	QGridLayout *ContactsLayout;
+
 	Contact CurrentContact;
 	void createGui();
 
 public:
 	ContactGeneralConfigurationWidget(Contact &contact, QWidget *parent = 0);
 	~ContactGeneralConfigurationWidget();
+
+	void saveConfiguration();
+private slots:
+	void addAccountDataRow(ContactAccountData *data = 0);
 
 };
 
