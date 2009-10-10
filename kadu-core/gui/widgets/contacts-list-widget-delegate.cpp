@@ -38,7 +38,7 @@ ContactsListWidgetDelegate::ContactsListWidgetDelegate(QObject *parent)
 	triggerAllAccountsRegistered();
 	configurationUpdated();
 
-	DefaultAvatarPixmap = IconsManager::instance()->loadPixmap("ContactsTab");
+	DefaultAvatarSize = IconsManager::instance()->loadPixmap("ContactsTab").size();
 }
 
 ContactsListWidgetDelegate::~ContactsListWidgetDelegate()
@@ -108,7 +108,7 @@ QSize ContactsListWidgetDelegate::sizeHint(const QStyleOptionViewItem &option, c
 	opt.locale = v3 ? v3->locale : QLocale();
 	opt.widget = v3 ? v3->widget : 0;
 
-	int avatarSize = DefaultAvatarPixmap.width() + 4;
+	int avatarSize = DefaultAvatarSize.width() + 4;
 
 	const QTreeView *widget = dynamic_cast<const QTreeView *>(opt.widget);
 	if (!widget)
@@ -141,7 +141,7 @@ QSize ContactsListWidgetDelegate::sizeHint(const QStyleOptionViewItem &option, c
 	}
 
 	int pixmapHeight = pixmap.height();
-	int height = qMax(qMax(pixmapHeight, displayHeight + descriptionHeight), avatarSize);
+	int height = qMax(qMax(pixmapHeight, displayHeight + descriptionHeight), avatar(index).isNull() ? 0 : avatarSize);
 
 	return QSize(width, height);
 }
@@ -159,7 +159,7 @@ void ContactsListWidgetDelegate::paint(QPainter *painter, const QStyleOptionView
 	opt.widget = v3 ? v3->widget : 0;
 	opt.showDecorationSelected = true;
 
-	int avatarSize = DefaultAvatarPixmap.width() + 4;
+	int avatarSize = DefaultAvatarSize.width() + 4;
 
 	const QAbstractItemView *widget = dynamic_cast<const QAbstractItemView *>(opt.widget);
 	if (!widget)
@@ -258,16 +258,16 @@ void ContactsListWidgetDelegate::paint(QPainter *painter, const QStyleOptionView
 		painter->setFont(Font);
 
 	QPixmap displayAvatar = avatar(index);
-	if (displayAvatar.isNull())
-		displayAvatar = DefaultAvatarPixmap;
-	if (!displayAvatar.isNull() && !DefaultAvatarPixmap.isNull() &&
-			displayAvatar.size() != DefaultAvatarPixmap.size())
-		displayAvatar = displayAvatar.scaled(DefaultAvatarPixmap.size(), Qt::KeepAspectRatio);
-
-	int avatarWidth = displayAvatar.width();
-	int width = widget->viewport()->width() - opt.rect.left() - (avatarWidth + (avatarSize - avatarWidth)/2);
 	if (!displayAvatar.isNull())
-		painter->drawPixmap(width - 2, 2, displayAvatar);
+	{
+		if (DefaultAvatarSize.isValid() && displayAvatar.size() != DefaultAvatarSize)
+			displayAvatar = displayAvatar.scaled(DefaultAvatarSize, Qt::KeepAspectRatio);
+
+		int avatarWidth = displayAvatar.width();
+		int width = widget->viewport()->width() - opt.rect.left() - (avatarWidth + (avatarSize - avatarWidth)/2);
+		if (!displayAvatar.isNull())
+			painter->drawPixmap(width - 2, 2, displayAvatar);
+	}
 
 	if (!hasDescription)
 	{

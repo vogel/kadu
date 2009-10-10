@@ -37,7 +37,7 @@ class ContactsListWidgetDelegate : public QItemDelegate, public ConfigurationAwa
 	bool ShowMultiLineDescription;
 	QColor DescriptionColor;
 
-	QPixmap DefaultAvatarPixmap;
+	QSize DefaultAvatarSize;
 
 	QTextDocument * descriptionDocument(const QString &text, int width, QColor color) const;
 	bool isBold(const QModelIndex &index) const;
