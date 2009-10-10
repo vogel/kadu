@@ -60,7 +60,7 @@ QVariant ActionsProxyModel::data(const QModelIndex &proxyIndex, int role) const
 	{
 		if (Qt::DisplayRole != role)
 			return QVariant();
-		return AfterActions[proxyIndex.row() - BeforeActions.count()].first;
+		return AfterActions[proxyIndex.row() - BeforeActions.count() - sourceModel()->rowCount(QModelIndex())].first;
 	}
 
 	return sourceModel()->data(mapToSource(proxyIndex), role);

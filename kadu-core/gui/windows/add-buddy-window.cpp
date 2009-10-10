@@ -22,6 +22,7 @@
 #include "contacts/contact-manager.h"
 #include "contacts/model/groups-model.h"
 #include "misc/misc.h"
+#include "model/actions-proxy-model.h"
 #include "protocols/protocol.h"
 #include "protocols/protocol-factory.h"
 
@@ -56,13 +57,31 @@ void AddBuddyWindow::createGui()
 
 	AccountCombo = new QComboBox(this);
 	AccountComboModel = new AccountsModel(AccountCombo);
-	AccountCombo->setModel(AccountComboModel);
+
+	ActionsProxyModel::ModelActionList accountsModelBeforeActions;
+	accountsModelBeforeActions.append(qMakePair<QString, QString>(tr(" - Select account - "), ""));
+	ActionsProxyModel *accountsProxyModel = new ActionsProxyModel(accountsModelBeforeActions,
+			ActionsProxyModel::ModelActionList(), AccountCombo);
+	accountsProxyModel->setSourceModel(AccountComboModel);
+
+	AccountCombo->setModel(accountsProxyModel);
 	AccountCombo->setModelColumn(1); // use long account name
 	layout->addWidget(AccountCombo, 0, 3);
 
 	layout->addWidget(new QLabel(tr("Add in group:"), this), 1, 0, Qt::AlignRight);
 	GroupCombo = new QComboBox(this);
-	GroupCombo->setModel(new GroupsModel(GroupCombo));
+	GroupsModel *groupComboModel = new GroupsModel(GroupCombo);
+
+	ActionsProxyModel::ModelActionList groupsModelBeforeActions;
+	groupsModelBeforeActions.append(qMakePair<QString, QString>(tr(" - Select group - "), ""));
+	ActionsProxyModel::ModelActionList groupsModelAfterActions;
+	groupsModelAfterActions.append(qMakePair<QString, QString>(tr("Create a new group..."), "createNewGroup"));
+
+	ActionsProxyModel *groupsProxyModel = new ActionsProxyModel(groupsModelBeforeActions,
+			groupsModelAfterActions, GroupCombo);
+	groupsProxyModel->setSourceModel(groupComboModel);
+
+	GroupCombo->setModel(groupsProxyModel);
 	layout->addWidget(GroupCombo, 1, 1, 1, 3);
 
 	layout->addWidget(new QLabel(tr("Visible name:"), this), 2, 0, Qt::AlignRight);
