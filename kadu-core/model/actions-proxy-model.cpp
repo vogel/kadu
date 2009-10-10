@@ -56,7 +56,7 @@ QVariant ActionsProxyModel::data(const QModelIndex &proxyIndex, int role) const
 	if (proxyIndex.row() < BeforeActions.count())
 		action = BeforeActions[proxyIndex.row()];
 	else if (proxyIndex.row() >= BeforeActions.count() + sourceModel()->rowCount(QModelIndex()))
-		action = AfterActions[proxyIndex.row() - BeforeActions.count()];
+		action = AfterActions[proxyIndex.row() - BeforeActions.count() - sourceModel()->rowCount(QModelIndex())];
 	else
 		return sourceModel()->data(mapToSource(proxyIndex), role);
 
@@ -67,9 +67,12 @@ QVariant ActionsProxyModel::data(const QModelIndex &proxyIndex, int role) const
 
 		case Qt::FontRole:
 			QFont font;
-			font.setItalic(true);
+			if (!action.second.isEmpty())
+				font.setItalic(true);
 			return font;
 	}
+
+	return QVariant();
 }
 
 QModelIndex ActionsProxyModel::mapFromSource(const QModelIndex &sourceIndex) const
