@@ -178,6 +178,7 @@ set (kadu_SRCS
 	misc/path-conversion.cpp
 	misc/syntax-list.cpp
 
+	model/actions-proxy-model.cpp
 	model/first-empty.cpp
 
 	modules/module-data.cpp
@@ -368,6 +369,7 @@ set (kadu_MOC_SRCS
 	identities/identity.h
 	identities/identity-manager.h
 
+	model/actions-proxy-model.h
 	model/first-empty.h
 
 	misc/syntax-list.h
