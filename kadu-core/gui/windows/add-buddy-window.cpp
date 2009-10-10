@@ -17,7 +17,9 @@
 
 #include "accounts/account.h"
 #include "accounts/account-manager.h"
+#include "accounts/filter/id-regular-expression-filter.h"
 #include "accounts/model/accounts-model.h"
+#include "accounts/model/accounts-proxy-model.h"
 #include "contacts/contact.h"
 #include "contacts/contact-manager.h"
 #include "contacts/model/contacts-model-base.h"
@@ -53,6 +55,7 @@ void AddBuddyWindow::createGui()
 	layout->addWidget(new QLabel(tr("Username:"), this), 0, 0, Qt::AlignRight);
 	UserNameEdit = new QLineEdit(this);
 	connect(UserNameEdit, SIGNAL(textChanged(const QString &)), this, SLOT(setAddContactEnabled()));
+	connect(UserNameEdit, SIGNAL(textChanged(const QString &)), this, SLOT(setAccountFilter()));
 
 	UserNameValidator = new QRegExpValidator(UserNameEdit);
 	UserNameEdit->setValidator(UserNameValidator);
@@ -62,13 +65,18 @@ void AddBuddyWindow::createGui()
 	AccountCombo = new QComboBox(this);
 	connect(AccountCombo, SIGNAL(activated(int)), this, SLOT(setAddContactEnabled()));
 	connect(AccountCombo, SIGNAL(activated(int)), this, SLOT(setValidateRegularExpression()));
+
 	AccountComboModel = new AccountsModel(AccountCombo);
+	AccountComboProxyModel = new AccountsProxyModel(AccountCombo);
+	AccountComboProxyModel->setSourceModel(AccountComboModel);
+	AccountComboFilter = new IdRegularExpressionFilter(AccountCombo);
+	AccountComboProxyModel->addFilter(AccountComboFilter);
 
 	ActionsProxyModel::ModelActionList accountsModelBeforeActions;
 	accountsModelBeforeActions.append(qMakePair<QString, QString>(tr(" - Select account - "), ""));
 	ActionsProxyModel *accountsProxyModel = new ActionsProxyModel(accountsModelBeforeActions,
 			ActionsProxyModel::ModelActionList(), AccountCombo);
-	accountsProxyModel->setSourceModel(AccountComboModel);
+	accountsProxyModel->setSourceModel(AccountComboProxyModel);
 
 	AccountCombo->setModel(accountsProxyModel);
 	AccountCombo->setModelColumn(1); // use long account name
@@ -193,6 +201,11 @@ void AddBuddyWindow::setValidateRegularExpression()
 	
 	regularExpressions.removeDuplicates();
 	UserNameValidator->setRegExp(QRegExp(QString("(%1)").arg(regularExpressions.join("|"))));
+}
+
+void AddBuddyWindow::setAccountFilter()
+{
+	AccountComboFilter->setId(UserNameEdit->text());
 }
 
 void AddBuddyWindow::accept()

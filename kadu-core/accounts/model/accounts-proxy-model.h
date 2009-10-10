@@ -7,20 +7,18 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef CONTACTS_MODEL_PROXY
-#define CONTACTS_MODEL_PROXY
+#ifndef ACCOUNTS_PROXY_MODEL_H
+#define ACCOUNTS_PROXY_MODEL_H
 
 #include <QtGui/QSortFilterProxyModel>
 
-#include "abstract-contacts-model.h"
-#include "contacts/filter/abstract-contact-filter.h"
+class AbstractAccountFilter;
 
-class ContactsModelProxy : public QSortFilterProxyModel, public AbstractContactsModel
+class AccountsProxyModel : public QSortFilterProxyModel
 {
 	Q_OBJECT
 
-	AbstractContactsModel *SourceContactModel;
-	QList<AbstractContactFilter *> Filters;
+	QList<AbstractAccountFilter *> Filters;
 
 	bool BrokenStringCompare;
 	int compareNames(QString n1, QString n2) const;
@@ -30,16 +28,13 @@ protected:
 	virtual bool filterAcceptsRow(int sourceRow, const QModelIndex &sourceParent) const;
 
 public:
-	ContactsModelProxy(QObject *parent = 0);
+	AccountsProxyModel(QObject *parent = 0);
+	virtual ~AccountsProxyModel();
 
 	virtual void setSourceModel(QAbstractItemModel *sourceModel);
-	void addFilter(AbstractContactFilter *filter);
-	void removeFilter(AbstractContactFilter *filter);
-
-	// AbstractContactsModel implementation
-	virtual Contact contact(const QModelIndex &index) const;
-	virtual const QModelIndex contactIndex(Contact contact) const;
+	void addFilter(AbstractAccountFilter *filter);
+	void removeFilter(AbstractAccountFilter *filter);
 
 };
 
-#endif // CONTACTS_MODEL_PROXY
+#endif // ACCOUNTS_PROXY_MODEL_H

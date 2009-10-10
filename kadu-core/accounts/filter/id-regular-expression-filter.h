@@ -7,26 +7,26 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef ABSTRACT_CONTACT_FILTER
-#define ABSTRACT_CONTACT_FILTER
+#ifndef ID_REGULAR_EXPRESSION_FILTER
+#define ID_REGULAR_EXPRESSION_FILTER
 
-#include <QtCore/QObject>
+#include "accounts/filter/abstract-account-filter.h"
 
-class Contact;
-
-class AbstractContactFilter : public QObject
+class IdRegularExpressionFilter : public AbstractAccountFilter
 {
 	Q_OBJECT
 
+	QString Id;
+
+protected:
+	virtual bool acceptAccount(Account *account);
+
 public:
-	AbstractContactFilter(QObject *parent = 0)
-			: QObject(parent) {}
+	IdRegularExpressionFilter(QObject *parent = 0);
+	virtual ~IdRegularExpressionFilter();
 
-	virtual bool acceptContact(Contact contact) = 0;
-
-signals:
-	void filterChanged();
+	void setId(QString id);
 
 };
 
-#endif // ABSTRACT_CONTACT_FILTER
+#endif // ID_REGULAR_EXPRESSION_FILTER

@@ -20,6 +20,8 @@ class QLineEdit;
 class QRegExpValidator;
 
 class AccountsModel;
+class AccountsProxyModel;
+class IdRegularExpressionFilter;
 
 class AddBuddyWindow : public QDialog
 {
@@ -29,6 +31,8 @@ class AddBuddyWindow : public QDialog
 	QRegExpValidator *UserNameValidator;
 	QComboBox *AccountCombo;
 	AccountsModel *AccountComboModel;
+	AccountsProxyModel *AccountComboProxyModel;
+	IdRegularExpressionFilter *AccountComboFilter;
 	QComboBox *GroupCombo;
 	QLineEdit *DisplayNameEdit;
 	QCheckBox *AllowToSeeMeCheck;
@@ -43,6 +47,7 @@ class AddBuddyWindow : public QDialog
 private slots:
 	void setAddContactEnabled();
 	void setValidateRegularExpression();
+	void setAccountFilter();
 
 protected slots:
 	virtual void accept();

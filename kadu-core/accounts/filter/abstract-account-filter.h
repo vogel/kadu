@@ -7,26 +7,26 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef ABSTRACT_CONTACT_FILTER
-#define ABSTRACT_CONTACT_FILTER
+#ifndef ABSTRACT_ACCOUNT_FILTER
+#define ABSTRACT_ACCOUNT_FILTER
 
 #include <QtCore/QObject>
 
-class Contact;
+class Account;
 
-class AbstractContactFilter : public QObject
+class AbstractAccountFilter : public QObject
 {
 	Q_OBJECT
 
 public:
-	AbstractContactFilter(QObject *parent = 0)
+	AbstractAccountFilter(QObject *parent = 0)
 			: QObject(parent) {}
 
-	virtual bool acceptContact(Contact contact) = 0;
+	virtual bool acceptAccount(Account *account) = 0;
 
 signals:
 	void filterChanged();
 
 };
 
-#endif // ABSTRACT_CONTACT_FILTER
+#endif // ABSTRACT_ACCOUNT_FILTER

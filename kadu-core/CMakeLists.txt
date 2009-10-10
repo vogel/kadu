@@ -4,7 +4,10 @@ set (kadu_SRCS
 	accounts/account-manager.cpp
 	accounts/accounts-aware-object.cpp
 
+	accounts/filter/id-regular-expression-filter.cpp
+
 	accounts/model/accounts-model.cpp
+	accounts/model/accounts-proxy-model.cpp
 
 	chat/aggregate-chat.cpp
 	chat/chat.cpp
@@ -244,7 +247,11 @@ set (kadu_MOC_SRCS
 	accounts/account.h
 	accounts/account-manager.h
 
+	accounts/filter/abstract-account-filter.h
+	accounts/filter/id-regular-expression-filter.h
+
 	accounts/model/accounts-model.h
+	accounts/model/accounts-proxy-model.h
 
 	#chat/aggregate-chat.h
 	chat/chat.h
