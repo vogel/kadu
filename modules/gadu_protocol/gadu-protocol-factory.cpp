@@ -40,6 +40,8 @@ GaduProtocolFactory::GaduProtocolFactory()
 	SupportedStatusTypes.append(statusTypeManager->statusType("Offline"));
 
 	qSort(SupportedStatusTypes.begin(), SupportedStatusTypes.end(), StatusType::lessThan);
+
+	IdRegularExpression.setPattern("[0-9]{1,12}");
 }
 
 Account * GaduProtocolFactory::newAccount()
@@ -87,9 +89,9 @@ QList<StatusType *> GaduProtocolFactory::supportedStatusTypes()
 	return SupportedStatusTypes;
 }
 
-QString GaduProtocolFactory::idRegularExpression()
+QRegExp GaduProtocolFactory::idRegularExpression()
 {
-	return "[0-9]{1,12}";
+	return IdRegularExpression;
 }
 
 ContactAccountDataWidget * GaduProtocolFactory::newContactAccountDataWidget(ContactAccountData *contactAccountData, QWidget *parent)

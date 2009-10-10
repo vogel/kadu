@@ -9,7 +9,7 @@
 
 #include "accounts/account.h"
 #include "accounts/account-manager.h"
-
+#include "contacts/model/contacts-model-base.h"
 #include "protocols/protocol.h"
 
 #include "accounts-model.h"
@@ -63,8 +63,13 @@ QVariant AccountsModel::data(const QModelIndex &index, int role) const
 				return acc->name();
 			else
 				return QString("%1 (%2)").arg(acc->name(), acc->id());
+
 		case Qt::DecorationRole:
 			return acc->protocol()->icon();
+
+		case AccountRole:
+			return QVariant::fromValue<Account *>(acc);
+
 		default:
 			return QVariant();
 	}

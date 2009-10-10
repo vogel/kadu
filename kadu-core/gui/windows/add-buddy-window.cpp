@@ -20,6 +20,7 @@
 #include "accounts/model/accounts-model.h"
 #include "contacts/contact.h"
 #include "contacts/contact-manager.h"
+#include "contacts/model/contacts-model-base.h"
 #include "contacts/model/groups-model.h"
 #include "misc/misc.h"
 #include "model/actions-proxy-model.h"
@@ -34,7 +35,8 @@ AddBuddyWindow::AddBuddyWindow(QWidget *parent) :
 	setAttribute(Qt::WA_DeleteOnClose);
 
 	createGui();
-	setUpValidator();
+	setAddContactEnabled();
+	setValidateRegularExpression();
 }
 
 AddBuddyWindow::~AddBuddyWindow()
@@ -50,12 +52,16 @@ void AddBuddyWindow::createGui()
 
 	layout->addWidget(new QLabel(tr("Username:"), this), 0, 0, Qt::AlignRight);
 	UserNameEdit = new QLineEdit(this);
+	connect(UserNameEdit, SIGNAL(textChanged(const QString &)), this, SLOT(setAddContactEnabled()));
+
 	UserNameValidator = new QRegExpValidator(UserNameEdit);
 	UserNameEdit->setValidator(UserNameValidator);
 	layout->addWidget(UserNameEdit, 0, 1);
 	layout->addWidget(new QLabel(tr("in"), this), 0, 2);
 
 	AccountCombo = new QComboBox(this);
+	connect(AccountCombo, SIGNAL(activated(int)), this, SLOT(setAddContactEnabled()));
+	connect(AccountCombo, SIGNAL(activated(int)), this, SLOT(setValidateRegularExpression()));
 	AccountComboModel = new AccountsModel(AccountCombo);
 
 	ActionsProxyModel::ModelActionList accountsModelBeforeActions;
@@ -86,6 +92,7 @@ void AddBuddyWindow::createGui()
 
 	layout->addWidget(new QLabel(tr("Visible name:"), this), 2, 0, Qt::AlignRight);
 	DisplayNameEdit = new QLineEdit(this);
+	connect(DisplayNameEdit, SIGNAL(textChanged(const QString &)), this, SLOT(setAddContactEnabled()));
 	layout->addWidget(DisplayNameEdit, 2, 1, 1, 3);
 
 	QLabel *hintLabel = new QLabel(tr("Enter a name for this contact"));
@@ -106,12 +113,14 @@ void AddBuddyWindow::createGui()
 	QDialogButtonBox *buttons = new QDialogButtonBox(this);
 	layout->addWidget(buttons, 7, 0, 1, 4);
 
-	QPushButton *addContact = new QPushButton(tr("Add contact"), this);
-	connect(addContact, SIGNAL(clicked(bool)), this, SLOT(addContact()));
+	AddContactButton = new QPushButton(tr("Add contact"), this);
+	AddContactButton->setDefault(true);
+	connect(AddContactButton, SIGNAL(clicked(bool)), this, SLOT(accept()));
 
 	QPushButton *cancel = new QPushButton(tr("Cancel"), this);
+	connect(cancel, SIGNAL(clicked(bool)), this, SLOT(reject()));
 
-	buttons->addButton(addContact, QDialogButtonBox::AcceptRole);
+	buttons->addButton(AddContactButton, QDialogButtonBox::AcceptRole);
 	buttons->addButton(cancel, QDialogButtonBox::DestructiveRole);
 
 // 	TODO: NOW, does not work
@@ -120,19 +129,10 @@ void AddBuddyWindow::createGui()
 // 	layout->setSizeConstraint(QLayout::SetMinAndMaxSize);
 }
 
-void AddBuddyWindow::setUpValidator()
+Account * AddBuddyWindow::selectedAccount()
 {
-	QStringList regularExpressions;
-
-	foreach (Account *account, AccountManager::instance()->accounts())
-	{
-		QString regularExpression = account->protocol()->protocolFactory()->idRegularExpression();
-		if (!regularExpression.isEmpty())
-			regularExpressions.append(regularExpression);
-	}
-
-	regularExpressions.removeDuplicates();
-	UserNameValidator->setRegExp(QRegExp(QString("(%1)").arg(regularExpressions.join("|"))));
+	QModelIndex index = AccountCombo->model()->index(AccountCombo->currentIndex(), 0);
+	return index.data(AccountRole).value<Account *>();
 }
 
 void AddBuddyWindow::setContact(Contact contact)
@@ -149,14 +149,65 @@ void AddBuddyWindow::setContact(Contact contact)
 	DisplayNameEdit->setText(contact.display());
 }
 
-void AddBuddyWindow::addContact()
+void AddBuddyWindow::setAddContactEnabled()
 {
-	Account *account = AccountComboModel->account(AccountComboModel->index(AccountCombo->currentIndex()));
+	Account *account = selectedAccount();
+	if (!account)
+	{
+		AddContactButton->setEnabled(false);
+		return;
+	}
+
+	if (!account->protocol()->protocolFactory()->idRegularExpression().exactMatch(UserNameEdit->text()))
+	{
+		AddContactButton->setEnabled(false);
+		return;
+	}
+
+	if (DisplayNameEdit->text().isEmpty())
+	{
+		AddContactButton->setEnabled(false);
+		return;
+	}
+
+	AddContactButton->setEnabled((ContactManager::instance()->byDisplay(DisplayNameEdit->text()).isNull()));
+}
+
+void AddBuddyWindow::setValidateRegularExpression()
+{
+	Account *account = selectedAccount();
+	if (account)
+	{
+		UserNameValidator->setRegExp(account->protocol()->protocolFactory()->idRegularExpression());
+		return;
+	}
+
+	QStringList regularExpressions;
+	
+	foreach (Account *account, AccountManager::instance()->accounts())
+	{
+		QRegExp regularExpression = account->protocol()->protocolFactory()->idRegularExpression();
+		if (!regularExpression.isEmpty())
+			regularExpressions.append(regularExpression.pattern());
+	}
+	
+	regularExpressions.removeDuplicates();
+	UserNameValidator->setRegExp(QRegExp(QString("(%1)").arg(regularExpressions.join("|"))));
+}
+
+void AddBuddyWindow::accept()
+{
+	Account *account = selectedAccount();
 	if (MyContact.isNull())
 		MyContact = ContactManager::instance()->byId(account, UserNameEdit->text());
 
 	MyContact.setType(ContactData::TypeNormal);
 	MyContact.setDisplay(DisplayNameEdit->text());
 
-	close();
+	QDialog::accept();
+}
+
+void AddBuddyWindow::reject()
+{
+	QDialog::reject();
 }

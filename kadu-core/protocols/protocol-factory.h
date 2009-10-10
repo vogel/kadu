@@ -38,7 +38,7 @@ public:
 	virtual ContactAccountDataWidget * newContactAccountDataWidget(ContactAccountData *contactAccountData, QWidget *parent = 0) = 0;
 	virtual ProtocolMenuManager * protocolMenuManager() { return 0; }
 	virtual QList<StatusType *> supportedStatusTypes() = 0;
-	virtual QString idRegularExpression() = 0;
+	virtual QRegExp idRegularExpression() = 0;
 
 	virtual QString name() = 0;
 	virtual QString displayName() = 0;

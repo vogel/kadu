@@ -18,6 +18,7 @@ class JabberProtocolFactory : public ProtocolFactory
 
 	static JabberProtocolFactory *Instance;
 	QList<StatusType *> SupportedStatusTypes;
+	QRegExp IdRegularExpression;
 
 	JabberProtocolFactory();
 
@@ -32,6 +33,7 @@ public:
 	virtual AccountEditWidget* newEditAccountWidget(Account*, QWidget*);
 	virtual ContactAccountDataWidget * newContactAccountDataWidget(ContactAccountData *contactAccountData, QWidget *parent = 0);
 	virtual QList<StatusType *> supportedStatusTypes();
+	virtual QRegExp idRegularExpression();
 
 	virtual QString name() { return "jabber"; }
 	virtual QString displayName() { return "Jabber"; }

@@ -41,6 +41,8 @@ JabberProtocolFactory::JabberProtocolFactory()
 	SupportedStatusTypes.append(statusTypeManager->statusType("Offline"));
 
 	qSort(SupportedStatusTypes.begin(), SupportedStatusTypes.end(), StatusType::lessThan);
+
+	IdRegularExpression.setPattern("[a-zA-Z0-9\\._-]+@[a-zA-Z0-9\\._-]+");
 }
 
 Account * JabberProtocolFactory::newAccount()
@@ -90,6 +92,11 @@ AccountEditWidget * JabberProtocolFactory::newEditAccountWidget(Account *account
 QList<StatusType *> JabberProtocolFactory::supportedStatusTypes()
 {
 	return SupportedStatusTypes;
+}
+
+QRegExp JabberProtocolFactory::idRegularExpression()
+{
+	return IdRegularExpression;
 }
 
 ContactAccountDataWidget * JabberProtocolFactory::newContactAccountDataWidget(ContactAccountData *contactAccountData, QWidget *parent)

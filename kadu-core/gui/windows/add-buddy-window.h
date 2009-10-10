@@ -32,14 +32,21 @@ class AddBuddyWindow : public QDialog
 	QComboBox *GroupCombo;
 	QLineEdit *DisplayNameEdit;
 	QCheckBox *AllowToSeeMeCheck;
+	QPushButton *AddContactButton;
 
 	Contact MyContact;
 
 	void createGui();
-	void setUpValidator();
+
+	Account * selectedAccount();
 
 private slots:
-	void addContact();
+	void setAddContactEnabled();
+	void setValidateRegularExpression();
+
+protected slots:
+	virtual void accept();
+	virtual void reject();
 
 public:
 	AddBuddyWindow(QWidget *parent = 0);
