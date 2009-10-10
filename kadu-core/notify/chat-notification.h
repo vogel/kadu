@@ -16,8 +16,8 @@ class Chat;
 
 class ChatNotification : public AccountNotification
 {
-
 	Chat *CurrentChat;
+
 public:
 	ChatNotification(Chat *chat, const QString &type, const QIcon &icon);
 	virtual ~ChatNotification() {}

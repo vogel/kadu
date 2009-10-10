@@ -640,7 +640,7 @@ void HintManager::notify(Notification *notification)
 	kdebugf();
 
 	ChatNotification *chatNotification = dynamic_cast<ChatNotification *>(notification);
-	if (chatNotification)
+	if (!chatNotification)
 	{
 		addHint(notification);
 
