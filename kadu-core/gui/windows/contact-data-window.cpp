@@ -130,7 +130,6 @@ void ContactDataWindow::updateContact()
 
 	ContactTab->saveConfiguration();
 	GroupsTab->saveConfiguration(); 
-
 	OptionsTab->saveConfiguration(); 
 
 	ContactManager::instance()->unblockUpdatedSignal(CurrentContact);

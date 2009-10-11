@@ -10,20 +10,23 @@
 #ifndef CONTACT_PERSONAL_INFO_CONFIGURATION_WIDGET
 #define CONTACT_PERSONAL_INFO_CONFIGURATION_WIDGET
 
-#include <QtGui/QDialog>
-#include <QtGui/QLineEdit>
+#include <QtGui/QComboBox>
+#include <QtGui/QGridLayout>
+#include <QtGui/QGroupBox>
+#include <QtGui/QLabel>
 
 #include "contacts/contact.h"
-#include "gui/widgets/configuration/configuration-widget.h"
 
 #include "exports.h"
-
-class ContactAccountData;
-class ContactAccountDataManager;
 
 class KADUAPI ContactPersonalInfoConfigurationWidget : public QWidget
 {
 	Q_OBJECT
+
+	QComboBox *ContactIdCombo;
+	QLabel *FirstNameText, *LastNameText, *NicknameText, *GenderText, 
+	*BirthdateText, *CityText, *StateProvinceText, *IpText, *PortText,
+	*DnsNameText, *ProtocolVerText;
 
 	Contact CurrentContact;
 	void createGui();
@@ -31,6 +34,9 @@ class KADUAPI ContactPersonalInfoConfigurationWidget : public QWidget
 public:
 	ContactPersonalInfoConfigurationWidget(Contact &contact, QWidget *parent = 0);
 	~ContactPersonalInfoConfigurationWidget();
+
+private slots:
+	void accountSelectionChanged(int index);
 
 };
 

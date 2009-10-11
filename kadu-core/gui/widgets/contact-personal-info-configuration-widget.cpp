@@ -7,17 +7,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <QtGui/QDialogButtonBox>
-#include <QtGui/QHBoxLayout>
-#include <QtGui/QLabel>
-#include <QtGui/QPushButton>
-#include <QtGui/QVBoxLayout>
-#include <QtGui/QLineEdit>
-#include <QtGui/QComboBox>
-#include <QtGui/QGroupBox>
-
 #include "accounts/account.h"
-#include "configuration/contact-account-data-manager.h"
+#include "accounts/account-manager.h"
 #include "contacts/contact-account-data.h"
 #include "misc/misc.h"
 #include "protocols/protocol.h"
@@ -56,13 +47,14 @@ void ContactPersonalInfoConfigurationWidget::createGui()
 	QLabel *usernameLabel = new QLabel(tr("Contact Username") + ":", this);
 	layout->addWidget(usernameLabel, row, 3, 1, 1); 
 
-	QComboBox *contactIdCombo = new QComboBox(this);
+	ContactIdCombo = new QComboBox(this);
 	foreach (ContactAccountData *data, CurrentContact.accountDatas())
-		contactIdCombo->addItem(data->account()->protocol()->icon(), 
+		ContactIdCombo->addItem(data->account()->protocol()->icon(), 
 			    data->id(),
 			    data->account()->uuid().toString()
 		);
-	layout->addWidget(contactIdCombo, row++, 4, 1, 1);
+	connect(ContactIdCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(accountSelectionChanged(int)));
+	layout->addWidget(ContactIdCombo, row++, 4, 1, 1);
 
 	QGroupBox *infoWidget = new QGroupBox(this);
 	QGridLayout *infoLayout = new QGridLayout(infoWidget);
@@ -77,74 +69,97 @@ void ContactPersonalInfoConfigurationWidget::createGui()
 	QLabel *firstNameLabel = new QLabel(tr("First Name") + ":",this);
 	firstNameLabel->setAlignment(Qt::AlignRight);
 	infoLayout->addWidget(firstNameLabel, subRow, 1, 1, 1);
-	QLabel *firstNameText = new QLabel("Juzwa",this);
-	infoLayout->addWidget(firstNameText, subRow++, 2, 1, 1);
+	FirstNameText = new QLabel(this);
+	infoLayout->addWidget(FirstNameText, subRow++, 2, 1, 1);
 
 	QLabel *lastNameLabel = new QLabel(tr("Last Name") + ":", this);
 	lastNameLabel->setAlignment(Qt::AlignRight);
 	infoLayout->addWidget(lastNameLabel, subRow, 1, 1, 1);
-	QLabel *lastNameText = new QLabel("Burp",this);
-	infoLayout->addWidget(lastNameText, subRow++, 2, 1, 1);
+	LastNameText = new QLabel(this);
+	infoLayout->addWidget(LastNameText, subRow++, 2, 1, 1);
 
 	QLabel *nicknameLabel = new QLabel(tr("Nickname") + ":", this);
 	nicknameLabel->setAlignment(Qt::AlignRight);
 	infoLayout->addWidget(nicknameLabel, subRow, 1, 1, 1);
-	QLabel *nicknameText = new QLabel("Burp",this);
-	infoLayout->addWidget(nicknameText, subRow++, 2, 1, 1);
+	NicknameText = new QLabel(this);
+	infoLayout->addWidget(NicknameText, subRow++, 2, 1, 1);
 
 	QLabel *genderLabel = new QLabel(tr("Gender") + ":", this);
 	genderLabel->setAlignment(Qt::AlignRight);
 	infoLayout->addWidget(genderLabel, subRow, 1, 1, 1);
-	QLabel *genderText = new QLabel("Male",this);
-	infoLayout->addWidget(genderText, subRow++, 2, 1, 1);
+	GenderText = new QLabel(this);
+	infoLayout->addWidget(GenderText, subRow++, 2, 1, 1);
 
 	QLabel *birthdateLabel = new QLabel(tr("Birthdate") + ":",this);
 	birthdateLabel->setAlignment(Qt::AlignRight);
 	infoLayout->addWidget(birthdateLabel, subRow, 1, 1, 1);
-	QLabel *birthdateText = new QLabel("19.08.1924", this);
-	infoLayout->addWidget(birthdateText, subRow++, 2, 1, 1);
+	BirthdateText = new QLabel(this);
+	infoLayout->addWidget(BirthdateText, subRow++, 2, 1, 1);
 
 	QLabel *cityLabel = new QLabel(tr("City") + ":",this);
 	cityLabel->setAlignment(Qt::AlignRight);
 	infoLayout->addWidget(cityLabel, subRow, 1, 1, 1);
-	QLabel *cityText = new QLabel("Wroc",this);
-	infoLayout->addWidget(cityText, subRow++, 2, 1, 1);
+	CityText = new QLabel(this);
+	infoLayout->addWidget(CityText, subRow++, 2, 1, 1);
 
 	QLabel *stateProvinceLabel = new QLabel(tr("State/Province") + ":",this);
 	stateProvinceLabel->setAlignment(Qt::AlignRight);
 	infoLayout->addWidget(stateProvinceLabel, subRow, 1, 1, 1);
-	QLabel *stateProvinceText = new QLabel("Poland",this);
-	infoLayout->addWidget(stateProvinceText, subRow++, 2, 1, 1);
+	StateProvinceText = new QLabel(this);
+	infoLayout->addWidget(StateProvinceText, subRow++, 2, 1, 1);
 
-	infoLayout->setRowStretch(7, 20);
+	infoLayout->setRowStretch(subRow++, 20);
 
 	QLabel *ipLabel = new QLabel(tr("IP Address") + ":",this);
 	ipLabel->setAlignment(Qt::AlignRight);
 	infoLayout->addWidget(ipLabel, subRow, 1, 1, 1);
-	QLabel *ipText = new QLabel("127.0.0.1",this);
-	infoLayout->addWidget(ipText, subRow++, 2, 1, 1);
+	IpText = new QLabel(this);
+	infoLayout->addWidget(IpText, subRow++, 2, 1, 1);
 
 	QLabel *portLabel = new QLabel(tr("Port") + ":",this);
 	portLabel->setAlignment(Qt::AlignRight);
 	infoLayout->addWidget(portLabel, subRow, 1, 1, 1);
-	QLabel *portText = new QLabel("80",this);
-	infoLayout->addWidget(portText, subRow++, 2, 1, 1);
+	PortText = new QLabel(this);
+	infoLayout->addWidget(PortText, subRow++, 2, 1, 1);
 
 	QLabel *dnsNameLabel = new QLabel(tr("DNS Name") + ":",this);
 	dnsNameLabel->setAlignment(Qt::AlignRight);
 	infoLayout->addWidget(dnsNameLabel, subRow, 1, 1, 1);
-	QLabel *dnsNameText = new QLabel("192.168.1.1", this);
-	infoLayout->addWidget(dnsNameText, subRow++, 2, 1, 1);
+	DnsNameText = new QLabel(this);
+	infoLayout->addWidget(DnsNameText, subRow++, 2, 1, 1);
 
 	QLabel *protocolVerLabel = new QLabel(tr("Protocol Version") + ":",this);
 	protocolVerLabel->setAlignment(Qt::AlignRight);
 	infoLayout->addWidget(protocolVerLabel, 11, 1, 1, 1);
-	QLabel *protocolVerText = new QLabel("1500",this);
-	infoLayout->addWidget(protocolVerText, 11, 2, 1, 1);
+	ProtocolVerText = new QLabel(this);
+	infoLayout->addWidget(ProtocolVerText, 11, 2, 1, 1);
 
 	infoLayout->setRowStretch(12, 100);
 
 	layout->addWidget(infoWidget, row++, 2, 1, 4);
 
 	layout->setRowStretch(row, 100);
+}
+
+void ContactPersonalInfoConfigurationWidget::accountSelectionChanged(int index)
+{
+	QString accountUuid = ContactIdCombo->itemData(index).toString();
+	if (accountUuid.isEmpty())
+		return;
+	Account *account = AccountManager::instance()->byUuid(QUuid(accountUuid));
+	if (!account)
+		return;
+	//TODO proper values
+	FirstNameText->setText(CurrentContact.firstName());
+	LastNameText->setText(CurrentContact.lastName());
+	NicknameText->setText(CurrentContact.nickName());
+	GenderText->setText(CurrentContact.firstName());
+	BirthdateText->setText(CurrentContact.firstName());
+	CityText->setText(CurrentContact.firstName());
+	StateProvinceText->setText(CurrentContact.firstName());
+	//
+	IpText->setText(CurrentContact.accountData(account)->ip().toString());
+	PortText->setText(QString::number(CurrentContact.accountData(account)->port()));
+	DnsNameText->setText(CurrentContact.accountData(account)->dnsName());
+	ProtocolVerText->setText(CurrentContact.accountData(account)->protocolVersion());
 }
