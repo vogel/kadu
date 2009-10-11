@@ -65,7 +65,6 @@ set (kadu_SRCS
 set (kadu_MOC_SRCS
 	about.h
 	action.h
-	activate.h
 	chat_edit_box.h
 	chat_manager.h
 	chat_messages_view.h
@@ -73,31 +72,23 @@ set (kadu_MOC_SRCS
 	chat_window.h
 	color_button.h
 	color_selector.h
-	config_file.h
-	configuration_aware_object.h
 	configuration_window.h
 	configuration_window_widgets.h
 	custom_input.h
-	debug.h
 	dnshandler.h
 	emoticons.h
 	expimp.h
 	gadu.h
 	gadu_resolver.h
-	gadu_images_manager.h
 	gadu-private.h
 	groups_manager.h
-	hot_key.h
-	html_document.h
 	http_client.h
 	icons_manager.h
 	ignore.h
 	kadu.h
 	kadu_main_window.h
-	kadu_parser.h
 	kadu_text_browser.h
 	main_configuration_window.h
-	message.h
 	message_box.h
 	misc.h
 	modules.h
