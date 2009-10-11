@@ -22,6 +22,7 @@
 #include "gui/widgets/account-create-widget.h"
 #include "gui/widgets/account-edit-widget.h"
 #include "misc/misc.h"
+#include "model/actions-proxy-model.h"
 #include "model/roles.h"
 #include "protocols/model/protocols-model.h"
 #include "protocols/protocol-factory.h"
@@ -111,8 +112,14 @@ void YourAccounts::createNewAccountWidget()
 	selectProtocolLayout->addSpacing(20);
 
 	Protocols = new QComboBox(NewAccountContainer);
-	ProtocolsModel *Model = new ProtocolsModel(tr("Choose a network to add"), Protocols);
-	Protocols->setModel(Model);
+	ProtocolsModel *model = new ProtocolsModel(Protocols);
+
+	ActionsProxyModel::ModelActionList beforeActions;
+	beforeActions.append(qMakePair<QString, QString>(tr("Choose a network to add"), ""));
+	ActionsProxyModel *actionsModel = new ActionsProxyModel(beforeActions, ActionsProxyModel::ModelActionList(), Protocols);
+	actionsModel->setSourceModel(model);
+
+	Protocols->setModel(actionsModel);
 	selectProtocolLayout->addWidget(Protocols, 10);
 
 	CreateStack = new QStackedWidget(this);

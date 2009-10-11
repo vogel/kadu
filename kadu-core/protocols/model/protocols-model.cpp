@@ -16,14 +16,8 @@
 
 #include "protocols-model.h"
 
-ProtocolsModel::ProtocolsModel(const QString &emptyString, QObject *parent) :
-		FirstEmpty(emptyString, parent)
-{
-}
-
-
 ProtocolsModel::ProtocolsModel(QObject *parent) :
-		FirstEmpty(parent)
+		QAbstractListModel(parent)
 {
 }
 
@@ -33,14 +27,11 @@ ProtocolsModel::~ProtocolsModel()
 
 int ProtocolsModel::rowCount(const QModelIndex &parent) const
 {
-	return ProtocolsManager::instance()->protocolFactories().count() + emptyCount();
+	return ProtocolsManager::instance()->protocolFactories().count();
 }
 
 QVariant ProtocolsModel::data(const QModelIndex &index, int role) const
 {
-	if (index.row() < emptyCount())
-		return FirstEmpty::data(index, role);
-
 	ProtocolFactory *pf = protocolFactory(index);
 	if (0 == pf)
 		return QVariant();
@@ -68,10 +59,10 @@ ProtocolFactory * ProtocolsModel::protocolFactory(const QModelIndex &index) cons
 	if (!index.isValid())
 		return 0;
 
-	if (index.row() > emptyCount() && index.row() >= rowCount())
+	if (index.row() > 0 && index.row() >= rowCount())
 		return 0;
 
-	return ProtocolsManager::instance()->byIndex(index.row() - emptyCount());
+	return ProtocolsManager::instance()->byIndex(index.row());
 }
 
 int ProtocolsModel::protocolFactoryIndex(ProtocolFactory *protocolFactory)

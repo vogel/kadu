@@ -13,16 +13,13 @@
 #include <QtCore/QAbstractListModel>
 #include <QtCore/QModelIndex>
 
-#include "model/first-empty.h"
-
 class ProtocolFactory;
 
-class ProtocolsModel : public FirstEmpty
+class ProtocolsModel : public QAbstractListModel
 {
 	Q_OBJECT
 
 public:
-	ProtocolsModel(const QString &emptyString, QObject *parent = 0);
 	explicit ProtocolsModel(QObject *parent = 0);
 	virtual ~ProtocolsModel();
 
