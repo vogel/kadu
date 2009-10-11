@@ -1887,8 +1887,10 @@ Jeśli zechcesz włączyć (lub wyłączyć) któryś z nich, wystarczy dwukrotn
 %2</translation>
     </message>
     <message>
-        <source>Module %1 cannot be deactivated because it is used now</source>
-        <translation>Moduł %1 nie może być dezaktywowany ponieważ jest obecnie w użyciu</translation>
+        <source>Module %1 cannot be deactivated because it is used by:
+%2</source>
+        <translation>Moduł %1 nie może być dezaktywowany ponieważ jest obecnie w użyciu przez:
+%2</translation>
     </message>
     <message>
         <source>Module %1 conflicts with: %2</source>

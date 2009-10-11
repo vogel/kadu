@@ -1860,8 +1860,10 @@ You can load (or unload) them by double-clicking on their names.</source>
 %2</translation>
     </message>
     <message>
-        <source>Module %1 cannot be deactivated because it is used now</source>
-        <translation>Module %1 impossible à activer car actuellement utilisé</translation>
+        <source>Module %1 cannot be deactivated because it is used by:
+%2</source>
+        <translation>Module %1 impossible à activer car actuellement utilisé par:
+%2</translation>
     </message>
     <message>
         <source>Module %1 conflicts with: %2</source>

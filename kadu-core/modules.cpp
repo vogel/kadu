@@ -679,6 +679,19 @@ void ModulesManager::saveLoadedModules()
 	config_file.sync();
 }
 
+QString ModulesManager::modulesUsing(const QString &module_name)
+{
+	ModuleInfo info;
+	QStringList moduleList = loadedModules();
+	QString modules = "";
+
+	foreach(const QString &moduleName, moduleList)
+	if (moduleInfo(moduleName, info))
+		if (info.depends.contains(module_name))
+			modules += moduleName + " ";
+	return modules;
+}
+
 bool ModulesManager::conflictsWithLoaded(const QString &module_name, const ModuleInfo& module_info) const
 {
 	kdebugf();
@@ -811,7 +824,7 @@ bool ModulesManager::deactivateModule(const QString& module_name, bool force)
 
 	if (m.usage_counter>0 && !force)
 	{
-		MessageBox::msg(tr("Module %1 cannot be deactivated because it is used now").arg(module_name));
+		MessageBox::msg(tr("Module %1 cannot be deactivated because it is used by:\n%2").arg(module_name).arg(modulesUsing(module_name)));
 		kdebugf2();
 		return false;
 	}
