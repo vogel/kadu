@@ -120,7 +120,8 @@ void FileTransferModule::createActionDecriptions()
 void FileTransferModule::deleteActionDecriptions()
 {
 	ContactsListWidgetMenuManager::instance()->removeActionDescription(SendFileActionDescription);
-	Core::instance()->kaduWindow()->removeMenuActionDescription(FileTransferWindowActionDescription);
+	// TODO: 0.6.6
+// 	Core::instance()->kaduWindow()->removeMenuActionDescription(FileTransferWindowActionDescription);
 
 	delete SendFileActionDescription;
 	SendFileActionDescription = 0;
