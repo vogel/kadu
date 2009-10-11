@@ -11,7 +11,7 @@
 #define CONTACT_OPTIONS_CONFIGURATION_WIDGET
 
 #include <QtGui/QDialog>
-#include <QtGui/QLineEdit>
+#include <QtGui/QCheckBox>
 
 #include "contacts/contact.h"
 #include "gui/widgets/configuration/configuration-widget.h"
@@ -25,12 +25,17 @@ class KADUAPI ContactOptionsConfigurationWidget : public QWidget
 {
 	Q_OBJECT
 
+	QCheckBox *BlockCheckBox;
+	QCheckBox *OfflineToCheckBox;
+	QCheckBox *NotifyCheckBox;
+
 	Contact CurrentContact;
 	void createGui();
 
 public:
 	ContactOptionsConfigurationWidget(Contact &contact, QWidget *parent = 0);
 	~ContactOptionsConfigurationWidget();
+	void saveConfiguration();
 
 };
 

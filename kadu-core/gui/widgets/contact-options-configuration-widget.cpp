@@ -7,19 +7,10 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <QtGui/QDialogButtonBox>
-#include <QtGui/QHBoxLayout>
+#include <QtGui/QGridLayout>
 #include <QtGui/QLabel>
-#include <QtGui/QPushButton>
-#include <QtGui/QVBoxLayout>
 
-#include <QtGui/QCheckBox>
-
-#include <QtGui/QLineEdit>
-
-#include "configuration/contact-account-data-manager.h"
 #include "contacts/contact-account-data.h"
-#include "misc/misc.h"
 #include "notify/contact-notify-data.h"
 
 #include "contact-options-configuration-widget.h"
@@ -55,22 +46,36 @@ void ContactOptionsConfigurationWidget::createGui()
 
 	layout->setRowStretch(row++, 1);       
 
-	QCheckBox *blockCheckBox = new QCheckBox(tr("Block contact"), this);
-	blockCheckBox->setChecked(CurrentContact.isBlocked(CurrentContact.prefferedAccount()));
-	layout->addWidget(blockCheckBox, row++, 2, 1, 2);      
+	BlockCheckBox = new QCheckBox(tr("Block contact"), this);
+	BlockCheckBox->setChecked(CurrentContact.isBlocked(CurrentContact.prefferedAccount()));
+	layout->addWidget(BlockCheckBox, row++, 2, 1, 2);      
 
-	QCheckBox *offlineToCheckBox = new QCheckBox(tr("Always appear as offline to contact"), this);
-	offlineToCheckBox->setChecked(CurrentContact.isOfflineTo(CurrentContact.prefferedAccount()));
-	layout->addWidget(offlineToCheckBox, row++, 2, 1, 2);        
+	OfflineToCheckBox = new QCheckBox(tr("Always appear as offline to contact"), this);
+	OfflineToCheckBox->setChecked(CurrentContact.isOfflineTo(CurrentContact.prefferedAccount()));
+	layout->addWidget(OfflineToCheckBox, row++, 2, 1, 2);        
 
-	QCheckBox *notifyCheckBox = new QCheckBox(tr("Notify when contact's status changes"), this);
+	NotifyCheckBox = new QCheckBox(tr("Notify when contact's status changes"), this);
 	ContactNotifyData *cnd = CurrentContact.moduleData<ContactNotifyData>();
 	if (cnd)
 	{
-		notifyCheckBox->setChecked(cnd->notify());
+		NotifyCheckBox->setChecked(cnd->notify());
 		delete cnd;
 	}
-	layout->addWidget(notifyCheckBox, row++, 2, 1, 2);   
+	layout->addWidget(NotifyCheckBox, row++, 2, 1, 2);   
 
 	layout->setRowStretch(row, 100);                            
+}
+
+void ContactOptionsConfigurationWidget::saveConfiguration()
+{
+
+	CurrentContact.accountData(CurrentContact.prefferedAccount())->setBlocked(BlockCheckBox->isChecked());
+	CurrentContact.setOfflineTo(CurrentContact.prefferedAccount(), OfflineToCheckBox->isChecked());
+	ContactNotifyData *cnd = CurrentContact.moduleData<ContactNotifyData>();
+	if (cnd)
+	{
+		cnd->setNotify(NotifyCheckBox->isChecked());
+		cnd->storeConfiguration();
+		delete cnd;
+	}
 }

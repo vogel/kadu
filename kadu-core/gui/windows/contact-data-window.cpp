@@ -104,9 +104,9 @@ void ContactDataWindow::createPersonalInfoTab(QTabWidget *tabWidget)
 
 void ContactDataWindow::createOptionsTab(QTabWidget *tabWidget)
 {
-	ContactOptionsConfigurationWidget *optionsTab = new ContactOptionsConfigurationWidget(CurrentContact, this);
-	optionsTab->setSizePolicy(QSizePolicy(QSizePolicy::Minimum, QSizePolicy::Expanding));
-	tabWidget->addTab(optionsTab, tr("Options"));
+	OptionsTab = new ContactOptionsConfigurationWidget(CurrentContact, this);
+	OptionsTab->setSizePolicy(QSizePolicy(QSizePolicy::Minimum, QSizePolicy::Expanding));
+	tabWidget->addTab(OptionsTab, tr("Options"));
 }
 
 void ContactDataWindow::createButtons(QLayout *layout)
@@ -129,6 +129,7 @@ void ContactDataWindow::updateContact()
 	ContactManager::instance()->blockUpdatedSignal(CurrentContact);
 
 	ContactTab->saveConfiguration();
+	OptionsTab->saveConfiguration(); 
 
 	ContactManager::instance()->unblockUpdatedSignal(CurrentContact);
 }
