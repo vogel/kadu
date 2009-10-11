@@ -20,6 +20,143 @@ ActionsProxyModel::~ActionsProxyModel()
 {
 }
 
+void ActionsProxyModel::setSourceModel(QAbstractItemModel *newSourceModel)
+{
+	QAbstractItemModel *currentModel = sourceModel();
+
+	disconnect(currentModel, SIGNAL(dataChanged(const QModelIndex &, const QModelIndex &)),
+			this, SLOT(sourceDataChanged(const QModelIndex &, const QModelIndex &)));
+	disconnect(currentModel, SIGNAL(headerDataChanged(Qt::Orientation, int, int)),
+			this, SLOT(sourceHeaderDataChanged(Qt::Orientation, int, int)));
+	disconnect(currentModel, SIGNAL(rowsAboutToBeInserted(const QModelIndex &, int, int)),
+			this, SLOT(sourceRowsAboutToBeInserted(const QModelIndex &, int, int)));
+	disconnect(currentModel, SIGNAL(rowsInserted(const QModelIndex &, int, int)),
+			this, SLOT(sourceRowsInserted(const QModelIndex &, int, int)));
+	disconnect(currentModel, SIGNAL(columnsAboutToBeInserted(const QModelIndex &, int, int)),
+			this, SLOT(sourceColumnsAboutToBeInserted(const QModelIndex &, int, int)));
+	disconnect(currentModel, SIGNAL(columnsInserted(const QModelIndex &, int, int)),
+			this, SLOT(sourceColumnsInserted(const QModelIndex &, int, int)));
+	disconnect(currentModel, SIGNAL(rowsAboutToBeRemoved(const QModelIndex &, int, int)),
+			this, SLOT(sourceRowsAboutToBeRemoved(const QModelIndex &, int, int)));
+	disconnect(currentModel, SIGNAL(rowsRemoved(const QModelIndex &, int, int)),
+			this, SLOT(sourceRowsRemoved(const QModelIndex &, int, int)));
+	disconnect(currentModel, SIGNAL(columnsAboutToBeRemoved(const QModelIndex &, int, int)),
+			this, SLOT(sourceColumnsAboutToBeRemoved(const QModelIndex &, int, int)));
+	disconnect(currentModel, SIGNAL(columnsRemoved(const QModelIndex &, int, int)),
+			this, SLOT(sourceColumnsRemoved(const QModelIndex &, int, int)));
+	disconnect(currentModel, SIGNAL(layoutAboutToBeChanged()),
+			this, SLOT(sourceLayoutAboutToBeChanged()));
+	disconnect(currentModel, SIGNAL(layoutChanged()),
+			this, SLOT(sourceLayoutChanged()));
+	disconnect(currentModel, SIGNAL(modelAboutToBeReset()), this, SLOT(sourceAboutToBeReset()));
+	disconnect(currentModel, SIGNAL(modelReset()), this, SLOT(sourceReset()));
+
+	QAbstractProxyModel::setSourceModel(newSourceModel);
+
+	connect(newSourceModel, SIGNAL(dataChanged(const QModelIndex &, const QModelIndex &)),
+			this, SLOT(sourceDataChanged(const QModelIndex &, const QModelIndex &)));
+	connect(newSourceModel, SIGNAL(headerDataChanged(Qt::Orientation, int, int)),
+			this, SLOT(sourceHeaderDataChanged(Qt::Orientation, int, int)));
+	connect(newSourceModel, SIGNAL(rowsAboutToBeInserted(const QModelIndex &, int, int)),
+			this, SLOT(sourceRowsAboutToBeInserted(const QModelIndex &, int, int)));
+	connect(newSourceModel, SIGNAL(rowsInserted(const QModelIndex &, int, int)),
+			this, SLOT(sourceRowsInserted(const QModelIndex &, int, int)));
+	connect(newSourceModel, SIGNAL(columnsAboutToBeInserted(const QModelIndex &, int, int)),
+			this, SLOT(sourceColumnsAboutToBeInserted(const QModelIndex &, int, int)));
+	connect(newSourceModel, SIGNAL(columnsInserted(const QModelIndex &, int, int)),
+			this, SLOT(sourceColumnsInserted(const QModelIndex &, int, int)));
+	connect(newSourceModel, SIGNAL(rowsAboutToBeRemoved(const QModelIndex &, int, int)),
+			this, SLOT(sourceRowsAboutToBeRemoved(const QModelIndex &, int, int)));
+	connect(newSourceModel, SIGNAL(rowsRemoved(const QModelIndex &, int, int)),
+			this, SLOT(sourceRowsRemoved(const QModelIndex &, int, int)));
+	connect(newSourceModel, SIGNAL(columnsAboutToBeRemoved(const QModelIndex &, int, int)),
+			this, SLOT(sourceColumnsAboutToBeRemoved(const QModelIndex &, int, int)));
+	connect(newSourceModel, SIGNAL(columnsRemoved(const QModelIndex &, int, int)),
+			this, SLOT(sourceColumnsRemoved(const QModelIndex &, int, int)));
+	connect(newSourceModel, SIGNAL(layoutAboutToBeChanged()),
+			this, SLOT(sourceLayoutAboutToBeChanged()));
+	connect(newSourceModel, SIGNAL(layoutChanged()),
+			this, SLOT(sourceLayoutChanged()));
+}
+
+void ActionsProxyModel::sourceDataChanged(const QModelIndex &sourceTopLeft, const QModelIndex &sourceBottomRight)
+{
+	emit dataChanged(mapFromSource(sourceTopLeft), mapFromSource(sourceBottomRight));
+}
+
+void ActionsProxyModel::sourceHeaderDataChanged(Qt::Orientation orientation, int start, int end)
+{
+	emit headerDataChanged(orientation, start, end);
+}
+
+void ActionsProxyModel::sourceRowsAboutToBeInserted(const QModelIndex &sourceParent, int start, int end)
+{
+	if (!sourceParent.isValid())
+	{
+		start += BeforeActions.size();
+		end += BeforeActions.size();
+	}
+
+	beginInsertRows(mapFromSource(sourceParent), start, end);
+}
+
+void ActionsProxyModel::sourceRowsInserted(const QModelIndex &sourceParent, int start, int end)
+{
+	if (!sourceParent.isValid())
+	{
+		start += BeforeActions.size();
+		end += BeforeActions.size();
+	}
+
+	endInsertRows();
+}
+
+void ActionsProxyModel::sourceColumnsAboutToBeInserted(const QModelIndex &sourceParent, int start, int end)
+{
+	beginInsertColumns(mapFromSource(sourceParent), start, end);
+}
+
+void ActionsProxyModel::sourceColumnsInserted(const QModelIndex &sourceParent, int start, int end)
+{
+	endInsertColumns();
+}
+
+void ActionsProxyModel::sourceRowsAboutToBeRemoved(const QModelIndex &sourceParent, int start, int end)
+{
+	if (!sourceParent.isValid())
+	{
+		start += BeforeActions.size();
+		end += BeforeActions.size();
+	}
+	
+	beginRemoveRows(mapFromSource(sourceParent), start, end);
+}
+
+void ActionsProxyModel::sourceRowsRemoved(const QModelIndex &sourceParent, int start, int end)
+{
+	endRemoveRows();
+}
+
+void ActionsProxyModel::sourceColumnsAboutToBeRemoved(const QModelIndex &sourceParent, int start, int end)
+{
+	beginRemoveColumns(mapFromSource(sourceParent), start, end);
+}
+
+void ActionsProxyModel::sourceColumnsRemoved(const QModelIndex &sourceParent, int start, int end)
+{
+	endRemoveColumns();
+}
+
+void ActionsProxyModel::sourceLayoutAboutToBeChanged()
+{
+	emit layoutAboutToBeChanged();
+}
+
+void ActionsProxyModel::sourceLayoutChanged()
+{
+	emit layoutChanged();
+}
+
 int ActionsProxyModel::columnCount(const QModelIndex &parent) const
 {
 	return sourceModel()->columnCount(parent);

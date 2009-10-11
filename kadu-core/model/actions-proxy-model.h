@@ -24,9 +24,25 @@ private:
 	ModelActionList BeforeActions;
 	ModelActionList AfterActions;
 
+private slots:
+	void sourceDataChanged(const QModelIndex &, const QModelIndex &);
+	void sourceHeaderDataChanged(Qt::Orientation, int, int);
+	void sourceRowsAboutToBeInserted(const QModelIndex &, int, int);
+	void sourceRowsInserted(const QModelIndex &, int, int);
+	void sourceColumnsAboutToBeInserted(const QModelIndex &, int, int);
+	void sourceColumnsInserted(const QModelIndex &, int, int);
+	void sourceRowsAboutToBeRemoved(const QModelIndex &, int, int);
+	void sourceRowsRemoved(const QModelIndex &, int, int);
+	void sourceColumnsAboutToBeRemoved(const QModelIndex &, int, int);
+	void sourceColumnsRemoved(const QModelIndex &, int, int);
+	void sourceLayoutAboutToBeChanged();
+	void sourceLayoutChanged();
+
 public:
 	ActionsProxyModel(ModelActionList beforeActions, ModelActionList afterActions, QObject *parent);
 	virtual ~ActionsProxyModel();
+
+	virtual void setSourceModel(QAbstractItemModel *newSourceModel);
 
 	virtual int columnCount(const QModelIndex &parent = QModelIndex()) const;
 	virtual int rowCount(const QModelIndex &parent = QModelIndex()) const;
