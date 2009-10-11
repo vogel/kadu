@@ -9,6 +9,8 @@
 
 #include <QtGui/QFont>
 
+#include "model/roles.h"
+
 #include "actions-proxy-model.h"
 
 ActionsProxyModel::ActionsProxyModel(ModelActionList beforeActions, ModelActionList afterActions, QObject *parent) :
@@ -203,10 +205,15 @@ QVariant ActionsProxyModel::data(const QModelIndex &proxyIndex, int role) const
 			return action.first;
 
 		case Qt::FontRole:
+		{
 			QFont font;
 			if (!action.second.isEmpty())
 				font.setItalic(true);
 			return font;
+		}
+
+		case ActionRole:
+			return action.second;
 	}
 
 	return QVariant();

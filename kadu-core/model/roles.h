@@ -22,5 +22,6 @@ const int AvatarRole = KaduRoles + 6;
 const int ChatRole = KaduRoles + 7;
 const int ChatTypeRole = KaduRoles + 8;
 const int DateRole = KaduRoles + 9;
+const int ActionRole = KaduRoles + 10;
 
 #endif // ROLES_H
