@@ -15,6 +15,7 @@
 #include <QtGui/QLabel>
 #include <QtGui/QLineEdit>
 #include <QtGui/QPushButton>
+#include <QtGui/QSortFilterProxyModel>
 
 #include "accounts/account.h"
 #include "accounts/account-manager.h"
@@ -89,6 +90,12 @@ void AddBuddyWindow::createGui()
 	connect(GroupCombo, SIGNAL(activated(int)), this, SLOT(groupChanged(int)));
 	GroupsModel *groupComboModel = new GroupsModel(GroupCombo);
 
+	QSortFilterProxyModel *sortModel = new QSortFilterProxyModel(GroupCombo);
+	sortModel->setSourceModel(groupComboModel);
+	sortModel->setDynamicSortFilter(true);
+	sortModel->sort(1);
+	sortModel->sort(0);
+
 	ActionsProxyModel::ModelActionList groupsModelBeforeActions;
 	groupsModelBeforeActions.append(qMakePair<QString, QString>(tr(" - Select group - "), ""));
 	ActionsProxyModel::ModelActionList groupsModelAfterActions;
@@ -96,7 +103,7 @@ void AddBuddyWindow::createGui()
 
 	ActionsProxyModel *groupsProxyModel = new ActionsProxyModel(groupsModelBeforeActions,
 			groupsModelAfterActions, GroupCombo);
-	groupsProxyModel->setSourceModel(groupComboModel);
+	groupsProxyModel->setSourceModel(sortModel);
 
 	GroupCombo->setModel(groupsProxyModel);
 	layout->addWidget(GroupCombo, 1, 1, 1, 3);
@@ -224,10 +231,14 @@ void AddBuddyWindow::groupChanged(int index)
 			tr("Please enter the name for the new group:"), QLineEdit::Normal,
 			QString::null, &ok);
 
-	if (ok && !newGroupName.isEmpty() && GroupManager::instance()->acceptableGroupName(newGroupName))
-		GroupManager::instance()->byName(newGroupName);
-	else
+	if (!ok || newGroupName.isEmpty() || !GroupManager::instance()->acceptableGroupName(newGroupName))
+	{
 		GroupCombo->setCurrentIndex(0);
+		return;
+	}
+
+	GroupManager::instance()->byName(newGroupName);
+	GroupCombo->setCurrentIndex(GroupCombo->findText(newGroupName));
 }
 
 void AddBuddyWindow::accept()
