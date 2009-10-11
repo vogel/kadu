@@ -19,6 +19,7 @@ class TlenProtocolFactory : public ProtocolFactory
 
 	static TlenProtocolFactory *Instance;
 	QList<StatusType *> SupportedStatusTypes;
+	QRegExp IdRegularExpression;
 
 	TlenProtocolFactory();
 
@@ -32,8 +33,9 @@ public:
 	virtual AccountCreateWidget * newCreateAccountWidget(QWidget *parent);
 	virtual AccountEditWidget* newEditAccountWidget(Account*, QWidget*);
 	virtual ContactAccountDataWidget * newContactAccountDataWidget(ContactAccountData *contactAccountData, QWidget *parent = 0);
-	//virtual ProtocolMenuManager * getProtocolMenuManager() { return 0; }
 	virtual QList<StatusType *> supportedStatusTypes();
+	virtual QString idLabel();
+	virtual QRegExp idRegularExpression();
 
 	virtual QString name() { return "tlen"; }
 	virtual QString displayName() { return "Tlen"; }

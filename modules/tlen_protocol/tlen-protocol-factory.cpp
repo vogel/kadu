@@ -41,6 +41,8 @@ TlenProtocolFactory::TlenProtocolFactory()
 	SupportedStatusTypes.append(statusTypeManager->statusType("Offline"));
 
 	qSort(SupportedStatusTypes.begin(), SupportedStatusTypes.end(), StatusType::lessThan);
+//TODO 0.6.6:
+	IdRegularExpression.setPattern("[a-zA-Z0-9\\._-]+@[a-zA-Z0-9\\._-]+");
 }
 
 Account * TlenProtocolFactory::newAccount()
@@ -85,6 +87,16 @@ AccountEditWidget * TlenProtocolFactory::newEditAccountWidget(Account *account, 
 QList<StatusType *> TlenProtocolFactory::supportedStatusTypes()
 {
 	return SupportedStatusTypes;
+}
+
+QString TlenProtocolFactory::idLabel()
+{
+	return tr("Tlen ID:");
+}
+
+QRegExp TlenProtocolFactory::idRegularExpression()
+{
+	return IdRegularExpression;
 }
 
 ContactAccountDataWidget * TlenProtocolFactory::newContactAccountDataWidget(ContactAccountData *contactAccountData, QWidget *parent)
