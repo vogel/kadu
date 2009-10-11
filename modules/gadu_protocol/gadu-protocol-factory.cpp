@@ -89,6 +89,11 @@ QList<StatusType *> GaduProtocolFactory::supportedStatusTypes()
 	return SupportedStatusTypes;
 }
 
+QString GaduProtocolFactory::idLabel()
+{
+	return tr("Gadu Gadu number:");
+}
+
 QRegExp GaduProtocolFactory::idRegularExpression()
 {
 	return IdRegularExpression;

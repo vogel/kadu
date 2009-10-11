@@ -55,7 +55,8 @@ void AddBuddyWindow::createGui()
 
 	QGridLayout *layout = new QGridLayout(this);
 
-	layout->addWidget(new QLabel(tr("Username:"), this), 0, 0, Qt::AlignRight);
+	UserNameLabel = new QLabel(tr("Username:"), this);
+	layout->addWidget(UserNameLabel, 0, 0, Qt::AlignRight);
 	UserNameEdit = new QLineEdit(this);
 	connect(UserNameEdit, SIGNAL(textChanged(const QString &)), this, SLOT(setAddContactEnabled()));
 	connect(UserNameEdit, SIGNAL(textChanged(const QString &)), this, SLOT(setAccountFilter()));
@@ -66,6 +67,7 @@ void AddBuddyWindow::createGui()
 	layout->addWidget(new QLabel(tr("in"), this), 0, 2);
 
 	AccountCombo = new QComboBox(this);
+	connect(AccountCombo, SIGNAL(activated(int)), this, SLOT(setUsernameLabel()));
 	connect(AccountCombo, SIGNAL(activated(int)), this, SLOT(setAddContactEnabled()));
 	connect(AccountCombo, SIGNAL(activated(int)), this, SLOT(setValidateRegularExpression()));
 
@@ -165,6 +167,15 @@ void AddBuddyWindow::setContact(Contact contact)
 	}
 
 	DisplayNameEdit->setText(contact.display());
+}
+
+void AddBuddyWindow::setUsernameLabel()
+{
+	Account *account = selectedAccount();
+	if (!account)
+		UserNameLabel->setText(tr("Username:"));
+	else
+		UserNameLabel->setText(account->protocol()->protocolFactory()->idLabel());
 }
 
 void AddBuddyWindow::setAddContactEnabled()

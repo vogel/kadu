@@ -33,6 +33,7 @@ public:
 	virtual AccountEditWidget* newEditAccountWidget(Account*, QWidget*);
 	virtual ContactAccountDataWidget * newContactAccountDataWidget(ContactAccountData *contactAccountData, QWidget *parent = 0);
 	virtual QList<StatusType *> supportedStatusTypes();
+	virtual QString idLabel();
 	virtual QRegExp idRegularExpression();
 
 	virtual QString name() { return "jabber"; }

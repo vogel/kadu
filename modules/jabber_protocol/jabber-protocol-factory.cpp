@@ -94,6 +94,11 @@ QList<StatusType *> JabberProtocolFactory::supportedStatusTypes()
 	return SupportedStatusTypes;
 }
 
+QString JabberProtocolFactory::idLabel()
+{
+	return tr("Jabber ID:");
+}
+
 QRegExp JabberProtocolFactory::idRegularExpression()
 {
 	return IdRegularExpression;
