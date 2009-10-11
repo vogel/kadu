@@ -30,6 +30,7 @@ class MEDIAPLAYERAPI MediaPlayer : public ConfigurationUiHandler, ConfigurationA
 
 	ActionDescription *enableMediaPlayerStatuses;
 	ActionDescription *mediaPlayerMenu;
+	ActionDescription *playAction, *stopAction, *prevAction, *nextAction, *volUpAction, *volDownAction;
 	QAction *mediaplayerStatus;
 
 	QTimer *timer;
@@ -39,6 +40,7 @@ class MEDIAPLAYERAPI MediaPlayer : public ConfigurationUiHandler, ConfigurationA
 	bool winKeyPressed; // TODO: this is lame, make it good ;)
 	QMap<ChatWidget *, QPushButton *> chatButtons;
 
+	bool isPaused;
 	int pos();
 
 	/**
@@ -72,6 +74,7 @@ private slots:
 	void setVolume(int vol);
 	void incrVolume();
 	void decrVolume();
+	void playPause();
 	QString getPlayerName();
 	QString getPlayerVersion();
 	QString getTitle(int position = -1);

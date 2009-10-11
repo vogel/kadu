@@ -130,9 +130,47 @@ MediaPlayer::MediaPlayer(bool firstLoad)
 		this, SLOT(mediaPlayerMenuActivated(QAction *, bool)),
 		"MediaPlayerButton", tr("MediaPlayer"), false, ""
 	);
+	playAction = new ActionDescription(
+		ActionDescription::TypeChat, "mediaplayer_play",
+		this, SLOT(playPause()),
+		"MediaPlayerPlay", tr("Play"), false, ""
+	);
+	stopAction = new ActionDescription(
+		ActionDescription::TypeChat, "mediaplayer_stop",
+		this, SLOT(stop()),
+		"MediaPlayerStop", tr("Stop"), false, ""
+	);
+	prevAction = new ActionDescription(
+		ActionDescription::TypeChat, "mediaplayer_prev",
+		this, SLOT(prevTrack()),
+		"MediaPlayerPrev", tr("Previous Track"), false, ""
+	);
+	nextAction = new ActionDescription(
+		ActionDescription::TypeChat, "mediaplayer_next",
+		this, SLOT(nextTrack()),
+		"MediaPlayerNext", tr("Next Track"), false, ""
+	);
+	volUpAction = new ActionDescription(
+		ActionDescription::TypeChat, "mediaplayer_vol_up",
+		this, SLOT(incrVolume()),
+		"MediaPlayerVolUp", tr("Volume Up"), false, ""
+	);
+	volDownAction = new ActionDescription(
+		ActionDescription::TypeChat, "mediaplayer_vol_down",
+		this, SLOT(decrVolume()),
+		"MediaPlayerVolDown", tr("Volume Down"), false, ""
+	);
 
 	if (firstLoad)
+	{
 		ChatEditBox::addAction("mediaplayer_button");
+		ChatEditBox::addAction("mediaplayer_prev");
+		ChatEditBox::addAction("mediaplayer_play");
+		ChatEditBox::addAction("mediaplayer_stop");
+		ChatEditBox::addAction("mediaplayer_next");
+		ChatEditBox::addAction("mediaplayer_vol_up");
+		ChatEditBox::addAction("mediaplayer_vol_down");
+	}
 
 	// MediaPlayer statuses menu item
 	bool menuPos = config_file.readBoolEntry("MediaPlayer", "dockMenu", false);
@@ -160,6 +198,7 @@ MediaPlayer::MediaPlayer(bool firstLoad)
 	mediaPlayerStatusChanger->changePositionInStatus((MediaPlayerStatusChanger::ChangeDescriptionTo)config_file.readNumEntry("MediaPlayer", "statusPosition"));
 
 	setControlsEnabled(false);
+	isPaused = true;
 }
 
 MediaPlayer::~MediaPlayer()
@@ -755,22 +794,55 @@ void MediaPlayer::prevTrack()
 		playerCommands->prevTrack();
 }
 
+void MediaPlayer::playPause()
+{
+	if (!playerCommandsSupported())
+		return;
+
+	if (isPaused)
+	{
+		play();
+		isPaused = false;
+		foreach(KaduAction *action, playAction->actions())
+			action->setIcon(icons_manager->loadIcon("MediaPlayerPause"));
+	}
+	else
+	{
+		pause();
+		isPaused = true;
+		foreach(KaduAction *action, playAction->actions())
+			action->setIcon(icons_manager->loadIcon("MediaPlayerPlay"));
+	}
+}
+
 void MediaPlayer::play()
 {
 	if (playerCommandsSupported())
 		playerCommands->play();
+
+	isPaused = false;
+	foreach(KaduAction *action, playAction->actions())
+			action->setIcon(icons_manager->loadIcon("MediaPlayerPause"));
 }
 
 void MediaPlayer::stop()
 {
 	if (playerCommandsSupported())
 		playerCommands->stop();
+
+	isPaused = true;
+	foreach(KaduAction *action, playAction->actions())
+			action->setIcon(icons_manager->loadIcon("MediaPlayerPlay"));
 }
 
 void MediaPlayer::pause()
 {
 	if (playerCommandsSupported())
 		playerCommands->pause();
+
+	isPaused = true;
+	foreach(KaduAction *action, playAction->actions())
+			action->setIcon(icons_manager->loadIcon("MediaPlayerPlay"));
 }
 
 void MediaPlayer::setVolume(int vol)
