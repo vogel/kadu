@@ -11,6 +11,7 @@
 #include <QtGui/QComboBox>
 #include <QtGui/QDialogButtonBox>
 #include <QtGui/QGridLayout>
+#include <QtGui/QInputDialog>
 #include <QtGui/QLabel>
 #include <QtGui/QLineEdit>
 #include <QtGui/QPushButton>
@@ -22,6 +23,7 @@
 #include "accounts/model/accounts-proxy-model.h"
 #include "contacts/contact.h"
 #include "contacts/contact-manager.h"
+#include "contacts/group-manager.h"
 #include "contacts/model/groups-model.h"
 #include "misc/misc.h"
 #include "model/actions-proxy-model.h"
@@ -84,6 +86,7 @@ void AddBuddyWindow::createGui()
 
 	layout->addWidget(new QLabel(tr("Add in group:"), this), 1, 0, Qt::AlignRight);
 	GroupCombo = new QComboBox(this);
+	connect(GroupCombo, SIGNAL(activated(int)), this, SLOT(groupChanged(int)));
 	GroupsModel *groupComboModel = new GroupsModel(GroupCombo);
 
 	ActionsProxyModel::ModelActionList groupsModelBeforeActions;
@@ -206,6 +209,25 @@ void AddBuddyWindow::setValidateRegularExpression()
 void AddBuddyWindow::setAccountFilter()
 {
 	AccountComboFilter->setId(UserNameEdit->text());
+}
+
+void AddBuddyWindow::groupChanged(int index)
+{
+	QModelIndex modelIndex = GroupCombo->model()->index(index, 0, QModelIndex());
+	QString action = modelIndex.data(ActionRole).toString();
+
+	if (action.isEmpty())
+		return;
+	bool ok;
+
+	QString newGroupName = QInputDialog::getText(this, tr("New Group"),
+			tr("Please enter the name for the new group:"), QLineEdit::Normal,
+			QString::null, &ok);
+
+	if (ok && !newGroupName.isEmpty() && GroupManager::instance()->acceptableGroupName(newGroupName))
+		GroupManager::instance()->byName(newGroupName);
+	else
+		GroupCombo->setCurrentIndex(0);
 }
 
 void AddBuddyWindow::accept()

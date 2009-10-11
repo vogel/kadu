@@ -48,6 +48,7 @@ private slots:
 	void setAddContactEnabled();
 	void setValidateRegularExpression();
 	void setAccountFilter();
+	void groupChanged(int index);
 
 protected slots:
 	virtual void accept();
