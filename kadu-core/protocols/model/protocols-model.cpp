@@ -9,7 +9,7 @@
 
 #include "accounts/account.h"
 #include "accounts/account-manager.h"
-#include "contacts/model/contacts-model-base.h"
+#include "model/roles.h"
 #include "protocols/protocol-factory.h"
 #include "protocols/protocols-manager.h"
 #include "icons-manager.h"

@@ -19,10 +19,10 @@
 
 #include "accounts/account-manager.h"
 #include "accounts/model/accounts-model.h"
-#include "contacts/model/contacts-model-base.h"
 #include "gui/widgets/account-create-widget.h"
 #include "gui/widgets/account-edit-widget.h"
 #include "misc/misc.h"
+#include "model/roles.h"
 #include "protocols/model/protocols-model.h"
 #include "protocols/protocol-factory.h"
 #include "protocols/protocols-manager.h"

@@ -22,10 +22,10 @@
 #include "accounts/model/accounts-proxy-model.h"
 #include "contacts/contact.h"
 #include "contacts/contact-manager.h"
-#include "contacts/model/contacts-model-base.h"
 #include "contacts/model/groups-model.h"
 #include "misc/misc.h"
 #include "model/actions-proxy-model.h"
+#include "model/roles.h"
 #include "protocols/protocol.h"
 #include "protocols/protocol-factory.h"
 

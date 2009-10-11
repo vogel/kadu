@@ -9,7 +9,7 @@
 
 #include "accounts/account.h"
 #include "accounts/filter/abstract-account-filter.h"
-#include "contacts/model/contacts-model-base.h"
+#include "model/roles.h"
 
 #include "accounts-proxy-model.h"
 

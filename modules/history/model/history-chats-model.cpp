@@ -9,7 +9,7 @@
 
 #include "chat/chat.h"
 #include "chat/type/chat-type-manager.h"
-#include "contacts/model/contacts-model-base.h"
+#include "model/roles.h"
 
 #include "history-chats-model.h"
 

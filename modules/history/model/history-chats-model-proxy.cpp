@@ -10,7 +10,7 @@
 #include "chat/filter/chat-filter.h"
 #include "chat/type/chat-type.h"
 #include "chat/chat.h"
-#include "contacts/model/contacts-model-base.h"
+#include "model/roles.h"
 #include "modules/history/model/history-chats-model.h"
 
 #include "history-chats-model-proxy.h"

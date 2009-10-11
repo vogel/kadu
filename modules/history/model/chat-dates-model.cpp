@@ -12,7 +12,7 @@
 #include "chat/chat.h"
 #include "chat/message/formatted-message.h"
 #include "chat/message/message.h"
-#include "contacts/model/contacts-model-base.h"
+#include "model/roles.h"
 
 #include "history.h"
 

@@ -15,6 +15,7 @@
 #include "contacts/contact-account-data.h"
 #include "contacts/contact-list-mime-data-helper.h"
 #include "contacts/contact-manager.h"
+#include "model/roles.h"
 #include "protocols/protocol.h"
 
 #include "contacts-model-base.h"
