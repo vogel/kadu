@@ -7,16 +7,10 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <QtGui/QDialogButtonBox>
-#include <QtGui/QHBoxLayout>
-#include <QtGui/QLabel>
-#include <QtGui/QPushButton>
-#include <QtGui/QVBoxLayout>
-
 #include <QtGui/QCheckBox>
+#include <QtGui/QGridLayout>
 #include <QtGui/QGroupBox>
-#include <QtGui/QLineEdit>
-#include <QtGui/QScrollArea>
+#include <QtGui/QLabel>
 
 #include "configuration/contact-account-data-manager.h"
 #include "contacts/contact-account-data.h"
@@ -74,8 +68,23 @@ void ContactGroupsConfigurationWidget::createGui()
 	foreach (Group *group, GroupManager::instance()->groups())
 	{
 		QCheckBox *groupCheckBox = new QCheckBox(group->name(), this);
+		groupCheckBox->setChecked(CurrentContact.isInGroup(group));
 		layout->addWidget(groupCheckBox, row++, 2, 1, 2);
+		GroupCheckBoxList.append(groupCheckBox);
 	}
 
 	layout->setRowStretch(row, 100);
+}
+
+void ContactGroupsConfigurationWidget::saveConfiguration()
+{
+	foreach (Group *group, CurrentContact.groups())
+	{
+		CurrentContact.removeFromGroup(group);
+	}
+	foreach (QCheckBox *groupBox, GroupCheckBoxList)
+	{
+		if (groupBox->isChecked())
+			CurrentContact.addToGroup(GroupManager::instance()->byName(groupBox->text()));
+	}
 }

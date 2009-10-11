@@ -41,6 +41,8 @@ class KADUAPI ContactDataWindow : public QWidget
 
 	Contact CurrentContact;
 	ContactGeneralConfigurationWidget *ContactTab;
+	ContactGroupsConfigurationWidget *GroupsTab;
+	ContactPersonalInfoConfigurationWidget *PersonalInfoTab;
 	ContactOptionsConfigurationWidget *OptionsTab; 
 
 	void createGui();

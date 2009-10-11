@@ -90,16 +90,16 @@ void ContactDataWindow::createGeneralTab(QTabWidget *tabWidget)
 
 void ContactDataWindow::createGroupsTab(QTabWidget *tabWidget)
 {
-	ContactGroupsConfigurationWidget *groupsTab = new ContactGroupsConfigurationWidget(CurrentContact, this);
-	groupsTab->setSizePolicy(QSizePolicy(QSizePolicy::Minimum, QSizePolicy::Expanding));
-	tabWidget->addTab(groupsTab, tr("Groups"));
+	GroupsTab = new ContactGroupsConfigurationWidget(CurrentContact, this);
+	GroupsTab->setSizePolicy(QSizePolicy(QSizePolicy::Minimum, QSizePolicy::Expanding));
+	tabWidget->addTab(GroupsTab, tr("Groups"));
 }
 
 void ContactDataWindow::createPersonalInfoTab(QTabWidget *tabWidget)
 {
-	ContactPersonalInfoConfigurationWidget *personalInfoTab = new ContactPersonalInfoConfigurationWidget(CurrentContact, this);
-	personalInfoTab->setSizePolicy(QSizePolicy(QSizePolicy::Minimum, QSizePolicy::Expanding));
-	tabWidget->addTab(personalInfoTab, tr("Personal Information"));
+	PersonalInfoTab = new ContactPersonalInfoConfigurationWidget(CurrentContact, this);
+	PersonalInfoTab->setSizePolicy(QSizePolicy(QSizePolicy::Minimum, QSizePolicy::Expanding));
+	tabWidget->addTab(PersonalInfoTab, tr("Personal Information"));
 }
 
 void ContactDataWindow::createOptionsTab(QTabWidget *tabWidget)
@@ -129,6 +129,8 @@ void ContactDataWindow::updateContact()
 	ContactManager::instance()->blockUpdatedSignal(CurrentContact);
 
 	ContactTab->saveConfiguration();
+	GroupsTab->saveConfiguration(); 
+
 	OptionsTab->saveConfiguration(); 
 
 	ContactManager::instance()->unblockUpdatedSignal(CurrentContact);

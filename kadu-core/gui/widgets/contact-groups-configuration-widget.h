@@ -10,28 +10,25 @@
 #ifndef CONTACT_GROUPS_CONFIGURATION_WIDGET
 #define CONTACT_GROUPS_CONFIGURATION_WIDGET
 
-#include <QtGui/QDialog>
-#include <QtGui/QLineEdit>
+#include <QtGui/QCheckBox>
 #include <QtGui/QScrollArea>
 
 #include "contacts/contact.h"
-#include "gui/widgets/configuration/configuration-widget.h"
 
 #include "exports.h"
-
-class ContactAccountData;
-class ContactAccountDataManager;
 
 class KADUAPI ContactGroupsConfigurationWidget : public QScrollArea
 {
 	Q_OBJECT
   
 	Contact CurrentContact;
+	QList<QCheckBox *> GroupCheckBoxList;
 	void createGui();
 
 public:
 	ContactGroupsConfigurationWidget(Contact &contact, QWidget *parent = 0);
 	~ContactGroupsConfigurationWidget();
+	void saveConfiguration();
 
 };
 
