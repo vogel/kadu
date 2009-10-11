@@ -2369,7 +2369,7 @@ fi
 
 # Define the identity of the package.
  PACKAGE=libgadu
- VERSION=1.9.0-pre
+ VERSION=1.9.0-rc1
 
 
 cat >>confdefs.h <<_ACEOF
@@ -13377,7 +13377,7 @@ fi
 $as_echo "$ac_cv_lib_c___connect" >&6; }
 if test "x$ac_cv_lib_c___connect" = x""yes; then
 
-	OPTIONAL_TESTS="connect resolver"
+	OPTIONAL_TESTS="dcc7 connect resolver"
 
 else
 

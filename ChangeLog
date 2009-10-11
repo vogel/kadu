@@ -2,7 +2,7 @@ Teksty w nawiasach na koñcu wpisu mówi± o tym, kto dokona³ poprawki lub rozbudow
 Postaæ (x/y) oznacza, ¿e x jest pomys³odawc± lub podes³a³ patcha, a zrobi³ to kto¶ oznaczony przez y.
 Je¶li jest w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 
-+++ wersja 0.6.0.4-rc1 (XX.06.2009)
++++ wersja 0.6.0.4-rc2 (XX.10.2009)
 * poprawiona wspó³praca z bramk± Orange (dorr,neeo)
 * poprawka b³êdów po³±czenia z komunikatami o niepoprawnym ha¶le (Vogel/neeo)
 * aktualizacja libgadu - poprawki kompilacji, zmiany w resolverze (neeo)
@@ -14,6 +14,7 @@ Je¶li jest w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * poprawka walidacji numerów GG - obs³uga GaduAIR (neeo)
 * poprawiona wspó³praca z bramk± Ery (neeo)
 * aktualizacja libgadu - potwierdzenie roz³±czenia (neeo)
+* aktualizacja libgadu - spore zmiany, pe³niejsza obs³uga gg 8.0 (neeo)
 
 +++ wersja 0.6.0.3 (01.01.2009)
 * aktualizacja libgadu - drobne poprawki, dodana obs³uga gg 8.0 (neeo)

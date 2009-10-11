@@ -1,7 +1,7 @@
-dnl $Id: configure.ac 646 2008-12-07 11:13:34Z wojtekka $
+dnl $Id: configure.ac 785 2009-09-03 19:58:22Z wojtekka $
 
 AC_INIT(src/libgadu.c)
-AM_INIT_AUTOMAKE(libgadu, 1.9.0-pre)
+AM_INIT_AUTOMAKE(libgadu, 1.9.0-rc1)
 
 AC_PREREQ(2.50)
 AC_CANONICAL_HOST
@@ -199,7 +199,7 @@ dnl
 
 AC_SUBST([OPTIONAL_TESTS])
 AC_CHECK_LIB(c, __connect, [
-	OPTIONAL_TESTS="connect resolver"
+	OPTIONAL_TESTS="dcc7 connect resolver"
 ],
 [
 	OPTIONAL_TESTS=""

@@ -1,5 +1,5 @@
 #!/bin/sh
-# $Id: autoclean.sh,v 1.4 2006-08-18 21:00:53 wojtekka Exp $
+# $Id: autoclean.sh 447 2006-08-18 21:00:58Z wojtekka $
 
 rm -rf \
 	aclocal.m4 \
