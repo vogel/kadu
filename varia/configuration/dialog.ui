@@ -34,6 +34,7 @@
 					<item value="Galeon" caption="Galeon" />
 					<item value="Safari" caption="Safari" />
 					<item value="Camino" caption="Camino" />
+					<item value="Internet Explorer" caption="Internet Explorer" />
 				</combo-box>
 				<line-edit caption="Custom browser" config-section="Chat" config-item="WebBrowser" id="browserPath"
 					   tool-tip="Write specific path to your browser" />
@@ -48,6 +49,7 @@
 					<item value="SeaMonkey" caption="SeaMonkey" />
 					<item value="Evolution" caption="Evolution" />
 					<item value="Mail" caption="Mail" />
+					<item value="Outlook Express" caption="Outlook Express" />
                 </combo-box>
 				<line-edit caption="Custom e-mail client" config-section="Chat" config-item="MailClient" id="mailPath" 
 					   tool-tip="Write specific path to your email client" />

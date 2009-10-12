@@ -465,6 +465,7 @@ void Wizard::createApplicationsPage()
 	browserCombo->insertItem(tr("Galeon"));
 	browserCombo->insertItem(tr("Safari"));
 	browserCombo->insertItem(tr("Camino"));
+	browserCombo->insertItem(tr("Internet Explorer"));
 	connect(browserCombo, SIGNAL(activated(int)), this, SLOT(browserChanged(int)));
 	gridLayout->addWidget(browserCombo, 0, 3);
 
@@ -480,6 +481,7 @@ void Wizard::createApplicationsPage()
 	mailCombo->insertItem(tr("SeaMonkey"));
 	mailCombo->insertItem(tr("Evolution"));
 	mailCombo->insertItem("Mail");
+	mailCombo->insertItem("Outlook Express");
 	connect(mailCombo, SIGNAL(activated(int)), this, SLOT(emailChanged(int)));
 	gridLayout->addWidget(mailCombo, 2, 3);
 

@@ -319,13 +319,19 @@ void MainConfigurationWindow::setToolTipClasses()
 QString MainConfigurationWindow::findExecutable(const QStringList &paths, const QStringList &executableNames)
 {
 	QFileInfo fi;
+	QString exec;
 
 	foreach(const QString &path, paths)
 		foreach(const QString &executableName, executableNames)
 		{
-			fi.setFile(path + "/" + executableName);
+#ifdef Q_OS_WIN
+			exec = path + "\\" + executableName;
+#else
+			exec = path + "/" + executableName;
+#endif
+			fi.setFile(exec);
 			if (fi.isExecutable())
-				return path + "/" + executableName;
+				return exec;
 		}
 
 	return QString::null;
@@ -354,11 +360,7 @@ QString MainConfigurationWindow::getBrowserExecutable(int browserIndex)
 			searchPath.append("/opt/kde/bin");
 			searchPath.append("/opt/kde3/bin");
 			executableName.append("kfmclient");
-
 			parameters = "openURL";
-
-// 			options << tr("Open in new window") << tr("Open in new tab");
-// 			browserOptionsCombo->setEnabled(true);
 			break;
 		}
 		case 2: // opera
@@ -368,6 +370,10 @@ QString MainConfigurationWindow::getBrowserExecutable(int browserIndex)
 			searchPath.append("/Applications");
 			executableName.append("Opera.app");
 			prefix = "open -a ";
+#elif defined (Q_OS_WIN)
+			QString programsPath = getenv("ProgramFiles");
+			searchPath.append(programsPath + "\\Opera");
+			executableName.append("opera.exe");
 #else
 			searchPath.append("/opt/opera");
 			executableName.append("opera");
@@ -375,8 +381,6 @@ QString MainConfigurationWindow::getBrowserExecutable(int browserIndex)
 			// Dorr: on Mac always opens on new tab
 			if (browserIndex == 3)
 				parameters = "-newpage";
-
-// 			options << tr("Open in new window") << tr("Open in new tab") << tr("Open in background tab");
 #endif
 			break;
 		}
@@ -386,6 +390,10 @@ QString MainConfigurationWindow::getBrowserExecutable(int browserIndex)
 			searchPath.append("/Applications");
 			executableName.append("Mozilla.app");
 			prefix = "open -a ";
+#elif defined (Q_OS_WIN)
+			QString programsPath = getenv("ProgramFiles");
+			searchPath.append(programsPath + "\\Mozilla");
+			executableName.append("mozilla.exe");
 #else
 			QString homePath = getenv("HOME");
 			QStringList dirList = QDir("/usr/lib").entryList("mozilla*", QDir::All, QDir::Name | QDir::Reversed);
@@ -397,12 +405,6 @@ QString MainConfigurationWindow::getBrowserExecutable(int browserIndex)
 			searchPath.append(homePath + "/Mozilla");
 			searchPath.append(homePath + "/mozilla");
 			executableName.append("mozilla");
-// it is for old mozillas, unsupported
-// 			executableName.append("mozilla-xremote-client");
-
-//			parameters = "";
-
-// 			options << tr("Open in new window") << tr("Open in new tab");
 #endif
 			break;
 		}
@@ -412,6 +414,10 @@ QString MainConfigurationWindow::getBrowserExecutable(int browserIndex)
 			searchPath.append("/Applications");
 			executableName.append("SeaMonkey.app");
 			prefix = "open -a ";
+#elif defined (Q_OS_WIN)
+			QString programsPath = getenv("ProgramFiles");
+			searchPath.append(programsPath + "\\SeaMonkey");
+			executableName.append("SeaMonkey.exe");
 #else
 			QString homePath = getenv("HOME");
 			QStringList dirList = QDir("/usr/lib").entryList("seamonkey*", QDir::All, QDir::Name | QDir::Reversed);
@@ -423,8 +429,6 @@ QString MainConfigurationWindow::getBrowserExecutable(int browserIndex)
 			searchPath.append(homePath + "/Seamonkey");
 			searchPath.append(homePath + "/seamonkey");
 			executableName.append("seamonkey");
-
-			// options << tr("Open in new window") << tr("Open in new tab");
 #endif
 			break;
 		}
@@ -434,6 +438,11 @@ QString MainConfigurationWindow::getBrowserExecutable(int browserIndex)
 			searchPath.append("/Applications");
 			executableName.append("Firefox.app");
 			prefix = "open -a ";
+#elif defined (Q_OS_WIN)
+			QString programsPath = getenv("ProgramFiles");
+			searchPath.append(programsPath + "\\Mozilla Firefox");
+			searchPath.append(programsPath + "\\Firefox");
+			executableName.append("firefox.exe");
 #else
 			QString homePath = getenv("HOME");
 
@@ -452,17 +461,10 @@ QString MainConfigurationWindow::getBrowserExecutable(int browserIndex)
 			searchPath.append(homePath + "/firefox");
 			executableName.append("firefox");
 
-//			parameters = "";
-//	do we need it anyway ??
-// 			executableName.append("mozilla-xremote-client");
-// 			executableName.append("mozilla-firefox-xremote-client");
-// 			executableName.append("firefox-xremote-client");
-
 			dirList = QDir("/usr/lib").entryList("mozilla*", QDir::All, QDir::Name | QDir::Reversed);
 			foreach(const QString &dir, dirList)
 				searchPath.append("/usr/lib/" + dir);
 #endif
-// 			options << tr("Open in new window") << tr("Open in new tab");
 			break;
 		}
 		case 7: // dillo
@@ -489,16 +491,26 @@ QString MainConfigurationWindow::getBrowserExecutable(int browserIndex)
 			prefix = "open -a ";
 			break;
 		}
+		case 11: // Internet Explorer
+		{
+#ifdef Q_OS_WIN
+			QString programsPath = getenv("ProgramFiles");
+			searchPath.append(programsPath + "\\Internet Explorer");
+			executableName.append("iexplore.exe");
+#endif
+			break;
+		}
 	}
-
-// 	browserOptionComboBox->clear();
-// 	browserOptionComboBox->setItems(options, options);
 
 	if (browserIndex != 0)
 	{
 		QString executable = findExecutable(searchPath, executableName);
 		if (!executable.isNull())
+#ifdef Q_OS_WIN
+			return prefix + "\"" + executable + "\" " + parameters;
+#else
 			return prefix + executable + " " + parameters;
+#endif
 		else
 			return QString::null;
 	}
@@ -539,6 +551,11 @@ QString MainConfigurationWindow::getEMailExecutable(int emailIndex)
 		}
 		case 2: // thunderbird
 		{
+#ifdef Q_OS_WIN
+			QString programsPath = getenv("ProgramFiles");
+			searchPath.append(programsPath + "\\Mozilla Thunderbird");
+			executableName.append("thunderbird.exe");
+#else
 			searchPath.append("/usr/local/Mozilla");
 			searchPath.append("/usr/local/mozilla");
 			searchPath.append("/usr/local/Thunderbird");
@@ -546,17 +563,24 @@ QString MainConfigurationWindow::getEMailExecutable(int emailIndex)
 			searchPath.append("/opt/thunderbird");
 			executableName.append("thunderbird");
 			executableName.append("mozilla-thunderbird");
+#endif
 			parameters = "-compose mailto:";
 			break;
 		}
 		case 3: // seamonkey
 		{
+#ifdef Q_OS_WIN
+			QString programsPath = getenv("ProgramFiles");
+			searchPath.append(programsPath + "\\SeaMonkey");
+			executableName.append("SeaMonkey.exe");
+#else
 			searchPath.append("/usr/local/Mozilla");
 			searchPath.append("/usr/local/mozilla");
 			searchPath.append("/usr/local/Seamonkey");
 			searchPath.append("/usr/local/seamonkey");
 			searchPath.append("/opt/seamonkey");
 			executableName.append("seamonkey");
+#endif
 			parameters = "-compose mailto:";
 			break;
 		}
@@ -575,6 +599,17 @@ QString MainConfigurationWindow::getEMailExecutable(int emailIndex)
 			executableName.append("Mail.app");
 			parameters = "mailto:";
 			prefix = "open -a ";
+			break;
+		}
+		case 6: //Outlook Express
+		{
+#ifdef Q_OS_WIN
+			QString programsPath = getenv("ProgramFiles");
+			searchPath.append(programsPath + "\\Outlook Express");
+			executableName.append("msimn.exe");
+			parameters = "/mailurl:mailto:";
+#endif
+			break;
 		}
 	}
 
@@ -582,7 +617,11 @@ QString MainConfigurationWindow::getEMailExecutable(int emailIndex)
 	{
 		QString executable = findExecutable(searchPath, executableName);
 		if (!executable.isNull())
-			return (prefix + executable + " " + parameters);
+#ifdef Q_OS_WIN
+			return prefix + "\"" + executable + "\" " + parameters;
+#else
+			return prefix + executable + " " + parameters;
+#endif
 		else
 			return QString::null;
 	}
@@ -617,6 +656,7 @@ QString MainConfigurationWindow::browserIndexToString(int browserIndex)
 		case 8:  return "Galeon";
 		case 9:  return "Safari";
 		case 10: return "Camino";
+		case 11: return "Internet Explorer";
 		default: return QString::null;
 	}
 }
