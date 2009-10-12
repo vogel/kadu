@@ -18,7 +18,7 @@
 #include "gui/widgets/chat-edit-box.h"
 #include "gui/widgets/chat-widget.h"
 #include "gui/widgets/chat-widget-manager.h"
-#include "gui/widgets/contacts-list-widget-menu-manager.h"
+#include "gui/widgets/contacts-list-view-menu-manager.h"
 #include "gui/windows/kadu-window.h"
 #include "gui/windows/kadu-window-actions.h"
 #include "gui/windows/message-box.h"
@@ -170,7 +170,7 @@ ChatWidgetActions::ChatWidgetActions(QObject *parent) : QObject(parent)
 		"Black", tr("Change color")
 	);
 
-	ContactsListWidgetMenuManager::instance()->addActionDescription(OpenChat);
+	ContactsListViewMenuManager::instance()->addActionDescription(OpenChat);
 }
 
 ChatWidgetActions::~ChatWidgetActions()

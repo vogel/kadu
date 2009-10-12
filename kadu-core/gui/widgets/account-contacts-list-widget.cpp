@@ -29,7 +29,7 @@ AccountContactsListWidget::AccountContactsListWidget(Account *account, QWidget *
 	layout->setContentsMargins(0, 0, 0, 0);
 	layout->setSpacing(5);
 
-	ContactsWidget = new ContactsListWidget(0, this);
+	ContactsWidget = new ContactsListView(0, this);
 	ContactsModelProxy *model = new ContactsModelProxy(this);
 	model->setSourceModel(new ContactsModel(ContactManager::instance(), this));
 	ContactsWidget->setModel(model);

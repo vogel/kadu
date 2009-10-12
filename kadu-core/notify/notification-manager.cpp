@@ -19,7 +19,7 @@
 #include "contacts/group-manager.h"
 #include "gui/actions/action.h"
 #include "gui/widgets/chat-widget-manager.h"
-#include "gui/widgets/contacts-list-widget-menu-manager.h"
+#include "gui/widgets/contacts-list-view-menu-manager.h"
 #include "gui/widgets/custom-input.h"
 #include "gui/windows/main-configuration-window.h"
 #include "gui/windows/main-window.h"
@@ -73,7 +73,7 @@ void NotificationManager::init()
 		checkNotify
 	);
 
-	ContactsListWidgetMenuManager::instance()->addManagementActionDescription(notifyAboutUserActionDescription);
+	ContactsListViewMenuManager::instance()->addManagementActionDescription(notifyAboutUserActionDescription);
 
 	foreach (Group *group, GroupManager::instance()->groups())
 		groupAdded(group);
@@ -88,7 +88,7 @@ NotificationManager::~NotificationManager()
 
 	MainConfigurationWindow::unregisterUiHandler(UiHandler);
 
-	ContactsListWidgetMenuManager::instance()->removeManagementActionDescription(notifyAboutUserActionDescription);
+	ContactsListViewMenuManager::instance()->removeManagementActionDescription(notifyAboutUserActionDescription);
 	delete notifyAboutUserActionDescription;
 	notifyAboutUserActionDescription = 0;
 

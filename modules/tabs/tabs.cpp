@@ -42,7 +42,7 @@
 
 #include "gui/widgets/chat-edit-box.h"
 #include "gui/widgets/chat-widget-manager.h"
-#include "gui/widgets/contacts-list-widget-menu-manager.h"
+#include "gui/widgets/contacts-list-view-menu-manager.h"
 #include "gui/widgets/configuration/configuration-widget.h"
 #include "gui/widgets/toolbar.h"
 
@@ -473,7 +473,7 @@ void TabsManager::insertTab(ChatWidget* chat)
 	target_tabs=-1;
 
 	connect(chat->edit(), SIGNAL(keyPressed(QKeyEvent*, CustomInput*, bool&)), tabdialog, SLOT(chatKeyPressed(QKeyEvent*, CustomInput*, bool&)));
-	// Podłączamy sie do nowej wiadomości w chacie, tylko jeśli dodany on został do kart
+	// Podlaczamy sie do nowej wiadomości w chacie, tylko jesli dodany on zostal do kart
 	connect(chat, SIGNAL(messageReceived(ChatWidget *)), this, SLOT(onMessageReceived(ChatWidget *)));
 	connect(chat, SIGNAL(closed()), this, SLOT(closeChat()));
 	connect(chat->chat(), SIGNAL(titleChanged(Chat *, const QString &)), this, SLOT( onTitleChanged(Chat *, const QString &)));
@@ -535,7 +535,7 @@ void TabsManager::onTimer()
 				{
 					// zeruje licznik nowch wiadomosci w chat
 					chat->markAllMessagesRead();
-					// a tutaj przywroc tytul�
+					// a tutaj przywroc tytul�
 					tabdialog->setWindowTitle(chat->chat()->title());
 				}
 				else if (chatsWithNewMessages.count() == 1 && !wasactive && config_autoTabChange)

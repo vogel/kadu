@@ -22,7 +22,7 @@ class QContextMenuEvent;
 class Chat;
 class Contact;
 class ContactSet;
-class ContactsListWidget;
+class ContactsListView;
 
 class KADUAPI MainWindow : public QMainWindow
 {
@@ -54,7 +54,7 @@ public:
 	virtual QMenu * createPopupMenu() { return 0; }
 
 	virtual bool supportsActionType(ActionDescription::ActionType type) = 0;
-	virtual ContactsListWidget * contactsListWidget() = 0;
+	virtual ContactsListView * contactsListView() = 0;
 	virtual ContactSet contacts() = 0;
 	virtual Chat * chat() = 0;
 	Contact contact();

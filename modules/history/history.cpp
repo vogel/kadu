@@ -88,7 +88,7 @@ History * History::instance()
 	return Instance;
 }
 
-History::History() : QObject(NULL), HistoryDialog(new HistoryWindow()), CurrentStorage(0)
+History::History() : QObject(0), HistoryDialog(new HistoryWindow()), CurrentStorage(0)
 {
 	kdebugf();
 	createActionDescriptions();
@@ -117,7 +117,7 @@ void History::createActionDescriptions()
 		disableNonHistoryContacts
 	);
 	ShowHistoryActionDescription->setShortcut("kadu_showhistory");
-	ContactsListWidgetMenuManager::instance()->insertActionDescription(3, ShowHistoryActionDescription);
+	ContactsListViewMenuManager::instance()->insertActionDescription(3, ShowHistoryActionDescription);
 
 	ChatsHistoryActionDescription = new ActionDescription(0,
 		ActionDescription::TypeMainMenu, "chatsHistoryAction",
@@ -138,13 +138,13 @@ void History::createActionDescriptions()
 		"ClearHistory", tr("Clear history"), false, "",
 		disableNonHistoryContacts
 	);
-	ContactsListWidgetMenuManager::instance()->addManagementActionDescription(ClearHistoryActionDescription);
+	ContactsListViewMenuManager::instance()->addManagementActionDescription(ClearHistoryActionDescription);
 
 }
 
 void History::deleteActionDescriptions()
 {
-	ContactsListWidgetMenuManager::instance()->removeActionDescription(ShowHistoryActionDescription);
+	ContactsListViewMenuManager::instance()->removeActionDescription(ShowHistoryActionDescription);
 
 	delete ShowHistoryActionDescription;
 	ShowHistoryActionDescription = 0;

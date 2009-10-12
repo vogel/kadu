@@ -16,7 +16,7 @@
 #include "contacts/contact.h"
 #include "contacts/contact-set.h"
 #include "gui/actions/action.h"
-#include "gui/widgets/contacts-list-widget.h"
+#include "gui/widgets/contacts-list-view.h"
 #include "gui/widgets/toolbar.h"
 
 #include "debug.h"
@@ -278,8 +278,8 @@ void MainWindow::addRightToolbar()
 
 void MainWindow::actionAdded(Action *action)
 {
-	if (contactsListWidget())
-		connect(contactsListWidget(), SIGNAL(contactsSelectionChanged()), action, SLOT(checkState()));
+	if (contactsListView())
+		connect(contactsListView(), SIGNAL(contactsSelectionChanged()), action, SLOT(checkState()));
 }
 
 Contact MainWindow::contact()

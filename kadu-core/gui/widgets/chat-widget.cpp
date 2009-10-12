@@ -28,7 +28,7 @@
 #include "gui/widgets/chat-widget-actions.h"
 #include "gui/widgets/chat-widget-manager.h"
 #include "gui/widgets/color-selector.h"
-#include "gui/widgets/contacts-list-widget.h"
+#include "gui/widgets/contacts-list-view.h"
 #include "gui/windows/kadu-window.h"
 #include "gui/windows/message-box.h"
 #include "parser/parser.h"
@@ -123,7 +123,7 @@ void ChatWidget::createContactsList()
 	layout->setContentsMargins(0, 0, 0, 0);
 	layout->setSpacing(0);
 
-	ContactsWidget = new ContactsListWidget(getChatEditBox(), this);
+	ContactsWidget = new ContactsListView(getChatEditBox(), this);
 	ContactsWidget->setModel(new ContactListModel(CurrentChat->contacts().toContactList(), this));
 	ContactsWidget->setMinimumSize(QSize(30, 30));
 

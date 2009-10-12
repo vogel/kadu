@@ -15,7 +15,7 @@
 
 #include "accounts/account.h"
 #include "contacts/contact-list.h"
-#include "gui/widgets/contacts-list-widget.h"
+#include "gui/widgets/contacts-list-view.h"
 
 #include "exports.h"
 
@@ -24,7 +24,7 @@ class KADUAPI AccountContactsListWidget : public QWidget
 	Q_OBJECT
 	
 	Account *CurrentAccount;
-	ContactsListWidget *ContactsWidget;
+	ContactsListView *ContactsWidget;
 	QPushButton *ExportButton;
 	QPushButton *ImportButton;
 	bool Clear;

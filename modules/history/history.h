@@ -35,7 +35,7 @@ enum HistoryEntryType
 #include "contacts/contact-remove-predicate-object.h"
 #include "gui/actions/action.h"
 #include "gui/actions/action-description.h"
-#include "gui/widgets/contacts-list-widget-menu-manager.h"
+#include "gui/widgets/contacts-list-view-menu-manager.h"
 #include "gui/windows/history-window.h"
 #include "gui/windows/main-configuration-window.h"
 #include "protocols/protocol.h"
@@ -67,7 +67,7 @@ class HISTORYAPI History : public ConfigurationUiHandler, ConfigurationAwareObje
 	QListWidget *selectedChatsUsers; 
 
 	History();
-	~History();
+	virtual ~History();
 
 	void createActionDescriptions();
 	void deleteActionDescriptions();
@@ -101,6 +101,6 @@ public:
 
 };
 
-	void disableNonHistoryContacts(Action *action);
+void disableNonHistoryContacts(Action *action);
 
 #endif

@@ -43,7 +43,7 @@ OpenChatWith::OpenChatWith(QWidget *parent)
 	connect(ContactID, SIGNAL(textChanged(const QString &)), this, SLOT(inputChanged(const QString &)));
 	MainLayout->addWidget(ContactID);
 	
-	ContactsWidget = new ContactsListWidget(0); // TODO: 0.6.6 fix that one
+	ContactsWidget = new ContactsListView(0); // TODO: 0.6.6 fix that one
 	//ContactsWidget->setModel(new ContactsModel(ContactManager::instance(), this));
 	connect(ContactsWidget, SIGNAL(contactActivated(Contact)), this, SLOT(openChat(Contact)));
 	MainLayout->addWidget(ContactsWidget);
@@ -98,7 +98,7 @@ void OpenChatWith::inputChanged(const QString &text)
 
 void OpenChatWith::openChat(Contact contact)
 {
-	ContactsListWidget *widget = dynamic_cast<ContactsListWidget *>(sender());
+	ContactsListView *widget = dynamic_cast<ContactsListView *>(sender());
 	if (!widget)
 		return;
 

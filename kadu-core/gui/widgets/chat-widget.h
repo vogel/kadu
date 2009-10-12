@@ -29,7 +29,7 @@ class QSplitter;
 class Account;
 class ChatEditBox;
 class ChatWidget;
-class ContactsListWidget;
+class ContactsListView;
 class CustomInput;
 class MessageRenderInfo;
 class Protocol;
@@ -43,7 +43,7 @@ class KADUAPI ChatWidget : public QWidget, ConfigurationAwareObject, AccountsAwa
 	Chat *CurrentChat;
 
 	ChatMessagesView *MessagesView;
-	ContactsListWidget *ContactsWidget;
+	ContactsListView *ContactsWidget;
 	ChatEditBox *InputBox;
 
 	QIcon pix;
@@ -118,7 +118,7 @@ public:
 	void repaintMessages();
 
 	CustomInput * edit();
-	ContactsListWidget * contactsListWidget() { return ContactsWidget; }
+	ContactsListView * contactsListWidget() { return ContactsWidget; }
 	ChatEditBox * getChatEditBox() { return InputBox; }
 	ChatMessagesView * chatMessagesView() { return MessagesView; }
 

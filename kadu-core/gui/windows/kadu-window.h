@@ -93,7 +93,7 @@ protected:
 	virtual void keyPressEvent(QKeyEvent *);
 
 	virtual bool supportsActionType(ActionDescription::ActionType type);
-	virtual ContactsListWidget * contactsListWidget();
+	virtual ContactsListView * contactsListView();
 	virtual ContactSet contacts();
 	virtual Chat * chat();
 

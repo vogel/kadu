@@ -86,7 +86,7 @@ public:
 	virtual bool supportsActionType(ActionDescription::ActionType type);
 	virtual ContactSet contacts() { return ContactSet(); }
 	virtual ChatWidget * chatWidget() { return 0; }
-	virtual ContactsListWidget * contactsListWidget() { return 0; }
+	virtual ContactsListView * contactsListView() { return 0; }
 	virtual Chat * chat() { return 0; }
 
 	void show(Chat *chat);
