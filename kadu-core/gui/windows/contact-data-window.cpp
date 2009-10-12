@@ -115,10 +115,13 @@ void ContactDataWindow::createButtons(QLayout *layout)
 
 	QPushButton *cancelButton = new QPushButton(IconsManager::instance()->loadIcon("CloseWindowButton"), tr("Cancel"), this);
 	buttons->addButton(cancelButton, QDialogButtonBox::RejectRole);
-	QPushButton *saveButton = new QPushButton(IconsManager::instance()->loadIcon("OkWindowButton"), tr("Save"), this);
+	QPushButton *applyButton = new QPushButton(IconsManager::instance()->loadIcon("OkWindowButton"), tr("Apply"), this);
+	buttons->addButton(applyButton, QDialogButtonBox::ApplyRole);
+	QPushButton *saveButton = new QPushButton(IconsManager::instance()->loadIcon("OkWindowButton"), tr("OK"), this);
 	buttons->addButton(saveButton, QDialogButtonBox::AcceptRole);
 
 	connect(saveButton, SIGNAL(clicked(bool)), this, SLOT(updateContactAndClose()));
+	connect(applyButton, SIGNAL(clicked(bool)), this, SLOT(updateContact()));
 	connect(cancelButton, SIGNAL(clicked(bool)), this, SLOT(close()));
 
 	layout->addWidget(buttons);

@@ -21,9 +21,11 @@
 #include "accounts/account-manager.h"
 #include "configuration/contact-account-data-manager.h"
 #include "contacts/contact-account-data.h"
+#include "contacts/contact-manager.h"
+#include "icons-manager.h"
+#include "misc/misc.h"
 #include "protocols/protocol.h"
 #include "protocols/protocol-factory.h"
-#include "misc/misc.h"
 
 #include "contact-general-configuration-widget.h"
 
@@ -91,6 +93,7 @@ void ContactGeneralConfigurationWidget::createGui()
 	QLabel *defaultContactLabel = new QLabel(tr("Default Contact") + ":");
 
 	QComboBox *defaultContact = new QComboBox(this);
+	defaultContact->setDisabled(CurrentContact.accountDatas().count() <= 1);
 	QLabel *defaultContactNoticeLabel = new QLabel(tr("Chat messages will be sent to this username when you select the name from the buddy list"));
 	AccountsLayout->addWidget(defaultContactLabel, row, 0, 1, 1);
 	AccountsLayout->addWidget(defaultContact, row++, 1, 1, 4);
@@ -112,6 +115,8 @@ void ContactGeneralConfigurationWidget::createGui()
 	QPushButton *addContactButton = new QPushButton(tr("Add Contact..."), this);
 	connect(addContactButton, SIGNAL(clicked()), this, SLOT(addAccountDataRow()));
 	QPushButton *setOrderButton = new QPushButton(tr("Set Order..."), this);
+	setOrderButton->setDisabled(CurrentContact.accountDatas().count() <= 1);
+	connect(setOrderButton, SIGNAL(clicked()), this, SLOT(showOrderDialog()));
 
 	AccountsLayout->addWidget(addContactButton, row, 0, 1, 1);
 	AccountsLayout->addWidget(setOrderButton, row, 1, 1, 1);
@@ -161,9 +166,27 @@ void ContactGeneralConfigurationWidget::createGui()
 void ContactGeneralConfigurationWidget::addAccountDataRow(ContactAccountData *data)
 {
 	int row = ContactsLayout->rowCount();
-	QLineEdit *contactLineEdit = new QLineEdit(this);
-	QLabel *inLabel = new QLabel(tr("in"));
-	QComboBox *accountsCombo = new QComboBox(this);
+
+	QWidget *accountRow = new QWidget(this);
+	QGridLayout *accountRowLayout = new QGridLayout(accountRow);
+	accountRowLayout->setColumnMinimumWidth(0, 100);
+	accountRowLayout->setColumnMinimumWidth(2, 100);
+	accountRowLayout->setColumnStretch(0, 5);
+	accountRowLayout->setColumnStretch(2, 5);
+	accountRowLayout->setColumnStretch(3, 2);
+
+	QLineEdit *contactLineEdit = new QLineEdit(accountRow);
+	QLabel *inLabel = new QLabel(tr("in"), accountRow);
+	QComboBox *accountsCombo = new QComboBox(accountRow);
+	QPushButton *unmergeButton = new QPushButton(IconsManager::instance()->loadIcon("CloseWindowButton"), tr("Unmerge contact..."), accountRow);
+	unmergeButton->setDisabled(ContactsAccounts.count() == 0 && CurrentContact.accountDatas().count() <= 1);
+	connect(unmergeButton, SIGNAL(clicked(bool)), accountRow, SLOT(hide()));
+	connect(unmergeButton, SIGNAL(clicked(bool)), contactLineEdit, SLOT(clear()));
+
+	accountRowLayout->addWidget(contactLineEdit, 0, 0, 1, 1);
+	accountRowLayout->addWidget(inLabel, 0, 1, 1, 1);
+	accountRowLayout->addWidget(accountsCombo, 0, 2, 1, 1);
+	accountRowLayout->addWidget(unmergeButton, 0, 3, 1, 1);
 
 	ContactsIds.append(contactLineEdit);
 	ContactsAccounts.append(accountsCombo);
@@ -181,9 +204,7 @@ void ContactGeneralConfigurationWidget::addAccountDataRow(ContactAccountData *da
 	if (data)
 		accountsCombo->setCurrentIndex(accountsCombo->findData(data->account()->uuid().toString()));
 
-	ContactsLayout->addWidget(contactLineEdit, row, 0, 1, 1);
-	ContactsLayout->addWidget(inLabel, row, 1, 1, 1);
-	ContactsLayout->addWidget(accountsCombo, row++, 2, 1, 1);
+	ContactsLayout->addWidget(accountRow, row, 0, 1, 6);
 
 	if (data)
 		contactLineEdit->setText(data->id());
@@ -223,3 +244,57 @@ void ContactGeneralConfigurationWidget::saveConfiguration()
 		}
 	}
 }
+
+void ContactGeneralConfigurationWidget::showOrderDialog()
+{
+	OrderDialog = new QDialog(this);
+	OrderDialog->setAttribute(Qt::WA_DeleteOnClose);
+	OrderDialog->setWindowTitle(tr("Set Order"));
+	OrderDialog->resize(300, 200);
+
+	QGridLayout *layout = new QGridLayout(OrderDialog);
+	layout->setColumnMinimumWidth(0, 10);
+	layout->setColumnMinimumWidth(1, 10);
+	layout->setColumnMinimumWidth(4, 20);
+	layout->setColumnMinimumWidth(5, 100);
+	layout->setColumnMinimumWidth(8, 20);
+	layout->setColumnStretch(3, 10);
+	layout->setColumnStretch(6, 2);
+
+	int row = 0;
+
+	QTreeView *orderView = new QTreeView(OrderDialog);
+	layout->addWidget(orderView, row++, 1, 1, 1);
+
+	QDialogButtonBox *buttons = new QDialogButtonBox(Qt::Horizontal, OrderDialog);
+
+	QPushButton *cancelButton = new QPushButton(IconsManager::instance()->loadIcon("CloseWindowButton"), tr("Cancel"), OrderDialog);
+	buttons->addButton(cancelButton, QDialogButtonBox::RejectRole);
+	QPushButton *saveButton = new QPushButton(IconsManager::instance()->loadIcon("OkWindowButton"), tr("Save"), OrderDialog);
+	buttons->addButton(saveButton, QDialogButtonBox::AcceptRole);
+
+	connect(saveButton, SIGNAL(clicked(bool)), this, SLOT(updateOrderAndClose()));
+	connect(cancelButton, SIGNAL(clicked(bool)), OrderDialog, SLOT(close()));
+
+	layout->addWidget(buttons, row, 1, 1, 1);
+
+	OrderDialog->show();
+}
+
+void ContactGeneralConfigurationWidget::updateOrder()
+{
+	ContactManager::instance()->blockUpdatedSignal(CurrentContact);
+
+// 	ContactTab->saveConfiguration();
+// 	GroupsTab->saveConfiguration(); 
+// 	OptionsTab->saveConfiguration(); 
+
+	ContactManager::instance()->unblockUpdatedSignal(CurrentContact);
+}
+
+void ContactGeneralConfigurationWidget::updateOrderAndClose()
+{
+	updateOrder();
+	OrderDialog->close();
+}
+
