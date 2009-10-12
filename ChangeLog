@@ -6,7 +6,10 @@ Je¶li jest w postaci (z) to zarówno pomys³ jak i wykonanie nale¿y do z.
 * wsparcie dla protoko³u gg8 (libgadu 1.9.0) (dorr)
 * dalsze poprawki w wyszukiwaniu w historii (dorr)
 * poprawiona kompilacja modu³ów zale¿nych od QtDBus (reavertm/dorr)
-* od¶wie¿one okno o programie
+* od¶wie¿one okno o programie (dorr)
+* mo¿liwo¶æ dodania przycisków sterujacych odtwarzaczem przez modu³y mediaplayer (dorr)
+* w komunikacie o braku mo¿liwo¶ci wy³adowania modu³u wymienione s± modu³y z niego korzystaj±ce (dorr)
+* usuniête kilka warningów przy kompilacji (neeo)
 
 +++ wersja 0.6.5.3
 * poprawki w module history (beevvy/dorr, dorr)
