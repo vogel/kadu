@@ -28,7 +28,7 @@
 #include "gui/widgets/chat-widget-actions.h"
 #include "gui/widgets/chat-widget-manager.h"
 #include "gui/widgets/contact-info-panel.h"
-#include "gui/widgets/contacts-list-widget.h"
+#include "gui/widgets/contacts-list-view.h"
 #include "gui/widgets/group-tab-bar.h"
 #include "gui/widgets/kadu-text-browser.h"
 #include "gui/windows/kadu-window-actions.h"
@@ -80,7 +80,7 @@ void KaduWindow::createGui()
 	// groupbar
 	GroupBar = new GroupTabBar(this);
 
-	ContactsWidget = new ContactsListWidget(this);
+	ContactsWidget = new ContactsListView(this);
 	ContactsWidget->setModel(new ContactsModel(ContactManager::instance(), this));
 	ContactsWidget->addFilter(GroupBar->filter());
 	AnonymousWithoutMessagesContactFilter *anonymousFilter = new AnonymousWithoutMessagesContactFilter(this);
@@ -333,7 +333,7 @@ bool KaduWindow::supportsActionType(ActionDescription::ActionType type)
 	return type & (ActionDescription::TypeGlobal | ActionDescription::TypeUserList | ActionDescription::TypeUser);
 }
 
-ContactsListWidget * KaduWindow::contactsListWidget()
+ContactsListView * KaduWindow::contactsListView()
 {
 	return ContactsWidget;
 }
@@ -365,11 +365,11 @@ void KaduWindow::configurationUpdated()
 		QString type = config_file.readEntry("Look", "UserboxBackgroundDisplayStyle");
 		ContactsWidget->setBackground(config_file.readColorEntry("Look","UserboxBgColor").name(),
 			config_file.readEntry("Look", "UserboxBackground"),
-			type == "Centered" ? ContactsListWidget::BackgroundCentered
-			: type == "Tiled" ? ContactsListWidget::BackgroundTiled
-			: type == "Stretched" ? ContactsListWidget::BackgroundStretched
-			: type == "TiledAndCentered" ? ContactsListWidget::BackgroundTiledAndCentered
-			: ContactsListWidget::BackgroundNone);
+			type == "Centered" ? ContactsListView::BackgroundCentered
+			: type == "Tiled" ? ContactsListView::BackgroundTiled
+			: type == "Stretched" ? ContactsListView::BackgroundStretched
+			: type == "TiledAndCentered" ? ContactsListView::BackgroundTiledAndCentered
+			: ContactsListView::BackgroundNone);
 	}
 	else
 		ContactsWidget->setBackground(config_file.readColorEntry("Look","UserboxBgColor").name());

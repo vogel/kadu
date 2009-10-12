@@ -30,9 +30,9 @@
 #include "model/roles.h"
 #include "icons-manager.h"
 
-#include "contacts-list-widget-delegate.h"
+#include "contacts-list-view-delegate.h"
 
-ContactsListWidgetDelegate::ContactsListWidgetDelegate(QObject *parent)
+ContactsListViewDelegate::ContactsListViewDelegate(QObject *parent)
 	: QItemDelegate(parent), Model(0)
 {
 	triggerAllAccountsRegistered();
@@ -41,35 +41,35 @@ ContactsListWidgetDelegate::ContactsListWidgetDelegate(QObject *parent)
 	DefaultAvatarSize = IconsManager::instance()->loadPixmap("ContactsTab").size();
 }
 
-ContactsListWidgetDelegate::~ContactsListWidgetDelegate()
+ContactsListViewDelegate::~ContactsListViewDelegate()
 {
 	triggerAllAccountsUnregistered();
 }
 
-void ContactsListWidgetDelegate::setModel(AbstractContactsModel *model)
+void ContactsListViewDelegate::setModel(AbstractContactsModel *model)
 {
 	Model = model;
 }
 
-void ContactsListWidgetDelegate::accountRegistered(Account *account)
+void ContactsListViewDelegate::accountRegistered(Account *account)
 {
 	connect(account, SIGNAL(contactStatusChanged(Account *, Contact, Status)),
 			this, SLOT(contactStatusChanged(Account *, Contact, Status)));
 }
 
-void ContactsListWidgetDelegate::accountUnregistered(Account *account)
+void ContactsListViewDelegate::accountUnregistered(Account *account)
 {
 	disconnect(account, SIGNAL(contactStatusChanged(Account *, Contact, Status)),
 			this, SLOT(contactStatusChanged(Account *, Contact, Status)));
 }
 
-void ContactsListWidgetDelegate::contactStatusChanged(Account *account, Contact c, Status oldStatus)
+void ContactsListViewDelegate::contactStatusChanged(Account *account, Contact c, Status oldStatus)
 {
 	if (Model)
 		emit sizeHintChanged(Model->contactIndex(c));
 }
 
-QTextDocument * ContactsListWidgetDelegate::descriptionDocument(const QString &text, int width, QColor color) const
+QTextDocument * ContactsListViewDelegate::descriptionDocument(const QString &text, int width, QColor color) const
 {
 	QString description = text;
 	description.replace("\n", ShowMultiLineDescription ? "<br/>" : " " );
@@ -94,7 +94,7 @@ QTextDocument * ContactsListWidgetDelegate::descriptionDocument(const QString &t
 	return doc;
 }
 
-QSize ContactsListWidgetDelegate::sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const
+QSize ContactsListViewDelegate::sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const
 {
 	QSize size(0, 0);
 
@@ -146,7 +146,7 @@ QSize ContactsListWidgetDelegate::sizeHint(const QStyleOptionViewItem &option, c
 	return QSize(width, height);
 }
 
-void ContactsListWidgetDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const
+void ContactsListViewDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const
 {
 	QStyleOptionViewItemV4 opt = setOptions(index, option);
 
@@ -287,7 +287,7 @@ void ContactsListWidgetDelegate::paint(QPainter *painter, const QStyleOptionView
 	painter->restore();
 }
 
-bool ContactsListWidgetDelegate::isBold(const QModelIndex &index) const
+bool ContactsListViewDelegate::isBold(const QModelIndex &index) const
 {
 	if (!ShowBold)
 		return false;
@@ -300,7 +300,7 @@ bool ContactsListWidgetDelegate::isBold(const QModelIndex &index) const
 	return !status.isDisconnected();
 }
 
-QPixmap ContactsListWidgetDelegate::avatar(const QModelIndex &index) const
+QPixmap ContactsListViewDelegate::avatar(const QModelIndex &index) const
 {
 	QVariant avatar = index.data(AvatarRole);
 	if (!avatar.canConvert<QPixmap>())
@@ -309,7 +309,7 @@ QPixmap ContactsListWidgetDelegate::avatar(const QModelIndex &index) const
 	return avatar.value<QPixmap>();
 }
 
-void ContactsListWidgetDelegate::configurationUpdated()
+void ContactsListViewDelegate::configurationUpdated()
 {
 	Font = config_file.readFontEntry("Look", "UserboxFont");
 	DescriptionFont = Font;

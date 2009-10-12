@@ -116,7 +116,7 @@ bool ChatEditBox::supportsActionType(ActionDescription::ActionType type)
 	return (type == ActionDescription::TypeGlobal || type == ActionDescription::TypeChat || type == ActionDescription::TypeUser);
 }
 
-ContactsListWidget * ChatEditBox::contactsListWidget()
+ContactsListView * ChatEditBox::contactsListView()
 {
 	ChatWidget *cw = chatWidget();
 	if (cw && cw->chat()->contacts().count() > 1)

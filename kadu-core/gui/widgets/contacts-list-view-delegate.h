@@ -7,8 +7,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef CONTACTS_LIST_WIDGET_DELEGATE_H
-#define CONTACTS_LIST_WIDGET_DELEGATE_H
+#ifndef CONTACTS_LIST_VIEW_DELEGATE_H
+#define CONTACTS_LIST_VIEW_DELEGATE_H
 
 #include <QtGui/QItemDelegate>
 
@@ -22,7 +22,7 @@ class QTextDocument;
 class AbstractContactsModel;
 class Account;
 
-class ContactsListWidgetDelegate : public QItemDelegate, public ConfigurationAwareObject, public AccountsAwareObject
+class ContactsListViewDelegate : public QItemDelegate, public ConfigurationAwareObject, public AccountsAwareObject
 {
 	Q_OBJECT
 
@@ -51,8 +51,8 @@ protected:
 	virtual void accountUnregistered(Account *account);
 
 public:
-	ContactsListWidgetDelegate(QObject *parent = 0);
-	virtual ~ContactsListWidgetDelegate();
+	ContactsListViewDelegate(QObject *parent = 0);
+	virtual ~ContactsListViewDelegate();
 
 	virtual void setModel(AbstractContactsModel *model);
 
@@ -62,4 +62,4 @@ public:
 	virtual void configurationUpdated();
 };
 
-#endif // CONTACTS_LIST_WIDGET_DELEGATE_H
+#endif // CONTACTS_LIST_VIEW_DELEGATE_H

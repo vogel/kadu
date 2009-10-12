@@ -7,8 +7,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef CONTACTS_LIST_WIDGET_MENU_MANAGER_H
-#define CONTACTS_LIST_WIDGET_MENU_MANAGER_H
+#ifndef CONTACTS_LIST_VIEW_MENU_MANAGER_H
+#define CONTACTS_LIST_VIEW_MENU_MANAGER_H
 
 #include <QtCore/QList>
 
@@ -16,21 +16,21 @@
 
 class ActionDescription;
 
-class KADUAPI ContactsListWidgetMenuManager
+class KADUAPI ContactsListViewMenuManager
 {
-	Q_DISABLE_COPY(ContactsListWidgetMenuManager)
+	Q_DISABLE_COPY(ContactsListViewMenuManager)
 
-	static ContactsListWidgetMenuManager *Instance;
+static ContactsListViewMenuManager *Instance;
 
 	QList<ActionDescription *> ContactsContexMenu;
 	QList<ActionDescription *> ContactsListActions;
 	QList<ActionDescription *> ManagementActions;
 
-	ContactsListWidgetMenuManager();
+	ContactsListViewMenuManager();
 
 public:
 
-	static ContactsListWidgetMenuManager * instance();
+	static ContactsListViewMenuManager * instance();
 
 	QList<ActionDescription *> contactsContexMenu() { return ContactsContexMenu; }
 	QList<ActionDescription *> contactsListActions() { return ContactsListActions; }
@@ -52,4 +52,4 @@ public:
 
 };
 
-#endif // CONTACTS_LIST_WIDGET_MENU_MANAGER_H
+#endif // CONTACTS_LIST_VIEW_MENU_MANAGER_H

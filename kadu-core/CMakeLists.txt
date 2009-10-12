@@ -104,9 +104,10 @@ set (kadu_SRCS
 	gui/widgets/color-selector.cpp
 	gui/widgets/contact-account-data-widget.cpp
 	gui/widgets/contact-info-panel.cpp
+	gui/widgets/contacts-list-view.cpp
+	gui/widgets/contacts-list-view-delegate.cpp
+	gui/widgets/contacts-list-view-menu-manager.cpp
 	gui/widgets/contacts-list-widget.cpp
-	gui/widgets/contacts-list-widget-delegate.cpp
-	gui/widgets/contacts-list-widget-menu-manager.cpp
 	gui/widgets/custom-input.cpp
 	gui/widgets/delayed-line-edit.cpp
 	gui/widgets/group-tab-bar.cpp
@@ -328,8 +329,9 @@ set (kadu_MOC_SRCS
 	gui/widgets/color-selector.h
 	gui/widgets/contact-account-data-widget.h
 	gui/widgets/contact-info-panel.h
+	gui/widgets/contacts-list-view.h
+	gui/widgets/contacts-list-view-delegate.h
 	gui/widgets/contacts-list-widget.h
-	gui/widgets/contacts-list-widget-delegate.h
 	gui/widgets/custom-input.h
 	gui/widgets/delayed-line-edit.h
 	gui/widgets/group-tab-bar.h

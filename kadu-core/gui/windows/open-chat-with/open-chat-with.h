@@ -12,7 +12,7 @@
 
 #include <QtGui/QWidget>
 
-#include "gui/widgets/contacts-list-widget.h"
+#include "gui/widgets/contacts-list-view.h"
 
 #include "open-chat-with-runner.h"
 
@@ -22,7 +22,7 @@ class QPushButton;
 class QVBoxLayout;
 
 /**
-	Klasa reprezentuje okno umozliwiajace rozpoczecie rozmowy z dowolnym uzytkownikiem wybranym z listy kontakt√≥w lub podanym przez jego identyfikator.
+	Klasa reprezentuje okno umozliwiajace rozpoczecie rozmowy z dowolnym uzytkownikiem wybranym z listy kontakt®Æw lub podanym przez jego identyfikator.
 	\class ContactDataWindow
 	\brief Okno dialogowe otwarcia rozmowy z dowolnym kontaktem
 **/
@@ -30,7 +30,7 @@ class KADUAPI OpenChatWith : public QWidget
 {
 	Q_OBJECT
 
-	ContactsListWidget *ContactsWidget;
+	ContactsListView *ContactsWidget;
 	QLineEdit *ContactID;
 	QVBoxLayout *MainLayout;
 	OpenChatWithRunner *OpenChatRunner;

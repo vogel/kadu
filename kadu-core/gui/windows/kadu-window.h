@@ -26,7 +26,7 @@ class QVBoxLayout;
 class Action;
 class ActionDescription;
 class ContactInfoPanel;
-class ContactsListWidget;
+class ContactsListView;
 class GroupTabBar;
 class KaduTextBrowser;
 class KaduWindowActions;
@@ -61,7 +61,7 @@ private:
 	QAction *RecentChatsMenuAction;
 	GroupTabBar *GroupBar;
 
-	ContactsListWidget *ContactsWidget;
+	ContactsListView *ContactsWidget;
 
 	QWidget *MainWidget;
 	QVBoxLayout *MainLayout;
@@ -93,7 +93,7 @@ protected:
 	virtual void keyPressEvent(QKeyEvent *);
 
 	virtual bool supportsActionType(ActionDescription::ActionType type);
-	virtual ContactsListWidget * contactsListWidget();
+	virtual ContactsListView * contactsListView();
 	virtual ContactSet contacts();
 	virtual Chat * chat();
 
