@@ -4,13 +4,19 @@
 #include <QtNetwork/QHostInfo>
 #include <QtGui/QMessageBox>
 
+#ifdef Q_OS_WIN
+#include <winsock2.h>
+#include <io.h>
+#define pipe(phandles)	_pipe (phandles, 4096, 0)
+#else
 #include <sys/wait.h>
 #include <netdb.h>
+#include <arpa/inet.h>
+#endif
 #include <errno.h>
 #include <stdlib.h>
 #include <unistd.h>
 #include <signal.h>
-#include <arpa/inet.h>
 
 #include "debug.h"
 #include "libgadu.h"
