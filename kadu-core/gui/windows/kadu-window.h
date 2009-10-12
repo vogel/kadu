@@ -26,7 +26,7 @@ class QVBoxLayout;
 class Action;
 class ActionDescription;
 class ContactInfoPanel;
-class ContactsListView;
+class ContactsListWidget;
 class GroupTabBar;
 class KaduTextBrowser;
 class KaduWindowActions;
@@ -61,7 +61,7 @@ private:
 	QAction *RecentChatsMenuAction;
 	GroupTabBar *GroupBar;
 
-	ContactsListView *ContactsWidget;
+	ContactsListWidget *ContactsWidget;
 
 	QWidget *MainWidget;
 	QVBoxLayout *MainLayout;

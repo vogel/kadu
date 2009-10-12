@@ -29,6 +29,7 @@
 #include "gui/widgets/chat-widget-manager.h"
 #include "gui/widgets/contact-info-panel.h"
 #include "gui/widgets/contacts-list-view.h"
+#include "gui/widgets/contacts-list-widget.h"
 #include "gui/widgets/group-tab-bar.h"
 #include "gui/widgets/kadu-text-browser.h"
 #include "gui/windows/kadu-window-actions.h"
@@ -80,12 +81,12 @@ void KaduWindow::createGui()
 	// groupbar
 	GroupBar = new GroupTabBar(this);
 
-	ContactsWidget = new ContactsListView(this);
-	ContactsWidget->setModel(new ContactsModel(ContactManager::instance(), this));
-	ContactsWidget->addFilter(GroupBar->filter());
+	ContactsWidget = new ContactsListWidget(this);
+	ContactsWidget->view()->setModel(new ContactsModel(ContactManager::instance(), this));
+	ContactsWidget->view()->addFilter(GroupBar->filter());
 	AnonymousWithoutMessagesContactFilter *anonymousFilter = new AnonymousWithoutMessagesContactFilter(this);
 	anonymousFilter->setEnabled(true);
-	ContactsWidget->addFilter(anonymousFilter);
+	ContactsWidget->view()->addFilter(anonymousFilter);
 
 	connect(ContactsWidget, SIGNAL(chatActivated(Chat *)), this, SLOT(openChatWindow(Chat *)));
 
@@ -271,7 +272,7 @@ void KaduWindow::storeConfiguration()
 
 void KaduWindow::updateInformationPanel()
 {
-	InfoPanel->displayContact(ContactsWidget->currentContact());
+	InfoPanel->displayContact(ContactsWidget->view()->currentContact());
 }
 
 void KaduWindow::closeEvent(QCloseEvent *e)
@@ -335,12 +336,12 @@ bool KaduWindow::supportsActionType(ActionDescription::ActionType type)
 
 ContactsListView * KaduWindow::contactsListView()
 {
-	return ContactsWidget;
+	return ContactsWidget->view();
 }
 
 ContactSet KaduWindow::contacts()
 {
-	return ContactsWidget->selectedContacts();
+	return ContactsWidget->view()->selectedContacts();
 }
 
 Chat * KaduWindow::chat()
@@ -363,7 +364,7 @@ void KaduWindow::configurationUpdated()
 	if (config_file.readBoolEntry("Look", "UseUserboxBackground", true))
 	{
 		QString type = config_file.readEntry("Look", "UserboxBackgroundDisplayStyle");
-		ContactsWidget->setBackground(config_file.readColorEntry("Look","UserboxBgColor").name(),
+		ContactsWidget->view()->setBackground(config_file.readColorEntry("Look","UserboxBgColor").name(),
 			config_file.readEntry("Look", "UserboxBackground"),
 			type == "Centered" ? ContactsListView::BackgroundCentered
 			: type == "Tiled" ? ContactsListView::BackgroundTiled
@@ -372,7 +373,7 @@ void KaduWindow::configurationUpdated()
 			: ContactsListView::BackgroundNone);
 	}
 	else
-		ContactsWidget->setBackground(config_file.readColorEntry("Look","UserboxBgColor").name());
+		ContactsWidget->view()->setBackground(config_file.readColorEntry("Look","UserboxBgColor").name());
 
 	ChangeStatusButtons->setVisible(config_file.readBoolEntry("Look", "ShowStatusButton"));
 }
