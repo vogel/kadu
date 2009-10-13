@@ -164,6 +164,7 @@ set (kadu_SRCS
 	gui/windows/kadu-window-actions.cpp
 	gui/windows/main-configuration-window.cpp
 	gui/windows/main-window.cpp
+	gui/windows/merge-contacts-window.cpp
 	gui/windows/message-box.cpp
 	gui/windows/open-chat-with/open-chat-with.cpp
 	gui/windows/open-chat-with/open-chat-with-contact-list-runner.cpp
@@ -368,6 +369,7 @@ set (kadu_MOC_SRCS
 	gui/windows/kadu-window-actions.h
 	gui/windows/main-configuration-window.h
 	gui/windows/main-window.h
+	gui/windows/merge-contacts-window.h
 	gui/windows/message-box.h
 	gui/windows/open-chat-with/open-chat-with.h
 	gui/windows/password-window.h

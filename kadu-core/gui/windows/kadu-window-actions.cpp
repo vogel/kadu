@@ -35,6 +35,7 @@
 #include "gui/windows/contact-data-window.h"
 #include "gui/windows/kadu-window.h"
 #include "gui/windows/main-configuration-window.h"
+#include "gui/windows/merge-contacts-window.h"
 #include "gui/windows/message-box.h"
 #include "gui/windows/your-accounts.h"
 #include "misc/misc.h"
@@ -278,7 +279,15 @@ KaduWindowActions::KaduWindowActions(QObject *parent) : QObject(parent)
 	);
 	AddUser->setShortcut("kadu_adduser", Qt::ApplicationShortcut);
 	ContactsListViewMenuManager::instance()->insertManagementActionDescription(0, AddUser);
-	ContactsListViewMenuManager::instance()->insertManagementActionDescription(1, 0);
+
+	MergeContact = new ActionDescription(this,
+		ActionDescription::TypeUser, "mergeContactAction",
+		this, SLOT(mergeContactActionActivated(QAction *, bool)),
+		"MergeContact", tr("Merge Buddy...")
+	);
+	ContactsListViewMenuManager::instance()->insertManagementActionDescription(1, MergeContact);
+	
+	ContactsListViewMenuManager::instance()->insertManagementActionDescription(2, 0);
 
 	AddGroup = new ActionDescription(this,
 		ActionDescription::TypeGlobal, "addGroupAction",
@@ -374,8 +383,8 @@ KaduWindowActions::KaduWindowActions(QObject *parent) : QObject(parent)
 	);
 	ContactsListViewMenuManager::instance()->addActionDescription(LookupUserInfo);*/
 
-	ContactsListViewMenuManager::instance()->insertManagementActionDescription(2, ChatWidgetManager::instance()->actions()->ignoreUser());
-	ContactsListViewMenuManager::instance()->insertManagementActionDescription(3, ChatWidgetManager::instance()->actions()->blockUser());
+	ContactsListViewMenuManager::instance()->insertManagementActionDescription(3, ChatWidgetManager::instance()->actions()->ignoreUser());
+	ContactsListViewMenuManager::instance()->insertManagementActionDescription(4, ChatWidgetManager::instance()->actions()->blockUser());
 
 	OfflineToUser = new ActionDescription(this,
 		ActionDescription::TypeUser, "offlineToUserAction",
@@ -596,6 +605,22 @@ void KaduWindowActions::addUserActionActivated(QAction *sender, bool toggled)
 	addBuddyWindow->show();
 
  	kdebugf2();
+}
+
+void KaduWindowActions::mergeContactActionActivated(QAction *sender, bool toggled)
+{
+	kdebugf();
+
+	MainWindow *window = dynamic_cast<MainWindow *>(sender->parent());
+	if (!window)
+		return;
+
+	Contact contact = window->contact();
+	MergeContactsWindow *mergeContactsWindow = new MergeContactsWindow(contact, window);
+
+	mergeContactsWindow->show();
+
+	kdebugf2();
 }
 
 void KaduWindowActions::addGroupActionActivated(QAction *sender, bool toggled)

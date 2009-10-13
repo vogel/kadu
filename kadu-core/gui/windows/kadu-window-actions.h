@@ -28,6 +28,7 @@ class KaduWindowActions : QObject
 	ActionDescription *ShowYourAccounts;
 	ActionDescription *ExitKadu;
 	ActionDescription *AddUser;
+	ActionDescription *MergeContact;
 	ActionDescription *AddGroup;
 	ActionDescription *OpenSearch;
 	ActionDescription *ManageIgnored;
@@ -69,6 +70,7 @@ private slots:
 	void yourAccountsActionActivated(QAction *sender, bool toggled);
 	void exitKaduActionActivated(QAction *sender, bool toggled);
 	void addUserActionActivated(QAction *sender, bool toggled);
+	void mergeContactActionActivated(QAction *sender, bool toggled);
 	void addGroupActionActivated(QAction *sender, bool toggled);
 	void openSearchActionActivated(QAction *sender, bool toggled);
 	void manageIgnoredActionActivated(QAction *sender, bool toggled);
