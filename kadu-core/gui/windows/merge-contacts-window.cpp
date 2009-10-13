@@ -7,8 +7,12 @@
  *                                                                         *
  ***************************************************************************/
 
+#include <QtGui/QDialogButtonBox>
 #include <QtGui/QHBoxLayout>
 #include <QtGui/QLabel>
+#include <QtGui/QLineEdit>
+#include <QtGui/QPushButton>
+#include <QtGui/QVBoxLayout>
 
 #include "merge-contacts-window.h"
 
@@ -24,8 +28,30 @@ MergeContactsWindow::~MergeContactsWindow()
 
 void MergeContactsWindow::createGui()
 {
-	QHBoxLayout *layout = new QHBoxLayout(this);
+	QVBoxLayout *layout = new QVBoxLayout(this);
 
-	QLabel *description = new QLabel(tr("<i>Choose which contact would you like to merge with <b>%1</b></i>").arg(MyContact.display()), this);
-	layout->addWidget(description);
+	layout->addWidget(new QLabel(tr("<i>Choose which contact would you like to merge with <b>%1</b></i>")
+			.arg(MyContact.display()), this));
+
+	QWidget *chooseWidget = new QWidget(this);
+	layout->addWidget(chooseWidget);
+
+	QHBoxLayout *chooseLayout = new QHBoxLayout(chooseWidget);
+
+	chooseLayout->addWidget(new QLabel(tr("Username:"), this));
+	chooseLayout->addWidget(new QLineEdit(this));
+	chooseLayout->addWidget(new QPushButton(tr("Choose..."), this));
+
+	layout->addStretch(100);
+	QDialogButtonBox *buttons = new QDialogButtonBox(this);
+	layout->addWidget(buttons);
+
+	QPushButton *mergeButton = new QPushButton(tr("Merge"), this);
+	mergeButton->setDefault(true);
+
+	QPushButton *cancel = new QPushButton(tr("Cancel"), this);
+	connect(cancel, SIGNAL(clicked(bool)), this, SLOT(reject()));
+
+	buttons->addButton(mergeButton, QDialogButtonBox::AcceptRole);
+	buttons->addButton(cancel, QDialogButtonBox::DestructiveRole);
 }
