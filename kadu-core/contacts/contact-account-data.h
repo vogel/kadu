@@ -13,7 +13,7 @@
 #include <QtNetwork/QHostAddress>
 #include <QtXml/QDomElement>
 
-#include "configuration/storable-object.h"
+#include "configuration/uuid-storable-object.h"
 #include "contacts/avatar.h"
 #include "status/status.h"
 
@@ -24,9 +24,11 @@
 class Account;
 class XmlConfigFile;
 
-class KADUAPI ContactAccountData : public QObject, public StorableObject
+class KADUAPI ContactAccountData : public QObject, public UuidStorableObject
 {
 	Q_OBJECT
+
+	QUuid Uuid;
 
 	Account *ContactAccount;
 	Avatar ContactAvatar;
@@ -44,19 +46,19 @@ class KADUAPI ContactAccountData : public QObject, public StorableObject
 	bool Blocked;
 	bool OfflineTo;
 
-protected:
-	virtual StoragePoint * createStoragePoint();
-
 public:
-	ContactAccountData(Contact contact, Account *account, const QString &id = QString::null, bool loadFromConfiguration = true);
+	ContactAccountData(Account *account, Contact contact, const QString &id, bool loaded = false);
+	ContactAccountData(Account *account, Contact contact, const QString &id, StoragePoint *storage);
 
 	virtual bool validateId() {return false;}
 	virtual void load();
 	virtual void store();
 
-	Account * account() { return ContactAccount; }
-	Contact contact() { return OwnerContact; }
-	Avatar & avatar() { return ContactAvatar; }
+	virtual QUuid uuid() const { return Uuid; }
+
+	Account * account() { ensureLoaded(); return ContactAccount; }
+	Contact contact() { ensureLoaded(); return OwnerContact; }
+	Avatar & avatar() { ensureLoaded(); return ContactAvatar; }
 
 	QString id() { return Id; }
 	void setId(const QString &newId);

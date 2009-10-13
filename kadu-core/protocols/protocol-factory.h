@@ -31,8 +31,8 @@ class ProtocolFactory : public QObject
 public:
 	virtual Account * newAccount() = 0;
 	virtual Account * loadAccount(StoragePoint *accountStoragePoint) = 0;
-	virtual ContactAccountData * newContactAccountData(Contact contact, Account *account, const QString &id, bool loadFromConfiguration = true) = 0;
-	virtual ContactAccountData * loadContactAccountData(Contact contact, Account *account) = 0;
+	virtual ContactAccountData * newContactAccountData(Account *account, Contact contact, const QString &id) = 0;
+	virtual ContactAccountData * loadContactAccountData(Account *account, Contact contact) = 0;
 	virtual AccountCreateWidget * newCreateAccountWidget(QWidget *parent = 0) = 0;
 	virtual AccountEditWidget * newEditAccountWidget(Account *, QWidget *parent = 0) = 0;
 	virtual ContactAccountDataWidget * newContactAccountDataWidget(ContactAccountData *contactAccountData, QWidget *parent = 0) = 0;

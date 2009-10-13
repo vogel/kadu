@@ -22,8 +22,10 @@ class GaduContactAccountData : public ContactAccountData
 	unsigned int GaduProtocolVersion;
 
 public:
-	GaduContactAccountData(Contact contact, Account *account, const QString &id = QString::null, bool loadFromConfiguration = true)
-			: ContactAccountData(contact, account, id, loadFromConfiguration), GaduProtocolVersion(0) {}
+	GaduContactAccountData(Account *account, Contact contact, const QString &id, bool loaded = false) :
+			ContactAccountData(account, contact, id, loaded) {}
+	GaduContactAccountData(Account *account, Contact contact, const QString &id, StoragePoint *storage) :
+			ContactAccountData(account, contact, id, storage) {}
 
 	virtual bool validateId();
 

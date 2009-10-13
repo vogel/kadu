@@ -36,7 +36,7 @@ void GaduPersonalInfoService::handleEventPubdir50Read(struct gg_event *e)
 		return;
 	}
 
-	GaduContactAccountData *gcad = new GaduContactAccountData(result, Protocol->account(),
+	GaduContactAccountData *gcad = new GaduContactAccountData(Protocol->account(), result,
 			gg_pubdir50_get(res, 0, GG_PUBDIR50_UIN));
 
 	result.addAccountData(gcad);

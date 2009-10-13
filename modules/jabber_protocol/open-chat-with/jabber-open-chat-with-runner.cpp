@@ -30,7 +30,7 @@ ContactList JabberOpenChatWithRunner::matchingContacts(const QString &query)
 
 	Contact c;
 
-	JabberContactAccountData *gcad = new JabberContactAccountData(c, ParentAccount, query);
+	JabberContactAccountData *gcad = new JabberContactAccountData(ParentAccount, c, query);
 	c.addAccountData(gcad);
 	c.setDisplay(ParentAccount->name() + ": " + query);
 	matchedContacts.append(c);

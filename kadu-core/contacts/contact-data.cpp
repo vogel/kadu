@@ -40,19 +40,6 @@ ContactData * ContactData::loadFromStorage(StoragePoint *contactStoragePoint)
 	return result;
 }
 
-StoragePoint * ContactData::storagePointForAccountData(Account *account)
-{
-	StoragePoint *parent = storage();
-	if (!parent || !parent->storage())
-		return 0;
-
-	QDomElement accountDataNode = parent->storage()->getUuidNode(parent->point(), "ContactAccountData",
-			account->uuid().toString(), XmlConfigFile::ModeGet);
-	return accountDataNode.isNull()
-		? 0
-		: new StoragePoint(parent->storage(), accountDataNode);
-}
-
 #undef Property
 #define Property(name, old_name) \
 	set##name(CustomData[#old_name]); \
@@ -224,14 +211,30 @@ QList<ContactAccountData *> ContactData::accountDatas()
 	return AccountsData.values();
 }
 
-bool ContactData::hasStoredAccountData(Account *account)
+StoragePoint * ContactData::storagePointForAccountData(Account *account)
 {
 	StoragePoint *sp = storage();
 	if (!sp || !sp->storage())
-		return false;
+		return 0;
 
-	return !sp->storage()->getUuidNode(sp->point(), "ContactAccountData",
-			account->uuid().toString(), XmlConfigFile::ModeFind).isNull();
+	QString stringUuid = account->uuid().toString();
+
+	QDomNodeList nodes = sp->storage()->getNodes(sp->point(), "ContactAccountData");
+	int count = nodes.count();
+	for (int i = 0; i < count; i++)
+	{
+		QDomElement element = nodes.at(i).toElement();
+		if (element.isNull())
+			continue;
+
+		QString accountUuid = sp->storage()->getTextNode(element, "Account");
+		if (accountUuid.isEmpty())
+			accountUuid = element.attribute("uuid");
+		if (accountUuid == stringUuid)
+			return new StoragePoint(sp->storage(), element);
+	}
+
+	return 0;
 }
 
 QString ContactData::id(Account *account)

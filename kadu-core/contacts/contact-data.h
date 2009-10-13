@@ -95,8 +95,6 @@ public:
 	virtual void load();
 	virtual void store();
 
-	StoragePoint * storagePointForAccountData(Account *account);
-
 	virtual QUuid uuid() const { return Uuid; }
 	QString id(Account *account);
 
@@ -112,7 +110,7 @@ public:
 	void removeAccountData(Account *account);
 	ContactAccountData * accountData(Account *account);
 	QList<ContactAccountData *> accountDatas();
-	bool hasStoredAccountData(Account *account);
+	StoragePoint * storagePointForAccountData(Account *account);
 
 	//contact type
 	bool isNull() const { return TypeNull == Type; }

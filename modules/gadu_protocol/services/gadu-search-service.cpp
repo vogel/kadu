@@ -87,7 +87,7 @@ void GaduSearchService::handleEventPubdir50SearchReply(struct gg_event *e)
 	{
 		Contact result;
 
-		GaduContactAccountData *gcad = new GaduContactAccountData(result, Protocol->account(),
+		GaduContactAccountData *gcad = new GaduContactAccountData(Protocol->account(), result,
 				gg_pubdir50_get(res, i, GG_PUBDIR50_UIN));
 
 		result.addAccountData(gcad);

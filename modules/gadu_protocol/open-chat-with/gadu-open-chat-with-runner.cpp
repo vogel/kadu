@@ -35,7 +35,7 @@ ContactList GaduOpenChatWithRunner::matchingContacts(const QString &query)
 
 	Contact c;
 
-	GaduContactAccountData *gcad = new GaduContactAccountData(c, ParentAccount, query);
+	GaduContactAccountData *gcad = new GaduContactAccountData(ParentAccount, c, query);
 	c.addAccountData(gcad);
 	c.setDisplay(ParentAccount->name() + ": " + query);
 	matchedContacts.append(c);

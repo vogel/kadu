@@ -74,7 +74,6 @@ public:
 	void loadConfiguration();
 	void store();
 
-	StoragePoint * storagePointForAccountData(Account *account) const;
 	StoragePoint * storagePointForModuleData(const QString &module, bool create = false) const;
 	void removeFromStorage();
 
@@ -90,7 +89,7 @@ public:
 	void removeAccountData(Account *account) const;
 	ContactAccountData * accountData(Account *account) const;
 	QList<ContactAccountData *> accountDatas() const;
-	bool hasStoredAccountData(Account *account) const;
+	StoragePoint * storagePointForAccountData(Account *account) const;
 	bool hasAccountData(Account *account) const;
 
 template<class T>

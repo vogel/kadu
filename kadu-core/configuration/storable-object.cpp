@@ -9,13 +9,18 @@
 
 #include "storable-object.h"
 
+StorableObject::StorableObject(bool loaded) :
+		Parent(0), Storage(0), Loaded(loaded)
+{
+}
+
 StorableObject::StorableObject(StoragePoint *storage, bool loaded) :
 		Parent(0), Storage(storage), Loaded(loaded)
 {
 }
 
-StorableObject::StorableObject(bool loaded) :
-		Parent(0), Storage(0), Loaded(loaded)
+StorableObject::StorableObject(const QString &nodeName, bool loaded) :
+		Parent(0), NodeName(nodeName), Storage(0), Loaded(loaded)
 {
 }
 
@@ -99,7 +104,7 @@ StoragePoint * StorableObject::storagePointForModuleData(const QString &module, 
 	QDomElement moduleDataNode = parent->storage()->getNamedNode(parent->point(), "ModuleData",
 			module, create ? XmlConfigFile::ModeGet : XmlConfigFile::ModeFind);
 	return moduleDataNode.isNull()
-		? 0
-		: new StoragePoint(parent->storage(), moduleDataNode);
+			? 0
+			: new StoragePoint(parent->storage(), moduleDataNode);
 }
 

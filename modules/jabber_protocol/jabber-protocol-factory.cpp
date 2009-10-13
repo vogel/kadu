@@ -67,16 +67,17 @@ Account * JabberProtocolFactory::loadAccount(StoragePoint *accountStoragePoint)
 	return account;
 }
 
-ContactAccountData * JabberProtocolFactory::newContactAccountData(Contact contact, Account *account, const QString &id, bool loadFromConfiguration)
+ContactAccountData * JabberProtocolFactory::newContactAccountData(Account *account, Contact contact, const QString &id)
 {
-	return new JabberContactAccountData(contact, account, id, loadFromConfiguration);
+	return new JabberContactAccountData(account, contact, id, true);
 }
 
-ContactAccountData * JabberProtocolFactory::loadContactAccountData(Contact contact, Account *account)
+ContactAccountData * JabberProtocolFactory::loadContactAccountData(Account *account, Contact contact)
 {
-	return contact.hasStoredAccountData(account)
-		? new JabberContactAccountData(contact, account, QString::null)
-		: 0;
+	StoragePoint *point = contact.storagePointForAccountData(account);
+	return point
+			? new JabberContactAccountData(account, contact, QString::null, point)
+			: 0;
 }
 
 AccountCreateWidget * JabberProtocolFactory::newCreateAccountWidget(QWidget *parent)

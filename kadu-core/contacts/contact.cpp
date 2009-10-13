@@ -99,11 +99,6 @@ void Contact::removeFromStorage()
 	Data->removeFromStorage();
 }
 
-StoragePoint * Contact::storagePointForAccountData(Account* account) const
-{
-	return Data->storagePointForAccountData(account);
-}
-
 StoragePoint * Contact::storagePointForModuleData(const QString& module, bool create) const
 {
 	return Data->storagePointForModuleData(module, create);
@@ -163,11 +158,11 @@ QList<ContactAccountData *> Contact::accountDatas() const
 		: Data->accountDatas();
 }
 
-bool Contact::hasStoredAccountData(Account *account) const
+StoragePoint * Contact::storagePointForAccountData(Account *account) const
 {
 	return isNull()
-		? false
-		: Data->hasStoredAccountData(account);
+		? 0
+		: Data->storagePointForAccountData(account);
 }
 
 bool Contact::hasAccountData(Account *account) const
@@ -280,7 +275,7 @@ Contact Contact::dummy()
 
 	if (account)
 	{
-		ContactAccountData *contactData = new ContactAccountData(example, account, "999999", false);
+		ContactAccountData *contactData = new ContactAccountData(account, example, "999999");
 		contactData->setStatus(Status("Away", tr("Example description")));
 		contactData->setIp(QHostAddress(2130706433));
 		contactData->setPort(80);

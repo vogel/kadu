@@ -23,7 +23,8 @@ protected:
 	virtual StoragePoint * createStoragePoint();
 
 public:
-	UuidStorableObject(StoragePoint *storage);
+	explicit UuidStorableObject(const QString &nodeName, bool loaded = false);
+	explicit UuidStorableObject(StoragePoint *storage);
 	UuidStorableObject(const QString &nodeName, StorableObject *parent);
 
 	virtual QUuid uuid() const = 0;

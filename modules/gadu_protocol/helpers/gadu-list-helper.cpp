@@ -128,7 +128,10 @@ ContactList GaduListHelper::streamToContactList(Account *account, QTextStream &c
 			if (!ok)
 				uin = 0;
 			if (uin)
-				contact.addAccountData(new GaduContactAccountData(contact, account, QString::number(uin), false));
+			{
+				GaduContactAccountData *gcad = new GaduContactAccountData(account, contact, QString::number(uin), false);
+				contact.addAccountData(gcad);
+			}
 		}
 
 		if (i < secCount)

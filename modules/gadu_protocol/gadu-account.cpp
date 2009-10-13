@@ -16,8 +16,8 @@
 #include "gadu-account.h"
 
 GaduAccount::GaduAccount(const QUuid &uuid) :
-	Account(uuid), AllowDcc(true), DccIP(QHostAddress()), DccExternalIP(QHostAddress()), DccIpDetect(true),
-	 DccPort(0), DccExternalPort(0), DccLocalPort(0), RemoveCompletedTransfers(0), DccForwarding(0)
+		Account(uuid), AllowDcc(true), DccIP(QHostAddress()), DccExternalIP(QHostAddress()), DccIpDetect(true),
+		DccPort(0), DccExternalPort(0), DccLocalPort(0), RemoveCompletedTransfers(0), DccForwarding(0)
 {
 	OpenChatRunner = new GaduOpenChatWithRunner(this);
 	OpenChatWithRunnerManager::instance()->registerRunner(OpenChatRunner);

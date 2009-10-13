@@ -56,7 +56,7 @@ bool Account::setId(const QString &id)
 
 void Account::contactAdded(Contact contact)
 {
-	ContactAccountData *cad = ProtocolHandler->protocolFactory()->loadContactAccountData(contact, this);
+	ContactAccountData *cad = ProtocolHandler->protocolFactory()->loadContactAccountData(this, contact);
 	if (cad)
 		contact.addAccountData(cad);
 }
@@ -131,7 +131,7 @@ Contact Account::createAnonymous(const QString& id)
 {
 	Contact result(ContactData::TypeAnonymous);
 	ProtocolFactory *protocolFactory = ProtocolHandler->protocolFactory();
-	ContactAccountData *contactAccountData = protocolFactory->newContactAccountData(result, this, id, false);
+	ContactAccountData *contactAccountData = protocolFactory->newContactAccountData(this, result, id);
 	if (!contactAccountData->isValid())
 	{
 		delete contactAccountData;

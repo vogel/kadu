@@ -32,6 +32,7 @@ protected:
 
 public:
 	explicit StorableObject(bool loaded = false);
+	explicit StorableObject(const QString &nodeName, bool loaded = false);
 	StorableObject(StoragePoint *storage, bool loaded = false);
 	StorableObject(const QString &nodeName, StorableObject *parent, bool loaded = false);
 
