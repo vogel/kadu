@@ -116,6 +116,8 @@ set (kadu_SRCS
 	gui/widgets/path-list-edit.cpp
 	gui/widgets/proxy-group-box.cpp
 	gui/widgets/preview.cpp
+	gui/widgets/select-contact-combobox.cpp
+	gui/widgets/select-contact-popup.cpp
 	gui/widgets/select-file.cpp
 	gui/widgets/select-font.cpp
 	gui/widgets/status-button.cpp
@@ -339,6 +341,8 @@ set (kadu_MOC_SRCS
 	gui/widgets/kadu-text-browser.h
 	gui/widgets/path-list-edit.h
 	gui/widgets/preview.h
+	gui/widgets/select-contact-combobox.h
+	gui/widgets/select-contact-popup.h
 	gui/widgets/select-file.h
 	gui/widgets/select-font.h
 	gui/widgets/status-button.h

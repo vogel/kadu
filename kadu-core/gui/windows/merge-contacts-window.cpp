@@ -14,6 +14,8 @@
 #include <QtGui/QPushButton>
 #include <QtGui/QVBoxLayout>
 
+#include "gui/widgets/select-contact-combobox.h"
+
 #include "merge-contacts-window.h"
 
 MergeContactsWindow::MergeContactsWindow(Contact contact, QWidget * parent) :
@@ -38,9 +40,8 @@ void MergeContactsWindow::createGui()
 
 	QHBoxLayout *chooseLayout = new QHBoxLayout(chooseWidget);
 
-	chooseLayout->addWidget(new QLabel(tr("Username:"), this));
-	chooseLayout->addWidget(new QLineEdit(this));
-	chooseLayout->addWidget(new QPushButton(tr("Choose..."), this));
+	chooseLayout->addWidget(new QLabel(tr("Contact:"), this));
+	chooseLayout->addWidget(new SelectContactCombobox(this));
 
 	layout->addStretch(100);
 	QDialogButtonBox *buttons = new QDialogButtonBox(this);
