@@ -134,6 +134,7 @@ void ContactData::load()
 	Property(HomePhone)
 	Property(Mobile)
 	Property(Email)
+	Property(Website)
 
 	Ignored = QVariant(configurationStorage->getTextNode(parent, "Ignored")).toBool();
 }
@@ -164,6 +165,7 @@ void ContactData::store()
 	Property(HomePhone)
 	Property(Mobile)
 	Property(Email)
+	Property(Website)
 
 	if (Groups.count())
 	{

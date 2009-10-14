@@ -124,6 +124,7 @@ template<class T>
 	Property(QString, homePhone, HomePhone, QString::null)
 	Property(QString, mobile, Mobile, QString::null)
 	Property(QString, email, Email, QString::null)
+	Property(QString, website, Website, QString::null)
 	Property(unsigned short, birthYear, BirthYear, 0)
 	Property(ContactData::ContactGender, gender, Gender, ContactData::GenderUnknown)
 	Property(QList<Group *>, groups, Groups, QList<Group *>())
