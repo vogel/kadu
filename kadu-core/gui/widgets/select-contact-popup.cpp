@@ -9,13 +9,19 @@
 
 #include "contacts/contact-manager.h"
 #include "contacts/model/contacts-model.h"
+#include "gui/widgets/contacts-list-view.h"
 
 #include "select-contact-popup.h"
 
 SelectContactPopup::SelectContactPopup(QWidget *parent) :
-		ContactsListView(0, parent)
+		ContactsListWidget(0, parent)
 {
-	setModel(new ContactsModel(ContactManager::instance(), this));
+	setWindowFlags(Qt::Popup);
+
+	ContactsModel *model = new ContactsModel(ContactManager::instance(), this);
+
+	view()->setItemsExpandable(false);
+	view()->setModel(model);
 }
 
 SelectContactPopup::~SelectContactPopup()

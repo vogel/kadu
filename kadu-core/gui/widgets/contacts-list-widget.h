@@ -12,6 +12,8 @@
 
 #include <QtGui/QWidget>
 
+class QLineEdit;
+
 class ContactNameFilter;
 class ContactsListView;
 class MainWindow;
@@ -20,6 +22,7 @@ class ContactsListWidget : public QWidget
 {
 	Q_OBJECT
 
+	QLineEdit *NameFilterEdit;
 	ContactsListView *View;
 	ContactNameFilter *NameFilter;
 
@@ -31,6 +34,7 @@ public:
 	virtual ~ContactsListWidget();
 
 	ContactsListView *view() { return View; }
+	ContactNameFilter *nameFilter() { return NameFilter; }
 
 };
 

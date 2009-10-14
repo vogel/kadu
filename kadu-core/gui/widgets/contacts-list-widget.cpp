@@ -28,9 +28,9 @@ ContactsListWidget::ContactsListWidget(MainWindow *mainWindow, QWidget *parent) 
 	QHBoxLayout *topLayout = new QHBoxLayout(topWidget);
 	topLayout->setMargin(0);
 
-	QLineEdit *nameFilterEdit = new QLineEdit(this);
-	topLayout->addWidget(nameFilterEdit);
-	connect(nameFilterEdit, SIGNAL(textChanged(const QString &)),
+	NameFilterEdit = new QLineEdit(this);
+	topLayout->addWidget(NameFilterEdit);
+	connect(NameFilterEdit, SIGNAL(textChanged(const QString &)),
 			this, SLOT(nameFilterChanged(const QString &)));
 
 	View = new ContactsListView(mainWindow, this);

@@ -10,15 +10,17 @@
 #ifndef SELECT_CONTACT_POPUP_H
 #define SELECT_CONTACT_POPUP_H
 
-#include "gui/widgets/contacts-list-view.h"
+#include "gui/widgets/contacts-list-widget.h"
 
-class SelectContactPopup : public ContactsListView
+class SelectContactPopup : public ContactsListWidget
 {
 	Q_OBJECT
 
 public:
 	explicit SelectContactPopup(QWidget *parent = 0);
 	virtual ~SelectContactPopup();
+
+	void setNameFilter(const QString &filter);
 
 };
 
