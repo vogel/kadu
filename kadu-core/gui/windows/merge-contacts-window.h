@@ -22,6 +22,9 @@ class MergeContactsWindow : public QDialog
 
 	void createGui();
 
+private slots:
+	void selectedContactChanged(Contact);
+
 public:
 	explicit MergeContactsWindow(Contact contact, QWidget *parent = 0);
 	virtual ~MergeContactsWindow();

@@ -18,7 +18,7 @@
 #include "contacts-model-proxy.h"
 
 ContactsModelProxy::ContactsModelProxy(QObject *parent)
-	: QSortFilterProxyModel(parent)
+	: QSortFilterProxyModel(parent), SourceContactModel(0)
 {
 	setDynamicSortFilter(true);
 	sort(0);

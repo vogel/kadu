@@ -12,13 +12,20 @@
 
 #include <QtGui/QComboBox>
 
+#include "contacts/contact.h"
+
 class SelectContactPopup;
 
 class SelectContactCombobox : public QComboBox
 {
 	Q_OBJECT
 
+	Contact CurrentContact;
+
 	SelectContactPopup *Popup;
+
+private slots:
+	void contactTextChanged(const QString &);
 
 protected:
 	virtual void showPopup();
@@ -27,6 +34,11 @@ protected:
 public:
 	explicit SelectContactCombobox(QWidget *parent = 0);
 	virtual ~SelectContactCombobox();
+
+	Contact contact() { return CurrentContact; }
+
+signals:
+	void contactChanged(Contact contact);
 
 };
 

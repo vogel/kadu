@@ -41,7 +41,9 @@ void MergeContactsWindow::createGui()
 	QHBoxLayout *chooseLayout = new QHBoxLayout(chooseWidget);
 
 	chooseLayout->addWidget(new QLabel(tr("Contact:"), this));
-	chooseLayout->addWidget(new SelectContactCombobox(this));
+	SelectContactCombobox* selectCombo = new SelectContactCombobox(this);
+	connect(selectCombo, SIGNAL(contactChanged(Contact)), this, SLOT(selectedContactChanged(Contact)));
+	chooseLayout->addWidget(selectCombo);
 
 	layout->addStretch(100);
 	QDialogButtonBox *buttons = new QDialogButtonBox(this);
@@ -55,4 +57,9 @@ void MergeContactsWindow::createGui()
 
 	buttons->addButton(mergeButton, QDialogButtonBox::AcceptRole);
 	buttons->addButton(cancel, QDialogButtonBox::DestructiveRole);
+}
+
+void MergeContactsWindow::selectedContactChanged(Contact contact)
+{
+	printf("contact changed: %s\n", qPrintable(contact.display()));
 }
