@@ -288,7 +288,7 @@ KaduWindowActions::KaduWindowActions(QObject *parent) : QObject(parent)
 
 	OpenSearch = new ActionDescription(this,
 		ActionDescription::TypeGlobal, "openSearchAction",
-		this, SLOT(/*openSearchActionActivated*/lookupInDirectoryActionActivated(QAction *, bool)),
+		this, SLOT(openSearchActionActivated(QAction *, bool)),
 		"LookupUserInfo", tr("Search for Buddies...")
 	);
 
@@ -365,13 +365,12 @@ KaduWindowActions::KaduWindowActions(QObject *parent) : QObject(parent)
 	);
 	ContactsListViewMenuManager::instance()->addListActionDescription(WriteEmail);
 
-/*	LookupUserInfo = new ActionDescription(this,			//thrown from ContexMenu
+	LookupUserInfo = new ActionDescription(this,
 		ActionDescription::TypeUser, "lookupUserInfoAction",
 		this, SLOT(lookupInDirectoryActionActivated(QAction *, bool)),
 		"LookupUserInfo", tr("Search in directory"), false, "",
 		disableNoGaduUle
 	);
-	ContactsListViewMenuManager::instance()->addActionDescription(LookupUserInfo);*/
 
 	ContactsListViewMenuManager::instance()->insertManagementActionDescription(2, ChatWidgetManager::instance()->actions()->ignoreUser());
 	ContactsListViewMenuManager::instance()->insertManagementActionDescription(3, ChatWidgetManager::instance()->actions()->blockUser());

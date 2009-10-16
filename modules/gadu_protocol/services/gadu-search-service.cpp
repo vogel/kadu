@@ -35,8 +35,8 @@ void GaduSearchService::searchNext()
 
 	gg_pubdir50_t req = gg_pubdir50_new(GG_PUBDIR50_SEARCH);
 
-// 	if (!Query.Uin.isEmpty()) TODO: 0.6.6
-// 		gg_pubdir50_add(req, GG_PUBDIR50_UIN, (const char *)unicode2cp(searchRecord.Uin).data());
+	if (!Query.accountData(Protocol->account())->id().isEmpty())
+		gg_pubdir50_add(req, GG_PUBDIR50_UIN, (const char *)unicode2cp(Query.accountData(Protocol->account())->id()).data());
 	if (!Query.firstName().isEmpty())
 		gg_pubdir50_add(req, GG_PUBDIR50_FIRSTNAME, (const char *)unicode2cp(Query.firstName()).data());
 	if (!Query.lastName().isEmpty())

@@ -20,6 +20,7 @@
 #include <QtGui/QTreeWidget>
 #include <QtGui/QTreeWidgetItem>
 
+#include "accounts/account-manager.h"
 #include "chat/chat-manager.h"
 #include "configuration/configuration-file.h"
 #include "contacts/contact-account-data.h"
@@ -35,6 +36,7 @@
 #include "protocols/services/search-service.h"
 
 #include "search-window.h"
+#include <protocols/protocol-factory.h>
 
 SearchActionsSlots *SearchWindow::searchActionsSlot;
 
@@ -46,7 +48,7 @@ ActionDescription *SearchWindow::addFoundAction;
 ActionDescription *SearchWindow::chatFoundAction;
 
 SearchWindow::SearchWindow(QWidget *parent, Contact contact)
-	: KaduWindow(parent),
+	: MainWindow(parent),
 	only_active(0), e_uin(0), e_name(0), e_nick(0), e_byrFrom(0), e_byrTo(0), e_surname(0),
 	c_gender(0), e_city(0), results(0), progress(0), r_uin(0), r_pers(0), CurrentContact(contact),
 	seq(0), selectedUsers(ContactSet()), searchhidden(false), searching(false), workaround(false)
@@ -149,20 +151,29 @@ SearchWindow::SearchWindow(QWidget *parent, Contact contact)
 	btngrpLayout->addWidget(r_uin);
 
 	QGridLayout * grid = new QGridLayout(centralWidget);
-	grid->addWidget(l_nick, 1, 0, Qt::AlignRight); grid->addWidget(e_nick, 1, 1);
-	grid->addWidget(l_gender, 2, 0, Qt::AlignRight); grid->addWidget(c_gender, 2, 1);
-	grid->addWidget(l_name, 1, 3, Qt::AlignRight); grid->addWidget(e_name, 1, 4);
-	grid->addWidget(l_surname, 2, 3, Qt::AlignRight); grid->addWidget(e_surname, 2, 4);
-	grid->addWidget(l_byr, 1, 6, Qt::AlignRight);
-	grid->addWidget(l_byrFrom, 1, 7, Qt::AlignRight); grid->addWidget(e_byrFrom, 1, 8);
-	grid->addWidget(l_byrTo, 2, 7, Qt::AlignRight); grid->addWidget(e_byrTo, 2, 8);
-	grid->addWidget(l_city, 1, 10, Qt::AlignRight); grid->addWidget(e_city, 1, 11);
 
-	grid->addWidget(only_active, 2, 2, 10, 11);
-	grid->addWidget(qgrp1, 3, 3, 0, 3);
-	grid->addWidget(btngrp, 3, 3, 4, 11);
-	grid->addWidget(results, 5, 5, 0, 11);
-	grid->addWidget(progress, 6, 6, 0, 1);
+	grid->addWidget(l_nick, 1, 0, Qt::AlignRight); 
+	grid->addWidget(e_nick, 1, 1);
+	grid->addWidget(l_name, 1, 3, Qt::AlignRight); 
+	grid->addWidget(e_name, 1, 4);
+	grid->addWidget(l_byr, 1, 6, Qt::AlignRight);
+	grid->addWidget(l_byrFrom, 1, 7, Qt::AlignRight); 
+	grid->addWidget(e_byrFrom, 1, 8);
+	grid->addWidget(l_city, 1, 10, Qt::AlignRight);
+	grid->addWidget(e_city, 1, 11);
+
+	grid->addWidget(l_gender, 2, 0, Qt::AlignRight); 
+	grid->addWidget(c_gender, 2, 1);
+	grid->addWidget(l_surname, 2, 3, Qt::AlignRight); 
+	grid->addWidget(e_surname, 2, 4);
+	grid->addWidget(l_byrTo, 2, 7, Qt::AlignRight); 
+	grid->addWidget(e_byrTo, 2, 8);
+	grid->addWidget(only_active, 2, 10, 1, 2);
+
+	grid->addWidget(qgrp1, 3, 0, 1, 4);
+	grid->addWidget(btngrp, 3, 4, 1, 8);
+	grid->addWidget(results, 5, 0, 1, 12);
+	grid->addWidget(progress, 6, 0, 1, 2);
 
 /// 	grid->addColSpacing(2, 10);
 ///	grid->addColSpacing(5, 10);
@@ -182,8 +193,6 @@ SearchWindow::SearchWindow(QWidget *parent, Contact contact)
 //		results->setColumnWidthMode(i, Q3ListView::Maximum);
 
 //	searchhidden = false;
-	if (!CurrentContact.isNull())
-		e_uin->insert(CurrentContact.accountData(CurrentContact.prefferedAccount())->id());
 
 	setCentralWidget(centralWidget);
 
@@ -201,11 +210,32 @@ SearchWindow::SearchWindow(QWidget *parent, Contact contact)
 
 	loadWindowGeometry(this, "General", "SearchWindowGeometry", 0, 50, 800, 350);
 
-	CurrentSearchService = CurrentContact.prefferedAccount()->protocol()->searchService();
+	if (Contact::null != contact)
+	{
+		CurrentAccount = contact.prefferedAccount();
+	}
+	else
+	{
+		foreach (Account *a, AccountManager::instance()->accounts())
+		{
+			if (a->protocol()->isConnected() && a->protocol()->protocolFactory()->name() == "gadu")
+			{
+				CurrentAccount = a;
+				break;
+			}
+		}
+		if (!CurrentAccount)
+			CurrentAccount = AccountManager::instance()->accounts().at(0);
+	}
+
+	CurrentSearchService = CurrentAccount->protocol()->searchService();
 	if (CurrentSearchService)
 	{
 		connect(CurrentSearchService, SIGNAL(newResults(ContactList)), this, SLOT(newSearchResults(ContactList)));
 	}
+
+	if (!CurrentContact.isNull())
+		e_uin->insert(CurrentContact.accountData(CurrentAccount)->id());
 
 	kdebugf2();
 }
@@ -337,7 +367,7 @@ ContactSet SearchWindow::selected()
 	else
 		altnick = uin; // If above are empty, use uin.
 
-	Contact e = ContactManager::instance()->byId(CurrentContact.prefferedAccount(), uin);
+	Contact e = ContactManager::instance()->byId(CurrentAccount, uin);
 
 	if (e.isAnonymous())
 	{
@@ -391,7 +421,14 @@ void SearchWindow::firstSearch()
 	if (r_pers->isChecked() && isPersonalDataEmpty())
 		return;
 
-	if (!CurrentContact.prefferedAccount()->protocol()->isConnected())
+	if (!CurrentSearchService)
+	{
+		MessageBox::msg(tr("For this network we dont offer contacts search feature yet"), false, "Critical", this);
+		kdebugf2();
+		return;
+	}
+
+	if (!CurrentAccount->protocol()->isConnected())
 	{
 		MessageBox::msg(tr("Cannot search contacts in offline mode"), false, "Critical", this);
 		kdebugf2();
@@ -441,6 +478,14 @@ void SearchWindow::firstSearch()
  	setActionState(addFoundAction, false);
  	setActionState(chatFoundAction, false);
 
+	if (Contact::null == CurrentContact)
+	{
+		Contact c;
+		ContactAccountData *data = new ContactAccountData(CurrentAccount, c, e_uin->text());
+		c.addAccountData(data);
+		CurrentContact = c;
+	}
+
 	CurrentSearchService->searchFirst(CurrentContact);
 
 	progress->setText(tr("Searching..."));
@@ -452,7 +497,7 @@ void SearchWindow::nextSearch()
 {
 	kdebugf();
 
-	if (!CurrentContact.prefferedAccount()->protocol()->isConnected())
+	if (!CurrentAccount->protocol()->isConnected())
 		return;
 
 	searching = true;
@@ -474,8 +519,8 @@ void SearchWindow::newSearchResults(ContactList contacts)
 {
 	kdebugf();
 
-	if ((seq != searchRecord->Seq) || searchRecord->IgnoreResults)
-		return;
+///	if ((seq != searchRecord->Seq) || searchRecord->IgnoreResults)
+///		return;
 
 	QTreeWidgetItem *qlv = 0;
 	QPixmap pix;
@@ -488,38 +533,25 @@ void SearchWindow::newSearchResults(ContactList contacts)
 
 	foreach(Contact contact, contacts)
 	{
-		///QList <QTreeWidgetItem *> items = results->findItems(searchResult.Uin, Qt::MatchExactly, 1);
-		///if (items.count())
-		///	qlv = items[0];
-		//TODO proper account
-		ContactAccountData *cad = contact.accountData(CurrentContact.prefferedAccount());
+		ContactAccountData *cad = contact.accountData(CurrentAccount);
+		QList <QTreeWidgetItem *> items = results->findItems(cad->id(), Qt::MatchExactly, 1);
+		if (items.count())
+			qlv = items[0];		
 		pix = cad->account()->statusPixmap(cad->status());
 
 		if (qlv)
 		{
-//			if (!searchhidden) {
 			qlv->setText(1, cad->id());
 			qlv->setText(2, contact.firstName());
 			qlv->setText(3, contact.city());
 			qlv->setText(4, contact.nickName());
 			qlv->setText(5, contact.familyCity());
-//	}
-//			else
-//				searchhidden = false;
 		}
 		else
 		{
 			QStringList strings;
 			strings << QString::null << cad->id() << contact.firstName() << contact.city() << contact.nickName() << contact.familyCity();
 			qlv = new QTreeWidgetItem(results, strings);
-//			if (count == 1 && r_uin->isChecked() && !searchhidden
-//				&& (statuscode == GG_STATUS_NOT_AVAIL || statuscode == GG_STATUS_NOT_AVAIL_DESCR)) {
-//				qlv->setPixmap(0, pix);
-//				searchhidden = true;
-//				nextSearch();
-//				return;
-//				}
-		//	}
 			qlv->setIcon(0, QIcon(pix));
 			qlv = 0;
 		}
@@ -527,19 +559,14 @@ void SearchWindow::newSearchResults(ContactList contacts)
 
 	progress->setText(tr("Done searching"));
 
-//	if (results->topLevelItemCount() > 0)
-//		results->topLevelItem(0)->setSelected(true);
-
-//	searchhidden = false;
 	if ((r_pers->isChecked() && !isPersonalDataEmpty()) || (r_uin->isChecked() && !e_uin->text().isEmpty()))
 		setActionState(firstSearchAction, true);
 	setActionState(stopSearchAction, false);
-/**
-	if (searchResults.isEmpty()  || ((int)searchResults.count() == items))
+
+	if (contacts.isEmpty()  || (contacts.count() == items))
 	{
 		kdebugmf(KDEBUG_INFO, "No results. Exit.\n");
 		MessageBox::msg(tr("There were no results of your search"), false, "Information", this);
-//		searchhidden = false;
 	}
 	else
 	{
@@ -549,7 +576,7 @@ void SearchWindow::newSearchResults(ContactList contacts)
 		if (results->topLevelItemCount() > 0)
 			setActionState(clearResultsAction, true);
 	}
-*/
+
 	if (!results->selectedItems().isEmpty())
 	{
 		setActionState(addFoundAction, true);

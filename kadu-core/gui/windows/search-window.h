@@ -4,7 +4,7 @@
 #include "contacts/contact-list.h"
 #include "contacts/contact-set.h"
 #include "gui/actions/action.h"
-#include "gui/windows/kadu-window.h"
+#include "gui/windows/main-window.h"
 
 class QCheckBox;
 class QComboBox;
@@ -88,7 +88,7 @@ public slots:
 };
 
 
-class KADUAPI SearchWindow : public KaduWindow
+class KADUAPI SearchWindow : public MainWindow
 {
 	Q_OBJECT
 
@@ -118,6 +118,7 @@ class KADUAPI SearchWindow : public KaduWindow
 	QRadioButton *r_uin;
 	QRadioButton *r_pers;
 	Contact CurrentContact;
+	Account *CurrentAccount;
 	uint32_t seq;
 	ContactSet selectedUsers;
 
@@ -175,6 +176,11 @@ public:
 	//virtual UserBox * userBox() { return 0; }
 	//virtual UserListElements userListElements() { return UserListElements(); }
 	//virtual ChatWidget * chatWidget() { return 0; }
+
+	virtual ContactsListView* contactsListView() { return 0; }
+	virtual ContactSet contacts() { return ContactSet(); }
+	virtual Chat* chat() { return 0; }
+
 
 	/**
 		\fn void nextSearch()
