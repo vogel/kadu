@@ -55,6 +55,7 @@ set (kadu_SRCS
 	contacts/filter/account-contact-filter.cpp
 	contacts/filter/anonymous-contact-filter.cpp
 	contacts/filter/anonymous-without-messages-contact-filter.cpp
+	contacts/filter/contact-mergable-filter.cpp
 	contacts/filter/contact-name-filter.cpp
 	contacts/filter/group-contact-filter.cpp
 	contacts/filter/has-description-contact-filter.cpp
@@ -294,6 +295,7 @@ set (kadu_MOC_SRCS
 	contacts/filter/account-contact-filter.h
 	contacts/filter/anonymous-contact-filter.h
 	contacts/filter/anonymous-without-messages-contact-filter.h
+	contacts/filter/contact-mergable-filter.h
 	#contacts/filter/contact-name-filter.h
 	contacts/filter/group-contact-filter.h
 	contacts/filter/has-description-contact-filter.h
