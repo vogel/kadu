@@ -12,6 +12,7 @@
 ContactMergableFilter::ContactMergableFilter(Contact contact, QObject *parent) :
 		AbstractContactFilter(parent), MyContact(contact)
 {
+	Accounts = MyContact.accounts().toSet();
 }
 
 ContactMergableFilter::~ContactMergableFilter()
@@ -31,5 +32,5 @@ void ContactMergableFilter::setContact(Contact contact)
 
 bool ContactMergableFilter::acceptContact(Contact contact)
 {
-	return !Accounts.contains(contact.accounts().toSet());
+	return contact.accounts().toSet().intersect(Accounts).empty();
 }

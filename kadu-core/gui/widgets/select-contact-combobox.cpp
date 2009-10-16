@@ -12,6 +12,7 @@
 #include "contacts/contact-manager.h"
 #include "contacts/filter/contact-name-filter.h"
 #include "contacts/model/contacts-model.h"
+#include "contacts/model/contacts-model-proxy.h"
 #include "gui/widgets/contacts-line-edit.h"
 #include "gui/widgets/contacts-list-view.h"
 #include "gui/widgets/select-contact-popup.h"
@@ -27,10 +28,12 @@ SelectContactCombobox::SelectContactCombobox(QWidget *parent) :
 			this, SLOT(contactTextChanged(const QString &)));
 
 	ContactsModel *model = new ContactsModel(ContactManager::instance(), this);
+	ProxyModel = new ContactsModelProxy(this);
+	ProxyModel->setSourceModel(model);
 
 	QCompleter *completer = new QCompleter(this);
 	completer->setPopup(new ContactsListView(0, this));
-	completer->setModel(model);
+	completer->setModel(ProxyModel);
 	completer->setCaseSensitivity(Qt::CaseInsensitive);
 	completer->setCompletionRole(Qt::DisplayRole);
 	completer->setCompletionMode(QCompleter::PopupCompletion);
@@ -46,6 +49,18 @@ SelectContactCombobox::~SelectContactCombobox()
 	Popup = 0;
 }
 
+
+void SelectContactCombobox::addFilter(AbstractContactFilter *filter)
+{
+	ProxyModel->addFilter(filter);
+	Popup->view()->addFilter(filter);
+}
+
+void SelectContactCombobox::removeFilter(AbstractContactFilter *filter)
+{
+	ProxyModel->removeFilter(filter);
+	Popup->view()->removeFilter(filter);
+}
 
 void SelectContactCombobox::contactTextChanged(const QString &contactText)
 {

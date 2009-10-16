@@ -14,6 +14,7 @@
 #include <QtGui/QPushButton>
 #include <QtGui/QVBoxLayout>
 
+#include "contacts/filter/contact-mergable-filter.h"
 #include "gui/widgets/select-contact-combobox.h"
 
 #include "merge-contacts-window.h"
@@ -42,6 +43,7 @@ void MergeContactsWindow::createGui()
 
 	chooseLayout->addWidget(new QLabel(tr("Contact:"), this));
 	SelectContactCombobox* selectCombo = new SelectContactCombobox(this);
+	selectCombo->addFilter(new ContactMergableFilter(MyContact, selectCombo));
 	connect(selectCombo, SIGNAL(contactChanged(Contact)), this, SLOT(selectedContactChanged(Contact)));
 	chooseLayout->addWidget(selectCombo);
 

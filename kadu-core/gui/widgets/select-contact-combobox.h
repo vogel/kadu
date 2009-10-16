@@ -14,6 +14,8 @@
 
 #include "contacts/contact.h"
 
+class AbstractContactFilter;
+class ContactsModelProxy;
 class SelectContactPopup;
 
 class SelectContactCombobox : public QComboBox
@@ -21,7 +23,7 @@ class SelectContactCombobox : public QComboBox
 	Q_OBJECT
 
 	Contact CurrentContact;
-
+	ContactsModelProxy *ProxyModel;
 	SelectContactPopup *Popup;
 
 private slots:
@@ -34,6 +36,9 @@ protected:
 public:
 	explicit SelectContactCombobox(QWidget *parent = 0);
 	virtual ~SelectContactCombobox();
+
+	void addFilter(AbstractContactFilter *filter);
+	void removeFilter(AbstractContactFilter *filter);
 
 	Contact contact() { return CurrentContact; }
 

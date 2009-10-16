@@ -616,9 +616,11 @@ void KaduWindowActions::mergeContactActionActivated(QAction *sender, bool toggle
 		return;
 
 	Contact contact = window->contact();
-	MergeContactsWindow *mergeContactsWindow = new MergeContactsWindow(contact, window);
-
-	mergeContactsWindow->show();
+	if (!contact.isNull())
+	{
+		MergeContactsWindow *mergeContactsWindow = new MergeContactsWindow(contact, window);
+		mergeContactsWindow->show();
+	}
 
 	kdebugf2();
 }
