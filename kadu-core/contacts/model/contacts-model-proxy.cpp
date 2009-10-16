@@ -33,6 +33,8 @@ void ContactsModelProxy::setSourceModel(QAbstractItemModel *sourceModel)
 	SourceContactModel = dynamic_cast<AbstractContactsModel *>(sourceModel);
 	QSortFilterProxyModel::setSourceModel(sourceModel);
 
+	connect(sourceModel, SIGNAL(destroyed(QObject *)), this, SLOT(modelDestroyed()));
+
 	setDynamicSortFilter(true);
 	sort(0);
 }
@@ -42,6 +44,11 @@ int ContactsModelProxy::compareNames(QString n1, QString n2) const
 	return BrokenStringCompare
 		? n1.toLower().localeAwareCompare(n2.toLower())
 		: n1.localeAwareCompare(n2);
+}
+
+void ContactsModelProxy::modelDestroyed()
+{
+	SourceContactModel = 0;
 }
 
 bool ContactsModelProxy::lessThan(const QModelIndex &left, const QModelIndex &right) const
