@@ -71,22 +71,20 @@ void MergeContactsWindow::selectedContactChanged(Contact contact)
 
 void MergeContactsWindow::accept()
 {
-	QDialog::accept();
-
 	Contact mergeWith = SelectCombo->contact();
 	if (mergeWith.isNull())
-		return;
-
-	if (MyContact.isNull())
-		return;
-
-	QList<Account *> accounts = MyContact.accounts();
-	foreach (Account *account, accounts)
 	{
-		ContactAccountData* cad = MyContact.accountData(account);
-		MyContact.removeAccountData(account);
-		mergeWith.addAccountData(cad);
+		printf("mw is null\n");
+		return;
 	}
 
-	ContactManager::instance()->removeContact(MyContact);
+	if (MyContact.isNull())
+	{
+		printf("mc is null\n");
+		return;
+	}
+
+	MyContact.mergeWith(mergeWith);
+
+	QDialog::accept();
 }

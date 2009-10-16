@@ -65,6 +65,8 @@ public:
 	bool isNull() const { return 0 == Data || Data->isNull(); }
 	bool isAnonymous() const { return 0 != Data && Data->isAnonymous(); }
 
+	void mergeWith(Contact contact); // TODO: 0.8 refactor
+
 	Contact & operator = (const Contact &copy);
 	bool operator == (const Contact &compare) const;
 	bool operator != (const Contact &compare) const;

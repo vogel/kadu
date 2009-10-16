@@ -96,6 +96,8 @@ public:
 	virtual void store();
 
 	virtual QUuid uuid() const { return Uuid; }
+	void setUuid(const QUuid uuid) { Uuid = uuid; }
+
 	QString id(Account *account);
 
 	Account * prefferedAccount();

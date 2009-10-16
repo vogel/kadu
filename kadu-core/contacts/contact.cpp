@@ -12,6 +12,7 @@
 #include "configuration/xml-configuration-file.h"
 #include "contacts/avatar.h"
 #include "contacts/contact-account-data.h"
+#include "contacts/contact-manager.h"
 #include "contacts/contact-remove-predicate-object.h"
 #include "protocols/protocols-manager.h"
 #include "icons-manager.h"
@@ -289,4 +290,25 @@ Contact Contact::dummy()
 		return example;
 	}
 	return null;
+}
+
+void Contact::mergeWith(Contact contact)
+{
+	printf("merging %s with %s\n", qPrintable(display()), qPrintable(contact.display()));
+
+	QList<Account *> myAccounts = accounts();
+	foreach (Account *account, myAccounts)
+	{
+		printf("moving data for accoun: %s\n", qPrintable(account->name()));
+
+		ContactAccountData* cad = accountData(account);
+		removeAccountData(account);
+		contact.addAccountData(cad);
+	}
+	
+	ContactManager::instance()->removeContact(*this);
+	Data->setUuid(contact.uuid()); // just for case
+	Data = contact.data(); // TODO: 0.8 tricky merge, this should work well ;)
+
+	printf("merge done\n");
 }
