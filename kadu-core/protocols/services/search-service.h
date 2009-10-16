@@ -28,7 +28,7 @@ public:
 	virtual void stop() = 0;
 
 signals:
-	void newResults(ContactList constacts);
+	void newResults(ContactList contacts);
 
 };
 

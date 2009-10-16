@@ -239,7 +239,7 @@ void ContactGeneralConfigurationWidget::saveConfiguration()
 			foreach (ContactAccountData *accountData, CurrentContact.accountDatas())
 					if (accountData->id() == contactId) // check if user has only changed account for previous existing ID
 						CurrentContact.removeAccountData(accountData->account()); // if so, remove old CAD, otherwise there will appear 2 identical contacts with different accounts
-			ContactAccountData *data = new ContactAccountData(CurrentContact, account, contactId, false);
+			ContactAccountData *data = new ContactAccountData(account, CurrentContact, contactId, false);
 			CurrentContact.addAccountData(data);
 		}
 	}

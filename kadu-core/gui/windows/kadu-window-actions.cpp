@@ -36,6 +36,7 @@
 #include "gui/windows/kadu-window.h"
 #include "gui/windows/main-configuration-window.h"
 #include "gui/windows/message-box.h"
+#include "gui/windows/search-window.h"
 #include "gui/windows/your-accounts.h"
 #include "misc/misc.h"
 #include "parser/parser.h"
@@ -47,8 +48,6 @@
 #include "ignore.h"
 #include "modules.h"
 #include "status_changer.h"
-
-#include "../modules/gadu_protocol/gadu-contact-account-data.h"
 
 #include "kadu-window-actions.h"
 
@@ -289,7 +288,7 @@ KaduWindowActions::KaduWindowActions(QObject *parent) : QObject(parent)
 
 	OpenSearch = new ActionDescription(this,
 		ActionDescription::TypeGlobal, "openSearchAction",
-		this, SLOT(openSearchActionActivated(QAction *, bool)),
+		this, SLOT(/*openSearchActionActivated*/lookupInDirectoryActionActivated(QAction *, bool)),
 		"LookupUserInfo", tr("Search for Buddies...")
 	);
 
@@ -611,7 +610,7 @@ void KaduWindowActions::addGroupActionActivated(QAction *sender, bool toggled)
 
 void KaduWindowActions::openSearchActionActivated(QAction *sender, bool toggled)
 {
-// 	(new SearchDialog(dynamic_cast<QWidget *>(sender->parent())))->show();
+	(new SearchWindow(dynamic_cast<QWidget *>(sender->parent())))->show();
 }
 
 void KaduWindowActions::manageIgnoredActionActivated(QAction *sender, bool toggled)
@@ -765,7 +764,7 @@ void KaduWindowActions::copyPersonalInfoActionActivated(QAction *sender, bool to
 void KaduWindowActions::lookupInDirectoryActionActivated(QAction *sender, bool toggled)
 {
 	kdebugf();
-/*
+
 	MainWindow *window = dynamic_cast<MainWindow *>(sender->parent());
 	if (!window)
 		return;
@@ -774,13 +773,9 @@ void KaduWindowActions::lookupInDirectoryActionActivated(QAction *sender, bool t
 	if (contact.isNull())
 		return;
 
-	GaduContactAccountData *cad = dynamic_cast<GaduContactAccountData *>(AccountManager::instance()->defaultAccount());
-	if (!cad)
-		return;
-
-	SearchDialog *sd = new SearchDialog(Core::instance()->kaduWindow()/*, cad->uin()* /);
+	SearchWindow *sd = new SearchWindow(Core::instance()->kaduWindow(), contact);
 	sd->show();
-	sd->firstSearch();*/
+	sd->firstSearch();
 
 	kdebugf2();
 }
