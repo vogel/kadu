@@ -8,11 +8,11 @@
  ***************************************************************************/
 
 #include <QtGui/QCompleter>
-#include <QtGui/QLineEdit>
 
 #include "contacts/contact-manager.h"
 #include "contacts/filter/contact-name-filter.h"
 #include "contacts/model/contacts-model.h"
+#include "gui/widgets/contacts-line-edit.h"
 #include "gui/widgets/contacts-list-view.h"
 #include "gui/widgets/select-contact-popup.h"
 
@@ -46,12 +46,13 @@ SelectContactCombobox::~SelectContactCombobox()
 void SelectContactCombobox::showPopup()
 {
 	Popup->setGeometry(QRect(
-			mapToGlobal(QPoint(0, height())),
+			mapToGlobal(QPoint(0, 0)),
 			QSize(geometry().width(), Popup->geometry().height())));
-	Popup->show();
+	Popup->show(lineEdit()->text());
 }
 
 void SelectContactCombobox::hidePopup()
 {
 	Popup->hide();
+	setEditText(Popup->nameFilterEdit()->text());
 }

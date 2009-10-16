@@ -9,6 +9,7 @@
 
 #include "contacts/contact-manager.h"
 #include "contacts/model/contacts-model.h"
+#include "gui/widgets/contacts-line-edit.h"
 #include "gui/widgets/contacts-list-view.h"
 
 #include "select-contact-popup.h"
@@ -26,4 +27,11 @@ SelectContactPopup::SelectContactPopup(QWidget *parent) :
 
 SelectContactPopup::~SelectContactPopup()
 {
+}
+
+void SelectContactPopup::show(const QString &text)
+{
+	nameFilterEdit()->setText(text);
+	nameFilterEdit()->setFocus();
+	ContactsListWidget::show();
 }

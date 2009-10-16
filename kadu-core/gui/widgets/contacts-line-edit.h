@@ -7,21 +7,26 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef SELECT_CONTACT_POPUP_H
-#define SELECT_CONTACT_POPUP_H
+#ifndef CONTACTS_LINE_EDIT_H
+#define CONTACTS_LINE_EDIT_H
 
-#include "gui/widgets/contacts-list-widget.h"
+#include <QtGui/QLineEdit>
 
-class SelectContactPopup : public ContactsListWidget
+class ContactsLineEdit : public QLineEdit
 {
 	Q_OBJECT
 
-public:
-	explicit SelectContactPopup(QWidget *parent = 0);
-	virtual ~SelectContactPopup();
+protected:
+	virtual void keyReleaseEvent(QKeyEvent *e);
 
-	void show(const QString &text);
+public:
+	explicit ContactsLineEdit(QWidget *parent = 0);
+	virtual ~ContactsLineEdit();
+
+signals:
+	void next();
+	void previous();
 
 };
 
-#endif // SELECT_CONTACT_POPUP_H
+#endif // CONTACTS_LINE_EDIT_H

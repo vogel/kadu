@@ -49,6 +49,9 @@ ContactsListViewDelegate::~ContactsListViewDelegate()
 void ContactsListViewDelegate::setModel(AbstractContactsModel *model)
 {
 	Model = model;
+	QAbstractItemModel *itemModel = dynamic_cast<QAbstractItemModel *>(Model);
+	if (itemModel)
+		connect(itemModel, SIGNAL(destroyed(QObject *)), this, SLOT(modelDestroyed()));
 }
 
 void ContactsListViewDelegate::accountRegistered(Account *account)
@@ -67,6 +70,11 @@ void ContactsListViewDelegate::contactStatusChanged(Account *account, Contact c,
 {
 	if (Model)
 		emit sizeHintChanged(Model->contactIndex(c));
+}
+
+void ContactsListViewDelegate::modelDestroyed()
+{
+	Model = 0;
 }
 
 QTextDocument * ContactsListViewDelegate::descriptionDocument(const QString &text, int width, QColor color) const
