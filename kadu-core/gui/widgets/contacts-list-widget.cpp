@@ -40,9 +40,9 @@ ContactsListWidget::ContactsListWidget(MainWindow *mainWindow, QWidget *parent) 
 
 	NameFilter = new ContactNameFilter(this);
 	View->addFilter(NameFilter);
-
+/*
 	setFocusProxy(NameFilterEdit);
-	View->setFocusPolicy(Qt::NoFocus);
+	View->setFocusPolicy(Qt::NoFocus);*/
 }
 
 ContactsListWidget::~ContactsListWidget()

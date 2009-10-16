@@ -14,6 +14,7 @@
 #include <QtGui/QPushButton>
 #include <QtGui/QVBoxLayout>
 
+#include "contacts/contact-manager.h"
 #include "contacts/filter/contact-mergable-filter.h"
 #include "gui/widgets/select-contact-combobox.h"
 
@@ -42,26 +43,50 @@ void MergeContactsWindow::createGui()
 	QHBoxLayout *chooseLayout = new QHBoxLayout(chooseWidget);
 
 	chooseLayout->addWidget(new QLabel(tr("Contact:"), this));
-	SelectContactCombobox* selectCombo = new SelectContactCombobox(this);
-	selectCombo->addFilter(new ContactMergableFilter(MyContact, selectCombo));
-	connect(selectCombo, SIGNAL(contactChanged(Contact)), this, SLOT(selectedContactChanged(Contact)));
-	chooseLayout->addWidget(selectCombo);
+	SelectCombo = new SelectContactCombobox(this);
+	SelectCombo->addFilter(new ContactMergableFilter(MyContact, SelectCombo));
+	connect(SelectCombo, SIGNAL(contactChanged(Contact)), this, SLOT(selectedContactChanged(Contact)));
+	chooseLayout->addWidget(SelectCombo);
 
 	layout->addStretch(100);
 	QDialogButtonBox *buttons = new QDialogButtonBox(this);
 	layout->addWidget(buttons);
 
-	QPushButton *mergeButton = new QPushButton(tr("Merge"), this);
-	mergeButton->setDefault(true);
+	MergeButton = new QPushButton(tr("Merge"), this);
+	MergeButton->setDefault(true);
+	MergeButton->setEnabled(false);
+	connect(MergeButton, SIGNAL(clicked(bool)), this, SLOT(accept()));
 
 	QPushButton *cancel = new QPushButton(tr("Cancel"), this);
 	connect(cancel, SIGNAL(clicked(bool)), this, SLOT(reject()));
 
-	buttons->addButton(mergeButton, QDialogButtonBox::AcceptRole);
+	buttons->addButton(MergeButton, QDialogButtonBox::AcceptRole);
 	buttons->addButton(cancel, QDialogButtonBox::DestructiveRole);
 }
 
 void MergeContactsWindow::selectedContactChanged(Contact contact)
 {
-	printf("contact changed: %s\n", qPrintable(contact.display()));
+	MergeButton->setEnabled(!contact.isNull());
+}
+
+void MergeContactsWindow::accept()
+{
+	QDialog::accept();
+
+	Contact mergeWith = SelectCombo->contact();
+	if (mergeWith.isNull())
+		return;
+
+	if (MyContact.isNull())
+		return;
+
+	QList<Account *> accounts = MyContact.accounts();
+	foreach (Account *account, accounts)
+	{
+		ContactAccountData* cad = MyContact.accountData(account);
+		MyContact.removeAccountData(account);
+		mergeWith.addAccountData(cad);
+	}
+
+	ContactManager::instance()->removeContact(MyContact);
 }

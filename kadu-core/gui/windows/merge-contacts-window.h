@@ -14,16 +14,24 @@
 
 #include "contacts/contact.h"
 
+class SelectContactCombobox;
+
 class MergeContactsWindow : public QDialog
 {
 	Q_OBJECT
 
 	Contact MyContact;
 
+	SelectContactCombobox *SelectCombo;
+	QPushButton *MergeButton;
+
 	void createGui();
 
 private slots:
 	void selectedContactChanged(Contact);
+
+protected slots:
+	virtual void accept();
 
 public:
 	explicit MergeContactsWindow(Contact contact, QWidget *parent = 0);
