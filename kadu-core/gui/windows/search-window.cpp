@@ -58,6 +58,8 @@ SearchWindow::SearchWindow(QWidget *parent, Contact contact)
 	setAttribute(Qt::WA_DeleteOnClose);
 	setWindowTitle(tr("Search user in directory"));
 
+	initModule();
+
 	QWidget *centralWidget = new QWidget(this);
 
 	QLabel *l_name;
@@ -243,11 +245,10 @@ SearchWindow::SearchWindow(QWidget *parent, Contact contact)
 SearchWindow::~SearchWindow()
 {
 	kdebugf();
-
 	writeToolBarsToConfig("search");
-
  	saveWindowGeometry(this, "General", "SearchWindowGeometry");
-	delete searchRecord;
+	closeModule();
+	//delete searchRecord;
 	kdebugf2();
 }
 
@@ -721,22 +722,22 @@ void SearchActionsSlots::firstSearchActionActivated(QAction *sender, bool toggle
 
 void SearchWindow::createDefaultToolbars(QDomElement toolbarsConfig)
 {
-// 	QDomElement dockAreaConfig = getDockAreaConfigElement(toolbarsConfig, "search_bottomDockArea");
-// 	QDomElement toolbarConfig = xml_config_file->createElement(dockAreaConfig, "ToolBar");
-// 
-// 	addToolButton(toolbarConfig, "firstSearchAction", true);
-// 	addToolButton(toolbarConfig, "nextResultsAction", true);
-// 	addToolButton(toolbarConfig, "stopSearchAction", true);
-// 	addToolButton(toolbarConfig, "clearSearchAction", true);
-// 	addToolButton(toolbarConfig, "addSearchedAction", true);
-// 	addToolButton(toolbarConfig, "chatSearchedAction", true);
+	QDomElement dockAreaConfig = getDockAreaConfigElement(toolbarsConfig, "search_bottomDockArea");
+	QDomElement toolbarConfig = xml_config_file->createElement(dockAreaConfig, "ToolBar");
+ 
+	addToolButton(toolbarConfig, "firstSearchAction", Qt::ToolButtonTextUnderIcon);
+	addToolButton(toolbarConfig, "nextResultsAction", Qt::ToolButtonTextUnderIcon);
+	addToolButton(toolbarConfig, "stopSearchAction", Qt::ToolButtonTextUnderIcon);
+	addToolButton(toolbarConfig, "clearSearchAction", Qt::ToolButtonTextUnderIcon);
+	addToolButton(toolbarConfig, "addSearchedAction", Qt::ToolButtonTextUnderIcon);
+	addToolButton(toolbarConfig, "chatSearchedAction", Qt::ToolButtonTextUnderIcon);
 }
 
 void SearchWindow::setActionState(ActionDescription *actionDescription, bool toogle)
 {
-// 	Action *action = actionDescription->action(this);
-// 	if (action)
-// 		action->setEnabled(toogle);
+	Action *action = actionDescription->action(this);
+	if (action)
+		action->setEnabled(toogle);
 }
 
 void SearchActionsSlots::firstSearchActionCreated(Action *action)
