@@ -6,7 +6,6 @@ set (SOURCES
 
 set (MOC_SOURCES
 	sound.h
-	sound_file.h
 	sound_slots.h
 )
 

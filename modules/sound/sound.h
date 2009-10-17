@@ -37,7 +37,7 @@ typedef void* SoundDevice;
 
 /**
 **/
-typedef enum SoundDeviceType {RECORD_ONLY, PLAY_ONLY, PLAY_AND_RECORD};
+enum SoundDeviceType {RECORD_ONLY, PLAY_ONLY, PLAY_AND_RECORD};
 
 /**
 	To jest klasa u¿ywana wewnêtrznie przez klasê SoundManager

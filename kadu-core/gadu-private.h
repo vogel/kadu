@@ -22,8 +22,15 @@ struct gg_session;
 // ------------------------------------
 //             Notifiers
 // ------------------------------------
+
+#if __GNUC__ >= 4
+	#define GADU_LOCAL __attribute__ ((visibility("hidden")))
+#else
+	#define GADU_LOCAL
+#endif /* __GNUC__ >= 4 */
+
 #ifndef _MSC_VER
-#pragma GCC visibility push(hidden)
+	#pragma GCC visibility push(hidden)
 #endif
 
 class SocketNotifiers : public QObject
@@ -99,7 +106,7 @@ signals:
 
 };
 
-class GaduSocketNotifiers : public SocketNotifiers
+class GADU_LOCAL GaduSocketNotifiers : public SocketNotifiers
 {
 	Q_OBJECT
 
@@ -163,7 +170,7 @@ public:
 };
 
 #ifndef _MSC_VER
-#pragma GCC visibility pop
+	#pragma GCC visibility pop
 #endif
 
 #endif

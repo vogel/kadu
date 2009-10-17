@@ -95,14 +95,15 @@ bool KaduParser::hasRegisteredObjectTag(const QString &name)
 QString KaduParser::executeCmd(const QString &cmd)
 {
 	kdebugf();
+
 	QString s(cmd);
 	s.remove(QRegExp("`|>|<"));
 	s.append(" >");
 	s.append(ggPath("execoutput"));
 
-	system(qPrintable(s));
+	int ret = system(qPrintable(s));
 	QFile *f = new QFile(ggPath("execoutput"));
-	if (f->open(QIODevice::ReadOnly))
+	if ((ret != -1) && (f->open(QIODevice::ReadOnly)))
 	{
 		s = QString(f->readAll());
 		f->close();
