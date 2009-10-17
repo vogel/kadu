@@ -26,7 +26,6 @@ struct KADUAPI SearchResult
 	QString FamilyName;
 	QString FamilyCity;
 	int Gender;
-	///GaduStatus Stat;
 
 	SearchResult();
 	SearchResult(const SearchResult &);
@@ -142,28 +141,16 @@ private slots:
 	void byrFromDataTyped(void);
 	void persClicked();
 	void uinClicked();
-	void updateInfoClicked();
 	void selectionChanged();
 
 protected:
-	/**
-		\fn void closeEvent(QCloseEvent * e)
-		Obs�uguje zdarzenie zamkni�cia okna wyszukiwania w katalogu publicznym.
-		\param e wska�nik do obiektu opisuj�cego zdarzenie zamkni�cie okna.
-	**/
+
 	virtual void closeEvent(QCloseEvent *e);
 	virtual void resizeEvent(QResizeEvent *e);
 	virtual void keyPressEvent(QKeyEvent *e);
 
 public:
-	/**
-		\fn SearchWindow(QWidget *parent=0, const char *name=0, UinType whoisSearchUin = 0)
-		Standardowy konstruktor.
-		\param parent rodzic kontrolki. Domy�lnie 0.
-		\param name nazwa kontrolki. Domy�lnie 0.
-		\param whoisSearchUin warto�� logiczna informuj�ca o tym, czy wst�pnie ma by� wybrane
-		wyszukiwanie po numerze UIN (1) czy po danych osobowych (0). Domy�lnie 0.
-	**/
+
 	SearchWindow(QWidget *parent=0, Contact contact = Contact::null);
 	~SearchWindow(void);
 
@@ -173,54 +160,21 @@ public:
 	static void closeModule();
 
 	virtual bool supportsActionType(ActionDescription::ActionType type) { return type & ActionDescription::TypeSearch; }
-	//virtual UserBox * userBox() { return 0; }
-	//virtual UserListElements userListElements() { return UserListElements(); }
-	//virtual ChatWidget * chatWidget() { return 0; }
-
 	virtual ContactsListView* contactsListView() { return 0; }
 	virtual ContactSet contacts() { return ContactSet(); }
 	virtual Chat* chat() { return 0; }
 
 
-	/**
-		\fn void nextSearch()
-		Kontynuuje wyszukowanie kolejnych kontakt�w, a wyniki dodaje do bierz�cych.
-		Metoda ta wywo�ywana jest przy wci�ni�ciu przycisku "Nast�pne wyniki".
-	**/
 	void nextSearch();
-
-	/**
-		\fn void stopSearch(void)
-		Zatrzymuje aktualne wyszukiwanie. Je�li w p��niejszym czasie zwr�cone
-		zostan� jakie� wyniki, b�d� one zignorowane.
-	**/
 	void stopSearch();
-
 	void clearResults();
 
 	void addFound();
 	void chatFound();
 
 public slots:
-	/**
-		\fn void newSearchResults(SearchResults& searchResults, int seq, int fromUin)
-		Interpretuje uzyskane wyniki wyszukiwania i dodaje je do listy wynik�w.
-		Metoda ta jest wywo�ywana, gdy serwer Gadu-Gadu odpowie na zapytanie do katalogu publicznego.
-		\param searchResults lista struktur opisuj�cych wyniki wyszukiwania.
-		\param seq unikalny identyfikator zapytania do katalogu publicznego.
-		\param fromUin numer UIN, od kt�rego rozpocz�to wyszukiwanie (jest r��ny dla kolejnych
-		wywo�a� - najpierw SearchWindow::firstSearch, a potem kolejne SearchWindow::nextSearch).
-	**/
-	void newSearchResults(ContactList contacts);
 
-	/**
-		\fn void firstSearch()
-		Czy�ci list� wynik�w, a nast�pnie wyszukuje w katalogu publicznym wg.
-		podanych w oknie danych. Wy�wietla tylko ograniczon� ich liczb�, ze wzgl�du
-		na dzia�anie protoko�u Gadu-Gadu. Metoda ta wywo�ywana jest przy wci�ni�ciu
-		przycisku "Szukaj". Aby uzyska� kolejne wyniki i doda� je do
-		bierz�cych, nale�y dokona� wt�rnego zapytania metod� SearchWindow::nextSearch.
-	**/
+	void newSearchResults(ContactList contacts);
 	void firstSearch();
 };
 

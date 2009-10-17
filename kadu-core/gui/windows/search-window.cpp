@@ -176,12 +176,6 @@ SearchWindow::SearchWindow(QWidget *parent, Contact contact)
 	grid->addWidget(btngrp, 3, 4, 1, 8);
 	grid->addWidget(results, 5, 0, 1, 12);
 	grid->addWidget(progress, 6, 0, 1, 2);
-
-/// 	grid->addColSpacing(2, 10);
-///	grid->addColSpacing(5, 10);
-/// 	grid->addColSpacing(9, 10);
-/// 
-/// 	grid->setResizeMode(QLayout::Minimum);
 	
 	QStringList headers;
 	headers << tr("Status") << tr("Uin") << tr("Name") << tr("City") << tr("Nickname") << tr("Birth year");
@@ -190,11 +184,6 @@ SearchWindow::SearchWindow(QWidget *parent, Contact contact)
 	results->setAllColumnsShowFocus(true);
 	results->setSelectionMode(QAbstractItemView::SingleSelection);
 	results->setIndentation(false);
-//	results->setResizeMode(Q3ListView::AllColumns);
-//	for (int i = 1; i < 5; ++i)
-//		results->setColumnWidthMode(i, Q3ListView::Maximum);
-
-//	searchhidden = false;
 
 	setCentralWidget(centralWidget);
 
@@ -356,10 +345,6 @@ ContactSet SearchWindow::selected()
 	QString firstname = selected->text(2);
 	QString nickname = selected->text(4);
 
-	//bool ok;
-	//if (uin.toUInt(&ok) == 0 || !ok)
-	//	return result;
-
 	QString altnick;
 	if (!nickname.isEmpty()) // Build altnick. Trying user nick first.
 		altnick = nickname;
@@ -395,22 +380,21 @@ void SearchWindow::stopSearch()
 	kdebugf();
 
 	CurrentSearchService->stop();
-// 	gadu->stopSearchInPubdir(*searchRecord);
-// 
-// 	setActionState(stopSearchAction, false);
-// 
-// 	if ((r_pers->isChecked() && !isPersonalDataEmpty()) || (r_uin->isChecked() && !e_uin->text().isEmpty()))
-// 		setActionState(firstSearchAction, true);
-// 	if (!results->selectedItems().isEmpty())
-// 	{
-// 		if (r_pers->isChecked() && !isPersonalDataEmpty())
-// 			setActionState(nextResultsAction, true);
-// 
-// 		setActionState(addFoundAction, true);
-// 		setActionState(chatFoundAction, true);
-// 	}
-// 	if (results->topLevelItemCount() > 0)
-// 		setActionState(clearResultsAction, true);
+
+	setActionState(stopSearchAction, false);
+
+	if ((r_pers->isChecked() && !isPersonalDataEmpty()) || (r_uin->isChecked() && !e_uin->text().isEmpty()))
+		setActionState(firstSearchAction, true);
+	if (!results->selectedItems().isEmpty())
+	{
+		if (r_pers->isChecked() && !isPersonalDataEmpty())
+			setActionState(nextResultsAction, true);
+
+		setActionState(addFoundAction, true);
+		setActionState(chatFoundAction, true);
+	}
+	if (results->topLevelItemCount() > 0)
+		setActionState(clearResultsAction, true);
 
 	kdebugf2();
 }
@@ -441,7 +425,7 @@ void SearchWindow::firstSearch()
 
 	if (searching)
 		CurrentSearchService->stop();
-
+//TODO searchRecord or what?
 /*	searchRecord->clearData();
 
 	if (r_pers->isChecked())
@@ -520,17 +504,10 @@ void SearchWindow::newSearchResults(ContactList contacts)
 {
 	kdebugf();
 
-///	if ((seq != searchRecord->Seq) || searchRecord->IgnoreResults)
-///		return;
-
 	QTreeWidgetItem *qlv = 0;
 	QPixmap pix;
 
-	///searchRecord->FromUin = fromUin;
-
 	int items = results->topLevelItemCount(); // number of items already in results
-
-	// ??	if ((status && atoi(status) <= 1 && only_active->isChecked()) || !status)
 
 	foreach(Contact contact, contacts)
 	{
@@ -654,44 +631,6 @@ void SearchWindow::uinClicked()
 
  	setActionState(firstSearchAction, !e_uin->text().isEmpty());
  	setActionState(nextResultsAction, false);
-}
-
-void SearchWindow::updateInfoClicked()
-{
-	kdebugf();
-/**
-	QTreeWidgetItem *selected = selectedItem();
-
-	if (!selected)
-		return;
-
-	QString suin = selected->text(1);
-	QString firstname = selected->text(2);
-//	QString lastname = selected->text(3);
-	QString nickname = selected->text(4);
-
-	UinType uin = suin.toUInt();
-	UserListElement ule = userlist->byID("Gadu", QString::number(uin));
-
-	// Build altnick. Try user nick first.
-	QString altnick = nickname;
-	// If nick is empty, try firstname+lastname.
-	if (altnick.isEmpty())
-	{
-		altnick = firstname;
-//		if (firstname.length() && lastname.length())
-//			altnick += " ";
-//		altnick += lastname;
-	}
-	// If nick is empty, use uin.
-	if (altnick.isEmpty())
-		altnick = uin;
-
-	ule.setFirstName(firstname);
-	ule.setNickName(nickname);
-	(new UserInfo(ule, kadu))->show();
-*/
-	kdebugf2();
 }
 
 bool SearchWindow::isPersonalDataEmpty() const
