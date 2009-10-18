@@ -72,14 +72,6 @@ ContactAccountData * JabberProtocolFactory::newContactAccountData(Account *accou
 	return new JabberContactAccountData(account, contact, id, true);
 }
 
-ContactAccountData * JabberProtocolFactory::loadContactAccountData(Account *account, Contact contact)
-{
-	StoragePoint *point = contact.storagePointForAccountData(account);
-	return point
-			? new JabberContactAccountData(account, contact, QString::null, point)
-			: 0;
-}
-
 ContactAccountData * JabberProtocolFactory::loadContactAccountData(StoragePoint *storagePoint)
 {
 	if (!storagePoint)

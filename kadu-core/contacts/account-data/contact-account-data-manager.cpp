@@ -53,8 +53,6 @@ StoragePoint * ContactAccountDataManager::createStoragePoint()
 
 void ContactAccountDataManager::load(Account *account)
 {
-	printf("loading account datas for: %s\n", qPrintable(account->uuid().toString()));
-
 	if (!isValidStorage())
 		return;
 

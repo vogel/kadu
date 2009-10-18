@@ -73,16 +73,10 @@ void MergeContactsWindow::accept()
 {
 	Contact mergeWith = SelectCombo->contact();
 	if (mergeWith.isNull())
-	{
-		printf("mw is null\n");
 		return;
-	}
 
 	if (MyContact.isNull())
-	{
-		printf("mc is null\n");
 		return;
-	}
 
 	MyContact.mergeWith(mergeWith);
 

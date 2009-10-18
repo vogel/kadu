@@ -134,12 +134,8 @@ QList<Account *> Contact::accounts() const
 
 void Contact::addAccountData(ContactAccountData *accountData)
 {
-	printf("add account data: %p\n", accountData);
-
 	if (!accountData)
 		return;
-
-	printf("Added\n");
 
 	checkNull();
 	Data->addAccountData(accountData);
@@ -300,8 +296,6 @@ Contact Contact::dummy()
 
 void Contact::mergeWith(Contact contact)
 {
-	printf("merging %s with %s\n", qPrintable(display()), qPrintable(contact.display()));
-
 	QList<Account *> myAccounts = accounts();
 	foreach (Account *account, myAccounts)
 	{
@@ -319,8 +313,6 @@ void Contact::mergeWith(Contact contact)
 	ContactManager::instance()->removeContact(*this);
 	Data->setUuid(contact.uuid()); // just for case
 	Data = contact.data(); // TODO: 0.8 tricky merge, this should work well ;)
-
-	printf("merge done\n");
 
 	Core::instance()->configuration()->flush();
 }

@@ -66,14 +66,6 @@ ContactAccountData * GaduProtocolFactory::newContactAccountData(Account *account
 	return new GaduContactAccountData(account, contact, id, true);
 }
 
-ContactAccountData * GaduProtocolFactory::loadContactAccountData(Account *account, Contact contact)
-{
-	StoragePoint *point = contact.storagePointForAccountData(account);
-	return point
-			? new GaduContactAccountData(account, contact, QString::null, point)
-			: 0;
-}
-
 ContactAccountData * GaduProtocolFactory::loadContactAccountData(StoragePoint *storagePoint)
 {
 	if (!storagePoint)
