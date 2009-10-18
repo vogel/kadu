@@ -22,6 +22,7 @@
 #include "gui/windows/kadu-window.h"
 #include "gui/windows/kadu-window-actions.h"
 #include "gui/windows/message-box.h"
+#include "gui/windows/search-window.h"
 
 #include "custom-input.h"
 #include "debug.h"
@@ -126,7 +127,7 @@ ChatWidgetActions::ChatWidgetActions(QObject *parent) : QObject(parent)
 		ActionDescription::TypeChat, "whoisAction",
 		this, SLOT(whoisActionActivated(QAction *, bool)),
 		"LookupUserInfo", tr("Search this user in directory"), false, QString::null,
-		disableEmptyUles
+		disableNoGaduUle
 	);
 
 	IgnoreUser = new ActionDescription(0,
@@ -312,27 +313,21 @@ void ChatWidgetActions::sendActionActivated(QAction *sender, bool toggled)
 void ChatWidgetActions::whoisActionActivated(QAction *sender, bool toggled)
 {
 	kdebugf();
-/*
+
 	MainWindow *window = dynamic_cast<MainWindow *>(sender->parent());
 	if (!window)
 	{
-		(new SearchDialog(Core::instance()->kaduWindow()))->show();
+		(new SearchWindow(Core::instance()->kaduWindow()))->show();
 		return;
 	}
-	Account *defaultAccount = AccountManager::instance()->defaultAccount();
-	ContactSet contacts = window->contacts();
 
-	if (contacts.count() == 0)
-		(new SearchDialog(Core::instance()->kaduWindow()))->show();
-	else
-	{*/
-// 		if (contacts[0].accountData(AccountManager::instance()->defaultAccount()) != 0)
-// 		{
-// 			SearchDialog *sd = new SearchDialog(Core::instance()->kaduWindow()/*, contacts[0].accountData(AccountManager::instance()->defaultAccount())->id().toUInt()*/);
-// 			sd->show();
-// 			sd->firstSearch();
-// 		}
-// 	}
+	Contact contact = window->contact();
+	if (contact.isNull())
+		return;
+
+	SearchWindow *sd = new SearchWindow(Core::instance()->kaduWindow(), contact);
+	sd->show();
+	sd->firstSearch();
 
 	kdebugf2();
 }
