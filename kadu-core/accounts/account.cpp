@@ -56,6 +56,7 @@ bool Account::setId(const QString &id)
 
 void Account::contactAdded(Contact contact)
 {
+	// TODO: fix now
 // 	ContactAccountData *cad = ProtocolHandler->protocolFactory()->loadContactAccountData(this, contact);
 // 	if (cad)
 // 		contact.addAccountData(cad);

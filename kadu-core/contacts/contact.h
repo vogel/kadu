@@ -88,6 +88,7 @@ public:
 	ContactData * data() const { return Data.data(); }
 
 	void addAccountData(ContactAccountData *accountData);
+	void removeAccountData(ContactAccountData *accountData) const;
 	void removeAccountData(Account *account) const;
 	ContactAccountData * accountData(Account *account) const;
 	QList<ContactAccountData *> accountDatas() const;

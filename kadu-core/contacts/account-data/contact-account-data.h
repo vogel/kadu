@@ -57,6 +57,8 @@ public:
 
 	Account * account() { ensureLoaded(); return ContactAccount; }
 	Contact contact() { ensureLoaded(); return OwnerContact; }
+	void setContact(Contact contact);
+
 	Avatar & avatar() { ensureLoaded(); return ContactAvatar; }
 
 	QString id() { ensureLoaded(); return Id; }

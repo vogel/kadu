@@ -189,6 +189,12 @@ void ContactData::addAccountData(ContactAccountData *accountData)
 	emit accountDataAdded(accountData->account());
 }
 
+void ContactData::removeAccountData(ContactAccountData *accountData)
+{
+	if (AccountsData[accountData->account()] == accountData)
+		removeAccountData(accountData->account());
+}
+
 void ContactData::removeAccountData(Account *account)
 {
 	emit accountDataAboutToBeRemoved(account);
