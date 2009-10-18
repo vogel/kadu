@@ -7,7 +7,6 @@
 #ifdef Q_OS_WIN
 #include <winsock2.h>
 #include <io.h>
-#define pipe(phandles)	_pipe (phandles, 4096, 0)
 #else
 #include <sys/wait.h>
 #include <netdb.h>
@@ -79,8 +78,11 @@ void GaduResolver::resolved(const QHostInfo &host)
 		kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "Error while resolving: %s\n", qPrintable(host.errorString()));
 		addr.s_addr = INADDR_NONE;
 	}
-
+#ifdef Q_OS_WIN
+	if (_write(data->wfd, &addr, sizeof(addr)) != sizeof(addr))
+#else
 	if (write(data->wfd, &addr, sizeof(addr)) != sizeof(addr))
+#endif
 	{
 		kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "Writing to pipe failed\n");
 	}
@@ -117,7 +119,11 @@ void gadu_resolver_cleanup(void **priv_data, int force)
 
 	if (data->wfd != -1)
 	{
+#ifdef Q_OS_WIN
+		_close(data->wfd);
+#else
 		close(data->wfd);
+#endif
 		data->wfd = -1;
 	}
 	free(data);
@@ -128,7 +134,11 @@ int gadu_resolver_start(int *fd, void **priv_data, const char *hostname)
 	int pipes[2];
 	struct gadu_resolver_data *data = NULL;
 
+#ifdef Q_OS_WIN
+	if (_pipe (pipes, 256, O_BINARY) == -1)
+#else
 	if (pipe(pipes) == -1)
+#endif
 	{
 		kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "Unable to create pipes\n");
 		return -1;
