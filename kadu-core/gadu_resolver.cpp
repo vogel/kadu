@@ -135,7 +135,7 @@ int gadu_resolver_start(int *fd, void **priv_data, const char *hostname)
 	struct gadu_resolver_data *data = NULL;
 
 #ifdef Q_OS_WIN
-	if (_pipe (pipes, 256, O_BINARY) == -1)
+	if (_pipe (pipes, 256, 0) == -1)
 #else
 	if (pipe(pipes) == -1)
 #endif
