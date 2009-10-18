@@ -25,7 +25,7 @@ class GaduSearchService : public SearchService
 	Q_OBJECT
 
 	GaduProtocol *Protocol;
-	Contact Query;
+	ContactSearchCriteria Query;
 	unsigned int SearchSeq;
 	unsigned int From;
 	bool Stopped;
@@ -35,9 +35,7 @@ class GaduSearchService : public SearchService
 
 public:
 	GaduSearchService(GaduProtocol *protocol);
-
-	// TODO 0.6.6: restore SearchRecord or QMap<QString, QString> or sth?
-	virtual void searchFirst(Contact contact);
+	virtual void searchFirst(ContactSearchCriteria criteria);
 	virtual void searchNext();
 	virtual void stop();
 

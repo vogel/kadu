@@ -2,6 +2,7 @@
 #define SEARCH_WINDOW_H
 
 #include "contacts/contact-list.h"
+#include "contacts/contact-search-criteria.h"
 #include "contacts/contact-set.h"
 #include "gui/actions/action.h"
 #include "gui/windows/main-window.h"
@@ -14,56 +15,6 @@ class QRadioButton;
 class QTreeWidget;
 class QTreeWidgetItem;
 class SearchService;
-
-struct KADUAPI SearchResult
-{
-	QString Uin;
-	QString First;
-	QString Last;
-	QString Nick;
-	QString Born;
-	QString City;
-	QString FamilyName;
-	QString FamilyCity;
-	int Gender;
-
-	SearchResult();
-	SearchResult(const SearchResult &);
-	void setData(const char *uin, const char *first, const char *last, const char *nick, const char *born,
-		const char *city, const char *familyName, const char *familyCity, const char *gender, const char *status);
-};
-
-typedef QList<SearchResult> SearchResults;
-
-struct KADUAPI SearchRecord
-{
-	int Seq;
-	int FromUin;
-	QString Uin;
-	QString FirstName;
-	QString LastName;
-	QString NickName;
-	QString City;
-	QString BirthYearFrom;
-	QString BirthYearTo;
-	int Gender;
-	bool Active;
-	bool IgnoreResults;
-
-	SearchRecord();
-	virtual ~SearchRecord();
-
-	void reqUin(const QString& uin);
-	void reqFirstName(const QString& firstName);
-	void reqLastName(const QString& lastName);
-	void reqNickName(const QString& nickName);
-	void reqCity(const QString& city);
-	void reqBirthYear(const QString& birthYearFrom, const QString& birthYearTo);
-	void reqGender(bool female);
-	void reqActive();
-
-	void clearData();
-};
 
 // TODO: a better name
 class SearchActionsSlots : public QObject
@@ -116,12 +67,11 @@ class KADUAPI SearchWindow : public MainWindow
 	QLabel *progress;
 	QRadioButton *r_uin;
 	QRadioButton *r_pers;
-	Contact CurrentContact;
 	Account *CurrentAccount;
 	uint32_t seq;
 	ContactSet selectedUsers;
 
-	SearchRecord *searchRecord;
+	ContactSearchCriteria CurrentSearchCriteria;
 
 	bool searchhidden;
 	bool searching;

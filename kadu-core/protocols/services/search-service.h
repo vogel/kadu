@@ -13,6 +13,7 @@
 #include <QtCore/QObject>
 
 #include "contacts/contact-list.h"
+#include "contacts/contact-search-criteria.h"
 
 #include "exports.h"
 
@@ -23,7 +24,7 @@ class KADUAPI SearchService : public QObject
 public:
 	SearchService(QObject *parent = 0) : QObject(parent) {}
 
-	virtual void searchFirst(Contact contact) = 0;
+	virtual void searchFirst(ContactSearchCriteria criteria) = 0;
 	virtual void searchNext() = 0;
 	virtual void stop() = 0;
 

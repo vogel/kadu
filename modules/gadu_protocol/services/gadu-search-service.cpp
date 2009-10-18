@@ -17,39 +17,39 @@
 #include "gadu-search-service.h"
 
 GaduSearchService::GaduSearchService(GaduProtocol *protocol) :
-		SearchService(protocol), Protocol(protocol), Query(ContactData::TypeAnonymous),
+		SearchService(protocol), Protocol(protocol), Query(ContactSearchCriteria()),
 		SearchSeq(0), From(0), Stopped(false)
 {
 }
 
-void GaduSearchService::searchFirst(Contact contact)
+void GaduSearchService::searchFirst(ContactSearchCriteria criteria)
 {
-	Query = contact;
-	From = 0;
+	Query = criteria;
+	From = Query.SearchContact.hasAccountData(Protocol->account()) ? Query.SearchContact.accountData(Protocol->account())->id().toUInt() : 0;
 	searchNext();
 }
 
 void GaduSearchService::searchNext()
 {
 	Stopped = false;
-
 	gg_pubdir50_t req = gg_pubdir50_new(GG_PUBDIR50_SEARCH);
 
-	if (!Query.accountData(Protocol->account())->id().isEmpty())
-		gg_pubdir50_add(req, GG_PUBDIR50_UIN, (const char *)unicode2cp(Query.accountData(Protocol->account())->id()).data());
-	if (!Query.firstName().isEmpty())
-		gg_pubdir50_add(req, GG_PUBDIR50_FIRSTNAME, (const char *)unicode2cp(Query.firstName()).data());
-	if (!Query.lastName().isEmpty())
-		gg_pubdir50_add(req, GG_PUBDIR50_LASTNAME, (const char *)unicode2cp(Query.lastName()).data());
-	if (!Query.nickName().isEmpty())
-		gg_pubdir50_add(req, GG_PUBDIR50_NICKNAME, (const char *)unicode2cp(Query.nickName()).data());
-	if (!Query.city().isEmpty())
-		gg_pubdir50_add(req, GG_PUBDIR50_CITY, (const char *)unicode2cp(Query.city()).data());
-// 	if (!Query.BirthYearFrom.isEmpty()) TODO: 0.6.6
-	if (0 != Query.birthYear())
-		gg_pubdir50_add(req, GG_PUBDIR50_BIRTHYEAR, (const char *)unicode2cp(QString::number(Query.birthYear())).data());
-
-	switch (Query.gender())
+	if (Query.SearchContact.hasAccountData(Protocol->account()))
+		gg_pubdir50_add(req, GG_PUBDIR50_UIN, (const char *)unicode2cp(Query.SearchContact.accountData(Protocol->account())->id()).data());
+	if (!Query.SearchContact.firstName().isEmpty())
+		gg_pubdir50_add(req, GG_PUBDIR50_FIRSTNAME, (const char *)unicode2cp(Query.SearchContact.firstName()).data());
+	if (!Query.SearchContact.lastName().isEmpty())
+		gg_pubdir50_add(req, GG_PUBDIR50_LASTNAME, (const char *)unicode2cp(Query.SearchContact.lastName()).data());
+	if (!Query.SearchContact.nickName().isEmpty())
+		gg_pubdir50_add(req, GG_PUBDIR50_NICKNAME, (const char *)unicode2cp(Query.SearchContact.nickName()).data());
+	if (!Query.SearchContact.city().isEmpty())
+		gg_pubdir50_add(req, GG_PUBDIR50_CITY, (const char *)unicode2cp(Query.SearchContact.city()).data());
+	if (!Query.BirthYearFrom.isEmpty())
+	{
+		QString bufYear = Query.BirthYearFrom + ' ' + Query.BirthYearTo;
+		gg_pubdir50_add(req, GG_PUBDIR50_BIRTHYEAR, (const char *)unicode2cp(bufYear).data());
+	}
+	switch (Query.SearchContact.gender())
 	{
 		case ContactData::GenderMale:
 			gg_pubdir50_add(req, GG_PUBDIR50_GENDER, GG_PUBDIR50_GENDER_MALE);
@@ -59,9 +59,8 @@ void GaduSearchService::searchNext()
 			break;
 	}
 
-	// TODO: 0.6.6
-// 	if (searchRecord.Active)
-// 		gg_pubdir50_add(req, GG_PUBDIR50_ACTIVE, GG_PUBDIR50_ACTIVE_TRUE);
+	if (Query.Active)
+		gg_pubdir50_add(req, GG_PUBDIR50_ACTIVE, GG_PUBDIR50_ACTIVE_TRUE);
 
 	gg_pubdir50_add(req, GG_PUBDIR50_START, qPrintable(QString::number(From)));
 
@@ -89,8 +88,12 @@ void GaduSearchService::handleEventPubdir50SearchReply(struct gg_event *e)
 
 		GaduContactAccountData *gcad = new GaduContactAccountData(Protocol->account(), result,
 				gg_pubdir50_get(res, i, GG_PUBDIR50_UIN));
-
+		//TODO 0.6.6
+		Status status;
+		status.setType(Protocol->statusTypeFromGaduStatus(atoi(gg_pubdir50_get(res, i, GG_PUBDIR50_STATUS)) & 127));
+		gcad->setStatus(status);
 		result.addAccountData(gcad);
+
 		result.setFirstName(cp2unicode(gg_pubdir50_get(res, i, GG_PUBDIR50_FIRSTNAME)));
 		result.setLastName(cp2unicode(gg_pubdir50_get(res, i, GG_PUBDIR50_LASTNAME)));
 		result.setNickName(cp2unicode(gg_pubdir50_get(res, i, GG_PUBDIR50_NICKNAME)));
@@ -99,8 +102,6 @@ void GaduSearchService::handleEventPubdir50SearchReply(struct gg_event *e)
 		result.setFamilyName(cp2unicode(gg_pubdir50_get(res, i, GG_PUBDIR50_FAMILYNAME)));
 		result.setFamilyCity(cp2unicode(gg_pubdir50_get(res, i, GG_PUBDIR50_FAMILYCITY)));
 		result.setGender((ContactData::ContactGender)QString::fromAscii(gg_pubdir50_get(res, i, GG_PUBDIR50_GENDER)).toUShort());
-		// TODO: 0.6.6
-		// result.setStatus(gg_pubdir50_get(res, 0, GG_PUBDIR50_STATUS));
 
 		results.append(result);
 	}

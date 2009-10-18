@@ -50,7 +50,7 @@ ActionDescription *SearchWindow::chatFoundAction;
 SearchWindow::SearchWindow(QWidget *parent, Contact contact)
 	: MainWindow(parent),
 	only_active(0), e_uin(0), e_name(0), e_nick(0), e_byrFrom(0), e_byrTo(0), e_surname(0),
-	c_gender(0), e_city(0), results(0), progress(0), r_uin(0), r_pers(0), CurrentContact(contact),
+	c_gender(0), e_city(0), results(0), progress(0), r_uin(0), r_pers(0), CurrentSearchCriteria(ContactSearchCriteria()),
 	seq(0), selectedUsers(ContactSet()), searchhidden(false), searching(false), workaround(false)
 {
 	kdebugf();
@@ -225,8 +225,11 @@ SearchWindow::SearchWindow(QWidget *parent, Contact contact)
 		connect(CurrentSearchService, SIGNAL(newResults(ContactList)), this, SLOT(newSearchResults(ContactList)));
 	}
 
-	if (!CurrentContact.isNull())
-		e_uin->insert(CurrentContact.accountData(CurrentAccount)->id());
+	if (!contact.isNull())
+	{
+		CurrentSearchCriteria.SearchContact = contact;
+		e_uin->insert(contact.accountData(CurrentAccount)->id());
+	}
 
 	kdebugf2();
 }
@@ -237,7 +240,6 @@ SearchWindow::~SearchWindow()
 	writeToolBarsToConfig("search");
  	saveWindowGeometry(this, "General", "SearchWindowGeometry");
 	closeModule();
-	//delete searchRecord;
 	kdebugf2();
 }
 
@@ -314,7 +316,7 @@ void SearchWindow::addFound()
 	foreach (Contact contact, found)
 	{
 		AddBuddyWindow *a = new AddBuddyWindow(this);
-		a->setContact(CurrentContact);
+		a->setContact(CurrentSearchCriteria.SearchContact);
 		a->show();
 	}
 }
@@ -425,36 +427,36 @@ void SearchWindow::firstSearch()
 
 	if (searching)
 		CurrentSearchService->stop();
-//TODO searchRecord or what?
-/*	searchRecord->clearData();
+
+	CurrentSearchCriteria.clearData();
 
 	if (r_pers->isChecked())
 	{
-		searchRecord->reqFirstName(e_name->text());
-		searchRecord->reqLastName(e_surname->text());
-		searchRecord->reqNickName(e_nick->text());
-		searchRecord->reqCity(e_city->text());
+		CurrentSearchCriteria.reqFirstName(e_name->text());
+		CurrentSearchCriteria.reqLastName(e_surname->text());
+		CurrentSearchCriteria.reqNickName(e_nick->text());
+		CurrentSearchCriteria.reqCity(e_city->text());
 		if (((e_byrTo->text().isEmpty()) && (!e_byrFrom->text().isEmpty()))
 		    || ((e_byrTo->text().toUShort()) < (e_byrFrom->text().toUShort())))
 			e_byrTo->setText(e_byrFrom->text());
-		searchRecord->reqBirthYear(e_byrFrom->text(), e_byrTo->text());
+		CurrentSearchCriteria.reqBirthYear(e_byrFrom->text(), e_byrTo->text());
 
 		switch (c_gender->currentIndex())
 		{
 			case 1:
-				searchRecord->reqGender(false);
+				CurrentSearchCriteria.reqGender(false);
 				break;
 			case 2:
-				searchRecord->reqGender(true);
+				CurrentSearchCriteria.reqGender(true);
 				break;
 		}
 
 		if (only_active->isChecked())
-			searchRecord->reqActive();
+			CurrentSearchCriteria.reqActive();
 	}
 	else if (r_uin->isChecked())
-		searchRecord->reqUin(e_uin->text());
-*/
+		CurrentSearchCriteria.reqUin(CurrentAccount, e_uin->text());
+
 	searching = true;
 
  	setActionState(stopSearchAction, true);
@@ -463,15 +465,7 @@ void SearchWindow::firstSearch()
  	setActionState(addFoundAction, false);
  	setActionState(chatFoundAction, false);
 
-	if (Contact::null == CurrentContact)
-	{
-		Contact c;
-		ContactAccountData *data = new ContactAccountData(CurrentAccount, c, e_uin->text());
-		c.addAccountData(data);
-		CurrentContact = c;
-	}
-
-	CurrentSearchService->searchFirst(CurrentContact);
+	CurrentSearchService->searchFirst(CurrentSearchCriteria);
 
 	progress->setText(tr("Searching..."));
 
@@ -528,7 +522,7 @@ void SearchWindow::newSearchResults(ContactList contacts)
 		else
 		{
 			QStringList strings;
-			strings << QString::null << cad->id() << contact.firstName() << contact.city() << contact.nickName() << contact.familyCity();
+			strings << QString::null << cad->id() << contact.firstName() << contact.city() << contact.nickName() << QString::number(contact.birthYear());
 			qlv = new QTreeWidgetItem(results, strings);
 			qlv->setIcon(0, QIcon(pix));
 			qlv = 0;
@@ -760,3 +754,4 @@ void SearchActionsSlots::chatFoundActionActivated(QAction *sender, bool toggled)
 	if (search)
 		search->chatFound();
 }
+

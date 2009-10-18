@@ -45,6 +45,7 @@ set (kadu_SRCS
 	contacts/contact-list-mime-data-helper.cpp
 	contacts/contact-manager.cpp
 	contacts/contact-remove-predicate-object.cpp
+	contacts/contact-search-criteria.cpp
 	contacts/contact-set.cpp
 	contacts/contact-set-configuration-helper.cpp
 	contacts/contacts-aware-object.cpp
@@ -287,6 +288,7 @@ set (kadu_MOC_SRCS
 	#contacts/contact-list.h
 	#contacts/contact-list-configuration-helper.h
 	contacts/contact-manager.h
+	#contacts/contact-search-criteria.h
 	#contacts/contact-set.h
 	contacts/group.h
 	contacts/group-manager.h
