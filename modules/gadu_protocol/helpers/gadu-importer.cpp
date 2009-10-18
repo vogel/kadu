@@ -14,6 +14,7 @@
 #include "contacts/contact-manager.h"
 #include "contacts/contact.h"
 #include "contacts/ignored-helper.h"
+#include "contacts/account-data/contact-account-data-manager.h"
 #include "protocols/protocols-manager.h"
 #include "misc/misc.h"
 #include "gadu-account.h"
@@ -101,6 +102,8 @@ void GaduImporter::importGaduContact(Contact& contact)
 	contact.customData().remove("offline_to");
 
 	contact.addAccountData(gcad);
+
+	ContactAccountDataManager::instance()->addContactAccountData(gcad);
 }
 
 void GaduImporter::importIgnored()

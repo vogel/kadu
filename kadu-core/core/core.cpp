@@ -360,11 +360,11 @@ void Core::accountRegistered(Account *account)
 	connect(protocol, SIGNAL(connecting(Account *)), this, SIGNAL(connecting()));
 	connect(protocol, SIGNAL(connected(Account *)), this, SIGNAL(connected()));
 	connect(protocol, SIGNAL(disconnected(Account *)), this, SIGNAL(disconnected()));
-
+/* TODO: 0.6.6
 	ContactAccountData *contactAccountData = protocol->protocolFactory()->loadContactAccountData(account, Myself);
 	if (!contactAccountData)
 		contactAccountData = protocol->protocolFactory()->newContactAccountData(account, Myself, account->id());
-	Myself.addAccountData(contactAccountData);
+	Myself.addAccountData(contactAccountData);*/
 }
 
 void Core::accountUnregistered(Account *account)

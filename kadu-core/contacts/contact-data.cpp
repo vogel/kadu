@@ -176,8 +176,6 @@ void ContactData::store()
 
 	configurationStorage->createTextNode(parent, "Ignored", QVariant(Ignored).toString());
 
-	foreach (ContactAccountData *cad, AccountsData.values())
-		cad->store();
 	storeModuleData();
 }
 

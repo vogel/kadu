@@ -134,8 +134,12 @@ QList<Account *> Contact::accounts() const
 
 void Contact::addAccountData(ContactAccountData *accountData)
 {
+	printf("add account data: %p\n", accountData);
+
 	if (!accountData)
 		return;
+
+	printf("Added\n");
 
 	checkNull();
 	Data->addAccountData(accountData);
@@ -301,14 +305,15 @@ void Contact::mergeWith(Contact contact)
 	QList<Account *> myAccounts = accounts();
 	foreach (Account *account, myAccounts)
 	{
-		printf("moving data for accoun: %s\n", qPrintable(account->name()));
-
-		ContactAccountData* cad = accountData(account);
-		removeAccountData(account);
-		contact.addAccountData(cad);
-		cad->setContact(contact);
-
-		cad->recreateStoragePoint();
+		// TODO: fix NOW
+// 		printf("moving data for accoun: %s\n", qPrintable(account->name()));
+// 
+// 		ContactAccountData* cad = accountData(account);
+// 		removeAccountData(account);
+// 		contact.addAccountData(cad);
+// 		cad->setContact(contact);
+// 
+// 		cad->recreateStoragePoint();
 	}
 	
 	ContactManager::instance()->removeContact(*this);

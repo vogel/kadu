@@ -84,8 +84,8 @@ void ContactAccountDataManager::load(Account *account)
 
 		if (cad)
 		{
-			printf("loaded\n");
 			addContactAccountData(cad);
+			cad->ensureLoaded();
 		}
 	}
 }

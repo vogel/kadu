@@ -31,9 +31,9 @@ bool AnonymousWithoutMessagesContactFilter::acceptContact(Contact contact)
 	if (!Enabled)
 		return true;
 
-	Account *prefferedAccount = contact.prefferedAccount();
-	if (!prefferedAccount)
-		return false;
+// 	Account *prefferedAccount = contact.prefferedAccount();
+// 	if (!prefferedAccount)
+// 		return false;
 
 // TODO:
 
