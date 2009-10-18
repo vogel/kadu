@@ -25,7 +25,7 @@
 
 ContactManager * ContactManager::Instance = 0;
 
-ContactManager *  ContactManager::instance()
+ContactManager * ContactManager::instance()
 {
 	if (0 == Instance)
 		Instance = new ContactManager();

@@ -7,8 +7,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef CONTACT_MANAGER
-#define CONTACT_MANAGER
+#ifndef CONTACT_MANAGER_H
+#define CONTACT_MANAGER_H
 
 #include <QtCore/QMap>
 #include <QtCore/QObject>
@@ -91,4 +91,4 @@ signals:
 
 };
 
-#endif // CONTACT_MANAGER
+#endif // CONTACT_MANAGER_H
