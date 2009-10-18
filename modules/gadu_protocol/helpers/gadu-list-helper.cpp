@@ -10,11 +10,11 @@
 #include <QtCore/QStringList>
 #include <QtCore/QTextStream>
 
-#include "contacts/contact-account-data.h"
 #include "contacts/contact-list.h"
 #include "contacts/contact-manager.h"
 #include "contacts/group.h"
 #include "contacts/group-manager.h"
+#include "contacts/account-data/contact-account-data.h"
 
 #include "protocols/protocol.h"
 

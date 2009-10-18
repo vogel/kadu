@@ -7,7 +7,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "contacts/contact-account-data.h"
+#include "contacts/account-data/contact-account-data.h"
 #include "status/status.h"
 
 #include "contact-account-data-manager.h"

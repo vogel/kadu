@@ -6,17 +6,11 @@
  *   (at your option) any later version.                                   *
  *                                                                         *
  ***************************************************************************/
-/*
-#include <QtGui/QDialogButtonBox>
-#include <QtGui/QHBoxLayout>
-#include <QtGui/QLabel>
-#include <QtGui/QPushButton>
-#include <QtGui/QVBoxLayout>
-*/
+
 #include <QtGui/QLineEdit>
 
 #include "configuration/contact-account-data-manager.h"
-#include "contacts/contact-account-data.h"
+#include "contacts/account-data/contact-account-data.h"
 #include "misc/misc.h"
 
 #include "contact-account-data-widget.h"

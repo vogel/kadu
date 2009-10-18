@@ -13,10 +13,10 @@
 #include "accounts/account.h"
 #include "configuration/storage-point.h"
 #include "configuration/xml-configuration-file.h"
-#include "contacts/contact-account-data.h"
 #include "contacts/contact-manager.h"
 #include "contacts/group.h"
 #include "contacts/group-manager.h"
+#include "contacts/account-data/contact-account-data.h"
 
 #include "contact-data.h"
 

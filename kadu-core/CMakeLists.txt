@@ -37,7 +37,6 @@ set (kadu_SRCS
 	contacts/avatar.cpp
 	contacts/avatar-manager.cpp
 	contacts/contact.cpp
-	contacts/contact-account-data.cpp
 	contacts/contact-data.cpp
 	contacts/contact-kadu-data.cpp
 	contacts/contact-list.cpp
@@ -51,6 +50,8 @@ set (kadu_SRCS
 	contacts/group.cpp
 	contacts/group-manager.cpp
 	contacts/ignored-helper.cpp
+
+	contacts/account-data/contact-account-data.cpp
 
 	contacts/filter/account-contact-filter.cpp
 	contacts/filter/anonymous-contact-filter.cpp
@@ -282,7 +283,6 @@ set (kadu_MOC_SRCS
 
 	contacts/avatar-manager.h
 	contacts/contact.h
-	contacts/contact-account-data.h
 	contacts/contact-data.h
 	#contacts/contact-list.h
 	#contacts/contact-list-configuration-helper.h
@@ -290,6 +290,8 @@ set (kadu_MOC_SRCS
 	#contacts/contact-set.h
 	contacts/group.h
 	contacts/group-manager.h
+
+	contacts/account-data/contact-account-data.h
 
 	contacts/filter/abstract-contact-filter.h
 	contacts/filter/account-contact-filter.h

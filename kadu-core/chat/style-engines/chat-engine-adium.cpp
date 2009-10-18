@@ -18,7 +18,7 @@
 #include "chat/html-messages-renderer.h"
 #include "chat/message/message-render-info.h"
 #include "contacts/avatar.h"
-#include "contacts/contact-account-data.h"
+#include "contacts/account-data/contact-account-data.h"
 #include "gui/widgets/chat-messages-view.h"
 #include "gui/widgets/chat-widget.h"
 #include "gui/widgets/preview.h"

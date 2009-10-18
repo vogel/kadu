@@ -15,9 +15,8 @@
 
 #include "configuration/uuid-storable-object.h"
 #include "contacts/avatar.h"
+#include "contacts/contact.h"
 #include "status/status.h"
-
-#include "contact.h"
 
 #include "exports.h"
 
