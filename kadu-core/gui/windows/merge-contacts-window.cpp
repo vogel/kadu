@@ -78,7 +78,7 @@ void MergeContactsWindow::accept()
 	if (MyContact.isNull())
 		return;
 
-	MyContact.mergeWith(mergeWith);
+	ContactManager::instance()->mergeContact(mergeWith, MyContact);
 
 	QDialog::accept();
 }

@@ -14,6 +14,7 @@
 #include "configuration/xml-configuration-file.h"
 #include "contacts/contact-remove-predicate-object.h"
 #include "contacts/group-manager.h"
+#include "contacts/account-data/contact-account-data.h"
 #include "core/core.h"
 
 #include "contact.h"
@@ -175,6 +176,23 @@ void ContactManager::removeContact(Contact contact)
 	contact.setType(ContactData::TypeAnonymous);
 
 	kdebugf();
+}
+
+void ContactManager::mergeContact(Contact destination, Contact source)
+{
+	while (source.accounts().size())
+	{
+		ContactAccountData *cad = source.accountData(source.accounts()[0]);
+		cad->setContact(destination);
+	}
+
+	source.setType(ContactData::TypeAnonymous);
+	removeContact(source);
+
+	source.data()->setUuid(destination.uuid()); // just for case
+	source.setData(destination.data()); // TODO: 0.8 tricky merge, this should work well ;)
+	
+	Core::instance()->configuration()->flush();
 }
 
 Contact ContactManager::byIndex(unsigned int index)

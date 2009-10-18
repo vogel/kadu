@@ -17,6 +17,7 @@
 #include "contacts/group.h"
 #include "contacts/group-manager.h"
 #include "contacts/account-data/contact-account-data.h"
+#include "contacts/account-data/contact-account-data-manager.h"
 
 #include "contact-data.h"
 
@@ -186,6 +187,7 @@ void ContactData::addAccountData(ContactAccountData *accountData)
 
 	emit accountDataAboutToBeAdded(accountData->account());
 	AccountsData.insert(accountData->account(), accountData);
+	ContactAccountDataManager::instance()->addContactAccountData(accountData);
 	emit accountDataAdded(accountData->account());
 }
 
@@ -198,6 +200,7 @@ void ContactData::removeAccountData(ContactAccountData *accountData)
 void ContactData::removeAccountData(Account *account)
 {
 	emit accountDataAboutToBeRemoved(account);
+	ContactAccountDataManager::instance()->removeContactAccountData(AccountsData[account]);
 	AccountsData.remove(account);
 	emit accountDataRemoved(account);
 }

@@ -65,6 +65,9 @@ void ContactAccountData::store()
 
 void ContactAccountData::setContact(Contact contact)
 {
+	if (contact == OwnerContact)
+		return;
+
 	if (!OwnerContact.isNull())
 		OwnerContact.removeAccountData(this);
 	OwnerContact = contact;

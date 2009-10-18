@@ -63,6 +63,7 @@ public:
 	ContactList contacts(Account *account, bool includeAnonymous = false);
 	void addContact(Contact contact);
 	void removeContact(Contact contact);
+	void mergeContact(Contact destination, Contact source);
 
 	unsigned int count() { return Contacts.count(); }
 

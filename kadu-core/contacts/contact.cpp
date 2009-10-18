@@ -299,26 +299,3 @@ Contact Contact::dummy()
 	}
 	return null;
 }
-
-void Contact::mergeWith(Contact contact)
-{
-	QList<Account *> myAccounts = accounts();
-	foreach (Account *account, myAccounts)
-	{
-		// TODO: fix NOW
-// 		printf("moving data for accoun: %s\n", qPrintable(account->name()));
-// 
-// 		ContactAccountData* cad = accountData(account);
-// 		removeAccountData(account);
-// 		contact.addAccountData(cad);
-// 		cad->setContact(contact);
-// 
-// 		cad->recreateStoragePoint();
-	}
-	
-	ContactManager::instance()->removeContact(*this);
-	Data->setUuid(contact.uuid()); // just for case
-	Data = contact.data(); // TODO: 0.8 tricky merge, this should work well ;)
-
-	Core::instance()->configuration()->flush();
-}

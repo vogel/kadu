@@ -86,6 +86,7 @@ public:
 	QList<Account *> accounts() const;
 
 	ContactData * data() const { return Data.data(); }
+	void setData(ContactData *data) { Data = data; }  // TODO: 0.8 tricky merge, this should work well ;)
 
 	void addAccountData(ContactAccountData *accountData);
 	void removeAccountData(ContactAccountData *accountData) const;
