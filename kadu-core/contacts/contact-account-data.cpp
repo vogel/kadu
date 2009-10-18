@@ -29,6 +29,15 @@ ContactAccountData::ContactAccountData(Account *account, Contact contact, const 
 {
 }
 
+void ContactAccountData::recreateStoragePoint()
+{
+	StoragePoint *oldStorage = storage();
+	QDomElement oldPoint = oldStorage->point();
+	oldPoint.parentNode().removeChild(oldPoint);
+
+	setStorage(contact().storagePointForAccountData(ContactAccount));
+}
+
 void ContactAccountData::load()
 {
 	StoragePoint *sp = storage();

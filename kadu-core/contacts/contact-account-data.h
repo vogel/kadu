@@ -50,6 +50,8 @@ public:
 	ContactAccountData(Account *account, Contact contact, const QString &id, bool loaded = false);
 	ContactAccountData(Account *account, Contact contact, const QString &id, StoragePoint *storage);
 
+	void recreateStoragePoint(); // TODO: 0.6.6 remove, this is temporary
+
 	virtual bool validateId() {return false;}
 	virtual void load();
 	virtual void store();
@@ -58,6 +60,7 @@ public:
 
 	Account * account() { ensureLoaded(); return ContactAccount; }
 	Contact contact() { ensureLoaded(); return OwnerContact; }
+	void setContact(Contact contact) { ensureLoaded(); OwnerContact = contact; }
 	Avatar & avatar() { ensureLoaded(); return ContactAvatar; }
 
 	QString id() { return Id; }

@@ -9,11 +9,13 @@
 
 #include "accounts/account.h"
 #include "accounts/account-manager.h"
+#include "configuration/configuration-manager.h"
 #include "configuration/xml-configuration-file.h"
 #include "contacts/avatar.h"
 #include "contacts/contact-account-data.h"
 #include "contacts/contact-manager.h"
 #include "contacts/contact-remove-predicate-object.h"
+#include "core/core.h"
 #include "protocols/protocols-manager.h"
 #include "icons-manager.h"
 
@@ -304,6 +306,9 @@ void Contact::mergeWith(Contact contact)
 		ContactAccountData* cad = accountData(account);
 		removeAccountData(account);
 		contact.addAccountData(cad);
+		cad->setContact(contact);
+
+		cad->recreateStoragePoint();
 	}
 	
 	ContactManager::instance()->removeContact(*this);
@@ -311,4 +316,6 @@ void Contact::mergeWith(Contact contact)
 	Data = contact.data(); // TODO: 0.8 tricky merge, this should work well ;)
 
 	printf("merge done\n");
+
+	Core::instance()->configuration()->flush();
 }
