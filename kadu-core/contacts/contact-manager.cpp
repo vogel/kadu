@@ -125,7 +125,6 @@ void ContactManager::addContact(Contact contact)
 		return;
 	}
 
-
 	emit contactAboutToBeAdded(contact);
 	Contacts.append(contact);
 	emit contactAdded(contact);

@@ -37,7 +37,10 @@ public:
 	StorableObject(const QString &nodeName, StorableObject *parent, bool loaded = false);
 
 	StorableObject * parent() { return Parent; }
+	void setStorageParent(StorableObject *parent) { Parent = parent; } // TODO: 0.8 removed
+
 	QString nodeName() { return NodeName; }
+	void setNodeName(const QString &nodeName) { NodeName = nodeName; } // TODO: 0.8 removed
 
 	StoragePoint * storage();
 

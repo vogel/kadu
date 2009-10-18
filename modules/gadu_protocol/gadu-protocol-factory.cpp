@@ -74,11 +74,18 @@ ContactAccountData * GaduProtocolFactory::loadContactAccountData(Account *accoun
 			: 0;
 }
 
+ContactAccountData * GaduProtocolFactory::loadContactAccountData(StoragePoint *storagePoint)
+{
+	if (!storagePoint)
+		return 0;
+
+	return new GaduContactAccountData(storagePoint);
+}
+
 AccountCreateWidget * GaduProtocolFactory::newCreateAccountWidget(QWidget *parent)
 {
 	return new GaduCreateAccountWidget(parent);
 }
-
 
 AccountEditWidget * GaduProtocolFactory::newEditAccountWidget(Account *account, QWidget *parent)
 {

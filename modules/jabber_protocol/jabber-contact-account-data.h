@@ -25,6 +25,8 @@ public:
 			ContactAccountData(account, contact, id, loaded) {}
 	JabberContactAccountData(Account *account, Contact contact, const QString &id, StoragePoint *storage) :
 			ContactAccountData(account, contact, id, storage) {}
+	JabberContactAccountData(StoragePoint *storage) :
+			ContactAccountData(storage) {}
 
 	virtual bool validateId();
 

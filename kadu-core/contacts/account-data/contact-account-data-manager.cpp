@@ -13,13 +13,18 @@
 #include "debug.h"
 
 #include "contact-account-data-manager.h"
+#include <protocols/protocol.h>
+#include <protocols/protocol-factory.h>
 
 ContactAccountDataManager * ContactAccountDataManager::Instance = 0;
 
 ContactAccountDataManager * ContactAccountDataManager::instance()
 {
 	if (0 == Instance)
+	{
 		Instance = new ContactAccountDataManager();
+		Instance->init();
+	}
 
 	return Instance;
 }
@@ -32,11 +37,67 @@ ContactAccountDataManager::ContactAccountDataManager()
 ContactAccountDataManager::~ContactAccountDataManager()
 {
 	Core::instance()->configuration()->unregisterStorableObject(this);
+
+	triggerAllAccountsUnregistered();
+}
+
+void ContactAccountDataManager::init()
+{
+	triggerAllAccountsRegistered();
 }
 
 StoragePoint * ContactAccountDataManager::createStoragePoint()
 {
 	return new StoragePoint(xml_config_file, xml_config_file->getNode("ContactAccountDatas"));
+}
+
+void ContactAccountDataManager::load(Account *account)
+{
+	printf("loading account datas for: %s\n", qPrintable(account->uuid().toString()));
+
+	if (!isValidStorage())
+		return;
+
+	XmlConfigFile *configurationStorage = storage()->storage();
+	QDomElement contactAccountDatasNode = storage()->point();
+
+	if (contactAccountDatasNode.isNull())
+		return;
+
+	// TODO 0.6.6: by tag does not work, this works only if childNodes are "Chat"
+	QDomNodeList contactAccountDatasNodes = contactAccountDatasNode.childNodes();
+
+	int count = contactAccountDatasNodes.count();
+
+	QString uuid = account->uuid().toString();
+	for (int i = 0; i < count; i++)
+	{
+		QDomElement contactAccountDataElement = contactAccountDatasNodes.at(i).toElement();
+		if (contactAccountDataElement.isNull())
+			continue;
+
+		if (configurationStorage->getTextNode(contactAccountDataElement, "Account") != uuid)
+			continue;
+
+		StoragePoint *contactStoragePoint = new StoragePoint(configurationStorage, contactAccountDataElement);
+		ContactAccountData *cad = account->protocol()->protocolFactory()->loadContactAccountData(contactStoragePoint);
+
+		if (cad)
+		{
+			printf("loaded\n");
+			addContactAccountData(cad);
+		}
+	}
+}
+
+void ContactAccountDataManager::accountRegistered(Account *account)
+{
+	load(account);
+}
+
+void ContactAccountDataManager::accountUnregistered(Account *account)
+{
+// 	store(account);
 }
 
 void ContactAccountDataManager::load()

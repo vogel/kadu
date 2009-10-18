@@ -48,6 +48,7 @@ class KADUAPI ContactAccountData : public QObject, public UuidStorableObject
 public:
 	ContactAccountData(Account *account, Contact contact, const QString &id, bool loaded = false);
 	ContactAccountData(Account *account, Contact contact, const QString &id, StoragePoint *storage);
+	ContactAccountData(StoragePoint *storage);
 
 	void recreateStoragePoint(); // TODO: 0.6.6 remove, this is temporary
 
@@ -62,7 +63,7 @@ public:
 	void setContact(Contact contact) { ensureLoaded(); OwnerContact = contact; }
 	Avatar & avatar() { ensureLoaded(); return ContactAvatar; }
 
-	QString id() { return Id; }
+	QString id() { ensureLoaded(); return Id; }
 	void setId(const QString &newId);
 
 	bool isValid();

@@ -26,6 +26,8 @@ public:
 			ContactAccountData(account, contact, id, loaded) {}
 	GaduContactAccountData(Account *account, Contact contact, const QString &id, StoragePoint *storage) :
 			ContactAccountData(account, contact, id, storage) {}
+	GaduContactAccountData(StoragePoint *storage) :
+			ContactAccountData(storage) {}
 
 	virtual bool validateId();
 

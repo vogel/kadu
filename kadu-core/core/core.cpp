@@ -18,6 +18,7 @@
 #include "configuration/configuration-manager.h"
 #include "contacts/contact-manager.h"
 #include "contacts/group-manager.h"
+#include "contacts/account-data/contact-account-data-manager.h"
 #include "gui/widgets/chat-edit-box.h"
 #include "gui/widgets/chat-widget-manager.h"
 #include "gui/windows/kadu-window.h"
@@ -288,6 +289,8 @@ void Core::init()
 	setIcon(IconsManager::instance()->loadPixmap("Offline"));
 #endif
 	QTimer::singleShot(15000, this, SLOT(deleteOldConfigurationFiles()));
+
+	ContactAccountDataManager::instance();
 }
 
 void Core::storeConfiguration()

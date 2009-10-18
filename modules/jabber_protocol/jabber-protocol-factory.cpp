@@ -80,6 +80,14 @@ ContactAccountData * JabberProtocolFactory::loadContactAccountData(Account *acco
 			: 0;
 }
 
+ContactAccountData * JabberProtocolFactory::loadContactAccountData(StoragePoint *storagePoint)
+{
+	if (!storagePoint)
+		return 0;
+
+	return new JabberContactAccountData(storagePoint);
+}
+
 AccountCreateWidget * JabberProtocolFactory::newCreateAccountWidget(QWidget *parent)
 {
 	return new JabberCreateAccountWidget(parent);

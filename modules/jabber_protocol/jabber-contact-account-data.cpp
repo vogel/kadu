@@ -8,12 +8,11 @@
  ***************************************************************************/
 
 #include "utils/jid-util.h"
+
 #include "jabber-contact-account-data.h"
 
 bool JabberContactAccountData::validateId()
 {
 	XMPP::Jid newJid(JIDUtil::accountFromString(id()));
-	if (newJid.node().isEmpty() || newJid.domain().isEmpty())
-		return false;
-	return true;
+	return !newJid.node().isEmpty() && !newJid.domain().isEmpty();
 }
