@@ -52,6 +52,7 @@ set (kadu_SRCS
 	contacts/ignored-helper.cpp
 
 	contacts/account-data/contact-account-data.cpp
+	contacts/account-data/contact-account-data-manager.cpp
 
 	contacts/filter/account-contact-filter.cpp
 	contacts/filter/anonymous-contact-filter.cpp
@@ -74,9 +75,9 @@ set (kadu_SRCS
 	configuration/account-data-manager.cpp
 	configuration/config-file-data-manager.cpp
 	configuration/configuration-aware-object.cpp
+	configuration/configuration-contact-account-data-manager.cpp
 	configuration/configuration-file.cpp
 	configuration/configuration-manager.cpp
-	configuration/contact-account-data-manager.cpp
 	configuration/notifier-configuration-data-manager.cpp
 	configuration/storable-object.cpp
 	configuration/storable-string-list.cpp
@@ -292,6 +293,7 @@ set (kadu_MOC_SRCS
 	contacts/group-manager.h
 
 	contacts/account-data/contact-account-data.h
+	contacts/account-data/contact-account-data-manager.h
 
 	contacts/filter/abstract-contact-filter.h
 	contacts/filter/account-contact-filter.h

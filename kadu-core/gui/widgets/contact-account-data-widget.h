@@ -17,8 +17,8 @@
 
 #include "exports.h"
 
+class ConfigurationContactAccountDataManager;
 class ContactAccountData;
-class ContactAccountDataManager;
 
 class KADUAPI ContactAccountDataWidget : public ConfigurationWidget
 {
@@ -28,7 +28,7 @@ class KADUAPI ContactAccountDataWidget : public ConfigurationWidget
 	void createGui();
 
 public:
-	ContactAccountDataWidget(ContactAccountDataManager *dataManager, ContactAccountData *contactAccountData, QWidget *parent = 0);
+	ContactAccountDataWidget(ConfigurationContactAccountDataManager *dataManager, ContactAccountData *contactAccountData, QWidget *parent = 0);
 	~ContactAccountDataWidget();
 
 };

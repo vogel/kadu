@@ -12,7 +12,7 @@
 #include "gadu-contact-account-data-manager.h"
 
 GaduContactAccountDataManager::GaduContactAccountDataManager(GaduContactAccountData *data, QObject *parent)
-	: ContactAccountDataManager(data, parent), Data(data)
+	: ConfigurationContactAccountDataManager(data, parent), Data(data)
 {
 }
 
@@ -20,7 +20,7 @@ void GaduContactAccountDataManager::writeEntry(const QString &section, const QSt
 {
 	if (section != "Gadu-Gadu")
 	{
-		ContactAccountDataManager::writeEntry(section, name, value);
+		ConfigurationContactAccountDataManager::writeEntry(section, name, value);
 		return;
 	}
 
@@ -33,7 +33,7 @@ void GaduContactAccountDataManager::writeEntry(const QString &section, const QSt
 QVariant GaduContactAccountDataManager::readEntry(const QString &section, const QString &name)
 {
 	if (section != "Gadu-Gadu")
-		return ContactAccountDataManager::readEntry(section, name);
+		return ConfigurationContactAccountDataManager::readEntry(section, name);
 
 	if (name == "Uin")
 		return Data->uin();
