@@ -88,7 +88,6 @@ void GaduSearchService::handleEventPubdir50SearchReply(struct gg_event *e)
 
 		GaduContactAccountData *gcad = new GaduContactAccountData(Protocol->account(), result,
 				gg_pubdir50_get(res, i, GG_PUBDIR50_UIN));
-		//TODO 0.6.6
 		Status status;
 		status.setType(Protocol->statusTypeFromGaduStatus(atoi(gg_pubdir50_get(res, i, GG_PUBDIR50_STATUS)) & 127));
 		gcad->setStatus(status);
