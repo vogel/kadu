@@ -25,7 +25,9 @@
 #include "contacts/contact.h"
 #include "contacts/contact-manager.h"
 #include "contacts/group-manager.h"
+#include "contacts/filter/non-account-contact-filter.h"
 #include "contacts/model/groups-model.h"
+#include "gui/widgets/select-contact-combobox.h"
 #include "misc/misc.h"
 #include "model/actions-proxy-model.h"
 #include "model/roles.h"
@@ -70,6 +72,7 @@ void AddBuddyWindow::createGui()
 	connect(AccountCombo, SIGNAL(activated(int)), this, SLOT(setUsernameLabel()));
 	connect(AccountCombo, SIGNAL(activated(int)), this, SLOT(setAddContactEnabled()));
 	connect(AccountCombo, SIGNAL(activated(int)), this, SLOT(setValidateRegularExpression()));
+	connect(AccountCombo, SIGNAL(activated(int)), this, SLOT(setMergeContactFilter()));
 
 	AccountComboModel = new AccountsModel(AccountCombo);
 	AccountComboProxyModel = new AccountsProxyModel(AccountCombo);
@@ -122,16 +125,25 @@ void AddBuddyWindow::createGui()
 	hintLabel->setFont(hintLabelFont);
 	layout->addWidget(hintLabel, 3, 1, 1, 3);
 
+	MergeContact = new QCheckBox(tr("Merge with an existing contact"), this);
+	layout->addWidget(MergeContact, 4, 1, 1, 3);
+	SelectContact = new SelectContactCombobox(this);
+	SelectContactFilter = new NonAccountContactFilter(SelectContact);
+	SelectContact->addFilter(SelectContactFilter);
+	SelectContact->setEnabled(false);
+	layout->addWidget(SelectContact, 5, 1, 1, 3);
+	connect(MergeContact, SIGNAL(toggled(bool)), SelectContact, SLOT(setEnabled(bool)));
+
 	AllowToSeeMeCheck = new QCheckBox(tr("Allow contact to see me when I'm available"), this);
 	AllowToSeeMeCheck->setChecked(true);
-	layout->addWidget(AllowToSeeMeCheck, 5, 1, 1, 3);
+	layout->addWidget(AllowToSeeMeCheck, 7, 1, 1, 3);
 
-	layout->setRowMinimumHeight(4, 20);
 	layout->setRowMinimumHeight(6, 20);
-	layout->setRowStretch(6, 100);
+	layout->setRowMinimumHeight(8, 20);
+	layout->setRowStretch(8, 100);
 
 	QDialogButtonBox *buttons = new QDialogButtonBox(this);
-	layout->addWidget(buttons, 7, 0, 1, 4);
+	layout->addWidget(buttons, 9, 0, 1, 4);
 
 	AddContactButton = new QPushButton(tr("Add contact"), this);
 	AddContactButton->setDefault(true);
@@ -212,14 +224,14 @@ void AddBuddyWindow::setValidateRegularExpression()
 	}
 
 	QStringList regularExpressions;
-	
+
 	foreach (Account *account, AccountManager::instance()->accounts())
 	{
 		QRegExp regularExpression = account->protocol()->protocolFactory()->idRegularExpression();
 		if (!regularExpression.isEmpty())
 			regularExpressions.append(regularExpression.pattern());
 	}
-	
+
 	regularExpressions.removeDuplicates();
 	UserNameValidator->setRegExp(QRegExp(QString("(%1)").arg(regularExpressions.join("|"))));
 }
@@ -227,6 +239,11 @@ void AddBuddyWindow::setValidateRegularExpression()
 void AddBuddyWindow::setAccountFilter()
 {
 	AccountComboFilter->setId(UserNameEdit->text());
+}
+
+void AddBuddyWindow::setMergeContactFilter()
+{
+	SelectContactFilter->setAccount(selectedAccount());
 }
 
 void AddBuddyWindow::groupChanged(int index)
@@ -255,11 +272,27 @@ void AddBuddyWindow::groupChanged(int index)
 void AddBuddyWindow::accept()
 {
 	Account *account = selectedAccount();
-	if (MyContact.isNull())
-		MyContact = ContactManager::instance()->byId(account, UserNameEdit->text());
+	if (!account)
+		return;
 
-	MyContact.setType(ContactData::TypeNormal);
-	MyContact.setDisplay(DisplayNameEdit->text());
+	if (!MergeContact->isChecked())
+	{
+		if (MyContact.isNull())
+			MyContact = ContactManager::instance()->byId(account, UserNameEdit->text());
+		
+		MyContact.setType(ContactData::TypeNormal);
+		MyContact.setDisplay(DisplayNameEdit->text());
+	}
+	else
+	{
+		Contact contact = SelectContact->contact();
+		if (contact.isNull())
+			return;
+
+		ContactAccountData *cad = account->protocol()->protocolFactory()
+				->newContactAccountData(account, contact, UserNameEdit->text());
+		contact.addAccountData(cad);
+	}
 
 	QDialog::accept();
 }

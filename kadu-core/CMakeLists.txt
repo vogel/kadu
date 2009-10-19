@@ -61,6 +61,7 @@ set (kadu_SRCS
 	contacts/filter/contact-name-filter.cpp
 	contacts/filter/group-contact-filter.cpp
 	contacts/filter/has-description-contact-filter.cpp
+	contacts/filter/non-account-contact-filter.cpp
 	contacts/filter/offline-contact-filter.cpp
 	contacts/filter/online-and-description-contact-filter.cpp
 	contacts/filter/online-contact-filter.cpp
@@ -303,6 +304,7 @@ set (kadu_MOC_SRCS
 	#contacts/filter/contact-name-filter.h
 	contacts/filter/group-contact-filter.h
 	contacts/filter/has-description-contact-filter.h
+	contacts/filter/non-account-contact-filter.h
 	contacts/filter/offline-contact-filter.h
 	contacts/filter/online-and-description-contact-filter.h
 	contacts/filter/online-contact-filter.h
