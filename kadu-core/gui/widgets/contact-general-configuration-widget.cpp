@@ -19,9 +19,9 @@
 
 #include "accounts/account.h"
 #include "accounts/account-manager.h"
-#include "configuration/contact-account-data-manager.h"
-#include "contacts/contact-account-data.h"
+#include "configuration/configuration-contact-account-data-manager.h"
 #include "contacts/contact-manager.h"
+#include "contacts/account-data/contact-account-data.h"
 #include "icons-manager.h"
 #include "misc/misc.h"
 #include "protocols/protocol.h"

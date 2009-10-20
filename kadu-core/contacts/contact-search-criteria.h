@@ -10,8 +10,8 @@
 #ifndef CONTACT_SEARCH_CRITERIA_H
 #define CONTACT_SEARCH_CRITERIA_H
 
+#include "contacts/account-data/contact-account-data.h"
 #include "contacts/contact.h"
-#include "contacts/contact-account-data.h"
 
 struct KADUAPI ContactSearchCriteria
 {

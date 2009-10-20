@@ -77,7 +77,7 @@ class KADUAPI SearchWindow : public MainWindow
 	QRadioButton *r_uin;
 	QRadioButton *r_pers;
 	Account *CurrentAccount;
-	uint32_t seq;
+	quint32 seq;
 	ContactSet selectedUsers;
 
 	ContactSearchCriteria CurrentSearchCriteria;

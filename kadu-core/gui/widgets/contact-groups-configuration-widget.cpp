@@ -12,8 +12,8 @@
 #include <QtGui/QGroupBox>
 #include <QtGui/QLabel>
 
-#include "configuration/contact-account-data-manager.h"
-#include "contacts/contact-account-data.h"
+#include "configuration/configuration-contact-account-data-manager.h"
+#include "contacts/account-data/contact-account-data.h"
 #include "contacts/group.h"
 #include "contacts/group-manager.h"
 #include "misc/misc.h"
