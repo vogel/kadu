@@ -40,4 +40,4 @@ public:
 
 };
 
-#endif CONTACTS_LIST_WIDGET_H
+#endif //CONTACTS_LIST_WIDGET_H
