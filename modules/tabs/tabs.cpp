@@ -105,7 +105,7 @@ void disableNewTab(Action *action)
 }
 
 TabsManager::TabsManager(bool firstload) :
-	QObject(), StorableObject("ModuleTabs", 0)
+	QObject(), StorableObject("ModuleTabs", 0, false)
 {
 	kdebugf();
 
@@ -152,7 +152,7 @@ TabsManager::TabsManager(bool firstload) :
 		this, SLOT(onNewTab(QAction *, bool)),
 		"OpenChat", tr("Open in new tab"), false, QString::null, disableNewTab
 	);
-	ContactsListWidgetMenuManager::instance()->insertActionDescription(1, openInNewTabActionDescription);
+	ContactsListViewMenuManager::instance()->insertActionDescription(1, openInNewTabActionDescription);
 
 	attachToTabsActionDescription = new ActionDescription(
 		0, ActionDescription::TypeChat, "attachToTabsAction",
@@ -204,7 +204,7 @@ TabsManager::~TabsManager()
 {
 	kdebugf();
 
-	ContactsListWidgetMenuManager::instance()->removeActionDescription(openInNewTabActionDescription);
+	ContactsListViewMenuManager::instance()->removeActionDescription(openInNewTabActionDescription);
 	delete openInNewTabActionDescription;
 	openInNewTabActionDescription = 0;
 
