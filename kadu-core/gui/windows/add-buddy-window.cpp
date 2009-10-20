@@ -137,6 +137,7 @@ void AddBuddyWindow::createGui()
 	SelectContact->setEnabled(false);
 	layout->addWidget(SelectContact, 5, 1, 1, 3);
 	connect(MergeContact, SIGNAL(toggled(bool)), SelectContact, SLOT(setEnabled(bool)));
+	connect(MergeContact, SIGNAL(toggled(bool)), DisplayNameEdit, SLOT(setDisabled(bool)));
 	connect(MergeContact, SIGNAL(toggled(bool)), this, SLOT(setAddContactEnabled()));
 	connect(SelectContact, SIGNAL(contactChanged(Contact)), this, SLOT(setAddContactEnabled()));
 	connect(SelectContact, SIGNAL(contactChanged(Contact)), this, SLOT(setAccountFilter()));
