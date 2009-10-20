@@ -7,26 +7,27 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef ID_REGULAR_EXPRESSION_FILTER
-#define ID_REGULAR_EXPRESSION_FILTER
+#include "non-in-contact-filter.h"
 
-#include "accounts/filter/abstract-account-filter.h"
-
-class IdRegularExpressionFilter : public AbstractAccountFilter
+NonInContactFilter::NonInContactFilter(QObject *parent) :
+		AbstractAccountFilter(parent), MyContact(Contact::null)
 {
-	Q_OBJECT
+}
 
-	QString Id;
+NonInContactFilter::~NonInContactFilter()
+{
+}
 
-protected:
-	virtual bool acceptAccount(Account *account);
+bool NonInContactFilter::acceptAccount(Account *account)
+{
+	return MyContact.isNull() || (0 == MyContact.accountData(account));
+}
 
-public:
-	explicit IdRegularExpressionFilter(QObject *parent = 0);
-	virtual ~IdRegularExpressionFilter();
-
-	void setId(QString id);
-
-};
-
-#endif // ID_REGULAR_EXPRESSION_FILTER
+void NonInContactFilter::setContact(Contact contact)
+{
+	if (MyContact != contact)
+	{
+		MyContact = contact;
+		emit filterChanged();
+	}
+}

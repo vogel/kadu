@@ -20,6 +20,7 @@
 #include "accounts/account.h"
 #include "accounts/account-manager.h"
 #include "accounts/filter/id-regular-expression-filter.h"
+#include "accounts/filter/non-in-contact-filter.h"
 #include "accounts/model/accounts-model.h"
 #include "accounts/model/accounts-proxy-model.h"
 #include "contacts/contact.h"
@@ -78,8 +79,10 @@ void AddBuddyWindow::createGui()
 	AccountComboModel = new AccountsModel(AccountCombo);
 	AccountComboProxyModel = new AccountsProxyModel(AccountCombo);
 	AccountComboProxyModel->setSourceModel(AccountComboModel);
-	AccountComboFilter = new IdRegularExpressionFilter(AccountCombo);
-	AccountComboProxyModel->addFilter(AccountComboFilter);
+	AccountComboIdFilter = new IdRegularExpressionFilter(AccountCombo);
+	AccountComboNotInContactFilter = new NonInContactFilter(AccountCombo);
+	AccountComboProxyModel->addFilter(AccountComboIdFilter);
+	AccountComboProxyModel->addFilter(AccountComboNotInContactFilter);
 
 	ActionsProxyModel::ModelActionList accountsModelBeforeActions;
 	accountsModelBeforeActions.append(qMakePair<QString, QString>(tr(" - Select account - "), ""));
@@ -134,6 +137,9 @@ void AddBuddyWindow::createGui()
 	SelectContact->setEnabled(false);
 	layout->addWidget(SelectContact, 5, 1, 1, 3);
 	connect(MergeContact, SIGNAL(toggled(bool)), SelectContact, SLOT(setEnabled(bool)));
+	connect(MergeContact, SIGNAL(toggled(bool)), this, SLOT(setAddContactEnabled()));
+	connect(SelectContact, SIGNAL(contactChanged(Contact)), this, SLOT(setAddContactEnabled()));
+	connect(SelectContact, SIGNAL(contactChanged(Contact)), this, SLOT(setAccountFilter()));
 
 	AllowToSeeMeCheck = new QCheckBox(tr("Allow contact to see me when I'm available"), this);
 	AllowToSeeMeCheck->setChecked(true);
@@ -212,7 +218,17 @@ void AddBuddyWindow::setAddContactEnabled()
 		return;
 	}
 
-	AddContactButton->setEnabled((ContactManager::instance()->byDisplay(DisplayNameEdit->text()).isNull()));
+	if (!MergeContact->isChecked())
+	{
+		AddContactButton->setEnabled(ContactManager::instance()->byDisplay(DisplayNameEdit->text()).isNull());
+		return;
+	}
+
+	Contact mergeWith = SelectContact->contact();
+	if (mergeWith.isNull())
+		AddContactButton->setEnabled(false);
+	else
+		AddContactButton->setEnabled(0 == mergeWith.accountData(account));
 }
 
 void AddBuddyWindow::setValidateRegularExpression()
@@ -239,7 +255,12 @@ void AddBuddyWindow::setValidateRegularExpression()
 
 void AddBuddyWindow::setAccountFilter()
 {
-	AccountComboFilter->setId(UserNameEdit->text());
+	AccountComboIdFilter->setId(UserNameEdit->text());
+
+	if (MergeContact->isChecked())
+		AccountComboNotInContactFilter->setContact(SelectContact->contact());
+	else
+		AccountComboNotInContactFilter->setContact(Contact::null);
 }
 
 void AddBuddyWindow::setMergeContactFilter()
