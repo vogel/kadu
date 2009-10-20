@@ -10,8 +10,8 @@
 #include "accounts/account-manager.h"
 #include "configuration/configuration-file.h"
 #include "configuration/xml-configuration-file.h"
-#include "contacts/contact-account-data.h"
 #include "contacts/contact-manager.h"
+#include "contacts/account-data/contact-account-data.h"
 #include "protocols/protocol.h"
 #include "protocols/protocol-factory.h"
 #include "protocols/protocols-manager.h"
@@ -56,9 +56,10 @@ bool Account::setId(const QString &id)
 
 void Account::contactAdded(Contact contact)
 {
-	ContactAccountData *cad = ProtocolHandler->protocolFactory()->loadContactAccountData(this, contact);
-	if (cad)
-		contact.addAccountData(cad);
+	// TODO: fix now
+// 	ContactAccountData *cad = ProtocolHandler->protocolFactory()->loadContactAccountData(this, contact);
+// 	if (cad)
+// 		contact.addAccountData(cad);
 }
 
 void Account::contactRemoved(Contact contact)

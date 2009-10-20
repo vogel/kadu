@@ -31,7 +31,7 @@ public:
 	virtual Account * newAccount();
 	virtual Account * loadAccount(StoragePoint *accountStoragePoint);
 	virtual ContactAccountData * newContactAccountData(Account *account, Contact contact, const QString &id);
-	virtual ContactAccountData * loadContactAccountData(Account *account, Contact contact);
+	virtual ContactAccountData * loadContactAccountData(StoragePoint *storagePoint);
 	virtual AccountCreateWidget * newCreateAccountWidget(QWidget *parent);
 	virtual AccountEditWidget * newEditAccountWidget(Account *, QWidget *parent);
 	virtual ContactAccountDataWidget * newContactAccountDataWidget(ContactAccountData *contactAccountData, QWidget *parent = 0);

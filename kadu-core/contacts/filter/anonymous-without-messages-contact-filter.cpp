@@ -9,7 +9,7 @@
 
 #include "accounts/account.h"
 #include "chat/message/pending-messages-manager.h"
-#include "contacts/contact-account-data.h"
+#include "contacts/account-data/contact-account-data.h"
 #include "anonymous-without-messages-contact-filter.h"
 
 AnonymousWithoutMessagesContactFilter::AnonymousWithoutMessagesContactFilter(QObject *parent)
@@ -31,9 +31,9 @@ bool AnonymousWithoutMessagesContactFilter::acceptContact(Contact contact)
 	if (!Enabled)
 		return true;
 
-	Account *prefferedAccount = contact.prefferedAccount();
-	if (!prefferedAccount)
-		return false;
+// 	Account *prefferedAccount = contact.prefferedAccount();
+// 	if (!prefferedAccount)
+// 		return false;
 
 // TODO:
 

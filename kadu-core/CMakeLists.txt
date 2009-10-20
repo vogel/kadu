@@ -5,6 +5,7 @@ set (kadu_SRCS
 	accounts/accounts-aware-object.cpp
 
 	accounts/filter/id-regular-expression-filter.cpp
+	accounts/filter/non-in-contact-filter.cpp
 
 	accounts/model/accounts-model.cpp
 	accounts/model/accounts-proxy-model.cpp
@@ -37,7 +38,6 @@ set (kadu_SRCS
 	contacts/avatar.cpp
 	contacts/avatar-manager.cpp
 	contacts/contact.cpp
-	contacts/contact-account-data.cpp
 	contacts/contact-data.cpp
 	contacts/contact-kadu-data.cpp
 	contacts/contact-list.cpp
@@ -53,12 +53,17 @@ set (kadu_SRCS
 	contacts/group-manager.cpp
 	contacts/ignored-helper.cpp
 
+	contacts/account-data/contact-account-data.cpp
+	contacts/account-data/contact-account-data-manager.cpp
+
 	contacts/filter/account-contact-filter.cpp
 	contacts/filter/anonymous-contact-filter.cpp
 	contacts/filter/anonymous-without-messages-contact-filter.cpp
+	contacts/filter/contact-mergable-filter.cpp
 	contacts/filter/contact-name-filter.cpp
 	contacts/filter/group-contact-filter.cpp
 	contacts/filter/has-description-contact-filter.cpp
+	contacts/filter/non-account-contact-filter.cpp
 	contacts/filter/offline-contact-filter.cpp
 	contacts/filter/online-and-description-contact-filter.cpp
 	contacts/filter/online-contact-filter.cpp
@@ -73,9 +78,9 @@ set (kadu_SRCS
 	configuration/account-data-manager.cpp
 	configuration/config-file-data-manager.cpp
 	configuration/configuration-aware-object.cpp
+	configuration/configuration-contact-account-data-manager.cpp
 	configuration/configuration-file.cpp
 	configuration/configuration-manager.cpp
-	configuration/contact-account-data-manager.cpp
 	configuration/notifier-configuration-data-manager.cpp
 	configuration/storable-object.cpp
 	configuration/storable-string-list.cpp
@@ -109,6 +114,7 @@ set (kadu_SRCS
 	gui/widgets/contact-personal-info-configuration-widget.cpp
 	gui/widgets/contact-options-configuration-widget.cpp
 	gui/widgets/contact-info-panel.cpp
+	gui/widgets/contacts-line-edit.cpp
 	gui/widgets/contacts-list-view.cpp
 	gui/widgets/contacts-list-view-delegate.cpp
 	gui/widgets/contacts-list-view-menu-manager.cpp
@@ -121,6 +127,8 @@ set (kadu_SRCS
 	gui/widgets/path-list-edit.cpp
 	gui/widgets/proxy-group-box.cpp
 	gui/widgets/preview.cpp
+	gui/widgets/select-contact-combobox.cpp
+	gui/widgets/select-contact-popup.cpp
 	gui/widgets/select-file.cpp
 	gui/widgets/select-font.cpp
 	gui/widgets/status-button.cpp
@@ -169,6 +177,7 @@ set (kadu_SRCS
 	gui/windows/kadu-window-actions.cpp
 	gui/windows/main-configuration-window.cpp
 	gui/windows/main-window.cpp
+	gui/windows/merge-contacts-window.cpp
 	gui/windows/message-box.cpp
 	gui/windows/open-chat-with/open-chat-with.cpp
 	gui/windows/open-chat-with/open-chat-with-contact-list-runner.cpp
@@ -255,6 +264,7 @@ set (kadu_MOC_SRCS
 
 	accounts/filter/abstract-account-filter.h
 	accounts/filter/id-regular-expression-filter.h
+	accounts/filter/non-in-contact-filter.h
 
 	accounts/model/accounts-model.h
 	accounts/model/accounts-proxy-model.h
@@ -283,7 +293,6 @@ set (kadu_MOC_SRCS
 
 	contacts/avatar-manager.h
 	contacts/contact.h
-	contacts/contact-account-data.h
 	contacts/contact-data.h
 	#contacts/contact-list.h
 	#contacts/contact-list-configuration-helper.h
@@ -293,13 +302,18 @@ set (kadu_MOC_SRCS
 	contacts/group.h
 	contacts/group-manager.h
 
+	contacts/account-data/contact-account-data.h
+	contacts/account-data/contact-account-data-manager.h
+
 	contacts/filter/abstract-contact-filter.h
 	contacts/filter/account-contact-filter.h
 	contacts/filter/anonymous-contact-filter.h
 	contacts/filter/anonymous-without-messages-contact-filter.h
+	contacts/filter/contact-mergable-filter.h
 	#contacts/filter/contact-name-filter.h
 	contacts/filter/group-contact-filter.h
 	contacts/filter/has-description-contact-filter.h
+	contacts/filter/non-account-contact-filter.h
 	contacts/filter/offline-contact-filter.h
 	contacts/filter/online-and-description-contact-filter.h
 	contacts/filter/online-contact-filter.h
@@ -340,6 +354,7 @@ set (kadu_MOC_SRCS
 	gui/widgets/contact-personal-info-configuration-widget.h
 	gui/widgets/contact-options-configuration-widget.h
 	gui/widgets/contact-info-panel.h
+	gui/widgets/contacts-line-edit.h
 	gui/widgets/contacts-list-view.h
 	gui/widgets/contacts-list-view-delegate.h
 	gui/widgets/contacts-list-widget.h
@@ -349,6 +364,8 @@ set (kadu_MOC_SRCS
 	gui/widgets/kadu-text-browser.h
 	gui/widgets/path-list-edit.h
 	gui/widgets/preview.h
+	gui/widgets/select-contact-combobox.h
+	gui/widgets/select-contact-popup.h
 	gui/widgets/select-file.h
 	gui/widgets/select-font.h
 	gui/widgets/status-button.h
@@ -379,6 +396,7 @@ set (kadu_MOC_SRCS
 	gui/windows/kadu-window-actions.h
 	gui/windows/main-configuration-window.h
 	gui/windows/main-window.h
+	gui/windows/merge-contacts-window.h
 	gui/windows/message-box.h
 	gui/windows/open-chat-with/open-chat-with.h
 	gui/windows/password-window.h

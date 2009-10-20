@@ -16,7 +16,7 @@
 #include "accounts/account.h"
 #include "configuration/configuration-file.h"
 #include "configuration/config-file-data-manager.h"
-#include "contacts/contact-account-data.h"
+#include "contacts/account-data/contact-account-data.h"
 #include "gui/widgets/configuration/config-color-button.h"
 #include "gui/widgets/configuration/config-combo-box.h"
 #include "gui/widgets/configuration/config-group-box.h"

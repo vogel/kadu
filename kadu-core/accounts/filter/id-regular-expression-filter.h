@@ -22,7 +22,7 @@ protected:
 	virtual bool acceptAccount(Account *account);
 
 public:
-	IdRegularExpressionFilter(QObject *parent = 0);
+	explicit IdRegularExpressionFilter(QObject *parent = 0);
 	virtual ~IdRegularExpressionFilter();
 
 	void setId(QString id);

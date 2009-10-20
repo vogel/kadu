@@ -11,45 +11,41 @@
 #include "accounts/account-manager.h"
 #include "configuration/xml-configuration-file.h"
 #include "configuration/storage-point.h"
+#include "contacts/account-data/contact-account-data-manager.h"
+#include "contacts/contact-manager.h"
 #include "dnshandler.h"
 
 #include "contact-account-data.h"
 
 ContactAccountData::ContactAccountData(Account *account, Contact contact, const QString &id, bool loaded) :
-		UuidStorableObject("ContactAccountData", loaded), ContactAccount(account), OwnerContact(contact), Id(id),
+		UuidStorableObject("ContactAccountData", ContactAccountDataManager::instance(), loaded),
+		ContactAccount(account), OwnerContact(contact), Id(id),
 		ContactAvatar(this, false) /* TODO: 0.6.6 */, Blocked(false), OfflineTo(false), Port(0)
 {
 	Uuid = QUuid::createUuid();
 }
 
-ContactAccountData::ContactAccountData(Account *account, Contact contact, const QString &id, StoragePoint *storage) :
+ContactAccountData::ContactAccountData(StoragePoint *storage) :
 		UuidStorableObject(storage), Uuid(QUuid::createUuid()),
-		ContactAccount(account), OwnerContact(contact), Id(id),
-		ContactAvatar(this, false) /* TODO: 0.6.6 */, Blocked(false), OfflineTo(false), Port(0)
+		ContactAccount(0), OwnerContact(Contact::null), ContactAvatar(this, false) /* TODO: 0.6.6 */, Blocked(false), OfflineTo(false), Port(0)
 {
 }
 
 void ContactAccountData::load()
 {
-	StoragePoint *sp = storage();
-	if (!sp)
+	if (!isValidStorage())
 		return;
 
 	StorableObject::load();
 
-	XmlConfigFile *configurationStorage = sp->storage();
-	QDomElement parent = sp->point();
-
 	Uuid = loadAttribute<QString>("uuid");
-
-	// TODO: remove after 0.7 release, this is only
-	// for compatibility with older 0.6.6 versions
-	if (loadValue<QString>("Account").isEmpty())
-		Uuid = QUuid::createUuid();
-
 	Id = loadValue<QString>("Id");
+	ContactAccount = AccountManager::instance()->byUuid(loadValue<QString>("Account"));
+	setContact(ContactManager::instance()->byUuid(loadValue<QString>("Contact")));
 
 	ContactAvatar.load();
+
+	ContactAccountDataManager::instance()->addContactAccountData(this);
 }
 
 void ContactAccountData::store()
@@ -58,11 +54,25 @@ void ContactAccountData::store()
 		return;
 
 	ensureLoaded();
+
 	storeValue("uuid", Uuid.toString(), true);
 	storeValue("Id", Id);
 	storeValue("Account", ContactAccount->uuid().toString());
+	storeValue("Contact", OwnerContact.uuid().toString());
 
 	ContactAvatar.store();
+}
+
+void ContactAccountData::setContact(Contact contact)
+{
+	if (contact == OwnerContact)
+		return;
+
+	if (!OwnerContact.isNull())
+		OwnerContact.removeAccountData(this);
+	OwnerContact = contact;
+	if (!OwnerContact.isNull())
+		OwnerContact.addAccountData(this);
 }
 
 void ContactAccountData::setId(const QString &newId)

@@ -66,19 +66,18 @@ ContactAccountData * GaduProtocolFactory::newContactAccountData(Account *account
 	return new GaduContactAccountData(account, contact, id, true);
 }
 
-ContactAccountData * GaduProtocolFactory::loadContactAccountData(Account *account, Contact contact)
+ContactAccountData * GaduProtocolFactory::loadContactAccountData(StoragePoint *storagePoint)
 {
-	StoragePoint *point = contact.storagePointForAccountData(account);
-	return point
-			? new GaduContactAccountData(account, contact, QString::null, point)
-			: 0;
+	if (!storagePoint)
+		return 0;
+
+	return new GaduContactAccountData(storagePoint);
 }
 
 AccountCreateWidget * GaduProtocolFactory::newCreateAccountWidget(QWidget *parent)
 {
 	return new GaduCreateAccountWidget(parent);
 }
-
 
 AccountEditWidget * GaduProtocolFactory::newEditAccountWidget(Account *account, QWidget *parent)
 {

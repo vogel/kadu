@@ -9,10 +9,13 @@
 
 #include "accounts/account.h"
 #include "accounts/account-manager.h"
+#include "configuration/configuration-manager.h"
 #include "configuration/xml-configuration-file.h"
 #include "contacts/avatar.h"
-#include "contacts/contact-account-data.h"
+#include "contacts/contact-manager.h"
 #include "contacts/contact-remove-predicate-object.h"
+#include "contacts/account-data/contact-account-data.h"
+#include "core/core.h"
 #include "protocols/protocols-manager.h"
 #include "icons-manager.h"
 
@@ -136,6 +139,12 @@ void Contact::addAccountData(ContactAccountData *accountData)
 
 	checkNull();
 	Data->addAccountData(accountData);
+}
+
+void Contact::removeAccountData(ContactAccountData *accountData) const
+{
+	if (!isNull())
+		Data->removeAccountData(accountData);
 }
 
 void Contact::removeAccountData(Account* account) const

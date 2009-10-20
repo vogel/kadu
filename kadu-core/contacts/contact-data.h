@@ -97,6 +97,8 @@ public:
 	virtual void store();
 
 	virtual QUuid uuid() const { return Uuid; }
+	void setUuid(const QUuid uuid) { Uuid = uuid; }
+
 	QString id(Account *account);
 
 	Account * prefferedAccount();
@@ -108,6 +110,7 @@ public:
 	QMap<QString, QString> & customData() { return CustomData; }
 
 	void addAccountData(ContactAccountData *accountData);
+	void removeAccountData(ContactAccountData *accountData);
 	void removeAccountData(Account *account);
 	ContactAccountData * accountData(Account *account);
 	QList<ContactAccountData *> accountDatas();

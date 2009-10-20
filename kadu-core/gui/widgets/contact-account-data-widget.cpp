@@ -6,22 +6,16 @@
  *   (at your option) any later version.                                   *
  *                                                                         *
  ***************************************************************************/
-/*
-#include <QtGui/QDialogButtonBox>
-#include <QtGui/QHBoxLayout>
-#include <QtGui/QLabel>
-#include <QtGui/QPushButton>
-#include <QtGui/QVBoxLayout>
-*/
+
 #include <QtGui/QLineEdit>
 
-#include "configuration/contact-account-data-manager.h"
-#include "contacts/contact-account-data.h"
+#include "configuration/configuration-contact-account-data-manager.h"
+#include "contacts/account-data/contact-account-data.h"
 #include "misc/misc.h"
 
 #include "contact-account-data-widget.h"
 
-ContactAccountDataWidget::ContactAccountDataWidget(ContactAccountDataManager *dataManager, ContactAccountData *contactAccountData, QWidget *parent)
+ContactAccountDataWidget::ContactAccountDataWidget(ConfigurationContactAccountDataManager *dataManager, ContactAccountData *contactAccountData, QWidget *parent)
 	: ConfigurationWidget(dataManager, parent), Data(contactAccountData)
 {
 	setAttribute(Qt::WA_DeleteOnClose);

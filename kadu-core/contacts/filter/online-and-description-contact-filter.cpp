@@ -9,7 +9,7 @@
 
 #include "accounts/account.h"
 
-#include "contacts/contact-account-data.h"
+#include "contacts/account-data/contact-account-data.h"
 
 #include "online-and-description-contact-filter.h"
 

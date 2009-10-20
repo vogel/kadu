@@ -18,6 +18,9 @@ class ConfigurationManager
 {
 	QList<StorableObject *> RegisteredStorableObjects;
 
+	void importConfiguration();
+	void importOldContactAccountData(); // TODO: remove after 0.6.6 release
+
 public:
 	ConfigurationManager();
 

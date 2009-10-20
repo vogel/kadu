@@ -25,7 +25,7 @@ protected:
 public:
 	explicit UuidStorableObject(const QString &nodeName, bool loaded = false);
 	explicit UuidStorableObject(StoragePoint *storage);
-	UuidStorableObject(const QString &nodeName, StorableObject *parent);
+	UuidStorableObject(const QString &nodeName, StorableObject *parent, bool loaded = false);
 
 	virtual QUuid uuid() const = 0;
 

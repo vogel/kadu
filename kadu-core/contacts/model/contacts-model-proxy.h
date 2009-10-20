@@ -24,6 +24,9 @@ class ContactsModelProxy : public QSortFilterProxyModel, public AbstractContacts
 
 	bool BrokenStringCompare;
 	int compareNames(QString n1, QString n2) const;
+	
+private slots:
+	void modelDestroyed();;
 
 protected:
 	virtual bool lessThan(const QModelIndex &left, const QModelIndex &right) const;

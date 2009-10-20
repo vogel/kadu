@@ -11,9 +11,9 @@
 #include "accounts/account-manager.h"
 
 #include "contacts/contact.h"
-#include "contacts/contact-account-data.h"
 #include "contacts/contact-list-mime-data-helper.h"
 #include "contacts/contact-manager.h"
+#include "contacts/account-data/contact-account-data.h"
 
 #include "protocols/protocol.h"
 

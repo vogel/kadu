@@ -19,8 +19,8 @@
 #include "accounts/account.h"
 #include "configuration/configuration-file.h"
 #include "contacts/contact.h"
-#include "contacts/contact-account-data.h"
 #include "contacts/contact-manager.h"
+#include "contacts/account-data/contact-account-data.h"
 #include "gui/windows/message-box.h"
 
 #include "debug.h"

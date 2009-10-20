@@ -65,6 +65,8 @@ public:
 	bool isNull() const { return 0 == Data || Data->isNull(); }
 	bool isAnonymous() const { return 0 != Data && Data->isAnonymous(); }
 
+	void mergeWith(Contact contact); // TODO: 0.8 refactor
+
 	Contact & operator = (const Contact &copy);
 	bool operator == (const Contact &compare) const;
 	bool operator != (const Contact &compare) const;
@@ -84,8 +86,10 @@ public:
 	QList<Account *> accounts() const;
 
 	ContactData * data() const { return Data.data(); }
+	void setData(ContactData *data) { Data = data; }  // TODO: 0.8 tricky merge, this should work well ;)
 
 	void addAccountData(ContactAccountData *accountData);
+	void removeAccountData(ContactAccountData *accountData) const;
 	void removeAccountData(Account *account) const;
 	ContactAccountData * accountData(Account *account) const;
 	QList<ContactAccountData *> accountDatas() const;

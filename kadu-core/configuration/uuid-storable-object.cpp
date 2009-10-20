@@ -20,8 +20,8 @@ UuidStorableObject::UuidStorableObject(StoragePoint *storage) :
 {
 }
 
-UuidStorableObject::UuidStorableObject(const QString &nodeName, StorableObject *parent) :
-		StorableObject(nodeName, parent)
+UuidStorableObject::UuidStorableObject(const QString &nodeName, StorableObject *parent, bool loaded) :
+		StorableObject(nodeName, parent, loaded)
 {
 }
 

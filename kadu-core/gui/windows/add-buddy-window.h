@@ -23,6 +23,9 @@ class QRegExpValidator;
 class AccountsModel;
 class AccountsProxyModel;
 class IdRegularExpressionFilter;
+class NonAccountContactFilter;
+class NonInContactFilter;
+class SelectContactCombobox;
 
 class AddBuddyWindow : public QDialog
 {
@@ -34,9 +37,13 @@ class AddBuddyWindow : public QDialog
 	QComboBox *AccountCombo;
 	AccountsModel *AccountComboModel;
 	AccountsProxyModel *AccountComboProxyModel;
-	IdRegularExpressionFilter *AccountComboFilter;
+	IdRegularExpressionFilter *AccountComboIdFilter;
+	NonInContactFilter *AccountComboNotInContactFilter;
 	QComboBox *GroupCombo;
 	QLineEdit *DisplayNameEdit;
+	QCheckBox *MergeContact;
+	SelectContactCombobox *SelectContact;
+	NonAccountContactFilter *SelectContactFilter;
 	QCheckBox *AllowToSeeMeCheck;
 	QPushButton *AddContactButton;
 
@@ -51,6 +58,8 @@ private slots:
 	void setAddContactEnabled();
 	void setValidateRegularExpression();
 	void setAccountFilter();
+	void setMergeContactFilter();
+
 	void groupChanged(int index);
 
 protected slots:

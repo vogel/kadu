@@ -45,13 +45,14 @@ class ContactsListViewDelegate : public QItemDelegate, public ConfigurationAware
 
 private slots:
 	void contactStatusChanged(Account *account, Contact contact, Status oldStatus);
+	void modelDestroyed();
 
 protected:
 	virtual void accountRegistered(Account *account);
 	virtual void accountUnregistered(Account *account);
 
 public:
-	ContactsListViewDelegate(QObject *parent = 0);
+	explicit ContactsListViewDelegate(QObject *parent = 0);
 	virtual ~ContactsListViewDelegate();
 
 	virtual void setModel(AbstractContactsModel *model);

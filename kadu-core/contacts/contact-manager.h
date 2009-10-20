@@ -7,8 +7,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef CONTACT_MANAGER
-#define CONTACT_MANAGER
+#ifndef CONTACT_MANAGER_H
+#define CONTACT_MANAGER_H
 
 #include <QtCore/QMap>
 #include <QtCore/QObject>
@@ -63,6 +63,7 @@ public:
 	ContactList contacts(Account *account, bool includeAnonymous = false);
 	void addContact(Contact contact);
 	void removeContact(Contact contact);
+	void mergeContact(Contact destination, Contact source);
 
 	unsigned int count() { return Contacts.count(); }
 
@@ -91,4 +92,4 @@ signals:
 
 };
 
-#endif // CONTACT_MANAGER
+#endif // CONTACT_MANAGER_H

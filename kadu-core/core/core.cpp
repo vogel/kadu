@@ -18,6 +18,7 @@
 #include "configuration/configuration-manager.h"
 #include "contacts/contact-manager.h"
 #include "contacts/group-manager.h"
+#include "contacts/account-data/contact-account-data-manager.h"
 #include "gui/widgets/chat-edit-box.h"
 #include "gui/widgets/chat-widget-manager.h"
 #include "gui/windows/kadu-window.h"
@@ -288,6 +289,8 @@ void Core::init()
 	setIcon(IconsManager::instance()->loadPixmap("Offline"));
 #endif
 	QTimer::singleShot(15000, this, SLOT(deleteOldConfigurationFiles()));
+
+	ContactAccountDataManager::instance();
 }
 
 void Core::storeConfiguration()
@@ -357,11 +360,11 @@ void Core::accountRegistered(Account *account)
 	connect(protocol, SIGNAL(connecting(Account *)), this, SIGNAL(connecting()));
 	connect(protocol, SIGNAL(connected(Account *)), this, SIGNAL(connected()));
 	connect(protocol, SIGNAL(disconnected(Account *)), this, SIGNAL(disconnected()));
-
+/* TODO: 0.6.6
 	ContactAccountData *contactAccountData = protocol->protocolFactory()->loadContactAccountData(account, Myself);
 	if (!contactAccountData)
 		contactAccountData = protocol->protocolFactory()->newContactAccountData(account, Myself, account->id());
-	Myself.addAccountData(contactAccountData);
+	Myself.addAccountData(contactAccountData);*/
 }
 
 void Core::accountUnregistered(Account *account)

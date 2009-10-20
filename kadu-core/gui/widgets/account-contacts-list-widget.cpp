@@ -10,8 +10,8 @@
 #include <QtGui/QHBoxLayout>
 #include <QtGui/QVBoxLayout>
 
-#include "contacts/contact-account-data.h"
 #include "contacts/contact-manager.h"
+#include "contacts/account-data/contact-account-data.h"
 #include "contacts/model/contacts-model.h"
 #include "contacts/model/contacts-model-proxy.h"
 #include "contacts/filter/account-contact-filter.h"

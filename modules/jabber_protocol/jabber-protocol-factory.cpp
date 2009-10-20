@@ -72,12 +72,12 @@ ContactAccountData * JabberProtocolFactory::newContactAccountData(Account *accou
 	return new JabberContactAccountData(account, contact, id, true);
 }
 
-ContactAccountData * JabberProtocolFactory::loadContactAccountData(Account *account, Contact contact)
+ContactAccountData * JabberProtocolFactory::loadContactAccountData(StoragePoint *storagePoint)
 {
-	StoragePoint *point = contact.storagePointForAccountData(account);
-	return point
-			? new JabberContactAccountData(account, contact, QString::null, point)
-			: 0;
+	if (!storagePoint)
+		return 0;
+
+	return new JabberContactAccountData(storagePoint);
 }
 
 AccountCreateWidget * JabberProtocolFactory::newCreateAccountWidget(QWidget *parent)

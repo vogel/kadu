@@ -10,7 +10,7 @@
 #ifndef GADU_CONTACT_ACCOUNT_DATA
 #define GADU_CONTACT_ACCOUNT_DATA
 
-#include "contacts/contact-account-data.h"
+#include "contacts/account-data/contact-account-data.h"
 
 #include "gadu-protocol.h"
 
@@ -26,6 +26,8 @@ public:
 			ContactAccountData(account, contact, id, loaded) {}
 	GaduContactAccountData(Account *account, Contact contact, const QString &id, StoragePoint *storage) :
 			ContactAccountData(account, contact, id, storage) {}
+	GaduContactAccountData(StoragePoint *storage) :
+			ContactAccountData(storage) {}
 
 	virtual bool validateId();
 

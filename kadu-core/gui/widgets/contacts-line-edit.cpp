@@ -7,26 +7,25 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef CONTACT_ACCOUNT_DATA_MANAGER_H
-#define CONTACT_ACCOUNT_DATA_MANAGER_H
+#include <QtGui/QKeyEvent>
 
-#include "configuration-window-data-manager.h"
+#include "contacts-line-edit.h"
 
-class ContactAccountData;
-
-class KADUAPI ContactAccountDataManager : public ConfigurationWindowDataManager
+ContactsLineEdit::ContactsLineEdit(QWidget *parent) :
+		QLineEdit(parent)
 {
-	ContactAccountData *Data;
+}
 
-protected:
-	ContactAccountData * data() { return Data; }
+ContactsLineEdit::~ContactsLineEdit()
+{
+}
 
-public:
-	explicit ContactAccountDataManager(ContactAccountData *data, QObject *parent = 0);
-
-	virtual void writeEntry(const QString &section, const QString &name, const QVariant &value);
-	virtual QVariant readEntry(const QString &section, const QString &name);
-
-};
-
-#endif 
+void ContactsLineEdit::keyReleaseEvent(QKeyEvent *e)
+{
+	if (e->key() == Qt::Key_Up)
+		emit previous();
+	else if (e->key() == Qt::Key_Down)
+		emit next();
+	else
+		QWidget::keyReleaseEvent(e);
+}

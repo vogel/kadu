@@ -9,7 +9,7 @@
 
 #include "accounts/account-manager.h"
 #include "contacts/contact.h"
-#include "contacts/contact-account-data.h"
+#include "contacts/account-data/contact-account-data.h"
 #include "status/status.h"
 #include "status/status-type.h"
 
@@ -18,7 +18,7 @@
 #include "contacts-model-proxy.h"
 
 ContactsModelProxy::ContactsModelProxy(QObject *parent)
-	: QSortFilterProxyModel(parent)
+	: QSortFilterProxyModel(parent), SourceContactModel(0)
 {
 	setDynamicSortFilter(true);
 	sort(0);
@@ -33,6 +33,8 @@ void ContactsModelProxy::setSourceModel(QAbstractItemModel *sourceModel)
 	SourceContactModel = dynamic_cast<AbstractContactsModel *>(sourceModel);
 	QSortFilterProxyModel::setSourceModel(sourceModel);
 
+	connect(sourceModel, SIGNAL(destroyed(QObject *)), this, SLOT(modelDestroyed()));
+
 	setDynamicSortFilter(true);
 	sort(0);
 }
@@ -42,6 +44,11 @@ int ContactsModelProxy::compareNames(QString n1, QString n2) const
 	return BrokenStringCompare
 		? n1.toLower().localeAwareCompare(n2.toLower())
 		: n1.localeAwareCompare(n2);
+}
+
+void ContactsModelProxy::modelDestroyed()
+{
+	SourceContactModel = 0;
 }
 
 bool ContactsModelProxy::lessThan(const QModelIndex &left, const QModelIndex &right) const

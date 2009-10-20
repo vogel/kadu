@@ -12,7 +12,7 @@
 #include "chat/chat.h"
 #include "configuration/configuration-file.h"
 #include "configuration/xml-configuration-file.h"
-#include "contacts/contact-account-data.h"
+#include "contacts/account-data/contact-account-data.h"
 #include "gui/actions/action.h"
 #include "gui/widgets/chat-widget-actions.h"
 #include "gui/widgets/chat-widget-manager.h"

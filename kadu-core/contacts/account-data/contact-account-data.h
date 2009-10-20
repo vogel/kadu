@@ -7,17 +7,16 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef CONTACT_ACCOUNT_DATA
-#define CONTACT_ACCOUNT_DATA
+#ifndef CONTACT_ACCOUNT_DATA_H
+#define CONTACT_ACCOUNT_DATA_H
 
 #include <QtNetwork/QHostAddress>
 #include <QtXml/QDomElement>
 
 #include "configuration/uuid-storable-object.h"
 #include "contacts/avatar.h"
+#include "contacts/contact.h"
 #include "status/status.h"
-
-#include "contact.h"
 
 #include "exports.h"
 
@@ -48,7 +47,7 @@ class KADUAPI ContactAccountData : public QObject, public UuidStorableObject
 
 public:
 	ContactAccountData(Account *account, Contact contact, const QString &id, bool loaded = false);
-	ContactAccountData(Account *account, Contact contact, const QString &id, StoragePoint *storage);
+	ContactAccountData(StoragePoint *storage);
 
 	virtual bool validateId() {return false;}
 	virtual void load();
@@ -58,9 +57,11 @@ public:
 
 	Account * account() { ensureLoaded(); return ContactAccount; }
 	Contact contact() { ensureLoaded(); return OwnerContact; }
+	void setContact(Contact contact);
+
 	Avatar & avatar() { ensureLoaded(); return ContactAvatar; }
 
-	QString id() { return Id; }
+	QString id() { ensureLoaded(); return Id; }
 	void setId(const QString &newId);
 
 	bool isValid();
@@ -98,4 +99,4 @@ signals:
 
 };
 
-#endif
+#endif // CONTACT_ACCOUNT_DATA_H

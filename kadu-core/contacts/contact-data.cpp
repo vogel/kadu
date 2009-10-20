@@ -13,10 +13,11 @@
 #include "accounts/account.h"
 #include "configuration/storage-point.h"
 #include "configuration/xml-configuration-file.h"
-#include "contacts/contact-account-data.h"
 #include "contacts/contact-manager.h"
 #include "contacts/group.h"
 #include "contacts/group-manager.h"
+#include "contacts/account-data/contact-account-data.h"
+#include "contacts/account-data/contact-account-data-manager.h"
 
 #include "contact-data.h"
 
@@ -178,8 +179,6 @@ void ContactData::store()
 
 	configurationStorage->createTextNode(parent, "Ignored", QVariant(Ignored).toString());
 
-	foreach (ContactAccountData *cad, AccountsData.values())
-		cad->store();
 	storeModuleData();
 }
 
@@ -190,12 +189,20 @@ void ContactData::addAccountData(ContactAccountData *accountData)
 
 	emit accountDataAboutToBeAdded(accountData->account());
 	AccountsData.insert(accountData->account(), accountData);
+	ContactAccountDataManager::instance()->addContactAccountData(accountData);
 	emit accountDataAdded(accountData->account());
+}
+
+void ContactData::removeAccountData(ContactAccountData *accountData)
+{
+	if (AccountsData[accountData->account()] == accountData)
+		removeAccountData(accountData->account());
 }
 
 void ContactData::removeAccountData(Account *account)
 {
 	emit accountDataAboutToBeRemoved(account);
+	ContactAccountDataManager::instance()->removeContactAccountData(AccountsData[account]);
 	AccountsData.remove(account);
 	emit accountDataRemoved(account);
 }
