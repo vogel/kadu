@@ -109,9 +109,7 @@ void AvatarManager::avatarFetched(ContactAccountData *contactAccountData, const 
 	avatar.setLastUpdated(QDateTime::currentDateTime());
 
 	QPixmap pixmap;
-#if QT_VERSION < 0x040599
-	pixmap.loadFromData(data); // TODO: quick fix for Qt 4.6 beta1
-#endif
+	pixmap.loadFromData(data);
 	avatar.setPixmap(pixmap);
 
 	QString avatarFile = avatarFileName(avatar);
