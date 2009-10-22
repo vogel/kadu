@@ -284,7 +284,7 @@ Contact Contact::dummy()
 
 	if (account)
 	{
-		ContactAccountData *contactData = new ContactAccountData(account, example, "999999");
+		ContactAccountData *contactData = new ContactAccountData(account, example, "999999", true);
 		contactData->setStatus(Status("Away", tr("Example description")));
 		contactData->setIp(QHostAddress(2130706433));
 		contactData->setPort(80);

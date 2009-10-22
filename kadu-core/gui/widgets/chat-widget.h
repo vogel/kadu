@@ -15,7 +15,6 @@
 #include <QtGui/QIcon>
 #include <QtGui/QWidget>
 
-#include "accounts/accounts-aware-object.h"
 #include "chat/chat.h"
 #include "chat/message/formatted-message.h"
 #include "configuration/configuration-aware-object.h"
@@ -26,7 +25,6 @@
 
 class QSplitter;
 
-class Account;
 class ChatEditBox;
 class ChatWidget;
 class ContactsListView;
@@ -34,7 +32,7 @@ class CustomInput;
 class MessageRenderInfo;
 class Protocol;
 
-class KADUAPI ChatWidget : public QWidget, ConfigurationAwareObject, AccountsAwareObject
+class KADUAPI ChatWidget : public QWidget, ConfigurationAwareObject
 {
 	Q_OBJECT
 
@@ -46,13 +44,9 @@ class KADUAPI ChatWidget : public QWidget, ConfigurationAwareObject, AccountsAwa
 	ContactsListView *ContactsWidget;
 	ChatEditBox *InputBox;
 
-	QIcon pix;
 	QSplitter *vertSplit, *horizSplit; /*!< obiekty oddzielaj�ce kontrolki od siebie */
 
 	QDateTime LastMessageTime; /*!< czas ostatniej wiadomo�ci */
-
-	// TODO: remove
-	int activationCount;
 
 	unsigned int NewMessagesCount; /*!< liczba nowych wiadomo�ci w oknie rozmowy */
 	bool SelectionFromMessagesView;
@@ -79,14 +73,11 @@ protected:
 
 	virtual void configurationUpdated();
 
-	virtual void accountRegistered(Account *account);
-	virtual void accountUnregistered(Account *account);
-
 public:
 	explicit ChatWidget(Chat *chat, QWidget *parent = 0);
 	virtual ~ChatWidget();
 
-	Chat * chat() { return CurrentChat; };
+	Chat * chat() { return CurrentChat; }
 
 	/**
 		Dodaje now� wiadomos� systemow� do okna.
@@ -142,8 +133,6 @@ public:
 
 public slots:
 // 	void messageStatusChanged(int messageId, ChatService::MessageStatus status);
-
-	void onStatusChanged(Account *account, Contact contact, Status oldStatus);
 
 	/**
 		\fn void appendMessages(const QValueList<MessageRenderInfo *> &)
@@ -245,8 +234,8 @@ signals:
 class ChatContainer
 {
 	public:
-		ChatContainer() {};
-		virtual ~ChatContainer() {};
+		ChatContainer() {}
+		virtual ~ChatContainer() {}
 
 		/**
 			Metoda informuj�ca, kt�ry chat powinien zosta� zamkni�ty

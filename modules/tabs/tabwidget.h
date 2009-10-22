@@ -23,7 +23,7 @@ class TabBar: public QTabBar
 		* Metoda wywoływana w momencie kliknięcia na tabbarze
 		* @param e wskaźnik obiektu opisującego to zdarzenie.
 		*/
-		virtual void mousePressEvent(QMouseEvent* e);
+		virtual void mousePressEvent(QMouseEvent *e);
 
 		/**
 		* Metoda wywoływana w momencie puszczenia przycisku myszy
@@ -31,114 +31,30 @@ class TabBar: public QTabBar
 		* Tu odpowiada za zamknięcie karty środokowym przyciskiem myszy
 		* @param e wskaźnik obiektu opisującego to zdarzenie.
 		*/
-		virtual void mouseReleaseEvent(QMouseEvent* e);
-
-	 	/**
-		* Metoda wywoływana w momencie przesunięcia wskaźnika myszy
-		* nad tabbarem
-		* Tu aktywuje dnd lub ustawia przycisk zamykania karty we
-		* właściwym miejscu na karcie w zależności od zdarzenia
-		* @param e wskaźnik obiektu opisującego to zdarzenie.
-		*/
-		virtual void mouseMoveEvent(QMouseEvent* e);
-
-		/**
-		* Metoda wywoływana w momencie opuszczenia wskaźnika myszy
-		* powierchni tabbara
-		* Tu ukrywa przycisk zamykania karty
-		* @param e wskaźnik obiektu opisującego to zdarzenie.
-		*/
-		virtual void leaveEvent(QEvent* e);
+		virtual void mouseReleaseEvent(QMouseEvent *e);
 
 		/**
 		* Metoda wywoływana w momencie dwukliku myszy
 		* Tu powoduje otwarcie okna openChatWith;
 		* @param e wskaźnik obiektu opisującego to zdarzenie.
 		*/
-		virtual void mouseDoubleClickEvent(QMouseEvent* e);
-
-		/**
-		* Metoda wywoływana w momencie ruchu kółkiem myszy.
-		* Tu zmienia aktywnną kartę zgodnie z ruchem rolki myszy
-		* @param e wskaźnik obiektu opisującego to zdarzenie.
-		*/
-		virtual void wheelEvent(QWheelEvent* e);
-
-		virtual void tabLayoutChange();
-
-	signals:
-		void contextMenu(int id, const QPoint& pos);
-		void deleteTab(int);
-		void wheelEventSignal(QWheelEvent* e);
-		void mouseDoubleClickEventSignal(QMouseEvent* e);
-
-	private:
-		int clickedItem;
-		QToolButton *crossButton;
-		bool showCloseButton;
-		QPoint MouseStart;
-
-	private slots:
-		/**
-		* Slot zostaje wywołany w momencie naciźnięcia przycisku
-		* zamknij na karcie
-		* Tu emituje sygnał void deleteTab(int);
-		*/
-		void closeTab();
-
-		/**
-		* Slot zostaje wywołany w momencie jakiejkolwiek zmiany wyglądu tabbara
-		* Tu uaktualnia pozycję przycisku zamknięcia na karcie
-		*/
-		void replaceCross();
+		virtual void mouseDoubleClickEvent(QMouseEvent *e);
 
 	public:
-		TabBar(QWidget *parent = 0, char *name = 0);
-		/**
-		* Metoda wywoływana w momencie zmiany konfiguracji kadu
-		* Tu pokazuje lub ukrywa przycisk zamknięcia chata na karcie
-		* @param show pokaz lub ukryj przycisk zmknięcia
-		*/
-		void setShowCloseButton(bool show);
+		TabBar(QWidget *parent = 0);
+
+	signals:
+		void contextMenu(int id, const QPoint &pos);
+		void deleteTab(int index);
+		void mouseDoubleClickEventSignal(QMouseEvent *e);
+
 };
 
 class TabWidget: public QTabWidget, public ChatContainer
 {
 	Q_OBJECT
 
-	public:
-		TabWidget();
-
-		/**
-		* Zmienia aktualną kartę na tą po lewej stronie
-		*/
-		void switchTabLeft();
-
-		/**
-		* Zmienia aktualną kartę na tą po prawej stronie
-		*/
-		void switchTabRight();
-
-		void moveTabLeft();
-		void moveTabRight();
-
-		/**
-		* Metoda wywoływana w momencie zaakceptowania zmian
-		* w oknie konfiguracji kadu. Ustawua opcje modułu zgodnie
-		* z konfiguracją
-		*/
-		void configurationUpdated();
-
-		/**
-		* Metoda wywoływana w momencie ignorowania/blokowania kontaktu
-		* Informuje, który chat powinien zostać zamknięty
-		* @param chat który powinien zostać zamknięty
-		*/
-		void closeChatWidget(ChatWidget *chat);
-		TabBar* getTabBar() { return tabbar; };
-
-	private:
-		TabBar* tabbar;
+		TabBar *tabbar;
 		OpenChatWith *openChatWithWindow;
 		QToolButton *closeChatButton;
 		QToolButton *openChatButton;
@@ -156,7 +72,7 @@ class TabWidget: public QTabWidget, public ChatContainer
 		bool config_oldStyleClosing;
 
 	private slots:
-		void onContextMenu(int id, const QPoint& pos);
+		void onContextMenu(int id, const QPoint &pos);
 
 		/**
 		* Slot zostaje wywołany w celu zmiany pozycji karty.
@@ -199,7 +115,7 @@ class TabWidget: public QTabWidget, public ChatContainer
 		* Odpowiada za zamykanie wszystkich kart, lub tylko aktywnej karty
 		* w zależności od konfiguracji
 		*/
-		virtual void closeEvent(QCloseEvent* e);
+		virtual void closeEvent(QCloseEvent *e);
 
 		/**
 		* Metoda wywoływana w chwili przeciągnięcia obiektu na pasek kart
@@ -207,7 +123,7 @@ class TabWidget: public QTabWidget, public ChatContainer
 		* akceptuje zdarzenie jeśli pochodziło z userbox'a lub z tabbara
 		* @param e wskaźnik obiektu opisującego to zdarzenie.
 		*/
-		virtual void dragEnterEvent(QDragEnterEvent* e);
+		virtual void dragEnterEvent(QDragEnterEvent *e);
 
 		/**
 		* Metoda wywoływana w chwili upuszczenia przeciągniętego obiektu
@@ -216,13 +132,43 @@ class TabWidget: public QTabWidget, public ChatContainer
 		* nowej w zależnośći od zdarzenia
 		* @param e wskaźnik obiektu opisującego to zdarzenie.
 		*/
-		virtual void dropEvent(QDropEvent* event);
+		virtual void dropEvent(QDropEvent *event);
 
 		virtual void windowActivationChange(bool oldActive);
 
-		virtual void tabInserted (int index);
-		virtual void tabRemoved (int index);
+		virtual void tabInserted(int index);
+		virtual void tabRemoved(int index);
 
+	public:
+		TabWidget();
+
+		/**
+		* Zmienia aktualną kartę na tą po lewej stronie
+		*/
+		void switchTabLeft();
+
+		/**
+		* Zmienia aktualną kartę na tą po prawej stronie
+		*/
+		void switchTabRight();
+
+		void moveTabLeft();
+		void moveTabRight();
+
+		/**
+		* Metoda wywoływana w momencie zaakceptowania zmian
+		* w oknie konfiguracji kadu. Ustawua opcje modułu zgodnie
+		* z konfiguracją
+		*/
+		void configurationUpdated();
+
+		/**
+		* Metoda wywoływana w momencie ignorowania/blokowania kontaktu
+		* Informuje, który chat powinien zostać zamknięty
+		* @param chat który powinien zostać zamknięty
+		*/
+		void closeChatWidget(ChatWidget *chat);
+		TabBar * getTabBar() { return tabbar; }
 
 	public slots:
 		/**
@@ -233,13 +179,6 @@ class TabWidget: public QTabWidget, public ChatContainer
 		* @param k wskaźnik do pola edycji z którego zostało wywołane zdarzenie.
 		*/
 		virtual void chatKeyPressed(QKeyEvent* e, CustomInput* k, bool &handled);
-
-		/**
-		* Slot zostaje wywołany w momencie ruchu kółkiem myszy.
-		* Tu zmienia aktywnną kartę zgodnie z ruchem rolki myszy
-		* @param e wskaźnik obiektu opisującego to zdarzenie.
-		*/
-		virtual void wheelEventSlot(QWheelEvent* e);
 
 		/**
 		* Slot zostaje wywołany w momencie dwukliku myszy
@@ -253,4 +192,5 @@ class TabWidget: public QTabWidget, public ChatContainer
 		void openTab(QStringList altnicks, int index);
 		void chatWidgetActivated(ChatWidget *);
 };
+
 #endif

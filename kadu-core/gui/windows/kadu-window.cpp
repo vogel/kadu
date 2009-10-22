@@ -88,7 +88,7 @@ void KaduWindow::createGui()
 	anonymousFilter->setEnabled(true);
 	ContactsWidget->view()->addFilter(anonymousFilter);
 
-	connect(ContactsWidget, SIGNAL(chatActivated(Chat *)), this, SLOT(openChatWindow(Chat *)));
+	connect(ContactsWidget->view(), SIGNAL(chatActivated(Chat *)), this, SLOT(openChatWindow(Chat *)));
 
 	hboxLayout->addWidget(GroupBar);
 	hboxLayout->setStretchFactor(GroupBar, 1);

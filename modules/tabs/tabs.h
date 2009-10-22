@@ -10,8 +10,6 @@
 #include <QtCore/QObject>
 #include <QtCore/QTimer>
 
-#include "accounts/accounts-aware-object.h"
-
 #include "chat/chat-manager.h"
 
 #include "configuration/configuration-aware-object.h"
@@ -26,9 +24,77 @@ class QMenu;
 class Action;
 class ActionDescription;
 
-class TabsManager : public ConfigurationUiHandler, ConfigurationAwareObject, AccountsAwareObject, StorableObject
+class TabsManager : public ConfigurationUiHandler, ConfigurationAwareObject, StorableObject
 {
 	Q_OBJECT
+
+		void createDefaultConfiguration();
+
+		ActionDescription *openInNewTabActionDescription;
+		ActionDescription *attachToTabsActionDescription;
+		TabWidget *tabdialog;
+		QTimer timer;
+		QList<ChatWidget *> chatsWithNewMessages, newchats, detachedchats;
+		bool no_tabs, autoswith, force_tabs;
+
+		/**
+		* pozycja na której ma zostać dodana nowa karta
+		*/
+		int target_tabs;
+		void insertTab(ChatWidget *chat);
+		void makePopupMenu();
+		int menuitem;
+		ChatWidget *selectedchat;
+		QMenu *menu;
+		Action *action;
+
+		/**
+		* Przywraca stan kart w momencie uruchomienia kadu.
+		*/
+		void loadTabs();
+
+		/**
+		* Zapisuje stan kart w momencie wyjścia z kadu.
+		*/
+		void saveTabs();
+
+		/**
+		* Rezerwuje lub usuwa miejsce na kartach przeznaczone
+		* na przycisk zamknięcia chata na karcie
+		* Odświeża również ikonki
+		*/
+		void repaintTabs();
+
+		QString formatTabName(ChatWidget * chatWidget);
+
+		void refreshTab(int tabIndex, ChatWidget * chatWidget);
+
+		/**
+		* Zmienne konfiguracyjne.
+		*/
+		bool config_conferencesInTabs;
+		bool config_tabsBelowChats;
+		bool config_autoTabChange;
+		bool config_defaultTabs;
+		unsigned config_minTabs;
+		bool config_closeButtonOnTab;
+		bool config_blinkChatTitle;
+		bool config_showNewMessagesNum;
+
+	private slots:
+		void onTimer();
+		void onContextMenu(QWidget *w, const QPoint &pos);
+		void onMenuActionDetach();
+		void onMenuActionDetachAll();
+		void onMenuActionClose();
+		void onMenuActionCloseAll();
+		void onMessageReceived(ChatWidget *chat);
+
+	protected:
+		/**
+		* Metoda jest wywoływana po zmianie w oknie konfiguracyjnym.
+		*/
+		virtual void configurationUpdated();
 
 	public:
 		TabsManager(bool firstload);
@@ -127,75 +193,6 @@ class TabsManager : public ConfigurationUiHandler, ConfigurationAwareObject, Acc
 		*/
 		void closeChat();
 
-	protected:
-		/**
-		* Metoda jest wywoływana po zmianie w oknie konfiguracyjnym.
-		*/
-		virtual void configurationUpdated();
-
-		virtual void accountRegistered(Account *account);
-		virtual void accountUnregistered(Account *account);
-
-	private:
-		ActionDescription* openInNewTabActionDescription;
-		ActionDescription* attachToTabsActionDescription;
-		TabWidget* tabdialog;
-		QTimer timer;
-		QList<ChatWidget *> chatsWithNewMessages, newchats, detachedchats;
-		bool no_tabs, autoswith, force_tabs;
-
-		/**
-		* pozycja na której ma zostać dodana nowa karta
-		*/
-		int target_tabs;
-		void insertTab(ChatWidget* chat);
-		void makePopupMenu();
-		int menuitem;
-		ChatWidget* selectedchat;
-		QMenu* menu;
-		Action* action;
-
-		/**
-		* Przywraca stan kart w momencie uruchomienia kadu.
-		*/
-		void loadTabs();
-
-		/**
-		* Zapisuje stan kart w momencie wyjścia z kadu.
-		*/
-		void saveTabs();
-
-		/**
-		* Rezerwuje lub usuwa miejsce na kartach przeznaczone
-		* na przycisk zamknięcia chata na karcie
-		* Odświeża również ikonki
-		*/
-		void repaintTabs();
-
-		QString formatTabName(ChatWidget * chatWidget);
-
-		void refreshTab(int tabIndex, ChatWidget * chatWidget);
-
-		/**
-		* Zmienne konfiguracyjne.
-		*/
-		bool config_conferencesInTabs;
-		bool config_tabsBelowChats;
-		bool config_autoTabChange;
-		bool config_defaultTabs;
-		unsigned config_minTabs;
-		bool config_closeButtonOnTab;
-		bool config_blinkChatTitle;
-		bool config_showNewMessagesNum;
-
-	private slots:
-		void onTimer();
-		void onContextMenu(QWidget* w, const QPoint& pos);
-		void onMenuActionDetach();
-		void onMenuActionDetachAll();
-		void onMenuActionClose();
-		void onMenuActionCloseAll();
-		void onMessageReceived(ChatWidget *chat);
 	signals:
 		void chatWidgetActivated(ChatWidget *);
 };

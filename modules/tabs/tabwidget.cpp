@@ -15,30 +15,32 @@
 TabWidget::TabWidget()
 {
 	tabbar = new TabBar(this);
+	tabbar->setMovable(true);
+
 	setTabBar(tabbar);
 	//akceptujemy dnd
 	setAcceptDrops(true);
 	connect(tabbar, SIGNAL(contextMenu(int, const QPoint&)),
 			SLOT(onContextMenu(int, const QPoint&)));
-	connect(tabbar, SIGNAL(deleteTab(int)),
+	connect(tabbar, SIGNAL(tabCloseRequested(int)),
 			SLOT(onDeleteTab(int)));
-	connect(tabbar, SIGNAL(wheelEventSignal(QWheelEvent*)),
-			SLOT(wheelEventSlot(QWheelEvent*)));
 	connect(tabbar,SIGNAL(mouseDoubleClickEventSignal(QMouseEvent*)),
 			SLOT(mouseDoubleClickEvent(QMouseEvent*)));
 	//przycisk otwarcia nowej karty pokazywany w lewym górnym rogu
+
 	openChatButton = new QToolButton(this);
    	openChatButton->setIcon(IconsManager::instance()->loadIcon("OpenChat"));
 	setCornerWidget(openChatButton, Qt::TopLeftCorner);
-	connect(openChatButton, SIGNAL(clicked()),SLOT(newChat()));
+	connect(openChatButton, SIGNAL(clicked()), SLOT(newChat()));
 	openChatButton->setAutoRaise(true);
+
 	//przycisk zamknięcia aktywnej karty znajdujący się w prawym górnym rogu
 	closeChatButton = new QToolButton(this);
    	closeChatButton->setIcon(IconsManager::instance()->loadIcon("TabsRemove"));
 	setCornerWidget(closeChatButton, Qt::TopRightCorner);
-	connect(closeChatButton, SIGNAL(clicked()),SLOT(deleteTab()));
+	connect(closeChatButton, SIGNAL(clicked()), SLOT(deleteTab()));
 	closeChatButton->setAutoRaise(true);
-	openChatWithWindow=NULL;
+	openChatWithWindow = NULL;
 }
 
 void TabWidget::closeChatWidget(ChatWidget *chat)
@@ -47,29 +49,32 @@ void TabWidget::closeChatWidget(ChatWidget *chat)
 		delete chat;
 }
 
-void TabWidget::closeEvent(QCloseEvent* e)
+void TabWidget::closeEvent(QCloseEvent *e)
 {
 	//w zależności od opcji w konfiguracji zamykamy wszystkie karty, lub tylko aktywną
-	if(config_oldStyleClosing)
+	if (config_oldStyleClosing)
 	{
-		QWidget* current = currentWidget();
+		QWidget *current = currentWidget();
 		delete current;
 
 	}
 	else
+	{
 		//dopóki są jeszcze karty zamykamy aktywną
 		while(count())
 		{
 			QWidget* current = currentWidget();
 			delete current;
 		}
+	}
+
 	if (count() > 0)
 		e->ignore();
 	else
 		e->accept();
 }
 
-void TabWidget::chatKeyPressed(QKeyEvent* e, CustomInput* k, bool &handled)
+void TabWidget::chatKeyPressed(QKeyEvent *e, CustomInput *k, bool &handled)
 {
 	handled = true;
 	// obsługa skrótów klawiszowych
@@ -86,34 +91,26 @@ void TabWidget::chatKeyPressed(QKeyEvent* e, CustomInput* k, bool &handled)
 		handled = false;
 }
 
-void TabWidget::onContextMenu(int id, const QPoint& pos)
+void TabWidget::onContextMenu(int id, const QPoint &pos)
 {
 	emit contextMenu(widget(id), pos);
-}
-
-void TabWidget::wheelEventSlot(QWheelEvent* e)
-{
-	if (e->delta() > 0)
-		switchTabLeft();
-	else
-		switchTabRight();
 }
 
 void TabWidget::moveTab(int from, int to)
 {
 	kdebugf();
 	QString tablabel=tabText(from);
-	QWidget *w=widget(from);
+	QWidget *w = widget(from);
 	QIcon tabiconset = tabIcon(from);
 	QString tabtooltip = tabToolTip(from);
-	bool current=(w==currentWidget());
+	bool current = (w == currentWidget());
 	blockSignals(true);
 	removeTab(from);
 
 	insertTab(to, w, tabiconset, tablabel);
 	setTabToolTip(to, tabtooltip);
 
-	if(current)
+	if (current)
 		setCurrentIndex(to);
 
 	blockSignals(false);
@@ -121,7 +118,7 @@ void TabWidget::moveTab(int from, int to)
 
 void TabWidget::onDeleteTab(int id)
 {
-	QWidget* chat = widget(id);
+	QWidget *chat = widget(id);
 	delete chat;
 }
 
@@ -135,7 +132,7 @@ void TabWidget::switchTabLeft()
 
 void TabWidget::switchTabRight()
 {
-	if (currentIndex()==(count()-1))
+	if (currentIndex() == (count() - 1))
 		setCurrentIndex(0);
 	else
 		setCurrentIndex(currentIndex()+1);
@@ -161,7 +158,7 @@ void TabWidget::dragEnterEvent(QDragEnterEvent* e)
 {
 	kdebugf();
 	// Akceptujemu dnd jeśli pochodzi on z UserBox'a lub paska kart
-// 	if ((UlesDrag::canDecode(e) && (dynamic_cast<ContactsListWidget *>(e->source()))) || (e->mimeData()->hasText() && dynamic_cast<TabBar*>(e->source())))
+// 	if ((UlesDrag::canDecode(e) && (dynamic_cast<ContactsListWidget *>(e->source()))))
 // 		e->acceptProposedAction();
 // 	else
 		e->ignore();
@@ -184,24 +181,6 @@ void TabWidget::dropEvent(QDropEvent* e)
 		// Jeśli nie na końcu tabbara
 			emit openTab(ules, -1);
 	}
-	// Jeśli dnd pochodził z tabbara, zmieniamy pozycję kart
-	else if(dynamic_cast<TabBar*>(e->source()) && e->mimeData()->hasText())
-	{
-		QString altnicks = e->mimeData()->text();
-		// karta źródłowa
-		int movingTabId = altnicks.toUInt();
-		// karta docelowa
-		int destinationTabId;
-		if (tabbar->tabAt(e->pos()) != -1)
-		// jeśli w miejscu upuszczenia jest inna karta staje się ona kartą docelową
-			destinationTabId = tabbar->tabAt(e->pos());
-		else
-		// Jeśli nie to kartą docelową jest ostatnia karta
-			destinationTabId = count() - 1;
-		if(movingTabId != -1 && destinationTabId != movingTabId)
-                         // zamieniamy miejcami kartę źródłową z docelową
-			moveTab(movingTabId, destinationTabId);
-	}
 
 	kdebugf2();
 }
@@ -222,7 +201,7 @@ void TabWidget::mouseDoubleClickEvent(QMouseEvent* e)
 {
 	kdebugf();
 	// jeśli dwuklik nastąpil lewym przyciskiem myszy pokazujemy okno openchatwith
-	if(e->button() == Qt::LeftButton)
+	if (e->button() == Qt::LeftButton)
 		newChat();
 	kdebugf2();
 }
@@ -252,7 +231,7 @@ void TabWidget::newChat()
 void TabWidget::deleteTab()
 {
 	// zamykamy bieżącą kartę
-	QWidget* current = currentWidget();
+	QWidget *current = currentWidget();
 	delete current;
 }
 
@@ -281,37 +260,23 @@ void TabWidget::configurationUpdated()
    	openChatButton->setIcon(IconsManager::instance()->loadIcon("OpenChat"));
    	closeChatButton->setIcon(IconsManager::instance()->loadIcon("TabsRemove"));
 
+	tabbar->setTabsClosable(config_file.readBoolEntry("Tabs", "CloseButtonOnTab"));
+
 	// uaktualniamy zmienne konfiguracyjne
 	closeChatButton->setShown(config_file.readBoolEntry("Tabs", "CloseButton"));
 	openChatButton->setShown(config_file.readBoolEntry("Tabs", "OpenChatButton"));
 	config_oldStyleClosing = config_file.readBoolEntry("Tabs", "OldStyleClosing");
-	tabbar->setShowCloseButton(config_file.readBoolEntry("Tabs", "CloseButtonOnTab"));
 }
 
-TabBar::TabBar(QWidget *parent, char *name)
+TabBar::TabBar(QWidget *parent)
 	: QTabBar(parent)
 {
-	// dzięki temu sygnał mouseMoveEvent jest emitowany także w momencie "zwykłego" poruszania się kursora myszy nad tabbarem
-	setMouseTracking(true);
-
-	// sposób działania przycisku na każdej karcie bazuje na rozwiazaniu z QDevelop (http://qdevelop.org)
-	// Tworzony jest przycisk zamknięcia karty pokazywany na aktywnej karcie
-	crossButton = new QToolButton(this);
-   	crossButton->hide();
-   	connect(crossButton, SIGNAL(clicked()), this, SLOT(closeTab()) );
-   	crossButton->setGeometry(0,0,15,15);
-   	crossButton->setIcon(IconsManager::instance()->loadIcon("TabsClose"));
-	// staje się "podświetlany"
-	crossButton->setAutoRaise(true);
-	// domyśnie żadna karta nie jest "naciśnięta" (nie znajduje się na niej przycisk zamknięcia)
-	clickedItem=-1;
 }
 
 void TabBar::mousePressEvent(QMouseEvent* e)
 {
 	if (tabAt(e->pos()) != -1 && e->button() == Qt::RightButton)
 		emit contextMenu(tabAt(e->pos()), mapToGlobal(e->pos()));
-	MouseStart = e->pos();
 
 	QTabBar::mousePressEvent(e);
 }
@@ -323,92 +288,10 @@ void TabBar::mouseReleaseEvent(QMouseEvent* e)
 	QTabBar::mouseReleaseEvent(e);
 }
 
-void TabBar::wheelEvent(QWheelEvent *e)
-{
-	emit wheelEventSignal(e);
-}
-
-void TabBar::mouseMoveEvent(QMouseEvent* e)
-{
-	kdebugf();
-	// Jeśli zaznaczona jest karta i wciśnięty lewy przycisk myszy, inicjujemy dnd
-	if ((e->buttons() & Qt::LeftButton) && (tabAt(MouseStart) != -1) && ((MouseStart - e->pos()).manhattanLength() >= 15))
-	{
-		// "przenoszonym" tekstem jest numer aktywowanej karty
-		QString drag_text = QString::number(tabAt(MouseStart));
-		// Bezpośrednia inicjacja dnd
-		QDrag* drag = new QDrag(this);
-		QMimeData *mimeData = new QMimeData;
-
-		mimeData->setText(drag_text);
-		drag->setMimeData(mimeData);
-
-		drag->exec(Qt::CopyAction);
-	}
-
-	// pomysł rozwiazania zaczerpnięty z QDevelop
-	// Jeśli aktywna jest opcja pokazywania przycisku zamknięcia na kartach i w obrębie zdarzenia jest karta
-	else if (tabAt(e->pos()) != -1 && showCloseButton)
-	{
-		// pokazujemy przycisk na odpowiedniej pozycji
-		clickedItem = tabAt(e->pos());
-		// pierwszy parametr ustawia przycisk 5 pixeli od prawej krawędzi karty.
-		//TODO: FIX this!
-		crossButton->setGeometry(tabRect(clickedItem).x()+tabRect(clickedItem).width()-crossButton->width()-5, 6, crossButton->width(), crossButton->height());
-                crossButton->show();
-	}
-	else
-
-		QTabBar::mouseMoveEvent(e);
-	kdebugf2();
-}
-
-void TabBar::leaveEvent(QEvent* e)
-{
-	// w chwili gdy kursor opuszcza tabbar chowamy przycisk zamknięcia
-       	crossButton->hide();
-}
-
-void TabBar::closeTab()
-{
-	emit deleteTab(clickedItem);
-}
-
 void TabBar::mouseDoubleClickEvent(QMouseEvent* e)
 {
 	kdebugf();
 	// w celu ułatwienia sobie zadania przekazujemy zdarzenie dalej- tu klasie tabdialog
 	emit mouseDoubleClickEventSignal(e);
 	kdebugf2();
-}
-
-void TabBar::setShowCloseButton(bool show)
-{
-	// odświeżenie ikonki
-   	crossButton->setIcon(IconsManager::instance()->loadPixmap("TabsClose"));
-
-	showCloseButton = show;
-	// w zaleźności czy w konfiguracji włączone jest pokazywanie przycisku zamykania na kartach ukrywamy go lub pokazujemy
-	if(!showCloseButton)
-		crossButton->hide();
-}
-
-void TabBar::tabLayoutChange()
-{
-	QTabBar::tabLayoutChange();
-	replaceCross();
-}
-
-void TabBar::replaceCross()
-{
-	// jeśli przycisk zamknięciakarty jest widoczny na karcie i w miejscu kursora znajuje się karta
-	if(crossButton->isVisible() && tabAt(mapFromGlobal(QCursor::pos())) != -1)
-	{
-		// uaktualniamy pozycję przycisku w prawym rogu karty
-		clickedItem = tabAt(mapFromGlobal(QCursor::pos()));
-		// pierwszy parametr ustawia przycisk 5 pixeli od prawej krawędzi karty.
-		crossButton->setGeometry(tabRect(clickedItem).x()+tabRect(clickedItem).width()-crossButton->width()-5, 6, crossButton->width(), crossButton->height());
-                crossButton->show();
-	}
-
 }

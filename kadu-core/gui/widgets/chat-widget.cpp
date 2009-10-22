@@ -47,14 +47,13 @@
 ChatWidget::ChatWidget(Chat *chat, QWidget *parent) :
 		QWidget(parent), CurrentChat(chat),
 		ContactsWidget(0), horizSplit(0),
-		activationCount(0), NewMessagesCount(0), SelectionFromMessagesView(true), InputBox(0)
+		NewMessagesCount(0), SelectionFromMessagesView(true), InputBox(0)
 {
 	kdebugf();
 
 	setAcceptDrops(true);
 	ChatWidgetManager::instance()->registerChatWidget(this);
 
-	triggerAllAccountsRegistered();
 	createGui();
 	configurationUpdated();
 
@@ -64,8 +63,6 @@ ChatWidget::ChatWidget(Chat *chat, QWidget *parent) :
 ChatWidget::~ChatWidget()
 {
 	kdebugf();
-
-	triggerAllAccountsUnregistered();
 
 	ChatWidgetManager::instance()->unregisterChatWidget(this);
 
@@ -199,7 +196,7 @@ bool ChatWidget::keyPressEventHandled(QKeyEvent *e)
 
 QIcon ChatWidget::icon()
 {
-	return pix;
+	return chat()->icon();
 }
 
 void ChatWidget::keyPressEvent(QKeyEvent *e)
@@ -210,25 +207,6 @@ void ChatWidget::keyPressEvent(QKeyEvent *e)
  	else
  		QWidget::keyPressEvent(e);
 	kdebugf2();
-}
-
-void ChatWidget::accountRegistered(Account *account)
-{
-	connect(account, SIGNAL(contactStatusChanged(Account *, Contact, Status)),
-			this, SLOT(onStatusChanged(Account *, Contact, Status)));
-}
-
-void ChatWidget::accountUnregistered(Account *account)
-{
-	disconnect(account, SIGNAL(contactStatusChanged(Account *, Contact, Status)),
-			this, SLOT(onStatusChanged(Account *, Contact, Status)));
-}
-
-void ChatWidget::onStatusChanged(Account *account, Contact contact, Status oldStatus)
-{
-// TODO: fix
-	if (account != CurrentChat->account() && (*CurrentChat->contacts().begin()) != contact)
-		return;
 }
 
 // TODO: remove

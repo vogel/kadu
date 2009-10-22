@@ -59,7 +59,7 @@ void ContactGroupsConfigurationWidget::createGui()
 	tabLabel->setFont(tabLabelFont);
 	layout->addWidget(tabLabel, row++, 1, 1, 4);
 
-	QLabel *tabSubLabel = new QLabel(tr("Add %1 to the groups below by checking the box next to the appropriate groups.").arg("Marian"), this);
+	QLabel *tabSubLabel = new QLabel(tr("Add %1 to the groups below by checking the box next to the appropriate groups.").arg(CurrentContact.display()), this);
 	layout->setRowStretch(row, 1);
 	layout->addWidget(tabSubLabel, row++, 2, 1, 4);
 
