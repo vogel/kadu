@@ -90,12 +90,22 @@ void ContactAccountDataManager::load(Account *account)
 
 void ContactAccountDataManager::accountRegistered(Account *account)
 {
+	if (LoadedAccounts.contains(account))
+		return;
+
 	load(account);
+	LoadedAccounts.append(account);
 }
 
 void ContactAccountDataManager::accountUnregistered(Account *account)
 {
 // 	store(account);
+	LoadedAccounts.removeAll(account);
+}
+
+void ContactAccountDataManager::ensureLoaded(Account *account)
+{
+	accountRegistered(account);
 }
 
 void ContactAccountDataManager::load()
@@ -113,7 +123,7 @@ void ContactAccountDataManager::store()
 	if (!isValidStorage())
 		return;
 
-	ensureLoaded();
+	StorableObject::ensureLoaded();
 
 	foreach (ContactAccountData *cad, ContactAccountDataList)
 		cad->store();
@@ -124,7 +134,7 @@ void ContactAccountDataManager::addContactAccountData(ContactAccountData *cad)
 	if (!cad)
 		return;
 
-	ensureLoaded();
+	StorableObject::ensureLoaded();
 
 	if (ContactAccountDataList.contains(cad))
 		return;
@@ -141,7 +151,7 @@ void ContactAccountDataManager::removeContactAccountData(ContactAccountData *cad
 	if (!cad)
 		return;
 
-	ensureLoaded();
+	StorableObject::ensureLoaded();
 
 	if (!ContactAccountDataList.contains(cad))
 		return;
@@ -156,7 +166,7 @@ ContactAccountData * ContactAccountDataManager::byIndex(unsigned int index)
 	if (index < 0 || index >= count())
 		return 0;
 
-	ensureLoaded();
+	StorableObject::ensureLoaded();
 
 	return ContactAccountDataList.at(index);
 }
@@ -166,7 +176,7 @@ ContactAccountData * ContactAccountDataManager::byUuid(const QString &uuid)
 	if (uuid.isEmpty())
 		return 0;
 
-	ensureLoaded();
+	StorableObject::ensureLoaded();
 
 	foreach (ContactAccountData *cad, ContactAccountDataList)
 		if (uuid == cad->uuid().toString())

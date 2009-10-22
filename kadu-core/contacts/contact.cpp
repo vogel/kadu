@@ -268,7 +268,8 @@ QString Contact::display() const
 
 Contact Contact::dummy()
 {
-    	Contact example;
+	Contact example;
+
 	example.setFirstName("Mark");
 	example.setLastName("Smith");
 	example.setNickName("Jimbo");
@@ -282,20 +283,19 @@ Contact Contact::dummy()
 	else if (ProtocolsManager::instance()->protocolFactories().count())
 		account = ProtocolsManager::instance()->protocolFactories()[0]->newAccount();
 
-	if (account)
-	{
-		ContactAccountData *contactData = new ContactAccountData(account, example, "999999", true);
-		contactData->setStatus(Status("Away", tr("Example description")));
-		contactData->setIp(QHostAddress(2130706433));
-		contactData->setPort(80);
-		Avatar &avatar = contactData->avatar();
-		avatar.setLastUpdated(QDateTime::currentDateTime());
-		avatar.setPixmap(IconsManager::instance()->loadPixmap("ContactsTab"));
-		avatar.setFileName(IconsManager::instance()->iconPath("ContactsTab"));
+	if (!account)
+		return null;
 
-		example.addAccountData(contactData);
+	ContactAccountData *contactData = new ContactAccountData(account, example, "999999", true);
+	contactData->setStatus(Status("Away", tr("Example description")));
+	contactData->setIp(QHostAddress(2130706433));
+	contactData->setPort(80);
+	Avatar &avatar = contactData->avatar();
+	avatar.setLastUpdated(QDateTime::currentDateTime());
+	avatar.setPixmap(IconsManager::instance()->loadPixmap("ContactsTab"));
+	avatar.setFileName(IconsManager::instance()->iconPath("ContactsTab"));
 
-		return example;
-	}
-	return null;
+	example.addAccountData(contactData);
+
+	return example;
 }

@@ -117,7 +117,12 @@ Chat * Protocol::findChat(ContactSet contacts, bool create)
 
 	if (contacts.count() == 1)
 	{
-		SimpleChat *simple = new SimpleChat(account(), (*contacts.begin()));
+		Contact contact = *contacts.begin();
+		ContactAccountData *cad = contact.accountData(account());
+		if (!cad)
+			return 0;
+
+		SimpleChat *simple = new SimpleChat(account(), cad);
 		ChatManager::instance()->addChat(simple);
 		return simple;
 	}

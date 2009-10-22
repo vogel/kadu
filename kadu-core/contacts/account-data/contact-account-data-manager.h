@@ -26,7 +26,8 @@ class KADUAPI ContactAccountDataManager : public QObject, public StorableObject,
 	Q_DISABLE_COPY(ContactAccountDataManager)
 
 	static ContactAccountDataManager * Instance;
-
+	
+	QList<Account *> LoadedAccounts;
 	QList<ContactAccountData *> ContactAccountDataList;
 
 	ContactAccountDataManager();
@@ -45,7 +46,8 @@ protected:
 
 public:
 	static ContactAccountDataManager * instance();
-
+	
+	void ensureLoaded(Account *account);
 	virtual void load();
 	virtual void store();
 

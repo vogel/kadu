@@ -16,11 +16,11 @@ class XmlConfigFile;
 
 class SimpleChat : public Chat
 {
-	Contact CurrentContact;
+	ContactAccountData *CurrentContactAccountData;
 
 public:
 	SimpleChat(StoragePoint *storage);
-	SimpleChat(Account *parentAccount, Contact contact, QUuid uuid = QUuid());
+	SimpleChat(Account *parentAccount, ContactAccountData *cad, QUuid uuid = QUuid());
 	virtual ~SimpleChat();
 
 	virtual void load();

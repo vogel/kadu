@@ -9,6 +9,8 @@
 
 #include "accounts/account-manager.h"
 #include "chat/type/chat-type-manager.h"
+#include "contacts/account-data/contact-account-data.h"
+#include "contacts/account-data/contact-account-data-manager.h"
 #include "contacts/contact-manager.h"
 #include "protocols/protocol.h"
 
@@ -16,12 +18,12 @@
 #include "chat-manager.h"
 
 SimpleChat::SimpleChat(StoragePoint *storage) :
-		Chat(storage)
+		Chat(storage), CurrentContactAccountData(0)
 {
 }
 
-SimpleChat::SimpleChat(Account *currentAccount, Contact contact, QUuid uuid) :
-		Chat(currentAccount, uuid), CurrentContact(contact)
+SimpleChat::SimpleChat(Account *currentAccount, ContactAccountData *cad, QUuid uuid) :
+		Chat(currentAccount, uuid), CurrentContactAccountData(cad)
 {
 }
 
@@ -35,7 +37,24 @@ void SimpleChat::load()
 		return;
 
 	Chat::load();
-	CurrentContact = ContactManager::instance()->byUuid(loadValue<QString>("Contact"));
+
+	QString cadUuid = loadValue<QString>("ContactAccountData");
+	if (cadUuid.isNull())
+	{
+		Contact contact = ContactManager::instance()->byUuid(loadValue<QString>("Contact"));
+		if (contact.isNull())
+			printf("null contact?");
+		CurrentContactAccountData = contact.accountData(account());
+		if (!CurrentContactAccountData)
+			printf("null cad\n");
+		removeValue("Contact");
+	}
+	else
+	{
+		ContactAccountDataManager::instance()->ensureLoaded(account());
+		CurrentContactAccountData = ContactAccountDataManager::instance()->byUuid(cadUuid);
+	}
+
 	refreshTitle();
 }
 
@@ -46,7 +65,9 @@ void SimpleChat::store()
 
 	Chat::store();
 	storeValue("Type", "Simple");
-	storeValue("Contact", CurrentContact.uuid().toString());
+
+	if (CurrentContactAccountData)
+		storeValue("ContactAccountData", CurrentContactAccountData->uuid().toString());
 }
 
 ChatType SimpleChat::type() const
@@ -56,10 +77,14 @@ ChatType SimpleChat::type() const
 
 ContactSet SimpleChat::contacts() const
 {
-	return ContactSet(CurrentContact);
+	if (!CurrentContactAccountData)
+		return ContactSet();
+	return ContactSet(CurrentContactAccountData->contact());
 }
 
 QString SimpleChat::name() const
 {
-	return CurrentContact.display();
+	if (!CurrentContactAccountData)
+		return QString::null;
+	return CurrentContactAccountData->contact().display();
 }
