@@ -97,7 +97,7 @@ void KaduWindow::createGui()
 	hboxLayout->setAlignment(GroupBar, Qt::AlignTop);
 
 	InfoPanel = new ContactInfoPanel(split);
-	connect(ContactsWidget, SIGNAL(currentContactChanged(Contact)), InfoPanel, SLOT(displayContact(Contact)));
+	connect(ContactsWidget->view(), SIGNAL(currentContactChanged(Contact)), InfoPanel, SLOT(displayContact(Contact)));
 
 	if (!config_file.readBoolEntry("Look", "ShowInfoPanel"))
 		InfoPanel->QWidget::hide();
