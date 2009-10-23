@@ -51,6 +51,7 @@ class HistorySqlStorage : public HistoryStorage
 
 	void executeQuery(QSqlQuery query);
 	QList<Message> messagesFromQuery(Chat *chat, QSqlQuery query);
+	void bindChat(Chat *chat, QSqlQuery &query);
 
 private slots:
 	virtual void messageReceived(const Message &message);

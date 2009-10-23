@@ -18,6 +18,8 @@ class XmlConfigFile;
 
 class AggregateChat : public Chat
 {
+	Q_OBJECT
+
 	QList<Chat *> Chats;
 
 public:

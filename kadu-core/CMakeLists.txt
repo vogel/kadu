@@ -270,7 +270,7 @@ set (kadu_MOC_SRCS
 	accounts/model/accounts-model.h
 	accounts/model/accounts-proxy-model.h
 
-	#chat/aggregate-chat.h
+	chat/aggregate-chat.h
 	chat/chat.h
 	chat/chat-aggregator-builder.h
 	chat/chat-manager.h

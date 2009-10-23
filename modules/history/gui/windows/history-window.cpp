@@ -16,9 +16,14 @@
 #include <QtGui/QStatusBar>
 #include <QtGui/QVBoxLayout>
 
-#include "chat/filter/chat-name-filter.h"
 #include "chat/message/message.h"
+
 #include "chat/type/chat-type.h"
+#include "chat/filter/chat-name-filter.h"
+#include "chat/aggregate-chat.h"
+#include "chat/chat-aggregator-builder.h"
+#include "contacts/model/contacts-model-base.h"
+
 #include "gui/actions/actions.h"
 #include "gui/widgets/chat-widget-manager.h"
 #include "gui/widgets/delayed-line-edit.h"
@@ -182,9 +187,32 @@ void HistoryWindow::updateData()
 	kdebugf();
 
 	ChatsModel->clear();
+	QList<Chat *> usedChats;
+	QList<Chat *> chatsList = History::instance()->chatsList(Search);
+	QList<Chat *> result;
 
-	foreach (Chat *chat, History::instance()->chatsList(Search))
-		ChatsModel->addChat(chat);
+	foreach (Chat *chat, chatsList)
+	{
+		if (usedChats.contains(chat))
+			continue;
+
+		AggregateChat *aggregate = dynamic_cast<AggregateChat *>(ChatAggregatorBuilder::buildAggregateChat(chat->contacts()));
+		if (!aggregate)
+			continue;
+		if (aggregate->chats().size() > 1)
+		{
+			result.append(aggregate);
+			foreach (Chat *usedChat, aggregate->chats())
+				usedChats.append(usedChat);
+		}
+		else
+		{
+			result.append(chat);
+			usedChats.append(chat);
+		}
+	}
+
+	ChatsModel->addChats(result);
 }
 
 void HistoryWindow::selectChat(Chat *chat)
@@ -245,7 +273,13 @@ void HistoryWindow::dateActivated(const QModelIndex &index)
 		return;
 
 	QList<Message> messages = History::instance()->messages(chat, date);
-	ContentBrowser->setChat(chat);
+
+	AggregateChat *aggregate = qobject_cast<AggregateChat *>(chat);
+	if (aggregate)
+		ContentBrowser->setChat(aggregate->chats().at(0));
+	else
+		ContentBrowser->setChat(chat);
+
 	ContentBrowser->clearMessages();
 	ContentBrowser->appendMessages(messages);
 
