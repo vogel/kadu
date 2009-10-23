@@ -55,14 +55,8 @@ void ContactGeneralConfigurationWidget::createGui()
 	layout->setColumnStretch(6, 2);
 
 	int row = 0;
-
-	QLabel *tabLabel = new QLabel(tr("General Properties"), this);
-	QFont tabLabelFont = tabLabel->font();
-	tabLabelFont.setPointSize(tabLabelFont.pointSize() + 3);
-	tabLabelFont.setWeight(QFont::Bold);
-	tabLabel->setFont(tabLabelFont);
-	layout->addWidget(tabLabel, 0, 1, 1, 4);
-
+	layout->setRowStretch(row++, 1); 
+	
 	QLabel *numberLabel = new QLabel(tr("Visible Name") + ":", this);
 	layout->addWidget(numberLabel, 2, 2, 1, 1);
 	DisplayEdit = new QLineEdit(this);
