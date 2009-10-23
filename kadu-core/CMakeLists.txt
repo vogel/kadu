@@ -55,6 +55,7 @@ set (kadu_SRCS
 
 	contacts/account-data/contact-account-data.cpp
 	contacts/account-data/contact-account-data-manager.cpp
+	contacts/account-data/model/contact-account-data-model.cpp
 
 	contacts/filter/account-contact-filter.cpp
 	contacts/filter/anonymous-contact-filter.cpp
@@ -304,6 +305,7 @@ set (kadu_MOC_SRCS
 
 	contacts/account-data/contact-account-data.h
 	contacts/account-data/contact-account-data-manager.h
+	contacts/account-data/model/contact-account-data-model.h
 
 	contacts/filter/abstract-contact-filter.h
 	contacts/filter/account-contact-filter.h

@@ -99,4 +99,6 @@ signals:
 
 };
 
+Q_DECLARE_METATYPE(ContactAccountData *)
+
 #endif // CONTACT_ACCOUNT_DATA_H

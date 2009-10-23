@@ -17,6 +17,7 @@
 #include <QtGui/QTreeView>
 
 #include "contacts/contact.h"
+#include "contacts/account-data/model/contact-account-data-model.h"
 
 #include "exports.h"
 
@@ -32,6 +33,7 @@ class KADUAPI ContactGeneralConfigurationWidget : public QWidget
 	QLineEdit *MobileEdit;
 	QLineEdit *EmailEdit;
 	QLineEdit *WebsiteEdit;
+	QComboBox *DefaultAccountCombo;
 
 	QDialog *OrderDialog; 
 
@@ -42,6 +44,7 @@ class KADUAPI ContactGeneralConfigurationWidget : public QWidget
 	QGridLayout *ContactsLayout;
 
 	Contact CurrentContact;
+	ContactAccountDataModel *AccountDataModel;
 	void createGui();
 	void updateOrder();
 

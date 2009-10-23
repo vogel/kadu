@@ -20,10 +20,12 @@
 #include "accounts/account.h"
 #include "accounts/account-manager.h"
 #include "configuration/configuration-contact-account-data-manager.h"
-#include "contacts/contact-manager.h"
 #include "contacts/account-data/contact-account-data.h"
+#include "contacts/contact-manager.h"
 #include "icons-manager.h"
 #include "misc/misc.h"
+#include "model/actions-proxy-model.h"
+#include "model/roles.h"
 #include "protocols/protocol.h"
 #include "protocols/protocol-factory.h"
 
@@ -92,11 +94,24 @@ void ContactGeneralConfigurationWidget::createGui()
 
 	QLabel *defaultContactLabel = new QLabel(tr("Default Contact") + ":");
 
-	QComboBox *defaultContact = new QComboBox(this);
-	defaultContact->setDisabled(CurrentContact.accountDatas().count() <= 1);
+	DefaultAccountCombo = new QComboBox(this);
+	AccountDataModel = new ContactAccountDataModel(CurrentContact, DefaultAccountCombo);
+//	ContactsModelProxy *AccountComboProxyModel = new ContactsModelProxy(DefaultContactCombo);
+//	AccountComboProxyModel->setSourceModel(AccountComboModel);
+	
+// 		ActionsProxyModel::ModelActionList accountsModelBeforeActions;
+// 	accountsModelBeforeActions.append(qMakePair<QString, QString>(tr(" - Select merged account - "), ""));
+// 	ActionsProxyModel *accountsProxyModel = new ActionsProxyModel(accountsModelBeforeActions,
+// 			ActionsProxyModel::ModelActionList(), DefaultContactCombo);
+	//accountsProxyModel->setSourceModel(AccountComboProxyModel);
+	
+	DefaultAccountCombo->setModel(AccountDataModel);
+	DefaultAccountCombo->setModelColumn(1); // use long account name
+	
+	DefaultAccountCombo->setDisabled(CurrentContact.accountDatas().count() <= 1);
 	QLabel *defaultContactNoticeLabel = new QLabel(tr("Chat messages will be sent to this username when you select the name from the buddy list"));
 	AccountsLayout->addWidget(defaultContactLabel, row, 0, 1, 1);
-	AccountsLayout->addWidget(defaultContact, row++, 1, 1, 4);
+	AccountsLayout->addWidget(DefaultAccountCombo, row++, 1, 1, 4);
 	AccountsLayout->addWidget(defaultContactNoticeLabel, row++, 1, 1, 5);
 
 	QWidget *contactsWidget = new QWidget(this);
@@ -106,7 +121,7 @@ void ContactGeneralConfigurationWidget::createGui()
 	
 	foreach (ContactAccountData *data, CurrentContact.accountDatas())
 	{
-		defaultContact->addItem(data->id());
+		DefaultAccountCombo->addItem(data->id());
 		addAccountDataRow(data);
 	}
 
@@ -239,8 +254,9 @@ void ContactGeneralConfigurationWidget::saveConfiguration()
 			foreach (ContactAccountData *accountData, CurrentContact.accountDatas())
 					if (accountData->id() == contactId) // check if user has only changed account for previous existing ID
 						CurrentContact.removeAccountData(accountData->account()); // if so, remove old CAD, otherwise there will appear 2 identical contacts with different accounts
-			ContactAccountData *data = new ContactAccountData(account, CurrentContact, contactId, false);
-			CurrentContact.addAccountData(data);
+			ContactAccountData *cad = account->protocol()->protocolFactory()
+				->newContactAccountData(account, CurrentContact, contactId);
+			CurrentContact.addAccountData(cad);
 		}
 	}
 }
