@@ -37,13 +37,6 @@ void ContactOptionsConfigurationWidget::createGui()
 
 	int row = 0;
 
-	QLabel *tabLabel = new QLabel(tr("Options"), this);
-	QFont tabLabelFont = tabLabel->font();
-	tabLabelFont.setPointSize(tabLabelFont.pointSize() + 3);
-	tabLabelFont.setWeight(QFont::Bold);
-	tabLabel->setFont(tabLabelFont);
-	layout->addWidget(tabLabel, row++, 1, 1, 4);
-
 	layout->setRowStretch(row++, 1);       
 
 	BlockCheckBox = new QCheckBox(tr("Block contact"), this);

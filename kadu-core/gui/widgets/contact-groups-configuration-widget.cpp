@@ -48,16 +48,11 @@ void ContactGroupsConfigurationWidget::createGui()
 	layout->setColumnStretch(6, 2);
 
 	int row = 0;
+	
+	layout->setRowStretch(row++, 1); 
 
 	setWidget(groupsTab);
 	setWidgetResizable(true);
-
-	QLabel *tabLabel = new QLabel(tr("Groups"), this);
-	QFont tabLabelFont = tabLabel->font();
-	tabLabelFont.setPointSize(tabLabelFont.pointSize() + 3);
-	tabLabelFont.setWeight(QFont::Bold);
-	tabLabel->setFont(tabLabelFont);
-	layout->addWidget(tabLabel, row++, 1, 1, 4);
 
 	QLabel *tabSubLabel = new QLabel(tr("Add %1 to the groups below by checking the box next to the appropriate groups.").arg(CurrentContact.display()), this);
 	layout->setRowStretch(row, 1);

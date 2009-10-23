@@ -36,13 +36,8 @@ void ContactPersonalInfoConfigurationWidget::createGui()
 	layout->setColumnMinimumWidth(6, 20);
 
 	int row = 0;
-
-	QLabel *tabLabel = new QLabel(tr("Personal Information"), this);
-	QFont tabLabelFont = tabLabel->font();
-	tabLabelFont.setPointSize(tabLabelFont.pointSize() + 3);
-	tabLabelFont.setWeight(QFont::Bold);
-	tabLabel->setFont(tabLabelFont);
-	layout->addWidget(tabLabel, row++, 1, 1, 4); 
+	
+	layout->setRowStretch(row++, 1); 
 
 	QLabel *usernameLabel = new QLabel(tr("Contact Username") + ":", this);
 	layout->addWidget(usernameLabel, row, 3, 1, 1); 
@@ -149,7 +144,7 @@ void ContactPersonalInfoConfigurationWidget::accountSelectionChanged(int index)
 	Account *account = AccountManager::instance()->byUuid(QUuid(accountUuid));
 	if (!account)
 		return;
-	//TODO proper values
+	//TODO 0.6.6 proper values
 	FirstNameText->setText(CurrentContact.firstName());
 	LastNameText->setText(CurrentContact.lastName());
 	NicknameText->setText(CurrentContact.nickName());
