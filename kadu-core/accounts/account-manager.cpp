@@ -181,8 +181,6 @@ Status AccountManager::status() const
 
 void AccountManager::protocolFactoryRegistered(ProtocolFactory *factory)
 {
-	printf("pf registered: %s\n", qPrintable(factory->name()));
-
 	if (!isValidStorage())
 		return;
 

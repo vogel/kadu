@@ -13,7 +13,7 @@
 #include <QtGui/QLineEdit>
 
 #include "debug.h"
-#include "gadu-account.h"
+#include "gadu-account-details.h"
 
 #include "gadu-personal-info-widget.h"
 

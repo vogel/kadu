@@ -19,6 +19,12 @@
 
 #include "exports.h"
 
+#define PROPERTY_DEC(type, fieldName) \
+	type fieldName;
+#define PROPERTY_DEF(type, getMethodName, setMethodName, fieldName) \
+	type getMethodName() { ensureLoaded(); return fieldName; } \
+	void setMethodName(type value) { ensureLoaded(); fieldName = value; }
+
 class KADUAPI StorableObject
 {
 	StorableObject *Parent;

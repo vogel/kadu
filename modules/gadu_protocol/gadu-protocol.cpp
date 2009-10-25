@@ -515,7 +515,7 @@ void GaduProtocol::setupDcc()
 	if (!gaduAccountDetails)
 		return;
 
-	if (gaduAccountDetails->allowDCC())
+	if (gaduAccountDetails->allowDcc())
 	{
 		if (!Dcc)
 			Dcc = new DccManager(this);
@@ -554,7 +554,7 @@ void GaduProtocol::setupLoginParams()
 	GaduLoginParams.protocol_version = 0x2a; // we are gg 7.7 now
 	GaduLoginParams.client_version = (char *)"7, 7, 0, 3351";
 
-	GaduLoginParams.has_audio = gaduAccountDetails->allowDCC();
+	GaduLoginParams.has_audio = gaduAccountDetails->allowDcc();
 	GaduLoginParams.last_sysmsg = config_file.readNumEntry("General", "SystemMsgIndex", 1389);
 
 	if (Dcc)

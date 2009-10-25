@@ -19,15 +19,15 @@ class GaduAccountDetails : public AccountDetails
 {
 	UinType Uin;
 
-	bool AllowDcc;
-	QHostAddress DccIP;
-	bool DccIpDetect;
-	short int DccPort;
-	QHostAddress DccExternalIP;
-	short int DccExternalPort;
-	short int DccLocalPort;
-	bool RemoveCompletedTransfers;
-	bool DccForwarding;
+	PROPERTY_DEC(bool, AllowDcc)
+	PROPERTY_DEC(QHostAddress, DccIP)
+	PROPERTY_DEC(bool, DccIpDetect)
+	PROPERTY_DEC(short int, DccPort)
+	PROPERTY_DEC(QHostAddress, DccExternalIP)
+	PROPERTY_DEC(short int, DccExternalPort)
+	PROPERTY_DEC(short int, DccLocalPort)
+	PROPERTY_DEC(bool, RemoveCompletedTransfers)
+	PROPERTY_DEC(bool, DccForwarding)
 
 	GaduOpenChatWithRunner *OpenChatRunner;
 
@@ -39,25 +39,16 @@ public:
 	virtual void store();
 
 	UinType uin();
-	bool allowDCC() { return AllowDcc; }
-	QHostAddress dccIP() { return DccIP; }
-	QHostAddress dccExternalIP() { return DccExternalIP; }
-	bool dccIpDetect() { return DccIpDetect; }
-	short int dccPort() { return DccPort; }
-	short int dccExternalPort() { return DccExternalPort; }
-	short int dccLocalPort() { return DccLocalPort; }
-	bool removeCompletedTransfers() { return RemoveCompletedTransfers; }
-	bool dccForwarding() { return DccForwarding; }
 
-	void setAllowDcc(bool allow) { AllowDcc = allow; }
-	void setDccIP(QHostAddress ip) { DccIP = ip; }
-	void setDccExternalIP(QHostAddress ip) { DccExternalIP = ip; }
-	void setDccIpDetect(bool detect) { DccIpDetect = detect; }
-	void setDccPort(short int port) { DccPort = port; }
-	void setDccExternalPort(short int port) { DccExternalPort = port; }
-	void setDccLocalPort(short int port) { DccLocalPort = port; }
-	void setRemoveCompletedTransfers(bool remove) { RemoveCompletedTransfers = remove; }
-	void setDccForwarding(bool forwarding) { DccForwarding = forwarding; }
+	PROPERTY_DEF(bool, allowDcc, setAllowDcc, AllowDcc)
+	PROPERTY_DEF(QHostAddress, dccIP, setDccIP, DccIP)
+	PROPERTY_DEF(bool, dccIpDetect, setDccIpDetect, DccIpDetect)
+	PROPERTY_DEF(short int, dccPort, setDccPort, DccPort)
+	PROPERTY_DEF(QHostAddress, dccExternalIP, setDccExternalIP, DccExternalIP)
+	PROPERTY_DEF(short int, dccExternalPort, setDccExternalPort, DccExternalPort)
+	PROPERTY_DEF(short int, dccLocalPort, setDccLocalPort, DccLocalPort)
+	PROPERTY_DEF(bool, removeCompletedTransfers, setRemoveCompletedTransfers, RemoveCompletedTransfers)
+	PROPERTY_DEF(bool, dccForwarding, setDccForwarding, DccForwarding)
 
 	void import_0_6_5_LastStatus();
 

@@ -91,15 +91,6 @@ void GaduAccountDetails::import_0_6_5_LastStatus()
 	storeValue("LastStatusDescription", config_file.readEntry("General", "LastStatusDescription"));
 }
 
-/*
-bool GaduAccountData::validateId(const QString &id)
-{
-	bool ok;
-	UinType tmpUin = id.toLong(&ok);
-	return ok;
-}*/
-
-
 UinType GaduAccountDetails::uin()
 {
 	return account()->id().toULong();
