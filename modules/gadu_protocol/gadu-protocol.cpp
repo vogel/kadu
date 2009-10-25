@@ -41,7 +41,7 @@
 #include "socket-notifiers/gadu-pubdir-socket-notifiers.h"
 
 #include "helpers/gadu-importer.h"
-#include "gadu-account.h"
+#include "gadu-account-details.h"
 #include "gadu-contact-account-data.h"
 #include "gadu-protocol-factory.h"
 
@@ -437,9 +437,9 @@ void GaduProtocol::login()
 	if (GaduSession)
 		return;
 
-	GaduAccount *gaduAccount = dynamic_cast<GaduAccount *>(account());
+	GaduAccountDetails *gaduAccountDetails = dynamic_cast<GaduAccountDetails *>(account()->details());
 
-	if (0 == gaduAccount->uin())
+	if (0 == gaduAccountDetails->uin())
 	{
 		MessageBox::msg(tr("UIN not set!"), false, "Warning");
 		setStatus(Status());
@@ -447,9 +447,9 @@ void GaduProtocol::login()
 		return;
 	}
 
-	if (!gaduAccount->hasPassword())
+	if (!account()->hasPassword())
 	{
-		PasswordWindow::getPassword(tr("Please provide password for %1 account").arg(gaduAccount->name()),
+		PasswordWindow::getPassword(tr("Please provide password for %1 account").arg(account()->name()),
 				this, SLOT(login(const QString &, bool)));
 		return;
 	}
@@ -489,22 +489,20 @@ void GaduProtocol::setupProxy()
 		gg_proxy_username = gg_proxy_password = 0;
 	}
 
-	GaduAccount *gaduAccount = dynamic_cast<GaduAccount *>(account());
-
-	gg_proxy_enabled = gaduAccount->useProxy();
+	gg_proxy_enabled = account()->useProxy();
 
 	if (gg_proxy_enabled)
 	{
-		gg_proxy_host = strdup((char *)unicode2latin(gaduAccount->proxyHost().toString()).data());
-		gg_proxy_port = gaduAccount->proxyPort();
+		gg_proxy_host = strdup((char *)unicode2latin(account()->proxyHost().toString()).data());
+		gg_proxy_port = account()->proxyPort();
 
 		kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "gg_proxy_host = %s\n", gg_proxy_host);
 		kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "gg_proxy_port = %d\n", gg_proxy_port);
 
-		if (gaduAccount->proxyReqAuthentication() && !gaduAccount->proxyUser().isEmpty())
+		if (account()->proxyReqAuthentication() && !account()->proxyUser().isEmpty())
 		{
-			gg_proxy_username = strdup((char *)unicode2latin(gaduAccount->proxyUser()).data());
-			gg_proxy_password = strdup((char *)unicode2latin(gaduAccount->proxyPassword()).data());
+			gg_proxy_username = strdup((char *)unicode2latin(account()->proxyUser()).data());
+			gg_proxy_password = strdup((char *)unicode2latin(account()->proxyPassword()).data());
 		}
 	}
 
@@ -513,10 +511,11 @@ void GaduProtocol::setupProxy()
 
 void GaduProtocol::setupDcc()
 {
-	GaduAccount *gaduAccount = dynamic_cast<GaduAccount *>(account());
-	if (!gaduAccount)
+	GaduAccountDetails *gaduAccountDetails = dynamic_cast<GaduAccountDetails *>(account()->details());
+	if (!gaduAccountDetails)
 		return;
-	if (gaduAccount->allowDCC())
+
+	if (gaduAccountDetails->allowDCC())
 	{
 		if (!Dcc)
 			Dcc = new DccManager(this);
@@ -535,12 +534,12 @@ void GaduProtocol::setupLoginParams()
 {
 	memset(&GaduLoginParams, 0, sizeof(GaduLoginParams));
 
-	GaduAccount *gaduAccount = dynamic_cast<GaduAccount *>(account());
-	if (!gaduAccount)
+	GaduAccountDetails *gaduAccountDetails = dynamic_cast<GaduAccountDetails *>(account()->details());
+	if (!gaduAccountDetails)
 		return;
 
-	GaduLoginParams.uin = gaduAccount->id().toULong();
-	GaduLoginParams.password = strdup(gaduAccount->password().toAscii().data());
+	GaduLoginParams.uin = account()->id().toULong();
+	GaduLoginParams.password = strdup(account()->password().toAscii().data());
 
 	GaduLoginParams.async = 1;
 	GaduLoginParams.status = gaduStatusFromStatus(nextStatus()); // TODO: 0.6.6 support is friend only
@@ -555,7 +554,7 @@ void GaduProtocol::setupLoginParams()
 	GaduLoginParams.protocol_version = 0x2a; // we are gg 7.7 now
 	GaduLoginParams.client_version = (char *)"7, 7, 0, 3351";
 
-	GaduLoginParams.has_audio = gaduAccount->allowDCC();
+	GaduLoginParams.has_audio = gaduAccountDetails->allowDCC();
 	GaduLoginParams.last_sysmsg = config_file.readNumEntry("General", "SystemMsgIndex", 1389);
 
 	if (Dcc)

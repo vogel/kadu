@@ -34,10 +34,8 @@ class KADUAPI AccountManager : public QObject, public StorableObject
 
 	void init();
 
+	QList<Account *> NonRegisteredAccounts;
 	QList<Account *> Accounts;
-
-	void load(ProtocolFactory *factory);
-	void store(ProtocolFactory *factory);
 
 private slots:
 	void protocolFactoryRegistered(ProtocolFactory *factory);
@@ -51,6 +49,7 @@ protected:
 public:
 	static AccountManager * instance();
 
+	virtual void load();
 	virtual void store();
 
 	Account * defaultAccount() const;

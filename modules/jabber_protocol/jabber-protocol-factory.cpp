@@ -45,26 +45,19 @@ JabberProtocolFactory::JabberProtocolFactory()
 	IdRegularExpression.setPattern("[a-zA-Z0-9\\._-]+@[a-zA-Z0-9\\._-]+");
 }
 
-Account * JabberProtocolFactory::newAccount()
-{
-	JabberAccount *account = new JabberAccount();
-	Protocol *protocol = new JabberProtocol(account, this);
-	return account;
-}
-
 QString JabberProtocolFactory::iconName()
 {
 	return dataPath("kadu/modules/data/jabber_protocol/").append("online.png");
 }
 
-Account * JabberProtocolFactory::loadAccount(StoragePoint *accountStoragePoint)
+Protocol * JabberProtocolFactory::createProtocolHandler(Account *account)
 {
-	JabberAccount *account = new JabberAccount();
-	account->setStorage(accountStoragePoint);
-	Protocol *protocol = new JabberProtocol(account, this);
-	account->load();
+	return new JabberProtocol(account, this);
+}
 
-	return account;
+AccountDetails * JabberProtocolFactory::createAccountDetails(Account *account)
+{
+	return 0;
 }
 
 ContactAccountData * JabberProtocolFactory::newContactAccountData(Account *account, Contact contact, const QString &id)

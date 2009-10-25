@@ -17,7 +17,7 @@
 #include "contacts/account-data/contact-account-data-manager.h"
 #include "protocols/protocols-manager.h"
 #include "misc/misc.h"
-#include "gadu-account.h"
+#include "gadu-account-details.h"
 #include "gadu-contact-account-data.h"
 #include "gadu-protocol-factory.h"
 
@@ -37,30 +37,31 @@ void GaduImporter::importAccounts()
 {
 	if (0 == config_file.readNumEntry("General", "UIN"))
 		return;
-
-	GaduAccount *defaultGaduGadu = dynamic_cast<GaduAccount *>(
-		ProtocolsManager::instance()->byName("gadu")->newAccount());
+	
+	Account *defaultGaduGadu = new Account();
+	GaduAccountDetails *accountDetails = new GaduAccountDetails(defaultGaduGadu->storage(), defaultGaduGadu);
+	defaultGaduGadu->setDetails(accountDetails);
 
 	defaultGaduGadu->setName("Gadu-Gadu");
 	defaultGaduGadu->setId(config_file.readEntry("General", "UIN"));
 	defaultGaduGadu->setPassword(unicode2cp(pwHash(config_file.readEntry("General", "Password"))));
 	defaultGaduGadu->setRememberPassword(true);
-	defaultGaduGadu->setAllowDcc(config_file.readBoolEntry("Network", "AllowDCC"));
+	accountDetails->setAllowDcc(config_file.readBoolEntry("Network", "AllowDCC"));
 
 	QHostAddress host;
 	if (!host.setAddress(config_file.readEntry("Network", "DccIP")))
 		host.setAddress("0.0.0.0");
-	defaultGaduGadu->setDccIP(host);
+	accountDetails->setDccIP(host);
 	if (!host.setAddress(config_file.readEntry("Network", "ExternalIP")))
 		host.setAddress("0.0.0.0");
-	defaultGaduGadu->setDccExternalIP(host);
+	accountDetails->setDccExternalIP(host);
 
-	defaultGaduGadu->setDccExternalPort(config_file.readNumEntry("Network", "ExternalPort"));
-	defaultGaduGadu->setDccPort(config_file.readNumEntry("Network", "ExternalPort"));
-	defaultGaduGadu->setDccIpDetect(config_file.readBoolEntry("Network", "DccIpDetect"));
-	defaultGaduGadu->setDccLocalPort(config_file.readNumEntry("Network", "LocalPort"));
-	defaultGaduGadu->setDccForwarding(config_file.readBoolEntry("Network", "DccForwarding"));
-	defaultGaduGadu->setRemoveCompletedTransfers(config_file.readBoolEntry("Network", "RemoveCompletedTransfers"));
+	accountDetails->setDccExternalPort(config_file.readNumEntry("Network", "ExternalPort"));
+	accountDetails->setDccPort(config_file.readNumEntry("Network", "ExternalPort"));
+	accountDetails->setDccIpDetect(config_file.readBoolEntry("Network", "DccIpDetect"));
+	accountDetails->setDccLocalPort(config_file.readNumEntry("Network", "LocalPort"));
+	accountDetails->setDccForwarding(config_file.readBoolEntry("Network", "DccForwarding"));
+	accountDetails->setRemoveCompletedTransfers(config_file.readBoolEntry("Network", "RemoveCompletedTransfers"));
 
 	defaultGaduGadu->setUseProxy(config_file.readBoolEntry("Network", "UseProxy"));
 	if (!host.setAddress(config_file.readEntry("Network", "ProxyHost")))
@@ -71,7 +72,7 @@ void GaduImporter::importAccounts()
 	defaultGaduGadu->setProxyUser(config_file.readEntry("Network", "ProxyUser"));
 	defaultGaduGadu->setProxyReqAuthentication(!defaultGaduGadu->proxyUser().isEmpty());
 
-	defaultGaduGadu->import_0_6_5_LastStatus();
+	accountDetails->import_0_6_5_LastStatus();
 
 	AccountManager::instance()->registerAccount(defaultGaduGadu);
 }

@@ -291,6 +291,7 @@ void Core::init()
 	QTimer::singleShot(15000, this, SLOT(deleteOldConfigurationFiles()));
 
 	ContactAccountDataManager::instance();
+	AccountManager::instance()->load();
 }
 
 void Core::storeConfiguration()

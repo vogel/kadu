@@ -14,7 +14,7 @@
 #include "status/status-type.h"
 #include "status/status-type-manager.h"
 
-#include "gadu-account.h"
+#include "gadu-account-details.h"
 #include "gadu-contact-account-data-widget.h"
 #include "gadu-contact-account-data.h"
 #include "gadu-protocol.h"
@@ -44,21 +44,14 @@ GaduProtocolFactory::GaduProtocolFactory()
 	IdRegularExpression.setPattern("[0-9]{1,12}");
 }
 
-Account * GaduProtocolFactory::newAccount()
+Protocol * GaduProtocolFactory::createProtocolHandler(Account *account)
 {
-	GaduAccount *account = new GaduAccount();
-	Protocol *protocol = new GaduProtocol(account, this);
-	return account;
+	return new GaduProtocol(account, this);
 }
 
-Account * GaduProtocolFactory::loadAccount(StoragePoint *accountStoragePoint)
+AccountDetails * GaduProtocolFactory::createAccountDetails(Account* account)
 {
-	GaduAccount *account = new GaduAccount();
-	account->setStorage(accountStoragePoint);
-	Protocol *protocol = new GaduProtocol(account, this);
-	account->load();
-
-	return account;
+	return new GaduAccountDetails(account->storage(), account);
 }
 
 ContactAccountData * GaduProtocolFactory::newContactAccountData(Account *account, Contact contact, const QString &id)

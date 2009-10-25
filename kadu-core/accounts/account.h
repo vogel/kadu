@@ -20,8 +20,9 @@
 
 class QPixmap;
 
-class AccountData;
+class AccountDetails;
 class Protocol;
+class ProtocolFactory;
 class Status;
 class XmlConfigFile;
 
@@ -30,7 +31,10 @@ class KADUAPI Account : public BaseStatusContainer, public ContactsAwareObject
 	Q_OBJECT
 
 	QUuid Uuid;
+
+	QString ProtocolName;
 	Protocol *ProtocolHandler;
+	AccountDetails *Details;
 
 	QString Name;
 	QString Id;
@@ -52,15 +56,25 @@ protected:
 	virtual void contactRemoved(Contact contact);
 
 public:
-	Account(const QUuid &uuid = QUuid());
+	static Account * loadFromStorage(StoragePoint *storage);
+
+	explicit Account(StoragePoint *storagePoint);
+	explicit Account(const QUuid &uuid = QUuid());
 	virtual ~Account();
 
 	virtual void load();
 	virtual void store();
 
 	virtual QUuid uuid() const { return Uuid; }
-	void setProtocol(Protocol *protocolHandler);
+
+	void loadProtocol(ProtocolFactory *protocolFactory);
+	void unloadProtocol();
+
 	Protocol * protocol() { return ProtocolHandler; }
+	QString protocolName() { ensureLoaded(); return ProtocolName; }
+
+	AccountDetails * details() { return Details; }
+	void setDetails(AccountDetails *details) { Details = details; } // TODO: 0.6.6 make it emit signals or sth
 
 	void setConnectAtStart(bool connectAtStart) { ConnectAtStart = connectAtStart; }
 	bool connectAtStart() { return ConnectAtStart; }

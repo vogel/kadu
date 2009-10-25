@@ -13,38 +13,30 @@
 #include "gui/windows/open-chat-with/open-chat-with-runner-manager.h"
 #include "misc/misc.h"
 
-#include "gadu-account.h"
+#include "gadu-account-details.h"
 
-GaduAccount::GaduAccount(const QUuid &uuid) :
-		Account(uuid), AllowDcc(true), DccIP(QHostAddress()), DccExternalIP(QHostAddress()), DccIpDetect(true),
+GaduAccountDetails::GaduAccountDetails(StoragePoint *storagePoint, Account *parent) :
+		AccountDetails(storagePoint, parent),
+		AllowDcc(true), DccIP(QHostAddress()), DccExternalIP(QHostAddress()), DccIpDetect(true),
 		DccPort(0), DccExternalPort(0), DccLocalPort(0), RemoveCompletedTransfers(0), DccForwarding(0)
 {
-	OpenChatRunner = new GaduOpenChatWithRunner(this);
+	OpenChatRunner = new GaduOpenChatWithRunner(parent);
 	OpenChatWithRunnerManager::instance()->registerRunner(OpenChatRunner);
 }
 
-GaduAccount::~GaduAccount()
+GaduAccountDetails::~GaduAccountDetails()
 {
 	OpenChatWithRunnerManager::instance()->unregisterRunner(OpenChatRunner);
 	delete OpenChatRunner;
 	OpenChatRunner = 0;
 }
 
-bool GaduAccount::setId(const QString &id)
-{
-	if (!Account::setId(id))
-		return false;
-
-	Uin = id.toLong();
-	return true;
-}
-
-void GaduAccount::load()
+void GaduAccountDetails::load()
 {
 	if (!isValidStorage())
 		return;
 
-	Account::load();
+	AccountDetails::load();
 
 	AllowDcc = loadValue<bool>("AllowDcC");
 	DccIpDetect = loadValue<bool>("DccIpDetect");
@@ -63,12 +55,10 @@ void GaduAccount::load()
 	DccIP = host;
 }
 
-void GaduAccount::store()
+void GaduAccountDetails::store()
 {
 	if (!isValidStorage())
 		return;
-
-	Account::store();
 
 	storeValue("AllowDcc", AllowDcc);
 	storeValue("DccIP", DccIP.toString());
@@ -81,12 +71,13 @@ void GaduAccount::store()
 	storeValue("DccForwarding", DccForwarding);
 }
 
-void GaduAccount::import_0_6_5_LastStatus()
+void GaduAccountDetails::import_0_6_5_LastStatus()
 {
-    	if (!isValidStorage())
+	if (!isValidStorage())
 		return;
 
-    	QString name;
+	QString name;
+
 	int typeIndex = config_file.readNumEntry("General", "LastStatusType", -1);
 	switch (typeIndex)
 	{
@@ -107,3 +98,9 @@ bool GaduAccountData::validateId(const QString &id)
 	UinType tmpUin = id.toLong(&ok);
 	return ok;
 }*/
+
+
+UinType GaduAccountDetails::uin()
+{
+	return account()->id().toULong();
+}

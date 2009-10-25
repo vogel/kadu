@@ -277,14 +277,8 @@ Contact Contact::dummy()
 	example.setMobile("+48123456789");
 	example.setEmail("jimbo@mail.server.net");
 	example.setHomePhone("+481234567890");
-	Account *account = 0;
-	if (AccountManager::instance()->defaultAccount())
-		account = AccountManager::instance()->defaultAccount();
-	else if (ProtocolsManager::instance()->protocolFactories().count())
-		account = ProtocolsManager::instance()->protocolFactories()[0]->newAccount();
 
-	if (!account)
-		return null;
+	Account *account = new Account();
 
 	ContactAccountData *contactData = new ContactAccountData(account, example, "999999", true);
 	contactData->setStatus(Status("Away", tr("Example description")));

@@ -23,10 +23,9 @@
 
 #include "protocol.h"
 
-Protocol::Protocol(Account *account, ProtocolFactory *factory)
-	: State(NetworkDisconnected), Factory(factory), CurrentAccount(account)
+Protocol::Protocol(Account *account, ProtocolFactory *factory) :
+		State(NetworkDisconnected), Factory(factory), CurrentAccount(account)
 {
-	CurrentAccount->setProtocol(this);
 }
 
 Protocol::~Protocol()

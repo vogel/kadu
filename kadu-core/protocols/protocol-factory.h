@@ -15,8 +15,8 @@
 
 class Account;
 class AccountCreateWidget;
+class AccountDetails;
 class AccountEditWidget;
-class AccountData;
 class ConfigurationWindow;
 class Contact;
 class ContactAccountData;
@@ -29,8 +29,8 @@ class StoragePoint;
 class ProtocolFactory : public QObject
 {
 public:
-	virtual Account * newAccount() = 0;
-	virtual Account * loadAccount(StoragePoint *accountStoragePoint) = 0;
+	virtual Protocol * createProtocolHandler(Account *account) = 0;
+	virtual AccountDetails * createAccountDetails(Account *account) = 0;
 	virtual ContactAccountData * newContactAccountData(Account *account, Contact contact, const QString &id) = 0;
 	virtual ContactAccountData * loadContactAccountData(StoragePoint *storagePoint) = 0;
 	virtual AccountCreateWidget * newCreateAccountWidget(QWidget *parent = 0) = 0;

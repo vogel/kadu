@@ -7,15 +7,15 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GADU_ACCOUNT
-#define GADU_ACCOUNT
+#ifndef GADU_ACCOUNT_DETAILS_H
+#define GADU_ACCOUNT_DETAILS_H
 
-#include "accounts/account.h"
+#include "accounts/account-details.h"
 
 #include "open-chat-with/gadu-open-chat-with-runner.h"
 #include "gadu-protocol.h"
 
-class GaduAccount : public Account
+class GaduAccountDetails : public AccountDetails
 {
 	UinType Uin;
 
@@ -32,13 +32,13 @@ class GaduAccount : public Account
 	GaduOpenChatWithRunner *OpenChatRunner;
 
 public:
-	explicit GaduAccount(const QUuid &uuid = QUuid());
-	virtual ~GaduAccount();
+	explicit GaduAccountDetails(StoragePoint *storagePoint, Account *parent = 0);
+	virtual ~GaduAccountDetails();
 
 	virtual void load();
 	virtual void store();
 
-	UinType uin() { return Uin; }
+	UinType uin();
 	bool allowDCC() { return AllowDcc; }
 	QHostAddress dccIP() { return DccIP; }
 	QHostAddress dccExternalIP() { return DccExternalIP; }
@@ -49,7 +49,6 @@ public:
 	bool removeCompletedTransfers() { return RemoveCompletedTransfers; }
 	bool dccForwarding() { return DccForwarding; }
 
-	virtual bool setId(const QString &id);
 	void setAllowDcc(bool allow) { AllowDcc = allow; }
 	void setDccIP(QHostAddress ip) { DccIP = ip; }
 	void setDccExternalIP(QHostAddress ip) { DccExternalIP = ip; }
@@ -64,4 +63,4 @@ public:
 
 };
 
-#endif // GADU_ACCOUNT
+#endif // GADU_ACCOUNT_DETAILS_H

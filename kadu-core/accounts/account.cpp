@@ -7,6 +7,7 @@
  *                                                                         *
  ***************************************************************************/
 
+#include "accounts/account-details.h"
 #include "accounts/account-manager.h"
 #include "configuration/configuration-file.h"
 #include "configuration/xml-configuration-file.h"
@@ -19,8 +20,20 @@
 
 #include "account.h"
 
+Account * Account::loadFromStorage(StoragePoint *storagePoint)
+{
+	return new Account(storagePoint);
+}
+
+Account::Account(StoragePoint *storagePoint) :
+		BaseStatusContainer(storagePoint), ProtocolHandler(0), Details(0),
+		RememberPassword(false), HasPassword(false), UseProxy(false), ProxyHost(QHostAddress()),
+		ProxyPort(0), ProxyUser(QString()), ProxyPassword(QString())
+{
+}
+
 Account::Account(const QUuid &uuid) :
-		BaseStatusContainer("Account", AccountManager::instance()), ProtocolHandler(0),
+		BaseStatusContainer("Account", AccountManager::instance()), ProtocolHandler(0), Details(0),
 		RememberPassword(false), HasPassword(false), UseProxy(false), ProxyHost(QHostAddress()),
 		ProxyPort(0), ProxyUser(QString()), ProxyPassword(QString())
 {
@@ -38,13 +51,23 @@ Account::~Account()
 	}
 }
 
-void Account::setProtocol(Protocol *protocolHandler)
+void Account::loadProtocol(ProtocolFactory *protocolFactory)
 {
-	ProtocolHandler = protocolHandler;
+	ProtocolHandler = protocolFactory->createProtocolHandler(this);
+	Details = protocolFactory->createAccountDetails(this);
 
 	connect(ProtocolHandler, SIGNAL(statusChanged(Account *, Status)), this, SIGNAL(statusChanged()));
 	connect(ProtocolHandler, SIGNAL(contactStatusChanged(Account *, Contact, Status)),
 			this, SIGNAL(contactStatusChanged(Account *, Contact, Status)));
+}
+
+void Account::unloadProtocol()
+{
+	delete ProtocolHandler;
+	ProtocolHandler = 0;
+
+	delete Details;
+	Details = 0;
 }
 
 bool Account::setId(const QString &id)
@@ -75,6 +98,7 @@ void Account::load()
 
 	Uuid = QUuid(storage()->point().attribute("uuid"));
 	Name = loadValue<QString>("Name");
+	ProtocolName = loadValue<QString>("Protocol");
 	setId(loadValue<QString>("Id"));
 
 	RememberPassword = loadValue<bool>("RememberPassword", true);
@@ -105,7 +129,7 @@ void Account::store()
 
 	storeValue("ConnectAtStart", ConnectAtStart);
 
-	storeValue("Protocol", ProtocolHandler->protocolFactory()->name());
+	storeValue("Protocol", ProtocolName);
 	storeValue("Name", Name);
 	storeValue("Id", id());
 

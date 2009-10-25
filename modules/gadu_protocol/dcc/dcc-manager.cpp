@@ -31,7 +31,7 @@
 #include "file-transfer/gadu-file-transfer.h"
 #include "services/gadu-file-transfer-service.h"
 #include "socket-notifiers/gadu-protocol-socket-notifiers.h"
-#include "gadu-account.h"
+#include "gadu-account-details.h"
 #include "gadu-contact-account-data.h"
 
 #include "gadu-protocol.h"
@@ -95,11 +95,11 @@ void DccManager::setUpDcc()
 
 	WaitingFileTransfers.clear();
 
-	GaduAccount *account = dynamic_cast<GaduAccount *>(Protocol->account());
-	if (!account)
+	GaduAccountDetails *gaduAccountDetails = dynamic_cast<GaduAccountDetails *>(Protocol->account()->details());
+	if (!gaduAccountDetails)
 		return;
 
-	struct gg_dcc *socket = gg_dcc_socket_create(account->uin(), account->dccLocalPort());
+	struct gg_dcc *socket = gg_dcc_socket_create(gaduAccountDetails->uin(), gaduAccountDetails->dccLocalPort());
 	if (!socket)
 	{
 		kdebugmf(KDEBUG_NETWORK | KDEBUG_INFO, "Couldn't bind DCC socket.\n");
@@ -116,17 +116,17 @@ void DccManager::setUpDcc()
 	QHostAddress DCCIP;
 	short int DCCPort;
 
-	if (account->dccIpDetect())
+	if (gaduAccountDetails->dccIpDetect())
 		DCCIP.setAddress("255.255.255.255");
 	else
-		DCCIP = account->dccIP();
+		DCCIP = gaduAccountDetails->dccIP();
 
 	QHostAddress ext_ip;
 
-	bool forwarding = account->dccForwarding() && !account->dccExternalIP().isNull();
+	bool forwarding = gaduAccountDetails->dccForwarding() && !gaduAccountDetails->dccExternalIP().isNull();
 
 	DccExternalIP = forwarding ? ext_ip : QHostAddress();
-	DccExternalPort = forwarding ? account->dccExternalPort() : 0;
+	DccExternalPort = forwarding ? gaduAccountDetails->dccExternalPort() : 0;
 
 	gg_dcc_ip = htonl(DCCIP.toIPv4Address());
 	gg_dcc_port = socket->port;
@@ -221,11 +221,12 @@ void DccManager::connectionRequestReceived(Contact contact)
 	GaduContactAccountData *gcad = Protocol->gaduContactAccountData(contact);
 	if (!gcad)
 		return;
-	GaduAccount *account = dynamic_cast<GaduAccount *>(Protocol->account());
-	if (!account)
+
+	GaduAccountDetails *gaduAccountDetails = dynamic_cast<GaduAccountDetails *>(Protocol->account()->details());
+	if (!gaduAccountDetails)
 		return;
 
-	struct gg_dcc *dcc = gg_dcc_get_file(htonl(gcad->ip().toIPv4Address()), gcad->port(), account->uin(), gcad->uin());
+	struct gg_dcc *dcc = gg_dcc_get_file(htonl(gcad->ip().toIPv4Address()), gcad->port(), gaduAccountDetails->uin(), gcad->uin());
 	if (!dcc)
 		return;
 
@@ -239,12 +240,12 @@ void DccManager::connectionRequestReceived(Contact contact)
 
 bool DccManager::acceptConnection(unsigned int uin, unsigned int peerUin, unsigned int peerAddr)
 {
-	GaduAccount *account = dynamic_cast<GaduAccount *>(Protocol->account());
-	if (!account)
+	GaduAccountDetails *gaduAccountDetails = dynamic_cast<GaduAccountDetails *>(Protocol->account()->details());
+	if (!gaduAccountDetails)
 		return false;
 
 	Contact contact = ContactManager::instance()->byId(Protocol->account(), QString::number(peerUin));
-	if (uin != account->uin() || contact.isAnonymous() || contact.isNull())
+	if (uin != gaduAccountDetails->uin() || contact.isAnonymous() || contact.isNull())
 	{
 		kdebugm(KDEBUG_WARNING, "insane values: uin:%d peer_uin:%d\n", uin, peerUin);
 		return false;
@@ -458,7 +459,7 @@ void DccManager::attachSendFileTransferSocket(GaduFileTransfer *gft)
 	if (!gcad)
 		return;
 
-	GaduAccount *account = dynamic_cast<GaduAccount *>(Protocol->account());
+	GaduAccountDetails *account = dynamic_cast<GaduAccountDetails *>(Protocol->account());
 	if (!account)
 		return;
 

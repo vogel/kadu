@@ -1,6 +1,7 @@
 set (kadu_SRCS
 
 	accounts/account.cpp
+	accounts/account-details.cpp
 	accounts/account-manager.cpp
 	accounts/accounts-aware-object.cpp
 
@@ -260,6 +261,7 @@ endif (UNIX AND NOT APPLE)
 set (kadu_MOC_SRCS
 
 	accounts/account.h
+	accounts/account-details.h
 	accounts/account-manager.h
 
 	accounts/filter/abstract-account-filter.h

@@ -7,32 +7,16 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "accounts/account.h"
+#include "gadu-contact-account-data.h"
 
-#include "gadu-account-data-manager.h"
-
-GaduAccountDataManager::GaduAccountDataManager(Account *data) :
-		AccountDataManager(data)
+unsigned int GaduContactAccountData::uin()
 {
+	return id().toUInt();
 }
 
-void GaduAccountDataManager::writeEntry(const QString &section, const QString &name, const QVariant &value)
+bool GaduContactAccountData::validateId()
 {
-	if (section != "Gadu-Gadu")
-	{
-		AccountDataManager::writeEntry(section, name, value);
-		return;
-	}
-
-	// other data
-}
-
-QVariant GaduAccountDataManager::readEntry(const QString &section, const QString &name)
-{
-	if (section != "Gadu-Gadu")
-		return AccountDataManager::readEntry(section, name);
-
-	// other data
-
-	return QVariant(QString::null);
+	bool ok;
+	id().toUInt(&ok);
+	return ok;
 }

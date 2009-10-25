@@ -20,7 +20,7 @@
 #include "gui/windows/message-box.h"
 #include "../../server/gadu-server-register-account.h"
 #include "html_document.h"
-#include "gadu-account.h"
+#include "gadu-account-details.h"
 #include "gadu-protocol-factory.h"
 #include "token-widget.h"
 
@@ -187,7 +187,8 @@ void GaduCreateAccountWidget::iHaveAccountDataChanged()
 
 void GaduCreateAccountWidget::addThisAccount()
 {
-	Account *gaduAccount = GaduProtocolFactory::instance()->newAccount();
+	Account *gaduAccount = new Account();
+	gaduAccount->setDetails(new GaduAccountDetails(gaduAccount->storage(), gaduAccount));
 	gaduAccount->setName(AccountName->text());
 	gaduAccount->setId(AccountId->text());
 	gaduAccount->setPassword(AccountPassword->text());
@@ -228,8 +229,9 @@ void GaduCreateAccountWidget::registerNewAccountFinished(GaduServerRegisterAccou
 	if (gsra->result())
 	{
 		MessageBox::msg(tr("Registration was successful. Your new number is %1.\nStore it in a safe place along with the password.\nNow add your friends to the userlist.").arg(gsra->uin()), false, "Information", this);
-
-		Account *gaduAccount = GaduProtocolFactory::instance()->newAccount();
+		
+		Account *gaduAccount = new Account();
+		gaduAccount->setDetails(new GaduAccountDetails(gaduAccount->storage(), gaduAccount));
 		gaduAccount->setName(AccountName->text());
 		gaduAccount->setId(QString::number(gsra->uin()));
 		gaduAccount->setPassword(NewPassword->text());

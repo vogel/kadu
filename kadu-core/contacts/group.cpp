@@ -15,6 +15,14 @@
 
 #include "group.h"
 
+Group * Group::loadFromStorage(StoragePoint *groupStoragePoint)
+{
+	Group *group = new Group(groupStoragePoint);
+	group->load();
+	
+	return group;
+}
+
 Group::Group(StoragePoint *storagePoint) :
 		UuidStorableObject(storagePoint)
 {
@@ -28,14 +36,6 @@ Group::Group(QUuid uuid) :
 
 Group::~Group()
 {
-}
-
-Group * Group::loadFromStorage(StoragePoint *groupStoragePoint)
-{
-	Group *group = new Group(groupStoragePoint);
-	group->load();
-
-	return group;
 }
 
 void Group::importConfiguration(const QString &name)

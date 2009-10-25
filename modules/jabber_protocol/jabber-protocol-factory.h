@@ -25,8 +25,8 @@ class JabberProtocolFactory : public ProtocolFactory
 public:
 	static JabberProtocolFactory * instance();
 
-	virtual Account * newAccount();
-	virtual Account * loadAccount(StoragePoint *accountStoragePoint);
+	virtual Protocol * createProtocolHandler(Account *account);
+	virtual AccountDetails * createAccountDetails(Account *account);
 	virtual ContactAccountData * newContactAccountData(Account *account, Contact contact, const QString &id);
 	virtual ContactAccountData * loadContactAccountData(StoragePoint *storagePoint);
 	virtual AccountCreateWidget * newCreateAccountWidget(QWidget *parent);

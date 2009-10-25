@@ -9,30 +9,13 @@
 
 #include "accounts/account.h"
 
-#include "gadu-account-data-manager.h"
+#include "account-details.h"
 
-GaduAccountDataManager::GaduAccountDataManager(Account *data) :
-		AccountDataManager(data)
+AccountDetails::AccountDetails(StoragePoint *storagePoint, Account *parent) :
+		QObject(parent), StorableObject(storagePoint), MyAccount(parent)
 {
 }
 
-void GaduAccountDataManager::writeEntry(const QString &section, const QString &name, const QVariant &value)
+AccountDetails::~AccountDetails()
 {
-	if (section != "Gadu-Gadu")
-	{
-		AccountDataManager::writeEntry(section, name, value);
-		return;
-	}
-
-	// other data
-}
-
-QVariant GaduAccountDataManager::readEntry(const QString &section, const QString &name)
-{
-	if (section != "Gadu-Gadu")
-		return AccountDataManager::readEntry(section, name);
-
-	// other data
-
-	return QVariant(QString::null);
 }

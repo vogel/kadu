@@ -22,9 +22,10 @@ public:
 	BaseStatusContainer(const QString &nodeName, StorableObject *parent);
 
 	virtual void setDefaultStatus(const QString &startupStatus, bool offlineToInvisible,
-				      const QString &startupDescription, bool StartupLastDescription);
+			const QString &startupDescription, bool StartupLastDescription);
 	virtual void disconnectAndStoreLastStatus(bool disconnectWithCurrentDescription,
-						  const QString &disconnectDescription);
+			const QString &disconnectDescription);
+
 };
 
 #endif // BASE_STATUS_CONTAINER_H

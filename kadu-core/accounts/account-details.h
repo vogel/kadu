@@ -7,32 +7,25 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "accounts/account.h"
+#ifndef ACCOUNT_DETAILS_H
+#define ACCOUNT_DETAILS_H
 
-#include "gadu-account-data-manager.h"
+#include <QtCore/QObject>
 
-GaduAccountDataManager::GaduAccountDataManager(Account *data) :
-		AccountDataManager(data)
+#include "configuration/storable-object.h"
+
+class AccountDetails : public QObject, public StorableObject
 {
-}
+	Q_OBJECT
 
-void GaduAccountDataManager::writeEntry(const QString &section, const QString &name, const QVariant &value)
-{
-	if (section != "Gadu-Gadu")
-	{
-		AccountDataManager::writeEntry(section, name, value);
-		return;
-	}
+	Account *MyAccount;
 
-	// other data
-}
+public:
+	explicit AccountDetails(StoragePoint *storagePoint, Account *parent = 0);
+	virtual ~AccountDetails();
 
-QVariant GaduAccountDataManager::readEntry(const QString &section, const QString &name)
-{
-	if (section != "Gadu-Gadu")
-		return AccountDataManager::readEntry(section, name);
+	Account * account() { return MyAccount; }
 
-	// other data
+};
 
-	return QVariant(QString::null);
-}
+#endif // ACCOUNT_DETAILS_H
