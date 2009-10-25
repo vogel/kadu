@@ -6,52 +6,38 @@
  *   (at your option) any later version.                                   *
  *                                                                         *
  ***************************************************************************/
+
 #include "base64.h"
 
 #include "configuration/xml-configuration-file.h"
-#include "misc/misc.h"
 #include "gui/windows/open-chat-with/open-chat-with-runner-manager.h"
-
-#include "jabber-account.h"
-#include "jabber-protocol.h"
+#include "misc/misc.h"
 #include "os/generic/system-info.h"
 
-JabberAccount::JabberAccount(const QUuid &uuid)
-	: Account(uuid), EncryptionMode(JabberAccount::Encryption_Auto)
+#include "jabber-protocol.h"
+
+#include "jabber-account-details.h"
+
+JabberAccountDetails::JabberAccountDetails(StoragePoint *storagePoint, Account *parent) :
+		AccountDetails(storagePoint, parent), EncryptionMode(JabberAccountDetails::Encryption_Auto)
 {
-	OpenChatRunner = new JabberOpenChatWithRunner(this);
+	OpenChatRunner = new JabberOpenChatWithRunner(parent);
 	OpenChatWithRunnerManager::instance()->registerRunner(OpenChatRunner);
 }
 
-JabberAccount::~JabberAccount()
+JabberAccountDetails::~JabberAccountDetails()
 {
 	OpenChatWithRunnerManager::instance()->unregisterRunner(OpenChatRunner);
 	delete OpenChatRunner;
 	OpenChatRunner = 0;
 }
 
-bool JabberAccount::setId(const QString &id)
-{
-	if (!Account::setId(id))
-		return false;
-
-    	Jid = id;
-    	return true;
-}
-/*
-bool JabberAccount::validateId(const QString &id)
-{
-	XMPP::Jid newJid(JIDUtil::accountFromString(id));
-	if (newJid.node().isEmpty() || newJid.domain().isEmpty())
-		return false;
-	return true;
-}
-*/
-void JabberAccount::load()
+void JabberAccountDetails::load()
 {
 	if (!isValidStorage())
 		return;
-	Account::load();
+
+	AccountDetails::load();
 
 	QString resourceString = loadValue<QString>("Resource");
 	QString priorityString = loadValue<QString>("Priority");
@@ -75,12 +61,10 @@ void JabberAccount::load()
 	setTlsOverrideDomain(loadValue<QString>("TlsOverrideDomain"));
 }
 
-void JabberAccount::store()
+void JabberAccountDetails::store()
 {
 	if (!isValidStorage())
 		return;
-
-	Account::store();
 
 	storeValue("AutoResource", autoResource());
 	storeValue("Resource", resource());

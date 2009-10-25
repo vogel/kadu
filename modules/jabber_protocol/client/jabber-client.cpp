@@ -28,17 +28,17 @@
 #include <jinglesessionmanager.h>
 #include <xmpp_tasks.h>
 
+#include "accounts/account.h"
 #include "gui/windows/message-box.h"
 #include "debug.h"
 
 #include "certificates/certificate-helpers.h"
-#include "jabber-account.h"
+#include "jabber-account-details.h"
 #include "jabber-client.h"
 #include "jabber-protocol.h"
 
+#define JABBER_PENALTY_TIME 2
 
-
-#define JABBER_PENALTY_TIME	2
 namespace XMPP
 {
 
@@ -548,16 +548,17 @@ void JabberClient::slotTLSHandshaken()
 {
 	emit debugMessage("TLS handshake done, testing certificate validity...");
 
-	JabberAccount *jabberAccount = dynamic_cast<JabberAccount *>(Protocol->account());
-	if (!jabberAccount)
+	JabberAccountDetails *jabberAccountDetails = dynamic_cast<JabberAccountDetails *>(Protocol->account()->details());
+	if (!jabberAccountDetails)
 		return;
-	if (CertificateHelpers::checkCertificate(JabberTLS, JabberTLSHandler, jabberAccount->TlsOverrideDomain, jabberAccount->TlsOverrideCert,
-		QString("%1: ").arg(jabberAccount->name()) + tr("Server Authentication"), XMPP::Jid(jabberAccount->id()).domain(), jabberAccount)) 
-	{
+
+	QString domain = jabberAccountDetails->tlsOverrideDomain();
+	QByteArray cert = jabberAccountDetails->tlsOverrideCert();
+	if (CertificateHelpers::checkCertificate(JabberTLS, JabberTLSHandler, domain, cert,
+		QString("%1: ").arg(Protocol->account()->name()) + tr("Server Authentication"), XMPP::Jid(Protocol->account()->id()).domain(), Protocol->account()))
 		JabberTLSHandler->continueAfterHandshake();
-	} else {
+	else
 		disconnect();
-	}
 }
 
 void JabberClient::slotCSNeedAuthParams(bool user, bool pass, bool realm)

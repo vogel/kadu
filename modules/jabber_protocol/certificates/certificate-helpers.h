@@ -18,7 +18,7 @@
 
 #include <QtCrypto>
 
-class JabberAccount;
+class JabberAccountDetails;
 class QString;
 namespace QCA {
 	class CertificateCollection;

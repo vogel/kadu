@@ -19,7 +19,7 @@
 #include "gui/widgets/choose-identity-widget.h"
 #include "gui/windows/message-box.h"
 #include "server/jabber-server-register-account.h"
-#include "jabber-account.h"
+#include "jabber-account-details.h"
 #include "jabber-protocol-factory.h"
 
 #include "jabber-create-account-widget.h"
@@ -312,7 +312,7 @@ void JabberCreateAccountWidget::iHaveAccountDataChanged()
 
 void JabberCreateAccountWidget::addThisAccount()
 {
-	Account *jabberAccount = JabberProtocolFactory::instance()->newAccount();
+	Account *jabberAccount = new Account();
 	jabberAccount->setName(AccountName->text());
 	jabberAccount->setId(AccountId->text());
 	jabberAccount->setPassword(AccountPassword->text());
@@ -358,14 +358,15 @@ void JabberCreateAccountWidget::registerNewAccountFinished(JabberServerRegisterA
 	{
 		MessageBox::msg(tr("Registration was successful. Your new Jabber ID is %1.\nStore it in a safe place along with the password.\nNow add your friends to the userlist.").arg(jsra->jid()), false, "Information", this);
 
-		JabberAccount *jabberAccount = dynamic_cast<JabberAccount *>(JabberProtocolFactory::instance()->newAccount());
-		if (!jabberAccount)
-			return;
+		Account *jabberAccount = new Account();
+		JabberAccountDetails *details = new JabberAccountDetails(jabberAccount->storage(), jabberAccount);
+
+		jabberAccount->setDetails(details);
 		jabberAccount->setName(AccountName->text());
 		jabberAccount->setId(jsra->jid());
 		jabberAccount->setPassword(NewPassword->text());
-		jabberAccount->setTlsOverrideDomain(jsra->client()->tlsOverrideDomain());
-		jabberAccount->setTlsOverrideCert(jsra->client()->tlsOverrideCert());
+		details->setTlsOverrideDomain(jsra->client()->tlsOverrideDomain());
+		details->setTlsOverrideCert(jsra->client()->tlsOverrideCert());
 		jabberAccount->setRememberPassword(DontHaveJidRememberPassword->isChecked());
 
 		emit accountCreated(jabberAccount);

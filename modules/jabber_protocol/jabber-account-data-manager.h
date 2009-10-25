@@ -12,15 +12,16 @@
 
 #include "configuration/account-data-manager.h"
 
-class JabberAccount;
+class JabberAccountDetails;
 
 class JabberAccountDataManager : public AccountDataManager
 {
-	JabberAccount *Data;
-public:
-	JabberAccountDataManager(JabberAccount *data);
+	JabberAccountDetails *Data;
 
-	JabberAccount * data() { return Data; }
+public:
+	JabberAccountDataManager(Account *data);
+
+	JabberAccountDetails * data() { return Data; }
 
 	virtual void writeEntry(const QString &section, const QString &name, const QVariant &value);
 	virtual QVariant readEntry(const QString &section, const QString &name);

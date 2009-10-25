@@ -1,10 +1,10 @@
  /***************************************************************************
- *                                                                         *
+ *									 *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
  *   the Free Software Foundation; either version 2 of the License, or     *
- *   (at your option) any later version.                                   *
- *                                                                         *
+ *   (at your option) any later version.				   *
+ *									 *
  ***************************************************************************/
 
 #include <QtCrypto>
@@ -26,7 +26,7 @@
 #include "gui/widgets/proxy-group-box.h"
 #include "gui/windows/message-box.h"
 
-#include "jabber-account.h"
+#include "jabber-account-details.h"
 #include "jabber-personal-info-widget.h"
 
 #include "jabber-edit-account-widget.h"
@@ -147,34 +147,34 @@ void JabberEditAccountWidget::createGeneralGroupBox(QVBoxLayout *layout)
 	general->setTitle(tr("General"));
 	layout->addWidget(general);
 
-        QVBoxLayout *vboxLayout2 = new QVBoxLayout(general);
-        vboxLayout2->setSpacing(6);
-        vboxLayout2->setMargin(9);
+	QVBoxLayout *vboxLayout2 = new QVBoxLayout(general);
+	vboxLayout2->setSpacing(6);
+	vboxLayout2->setMargin(9);
 
-        CustomHostPort = new QCheckBox(general);
-        CustomHostPort->setText(tr("Manually Specify Server Host/Port")+":");
-        vboxLayout2->addWidget(CustomHostPort);
+	CustomHostPort = new QCheckBox(general);
+	CustomHostPort->setText(tr("Manually Specify Server Host/Port")+":");
+	vboxLayout2->addWidget(CustomHostPort);
 
-        HostPortLayout = new QHBoxLayout();
-        HostPortLayout->setSpacing(6);
-        HostPortLayout->setMargin(0);
+	HostPortLayout = new QHBoxLayout();
+	HostPortLayout->setSpacing(6);
+	HostPortLayout->setMargin(0);
 
-        CustomHostLabel = new QLabel(general);
-        CustomHostLabel->setText(tr("Host")+":");
-        HostPortLayout->addWidget(CustomHostLabel);
+	CustomHostLabel = new QLabel(general);
+	CustomHostLabel->setText(tr("Host")+":");
+	HostPortLayout->addWidget(CustomHostLabel);
 
-        CustomHost = new QLineEdit(general);
-        HostPortLayout->addWidget(CustomHost);
+	CustomHost = new QLineEdit(general);
+	HostPortLayout->addWidget(CustomHost);
 
-        CustomPortLabel = new QLabel(general);
-        CustomPortLabel->setText(tr("Port")+":");
-        HostPortLayout->addWidget(CustomPortLabel);
+	CustomPortLabel = new QLabel(general);
+	CustomPortLabel->setText(tr("Port")+":");
+	HostPortLayout->addWidget(CustomPortLabel);
 
-        CustomPort = new QLineEdit(general);
-        CustomPort->setMinimumSize(QSize(56, 0));
-        CustomPort->setMaximumSize(QSize(56, 32767));
+	CustomPort = new QLineEdit(general);
+	CustomPort->setMinimumSize(QSize(56, 0));
+	CustomPort->setMaximumSize(QSize(56, 32767));
 	CustomPort->setValidator(new QIntValidator(0, 9999999, CustomPort));
-        HostPortLayout->addWidget(CustomPort);
+	HostPortLayout->addWidget(CustomPort);
 
 	// Manual Host/Port
 	CustomHost->setEnabled(false);
@@ -183,46 +183,46 @@ void JabberEditAccountWidget::createGeneralGroupBox(QVBoxLayout *layout)
 	CustomPortLabel->setEnabled(false);
 	connect(CustomHostPort, SIGNAL(toggled(bool)), SLOT(hostToggled(bool)));
 
-        vboxLayout2->addLayout(HostPortLayout);
+	vboxLayout2->addLayout(HostPortLayout);
 
-        QHBoxLayout *EncryptionLayout = new QHBoxLayout();
-        EncryptionLayout->setSpacing(6);
-        EncryptionLayout->setMargin(0);
-        EncryptionModeLabel = new QLabel(general);
-        EncryptionModeLabel->setText(tr("Encrypt connection")+":");
-        EncryptionLayout->addWidget(EncryptionModeLabel);
+	QHBoxLayout *EncryptionLayout = new QHBoxLayout();
+	EncryptionLayout->setSpacing(6);
+	EncryptionLayout->setMargin(0);
+	EncryptionModeLabel = new QLabel(general);
+	EncryptionModeLabel->setText(tr("Encrypt connection")+":");
+	EncryptionLayout->addWidget(EncryptionModeLabel);
 
-        EncryptionMode = new QComboBox(general);
-	EncryptionMode->addItem(tr("Never"), JabberAccount::Encryption_No);
-	EncryptionMode->addItem(tr("Always"), JabberAccount::Encryption_Yes);
-	EncryptionMode->addItem(tr("When available"), JabberAccount::Encryption_Auto);
-	EncryptionMode->addItem(tr("Legacy SSL"), JabberAccount::Encryption_Legacy);
+	EncryptionMode = new QComboBox(general);
+	EncryptionMode->addItem(tr("Never"), JabberAccountDetails::Encryption_No);
+	EncryptionMode->addItem(tr("Always"), JabberAccountDetails::Encryption_Yes);
+	EncryptionMode->addItem(tr("When available"), JabberAccountDetails::Encryption_Auto);
+	EncryptionMode->addItem(tr("Legacy SSL"), JabberAccountDetails::Encryption_Legacy);
 	connect(EncryptionMode, SIGNAL(activated(int)), SLOT(sslActivated(int)));
-        EncryptionLayout->addWidget(EncryptionMode);
+	EncryptionLayout->addWidget(EncryptionMode);
 
-        QSpacerItem *spacerItem = new QSpacerItem(151, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
-        EncryptionLayout->addItem(spacerItem);
-        vboxLayout2->addLayout(EncryptionLayout);
+	QSpacerItem *spacerItem = new QSpacerItem(151, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
+	EncryptionLayout->addItem(spacerItem);
+	vboxLayout2->addLayout(EncryptionLayout);
 
-        LegacySSLProbe = new QCheckBox(general);
-        LegacySSLProbe->setText(tr("Probe legacy SSL port"));
-        vboxLayout2->addWidget(LegacySSLProbe);
+	LegacySSLProbe = new QCheckBox(general);
+	LegacySSLProbe->setText(tr("Probe legacy SSL port"));
+	vboxLayout2->addWidget(LegacySSLProbe);
 
-        QHBoxLayout *plainAuthLayout = new QHBoxLayout();
-        plainAuthLayout->setSpacing(6);
-        plainAuthLayout->setMargin(0);
-        QLabel *plainAuthLabel = new QLabel(general);
-        plainAuthLabel->setText(tr("Allow plaintext authentication")+":");
-        plainAuthLayout->addWidget(plainAuthLabel);
+	QHBoxLayout *plainAuthLayout = new QHBoxLayout();
+	plainAuthLayout->setSpacing(6);
+	plainAuthLayout->setMargin(0);
+	QLabel *plainAuthLabel = new QLabel(general);
+	plainAuthLabel->setText(tr("Allow plaintext authentication")+":");
+	plainAuthLayout->addWidget(plainAuthLabel);
 
 	//TODO: powinno być XMPP::ClientStream::AllowPlainType - potrzebna koncepcja jak to zapisywać w konfiguracji
-        PlainTextAuth = new QComboBox(general);
-	PlainTextAuth->addItem(tr("Never"), JabberAccount::Encryption_No);
-	PlainTextAuth->addItem(tr("Always"), JabberAccount::Encryption_Yes);
-	PlainTextAuth->addItem(tr("When available"), JabberAccount::Encryption_Auto);
-	PlainTextAuth->addItem(tr("Legacy SSL"), JabberAccount::Encryption_Legacy);
-        plainAuthLayout->addWidget(PlainTextAuth);
-        vboxLayout2->addLayout(plainAuthLayout);
+	PlainTextAuth = new QComboBox(general);
+	PlainTextAuth->addItem(tr("Never"), JabberAccountDetails::Encryption_No);
+	PlainTextAuth->addItem(tr("Always"), JabberAccountDetails::Encryption_Yes);
+	PlainTextAuth->addItem(tr("When available"), JabberAccountDetails::Encryption_Auto);
+	PlainTextAuth->addItem(tr("Legacy SSL"), JabberAccountDetails::Encryption_Legacy);
+	plainAuthLayout->addWidget(PlainTextAuth);
+	vboxLayout2->addLayout(plainAuthLayout);
 
 }
 
@@ -232,33 +232,33 @@ void JabberEditAccountWidget::createOptionsTab(QTabWidget *tabWidget)
 	tabWidget->addTab(optionsTab, tr("Options"));
 
 	QVBoxLayout *layout = new QVBoxLayout(optionsTab);
-        layout->setSpacing(6);
-        layout->setMargin(9);
+	layout->setSpacing(6);
+	layout->setMargin(9);
 
-        AutoResource = new QCheckBox;
-        AutoResource->setText(tr("Use hostname as a resource"));
-        layout->addWidget(AutoResource);
+	AutoResource = new QCheckBox;
+	AutoResource->setText(tr("Use hostname as a resource"));
+	layout->addWidget(AutoResource);
 
-        ResourceLayout = new QHBoxLayout();
-        ResourceLayout->setSpacing(6);
-        ResourceLayout->setMargin(0);
+	ResourceLayout = new QHBoxLayout();
+	ResourceLayout->setSpacing(6);
+	ResourceLayout->setMargin(0);
 
-        ResourceLabel = new QLabel;
-        ResourceLabel->setText(tr("Resource")+":");
-        ResourceLayout->addWidget(ResourceLabel);
+	ResourceLabel = new QLabel;
+	ResourceLabel->setText(tr("Resource")+":");
+	ResourceLayout->addWidget(ResourceLabel);
 
-        ResourceName = new QLineEdit;
-        ResourceLayout->addWidget(ResourceName);
+	ResourceName = new QLineEdit;
+	ResourceLayout->addWidget(ResourceName);
 
-        PriorityLabel = new QLabel;
-        PriorityLabel->setText(tr("Priority")+":");
-        ResourceLayout->addWidget(PriorityLabel);
+	PriorityLabel = new QLabel;
+	PriorityLabel->setText(tr("Priority")+":");
+	ResourceLayout->addWidget(PriorityLabel);
 
-        Priority = new QLineEdit;
-//         Priority->setMinimumSize(QSize(56, 0));
-//         Priority->setMaximumSize(QSize(56, 32767));
+	Priority = new QLineEdit;
+//	 Priority->setMinimumSize(QSize(56, 0));
+//	 Priority->setMaximumSize(QSize(56, 32767));
 	Priority->setValidator(new QIntValidator(Priority));
-        ResourceLayout->addWidget(Priority);
+	ResourceLayout->addWidget(Priority);
 
 /*	ResourceName->setEnabled(false);
 	ResourceLabel->setEnabled(false);
@@ -267,7 +267,7 @@ void JabberEditAccountWidget::createOptionsTab(QTabWidget *tabWidget)
 */
 	connect(AutoResource, SIGNAL(toggled(bool)), SLOT(autoResourceToggled(bool)));
 
-        layout->addLayout(ResourceLayout);
+	layout->addLayout(ResourceLayout);
 
 }
 
@@ -318,38 +318,40 @@ void JabberEditAccountWidget::loadAccountData()
 
 void JabberEditAccountWidget::loadConnectionData()
 {
-	JabberAccount *jabberAccount = dynamic_cast<JabberAccount *>(account());
-	if (!jabberAccount)
+	JabberAccountDetails *jabberAccountDetails = dynamic_cast<JabberAccountDetails *>(account()->details());
+	if (!jabberAccountDetails)
 		return;
-	CustomHostPort->setChecked(jabberAccount->useCustomHostPort());
-	CustomHost->setText(jabberAccount->customHost());
-	CustomPort->setText(jabberAccount->customPort() ? QString::number(jabberAccount->customPort()) : QString::number(5222));
-	EncryptionMode->setCurrentIndex(EncryptionMode->findData(jabberAccount->encryptionMode()));
-	LegacySSLProbe->setChecked(jabberAccount->legacySSLProbe());
+
+	CustomHostPort->setChecked(jabberAccountDetails->useCustomHostPort());
+	CustomHost->setText(jabberAccountDetails->customHost());
+	CustomPort->setText(jabberAccountDetails->customPort() ? QString::number(jabberAccountDetails->customPort()) : QString::number(5222));
+	EncryptionMode->setCurrentIndex(EncryptionMode->findData(jabberAccountDetails->encryptionMode()));
+	LegacySSLProbe->setChecked(jabberAccountDetails->legacySSLProbe());
 	proxy->loadProxyData();
 
-	AutoResource->setChecked(jabberAccount->autoResource());
-	ResourceName->setText(jabberAccount->resource());
-	Priority->setText(QString::number(jabberAccount->priority()));
+	AutoResource->setChecked(jabberAccountDetails->autoResource());
+	ResourceName->setText(jabberAccountDetails->resource());
+	Priority->setText(QString::number(jabberAccountDetails->priority()));
 }
 
 void JabberEditAccountWidget::apply()
 {
-	JabberAccount *jabberAccount = dynamic_cast<JabberAccount *>(account());
-	if (!jabberAccount)
+	JabberAccountDetails *jabberAccountDetails = dynamic_cast<JabberAccountDetails *>(account()->details());
+	if (!jabberAccountDetails)
 		return;
-	jabberAccount->setConnectAtStart(ConnectAtStart->isChecked());
-	jabberAccount->setId(AccountId->text());
-	jabberAccount->setRememberPassword(RememberPassword->isChecked());
-	jabberAccount->setPassword(AccountPassword->text());
-	jabberAccount->setUseCustomHostPort(CustomHostPort->isChecked());
-	jabberAccount->setCustomHost(CustomHost->text());
-	jabberAccount->setCustomPort(CustomPort->text().toInt());
-	jabberAccount->setEncryptionMode((JabberAccount::EncryptionFlag)EncryptionMode->itemData(EncryptionMode->currentIndex()).toInt());
-	jabberAccount->setLegacySSLProbe(LegacySSLProbe->isChecked());
-	jabberAccount->setAutoResource(AutoResource->isChecked());
-	jabberAccount->setResource(ResourceName->text());
-	jabberAccount->setPriority(Priority->text().toInt());
+
+	account()->setConnectAtStart(ConnectAtStart->isChecked());
+	account()->setId(AccountId->text());
+	account()->setRememberPassword(RememberPassword->isChecked());
+	account()->setPassword(AccountPassword->text());
+	jabberAccountDetails->setUseCustomHostPort(CustomHostPort->isChecked());
+	jabberAccountDetails->setCustomHost(CustomHost->text());
+	jabberAccountDetails->setCustomPort(CustomPort->text().toInt());
+	jabberAccountDetails->setEncryptionMode((JabberAccountDetails::EncryptionFlag)EncryptionMode->itemData(EncryptionMode->currentIndex()).toInt());
+	jabberAccountDetails->setLegacySSLProbe(LegacySSLProbe->isChecked());
+	jabberAccountDetails->setAutoResource(AutoResource->isChecked());
+	jabberAccountDetails->setResource(ResourceName->text());
+	jabberAccountDetails->setPriority(Priority->text().toInt());
 }
 
 void JabberEditAccountWidget::removeAccount()

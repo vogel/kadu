@@ -12,9 +12,10 @@
 #include <QtGui/QLabel>
 #include <QtGui/QLineEdit>
 
+#include "accounts/account.h"
 #include "protocols/services/personal-info-service.h"
+#include "protocols/protocol.h"
 
-#include "jabber-account.h"
 #include "jabber-personal-info-widget.h"
 
 JabberPersonalInfoWidget::JabberPersonalInfoWidget(Account *account, QWidget* parent) :

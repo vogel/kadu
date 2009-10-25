@@ -248,9 +248,9 @@ set (SOURCES
 	gui/widgets/jabber-personal-info-widget.cpp
 	open-chat-with/jabber-open-chat-with-runner.cpp
 	jabber-account-data-manager.cpp
+	jabber-account-details.cpp
 	jabber-contact-account-data.cpp
 	jabber-contact-account-data-manager.cpp
-	jabber-account.cpp
 	jabber-protocol.cpp
 	jabber-protocol-factory.cpp
 	resource/jabber-resource.cpp
@@ -274,6 +274,7 @@ set (MOC_SOURCES
 	gui/widgets/jabber-create-account-widget.h
 	gui/widgets/jabber-edit-account-widget.h
 	gui/widgets/jabber-personal-info-widget.h
+	jabber-account-details.h
 	jabber-protocol.h
 	resource/jabber-resource.h
 	resource/jabber-resource-pool.h

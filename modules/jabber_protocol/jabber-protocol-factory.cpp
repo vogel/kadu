@@ -14,7 +14,7 @@
 #include "gui/widgets/jabber-contact-account-data-widget.h"
 #include "gui/widgets/jabber-create-account-widget.h"
 #include "gui/widgets/jabber-edit-account-widget.h"
-#include "jabber-account.h"
+#include "jabber-account-details.h"
 #include "jabber-contact-account-data.h"
 #include "jabber-protocol.h"
 #include "jabber-protocol-factory.h"
@@ -57,7 +57,7 @@ Protocol * JabberProtocolFactory::createProtocolHandler(Account *account)
 
 AccountDetails * JabberProtocolFactory::createAccountDetails(Account *account)
 {
-	return 0;
+	return new JabberAccountDetails(account->storage(), account);
 }
 
 ContactAccountData * JabberProtocolFactory::newContactAccountData(Account *account, Contact contact, const QString &id)

@@ -7,12 +7,16 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "jabber-account.h"
+#include "accounts/account.h"
+
+#include "jabber-account-details.h"
+
 #include "jabber-account-data-manager.h"
 
-JabberAccountDataManager::JabberAccountDataManager(JabberAccount* data)
-	: AccountDataManager(data), Data(data)
+JabberAccountDataManager::JabberAccountDataManager(Account *data) :
+		AccountDataManager(data)
 {
+	Data = dynamic_cast<JabberAccountDetails *>(data->details());
 }
 
 void JabberAccountDataManager::writeEntry(const QString &section, const QString &name, const QVariant &value)
@@ -22,6 +26,9 @@ void JabberAccountDataManager::writeEntry(const QString &section, const QString 
 		AccountDataManager::writeEntry(section, name, value);
 		return;
 	}
+
+	if (!Data)
+		return;
 
 	if (name == "Resource")
 		Data->setResource(value.value<QString>());
@@ -40,6 +47,9 @@ void JabberAccountDataManager::writeEntry(const QString &section, const QString 
 
 QVariant JabberAccountDataManager::readEntry(const QString &section, const QString &name)
 {
+	if (!Data)
+		return QVariant(QString::null);
+
 	if (section != "Jabber")
 		return AccountDataManager::readEntry(section, name);
 

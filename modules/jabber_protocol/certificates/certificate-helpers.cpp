@@ -29,7 +29,6 @@
 #include "certificates/certificate-helpers.h"
 #include "certificates/certificate-error-dialog.h"
 #include "client/mini-client.h"
-#include "jabber-account.h"
 #include "jabber-protocol.h"
 
 using namespace QCA;

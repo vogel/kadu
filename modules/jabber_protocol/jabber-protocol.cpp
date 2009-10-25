@@ -34,7 +34,7 @@
 #include "status/status.h"
 
 #include "file-transfer/jabber-file-transfer.h"
-#include "jabber-account.h"
+#include "jabber-account-details.h"
 #include "jabber-protocol.h"
 #include "jabber-protocol-factory.h"
 #include "os/generic/system-info.h"
@@ -164,12 +164,15 @@ void JabberProtocol::connectToServer()
 {
 	kdebugf();
 
-	JabberAccount *jabberAccount = dynamic_cast<JabberAccount *>(account());
-	if (jabberAccount->id().isNull() || jabberAccount->password().isNull())
+	JabberAccountDetails *jabberAccountDetails = dynamic_cast<JabberAccountDetails *>(account()->details());
+	if (!jabberAccountDetails)
+		return;
+
+	if (account()->id().isNull() || account()->password().isNull())
 	{
 		setStatus(Status());
 
-		MessageBox::msg(jabberAccount->name() + ": " + tr("Jabber ID or password not set!"), false, "Warning");
+		MessageBox::msg(account()->name() + ": " + tr("Jabber ID or password not set!"), false, "Warning");
 		kdebugmf(KDEBUG_FUNCTION_END, "end: Jabber ID or password not set\n");
 		return;
 	}
@@ -185,11 +188,11 @@ void JabberProtocol::connectToServer()
 	JabberClient->setCapsNode("http://psi-im.org/caps");
 	JabberClient->setCapsVersion("0.12");
 
-	JabberClient->setForceTLS(jabberAccount->encryptionMode() != JabberAccount::Encryption_No);
+	JabberClient->setForceTLS(jabberAccountDetails->encryptionMode() != JabberAccountDetails::Encryption_No);
 
 	// override server and port (this should be dropped when using the new protocol and no direct SSL)
-	JabberClient->setUseSSL(jabberAccount->encryptionMode() == JabberAccount::Encryption_Legacy);
-	JabberClient->setOverrideHost(jabberAccount->useCustomHostPort(), jabberAccount->customHost(), jabberAccount->customPort());
+	JabberClient->setUseSSL(jabberAccountDetails->encryptionMode() == JabberAccountDetails::Encryption_Legacy);
+	JabberClient->setOverrideHost(jabberAccountDetails->useCustomHostPort(), jabberAccountDetails->customHost(), jabberAccountDetails->customPort());
 
 	// allow plaintext password authentication or not?
 	///gtalk
@@ -197,7 +200,7 @@ void JabberProtocol::connectToServer()
 
 	JabberClient->setFileTransfersEnabled(true); // i haz it
 	rosterRequestDone = false;
-	jabberID = jabberAccount->id();
+	jabberID = account()->id();
 
 /*
 //TODO: do nowej klasy dostosowa?
@@ -227,9 +230,9 @@ void JabberProtocol::connectToServer()
 */
 	whileConnecting = true;
 	networkStateChanged(NetworkConnecting);
-	jabberID = jabberID.withResource(jabberAccount->resource());
+	jabberID = jabberID.withResource(jabberAccountDetails->resource());
 	networkStateChanged(NetworkConnecting);
-	JabberClient->connect(jabberID, jabberAccount->password(), true);
+	JabberClient->connect(jabberID, account()->password(), true);
 	kdebugf2();
 }
 
@@ -311,11 +314,11 @@ void JabberProtocol::setPresence(const XMPP::Status &status)
 		newStatus.setCapsExt(JabberClient->capsExt());
 	}
 
-	JabberAccount *jabberAccount = dynamic_cast<JabberAccount *>(account());
-	newStatus.setPriority(jabberAccount->priority());
+	JabberAccountDetails *jabberAccountDetails = dynamic_cast<JabberAccountDetails *>(account()->details());
+	newStatus.setPriority(jabberAccountDetails->priority());
 	//TODO whatever
 	XMPP::Jid jid(jabberID);
-	XMPP::Resource newResource(jabberAccount->resource(), newStatus);
+	XMPP::Resource newResource(jabberAccountDetails->resource(), newStatus);
 
 	// update our resource in the resource pool
 	resourcePool()->addResource(jid, newResource);

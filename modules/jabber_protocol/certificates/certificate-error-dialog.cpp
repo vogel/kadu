@@ -20,7 +20,6 @@
 #include "certificates/certificate-helpers.h"
 #include "certificates/certificate-error-dialog.h"
 #include "certificates/certificate-display-dialog.h"
-#include "jabber-account.h"
 #include "client/mini-client.h"
 
 CertificateErrorDialog::CertificateErrorDialog(const QString& title, const QString& host, const QCA::Certificate& cert, 
