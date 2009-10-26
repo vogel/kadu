@@ -22,8 +22,8 @@
 #include "exports.h"
 
 #define Property(type, name, capitalized_name) \
-	type name() const { return capitalized_name; } \
-	void set##capitalized_name(const type &name) { capitalized_name = name; dataUpdated(); }
+	type name() { ensureLoaded(); return capitalized_name; } \
+	void set##capitalized_name(const type &name) { ensureLoaded(); capitalized_name = name; dataUpdated(); }
 
 class Account;
 class ContactAccountData;
@@ -88,8 +88,8 @@ private slots:
 public:
 	static ContactData * loadFromStorage(StoragePoint *contactStoragePoint);
 
-	ContactData(ContactType type, QUuid uuid = QUuid());
-	~ContactData();
+	explicit ContactData(ContactType type, QUuid uuid = QUuid());
+	virtual ~ContactData();
 
 	void importConfiguration(XmlConfigFile *configurationStorage, QDomElement parent);
 

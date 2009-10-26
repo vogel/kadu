@@ -21,24 +21,25 @@
 
 #include "contact-data.h"
 
+ContactData * ContactData::loadFromStorage(StoragePoint *contactStoragePoint)
+{
+	ContactData *result = new ContactData(TypeNormal, QUuid());
+	result->setStorage(contactStoragePoint);
+	result->load();
+	
+	return result;
+}
+
 ContactData::ContactData(ContactType type, QUuid uuid) :
 		UuidStorableObject("Contact", ContactManager::instance()),
-		Uuid(uuid.isNull() ? QUuid::createUuid() : uuid), Type(type), Ignored(false), Blocked(false), OfflineTo(false),
+		Uuid(uuid.isNull() ? QUuid::createUuid() : uuid), Type(type),
+		Ignored(false), Blocked(false), OfflineTo(false),
 		BlockUpdatedSignalCount(0), Updated(false)
 {
 }
 
 ContactData::~ContactData()
 {
-}
-
-ContactData * ContactData::loadFromStorage(StoragePoint *contactStoragePoint)
-{
-	ContactData *result = new ContactData(TypeNormal, QUuid());
-	result->setStorage(contactStoragePoint);
-	result->load();
-
-	return result;
 }
 
 #undef Property
