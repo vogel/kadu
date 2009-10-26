@@ -20,6 +20,7 @@
 #include "contacts/contact-manager.h"
 #include "core/core.h"
 #include "debug.h"
+#include "gui/widgets/contacts-list-view.h"
 #include "gui/widgets/contacts-list-widget.h"
 #include "gui/widgets/contacts-list-view-menu-manager.h"
 #include "gui/widgets/configuration/configuration-widget.h"
@@ -50,9 +51,8 @@ extern "C" KADU_EXPORT int sms_init(bool firstLoad)
 	MainConfigurationWindow::registerUiFile(dataPath("kadu/modules/configuration/sms.ui"));
 	MainConfigurationWindow::registerUiHandler(smsConfigurationUiHandler);
 
-	//QObject::connect(Core::instance()->kaduWindow()->contactsListView(), SIGNAL(chatActivated(Chat *)), smsConfigurationUiHandler, SLOT(onUserDblClicked(Chat *)));
-	//QObject::connect(Core::instance()->kaduWindow()->contactsListView(), SIGNAL(currentContactChanged(Contact)), smsConfigurationUiHandler, SLOT(onUserClicked(Contact)));
-
+	QObject::connect(Core::instance()->kaduWindow()->contactsListView(), SIGNAL(chatActivated(Chat *)), smsConfigurationUiHandler, SLOT(onUserDblClicked(Chat *)));
+	
 	kdebugf2();
 	return 0;
 }
@@ -61,9 +61,8 @@ extern "C" KADU_EXPORT void sms_close()
 {
 	kdebugf();
 
-	//QObject::disconnect(Core::instance()->kaduWindow()->contactsListView(), SIGNAL(chatActivated(Chat *)), smsConfigurationUiHandler, SLOT(onUserDblClicked(Chat *)));
-	//QObject::disconnect(Core::instance()->kaduWindow()->contactsListView(), SIGNAL(currentContactChanged(Contact)), smsConfigurationUiHandler, SLOT(onUserClicked(Contact)));
-
+	QObject::disconnect(Core::instance()->kaduWindow()->contactsListView(), SIGNAL(chatActivated(Chat *)), smsConfigurationUiHandler, SLOT(onUserDblClicked(Chat *)));
+	
 	MainConfigurationWindow::unregisterUiFile(dataPath("kadu/modules/configuration/sms.ui"));
 	MainConfigurationWindow::unregisterUiHandler(smsConfigurationUiHandler);
 	delete smsConfigurationUiHandler;
@@ -84,9 +83,9 @@ SmsImageDialog::SmsImageDialog(QWidget* parent, const QByteArray& image)
 	code_edit = new QLineEdit(this);
 
 	QGridLayout *grid = new QGridLayout(this);
-	grid->addWidget(image_widget, 0, 0, 0, 1);
-	grid->addWidget(label, 1, 0);
-	grid->addWidget(code_edit, 1, 1);
+	grid->addWidget(image_widget, 0, 0, 1, 2);
+	grid->addWidget(label, 1, 0, 1, 1);
+	grid->addWidget(code_edit, 1, 1, 1, 1);
 	
 	QWidget *buttonsWidget = new QWidget(this);
 	QHBoxLayout *buttonsLayout = new QHBoxLayout(buttonsWidget);
@@ -98,7 +97,7 @@ SmsImageDialog::SmsImageDialog(QWidget* parent, const QByteArray& image)
 	buttonsLayout->addWidget(okButton);
 	buttonsLayout->addWidget(cancelButton);
 
-	grid->addWidget(buttonsWidget, 2, 2, 0, 1);
+	grid->addWidget(buttonsWidget, 2, 0, 1, 2);
 
 	connect(code_edit, SIGNAL(returnPressed()), this, SLOT(onReturnPressed()));
 	connect(okButton, SIGNAL(clicked()), this, SLOT(onReturnPressed()));
@@ -278,7 +277,7 @@ Sms::Sms(const QString& altnick, QWidget* parent) : QWidget(parent, Qt::Window),
 
 	configurationUpdated();
 	
-	///restoreGeometry(this, "Sms", "SmsDialogGeometry", 200, 200, 400, 250);
+	loadWindowGeometry(this, "Sms", "SmsDialogGeometry", 200, 200, 400, 250);
 
 	ModulesManager::instance()->moduleIncUsageCount("sms");
 	kdebugf2();
@@ -286,7 +285,7 @@ Sms::Sms(const QString& altnick, QWidget* parent) : QWidget(parent, Qt::Window),
 
 Sms::~Sms()
 {
-	///saveGeometry(this, "Sms", "SmsDialogGeometry");
+	saveWindowGeometry(this, "Sms", "SmsDialogGeometry");
 
 	ModulesManager::instance()->moduleDecUsageCount("sms");
 }
@@ -382,12 +381,9 @@ void Sms::sendSms()
 		{
 			QStringList args = config_file.readEntry("SMS", "SmsString").split(' ');
 
-			//FIXME args.find -> args.filter - to samo na pewno?
-			/*if(args.filter("%n") != args.end())
-				*args.filter("%n") = recipient->text();
-			if(args.filter("%m") != args.end())
-				*args.filter("%m") = body->toPlainText();
-			*/
+			args.replaceInStrings("%n", recipient->text());
+			args.replaceInStrings("%n", body->toPlainText());
+			
 			smsProcess->start(SmsAppPath, args);
 		}
 		else
@@ -524,23 +520,6 @@ void SmsConfigurationUiHandler::configurationUpdated()
 void SmsConfigurationUiHandler::newSms(QString nick)
 {
 	(new Sms(nick/*, Core::instance()->kaduWindow()*/))->show();
-}
-
-void SmsConfigurationUiHandler::onUserClicked(Contact contact)
-{
-// 	if (button == 4)
-// 	{
-// 		UserBox *userbox = dynamic_cast<UserBox *>(item->listBox());
-// 		if (userbox)
-// 		{
-// 			UserListElements users = userbox->selectedUsers();
-//  			if (users.count() != 1)
-//  				return;
-
- 			if (!contact.mobile().isEmpty())
- 				newSms(contact.display());
-// 		}
-// 	}
 }
 
 void SmsConfigurationUiHandler::onUserDblClicked(Chat *chat)

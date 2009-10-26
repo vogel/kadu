@@ -7,15 +7,20 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "default_sms.h"
-
 #include <QtCore/QRegExp>
 #include <QtGui/QMessageBox>
+#include <QtCore/QUrl>
 
-#include "configuration/configuration-window-widgets.h"
-#include "config_file.h"
+#include "gui/widgets/configuration/configuration-widget.h"
+#include "gui/widgets/configuration/config-combo-box.h"
+#include "gui/widgets/configuration/config-line-edit.h"
+#include "configuration/configuration-file.h"
 #include "debug.h"
+#include "misc/misc.h"
+#include "misc/path-conversion.h"
 #include "modules.h"
+
+#include "default_sms.h"
 
 /**
  * @ingroup default_sms
@@ -30,7 +35,8 @@ extern "C" KADU_EXPORT int default_sms_init(bool firstLoad)
 	smsConfigurationUiHandler->registerGateway("era" , &DefaultSmsConfigurationUiHandler::isValidEra);
 
 	defaultSmsConfigurationUiHandler = new DefaultSmsConfigurationUiHandler(NULL, "sms_gateway_slots");
-	MainConfigurationWindow::registerUiFile(dataPath("kadu/modules/configuration/default_sms.ui"), defaultSmsConfigurationUiHandler);
+	MainConfigurationWindow::registerUiFile(dataPath("kadu/modules/configuration/default_sms.ui"));
+	MainConfigurationWindow::registerUiHandler(defaultSmsConfigurationUiHandler);
 
 	kdebugf2();
 	return 0;
@@ -44,7 +50,8 @@ extern "C" KADU_EXPORT void default_sms_close()
 	smsConfigurationUiHandler->unregisterGateway("plus");
 	smsConfigurationUiHandler->unregisterGateway("era");
 
-	MainConfigurationWindow::unregisterUiFile(dataPath("kadu/modules/configuration/default_sms.ui"), defaultSmsConfigurationUiHandler);
+	MainConfigurationWindow::unregisterUiFile(dataPath("kadu/modules/configuration/default_sms.ui"));
+	MainConfigurationWindow::unregisterUiHandler(defaultSmsConfigurationUiHandler);
 	delete defaultSmsConfigurationUiHandler;
 	defaultSmsConfigurationUiHandler = 0;
 
@@ -101,7 +108,7 @@ void SmsOrangeGateway::httpFinished()
 		QString Page=Http.data();
 		kdebugm(KDEBUG_INFO, "SMS Provider Page:\n%s\n", qPrintable(Page));
 		QRegExp pic_regexp("rotate_token\\.aspx\\?token=([^\"]+)");
-		int pic_pos=pic_regexp.search(Page);
+		int pic_pos=pic_regexp.indexIn(Page);
 		if (pic_pos<0)
 		{
 			QMessageBox::critical(p,"SMS",tr("Provider gateway page looks strange. It's probably temporary disabled\nor has beed changed too much to parse it correctly."));
@@ -126,30 +133,30 @@ void SmsOrangeGateway::httpFinished()
 	{
 		QString Page=Http.data();
 		kdebugm(KDEBUG_INFO, "SMS Provider Results Page:\n%s\n", qPrintable(Page));
-		if (Page.find("wyczerpany")>=0)
+		if (Page.indexOf("wyczerpany")>=0)
 		{
 			kdebugm(KDEBUG_INFO, "You exceeded your daily limit\n");
 			QMessageBox::critical(p,"SMS",tr("You exceeded your daily limit"));
 			emit finished(false);
 		}
-		else if (Page.find("Podano błędne hasło")>=0)
+		else if (Page.indexOf("Podano błędne hasło")>=0)
 		{
 			kdebugm(KDEBUG_INFO, "Text from the picture is incorrect\n");
 			QMessageBox::critical(p,"SMS",tr("Text from the picture is incorrect"));
 			emit finished(false);
 		}
-		else if (Page.find("Użytkownik nie ma aktywnej usługi")>=0)
+		else if (Page.indexOf("Użytkownik nie ma aktywnej usługi")>=0)
 		{
 			kdebugm(KDEBUG_INFO, "The receiver has to enable SMS STANDARD service\n");
 			QMessageBox::critical(p,"SMS",tr("The receiver has to enable SMS STANDARD service"));
 			emit finished(false);
 		}
-		else if (Page.find("Twój SMS został wysłany")>=0)
+		else if (Page.indexOf("Twój SMS został wysłany")>=0)
 		{
 			kdebugm(KDEBUG_INFO, "SMS was sent succesfully\n");
 			emit finished(true);
 		}
-		else if (Page.find("Wiadomość została pomyślnie wysłana")>=0)
+		else if (Page.indexOf("Wiadomość została pomyślnie wysłana")>=0)
 		{
 			kdebugm(KDEBUG_INFO, "SMS was sent succesfully\n");
 			emit finished(true);
@@ -176,7 +183,7 @@ void SmsOrangeGateway::onCodeEntered(const QString& code)
 	}
 	kdebugm(KDEBUG_INFO, "SMS User entered the code\n");
 	State=SMS_LOADING_RESULTS;
-	QString post_data=QString("token=")+Token+"&SENDER="+unicodeUrl2latinUrl(Http.encode(Signature))+"&RECIPIENT="+Number+"&SHORT_MESSAGE="+unicodeUrl2latinUrl(Http.encode(Message))+"&pass="+code+"&CHK_RESP=FALSE"+"&respInfo=1";
+	QString post_data=QString("token=")+Token+"&SENDER="+unicodeUrl2latinUrl(QUrl::toPercentEncoding(Signature))+"&RECIPIENT="+Number+"&SHORT_MESSAGE="+unicodeUrl2latinUrl(QUrl::toPercentEncoding(Message))+"&pass="+code+"&CHK_RESP=FALSE"+"&respInfo=1";
 	Http.post("sendsms.aspx",post_data);
 	kdebugf2();
 }
@@ -230,13 +237,13 @@ void SmsPlusGateway::httpFinished()
 		kdebugm(KDEBUG_INFO, "SMS Provider Page:\n%s\n", qPrintable(Page));
 		QRegExp code_regexp("name=\\\"kod\\\" value=\\\"(\\d+)\\\"");
 		QRegExp code_regexp2("name=\\\"Kod(\\d+)\\\" value=\\\"(\\d+)\\\"");
-		if (code_regexp.search(Page) < 0)
+		if (code_regexp.indexIn(Page) < 0)
 		{
 			QMessageBox::critical(p,"SMS",tr("Provider gateway page looks strange. It's probably temporary disabled\nor has beed changed too much to parse it correctly."));
 			emit finished(false);
 			return;
 		}
-		if (code_regexp2.search(Page) < 0)
+		if (code_regexp2.indexIn(Page) < 0)
 		{
 			QMessageBox::critical(p,"SMS",tr("Provider gateway page looks strange. It's probably temporary disabled\nor has beed changed too much to parse it correctly."));
 			emit finished(false);
@@ -246,22 +253,22 @@ void SmsPlusGateway::httpFinished()
 		QString num = code_regexp2.cap(1);
 		QString code2 = code_regexp2.cap(2);
 		State = SMS_LOADING_RESULTS;
-		QString post_data = "bookopen=&numer="+Number+"&ksiazka=ksi%B1%BFka+telefoniczna&message="+Http.encode(Message)+"&podpis="+config_file.readEntry("General","Nick")+"&kontakt=&Send=++tak-nada%E6++&Kod"+num+"="+code2+"&kod="+code;
+		QString post_data = "bookopen=&numer="+Number+"&ksiazka=ksi%B1%BFka+telefoniczna&message="+QUrl::toPercentEncoding(Message)+"&podpis="+config_file.readEntry("General","Nick")+"&kontakt=&Send=++tak-nada%E6++&Kod"+num+"="+code2+"&kod="+code;
 		Http.post("sms/sendsms.asp", post_data);
 	}
 	else if (State==SMS_LOADING_RESULTS)
 	{
 		QString Page=Http.data();
 		kdebugm(KDEBUG_INFO, "SMS Provider Results Page:\n%s\n", qPrintable(Page));
-		if (Page.find("Z powodu przekroczenia limit�w bramki")>=0)
+		if (Page.indexOf("Z powodu przekroczenia limit�w bramki")>=0)
 		{
 			kdebugm(KDEBUG_INFO, "Limit exceeded\n");
 			QMessageBox::critical(p,"SMS",tr("Limits have been exceeded, try again later."));
 			emit finished(false);
 		}
-		else if (Page.find("SMS zosta� wys�any")>=0)
+		else if (Page.indexOf("SMS zosta� wys�any")>=0)
 			emit finished(true);
-		else if (Page.find("wiadomo�� zosta�a wys�ana")>=0)
+		else if (Page.indexOf("wiadomo�� zosta�a wys�ana")>=0)
 			emit finished(true);
 		else
 		{
@@ -279,7 +286,6 @@ void SmsPlusGateway::httpFinished()
 SmsEraGateway::SmsEraGateway(QObject* parent, const char *name)
 	: SmsGateway(parent)
 {
-	import_0_5_0_configuration();
 	createDefaultConfiguration();
 
 	ModulesManager::instance()->moduleIncUsageCount("default_sms");
@@ -340,14 +346,14 @@ void SmsEraGateway::httpRedirected(QString link)
 
 	QWidget *p = (QWidget*)(parent()->parent());
 
-	if (link.find("localhost") > 0)
+	if (link.indexOf("localhost") > 0)
 	{
 		// remove unused parts of link
 		link.remove("http://localhost?X-ERA-error=");
-		link.remove(link.find("X-ERA-counter="), 14);
+		link.remove(link.indexOf("X-ERA-counter="), 14);
 
 		// split parts of link
-		QStringList counters = QStringList::split("&", link);
+		QStringList counters = link.split('&');
 		int error = (*(counters.begin())).toInt();
 
 		if (error == 0)
@@ -390,24 +396,13 @@ void SmsEraGateway::httpFinished()
 {
 }
 
-void SmsEraGateway::import_0_5_0_configuration()
-{
-	//przepisanie starego hasla
-	config_file.addVariable("SMS", "EraGateway_Omnix_User", config_file.readEntry("SMS", "EraGatewayUser"));
-	config_file.addVariable("SMS", "EraGateway_Omnix_Password", config_file.readEntry("SMS", "EraGatewayPassword"));
-	config_file.addVariable("SMS", "EraGateway_OmnixMultimedia_User", config_file.readEntry("SMS", "EraGateway_Omnix_User"));
-	config_file.addVariable("SMS", "EraGateway_OmnixMultimedia_Password", config_file.readEntry("SMS", "EraGateway_Omnix_Password"));
-	config_file.addVariable("SMS", "EraGateway_Sponsored_User", config_file.readEntry("SMS", "EraGateway_Basic_User"));
-	config_file.addVariable("SMS", "EraGateway_Sponsored_Password", config_file.readEntry("SMS", "EraGateway_Basic_Password"));
-}
-
 void SmsEraGateway::createDefaultConfiguration()
 {
 	config_file.addVariable("SMS", "EraGateway", "Sponsored");
 }
 
 DefaultSmsConfigurationUiHandler::DefaultSmsConfigurationUiHandler(QObject *parent, const char *name) :
-	QObject(parent, name), era_types(), era_values(), actualEraGateway()
+	QObject(parent), era_types(), era_values(), actualEraGateway()
 {
 	kdebugf();
 
@@ -459,11 +454,11 @@ void DefaultSmsConfigurationUiHandler::onChangeEraGateway()
 
 void DefaultSmsConfigurationUiHandler::mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow)
 {
-	eraGateway = dynamic_cast<ConfigComboBox *>(mainConfigurationWindow->widgetById("default_sms/eraGateway"));
-	sponsoredUser = dynamic_cast<ConfigLineEdit *>(mainConfigurationWindow->widgetById("default_sms/sponsoredUser"));
-	sponsoredPassword = dynamic_cast<ConfigLineEdit *>(mainConfigurationWindow->widgetById("default_sms/sponsoredPassword"));
-	multimediaUser = dynamic_cast<ConfigLineEdit *>(mainConfigurationWindow->widgetById("default_sms/multimediaUser"));
-	multimediaPassword = dynamic_cast<ConfigLineEdit *>(mainConfigurationWindow->widgetById("default_sms/multimediaPassword"));
+	eraGateway = dynamic_cast<ConfigComboBox *>(mainConfigurationWindow->widget()->widgetById("default_sms/eraGateway"));
+	sponsoredUser = dynamic_cast<ConfigLineEdit *>(mainConfigurationWindow->widget()->widgetById("default_sms/sponsoredUser"));
+	sponsoredPassword = dynamic_cast<ConfigLineEdit *>(mainConfigurationWindow->widget()->widgetById("default_sms/sponsoredPassword"));
+	multimediaUser = dynamic_cast<ConfigLineEdit *>(mainConfigurationWindow->widget()->widgetById("default_sms/multimediaUser"));
+	multimediaPassword = dynamic_cast<ConfigLineEdit *>(mainConfigurationWindow->widget()->widgetById("default_sms/multimediaPassword"));
 
 	sponsoredPassword->setEchoMode(QLineEdit::Password);
 	multimediaPassword->setEchoMode(QLineEdit::Password);

@@ -172,7 +172,6 @@ public:
 
 public slots:
 	void onSmsBuildInCheckToggle(bool);
-	void onUserClicked(Contact contact);
 	void onUserDblClicked(Chat *chat);
 	void onUpButton();
 	void onDownButton();

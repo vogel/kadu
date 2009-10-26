@@ -1,7 +1,7 @@
 #ifndef _DEFAULT_SMS_H
 #define _DEFAULT_SMS_H
 
-#include "main_configuration_window.h"
+#include "gui/windows/main-configuration-window.h"
 
 #include "../sms/sms.h"
 
