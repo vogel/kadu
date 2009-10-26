@@ -1,17 +1,19 @@
 #ifndef SMS_H
 #define SMS_H
 
-#include <QtGui/QDialog>
 #include <QtCore/QMap>
+#include <QtGui/QDialog>
+#include <QtGui/QLabel>
+#include <QtGui/QLineEdit>
 #include <QtGui/QWidget>
 
-#include "configuration_aware_object.h"
+#include "configuration/configuration-aware-object.h"
 #include "http_client.h"
-#include "main_configuration_window.h"
+#include "gui/actions/action.h"
+#include "gui/windows/main-configuration-window.h"
 
 #include "sms_exports.h"
 
-class Q3ListBox;
 class QCheckBox;
 class QComboBox;
 class QListWidget;
@@ -169,8 +171,8 @@ public:
 
 public slots:
 	void onSmsBuildInCheckToggle(bool);
-	void onUserClicked(int button, Q3ListBoxItem* item, const QPoint& pos);
-	void onUserDblClicked(UserListElement elem);
+	///void onUserClicked(int button, Q3ListBoxItem* item, const QPoint& pos);
+	///void onUserDblClicked(UserListElement elem);
 	void onUpButton();
 	void onDownButton();
 	void sendSmsActionActivated(QAction *sender, bool toggled);
