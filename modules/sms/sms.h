@@ -7,6 +7,7 @@
 #include <QtGui/QLineEdit>
 #include <QtGui/QWidget>
 
+#include "chat/chat.h"
 #include "configuration/configuration-aware-object.h"
 #include "http_client.h"
 #include "gui/actions/action.h"
@@ -171,8 +172,8 @@ public:
 
 public slots:
 	void onSmsBuildInCheckToggle(bool);
-	///void onUserClicked(int button, Q3ListBoxItem* item, const QPoint& pos);
-	///void onUserDblClicked(UserListElement elem);
+	void onUserClicked(Contact contact);
+	void onUserDblClicked(Chat *chat);
 	void onUpButton();
 	void onDownButton();
 	void sendSmsActionActivated(QAction *sender, bool toggled);

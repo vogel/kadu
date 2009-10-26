@@ -93,7 +93,6 @@ protected:
 	virtual void keyPressEvent(QKeyEvent *);
 
 	virtual bool supportsActionType(ActionDescription::ActionType type);
-	virtual ContactsListView * contactsListView();
 	virtual ContactSet contacts();
 	virtual Chat * chat();
 
@@ -113,6 +112,7 @@ public:
 	bool docked() { return Docked; }
 
 	ContactInfoPanel *infoPanel() { return InfoPanel; }
+	virtual ContactsListView * contactsListView();
 
 signals:
 	void keyPressed(QKeyEvent *e);
