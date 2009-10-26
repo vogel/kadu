@@ -29,13 +29,16 @@ class KADUAPI AccountManager : public QObject, public StorableObject
 
 	static AccountManager *Instance;
 
+	QList<Account *> AllAccounts;
+	QList<Account *> RegisteredAccounts;
+
 	AccountManager();
 	virtual ~AccountManager();
 
 	void init();
-
-	QList<Account *> NonRegisteredAccounts;
-	QList<Account *> Accounts;
+	void loadAccount(Account *account, ProtocolFactory *protocolFactory);
+	void unloadAccount(Account *account);
+	void tryLoadAccount(Account *account);
 
 private slots:
 	void protocolFactoryRegistered(ProtocolFactory *factory);
@@ -57,10 +60,10 @@ public:
 	Account * byIndex(unsigned int index) const;
 	Account * byUuid(const QUuid &uuid) const;
 
-	unsigned int indexOf(Account *account) const { return Accounts.indexOf(account); }
-	unsigned int count() const { return Accounts.count(); }
+	unsigned int indexOf(Account *account) const { return RegisteredAccounts.indexOf(account); }
+	unsigned int count() const { return RegisteredAccounts.count(); }
 
-	const QList<Account *> accounts() const { return Accounts; }
+	const QList<Account *> accounts() const { return RegisteredAccounts; }
 	const QList<Account *> byProtocolName(const QString &name) const;
 
 	void registerAccount(Account *account);

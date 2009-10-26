@@ -64,6 +64,25 @@ void AccountManager::init()
 		protocolFactoryRegistered(factory);
 }
 
+void AccountManager::loadAccount(Account *account, ProtocolFactory *protocolFactory)
+{
+	account->loadProtocol(protocolFactory);
+	registerAccount(account);
+}
+
+void AccountManager::unloadAccount(Account* account)
+{
+	unregisterAccount(account);
+	account->unloadProtocol();
+}
+
+void AccountManager::tryLoadAccount(Account *account)
+{
+	ProtocolFactory *factory = ProtocolsManager::instance()->byName(account->protocolName());
+	if (factory)
+		loadAccount(account, factory);
+}
+
 StoragePoint * AccountManager::createStoragePoint()
 {
 	return new StoragePoint(xml_config_file, xml_config_file->getNode("Accounts"));
@@ -88,14 +107,9 @@ void AccountManager::load()
 
 		StoragePoint *storagePoint = new StoragePoint(storage()->storage(), accountElement);
 		Account *account = Account::loadFromStorage(storagePoint);
-		NonRegisteredAccounts.append(account);
+		AllAccounts.append(account);
 
-		ProtocolFactory *factory = ProtocolsManager::instance()->byName(account->protocolName());
-		if (factory)
-		{
-			account->loadProtocol(factory);
-			registerAccount(account);
-		}
+		tryLoadAccount(account);
 	}
 }
 
@@ -104,7 +118,7 @@ void AccountManager::store()
 	if (!isValidStorage())
 		return;
 	
-	foreach (Account *account, Accounts)
+	foreach (Account *account, AllAccounts)
 		account->store();
 }
 
@@ -118,12 +132,12 @@ Account * AccountManager::byIndex(unsigned int index) const
 	if (index < 0 || index >= count())
 		return 0;
 
-	return Accounts.at(index);
+	return RegisteredAccounts.at(index);
 }
 
 Account * AccountManager::byUuid(const QUuid &uuid) const
 {
-	foreach (Account *account, Accounts)
+	foreach (Account *account, AllAccounts)
 		if (uuid == account->uuid())
 			return account;
 
@@ -133,18 +147,17 @@ Account * AccountManager::byUuid(const QUuid &uuid) const
 const QList<Account *> AccountManager::byProtocolName(const QString &name) const
 {
 	QList<Account *> list;
-	foreach (Account *account, Accounts)
-	{
+	foreach (Account *account, AllAccounts)
 		if (account->protocol()->protocolFactory()->name() == name)
 			list.append(account);
-	}
+
 	return list;
 }
 
 void AccountManager::registerAccount(Account *account)
 {
 	emit accountAboutToBeRegistered(account);
-	Accounts << account;
+	RegisteredAccounts << account;
 	emit accountRegistered(account);
 	AccountsAwareObject::notifyAccountRegistered(account);
 
@@ -159,7 +172,7 @@ void AccountManager::unregisterAccount(Account *account)
 
 	AccountsAwareObject::notifyAccountUnregistered(account);
 	emit accountAboutToBeUnregistered(account);
-	Accounts.removeAll(account);
+	RegisteredAccounts.removeAll(account);
 	emit accountUnregistered(account);
 }
 
@@ -186,25 +199,16 @@ void AccountManager::protocolFactoryRegistered(ProtocolFactory *factory)
 
 	QString factoryProtocolName = factory->name();
 
-	foreach (Account *account, NonRegisteredAccounts)
-	{
+	foreach (Account *account, AllAccounts)
 		if (account->protocolName() == factoryProtocolName)
-		{
-			account->loadProtocol(factory);
-			registerAccount(account);
-			printf("registered account\n");
-		}
-	}
+			loadAccount(account, factory);
 }
 
 void AccountManager::protocolFactoryUnregistered(ProtocolFactory *factory)
 {
-	foreach (Account *account, Accounts)
+	foreach (Account *account, RegisteredAccounts)
 		if (account->protocol()->protocolFactory() == factory)
-		{
-			unregisterAccount(account);
-			account->unloadProtocol();
-		}
+			unloadAccount(account);
 }
 
 void AccountManager::connectionError(Account *account, const QString &server, const QString &message)
