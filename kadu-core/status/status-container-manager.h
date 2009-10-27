@@ -50,7 +50,7 @@ public:
 	static StatusContainerManager * instance();
 
 	unsigned int count() const { return StatusContainers.count(); }
-	const QList<StatusContainer *> statusContainers() const { printf("count: %d\n", count()); return StatusContainers; }
+	const QList<StatusContainer *> statusContainers() const { return StatusContainers; }
 
 	void registerStatusContainer(StatusContainer *statusContainer);
 	void unregisterStatusContainer(StatusContainer *statusContainer);

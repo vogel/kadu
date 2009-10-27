@@ -42,11 +42,7 @@ void SimpleChat::load()
 	if (cadUuid.isNull())
 	{
 		Contact contact = ContactManager::instance()->byUuid(loadValue<QString>("Contact"));
-		if (contact.isNull())
-			printf("null contact?");
 		CurrentContactAccountData = contact.accountData(account());
-		if (!CurrentContactAccountData)
-			printf("null cad\n");
 		removeValue("Contact");
 	}
 	else

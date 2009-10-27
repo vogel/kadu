@@ -44,15 +44,11 @@ class ProtocolFactory;
 class Status;
 class XmlConfigFile;
 
-class KADUAPI Account : public QObject, public ContactsAwareObject
+class KADUAPI Account : public QObject
 {
 	Q_OBJECT
 
 	QExplicitlySharedDataPointer<AccountData> Data;
-
-protected:
-	virtual void contactAdded(Contact contact);
-	virtual void contactRemoved(Contact contact);
 
 public:
 	static Account * loadFromStorage(StoragePoint *storage);

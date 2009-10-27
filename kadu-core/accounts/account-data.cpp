@@ -9,6 +9,7 @@
 
 #include "accounts/account-details.h"
 #include "accounts/account-manager.h"
+#include "contacts/account-data/contact-account-data.h"
 #include "misc/misc.h"
 #include "protocols/protocol.h"
 
@@ -52,7 +53,7 @@ void AccountData::load()
 	
 	ConnectAtStart = loadValue<bool>("ConnectAtStart", true);
 	
-	Uuid = QUuid(loadValue<QString>("uuid"));
+	Uuid = QUuid(loadAttribute<QString>("uuid"));
 	Name = loadValue<QString>("Name");
 	ProtocolName = loadValue<QString>("Protocol");
 	setId(loadValue<QString>("Id"));
@@ -79,7 +80,7 @@ void AccountData::store()
 	if (!isValidStorage())
 		return;
 
-	storage()->point().setAttribute("uuid", Uuid.toString());
+	storeValue("uuid", Uuid.toString(), true);
 
 	storeValue("ConnectAtStart", ConnectAtStart);
 
@@ -138,8 +139,6 @@ void AccountData::setStatus(Status status)
 
 const Status & AccountData::status()
 {
-	printf("ph: %p\n", ProtocolHandler);
-
 	if (ProtocolHandler)
 		ProtocolHandler->status();
 	else

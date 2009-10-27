@@ -21,6 +21,7 @@
 	void set##capitalized_name(type name) { ensureLoaded(); capitalized_name = name; dataUpdated(); }
 
 class AccountDetails;
+class Contact;
 class Protocol;
 
 class KADUAPI AccountData : public BaseStatusContainer, public QSharedData
