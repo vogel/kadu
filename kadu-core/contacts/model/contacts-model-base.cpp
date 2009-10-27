@@ -122,6 +122,21 @@ ContactAccountData * ContactsModelBase::contactAccountData(const QModelIndex &in
 	return accountDatas[accountIndex];
 }
 
+QVariant ContactsModelBase::data(Contact contact, int role) const
+{
+	switch (role)
+	{
+		case Qt::DisplayRole:
+			return contact.display();
+		case ContactRole:
+			return QVariant::fromValue(contact);
+		case StatusRole:
+			return QVariant::fromValue(Status::null);
+		default:
+			return QVariant();
+	}
+}
+
 QVariant ContactsModelBase::data(ContactAccountData *cad, int role, bool useDisplay) const
 {
 	if (!cad)
@@ -166,7 +181,7 @@ QVariant ContactsModelBase::data(ContactAccountData *cad, int role, bool useDisp
 			return QVariant::fromValue(cad->avatar().pixmap());
 		default:
 			return QVariant();
-}
+	}
 }
 
 QVariant ContactsModelBase::data(const QModelIndex &index, int role) const
@@ -176,7 +191,10 @@ QVariant ContactsModelBase::data(const QModelIndex &index, int role) const
 
 	QModelIndex parentIndex = parent(index);
 	if (!parentIndex.isValid())
-		return data(contactDefaultAccountData(index), role, true);
+	{
+		ContactAccountData *cad = contactDefaultAccountData(index);
+		return cad ? data(cad, role, true) : data(contact(index), role);
+	}
 	else
 		return data(contactAccountData(parentIndex, index.row()), role, false);
 }
@@ -188,7 +206,7 @@ QStringList ContactsModelBase::mimeTypes() const
 	return ContactListMimeDataHelper::mimeTypes();
 }
 
-QMimeData * ContactsModelBase::mimeData(const QModelIndexList & indexes) const
+QMimeData * ContactsModelBase::mimeData(const QModelIndexList &indexes) const
 {
 	ContactList list;
 	foreach (QModelIndex index, indexes)

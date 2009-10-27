@@ -27,6 +27,8 @@ class ContactsModelBase : public QAbstractItemModel, public AbstractContactsMode
 
 	ContactAccountData * contactDefaultAccountData(const QModelIndex &index) const;
 	ContactAccountData * contactAccountData(const QModelIndex &index, int accountIndex) const;
+
+	QVariant data(Contact contact, int role) const;
 	QVariant data(ContactAccountData *cad, int role, bool useDisplay = true) const;
 
 private slots:
