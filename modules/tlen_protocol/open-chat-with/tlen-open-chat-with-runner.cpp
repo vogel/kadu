@@ -30,7 +30,7 @@ ContactList TlenOpenChatWithRunner::matchingContacts(const QString &query)
 
 	Contact c;
 
-	TlenContactAccountData *gcad = new TlenContactAccountData(c, ParentAccount, query);
+	TlenContactAccountData *gcad = new TlenContactAccountData(ParentAccount, c, query);
 	c.addAccountData(gcad);
 	c.setDisplay(ParentAccount->name() + ": " + query);
 	matchedContacts.append(c);

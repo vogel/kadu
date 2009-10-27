@@ -21,9 +21,12 @@ class TlenContactAccountData : public ContactAccountData
 	unsigned long MaxImageSize;
 
 public:
-	TlenContactAccountData(Contact contact, Account *account, const QString &id = QString::null, bool loadFromConfiguration = true)
-		: ContactAccountData(contact, account, id, loadFromConfiguration)
-	{}
+	TlenContactAccountData(Account *account, Contact contact, const QString &id, bool loaded = false)
+		: ContactAccountData(account, contact, id, loaded) {}
+	TlenContactAccountData(Account *account, Contact contact, const QString &id, StoragePoint *storage)
+		: ContactAccountData(account, contact, id, storage) {}
+	TlenContactAccountData(StoragePoint *storage) :
+		ContactAccountData(storage) {}
 
 	virtual bool validateId();
 

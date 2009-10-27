@@ -62,16 +62,17 @@ Account * TlenProtocolFactory::loadAccount(StoragePoint *accountStoragePoint)
        return account;
 }
 
-ContactAccountData * TlenProtocolFactory::newContactAccountData(Contact contact, Account *account, const QString &id, bool loadFromConfiguration)
+ContactAccountData * TlenProtocolFactory::newContactAccountData(Account *account, Contact contact, const QString &id)
 {
-	return new TlenContactAccountData(contact, account, id, loadFromConfiguration);
+	return new TlenContactAccountData(account, contact, id, true);
 }
 
-ContactAccountData * TlenProtocolFactory::loadContactAccountData(Contact contact, Account *account)
+ContactAccountData * TlenProtocolFactory::loadContactAccountData(StoragePoint *storagePoint)
 {
-	return contact.hasStoredAccountData(account)
-		? new TlenContactAccountData(contact, account, QString::null)
-		: 0;
+	if (!storagePoint)
+		return 0;
+
+	return new TlenContactAccountData(storagePoint);
 }
 
 AccountCreateWidget * TlenProtocolFactory::newCreateAccountWidget(QWidget *parent)
