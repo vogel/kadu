@@ -122,14 +122,14 @@ void Identity::removeAccount(Account *account)
 void Identity::setStatus(Status status)
 {
 	foreach (Account *account, Accounts)
-		account->setStatus(status);
+		account->statusContainer()->setStatus(status);
 }
 
 Status Identity::status()
 {
 	return Accounts.count()
-		? Accounts[0]->status()
-		: Status();
+			? Accounts[0]->statusContainer()->status()
+			: Status();
 }
 
 QString Identity::statusName()
@@ -142,29 +142,34 @@ QPixmap Identity::statusPixmap()
 	return statusPixmap(status().type());
 }
 
+QPixmap Identity::statusPixmap(Status status)
+{
+	return statusPixmap(status.type());
+}
+
 QPixmap Identity::statusPixmap(const QString &statusType)
 {
 	return Accounts.count()
-		? Accounts[0]->statusPixmap(statusType)
-		: QPixmap();
+			? Accounts[0]->statusContainer()->statusPixmap(statusType)
+			: QPixmap();
 }
 
 QList<StatusType *> Identity::supportedStatusTypes()
 {
-    	return Accounts.count()
-		? Accounts[0]->supportedStatusTypes()
-		: QList<StatusType *>();
+	return Accounts.count()
+			? Accounts[0]->statusContainer()->supportedStatusTypes()
+			: QList<StatusType *>();
 }
 
 int Identity::maxDescriptionLength()
 {
-    	return Accounts.count()
-		? Accounts[0]->maxDescriptionLength()
-		: -1;
+	return Accounts.count()
+			? Accounts[0]->statusContainer()->maxDescriptionLength()
+			: -1;
 }
 
 void Identity::setPrivateStatus(bool isPrivate)
 {
 	foreach (Account *account, Accounts)
-		account->setPrivateStatus(isPrivate);
+		account->statusContainer()->setPrivateStatus(isPrivate);
 }

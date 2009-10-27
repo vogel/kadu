@@ -327,7 +327,7 @@ void ChatWidget::messageStatusChanged(int messageId, ChatService::MessageStatus 
 
 void ChatWidget::connectAcknowledgeSlots()
 {
-	ChatService *chatService = CurrentChat->account()->protocol()->chatService();
+	ChatService *chatService = CurrentChat->account()->protocolHandler()->chatService();
 	if (chatService)
 		connect(chatService, SIGNAL(messageStatusChanged(int, ChatService::MessageStatus)),
 				this, SLOT(messageStatusChanged(int, ChatService::MessageStatus)));
@@ -335,7 +335,7 @@ void ChatWidget::connectAcknowledgeSlots()
 
 void ChatWidget::disconnectAcknowledgeSlots()
 {
-	ChatService *chatService = CurrentChat->account()->protocol()->chatService();
+	ChatService *chatService = CurrentChat->account()->protocolHandler()->chatService();
 	if (chatService)
 		disconnect(chatService, SIGNAL(messageStatusChanged(int, ChatService::MessageStatus)),
 				this, SLOT(messageStatusChanged(int, ChatService::MessageStatus)));
@@ -454,7 +454,7 @@ void ChatWidget::dropEvent(QDropEvent *e)
 
 Protocol *ChatWidget::currentProtocol()
 {
-	return CurrentChat->account()->protocol();
+	return CurrentChat->account()->protocolHandler();
 }
 
 void ChatWidget::makeActive()

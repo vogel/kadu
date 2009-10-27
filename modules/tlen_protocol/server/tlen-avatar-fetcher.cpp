@@ -25,7 +25,7 @@ TlenAvatarFetcher::TlenAvatarFetcher(ContactAccountData *contactAccountData, QOb
 
 void TlenAvatarFetcher::fetchAvatar()
 {
-	tlen * tlenClient = (dynamic_cast <TlenProtocol *> (MyContactAccountData->account()->protocol()))->client();
+	tlen * tlenClient = (dynamic_cast <TlenProtocol *> (MyContactAccountData->account()->protocolHandler()))->client();
 
 	// TODO: clean up, clean access to tlenClient
 	// create QString tlen/protocol::avatarGetRequest(QString login), avatarGetRequestMethod()

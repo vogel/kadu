@@ -65,7 +65,7 @@ QVariant AccountsModel::data(const QModelIndex &index, int role) const
 				return QString("%1 (%2)").arg(acc->name(), acc->id());
 
 		case Qt::DecorationRole:
-			return acc->protocol()->icon();
+			return acc->protocolHandler()->icon();
 
 		case AccountRole:
 			return QVariant::fromValue<Account *>(acc);

@@ -36,7 +36,7 @@ bool IdRegularExpressionFilter::acceptAccount(Account *account)
 	if (Id.isEmpty())
 		return true;
 	
-	QRegExp regularExpression = account->protocol()->protocolFactory()->idRegularExpression();
+	QRegExp regularExpression = account->protocolHandler()->protocolFactory()->idRegularExpression();
 	if (regularExpression.exactMatch(Id))
 		return true;
 

@@ -195,7 +195,7 @@ void AddBuddyWindow::setUsernameLabel()
 	if (!account)
 		UserNameLabel->setText(tr("Username:"));
 	else
-		UserNameLabel->setText(account->protocol()->protocolFactory()->idLabel());
+		UserNameLabel->setText(account->protocolHandler()->protocolFactory()->idLabel());
 }
 
 void AddBuddyWindow::setAddContactEnabled()
@@ -207,7 +207,7 @@ void AddBuddyWindow::setAddContactEnabled()
 		return;
 	}
 
-	if (!account->protocol()->protocolFactory()->idRegularExpression().exactMatch(UserNameEdit->text()))
+	if (!account->protocolHandler()->protocolFactory()->idRegularExpression().exactMatch(UserNameEdit->text()))
 	{
 		AddContactButton->setEnabled(false);
 		return;
@@ -237,7 +237,7 @@ void AddBuddyWindow::setValidateRegularExpression()
 	Account *account = selectedAccount();
 	if (account)
 	{
-		UserNameValidator->setRegExp(account->protocol()->protocolFactory()->idRegularExpression());
+		UserNameValidator->setRegExp(account->protocolHandler()->protocolFactory()->idRegularExpression());
 		return;
 	}
 
@@ -245,7 +245,7 @@ void AddBuddyWindow::setValidateRegularExpression()
 
 	foreach (Account *account, AccountManager::instance()->accounts())
 	{
-		QRegExp regularExpression = account->protocol()->protocolFactory()->idRegularExpression();
+		QRegExp regularExpression = account->protocolHandler()->protocolFactory()->idRegularExpression();
 		if (!regularExpression.isEmpty())
 			regularExpressions.append(regularExpression.pattern());
 	}
@@ -312,7 +312,7 @@ void AddBuddyWindow::accept()
 		if (contact.isNull())
 			return;
 
-		ContactAccountData *cad = account->protocol()->protocolFactory()
+		ContactAccountData *cad = account->protocolHandler()->protocolFactory()
 				->newContactAccountData(account, contact, UserNameEdit->text());
 		contact.addAccountData(cad);
 	}

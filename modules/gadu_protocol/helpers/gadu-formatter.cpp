@@ -107,7 +107,7 @@ unsigned char * GaduFormater::createFormats(Account *account, const FormattedMes
 			uint32_t size;
 			uint32_t crc32;
 
-			GaduChatImageService *gcis = dynamic_cast<GaduChatImageService *>(account->protocol()->chatImageService());
+			GaduChatImageService *gcis = dynamic_cast<GaduChatImageService *>(account->protocolHandler()->chatImageService());
 			gcis->prepareImageToSend(part.imagePath(), size, crc32);
 
 			image.unknown1 = 0x0109;
@@ -147,7 +147,7 @@ void GaduFormater::appendToMessage(Account *account, FormattedMessage &result, U
 		if (size == 20 && (crc32 == 4567 || crc32 == 99)) // fake spy images
 			return;
 
-		GaduChatImageService *gcis = dynamic_cast<GaduChatImageService *>(account->protocol()->chatImageService());
+		GaduChatImageService *gcis = dynamic_cast<GaduChatImageService *>(account->protocolHandler()->chatImageService());
 
 		QString file_name = gcis->getSavedImageFileName(size, crc32);
 		if (!file_name.isEmpty())
@@ -170,7 +170,7 @@ void GaduFormater::appendToMessage(Account *account, FormattedMessage &result, U
 		}
 
 		// TODO: fix
-		GaduProtocol *gadu = dynamic_cast<GaduProtocol *>(account->protocol());
+		GaduProtocol *gadu = dynamic_cast<GaduProtocol *>(account->protocolHandler());
 		if (gadu)
 		{
 			dynamic_cast<GaduChatImageService *>(gadu->chatImageService())->

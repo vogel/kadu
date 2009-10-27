@@ -138,7 +138,7 @@ QVariant ContactsModelBase::data(ContactAccountData *cad, int role, bool useDisp
 				return QVariant();
 			// TODO generic icon
 			return cad->account()
-				? cad->account()->statusPixmap(cad->status())
+				? cad->account()->statusContainer()->statusPixmap(cad->status())
 				: QVariant();
 		case ContactRole:
 			return QVariant::fromValue(cad->contact());

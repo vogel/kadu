@@ -107,7 +107,7 @@ void OpenChatWith::openChat(Contact contact)
 
 	if (account && !contacts.isEmpty() && !contacts.contains(Core::instance()->myself()))
 	{
-		Chat *chat = account->protocol()->findChat(contacts);
+		Chat *chat = account->protocolHandler()->findChat(contacts);
 		if (chat)
 		{
 			ChatWidgetManager::instance()->sendMessage(chat);

@@ -136,11 +136,11 @@ void DockingManager::changeIcon()
 				else
 				{
 					Account *account = AccountManager::instance()->defaultAccount();
-					if (!account || !account->protocol())
+					if (!account || !account->protocolHandler())
 						return;
 
-					const Status &stat = account->protocol()->status();
-					emit trayPixmapChanged(QIcon(account->protocol()->statusPixmap(stat)));
+					const Status &stat = account->protocolHandler()->status();
+					emit trayPixmapChanged(QIcon(account->protocolHandler()->statusPixmap(stat)));
 					icon_timer->setSingleShot(true);
 					icon_timer->start(500);
 					blink = false;
@@ -163,11 +163,11 @@ void DockingManager::pendingMessageDeleted()
 	if (!PendingMessagesManager::instance()->pendingMsgs())
 	{
 		Account *account = AccountManager::instance()->defaultAccount();
-		if (!account || !account->protocol())
+		if (!account || !account->protocolHandler())
 			return;
 
-		const Status &stat = account->protocol()->status();
-		emit trayPixmapChanged(QIcon(account->protocol()->statusPixmap(stat)));
+		const Status &stat = account->protocolHandler()->status();
+		emit trayPixmapChanged(QIcon(account->protocolHandler()->statusPixmap(stat)));
 	}
 }
 
@@ -253,11 +253,11 @@ void DockingManager::statusPixmapChanged(const QIcon &icon)
 QIcon DockingManager::defaultPixmap()
 {
 	Account *account = AccountManager::instance()->defaultAccount();
-	if (!account || !account->protocol())
+	if (!account || !account->protocolHandler())
 	{
 		return QIcon();
 	}
-	return QIcon(account->protocol()->statusPixmap(account->protocol()->status()));
+	return QIcon(account->protocolHandler()->statusPixmap(account->protocolHandler()->status()));
 }
 
 void DockingManager::setDocked(bool docked)

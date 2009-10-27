@@ -96,7 +96,7 @@ void ProxyGroupBox::loadProxyData()
     	useProxy->setChecked(MyAccount->useProxy());
 	host->setText(MyAccount->proxyHost().toString());
 	proxyPort->setText(QString::number(MyAccount->proxyPort()));
-    	proxyAuthentication->setChecked(MyAccount->proxyReqAuthentication());
+    	proxyAuthentication->setChecked(MyAccount->proxyRequiresAuthentication());
 	username->setText(MyAccount->proxyUser());
 	password->setText(MyAccount->proxyPassword());
 }
@@ -110,7 +110,7 @@ void ProxyGroupBox::applyProxyData()
 		hostAdrr.setAddress("0.0.0.0");
 	MyAccount->setProxyHost(hostAdrr);
 	MyAccount->setProxyPort(proxyPort->text().toInt());
-	MyAccount->setProxyReqAuthentication(proxyAuthentication->isChecked());
+	MyAccount->setProxyRequiresAuthentication(proxyAuthentication->isChecked());
 	MyAccount->setProxyUser(username->text());
 	MyAccount->setProxyPassword(password->text());
 }

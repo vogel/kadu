@@ -49,7 +49,7 @@ void ContactPersonalInfoConfigurationWidget::createGui()
 
 	ContactIdCombo = new QComboBox(this);
 	foreach (ContactAccountData *data, CurrentContact.accountDatas())
-		ContactIdCombo->addItem(data->account()->protocol()->icon(), 
+		ContactIdCombo->addItem(data->account()->protocolHandler()->icon(),
 			    data->id(),
 			    data->account()->uuid().toString()
 		);

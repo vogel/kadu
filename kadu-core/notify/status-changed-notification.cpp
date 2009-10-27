@@ -92,8 +92,8 @@ void StatusChangedNotification::unregisterEvents()
 }
 
 StatusChangedNotification::StatusChangedNotification(const QString &toStatus, ContactSet &contacts, Account *account) :
-		ChatNotification(account->protocol()->findChat(contacts), QString("StatusChanged") + toStatus,
-			account->protocol()->statusPixmap(contacts.begin()->accountData(account)->status()))
+		ChatNotification(account->protocolHandler()->findChat(contacts), QString("StatusChanged") + toStatus,
+			account->protocolHandler()->statusPixmap(contacts.begin()->accountData(account)->status()))
 {
 	const Contact &contact = *contacts.begin();
 	Status status = contact.accountData(account)->status();

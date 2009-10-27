@@ -78,7 +78,7 @@ void ContactAccountDataManager::load(Account *account)
 			continue;
 
 		StoragePoint *contactStoragePoint = new StoragePoint(configurationStorage, contactAccountDataElement);
-		ContactAccountData *cad = account->protocol()->protocolFactory()->loadContactAccountData(contactStoragePoint);
+		ContactAccountData *cad = account->protocolHandler()->protocolFactory()->loadContactAccountData(contactStoragePoint);
 
 		if (cad)
 		{

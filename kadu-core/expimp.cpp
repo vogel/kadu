@@ -169,7 +169,7 @@ UserlistImportExport::UserlistImportExport(QWidget *parent)
 		return;
 	}
 
-	Protocol *gadu = AccountManager::instance()->defaultAccount()->protocol();
+	Protocol *gadu = AccountManager::instance()->defaultAccount()->protocolHandler();
 	ContactListService *manager = gadu->contactListService();
 	connect(manager, SIGNAL(contactListExported(bool)), this, SLOT(contactListExported(bool)));
 	connect(manager, SIGNAL(contactListImported(bool, ContactList)),
@@ -225,7 +225,7 @@ void UserlistImportExport::fromfile()
 {
 	kdebugf();
 
-	GaduProtocol *gadu = dynamic_cast<GaduProtocol *>(AccountManager::instance()->defaultAccount()->protocol());
+	GaduProtocol *gadu = dynamic_cast<GaduProtocol *>(AccountManager::instance()->defaultAccount()->protocolHandler());
 
 	QString fname = QFileDialog::getOpenFileName(this, QString::null, "/");
 	if (!fname.isEmpty())
@@ -260,7 +260,7 @@ void UserlistImportExport::startImportTransfer()
 {
 	kdebugf();
 
-	GaduProtocol *gadu = dynamic_cast<GaduProtocol *>(AccountManager::instance()->defaultAccount()->protocol());
+	GaduProtocol *gadu = dynamic_cast<GaduProtocol *>(AccountManager::instance()->defaultAccount()->protocolHandler());
 	if (!gadu->isConnected())
 	{
 		MessageBox::msg(tr("Cannot import user list from server in offline mode"), false, "Critical", this);
@@ -347,7 +347,7 @@ void UserlistImportExport::startExportTransfer()
 {
 	kdebugf();
 
-	GaduProtocol *gadu = dynamic_cast<GaduProtocol *>(AccountManager::instance()->defaultAccount()->protocol());
+	GaduProtocol *gadu = dynamic_cast<GaduProtocol *>(AccountManager::instance()->defaultAccount()->protocolHandler());
 	if (!gadu->isConnected())
 	{
 		MessageBox::msg(tr("Cannot export user list to server in offline mode"), false, "Critical", this);
@@ -374,7 +374,7 @@ void UserlistImportExport::ExportToFile(void)
 	pb_tofile->setEnabled(false);
 
 	Account *account = AccountManager::instance()->defaultAccount();
-	GaduProtocol *gadu = dynamic_cast<GaduProtocol *>(account->protocol());
+	GaduProtocol *gadu = dynamic_cast<GaduProtocol *>(account->protocolHandler());
 
 	QString fname = QFileDialog::getSaveFileName(this, QString::null, QString(getenv("HOME")));
 	if (!fname.isEmpty())
@@ -408,7 +408,7 @@ void UserlistImportExport::clean()
 {
 	kdebugf();
 
-	GaduProtocol *gadu = dynamic_cast<GaduProtocol *>(AccountManager::instance()->defaultAccount()->protocol());
+	GaduProtocol *gadu = dynamic_cast<GaduProtocol *>(AccountManager::instance()->defaultAccount()->protocolHandler());
 	if (!gadu->isConnected())
 	{
 		MessageBox::msg(tr("Cannot clear user list on server in offline mode"), false, "Critical", this);

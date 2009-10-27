@@ -40,7 +40,7 @@ AvatarManager::~AvatarManager()
 
 AvatarService * AvatarManager::avatarService(Account *account)
 {
-	Protocol *protocol = account->protocol();
+	Protocol *protocol = account->protocolHandler();
 	if (!protocol)
 		return 0;
 

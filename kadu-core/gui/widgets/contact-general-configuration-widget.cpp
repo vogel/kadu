@@ -196,8 +196,8 @@ void ContactGeneralConfigurationWidget::addAccountDataRow(ContactAccountData *da
 	foreach (Account *account, AccountManager::instance()->accounts())
 	{
 		accountsCombo->addItem(
-		    account->protocol()->icon(), 
-		    account->protocol()->protocolFactory()->displayName() + " (" + account->id() + ")",
+		    account->protocolHandler()->icon(),
+		    account->protocolHandler()->protocolFactory()->displayName() + " (" + account->id() + ")",
 		    account->uuid().toString()
 		);
 	}
@@ -227,7 +227,7 @@ void ContactGeneralConfigurationWidget::saveConfiguration()
 
 		if (CurrentContact.hasAccountData(account))
 		{
-			if (!contactId.isEmpty()/* && account->protocol()->validateId(ContactsIds.at(i)->text())*/)
+			if (!contactId.isEmpty()/* && account->protocolHandler()->validateId(ContactsIds.at(i)->text())*/)
 			{
 				CurrentContact.accountData(account)->setId(contactId);
 			}

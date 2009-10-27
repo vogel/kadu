@@ -395,9 +395,9 @@ QString AdiumChatStyleEngine::replaceKeywords(Chat *chat, QString &styleHref, QS
 	// Replace %screenName% (contact ID)
 	result.replace(QString("%senderScreenName%"), msg.sender().id(chat->account()));
 	// Replace service name (protocol name)
-	result.replace(QString("%service%"), chat->account()->protocol()->protocolFactory()->displayName());
+	result.replace(QString("%service%"), chat->account()->protocolHandler()->protocolFactory()->displayName());
 	// Replace protocolIcon (sender statusIcon). TODO:
-	result.replace(QString("%senderStatusIcon%"), chat->account()->protocol()->protocolFactory()->iconName());
+	result.replace(QString("%senderStatusIcon%"), chat->account()->protocolHandler()->protocolFactory()->iconName());
 
 	// Replace time
 	QDateTime time = msg.sendDate().isNull() ? msg.receiveDate(): msg.sendDate();

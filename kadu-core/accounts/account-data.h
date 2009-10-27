@@ -14,16 +14,16 @@
 #include <QtCore/QSharedData>
 #include <QtCore/QUuid>
 
-#include "configuration/uuid-storable-object.h"
+#include "status/base-status-container.h"
 
 #define Property(type, name, capitalized_name) \
 	type name() { ensureLoaded(); return capitalized_name; } \
-	void set##capitalized_name(const type &name) { ensureLoaded(); capitalized_name = name; dataUpdated(); }
+	void set##capitalized_name(type name) { ensureLoaded(); capitalized_name = name; dataUpdated(); }
 
 class AccountDetails;
 class Protocol;
 
-class KADUAPI AccountData : public QObject, public QSharedData, public UuidStorableObject
+class KADUAPI AccountData : public BaseStatusContainer, public QSharedData
 {
 	Q_OBJECT
 	Q_DISABLE_COPY(AccountData)
@@ -77,6 +77,14 @@ public:
 	virtual QUuid uuid() const { return Uuid; }
 	void setUuid(const QUuid uuid) { Uuid = uuid; }
 
+	//account type
+	bool isNull() const { return TypeNull == Type; }
+
+	void unloadProtocol();
+
+	Property(QString, protocolName, ProtocolName)
+	Property(Protocol *, protocolHandler, ProtocolHandler)
+	Property(AccountDetails *, details, Details)
 	Property(QString, name, Name)
 	Property(QString, id, Id)
 	Property(bool, rememberPassword, RememberPassword)
@@ -89,6 +97,24 @@ public:
 	Property(bool, proxyRequiresAuthentication, ProxyRequiresAuthentication)
 	Property(QString, proxyUser, ProxyUser)
 	Property(QString, proxyPassword, ProxyPassword)
+
+	// StatusContainer implementation
+
+	virtual QString statusContainerName();
+
+	virtual void setStatus(Status newStatus);
+	virtual Status status();
+	virtual int maxDescriptionLength();
+
+	virtual QString statusName();
+	virtual QPixmap statusPixmap();
+	virtual QPixmap statusPixmap(const QString &statusType);
+
+	virtual QList<StatusType *> supportedStatusTypes();
+
+	QPixmap statusPixmap(Status status);
+
+	virtual void setPrivateStatus(bool isPrivate);
 
 signals:
 	void updated();

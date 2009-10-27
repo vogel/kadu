@@ -171,7 +171,7 @@ void WizardStarter::userListImported(bool ok, QList<UserListElement> list)
 {
 	kdebugf();
 
-	Protocol *gadu = AccountManager::instance()->defaultAccount()->protocol();
+	Protocol *gadu = AccountManager::instance()->defaultAccount()->protocolHandler();
 	disconnect(gadu, SIGNAL(userListImported(bool, QList<UserListElement>)), this, SLOT(userListImported(bool, QList<UserListElement>)));
 
 	if (!ok)
@@ -190,7 +190,7 @@ void WizardStarter::userListImported(bool ok, QList<UserListElement> list)
 **/
 void WizardStarter::connected()
 {
-	GaduProtocol *gadu = dynamic_cast<GaduProtocol *>(AccountManager::instance()->defaultAccount()->protocol());
+	GaduProtocol *gadu = dynamic_cast<GaduProtocol *>(AccountManager::instance()->defaultAccount()->protocolHandler());
 	if (!gadu->doImportUserList())
 	{
 		MessageBox::msg(tr("User list couldn't be imported"));

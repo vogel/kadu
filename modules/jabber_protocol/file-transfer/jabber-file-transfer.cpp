@@ -159,7 +159,7 @@ void JabberFileTransfer::send()
 		return; // TODO: notify
 	}
 
-	JabberProtocol *jabberProtocol = dynamic_cast<JabberProtocol *>(account()->protocol());
+	JabberProtocol *jabberProtocol = dynamic_cast<JabberProtocol *>(account()->protocolHandler());
 	if (!jabberProtocol)
 	{
 		changeFileTransferStatus(FileTransfer::StatusNotConnected);

@@ -13,10 +13,28 @@
 #include <QtCore/QUuid>
 #include <QtXml/QDomElement>
 
+#include "accounts/account-data.h"
 #include "contacts/contact.h"
 #include "contacts/contacts-aware-object.h"
 #include "status/base-status-container.h"
 #include "status/status.h"
+
+#define PropertyRead(type, name, capitalized_name, default) \
+	type name() const\
+	{\
+		return isNull()\
+			? default\
+			: Data->name();\
+	}
+#define PropertyWrite(type, name, capitalized_name, default) \
+	void set##capitalized_name(type name) const\
+	{\
+		if (!isNull())\
+			Data->set##capitalized_name(name);\
+	}
+#define Property(type, name, capitalized_name, default) \
+	PropertyRead(type, name, capitalized_name, default) \
+	PropertyWrite(type, name, capitalized_name, default)
 
 class QPixmap;
 
@@ -26,30 +44,11 @@ class ProtocolFactory;
 class Status;
 class XmlConfigFile;
 
-class KADUAPI Account : public BaseStatusContainer, public ContactsAwareObject
+class KADUAPI Account : public QObject, public ContactsAwareObject
 {
 	Q_OBJECT
 
-	QUuid Uuid;
-
-	QString ProtocolName;
-	Protocol *ProtocolHandler;
-	AccountDetails *Details;
-
-	QString Name;
-	QString Id;
-	bool RememberPassword;
-	bool HasPassword;
-	QString Password;
-
-	bool ConnectAtStart;
-
-	bool UseProxy;
-	QHostAddress ProxyHost;
-	short int ProxyPort;
-	bool ProxyReqAuthentication;
-	QString ProxyUser;
-	QString ProxyPassword;
+	QExplicitlySharedDataPointer<AccountData> Data;
 
 protected:
 	virtual void contactAdded(Contact contact);
@@ -58,75 +57,44 @@ protected:
 public:
 	static Account * loadFromStorage(StoragePoint *storage);
 
-	explicit Account(StoragePoint *storagePoint);
-	explicit Account(const QUuid &uuid = QUuid());
+	explicit Account(AccountData::AccountType type = AccountData::TypeNormal);
+	explicit Account(AccountData *data);
+	Account(const Account &copy);
 	virtual ~Account();
 
-	virtual void load();
-	virtual void store();
+	bool isNull() const { return 0 == Data || Data->isNull(); }
 
-	virtual QUuid uuid() const { return Uuid; }
+	void store();
+	void removeFromStorage();
+
+	QUuid uuid() const;
+	StoragePoint * storage() const;
 
 	void loadProtocol(ProtocolFactory *protocolFactory);
 	void unloadProtocol();
-
-	Protocol * protocol() { return ProtocolHandler; }
-	QString protocolName() { ensureLoaded(); return ProtocolName; }
-
-	AccountDetails * details() { return Details; }
-	void setDetails(AccountDetails *details) { Details = details; } // TODO: 0.6.6 make it emit signals or sth
-
-	void setConnectAtStart(bool connectAtStart) { ConnectAtStart = connectAtStart; }
-	bool connectAtStart() { return ConnectAtStart; }
-
-	void setName(const QString &name) { Name = name; }
-	virtual bool setId(const QString &id);
-	void setRememberPassword(bool rememberPassword) { RememberPassword = rememberPassword; }
-	void setPassword(const QString &password) { Password = password; HasPassword = !Password.isEmpty(); }
-
-	QString name() { return Name; }
-	QString id() { return Id; }
-	bool rememberPassword() { return RememberPassword; }
-	bool hasPassword() { return HasPassword; }
-	QString password() { return Password; }
-
-	bool useProxy() { return UseProxy; }
-	QHostAddress proxyHost() { return ProxyHost; }
-	short int proxyPort() { return ProxyPort; }
-	bool proxyReqAuthentication() { return ProxyReqAuthentication; }
-	QString proxyUser() { return ProxyUser; }
-	QString proxyPassword() { return ProxyPassword; }
-
-	void setUseProxy(bool useProxy) { UseProxy = useProxy; }
-	void setProxyHost(QHostAddress proxyHost) { ProxyHost = proxyHost; }
-	void setProxyPort(short int proxyPort) { ProxyPort = proxyPort; }
-	void setProxyReqAuthentication(bool proxyReqAuth) { ProxyReqAuthentication = proxyReqAuth; }
-	void setProxyUser(QString proxyUser) { ProxyUser = proxyUser; }
-	void setProxyPassword(QString proxyPassword) { ProxyPassword = proxyPassword; }
 
 	void importProxySettings();
 
 	Contact getContactById(const QString &id);
 	Contact createAnonymous(const QString &id);
 
-	// StatusContainer implementation
+	StatusContainer * statusContainer() { return Data.data(); }
 
-	virtual QString statusContainerName();
-
-	virtual void setStatus(Status newStatus);
-	virtual Status status();
-	virtual int maxDescriptionLength();
-
-	virtual QString statusName();
-	virtual QPixmap statusPixmap();
-	virtual QPixmap statusPixmap(const QString &statusType);
-
-	virtual QList<StatusType *> supportedStatusTypes();
-
-	QPixmap statusPixmap(Status status);
-
-	virtual void setPrivateStatus(bool isPrivate);
-
+	Property(QString, protocolName, ProtocolName, QString::null)
+	Property(Protocol *, protocolHandler, ProtocolHandler, 0)
+	Property(AccountDetails *, details, Details, 0)
+	Property(QString, name, Name, QString::null)
+	Property(QString, id, Id, QString::null)
+	Property(bool, rememberPassword, RememberPassword, true)
+	Property(bool, hasPassword, HasPassword, false)
+	Property(QString, password, Password, QString::null)
+	Property(bool, connectAtStart, ConnectAtStart, true)
+	Property(bool, useProxy, UseProxy, false)
+	Property(QHostAddress, proxyHost, ProxyHost, QHostAddress())
+	Property(short int, proxyPort, ProxyPort, 0)
+	Property(bool, proxyRequiresAuthentication, ProxyRequiresAuthentication, false)
+	Property(QString, proxyUser, ProxyUser, QString::null)
+	Property(QString, proxyPassword, ProxyPassword, QString::null)
 
 signals:
 	void contactStatusChanged(Account *account, Contact contact, Status oldStatus);

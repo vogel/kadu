@@ -71,7 +71,7 @@ void disableNonHistoryContacts(Action *action)
 			return;
 
 		Account *account = contact.prefferedAccount();
-		if (!account || !account->protocol()->chatService())
+		if (!account || !account->protocolHandler()->chatService())
 			return;
 	}
 
@@ -276,7 +276,7 @@ void History::chatCreated(ChatWidget *chatWidget)
 
 void History::accountRegistered(Account *account)
 {
-	ChatService *service = account->protocol()->chatService();
+	ChatService *service = account->protocolHandler()->chatService();
 	if (service)
 	{
 		connect(service, SIGNAL(messageReceived(const Message &)),
@@ -289,7 +289,7 @@ void History::accountRegistered(Account *account)
 
 void History::accountUnregistered(Account *account)
 {
-	ChatService *service = account->protocol()->chatService();
+	ChatService *service = account->protocolHandler()->chatService();
 	if (service)
 	{
 		disconnect(service, SIGNAL(messageReceived(const Message &)),

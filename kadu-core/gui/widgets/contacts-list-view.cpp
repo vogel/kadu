@@ -137,7 +137,7 @@ void ContactsListView::triggerActivate(const QModelIndex& index)
 	if (con.isNull())
 		return;
 
-	Chat *chat = account->protocol()->findChat(ContactSet(con));
+	Chat *chat = account->protocolHandler()->findChat(ContactSet(con));
 	if (chat)
 		emit chatActivated(chat);
 }
@@ -199,10 +199,10 @@ void ContactsListView::contextMenuEvent(QContextMenuEvent *event)
 
 	foreach (Account * account, con.accounts())
 	{
-		if (!account || !account->protocol())
+		if (!account || !account->protocolHandler())
 			continue;
 
-		ProtocolFactory *protocolFactory = account->protocol()->protocolFactory();
+		ProtocolFactory *protocolFactory = account->protocolHandler()->protocolFactory();
 
 		if (!protocolFactory || !protocolFactory->protocolMenuManager())
 			continue;

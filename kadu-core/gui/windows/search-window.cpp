@@ -209,7 +209,7 @@ SearchWindow::SearchWindow(QWidget *parent, Contact contact)
 	{
 		foreach (Account *a, AccountManager::instance()->accounts())
 		{
-			if (a->protocol()->isConnected() && a->protocol()->protocolFactory()->name() == "gadu")
+			if (a->protocolHandler()->isConnected() && a->protocolHandler()->protocolFactory()->name() == "gadu")
 			{
 				CurrentAccount = a;
 				break;
@@ -219,7 +219,7 @@ SearchWindow::SearchWindow(QWidget *parent, Contact contact)
 			CurrentAccount = AccountManager::instance()->accounts().at(0);
 	}
 
-	CurrentSearchService = CurrentAccount->protocol()->searchService();
+CurrentSearchService = CurrentAccount->protocolHandler()->searchService();
 	if (CurrentSearchService)
 	{
 		connect(CurrentSearchService, SIGNAL(newResults(ContactList)), this, SLOT(newSearchResults(ContactList)));
@@ -326,7 +326,7 @@ void SearchWindow::chatFound()
 	ContactSet contacts = selected();
 	if (contacts.count() > 0)
 	{
-		Chat *chat = (*contacts.begin()).prefferedAccount()->protocol()->findChat(contacts);
+		Chat *chat = (*contacts.begin()).prefferedAccount()->protocolHandler()->findChat(contacts);
 		if (chat)
 			ChatWidgetManager::instance()->openChatWidget(chat, true);
 	}
@@ -415,7 +415,7 @@ void SearchWindow::firstSearch()
 		return;
 	}
 
-	if (!CurrentAccount->protocol()->isConnected())
+	if (!CurrentAccount->protocolHandler()->isConnected())
 	{
 		MessageBox::msg(tr("Cannot search contacts in offline mode"), false, "Critical", this);
 		kdebugf2();
@@ -476,7 +476,7 @@ void SearchWindow::nextSearch()
 {
 	kdebugf();
 
-	if (!CurrentAccount->protocol()->isConnected())
+	if (!CurrentAccount->protocolHandler()->isConnected())
 		return;
 
 	searching = true;
@@ -509,7 +509,7 @@ void SearchWindow::newSearchResults(ContactList contacts)
 		QList <QTreeWidgetItem *> items = results->findItems(cad->id(), Qt::MatchExactly, 1);
 		if (items.count())
 			qlv = items[0];		
-		pix = cad->account()->statusPixmap(cad->status());
+		pix = cad->account()->statusContainer()->statusPixmap(cad->status());
 
 		if (qlv)
 		{

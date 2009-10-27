@@ -25,9 +25,9 @@ static QString getProtocolName(const QObject * const object)
 	const AccountNotification * const notification = dynamic_cast<const AccountNotification * const>(object);
 	return notification &&
 			notification->account() &&
-			notification->account()->protocol() &&
-			notification->account()->protocol()->protocolFactory()
-		? notification->account()->protocol()->protocolFactory()->displayName()
+			notification->account()->protocolHandler() &&
+			notification->account()->protocolHandler()->protocolFactory()
+		? notification->account()->protocolHandler()->protocolFactory()->displayName()
 		: QString::null;
 }
 

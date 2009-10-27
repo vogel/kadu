@@ -264,7 +264,7 @@ void JabberTransport::setStatusMessage(/* const Kopete::StatusMessage &statusMes
 
 JabberProtocol * JabberTransport::protocol( ) const
 {
-	return 0;///m_account->protocol(); 
+	return 0;///m_account->protocolHandler();
 }
 
 bool JabberTransport::removeAccount( )

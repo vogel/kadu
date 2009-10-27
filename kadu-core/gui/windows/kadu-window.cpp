@@ -350,7 +350,7 @@ Chat * KaduWindow::chat()
 	if (!account)
 		return 0;
 
-	return account->protocol()->findChat(contacts());
+	return account->protocolHandler()->findChat(contacts());
 }
 
 void KaduWindow::configurationUpdated()

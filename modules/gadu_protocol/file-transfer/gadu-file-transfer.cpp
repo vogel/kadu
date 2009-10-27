@@ -109,7 +109,7 @@ void GaduFileTransfer::send()
 		return; // TODO: notify
 	}
 
-	GaduProtocol *gaduProtocol = dynamic_cast<GaduProtocol *>(account()->protocol());
+	GaduProtocol *gaduProtocol = dynamic_cast<GaduProtocol *>(account()->protocolHandler());
 	if (!gaduProtocol)
 	{
 		changeFileTransferStatus(FileTransfer::StatusNotConnected);

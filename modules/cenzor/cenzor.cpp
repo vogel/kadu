@@ -40,7 +40,7 @@ Cenzor::Cenzor()
 {
 	kdebugf();
 
-	Protocol *gadu = AccountManager::instance()->defaultAccount()->protocol();
+	Protocol *gadu = AccountManager::instance()->defaultAccount()->protocolHandler();
 	connect(gadu, SIGNAL(rawGaduReceivedMessageFilter(Protocol *, UserListElements, QString&, QByteArray&, bool&)), this, SLOT(messageFiltering(Protocol *, UserListElements, QString&, QByteArray&, bool&)));
 
 	words_read();

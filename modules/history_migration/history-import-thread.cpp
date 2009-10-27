@@ -105,7 +105,7 @@ Chat * HistoryImportThread::chatFromUinsList(QStringList uinsList)
 		contacts.insert(contact);
 	}
 
-	return GaduAccount->protocol()->findChat(contacts);
+	return GaduAccount->protocolHandler()->findChat(contacts);
 }
 
 QList<HistoryEntry> HistoryImportThread::historyEntries(QStringList uins, int mask)

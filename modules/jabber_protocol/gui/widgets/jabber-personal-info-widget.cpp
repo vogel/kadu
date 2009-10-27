@@ -26,7 +26,7 @@ JabberPersonalInfoWidget::JabberPersonalInfoWidget(Account *account, QWidget* pa
 	if (!account)
 		return;
 
-	Service = account->protocol()->personalInfoService();
+	Service = account->protocolHandler()->personalInfoService();
 	if (!Service)
 		return;
 

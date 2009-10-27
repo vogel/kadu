@@ -198,7 +198,7 @@ void YourAccounts::accountSelectionChanged(const QItemSelection &selected, const
 	AccountEditWidget *editWidget;
 	if (!EditWidgets.contains(account))
 	{
-		editWidget = account->protocol()->protocolFactory()->newEditAccountWidget(account, this);
+		editWidget = account->protocolHandler()->protocolFactory()->newEditAccountWidget(account, this);
 		EditWidgets[account] = editWidget;
 		EditStack->addWidget(editWidget);
 	}

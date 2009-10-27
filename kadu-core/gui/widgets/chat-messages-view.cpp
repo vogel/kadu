@@ -56,7 +56,7 @@ void ChatMessagesView::connectChat()
 	if (!CurrentChat || !CurrentChat->account())
 		return;
 
-	ChatImageService *chatImageService = CurrentChat->account()->protocol()->chatImageService();
+	ChatImageService *chatImageService = CurrentChat->account()->protocolHandler()->chatImageService();
 	if (chatImageService)
 		connect(chatImageService, SIGNAL(imageReceived(const QString &, const QString &)),
 				this, SLOT(imageReceived(const QString &, const QString &)));
@@ -67,7 +67,7 @@ void ChatMessagesView::disconnectChat()
 	if (!CurrentChat || !CurrentChat->account())
 		return;
 	
-	ChatImageService *chatImageService = CurrentChat->account()->protocol()->chatImageService();
+	ChatImageService *chatImageService = CurrentChat->account()->protocolHandler()->chatImageService();
 	if (chatImageService)
 		disconnect(chatImageService, SIGNAL(imageReceived(const QString &, const QString &)),
 				this, SLOT(imageReceived(const QString &, const QString &)));

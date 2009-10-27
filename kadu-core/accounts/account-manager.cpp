@@ -148,7 +148,7 @@ const QList<Account *> AccountManager::byProtocolName(const QString &name) const
 {
 	QList<Account *> list;
 	foreach (Account *account, AllAccounts)
-		if (account->protocol()->protocolFactory()->name() == name)
+		if (account->protocolName() == name)
 			list.append(account);
 
 	return list;
@@ -161,13 +161,13 @@ void AccountManager::registerAccount(Account *account)
 	emit accountRegistered(account);
 	AccountsAwareObject::notifyAccountRegistered(account);
 
-	connect(account->protocol(), SIGNAL(connectionError(Account *, const QString &, const QString &)),
+	connect(account->protocolHandler(), SIGNAL(connectionError(Account *, const QString &, const QString &)),
 			this, SLOT(connectionError(Account *, const QString &, const QString &)));
 }
 
 void AccountManager::unregisterAccount(Account *account)
 {
-	disconnect(account->protocol(), SIGNAL(connectionError(Account *, const QString &, const QString &)),
+	disconnect(account->protocolHandler(), SIGNAL(connectionError(Account *, const QString &, const QString &)),
 			this, SLOT(connectionError(Account *, const QString &, const QString &)));
 
 	AccountsAwareObject::notifyAccountUnregistered(account);
@@ -188,8 +188,8 @@ Status AccountManager::status() const
 {
 	Account *account = defaultAccount();
 	return account
-		? account->status()
-		: Status();
+			? account->statusContainer()->status()
+			: Status();
 }
 
 void AccountManager::protocolFactoryRegistered(ProtocolFactory *factory)
@@ -207,7 +207,7 @@ void AccountManager::protocolFactoryRegistered(ProtocolFactory *factory)
 void AccountManager::protocolFactoryUnregistered(ProtocolFactory *factory)
 {
 	foreach (Account *account, RegisteredAccounts)
-		if (account->protocol()->protocolFactory() == factory)
+		if (account->protocolHandler()->protocolFactory() == factory)
 			unloadAccount(account);
 }
 

@@ -499,7 +499,7 @@ void GaduProtocol::setupProxy()
 		kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "gg_proxy_host = %s\n", gg_proxy_host);
 		kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "gg_proxy_port = %d\n", gg_proxy_port);
 
-		if (account()->proxyReqAuthentication() && !account()->proxyUser().isEmpty())
+		if (account()->proxyRequiresAuthentication() && !account()->proxyUser().isEmpty())
 		{
 			gg_proxy_username = strdup((char *)unicode2latin(account()->proxyUser()).data());
 			gg_proxy_password = strdup((char *)unicode2latin(account()->proxyPassword()).data());

@@ -347,7 +347,7 @@ void Core::kaduWindowDestroyed()
 
 void Core::accountRegistered(Account *account)
 {
-	Protocol *protocol = account->protocol();
+	Protocol *protocol = account->protocolHandler();
 
 	ChatService *chatService = protocol->chatService();
 	if (chatService)
@@ -370,7 +370,7 @@ void Core::accountRegistered(Account *account)
 
 void Core::accountUnregistered(Account *account)
 {
-	Protocol *protocol = account->protocol();
+	Protocol *protocol = account->protocolHandler();
 
 	ChatService *chatService = protocol->chatService();
 	if (chatService)

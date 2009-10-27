@@ -53,8 +53,7 @@ class KADUAPI Contact : public QObject
 public:
 	static Contact loadFromStorage(StoragePoint *contactStoragePoint);
 
-	Contact();
-	Contact(ContactData::ContactType type);
+	explicit Contact(ContactData::ContactType type = ContactData::TypeNormal);
 	Contact(const Contact &copy);
 	virtual ~Contact();
 

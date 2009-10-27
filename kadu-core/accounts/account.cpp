@@ -20,41 +20,51 @@
 
 #include "account.h"
 
-Account * Account::loadFromStorage(StoragePoint *storagePoint)
+Account * Account::loadFromStorage(StoragePoint *accountStoragePoint)
 {
-	return new Account(storagePoint);
+	return new Account(AccountData::loadFromStorage(accountStoragePoint));
 }
 
-Account::Account(StoragePoint *storagePoint) :
-		BaseStatusContainer(storagePoint), ProtocolHandler(0), Details(0),
-		RememberPassword(false), HasPassword(false), UseProxy(false), ProxyHost(QHostAddress()),
-		ProxyPort(0), ProxyUser(QString()), ProxyPassword(QString())
+Account::Account(AccountData::AccountType type) :
+		Data(AccountData::TypeNull != type ? new AccountData(type) : 0)
 {
 }
 
-Account::Account(const QUuid &uuid) :
-		BaseStatusContainer("Account", AccountManager::instance()), ProtocolHandler(0), Details(0),
-		RememberPassword(false), HasPassword(false), UseProxy(false), ProxyHost(QHostAddress()),
-		ProxyPort(0), ProxyUser(QString()), ProxyPassword(QString())
+Account::Account(AccountData *data) :
+		Data(data)
 {
-	Uuid = uuid.isNull()
-		? QUuid::createUuid()
-		: uuid;
+
+}
+
+Account::Account(const Account &copy) :
+		Data(copy.Data)
+{
 }
 
 Account::~Account()
 {
-	if (0 != ProtocolHandler)
-	{
-		delete ProtocolHandler;
-		ProtocolHandler = 0;
-	}
+}
+
+QUuid Account::uuid() const
+{
+	return isNull() ? QUuid() : Data->uuid();
+}
+
+StoragePoint * Account::storage() const
+{
+	return isNull() ? 0 : Data->storage();
 }
 
 void Account::loadProtocol(ProtocolFactory *protocolFactory)
 {
-	ProtocolHandler = protocolFactory->createProtocolHandler(this);
-	Details = protocolFactory->createAccountDetails(this);
+	if (!Data)
+		return;
+
+	Protocol *ProtocolHandler = protocolFactory->createProtocolHandler(this);
+	AccountDetails *Details = protocolFactory->createAccountDetails(this);
+
+	Data->setProtocolHandler(ProtocolHandler);
+	Data->setDetails(Details);
 
 	connect(ProtocolHandler, SIGNAL(statusChanged(Account *, Status)), this, SIGNAL(statusChanged()));
 	connect(ProtocolHandler, SIGNAL(contactStatusChanged(Account *, Contact, Status)),
@@ -63,18 +73,8 @@ void Account::loadProtocol(ProtocolFactory *protocolFactory)
 
 void Account::unloadProtocol()
 {
-	delete ProtocolHandler;
-	ProtocolHandler = 0;
-
-	delete Details;
-	Details = 0;
-}
-
-bool Account::setId(const QString &id)
-{
-	// TODO: 0.6.6 reconnect
-	Id = id;
-	return true;
+	if (Data)
+		Data->unloadProtocol();
 }
 
 void Account::contactAdded(Contact contact)
@@ -89,62 +89,16 @@ void Account::contactRemoved(Contact contact)
 {
 }
 
-void Account::load()
-{
-	if (!isValidStorage())
-		return;
-
-	ConnectAtStart = loadValue<bool>("ConnectAtStart", true);
-
-	Uuid = QUuid(storage()->point().attribute("uuid"));
-	Name = loadValue<QString>("Name");
-	ProtocolName = loadValue<QString>("Protocol");
-	setId(loadValue<QString>("Id"));
-
-	RememberPassword = loadValue<bool>("RememberPassword", true);
-	HasPassword = RememberPassword;
-	if (RememberPassword)
-		Password = pwHash(loadValue<QString>("Password"));
-
-	UseProxy = loadValue<bool>("UseProxy");
-	ProxyPort = loadValue<int>("ProxyPort");
-	ProxyReqAuthentication = loadValue<bool>("ProxyRequiresAuthentication");
-	ProxyUser = loadValue<QString>("ProxyUser");
-	ProxyPassword = loadValue<QString>("ProxyPassword");
-
-	QHostAddress host;
-	if (!host.setAddress(loadValue<QString>("ProxyHost")))
-		host.setAddress("0.0.0.0");
-	ProxyHost = host;
-
-	triggerAllContactsAdded();
-}
-
 void Account::store()
 {
-	if (!isValidStorage())
-		return;
+	if (Data)
+		Data->store();
+}
 
-	storage()->point().setAttribute("uuid", Uuid.toString());
-
-	storeValue("ConnectAtStart", ConnectAtStart);
-
-	storeValue("Protocol", ProtocolName);
-	storeValue("Name", Name);
-	storeValue("Id", id());
-
-	storeValue("RememberPassword", RememberPassword);
-	if (RememberPassword && HasPassword)
-		storeValue("Password", pwHash(password()));
-	else
-		removeValue("Password");
-
-	storeValue("UseProxy", UseProxy);
-	storeValue("ProxyPort", ProxyPort);
-	storeValue("ProxyRequiresAuthentication", ProxyReqAuthentication);
-	storeValue("ProxyUser", ProxyUser);
-	storeValue("ProxyPassword", ProxyPassword);
-	storeValue("ProxyHost", ProxyHost.toString());
+void Account::removeFromStorage()
+{
+	if (Data)
+		Data->removeFromStorage();
 }
 
 Contact Account::getContactById(const QString& id)
@@ -154,8 +108,11 @@ Contact Account::getContactById(const QString& id)
 
 Contact Account::createAnonymous(const QString& id)
 {
+	if (!Data)
+		return Contact::null;
+
 	Contact result(ContactData::TypeAnonymous);
-	ProtocolFactory *protocolFactory = ProtocolHandler->protocolFactory();
+	ProtocolFactory *protocolFactory = Data->protocolHandler()->protocolFactory();
 	ContactAccountData *contactAccountData = protocolFactory->newContactAccountData(this, result, id);
 	if (!contactAccountData->isValid())
 	{
@@ -169,69 +126,17 @@ Contact Account::createAnonymous(const QString& id)
 
 void Account::importProxySettings()
 {
+	if (!Data)
+		return;
+
 	Account *defaultAccount = AccountManager::instance()->defaultAccount();
 	if (defaultAccount && defaultAccount->proxyHost().toString() != "0.0.0.0")
 	{
-		UseProxy = defaultAccount->useProxy();
-		ProxyPort = defaultAccount->proxyPort();
-		ProxyUser = defaultAccount->proxyUser();
-		ProxyReqAuthentication = defaultAccount->proxyReqAuthentication();
-		ProxyPassword = defaultAccount->proxyPassword();
-		ProxyHost = defaultAccount->proxyHost();
+		Data->setUseProxy(defaultAccount->useProxy());
+		Data->setProxyHost(defaultAccount->proxyHost());
+		Data->setProxyPort(defaultAccount->proxyPort());
+		Data->setProxyRequiresAuthentication(defaultAccount->proxyRequiresAuthentication());
+		Data->setProxyUser(defaultAccount->proxyUser());
+		Data->setProxyPassword(defaultAccount->proxyPassword());
 	}
-}
-
-QString Account::statusContainerName()
-{
-	return name();
-}
-
-void Account::setStatus(Status status)
-{
-	if (0 != ProtocolHandler)
-		ProtocolHandler->setStatus(status);
-}
-
-Status Account::status()
-{
-	return 0 != ProtocolHandler
-		? ProtocolHandler->status()
-		: Status();
-}
-
-QString Account::statusName()
-{
-	return Status::name(status(), false);
-}
-
-QPixmap Account::statusPixmap()
-{
-	return statusPixmap(status());
-}
-
-QPixmap Account::statusPixmap(const QString &statusType)
-{
-	return ProtocolHandler->statusPixmap(statusType);
-}
-
-QPixmap Account::statusPixmap(Status status)
-{
-	return ProtocolHandler->statusPixmap(status);
-}
-
-QList<StatusType *> Account::supportedStatusTypes()
-{
-	return ProtocolHandler->protocolFactory()->supportedStatusTypes();
-}
-
-int Account::maxDescriptionLength() 
-{
-	if (ProtocolHandler)
-		return ProtocolHandler->maxDescriptionLength();
-}
-
-void Account::setPrivateStatus(bool isPrivate)
-{
-	if (ProtocolHandler)
-		return ProtocolHandler->setPrivateMode(isPrivate);
 }

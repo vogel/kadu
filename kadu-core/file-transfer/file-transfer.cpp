@@ -51,7 +51,7 @@ FileTransfer * FileTransfer::loadFromStorage(StoragePoint *fileTransferStoragePo
 	if (!account)
 		return 0;
 
-	FileTransferService *service = account->protocol()->fileTransferService();
+	FileTransferService *service = account->protocolHandler()->fileTransferService();
 	if (!service)
 		return 0;
 

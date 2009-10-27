@@ -83,7 +83,7 @@ void FileTransferManager::accountRegistered(Account *account)
 {
 	load(account);
 
-	Protocol *protocol = account->protocol();
+	Protocol *protocol = account->protocolHandler();
 	if (!protocol)
 		return;
 
@@ -112,7 +112,7 @@ void FileTransferManager::accountUnregistered(Account *account)
 {
 	store(account);
 
-	Protocol *protocol = account->protocol();
+	Protocol *protocol = account->protocolHandler();
 	if (!protocol)
 		return;
 

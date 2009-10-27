@@ -28,23 +28,18 @@ Contact Contact::loadFromStorage(StoragePoint* contactStoragePoint)
 	return Contact(ContactData::loadFromStorage(contactStoragePoint));
 }
 
-Contact::Contact(ContactData *contactData)
-	: Data(contactData)
+Contact::Contact(ContactData *contactData) :
+		Data(contactData)
 {
 }
 
-Contact::Contact()
-	: Data(new ContactData(ContactData::TypeNormal))
+Contact::Contact(ContactData::ContactType type) :
+		Data(ContactData::TypeNull != type ? new ContactData(type) : 0)
 {
 }
 
-Contact::Contact(ContactData::ContactType type)
-	:Data(ContactData::TypeNull != type ? new ContactData(type) : 0)
-{
-}
-
-Contact::Contact(const Contact &copy)
-	: Data(copy.Data)
+Contact::Contact(const Contact &copy) :
+		Data(copy.Data)
 {
 }
 

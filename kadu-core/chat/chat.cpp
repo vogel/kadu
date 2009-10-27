@@ -30,7 +30,7 @@ Chat * Chat::loadFromStorage(StoragePoint *chatStoragePoint)
 	if (!account)
 		return 0;
 
-	return account->protocol()->loadChatFromStorage(chatStoragePoint);
+	return account->protocolHandler()->loadChatFromStorage(chatStoragePoint);
 }
 
 Chat::Chat(StoragePoint *storage) :
@@ -133,7 +133,7 @@ void Chat::refreshTitle()
 		ContactAccountData *cad = contact.accountData(account());
 
 		if (cad)
-			Icon = account()->statusPixmap(cad->status());
+			Icon = account()->statusContainer()->statusPixmap(cad->status());
 	}
 
 	title.replace("<br/>", " ");
