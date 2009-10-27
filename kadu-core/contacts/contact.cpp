@@ -151,36 +151,36 @@ void Contact::removeAccountData(Account* account) const
 ContactAccountData * Contact::accountData(Account *account) const
 {
 	return isNull()
-		? 0
-		: Data->accountData(account);
+			? 0
+			: Data->accountData(account);
 }
 
 QList<ContactAccountData *> Contact::accountDatas() const
 {
 	return isNull()
-		? QList<ContactAccountData *>()
-		: Data->accountDatas();
+			? QList<ContactAccountData *>()
+			: Data->accountDatas();
 }
 
 StoragePoint * Contact::storagePointForAccountData(Account *account) const
 {
 	return isNull()
-		? 0
-		: Data->storagePointForAccountData(account);
+			? 0
+			: Data->storagePointForAccountData(account);
 }
 
 bool Contact::hasAccountData(Account *account) const
 {
 	return isNull()
-		? false
-		: 0 != Data->accountData(account);
+			? false
+			: 0 != Data->accountData(account);
 }
 
 QString Contact::id(Account *account) const
 {
 	return isNull()
-		? QString::null
-		: Data->id(account);
+			? QString::null
+			: Data->id(account);
 }
 
 uint qHash(const Contact &contact)
@@ -191,8 +191,8 @@ uint qHash(const Contact &contact)
 bool Contact::isIgnored() const
 {
 	return isNull()
-		? false
-		: Data->isIgnored();
+			? false
+			: Data->isIgnored();
 }
 
 bool Contact::setIgnored(bool ignored)
@@ -205,15 +205,15 @@ bool Contact::setIgnored(bool ignored)
 bool Contact::isBlocked(Account *account) const
 {
 	return isNull()
-		? false
-		: Data->isBlocked(account);
+			? false
+			: Data->isBlocked(account);
 }
 
 bool Contact::isOfflineTo(Account *account) const
 {
 	return isNull()
-		? false
-		: Data->isOfflineTo(account);
+			? false
+			: Data->isOfflineTo(account);
 }
 
 void Contact::setOfflineTo(Account *account, bool offlineTo) const
@@ -225,21 +225,21 @@ void Contact::setOfflineTo(Account *account, bool offlineTo) const
 bool Contact::isInGroup(Group *group) const
 {
 	return isNull()
-		? false
-		: Data->isInGroup(group);
+			? false
+			: Data->isInGroup(group);
 }
 
 bool Contact::showInAllGroup() const
 {
 	return isNull()
-		? false
-		: Data->showInAllGroup();
+			? false
+			: Data->showInAllGroup();
 }
 
 void Contact::addToGroup(Group *group)
 {
 	if (!isNull() && !Data->isInGroup(group))
-		Data->addToGroup(group);
+			Data->addToGroup(group);
 
 }
 void Contact::removeFromGroup(Group *group)
@@ -251,14 +251,14 @@ void Contact::removeFromGroup(Group *group)
 QString Contact::display() const
 {
 	return isNull()
-		? QString::null
-		: isAnonymous() && prefferedAccount()
-			? (prefferedAccount()->name() + ":" + id(prefferedAccount()))
-			: Data->display().isEmpty()
-				? Data->nickName().isEmpty()
-					? Data->firstName()
-					: Data->nickName()
-				: Data->display();
+			? QString::null
+			: isAnonymous() && prefferedAccount()
+					? (prefferedAccount()->name() + ":" + id(prefferedAccount()))
+					: Data->display().isEmpty()
+							? Data->nickName().isEmpty()
+									? Data->firstName()
+									: Data->nickName()
+							: Data->display();
 }
 
 Contact Contact::dummy()

@@ -47,7 +47,7 @@ class KADUAPI ContactAccountData : public QObject, public UuidStorableObject
 
 public:
 	ContactAccountData(Account *account, Contact contact, const QString &id, bool loaded = false);
-	ContactAccountData(StoragePoint *storage);
+	explicit ContactAccountData(StoragePoint *storage);
 
 	virtual bool validateId() {return false;}
 	virtual void load();

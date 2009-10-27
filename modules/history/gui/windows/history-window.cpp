@@ -189,6 +189,9 @@ void HistoryWindow::updateData()
 
 void HistoryWindow::selectChat(Chat *chat)
 {
+	if (!chat)
+		return;
+
 	ChatType type = chat->type();
 	QModelIndex chatTypeIndex = ChatsModelProxy->chatTypeIndex(type);
 
