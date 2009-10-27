@@ -22,7 +22,7 @@ public:
 	virtual QString statusContainerName() = 0;
 
 	virtual void setStatus(Status newStatus) = 0;
-	virtual Status status() = 0;
+	virtual const Status & status() = 0;
 
 	virtual QString statusName() = 0;
 	virtual QPixmap statusPixmap() = 0;

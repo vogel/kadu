@@ -61,7 +61,7 @@ public:
 	virtual QString statusContainerName() { return Name; }
 
 	virtual void setStatus(Status newStatus);
-	virtual Status status();
+	virtual const Status & status();
 
 	virtual QString statusName();
 	virtual QPixmap statusPixmap();

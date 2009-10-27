@@ -125,11 +125,11 @@ void Identity::setStatus(Status status)
 		account->statusContainer()->setStatus(status);
 }
 
-Status Identity::status()
+const Status & Identity::status()
 {
 	return Accounts.count()
 			? Accounts[0]->statusContainer()->status()
-			: Status();
+			: Status::null;
 }
 
 QString Identity::statusName()

@@ -107,11 +107,11 @@ void StatusContainerManager::setStatus(Status newStatus)
 		container->setStatus(newStatus);
 }
 
-Status StatusContainerManager::status()
+const Status & StatusContainerManager::status()
 {
-    	return AccountManager::instance()->defaultAccount()
-		? AccountManager::instance()->defaultAccount()->statusContainer()->status()
-		: Status("Offline");
+	return AccountManager::instance()->defaultAccount()
+			? AccountManager::instance()->defaultAccount()->statusContainer()->status()
+			: Status("Offline");
 }
 
 QString StatusContainerManager::statusName()

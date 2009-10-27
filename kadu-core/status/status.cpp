@@ -13,14 +13,22 @@
 
 #include "status.h"
 
-Status::Status(const QString &type, const QString &description)
-	: Description(description)
+#include <stdio.h>
+
+Status Status::null("Offline");
+
+Status::Status(const QString &type, const QString &description) :
+		Description(description)
 {
 	setType(type);
 }
 
-Status::Status(const Status& copyme)
-	: Type(copyme.Type), Group(copyme.Group), Description(copyme.Description)
+Status::Status(const Status& copyme) :
+		Type(copyme.Type), Group(copyme.Group), Description(copyme.Description)
+{
+}
+
+Status::~Status()
 {
 }
 

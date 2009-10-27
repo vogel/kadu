@@ -26,8 +26,11 @@ private:
 	QString Description;
 
 public:
-	Status(const QString &type = QString::null, const QString &description = QString::null);
+	static Status null;
+
+	explicit Status(const QString &type = QString::null, const QString &description = QString::null);
 	Status(const Status &copyme);
+	~Status();
 
 	QString type() const { return Type; }
 	void setType(const QString &type);

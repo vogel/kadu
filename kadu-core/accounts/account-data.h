@@ -103,7 +103,7 @@ public:
 	virtual QString statusContainerName();
 
 	virtual void setStatus(Status newStatus);
-	virtual Status status();
+	virtual const Status & status();
 	virtual int maxDescriptionLength();
 
 	virtual QString statusName();

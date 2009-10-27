@@ -136,12 +136,14 @@ void AccountData::setStatus(Status status)
 		ProtocolHandler->setStatus(status);
 }
 
-Status AccountData::status()
+const Status & AccountData::status()
 {
+	printf("ph: %p\n", ProtocolHandler);
+
 	if (ProtocolHandler)
 		ProtocolHandler->status();
 	else
-		return Status();
+		return Status::null;
 }
 
 int AccountData::maxDescriptionLength()

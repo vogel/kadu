@@ -16,6 +16,8 @@
 #include "configuration/configuration-aware-object.h"
 #include "status/status-container.h"
 
+#include <stdio.h>
+
 class KADUAPI StatusContainerManager : public StatusContainer, public ConfigurationAwareObject, private AccountsAwareObject
 {
 	Q_OBJECT
@@ -48,7 +50,7 @@ public:
 	static StatusContainerManager * instance();
 
 	unsigned int count() const { return StatusContainers.count(); }
-	const QList<StatusContainer *> statusContainers() const { return StatusContainers; }
+	const QList<StatusContainer *> statusContainers() const { printf("count: %d\n", count()); return StatusContainers; }
 
 	void registerStatusContainer(StatusContainer *statusContainer);
 	void unregisterStatusContainer(StatusContainer *statusContainer);
@@ -57,7 +59,7 @@ public:
 	virtual QString statusContainerName();
 
 	virtual void setStatus(Status newStatus);
-	virtual Status status();
+	virtual const Status & status();
 
 	virtual QString statusName();
 	virtual QPixmap statusPixmap();
