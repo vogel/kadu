@@ -202,6 +202,10 @@ void GaduProtocol::changeStatus()
 {
 	Status newStatus = nextStatus();
 
+	printf("changing status\n");
+	printf("connected: %d\n", newStatus.isDisconnected());
+	printf("network state: %d\n", state());
+
 	if (newStatus.isDisconnected() && status().isDisconnected())
 	{
 		if (NetworkConnecting == state())
@@ -227,6 +231,8 @@ void GaduProtocol::changeStatus()
 		gg_change_status_descr(GaduSession, type | friends, unicode2cp(newStatus.description()));
 	else
 		gg_change_status(GaduSession, type | friends);
+
+	printf("done\n");
 
 	if (newStatus.isDisconnected())
 		networkDisconnected(false);

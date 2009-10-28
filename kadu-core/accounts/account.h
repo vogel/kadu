@@ -32,6 +32,8 @@
 		if (!isNull())\
 			Data->set##capitalized_name(name);\
 	}
+
+#undef Property
 #define Property(type, name, capitalized_name, default) \
 	PropertyRead(type, name, capitalized_name, default) \
 	PropertyWrite(type, name, capitalized_name, default)
@@ -50,6 +52,9 @@ class KADUAPI Account : public QObject
 
 	QExplicitlySharedDataPointer<AccountData> Data;
 
+	void connectDataSignals();
+	void disconnectDataSignals();
+
 public:
 	static Account * loadFromStorage(StoragePoint *storage);
 
@@ -59,6 +64,11 @@ public:
 	virtual ~Account();
 
 	bool isNull() const { return 0 == Data || Data->isNull(); }
+
+	Account & operator = (const Account &copy);
+	bool operator == (const Account &compare) const;
+	bool operator != (const Account &compare) const;
+	int operator < (const Account &compare) const;
 
 	void store();
 	void removeFromStorage();

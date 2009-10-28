@@ -16,6 +16,7 @@
 
 #include "status/base-status-container.h"
 
+#undef Property
 #define Property(type, name, capitalized_name) \
 	type name() { ensureLoaded(); return capitalized_name; } \
 	void set##capitalized_name(type name) { ensureLoaded(); capitalized_name = name; dataUpdated(); }
@@ -23,6 +24,7 @@
 class AccountDetails;
 class Contact;
 class Protocol;
+class ProtocolFactory;
 
 class KADUAPI AccountData : public BaseStatusContainer, public QSharedData
 {
@@ -81,6 +83,7 @@ public:
 	//account type
 	bool isNull() const { return TypeNull == Type; }
 
+	void loadProtocol(ProtocolFactory *protocolFactory);
 	void unloadProtocol();
 
 	Property(QString, protocolName, ProtocolName)
@@ -118,8 +121,12 @@ public:
 	virtual void setPrivateStatus(bool isPrivate);
 
 signals:
+	void contactStatusChanged(Account *account, Contact contact, Status oldStatus);
+
 	void updated();
 
 };
+
+#include "contacts/contact.h" // for MOC
 
 #endif // ACCOUNT_DATA_H

@@ -21,11 +21,11 @@
 
 #include "exports.h"
 
+#undef Property
 #define Property(type, name, capitalized_name) \
 	type name() { ensureLoaded(); return capitalized_name; } \
 	void set##capitalized_name(const type &name) { ensureLoaded(); capitalized_name = name; dataUpdated(); }
 
-class Account;
 class ContactAccountData;
 class Group;
 class XmlConfigFile;
@@ -53,7 +53,7 @@ public:
 private:
 	QUuid Uuid;
 	QMap<QString, QString> CustomData;
-	QMap<Account *, ContactAccountData *> AccountsData;
+	QMap<Account, ContactAccountData *> AccountsData;
 
 	ContactType Type;
 
@@ -160,5 +160,7 @@ signals:
 };
 
 #undef Property
+
+#include "accounts/account.h" // for MOC
 
 #endif // CONTACT_DATA

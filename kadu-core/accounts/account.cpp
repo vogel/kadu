@@ -28,21 +28,66 @@ Account * Account::loadFromStorage(StoragePoint *accountStoragePoint)
 Account::Account(AccountData::AccountType type) :
 		Data(AccountData::TypeNull != type ? new AccountData(type) : 0)
 {
+	connectDataSignals();
 }
 
 Account::Account(AccountData *data) :
 		Data(data)
 {
-
+	connectDataSignals();
 }
 
 Account::Account(const Account &copy) :
 		Data(copy.Data)
 {
+	connectDataSignals();
 }
 
 Account::~Account()
 {
+	disconnectDataSignals();
+}
+
+Account & Account::operator = (const Account &copy)
+{
+	disconnectDataSignals();
+	Data = copy.Data;
+	connectDataSignals();
+
+	return *this;
+}
+
+bool Account::operator == (const Account &compare) const
+{
+	return Data == compare.Data;
+}
+
+bool Account::operator != (const Account &compare) const
+{
+	return Data != compare.Data;
+}
+
+int Account::operator < (const Account& compare) const
+{
+	return Data.data() - compare.Data.data();
+}
+
+void Account::connectDataSignals()
+{
+	if (isNull())
+		return;
+
+	connect(Data.data(), SIGNAL(contactStatusChanged(Account *, Contact, Status)),
+			this, SIGNAL(contactStatusChanged(Account *, Contact, Status)));
+}
+
+void Account::disconnectDataSignals()
+{
+	if (isNull())
+		return;
+
+	disconnect(Data.data(), SIGNAL(contactStatusChanged(Account *, Contact, Status)),
+			this, SIGNAL(contactStatusChanged(Account *, Contact, Status)));
 }
 
 QUuid Account::uuid() const
@@ -57,18 +102,10 @@ StoragePoint * Account::storage() const
 
 void Account::loadProtocol(ProtocolFactory *protocolFactory)
 {
-	if (!Data)
+	if (isNull())
 		return;
 
-	Protocol *ProtocolHandler = protocolFactory->createProtocolHandler(this);
-	AccountDetails *Details = protocolFactory->createAccountDetails(this);
-
-	Data->setProtocolHandler(ProtocolHandler);
-	Data->setDetails(Details);
-
-	connect(ProtocolHandler, SIGNAL(statusChanged(Account *, Status)), this, SIGNAL(statusChanged()));
-	connect(ProtocolHandler, SIGNAL(contactStatusChanged(Account *, Contact, Status)),
-			this, SIGNAL(contactStatusChanged(Account *, Contact, Status)));
+	Data->loadProtocol(protocolFactory);
 }
 
 void Account::unloadProtocol()
@@ -76,7 +113,6 @@ void Account::unloadProtocol()
 	if (Data)
 		Data->unloadProtocol();
 }
-
 
 void Account::store()
 {

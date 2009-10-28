@@ -189,31 +189,31 @@ void ContactData::addAccountData(ContactAccountData *accountData)
 		return;
 
 	emit accountDataAboutToBeAdded(accountData->account());
-	AccountsData.insert(accountData->account(), accountData);
+	AccountsData.insert(Account(*accountData->account()), accountData);
 	ContactAccountDataManager::instance()->addContactAccountData(accountData);
 	emit accountDataAdded(accountData->account());
 }
 
 void ContactData::removeAccountData(ContactAccountData *accountData)
 {
-	if (AccountsData[accountData->account()] == accountData)
+	if (AccountsData[Account(*accountData->account())] == accountData)
 		removeAccountData(accountData->account());
 }
 
 void ContactData::removeAccountData(Account *account)
 {
 	emit accountDataAboutToBeRemoved(account);
-	ContactAccountDataManager::instance()->removeContactAccountData(AccountsData[account]);
-	AccountsData.remove(account);
+	ContactAccountDataManager::instance()->removeContactAccountData(AccountsData[*account]);
+	AccountsData.remove(*account);
 	emit accountDataRemoved(account);
 }
 
 ContactAccountData * ContactData::accountData(Account *account)
 {
-	if (!AccountsData.contains(account))
+	if (!AccountsData.contains(*account))
 		return 0;
 
-	return AccountsData[account];
+	return AccountsData[*account];
 }
 
 QList<ContactAccountData *> ContactData::accountDatas()
@@ -249,8 +249,8 @@ StoragePoint * ContactData::storagePointForAccountData(Account *account)
 
 QString ContactData::id(Account *account)
 {
-	if (AccountsData.contains(account))
-		return AccountsData[account]->id();
+	if (AccountsData.contains(*account))
+		return AccountsData[*account]->id();
 
 	return QString::null;
 }
@@ -258,15 +258,20 @@ QString ContactData::id(Account *account)
 Account * ContactData::prefferedAccount()
 {
 	return AccountsData.count() > 0
-		? AccountsData.keys()[0]
+		? new Account(AccountsData.keys()[0])
 		: 0;
 }
 
 QList<Account *> ContactData::accounts()
 {
-	return AccountsData.count() > 0
-		? AccountsData.keys()
-		: QList<Account *>();
+	QList<Account *> r;
+	foreach (Account a, AccountsData.keys())
+		r.append(new Account(a));
+	return r;
+
+// 	return AccountsData.count() > 0
+// 		? AccountsData.keys()
+// 		: QList<Account *>();
 ;
 }
 
