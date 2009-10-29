@@ -12,22 +12,22 @@
 
 #include <QtCore/QMetaType>
 
-#include "abstract-contact-filter.h"
+#include "accounts/account.h"
 
-class Account;
+#include "abstract-contact-filter.h"
 
 class NonAccountContactFilter : public AbstractContactFilter
 {
 	Q_OBJECT
 
-	Account *CurrentAccount;
+	Account CurrentAccount;
 	bool Enabled;
 
 public:
 	explicit NonAccountContactFilter(QObject *parent = 0);
 	virtual ~NonAccountContactFilter();
 
-	void setAccount(Account *account);
+	void setAccount(Account account);
 	virtual bool acceptContact(Contact contact);
 
 };

@@ -42,8 +42,8 @@ class KADUAPI StatusContainerManager : public StatusContainer, public Configurat
 	QString DisconnectDescription;
 
 protected:
-	virtual void accountRegistered(Account *account);
-	virtual void accountUnregistered(Account *account);
+	virtual void accountRegistered(Account account);
+	virtual void accountUnregistered(Account account);
 	virtual void configurationUpdated();
 
 public:

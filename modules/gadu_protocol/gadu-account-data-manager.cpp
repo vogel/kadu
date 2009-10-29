@@ -11,7 +11,7 @@
 
 #include "gadu-account-data-manager.h"
 
-GaduAccountDataManager::GaduAccountDataManager(Account *data) :
+GaduAccountDataManager::GaduAccountDataManager(Account data) :
 		AccountDataManager(data)
 {
 }

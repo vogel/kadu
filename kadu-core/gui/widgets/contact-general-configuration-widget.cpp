@@ -193,16 +193,16 @@ void ContactGeneralConfigurationWidget::addAccountDataRow(ContactAccountData *da
 
 	if (!data)
 		accountsCombo->addItem("-" + tr("Select a Network") + "-");
-	foreach (Account *account, AccountManager::instance()->accounts())
+	foreach (Account account, AccountManager::instance()->accounts())
 	{
 		accountsCombo->addItem(
-		    account->protocolHandler()->icon(),
-		    account->protocolHandler()->protocolFactory()->displayName() + " (" + account->id() + ")",
-		    account->uuid().toString()
+				account.protocolHandler()->icon(),
+				account.protocolHandler()->protocolFactory()->displayName() + " (" + account.id() + ")",
+				account.uuid().toString()
 		);
 	}
 	if (data)
-		accountsCombo->setCurrentIndex(accountsCombo->findData(data->account()->uuid().toString()));
+		accountsCombo->setCurrentIndex(accountsCombo->findData(data->account().uuid().toString()));
 
 	ContactsLayout->addWidget(accountRow, row, 0, 1, 6);
 
@@ -222,12 +222,12 @@ void ContactGeneralConfigurationWidget::saveConfiguration()
 	{
 		if (ContactsAccounts.at(i)->itemData(ContactsAccounts.at(i)->currentIndex()).toString().isEmpty())
 			break;
-		Account *account = AccountManager::instance()->byUuid(QUuid(ContactsAccounts.at(i)->itemData(ContactsAccounts.at(i)->currentIndex()).toString()));
+		Account account = AccountManager::instance()->byUuid(QUuid(ContactsAccounts.at(i)->itemData(ContactsAccounts.at(i)->currentIndex()).toString()));
 		QString contactId = ContactsIds.at(i)->text();
 
 		if (CurrentContact.hasAccountData(account))
 		{
-			if (!contactId.isEmpty()/* && account->protocolHandler()->validateId(ContactsIds.at(i)->text())*/)
+			if (!contactId.isEmpty()/* && account.protocolHandler()->validateId(ContactsIds.at(i)->text())*/)
 			{
 				CurrentContact.accountData(account)->setId(contactId);
 			}

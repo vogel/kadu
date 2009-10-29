@@ -162,14 +162,16 @@ void NotificationManager::notifyAboutUserActionActivated(QAction *sender, bool t
 	kdebugf2();
 }
 
-void NotificationManager::accountRegistered(Account *account)
+void NotificationManager::accountRegistered(Account account)
 {
-	Protocol *protocol = account->protocolHandler();
+	Protocol *protocol = account.protocolHandler();
+	if (!protocol)
+		return;
 // 	TODO: 0.6.6
-// 	connect(protocol, SIGNAL(connectionError(Account *, const QString &, const QString &)),
-// 			this, SLOT(connectionError(Account *, const QString &, const QString &)));
-	connect(account, SIGNAL(contactStatusChanged(Account *, Contact, Status)),
-			this, SLOT(statusChanged(Account *, Contact, Status)));
+// 	connect(protocol, SIGNAL(connectionError(Account, const QString &, const QString &)),
+// 			this, SLOT(connectionError(Account, const QString &, const QString &)));
+	connect(account.data(), SIGNAL(contactStatusChanged(Account, Contact, Status)),
+			this, SLOT(statusChanged(Account, Contact, Status)));
 
 	ChatService *chatService = protocol->chatService();
 	if (chatService)
@@ -179,13 +181,13 @@ void NotificationManager::accountRegistered(Account *account)
 	}
 }
 
-void NotificationManager::accountUnregistered(Account *account)
+void NotificationManager::accountUnregistered(Account account)
 {
-	Protocol *protocol = account->protocolHandler();
-	disconnect(protocol, SIGNAL(connectionError(Account *, const QString &, const QString &)),
-			this, SLOT(connectionError(Account *, const QString &, const QString &)));
-	disconnect(account, SIGNAL(contactStatusChanged(Account *, Contact, Status)),
-			this, SLOT(statusChanged(Account *, Contact, Status)));
+	Protocol *protocol = account.protocolHandler();
+	disconnect(protocol, SIGNAL(connectionError(Account, const QString &, const QString &)),
+			this, SLOT(connectionError(Account, const QString &, const QString &)));
+	disconnect(account.data(), SIGNAL(contactStatusChanged(Account, Contact, Status)),
+			this, SLOT(statusChanged(Account, Contact, Status)));
 
 	ChatService *chatService = protocol->chatService();
 	if (chatService)
@@ -195,7 +197,7 @@ void NotificationManager::accountUnregistered(Account *account)
 	}
 }
 
-void NotificationManager::statusChanged(Account *account, Contact contact, Status oldStatus)
+void NotificationManager::statusChanged(Account account, Contact contact, Status oldStatus)
 {
 	kdebugf();
 
@@ -222,7 +224,7 @@ void NotificationManager::statusChanged(Account *account, Contact contact, Statu
 		return;
 	}
 
-	if (contact.id(account) == account->id()) // myself
+	if (contact.id(account) == account.id()) // myself
 		return;
 
 	ContactAccountData *data = contact.accountData(account);

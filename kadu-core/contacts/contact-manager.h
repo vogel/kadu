@@ -42,11 +42,11 @@ class KADUAPI ContactManager : public QObject, public StorableObject
 
 private slots:
 	void contactDataUpdated();
-	void contactAccountDataAboutToBeAdded(Account *account);
-	void contactAccountDataAdded(Account *account);
-	void contactAccountDataAboutToBeRemoved(Account *account);
-	void contactAccountDataRemoved(Account *account);
-	void contactAccountDataIdChanged(Account *account, const QString &oldId);
+	void contactAccountDataAboutToBeAdded(Account account);
+	void contactAccountDataAdded(Account account);
+	void contactAccountDataAboutToBeRemoved(Account account);
+	void contactAccountDataRemoved(Account account);
+	void contactAccountDataIdChanged(Account account, const QString &oldId);
 
 	void groupRemoved(Group *group);
 
@@ -60,7 +60,7 @@ public:
 	virtual void store();
 
 	ContactList contacts();
-	ContactList contacts(Account *account, bool includeAnonymous = false);
+	ContactList contacts(Account account, bool includeAnonymous = false);
 	void addContact(Contact contact);
 	void removeContact(Contact contact);
 	void mergeContact(Contact destination, Contact source);
@@ -70,7 +70,7 @@ public:
 	Contact byIndex(unsigned int index);
 	int contactIndex(Contact contact) { return Contacts.indexOf(contact); }
 
-	Contact byId(Account *account, const QString &id);
+	Contact byId(Account account, const QString &id);
 	Contact byUuid(const QString &uuid);
 	Contact byDisplay(const QString &display);
 
@@ -84,11 +84,11 @@ signals:
 	void contactRemoved(Contact &contact);
 
 	void contactUpdated(Contact &contact);
-	void contactAccountDataAboutToBeAdded(Contact &contact, Account *account);
-	void contactAccountDataAdded(Contact &contact, Account *account);
-	void contactAccountDataAboutToBeRemoved(Contact &contact, Account *account);
-	void contactAccountDataRemoved(Contact &contact, Account *account);
-	void contactAccountIdChanged(Contact &contact, Account *account, const QString &oldId);
+	void contactAccountDataAboutToBeAdded(Contact &contact, Account account);
+	void contactAccountDataAdded(Contact &contact, Account account);
+	void contactAccountDataAboutToBeRemoved(Contact &contact, Account account);
+	void contactAccountDataRemoved(Contact &contact, Account account);
+	void contactAccountIdChanged(Contact &contact, Account account, const QString &oldId);
 
 };
 

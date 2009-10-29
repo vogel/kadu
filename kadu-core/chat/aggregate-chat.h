@@ -33,7 +33,7 @@ public:
 	virtual QUuid uuid() const { return Chats.at(0)->uuid(); }
 	virtual QString name() const { return Chats.at(0)->name(); }
 
-	Account * account() { return Chats.at(0)->account(); }
+	Account account() { return Chats.at(0)->account(); }
 	QString title() { return Chats.at(0)->title(); }
 	QPixmap icon() { return Chats.at(0)->icon(); }
 

@@ -17,7 +17,7 @@ class ContactMergableFilter : public AbstractContactFilter
 {
 	Q_OBJECT
 
-	QSet<Account *> Accounts;
+	QSet<Account> Accounts;
 	Contact MyContact;
 
 public:

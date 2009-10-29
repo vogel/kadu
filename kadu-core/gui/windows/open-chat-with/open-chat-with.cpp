@@ -102,12 +102,12 @@ void OpenChatWith::openChat(Contact contact)
 	if (!widget)
 		return;
 
-	Account *account = AccountManager::instance()->defaultAccount();
+	Account account = AccountManager::instance()->defaultAccount();
 	ContactSet contacts = widget->selectedContacts();
 
-	if (account && !contacts.isEmpty() && !contacts.contains(Core::instance()->myself()))
+	if (!account.isNull() && !contacts.isEmpty() && !contacts.contains(Core::instance()->myself()))
 	{
-		Chat *chat = account->protocolHandler()->findChat(contacts);
+		Chat *chat = account.protocolHandler()->findChat(contacts);
 		if (chat)
 		{
 			ChatWidgetManager::instance()->sendMessage(chat);

@@ -25,12 +25,12 @@ class JabberProtocolFactory : public ProtocolFactory
 public:
 	static JabberProtocolFactory * instance();
 
-	virtual Protocol * createProtocolHandler(Account *account);
-	virtual AccountDetails * createAccountDetails(Account *account);
-	virtual ContactAccountData * newContactAccountData(Account *account, Contact contact, const QString &id);
+	virtual Protocol * createProtocolHandler(Account account);
+	virtual AccountDetails * createAccountDetails(Account account);
+	virtual ContactAccountData * newContactAccountData(Account account, Contact contact, const QString &id);
 	virtual ContactAccountData * loadContactAccountData(StoragePoint *storagePoint);
 	virtual AccountCreateWidget * newCreateAccountWidget(QWidget *parent);
-	virtual AccountEditWidget* newEditAccountWidget(Account*, QWidget*);
+	virtual AccountEditWidget* newEditAccountWidget(Account, QWidget*);
 	virtual ContactAccountDataWidget * newContactAccountDataWidget(ContactAccountData *contactAccountData, QWidget *parent = 0);
 	virtual QList<StatusType *> supportedStatusTypes();
 	virtual QString idLabel();

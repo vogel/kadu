@@ -36,14 +36,14 @@ StatusContainerManager::~StatusContainerManager()
 	triggerAllAccountsUnregistered();
 }
 
-void StatusContainerManager::accountRegistered(Account *account)
+void StatusContainerManager::accountRegistered(Account account)
 {
-	registerStatusContainer(account->statusContainer());
+	registerStatusContainer(account.statusContainer());
 }
 
-void StatusContainerManager::accountUnregistered(Account *account)
+void StatusContainerManager::accountUnregistered(Account account)
 {
-	unregisterStatusContainer(account->statusContainer());
+	unregisterStatusContainer(account.statusContainer());
 }
 
 void StatusContainerManager::configurationUpdated()
@@ -71,7 +71,7 @@ void StatusContainerManager::configurationUpdated()
 
 void StatusContainerManager::registerStatusContainer(StatusContainer *statusContainer)
 {
-	if (statusContainer == AccountManager::instance()->defaultAccount()->statusContainer())
+	if (statusContainer == AccountManager::instance()->defaultAccount().statusContainer())
 		connect(statusContainer, SIGNAL(statusChanged()), this, SIGNAL(statusChanged()));
 
 	emit statusContainerAboutToBeRegistered(statusContainer);
@@ -85,8 +85,8 @@ void StatusContainerManager::registerStatusContainer(StatusContainer *statusCont
 
 void StatusContainerManager::unregisterStatusContainer(StatusContainer *statusContainer)
 {
-	if (statusContainer == AccountManager::instance()->defaultAccount()->statusContainer() && AccountManager::instance()->byIndex(1))
-		connect(AccountManager::instance()->byIndex(1), SIGNAL(statusChanged()), this, SIGNAL(statusChanged()));
+	if (statusContainer == AccountManager::instance()->defaultAccount().statusContainer() && !AccountManager::instance()->byIndex(1).isNull())
+		connect(AccountManager::instance()->byIndex(1).data(), SIGNAL(statusChanged()), this, SIGNAL(statusChanged()));
 
 	emit statusContainerAboutToBeUnregistered(statusContainer);
 	StatusContainers.removeAll(statusContainer);
@@ -109,22 +109,22 @@ void StatusContainerManager::setStatus(Status newStatus)
 
 const Status & StatusContainerManager::status()
 {
-	return AccountManager::instance()->defaultAccount()
-			? AccountManager::instance()->defaultAccount()->statusContainer()->status()
+	return !AccountManager::instance()->defaultAccount().isNull()
+			? AccountManager::instance()->defaultAccount().statusContainer()->status()
 			: Status("Offline");
 }
 
 QString StatusContainerManager::statusName()
 {
-	return AccountManager::instance()->defaultAccount()
-			? AccountManager::instance()->defaultAccount()->statusContainer()->statusName()
+	return !AccountManager::instance()->defaultAccount().isNull()
+			? AccountManager::instance()->defaultAccount().statusContainer()->statusName()
 			: tr("Offline");
 }
 
 QPixmap StatusContainerManager::statusPixmap()
 {
-	return AccountManager::instance()->defaultAccount()
-			? AccountManager::instance()->defaultAccount()->statusContainer()->statusPixmap()
+	return !AccountManager::instance()->defaultAccount().isNull()
+			? AccountManager::instance()->defaultAccount().statusContainer()->statusPixmap()
 			: IconsManager::instance()->loadPixmap("Offline");
 }
 
@@ -135,22 +135,22 @@ QPixmap StatusContainerManager::statusPixmap(Status status)
 
 QPixmap StatusContainerManager::statusPixmap(const QString &statusType)
 {
-	return AccountManager::instance()->defaultAccount()
-			? AccountManager::instance()->defaultAccount()->statusContainer()->statusPixmap(statusType)
+	return !AccountManager::instance()->defaultAccount().isNull()
+			? AccountManager::instance()->defaultAccount().statusContainer()->statusPixmap(statusType)
 			: IconsManager::instance()->loadPixmap(statusType);
 }
 
 QList<StatusType *> StatusContainerManager::supportedStatusTypes()
 {
-	return AccountManager::instance()->defaultAccount()
-	? AccountManager::instance()->defaultAccount()->statusContainer()->supportedStatusTypes()
+	return !AccountManager::instance()->defaultAccount().isNull()
+			? AccountManager::instance()->defaultAccount().statusContainer()->supportedStatusTypes()
 			: StatusTypeManager::instance()->statusTypes();
 }
 
 int StatusContainerManager::maxDescriptionLength()
 {
-	return AccountManager::instance()->defaultAccount()
-			? AccountManager::instance()->defaultAccount()->statusContainer()->maxDescriptionLength()
+	return !AccountManager::instance()->defaultAccount().isNull()
+			? AccountManager::instance()->defaultAccount().statusContainer()->maxDescriptionLength()
 			: -1;
 }
 

@@ -38,7 +38,7 @@
 
 #include "xmpp_tasks.h"
 
-JabberTransport::JabberTransport (Account * parentAccount, const XMPP::RosterItem & item, const QString& gateway_type)
+JabberTransport::JabberTransport (Account parentAccount, const XMPP::RosterItem & item, const QString& gateway_type)
 	: QObject()//Kopete::Account ( parentAccount->protocol(), parentAccount->accountId()+'/'+ item.jid().bare() )
 {
 	m_status=Creating;
@@ -87,7 +87,7 @@ JabberTransport::JabberTransport (Account * parentAccount, const XMPP::RosterIte
 	m_status=Normal;
 }
 
-JabberTransport::JabberTransport( Account * parentAccount, const QString & _accountId )
+JabberTransport::JabberTransport( Account parentAccount, const QString & _accountId )
 	: QObject()//Kopete::Account ( parentAccount->protocol(), _accountId )
 {
 	m_status=Creating;

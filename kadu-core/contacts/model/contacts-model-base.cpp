@@ -30,19 +30,19 @@ ContactsModelBase::~ContactsModelBase()
 	triggerAllAccountsUnregistered();
 }
 
-void ContactsModelBase::accountRegistered(Account *account)
+void ContactsModelBase::accountRegistered(Account account)
 {
-	connect(account, SIGNAL(contactStatusChanged(Account *, Contact, Status)),
-			this, SLOT(contactStatusChanged(Account *, Contact, Status)));
+	connect(account.data(), SIGNAL(contactStatusChanged(Account, Contact, Status)),
+			this, SLOT(contactStatusChanged(Account, Contact, Status)));
 }
 
-void ContactsModelBase::accountUnregistered(Account *account)
+void ContactsModelBase::accountUnregistered(Account account)
 {
-	disconnect(account, SIGNAL(contactStatusChanged(Account *, Contact, Status)),
-			this, SLOT(contactStatusChanged(Account *, Contact, Status)));
+	disconnect(account.data(), SIGNAL(contactStatusChanged(Account, Contact, Status)),
+			this, SLOT(contactStatusChanged(Account, Contact, Status)));
 }
 
-void ContactsModelBase::contactStatusChanged(Account *account, Contact contact, Status oldStatus)
+void ContactsModelBase::contactStatusChanged(Account account, Contact contact, Status oldStatus)
 {
 	QModelIndex index = contactIndex(contact);
 
@@ -102,8 +102,8 @@ ContactAccountData * ContactsModelBase::contactDefaultAccountData(const QModelIn
 	if (con.isNull())
 		return 0;
 
-	Account *account = con.prefferedAccount();
-	if (!account)
+	Account account = con.prefferedAccount();
+	if (account.isNull())
 		account = AccountManager::instance()->defaultAccount();
 	
 	return con.accountData(account);
@@ -147,13 +147,13 @@ QVariant ContactsModelBase::data(ContactAccountData *cad, int role, bool useDisp
 		case Qt::DisplayRole:
 			return useDisplay
 				? cad->contact().display()
-				: QString("%1: %2").arg(cad->account()->name()).arg(cad->id());
+				: QString("%1: %2").arg(cad->account().name()).arg(cad->id());
 		case Qt::DecorationRole:
 			if (0 == cad)
 				return QVariant();
 			// TODO generic icon
-			return cad->account()
-				? cad->account()->statusContainer()->statusPixmap(cad->status())
+			return !cad->account().isNull()
+				? cad->account().statusContainer()->statusPixmap(cad->status())
 				: QVariant();
 		case ContactRole:
 			return QVariant::fromValue(cad->contact());

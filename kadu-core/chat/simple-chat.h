@@ -19,8 +19,8 @@ class SimpleChat : public Chat
 	ContactAccountData *CurrentContactAccountData;
 
 public:
-	SimpleChat(StoragePoint *storage);
-	SimpleChat(Account *parentAccount, ContactAccountData *cad, QUuid uuid = QUuid());
+	explicit SimpleChat(StoragePoint *storage);
+	explicit SimpleChat(Account parentAccount, ContactAccountData *cad, QUuid uuid = QUuid());
 	virtual ~SimpleChat();
 
 	virtual void load();

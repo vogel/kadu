@@ -95,7 +95,7 @@ void DccManager::setUpDcc()
 
 	WaitingFileTransfers.clear();
 
-	GaduAccountDetails *gaduAccountDetails = dynamic_cast<GaduAccountDetails *>(Protocol->account()->details());
+	GaduAccountDetails *gaduAccountDetails = dynamic_cast<GaduAccountDetails *>(Protocol->account().details());
 	if (!gaduAccountDetails)
 		return;
 
@@ -222,7 +222,7 @@ void DccManager::connectionRequestReceived(Contact contact)
 	if (!gcad)
 		return;
 
-	GaduAccountDetails *gaduAccountDetails = dynamic_cast<GaduAccountDetails *>(Protocol->account()->details());
+	GaduAccountDetails *gaduAccountDetails = dynamic_cast<GaduAccountDetails *>(Protocol->account().details());
 	if (!gaduAccountDetails)
 		return;
 
@@ -240,7 +240,7 @@ void DccManager::connectionRequestReceived(Contact contact)
 
 bool DccManager::acceptConnection(unsigned int uin, unsigned int peerUin, unsigned int peerAddr)
 {
-	GaduAccountDetails *gaduAccountDetails = dynamic_cast<GaduAccountDetails *>(Protocol->account()->details());
+	GaduAccountDetails *gaduAccountDetails = dynamic_cast<GaduAccountDetails *>(Protocol->account().details());
 	if (!gaduAccountDetails)
 		return false;
 
@@ -459,7 +459,7 @@ void DccManager::attachSendFileTransferSocket(GaduFileTransfer *gft)
 	if (!gcad)
 		return;
 
-	GaduAccountDetails *account = dynamic_cast<GaduAccountDetails *>(Protocol->account());
+	GaduAccountDetails *account = dynamic_cast<GaduAccountDetails *>(Protocol->account().details());
 	if (!account)
 		return;
 

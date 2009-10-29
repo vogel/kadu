@@ -99,10 +99,10 @@ public:
 	virtual QUuid uuid() const { return Uuid; }
 	void setUuid(const QUuid uuid) { Uuid = uuid; }
 
-	QString id(Account *account);
+	QString id(Account account);
 
-	Account * prefferedAccount();
-	QList<Account *> accounts();
+	Account prefferedAccount();
+	QList<Account> accounts();
 
 	void blockUpdatedSignal();
 	void unblockUpdatedSignal();
@@ -111,10 +111,10 @@ public:
 
 	void addAccountData(ContactAccountData *accountData);
 	void removeAccountData(ContactAccountData *accountData);
-	void removeAccountData(Account *account);
-	ContactAccountData * accountData(Account *account);
+	void removeAccountData(Account account);
+	ContactAccountData * accountData(Account account);
 	QList<ContactAccountData *> accountDatas();
-	StoragePoint * storagePointForAccountData(Account *account);
+	StoragePoint * storagePointForAccountData(Account account);
 
 	//contact type
 	bool isNull() const { return TypeNull == Type; }
@@ -125,9 +125,9 @@ public:
 	// properties
 	bool isIgnored();
 	bool setIgnored(bool ignored = true);
-	bool isBlocked(Account *account);
-	bool isOfflineTo(Account *account);
-	bool setOfflineTo(Account *account, bool offlineTo);
+	bool isBlocked(Account account);
+	bool isOfflineTo(Account account);
+	bool setOfflineTo(Account account, bool offlineTo);
 	bool showInAllGroup();
 	bool isInGroup(Group *group);
 	void addToGroup(Group *group);
@@ -149,11 +149,11 @@ public:
 	Property(QList<Group *>, groups, Groups)
 
 signals:
-	void accountDataAboutToBeAdded(Account *account);
-	void accountDataAdded(Account *account);
-	void accountDataAboutToBeRemoved(Account *account);
-	void accountDataRemoved(Account *account);
-	void accountDataIdChanged(Account *account, const QString &oldId);
+	void accountDataAboutToBeAdded(Account account);
+	void accountDataAdded(Account account);
+	void accountDataAboutToBeRemoved(Account account);
+	void accountDataRemoved(Account account);
+	void accountDataIdChanged(Account account, const QString &oldId);
 
 	void updated();
 

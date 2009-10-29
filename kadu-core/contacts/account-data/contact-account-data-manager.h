@@ -27,7 +27,7 @@ class KADUAPI ContactAccountDataManager : public QObject, public StorableObject,
 
 	static ContactAccountDataManager * Instance;
 	
-	QList<Account *> LoadedAccounts;
+	QList<Account> LoadedAccounts;
 	QList<ContactAccountData *> ContactAccountDataList;
 
 	ContactAccountDataManager();
@@ -35,19 +35,19 @@ class KADUAPI ContactAccountDataManager : public QObject, public StorableObject,
 
 	void init();
 
-	void load(Account *account);
-	void store(Account *account);
+	void load(Account account);
+	void store(Account account);
 
 protected:
 	virtual StoragePoint * createStoragePoint();
 
-	virtual void accountRegistered(Account *account);
-	virtual void accountUnregistered(Account *account);
+	virtual void accountRegistered(Account account);
+	virtual void accountUnregistered(Account account);
 
 public:
 	static ContactAccountDataManager * instance();
 	
-	void ensureLoaded(Account *account);
+	void ensureLoaded(Account account);
 	virtual void load();
 	virtual void store();
 

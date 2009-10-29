@@ -45,15 +45,15 @@ int AccountsProxyModel::compareNames(QString n1, QString n2) const
 
 bool AccountsProxyModel::lessThan(const QModelIndex &left, const QModelIndex &right) const
 {
-	Account *leftAccount = left.data(AccountRole).value<Account *>();
-	Account *rightAccount = right.data(AccountRole).value<Account *>();
+	Account leftAccount = left.data(AccountRole).value<Account>();
+	Account rightAccount = right.data(AccountRole).value<Account>();
 
-	if (!leftAccount)
+	if (leftAccount.isNull())
 		return false;
-	if (!rightAccount)
+	if (rightAccount.isNull())
 		return true;
 
-	int displayCompare = compareNames(leftAccount->name(), rightAccount->name());
+	int displayCompare = compareNames(leftAccount.name(), rightAccount.name());
 	return displayCompare < 0;
 }
 
@@ -62,7 +62,7 @@ bool AccountsProxyModel::filterAcceptsRow(int sourceRow, const QModelIndex &sour
 	if (sourceParent.isValid())
 		return true;
 	
-	Account *account = sourceModel()->index(sourceRow, 0).data(AccountRole).value<Account *>();;
+	Account account = sourceModel()->index(sourceRow, 0).data(AccountRole).value<Account>();;
 	foreach (AbstractAccountFilter *filter, Filters)
 		if (!filter->acceptAccount(account))
 			return false;

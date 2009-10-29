@@ -312,11 +312,11 @@ void JabberCreateAccountWidget::iHaveAccountDataChanged()
 
 void JabberCreateAccountWidget::addThisAccount()
 {
-	Account *jabberAccount = new Account();
-	jabberAccount->setName(AccountName->text());
-	jabberAccount->setId(AccountId->text());
-	jabberAccount->setPassword(AccountPassword->text());
-	jabberAccount->setRememberPassword(HaveJidRememberPassword->isChecked());
+	Account jabberAccount;
+	jabberAccount.setName(AccountName->text());
+	jabberAccount.setId(AccountId->text());
+	jabberAccount.setPassword(AccountPassword->text());
+	jabberAccount.setRememberPassword(HaveJidRememberPassword->isChecked());
 
 	emit accountCreated(jabberAccount);
 }
@@ -358,16 +358,16 @@ void JabberCreateAccountWidget::registerNewAccountFinished(JabberServerRegisterA
 	{
 		MessageBox::msg(tr("Registration was successful. Your new Jabber ID is %1.\nStore it in a safe place along with the password.\nNow add your friends to the userlist.").arg(jsra->jid()), false, "Information", this);
 
-		Account *jabberAccount = new Account();
-		JabberAccountDetails *details = new JabberAccountDetails(jabberAccount->storage(), jabberAccount);
+		Account jabberAccount;
+		JabberAccountDetails *details = new JabberAccountDetails(jabberAccount.storage(), jabberAccount);
 
-		jabberAccount->setDetails(details);
-		jabberAccount->setName(AccountName->text());
-		jabberAccount->setId(jsra->jid());
-		jabberAccount->setPassword(NewPassword->text());
+		jabberAccount.setDetails(details);
+		jabberAccount.setName(AccountName->text());
+		jabberAccount.setId(jsra->jid());
+		jabberAccount.setPassword(NewPassword->text());
 		details->setTlsOverrideDomain(jsra->client()->tlsOverrideDomain());
 		details->setTlsOverrideCert(jsra->client()->tlsOverrideCert());
-		jabberAccount->setRememberPassword(DontHaveJidRememberPassword->isChecked());
+		jabberAccount.setRememberPassword(DontHaveJidRememberPassword->isChecked());
 
 		emit accountCreated(jabberAccount);
 	}

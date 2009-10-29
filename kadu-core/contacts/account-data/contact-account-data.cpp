@@ -17,7 +17,7 @@
 
 #include "contact-account-data.h"
 
-ContactAccountData::ContactAccountData(Account *account, Contact contact, const QString &id, bool loaded) :
+ContactAccountData::ContactAccountData(Account account, Contact contact, const QString &id, bool loaded) :
 		UuidStorableObject("ContactAccountData", ContactAccountDataManager::instance(), loaded),
 		ContactAccount(account), OwnerContact(contact), Id(id),
 		ContactAvatar(this, false) /* TODO: 0.6.6 */, Blocked(false), OfflineTo(false), Port(0)
@@ -57,7 +57,7 @@ void ContactAccountData::store()
 
 	storeValue("uuid", Uuid.toString(), true);
 	storeValue("Id", Id);
-	storeValue("Account", ContactAccount->uuid().toString());
+	storeValue("Account", ContactAccount.uuid().toString());
 	storeValue("Contact", OwnerContact.uuid().toString());
 
 	ContactAvatar.store();

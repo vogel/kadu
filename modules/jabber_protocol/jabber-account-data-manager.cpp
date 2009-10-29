@@ -13,10 +13,10 @@
 
 #include "jabber-account-data-manager.h"
 
-JabberAccountDataManager::JabberAccountDataManager(Account *data) :
+JabberAccountDataManager::JabberAccountDataManager(Account data) :
 		AccountDataManager(data)
 {
-	Data = dynamic_cast<JabberAccountDetails *>(data->details());
+	Data = dynamic_cast<JabberAccountDetails *>(data.details());
 }
 
 void JabberAccountDataManager::writeEntry(const QString &section, const QString &name, const QVariant &value)

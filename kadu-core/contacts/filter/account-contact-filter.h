@@ -20,11 +20,11 @@ class AccountContactFilter : public AbstractContactFilter
 {
 	Q_OBJECT
 
-	Account *CurrentAccount;
+	Account CurrentAccount;
 	bool Enabled;
 
 public:
-	AccountContactFilter(Account *account, QObject *parent = 0);
+	AccountContactFilter(Account account, QObject *parent = 0);
 
 	void setEnabled(bool enabled);
 	virtual bool acceptContact(Contact contact);

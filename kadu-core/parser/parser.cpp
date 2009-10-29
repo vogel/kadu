@@ -124,15 +124,15 @@ QString Parser::executeCmd(const QString &cmd)
 
 QString Parser::parse(const QString &s, const QObject * const object, bool escape)
 {
-    	return parse(s, 0, Contact(), object, escape);
+    	return parse(s, Account::null, Contact::null, object, escape);
 }
 
-QString Parser::parse(const QString &s, Account *account, const Contact &contact, bool escape)
+QString Parser::parse(const QString &s, Account account, const Contact &contact, bool escape)
 {
 	return parse(s, account, contact, 0, escape);
 }
 
-QString Parser::parse(const QString &s, Account *account, const Contact &contact, const QObject * const object, bool escape)
+QString Parser::parse(const QString &s, Account account, const Contact &contact, const QObject * const object, bool escape)
 {
 	kdebugmf(KDEBUG_DUMP, "%s escape=%i\n", qPrintable(s), escape);
 	int index = 0, i, len = s.length();

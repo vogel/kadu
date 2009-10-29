@@ -32,7 +32,7 @@ class GaduAccountDetails : public AccountDetails
 	GaduOpenChatWithRunner *OpenChatRunner;
 
 public:
-	explicit GaduAccountDetails(StoragePoint *storagePoint, Account *parent = 0);
+	explicit GaduAccountDetails(StoragePoint *storagePoint, Account parent = Account::null);
 	virtual ~GaduAccountDetails();
 
 	virtual void load();

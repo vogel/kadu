@@ -13,13 +13,13 @@
 
 KADU_AWARE_CLASS(AccountsAwareObject)
 
-void AccountsAwareObject::notifyAccountRegistered(Account *account)
+void AccountsAwareObject::notifyAccountRegistered(Account account)
 {
 	foreach (AccountsAwareObject *object, Objects)
 		object->accountRegistered(account);
 }
 
-void AccountsAwareObject::notifyAccountUnregistered(Account *account)
+void AccountsAwareObject::notifyAccountUnregistered(Account account)
 {
 	foreach (AccountsAwareObject *object, Objects)
 		object->accountUnregistered(account);
@@ -27,12 +27,12 @@ void AccountsAwareObject::notifyAccountUnregistered(Account *account)
 
 void AccountsAwareObject::triggerAllAccountsRegistered()
 {
-	foreach (Account *account, AccountManager::instance()->accounts())
+	foreach (Account account, AccountManager::instance()->accounts())
 		accountRegistered(account);
 }
 
 void AccountsAwareObject::triggerAllAccountsUnregistered()
 {
-	foreach (Account *account, AccountManager::instance()->accounts())
+	foreach (Account account, AccountManager::instance()->accounts())
 		accountUnregistered(account);
 }

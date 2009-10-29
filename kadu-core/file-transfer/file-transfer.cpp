@@ -21,14 +21,14 @@
 #include <contacts/contact-manager.h>
 #include <contacts/contact-manager.h>
 
-FileTransfer::FileTransfer(Account *account) :
+FileTransfer::FileTransfer(Account account) :
 		Uuid(QUuid::createUuid()), CurrentAccount(account), Peer(Contact::null),
 		FileSize(0), TransferredSize(0),
 		TransferType(TypeReceive), TransferStatus(StatusNotConnected), TransferError(ErrorOk)
 {
 }
 
-FileTransfer::FileTransfer(Account *account, Contact peer, FileTransferType transferType) :
+FileTransfer::FileTransfer(Account account, Contact peer, FileTransferType transferType) :
 		Uuid(QUuid::createUuid()), CurrentAccount(account), Peer(peer),
 		FileSize(0), TransferredSize(0),
 		TransferType(transferType), TransferStatus(StatusNotConnected), TransferError(ErrorOk)
@@ -47,11 +47,11 @@ FileTransfer * FileTransfer::loadFromStorage(StoragePoint *fileTransferStoragePo
 	XmlConfigFile *storage = fileTransferStoragePoint->storage();
 	QDomElement point = fileTransferStoragePoint->point();
 
-	Account *account = AccountManager::instance()->byUuid(QUuid(storage->getTextNode(point, "Account")));
-	if (!account)
+	Account account = AccountManager::instance()->byUuid(QUuid(storage->getTextNode(point, "Account")));
+	if (account.isNull() || !account.protocolHandler())
 		return 0;
 
-	FileTransferService *service = account->protocolHandler()->fileTransferService();
+	FileTransferService *service = account.protocolHandler()->fileTransferService();
 	if (!service)
 		return 0;
 
@@ -98,7 +98,7 @@ void FileTransfer::store()
 
 	ensureLoaded();
 
-	storeValue("Account", CurrentAccount->uuid().toString());
+	storeValue("Account", CurrentAccount.uuid().toString());
 	storeValue("Peer", Peer.uuid().toString());
 	storeValue("LocalFileName", LocalFileName);
 	storeValue("RemoteFileName", RemoteFileName);

@@ -15,7 +15,7 @@
 
 #include "gadu-account-details.h"
 
-GaduAccountDetails::GaduAccountDetails(StoragePoint *storagePoint, Account *parent) :
+GaduAccountDetails::GaduAccountDetails(StoragePoint *storagePoint, Account parent) :
 		AccountDetails(storagePoint, parent),
 		AllowDcc(true), DccIP(QHostAddress()), DccExternalIP(QHostAddress()), DccIpDetect(true),
 		DccPort(0), DccExternalPort(0), DccLocalPort(0), RemoveCompletedTransfers(0), DccForwarding(0)
@@ -93,5 +93,5 @@ void GaduAccountDetails::import_0_6_5_LastStatus()
 
 UinType GaduAccountDetails::uin()
 {
-	return account()->id().toULong();
+	return account().id().toULong();
 }

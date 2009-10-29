@@ -54,7 +54,7 @@ private slots:
 	void removeAccount();
 
 public:
-	explicit GaduEditAccountWidget(Account *account, QWidget *parent = 0);
+	explicit GaduEditAccountWidget(Account account, QWidget *parent = 0);
 	virtual ~GaduEditAccountWidget();
 
 	virtual void apply();

@@ -113,17 +113,17 @@ QMap<QString, QString> & Contact::customData()
 	return Data->customData();
 }
 
-Account * Contact::prefferedAccount() const
+Account Contact::prefferedAccount() const
 {
 	return isNull()
-		? 0
-		: Data->prefferedAccount();
+			? Account::null
+			: Data->prefferedAccount();
 }
 
-QList<Account *> Contact::accounts() const
+QList<Account> Contact::accounts() const
 {
 	return isNull()
-		? QList<Account *>()
+		? QList<Account>()
 		: Data->accounts();
 }
 
@@ -142,13 +142,13 @@ void Contact::removeAccountData(ContactAccountData *accountData) const
 		Data->removeAccountData(accountData);
 }
 
-void Contact::removeAccountData(Account* account) const
+void Contact::removeAccountData(Account account) const
 {
 	if (!isNull())
 		Data->removeAccountData(account);
 }
 
-ContactAccountData * Contact::accountData(Account *account) const
+ContactAccountData * Contact::accountData(Account account) const
 {
 	return isNull()
 			? 0
@@ -162,30 +162,25 @@ QList<ContactAccountData *> Contact::accountDatas() const
 			: Data->accountDatas();
 }
 
-StoragePoint * Contact::storagePointForAccountData(Account *account) const
+StoragePoint * Contact::storagePointForAccountData(Account account) const
 {
 	return isNull()
 			? 0
 			: Data->storagePointForAccountData(account);
 }
 
-bool Contact::hasAccountData(Account *account) const
+bool Contact::hasAccountData(Account account) const
 {
 	return isNull()
 			? false
 			: 0 != Data->accountData(account);
 }
 
-QString Contact::id(Account *account) const
+QString Contact::id(Account account) const
 {
 	return isNull()
 			? QString::null
 			: Data->id(account);
-}
-
-uint qHash(const Contact &contact)
-{
-	return qHash(contact.uuid().toString());
 }
 
 bool Contact::isIgnored() const
@@ -202,21 +197,21 @@ bool Contact::setIgnored(bool ignored)
 		: Data->setIgnored(ignored);
 }
 
-bool Contact::isBlocked(Account *account) const
+bool Contact::isBlocked(Account account) const
 {
 	return isNull()
 			? false
 			: Data->isBlocked(account);
 }
 
-bool Contact::isOfflineTo(Account *account) const
+bool Contact::isOfflineTo(Account account) const
 {
 	return isNull()
 			? false
 			: Data->isOfflineTo(account);
 }
 
-void Contact::setOfflineTo(Account *account, bool offlineTo) const
+void Contact::setOfflineTo(Account account, bool offlineTo) const
 {
 	if (!isNull())
 		Data->setOfflineTo(account, offlineTo);
@@ -252,8 +247,8 @@ QString Contact::display() const
 {
 	return isNull()
 			? QString::null
-			: isAnonymous() && prefferedAccount()
-					? (prefferedAccount()->name() + ":" + id(prefferedAccount()))
+			: isAnonymous() && !prefferedAccount().isNull()
+					? (prefferedAccount().name() + ":" + id(prefferedAccount()))
 					: Data->display().isEmpty()
 							? Data->nickName().isEmpty()
 									? Data->firstName()
@@ -273,7 +268,7 @@ Contact Contact::dummy()
 	example.setEmail("jimbo@mail.server.net");
 	example.setHomePhone("+481234567890");
 
-	Account *account = new Account();
+	Account account;
 
 	ContactAccountData *contactData = new ContactAccountData(account, example, "999999", true);
 	contactData->setStatus(Status("Away", tr("Example description")));
@@ -287,4 +282,9 @@ Contact Contact::dummy()
 	example.addAccountData(contactData);
 
 	return example;
+}
+
+uint qHash(const Contact &contact)
+{
+	return qHash(contact.uuid().toString());
 }

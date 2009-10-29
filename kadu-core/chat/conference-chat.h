@@ -26,7 +26,7 @@ class ConferenceChat : public Chat
 
 public:
 	ConferenceChat(StoragePoint *storage);
-	ConferenceChat(Account *parentAccount, ContactSet contacts, QUuid uuid = QUuid());
+	ConferenceChat(Account parentAccount, ContactSet contacts, QUuid uuid = QUuid());
 	virtual ~ConferenceChat();
 
 	virtual void load();

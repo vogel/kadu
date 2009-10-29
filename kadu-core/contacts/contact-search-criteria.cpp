@@ -18,7 +18,7 @@ ContactSearchCriteria::~ContactSearchCriteria()
 {
 }
 
-void ContactSearchCriteria::reqUin(Account *account, const QString &uin)
+void ContactSearchCriteria::reqUin(Account account, const QString &uin)
 {
 	ContactAccountData *cad = SearchContact.accountData(account);
 	if (!cad)

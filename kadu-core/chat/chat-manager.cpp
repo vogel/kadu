@@ -49,7 +49,7 @@ StoragePoint * ChatManager::createStoragePoint()
 	return new StoragePoint(xml_config_file, xml_config_file->getNode("Chats"));
 }
 
-void ChatManager::load(Account *account)
+void ChatManager::load(Account account)
 {
 	if (!isValidStorage())
 		return;
@@ -66,7 +66,7 @@ void ChatManager::load(Account *account)
 
 	int count = chatNodes.count();
 
-	QString uuid = account->uuid().toString();
+	QString uuid = account.uuid().toString();
 	for (int i = 0; i < count; i++)
 	{
 		QDomElement chatElement = chatNodes.at(i).toElement();
@@ -84,7 +84,7 @@ void ChatManager::load(Account *account)
 	}
 }
 
-void ChatManager::store(Account *account)
+void ChatManager::store(Account account)
 {
 	foreach (Chat *chat, Chats[account])
 		chat->store();
@@ -119,7 +119,7 @@ void ChatManager::removeChat(Chat *chat)
 	delete chat;
 }
 
-QList<Chat *> ChatManager::chatsForAccount(Account *account)
+QList<Chat *> ChatManager::chatsForAccount(Account account)
 {
 	if (!Chats.contains(account))
 		return QList<Chat *>();
@@ -135,12 +135,12 @@ Chat * ChatManager::byUuid(QUuid uuid)
 	return 0;
 }
 
-void ChatManager::accountRegistered(Account *account)
+void ChatManager::accountRegistered(Account account)
 {
 	load(account);
 }
 
-void ChatManager::accountUnregistered(Account *account)
+void ChatManager::accountUnregistered(Account account)
 {
 	store(account);
 }

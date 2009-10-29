@@ -38,9 +38,9 @@ AvatarManager::~AvatarManager()
 	triggerAllAccountsUnregistered();
 }
 
-AvatarService * AvatarManager::avatarService(Account *account)
+AvatarService * AvatarManager::avatarService(Account account)
 {
-	Protocol *protocol = account->protocolHandler();
+	Protocol *protocol = account.protocolHandler();
 	if (!protocol)
 		return 0;
 
@@ -49,8 +49,8 @@ AvatarService * AvatarManager::avatarService(Account *account)
 
 AvatarService * AvatarManager::avatarService(ContactAccountData *contactAccountData)
 {
-	Account *account = contactAccountData->account();
-	if (!account)
+	Account account = contactAccountData->account();
+	if (account.isNull())
 		return 0;
 
 	return avatarService(account);
@@ -62,14 +62,14 @@ QString AvatarManager::avatarFileName(Avatar avatar)
 	if (!cad)
 		return QString::null;
 
-	Account *account = cad->account();
-	if (!account)
+	Account account = cad->account();
+	if (account.isNull())
 		return QString::null;
 
-	return QString("%1-%2").arg(cad->contact().uuid().toString(), account->uuid().toString());
+	return QString("%1-%2").arg(cad->contact().uuid().toString(), account.uuid().toString());
 }
 
-void AvatarManager::accountRegistered(Account *account)
+void AvatarManager::accountRegistered(Account account)
 {
 	AvatarService *service = avatarService(account);
 	if (!service)
@@ -79,7 +79,7 @@ void AvatarManager::accountRegistered(Account *account)
 			this, SLOT(avatarFetched(ContactAccountData *, const QByteArray &)));
 }
 
-void AvatarManager::accountUnregistered(Account *account)
+void AvatarManager::accountUnregistered(Account account)
 {
 	AvatarService *service = avatarService(account);
 	if (!service)

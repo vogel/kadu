@@ -19,7 +19,7 @@ class IdRegularExpressionFilter : public AbstractAccountFilter
 	QString Id;
 
 protected:
-	virtual bool acceptAccount(Account *account);
+	virtual bool acceptAccount(Account account);
 
 public:
 	explicit IdRegularExpressionFilter(QObject *parent = 0);

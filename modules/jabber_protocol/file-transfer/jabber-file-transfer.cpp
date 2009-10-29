@@ -107,17 +107,17 @@ static QString clean_filename(const QString &s)
 }
 
 
-JabberFileTransfer::JabberFileTransfer(Account *account) :
+JabberFileTransfer::JabberFileTransfer(Account account) :
 		FileTransfer(account), InProgress(false)
 {
 }
 
-JabberFileTransfer::JabberFileTransfer(Account *account, Contact peer, FileTransferType transferType) :
+JabberFileTransfer::JabberFileTransfer(Account account, Contact peer, FileTransferType transferType) :
 		FileTransfer(account, peer, transferType), InProgress(false)
 {
 }
 
-JabberFileTransfer::JabberFileTransfer(Account *account, FileTransferType transferType, XMPP::FileTransfer *jTransfer) :
+JabberFileTransfer::JabberFileTransfer(Account account, FileTransferType transferType, XMPP::FileTransfer *jTransfer) :
 		FileTransfer(account, ContactManager::instance()->byId(account, jTransfer->peer().bare()), transferType), 
 		InProgress(false), JabberTransfer(jTransfer)
 {
@@ -153,13 +153,13 @@ void JabberFileTransfer::send()
 
 	setRemoteFile(QString::null);
 
-	if (!account() || localFileName().isEmpty())
+	if (account().isNull() || localFileName().isEmpty())
 	{
 		changeFileTransferStatus(FileTransfer::StatusNotConnected);
 		return; // TODO: notify
 	}
 
-	JabberProtocol *jabberProtocol = dynamic_cast<JabberProtocol *>(account()->protocolHandler());
+	JabberProtocol *jabberProtocol = dynamic_cast<JabberProtocol *>(account().protocolHandler());
 	if (!jabberProtocol)
 	{
 		changeFileTransferStatus(FileTransfer::StatusNotConnected);

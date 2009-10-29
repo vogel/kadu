@@ -17,26 +17,26 @@
 AccountsModel::AccountsModel(QObject *parent)
 	: QAbstractListModel(parent)
 {
-	connect(AccountManager::instance(), SIGNAL(accountAboutToBeRegistered(Account *)),
-			this, SLOT(accountAboutToBeRegistered(Account *)));
-	connect(AccountManager::instance(), SIGNAL(accountRegistered(Account *)),
-			this, SLOT(accountRegistered(Account *)));
-	connect(AccountManager::instance(), SIGNAL(accountAboutToBeUnregistered(Account *)),
-			this, SLOT(accountAboutToBeUnregistered(Account *)));
-	connect(AccountManager::instance(), SIGNAL(accountUnregistered(Account *)),
-			this, SLOT(accountUnregistered(Account *)));
+	connect(AccountManager::instance(), SIGNAL(accountAboutToBeRegistered(Account)),
+			this, SLOT(accountAboutToBeRegistered(Account)));
+	connect(AccountManager::instance(), SIGNAL(accountRegistered(Account)),
+			this, SLOT(accountRegistered(Account)));
+	connect(AccountManager::instance(), SIGNAL(accountAboutToBeUnregistered(Account)),
+			this, SLOT(accountAboutToBeUnregistered(Account)));
+	connect(AccountManager::instance(), SIGNAL(accountUnregistered(Account)),
+			this, SLOT(accountUnregistered(Account)));
 }
 
 AccountsModel::~AccountsModel()
 {
-	disconnect(AccountManager::instance(), SIGNAL(accountAboutToBeRegistered(Account *)),
-			this, SLOT(accountAboutToBeRegistered(Account *)));
-	disconnect(AccountManager::instance(), SIGNAL(accountRegistered(Account *)),
-			this, SLOT(accountRegistered(Account *)));
-	disconnect(AccountManager::instance(), SIGNAL(accountAboutToBeUnregistered(Account *)),
-			this, SLOT(accountAboutToBeUnregistered(Account *)));
-	disconnect(AccountManager::instance(), SIGNAL(accountUnregistered(Account *)),
-			this, SLOT(accountUnregistered(Account *)));
+	disconnect(AccountManager::instance(), SIGNAL(accountAboutToBeRegistered(Account)),
+			this, SLOT(accountAboutToBeRegistered(Account)));
+	disconnect(AccountManager::instance(), SIGNAL(accountRegistered(Account)),
+			this, SLOT(accountRegistered(Account)));
+	disconnect(AccountManager::instance(), SIGNAL(accountAboutToBeUnregistered(Account)),
+			this, SLOT(accountAboutToBeUnregistered(Account)));
+	disconnect(AccountManager::instance(), SIGNAL(accountUnregistered(Account)),
+			this, SLOT(accountUnregistered(Account)));
 }
 
 int AccountsModel::columnCount(const QModelIndex &parent) const
@@ -51,8 +51,8 @@ int AccountsModel::rowCount(const QModelIndex &parent) const
 
 QVariant AccountsModel::data(const QModelIndex &index, int role) const
 {
-	Account *acc = account(index);
-	if (0 == acc)
+	Account acc = account(index);
+	if (acc.isNull())
 		return QVariant();
 
 	switch (role)
@@ -60,15 +60,15 @@ QVariant AccountsModel::data(const QModelIndex &index, int role) const
 		// TODO: 0.6.6 make it pretty
 		case Qt::DisplayRole:
 			if (index.column() == 0) // long or shor name?
-				return acc->name();
+				return acc.name();
 			else
-				return QString("%1 (%2)").arg(acc->name(), acc->id());
+				return QString("%1 (%2)").arg(acc.name(), acc.id());
 
 		case Qt::DecorationRole:
-			return acc->protocolHandler()->icon();
+			return acc.protocolHandler()->icon();
 
 		case AccountRole:
-			return QVariant::fromValue<Account *>(acc);
+			return QVariant::fromValue<Account>(acc);
 
 		default:
 			return QVariant();
@@ -86,45 +86,45 @@ QVariant AccountsModel::headerData(int section, Qt::Orientation orientation, int
 		return QString("Row %1").arg(section);
 }
 
-Account * AccountsModel::account(const QModelIndex &index) const
+Account AccountsModel::account(const QModelIndex &index) const
 {
 	if (!index.isValid())
-		return 0;
+		return Account::null;
 
 	if (index.row() < 0 || index.row() >= rowCount())
-		return 0;
+		return Account::null;
 
 	return AccountManager::instance()->byIndex(index.row());
 }
 
-int AccountsModel::accountIndex(Account *account)
+int AccountsModel::accountIndex(Account account)
 {
 	return AccountManager::instance()->indexOf(account);
 }
 
-QModelIndex AccountsModel::accountModelIndex(Account *account)
+QModelIndex AccountsModel::accountModelIndex(Account account)
 {
 	return createIndex(accountIndex(account), 0, 0);
 }
 
-void AccountsModel::accountAboutToBeRegistered(Account *account)
+void AccountsModel::accountAboutToBeRegistered(Account account)
 {
 	int count = rowCount();
 	beginInsertRows(QModelIndex(), count, count);
 }
 
-void AccountsModel::accountRegistered(Account *account)
+void AccountsModel::accountRegistered(Account account)
 {
 	endInsertRows();
 }
 
-void AccountsModel::accountAboutToBeUnregistered(Account *account)
+void AccountsModel::accountAboutToBeUnregistered(Account account)
 {
 	int index = accountIndex(account);
 	beginRemoveRows(QModelIndex(), index, index);
 }
 
-void AccountsModel::accountUnregistered(Account *account)
+void AccountsModel::accountUnregistered(Account account)
 {
 	endRemoveRows();
 }

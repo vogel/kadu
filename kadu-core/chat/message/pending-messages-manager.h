@@ -103,7 +103,7 @@ public slots:
 	void deleteMsg(int index);
 
 	/**
-		\fn void addMsg(Account *account, ContactList contacts, QString msg, time_t time)
+		\fn void addMsg(Account account, ContactList contacts, QString msg, time_t time)
 		Appends new message to queue.
 		\param account user account
 		\param contacts senders list.

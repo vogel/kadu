@@ -121,12 +121,12 @@ void AccountData::loadProtocol(ProtocolFactory* protocolFactory)
 {
 	ensureLoaded();
 
-	ProtocolHandler = protocolFactory->createProtocolHandler(new Account(this));
-	Details = protocolFactory->createAccountDetails(new Account(this));
+	ProtocolHandler = protocolFactory->createProtocolHandler(Account(this));
+	Details = protocolFactory->createAccountDetails(Account(this));
 
-	connect(ProtocolHandler, SIGNAL(statusChanged(Account *, Status)), this, SIGNAL(statusChanged()));
-	connect(ProtocolHandler, SIGNAL(contactStatusChanged(Account *, Contact, Status)),
-			this, SIGNAL(contactStatusChanged(Account *, Contact, Status)));
+	connect(ProtocolHandler, SIGNAL(statusChanged(Account, Status)), this, SIGNAL(statusChanged()));
+	connect(ProtocolHandler, SIGNAL(contactStatusChanged(Account, Contact, Status)),
+			this, SIGNAL(contactStatusChanged(Account, Contact, Status)));
 }
 
 void AccountData::unloadProtocol()

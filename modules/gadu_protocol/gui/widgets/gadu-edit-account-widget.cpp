@@ -27,7 +27,7 @@
 
 #include "gadu-edit-account-widget.h"
 
-GaduEditAccountWidget::GaduEditAccountWidget(Account *account, QWidget *parent) :
+GaduEditAccountWidget::GaduEditAccountWidget(Account account, QWidget *parent) :
 		AccountEditWidget(account, parent)
 {
 	createGui();
@@ -174,10 +174,10 @@ void GaduEditAccountWidget::createGeneralGroupBox(QVBoxLayout *layout)
 
 void GaduEditAccountWidget::loadAccountData()
 {
-	ConnectAtStart->setChecked(account()->connectAtStart());
-	AccountId->setText(account()->id());
-	RememberPassword->setChecked(account()->rememberPassword());
-	AccountPassword->setText(account()->password());
+	ConnectAtStart->setChecked(account().connectAtStart());
+	AccountId->setText(account().id());
+	RememberPassword->setChecked(account().rememberPassword());
+	AccountPassword->setText(account().password());
 }
 
 void GaduEditAccountWidget::loadConnectionData()
@@ -187,10 +187,10 @@ void GaduEditAccountWidget::loadConnectionData()
 
 void GaduEditAccountWidget::apply()
 {
-	account()->setConnectAtStart(ConnectAtStart->isChecked());
-	account()->setId(AccountId->text());
-	account()->setRememberPassword(RememberPassword->isChecked());
-	account()->setPassword(AccountPassword->text());
+	account().setConnectAtStart(ConnectAtStart->isChecked());
+	account().setId(AccountId->text());
+	account().setRememberPassword(RememberPassword->isChecked());
+	account().setPassword(AccountPassword->text());
 
 	proxy->applyProxyData();
 
@@ -202,8 +202,8 @@ void GaduEditAccountWidget::removeAccount()
 	QMessageBox *messageBox = new QMessageBox(this);
 	messageBox->setWindowTitle(tr("Confirm account removal"));
 	messageBox->setText(tr("Are you sure do you want to remove account %1 (%2)")
-			.arg(account()->name())
-			.arg(account()->id()));
+			.arg(account().name())
+			.arg(account().id()));
 
 	messageBox->addButton(tr("Remove account"), QMessageBox::AcceptRole);
 	messageBox->addButton(tr("Remove account and unregister from server"), QMessageBox::DestructiveRole);

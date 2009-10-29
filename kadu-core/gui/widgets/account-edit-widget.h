@@ -12,21 +12,20 @@
 
 #include <QtGui/QWidget>
 
+#include "accounts/account.h"
 #include "exports.h"
-
-class Account;
 
 class KADUAPI AccountEditWidget : public QWidget
 {
 	Q_OBJECT
 
-	Account *MyAccount;
+	Account MyAccount;
 
 protected:
-	Account *account() { return MyAccount; }
+	Account account() { return MyAccount; }
 
 public:
-	explicit AccountEditWidget(Account *account, QWidget *parent = 0) :
+	explicit AccountEditWidget(Account account, QWidget *parent = 0) :
 			QWidget(parent), MyAccount(account) {}
 	virtual ~AccountEditWidget() {}
 

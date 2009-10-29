@@ -1,11 +1,12 @@
 /***************************************************************************
-*                                                                         *
-*   This program is free software; you can redistribute it and/or modify  *
-*   it under the terms of the GNU General Public License as published by  *
-*   the Free Software Foundation; either version 2 of the License, or     *
-*   (at your option) any later version.                                   *
-*                                                                         *
-***************************************************************************/
+ *                                                                         *
+ *   This program is free software; you can redistribute it and/or modify  *
+ *   it under the terms of the GNU General Public License as published by  *
+ *   the Free Software Foundation; either version 2 of the License, or     *
+ *   (at your option) any later version.                                   *
+ *                                                                         *
+ ***************************************************************************/
+
 #include <QtCore/QFile>
 
 #include "chat/chat.h"
@@ -42,7 +43,7 @@ struct HistoryEntry
 	QString mobile;
 };
 
-HistoryImportThread::HistoryImportThread(Account *gaduAccount, QList<QStringList> uinsLists, unsigned long totalEntries, QObject *parent) :
+HistoryImportThread::HistoryImportThread(Account gaduAccount, QList<QStringList> uinsLists, unsigned long totalEntries, QObject *parent) :
 		QThread(parent), GaduAccount(gaduAccount), UinsLists(uinsLists), Canceled(false), TotalEntries(totalEntries), ImportedEntries(0)
 {
 }
@@ -86,7 +87,7 @@ void HistoryImportThread::importEntry(Chat *chat, const HistoryEntry &entry)
 	Message msg;
 	msg
 		.setChat(chat)
-		.setSender(outgoing ? Core::instance()->myself() : GaduAccount->getContactById(id))
+		.setSender(outgoing ? Core::instance()->myself() : GaduAccount.getContactById(id))
 		.setContent(entry.message)
 		.setSendDate(entry.sdate)
 		.setReceiveDate(entry.date);
@@ -101,11 +102,11 @@ Chat * HistoryImportThread::chatFromUinsList(QStringList uinsList)
 	ContactSet contacts;
 	foreach (const QString &uin, uinsList)
 	{
-		Contact contact = GaduAccount->getContactById(uin);
+		Contact contact = GaduAccount.getContactById(uin);
 		contacts.insert(contact);
 	}
 
-	return GaduAccount->protocolHandler()->findChat(contacts);
+	return GaduAccount.protocolHandler()->findChat(contacts);
 }
 
 QList<HistoryEntry> HistoryImportThread::historyEntries(QStringList uins, int mask)

@@ -54,19 +54,19 @@ void ContactsListViewDelegate::setModel(AbstractContactsModel *model)
 		connect(itemModel, SIGNAL(destroyed(QObject *)), this, SLOT(modelDestroyed()));
 }
 
-void ContactsListViewDelegate::accountRegistered(Account *account)
+void ContactsListViewDelegate::accountRegistered(Account account)
 {
-	connect(account, SIGNAL(contactStatusChanged(Account *, Contact, Status)),
-			this, SLOT(contactStatusChanged(Account *, Contact, Status)));
+	connect(account.data(), SIGNAL(contactStatusChanged(Account, Contact, Status)),
+			this, SLOT(contactStatusChanged(Account, Contact, Status)));
 }
 
-void ContactsListViewDelegate::accountUnregistered(Account *account)
+void ContactsListViewDelegate::accountUnregistered(Account account)
 {
-	disconnect(account, SIGNAL(contactStatusChanged(Account *, Contact, Status)),
-			this, SLOT(contactStatusChanged(Account *, Contact, Status)));
+	disconnect(account.data(), SIGNAL(contactStatusChanged(Account, Contact, Status)),
+			this, SLOT(contactStatusChanged(Account, Contact, Status)));
 }
 
-void ContactsListViewDelegate::contactStatusChanged(Account *account, Contact c, Status oldStatus)
+void ContactsListViewDelegate::contactStatusChanged(Account account, Contact c, Status oldStatus)
 {
 	if (Model)
 		emit sizeHintChanged(Model->contactIndex(c));

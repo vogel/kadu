@@ -73,7 +73,7 @@ private slots:
 	void autoResourceToggled(bool on);
 
 public:
-	explicit JabberEditAccountWidget(Account *account, QWidget *parent = 0);
+	explicit JabberEditAccountWidget(Account account, QWidget *parent = 0);
 	virtual ~JabberEditAccountWidget();
 
 	virtual void apply();

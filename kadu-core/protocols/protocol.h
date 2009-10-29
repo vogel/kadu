@@ -57,7 +57,7 @@ public:
 private:
 	ProtocolFactory *Factory;
 
-	Account *CurrentAccount;
+	Account CurrentAccount;
 
 	NetworkState State;
 	Status CurrentStatus;
@@ -75,11 +75,11 @@ protected:
 	void networkStateChanged(NetworkState state);
 
 public:
-	Protocol(Account *account, ProtocolFactory *factory);
+	Protocol(Account account, ProtocolFactory *factory);
 	virtual ~Protocol();
 
 	ProtocolFactory * protocolFactory() const { return Factory; }
-	Account * account() const { return CurrentAccount; }
+	Account account() const { return CurrentAccount; }
 
 	virtual AvatarService * avatarService() { return 0; }
 	virtual ChatImageService * chatImageService() { return 0; }
@@ -112,16 +112,16 @@ public:
 	QIcon icon();
 
 signals:
-	void connecting(Account *account);
-	void connected(Account *account);
-	void disconnecting(Account *account);
-	void disconnected(Account *account);
+	void connecting(Account account);
+	void connected(Account account);
+	void disconnecting(Account account);
+	void disconnected(Account account);
 
-	void statusChanged(Account *account, Status newStatus);
-	void contactStatusChanged(Account *account, Contact contact, Status oldStatus);
+	void statusChanged(Account account, Status newStatus);
+	void contactStatusChanged(Account account, Contact contact, Status oldStatus);
 
 // TODO: REVIEW
-	void connectionError(Account *account, const QString &server, const QString &reason);
+	void connectionError(Account account, const QString &server, const QString &reason);
 
 };
 

@@ -52,7 +52,7 @@ class JabberProtocol : public Protocol
 	public:
 		static int initModule();
 		static void closeModule();
-		JabberProtocol(Account *account, ProtocolFactory *factory);
+		JabberProtocol(Account account, ProtocolFactory *factory);
 		~JabberProtocol();
 		XMPP::JabberClient * client() { return JabberClient; }
 		bool validateUserID(QString& uid);
@@ -95,9 +95,9 @@ class JabberProtocol : public Protocol
 		void contactAdded(Contact &contact);
 		void contactRemoved(Contact &contact);
 		void contactUpdated(Contact &contact);
-		void contactAccountDataAdded(Contact &contact, Account *contactAccount);
-		void contactAccountDataAboutToBeRemoved(Contact &contact, Account *contactAccount);
-		void contactAccountIdChanged(Contact &contact, Account *account, const QString &oldId);
+		void contactAccountDataAdded(Contact &contact, Account contactAccount);
+		void contactAccountDataAboutToBeRemoved(Contact &contact, Account contactAccount);
+		void contactAccountIdChanged(Contact &contact, Account account, const QString &oldId);
 
 	public slots:
 		void connectToServer();

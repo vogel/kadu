@@ -84,7 +84,8 @@ void JabberProtocol::closeModule()
 	kdebugf2();
 }
 
-JabberProtocol::JabberProtocol(Account *account, ProtocolFactory *factory): Protocol(account,factory), JabberClient(NULL), ResourcePool(0)
+JabberProtocol::JabberProtocol(Account account, ProtocolFactory *factory) :
+		Protocol(account, factory), JabberClient(NULL), ResourcePool(0)
 {
 	kdebugf();
 
@@ -98,14 +99,14 @@ JabberProtocol::JabberProtocol(Account *account, ProtocolFactory *factory): Prot
 			this, SLOT(contactAdded(Contact &)));
 	connect(ContactManager::instance(), SIGNAL(contactRemoved(Contact &)),
 			this, SLOT(contactRemoved(Contact &)));
-	connect(ContactManager::instance(), SIGNAL(contactAccountDataAdded(Contact &, Account *)),
-			this, SLOT(contactAccountDataAboutToBeRemoved(Contact & , Account *)));
-	connect(ContactManager::instance(), SIGNAL(contactAccountDataAboutToBeRemoved(Contact &, Account *)),
-			this, SLOT(contactAccountDataAboutToBeRemoved(Contact &, Account *)));
+	connect(ContactManager::instance(), SIGNAL(contactAccountDataAdded(Contact &, Account)),
+			this, SLOT(contactAccountDataAboutToBeRemoved(Contact & , Account)));
+	connect(ContactManager::instance(), SIGNAL(contactAccountDataAboutToBeRemoved(Contact &, Account)),
+			this, SLOT(contactAccountDataAboutToBeRemoved(Contact &, Account)));
 	connect(ContactManager::instance(), SIGNAL(contactUpdated(Contact &)),
 			this, SLOT(contactUpdated(Contact &)));
-	connect(ContactManager::instance(), SIGNAL(contactAccountIdChanged(Contact &, Account *, const QString &)),
-			this, SLOT(contactAccountIdChanged(Contact &, Account *, const QString &)));
+	connect(ContactManager::instance(), SIGNAL(contactAccountIdChanged(Contact &, Account, const QString &)),
+			this, SLOT(contactAccountIdChanged(Contact &, Account, const QString &)));
 
 	kdebugf2();
 }
@@ -116,10 +117,10 @@ JabberProtocol::~JabberProtocol()
 			this, SLOT(contactAdded(Contact &)));
 	QObject::disconnect(ContactManager::instance(), SIGNAL(contactRemoved(Contact &)),
 			this, SLOT(contactRemoved(Contact &)));
-	QObject::disconnect(ContactManager::instance(), SIGNAL(contactAccountDataAdded(Contact &, Account *)),
-			this, SLOT(contactAccountDataAboutToBeRemoved(Contact & , Account *)));
-	QObject::disconnect(ContactManager::instance(), SIGNAL(contactAccountDataAboutToBeRemoved(Contact &, Account *)),
-			this, SLOT(contactAccountDataAboutToBeRemoved(Contact &, Account *)));
+	QObject::disconnect(ContactManager::instance(), SIGNAL(contactAccountDataAdded(Contact &, Account)),
+			this, SLOT(contactAccountDataAboutToBeRemoved(Contact & , Account)));
+	QObject::disconnect(ContactManager::instance(), SIGNAL(contactAccountDataAboutToBeRemoved(Contact &, Account)),
+			this, SLOT(contactAccountDataAboutToBeRemoved(Contact &, Account)));
 }
 
 void JabberProtocol::initializeJabberClient()
@@ -164,15 +165,15 @@ void JabberProtocol::connectToServer()
 {
 	kdebugf();
 
-	JabberAccountDetails *jabberAccountDetails = dynamic_cast<JabberAccountDetails *>(account()->details());
+	JabberAccountDetails *jabberAccountDetails = dynamic_cast<JabberAccountDetails *>(account().details());
 	if (!jabberAccountDetails)
 		return;
 
-	if (account()->id().isNull() || account()->password().isNull())
+	if (account().id().isNull() || account().password().isNull())
 	{
 		setStatus(Status());
 
-		MessageBox::msg(account()->name() + ": " + tr("Jabber ID or password not set!"), false, "Warning");
+		MessageBox::msg(account().name() + ": " + tr("Jabber ID or password not set!"), false, "Warning");
 		kdebugmf(KDEBUG_FUNCTION_END, "end: Jabber ID or password not set\n");
 		return;
 	}
@@ -200,7 +201,7 @@ void JabberProtocol::connectToServer()
 
 	JabberClient->setFileTransfersEnabled(true); // i haz it
 	rosterRequestDone = false;
-	jabberID = account()->id();
+	jabberID = account().id();
 
 /*
 //TODO: do nowej klasy dostosowa?
@@ -232,7 +233,7 @@ void JabberProtocol::connectToServer()
 	networkStateChanged(NetworkConnecting);
 	jabberID = jabberID.withResource(jabberAccountDetails->resource());
 	networkStateChanged(NetworkConnecting);
-	JabberClient->connect(jabberID, account()->password(), true);
+	JabberClient->connect(jabberID, account().password(), true);
 	kdebugf2();
 }
 
@@ -314,7 +315,7 @@ void JabberProtocol::setPresence(const XMPP::Status &status)
 		newStatus.setCapsExt(JabberClient->capsExt());
 	}
 
-	JabberAccountDetails *jabberAccountDetails = dynamic_cast<JabberAccountDetails *>(account()->details());
+	JabberAccountDetails *jabberAccountDetails = dynamic_cast<JabberAccountDetails *>(account().details());
 	newStatus.setPriority(jabberAccountDetails->priority());
 	//TODO whatever
 	XMPP::Jid jid(jabberID);
@@ -465,7 +466,7 @@ void JabberProtocol::clientResourceAvailable(const XMPP::Jid &jid, const XMPP::R
 	description.replace("\r", "\n");
 	status.setDescription(description);
 
-	Contact contact = account()->getContactById(jid.bare());
+	Contact contact = account().getContactById(jid.bare());
 	/* is this contact realy anonymous? - need deep check
  	if (contact.isAnonymous())
 	{
@@ -519,7 +520,7 @@ void JabberProtocol::clientResourceUnavailable(const XMPP::Jid &jid, const XMPP:
 	description.replace("\r", "\n");
 	status.setDescription(description);
 
-	Contact contact = account()->getContactById(jid.bare());
+	Contact contact = account().getContactById(jid.bare());
  	if (contact.isAnonymous())
 	{
 		// TODO - ignore! - przynajmniej na razie
@@ -578,14 +579,14 @@ void JabberProtocol::contactUpdated(Contact &contact)
 
 }
 
-void JabberProtocol::contactAccountDataAdded(Contact &contact, Account *contactAccount)
+void JabberProtocol::contactAccountDataAdded(Contact &contact, Account contactAccount)
 {
 	if (contactAccount != account())
 		return;
 	contactAdded(contact);
 }
 
-void JabberProtocol::contactAccountDataAboutToBeRemoved(Contact &contact, Account *contactAccount)
+void JabberProtocol::contactAccountDataAboutToBeRemoved(Contact &contact, Account contactAccount)
 {
 	if (contactAccount != account())
 		return;
@@ -593,7 +594,7 @@ void JabberProtocol::contactAccountDataAboutToBeRemoved(Contact &contact, Accoun
 }
 
 
-void JabberProtocol::contactAccountIdChanged(Contact &contact, Account *account, const QString &oldId)
+void JabberProtocol::contactAccountIdChanged(Contact &contact, Account account, const QString &oldId)
 {
 	contactUpdated(contact);
 }

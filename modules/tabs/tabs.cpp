@@ -91,8 +91,8 @@ void disableNewTab(Action *action)
 		if (Core::instance()->myself() == contact)
 			return;
 
-		Account *account = contact.prefferedAccount();
-		if (!account || !account->protocolHandler()->chatService())
+		Account account = contact.prefferedAccount();
+		if (account.isNull() || !account.protocolHandler()->chatService())
 			return;
 	}
 
@@ -359,11 +359,11 @@ void TabsManager::onNewTab(QAction *sender, bool toggled)
 		return;
 
 	// sprawdzic czy to ma sens?
-	Account *account = contacts.prefferedAccount();
-	if (!account || !account->protocolHandler() || !account->protocolHandler()->chatService())
+	Account account = contacts.prefferedAccount();
+	if (account.isNull() || !account.protocolHandler() || !account.protocolHandler()->chatService())
 		return;
 
-	Chat *chat = account->protocolHandler()->findChat(contacts);
+	Chat *chat = account.protocolHandler()->findChat(contacts);
 
 	// istnieje = przywracamy na pierwszy plan
 	if (chat)

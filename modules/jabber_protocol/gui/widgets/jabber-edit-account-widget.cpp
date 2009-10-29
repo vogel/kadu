@@ -31,7 +31,7 @@
 
 #include "jabber-edit-account-widget.h"
 
-JabberEditAccountWidget::JabberEditAccountWidget(Account *account, QWidget *parent) :
+JabberEditAccountWidget::JabberEditAccountWidget(Account account, QWidget *parent) :
 		AccountEditWidget(account, parent)
 {
 	createGui();
@@ -310,15 +310,15 @@ void JabberEditAccountWidget::sslActivated(int i)
 
 void JabberEditAccountWidget::loadAccountData()
 {
-	ConnectAtStart->setChecked(account()->connectAtStart());
-	AccountId->setText(account()->id());
-	RememberPassword->setChecked(account()->rememberPassword());
-	AccountPassword->setText(account()->password());
+	ConnectAtStart->setChecked(account().connectAtStart());
+	AccountId->setText(account().id());
+	RememberPassword->setChecked(account().rememberPassword());
+	AccountPassword->setText(account().password());
 }
 
 void JabberEditAccountWidget::loadConnectionData()
 {
-	JabberAccountDetails *jabberAccountDetails = dynamic_cast<JabberAccountDetails *>(account()->details());
+	JabberAccountDetails *jabberAccountDetails = dynamic_cast<JabberAccountDetails *>(account().details());
 	if (!jabberAccountDetails)
 		return;
 
@@ -336,14 +336,14 @@ void JabberEditAccountWidget::loadConnectionData()
 
 void JabberEditAccountWidget::apply()
 {
-	JabberAccountDetails *jabberAccountDetails = dynamic_cast<JabberAccountDetails *>(account()->details());
+	JabberAccountDetails *jabberAccountDetails = dynamic_cast<JabberAccountDetails *>(account().details());
 	if (!jabberAccountDetails)
 		return;
 
-	account()->setConnectAtStart(ConnectAtStart->isChecked());
-	account()->setId(AccountId->text());
-	account()->setRememberPassword(RememberPassword->isChecked());
-	account()->setPassword(AccountPassword->text());
+	account().setConnectAtStart(ConnectAtStart->isChecked());
+	account().setId(AccountId->text());
+	account().setRememberPassword(RememberPassword->isChecked());
+	account().setPassword(AccountPassword->text());
 	jabberAccountDetails->setUseCustomHostPort(CustomHostPort->isChecked());
 	jabberAccountDetails->setCustomHost(CustomHost->text());
 	jabberAccountDetails->setCustomPort(CustomPort->text().toInt());
@@ -359,8 +359,8 @@ void JabberEditAccountWidget::removeAccount()
 	QMessageBox *messageBox = new QMessageBox(this);
 	messageBox->setWindowTitle(tr("Confirm account removal"));
 	messageBox->setText(tr("Are you sure do you want to remove account %1 (%2)")
-			.arg(account()->name())
-			.arg(account()->id()));
+			.arg(account().name())
+			.arg(account().id()));
 
 	messageBox->addButton(tr("Remove account"), QMessageBox::AcceptRole);
 	messageBox->addButton(tr("Remove account and unregister from server"), QMessageBox::DestructiveRole);

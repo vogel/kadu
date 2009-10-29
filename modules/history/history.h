@@ -76,8 +76,8 @@ class HISTORYAPI History : public ConfigurationUiHandler, ConfigurationAwareObje
 	void mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow);
 
 private slots:
-	void accountRegistered(Account *);
-	void accountUnregistered(Account *);
+	void accountRegistered(Account);
+	void accountUnregistered(Account);
 
 	void showHistoryActionActivated(QAction *sender, bool toggled);
 	void showMoreMessagesActionActivated(QAction *sender, bool toggled);

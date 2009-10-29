@@ -44,7 +44,7 @@ void disableEmptyTextBox(Action *action)
 
 void checkBlocking(Action *action)
 {
-	Account *account = AccountManager::instance()->defaultAccount();
+	Account account = AccountManager::instance()->defaultAccount();
 	ContactSet contacts = action->contacts();
 
 	if (contacts.contains(Core::instance()->myself()))
@@ -335,7 +335,7 @@ void ChatWidgetActions::whoisActionActivated(QAction *sender, bool toggled)
 void ChatWidgetActions::ignoreUserActionActivated(QAction *sender, bool toggled)
 {
 	kdebugf();
-	Account *account = AccountManager::instance()->defaultAccount();
+	Account account = AccountManager::instance()->defaultAccount();
 	MainWindow *window = dynamic_cast<MainWindow *>(sender->parent());
 	if (!window)
 		return;
@@ -347,14 +347,14 @@ void ChatWidgetActions::ignoreUserActionActivated(QAction *sender, bool toggled)
 		foreach (Contact contact, contacts)
 		{
 			QString uid = contact.accountData(account)->id();
-			if (!account->protocolHandler()->validateUserID(uid))
+			if (!account.protocolHandler()->validateUserID(uid))
 			{
 				ContainsBad = true;
 				break;
 			}
 		}
 
-		Chat *chat = account->protocolHandler()->findChat(contacts);
+		Chat *chat = account.protocolHandler()->findChat(contacts);
 		if (chat && !ContainsBad)
 		{
 			if (IgnoredHelper::isIgnored(contacts))
@@ -387,7 +387,7 @@ void ChatWidgetActions::ignoreUserActionActivated(QAction *sender, bool toggled)
 void ChatWidgetActions::blockUserActionActivated(QAction *sender, bool toggled)
 {
 	kdebugf();
-	Account *account = AccountManager::instance()->defaultAccount();
+	Account account = AccountManager::instance()->defaultAccount();
 	MainWindow *window = dynamic_cast<MainWindow *>(sender->parent());
 	if (!window)
 		return;
@@ -410,7 +410,7 @@ void ChatWidgetActions::blockUserActionActivated(QAction *sender, bool toggled)
 		foreach(Contact user, copy)
 		{
 			QString uid = user.accountData(account)->id();
-			if (account->protocolHandler()->validateUserID(uid) && user.isBlocked(account) != !on)
+			if (account.protocolHandler()->validateUserID(uid) && user.isBlocked(account) != !on)
 			{
 //TODO: 0.6.6
 /// 				user.setProtocolData("Gadu", "Blocking", !on);
@@ -419,7 +419,7 @@ void ChatWidgetActions::blockUserActionActivated(QAction *sender, bool toggled)
 			}
 		}
 
-		Chat *chat = account->protocolHandler()->findChat(contacts);
+		Chat *chat = account.protocolHandler()->findChat(contacts);
 		if (chat && !on) // if we were blocking, we also close the chat (and show info if blocked anonymous)
 		{
 			if (blocked_anonymous)
@@ -456,7 +456,7 @@ void ChatWidgetActions::openChatActionActivated(QAction *sender, bool toggled)
 	ContactSet contacts = window->contacts();
 	if (contacts.count() > 0)
 	{
-		Chat *chat = (*contacts.begin()).prefferedAccount()->protocolHandler()->findChat(contacts);
+		Chat *chat = (*contacts.begin()).prefferedAccount().protocolHandler()->findChat(contacts);
 		if (chat)
 			ChatWidgetManager::instance()->openChatWidget(chat, true);
 	}

@@ -44,7 +44,7 @@ StoragePoint * FileTransferManager::createStoragePoint()
 	return new StoragePoint(xml_config_file, xml_config_file->getNode("FileTransfersNew"));
 }
 
-void FileTransferManager::load(Account *account)
+void FileTransferManager::load(Account account)
 {
 	if (!isValidStorage())
 		return;
@@ -59,7 +59,7 @@ void FileTransferManager::load(Account *account)
 
 	int count = fileTransferNodes.count();
 
-	QString uuid = account->uuid().toString();
+	QString uuid = account.uuid().toString();
 	for (int i = 0; i < count; i++)
 	{
 		QDomElement fileTransferElement = fileTransferNodes.at(i).toElement();
@@ -79,11 +79,11 @@ void FileTransferManager::load(Account *account)
 	}
 }
 
-void FileTransferManager::accountRegistered(Account *account)
+void FileTransferManager::accountRegistered(Account account)
 {
 	load(account);
 
-	Protocol *protocol = account->protocolHandler();
+	Protocol *protocol = account.protocolHandler();
 	if (!protocol)
 		return;
 
@@ -95,7 +95,7 @@ void FileTransferManager::accountRegistered(Account *account)
 			this, SLOT(incomingFileTransfer(FileTransfer *)));
 }
 
-void FileTransferManager::store(Account *account)
+void FileTransferManager::store(Account account)
 {
 	foreach (FileTransfer *fileTransfer, FileTransfers)
 		if (fileTransfer->account() == account)
@@ -108,11 +108,11 @@ void FileTransferManager::store()
 		fileTransfer->store();
 }
 
-void FileTransferManager::accountUnregistered(Account *account)
+void FileTransferManager::accountUnregistered(Account account)
 {
 	store(account);
 
-	Protocol *protocol = account->protocolHandler();
+	Protocol *protocol = account.protocolHandler();
 	if (!protocol)
 		return;
 

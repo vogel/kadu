@@ -19,17 +19,20 @@
 #include "status/base-status-container.h"
 #include "status/status.h"
 
+#undef PropertyRead
 #define PropertyRead(type, name, capitalized_name, default) \
 	type name() const\
 	{\
-		return isNull()\
+		return !Data\
 			? default\
 			: Data->name();\
 	}
+
+#undef PropertyWrite
 #define PropertyWrite(type, name, capitalized_name, default) \
 	void set##capitalized_name(type name) const\
 	{\
-		if (!isNull())\
+		if (Data)\
 			Data->set##capitalized_name(name);\
 	}
 
@@ -56,14 +59,17 @@ class KADUAPI Account : public QObject
 	void disconnectDataSignals();
 
 public:
-	static Account * loadFromStorage(StoragePoint *storage);
+	static Account loadFromStorage(StoragePoint *storage);
+	static Account null;
 
 	explicit Account(AccountData::AccountType type = AccountData::TypeNormal);
 	explicit Account(AccountData *data);
 	Account(const Account &copy);
 	virtual ~Account();
 
-	bool isNull() const { return 0 == Data || Data->isNull(); }
+	AccountData * data() const { return Data.data(); }
+
+	bool isNull() const { return 0 == Data || Data->isNull() || 0 == protocolHandler(); }
 
 	Account & operator = (const Account &copy);
 	bool operator == (const Account &compare) const;
@@ -103,10 +109,12 @@ public:
 	Property(QString, proxyPassword, ProxyPassword, QString::null)
 
 signals:
-	void contactStatusChanged(Account *account, Contact contact, Status oldStatus);
+	void contactStatusChanged(Account account, Contact contact, Status oldStatus);
 
 };
 
-Q_DECLARE_METATYPE(Account *)
+Q_DECLARE_METATYPE(Account)
+
+uint qHash(const Account &account);
 
 #endif // ACCOUNT_H

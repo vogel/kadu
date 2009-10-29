@@ -25,7 +25,7 @@
 
 #include "gadu-list-helper.h"
 
-QString GaduListHelper::contactListToString(Account *account, ContactList contacts)
+QString GaduListHelper::contactListToString(Account account, ContactList contacts)
 {
 	kdebugf();
 
@@ -71,12 +71,12 @@ QString GaduListHelper::contactListToString(Account *account, ContactList contac
 	return contactsString;
 }
 
-ContactList GaduListHelper::stringToContactList(Account* account, QString &content) {
+ContactList GaduListHelper::stringToContactList(Account account, QString &content) {
 	QTextStream stream(&content, QIODevice::ReadOnly);
 	return streamToContactList(account, stream);
 }
 
-ContactList GaduListHelper::streamToContactList(Account *account, QTextStream &content)
+ContactList GaduListHelper::streamToContactList(Account account, QTextStream &content)
 {
 	ContactList result;
 

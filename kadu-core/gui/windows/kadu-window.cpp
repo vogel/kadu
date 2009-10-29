@@ -288,7 +288,7 @@ void KaduWindow::closeEvent(QCloseEvent *e)
 void KaduWindow::customEvent(QEvent *e)
 {
 // TODO: 0.6.6
-// 	Account *defaultAccount = AccountManager::instance()->defaultAccount();
+// 	Account defaultAccount = AccountManager::instance()->defaultAccount();
 // 
 // 	if (int(e->type()) == 4321)
 // 		show();
@@ -346,11 +346,11 @@ ContactSet KaduWindow::contacts()
 
 Chat * KaduWindow::chat()
 {
-	Account *account = AccountManager::instance()->defaultAccount();
-	if (!account)
+	Account account = AccountManager::instance()->defaultAccount();
+	if (account.isNull())
 		return 0;
 
-	return account->protocolHandler()->findChat(contacts());
+	return account.protocolHandler()->findChat(contacts());
 }
 
 void KaduWindow::configurationUpdated()

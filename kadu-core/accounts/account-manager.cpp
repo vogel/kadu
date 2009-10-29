@@ -64,21 +64,21 @@ void AccountManager::init()
 		protocolFactoryRegistered(factory);
 }
 
-void AccountManager::loadAccount(Account *account, ProtocolFactory *protocolFactory)
+void AccountManager::loadAccount(Account account, ProtocolFactory *protocolFactory)
 {
-	account->loadProtocol(protocolFactory);
+	account.loadProtocol(protocolFactory);
 	registerAccount(account);
 }
 
-void AccountManager::unloadAccount(Account* account)
+void AccountManager::unloadAccount(Account account)
 {
 	unregisterAccount(account);
-	account->unloadProtocol();
+	account.unloadProtocol();
 }
 
-void AccountManager::tryLoadAccount(Account *account)
+void AccountManager::tryLoadAccount(Account account)
 {
-	ProtocolFactory *factory = ProtocolsManager::instance()->byName(account->protocolName());
+	ProtocolFactory *factory = ProtocolsManager::instance()->byName(account.protocolName());
 	if (factory)
 		loadAccount(account, factory);
 }
@@ -106,7 +106,7 @@ void AccountManager::load()
 			continue;
 
 		StoragePoint *storagePoint = new StoragePoint(storage()->storage(), accountElement);
-		Account *account = Account::loadFromStorage(storagePoint);
+		Account account = Account::loadFromStorage(storagePoint);
 		AllAccounts.append(account);
 
 		tryLoadAccount(account);
@@ -118,57 +118,57 @@ void AccountManager::store()
 	if (!isValidStorage())
 		return;
 	
-	foreach (Account *account, AllAccounts)
-		account->store();
+	foreach (Account account, AllAccounts)
+		account.store();
 }
 
-Account * AccountManager::defaultAccount() const
+Account AccountManager::defaultAccount() const
 {
 	return byIndex(0);
 }
 
-Account * AccountManager::byIndex(unsigned int index) const
+Account AccountManager::byIndex(unsigned int index) const
 {
 	if (index < 0 || index >= count())
-		return 0;
+		return Account::null;
 
 	return RegisteredAccounts.at(index);
 }
 
-Account * AccountManager::byUuid(const QUuid &uuid) const
+Account AccountManager::byUuid(const QUuid &uuid) const
 {
-	foreach (Account *account, AllAccounts)
-		if (uuid == account->uuid())
+	foreach (Account account, AllAccounts)
+		if (uuid == account.uuid())
 			return account;
 
-	return 0;
+	return Account::null;
 }
 
-const QList<Account *> AccountManager::byProtocolName(const QString &name) const
+const QList<Account> AccountManager::byProtocolName(const QString &name) const
 {
-	QList<Account *> list;
-	foreach (Account *account, AllAccounts)
-		if (account->protocolName() == name)
+	QList<Account> list;
+	foreach (Account account, AllAccounts)
+		if (account.protocolName() == name)
 			list.append(account);
 
 	return list;
 }
 
-void AccountManager::registerAccount(Account *account)
+void AccountManager::registerAccount(Account account)
 {
 	emit accountAboutToBeRegistered(account);
 	RegisteredAccounts << account;
 	emit accountRegistered(account);
 	AccountsAwareObject::notifyAccountRegistered(account);
 
-	connect(account->protocolHandler(), SIGNAL(connectionError(Account *, const QString &, const QString &)),
-			this, SLOT(connectionError(Account *, const QString &, const QString &)));
+	connect(account.protocolHandler(), SIGNAL(connectionError(Account, const QString &, const QString &)),
+			this, SLOT(connectionError(Account, const QString &, const QString &)));
 }
 
-void AccountManager::unregisterAccount(Account *account)
+void AccountManager::unregisterAccount(Account account)
 {
-	disconnect(account->protocolHandler(), SIGNAL(connectionError(Account *, const QString &, const QString &)),
-			this, SLOT(connectionError(Account *, const QString &, const QString &)));
+	disconnect(account.protocolHandler(), SIGNAL(connectionError(Account, const QString &, const QString &)),
+			this, SLOT(connectionError(Account, const QString &, const QString &)));
 
 	AccountsAwareObject::notifyAccountUnregistered(account);
 	emit accountAboutToBeUnregistered(account);
@@ -176,19 +176,19 @@ void AccountManager::unregisterAccount(Account *account)
 	emit accountUnregistered(account);
 }
 
-void AccountManager::deleteAccount(Account *account)
+void AccountManager::deleteAccount(Account account)
 {
 	emit accountAboutToBeRemoved(account);
 	unregisterAccount(account);
-	account->removeFromStorage();
+	account.removeFromStorage();
 	emit accountRemoved(account);
 }
 
 Status AccountManager::status() const
 {
-	Account *account = defaultAccount();
-	return account
-			? account->statusContainer()->status()
+	Account account = defaultAccount();
+	return !account.isNull()
+			? account.statusContainer()->status()
 			: Status();
 }
 
@@ -199,19 +199,19 @@ void AccountManager::protocolFactoryRegistered(ProtocolFactory *factory)
 
 	QString factoryProtocolName = factory->name();
 
-	foreach (Account *account, AllAccounts)
-		if (account->protocolName() == factoryProtocolName)
+	foreach (Account account, AllAccounts)
+		if (account.protocolName() == factoryProtocolName)
 			loadAccount(account, factory);
 }
 
 void AccountManager::protocolFactoryUnregistered(ProtocolFactory *factory)
 {
-	foreach (Account *account, RegisteredAccounts)
-		if (account->protocolHandler()->protocolFactory() == factory)
+	foreach (Account account, RegisteredAccounts)
+		if (account.protocolHandler()->protocolFactory() == factory)
 			unloadAccount(account);
 }
 
-void AccountManager::connectionError(Account *account, const QString &server, const QString &message)
+void AccountManager::connectionError(Account account, const QString &server, const QString &message)
 {
 	kdebugf();
 

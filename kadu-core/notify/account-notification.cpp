@@ -15,23 +15,23 @@
 static QString getAccountName(const QObject * const object)
 {
 	const AccountNotification * const notification = dynamic_cast<const AccountNotification * const>(object);
-	return notification && notification->account()
-		? notification->account()->name()
-		: QString::null;
+	return notification && !notification->account().isNull()
+			? notification->account().name()
+			: QString::null;
 }
 
 static QString getProtocolName(const QObject * const object)
 {
 	const AccountNotification * const notification = dynamic_cast<const AccountNotification * const>(object);
 	return notification &&
-			notification->account() &&
-			notification->account()->protocolHandler() &&
-			notification->account()->protocolHandler()->protocolFactory()
-		? notification->account()->protocolHandler()->protocolFactory()->displayName()
+			!notification->account().isNull() &&
+			notification->account().protocolHandler() &&
+			notification->account().protocolHandler()->protocolFactory()
+		? notification->account().protocolHandler()->protocolFactory()->displayName()
 		: QString::null;
 }
 
-AccountNotification::AccountNotification(Account *account, const QString &type, const QIcon &icon) :
+AccountNotification::AccountNotification(Account account, const QString &type, const QIcon &icon) :
 		Notification(type, icon), CurrentAccount(account)
 {
 	Parser::registerObjectTag("protocol", getProtocolName);

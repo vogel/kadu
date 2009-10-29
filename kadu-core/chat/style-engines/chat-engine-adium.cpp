@@ -347,7 +347,7 @@ QString AdiumChatStyleEngine::replaceKeywords(Chat *chat, QString &styleHref, QS
 	}
 	result.replace(QString("%chatName%"), name);
 	// Replace %sourceName%
-	result.replace(QString("%sourceName%"), chat->account()->name());
+	result.replace(QString("%sourceName%"), chat->account().name());
 	// Replace %destinationName%
 	result.replace(QString("%destinationName%"), name);
 	// For %timeOpened%, display the date and time. TODO: get real time 
@@ -395,9 +395,9 @@ QString AdiumChatStyleEngine::replaceKeywords(Chat *chat, QString &styleHref, QS
 	// Replace %screenName% (contact ID)
 	result.replace(QString("%senderScreenName%"), msg.sender().id(chat->account()));
 	// Replace service name (protocol name)
-	result.replace(QString("%service%"), chat->account()->protocolHandler()->protocolFactory()->displayName());
+	result.replace(QString("%service%"), chat->account().protocolHandler()->protocolFactory()->displayName());
 	// Replace protocolIcon (sender statusIcon). TODO:
-	result.replace(QString("%senderStatusIcon%"), chat->account()->protocolHandler()->protocolFactory()->iconName());
+	result.replace(QString("%senderStatusIcon%"), chat->account().protocolHandler()->protocolFactory()->iconName());
 
 	// Replace time
 	QDateTime time = msg.sendDate().isNull() ? msg.receiveDate(): msg.sendDate();

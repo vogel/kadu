@@ -89,7 +89,7 @@ public:
 	void appendSystemMessage(const QString &rawContent, const QString &backgroundColor, const QString &fontColor);
 
 	/**
-		\fn void newMessage(Account *account, ContactList senders, const QString &message, time_t time)
+		\fn void newMessage(Account account, ContactList senders, const QString &message, time_t time)
 		Add new message to window
 
 		\param account account on which the message was received

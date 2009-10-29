@@ -38,14 +38,14 @@ void GaduImporter::importAccounts()
 	if (0 == config_file.readNumEntry("General", "UIN"))
 		return;
 	
-	Account *defaultGaduGadu = new Account();
-	GaduAccountDetails *accountDetails = new GaduAccountDetails(defaultGaduGadu->storage(), defaultGaduGadu);
-	defaultGaduGadu->setDetails(accountDetails);
+	Account defaultGaduGadu;
+	GaduAccountDetails *accountDetails = new GaduAccountDetails(defaultGaduGadu.storage(), defaultGaduGadu);
+	defaultGaduGadu.setDetails(accountDetails);
 
-	defaultGaduGadu->setName("Gadu-Gadu");
-	defaultGaduGadu->setId(config_file.readEntry("General", "UIN"));
-	defaultGaduGadu->setPassword(unicode2cp(pwHash(config_file.readEntry("General", "Password"))));
-	defaultGaduGadu->setRememberPassword(true);
+	defaultGaduGadu.setName("Gadu-Gadu");
+	defaultGaduGadu.setId(config_file.readEntry("General", "UIN"));
+	defaultGaduGadu.setPassword(unicode2cp(pwHash(config_file.readEntry("General", "Password"))));
+	defaultGaduGadu.setRememberPassword(true);
 	accountDetails->setAllowDcc(config_file.readBoolEntry("Network", "AllowDCC"));
 
 	QHostAddress host;
@@ -63,14 +63,14 @@ void GaduImporter::importAccounts()
 	accountDetails->setDccForwarding(config_file.readBoolEntry("Network", "DccForwarding"));
 	accountDetails->setRemoveCompletedTransfers(config_file.readBoolEntry("Network", "RemoveCompletedTransfers"));
 
-	defaultGaduGadu->setUseProxy(config_file.readBoolEntry("Network", "UseProxy"));
+	defaultGaduGadu.setUseProxy(config_file.readBoolEntry("Network", "UseProxy"));
 	if (!host.setAddress(config_file.readEntry("Network", "ProxyHost")))
 		host.setAddress("0.0.0.0");
-	defaultGaduGadu->setProxyHost(host);
-	defaultGaduGadu->setProxyPassword(config_file.readEntry("Network", "ProxyPassword"));
-	defaultGaduGadu->setProxyPort(config_file.readNumEntry("Network", "ProxyPort"));
-	defaultGaduGadu->setProxyUser(config_file.readEntry("Network", "ProxyUser"));
-	defaultGaduGadu->setProxyRequiresAuthentication(!defaultGaduGadu->proxyUser().isEmpty());
+	defaultGaduGadu.setProxyHost(host);
+	defaultGaduGadu.setProxyPassword(config_file.readEntry("Network", "ProxyPassword"));
+	defaultGaduGadu.setProxyPort(config_file.readNumEntry("Network", "ProxyPort"));
+	defaultGaduGadu.setProxyUser(config_file.readEntry("Network", "ProxyUser"));
+	defaultGaduGadu.setProxyRequiresAuthentication(!defaultGaduGadu.proxyUser().isEmpty());
 
 	accountDetails->import_0_6_5_LastStatus();
 
@@ -90,7 +90,7 @@ void GaduImporter::importContacts()
 
 void GaduImporter::importGaduContact(Contact& contact)
 {
-	Account *account = AccountManager::instance()->defaultAccount();
+	Account account = AccountManager::instance()->defaultAccount();
 	QString id = contact.customData()["uin"];
 
 	GaduContactAccountData *gcad = new GaduContactAccountData(account, contact, id, true);
@@ -109,8 +109,8 @@ void GaduImporter::importGaduContact(Contact& contact)
 
 void GaduImporter::importIgnored()
 {
-	Account *account = AccountManager::instance()->defaultAccount();
-	if (!account)
+	Account account = AccountManager::instance()->defaultAccount();
+	if (account.isNull())
 		return;
 
 	QDomElement ignored = xml_config_file->getNode("Ignored", XmlConfigFile::ModeFind);

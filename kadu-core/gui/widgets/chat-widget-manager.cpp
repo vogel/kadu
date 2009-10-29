@@ -137,8 +137,8 @@ void ChatWidgetManager::store()
 
 	foreach (Chat *chat, Chats.keys())
 	{
-		if (!chat || !chat->account() || !chat->account()->protocolHandler()
-			|| !chat->account()->protocolHandler()->protocolFactory())
+		if (!chat || chat->account().isNull() || !chat->account().protocolHandler()
+			|| !chat->account().protocolHandler()->protocolFactory())
 				continue;
 
 		append(chat->uuid().toString());

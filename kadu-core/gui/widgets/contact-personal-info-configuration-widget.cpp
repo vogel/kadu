@@ -49,9 +49,9 @@ void ContactPersonalInfoConfigurationWidget::createGui()
 
 	ContactIdCombo = new QComboBox(this);
 	foreach (ContactAccountData *data, CurrentContact.accountDatas())
-		ContactIdCombo->addItem(data->account()->protocolHandler()->icon(),
-			    data->id(),
-			    data->account()->uuid().toString()
+		ContactIdCombo->addItem(data->account().protocolHandler()->icon(),
+				data->id(),
+				data->account().uuid().toString()
 		);
 	connect(ContactIdCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(accountSelectionChanged(int)));
 	layout->addWidget(ContactIdCombo, row++, 4, 1, 1);
@@ -146,8 +146,8 @@ void ContactPersonalInfoConfigurationWidget::accountSelectionChanged(int index)
 	QString accountUuid = ContactIdCombo->itemData(index).toString();
 	if (accountUuid.isEmpty())
 		return;
-	Account *account = AccountManager::instance()->byUuid(QUuid(accountUuid));
-	if (!account)
+	Account account = AccountManager::instance()->byUuid(QUuid(accountUuid));
+	if (account.isNull())
 		return;
 	//TODO proper values
 	FirstNameText->setText(CurrentContact.firstName());

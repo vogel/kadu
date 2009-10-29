@@ -22,7 +22,7 @@ class QLineEdit;
 
 class KADUAPI ProxyGroupBox : public QGroupBox
 {
-	Account *MyAccount;
+	Account MyAccount;
 
 	QWidget *proxyAuthWidget;
 
@@ -34,7 +34,7 @@ class KADUAPI ProxyGroupBox : public QGroupBox
 	QLineEdit *password;
 
 public:
-	ProxyGroupBox(Account *account, const QString &title, QWidget *parent = 0);
+	ProxyGroupBox(Account account, const QString &title, QWidget *parent = 0);
 
 	void loadProxyData();
 	void applyProxyData();

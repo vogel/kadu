@@ -16,13 +16,13 @@ class Account;
 
 class KADUAPI AccountDataManager : public ConfigurationWindowDataManager
 {
-	Account *Data;
+	Account Data;
 
 protected:
-	Account * data() { return Data; }
+	Account data() { return Data; }
 
 public:
-	AccountDataManager(Account *data, QObject *parent = 0);
+	AccountDataManager(Account data, QObject *parent = 0);
 
 	virtual void writeEntry(const QString &section, const QString &name, const QVariant &value);
 	virtual QVariant readEntry(const QString &section, const QString &name);

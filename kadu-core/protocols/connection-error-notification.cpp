@@ -16,7 +16,7 @@
 #include "connection-error-notification.h"
 
 NotifyEvent *ConnectionErrorNotification::ConnectionErrorNotifyEvent = 0;
-QMap<Account *, QStringList> ConnectionErrorNotification::ActiveErrors;
+QMap<Account, QStringList> ConnectionErrorNotification::ActiveErrors;
 
 static QString getErrorMessage(const QObject * const object)
 {
@@ -57,12 +57,12 @@ void ConnectionErrorNotification::unregisterEvent()
 	ConnectionErrorNotifyEvent = 0;
 }
 
-bool ConnectionErrorNotification::activeError(Account *account, const QString &errorMessage)
+bool ConnectionErrorNotification::activeError(Account account, const QString &errorMessage)
 {
 	return ActiveErrors.contains(account) && ActiveErrors[account].contains(errorMessage);
 }
 
-ConnectionErrorNotification::ConnectionErrorNotification(Account *account, const QString &errorServer, const QString &errorMessage) :
+ConnectionErrorNotification::ConnectionErrorNotification(Account account, const QString &errorServer, const QString &errorMessage) :
 		AccountNotification(account, "ConnectionError", IconsManager::instance()->loadIcon("CriticalSmall")),
 		ErrorServer(errorServer), ErrorMessage(errorMessage)
 {

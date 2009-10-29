@@ -132,12 +132,15 @@ void ContactsListView::triggerActivate(const QModelIndex& index)
 	if (!index.isValid())
 		return;
 
-	Account *account = index.data(AccountRole).value<Account *>();
+	Account account = index.data(AccountRole).value<Account>();
+	if (account.isNull())
+		return;
+
 	Contact con = contact(index);
 	if (con.isNull())
 		return;
 
-	Chat *chat = account->protocolHandler()->findChat(ContactSet(con));
+	Chat *chat = account.protocolHandler()->findChat(ContactSet(con));
 	if (chat)
 		emit chatActivated(chat);
 }
@@ -197,17 +200,17 @@ void ContactsListView::contextMenuEvent(QContextMenuEvent *event)
 		else
 			management->addSeparator();
 
-	foreach (Account * account, con.accounts())
+	foreach (Account account, con.accounts())
 	{
-		if (!account || !account->protocolHandler())
+		if (account.isNull())
 			continue;
 
-		ProtocolFactory *protocolFactory = account->protocolHandler()->protocolFactory();
+		ProtocolFactory *protocolFactory = account.protocolHandler()->protocolFactory();
 
 		if (!protocolFactory || !protocolFactory->protocolMenuManager())
 			continue;
 
-		QMenu *account_menu = menu->addMenu(account->name());
+		QMenu *account_menu = menu->addMenu(account.name());
 		if (!protocolFactory->iconName().isEmpty())
 			account_menu->setIcon(IconsManager::instance()->loadIcon(protocolFactory->iconName()));
 

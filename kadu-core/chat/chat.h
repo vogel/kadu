@@ -24,7 +24,7 @@ class Chat : public QObject, public UuidStorableObject
 {
 	Q_OBJECT
 
-	Account *CurrentAccount;
+	Account CurrentAccount;
 	QUuid Uuid;
 	QString Title;
 	QPixmap Icon;
@@ -33,7 +33,7 @@ public:
 	static Chat * loadFromStorage(StoragePoint *conferenceStoragePoint);
 
 	explicit Chat(StoragePoint *storage);
-	explicit Chat(Account *parentAccount, QUuid uuid = QUuid());
+	explicit Chat(Account parentAccount, QUuid uuid = QUuid());
 	virtual ~Chat();
 
 	virtual void load();
@@ -44,7 +44,7 @@ public:
 	virtual ContactSet contacts() const = 0;
 	virtual QString name() const = 0;
 
-	Account * account() { return CurrentAccount; }
+	Account account() { return CurrentAccount; }
 	void setTitle(const QString &newTitle);
 	QString title() { return Title; }
 	QPixmap icon() { return Icon; }

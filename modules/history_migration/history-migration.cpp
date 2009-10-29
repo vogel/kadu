@@ -84,16 +84,16 @@ void HistoryImporter::run()
 	if (config_file.readBoolEntry("History", "Imported_from_0.6.5", false))
 		return;
 
-	Account *gaduAccount = 0;
-	foreach (Account *account, AccountManager::instance()->accounts())
-		if (account->protocolHandler() && account->protocolHandler()->protocolFactory()
-			&& account->protocolHandler()->protocolFactory()->name() == "gadu")
+	Account gaduAccount = Account::null;
+	foreach (Account account, AccountManager::instance()->accounts())
+		if (account.protocolHandler() && account.protocolHandler()->protocolFactory()
+			&& account.protocolHandler()->protocolFactory()->name() == "gadu")
 		{
 			gaduAccount = account;
 			break;
 		}
 
-	if (!gaduAccount || !History::instance()->currentStorage())
+	if (gaduAccount.isNull() || !History::instance()->currentStorage())
 		return;
 
 	QList<QStringList> uinsLists = getUinsLists();

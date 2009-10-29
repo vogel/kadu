@@ -59,8 +59,8 @@ bool ContactsModelProxy::lessThan(const QModelIndex &left, const QModelIndex &ri
 	Contact leftContact = SourceContactModel->contact(left);
 	Contact rightContact = SourceContactModel->contact(right);
 
-	Account *leftAccount = leftContact.prefferedAccount();
-	Account *rightAccount = rightContact.prefferedAccount();
+	Account leftAccount = leftContact.prefferedAccount();
+	Account rightAccount = rightContact.prefferedAccount();
 
 	ContactAccountData *leftContactAccountData = leftContact.accountData(leftAccount);
 	ContactAccountData *rightContactAccountData = rightContact.accountData(rightAccount);

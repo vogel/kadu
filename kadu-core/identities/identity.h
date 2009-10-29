@@ -13,6 +13,7 @@
 #include <QtCore/QUuid>
 #include <QtCore/QStringList>
 
+#include "accounts/account.h"
 #include "accounts/accounts-aware-object.h"
 #include "status/base-status-container.h"
 
@@ -30,7 +31,7 @@ class KADUAPI Identity : public BaseStatusContainer, public AccountsAwareObject
 	QString Name;
 	QUuid Uuid;
 
-	QList<Account *> Accounts;
+	QList<Account> Accounts;
 	QStringList AccountsUuids;
 
 public:
@@ -49,13 +50,13 @@ public:
 
 	QString name() const { return Name; }
 
-	QList<Account *> accounts() const { return Accounts; }
-	bool hasAccount(Account *account) const { return Accounts.contains(account); }
+	QList<Account> accounts() const { return Accounts; }
+	bool hasAccount(Account account) const { return Accounts.contains(account); }
 
-	void accountRegistered(Account *account);
-	void accountUnregistered(Account *account);
+	void accountRegistered(Account account);
+	void accountUnregistered(Account account);
 
-	void addAccount(Account *account);
+	void addAccount(Account account);
 
 	// StatusContainer implementation
 	virtual QString statusContainerName() { return Name; }
@@ -76,7 +77,7 @@ public:
 
 
 public slots:
-	void removeAccount(Account *account);
+	void removeAccount(Account account);
 
 };
 

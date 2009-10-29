@@ -160,7 +160,7 @@ void YourAccounts::protocolChanged(int protocolIndex)
 		CreateWidgets[factory] = createWidget;
 		if (createWidget)
 		{
-			connect(createWidget, SIGNAL(accountCreated(Account *)), this, SLOT(accountCreated(Account *)));
+			connect(createWidget, SIGNAL(accountCreated(Account)), this, SLOT(accountCreated(Account)));
 			CreateStack->addWidget(createWidget);
 		}
 	}
@@ -171,9 +171,9 @@ void YourAccounts::protocolChanged(int protocolIndex)
 		CreateStack->setCurrentWidget(createWidget);
 }
 
-void YourAccounts::accountCreated(Account *account)
+void YourAccounts::accountCreated(Account account)
 {
-	account->importProxySettings();
+	account.importProxySettings();
 	AccountManager::instance()->registerAccount(account);
 	AccountsView->selectionModel()->clearSelection();
 	AccountsView->selectionModel()->select(MyAccountsModel->accountModelIndex(account), QItemSelectionModel::Select);
@@ -191,14 +191,14 @@ void YourAccounts::accountSelectionChanged(const QItemSelection &selected, const
 	if (!accountModel)
 		return;
 
-	Account *account = accountModel->account(current);
-	if (!account)
+	Account account = accountModel->account(current);
+	if (account.isNull())
 		return;
 
 	AccountEditWidget *editWidget;
 	if (!EditWidgets.contains(account))
 	{
-		editWidget = account->protocolHandler()->protocolFactory()->newEditAccountWidget(account, this);
+		editWidget = account.protocolHandler()->protocolFactory()->newEditAccountWidget(account, this);
 		EditWidgets[account] = editWidget;
 		EditStack->addWidget(editWidget);
 	}
@@ -209,7 +209,7 @@ void YourAccounts::accountSelectionChanged(const QItemSelection &selected, const
 		EditStack->setCurrentWidget(editWidget);
 }
 
-void YourAccounts::accountUnregistered(Account *account)
+void YourAccounts::accountUnregistered(Account account)
 {
 	if (EditWidgets.contains(account))
 	{

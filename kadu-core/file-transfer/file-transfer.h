@@ -55,7 +55,7 @@ public:
 private:
 	QUuid Uuid;
 
-	Account *CurrentAccount;
+	Account CurrentAccount;
 	Contact Peer;
 	QString LocalFileName;
 	QString RemoteFileName;
@@ -82,14 +82,14 @@ protected:
 public:
 	static FileTransfer * loadFromStorage(StoragePoint *fileTransferStoragePoint);
 
-	FileTransfer(Account *account);
-	FileTransfer(Account *account, Contact peer, FileTransferType transferType);
+	FileTransfer(Account account);
+	FileTransfer(Account account, Contact peer, FileTransferType transferType);
 	virtual ~FileTransfer();
 
 	virtual void load();
 	virtual void store();
 
-	Account * account() { return CurrentAccount; }
+	Account account() { return CurrentAccount; }
 	Contact contact() { return Peer; }
 
 	FileTransferType transferType() { return TransferType; }

@@ -44,7 +44,7 @@ KADUAPI class YourAccounts : public QWidget, AccountsAwareObject
 	QWidget *NewAccountContainer;
 
 	QMap<ProtocolFactory *, AccountCreateWidget *> CreateWidgets;
-	QMap<Account *, AccountEditWidget *> EditWidgets;
+	QMap<Account, AccountEditWidget *> EditWidgets;
 
 	void createGui();
 	void createNewAccountWidget();
@@ -53,7 +53,7 @@ KADUAPI class YourAccounts : public QWidget, AccountsAwareObject
 private slots:
 	void newAccountClicked();
 	void protocolChanged(int protocolIndex);
-	void accountCreated(Account *account);
+	void accountCreated(Account account);
 	void accountSelectionChanged(const QItemSelection &selected, const QItemSelection &deselected);
 
 	void okClicked();
@@ -61,8 +61,8 @@ private slots:
 
 protected:
 	virtual void keyPressEvent(QKeyEvent *e);
-	virtual void accountRegistered(Account *account) { }
-	virtual void accountUnregistered(Account *account);
+	virtual void accountRegistered(Account account) { }
+	virtual void accountUnregistered(Account account);
 
 public:
 	explicit YourAccounts(QWidget *parent = 0);

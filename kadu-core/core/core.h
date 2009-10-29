@@ -60,8 +60,8 @@ private slots:
 	void kaduWindowDestroyed();
 
 protected:
-	virtual void accountRegistered(Account* account);
-	virtual void accountUnregistered(Account* account);
+	virtual void accountRegistered(Account account);
+	virtual void accountUnregistered(Account account);
 	virtual void configurationUpdated();
 
 public:

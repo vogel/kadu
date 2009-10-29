@@ -19,7 +19,7 @@ class JabberAccountDataManager : public AccountDataManager
 	JabberAccountDetails *Data;
 
 public:
-	JabberAccountDataManager(Account *data);
+	JabberAccountDataManager(Account data);
 
 	JabberAccountDetails * data() { return Data; }
 

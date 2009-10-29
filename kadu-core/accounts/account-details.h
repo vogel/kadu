@@ -12,19 +12,22 @@
 
 #include <QtCore/QObject>
 
+#include "accounts/account.h"
 #include "configuration/storable-object.h"
+
+class AccountData;
 
 class AccountDetails : public QObject, public StorableObject
 {
 	Q_OBJECT
 
-	Account *MyAccount;
+	AccountData *MyAccountData;
 
 public:
-	explicit AccountDetails(StoragePoint *storagePoint, Account *parent = 0);
+	explicit AccountDetails(StoragePoint *storagePoint, Account parent);
 	virtual ~AccountDetails();
 
-	Account * account() { return MyAccount; }
+	Account account() { return Account(MyAccountData); }
 
 };
 

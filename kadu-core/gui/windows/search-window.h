@@ -76,7 +76,7 @@ class KADUAPI SearchWindow : public MainWindow
 	QLabel *progress;
 	QRadioButton *r_uin;
 	QRadioButton *r_pers;
-	Account *CurrentAccount;
+	Account CurrentAccount;
 	quint32 seq;
 	ContactSet selectedUsers;
 

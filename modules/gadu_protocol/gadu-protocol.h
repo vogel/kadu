@@ -101,15 +101,15 @@ private:
 private slots:
 	void login(const QString &password, bool permanent);
 	void login();
-	void fetchAvatars(Account *account);
+	void fetchAvatars(Account account);
 	void connectionTimeoutTimerSlot();
 	void everyMinuteActions();
 
 	void contactAdded(Contact &contact);
 	void contactRemoved(Contact &contact);
-	void contactAccountDataAdded(Contact &contact, Account *contactAccount);
-	void contactAccountDataAboutToBeRemoved(Contact &contact, Account *contactAccount);
-	void contactAccountDataIdChanged(Contact &contact, Account *contactAccount, const QString &oldId);
+	void contactAccountDataAdded(Contact &contact, Account contactAccount);
+	void contactAccountDataAboutToBeRemoved(Contact &contact, Account contactAccount);
+	void contactAccountDataIdChanged(Contact &contact, Account contactAccount, const QString &oldId);
 
 protected:
 	virtual void changeStatus();
@@ -119,7 +119,7 @@ public:
 	static QString statusTypeFromGaduStatus(unsigned int index);
 	static unsigned int gaduStatusFromStatus(const Status &status);
 
-	GaduProtocol(Account *account, ProtocolFactory *factory);
+	GaduProtocol(Account account, ProtocolFactory *factory);
 	virtual ~GaduProtocol();
 
 	virtual AvatarService *avatarService() { return CurrentAvatarService; }

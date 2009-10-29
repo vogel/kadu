@@ -29,7 +29,7 @@ class KADUAPI ContactAccountData : public QObject, public UuidStorableObject
 
 	QUuid Uuid;
 
-	Account *ContactAccount;
+	Account ContactAccount;
 	Avatar ContactAvatar;
 	Contact OwnerContact;
 	QString Id;
@@ -46,7 +46,7 @@ class KADUAPI ContactAccountData : public QObject, public UuidStorableObject
 	bool OfflineTo;
 
 public:
-	ContactAccountData(Account *account, Contact contact, const QString &id, bool loaded = false);
+	ContactAccountData(Account account, Contact contact, const QString &id, bool loaded = false);
 	explicit ContactAccountData(StoragePoint *storage);
 
 	virtual bool validateId() {return false;}
@@ -55,7 +55,7 @@ public:
 
 	virtual QUuid uuid() const { return Uuid; }
 
-	Account * account() { ensureLoaded(); return ContactAccount; }
+	Account account() { ensureLoaded(); return ContactAccount; }
 	Contact contact() { ensureLoaded(); return OwnerContact; }
 	void setContact(Contact contact);
 

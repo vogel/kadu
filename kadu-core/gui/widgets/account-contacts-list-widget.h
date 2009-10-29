@@ -23,14 +23,14 @@ class KADUAPI AccountContactsListWidget : public QWidget
 {
 	Q_OBJECT
 	
-	Account *CurrentAccount;
+	Account CurrentAccount;
 	ContactsListView *ContactsWidget;
 	QPushButton *ExportButton;
 	QPushButton *ImportButton;
 	bool Clear;
 
 public:
-	AccountContactsListWidget(Account *account, QWidget *parent = 0);
+	AccountContactsListWidget(Account account, QWidget *parent = 0);
 	virtual ~AccountContactsListWidget() {}
 
 private slots:

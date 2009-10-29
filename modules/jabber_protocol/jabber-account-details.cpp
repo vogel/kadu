@@ -18,7 +18,7 @@
 
 #include "jabber-account-details.h"
 
-JabberAccountDetails::JabberAccountDetails(StoragePoint *storagePoint, Account *parent) :
+JabberAccountDetails::JabberAccountDetails(StoragePoint *storagePoint, Account parent) :
 		AccountDetails(storagePoint, parent), EncryptionMode(JabberAccountDetails::Encryption_Auto)
 {
 	OpenChatRunner = new JabberOpenChatWithRunner(parent);

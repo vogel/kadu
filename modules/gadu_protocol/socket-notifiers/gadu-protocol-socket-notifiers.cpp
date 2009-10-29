@@ -28,7 +28,7 @@
 
 #include "gadu-protocol-socket-notifiers.h"
 
-GaduProtocolSocketNotifiers::GaduProtocolSocketNotifiers(Account *account, GaduProtocol *protocol, QObject *parent) :
+GaduProtocolSocketNotifiers::GaduProtocolSocketNotifiers(Account account, GaduProtocol *protocol, QObject *parent) :
 			CurrentAccount(account), CurrentProtocol(protocol),
 			GaduSocketNotifiers(parent), Sess(0),
 			Timeout(config_file.readUnsignedNumEntry("Network", "TimeoutInMs"))
@@ -93,7 +93,7 @@ void GaduProtocolSocketNotifiers::handleEventMsg(struct gg_event *e)
 	if (0 == e->event.msg.sender)
 		return;
 
-	Contact sender = CurrentAccount->getContactById(QString::number(e->event.msg.sender));
+	Contact sender = CurrentAccount.getContactById(QString::number(e->event.msg.sender));
 
 	if (GG_CLASS_CTCP == e->event.msg.msgclass)
 	{

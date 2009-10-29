@@ -32,11 +32,11 @@ class ContactsModelBase : public QAbstractItemModel, public AbstractContactsMode
 	QVariant data(ContactAccountData *cad, int role, bool useDisplay = true) const;
 
 private slots:
-	void contactStatusChanged(Account *account, Contact contact, Status oldStatus);
+	void contactStatusChanged(Account account, Contact contact, Status oldStatus);
 
 protected:
-	virtual void accountRegistered(Account *account);
-	virtual void accountUnregistered(Account *account);
+	virtual void accountRegistered(Account account);
+	virtual void accountUnregistered(Account account);
 
 public:
 	explicit ContactsModelBase(QObject *parent = 0);

@@ -23,7 +23,7 @@
 
 #include "protocol.h"
 
-Protocol::Protocol(Account *account, ProtocolFactory *factory) :
+Protocol::Protocol(Account account, ProtocolFactory *factory) :
 		State(NetworkDisconnected), Factory(factory), CurrentAccount(account)
 {
 }
@@ -141,7 +141,7 @@ Chat * Protocol::loadChatFromStorage(StoragePoint *chatStorage)
 	XmlConfigFile *storage = chatStorage->storage();
 	QDomElement point = chatStorage->point();
 
-	Account *account = AccountManager::instance()->byUuid(QUuid(storage->getTextNode(point, "Account")));
+	Account account = AccountManager::instance()->byUuid(QUuid(storage->getTextNode(point, "Account")));
 
 	QString type = storage->getTextNode(point, "Type");
 	if ("Simple" == type)

@@ -51,7 +51,7 @@ unsigned int GaduFormater::computeFormatsSize(const FormattedMessage &message)
 	return first ? 0 : size;
 }
 
-unsigned char * GaduFormater::createFormats(Account *account, const FormattedMessage &message, unsigned int &size)
+unsigned char * GaduFormater::createFormats(Account account, const FormattedMessage &message, unsigned int &size)
 {
 	size = computeFormatsSize(message);
 	if (!size)
@@ -107,7 +107,7 @@ unsigned char * GaduFormater::createFormats(Account *account, const FormattedMes
 			uint32_t size;
 			uint32_t crc32;
 
-			GaduChatImageService *gcis = dynamic_cast<GaduChatImageService *>(account->protocolHandler()->chatImageService());
+			GaduChatImageService *gcis = dynamic_cast<GaduChatImageService *>(account.protocolHandler()->chatImageService());
 			gcis->prepareImageToSend(part.imagePath(), size, crc32);
 
 			image.unknown1 = 0x0109;
@@ -133,7 +133,7 @@ unsigned char * GaduFormater::createFormats(Account *account, const FormattedMes
 	return result;
 }
 
-void GaduFormater::appendToMessage(Account *account, FormattedMessage &result, UinType sender, const QString &content,
+void GaduFormater::appendToMessage(Account account, FormattedMessage &result, UinType sender, const QString &content,
 		struct gg_msg_richtext_format &format,
 		struct gg_msg_richtext_color &color, struct gg_msg_richtext_image &image, bool receiveImages)
 {
@@ -147,7 +147,7 @@ void GaduFormater::appendToMessage(Account *account, FormattedMessage &result, U
 		if (size == 20 && (crc32 == 4567 || crc32 == 99)) // fake spy images
 			return;
 
-		GaduChatImageService *gcis = dynamic_cast<GaduChatImageService *>(account->protocolHandler()->chatImageService());
+		GaduChatImageService *gcis = dynamic_cast<GaduChatImageService *>(account.protocolHandler()->chatImageService());
 
 		QString file_name = gcis->getSavedImageFileName(size, crc32);
 		if (!file_name.isEmpty())
@@ -170,11 +170,11 @@ void GaduFormater::appendToMessage(Account *account, FormattedMessage &result, U
 		}
 
 		// TODO: fix
-		GaduProtocol *gadu = dynamic_cast<GaduProtocol *>(account->protocolHandler());
+		GaduProtocol *gadu = dynamic_cast<GaduProtocol *>(account.protocolHandler());
 		if (gadu)
 		{
 			dynamic_cast<GaduChatImageService *>(gadu->chatImageService())->
-					sendImageRequest(account->getContactById(QString::number(sender)), size, crc32);
+					sendImageRequest(account.getContactById(QString::number(sender)), size, crc32);
 			result << FormattedMessagePart(createImageId(sender, size, crc32), true);
 		}
 	}
@@ -201,7 +201,7 @@ QString GaduFormater::createImageId(unsigned int sender, unsigned int size, unsi
 		.arg(crc32);
 }
 
-FormattedMessage GaduFormater::createMessage(Account *account, UinType sender, const QString &content,
+FormattedMessage GaduFormater::createMessage(Account account, UinType sender, const QString &content,
 		unsigned char *formats, unsigned int size, bool receiveImages)
 {
 	FormattedMessage result;

@@ -29,7 +29,7 @@ class AvatarManager : public QObject, public AccountsAwareObject
 	AvatarManager();
 	virtual ~AvatarManager();
 
-	AvatarService * avatarService(Account *account);
+	AvatarService * avatarService(Account account);
 	AvatarService * avatarService(ContactAccountData *contactAccountData);
 
 	QString avatarFileName(Avatar avatar);
@@ -38,8 +38,8 @@ private slots:
 	void avatarFetched(ContactAccountData *contactAccountData, const QByteArray &data);
 
 protected:
-	virtual void accountRegistered(Account *account);
-	virtual void accountUnregistered(Account *account);
+	virtual void accountRegistered(Account account);
+	virtual void accountUnregistered(Account account);
 
 public:
 	static AvatarManager * instance();

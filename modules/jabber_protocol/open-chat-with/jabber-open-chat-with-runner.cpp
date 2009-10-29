@@ -16,7 +16,8 @@
 #include "jabber-contact-account-data.h"
 #include "jabber-open-chat-with-runner.h"
 
-JabberOpenChatWithRunner::JabberOpenChatWithRunner(Account *account) : ParentAccount(account)
+JabberOpenChatWithRunner::JabberOpenChatWithRunner(Account account) :
+		ParentAccount(account)
 {
 }
 
@@ -32,7 +33,7 @@ ContactList JabberOpenChatWithRunner::matchingContacts(const QString &query)
 
 	JabberContactAccountData *gcad = new JabberContactAccountData(ParentAccount, c, query);
 	c.addAccountData(gcad);
-	c.setDisplay(ParentAccount->name() + ": " + query);
+	c.setDisplay(ParentAccount.name() + ": " + query);
 	matchedContacts.append(c);
 
 	return matchedContacts;

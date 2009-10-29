@@ -51,7 +51,7 @@ StoragePoint * ContactAccountDataManager::createStoragePoint()
 	return new StoragePoint(xml_config_file, xml_config_file->getNode("ContactAccountDatas"));
 }
 
-void ContactAccountDataManager::load(Account *account)
+void ContactAccountDataManager::load(Account account)
 {
 	if (!isValidStorage())
 		return;
@@ -67,7 +67,7 @@ void ContactAccountDataManager::load(Account *account)
 
 	int count = contactAccountDatasNodes.count();
 
-	QString uuid = account->uuid().toString();
+	QString uuid = account.uuid().toString();
 	for (int i = 0; i < count; i++)
 	{
 		QDomElement contactAccountDataElement = contactAccountDatasNodes.at(i).toElement();
@@ -78,7 +78,10 @@ void ContactAccountDataManager::load(Account *account)
 			continue;
 
 		StoragePoint *contactStoragePoint = new StoragePoint(configurationStorage, contactAccountDataElement);
-		ContactAccountData *cad = account->protocolHandler()->protocolFactory()->loadContactAccountData(contactStoragePoint);
+		if (!account.protocolHandler())
+			return;
+
+		ContactAccountData *cad = account.protocolHandler()->protocolFactory()->loadContactAccountData(contactStoragePoint);
 
 		if (cad)
 		{
@@ -88,7 +91,7 @@ void ContactAccountDataManager::load(Account *account)
 	}
 }
 
-void ContactAccountDataManager::accountRegistered(Account *account)
+void ContactAccountDataManager::accountRegistered(Account account)
 {
 	if (LoadedAccounts.contains(account))
 		return;
@@ -97,13 +100,13 @@ void ContactAccountDataManager::accountRegistered(Account *account)
 	LoadedAccounts.append(account);
 }
 
-void ContactAccountDataManager::accountUnregistered(Account *account)
+void ContactAccountDataManager::accountUnregistered(Account account)
 {
 // 	store(account);
 	LoadedAccounts.removeAll(account);
 }
 
-void ContactAccountDataManager::ensureLoaded(Account *account)
+void ContactAccountDataManager::ensureLoaded(Account account)
 {
 	accountRegistered(account);
 }

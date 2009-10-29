@@ -51,7 +51,7 @@ class AddBuddyWindow : public QDialog
 
 	void createGui();
 
-	Account * selectedAccount();
+	Account selectedAccount();
 
 private slots:
 	void setUsernameLabel();

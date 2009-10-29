@@ -25,7 +25,7 @@ public:
 	virtual ~AccountCreateWidget() {}
 
 signals:
-	void accountCreated(Account *account);
+	void accountCreated(Account account);
 
 };
 

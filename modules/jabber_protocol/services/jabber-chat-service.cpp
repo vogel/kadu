@@ -99,7 +99,7 @@ void JabberChatService::clientMessageReceived(const XMPP::Message &msg)
 		return;
 
 	// TODO - zaimplementowac to samo w ContactList
-	Contact contact = Protocol->account()->getContactById(msg.from().bare());
+	Contact contact = Protocol->account().getContactById(msg.from().bare());
 	ContactSet contacts = ContactSet(contact);
 	time_t msgtime = msg.timeStamp().toTime_t();
 	FormattedMessage formattedMessage(msg.body());

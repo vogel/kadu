@@ -62,7 +62,7 @@ class KADUAPI NotificationManager : public QObject, AccountsAwareObject, Configu
 private slots:
 	void messageReceived(const Message &message);
 
-	void statusChanged(Account *account, Contact contact, Status oldStatus);
+	void statusChanged(Account account, Contact contact, Status oldStatus);
 
 	void notifyAboutUserActionActivated(QAction *sender, bool toggled);
 
@@ -70,8 +70,8 @@ private slots:
 	void groupNotifyChanged(Group *group);
 
 protected:
-	virtual void accountRegistered(Account *account);
-	virtual void accountUnregistered(Account *account);
+	virtual void accountRegistered(Account account);
+	virtual void accountUnregistered(Account account);
 
 	virtual void configurationUpdated();
 

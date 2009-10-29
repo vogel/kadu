@@ -27,7 +27,7 @@ public:
 	explicit ContactSet(Contact contact);
 
 	ContactList toContactList() const;
-	Account * prefferedAccount();
+	Account prefferedAccount();
 
 };
 

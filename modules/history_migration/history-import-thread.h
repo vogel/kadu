@@ -13,7 +13,8 @@
 #include <QtCore/QStringList>
 #include <QtCore/QThread>
 
-class Account;
+#include "accounts/account.h"
+
 class Chat;
 
 struct HistoryEntry;
@@ -22,7 +23,7 @@ class HistoryImportThread : public QThread
 {
 	Q_OBJECT
 
-	Account *GaduAccount;
+	Account GaduAccount;
 	QList<QStringList> UinsLists;
 
 	bool Canceled;
@@ -35,7 +36,7 @@ class HistoryImportThread : public QThread
 	QStringList mySplit(const QChar &sep, const QString &str);
 
 public:
-	HistoryImportThread(Account *gaduAccount, QList<QStringList> uinsLists, unsigned long totalEntries, QObject *parent = 0);
+	HistoryImportThread(Account gaduAccount, QList<QStringList> uinsLists, unsigned long totalEntries, QObject *parent = 0);
 	virtual ~HistoryImportThread();
 
 	static QString getFileNameByUinsList(QStringList uins);

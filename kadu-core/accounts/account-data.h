@@ -121,7 +121,7 @@ public:
 	virtual void setPrivateStatus(bool isPrivate);
 
 signals:
-	void contactStatusChanged(Account *account, Contact contact, Status oldStatus);
+	void contactStatusChanged(Account account, Contact contact, Status oldStatus);
 
 	void updated();
 

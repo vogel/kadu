@@ -22,7 +22,7 @@ SimpleChat::SimpleChat(StoragePoint *storage) :
 {
 }
 
-SimpleChat::SimpleChat(Account *currentAccount, ContactAccountData *cad, QUuid uuid) :
+SimpleChat::SimpleChat(Account currentAccount, ContactAccountData *cad, QUuid uuid) :
 		Chat(currentAccount, uuid), CurrentContactAccountData(cad)
 {
 }

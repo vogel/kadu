@@ -29,12 +29,12 @@ class StoragePoint;
 class ProtocolFactory : public QObject
 {
 public:
-	virtual Protocol * createProtocolHandler(Account *account) = 0;
-	virtual AccountDetails * createAccountDetails(Account *account) = 0;
-	virtual ContactAccountData * newContactAccountData(Account *account, Contact contact, const QString &id) = 0;
+	virtual Protocol * createProtocolHandler(Account account) = 0;
+	virtual AccountDetails * createAccountDetails(Account account) = 0;
+	virtual ContactAccountData * newContactAccountData(Account account, Contact contact, const QString &id) = 0;
 	virtual ContactAccountData * loadContactAccountData(StoragePoint *storagePoint) = 0;
 	virtual AccountCreateWidget * newCreateAccountWidget(QWidget *parent = 0) = 0;
-	virtual AccountEditWidget * newEditAccountWidget(Account *, QWidget *parent = 0) = 0;
+	virtual AccountEditWidget * newEditAccountWidget(Account, QWidget *parent = 0) = 0;
 	virtual ContactAccountDataWidget * newContactAccountDataWidget(ContactAccountData *contactAccountData, QWidget *parent = 0) = 0;
 	virtual ProtocolMenuManager * protocolMenuManager() { return 0; }
 	virtual QList<StatusType *> supportedStatusTypes() = 0;

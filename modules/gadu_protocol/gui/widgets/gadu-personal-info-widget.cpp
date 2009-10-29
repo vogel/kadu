@@ -17,15 +17,15 @@
 
 #include "gadu-personal-info-widget.h"
 
-GaduPersonalInfoWidget::GaduPersonalInfoWidget(Account *account, QWidget* parent) :
+GaduPersonalInfoWidget::GaduPersonalInfoWidget(Account account, QWidget* parent) :
 		QWidget(parent)
 {
 	createGui();
 
-	if (!account)
+	if (account.isNull() || !account.protocolHandler())
 		return;
 
-	Service = account->protocolHandler()->personalInfoService();
+	Service = account.protocolHandler()->personalInfoService();
 	if (!Service)
 		return;
 

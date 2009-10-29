@@ -19,7 +19,7 @@ class ConnectionErrorNotification : public AccountNotification
 	Q_OBJECT
 
 	static NotifyEvent *ConnectionErrorNotifyEvent;
-	static QMap<Account *, QStringList> ActiveErrors;
+	static QMap<Account, QStringList> ActiveErrors;
 	QString ErrorServer;
 	QString ErrorMessage;
 
@@ -27,9 +27,9 @@ public:
 	static void registerEvent();
 	static void unregisterEvent();
 
-	static bool activeError(Account *account, const QString &errorMessage);
+	static bool activeError(Account account, const QString &errorMessage);
 
-	ConnectionErrorNotification(Account *account, const QString &errorServer, const QString &errorMessage);
+	ConnectionErrorNotification(Account account, const QString &errorServer, const QString &errorMessage);
 	virtual ~ConnectionErrorNotification();
 
 	QString errorMessage() const;

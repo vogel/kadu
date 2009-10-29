@@ -80,7 +80,7 @@ void disableContainsSelfUles(Action *action)
 void checkOfflineTo(Action *action)
 {
 	kdebugf();
-	Account *account = AccountManager::instance()->defaultAccount();
+	Account account = AccountManager::instance()->defaultAccount();
 	bool on = true;
 	foreach (const Contact contact, action->contacts())
 		if (contact.accountData(account) == 0 || !contact.isOfflineTo(account))
@@ -94,7 +94,7 @@ void checkOfflineTo(Action *action)
 
 void checkHideDescription(Action *action)
 {
-	Account *account = AccountManager::instance()->defaultAccount();
+	Account account = AccountManager::instance()->defaultAccount();
 
 	foreach (const Contact contact, action->contacts())
 		if (contact.accountData(account) == 0)
@@ -162,7 +162,7 @@ void disableNoGaduDescription(Action *action)
 	kdebugf();
 
 	Contact contact = action->contact();
-	Account *account = contact.prefferedAccount();
+	Account account = contact.prefferedAccount();
 
 	if (contact.isNull())
 	{
@@ -191,7 +191,7 @@ void disableNoGaduDescriptionUrl(Action *action)
 	kdebugf();
 
 	Contact contact = action->contact();
-	Account *account = contact.prefferedAccount();
+	Account account = contact.prefferedAccount();
 
 	if (contact.isNull())
 	{
@@ -471,11 +471,11 @@ KaduWindowActions::~KaduWindowActions()
 
 void KaduWindowActions::statusChanged(Status status)
 {
-	Account *account = AccountManager::instance()->defaultAccount();
-	if (!account)
+	Account account = AccountManager::instance()->defaultAccount();
+	if (account.isNull())
 		return;
 
-	QIcon icon = account->statusContainer()->statusPixmap(status);
+	QIcon icon = account.statusContainer()->statusPixmap(status);
 	foreach (Action *action, ShowStatus->actions())
 		action->setIcon(icon);
 }
@@ -550,10 +550,10 @@ void KaduWindowActions::editUserActionCreated(Action *action)
 
 void KaduWindowActions::showStatusActionCreated(Action *action)
 {
-	Account *account = AccountManager::instance()->defaultAccount();
+	Account account = AccountManager::instance()->defaultAccount();
 
-	if (account)
-		action->setIcon(account->protocolHandler()->statusPixmap());
+	if (account.isNull())
+		action->setIcon(account.protocolHandler()->statusPixmap());
 }
 
 void KaduWindowActions::useProxyActionCreated(Action *action)
@@ -716,7 +716,7 @@ void KaduWindowActions::copyDescriptionActionActivated(QAction *sender, bool tog
 	if (contact.isNull())
 		return;
 
-	Account *account = contact.prefferedAccount();
+	Account account = contact.prefferedAccount();
 	ContactAccountData *data = contact.accountData(account);
 
 	if (!data)
@@ -744,7 +744,7 @@ void KaduWindowActions::openDescriptionLinkActionActivated(QAction *sender, bool
 	if (contact.isNull())
 		return;
 
-	Account *account = contact.prefferedAccount();
+	Account account = contact.prefferedAccount();
 	ContactAccountData *data = contact.accountData(account);
 
 	if (!data)
@@ -809,7 +809,7 @@ void KaduWindowActions::lookupInDirectoryActionActivated(QAction *sender, bool t
 void KaduWindowActions::offlineToUserActionActivated(QAction *sender, bool toggled)
 {
 	kdebugf();
-	Account *account = AccountManager::instance()->defaultAccount();
+	Account account = AccountManager::instance()->defaultAccount();
 	if (toggled && !config_file.readBoolEntry("General", "PrivateStatus"))
 	{
 // TODO: 0.6.6

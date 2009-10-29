@@ -24,7 +24,7 @@ struct KADUAPI ContactSearchCriteria
 	ContactSearchCriteria();
 	virtual ~ContactSearchCriteria();
 
-	void reqUin(Account *account, const QString& uin);
+	void reqUin(Account account, const QString& uin);
 	void reqFirstName(const QString& firstName);
 	void reqLastName(const QString& lastName);
 	void reqNickName(const QString& nickName);

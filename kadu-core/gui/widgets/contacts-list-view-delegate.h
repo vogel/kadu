@@ -44,12 +44,12 @@ class ContactsListViewDelegate : public QItemDelegate, public ConfigurationAware
 	QPixmap avatar(const QModelIndex &index) const;
 
 private slots:
-	void contactStatusChanged(Account *account, Contact contact, Status oldStatus);
+	void contactStatusChanged(Account account, Contact contact, Status oldStatus);
 	void modelDestroyed();
 
 protected:
-	virtual void accountRegistered(Account *account);
-	virtual void accountUnregistered(Account *account);
+	virtual void accountRegistered(Account account);
+	virtual void accountUnregistered(Account account);
 
 public:
 	explicit ContactsListViewDelegate(QObject *parent = 0);

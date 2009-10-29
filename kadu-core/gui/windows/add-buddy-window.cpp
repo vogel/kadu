@@ -169,18 +169,18 @@ void AddBuddyWindow::createGui()
 // 	layout->setSizeConstraint(QLayout::SetMinAndMaxSize);
 }
 
-Account * AddBuddyWindow::selectedAccount()
+Account AddBuddyWindow::selectedAccount()
 {
 	QModelIndex index = AccountCombo->model()->index(AccountCombo->currentIndex(), 0);
-	return index.data(AccountRole).value<Account *>();
+	return index.data(AccountRole).value<Account>();
 }
 
 void AddBuddyWindow::setContact(Contact contact)
 {
 	MyContact = contact;
 
-	Account *account = contact.prefferedAccount();
-	if (account)
+	Account account = contact.prefferedAccount();
+	if (!account.isNull())
 	{
 		AccountCombo->setCurrentIndex(AccountComboModel->accountIndex(account));
 		UserNameEdit->setText(contact.id(account));
@@ -191,23 +191,23 @@ void AddBuddyWindow::setContact(Contact contact)
 
 void AddBuddyWindow::setUsernameLabel()
 {
-	Account *account = selectedAccount();
-	if (!account)
+	Account account = selectedAccount();
+	if (account.isNull())
 		UserNameLabel->setText(tr("Username:"));
 	else
-		UserNameLabel->setText(account->protocolHandler()->protocolFactory()->idLabel());
+		UserNameLabel->setText(account.protocolHandler()->protocolFactory()->idLabel());
 }
 
 void AddBuddyWindow::setAddContactEnabled()
 {
-	Account *account = selectedAccount();
-	if (!account)
+	Account account = selectedAccount();
+	if (account.isNull())
 	{
 		AddContactButton->setEnabled(false);
 		return;
 	}
 
-	if (!account->protocolHandler()->protocolFactory()->idRegularExpression().exactMatch(UserNameEdit->text()))
+	if (!account.protocolHandler()->protocolFactory()->idRegularExpression().exactMatch(UserNameEdit->text()))
 	{
 		AddContactButton->setEnabled(false);
 		return;
@@ -234,18 +234,18 @@ void AddBuddyWindow::setAddContactEnabled()
 
 void AddBuddyWindow::setValidateRegularExpression()
 {
-	Account *account = selectedAccount();
-	if (account)
+	Account account = selectedAccount();
+	if (!account.isNull())
 	{
-		UserNameValidator->setRegExp(account->protocolHandler()->protocolFactory()->idRegularExpression());
+		UserNameValidator->setRegExp(account.protocolHandler()->protocolFactory()->idRegularExpression());
 		return;
 	}
 
 	QStringList regularExpressions;
 
-	foreach (Account *account, AccountManager::instance()->accounts())
+	foreach (Account account, AccountManager::instance()->accounts())
 	{
-		QRegExp regularExpression = account->protocolHandler()->protocolFactory()->idRegularExpression();
+		QRegExp regularExpression = account.protocolHandler()->protocolFactory()->idRegularExpression();
 		if (!regularExpression.isEmpty())
 			regularExpressions.append(regularExpression.pattern());
 	}
@@ -294,8 +294,8 @@ void AddBuddyWindow::groupChanged(int index)
 
 void AddBuddyWindow::accept()
 {
-	Account *account = selectedAccount();
-	if (!account)
+	Account account = selectedAccount();
+	if (account.isNull())
 		return;
 
 	if (!MergeContact->isChecked())
@@ -312,7 +312,7 @@ void AddBuddyWindow::accept()
 		if (contact.isNull())
 			return;
 
-		ContactAccountData *cad = account->protocolHandler()->protocolFactory()
+		ContactAccountData *cad = account.protocolHandler()->protocolFactory()
 				->newContactAccountData(account, contact, UserNameEdit->text());
 		contact.addAccountData(cad);
 	}

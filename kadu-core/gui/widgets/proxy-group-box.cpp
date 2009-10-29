@@ -17,8 +17,8 @@
 
 #include "proxy-group-box.h"
 
-ProxyGroupBox::ProxyGroupBox(Account *account, const QString &title, QWidget *parent)
-	: QGroupBox(title, parent) ,MyAccount(account)
+ProxyGroupBox::ProxyGroupBox(Account account, const QString &title, QWidget *parent)
+	: QGroupBox(title, parent), MyAccount(account)
 {
     	QGridLayout *proxyLayout = new QGridLayout(this);
 	proxyLayout->setColumnMinimumWidth(0, 20);
@@ -93,24 +93,24 @@ ProxyGroupBox::ProxyGroupBox(Account *account, const QString &title, QWidget *pa
 
 void ProxyGroupBox::loadProxyData()
 {
-    	useProxy->setChecked(MyAccount->useProxy());
-	host->setText(MyAccount->proxyHost().toString());
-	proxyPort->setText(QString::number(MyAccount->proxyPort()));
-    	proxyAuthentication->setChecked(MyAccount->proxyRequiresAuthentication());
-	username->setText(MyAccount->proxyUser());
-	password->setText(MyAccount->proxyPassword());
+	useProxy->setChecked(MyAccount.useProxy());
+	host->setText(MyAccount.proxyHost().toString());
+	proxyPort->setText(QString::number(MyAccount.proxyPort()));
+	proxyAuthentication->setChecked(MyAccount.proxyRequiresAuthentication());
+	username->setText(MyAccount.proxyUser());
+	password->setText(MyAccount.proxyPassword());
 }
 
 void ProxyGroupBox::applyProxyData()
 {
-    	MyAccount->setUseProxy(useProxy->isChecked());
+	MyAccount.setUseProxy(useProxy->isChecked());
 
 	QHostAddress hostAdrr;
 	if (!hostAdrr.setAddress(host->text()))
 		hostAdrr.setAddress("0.0.0.0");
-	MyAccount->setProxyHost(hostAdrr);
-	MyAccount->setProxyPort(proxyPort->text().toInt());
-	MyAccount->setProxyRequiresAuthentication(proxyAuthentication->isChecked());
-	MyAccount->setProxyUser(username->text());
-	MyAccount->setProxyPassword(password->text());
+	MyAccount.setProxyHost(hostAdrr);
+	MyAccount.setProxyPort(proxyPort->text().toInt());
+	MyAccount.setProxyRequiresAuthentication(proxyAuthentication->isChecked());
+	MyAccount.setProxyUser(username->text());
+	MyAccount.setProxyPassword(password->text());
 }

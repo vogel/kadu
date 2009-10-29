@@ -50,17 +50,17 @@ QString JabberProtocolFactory::iconName()
 	return dataPath("kadu/modules/data/jabber_protocol/").append("online.png");
 }
 
-Protocol * JabberProtocolFactory::createProtocolHandler(Account *account)
+Protocol * JabberProtocolFactory::createProtocolHandler(Account account)
 {
 	return new JabberProtocol(account, this);
 }
 
-AccountDetails * JabberProtocolFactory::createAccountDetails(Account *account)
+AccountDetails * JabberProtocolFactory::createAccountDetails(Account account)
 {
-	return new JabberAccountDetails(account->storage(), account);
+	return new JabberAccountDetails(account.storage(), account);
 }
 
-ContactAccountData * JabberProtocolFactory::newContactAccountData(Account *account, Contact contact, const QString &id)
+ContactAccountData * JabberProtocolFactory::newContactAccountData(Account account, Contact contact, const QString &id)
 {
 	return new JabberContactAccountData(account, contact, id, true);
 }
@@ -78,7 +78,7 @@ AccountCreateWidget * JabberProtocolFactory::newCreateAccountWidget(QWidget *par
 	return new JabberCreateAccountWidget(parent);
 }
 
-AccountEditWidget * JabberProtocolFactory::newEditAccountWidget(Account *account, QWidget *parent)
+AccountEditWidget * JabberProtocolFactory::newEditAccountWidget(Account account, QWidget *parent)
 {
 	return new JabberEditAccountWidget(account, parent);
 }

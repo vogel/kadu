@@ -103,7 +103,7 @@ Identity * IdentityManager::byName(const QString &name, bool create)
 	return newIdentity;
 }
 
-Identity * IdentityManager::identityForAcccount(Account *account)
+Identity * IdentityManager::identityForAcccount(Account account)
 {
 	foreach (Identity *identity, Identities)
 	{

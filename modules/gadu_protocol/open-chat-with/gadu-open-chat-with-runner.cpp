@@ -21,7 +21,8 @@
 #include "gadu-contact-account-data.h"
 #include "gadu-open-chat-with-runner.h"
 
-GaduOpenChatWithRunner::GaduOpenChatWithRunner(Account *account) : ParentAccount(account)
+GaduOpenChatWithRunner::GaduOpenChatWithRunner(Account account) :
+		ParentAccount(account)
 {
 }
 
@@ -37,7 +38,7 @@ ContactList GaduOpenChatWithRunner::matchingContacts(const QString &query)
 
 	GaduContactAccountData *gcad = new GaduContactAccountData(ParentAccount, c, query);
 	c.addAccountData(gcad);
-	c.setDisplay(ParentAccount->name() + ": " + query);
+	c.setDisplay(ParentAccount.name() + ": " + query);
 	matchedContacts.append(c);
 
 	return matchedContacts;

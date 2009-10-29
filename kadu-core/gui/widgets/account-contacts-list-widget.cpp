@@ -23,7 +23,7 @@
 
 #include "account-contacts-list-widget.h"
 
-AccountContactsListWidget::AccountContactsListWidget(Account *account, QWidget *parent) : QWidget(parent), CurrentAccount(account)
+AccountContactsListWidget::AccountContactsListWidget(Account account, QWidget *parent) : QWidget(parent), CurrentAccount(account)
 {
 	QVBoxLayout *layout = new QVBoxLayout(this);
 	layout->setContentsMargins(0, 0, 0, 0);
@@ -57,7 +57,7 @@ AccountContactsListWidget::AccountContactsListWidget(Account *account, QWidget *
 	filter->setEnabled(true);
 	ContactsWidget->addFilter(filter);
 
-	ContactListService *manager = CurrentAccount->protocolHandler()->contactListService();
+	ContactListService *manager = CurrentAccount.protocolHandler()->contactListService();
 	if (!manager)
 		return;
 	connect(manager, SIGNAL(contactListExported(bool)), this, SLOT(contactListExported(bool)));
@@ -69,13 +69,13 @@ void AccountContactsListWidget::startImportTransfer()
 {
 	kdebugf();
 
-	if (!CurrentAccount->protocolHandler()->isConnected())
+	if (!CurrentAccount.protocolHandler()->isConnected())
 	{
 		MessageBox::msg(tr("Cannot import user list from server in offline mode"), false, "Critical", this);
 		return;
 	}
 
-	ContactListService *service = CurrentAccount->protocolHandler()->contactListService();
+	ContactListService *service = CurrentAccount.protocolHandler()->contactListService();
 	if (!service)
 		return;
 	ImportButton->setEnabled(false);
@@ -88,14 +88,14 @@ void AccountContactsListWidget::startExportTransfer()
 {
 	kdebugf();
 
-	if (!CurrentAccount->protocolHandler()->isConnected())
+	if (!CurrentAccount.protocolHandler()->isConnected())
 	{
 		MessageBox::msg(tr("Cannot export user list to server in offline mode"), false, "Critical", this);
 		kdebugf2();
 		return;
 	}
 
-	ContactListService *service = CurrentAccount->protocolHandler()->contactListService();
+	ContactListService *service = CurrentAccount.protocolHandler()->contactListService();
 	if (!service)
 		return;
 

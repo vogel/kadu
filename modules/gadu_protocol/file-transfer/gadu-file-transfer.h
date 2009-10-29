@@ -33,8 +33,8 @@ protected:
 	virtual void updateFileInfo();
 
 public:
-	GaduFileTransfer(Account *account);
-	GaduFileTransfer(Account *account, Contact peer, FileTransferType transferType);
+	GaduFileTransfer(Account account);
+	GaduFileTransfer(Account account, Contact peer, FileTransferType transferType);
 	virtual ~GaduFileTransfer();
 
 	void setFileTransferNotifiers(DccSocketNotifiers *);

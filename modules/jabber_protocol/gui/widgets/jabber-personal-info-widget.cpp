@@ -18,15 +18,15 @@
 
 #include "jabber-personal-info-widget.h"
 
-JabberPersonalInfoWidget::JabberPersonalInfoWidget(Account *account, QWidget* parent) :
+JabberPersonalInfoWidget::JabberPersonalInfoWidget(Account account, QWidget* parent) :
 		QWidget(parent)
 {
 	createGui();
 
-	if (!account)
+	if (account.isNull() || !account.protocolHandler())
 		return;
 
-	Service = account->protocolHandler()->personalInfoService();
+	Service = account.protocolHandler()->personalInfoService();
 	if (!Service)
 		return;
 

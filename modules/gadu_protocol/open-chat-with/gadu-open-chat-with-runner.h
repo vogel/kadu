@@ -16,14 +16,14 @@
 
 class GaduOpenChatWithRunner : public OpenChatWithRunner
 {
-	Account *ParentAccount;
+	Account ParentAccount;
 
 	bool validateUserID(const QString &uid);
 
 public:
-	GaduOpenChatWithRunner(Account *account);
+	GaduOpenChatWithRunner(Account account);
 	virtual ContactList matchingContacts(const QString &query);
-	void setAccount(Account *account) { ParentAccount = account; }
+	void setAccount(Account account) { ParentAccount = account; }
 
 };
 

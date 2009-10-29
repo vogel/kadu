@@ -20,9 +20,11 @@
 
 #include "account.h"
 
-Account * Account::loadFromStorage(StoragePoint *accountStoragePoint)
+Account Account::null(AccountData::TypeNull);
+
+Account Account::loadFromStorage(StoragePoint *accountStoragePoint)
 {
-	return new Account(AccountData::loadFromStorage(accountStoragePoint));
+	return Account(AccountData::loadFromStorage(accountStoragePoint));
 }
 
 Account::Account(AccountData::AccountType type) :
@@ -77,8 +79,8 @@ void Account::connectDataSignals()
 	if (isNull())
 		return;
 
-	connect(Data.data(), SIGNAL(contactStatusChanged(Account *, Contact, Status)),
-			this, SIGNAL(contactStatusChanged(Account *, Contact, Status)));
+	connect(Data.data(), SIGNAL(contactStatusChanged(Account, Contact, Status)),
+			this, SIGNAL(contactStatusChanged(Account, Contact, Status)));
 }
 
 void Account::disconnectDataSignals()
@@ -86,8 +88,8 @@ void Account::disconnectDataSignals()
 	if (isNull())
 		return;
 
-	disconnect(Data.data(), SIGNAL(contactStatusChanged(Account *, Contact, Status)),
-			this, SIGNAL(contactStatusChanged(Account *, Contact, Status)));
+	disconnect(Data.data(), SIGNAL(contactStatusChanged(Account, Contact, Status)),
+			this, SIGNAL(contactStatusChanged(Account, Contact, Status)));
 }
 
 QUuid Account::uuid() const
@@ -128,7 +130,7 @@ void Account::removeFromStorage()
 
 Contact Account::getContactById(const QString& id)
 {
-	return ContactManager::instance()->byId(this, id);
+	return ContactManager::instance()->byId(*this, id);
 }
 
 Contact Account::createAnonymous(const QString& id)
@@ -138,7 +140,7 @@ Contact Account::createAnonymous(const QString& id)
 
 	Contact result(ContactData::TypeAnonymous);
 	ProtocolFactory *protocolFactory = Data->protocolHandler()->protocolFactory();
-	ContactAccountData *contactAccountData = protocolFactory->newContactAccountData(this, result, id);
+	ContactAccountData *contactAccountData = protocolFactory->newContactAccountData(*this, result, id);
 	if (!contactAccountData->isValid())
 	{
 		delete contactAccountData;
@@ -154,14 +156,19 @@ void Account::importProxySettings()
 	if (!Data)
 		return;
 
-	Account *defaultAccount = AccountManager::instance()->defaultAccount();
-	if (defaultAccount && defaultAccount->proxyHost().toString() != "0.0.0.0")
+	Account defaultAccount = AccountManager::instance()->defaultAccount();
+	if (!defaultAccount.isNull() && defaultAccount.proxyHost().toString() != "0.0.0.0")
 	{
-		Data->setUseProxy(defaultAccount->useProxy());
-		Data->setProxyHost(defaultAccount->proxyHost());
-		Data->setProxyPort(defaultAccount->proxyPort());
-		Data->setProxyRequiresAuthentication(defaultAccount->proxyRequiresAuthentication());
-		Data->setProxyUser(defaultAccount->proxyUser());
-		Data->setProxyPassword(defaultAccount->proxyPassword());
+		Data->setUseProxy(defaultAccount.useProxy());
+		Data->setProxyHost(defaultAccount.proxyHost());
+		Data->setProxyPort(defaultAccount.proxyPort());
+		Data->setProxyRequiresAuthentication(defaultAccount.proxyRequiresAuthentication());
+		Data->setProxyUser(defaultAccount.proxyUser());
+		Data->setProxyPassword(defaultAccount.proxyPassword());
 	}
+}
+
+uint qHash(const Account &account)
+{
+	return qHash(account.uuid().toString());
 }

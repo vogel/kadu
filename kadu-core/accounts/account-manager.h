@@ -29,22 +29,22 @@ class KADUAPI AccountManager : public QObject, public StorableObject
 
 	static AccountManager *Instance;
 
-	QList<Account *> AllAccounts;
-	QList<Account *> RegisteredAccounts;
+	QList<Account> AllAccounts;
+	QList<Account> RegisteredAccounts;
 
 	AccountManager();
 	virtual ~AccountManager();
 
 	void init();
-	void loadAccount(Account *account, ProtocolFactory *protocolFactory);
-	void unloadAccount(Account *account);
-	void tryLoadAccount(Account *account);
+	void loadAccount(Account account, ProtocolFactory *protocolFactory);
+	void unloadAccount(Account account);
+	void tryLoadAccount(Account account);
 
 private slots:
 	void protocolFactoryRegistered(ProtocolFactory *factory);
 	void protocolFactoryUnregistered(ProtocolFactory *factory);
 
-	void connectionError(Account *account, const QString &server, const QString &message);
+	void connectionError(Account account, const QString &server, const QString &message);
 
 protected:
 	virtual StoragePoint * createStoragePoint();
@@ -55,30 +55,30 @@ public:
 	virtual void load();
 	virtual void store();
 
-	Account * defaultAccount() const;
+	Account defaultAccount() const;
 
-	Account * byIndex(unsigned int index) const;
-	Account * byUuid(const QUuid &uuid) const;
+	Account byIndex(unsigned int index) const;
+	Account byUuid(const QUuid &uuid) const;
 
-	unsigned int indexOf(Account *account) const { return RegisteredAccounts.indexOf(account); }
+	unsigned int indexOf(Account account) const { return RegisteredAccounts.indexOf(account); }
 	unsigned int count() const { return RegisteredAccounts.count(); }
 
-	const QList<Account *> accounts() const { return RegisteredAccounts; }
-	const QList<Account *> byProtocolName(const QString &name) const;
+	const QList<Account> accounts() const { return RegisteredAccounts; }
+	const QList<Account> byProtocolName(const QString &name) const;
 
-	void registerAccount(Account *account);
-	void unregisterAccount(Account *account);
-	void deleteAccount(Account *account);
+	void registerAccount(Account account);
+	void unregisterAccount(Account account);
+	void deleteAccount(Account account);
 
 	Status status() const;
 
 signals:
-	void accountAboutToBeRegistered(Account *);
-	void accountRegistered(Account *);
-	void accountAboutToBeUnregistered(Account *);
-	void accountUnregistered(Account *);
-	void accountAboutToBeRemoved(Account *);
-	void accountRemoved(Account *);
+	void accountAboutToBeRegistered(Account);
+	void accountRegistered(Account);
+	void accountAboutToBeUnregistered(Account);
+	void accountUnregistered(Account);
+	void accountAboutToBeRemoved(Account);
+	void accountRemoved(Account);
 
 };
 

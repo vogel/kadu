@@ -42,14 +42,14 @@ public:
 	 * @param item is the roster item of the gateway
 	 * @param gateway_type eg: "msn" or "icq"  only used when the account is not loaded from config file for determining the icon
 	 */
-	JabberTransport (Account * parentAccount, const XMPP::RosterItem &item, const QString& gateway_type=QString());
+	JabberTransport (Account parentAccount, const XMPP::RosterItem &item, const QString& gateway_type=QString());
 
 	/**
 	 * constructor called when the transport is loaded from config
 	 * @param parentAccount is the parent jabber account.
 	 * @param accountId is the accountId
 	 */
-	JabberTransport (Account * parentAccount, const QString &accountId );
+	JabberTransport (Account parentAccount, const QString &accountId );
 
 	~JabberTransport ();
 
@@ -60,7 +60,7 @@ public:
 	virtual bool hasCustomStatusMenu() const;
 
 	/** the parent account */
-	Account *account() const
+	Account account() const
 	{ return m_account; }
 
 	/* to get the protocol from the account */
@@ -127,7 +127,7 @@ protected:
 	virtual bool createContact (const QString & contactID/*, Kopete::MetaContact * parentContact*/);
 
 private:
-	Account *m_account;
+	Account m_account;
 	TransportStatus m_status;
 
 };

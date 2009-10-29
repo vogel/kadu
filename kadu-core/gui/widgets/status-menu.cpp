@@ -136,8 +136,8 @@ void StatusMenu::changeDescription()
 
 void StatusMenu::changeStatusPrivate(bool toggled)
 {
-	if (AccountManager::instance()->defaultAccount())
-		AccountManager::instance()->defaultAccount()->protocolHandler()->setPrivateMode(toggled);
+	if (!AccountManager::instance()->defaultAccount().isNull())
+		AccountManager::instance()->defaultAccount().protocolHandler()->setPrivateMode(toggled);
 
 	config_file.writeEntry("General", "PrivateStatus", toggled);
 }
@@ -155,9 +155,9 @@ void StatusMenu::statusChanged()
 		action->setChecked(statusTypeName == statusType->name());
 	}
 
-	if (AccountManager::instance()->defaultAccount() && AccountManager::instance()->defaultAccount()->protocolHandler())
+	if (!AccountManager::instance()->defaultAccount().isNull())
 	{
-		Protocol *protocol = AccountManager::instance()->defaultAccount()->protocolHandler();
+		Protocol *protocol = AccountManager::instance()->defaultAccount().protocolHandler();
 		ChangePrivateStatus->setChecked(protocol->privateMode());
 	}
 

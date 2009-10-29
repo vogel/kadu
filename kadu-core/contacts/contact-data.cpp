@@ -189,31 +189,31 @@ void ContactData::addAccountData(ContactAccountData *accountData)
 		return;
 
 	emit accountDataAboutToBeAdded(accountData->account());
-	AccountsData.insert(Account(*accountData->account()), accountData);
+	AccountsData.insert(accountData->account(), accountData);
 	ContactAccountDataManager::instance()->addContactAccountData(accountData);
 	emit accountDataAdded(accountData->account());
 }
 
 void ContactData::removeAccountData(ContactAccountData *accountData)
 {
-	if (AccountsData[Account(*accountData->account())] == accountData)
+	if (AccountsData[accountData->account()] == accountData)
 		removeAccountData(accountData->account());
 }
 
-void ContactData::removeAccountData(Account *account)
+void ContactData::removeAccountData(Account account)
 {
 	emit accountDataAboutToBeRemoved(account);
-	ContactAccountDataManager::instance()->removeContactAccountData(AccountsData[*account]);
-	AccountsData.remove(*account);
+	ContactAccountDataManager::instance()->removeContactAccountData(AccountsData[account]);
+	AccountsData.remove(account);
 	emit accountDataRemoved(account);
 }
 
-ContactAccountData * ContactData::accountData(Account *account)
+ContactAccountData * ContactData::accountData(Account account)
 {
-	if (!AccountsData.contains(*account))
+	if (!AccountsData.contains(account))
 		return 0;
 
-	return AccountsData[*account];
+	return AccountsData[account];
 }
 
 QList<ContactAccountData *> ContactData::accountDatas()
@@ -221,13 +221,13 @@ QList<ContactAccountData *> ContactData::accountDatas()
 	return AccountsData.values();
 }
 
-StoragePoint * ContactData::storagePointForAccountData(Account *account)
+StoragePoint * ContactData::storagePointForAccountData(Account account)
 {
 	StoragePoint *sp = storage();
 	if (!sp || !sp->storage())
 		return 0;
 
-	QString stringUuid = account->uuid().toString();
+	QString stringUuid = account.uuid().toString();
 
 	QDomNodeList nodes = sp->storage()->getNodes(sp->point(), "ContactAccountData");
 	int count = nodes.count();
@@ -247,32 +247,26 @@ StoragePoint * ContactData::storagePointForAccountData(Account *account)
 	return 0;
 }
 
-QString ContactData::id(Account *account)
+QString ContactData::id(Account account)
 {
-	if (AccountsData.contains(*account))
-		return AccountsData[*account]->id();
+	if (AccountsData.contains(account))
+		return AccountsData[account]->id();
 
 	return QString::null;
 }
 
-Account * ContactData::prefferedAccount()
+Account ContactData::prefferedAccount()
 {
 	return AccountsData.count() > 0
-		? new Account(AccountsData.keys()[0])
-		: 0;
+		? AccountsData.keys()[0]
+		: Account::null;
 }
 
-QList<Account *> ContactData::accounts()
+QList<Account> ContactData::accounts()
 {
-	QList<Account *> r;
-	foreach (Account a, AccountsData.keys())
-		r.append(new Account(a));
-	return r;
-
-// 	return AccountsData.count() > 0
-// 		? AccountsData.keys()
-// 		: QList<Account *>();
-;
+	return AccountsData.count() > 0
+			? AccountsData.keys()
+			: QList<Account>();
 }
 
 void ContactData::blockUpdatedSignal()
@@ -318,7 +312,7 @@ bool ContactData::setIgnored(bool ignored)
 	return Ignored; // XXX: nie wiem co to
 }
 
-bool ContactData::isBlocked(Account *account)
+bool ContactData::isBlocked(Account account)
 {
 	ContactAccountData *cad = accountData(account);
 	return cad
@@ -326,7 +320,7 @@ bool ContactData::isBlocked(Account *account)
 		: Blocked;
 }
 
-bool ContactData::isOfflineTo(Account *account)
+bool ContactData::isOfflineTo(Account account)
 {
 	ContactAccountData *cad = accountData(account);
 	return cad
@@ -334,7 +328,7 @@ bool ContactData::isOfflineTo(Account *account)
 		: OfflineTo;
 }
 
-bool ContactData::setOfflineTo(Account *account, bool offlineTo)
+bool ContactData::setOfflineTo(Account account, bool offlineTo)
 {
 	ContactAccountData *cad = accountData(account);
 	if (cad)
@@ -375,6 +369,6 @@ void ContactData::removeFromGroup(Group *group)
 void ContactData::accountContactDataIdChanged(const QString &id)
 {
 	ContactAccountData *cad = dynamic_cast<ContactAccountData *>(sender());
-	if (cad && cad->account())
+	if (cad && !cad->account().isNull())
 		emit accountDataIdChanged(cad->account(), id);
 }

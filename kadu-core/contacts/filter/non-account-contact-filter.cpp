@@ -20,7 +20,7 @@ NonAccountContactFilter::~NonAccountContactFilter()
 {
 }
 
-void NonAccountContactFilter::setAccount(Account *account)
+void NonAccountContactFilter::setAccount(Account account)
 {
 	if (CurrentAccount != account)
 	{
@@ -31,5 +31,5 @@ void NonAccountContactFilter::setAccount(Account *account)
 
 bool NonAccountContactFilter::acceptContact(Contact contact)
 {
-	return !CurrentAccount || !contact.hasAccountData(CurrentAccount);
+	return CurrentAccount.isNull() || !contact.hasAccountData(CurrentAccount);
 }

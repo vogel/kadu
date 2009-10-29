@@ -26,11 +26,11 @@ Chat * Chat::loadFromStorage(StoragePoint *chatStoragePoint)
 	XmlConfigFile *storage = chatStoragePoint->storage();
 	QDomElement point = chatStoragePoint->point();
 
-	Account *account = AccountManager::instance()->byUuid(QUuid(storage->getTextNode(point, "Account")));
-	if (!account)
+	Account account = AccountManager::instance()->byUuid(QUuid(storage->getTextNode(point, "Account")));
+	if (account.isNull() || !account.protocolHandler())
 		return 0;
 
-	return account->protocolHandler()->loadChatFromStorage(chatStoragePoint);
+	return account.protocolHandler()->loadChatFromStorage(chatStoragePoint);
 }
 
 Chat::Chat(StoragePoint *storage) :
@@ -38,16 +38,16 @@ Chat::Chat(StoragePoint *storage) :
 {
 }
 
-Chat::Chat(Account *currentAccount, QUuid uuid) :
+Chat::Chat(Account currentAccount, QUuid uuid) :
 		UuidStorableObject("Chat", ChatManager::instance()), CurrentAccount(currentAccount), Uuid(uuid.isNull() ? QUuid::createUuid() : uuid)
 {
-	connect(CurrentAccount, SIGNAL(contactStatusChanged(Account *, Contact, Status)),
+	connect(&CurrentAccount, SIGNAL(contactStatusChanged(Account, Contact, Status)),
 			this, SLOT(refreshTitle()));
 }
 
 Chat::~Chat()
 {
-	disconnect(CurrentAccount, SIGNAL(contactStatusChanged(Account *, Contact, Status)),
+	disconnect(&CurrentAccount, SIGNAL(contactStatusChanged(Account, Contact, Status)),
 			this, SLOT(refreshTitle()));
 }
 
@@ -61,7 +61,7 @@ void Chat::load()
 	Uuid = loadAttribute<QString>("uuid");
 	CurrentAccount = AccountManager::instance()->byUuid(QUuid(loadValue<QString>("Account")));
 
-	connect(CurrentAccount, SIGNAL(contactStatusChanged(Account *, Contact, Status)),
+	connect(&CurrentAccount, SIGNAL(contactStatusChanged(Account, Contact, Status)),
 			this, SLOT(refreshTitle()));
 	refreshTitle();
 }
@@ -71,7 +71,7 @@ void Chat::store()
 	if (!isValidStorage())
 		return;
 
-	storeValue("Account", CurrentAccount->uuid().toString());
+	storeValue("Account", CurrentAccount.uuid().toString());
 }
 
 void Chat::setTitle(const QString &newTitle)
@@ -133,7 +133,7 @@ void Chat::refreshTitle()
 		ContactAccountData *cad = contact.accountData(account());
 
 		if (cad)
-			Icon = account()->statusContainer()->statusPixmap(cad->status());
+			Icon = account().statusContainer()->statusPixmap(cad->status());
 	}
 
 	title.replace("<br/>", " ");

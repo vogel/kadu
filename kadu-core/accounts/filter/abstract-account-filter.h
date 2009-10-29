@@ -22,7 +22,7 @@ public:
 	AbstractAccountFilter(QObject *parent = 0)
 			: QObject(parent) {}
 
-	virtual bool acceptAccount(Account *account) = 0;
+	virtual bool acceptAccount(Account account) = 0;
 
 signals:
 	void filterChanged();

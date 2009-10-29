@@ -20,13 +20,13 @@ class AccountNotification : public Notification
 {
 	Q_OBJECT
 
-	Account *CurrentAccount;
+	Account CurrentAccount;
 
 public:
-	AccountNotification(Account *account, const QString &type, const QIcon &icon);
+	AccountNotification(Account account, const QString &type, const QIcon &icon);
 	virtual ~AccountNotification();
 
-	Account * account() const { return CurrentAccount; }
+	Account account() const { return CurrentAccount; }
 
 };
 

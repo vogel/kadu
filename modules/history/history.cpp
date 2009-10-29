@@ -70,8 +70,8 @@ void disableNonHistoryContacts(Action *action)
 		if (Core::instance()->myself() == contact)
 			return;
 
-		Account *account = contact.prefferedAccount();
-		if (!account || !account->protocolHandler()->chatService())
+		Account account = contact.prefferedAccount();
+		if (!account.protocolHandler() || !account.protocolHandler()->chatService())
 			return;
 	}
 
@@ -92,10 +92,10 @@ History::History() : QObject(0), HistoryDialog(new HistoryWindow()), CurrentStor
 {
 	kdebugf();
 	createActionDescriptions();
-	connect(AccountManager::instance(), SIGNAL(accountRegistered(Account *)),
-		this, SLOT(accountRegistered(Account *)));
-	connect(AccountManager::instance(), SIGNAL(accountUnregistered(Account *)),
-		this, SLOT(accountUnregistered(Account *)));
+	connect(AccountManager::instance(), SIGNAL(accountRegistered(Account)),
+		this, SLOT(accountRegistered(Account)));
+	connect(AccountManager::instance(), SIGNAL(accountUnregistered(Account)),
+		this, SLOT(accountUnregistered(Account)));
 
 	connect(ChatWidgetManager::instance(), SIGNAL(chatWidgetCreated(ChatWidget *)), this, SLOT(chatCreated(ChatWidget *)));
 	kdebugf2();
@@ -274,9 +274,12 @@ void History::chatCreated(ChatWidget *chatWidget)
 }
 
 
-void History::accountRegistered(Account *account)
+void History::accountRegistered(Account account)
 {
-	ChatService *service = account->protocolHandler()->chatService();
+	if (!account.protocolHandler())
+		return;
+
+	ChatService *service = account.protocolHandler()->chatService();
 	if (service)
 	{
 		connect(service, SIGNAL(messageReceived(const Message &)),
@@ -287,9 +290,12 @@ void History::accountRegistered(Account *account)
 }
 
 
-void History::accountUnregistered(Account *account)
+void History::accountUnregistered(Account account)
 {
-	ChatService *service = account->protocolHandler()->chatService();
+	if (account.isNull() || !account.protocolHandler())
+		return;
+
+	ChatService *service = account.protocolHandler()->chatService();
 	if (service)
 	{
 		disconnect(service, SIGNAL(messageReceived(const Message &)),
@@ -468,7 +474,7 @@ void History::registerStorage(HistoryStorage *storage)
 	foreach (ChatWidget *chat, ChatWidgetManager::instance()->chats())
 		chatCreated(chat);
 
-	foreach (Account *account, AccountManager::instance()->accounts())
+	foreach (Account account, AccountManager::instance()->accounts())
 		accountRegistered(account);
 }
 
@@ -477,7 +483,7 @@ void History::unregisterStorage(HistoryStorage *storage)
 	if (CurrentStorage != storage)
 		return;
 
-	foreach (Account *account, AccountManager::instance()->accounts())
+	foreach (Account account, AccountManager::instance()->accounts())
 		accountUnregistered(account);
 
 	delete CurrentStorage;

@@ -21,7 +21,7 @@ class NonInContactFilter : public AbstractAccountFilter
 	Contact MyContact;
 
 protected:
-	virtual bool acceptAccount(Account *account);
+	virtual bool acceptAccount(Account account);
 
 public:
 	explicit NonInContactFilter(QObject *parent = 0);

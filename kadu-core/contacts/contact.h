@@ -20,6 +20,7 @@
 #include "contact-data.h"
 #include "exports.h"
 
+#undef PropertyRead
 #define PropertyRead(type, name, capitalized_name, default) \
 	type name() const\
 	{\
@@ -27,12 +28,16 @@
 			? default\
 			: Data->name();\
 	}
+
+#undef PropertyWrite
 #define PropertyWrite(type, name, capitalized_name, default) \
 	void set##capitalized_name(const type &name)\
 	{\
 		if (!isNull())\
 			Data->set##capitalized_name(name);\
 	}
+
+#undef Property
 #define Property(type, name, capitalized_name, default) \
 	PropertyRead(type, name, capitalized_name, default) \
 	PropertyWrite(type, name, capitalized_name, default)
@@ -81,19 +86,19 @@ public:
 	QUuid uuid() const;
 	QMap<QString, QString> & customData();
 
-	Account * prefferedAccount() const;
-	QList<Account *> accounts() const;
+	Account prefferedAccount() const;
+	QList<Account> accounts() const;
 
 	ContactData * data() const { return Data.data(); }
 	void setData(ContactData *data) { Data = data; }  // TODO: 0.8 tricky merge, this should work well ;)
 
 	void addAccountData(ContactAccountData *accountData);
 	void removeAccountData(ContactAccountData *accountData) const;
-	void removeAccountData(Account *account) const;
-	ContactAccountData * accountData(Account *account) const;
+	void removeAccountData(Account account) const;
+	ContactAccountData * accountData(Account account) const;
 	QList<ContactAccountData *> accountDatas() const;
-	StoragePoint * storagePointForAccountData(Account *account) const;
-	bool hasAccountData(Account *account) const;
+	StoragePoint * storagePointForAccountData(Account account) const;
+	bool hasAccountData(Account account) const;
 
 template<class T>
 	T * moduleData(bool create = false, bool cache = false) const
@@ -101,14 +106,14 @@ template<class T>
 		return isNull() ? 0 : Data->moduleData<T>(create, cache);
 	}
 
-	QString id(Account *account) const;
+	QString id(Account account) const;
 	// properties
 
 	bool isIgnored() const;
 	bool setIgnored(bool ignored = true);
-	bool isBlocked(Account *account) const;
-	bool isOfflineTo(Account *account) const;
-	void setOfflineTo(Account *account, bool offlineTo) const;
+	bool isBlocked(Account account) const;
+	bool isOfflineTo(Account account) const;
+	void setOfflineTo(Account account, bool offlineTo) const;
 	bool showInAllGroup() const;
 	bool isInGroup(Group *group) const;
 	void addToGroup(Group *group);

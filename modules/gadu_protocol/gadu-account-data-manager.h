@@ -17,7 +17,7 @@ class Account;
 class GaduAccountDataManager : public AccountDataManager
 {
 public:
-	GaduAccountDataManager(Account *data);
+	GaduAccountDataManager(Account data);
 
 	virtual void writeEntry(const QString &section, const QString &name, const QVariant &value);
 	virtual QVariant readEntry(const QString &section, const QString &name);

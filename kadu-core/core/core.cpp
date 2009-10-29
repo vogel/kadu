@@ -345,9 +345,11 @@ void Core::kaduWindowDestroyed()
 	Window = 0;
 }
 
-void Core::accountRegistered(Account *account)
+void Core::accountRegistered(Account account)
 {
-	Protocol *protocol = account->protocolHandler();
+	Protocol *protocol = account.protocolHandler();
+	if (!protocol)
+		return;
 
 	ChatService *chatService = protocol->chatService();
 	if (chatService)
@@ -358,9 +360,9 @@ void Core::accountRegistered(Account *account)
 			this, SIGNAL(messageSent(const Message &)));
 	}
 
-	connect(protocol, SIGNAL(connecting(Account *)), this, SIGNAL(connecting()));
-	connect(protocol, SIGNAL(connected(Account *)), this, SIGNAL(connected()));
-	connect(protocol, SIGNAL(disconnected(Account *)), this, SIGNAL(disconnected()));
+	connect(protocol, SIGNAL(connecting(Account)), this, SIGNAL(connecting()));
+	connect(protocol, SIGNAL(connected(Account)), this, SIGNAL(connected()));
+	connect(protocol, SIGNAL(disconnected(Account)), this, SIGNAL(disconnected()));
 /* TODO: 0.6.6
 	ContactAccountData *contactAccountData = protocol->protocolFactory()->loadContactAccountData(account, Myself);
 	if (!contactAccountData)
@@ -368,9 +370,9 @@ void Core::accountRegistered(Account *account)
 	Myself.addAccountData(contactAccountData);*/
 }
 
-void Core::accountUnregistered(Account *account)
+void Core::accountUnregistered(Account account)
 {
-	Protocol *protocol = account->protocolHandler();
+	Protocol *protocol = account.protocolHandler();
 
 	ChatService *chatService = protocol->chatService();
 	if (chatService)
@@ -381,9 +383,9 @@ void Core::accountUnregistered(Account *account)
 			this, SIGNAL(messageSent(const Message &)));
 	}
 
-	disconnect(protocol, SIGNAL(connecting(Account *)), this, SIGNAL(connecting()));
-	disconnect(protocol, SIGNAL(connected(Account *)), this, SIGNAL(connected()));
-	disconnect(protocol, SIGNAL(disconnected(Account *)), this, SIGNAL(disconnected()));
+	disconnect(protocol, SIGNAL(connecting(Account)), this, SIGNAL(connecting()));
+	disconnect(protocol, SIGNAL(connected(Account)), this, SIGNAL(connected()));
+	disconnect(protocol, SIGNAL(disconnected(Account)), this, SIGNAL(disconnected()));
 
 	Myself.removeAccountData(account);
 }

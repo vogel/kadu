@@ -17,7 +17,7 @@ ConferenceChat::ConferenceChat(StoragePoint *storage) :
 {
 }
 
-ConferenceChat::ConferenceChat(Account *currentAccount, ContactSet contacts, QUuid uuid) :
+ConferenceChat::ConferenceChat(Account currentAccount, ContactSet contacts, QUuid uuid) :
 		Chat(currentAccount, uuid), CurrentContacts(contacts)
 {
 }

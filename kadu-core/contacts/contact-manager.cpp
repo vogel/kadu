@@ -131,16 +131,16 @@ void ContactManager::addContact(Contact contact)
 	emit contactAdded(contact);
 
 	connect(contact.data(), SIGNAL(updated()), this, SLOT(contactDataUpdated()));
-	connect(contact.data(), SIGNAL(accountDataAboutToBeAdded(Account *)),
-			this, SLOT(contactAccountDataAboutToBeAdded(Account *)));
-	connect(contact.data(), SIGNAL(accountDataAdded(Account *)),
-			this, SLOT(contactAccountDataAdded(Account *)));
-	connect(contact.data(), SIGNAL(accountDataAboutToBeRemoved(Account *)),
-			this, SLOT(contactAccountDataAboutToBeRemoved(Account *)));
-	connect(contact.data(), SIGNAL(accountDataRemoved(Account *)),
-			this, SLOT(contactAccountDataRemoved(Account *)));
-	connect(contact.data(), SIGNAL(accountDataIdChanged(Account *, const QString &)),
-			this, SLOT(contactAccountDataIdChanged(Account *, const QString &)));
+	connect(contact.data(), SIGNAL(accountDataAboutToBeAdded(Account)),
+			this, SLOT(contactAccountDataAboutToBeAdded(Account)));
+	connect(contact.data(), SIGNAL(accountDataAdded(Account)),
+			this, SLOT(contactAccountDataAdded(Account)));
+	connect(contact.data(), SIGNAL(accountDataAboutToBeRemoved(Account)),
+			this, SLOT(contactAccountDataAboutToBeRemoved(Account)));
+	connect(contact.data(), SIGNAL(accountDataRemoved(Account)),
+			this, SLOT(contactAccountDataRemoved(Account)));
+	connect(contact.data(), SIGNAL(accountDataIdChanged(Account, const QString &)),
+			this, SLOT(contactAccountDataIdChanged(Account, const QString &)));
 }
 
 void ContactManager::removeContact(Contact contact)
@@ -155,16 +155,16 @@ void ContactManager::removeContact(Contact contact)
 		return;
 
 	disconnect(contact.data(), SIGNAL(updated()), this, SLOT(contactDataUpdated()));
-	disconnect(contact.data(), SIGNAL(accountDataAboutToBeAdded(Account *)),
-			this, SLOT(contactAccountDataAboutToBeAdded(Account *)));
-	disconnect(contact.data(), SIGNAL(accountDataAdded(Account *)),
-			this, SLOT(contactAccountDataAdded(Account *)));
-	disconnect(contact.data(), SIGNAL(accountDataAboutToBeRemoved(Account *)),
-			this, SLOT(contactAccountDataAboutToBeRemoved(Account *)));
-	disconnect(contact.data(), SIGNAL(accountDataRemoved(Account *)),
-			this, SLOT(contactAccountDataRemoved(Account *)));
-	disconnect(contact.data(), SIGNAL(accountDataIdChanged(Account *, const QString &)),
-			this, SLOT(contactAccountDataIdChanged(Account *, const QString &)));
+	disconnect(contact.data(), SIGNAL(accountDataAboutToBeAdded(Account)),
+			this, SLOT(contactAccountDataAboutToBeAdded(Account)));
+	disconnect(contact.data(), SIGNAL(accountDataAdded(Account)),
+			this, SLOT(contactAccountDataAdded(Account)));
+	disconnect(contact.data(), SIGNAL(accountDataAboutToBeRemoved(Account)),
+			this, SLOT(contactAccountDataAboutToBeRemoved(Account)));
+	disconnect(contact.data(), SIGNAL(accountDataRemoved(Account)),
+			this, SLOT(contactAccountDataRemoved(Account)));
+	disconnect(contact.data(), SIGNAL(accountDataIdChanged(Account, const QString &)),
+			this, SLOT(contactAccountDataIdChanged(Account, const QString &)));
 
 	emit contactAboutToBeRemoved(contact);
 	if (ContactRemovePredicateObject::inquireAll(contact))
@@ -205,9 +205,9 @@ Contact ContactManager::byIndex(unsigned int index)
 	return Contacts.at(index);
 }
 
-Contact ContactManager::byId(Account *account, const QString &id)
+Contact ContactManager::byId(Account account, const QString &id)
 {
-	if (id.isEmpty() || 0 == account)
+	if (id.isEmpty() || account.isNull())
 		return Contact::null;
 
 	ensureLoaded();
@@ -218,7 +218,7 @@ Contact ContactManager::byId(Account *account, const QString &id)
 			return contact;
 	}
 
-	Contact anonymous = account->createAnonymous(id);
+	Contact anonymous = account.createAnonymous(id);
 	addContact(anonymous);
 
 	return anonymous;
@@ -270,7 +270,7 @@ ContactList ContactManager::contacts()
 	return Contacts;
 }
 
-ContactList ContactManager::contacts(Account *account, bool includeAnonymous)
+ContactList ContactManager::contacts(Account account, bool includeAnonymous)
 {
 	ContactList result;
 
@@ -303,7 +303,7 @@ void ContactManager::contactDataUpdated()
 		emit contactUpdated(contact);
 }
 
-void ContactManager::contactAccountDataAboutToBeAdded(Account *account)
+void ContactManager::contactAccountDataAboutToBeAdded(Account account)
 {
 	ContactData *cd = dynamic_cast<ContactData *>(sender());
 	if (!cd)
@@ -314,7 +314,7 @@ void ContactManager::contactAccountDataAboutToBeAdded(Account *account)
 		emit contactAccountDataAboutToBeAdded(contact, account);
 }
 
-void ContactManager::contactAccountDataAdded(Account *account)
+void ContactManager::contactAccountDataAdded(Account account)
 {
 	ContactData *cd = dynamic_cast<ContactData *>(sender());
 	if (!cd)
@@ -325,7 +325,7 @@ void ContactManager::contactAccountDataAdded(Account *account)
 		emit contactAccountDataAdded(contact, account);
 }
 
-void ContactManager::contactAccountDataAboutToBeRemoved(Account *account)
+void ContactManager::contactAccountDataAboutToBeRemoved(Account account)
 {
 	ContactData *cd = dynamic_cast<ContactData *>(sender());
 	if (!cd)
@@ -336,7 +336,7 @@ void ContactManager::contactAccountDataAboutToBeRemoved(Account *account)
 		emit contactAccountDataAboutToBeRemoved(contact, account);
 }
 
-void ContactManager::contactAccountDataRemoved(Account *account)
+void ContactManager::contactAccountDataRemoved(Account account)
 {
 	ContactData *cd = dynamic_cast<ContactData *>(sender());
 	if (!cd)
@@ -347,7 +347,7 @@ void ContactManager::contactAccountDataRemoved(Account *account)
 		emit contactAccountDataRemoved(contact, account);
 }
 
-void ContactManager::contactAccountDataIdChanged(Account *account, const QString &oldId)
+void ContactManager::contactAccountDataIdChanged(Account account, const QString &oldId)
 {
 	ContactData *cd = dynamic_cast<ContactData *>(sender());
 	if (!cd)

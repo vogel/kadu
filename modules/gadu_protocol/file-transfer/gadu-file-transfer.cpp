@@ -15,13 +15,13 @@
 
 #include "gadu-file-transfer.h"
 
-GaduFileTransfer::GaduFileTransfer(Account *account) :
+GaduFileTransfer::GaduFileTransfer(Account account) :
 		FileTransfer(account),
 		SocketNotifiers(0), WaitingForSocketNotifiers(false)
 {
 }
 
-GaduFileTransfer::GaduFileTransfer(Account *account, Contact peer, FileTransfer::FileTransferType transferType) :
+GaduFileTransfer::GaduFileTransfer(Account account, Contact peer, FileTransfer::FileTransferType transferType) :
 		FileTransfer(account, peer, transferType),
 		SocketNotifiers(0), WaitingForSocketNotifiers(false)
 {
@@ -103,13 +103,13 @@ void GaduFileTransfer::send()
 
 	setRemoteFile(QString::null);
 
-	if (!account() || localFileName().isEmpty())
+	if (account().isNull() || localFileName().isEmpty())
 	{
 		changeFileTransferStatus(FileTransfer::StatusNotConnected);
 		return; // TODO: notify
 	}
 
-	GaduProtocol *gaduProtocol = dynamic_cast<GaduProtocol *>(account()->protocolHandler());
+	GaduProtocol *gaduProtocol = dynamic_cast<GaduProtocol *>(account().protocolHandler());
 	if (!gaduProtocol)
 	{
 		changeFileTransferStatus(FileTransfer::StatusNotConnected);

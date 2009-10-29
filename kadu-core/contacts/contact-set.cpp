@@ -26,10 +26,10 @@ ContactList ContactSet::toContactList() const
 	return toList();
 }
 
-Account * ContactSet::prefferedAccount()
+Account ContactSet::prefferedAccount()
 {
-	QList<Account *> accounts;
-	QList<Account *> contactAccounts;
+	QList<Account> accounts;
+	QList<Account> contactAccounts;
 	int contactsCount = count();
 	// TODO 0.6.6 - Rework it if more than 1 account on the same proto.
 
@@ -38,14 +38,14 @@ Account * ContactSet::prefferedAccount()
 		contactAccounts = contact.accounts();
 		// one contact have no account = no common account
 		if (0 == contactAccounts.count())
-			return 0;
+			return Account::null;
 
 		accounts.append(contactAccounts);
 	}
 
-	foreach (Account *account, AccountManager::instance()->accounts())
+	foreach (Account account, AccountManager::instance()->accounts())
 		if (contactsCount == accounts.count(account))
 			return account;
 
-	return 0;
+	return Account::null;
 }

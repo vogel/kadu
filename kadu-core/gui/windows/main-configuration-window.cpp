@@ -143,11 +143,11 @@ MainConfigurationWindow::MainConfigurationWindow()
 	QLineEdit *disconnectDescription = dynamic_cast<QLineEdit *>(widget()->widgetById("disconnectDescription"));
 	QLineEdit *onStartupSetDescription = dynamic_cast<QLineEdit *>(widget()->widgetById("onStartupSetDescription"));
 
-	Account * account = AccountManager::instance()->defaultAccount();
-	if ( 0 != account && 0 != account->protocolHandler())
+	Account account = AccountManager::instance()->defaultAccount();
+	if (!account.isNull() && account.protocolHandler())
 	{
-		disconnectDescription->setMaxLength(account->statusContainer()->maxDescriptionLength());
-		onStartupSetDescription->setMaxLength(account->statusContainer()->maxDescriptionLength());
+		disconnectDescription->setMaxLength(account.statusContainer()->maxDescriptionLength());
+		onStartupSetDescription->setMaxLength(account.statusContainer()->maxDescriptionLength());
 	}
 
 	connect(widget()->widgetById("disconnectWithCurrentDescription"), SIGNAL(toggled(bool)), disconnectDescription, SLOT(setDisabled(bool)));

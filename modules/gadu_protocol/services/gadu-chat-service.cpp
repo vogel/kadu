@@ -141,7 +141,7 @@ bool GaduChatService::isSystemMessage(gg_event *e)
 
 Contact GaduChatService::getSender(gg_event *e)
 {
-	return Protocol->account()->getContactById(QString::number(e->event.msg.sender));
+	return Protocol->account().getContactById(QString::number(e->event.msg.sender));
 }
 
 bool GaduChatService::ignoreSender(gg_event *e, Contact sender)
@@ -165,7 +165,7 @@ ContactSet GaduChatService::getRecipients(gg_event *e)
 	ContactSet recipients;
 	for (int i = 0; i < e->event.msg.recipients_count; ++i)
 	{
-		Contact recipient = Protocol->account()->getContactById(QString::number(e->event.msg.recipients[i]));
+		Contact recipient = Protocol->account().getContactById(QString::number(e->event.msg.recipients[i]));
 		recipients.insert(recipient);
 	}
 

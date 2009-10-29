@@ -13,17 +13,17 @@
 #include <QtCore/QAbstractListModel>
 #include <QtCore/QModelIndex>
 
-class Account;
+#include "accounts/account.h"
 
 class AccountsModel : public QAbstractListModel
 {
 	Q_OBJECT
 
 private slots:
-	void accountAboutToBeRegistered(Account *account);
-	void accountRegistered(Account *account);
-	void accountAboutToBeUnregistered(Account *account);
-	void accountUnregistered(Account *account);
+	void accountAboutToBeRegistered(Account account);
+	void accountRegistered(Account account);
+	void accountAboutToBeUnregistered(Account account);
+	void accountUnregistered(Account account);
 
 public:
 	AccountsModel(QObject *parent = 0);
@@ -35,9 +35,9 @@ public:
 	virtual QVariant data(const QModelIndex &index, int role) const;
 	virtual QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const;
 
-	Account * account(const QModelIndex &index) const;
-	int accountIndex(Account *account);
-	QModelIndex accountModelIndex(Account *account);
+	Account account(const QModelIndex &index) const;
+	int accountIndex(Account account);
+	QModelIndex accountModelIndex(Account account);
 };
 
 #endif // ACCOUNTS_MODEL

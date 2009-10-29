@@ -41,7 +41,7 @@ private slots:
 	void personalInfoAvailable(Contact contact);
 
 public:
-	explicit JabberPersonalInfoWidget(Account *account, QWidget *parent = 0);
+	explicit JabberPersonalInfoWidget(Account account, QWidget *parent = 0);
 	virtual ~JabberPersonalInfoWidget();
 
 };

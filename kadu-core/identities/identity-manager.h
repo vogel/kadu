@@ -45,7 +45,7 @@ public:
 
 	Identity * byUuid(const QString &uuid);
 	Identity * byName(const QString &name, bool create = true);
-	Identity * identityForAcccount(Account *account);
+	Identity * identityForAcccount(Account account);
 
 	const QList<Identity *> identities() { return Identities; }
 

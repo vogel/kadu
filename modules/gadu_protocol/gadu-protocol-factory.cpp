@@ -44,17 +44,17 @@ GaduProtocolFactory::GaduProtocolFactory()
 	IdRegularExpression.setPattern("[0-9]{1,12}");
 }
 
-Protocol * GaduProtocolFactory::createProtocolHandler(Account *account)
+Protocol * GaduProtocolFactory::createProtocolHandler(Account account)
 {
 	return new GaduProtocol(account, this);
 }
 
-AccountDetails * GaduProtocolFactory::createAccountDetails(Account* account)
+AccountDetails * GaduProtocolFactory::createAccountDetails(Account account)
 {
-	return new GaduAccountDetails(account->storage(), account);
+	return new GaduAccountDetails(account.storage(), account);
 }
 
-ContactAccountData * GaduProtocolFactory::newContactAccountData(Account *account, Contact contact, const QString &id)
+ContactAccountData * GaduProtocolFactory::newContactAccountData(Account account, Contact contact, const QString &id)
 {
 	return new GaduContactAccountData(account, contact, id, true);
 }
@@ -72,7 +72,7 @@ AccountCreateWidget * GaduProtocolFactory::newCreateAccountWidget(QWidget *paren
 	return new GaduCreateAccountWidget(parent);
 }
 
-AccountEditWidget * GaduProtocolFactory::newEditAccountWidget(Account *account, QWidget *parent)
+AccountEditWidget * GaduProtocolFactory::newEditAccountWidget(Account account, QWidget *parent)
 {
 	return new GaduEditAccountWidget(account, parent);
 }

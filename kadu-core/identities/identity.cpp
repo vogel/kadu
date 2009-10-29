@@ -92,43 +92,43 @@ void Identity::store()
 		configurationStorage->removeNode(storage()->point(), "Accounts");
 }
 
-void Identity::accountRegistered(Account *account)
+void Identity::accountRegistered(Account account)
 {
-	if (AccountsUuids.contains(account->uuid()))
+	if (AccountsUuids.contains(account.uuid()))
 		Accounts << account;
 }
 
-void Identity::accountUnregistered(Account *account)
+void Identity::accountUnregistered(Account account)
 {
 	Accounts.removeAll(account);
 }
 
-void Identity::addAccount(Account *account)
+void Identity::addAccount(Account account)
 {
 	if (Accounts.contains(account))
 		return;
 
 	Accounts << account;
-	AccountsUuids << account->uuid();
+	AccountsUuids << account.uuid();
 }
 
-void Identity::removeAccount(Account *account)
+void Identity::removeAccount(Account account)
 {
-    	Accounts.removeAll(account);
-	AccountsUuids.removeAll(account->uuid());
+	Accounts.removeAll(account);
+	AccountsUuids.removeAll(account.uuid());
 }
 
 //TODO 0.6.6:
 void Identity::setStatus(Status status)
 {
-	foreach (Account *account, Accounts)
-		account->statusContainer()->setStatus(status);
+	foreach (Account account, Accounts)
+		account.statusContainer()->setStatus(status);
 }
 
 const Status & Identity::status()
 {
 	return Accounts.count()
-			? Accounts[0]->statusContainer()->status()
+			? Accounts[0].statusContainer()->status()
 			: Status::null;
 }
 
@@ -150,26 +150,26 @@ QPixmap Identity::statusPixmap(Status status)
 QPixmap Identity::statusPixmap(const QString &statusType)
 {
 	return Accounts.count()
-			? Accounts[0]->statusContainer()->statusPixmap(statusType)
+			? Accounts[0].statusContainer()->statusPixmap(statusType)
 			: QPixmap();
 }
 
 QList<StatusType *> Identity::supportedStatusTypes()
 {
 	return Accounts.count()
-			? Accounts[0]->statusContainer()->supportedStatusTypes()
+			? Accounts[0].statusContainer()->supportedStatusTypes()
 			: QList<StatusType *>();
 }
 
 int Identity::maxDescriptionLength()
 {
 	return Accounts.count()
-			? Accounts[0]->statusContainer()->maxDescriptionLength()
+			? Accounts[0].statusContainer()->maxDescriptionLength()
 			: -1;
 }
 
 void Identity::setPrivateStatus(bool isPrivate)
 {
-	foreach (Account *account, Accounts)
-		account->statusContainer()->setPrivateStatus(isPrivate);
+	foreach (Account account, Accounts)
+		account.statusContainer()->setPrivateStatus(isPrivate);
 }

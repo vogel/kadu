@@ -169,7 +169,7 @@ void Updates::initModule()
 			connect(instance->httpClient, SIGNAL(readyRead(const QHttpResponseHeader &)),
 					instance, SLOT(gotUpdatesInfo(const QHttpResponseHeader &)));
 
-			GaduProtocol *gadu = dynamic_cast<GaduProtocol *>(AccountManager::instance()->defaultAccount()->protocol());
+			GaduProtocol *gadu = dynamic_cast<GaduProtocol *>(AccountManager::instance()->defaultAccount().protocol());
 			connect(gadu, SIGNAL(connected()), instance, SLOT(run()));
 		}*/
 	}
@@ -196,7 +196,7 @@ void Updates::gotUpdatesInfo(const QHttpResponseHeader &responseHeader)
 
 	QByteArray data = httpClient->readAll();
 
-	GaduProtocol *gadu = dynamic_cast<GaduProtocol *>(AccountManager::instance()->defaultAccount()->protocolHandler());
+	GaduProtocol *gadu = dynamic_cast<GaduProtocol *>(AccountManager::instance()->defaultAccount().protocolHandler());
 	if (config_file.readBoolEntry("General", "CheckUpdates"))
 	{
 		unsigned int size = data.size();

@@ -41,7 +41,7 @@ private slots:
 	void personalInfoAvailable(Contact contact);
 
 public:
-	explicit GaduPersonalInfoWidget(Account *account, QWidget *parent = 0);
+	explicit GaduPersonalInfoWidget(Account account, QWidget *parent = 0);
 	virtual ~GaduPersonalInfoWidget();
 
 	void applyData();

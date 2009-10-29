@@ -121,7 +121,7 @@ unsigned int GaduProtocol::gaduStatusFromStatus(const Status &status)
 	return hasDescription ? GG_STATUS_NOT_AVAIL_DESCR : GG_STATUS_NOT_AVAIL;
 }
 
-GaduProtocol::GaduProtocol(Account *account, ProtocolFactory *factory) :
+GaduProtocol::GaduProtocol(Account account, ProtocolFactory *factory) :
 		Protocol(account, factory), Dcc(0),
 		ActiveServer(), GaduLoginParams(), GaduSession(0), PingTimer(0)
 {
@@ -130,8 +130,8 @@ GaduProtocol::GaduProtocol(Account *account, ProtocolFactory *factory) :
 	SocketNotifiers = new GaduProtocolSocketNotifiers(account, this);
 
 	CurrentAvatarService = new GaduAvatarService(this);
-	connect(this, SIGNAL(connected(Account *)),
-			this, SLOT(fetchAvatars(Account *)));
+	connect(this, SIGNAL(connected(Account)),
+			this, SLOT(fetchAvatars(Account)));
 	CurrentChatImageService = new GaduChatImageService(this);
 	CurrentChatService = new GaduChatService(this);
 	CurrentContactListService = new GaduContactListService(this);
@@ -143,15 +143,15 @@ GaduProtocol::GaduProtocol(Account *account, ProtocolFactory *factory) :
 			this, SLOT(contactAdded(Contact &)));
 	connect(ContactManager::instance(), SIGNAL(contactRemoved(Contact &)),
 			this, SLOT(contactRemoved(Contact &)));
-	connect(ContactManager::instance(), SIGNAL(contactAccountDataAdded(Contact &, Account *)),
-			this, SLOT(contactAccountDataAboutToBeRemoved(Contact & , Account *)));
-	connect(ContactManager::instance(), SIGNAL(contactAccountDataAboutToBeRemoved(Contact &, Account *)),
-			this, SLOT(contactAccountDataAboutToBeRemoved(Contact &, Account *)));
+	connect(ContactManager::instance(), SIGNAL(contactAccountDataAdded(Contact &, Account)),
+			this, SLOT(contactAccountDataAboutToBeRemoved(Contact &, Account)));
+	connect(ContactManager::instance(), SIGNAL(contactAccountDataAboutToBeRemoved(Contact &, Account)),
+			this, SLOT(contactAccountDataAboutToBeRemoved(Contact &, Account)));
 
 	kdebugf2();
 }
 
-void GaduProtocol::fetchAvatars(Account *account)
+void GaduProtocol::fetchAvatars(Account account)
 {
 	foreach (Contact contact, ContactManager::instance()->contacts(account))
 		if (contact.hasAccountData(account))
@@ -166,10 +166,10 @@ GaduProtocol::~GaduProtocol()
 			this, SLOT(contactAdded(Contact &)));
 	disconnect(ContactManager::instance(), SIGNAL(contactRemoved(Contact &)),
 			this, SLOT(contactRemoved(Contact &)));
-	disconnect(ContactManager::instance(), SIGNAL(contactAccountDataAdded(Contact &, Account *)),
-			this, SLOT(contactAccountDataAboutToBeRemoved(Contact & , Account *)));
-	disconnect(ContactManager::instance(), SIGNAL(contactAccountDataAboutToBeRemoved(Contact &, Account *)),
-			this, SLOT(contactAccountDataAboutToBeRemoved(Contact &, Account *)));
+	disconnect(ContactManager::instance(), SIGNAL(contactAccountDataAdded(Contact &, Account)),
+			this, SLOT(contactAccountDataAboutToBeRemoved(Contact &, Account)));
+	disconnect(ContactManager::instance(), SIGNAL(contactAccountDataAboutToBeRemoved(Contact &, Account)),
+			this, SLOT(contactAccountDataAboutToBeRemoved(Contact &, Account)));
 
 	networkDisconnected(false);
 	delete SocketNotifiers;
@@ -430,8 +430,8 @@ void GaduProtocol::everyMinuteActions()
 
 void GaduProtocol::login(const QString &password, bool permanent)
 {
-	account()->setPassword(password);
-	account()->setRememberPassword(permanent);
+	account().setPassword(password);
+	account().setRememberPassword(permanent);
 
 	login();
 }
@@ -443,7 +443,7 @@ void GaduProtocol::login()
 	if (GaduSession)
 		return;
 
-	GaduAccountDetails *gaduAccountDetails = dynamic_cast<GaduAccountDetails *>(account()->details());
+	GaduAccountDetails *gaduAccountDetails = dynamic_cast<GaduAccountDetails *>(account().details());
 
 	if (0 == gaduAccountDetails->uin())
 	{
@@ -453,9 +453,9 @@ void GaduProtocol::login()
 		return;
 	}
 
-	if (!account()->hasPassword())
+	if (!account().hasPassword())
 	{
-		PasswordWindow::getPassword(tr("Please provide password for %1 account").arg(account()->name()),
+		PasswordWindow::getPassword(tr("Please provide password for %1 account").arg(account().name()),
 				this, SLOT(login(const QString &, bool)));
 		return;
 	}
@@ -495,20 +495,20 @@ void GaduProtocol::setupProxy()
 		gg_proxy_username = gg_proxy_password = 0;
 	}
 
-	gg_proxy_enabled = account()->useProxy();
+	gg_proxy_enabled = account().useProxy();
 
 	if (gg_proxy_enabled)
 	{
-		gg_proxy_host = strdup((char *)unicode2latin(account()->proxyHost().toString()).data());
-		gg_proxy_port = account()->proxyPort();
+		gg_proxy_host = strdup((char *)unicode2latin(account().proxyHost().toString()).data());
+		gg_proxy_port = account().proxyPort();
 
 		kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "gg_proxy_host = %s\n", gg_proxy_host);
 		kdebugmf(KDEBUG_NETWORK|KDEBUG_INFO, "gg_proxy_port = %d\n", gg_proxy_port);
 
-		if (account()->proxyRequiresAuthentication() && !account()->proxyUser().isEmpty())
+		if (account().proxyRequiresAuthentication() && !account().proxyUser().isEmpty())
 		{
-			gg_proxy_username = strdup((char *)unicode2latin(account()->proxyUser()).data());
-			gg_proxy_password = strdup((char *)unicode2latin(account()->proxyPassword()).data());
+			gg_proxy_username = strdup((char *)unicode2latin(account().proxyUser()).data());
+			gg_proxy_password = strdup((char *)unicode2latin(account().proxyPassword()).data());
 		}
 	}
 
@@ -517,7 +517,7 @@ void GaduProtocol::setupProxy()
 
 void GaduProtocol::setupDcc()
 {
-	GaduAccountDetails *gaduAccountDetails = dynamic_cast<GaduAccountDetails *>(account()->details());
+	GaduAccountDetails *gaduAccountDetails = dynamic_cast<GaduAccountDetails *>(account().details());
 	if (!gaduAccountDetails)
 		return;
 
@@ -540,12 +540,12 @@ void GaduProtocol::setupLoginParams()
 {
 	memset(&GaduLoginParams, 0, sizeof(GaduLoginParams));
 
-	GaduAccountDetails *gaduAccountDetails = dynamic_cast<GaduAccountDetails *>(account()->details());
+	GaduAccountDetails *gaduAccountDetails = dynamic_cast<GaduAccountDetails *>(account().details());
 	if (!gaduAccountDetails)
 		return;
 
-	GaduLoginParams.uin = account()->id().toULong();
-	GaduLoginParams.password = strdup(account()->password().toAscii().data());
+	GaduLoginParams.uin = account().id().toULong();
+	GaduLoginParams.password = strdup(account().password().toAscii().data());
 
 	GaduLoginParams.async = 1;
 	GaduLoginParams.status = gaduStatusFromStatus(nextStatus()); // TODO: 0.6.6 support is friend only
@@ -879,7 +879,7 @@ void GaduProtocol::contactRemoved(Contact &contact)
 	gg_remove_notify(GaduSession, gcad->uin());
 }
 
-void GaduProtocol::contactAccountDataAdded(Contact &contact, Account *contactAccount)
+void GaduProtocol::contactAccountDataAdded(Contact &contact, Account contactAccount)
 {
 	if (contactAccount != account())
 		return;
@@ -887,7 +887,7 @@ void GaduProtocol::contactAccountDataAdded(Contact &contact, Account *contactAcc
 	contactAdded(contact);
 }
 
-void GaduProtocol::contactAccountDataAboutToBeRemoved(Contact &contact, Account *contactAccount)
+void GaduProtocol::contactAccountDataAboutToBeRemoved(Contact &contact, Account contactAccount)
 {
 	if (contactAccount != account())
 		return;
@@ -895,7 +895,7 @@ void GaduProtocol::contactAccountDataAboutToBeRemoved(Contact &contact, Account 
 	contactRemoved(contact);
 }
 
-void GaduProtocol::contactAccountDataIdChanged(Contact &contact, Account *contactAccount, const QString &oldId)
+void GaduProtocol::contactAccountDataIdChanged(Contact &contact, Account contactAccount, const QString &oldId)
 {
 	if (contactAccount != account())
 		return;

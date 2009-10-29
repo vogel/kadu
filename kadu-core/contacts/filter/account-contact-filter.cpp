@@ -11,7 +11,7 @@
 
 #include "account-contact-filter.h"
 
-AccountContactFilter::AccountContactFilter(Account *account, QObject *parent)
+AccountContactFilter::AccountContactFilter(Account account, QObject *parent)
 	: AbstractContactFilter(parent), Enabled(false), CurrentAccount(account)
 {
 }

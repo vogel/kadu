@@ -20,12 +20,12 @@ class KADUAPI AccountsAwareObject : public AwareObject<AccountsAwareObject>
 {
 
 protected:
-	virtual void accountRegistered(Account *account) = 0;
-	virtual void accountUnregistered(Account *account) = 0;
+	virtual void accountRegistered(Account account) = 0;
+	virtual void accountUnregistered(Account account) = 0;
 
 public:
-	static void notifyAccountRegistered(Account *account);
-	static void notifyAccountUnregistered(Account *account);
+	static void notifyAccountRegistered(Account account);
+	static void notifyAccountUnregistered(Account account);
 
 	void triggerAllAccountsRegistered();
 	void triggerAllAccountsUnregistered();

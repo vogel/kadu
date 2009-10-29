@@ -32,8 +32,8 @@ bool OnlineContactFilter::acceptContact(Contact contact)
 	if (!Enabled)
 		return true;
 
-	Account *prefferedAccount = contact.prefferedAccount();
-	if (!prefferedAccount)
+	Account prefferedAccount = contact.prefferedAccount();
+	if (prefferedAccount.isNull())
 		return false;
 
 	Status status = contact.accountData(prefferedAccount)->status();
