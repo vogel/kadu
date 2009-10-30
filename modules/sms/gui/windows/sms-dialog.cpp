@@ -58,8 +58,8 @@ SmsDialog::SmsDialog(const QString& altnick, QWidget* parent) : QWidget(parent, 
 	widgetGrid->addWidget(providersListLabel, 0, 0, 1, 1);
 	
 	ProvidersList = new QComboBox(this);
-		//TODO
-	//ProvidersList->addItems(SmsGatewayManager::instance()->gatewa);
+	foreach (SmsGateway* gateway, SmsGatewayManager::instance()->gateways())
+		ProvidersList->addItem(gateway->displayName(), gateway->name());
 	widgetGrid->addWidget(ProvidersList, 0, 1, 1, 1);
 	
 	AutoSelectProvider = new QCheckBox(tr("Automatically select provider"), this);
@@ -222,7 +222,8 @@ void SmsDialog::sendSms()
 
 	if (config_file.readBoolEntry("SMS", "BuiltInApp"))
 	{
-		Sender.send(recipient->text(), body->toPlainText(), e_contact->text(), e_signature->text(), AutoSelectProvider->isChecked());
+		Sender.send(recipient->text(), body->toPlainText(), e_contact->text(), e_signature->text(), 
+			    AutoSelectProvider->isChecked(), ProvidersList->itemData(ProvidersList->currentIndex()).toString());
 	}
 	else
 	{
@@ -291,8 +292,10 @@ void SmsDialog::onSmsSenderFinished(bool success)
 	if (success)
 	{
 		if (c_saveInHistory->isChecked())
+		{
 		//TODO 0.6.6
 		///	history->appendSms(recipient->text(), body->text());
+		}
 		if (!MessageBox::ask(tr("The SMS was sent and should be on its way.\nDo you want to send next message?"), "Information", this))
 			deleteLater();
 		body->clear();

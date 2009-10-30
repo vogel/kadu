@@ -61,7 +61,7 @@ void SmsSender::onFinished(bool success)
 	emit finished(success);
 }
 
-void SmsSender::send(const QString& number,const QString& message, const QString& contact, const QString& signature, bool autoSelectProvider)
+void SmsSender::send(const QString& number,const QString& message, const QString& contact, const QString& signature, bool autoSelectProvider, QString provider)
 {
 	kdebugf();
 	Number = number;
@@ -92,8 +92,7 @@ void SmsSender::send(const QString& number,const QString& message, const QString
 	}
 	else
 	{
-		//TODO z comboboxa wybor
-	  	CurrentGateway = SmsGatewayManager::instance()->gateways().take("orange");
+	  	CurrentGateway = SmsGatewayManager::instance()->gateways().take(provider);
 		gatewaySelected();
 	}
 	
@@ -111,20 +110,21 @@ void SmsSender::findGatewayForNumber(const QString& number)
 void SmsSender::gatewayQueryDone(bool success, const QString &provider)
 {
 	if (success)
-		CurrentGateway = SmsGatewayManager::instance()->gateways().take(provider);
-	gatewaySelected();
-}
-
-void SmsSender::gatewaySelected()
-{
-	if (!CurrentGateway)
 	{
-		MessageBox::msg(tr("Gateway is not available"), false, "Warning", (QWidget*)parent());
+		CurrentGateway = SmsGatewayManager::instance()->gateways().take(provider);
+		gatewaySelected();
+	}
+	else
+	{
+		MessageBox::msg(tr("Automatic gateway selection is not available. Please select SMS gateway manually."), false, "Warning", (QWidget*)parent());
 		emit finished(false);
 		kdebugf2();
 		return;
 	}
+}
 
+void SmsSender::gatewaySelected()
+{
 	connect(CurrentGateway, SIGNAL(finished(bool)), this, SLOT(onFinished(bool)));
 	CurrentGateway->send(Number, Message, Contact, Signature); 
 }

@@ -41,7 +41,7 @@ class SmsSender : public QObject
 		void findGatewayForNumber(const QString& number);
 
 	public slots:
-		void send(const QString& number, const QString& message, const QString& contact, const QString& signature, bool autoSelectProvider);
+		void send(const QString& number, const QString& message, const QString& contact, const QString& signature, bool autoSelectProvider = true, QString provider = QString::null);
 		void gatewayQueryDone(bool success, const QString &provider);
 	
 	signals:
