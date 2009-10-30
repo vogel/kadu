@@ -3,7 +3,9 @@
 
 #include "gui/windows/main-configuration-window.h"
 
-#include "../sms/sms.h"
+#include "../sms/gui/windows/sms-image-dialog.h"
+#include "../sms/sms-gateway.h"
+#include "../sms/sms-gateway-manager.h"
 
 /** @defgroup default_sms Default SMS
  * @{
@@ -12,8 +14,7 @@ class SmsOrangeGateway : public SmsGateway
 {
 	Q_OBJECT
 
-	private:
-		QString Token;
+	QString Token;
 
 	private slots:
 		void onCodeEntered(const QString& code);
@@ -23,9 +24,10 @@ class SmsOrangeGateway : public SmsGateway
 		virtual void httpRedirected(QString);
 
 	public:
-		SmsOrangeGateway(QObject* parent, const char *name=0);
+		SmsOrangeGateway();
 		~SmsOrangeGateway();
-		static bool isNumberCorrect(const QString& number);
+		virtual QString name() { return "orange"; };
+		virtual QString displayName() { return "Orange"; };
 	public slots:
 		virtual void send(const QString& number,const QString& message, const QString& contact, const QString& signature);
 };
@@ -39,9 +41,10 @@ class SmsPlusGateway : public SmsGateway
 		virtual void httpRedirected(QString);
 
 	public:
-		SmsPlusGateway(QObject* parent, const char *name=0);
+		SmsPlusGateway();
 		~SmsPlusGateway();
-		static bool isNumberCorrect(const QString& number);
+		virtual QString name() { return "plus"; };
+		virtual QString displayName() { return "Plus"; };
 	public slots:
 		virtual void send(const QString& number,const QString& message, const QString& contact, const QString& signature);
 };
@@ -49,18 +52,19 @@ class SmsPlusGateway : public SmsGateway
 class SmsEraGateway : public SmsGateway
 {
 	Q_OBJECT
-
-		void createDefaultConfiguration();
-
+	
+	void createDefaultConfiguration();
+	
 	protected:
 		virtual void httpFinished();
 		virtual void httpRedirected(QString link);
 
 	public:
-		SmsEraGateway(QObject* parent, const char *name=0);
+		SmsEraGateway();
 		~SmsEraGateway();
-		static bool isNumberCorrect(const QString& number);
 		static QString errorNumber(int nr);
+		virtual QString name() { return "era"; };
+		virtual QString displayName() { return "Era"; };
 	public slots:
 		virtual void send(const QString& number,const QString& message, const QString& contact, const QString& signature);
 };
@@ -84,10 +88,6 @@ private slots:
 	void onChangeEraGateway();
 
 public:
-	static SmsGateway* isValidOrange(const QString& number, QObject* parent);
-	static SmsGateway* isValidPlus(const QString& number, QObject* parent);
-	static SmsGateway* isValidEra(const QString& number, QObject* parent);
-
 	DefaultSmsConfigurationUiHandler(QObject *parent=0, const char *name=0);
 
 	virtual void mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow);

@@ -1,9 +1,21 @@
 set (SOURCES
+	gui/windows/sms-image-dialog.cpp
+	gui/windows/sms-dialog.cpp
 	sms.cpp
+	sms-gateway.cpp
+	sms-gateway-manager.cpp
+	sms-gateway-query.cpp
+	sms-sender.cpp
 )
 
 set (MOC_SOURCES
+	gui/windows/sms-image-dialog.h
+	gui/windows/sms-dialog.h
 	sms.h
+	sms-gateway.h
+	sms-gateway-manager.h
+	sms-gateway-query.h
+	sms-sender.h
 )
 
 set (TRANSLATION_SOURCES

@@ -34,15 +34,14 @@
 #include "modules.h"
 #include "misc/path-conversion.h"
 
-
 #include "../history/history.h"
+
+#include "gui/windows/sms-image-dialog.h"
+#include "gui/windows/sms-dialog.h"
+#include "sms-gateway-manager.h"
 
 #include "sms.h"
 
-/**
- * @ingroup sms
- * @{
- */
 extern "C" KADU_EXPORT int sms_init(bool firstLoad)
 {
 	kdebugf();
@@ -71,396 +70,8 @@ extern "C" KADU_EXPORT void sms_close()
 	kdebugf2();
 }
 
-/********** SmsImageDialog **********/
-
-SmsImageDialog::SmsImageDialog(QWidget* parent, const QByteArray& image)
-	: QDialog(parent), code_edit(0)
-{
-	kdebugf();
-
-	ImageWidget *image_widget = new ImageWidget(image, this);
-	QLabel* label = new QLabel(tr("Enter text from the picture:"), this);
-	code_edit = new QLineEdit(this);
-
-	QGridLayout *grid = new QGridLayout(this);
-	grid->addWidget(image_widget, 0, 0, 1, 2);
-	grid->addWidget(label, 1, 0, 1, 1);
-	grid->addWidget(code_edit, 1, 1, 1, 1);
-	
-	QWidget *buttonsWidget = new QWidget(this);
-	QHBoxLayout *buttonsLayout = new QHBoxLayout(buttonsWidget);
-
-	QPushButton *okButton = new QPushButton(tr("Ok"), buttonsWidget);
-	QPushButton *cancelButton = new QPushButton(tr("Cancel"), buttonsWidget);
-
-	buttonsLayout->setSpacing(10);
-	buttonsLayout->addWidget(okButton);
-	buttonsLayout->addWidget(cancelButton);
-
-	grid->addWidget(buttonsWidget, 2, 0, 1, 2);
-
-	connect(code_edit, SIGNAL(returnPressed()), this, SLOT(onReturnPressed()));
-	connect(okButton, SIGNAL(clicked()), this, SLOT(onReturnPressed()));
-	connect(cancelButton, SIGNAL(clicked()), this, SLOT(reject()));
-	kdebugf2();
-}
-
-void SmsImageDialog::reject()
-{
-	kdebugf();
-	emit codeEntered(QString::null);
-	QDialog::reject();
-	kdebugf2();
-}
-
-void SmsImageDialog::onReturnPressed()
-{
-	kdebugf();
-	accept();
-	emit codeEntered(code_edit->text());
-	kdebugf2();
-}
-
-/********** SmsGateway **********/
-
-SmsGateway::SmsGateway(QObject* parent)
-	: QObject(parent), State(SMS_LOADING_PAGE), Number(), Signature(), Message(), Http()
-{
-	connect(&Http, SIGNAL(finished()), this, SLOT(httpFinished()));
-	connect(&Http, SIGNAL(redirected(QString)), this, SLOT(httpRedirected(QString)));
-	connect(&Http, SIGNAL(error()), this, SLOT(httpError()));
-}
-
-void SmsGateway::httpError()
-{
-	kdebugf();
-	MessageBox::msg(tr("Network error. Provider gateway page is probably unavailable"), false, "Warning", (QDialog*)(parent()->parent()));
-	emit finished(false);
-	kdebugf2();
-}
-
-/********** SmsSender **********/
-
-SmsSender::SmsSender(QObject* parent)
-	: QObject(parent), Gateway(0)
-{
-}
-
-SmsSender::~SmsSender()
-{
-	kdebugf();
-	emit finished(false);
-	if (Gateway)
-	{
-		disconnect(Gateway, SIGNAL(finished(bool)), this, SLOT(onFinished(bool)));
-		delete Gateway;
-	}
-	kdebugf2();
-}
-
-void SmsSender::onFinished(bool success)
-{
-	emit finished(success);
-}
-
-void SmsSender::send(const QString& number,const QString& message, const QString& contact, const QString& signature)
-{
-	kdebugf();
-	QString Number=number;
-	if (Number.length() == 12 && Number.left(3) == "+48")
-		Number=Number.right(9);
-	if (Number.length() != 9)
-	{
-		MessageBox::msg(tr("Mobile number is incorrect"), false, "Warning", (QWidget*)parent());
-		emit finished(false);
-		kdebugf2();
-		return;
-	}
-	if (signature.isEmpty())
-	{
-		MessageBox::msg(tr("Signature can't be empty"), false, "Warning", (QWidget*)parent());
-		emit finished(false);
-		kdebugf2();
-		return;
-	}
-	Gateway = smsConfigurationUiHandler->getGateway(Number);
-
-	if (!Gateway)
-	{
-		MessageBox::msg(tr("Mobile number is incorrect or gateway is not available"), false, "Warning", (QWidget*)parent());
-		emit finished(false);
-		kdebugf2();
-		return;
-	}
-
-	connect(Gateway, SIGNAL(finished(bool)), this, SLOT(onFinished(bool)));
-	Gateway->send(Number, message, contact, signature);
-	kdebugf2();
-}
-
-/********** Sms **********/
-
-Sms::Sms(const QString& altnick, QWidget* parent) : QWidget(parent, Qt::Window),
-	body(0), recipient(0), list(0), smslen(0), l_contact(0), e_contact(0), l_signature(0),
-	e_signature(0), b_send(0), c_saveInHistory(0), smsProcess(0), Sender()
-{
-	kdebugf();
-
-	setWindowTitle(tr("Send SMS"));
-	setAttribute(Qt::WA_DeleteOnClose);
-
-	QGridLayout *grid = new QGridLayout(this);
-	grid->setColumnStretch(1, 5);
-
-	body = new QTextEdit(this);
-	grid->addWidget(body, 1, 0, 1, 3);
-	body->setLineWrapMode(QTextEdit::WidgetWidth);
-	body->setTabChangesFocus(true);
-	connect(body, SIGNAL(textChanged()), this, SLOT(updateCounter()));
-
-	recipient = new QLineEdit(this);
-	recipient->setMinimumWidth(140);
-	if (altnick.isEmpty())
-		recipient->setFocus();
-	else
-		recipient->setText(ContactManager::instance()->byDisplay(altnick).mobile());
-	connect(recipient, SIGNAL(textChanged(const QString&)), this, SLOT(updateList(const QString&)));
-	connect(recipient, SIGNAL(returnPressed()), this, SLOT(editReturnPressed()));
-	grid->addWidget(recipient, 0, 1, 1, 1);
-
-	QStringList strlist; // lista kontaktow z przypisanym numerem telefonu
-	foreach(Contact c, ContactManager::instance()->contacts())
-		if (!c.mobile().isEmpty())
-		 	strlist.append(c.display());
-	strlist.sort();
-	strlist.prepend(QString::null);
-
-	list = new QComboBox(this);
-	list->addItems(strlist);
-	list->setCurrentIndex(list->findText(altnick));
-	connect(list, SIGNAL(activated(const QString&)), this, SLOT(updateRecipient(const QString &)));
-	grid->addWidget(list, 0, 2, 1, 1);
-
-	QLabel *recilabel = new QLabel(tr("Recipient"), this);
-	grid->addWidget(recilabel, 0, 0, 1, 1);
-
-	l_contact = new QLabel(tr("Contact"), this);
-	grid->addWidget(l_contact, 2, 0, 1, 1);
-	e_contact = new QLineEdit(this);
-	connect(e_contact, SIGNAL(returnPressed()), this, SLOT(editReturnPressed()));
-	grid->addWidget(e_contact, 2, 1, 1, 1);
-
-	smslen = new QLabel("0", this);
-	grid->addWidget(smslen, 2, 2, 1, 1, Qt::AlignRight);
-
-	l_signature = new QLabel(tr("Signature"), this);
-	grid->addWidget(l_signature, 3, 0, 1, 1);
-	e_signature = new QLineEdit(config_file.readEntry("SMS", "SmsNick"), this);
-	connect(e_signature, SIGNAL(returnPressed()), this, SLOT(editReturnPressed()));
-	grid->addWidget(e_signature, 3, 1, 1, 1);
-
-	c_saveInHistory = new QCheckBox(tr("Save SMS in history"), this);
-	c_saveInHistory->setChecked(true);
-	grid->addWidget(c_saveInHistory, 4, 0, 1, 2);
-
-	b_send = new QPushButton(this);
-	b_send->setIcon(IconsManager::instance()->loadIcon("SendSMSButton"));
-	b_send->setText(tr("&Send"));
-	b_send->setDefault(true);
-	b_send->setMaximumWidth(200);
-	connect(b_send, SIGNAL(clicked()), this, SLOT(editReturnPressed()));
-	grid->addWidget(b_send, 4, 2, 1, 1, Qt::AlignRight);
-
-	resize(400, 250);
-
-	connect(&Sender, SIGNAL(finished(bool)), this, SLOT(onSmsSenderFinished(bool)));
-
-	configurationUpdated();
-	
-	loadWindowGeometry(this, "Sms", "SmsDialogGeometry", 200, 200, 400, 250);
-
-	ModulesManager::instance()->moduleIncUsageCount("sms");
-	kdebugf2();
-}
-
-Sms::~Sms()
-{
-	saveWindowGeometry(this, "Sms", "SmsDialogGeometry");
-
-	ModulesManager::instance()->moduleDecUsageCount("sms");
-}
-
-void Sms::configurationUpdated()
-{
-	body->setFont(config_file.readFontEntry("Look","ChatFont"));
-}
-
-void Sms::setRecipient(const QString &phone)
-{
-    	kdebugf();
-  	recipient->setText(phone);
-  	body->setFocus();
-  	kdebugf2();
-}
-
-void Sms::updateRecipient(const QString &newtext)
-{
-	kdebugf();
-//	kdebugmf(KDEBUG_FUNCTION_START | KDEBUG_INFO, "'%s' %d %d\n", qPrintable(newtext), newtext.isEmpty(), userlist->containsAltNick(newtext));
-	if (newtext.isEmpty())
-	{
-		recipient->clear();
-		kdebugf2();
-		return;
-	}
-	Contact c = ContactManager::instance()->byDisplay(newtext);
-	if (!c.isNull())
-		recipient->setText(c.mobile());
-	kdebugf2();
-}
-
-void Sms::updateList(const QString &newnumber)
-{
-	kdebugf();
-	if (newnumber.isEmpty())
-	{
-		kdebugmf(KDEBUG_FUNCTION_END, "end: new number is empty\n");
-		return;
-	}
-	foreach(Contact c, ContactManager::instance()->contacts())
-		if (c.mobile() == newnumber)
-		{
-			list->setCurrentIndex(list->findText(c.display()));
-			kdebugf2();
-			return;
-		}
-	list->setCurrentIndex(-1);
-	kdebugf2();
-}
-
-void Sms::editReturnPressed()
-{
-	kdebugf();
-
-	if (body->toPlainText().isEmpty())
-		body->setFocus();
-	else
-		sendSms();
-
-	kdebugf2();
-}
-
-void Sms::sendSms()
-{
-	kdebugf();
-	b_send->setEnabled(false);
-	body->setEnabled(false);
-	e_contact->setEnabled(false);
-	l_contact->setEnabled(false);
-	e_signature->setEnabled(false);
-	l_signature->setEnabled(false);
-	c_saveInHistory->setEnabled(false);
-
-	if (config_file.readBoolEntry("SMS", "BuiltInApp"))
-	{
-		Sender.send(recipient->text(), body->toPlainText(), e_contact->text(), e_signature->text());
-	}
-	else
-	{
-		if (config_file.readEntry("SMS", "SmsApp").isEmpty())
-		{
-			MessageBox::msg(tr("Sms application was not specified. Visit the configuration section"), false, "Warning", this);
-			kdebugm(KDEBUG_WARNING, "SMS application NOT specified. Exit.\n");
-			return;
-		}
-		QString SmsAppPath = config_file.readEntry("SMS", "SmsApp");
-
-		smsProcess = new QProcess(this);
-		if (config_file.readBoolEntry("SMS", "UseCustomString")&&
-			(!config_file.readBoolEntry("SMS", "BuiltInApp")))
-		{
-			QStringList args = config_file.readEntry("SMS", "SmsString").split(' ');
-
-			args.replaceInStrings("%n", recipient->text());
-			args.replaceInStrings("%n", body->toPlainText());
-			
-			smsProcess->start(SmsAppPath, args);
-		}
-		else
-		{
-			QStringList args(recipient->text());
-			args.append(body->toPlainText());
-			smsProcess->start(SmsAppPath, args);
-		}
-
-		if (!smsProcess->waitForStarted())
-			MessageBox::msg(tr("Could not spawn child process. Check if the program is functional"), false, "Warning", this);
-		connect(smsProcess, SIGNAL(finished(int, QProcess::ExitStatus)), this, SLOT(smsSigHandler()));
-	}
-	kdebugf2();
-}
-
-void Sms::smsSigHandler()
-{
-	kdebugf();
-	if (smsProcess->exitStatus() == QProcess::NormalExit)
-		MessageBox::msg(tr("The process exited normally. The SMS should be on its way"), false, "Information", this);
-	else
-		MessageBox::msg(tr("The process exited abnormally. The SMS may not be sent"), false, "Warning", this);
-	delete smsProcess;
-	smsProcess = 0;
-
-	c_saveInHistory->setEnabled(true);
-	e_contact->setEnabled(true);
-	l_contact->setEnabled(true);
-	e_signature->setEnabled(true);
-	l_signature->setEnabled(true);
-	b_send->setEnabled(true);
-	body->setEnabled(true);
-	body->clear();
-	kdebugf2();
-}
-
-void Sms::updateCounter()
-{
-	smslen->setText(QString::number(body->toPlainText().length()));
-}
-
-void Sms::onSmsSenderFinished(bool success)
-{
-	kdebugf();
-	if (success)
-	{
-		if (c_saveInHistory->isChecked())
-		//TODO 0.6.6
-		///	history->appendSms(recipient->text(), body->text());
-		if (!MessageBox::ask(tr("The SMS was sent and should be on its way.\nDo you want to send next message?"), "Information", this))
-			deleteLater();
-		body->clear();
-	}
-	b_send->setEnabled(true);
-	body->setEnabled(true);
-	e_contact->setEnabled(true);
-	l_contact->setEnabled(true);
-	e_signature->setEnabled(true);
-	l_signature->setEnabled(true);
-	c_saveInHistory->setEnabled(true);
-	kdebugf2();
-}
-
-void Sms::keyPressEvent(QKeyEvent *e)
-{
-	if (e->key() == Qt::Key_Escape)
-	{
-		e->accept();
-		close();
-	}
-	else
-		QWidget::keyPressEvent(e);
-}
-
 SmsConfigurationUiHandler::SmsConfigurationUiHandler()
-	: menuid(0), gateways(), gatewayListWidget(0)
+	: menuid(0), gatewayListWidget(0)
 {
 	kdebugf();
 
@@ -519,7 +130,7 @@ void SmsConfigurationUiHandler::configurationUpdated()
 
 void SmsConfigurationUiHandler::newSms(QString nick)
 {
-	(new Sms(nick/*, Core::instance()->kaduWindow()*/))->show();
+	(new SmsDialog(nick/*, Core::instance()->kaduWindow()*/))->show();
 }
 
 void SmsConfigurationUiHandler::onUserDblClicked(Chat *chat)
@@ -529,49 +140,6 @@ void SmsConfigurationUiHandler::onUserDblClicked(Chat *chat)
 	if ((contact.accountDatas().isEmpty() || contact == Core::instance()->myself()) && !contact.mobile().isEmpty())
 		newSms(contact.display());
 	kdebugf2();
-}
-
-void SmsConfigurationUiHandler::registerGateway(QString name, isValidFunc* f)
-{
-	kdebugf();
-	QStringList priority = config_file.readEntry("SMS", "Priority").split(";");
-	if (!priority.contains(name))
-	{
-		priority += name;
-		config_file.writeEntry("SMS", "Priority", priority.join(";"));
-	}
-	gateways.insert(name, f);
-	kdebugf2();
-}
-
-void SmsConfigurationUiHandler::unregisterGateway(QString name)
-{
-	kdebugf();
-	gateways.remove(name);
-	kdebugf2();
-}
-
-SmsGateway* SmsConfigurationUiHandler::getGateway(const QString& number)
-{
-	kdebugf();
-	QStringList priorities = config_file.readEntry("SMS", "Priority").split(";");
-
-	foreach(const QString &gate, priorities)
-	{
-		if (gateways.contains(gate))
-		{
-			isValidFunc *f = gateways[gate];
-			SmsGateway *Gateway = f(number, this);
-			if (Gateway)
-			{
-				kdebugf2();
-				return Gateway;
-			}
-		}
-	}
-
-	kdebugmf(KDEBUG_INFO|KDEBUG_FUNCTION_END, "return NULL\n");
-	return NULL;
 }
 
 void SmsConfigurationUiHandler::onUpButton()
@@ -662,10 +230,10 @@ void SmsConfigurationUiHandler::mainConfigurationWindowCreated(MainConfiguration
 	QStringList priority = config_file.readEntry("SMS", "Priority").split(";");
 
 	foreach(const QString &gate, priority)
-		if (gateways.contains(gate))
+		if (SmsGatewayManager::instance()->gateways().contains(gate))
 			gatewayListWidget->addItem(gate);
 
-	foreach(const QString &key, gateways.keys())
+	foreach(const QString &key, SmsGatewayManager::instance()->gateways().keys())
 		if (gatewayListWidget->findItems(key, 0).isEmpty())
 			gatewayListWidget->addItem(key);
 }
@@ -686,6 +254,4 @@ void SmsConfigurationUiHandler::createDefaultConfiguration()
 }
 
 SmsConfigurationUiHandler *smsConfigurationUiHandler;
-
-/** @} */
 

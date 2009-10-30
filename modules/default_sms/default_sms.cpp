@@ -30,9 +30,9 @@ extern "C" KADU_EXPORT int default_sms_init(bool firstLoad)
 {
 	kdebugf();
 
-	smsConfigurationUiHandler->registerGateway("orange", &DefaultSmsConfigurationUiHandler::isValidOrange);
-	smsConfigurationUiHandler->registerGateway("plus", &DefaultSmsConfigurationUiHandler::isValidPlus);
-	smsConfigurationUiHandler->registerGateway("era" , &DefaultSmsConfigurationUiHandler::isValidEra);
+	SmsGatewayManager::instance()->registerGateway(new SmsOrangeGateway());
+	SmsGatewayManager::instance()->registerGateway(new SmsPlusGateway());
+	SmsGatewayManager::instance()->registerGateway(new SmsEraGateway());
 
 	defaultSmsConfigurationUiHandler = new DefaultSmsConfigurationUiHandler(NULL, "sms_gateway_slots");
 	MainConfigurationWindow::registerUiFile(dataPath("kadu/modules/configuration/default_sms.ui"));
@@ -46,9 +46,9 @@ extern "C" KADU_EXPORT void default_sms_close()
 {
 	kdebugf();
 
-	smsConfigurationUiHandler->unregisterGateway("orange");
-	smsConfigurationUiHandler->unregisterGateway("plus");
-	smsConfigurationUiHandler->unregisterGateway("era");
+	SmsGatewayManager::instance()->unregisterGateway("orange");
+	SmsGatewayManager::instance()->unregisterGateway("plus");
+	SmsGatewayManager::instance()->unregisterGateway("era");
 
 	MainConfigurationWindow::unregisterUiFile(dataPath("kadu/modules/configuration/default_sms.ui"));
 	MainConfigurationWindow::unregisterUiHandler(defaultSmsConfigurationUiHandler);
@@ -61,8 +61,8 @@ extern "C" KADU_EXPORT void default_sms_close()
 
 /********** SmsOrangeGateway **********/
 
-SmsOrangeGateway::SmsOrangeGateway(QObject* parent, const char *name)
-	: SmsGateway(parent), Token()
+SmsOrangeGateway::SmsOrangeGateway()
+	: SmsGateway(), Token()
 {
 	ModulesManager::instance()->moduleIncUsageCount("default_sms");
 }
@@ -91,18 +91,10 @@ void SmsOrangeGateway::send(const QString& number,const QString& message, const 
 	kdebugf2();
 }
 
-bool SmsOrangeGateway::isNumberCorrect(const QString& number)
-{
-	return 
-		((number[0]=='5') || 
-		(number[0]=='7' && number[1]=='8' && (number[2]=='0' || number[2]=='6' || number[2]=='9')) ||
-		(number[0]=='7' && number[1]=='9' && (number[2]=='7' || number[2]=='8' || number[2]=='9')));
-}
-
 void SmsOrangeGateway::httpFinished()
 {
 	kdebugf();
-	QDialog* p=(QDialog*)(parent()->parent());
+	//QDialog* p=(QDialog*)(parent()->parent());
 	if (State==SMS_LOADING_PAGE)
 	{
 		QString Page=Http.data();
@@ -111,7 +103,7 @@ void SmsOrangeGateway::httpFinished()
 		int pic_pos=pic_regexp.indexIn(Page);
 		if (pic_pos<0)
 		{
-			QMessageBox::critical(p,"SMS",tr("Provider gateway page looks strange. It's probably temporary disabled\nor has beed changed too much to parse it correctly."));
+			QMessageBox::critical(NULL,"SMS",tr("Provider gateway page looks strange. It's probably temporary disabled\nor has beed changed too much to parse it correctly."));
 			emit finished(false);
 			return;
 		}
@@ -125,7 +117,7 @@ void SmsOrangeGateway::httpFinished()
 	else if (State==SMS_LOADING_PICTURE)
 	{
 		kdebugm(KDEBUG_INFO, "SMS Orange Picture Loaded: %i bytes\n",Http.data().size());
-		SmsImageDialog* d=new SmsImageDialog(p,Http.data());
+		SmsImageDialog* d=new SmsImageDialog(NULL,Http.data());
 		connect(d,SIGNAL(codeEntered(const QString&)),this,SLOT(onCodeEntered(const QString&)));
 		d->show();
 	}
@@ -136,19 +128,19 @@ void SmsOrangeGateway::httpFinished()
 		if (Page.indexOf("wyczerpany")>=0)
 		{
 			kdebugm(KDEBUG_INFO, "You exceeded your daily limit\n");
-			QMessageBox::critical(p,"SMS",tr("You exceeded your daily limit"));
+			QMessageBox::critical(NULL,"SMS",tr("You exceeded your daily limit"));
 			emit finished(false);
 		}
 		else if (Page.indexOf("Podano błędne hasło")>=0)
 		{
 			kdebugm(KDEBUG_INFO, "Text from the picture is incorrect\n");
-			QMessageBox::critical(p,"SMS",tr("Text from the picture is incorrect"));
+			QMessageBox::critical(NULL,"SMS",tr("Text from the picture is incorrect"));
 			emit finished(false);
 		}
 		else if (Page.indexOf("Użytkownik nie ma aktywnej usługi")>=0)
 		{
 			kdebugm(KDEBUG_INFO, "The receiver has to enable SMS STANDARD service\n");
-			QMessageBox::critical(p,"SMS",tr("The receiver has to enable SMS STANDARD service"));
+			QMessageBox::critical(NULL,"SMS",tr("The receiver has to enable SMS STANDARD service"));
 			emit finished(false);
 		}
 		else if (Page.indexOf("Twój SMS został wysłany")>=0)
@@ -164,7 +156,7 @@ void SmsOrangeGateway::httpFinished()
 		else
 		{
 			kdebugm(KDEBUG_INFO, "Provider gateway results page looks strange. SMS was probably NOT sent.\n");
-			QMessageBox::critical(p,"SMS",tr("Provider gateway results page looks strange. SMS was probably NOT sent."));
+			QMessageBox::critical(NULL,"SMS",tr("Provider gateway results page looks strange. SMS was probably NOT sent."));
 			emit finished(false);
 		}
 	}
@@ -190,8 +182,8 @@ void SmsOrangeGateway::onCodeEntered(const QString& code)
 
 /********** SmsPlusGateway **********/
 
-SmsPlusGateway::SmsPlusGateway(QObject* parent, const char *name)
-	: SmsGateway(parent)
+SmsPlusGateway::SmsPlusGateway()
+	: SmsGateway()
 {
 	ModulesManager::instance()->moduleIncUsageCount("default_sms");
 }
@@ -216,15 +208,6 @@ void SmsPlusGateway::send(const QString& number, const QString& message, const Q
 	QString post_data="tprefix="+Number.left(3)+"&numer="+Number.right(6)+"&odkogo="+signature+"&tekst="+Message;
 	Http.post("sms/sendsms.php",post_data);
 	kdebugf2();
-}
-
-bool SmsPlusGateway::isNumberCorrect(const QString& number)
-{
-	return
-		((number[0]=='6' && ((QChar(number[2]).digitValue() - '0') % 2) != 0) ||
-		(number[0]=='7' && number[1]=='8' && (number[2]=='1' || number[2]=='2' || number[2]=='3' || number[2]=='5')) ||
-		(number[0]=='7' && number[1]=='2' && (number[2]=='1' || number[2]=='2' || number[2]=='3' || number[2]=='5' || number[2]=='6')) ||
-		(number[0]=='8' && number[1]=='8' && (number[2]=='5' || number[2]=='7')));
 }
 
 void SmsPlusGateway::httpFinished()
@@ -283,8 +266,8 @@ void SmsPlusGateway::httpFinished()
 
 /********** SmsEraGateway **********/
 
-SmsEraGateway::SmsEraGateway(QObject* parent, const char *name)
-	: SmsGateway(parent)
+SmsEraGateway::SmsEraGateway()
+	: SmsGateway()
 {
 	createDefaultConfiguration();
 
@@ -329,15 +312,6 @@ void SmsEraGateway::send(const QString& number, const QString& message, const QS
 	Http.get(path + get_data, false);
 
 	kdebugf2();
-}
-
-bool SmsEraGateway::isNumberCorrect(const QString& number)
-{
-	return
-		((number[0]=='6'&&((QChar(number[2]).digitValue() - '0') % 2) == 0) ||
-		(number[0]=='7' && number[1]=='8' && (number[2]=='4' || number[2]=='7' || number[2]=='8')) ||
-		(number[0]=='8' && number[1]=='8' && number[2]!='5' && number[2]!='7') ||
-		(number[0]=='7' && number[1]=='2' && number[2]=='8' && number[3]=='3'));
 }
 
 void SmsEraGateway::httpRedirected(QString link)
@@ -409,29 +383,6 @@ DefaultSmsConfigurationUiHandler::DefaultSmsConfigurationUiHandler(QObject *pare
 	kdebugf2();
 }
 
-SmsGateway* DefaultSmsConfigurationUiHandler::isValidOrange(const QString& number, QObject* parent)
-{
-	if(SmsOrangeGateway::isNumberCorrect(number))
-		return new SmsOrangeGateway(parent, "sms_orange_gateway");
-	else
-		return NULL;
-}
-
-SmsGateway* DefaultSmsConfigurationUiHandler::isValidPlus(const QString& number, QObject* parent)
-{
-	if(SmsPlusGateway::isNumberCorrect(number))
-		return new SmsPlusGateway(parent, "sms_plus_gateway");
-	else
-		return NULL;
-}
-
-SmsGateway* DefaultSmsConfigurationUiHandler::isValidEra(const QString& number, QObject* parent)
-{
-	if(SmsEraGateway::isNumberCorrect(number))
-		return new SmsEraGateway(parent, "sms_era_gateway");
-	else
-		return NULL;
-}
 
 void DefaultSmsConfigurationUiHandler::onChangeEraGateway()
 {
