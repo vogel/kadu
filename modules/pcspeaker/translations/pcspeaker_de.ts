@@ -5,37 +5,37 @@
     <message>
         <location filename="" line="0"/>
         <source>On message play</source>
-        <translation type="obsolete">Nach Nachricht spiel</translation>
+        <translation>Nach Nachricht spiel</translation>
     </message>
     <message>
         <location filename="" line="0"/>
         <source>On chat play</source>
-        <translation type="obsolete">Nach Gesprach spiel</translation>
+        <translation>Nach Gesprach spiel</translation>
     </message>
     <message>
         <location filename="" line="0"/>
         <source>On nofify play</source>
-        <translation type="obsolete">Nach mitteilung spiel</translation>
+        <translation>Nach mitteilung spiel</translation>
     </message>
     <message>
         <location filename="" line="0"/>
         <source>Put the played sounds separate by space, _ for pause, eg. D2 C1# G0</source>
-        <translation type="obsolete">Schreiben Sie Tonen isolieren durch Sperrung, zb. D2 C1# H0#</translation>
+        <translation>Schreiben Sie Tonen isolieren durch Sperrung, zb. D2 C1# H0#</translation>
     </message>
     <message>
         <location filename="" line="0"/>
         <source>Sounds</source>
-        <translation type="obsolete">Klange</translation>
+        <translation>Klange</translation>
     </message>
     <message>
         <location filename="" line="0"/>
         <source>On connection error play</source>
-        <translation type="obsolete">Nach Verbindungsfehler spiel</translation>
+        <translation>Nach Verbindungsfehler spiel</translation>
     </message>
     <message>
         <location filename="" line="0"/>
         <source>On other messages play</source>
-        <translation type="obsolete">Nach Andere Nachricht spiel</translation>
+        <translation>Nach Andere Nachricht spiel</translation>
     </message>
     <message>
         <location filename="../pcspeaker.cpp" line="118"/>

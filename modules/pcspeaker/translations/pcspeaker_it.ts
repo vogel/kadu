@@ -5,37 +5,37 @@
     <message>
         <location filename="" line="0"/>
         <source>On message play</source>
-        <translation type="obsolete">Quando nuovo messagio arriva suona</translation>
+        <translation>Quando nuovo messagio arriva suona</translation>
     </message>
     <message>
         <location filename="" line="0"/>
         <source>On chat play</source>
-        <translation type="obsolete">Quando nuova chat comincia suona</translation>
+        <translation>Quando nuova chat comincia suona</translation>
     </message>
     <message>
         <location filename="" line="0"/>
         <source>On nofify play</source>
-        <translation type="obsolete">Quando contatto cambia status suona</translation>
+        <translation>Quando contatto cambia status suona</translation>
     </message>
     <message>
         <location filename="" line="0"/>
         <source>Put the played sounds separate by space, _ for pause, eg. D2 C1# G0</source>
-        <translation type="obsolete">Scriva i toni separato con suoi lungo, per pausa scrivo _ . Per esempio: D2/1 C1#/4 _/2 H0#/3</translation>
+        <translation>Scriva i toni separato con suoi lungo, per pausa scrivo _ . Per esempio: D2/1 C1#/4 _/2 H0#/3</translation>
     </message>
     <message>
         <location filename="" line="0"/>
         <source>Sounds</source>
-        <translation type="obsolete">Suoni</translation>
+        <translation>Suoni</translation>
     </message>
     <message>
         <location filename="" line="0"/>
         <source>On connection error play</source>
-        <translation type="obsolete">Quando errore concessione accade suona</translation>
+        <translation>Quando errore concessione accade suona</translation>
     </message>
     <message>
         <location filename="" line="0"/>
         <source>On other messages play</source>
-        <translation type="obsolete">Quando altro messagio arriva suona</translation>
+        <translation>Quando altro messagio arriva suona</translation>
     </message>
     <message>
         <location filename="../pcspeaker.cpp" line="118"/>
