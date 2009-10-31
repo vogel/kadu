@@ -38,11 +38,7 @@
 #define MODULE_MEDIAPLAYER_VERSION 1.2
 #define CHECK_STATUS_INTERVAL 10*1000 /* 10s */
 
-#ifdef Q_OS_WIN
 #define SHORTCUT_KEY Qt::Key_Meta
-#else
-#define SHORTCUT_KEY Qt::Key_Super_L
-#endif
 
 const char *MediaPlayerSyntaxText = QT_TRANSLATE_NOOP
 (
@@ -57,7 +53,11 @@ const char *MediaPlayerChatShortCutsText = QT_TRANSLATE_NOOP
 	"@default",
 	"With this option enabled you'll be able to control\n"
 	"your MediaPlayer in chat window by keyboard shortcuts:\n"
+#ifdef Q_OS_MAC
+	"Control+ Enter/Backspace/Left/Right/Up/Down."
+#else
 	"Win+ Enter/Backspace/Left/Right/Up/Down."
+#endif
 );
 
 // TODO: remove For CP1250->ISO8859-2 converter
