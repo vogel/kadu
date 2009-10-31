@@ -365,7 +365,7 @@ void TabsManager::onNewTab(QAction *sender, bool toggled)
 
 	Chat *chat = account.protocolHandler()->findChat(contacts);
 
-	// istnieje = przywracamy na pierwszy plan
+	// exists - bring to front
 	if (chat)
 	{
 		ChatWidgetManager::instance()->openPendingMsgs(chat, true);
