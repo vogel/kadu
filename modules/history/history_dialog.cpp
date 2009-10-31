@@ -194,7 +194,7 @@ HistoryDialog::HistoryDialog(UinsList uins)
 		{
 			QTreeWidgetItem *dateItem;
 			selectedUinsItem->setExpanded(true);
-			dateItem = selectedUinsItem->child(selectedUinsItem->childCount() - 1);
+			dateItem = selectedUinsItem->child(0);//selectedUinsItem->childCount()-1
 			uinsTreeWidget->setCurrentItem(dateItem);
 			dateItem->setSelected(true);
 			dateChanged(dateItem);
@@ -390,6 +390,18 @@ void HistoryDialog::searchButtonClicked()
 	kdebugf();
 
 	HistorySearchDialog* hs = new HistorySearchDialog(this, uins);
+
+	if (findRec.actualrecord <= 0)
+	{
+		QTreeWidgetItem *actlvi = uinsTreeWidget->currentItem();
+		if (actlvi->parent() != NULL)
+		{
+			findRec.fromdate = dynamic_cast<DateListViewText *>(actlvi)->getDate().date;
+		}
+		else
+			findRec.fromdate = QDateTime();
+	}
+
 //	hs->resetBtnClicked();
 	hs->setDialogValues(findRec);
 	if (hs->exec() == QDialog::Accepted)
@@ -538,7 +550,10 @@ bool HistoryDialog::openFirstPage()
 int HistoryDialog::openNextPage()
 {
 	QTreeWidgetItem *actlvi = uinsTreeWidget->currentItem();
-	if (actlvi && actlvi->parent())
+	if (actlvi == NULL)
+		return -1;
+
+	if (actlvi->parent() != NULL)
 	{
 		int index = actlvi->parent()->indexOfChild(actlvi);
 		if (findRec.reverse)
@@ -553,6 +568,9 @@ int HistoryDialog::openNextPage()
 				dynamic_cast<DateListViewText *>(actlvi)->getDate().date);
 		}
 	}
+	else
+		openFirstPage();
+
 	return -1;
 }
 
