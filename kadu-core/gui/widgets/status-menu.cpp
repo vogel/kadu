@@ -33,13 +33,13 @@ StatusMenu::StatusMenu(StatusContainer *statusContainer, QWidget *parent) :
 
 	// TODO: 0.6.6
 
-	const QString &statusTypeName = statusContainer->status().type();
+	const QString &statusTypeName = MyStatusContainer->status().type();
 
-	QList<StatusType *> statusTypes = statusContainer->supportedStatusTypes();
+	QList<StatusType *> statusTypes = MyStatusContainer->supportedStatusTypes();
 	foreach (StatusType *statusType, statusTypes)
 	{
-		QAction *statusAction = new QAction(statusContainer->statusPixmap(statusType->name()),
-				statusContainer->statusNamePrefix() + statusType->displayName(), this);
+		QAction *statusAction = new QAction(MyStatusContainer->statusPixmap(statusType->name()),
+											MyStatusContainer->statusNamePrefix() + statusType->displayName(), this);
 		statusAction->setCheckable(true);
 		statusAction->setData(QVariant::fromValue(statusType));
 

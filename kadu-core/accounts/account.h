@@ -69,7 +69,7 @@ public:
 
 	AccountData * data() const { return Data.data(); }
 
-	bool isNull() const { return 0 == Data || Data->isNull() || 0 == protocolHandler(); }
+	bool isNull() const;
 
 	Account & operator = (const Account &copy);
 	bool operator == (const Account &compare) const;

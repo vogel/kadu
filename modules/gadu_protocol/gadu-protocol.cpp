@@ -202,10 +202,6 @@ void GaduProtocol::changeStatus()
 {
 	Status newStatus = nextStatus();
 
-	printf("changing status\n");
-	printf("connected: %d\n", newStatus.isDisconnected());
-	printf("network state: %d\n", state());
-
 	if (newStatus.isDisconnected() && status().isDisconnected())
 	{
 		if (NetworkConnecting == state())

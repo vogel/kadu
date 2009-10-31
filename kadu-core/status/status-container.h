@@ -19,6 +19,9 @@ class StatusContainer : public QObject
 	Q_OBJECT
 
 public:
+	explicit StatusContainer(QObject *parent = 0) : QObject(parent) {}
+	virtual ~StatusContainer() {}
+
 	virtual QString statusContainerName() = 0;
 
 	virtual void setStatus(Status newStatus) = 0;

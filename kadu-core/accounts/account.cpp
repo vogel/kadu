@@ -50,6 +50,11 @@ Account::~Account()
 	disconnectDataSignals();
 }
 
+bool Account::isNull() const
+{
+	return !Data.data() || Data->isNull();
+}
+
 Account & Account::operator = (const Account &copy)
 {
 	disconnectDataSignals();

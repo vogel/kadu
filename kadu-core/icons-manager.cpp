@@ -7,6 +7,7 @@
  *                                                                         *
  ***************************************************************************/
 
+#include <QtCore/QDir>
 #include <QtCore/QFile>
 
 #include "configuration/configuration-file.h"
@@ -58,6 +59,10 @@ QString IconsManager::iconPath(const QString &name) const
 	if (!QFile::exists(fname) && QFile::exists(absoluteName))
 		fname = absoluteName;
 
+	QDir dir(fname);
+	if (dir.exists()) // hmm, icon != dir
+		return QString::null;
+
 	return fname;
 }
 
@@ -67,7 +72,10 @@ const QPixmap &IconsManager::loadPixmap(const QString &name)
 	if (i != pixmaps.end())
 		return *i;
 
-	QPixmap pix(iconPath(name));
+	QPixmap pix;
+	QString path = iconPath(name);
+	if (!path.isEmpty())
+		pix.load(path);
 
 	pixmaps.insert(name, pix);
 	return pixmaps[name];
@@ -79,7 +87,10 @@ const QIcon &IconsManager::loadIcon(const QString &name)
 	if (i != icons.end())
 		return *i;
 
-	QIcon icon(iconPath(name));
+	QIcon icon;
+	QString path = iconPath(name);
+	if (!path.isEmpty())
+		icon.addFile(path);
 
 	icons.insert(name, icon);
 	return icons[name];

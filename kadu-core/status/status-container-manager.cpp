@@ -1,3 +1,4 @@
+
 /***************************************************************************
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -20,12 +21,13 @@ StatusContainerManager * StatusContainerManager::Instance = 0;
 
 KADUAPI StatusContainerManager * StatusContainerManager::instance()
 {
-	if (0 == Instance)
+	if (!Instance)
 		Instance = new StatusContainerManager();
 	return Instance;
 }
 
-StatusContainerManager::StatusContainerManager()
+StatusContainerManager::StatusContainerManager() :
+		StatusContainer(0)
 {
 	configurationUpdated();
 	triggerAllAccountsRegistered();
@@ -135,7 +137,7 @@ QPixmap StatusContainerManager::statusPixmap(Status status)
 
 QPixmap StatusContainerManager::statusPixmap(const QString &statusType)
 {
-	return !AccountManager::instance()->defaultAccount().isNull()
+	return !AccountManager::instance()->defaultAccount().isNull() && AccountManager::instance()->defaultAccount().statusContainer()
 			? AccountManager::instance()->defaultAccount().statusContainer()->statusPixmap(statusType)
 			: IconsManager::instance()->loadPixmap(statusType);
 }
