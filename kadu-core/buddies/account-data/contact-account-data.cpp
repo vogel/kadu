@@ -40,8 +40,12 @@ void ContactAccountData::load()
 
 	Uuid = loadAttribute<QString>("uuid");
 	Id = loadValue<QString>("Id");
+
 	ContactAccount = AccountManager::instance()->byUuid(loadValue<QString>("Account"));
-	setContact(BuddyManager::instance()->byUuid(loadValue<QString>("Contact")));
+	QString buddyUuid = loadValue<QString>("Buddy");
+	if (buddyUuid.isNull())
+		buddyUuid = loadValue<QString>("Contact");
+	setContact(BuddyManager::instance()->byUuid(buddyUuid));
 
 	ContactAvatar.load();
 
@@ -58,7 +62,8 @@ void ContactAccountData::store()
 	storeValue("uuid", Uuid.toString(), true);
 	storeValue("Id", Id);
 	storeValue("Account", ContactAccount.uuid().toString());
-	storeValue("Contact", OwnerContact.uuid().toString());
+	storeValue("Buddy", OwnerContact.uuid().toString());
+	removeValue("Contact");
 
 	ContactAvatar.store();
 }
