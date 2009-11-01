@@ -1,4 +1,4 @@
-ï»¿#
+#
 # KADU CONFIGURATION FILE
 #
 # PL: PLIK KONFIGURACYJNY KADU
@@ -11,44 +11,44 @@
 # m - module, compiles as .so (shared)
 # n - no, module disabled
 #
-# PL: Poniï¿½ej znajduje siï¿½ lista wewnï¿½trznych moduï¿½ï¿½w Kadu, stworzonych przez Kadu Team
-# PL: lub przez inne osoby, ale umieszczone w ï¿½rï¿½dï¿½ach ze wzglï¿½du na ich uï¿½ytecznoï¿½ï¿½
+# PL: Poni¿ej znajduje siê lista wewnêtrznych modu³ów Kadu, stworzonych przez Kadu Team
+# PL: lub przez inne osoby, ale umieszczone w Ÿród³ach ze wzglêdu na ich u¿ytecznoœæ
 #
-# PL: y - wkompiluj moduï¿½ na staï¿½e w Kadu (statycznie)
-# PL: m - kompiluj jako ï¿½adowalny moduï¿½ (biblioteka dzielona)
+# PL: y - wkompiluj modu³ na sta³e w Kadu (statycznie)
+# PL: m - kompiluj jako ³adowalny modu³ (biblioteka dzielona)
 # PL: n - nie kompiluj wcale
 #
-# PL: w polu "needs" znajduje siï¿½ lista bibliotek potrzebnych do kompilacji moduï¿½u
-# PL:                (w dystrybucjach pakietowych zwrï¿½ï¿½ uwagï¿½ na to, ï¿½e obrï¿½cz
-# PL:                np. pakietu libsndfile do kompilacji bï¿½dziesz potrzebowaï¿½
-# PL:                takï¿½e pakietu libsndfile-dev lub libsndfile-devel)
-# PL: w polu "depends" znajduje siï¿½ lista innych moduï¿½ï¿½w wymaganych
-# PL:                do dziaï¿½ania tego moduï¿½u
+# PL: w polu "needs" znajduje siê lista bibliotek potrzebnych do kompilacji modu³u
+# PL:                (w dystrybucjach pakietowych zwróæ uwagê na to, ¿e obrócz
+# PL:                np. pakietu libsndfile do kompilacji bêdziesz potrzebowa³
+# PL:                tak¿e pakietu libsndfile-dev lub libsndfile-devel)
+# PL: w polu "depends" znajduje siê lista innych modu³ów wymaganych
+# PL:                do dzia³ania tego modu³u
 
 #################### docking #########################################
 # PL: ############## dokowanie #######################################
 
 # Description: Tray icon support (common part of all docking modules)
-# PL: Obsï¿½uga ikony na tacce systemowej (wspï¿½lna czï¿½ï¿½ï¿½ wszystkich moduï¿½ï¿½w dokujï¿½cych)
+# PL: Obs³uga ikony na tacce systemowej (wspólna czêœæ wszystkich modu³ów dokuj¹cych)
 # Platform: Linux, Mac OS X, Windows
 module_docking=y
 
 # Description: Qt tray docking techniques module (works everywhere)
-# PL: Standardowy moduï¿½ obsï¿½ugi tacki systemowej przy pomocy Qt
-# PL: (dziaï¿½a m.in. w KDE, GNOME, Xfce, ...)
+# PL: Standardowy modu³ obs³ugi tacki systemowej przy pomocy Qt
+# PL: (dzia³a m.in. w KDE, GNOME, Xfce, ...)
 # Platform: Linux, Mac OS X, Windows
 # Depends: docking
 module_qt4_docking=y
 
 # Description: Always on top window docking module
-# PL: Moduï¿½ sï¿½uï¿½ï¿½cy symulacji dokowania przy pomocy maï¿½ego okna
-# PL: (bez ramek i z ustawionï¿½ flagï¿½ "Zawsze na wierzchu")
+# PL: Modu³ s³u¿¹cy symulacji dokowania przy pomocy ma³ego okna
+# PL: (bez ramek i z ustawion¹ flag¹ "Zawsze na wierzchu")
 # Platform: Linux, Mac OS X, Windows
 # Depends: docking
 module_desktop_docking=n
 
 # Description: MacOS X docking module
-# PL: Moduï¿½ sï¿½uï¿½ï¿½cy symulacji dokowania na MacOS X
+# PL: Modu³ s³u¿¹cy symulacji dokowania na MacOS X
 # Platform: Mac OS X
 # Depends: docking
 module_macosx_docking=n
@@ -57,25 +57,25 @@ module_macosx_docking=n
 # PL: ################ powiadamianie #################################
 
 # Description: General notification module (common part of all notification modules)
-# PL: Podstawowa obsï¿½uga powiadomieï¿½ o zdarzeniach (wspï¿½lna czï¿½ï¿½ï¿½ wszystkich
-# PL:                                               moduï¿½ï¿½w powiadomieï¿½)
+# PL: Podstawowa obs³uga powiadomieñ o zdarzeniach (wspólna czêœæ wszystkich
+# PL:                                               modu³ów powiadomieñ)
 # Platform: Linux, Mac OS X, Windows
 module_notify=m
 
 # Description: Notification by window module
-# PL: Powiadamianie za pomocï¿½ wyskakujï¿½cego okienka
+# PL: Powiadamianie za pomoc¹ wyskakuj¹cego okienka
 # Platform: Linux, Mac OS X, Windows
 # Depends: notify
 module_window_notify=m
 
 # Description: Notification by hints module
-# PL: Powiadamianie za pomocï¿½ dymkï¿½w
+# PL: Powiadamianie za pomoc¹ dymków
 # Platform: Linux, Mac OS X, Windows
 # Depends: notify
 module_hints=m
 
 # Description: Notification by external commands module
-# PL: Moduï¿½ powiadamiania o zdarzeniach za pomocï¿½ zewnï¿½trznych poleceï¿½
+# PL: Modu³ powiadamiania o zdarzeniach za pomoc¹ zewnêtrznych poleceñ
 # Platform: Linux, Mac OS X, Windows
 # Depends: notify
 module_exec_notify=n
@@ -93,20 +93,26 @@ module_pcspeaker=n
 # Depends: notify
 module_growl_notify=n
 
-# Description: Notification by Amarok-like hints module
-# PL: Moduï¿½ powiadamiania o zdarzeniach przy pomocy dymkï¿½w a'la OSD z Amaroka
-# Platform: Linux, Mac OS X, Windows
+# Description: KDE4 Notification
+# PL: Powiadamianie za pomoc¹ powiadomieñ KDE4
+# Platform: Linux
 # Depends: notify
+module_kde_notify=n
+
+# Description: Notification by Amarok-like hints module
+# PL: Modu³ powiadamiania o zdarzeniach przy pomocy dymków a'la OSD z Amaroka
+# Platform: Linux, Mac OS X, Windows
+# Depends: notif
 module_osd_hints=n
 
 # Description: Notification by qt4 docking module
-# PL: Powiadamianie za pomocï¿½ modulu qt4_docking
+# PL: Powiadamianie za pomoc¹ modulu qt4_docking
 # Platform: Linux, Mac OS X, Windows
 # Depends: notify qt4_docking
 module_qt4_docking_notify=n
 
 # Description: Notification by Water Plugin in Compiz
-# PL: Moduï¿½ powiadamiania pluginem Water w Compiz
+# PL: Modu³ powiadamiania pluginem Water w Compiz
 # Platform: Linux
 # Depends: notify
 module_water_notify=n
@@ -117,39 +123,44 @@ module_water_notify=n
 # Depends: notify
 module_mx610_notify=n
 
+# Description: Speech synthesis support ("powiedz")
+# PL: Powiadamianie mow¹ za pomoc¹ programu "powiedz"
+# Depends: notify
+module_speech=n
+
 ##################### sound ##########################################
-# PL: ############### dï¿½wiï¿½k #########################################
+# PL: ############### dŸwiêk #########################################
 
 # Description: General sound support (common part of all sound modules)
-# PL: Podstawowa obsï¿½uga dï¿½wiï¿½ku (wspï¿½lna czï¿½ï¿½ï¿½ wszystkich moduï¿½ï¿½w dï¿½wiï¿½kowych)
+# PL: Podstawowa obs³uga dŸwiêku (wspólna czêœæ wszystkich modu³ów dŸwiêkowych)
 # Platform: Linux, Mac OS X, Windows
 # Needs: libsndfile
 # Depends: notify
 module_sound=m
 
 # Description: ALSA sound support
-# PL: Obsï¿½uga dï¿½wiï¿½ku przez ALSï¿½
+# PL: Obs³uga dŸwiêku przez ALSÊ
 # Platform: Linux
 # Needs: libasound
 # Depends: sound
 module_alsa_sound=n
 
 # Description: QtSound sound support
-# PL: Obsï¿½uga dï¿½wiï¿½ku przez QtSound
+# PL: Obs³uga dŸwiêku przez QtSound
 # Platform: Linux (requires NAS), Mac OS X, Windows
 # Needs: QtSound
 # Depends: sound
 module_qt4_sound=m
 
 # Description: Phonon sound support
-# PL: Obsï¿½uga dï¿½wiï¿½ku przez Phonon
+# PL: Obs³uga dŸwiêku przez Phonon
 # Platform: Linux, Mac OS X, Windows
 # Needs: (GStreamer on Linux, QuickTime on Mac OS X and DirectShow on Windows)
 # Depends: sound
 module_phonon_sound=n
 
 # Description: ao library sound module (ALSA, OSS, ESD, AIX, IRIX, NAS, Sun, NenBSD, OpenBSD)
-# PL: Obsï¿½uga dï¿½wiï¿½ku przy pomocy biblioteki libao (ktï¿½ra obsï¿½uguje:
+# PL: Obs³uga dŸwiêku przy pomocy biblioteki libao (która obs³uguje:
 # PL:                                    ALSA, OSS, ESD, AIX, IRIX, NAS, Sun, NenBSD, OpenBSD)
 # Platform: Linux
 # Needs: libao
@@ -157,39 +168,39 @@ module_phonon_sound=n
 module_ao_sound=n
 
 # Description: Direct /dev/dsp sound support (Open Sound System)
-# PL: Obsï¿½uga dï¿½wiï¿½ku przez bezpoï¿½redni dostï¿½p do urzï¿½dzenia /dev/dsp (Open Sound System)
+# PL: Obs³uga dŸwiêku przez bezpoœredni dostêp do urz¹dzenia /dev/dsp (Open Sound System)
 # Platform: Linux
 # Depends: sound
 module_dsp_sound=n
 
 # Description: External application sound support
-# PL: Obsï¿½uga dï¿½wiï¿½ku poprzez zewnï¿½trznï¿½ aplikacjï¿½
+# PL: Obs³uga dŸwiêku poprzez zewnêtrzn¹ aplikacjê
 # Platform: Linux, Mac OS X, Windows
 # Depends: sound
 module_ext_sound=n
 
 # Description: Direct Show sound module (Windows only)
-# PL: Obsï¿½uga dzwiï¿½ku poprzez Direct Show (tylko dla Windows)
+# PL: Obs³uga dzwiêku poprzez Direct Show (tylko dla Windows)
 # Platform: Windows
 # Depends: sound
 module_dshow_sound=n
 
-# Description: Windows wave in/out sound module 
-# PL: ObsÅ‚uga dzwiÄ™ku dla systemu Windows
+# Description: Windows wave in/out sound module
+# PL: Obs³uga dŸwiêku dla systemu Windows
 # Platform: Windows
 # Depends: sound
 module_win32_sound=m
 
 ###################### p2p ###########################################
-# PL: ################ poï¿½ï¿½czenia bezpoï¿½rednie #######################
+# PL: ################ po³¹czenia bezpoœrednie #######################
 
 # Description: dcc module with file transfer support
-# PL: Podstawowy moduï¿½ obsï¿½ugi poï¿½ï¿½czeï¿½ bezpoï¿½rednich wraz z przesyï¿½aniem plikï¿½w
+# PL: Podstawowy modu³ obs³ugi po³¹czeñ bezpoœrednich wraz z przesy³aniem plików
 # Platform: Linux, Mac OS X, Windows
 module_dcc=m
 
 # Description: Voice chat support
-# PL: Obsï¿½uga rozmï¿½w gï¿½osowych
+# PL: Obs³uga rozmów g³osowych
 # Platform: Linux, Mac OS X, Windows
 # Depends: dcc, sound
 module_voice=m
@@ -197,13 +208,13 @@ module_voice=m
 ###################### sms ###########################################
 
 # Description: General SMS support module
-# PL: Podstawowy moduï¿½ obsï¿½ugi bramek SMSowych
+# PL: Podstawowy modu³ obs³ugi bramek SMSowych
 # Platform: Linux, Mac OS X, Windows
 # Depends: history
 module_sms=m
 
 # Description: Default Polish gateways for SMS module
-# PL: Obsï¿½uga najwaï¿½niejszych polskich bramek SMSowych (Era, Idea, Plus)
+# PL: Obs³uga najwa¿niejszych polskich bramek SMSowych (Era, Idea, Plus)
 # Platform: Linux, Mac OS X, Windows
 # Depends: sms
 module_default_sms=m
@@ -212,55 +223,55 @@ module_default_sms=m
 # PL: ################ inne ##########################################
 
 # Description: Idle time counter
-# PL: Odmierzacz czasu bezczynnosci
+# PL: Odmierzacz czasu bezczynnoœci
 # Platform: Linux, Mac OS X, Windows
 module_idle=y
 
 # Description: Register / unregister account, remind / change password support
-# PL: Obsï¿½uga rejestracji / wyrejestrowywania konta, przypominania / zmiany hasï¿½a
-# Platform: Linux, Mac OS X, Windows
+# PL: Obs³uga rejestracji / wyrejestrowywania konta, przypominania / zmiany has³a
+# Platform: Linux, Mac OS X, Window
 module_account_management=m
 
 # Description: User list: support for priorities (VIP/NIP) and changing order of sorting functions
-# PL: Obsï¿½uga priorytetï¿½w (VIP/NIP) oraz zmiany kryteriï¿½w sortowania listy kontaktï¿½w
+# PL: Obs³uga priorytetów (VIP/NIP) oraz zmiany kryteriów sortowania listy kontaktów
 # Platform: Linux, Mac OS X, Windows
 module_advanced_userlist=m
 
 # Description: Chat history storing, browsing and searching support
-# PL: Obsï¿½uga przechowywania historii rozmï¿½w, przeglï¿½dania i wyszukiwania w niej
+# PL: Obs³uga przechowywania historii rozmów, przegl¹dania i wyszukiwania w niej
 # Platform: Linux, Mac OS X, Windows
 module_history=m
 
 # Description: Encrypted chat support
-# PL: Obsï¿½uga szyfrowania wiadomoï¿½ci
+# PL: Obs³uga szyfrowania wiadomoœci
 # Platform: Linux, Mac OS X, Windows
 # Needs: QCA2
 module_encryption=m
 
 # Description: Encrypted chat support
-# PL: Obs³uga szyfrowania wiadomo¶ci
+# PL: Obs³uga szyfrowania wiadomoœci
 # Platform: Linux, Mac OS X, Windows
 # Needs: openssl
 module_encryption_old=m
 
 # Description: Auto away module
-# PL: Obsï¿½uga automatycznej zmiany statusu po okreï¿½lonym czasie bezczynnoï¿½ci
+# PL: Obs³uga automatycznej zmiany statusu po okreœlonym czasie bezczynnoœci
 # Platform: Linux, Mac OS X, Windows
 module_autoaway=m
 
 # Description: Configuration wizard module
-# PL: Moduï¿½ konfiguracji Kadu za pomocï¿½ wizarda (kreatora)
+# PL: Modu³ konfiguracji Kadu za pomoc¹ wizarda (kreatora)
 # Platform: Linux, Mac OS X, Windows
 # Depends: account_management sound hints
 module_config_wizard=m
 
 # Description: Autoresponder module
-# PL: Moduï¿½ automatycznej odpowiedzi
+# PL: Modu³ automatycznej odpowiedzi
 # Platform: Linux, Mac OS X, Windows
 module_autoresponder=m
 
 # Description: Profiles support
-# PL: Klikalna obsï¿½uga profili
+# PL: Klikalna obs³uga profili
 # Platform: Linux, Mac OS X, Windows
 module_profiles=n
 
@@ -271,7 +282,7 @@ module_profiles=n
 module_firewall=n
 
 # Description: Antistring
-# PL: Ochrona przed lancuszkami
+# PL: Ochrona przed ³añcuszkami
 # Platform: Linux, Mac OS X, Windows
 # Depends: notify
 module_antistring=n
@@ -289,22 +300,22 @@ module_auto_hide=n
 module_cenzor=n
 
 # Description: Display Gadu Avatars in Kadu
-# PL: Umozliwia wyswietlanie awatarow GG w Kadu
+# PL: Umo¿liwia wyœwietlanie awatarow GG w Kadu
 # Platform: Linux, Mac OS X, Windows
 module_gg_avatars=n
 
 # Description: Extends Kadu Parser
-# PL: Rozszerza mozliwosci Parsera Kadu
+# PL: Rozszerza mozliwoœci Parsera Kadu
 # Platform: Linux, Mac OS X, Windows
 module_parser_extender=n
 
 # Description: Automaticaly split too long messages
-# PL: Automatyczne dzielenie zbyt dlugich wiadomosci
+# PL: Automatyczne dzielenie zbyt d³ugich wiadomoœci
 # Platform: Linux, Mac OS X, Windows
 module_split_messages=n
 
 # Description: Automatic word replacement
-# PL: Automatyczna zamiana slow
+# PL: Automatyczna zamiana s³ów
 # Platform: Linux, Mac OS X, Windows
 module_word_fix=n
 
@@ -314,39 +325,39 @@ module_word_fix=n
 module_autostatus=n
 
 # Description: Last status infos
-# PL: Informacje o ostatnich statusach kontaktÃ³w
+# PL: Informacje o ostatnich statusach kontaktów
 # Platform: Linux, Mac OS X, Windows
 module_last_seen=n
 
 # Description:
-# PL: Dodaje moï¿½liwoï¿½ï¿½ zaznaczenia fragmentu ekranu i wysï¿½ania obrazka z jego zawartoï¿½ciï¿½
-# Platform: Linux, Windows
+# PL: Dodaje mo¿liwoœæ zaznaczenia fragmentu ekranu i wys³ania obrazka z jego zawartoœci¹
+# Platform: Linux, Mac OS X, Windows
 module_screenshot=n
 
 # Description: Description from file module
-# PL: Obsï¿½uga statusï¿½w pobieranych z pliku
+# PL: Obs³uga statusów pobieranych z pliku
 # Platform: Linux, Mac OS X, Windows
 module_filedesc=n
 
 # Description: User list filtering
-# PL: Filtrowanie listy kontaktï¿½w
+# PL: Filtrowanie listy kontaktów
 # Platform: Linux, Mac OS X, Windows
 module_filtering=n
 
 # Description: Spellchecking in chat window
-# PL: Sprawdzanie bï¿½ï¿½dï¿½w pisowni w oknie rozmowy
+# PL: Sprawdzanie b³êdów pisowni w oknie rozmowy
 # Platform: Linux, Mac OS X, Windows
 # Needs: libaspell
 module_spellchecker=n
 
 # Description: Echo module (only example!)
-# PL: Moduï¿½ automatycznej odpowiedzi z przedrostkiem "KADU ECHO: "
-# PL: (to tylko przykï¿½ad jak siï¿½ pisze moduï¿½y do Kadu)
+# PL: Modu³ automatycznej odpowiedzi z przedrostkiem "KADU ECHO: "
+# PL: (to tylko przyk³ad jak siê pisze modu³y do Kadu)
 # Platform: Linux, Mac OS X, Windows
 module_echo=n
 
 ############################################# EXTERNAL ###########################################################################
-# PL: ####################################### ZEWNï¿½TRZNE #########################################################################
+# PL: ####################################### ZEWNÊTRZNE #########################################################################
 
 #
 # Below there are some external modules, made by third parties, but
@@ -360,13 +371,13 @@ module_echo=n
 # n - no, module disabled
 #
 
-# PL: Poniï¿½ej znajduje siï¿½ lista zewnï¿½trznych moduï¿½ï¿½w, stworzonych przez niezaleï¿½nych programistï¿½w,
-# PL: ale zaakceptowanych przez Kadu Team i wspieranych na naszym forum. Gdy wybierzesz ktï¿½ryï¿½
-# PL: z tych moduï¿½ï¿½w, jego ï¿½rï¿½dï¿½a zostanï¿½ pobrane ze strony twï¿½rcy, wiï¿½c w razie problemï¿½w nie wiï¿½
-# PL: nas z powodu ich (prawdopodobnie czasowej) niedostï¿½pnoï¿½ci.
+# PL: Poni¿ej znajduje siê lista zewnêtrznych modu³ów, stworzonych przez niezale¿nych programistów,
+# PL: ale zaakceptowanych przez Kadu Team i wspieranych na naszym forum. Gdy wybierzesz któryœ
+# PL: z tych modu³ów, jego Ÿród³a zostan¹ pobrane ze strony twórcy, wiêc w razie problemów nie wiñ
+# PL: nas z powodu ich (prawdopodobnie czasowej) niedostêpnoœci.
 
 # Description: Puts your current song in description
-# PL: Wstawia tytuï¿½ aktualnie sï¿½uchanej piosenki do opisu
+# PL: Wstawia tytu³ aktualnie s³uchanej piosenki do opisu
 # Platform: Linux, Mac OS X, Windows
 module_mediaplayer=n
 
@@ -405,6 +416,11 @@ module_falf_mediaplayer=n
 # Platform: Mac OS X
 module_itunes_mediaplayer=n
 
+# Description: Media player support for mediaplayer using MPRIS interface
+# PL: Wsparcie w mediaplayer dla odtwarzaczy z interfejsem MPRIS
+# Platform: Linux
+module_mpris_mediaplayer=m
+
 # Description: VLC support for mediaplayer
 # PL: Wsparcie dla VLC w mediaplayer
 # Platform: Linux
@@ -425,38 +441,38 @@ module_xmms_mediaplayer=n
 # Platform: Linux
 module_xmms2_mediaplayer=n
 
-# Description: List of people, that you don't have on list, but they have you   
-# PL: List osï¿½b, jakich nie masz na liï¿½cie, ale ktï¿½re majï¿½ Ciebie
+# Description: List of people, that you don't have on list, but they have you
+# PL: List osób, jakich nie masz na liœcie, ale które maj¹ Ciebie
 # Platform: Linux, Mac OS X, Windows
 module_agent=n
 
 # Description: Plus.pl SMS Gateway support
-# PL: Obsï¿½uga bramki SMSowej Plus.pl
+# PL: Obs³uga bramki SMSowej Plus.pl
 # Platform: Linux
 # Needs: libcurl, libssl
 # Depends: sms
 module_plus_pl_sms=n
 
 # Description: Tabbed chat dialog module
-# PL: Moduï¿½ okna rozmowy z zakï¿½adkami
+# PL: Modu³ okna rozmowy z zak³adkami
 # Platform: Linux, Mac OS X, Windows
 module_tabs=n
 
 # Description: Notifications by Scroll Lock LED
-# PL: Powiadomiania diodï¿½ Scroll Lock
+# PL: Powiadomiania diod¹ Scroll Lock
 # Platform: Linux
 # Needs: libX11
 # Depends: notify
 module_led_notify=n
 
 # Description: Mail checking module
-# PL: Moduï¿½ do sprawdzana poczty
+# PL: Modu³ do sprawdzana poczty
 # Platform: Linux
 # Depends: notify
 module_mail=n
 
 # Description: TeX formula support
-# PL: Wsparcie dla formuï¿½ TeX-owych
+# PL: Wsparcie dla formu³ TeX-owych
 # Platform: Linux
 module_mime_tex=n
 
@@ -466,7 +482,7 @@ module_mime_tex=n
 module_panelkadu=n
 
 # Description: Automatic lookup of an interlocutor in public directory
-# PL: Automatyczne wyszukiwanie nieznajomych rozmï¿½wcï¿½w w publicznym katalogu
+# PL: Automatyczne wyszukiwanie nieznajomych rozmówców w publicznym katalogu
 # Platform: Linux, Mac OS X, Windows
 module_anonymous_check=n
 
@@ -477,12 +493,12 @@ module_anonymous_check=n
 module_powerkadu=n
 
 # Description: Adds global hotkeys support to Kadu
-# PL: Dodaje do Kadu obsï¿½ugï¿½ skrï¿½tï¿½w globalnych
+# PL: Dodaje do Kadu obs³ugê skrótów globalnych
 # Platform: Linux
 module_globalhotkeys=n
 
 # Description: Adds history of sent messages to chat windows
-# PL: Dodaje historiï¿½ wysï¿½anych wiadomoï¿½ci do okien rozmowy
+# PL: Dodaje historiê wys³anych wiadomoœci do okien rozmowy
 # Platform: Linux, Mac OS X, Windows
 module_senthistory=n
 
@@ -493,7 +509,7 @@ module_senthistory=n
 module_weather=n
 
 # Description: New ext_info module providing extended contact information support
-# PL: Nowy moduï¿½ ext_info wprowadzajï¿½cy obsï¿½ugï¿½ dodatkowych informacji o kontaktach
+# PL: Nowy modu³ ext_info wprowadzaj¹cy obs³ugê dodatkowych informacji o kontaktach
 module_nextinfo=n
 
 ############################################# ICONS ###########################################################################
@@ -507,15 +523,15 @@ module_nextinfo=n
 # y - yes, install with kadu
 # n - no, icon theme disabled
 # PL: y - Tak, zainstaluj z kadu
-# PL: n - Nie, zestaw wylaczony
+# PL: n - Nie, zestaw wy³¹czony
 #
 
-# PL: Poniï¿½ej znajduje siï¿½ lista zestawï¿½w ikon. Gdy wybierzesz ktï¿½ryï¿½ z nich,
-# PL: odpowiednia paczka zostanie pobrana ze strony twï¿½rcy, wiï¿½c w razie problemï¿½w
-# PL: nie wiï¿½ nas z powodu ich (prawdopodobnie czasowej) niedostï¿½pnoï¿½ci.
+# PL: Poni¿ej znajduje siê lista zestawów ikon. Gdy wybierzesz któryœ z nich,
+# PL: odpowiednia paczka zostanie pobrana ze strony twórcy, wiêc w razie problemów
+# PL: nie wiñ nas z powodu ich (prawdopodobnie czasowej) niedostêpnoœci.
 
 # Description: Default icon theme shipped with sources
-# PL: Standardowy zestaw ikon dostï¿½pny razem ze ï¿½rï¿½dï¿½ami Kadu
+# PL: Standardowy zestaw ikon dostêpny razem ze Ÿród³ami Kadu
 icons_default=y
 
 # Description: Default theme from kadu 0.5.x
@@ -538,39 +554,39 @@ icons_oxygen16=n
 
 #
 # Below are some emoticon themes.
-# PL: Poniï¿½ej znajduje siï¿½ lista zestawï¿½w emotikon.
+# PL: Poni¿ej znajduje siê lista zestawów emotikon.
 
 # y - yes, install with kadu
 # n - no, emoticon theme disabled
 # PL: y - Tak, zainstaluj z kadu
-# PL: n - Nie, zestaw wylaczony
+# PL: n - Nie, zestaw wy³¹czony
 
 # Description: Default emoticon theme shipped with sources
-# PL: Standardowy zestaw emotikon dostï¿½pny razem ze ï¿½rï¿½dï¿½ami Kadu
+# PL: Standardowy zestaw emotikon dostêpny razem ze Ÿród³ami Kadu
 emoticons_penguins=y
 
 # Description: Old Gadu-Gadu 6.x emoticons
-# PL: Kompatybilne ze starï¿½ wersjï¿½ Gadu-Gadu 6.x
+# PL: Kompatybilne ze star¹ wersj¹ Gadu-Gadu 6.x
 emoticons_gg6_compatible=n
 
 # Description: Tango emoticons, some copied from penguins theme
-# PL: Emotki Tango, czï¿½ï¿½ï¿½ wziï¿½ta z penguins
+# PL: Emotki Tango, czêœæ wziêta z penguins
 emoticons_tango=n
 
 ########################################### SOUNDS ############################################################################
-# PL: ##################################### Dï¿½WIï¿½KI ###########################################################################
+# PL: ##################################### DWIÊKI ###########################################################################
 
 #
 # Below are some sound themes.
-# PL: Poniï¿½ej znajduje siï¿½ lista zestawï¿½w dï¿½wiï¿½kï¿½w.
+# PL: Poni¿ej znajduje siê lista zestawów dŸwiêków.
 
 # y - yes, install with kadu
 # n - no, sound theme disabled
 # PL: y - Tak, zainstaluj z kadu
-# PL: n - Nie, zestaw wylaczony
+# PL: n - Nie, zestaw wy³¹czony
 
 # Description: Default sound theme shipped with sources
-# PL: Standardowy zestaw dï¿½wiï¿½kï¿½w dostï¿½pny razem ze ï¿½rï¿½dï¿½ami Kadu
+# PL: Standardowy zestaw dŸwiêków dostêpny razem ze Ÿród³ami Kadu
 sound_default=y
 
 sound_bns=n
