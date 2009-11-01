@@ -7,8 +7,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef CONTACT_DATA_WINDOW_H
-#define CONTACT_DATA_WINDOW_H
+#ifndef BUDDY_DATA_WINDOW_H
+#define BUDDY_DATA_WINDOW_H
 
 #include <QtCore/QList>
 #include <QtCore/QMap>
@@ -35,11 +35,11 @@ class QVBoxLayout;
 class Buddy;
 
 
-class KADUAPI ContactDataWindow : public QWidget
+class KADUAPI BuddyDataWindow : public QWidget
 {
 	Q_OBJECT
 
-	Buddy CurrentContact;
+	Buddy MyBuddy;
 	ContactGeneralConfigurationWidget *ContactTab;
 	ContactGroupsConfigurationWidget *GroupsTab;
 	ContactPersonalInfoConfigurationWidget *PersonalInfoTab;
@@ -56,13 +56,13 @@ class KADUAPI ContactDataWindow : public QWidget
 	void keyPressEvent(QKeyEvent *);
 
 private slots:
-	void updateContact();
-	void updateContactAndClose();
+	void updateBuddy();
+	void updateBuddyAndClose();
 
 public:
-	ContactDataWindow(Buddy contact, QWidget *parent = 0);
-	virtual ~ContactDataWindow();
+	BuddyDataWindow(Buddy buddy, QWidget *parent = 0);
+	virtual ~BuddyDataWindow();
 
 };
 
-#endif // CONTACT_DATA_WINDOW_H
+#endif // BUDDY_DATA_WINDOW_H

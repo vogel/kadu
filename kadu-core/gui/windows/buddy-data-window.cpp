@@ -32,7 +32,7 @@
 
 #include "buddies/account-data/contact-account-data.h"
 #include "gui/widgets/contact-account-data-widget.h"
-#include "gui/windows/contact-data-manager.h"
+#include "gui/windows/buddy-data-manager.h"
 #include "gui/windows/message-box.h"
 #include "protocols/protocol.h"
 #include "protocols/protocol-factory.h"
@@ -41,10 +41,10 @@
 #include "icons-manager.h"
 #include "misc/misc.h"
 
-#include "contact-data-window.h"
+#include "buddy-data-window.h"
 
-ContactDataWindow::ContactDataWindow(Buddy contact, QWidget *parent) :
-		QWidget(parent, Qt::Dialog), CurrentContact(contact)
+BuddyDataWindow::BuddyDataWindow(Buddy buddy, QWidget *parent) :
+		QWidget(parent, Qt::Dialog), MyBuddy(buddy)
 {
 	kdebugf();
 
@@ -52,19 +52,19 @@ ContactDataWindow::ContactDataWindow(Buddy contact, QWidget *parent) :
 
 	createGui();
 
-	setWindowTitle(tr("Merged Contact Properties - %1").arg(CurrentContact.display()));
+	setWindowTitle(tr("Merged Contact Properties - %1").arg(MyBuddy.display()));
 
 	loadWindowGeometry(this, "General", "ManageUsersDialogGeometry", 0, 50, 425, 500);
 }
 
-ContactDataWindow::~ContactDataWindow()
+BuddyDataWindow::~BuddyDataWindow()
 {
 	kdebugf();
  	saveWindowGeometry(this, "General", "ManageUsersDialogGeometry");
 	kdebugf2();
 }
 
-void ContactDataWindow::createGui()
+void BuddyDataWindow::createGui()
 {
 	QVBoxLayout *layout = new QVBoxLayout(this);
 
@@ -72,7 +72,7 @@ void ContactDataWindow::createGui()
 	createButtons(layout);
 }
 
-void ContactDataWindow::createTabs(QLayout *layout)
+void BuddyDataWindow::createTabs(QLayout *layout)
 {
 	QTabWidget *tabWidget = new QTabWidget(this);
 
@@ -83,35 +83,35 @@ void ContactDataWindow::createTabs(QLayout *layout)
 	layout->addWidget(tabWidget);
 }
 
-void ContactDataWindow::createGeneralTab(QTabWidget *tabWidget)
+void BuddyDataWindow::createGeneralTab(QTabWidget *tabWidget)
 {
-	ContactTab = new ContactGeneralConfigurationWidget(CurrentContact, this);
+	ContactTab = new ContactGeneralConfigurationWidget(MyBuddy, this);
 	ContactTab->setSizePolicy(QSizePolicy(QSizePolicy::Minimum, QSizePolicy::Expanding));
 	tabWidget->addTab(ContactTab, tr("General"));
 }
 
-void ContactDataWindow::createGroupsTab(QTabWidget *tabWidget)
+void BuddyDataWindow::createGroupsTab(QTabWidget *tabWidget)
 {
-	GroupsTab = new ContactGroupsConfigurationWidget(CurrentContact, this);
+	GroupsTab = new ContactGroupsConfigurationWidget(MyBuddy, this);
 	GroupsTab->setSizePolicy(QSizePolicy(QSizePolicy::Minimum, QSizePolicy::Expanding));
 	tabWidget->addTab(GroupsTab, tr("Groups"));
 }
 
-void ContactDataWindow::createPersonalInfoTab(QTabWidget *tabWidget)
+void BuddyDataWindow::createPersonalInfoTab(QTabWidget *tabWidget)
 {
-	PersonalInfoTab = new ContactPersonalInfoConfigurationWidget(CurrentContact, this);
+	PersonalInfoTab = new ContactPersonalInfoConfigurationWidget(MyBuddy, this);
 	PersonalInfoTab->setSizePolicy(QSizePolicy(QSizePolicy::Minimum, QSizePolicy::Expanding));
 	tabWidget->addTab(PersonalInfoTab, tr("Personal Information"));
 }
 
-void ContactDataWindow::createOptionsTab(QTabWidget *tabWidget)
+void BuddyDataWindow::createOptionsTab(QTabWidget *tabWidget)
 {
-	OptionsTab = new ContactOptionsConfigurationWidget(CurrentContact, this);
+	OptionsTab = new ContactOptionsConfigurationWidget(MyBuddy, this);
 	OptionsTab->setSizePolicy(QSizePolicy(QSizePolicy::Minimum, QSizePolicy::Expanding));
 	tabWidget->addTab(OptionsTab, tr("Options"));
 }
 
-void ContactDataWindow::createButtons(QLayout *layout)
+void BuddyDataWindow::createButtons(QLayout *layout)
 {
 	QDialogButtonBox *buttons = new QDialogButtonBox(Qt::Horizontal, this);
 
@@ -122,31 +122,31 @@ void ContactDataWindow::createButtons(QLayout *layout)
 	QPushButton *saveButton = new QPushButton(IconsManager::instance()->loadIcon("OkWindowButton"), tr("OK"), this);
 	buttons->addButton(saveButton, QDialogButtonBox::AcceptRole);
 
-	connect(saveButton, SIGNAL(clicked(bool)), this, SLOT(updateContactAndClose()));
-	connect(applyButton, SIGNAL(clicked(bool)), this, SLOT(updateContact()));
+	connect(saveButton, SIGNAL(clicked(bool)), this, SLOT(updateBuddyAndClose()));
+	connect(applyButton, SIGNAL(clicked(bool)), this, SLOT(updateBuddy()));
 	connect(cancelButton, SIGNAL(clicked(bool)), this, SLOT(close()));
 
 	layout->addWidget(buttons);
 }
 
-void ContactDataWindow::updateContact()
+void BuddyDataWindow::updateBuddy()
 {
-	BuddyManager::instance()->blockUpdatedSignal(CurrentContact);
+	BuddyManager::instance()->blockUpdatedSignal(MyBuddy);
 
 	ContactTab->saveConfiguration();
 	GroupsTab->saveConfiguration(); 
 	OptionsTab->saveConfiguration(); 
 
-	BuddyManager::instance()->unblockUpdatedSignal(CurrentContact);
+	BuddyManager::instance()->unblockUpdatedSignal(MyBuddy);
 }
 
-void ContactDataWindow::updateContactAndClose()
+void BuddyDataWindow::updateBuddyAndClose()
 {
-	updateContact();
+	updateBuddy();
 	close();
 }
 
-void ContactDataWindow::keyPressEvent(QKeyEvent *ke_event)
+void BuddyDataWindow::keyPressEvent(QKeyEvent *ke_event)
 {
 	if (ke_event->key() == Qt::Key_Escape)
 		close();

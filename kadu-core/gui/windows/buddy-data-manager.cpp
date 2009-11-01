@@ -7,72 +7,72 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "contact-data-manager.h"
+#include "buddy-data-manager.h"
 
-ContactDataManager::ContactDataManager(Buddy contact, QObject *parent) :
-		ConfigurationWindowDataManager(parent), CurrentContact(contact)
+BuddyDataManager::BuddyDataManager(Buddy buddy, QObject *parent) :
+		ConfigurationWindowDataManager(parent), MyBuddy(buddy)
 {
 
 }
 
-void ContactDataManager::writeEntry(const QString &section, const QString &name, const QVariant &value) {
+void BuddyDataManager::writeEntry(const QString &section, const QString &name, const QVariant &value) {
 	if (section != "Contact")
 		return;
 
 	if (name == "display")
-		CurrentContact.setDisplay(value.toString());
+		MyBuddy.setDisplay(value.toString());
 	else if (name == "firstName")
-		CurrentContact.setFirstName(value.toString());
+		MyBuddy.setFirstName(value.toString());
 	else if (name == "lastName")
-		CurrentContact.setLastName(value.toString());
+		MyBuddy.setLastName(value.toString());
 	else if (name == "familyName")
-		CurrentContact.setFamilyName(value.toString());
+		MyBuddy.setFamilyName(value.toString());
 	else if (name == "city")
-		CurrentContact.setCity(value.toString());
+		MyBuddy.setCity(value.toString());
 	else if (name == "familyCity")
-		CurrentContact.setFamilyCity(value.toString());
+		MyBuddy.setFamilyCity(value.toString());
 	else if (name == "nickName")
-		CurrentContact.setNickName(value.toString());
+		MyBuddy.setNickName(value.toString());
 	else if (name == "homePhone")
-		CurrentContact.setHomePhone(value.toString());
+		MyBuddy.setHomePhone(value.toString());
 	else if (name == "mobilePhone")
-		CurrentContact.setMobile(value.toString());
+		MyBuddy.setMobile(value.toString());
 	else if (name == "email")
-		CurrentContact.setEmail(value.toString());
+		MyBuddy.setEmail(value.toString());
 	else if (name == "birthYear")
-		CurrentContact.setBirthYear(value.toInt());
+		MyBuddy.setBirthYear(value.toInt());
 	else if (name == "gender")
-		CurrentContact.setGender((BuddyShared::BuddyGender)value.toInt());
+		MyBuddy.setGender((BuddyShared::BuddyGender)value.toInt());
 }
 
-QVariant ContactDataManager::readEntry(const QString &section, const QString &name) {
+QVariant BuddyDataManager::readEntry(const QString &section, const QString &name) {
 	if (section != "Contact")
 		return QVariant();
 
 	if (name == "display")
-		return CurrentContact.display();
+		return MyBuddy.display();
 	else if (name == "firstName")
-		return CurrentContact.firstName();
+		return MyBuddy.firstName();
 	else if (name == "lastName")
-		return CurrentContact.lastName();
+		return MyBuddy.lastName();
 	else if (name == "familyName")
-		return CurrentContact.familyName();
+		return MyBuddy.familyName();
 	else if (name == "city")
-		return CurrentContact.city();
+		return MyBuddy.city();
 	else if (name == "familyCity")
-		return CurrentContact.familyCity();
+		return MyBuddy.familyCity();
 	else if (name == "nickName")
-		return CurrentContact.nickName();
+		return MyBuddy.nickName();
 	else if (name == "homePhone")
-		return CurrentContact.homePhone();
+		return MyBuddy.homePhone();
 	else if (name == "mobilePhone")
-		return CurrentContact.mobile();
+		return MyBuddy.mobile();
 	else if (name == "email")
-		return CurrentContact.email();
+		return MyBuddy.email();
 	else if (name == "birthYear")
-		return CurrentContact.birthYear();
+		return MyBuddy.birthYear();
 	else if (name == "gender")
-		return CurrentContact.gender();
+		return MyBuddy.gender();
 
 	return QVariant();
 }

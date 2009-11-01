@@ -7,8 +7,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef MERGE_CONTACTS_WINDOW_H
-#define MERGE_CONTACTS_WINDOW_H
+#ifndef MERGE_BUDDIES_WINDOW_H
+#define MERGE_BUDDIES_WINDOW_H
 
 #include <QtGui/QDialog>
 
@@ -16,11 +16,11 @@
 
 class SelectContactCombobox;
 
-class MergeContactsWindow : public QDialog
+class MergeBuddiesWindow : public QDialog
 {
 	Q_OBJECT
 
-	Buddy MyContact;
+	Buddy MyBuddy;
 
 	SelectContactCombobox *SelectCombo;
 	QPushButton *MergeButton;
@@ -28,15 +28,15 @@ class MergeContactsWindow : public QDialog
 	void createGui();
 
 private slots:
-	void selectedContactChanged(Buddy);
+	void selectedBuddyChanged(Buddy);
 
 protected slots:
 	virtual void accept();
 
 public:
-	explicit MergeContactsWindow(Buddy contact, QWidget *parent = 0);
-	virtual ~MergeContactsWindow();
+	explicit MergeBuddiesWindow(Buddy contact, QWidget *parent = 0);
+	virtual ~MergeBuddiesWindow();
 
 };
 
-#endif // MERGE_CONTACTS_WINDOW_H
+#endif // MERGE_BUDDIES_WINDOW_H

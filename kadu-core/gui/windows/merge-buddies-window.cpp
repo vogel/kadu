@@ -19,24 +19,24 @@
 #include "gui/widgets/select-contact-combobox.h"
 #include "icons-manager.h"
 
-#include "merge-contacts-window.h"
+#include "merge-buddies-window.h"
 
-MergeContactsWindow::MergeContactsWindow(Buddy contact, QWidget * parent) :
-		QDialog(parent), MyContact(contact)
+MergeBuddiesWindow::MergeBuddiesWindow(Buddy contact, QWidget * parent) :
+		QDialog(parent), MyBuddy(contact)
 {
 	createGui();
 }
 
-MergeContactsWindow::~MergeContactsWindow()
+MergeBuddiesWindow::~MergeBuddiesWindow()
 {
 }
 
-void MergeContactsWindow::createGui()
+void MergeBuddiesWindow::createGui()
 {
 	QVBoxLayout *layout = new QVBoxLayout(this);
 
 	layout->addWidget(new QLabel(tr("<i>Choose which contact would you like to merge with <b>%1</b></i>")
-			.arg(MyContact.display()), this));
+			.arg(MyBuddy.display()), this));
 
 	QWidget *chooseWidget = new QWidget(this);
 	layout->addWidget(chooseWidget);
@@ -45,8 +45,8 @@ void MergeContactsWindow::createGui()
 
 	chooseLayout->addWidget(new QLabel(tr("Contact:"), this));
 	SelectCombo = new SelectContactCombobox(this);
-	SelectCombo->addFilter(new BuddyMergableFilter(MyContact, SelectCombo));
-	connect(SelectCombo, SIGNAL(contactChanged(Buddy)), this, SLOT(selectedContactChanged(Buddy)));
+	SelectCombo->addFilter(new BuddyMergableFilter(MyBuddy, SelectCombo));
+	connect(SelectCombo, SIGNAL(contactChanged(Buddy)), this, SLOT(selectedBuddyChanged(Buddy)));
 	chooseLayout->addWidget(SelectCombo);
 
 	layout->addStretch(100);
@@ -65,21 +65,21 @@ void MergeContactsWindow::createGui()
 	buttons->addButton(cancel, QDialogButtonBox::DestructiveRole);
 }
 
-void MergeContactsWindow::selectedContactChanged(Buddy contact)
+void MergeBuddiesWindow::selectedBuddyChanged(Buddy contact)
 {
 	MergeButton->setEnabled(!contact.isNull());
 }
 
-void MergeContactsWindow::accept()
+void MergeBuddiesWindow::accept()
 {
 	Buddy mergeWith = SelectCombo->contact();
 	if (mergeWith.isNull())
 		return;
 
-	if (MyContact.isNull())
+	if (MyBuddy.isNull())
 		return;
 
-	BuddyManager::instance()->mergeBuddies(mergeWith, MyContact);
+	BuddyManager::instance()->mergeBuddies(mergeWith, MyBuddy);
 
 	QDialog::accept();
 }

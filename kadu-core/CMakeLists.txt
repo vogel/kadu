@@ -168,27 +168,28 @@ set (kadu_SRCS
 
 	gui/windows/about.cpp
 	gui/windows/add-buddy-window.cpp
+	gui/windows/buddy-data-manager.cpp
+	gui/windows/buddy-data-window.cpp
 	gui/windows/chat-window.cpp
 	gui/windows/choose-description.cpp
 	gui/windows/configuration-window.cpp
-	gui/windows/contact-data-manager.cpp
-	gui/windows/contact-data-window.cpp
 	gui/windows/group-properties-window.cpp
 	gui/windows/image-dialog.cpp
 	gui/windows/kadu-window.cpp
 	gui/windows/kadu-window-actions.cpp
 	gui/windows/main-configuration-window.cpp
 	gui/windows/main-window.cpp
-	gui/windows/merge-contacts-window.cpp
+	gui/windows/merge-buddies-window.cpp
 	gui/windows/message-box.cpp
-	gui/windows/open-chat-with/open-chat-with.cpp
-	gui/windows/open-chat-with/open-chat-with-contact-list-runner.cpp
-	gui/windows/open-chat-with/open-chat-with-runner-manager.cpp
 	gui/windows/password-window.cpp
 	gui/windows/search-window.cpp
 	gui/windows/syntax-editor-window.cpp
 	gui/windows/window-notifier-window.cpp
 	gui/windows/your-accounts.cpp
+
+	gui/windows/open-chat-with/open-chat-with.cpp
+	gui/windows/open-chat-with/open-chat-with-contact-list-runner.cpp
+	gui/windows/open-chat-with/open-chat-with-runner-manager.cpp
 
 	identities/identity.cpp
 	identities/identity-manager.cpp
@@ -389,23 +390,24 @@ set (kadu_MOC_SRCS
 
 	gui/windows/about.h
 	gui/windows/add-buddy-window.h
+	gui/windows/buddy-data-manager.h
+	gui/windows/buddy-data-window.h
 	gui/windows/chat-window.h
 	gui/windows/choose-description.h
 	gui/windows/configuration-window.h
-	gui/windows/contact-data-manager.h
-	gui/windows/contact-data-window.h
 	gui/windows/group-properties-window.h
 	gui/windows/kadu-window.h
 	gui/windows/kadu-window-actions.h
 	gui/windows/main-configuration-window.h
 	gui/windows/main-window.h
-	gui/windows/merge-contacts-window.h
+	gui/windows/merge-buddies-window.h
 	gui/windows/message-box.h
-	gui/windows/open-chat-with/open-chat-with.h
 	gui/windows/password-window.h
 	gui/windows/search-window.h
 	gui/windows/syntax-editor-window.h
 	gui/windows/your-accounts.h
+
+	gui/windows/open-chat-with/open-chat-with.h
 
 	identities/identity.h
 	identities/identity-manager.h

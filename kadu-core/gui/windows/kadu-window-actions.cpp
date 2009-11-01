@@ -32,10 +32,10 @@
 #include "gui/widgets/contacts-list-view-menu-manager.h"
 #include "gui/widgets/status-menu.h"
 #include "gui/windows/add-buddy-window.h"
-#include "gui/windows/contact-data-window.h"
+#include "gui/windows/buddy-data-window.h"
 #include "gui/windows/kadu-window.h"
 #include "gui/windows/main-configuration-window.h"
-#include "gui/windows/merge-contacts-window.h"
+#include "gui/windows/merge-buddies-window.h"
 #include "gui/windows/message-box.h"
 #include "gui/windows/search-window.h"
 #include "gui/windows/your-accounts.h"
@@ -616,8 +616,8 @@ void KaduWindowActions::mergeContactActionActivated(QAction *sender, bool toggle
 	Buddy contact = window->contact();
 	if (!contact.isNull())
 	{
-		MergeContactsWindow *mergeContactsWindow = new MergeContactsWindow(contact, window);
-		mergeContactsWindow->show();
+		MergeBuddiesWindow *mergeBuddiesWindow = new MergeBuddiesWindow(contact, window);
+		mergeBuddiesWindow->show();
 	}
 
 	kdebugf2();
@@ -972,7 +972,7 @@ void KaduWindowActions::editUserActionActivated(QAction *sender, bool toggled)
 		addBuddyWindow->show();
 	}
 	else
-		(new ContactDataWindow(contact, window))->show();
+		(new BuddyDataWindow(contact, window))->show();
 
 	kdebugf2();
 }

@@ -7,24 +7,24 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef CONTACT_DATA_MANAGER_H
-#define CONTACT_DATA_MANAGER_H
+#ifndef BUDDY_DATA_MANAGER_H
+#define BUDDY_DATA_MANAGER_H
 
 #include "configuration/configuration-window-data-manager.h"
 #include "buddies/buddy.h"
 
-class ContactDataManager : public ConfigurationWindowDataManager
+class BuddyDataManager : public ConfigurationWindowDataManager
 {
 	Q_OBJECT
 
-	Buddy CurrentContact;
+	Buddy MyBuddy;
 
 public:
-	ContactDataManager(Buddy contact, QObject *parent = 0);
+	BuddyDataManager(Buddy buddy, QObject *parent = 0);
 
 	virtual void writeEntry(const QString &section, const QString &name, const QVariant &value);
 	virtual QVariant readEntry(const QString &section, const QString &name);
 
 };
 
-#endif // CONTACT_DATA_MANAGER_H
+#endif // BUDDY_DATA_MANAGER_H
