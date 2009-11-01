@@ -48,7 +48,6 @@ void MediaPlayerStatusChanger::setTitle(const QString &newTitle)
 
 void MediaPlayerStatusChanger::setDisable(bool disable)
 {
-printf("MediaPlayerStatusChanger::setDisable(%d)\n", disable);
 	disabled = disable;
 	emit statusChanged();
 }

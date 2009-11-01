@@ -39,23 +39,31 @@ MPRISMediaPlayer::~MPRISMediaPlayer()
 	controller = 0;
 }
 
+void MPRISMediaPlayer::setService(QString service)
+{
+	this->service = service;
+}
+
 void MPRISMediaPlayer::send(QString obj, QString func, int val)
 {
-	QDBusInterface amarokApp(service, obj, "org.freedesktop.MediaPlayer");
-	if (val != -1)
-		amarokApp.call(func, val);
-	else
-		amarokApp.call(func);
+	if (!service.isEmpty())
+	{
+		QDBusInterface mprisApp(service, obj, "org.freedesktop.MediaPlayer");
+		if (val != -1)
+			mprisApp.call(func, val);
+		else
+			mprisApp.call(func);
+	}
 }
 
 QString MPRISMediaPlayer::getString(QString obj, QString func)
 {
-	if (!isActive())
+	if (!isActive() || service.isEmpty())
 		return "";
 
-	QDBusInterface amarokApp(service, obj, "org.freedesktop.MediaPlayer");
-	QDBusReply<QString> reply = amarokApp.call(func);
-                               
+	QDBusInterface mprisApp(service, obj, "org.freedesktop.MediaPlayer");
+	QDBusReply<QString> reply = mprisApp.call(func);
+
 	if (reply.isValid())
 	{
 		return reply.value().simplified();
@@ -65,12 +73,12 @@ QString MPRISMediaPlayer::getString(QString obj, QString func)
 
 int MPRISMediaPlayer::getInt(QString obj, QString func)
 {
-	if (!isActive())
+	if (!isActive() || service.isEmpty())
 		return 0;
 
-	QDBusInterface amarokApp(service, obj, "org.freedesktop.MediaPlayer");
-	QDBusReply<int> reply = amarokApp.call(func);
-                               
+	QDBusInterface mprisApp(service, obj, "org.freedesktop.MediaPlayer");
+	QDBusReply<int> reply = mprisApp.call(func);
+
 	if (reply.isValid())
 	{
 		return reply.value();
@@ -80,24 +88,30 @@ int MPRISMediaPlayer::getInt(QString obj, QString func)
 
 QString MPRISMediaPlayer::getStringMapValue(QString obj, QString func, int param, QString field)
 {
-	QDBusInterface amarokApp(service, obj, "org.freedesktop.MediaPlayer");
-	QDBusReply<QVariantMap> reply = amarokApp.call(func, param);
-	if (reply.isValid())
+	if (!service.isEmpty())
 	{
-		QVariantMap map = reply.value();
-		return map.value(field).toString();
+		QDBusInterface mprisApp(service, obj, "org.freedesktop.MediaPlayer");
+		QDBusReply<QVariantMap> reply = mprisApp.call(func, param);
+		if (reply.isValid())
+		{
+			QVariantMap map = reply.value();
+			return map.value(field).toString();
+		}
 	}
 	return "";
 }
 
 int MPRISMediaPlayer::getIntMapValue(QString obj, QString func, int param, QString field)
 {
-	QDBusInterface amarokApp(service, obj, "org.freedesktop.MediaPlayer");
-	QDBusReply<QVariantMap> reply = amarokApp.call(func, param);
-	if (reply.isValid())
+	if (!service.isEmpty())
 	{
-		QVariantMap map = reply.value();
-		return map.value(field).toInt();
+		QDBusInterface mprisApp(service, obj, "org.freedesktop.MediaPlayer");
+		QDBusReply<QVariantMap> reply = mprisApp.call(func, param);
+		if (reply.isValid())
+		{
+			QVariantMap map = reply.value();
+			return map.value(field).toInt();
+		}
 	}
 	return -1;
 }
