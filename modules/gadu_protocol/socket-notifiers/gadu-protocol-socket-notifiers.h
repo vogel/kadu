@@ -10,7 +10,7 @@
 #ifndef GADU_PROTOCOL_SOCKET_NOTIFIERS_H
 #define GADU_PROTOCOL_SOCKET_NOTIFIERS_H
 
-#include "contacts/contact.h"
+#include "buddies/buddy.h"
 
 #include "gadu-protocol.h"
 

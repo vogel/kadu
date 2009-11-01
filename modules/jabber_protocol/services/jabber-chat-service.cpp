@@ -11,7 +11,7 @@
 #include "chat/message/message.h"
 #include "core/core.h"
 #include "configuration/configuration-file.h"
-#include "contacts/ignored-helper.h"
+#include "buddies/ignored-helper.h"
 #include "gui/windows/message-box.h"
 #include "misc/misc.h"
 

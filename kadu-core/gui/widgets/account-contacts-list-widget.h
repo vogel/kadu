@@ -14,7 +14,7 @@
 #include <QtGui/QWidget>
 
 #include "accounts/account.h"
-#include "contacts/contact-list.h"
+#include "buddies/buddy-list.h"
 #include "gui/widgets/contacts-list-view.h"
 
 #include "exports.h"

@@ -8,7 +8,7 @@
  ***************************************************************************/
 
 #include "configuration/configuration-file.h"
-#include "contacts/contact.h"
+#include "buddies/buddy.h"
 
 #include "tool-tip-class-manager.h"
 

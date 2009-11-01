@@ -16,7 +16,7 @@
 #include "accounts/account.h"
 #include "chat/chat.h"
 #include "configuration/storable-object.h"
-#include "contacts/contact-list.h"
+#include "buddies/buddy-list.h"
 
 class XmlConfigFile;
 

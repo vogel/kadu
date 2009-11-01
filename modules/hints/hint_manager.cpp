@@ -15,7 +15,7 @@
 #include <QtGui/QPushButton>
 #include <QtGui/QSpinBox>
 
-#include "contacts/account-data/contact-account-data.h"
+#include "buddies/account-data/contact-account-data.h"
 #include "configuration/configuration-file.h"
 #include "core/core.h"
 #include "gui/widgets/chat-widget-manager.h"

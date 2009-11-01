@@ -13,7 +13,7 @@
 #include <QtGui/QTabBar>
 
 #include "configuration/configuration-aware-object.h"
-#include "contacts/contact-list.h"
+#include "buddies/buddy-list.h"
 
 class GroupContactFilter;
 class Group;

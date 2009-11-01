@@ -7,8 +7,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "contacts/contact-manager.h"
-#include "contacts/model/contacts-model.h"
+#include "buddies/buddy-manager.h"
+#include "buddies/model/contacts-model.h"
 #include "gui/widgets/contacts-line-edit.h"
 #include "gui/widgets/contacts-list-view.h"
 

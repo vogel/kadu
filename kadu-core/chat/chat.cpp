@@ -9,7 +9,7 @@
 
 #include "accounts/account-manager.h"
 #include "configuration/configuration-file.h"
-#include "contacts/account-data/contact-account-data.h"
+#include "buddies/account-data/contact-account-data.h"
 #include "parser/parser.h"
 #include "debug.h"
 #include "icons-manager.h"

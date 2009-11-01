@@ -15,8 +15,8 @@
 #include <time.h>
 
 #include "chat/message/message.h"
-#include "contacts/contact.h"
-#include "contacts/contact-remove-predicate-object.h"
+#include "buddies/buddy.h"
+#include "buddies/buddy-remove-predicate-object.h"
 
 #include "exports.h"
 

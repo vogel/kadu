@@ -16,7 +16,7 @@
 
 #include "accounts/account.h"
 #include "configuration/uuid-storable-object.h"
-#include "contacts/contact-set.h"
+#include "buddies/buddy-set.h"
 
 class ChatType;
 

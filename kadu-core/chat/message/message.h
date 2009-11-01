@@ -13,7 +13,7 @@
 #include <QtCore/QDateTime>
 #include <QtCore/QObject>
 
-#include "contacts/contact.h"
+#include "buddies/buddy.h"
 
 #include "exports.h"
 

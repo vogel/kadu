@@ -10,7 +10,7 @@
 #include <QtGui/QHBoxLayout>
 #include <QtGui/QVBoxLayout>
 
-#include "contacts/filter/contact-name-filter.h"
+#include "buddies/filter/contact-name-filter.h"
 #include "gui/widgets/contacts-line-edit.h"
 #include "gui/widgets/contacts-list-view.h"
 

@@ -11,7 +11,7 @@
 
 #include <QtCore/QByteArray>
 
-#include "contacts/contact-manager.h"
+#include "buddies/buddy-manager.h"
 
 #include "debug.h"
 #include "misc/misc.h"

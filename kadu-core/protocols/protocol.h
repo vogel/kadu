@@ -21,8 +21,8 @@
 #include "exports.h"
 
 #include "chat/chat.h"
-#include "contacts/contact.h"
-#include "contacts/contact-list.h"
+#include "buddies/buddy.h"
+#include "buddies/buddy-list.h"
 #include "status/status.h"
 
 typedef quint32 UinType;

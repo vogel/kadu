@@ -15,7 +15,7 @@
 #include "accounts/account-manager.h"
 #include "chat/message/formatted-message.h"
 #include "configuration/configuration-file.h"
-#include "contacts/contact-manager.h"
+#include "buddies/buddy-manager.h"
 
 #include "gadu-protocol.h"
 

@@ -4,7 +4,7 @@
 #include <QtCore/QList>
 #include <QtGui/QWidget>
 
-#include "contacts/contact-list.h"
+#include "buddies/buddy-list.h"
 
 class QLabel;
 class QPushButton;

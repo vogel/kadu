@@ -15,7 +15,7 @@
 #include <QtCore/QTimer>
 
 #include "chat/chat.h"
-#include "contacts/contact.h"
+#include "buddies/buddy.h"
 
 class QContextMenuEvent;
 class QModelIndex;

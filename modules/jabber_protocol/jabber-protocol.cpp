@@ -17,8 +17,8 @@
 
 #include "accounts/account-manager.h"
 #include "core/core.h"
-#include "contacts/contact-manager.h"
-#include "contacts/group.h"
+#include "buddies/buddy-manager.h"
+#include "buddies/group.h"
 #include "gui/widgets/chat-widget-manager.h"
 #include "gui/windows/kadu-window.h"
 #include "gui/windows/message-box.h"

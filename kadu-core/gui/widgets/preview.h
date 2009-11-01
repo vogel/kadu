@@ -10,8 +10,8 @@
 #ifndef PREVIEW_H
 #define PREVIEW_H
 
-#include "contacts/contact.h"
-#include "contacts/contact-list.h"
+#include "buddies/buddy.h"
+#include "buddies/buddy-list.h"
 
 #include "kadu-text-browser.h"
 

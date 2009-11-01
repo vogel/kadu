@@ -12,7 +12,7 @@
 
 #include <QtGui/QWidget>
 
-#include "contacts/contact.h"
+#include "buddies/buddy.h"
 
 class QComboBox;
 class QLineEdit;

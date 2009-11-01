@@ -13,7 +13,7 @@
 #include <QtCore/QObject>
 
 #include "configuration/storable-object.h"
-#include "contacts/contact.h"
+#include "buddies/buddy.h"
 
 #include "exports.h"
 

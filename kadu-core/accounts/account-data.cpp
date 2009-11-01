@@ -9,7 +9,7 @@
 
 #include "accounts/account-details.h"
 #include "accounts/account-manager.h"
-#include "contacts/account-data/contact-account-data.h"
+#include "buddies/account-data/contact-account-data.h"
 #include "misc/misc.h"
 #include "protocols/protocol.h"
 

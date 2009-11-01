@@ -127,6 +127,6 @@ signals:
 
 };
 
-#include "contacts/contact.h" // for MOC
+#include "buddies/buddy.h" // for MOC
 
 #endif // ACCOUNT_DATA_H

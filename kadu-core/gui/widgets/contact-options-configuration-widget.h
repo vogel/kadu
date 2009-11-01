@@ -13,7 +13,7 @@
 #include <QtGui/QDialog>
 #include <QtGui/QCheckBox>
 
-#include "contacts/contact.h"
+#include "buddies/buddy.h"
 #include "gui/widgets/configuration/configuration-widget.h"
 
 #include "exports.h"

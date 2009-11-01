@@ -14,8 +14,8 @@
 #include <QtXml/QDomElement>
 
 #include "accounts/account-data.h"
-#include "contacts/contact.h"
-#include "contacts/contacts-aware-object.h"
+#include "buddies/buddy.h"
+#include "buddies/buddies-aware-object.h"
 #include "status/base-status-container.h"
 #include "status/status.h"
 

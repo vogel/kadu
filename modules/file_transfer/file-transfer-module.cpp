@@ -15,7 +15,7 @@
 #include "accounts/account.h"
 #include "configuration/configuration-file.h"
 #include "configuration/xml-configuration-file.h"
-#include "contacts/contact.h"
+#include "buddies/buddy.h"
 #include "core/core.h"
 #include "file-transfer/file-transfer.h"
 #include "file-transfer/file-transfer-manager.h"

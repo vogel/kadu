@@ -11,7 +11,7 @@
 
 #include "chat/chat.h"
 #include "chat/message/message.h"
-#include "contacts/contact-set.h"
+#include "buddies/buddy-set.h"
 #include "core/core.h"
 #include "misc/misc.h"
 #include "modules/history/history.h"

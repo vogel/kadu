@@ -27,9 +27,9 @@
 #include "configuration/configuration-manager.h"
 #include "configuration/xml-configuration-file.h"
 
-#include "contacts/contact.h"
-#include "contacts/contact-list.h"
-#include "contacts/contact-manager.h"
+#include "buddies/buddy.h"
+#include "buddies/buddy-list.h"
+#include "buddies/buddy-manager.h"
 
 #include "core/core.h"
 

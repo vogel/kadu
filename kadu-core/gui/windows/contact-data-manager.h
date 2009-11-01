@@ -11,7 +11,7 @@
 #define CONTACT_DATA_MANAGER_H
 
 #include "configuration/configuration-window-data-manager.h"
-#include "contacts/contact.h"
+#include "buddies/buddy.h"
 
 class ContactDataManager : public ConfigurationWindowDataManager
 {

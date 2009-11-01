@@ -7,7 +7,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "contacts/ignored-helper.h"
+#include "buddies/ignored-helper.h"
 
 #include "configuration/configuration-file.h"
 #include "debug.h"

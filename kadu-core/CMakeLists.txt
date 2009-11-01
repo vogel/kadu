@@ -12,6 +12,46 @@ set (kadu_SRCS
 	accounts/model/accounts-model.cpp
 	accounts/model/accounts-proxy-model.cpp
 
+	buddies/avatar.cpp
+	buddies/avatar-manager.cpp
+	buddies/buddies-aware-object.cpp
+	buddies/buddy.cpp
+	buddies/buddy-kadu-data.cpp
+	buddies/buddy-list.cpp
+	buddies/buddy-list-configuration-helper.cpp
+	buddies/buddy-list-mime-data-helper.cpp
+	buddies/buddy-manager.cpp
+	buddies/buddy-remove-predicate-object.cpp
+	buddies/buddy-search-criteria.cpp
+	buddies/buddy-set.cpp
+	buddies/buddy-set-configuration-helper.cpp
+	buddies/buddy-shared.cpp
+	buddies/group.cpp
+	buddies/group-manager.cpp
+	buddies/ignored-helper.cpp
+
+	buddies/account-data/contact-account-data.cpp
+	buddies/account-data/contact-account-data-manager.cpp
+
+	buddies/filter/account-contact-filter.cpp
+	buddies/filter/anonymous-contact-filter.cpp
+	buddies/filter/anonymous-without-messages-contact-filter.cpp
+	buddies/filter/contact-mergable-filter.cpp
+	buddies/filter/contact-name-filter.cpp
+	buddies/filter/group-contact-filter.cpp
+	buddies/filter/has-description-contact-filter.cpp
+	buddies/filter/non-account-contact-filter.cpp
+	buddies/filter/offline-contact-filter.cpp
+	buddies/filter/online-and-description-contact-filter.cpp
+	buddies/filter/online-contact-filter.cpp
+
+	buddies/model/abstract-contacts-model.cpp
+	buddies/model/contact-list-model.cpp
+	buddies/model/contacts-model.cpp
+	buddies/model/contacts-model-base.cpp
+	buddies/model/contacts-model-proxy.cpp
+	buddies/model/groups-model.cpp
+
 	chat/aggregate-chat.cpp
 	chat/chat.cpp
 	chat/chat-aggregator-builder.cpp
@@ -36,46 +76,6 @@ set (kadu_SRCS
 
 	chat/type/chat-type.cpp
 	chat/type/chat-type-manager.cpp
-
-	contacts/avatar.cpp
-	contacts/avatar-manager.cpp
-	contacts/contact.cpp
-	contacts/contact-data.cpp
-	contacts/contact-kadu-data.cpp
-	contacts/contact-list.cpp
-	contacts/contact-list-configuration-helper.cpp
-	contacts/contact-list-mime-data-helper.cpp
-	contacts/contact-manager.cpp
-	contacts/contact-remove-predicate-object.cpp
-	contacts/contact-search-criteria.cpp
-	contacts/contact-set.cpp
-	contacts/contact-set-configuration-helper.cpp
-	contacts/contacts-aware-object.cpp
-	contacts/group.cpp
-	contacts/group-manager.cpp
-	contacts/ignored-helper.cpp
-
-	contacts/account-data/contact-account-data.cpp
-	contacts/account-data/contact-account-data-manager.cpp
-
-	contacts/filter/account-contact-filter.cpp
-	contacts/filter/anonymous-contact-filter.cpp
-	contacts/filter/anonymous-without-messages-contact-filter.cpp
-	contacts/filter/contact-mergable-filter.cpp
-	contacts/filter/contact-name-filter.cpp
-	contacts/filter/group-contact-filter.cpp
-	contacts/filter/has-description-contact-filter.cpp
-	contacts/filter/non-account-contact-filter.cpp
-	contacts/filter/offline-contact-filter.cpp
-	contacts/filter/online-and-description-contact-filter.cpp
-	contacts/filter/online-contact-filter.cpp
-
-	contacts/model/abstract-contacts-model.cpp
-	contacts/model/contact-list-model.cpp
-	contacts/model/contacts-model.cpp
-	contacts/model/contacts-model-base.cpp
-	contacts/model/contacts-model-proxy.cpp
-	contacts/model/groups-model.cpp
 
 	configuration/account-data-manager.cpp
 	configuration/config-file-data-manager.cpp
@@ -272,6 +272,40 @@ set (kadu_MOC_SRCS
 	accounts/model/accounts-model.h
 	accounts/model/accounts-proxy-model.h
 
+	buddies/avatar-manager.h
+	buddies/buddy.h
+	buddies/buddy-shared.h
+	#buddies/buddy-list.h
+	#buddies/buddy-list-configuration-helper.h
+	buddies/buddy-manager.h
+	#buddies/buddy-search-criteria.h
+	#buddies/buddy-set.h
+	buddies/group.h
+	buddies/group-manager.h
+
+	buddies/account-data/contact-account-data.h
+	buddies/account-data/contact-account-data-manager.h
+
+	buddies/filter/abstract-contact-filter.h
+	buddies/filter/account-contact-filter.h
+	buddies/filter/anonymous-contact-filter.h
+	buddies/filter/anonymous-without-messages-contact-filter.h
+	buddies/filter/contact-mergable-filter.h
+	#buddies/filter/contact-name-filter.h
+	buddies/filter/group-contact-filter.h
+	buddies/filter/has-description-contact-filter.h
+	buddies/filter/non-account-contact-filter.h
+	buddies/filter/offline-contact-filter.h
+	buddies/filter/online-and-description-contact-filter.h
+	buddies/filter/online-contact-filter.h
+
+	#buddies/model/abstract-contacts-model.h
+	buddies/model/contact-list-model.h
+	buddies/model/contacts-model.h
+	buddies/model/contacts-model-base.h
+	buddies/model/contacts-model-proxy.h
+	buddies/model/groups-model.h
+
 	#chat/aggregate-chat.h
 	chat/chat.h
 	chat/chat-aggregator-builder.h
@@ -293,40 +327,6 @@ set (kadu_MOC_SRCS
 	chat/style-engines/chat-engine-kadu.h
 
 	chat/type/chat-type-manager.h
-
-	contacts/avatar-manager.h
-	contacts/contact.h
-	contacts/contact-data.h
-	#contacts/contact-list.h
-	#contacts/contact-list-configuration-helper.h
-	contacts/contact-manager.h
-	#contacts/contact-search-criteria.h
-	#contacts/contact-set.h
-	contacts/group.h
-	contacts/group-manager.h
-
-	contacts/account-data/contact-account-data.h
-	contacts/account-data/contact-account-data-manager.h
-
-	contacts/filter/abstract-contact-filter.h
-	contacts/filter/account-contact-filter.h
-	contacts/filter/anonymous-contact-filter.h
-	contacts/filter/anonymous-without-messages-contact-filter.h
-	contacts/filter/contact-mergable-filter.h
-	#contacts/filter/contact-name-filter.h
-	contacts/filter/group-contact-filter.h
-	contacts/filter/has-description-contact-filter.h
-	contacts/filter/non-account-contact-filter.h
-	contacts/filter/offline-contact-filter.h
-	contacts/filter/online-and-description-contact-filter.h
-	contacts/filter/online-contact-filter.h
-
-	#contacts/model/abstract-contacts-model.h
-	contacts/model/contact-list-model.h
-	contacts/model/contacts-model.h
-	contacts/model/contacts-model-base.h
-	contacts/model/contacts-model-proxy.h
-	contacts/model/groups-model.h
 
 	configuration/configuration-window-data-manager.h
 	configuration/notifier-configuration-data-manager.h

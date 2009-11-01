@@ -15,7 +15,7 @@
 #include <QtGui/QGroupBox>
 #include <QtGui/QLabel>
 
-#include "contacts/contact.h"
+#include "buddies/buddy.h"
 
 #include "exports.h"
 

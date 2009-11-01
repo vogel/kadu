@@ -17,11 +17,11 @@
 #include <QtGui/QSortFilterProxyModel>
 
 #include "accounts/account.h"
-#include "contacts/contact.h"
-#include "contacts/contact-list.h"
-#include "contacts/contact-list-mime-data-helper.h"
-#include "contacts/contact-manager.h"
-#include "contacts/model/contacts-model-proxy.h"
+#include "buddies/buddy.h"
+#include "buddies/buddy-list.h"
+#include "buddies/buddy-list-mime-data-helper.h"
+#include "buddies/buddy-manager.h"
+#include "buddies/model/contacts-model-proxy.h"
 #include "gui/actions/action.h"
 #include "gui/actions/action-description.h"
 #include "model/roles.h"

@@ -13,12 +13,12 @@
 #include <QtGui/QLabel>
 #include <QtGui/QHBoxLayout>
 
+#include "buddies/buddy.h"
+#include "buddies/buddy-list.h"
+
 #include "chat/chat.h"
 
 #include "configuration/configuration-file.h"
-
-#include "contacts/contact.h"
-#include "contacts/contact-list.h"
 
 #include "gui/widgets/configuration/notify-group-box.h"
 #include "gui/windows/main-configuration-window.h"

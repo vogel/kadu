@@ -25,8 +25,8 @@
 #include "accounts/account.h"
 #include "accounts/account-manager.h"
 #include "configuration/configuration-file.h"
-#include "contacts/account-data/contact-account-data.h"
-#include "contacts/model/contacts-model.h"
+#include "buddies/account-data/contact-account-data.h"
+#include "buddies/model/contacts-model.h"
 #include "model/roles.h"
 #include "icons-manager.h"
 

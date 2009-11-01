@@ -8,7 +8,7 @@
  ***************************************************************************/
 
 #include "configuration/configuration-file.h"
-#include "contacts/ignored-helper.h"
+#include "buddies/ignored-helper.h"
 #include "core/core.h"
 #include "gui/windows/message-box.h"
 #include "misc/misc.h"

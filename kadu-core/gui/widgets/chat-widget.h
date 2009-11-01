@@ -18,7 +18,7 @@
 #include "chat/chat.h"
 #include "chat/message/formatted-message.h"
 #include "configuration/configuration-aware-object.h"
-#include "contacts/contact-list.h"
+#include "buddies/buddy-list.h"
 #include "protocols/services/chat-service.h"
 #include "chat-messages-view.h"
 #include "exports.h"

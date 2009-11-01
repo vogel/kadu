@@ -10,7 +10,7 @@
 #ifndef GADU_AVATAR_SERVICE_H
 #define GADU_AVATAR_SERVICE_H
 
-#include "contacts/account-data/contact-account-data.h"
+#include "buddies/account-data/contact-account-data.h"
 #include "protocols/services/avatar-service.h"
 
 class GaduAvatarService : public AvatarService

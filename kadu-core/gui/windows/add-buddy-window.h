@@ -12,7 +12,7 @@
 
 #include <QtGui/QDialog>
 
-#include "contacts/contact.h"
+#include "buddies/buddy.h"
 
 class QCheckBox;
 class QComboBox;

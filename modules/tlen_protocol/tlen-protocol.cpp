@@ -20,7 +20,7 @@
 #include "accounts/account-manager.h"
 #include "chat/message/message.h"
 #include "configuration/configuration-file.h"
-#include "contacts/contact-manager.h"
+#include "buddies/buddy-manager.h"
 #include "core/core.h"
 #include "gui/windows/kadu-window.h"
 #include "gui/windows/main-configuration-window.h"

@@ -14,7 +14,7 @@
 
 #include <libgadu.h>
 
-#include "contacts/contact.h"
+#include "buddies/buddy.h"
 
 #include "protocols/services/search-service.h"
 

@@ -18,8 +18,8 @@
 #include "protocols/services/file-transfer-service.h"
 
 #include "file-transfer.h"
-#include <contacts/contact-manager.h>
-#include <contacts/contact-manager.h>
+#include <buddies/buddy-manager.h>
+#include <buddies/buddy-manager.h>
 
 FileTransfer::FileTransfer(Account account) :
 		Uuid(QUuid::createUuid()), CurrentAccount(account), Peer(Contact::null),

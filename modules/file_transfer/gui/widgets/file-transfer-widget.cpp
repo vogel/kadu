@@ -14,7 +14,7 @@
 #include <QtGui/QProgressBar>
 #include <QtGui/QPushButton>
 
-#include "contacts/contact.h"
+#include "buddies/buddy.h"
 #include "file-transfer/file-transfer.h"
 #include "file-transfer/file-transfer-manager.h"
 #include "gui/windows/message-box.h"

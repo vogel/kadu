@@ -9,7 +9,7 @@
 
 #include "accounts/account.h"
 
-#include "contacts/contact.h"
+#include "buddies/buddy.h"
 
 #include "debug.h"
 

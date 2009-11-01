@@ -8,7 +8,7 @@
  ***************************************************************************/
 
 #include "accounts/account.h"
-#include "contacts/contact.h"
+#include "buddies/buddy.h"
 
 #include "protocol-menu-manager.h"
 

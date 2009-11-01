@@ -12,8 +12,8 @@
 
 #include <QtCore/QObject>
 
-#include "contacts/contact-list.h"
-#include "contacts/contact-search-criteria.h"
+#include "buddies/buddy-list.h"
+#include "buddies/buddy-search-criteria.h"
 
 #include "exports.h"
 

@@ -13,7 +13,7 @@
 #include <QtCore/QSharedData>
 
 #include "chat/message/message.h"
-#include "contacts/contact.h"
+#include "buddies/buddy.h"
 
 class Chat;
 

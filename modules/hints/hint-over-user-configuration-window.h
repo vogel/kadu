@@ -11,7 +11,7 @@
 #define HINT_OVER_USER_CONFIGURATION_WINDOW_H
 
 #include "gui/windows/configuration-window.h"
-#include "contacts/contact.h"
+#include "buddies/buddy.h"
 
 class QFrame;
 class QLabel;

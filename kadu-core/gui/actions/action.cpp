@@ -8,8 +8,8 @@
  ***************************************************************************/
 
 #include "accounts/account-manager.h"
-#include "contacts/contact.h"
-#include "contacts/contact-set.h"
+#include "buddies/buddy.h"
+#include "buddies/buddy-set.h"
 #include "gui/hot-key.h"
 #include "gui/windows/main-window.h"
 #include "icons-manager.h"

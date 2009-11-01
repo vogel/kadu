@@ -16,9 +16,9 @@
 #include <QtGui/QLabel>
 
 #include "configuration/configuration-file.h"
-#include "contacts/contact-list.h"
-#include "contacts/contact-manager.h"
-#include "contacts/account-data/contact-account-data.h"
+#include "buddies/buddy-list.h"
+#include "buddies/buddy-manager.h"
+#include "buddies/account-data/contact-account-data.h"
 #include "contact-notify-data.h"
 #include "gui/widgets/chat-widget.h"
 #include "gui/widgets/configuration/configuration-widget.h"

@@ -10,11 +10,11 @@
 #include <QtGui/QHBoxLayout>
 #include <QtGui/QVBoxLayout>
 
-#include "contacts/contact-manager.h"
-#include "contacts/account-data/contact-account-data.h"
-#include "contacts/model/contacts-model.h"
-#include "contacts/model/contacts-model-proxy.h"
-#include "contacts/filter/account-contact-filter.h"
+#include "buddies/buddy-manager.h"
+#include "buddies/account-data/contact-account-data.h"
+#include "buddies/model/contacts-model.h"
+#include "buddies/model/contacts-model-proxy.h"
+#include "buddies/filter/account-contact-filter.h"
 #include "gui/windows/message-box.h"
 
 #include "debug.h"

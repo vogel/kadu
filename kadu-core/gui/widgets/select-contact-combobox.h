@@ -12,7 +12,7 @@
 
 #include <QtGui/QComboBox>
 
-#include "contacts/contact.h"
+#include "buddies/buddy.h"
 
 class AbstractContactFilter;
 class ContactsModelProxy;

@@ -9,7 +9,7 @@
 #include <QtGui/QMessageBox>
 
 #include "accounts/account.h"
-#include "contacts/contact-manager.h"
+#include "buddies/buddy-manager.h"
 #include "debug.h"
 #include "jabber-contact-account-data.h"
 #include "../jabber-protocol.h"

@@ -14,7 +14,7 @@
 #include <QtCore/QPair>
 
 #include "chat/chat.h"
-#include "contacts/contact-list.h"
+#include "buddies/buddy-list.h"
 
 #include "gui/windows/main-window.h"
 

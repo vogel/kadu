@@ -15,8 +15,8 @@
 #include "accounts/account.h"
 #include "accounts/account-manager.h"
 #include "configuration/xml-configuration-file.h"
-#include "contacts/model/contact-list-model.h"
-#include "contacts/contact-manager.h"
+#include "buddies/model/contact-list-model.h"
+#include "buddies/buddy-manager.h"
 #include "core/core.h"
 #include "gui/widgets/chat-widget-manager.h"
 

@@ -10,9 +10,9 @@
 #ifndef SEARCH_WINDOW_H
 #define SEARCH_WINDOW_H
 
-#include "contacts/contact-list.h"
-#include "contacts/contact-search-criteria.h"
-#include "contacts/contact-set.h"
+#include "buddies/buddy-list.h"
+#include "buddies/buddy-search-criteria.h"
+#include "buddies/buddy-set.h"
 #include "gui/actions/action.h"
 #include "gui/windows/main-window.h"
 

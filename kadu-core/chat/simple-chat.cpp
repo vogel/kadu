@@ -9,9 +9,9 @@
 
 #include "accounts/account-manager.h"
 #include "chat/type/chat-type-manager.h"
-#include "contacts/account-data/contact-account-data.h"
-#include "contacts/account-data/contact-account-data-manager.h"
-#include "contacts/contact-manager.h"
+#include "buddies/account-data/contact-account-data.h"
+#include "buddies/account-data/contact-account-data-manager.h"
+#include "buddies/buddy-manager.h"
 #include "protocols/protocol.h"
 
 #include "simple-chat.h"

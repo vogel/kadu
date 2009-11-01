@@ -10,7 +10,7 @@
 #include <QtGui/QLineEdit>
 
 #include "configuration/configuration-contact-account-data-manager.h"
-#include "contacts/account-data/contact-account-data.h"
+#include "buddies/account-data/contact-account-data.h"
 #include "misc/misc.h"
 
 #include "contact-account-data-widget.h"

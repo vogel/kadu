@@ -12,7 +12,7 @@
 
 #include <QtCore/QObject>
 
-#include "contacts/contact.h"
+#include "buddies/buddy.h"
 
 class PersonalInfoService : public QObject
 {

@@ -14,8 +14,8 @@
 #include <QtGui/QPushButton>
 #include <QtGui/QVBoxLayout>
 
-#include "contacts/contact-manager.h"
-#include "contacts/filter/contact-mergable-filter.h"
+#include "buddies/buddy-manager.h"
+#include "buddies/filter/contact-mergable-filter.h"
 #include "gui/widgets/select-contact-combobox.h"
 #include "icons-manager.h"
 

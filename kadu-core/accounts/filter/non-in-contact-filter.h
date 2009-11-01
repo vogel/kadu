@@ -10,7 +10,7 @@
 #ifndef NON_IN_CONTACT_FILTER
 #define NON_IN_CONTACT_FILTER
 
-#include "contacts/contact.h"
+#include "buddies/buddy.h"
 
 #include "accounts/filter/abstract-account-filter.h"
 

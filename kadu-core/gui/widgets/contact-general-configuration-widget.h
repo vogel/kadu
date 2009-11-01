@@ -16,7 +16,7 @@
 #include <QtGui/QLineEdit>
 #include <QtGui/QTreeView>
 
-#include "contacts/contact.h"
+#include "buddies/buddy.h"
 
 #include "exports.h"
 

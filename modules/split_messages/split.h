@@ -6,7 +6,7 @@
 #include <QtCore/QTimer>
 
 #include "configuration_aware_object.h"
-#include "contacts/contact-list.h"
+#include "buddies/buddy-list.h"
 #include "main_configuration_window.h"
 
 class ChatWidget;

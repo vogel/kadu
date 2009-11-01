@@ -9,8 +9,8 @@
 
 #include "chat/aggregate-chat.h"
 #include "chat/chat.h"
-#include "contacts/filter/contact-name-filter.h"
-#include "contacts/contact-list.h"
+#include "buddies/filter/contact-name-filter.h"
+#include "buddies/buddy-list.h"
 
 #include "chat-name-filter.h"
 

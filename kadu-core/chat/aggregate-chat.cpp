@@ -7,7 +7,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "contacts/contact-set-configuration-helper.h"
+#include "buddies/buddy-set-configuration-helper.h"
 
 #include "chat/aggregate-chat.h"
 

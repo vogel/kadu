@@ -19,7 +19,7 @@
 
 #include "accounts/account.h"
 #include "configuration/configuration-file.h"
-#include "contacts/ignored-helper.h"
+#include "buddies/ignored-helper.h"
 
 #include "debug.h"
 #include "misc/misc.h"

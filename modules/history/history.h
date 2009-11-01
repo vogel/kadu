@@ -32,7 +32,7 @@ enum HistoryEntryType
 };
 
 #include "configuration/configuration-aware-object.h"
-#include "contacts/contact-remove-predicate-object.h"
+#include "buddies/buddy-remove-predicate-object.h"
 #include "gui/actions/action.h"
 #include "gui/actions/action-description.h"
 #include "gui/widgets/contacts-list-view-menu-manager.h"

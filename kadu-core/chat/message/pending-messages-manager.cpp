@@ -13,8 +13,8 @@
 #include "accounts/account-manager.h"
 #include "chat/chat-manager.h"
 #include "configuration/xml-configuration-file.h"
-#include "contacts/contact-manager.h"
-#include "contacts/contact-list-configuration-helper.h"
+#include "buddies/buddy-manager.h"
+#include "buddies/buddy-list-configuration-helper.h"
 #include "gui/widgets/chat-widget-manager.h"
 
 #include "debug.h"

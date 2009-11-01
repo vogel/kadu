@@ -14,7 +14,7 @@
 
 #include "accounts/accounts-aware-object.h"
 #include "configuration/configuration-aware-object.h"
-#include "contacts/contact.h"
+#include "buddies/buddy.h"
 #include "status/status.h"
 
 class QTextDocument;

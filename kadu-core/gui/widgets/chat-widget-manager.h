@@ -14,7 +14,7 @@
 
 #include "configuration/configuration-aware-object.h"
 #include "configuration/storable-string-list.h"
-#include "contacts/contact-list.h"
+#include "buddies/buddy-list.h"
 #include "gui/widgets/chat-widget.h"
 
 #include "exports.h"

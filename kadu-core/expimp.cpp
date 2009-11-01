@@ -25,9 +25,9 @@
 
 #include "accounts/account.h"
 #include "accounts/account-manager.h"
-#include "contacts/contact-manager.h"
-#include "contacts/group.h"
-#include "contacts/account-data/contact-account-data.h"
+#include "buddies/buddy-manager.h"
+#include "buddies/group.h"
+#include "buddies/account-data/contact-account-data.h"
 #include "gui/windows/message-box.h"
 #include "protocols/protocol.h"
 #include "protocols/services/contact-list-service.h"

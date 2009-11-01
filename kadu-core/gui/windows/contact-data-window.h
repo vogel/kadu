@@ -14,7 +14,7 @@
 #include <QtCore/QMap>
 #include <QtGui/QWidget>
 
-#include "contacts/contact.h"
+#include "buddies/buddy.h"
 #include "gui/widgets/contact-general-configuration-widget.h"
 #include "gui/widgets/contact-groups-configuration-widget.h"
 #include "gui/widgets/contact-options-configuration-widget.h"

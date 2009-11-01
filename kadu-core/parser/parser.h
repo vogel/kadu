@@ -12,7 +12,7 @@
 
 #include <QtCore/QMap>
 
-#include "contacts/contact.h"
+#include "buddies/buddy.h"
 
 #include "exports.h"
 

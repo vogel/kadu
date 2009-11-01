@@ -11,7 +11,7 @@
 #include <QtCore/QUrl>
 
 #include "accounts/account.h"
-#include "contacts/avatar-manager.h"
+#include "buddies/avatar-manager.h"
 #include "misc/path-conversion.h"
 #include "tlen.h"
 #include "tlen-protocol.h"

@@ -17,8 +17,8 @@
 #include "accounts/accounts-aware-object.h"
 #include "chat/chat.h"
 #include "configuration/configuration-aware-object.h"
-#include "contacts/contact.h"
-#include "contacts/contact-set.h"
+#include "buddies/buddy.h"
+#include "buddies/buddy-set.h"
 #include "status/status.h"
 
 class Action;

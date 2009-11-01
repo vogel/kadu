@@ -8,7 +8,7 @@
  ***************************************************************************/
 
 #include "chat/type/chat-type-manager.h"
-#include "contacts/contact-set-configuration-helper.h"
+#include "buddies/buddy-set-configuration-helper.h"
 
 #include "conference-chat.h"
 
