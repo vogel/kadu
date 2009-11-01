@@ -49,7 +49,7 @@ BuddyManager::~BuddyManager()
 
 StoragePoint * BuddyManager::createStoragePoint()
 {
-	return new StoragePoint(xml_config_file, xml_config_file->getNode("ContactsNew"));
+	return new StoragePoint(xml_config_file, xml_config_file->getNode("Buddies"));
 }
 
 void BuddyManager::importConfiguration(XmlConfigFile *configurationStorage)
@@ -77,7 +77,7 @@ void BuddyManager::load()
 {
 	StorableObject::load();
 
-	if (xml_config_file->getNode("ContactsNew", XmlConfigFile::ModeFind).isNull())
+	if (xml_config_file->getNode("Buddies", XmlConfigFile::ModeFind).isNull())
 	{
 		importConfiguration(xml_config_file);
 		return;
@@ -87,7 +87,7 @@ void BuddyManager::load()
 		return;
 
 	QDomElement contactsNewNode = storage()->point();
-	QDomNodeList contactsNodes = contactsNewNode.elementsByTagName("Contact");
+	QDomNodeList contactsNodes = contactsNewNode.elementsByTagName("Buddy");
 
 	int count = contactsNodes.count();
 	for (int i = 0; i < count; i++)

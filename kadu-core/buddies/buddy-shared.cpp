@@ -31,7 +31,7 @@ BuddyShared * BuddyShared::loadFromStorage(StoragePoint *contactStoragePoint)
 }
 
 BuddyShared::BuddyShared(BuddyType type, QUuid uuid) :
-		UuidStorableObject("Contact", BuddyManager::instance()),
+		UuidStorableObject("Buddy", BuddyManager::instance()),
 		Uuid(uuid.isNull() ? QUuid::createUuid() : uuid), Type(type),
 		Ignored(false), Blocked(false), OfflineTo(false),
 		BlockUpdatedSignalCount(0), Updated(false)

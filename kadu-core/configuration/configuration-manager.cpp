@@ -53,6 +53,10 @@ void ConfigurationManager::importConfiguration()
 	if (root.elementsByTagName("ContactAccountDatas").count() == 0 &&
 	    root.elementsByTagName("ContactsNew").count() == 1)
 		importOldContactAccountData();
+
+	if (root.elementsByTagName("ContactsNew").count() == 1 &&
+	    root.elementsByTagName("Buddies").count() == 0)
+		importContactsIntoBuddies();
 }
 
 void ConfigurationManager::importOldContactAccountData()
@@ -81,6 +85,26 @@ void ConfigurationManager::importOldContactAccountData()
 			contactAccountDatasNode.appendChild(contactAccountData);
 			xml_config_file->createTextNode(contactAccountData, "Contact", contact.attribute("uuid"));
 		}
+	}
+
+	flush();
+}
+
+void ConfigurationManager::importContactsIntoBuddies()
+{
+	QDomElement root = xml_config_file->rootElement();
+	QDomElement buddiesNode = root.elementsByTagName("ContactsNew").at(0).toElement();
+	buddiesNode.setTagName("Buddies");
+
+	QDomNodeList buddies = buddiesNode.elementsByTagName("Contact");
+	int count = buddies.count();
+	for (int i = 0; i < count; i++)
+	{
+		QDomElement buddy = buddies.at(i).toElement();
+		if (buddy.isNull())
+			continue;
+
+		buddy.setTagName("Buddy");
 	}
 
 	flush();
