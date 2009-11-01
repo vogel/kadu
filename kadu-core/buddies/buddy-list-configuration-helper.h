@@ -7,8 +7,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef CONTACT_LIST_CONFIGURATION_HELPER_H
-#define CONTACT_LIST_CONFIGURATION_HELPER_H
+#ifndef BUDDY_LIST_CONFIGURATION_HELPER_H
+#define BUDDY_LIST_CONFIGURATION_HELPER_H
 
 #include "buddies/buddy-list.h"
 
@@ -20,4 +20,4 @@ public:
 
 };
 
-#endif // CONTACT_LIST_CONFIGURATION_HELPER_H
+#endif // BUDDY_LIST_CONFIGURATION_HELPER_H

@@ -7,8 +7,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef CONTACT_H
-#define CONTACT_H
+#ifndef BUDDY_H
+#define BUDDY_H
 
 #include <QtCore/QExplicitlySharedDataPointer>
 #include <QtCore/QHash>
@@ -147,4 +147,4 @@ uint qHash(const Buddy &contact);
 #undef PropertyWrite
 #undef Property
 
-#endif // CONTACT_H
+#endif // BUDDY_H

@@ -7,8 +7,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef CONTACT_DATA
-#define CONTACT_DATA
+#ifndef BUDDY_SHARED_DATA
+#define BUDDY_SHARED_DATA
 
 #include <QtCore/QMap>
 #include <QtCore/QSharedData>
@@ -163,4 +163,4 @@ signals:
 
 #include "accounts/account.h" // for MOC
 
-#endif // CONTACT_DATA
+#endif // BUDDY_SHARED_DATA

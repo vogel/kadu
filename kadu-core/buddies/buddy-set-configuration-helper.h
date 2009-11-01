@@ -7,8 +7,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef CONTACT_SET_CONFIGURATION_HELPER_H
-#define CONTACT_SET_CONFIGURATION_HELPER_H
+#ifndef BUDDY_SET_CONFIGURATION_HELPER_H
+#define BUDDY_SET_CONFIGURATION_HELPER_H
 
 #include "buddies/buddy-set.h"
 
@@ -22,4 +22,4 @@ public:
 
 };
 
-#endif // CONTACT_SET_CONFIGURATION_HELPER_H
+#endif // BUDDY_SET_CONFIGURATION_HELPER_H

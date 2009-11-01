@@ -7,8 +7,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef CONTACT_LIST_H
-#define CONTACT_LIST_H
+#ifndef BUDDY_LIST_H
+#define BUDDY_LIST_H
 
 #include <QtCore/QList>
 
@@ -29,4 +29,4 @@ public:
 
 };
 
-#endif // CONTACT_LIST_H
+#endif // BUDDY_LIST_H

@@ -7,8 +7,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef CONTACT_REMOVE_PREDICATE_OBJECT
-#define CONTACT_REMOVE_PREDICATE_OBJECT
+#ifndef BUDDY_REMOVE_PREDICATE_OBJECT
+#define BUDDY_REMOVE_PREDICATE_OBJECT
 
 #include "predicate-object.h"
 
@@ -25,4 +25,4 @@ public:
 
 };
 
-#endif // CONTACT_REMOVE_PREDICATE_OBJECT
+#endif // BUDDY_REMOVE_PREDICATE_OBJECT

@@ -7,8 +7,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef CONTACT_SET_H
-#define CONTACT_SET_H
+#ifndef BUDDY_SET_H
+#define BUDDY_SET_H
 
 #include <QtCore/QSet>
 
@@ -31,4 +31,4 @@ public:
 
 };
 
-#endif // CONTACT_SET_H
+#endif // BUDDY_SET_H

@@ -7,8 +7,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef CONTACT_KADU_DATA_H
-#define CONTACT_KADU_DATA_H
+#ifndef BUDDY_KADU_DATA_H
+#define BUDDY_KADU_DATA_H
 
 #include <QtCore/QRect>
 
@@ -39,4 +39,4 @@ public:
 
 #undef Property
 
-#endif // CONTACT_KADU_DATA_H
+#endif // BUDDY_KADU_DATA_H

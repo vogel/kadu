@@ -7,8 +7,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef CONTACT_MANAGER_H
-#define CONTACT_MANAGER_H
+#ifndef BUDDY_MANAGER_H
+#define BUDDY_MANAGER_H
 
 #include <QtCore/QMap>
 #include <QtCore/QObject>
@@ -92,4 +92,4 @@ signals:
 
 };
 
-#endif // CONTACT_MANAGER_H
+#endif // BUDDY_MANAGER_H

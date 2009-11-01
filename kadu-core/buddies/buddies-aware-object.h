@@ -7,8 +7,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef CONTACTS_AWARE_OBJECT
-#define CONTACTS_AWARE_OBJECT
+#ifndef BUDDIES_AWARE_OBJECT
+#define BUDDIES_AWARE_OBJECT
 
 #include <QtCore/QList>
 
@@ -32,4 +32,4 @@ public:
 
 };
 
-#endif // CONTACTS_AWARE_OBJECT
+#endif // BUDDIES_AWARE_OBJECT
